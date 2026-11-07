@@ -22,12 +22,14 @@ import json
 import math
 import os
 import socket
+import time
 from collections.abc import Iterable, Mapping, Sequence
 from pathlib import Path
 from typing import Any
 
 import numpy as np
 from sqlalchemy import Engine, and_, create_engine, delete, event, func, inspect, or_, select, text
+from sqlalchemy.exc import DBAPIError
 from sqlalchemy.dialects import postgresql, sqlite
 from sqlalchemy.orm import Session, selectinload, sessionmaker
 from sqlalchemy.pool import StaticPool
@@ -216,11 +218,23 @@ class Catalog:
         self.engine.dispose()
 
     def create_schema(self) -> None:
-        """Crée les tables, index, contraintes et la vue ``v_eval_summary`` absents (idempotent)."""
-        Base.metadata.create_all(self.engine)
-        with self.engine.begin() as conn:
-            if "v_eval_summary" not in inspect(conn).get_view_names():
-                conn.execute(text(VIEW_EVAL_SUMMARY_SQL))
+        """Crée les tables, index, contraintes et la vue ``v_eval_summary`` absents (idempotent).
+
+        Tolère deux créations simultanées (deux campagnes lancées en même temps sur un catalogue neuf) :
+        si l'autre processus a créé un objet entre la vérification et la création, on réessaie.
+        """
+        for attempt in range(6):
+            try:
+                Base.metadata.create_all(self.engine)
+                with self.engine.begin() as conn:
+                    if "v_eval_summary" not in inspect(conn).get_view_names():
+                        conn.execute(text(VIEW_EVAL_SUMMARY_SQL))
+                return
+            except DBAPIError as exc:
+                msg = str(exc).lower()
+                if attempt == 5 or not ("already exists" in msg or "duplicate key" in msg):
+                    raise
+                time.sleep(0.2 * (attempt + 1))
 
     def session(self) -> Session:
         """Session SQLAlchemy brute (requêtes libres) ; à utiliser avec ``with cat.session() as s``."""

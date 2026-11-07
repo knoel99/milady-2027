@@ -208,6 +208,34 @@ def test_sqlite_file_default_url(tmp_path: Path, monkeypatch: pytest.MonkeyPatch
     assert Catalog().url.endswith("autre.sqlite")
 
 
+def _open_catalog(url: str, queue) -> None:  # processus fils de test_concurrent_schema_creation
+    try:
+        Catalog(url).close()
+        queue.put("ok")
+    except Exception as exc:  # noqa: BLE001 - on remonte le message au processus parent
+        queue.put(f"{type(exc).__name__}: {exc}")
+
+
+def test_concurrent_schema_creation(tmp_path: Path) -> None:
+    """Deux campagnes lancées en même temps sur un catalogue SQLite neuf : aucune ne doit échouer."""
+    import multiprocessing as mp
+
+    ctx = mp.get_context("spawn")
+    for trial in range(5):
+        url = f"sqlite:///{tmp_path}/race{trial}.sqlite"
+        queue = ctx.Queue()
+        procs = [ctx.Process(target=_open_catalog, args=(url, queue)) for _ in range(4)]
+        for proc in procs:
+            proc.start()
+        for proc in procs:
+            proc.join(60)
+        results = [queue.get(timeout=5) for _ in procs]
+        assert results == ["ok"] * 4, results
+        cat = Catalog(url)
+        assert "simulation" in inspect(cat.engine).get_table_names()
+        cat.close()
+
+
 def test_sqlite_constraints_enforced() -> None:
     """Les CHECK et clés étrangères tiennent même si l'on contourne l'API."""
     cat = Catalog("sqlite://")
