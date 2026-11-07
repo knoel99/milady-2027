@@ -38,7 +38,7 @@ format:
           <script defer src="../../assets/theme.js"></script>
 ---
 
-This pathway leads from a first-year undergraduate (L1) level (calculus, linear algebra, some programming) to the level required to start the MilaDy internship: reading a paper on generative models under physical constraints, writing and training a conditional flow matching model, and assessing a generated MHD field against physical criteria. It comprises **eight modules**, about **215 hours** of work and **121 exercises with solutions**.
+This pathway leads from a first-year undergraduate (L1) level (calculus, linear algebra, some programming) to the level required to start the MilaDy internship: reading a paper on generative models under physical constraints, writing and training a conditional flow matching model, and assessing a generated MHD field against physical criteria. It comprises **eight modules**, about **215 hours** of work and **122 exercises with solutions**.
 
 ::: note
 [About]{.tag}
@@ -56,7 +56,7 @@ These modules are independent notes. They are not an official course of ENPC, LI
 | [5. Probability, statistics and optimal transport](p5-probabilites-transport/index.html) | L2 → M1 | 25 h | 15 | pushforward measure, KL and I-projection, distances between distributions, SDEs |
 | [6. Deep learning for physics](p6-apprentissage-profond/index.html) | L3 → M2 | 30 h | 16 | neural networks, POD and autoencoders, equivariance, PINNs and operators |
 | [7. Generative models: diffusion and flow matching](p7-modeles-generatifs/index.html) | M1 → M2 | 30 h | 16 | diffusion, score, flow matching, conditioning, FunDiff |
-| [8. Generative models under physical constraints](p8-contraintes-physiques/index.html) | M2 → research | 30 h | 15 | taxonomy of constraints, projections, penalties, distributional constraints |
+| [8. Generative models under physical constraints](p8-contraintes-physiques/index.html) | M2 → research | 30 h | 16 | taxonomy of constraints, projections, penalties, distributional constraints |
 
 ## In what order {#ordre}
 
@@ -81,7 +81,7 @@ To start the internship in spring 2027, at a pace of about 15 hours per week:
 | 9–10 | 4 | be able to check a stationarity identity and the Rice formula on a simple model |
 | 11–12 | 6 | have compared POD and an autoencoder on fields |
 | 13–14 | 7 | have trained a conditional flow matching model |
-| 15 | 8 | have read the five references of the internship offer and reproduced an experiment from the [report](../rapport/index.html) |
+| 15–16 | 8 | have read the five references of the internship offer and reproduced an experiment from the [report](../rapport/index.html) |
 
 ## How to work through a module {#methode}
 

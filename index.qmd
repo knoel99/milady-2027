@@ -49,11 +49,11 @@ Un projet indépendant, préparé pour candidater au stage de M2 « *Physics-Con
 
 | Étape | Contenu | Pages |
 |---|---|---|
-| **1. Se préparer** | Huit modules gradués, du niveau licence 1 au niveau M2 recherche : calcul vectoriel et Fourier, turbulence, MHD et dynamo, systèmes dynamiques, probabilités et transport, apprentissage profond, diffusion et flow matching, contraintes physiques. Environ 215 heures, 121 exercices corrigés. | [Parcours de préparation](prep/index.html) |
-| **2. Faire le stage** | Le rapport de stage : état de l'art, une taxonomie des contraintes physiques avec neuf propositions démontrées, trois expériences (modèle de renversements, MHD 2D, dynamo ABC) et leur discussion. | [Rapport de stage](rapport/index.html) · [Expériences](experiences/index.html) |
+| **1. Se préparer** | Huit modules gradués, du niveau licence 1 au niveau M2 recherche : calcul vectoriel et Fourier, turbulence, MHD et dynamo, systèmes dynamiques, probabilités et transport, apprentissage profond, diffusion et flow matching, contraintes physiques. Environ 215 heures, 122 exercices corrigés. | [Parcours de préparation](prep/index.html) |
+| **2. Faire le stage** | Le rapport de stage : état de l'art, une taxonomie des contraintes physiques avec neuf énoncés démontrés (huit propositions et un corollaire), trois expériences (modèle de renversements, MHD 2D, dynamo ABC) et leur discussion. | [Rapport de stage](rapport/index.html) · [Expériences](experiences/index.html) |
 | **3. Préparer la thèse** | Les travaux des quatre encadrants, six pistes évaluées, la piste retenue, sa partie théorique, son plan expérimental chiffré et évalué, son calendrier. | [Encadrants](encadrants/index.html) · [Sujet de thèse](these/index.html) |
 
-Six [schémas interactifs](interactifs/index.html) accompagnent le parcours : flow matching, projection de Leray, contrainte en loi, renversements du dipôle, dynamo ABC et chaîne de simulation.
+Six [schémas interactifs](interactifs/index.html) transversaux accompagnent le parcours, en plus des 25 schémas interactifs des modules : flow matching, projection de Leray, contrainte en loi, renversements du dipôle, dynamo ABC et chaîne de simulation.
 
 Pour passer à l'échelle pendant la thèse, la page [Calcul et données](calcul/index.html) décrit l'infrastructure du dépôt : format de données standard, catalogue des simulations et des résultats, déploiement en une commande sur une VM cloud avec GPU ou sur un cluster Slurm.
 
@@ -81,9 +81,9 @@ MilaDy (« Modélisation par apprentissage automatique des dynamos turbulentes �
 
 Les expériences sont des bancs d'essai à petite échelle (CPU, sans GPU). Tous les chiffres viennent du [condensé des résultats](https://github.com/knoel99/milady-2027/blob/main/experiences/resultats/digest.md).
 
-- **Divergence nulle (MHD 2D, E2).** Générer librement les composantes laisse une divergence relative d'environ 0,4 ; une pénalité douce la réduit peu (environ 0,3) et dégrade l'énergie magnétique. Générer des potentiels, projeter à la fin ou projeter le flot donne une divergence nulle à la précision machine.
-- **Bilan d'énergie en loi (E2).** Imposer le bilan d'énergie moyen pendant l'entraînement, y compris pour des valeurs de $\eta$ sans données, divise par environ 3,6 la distance à la vraie loi sur les valeurs de test (0,70 contre 2,52 pour un témoin entraîné aussi longtemps sans cette perte). Imposer le bilan à chaque échantillon le satisfait exactement, mais en annulant la variance de la dissipation, ce qui est faux physiquement.
-- **Dynamo ABC (E3).** Les seuils mesurés, $Rm \approx 8{,}87$, $17{,}60$ et $26{,}80$, retrouvent les fenêtres de dynamo connues.
+- **Divergence nulle (MHD 2D, E2).** Générer librement les composantes laisse une divergence relative d'environ 0,4 ; une pénalité douce la réduit peu (0,34 pour u, 0,16 pour B) et dégrade l'énergie magnétique. Générer des potentiels, projeter à la fin ou projeter le flot donne une divergence nulle à la précision machine.
+- **Bilan d'énergie en loi (E2).** Imposer le bilan d'énergie moyen pendant l'entraînement, y compris pour des valeurs de $\eta$ sans données, divise par environ 3,6 la distance d'énergie entre lois de descripteurs spectraux sur les valeurs de test (0,70 contre 2,52 pour un témoin entraîné aussi longtemps sans cette perte). Imposer le bilan à chaque échantillon le satisfait exactement, mais en annulant la variance de la dissipation, ce qui est faux physiquement.
+- **Dynamo ABC (E3).** Les seuils mesurés, $Rm \approx 8{,}87$, $17{,}6$ et $26{,}8$, retrouvent les fenêtres de dynamo connues.
 - **Renversements (E1).** Sur un modèle de renversements à trois modes, rendre le champ de vitesse symétrique par construction garde les deux polarités à égalité à toute valeur du forçage, alors qu'ajouter des données retournées ne le fait qu'aux valeurs vues pendant l'entraînement. La fréquence des renversements se prédit à partir des seuls échantillons générés, sans simulation temporelle, avec une erreur cumulée de 14 % loin du seuil (jusqu'à 65 % en un point) et de 42 % au seuil, que le générateur lisse. Imposer le bilan d'énergie à chaque échantillon multiplie par 9 la distance d'énergie à la vraie loi ; la perte en loi, utile sur un bon modèle, échoue sur un modèle biaisé. Voir le [rapport, section E1](rapport/index.html#e1).
 
 ## Sources officielles {#sources}

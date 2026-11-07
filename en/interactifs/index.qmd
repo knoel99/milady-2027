@@ -40,7 +40,7 @@ format:
 
 ::: note
 [About]{.tag}
-Each diagram is a small, self-contained JavaScript program that runs in your browser, with no server. The formulas it uses are written at the top of each file (`assets/interactif/<name>.js`), together with their references. These diagrams complement the static figures of the [report](../rapport/index.html) and of the [preparation modules](../prep/index.html); they do not replace the proofs.
+Each diagram is a small, self-contained JavaScript program that runs in your browser, with no server. The formulas it uses are written at the top of each file (`assets/interactif/<name>.js`), together with their references. These diagrams complement the figures of the [report](../rapport/index.html) and the static or interactive diagrams of the [preparation modules](../prep/index.html); they do not replace the proofs.
 :::
 
 The six diagrams follow the order of the curriculum: the transport of probability distributions that underlies flow matching, the projection that makes a field divergence-free, the difference between a per-sample constraint and a constraint in distribution, two dynamical systems from the internship, the reversal model and the ABC kinematic dynamo, then the infrastructure's simulation pipeline.
@@ -86,7 +86,7 @@ Further reading: module [p5 — probability and optimal transport](../prep/p5-pr
 
 ## 4. Dipole reversals: the Gissinger model {#gissinger}
 
-Gissinger's three-mode model (2012) couples a dipolar mode $D$, a quadrupolar mode $Q$ and a velocity mode $V$. It reproduces chaotic reversals of the dipole, analogous to those of the VKS experiment. Vary $\Gamma$: up to $\Gamma = 0.86$, the trajectory stays on one side (no reversal); just above (from $0.8625$ in the site's simulations), the two symmetric attractors have merged and $D$ changes sign irregularly, rarely at first, then more and more often as $\Gamma$ increases.
+Gissinger's three-mode model (2012) couples a dipolar mode $D$, a quadrupolar mode $Q$ and a velocity mode $V$. It reproduces chaotic reversals of the dipole, analogous to those of the VKS experiment. Vary $\Gamma$: up to $\Gamma = 0.86$, the trajectory stays on one side (no reversal); just above (from $0.865$ on E1's fine grid; a longer check already finds some at $0.8625$), the two symmetric attractors have merged and $D$ changes sign irregularly, rarely at first, then more and more often as $\Gamma$ increases.
 
 The diagram counts the zero crossings of $D$ and compares them with the estimate given by **Rice's formula**, computed from the visited states alone: $\nu_0 \approx \mathbb{E}\big[|\dot D|\,\mathbf{1}_{|D|<h}\big]/(2h)$. This is the idea behind Proposition 8 of the report: a generative model of the stationary distribution is enough to predict the reversal frequency, without integrating in time.
 
@@ -101,7 +101,7 @@ Further reading: module [p4 — dynamical systems](../prep/p4-systemes-dynamique
 
 The ABC flow ($A = B = C = 1$) is a kinematic dynamo: for certain values of the magnetic Reynolds number $Rm = 1/\eta$, an initially weak magnetic field grows exponentially. The curve shows the growth rate $\lambda(Rm)$ computed in this repository on a $32^3$ grid; the shaded areas are the dynamo windows. The map shows a slice of $|\mathbf{B}|$ for the most unstable mode.
 
-The measured thresholds ($Rm \approx 8.87$, $17.60$ and $26.80$) recover the known windows ($8.9 < Rm < 17.5$, then $Rm \gtrsim 27$). This computation serves as a 3D test bed for the PhD: generating eigenmodes conditioned on $Rm$ from a vector potential.
+The measured thresholds ($Rm \approx 8.87$, $17.6$ and $26.8$) recover the known windows ($8.9 < Rm < 17.5$, then $Rm \gtrsim 27$). This computation serves as a 3D test bed for the PhD: generating eigenmodes conditioned on $Rm$ from a vector potential.
 
 ```{=html}
 <div class="widget" data-widget="abc-dynamo" data-src="../../assets/interactif/data/abc-dynamo.json"></div>

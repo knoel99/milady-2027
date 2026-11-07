@@ -49,11 +49,11 @@ An independent project, prepared to apply for the M2 internship "*Physics-Constr
 
 | Stage | Content | Pages |
 |---|---|---|
-| **1. Prepare** | Eight graded modules, from first-year undergraduate level to M2 research level: vector calculus and Fourier analysis, turbulence, MHD and dynamo, dynamical systems, probability and transport, deep learning, diffusion and flow matching, physical constraints. About 215 hours, 121 exercises with solutions. | [Preparation pathway](prep/index.html) |
-| **2. Do the internship** | The internship report: state of the art, a taxonomy of physical constraints with nine proven propositions, three experiments (reversal model, 2D MHD, ABC dynamo) and their discussion. | [Internship report](rapport/index.html) · [Experiments](experiences/index.html) |
+| **1. Prepare** | Eight graded modules, from first-year undergraduate level to M2 research level: vector calculus and Fourier analysis, turbulence, MHD and dynamo, dynamical systems, probability and transport, deep learning, diffusion and flow matching, physical constraints. About 215 hours, 122 exercises with solutions. | [Preparation pathway](prep/index.html) |
+| **2. Do the internship** | The internship report: state of the art, a taxonomy of physical constraints with nine proven statements (eight propositions and one corollary), three experiments (reversal model, 2D MHD, ABC dynamo) and their discussion. | [Internship report](rapport/index.html) · [Experiments](experiences/index.html) |
 | **3. Prepare the PhD** | The work of the four supervisors, six assessed directions, the selected direction, its theoretical part, its costed and assessed experimental plan, its timeline. | [Supervisors](encadrants/index.html) · [PhD proposal](these/index.html) |
 
-Six [interactive diagrams](interactifs/index.html) accompany the pathway: flow matching, Leray projection, constraint in law, dipole reversals, ABC dynamo and simulation pipeline.
+Six cross-cutting [interactive diagrams](interactifs/index.html) accompany the pathway, in addition to the 25 interactive diagrams inside the modules: flow matching, Leray projection, constraint in law, dipole reversals, ABC dynamo and simulation pipeline.
 
 To scale up during the PhD, the [Computing and data](calcul/index.html) page describes the repository's infrastructure: standard data format, catalog of simulations and results, one-command deployment on a cloud VM with a GPU or on a Slurm cluster.
 
@@ -81,9 +81,9 @@ MilaDy (*Machine learning modelling for turbulent Dynamos*; French title *Modél
 
 The experiments are small-scale testbeds (CPU, no GPU). All the numbers come from the [results digest](https://github.com/knoel99/milady-2027/blob/main/experiences/resultats/digest.md).
 
-- **Zero divergence (2D MHD, E2).** Generating the components freely leaves a relative divergence of about 0.4; a soft penalty only slightly reduces it (about 0.3) and degrades the magnetic energy. Generating potentials, projecting at the end or projecting the flow gives zero divergence to machine precision.
-- **Energy balance in law (E2).** Enforcing the mean energy balance during training, including for values of $\eta$ without data, divides the distance to the true law at test values by about 3.6 (0.70 versus 2.52 for a baseline trained just as long without this loss). Enforcing the balance on each sample satisfies it exactly, but by reducing the variance of the dissipation to zero, which is physically wrong.
-- **ABC dynamo (E3).** The measured thresholds, $Rm \approx 8.87$, $17.60$ and $26.80$, recover the known dynamo windows.
+- **Zero divergence (2D MHD, E2).** Generating the components freely leaves a relative divergence of about 0.4; a soft penalty only partly reduces it (0.34 for u, 0.16 for B) and degrades the magnetic energy. Generating potentials, projecting at the end or projecting the flow gives zero divergence to machine precision.
+- **Energy balance in law (E2).** Enforcing the mean energy balance during training, including for values of $\eta$ without data, divides the energy distance between distributions of spectral descriptors at test values by about 3.6 (0.70 versus 2.52 for a baseline trained just as long without this loss). Enforcing the balance on each sample satisfies it exactly, but by reducing the variance of the dissipation to zero, which is physically wrong.
+- **ABC dynamo (E3).** The measured thresholds, $Rm \approx 8.87$, $17.6$ and $26.8$, recover the known dynamo windows.
 - **Reversals (E1).** On a three-mode reversal model, making the velocity field symmetric by construction keeps the two polarities equally likely at every value of the forcing, whereas adding flipped data does so only at values seen during training. The reversal frequency is predicted from the generated samples alone, without any time-dependent simulation, with a cumulative error of 14% far from the threshold (up to 65% at a single value) and of 42% at the threshold, which the generator smooths out. Enforcing the energy balance on each sample multiplies the energy distance to the true law by 9; the loss in law, useful on a good model, fails on a biased model. See the [report, section E1](rapport/index.html#e1).
 
 ## Official sources {#sources}

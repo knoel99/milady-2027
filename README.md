@@ -25,14 +25,14 @@ Python 3.11+ avec NumPy, SciPy, Matplotlib et PyTorch (CPU suffit).
 
 ```bash
 cd experiences
-python3 e1_gissinger.py            # E1 : loi invariante du modèle de renversements de Gissinger (≈ 1 h CPU)
+python3 e1_gissinger.py            # E1 : loi invariante du modèle de renversements de Gissinger (≈ 2 à 3 h CPU, reprenable)
 python3 e2_donnees.py              # E2 : instantanés MHD 2D forcée (≈ 30 min)
 python3 e2_mhd2d.py                # E2 : 5 mécanismes de contrainte + volet « en loi » (≈ 1 h)
-python3 e3_abc.py                  # E3 : dynamo cinématique ABC, taux de croissance en fonction de Rm (≈ 20 min)
+python3 e3_abc.py                  # E3 : dynamo cinématique ABC, taux de croissance en fonction de Rm (≈ 23 min)
 python3 figures.py                 # graphiques
 ```
 
-Chaque script accepte `--quick` (version réduite, quelques minutes).
+Chaque script accepte `--quick` (version réduite, de quelques minutes à une vingtaine de minutes pour E1).
 
 ## Calcul HPC et cloud (paquet `milady`, dossier `infra/`)
 

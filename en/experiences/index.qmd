@@ -65,9 +65,9 @@ The `experiences/` folder of the repository contains everything needed to reprod
 
 ```bash
 cd experiences
-python3 e3_abc.py                 # E3, about 25 min
+python3 e3_abc.py                 # E3, about 23 min
 python3 e2_donnees.py             # E2, data: about 30 min
-python3 e2_mhd2d.py               # E2, models: about 70 min
+python3 e2_mhd2d.py               # E2, models: about 67 min
 python3 e1_gissinger.py           # E1, about 2 to 3 h (resumable)
 python3 figures.py && python3 digest.py > resultats/digest.md
 ```
@@ -98,11 +98,11 @@ Results and discussion: [report, section E2](../rapport/index.html#e2).
 
 ![Distributional constraint versus per-sample constraint (test values of $\eta$): residual of the energy budget, spread of the dissipation and energy distance, for the V4 model, its exponential tilting, its sample-by-sample correction, and the V5 model trained with the stationarity loss.](../../experiences/figures/e2_en_loi-en.png){width="100%" fig-alt="Three horizontal bar charts for four variants."}
 
-A first attempt with a periodic U-Net on the $32\times32$ grid (file `unet.py`) cost about 0.3 s per training step on this processor: five variants would have required several hours each. Switching to the truncated Fourier basis keeps the comparison clean (same network, same budget for all variants) at a cost compatible with a CPU. The internship itself would run on GPU, with field architectures (U-Nets, transformers, functional decoders).
+A first attempt with a periodic U-Net on the $32\times32$ grid (file `unet.py`) cost about 0.3 s per training step on this processor: five variants would have required several hours in total (about 30 min each at the 6000-iteration budget). Switching to the truncated Fourier basis keeps the comparison clean (same network, same budget for all variants) at a cost compatible with a CPU. The internship itself would run on GPU, with field architectures (U-Nets, transformers, functional decoders).
 
 ## E3 — ABC kinematic dynamo {#e3}
 
-The induction equation with the imposed ABC flow is solved by a $32^3$ pseudo-spectral method. The growth rate $\lambda(Rm)$ changes sign at $Rm \approx 8.87$, $17.60$ and $26.80$, in agreement with the known windows. The curl form of the equation keeps $\nabla\cdot\mathbf{B}$ at machine precision ($\sim 10^{-16}$).
+The induction equation with the imposed ABC flow is solved by a $32^3$ pseudo-spectral method. The growth rate $\lambda(Rm)$ changes sign at $Rm \approx 8.87$, $17.6$ and $26.8$, in agreement with the known windows. The curl form of the equation keeps $\nabla\cdot\mathbf{B}$ at machine precision ($\sim 10^{-16}$).
 
 Results: [report, section E3](../rapport/index.html#e3). Interactive diagram: [ABC dynamo](../interactifs/index.html#abc-dynamo).
 

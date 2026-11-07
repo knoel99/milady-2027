@@ -40,7 +40,7 @@ format:
 
 ::: note
 [À propos]{.tag}
-Chaque schéma est un petit programme JavaScript autonome qui tourne dans votre navigateur, sans serveur. Les formules utilisées sont écrites en tête de chaque fichier (`assets/interactif/<nom>.js`), avec leurs références. Ces schémas complètent les schémas statiques du [rapport](../rapport/index.html) et des [modules de préparation](../prep/index.html) ; ils ne remplacent pas les démonstrations.
+Chaque schéma est un petit programme JavaScript autonome qui tourne dans votre navigateur, sans serveur. Les formules utilisées sont écrites en tête de chaque fichier (`assets/interactif/<nom>.js`), avec leurs références. Ces schémas complètent les figures du [rapport](../rapport/index.html) et les schémas, statiques ou interactifs, des [modules de préparation](../prep/index.html) ; ils ne remplacent pas les démonstrations.
 :::
 
 Les six schémas suivent l'ordre du parcours : le transport de lois qui fonde le flow matching, la projection qui rend un champ à divergence nulle, la différence entre contrainte par échantillon et contrainte en loi, deux systèmes dynamiques du stage, le modèle de renversements et la dynamo cinématique ABC, puis la chaîne de simulation de l'infrastructure.
@@ -86,7 +86,7 @@ Pour aller plus loin : module [p5 — probabilités et transport optimal](../pre
 
 ## 4. Renversements du dipôle : le modèle de Gissinger {#gissinger}
 
-Le modèle à trois modes de Gissinger (2012) couple un mode dipolaire $D$, un mode quadripolaire $Q$ et un mode de vitesse $V$. Il reproduit des renversements chaotiques du dipôle, analogues à ceux de l'expérience VKS. Faites varier $\Gamma$ : jusqu'à $\Gamma = 0{,}86$, la trajectoire reste d'un côté (pas de renversement) ; juste au-dessus (dès $0{,}8625$ dans les simulations du site), les deux attracteurs symétriques ont fusionné et $D$ change de signe de façon irrégulière, d'abord rarement, puis de plus en plus souvent quand $\Gamma$ augmente.
+Le modèle à trois modes de Gissinger (2012) couple un mode dipolaire $D$, un mode quadripolaire $Q$ et un mode de vitesse $V$. Il reproduit des renversements chaotiques du dipôle, analogues à ceux de l'expérience VKS. Faites varier $\Gamma$ : jusqu'à $\Gamma = 0{,}86$, la trajectoire reste d'un côté (pas de renversement) ; juste au-dessus (dès $0{,}865$ sur la grille fine de E1 ; un contrôle plus long en trouve déjà à $0{,}8625$), les deux attracteurs symétriques ont fusionné et $D$ change de signe de façon irrégulière, d'abord rarement, puis de plus en plus souvent quand $\Gamma$ augmente.
 
 Le schéma compte les passages de $D$ par zéro et les compare à l'estimation par la **formule de Rice**, calculée à partir des seuls états visités : $\nu_0 \approx \mathbb{E}\big[|\dot D|\,\mathbf{1}_{|D|<h}\big]/(2h)$. C'est l'idée de la Proposition 8 du rapport : un modèle génératif de la loi stationnaire suffit à prédire la fréquence des renversements, sans intégrer en temps.
 
@@ -101,7 +101,7 @@ Pour aller plus loin : module [p4 — systèmes dynamiques](../prep/p4-systemes-
 
 L'écoulement ABC ($A = B = C = 1$) est une dynamo cinématique : pour certaines valeurs du nombre de Reynolds magnétique $Rm = 1/\eta$, un champ magnétique initialement faible croît exponentiellement. La courbe montre le taux de croissance $\lambda(Rm)$ calculé dans ce dépôt sur une grille $32^3$ ; les zones ombrées sont les fenêtres de dynamo. La carte montre une coupe de $|\mathbf{B}|$ du mode le plus instable.
 
-Les seuils mesurés ($Rm \approx 8{,}87$, $17{,}60$ et $26{,}80$) retrouvent les fenêtres connues ($8{,}9 < Rm < 17{,}5$ puis $Rm \gtrsim 27$). Ce calcul sert de banc d'essai 3D pour la thèse : générer des modes propres conditionnés par $Rm$ à partir d'un potentiel vecteur.
+Les seuils mesurés ($Rm \approx 8{,}87$, $17{,}6$ et $26{,}8$) retrouvent les fenêtres connues ($8{,}9 < Rm < 17{,}5$ puis $Rm \gtrsim 27$). Ce calcul sert de banc d'essai 3D pour la thèse : générer des modes propres conditionnés par $Rm$ à partir d'un potentiel vecteur.
 
 ```{=html}
 <div class="widget" data-widget="abc-dynamo" data-src="../assets/interactif/data/abc-dynamo.json"></div>

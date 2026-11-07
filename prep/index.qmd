@@ -38,7 +38,7 @@ format:
           <script defer src="../assets/theme.js"></script>
 ---
 
-Ce parcours mène d'un niveau de licence 1 (analyse, algèbre linéaire, un peu de programmation) au niveau requis pour commencer le stage MilaDy : lire un article sur les modèles génératifs sous contraintes physiques, écrire et entraîner un modèle de flow matching conditionnel, et juger un champ MHD généré avec des critères physiques. Il compte **huit modules**, environ **215 heures** de travail et **121 exercices corrigés**.
+Ce parcours mène d'un niveau de licence 1 (analyse, algèbre linéaire, un peu de programmation) au niveau requis pour commencer le stage MilaDy : lire un article sur les modèles génératifs sous contraintes physiques, écrire et entraîner un modèle de flow matching conditionnel, et juger un champ MHD généré avec des critères physiques. Il compte **huit modules**, environ **215 heures** de travail et **122 exercices corrigés**.
 
 ::: note
 [À propos]{.tag}
@@ -56,7 +56,7 @@ Ces modules sont des notes indépendantes. Ils ne sont pas un cours officiel de 
 | [5. Probabilités, statistiques et transport optimal](p5-probabilites-transport/index.html) | L2 → M1 | 25 h | 15 | mesure image, KL et I-projection, distances entre lois, EDS |
 | [6. Apprentissage profond pour la physique](p6-apprentissage-profond/index.html) | L3 → M2 | 30 h | 16 | réseaux, POD et autoencodeurs, équivariance, PINNs et opérateurs |
 | [7. Modèles génératifs : diffusion et flow matching](p7-modeles-generatifs/index.html) | M1 → M2 | 30 h | 16 | diffusion, score, flow matching, conditionnement, FunDiff |
-| [8. Modèles génératifs sous contraintes physiques](p8-contraintes-physiques/index.html) | M2 → recherche | 30 h | 15 | taxonomie des contraintes, projections, pénalités, contraintes en loi |
+| [8. Modèles génératifs sous contraintes physiques](p8-contraintes-physiques/index.html) | M2 → recherche | 30 h | 16 | taxonomie des contraintes, projections, pénalités, contraintes en loi |
 
 ## Dans quel ordre {#ordre}
 
@@ -81,7 +81,7 @@ Pour une arrivée en stage au printemps 2027, à raison d'environ 15 heures par 
 | 9–10 | 4 | savoir vérifier une identité de stationnarité et la formule de Rice sur un modèle simple |
 | 11–12 | 6 | avoir comparé POD et autoencodeur sur des champs |
 | 13–14 | 7 | avoir entraîné un flow matching conditionnel |
-| 15 | 8 | avoir lu les cinq références de l'offre et refait une expérience du [rapport](../rapport/index.html) |
+| 15–16 | 8 | avoir lu les cinq références de l'offre et refait une expérience du [rapport](../rapport/index.html) |
 
 ## Comment travailler un module {#methode}
 

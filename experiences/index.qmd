@@ -65,9 +65,9 @@ Le dossier `experiences/` du dépôt contient tout le nécessaire pour reproduir
 
 ```bash
 cd experiences
-python3 e3_abc.py                 # E3, environ 25 min
+python3 e3_abc.py                 # E3, environ 23 min
 python3 e2_donnees.py             # E2, données : environ 30 min
-python3 e2_mhd2d.py               # E2, modèles : environ 70 min
+python3 e2_mhd2d.py               # E2, modèles : environ 67 min
 python3 e1_gissinger.py           # E1, environ 2 à 3 h (reprenable)
 python3 figures.py && python3 digest.py > resultats/digest.md
 ```
@@ -98,11 +98,11 @@ Résultats et discussion : [rapport, section E2](../rapport/index.html#e2).
 
 ![Contrainte en loi contre contrainte par échantillon (valeurs de $\eta$ de test) : résidu du bilan d'énergie, dispersion de la dissipation et distance d'énergie, pour le modèle V4, son inclinaison exponentielle, son recalage échantillon par échantillon et le modèle V5 entraîné avec la perte de stationnarité.](figures/e2_en_loi.png){width="100%" fig-alt="Trois diagrammes en barres horizontales pour quatre variantes."}
 
-Un premier essai avec un U-Net périodique sur la grille $32\times32$ (fichier `unet.py`) coûtait environ 0,3 s par pas d'entraînement sur ce processeur : cinq variantes auraient demandé plusieurs heures chacune. Le passage à la base de Fourier tronquée garde la comparaison propre (même réseau, même budget pour toutes les variantes) à un coût compatible avec un CPU. Le stage proprement dit se ferait sur GPU, avec des architectures de champ (U-Net, transformeurs, décodeurs fonctionnels).
+Un premier essai avec un U-Net périodique sur la grille $32\times32$ (fichier `unet.py`) coûtait environ 0,3 s par pas d'entraînement sur ce processeur : cinq variantes auraient demandé plusieurs heures au total (environ 30 min chacune au budget de 6000 itérations). Le passage à la base de Fourier tronquée garde la comparaison propre (même réseau, même budget pour toutes les variantes) à un coût compatible avec un CPU. Le stage proprement dit se ferait sur GPU, avec des architectures de champ (U-Net, transformeurs, décodeurs fonctionnels).
 
 ## E3 — dynamo cinématique ABC {#e3}
 
-L'équation d'induction avec l'écoulement ABC imposé est résolue par une méthode pseudo-spectrale $32^3$. Le taux de croissance $\lambda(Rm)$ change de signe en $Rm \approx 8{,}87$, $17{,}60$ et $26{,}80$, en accord avec les fenêtres connues. La forme rotationnelle de l'équation garde $\nabla\cdot\mathbf{B}$ à la précision machine ($\sim 10^{-16}$).
+L'équation d'induction avec l'écoulement ABC imposé est résolue par une méthode pseudo-spectrale $32^3$. Le taux de croissance $\lambda(Rm)$ change de signe en $Rm \approx 8{,}87$, $17{,}6$ et $26{,}8$, en accord avec les fenêtres connues. La forme rotationnelle de l'équation garde $\nabla\cdot\mathbf{B}$ à la précision machine ($\sim 10^{-16}$).
 
 Résultats : [rapport, section E3](../rapport/index.html#e3). Schéma interactif : [dynamo ABC](../interactifs/index.html#abc-dynamo).
 

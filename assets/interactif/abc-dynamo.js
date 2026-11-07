@@ -27,7 +27,7 @@
  *    (Rm_a, λ_a), (Rm_b, λ_b) de signes opposés :
  *        Rm_c = Rm_a + (Rm_b − Rm_a) (−λ_a) / (λ_b − λ_a).
  *    Les zones ombrées sont les intervalles où la courbe affine par morceaux vérifie λ > 0.
- *    Valeurs publiées : 8,9 < Rm < 17,5 puis Rm > ≈ 27 (Galloway & Frisch 1986).
+ *    Valeurs publiées : 8,9 < Rm < 17,5 puis Rm > ≈ 27 (Galloway & Frisch 1984, cités par Archontis et al. 2003).
  *
  * 4. Mode exact de référence (courbe −1/Rm) : u est un champ de Beltrami, ∇×u = u
  *    (∇×u = (C cos y + A sin z, A cos z + B sin x, B cos x + C sin y) = u), et chaque composante
@@ -51,6 +51,9 @@
  *    incompressible flow », Vestn. Mosk. Univ. Ser. 1 Mat. Mekh. 3, 43–46 (1983).
  *  - T. Dombre, U. Frisch, J. M. Greene, M. Hénon, A. Mehr, A. M. Soward, « Chaotic streamlines in
  *    the ABC flows », J. Fluid Mech. 167, 353–391 (1986).
+ *  - D. Galloway, U. Frisch, « A numerical investigation of magnetic field generation in a flow with
+ *    chaotic streamlines », Geophys. Astrophys. Fluid Dyn. 29, 13–18 (1984), DOI 10.1080/03091928408248180
+ *    (cité d'après Archontis, Dorch & Nordlund 2003 : seuils 8,9 < Rm < 17,5 et Rm > 27).
  *  - D. J. Galloway, U. Frisch, « Dynamo action in a family of flows with chaotic streamlines »,
  *    Geophys. Astrophys. Fluid Dyn. 36, 53–83 (1986).
  *  - S. B. F. Dorch, « On the structure of the magnetic field in a kinematic ABC flow dynamo »,
@@ -86,7 +89,7 @@
       panelA: "(a) taux de croissance λ en fonction de Rm = 1/η",
       panelAShort: "(a) taux de croissance λ(Rm)",
       panelB: function (rm) { return "(b) |B|/B_rms, coupe z = 0, Rm = " + rm; },
-      lg32: "λ (32³)", lg48: "λ (48³, contrôle)", lgDyn: "dynamo (λ > 0)", lgGF: "seuils publiés (Galloway & Frisch 1986)",
+      lg32: "λ (32³)", lg48: "λ (48³, contrôle)", lgDyn: "dynamo (λ > 0)", lgGF: "seuils publiés (Galloway & Frisch 1984, d'après Archontis et al. 2003)",
       lgRef: "−1/Rm : mode exact B = u", lgOut: "point hors cadre",
       dyn: "dynamo", xAxis: "Rm = 1/η", yAxis: "λ",
       tipLam: "λ", tipQ: "dernier quart", tip48: "48³",
@@ -105,14 +108,14 @@
       hov: function (x, y, v, bx, by) {
         return "en (x, y) = (" + x + " ; " + y + ") : |B|/B_rms = " + v + ", (Bx, By)/B_rms = (" + bx + " ; " + by + ")";
       },
-      l3: function (s, ref) { return "Seuils interpolés (32³) : Rm ≈ " + s + " — publiés (Galloway & Frisch 1986) : " + ref; },
+      l3: function (s, ref) { return "Seuils interpolés (32³) : Rm ≈ " + s + " — publiés (Galloway & Frisch 1984, d'après Archontis et al. 2003) : " + ref; },
       listSep: " ; ", approx: "≈ ",
       loading: "Chargement des données…",
       noSrc: "Données absentes : ajoutez l'attribut data-src (chemin du fichier abc-dynamo.json).",
       error: function (src) { return "Données introuvables (" + src + "). La page doit être servie en http(s), pas ouverte en file://."; },
       note: "u = (A sin z + C cos y, B sin x + A cos z, C sin y + B cos x), [0, 2π)³ périodique, Rm = 1/⁠η ; λ = pente de ln‖B‖ " +
         "sur t ∈ [75 ; 150] (pseudo-spectral 32³ ; carrés : contrôle en 48³). Fenêtres publiées : 8,9 < Rm < 17,5, puis Rm > 27 environ " +
-        "(Galloway & Frisch 1986). Comme ∇×u = u, B = u est un mode exact de taux −1/Rm (tirets, vue « complet »). " +
+        "(Galloway & Frisch 1984, d'après Archontis et al. 2003). Comme ∇×u = u, B = u est un mode exact de taux −1/Rm (tirets, vue « complet »). " +
         "Carte : champ final normalisé (B_rms = 1), proche du mode dominant (le moins amorti si λ < 0)."
     },
     en: {
@@ -124,7 +127,7 @@
       panelA: "(a) growth rate λ versus Rm = 1/η",
       panelAShort: "(a) growth rate λ(Rm)",
       panelB: function (rm) { return "(b) |B|/B_rms, slice z = 0, Rm = " + rm; },
-      lg32: "λ (32³)", lg48: "λ (48³, check)", lgDyn: "dynamo (λ > 0)", lgGF: "published thresholds (Galloway & Frisch 1986)",
+      lg32: "λ (32³)", lg48: "λ (48³, check)", lgDyn: "dynamo (λ > 0)", lgGF: "published thresholds (Galloway & Frisch 1984, via Archontis et al. 2003)",
       lgRef: "−1/Rm: exact mode B = u", lgOut: "off-scale point",
       dyn: "dynamo", xAxis: "Rm = 1/η", yAxis: "λ",
       tipLam: "λ", tipQ: "last quarter", tip48: "48³",
@@ -143,14 +146,14 @@
       hov: function (x, y, v, bx, by) {
         return "at (x, y) = (" + x + ", " + y + "): |B|/B_rms = " + v + ", (Bx, By)/B_rms = (" + bx + ", " + by + ")";
       },
-      l3: function (s, ref) { return "Interpolated thresholds (32³): Rm ≈ " + s + " — published (Galloway & Frisch 1986): " + ref; },
+      l3: function (s, ref) { return "Interpolated thresholds (32³): Rm ≈ " + s + " — published (Galloway & Frisch 1984, via Archontis et al. 2003): " + ref; },
       listSep: "; ", approx: "≈ ",
       loading: "Loading data…",
       noSrc: "No data: add the data-src attribute (path of the abc-dynamo.json file).",
       error: function (src) { return "Data not found (" + src + "). The page must be served over http(s), not opened as file://."; },
       note: "u = (A sin z + C cos y, B sin x + A cos z, C sin y + B cos x), periodic [0, 2π)³, Rm = 1/⁠η; λ = slope of ln‖B‖ " +
         "over t ∈ [75, 150] (pseudo-spectral 32³; squares: 48³ check). Published windows: 8.9 < Rm < 17.5, then Rm > 27 approximately " +
-        "(Galloway & Frisch 1986). Since ∇×u = u, B = u is an exact mode with rate −1/Rm (dashes, “full” view). " +
+        "(Galloway & Frisch 1984, via Archontis et al. 2003). Since ∇×u = u, B = u is an exact mode with rate −1/Rm (dashes, “full” view). " +
         "Map: final field normalised (B_rms = 1), close to the dominant mode (the least damped one if λ < 0)."
     }
   };
@@ -789,7 +792,7 @@
       if (y >= p.t - 1 && y <= p.b + 1) self.marker("sq", X(q.rm), y, C.pal[1]);
     });
 
-    // seuils publiés (Galloway & Frisch 1986) : triangles sur l'axe des Rm
+    // seuils publiés (Galloway & Frisch 1984, d'après Archontis et al. 2003) : triangles sur l'axe des Rm
     d.ref.forEach(function (r) { self.marker("tri", X(r), p.b - 6, C.ink); });
 
     c.restore();
