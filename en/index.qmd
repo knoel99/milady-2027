@@ -53,7 +53,7 @@ An independent project, prepared to apply for the M2 internship "*Physics-Constr
 | **2. Do the internship** | The internship report: state of the art, a taxonomy of physical constraints with nine proven propositions, three experiments (reversal model, 2D MHD, ABC dynamo) and their discussion. | [Internship report](rapport/index.html) · [Experiments](experiences/index.html) |
 | **3. Prepare the PhD** | The work of the four supervisors, six assessed directions, the selected direction, its theoretical part, its costed and assessed experimental plan, its timeline. | [Supervisors](encadrants/index.html) · [PhD proposal](these/index.html) |
 
-Five [interactive diagrams](interactifs/index.html) accompany the pathway: flow matching, Leray projection, constraint in law, dipole reversals and ABC dynamo.
+Six [interactive diagrams](interactifs/index.html) accompany the pathway: flow matching, Leray projection, constraint in law, dipole reversals, ABC dynamo and simulation pipeline.
 
 To scale up during the PhD, the [Computing and data](calcul/index.html) page describes the repository's infrastructure: standard data format, catalog of simulations and results, one-command deployment on a cloud VM with a GPU or on a Slurm cluster.
 

@@ -131,6 +131,12 @@ window.Quarto = {
 <div class="note">
 <p><span class="tag">À propos</span> Toutes les expériences de ce site tournent sur un processeur ordinaire (Intel Xeon, 4 cœurs, 2,30 GHz, sans GPU), en Python 3.13 avec NumPy 2.5, SciPy 1.18, Matplotlib 3.11 et PyTorch 2.15 (version CPU). Ce sont des <strong>bancs d’essai à petite échelle</strong> : ils testent des idées et des mécanismes, pas des performances sur des données de dynamo réelles. Les chiffres cités dans le <a href="../rapport/index.html">rapport</a> viennent tous des fichiers de résultats décrits ici.</p>
 </div>
+<div class="quarto-figure quarto-figure-center">
+<figure>
+<p><img src="../figures/simulations/figure/out/simulations.png" style="width:100.0%" alt="Trois rangées, E1, E2 et E3. Dans chaque rangée : une vignette du système (série du dipôle D, carte de MHD 2D, boîte périodique), deux lignes sur le schéma numérique, un petit graphique de la réponse en fonction du paramètre avec les valeurs d'entraînement et de test sur l'axe, et la campagne correspondante de l'infrastructure."></p>
+<figcaption>Les trois bancs d’essai sur un même gabarit : système, schéma numérique, balayage du paramètre avec la réponse du système, données gardées et place dans la chaîne de calcul. Réponses : E1, fréquence des passages de <span class="math inline">D</span> par zéro dans les simulations de la grille fine ; E2, énergie magnétique moyenne <span class="math inline">E_B</span> (± un écart-type), <strong>recalculée</strong> pour ce schéma avec le solveur et les réglages de E2 ; E3, taux de croissance <span class="math inline">\lambda</span>, axe restreint à <span class="math inline">\pm 0{,}012</span> (trois points sous l’échelle, à <span class="math inline">Rm = 2</span>, 4 et 6, marqués d’une flèche). Points pleins : valeurs d’entraînement ; points vides : valeurs de test. Zones teintées : seuil des renversements (E1) et fenêtres de dynamo (E3).</figcaption>
+</figure>
+</div>
 <h2 id="code">Organisation du code</h2>
 <p>Le dossier <code>experiences/</code> du dépôt contient tout le nécessaire pour reproduire les résultats.</p>
 <table class="caption-top">

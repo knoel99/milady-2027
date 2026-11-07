@@ -1,6 +1,6 @@
 ---
 title: "Interactive diagrams"
-subtitle: "Five thought experiments to manipulate in the browser"
+subtitle: "Six diagrams to manipulate in the browser"
 lang: en
 format:
   html:
@@ -43,7 +43,7 @@ format:
 Each diagram is a small, self-contained JavaScript program that runs in your browser, with no server. The formulas it uses are written at the top of each file (`assets/interactif/<name>.js`), together with their references. These diagrams complement the static figures of the [report](../rapport/index.html) and of the [preparation modules](../prep/index.html); they do not replace the proofs.
 :::
 
-The five diagrams follow the order of the curriculum: the transport of probability distributions that underlies flow matching, the projection that makes a field divergence-free, the difference between a per-sample constraint and a constraint in distribution, then two dynamical systems from the internship, the reversal model and the ABC kinematic dynamo.
+The six diagrams follow the order of the curriculum: the transport of probability distributions that underlies flow matching, the projection that makes a field divergence-free, the difference between a per-sample constraint and a constraint in distribution, two dynamical systems from the internship, the reversal model and the ABC kinematic dynamo, then the infrastructure's simulation pipeline.
 
 ## 1. Flow matching: transporting a distribution {#flow-matching}
 
@@ -109,6 +109,17 @@ The measured thresholds ($Rm \approx 8.87$, $17.60$ and $26.80$) recover the kno
 ```
 
 Further reading: module [p3 — MHD and the dynamo effect](../prep/p3-mhd-dynamo/index.html) and experiment [E3](../rapport/index.html#e3).
+
+## 6. The simulation pipeline {#architecture}
+
+This last diagram does not illustrate a mathematical notion but the repository's computing tool: the pipeline that leads from a campaign of simulations to the evaluation of a model, and what changes from one target to another (laptop, cloud VM with GPU, Slurm cluster). Pick a target, then click a stage: the diagram shows what it does, what it writes to the catalog and to storage, and the exact command on that target. The "Follow a campaign" button walks through the seven stages.
+
+```{=html}
+<div class="widget" data-widget="architecture"></div>
+<script defer src="../../assets/interactif/architecture.js"></script>
+```
+
+Further reading: page [Computing and data](../calcul/index.html), Figures 1 and 2.
 
 ## Sources {#sources}
 

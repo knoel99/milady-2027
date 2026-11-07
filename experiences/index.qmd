@@ -43,6 +43,8 @@ format:
 Toutes les expériences de ce site tournent sur un processeur ordinaire (Intel Xeon, 4 cœurs, 2,30 GHz, sans GPU), en Python 3.13 avec NumPy 2.5, SciPy 1.18, Matplotlib 3.11 et PyTorch 2.15 (version CPU). Ce sont des **bancs d'essai à petite échelle** : ils testent des idées et des mécanismes, pas des performances sur des données de dynamo réelles. Les chiffres cités dans le [rapport](../rapport/index.html) viennent tous des fichiers de résultats décrits ici.
 :::
 
+![Les trois bancs d'essai sur un même gabarit : système, schéma numérique, balayage du paramètre avec la réponse du système, données gardées et place dans la chaîne de calcul. Réponses : E1, fréquence des passages de $D$ par zéro dans les simulations de la grille fine ; E2, énergie magnétique moyenne $E_B$ (± un écart-type), **recalculée** pour ce schéma avec le solveur et les réglages de E2 ; E3, taux de croissance $\lambda$, axe restreint à $\pm 0{,}012$ (trois points sous l'échelle, à $Rm = 2$, 4 et 6, marqués d'une flèche). Points pleins : valeurs d'entraînement ; points vides : valeurs de test. Zones teintées : seuil des renversements (E1) et fenêtres de dynamo (E3).](../figures/simulations/figure/out/simulations.png){width="100%" fig-alt="Trois rangées, E1, E2 et E3. Dans chaque rangée : une vignette du système (série du dipôle D, carte de MHD 2D, boîte périodique), deux lignes sur le schéma numérique, un petit graphique de la réponse en fonction du paramètre avec les valeurs d'entraînement et de test sur l'axe, et la campagne correspondante de l'infrastructure."}
+
 ## Organisation du code {#code}
 
 Le dossier `experiences/` du dépôt contient tout le nécessaire pour reproduire les résultats.

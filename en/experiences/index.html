@@ -131,6 +131,12 @@ window.Quarto = {
 <div class="note">
 <p><span class="tag">About</span> All the experiments on this site run on an ordinary processor (Intel Xeon, 4 cores, 2.30 GHz, no GPU), in Python 3.13 with NumPy 2.5, SciPy 1.18, Matplotlib 3.11 and PyTorch 2.15 (CPU build). They are <strong>small-scale testbeds</strong>: they test ideas and mechanisms, not performance on real dynamo data. All the numbers quoted in the <a href="../rapport/index.html">report</a> come from the result files described here.</p>
 </div>
+<div class="quarto-figure quarto-figure-center">
+<figure>
+<p><img src="../../figures/simulations/figure/out/simulations-en.png" style="width:100.0%" alt="Three rows, E1, E2 and E3. In each row: a thumbnail of the system (time series of the dipole D, 2D MHD map, periodic box), two lines on the numerical scheme, a small plot of the response against the parameter with the training and test values on the axis, and the corresponding infrastructure campaign."></p>
+<figcaption>The three test benches on one template: system, numerical scheme, parameter sweep with the system’s response, data kept and place in the compute pipeline. Responses: E1, frequency of zero crossings of <span class="math inline">D</span> in the fine-grid simulations; E2, mean magnetic energy <span class="math inline">E_B</span> (± one standard deviation), <strong>recomputed</strong> for this diagram with E2’s solver and settings; E3, growth rate <span class="math inline">\lambda</span>, axis restricted to <span class="math inline">\pm 0.012</span> (three points below the scale, at <span class="math inline">Rm = 2</span>, 4 and 6, marked with an arrow). Filled points: training values; open points: test values. Shaded zones: reversal threshold (E1) and dynamo windows (E3).</figcaption>
+</figure>
+</div>
 <h2 id="code">Code organization</h2>
 <p>The <code>experiences/</code> folder of the repository contains everything needed to reproduce the results.</p>
 <table class="caption-top">

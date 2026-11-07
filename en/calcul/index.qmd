@@ -83,6 +83,8 @@ The web interfaces (MLflow, MinIO console, JupyterLab) listen only on the VM: yo
 
 A campaign described in a YAML file becomes simulations, then files, then a dataset, models, and evaluations. Each step writes its record to the catalog under a unique identifier (UUID); the simulations, their files, and the models also carry the code commit (with a `-dirty` suffix if the working tree had been modified).
 
+![**Figure 1 — A campaign's pipeline and its three targets.** **a**, A YAML campaign (here `palier2_tg3d`: 4 × 3 $(Re, Pm)$ points, $64^3$ grid) goes through seven modules; every stage writes its record to the catalog, fields and checkpoints go to object storage, and a simulation carries the same UUID in its file and in the catalog, so the simulations part of the catalog can be rebuilt from the files (`ingest`). The split of stage 5 follows `train_fm3d.yaml` (validation $Re = 100$, $Pm = 1$; test $Re = 50$, $Pm = 2$); the spectrum of stage 7 is illustrative. **b**, The same roles on three targets; on the cluster, whose nodes have no Internet access, files are copied to S3 storage and then ingested into PostgreSQL, while models and evaluations stay in the cluster's SQLite. Diagram drawn with the [schematic-figure](https://lgwrightlab.github.io/schematic-figure/) skill; sources in `figures/architecture/`.](../../figures/architecture/figure/out/architecture-en.png){width="100%" fig-alt="Two-panel diagram. At the top, seven numbered stages from left to right, each with a thumbnail and its module, linked by vertical lines to two horizontal bands: the catalog, where each stage writes a table, and the files, where fields.h5 and last.pt go. At the bottom, a table of three columns, laptop, cloud GPU VM and Slurm cluster, over four rows: execution, files, catalog, tracking; two dashed arrows go from the cluster to the VM."}
+
 | Step | Module | What is produced | Where it is recorded |
 |---|---|---|---|
 | 1. Campaign | YAML file in `infra/configs/` | grid of physical parameters ($Re$, $Rm$, $Pm$…) | `campaign` table (full copy of the YAML) |
@@ -94,6 +96,13 @@ A campaign described in a YAML file becomes simulations, then files, then a data
 | 7. Evaluation | `milady.eval` | statistical and physical metrics of the generated fields | `evaluation` table; `v_eval_summary` view |
 
 Since the simulation carries the same UUID in the file and in the catalog, the simulation part of the catalog (simulations, files, diagnostics) can always be rebuilt or merged from the files alone; datasets, models, and evaluations, by contrast, exist only in the catalog. This is what makes it possible to work on a cluster without network access.
+
+The following interactive diagram walks through the same pipeline target by target: pick a target, then click a stage to see what it does, what it writes and the exact command on that target.
+
+```{=html}
+<div class="widget" data-widget="architecture"></div>
+<script defer src="../../assets/interactif/architecture.js"></script>
+```
 
 ## The data format {#format}
 
@@ -112,7 +121,7 @@ fields.h5
 └── milady_spectral/     Fourier coefficients of the fields (periodic domains, optional)
 ```
 
-Following The Well makes the data readable by the reference loaders and models of the community: we checked, by replaying the HDF5 accesses of the `WellDataset` loader (the_well 1.2.0) without running the package itself, that a 3D MFF file is read back identically. The `milady_*` attributes are invisible to a The Well reader and are validated by a JSON schema. A **Zarr** variant, with the same hierarchy, makes it possible to read a chunk of a file on S3 without downloading it. An extension is planned for the outputs of SFEMaNS (azimuthal Fourier modes on a meridional finite-element mesh), without destructive interpolation. The validation function detects corrupted files: the 18 corruptions tested (types, shapes, non-finite values, identifiers…) are all flagged. Full specification: [`specs/format-donnees.md`](https://github.com/knoel99/milady-2027/blob/main/specs/format-donnees.md).
+Following The Well makes the data readable by the reference loaders and models of the community: we checked, by replaying the HDF5 accesses of the `WellDataset` loader (the_well 1.2.0) without running the package itself, that a 3D MFF file is read back identically. The `milady_*` attributes are invisible to a The Well reader and are validated by a JSON schema. A **Zarr** variant, with the same hierarchy, makes it possible to read a chunk of a file on S3 without downloading it. An extension is planned for the outputs of SFEMaNS (azimuthal Fourier modes on a meridional finite-element mesh), without destructive interpolation. The validation function detects corrupted files: the 18 corruptions tested (types, shapes, non-finite values, identifiers…) are all flagged. Full specification: [`specs/format-donnees.md`](https://github.com/knoel99/milady-2027/blob/main/specs/format-donnees.md). Figure 2, in the [section on the solver](#solveur), links each part of the file to its column in the catalog.
 
 ## The results catalog {#catalogue}
 
@@ -142,6 +151,8 @@ and, from the command line, `python -m milady.catalog sims --campaign palier2_ab
 ## The solver, the campaigns, and training {#solveur}
 
 **Solver.** `milady.sim.mhd3d` solves periodic 3D incompressible MHD with a pseudo-spectral method in PyTorch, on CPU or GPU: fourth-order Runge–Kutta with an integrating factor, dealiasing with the 2/3 rule, Leray projection of $\mathbf{u}$ and of $\mathbf{B}$, so that both divergences remain at machine precision. It has two modes: dynamic (coupled Navier–Stokes and induction equations, ABC, Taylor–Green, or random forcing) and kinematic (imposed flow, as in experiment [E3](../rapport/index.html#e3)). Several trajectories advance together on the same GPU. The energy balance $\mathrm{d}(E_u + E_B)/\mathrm{d}t = \text{injection} - \nu\langle|\boldsymbol\omega|^2\rangle - \eta\langle|\mathbf{j}|^2\rangle$ is checked by the tests. On the development CPU, one step takes 0.08 s at $64^3$ in dynamic mode (2 threads); no GPU timing is given, for lack of a GPU, and the command `python -m milady.sim.mhd3d bench --device cuda` measures it on site.
+
+![**Figure 2 — The solver and what a simulation writes.** **a**, One step of `milady.sim.mhd3d`: curls taken in Fourier space, products $\mathbf{u}\times\boldsymbol{\omega} + \mathbf{j}\times\mathbf{B}$ and $\mathbf{u}\times\mathbf{B}$ in physical space, back to Fourier space, 2/3 dealiasing, Leray projection of the momentum term, curl of the induction term; the Lawson RK4 integrates the diffusion exactly, with four right-hand-side evaluations per step. The mode planes show 11 points per direction (actual cutoff $|m| \le 21$ at $64^3$). **b**, One simulation of `palier2_tg3d` over time: diagnostics from $t = 0$, 40 snapshots over the kept window, checkpoints and resume after SIGTERM (example position). **c**, The MFF file follows The Well's convention (grey) and adds `milady_*` attributes and groups; the identifier, parameters, commit and diagnostics have their column in the catalog.](../../figures/solveur/figure/out/solveur-en.png){width="100%" fig-alt="Three panels. At the top, a loop between Fourier space, on the left, and physical space, on the right: spectral state, curls, inverse transform, products, forward transform, dealiasing, Leray projection and curl, then the Lawson RK4 that returns to the state. Bottom left, a timeline of simulated time from 0 to 140 with continuous diagnostics, 40 snapshots between 100 and 140, checkpoints and an interruption followed by a resume. Bottom right, the tree of an HDF5 file linked to three catalog tables."}
 
 **Ready-made campaigns.** They follow the tiers of the [thesis plan](../these/index.html#plan-experimental).
 

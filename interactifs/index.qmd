@@ -1,6 +1,6 @@
 ---
 title: "Schémas interactifs"
-subtitle: "Cinq expériences de pensée à manipuler dans le navigateur"
+subtitle: "Six schémas à manipuler dans le navigateur"
 lang: fr
 format:
   html:
@@ -43,7 +43,7 @@ format:
 Chaque schéma est un petit programme JavaScript autonome qui tourne dans votre navigateur, sans serveur. Les formules utilisées sont écrites en tête de chaque fichier (`assets/interactif/<nom>.js`), avec leurs références. Ces schémas complètent les schémas statiques du [rapport](../rapport/index.html) et des [modules de préparation](../prep/index.html) ; ils ne remplacent pas les démonstrations.
 :::
 
-Les cinq schémas suivent l'ordre du parcours : le transport de lois qui fonde le flow matching, la projection qui rend un champ à divergence nulle, la différence entre contrainte par échantillon et contrainte en loi, puis deux systèmes dynamiques du stage, le modèle de renversements et la dynamo cinématique ABC.
+Les six schémas suivent l'ordre du parcours : le transport de lois qui fonde le flow matching, la projection qui rend un champ à divergence nulle, la différence entre contrainte par échantillon et contrainte en loi, deux systèmes dynamiques du stage, le modèle de renversements et la dynamo cinématique ABC, puis la chaîne de simulation de l'infrastructure.
 
 ## 1. Flow matching : transporter une loi {#flow-matching}
 
@@ -109,6 +109,17 @@ Les seuils mesurés ($Rm \approx 8{,}87$, $17{,}60$ et $26{,}80$) retrouvent les
 ```
 
 Pour aller plus loin : module [p3 — MHD et effet dynamo](../prep/p3-mhd-dynamo/index.html) et expérience [E3](../rapport/index.html#e3).
+
+## 6. La chaîne de simulation {#architecture}
+
+Ce dernier schéma n'illustre pas une notion mathématique, mais l'outil de calcul du dépôt : la chaîne qui mène d'une campagne de simulations à l'évaluation d'un modèle, et ce qui change d'une cible à l'autre (portable, VM cloud avec GPU, cluster Slurm). Choisissez une cible, puis cliquez une étape : le schéma montre ce qu'elle fait, ce qu'elle écrit au catalogue et dans le stockage, et la commande exacte sur cette cible. Le bouton « Suivre une campagne » parcourt les sept étapes.
+
+```{=html}
+<div class="widget" data-widget="architecture"></div>
+<script defer src="../assets/interactif/architecture.js"></script>
+```
+
+Pour aller plus loin : page [Calcul et données](../calcul/index.html), figures 1 et 2.
 
 ## Sources {#sources}
 

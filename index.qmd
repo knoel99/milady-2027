@@ -53,7 +53,7 @@ Un projet indépendant, préparé pour candidater au stage de M2 « *Physics-Con
 | **2. Faire le stage** | Le rapport de stage : état de l'art, une taxonomie des contraintes physiques avec neuf propositions démontrées, trois expériences (modèle de renversements, MHD 2D, dynamo ABC) et leur discussion. | [Rapport de stage](rapport/index.html) · [Expériences](experiences/index.html) |
 | **3. Préparer la thèse** | Les travaux des quatre encadrants, six pistes évaluées, la piste retenue, sa partie théorique, son plan expérimental chiffré et évalué, son calendrier. | [Encadrants](encadrants/index.html) · [Sujet de thèse](these/index.html) |
 
-Cinq [schémas interactifs](interactifs/index.html) accompagnent le parcours : flow matching, projection de Leray, contrainte en loi, renversements du dipôle et dynamo ABC.
+Six [schémas interactifs](interactifs/index.html) accompagnent le parcours : flow matching, projection de Leray, contrainte en loi, renversements du dipôle, dynamo ABC et chaîne de simulation.
 
 Pour passer à l'échelle pendant la thèse, la page [Calcul et données](calcul/index.html) décrit l'infrastructure du dépôt : format de données standard, catalogue des simulations et des résultats, déploiement en une commande sur une VM cloud avec GPU ou sur un cluster Slurm.
 

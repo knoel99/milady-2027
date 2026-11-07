@@ -88,7 +88,7 @@ window.Quarto = {
 
 <header id="title-block-header">
 <h1 class="title">Schémas interactifs</h1>
-<p class="subtitle">Cinq expériences de pensée à manipuler dans le navigateur</p>
+<p class="subtitle">Six schémas à manipuler dans le navigateur</p>
 
 </header>
 
@@ -96,7 +96,7 @@ window.Quarto = {
 <div class="note">
 <p><span class="tag">À propos</span> Chaque schéma est un petit programme JavaScript autonome qui tourne dans votre navigateur, sans serveur. Les formules utilisées sont écrites en tête de chaque fichier (<code>assets/interactif/&lt;nom&gt;.js</code>), avec leurs références. Ces schémas complètent les schémas statiques du <a href="../rapport/index.html">rapport</a> et des <a href="../prep/index.html">modules de préparation</a> ; ils ne remplacent pas les démonstrations.</p>
 </div>
-<p>Les cinq schémas suivent l’ordre du parcours : le transport de lois qui fonde le flow matching, la projection qui rend un champ à divergence nulle, la différence entre contrainte par échantillon et contrainte en loi, puis deux systèmes dynamiques du stage, le modèle de renversements et la dynamo cinématique ABC.</p>
+<p>Les six schémas suivent l’ordre du parcours : le transport de lois qui fonde le flow matching, la projection qui rend un champ à divergence nulle, la différence entre contrainte par échantillon et contrainte en loi, deux systèmes dynamiques du stage, le modèle de renversements et la dynamo cinématique ABC, puis la chaîne de simulation de l’infrastructure.</p>
 <h2 id="flow-matching">1. Flow matching : transporter une loi</h2>
 <p>Un modèle de flow matching transporte une loi simple, ici une gaussienne, vers la loi des données par un champ de vitesse <span class="math inline">v(\mathbf{x}, t)</span>. Ce schéma utilise le champ marginal <strong>exact</strong> pour une loi cible formée de deux gaussiennes symétriques <span class="math inline">\pm\mathbf{m}(\lambda)</span> : c’est le champ qu’un réseau chercherait à apprendre. Le curseur <span class="math inline">\lambda</span> joue le rôle d’un paramètre physique de conditionnement, comme <span class="math inline">Rm</span> dans le stage.</p>
 <p>Observez deux choses. Les chemins conditionnels <span class="math inline">\mathbf{x}_t = (1-t)\mathbf{x}_0 + t\mathbf{x}_1</span> sont droits et se croisent souvent. Les trajectoires du flot marginal sont courbes ; deux particules ne sont jamais au même point <strong>au même instant</strong> (unicité des solutions de l’équation différentielle), mais leurs traces dans le plan peuvent se couper à des instants différents. En un même point <span class="math inline">(\mathbf{x}, t)</span> passent des chemins conditionnels de directions différentes, et <span class="math inline">v(\mathbf{x}, t)</span> est leur moyenne. La loi finale est symétrique parce que le champ l’est : c’est la Proposition 4 du rapport à l’œuvre.</p>
@@ -127,6 +127,11 @@ window.Quarto = {
 <div class="widget" data-widget="abc-dynamo" data-src="../assets/interactif/data/abc-dynamo.json"></div>
 <script defer="" src="../assets/interactif/abc-dynamo.js"></script>
 <p>Pour aller plus loin : module <a href="../prep/p3-mhd-dynamo/index.html">p3 — MHD et effet dynamo</a> et expérience <a href="../rapport/index.html#e3">E3</a>.</p>
+<h2 id="architecture">6. La chaîne de simulation</h2>
+<p>Ce dernier schéma n’illustre pas une notion mathématique, mais l’outil de calcul du dépôt : la chaîne qui mène d’une campagne de simulations à l’évaluation d’un modèle, et ce qui change d’une cible à l’autre (portable, VM cloud avec GPU, cluster Slurm). Choisissez une cible, puis cliquez une étape : le schéma montre ce qu’elle fait, ce qu’elle écrit au catalogue et dans le stockage, et la commande exacte sur cette cible. Le bouton « Suivre une campagne » parcourt les sept étapes.</p>
+<div class="widget" data-widget="architecture"></div>
+<script defer="" src="../assets/interactif/architecture.js"></script>
+<p>Pour aller plus loin : page <a href="../calcul/index.html">Calcul et données</a>, figures 1 et 2.</p>
 <h2 id="sources">Sources</h2>
 <ul>
 <li>C. Gissinger, « A new deterministic model for chaotic reversals », <em>Eur. Phys. J. B</em> 85, 137 (2012), arXiv:1109.6569.</li>

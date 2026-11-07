@@ -13,9 +13,9 @@ Ressources préparatoires, rapport de stage prospectif et proposition de sujet d
 - **Encadrants** (`encadrants/`) : travaux de S. Cheng, D. Lucor, C. Nore et Y. Ponty, pistes de thèse et choix argumenté.
 - **Rapport de stage** (`rapport/`) : état de l'art, formulation (taxonomie des contraintes, propositions démontrées), méthodes, expériences E1–E3 et résultats, discussion, ouverture vers la thèse.
 - **Sujet de thèse** (`these/`) : piste retenue, partie théorique, plan expérimental planifié et évalué (paliers, métriques, risques, calendrier).
-- **Expériences** (`experiences/`) : code, résultats JSON et graphiques.
-- **Schémas interactifs** (`interactifs/`) : cinq widgets dans le navigateur (flow matching, projection de Leray, contrainte en loi, modèle de Gissinger, dynamo ABC).
-- **Calcul et données** (`calcul/`) : l'infrastructure de calcul (format MFF, catalogue, déploiement cloud et Slurm), résumée pour le lecteur.
+- **Expériences** (`experiences/`) : code, résultats JSON et graphiques, et un schéma des trois simulations sur un même gabarit.
+- **Schémas interactifs** (`interactifs/`) : six widgets dans le navigateur (flow matching, projection de Leray, contrainte en loi, modèle de Gissinger, dynamo ABC, chaîne de simulation).
+- **Calcul et données** (`calcul/`) : l'infrastructure de calcul (format MFF, catalogue, déploiement cloud et Slurm), résumée pour le lecteur, avec deux schémas d'architecture (chaîne de simulation, solveur) et un schéma interactif.
 - **Version anglaise** (`en/`) : toutes les pages, aux mêmes chemins sous `en/`.
 - **Schémas** (`figures/`) : figures conceptuelles dessinées avec la skill [schematic-figure](https://lgwrightlab.github.io/schematic-figure/) (sources `figure.js`, brief, spec, légende ; sorties SVG/PDF/PNG).
 

@@ -88,7 +88,7 @@ window.Quarto = {
 
 <header id="title-block-header">
 <h1 class="title">Interactive diagrams</h1>
-<p class="subtitle">Five thought experiments to manipulate in the browser</p>
+<p class="subtitle">Six diagrams to manipulate in the browser</p>
 
 </header>
 
@@ -96,7 +96,7 @@ window.Quarto = {
 <div class="note">
 <p><span class="tag">About</span> Each diagram is a small, self-contained JavaScript program that runs in your browser, with no server. The formulas it uses are written at the top of each file (<code>assets/interactif/&lt;name&gt;.js</code>), together with their references. These diagrams complement the static figures of the <a href="../rapport/index.html">report</a> and of the <a href="../prep/index.html">preparation modules</a>; they do not replace the proofs.</p>
 </div>
-<p>The five diagrams follow the order of the curriculum: the transport of probability distributions that underlies flow matching, the projection that makes a field divergence-free, the difference between a per-sample constraint and a constraint in distribution, then two dynamical systems from the internship, the reversal model and the ABC kinematic dynamo.</p>
+<p>The six diagrams follow the order of the curriculum: the transport of probability distributions that underlies flow matching, the projection that makes a field divergence-free, the difference between a per-sample constraint and a constraint in distribution, two dynamical systems from the internship, the reversal model and the ABC kinematic dynamo, then the infrastructure’s simulation pipeline.</p>
 <h2 id="flow-matching">1. Flow matching: transporting a distribution</h2>
 <p>A flow matching model transports a simple distribution, here a Gaussian, to the data distribution through a velocity field <span class="math inline">v(\mathbf{x}, t)</span>. This diagram uses the <strong>exact</strong> marginal field for a target distribution made of two symmetric Gaussians <span class="math inline">\pm\mathbf{m}(\lambda)</span>: it is the field that a network would try to learn. The slider <span class="math inline">\lambda</span> plays the role of a physical conditioning parameter, like <span class="math inline">Rm</span> in the internship.</p>
 <p>Notice two things. The conditional paths <span class="math inline">\mathbf{x}_t = (1-t)\mathbf{x}_0 + t\mathbf{x}_1</span> are straight and often cross. The trajectories of the marginal flow are curved; two particles are never at the same point <strong>at the same time</strong> (uniqueness of solutions of the differential equation), but their tracks in the plane can intersect at different times. Conditional paths with different directions pass through the same point <span class="math inline">(\mathbf{x}, t)</span>, and <span class="math inline">v(\mathbf{x}, t)</span> is their average. The final distribution is symmetric because the field is: this is Proposition 4 of the report at work.</p>
@@ -127,6 +127,11 @@ window.Quarto = {
 <div class="widget" data-widget="abc-dynamo" data-src="../../assets/interactif/data/abc-dynamo.json"></div>
 <script defer="" src="../../assets/interactif/abc-dynamo.js"></script>
 <p>Further reading: module <a href="../prep/p3-mhd-dynamo/index.html">p3 — MHD and the dynamo effect</a> and experiment <a href="../rapport/index.html#e3">E3</a>.</p>
+<h2 id="architecture">6. The simulation pipeline</h2>
+<p>This last diagram does not illustrate a mathematical notion but the repository’s computing tool: the pipeline that leads from a campaign of simulations to the evaluation of a model, and what changes from one target to another (laptop, cloud VM with GPU, Slurm cluster). Pick a target, then click a stage: the diagram shows what it does, what it writes to the catalog and to storage, and the exact command on that target. The “Follow a campaign” button walks through the seven stages.</p>
+<div class="widget" data-widget="architecture"></div>
+<script defer="" src="../../assets/interactif/architecture.js"></script>
+<p>Further reading: page <a href="../calcul/index.html">Computing and data</a>, Figures 1 and 2.</p>
 <h2 id="sources">Sources</h2>
 <ul>
 <li>C. Gissinger, “A new deterministic model for chaotic reversals”, <em>Eur. Phys. J. B</em> 85, 137 (2012), arXiv:1109.6569.</li>
