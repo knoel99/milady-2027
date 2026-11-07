@@ -73,7 +73,7 @@ Les deux objectifs sont formulés ainsi (extrait du résumé en français, page 
 
 Dans cet extrait, « DyE » désigne l'effet dynamo et « ROM » un modèle d'ordre réduit (*reduced-order model*).
 
-**Objectif (i) : inversions et dynamos explosives.** Une inversion est le changement de signe du dipôle magnétique, comme lors des inversions du champ terrestre ; l'expérience VKS de Cadarache en a produit en laboratoire (Berhanu et al. 2007). La version anglaise du résumé parle de « burst dynamo phenomena » et de modèles capables de distinguer les phases « precursor, reversal, and recovery ». Il s'agit donc de construire, à partir des simulations, des modèles réduits qui reproduisent cette dynamique et en reconnaissent les étapes.
+**Objectif (i) : renversements et dynamos explosives.** Un renversement est le changement de signe du dipôle magnétique, comme lors des renversements du champ terrestre ; l'expérience VKS de Cadarache en a produit en laboratoire (Berhanu et al. 2007). La version anglaise du résumé parle de « burst dynamo phenomena » et de modèles capables de distinguer les phases « precursor, reversal, and recovery ». Il s'agit donc de construire, à partir des simulations, des modèles réduits qui reproduisent cette dynamique et en reconnaissent les étapes.
 
 **Objectif (ii) : DRESDYN.** DRESDYN est une expérience de dynamo par précession conduite au centre de recherche HZDR de Dresde. Le projet veut y contribuer par des modèles réduits paramétriques, qui permettent d'explorer à faible coût les conditions d'apparition de la dynamo en fonction du rapport entre fréquence de précession et fréquence de rotation.
 
@@ -84,7 +84,7 @@ Trois offres publiques précèdent ou accompagnent le stage 2027. Elles dessinen
 | Offre | Période | Question centrale | Méthodes annoncées |
 |----------|-----|------------|------------|
 | Stage M2 « Physics-aware Representation Learning for Turbulent Dynamo Data » | printemps 2026 | Compresser des sorties de simulation 3D de dynamo (configurations de Cadarache et de Dresde) en une représentation latente liée aux paramètres physiques. | Encodeur–décodeur convolutionnel ou à attention, régression latente sur les paramètres, apprentissage contrastif. |
-| Post-doctorat LISN de 24 mois, « Turbulent Dynamos Reduced-Order Modeling via Machine learning » | annoncé en janvier 2026 | Construire des modèles réduits paramétriques et interprétables pour les inversions, les bursts et l'optimisation de DRESDYN. | Approches spectrales linéaires et (v)AE informés par la physique, dynamique réduite contrainte dans l'espace latent (LSTM, transformers). |
+| Post-doctorat LISN de 24 mois, « Turbulent Dynamos Reduced-Order Modeling via Machine learning » | annoncé en janvier 2026 | Construire des modèles réduits paramétriques et interprétables pour les renversements, les bursts et l'optimisation de DRESDYN. | Approches spectrales linéaires et (v)AE informés par la physique, dynamique réduite contrainte dans l'espace latent (LSTM, transformers). |
 | Stage M2 « Physics-Constrained Generative AI Modelling of Parametric Dynamical Systems » | printemps 2027 | Générer des champs 3D conditionnés par les paramètres de contrôle, en respectant les contraintes physiques. | Diffusion ou flow matching conditionnels ; contraintes imposées par l'architecture, les pertes ou l'échantillonnage. |
 
 : Offres publiques liées au projet MilaDy (PDF des offres, consultés le 6 novembre 2026).
@@ -95,7 +95,7 @@ L'offre de stage 2026 donnait pour contacts les quatre encadrants du stage 2027 
 
 Le 6 novembre 2026, une recherche dans HAL sur la référence ANR-25-CE51-0077 renvoie trois notices. Les deux premières sont au cœur du projet.
 
-**Bousquet, Ponty, Botez, Plihon et Nore (2026), *Physical Review Fluids* 11, 063703.** L'article étudie les inversions de champ dans des simulations de l'expérience VKS, avec deux solveurs : LATU, code pseudo-spectral à pénalisation (Kreuzahler et al. 2017), et SFEMaNS (Nore et al. 2018). La simulation de référence est à $Re = 1594$ et $Rm = 531$, avec une asymétrie de forçage de $0{,}058$ et une perméabilité relative $\mu_r = 16$ dans les turbines ; un milieu extérieur conducteur s'est révélé nécessaire aux inversions dans la gamme explorée. Une décomposition en modes propres orthogonaux (POD) sur 2000 instantanés fait apparaître quatre modes axisymétriques dominants, et un modèle de Galerkin réduit, appelé DQVU, est identifié par régression sous contraintes avec PySINDy ; il reproduit la distribution bimodale asymétrique de l'amplitude $V$ du mode zonal, ce que le modèle DQV antérieur ne faisait pas. Les données ne sont pas publiques : elles sont disponibles auprès des auteurs sur demande raisonnable.
+**Bousquet, Ponty, Botez, Plihon et Nore (2026), *Physical Review Fluids* 11, 063703.** L'article étudie les renversements de champ dans des simulations de l'expérience VKS, avec deux solveurs : LATU, code pseudo-spectral à pénalisation (Kreuzahler et al. 2017), et SFEMaNS (Nore et al. 2018). La simulation de référence est à $Re = 1594$ et $Rm = 531$, avec une asymétrie de forçage de $0{,}058$ et une perméabilité relative $\mu_r = 16$ dans les turbines ; un milieu extérieur conducteur s'est révélé nécessaire aux renversements dans la gamme explorée. Une décomposition en modes propres orthogonaux (POD) sur 2000 instantanés fait apparaître quatre modes axisymétriques dominants, et un modèle de Galerkin réduit, appelé DQVU, est identifié par régression sous contraintes avec PySINDy ; il reproduit la distribution bimodale asymétrique de l'amplitude $V$ du mode zonal, ce que le modèle DQV antérieur ne faisait pas. Les données ne sont pas publiques : elles sont disponibles auprès des auteurs sur demande raisonnable.
 
 **Botez, Giesecke, Nore, Cappanera et Stefani (2026), *Physical Review Fluids* 11, 083701** (publié le 14 août 2026). L'article calcule la dynamo cinématique engendrée par des champs de vitesse moyennés dans un cylindre en précession, dans la fenêtre étroite de nombres de Poincaré où la dynamo est la plus probable. Il montre que les conditions aux limites simplifiées à champ tangentiel nul sous-estiment systématiquement le seuil $Rm_c$, et que des parois conductrices ou perméables peuvent favoriser ou supprimer la dynamo. C'est une application directe à DRESDYN.
 
@@ -116,7 +116,7 @@ Le stage 2026 apprenait à **représenter** les champs de dynamo ; le stage 2027
 
 ### L'équipe d'encadrement
 
-Plusieurs collaborations antérieures relient les encadrants. S. Cheng a fait sa thèse sous la direction de D. Lucor (2017–2020, avec EDF R&D). D. Lucor et C. Nore co-encadrent R. Bousquet, auteur des travaux sur les autoencodeurs et la POD. C. Nore et Y. Ponty publient ensemble sur les inversions de VKS. S. Cheng et D. Lucor ont été éditeurs invités du même numéro spécial de *Computer Physics Communications*, « Advances in Physics-Aware Machine Learning ». Les quatre sections qui suivent décrivent leurs travaux du point de vue du stage.
+Plusieurs collaborations antérieures relient les encadrants. S. Cheng a fait sa thèse sous la direction de D. Lucor (2017–2020, avec EDF R&D). D. Lucor et C. Nore co-encadrent R. Bousquet, auteur des travaux sur les autoencodeurs et la POD. C. Nore et Y. Ponty publient ensemble sur les renversements de VKS. S. Cheng et D. Lucor ont été éditeurs invités du même numéro spécial de *Computer Physics Communications*, « Advances in Physics-Aware Machine Learning ». Les quatre sections qui suivent décrivent leurs travaux du point de vue du stage.
 
 ## Sibo Cheng {#cheng}
 
@@ -181,16 +181,16 @@ Elle a dirigé des thèses sur la MHD et la dynamo (F. Luddens en 2012 avec J.-L
 | Guermond J.-L., Laguerre R., Léorat J., Nore C. (2009). « Nonlinear magnetohydrodynamics in axisymmetric heterogeneous domains using a Fourier/finite element technique and an interior penalty method ». *Journal of Computational Physics* 228(8), 2739–2757. [doi:10.1016/j.jcp.2008.12.026](https://doi.org/10.1016/j.jcp.2008.12.026). | La méthode Fourier / éléments finis de SFEMaNS, qui fixe la structure des données que le générateur devra produire. |
 | Guermond J.-L., Léorat J., Luddens F., Nore C., Ribeiro A. (2011). « Effects of discontinuous magnetic permeability on magnetodynamic problems ». *Journal of Computational Physics* 230(16), 6299–6319. [doi:10.1016/j.jcp.2011.04.026](https://doi.org/10.1016/j.jcp.2011.04.026). | Les conditions de saut aux interfaces de perméabilité discontinue : des contraintes linéaires qu'un générateur de champs magnétiques devrait respecter. |
 | Nore C., Léorat J., Guermond J.-L., Luddens F. (2011). « Nonlinear dynamo action in a precessing cylindrical container ». *Physical Review E* 84(1), 016317. [doi:10.1103/PhysRevE.84.016317](https://doi.org/10.1103/PhysRevE.84.016317) ; arXiv:1102.1846. | La démonstration numérique qu'une précession peut entretenir une dynamo dans un cylindre : la physique de l'objectif DRESDYN. |
-| Nore C., Guermond J.-L., Laguerre R., Léorat J., Luddens F. (2012). « Nonlinear dynamo in a short Taylor–Couette setup ». *Physics of Fluids* 24(9), 094106. [doi:10.1063/1.4752756](https://doi.org/10.1063/1.4752756). | Un dipôle incliné dont la composante axiale présente des inversions apériodiques : un second système à inversions, plus simple que VKS. |
+| Nore C., Guermond J.-L., Laguerre R., Léorat J., Luddens F. (2012). « Nonlinear dynamo in a short Taylor–Couette setup ». *Physics of Fluids* 24(9), 094106. [doi:10.1063/1.4752756](https://doi.org/10.1063/1.4752756). | Un dipôle incliné dont la composante axiale présente des renversements apériodiques : un second système à renversements, plus simple que VKS. |
 | Nore C., Castanon Quiroz D., Cappanera L., Guermond J.-L. (2018). « Numerical simulation of the von Kármán sodium dynamo experiment ». *Journal of Fluid Mechanics* 854, 164–195. [doi:10.1017/jfm.2018.582](https://doi.org/10.1017/jfm.2018.582). | La simulation de VKS avec turbines en fer doux. Le seuil $Rm_c$ diminue quand la perméabilité ou le nombre de Reynolds augmentent : c'est exactement le type de dépendance paramétrique à apprendre. |
 | Creff M., Faller H., Dubrulle B., Guermond J.-L., Nore C. (2024). « Tracking dynamo mechanisms from local energy transfers: Application to the von Kármán sodium dynamo ». *Physics of Plasmas* 31(2), 022306. [doi:10.1063/5.0174251](https://doi.org/10.1063/5.0174251). | Des bilans d'énergie locaux en espace, en échelle et en temps, calculables sur maillage non structuré : une métrique physique fine pour juger des champs générés. |
 | Botez V., Bousquet R., Nore C. (2025). « Large scale analysis of the von Kármán sodium experiment using proper orthogonal decomposition ». *Magnetohydrodynamics* 61(1/2), 13–24. [doi:10.22364/mhd.61.1-2.2](https://doi.org/10.22364/mhd.61.1-2.2). | La POD de VKS en phases de croissance et de saturation ; en saturation, la rétroaction magnétique brise la symétrie du champ de vitesse, ce qui fournit un test de symétrie pour les champs générés. |
-| Bousquet R., Ponty Y., Botez V., Plihon N., Nore C. (2026). « Magnetic field reversals in numerical simulations of the von Kármán sodium experiment ». *Physical Review Fluids* 11(6), 063703. [doi:10.1103/9tx2-1m13](https://doi.org/10.1103/9tx2-1m13). | Les données et le modèle réduit de référence pour les inversions : POD sur 2000 instantanés et modèle de Galerkin DQVU identifié sous contraintes (voir la section sur le projet). |
+| Bousquet R., Ponty Y., Botez V., Plihon N., Nore C. (2026). « Magnetic field reversals in numerical simulations of the von Kármán sodium experiment ». *Physical Review Fluids* 11(6), 063703. [doi:10.1103/9tx2-1m13](https://doi.org/10.1103/9tx2-1m13). | Les données et le modèle réduit de référence pour les renversements : POD sur 2000 instantanés et modèle de Galerkin DQVU identifié sous contraintes (voir la section sur le projet). |
 | Botez V., Giesecke A., Nore C., Cappanera L., Stefani F. (2026). « Impact of boundary conditions on onset and symmetry of precession-driven dynamos ». *Physical Review Fluids* 11(8), 083701. [doi:10.1103/rx1h-5zxp](https://doi.org/10.1103/rx1h-5zxp). | Le seuil et la symétrie des dynamos de précession selon les conditions aux limites, pour DRESDYN : les conditions simplifiées sous-estiment systématiquement $Rm_c$. |
 
 : Publications choisies de C. Nore, dans l'ordre chronologique.
 
-**À lire en priorité.** Le stagiaire lira d'abord Bousquet et al. (2026), qui décrit les données d'inversions, les paramètres de la simulation de référence et le modèle réduit auquel un générateur devra se confronter. Nore et al. (2018) donne ensuite la géométrie de VKS, les paramètres physiques et la méthode de SFEMaNS. Creff et al. (2024) viendra au moment de choisir des métriques physiques plus fines que les spectres.
+**À lire en priorité.** Le stagiaire lira d'abord Bousquet et al. (2026), qui décrit les données de renversements, les paramètres de la simulation de référence et le modèle réduit auquel un générateur devra se confronter. Nore et al. (2018) donne ensuite la géométrie de VKS, les paramètres physiques et la méthode de SFEMaNS. Creff et al. (2024) viendra au moment de choisir des métriques physiques plus fines que les spectres.
 
 ## Yannick Ponty {#ponty}
 
@@ -210,7 +210,7 @@ Son apport au stage ne relève pas de l'apprentissage automatique, domaine dans 
 | Kreuzahler S., Ponty Y., Plihon N., Homann H., Grauer R. (2017). « Dynamo Enhancement and Mode Selection Triggered by High Magnetic Permeability ». *Physical Review Letters* 119(23), 234501. [doi:10.1103/PhysRevLett.119.234501](https://doi.org/10.1103/PhysRevLett.119.234501) ; arXiv:1706.00260. | Le solveur LATU de Bousquet et al. (2026), sur une grille cartésienne de $384^3$ points avec une perméabilité relative de 1 à 16 : un format de données plus simple à apprendre que le maillage hybride de SFEMaNS. |
 | Mannix P.M., Ponty Y., Marcotte F. (2022). « Systematic Route to Subcritical Dynamo Branches ». *Physical Review Letters* 129(2), 024502. [doi:10.1103/PhysRevLett.129.024502](https://doi.org/10.1103/PhysRevLett.129.024502) ; arXiv:2112.11376. | Une optimisation non linéaire qui trouve les branches dynamo sous-critiques et leurs perturbations critiques : un outil pour localiser le seuil que le générateur doit franchir. |
 | Ponty Y., Politano H., Pouquet A. (2025). « Intermittency assessed through a model of kurtosis–skewness relation in MHD in fast dynamo regimes ». *Journal of Plasma Physics* 91(2), E69. [doi:10.1017/S0022377825000169](https://doi.org/10.1017/S0022377825000169). | Des relations entre kurtosis et coefficient d'asymétrie mesurées sur des simulations très longues (jusqu'à $3{,}14\times10^{5}$ temps de retournement) : une métrique statistique d'ordre élevé pour valider des champs générés. |
-| Bousquet R., Ponty Y., Botez V., Plihon N., Nore C. (2026). « Magnetic field reversals in numerical simulations of the von Kármán sodium experiment ». *Physical Review Fluids* 11(6), 063703. [doi:10.1103/9tx2-1m13](https://doi.org/10.1103/9tx2-1m13). | Classée par Y. Ponty parmi ses cinq publications significatives (CV 2026) : les inversions de VKS vues par les deux solveurs du projet, LATU et SFEMaNS. |
+| Bousquet R., Ponty Y., Botez V., Plihon N., Nore C. (2026). « Magnetic field reversals in numerical simulations of the von Kármán sodium experiment ». *Physical Review Fluids* 11(6), 063703. [doi:10.1103/9tx2-1m13](https://doi.org/10.1103/9tx2-1m13). | Classée par Y. Ponty parmi ses cinq publications significatives (CV 2026) : les renversements de VKS vus par les deux solveurs du projet, LATU et SFEMaNS. |
 
 : Publications choisies de Y. Ponty, dans l'ordre chronologique.
 
@@ -229,12 +229,12 @@ Le tableau croise les compétences demandées par l'offre avec les travaux publi
 | Assimilation de données (usage aval des champs) | ● TorchDA (2025) ; revue (2023) | ● revue (2023) ; compression d'observations issue de la thèse de S. Cheng (2021) | ◐ co-direction de la thèse de M. Quattromini (2024) | – |
 | Quantification d'incertitude et évaluation probabiliste | ● ensembles par diffusion et score « hit rate » (2026) | ● chaos polynomial (2007) ; prédiction conforme (2025) | – | – |
 | Données de simulation MHD et dynamo en 3D | – | ◐ simulations hydrodynamiques de von Kármán (2024, 2025) | ● SFEMaNS : VKS, précession, Taylor–Couette | ● LATU ; dynamos Taylor–Green et ABC |
-| Physique des inversions et des événements rares | – | – | ● inversions de VKS (2026) et de Taylor–Couette (2012) | ● intermittence on-off (2008) ; bifurcations sous-critiques (2007, 2022) |
+| Physique des renversements et des événements rares | – | – | ● renversements de VKS (2026) et de Taylor–Couette (2012) | ● intermittence on-off (2008) ; bifurcations sous-critiques (2007, 2022) |
 | Métriques physiques (spectres, hélicité, divergence, topologie) | ◐ scores d'image et « hit rate » (2026) | ◐ couverture conforme (2025) | ● transferts d'énergie locaux (2024) | ● kurtosis et asymétrie (2025) ; spectre de Kazantsev (2005) |
 
 : Compétences de l'offre et travaux publiés des encadrants (les années renvoient aux publications citées sur cette page et listées dans les Sources).
 
-La matrice montre une complémentarité nette. S. Cheng et D. Lucor couvrent le versant apprentissage (génératif, contraintes, réduction, assimilation, incertitude), C. Nore et Y. Ponty le versant physique (simulations de dynamo, inversions, métriques). Le recouvrement se fait sur les modèles réduits, que les quatre touchent par la POD, les autoencodeurs ou le modèle DQVU. Les cases vides indiquent où le stagiaire devra faire le pont : d'après nos recherches, aucun des quatre n'a encore publié de modèle génératif entraîné sur des données de dynamo, et c'est précisément la nouveauté attendue du stage.
+La matrice montre une complémentarité nette. S. Cheng et D. Lucor couvrent le versant apprentissage (génératif, contraintes, réduction, assimilation, incertitude), C. Nore et Y. Ponty le versant physique (simulations de dynamo, renversements, métriques). Le recouvrement se fait sur les modèles réduits, que les quatre touchent par la POD, les autoencodeurs ou le modèle DQVU. Les cases vides indiquent où le stagiaire devra faire le pont : d'après nos recherches, aucun des quatre n'a encore publié de modèle génératif entraîné sur des données de dynamo, et c'est précisément la nouveauté attendue du stage.
 
 ## Pistes de thèse {#pistes}
 
@@ -252,15 +252,15 @@ Les six pistes ci-dessous sont des propositions rédigées pour ce site à parti
 
 **Risques.** Les points paramétriques sont peu nombreux, car chaque simulation MHD est coûteuse, ce que le résumé de l'ANR souligne. Le volume des champs 3D impose de travailler en espace latent. Les données ne sont pas publiques et passent par le consortium. Enfin, la tension entre reconstruction et régularisation déjà observée pour les VAE (Bousquet et al. 2025) peut limiter la qualité de l'espace latent.
 
-### Piste B — Inversions magnétiques et événements rares par génération probabiliste {#piste-b}
+### Piste B — Renversements magnétiques et événements rares par génération probabiliste {#piste-b}
 
-**Énoncé.** La piste B construit un modèle génératif temporel, par exemple une diffusion autorégressive ou conditionnée par l'état courant, qui produit des ensembles de trajectoires de champs au voisinage des inversions. L'échantillonnage est guidé par le modèle réduit DQVU ou par des contraintes de Galerkin, à la manière du guidage universel (Bansal et al. 2024). Le but est d'estimer des probabilités d'inversion, des temps d'attente et les phases de précurseur, d'inversion et de rebond que vise l'objectif (i).
+**Énoncé.** La piste B construit un modèle génératif temporel, par exemple une diffusion autorégressive ou conditionnée par l'état courant, qui produit des ensembles de trajectoires de champs au voisinage des renversements. L'échantillonnage est guidé par le modèle réduit DQVU ou par des contraintes de Galerkin, à la manière du guidage universel (Bansal et al. 2024). Le but est d'estimer des probabilités de renversement, des temps d'attente et les phases de précurseur, de renversement et de rebond que vise l'objectif (i).
 
-**Verrou.** Les inversions sont rares (une simulation en contient peu), leurs statistiques ont des queues lourdes (lois de puissance des phases actives), et il faut que le champ 3D généré reste cohérent avec la dynamique réduite tout en restant calibré au sens probabiliste.
+**Verrou.** Les renversements sont rares (une simulation en contient peu), leurs statistiques ont des queues lourdes (lois de puissance des phases actives), et il faut que le champ 3D généré reste cohérent avec la dynamique réduite tout en restant calibré au sens probabiliste.
 
-**Travaux prolongés.** La piste prolonge l'analyse des inversions et le modèle DQVU de Bousquet et al. (2026), l'intermittence on-off d'Alexakis et Ponty (2008), les bifurcations sous-critiques de Ponty et al. (2007) et de Mannix, Ponty et Marcotte (2022), les inversions apériodiques de Taylor–Couette (Nore et al. 2012), les ensembles par diffusion de Yu et al. (2026) et l'apprentissage respectueux de la mesure invariante de Cheng X. et al. (2025).
+**Travaux prolongés.** La piste prolonge l'analyse des renversements et le modèle DQVU de Bousquet et al. (2026), l'intermittence on-off d'Alexakis et Ponty (2008), les bifurcations sous-critiques de Ponty et al. (2007) et de Mannix, Ponty et Marcotte (2022), les renversements apériodiques de Taylor–Couette (Nore et al. 2012), les ensembles par diffusion de Yu et al. (2026) et l'apprentissage respectueux de la mesure invariante de Cheng X. et al. (2025).
 
-**Données.** Elle utilise les simulations d'inversions de Bousquet et al. (2026), à $Re = 1594$, $Rm = 531$ et $\mu_r = 16$ avec couche conductrice extérieure, et les simulations de dynamos ABC et Taylor–Green de Y. Ponty pour l'intermittence.
+**Données.** Elle utilise les simulations de renversements de Bousquet et al. (2026), à $Re = 1594$, $Rm = 531$ et $\mu_r = 16$ avec couche conductrice extérieure, et les simulations de dynamos ABC et Taylor–Green de Y. Ponty pour l'intermittence.
 
 **Risques.** Il faut de longues séries temporelles, donc du calcul. Le modèle DQVU ne reproduit qu'imparfaitement la distribution de l'amplitude $Q$ du mode quadrupolaire (Bousquet et al. 2026). Enfin, les métriques d'événements rares sont difficiles à valider statistiquement avec peu d'événements.
 
@@ -343,7 +343,7 @@ où $n_k$ est la note du critère $k$ et $w_k$ son poids, avec $\sum_k w_k = 1$.
 | Piste | Note | Justification |
 |:-:|:-:|------------------|
 | A | 5 | C'est l'objectif même de l'offre : générer des champs 3D conditionnés par $Re$, $Rm$ et les propriétés matériaux, sous contraintes, pour alimenter modèles réduits et assimilation. |
-| B | 3 | L'offre cite les inversions brusques dans son contexte, mais elle demande des champs conditionnés par les paramètres et non des trajectoires ; la génération temporelle dépasse le stage. |
+| B | 3 | L'offre cite les renversements brusques dans son contexte, mais elle demande des champs conditionnés par les paramètres et non des trajectoires ; la génération temporelle dépasse le stage. |
 | C | 3 | L'offre destine les champs générés à des cadres d'assimilation « developed elsewhere in the project » : l'assimilation n'est pas le cœur du stage. |
 | D | 3 | La précession ne figure pas parmi les paramètres cités par l'offre 2027 (elle figurait dans l'offre 2026), mais la piste réutilise le générateur conditionnel du stage. |
 | E | 4 | L'offre demande des contraintes issues des équations et des conditions aux limites, imposées par l'architecture, les pertes ou l'échantillonnage : c'est le sujet de E, poussé jusqu'à la géométrie des données réelles. |
@@ -353,8 +353,8 @@ où $n_k$ est la note du critère $k$ et $w_k$ son poids, avec $\sum_k w_k = 1$.
 
 | Piste | Note | Justification |
 |:-:|:-:|------------------|
-| A | 4 | A apporte la méthode d'exploration paramétrique que vise l'objectif (ii), appliquée à VKS plutôt qu'à DRESDYN, et fournit des états aux modèles réduits de l'objectif (i), sans traiter la dynamique des inversions. |
-| B | 5 | B est l'objectif (i) : inversions, dynamos explosives et phases de précurseur, d'inversion et de rebond. |
+| A | 4 | A apporte la méthode d'exploration paramétrique que vise l'objectif (ii), appliquée à VKS plutôt qu'à DRESDYN, et fournit des états aux modèles réduits de l'objectif (i), sans traiter la dynamique des renversements. |
+| B | 5 | B est l'objectif (i) : renversements, dynamos explosives et phases de précurseur, de renversement et de rebond. |
 | C | 3 | Le résumé met en avant l'assimilation (TorchDA), mais aucun des deux objectifs n'est l'assimilation : C est transversale. |
 | D | 5 | D est l'objectif (ii) : des modèles paramétriques pour explorer les conditions de la dynamo dans DRESDYN. |
 | E | 3 | E améliore tout générateur du projet sans répondre directement à l'un des deux objectifs. |
@@ -365,7 +365,7 @@ où $n_k$ est la note du critère $k$ et $w_k$ son poids, avec $\sum_k w_k = 1$.
 | Piste | Note | Justification |
 |:-:|:-:|------------------|
 | A | 4 | Les simulations VKS de SFEMaNS et de LATU existent dans le consortium ; elles ne sont pas publiques et les points paramétriques sont peu nombreux. |
-| B | 3 | Les simulations d'inversions de Bousquet et al. (2026) existent, mais chacune contient peu d'inversions et il faut de longues séries. |
+| B | 3 | Les simulations de renversements de Bousquet et al. (2026) existent, mais chacune contient peu de renversements et il faut de longues séries. |
 | C | 3 | Faute de mesures expérimentales identifiées comme accessibles, il faudrait fabriquer des observations synthétiques à partir des simulations. |
 | D | 2 | Les simulations de précession de Botez et al. (2026) portent sur peu de configurations, et la piste dépend de la collaboration avec le HZDR. |
 | E | 4 | Les sorties natives de SFEMaNS suffisent, et les EDP simples de validation se calculent à volonté. |
@@ -376,7 +376,7 @@ où $n_k$ est la note du critère $k$ et $w_k$ son poids, avec $\sum_k w_k = 1$.
 | Piste | Note | Justification |
 |:-:|:-:|------------------|
 | A | 4 | Aucun modèle génératif publié sur des simulations de dynamo, ni conditionné conjointement par $Re$ et $Rm$, n'a été trouvé ; les briques (diffusion latente, projection de Leray, fonction de courant) existent en revanche. |
-| B | 5 | Aucune génération probabiliste d'inversions de dynamo n'a été trouvée, et la statistique des renversements par modèle génératif est entièrement à construire. |
+| B | 5 | Aucune génération probabiliste de renversements de dynamo n'a été trouvée, et la statistique des renversements par modèle génératif est entièrement à construire. |
 | C | 3 | L'assimilation par diffusion existe déjà dans d'autres domaines, notamment dans les travaux de S. Cheng ; la nouveauté serait surtout l'application à la MHD. |
 | D | 4 | Aucun générateur de champs de précession n'a été trouvé ; l'optimisation bayésienne robuste et les modèles paramétriques sont, eux, établis. |
 | E | 4 | Aucune méthode trouvée n'impose une divergence nulle dure avec parois cylindriques, sauts de perméabilité et raccord au vide ; les projections en domaine périodique sont en revanche publiées. |
@@ -387,7 +387,7 @@ où $n_k$ est la note du critère $k$ et $w_k$ son poids, avec $\sum_k w_k = 1$.
 | Piste | Note | Justification |
 |:-:|:-:|------------------|
 | A | 4 | A prolonge directement le stage sur des données existantes ; le volume des champs 3D impose seulement de travailler en espace latent. |
-| B | 3 | B exige d'abord un générateur fiable, puis de longues séries pour valider les statistiques d'inversions. |
+| B | 3 | B exige d'abord un générateur fiable, puis de longues séries pour valider les statistiques de renversements. |
 | C | 3 | C suppose un générateur au point, puis une boucle d'assimilation dont chaque cycle échantillonne une diffusion. |
 | D | 2 | D cumule peu de configurations, un problème aux valeurs propres sensible en aval et un calendrier lié à DRESDYN. |
 | E | 2 | Le développement sur maillage non structuré avec sauts de perméabilité est long, et l'intégration avec le code de simulation n'est pas garantie. |
@@ -409,7 +409,7 @@ où $n_k$ est la note du critère $k$ et $w_k$ son poids, avec $\sum_k w_k = 1$.
 | Piste | Note | Justification |
 |:-:|:-:|------------------|
 | A | 4 | S. Cheng apporte la diffusion conditionnelle, D. Lucor l'espace latent et la POD, C. Nore les données SFEMaNS et les symétries ; Y. Ponty intervient surtout par les données LATU. |
-| B | 5 | Les quatre sont au cœur : ensembles par diffusion (Cheng), modèles réduits et incertitude (Lucor), inversions de VKS (Nore), intermittence et sous-criticité (Ponty). |
+| B | 5 | Les quatre sont au cœur : ensembles par diffusion (Cheng), modèles réduits et incertitude (Lucor), renversements de VKS (Nore), intermittence et sous-criticité (Ponty). |
 | C | 3 | C relève du cœur de métier de S. Cheng et D. Lucor, avec un appui de C. Nore ; aucun apport de Y. Ponty n'est identifié. |
 | D | 3 | C. Nore (précession) et D. Lucor (optimisation robuste) sont en première ligne, S. Cheng pour le génératif ; Y. Ponty est peu concerné. |
 | E | 4 | C. Nore (méthodes de SFEMaNS), S. Cheng (données non structurées), D. Lucor (relaxation des contraintes) et Y. Ponty (pénalisation) contribuent chacun. |
@@ -448,7 +448,7 @@ Le titre parle de renversements, terme usuel de la littérature des dynamos ; le
 
 ### Pourquoi fusionner A et B
 
-La première raison est le classement : A et B sont les deux meilleures pistes sous les trois jeux de poids essayés. La deuxième est leur complémentarité. A répond à l'offre et apporte la méthode d'exploration paramétrique visée par l'objectif (ii) ; B répond à l'objectif (i), centré sur les inversions. Une thèse qui les réunit couvre donc à la fois ce que le stage demande et ce que le projet a promis. Si l'on note la fusion avec la même grille, elle hérite des meilleures notes de chacune pour l'offre, l'ANR, la nouveauté et la couverture des encadrants (5 partout), garde les notes de A pour l'accès aux données et le risque (4 et 3), puisqu'un générateur d'instantanés suffit (voir plus bas), et perd un point de faisabilité par rapport à A (3), car son périmètre est plus large ; son score pondéré serait alors de 4,45. Ce chiffre est favorable par construction et ne doit pas être surinterprété.
+La première raison est le classement : A et B sont les deux meilleures pistes sous les trois jeux de poids essayés. La deuxième est leur complémentarité. A répond à l'offre et apporte la méthode d'exploration paramétrique visée par l'objectif (ii) ; B répond à l'objectif (i), centré sur les renversements. Une thèse qui les réunit couvre donc à la fois ce que le stage demande et ce que le projet a promis. Si l'on note la fusion avec la même grille, elle hérite des meilleures notes de chacune pour l'offre, l'ANR, la nouveauté et la couverture des encadrants (5 partout), garde les notes de A pour l'accès aux données et le risque (4 et 3), puisqu'un générateur d'instantanés suffit (voir plus bas), et perd un point de faisabilité par rapport à A (3), car son périmètre est plus large ; son score pondéré serait alors de 4,45. Ce chiffre est favorable par construction et ne doit pas être surinterprété.
 
 La troisième raison est la plus importante : un même fil théorique relie les deux pistes et lève le principal risque de B. Ce risque était le besoin de longues séries temporelles pour apprendre la dynamique des renversements. Or, on va le voir, un générateur d'**instantanés**, c'est-à-dire l'objet de la piste A, suffit à prédire la fréquence moyenne des passages du dipôle par zéro, donc des renversements aux excursions près, sans modèle temporel. La validation demande toujours des séries de référence, et les instantanés d'apprentissage doivent couvrir la région rare où le dipôle est proche de zéro ; mais l'apprentissage ne demande plus de trajectoires résolues en temps.
 
@@ -486,15 +486,15 @@ Le stage doit produire une étude comparative des stratégies de contrainte (dur
 
 Les champs générés alimentent directement les outils existants du projet. Ils peuvent servir d'entrée aux modèles réduits (POD et modèle DQVU de Bousquet et al. 2026, autoencodeurs de Bousquet, Nore et Lucor 2025) et aux cadres d'assimilation (TorchDA), ce qui correspond à la phrase de l'offre sur les « input for reduced-order models or data assimilation frameworks ». Notons enfin un rapprochement, qui relève de notre lecture et non des auteurs : la régression qui identifie DQVU impose déjà une contrainte statistique, la conservation d'un moment d'ordre trois (Bousquet et al. 2026). Une contrainte portant sur des moyennes, et non sur chaque instant, est donc déjà employée dans le consortium, dans un autre cadre.
 
-### Ouvertures de troisième année : pistes C et D
+### Ouvertures : pistes C et D
 
-Une fois le générateur conditionnel établi, deux prolongements deviennent naturels. Vers la **piste C**, le générateur sert d'a priori dans une assimilation latente (assimilation latente généralisée, TorchDA, 4D-Var à dynamique générative) pour reconstruire $(\mathbf{u}, \mathbf{B})$ à partir de sondes magnétiques synthétiques ; la loi a posteriori y est bimodale, à cause des deux polarités du dipôle, et un a priori qui respecte la symétrie $\mathbf{B} \to -\mathbf{B}$, donc qui donne le même poids aux deux polarités, évite de biaiser l'analyse vers l'une d'elles. Vers la **piste D**, on conditionne le générateur par le nombre de Poincaré pour estimer $Rm_c$ et la symétrie du mode dominant dans la géométrie de DRESDYN, en s'appuyant sur les simulations de Botez et al. (2026) si elles sont accessibles. Le choix entre les deux dépendra des données disponibles et de l'avancement des deux premières années.
+Une fois le générateur conditionnel établi, deux prolongements deviennent naturels. Vers la **piste C**, le générateur sert d'a priori dans une assimilation latente (assimilation latente généralisée, TorchDA, 4D-Var à dynamique générative) pour reconstruire $(\mathbf{u}, \mathbf{B})$ à partir de sondes magnétiques synthétiques ; la loi a posteriori y est bimodale, à cause des deux polarités du dipôle, et un a priori qui respecte la symétrie $\mathbf{B} \to -\mathbf{B}$, donc qui donne le même poids aux deux polarités, évite de biaiser l'analyse vers l'une d'elles. Vers la **piste D**, on conditionne le générateur par le nombre de Poincaré pour estimer $Rm_c$ et la symétrie du mode dominant dans la géométrie de DRESDYN, en s'appuyant sur les simulations de Botez et al. (2026) si elles sont accessibles. La thèse les intègre toutes deux : l'assimilation devient l'usage en aval de la question Q4 (mois 25–27) et DRESDYN le palier 4 (mois 24–34), le premier abandonné en cas de retard.
 
 | Année | Travail proposé | Résultat visé |
 |:-:|--------------|----------|
-| 1 | Générateur conditionnel latent sur LATU puis SFEMaNS ; contraintes dures (divergence, symétries) ; métriques physiques de la piste F. | Une étude comparative des stratégies de contrainte sur des champs MHD 3D de dynamo. |
-| 2 | Contraintes en loi (bilans stationnaires), formule de Rice, comportement au voisinage du seuil dynamo. | La fréquence des renversements prédite sans intégration temporelle, en fonction des paramètres. |
-| 3 | Ouverture vers C (assimilation) ou D (DRESDYN), selon les données ; rédaction. | Une application au projet et le manuscrit. |
+| 1 | Paliers 0 et 1 (Gissinger, DQVU, MHD 2D), puis palier 2 (simulations ABC et Taylor–Green) : contraintes en loi, équivariance, formule de Rice ; demande d'accès aux données VKS. | Article 1 (contraintes en loi, mois 10). |
+| 2 | Palier 2 (seuil dynamo, conditionnement par la branche) ; palier 3 dès le mois 15 (SFEMaNS, LATU) : décodeur hybride, raccord au vide, pli d'interface. | Version 1 du code (mois 16) ; article 2 (contraintes dures, mois 22). |
+| 3 | Palier 3 (renversements dans VKS, modèle réduit, assimilation avec TorchDA) et palier 4 (DRESDYN, mois 24–34) ; rédaction. | Article 3 (renversements et seuil, mois 33) ; soutenance (mois 36). |
 
 : Calendrier indicatif, proposé à titre de discussion.
 

@@ -43,7 +43,7 @@ format:
 Each diagram is a small, self-contained JavaScript program that runs in your browser, with no server. The formulas it uses are written at the top of each file (`assets/interactif/<name>.js`), together with their references. These diagrams complement the figures of the [report](../rapport/index.html) and the static or interactive diagrams of the [preparation modules](../prep/index.html); they do not replace the proofs.
 :::
 
-The six diagrams follow the order of the curriculum: the transport of probability distributions that underlies flow matching, the projection that makes a field divergence-free, the difference between a per-sample constraint and a constraint in distribution, two dynamical systems from the internship, the reversal model and the ABC kinematic dynamo, then the infrastructure's simulation pipeline.
+The six diagrams follow the order of the curriculum: the transport of probability distributions that underlies flow matching, the projection that makes a field divergence-free, the difference between a per-sample constraint and a distributional constraint, two dynamical systems from the internship, the reversal model and the ABC kinematic dynamo, then the infrastructure's simulation pipeline.
 
 ## 1. Flow matching: transporting a distribution {#flow-matching}
 
@@ -71,7 +71,7 @@ The projection can only remove energy ($\|\mathbb{P}\mathbf{u}\|^2 \le \|\mathbf
 
 Further reading: module [p1 — vector calculus and Fourier](../prep/p1-calcul-vectoriel/index.html) and experiment [E2](../rapport/index.html#e2).
 
-## 3. Constraint in distribution or per-sample constraint {#contrainte-loi}
+## 3. Distributional constraint or per-sample constraint {#contrainte-loi}
 
 In a statistically stationary state, the energy variation $r = \mathrm{d}E/\mathrm{d}t = P - \varepsilon$ fluctuates: it is zero only **on average**. This diagram compares three distributions of $r$: the true distribution, the distribution of a biased model in which each sample is projected onto $r = 0$, and the same distribution corrected by exponential tilting $w_i \propto e^{\beta r_i}$. The per-sample projection satisfies the constraint by destroying the variance; the tilting corrects the mean while distorting the distribution as little as possible in the Kullback–Leibler sense.
 
@@ -101,7 +101,7 @@ Further reading: module [p4 — dynamical systems](../prep/p4-systemes-dynamique
 
 The ABC flow ($A = B = C = 1$) is a kinematic dynamo: for certain values of the magnetic Reynolds number $Rm = 1/\eta$, an initially weak magnetic field grows exponentially. The curve shows the growth rate $\lambda(Rm)$ computed in this repository on a $32^3$ grid; the shaded areas are the dynamo windows. The map shows a slice of $|\mathbf{B}|$ for the most unstable mode.
 
-The measured thresholds ($Rm \approx 8.87$, $17.6$ and $26.8$) recover the known windows ($8.9 < Rm < 17.5$, then $Rm \gtrsim 27$). This computation serves as a 3D test bed for the PhD: generating eigenmodes conditioned on $Rm$ from a vector potential.
+The measured thresholds ($Rm \approx 8.87$, $17.6$ and $26.8$) recover the known windows ($8.9 < Rm < 17.5$, then $Rm \gtrsim 27$). This computation serves as a 3D test bench for the PhD: generating eigenmodes conditioned on $Rm$ from a vector potential.
 
 ```{=html}
 <div class="widget" data-widget="abc-dynamo" data-src="../../assets/interactif/data/abc-dynamo.json"></div>

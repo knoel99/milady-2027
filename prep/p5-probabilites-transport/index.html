@@ -645,7 +645,7 @@ p_Y(y) = \frac{1}{\sqrt{2\pi}\sqrt{1 + y^2}}\exp\Big(-\frac{(\operatorname{argsh
 <div class="def">
 <p><span class="tag">Définition 3.9 — Poids autonormalisés</span> Avec <span class="math inline">\tilde w_i = \tilde p(\mathbf{Y}_i)/q(\mathbf{Y}_i)</span>, l’estimateur autonormalisé est</p>
 <p><span class="math display">
-\hat I_N^{\mathrm{AN}} = \frac{\sum_{i=1}^N \tilde w_i\,f(\mathbf{Y}_i)}{\sum_{i=1}^N \tilde w_i} = \sum_{i=1}^N \bar w_i\,f(\mathbf{Y}_i), \qquad \bar w_i = \frac{\tilde w_i}{\sum_j \tilde w_j}.
+\hat I_N^{\text{AN}} = \frac{\sum_{i=1}^N \tilde w_i\,f(\mathbf{Y}_i)}{\sum_{i=1}^N \tilde w_i} = \sum_{i=1}^N \bar w_i\,f(\mathbf{Y}_i), \qquad \bar w_i = \frac{\tilde w_i}{\sum_j \tilde w_j}.
 </span></p>
 <p>Il converge vers <span class="math inline">\mathbb{E}_p[f]</span> (rapport de deux moyennes qui convergent vers <span class="math inline">Z\,\mathbb{E}_p[f]</span> et <span class="math inline">Z</span>), avec un biais d’ordre <span class="math inline">1/N</span>.</p>
 </div>
@@ -667,7 +667,7 @@ p_Y(y) = \frac{1}{\sqrt{2\pi}\sqrt{1 + y^2}}\exp\Big(-\frac{(\operatorname{argsh
 </ol>
 </div>
 </div>
-<p>L’interprétation usuelle est que la variance de <span class="math inline">\hat I_N^{\mathrm{AN}}</span> est à peu près celle d’une moyenne de <span class="math inline">\mathrm{ESS}</span> tirages indépendants de <span class="math inline">p</span>. C’est une heuristique, utile mais pas un théorème : Elvira, Martino et Robert (2022) en discutent les limites. L’exercice 7 montre que pour une cible <span class="math inline">\mathcal{N}(0, 1)</span> et une proposition <span class="math inline">\mathcal{N}(a, 1)</span>, <span class="math inline">\mathrm{ESS}/N \to e^{-a^2}</span> : décaler la proposition de 2 écarts-types ne laisse que 1,8 % de tirages utiles.</p>
+<p>L’interprétation usuelle est que la variance de <span class="math inline">\hat I_N^{\text{AN}}</span> est à peu près celle d’une moyenne de <span class="math inline">\mathrm{ESS}</span> tirages indépendants de <span class="math inline">p</span>. C’est une heuristique, utile mais pas un théorème : Elvira, Martino et Robert (2022) en discutent les limites. L’exercice 7 montre que pour une cible <span class="math inline">\mathcal{N}(0, 1)</span> et une proposition <span class="math inline">\mathcal{N}(a, 1)</span>, <span class="math inline">\mathrm{ESS}/N \to e^{-a^2}</span> : décaler la proposition de 2 écarts-types ne laisse que 1,8 % de tirages utiles.</p>
 <div class="sourceCode" id="cb3"><pre class="sourceCode python"><code class="sourceCode python"><span id="cb3-1"><a href="#cb3-1" aria-hidden="true" tabindex="-1"></a><span class="im">import</span> numpy <span class="im">as</span> np</span>
 <span id="cb3-2"><a href="#cb3-2" aria-hidden="true" tabindex="-1"></a><span class="im">from</span> scipy.stats <span class="im">import</span> norm</span>
 <span id="cb3-3"><a href="#cb3-3" aria-hidden="true" tabindex="-1"></a>rng <span class="op">=</span> np.random.default_rng(<span class="dv">2</span>)</span>

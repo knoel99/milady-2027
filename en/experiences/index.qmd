@@ -40,7 +40,7 @@ format:
 
 ::: note
 [About]{.tag}
-All the experiments on this site run on an ordinary processor (Intel Xeon, 4 cores, 2.30 GHz, no GPU), in Python 3.13 with NumPy 2.5, SciPy 1.18, Matplotlib 3.11 and PyTorch 2.15 (CPU build). They are **small-scale testbeds**: they test ideas and mechanisms, not performance on real dynamo data. All the numbers quoted in the [report](../rapport/index.html) come from the result files described here.
+All the experiments on this site run on an ordinary processor (Intel Xeon, 4 cores, 2.30 GHz, no GPU), in Python 3.13 with NumPy 2.5, SciPy 1.18, Matplotlib 3.11 and PyTorch 2.15 (CPU build). They are **small-scale test benches**: they test ideas and mechanisms, not performance on real dynamo data. All the numbers quoted in the [report](../rapport/index.html) come from the result files described here.
 :::
 
 ![The three test benches on one template: system, numerical scheme, parameter sweep with the system's response, data kept and place in the compute pipeline. Responses: E1, frequency of zero crossings of $D$ in the fine-grid simulations; E2, mean magnetic energy $E_B$ (± one standard deviation), **recomputed** for this diagram with E2's solver and settings; E3, growth rate $\lambda$, axis restricted to $\pm 0.012$ (three points below the scale, at $Rm = 2$, 4 and 6, marked with an arrow). Filled points: training values; open points: test values. Shaded zones: reversal threshold (E1) and dynamo windows (E3).](../../figures/simulations/figure/out/simulations-en.png){width="100%" fig-alt="Three rows, E1, E2 and E3. In each row: a thumbnail of the system (time series of the dipole D, 2D MHD map, periodic box), two lines on the numerical scheme, a small plot of the response against the parameter with the training and test values on the axis, and the corresponding infrastructure campaign."}
@@ -55,11 +55,11 @@ The `experiences/` folder of the repository contains everything needed to reprod
 | `e1_gissinger.py` | E1: invariant distribution of the Gissinger (2012) reversal model, conditioned on $\Gamma$; symmetry, stationarity identities, Rice formula. Costly steps are cached in `resultats/cache_e1/`. |
 | `mhd2d.py` | Pseudo-spectral solver for forced incompressible 2D MHD, in potentials $(\omega, a)$. |
 | `e2_donnees.py` | E2: 2D MHD snapshots for eleven values of $\eta$ (six for training, five for testing). |
-| `e2_mhd2d.py` | E2: five divergence-constraint mechanisms, distributional stationarity loss, tilting versus per-sample correction. |
+| `e2_mhd2d.py` | E2: five divergence-constraint mechanisms, distributional stationarity loss, tilting versus per-sample rescaling. |
 | `e3_abc.py` | E3: kinematic dynamo of the ABC flow, growth rate as a function of $Rm$. |
 | `unet.py` | Small periodic U-Net (not used in the final results: too slow on CPU, see below). |
 | `figures.py` | Plots in French and English (`figures/<name>.png` and `figures/<name>-en.png`). |
-| `digest.py` | Numerical digest `resultats/digest.md`, the single source of the report's tables. |
+| `digest.py` | Numerical digest `resultats/digest.md`, the source of Tables 1, 3 to 6 and 8 of the report (Tables 2 and 7 come from the JSON files of E1 and E2). |
 
 ## Reproducing the results {#reproduire}
 
@@ -96,7 +96,7 @@ Results and discussion: [report, section E2](../rapport/index.html#e2).
 
 ![Relative divergence, spectrum error and residual of the mean energy budget for variants V0 to V5 on the test values of $\eta$, compared with a subsample of the data.](../../experiences/figures/e2_mecanismes-en.png){width="100%" fig-alt="Three horizontal bar charts, logarithmic scale, for eight variants."}
 
-![Distributional constraint versus per-sample constraint (test values of $\eta$): residual of the energy budget, spread of the dissipation and energy distance, for the V4 model, its exponential tilting, its sample-by-sample correction, and the V5 model trained with the stationarity loss.](../../experiences/figures/e2_en_loi-en.png){width="100%" fig-alt="Three horizontal bar charts for four variants."}
+![Distributional constraint versus per-sample constraint (test values of $\eta$): residual of the energy budget, spread of the dissipation and energy distance, for the V4 model, its exponential tilting, its sample-by-sample rescaling, and the V5 model trained with the stationarity loss.](../../experiences/figures/e2_en_loi-en.png){width="100%" fig-alt="Three horizontal bar charts for four variants."}
 
 A first attempt with a periodic U-Net on the $32\times32$ grid (file `unet.py`) cost about 0.3 s per training step on this processor: five variants would have required several hours in total (about 30 min each at the 6000-iteration budget). Switching to the truncated Fourier basis keeps the comparison clean (same network, same budget for all variants) at a cost compatible with a CPU. The internship itself would run on GPU, with field architectures (U-Nets, transformers, functional decoders).
 

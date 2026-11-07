@@ -48,7 +48,7 @@ Ce module est le cœur méthodologique du parcours : il construit, démonstratio
 4. démontrer que le champ de vitesse marginal engendre le chemin de probabilité (équation de continuité) et que la perte conditionnelle de flow matching a le même gradient que la perte marginale ; relier flow matching, *rectified flow*, interpolants stochastiques et diffusion ;
 5. conditionner un modèle par un paramètre physique $\boldsymbol\lambda$ (par exemple $Re$ ou $Rm$), programmer le guidage sans classifieur, expliquer le guidage par l'estimation débruitée (DPS, *universal guidance*) et calculer l'écart de Jensen qu'il introduit ;
 6. décrire la génération dans un espace latent et dans un espace de fonctions (diffusion latente, FunDiff, *Functional Flow Matching*) et dire où y placer une contrainte comme $\nabla\cdot\mathbf{B} = 0$ ;
-7. évaluer un modèle génératif sans vraisemblance, par des distances entre échantillons (distance d'énergie, Wasserstein tranché) et par des métriques physiques, en comparant toujours au plancher statistique.
+7. évaluer un modèle génératif sans vraisemblance, par des distances entre échantillons (distance d'énergie, Wasserstein tranché) et par des métriques physiques, en comparant toujours au plancher de bruit.
 
 ## Prérequis {#prerequis}
 
@@ -306,7 +306,7 @@ $$
 q(\mathbf{y}_k \mid \mathbf{y}_{k-1}) = \mathcal{N}\big(\sqrt{1 - \beta_k}\,\mathbf{y}_{k-1},\; \beta_k I\big), \qquad k = 1, \dots, K, \qquad \mathbf{y}_0 \sim \mu.
 $$
 
-On note $\alpha_k = 1 - \beta_k$, $\bar\alpha_k = \prod_{j=1}^k \alpha_j$ et $\mathrm{RSB}_k = \bar\alpha_k/(1 - \bar\alpha_k)$ le rapport signal sur bruit.
+On note $\alpha_k = 1 - \beta_k$, $\bar\alpha_k = \prod_{j=1}^k \alpha_j$ et $\operatorname{RSB}_k = \bar\alpha_k/(1 - \bar\alpha_k)$ le rapport signal sur bruit.
 :::
 
 Le facteur $\sqrt{1 - \beta_k}$ n'est pas arbitraire : il contracte le signal juste assez pour que la variance totale reste bornée, de sorte que la chaîne converge vers $\mathcal{N}(0, I)$ au lieu d'exploser.
@@ -328,7 +328,7 @@ Si $\bar\alpha_K \approx 0$, la loi de $\mathbf{y}_K$ est presque $\mathcal{N}(0
 
 ::: ex
 [Exemple 2.3 — Planning linéaire de Ho et al. (2020)]{.tag}
-Avec $K = 1000$ et $\beta_k$ croissant linéairement de $10^{-4}$ à $0{,}02$, le bloc de code de la section 2.4 donne $\bar\alpha_K = 4{,}0 \times 10^{-5}$ : la donnée ne pèse plus que $\sqrt{\bar\alpha_K} \approx 0{,}006$ dans $\mathbf{y}_K$. Le rapport signal sur bruit passe par $1$ vers $k = 250$ ($\mathrm{RSB}_{250} = 1{,}10$) et vaut encore $8{,}7$ à $k = 100$ : une grande partie des pas sert à détruire les petites échelles, une autre à effacer les grandes structures. La figure 2.4 montre l'effet du bruitage sur un mélange de quatre gaussiennes du plan.
+Avec $K = 1000$ et $\beta_k$ croissant linéairement de $10^{-4}$ à $0{,}02$, le bloc de code de la section 2.4 donne $\bar\alpha_K = 4{,}0 \times 10^{-5}$ : la donnée ne pèse plus que $\sqrt{\bar\alpha_K} \approx 0{,}006$ dans $\mathbf{y}_K$. Le rapport signal sur bruit passe par $1$ vers $k = 250$ ($\operatorname{RSB}_{250} = 1{,}10$) et vaut encore $8{,}7$ à $k = 100$ : une grande partie des pas sert à détruire les petites échelles, une autre à effacer les grandes structures. La figure 2.4 montre l'effet du bruitage sur un mélange de quatre gaussiennes du plan.
 :::
 
 ![Figure 2.4 — Processus direct de DDPM appliqué à un mélange de quatre gaussiennes du plan (planning linéaire de Ho et al. 2020, $K = 1000$). Les petites échelles (la largeur des modes) disparaissent d'abord, puis la structure globale ; à $k = 1000$, le nuage est indiscernable de $\mathcal{N}(0, I)$.](fig-bruitage.png){width="100%" fig-alt="Cinq nuages de points : quatre amas nets à k = 0, encore séparés à k = 50, élargis et se chevauchant à k = 150, un seul nuage diffus à k = 300 et une gaussienne isotrope à k = 1000."}
@@ -792,7 +792,7 @@ for nom, f, N in [("ODE, Heun", ode_heun, 18), ("ODE, Heun", ode_heun, 5),
 # EDS inverse   500 évaluations : D_E = -0.0007, part du mode de droite = 0.699
 ```
 
-Avec le débruiteur exact, l'ODE intégrée par Heun en 35 évaluations est indiscernable des données (sa distance d'énergie est au niveau du plancher statistique), alors qu'avec 9 évaluations l'erreur d'intégration domine. L'EDS inverse a besoin de beaucoup plus de pas pour la même précision : son bruit doit être intégré finement. C'est la raison pour laquelle les échantillonneurs rapides sont presque toujours déterministes.
+Avec le débruiteur exact, l'ODE intégrée par Heun en 35 évaluations est indiscernable des données (sa distance d'énergie est au niveau du plancher de bruit), alors qu'avec 9 évaluations l'erreur d'intégration domine. L'EDS inverse a besoin de beaucoup plus de pas pour la même précision : son bruit doit être intégré finement. C'est la raison pour laquelle les échantillonneurs rapides sont presque toujours déterministes.
 
 :::: recap
 ::: recap-title
@@ -1406,7 +1406,7 @@ for lam in [0.25, 0.5, 0.375, 0.625]:      # 0,375 et 0,625 : valeurs absentes d
 # 0.625     -0.0002        0.0033           -0.0017              0.1078
 ```
 
-Trois constats. D'abord, avec Heun et 50 pas (99 évaluations du réseau), la distance d'énergie entre échantillons générés et données est au niveau du **plancher statistique**, c'est-à-dire de la distance entre deux jeux de données indépendants de même taille ($\pm 0{,}002$) ; elle est environ deux ordres de grandeur plus petite que celle d'une gaussienne de même moyenne et de même covariance, qui rate la structure en quatre modes. Ensuite, la qualité est la même aux valeurs $\lambda = 0{,}375$ et $0{,}625$ absentes de l'entraînement : sur cet exemple très régulier en $\lambda$, le réseau interpole correctement. Enfin, Euler avec 10 pas (10 évaluations) laisse une distance d'environ $0{,}004$, nettement au-dessus du plancher, mais encore vingt fois plus petite que celle de la référence gaussienne : l'erreur d'intégration se voit, sans masquer la structure. La perte finale, $2{,}63$, ne tend pas vers $0$ : c'est la constante $C$ du théorème 4.7 (plus le bruit du mini-lot).
+Trois constats. D'abord, avec Heun et 50 pas (99 évaluations du réseau), la distance d'énergie entre échantillons générés et données est au niveau du **plancher de bruit**, c'est-à-dire de la distance entre deux jeux de données indépendants de même taille ($\pm 0{,}002$) ; elle est environ deux ordres de grandeur plus petite que celle d'une gaussienne de même moyenne et de même covariance, qui rate la structure en quatre modes. Ensuite, la qualité est la même aux valeurs $\lambda = 0{,}375$ et $0{,}625$ absentes de l'entraînement : sur cet exemple très régulier en $\lambda$, le réseau interpole correctement. Enfin, Euler avec 10 pas (10 évaluations) laisse une distance d'environ $0{,}004$, nettement au-dessus du plancher, mais encore vingt fois plus petite que celle de la référence gaussienne : l'erreur d'intégration se voit, sans masquer la structure. La perte finale, $2{,}63$, ne tend pas vers $0$ : c'est la constante $C$ du théorème 4.7 (plus le bruit du mini-lot).
 
 ![Figure 5.11 — Flow matching conditionnel du travail pratique : données (en haut, gris) et échantillons générés par Heun en 50 pas (en bas, bleu) pour quatre valeurs du paramètre, dont deux ($\lambda = 0{,}375$ et $0{,}625$) absentes de l'entraînement. Le modèle place correctement les modes, y compris en $\lambda$ non vu ; de fins filaments relient les modes.](fig-fm-conditionnel.png){width="100%" fig-alt="Huit nuages de points sur deux rangées : en haut quatre jeux de données à quatre amas sur un cercle qui grandit et tourne avec lambda ; en bas les échantillons générés correspondants, aux mêmes positions, avec quelques points isolés entre les amas."}
 
@@ -1760,7 +1760,7 @@ En rapprochant ces chiffres de ceux de la section 5.6 (même réseau, même budg
 | Plancher (référence / référence) | — | $-0{,}0017$ à $0{,}0009$ |
 | Gaussienne ajustée | — | $0{,}074$ à $0{,}108$ |
 
-À une centaine d'évaluations, les deux familles atteignent le plancher statistique. À dix évaluations, le flow matching avec le plus simple des solveurs fait environ quatre fois mieux que DDIM sur le même budget. Ce résultat est cohérent avec l'argument du chapitre 4 (chemins plus droits, intégration plus facile), mais il ne porte que sur un exemple jouet en dimension 2, avec une seule graine et des réglages non optimisés : il illustre un protocole, il ne tranche pas entre les méthodes.
+À une centaine d'évaluations, les deux familles atteignent le plancher de bruit. À dix évaluations, le flow matching avec le plus simple des solveurs fait environ quatre fois mieux que DDIM sur le même budget. Ce résultat est cohérent avec l'argument du chapitre 4 (chemins plus droits, intégration plus facile), mais il ne porte que sur un exemple jouet en dimension 2, avec une seule graine et des réglages non optimisés : il illustre un protocole, il ne tranche pas entre les méthodes.
 
 :::: recap
 ::: recap-title
@@ -1769,7 +1769,7 @@ Ce qu'il faut retenir — chapitre 7
 - La vraisemblance est coûteuse et peu informative sur la qualité des échantillons ; on évalue un modèle génératif par l'usage visé.
 - La distance d'énergie $2\mathbb{E}\|X - Y\| - \mathbb{E}\|X - X'\| - \mathbb{E}\|Y - Y'\|$ est nulle si et seulement si les lois coïncident ; son estimateur sans biais fluctue autour de $0$.
 - La distance de Wasserstein tranchée se calcule par projections et tris ; son estimateur empirique est biaisé positivement.
-- Pour la physique, on ajoute contraintes par échantillon, spectres, invariants, bilans en loi, intermittence et topologie, toujours comparés au plancher statistique, dans et hors de la plage de paramètres d'entraînement.
+- Pour la physique, on ajoute contraintes par échantillon, spectres, invariants, bilans en loi, intermittence et topologie, toujours comparés au plancher de bruit, dans et hors de la plage de paramètres d'entraînement.
 ::::
 
 ## Exercices {#exercices}
@@ -1784,16 +1784,16 @@ Les exercices sont gradués : ★ application directe du cours, ★★ calcul ou
 
    *Solution* : Par l'exemple 1.9 en dimension 1, $\log q_{a,b}(x) = -\tfrac12\log(2\pi) - \frac{(x - b)^2}{2a^2} - \log a$. En notant $\bar x$ la moyenne empirique et $S = \frac1N\sum_i(x_i - \bar x)^2$, la log-vraisemblance moyenne vaut $\ell(a, b) = -\tfrac12\log(2\pi) - \frac{S + (\bar x - b)^2}{2a^2} - \log a$. Elle est maximale en $b = \bar x$ ; puis $\partial_a\ell = S/a^3 - 1/a = 0$ donne $a^2 = S$. Le maximum vaut $-\tfrac12\log(2\pi) - \tfrac12 - \tfrac12\log S$ : le flot affine optimal est la gaussienne de mêmes moyenne et variance empiriques, et la vraisemblance ne dépend des données que par $S$.
 
-3. **★ Planning de bruit constant.** Dans DDPM, on prend $\beta_k = \beta = 0{,}01$ pour tout $k$. (a) Exprimer $\bar\alpha_k$ et $\mathrm{RSB}_k$. (b) Combien de pas faut-il pour que $\bar\alpha_K \le 10^{-4}$ ? (c) À quel pas le rapport signal sur bruit vaut-il $1$ ? Comparer au planning linéaire de l'exemple 2.3.
+3. **★ Planning de bruit constant.** Dans DDPM, on prend $\beta_k = \beta = 0{,}01$ pour tout $k$. (a) Exprimer $\bar\alpha_k$ et $\operatorname{RSB}_k$. (b) Combien de pas faut-il pour que $\bar\alpha_K \le 10^{-4}$ ? (c) À quel pas le rapport signal sur bruit vaut-il $1$ ? Comparer au planning linéaire de l'exemple 2.3.
 
-   *Solution* : (a) $\bar\alpha_k = (1 - \beta)^k = 0{,}99^k$ et $\mathrm{RSB}_k = 0{,}99^k/(1 - 0{,}99^k)$. (b) $0{,}99^K \le 10^{-4}$ équivaut à $K \ge \ln(10^{-4})/\ln(0{,}99) = 916{,}4$, soit $K = 917$. (c) $\mathrm{RSB}_k = 1$ équivaut à $\bar\alpha_k = 1/2$, soit $k = \ln 2/(-\ln 0{,}99) = 69{,}0$. Avec le planning constant, le signal est à moitié détruit dès $7$ % des pas, contre $25$ % pour le planning linéaire ($\mathrm{RSB}_{250} = 1{,}10$) : un planning croissant consacre plus de pas aux faibles bruits, là où se forment les détails.
+   *Solution* : (a) $\bar\alpha_k = (1 - \beta)^k = 0{,}99^k$ et $\operatorname{RSB}_k = 0{,}99^k/(1 - 0{,}99^k)$. (b) $0{,}99^K \le 10^{-4}$ équivaut à $K \ge \ln(10^{-4})/\ln(0{,}99) = 916{,}4$, soit $K = 917$. (c) $\operatorname{RSB}_k = 1$ équivaut à $\bar\alpha_k = 1/2$, soit $k = \ln 2/(-\ln 0{,}99) = 69{,}0$. Avec le planning constant, le signal est à moitié détruit dès $7$ % des pas, contre $25$ % pour le planning linéaire ($\operatorname{RSB}_{250} = 1{,}10$) : un planning croissant consacre plus de pas aux faibles bruits, là où se forment les détails.
 
-4. **★★ Prédire le bruit ou prédire la donnée.** On note $\hat{\mathbf{y}}_0 = (\mathbf{y}_k - \sqrt{1 - \bar\alpha_k}\,\hat{\boldsymbol\varepsilon})/\sqrt{\bar\alpha_k}$ l'estimée de la donnée associée à une prédiction $\hat{\boldsymbol\varepsilon}$ du bruit. Montrer que $\|\boldsymbol\varepsilon - \hat{\boldsymbol\varepsilon}\|^2 = \mathrm{RSB}_k\,\|\mathbf{y}_0 - \hat{\mathbf{y}}_0\|^2$. Qu'en déduire sur la pondération implicite de $L_{\mathrm{simple}}$ ?
+4. **★★ Prédire le bruit ou prédire la donnée.** On note $\hat{\mathbf{y}}_0 = (\mathbf{y}_k - \sqrt{1 - \bar\alpha_k}\,\hat{\boldsymbol\varepsilon})/\sqrt{\bar\alpha_k}$ l'estimée de la donnée associée à une prédiction $\hat{\boldsymbol\varepsilon}$ du bruit. Montrer que $\|\boldsymbol\varepsilon - \hat{\boldsymbol\varepsilon}\|^2 = \operatorname{RSB}_k\,\|\mathbf{y}_0 - \hat{\mathbf{y}}_0\|^2$. Qu'en déduire sur la pondération implicite de $L_{\mathrm{simple}}$ ?
 
    *Solution* : Comme $\mathbf{y}_0 = (\mathbf{y}_k - \sqrt{1 - \bar\alpha_k}\,\boldsymbol\varepsilon)/\sqrt{\bar\alpha_k}$, on a $\mathbf{y}_0 - \hat{\mathbf{y}}_0 = \sqrt{(1 - \bar\alpha_k)/\bar\alpha_k}\,(\hat{\boldsymbol\varepsilon} - \boldsymbol\varepsilon)$, d'où
 
    $$
-   \|\mathbf{y}_0 - \hat{\mathbf{y}}_0\|^2 = \frac{1 - \bar\alpha_k}{\bar\alpha_k}\,\|\boldsymbol\varepsilon - \hat{\boldsymbol\varepsilon}\|^2 = \frac{1}{\mathrm{RSB}_k}\,\|\boldsymbol\varepsilon - \hat{\boldsymbol\varepsilon}\|^2.
+   \|\mathbf{y}_0 - \hat{\mathbf{y}}_0\|^2 = \frac{1 - \bar\alpha_k}{\bar\alpha_k}\,\|\boldsymbol\varepsilon - \hat{\boldsymbol\varepsilon}\|^2 = \frac{1}{\operatorname{RSB}_k}\,\|\boldsymbol\varepsilon - \hat{\boldsymbol\varepsilon}\|^2.
    $$
 
    La perte $L_{\mathrm{simple}}$, uniforme en $k$ pour le bruit, est donc une perte sur la donnée pondérée par le rapport signal sur bruit : les niveaux de faible bruit (grand RSB) pèsent beaucoup, les niveaux de fort bruit presque pas. Ce choix de pondération est l'un des « boutons » que Kingma et al. (2021) et EDM (section 3.4) rendent explicites.
@@ -1806,7 +1806,7 @@ Les exercices sont gradués : ★ application directe du cours, ★★ calcul ou
    \mathbb{E}[y_0 \mid y] = \mathbb{P}(y_0 = 1 \mid y) - \mathbb{P}(y_0 = -1 \mid y) = \tanh(y/\sigma^2).
    $$
 
-   (b) Avec $a = 1$, la proposition 3.7 donne $\partial_y\log p(y) = \big(\tanh(y/\sigma^2) - y\big)/\sigma^2$, ce que l'on vérifie en dérivant directement $\log\big(e^{-(y-1)^2/(2\sigma^2)} + e^{-(y+1)^2/(2\sigma^2)}\big)$. (c) Quand $\sigma \to 0$, $\tanh(y/\sigma^2) \to \mathrm{signe}(y)$ : le débruiteur choisit le point le plus proche. Quand $\sigma \to \infty$, $\tanh(y/\sigma^2) \approx y/\sigma^2 \to 0$ : à très fort bruit, le débruiteur optimal renvoie la moyenne des données.
+   (b) Avec $a = 1$, la proposition 3.7 donne $\partial_y\log p(y) = \big(\tanh(y/\sigma^2) - y\big)/\sigma^2$, ce que l'on vérifie en dérivant directement $\log\big(e^{-(y-1)^2/(2\sigma^2)} + e^{-(y+1)^2/(2\sigma^2)}\big)$. (c) Quand $\sigma \to 0$, $\tanh(y/\sigma^2) \to \operatorname{signe}(y)$ : le débruiteur choisit le point le plus proche. Quand $\sigma \to \infty$, $\tanh(y/\sigma^2) \approx y/\sigma^2 \to 0$ : à très fort bruit, le débruiteur optimal renvoie la moyenne des données.
 
 6. **★★ ODE de flot de probabilité pour des données gaussiennes.** Dans la paramétrisation d'EDM, $y = x + \sigma n$ avec $x \sim \mathcal{N}(0, \tau^2)$. (a) Calculer le débruiteur $D(y; \sigma)$ et le score. (b) Résoudre l'ODE $\mathrm{d}y/\mathrm{d}\sigma = (y - D(y; \sigma))/\sigma$ de $\sigma_{\max}$ à $0$. (c) Si l'on part de $y \sim \mathcal{N}(0, \sigma_{\max}^2)$ au lieu de $\mathcal{N}(0, \tau^2 + \sigma_{\max}^2)$, quelle variance obtient-on à l'arrivée ? Application : $\tau = 0{,}5$, $\sigma_{\max} = 80$.
 
@@ -1967,7 +1967,7 @@ Les exercices sont gradués : ★ application directe du cours, ★★ calcul ou
     2\big[F(1 - G) + G(1 - F)\big] - 2F(1 - F) - 2G(1 - G) = 2F^2 - 4FG + 2G^2 = 2(F - G)^2.
     $$
 
-    (b) L'intégrale d'un carré est positive ; elle est nulle si et seulement si $F = G$ presque partout, donc partout par continuité à droite, c'est-à-dire $P = Q$. (c) Ici $F(u) - G(u) = \Phi(u) - \Phi(u - \delta) \approx \delta\,\varphi(u)$, et $\int\varphi^2 = 1/(2\sqrt\pi)$, d'où $\mathcal{E} \approx \delta^2/\sqrt\pi$. Pour $\delta = 0{,}1$, l'intégrale exacte vaut $0{,}005640$ et l'approximation $0{,}005642$. La distance d'énergie est **quadratique** en un petit décalage : c'est pourquoi les valeurs mesurées au chapitre 7 sont si petites, et pourquoi il faut les comparer au plancher statistique plutôt qu'à zéro.
+    (b) L'intégrale d'un carré est positive ; elle est nulle si et seulement si $F = G$ presque partout, donc partout par continuité à droite, c'est-à-dire $P = Q$. (c) Ici $F(u) - G(u) = \Phi(u) - \Phi(u - \delta) \approx \delta\,\varphi(u)$, et $\int\varphi^2 = 1/(2\sqrt\pi)$, d'où $\mathcal{E} \approx \delta^2/\sqrt\pi$. Pour $\delta = 0{,}1$, l'intégrale exacte vaut $0{,}005640$ et l'approximation $0{,}005642$. La distance d'énergie est **quadratique** en un petit décalage : c'est pourquoi les valeurs mesurées au chapitre 7 sont si petites, et pourquoi il faut les comparer au plancher de bruit plutôt qu'à zéro.
 
 ## Lien avec le stage {#lien-stage}
 
@@ -1978,7 +1978,7 @@ L'offre de stage demande de développer des modèles génératifs conditionnels,
 - **Expérience E3** ([rapport, section E3](../../rapport/index.html#e3)). Le taux de croissance de la dynamo cinématique ABC en fonction de $Rm$ fournit un exemple de dépendance paramétrique avec seuil : un modèle conditionnel en $Rm$ doit traverser ce seuil, ce qui est exactement la situation où l'interpolation en $\boldsymbol\lambda$ n'est garantie par aucun théorème.
 - La **formulation** du problème et la **taxonomie** des contraintes (où agit la contrainte : architecture, perte, échantillonnage ; dure ou douce) sont développées dans le rapport ([formulation](../../rapport/index.html#formulation), [taxonomie](../../rapport/index.html#taxonomie)). Le sujet de thèse en tire une [partie théorique](../../these/index.html#theorie) et un [plan expérimental](../../these/index.html#plan-experimental).
 
-Trois enseignements de ce module orientent ces choix. D'abord, flow matching et diffusion sont deux paramétrisations du même objet (proposition 4.13) : le choix entre eux relève du chemin, du solveur et de la commodité (le flow matching donne directement l'estimée débruitée et des chemins plus droits), pas d'une différence de principe. Ensuite, les contraintes linéaires (divergence) et non linéaires (énergie, résidus) ne se traitent pas de la même façon, à cause de l'écart de Jensen. Enfin, l'évaluation doit comparer chaque mécanisme au plancher statistique, dans et hors de la plage de paramètres, et avec des métriques physiques ; la comparaison publiée la plus proche, celle de Genuist et al. (2026, préprint) sur la seule divergence en hydrodynamique 2D, montre qu'aucune stratégie ne domine partout : les contraintes strictes y sont meilleures en distribution, mais une pénalité douce l'emporte parfois hors distribution.
+Trois enseignements de ce module orientent ces choix. D'abord, flow matching et diffusion sont deux paramétrisations du même objet (proposition 4.13) : le choix entre eux relève du chemin, du solveur et de la commodité (le flow matching donne directement l'estimée débruitée et des chemins plus droits), pas d'une différence de principe. Ensuite, les contraintes linéaires (divergence) et non linéaires (énergie, résidus) ne se traitent pas de la même façon, à cause de l'écart de Jensen. Enfin, l'évaluation doit comparer chaque mécanisme au plancher de bruit, dans et hors de la plage de paramètres, et avec des métriques physiques ; la comparaison publiée la plus proche, celle de Genuist et al. (2026, préprint) sur la seule divergence en hydrodynamique 2D, montre qu'aucune stratégie ne domine partout : les contraintes strictes y sont meilleures en distribution, mais une pénalité douce l'emporte parfois hors distribution.
 
 ## Pour aller plus loin {#plus-loin}
 

@@ -421,10 +421,10 @@ We take the logarithm of (2.1), then use $J_T(\mathbf{x}) = J_{T_K}(\mathbf{x}_{
 
 ::: ex
 [Example 2.7 — The hyperbolic sine]{.tag}
-Let $X \sim \mathcal{N}(0, 1)$ and $Y = \sinh X$. The inverse is $T^{-1}(y) = \operatorname{argsh} y$, with derivative $1/\sqrt{1 + y^2}$. Formula (2.1) gives
+Let $X \sim \mathcal{N}(0, 1)$ and $Y = \sinh X$. The inverse is $T^{-1}(y) = \operatorname{arsinh} y$, with derivative $1/\sqrt{1 + y^2}$. Formula (2.1) gives
 
 $$
-p_Y(y) = \frac{1}{\sqrt{2\pi}\sqrt{1 + y^2}}\exp\Big(-\frac{(\operatorname{argsh} y)^2}{2}\Big).
+p_Y(y) = \frac{1}{\sqrt{2\pi}\sqrt{1 + y^2}}\exp\Big(-\frac{(\operatorname{arsinh} y)^2}{2}\Big).
 $$
 
 At $y = 0$, $p_Y(0) = 1/\sqrt{2\pi} \approx 0.3989$, the same value as $p_X(0)$, because $T'(0) = \cosh 0 = 1$. On the other hand, $p_Y$ decays much more slowly than the Gaussian: $Y$ has heavy tails, like velocity increments in turbulence.
@@ -667,7 +667,7 @@ Often, the target density is known only up to a constant: $p = \tilde p/Z$ with 
 With $\tilde w_i = \tilde p(\mathbf{Y}_i)/q(\mathbf{Y}_i)$, the self-normalized estimator is
 
 $$
-\hat I_N^{\mathrm{AN}} = \frac{\sum_{i=1}^N \tilde w_i\,f(\mathbf{Y}_i)}{\sum_{i=1}^N \tilde w_i} = \sum_{i=1}^N \bar w_i\,f(\mathbf{Y}_i), \qquad \bar w_i = \frac{\tilde w_i}{\sum_j \tilde w_j}.
+\hat I_N^{\text{SN}} = \frac{\sum_{i=1}^N \tilde w_i\,f(\mathbf{Y}_i)}{\sum_{i=1}^N \tilde w_i} = \sum_{i=1}^N \bar w_i\,f(\mathbf{Y}_i), \qquad \bar w_i = \frac{\tilde w_i}{\sum_j \tilde w_j}.
 $$
 
 It converges to $\mathbb{E}_p[f]$ (ratio of two means that converge to $Z\,\mathbb{E}_p[f]$ and $Z$), with a bias of order $1/N$.
@@ -693,7 +693,7 @@ $$
 :::
 ::::
 
-The usual interpretation is that the variance of $\hat I_N^{\mathrm{AN}}$ is roughly that of a mean of $\mathrm{ESS}$ independent draws from $p$. This is a heuristic, useful but not a theorem: Elvira, Martino and Robert (2022) discuss its limits. Exercise 7 shows that for a target $\mathcal{N}(0, 1)$ and a proposal $\mathcal{N}(a, 1)$, $\mathrm{ESS}/N \to e^{-a^2}$: shifting the proposal by 2 standard deviations leaves only 1.8% of useful draws.
+The usual interpretation is that the variance of $\hat I_N^{\text{SN}}$ is roughly that of a mean of $\mathrm{ESS}$ independent draws from $p$. This is a heuristic, useful but not a theorem: Elvira, Martino and Robert (2022) discuss its limits. Exercise 7 shows that for a target $\mathcal{N}(0, 1)$ and a proposal $\mathcal{N}(a, 1)$, $\mathrm{ESS}/N \to e^{-a^2}$: shifting the proposal by 2 standard deviations leaves only 1.8% of useful draws.
 
 ```python
 import numpy as np
@@ -1363,22 +1363,22 @@ def energy(X, Y):                                  # energy distance between clo
 ref = champs(5 / 3, M)                             # "data"
 modeles = {"A: same distribution": champs(5 / 3, M),
            "B: spectrum k^-3": champs(3.0, M),
-           "C: distorted 1-point law": champs(5 / 3, M, transforme=True),
+           "C: distorted 1-point distribution": champs(5 / 3, M, transforme=True),
            "D: zero field": np.zeros((M, n))}
 E_ref = spectre(ref)
-print(f"{'model':28s} {'paired MSE':>11s} {'W1 1-point':>10s} {'log-spectrum gap':>17s} {'D_E fields':>10s}")
+print(f"{'model':33s} {'paired MSE':>11s} {'W1 1-point':>10s} {'log-spectrum gap':>17s} {'D_E fields':>10s}")
 for nom, u in modeles.items():
     mse = np.mean((u - ref) ** 2)
     w1 = np.mean(np.abs(np.sort(u.ravel()) - np.sort(ref.ravel())))
     dspec = np.mean(np.abs(np.log(spectre(u) + 1e-12) - np.log(E_ref)))
     de = energy(u[:500], ref[:500])
-    print(f"{nom:28s} {mse:11.3f} {w1:10.3f} {dspec:17.3f} {de:10.3f}")
+    print(f"{nom:33s} {mse:11.3f} {w1:10.3f} {dspec:17.3f} {de:10.3f}")
 # output:
-# model                         paired MSE W1 1-point  log-spectrum gap D_E fields
-# A: same distribution               2.002      0.006             0.028      0.010
-# B: spectrum k^-3                   1.996      0.004             3.792      0.228
-# C: distorted 1-point law           2.028      0.179             0.119      0.012
-# D: zero field                      1.000      0.798            30.568      6.403
+# model                              paired MSE W1 1-point  log-spectrum gap D_E fields
+# A: same distribution                    2.002      0.006             0.028      0.010
+# B: spectrum k^-3                        1.996      0.004             3.792      0.228
+# C: distorted 1-point distribution       2.028      0.179             0.119      0.012
+# D: zero field                           1.000      0.798            30.568      6.403
 ```
 
 Each column has its blind spot. The paired squared error ranks the zero field (1.0) ahead of the perfect model (2.0): for two independent fields with the same distribution, $\mathbb{E}|\mathbf{x} - \mathbf{x}'|^2 = 2\,\mathrm{Var}$, so that this metric penalizes the variability that a generative model must precisely reproduce. The distance $W_1$ on pointwise values does not distinguish the too-steep spectrum (0.004), since both one-point distributions are $\mathcal{N}(0, 1)$. The spectral gap detects B but barely sees C. The energy distance on whole fields detects B but confuses C with the perfect model (0.012 versus 0.010): with 500 fields in dimension 128, it lacks power for a defect in the marginal distribution. Only the combination of targeted metrics ranks the four models correctly.
@@ -1843,7 +1843,7 @@ By the transfer formula, $\mathbb{E}[Y] = \mathbb{E}[e^X] = \int e^x\,\frac{e^{-
 14. **★★★ Double well and stationarity identity (code).** Let $\mathrm{d}X = -V'(X)\,\mathrm{d}t + \sigma\,\mathrm{d}W$ with $V(x) = \frac{x^4}{4} - \frac{x^2}{2}$ and $\sigma = 0.8$. (a) Give the stationary density and the ratio $p_\infty(1)/p_\infty(0)$. (b) By applying the weak form $\mathbb{E}_{p_\infty}[\mathcal{L}\varphi] = 0$ to $\varphi(x) = x^2$, establish an identity between $\mathbb{E}[X^4]$ and $\mathbb{E}[X^2]$ that does not require knowing $p_\infty$. (c) Check (a) and (b) with Euler–Maruyama and by quadrature.
 
 ::: sol
-*Solution.* (a) By Proposition 6.11 (ii), $p_\infty \propto e^{-2V/\sigma^2}$, bimodal with maxima at $x = \pm1$. The ratio equals $e^{-2(V(1) - V(0))/\sigma^2} = e^{1/(2\sigma^2)} = e^{0.78} \approx 2.18$. (b) With $\varphi = x^2$: $\mathcal{L}\varphi = -V'(x)\,2x + \sigma^2 = -2x^4 + 2x^2 + \sigma^2$. The identity $\mathbb{E}[\mathcal{L}\varphi] = 0$ gives $\mathbb{E}[X^4] - \mathbb{E}[X^2] = \sigma^2/2 = 0.32$: a balance “injection by the noise = dissipation by the restoring force”, an exact analogue of the distributional energy budget. (c) The following code checks it.
+*Solution.* (a) By Proposition 6.11 (ii), $p_\infty \propto e^{-2V/\sigma^2}$, bimodal with maxima at $x = \pm1$. The ratio equals $e^{-2(V(1) - V(0))/\sigma^2} = e^{1/(2\sigma^2)} = e^{0.78} \approx 2.18$. (b) With $\varphi = x^2$: $\mathcal{L}\varphi = -V'(x)\,2x + \sigma^2 = -2x^4 + 2x^2 + \sigma^2$. The identity $\mathbb{E}[\mathcal{L}\varphi] = 0$ gives $\mathbb{E}[X^4] - \mathbb{E}[X^2] = \sigma^2/2 = 0.32$: a budget “injection by the noise = dissipation by the restoring force”, an exact analogue of the distributional energy budget. (c) The following code checks it.
 
 ```python
 import numpy as np

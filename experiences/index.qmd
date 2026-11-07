@@ -59,7 +59,7 @@ Le dossier `experiences/` du dépôt contient tout le nécessaire pour reproduir
 | `e3_abc.py` | E3 : dynamo cinématique de l'écoulement ABC, taux de croissance en fonction de $Rm$. |
 | `unet.py` | Petit U-Net périodique (non utilisé dans les résultats finaux : trop lent sur CPU, voir plus bas). |
 | `figures.py` | Graphiques en français et en anglais (`figures/<nom>.png` et `figures/<nom>-en.png`). |
-| `digest.py` | Condensé chiffré `resultats/digest.md`, source unique des tableaux du rapport. |
+| `digest.py` | Condensé chiffré `resultats/digest.md`, source des tableaux 1, 3 à 6 et 8 du rapport (les tableaux 2 et 7 viennent des fichiers JSON de E1 et E2). |
 
 ## Reproduire {#reproduire}
 
@@ -86,7 +86,7 @@ Résultats et discussion : [rapport, section E1](../rapport/index.html#e1). Sch�
 
 ![Comparaison des variantes aux valeurs de test de $\Gamma$ : distance d'énergie, résidu de Liouville de contrôle (degré 3), asymétrie $|\mathbb{P}(D>0) - 1/2|$ et rapport $\sigma(\mathrm{d}E/\mathrm{d}t)/\sigma_{\mathrm{ref}}$, avec les planchers de bruit.](figures/e1_variantes.png){width="100%" fig-alt="Quatre diagrammes en barres horizontales, une barre par variante, avec une ligne en tirets pour le plancher de bruit ou la valeur de référence."}
 
-![Symétrie et contrainte par échantillon : densité de dE/dt à $\Gamma = 0{,}93$ (la projection concentre tout en zéro) et nuages $(Q, D)$ à $\Gamma = 0{,}85$ pour le modèle de référence, asymétrique, et le modèle équivariant.](figures/e1_symetrie_projection.png){width="100%" fig-alt="Trois panneaux : histogrammes de dE/dt, puis deux nuages de points dans le plan Q-D superposés à la référence grise."}
+![Symétrie et contrainte par échantillon : densité de dE/dt à $\Gamma = 0{,}93$ (la projection concentre tout en zéro) et nuages $(Q, D)$ à $\Gamma = 0{,}85$ pour le modèle de base, asymétrique, et le modèle équivariant.](figures/e1_symetrie_projection.png){width="100%" fig-alt="Trois panneaux : histogrammes de dE/dt, puis deux nuages de points dans le plan Q-D superposés à la référence grise."}
 
 ## E2 — MHD 2D et contraintes de divergence {#e2}
 

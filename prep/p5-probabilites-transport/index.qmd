@@ -667,7 +667,7 @@ Souvent, la densité cible n'est connue qu'à une constante près : $p = \tilde 
 Avec $\tilde w_i = \tilde p(\mathbf{Y}_i)/q(\mathbf{Y}_i)$, l'estimateur autonormalisé est
 
 $$
-\hat I_N^{\mathrm{AN}} = \frac{\sum_{i=1}^N \tilde w_i\,f(\mathbf{Y}_i)}{\sum_{i=1}^N \tilde w_i} = \sum_{i=1}^N \bar w_i\,f(\mathbf{Y}_i), \qquad \bar w_i = \frac{\tilde w_i}{\sum_j \tilde w_j}.
+\hat I_N^{\text{AN}} = \frac{\sum_{i=1}^N \tilde w_i\,f(\mathbf{Y}_i)}{\sum_{i=1}^N \tilde w_i} = \sum_{i=1}^N \bar w_i\,f(\mathbf{Y}_i), \qquad \bar w_i = \frac{\tilde w_i}{\sum_j \tilde w_j}.
 $$
 
 Il converge vers $\mathbb{E}_p[f]$ (rapport de deux moyennes qui convergent vers $Z\,\mathbb{E}_p[f]$ et $Z$), avec un biais d'ordre $1/N$.
@@ -693,7 +693,7 @@ $$
 :::
 ::::
 
-L'interprétation usuelle est que la variance de $\hat I_N^{\mathrm{AN}}$ est à peu près celle d'une moyenne de $\mathrm{ESS}$ tirages indépendants de $p$. C'est une heuristique, utile mais pas un théorème : Elvira, Martino et Robert (2022) en discutent les limites. L'exercice 7 montre que pour une cible $\mathcal{N}(0, 1)$ et une proposition $\mathcal{N}(a, 1)$, $\mathrm{ESS}/N \to e^{-a^2}$ : décaler la proposition de 2 écarts-types ne laisse que 1,8 % de tirages utiles.
+L'interprétation usuelle est que la variance de $\hat I_N^{\text{AN}}$ est à peu près celle d'une moyenne de $\mathrm{ESS}$ tirages indépendants de $p$. C'est une heuristique, utile mais pas un théorème : Elvira, Martino et Robert (2022) en discutent les limites. L'exercice 7 montre que pour une cible $\mathcal{N}(0, 1)$ et une proposition $\mathcal{N}(a, 1)$, $\mathrm{ESS}/N \to e^{-a^2}$ : décaler la proposition de 2 écarts-types ne laisse que 1,8 % de tirages utiles.
 
 ```python
 import numpy as np

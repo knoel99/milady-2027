@@ -672,7 +672,7 @@ Ce qu'il faut retenir — chapitre 2
 :::
 - Un MLP alterne couches affines et activations ; il approche toute fonction continue sur un compact, mais le théorème ne dit rien de la taille nécessaire, de l'entraînement ni de la généralisation.
 - Les réseaux apprennent d'abord les basses fréquences ; les caractéristiques de Fourier corrigent ce biais et imposent la périodicité par construction.
-- Initialisation de He : poids de variance $2/n_{\mathrm{entrée}}$ pour des ReLU, pour que la variance du signal ne s'éteigne ni n'explose.
+- Initialisation de He : poids de variance $2/n_{\text{entrée}}$ pour des ReLU, pour que la variance du signal ne s'éteigne ni n'explose.
 - LayerNorm et GroupNorm normalisent chaque exemple séparément ; les blocs résiduels et FiLM permettent des réseaux profonds conditionnés par $t$ et $\boldsymbol\lambda$.
 ::::
 
@@ -1552,7 +1552,7 @@ Le **β-VAE** (Higgins et al., 2017) pondère le terme de régularisation : on m
 
 ::: note
 [Remarque 5.15 — Le nombre β n'a pas de sens absolu]{.tag}
-Avec un décodeur gaussien de variance $s^2$, on a $-\mathrm{ELBO} = \frac{1}{2s^2}\mathbb{E}_q|\mathbf{x} - G(\mathbf{z})|^2 + \mathrm{KL} + \mathrm{cte}$. Multiplier par $2s^2$ montre que minimiser « erreur quadratique $+\ \beta\,\mathrm{KL}$ » revient à maximiser l'ELBO avec $s^2 = \beta/2$. La valeur de $\beta$ dépend donc de la normalisation des données et de la façon de moyenner l'erreur (somme ou moyenne sur les composantes) : le $\beta = 0{,}05$ de Solera-Rico et al. (2024) ne se compare pas directement aux $\beta > 1$ de Higgins et al. (2017). Sur des écoulements forcés périodiquement, Bousquet, Nore et Lucor (2025) observent qu'augmenter la régularisation d'un VAE dégrade la reconstruction, ce qu'ils interprètent comme une limite de la loi a priori gaussienne.
+Avec un décodeur gaussien de variance $s^2$, on a $-\mathrm{ELBO} = \frac{1}{2s^2}\mathbb{E}_q|\mathbf{x} - G(\mathbf{z})|^2 + \mathrm{KL} + \text{cte}$. Multiplier par $2s^2$ montre que minimiser « erreur quadratique $+\ \beta\,\mathrm{KL}$ » revient à maximiser l'ELBO avec $s^2 = \beta/2$. La valeur de $\beta$ dépend donc de la normalisation des données et de la façon de moyenner l'erreur (somme ou moyenne sur les composantes) : le $\beta = 0{,}05$ de Solera-Rico et al. (2024) ne se compare pas directement aux $\beta > 1$ de Higgins et al. (2017). Sur des écoulements forcés périodiquement, Bousquet, Nore et Lucor (2025) observent qu'augmenter la régularisation d'un VAE dégrade la reconstruction, ce qu'ils interprètent comme une limite de la loi a priori gaussienne.
 :::
 
 ### 5.6 Autoencodeur augmenté par une observable

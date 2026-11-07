@@ -129,7 +129,7 @@ window.Quarto = {
 
 
 <div class="note">
-<p><span class="tag">About</span> All the experiments on this site run on an ordinary processor (Intel Xeon, 4 cores, 2.30 GHz, no GPU), in Python 3.13 with NumPy 2.5, SciPy 1.18, Matplotlib 3.11 and PyTorch 2.15 (CPU build). They are <strong>small-scale testbeds</strong>: they test ideas and mechanisms, not performance on real dynamo data. All the numbers quoted in the <a href="../rapport/index.html">report</a> come from the result files described here.</p>
+<p><span class="tag">About</span> All the experiments on this site run on an ordinary processor (Intel Xeon, 4 cores, 2.30 GHz, no GPU), in Python 3.13 with NumPy 2.5, SciPy 1.18, Matplotlib 3.11 and PyTorch 2.15 (CPU build). They are <strong>small-scale test benches</strong>: they test ideas and mechanisms, not performance on real dynamo data. All the numbers quoted in the <a href="../rapport/index.html">report</a> come from the result files described here.</p>
 </div>
 <div class="quarto-figure quarto-figure-center">
 <figure>
@@ -169,7 +169,7 @@ window.Quarto = {
 </tr>
 <tr class="odd">
 <td><code>e2_mhd2d.py</code></td>
-<td>E2: five divergence-constraint mechanisms, distributional stationarity loss, tilting versus per-sample correction.</td>
+<td>E2: five divergence-constraint mechanisms, distributional stationarity loss, tilting versus per-sample rescaling.</td>
 </tr>
 <tr class="even">
 <td><code>e3_abc.py</code></td>
@@ -185,7 +185,7 @@ window.Quarto = {
 </tr>
 <tr class="odd">
 <td><code>digest.py</code></td>
-<td>Numerical digest <code>resultats/digest.md</code>, the single source of the report’s tables.</td>
+<td>Numerical digest <code>resultats/digest.md</code>, the source of Tables 1, 3 to 6 and 8 of the report (Tables 2 and 7 come from the JSON files of E1 and E2).</td>
 </tr>
 </tbody>
 </table>
@@ -231,7 +231,7 @@ window.Quarto = {
 <div class="quarto-figure quarto-figure-center">
 <figure>
 <p><img src="../../experiences/figures/e2_en_loi-en.png" style="width:100.0%" alt="Three horizontal bar charts for four variants."></p>
-<figcaption>Distributional constraint versus per-sample constraint (test values of <span class="math inline">\eta</span>): residual of the energy budget, spread of the dissipation and energy distance, for the V4 model, its exponential tilting, its sample-by-sample correction, and the V5 model trained with the stationarity loss.</figcaption>
+<figcaption>Distributional constraint versus per-sample constraint (test values of <span class="math inline">\eta</span>): residual of the energy budget, spread of the dissipation and energy distance, for the V4 model, its exponential tilting, its sample-by-sample rescaling, and the V5 model trained with the stationarity loss.</figcaption>
 </figure>
 </div>
 <p>A first attempt with a periodic U-Net on the <span class="math inline">32\times32</span> grid (file <code>unet.py</code>) cost about 0.3 s per training step on this processor: five variants would have required several hours in total (about 30 min each at the 6000-iteration budget). Switching to the truncated Fourier basis keeps the comparison clean (same network, same budget for all variants) at a cost compatible with a CPU. The internship itself would run on GPU, with field architectures (U-Nets, transformers, functional decoders).</p>

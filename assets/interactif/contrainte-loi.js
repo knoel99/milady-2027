@@ -161,7 +161,7 @@
         "exactement contre μ ; même pour q = μ, il reste de l'ordre de 1/√N (bruit d'échantillonnage)."
     },
     en: {
-      title: "Constraint in distribution or per sample: the mean energy balance ⟨dE/dt⟩\u00a0=\u00a00",
+      title: "Distributional or per-sample constraint: the mean energy budget ⟨dE/dt⟩\u00a0=\u00a00",
       bLab: "bias b", sLab: "width s", nLab: "N", cLab: "cut-off r<sub>c</sub>",
       bName: "Bias b of the model: shift of the mean of q",
       sName: "Width s of the model: dilation of q about 0",

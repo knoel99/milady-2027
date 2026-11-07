@@ -766,7 +766,7 @@ The budget $\overline{P} = \overline{\varepsilon}$ says nothing about an isolate
 $$
 \mathbb{E}_{\mu_{\boldsymbol\lambda}}\big[\langle\mathbf{f}\cdot\mathbf{u}\rangle - \nu\langle|\boldsymbol\omega|^2\rangle\big] = 0,
 $$
-where $\mu_{\boldsymbol\lambda}$ is the stationary distribution of the flow (Chapter 6). This is exactly the form of the "in distribution" constraint studied in experiment E2 of the [report](../../rapport/index.html#e2).
+where $\mu_{\boldsymbol\lambda}$ is the stationary distribution of the flow (Chapter 6). This is exactly the form of the distributional constraint studied in experiment E2 of the [report](../../rapport/index.html#e2).
 :::
 
 :::: thm
@@ -1071,7 +1071,7 @@ Key takeaways — chapter 5
 
 ## 6. Turbulence: statistics, Kolmogorov 1941 and 2D turbulence {#ch6}
 
-At large Reynolds number, the solutions of the Navier–Stokes equations are unstable, chaotic and sensitive to initial conditions: predicting a precise field no longer makes sense beyond a few turnover times. On the other hand, the **statistics** of the flow (means, spectra, laws of the increments) are reproducible. This is exactly the change of viewpoint of a generative model: it does not learn a trajectory, it learns a **distribution** $\mu_{\boldsymbol\lambda}$ on the space of fields.
+At large Reynolds number, the solutions of the Navier–Stokes equations are unstable, chaotic and sensitive to initial conditions: predicting a precise field no longer makes sense beyond a few turnover times. On the other hand, the **statistics** of the flow (means, spectra, distributions of the increments) are reproducible. This is exactly the change of viewpoint of a generative model: it does not learn a trajectory, it learns a **distribution** $\mu_{\boldsymbol\lambda}$ on the space of fields.
 
 ### 6.1 Averages, stationarity, ergodicity
 
@@ -1176,9 +1176,9 @@ Validating a generative model of turbulence on the spectrum alone is therefore i
 [Proposition 6.9 — Dissipative anomaly and number of degrees of freedom]{.tag}
 Assume, in agreement with observations, that $\varepsilon = C_\varepsilon U^3/L$ with $C_\varepsilon$ of order $1$ and independent of $\nu$ at large $Re$ (**dissipative anomaly**). Then
 $$
-\frac{L}{\eta} = C_\varepsilon^{1/4}\,Re^{3/4}, \qquad N_{\mathrm{ddl}} \sim \left(\frac{L}{\eta}\right)^3 \sim Re^{9/4},
+\frac{L}{\eta} = C_\varepsilon^{1/4}\,Re^{3/4}, \qquad N_{\text{dof}} \sim \left(\frac{L}{\eta}\right)^3 \sim Re^{9/4},
 $$
-where $N_{\mathrm{ddl}}$ (from the French *degrés de liberté*, degrees of freedom) is the number of grid points needed for a 3D direct numerical simulation (DNS) that resolves all scales. The total cost of a DNS over one turnover time grows as $Re^3$.
+where $N_{\text{dof}}$ is the number of grid points needed for a 3D direct numerical simulation (DNS) that resolves all scales. The total cost of a DNS over one turnover time grows as $Re^3$.
 
 ::: proof
 $\eta/L = L^{-1}(\nu^3L/(C_\varepsilon U^3))^{1/4} = C_\varepsilon^{-1/4}(\nu/(UL))^{3/4} = C_\varepsilon^{-1/4}Re^{-3/4}$. A grid spacing of the order of $\eta$ is needed in each direction, hence $(L/\eta)^3$ points. The time step is limited by the CFL condition (Chapter 7) to $\Delta t \lesssim \eta/U$, hence $L/\eta \sim Re^{3/4}$ steps per turnover time $L/U$, and a cost $\sim Re^{9/4}\times Re^{3/4} = Re^3$. [∎]{.qed}
@@ -1402,7 +1402,7 @@ Key takeaways — chapter 6
 - Turbulence is described by distributions: statistical stationarity, ergodicity (hypothesis: time average = average under $\mu_{\boldsymbol\lambda}$); a long simulation samples the distribution.
 - Averaging Navier–Stokes brings in the Reynolds stress tensor: the closure problem.
 - K41: $\eta = (\nu^3/\varepsilon)^{1/4}$, $E(k) = C_K\varepsilon^{2/3}k^{-5/3}$, $S_2 \propto (\varepsilon\ell)^{2/3}$; exact result: $S_3 = -\tfrac45\varepsilon\ell$.
-- Dissipative anomaly $\varepsilon \approx C_\varepsilon U^3/L$ $\Rightarrow$ $L/\eta \sim Re^{3/4}$, $N_{\mathrm{ddl}} \sim Re^{9/4}$, cost $\sim Re^3$.
+- Dissipative anomaly $\varepsilon \approx C_\varepsilon U^3/L$ $\Rightarrow$ $L/\eta \sim Re^{3/4}$, $N_{\text{dof}} \sim Re^{9/4}$, cost $\sim Re^3$.
 - 2D: energy toward the large scales ($k^{-5/3}$), enstrophy toward the small ones ($k^{-3}$); Kraichnan's dual cascade.
 - A Gaussian field can have the right spectrum and zero energy flux: third- and higher-order moments must be validated as well.
 ::::
@@ -2123,7 +2123,7 @@ The MilaDy internship consists in learning **distributions** of MHD fields param
 
 **Zero divergence.** Chapter 2 shows that the constraint $\nabla\cdot\mathbf{u} = 0$ is enforced, within the equations themselves, by the pressure seen as a Lagrange multiplier, that is, by the Leray projection. Chapter 3 shows that in 2D, parameterizing the field by a stream function guarantees it by construction. These are exactly two of the mechanisms compared in experiment E2 of the repository (final projection or projected flow on the one hand, potentials on the other): see the [report, section E2](../../rapport/index.html#e2) and the [taxonomy of constraints](../../rapport/index.html#taxonomie).
 
-**Energy budget "in distribution".** Corollary 4.4 and the box that follows it show that $\overline{P} = \overline{\varepsilon}$ is a constraint on the stationary distribution $\mu_{\boldsymbol\lambda}$, not on each snapshot: the solver of Chapter 7 shows instants at which $P$ and $\varepsilon$ differ markedly. Imposing this budget on each generated sample would therefore be wrong; it must be imposed in expectation, which is what the "in distribution" part of experiment E2 does (see the [formulation](../../rapport/index.html#formulation) in the report).
+**Distributional energy budget.** Corollary 4.4 and the box that follows it show that $\overline{P} = \overline{\varepsilon}$ is a constraint on the stationary distribution $\mu_{\boldsymbol\lambda}$, not on each snapshot: the solver of Chapter 7 shows instants at which $P$ and $\varepsilon$ differ markedly. Imposing this budget on each generated sample would therefore be wrong; it must be imposed in expectation, which is what the "distributional" part of experiment E2 does (see the [formulation](../../rapport/index.html#formulation) in the report).
 
 **Metrics.** The internship offer cites spectra, helicity, divergence and topology. Chapter 4 defines the spectrum $E(k)$ and the helicity, and shows that helicity is a pseudoscalar (Exercise 8); Chapter 6 shows that a Gaussian field can have the right spectrum and zero energy flux, so that a model validated on the spectrum alone can be wrong on third-order statistics. The modules [Probability, statistics and optimal transport](../p5-probabilites-transport/index.html) and [Generative models under physical constraints](../p8-contraintes-physiques/index.html) build the metrics between distributions that complement these diagnostics.
 

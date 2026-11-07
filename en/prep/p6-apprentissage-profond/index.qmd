@@ -672,7 +672,7 @@ Key takeaways — chapter 2
 :::
 - An MLP alternates affine layers and activations; it approximates any continuous function on a compact set, but the theorem says nothing about the required size, about training or about generalization.
 - Networks learn the low frequencies first; Fourier features correct this bias and impose periodicity by construction.
-- He initialization: weights of variance $2/n_{\mathrm{entrée}}$ for ReLUs, so that the variance of the signal neither dies out nor explodes.
+- He initialization: weights of variance $2/n_{\text{in}}$ for ReLUs, so that the variance of the signal neither dies out nor explodes.
 - LayerNorm and GroupNorm normalize each example separately; residual blocks and FiLM enable deep networks conditioned on $t$ and $\boldsymbol\lambda$.
 ::::
 
@@ -1552,7 +1552,7 @@ The **β-VAE** (Higgins et al., 2017) weights the regularization term: one maxim
 
 ::: note
 [Remark 5.15 — The number β has no absolute meaning]{.tag}
-With a Gaussian decoder of variance $s^2$, we have $-\mathrm{ELBO} = \frac{1}{2s^2}\mathbb{E}_q|\mathbf{x} - G(\mathbf{z})|^2 + \mathrm{KL} + \mathrm{cte}$. Multiplying by $2s^2$ shows that minimizing "squared error $+\ \beta\,\mathrm{KL}$" amounts to maximizing the ELBO with $s^2 = \beta/2$. The value of $\beta$ therefore depends on the normalization of the data and on the way the error is averaged (sum or mean over the components): the $\beta = 0.05$ of Solera-Rico et al. (2024) cannot be compared directly with the $\beta > 1$ of Higgins et al. (2017). On periodically forced flows, Bousquet, Nore and Lucor (2025) observe that increasing the regularization of a VAE degrades the reconstruction, which they interpret as a limitation of the Gaussian prior.
+With a Gaussian decoder of variance $s^2$, we have $-\mathrm{ELBO} = \frac{1}{2s^2}\mathbb{E}_q|\mathbf{x} - G(\mathbf{z})|^2 + \mathrm{KL} + \text{const}$. Multiplying by $2s^2$ shows that minimizing "squared error $+\ \beta\,\mathrm{KL}$" amounts to maximizing the ELBO with $s^2 = \beta/2$. The value of $\beta$ therefore depends on the normalization of the data and on the way the error is averaged (sum or mean over the components): the $\beta = 0.05$ of Solera-Rico et al. (2024) cannot be compared directly with the $\beta > 1$ of Higgins et al. (2017). On periodically forced flows, Bousquet, Nore and Lucor (2025) observe that increasing the regularization of a VAE degrades the reconstruction, which they interpret as a limitation of the Gaussian prior.
 :::
 
 ### 5.6 Observable-augmented autoencoder
@@ -2068,7 +2068,7 @@ print("gradcheck:", torch.autograd.gradcheck(f, (torch.randn(3, 4, dtype=torch.f
 # gradcheck: True
 ```
 
-The network interpolates very well (1% error for unseen parameters within the interval) but extrapolates very poorly (74%): nothing teaches it the shape of the family outside the training interval. This is a central point for a parametric generator: the quality at unseen parameters must be measured separately in interpolation and in extrapolation, and a physical constraint imposed at every $\boldsymbol\lambda$, including without data, is one of the few levers for extrapolation. This is the idea behind the "in distribution" constraint of the energy balance in experiment E2: the stationarity loss is imposed there at all values of the magnetic diffusivity $\eta$, including those without data (see the [report](../../rapport/index.html#e2) for the results).
+The network interpolates very well (1% error for unseen parameters within the interval) but extrapolates very poorly (74%): nothing teaches it the shape of the family outside the training interval. This is a central point for a parametric generator: the quality at unseen parameters must be measured separately in interpolation and in extrapolation, and a physical constraint imposed at every $\boldsymbol\lambda$, including without data, is one of the few levers for extrapolation. This is the idea behind the "distributional" energy-budget constraint in experiment E2: the stationarity loss is imposed there at all values of the magnetic diffusivity $\eta$, including those without data (see the [report](../../rapport/index.html#e2) for the results).
 
 ### 7.3 Specifics of computing on CPU
 
@@ -2308,7 +2308,7 @@ The exercises are sorted by difficulty: ★ for a direct application of the mate
 
 ## Link with the internship {#lien-stage}
 
-The MilaDy internship asks for building conditional generative models (diffusion, flow matching) of MHD fields parameterized by $Re$, $Rm$ and material properties, which respect zero divergence, the energy balance and the boundary conditions, and then for comparing them using physical metrics (spectra, helicity, divergence, topology). Each chapter of this module provides one building block.
+The MilaDy internship asks for building conditional generative models (diffusion, flow matching) of MHD fields parameterized by $Re$, $Rm$ and material properties, which respect zero divergence, the energy budget and the boundary conditions, and then for comparing them using physical metrics (spectra, helicity, divergence, topology). Each chapter of this module provides one building block.
 
 **Parameterizing the generator.** The velocity field $v_\theta(\mathbf{x}, t, \boldsymbol\lambda)$ of a flow matching model is a network trained by quadratic regression (chapter 1, proposition 1.2). For a small state, it is an MLP with sinusoidal embeddings of $t$ and $\boldsymbol\lambda$ (chapter 2), like `MLPField` in experiments E1 and E2; for a field on a periodic grid, it is a U-Net with circular padding, GroupNorm and FiLM modulation (chapters 2 and 3), like `experiences/unet.py`. For a field decoded at arbitrary points, in the manner of FunDiff, it is a transformer with a cross-attention decoder (chapter 4).
 

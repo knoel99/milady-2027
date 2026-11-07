@@ -42,21 +42,21 @@ format:
 
 This module is the methodological core of the curriculum: it builds, with full proofs, the two families of generative models that the MilaDy internship must compare, diffusion and flow matching. By the end of the thirty planned hours, you will be able to:
 
-1. explain what a generative model is as the **transport** of a simple law onto the data law, write the change-of-variables formula and compute the log-likelihood of a normalizing flow;
-2. derive the marginal law of the DDPM noising process, the posterior law of one step, the variational bound and the noise-prediction loss, then program ancestral sampling;
+1. explain what a generative model is as the **transport** of a simple distribution onto the data distribution, write the change-of-variables formula and compute the log-likelihood of a normalizing flow;
+2. derive the marginal distribution of the DDPM noising process, the posterior distribution of one step, the variational bound and the noise-prediction loss, then program ancestral sampling;
 3. pass to the continuous limit (forward and reverse stochastic differential equations, probability flow ordinary differential equation), prove Vincent's equivalence between explicit and denoising *score matching*, as well as Tweedie's formula;
 4. prove that the marginal velocity field generates the probability path (continuity equation) and that the conditional flow matching loss has the same gradient as the marginal loss; relate flow matching, *rectified flow*, stochastic interpolants and diffusion;
 5. condition a model on a physical parameter $\boldsymbol\lambda$ (for example $Re$ or $Rm$), program classifier-free guidance, explain guidance through the denoised estimate (DPS, *universal guidance*) and compute the Jensen gap it introduces;
 6. describe generation in a latent space and in a function space (latent diffusion, FunDiff, *Functional Flow Matching*) and say where to place a constraint such as $\nabla\cdot\mathbf{B} = 0$ in them;
-7. evaluate a generative model without likelihood, through distances between samples (energy distance, sliced Wasserstein) and physical metrics, always comparing with the statistical floor.
+7. evaluate a generative model without likelihood, through distances between samples (energy distance, sliced Wasserstein) and physical metrics, always comparing with the noise floor.
 
 ## Prerequisites {#prerequis}
 
-The entry level is that of a first-year master's student (M1) who has followed the previous modules of the curriculum. You should be comfortable with multivariate Gaussian laws (mean, covariance, conditioning of a Gaussian vector), conditional expectation and its orthogonal projection property in $L^2$, the Kullback–Leibler divergence, and the basics of stochastic calculus (Brownian motion, Fokker–Planck equation). These notions are covered in the module [Probability, statistics and optimal transport](../p5-probabilites-transport/index.html); the Fokker–Planck equation and the generator of a noisy dynamics also appear in [Dynamical systems, bifurcations and invariant measures](../p4-systemes-dynamiques/index.html).
+The entry level is that of a first-year master's student (M1) who has followed the previous modules of the curriculum. You should be comfortable with multivariate Gaussian distributions (mean, covariance, conditioning of a Gaussian vector), conditional expectation and its orthogonal projection property in $L^2$, the Kullback–Leibler divergence, and the basics of stochastic calculus (Brownian motion, Fokker–Planck equation). These notions are covered in the module [Probability, statistics and optimal transport](../p5-probabilites-transport/index.html); the Fokker–Planck equation and the generator of a noisy dynamics also appear in [Dynamical systems, bifurcations and invariant measures](../p4-systemes-dynamiques/index.html).
 
 On the learning side, you should be able to write a training loop in PyTorch (multilayer perceptron, Adam optimizer, backpropagation), which is covered by the module [Deep learning for physics](../p6-apprentissage-profond/index.html). The divergence of a field and the Leray projection, used in Chapter 6, come from the module [Vector calculus and Fourier analysis](../p1-calcul-vectoriel/index.html).
 
-This module directly prepares the last one of the curriculum, [Generative models under physical constraints](../p8-contraintes-physiques/index.html), which takes up the tools built here to impose zero divergence, energy balances and boundary conditions.
+This module directly prepares the last one of the curriculum, [Generative models under physical constraints](../p8-contraintes-physiques/index.html), which takes up the tools built here to impose zero divergence, energy budgets and boundary conditions.
 
 ::: note
 [Conventions of this module]{.tag}
@@ -69,8 +69,8 @@ The level indicates the difficulty: 1 for the foundations, 2 for the core of the
 
 | Session | Duration | Level | Content | Exercises |
 |:---:|:---:|:---:|---|:---:|
-| 1 | 3 h | 1 | Chapter 1: transport of a law, likelihood and its limitations, normalizing flows, continuous flows | 1, 2 |
-| 2 | 4 h | 2 | Chapter 2: forward process, posterior law, variational bound, noise prediction, DDPM sampling | 3, 4 |
+| 1 | 3 h | 1 | Chapter 1: transport of a distribution, likelihood and its limitations, normalizing flows, continuous flows | 1, 2 |
+| 2 | 4 h | 2 | Chapter 2: forward process, posterior distribution, variational bound, noise prediction, DDPM sampling | 3, 4 |
 | 3 | 5 h | 2 | Chapter 3: forward and reverse SDEs, probability flow ODE, score matching (Vincent, Tweedie), EDM | 5, 6, 7 |
 | 4 | 4 h | 2 | Chapter 4, Sections 4.1 to 4.3: continuity equation, marginal field, gradient theorem, Gaussian example | 8, 9 |
 | 5 | 3 h | 3 | Chapter 4, Sections 4.4 to 4.6: rectified flow, stochastic interpolants, velocity–score link | 10, 11 |
@@ -83,13 +83,13 @@ Each session ends with the indicated exercises, to be worked on before reading t
 
 ## 1. What is a generative model? {#ch1}
 
-The MilaDy internship seeks to produce, for a set of parameters $\boldsymbol\lambda = (Re, Rm, \dots)$, magnetohydrodynamic (MHD) fields that have the same **statistical law** as those of a simulation, without rerunning the simulation. We have samples (snapshots), not a formula for their density. This chapter sets the framework: a generative model is a machine that produces samples of a learned law, and the most natural way to build it is to **transport** a simple law, Gaussian noise, onto the data law.
+The MilaDy internship seeks to produce, for a set of parameters $\boldsymbol\lambda = (Re, Rm, \dots)$, magnetohydrodynamic (MHD) fields that have the same **statistical distribution** as those of a simulation, without rerunning the simulation. We have samples (snapshots), not a formula for their density. This chapter sets the framework: a generative model is a machine that produces samples of a learned distribution, and the most natural way to build it is to **transport** a simple distribution, Gaussian noise, onto the data distribution.
 
-### 1.1 Transporting a simple law onto the data law
+### 1.1 Transporting a simple distribution onto the data distribution
 
 ::: def
-[Definition 1.1 — Image law (pushforward)]{.tag}
-Let $\rho$ be a probability law on $\mathbb{R}^d$ and $T : \mathbb{R}^d \to \mathbb{R}^D$ a measurable map. The **image law** of $\rho$ under $T$, denoted $T_\#\rho$, is defined by $T_\#\rho(A) = \rho\big(T^{-1}(A)\big)$ for every measurable set $A$. Equivalently, if $\mathbf{z} \sim \rho$ then $T(\mathbf{z}) \sim T_\#\rho$, and for every bounded test function $\varphi$:
+[Definition 1.1 — Image distribution (pushforward)]{.tag}
+Let $\rho$ be a probability distribution on $\mathbb{R}^d$ and $T : \mathbb{R}^d \to \mathbb{R}^D$ a measurable map. The **image distribution** of $\rho$ under $T$, denoted $T_\#\rho$, is defined by $T_\#\rho(A) = \rho\big(T^{-1}(A)\big)$ for every measurable set $A$. Equivalently, if $\mathbf{z} \sim \rho$ then $T(\mathbf{z}) \sim T_\#\rho$, and for every bounded test function $\varphi$:
 
 $$
 \mathbb{E}_{T_\#\rho}[\varphi] = \mathbb{E}_{\mathbf{z} \sim \rho}\big[\varphi(T(\mathbf{z}))\big].
@@ -98,23 +98,23 @@ $$
 
 ::: def
 [Definition 1.2 — Generative model]{.tag}
-A **generative model** is a family of laws $q_\theta$ on $\mathbb{R}^D$, indexed by parameters $\theta$ (the weights of a network), from which samples can be drawn at low cost, and which is fitted so that $q_\theta$ is close to the data law $\mu$. The model is **conditional** if it depends on a variable $\boldsymbol\lambda$, $q_\theta(\cdot \mid \boldsymbol\lambda) \approx \mu_{\boldsymbol\lambda}$. It is **explicit** if its density can also be evaluated, **implicit** otherwise. A **transport** model is written $q_\theta = (T_\theta)_\#\rho_0$ with $\rho_0 = \mathcal{N}(0, I)$.
+A **generative model** is a family of distributions $q_\theta$ on $\mathbb{R}^D$, indexed by parameters $\theta$ (the weights of a network), from which samples can be drawn at low cost, and which is fitted so that $q_\theta$ is close to the data distribution $\mu$. The model is **conditional** if it depends on a variable $\boldsymbol\lambda$, $q_\theta(\cdot \mid \boldsymbol\lambda) \approx \mu_{\boldsymbol\lambda}$. It is **explicit** if its density can also be evaluated, **implicit** otherwise. A **transport** model is written $q_\theta = (T_\theta)_\#\rho_0$ with $\rho_0 = \mathcal{N}(0, I)$.
 :::
 
 The question is never whether a transport exists: in dimension 1, it is given explicitly by the cumulative distribution function, and in any dimension Brenier's theorem (module [p5](../p5-probabilites-transport/index.html)) guarantees the existence of an optimal transport as soon as the source has a density. The difficulty is to **learn** this transport from samples only, in high dimension.
 
 :::: prop
 [Proposition 1.3 — Transport in dimension 1]{.tag}
-Let $\mu$ be a law on $\mathbb{R}$ with cumulative distribution function $F$, generalized inverse $F^{-1}(u) = \inf\{x : F(x) \ge u\}$, and let $\Phi$ be the cumulative distribution function of $\mathcal{N}(0, 1)$. Then $T = F^{-1} \circ \Phi$ transports $\mathcal{N}(0, 1)$ onto $\mu$: if $Z \sim \mathcal{N}(0, 1)$, then $T(Z) \sim \mu$.
+Let $\mu$ be a distribution on $\mathbb{R}$ with cumulative distribution function $F$, generalized inverse $F^{-1}(u) = \inf\{x : F(x) \ge u\}$, and let $\Phi$ be the cumulative distribution function of $\mathcal{N}(0, 1)$. Then $T = F^{-1} \circ \Phi$ transports $\mathcal{N}(0, 1)$ onto $\mu$: if $Z \sim \mathcal{N}(0, 1)$, then $T(Z) \sim \mu$.
 
 ::: proof
-The variable $U = \Phi(Z)$ follows the uniform law on $]0, 1[$, since $\mathbb{P}(\Phi(Z) \le u) = \mathbb{P}(Z \le \Phi^{-1}(u)) = u$. Since $F$ is nondecreasing and right-continuous, we have the equivalence $F^{-1}(u) \le x \iff u \le F(x)$. Hence $\mathbb{P}(F^{-1}(U) \le x) = \mathbb{P}(U \le F(x)) = F(x)$: the variable $F^{-1}(U)$ has cumulative distribution function $F$. [∎]{.qed}
+The variable $U = \Phi(Z)$ follows the uniform distribution on $]0, 1[$, since $\mathbb{P}(\Phi(Z) \le u) = \mathbb{P}(Z \le \Phi^{-1}(u)) = u$. Since $F$ is nondecreasing and right-continuous, we have the equivalence $F^{-1}(u) \le x \iff u \le F(x)$. Hence $\mathbb{P}(F^{-1}(U) \le x) = \mathbb{P}(U \le F(x)) = F(x)$: the variable $F^{-1}(U)$ has cumulative distribution function $F$. [∎]{.qed}
 :::
 ::::
 
 ::: ex
-[Example 1.4 — Exponential law]{.tag}
-For the exponential law with parameter 1, $F(x) = 1 - e^{-x}$ for $x \ge 0$, so $T(z) = -\ln\big(1 - \Phi(z)\big)$. The point $z = 0$, the median of the Gaussian, is sent to $T(0) = \ln 2 \approx 0.693$, the median of the exponential law. The map $T$ is increasing: it “stretches” the right tail of the Gaussian and “compresses” its left tail against $0$.
+[Example 1.4 — Exponential distribution]{.tag}
+For the exponential distribution with parameter 1, $F(x) = 1 - e^{-x}$ for $x \ge 0$, so $T(z) = -\ln\big(1 - \Phi(z)\big)$. The point $z = 0$, the median of the Gaussian, is sent to $T(0) = \ln 2 \approx 0.693$, the median of the exponential distribution. The map $T$ is increasing: it “stretches” the right tail of the Gaussian and “compresses” its left tail against $0$.
 :::
 
 ### 1.2 Likelihood and its limitations
@@ -151,7 +151,7 @@ Likelihood nevertheless has four limitations, which explain why the models of th
 
 (c) **In high dimension, it says little about the quality of the samples.** If $q = 0.01\,p + 0.99\,r$ mixes an excellent model $p$ with a model $r$ that produces only noise, then $\log q \ge \log p - \ln 100$ at every point: the log-likelihood loses at most $4.6$ nats, a negligible quantity compared with a log-likelihood proportional to the dimension $D \sim 10^6$, whereas 99% of the samples are unusable. Theis et al. (2016) show more generally that likelihood and sample quality are largely independent in high dimension.
 
-(d) **It ignores physics.** A good likelihood guarantees neither $\nabla\cdot\mathbf{B} = 0$, nor the right energy spectrum, nor the right energy balance. Chapter 7 comes back to evaluation.
+(d) **It ignores physics.** A good likelihood guarantees neither $\nabla\cdot\mathbf{B} = 0$, nor the right energy spectrum, nor the right energy budget. Chapter 7 comes back to evaluation.
 :::
 
 ### 1.3 Normalizing flows: the change of variables
@@ -181,13 +181,13 @@ For every bounded function $\varphi$, $\mathbb{E}[\varphi(T(\mathbf{z}))] = \int
 
 ::: ex
 [Example 1.9 — Affine flow]{.tag}
-For $T(\mathbf{z}) = A\mathbf{z} + \mathbf{b}$ with $A$ invertible, the image law of $\mathcal{N}(0, I)$ is $\mathcal{N}(\mathbf{b}, AA^\top)$ and
+For $T(\mathbf{z}) = A\mathbf{z} + \mathbf{b}$ with $A$ invertible, the image distribution of $\mathcal{N}(0, I)$ is $\mathcal{N}(\mathbf{b}, AA^\top)$ and
 
 $$
 \log q(\mathbf{x}) = -\tfrac{D}{2}\log(2\pi) - \tfrac12\big\|A^{-1}(\mathbf{x} - \mathbf{b})\big\|^2 - \log|\det A|.
 $$
 
-Maximum likelihood then gives $\mathbf{b}$ = empirical mean and $AA^\top$ = empirical covariance (Exercise 2): an affine flow can only represent Gaussian laws. Nonlinear transformations with a controlled determinant are needed.
+Maximum likelihood then gives $\mathbf{b}$ = empirical mean and $AA^\top$ = empirical covariance (Exercise 2): an affine flow can only represent Gaussian distributions. Nonlinear transformations with a controlled determinant are needed.
 :::
 
 ::: def
@@ -280,7 +280,7 @@ print("E[log ρ0(Z) - log T'(Z)]    :", round(np.mean(norm.logpdf(z) - np.log(dT
 # E[log ρ0(Z) - log T'(Z)]    : -2.5648
 ```
 
-The histogram and the formula agree to within $2 \times 10^{-3}$, which is the order of magnitude of the statistical error of a 120-bin histogram. The two estimates of the log-likelihood differ by $10^{-3}$, again a sampling fluctuation. A smooth monotone map is therefore enough to turn a Gaussian into a bimodal law; in high dimension, the whole problem is to find such a map from the data alone.
+The histogram and the formula agree to within $2 \times 10^{-3}$, which is the order of magnitude of the statistical error of a 120-bin histogram. The two estimates of the log-likelihood differ by $10^{-3}$, again a sampling fluctuation. A smooth monotone map is therefore enough to turn a Gaussian into a bimodal distribution; in high dimension, the whole problem is to find such a map from the data alone.
 
 :::: recap
 ::: recap-title
@@ -306,13 +306,13 @@ $$
 q(\mathbf{y}_k \mid \mathbf{y}_{k-1}) = \mathcal{N}\big(\sqrt{1 - \beta_k}\,\mathbf{y}_{k-1},\; \beta_k I\big), \qquad k = 1, \dots, K, \qquad \mathbf{y}_0 \sim \mu.
 $$
 
-We write $\alpha_k = 1 - \beta_k$, $\bar\alpha_k = \prod_{j=1}^k \alpha_j$ and $\mathrm{RSB}_k = \bar\alpha_k/(1 - \bar\alpha_k)$ for the signal-to-noise ratio (RSB, from the French *rapport signal sur bruit*).
+We write $\alpha_k = 1 - \beta_k$, $\bar\alpha_k = \prod_{j=1}^k \alpha_j$ and $\operatorname{SNR}_k = \bar\alpha_k/(1 - \bar\alpha_k)$ for the signal-to-noise ratio (SNR).
 :::
 
 The factor $\sqrt{1 - \beta_k}$ is not arbitrary: it contracts the signal just enough for the total variance to remain bounded, so that the chain converges to $\mathcal{N}(0, I)$ instead of blowing up.
 
 :::: prop
-[Proposition 2.2 — Marginal law of the forward process]{.tag}
+[Proposition 2.2 — Marginal distribution of the forward process]{.tag}
 For every $k$, $q(\mathbf{y}_k \mid \mathbf{y}_0) = \mathcal{N}\big(\sqrt{\bar\alpha_k}\,\mathbf{y}_0,\; (1 - \bar\alpha_k) I\big)$. In other words, $\mathbf{y}_k$ can be drawn directly, without simulating the chain:
 
 $$
@@ -324,21 +324,21 @@ By induction on $k$. The case $k = 1$ is the definition, since $\bar\alpha_1 = \
 :::
 ::::
 
-If $\bar\alpha_K \approx 0$, the law of $\mathbf{y}_K$ is almost $\mathcal{N}(0, I)$ **whatever** the data law: this is the starting point of sampling.
+If $\bar\alpha_K \approx 0$, the distribution of $\mathbf{y}_K$ is almost $\mathcal{N}(0, I)$ **whatever** the data distribution: this is the starting point of sampling.
 
 ::: ex
 [Example 2.3 — Linear schedule of Ho et al. (2020)]{.tag}
-With $K = 1000$ and $\beta_k$ increasing linearly from $10^{-4}$ to $0.02$, the code block of Section 2.4 gives $\bar\alpha_K = 4.0 \times 10^{-5}$: the data point only weighs $\sqrt{\bar\alpha_K} \approx 0.006$ in $\mathbf{y}_K$. The signal-to-noise ratio crosses $1$ around $k = 250$ ($\mathrm{RSB}_{250} = 1.10$) and is still $8.7$ at $k = 100$: a large share of the steps serves to destroy the small scales, another to erase the large structures. Figure 2.4 shows the effect of noising on a mixture of four Gaussians in the plane.
+With $K = 1000$ and $\beta_k$ increasing linearly from $10^{-4}$ to $0.02$, the code block of Section 2.4 gives $\bar\alpha_K = 4.0 \times 10^{-5}$: the data point only weighs $\sqrt{\bar\alpha_K} \approx 0.006$ in $\mathbf{y}_K$. The signal-to-noise ratio crosses $1$ around $k = 250$ ($\operatorname{SNR}_{250} = 1.10$) and is still $8.7$ at $k = 100$: a large share of the steps serves to destroy the small scales, another to erase the large structures. Figure 2.4 shows the effect of noising on a mixture of four Gaussians in the plane.
 :::
 
 ![Figure 2.4 — DDPM forward process applied to a mixture of four Gaussians in the plane (linear schedule of Ho et al. 2020, $K = 1000$). The small scales (the width of the modes) disappear first, then the global structure; at $k = 1000$, the cloud is indistinguishable from $\mathcal{N}(0, I)$.](../../../prep/p7-modeles-generatifs/fig-bruitage-en.png){width="100%" fig-alt="Five point clouds: four sharp clusters at k = 0, still separated at k = 50, widened and overlapping at k = 150, a single diffuse cloud at k = 300 and an isotropic Gaussian at k = 1000."}
 
-### 2.2 The posterior law of one step
+### 2.2 The posterior distribution of one step
 
-Inverting the forward process requires the law of $\mathbf{y}_{k-1}$ given $\mathbf{y}_k$. It is inaccessible in general, since it depends on the data law. However, **if $\mathbf{y}_0$ is also known**, it is Gaussian and explicit.
+Inverting the forward process requires the distribution of $\mathbf{y}_{k-1}$ given $\mathbf{y}_k$. It is inaccessible in general, since it depends on the data distribution. However, **if $\mathbf{y}_0$ is also known**, it is Gaussian and explicit.
 
 :::: prop
-[Proposition 2.5 — Posterior law given the data]{.tag}
+[Proposition 2.5 — Posterior distribution given the data]{.tag}
 For $k \ge 2$, $q(\mathbf{y}_{k-1} \mid \mathbf{y}_k, \mathbf{y}_0) = \mathcal{N}\big(\tilde{\boldsymbol\mu}_k(\mathbf{y}_k, \mathbf{y}_0),\; \tilde\beta_k I\big)$ with
 
 $$
@@ -358,7 +358,7 @@ $$
 -\frac{\|\mathbf{y}_k - \sqrt{\alpha_k}\,\mathbf{y}_{k-1}\|^2}{2\beta_k} - \frac{\|\mathbf{y}_{k-1} - \sqrt{\bar\alpha_{k-1}}\,\mathbf{y}_0\|^2}{2(1 - \bar\alpha_{k-1})}.
 $$
 
-This is a quadratic form in $\mathbf{y}_{k-1}$: the law is Gaussian. The coefficient of $-\tfrac12\|\mathbf{y}_{k-1}\|^2$, that is, the precision, equals $\frac{\alpha_k}{\beta_k} + \frac{1}{1 - \bar\alpha_{k-1}} = \frac{\alpha_k(1 - \bar\alpha_{k-1}) + \beta_k}{\beta_k(1 - \bar\alpha_{k-1})} = \frac{1 - \bar\alpha_k}{\beta_k(1 - \bar\alpha_{k-1})} = \frac{1}{\tilde\beta_k}$. The coefficient of the term linear in $\mathbf{y}_{k-1}$ is $\frac{\sqrt{\alpha_k}}{\beta_k}\mathbf{y}_k + \frac{\sqrt{\bar\alpha_{k-1}}}{1 - \bar\alpha_{k-1}}\mathbf{y}_0$; the mean is this vector multiplied by the variance $\tilde\beta_k$, which gives exactly $\tilde{\boldsymbol\mu}_k$. [∎]{.qed}
+This is a quadratic form in $\mathbf{y}_{k-1}$: the distribution is Gaussian. The coefficient of $-\tfrac12\|\mathbf{y}_{k-1}\|^2$, that is, the precision, equals $\frac{\alpha_k}{\beta_k} + \frac{1}{1 - \bar\alpha_{k-1}} = \frac{\alpha_k(1 - \bar\alpha_{k-1}) + \beta_k}{\beta_k(1 - \bar\alpha_{k-1})} = \frac{1 - \bar\alpha_k}{\beta_k(1 - \bar\alpha_{k-1})} = \frac{1}{\tilde\beta_k}$. The coefficient of the term linear in $\mathbf{y}_{k-1}$ is $\frac{\sqrt{\alpha_k}}{\beta_k}\mathbf{y}_k + \frac{\sqrt{\bar\alpha_{k-1}}}{1 - \bar\alpha_{k-1}}\mathbf{y}_0$; the mean is this vector multiplied by the variance $\tilde\beta_k$, which gives exactly $\tilde{\boldsymbol\mu}_k$. [∎]{.qed}
 :::
 ::::
 
@@ -392,7 +392,7 @@ L_{k-1} = \mathbb{E}_{q(\mathbf{y}_k \mid \mathbf{y}_0)}\Big[\mathrm{KL}\big(q(\
 $$
 
 ::: proof
-We introduce the law of the forward process as an importance law: $\log p_\theta(\mathbf{y}_0) = \log \mathbb{E}_{q(\mathbf{y}_{1:K} \mid \mathbf{y}_0)}\big[p_\theta(\mathbf{y}_{0:K})/q(\mathbf{y}_{1:K} \mid \mathbf{y}_0)\big]$, and Jensen's inequality (the logarithm is concave) allows us to move the logarithm inside the expectation, which gives a lower bound.
+We introduce the distribution of the forward process as an importance distribution: $\log p_\theta(\mathbf{y}_0) = \log \mathbb{E}_{q(\mathbf{y}_{1:K} \mid \mathbf{y}_0)}\big[p_\theta(\mathbf{y}_{0:K})/q(\mathbf{y}_{1:K} \mid \mathbf{y}_0)\big]$, and Jensen's inequality (the logarithm is concave) allows us to move the logarithm inside the expectation, which gives a lower bound.
 
 It remains to rewrite the quotient. By the Markov property and then Bayes' formula, $q(\mathbf{y}_k \mid \mathbf{y}_{k-1}) = q(\mathbf{y}_k \mid \mathbf{y}_{k-1}, \mathbf{y}_0) = q(\mathbf{y}_{k-1} \mid \mathbf{y}_k, \mathbf{y}_0)\,q(\mathbf{y}_k \mid \mathbf{y}_0)/q(\mathbf{y}_{k-1} \mid \mathbf{y}_0)$. In the product over $k = 2, \dots, K$, the quotients $q(\mathbf{y}_k \mid \mathbf{y}_0)/q(\mathbf{y}_{k-1} \mid \mathbf{y}_0)$ telescope into $q(\mathbf{y}_K \mid \mathbf{y}_0)/q(\mathbf{y}_1 \mid \mathbf{y}_0)$, hence
 
@@ -466,7 +466,7 @@ abar = np.cumprod(alpha)                     # ᾱ_k = ∏_{j ≤ k} (1 - β_j) 
 snr = abar / (1 - abar)                      # signal-to-noise ratio
 print(f"ᾱ_K = {abar[-1]:.2e}")
 for k in [1, 10, 100, 250, 500, 1000]:
-    print(f"k = {k:4d} : ᾱ_k = {abar[k-1]:.4f}, RSB = {snr[k-1]:.3e}")
+    print(f"k = {k:4d} : ᾱ_k = {abar[k-1]:.4f}, SNR = {snr[k-1]:.3e}")
 
 rng = np.random.default_rng(0)
 n = 400_000
@@ -479,12 +479,12 @@ def chaine(k):
         y = np.sqrt(alpha[j]) * y + np.sqrt(beta[j]) * rng.standard_normal(n)
     return y, np.sqrt(alpha[k-1]) * y + np.sqrt(beta[k-1]) * rng.standard_normal(n)
 
-# Marginal law (Prop. 2.2): ε = (y_k - √ᾱ_k y0)/√(1-ᾱ_k) must be N(0,1) and independent of y0
+# Marginal distribution (Prop. 2.2): ε = (y_k - √ᾱ_k y0)/√(1-ᾱ_k) must be N(0,1) and independent of y0
 _, yk = chaine(300)
 eps = (yk - np.sqrt(abar[299]) * y0) / np.sqrt(1 - abar[299])
 print(f"k = 300, ε: mean {eps.mean():+.4f}, variance {eps.var():.4f}, corr(ε, y0) = {np.corrcoef(eps, y0)[0,1]:+.4f}")
 
-# Posterior law q(y_{k-1} | y_k, y0) (Prop. 2.5), at k = 10 where β̃_k and β_k clearly differ
+# Posterior distribution q(y_{k-1} | y_k, y0) (Prop. 2.5), at k = 10 where β̃_k and β_k clearly differ
 k = 10
 yprec, yk = chaine(k)
 c0 = np.sqrt(abar[k-2]) * beta[k-1] / (1 - abar[k-1])
@@ -494,12 +494,12 @@ r = yprec - (c0 * y0 + ck * yk)
 print(f"k = 10, residual: mean {r.mean():+.1e}, variance {r.var():.4e} ; β̃_k = {beta_t:.4e}, β_k = {beta[k-1]:.4e}")
 # output:
 # ᾱ_K = 4.04e-05
-# k =    1 : ᾱ_k = 0.9999, RSB = 9.999e+03
-# k =   10 : ᾱ_k = 0.9981, RSB = 5.268e+02
-# k =  100 : ᾱ_k = 0.8970, RSB = 8.710e+00
-# k =  250 : ᾱ_k = 0.5241, RSB = 1.101e+00
-# k =  500 : ᾱ_k = 0.0786, RSB = 8.529e-02
-# k = 1000 : ᾱ_k = 0.0000, RSB = 4.036e-05
+# k =    1 : ᾱ_k = 0.9999, SNR = 9.999e+03
+# k =   10 : ᾱ_k = 0.9981, SNR = 5.268e+02
+# k =  100 : ᾱ_k = 0.8970, SNR = 8.710e+00
+# k =  250 : ᾱ_k = 0.5241, SNR = 1.101e+00
+# k =  500 : ᾱ_k = 0.0786, SNR = 8.529e-02
+# k = 1000 : ᾱ_k = 0.0000, SNR = 4.036e-05
 # k = 300, ε: mean +0.0025, variance 1.0025, corr(ε, y0) = -0.0021
 # k = 10, residual: mean +1.0e-05, variance 2.3764e-04 ; β̃_k = 2.3818e-04, β_k = 2.7928e-04
 ```
@@ -510,7 +510,7 @@ The measured variance of the residual, $2.376 \times 10^{-4}$, is within $0.2$% 
 ::: recap-title
 Key takeaways — chapter 2
 :::
-- Gaussian noising has an explicit marginal law: $\mathbf{y}_k = \sqrt{\bar\alpha_k}\,\mathbf{y}_0 + \sqrt{1 - \bar\alpha_k}\,\boldsymbol\varepsilon$; $\mathbf{y}_k$ is drawn in one line.
+- Gaussian noising has an explicit marginal distribution: $\mathbf{y}_k = \sqrt{\bar\alpha_k}\,\mathbf{y}_0 + \sqrt{1 - \bar\alpha_k}\,\boldsymbol\varepsilon$; $\mathbf{y}_k$ is drawn in one line.
 - Given the data point, a reverse step is Gaussian with mean $\tilde{\boldsymbol\mu}_k$ and variance $\tilde\beta_k$; the variational bound reduces to learning this mean.
 - Parameterizing the mean by the predicted noise $\boldsymbol\varepsilon_\theta$ turns training into a regression: $L_{\mathrm{simple}} = \mathbb{E}\|\boldsymbol\varepsilon - \boldsymbol\varepsilon_\theta(\mathbf{y}_k, k)\|^2$.
 - Ancestral sampling costs $K$ evaluations of the network; DDIM reuses the same network with far fewer steps.
@@ -518,7 +518,7 @@ Key takeaways — chapter 2
 
 ## 3. The continuous view: SDEs, score and probability flow {#ch3}
 
-When the number of steps $K$ tends to infinity, the DDPM chain becomes a stochastic differential equation (SDE). This passage to the limit, systematized by Song et al. (2021), has three benefits: it shows that the whole of diffusion rests on a single object, the **score** $\nabla\log p_s$; it provides an **ordinary** differential equation with the same marginal laws, hence a deterministic sampler; it cleanly separates the modeling choices (schedule, parameterization, solver), which EDM exploits (Karras et al., 2022).
+When the number of steps $K$ tends to infinity, the DDPM chain becomes a stochastic differential equation (SDE). This passage to the limit, systematized by Song et al. (2021), has three benefits: it shows that the whole of diffusion rests on a single object, the **score** $\nabla\log p_s$; it provides an **ordinary** differential equation with the same marginal distributions, hence a deterministic sampler; it cleanly separates the modeling choices (schedule, parameterization, solver), which EDM exploits (Karras et al., 2022).
 
 ### 3.1 From the chain to the stochastic differential equation
 
@@ -536,7 +536,7 @@ where $W$ is a Brownian motion in $\mathbb{R}^D$. We write $p_s$ for the density
 :::
 
 :::: prop
-[Proposition 3.2 — Marginal laws of the VP SDE]{.tag}
+[Proposition 3.2 — Marginal distributions of the VP SDE]{.tag}
 For the VP SDE, $\mathbf{y}_s \mid \mathbf{y}_0 \sim \mathcal{N}\big(a(s)\,\mathbf{y}_0,\; \sigma(s)^2 I\big)$ with $a(s) = \exp\big(-\tfrac12\int_0^s\beta(r)\,\mathrm{d}r\big)$ and $\sigma(s)^2 = 1 - a(s)^2$.
 
 ::: proof
@@ -562,10 +562,10 @@ $$
 \mathrm{d}\bar{\mathbf{y}}_\tau = \Big[-f(\bar{\mathbf{y}}_\tau, 1 - \tau) + g(1 - \tau)^2\,\nabla\log p_{1-\tau}(\bar{\mathbf{y}}_\tau)\Big]\mathrm{d}\tau + g(1 - \tau)\,\mathrm{d}\bar W_\tau, \qquad \bar{\mathbf{y}}_0 \sim p_1,
 $$
 
-has, at time $\tau$, the law $p_{1-\tau}$ of the forward process at time $s = 1 - \tau$. In particular $\bar{\mathbf{y}}_1 \sim \mu$.
+has, at time $\tau$, the distribution $p_{1-\tau}$ of the forward process at time $s = 1 - \tau$. In particular $\bar{\mathbf{y}}_1 \sim \mu$.
 
 ::: proof
-Sketch, at the level of marginal laws (Anderson proves the equality of the laws of entire trajectories). Let $q_\tau = p_{1-\tau}$. By Fokker–Planck, $\partial_\tau q_\tau = -(\partial_s p)_{s = 1 - \tau} = \nabla\cdot(f\,q_\tau) - \frac{g^2}{2}\Delta q_\tau$. We look for a drift $b$ such that this equation is the Fokker–Planck equation of an SDE with diffusion coefficient $g$, that is, $\partial_\tau q = -\nabla\cdot(b\,q) + \frac{g^2}{2}\Delta q$. We need $-\nabla\cdot(b\,q) = \nabla\cdot(f\,q) - g^2\Delta q = \nabla\cdot\big(f\,q - g^2 q\,\nabla\log q\big)$, which is achieved by $b = -f + g^2\,\nabla\log q$. The two Fokker–Planck equations coincide and start from the same law $q_0 = p_1$; by uniqueness of the solution (taken for granted), the marginal laws coincide at all times. [∎]{.qed}
+Sketch, at the level of marginal distributions (Anderson proves the equality of the distributions of entire trajectories). Let $q_\tau = p_{1-\tau}$. By Fokker–Planck, $\partial_\tau q_\tau = -(\partial_s p)_{s = 1 - \tau} = \nabla\cdot(f\,q_\tau) - \frac{g^2}{2}\Delta q_\tau$. We look for a drift $b$ such that this equation is the Fokker–Planck equation of an SDE with diffusion coefficient $g$, that is, $\partial_\tau q = -\nabla\cdot(b\,q) + \frac{g^2}{2}\Delta q$. We need $-\nabla\cdot(b\,q) = \nabla\cdot(f\,q) - g^2\Delta q = \nabla\cdot\big(f\,q - g^2 q\,\nabla\log q\big)$, which is achieved by $b = -f + g^2\,\nabla\log q$. The two Fokker–Planck equations coincide and start from the same distribution $q_0 = p_1$; by uniqueness of the solution (taken for granted), the marginal distributions coincide at all times. [∎]{.qed}
 :::
 ::::
 
@@ -584,7 +584,7 @@ With the identity $\Delta p = \nabla\cdot(p\nabla\log p)$, the Fokker–Planck e
 :::
 ::::
 
-The reverse SDE and the probability flow ODE have the same marginal laws, but not the same trajectories: the SDE adds noise that can correct some errors, while the ODE is deterministic, bijective, allows the likelihood to be computed through Proposition 1.12 and lends itself to high-order solvers. In both cases, **it is enough to know the score $\nabla\log p_s$ at all noise levels**.
+The reverse SDE and the probability flow ODE have the same marginal distributions, but not the same trajectories: the SDE adds noise that can correct some errors, while the ODE is deterministic, bijective, allows the likelihood to be computed through Proposition 1.12 and lends itself to high-order solvers. In both cases, **it is enough to know the score $\nabla\log p_s$ at all noise levels**.
 
 ### 3.3 The score and how to learn it
 
@@ -601,7 +601,7 @@ This loss is unusable as is, since $\nabla\log p$ is precisely unknown. Hyvärin
 
 :::: thm
 [Theorem 3.6 — Vincent's equivalence (2011)]{.tag}
-Let $q_\sigma(\mathbf{y} \mid \mathbf{y}_0)$ be a smooth noising density and $p_\sigma(\mathbf{y}) = \int q_\sigma(\mathbf{y} \mid \mathbf{y}_0)\,\mu(\mathrm{d}\mathbf{y}_0)$ the law of the noisy data. Define the denoising *score matching* loss
+Let $q_\sigma(\mathbf{y} \mid \mathbf{y}_0)$ be a smooth noising density and $p_\sigma(\mathbf{y}) = \int q_\sigma(\mathbf{y} \mid \mathbf{y}_0)\,\mu(\mathrm{d}\mathbf{y}_0)$ the distribution of the noisy data. Define the denoising *score matching* loss
 
 $$
 J_{\mathrm{DSM}}(\theta) = \mathbb{E}_{\mathbf{y}_0 \sim \mu,\; \mathbf{y} \sim q_\sigma(\cdot \mid \mathbf{y}_0)}\big\|s_\theta(\mathbf{y}) - \nabla_{\mathbf{y}}\log q_\sigma(\mathbf{y} \mid \mathbf{y}_0)\big\|^2.
@@ -610,13 +610,13 @@ $$
 Then $J_{\mathrm{DSM}}(\theta) = J_{\mathrm{ESM}}(\theta) + C$, where $J_{\mathrm{ESM}}$ is computed for $p = p_\sigma$ and $C$ does not depend on $\theta$. The two losses therefore have the same minimizers and the same gradients.
 
 ::: proof
-Expand both squares. In $J_{\mathrm{ESM}}$: $\mathbb{E}_{p_\sigma}\|s_\theta\|^2 - 2\,\mathbb{E}_{p_\sigma}[s_\theta\cdot\nabla\log p_\sigma] + C_1$. In $J_{\mathrm{DSM}}$: $\mathbb{E}\|s_\theta(\mathbf{y})\|^2 - 2\,\mathbb{E}[s_\theta(\mathbf{y})\cdot\nabla_{\mathbf{y}}\log q_\sigma(\mathbf{y} \mid \mathbf{y}_0)] + C_2$. The constants $C_1 = \mathbb{E}\|\nabla\log p_\sigma\|^2$ and $C_2 = \mathbb{E}\|\nabla\log q_\sigma\|^2$ do not depend on $\theta$. The first terms are equal, since the marginal law of $\mathbf{y}$ is $p_\sigma$. For the cross terms, differentiating under the integral:
+Expand both squares. In $J_{\mathrm{ESM}}$: $\mathbb{E}_{p_\sigma}\|s_\theta\|^2 - 2\,\mathbb{E}_{p_\sigma}[s_\theta\cdot\nabla\log p_\sigma] + C_1$. In $J_{\mathrm{DSM}}$: $\mathbb{E}\|s_\theta(\mathbf{y})\|^2 - 2\,\mathbb{E}[s_\theta(\mathbf{y})\cdot\nabla_{\mathbf{y}}\log q_\sigma(\mathbf{y} \mid \mathbf{y}_0)] + C_2$. The constants $C_1 = \mathbb{E}\|\nabla\log p_\sigma\|^2$ and $C_2 = \mathbb{E}\|\nabla\log q_\sigma\|^2$ do not depend on $\theta$. The first terms are equal, since the marginal distribution of $\mathbf{y}$ is $p_\sigma$. For the cross terms, differentiating under the integral:
 
 $$
 \mathbb{E}_{p_\sigma}[s_\theta\cdot\nabla\log p_\sigma] = \int s_\theta(\mathbf{y})\cdot\nabla p_\sigma(\mathbf{y})\,\mathrm{d}\mathbf{y} = \iint s_\theta(\mathbf{y})\cdot\nabla_{\mathbf{y}} q_\sigma(\mathbf{y} \mid \mathbf{y}_0)\,\mu(\mathrm{d}\mathbf{y}_0)\,\mathrm{d}\mathbf{y}.
 $$
 
-Write $\nabla_{\mathbf{y}} q_\sigma = q_\sigma\,\nabla_{\mathbf{y}}\log q_\sigma$: the last integral is exactly $\mathbb{E}[s_\theta(\mathbf{y})\cdot\nabla_{\mathbf{y}}\log q_\sigma(\mathbf{y} \mid \mathbf{y}_0)]$ under the joint law of $(\mathbf{y}_0, \mathbf{y})$. The cross terms are equal, hence $J_{\mathrm{DSM}} - J_{\mathrm{ESM}} = C_2 - C_1$. [∎]{.qed}
+Write $\nabla_{\mathbf{y}} q_\sigma = q_\sigma\,\nabla_{\mathbf{y}}\log q_\sigma$: the last integral is exactly $\mathbb{E}[s_\theta(\mathbf{y})\cdot\nabla_{\mathbf{y}}\log q_\sigma(\mathbf{y} \mid \mathbf{y}_0)]$ under the joint distribution of $(\mathbf{y}_0, \mathbf{y})$. The cross terms are equal, hence $J_{\mathrm{DSM}} - J_{\mathrm{ESM}} = C_2 - C_1$. [∎]{.qed}
 :::
 ::::
 
@@ -726,7 +726,7 @@ We have $\mathrm{Var}(y_i) = \sigma_{\mathrm{d}}^2 + \sigma^2$, hence the first 
 
 ::: ex
 [Example 3.10 — Sampling with the exact denoiser]{.tag}
-To separate learning errors from integration errors, we use an **exact** denoiser: for a one-dimensional Gaussian mixture, $D(y; \sigma) = \mathbb{E}[x \mid y]$ can be computed in closed form. We compare the probability flow ODE integrated by Heun on the EDM grid with the reverse SDE integrated by Euler–Maruyama, using the energy distance $\mathcal{E}$ defined in Chapter 7 (zero if and only if the two laws coincide; its unbiased estimator fluctuates around $0$ when they coincide).
+To separate learning errors from integration errors, we use an **exact** denoiser: for a one-dimensional Gaussian mixture, $D(y; \sigma) = \mathbb{E}[x \mid y]$ can be computed in closed form. We compare the probability flow ODE integrated by Heun on the EDM grid with the reverse SDE integrated by Euler–Maruyama, using the energy distance $\mathcal{E}$ defined in Chapter 7 (zero if and only if the two distributions coincide; its unbiased estimator fluctuates around $0$ when they coincide).
 :::
 
 ```python
@@ -792,14 +792,14 @@ for nom, f, N in [("ODE, Heun", ode_heun, 18), ("ODE, Heun", ode_heun, 5),
 # reverse SDE   500 evaluations: D_E = -0.0007, share of right mode = 0.699
 ```
 
-With the exact denoiser, the ODE integrated by Heun in 35 evaluations is indistinguishable from the data (its energy distance is at the level of the statistical floor), whereas with 9 evaluations the integration error dominates. The reverse SDE needs many more steps for the same accuracy: its noise must be integrated finely. This is why fast samplers are almost always deterministic.
+With the exact denoiser, the ODE integrated by Heun in 35 evaluations is indistinguishable from the data (its energy distance is at the level of the noise floor), whereas with 9 evaluations the integration error dominates. The reverse SDE needs many more steps for the same accuracy: its noise must be integrated finely. This is why fast samplers are almost always deterministic.
 
 :::: recap
 ::: recap-title
 Key takeaways — chapter 3
 :::
-- When $K \to \infty$, DDPM becomes the VP SDE $\mathrm{d}\mathbf{y} = -\tfrac12\beta\,\mathbf{y}\,\mathrm{d}s + \sqrt\beta\,\mathrm{d}W$, with explicit Gaussian marginal laws.
-- The reverse SDE (drift $-f + g^2\nabla\log p_s$) and the probability flow ODE (velocity $f - \tfrac12 g^2\nabla\log p_s$) have the same marginal laws as the forward process: everything rests on the score.
+- When $K \to \infty$, DDPM becomes the VP SDE $\mathrm{d}\mathbf{y} = -\tfrac12\beta\,\mathbf{y}\,\mathrm{d}s + \sqrt\beta\,\mathrm{d}W$, with explicit Gaussian marginal distributions.
+- The reverse SDE (drift $-f + g^2\nabla\log p_s$) and the probability flow ODE (velocity $f - \tfrac12 g^2\nabla\log p_s$) have the same marginal distributions as the forward process: everything rests on the score.
 - Vincent's equivalence: $J_{\mathrm{DSM}} = J_{\mathrm{ESM}} + C$; predicting the noise is learning the score, $s_\theta = -\boldsymbol\varepsilon_\theta/\sigma$.
 - Tweedie: $\mathbb{E}[\mathbf{y}_0 \mid \mathbf{y}] = (\mathbf{y} + \sigma^2\nabla\log p)/a$; the optimal denoiser and the score carry the same information.
 - EDM separates schedule, preconditioning and solver; Heun on a grid concentrated near $\sigma = 0$ is enough with a few dozen evaluations.
@@ -831,7 +831,7 @@ We have $\int \varphi\,\mathrm{d}p_t = \mathbb{E}[\varphi(\mathbf{x}_t)]$ with $
 :::
 ::::
 
-The weak form involves no density: it remains valid for laws without a density, which will be useful in infinite dimension (Chapter 6).
+The weak form involves no density: it remains valid for distributions without a density, which will be useful in infinite dimension (Chapter 6).
 
 ### 4.2 Conditional path and marginal field
 
@@ -845,7 +845,7 @@ $$
 \mathbf{x}_t = (1 - t)\,\mathbf{x}_0 + t\,\mathbf{x}_1,
 $$
 
-write $p_t$ for the law of $\mathbf{x}_t$ (so that $p_0 = \mathcal{N}(0, I)$ and $p_1 = \mu$) and define the **marginal velocity field**
+write $p_t$ for the distribution of $\mathbf{x}_t$ (so that $p_0 = \mathcal{N}(0, I)$ and $p_1 = \mu$) and define the **marginal velocity field**
 
 $$
 v_t(\mathbf{x}) = \mathbb{E}\big[\mathbf{x}_1 - \mathbf{x}_0 \,\big|\, \mathbf{x}_t = \mathbf{x}\big].
@@ -873,14 +873,14 @@ With a Gaussian source, $p_t$ has a strictly positive smooth density for $t < 1$
 
 :::: prop
 [Proposition 4.5 — Link with the formulation of Lipman et al. (2023)]{.tag}
-Conditionally on $\mathbf{x}_1$, the law of $\mathbf{x}_t$ is $p_t(\mathbf{x} \mid \mathbf{x}_1) = \mathcal{N}\big(t\,\mathbf{x}_1, (1 - t)^2 I\big)$ and the conditional velocity reads $u_t(\mathbf{x} \mid \mathbf{x}_1) = (\mathbf{x}_1 - \mathbf{x})/(1 - t)$. The marginal field is its posterior mean:
+Conditionally on $\mathbf{x}_1$, the distribution of $\mathbf{x}_t$ is $p_t(\mathbf{x} \mid \mathbf{x}_1) = \mathcal{N}\big(t\,\mathbf{x}_1, (1 - t)^2 I\big)$ and the conditional velocity reads $u_t(\mathbf{x} \mid \mathbf{x}_1) = (\mathbf{x}_1 - \mathbf{x})/(1 - t)$. The marginal field is its posterior mean:
 
 $$
 v_t(\mathbf{x}) = \frac{1}{p_t(\mathbf{x})}\int u_t(\mathbf{x} \mid \mathbf{x}_1)\,p_t(\mathbf{x} \mid \mathbf{x}_1)\,\mu(\mathrm{d}\mathbf{x}_1).
 $$
 
 ::: proof
-If $\mathbf{x}_t = \mathbf{x}$ and $\mathbf{x}_1$ are known, then $\mathbf{x}_0 = (\mathbf{x} - t\mathbf{x}_1)/(1 - t)$, so $\mathbf{x}_1 - \mathbf{x}_0 = (\mathbf{x}_1 - \mathbf{x})/(1 - t)$. The law of $\mathbf{x}_1$ given $\mathbf{x}_t = \mathbf{x}$ is $p_t(\mathbf{x} \mid \mathbf{x}_1)\,\mu(\mathrm{d}\mathbf{x}_1)/p_t(\mathbf{x})$ (Bayes' formula); integrate the conditional velocity against this law. [∎]{.qed}
+If $\mathbf{x}_t = \mathbf{x}$ and $\mathbf{x}_1$ are known, then $\mathbf{x}_0 = (\mathbf{x} - t\mathbf{x}_1)/(1 - t)$, so $\mathbf{x}_1 - \mathbf{x}_0 = (\mathbf{x}_1 - \mathbf{x})/(1 - t)$. The distribution of $\mathbf{x}_1$ given $\mathbf{x}_t = \mathbf{x}$ is $p_t(\mathbf{x} \mid \mathbf{x}_1)\,\mu(\mathrm{d}\mathbf{x}_1)/p_t(\mathbf{x})$ (Bayes' formula); integrate the conditional velocity against this distribution. [∎]{.qed}
 :::
 ::::
 
@@ -1077,13 +1077,13 @@ $$
 $$
 
 ::: proof
-The law of $Z_1$ is $\mu$ by Theorem 4.4 (its proof holds for an arbitrary coupling), and more generally $Z_t$ and $X_t$ have the same law for every $t$. Apply Jensen's inequality twice, first to the time average, then to the conditional expectation:
+The distribution of $Z_1$ is $\mu$ by Theorem 4.4 (its proof holds for an arbitrary coupling), and more generally $Z_t$ and $X_t$ have the same distribution for every $t$. Apply Jensen's inequality twice, first to the time average, then to the conditional expectation:
 
 $$
 \mathbb{E}\,c(Z_1 - Z_0) = \mathbb{E}\,c\Big(\int_0^1 v(Z_t, t)\,\mathrm{d}t\Big) \le \int_0^1 \mathbb{E}\,c\big(v(Z_t, t)\big)\,\mathrm{d}t = \int_0^1 \mathbb{E}\,c\big(\mathbb{E}[X_1 - X_0 \mid X_t]\big)\,\mathrm{d}t \le \int_0^1 \mathbb{E}\,c(X_1 - X_0)\,\mathrm{d}t.
 $$
 
-The central equality uses the fact that $Z_t$ and $X_t$ have the same law and that $v(\cdot, t) = \mathbb{E}[X_1 - X_0 \mid X_t = \cdot]$. [∎]{.qed}
+The central equality uses the fact that $Z_t$ and $X_t$ have the same distribution and that $v(\cdot, t) = \mathbb{E}[X_1 - X_0 \mid X_t = \cdot]$. [∎]{.qed}
 :::
 ::::
 
@@ -1115,8 +1115,8 @@ Tweedie's formula (Proposition 3.7), applied to $\mathbf{x}_t = \beta\,\mathbf{x
 A diffusion model (which learns the score) and a flow matching model with a Gaussian source (which learns the velocity) are therefore two parameterizations of the same object; what distinguishes them is the **path** ($\alpha, \beta$), that is, the noise schedule, the **weighting** of the loss over $t$, and the **solver**. The VP path of DDPM corresponds, in flow time $t = 1 - s$, to $\beta(t) = a(1 - t)$ and $\alpha(t) = \sigma(1 - t)$ with $\alpha^2 + \beta^2 = 1$ (Proposition 3.2).
 
 :::: prop
-[Proposition 4.14 — A family of SDEs with the same marginal laws]{.tag}
-For every function $g(t) \ge 0$, the SDE $\mathrm{d}\mathbf{x} = \big[v_t(\mathbf{x}) + \tfrac12 g(t)^2\,\nabla\log p_t(\mathbf{x})\big]\mathrm{d}t + g(t)\,\mathrm{d}W_t$, started from $\mathcal{N}(0, I)$, has the same marginal laws $p_t$ as the ODE $\dot{\mathbf{x}} = v_t(\mathbf{x})$.
+[Proposition 4.14 — A family of SDEs with the same marginal distributions]{.tag}
+For every function $g(t) \ge 0$, the SDE $\mathrm{d}\mathbf{x} = \big[v_t(\mathbf{x}) + \tfrac12 g(t)^2\,\nabla\log p_t(\mathbf{x})\big]\mathrm{d}t + g(t)\,\mathrm{d}W_t$, started from $\mathcal{N}(0, I)$, has the same marginal distributions $p_t$ as the ODE $\dot{\mathbf{x}} = v_t(\mathbf{x})$.
 
 ::: proof
 Its Fokker–Planck equation is $\partial_t p = -\nabla\cdot\big[(v_t + \tfrac12 g^2\nabla\log p)\,p\big] + \tfrac12 g^2\Delta p = -\nabla\cdot(v_t\,p) - \tfrac12 g^2\nabla\cdot(p\nabla\log p) + \tfrac12 g^2\Delta p = -\nabla\cdot(v_t\,p)$, since $\nabla\cdot(p\nabla\log p) = \Delta p$. This is the continuity equation of Theorem 4.4, and we conclude by uniqueness. [∎]{.qed}
@@ -1133,11 +1133,11 @@ The table summarizes the correspondences. In all cases, training is a simulation
 |---|---|---|---|
 | Regression target | noise $\boldsymbol\varepsilon$ | score $-\boldsymbol\varepsilon/\sigma$ or denoiser | velocity $\mathbf{x}_1 - \mathbf{x}_0$ |
 | Path | discrete VP, schedule $\beta_k$ | VP, VE, EDM | linear $(1 - t)\mathbf{x}_0 + t\mathbf{x}_1$, or interpolant |
-| Source | $\mathcal{N}(0, I)$ (approximate) | $\mathcal{N}(0, \sigma_{\max}^2 I)$ or $\mathcal{N}(0, I)$ | $\mathcal{N}(0, I)$ exact, or any law |
+| Source | $\mathcal{N}(0, I)$ (approximate) | $\mathcal{N}(0, \sigma_{\max}^2 I)$ or $\mathcal{N}(0, I)$ | $\mathcal{N}(0, I)$ exact, or any distribution |
 | Sampler | ancestral ($K$ NFE), DDIM | reverse SDE, ODE (Heun) | ODE (Euler, Heun), SDE (prop. 4.14) |
 | Strength | simplicity, robustness | unified framework, likelihood through the ODE | straight paths, few steps, arbitrary source |
 
-Three practical choices matter. **The law of $t$**: uniform by default, it can be concentrated where the regression is hardest. **The solver**: Heun is second order (global error in $O(h^2)$ for two evaluations per step), Euler first order. **The coupling**: independent by default, it can be made “straighter” by mini-batch optimal transport (Tong et al., 2024) or by *reflow*.
+Three practical choices matter. **The distribution of $t$**: uniform by default, it can be concentrated where the regression is hardest. **The solver**: Heun is second order (global error in $O(h^2)$ for two evaluations per step), Euler first order. **The coupling**: independent by default, it can be made “straighter” by mini-batch optimal transport (Tong et al., 2024) or by *reflow*.
 
 :::: recap
 ::: recap-title
@@ -1151,11 +1151,11 @@ Key takeaways — chapter 4
 
 ## 5. Conditioning on parameters and guidance {#ch5}
 
-The internship does not ask for a model of *the* law of MHD fields, but for a family of laws $\mu_{\boldsymbol\lambda}$ indexed by physical parameters: kinetic and magnetic Reynolds numbers $Re$ and $Rm$, material properties. This chapter shows how to condition a generative model on $\boldsymbol\lambda$, then how to steer sampling toward observations or constraints **without retraining**, and why these guidance methods are approximate.
+The internship does not ask for a model of *the* distribution of MHD fields, but for a family of distributions $\mu_{\boldsymbol\lambda}$ indexed by physical parameters: kinetic and magnetic Reynolds numbers $Re$ and $Rm$, material properties. This chapter shows how to condition a generative model on $\boldsymbol\lambda$, then how to steer sampling toward observations or constraints **without retraining**, and why these guidance methods are approximate.
 
 ### 5.1 Conditional generation
 
-The training data are pairs $(\boldsymbol\lambda^{(j)}, \mathbf{x}^{(j, i)})$: for each simulated value $\boldsymbol\lambda^{(j)}$, snapshots $\mathbf{x}^{(j, i)}$ of a statistically stationary state, hence samples of $\mu_{\boldsymbol\lambda^{(j)}}$. We write $\nu$ for the law of the parameters in the training set.
+The training data are pairs $(\boldsymbol\lambda^{(j)}, \mathbf{x}^{(j, i)})$: for each simulated value $\boldsymbol\lambda^{(j)}$, snapshots $\mathbf{x}^{(j, i)}$ of a statistically stationary state, hence samples of $\mu_{\boldsymbol\lambda^{(j)}}$. We write $\nu$ for the distribution of the parameters in the training set.
 
 ::: def
 [Definition 5.1 — Conditional flow matching]{.tag}
@@ -1179,7 +1179,7 @@ Condition on $\boldsymbol\lambda$: $L(\theta) = \mathbb{E}_{\boldsymbol\lambda}\
 
 ::: note
 [Remark 5.3 — What the theorem does not say: interpolation in $\boldsymbol\lambda$]{.tag}
-Proposition 5.2 only concerns the values of $\boldsymbol\lambda$ present in the data. In practice, only a handful of values of $(Re, Rm)$ are simulated, and one hopes that the network **interpolates** between them. This relies on the regularity of $\boldsymbol\lambda \mapsto \mu_{\boldsymbol\lambda}$ and on the inductive bias of the network, not on a theorem. Yet the systems of the internship have bifurcations: at the dynamo threshold $Rm_c$, the stationary law of the magnetic field changes nature (zero field below, self-sustained field above; see modules [p3](../p3-mhd-dynamo/index.html) and [p4](../p4-systemes-dynamiques/index.html)). A conditional model must therefore be tested at values of $\boldsymbol\lambda$ **absent** from training, inside the range and beyond; Kohl, Chen and Thuerey (2026) thus evaluate their diffusion models for fluid flows at Reynolds numbers outside the training range.
+Proposition 5.2 only concerns the values of $\boldsymbol\lambda$ present in the data. In practice, only a handful of values of $(Re, Rm)$ are simulated, and one hopes that the network **interpolates** between them. This relies on the regularity of $\boldsymbol\lambda \mapsto \mu_{\boldsymbol\lambda}$ and on the inductive bias of the network, not on a theorem. Yet the systems of the internship have bifurcations: at the dynamo threshold $Rm_c$, the stationary distribution of the magnetic field changes nature (zero field below, self-sustained field above; see modules [p3](../p3-mhd-dynamo/index.html) and [p4](../p4-systemes-dynamiques/index.html)). A conditional model must therefore be tested at values of $\boldsymbol\lambda$ **absent** from training, inside the range and beyond; Kohl, Chen and Thuerey (2026) thus evaluate their diffusion models for fluid flows at Reynolds numbers outside the training range.
 :::
 
 The parameter can enter the network by simple concatenation (as in the code of Section 5.6), or through an embedding followed by a modulation of the layers (FiLM, or AdaLN-Zero in the diffusion transformers used by FunDiff), and it is better to normalize it, for example by switching to $\log Re$.
@@ -1216,7 +1216,7 @@ For fixed $(\mathbf{x}, t)$, Proposition 4.13 gives $v = \mathbf{x}/t + \frac{1 
 :::
 ::::
 
-The guided score is, at each time, that of the tilted law $p_t(\mathbf{x} \mid c)\,p_t(c \mid \mathbf{x})^w$ (normalized). But the family of these tilted laws is not the probability path of a noising process: the guided ODE does not exactly produce $p_1(\mathbf{x} \mid c)\,p(c \mid \mathbf{x})^w$. For physics, the consequence is clear: **if one wants the law $\mu_{\boldsymbol\lambda}$ itself** (spectra, statistics of a stationary state), guidance must be zero or very weak, because it distorts the law. Exercise 14 measures this.
+The guided score is, at each time, that of the tilted distribution $p_t(\mathbf{x} \mid c)\,p_t(c \mid \mathbf{x})^w$ (normalized). But the family of these tilted distributions is not the probability path of a noising process: the guided ODE does not exactly produce $p_1(\mathbf{x} \mid c)\,p(c \mid \mathbf{x})^w$. For physics, the consequence is clear: **if one wants the distribution $\mu_{\boldsymbol\lambda}$ itself** (spectra, statistics of a stationary state), guidance must be zero or very weak, because it distorts the distribution. Exercise 14 measures this.
 
 ### 5.4 Guidance through the denoised estimate: DPS and universal guidance
 
@@ -1226,7 +1226,7 @@ $$
 p_t(\mathbf{y} \mid \mathbf{x}_t) = \int p(\mathbf{y} \mid \mathbf{x}_1)\,p(\mathbf{x}_1 \mid \mathbf{x}_t)\,\mathrm{d}\mathbf{x}_1,
 $$
 
-an inaccessible integral since $p(\mathbf{x}_1 \mid \mathbf{x}_t)$ is the full posterior law.
+an inaccessible integral since $p(\mathbf{x}_1 \mid \mathbf{x}_t)$ is the full posterior distribution.
 
 :::: prop
 [Proposition 5.6 — Denoised estimate of a velocity model]{.tag}
@@ -1268,14 +1268,14 @@ $$
 
 ::: key
 [Key point — linear and quadratic constraints are not handled the same way]{.tag}
-The divergence $\nabla\cdot\mathbf{B}$ is **linear** in the field: it commutes with conditional expectation, there is no Jensen gap, and the denoised estimate of an exact model trained on solenoidal fields is solenoidal. The energy $\tfrac12\langle|\mathbf{B}|^2\rangle$ is **quadratic**: the denoised estimate has less energy than the true fields, by an amount equal to the posterior variance. Penalizing the energy of $\hat{\mathbf{x}}_1$ to match it to the physical value is therefore biased at small $t$. This is why experiment E2 handles the divergence sample by sample and the energy balance **in law**. Bastek, Sun and Kochmann (2025) run into the same difficulty with an equation residual evaluated on the denoised estimate and propose to evaluate it on a sample obtained by a few DDIM steps, at the cost of longer training.
+The divergence $\nabla\cdot\mathbf{B}$ is **linear** in the field: it commutes with conditional expectation, there is no Jensen gap, and the denoised estimate of an exact model trained on solenoidal fields is solenoidal. The energy $\tfrac12\langle|\mathbf{B}|^2\rangle$ is **quadratic**: the denoised estimate has less energy than the true fields, by an amount equal to the posterior variance. Penalizing the energy of $\hat{\mathbf{x}}_1$ to match it to the physical value is therefore biased at small $t$. This is why experiment E2 handles the divergence sample by sample and the energy budget **at the distribution level**. Bastek, Sun and Kochmann (2025) run into the same difficulty with an equation residual evaluated on the denoised estimate and propose to evaluate it on a sample obtained by a few DDIM steps, at the cost of longer training.
 :::
 
 Caution: (iv) concerns the denoised estimate, not the velocity. Since $v_t(\mathbf{x}) = \mathbb{E}[\mathbf{x}_1 \mid \mathbf{x}] - \mathbb{E}[\mathbf{x}_0 \mid \mathbf{x}]$ and the Gaussian noise $\mathbf{x}_0$ is not solenoidal, $Av_t \ne 0$ in general, and the intermediate states $\mathbf{x}_t$ do not satisfy the constraint. Also projecting the noise onto $\ker A$ (the “projected flow” of E2) makes the whole path solenoidal; module [p8](../p8-contraintes-physiques/index.html) compares these options.
 
 ::: ex
 [Example 5.10 — The Jensen gap as a function of time]{.tag}
-For the one-dimensional target $0.3\,\mathcal{N}(-2, 0.5^2) + 0.7\,\mathcal{N}(2, 0.5^2)$, the posterior law of $x_1$ given $x_t$ is an explicit Gaussian mixture (same computation as Proposition 4.8). The following block computes the mean Jensen gap for $R(x) = x^2$, that is, $\mathbb{E}[\mathrm{Var}(x_1 \mid x_t)]$, and the “energy” $\mathbb{E}[\hat x_1^2]$ of the denoised estimate.
+For the one-dimensional target $0.3\,\mathcal{N}(-2, 0.5^2) + 0.7\,\mathcal{N}(2, 0.5^2)$, the posterior distribution of $x_1$ given $x_t$ is an explicit Gaussian mixture (same computation as Proposition 4.8). The following block computes the mean Jensen gap for $R(x) = x^2$, that is, $\mathbb{E}[\mathrm{Var}(x_1 \mid x_t)]$, and the “energy” $\mathbb{E}[\hat x_1^2]$ of the denoised estimate.
 :::
 
 ```python
@@ -1319,7 +1319,7 @@ At $t = 0$, the denoised estimate is the mean of the data ($0.8$, with energy $0
 
 ### 5.6 Hands-on session: conditional flow matching in dimension 2
 
-We put everything together: a parametric dataset, a conditional velocity field in PyTorch, sampling by Heun and evaluation by the energy distance (Chapter 7). The law $\mu_\lambda$ is a mixture of four Gaussians with standard deviation $0.15$, placed on a circle of radius $1 + \lambda$ and rotated by an angle $\lambda\pi/4$. We train with only five values, $\lambda \in \{0 ; 0.25 ; 0.5 ; 0.75 ; 1\}$, as if five simulations were available, and we also test at $\lambda = 0.375$ and $\lambda = 0.625$, values **never seen**.
+We put everything together: a parametric dataset, a conditional velocity field in PyTorch, sampling by Heun and evaluation by the energy distance (Chapter 7). The distribution $\mu_\lambda$ is a mixture of four Gaussians with standard deviation $0.15$, placed on a circle of radius $1 + \lambda$ and rotated by an angle $\lambda\pi/4$. We train with only five values, $\lambda \in \{0 ; 0.25 ; 0.5 ; 0.75 ; 1\}$, as if five simulations were available, and we also test at $\lambda = 0.375$ and $\lambda = 0.625$, values **never seen**.
 
 ```python
 import math, time
@@ -1406,7 +1406,7 @@ for lam in [0.25, 0.5, 0.375, 0.625]:      # 0.375 and 0.625: values absent from
 # 0.625     -0.0002        0.0033           -0.0017              0.1078
 ```
 
-Three observations. First, with Heun and 50 steps (99 network evaluations), the energy distance between generated samples and data is at the level of the **statistical floor**, that is, of the distance between two independent data sets of the same size ($\pm 0.002$); it is about two orders of magnitude smaller than that of a Gaussian with the same mean and covariance, which misses the four-mode structure. Next, the quality is the same at the values $\lambda = 0.375$ and $0.625$ absent from training: on this example, which is very regular in $\lambda$, the network interpolates correctly. Finally, Euler with 10 steps (10 evaluations) leaves a distance of about $0.004$, clearly above the floor, but still twenty times smaller than that of the Gaussian reference: the integration error is visible, without hiding the structure. The final loss, $2.63$, does not tend to $0$: it is the constant $C$ of Theorem 4.7 (plus the mini-batch noise).
+Three observations. First, with Heun and 50 steps (99 network evaluations), the energy distance between generated samples and data is at the level of the **noise floor**, that is, of the distance between two independent data sets of the same size ($\pm 0.002$); it is about two orders of magnitude smaller than that of a Gaussian with the same mean and covariance, which misses the four-mode structure. Next, the quality is the same at the values $\lambda = 0.375$ and $0.625$ absent from training: on this example, which is very regular in $\lambda$, the network interpolates correctly. Finally, Euler with 10 steps (10 evaluations) leaves a distance of about $0.004$, clearly above the floor, but still twenty times smaller than that of the Gaussian reference: the integration error is visible, without hiding the structure. The final loss, $2.63$, does not tend to $0$: it is the constant $C$ of Theorem 4.7 (plus the mini-batch noise).
 
 ![Figure 5.11 — Conditional flow matching of the hands-on session: data (top, gray) and samples generated by Heun in 50 steps (bottom, blue) for four values of the parameter, two of which ($\lambda = 0.375$ and $0.625$) are absent from training. The model places the modes correctly, including at unseen $\lambda$; thin filaments connect the modes.](../../../prep/p7-modeles-generatifs/fig-fm-conditionnel-en.png){width="100%" fig-alt="Eight point clouds in two rows: at the top, four data sets with four clusters on a circle that grows and rotates with lambda; at the bottom, the corresponding generated samples, at the same positions, with a few isolated points between the clusters."}
 
@@ -1417,7 +1417,7 @@ The filaments visible in Figure 5.11 are not a training defect that could be com
 Key takeaways — chapter 5
 :::
 - Conditional flow matching regresses $v_\theta(\mathbf{x}_t, t, \boldsymbol\lambda)$ on $\mathbf{x}_1 - \mathbf{x}_0$; it learns the marginal field of each $\mu_{\boldsymbol\lambda}$ seen, but interpolation in $\boldsymbol\lambda$ is not guaranteed, especially near a bifurcation.
-- Classifier-free guidance: $\tilde v = (1 + w)\,v(\cdot, \boldsymbol\lambda) - w\,v(\cdot, \varnothing)$; it accentuates the condition but distorts the law, which is undesirable when the exact statistics are wanted.
+- Classifier-free guidance: $\tilde v = (1 + w)\,v(\cdot, \boldsymbol\lambda) - w\,v(\cdot, \varnothing)$; it accentuates the condition but distorts the distribution, which is undesirable when the exact statistics are wanted.
 - DPS and *universal guidance* guide through the denoised estimate $\hat{\mathbf{x}}_1 = \mathbf{x}_t + (1 - t)v_t$, replacing $\mathbb{E}[R(\mathbf{x}_1) \mid \mathbf{x}_t]$ by $R(\hat{\mathbf{x}}_1)$.
 - The Jensen gap is zero for a linear constraint (divergence), positive for a convex constraint (energy, where it equals the posterior variance), and tends to $0$ as $t \to 1$.
 ::::
@@ -1430,7 +1430,7 @@ A three-dimensional MHD field discretized on $64^3$ points, with its six compone
 
 ::: def
 [Definition 6.1 — Latent generative model]{.tag}
-An autoencoder $(E, \mathcal{D})$ is trained to reconstruct the data: $\mathcal{D}(E(\mathbf{x})) \approx \mathbf{x}$, with a latent $\mathbf{z} = E(\mathbf{x}) \in \mathbb{R}^d$, $d \ll D$. A diffusion or flow matching model is then trained on the law of the latents $E_\#\mu$, and one generates $\mathbf{x} = \mathcal{D}(\mathbf{z})$ from a generated latent (Rombach et al., 2022).
+An autoencoder $(E, \mathcal{D})$ is trained to reconstruct the data: $\mathcal{D}(E(\mathbf{x})) \approx \mathbf{x}$, with a latent $\mathbf{z} = E(\mathbf{x}) \in \mathbb{R}^d$, $d \ll D$. A diffusion or flow matching model is then trained on the distribution of the latents $E_\#\mu$, and one generates $\mathbf{x} = \mathcal{D}(\mathbf{z})$ from a generated latent (Rombach et al., 2022).
 :::
 
 The gain is twofold: the generative model works in dimension $d$, and the autoencoder absorbs the high-frequency details. The price is that fidelity is bounded by the reconstruction error of $\mathcal{D}$, and that generated latents may leave the region where the decoder was trained. For physics, a question arises: where do the constraints go? The most robust answer is **in the decoder**.
@@ -1514,9 +1514,9 @@ The norm of white noise doubles when $N$ is multiplied by four ($\sqrt{N}$), and
 
 ### 6.3 Flow matching and diffusion in function space
 
-In infinite dimension, there is no Lebesgue measure: laws have no density, and the formulas that use $p_t(\mathbf{x})$ or $\nabla\log p_t$ must be reformulated. Flow matching lends itself well to this, because its proofs only use the weak form of the continuity equation (Theorems 4.2 and 4.4), without densities.
+In infinite dimension, there is no Lebesgue measure: distributions have no density, and the formulas that use $p_t(\mathbf{x})$ or $\nabla\log p_t$ must be reformulated. Flow matching lends itself well to this, because its proofs only use the weak form of the continuity equation (Theorems 4.2 and 4.4), without densities.
 
-*Functional Flow Matching* (Kerrigan, Migliorini & Smyth, 2024) builds a path of measures between a fixed Gaussian measure on a function space and the data law, through conditional Gaussian paths, and learns the velocity field by regression, without likelihood or simulation. The velocity field is an **operator** (for example a Fourier neural operator, FNO): it applies to a function sampled on any grid. On the diffusion side, the *Denoising Diffusion Operators* of Lim et al. (2025) add noise through Gaussian processes and sample through a function-valued Langevin dynamics, with a sampling cost independent of the resolution; they are tested in particular on Navier–Stokes flows.
+*Functional Flow Matching* (Kerrigan, Migliorini & Smyth, 2024) builds a path of measures between a fixed Gaussian measure on a function space and the data distribution, through conditional Gaussian paths, and learns the velocity field by regression, without likelihood or simulation. The velocity field is an **operator** (for example a Fourier neural operator, FNO): it applies to a function sampled on any grid. On the diffusion side, the *Denoising Diffusion Operators* of Lim et al. (2025) add noise through Gaussian processes and sample through a function-valued Langevin dynamics, with a sampling cost independent of the resolution; they are tested in particular on Navier–Stokes flows.
 
 ### 6.4 FunDiff: functional autoencoder and latent rectified flow
 
@@ -1554,17 +1554,17 @@ Key takeaways — chapter 6
 
 ## 7. Evaluating a generative model {#ch7}
 
-A generative model of MHD fields is useful if it reproduces the **law** of the fields (spectra, statistics, invariants) and if **each** sample satisfies the physical constraints. Neither of these two criteria is a likelihood. This chapter presents the distances between laws that are estimated from samples, then the physical metrics targeted by the internship, and a comparison protocol.
+A generative model of MHD fields is useful if it reproduces the **distribution** of the fields (spectra, statistics, invariants) and if **each** sample satisfies the physical constraints. Neither of these two criteria is a likelihood. This chapter presents the distances between distributions that are estimated from samples, then the physical metrics targeted by the internship, and a comparison protocol.
 
 ### 7.1 Why likelihood is not enough
 
 Remark 1.7 gave the general reasons. For the models of this module, cost must be added: the likelihood of a flow matching or diffusion model is obtained through the formula of Proposition 1.12, by integrating the ODE and the divergence of the velocity field, which is expensive in high dimension. Above all, Theis, van den Oord and Bethge (2016) show that likelihood, Parzen-window estimates and visual quality of samples are largely independent in high dimension, and conclude that a model must be evaluated according to the use for which it is designed. For the internship, the use is physical.
 
-### 7.2 Distances between laws estimated from samples
+### 7.2 Distances between distributions estimated from samples
 
 ::: def
 [Definition 7.1 — Energy distance (Székely & Rizzo, 2013)]{.tag}
-For two laws $P$ and $Q$ on $\mathbb{R}^D$ with finite first moment, with $X, X' \sim P$ and $Y, Y' \sim Q$ independent,
+For two distributions $P$ and $Q$ on $\mathbb{R}^D$ with finite first moment, with $X, X' \sim P$ and $Y, Y' \sim Q$ independent,
 
 $$
 \mathcal{E}(P, Q) = 2\,\mathbb{E}\|X - Y\| - \mathbb{E}\|X - X'\| - \mathbb{E}\|Y - Y'\|.
@@ -1572,7 +1572,7 @@ $$
 :::
 
 :::: thm
-[Theorem 7.2 — The energy distance characterizes equality of laws]{.tag}
+[Theorem 7.2 — The energy distance characterizes equality of distributions]{.tag}
 We have $\mathcal{E}(P, Q) \ge 0$, with equality if and only if $P = Q$, and $\sqrt{\mathcal{E}}$ is a distance. Moreover, $\mathcal{E}$ equals twice the square of the *maximum mean discrepancy* (MMD) associated with the kernel induced by the distance, $k(\mathbf{x}, \mathbf{y}) = \tfrac12\big(\|\mathbf{x}\| + \|\mathbf{y}\| - \|\mathbf{x} - \mathbf{y}\|\big)$ (Sejdinovic et al., 2013).
 
 ::: proof
@@ -1586,7 +1586,7 @@ $$
 \hat{\mathcal{E}} = \frac{2}{nm}\sum_{i, j}\|X_i - Y_j\| - \frac{1}{n(n-1)}\sum_{i \ne i'}\|X_i - X_{i'}\| - \frac{1}{m(m-1)}\sum_{j \ne j'}\|Y_j - Y_{j'}\|.
 $$
 
-Its expectation is exactly $\mathcal{E}$; it can therefore be negative when the laws coincide, which is normal and a reminder that it must always be compared with its fluctuation level. Its cost is $O((n + m)^2 D)$.
+Its expectation is exactly $\mathcal{E}$; it can therefore be negative when the distributions coincide, which is normal and a reminder that it must always be compared with its fluctuation level. Its cost is $O((n + m)^2 D)$.
 
 ::: def
 [Definition 7.3 — Sliced Wasserstein distance]{.tag}
@@ -1596,16 +1596,16 @@ $$
 SW_p^p(P, Q) = \int_{S^{D-1}} W_p^p\big(\theta_\# P,\, \theta_\# Q\big)\,\mathrm{d}\sigma(\theta),
 $$
 
-where $\theta_\# P$ is the law of $\langle\theta, X\rangle$ and $\sigma$ the uniform measure on the sphere.
+where $\theta_\# P$ is the distribution of $\langle\theta, X\rangle$ and $\sigma$ the uniform measure on the sphere.
 :::
 
-In dimension 1, $W_p^p(P, Q) = \int_0^1|F^{-1}(u) - G^{-1}(u)|^p\,\mathrm{d}u$: with two samples of the same size, it is enough to **sort** them and compare the values of the same rank. The integral over the sphere is estimated by Monte Carlo over $L$ directions, for a cost $O(L\,n\log n)$, much lower than that of optimal transport in dimension $D$ (module [p5](../p5-probabilites-transport/index.html)). The empirical estimator is positively biased: it is not $0$ for two samples of the same law.
+In dimension 1, $W_p^p(P, Q) = \int_0^1|F^{-1}(u) - G^{-1}(u)|^p\,\mathrm{d}u$: with two samples of the same size, it is enough to **sort** them and compare the values of the same rank. The integral over the sphere is estimated by Monte Carlo over $L$ directions, for a cost $O(L\,n\log n)$, much lower than that of optimal transport in dimension $D$ (module [p5](../p5-probabilites-transport/index.html)). The empirical estimator is positively biased: it is not $0$ for two samples of the same distribution.
 
 In image applications, the standard metric is the FID (Heusel et al., 2017): the Fréchet distance between two Gaussians fitted on features of an image classification network. These features have no physical meaning for an MHD field; the internship therefore uses distances on the fields themselves or on physical descriptors.
 
 ::: ex
 [Example 7.4 — Sensitivity of the two distances]{.tag}
-The following block compares, in dimension 2, a reference mixture of four Gaussians with five variants: same law, shift of $0.1$, standard deviation multiplied by $1.5$, one mode lost, unbalanced weights.
+The following block compares, in dimension 2, a reference mixture of four Gaussians with five variants: same distribution, shift of $0.1$, standard deviation multiplied by $1.5$, one mode lost, unbalanced weights.
 :::
 
 ```python
@@ -1632,7 +1632,7 @@ def melange(n, poids=(0.25, 0.25, 0.25, 0.25), decalage=0.0, ecart=0.15):
 
 n = 2000
 ref = melange(n)
-cas = {"same law": melange(n),
+cas = {"same distribution": melange(n),
        "shift of 0.1": melange(n, decalage=0.1),
        "standard deviation ×1.5": melange(n, ecart=0.225),
        "one mode lost": melange(n, poids=(1/3, 1/3, 1/3, 0)),
@@ -1642,14 +1642,14 @@ for nom, X in cas.items():
     print(f"{nom:26s} {distance_energie(X, ref):8.4f} {wasserstein_tranche(X, ref):8.4f}")
 # output:
 # case                            D_E     SW_1
-# same law                    -0.0010   0.0238
+# same distribution           -0.0010   0.0238
 # shift of 0.1                 0.0135   0.0912
 # standard deviation ×1.5      0.0049   0.0749
 # one mode lost                0.1860   0.3824
 # weights 0.4/0.1/0.25/0.25    0.0665   0.1989
 ```
 
-The two distances rank the defects in the same order: losing a mode is the most serious, then a poor balance of the weights, then a shift, then a widening of the modes. The energy distance fluctuates around $0$ for the same law ($-0.001$), whereas the sliced distance keeps a positive bias ($0.024$) due to the finite sample size. In both cases, an isolated number says nothing: it must be compared with the **floor** obtained between two independent samples of the reference.
+The two distances rank the defects in the same order: losing a mode is the most serious, then a poor balance of the weights, then a shift, then a widening of the modes. The energy distance fluctuates around $0$ for the same distribution ($-0.001$), whereas the sliced distance keeps a positive bias ($0.024$) due to the finite sample size. In both cases, an isolated number says nothing: it must be compared with the **floor** obtained between two independent samples of the reference.
 
 ### 7.3 Physical metrics
 
@@ -1659,8 +1659,8 @@ The previous distances are generic. For MHD fields, they must be complemented by
 |---|---|---|
 | Constraint on each sample | relative divergence $\|\nabla\cdot\mathbf{B}\|/\|\nabla\mathbf{B}\|$, error on the boundary conditions | distribution over all samples, not only the mean |
 | Second-order statistics | spectra $E_u(k)$, $E_B(k)$; error per logarithmic band | errors concentrate at small scales |
-| Invariants | laws of $E$, $H_K$, $H_M$, $H_C$, compared through $W_1$ | $H_M$ depends on the gauge if $\mathbf{B}\cdot\mathbf{n} \ne 0$ at the boundary |
-| Balances | mean injection = mean dissipation (constraint **in law**) | stationarity identity, see E1 and E2 |
+| Invariants | distributions of $E$, $H_K$, $H_M$, $H_C$, compared through $W_1$ | $H_M$ depends on the gauge if $\mathbf{B}\cdot\mathbf{n} \ne 0$ at the boundary |
+| Budgets | mean injection = mean dissipation (**distributional** constraint) | stationarity identity, see E1 and E2 |
 | Intermittency | densities of increments, flatness | the tails of the distribution are the hardest |
 | Topology | null points of the field, persistence diagrams | stable distance between diagrams (Cohen-Steiner et al., 2007) |
 | Dynamics | frequency of reversals, correlation time | requires temporal information (E1: Rice formula) |
@@ -1760,45 +1760,45 @@ Putting these numbers side by side with those of Section 5.6 (same network, same
 | Floor (reference / reference) | — | $-0.0017$ to $0.0009$ |
 | Fitted Gaussian | — | $0.074$ to $0.108$ |
 
-At about a hundred evaluations, both families reach the statistical floor. At ten evaluations, flow matching with the simplest of solvers does about four times better than DDIM on the same budget. This result is consistent with the argument of Chapter 4 (straighter paths, easier integration), but it concerns only a toy example in dimension 2, with a single seed and non-optimized settings: it illustrates a protocol, it does not settle the question between the methods.
+At about a hundred evaluations, both families reach the noise floor. At ten evaluations, flow matching with the simplest of solvers does about four times better than DDIM on the same budget. This result is consistent with the argument of Chapter 4 (straighter paths, easier integration), but it concerns only a toy example in dimension 2, with a single seed and non-optimized settings: it illustrates a protocol, it does not settle the question between the methods.
 
 :::: recap
 ::: recap-title
 Key takeaways — chapter 7
 :::
 - Likelihood is expensive and says little about sample quality; a generative model is evaluated according to its intended use.
-- The energy distance $2\mathbb{E}\|X - Y\| - \mathbb{E}\|X - X'\| - \mathbb{E}\|Y - Y'\|$ is zero if and only if the laws coincide; its unbiased estimator fluctuates around $0$.
+- The energy distance $2\mathbb{E}\|X - Y\| - \mathbb{E}\|X - X'\| - \mathbb{E}\|Y - Y'\|$ is zero if and only if the distributions coincide; its unbiased estimator fluctuates around $0$.
 - The sliced Wasserstein distance is computed through projections and sorting; its empirical estimator is positively biased.
-- For physics, one adds per-sample constraints, spectra, invariants, balances in law, intermittency and topology, always compared with the statistical floor, inside and outside the training parameter range.
+- For physics, one adds per-sample constraints, spectra, invariants, distributional budgets, intermittency and topology, always compared with the noise floor, inside and outside the training parameter range.
 ::::
 
 ## Exercises {#exercices}
 
 The exercises are graded: ★ direct application of the course, ★★ multi-step computation or proof, ★★★ question close to research or programming exercise. Work on each exercise before reading the solution.
 
-1. **★ Transport by the cumulative distribution function.** Let $Z \sim \mathcal{N}(0, 1)$ and $T(z) = -\ln\big(1 - \Phi(z)\big)$. (a) Show that $T$ is strictly increasing. (b) Compute the density of $X = T(Z)$ through Theorem 1.8 and identify the law. (c) What is the image of the median of $Z$?
+1. **★ Transport by the cumulative distribution function.** Let $Z \sim \mathcal{N}(0, 1)$ and $T(z) = -\ln\big(1 - \Phi(z)\big)$. (a) Show that $T$ is strictly increasing. (b) Compute the density of $X = T(Z)$ through Theorem 1.8 and identify the distribution. (c) What is the image of the median of $Z$?
 
-   *Solution*: (a) $T'(z) = \varphi(z)/(1 - \Phi(z)) > 0$, where $\varphi$ is the Gaussian density. (b) For $x > 0$, let $z = T^{-1}(x)$, so that $1 - \Phi(z) = e^{-x}$. Theorem 1.8 gives $q(x) = \varphi(z)/T'(z) = 1 - \Phi(z) = e^{-x}$: this is the exponential law with parameter 1, as announced by Proposition 1.3 with $F(x) = 1 - e^{-x}$. (c) $T(0) = -\ln(1/2) = \ln 2$, the median of the exponential law: an increasing transport sends quantiles to quantiles.
+   *Solution*: (a) $T'(z) = \varphi(z)/(1 - \Phi(z)) > 0$, where $\varphi$ is the Gaussian density. (b) For $x > 0$, let $z = T^{-1}(x)$, so that $1 - \Phi(z) = e^{-x}$. Theorem 1.8 gives $q(x) = \varphi(z)/T'(z) = 1 - \Phi(z) = e^{-x}$: this is the exponential distribution with parameter 1, as announced by Proposition 1.3 with $F(x) = 1 - e^{-x}$. (c) $T(0) = -\ln(1/2) = \ln 2$, the median of the exponential distribution: an increasing transport sends quantiles to quantiles.
 
 2. **★ Affine flow and maximum likelihood.** Real data $x_1, \dots, x_N$ are modeled by $q_{a,b} = (T_{a,b})_\#\mathcal{N}(0, 1)$ with $T_{a,b}(z) = az + b$, $a > 0$. Write the average log-likelihood and maximize it.
 
    *Solution*: By Example 1.9 in dimension 1, $\log q_{a,b}(x) = -\tfrac12\log(2\pi) - \frac{(x - b)^2}{2a^2} - \log a$. Writing $\bar x$ for the empirical mean and $S = \frac1N\sum_i(x_i - \bar x)^2$, the average log-likelihood equals $\ell(a, b) = -\tfrac12\log(2\pi) - \frac{S + (\bar x - b)^2}{2a^2} - \log a$. It is maximal at $b = \bar x$; then $\partial_a\ell = S/a^3 - 1/a = 0$ gives $a^2 = S$. The maximum equals $-\tfrac12\log(2\pi) - \tfrac12 - \tfrac12\log S$: the optimal affine flow is the Gaussian with the same empirical mean and variance, and the likelihood depends on the data only through $S$.
 
-3. **★ Constant noise schedule.** In DDPM, take $\beta_k = \beta = 0.01$ for all $k$. (a) Express $\bar\alpha_k$ and $\mathrm{RSB}_k$. (b) How many steps are needed for $\bar\alpha_K \le 10^{-4}$? (c) At which step does the signal-to-noise ratio equal $1$? Compare with the linear schedule of Example 2.3.
+3. **★ Constant noise schedule.** In DDPM, take $\beta_k = \beta = 0.01$ for all $k$. (a) Express $\bar\alpha_k$ and $\operatorname{SNR}_k$. (b) How many steps are needed for $\bar\alpha_K \le 10^{-4}$? (c) At which step does the signal-to-noise ratio equal $1$? Compare with the linear schedule of Example 2.3.
 
-   *Solution*: (a) $\bar\alpha_k = (1 - \beta)^k = 0.99^k$ and $\mathrm{RSB}_k = 0.99^k/(1 - 0.99^k)$. (b) $0.99^K \le 10^{-4}$ is equivalent to $K \ge \ln(10^{-4})/\ln(0.99) = 916.4$, that is, $K = 917$. (c) $\mathrm{RSB}_k = 1$ is equivalent to $\bar\alpha_k = 1/2$, that is, $k = \ln 2/(-\ln 0.99) = 69.0$. With the constant schedule, the signal is half destroyed after only $7$% of the steps, against $25$% for the linear schedule ($\mathrm{RSB}_{250} = 1.10$): an increasing schedule devotes more steps to low noise levels, where the details form.
+   *Solution*: (a) $\bar\alpha_k = (1 - \beta)^k = 0.99^k$ and $\operatorname{SNR}_k = 0.99^k/(1 - 0.99^k)$. (b) $0.99^K \le 10^{-4}$ is equivalent to $K \ge \ln(10^{-4})/\ln(0.99) = 916.4$, that is, $K = 917$. (c) $\operatorname{SNR}_k = 1$ is equivalent to $\bar\alpha_k = 1/2$, that is, $k = \ln 2/(-\ln 0.99) = 69.0$. With the constant schedule, the signal is half destroyed after only $7$% of the steps, against $25$% for the linear schedule ($\operatorname{SNR}_{250} = 1.10$): an increasing schedule devotes more steps to low noise levels, where the details form.
 
-4. **★★ Predicting the noise or predicting the data.** Let $\hat{\mathbf{y}}_0 = (\mathbf{y}_k - \sqrt{1 - \bar\alpha_k}\,\hat{\boldsymbol\varepsilon})/\sqrt{\bar\alpha_k}$ be the estimate of the data point associated with a prediction $\hat{\boldsymbol\varepsilon}$ of the noise. Show that $\|\boldsymbol\varepsilon - \hat{\boldsymbol\varepsilon}\|^2 = \mathrm{RSB}_k\,\|\mathbf{y}_0 - \hat{\mathbf{y}}_0\|^2$. What does this imply about the implicit weighting of $L_{\mathrm{simple}}$?
+4. **★★ Predicting the noise or predicting the data.** Let $\hat{\mathbf{y}}_0 = (\mathbf{y}_k - \sqrt{1 - \bar\alpha_k}\,\hat{\boldsymbol\varepsilon})/\sqrt{\bar\alpha_k}$ be the estimate of the data point associated with a prediction $\hat{\boldsymbol\varepsilon}$ of the noise. Show that $\|\boldsymbol\varepsilon - \hat{\boldsymbol\varepsilon}\|^2 = \operatorname{SNR}_k\,\|\mathbf{y}_0 - \hat{\mathbf{y}}_0\|^2$. What does this imply about the implicit weighting of $L_{\mathrm{simple}}$?
 
    *Solution*: Since $\mathbf{y}_0 = (\mathbf{y}_k - \sqrt{1 - \bar\alpha_k}\,\boldsymbol\varepsilon)/\sqrt{\bar\alpha_k}$, we have $\mathbf{y}_0 - \hat{\mathbf{y}}_0 = \sqrt{(1 - \bar\alpha_k)/\bar\alpha_k}\,(\hat{\boldsymbol\varepsilon} - \boldsymbol\varepsilon)$, hence
 
    $$
-   \|\mathbf{y}_0 - \hat{\mathbf{y}}_0\|^2 = \frac{1 - \bar\alpha_k}{\bar\alpha_k}\,\|\boldsymbol\varepsilon - \hat{\boldsymbol\varepsilon}\|^2 = \frac{1}{\mathrm{RSB}_k}\,\|\boldsymbol\varepsilon - \hat{\boldsymbol\varepsilon}\|^2.
+   \|\mathbf{y}_0 - \hat{\mathbf{y}}_0\|^2 = \frac{1 - \bar\alpha_k}{\bar\alpha_k}\,\|\boldsymbol\varepsilon - \hat{\boldsymbol\varepsilon}\|^2 = \frac{1}{\operatorname{SNR}_k}\,\|\boldsymbol\varepsilon - \hat{\boldsymbol\varepsilon}\|^2.
    $$
 
-   The loss $L_{\mathrm{simple}}$, uniform in $k$ for the noise, is therefore a loss on the data weighted by the signal-to-noise ratio: low noise levels (large RSB) weigh a lot, high noise levels almost nothing. This choice of weighting is one of the “knobs” that Kingma et al. (2021) and EDM (Section 3.4) make explicit.
+   The loss $L_{\mathrm{simple}}$, uniform in $k$ for the noise, is therefore a loss on the data weighted by the signal-to-noise ratio: low noise levels (large SNR) weigh a lot, high noise levels almost nothing. This choice of weighting is one of the “knobs” that Kingma et al. (2021) and EDM (Section 3.4) make explicit.
 
-5. **★★ Optimal denoiser for two-point data.** Let $\mu = \tfrac12(\delta_{-1} + \delta_{+1})$ and $y = y_0 + \sigma\varepsilon$. (a) Compute $\mathbb{E}[y_0 \mid y]$. (b) Deduce the score of the law of $y$ through Tweedie's formula. (c) Study the limits $\sigma \to 0$ and $\sigma \to \infty$.
+5. **★★ Optimal denoiser for two-point data.** Let $\mu = \tfrac12(\delta_{-1} + \delta_{+1})$ and $y = y_0 + \sigma\varepsilon$. (a) Compute $\mathbb{E}[y_0 \mid y]$. (b) Deduce the score of the distribution of $y$ through Tweedie's formula. (c) Study the limits $\sigma \to 0$ and $\sigma \to \infty$.
 
    *Solution*: (a) By Bayes, $\mathbb{P}(y_0 = 1 \mid y) \propto e^{-(y-1)^2/(2\sigma^2)}$ and $\mathbb{P}(y_0 = -1 \mid y) \propto e^{-(y+1)^2/(2\sigma^2)}$; their ratio equals $e^{2y/\sigma^2}$, so $\mathbb{P}(y_0 = 1 \mid y) = 1/(1 + e^{-2y/\sigma^2})$ and
 
@@ -1806,7 +1806,7 @@ The exercises are graded: ★ direct application of the course, ★★ multi-ste
    \mathbb{E}[y_0 \mid y] = \mathbb{P}(y_0 = 1 \mid y) - \mathbb{P}(y_0 = -1 \mid y) = \tanh(y/\sigma^2).
    $$
 
-   (b) With $a = 1$, Proposition 3.7 gives $\partial_y\log p(y) = \big(\tanh(y/\sigma^2) - y\big)/\sigma^2$, which can be checked by directly differentiating $\log\big(e^{-(y-1)^2/(2\sigma^2)} + e^{-(y+1)^2/(2\sigma^2)}\big)$. (c) As $\sigma \to 0$, $\tanh(y/\sigma^2) \to \mathrm{signe}(y)$ (the sign function): the denoiser chooses the nearest point. As $\sigma \to \infty$, $\tanh(y/\sigma^2) \approx y/\sigma^2 \to 0$: at very high noise, the optimal denoiser returns the mean of the data.
+   (b) With $a = 1$, Proposition 3.7 gives $\partial_y\log p(y) = \big(\tanh(y/\sigma^2) - y\big)/\sigma^2$, which can be checked by directly differentiating $\log\big(e^{-(y-1)^2/(2\sigma^2)} + e^{-(y+1)^2/(2\sigma^2)}\big)$. (c) As $\sigma \to 0$, $\tanh(y/\sigma^2) \to \operatorname{sign}(y)$ (the sign function): the denoiser chooses the nearest point. As $\sigma \to \infty$, $\tanh(y/\sigma^2) \approx y/\sigma^2 \to 0$: at very high noise, the optimal denoiser returns the mean of the data.
 
 6. **★★ Probability flow ODE for Gaussian data.** In the EDM parameterization, $y = x + \sigma n$ with $x \sim \mathcal{N}(0, \tau^2)$. (a) Compute the denoiser $D(y; \sigma)$ and the score. (b) Solve the ODE $\mathrm{d}y/\mathrm{d}\sigma = (y - D(y; \sigma))/\sigma$ from $\sigma_{\max}$ to $0$. (c) If one starts from $y \sim \mathcal{N}(0, \sigma_{\max}^2)$ instead of $\mathcal{N}(0, \tau^2 + \sigma_{\max}^2)$, what variance is obtained at the end? Application: $\tau = 0.5$, $\sigma_{\max} = 80$.
 
@@ -1816,13 +1816,13 @@ The exercises are graded: ★ direct application of the course, ★★ multi-ste
    y(\sigma) = y(\sigma_{\max})\sqrt{\frac{\tau^2 + \sigma^2}{\tau^2 + \sigma_{\max}^2}}.
    $$
 
-   At $\sigma = 0$, $y(0) = y(\sigma_{\max})\,\tau/\sqrt{\tau^2 + \sigma_{\max}^2}$: if $y(\sigma_{\max}) \sim \mathcal{N}(0, \tau^2 + \sigma_{\max}^2)$, then $y(0) \sim \mathcal{N}(0, \tau^2)$, the law of the data. (c) Starting from $\mathcal{N}(0, \sigma_{\max}^2)$, one obtains the variance $\tau^2\sigma_{\max}^2/(\tau^2 + \sigma_{\max}^2) = \tau^2\big(1 - \tau^2/(\tau^2 + \sigma_{\max}^2)\big)$; for $\tau = 0.5$ and $\sigma_{\max} = 80$, the relative error equals $0.25/6400.25 \approx 4 \times 10^{-5}$, which justifies starting from a Gaussian of variance $\sigma_{\max}^2$.
+   At $\sigma = 0$, $y(0) = y(\sigma_{\max})\,\tau/\sqrt{\tau^2 + \sigma_{\max}^2}$: if $y(\sigma_{\max}) \sim \mathcal{N}(0, \tau^2 + \sigma_{\max}^2)$, then $y(0) \sim \mathcal{N}(0, \tau^2)$, the distribution of the data. (c) Starting from $\mathcal{N}(0, \sigma_{\max}^2)$, one obtains the variance $\tau^2\sigma_{\max}^2/(\tau^2 + \sigma_{\max}^2) = \tau^2\big(1 - \tau^2/(\tau^2 + \sigma_{\max}^2)\big)$; for $\tau = 0.5$ and $\sigma_{\max} = 80$, the relative error equals $0.25/6400.25 \approx 4 \times 10^{-5}$, which justifies starting from a Gaussian of variance $\sigma_{\max}^2$.
 
 7. **★★ Score matching by integration by parts (Hyvärinen, 2005).** In dimension 1, let $p$ be a smooth density with score $\psi = (\log p)'$ and $s_\theta$ a model such that $s_\theta\,p \to 0$ at $\pm\infty$. Show that $J_{\mathrm{ESM}}(\theta) = \mathbb{E}_p\big[s_\theta^2 + 2\,s_\theta'\big] + C$, where $C$ does not depend on $\theta$. Why is this form expensive in dimension $D$?
 
    *Solution*: Expand $J_{\mathrm{ESM}} = \mathbb{E}_p[s_\theta^2] - 2\,\mathbb{E}_p[s_\theta\psi] + \mathbb{E}_p[\psi^2]$. Since $p\,\psi = p'$, an integration by parts gives $\mathbb{E}_p[s_\theta\psi] = \int s_\theta\,p'\,\mathrm{d}y = [s_\theta\,p]_{-\infty}^{+\infty} - \int s_\theta'\,p\,\mathrm{d}y = -\mathbb{E}_p[s_\theta']$, hence the result with $C = \mathbb{E}_p[\psi^2]$. The unknown score has disappeared. In dimension $D$, the term $s_\theta'$ becomes the trace of the Jacobian $\sum_i\partial_i s_{\theta, i}$, which requires $D$ backpropagations: this is what denoising *score matching* (Theorem 3.6) avoids.
 
-8. **★ Gaussian path of Lipman et al.** Consider $\mathbf{x}_t = \big(1 - (1 - \sigma_{\min})t\big)\mathbf{x}_0 + t\,\mathbf{x}_1$ with $0 < \sigma_{\min} \ll 1$. (a) What is the law of $\mathbf{x}_t$ given $\mathbf{x}_1$, and at $t = 1$? (b) Compute the conditional velocity $u_t(\mathbf{x} \mid \mathbf{x}_1)$. (c) Which regression target is used in training?
+8. **★ Gaussian path of Lipman et al.** Consider $\mathbf{x}_t = \big(1 - (1 - \sigma_{\min})t\big)\mathbf{x}_0 + t\,\mathbf{x}_1$ with $0 < \sigma_{\min} \ll 1$. (a) What is the distribution of $\mathbf{x}_t$ given $\mathbf{x}_1$, and at $t = 1$? (b) Compute the conditional velocity $u_t(\mathbf{x} \mid \mathbf{x}_1)$. (c) Which regression target is used in training?
 
    *Solution*: (a) Given $\mathbf{x}_1$, $\mathbf{x}_t \sim \mathcal{N}\big(t\mathbf{x}_1, \sigma_t^2 I\big)$ with $\sigma_t = 1 - (1 - \sigma_{\min})t$; at $t = 1$, it is $\mathcal{N}(\mathbf{x}_1, \sigma_{\min}^2 I)$, a narrow Gaussian that avoids the singularity of Proposition 4.5. (b) The velocity along the path is $\dot{\mathbf{x}}_t = \mathbf{x}_1 - (1 - \sigma_{\min})\mathbf{x}_0$; substitute $\mathbf{x}_0 = (\mathbf{x} - t\mathbf{x}_1)/\sigma_t$ and use $\sigma_t + (1 - \sigma_{\min})t = 1$:
 
@@ -1846,7 +1846,7 @@ The exercises are graded: ★ direct application of the course, ★★ multi-ste
 
     For a standard Gaussian target, $p_t = \mathcal{N}(0, I)$ for every $t$, the score equals $-\mathbf{x}$ and the field is zero: nothing moves, which is consistent.
 
-11. **★★★ Rectified flow in dimension 1.** Let $\mu$ be a law on $\mathbb{R}$ with a density, and $\phi_1$ the time-1 flow of the marginal field (Theorem 4.4) starting from $\mathcal{N}(0, 1)$. (a) Show that $\phi_1$ is strictly increasing and deduce that $\phi_1 = F_\mu^{-1}\circ\Phi$. (b) Show that after one rectification, the trajectories of the new marginal flow are straight lines. (c) Why does this coupling minimize all convex costs $\mathbb{E}\,c(Z_1 - Z_0)$?
+11. **★★★ Rectified flow in dimension 1.** Let $\mu$ be a distribution on $\mathbb{R}$ with a density, and $\phi_1$ the time-1 flow of the marginal field (Theorem 4.4) starting from $\mathcal{N}(0, 1)$. (a) Show that $\phi_1$ is strictly increasing and deduce that $\phi_1 = F_\mu^{-1}\circ\Phi$. (b) Show that after one rectification, the trajectories of the new marginal flow are straight lines. (c) Why does this coupling minimize all convex costs $\mathbb{E}\,c(Z_1 - Z_0)$?
 
     *Solution*: (a) Two trajectories of an ODE with a smooth field cannot cross (Cauchy–Lipschitz uniqueness); in dimension 1, if $x < x'$ then $\phi_t(x) < \phi_t(x')$ for every $t$, otherwise the trajectories would meet by the intermediate value theorem. Hence $\phi_1$ is strictly increasing and pushes $\mathcal{N}(0, 1)$ onto $\mu$. For every $z$, $F_\mu(\phi_1(z)) = \mathbb{P}(\phi_1(Z) \le \phi_1(z)) = \mathbb{P}(Z \le z) = \Phi(z)$, hence $\phi_1 = F_\mu^{-1}\circ\Phi$. (b) The new coupling is $(Z_0, T(Z_0))$ with $T = \phi_1$ increasing. The interpolant $Z_t = \big((1 - t)\,\mathrm{id} + t\,T\big)(Z_0)$ is the image of $Z_0$ under a strictly increasing, hence invertible, function: knowing $Z_t$ determines $Z_0$, and $\mathbb{E}[Z_1 - Z_0 \mid Z_t] = T(Z_0) - Z_0$ exactly. The marginal field therefore makes each point follow the straight line $z_0 + t\,(T(z_0) - z_0)$, and one Euler step integrates the ODE without error. (c) In dimension 1, the monotone coupling (the “increasing rearrangement”) minimizes $\mathbb{E}\,c(Z_1 - Z_0)$ simultaneously for all convex functions $c$; this is a classical result of one-dimensional optimal transport (module [p5](../p5-probabilites-transport/index.html)), consistent with Theorem 4.12. In higher dimension, the marginal flow is in general not the optimal transport, and a single rectification is not, in general, enough to make the trajectories straight.
 
@@ -1872,9 +1872,9 @@ The exercises are graded: ★ direct application of the course, ★★ multi-ste
 
     independent of the value of $x_t$. (b) By Proposition 5.9 (iii), $\mathcal{J}_R = s^2(1 - t)^2/\sigma_t^2$, and $\mathbb{E}[\hat x_1^2] = \mathbb{E}[x_1^2] - s^2(1 - t)^2/\sigma_t^2$: the denoised estimate lacks exactly this energy. (c) For $t = 0.5$: $\sigma_t^2 = 0.3125$ and the gap equals $0.2$, that is, 80% of $s^2$. For $t = 0.9$: $\sigma_t^2 = 0.2125$ and the gap equals $0.0118$. In Example 5.10, the target is a mixture of two Gaussians with the same standard deviation $0.5$; at $t = 0.9$, the mode is already chosen and the measured gap, $0.0118$, coincides with the intra-mode value computed here. At $t = 0.5$, the gap of the mixture ($0.45$) is larger, because the uncertainty about the mode adds to the intra-mode variance.
 
-14. **★★★ Programming: guidance distorts the law.** Take the hands-on session of Section 5.6 and train a single network that is both conditional and unconditional ($p_{\mathrm{uncond}} = 0.2$), then sample at $\lambda = 0.5$ with the guided field $\tilde v = (1 + w)\,v(\mathbf{x}, t, \lambda) - w\,v(\mathbf{x}, t, \varnothing)$ for $w \in \{0, 1, 3\}$. Measure the width of the modes, their shift with respect to the exact positions, the proportion of points far from all modes, the median radius and the energy distance to the data.
+14. **★★★ Programming: guidance distorts the distribution.** Take the hands-on session of Section 5.6 and train a single network that is both conditional and unconditional ($p_{\mathrm{uncond}} = 0.2$), then sample at $\lambda = 0.5$ with the guided field $\tilde v = (1 + w)\,v(\mathbf{x}, t, \lambda) - w\,v(\mathbf{x}, t, \varnothing)$ for $w \in \{0, 1, 3\}$. Measure the width of the modes, their shift with respect to the exact positions, the proportion of points far from all modes, the median radius and the energy distance to the data.
 
-    *Solution*: The empty token is encoded by an additional input $c \in \{0, 1\}$ (with $\lambda$ set to $0$ when $c = 0$). The intra-mode standard deviation is estimated robustly through the median of the distance to the mode center, which follows a Rayleigh law with median $\sigma\sqrt{2\ln 2}$. It is computed twice: around the exact centers, then around the empirical centers of the generated modes, which separates a widening from a mere displacement of the modes.
+    *Solution*: The empty token is encoded by an additional input $c \in \{0, 1\}$ (with $\lambda$ set to $0$ when $c = 0$). The intra-mode standard deviation is estimated robustly through the median of the distance to the mode center, which follows a Rayleigh distribution with median $\sigma\sqrt{2\ln 2}$. It is computed twice: around the exact centers, then around the empirical centers of the generated modes, which separates a widening from a mere displacement of the modes.
 
     ```python
     import math
@@ -1928,7 +1928,7 @@ The exercises are graded: ★ direct application of the course, ★★ multi-ste
     ref = echantillons(lam, n)
     ang = torch.arange(4) * math.pi / 2 + lam * math.pi / 4
     centres = (1 + lam) * torch.stack([torch.cos(ang), torch.sin(ang)], 1)
-    RAYLEIGH = math.sqrt(2 * math.log(2))                       # Rayleigh law: median = σ √(2 ln 2)
+    RAYLEIGH = math.sqrt(2 * math.log(2))                       # Rayleigh distribution: median = σ √(2 ln 2)
     def resume(x):
         dmin, j = torch.cdist(x, centres).min(1)                # distance to the nearest exact center
         proche = dmin < 0.6
@@ -1953,13 +1953,13 @@ The exercises are graded: ★ direct application of the course, ★★ multi-ste
     # w = 3.0   : 0.155     0.023        0.181      0.0025      1.529   0.0574
     ```
 
-    Without guidance ($w = 0$), the width of the modes is correct but 6% of the points remain between the modes: this model, which shares its capacity between the conditional and unconditional tasks, is slightly worse than the one of Section 5.6. Guidance cleans the space between the modes (6% → 2% → 0.25%), but it distorts the law in two ways. First, measured around their own centers, the width of the modes drops from $0.14$ to $0.065$ for $w = 1$, then to $0.023$ for $w = 3$: this is the reduction of the spread predicted by Exercise 12. Next, the modes move, by $0.08$ then by $0.18$ with respect to their exact position (the median radius goes up to $1.53$ for $w = 3$), which recalls the exaggeration of the condition in Exercise 12. The width measured around the exact centers mixes the two effects: at $w = 3$, its value ($0.155$, close to that of the data) only reflects the displacement of the modes, which shows that an isolated indicator can be misleading. The energy distance, for its part, is multiplied by 4 and then by 20. To reproduce a physical law, one therefore needs $w = 0$ and should rather invest in the model itself; guidance is only of interest if one accepts to sacrifice statistical fidelity.
+    Without guidance ($w = 0$), the width of the modes is correct but 6% of the points remain between the modes: this model, which shares its capacity between the conditional and unconditional tasks, is slightly worse than the one of Section 5.6. Guidance cleans the space between the modes (6% → 2% → 0.25%), but it distorts the distribution in two ways. First, measured around their own centers, the width of the modes drops from $0.14$ to $0.065$ for $w = 1$, then to $0.023$ for $w = 3$: this is the reduction of the spread predicted by Exercise 12. Next, the modes move, by $0.08$ then by $0.18$ with respect to their exact position (the median radius goes up to $1.53$ for $w = 3$), which recalls the exaggeration of the condition in Exercise 12. The width measured around the exact centers mixes the two effects: at $w = 3$, its value ($0.155$, close to that of the data) only reflects the displacement of the modes, which shows that an isolated indicator can be misleading. The energy distance, for its part, is multiplied by 4 and then by 20. To reproduce a physical distribution, one therefore needs $w = 0$ and should rather invest in the model itself; guidance is only of interest if one accepts to sacrifice statistical fidelity.
 
 15. **★ Noise in function space.** On periodic $[0, 1)$, consider $x_0 = \sum_{k \ne 0}\sqrt{\kappa_k}\,\xi_k\,e^{2i\pi ks}$ with $\kappa_k = |k|^{-\alpha}$ (and $\xi_{-k} = \bar\xi_k$ for a real field). (a) For which values of $\alpha$ do we have $\mathbb{E}\|x_0\|_{L^2}^2 < \infty$? (b) On a grid of $N$ points, what is $\mathbb{E}\|x_0\|^2$ for white noise? Compare with the output of the block of Section 6.2. (c) For $\alpha = 2$, what is $\mathbb{E}\|x_0\|^2$?
 
     *Solution*: (a) By Proposition 6.3, $\mathbb{E}\|x_0\|^2 = \sum_{k \ne 0}|k|^{-\alpha} = 2\sum_{k \ge 1}k^{-\alpha}$, finite if and only if $\alpha > 1$ (Riemann series). (b) On $N$ points, only the modes $1 \le |k| < N/2$ are represented, that is, about $N$ modes of variance $1$: $\mathbb{E}\|x_0\|^2 \approx N$ and the norm grows like $\sqrt N$. The block gives $5.4$, $10.7$, $23.0$, $44.4$ for $N = 32, 128, 512, 2048$, to be compared with $\sqrt N = 5.7$, $11.3$, $22.6$, $45.3$. (c) $\mathbb{E}\|x_0\|^2 = 2\zeta(2) = \pi^2/3 \approx 3.29$, that is, a typical norm of order $1.8$; the realization of the block ($2.19$) is compatible, the first modes, which are few, dominating the fluctuation. More generally, since the Sobolev norm $H^r$ weights mode $k$ by a factor of order $(2\pi k)^{2r}$, $\mathbb{E}\|x_0\|_{H^r}^2$ is finite if and only if $\sum_{k \ge 1} k^{2r - \alpha}$ is, that is, if $\alpha > 2r + 1$: the decay of the spectrum sets the regularity of the samples.
 
-16. **★★★ Energy distance in dimension 1.** Let $P$ and $Q$ be two laws on $\mathbb{R}$ with finite first moment and cumulative distribution functions $F$ and $G$. (a) Show that $\mathcal{E}(P, Q) = 2\int_{\mathbb{R}}(F(u) - G(u))^2\,\mathrm{d}u$. (b) Deduce that $\mathcal{E} \ge 0$ with equality if and only if $P = Q$. (c) Compute $\mathcal{E}\big(\mathcal{N}(0, 1), \mathcal{N}(\delta, 1)\big)$ for small $\delta$.
+16. **★★★ Energy distance in dimension 1.** Let $P$ and $Q$ be two distributions on $\mathbb{R}$ with finite first moment and cumulative distribution functions $F$ and $G$. (a) Show that $\mathcal{E}(P, Q) = 2\int_{\mathbb{R}}(F(u) - G(u))^2\,\mathrm{d}u$. (b) Deduce that $\mathcal{E} \ge 0$ with equality if and only if $P = Q$. (c) Compute $\mathcal{E}\big(\mathcal{N}(0, 1), \mathcal{N}(\delta, 1)\big)$ for small $\delta$.
 
     *Solution*: (a) For two reals, $|x - y| = \int_{\mathbb{R}}\big(\mathbf{1}_{x \le u < y} + \mathbf{1}_{y \le u < x}\big)\,\mathrm{d}u$. For $X \sim P$ and $Y \sim Q$ independent, Fubini's theorem gives $\mathbb{E}|X - Y| = \int\big[F(u)(1 - G(u)) + G(u)(1 - F(u))\big]\mathrm{d}u$, and likewise $\mathbb{E}|X - X'| = \int 2F(1 - F)$, $\mathbb{E}|Y - Y'| = \int 2G(1 - G)$. Combining:
 
@@ -1967,18 +1967,18 @@ The exercises are graded: ★ direct application of the course, ★★ multi-ste
     2\big[F(1 - G) + G(1 - F)\big] - 2F(1 - F) - 2G(1 - G) = 2F^2 - 4FG + 2G^2 = 2(F - G)^2.
     $$
 
-    (b) The integral of a square is nonnegative; it is zero if and only if $F = G$ almost everywhere, hence everywhere by right-continuity, that is, $P = Q$. (c) Here $F(u) - G(u) = \Phi(u) - \Phi(u - \delta) \approx \delta\,\varphi(u)$, and $\int\varphi^2 = 1/(2\sqrt\pi)$, hence $\mathcal{E} \approx \delta^2/\sqrt\pi$. For $\delta = 0.1$, the exact integral equals $0.005640$ and the approximation $0.005642$. The energy distance is **quadratic** in a small shift: this is why the values measured in Chapter 7 are so small, and why they must be compared with the statistical floor rather than with zero.
+    (b) The integral of a square is nonnegative; it is zero if and only if $F = G$ almost everywhere, hence everywhere by right-continuity, that is, $P = Q$. (c) Here $F(u) - G(u) = \Phi(u) - \Phi(u - \delta) \approx \delta\,\varphi(u)$, and $\int\varphi^2 = 1/(2\sqrt\pi)$, hence $\mathcal{E} \approx \delta^2/\sqrt\pi$. For $\delta = 0.1$, the exact integral equals $0.005640$ and the approximation $0.005642$. The energy distance is **quadratic** in a small shift: this is why the values measured in Chapter 7 are so small, and why they must be compared with the noise floor rather than with zero.
 
 ## Connection with the internship {#lien-stage}
 
 The internship offer asks for the development of conditional generative models, by diffusion or flow matching, of parameterized physical fields, for imposing on them constraints stemming from the equations and the boundary conditions “through the design of the model, the training losses or the sampling procedures”, and for validating them on simple PDEs and then on MHD fields with metrics of spectra, helicity, divergence and topology. This module provides the tools for the first half of this program; module [p8](../p8-contraintes-physiques/index.html) covers the second. Here is where each chapter comes into play in the experiments actually carried out in this repository (the quantitative results are in the report, not here).
 
-- **Experiment E1** ([report, section E1](../../rapport/index.html#e1)). A conditional flow matching model (Chapters 4 and 5) learns the invariant measure of the three-mode reversal model of Gissinger (2012) as a function of the forcing parameter $\Gamma$, trained on a grid of values and tested between them (Remark 5.3). The symmetry $(Q, D, V) \to (-Q, -D, V)$, the analogue of the reversal $\mathbf{B} \to -\mathbf{B}$, is imposed there by data augmentation or by an equivariant velocity field; stationarity identities are imposed **in law**; the frequency of reversals is estimated from the generated law alone through the Rice formula. The evaluation uses the energy distance and the sliced Wasserstein distance (Chapter 7).
-- **Experiment E2** ([report, section E2](../../rapport/index.html#e2)). Forced 2D MHD fields $(\mathbf{u}, \mathbf{B})$ are generated conditionally on the magnetic diffusivity $\eta$, and five divergence-constraint mechanisms are compared with equal network and budget: free generation, penalty on the denoised estimate $\hat{\mathbf{x}}_1 = \mathbf{x}_t + (1 - t)v_\theta$ (Proposition 5.6, with no Jensen gap since the divergence is linear), final projection, projected flow (projected noise and steps) and generation of potentials $(\psi, a)$ (Proposition 6.2). The energy balance, which is quadratic, is handled in law rather than on the denoised estimate (Section 5.5).
+- **Experiment E1** ([report, section E1](../../rapport/index.html#e1)). A conditional flow matching model (Chapters 4 and 5) learns the invariant measure of the three-mode reversal model of Gissinger (2012) as a function of the forcing parameter $\Gamma$, trained on a grid of values and tested between them (Remark 5.3). The symmetry $(Q, D, V) \to (-Q, -D, V)$, the analogue of the reversal $\mathbf{B} \to -\mathbf{B}$, is imposed there by data augmentation or by an equivariant velocity field; stationarity identities are imposed **at the distribution level**; the frequency of reversals is estimated from the generated distribution alone through the Rice formula. The evaluation uses the energy distance and the sliced Wasserstein distance (Chapter 7).
+- **Experiment E2** ([report, section E2](../../rapport/index.html#e2)). Forced 2D MHD fields $(\mathbf{u}, \mathbf{B})$ are generated conditionally on the magnetic diffusivity $\eta$, and five divergence-constraint mechanisms are compared with equal network and budget: free generation, penalty on the denoised estimate $\hat{\mathbf{x}}_1 = \mathbf{x}_t + (1 - t)v_\theta$ (Proposition 5.6, with no Jensen gap since the divergence is linear), final projection, projected flow (projected noise and steps) and generation of potentials $(\psi, a)$ (Proposition 6.2). The energy budget, which is quadratic, is handled at the distribution level rather than on the denoised estimate (Section 5.5).
 - **Experiment E3** ([report, section E3](../../rapport/index.html#e3)). The growth rate of the ABC kinematic dynamo as a function of $Rm$ provides an example of parametric dependence with a threshold: a model conditioned on $Rm$ must cross this threshold, which is exactly the situation where interpolation in $\boldsymbol\lambda$ is guaranteed by no theorem.
 - The **formulation** of the problem and the **taxonomy** of constraints (where the constraint acts: architecture, loss, sampling; hard or soft) are developed in the report ([formulation](../../rapport/index.html#formulation), [taxonomy](../../rapport/index.html#taxonomie)). The PhD proposal derives from it a [theoretical part](../../these/index.html#theorie) and an [experimental plan](../../these/index.html#plan-experimental).
 
-Three lessons of this module guide these choices. First, flow matching and diffusion are two parameterizations of the same object (Proposition 4.13): the choice between them is a matter of path, solver and convenience (flow matching directly gives the denoised estimate and straighter paths), not of a difference in principle. Next, linear constraints (divergence) and nonlinear ones (energy, residuals) are not handled the same way, because of the Jensen gap. Finally, evaluation must compare each mechanism with the statistical floor, inside and outside the parameter range, and with physical metrics; the closest published comparison, that of Genuist et al. (2026, preprint) on divergence alone in 2D hydrodynamics, shows that no strategy dominates everywhere: strict constraints are better in distribution there, but a soft penalty sometimes wins out of distribution.
+Three lessons of this module guide these choices. First, flow matching and diffusion are two parameterizations of the same object (Proposition 4.13): the choice between them is a matter of path, solver and convenience (flow matching directly gives the denoised estimate and straighter paths), not of a difference in principle. Next, linear constraints (divergence) and nonlinear ones (energy, residuals) are not handled the same way, because of the Jensen gap. Finally, evaluation must compare each mechanism with the noise floor, inside and outside the parameter range, and with physical metrics; the closest published comparison, that of Genuist et al. (2026, preprint) on divergence alone in 2D hydrodynamics, shows that no strategy dominates everywhere: strict constraints are better in-distribution there, but a soft penalty sometimes wins out-of-distribution.
 
 ## Further reading {#plus-loin}
 

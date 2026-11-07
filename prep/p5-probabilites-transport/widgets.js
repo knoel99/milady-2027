@@ -29,11 +29,11 @@
     },
     en: {
       a: "non-linearity a", s: "scale s", mintp: "min T′", integral: "∫ p_Y", histerr: "max gap histogram / formula",
-      topX: "law of X ~ N(0, 1), 10 slices of probability 0.1", botY: "law of Y = T(X): same slices, same mass",
+      topX: "distribution of X ~ N(0, 1), 10 slices of probability 0.1", botY: "distribution of Y = T(X): same slices, same mass",
       mapLbl: "T(x) = s (x + a sin 2x)",
       c: "constraint c = E[X]", lamS: "λ (sample)", lamE: "λ (exact)", ess: "ESS / N", kl: "KL(p̂ ‖ q̂)",
       infeas: "c lies outside the convex hull of the sample: no tilt works (ESS → 1).",
-      baseH: "sample of q", tiltH: "reweighted sample", tiltE: "exact tilted law", essCurve: "ESS / N as a function of c",
+      baseH: "sample of q", tiltH: "reweighted sample", tiltE: "exact tilted distribution", essCurve: "ESS / N as a function of c",
       m: "shift m", sd: "standard deviation s", d: "mode separation d", w1: "W₁", w2: "W₂", de: "ℰ (energy)", klnm: "KL(ν ‖ μ)",
       dens: "densities μ (blue) and ν (orange)", cdf: "CDFs F, G; shaded area = W₁",
       theta: "θ", sigma: "σ", dt: "Δt", x0: "x₀", run: "Run", pause: "Pause", reset: "Reset",
@@ -43,7 +43,7 @@
       w1t: "W₁(conditional cloud, ODE cloud)", disp: "mean gap |x_t cond − x_t ODE|", pt: "p_t(x) and paths", ht: "histogram at time t and exact p_t",
       alt1: "Pushforward: density of X, map T and density of Y = T(X).",
       alt2: "Exponential tilting of a sample: histograms and ESS.",
-      alt3: "Densities and CDFs of two laws, and the associated distances.",
+      alt3: "Densities and CDFs of two distributions, and the associated distances.",
       alt4: "Ornstein–Uhlenbeck particles simulated by Euler–Maruyama and Fokker–Planck densities.",
       alt5: "Transport of a Gaussian to a mixture by conditional paths or marginal flow."
     }
@@ -155,6 +155,9 @@
     if (opt.title) {
       ctx.fillStyle = P.ink; ctx.textAlign = "left"; ctx.textBaseline = "bottom";
       ctx.font = "600 12.5px system-ui, -apple-system, Segoe UI, sans-serif";
+      // titre réduit s'il dépasse la largeur disponible (petits écrans)
+      var avail = (ctx.canvas.clientWidth || ctx.canvas.width) - box.x - 4, tw = ctx.measureText(opt.title).width;
+      if (tw > avail && avail > 0) ctx.font = "600 " + Math.max(9, 12.5 * avail / tw).toFixed(1) + "px system-ui, -apple-system, Segoe UI, sans-serif";
       ctx.fillText(opt.title, box.x, box.y - 5);
     }
     ctx.restore();

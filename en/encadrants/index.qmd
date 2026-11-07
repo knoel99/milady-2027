@@ -73,7 +73,7 @@ The two objectives are stated as follows (excerpt from the French abstract on th
 
 In this excerpt, "DyE" denotes the dynamo effect and "ROM" a *reduced-order model*.
 
-**Objective (i): reversals and explosive dynamos.** A reversal is the sign change of the magnetic dipole, as in the reversals of the Earth's field; the VKS experiment at Cadarache produced some in the laboratory (Berhanu et al. 2007). The English version of the abstract speaks of "burst dynamo phenomena" and of models able to distinguish the "precursor, reversal, and recovery" phases. The aim is thus to build, from the simulations, reduced models that reproduce this dynamics and recognize its stages.
+**Objective (i): reversals and burst dynamos.** A reversal is the sign change of the magnetic dipole, as in the reversals of the Earth's field; the VKS experiment at Cadarache produced some in the laboratory (Berhanu et al. 2007). The English version of the abstract speaks of "burst dynamo phenomena" and of models able to distinguish the "precursor, reversal, and recovery" phases. The aim is thus to build, from the simulations, reduced models that reproduce this dynamics and recognize its stages.
 
 **Objective (ii): DRESDYN.** DRESDYN is a precession-driven dynamo experiment conducted at the HZDR research center in Dresden. The project intends to contribute to it with parametric reduced models, which make it possible to explore at low cost the conditions for dynamo onset as a function of the ratio between the precession frequency and the rotation frequency.
 
@@ -202,7 +202,7 @@ His contribution to the internship does not lie in machine learning, a field in 
 
 | Reference | What it brings to the internship |
 |--------------|----------|
-| Ponty Y., Mininni P.D., Montgomery D.C., Pinton J.-F., Politano H., Pouquet A. (2005). "Numerical study of dynamo action at low magnetic Prandtl numbers". *Physical Review Letters* 94, 164502. [doi:10.1103/PhysRevLett.94.164502](https://doi.org/10.1103/PhysRevLett.94.164502); arXiv:physics/0410046. | Taylor–Green dynamos from $P_M = 1$ down to $P_M = 10^{-2}$, with a threshold $Rm_c$ that rises steeply with $P_M^{-1}$ and then saturates, and a Kazantsev spectrum in $k^{3/2}$ in the linear phase: a periodic test bed and a spectral signature to check. |
+| Ponty Y., Mininni P.D., Montgomery D.C., Pinton J.-F., Politano H., Pouquet A. (2005). "Numerical study of dynamo action at low magnetic Prandtl numbers". *Physical Review Letters* 94, 164502. [doi:10.1103/PhysRevLett.94.164502](https://doi.org/10.1103/PhysRevLett.94.164502); arXiv:physics/0410046. | Taylor–Green dynamos from $P_M = 1$ down to $P_M = 10^{-2}$, with a threshold $Rm_c$ that rises steeply with $P_M^{-1}$ and then saturates, and a Kazantsev spectrum in $k^{3/2}$ in the linear phase: a periodic test bench and a spectral signature to check. |
 | Ponty Y., Laval J.-P., Dubrulle B., Daviaud F., Pinton J.-F. (2007). "Subcritical Dynamo Bifurcation in the Taylor-Green Flow". *Physical Review Letters* 99(22), 224501. [doi:10.1103/PhysRevLett.99.224501](https://doi.org/10.1103/PhysRevLett.99.224501); arXiv:0707.2498. | A subcritical dynamo bifurcation with hysteresis: the case where the distribution of states jumps at the threshold, difficult for a generator that varies smoothly with its parameters. |
 | Alexakis A., Ponty Y. (2008). "Effect of the Lorentz force on on-off dynamo intermittency". *Physical Review E* 77, 056308. [doi:10.1103/PhysRevE.77.056308](https://doi.org/10.1103/PhysRevE.77.056308); arXiv:0710.0063. | On-off intermittency near the threshold, with active phases whose duration follows a power law at large Reynolds number: the rare-event statistics that a generator must reproduce. |
 | Ponty Y., Plunian F. (2011). "Transition from Large-Scale to Small-Scale Dynamo". *Physical Review Letters* 106, 154502. [doi:10.1103/PhysRevLett.106.154502](https://doi.org/10.1103/PhysRevLett.106.154502); arXiv:2004.11028. | The transition from a large-scale dynamo to a small-scale dynamo as $Rm$ increases: a parametric regime change to be captured. |
@@ -272,7 +272,7 @@ The six directions below are proposals written for this site on the basis of the
 
 **Builds on.** The direction extends generalized latent assimilation (Cheng et al. 2022), the learned inverse operator VIVID (Cheng et al. 2024), TorchDA (Cheng et al. 2025), the 4D-Var with generative dynamics of Bocquet, Finn and Cheng (2026, preprint), the review by Cheng et al. (2023) and the conformal coverage of Jaber et al. (2025).
 
-**Data.** It uses subsampled SFEMaNS and LATU outputs, and intermediate test beds (Lorenz, shallow water) already available in TorchDA.
+**Data.** It uses subsampled SFEMaNS and LATU outputs, and intermediate test benches (Lorenz, shallow water) already available in TorchDA.
 
 **Risks.** No experimental data from VKS or DRESDYN has been identified as accessible: one would probably have to work with synthetic observations. The cost of diffusion sampling at each assimilation cycle may also be prohibitive.
 
@@ -300,17 +300,17 @@ The six directions below are proposals written for this site on the basis of the
 
 **Risks.** The implementation on an unstructured mesh is costly, hard constraints can reduce the diversity of the samples, and the integration of a generator written in PyTorch with a massively parallel simulation code is not a given.
 
-### Direction F — Test beds and physical metrics for MHD generators {#piste-f}
+### Direction F — Test benches and physical metrics for MHD generators {#piste-f}
 
-**Statement.** Direction F builds a ladder of test beds, from simple PDEs to periodic dynamos (Taylor–Green, ABC, Roberts) computed with Y. Ponty's codes, then to VKS and precession with SFEMaNS and LATU. It pairs this ladder with a battery of metrics: spectra (including the Kazantsev spectrum), helicity, divergence, topology, local energy transfers (Creff et al. 2024), kurtosis–skewness relations (Ponty et al. 2025), conformal coverage (Jaber et al. 2025) and the "hit rate" score (Yu et al. 2026).
+**Statement.** Direction F builds a ladder of test benches, from simple PDEs to periodic dynamos (Taylor–Green, ABC, Roberts) computed with Y. Ponty's codes, then to VKS and precession with SFEMaNS and LATU. It pairs this ladder with a battery of metrics: spectra (including the Kazantsev spectrum), helicity, divergence, topology, local energy transfers (Creff et al. 2024), kurtosis–skewness relations (Ponty et al. 2025), conformal coverage (Jaber et al. 2025) and the "hit rate" score (Yu et al. 2026).
 
 **Challenge.** The metrics must truly discriminate between models and must not depend on the mesh, and 3D diagnostics are expensive.
 
 **Builds on.** The direction extends the Taylor–Green dynamos of Ponty et al. (2005, 2007), the transition studied by Ponty and Plunian (2011), the statistics of Ponty, Politano and Pouquet (2025), the budgets of Creff et al. (2024) and the metrics of the 2026 internship.
 
-**Data.** Periodic simulations in a Cartesian box are simpler to produce and to learn, and long series exist (up to $3.14\times10^{5}$ turnover times). The public dataset The Well (Ohana et al. 2024) also contains 3D MHD turbulence, but compressible and without dynamo effect: it can serve as a test bed for learning, not as a substitute for dynamo data.
+**Data.** Periodic simulations in a Cartesian box are simpler to produce and to learn, and long series exist (up to $3.14\times10^{5}$ turnover times). The public dataset The Well (Ohana et al. 2024) also contains 3D MHD turbulence, but compressible and without dynamo effect: it can serve as a test bench for learning, not as a substitute for dynamo data.
 
-**Risks.** The topic is mostly methodological, and a test bed risks being judged incremental. It is better to attach it to direction A or direction B.
+**Risks.** The topic is mostly methodological, and a test bench risks being judged incremental. It is better to attach it to direction A or direction B.
 
 ## Evaluation of the directions {#evaluation}
 
@@ -354,7 +354,7 @@ where $n_k$ is the score for criterion $k$ and $w_k$ its weight, with $\sum_k w_
 | Direction | Score | Justification |
 |:-:|:-:|------------------|
 | A | 4 | A provides the parametric exploration method targeted by objective (ii), applied to VKS rather than to DRESDYN, and supplies states to the reduced models of objective (i), without addressing the dynamics of reversals. |
-| B | 5 | B is objective (i): reversals, explosive dynamos and the precursor, reversal and recovery phases. |
+| B | 5 | B is objective (i): reversals, burst dynamos and the precursor, reversal and recovery phases. |
 | C | 3 | The abstract highlights assimilation (TorchDA), but neither of the two objectives is assimilation: C is cross-cutting. |
 | D | 5 | D is objective (ii): parametric models to explore the conditions for the dynamo in DRESDYN. |
 | E | 3 | E improves every generator of the project without directly addressing either of the two objectives. |
@@ -380,7 +380,7 @@ where $n_k$ is the score for criterion $k$ and $w_k$ its weight, with $\sum_k w_
 | C | 3 | Diffusion-based assimilation already exists in other fields, notably in S. Cheng's work; the novelty would mainly lie in the application to MHD. |
 | D | 4 | No generator of precession fields has been found; robust Bayesian optimization and parametric models, on the other hand, are established. |
 | E | 4 | No method found imposes a hard zero-divergence constraint with cylindrical walls, permeability jumps and matching to the vacuum; projections in periodic domains, on the other hand, are published. |
-| F | 3 | The absence of MHD metrics in the evaluation of generators is a real gap, but a test bed risks being judged incremental. |
+| F | 3 | The absence of MHD metrics in the evaluation of generators is a real gap, but a test bench risks being judged incremental. |
 
 #### Feasibility in 36 months (10%)
 
@@ -391,7 +391,7 @@ where $n_k$ is the score for criterion $k$ and $w_k$ its weight, with $\sum_k w_
 | C | 3 | C assumes a mature generator, then an assimilation loop in which each cycle samples a diffusion. |
 | D | 2 | D combines few configurations, a sensitive downstream eigenvalue problem and a schedule tied to DRESDYN. |
 | E | 2 | Development on an unstructured mesh with permeability jumps is long, and the integration with the simulation code is not guaranteed. |
-| F | 4 | Periodic test beds can be set up quickly. |
+| F | 4 | Periodic test benches can be set up quickly. |
 
 #### Risk (10%, 5 = low risk)
 
@@ -462,7 +462,7 @@ $$
 \mathbb{E}_{\mathbf{x}\sim\mu_{\boldsymbol\lambda}}\big[F_{\boldsymbol\lambda}(\mathbf{x})\cdot\nabla\varphi(\mathbf{x})\big] = 0 .
 $$
 
-With $\varphi = E$, the energy, we recover the mean budget: on average, the injected power equals the dissipated power. An isolated snapshot does not satisfy this budget in general, since the time derivative of the energy is not zero at every instant; it is a constraint on the distribution, which can be imposed through a loss during training, including at parameters for which no data are available, or through exponential tilting at sampling time. The offer asks for the energy balance to be respected: this formulation states in what precise sense this can be done.
+With $\varphi = E$, the energy, we recover the mean budget: on average, the injected power equals the dissipated power. An isolated snapshot does not satisfy this budget in general, since the time derivative of the energy is not zero at every instant; it is a constraint on the distribution, which can be imposed through a loss during training, including at parameters for which no data are available, or through exponential tilting at sampling time. The offer asks for the energy budget to be respected: this formulation states in what precise sense this can be done.
 
 **Rice's formula** (Rice 1944) makes the link with reversals. Let $D = \ell(\mathbf{x})$ be the dipole moment, a linear observable of the state. For a stationary process with smooth trajectories, whose pair $(D, \dot D)$ has a continuous joint density, the mean number of zero crossings of $D$ per unit time is
 
@@ -482,19 +482,19 @@ The proof is a single triangle inequality between $\mu_{\lambda_c - r}$, $q_{\la
 
 ### Continuity with the internship and reuse of the toolbox
 
-The internship must produce a comparative study of constraint strategies (hard, soft, distributional). The preparatory experiments in this repository (`experiences/` folder, small models run on CPU) already lay the groundwork on three test beds: a three-mode reversal model (Gissinger 2012), a forced 2D MHD system, and a 3D kinematic ABC dynamo. The PhD would reuse the same code, integrated into the project's toolbox as the offer requires, and would transfer it to the consortium's 3D data: first LATU, whose Cartesian grid is the simplest, then SFEMaNS and its hybrid mesh.
+The internship must produce a comparative study of constraint strategies (hard, soft, distributional). The preparatory experiments in this repository (`experiences/` folder, small models run on CPU) already lay the groundwork on three test benches: a three-mode reversal model (Gissinger 2012), a forced 2D MHD system, and a 3D kinematic ABC dynamo. The PhD would reuse the same code, integrated into the project's toolbox as the offer requires, and would transfer it to the consortium's 3D data: first LATU, whose Cartesian grid is the simplest, then SFEMaNS and its hybrid mesh.
 
 The generated fields directly feed the project's existing tools. They can serve as input to the reduced models (POD and the DQVU model of Bousquet et al. 2026, autoencoders of Bousquet, Nore and Lucor 2025) and to the assimilation frameworks (TorchDA), which matches the sentence of the offer about "input for reduced-order models or data assimilation frameworks". Finally, let us note a connection, which reflects our own reading and not that of the authors: the regression that identifies DQVU already imposes a statistical constraint, the conservation of a third-order moment (Bousquet et al. 2026). A constraint on averages, rather than on each instant, is therefore already used in the consortium, in another setting.
 
-### Third-year extensions: directions C and D
+### Extensions: directions C and D
 
-Once the conditional generator is established, two extensions become natural. Toward **direction C**, the generator serves as a prior in latent assimilation (generalized latent assimilation, TorchDA, 4D-Var with generative dynamics) to reconstruct $(\mathbf{u}, \mathbf{B})$ from synthetic magnetic probes; the posterior distribution is then bimodal, because of the two polarities of the dipole, and a prior that respects the symmetry $\mathbf{B} \to -\mathbf{B}$, and hence gives the same weight to both polarities, avoids biasing the analysis toward one of them. Toward **direction D**, the generator is conditioned on the Poincaré number to estimate $Rm_c$ and the symmetry of the dominant mode in the DRESDYN geometry, relying on the simulations of Botez et al. (2026) if they are accessible. The choice between the two will depend on the available data and on the progress made in the first two years.
+Once the conditional generator is established, two extensions become natural. Toward **direction C**, the generator serves as a prior in latent assimilation (generalized latent assimilation, TorchDA, 4D-Var with generative dynamics) to reconstruct $(\mathbf{u}, \mathbf{B})$ from synthetic magnetic probes; the posterior distribution is then bimodal, because of the two polarities of the dipole, and a prior that respects the symmetry $\mathbf{B} \to -\mathbf{B}$, and hence gives the same weight to both polarities, avoids biasing the analysis toward one of them. Toward **direction D**, the generator is conditioned on the Poincaré number to estimate $Rm_c$ and the symmetry of the dominant mode in the DRESDYN geometry, relying on the simulations of Botez et al. (2026) if they are accessible. The thesis includes both: assimilation becomes the downstream use of question Q4 (months 25–27) and DRESDYN becomes tier 4 (months 24–34), the first to be dropped in case of delay.
 
 | Year | Proposed work | Target result |
 |:-:|--------------|----------|
-| 1 | Latent conditional generator on LATU then SFEMaNS; hard constraints (divergence, symmetries); physical metrics from direction F. | A comparative study of constraint strategies on 3D MHD dynamo fields. |
-| 2 | Distributional constraints (stationary budgets), Rice's formula, behavior near the dynamo threshold. | The reversal frequency predicted without time integration, as a function of the parameters. |
-| 3 | Extension toward C (assimilation) or D (DRESDYN), depending on the data; writing. | An application to the project, and the dissertation. |
+| 1 | Tiers 0 and 1 (Gissinger, DQVU, 2D MHD), then tier 2 (ABC and Taylor–Green simulations): distributional constraints, equivariance, Rice's formula; request for access to VKS data. | Paper 1 (distributional constraints, month 10). |
+| 2 | Tier 2 (dynamo threshold, conditioning on the branch); tier 3 from month 15 (SFEMaNS, LATU): hybrid decoder, vacuum matching, interface kink. | Code release 1 (month 16); paper 2 (hard constraints, month 22). |
+| 3 | Tier 3 (VKS reversals, reduced model, assimilation with TorchDA) and tier 4 (DRESDYN, months 24–34); writing. | Paper 3 (reversals and threshold, month 33); PhD defense (month 36). |
 
 : Indicative timeline, proposed as a basis for discussion.
 
