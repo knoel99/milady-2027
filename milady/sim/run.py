@@ -23,7 +23,7 @@ Usage ::
 En cas d'erreur : statut ``failed`` (message dans ``notes``), point de contrôle conservé, code de
 retour 1. Le catalogue est facultatif (``--no-catalog``, ou base injoignable : avertissement) : le
 fichier MFF porte l'identifiant ``milady_uuid`` et s'enregistre a posteriori avec
-``python -m milady.catalog ingest <uri>``.
+``python -m milady.catalog ingest <uri> --campaign <campagne>``.
 
 Variables d'environnement : ``MILADY_DB_URL``, ``MILADY_STORAGE_URI`` (et S3), ``MILADY_WORKDIR``
 (dossier de travail local, défaut ``$MILADY_DATA/work`` ou ``<racine>/data/work``), ``MILADY_JOB_ID``,
@@ -336,7 +336,7 @@ class CatalogLink:
             raise exc
         LOG.warning(
             "catalogue indisponible (%s : %s) ; la simulation continue sans catalogue "
-            "(enregistrer ensuite avec `python -m milady.catalog ingest <uri>`)",
+            "(enregistrer ensuite avec `python -m milady.catalog ingest <uri> --campaign <campagne>`)",
             what,
             exc,
         )
@@ -808,7 +808,7 @@ def _finalize(
     fmt = str(out.get("format", "mff")).lower()
     if "zarr" in fmt:
         zuri = storage.join(base, campaign.name, sim_id, "fields.zarr")
-        to_zarr(local, zuri)
+        to_zarr(local, zuri, overwrite=True)
         files.append({"kind": "fields", "uri": zuri, "sha256": "", "size_bytes": 0})
     n_t, t0, t1 = len(snap_t), float(snap_t[0]), float(snap_t[-1])
     for f in files:

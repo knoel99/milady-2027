@@ -205,7 +205,7 @@ window.Quarto = {
 <td>1. Campagne</td>
 <td>fichier YAML de <code>infra/configs/</code></td>
 <td>grille de paramètres physiques (<span class="math inline">Re</span>, <span class="math inline">Rm</span>, <span class="math inline">Pm</span>…)</td>
-<td>table <code>campaign</code> (copie intégrale du YAML)</td>
+<td>table <code>campaign</code> (YAML du premier lancement ; chaque lancement en garde une copie figée dans <code>data/sweeps/</code>)</td>
 </tr>
 <tr class="even">
 <td>2. Lancement</td>
@@ -227,7 +227,7 @@ window.Quarto = {
 </tr>
 <tr class="odd">
 <td>5. Jeu de données</td>
-<td><code>milady.catalog</code></td>
+<td><code>milady.train.data</code> (au premier entraînement, selon <code>data.auto_dataset</code> ; stocké par <code>milady.catalog</code>)</td>
 <td>sélection des simulations et découpage entraînement, validation, test</td>
 <td>tables <code>dataset</code> et <code>dataset_member</code></td>
 </tr>
@@ -245,7 +245,7 @@ window.Quarto = {
 </tr>
 </tbody>
 </table>
-<p>Comme la simulation porte le même UUID dans le fichier et au catalogue, la partie simulations du catalogue (simulations, fichiers, diagnostics) peut toujours être reconstruite ou fusionnée à partir des seuls fichiers ; les jeux de données, modèles et évaluations, eux, n’existent qu’au catalogue. C’est ce qui permet de travailler sur un cluster sans réseau.</p>
+<p>Comme la simulation porte le même UUID dans le fichier et au catalogue, la partie simulations du catalogue (simulations, fichiers, diagnostics) peut être reconstruite ou fusionnée à partir des seuls fichiers (paramètres, code, commit, fichier, diagnostics ; le nom de campagne se donne avec <code>--campaign</code>, et la durée de calcul, les ressources et le YAML de la campagne ne sont pas restitués) ; les jeux de données, modèles et évaluations, eux, n’existent qu’au catalogue. C’est ce qui permet de travailler sur un cluster sans réseau.</p>
 <p>Le schéma interactif suivant parcourt la même chaîne cible par cible : choisissez une cible, puis cliquez une étape pour voir ce qu’elle fait, ce qu’elle écrit et la commande exacte sur cette cible.</p>
 <div class="widget" data-widget="architecture"></div>
 <script defer="" src="../assets/interactif/architecture.js"></script>
@@ -261,7 +261,7 @@ window.Quarto = {
 ├── t1_fields/           u, B : (trajectoires, temps, x, y, z, composantes)
 ├── milady_diagnostics/  énergies, dissipations, hélicités, taux de croissance, max |∇·u|, max |∇·B|
 └── milady_spectral/     coefficients de Fourier des champs (domaines périodiques, facultatif)</code></pre>
-<p>Suivre The Well rend les données lisibles par les chargeurs et les modèles de référence de la communauté : nous avons vérifié, en rejouant les accès HDF5 du chargeur <code>WellDataset</code> (the_well 1.2.0) sans exécuter le paquet lui-même, qu’un fichier MFF 3D est relu à l’identique. Les attributs <code>milady_*</code> sont invisibles pour un lecteur The Well et validés par un schéma JSON. Une variante <strong>Zarr</strong>, de même hiérarchie, permet de lire un morceau d’un fichier sur S3 sans le télécharger. Une extension est prévue pour les sorties de SFEMaNS (modes de Fourier azimutaux sur un maillage d’éléments finis méridien), sans interpolation destructive. La fonction de validation détecte les fichiers corrompus : les 18 corruptions testées (types, formes, valeurs non finies, identifiants…) sont toutes signalées. Spécification complète : <a href="https://github.com/knoel99/milady-2027/blob/main/specs/format-donnees.md"><code>specs/format-donnees.md</code></a>. La figure 2, dans la section <a href="#solveur">sur le solveur</a>, relie chaque partie du fichier à sa colonne du catalogue.</p>
+<p>Suivre The Well rend les données lisibles par les chargeurs et les modèles de référence de la communauté : nous avons vérifié, en rejouant les accès HDF5 du chargeur <code>WellDataset</code> (the_well 1.2.0) sans exécuter le paquet lui-même, qu’un fichier MFF 3D est relu à l’identique. Les attributs <code>milady_*</code> sont invisibles pour un lecteur The Well et validés par un schéma JSON. Une variante <strong>Zarr</strong>, de même hiérarchie, permet de lire un morceau d’un fichier sur S3 sans le télécharger. Une extension est prévue pour les sorties de SFEMaNS (modes de Fourier azimutaux sur un maillage d’éléments finis méridien), sans interpolation destructive. La fonction de validation détecte les fichiers corrompus : les 18 corruptions testées (types, formes, valeurs non finies, identifiants…) sont toutes signalées, un NaN au milieu d’une trajectoire seulement par la vérification complète (<code>validate --full</code>). Spécification complète : <a href="https://github.com/knoel99/milady-2027/blob/main/specs/format-donnees.md"><code>specs/format-donnees.md</code></a>. La figure 2, dans la section <a href="#solveur">sur le solveur</a>, relie chaque partie du fichier à sa colonne du catalogue.</p>
 <h2 id="catalogue">Le catalogue des résultats</h2>
 <p>Les résultats d’une thèse sont relationnels : campagne, simulations, fichiers, jeux de données, modèles, évaluations. Ils sont rangés dans une base <strong>PostgreSQL</strong> (en local ou sur la VM), ou dans un fichier <strong>SQLite</strong> de même schéma sur un portable ou un cluster sans réseau.</p>
 <table class="caption-top">
@@ -310,7 +310,7 @@ window.Quarto = {
 </tr>
 </tbody>
 </table>
-<p>On interroge le catalogue en SQL ou en ligne de commande. Par exemple, les heures de GPU consommées par campagne :</p>
+<p>On interroge le catalogue en SQL ou en ligne de commande. Par exemple, les heures de calcul par campagne (des heures GPU seulement si chaque simulation a eu son propre GPU, comme dans un tableau Slurm ; sur une VM, <code>make sweep</code> fait tourner jusqu’à <code>resources.max_parallel</code> simulations à la fois sur le même GPU) :</p>
 <div class="sourceCode" id="cb4"><pre class="sourceCode sql"><code class="sourceCode sql"><span id="cb4-1"><a href="#cb4-1" aria-hidden="true" tabindex="-1"></a><span class="kw">SELECT</span> c.name, <span class="fu">round</span>(<span class="fu">sum</span>(s.wall_time_s <span class="op">*</span> <span class="fu">greatest</span>(s.n_gpus, <span class="dv">1</span>)) <span class="op">/</span> <span class="fl">3600.0</span>, <span class="dv">1</span>) <span class="kw">AS</span> heures_gpu</span>
 <span id="cb4-2"><a href="#cb4-2" aria-hidden="true" tabindex="-1"></a><span class="kw">FROM</span> simulation s <span class="kw">JOIN</span> campaign c <span class="kw">ON</span> c.<span class="kw">id</span> <span class="op">=</span> s.campaign_id</span>
 <span id="cb4-3"><a href="#cb4-3" aria-hidden="true" tabindex="-1"></a><span class="kw">WHERE</span> s.status <span class="op">=</span> <span class="st">'done'</span> <span class="kw">GROUP</span> <span class="kw">BY</span> c.name <span class="kw">ORDER</span> <span class="kw">BY</span> heures_gpu <span class="kw">DESC</span>;</span></code></pre></div>
@@ -354,13 +354,13 @@ window.Quarto = {
 </tr>
 </tbody>
 </table>
-<p><strong>Entraînement.</strong> <code>milady.train.fm3d</code> reprend en 3D les choix validés par les expériences : potentiels vecteurs en jauge de Coulomb (divergence nulle par construction, comme la variante V4 de E2), champ de vitesse équivariant pour <span class="math inline">\mathbf{B} \to -\mathbf{B}</span> (variante C de E1), et réglage fin facultatif par la perte de stationnarité estimée sans biais. L’expérience E1 a montré que ce réglage fin peut diverger à partir d’un modèle biaisé : on ne le lance qu’à partir d’un modèle déjà bon, avec deux garde-fous ajoutés pour cette raison, un ancrage aux poids de départ (<code>stationarity.anchor</code>) et une montée progressive du poids <span class="math inline">\beta</span> (<code>stationarity.beta_warmup</code>), et il faut surveiller la dispersion des bilans : l’écart-type des bilans par échantillon n’est pas encore calculé automatiquement, car l’évaluation n’enregistre que les résidus moyens. Le même code tourne sur un GPU ou sur plusieurs nœuds (DDP), reprend après une interruption, et journalise dans MLflow.</p>
+<p><strong>Entraînement.</strong> <code>milady.train.fm3d</code> reprend en 3D les choix validés par les expériences : potentiels vecteurs en jauge de Coulomb (divergence nulle par construction, comme la variante V4 de E2), champ de vitesse équivariant pour <span class="math inline">\mathbf{B} \to -\mathbf{B}</span> (variante C de E1), et réglage fin facultatif par la perte de stationnarité estimée sans biais. L’expérience E1 a montré que ce réglage fin peut diverger à partir d’un modèle biaisé : on ne le lance qu’à partir d’un modèle déjà bon, avec deux garde-fous ajoutés pour cette raison (désactivés par défaut : ils valent 0 tant qu’on ne les fixe pas), un ancrage aux poids de départ (<code>stationarity.anchor</code>) et une montée progressive du poids <span class="math inline">\beta</span> (<code>stationarity.beta_warmup</code>), et il faut surveiller la dispersion des bilans : l’écart-type des bilans par échantillon n’est pas encore calculé automatiquement, car l’évaluation n’enregistre que les résidus moyens. Le même code tourne sur un GPU ou sur plusieurs nœuds (DDP), reprend après une interruption depuis son dernier point de contrôle <code>last.pt</code> si on le relance sous le même nom de run (<code>--run-name</code>, ou <code>--resume &lt;uri&gt;</code> ; automatiquement sous Slurm seulement pour un job remis en file avec le même identifiant), et journalise dans MLflow.</p>
 <h2 id="couts">Coûts</h2>
 <p>Les prix changent selon le fournisseur, la région et le mode de location : le guide ne donne aucun prix, mais une méthode.</p>
 <p><span class="math display">
 \text{coût} \approx \sum_{\text{tâches}} \text{durée (h)} \times \text{nombre de GPU} \times \text{prix horaire de l'instance} \;+\; \text{stockage} \;+\; \text{données sortantes} .
 </span></p>
-<p>On mesure d’abord une seule simulation représentative ; sa durée est enregistrée au catalogue et s’extrapole à la campagne. Pour la mémoire, un état <span class="math inline">(\mathbf{u}, \mathbf{B})</span> en simple précision occupe <span class="math inline">6 \times N^3 \times 4</span> octets, soit environ 0,4 Go à <span class="math inline">256^3</span> ; le pic de mémoire mesuré sur processeur vaut environ 14 fois cet état à <span class="math inline">128^3</span>, soit environ 6 Go à <span class="math inline">256^3</span> et 45 Go à <span class="math inline">512^3</span> : un GPU de 24 Go suffit à <span class="math inline">256^3</span>, et il faut un GPU de 80 Go à <span class="math inline">512^3</span> (estimation à vérifier avec <code>nvidia-smi</code>). Trois règles réduisent la facture : des instances interruptibles pour les tableaux de simulations, qui sont indépendantes et relançables ; une VM supprimée dès qu’elle ne sert plus, après sauvegarde (<code>make backup</code>) ; et les données dans un bucket plutôt que sur le disque de la VM.</p>
+<p>On mesure d’abord une seule simulation représentative ; sa durée est enregistrée au catalogue et s’extrapole à la campagne. Pour la mémoire, un état <span class="math inline">(\mathbf{u}, \mathbf{B})</span> en simple précision occupe <span class="math inline">6 \times N^3 \times 4</span> octets, soit environ 0,4 Go à <span class="math inline">256^3</span> ; le pic de mémoire mesuré sur processeur vaut environ 15 fois cet état à <span class="math inline">128^3</span> (717 Mo), soit environ 6 Go à <span class="math inline">256^3</span> et 48 Go à <span class="math inline">512^3</span> : un GPU de 24 Go suffit à <span class="math inline">256^3</span>, et il faut un GPU de 80 Go à <span class="math inline">512^3</span> (estimation à vérifier avec <code>nvidia-smi</code>). Trois règles réduisent la facture : des instances interruptibles pour les tableaux de simulations, qui sont indépendantes et relançables ; une VM supprimée dès qu’elle ne sert plus, après sauvegarde (<code>make backup</code>) ; et les données dans un bucket plutôt que sur le disque de la VM.</p>
 <h2 id="tests">Ce qui est testé, ce qui reste à vérifier</h2>
 <table class="caption-top">
 <colgroup>
@@ -399,7 +399,7 @@ window.Quarto = {
 <td>quelques secondes</td>
 </tr>
 <tr class="odd">
-<td>fichier MFF relu en rejouant les accès HDF5 du chargeur de The Well ; sauvegarde relisible par <code>pg_restore</code></td>
+<td>fichier MFF relu en rejouant les accès HDF5 du chargeur de The Well ; sauvegarde produite par <code>make backup</code> (dumps <code>pg_dump</code> et miroir des buckets)</td>
 <td>—</td>
 </tr>
 </tbody>

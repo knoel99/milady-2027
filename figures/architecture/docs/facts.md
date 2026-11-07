@@ -21,7 +21,7 @@ Chaque libellé affiché, avec sa source dans le dépôt (chemins relatifs à la
 | « train », « val », « test », « par point (Re, Pm) » | « train », « val », « test », « by (Re, Pm) point » | infra/configs/train_fm3d.yaml : `auto_dataset: val: {Re: 100, Pm: 1.0}`, `test: {Re: 50, Pm: 2.0}` ; les 10 autres points en entraînement |
 | « A_u, A_B » (affiché « Au, AB »), « ∇× », « u, B », « torchrun · DDP » | idem | milady/train/fm3d.py, en-tête : potentiels vecteurs A_u, A_B, décodage u = ∇×A_u, B = ∇×A_B |
 | « E(k) », « k », « référence », « généré », « spectres, bilans » | « E(k) », « k », « reference », « generated », « spectra, budgets » | milady/eval/metrics.py, en-tête : spectres en couronnes, comparaison d'un ensemble généré à une référence ; **forme illustrative** (aucune évaluation 3D n'a encore tourné) |
-| `infra/configs/`, `milady.sweep`, `milady.sim`, `milady.storage`, `milady.catalog`, `milady.train.fm3d`, `milady.eval` | idem | calcul/index.qmd l. 86-94 |
+| `infra/configs/`, `milady.sweep`, `milady.sim`, `milady.storage`, `milady.train.data`, `milady.train.fm3d`, `milady.eval` | idem | calcul/index.qmd l. 86-94 ; étape 5 : le jeu de données est créé par `milady.train.data` au premier entraînement (`data.auto_dataset`, milady/train/data.py l. 740-820), `milady.catalog` le stocke |
 | « Catalogue · PostgreSQL ou SQLite » | « Catalog · PostgreSQL or SQLite » | infra/ARCHITECTURE.md § 3 « Catalogue » ; milady/catalog/api.py |
 | `campaign`, `simulation · job`, `diagnostic`, `file`, `dataset`, `model`, `evaluation` | idem | calcul/index.qmd l. 86-94 (colonne « Où c'est enregistré ») ; milady/catalog/models.py |
 | « Fichiers · S3, MinIO ou disque » | « Files · S3, MinIO or disk » | milady/storage.py, en-tête (schémas `s3://`, chemins locaux) |

@@ -2,14 +2,14 @@
 
 Objectif : qu'un utilisateur puisse **cloner le dépôt et déployer en une commande** sur (1) une VM GPU louée dans le cloud, (2) un cluster HPC Slurm (IDRIS Jean Zay, mésocentres, Slurm cloud), (3) un portable (CPU), puis lancer les campagnes de simulation, d'entraînement et d'évaluation du stage et de la thèse, avec des données dans un format standard et un catalogue central des résultats.
 
-Racine : le dossier `milady-2027/` (destiné à devenir le dépôt `knoel99/milady-2027`). Tout ce qui suit est relatif à cette racine.
+Racine : le dossier `milady-2027/` (racine du dépôt `knoel99/milady-2027`). Tout ce qui suit est relatif à cette racine.
 
 ## 1. Arborescence
 
 ```
 Makefile                     cibles : setup, up, down, smoke, sweep, train, eval, backup, image, sif
 infra/
-  README.md                  guide de déploiement pas à pas (FR), coûts indicatifs, dépannage
+  README.md                  guide de déploiement pas à pas (FR), méthode d'estimation des coûts (sans prix), dépannage
   ARCHITECTURE.md            vue d'ensemble, schéma des flux, choix techniques justifiés
   env/requirements.txt       dépendances Python épinglées (CPU) ; requirements-gpu.txt (CUDA)
   docker/Dockerfile          image CPU (python:3.12-slim) ; Dockerfile.gpu (pytorch/pytorch:*-cuda*-runtime)
@@ -48,7 +48,7 @@ Principe : **compatible avec le format HDF5 de The Well** (Ohana et al., NeurIPS
 - Groupe optionnel `milady_spectral/` : coefficients de Fourier (rfftn) des champs, pour les domaines périodiques (dérivées exactes, plus compact).
 - Groupe optionnel `milady_diagnostics/` : séries temporelles (énergie cinétique et magnétique, dissipation, injection, hélicités, max |∇·B|).
 - Stockage : float32, découpage en blocs par pas de temps (`chunks=(1, 1, *spatial, comp)`), compression `gzip` niveau 4 (ou `lzf`) ; somme SHA-256 calculée à l'écriture et stockée au catalogue.
-- Extension `grid_type = "fourier_fe_axisym"` (SFEMaNS) : nœuds méridiens (r, z), connectivité, modes azimutaux m, coefficients cos/sin par mode, sans interpolation ; outil d'interpolation vers une grille régulière cylindrique ou cartésienne pour l'apprentissage. Spécifié ici, implémentation en squelette documenté (les données SFEMaNS ne sont pas publiques).
+- Extension `grid_type = "fourier_fe_axisym"` (SFEMaNS) : nœuds méridiens (r, z), connectivité, modes azimutaux m, coefficients cos/sin par mode, sans interpolation ; outil d'interpolation vers une grille régulière cylindrique ou cartésienne pour l'apprentissage. Écriture, validation et interpolation implémentées ; seul le lecteur des fichiers natifs SFEMaNS est un squelette (les données SFEMaNS ne sont pas publiques).
 - Variante cloud : la même hiérarchie en **Zarr** (lecture par morceaux depuis S3), via la même API.
 - `milady.data.format.validate(path)` vérifie la conformité (groupes, formes, attributs, schéma JSON des métadonnées).
 
@@ -71,12 +71,12 @@ MLflow (même PostgreSQL, base distincte ; artefacts dans S3) suit les entraîne
 
 - Objets lourds (fichiers MFF, points de contrôle, figures) : **S3** — MinIO dans le compose (bucket `milady-data`, `milady-models`, `mlflow`), ou un bucket du fournisseur (AWS S3, Scaleway, OVHcloud) en changeant `MILADY_STORAGE_URI` et les identifiants.
 - Sur HPC : chemins `$SCRATCH` / `$WORK` (fichiers locaux), catalogue SQLite sur `$WORK` ou PostgreSQL distant joignable.
-- Convention d'URI : `{MILADY_STORAGE_URI}/{campaign}/{simulation_uuid}/{kind}.h5`.
+- Convention d'URI : `{MILADY_STORAGE_URI}/{campaign}/{simulation_uuid}/fields.h5` (copie Zarr facultative `fields.zarr`, point de contrôle final `checkpoint.npz`).
 
 ## 5. Déploiement
 
 - **VM cloud GPU** : `git clone … && cd milady-2027 && sudo infra/deploy/bootstrap_vm.sh` ; installe Docker et le NVIDIA Container Toolkit si un GPU est détecté, génère `.env` (mots de passe aléatoires), construit l'image (`Dockerfile.gpu` si GPU), lance `db`, `s3`, `mlflow`, puis `make smoke` (simulation 3D minuscule → fichier MFF → catalogue → entraînement d'une itération → évaluation).
-- **HPC Slurm** : `make sif` (Apptainer depuis l'image Docker ou `apptainer.def`), puis `python -m milady.sweep infra/configs/palier2_abc3d.yaml --scheduler slurm` (tableau de jobs), `sbatch infra/slurm/train.sbatch`. Notes pour Jean Zay (modules, partitions GPU, `$WORK`, `$SCRATCH`, pas d'Internet sur les nœuds de calcul).
+- **HPC Slurm** : `make sif` (Apptainer depuis l'image Docker ou `apptainer.def`), puis `python -m milady.sweep infra/configs/palier2_abc3d.yaml --scheduler slurm` (tableau de jobs), `sbatch infra/slurm/train.sbatch infra/configs/train_fm3d.yaml`. Notes pour Jean Zay (modules, partitions GPU, `$WORK`, `$SCRATCH`, pas d'Internet sur les nœuds de calcul).
 - **Portable** : `make setup` (venv + `pip install -e .`), catalogue SQLite, stockage local `./data`.
 - Aucun secret dans le dépôt ; `.env` et identifiants dans `.gitignore`.
 

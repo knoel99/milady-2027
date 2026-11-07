@@ -162,7 +162,8 @@ Voir [`slurm/README-slurm.md`](slurm/README-slurm.md) : image Apptainer construi
 Docker (`make image-gpu && make sif`), tableau de jobs pour les simulations, `torchrun` multi-nœuds
 pour l'entraînement, notes détaillées pour Jean Zay (comptes `projet@h100`, partitions, QoS,
 `$WORK`/`$SCRATCH`, pas d'Internet sur les nœuds de calcul donc catalogue SQLite puis
-synchronisation a posteriori avec `python -m milady.catalog ingest`).
+enregistrement a posteriori des simulations dans la base centrale à partir des fichiers MFF
+(`python -m milady.catalog ingest`), les modèles, évaluations et tâches restant dans le SQLite du cluster).
 
 ## 4. Cible C — portable
 
@@ -217,7 +218,8 @@ Docker Desktop (macOS, Windows/WSL2) convient ; prévoir 8 Go de RAM pour Docker
   sous `{MILADY_STORAGE_URI}/{campagne}/{uuid_simulation}/fields.h5`, avec somme SHA-256 au catalogue.
 - **Catalogue** : campagnes, simulations (paramètres JSONB, statut, machine, temps de calcul), fichiers,
   diagnostics, jeux de données, modèles, évaluations, tâches ; vue `v_eval_summary`.
-- **Suivi des entraînements** : MLflow (métriques, hyperparamètres, artefacts) ; `model.mlflow_run_id`
+- **Suivi des entraînements** : MLflow (métriques et hyperparamètres ; points de contrôle dans `MILADY_MODELS_URI`, copiés dans les
+  artefacts MLflow seulement avec `mlflow.log_checkpoint: true`) ; `model.mlflow_run_id`
   relie le catalogue à MLflow.
 
 ## 6. Coûts : comment les estimer
@@ -246,22 +248,28 @@ la page de tarifs du fournisseur le jour de la location.
 4. après coup, la consommation réelle se lit dans le catalogue :
 
 ```sql
--- heures GPU consommées par campagne
+-- heures de calcul par campagne (heures GPU seulement si chaque simulation a son propre GPU, ex. tableau Slurm)
 SELECT c.name, round(sum(s.wall_time_s * greatest(s.n_gpus, 1)) / 3600.0, 1) AS heures_gpu
 FROM simulation s JOIN campaign c ON c.id = s.campaign_id
 WHERE s.status = 'done' GROUP BY c.name ORDER BY heures_gpu DESC;
 ```
 
-Ordre de grandeur de la mémoire GPU (calcul, pas mesure) : un état (u, B) en float32 sur une grille
-N³ occupe 6 × N³ × 4 octets, soit ≈ 0,4 Go pour N = 256 et ≈ 3,2 Go pour N = 512 ; le schéma
-RK4 pseudo-spectral garde une dizaine de tableaux de cette taille (étapes intermédiaires, FFT,
-désaliasage). Compter quelques Go pour 256³ (un GPU de 24 Go suffit) et plusieurs dizaines de Go
-pour 512³ (GPU de 80 Go). À vérifier avec `nvidia-smi` pendant la simulation de test.
+Mémoire : un état (u, B) en float32 sur une grille N³ occupe 6 × N³ × 4 octets, soit ≈ 0,4 Go
+pour N = 256 et ≈ 3,2 Go pour N = 512. Mesure sur processeur (7 novembre 2026 ; torch 2.14.1 CPU,
+Xeon 2,1 GHz, 4 fils ; mode dynamique, forçage ABC puis aléatoire, float32, 2 pas ; mémoire résidente
+lue dans `/proc/self/status` et `getrusage`) : le pic, moins la mémoire de Python et de torch après
+import, vaut 100 Mo à 64³ (≈ 17 états) et 717 Mo à 128³ (≈ 15 états, avec les deux forçages).
+En extrapolant à 15 états : ≈ 6 Go pour 256³ (un GPU de 24 Go suffit) et ≈ 48 Go pour 512³ (GPU de
+80 Go). Sur GPU, l'espace de travail de cuFFT et le cache de l'allocateur de PyTorch s'y ajoutent :
+à vérifier avec `python -m milady.sim.mhd3d bench --device cuda` (mémoire maximale allouée) ou
+`nvidia-smi` pendant la simulation de test.
 
 ### 6.3 Réduire la facture
 
 - **Instances interruptibles (*spot*)** pour les tableaux de simulations : chaque simulation est
-  indépendante et ré-exécutable (statut `failed` au catalogue → relancer la campagne) ;
+  indépendante et ré-exécutable (statut `failed` si la simulation a reçu SIGTERM, sinon resté `running` : relancer avec
+  `make sweep … SWEEP_ARGS=--retry-running` ; `runtime.checkpoint_to_storage: true` pour reprendre au point de
+  contrôle après la perte de la VM) ;
 - éteindre la VM entre deux campagnes **et la supprimer** quand elle ne sert plus (§8) ;
 - garder les données dans un bucket S3 (moins cher qu'un disque de VM au Go) ;
 - dimensionner le GPU sur la mémoire réellement nécessaire (§6.2) plutôt que sur le plus gros modèle.

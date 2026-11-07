@@ -10,7 +10,8 @@ d'ensemble : `specs/infra.md`, section 2.
 1. **Compatible avec The Well.** Un fichier MFF sur grille régulière est un fichier HDF5 qui suit exactement la
    spécification de The Well (Ohana et al., NeurIPS 2024 Datasets & Benchmarks ; dépôt `PolymathicAI/the_well`,
    page `docs/data_format.md`) : mêmes groupes, mêmes formes, mêmes attributs. Le chargeur `WellDataset` de
-   The Well lit nos champs sans modification, et nos outils lisent les jeux de données de The Well.
+   The Well (1.2.0) doit lire nos champs sans modification : ses accès HDF5, rejoués sans exécuter the_well, les
+   relisent à l'identique (§ 8) ; nos outils lisent les fichiers au format de The Well (vérifié sur un fichier factice).
 2. **Un fichier = une simulation** : une ou plusieurs trajectoires (membres d'ensemble, graines différentes) qui
    partagent les mêmes paramètres physiques et la même grille. L'identifiant `milady_uuid` du fichier est celui
    de la simulation au catalogue.
@@ -182,10 +183,11 @@ recommandés (½⟨·⟩ = moyenne spatiale) :
 |---|---|
 | `kinetic_energy`, `magnetic_energy` | ½⟨\|u\|²⟩, ½⟨\|B\|²⟩ |
 | `enstrophy`, `mean_square_current` | ⟨\|ω\|²⟩, ⟨\|j\|²⟩ |
-| `dissipation_viscous`, `dissipation_ohmic`, `dissipation` | ν⟨\|ω\|²⟩, η⟨\|j\|²⟩, total (frottements compris) |
+| `kinetic_dissipation`, `magnetic_dissipation`, `dissipation` | ν⟨\|ω\|²⟩, η⟨\|j\|²⟩, total (frottements compris) |
 | `injection` | puissance injectée par le forçage |
 | `kinetic_helicity`, `magnetic_helicity`, `cross_helicity` | ⟨u·ω⟩, ⟨A·B⟩, ⟨u·B⟩ |
 | `max_div_b` | max \|∇·B\| (contrôle de la contrainte) |
+| `max_div_u`, `growth_rate`, `magnetic_production`, `u_rms`, `b_rms`, `log_b_rms` | solveur 3D (`milady.sim.mhd3d`) : max \|∇·u\|, taux de croissance instantané d ln‖B‖/dt, production magnétique ⟨B·∇×(u×B)⟩, valeurs efficaces de u et B, logarithme de la valeur efficace de B (renormalisations cumulées comprises) |
 
 Le catalogue en garde une copie (moyenne sur les trajectoires, table `diagnostic`) pour les requêtes rapides.
 
@@ -209,9 +211,10 @@ mode par mode, représentation naturelle des modèles génératifs en base de Fo
 - **Compression** : `gzip` niveau 4 avec filtre `shuffle` (défaut, lisible partout) ou `lzf` (plus rapide) ou aucune.
 - **Intégrité** : écriture dans un fichier temporaire du même dossier puis renommage atomique ; SHA-256 du fichier
   final renvoyé par `write_mff` et enregistré dans `file.sha256`.
-- **Rangement** : `{MILADY_STORAGE_URI}/{campagne}/{uuid_simulation}/{kind}.h5` (`kind` = `fields`,
-  `spectral`, `diagnostics`, `checkpoint`, `log`) ; `MILADY_STORAGE_URI` = `s3://milady-data` (MinIO, AWS,
-  Scaleway, OVHcloud), `file:///…`, ou `$SCRATCH/milady` sur un cluster.
+- **Rangement** : `{MILADY_STORAGE_URI}/{campagne}/{uuid_simulation}/fields.h5` (spectres et diagnostics dans ce
+  fichier ; copie Zarr facultative `fields.zarr` ; point de contrôle final `checkpoint.npz` avec
+  `runtime.keep_checkpoint`) ; `MILADY_STORAGE_URI` = `s3://milady-data` (MinIO, AWS, Scaleway, OVHcloud),
+  `file:///…`, ou `$SCRATCH/milady/store` sur un cluster (défaut de `infra/slurm/env.sh`).
 - **Taille indicative** : un fichier E2 d'entraînement (16 × 150 instantanés 32², u, B, spectres, diagnostics) fait
   50 Mio ; une trajectoire 3D 128³ de 100 instantanés (u, B) ≈ 5 Gio avant compression.
 
@@ -245,7 +248,8 @@ with open_mff(uri) as f:                                         # h5py.File (ou
 ```
 
 Ligne de commande : `python -m milady.data.convert {e2, validate, info, zarr, sfemans}` ; catalogue :
-`python -m milady.catalog ingest <uri>…` (enregistre des fichiers déjà écrits, par exemple après un tableau de jobs
+`python -m milady.catalog ingest <uri>… --campaign <campagne>` (sans `--campaign`, les simulations vont dans une
+campagne « default ») (enregistre des fichiers déjà écrits, par exemple après un tableau de jobs
 Slurm dont les nœuds ne joignent pas la base).
 
 **Validation** (`validate(path, well_only=False, full_scan=False)`) : attributs racine contre `schema.json`
@@ -281,7 +285,8 @@ sur un fichier MFF 3D tous les accès HDF5 de `the_well/data/datasets.py` (versi
 `_reconstruct_fields`, `_reconstruct_scalars`, `_reconstruct_grids`, `_padding_bcs`) : champs relus à l'identique,
 noms développés `velocity_x…z`, conditions aux limites `PERIODIC` sur les trois axes. Les trois groupes
 `t0_fields`, `t1_fields`, `t2_fields` doivent exister même vides (le lecteur les parcourt tous) ; (2) `read_mff`
-et `validate(..., well_only=True)` acceptent les fichiers de The Well (y compris `MHD_64` et `MHD_256`, utiles
+et `validate(..., well_only=True)` acceptent les fichiers de The Well (vérifié sur un fichier factice construit comme `the_well/utils/dummy_data.py`, pas encore sur `MHD_64` ni
+`MHD_256`, utiles
 comme données externes de MHD 3D) ; (3) The Well impose une résolution et un nom uniques par dossier : un jeu de
 données MilaDy à résolutions multiples se range en un dossier par résolution.
 

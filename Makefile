@@ -187,7 +187,7 @@ sif: ## Image Apptainer milady.sif (depuis milady:gpu si présente, sinon apptai
 backup: check-env ## Sauvegarde : pg_dump + miroir S3 vers BACKUP_TARGET (dossier ou s3://…)
 	MILADY_ENV_FILE=$(ENV_FILE) $(ROOT)/infra/deploy/backup.sh $(BACKUP_TARGET)
 
-lock: ## Régénère les verrous infra/env/requirements*.txt (nécessite uv)
+lock: ## Calcule de nouveaux verrous dans infra/env/*.lock.tmp, à reporter à la main dans requirements*.txt (nécessite uv)
 	@command -v uv >/dev/null || { echo "installer uv : pip install uv"; exit 1; }
 	cd $(ROOT)/infra/env && uv pip compile requirements.in --universal --python-version 3.11 \
 	  --default-index https://pypi.org/simple --index https://download.pytorch.org/whl/cpu \

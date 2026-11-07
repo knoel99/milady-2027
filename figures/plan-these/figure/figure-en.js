@@ -250,7 +250,7 @@ export default async function draw(F, L) {
     L.text(P, m(colX(0) + 1.0), m(yAt(colX(0) + 1.0) - 3.0), 'increasing complexity', { size: 6.5, italic: true, color: C.sub });
   }
   // en-têtes de ligne
-  L.text(P, m(1.2), m(tread(0) + 2.6), '**Testbeds**', { size: 7.5, color: C.txt });
+  L.text(P, m(1.2), m(tread(0) + 2.6), '**Test benches**', { size: 7.5, color: C.txt });
 
   // ---- rangée « acquis du stage » : E1, E2, E3 sous les paliers 0, 1, 2 ----
   {
@@ -265,7 +265,7 @@ export default async function draw(F, L) {
   // =================================================================================================
   const HEAD = [
     ['Axis 1', 'Hard 3D constraints'],
-    ['Axis 2', 'Constraints in law\nand symmetries'],
+    ['Axis 2', 'Distributional and\nsymmetry constraints'],
     ['Axis 3', 'Dynamo threshold\nand reversals'],
   ];
   const ST = [

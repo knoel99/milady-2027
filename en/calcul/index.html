@@ -205,7 +205,7 @@ window.Quarto = {
 <td>1. Campaign</td>
 <td>YAML file in <code>infra/configs/</code></td>
 <td>grid of physical parameters (<span class="math inline">Re</span>, <span class="math inline">Rm</span>, <span class="math inline">Pm</span>…)</td>
-<td><code>campaign</code> table (full copy of the YAML)</td>
+<td><code>campaign</code> table (YAML of the first launch; each launch keeps a frozen copy in <code>data/sweeps/</code>)</td>
 </tr>
 <tr class="even">
 <td>2. Launch</td>
@@ -227,7 +227,7 @@ window.Quarto = {
 </tr>
 <tr class="odd">
 <td>5. Dataset</td>
-<td><code>milady.catalog</code></td>
+<td><code>milady.train.data</code> (at the first training run, following <code>data.auto_dataset</code>; stored by <code>milady.catalog</code>)</td>
 <td>selection of simulations and split into training, validation, and test sets</td>
 <td><code>dataset</code> and <code>dataset_member</code> tables</td>
 </tr>
@@ -245,7 +245,7 @@ window.Quarto = {
 </tr>
 </tbody>
 </table>
-<p>Since the simulation carries the same UUID in the file and in the catalog, the simulation part of the catalog (simulations, files, diagnostics) can always be rebuilt or merged from the files alone; datasets, models, and evaluations, by contrast, exist only in the catalog. This is what makes it possible to work on a cluster without network access.</p>
+<p>Since the simulation carries the same UUID in the file and in the catalog, the simulation part of the catalog (simulations, files, diagnostics) can be rebuilt or merged from the files alone (parameters, code, commit, file, diagnostics; the campaign name is given with <code>--campaign</code>, and the compute time, resources, and campaign YAML are not restored); datasets, models, and evaluations, by contrast, exist only in the catalog. This is what makes it possible to work on a cluster without network access.</p>
 <p>The following interactive diagram walks through the same pipeline target by target: pick a target, then click a stage to see what it does, what it writes and the exact command on that target.</p>
 <div class="widget" data-widget="architecture"></div>
 <script defer="" src="../../assets/interactif/architecture.js"></script>
@@ -261,7 +261,7 @@ window.Quarto = {
 ├── t1_fields/           u, B: (trajectories, time, x, y, z, components)
 ├── milady_diagnostics/  energies, dissipations, helicities, growth rates, max |∇·u|, max |∇·B|
 └── milady_spectral/     Fourier coefficients of the fields (periodic domains, optional)</code></pre>
-<p>Following The Well makes the data readable by the reference loaders and models of the community: we checked, by replaying the HDF5 accesses of the <code>WellDataset</code> loader (the_well 1.2.0) without running the package itself, that a 3D MFF file is read back identically. The <code>milady_*</code> attributes are invisible to a The Well reader and are validated by a JSON schema. A <strong>Zarr</strong> variant, with the same hierarchy, makes it possible to read a chunk of a file on S3 without downloading it. An extension is planned for the outputs of SFEMaNS (azimuthal Fourier modes on a meridional finite-element mesh), without destructive interpolation. The validation function detects corrupted files: the 18 corruptions tested (types, shapes, non-finite values, identifiers…) are all flagged. Full specification: <a href="https://github.com/knoel99/milady-2027/blob/main/specs/format-donnees.md"><code>specs/format-donnees.md</code></a>. Figure 2, in the <a href="#solveur">section on the solver</a>, links each part of the file to its column in the catalog.</p>
+<p>Following The Well makes the data readable by the reference loaders and models of the community: we checked, by replaying the HDF5 accesses of the <code>WellDataset</code> loader (the_well 1.2.0) without running the package itself, that a 3D MFF file is read back identically. The <code>milady_*</code> attributes are invisible to a The Well reader and are validated by a JSON schema. A <strong>Zarr</strong> variant, with the same hierarchy, makes it possible to read a chunk of a file on S3 without downloading it. An extension is planned for the outputs of SFEMaNS (azimuthal Fourier modes on a meridional finite-element mesh), without destructive interpolation. The validation function detects corrupted files: the 18 corruptions tested (types, shapes, non-finite values, identifiers…) are all flagged, a NaN in the middle of a trajectory only by the full check (<code>validate --full</code>). Full specification: <a href="https://github.com/knoel99/milady-2027/blob/main/specs/format-donnees.md"><code>specs/format-donnees.md</code></a>. Figure 2, in the <a href="#solveur">section on the solver</a>, links each part of the file to its column in the catalog.</p>
 <h2 id="catalogue">The results catalog</h2>
 <p>The results of a thesis are relational: campaign, simulations, files, datasets, models, evaluations. They are stored in a <strong>PostgreSQL</strong> database (locally or on the VM), or in an <strong>SQLite</strong> file with the same schema on a laptop or on a cluster without network access.</p>
 <table class="caption-top">
@@ -310,7 +310,7 @@ window.Quarto = {
 </tr>
 </tbody>
 </table>
-<p>The catalog is queried in SQL or from the command line. For example, the GPU hours consumed per campaign:</p>
+<p>The catalog is queried in SQL or from the command line. For example, the compute hours per campaign (GPU hours only if each simulation had its own GPU, as in a Slurm array; on a VM, <code>make sweep</code> runs up to <code>resources.max_parallel</code> simulations at once on the same GPU):</p>
 <div class="sourceCode" id="cb4"><pre class="sourceCode sql"><code class="sourceCode sql"><span id="cb4-1"><a href="#cb4-1" aria-hidden="true" tabindex="-1"></a><span class="kw">SELECT</span> c.name, <span class="fu">round</span>(<span class="fu">sum</span>(s.wall_time_s <span class="op">*</span> <span class="fu">greatest</span>(s.n_gpus, <span class="dv">1</span>)) <span class="op">/</span> <span class="fl">3600.0</span>, <span class="dv">1</span>) <span class="kw">AS</span> heures_gpu</span>
 <span id="cb4-2"><a href="#cb4-2" aria-hidden="true" tabindex="-1"></a><span class="kw">FROM</span> simulation s <span class="kw">JOIN</span> campaign c <span class="kw">ON</span> c.<span class="kw">id</span> <span class="op">=</span> s.campaign_id</span>
 <span id="cb4-3"><a href="#cb4-3" aria-hidden="true" tabindex="-1"></a><span class="kw">WHERE</span> s.status <span class="op">=</span> <span class="st">'done'</span> <span class="kw">GROUP</span> <span class="kw">BY</span> c.name <span class="kw">ORDER</span> <span class="kw">BY</span> heures_gpu <span class="kw">DESC</span>;</span></code></pre></div>
@@ -354,13 +354,13 @@ window.Quarto = {
 </tr>
 </tbody>
 </table>
-<p><strong>Training.</strong> <code>milady.train.fm3d</code> carries over to 3D the choices validated by the experiments: vector potentials in the Coulomb gauge (zero divergence by construction, like variant V4 of E2), a velocity field equivariant under <span class="math inline">\mathbf{B} \to -\mathbf{B}</span> (variant C of E1), and optional fine-tuning with an unbiased estimate of the stationarity loss. Experiment E1 showed that this fine-tuning can diverge when started from a biased model: it is launched only from an already good model, with two safeguards added for this reason, an anchor to the starting weights (<code>stationarity.anchor</code>) and a gradual ramp-up of the weight <span class="math inline">\beta</span> (<code>stationarity.beta_warmup</code>), and the spread of the balances must be monitored: the per-sample standard deviation of the balances is not yet computed automatically, because the evaluation records only the mean residuals. The same code runs on one GPU or on several nodes (DDP), resumes after an interruption, and logs to MLflow.</p>
+<p><strong>Training.</strong> <code>milady.train.fm3d</code> carries over to 3D the choices validated by the experiments: vector potentials in the Coulomb gauge (zero divergence by construction, like variant V4 of E2), a velocity field equivariant under <span class="math inline">\mathbf{B} \to -\mathbf{B}</span> (variant C of E1), and optional fine-tuning with an unbiased estimate of the stationarity loss. Experiment E1 showed that this fine-tuning can diverge when started from a biased model: it is launched only from an already good model, with two safeguards added for this reason (disabled by default: they stay at 0 unless set), an anchor to the starting weights (<code>stationarity.anchor</code>) and a gradual ramp-up of the weight <span class="math inline">\beta</span> (<code>stationarity.beta_warmup</code>), and the spread of the balances must be monitored: the per-sample standard deviation of the balances is not yet computed automatically, because the evaluation records only the mean residuals. The same code runs on one GPU or on several nodes (DDP), resumes after an interruption from its last checkpoint <code>last.pt</code> when restarted under the same run name (<code>--run-name</code>, or <code>--resume &lt;uri&gt;</code>; automatically under Slurm only for a job requeued with the same ID), and logs to MLflow.</p>
 <h2 id="couts">Costs</h2>
 <p>Prices change with the provider, the region, and the rental mode: the guide gives no prices, but a method.</p>
 <p><span class="math display">
 \text{cost} \approx \sum_{\text{tasks}} \text{duration (h)} \times \text{number of GPUs} \times \text{hourly price of the instance} \;+\; \text{storage} \;+\; \text{outbound data} .
 </span></p>
-<p>First measure a single representative simulation; its duration is recorded in the catalog and extrapolated to the whole campaign. As for memory, a state <span class="math inline">(\mathbf{u}, \mathbf{B})</span> in single precision takes <span class="math inline">6 \times N^3 \times 4</span> bytes, i.e., about 0.4 GB at <span class="math inline">256^3</span>; the peak memory measured on CPU is about 14 times this state at <span class="math inline">128^3</span>, which comes to about 6 GB at <span class="math inline">256^3</span> and 45 GB at <span class="math inline">512^3</span>: a 24 GB GPU is enough at <span class="math inline">256^3</span>, and an 80 GB GPU is needed at <span class="math inline">512^3</span> (an estimate to be checked with <code>nvidia-smi</code>). Three rules reduce the bill: preemptible instances for the simulation arrays, which are independent and can be restarted; a VM deleted as soon as it is no longer in use, after a backup (<code>make backup</code>); and data in a bucket rather than on the VM’s disk.</p>
+<p>First measure a single representative simulation; its duration is recorded in the catalog and extrapolated to the whole campaign. As for memory, a state <span class="math inline">(\mathbf{u}, \mathbf{B})</span> in single precision takes <span class="math inline">6 \times N^3 \times 4</span> bytes, i.e., about 0.4 GB at <span class="math inline">256^3</span>; the peak memory measured on CPU is about 15 times this state at <span class="math inline">128^3</span> (717 MB), which comes to about 6 GB at <span class="math inline">256^3</span> and 48 GB at <span class="math inline">512^3</span>: a 24 GB GPU is enough at <span class="math inline">256^3</span>, and an 80 GB GPU is needed at <span class="math inline">512^3</span> (an estimate to be checked with <code>nvidia-smi</code>). Three rules reduce the bill: preemptible instances for the simulation arrays, which are independent and can be restarted; a VM deleted as soon as it is no longer in use, after a backup (<code>make backup</code>); and data in a bucket rather than on the VM’s disk.</p>
 <h2 id="tests">What is tested, what remains to be verified</h2>
 <table class="caption-top">
 <colgroup>
@@ -399,7 +399,7 @@ window.Quarto = {
 <td>a few seconds</td>
 </tr>
 <tr class="odd">
-<td>MFF file read back by replaying the HDF5 accesses of The Well’s loader; backup readable by <code>pg_restore</code></td>
+<td>MFF file read back by replaying the HDF5 accesses of The Well’s loader; backup produced by <code>make backup</code> (<code>pg_dump</code> dumps and bucket mirror)</td>
 <td>—</td>
 </tr>
 </tbody>

@@ -1,6 +1,6 @@
 // Figure 1 "cadre", ENGLISH version (MilaDy internship report): the proposed generative framework, one causal row of five stations.
 // a lambda conditions a latent flow matching (equivariant under S); b a functional decoder outputs potentials, the curl gives
-// divergence-free fields; c generated u, B in the VKS target geometry; d the energy balance checked in law; e downstream uses.
+// divergence-free fields; c generated u, B in the VKS target geometry; d the energy budget checked on average (distributional control); e downstream uses.
 // Constraint chips (classes C1, C3, C4 of the theory note) sit under the station that enforces each one.
 // Hero: VKS cylinder with generated u and B, drawn with vector 3D library parts (L.obliqueProj, L.cylinder3) and the illustrated finish.
 import { K, heading, chip, latentFlow, potentialMap, fieldLines, vks, lawHist, miniDiff, modesGlyph, assimGlyph, riceGlyph, check, cross } from './parts.js';
@@ -19,7 +19,7 @@ export default async function draw(F, L) {
   heading(L, pa, 'Latent flow matching');
   heading(L, pb, 'Potential decoder');
   heading(L, pc, '3D target: VKS');
-  heading(L, pd, 'Control in law');
+  heading(L, pd, 'Distributional control');
   heading(L, pe, 'Uses');
   const yA = 90;                                 // main axis (panel-local pt)
   const chipY = mm(H) - 15;
@@ -94,7 +94,7 @@ export default async function draw(F, L) {
   miniDiff(L, pd, 6, 106, 28, 20, D, 'law');
   miniDiff(L, pd, 46, 106, 28, 20, D, 'sample');
   check(L, pd, 31, 103, 5, K.ink); cross(L, pd, 71, 103, 5, K.ink);
-  L.text(pd, 20, 135, 'in law', { size: 6, anchor: 'middle', color: K.ink });
+  L.text(pd, 20, 135, 'on average', { size: 6, anchor: 'middle', color: K.ink });
   L.text(pd, 60, 135, 'per sample', { size: 6, anchor: 'middle', color: K.ink });
   L.text(pd, 40, 147, 'd*E*/d*t* = *P* − *ε*', { size: 6, anchor: 'middle', color: K.ink });
 
@@ -111,7 +111,7 @@ export default async function draw(F, L) {
   chip(L, pa, 3, chipY, 138, 'C3', 'symmetry **B** ↦ −**B**: equivariance');
   chip(L, pb, 3, chipY, 126, 'C1', '∇·**u** = ∇·**B** = 0: by construction');
   chip(L, pc, 3, chipY, 79, null, 'tested: 3-mode, 2D MHD', { dash: '1.6 1.2', fill: '#f6f6f6' });
-  chip(L, pd, 3, chipY, 86, 'C4', 'energy balance: in law');
+  chip(L, pd, 3, chipY, 86, 'C4', 'mean energy budget');
 
   // ================================================================ flow between stations
   const ya = mm(T) + yA;

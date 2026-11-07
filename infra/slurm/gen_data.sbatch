@@ -6,7 +6,7 @@
 # Soumission manuelle (N simulations, au plus 16 en parallèle) :
 #   sbatch --array=0-$((N-1))%16 infra/slurm/gen_data.sbatch infra/configs/palier2_abc3d.yaml
 # Jean Zay (exemple H100 ; voir infra/slurm/README-slurm.md) :
-#   sbatch --account=abc@h100 -C h100 --cpus-per-task=24 --array=0-63%16 \
+#   sbatch --account=abc@h100 -C h100 --cpus-per-task=24 --array=0-36%16 \
 #          infra/slurm/gen_data.sbatch infra/configs/palier2_abc3d.yaml
 #
 # Argument : fichier YAML de campagne. L'élément SLURM_ARRAY_TASK_ID du tableau choisit le point

@@ -10,11 +10,12 @@ Ce dossier contient les gabarits pour lancer les campagnes MilaDy sur un superca
 | `eval.sbatch` | évaluation d'un modèle (1 GPU) |
 | `apptainer.def` | définition de l'image Apptainer (base `docker://pytorch/pytorch`) |
 
-Principe : **les calculs tournent dans une image Apptainer (`.sif`) identique à l'image Docker de la VM
+Principe : **les calculs tournent dans une image Apptainer (`.sif`) convertie de l'image Docker GPU de la VM
 cloud**, le dépôt étant monté sur `/opt/milady` (le commit du dépôt monté, et non celui de la construction
 de l'image, est enregistré dans les fichiers et au catalogue). Sur la frontale, seule la soumission des
-campagnes demande un petit environnement Python (§1). Les résultats sont reproductibles d'une cible à
-l'autre.
+campagnes demande un petit environnement Python (§1). Le code et les dépendances sont les mêmes d'une cible à
+l'autre ; les résultats ne sont identiques bit à bit que sur le même matériel, et une image construite depuis
+`apptainer.def` n'a pas les mêmes paquets système.
 
 ## 1. Démarrage rapide (tout cluster Slurm avec Apptainer)
 
@@ -36,14 +37,15 @@ python3 -m venv .venv-front && .venv-front/bin/pip install pyyaml numpy sqlalche
 # Campagne de simulations (le développement YAML → tableau de jobs est fait par milady.sweep)
 .venv-front/bin/python -m milady.sweep infra/configs/palier2_abc3d.yaml --scheduler slurm
 
-# Ou à la main : N simulations, au plus 16 simultanées
-sbatch --array=0-63%16 infra/slurm/gen_data.sbatch infra/configs/palier2_abc3d.yaml
+# Ou à la main : les 37 simulations de palier2_abc3d (indices 0 à 36), au plus 16 simultanées
+sbatch --array=0-36%16 infra/slurm/gen_data.sbatch infra/configs/palier2_abc3d.yaml
 
 # Entraînement sur 2 nœuds de 4 GPU, puis évaluation
 sbatch --nodes=2 --gres=gpu:4 infra/slurm/train.sbatch infra/configs/train_fm3d.yaml
 sbatch infra/slurm/eval.sbatch infra/configs/train_fm3d.yaml
 
-squeue --me                    # suivi ; journaux : milady-sim-<job>_<tâche>.out dans le dossier de soumission
+squeue --me                    # suivi ; journaux : data/sweeps/<campagne>/<horodatage>/milady-sim-<campagne>-<job>_<tâche>.out
+                                # (milady.sweep, chemin affiché), ou milady-sim-<job>_<tâche>.out dans le dossier de soumission (sbatch à la main)
 ```
 
 Les scripts se soumettent **depuis la racine du dépôt** (Slurm exécute une copie du script : le dépôt
@@ -57,7 +59,8 @@ demande `--signal=TERM@120` : 120 s avant la limite, la simulation reçoit SIGTE
 contrôle (dans `$MILADY_DATA/work/…`, sur `$SCRATCH`) et s'arrête (statut `failed`, note
 `interrupted` au catalogue). Resoumettre les mêmes indices reprend au dernier point de contrôle :
 `.venv-front/bin/python -m milady.sweep <campagne.yaml> --scheduler slurm` ne resoumet que les
-simulations non terminées (`--indices 3,7` pour en choisir).
+simulations `queued` ou `failed` (`--indices 3,7` pour en choisir) ; une simulation restée `running` (nœud perdu
+sans SIGTERM) n'est resoumise qu'avec `--retry-running`.
 
 **Cœurs par tâche.** Depuis Slurm 22.05, `srun` n'hérite plus forcément du `--cpus-per-task` de
 `sbatch` : les gabarits le redonnent explicitement à `srun` (sinon toute l'étape, y compris les
@@ -121,7 +124,7 @@ Exemples :
 ```bash
 # Simulations : 1 GPU H100 et 1/4 du nœud (24 cœurs) par simulation
 sbatch --account=abc@h100 -C h100 --cpus-per-task=24 --time=10:00:00 \
-       --array=0-63%16 infra/slurm/gen_data.sbatch infra/configs/palier2_abc3d.yaml
+       --array=0-36%16 infra/slurm/gen_data.sbatch infra/configs/palier2_abc3d.yaml
 # Entraînement : 2 nœuds H100 complets
 sbatch --account=abc@h100 -C h100 --nodes=2 --gres=gpu:4 --cpus-per-task=96 --time=20:00:00 \
        infra/slurm/train.sbatch infra/configs/train_fm3d.yaml
@@ -147,7 +150,7 @@ stockage S3 du projet (§5).
 - Le moteur disponible est **Singularity** (`module load singularity`) ; Docker et Podman ne le sont pas.
   `env.sh` charge ce module automatiquement s'il ne trouve ni `apptainer` ni `singularity`.
 - **Construction depuis un fichier `.def` impossible** (ni root ni `fakeroot`) : construire l'image
-  ailleurs (§3), ou depuis une frontale à partir d'un registre public :
+  ailleurs (§3), ou, une fois l'image publiée (§3 ; elle ne l'est pas encore), depuis une frontale :
   `singularity build milady.sif docker://ghcr.io/knoel99/milady:gpu` (lancer depuis `$WORK`/`$SCRATCH` ;
   la mémoire est limitée sur les frontales : préférer un nœud `prepost` pour les grosses images).
 - Une image n'est utilisable sur les nœuds de calcul qu'après copie dans l'espace autorisé :
@@ -165,7 +168,9 @@ frontales ou les nœuds de pré/post-traitement). Conséquences pour MilaDy :
   défaut de `env.sh`). Le catalogue attend jusqu'à 120 s un verrou libre : plusieurs simulations d'un
   tableau peuvent y écrire. En cas de verrous récalcitrants sur le système de fichiers parallèle, ne
   garder que l'écriture des fichiers MFF dans les jobs, puis enregistrer **a posteriori** depuis la
-  frontale : `python -m milady.catalog ingest $SCRATCH/milady/store/<campagne>/*/fields.h5 --campaign <campagne>` ;
+  frontale (jobs lancés avec `milady.sweep … --no-catalog` ; h5py et fsspec requis : `.venv-front/bin/pip install h5py fsspec`,
+  ou le `.venv` de `make setup`) :
+  `MILADY_DB_URL=sqlite:///$WORK/milady/catalog.sqlite .venv-front/bin/python -m milady.catalog ingest $SCRATCH/milady/store/<campagne>/*/fields.h5 --campaign <campagne>` ;
 - **suivi MLflow** : base SQLite locale (`MLFLOW_TRACKING_URI=sqlite:///$WORK/milady/mlflow.db`), à
   consulter avec `mlflow ui --backend-store-uri sqlite:///…/mlflow.db` (depuis le portable après copie,
   ou le JupyterHub de l'IDRIS) ;
@@ -225,11 +230,12 @@ directement la pile de la VM (catalogue PostgreSQL et S3) :
 ```bash
 export MILADY_DB_URL=postgresql://milady:<mdp>@<ip-privée-vm>:5432/milady
 export MILADY_STORAGE_URI=s3://milady-data MILADY_S3_ENDPOINT=http://<ip-privée-vm>:9000
+export AWS_ACCESS_KEY_ID=<S3_ACCESS_KEY de .env> AWS_SECRET_ACCESS_KEY=<S3_SECRET_KEY de .env>
 export MLFLOW_TRACKING_URI=http://<ip-privée-vm>:5000
 ```
 
-(la VM doit alors publier ses ports sur le réseau privé : `BIND_ADDR=<ip-privée>` dans `infra/docker/.env`,
-avec un pare-feu limité au sous-réseau du cluster).
+(la VM doit alors publier ses ports sur le réseau privé : `BIND_ADDR=<ip-privée>` dans `infra/docker/.env`
+et `<ip-privée>,<ip-privée>:*` ajoutés à `MLFLOW_ALLOWED_HOSTS`, avec un pare-feu limité au sous-réseau du cluster).
 
 ## 5. Rapatrier les résultats vers l'infrastructure centrale
 
@@ -248,4 +254,7 @@ python -m milady.catalog ingest --campaign palier2_abc3d \
 ```
 
 `ingest` lit les métadonnées du fichier (`milady_uuid`, paramètres, code, commit, diagnostics) : les
-identifiants restent les mêmes que dans le catalogue SQLite du cluster.
+identifiants restent les mêmes que dans le catalogue SQLite du cluster. Seuls les simulations, leurs fichiers et
+leurs diagnostics sont enregistrés (sans durée de calcul ni ressources) ; modèles, évaluations, tâches et points de
+contrôle (`$SCRATCH/milady/store/_models`) restent sur le cluster. `ingest` demande h5py, fsspec et s3fs (`.venv` de
+`make setup`), pas le petit venv de soumission.

@@ -37,7 +37,7 @@ Retenus pour les deux brouillons (profondeur full) : **A** et **B**. C est écar
 | a | vignette 5 : découpage | « val », « test » | grille 4 × 3 : 10 points pleins, un point cerclé (val), un anneau vide (test) | draw ; train_fm3d.yaml |
 | a | vignette 6 : modèle | « A_u, A_B », « ∇× » | boîte violette avec petit réseau | draw (`L.network`) |
 | a | vignette 7 : évaluation | « généré », « référence » | mini spectre log-log, référence gris plein, généré ambre tireté (forme illustrative) | draw (forme indicative, dite telle dans la légende) |
-| a | modules ×7 | `infra/configs/`, `milady.sweep`, `milady.sim`, `milady.storage`, `milady.catalog`, `milady.train.fm3d`, `milady.eval` | monospace 5,5 pt gris foncé | draw |
+| a | modules ×7 | `infra/configs/`, `milady.sweep`, `milady.sim`, `milady.storage`, `milady.train.data`, `milady.train.fm3d`, `milady.eval` | monospace 5,5 pt gris foncé | draw |
 | a | rail catalogue | « Catalogue · PostgreSQL ou SQLite » | bande gris clair arrondie | draw |
 | a | prises catalogue ×7 | `campaign`, `simulation · job`, `diagnostic`, `file`, `dataset`, `model`, `evaluation` | trait vertical + point + nom de table monospace | draw (`L.line`, `L.text`) |
 | a | rail fichiers | « Fichiers · stockage objet S3, MinIO ou disque » | bande gris moyen arrondie | draw |

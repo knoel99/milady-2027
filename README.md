@@ -9,7 +9,7 @@ Ressources préparatoires, rapport de stage prospectif et proposition de sujet d
 ## Ce que contient le site
 
 - **Accueil** (`index.html`) : l'offre (faits officiels), le projet MilaDy, le parcours en trois étapes.
-- **Préparation** (`prep/`) : 8 modules gradués du niveau licence 1 au niveau M2 recherche (calcul vectoriel et Fourier, mécanique des fluides et turbulence, MHD et effet dynamo, systèmes dynamiques et mesures invariantes, probabilités et transport optimal, apprentissage profond, diffusion et flow matching, contraintes physiques). Chaque module : objectifs, plan de travail, cours avec démonstrations, code Python exécuté, exercices corrigés ★/★★/★★★, sources.
+- **Préparation** (`prep/`) : 8 modules gradués du niveau licence 1 au niveau M2 recherche (calcul vectoriel et Fourier, mécanique des fluides et turbulence, MHD et effet dynamo, systèmes dynamiques, bifurcations et mesures invariantes, probabilités et transport optimal, apprentissage profond, diffusion et flow matching, contraintes physiques). Chaque module : objectifs, plan de travail, cours avec démonstrations, code Python exécuté, exercices corrigés ★/★★/★★★, sources.
 - **Encadrants** (`encadrants/`) : travaux de S. Cheng, D. Lucor, C. Nore et Y. Ponty, pistes de thèse et choix argumenté.
 - **Rapport de stage** (`rapport/`) : état de l'art, formulation (taxonomie des contraintes, propositions démontrées), méthodes, expériences E1–E3 et résultats, discussion, ouverture vers la thèse.
 - **Sujet de thèse** (`these/`) : piste retenue, partie théorique, plan expérimental planifié et évalué (paliers, métriques, risques, calendrier).

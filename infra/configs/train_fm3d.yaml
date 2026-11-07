@@ -12,11 +12,12 @@
 #   make eval  CONFIG=infra/configs/train_fm3d.yaml [MODEL=<uuid>]          évaluation (dernier modèle « name » sinon)
 # Réglage fin avec la perte de stationnarité (variante V5 de E2, en 3D), depuis un modèle entraîné :
 #   python -m milady.train.fm3d --config infra/configs/train_fm3d.yaml --init-from <…/final.pt> \
-#       --set stationarity.enabled=true train.iters=2000 train.lr=1e-4 train.warmup=0
+#       --set stationarity.enabled=true stationarity.anchor=1.0 stationarity.beta_warmup=500 train.iters=2000 train.lr=1e-4 train.warmup=0
 # Toute clé se surcharge en ligne de commande : --set train.batch_size=32 model.architecture=transformer
 #
 # Ordres de grandeur (kmax = 8 : 1054 modes × 8 canaux = 8432 dimensions ; MLP 1024 × 6 ≈ 30 M paramètres) :
-# quelques ms par itération sur un GPU A100/H100 en bf16 ; la perte de stationnarité ajoute ≈ 2 × steps
+# temps par itération sur GPU non mesuré (pas de GPU sur la machine de développement) : le mesurer par un court
+# entraînement (`--set train.iters=200`) ; la perte de stationnarité ajoute ≈ 2 × steps
 # évaluations du réseau sur n_cond × n_per échantillons par itération où elle est active.
 
 name: fm3d_tg3d

@@ -90,6 +90,10 @@ Le mode cinématique coûte ≈ 1/3 à 1/2 du mode dynamique ; de 32³ à 64³ l
 ces 4 cœurs déjà chargés, le pas passait à ≈ 1 s (32³) et ≈ 4 s (64³). Fixer OMP_NUM_THREADS (ou
 ``resources.cpus``, ``--cpus-per-task`` sous Slurm) au nombre de cœurs réellement libres.
 
+Mémoire sur CPU (7 novembre 2026, torch 2.14.1 CPU, 4 fils, dynamique float32, 2 pas) : pic de mémoire
+résidente moins celle de Python et torch après import ≈ 100 Mo à 64³ et 717 Mo à 128³, soit ≈ 15 fois
+l'état (u, B) de 6 × N³ × 4 octets (voir infra/README.md § 6.2).
+
 GPU : aucun chiffre n'est donné ici (pas de GPU sur la machine de développement ; ne pas extrapoler
 les chiffres CPU). Pour mesurer sur la VM louée ou le nœud Slurm, avant de dimensionner une campagne :
 

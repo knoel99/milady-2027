@@ -50,8 +50,9 @@ campagne YAML ──► milady.sweep ──► jobs (local | docker | slurm --ar
 ```
 
 Chaque objet porte un **UUID** : la simulation reçoit le même identifiant au catalogue et dans le
-fichier (`milady_uuid`), ce qui permet de reconstruire ou de fusionner un catalogue à partir des
-seuls fichiers (`python -m milady.catalog ingest`), par exemple après une campagne sur un cluster
+fichier (`milady_uuid`), ce qui permet de reconstruire ou de fusionner la partie simulations d'un catalogue (simulations,
+fichiers, diagnostics ; jeux de données, modèles, évaluations et tâches n'existent qu'au catalogue) à
+partir des seuls fichiers (`python -m milady.catalog ingest --campaign <campagne>`), par exemple après une campagne sur un cluster
 sans accès réseau.
 
 ## 2. Déploiement sur les trois cibles
@@ -86,7 +87,7 @@ flowchart TB
         venv --> lite
     end
     fs -. "mc mirror / rclone<br/>depuis la frontale" .-> s3
-    sq -. "milady.catalog ingest" .-> db
+    s3 -. "milady.catalog ingest<br/>(fichiers MFF → simulations,<br/>fichiers, diagnostics)" .-> db
     Dev(["Portable : ssh, tunnel,<br/>deploy_remote.sh"]) --> VM
     Dev --> HPC
 ```
@@ -95,7 +96,7 @@ flowchart TB
 |---|---|---|---|
 | Exécution | conteneurs Docker | image Apptainer (`.sif`) | venv ou Docker |
 | Image | `milady:gpu` (CUDA 12.6) / `milady:cpu` | conversion de `milady:gpu` | `milady:cpu` ou paquets PyPI |
-| Catalogue | PostgreSQL (`db`) | SQLite sur `$WORK`, ingestion ultérieure | SQLite `data/` |
+| Catalogue | PostgreSQL (`db`) | SQLite sur `$WORK` ; simulations enregistrées ensuite dans PostgreSQL à partir des fichiers MFF | SQLite `data/` |
 | Fichiers | S3 (MinIO ou bucket fournisseur) | `$SCRATCH` puis S3 | `data/store` |
 | Suivi | serveur MLflow | MLflow SQLite local | MLflow (facultatif) |
 | Installation | `bootstrap_vm.sh` / cloud-init / `deploy_remote.sh` | `make sif` + `sbatch` | `make setup` |
@@ -103,7 +104,8 @@ flowchart TB
 **Une seule image logicielle** : l'image GPU de la VM est la source de l'image Apptainer du cluster ;
 les versions Python sont épinglées dans `infra/env/requirements*.txt`. Le dépôt est monté dans le
 conteneur (`/opt/milady`, installation éditable), si bien qu'une modification du code n'exige pas de
-reconstruire l'image, et que le commit exact est enregistré dans chaque fichier et au catalogue.
+reconstruire l'image, et que le commit (suffixe `-dirty` si l'arbre était modifié) est enregistré dans chaque fichier MFF,
+dans les points de contrôle et au catalogue pour les simulations et les modèles.
 
 ## 3. Choix techniques
 
@@ -147,7 +149,8 @@ reconstruire l'image, et que le commit exact est enregistré dans chaque fichier
 
 - L'API S3 est le standard de fait : le même code (`fsspec`/`s3fs`) écrit dans MinIO sur la VM, dans
   un bucket AWS S3, Scaleway ou OVHcloud, en changeant seulement `MILADY_STORAGE_URI` et le point
-  d'accès. Les fichiers sont immuables et adressés par une convention d'URI
+  d'accès. Les fichiers ne sont pas réécrits en usage normal (`--force` les réécrit, et `register_file` met
+  alors à jour leur ligne et leur somme SHA-256) et sont adressés par une convention d'URI
   (`{campagne}/{uuid}/fields.h5`), ce qui sépare clairement données lourdes et métadonnées.
 - **MinIO** : serveur S3 en un seul binaire, adapté à une VM. MinIO Inc. a cessé fin 2025 de publier
   des images Docker de l'édition communautaire (constaté le 2026-11-07 : `minio/minio` et
@@ -188,7 +191,7 @@ reconstruire l'image, et que le commit exact est enregistré dans chaque fichier
 | Version du code | `milady_git_commit` (fichier), `simulation.git_commit`, `model.git_commit` |
 | Dépendances | `infra/env/requirements*.txt` (verrou), étiquettes d'image |
 | Paramètres physiques | `milady_parameters` (JSON, fichier) = `simulation.parameters` (JSONB) |
-| Configuration de campagne | `campaign.config_yaml` (copie intégrale du YAML) |
+| Configuration de campagne | `campaign.config_yaml` (YAML du premier lancement) ; copie figée de chaque lancement dans `data/sweeps/` |
 | Machine et ressources | `simulation.host`, `n_gpus`, `n_cpus`, `wall_time_s`, `job.external_id` (identifiant Slurm) |
 | Intégrité des données | `file.sha256`, `file.size_bytes` |
 | Entraînement | `model.hyperparams`, `model.dataset_id`, `model.mlflow_run_id`, `model.checkpoint_uri` |
@@ -198,5 +201,6 @@ reconstruire l'image, et que le commit exact est enregistré dans chaque fichier
 
 Pas de secret dans le dépôt (`.env` généré sur la machine, droits 600, ignoré par git) ; ports liés
 à `127.0.0.1` et accès par tunnel SSH ; compte S3 applicatif distinct du compte administrateur ;
-conteneurs sans root ; sauvegardes (`pg_dump` + miroir S3) vers une cible externe avant toute
+conteneurs de calcul, Jupyter et MLflow sans root (MinIO tourne en root, sans port exposé hors de
+`127.0.0.1`) ; sauvegardes (`pg_dump` + miroir S3) vers une cible externe avant toute
 suppression de VM.

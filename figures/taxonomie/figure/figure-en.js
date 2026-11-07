@@ -37,7 +37,7 @@ export default async function draw(F, L) {
       mech: ['Nonlinear\nprojection', 'Penalty,\nguidance'], join: 'or' },
     { id: 'C3', name: 'Symmetry', g: 1, form: '*g*_#μ = μ', ex: ['**B** ↦ −**B**', 'Rotation *R*_π (VKS)'],
       mech: ['Equivariant *v*_θ', 'Invariant base\ndistribution'], join: 'and' },
-    { id: 'C4', name: 'Distributional\nstatistic', g: 1, form: '𝔼_μ[ℒφ] = 0', ex: ['Energy balance', '𝔼[ε] = 𝔼[*P*]'],
+    { id: 'C4', name: 'Distributional\nstatistic', g: 1, form: '𝔼_μ[ℒφ] = 0', ex: ['Energy budget', '𝔼[ε] = 𝔼[*P*]'],
       mech: ['Stationarity\nloss', 'Exponential\ntilting'], join: 'or' },
   ];
   const fy0 = m(16.3), fh = m(24);        // vignette frame
@@ -152,7 +152,7 @@ export default async function draw(F, L) {
   // panel b : C4, trois lois de dE/dt sur les mêmes axes
   // =====================================================================================================
   const b = F.panel('b', { x: 117, y: 0, w: 66, h: 80 });
-  L.text(b, m(5), m(2.9), 'Energy balance (C4)', { size: T.head, weight: 'bold', valign: 'middle', color: TXT });
+  L.text(b, m(5), m(2.9), 'Energy budget (C4)', { size: T.head, weight: 'bold', valign: 'middle', color: TXT });
   L.text(b, m(65.5), m(2.9), 'Illustrative shapes', { size: T.small, anchor: 'end', valign: 'middle', color: GREY, italic: true });
   const px = [1.5, 23.75, 46].map(m), pw = m(19.5);
   const base = m(44), ytop = m(15.5), ys = m(45 - 17) / 0.5;      // 0.5 density units = 28 mm

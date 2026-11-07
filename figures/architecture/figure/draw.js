@@ -129,7 +129,7 @@ export function make(lang) {
     L.text(pa, 12, 7.6, S.a, { size: 7, weight: 'bold', color: K.ink, role: 'title' });
     const CW = 179 / 7, cx = (k) => m(2 + CW * (k + 0.5)), bx = (k) => m(2 + CW * k);
     const HY = m(9.2), GY = m(22.2), SUBY = m(34.4), MODY = m(37.2);
-    const modules = ['infra/configs/', 'milady.sweep', 'milady.sim', 'milady.storage', 'milady.catalog', 'milady.train.fm3d', 'milady.eval'];
+    const modules = ['infra/configs/', 'milady.sweep', 'milady.sim', 'milady.storage', 'milady.train.data', 'milady.train.fm3d', 'milady.eval'];
     for (let k = 0; k < 7; k++) {
       const x0 = bx(k) + m(1.4);
       badge(L, pa, x0 + m(1.9), HY, m(1.75), k + 1, 5.8);

@@ -57,7 +57,7 @@
  *    disjoints) ; ils fusionnent par une crise (Grebogi, Ott, Romeiras, Yorke 1987) entre
  *    Γ = 0,86 et 0,865 avec cet intégrateur (RK4, dt = 0,01 ; contrôle indépendant sur
  *    16 × 10 000 u.t. : 0 passage à Γ = 0,86, taux 0,0007 à 0,8625, 0,0012 à 0,865, 0,0042 à 0,9,
- *    0,0113 à 1,0), intervalle compatible avec ]0,86 ; 0,87] de l'expérience E1 du site
+ *    0,0113 à 1,0), intervalle identique à ]0,86 ; 0,865] de la grille fine de l'expérience E1 du site
  *    (experiences/e1_gissinger.py). Aux valeurs du curseur (pas 0,005) : aucun renversement pour
  *    Γ ≤ 0,86, renversements dès Γ = 0,865.
  *

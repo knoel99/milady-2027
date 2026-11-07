@@ -87,15 +87,15 @@ Une campagne décrite dans un fichier YAML devient des simulations, puis des fic
 
 | Étape | Module | Ce qui est produit | Où c'est enregistré |
 |---|---|---|---|
-| 1. Campagne | fichier YAML de `infra/configs/` | grille de paramètres physiques ($Re$, $Rm$, $Pm$…) | table `campaign` (copie intégrale du YAML) |
+| 1. Campagne | fichier YAML de `infra/configs/` | grille de paramètres physiques ($Re$, $Rm$, $Pm$…) | table `campaign` (YAML du premier lancement ; chaque lancement en garde une copie figée dans `data/sweeps/`) |
 | 2. Lancement | `milady.sweep` | une tâche par point de la grille : en local, un processus par simulation ; avec Docker, un conteneur par simulation ; sur un cluster, un tableau de jobs Slurm | tables `simulation` et `job` |
 | 3. Simulation | `milady.sim` (solveur MHD 3D, PyTorch) | champs $(\mathbf{u}, \mathbf{B})$ et diagnostics | fichier MFF ; table `diagnostic` |
 | 4. Stockage | `milady.storage` | fichier `{campagne}/{uuid}/fields.h5`, jamais modifié en usage normal (`--force` le réécrit, et sa somme SHA-256 est alors mise à jour au catalogue), sur S3, MinIO ou disque | table `file` (somme SHA-256, taille) |
-| 5. Jeu de données | `milady.catalog` | sélection des simulations et découpage entraînement, validation, test | tables `dataset` et `dataset_member` |
+| 5. Jeu de données | `milady.train.data` (au premier entraînement, selon `data.auto_dataset` ; stocké par `milady.catalog`) | sélection des simulations et découpage entraînement, validation, test | tables `dataset` et `dataset_member` |
 | 6. Entraînement | `milady.train.fm3d` | flow matching conditionnel à potentiels vecteurs ; points de contrôle | table `model` ; MLflow (courbes, hyperparamètres) |
 | 7. Évaluation | `milady.eval` | métriques statistiques et physiques des champs générés | table `evaluation` ; vue `v_eval_summary` |
 
-Comme la simulation porte le même UUID dans le fichier et au catalogue, la partie simulations du catalogue (simulations, fichiers, diagnostics) peut toujours être reconstruite ou fusionnée à partir des seuls fichiers ; les jeux de données, modèles et évaluations, eux, n'existent qu'au catalogue. C'est ce qui permet de travailler sur un cluster sans réseau.
+Comme la simulation porte le même UUID dans le fichier et au catalogue, la partie simulations du catalogue (simulations, fichiers, diagnostics) peut être reconstruite ou fusionnée à partir des seuls fichiers (paramètres, code, commit, fichier, diagnostics ; le nom de campagne se donne avec `--campaign`, et la durée de calcul, les ressources et le YAML de la campagne ne sont pas restitués) ; les jeux de données, modèles et évaluations, eux, n'existent qu'au catalogue. C'est ce qui permet de travailler sur un cluster sans réseau.
 
 Le schéma interactif suivant parcourt la même chaîne cible par cible : choisissez une cible, puis cliquez une étape pour voir ce qu'elle fait, ce qu'elle écrit et la commande exacte sur cette cible.
 
@@ -121,7 +121,7 @@ fields.h5
 └── milady_spectral/     coefficients de Fourier des champs (domaines périodiques, facultatif)
 ```
 
-Suivre The Well rend les données lisibles par les chargeurs et les modèles de référence de la communauté : nous avons vérifié, en rejouant les accès HDF5 du chargeur `WellDataset` (the_well 1.2.0) sans exécuter le paquet lui-même, qu'un fichier MFF 3D est relu à l'identique. Les attributs `milady_*` sont invisibles pour un lecteur The Well et validés par un schéma JSON. Une variante **Zarr**, de même hiérarchie, permet de lire un morceau d'un fichier sur S3 sans le télécharger. Une extension est prévue pour les sorties de SFEMaNS (modes de Fourier azimutaux sur un maillage d'éléments finis méridien), sans interpolation destructive. La fonction de validation détecte les fichiers corrompus : les 18 corruptions testées (types, formes, valeurs non finies, identifiants…) sont toutes signalées. Spécification complète : [`specs/format-donnees.md`](https://github.com/knoel99/milady-2027/blob/main/specs/format-donnees.md). La figure 2, dans la section [sur le solveur](#solveur), relie chaque partie du fichier à sa colonne du catalogue.
+Suivre The Well rend les données lisibles par les chargeurs et les modèles de référence de la communauté : nous avons vérifié, en rejouant les accès HDF5 du chargeur `WellDataset` (the_well 1.2.0) sans exécuter le paquet lui-même, qu'un fichier MFF 3D est relu à l'identique. Les attributs `milady_*` sont invisibles pour un lecteur The Well et validés par un schéma JSON. Une variante **Zarr**, de même hiérarchie, permet de lire un morceau d'un fichier sur S3 sans le télécharger. Une extension est prévue pour les sorties de SFEMaNS (modes de Fourier azimutaux sur un maillage d'éléments finis méridien), sans interpolation destructive. La fonction de validation détecte les fichiers corrompus : les 18 corruptions testées (types, formes, valeurs non finies, identifiants…) sont toutes signalées, un NaN au milieu d'une trajectoire seulement par la vérification complète (`validate --full`). Spécification complète : [`specs/format-donnees.md`](https://github.com/knoel99/milady-2027/blob/main/specs/format-donnees.md). La figure 2, dans la section [sur le solveur](#solveur), relie chaque partie du fichier à sa colonne du catalogue.
 
 ## Le catalogue des résultats {#catalogue}
 
@@ -138,7 +138,7 @@ Les résultats d'une thèse sont relationnels : campagne, simulations, fichiers,
 | `evaluation` | métrique, valeur, paramètres, graine, nombre d'échantillons |
 | `job` | identifiant de l'ordonnanceur (Slurm, Docker), statut, journaux |
 
-On interroge le catalogue en SQL ou en ligne de commande. Par exemple, les heures de GPU consommées par campagne :
+On interroge le catalogue en SQL ou en ligne de commande. Par exemple, les heures de calcul par campagne (des heures GPU seulement si chaque simulation a eu son propre GPU, comme dans un tableau Slurm ; sur une VM, `make sweep` fait tourner jusqu'à `resources.max_parallel` simulations à la fois sur le même GPU) :
 
 ```sql
 SELECT c.name, round(sum(s.wall_time_s * greatest(s.n_gpus, 1)) / 3600.0, 1) AS heures_gpu
@@ -163,7 +163,7 @@ et, en ligne de commande, `python -m milady.catalog sims --campaign palier2_abc3
 | `palier2_tg3d` | MHD 3D forcée Taylor–Green à $64^3$ : $Re \in \{25, 50, 100, 200\}$ et $Pm \in \{0{,}5 ; 1 ; 2\}$ (12 simulations) |
 | `train_fm3d` | flow matching conditionnel par $(Re, Pm)$ des champs Taylor–Green, potentiels vecteurs tronqués à $|\mathbf{m}| \le 8$, symétrie $\mathbf{B} \to -\mathbf{B}$ exacte |
 
-**Entraînement.** `milady.train.fm3d` reprend en 3D les choix validés par les expériences : potentiels vecteurs en jauge de Coulomb (divergence nulle par construction, comme la variante V4 de E2), champ de vitesse équivariant pour $\mathbf{B} \to -\mathbf{B}$ (variante C de E1), et réglage fin facultatif par la perte de stationnarité estimée sans biais. L'expérience E1 a montré que ce réglage fin peut diverger à partir d'un modèle biaisé : on ne le lance qu'à partir d'un modèle déjà bon, avec deux garde-fous ajoutés pour cette raison, un ancrage aux poids de départ (`stationarity.anchor`) et une montée progressive du poids $\beta$ (`stationarity.beta_warmup`), et il faut surveiller la dispersion des bilans : l'écart-type des bilans par échantillon n'est pas encore calculé automatiquement, car l'évaluation n'enregistre que les résidus moyens. Le même code tourne sur un GPU ou sur plusieurs nœuds (DDP), reprend après une interruption, et journalise dans MLflow.
+**Entraînement.** `milady.train.fm3d` reprend en 3D les choix validés par les expériences : potentiels vecteurs en jauge de Coulomb (divergence nulle par construction, comme la variante V4 de E2), champ de vitesse équivariant pour $\mathbf{B} \to -\mathbf{B}$ (variante C de E1), et réglage fin facultatif par la perte de stationnarité estimée sans biais. L'expérience E1 a montré que ce réglage fin peut diverger à partir d'un modèle biaisé : on ne le lance qu'à partir d'un modèle déjà bon, avec deux garde-fous ajoutés pour cette raison (désactivés par défaut : ils valent 0 tant qu'on ne les fixe pas), un ancrage aux poids de départ (`stationarity.anchor`) et une montée progressive du poids $\beta$ (`stationarity.beta_warmup`), et il faut surveiller la dispersion des bilans : l'écart-type des bilans par échantillon n'est pas encore calculé automatiquement, car l'évaluation n'enregistre que les résidus moyens. Le même code tourne sur un GPU ou sur plusieurs nœuds (DDP), reprend après une interruption depuis son dernier point de contrôle `last.pt` si on le relance sous le même nom de run (`--run-name`, ou `--resume <uri>` ; automatiquement sous Slurm seulement pour un job remis en file avec le même identifiant), et journalise dans MLflow.
 
 ## Coûts {#couts}
 
@@ -173,7 +173,7 @@ $$
 \text{coût} \approx \sum_{\text{tâches}} \text{durée (h)} \times \text{nombre de GPU} \times \text{prix horaire de l'instance} \;+\; \text{stockage} \;+\; \text{données sortantes} .
 $$
 
-On mesure d'abord une seule simulation représentative ; sa durée est enregistrée au catalogue et s'extrapole à la campagne. Pour la mémoire, un état $(\mathbf{u}, \mathbf{B})$ en simple précision occupe $6 \times N^3 \times 4$ octets, soit environ 0,4 Go à $256^3$ ; le pic de mémoire mesuré sur processeur vaut environ 14 fois cet état à $128^3$, soit environ 6 Go à $256^3$ et 45 Go à $512^3$ : un GPU de 24 Go suffit à $256^3$, et il faut un GPU de 80 Go à $512^3$ (estimation à vérifier avec `nvidia-smi`). Trois règles réduisent la facture : des instances interruptibles pour les tableaux de simulations, qui sont indépendantes et relançables ; une VM supprimée dès qu'elle ne sert plus, après sauvegarde (`make backup`) ; et les données dans un bucket plutôt que sur le disque de la VM.
+On mesure d'abord une seule simulation représentative ; sa durée est enregistrée au catalogue et s'extrapole à la campagne. Pour la mémoire, un état $(\mathbf{u}, \mathbf{B})$ en simple précision occupe $6 \times N^3 \times 4$ octets, soit environ 0,4 Go à $256^3$ ; le pic de mémoire mesuré sur processeur vaut environ 15 fois cet état à $128^3$ (717 Mo), soit environ 6 Go à $256^3$ et 48 Go à $512^3$ : un GPU de 24 Go suffit à $256^3$, et il faut un GPU de 80 Go à $512^3$ (estimation à vérifier avec `nvidia-smi`). Trois règles réduisent la facture : des instances interruptibles pour les tableaux de simulations, qui sont indépendantes et relançables ; une VM supprimée dès qu'elle ne sert plus, après sauvegarde (`make backup`) ; et les données dans un bucket plutôt que sur le disque de la VM.
 
 ## Ce qui est testé, ce qui reste à vérifier {#tests}
 
@@ -185,7 +185,7 @@ On mesure d'abord une seule simulation représentative ; sa durée est enregistr
 | installation par `bootstrap_vm.sh --cpu` (Docker déjà présent) sur une copie neuve du dépôt, puis relance | 3 min ; 33 s |
 | tests automatiques (`make test`), avec PostgreSQL et MinIO | 66 réussis, 1 sauté (avant l'ajout d'un 68e test, qui passe aussi) |
 | gabarits Slurm exécutés avec un ordonnanceur simulé, dont l'arrêt en fin de temps et la reprise | quelques secondes |
-| fichier MFF relu en rejouant les accès HDF5 du chargeur de The Well ; sauvegarde relisible par `pg_restore` | — |
+| fichier MFF relu en rejouant les accès HDF5 du chargeur de The Well ; sauvegarde produite par `make backup` (dumps `pg_dump` et miroir des buckets) | — |
 
 Restent à vérifier sur place, à la première location : l'image GPU complète et le NVIDIA Container Toolkit, le solveur et l'entraînement sur CUDA (et sur plusieurs GPU), un vrai Slurm avec Apptainer, l'installation de Docker sur une Ubuntu neuve, les buckets S3 des fournisseurs, et les campagnes à leur taille réelle. Le [guide de déploiement](https://github.com/knoel99/milady-2027/blob/main/infra/README.md) (§ 11 et 12) en donne le détail.
 
