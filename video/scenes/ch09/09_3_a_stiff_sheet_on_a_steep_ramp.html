@@ -1,0 +1,171 @@
+<!doctype html>
+<html lang="en"><head><meta charset="utf-8">
+<title>09.3 A stiff sheet on a steep ramp</title>
+<link rel="stylesheet" href="../../vendor/katex/katex.min.css">
+<link rel="stylesheet" href="../../runtime/theme.css">
+<link rel="stylesheet" href="ch09.css">
+<script src="../../vendor/katex/katex.min.js"></script>
+<script src="../../runtime/scene.js"></script>
+<script src="../../runtime/components/kit.js"></script>
+<script src="../../runtime/components/hud.js"></script>
+<script src="../../runtime/components/plot.js"></script>
+<script src="../../runtime/components/field.js"></script>
+<script src="../../runtime/components/equation.js"></script>
+<script src="../../runtime/components/motifs.js"></script>
+<script src="../../runtime/components/cards.js"></script>
+<script src="../../runtime/components/seat.js"></script>
+<script src="../../runtime/components/threemodes.js"></script>
+<script src="ch09_kit.js"></script>
+</head><body><div id="stage"></div>
+<script>
+/* 09.3 A stiff sheet on a steep ramp (L4, NIGHT, PROVED: Prop. 9; E1 consistent with it).
+   P1 metaphor (SCHEMATIC): the true ramp (monotone envelope of the fine-grid bridge mass of the reference, shape only)
+   and the machine as a stiff violet sheet (a Gaussian smoothing of the ramp: it lifts early and stays low, never
+   overshoots). P2 data: the bridge-mass curves of the fine grid (reference solid, model C dashed, 20,000 per Γ) and
+   two (Q, D) clouds at the data Γ that exist in data/ (0.85, 0.87, 0.9, 0.93; reference symmetrized by S as in the
+   evaluation, model C seed 0). P3 the bound, picture first: a cliff ghost and the sheet missing half the jump.
+   P4 honest: consistent, not proof; the overshoot is circled, unexplained. */
+Scene.define({
+  duration: 46,
+  register: 'night',
+  cues: { sheet: 0.4, ramp: 5.6, round: 10.4, clouds: 14.2, bound: 21.4, unless: 26.0, honest: 30.8, overshoot: 36.4 },
+  data: { e1: 'data/e1_finegrid.json', s85: 'data/e1_samples_0.85.json', s87: 'data/e1_samples_0.87.json', s90: 'data/e1_samples_0.9.json', s93: 'data/e1_samples_0.93.json' },
+  params: {
+    metaphor: { box: { x0: 200, x1: 1300, y0: 200, y1: 600 }, x_range: [0.8, 1.0], sheet: { thickness_px: 26, fill_alpha: 0.35 } },
+    smooth_sigma: 0.022,
+    clouds: { boxes: [{ x0: 1330, x1: 1570, y0: 230, y1: 470 }, { x0: 1584, x1: 1824, y0: 230, y1: 470 }], range: 3.2, strip_half_width: 0.25, n_draw: 3000 },
+    knob: { x: 1577, y: 612, r: 40 },
+    bridge_plot: { box: { x0: 200, x1: 1260, y0: 220, y1: 620 }, x: { label: 'Γ, control parameter', min: 0.8, max: 1.0, ticks: [0.8, 0.85, 0.9, 0.95, 1.0], param: true },
+      y: { label: 'snapshots in the corridor, P(|D| < 0.25)', min: 0, max: 0.01, ticks: [0, 0.005, 0.01] } },
+  },
+  setup(ctx) {
+    const K = Kit, S = Scene, P = ctx.params, E1 = ctx.data.e1, U = UK, st = ctx.stage;
+    const xs = E1.x.values, ref = E1.bridge.reference, mc = E1.bridge.model_C;
+    const MB = P.metaphor.box, xr = P.metaphor.x_range;
+    // ---- P1: the metaphor (shape only) ----
+    const msvg = K.svgLayer(ctx, 12), mg = K.s('g', {}, msvg);
+    const mx = (g) => MB.x0 + (MB.x1 - MB.x0) * (g - xr[0]) / (xr[1] - xr[0]);
+    const env = []; ref.reduce((m, v, i) => (env[i] = Math.max(m, v)), 0);
+    const top = env[env.length - 1], my = (v) => MB.y1 - 0.8 * (MB.y1 - MB.y0) * v / top;
+    const sig = P.smooth_sigma, sm = xs.map((g) => { let a = 0, w = 0; xs.forEach((h, j) => { const k = Math.exp(-0.5 * ((g - h) / sig) ** 2); a += k * env[j]; w += k; });
+      // beyond the ends: the ramp is extended flat (no edge droop at 1.0)
+      for (let d = 1; d <= 10; d++) { const h = 1.0 + 0.005 * d, k = Math.exp(-0.5 * ((g - h) / sig) ** 2); a += k * env[env.length - 1]; w += k; const h2 = 0.8 - 0.005 * d, k2 = Math.exp(-0.5 * ((g - h2) / sig) ** 2); w += k2; }
+      return a / w; });
+    K.s('line', { x1: MB.x0, x2: MB.x1 + 16, y1: MB.y1, y2: MB.y1, stroke: K.c('param'), 'stroke-width': 3 }, mg);
+    const thr = E1.threshold.last_zero;
+    K.s('line', { x1: mx(thr), x2: mx(thr), y1: MB.y1, y2: MB.y1 + 14, stroke: K.c('param'), 'stroke-width': 3 }, mg);
+    const thrLab = K.s('text', { x: mx(thr), y: MB.y1 + 50, 'text-anchor': 'middle', class: 'kt-tick' }, mg, String(thr)); thrLab.style.fill = K.c('param');
+    const gl = K.s('text', { x: (MB.x0 + MB.x1) / 2, y: MB.y1 + 96, 'text-anchor': 'middle', class: 'kt-axis' }, mg, 'Γ'); gl.style.fill = K.c('param');
+    U.fade(ctx, mg, { at: -0.3, out: 'clouds-0.15' });
+    const path = (ys) => xs.map((g, i) => `${i ? 'L' : 'M'}${mx(g).toFixed(1)},${ys[i].toFixed(1)}`).join('');
+    const rampP = K.s('path', { d: path(env.map(my)), fill: 'none', stroke: K.c('metric'), 'stroke-width': 4, 'stroke-linejoin': 'round' }, mg);
+    const rl = rampP.getTotalLength(); rampP.style.strokeDasharray = `${rl} ${rl}`;
+    const sheetFill = K.s('path', { d: '', fill: 'none', stroke: K.rgba(K.c('model'), P.metaphor.sheet.fill_alpha), 'stroke-width': P.metaphor.sheet.thickness_px, 'stroke-linejoin': 'round', 'stroke-linecap': 'round' }, mg);
+    const sheetEdge = K.s('path', { d: '', fill: 'none', stroke: K.c('model'), 'stroke-width': 2.5 }, mg);
+    U.label(ctx, { text: 'the machine: a stiff sheet', x: MB.x0 + 20, y: MB.y0 - 10, color: 'model', at: 'sheet+0.6', out: 'clouds-0.15' });
+    U.label(ctx, { text: 'truth: a steep ramp', x: mx(0.93), y: my(env[26]) - 92, anchor: 'c', color: 'metric', cls: 'halo', at: 'ramp+0.4', out: 'clouds-0.15' });
+    const iE = xs.findIndex((g) => g >= 0.845), iL = xs.findIndex((g) => g >= 0.885);
+    U.label(ctx, { text: 'too early', x: mx(xs[iE]) - 10, y: my(sm[iE]) - 70, anchor: 'r', color: 'chalk', cls: 'halo', at: 'round+1.2', out: 'clouds-0.15' });
+    U.label(ctx, { text: 'too low', x: mx(xs[iL]) + 30, y: my(sm[iL]) + 10, color: 'chalk', cls: 'halo', at: 'round+1.6', out: 'clouds-0.15' });
+    K.pen(ctx, { kind: 'arrow', from: [mx(xs[iE]) - 40, my(sm[iE]) - 24], to: [mx(xs[iE]) + 4, my(sm[iE]) - 6], bend: 0.1, at: 'round+1.2', out: 'clouds-0.15', dur: 0.3, seed: 'early' });
+    K.chip(ctx, { text: 'SCHEMATIC · stiff sheet and cliff (shape only)', kind: 'schematic', x: MB.x0, y: 740, at: 'sheet', out: 'clouds-0.15' });
+    const events = [{ t: +(ctx.at('ramp') + 1.0).toFixed(3), id: 'squeal', dur: 0.5, gain_db: -30 }];
+
+    // ---- P2: the bridge-mass chart (fine grid) ----
+    const BP = P.bridge_plot, PL = K.plot(ctx, { box: BP.box, x: BP.x, y: BP.y, at: 'clouds-0.15' });
+    const cRef = PL.curve({ x: xs, y: ref, field: 'metric', width: 4, at: 'clouds+0.4', dur: 4.0 });
+    const cGen = PL.curve({ x: xs, y: mc, field: 'metric', kind: 'generated', width: 3, at: 'clouds+0.4', dur: 4.0 }); void cRef; void cGen;
+    PL.legend([{ label: 'reference', field: 'metric' }, { label: 'generated · model C, seed 0', field: 'metric', kind: 'generated' }], { at: 'clouds+0.2', x: BP.box.x0 + 30, y: BP.box.y0 + 10 });
+    const iT = xs.findIndex((g) => Math.abs(g - E1.threshold.first_nonzero) < 1e-9);
+    const tFew = U.frac(ctx, 'clouds', 0.75, 4.5), bsv = K.svgLayer(ctx, 31), xT = PL.sx(xs[iT]);
+    const brace = K.s('path', { d: `M${xT - 30},${PL.sy(mc[iT])} H${xT - 40} V${PL.sy(ref[iT])} H${xT - 30}`, fill: 'none', stroke: K.c('chalk'), 'stroke-width': 3.5 }, bsv);
+    U.fade(ctx, brace, { at: tFew, out: 'bound-0.2' });
+    U.label(ctx, { text: 'too few at the threshold', x: BP.box.x0 + 30, y: PL.sy(0.003) - 20, anchor: 'l', color: 'chalk', cls: 'halo', at: tFew, out: 'bound-0.2' });
+    const dim = (t) => 1 - 0.6 * S.seg(t, ctx.at('bound-0.15'), ctx.at('bound+0.35'), S.ease.linear) * (1 - S.seg(t, ctx.at('honest-0.15'), ctx.at('honest+0.65'), S.ease.linear));
+
+    // ---- P2: the clouds (four data Γ present in data/) ----
+    const CL = P.clouds, sets = [ctx.data.s85, ctx.data.s87, ctx.data.s90, ctx.data.s93];
+    const panels = CL.boxes.map((b, k) => {
+      const L = K.canvasLayer(ctx, 8, { x: b.x0, y: b.y0, w: b.x1 - b.x0, h: b.y1 - b.y0 }, null, { reset: true });
+      const frames = sets.map((D) => {
+        const V = D.variants[k === 0 ? 'ref' : 'C_equivariant'], X = S.f32(V.x), n = X.length / 3;
+        const pts = []; for (let i = 0; i < n; i++) { pts.push([X[3 * i], X[3 * i + 1]]); if (k === 0) pts.push([-X[3 * i], -X[3 * i + 1]]); }   // reference symmetrized by S
+        const rng = S.rng('cloud' + k + D.gamma), keep = [], strip = [];
+        for (const p of pts) { if (Math.abs(p[1]) < CL.strip_half_width) strip.push(p); else if (rng() < CL.n_draw / pts.length) keep.push(p); }
+        const c = document.createElement('canvas'), W = b.x1 - b.x0, H = b.y1 - b.y0; c.width = W * 2; c.height = H * 2; const g = c.getContext('2d'); g.scale(2, 2);
+        const px = (q) => W / 2 + q * W / (2 * CL.range), py = (d) => H / 2 - d * H / (2 * CL.range);
+        g.fillStyle = K.rgba(K.c('metric'), 0.18); g.fillRect(0, py(CL.strip_half_width), W, py(-CL.strip_half_width) - py(CL.strip_half_width));
+        g.fillStyle = K.rgba(K.c(k === 0 ? 'silver' : 'model'), 0.55); for (const p of keep) g.fillRect(px(p[0]) - 0.8, py(p[1]) - 0.8, 1.6, 1.6);
+        for (const p of strip) { g.beginPath(); g.arc(px(p[0]), py(p[1]), 4, 0, 6.2832); g.fillStyle = K.c('metric'); g.fill(); g.lineWidth = 1.5; g.strokeStyle = K.c(k === 0 ? 'silver' : 'model'); g.stroke(); }
+        return { c, strip: strip.map((p) => [b.x0 + px(p[0]), b.y0 + py(p[1])]), gamma: D.gamma };
+      });
+      return { L, frames, b };
+    });
+    const psvg = K.svgLayer(ctx, 11);
+    panels.forEach((p, k) => K.s('rect', { x: p.b.x0, y: p.b.y0, width: p.b.x1 - p.b.x0, height: p.b.y1 - p.b.y0, fill: 'none', stroke: K.c(k ? 'model' : 'matter'), 'stroke-width': 2 }, psvg));
+    U.fade(ctx, psvg, { at: 'clouds-0.15', out: 'bound-0.2' });
+    U.label(ctx, { html: '<span class="k-metric">the corridor · |D| &lt; 0.25</span>', x: (CL.boxes[0].x0 + CL.boxes[1].x1) / 2, y: CL.boxes[0].y0 - 48, anchor: 'c', size: 28, at: 'clouds', out: 'bound-0.2' });
+    ['Q', 'Q'].forEach((q, k) => U.label(ctx, { text: 'Q → · D ↑', x: CL.boxes[k].x0 + 8, y: CL.boxes[k].y1 - 40, size: 28, cls: 'dim halo', at: 'clouds', out: 'bound-0.2' }));
+    K.chip(ctx, { text: 'SIMULATED', kind: '', x: (CL.boxes[0].x0 + CL.boxes[0].x1) / 2, y: CL.boxes[0].y1 + 8, anchor: 'tl', at: 'clouds', out: 'bound-0.2' }).root.style.transform = 'translate(-50%,0)';
+    K.chip(ctx, { text: 'GENERATED', kind: 'generated', x: (CL.boxes[1].x0 + CL.boxes[1].x1) / 2, y: CL.boxes[1].y1 + 8, anchor: 'tl', at: 'clouds', out: 'bound-0.2' }).root.style.transform = 'translate(-50%,0)';
+    K.chip(ctx, { text: 'clouds: 4,000 generated per Γ · curve: 20,000', kind: 'plain', x: 1824, y: 124, anchor: 'tr', at: 'clouds+0.4', out: 'bound-0.2' });
+    // Γ steps: a long dwell below the threshold (0.85), then quickly through 0.87, 0.9, 0.93
+    const tc = ctx.at('clouds-0.15') + 0.5, tUp = U.frac(ctx, 'clouds', 0.5, 3.0);
+    const steps = [tc, tUp, tUp + 0.5, tUp + 1.0];
+    const KN = P.knob;
+    K.knob(ctx, { x: KN.x, y: KN.y, r: KN.r, min: 0.8, max: 1.0, window: [E1.threshold.last_zero, E1.threshold.first_nonzero], ticks: 8,
+      keys: steps.map((t, i) => ({ at: t, v: sets[i].gamma, dur: i ? 0.3 : 0 })), at: 'clouds-0.15', out: 'bound-0.2', labelDy: KN.r + 56 });
+    const gLab = U.label(ctx, { text: 'Γ', x: KN.x - KN.r - 60, y: KN.y, anchor: 'r', vmid: true, size: 36, color: 'param', cls: 'tnum', at: 'clouds', out: 'bound-0.2' });
+    // the stray generated point(s) below the threshold, ringed
+    const s85 = panels[1].frames[0].strip;
+    s85.slice(0, 3).forEach((p, i) => K.pen(ctx, { kind: 'circle', box: { x: p[0] - 10, y: p[1] - 10, w: 20, h: 20 }, pad: 6, at: tc + 0.6 + 0.2 * i, out: tUp, dur: 0.4, seed: 'stray' + i }));
+    events.push({ t: +tc.toFixed(3), id: 'detent' });
+
+    // ---- P3: the bound, picture first ----
+    const B = BP.box, cg = K.s('g', {}, K.svgLayer(ctx, 26));
+    const cx0 = (B.x0 + B.x1) / 2, yb = B.y1 - 40, ytp = B.y0 + 70;
+    K.s('path', { d: `M${B.x0 + 40},${yb} H${cx0} V${ytp} H${B.x1 - 40}`, fill: 'none', stroke: K.c('muted'), 'stroke-width': 4, 'stroke-dasharray': '12 9' }, cg);
+    let sd = ''; for (let i = 0; i <= 80; i++) { const x = B.x0 + 40 + (B.x1 - B.x0 - 80) * i / 80, z = (x - cx0) / 120; sd += `${i ? 'L' : 'M'}${x.toFixed(1)},${(yb + (ytp - yb) * 0.5 * (1 + Math.tanh(z))).toFixed(1)}`; }
+    K.s('path', { d: sd, fill: 'none', stroke: K.rgba(K.c('model'), 0.35), 'stroke-width': 24, 'stroke-linecap': 'round' }, cg);
+    K.s('path', { d: sd, fill: 'none', stroke: K.c('model'), 'stroke-width': 2.5 }, cg);
+    U.fade(ctx, cg, { at: 'bound-0.15', out: 'honest-0.15', dout: 0.8 });
+    const bg = K.svgLayer(ctx, 31);
+    const jb = K.s('path', { d: `M${cx0 - 40},${yb} h-14 V${ytp} h14`, fill: 'none', stroke: K.c('chalk'), 'stroke-width': 3.5 }, bg); U.fade(ctx, jb, { at: 'bound+0.8', out: 'honest-0.15' });
+    U.label(ctx, { text: 'jump', x: cx0 - 70, y: (yb + ytp) / 2 - 20, anchor: 'r', color: 'chalk', cls: 'halo', at: 'bound+0.8', out: 'honest-0.15' });
+    const ym = (yb + ytp) / 2, mb = K.s('path', { d: `M${cx0 + 30},${ym} h14 V${ytp} h-14`, fill: 'none', stroke: K.c('chalk'), 'stroke-width': 3.5 }, bg); U.fade(ctx, mb, { at: 'bound+1.6', out: 'honest-0.15' });
+    U.label(ctx, { text: 'miss ≥ about half the jump', x: cx0 + 64, y: (ym + ytp) / 2 - 20, color: 'chalk', cls: 'halo', at: 'bound+1.6', out: 'honest-0.15' });
+    U.label(ctx, { text: 'unless: very supple, or told which state', x: 1320, y: 400, maxW: 480, size: 40, color: 'chalk', at: 'unless-0.15', out: 'honest-0.15' });
+
+    // ---- P4: honest ----
+    U.label(ctx, { text: 'leaks · lags · overshoots', x: B.x0, y: 760, size: 40, color: 'chalk', at: 'honest+0.6' });
+    const iO = xs.findIndex((g) => g >= 0.875), iO2 = xs.findIndex((g) => g >= 0.885);
+    const ob = { x: PL.sx(xs[iO]) - 10, y: PL.sy(Math.max(mc[iO], mc[iO + 1])) - 10, w: PL.sx(xs[iO2]) - PL.sx(xs[iO]) + 20, h: PL.sy(Math.min(ref[iO], ref[iO2])) - PL.sy(Math.max(mc[iO], mc[iO + 1])) + 20 };
+    const oc = K.s('ellipse', { cx: ob.x + ob.w / 2, cy: ob.y + ob.h / 2, rx: ob.w / 2 + 22, ry: ob.h / 2 + 16, fill: 'none', stroke: K.c('chalk'), 'stroke-width': 4, 'stroke-dasharray': '4 10', 'stroke-linecap': 'round' }, K.svgLayer(ctx, 30));
+    U.fade(ctx, oc, { at: 'overshoot-0.15' });
+    U.label(ctx, { text: '?', x: ob.x + ob.w + 30, y: ob.y - 40, size: 56, color: 'muted', at: 'overshoot+0.4' });
+    K.chip(ctx, { text: 'consistent with Prop. 9 · one model, seed 0', kind: 'plain', x: 1824, y: 124, anchor: 'tr', at: 'honest+0.4' });
+    K.badge(ctx, { kind: 'PROVED', at: -0.3 });
+    K.formulaLayer(ctx, { label: 'Formula · R:544-557' });
+    window.__EVENTS__ = events;
+    ctx.u = { gLab, sets, panels, steps, sheetFill, sheetEdge, rampP, rl, sm, my, mx, xs, MB, PL, dim, T: { sheet: ctx.at('sheet-0.15'), ramp: ctx.at('ramp-0.15'), round: ctx.at('round-0.15'), clouds: ctx.at('clouds-0.15'), bound: ctx.at('bound-0.2') } };
+  },
+  render(t, ctx) {
+    const S = Scene, u = ctx.u, T = u.T;
+    // the sheet: drops in flat, then sags onto the ramp (smoothed shape), breathing slightly
+    const pd = S.seg(t, T.sheet, T.sheet + 1.2, S.ease.outCubic), pr = S.seg(t, T.round, T.round + 1.8, S.ease.inOutCubic);
+    const flat = u.MB.y0 + 60 + 220 * pd, br = 3 * Math.sin(t * 1.3);
+    const d = u.xs.map((g, i) => `${i ? 'L' : 'M'}${u.mx(g).toFixed(1)},${((1 - pr) * flat + pr * u.my(u.sm[i]) + br * (1 - pr)).toFixed(1)}`).join('');
+    u.sheetFill.setAttribute('d', d); u.sheetEdge.setAttribute('d', d);
+    const so = t >= T.sheet ? Math.min(1, (t - T.sheet) / 0.3) : 0; u.sheetFill.style.opacity = so; u.sheetEdge.style.opacity = so;
+    u.rampP.style.strokeDashoffset = (u.rl * (1 - S.seg(t, T.ramp, T.ramp + 1.4, S.ease.inOutSine))).toFixed(1);
+    u.rampP.style.opacity = t >= T.ramp ? 1 : 0;
+    // the chart dims under the bound
+    u.PL.root.style.opacity = (+u.PL.root.style.opacity || 1) * u.dim(t);
+    // clouds: the frame of the current Γ step
+    let k = 0; for (let i = 0; i < u.steps.length; i++) if (t >= u.steps[i]) k = i;
+    const on = t >= T.clouds && t < T.bound + 0.3, a = S.seg(t, T.clouds, T.clouds + 0.4, S.ease.linear) * (1 - S.seg(t, T.bound, T.bound + 0.3, S.ease.linear));
+    u.gLab.el.textContent = `Γ = ${u.sets[k].gamma}`;
+    for (const p of u.panels) { const g = p.L.g; g.clearRect(0, 0, p.L.w, p.L.h); if (!on) continue; g.globalAlpha = a; g.drawImage(p.frames[k].c, 0, 0, p.L.w, p.L.h); }
+  },
+});
+</script></body></html>

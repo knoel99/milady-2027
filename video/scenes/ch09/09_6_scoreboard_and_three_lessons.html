@@ -1,0 +1,111 @@
+<!doctype html>
+<html lang="en"><head><meta charset="utf-8">
+<title>09.6 Scoreboard and three lessons</title>
+<link rel="stylesheet" href="../../vendor/katex/katex.min.css">
+<link rel="stylesheet" href="../../runtime/theme.css">
+<link rel="stylesheet" href="ch09.css">
+<script src="../../vendor/katex/katex.min.js"></script>
+<script src="../../runtime/scene.js"></script>
+<script src="../../runtime/components/kit.js"></script>
+<script src="../../runtime/components/hud.js"></script>
+<script src="../../runtime/components/plot.js"></script>
+<script src="../../runtime/components/field.js"></script>
+<script src="../../runtime/components/equation.js"></script>
+<script src="../../runtime/components/motifs.js"></script>
+<script src="../../runtime/components/cards.js"></script>
+<script src="../../runtime/components/seat.js"></script>
+<script src="../../runtime/components/threemodes.js"></script>
+<script src="ch09_kit.js"></script>
+</head><body><div id="stage"></div>
+<script>
+/* 09.6 Scoreboard and three lessons (L4, NIGHT, MEASURED: the report's summary of the mechanisms, R:1149-1158).
+   Eight mechanism cards dealt onto two planks (per snapshot / crowd), verdict icons only (never a key colour);
+   the three promise cards of 03.7 get their ticks (card 1 a half tick); then the three lessons. Words and motifs only:
+   the two factors of card 1 come from data/ch09_rice.json (09.5). */
+Scene.define({
+  duration: 47,
+  register: 'night',
+  cues: { board: 0.4, every: 3.8, crowd: 8.6, promises: 15.2, family: 17.6, where: 23.4, often: 27.4, lessons: 33.2, exact: 35.0, crowdlaw: 37.4, judge: 41.0 },
+  data: { rice: 'data/ch09_rice.json' },
+  params: {
+    cards: [{ shelf: 'every', title: 'hill maps', sub: 'potentials', verdict: 'exact' }, { shelf: 'every', title: 'final projection', verdict: 'exact' },
+      { shelf: 'every', title: 'projected flow', verdict: 'exact' }, { shelf: 'every', title: 'penalty', verdict: 'approximate' },
+      { shelf: 'crowd', title: 'built-in mirror', sub: 'equivariance', verdict: 'exact' }, { shelf: 'crowd', title: 'crowd loss', verdict: 'approximate', was: 'exact', note: 'E2 ✓ · E1 mixed' },
+      { shelf: 'crowd', title: 'reweighting afterwards', verdict: 'harmful' }, { shelf: 'crowd', title: 'forced on each snapshot', verdict: 'harmful' }],
+    verdict_icons: { exact: '✓', approximate: '≈', harmful: '✗' }, deal_s: 0.35,
+    rate_row: { text: 'how often · Rice on generated snapshots: ✓ far · ≈ near the threshold' },
+    lessons: [{ cue: 'exact', text: 'Exact laws: build them in' }, { cue: 'crowdlaw', text: 'Crowd laws: on the crowd, never on each snapshot' }, { cue: 'judge', text: 'Judge against the noise floor, with enough seeds' }],
+  },
+  setup(ctx) {
+    const K = Kit, S = Scene, P = ctx.params, R = ctx.data.rice, U = UK, st = ctx.stage;
+    const T = (c) => ctx.at(c);
+    U.label(ctx, { text: 'The scoreboard', x: 120, y: 44, size: 60, cls: 'display', at: -0.3, out: 'promises-0.3' });
+    // ---- shelves ----
+    const shelf = K.el('div', { class: 'uk-abs' }, st); shelf.style.cssText = 'position:absolute;inset:0;z-index:20;transform-origin:960px 140px';
+    const plank = (x0, label, glyph) => { const l = K.el('div', { class: 'uk-lab dim', html: glyph + ' ' + label }, shelf); l.style.cssText += `;left:${x0}px;top:136px;font-size:32px`;
+      const b = K.el('div', {}, shelf); b.style.cssText = `position:absolute;left:${x0}px;top:408px;width:760px;height:6px;background:var(--matter);border-radius:3px`; };
+    plank(120, 'true for every snapshot', '▭'); plank(1040, 'true only for the crowd', '<span class="k-metric">▤</span>');
+    const W = 184, H = 214, GAP = 8, cards = P.cards.map((c, i) => {
+      const k = c.shelf === 'every' ? i : i - 4, x = (c.shelf === 'every' ? 120 : 1040) + k * (W + GAP), y = 186;
+      const e = K.el('div', { class: 'uk-card' }, shelf); e.style.cssText += `;left:${x}px;top:${y}px;width:${W}px;height:${H}px;padding:12px 8px`;
+      const t = K.el('div', { class: 'uk-lab' }, e, c.title); t.style.cssText = `position:static;white-space:normal;font-size:30px;line-height:1.12;font-weight:600`;
+      if (c.sub) { const s2 = K.el('div', { class: 'uk-lab dim' }, e, c.sub); s2.style.position = 'static'; s2.style.fontSize = '28px'; s2.style.letterSpacing = '-0.02em'; }
+      const v = K.el('div', { class: 'uk-lab' }, e, P.verdict_icons[c.was || c.verdict]); v.style.cssText += ';left:0;right:0;bottom:6px;top:auto;text-align:center;font-size:56px';
+      const v2 = c.was ? K.el('div', { class: 'uk-lab' }, e, P.verdict_icons[c.verdict]) : null; if (v2) v2.style.cssText += ';left:0;right:0;bottom:6px;top:auto;text-align:center;font-size:56px';
+      return { e, x, y, v, v2, c, t0: T('board-0.15') + P.deal_s * i };
+    });
+    U.label(ctx, { text: '×2.7 magnetic energy', x: cards[3].x + W / 2, y: 420, anchor: 'c', size: 32, cls: 'mono', at: 'every+1.6', out: 'promises-0.2' });
+    U.label(ctx, { text: cards[5].c.note, x: cards[5].x + W / 2, y: 420, anchor: 'c', size: 32, color: 'chalk', at: 'crowd+1.0', out: 'promises-0.2' });
+    // ---- promise cards (03.7) ----
+    const pTexts = ['learn the whole family of fields, even at {param}knob settings{/} between the dots', 'respect each law where it holds: exactly, or {metric}on average{/}', 'say {metric}how often{/} the field flips'];
+    const prow = K.el('div', {}, st); prow.style.cssText = 'position:absolute;inset:0;z-index:22';
+    const PW = 540, PY = 456, pc = pTexts.map((txt, i) => { const x = 120 + i * (PW + 24), e = K.el('div', { class: 'uk-card' }, prow); e.style.cssText += `;left:${x}px;top:${PY}px;width:${PW}px;height:200px`;
+      const k = K.el('div', { class: 'uk-lab mono' }, e, K.upper('promise ' + (i + 1))); k.style.cssText += ';left:22px;top:14px';
+      const q = K.el('div', { class: 'uk-lab', html: K.markup(txt) }, e); q.style.cssText += ';left:22px;top:54px;width:400px;white-space:normal;font-size:32px';
+      return { e, x }; });
+    U.fade(ctx, prow, { at: 'promises-0.15', out: 'lessons-0.15' });
+    const psvg = K.svgLayer(ctx, 33), tk = (x, y, half) => K.s('path', { d: half ? `M${x},${y + 4} q12,-12 24,0 t24,0` : `M${x},${y} l12,14 l26,-34`, fill: 'none', stroke: K.c('chalk'), 'stroke-width': 5, 'stroke-linecap': 'round' }, psvg);
+    const old = [tk(pc[1].x + 460, PY + 150), tk(pc[2].x + 430, PY + 150), tk(pc[2].x + 480, PY + 150)];
+    old.forEach((p) => U.fade(ctx, p, { at: 'promises+0.2', out: 'lessons-0.15' }));
+    U.label(ctx, { text: '≈', x: pc[0].x + 476, y: PY + 90, anchor: 'c', size: 56, at: 'family+0.6', out: 'lessons-0.15' });
+    U.label(ctx, { text: `≈ between the dots: right shapes · above the noise floor (×\u00a0${Math.round(R.factors.e1_best_over_floor)} three dials · ×\u00a0${Math.round(R.factors.e2_best_over_honest_floor)} flat\u00a0sheet)`, x: pc[0].x, y: PY + 216, maxW: PW, size: 28, cls: 'dim', at: 'family+0.8', out: 'lessons-0.15' });
+    U.label(ctx, { text: 'exactly ✓ · on average ≈', x: pc[1].x, y: PY + 216, size: 28, cls: 'dim', at: 'where+0.3', out: 'lessons-0.15' });
+    U.label(ctx, { text: P.rate_row.text, x: pc[2].x, y: PY + 216, maxW: PW, size: 28, cls: 'dim', at: 'often+0.3', out: 'lessons-0.15' });
+    const pulses = [['family', 0], ['where', 1], ['often', 2]].map(([c, i]) => ({ t: T(c + '-0.15'), e: pc[i].e }));
+    // ---- lessons ----
+    const ls = K.svgLayer(ctx, 33);
+    const glyph = [(x, y) => { K.s('rect', { x, y: y - 26, width: 52, height: 52, fill: 'none', stroke: K.c('chalk'), 'stroke-width': 3 }, ls); [-12, 0, 12].forEach((d) => K.s('line', { x1: x - 18, x2: x + 70, y1: y + d, y2: y + d, stroke: K.c('chalk'), 'stroke-width': 2 }, ls)); },
+      (x, y) => { K.s('line', { x1: x + 10, x2: x + 10, y1: y - 30, y2: y + 30, stroke: K.c('chalk'), 'stroke-width': 3 }, ls); K.s('path', { d: `M${x + 24},${y + 24} L${x + 44},${y + 24} L${x + 50},${y - 28} L${x + 56},${y + 24} L${x + 70},${y + 24}`, fill: 'none', stroke: K.c('metric'), 'stroke-width': 3 }, ls);
+        K.s('path', { d: `M${x + 22},${y - 26} L${x + 74},${y + 30}`, stroke: K.c('chalk'), 'stroke-width': 4 }, ls); },
+      (x, y) => { K.s('line', { x1: x, x2: x + 70, y1: y + 12, y2: y + 12, stroke: K.c('muted'), 'stroke-width': 3, 'stroke-dasharray': '8 6' }, ls); [0, 1, 2].forEach((i) => K.s('circle', { cx: x + 12 + 22 * i, cy: y - 12, r: 7, fill: i < 2 ? K.c('chalk') : 'none', stroke: K.c('chalk'), 'stroke-width': 2.5 }, ls)); }];
+    const LY = [520, 630, 740];
+    P.lessons.forEach((l, i) => {
+      const g0 = ls.childNodes.length; glyph[i](130, LY[i] + 30); const gs = [...ls.childNodes].slice(g0); gs.forEach((n) => U.fade(ctx, n, { at: `${l.cue}-0.15` }));
+      const lab = U.label(ctx, { text: l.text, x: 240, y: LY[i], size: 48, cls: 'display', at: `${l.cue}-0.15` });
+      const key = ['build them in', 'on the crowd', 'noise floor'][i], full = lab.el.textContent, idx = full.indexOf(key);
+      if (idx >= 0) { lab.el.innerHTML = K.esc(full.slice(0, idx)) + `<span>${K.esc(key)}</span>` + K.esc(full.slice(idx + key.length)); }
+      const sp = lab.el.querySelector('span');
+      if (sp) K.pen(ctx, { kind: 'underline', target: sp, at: U.frac(ctx, l.cue, 0.6, 1.2), dur: 0.4, seed: 'lu' + i });
+    });
+    U.label(ctx, { html: K.upper('full table: report §6, summary of the mechanisms') + '<br>' + K.upper('(in the description)'), x: 1824, y: 800, anchor: 'r', cls: 'mono', at: 'board+0.6', out: 'promises-0.3' });
+    K.badge(ctx, { kind: 'MEASURED', at: -0.3 });
+    window.__EVENTS__ = cards.map((c) => ({ t: +(c.t0 + 0.3).toFixed(3), id: 'pop', gain_db: -28 }));
+    ctx.u = { cards, shelf, pulses, T: { every: T('every-0.15'), crowd: T('crowd-0.15'), prom: T('promises-0.15'), les: T('lessons-0.15'), deck: [960, 900] } };
+  },
+  render(t, ctx) {
+    const S = Scene, u = ctx.u, T = u.T;
+    u.cards.forEach((c, i) => {
+      const p = S.seg(t, c.t0, c.t0 + 0.45, S.ease.outCubic), dx = (T.deck[0] - c.x - 87) * (1 - p), dy = (T.deck[1] - c.y) * (1 - p);
+      const pt = i < 4 ? T.every + 0.3 * i : T.crowd + 0.3 * (i - 4), pulse = Math.sin(Math.PI * S.seg(t, pt, pt + 0.5, S.ease.inOutSine));
+      c.e.style.transform = `translate(${dx.toFixed(1)}px, ${dy.toFixed(1)}px) scale(${(1 + 0.06 * pulse).toFixed(4)})`;
+      c.e.style.opacity = p.toFixed(3); c.e.style.borderColor = pulse > 0.05 ? 'var(--fg)' : '';
+      if (c.v2) { const m = S.seg(t, T.crowd + 0.3 * (i - 4) + 0.6, T.crowd + 0.3 * (i - 4) + 1.0, S.ease.linear); c.v.style.opacity = 1 - m; c.v2.style.opacity = m; }
+    });
+    // shelves dim and rise for the promises, dim further for the lessons
+    const pp = S.seg(t, T.prom, T.prom + 0.6, S.ease.inOutCubic), pl = S.seg(t, T.les, T.les + 0.6, S.ease.inOutCubic);
+    u.shelf.style.transform = '';
+    u.shelf.style.opacity = (1 - 0.5 * pp - 0.25 * pl).toFixed(3);
+    for (const q of u.pulses) { const s = Math.sin(Math.PI * S.seg(t, q.t, q.t + 0.6, S.ease.inOutSine)); q.e.style.borderColor = s > 0.05 ? 'var(--fg)' : ''; q.e.style.transform = `scale(${(1 + 0.03 * s).toFixed(4)})`; }
+  },
+});
+</script></body></html>

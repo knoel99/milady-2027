@@ -1,0 +1,9 @@
+/* ch09.css: styles shared by the scenes of unit ch09 (tokens only, no transitions, no animations). */
+.uk-lab { position: absolute; white-space: nowrap; font-size: 32px; font-weight: 500; line-height: 1.22; color: var(--fg); z-index: 32; }
+.uk-lab.mono { font-family: "JetBrains Mono"; font-size: 28px; letter-spacing: .07em; color: var(--muted); }
+.uk-lab.display { font-family: "Inter Display"; font-weight: 700; }
+.uk-lab.small { font-size: 28px; }
+.uk-lab.dim { color: var(--fg-2); }
+.uk-lab.halo, .uk-halo { text-shadow: 0 0 3px var(--bg), 0 0 6px var(--bg), 0 0 10px var(--bg); }
+.uk-card { position: absolute; box-sizing: border-box; background: var(--panel); border: 2px solid var(--fg-2); border-radius: 12px; z-index: 22; }
+.uk-stamp { border: 3px solid var(--fg-2); padding: 2px 14px; border-radius: 6px; color: var(--fg-2) !important; background: var(--bg); transform: translate(-50%, 0) rotate(-5deg) !important; }

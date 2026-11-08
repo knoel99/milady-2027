@@ -1,0 +1,183 @@
+<!doctype html>
+<html lang="en"><head><meta charset="utf-8">
+<title>09.1 How often, from generated photographs</title>
+<link rel="stylesheet" href="../../vendor/katex/katex.min.css">
+<link rel="stylesheet" href="../../runtime/theme.css">
+<link rel="stylesheet" href="ch09.css">
+<script src="../../vendor/katex/katex.min.js"></script>
+<script src="../../runtime/scene.js"></script>
+<script src="../../runtime/components/kit.js"></script>
+<script src="../../runtime/components/hud.js"></script>
+<script src="../../runtime/components/plot.js"></script>
+<script src="../../runtime/components/field.js"></script>
+<script src="../../runtime/components/equation.js"></script>
+<script src="../../runtime/components/motifs.js"></script>
+<script src="../../runtime/components/cards.js"></script>
+<script src="../../runtime/components/seat.js"></script>
+<script src="../../runtime/components/threemodes.js"></script>
+<script src="ch09_kit.js"></script>
+</head><body><div id="stage"></div>
+<script>
+/* 09.1 How often, from generated photographs (L4, NIGHT, MEASURED). Lead-in: chapter card. P1: the toll counter
+   of 05.1 returns with violet (generated) cars, the Γ ruler (41 settings, 30 never trained on), Rice turns the
+   cars into a crossing rate. P2: the 05.3 chart: counted rate, Rice on true snapshots (ghost), Rice on generated
+   snapshots far from the threshold, cumulative error as a shaded area; pointwise misses; the near range stays
+   fogged (its shape is the answer of 09.2). P3: caveat chips and promise card 3 with its second tick.
+   Every number from data/ch09_rice.json and data/e1_finegrid.json. */
+Scene.define({
+  duration: 52,
+  register: 'night',
+  cues: { back: 3.6, machine: 7.4, rice: 15.2, far: 19.6, pointwise: 25.4, near: 31.2, seed: 34.6, caveats: 37.2, answer: 41.4, yes: 45.2 },
+  data: { e1: 'data/e1_finegrid.json', rice: 'data/ch09_rice.json' },
+  params: {
+    chapter_card: { num: '09', title: 'The honest scoreboard', level: 'L4', levelFrom: 'L4', tier: 0, pending: [3, 4] },
+    road: { box: { x0: 260, x1: 1660, y0: 120, y1: 330 }, cars: { n: 22, seed: 'ch09-cars' }, icon_box: { x0: 1480, x1: 1780, y0: 112, y1: 222 } },
+    ruler: { x0: 260, x1: 1660, y: 372 },
+    plot: { box: { x0: 240, x1: 1440, y0: 200, y1: 620 }, x: { label: 'Γ, control parameter', min: 0.8, max: 1.0, ticks: [0.8, 0.85, 0.9, 0.95, 1.0], param: true },
+      y: { label: 'crossing rate of D (per unit time)', min: 0, max: 0.014, ticks: [0, 0.005, 0.01] } },
+    series: { count: 'simulation (counted crossings)', rice_ref: 'Rice, reference snapshots', rice_gen: 'Rice, generated (model C)' },
+    tick_gain_db: -26,
+  },
+  setup(ctx) {
+    const K = Kit, S = Scene, P = ctx.params, st = ctx.stage, E1 = ctx.data.e1, R = ctx.data.rice, U = UK;
+    const cc = P.chapter_card, title = cc.title;
+    K.chapterCard(ctx, { num: cc.num, title, level: cc.level, levelFrom: cc.levelFrom, tier: cc.tier, pending: cc.pending, at: -0.3, out: 'back-0.4', railHold: 2.6 });
+    const events = [];
+
+    // ================= P1: the toll counter with generated cars =================
+    const RD = Object.assign({}, P.road.box, { cars: P.road.cars.n, seed: P.road.cars.seed }), roadSvg = K.svgLayer(ctx, 12), road = K.s('g', {}, roadSvg);
+    K.s('rect', { x: RD.x0, y: RD.y0, width: RD.x1 - RD.x0, height: RD.y1 - RD.y0, rx: 14, fill: K.c('panel'), stroke: K.c('matter'), 'stroke-width': 3 }, road);
+    const lineX = (RD.x0 + RD.x1) / 2;
+    K.s('rect', { x: lineX - 70, y: RD.y0 + 8, width: 140, height: RD.y1 - RD.y0 - 16, fill: 'none', stroke: K.c('muted'), 'stroke-width': 2, 'stroke-dasharray': '8 8' }, road);
+    K.s('line', { x1: lineX, x2: lineX, y1: RD.y0 + 6, y2: RD.y1 - 6, stroke: K.c('chalk'), 'stroke-width': 4 }, road);
+    const rng = S.rng(RD.seed), cars = [];
+    const lanes = [RD.y0 + 40, RD.y0 + 90, RD.y0 + 140];
+    for (let i = 0; i < RD.cars; i++) {
+      const lane = lanes[i % 3] - 14, v = 90 + 160 * rng(), x0 = rng() * (RD.x1 - RD.x0), dir = (i % 3 === 1) ? -1 : 1;
+      const g = K.s('g', {}, road);
+      K.s('rect', { x: -26, y: 0, width: 52, height: 28, rx: 7, fill: K.rgba(K.c('model'), 0.7), stroke: K.c('model'), 'stroke-width': 2 }, g);
+      const bar = K.s('rect', { x: -26, y: -12, width: 0, height: 6, fill: K.c('metric') }, g);
+      cars.push({ g, lane, v, x0, dir, bar });
+    }
+    const T = { back: ctx.at('back-0.15'), mach: ctx.at('machine-0.15'), rice: ctx.at('rice-0.15'), far: ctx.at('far-0.15') };
+    const span = RD.x1 - RD.x0 - 60;
+    const pos = (c, t) => { // the cars slow to a stop at 'rice' (distance = integral of a speed that ramps to 0 in 0.6 s)
+      const tt = Math.max(0, t - T.back), ts = Math.max(0, T.rice - T.back), stopDur = 0.6;
+      const d = tt <= ts ? c.v * tt : c.v * (ts + Math.min(tt - ts, stopDur) - Math.min(tt - ts, stopDur) ** 2 / (2 * stopDur));
+      const u = ((c.x0 + c.dir * d) % span + span) % span; return RD.x0 + 30 + u;
+    };
+    // crossing ticks (the chalk line), at most 10, from the same motion
+    { const cand = []; for (const c of cars) { let prev = pos(c, T.back); for (let t = T.back + 0.05; t < T.rice; t += 0.05) { const x = pos(c, t); if ((prev - lineX) * (x - lineX) < 0 && Math.abs(x - prev) < 200) cand.push(+t.toFixed(3)); prev = x; } }
+      cand.sort((a, b) => a - b); let last = -1; for (const t of cand) if (events.length < 10 && t - last > 0.4) { events.push({ t, id: 'tick', gain_db: P.tick_gain_db }); last = t; } }
+    const genChip = K.chip(ctx, { text: 'GENERATED', kind: 'generated', x: RD.x1, y: RD.y0 - 12, anchor: 'br', at: 'back', out: 'far-0.4' });
+    // the machine: a small violet cloud feeding the cars
+    const cloudG = K.s('g', {}, roadSvg), cr = S.rng('ch09-cloud'), pts = [];
+    for (let i = 0; i < 90; i++) { const a = cr() * 6.283, r = 38 * Math.sqrt(-2 * Math.log(1 - cr() * 0.95)) / 2.4; pts.push([a, r, K.s('circle', { r: 3, fill: K.c('model') }, cloudG)]); }
+    const cloudC = [168, (RD.y0 + RD.y1) / 2];
+    K.s('path', { d: `M${cloudC[0] + 52},${cloudC[1]} L${RD.x0 - 12},${cloudC[1]} M${RD.x0 - 26},${cloudC[1] - 10} L${RD.x0 - 12},${cloudC[1]} L${RD.x0 - 26},${cloudC[1] + 10}`, fill: 'none', stroke: K.c('model'), 'stroke-width': 3 }, cloudG);
+    U.fade(ctx, cloudG, { at: 'machine-0.15', out: 'far-1.2' });
+    U.label(ctx, { text: U.onscreen(ctx, 'built-in mirror', 'built-in mirror · seed 0'), x: RD.x0, y: RD.y0 - 58, size: 28, cls: 'dim', at: 'machine', out: 'far-1.2' });
+    // the Γ ruler: 41 ticks, training values filled
+    const RU = P.ruler, ruler = K.s('g', {}, roadSvg), xs = E1.x.values, xr = (g) => RU.x0 + (RU.x1 - RU.x0) * (g - 0.8) / 0.2;
+    K.s('line', { x1: RU.x0, x2: RU.x1, y1: RU.y, y2: RU.y, stroke: K.c('param'), 'stroke-width': 3 }, ruler);
+    xs.forEach((g, i) => K.s('circle', { cx: xr(g), cy: RU.y, r: 7, fill: E1.x.train[i] ? K.c('param') : K.c('bg'), stroke: K.c('param'), 'stroke-width': 2.5 }, ruler));
+    U.fade(ctx, ruler, { at: 'machine', out: 'rice+1.2' });
+    U.label(ctx, { text: 'Γ', x: RU.x0 - 30, y: RU.y - 22, color: 'param', at: 'machine', out: 'rice+1.2' });
+    const nfmt = (n) => n.toLocaleString('en-US');
+    U.label(ctx, { text: `${nfmt(R.n_generated_per_gamma)} per setting · ${R.n_settings} settings · ${R.n_unseen} never trained on`, x: (RU.x0 + RU.x1) / 2, y: RU.y + 26, anchor: 'c', at: 'machine+0.4', out: 'rice+1.2' });
+    // Rice: speed bars grow on the stopped in-strip cars, an amber counter appears
+    const counter = U.label(ctx, { html: '<span class="k-metric">crossing rate</span>', x: lineX, y: RD.y0 - 64, anchor: 'c', size: 40, at: 'rice+0.6', out: 'far-1.2' });
+    void counter;
+
+    // ================= P2: the chart =================
+    const PL = K.plot(ctx, Object.assign({}, P.plot, { at: 'far-0.15' }));
+    const sc = U.series(E1, P.series.count), sr = U.series(E1, P.series.rice_ref), sg = U.series(E1, P.series.rice_gen);
+    const cCount = PL.curve({ x: xs, y: sc.y, field: 'b', kind: 'simulated', width: 4, at: 'far-0.15', dur: 0.5 });
+    const cRef = PL.curve({ x: xs, y: sr.y, field: 'metric', kind: 'simulated', width: 3, at: 'far-0.15', dur: 0.5 });
+    cRef.path.setAttribute('opacity', 0.5);
+    const iFar = xs.findIndex((g) => g >= R.check.C.far.gamma_min - 1e-9);
+    const gx = xs.slice(iFar), gy = sg.y.slice(iFar), cy = sc.y.slice(iFar);
+    const cGen = PL.curve({ x: gx, y: gy, field: 'metric', kind: 'generated', width: 3, at: 'far+0.3', dur: 1.5 });
+    void cCount; void cGen;
+    // shading: between the generated Rice curve and the counted curve (amber), under the counted curve (grey hatch)
+    const pg = (arrA, arrB) => { let d = ''; gx.forEach((g, i) => { d += `${i ? 'L' : 'M'}${PL.sx(g).toFixed(1)},${PL.sy(arrA[i]).toFixed(1)}`; }); for (let i = gx.length - 1; i >= 0; i--) d += `L${PL.sx(gx[i]).toFixed(1)},${PL.sy(arrB[i]).toFixed(1)}`; return d + 'Z'; };
+    const defs = K.s('defs', {}, PL.svg), hid = 'ch09hatch';
+    const pat = K.s('pattern', { id: hid, width: 14, height: 14, patternUnits: 'userSpaceOnUse', patternTransform: 'rotate(45)' }, defs);
+    K.s('line', { x1: 0, y1: 0, x2: 0, y2: 14, stroke: K.c('muted'), 'stroke-width': 2, opacity: 0.45 }, pat);
+    const under = K.s('path', { d: pg(cy, cy.map(() => 0)), fill: `url(#${hid})` }, PL.root);
+    const between = K.s('path', { d: pg(gy, cy), fill: K.rgba(K.c('metric'), 0.35) }, PL.root);
+    PL.root.insertBefore(under, PL.root.children[1]); PL.root.insertBefore(between, PL.root.children[1]);
+    U.fade(ctx, under, { at: 'far+1.6', din: 0.4 }); U.fade(ctx, between, { at: 'far+1.8', din: 0.4 });
+    // legend (top-left inside the plot)
+    PL.legend([{ label: 'counted · simulation', field: 'b' }, { label: 'Rice · true snapshots', field: 'metric', kind: 'ghost' }, { label: 'Rice · generated snapshots', field: 'metric', kind: 'generated' }], { at: 'far', x: PL.box.x0 + 30, y: PL.box.y0 + 10 });
+    K.chip(ctx, { text: 'GENERATED', kind: 'generated', x: PL.sx(1.0) + 14, y: PL.sy(gy[gy.length - 1]) - 50, anchor: 'tl', at: 'far+1.6' });
+    // bracket 'far' + label
+    const brSvg = K.svgLayer(ctx, 31);
+    const bracket = (g0, g1, y, at, out) => { const x0 = PL.sx(g0), x1 = PL.sx(g1); const p = K.s('path', { d: `M${x0},${y + 14} V${y} H${x1} V${y + 14}`, fill: 'none', stroke: K.c('chalk'), 'stroke-width': 3 }, brSvg); U.fade(ctx, p, { at, out }); return p; };
+    const yFar = PL.sy(0.0125);
+    bracket(R.check.C.far.gamma_min, R.check.C.far.gamma_max, yFar, 'far+2.2');
+    U.label(ctx, { text: `{metric}${R.check.C.far.percent} %{/} · far from the threshold`, x: PL.sx(0.945), y: yFar - 50, anchor: 'c', cls: 'halo', at: 'far+2.3' });
+    // pointwise: a dot per Γ >= 0.89, radius by the miss; the two largest circled
+    const pf = R.check.C.pointwise_far, dotG = K.s('g', {}, brSvg);
+    pf.gamma.forEach((g, i) => { const j = xs.findIndex((x) => Math.abs(x - g) < 1e-6); K.s('circle', { cx: PL.sx(g), cy: PL.sy(sg.y[j]), r: (4 + 26 * pf.values[i]).toFixed(1), fill: 'none', stroke: K.c('chalk'), 'stroke-width': 2.5 }, dotG); });
+    U.fade(ctx, dotG, { at: 'pointwise-0.15' });
+    const am = pf.argmax.map((g) => { const j = xs.findIndex((x) => Math.abs(x - g) < 1e-6); return [PL.sx(g), PL.sy(sg.y[j])]; });
+    const amBox = { x: Math.min(am[0][0], am[1][0]) - 24, y: Math.min(am[0][1], am[1][1]) - 24, w: Math.abs(am[1][0] - am[0][0]) + 48, h: Math.abs(am[1][1] - am[0][1]) + 48 };
+    K.pen(ctx, { kind: 'circle', box: amBox, at: 'pointwise+0.6', dur: 0.6, seed: 'argmax', pad: 6 });
+    U.label(ctx, { text: `${pf.max_percent} % at Γ = ${pf.argmax.join(' and ')}`, x: amBox.x + amBox.w / 2, y: amBox.y + amBox.h + 12, anchor: 'c', cls: 'halo', at: 'pointwise+1.0' });
+    U.label(ctx, { text: `pointwise mean ${pf.mean_percent} %`, x: PL.sx(0.945), y: yFar + 22, anchor: 'c', size: 28, cls: 'dim halo', at: 'pointwise+0.3' });
+    // near: grey fog over 0.80-0.885 with a '?', and a higher bracket over the near range
+    const fog = K.s('rect', { x: PL.sx(0.8), y: PL.box.y0, width: PL.sx(R.check.C.near.gamma_max) - PL.sx(0.8), height: PL.box.y1 - PL.box.y0, fill: K.rgba(K.c('fg-2'), 0.15) }, brSvg);
+    U.fade(ctx, fog, { at: 'near-0.15' });
+    U.label(ctx, { text: '?', x: PL.sx(0.83), y: PL.sy(0.0042), anchor: 'c', size: 72, color: 'chalk', at: 'near' });
+    const yNear = PL.sy(0.0072);
+    bracket(R.check.C.near.gamma_min, R.check.C.near.gamma_max, yNear, 'near');
+    U.label(ctx, { text: `{metric}${R.check.C.near.percent} %{/} · near the threshold`, x: PL.sx(R.check.C.near.gamma_min) - 24, y: yNear - 30, anchor: 'r', cls: 'halo', at: 'near+0.1' });
+    K.lowerThird(ctx, { kind: 'source', data: E1, at: 'far+0.3', hold: 4 });
+    K.badge(ctx, { kind: 'MEASURED', at: 'far-0.15' });
+    const FS = (ctx.script.onscreen && ctx.script.onscreen.formulas) || [];
+    const items = [];
+    FS.forEach((f, k) => { const parts = k === 0 ? f.tex.split(',\\qquad ') : f.tex.split(':\\ \\ '); parts.forEach((p, i) => items.push({ tex: p, at: i ? `${f.cue}+4` : f.cue })); });
+    if (items.length) K.formulaLayer(ctx, { label: 'Formula · R:514, R:883', items });
+
+    // ================= P3: caveats, promise card =================
+    K.chip(ctx, { text: 'one model · seed 0 · interpolation only', kind: 'plain', x: 120, y: 772, at: 'seed-0.15' });
+    K.chip(ctx, { text: 'needs the equations', kind: 'plain', x: 120, y: 830, at: 'caveats-0.15' });
+    K.chip(ctx, { text: 'a rate, not waiting times', kind: 'plain', x: 520, y: 830, at: 'caveats+0.4' });
+    const PC = P.promise_card || { x0: 1480, x1: 1820, y0: 230, y1: 470 };
+    const C = { x: Math.min(PC.x0, 1480), y: PC.y0, w: 1820 - Math.min(PC.x0, 1480), h: 260 }, card = K.el('div', { class: 'uk-card' }, st);
+    card.style.cssText += `;left:${C.x}px;top:${C.y}px;width:${C.w}px;height:${C.h}px`;
+    K.el('div', { class: 'uk-lab mono', html: K.upper('promise 3') }, card).style.cssText = 'left:22px;top:16px';
+    const ct = K.el('div', { class: 'uk-lab', html: K.markup('say {metric}how often{/} the field flips') }, card);
+    ct.style.cssText = 'left:22px;top:56px;width:290px;white-space:normal;font-size:36px';
+    const tl1 = K.el('div', { class: 'uk-lab small dim' }, card, 'true'); tl1.style.cssText = 'left:76px;top:204px';
+    const tl2 = K.el('div', { class: 'uk-lab small dim' }, card, 'generated'); tl2.style.cssText = 'left:206px;top:204px';
+    U.fade(ctx, card, { at: 'answer-0.15' }); U.fade(ctx, tl2, { at: 'yes' });
+    const cSvg = K.svgLayer(ctx, 33);
+    const tick1 = K.s('path', { d: `M${C.x + 26},${C.y + 214} l12,14 l24,-30`, fill: 'none', stroke: K.c('chalk'), 'stroke-width': 5, 'stroke-linecap': 'round' }, cSvg);
+    U.fade(ctx, tick1, { at: 'answer+0.2' });
+    const tYes = U.frac(ctx, 'yes', 0.7, 2.4);
+    K.pen(ctx, { kind: 'check', box: { x: C.x + 150, y: C.y + 196, w: 44, h: 44 }, at: tYes, dur: 0.4, seed: 'tick2' });
+    events.push({ t: +(tYes + 0.2).toFixed(3), id: 'pop', gain_db: -24 });
+    UK.label(ctx, { html: '✓ far from the threshold<br>≈ near it', x: C.x + C.w, y: C.y + C.h + 16, anchor: 'r', size: 32, at: tYes + 0.3 });
+    window.__EVENTS__ = events;
+    ctx.u = { cars, pos, road, roadSvg, T, cloudG, pts, cloudC, RD, IB: P.road.icon_box || { x0: 1480, x1: 1780, y0: 112, y1: 222 } };
+  },
+  render(t, ctx) {
+    const S = Scene, u = ctx.u, T = u.T;
+    // the road group: slides in at 'back', shrinks into the top-right corner after 'rice', gone by 'far'
+    const pin = S.seg(t, T.back, T.back + 0.6, S.ease.outCubic), psh = S.seg(t, Math.max(T.rice + 1.4, T.far - 1.1), Math.max(T.rice + 2.2, T.far - 0.4), S.ease.inOutCubic);
+    const IB = u.IB, RD = u.RD, s1 = (IB.x1 - IB.x0) / (RD.x1 - RD.x0), s = 1 + (s1 - 1) * psh;
+    const tx = (IB.x0 - s1 * RD.x0) * psh, ty = (IB.y0 - s1 * RD.y0) * psh - 40 * (1 - pin);
+    u.road.setAttribute('transform', `translate(${tx.toFixed(1)} ${ty.toFixed(1)}) scale(${s.toFixed(4)})`);
+    u.road.style.opacity = (pin * (1 - S.seg(t, T.far - 0.5, T.far, S.ease.linear))).toFixed(3);
+    u.road.style.display = t < T.back || t > T.far ? 'none' : '';
+    const bars = S.seg(t, T.rice + 0.1, T.rice + 0.9, S.ease.outCubic);
+    for (const c of u.cars) { const x = c.pos = u.pos(c, t); c.g.setAttribute('transform', `translate(${x.toFixed(1)} ${c.lane})`);
+      const inStrip = Math.abs(x - (u.RD.x0 + u.RD.x1) / 2) < 70; c.bar.setAttribute('width', (inStrip ? 52 * bars * (0.4 + 0.6 * (c.v - 90) / 160) : 0).toFixed(1)); }
+    // the cloud breathes
+    const br = 1 + 0.05 * Math.sin(t * 1.7);
+    for (const [a, r, e] of u.pts) { e.setAttribute('cx', (u.cloudC[0] + r * br * Math.cos(a + 0.05 * t)).toFixed(1)); e.setAttribute('cy', (u.cloudC[1] + r * br * Math.sin(a + 0.05 * t)).toFixed(1)); }
+  },
+});
+</script></body></html>

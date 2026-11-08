@@ -1,0 +1,42 @@
+<!doctype html>
+<html lang="en"><head><meta charset="utf-8">
+<title>ch09.Q Question for the supervisors</title>
+<link rel="stylesheet" href="../../vendor/katex/katex.min.css">
+<link rel="stylesheet" href="../../runtime/theme.css">
+<link rel="stylesheet" href="ch09.css">
+<script src="../../vendor/katex/katex.min.js"></script>
+<script src="../../runtime/scene.js"></script>
+<script src="../../runtime/components/kit.js"></script>
+<script src="../../runtime/components/hud.js"></script>
+<script src="../../runtime/components/plot.js"></script>
+<script src="../../runtime/components/field.js"></script>
+<script src="../../runtime/components/equation.js"></script>
+<script src="../../runtime/components/motifs.js"></script>
+<script src="../../runtime/components/cards.js"></script>
+<script src="../../runtime/components/seat.js"></script>
+<script src="../../runtime/components/threemodes.js"></script>
+<script src="ch09_kit.js"></script>
+</head><body><div id="stage"></div>
+<script>
+/* ch09.Q (question card, no claim, no badge). Text, number, category and who-to-ask come from the script's
+   "question". Behind it, at params.backdrop.opacity, the 09.1 chart: counted curve and dashed generated Rice curve
+   (data/e1_finegrid.json), no labels: a texture. */
+Scene.define({
+  duration: 9,
+  register: 'night',
+  cues: { q: 0.5 },
+  data: { e1: 'data/e1_finegrid.json' },
+  params: { backdrop: { opacity: 0.1 } },
+  setup(ctx) {
+    const K = Kit, E1 = ctx.data.e1, svg = K.svgLayer(ctx, 2), bg = K.s('g', { opacity: ctx.params.backdrop.opacity }, svg);
+    const xs = E1.x.values, sx = (g) => 160 + 1600 * (g - 0.8) / 0.2, sy = (v) => 900 - 760 * v / 0.014;
+    const line = (ys, dash, col) => K.s('path', { d: xs.map((g, i) => `${i ? 'L' : 'M'}${sx(g).toFixed(1)},${sy(ys[i]).toFixed(1)}`).join(''), fill: 'none', stroke: K.c(col), 'stroke-width': 6, 'stroke-dasharray': dash || 'none' }, bg);
+    line(UK.series(E1, 'simulation (counted crossings)').y, null, 'b');
+    line(UK.series(E1, 'Rice, generated (model C)').y, '18 12', 'metric');
+    ctx.bgG = bg;
+    K.questionCard(ctx, { chapter: 'ch09', category: 'runs', at: -0.4, whyAt: 'q+2.4', unblocksAt: 'q+4.6' });
+    window.__EVENTS__ = [{ t: Math.max(0, +(ctx.at('q') - 0.2).toFixed(3)), id: 'chime' }];
+  },
+  render(t, ctx) { ctx.bgG.setAttribute('transform', `translate(${(-6 * Math.sin(2 * Math.PI * t / 9)).toFixed(2)} 0)`); },
+});
+</script></body></html>

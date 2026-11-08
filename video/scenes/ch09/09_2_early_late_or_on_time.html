@@ -1,0 +1,107 @@
+<!doctype html>
+<html lang="en"><head><meta charset="utf-8">
+<title>09.2 Predict: early, late or on time?</title>
+<link rel="stylesheet" href="../../vendor/katex/katex.min.css">
+<link rel="stylesheet" href="../../runtime/theme.css">
+<link rel="stylesheet" href="ch09.css">
+<script src="../../vendor/katex/katex.min.js"></script>
+<script src="../../runtime/scene.js"></script>
+<script src="../../runtime/components/kit.js"></script>
+<script src="../../runtime/components/hud.js"></script>
+<script src="../../runtime/components/plot.js"></script>
+<script src="../../runtime/components/field.js"></script>
+<script src="../../runtime/components/equation.js"></script>
+<script src="../../runtime/components/motifs.js"></script>
+<script src="../../runtime/components/cards.js"></script>
+<script src="../../runtime/components/seat.js"></script>
+<script src="../../runtime/components/threemodes.js"></script>
+<script src="ch09_kit.js"></script>
+</head><body><div id="stage"></div>
+<script>
+/* 09.2 Predict: early, late or on time? (L4, NIGHT, MEASURED). The zoomed chart (0.80-0.90, per 1,000 time units):
+   counted curve and threshold band; a knob turns smoothly; PREDICT; then the generated Rice curve (model C, seed 0)
+   is revealed in three beats: leak (inset x 10), late onset (brace at 0.865), overshoot (brace at 0.88).
+   Every number from data/ch09_rice.json and data/e1_finegrid.json. */
+Scene.define({
+  duration: 40,
+  register: 'night',
+  cues: { zoom: 0.4, smooth: 4.4, predict: 8.6, each: 15.6, leak: 18.0, late: 23.0, over: 28.0 },
+  data: { e1: 'data/e1_finegrid.json', rice: 'data/ch09_rice.json' },
+  params: {
+    plot: { box: { x0: 240, x1: 1440, y0: 260, y1: 640 }, x: { label: 'Γ, control parameter', min: 0.8, max: 0.9, ticks: [0.8, 0.82, 0.84, 0.86, 0.88, 0.9], param: true },
+      y: { label: 'crossings per 1,000 time units', min: 0, max: 6, ticks: [0, 2, 4, 6] }, y_scale: 1000 },
+    inset: { box: { x0: 290, x1: 830, y0: 290, y1: 450 }, x: [0.8, 0.86], y_max_per_1000: 0.25, label: '× 10 vertical' },
+    knob: { x: 1640, y: 520, r: 70, min: 0.8, max: 0.9, sweep: [0.8, 0.9], label: 'Γ' },
+    predict: { question: 'Near the threshold, will the generated rate switch on early, late, or on time?', options: ['early', 'late', 'on time'] },
+    caption_y: 700,
+  },
+  setup(ctx) {
+    const K = Kit, S = Scene, P = ctx.params, E1 = ctx.data.e1, R = ctx.data.rice, U = UK, st = ctx.stage;
+    const sc = P.plot.y_scale, xs = E1.x.values;
+    const cnt = U.series(E1, 'simulation (counted crossings)').y.map((v) => v * sc), gen = U.series(E1, 'Rice, generated (model C)').y.map((v) => v * sc);
+    const PL = K.plot(ctx, { box: P.plot.box, x: P.plot.x, y: P.plot.y, at: -0.4 });
+    const sel = (lo, hi) => { const i = xs.map((g, k) => k).filter((k) => xs[k] >= lo - 1e-9 && xs[k] <= hi + 1e-9); return { x: i.map((k) => xs[k]), c: i.map((k) => cnt[k]), g: i.map((k) => gen[k]) }; };
+    const all = sel(0.8, 0.9);
+    PL.curve({ x: all.x, y: all.c, field: 'b', width: 4, at: 'zoom-0.15', dur: 1.2 });
+    PL.band({ x: [E1.threshold.last_zero, E1.threshold.first_nonzero], kind: 'window', at: 'zoom+0.4' });
+    U.label(ctx, { text: `threshold: between ${E1.threshold.last_zero} and ${E1.threshold.first_nonzero}`, x: PL.sx(E1.threshold.last_zero) - 16, y: PL.sy(3.2), anchor: 'r', size: 28, color: 'param', cls: 'halo', at: 'zoom+0.5', out: 'leak-0.3' });
+    PL.legend([{ label: 'counted · simulation', field: 'b' }, { label: 'Rice · generated (model C)', field: 'metric', kind: 'generated' }].slice(0, 1), { at: 'zoom', x: PL.box.x0 + 30, y: PL.box.y0 + 20 });
+    PL.legend([{ label: 'Rice · generated (model C)', field: 'metric', kind: 'generated' }], { at: 'leak-0.15', x: PL.box.x0 + 30, y: PL.box.y0 + 68 });
+    // knob turning slowly and evenly (smooth in Γ), until the answer
+    const KN = P.knob, tS = ctx.at('smooth-0.15'), tE = ctx.at('each-0.15');
+    const keys = [{ at: tS, v: KN.sweep[0], dur: 0 }];
+    for (let k = 1, n = 6; k <= n; k++) keys.push({ at: tS + (tE - tS) * (k - 1) / n, v: KN.sweep[k % 2], dur: (tE - tS) / n });
+    K.knob(ctx, { x: KN.x, y: KN.y, r: KN.r, min: KN.min, max: KN.max, label: KN.label, keys, ticks: 10, at: 'smooth-0.15', labelDy: KN.r + 70, out: 'leak-0.3' });
+    K.chip(ctx, { text: 'smooth in Γ', kind: 'generated', x: KN.x, y: KN.y - KN.r - 66, anchor: 'c', at: 'smooth+0.2', out: 'leak-0.3' });
+    // PREDICT, then the compact answer card
+    K.predictCard(ctx, { x: 700, y: 96, w: 1000, anchor: 'l', question: P.predict.question, options: P.predict.options, at: 'predict-0.15', out: 'each-0.3' });
+    const ans = K.predictCard(ctx, { x: 1180, y: 96, w: 560, anchor: 'l', question: '', options: P.predict.options, at: 'each-0.15' });
+    // the generated curve in three stretches, with its GENERATED chip
+    const below = sel(0.8, E1.threshold.last_zero), onset = sel(E1.threshold.last_zero, R.onset.gamma), above = sel(R.onset.gamma, 0.9);
+    PL.curve({ x: below.x, y: below.g, field: 'metric', kind: 'generated', width: 3, at: 'leak-0.15', dur: 1.2 });
+    PL.curve({ x: onset.x, y: onset.g, field: 'metric', kind: 'generated', width: 3, at: 'late-0.15', dur: 0.5 });
+    PL.curve({ x: above.x, y: above.g, field: 'metric', kind: 'generated', width: 3, at: 'over-0.15', dur: 1.4 });
+    K.chip(ctx, { text: 'GENERATED', kind: 'generated', x: PL.box.x1 + 20, y: PL.sy(above.g[above.g.length - 1]) + 40, anchor: 'tl', at: 'over+1.2' });
+    // inset x 10 over 0.80-0.86
+    const IN = P.inset, ib = Object.assign({}, IN.box, { y0: IN.box.y0 + 60, y1: IN.box.y1 + 60 }),   // below the legend
+      isvg = K.svgLayer(ctx, 34), ig = K.s('g', {}, isvg);
+    K.s('rect', { x: ib.x0, y: ib.y0, width: ib.x1 - ib.x0, height: ib.y1 - ib.y0, rx: 8, fill: K.c('bg'), stroke: K.c('chalk'), 'stroke-width': 2.5 }, ig);
+    const ix = (g) => ib.x0 + 20 + (ib.x1 - ib.x0 - 40) * (g - IN.x[0]) / (IN.x[1] - IN.x[0]), iy = (v) => ib.y1 - 24 - (ib.y1 - ib.y0 - 70) * v / IN.y_max_per_1000;
+    K.s('line', { x1: ix(IN.x[0]), x2: ix(IN.x[1]), y1: iy(0), y2: iy(0), stroke: K.c('b'), 'stroke-width': 4 }, ig);
+    K.s('path', { d: below.x.map((g, i) => `${i ? 'L' : 'M'}${ix(g).toFixed(1)},${iy(below.g[i]).toFixed(1)}`).join(''), fill: 'none', stroke: K.c('metric'), 'stroke-width': 3, 'stroke-dasharray': '12 8' }, ig);
+    U.fade(ctx, ig, { at: 'leak+0.9', out: 'late-0.3' });
+    U.label(ctx, { text: IN.label, x: ib.x1 - 14, y: ib.y0 + 8, anchor: 'r', size: 28, color: 'chalk', z: 35, at: 'leak+0.9', out: 'late-0.3' });
+    const f2 = (v) => (v * sc).toFixed(2);
+    U.label(ctx, { text: `up to ${f2(R.below.C_rate_max)} per 1,000 · truth: ${R.below.truth}`, x: ib.x0, y: ib.y1 + 14, size: 32, cls: 'halo', z: 35, at: 'leak+1.2', out: 'late-0.3' });
+    // late: brace between generated and counted at the onset
+    const bs = K.svgLayer(ctx, 31), xo = PL.sx(R.onset.gamma);
+    const brace = (x, ya, yb, at) => { const p = K.s('path', { d: `M${x + 12},${ya} H${x + 22} V${yb} H${x + 12}`, fill: 'none', stroke: K.c('chalk'), 'stroke-width': 3.5 }, bs); U.fade(ctx, p, { at }); };
+    brace(xo, PL.sy(R.onset.C * sc), PL.sy(R.onset.count * sc), 'late+0.3');
+    U.label(ctx, { text: `${R.onset.gamma}: ${f2(R.onset.C)} generated vs ${f2(R.onset.count)} counted`, x: xo + 36, y: PL.sy(R.onset.count * sc) - 70, cls: 'halo', at: 'late+0.4', out: 'over-0.2' });
+    const lateTxt = U.onscreen(ctx, 'onset late', 'onset late by about 0.005-0.01 in Γ');
+    const ar = K.s('path', { d: `M${xo - 4},${PL.box.y1 - 30} H${xo + 70} M${xo + 58},${PL.box.y1 - 40} L${xo + 70},${PL.box.y1 - 30} L${xo + 58},${PL.box.y1 - 20}`, fill: 'none', stroke: K.c('chalk'), 'stroke-width': 3 }, bs);
+    U.fade(ctx, ar, { at: 'late+1.0', out: 'over-0.2' });
+    U.label(ctx, { text: lateTxt, x: xo + 86, y: PL.box.y1 - 52, size: 28, cls: 'dim halo', at: 'late+1.0', out: 'over-0.2' });
+    // over: gap fill where generated > counted, brace at 0.88
+    const ov = R.overshoot[R.overshoot.length - 1], gx = above.x;
+    let d = ''; gx.forEach((g, i) => { d += `${i ? 'L' : 'M'}${PL.sx(g).toFixed(1)},${PL.sy(Math.max(above.g[i], above.c[i])).toFixed(1)}`; });
+    for (let i = gx.length - 1; i >= 0; i--) d += `L${PL.sx(gx[i]).toFixed(1)},${PL.sy(above.c[i]).toFixed(1)}`;
+    const gap = K.s('path', { d: d + 'Z', fill: K.rgba(K.c('metric'), 0.35) }, PL.root); U.fade(ctx, gap, { at: 'over+1.2' });
+    const x88 = PL.sx(ov.gamma);
+    brace(x88, PL.sy(ov.C * sc), PL.sy(ov.count * sc), 'over+1.4');
+    U.label(ctx, { text: `${ov.gamma}: ${(ov.C * sc).toFixed(1)} generated vs ${(ov.count * sc).toFixed(1)} counted`, x: x88 + 40, y: PL.sy(ov.count * sc) + 18, cls: 'halo', at: 'over+1.5' });
+    // caption at the end of the 'over' sentence (below the axis title, above the subtitle band)
+    const tCap = U.end(ctx, 'over', 3.6);
+    U.label(ctx, { html: 'leaks · lags · overshoots', x: 840, y: 780, anchor: 'c', size: 40, color: 'chalk', at: tCap - 0.2 });
+    K.chip(ctx, { text: 'one model · seed 0', kind: 'plain', x: 1824, y: 860, anchor: 'br', at: -0.3 });
+    K.badge(ctx, { kind: 'MEASURED', at: -0.3 });
+    window.__EVENTS__ = [{ t: +(ctx.at('each') + 0.3).toFixed(3), id: 'pop', gain_db: -24 }];
+    // pen: ticks on early and late, a strike through 'on time' (positions measured once the card is laid out)
+    const tE2 = ctx.at('each');
+    const pb = ans.buttons.map((b) => { const r = b.getBoundingClientRect(), sr = st.getBoundingClientRect(), k = sr.width / 1920; return { x: (r.left - sr.left) / k, y: (r.top - sr.top) / k, w: r.width / k, h: r.height / k }; });
+    // the card slides in by 18 px: aim at its resting place
+    pb.forEach((b, i) => { if (i < 2) K.pen(ctx, { kind: 'check', box: { x: b.x + b.w - 30, y: b.y - 22, w: 40, h: 40 }, at: tE2 + 0.25 * i, dur: 0.3, seed: 'ck' + i, z: 60 }); });
+    K.pen(ctx, { kind: 'underline', box: { x: pb[2].x + 4, y: pb[2].y + pb[2].h / 2 - 14, w: pb[2].w - 8, h: 0 }, offset: 0, at: tE2 + 0.6, dur: 0.3, seed: 'strike', z: 60 }).path.setAttribute('data-qa', 'ignore');   // a deliberate strike-through of 'on time'
+  },
+});
+</script></body></html>

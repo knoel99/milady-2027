@@ -1,0 +1,108 @@
+<!doctype html>
+<html lang="en"><head><meta charset="utf-8">
+<title>09.4 The loss is not a clean win</title>
+<link rel="stylesheet" href="../../vendor/katex/katex.min.css">
+<link rel="stylesheet" href="../../runtime/theme.css">
+<link rel="stylesheet" href="ch09.css">
+<script src="../../vendor/katex/katex.min.js"></script>
+<script src="../../runtime/scene.js"></script>
+<script src="../../runtime/components/kit.js"></script>
+<script src="../../runtime/components/hud.js"></script>
+<script src="../../runtime/components/plot.js"></script>
+<script src="../../runtime/components/field.js"></script>
+<script src="../../runtime/components/equation.js"></script>
+<script src="../../runtime/components/motifs.js"></script>
+<script src="../../runtime/components/cards.js"></script>
+<script src="../../runtime/components/seat.js"></script>
+<script src="../../runtime/components/threemodes.js"></script>
+<script src="ch09_kit.js"></script>
+</head><body><div id="stage"></div>
+<script>
+/* 09.4 The loss is not a clean win (L4, NIGHT, MEASURED). Scoreboard rows (grey outline = control run, amber =
+   with the crowd loss, model F), one verdict per row. Good machine C at the test values: residuals of the enforced
+   and of the never-enforced crowd laws halve; the spread of dE/dt shrinks to three quarters of the truth; the
+   distribution distance stays within the seed spread. Biased machine (C short): off scale. Crossing rate (seed 0):
+   better near the threshold, worse far from it. Values from data/e1_eval.json and data/ch09_rice.json. */
+Scene.define({
+  duration: 32,
+  register: 'night',
+  cues: { loss: 0.4, halves: 4.0, narrow: 9.4, biased: 15.6, trade: 21.6 },
+  data: { ev: 'data/e1_eval.json', rice: 'data/ch09_rice.json' },
+  params: {
+    panel_good: { x0: 120, x1: 1060, y0: 170, y1: 640, axis: { log: true, min: 0.001, max: 0.05 } },
+    panel_biased: { x0: 1140, x1: 1800, y0: 170, y1: 470 },
+    panel_rate: { x0: 1140, x1: 1800, y0: 500, y1: 700 },
+  },
+  setup(ctx) {
+    const K = Kit, S = Scene, P = ctx.params, EV = ctx.data.ev, R = ctx.data.rice, U = UK;
+    const ctl = EV.variants.F0_temoin_C.mean.test, los = EV.variants.F_stationnarite_C.mean.test, fl = EV.noise_floor.n_gen;
+    const svg = K.svgLayer(ctx, 12), grey = K.c('muted'), amb = K.c('metric');
+    const G = P.panel_good, ax = G.axis, bx0 = G.x0 + 20, bx1 = G.x1 - 110;
+    const lx = (v) => bx0 + (bx1 - bx0) * (Math.log10(v) - Math.log10(ax.min)) / (Math.log10(ax.max) - Math.log10(ax.min));
+    const bar = (g, x0, x1, y, h, filled) => K.s('rect', { x: x0, y, width: Math.max(2, x1 - x0), height: h, rx: 3, fill: filled ? amb : 'none', stroke: filled ? amb : grey, 'stroke-width': 3 }, g);
+    // growing bars: a clip per row group (left to right)
+    const grow = (g, at, dur) => { const cid = 'cl' + (++ctx.__n || (ctx.__n = 1)); const cp = K.s('clipPath', { id: cid }, svg); const r = K.s('rect', { x: 0, y: 0, height: 1080, width: 0 }, cp); g.setAttribute('clip-path', `url(#${cid})`);
+      const a = ctx.at(at); ctx.add({ render(t) { r.setAttribute('width', (2000 * S.seg(t, a, a + (dur || 0.8), S.ease.inOutSine)).toFixed(1)); g.style.display = t >= a ? '' : 'none'; } }); };
+    // ---- panel good ----
+    U.label(ctx, { text: U.onscreen(ctx, 'good machine', 'good machine (C) · test values of Γ'), x: G.x0, y: G.y0 - 8, size: 36, at: -0.3 });
+    K.chip(ctx, { text: 'GENERATED', kind: 'generated', x: G.x1, y: G.y0 - 2, anchor: 'tr', at: -0.3 });
+    const lg = K.s('g', {}, svg); bar(lg, G.x0, G.x0 + 54, G.y0 + 62, 18, false); bar(lg, G.x0 + 470, G.x0 + 524, G.y0 + 62, 18, true); U.fade(ctx, lg, { at: -0.3 });
+    U.label(ctx, { text: 'control run, same length', x: G.x0 + 66, y: G.y0 + 52, size: 28, cls: 'dim', at: -0.3 });
+    U.label(ctx, { text: 'with the crowd loss (model F)', x: G.x0 + 536, y: G.y0 + 52, size: 28, at: -0.3 });
+    const rows = [
+      { lab: 'crowd laws enforced (degree ≤ 2)', c: ctl.liou_train_moy, l: los.liou_train_moy, f: fl.liou_train_moy, at: 'halves-0.15', v: '✓', tag: '÷ 2' },
+      { lab: 'crowd laws not enforced (degree 3)', c: ctl.liou_test_moy, l: los.liou_test_moy, f: fl.liou_test_moy, at: 'halves+1.2', v: '✓', tag: '÷ 2' },
+      { lab: 'spread of dE/dt ÷ truth', c: R.spread_ratio.control_C, l: R.spread_ratio.loss_C, lin: true, at: 'narrow-0.15', v: '≈' },
+      { lab: 'distribution distance: within the seed spread', c: ctl.energie, l: los.energie, f: fl.energie, at: 'narrow+2.0', v: '≈', small: true },
+    ];
+    const lin = (v) => bx0 + (bx1 - bx0) * v / 1.2;
+    rows.forEach((r, i) => {
+      const y = G.y0 + 100 + 100 * i, g = K.s('g', {}, svg), X = r.lin ? lin : lx;
+      U.label(ctx, { text: r.lab, x: bx0, y, size: r.small ? 28 : 32, cls: r.small ? 'dim' : '', at: r.at });
+      bar(g, bx0, X(r.c), y + 42, 20, false); bar(g, bx0, X(r.l), y + 68, 20, true); grow(g, r.at, 1.0);
+      if (r.f) { const fg = K.s('line', { x1: lx(r.f), x2: lx(r.f), y1: y + 34, y2: y + 96, stroke: grey, 'stroke-width': 3, 'stroke-dasharray': '6 5' }, svg); U.fade(ctx, fg, { at: ctx.at(r.at) + 0.8 }); }
+      if (r.lin) { const tl = K.s('line', { x1: lin(1), x2: lin(1), y1: y + 30, y2: y + 100, stroke: K.c('chalk'), 'stroke-width': 3 }, svg); U.fade(ctx, tl, { at: r.at });
+        U.label(ctx, { text: 'truth = 1', x: lin(1) + 10, y: y + 2, size: 28, color: 'chalk', at: r.at });
+        U.label(ctx, { text: `${r.c.toFixed(2)} → ${r.l.toFixed(2)}`, x: bx0 + 380, y: y + 2, size: 28, cls: 'halo', at: ctx.at(r.at) + 1.0 }); }
+      if (r.tag) U.label(ctx, { text: r.tag, x: Math.max(lx(r.c), lx(r.l)) + 24, y: y + 46, size: 32, color: 'chalk', at: ctx.at(r.at) + 1.0 });
+      U.label(ctx, { text: r.v, x: G.x1 - 40, y: y + 40, anchor: 'c', size: 48, at: ctx.at(r.at) + 1.1 });
+    });
+    const flg = K.s('line', { x1: 640, x2: 640, y1: G.y1 + 52, y2: G.y1 + 88, stroke: grey, 'stroke-width': 3, 'stroke-dasharray': '6 5' }, svg); U.fade(ctx, flg, { at: 'halves+0.8' });
+    U.label(ctx, { text: 'noise floor (optimistic)', x: 656, y: G.y1 + 52, size: 28, cls: 'dim', at: 'halves+0.8' });
+    // log axis ticks under the panel (rows 1, 2, 4)
+    const axg = K.s('g', {}, svg);
+    K.s('line', { x1: bx0, x2: bx1, y1: G.y1 + 34, y2: G.y1 + 34, stroke: grey, 'stroke-width': 2 }, axg);
+    [0.001, 0.01].forEach((v) => { K.s('line', { x1: lx(v), x2: lx(v), y1: G.y1 + 28, y2: G.y1 + 40, stroke: grey, 'stroke-width': 2 }, axg); K.s('text', { x: lx(v), y: G.y1 + 74, 'text-anchor': 'middle', class: 'kt-tick' }, axg, K.pow10(v)); });
+    U.fade(ctx, axg, { at: 'halves' });
+    K.chip(ctx, { text: 'HYPOTHESIS · why the spread narrows (R:875)', kind: 'schematic', x: 120, y: 780, at: 'narrow+0.8' });
+    K.chip(ctx, { text: 'two seeds · means over the test values', kind: 'plain', x: 120, y: 836, at: 'loss+0.6' });
+
+    // ---- panel biased ----
+    const B = P.panel_biased, bb0 = B.x0, bb1 = B.x1 - 100, linB = (v) => bb0 + (bb1 - bb0) * Math.min(v, 2.2) / 2.2;
+    U.label(ctx, { text: 'biased machine (C short)', x: B.x0, y: B.y0 - 8, size: 36, at: 'biased-0.15' });
+    U.label(ctx, { text: 'spread of dE/dt ÷ truth', x: bb0, y: B.y0 + 60, size: 28, cls: 'dim', at: 'biased' });
+    const gB = K.s('g', {}, svg), yB = B.y0 + 110;
+    bar(gB, bb0, linB(R.spread_ratio.control_Cshort), yB, 20, false); bar(gB, bb0, linB(R.spread_ratio.loss_Cshort), yB + 28, 20, true); grow(gB, 'biased+0.2', 1.0);
+    const tlB = K.s('line', { x1: linB(1), x2: linB(1), y1: yB - 14, y2: yB + 62, stroke: K.c('chalk'), 'stroke-width': 3 }, svg); U.fade(ctx, tlB, { at: 'biased' });
+    U.label(ctx, { text: `→ off scale · × ${R.spread_ratio.loss_Cshort}`, x: bb1, y: yB + 66, anchor: 'r', size: 28, at: 'biased+1.2' });
+    const tDiv = U.frac(ctx, 'biased', 0.55, 2.4);
+    U.label(ctx, { text: 'SEED 1 DIVERGED', x: (bb0 + bb1) / 2, y: yB + 2, anchor: 'c', size: 32, cls: 'mono uk-stamp', at: tDiv - 0.1 });
+    K.chip(ctx, { text: 'seed 0: worse than its control', kind: 'plain', x: bb0, y: yB + 108, at: U.frac(ctx, 'biased', 0.8, 3.4) });
+    U.label(ctx, { text: '✗', x: B.x1 - 30, y: yB + 6, anchor: 'c', size: 48, at: tDiv + 0.4 });
+    window.__EVENTS__ = [{ t: +tDiv.toFixed(3), id: 'pop', gain_db: -24 }];
+
+    // ---- panel rate ----
+    const Rp = P.panel_rate, rb0 = Rp.x0, rb1 = Rp.x1 - 100, pc = (v) => rb0 + (rb1 - rb0) * v / 0.5;
+    U.label(ctx, { text: 'crossing rate, cumulative error (seed 0)', x: Rp.x0, y: Rp.y0, size: 32, at: 'trade-0.15' });
+    [['near', R.check.F.near, R.check.C.near, '✓', `near: ${R.check.F.near.percent} % with the loss vs ${R.check.C.near.percent} % without`],
+     ['far', R.check.F.far, R.check.C.far, '✗', `far: ${R.check.F.far.percent} % vs ${R.check.C.far.percent} %`]].forEach(([k, f, c, v, txt], i) => {
+      const y = Rp.y0 + 50 + 76 * i, g = K.s('g', {}, svg), at = `trade+${(0.2 + 1.0 * i).toFixed(1)}`;
+      U.label(ctx, { text: txt, x: rb0, y, size: 28, at });
+      bar(g, rb0, pc(c.cumulative_error), y + 36, 14, false); bar(g, rb0, pc(f.cumulative_error), y + 54, 14, true); grow(g, at, 0.8);
+      U.label(ctx, { text: v, x: Rp.x1 - 30, y: y + 20, anchor: 'c', size: 48, at: ctx.at(at) + 0.8 });
+    });
+    K.badge(ctx, { kind: 'MEASURED', at: -0.3 });
+    K.formulaLayer(ctx, { label: 'Formula · R:798, R:875', items: UK.formulaItems(ctx) });
+  },
+});
+</script></body></html>
