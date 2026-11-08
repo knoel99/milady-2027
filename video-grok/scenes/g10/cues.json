@@ -11,10 +11,10 @@
     {
       "id": "cue.g10.law.caveat",
       "lang": "fr",
-      "source": null,
+      "source": "narration/fr/g10.law.caveat.md",
       "audio": null,
       "status": "PENDING",
-      "reason": "La narration française n'existe pas. Aucun texte français n'est inventé ici."
+      "reason": "La voix française n'est pas synthétisée. Seul le caveat est écrit."
     }
   ]
 }

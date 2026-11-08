@@ -1,4 +1,5 @@
 import assert from "node:assert/strict";
+import { execFileSync } from "node:child_process";
 import { copyFile, mkdir, mkdtemp, readFile, rm, writeFile } from "node:fs/promises";
 import { tmpdir } from "node:os";
 import { dirname, join } from "node:path";
@@ -126,7 +127,12 @@ test("les sous-titres sont des extraits du script, et la carte est q.g10", () =>
   assert.equal(viewAt(card, 8).questionCard, null);
 });
 
-test("le caveat de g10.law est branché sans voix et sans français", async () => {
+const CAVEAT_EN =
+  "E2 is two-dimensional and forced. One seed. The tests are interpolation. This is not a dynamo.";
+const CAVEAT_FR =
+  "E2 est bidimensionnel et forcé. Une seule graine aléatoire testée. Valeurs intermédiaires dans la plage d’entraînement. Pas une dynamo.";
+
+test("le caveat de g10.law reste sans voix", async () => {
   assert.equal(slots.slots.length, 2);
   for (const slot of slots.slots) {
     assert.equal(slot.id, "cue.g10.law.caveat");
@@ -136,16 +142,85 @@ test("le caveat de g10.law est branché sans voix et sans français", async () =
   const english = slots.slots.find((slot) => slot.lang === "en");
   const french = slots.slots.find((slot) => slot.lang === "fr");
   assert.equal(english.source, "narration/en/g10.md");
-  assert.equal(french.source, null);
+  assert.equal(french.source, "narration/fr/g10.law.caveat.md");
   assert.match(narration, /cue\.g10\.law\.caveat/);
-  assert.match(narration, /One seed\./);
-  assert.match(narration, /The tests are interpolation\./);
-  assert.match(narration, /This is not a dynamo\./);
+  assert.equal(parole(narration, "cue.g10.law.caveat"), CAVEAT_EN);
   await assert.rejects(readFile(join(root, "narration/fr/g10.md"), "utf8"));
   const tree = await readFile(join(root, "scenes/g10/cues.json"), "utf8");
   assert.equal(tree.includes("One seed"), false);
   assert.equal(tree.includes("dynamo"), false);
 });
+
+test("les deux créneaux du caveat disent les trois limites", async () => {
+  const points = {
+    en: [/One seed/, /interpolation/, /not a dynamo/],
+    fr: [/Une seule graine aléatoire/, /[Vv]aleurs intermédiaires dans la plage d’entraînement/, /[Pp]as une dynamo/],
+  };
+  const expected = { en: CAVEAT_EN, fr: CAVEAT_FR };
+  for (const lang of ["en", "fr"]) {
+    const slot = slots.slots.find((item) => item.lang === lang);
+    assert.equal(typeof slot.source, "string", lang);
+    const text = parole(await readFile(join(root, slot.source), "utf8"), slot.id);
+    assert.equal(text.length > 0, true, lang);
+    assert.equal(text, expected[lang], lang);
+    for (const point of points[lang]) assert.match(text, point, `${lang} ${point}`);
+  }
+});
+
+test("le beat g10.law avec le caveat français reste à 156 mots par minute", async () => {
+  const show = parole(narration, "cue.g10.law.show");
+  const caveat = parole(
+    await readFile(join(root, "narration/fr/g10.law.caveat.md"), "utf8"),
+    "cue.g10.law.caveat",
+  );
+  const duration = duree(narration, "g10.law");
+  const { count, rate } = motsDits(`${show}\n${caveat}`, duration);
+  assert.equal(duration, 35);
+  assert.ok(count <= 91, `${count} mots dits`);
+  assert.ok(rate <= 156, `${rate} mots/min`);
+});
+
+function duree(markdown, beatId) {
+  const lines = markdown.split(/\r?\n/);
+  const start = lines.findIndex((line) => line.trim() === `## ${beatId}`);
+  const row = lines.slice(start + 1).find((line) => line.startsWith("duration:"));
+  const [minutes, seconds] = row.slice("duration:".length).trim().split(":");
+  return Number(minutes) * 60 + Number(seconds);
+}
+
+function motsDits(text, duration) {
+  const checker = join(root, "narration/en/g07-g11-verify.py");
+  const script = `
+import importlib.util, json, sys
+spec = importlib.util.spec_from_file_location("chk", sys.argv[1])
+mod = importlib.util.module_from_spec(spec)
+spec.loader.exec_module(mod)
+payload = json.loads(sys.stdin.read())
+said = payload["text"]
+count = len(mod.words(mod.expand_spoken(said)))
+rate = mod.speech_rate(said, payload["duration"], 0)
+print(json.dumps({"count": count, "rate": rate}))
+`;
+  const out = execFileSync("python3", ["-c", script, checker], {
+    input: JSON.stringify({ text, duration }),
+    encoding: "utf8",
+  });
+  return JSON.parse(out);
+}
+
+function parole(markdown, cueId) {
+  const lines = markdown.split(/\r?\n/);
+  const start = lines.findIndex((line) => line.trim() === `### ${cueId}`);
+  if (start < 0) return "";
+  const body = [];
+  for (const line of lines.slice(start + 1)) {
+    if (line.startsWith("## ") || line.startsWith("### ")) break;
+    const trimmed = line.trim();
+    if (trimmed === "" || trimmed.startsWith("role:")) continue;
+    body.push(trimmed);
+  }
+  return body.join(" ");
+}
 
 test("le texte reste à 28 px, hors marge, et ne coupe pas les barres", async () => {
   const server = await servir(root);
