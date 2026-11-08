@@ -1,0 +1,168 @@
+<!doctype html>
+<html lang="en"><head><meta charset="utf-8">
+<title>06.5 The noise floor</title>
+<link rel="stylesheet" href="../../vendor/katex/katex.min.css">
+<link rel="stylesheet" href="../../runtime/theme.css">
+<link rel="stylesheet" href="ch06.css">
+<script src="../../vendor/katex/katex.min.js"></script>
+<script src="../../runtime/scene.js"></script>
+<script src="../../runtime/components/kit.js"></script>
+<script src="../../runtime/components/hud.js"></script>
+<script src="../../runtime/components/motifs.js"></script>
+<script src="../../runtime/components/cards.js"></script>
+<script src="ch06_kit.js"></script>
+</head><body><div id="stage"></div>
+<script>
+/* 06.5 The noise floor (L3, NIGHT, CONTEXT: finite-sample statistics, R:723). Crowds, not twins: two sand piles and the
+   earth-mover's work; predict; a fair die rolled 1,000 times twice gives two different histograms: that gap is the
+   noise floor; judge models against it at equal sample size, never against zero; overlapping samples make the floor too
+   low. Every quantity is a seeded illustration: no number on screen except the roll count label. */
+Scene.define({
+  duration: 50,
+  register: 'night',
+  cues: { twin: 0.5, sand: 4.0, distance: 6.0, earth: 9.4, predict: 13.4, dice: 19.0, differ: 22.4, floor: 25.0, judge: 28.6, independent: 32.4, overlap: 34.6 },
+  params: { rolls: 1000, one_by_one: 12, one_by_one_s: 0.3, rain_s: 2.0, seed_die_a: 'die-a', seed_die_b: 'die-b', overlap_share: 0.5, grains: 300,
+    piles: { centres: [-0.6, 0.7], widths: [0.9, 0.7], range: [-3, 3] }, chart: { x0: 1180, x1: 1760, y0: 220, y1: 600 }, tick_gain_db: -26 },
+  setup(ctx) {
+    const K = Kit, S = Scene, P = ctx.params, st = ctx.stage;
+    const T = {}; for (const k of ['twin', 'sand', 'distance', 'earth', 'predict', 'dice', 'differ', 'floor', 'judge', 'independent', 'overlap']) T[k] = ctx.at(k + '-0.15');
+    const svg = K.svgLayer(ctx, 12);
+    // ---- shot 1: crowds
+    const twin = K.s('g', {}, svg);
+    K.s('rect', { x: 300, y: 150, width: 170, height: 120, rx: 8, fill: K.c('panel'), stroke: K.c('model'), 'stroke-width': 4 }, twin);
+    [0.25, 0.5, 0.75].forEach((f) => K.s('circle', { cx: 300 + f * 170, cy: 210, r: 20, fill: 'none', stroke: K.c('matter'), 'stroke-width': 3 }, twin));
+    K.s('line', { x1: 480, x2: 680, y1: 210, y2: 210, stroke: K.c('fg-2'), 'stroke-width': 3, 'stroke-dasharray': '8 8' }, twin);
+    K.s('rect', { x: 690, y: 150, width: 170, height: 120, rx: 8, fill: 'none', stroke: K.c('fg-2'), 'stroke-width': 3, 'stroke-dasharray': '10 8' }, twin);
+    const lTwin = C6.lab(ctx, 'its true twin?', 775, 286, 'big center');
+    K.pen(ctx, { kind: 'cross', box: { x: 555, y: 185, w: 50, h: 50 }, at: 'twin+0.8', out: 'sand', dur: 0.35, seed: 'tw65' });
+    const PL = P.piles, AX = { x0: 260, x1: 1660, y: 600 }, xs = (v) => AX.x0 + (v - PL.range[0]) / (PL.range[1] - PL.range[0]) * (AX.x1 - AX.x0);
+    const axis = K.s('line', { x1: AX.x0, x2: AX.x1, y1: AX.y, y2: AX.y, stroke: K.c('muted'), 'stroke-width': 3 }, svg);
+    const pdf = (v, k) => Math.exp(-0.5 * ((v - PL.centres[k]) / PL.widths[k]) ** 2) / PL.widths[k];
+    const pileD = (k) => { let d = `M${xs(PL.range[0])},${AX.y}`; for (let i = 0; i <= 120; i++) { const v = PL.range[0] + (PL.range[1] - PL.range[0]) * i / 120; d += `L${xs(v).toFixed(1)},${(AX.y - 230 * pdf(v, k) / (1 / PL.widths[1])).toFixed(1)}`; } return d + `L${xs(PL.range[1])},${AX.y}Z`; };
+    const piles = K.s('g', {}, svg);
+    const pGen = K.s('path', { d: pileD(0), fill: K.c('metric'), 'fill-opacity': 0.35, stroke: K.c('model'), 'stroke-width': 3, 'stroke-dasharray': '10 7' }, piles);
+    const pSim = K.s('path', { d: pileD(1), fill: K.c('metric'), 'fill-opacity': 0.35, stroke: K.c('fg'), 'stroke-width': 3 }, piles);
+    const lGen = C6.lab(ctx, 'generated crowd', xs(PL.centres[0]) - 60, AX.y - 300, 'big right'), lSim = C6.lab(ctx, 'simulated crowd', xs(PL.centres[1]) + 60, AX.y - 360, 'big');
+    // grains of the generated pile, matched in sorted order to the simulated pile (no two arcs cross)
+    const gr = S.rng('grains'), sample = (k) => { const a = []; for (let i = 0; i < P.grains; i++) a.push(PL.centres[k] + PL.widths[k] * C6.gauss(gr)[0]); return a.sort((p, q) => p - q); };
+    const A = sample(0), Bs = sample(1), bin = (AX.x1 - AX.x0) / 70, stack = (arr) => { const h = {}; return arr.map((v) => { const b = Math.round(xs(v) / bin); h[b] = (h[b] || 0) + 1; return [b * bin, AX.y - 5 - 9 * (h[b] - 1)]; }); };
+    const sa = stack(A), sb = stack(Bs), grains = A.map((_, i) => ({ e: K.s('circle', { r: 4, fill: K.c('metric') }, svg), a: sa[i], b: sb[i], w: i % 3 }));
+    const simG = K.s('g', {}, svg); sb.forEach(([x, y]) => K.s('circle', { cx: x, cy: y, r: 4, fill: 'none', stroke: K.c('fg'), 'stroke-width': 1.5, opacity: 0.6 }, simG));
+    const work = A.reduce((s, v, i) => s + Math.abs(Bs[i] - v), 0);
+    // gauge (top right)
+    const gauge = K.s('g', {}, svg);
+    K.s('rect', { x: 1400, y: 150, width: 360, height: 26, rx: 4, fill: 'none', stroke: K.c('muted'), 'stroke-width': 2 }, gauge);
+    const gBar = K.s('rect', { x: 1400, y: 150, width: 0, height: 26, rx: 4, fill: K.c('metric') }, gauge);
+    K.s('text', { x: 1400, y: 210, 'text-anchor': 'middle', class: 'kt-tick' }, gauge, '0');
+    const lDist = C6.lab(ctx, 'distribution distance', 1396, 136, 'big right'); lDist.style.color = K.c('metric');
+    K.chip(ctx, { text: 'technical names: energy distance (main score of E1 and E2) · Wasserstein W1, earth-mover (sliced in E1)', kind: 'plain', x: 700, y: 630, anchor: 'tl', maxWidth: 1080, at: 'distance+1.0', out: 'predict-0.2', caps: false });
+    K.lowerThird(ctx, { kind: 'reference', l1: 'Reference', l2: 'Rubner, Tomasi & Guibas 2000 · Székely & Rizzo 2013', at: 'distance+2.0', hold: 4 });
+    // ---- shot 2: predict
+    K.predictCard(ctx, { x: 960, y: 260, w: 980, question: 'A perfect model, scored against the data: *zero*?', options: ['A · zero', 'B · more than zero'], at: 'predict-0.15', answerAt: 'dice-0.15', pick: 1, out: 'dice+1.3' });
+    // ---- shot 3: the die and two histograms
+    const HA = { x0: 360, x1: 900, y0: 300, y1: 640 }, HB = { x0: 960, x1: 1500, y0: 300, y1: 640 };
+    const rollsOf = (seed) => { const r = S.rng(seed), a = new Uint8Array(P.rolls); for (let i = 0; i < P.rolls; i++) a[i] = Math.floor(r() * 6); return a; };
+    const RA = rollsOf(P.seed_die_a), RB0 = rollsOf(P.seed_die_b);
+    const RB1 = RB0.slice(); for (let i = 0; i < Math.round(P.rolls * P.overlap_share); i++) RB1[i] = RA[i];
+    const counts = (R, n) => { const c = [0, 0, 0, 0, 0, 0]; for (let i = 0; i < n; i++) c[R[i]]++; return c; };
+    const cmax = 1.35 * P.rolls / 6, bars = (H, col) => { const g = K.s('g', {}, svg), bw = (H.x1 - H.x0) / 6; return { g, H, r: [0, 1, 2, 3, 4, 5].map((i) => K.s('rect', { x: H.x0 + i * bw + 6, width: bw - 12, y: H.y1, height: 0, fill: K.c(col), 'fill-opacity': 0.85 }, g)) }; };
+    const hA = bars(HA, 'metric'), hB = bars(HB, 'metric');
+    const outl = K.s('path', { fill: 'none', stroke: K.c('fg'), 'stroke-width': 3 }, svg), deltas = K.s('g', {}, svg);
+    const dRects = [0, 1, 2, 3, 4, 5].map(() => K.s('rect', { fill: K.c('metric'), opacity: 0.9 }, deltas));
+    [HA, HB].forEach((H) => K.s('line', { x1: H.x0, x2: H.x1, y1: H.y1, y2: H.y1, stroke: K.c('muted'), 'stroke-width': 2 }, hA.g));
+    const nOf = (t, t0, speed) => { const k = (t - t0) / (P.one_by_one_s * speed); if (k < 0) return 0; if (k <= P.one_by_one) return Math.floor(k); return Math.min(P.rolls, P.one_by_one + Math.floor((P.rolls - P.one_by_one) * S.seg(t, t0 + P.one_by_one * P.one_by_one_s * speed, t0 + P.one_by_one * P.one_by_one_s * speed + P.rain_s * speed, S.ease.inOutSine))); };
+    const tA = T.dice + 1.0, tB = tA + P.one_by_one * P.one_by_one_s + P.rain_s + 0.3;
+    const ev = []; for (let i = 0; i < P.one_by_one; i++) { ev.push({ t: +(tA + i * P.one_by_one_s).toFixed(3), id: 'tick', gain_db: P.tick_gain_db }); ev.push({ t: +(tB + i * P.one_by_one_s * 0.5).toFixed(3), id: 'tick', gain_db: P.tick_gain_db }); }
+    window.__EVENTS__ = ev;
+    const fmtN = P.rolls.toLocaleString('en-US');
+    const lA = C6.lab(ctx, `${fmtN} rolls`, (HA.x0 + HA.x1) / 2, HA.y1 + 16, 'big center'), lB = C6.lab(ctx, `${fmtN} more`, (HB.x0 + HB.x1) / 2, HB.y1 + 16, 'big center');
+    const die = K.s('g', { transform: 'translate(200 470)' }, svg);
+    K.s('rect', { x: -44, y: -44, width: 88, height: 88, rx: 14, fill: K.c('panel'), stroke: K.c('fg-2'), 'stroke-width': 4 }, die);
+    [[-20, -20], [20, -20], [0, 0], [-20, 20], [20, 20]].forEach(([x, y]) => K.s('circle', { cx: x, cy: y, r: 7, fill: K.c('fg-2') }, die));
+    K.chip(ctx, { text: 'SCHEMATIC · a fair die', kind: 'schematic', x: 120, y: 540, at: 'dice+0.4', out: 'floor' });
+    const lSame = C6.lab(ctx, 'same die, same truth', (HA.x0 + HA.x1) / 2, HA.y0 - 70, 'big center');
+    // the floor and the judge chart
+    const C = P.chart, chart = K.s('g', {}, svg);
+    K.s('line', { x1: C.x0, x2: C.x0, y1: C.y0, y2: C.y1, stroke: K.c('muted'), 'stroke-width': 2 }, chart);
+    const zero = K.s('line', { x1: C.x0, x2: C.x1, y1: C.y1, y2: C.y1, stroke: K.c('fg-2'), 'stroke-width': 3 }, chart);
+    const lCy = C6.lab(ctx, 'distribution distance', C.x0 - 10, C.y0 - 52, ''); lCy.style.color = K.c('metric');
+    const floorH = 110, modelH = 260, bw2 = 150;
+    const fBar = K.s('rect', { x: C.x0 + 60, width: bw2, fill: K.c('metric'), opacity: 0.85 }, chart);
+    const mBar = K.s('rect', { x: C.x0 + 300, width: bw2, fill: K.c('metric'), 'fill-opacity': 0.6, stroke: K.c('model'), 'stroke-width': 3, 'stroke-dasharray': '9 6' }, chart);
+    const fLine = K.s('line', { x1: C.x0, x2: C.x1, stroke: K.c('muted'), 'stroke-width': 3, 'stroke-dasharray': '12 9' }, svg);
+    const lFloor = C6.lab(ctx, 'noise floor', C.x1, 0, 'right halo');
+    const lModel = C6.lab(ctx, 'model', C.x0 + 300 + bw2 / 2, C.y1 + 14, 'center');
+    K.pen(ctx, { kind: 'cross', box: { x: C.x1 - 70, y: C.y1 - 24, w: 48, h: 48 }, at: 'judge+1.4', dur: 0.35, seed: 'z65' });
+    const lNot = C6.lab(ctx, 'not zero', C.x1 - 46, C.y1 + 30, 'center');
+    const lEq = C6.lab(ctx, 'equal sample size', (C.x0 + C.x1) / 2, C.y1 + 62, 'center');
+    const tagI = [HA].map((H) => C6.lab(ctx, 'independent', (H.x0 + H.x1) / 2, H.y0 - 70, 'center'));
+    const lLow = C6.lab(ctx, 'overlapping samples: floor too low', (C.x0 + C.x1) / 2, C.y0 - 120, 'center', { w: 560 });
+    const lHon = C6.lab(ctx, 'independent samples: honest floor', (C.x0 + C.x1) / 2, C.y0 - 120, 'center', { w: 560 });
+    [lLow, lHon].forEach((e) => { e.style.textAlign = 'center'; });
+    const tLow = T.overlap + 0.3, tBack = T.overlap + 2.6;
+    K.pen(ctx, { kind: 'arrow', from: [C.x1 - 30, C.y1 - floorH - 40], to: [C.x1 - 30, C.y1 - floorH * 0.45], at: tLow + 0.5, out: tBack, dur: 0.4, seed: 'dn65' });
+    K.pen(ctx, { kind: 'check', box: { x: C.x1 - 54, y: C.y1 - floorH - 70, w: 44, h: 44 }, at: tBack + 0.6, dur: 0.4, seed: 'ok65' });
+    K.badge(ctx, { kind: 'CONTEXT', at: -0.3 });
+    // WORKAROUND (script formula 2 too long for one layer item at 28 px): a \quad break before its parenthesis
+    K.formulaLayer(ctx, { items: ((ctx.script.onscreen && ctx.script.onscreen.formulas) || []).map((f) => ({ tex: f.tex.replace('\\ \\ (= 0', ';\\quad (= 0'), at: f.cue + '-0.15' })) });
+    ctx.c = { T, twin, lTwin, axis, piles, pGen, pSim, lGen, lSim, grains, simG, work, gauge, gBar, lDist, HA, HB, hA, hB, RA, RB0, RB1, counts, cmax, nOf, tA, tB, outl, deltas, dRects, lA, lB, die, lSame,
+      chart, zero, lCy, fBar, mBar, fLine, lFloor, lModel, lNot, lEq, tagI, lLow, lHon, tLow, tBack, C, floorH, modelH };
+  },
+  render(t, ctx) {
+    const S = Scene, P = ctx.params, c = ctx.c, T = c.T, ease = S.ease.inOutCubic;
+    C6.fadeS(c.twin, t, -0.3, T.sand); C6.fade(c.lTwin, t, T.twin + 0.3, T.sand);
+    // piles → sand → earth mover; out on 'dice'
+    const pileIn = S.seg(t, T.twin + 1.6, T.twin + 2.4, S.ease.linear), shot1Out = S.seg(t, T.dice, T.dice + 0.5, S.ease.linear), dim = 1 - 0.7 * S.seg(t, T.predict, T.predict + 0.4, S.ease.linear);
+    const s1 = pileIn * (1 - shot1Out) * dim;
+    c.axis.setAttribute('opacity', (pileIn * (1 - shot1Out)).toFixed(3));
+    const toSand = S.seg(t, T.sand, T.sand + 0.8, S.ease.linear);
+    c.piles.setAttribute('opacity', (s1 * (1 - 0.75 * toSand) * (1 + 0.02 * Math.sin(t * 2))).toFixed(3));
+    C6.fade(c.lGen, t, T.sand, T.predict - 0.2); C6.fade(c.lSim, t, T.sand + 0.2, T.predict - 0.2);
+    c.simG.setAttribute('opacity', (toSand * s1).toFixed(3));
+    const waveT = (w) => T.distance + 0.8 + w * 1.5;
+    let moved = 0;
+    for (let i = 0; i < c.grains.length; i++) {
+      const gr = c.grains[i], p = S.seg(t, waveT(gr.w), waveT(gr.w) + 1.2, ease), x = gr.a[0] + (gr.b[0] - gr.a[0]) * p, y = gr.a[1] + (gr.b[1] - gr.a[1]) * p - Math.sin(Math.PI * p) * Math.min(120, 0.25 * Math.abs(gr.b[0] - gr.a[0]) + 20);
+      gr.e.setAttribute('cx', x.toFixed(1)); gr.e.setAttribute('cy', y.toFixed(1)); gr.e.setAttribute('opacity', (toSand * s1).toFixed(3));
+      moved += p * Math.abs(gr.b[0] - gr.a[0]);
+    }
+    const tot = c.grains.reduce((s, g) => s + Math.abs(g.b[0] - g.a[0]), 0);
+    c.gBar.setAttribute('width', (300 * moved / tot * (1 - S.seg(t, T.predict, T.predict + 0.4, S.ease.linear))).toFixed(1));
+    C6.fadeS(c.gauge, t, T.distance, T.dice); C6.fade(c.lDist, t, T.distance + 0.2, T.dice);
+    // die, histograms
+    C6.fadeS(c.die, t, T.dice + 0.3, T.floor); c.die.setAttribute('transform', `translate(200 470) rotate(${(360 * S.seg(t, T.dice + 0.3, T.dice + 1.0, S.ease.outCubic)).toFixed(1)})`);
+    const nA = c.nOf(t, c.tA, 1), nB = c.nOf(t, c.tB, 0.5);
+    const ovl = S.seg(t, c.tLow - 0.3, c.tLow + 0.4, ease) * (1 - S.seg(t, c.tBack, c.tBack + 0.6, ease));
+    const cA = c.counts(c.RA, nA), cB0 = c.counts(c.RB0, nB), cB1 = c.counts(c.RB1, nB), cB = cB0.map((v, i) => v + (cB1[i] - v) * ovl);
+    const slide = S.seg(t, T.differ, T.differ + 0.9, ease);
+    const hy = (H, v) => H.y1 - (H.y1 - H.y0) * v / c.cmax, bw = (c.HA.x1 - c.HA.x0) / 6;
+    c.hA.r.forEach((r, i) => { const y = hy(c.HA, cA[i]); r.setAttribute('y', y.toFixed(1)); r.setAttribute('height', (c.HA.y1 - y).toFixed(1)); });
+    c.hB.r.forEach((r, i) => { const y = hy(c.HB, cB[i]); r.setAttribute('y', y.toFixed(1)); r.setAttribute('height', (c.HB.y1 - y).toFixed(1)); });
+    const hIn = S.seg(t, c.tA - 0.4, c.tA, S.ease.linear);
+    c.hA.g.setAttribute('opacity', hIn.toFixed(3)); c.hB.g.setAttribute('opacity', (S.seg(t, c.tB - 0.4, c.tB, S.ease.linear) * (1 - slide)).toFixed(3));
+    C6.fade(c.lA, t, c.tA - 0.2); C6.fade(c.lB, t, c.tB - 0.2, T.differ + 0.5);
+    // B slides over A as an outline; deltas light up; they become the floor bar
+    let d = ''; cB.forEach((v, i) => { const x0 = c.HA.x0 + i * bw + 6 + (c.HB.x0 - c.HA.x0) * (1 - slide), y = hy(c.HA, v); d += `M${x0.toFixed(1)},${c.HA.y1} V${y.toFixed(1)} H${(x0 + bw - 12).toFixed(1)} V${c.HA.y1}`; });
+    c.outl.setAttribute('d', d); c.outl.setAttribute('opacity', (slide > 0 ? 1 : 0) * hIn);
+    const dIn = S.seg(t, T.differ + 1.0, T.differ + 1.3, S.ease.linear), fly = S.seg(t, T.floor, T.floor + 0.9, ease);
+    c.dRects.forEach((r, i) => { const ya = hy(c.HA, cA[i]), yb = hy(c.HA, cB[i]), x0 = c.HA.x0 + i * bw + 6, y0 = Math.min(ya, yb), h = Math.max(3, Math.abs(ya - yb));
+      const tx = c.C.x0 + 60, ty = c.C.y1 - c.floorH + i * c.floorH / 6;
+      r.setAttribute('x', (x0 + (tx - x0) * fly).toFixed(1)); r.setAttribute('y', (y0 + (ty - y0) * fly).toFixed(1)); r.setAttribute('width', ((bw - 12) + (150 - (bw - 12)) * fly).toFixed(1)); r.setAttribute('height', (h + (c.floorH / 6 - h) * fly).toFixed(1));
+      r.setAttribute('opacity', (dIn * (1 - S.seg(t, T.floor + 0.9, T.floor + 1.1, S.ease.linear))).toFixed(3)); });
+    C6.fade(c.lSame, t, T.differ + 0.6, T.independent);
+    // chart: floor bar, dashed line, model bar
+    const chIn = S.seg(t, T.floor - 0.2, T.floor + 0.3, S.ease.linear);
+    c.chart.setAttribute('opacity', chIn.toFixed(3)); C6.fade(c.lCy, t, T.floor);
+    const fb = S.seg(t, T.floor + 0.9, T.floor + 1.0, S.ease.linear);
+    c.fBar.setAttribute('height', (c.floorH * fb).toFixed(1)); c.fBar.setAttribute('y', (c.C.y1 - c.floorH * fb).toFixed(1));
+    const fy = c.C.y1 - c.floorH * (1 - 0.55 * ovl), lineOn = S.seg(t, T.floor + 1.1, T.floor + 1.4, S.ease.linear);
+    c.fLine.setAttribute('y1', fy); c.fLine.setAttribute('y2', fy); c.fLine.setAttribute('opacity', lineOn);
+    C6.fade(c.lFloor, t, T.floor + 1.3); c.lFloor.style.top = (fy - 46) + 'px';
+    const mb = S.seg(t, T.judge, T.judge + 0.8, S.ease.outCubic);
+    c.mBar.setAttribute('height', (c.modelH * mb).toFixed(1)); c.mBar.setAttribute('y', (c.C.y1 - c.modelH * mb).toFixed(1));
+    C6.fade(c.lModel, t, T.judge + 0.4); C6.fade(c.lNot, t, T.judge + 1.7); C6.fade(c.lEq, t, T.judge + 2.2);
+    c.tagI.forEach((e) => C6.fade(e, t, T.independent + 0.2));
+    C6.fade(c.lLow, t, c.tLow + 0.4, c.tBack); C6.fade(c.lHon, t, c.tBack + 0.6);
+  },
+});
+</script></body></html>

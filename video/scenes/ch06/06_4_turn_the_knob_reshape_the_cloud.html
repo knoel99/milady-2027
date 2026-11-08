@@ -1,0 +1,135 @@
+<!doctype html>
+<html lang="en"><head><meta charset="utf-8">
+<title>06.4 Turn the knob, reshape the cloud</title>
+<link rel="stylesheet" href="../../vendor/katex/katex.min.css">
+<link rel="stylesheet" href="../../runtime/theme.css">
+<link rel="stylesheet" href="ch06.css">
+<script src="../../vendor/katex/katex.min.js"></script>
+<script src="../../runtime/scene.js"></script>
+<script src="../../runtime/components/kit.js"></script>
+<script src="../../runtime/components/hud.js"></script>
+<script src="../../runtime/components/motifs.js"></script>
+<script src="../../runtime/components/threemodes.js"></script>
+<script src="ch06_kit.js"></script>
+<style>.grp { position: absolute; left: 0; top: 0; width: 1920px; height: 1080px; }</style>
+</head><body><div id="stage"></div>
+<script>
+/* 06.4 Turn the knob, reshape the cloud (L3, NIGHT; shot 1 SCHEMATIC toy, shots 2-3 MEASURED: E1, model A, seed 0).
+   A knob reshapes the toy target (one blob → two mirror blobs) and the cloud, re-transported from the same noise by the
+   exact wind, follows. Then the E1 protocol: trained at the filled dots, tested at the open dots, a hope in between,
+   nothing beyond; at the open dot Γ = 0.93 the network's snapshots (violet frames) join the 04.6 shoebox. */
+Scene.define({
+  duration: 30,
+  register: 'night',
+  cues: { knob: 0.5, reshape: 2.0, onemodel: 5.0, dots: 7.2, open: 10.0, hope: 12.6, beyond: 15.6, drop: 18.2 },
+  data: { fm: 'data/fig_flow_matching.json', e1eval: 'data/e1_eval.json', shoebox: 'data/e1_samples_0.93.json' },
+  params: { knob_keys: [{ at: 'knob', v: 0.0 }, { at: 'reshape', v: 1.0, dur: 3.0 }, { at: 'reshape+3.2', v: 0.6, dur: 1.2 }], n_particles: 1000, heun_steps: 20,
+    axis: { min: 0.8, max: 1.0, ticks: [0.8, 0.85, 0.9, 0.95, 1.0], box: { x0: 260, x1: 1660, y: 300 } }, cards: { generated: 12, simulated: 8, seed: 'cards' }, box: { x: 960, y: 600, w: 520, h: 260 } },
+  setup(ctx) {
+    const K = Kit, S = Scene, P = ctx.params, st = ctx.stage, FM = ctx.data.fm.data, EV = ctx.data.e1eval.variants.A_reference.per_gamma, SB = ctx.data.shoebox;
+    const T = {}; for (const k of ['knob', 'reshape', 'onemodel', 'dots', 'open', 'hope', 'beyond', 'drop']) T[k] = ctx.at(k + '-0.15');
+    const m = C6.val(FM.params.m), s = C6.val(FM.params.s), mh = C6.val(FM.cloud_mh);
+    // ---- shot 1: the toy stage of 06.1 with a knob
+    const keys = P.knob_keys.map((k) => ({ t: ctx.at(k.at), v: k.v, d: k.dur || 0 }));
+    const kAt = (t) => { let v = keys[0].v; for (const k of keys) if (t >= k.t) v = k.d ? v + (k.v - v) * S.ease.inOutSine(S.seg(t, k.t, k.t + k.d, S.ease.linear)) : k.v; return v; };
+    const toy = K.el('div', { class: 'grp' }, st); toy.style.zIndex = 8;
+    const TB = { x: 560, y: 120, w: 800, h: 600 }, cx = TB.x + TB.w / 2, cy = TB.y + TB.h / 2, kk = 100;
+    const L = K.canvasLayer(ctx, 1, TB, toy, { reset: true });
+    const tsvg = K.svgLayer(ctx, 2, toy);
+    K.s('rect', { x: TB.x, y: TB.y, width: TB.w, height: TB.h, fill: 'none', stroke: K.c('muted'), 'stroke-width': 1.5, opacity: 0.5 }, tsvg);
+    const rings = [1, -1].map(() => [1, 2].map(() => K.s('circle', { fill: 'none', stroke: K.c('fg-2'), 'stroke-width': 2.5, 'stroke-dasharray': '8 7' }, tsvg)));
+    const rn = S.rng('noise'), noise = []; while (noise.length < P.n_particles) noise.push(C6.gauss(rn));
+    const knobWrap = K.el('div', { class: 'grp' }, toy);
+    K.knob(ctx, { parent: knobWrap, x: 1600, y: 480, r: 90, min: 0, max: 1, keys: P.knob_keys, showValue: false, label: 'λ · the knob' });
+    K.s('path', { d: `M1490,480 C1440,480 1420,460 ${TB.x + TB.w},460`, fill: 'none', stroke: K.c('param'), 'stroke-width': 2.5 }, tsvg);
+    const lOne = C6.lab(ctx, 'one network · every setting', 1600, 230, 'big center', { parent: toy, w: 300 }); lOne.style.textAlign = 'center';
+    const minis = [0, 0.5, 1].map((kv, i) => {
+      const g = K.s('g', {}, tsvg), bx = 1440 + i * 110, by = 610;
+      K.s('rect', { x: bx, y: by, width: 96, height: 96, rx: 4, fill: K.c('panel'), stroke: K.c('muted'), 'stroke-width': 1.5 }, g);
+      const pts = C6.transport(noise.slice(0, 220), kv * mh, kv * m, s, 12);
+      for (const p of pts) { const q = C6.at(p, 1, [0, 0]); K.s('circle', { cx: bx + 48 + q[0] * 15, cy: by + 48 - q[1] * 15, r: 1.6, fill: K.c('model') }, g); }
+      return g;
+    });
+    K.chip(ctx, { text: 'SCHEMATIC · toy target', kind: 'schematic', x: TB.x, y: TB.y - 14, anchor: 'bl', at: -0.3, out: 'dots-0.15' });
+    // ---- shot 2: the E1 protocol on a green axis
+    const A = P.axis, AX = A.box, ax0 = AX.x0 + 140, ax1 = AX.x1 - 140, gx = (G) => ax0 + (G - A.min) / (A.max - A.min) * (ax1 - ax0), Y0 = AX.y;
+    const proto = K.el('div', { class: 'grp' }, st); proto.style.zIndex = 12;
+    const psvg = K.svgLayer(ctx, 1, proto), axG = K.s('g', {}, psvg);
+    const axLine = K.s('line', { x1: AX.x0, x2: AX.x1, y1: Y0, y2: Y0, stroke: K.c('param'), 'stroke-width': 4 }, axG);
+    A.ticks.forEach((v) => { K.s('line', { x1: gx(v), x2: gx(v), y1: Y0 + 14, y2: Y0 + 26, stroke: K.c('muted'), 'stroke-width': 2 }, axG); K.s('text', { x: gx(v), y: Y0 + 62, 'text-anchor': 'middle', class: 'kt-tick' }, axG, K.fmt(v)); });
+    const lAx = C6.lab(ctx, 'Γ · forcing knob of the three-dial model', (AX.x0 + AX.x1) / 2, Y0 + 80, 'big center', { parent: proto }); lAx.style.color = K.c('param');
+    const tr = EV.train.Gamma, te = EV.test.Gamma;
+    const trD = tr.map((G) => K.s('circle', { cx: gx(G), cy: Y0, r: 13, fill: K.c('param') }, psvg));
+    const teD = te.map((G) => K.s('circle', { cx: gx(G), cy: Y0, r: 11, fill: K.c('bg'), stroke: K.c('param'), 'stroke-width': 4 }, psvg));
+    const lTr = C6.lab(ctx, 'trained', gx(tr[0]) - 20, Y0 - 82, 'big', { parent: proto }); lTr.style.color = K.c('param');
+    const lTe = C6.lab(ctx, 'tested · never seen in training', gx(te[3]), Y0 - 82, 'big', { parent: proto }); lTe.style.color = K.c('param');
+    const bi = Math.floor(tr.length / 2), brk = K.s('path', { d: `M${gx(tr[bi])},${Y0 + 120} V${Y0 + 136} H${gx(tr[bi + 1])} V${Y0 + 120}`, fill: 'none', stroke: K.c('param'), 'stroke-width': 3, 'stroke-dasharray': '7 6' }, psvg);
+    const lHope = C6.lab(ctx, 'in between: a hope, not a theorem', gx(tr[bi]), Y0 + 150, 'big center', { parent: proto });
+    const defs = K.s('defs', {}, psvg), hp = K.s('pattern', { id: 'h64', width: 12, height: 12, patternUnits: 'userSpaceOnUse', patternTransform: 'rotate(45)' }, defs);
+    K.s('line', { x1: 0, y1: 0, x2: 0, y2: 12, stroke: K.c('muted'), 'stroke-width': 4 }, hp);
+    const beyond = K.s('g', { opacity: 0 }, psvg);
+    [[AX.x0, gx(A.min) - 24], [gx(A.max) + 24, AX.x1]].forEach(([a, b]) => K.s('rect', { x: a, y: Y0 - 40, width: b - a, height: 80, fill: 'url(#h64)', opacity: 0.5 }, beyond));
+    const lBey = C6.lab(ctx, 'beyond: untested', AX.x0, Y0 + 150, 'big', { parent: proto });
+    const lInt = C6.lab(ctx, 'trained on filled dots, tested on open dots (interpolation only)', 960, Y0 + 230, 'center', { parent: proto });
+    K.chip(ctx, { text: 'DATA · E1 · test protocol', kind: 'plain', x: AX.x0, y: Y0 - 150, at: 'dots+0.3', out: 'drop' });
+    const marker = K.s('path', { d: 'M0,-34 L12,-54 L-12,-54 Z', fill: K.c('param') }, psvg);
+    const glow = K.s('circle', { cx: gx(SB.gamma), cy: Y0, r: 24, fill: 'none', stroke: K.c('param'), 'stroke-width': 3 }, psvg);
+    if (!te.some((G) => Math.abs(G - SB.gamma) < 1e-9)) S.warn(`06.4: shoebox Γ ${SB.gamma} is not a test value`);
+    const lG = C6.lab(ctx, `Γ = ${SB.gamma} · open dot`, gx(SB.gamma), Y0 - 30, 'big center');
+    // ---- shot 3: the shoebox with simulated (grey) and generated (violet) photos
+    const sv = K.svgLayer(ctx, 14), boxG = K.s('g', {}, sv), BX = P.box;
+    const box = K.shoebox(boxG, { x: BX.x, y: BX.y, w: BX.w, h: BX.h });
+    const XR = S.f32(SB.variants.ref.x), XA = S.f32(SB.variants.A_reference.x), cr = S.rng(P.cards.seed);
+    const top = BX.y - BX.h / 2, cards = [];
+    const mk = (Xs, n, gen, i) => { const r = Math.floor(cr() * n), g = K.s('g', {}, box.content);
+      const ph = K.photo(g, { x: -70, y: -52, w: 140, h: 104, q: Xs[3 * r], d: Xs[3 * r + 1], v: Xs[3 * r + 2], vmax: 3 });
+      ph.g.firstChild.setAttribute('stroke', K.c(gen ? 'model' : 'matter')); ph.g.firstChild.setAttribute('stroke-width', gen ? 4 : 2.5);
+      return { g, gen, i, x: BX.x - BX.w * 0.4 + cr() * BX.w * 0.8, y: top - 46 + cr() * 40, rot: (cr() - 0.5) * 30 }; };
+    for (let i = 0; i < P.cards.simulated; i++) cards.push(mk(XR, SB.variants.ref.n, false, i));
+    for (let i = 0; i < P.cards.generated; i++) cards.push(mk(XA, SB.variants.A_reference.n, true, i));
+    K.chip(ctx, { text: 'GENERATED · model A · seed 0', kind: 'generated', x: BX.x + BX.w / 2 + 60, y: top - 120, at: 'drop+0.8' });
+    K.chip(ctx, { text: 'SIMULATED', kind: '', x: BX.x - BX.w / 2 - 40, y: top - 120, anchor: 'tr', at: 'drop+0.6' });
+    K.lowerThird(ctx, { kind: 'source', data: SB, at: 'drop+0.8', hold: 4 });
+    K.badge(ctx, { kind: 'MEASURED', note: 'E1 · model A · seed 0', at: 'dots-0.15' });
+    K.formulaLayer(ctx);
+    ctx.c = { T, kAt, toy, L, TB, cx, cy, kk, rings, noise, m, s, mh, lOne, minis, proto, axG, axLine, trD, teD, lAx, lTr, lTe, brk, lHope, beyond, lBey, lInt, marker, glow, lG, gx, Y0, boxG, cards, BX, top, SB };
+  },
+  render(t, ctx) {
+    const S = Scene, P = ctx.params, c = ctx.c, T = c.T, ease = S.ease.inOutCubic;
+    // shot 1
+    const toyOut = S.seg(t, T.dots, T.dots + 0.8, S.ease.linear);
+    c.toy.style.opacity = (1 - toyOut).toFixed(3); c.toy.style.display = toyOut < 1 ? '' : 'none';
+    if (toyOut < 1) {
+      const k = c.kAt(t), g = c.L.g, TB = c.TB;
+      g.clearRect(0, 0, TB.w, TB.h); g.translate(-TB.x, -TB.y);
+      c.rings.forEach((pair, i) => pair.forEach((e, j) => { const sg = i ? -1 : 1; e.setAttribute('cx', c.cx + sg * k * c.mh * c.kk); e.setAttribute('cy', c.cy - sg * k * c.m * c.kk); e.setAttribute('r', (j + 1) * Math.sqrt(c.s * c.s + (1 - k) * (1 - k) * 0) * c.kk * (k < 0.05 ? 1 : 1)); }));
+      const paths = C6.transport(c.noise, k * c.mh, k * c.m, c.s, P.heun_steps), q = [0, 0];
+      g.fillStyle = S.col('model'); g.globalAlpha = 0.75;
+      for (const p of paths) { C6.at(p, 1, q); g.fillRect(c.cx + q[0] * c.kk - 1.2, c.cy - q[1] * c.kk - 1.2, 2.4, 2.4); }
+      C6.fade(c.lOne, t, T.onemodel + 0.2);
+      c.minis.forEach((e, i) => C6.fadeS(e, t, T.onemodel + 0.3 + 0.15 * i, T.onemodel + 2.6));
+    }
+    // shot 2
+    const pin = S.seg(t, T.dots, T.dots + 0.6, S.ease.linear), pout = S.seg(t, T.drop + 0.9, T.drop + 1.5, S.ease.linear);
+    c.proto.style.opacity = (pin * (1 - pout)).toFixed(3); c.proto.style.display = pin * (1 - pout) > 0 ? '' : 'none';
+    c.axLine.setAttribute('x2', 260 + 1400 * S.seg(t, T.dots, T.dots + 1.0, ease));
+    c.trD.forEach((e, i) => e.setAttribute('opacity', S.seg(t, T.dots + 0.6 + 0.08 * i, T.dots + 0.75 + 0.08 * i, S.ease.linear)));
+    c.teD.forEach((e, i) => e.setAttribute('opacity', S.seg(t, T.open + 0.2 + 0.08 * i, T.open + 0.35 + 0.08 * i, S.ease.linear)));
+    C6.fade(c.lAx, t, T.dots + 0.6); C6.fade(c.lTr, t, T.dots + 1.2); C6.fade(c.lTe, t, T.open + 0.6);
+    C6.fadeS(c.brk, t, T.hope + 0.2); C6.fade(c.lHope, t, T.hope + 0.4);
+    c.beyond.setAttribute('opacity', S.seg(t, T.beyond, T.beyond + 0.5, S.ease.linear)); C6.fade(c.lBey, t, T.beyond + 0.3); C6.fade(c.lInt, t, T.beyond + 1.0);
+    const mv = S.seg(t, T.drop, T.drop + 0.8, ease), mx = c.gx(0.8) + (c.gx(c.SB.gamma) - c.gx(0.8)) * mv;
+    c.marker.setAttribute('transform', `translate(${mx.toFixed(1)} ${c.Y0})`); c.marker.setAttribute('opacity', S.seg(t, T.drop, T.drop + 0.2, S.ease.linear));
+    c.glow.setAttribute('opacity', (S.seg(t, T.drop + 0.7, T.drop + 0.9, S.ease.linear) * (0.6 + 0.4 * Math.sin(t * 5))).toFixed(3));
+    C6.fade(c.lG, t, T.drop + 1.0);
+    // shot 3: the shoebox slides in, simulated photos already inside, generated ones drop
+    const bin = S.seg(t, T.drop + 1.2, T.drop + 2.0, ease);
+    c.boxG.setAttribute('transform', `translate(0 ${(260 * (1 - bin)).toFixed(1)})`); c.boxG.setAttribute('opacity', bin.toFixed(3));
+    for (const cd of c.cards) {
+      let y = cd.y, o = 1;
+      if (cd.gen) { const a = T.drop + 2.2 + 0.25 * cd.i, p = S.seg(t, a, a + 0.35, S.ease.outCubic); y = cd.y - 340 * (1 - p); o = p > 0 ? 1 : 0; }
+      cd.g.setAttribute('transform', `translate(${cd.x.toFixed(1)} ${y.toFixed(1)}) rotate(${cd.rot.toFixed(1)})`); cd.g.setAttribute('opacity', o);
+    }
+  },
+});
+</script></body></html>
