@@ -28,7 +28,11 @@ make film CUT=extended        # construction complète : voix (cache), scènes m
 make films                    # les deux coupes
 make draft CUT=core           # brouillon 960x540 à 15 i/s pour relecture (n'appelle pas l'API)
 make scene S=04.3             # refaire une scène puis réassembler
-make check U=ch04             # une image par repère de chaque scène d'une unité + erreurs de page
+make check U=ch04             # images autour de chaque repère des scènes d'une unité + erreurs de page + contrôle de mise en page
+                              # (n'écrit jamais dans audio/ : minutage de la narration lu tel quel s'il correspond au script,
+                              #  sinon estimé à 146 mots/min ; TIMING=estimate force l'estimation ; sorties dans out/check/unit_ch04/)
+make draft U=ch04             # brouillon vidéo d'une seule unité, narration ajoutée quand elle existe (out/draft/unit_ch04/)
+make det U=ch04               # déterminisme des scènes d'une unité (après make check)
 make data                     # régénérer data/*.json depuis les résultats existants du dépôt
 make film CUT=update          # épisode « Results update » (scènes dont les résultats sont arrivés)
 make test                     # test complet du pipeline sur script/_test (voix factice, sans API)

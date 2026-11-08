@@ -300,8 +300,9 @@ if (UNITBUILD && DRAFT) {   // unit draft: the scenes in order, narration muxed 
   fs.writeFileSync(list, parts.map((f) => `file '${f}'`).join('\n'));
   execFileSync('ffmpeg', ['-hide_banner', '-loglevel', 'error', '-y', '-f', 'concat', '-safe', '0', '-i', list, '-c', 'copy', '-movflags', '+faststart', film]);
   const pe = Object.keys(pageErrors);
-  log(`unit draft: ${rel(film)} (${parts.length} scenes, ${fmt(scenes.filter((e) => !only || only.has(e.id)).reduce((a, e) => a + e.duration, 0))}; narration: `
-    + `${scenes.filter((e) => (!only || only.has(e.id)) && e.audio.wav && !e.audio.estimated).length} scenes, the others silent)` + (pe.length ? `, PAGE ERRORS in ${pe.join(', ')}` : ''));
+  const sel = scenes.filter((e) => !only || only.has(e.id)), voiced = sel.filter((e) => e.audio.wav && !e.audio.estimated).length;
+  log(`unit draft: ${rel(film)} (${parts.length} scenes, ${fmt(sel.reduce((a, e) => a + e.duration, 0))}; narration on ${voiced} of ${sel.length} scenes`
+    + `${voiced < sel.length ? ', silent where the timing is estimated' : ''})` + (pe.length ? `, PAGE ERRORS in ${pe.join(', ')}` : ''));
   process.exit(pe.length ? 1 : 0);
 }
 if (opt['no-mix']) process.exit(0);

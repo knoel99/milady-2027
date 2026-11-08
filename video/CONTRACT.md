@@ -34,6 +34,7 @@ browser, `?plate=K` starts at plate K, key `g` shows the safe area) and its stil
 <script src="../../runtime/components/motifs.js"></script>         <!-- M1–M10 (cards.js needs it) -->
 <script src="../../runtime/components/cards.js"></script>          <!-- chapter card, question card -->
 <script src="../../runtime/components/seat.js"></script>           <!-- empty seat (pending results) -->
+<script src="../../runtime/components/threemodes.js"></script>     <!-- E1 three-mode model, dial, photo, shoebox -->
 <style> /* scene-specific CSS only: no colours outside the tokens, no transitions, no animations */ </style>
 </head><body><div id="stage"></div>
 <script>
@@ -63,7 +64,7 @@ Scene.define({
 
 | field | meaning |
 |---|---|
-| `ctx.at(spec)` | time spec → seconds: `2.5`, `'rate'`, `'rate+0.4'`, `'rate-0.15'`, `{cue: 'rate', dt: 0.4}`. Unknown cue = scene error. |
+| `ctx.at(spec)` | time spec → seconds: `2.5`, `'rate'`, `'rate+0.4'`, `'rate-0.15'`, `{cue: 'rate', dt: 0.4}`. An exact cue name wins (`'step-2'` may be a cue); otherwise a name and a signed offset. Unknown cue = scene error. `_tail` and `_speech_end` always exist (from the duration in a preview). |
 | `ctx.cue(name, fallback)` | legacy helper of the prototype (no error on unknown names) |
 | `ctx.data.<name>` | parsed JSON (or `null` for an optional / pending file) |
 | `ctx.status`, `ctx.variant` | `ready`/`pending`; `pending`/`result` (which narration variant and which seat to draw) |
@@ -97,16 +98,19 @@ Every factory is `Kit.<name>(ctx, opts)`, called in `setup`. Common options: `at
 ### HUD — `hud.js`
 
 ```js
-Kit.badge(ctx, { note: 'E1 · 2 seeds' });                 // kind/confidence from the script's "badge"
+Kit.badge(ctx, { note: 'E1 · 2 seeds' });                 // kind/confidence/note from the script's "badge" (opts.note = fallback)
 Kit.badge(ctx, { kind: 'CONJECTURE', confidence: 'medium' });   // preview fallback (the script wins, a mismatch warns)
 Kit.lowerThird(ctx, { kind: 'source', data: ctx.data.rate, at: 'rate+0.5', hold: 5 });
 Kit.lowerThird(ctx, { kind: 'reference', l1: 'Reference', l2: 'Gissinger 2012', at: 'model' });
 Kit.lowerThird(ctx, { kind: 'chapter', l1: 'Level 2 · chapter 4', l2: 'Chaos and the shoebox', color: 'param' });
 Kit.lowerThird(ctx, { kind: 'stamp', l1: 'Regenerable · pending', l2: 'Re-rendered when palier2_abc3d arrives' });
 Kit.rail(ctx, { from: 'L1', to: 'L2', at: 0.3, hold: 3 });   // M8: chapter cards and checkpoints only
-Kit.formulaLayer(ctx);                                        // the script's onscreen.formulas [{cue, tex}] (D8)
+Kit.formulaLayer(ctx);                                        // the script's onscreen.formulas [{cue, tex}] (D8); null if none
 Kit.formulaLayer(ctx, { label: 'Formula · R:514', items: [{ tex: 'r_0 = …', at: 'rice', out: 'check' }] });
+Kit.formulaLayer(ctx, { stack: true });                       // old behaviour: every item stays to the end
 Kit.chip(ctx, { text: 'illustration, not to time scale', kind: 'plain', x: 960, y: 820, anchor: 'c', at: 'flip' });
+Kit.chip(ctx, { text: 'illustration · live integration of the model', kind: 'plain', maxWidth: 520, x, y });   // two lines
+Kit.chip(ctx, { text: 'Γ = 0.93', kind: 'param', x, y });     // a control-parameter value: green outline and text
 ```
 
 - **Badge kinds**: `MEASURED` (E1–E3 results), `PROVED` (a proposition of the report), `CONJECTURE` + confidence
@@ -114,9 +118,16 @@ Kit.chip(ctx, { text: 'illustration, not to time scale', kind: 'plain', x: 960, 
   Top-right, one per scene; on every claim-bearing scene.
 - **Lower-thirds**: four kinds (chapter tag, source chip, reference chip, regenerable stamp), one at a time (the
   runtime warns on overlap), bottom-left, line 1 mono capitals, line 2 Inter 32 px. `kind: 'source'` with `data`
-  fills itself from the data file's `meta.stamp`, `meta.source` and the first 8 digits of its SHA-256.
-- **Chip kinds**: `''` (simulated, white), `generated` (violet), `schematic` (grey dashed), `measured` (pill), `plain`.
-- **Formula layer** (bottom-right): full statements in small type; never narrated, never in subtitles.
+  fills itself from the data file's `meta.stamp`, `meta.source` and the first 8 digits of its SHA-256; that line stays
+  on one line (shrunk to ≥ 28 px, else the file's basename), so the box is two lines tall (y ≈ 760–880).
+- **Chip kinds**: `''` (simulated, white), `generated` (violet), `schematic` (grey dashed), `measured` (pill), `plain`,
+  `param` (green: a value of Γ, η, Rm). `maxWidth` wraps a long chip to two lines (warned beyond two).
+- **Formula layer** (bottom-right): full statements in small type; never narrated, never in subtitles. **One item at a
+  time**: an item without `out` leaves when the next one comes in (`stack: true` keeps them all). Each item is fitted on
+  at most two lines (`Kit.fitFormula`): a long item is split at its most balanced `;` `:` `,` (top level or inside
+  `\text{}`) or `\quad`, else after a relation only if both halves are substantial (never "Γ ≤ | 0.86"), then shrunk,
+  never below 28 px (warned). Write long statements with a `;` or `\quad` where a break reads well. About 140 px tall
+  for a two-line item, from y ≈ 740.
 
 ### Cards — `cards.js`
 
@@ -132,8 +143,21 @@ Kit.questionCard(ctx, { n: 4, chapter: 'ch04', category: 'runs', at: 'q', whyAt:
   the question (≤ 18 words, `*word*` gets a graphite underline), WHY IT MATTERS, WHAT IT UNBLOCKS with a category tag:
   `runs` (which simulations, which parameters), `framing` (constraints, metrics, success criteria), `logistics`
   (data access, lab GPUs, Jean Zay, budget). Text comes from the script's `question` (`en`, `why`, `unblocks`,
-  `ask_who`); `n` and `category` from opts unless the script has them. Too long = warning, then shorten. The card
-  fills the frame: no lower-third, formula layer or seat beside it (the badge is optional: a question makes no claim).
+  `ask_who`); the script wins for every field (`n`, `chapter`, `category` too), opts are the fallback: do not pass `n`.
+  An initial stays with its name ("D. Lucor"). Too long = warning, then shorten. The card fills the frame: no
+  lower-third, formula layer or seat beside it (the badge is optional: a question makes no claim). In a preview
+  without a built entry it draws a placeholder ticket (warned) instead of throwing.
+
+```js
+Kit.predictCard(ctx, { x: 1380, y: 300, w: 620, anchor: 'l', question: 'Will the flips come like *clockwork*?',
+  options: ['A · regular', 'B · irregular'], at: 'predict-0.15', answerAt: 'irregular-0.15', pick: 1, out: 'irregular+1.2' });
+Kit.predictCard(ctx, { …, question: '' });                     // compact card (kicker + buttons) for the answer beat
+```
+
+- **PREDICT card** (predict beats, §3): mono kicker, the question in Inter Display 44, outline buttons; on `answerAt` the
+  picked button lights and the others dim. The question comes on its cue, the answer on the next paragraph's cue (the
+  hold is the script's `hold_after`); keep the lit answer ≥ 1.2 s on screen (warned). z 58: keep the subject of the
+  question visible beside it (the ch04 pilot moved the card into empty space).
 
 ### Equations — `equation.js` (KaTeX)
 
@@ -148,7 +172,9 @@ Kit.morph(ctx, { from: E, to: E2, at: 'rewrite', dur: 1.0 });   // T6: create E2
 ```
 
 Macros (colour by role): `\U \B \Rm \etaP \Gam \RE \PM \Po \vth \Edist`, and `\cu{} \cb{} \cp{} \cm{} \ck{} \cg{}`
-(velocity, field, parameter, model, metric, grey). `\term{id}{…}` makes a term addressable (`E.box(id)` gives its box).
+(velocity, field, parameter, model, metric, grey), `\cq{}` (the quadrupole Q, light vermillion `--b-light`) and `\cbn{}`
+(the other polarity, `--b-neg`). `\term{id}{…}` makes a term addressable (`E.box(id)` gives its box). Extra macros for one
+equation: `Kit.equation(ctx, { …, macros: { '\\Q': '\\cq{Q}' } })` (the formula layer takes `macros` too).
 Never redefine a built-in (`\eta` → use `\etaP`). Labels: at most two on screen (warned). Display size 64–96 px.
 
 ### Plots — `plot.js` (SVG)
@@ -187,14 +213,27 @@ comparison (the data files give it). Show the chip `display interpolation (spect
 |---|---|---|
 | M1 needle | `Kit.needle(ctx, { flips: ['flip'], corner: false })` | big compass or the corner needle (`corner: true`, only while D is on screen); a flip is 180° with ≤ 3 % overshoot |
 | polarity strip | `Kit.barcode(ctx, { box, series: { t, D }, label })` | sign runs of D in two shades of vermillion |
-| M2 knob | `Kit.knob(ctx, { min, max, window: [lo, hi], label: 'Γ', keys: [{ at, v }, { at: 'turn', v: 0.93, dur: 1.4 }] })` | green pointer, threshold window shaded green |
+| M2 knob | `Kit.knob(ctx, { min, max, window: [lo, hi], label: 'Γ', keys: [{ at, v }, { at: 'turn', v: 0.93, dur: 1.4 }] })` | green pointer, threshold window shaded green; a window under 12° also gets a full-green tick (`windowTick`), `windowLabel: '0.86'` prints the threshold beside it, `windowMinDeg` widens a thin window (schematic knobs only), `labelDy` moves the "Γ = …" label (default R + 92; tabular figures) |
 | M3 two inks | `Kit.twoInks(ctx, { box, cells: [4, 2], amp: 200, run: 'stretch' })` | blue cellular flow carries a vermillion material line (stretch, fold); SCHEMATIC |
 | M4 cloud | `Kit.cloud(ctx, { box, range, targets: [{ pts, at, dur }], strings: 120 })` | violet points on straight paths from a seeded Gaussian; several targets = conditioning |
-| M5 histogram | `Kit.histogram(ctx, { box, values, ref, range, bins: 31, morph: { values, at } })` | amber bars, reference outline; the morph to a spike is clipped "↑ off scale" |
+| M5 histogram | `Kit.histogram(ctx, { box, values, ref, range, bins: 31, morph: { values, at } })` | amber bars, reference outline; the morph to a spike is clipped "↑ off scale". `live: (t) => counts \| {counts, lo, hi}` (bars follow a growing count, in count units scaled by `liveMax`, default 1.12 × the final maximum), `manual: true` + `H.set(counts, lo, hi)` in your render, `outline: true \| {at, dur}` (a step outline, or bars morphing into it), `edges: true` (values outside the range collect into two dashed edge markers instead of being dropped); `H.root` can be moved |
 | M6 projector | `Kit.projector(ctx, { drop: 'project', field: 'b', gauge: { label: '∇·B', value } })` | the gauge value comes from data |
 | M7 staircase | `Kit.staircase(ctx, { lit: 2, pending: [3, 4] })` | tiers 0–4: three modes, 2D square, 3D box, VKS cylinder, precessing cylinder |
-| M9 pen | `Kit.pen(ctx, { kind: 'circle' | 'underline' | 'box' | 'brace' | 'arrow' | 'check' | 'cross', target: el | box, at })` | chalk, drawn on, seeded hand wobble |
+| M9 pen | `Kit.pen(ctx, { kind: 'circle' | 'underline' | 'box' | 'brace' | 'arrow' | 'check' | 'cross', target: el | box, at })` | chalk, drawn on, seeded hand wobble; `svg: <g>` draws into your own SVG group, so the mark rides with moving content (04.3's excursion circle scrolls with the strip); `__QA__` reports a mark running through text that is not its target |
 | M10 mirror | `Kit.mirror(ctx, { mode: 'plane' | 'point', reflect: 'mirror' })` | `point`: S = diag(−1, −1, 1) sends (Q, D) to (−Q, −D) — a point reflection in the (Q, D) plane, not a line mirror; use `plane` only as the B → −B metaphor |
+
+### The E1 story's pieces — `threemodes.js` (promoted from the ch04 pilot)
+
+```js
+const M = Kit.threeModes(ctx.data.e1.config.mu, ctx.data.e1.config.nu);   // never type the coefficients
+const s = M.seed(0.9, +1, Scene.rng('ic')); M.run(s, 0.9, 200, 0.01);       // RK4, fixed step; M.step(s, G, dt)
+const d = Kit.dial(g, { x, y, r: 110 }); d.set(Kit.dialAngle(q, 3), Kit.c('b-light'));
+Kit.photo(g, { x, y, w: 160, h: 120, q, d, v });                             // a snapshot: three small dials
+const box = Kit.shoebox(g, { x: 960, y: 600, w: 520, h: 260 });            // drop photos into box.content
+```
+
+SVG builders (no timing): the first argument is an SVG parent (a `<g>` of your `Kit.svgLayer`); you move them in your
+render. Q is drawn in `--b-light`, D in `--b` or `--b-neg` by sign, V in `--u`. 05.2, 06.4, 07.x and 09.x reuse them.
 
 ### Text helpers — `kit.js`
 
@@ -202,7 +241,14 @@ comparison (the data files give it). Show the chip `display interpolation (spect
 case: CSS `text-transform` would turn ω into Ω, η into Η, j into J — it is not used anywhere). `Kit.markup(text)`:
 `{u}…{/} {b}…{/} {param}…{/} {model}…{/} {metric}…{/}` key colours, `*…*` pen target, `$…$` inline KaTeX.
 `Kit.fmt(x, sig)` numbers with U+2212 minus and × 10ⁿ; `Kit.pow10(v)`; `Kit.fit(el, w, h, min)` shrinks to fit, never
-below 28 px (warns); `Kit.tex(tex)`; `Kit.el`, `Kit.s` (SVG), `Kit.svgLayer`, `Kit.canvasLayer`, `Kit.box(el)`.
+below 28 px (warns); `Kit.tex(tex, display, macros)`; `Kit.fitFormula(row, tex, maxW)` (the formula layer's splitter, for
+your own inline formulas); `Kit.nbhy(root)` (U+2011 between letters: keeps "north-south" on one line);
+`Kit.el`, `Kit.s` (SVG), `Kit.svgLayer`, `Kit.box(el)`.
+`Kit.canvasLayer(ctx, z, box, parent, { reset: true })` → `{canvas, g, w, h, reset()}`: with `reset: true` the context
+STATE (transform, alpha, composite, caps, joins, dash, shadow, filter, font) is restored before every frame, so a setting
+left by one frame never leaks into the next (the 04.3 `lineCap` leak); without it call `L.reset()` first in your render.
+Numbers whose digits change on screen (counters, readouts) take the class `tnum` (HTML) or `kt-num` (SVG): the theme
+has no global tabular figures (they widened Inter's hyphen and Inter Display's word spaces).
 
 ## 5. Data
 
@@ -289,8 +335,14 @@ setup(ctx) {
   lead 44, body 36, labels 32, minimum 28. KaTeX display 64–96 px, formula layer 32 px. Inter for words (tabular
   figures), Inter Display for titles, JetBrains Mono for chips and file names (capitals via `Kit.upper`).
 - **Colour = quantity**: `--param` green, `--u` blue, `--b` vermillion (other polarity `--b-neg`, a shade, not a
-  hue), `--model` violet, `--metric` amber, `--infra` grey lines; matter grey. At most three key colours per shot.
-  Only tokens (`var(--b)`, `Scene.col('b')`, `Kit.c('b')`), never a hex in a scene. Registers switch the tokens.
+  hue; the quadrupole Q beside D: `--b-light`, `.k-q`, `\cq{}`), `--model` violet, `--metric` amber, `--infra` grey lines;
+  matter grey. At most three key colours per shot — the formula layer's coloured symbols count. Never dim a `--b`
+  surface (at 60 % it reads as `--b-neg`). Only tokens (`var(--b)`, `Scene.col('b')`, `Kit.c('b')`), never a hex in a
+  scene. Registers switch the tokens.
+- **z ladder** (stage-level `z-index`, theme.css): backgrounds 1–2 · canvases 5–9 · SVG layers 10–16 · equations 20–21 ·
+  pen 30 · question card 40 · chips 45 · rail, corner needle, formula layer, lower-thirds 50–55 · PREDICT card 58 ·
+  badge 60. A label that annotates a canvas sits ABOVE it (z ≥ 30 for scene labels over canvases), with a background
+  halo when data passes under it (`text-shadow: 0 0 3px var(--bg), 0 0 6px var(--bg), 0 0 10px var(--bg)`, 04.2).
 - **Provenance**: simulated solid + white chip; generated dashed + violet chip / frame; schematic grey dashed chip;
   laboratory measurement ring chip. Metaphors carry `SCHEMATIC` and no invented numbers.
 - One idea per shot; never more than 3 s of complete stillness (the kit's idle motion: field-line breathing,
@@ -322,9 +374,12 @@ frames in order, so the cost per frame is the cost of one step batch. Give heavy
 - Build DOM, SVG, KaTeX and geometry in `setup`; `render` only sets styles/attributes/draws. Never create elements
   in `render`.
 - GSAP only as paused timelines driven by `tl.seek(t)`; Three.js renders inside `render(t)` with `preserveDrawingBuffer: true`.
-- Measured on the gallery (`tools/determinism.js`): a frame reached directly is bit-identical across fresh browsers;
-  after sequential seeking, some SVG/Canvas edges differ by anti-aliasing (a few to ~500 edge pixels, invisible);
-  workers always render in order, so a render is consistent.
+- Canvas 2D state (lineCap, globalAlpha, dash, transform…) persists between frames: `Kit.canvasLayer(…, { reset: true })`
+  or `L.reset()` first in your render.
+- Measured on the gallery and ch04 (`tools/determinism.js`, with the built entry): a frame reached directly is
+  bit-identical across fresh browsers; after sequential seeking, some SVG/Canvas edges differ by anti-aliasing (up to a
+  few thousand pixels by ≤ 32 levels, invisible); a state leak shows as thousands of pixels by > 32 levels (verdict
+  DIFFERENT). Workers always render in order, so a render is consistent.
 
 ## 10. What NOT to do
 
@@ -342,8 +397,11 @@ frames in order, so the cost per frame is the cost of one step batch. Give heavy
 
 ## 11. Reviewer checklist (apply to the stills of every cue and every transition)
 
-Run `node stills.js` on the scene (it reports page errors, `__SCENE_WARNINGS__` and the runtime's layout QA,
-`window.__QA__(t)`: small text, clipping, subtitle band, overlapping text boxes), then look at every still.
+Run `make check U=<unit>` (stills around every cue, page errors, `__SCENE_WARNINGS__`, a blank-first-frame warning and
+the runtime's layout QA, `window.__QA__(t)`: `small-text`/`small-formula` (effective size, transforms included),
+`clipped`, `subtitle-band`, `overlap` (one box per line of wrapped text), `under-canvas` (a canvas paints over text),
+`text-over-data` (text without a backing over canvas ink), `pen-over-text` (a chalk mark through text that is not its
+target); `data-qa="ignore"` skips a subtree, `data-qa="over-ok"` allows text over data), then look at every still.
 
 1. **Renders**: no page error, no scene warning (unknown cue, overlapping lower-thirds, text that does not fit), no blank frame.
 2. **Cues**: every visual event sits on a script cue (120–200 ms ahead of the word); no hard-coded time; predict holds come from `hold_after`.
@@ -372,6 +430,108 @@ lamps pending · 8 seat gauge result (test fixture) · 9 seat map pending · 10 
 tracers · 12 needle, knob, polarity strip, staircase · 13 two inks · 14 cloud (E1 model C) and histogram spike ·
 15 projector, pen, mirror · 16 seat curve result (fixture using the E3 data). Fixtures carry the chip
 "TEST FIXTURE · NOT A RESULT" and never leave the gallery.
+
+## 13. Lessons from the pilot (ch04)
+
+Unit ch04 (8 scenes, 4:29 with the narration) was built first to test this contract. The build report and the
+independent review are in `script/_review/scenes_ch04.md`. The kit problems they found are fixed in `runtime/` (13.2).
+The pages in `scenes/ch04/` are the worked examples below; line numbers are as of 2026-11-08.
+`scenes/ch04/ch04_kit.js` still holds the pilot's workarounds: `C4.fixAt`, `C4.formulas`, `C4.nbhy` and `C4.predict`
+are now redundant, and `C4.model`, `C4.dial`, `C4.frame` and `C4.shoebox` have moved into the kit. **Do not copy them.**
+Use `ctx.at('cue-0.15')`, `Kit.formulaLayer`, `Kit.predictCard`, `Kit.threeModes`, `Kit.dial`, `Kit.photo` and
+`Kit.shoebox`.
+
+### 13.1 Patterns to copy
+
+| Pattern | How | Worked example |
+|---|---|---|
+| **Frame 0 is never black** | Each scene is hard-cut to the previous one. Give the base layout (badge, chips, panels, empty strips, the chapter card) a negative `at` (−0.4 … −0.2); only what the narration introduces waits for its cue. `make check` warns about a blank first frame. | `04_1_three_dials.html:44` (chapter card `at: -0.3`, gone at `caricature-0.55`), `04_2…:49-50`, `04_Q_question.html:38` (`at: -0.4`) |
+| **Lead the word** | Visual events start 120–200 ms before their cue: `'flip-0.15'`. Offsets after a cue are fine (`'eqs+0.4'`). | every ch04 page |
+| **A precise word inside a sentence** | A cue is a sentence start. For the word that matters, use a fraction of that sentence: `ctx.script.sentences` gives `{id, cue, start, end}`. Keep a cue-based fallback for previews. | `04_2…:91-93` (the flip lands on "The dipole flips" via `first_flip_frac`), `04_3…:107-108` (callout at 62 % of `grows`), `04_6…:46` (tags from the sentence's start and end) |
+| **Live integration that agrees with the narration** | `Kit.threeModes(mu, nu)` with the coefficients from `e1_finegrid.json` config. In `setup`, run a **seeded search** over starting states, scored against the real cue times. That makes the scene work for any narration timing. Bound the search (rounds of `candidates`). If nothing qualifies, `S.warn(…)` and show the honest fallback. Never fake. | `04_2…:62-111` (start that crosses inside the window and stays until `irregular`), `04_4…:46` (a typical pair), `04_5…:41-52` (stays of the right polarity), `04_3…:56` (no excursion: schematic inset + warning) |
+| **Check the model before drawing the claim** | Run the model (or read the data) before you draw what the visual text says. Two ch04 claims were false for this model: "the outlines touch at the centre" (the passage runs round the outside, \|Q\| ≈ 2.5), and an excursion "crosses and comes straight back" (no two crossings closer than ~29 units). Draw what is true, and report the sentence to the writer. | `script/_review/scenes_ch04.md` §2 (04.2, 04.3) |
+| **Numbers only from data** | A value that `data/` lacks gets a `tools/data_<unit>.py`. It reads existing repository files only (recorded outputs, figures, result JSON) and writes `data/<unit>_*.json` with `meta` = {source, sha256, generator, extracted, stamp, note}. It rewrites a file only when the content changes. The script's `deps` and `entry.data` point to it. In the scene, cross-check the parameters and warn on a mismatch. | `tools/data_ch04.py` → `data/ch04_lyapunov.json`; `04_4…:35` (Γ of the exponent vs the scene's Γ) |
+| **Sound from the same computation** | `window.__EVENTS__ = [{t, id, gain_db}]` comes from the computation that draws the event: needle flips, crossing ticks, marbles. Never use a separate list of times. | `04_2…:141-142`, `04_3…:132`, `04_7…:98` |
+| **Move things together** | Mount components in a group (`parent:` for HTML, `svg:` for SVG) and transform the group in `render`. A pen mark with `svg:` rides with its content. | `04_1…:48` and `:111-114` (dial group shrinks onto the staircase), `04_3…:77` (excursion circle scrolls with the strip) |
+| **Labels over canvases** | z ≥ 30 above the canvas, plus a background halo when data passes under them. `__QA__` reports `under-canvas` and `text-over-data`. | `04_2…:17` (`.halo`), `04_3…:123` |
+| **Accumulating pictures** | Long exposures and growing histograms go through `Scene.stepper` on a fixed step (≥ 1/120 s), or `Kit.histogram({live})` when the count is a pure function of t. | `04_5…:99` (glow + live histograms), `04_7…:54-56` (rain, landing times sorted per bin) |
+| **Predict beat** | `Kit.predictCard`: the question on its cue, placed beside its subject, not over it. The answer lights on the next paragraph's cue and stays ≥ 1.2 s. The hold is the script's `hold_after`. | `04_2…:186` and `04_4…:144-145` (as `C4.predict`) |
+| **Question card** | `Kit.questionCard(ctx, { category, at: -0.4, whyAt: 'q+2.4', unblocksAt: 'q+4.6' })`. Everything else comes from the script; do not pass `n`. A faint textured background (≤ 10 %) keeps the frame alive. | `04_Q_question.html` |
+| **Unit helpers** | Shared JS/CSS of a unit go in `scenes/<unit>/<unit>_kit.js` and `<unit>.css`. They count in the render hash of every scene of the unit (P3). Anything another unit could reuse is reported for promotion; it is never loaded from another unit's folder. | `scenes/ch04/ch04_kit.js`, `ch04.css` |
+| **Polarity and Q in canvases** | `--b` and `--b-neg` at full alpha: a dimmed `--b` turns into `--b-neg`. Draw Q in `--b-light` (`Kit.c('b-light')`, `\cq{}`). | `04_5` (glow by polarity), `04_1` (Q dial) |
+| **AS BUILT** | Deviations from the script's `visual` go in a closing "AS BUILT (…date)" paragraph of `visual`. The writer's text before it stays untouched. | `script/ch04.json`, every ch04 scene |
+
+### 13.2 Pitfalls (and what the kit does about them now)
+
+| Pitfall met in ch04 | Now |
+|---|---|
+| `ctx.at('flip-0.15')` threw "unknown cue" | Fixed in `scene.js` (exact cue name first, then name ± offset). |
+| `_tail` / `_speech_end` threw in a preview | Defined from the duration in a preview. |
+| Formula layer items piled up (the layer grew into the scene), and KaTeX broke "Γ ≤ \| 0.86" | One item at a time by default; balanced splits (`Kit.fitFormula`); `null` without items. |
+| "north - south": the global tabular figures widened Inter's hyphen and Inter Display's word spaces | Dropped from the theme. Use `.tnum` / `.kt-num` for numbers that change. |
+| Canvas state leaked between frames (04.3 `lineCap`): frames depended on seek history | `Kit.canvasLayer(…, {reset: true})` / `L.reset()`. `make det` reports it (DIFFERENT). |
+| Labels under a canvas, and a trajectory through an axis label (04.2) | z ladder (§7); `__QA__` reports `under-canvas` and `text-over-data`. |
+| A pen ellipse touching a neighbouring tag (04.7) | `__QA__` reports `pen-over-text`. |
+| Text shrunk by a transform passed the 28 px check | `__QA__` measures the effective size (CSS and SVG transforms). |
+| Question card: opts overrode the script's `n` (Q5 for Q6); "D. \| Lucor"; the preview threw; 3 false overlap reports per card | Script wins; initials bound to their names; placeholder in a preview; QA compares line boxes. |
+| The badge ignored the script's `note` | Read from the script. |
+| The source lower-third wrapped to three lines (box up to y ≈ 730) | One line (shrink, then basename): y ≈ 760–880. |
+| `make check` wrote placeholders into `audio/` while the narration agent worked there | Unit check and unit draft are read-only on `audio/` (P7). |
+| Transition problems were invisible at cue + 0.6 s (5 of the 22 review findings) | A still 0.2 s before every cue, one in the lead-in, `EVERY=`; look at the draft too. |
+| A fast Γ ramp creates flips by itself: of 128 starts, 64 crossed during a 3 s turn to 0.86, where the stationary regime has none | Any knob turned over a live integration must select a start that does not do that (04.2), or narrate the transient. |
+| Four key colours in a shot because of the formula layer (`\Gam` green beside b, u, amber) | Count the formula layer's colours. Write `\Gamma` (plain) there when the shot already has three. |
+| A PREDICT card over the subject of the question for the whole 9 s hold (04.4) | Put the card in empty space; it leaves before the answer's picture comes in. |
+| Histogram too peaked: the axis at ±3.7 σ made "the pile spreads wide" read as a spike (04.7) | Choose the range from the data's spread (IQR, 1–99 %). `edges: true` keeps the tails visible. |
+| The excursion inset is schematic (the model has none) | Keep `SCHEMATIC` and the warning; the sentence goes to the writer. |
+
+### 13.3 Performance notes
+
+- Measured on ch04 (this machine, shared): setup 0.13–0.47 s per scene, 1.5 s for 04.2 with its three-round seeded
+  search. Keep setup under 2 s: bound searches, precompute once, decimate.
+- Median seek 1–8 ms. 04.5 (two glow canvases, live histograms) is the outlier at 18 ms median and 46 ms p95, inside
+  the dense budget of 60 ms. Draft capture runs at 43–72 fps at 960×540.
+- Dense trajectories: record every RK4 step once in `setup` (the "fine path"), draw with a 2.5–4 px decimation, and
+  batch strokes by colour and age (04.2). Interpolating between coarse samples showed straight segments 50–110 px
+  long at Γ = 1.
+- Give `Kit.canvasLayer` a box. Never create elements in `render`. Glow canvases: accumulate on a small grid
+  (152 × 80) and blur by 2 px when drawn, not per particle.
+- `__QA__` reads canvas pixels; it runs only in checks, never in a render.
+
+### 13.4 Verification routine (exact commands)
+
+```bash
+cd video && export NODE_PATH=/opt/node22/lib/node_modules
+make serve                                   # while building: http://127.0.0.1:8765/scenes/<unit>/<page>.html (g = safe area)
+make check U=<unit>                          # timing "auto": real narration where it matches, else the estimate
+make check U=<unit> TIMING=estimate          # the 146-wpm estimate (the narration will move the cues: both must hold)
+node -e "for (const d of ['unit_<unit>','unit_<unit>_est']) { const r = require('./out/check/'+d+'/report.json');
+  for (const s of r.scenes) console.log(d, s.id, 'errors', s.errors.length, 'warnings', s.warnings, 'qa', s.layout_qa.length) }"
+#   then OPEN EVERY STILL of out/check/unit_<unit>/ (and the _est ones): pre-cue and post-cue, lead-in, first and last
+make det U=<unit>                            # direct seeks identical, sequential = anti-aliasing only (exit 0)
+node build.js --unit <unit> --draft          # = make draft U=<unit> without `make data`: out/draft/unit_<unit>/unit_<unit>_draft.mp4
+ffmpeg -v error -ss <t> -i out/draft/unit_<unit>/unit_<unit>_draft.mp4 -frames:v 1 /tmp/mid.png   # frames in the middle of every move
+```
+
+`S=<id>,<id>` limits `make check`/`make det` to some scenes while iterating; `EVERY=1.0` adds a still every second.
+
+### 13.5 Definition of done for a unit
+
+1. Every scene of `script/<unit>.json` has its page at `file` (§1). Pending scenes draw `Kit.seat` in both variants.
+2. `make check U=<unit>` and `make check U=<unit> TIMING=estimate`: 0 page errors; 0 scene warnings except ones
+   documented as intended in `script/_review/scenes_<unit>.md`; 0 layout-QA issues, or each one explained there as a
+   false positive with its `data-qa` opt-out justified.
+3. Every still looked at, on both timings, against the checklist (§11). The draft watched, and frames taken in the
+   middle of every move. No blank first frame. No stillness over 3 s.
+4. `make det U=<unit>` exits 0.
+5. Performance within §8: setup < 2 s, seek < 20 ms (flat) / 60 ms (dense), draft capture ≥ 30 fps
+   (`out/draft/unit_<unit>/scenes/<id>.metrics.json`).
+6. Every number on screen comes from `data/` (or is an axis bound or tick of a known parameter range); new values come
+   through `tools/data_<unit>.py`; `deps` lists every data file read.
+7. The script changed only in `file`, `deps`, `entry` and `visual` (with an AS BUILT paragraph); narration untouched.
+8. `script/_review/scenes_<unit>.md` holds the build report and an **independent review** by an agent that did not
+   build the pages. Every confirmed problem is fixed, and the checks are re-run after the fixes. Kit or pipeline
+   problems are reported there with file, evidence and proposed fix, never patched in `runtime/` or the tools.
+
 
 <!-- Section "Pipeline" is appended below by foundation engineer A. -->
 
@@ -483,10 +643,24 @@ sources, data, params, seed`.
 
 ### P7. Checks
 
-- `make check U=<unit>` (`node build.js --unit <unit> --check`): narration from the cache or a placeholder
-  (never the API), real timings, then one still per cue (0.6 s after it, before the next), plus the first and
-  last frames, with page errors (exit 1), `__SCENE_WARNINGS__` and `__QA__` issues: `out/check/unit_<unit>/`
-  (stills, `<id>_sheet.png`, `report.json`).
+- `make check U=<unit> [S=id,id] [TIMING=auto|estimate|audio] [EVERY=1.0]` (`node build.js --unit <unit> --check`):
+  **never writes into `audio/`, `script/_build/` or `subs/`** (the narration agent may be synthesising at the same time).
+  Timing `auto`: each scene's `audio/scenes<_lang>/<id>.align.json` is read (read only) when its sentences match the
+  script (a changed `hold_after` is re-applied), else the 146-wpm estimate of `align.py --allow-missing` is computed in
+  build.js; `estimate` forces it; `audio` fails when a scene has no matching narration. The log prints each scene's
+  timing source. Stills (stills.js check mode): frame 0, the middle of the lead-in, for every cue one still 0.2 s BEFORE
+  it (`<cue>-pre`, the end of the previous move) and one 0.6 s after it, the last frame; `EVERY=s` adds regular stills.
+  Page errors (exit 1), `__SCENE_WARNINGS__`, a blank-first-frame warning and `__QA__` issues: `out/check/unit_<unit>/`
+  (estimate: `unit_<unit>_est/`): stills, `<id>_sheet.png`, `report.json`, and `build/` (the unit's film, cue sheet,
+  timeline and subtitles). `--audio-write` (OPTS) restores the old check (tts `--mode auto` + align.py into `audio/`).
+- `make draft U=<unit> [S=id,id] [TIMING=…]` (`node build.js --unit <unit> --draft`): the unit at 960×540, 15 fps, the
+  same read-only timing, scenes in `out/draft/unit_<unit>/scenes/` (incremental), and `unit_<unit>_draft.mp4` with the
+  narration muxed from `audio/scenes/<id>.wav` (read only) where the timing is real, silence elsewhere. No music or
+  effects (mix.py writes into `audio/cache/music/`); page errors exit 1.
+- `make det U=<unit> [S=id,id] [TIMING=estimate]` (`node tools/determinism.js --timeline out/check/…/build/…_timeline.json`,
+  after `make check`): per scene at 25/50/75 % of its duration, two fresh direct seeks must be bit-identical and a
+  sequential arrival may differ only by anti-aliasing (≤ 600 pixels by > 32 levels); verdict per frame, exit 1 otherwise.
+  `node tools/determinism.js <page.html> --times a,b --entry e.json` for one page.
 - A 404 on a data URL is tolerated only while the scene is `pending`. Page errors of a render are in
   `out/<cut>_build_report.json` (`page_errors`); `--strict` makes them fatal.
 - `make test` runs the whole chain on `script/_test` (units tc1, tq, tc2, tx; pages in `scenes/_test/`; test data
