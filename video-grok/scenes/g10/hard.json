@@ -1,0 +1,131 @@
+{
+  "id": "g10.hard",
+  "width": 1920,
+  "height": 1080,
+  "fps": 30,
+  "duration": 43,
+  "seed": 20261108,
+  "cues": [
+    { "id": "cue.g10.hard.show", "at": 0 },
+    { "id": "cue.g10.hard.penalty", "at": 8 },
+    { "id": "cue.g10.hard.magnetic", "at": 14 },
+    { "id": "cue.g10.hard.projection", "at": 20 },
+    { "id": "cue.g10.hard.flow", "at": 28 },
+    { "id": "cue.g10.hard.order", "at": 34 },
+    { "id": "cue.g10.hard.winner", "at": 38 },
+    { "id": "cue.g10.hard.end", "at": 43 }
+  ],
+  "layers": [
+    { "kind": "matter", "at": "cue.g10.hard.show", "matter": "night" },
+    {
+      "kind": "badge",
+      "badge": "MEASURED",
+      "primary": true,
+      "from": "cue.g10.hard.show",
+      "until": "cue.g10.hard.end"
+    },
+    { "kind": "level", "level": "L3", "from": "cue.g10.hard.show", "until": "cue.g10.hard.end" },
+    {
+      "kind": "subtitle",
+      "from": "cue.g10.hard.show",
+      "until": "cue.g10.hard.penalty",
+      "text": "V0 leaves a divergence of 0.408."
+    },
+    {
+      "kind": "subtitle",
+      "from": "cue.g10.hard.penalty",
+      "until": "cue.g10.hard.magnetic",
+      "text": "A soft penalty leaves 0.34 on the"
+    },
+    {
+      "kind": "subtitle",
+      "from": "cue.g10.hard.magnetic",
+      "until": "cue.g10.hard.projection",
+      "text": "velocity and 0.162 on the magnetic"
+    },
+    {
+      "kind": "subtitle",
+      "from": "cue.g10.hard.projection",
+      "until": "cue.g10.hard.flow",
+      "text": "Potentials and the final projection"
+    },
+    {
+      "kind": "subtitle",
+      "from": "cue.g10.hard.flow",
+      "until": "cue.g10.hard.order",
+      "text": "The projected flow falls to 2.03"
+    },
+    {
+      "kind": "subtitle",
+      "from": "cue.g10.hard.order",
+      "until": "cue.g10.hard.winner",
+      "text": "Read the bars in a fixed order."
+    },
+    {
+      "kind": "subtitle",
+      "from": "cue.g10.hard.winner",
+      "until": "cue.g10.hard.end",
+      "text": "Do not sort them by a winner."
+    },
+    {
+      "kind": "bars",
+      "from": "cue.g10.hard.show",
+      "until": "cue.g10.hard.penalty",
+      "title": "Divergence, fixed order",
+      "log": true,
+      "rows": [{ "name": "V0", "value": 0.408, "label": "0.408", "role": "model" }]
+    },
+    {
+      "kind": "bars",
+      "from": "cue.g10.hard.penalty",
+      "until": "cue.g10.hard.magnetic",
+      "title": "Divergence, fixed order",
+      "log": true,
+      "rows": [
+        { "name": "V0", "value": 0.408, "label": "0.408", "role": "model" },
+        { "name": "V1 u", "value": 0.34, "label": "0.34", "role": "velocity" }
+      ]
+    },
+    {
+      "kind": "bars",
+      "from": "cue.g10.hard.magnetic",
+      "until": "cue.g10.hard.projection",
+      "title": "Divergence, fixed order",
+      "log": true,
+      "rows": [
+        { "name": "V0", "value": 0.408, "label": "0.408", "role": "model" },
+        { "name": "V1 u", "value": 0.34, "label": "0.34", "role": "velocity" },
+        { "name": "V1 B", "value": 0.162, "label": "0.162", "role": "field" }
+      ]
+    },
+    {
+      "kind": "bars",
+      "from": "cue.g10.hard.projection",
+      "until": "cue.g10.hard.flow",
+      "title": "Divergence, fixed order",
+      "log": true,
+      "rows": [
+        { "name": "V0", "value": 0.408, "label": "0.408", "role": "model" },
+        { "name": "V1 u", "value": 0.34, "label": "0.34", "role": "velocity" },
+        { "name": "V1 B", "value": 0.162, "label": "0.162", "role": "field" },
+        { "name": "V2", "value": 5.05e-17, "label": "5.05e-17", "role": "model" },
+        { "name": "V4", "value": 1.78e-17, "label": "1.78e-17", "role": "model" }
+      ]
+    },
+    {
+      "kind": "bars",
+      "from": "cue.g10.hard.flow",
+      "until": "cue.g10.hard.end",
+      "title": "Divergence, fixed order",
+      "log": true,
+      "rows": [
+        { "name": "V0", "value": 0.408, "label": "0.408", "role": "model" },
+        { "name": "V1 u", "value": 0.34, "label": "0.34", "role": "velocity" },
+        { "name": "V1 B", "value": 0.162, "label": "0.162", "role": "field" },
+        { "name": "V2", "value": 5.05e-17, "label": "5.05e-17", "role": "model" },
+        { "name": "V4", "value": 1.78e-17, "label": "1.78e-17", "role": "model" },
+        { "name": "V3", "value": 2.03e-8, "label": "2.03e-08", "role": "model" }
+      ]
+    }
+  ]
+}

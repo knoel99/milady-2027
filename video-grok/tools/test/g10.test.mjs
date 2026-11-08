@@ -9,7 +9,12 @@ import { loadScene, viewAt, cueTime } from "../../engine/scene.js";
 import { ouvrir } from "../navigateur.mjs";
 import { servir } from "../servir.mjs";
 import classesRaw from "../../scenes/g10/classes.json" with { type: "json" };
+import hardRaw from "../../scenes/g10/hard.json" with { type: "json" };
+import symRaw from "../../scenes/g10/sym.json" with { type: "json" };
+import lawRaw from "../../scenes/g10/law.json" with { type: "json" };
 import sampleRaw from "../../scenes/g10/sample.json" with { type: "json" };
+import biasRaw from "../../scenes/g10/bias.json" with { type: "json" };
+import closeRaw from "../../scenes/g10/close.json" with { type: "json" };
 import cardRaw from "../../scenes/g10/card.json" with { type: "json" };
 import slots from "../../scenes/g10/cues.json" with { type: "json" };
 
@@ -17,8 +22,14 @@ const here = dirname(fileURLToPath(import.meta.url));
 const root = join(here, "../..");
 const repo = join(root, "..");
 const classes = loadScene(classesRaw);
+const hard = loadScene(hardRaw);
+const sym = loadScene(symRaw);
+const law = loadScene(lawRaw);
 const sample = loadScene(sampleRaw);
+const bias = loadScene(biasRaw);
+const close = loadScene(closeRaw);
 const card = loadScene(cardRaw);
+const scenes = [classes, hard, sym, law, sample, bias, close, card];
 const narration = await readFile(join(root, "narration/en/g10.md"), "utf8");
 const digest = (await readFile(join(repo, "experiences/resultats/digest.md"), "utf8")).split("\n");
 
@@ -110,8 +121,28 @@ test("les chiffres affichés sont ceux du digest, dans l'ordre fixe", () => {
   assert.equal(proved.badges.some((badge) => badge.kind === "PROVED" && badge.primary), true);
 });
 
+test("les cinq scènes du pilote durent leur créneau", () => {
+  assert.deepEqual(
+    [hard, sym, law, bias, close].map((scene) => [scene.id, scene.duration]),
+    [
+      ["g10.hard", 43],
+      ["g10.sym", 30],
+      ["g10.law", 39],
+      ["g10.bias", 25],
+      ["g10.close", 17],
+    ],
+  );
+  assert.equal(cueTime(law, "cue.g10.law.caveat"), 19.5);
+  assert.equal(viewAt(hard, cueTime(hard, "cue.g10.hard.flow")).bars.rows.map((row) => row.name).join(","), "V0,V1 u,V1 B,V2,V4,V3");
+  assert.equal(viewAt(law, 0).badges.some((badge) => badge.kind === "MEASURED" && badge.primary), true);
+  assert.equal(viewAt(sym, 0).badges.some((badge) => badge.kind === "PROVED" && badge.primary), true);
+  assert.equal(viewAt(bias, 0).bars.schematic, true);
+  assert.equal(viewAt(close, 0).badges.length, 0);
+  assert.equal(viewAt(close, 0).questionCard, null);
+});
+
 test("les sous-titres sont des extraits du script, et la carte est q.g10", () => {
-  for (const scene of [classes, sample]) {
+  for (const scene of scenes) {
     for (const layer of scene.layers) {
       if (layer.kind !== "subtitle") continue;
       assert.equal(narration.includes(layer.text), true, layer.text);
@@ -317,6 +348,11 @@ test("le texte reste à 28 px, hors marge, et ne coupe pas les barres", async ()
         "cue.g10.sample.formula",
       ],
     ],
+    ["hard.html", ["cue.g10.hard.show", "cue.g10.hard.flow", "cue.g10.hard.winner"]],
+    ["sym.html", ["cue.g10.sym.show", "cue.g10.sym.weights"]],
+    ["law.html", ["cue.g10.law.show", "cue.g10.law.caveat", "cue.g10.law.dynamo"]],
+    ["bias.html", ["cue.g10.bias.show", "cue.g10.bias.model"]],
+    ["close.html", ["cue.g10.close.show", "cue.g10.close.prove"]],
     ["card.html", ["cue.g10.card"]],
   ];
   const { browser, page } = await ouvrir(`http://127.0.0.1:${server.port}/scenes/g10/${pages[0][0]}`);

@@ -50,6 +50,79 @@ Les autres étiquettes viennent des mêmes lignes, plus la ligne 19 pour `0.0231
 
 L'extrait dure 8 s, de `cue.g10.card` à `cue.g10.card.end`. La phrase de `q.g10` est `Must stationarity fine-tuning be anchored first?` La classe est A. La pastille est PLANNED.
 
+## hard.html
+
+La scène dure 43 s. La pastille principale est MEASURED.
+
+| Repère | t (s) | Écran |
+|---|---|---|
+| `cue.g10.hard.show` | 0 | V0, divergence 0,408. |
+| `cue.g10.hard.penalty` | 8 | V0 puis V1 sur u, 0,34. |
+| `cue.g10.hard.magnetic` | 14 | V1 sur B, 0,162. |
+| `cue.g10.hard.projection` | 20 | V2 et V4, autour de 10⁻¹⁷. |
+| `cue.g10.hard.flow` | 28 | V3, flot projeté 2,03×10⁻⁸. |
+| `cue.g10.hard.order` | 34 | L'ordre reste fixe. |
+| `cue.g10.hard.winner` | 38 | « Do not sort them by a winner. » |
+| `cue.g10.hard.end` | 43 | Fin. |
+
+L'ordre des rangées reste V0, V1 u, V1 B, V2, V4, V3. Ce n'est pas l'ordre des valeurs. Les chiffres sont ceux de `digest.md` lignes 134 à 138. L'échelle est logarithmique.
+
+## sym.html
+
+La scène dure 30 s. La pastille principale est PROVED. Les deux barres sont schématiques et de même longueur. Le champ dessiné est B.
+
+| Repère | t (s) | Écran |
+|---|---|---|
+| `cue.g10.sym.show` | 0 | Changer le signe de B. |
+| `cue.g10.sym.sign` | 6 | B vers −B est une symétrie de la loi. |
+| `cue.g10.sym.equivariance` | 12 | L'équivariance tient cette symétrie. |
+| `cue.g10.sym.budget` | 18 | Les identités de budget ne fixent pas les poids. |
+| `cue.g10.sym.weights` | 24 | Les deux polarités. |
+| `cue.g10.sym.end` | 30 | Fin. |
+
+## law.html
+
+La scène dure 39 s. La pastille principale est MEASURED. `cue.g10.law.caveat` est à 19,5 s, la moitié du créneau, pour rester l'horloge des deux pistes.
+
+| Repère | t (s) | Écran |
+|---|---|---|
+| `cue.g10.law.show` | 0 | V5, distance 0,699. |
+| `cue.g10.law.witness` | 7 | Le témoin à 2,52. |
+| `cue.g10.law.floor` | 13 | Plancher 0,0304. |
+| `cue.g10.law.caveat` | 19.5 | E2 forcé, une graine, interpolation, pas une dynamo. |
+| `cue.g10.law.seed` | 25 | « One seed. » |
+| `cue.g10.law.interpolation` | 29 | Interpolation. |
+| `cue.g10.law.dynamo` | 34 | Pas une dynamo. |
+| `cue.g10.law.end` | 39 | Fin. |
+
+L'ordre des rangées reste V5, witness, floor. Le témoin est la barre la plus haute. Il ne gagne pas. Les chiffres 0,699 et 2,52 viennent des lignes 139 et 140 de `digest.md`. Le plancher 0,0304 est la distance d'énergie du sous-échantillon sur les η d'entraînement, ligne 157.
+
+## bias.html
+
+La scène dure 25 s. La pastille principale est PROVED. Les deux demi-lots sont schématiques et de même longueur. Aucun chiffre n'est affiché.
+
+| Repère | t (s) | Écran |
+|---|---|---|
+| `cue.g10.bias.show` | 0 | Le carré d'une moyenne empirique. |
+| `cue.g10.bias.variance` | 6 | Ce carré pénalise la variance. |
+| `cue.g10.bias.halves` | 12 | Deux demi-lots indépendants. |
+| `cue.g10.bias.removes` | 17 | Leur produit retire ce biais. |
+| `cue.g10.bias.model` | 21 | L'identité ne choisit pas un modèle. |
+| `cue.g10.bias.end` | 25 | Fin. |
+
+## close.html
+
+La scène dure 17 s. Pas de pastille. Pas de carte question. Le niveau reste L3.
+
+| Repère | t (s) | Écran |
+|---|---|---|
+| `cue.g10.close.show` | 0 | Pas de masse en zéro. |
+| `cue.g10.close.zero` | 4 | La valeur tombe exactement sur zéro. |
+| `cue.g10.close.anchor` | 8 | L'ancrage limite le réglage fin. |
+| `cue.g10.close.states` | 12 | Le chapitre énonce les propositions. |
+| `cue.g10.close.prove` | 15 | Il ne les prouve pas. |
+| `cue.g10.close.end` | 17 | Fin. |
+
 ## Caveat oral de g10.law
 
 `cues.json` réserve deux créneaux `cue.g10.law.caveat`.

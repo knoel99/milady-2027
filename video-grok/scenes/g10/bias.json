@@ -1,0 +1,68 @@
+{
+  "id": "g10.bias",
+  "width": 1920,
+  "height": 1080,
+  "fps": 30,
+  "duration": 25,
+  "seed": 20261108,
+  "cues": [
+    { "id": "cue.g10.bias.show", "at": 0 },
+    { "id": "cue.g10.bias.variance", "at": 6 },
+    { "id": "cue.g10.bias.halves", "at": 12 },
+    { "id": "cue.g10.bias.removes", "at": 17 },
+    { "id": "cue.g10.bias.model", "at": 21 },
+    { "id": "cue.g10.bias.end", "at": 25 }
+  ],
+  "layers": [
+    { "kind": "matter", "at": "cue.g10.bias.show", "matter": "night" },
+    {
+      "kind": "badge",
+      "badge": "PROVED",
+      "primary": true,
+      "from": "cue.g10.bias.show",
+      "until": "cue.g10.bias.end"
+    },
+    { "kind": "level", "level": "L3", "from": "cue.g10.bias.show", "until": "cue.g10.bias.end" },
+    {
+      "kind": "subtitle",
+      "from": "cue.g10.bias.show",
+      "until": "cue.g10.bias.variance",
+      "text": "The square of an empirical mean"
+    },
+    {
+      "kind": "subtitle",
+      "from": "cue.g10.bias.variance",
+      "until": "cue.g10.bias.halves",
+      "text": "penalizes variance."
+    },
+    {
+      "kind": "subtitle",
+      "from": "cue.g10.bias.halves",
+      "until": "cue.g10.bias.removes",
+      "text": "two independent half-batch means"
+    },
+    {
+      "kind": "subtitle",
+      "from": "cue.g10.bias.removes",
+      "until": "cue.g10.bias.model",
+      "text": "removes that bias."
+    },
+    {
+      "kind": "subtitle",
+      "from": "cue.g10.bias.model",
+      "until": "cue.g10.bias.end",
+      "text": "It does not by itself pick a model."
+    },
+    {
+      "kind": "bars",
+      "from": "cue.g10.bias.show",
+      "until": "cue.g10.bias.end",
+      "title": "Two half-batches",
+      "schematic": true,
+      "rows": [
+        { "name": "half A", "value": 1, "role": "parameter" },
+        { "name": "half B", "value": 1, "role": "parameter" }
+      ]
+    }
+  ]
+}

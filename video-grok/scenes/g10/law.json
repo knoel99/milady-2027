@@ -1,0 +1,83 @@
+{
+  "id": "g10.law",
+  "width": 1920,
+  "height": 1080,
+  "fps": 30,
+  "duration": 39,
+  "seed": 20261108,
+  "cues": [
+    { "id": "cue.g10.law.show", "at": 0 },
+    { "id": "cue.g10.law.witness", "at": 7 },
+    { "id": "cue.g10.law.floor", "at": 13 },
+    { "id": "cue.g10.law.caveat", "at": 19.5 },
+    { "id": "cue.g10.law.seed", "at": 25 },
+    { "id": "cue.g10.law.interpolation", "at": 29 },
+    { "id": "cue.g10.law.dynamo", "at": 34 },
+    { "id": "cue.g10.law.end", "at": 39 }
+  ],
+  "layers": [
+    { "kind": "matter", "at": "cue.g10.law.show", "matter": "night" },
+    {
+      "kind": "badge",
+      "badge": "MEASURED",
+      "primary": true,
+      "from": "cue.g10.law.show",
+      "until": "cue.g10.law.end"
+    },
+    { "kind": "level", "level": "L3", "from": "cue.g10.law.show", "until": "cue.g10.law.end" },
+    {
+      "kind": "subtitle",
+      "from": "cue.g10.law.show",
+      "until": "cue.g10.law.witness",
+      "text": "V5 reaches an energy distance of 0.699."
+    },
+    {
+      "kind": "subtitle",
+      "from": "cue.g10.law.witness",
+      "until": "cue.g10.law.floor",
+      "text": "sits at 2.52 and does not win."
+    },
+    {
+      "kind": "subtitle",
+      "from": "cue.g10.law.floor",
+      "until": "cue.g10.law.caveat",
+      "text": "is 0.0304."
+    },
+    {
+      "kind": "subtitle",
+      "from": "cue.g10.law.caveat",
+      "until": "cue.g10.law.seed",
+      "text": "E2 is two-dimensional and forced."
+    },
+    {
+      "kind": "subtitle",
+      "from": "cue.g10.law.seed",
+      "until": "cue.g10.law.interpolation",
+      "text": "One seed."
+    },
+    {
+      "kind": "subtitle",
+      "from": "cue.g10.law.interpolation",
+      "until": "cue.g10.law.dynamo",
+      "text": "The tests are interpolation."
+    },
+    {
+      "kind": "subtitle",
+      "from": "cue.g10.law.dynamo",
+      "until": "cue.g10.law.end",
+      "text": "This is not a dynamo."
+    },
+    {
+      "kind": "bars",
+      "from": "cue.g10.law.show",
+      "until": "cue.g10.law.end",
+      "title": "Energy distance",
+      "log": true,
+      "rows": [
+        { "name": "V5", "value": 0.699, "label": "0.699", "role": "model" },
+        { "name": "witness", "value": 2.52, "label": "2.52", "role": "model" },
+        { "name": "floor", "value": 0.0304, "label": "0.0304", "role": "metric" }
+      ]
+    }
+  ]
+}
