@@ -287,8 +287,8 @@ def check_chapter(
         errors.append(f"{chapter}: carte alors que le registre n'en a pas")
     joined = "\n".join(spoken_all)
     marked = joined.replace(
-        "If the flow gets faster, which wins: induction or diffusion?",
-        "If the flow gets faster, which wins, induction or diffusion?",
+        "If only the flow speed increases, which gains relative strength: induction or diffusion?",
+        "If only the flow speed increases, which gains relative strength, induction or diffusion?",
     )
     if GREEK_IN_SPEECH.search(marked) or "(" in marked or ")" in marked or ":" in marked or "\u2014" in marked:
         errors.append(f"{chapter}: le parlé contient un symbole, des parenthèses, deux-points, ou un tiret long")
@@ -335,9 +335,14 @@ def check_reservations(chapters: dict, errors: list[str]) -> None:
     need(cues, "cue.g00.needle.start", "south", "g00", errors)
     need(cues, "cue.g01.earth.show", "illustration, not to time scale", "g01", errors)
     need(cues, "cue.g01.earth.show", "Ohmic dissipation is the field losing energy as heat", "g01", errors)
-    need(cues, "cue.g01.rate.show", "probability distribution over states", "g01", errors)
+    need(cues, "cue.g01.rate.show", "how probable each state is", "g01", errors)
+    need(cues, "cue.g01.rate.show", "how often the field switches polarity per unit time", "g01", errors)
+    need(cues, "cue.g01.rate.show", "Those are different quantities", "g01", errors)
+    need(cues, "cue.g01.rate.show", "Together with the evolution equation, the state distribution lets us estimate how often polarity changes", "g01", errors)
     need(cues, "cue.g01.rate.caveat", "No Earth rate is stated", "g01", errors)
-    need(cues, "cue.g02.ratio.predict", "If the flow gets faster, which wins: induction or diffusion?", "g02", errors)
+    need(cues, "cue.g01.rate.caveat", "not the reversal rate", "g01", errors)
+    need(cues, "cue.g02.ratio.predict", "If only the flow speed increases, which gains relative strength: induction or diffusion?", "g02", errors)
+    need(cues, "cue.g02.ratio.show", "Induction becomes stronger relative to diffusion", "g02", errors)
     need(cues, "cue.g05.offer.show", "lines that neither begin nor end", "g05", errors)
     formula = cues.get("cue.g02.ratio.formula")
     predict = cues.get("cue.g02.ratio.predict")
@@ -408,6 +413,10 @@ def check_reservations(chapters: dict, errors: list[str]) -> None:
         "name the length, the speed, and the diffusivity",
         "several million",
         "are Poissonian",
+        "A frequency is the total weight of one kind of state",
+        "which wins",
+        "induction wins",
+        "slower flow lets diffusion win",
     )
     all_spoken = "\n".join(spoken.values())
     for phrase in banned:

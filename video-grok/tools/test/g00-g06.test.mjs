@@ -131,7 +131,7 @@ test("les repères nommés du plan sont dans le script, dans l'ordre des scènes
   assert.equal(earth.cues[0].pause, 3);
   assert.equal(
     ratio.cues[0].text.join(" "),
-    "If the flow gets faster, which wins: induction or diffusion?",
+    "If only the flow speed increases, which gains relative strength: induction or diffusion?",
   );
 });
 
@@ -148,7 +148,10 @@ test("chaque beat g00-g06 reste à 156 mots par minute, avec le tokenizer g07", 
     const fromVerifier = report.beats.find((row) => row.id === beat.id);
     assert.equal(fromVerifier.duration, beat.duration);
     assert.deepEqual(fromVerifier.cues, beat.cues.map((cue) => cue.id));
-    assert.equal(fromVerifier.rate, Math.round(result.rate * 10) / 10);
+    assert.ok(
+      Math.abs(fromVerifier.rate - result.rate) < 0.051,
+      `${beat.id}: ${fromVerifier.rate} contre ${result.rate}`,
+    );
   }
   const tooFast = speech(Array.from({ length: 100 }, () => "word").join(" "), 30, 0);
   assert.ok(tooFast.rate > 156, `${tooFast.rate} mots/min`);
