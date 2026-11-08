@@ -1,0 +1,28 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <title>g10.sample</title>
+    <link rel="stylesheet" href="../../vendor/katex/katex.min.css" />
+    <link rel="stylesheet" href="../../components/stage.css" />
+    <style>
+      .bars {
+        width: 1680px;
+      }
+
+      .formula {
+        top: 640px;
+      }
+    </style>
+  </head>
+  <body>
+    <div id="stage"></div>
+    <script src="../../vendor/katex/katex.min.js"></script>
+    <script type="module">
+      import scene from "./sample.json" with { type: "json" };
+      import { mount } from "../../engine/runtime.js";
+
+      mount(scene, document.querySelector("#stage"));
+    </script>
+  </body>
+</html>

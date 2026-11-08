@@ -1,0 +1,203 @@
+{
+  "id": "g10.sample",
+  "width": 1920,
+  "height": 1080,
+  "fps": 30,
+  "duration": 40,
+  "seed": 20261108,
+  "cues": [
+    { "id": "cue.g10.sample.div", "at": 0 },
+    { "id": "cue.g10.sample.div.order", "at": 3 },
+    { "id": "cue.g10.sample.e2", "at": 6 },
+    { "id": "cue.g10.sample.e2.tail", "at": 9 },
+    { "id": "cue.g10.sample.e2.spread", "at": 12 },
+    { "id": "cue.g10.sample.e2.spread.mid", "at": 15 },
+    { "id": "cue.g10.sample.e2.spread.tail", "at": 17.5 },
+    { "id": "cue.g10.sample.e2.dissipation", "at": 19.5 },
+    { "id": "cue.g10.sample.predict", "at": 22 },
+    { "id": "cue.g10.sample.e1", "at": 25 },
+    { "id": "cue.g10.sample.e1.tail", "at": 28 },
+    { "id": "cue.g10.sample.e1.spread", "at": 31 },
+    { "id": "cue.g10.sample.e1.spread.tail", "at": 33.5 },
+    { "id": "cue.g10.sample.e1.variance", "at": 36 },
+    { "id": "cue.g10.sample.paper", "at": 37.733333333333334 },
+    { "id": "cue.g10.sample.formula", "at": 38 },
+    { "id": "cue.g10.sample.end", "at": 40 }
+  ],
+  "layers": [
+    { "kind": "matter", "at": "cue.g10.sample.div", "matter": "night" },
+    { "kind": "transition", "at": "cue.g10.sample.paper", "frames": 8, "to": "paper" },
+    {
+      "kind": "badge",
+      "badge": "MEASURED",
+      "primary": true,
+      "from": "cue.g10.sample.div",
+      "until": "cue.g10.sample.formula"
+    },
+    { "kind": "level", "level": "L3", "from": "cue.g10.sample.div", "until": "cue.g10.sample.end" },
+    {
+      "kind": "subtitle",
+      "from": "cue.g10.sample.div",
+      "until": "cue.g10.sample.div.order",
+      "text": "Read the bars in a fixed order."
+    },
+    {
+      "kind": "subtitle",
+      "from": "cue.g10.sample.div.order",
+      "until": "cue.g10.sample.e2",
+      "text": "Do not sort them by a winner."
+    },
+    {
+      "kind": "subtitle",
+      "from": "cue.g10.sample.e2",
+      "until": "cue.g10.sample.e2.tail",
+      "text": "E2 leaves a residue of 8.27 times 10"
+    },
+    {
+      "kind": "subtitle",
+      "from": "cue.g10.sample.e2.tail",
+      "until": "cue.g10.sample.e2.spread",
+      "text": "to the minus 6."
+    },
+    {
+      "kind": "subtitle",
+      "from": "cue.g10.sample.e2.spread",
+      "until": "cue.g10.sample.e2.spread.mid",
+      "text": "Dissipation spread divided by"
+    },
+    {
+      "kind": "subtitle",
+      "from": "cue.g10.sample.e2.spread.mid",
+      "until": "cue.g10.sample.e2.spread.tail",
+      "text": "reference spread is 8.64 times 10"
+    },
+    {
+      "kind": "subtitle",
+      "from": "cue.g10.sample.e2.spread.tail",
+      "until": "cue.g10.sample.e2.dissipation",
+      "text": "to the minus 4."
+    },
+    {
+      "kind": "subtitle",
+      "from": "cue.g10.sample.e2.dissipation",
+      "until": "cue.g10.sample.predict",
+      "text": "D is dissipation, not the dipole."
+    },
+    {
+      "kind": "subtitle",
+      "from": "cue.g10.sample.predict",
+      "until": "cue.g10.sample.e1",
+      "text": "Does the crushed bar help?"
+    },
+    {
+      "kind": "subtitle",
+      "from": "cue.g10.sample.e1",
+      "until": "cue.g10.sample.e1.tail",
+      "text": "E1 distance goes from 0.00257"
+    },
+    {
+      "kind": "subtitle",
+      "from": "cue.g10.sample.e1.tail",
+      "until": "cue.g10.sample.e1.spread",
+      "text": "to 0.0231, a factor of 9."
+    },
+    {
+      "kind": "subtitle",
+      "from": "cue.g10.sample.e1.spread",
+      "until": "cue.g10.sample.e1.spread.tail",
+      "text": "The energy-budget spread falls"
+    },
+    {
+      "kind": "subtitle",
+      "from": "cue.g10.sample.e1.spread.tail",
+      "until": "cue.g10.sample.e1.variance",
+      "text": "to 4.17 times 10 to the minus 17."
+    },
+    {
+      "kind": "subtitle",
+      "from": "cue.g10.sample.e1.variance",
+      "until": "cue.g10.sample.formula",
+      "text": "A positive variance does not prove"
+    },
+    {
+      "kind": "bars",
+      "from": "cue.g10.sample.div",
+      "until": "cue.g10.sample.e2",
+      "title": "Divergence, log scale",
+      "log": true,
+      "seeds": 1,
+      "rows": [
+        { "name": "V0", "value": 0.408, "label": "0.408", "role": "model" },
+        { "name": "V1", "value": 0.34, "label": "0.34", "role": "model" },
+        { "name": "V2", "value": 5.05e-17, "label": "5.05e-17", "role": "model" },
+        { "name": "V3", "value": 2.03e-8, "label": "2.03e-08", "role": "model" },
+        { "name": "V4", "value": 1.78e-17, "label": "1.78e-17", "role": "model" },
+        { "name": "V5", "value": 1.74e-17, "label": "1.74e-17", "role": "model" },
+        { "name": "witness", "value": 1.78e-17, "label": "1.78e-17", "role": "model" },
+        { "name": "subsample", "value": 1.52e-17, "label": "1.52e-17", "role": "infra" }
+      ]
+    },
+    {
+      "kind": "bars",
+      "from": "cue.g10.sample.e2",
+      "until": "cue.g10.sample.e2.spread",
+      "title": "Energy residue, log scale",
+      "log": true,
+      "seeds": 1,
+      "rows": [
+        { "name": "V0", "value": 0.491, "label": "0.491", "role": "metric" },
+        { "name": "rescaled", "value": 8.27e-6, "label": "8.27e-06", "role": "metric" }
+      ]
+    },
+    {
+      "kind": "bars",
+      "from": "cue.g10.sample.e2.spread",
+      "until": "cue.g10.sample.predict",
+      "title": "Dissipation spread, log scale",
+      "log": true,
+      "seeds": 1,
+      "rows": [
+        { "name": "V0", "value": 0.68, "label": "0.68", "role": "metric" },
+        { "name": "rescaled", "value": 8.64e-4, "label": "8.64e-04", "role": "metric" }
+      ]
+    },
+    {
+      "kind": "bars",
+      "from": "cue.g10.sample.e1",
+      "until": "cue.g10.sample.e1.spread",
+      "title": "Energy distance, log scale",
+      "log": true,
+      "seeds": 2,
+      "floor": 0.0012269410015240956,
+      "n": 10000,
+      "rows": [
+        { "name": "C", "value": 0.00257, "label": "0.00257", "role": "metric" },
+        { "name": "E", "value": 0.0231, "label": "0.0231", "role": "metric" }
+      ]
+    },
+    {
+      "kind": "bars",
+      "from": "cue.g10.sample.e1.spread",
+      "until": "cue.g10.sample.formula",
+      "title": "Energy-budget spread, log scale",
+      "log": true,
+      "seeds": 2,
+      "rows": [
+        { "name": "C", "value": 0.384, "label": "0.384", "role": "metric" },
+        { "name": "E", "value": 4.17e-17, "label": "4.17e-17", "role": "metric" }
+      ]
+    },
+    {
+      "kind": "formula",
+      "from": "cue.g10.sample.formula",
+      "until": "cue.g10.sample.end",
+      "terms": [
+        {
+          "tex": "\\text{Hypothesis: no mass at 0.}",
+          "role": "model",
+          "cue": "cue.g10.sample.formula"
+        }
+      ]
+    }
+  ]
+}
