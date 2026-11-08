@@ -1,0 +1,99 @@
+{
+  "id": "demo",
+  "width": 1920,
+  "height": 1080,
+  "fps": 30,
+  "duration": 24,
+  "seed": 20261108,
+  "cues": [
+    { "id": "start", "at": 0 },
+    { "id": "chapter-end", "at": 4 },
+    { "id": "predict", "at": 4 },
+    { "id": "show", "at": 6 },
+    { "id": "formula", "at": 8 },
+    { "id": "caveat", "at": 9.5 },
+    { "id": "card", "at": 11 },
+    { "id": "card-end", "at": 19 },
+    { "id": "close", "at": 19 },
+    { "id": "waiting", "at": 19.5 },
+    { "id": "end", "at": 24 }
+  ],
+  "layers": [
+    { "kind": "matter", "at": "start", "matter": "night" },
+    { "kind": "transition", "at": "formula", "frames": 8, "to": "paper" },
+    { "kind": "transition", "at": "card", "frames": 8, "to": "night" },
+    { "kind": "transition", "at": "close", "frames": 8, "to": "blueprint" },
+    { "kind": "badge", "badge": "PROVED", "primary": true, "from": "start", "until": "card" },
+    { "kind": "badge", "badge": "CONTEXT", "primary": false, "from": "predict", "until": "show", "source": "Demo 2026" },
+    { "kind": "badge", "badge": "MEASURED", "primary": false, "from": "show", "until": "formula" },
+    { "kind": "badge", "badge": "CONJECTURE", "primary": false, "from": "caveat", "until": "card", "confidence": "low" },
+    { "kind": "badge", "badge": "PLANNED", "primary": true, "from": "waiting", "until": "end" },
+    { "kind": "level", "level": "L0", "from": "start", "until": "formula" },
+    { "kind": "level", "level": "L4", "from": "formula", "until": "card" },
+    { "kind": "level", "level": "L5", "from": "waiting", "until": "end" },
+    {
+      "kind": "chapter-card",
+      "from": "start",
+      "until": "chapter-end",
+      "number": "00",
+      "title": "Shared stage",
+      "level": "L0",
+      "asks": "Can one stage hold every part?"
+    },
+    { "kind": "needle", "from": "predict", "until": "show", "southAt": "show" },
+    { "kind": "spots", "from": "predict", "until": "show" },
+    {
+      "kind": "axis",
+      "from": "predict",
+      "until": "show",
+      "param": "Gamma",
+      "ticks": [
+        { "value": "0.80", "trained": true },
+        { "value": "0.95", "trained": false }
+      ]
+    },
+    {
+      "kind": "bars",
+      "from": "show",
+      "until": "formula",
+      "title": "Divergence, log scale",
+      "log": true,
+      "floor": 0.01,
+      "n": 2,
+      "seeds": 2,
+      "rows": [
+        { "name": "A", "value": 0.4, "role": "model" },
+        { "name": "B", "value": 0.08, "role": "model" },
+        { "name": "C", "value": 0.2, "role": "model" }
+      ]
+    },
+    { "kind": "field", "from": "show", "until": "formula", "quantity": "B" },
+    {
+      "kind": "formula",
+      "from": "formula",
+      "until": "card",
+      "terms": [
+        { "tex": "\\eta", "role": "parameter", "cue": "formula" },
+        { "tex": "B", "role": "field", "cue": "caveat" }
+      ]
+    },
+    { "kind": "subtitle", "from": "formula", "until": "caveat", "text": "The lit term matches this cue." },
+    { "kind": "subtitle", "from": "caveat", "until": "card", "text": "The next term lights on caveat." },
+    {
+      "kind": "question-card",
+      "from": "card",
+      "until": "card-end",
+      "sentence": "What should a shared stage prove first?",
+      "class": "B",
+      "badge": "PLANNED"
+    },
+    {
+      "kind": "waiting",
+      "from": "waiting",
+      "until": "end",
+      "campaign": "Palier 0",
+      "criterion": "Three seeds and a factor of two",
+      "confidence": "low"
+    }
+  ]
+}
