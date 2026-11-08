@@ -56,6 +56,6 @@ L'extrait dure 8 s, de `cue.g10.card` à `cue.g10.card.end`. La phrase de `q.g10
 
 Le créneau anglais pointe vers `narration/en/g10.md`. La phrase gelée est "E2 is two-dimensional and forced. One seed. The tests are interpolation. This is not a dynamo." Il n'y a pas de fichier audio.
 
-Le créneau français n'a pas de source. Il n'y a pas de phrase française dans ce dossier. `narration/fr/g10.md` n'existe pas.
+Le créneau français pointe vers `narration/fr/g10.law.caveat.md`. La phrase est "E2 est bidimensionnel et forcé. Une graine. Les tests sont de l’interpolation. Ce n’est pas une dynamo." Ce fichier ne reprend pas le chapitre. `narration/fr/g10.md` n'existe pas.
 
 Les deux créneaux sont PENDING. Le critère audible, en anglais et en français, attend la voix. Le critère du relecteur indépendant n'est pas un test de cette branche.
