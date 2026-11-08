@@ -1,0 +1,47 @@
+<!doctype html>
+<html lang="en"><head><meta charset="utf-8">
+<title>10.4 Bet 1: the ABC windows at 64³</title>
+<link rel="stylesheet" href="../../vendor/katex/katex.min.css">
+<link rel="stylesheet" href="../../runtime/theme.css">
+<link rel="stylesheet" href="ch10.css">
+<script src="../../vendor/katex/katex.min.js"></script>
+<script src="../../runtime/scene.js"></script>
+<script src="../../runtime/components/kit.js"></script>
+<script src="../../runtime/components/hud.js"></script>
+<script src="../../runtime/components/plot.js"></script>
+<script src="../../runtime/components/field.js"></script>
+<script src="../../runtime/components/equation.js"></script>
+<script src="../../runtime/components/motifs.js"></script>
+<script src="../../runtime/components/cards.js"></script>
+<script src="../../runtime/components/seat.js"></script>
+<script src="../../runtime/components/threemodes.js"></script>
+<script src="ch10_kit.js"></script>
+</head><body><div id="stage"></div>
+<script>
+/* 10.4 Bet 1: the ABC windows at 64³ (L4, NIGHT, CONJECTURE medium; PENDING). Seat (curve) over Rm 4-40 with the E3
+   32³ curve as a grey ghost (data/e3_growth.json), the zero line, the decisive band 17-18, the pen '?' at Rm 17.5
+   where 32³ and 48³ disagree in sign; the bet, confidence and its reason, the criterion and the question. */
+Scene.define({
+  duration: 42,
+  register: 'night',
+  cues: { anchor: 0.4, ghost: 2.6, seat: 12.6, bet: 16.6, why: 26.4, ask: 33.4 },
+  data: { seat: { url: 'data/palier2_abc3d.json', optional: true }, e3: 'data/e3_growth.json' },
+  params: { seat: {} },
+  setup(ctx) {
+    const K = Kit, U = UK, E = ctx.data.e3, sp = Object.assign({}, ctx.params.seat);
+    const fr = { x: 216, y: 236, w: 900, h: 440 };
+    U.seat(ctx, sp, { frame: fr, at: 'ghost-0.15', cues: Object.assign({}, sp.cues, { frame: 'ghost-0.15' }),
+      ghost: { x: E.x.values, y: E.series[0].y, label: 'E3 at 32³ (measured)', legendX: 250, legendY: 310 } });
+    // pen '?' at Rm 17.5 (the ghost's value there), plot geometry as Kit.seat builds it
+    const X = sp.x, Y = sp.y, bx = { x0: fr.x, x1: fr.x + fr.w, y0: fr.y + 40, y1: fr.y + fr.h - 60 };
+    const px = (v) => bx.x0 + (bx.x1 - bx.x0) * (v - X.min) / (X.max - X.min), py = (v) => bx.y1 - (bx.y1 - bx.y0) * (v - Y.min) / (Y.max - Y.min);
+    const i = E.x.values.findIndex((v) => Math.abs(v - 17.5) < 1e-9), gx = px(17.5), gy = py(i >= 0 ? E.series[0].y[i] : 0);
+    K.pen(ctx, { kind: 'circle', box: { x: gx - 22, y: gy - 22, w: 44, h: 44 }, at: 'ghost+1.6', dur: 0.6, seed: 'q175', pad: 6 });
+    U.label(ctx, { text: '?', x: gx + 40, y: gy + 16, size: 56, color: 'chalk', at: 'ghost+2.0' });
+    U.label(ctx, { text: '64³ · Rm = 4, 5, …, 40 · 2 seeds', x: fr.x + 560, y: fr.y - 80, size: 28, cls: 'dim', at: 'seat' });
+    K.chip(ctx, { text: 'bet written before the data · the campaign runs whole values of Rm, so 17.5 itself is not tested', kind: 'plain', maxWidth: 1000, x: 96, y: 52, at: 'bet+0.6' });
+    K.badge(ctx, { kind: 'CONJECTURE', confidence: 'medium', at: -0.3 });
+    UK.formulaLayers(ctx, 'Formula · R:1112', null, { left: true });
+  },
+});
+</script></body></html>

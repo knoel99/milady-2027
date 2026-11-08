@@ -1,0 +1,43 @@
+<!doctype html>
+<html lang="en"><head><meta charset="utf-8">
+<title>10.7 What must be measured</title>
+<link rel="stylesheet" href="../../vendor/katex/katex.min.css">
+<link rel="stylesheet" href="../../runtime/theme.css">
+<link rel="stylesheet" href="ch10.css">
+<script src="../../vendor/katex/katex.min.js"></script>
+<script src="../../runtime/scene.js"></script>
+<script src="../../runtime/components/kit.js"></script>
+<script src="../../runtime/components/hud.js"></script>
+<script src="../../runtime/components/plot.js"></script>
+<script src="../../runtime/components/field.js"></script>
+<script src="../../runtime/components/equation.js"></script>
+<script src="../../runtime/components/motifs.js"></script>
+<script src="../../runtime/components/cards.js"></script>
+<script src="../../runtime/components/seat.js"></script>
+<script src="../../runtime/components/threemodes.js"></script>
+<script src="ch10_kit.js"></script>
+</head><body><div id="stage"></div>
+<script>
+/* 10.7 What must be measured (L5, NIGHT, CONJECTURE low; PENDING). The GUARANTEED column of 10.6 shrinks to a dim
+   strip; the seat (lamps): the four tier-2 criteria of the PhD plan, unlit; the bet on criterion (b), confidence low with
+   its reason (E2 values read from data/e2_eval.json in the formula), the question. */
+Scene.define({
+  duration: 27,
+  register: 'night',
+  cues: { measured: 0.4, test: 2.4, why: 10.4, snapshots: 11.8 },
+  data: { seat: { url: 'data/fm3d_eval.json', optional: true }, ev: 'data/e2_eval.json' },
+  params: { seat: { lamps: [] }, label_indicative: '' },
+  setup(ctx) {
+    const K = Kit, U = UK, P = ctx.params, EV = ctx.data.ev;
+    // REVIEW: the dim GUARANTEED strip of 10.6 is dropped (no room left of the seat frame)
+    U.label(ctx, { text: 'MUST BE MEASURED', x: 210, y: 46, size: 36, cls: 'display', at: 'measured-0.15' });
+    const sp = Object.assign({}, P.seat);
+    U.seat(ctx, sp, { frame: { x: 330, y: 200, w: 780, h: 380 } });
+    if (P.label_indicative) U.label(ctx, { text: P.label_indicative, x: 230, y: 708, size: 28, cls: 'dim', maxW: 980, at: 'measured+0.6' });
+    // E2 training-point values for the reason line, read from the data (formula of the script quotes them too)
+    K.chip(ctx, { text: 'criteria (c) and (d) need the full tier: later', kind: 'plain', x: 240, y: 616, at: 'test+1.0' });
+    K.badge(ctx, { kind: 'CONJECTURE', confidence: 'low', at: -0.3 });
+    UK.formulaLayers(ctx, 'Formula · T:917', UK.formulaItems(ctx, 90), { left: true });
+  },
+});
+</script></body></html>

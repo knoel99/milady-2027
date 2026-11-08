@@ -1,0 +1,92 @@
+<!doctype html>
+<html lang="en"><head><meta charset="utf-8">
+<title>10.2 The data factory</title>
+<link rel="stylesheet" href="../../vendor/katex/katex.min.css">
+<link rel="stylesheet" href="../../runtime/theme.css">
+<link rel="stylesheet" href="ch10.css">
+<script src="../../vendor/katex/katex.min.js"></script>
+<script src="../../runtime/scene.js"></script>
+<script src="../../runtime/components/kit.js"></script>
+<script src="../../runtime/components/hud.js"></script>
+<script src="../../runtime/components/plot.js"></script>
+<script src="../../runtime/components/field.js"></script>
+<script src="../../runtime/components/equation.js"></script>
+<script src="../../runtime/components/motifs.js"></script>
+<script src="../../runtime/components/cards.js"></script>
+<script src="../../runtime/components/seat.js"></script>
+<script src="../../runtime/components/threemodes.js"></script>
+<script src="ch10_kit.js"></script>
+</head><body><div id="stage"></div>
+<script>
+/* 10.2 The data factory (L4, BLUEPRINT, MEASURED: pipeline tests on CPU). A kitchen line of seven grey stations
+   (recipe card, ovens, labelled jar, ledger, menu, chef, critic) linked by a conveyor; packets travel along it
+   (a pure function of t); the stations light on their words; 'not yet run' on the GPU / cluster ovens; the grey
+   AWAITING tag and the filled tag (checksum drawn as x's, never invented). */
+Scene.define({
+  duration: 46,
+  register: 'blueprint',
+  cues: { factory: 0.4, recipe: 3.4, ovens: 6.0, jars: 10.8, ledger: 16.4, tested: 27.2, tags: 33.8 },
+  params: { stations: [], tag_example: 'DATA · palier2_abc3d · AWAITING' },
+  setup(ctx) {
+    const K = Kit, S = Scene, P = ctx.params, U = UK, st = P.stations;
+    const n = st.length, x0 = 200, dx = (1720 - x0) / (n - 1), cx = (i) => x0 + dx * i, BY = 330, BW = 190, BH = 140;
+    const svg = K.svgLayer(ctx, 12), line = K.s('g', {}, svg), ink = K.c('infra');
+    K.s('line', { x1: cx(0), x2: cx(n - 1), y1: BY + BH / 2, y2: BY + BH / 2, stroke: ink, 'stroke-width': 4 }, line);
+    U.fade(ctx, line, { at: -0.3 });
+    // cue times per station: recipe, ovens, jars, then the four clauses of the 'ledger' sentence
+    const lg = (ctx.script.sentences || []).find((s) => s.cue === 'ledger');
+    const lt = (f) => (lg ? lg.start + (lg.end - lg.start) * f : ctx.at('ledger') + 4 * f);
+    const at = { recipe: ctx.at('recipe-0.15'), ovens: ctx.at('ovens-0.15'), jar: ctx.at('jars-0.15'), ledger: lt(0) - 0.15, menu: lt(0.25) - 0.15, chef: lt(0.5) - 0.15, critic: lt(0.75) - 0.15 };
+    const boxes = st.map((s, i) => {
+      const g = K.s('g', {}, svg), col = s.color ? K.c(s.color) : K.c('fg-2');
+      K.s('rect', { x: cx(i) - BW / 2, y: BY, width: BW, height: BH, rx: 10, fill: K.c('bg'), stroke: col, 'stroke-width': s.color ? 4 : 3 }, g);
+      // simple line icons
+      const c = cx(i), cy = BY + BH / 2, ic = { fill: 'none', stroke: col, 'stroke-width': 3 };
+      if (s.id === 'recipe') { K.s('rect', { x: c - 40, y: cy - 30, width: 80, height: 60, ...ic }, g); [0, 1, 2].forEach((k) => K.s('line', { x1: c - 28, x2: c + 10, y1: cy - 14 + 14 * k, y2: cy - 14 + 14 * k, ...ic }, g)); K.s('circle', { cx: c + 24, cy: cy + 12, r: 9, fill: 'none', stroke: K.c('param'), 'stroke-width': 3 }, g); }
+      else if (s.id === 'ovens') [-50, 0, 50].forEach((d) => { K.s('rect', { x: c + d - 20, y: cy - 26, width: 40, height: 52, ...ic }, g); K.s('line', { x1: c + d - 12, x2: c + d + 12, y1: cy + 12, y2: cy + 12, ...ic }, g); });
+      else if (s.id === 'jar') { K.s('path', { d: `M${c - 26},${cy - 30} h52 v8 h-6 v54 h-40 v-54 h-6 Z`, ...ic }, g); K.s('rect', { x: c - 18, y: cy, width: 36, height: 14, ...ic }, g); }
+      else if (s.id === 'ledger') { K.s('rect', { x: c - 44, y: cy - 34, width: 88, height: 68, ...ic }, g); K.s('line', { x1: c, x2: c, y1: cy - 34, y2: cy + 34, ...ic }, g); [-16, 0, 16].forEach((d) => K.s('line', { x1: c - 36, x2: c - 8, y1: cy + d, y2: cy + d, stroke: col, 'stroke-width': 2 }, g)); }
+      else if (s.id === 'menu') [-30, 0, 30].forEach((d) => K.s('rect', { x: c + d - 12, y: cy - 30, width: 24, height: 60, ...ic }, g));
+      else if (s.id === 'chef') { K.s('path', { d: `M${c - 26},${cy + 26} v-24 a18,18 0 1 1 10,-26 a16,16 0 0 1 32,0 a18,18 0 1 1 10,26 v24 Z`, ...ic }, g); }
+      else if (s.id === 'critic') { K.s('path', { d: `M${c - 34},${cy + 20} a34,34 0 0 1 68,0`, ...ic }, g); K.s('line', { x1: c, y1: cy + 20, x2: c + 20, y2: cy - 6, stroke: col, 'stroke-width': 4 }, g); }
+      U.fade(ctx, g, { at: at[s.id] ?? -0.3 });
+      const lab = U.label(ctx, { text: s.label, x: c, y: BY - 48, anchor: 'c', size: 30, at: at[s.id] ?? -0.3 }); if (s.color) lab.el.style.color = col;
+      const sub = U.label(ctx, { text: s.sub, x: c, y: BY + BH + 14, anchor: 'c', size: 28, cls: 'dim', maxW: dx - 16, at: (at[s.id] ?? -0.3) + 0.2 }); sub.el.style.textAlign = 'center';
+      return g;
+    });
+    void boxes;
+    // packets: three per cycle, from the ovens to the critic, each carrying a green dot (its knob value)
+    const pk = [0, 1, 2, 3, 4].map(() => { const g = K.s('g', {}, svg); K.s('rect', { x: -11, y: -11, width: 22, height: 22, fill: K.c('fg-2') }, g); K.s('circle', { cx: 0, cy: -20, r: 5, fill: K.c('param') }, g); return g; });
+    // the jar label zoom, the shared UUID, the return arrow critic -> ledger
+    const jx = cx(st.findIndex((s) => s.id === 'jar')), lx = cx(st.findIndex((s) => s.id === 'ledger')), crx = cx(st.findIndex((s) => s.id === 'critic'));
+    U.label(ctx, { text: (st.find((s) => s.id === 'jar') || {}).tag || 'UUID · commit · SHA-256', x: jx, y: BY - 110, anchor: 'c', cls: 'mono', size: 32, at: 'jars+0.6', out: 'jars+3.0' });
+    const ret = K.s('path', { d: `M${crx},${BY + BH + 100} C${crx},${BY + BH + 190} ${lx},${BY + BH + 190} ${lx},${BY + BH + 100}`, fill: 'none', stroke: K.c('metric'), 'stroke-width': 3, 'stroke-dasharray': '8 6' }, svg);
+    const ah = K.s('path', { d: `M${lx - 10},${BY + BH + 116} L${lx},${BY + BH + 100} L${lx + 10},${BY + BH + 116}`, fill: 'none', stroke: K.c('metric'), 'stroke-width': 3 }, svg);
+    U.fade(ctx, ah, { at: lt(0.85), out: 'tags-0.3' });
+    U.fade(ctx, ret, { at: lt(0.85), out: 'tags-0.3' });
+    U.label(ctx, { text: 'scores go back into the ledger', x: (lx + crx) / 2, y: BY + BH + 196, anchor: 'c', size: 28, cls: 'dim', at: lt(0.85), out: 'tags-0.3' });
+    // untested: a faint fourth oven 'GPU' and 'not yet run'
+    const ov = cx(st.findIndex((s) => s.id === 'ovens'));
+    U.label(ctx, { text: 'not yet run: GPU · real cluster', x: ov, y: BY - 108, anchor: 'c', size: 28, color: 'muted', at: 'tested+0.6' });
+    K.chip(ctx, { text: (ctx.script.onscreen.chips || [])[0] || 'tested end to end on CPU', kind: 'plain', maxWidth: 1000, x: 960, y: 128, at: 'tested-0.15' }).root.style.transform = 'translate(-50%,0)';
+    // tags: the line dims; the awaiting tag and a filled tag with x's
+    const tT = ctx.at('tags-0.15');
+    const tg = K.s('g', {}, svg), tY = 690;
+    K.s('rect', { x: 440, y: tY, width: 400, height: 120, rx: 8, fill: 'none', stroke: K.c('muted'), 'stroke-width': 2.5, 'stroke-dasharray': '10 8' }, tg);
+    K.s('rect', { x: 1080, y: tY, width: 400, height: 120, rx: 8, fill: 'none', stroke: K.c('fg-2'), 'stroke-width': 2.5 }, tg);
+    U.fade(ctx, tg, { at: tT });
+    K.chip(ctx, { text: P.tag_example, kind: 'schematic', x: 454, y: tY - 22, at: tT });
+    K.chip(ctx, { text: P.tag_example.replace('AWAITING', 'xxxxxxxx'), kind: '', x: 1094, y: tY - 22, at: tT + 0.4 });
+    U.label(ctx, { text: 'grey tag = awaiting · filled tag = data with its checksum', x: 960, y: tY + 134, anchor: 'c', size: 28, at: tT + 0.8 });
+    K.badge(ctx, { kind: 'MEASURED', at: -0.3 });
+    ctx.u = { pk, x0: cx(1), x1: cx(n - 1), y: BY + BH / 2, t0: ctx.at('ovens'), dim: [line, ...boxes], tT };
+  },
+  render(t, ctx) {
+    const u = ctx.u, S = Scene;
+    u.pk.forEach((g, i) => { const ph = (t - u.t0) / 9 - i / u.pk.length; const f = ph - Math.floor(ph), on = t >= u.t0 + i * 1.8;
+      g.setAttribute('transform', `translate(${(u.x0 + (u.x1 - u.x0) * f).toFixed(1)} ${u.y})`); g.style.display = on ? '' : 'none'; });
+    const d = 1 - 0.6 * S.seg(t, u.tT, u.tT + 0.6, S.ease.linear);
+    u.dim.forEach((e) => { e.style.opacity = (+e.style.opacity || 1) * d; });
+  },
+});
+</script></body></html>

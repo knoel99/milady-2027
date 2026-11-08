@@ -1,0 +1,50 @@
+<!doctype html>
+<html lang="en"><head><meta charset="utf-8">
+<title>10.9-bridge The top steps: a bridge</title>
+<link rel="stylesheet" href="../../vendor/katex/katex.min.css">
+<link rel="stylesheet" href="../../runtime/theme.css">
+<link rel="stylesheet" href="ch10.css">
+<script src="../../vendor/katex/katex.min.js"></script>
+<script src="../../runtime/scene.js"></script>
+<script src="../../runtime/components/kit.js"></script>
+<script src="../../runtime/components/hud.js"></script>
+<script src="../../runtime/components/plot.js"></script>
+<script src="../../runtime/components/field.js"></script>
+<script src="../../runtime/components/equation.js"></script>
+<script src="../../runtime/components/motifs.js"></script>
+<script src="../../runtime/components/cards.js"></script>
+<script src="../../runtime/components/seat.js"></script>
+<script src="../../runtime/components/threemodes.js"></script>
+<script src="ch10_kit.js"></script>
+</head><body><div id="stage"></div>
+<script>
+/* 10.9-bridge The top steps: a bridge (L5, NIGHT, PLANNED; extended cut only). The staircase with the two top steps
+   enlarged and dashed; three ink icons (walls, metals, meshes) slide in on their words. */
+Scene.define({
+  duration: 16,
+  register: 'night',
+  cues: { top: 0.4, detour: 7.2 },
+  params: { icons: ['walls', 'metals', 'meshes'] },
+  setup(ctx) {
+    const K = Kit, U = UK, sv = K.svgLayer(ctx, 12);
+    K.staircase(ctx, { x: 260, y: 160, w: 1400, h: 420, lit: null, pending: [3, 4], labels: false, at: -0.3 });
+    const sw = 280;
+    U.label(ctx, { text: 'the VKS cylinder', x: 260 + 3.5 * sw, y: 600, anchor: 'c', size: 30, maxW: 260, at: 'top' });
+    U.label(ctx, { text: 'a precessing cylinder', x: 260 + 4.5 * sw, y: 600, anchor: 'c', size: 30, maxW: 260, at: 'top' });
+    K.chip(ctx, { text: 'SCHEMATIC · VKS and DRESDYN drawings', kind: 'schematic', x: 96, y: 52, at: 'top' });
+    const ds = (ctx.script.sentences || []).find((x) => x.cue === 'detour');
+    const words = ctx.params.icons, ink = K.c('fg-2');
+    words.forEach((w, i) => {
+      const at = ds ? ds.start + (ds.end - ds.start) * (0.35 + 0.12 * i) - 0.15 : ctx.at('detour') + 1 + 0.5 * i;
+      const cx = 560 + i * 400, cy = 730, g = K.s('g', {}, sv);
+      if (w === 'walls') { K.s('path', { d: `M${cx - 40},${cy - 40} v80 M${cx + 40},${cy - 40} v80`, stroke: ink, 'stroke-width': 4 }, g); K.s('path', { d: `M${cx + 34},${cy + 20} v-40 m-8,10 l8,-10 l8,10`, fill: 'none', stroke: ink, 'stroke-width': 3 }, g); }
+      if (w === 'metals') { K.s('rect', { x: cx - 50, y: cy - 14, width: 100, height: 28, fill: K.c('matter'), stroke: ink, 'stroke-width': 2 }, g); K.s('path', { d: `M${cx - 30},${cy - 50} L${cx - 14},${cy - 14} L${cx + 14},${cy + 14} L${cx + 30},${cy + 50}`, fill: 'none', stroke: K.c('b'), 'stroke-width': 3 }, g); }
+      if (w === 'meshes') { [[0, 0], [1, 0], [0, 1]].forEach(([a, b]) => K.s('path', { d: `M${cx - 40 + 40 * a},${cy - 40 + 40 * b} l40,0 l-40,40 Z`, fill: 'none', stroke: ink, 'stroke-width': 2 }, g)); K.s('ellipse', { cx: cx + 40, cy, rx: 12, ry: 40, fill: 'none', stroke: ink, 'stroke-width': 2 }, g); }
+      U.fade(ctx, g, { at });
+      U.label(ctx, { text: w, x: cx + 70, y: cy - 18, size: 32, at });
+    });
+    U.label(ctx, { text: 'next: walls, metals and meshes', x: 960, y: 800, anchor: 'c', size: 30, cls: 'dim', at: ds ? ds.end : 'detour+3' });
+    K.badge(ctx, { kind: 'PLANNED', at: -0.3 });
+  },
+});
+</script></body></html>

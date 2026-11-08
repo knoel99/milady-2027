@@ -1,0 +1,48 @@
+<!doctype html>
+<html lang="en"><head><meta charset="utf-8">
+<title>10.3 First product off the line</title>
+<link rel="stylesheet" href="../../vendor/katex/katex.min.css">
+<link rel="stylesheet" href="../../runtime/theme.css">
+<link rel="stylesheet" href="ch10.css">
+<script src="../../vendor/katex/katex.min.js"></script>
+<script src="../../runtime/scene.js"></script>
+<script src="../../runtime/components/kit.js"></script>
+<script src="../../runtime/components/hud.js"></script>
+<script src="../../runtime/components/plot.js"></script>
+<script src="../../runtime/components/field.js"></script>
+<script src="../../runtime/components/equation.js"></script>
+<script src="../../runtime/components/motifs.js"></script>
+<script src="../../runtime/components/cards.js"></script>
+<script src="../../runtime/components/seat.js"></script>
+<script src="../../runtime/components/threemodes.js"></script>
+<script src="ch10_kit.js"></script>
+</head><body><div id="stage"></div>
+<script>
+/* 10.3 First product off the line (L4, NIGHT, CONJECTURE high; PENDING). READY anchor: the E2 reference current map
+   (data/e2_maps.json, same solver). Seat (curve): |mean of P − ε| / P against η (log), band within 5 %, the bet,
+   confidence with its reason, criterion, the question to ask. Result variant: Kit.seat draws the converter's data. */
+Scene.define({
+  duration: 17,
+  register: 'night',
+  cues: { product: 0.4, bet: 5.6 },
+  data: { seat: { url: 'data/palier1_sweep.json', optional: true }, maps: 'data/e2_maps.json', ev: 'data/e2_eval.json' },
+  params: { seat: {} },
+  setup(ctx) {
+    const K = Kit, U = UK, M = ctx.data.maps;
+    const ref = M.variants.ref, smp = ref.samples[0];
+    K.fieldMap(ctx, { grid: Scene.f32(smp.j), kind: 'b', vmax: M.vmax.j, x: 120, y: 250, w: 380, h: 380, at: -0.3, label: '' });
+    U.label(ctx, { text: 'E2 reference · η = ' + K.fmt(smp.eta ?? M.eta, 3) + ' · same solver', x: 120, y: 640, size: 28, at: -0.3, maxW: 400 });
+    K.chip(ctx, { text: 'SIMULATED · E2 reference', kind: '', x: 120, y: 728, at: -0.3 });
+    const sp = Object.assign({}, ctx.params.seat);
+    U.seat(ctx, sp, { frame: { x: 700, y: 250, w: 420, h: 440 }, x: Object.assign({ ticks: [0.004, 0.008, 0.016] , fmt: (v) => String(v) }, sp.x), at: sp.cues && sp.cues.frame });
+    K.chip(ctx, { text: 'data check, not a criterion of the PhD plan · plan tier 1: 128², 8 × 8 (ν, η) grid (T:898)', kind: 'plain', maxWidth: 1000, x: 96, y: 52, at: 'bet+0.6' });
+    K.badge(ctx, { kind: 'CONJECTURE', confidence: 'high', at: -0.3 });
+    const F0 = (ctx.script.onscreen.formulas || [])[0];
+    // the script's statement in three steps (its long \text is broken after 'rate'; same words)
+    const items = F0 ? [{ tex: F0.tex.split('\\quad')[0], at: F0.cue },
+      { tex: '\\text{stationary crowd; } P:\\ \\text{constant It\\^o injection rate}', at: F0.cue + '+3.5' },
+      { tex: '\\text{of the white-in-time forcing (R:442)}', at: F0.cue + '+7' }] : null;
+    if (items) UK.formulaLayers(ctx, 'Formula · R:442', items, { left: true });
+  },
+});
+</script></body></html>
