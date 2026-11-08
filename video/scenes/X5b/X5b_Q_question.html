@@ -1,0 +1,39 @@
+<!doctype html>
+<html lang="en"><head><meta charset="utf-8">
+<title>X5b.Q Question for the supervisors</title>
+<link rel="stylesheet" href="../../vendor/katex/katex.min.css">
+<link rel="stylesheet" href="../../runtime/theme.css">
+<link rel="stylesheet" href="X5b.css">
+<script src="../../vendor/katex/katex.min.js"></script>
+<script src="../../runtime/scene.js"></script>
+<script src="../../runtime/components/kit.js"></script>
+<script src="../../runtime/components/hud.js"></script>
+<script src="../../runtime/components/plot.js"></script>
+<script src="../../runtime/components/equation.js"></script>
+<script src="../../runtime/components/motifs.js"></script>
+<script src="../../runtime/components/cards.js"></script>
+<script src="../../runtime/components/seat.js"></script>
+<script src="X5b_kit.js"></script>
+</head><body><div id="stage"></div>
+<script>
+/* X5b.Q question card (logistics; no claim, no badge). Text from the script's "question"; behind it at 10 %, a schematic
+   of X5.6's last frame (bars of the shrunk timeline, the hatched overhang, the score bars, five risk rows; no labels). */
+Scene.define({
+  duration: 10, register: 'night',
+  cues: { q: 0.5 },
+  params: { backdrop: { opacity: 0.1 } },
+  setup(ctx) {
+    const K = Kit, P = ctx.params;
+    window.__EVENTS__ = [{ t: +Math.max(0, ctx.at('q') - 0.2).toFixed(3), id: 'chime', gain_db: -22 }];
+    const svg = K.svgLayer(ctx, 2), bg = K.s('g', { opacity: P.backdrop.opacity }, svg), mx = (m) => 330 + 1470 * m / 36;
+    [[0, 6], [0, 9], [5, 20], [14, 33], [23, 34]].forEach(([a, b], k) => K.s('rect', { x: mx(a), y: 186 + 34 * k, width: mx(b) - mx(a), height: 22, rx: 10, fill: K.c('fg') }, bg));
+    for (let x = mx(28); x < mx(36); x += 18) K.s('line', { x1: x, y1: 384, x2: x + 30, y2: 354, stroke: K.c('fg'), 'stroke-width': 3 }, bg);
+    K.s('rect', { x: mx(26), y: 110, width: mx(28) - mx(26), height: 274, fill: K.c('fg'), opacity: 0.5 }, bg);
+    [4.1, 3.9, 3.5].forEach((v, k) => K.s('rect', { x: 330, y: 574 + 46 * k, width: v * 60, height: 24, rx: 4, fill: K.c('fg') }, bg));
+    for (let k = 0; k < 5; k++) K.s('rect', { x: 880, y: 566 + 58 * k, width: 940, height: 50, rx: 8, fill: 'none', stroke: K.c('fg'), 'stroke-width': 3, 'stroke-dasharray': k === 4 ? '8 6' : null }, bg);
+    ctx.bgG = bg;
+    K.questionCard(ctx, { chapter: 'X5b', category: 'logistics', at: -0.4, whyAt: 'q+2.4', unblocksAt: 'q+4.6' });
+  },
+  render(t, ctx) { ctx.bgG.setAttribute('transform', `translate(${(-6 * Math.sin(2 * Math.PI * t / 10)).toFixed(2)} 0)`); },
+});
+</script></body></html>

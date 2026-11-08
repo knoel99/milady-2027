@@ -1,0 +1,20 @@
+/* Unit styles (batch 4): tokens only, no transitions, no animations. */
+.xk-lab { position: absolute; font-weight: 500; font-size: 32px; color: var(--fg-2); white-space: nowrap; line-height: 1.25; }
+.xk-lab.big { font-size: 36px; color: var(--fg); }
+.xk-lab.small { font-size: 28px; }
+.xk-lab.mono { font-family: "JetBrains Mono"; font-size: 28px; letter-spacing: .07em; color: var(--muted); }
+.xk-lab.tag { padding: 4px 14px 6px; border: 2px dashed var(--muted); border-radius: 8px; font-size: 28px; color: var(--fg-2); }
+.xk-lab.halo { text-shadow: 0 0 3px var(--bg), 0 0 6px var(--bg), 0 0 10px var(--bg); }
+.xk-title { font-family: "Inter Display"; font-weight: 600; font-size: 56px; color: var(--fg); }
+.xk-card { position: absolute; box-sizing: border-box; background: var(--panel); border: 2px solid var(--matter); border-radius: 10px; padding: 14px 20px; }
+.xk-card-h { font-family: "JetBrains Mono"; font-size: 28px; letter-spacing: .07em; color: var(--muted); }
+.xk-card-b { font-size: 32px; color: var(--fg); line-height: 1.3; margin-top: 6px; }
+.xk-tex { position: absolute; white-space: nowrap; color: var(--fg); }
+.xk-lamp { position: absolute; display: flex; align-items: center; gap: 14px; font-size: 32px; color: var(--fg-2); white-space: nowrap; }
+.xk-lamp i { display: block; width: 26px; height: 26px; border-radius: 50%; border: 3px solid var(--muted); box-sizing: border-box; }
+.xk-night { position: absolute; inset: 0; background: var(--bg); z-index: 90; }
+.xk-pen { position: absolute; left: 0; height: 4px; background: var(--chalk); z-index: 91; }
+.xk-lab.right { text-align: right; }
+.x5b-card { position: absolute; box-sizing: border-box; border: 2px solid var(--matter); border-radius: 10px; background: var(--panel); padding: 10px 16px; z-index: 14; font-size: 28px; color: var(--fg); }
+.x5b-card.dashed { border-style: dashed; }
+.x5b-card .m { font-family: "JetBrains Mono"; font-size: 28px; color: var(--muted); }

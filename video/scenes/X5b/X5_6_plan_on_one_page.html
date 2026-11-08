@@ -1,0 +1,127 @@
+<!doctype html>
+<html lang="en"><head><meta charset="utf-8">
+<title>X5.6 The plan on one page</title>
+<link rel="stylesheet" href="../../vendor/katex/katex.min.css">
+<link rel="stylesheet" href="../../runtime/theme.css">
+<link rel="stylesheet" href="X5b.css">
+<script src="../../vendor/katex/katex.min.js"></script>
+<script src="../../runtime/scene.js"></script>
+<script src="../../runtime/components/kit.js"></script>
+<script src="../../runtime/components/hud.js"></script>
+<script src="../../runtime/components/plot.js"></script>
+<script src="../../runtime/components/equation.js"></script>
+<script src="../../runtime/components/motifs.js"></script>
+<script src="../../runtime/components/cards.js"></script>
+<script src="../../runtime/components/seat.js"></script>
+<script src="X5b_kit.js"></script>
+</head><body><div id="stage"></div>
+<script>
+/* X5.6 The plan on one page (NIGHT, PLANNED). Redrawn from the thesis schedule (entry params, T:1040-1063): month axis,
+   tier bars, axis bands with their chips, milestones; then the timeline shrinks (the axis bands and long labels leave,
+   the bars move up), the score table, the risk rows with pips, the dashed funding row and the overhang after MilaDy's
+   nominal end; the caveat chip. Amber (metric) only for axis 2. T3 ink change BLUEPRINT → NIGHT in the lead-in. */
+Scene.define({
+  duration: 45, register: 'night',
+  cues: { page: 1.2, axes: 6.5, papers: 12.7, score: 18.9, risks: 26.7, funding: 34.5, caveat: 38.6 },
+  params: {},
+  setup(ctx) {
+    const K = Kit, S = Scene, P = ctx.params, TL = P.timeline, L = ctx.script.onscreen.labels, svg = K.svgLayer(ctx, 12);
+    XK.inkChange(ctx, 0.05, 1.0, 540, 'blueprint');
+    K.badge(ctx, { kind: 'PLANNED', at: -0.3 });
+    const PX0 = 330, PX1 = 1800, mx = (m) => PX0 + (PX1 - PX0) * m / TL.months, tS = ctx.at('score') - 0.15, mov = [];
+    const grp = (dy, at, out) => { const g = K.s('g', {}, svg); XK.timed(ctx, g, at, out); if (dy) mov.push({ g, dy }); return g; };
+    const lab = (txt, x, y, o, dy) => { const e = XK.lab(ctx, txt, x, y, o); if (dy) mov.push({ e, y, dy }); return e; };
+    // years and the month axis (moves up 20 / 250 on 'score')
+    const gy = grp(-20, 'page-0.15');
+    TL.years.forEach((yl, k) => { K.s('rect', { x: mx(12 * k) + 2, y: 130, width: mx(12) - mx(0) - 4, height: 36, rx: 6, fill: K.rgba(K.c('fg'), 0.06) }, gy);
+      lab(yl, (mx(12 * k) + mx(12 * k + 12)) / 2, 132, { anchor: 'c', cls: 'small', color: 'muted', at: 'page-0.15' }, -20); });
+    const TY = 430, RH = 34, gt = grp(-250, 'page-0.15');
+    K.s('line', { x1: PX0, y1: TY + 6 * RH + 4, x2: PX1, y2: TY + 6 * RH + 4, stroke: K.c('fg-2'), 'stroke-width': 2 }, gt);
+    TL.ticks.forEach((m) => { K.s('line', { x1: mx(m), y1: TY - 4, x2: mx(m), y2: TY + 6 * RH + 10, stroke: K.c('grid'), 'stroke-width': 1.5 }, gt);
+      lab(String(m), mx(m), TY + 6 * RH + 10, { anchor: 'c', cls: 'mono', color: 'muted', at: 'page-0.15' }, -250); });
+    lab(TL.axis_label, PX1, 692, { anchor: 'r', cls: 'small', color: 'muted', at: 'page+0.2', out: 'score-0.15' });
+    TL.tiers.forEach((tr, k) => { const g = K.s('g', {}, gt), y = TY + k * RH;
+      K.s('rect', { x: mx(tr.from), y: y + 6, width: mx(tr.to) - mx(tr.from), height: RH - 12, rx: 10, fill: K.c('infra') }, g);
+      XK.timed(ctx, g, XK.at(ctx, 'page', 0.3 * k), null);
+      lab(`tier ${tr.tier}`, 180, y, { cls: 'mono', at: XK.at(ctx, 'page', 0.3 * k) }, -250); });
+    const W = TL.writing, gw = K.s('g', {}, gt), yw = TY + 5 * RH;
+    K.s('rect', { x: mx(W.from), y: yw + 6, width: mx(W.to) - mx(W.from), height: RH - 12, rx: 10, fill: 'none', stroke: K.c('fg-2'), 'stroke-width': 2, 'stroke-dasharray': '8 6' }, gw);
+    XK.timed(ctx, gw, 'page+1.6', null); lab(L[9], 180, yw, { cls: 'mono', at: 'page+1.6' }, -250);
+    // axis bands (fade out on 'score')
+    const COLW = (PX1 - PX0) / 5, colx = (i) => PX0 + COLW * (i + 0.5);
+    const place = [[1, 2, 3, 4], [0, 1, 2, 3, 4], [0, 2, 3, 4]];
+    P.axes.forEach((ax, a) => { const y = 176 + a * 82, at = XK.at(ctx, 'axes', 0.35 * a - 0.15), col = ax.tint === 'metric' ? K.c('metric') : K.c('fg-2');
+      const g = grp(0, at, 'score-0.15');
+      K.s('rect', { x: 180, y, width: PX1 - 180, height: 76, rx: 8, fill: K.rgba(col, 0.08), stroke: K.rgba(col, 0.5), 'stroke-width': 1.5 }, g);
+      XK.lab(ctx, ax.label, 196, y + 2, { cls: 'small', color: ax.tint === 'metric' ? 'metric' : 'fg', at, out: 'score-0.15' });
+      ax.chips.forEach((c, i) => { const cx = colx(place[a][i]);
+        K.s('rect', { x: cx - COLW / 2 + 8, y: y + 38, width: COLW - 16, height: 34, rx: 17, fill: 'none', stroke: col, 'stroke-width': 1.5 }, g);
+        XK.lab(ctx, c, cx, y + 38, { anchor: 'c', cls: 'small', color: ax.tint === 'metric' ? 'metric' : 'fg', at, out: 'score-0.15' }); });
+      if (a === 2) K.s('rect', { x: colx(1) - COLW / 2 + 8, y: y + 38, width: COLW - 16, height: 34, rx: 17, fill: 'none', stroke: K.c('muted'), 'stroke-width': 1.5, 'stroke-dasharray': '6 6' }, g);
+    });
+    // the staircase sweep (an arrow along the tier rows)
+    const ar = K.s('path', { d: `M ${mx(0) - 10} ${TY + 2} L ${mx(23) - 10} ${TY + 4 * RH + 4}`, fill: 'none', stroke: K.c('fg'), 'stroke-width': 2.5, 'marker-end': '' }, gt);
+    XK.drawOn(ctx, ar, 'axes+1.6', 1.2, 'score-0.15');
+    XK.lab(ctx, P.staircase_arrow, mx(12), TY + 4, { cls: 'small', at: 'axes+2.4', out: 'score-0.15' });
+    // milestones (marks move onto the axis line; their labels leave on 'score')
+    const MY = 750, gm = grp(-300, 'papers-0.15');
+    const dia = (m, r, fill) => K.s('path', { d: `M ${mx(m)} ${MY - r} L ${mx(m) + r} ${MY} L ${mx(m)} ${MY + r} L ${mx(m) - r} ${MY} Z`, fill, stroke: K.c('fg'), 'stroke-width': 2 }, gm);
+    K.s('line', { x1: PX0, y1: MY, x2: PX1, y2: MY, stroke: K.c('grid'), 'stroke-width': 1.5 }, gm);
+    TL.visits.forEach((v) => K.s('rect', { x: mx(v.from - 1), y: MY - 12, width: mx(v.to) - mx(v.from - 1), height: 24, rx: 4, fill: 'none', stroke: K.c('fg-2'), 'stroke-width': 2 }, gm));
+    TL.committees.forEach((m) => K.s('circle', { cx: mx(m), cy: MY, r: 9, fill: K.c('bg'), stroke: K.c('fg'), 'stroke-width': 2 }, gm));
+    TL.code_releases.forEach((m) => K.s('rect', { x: mx(m) - 8, y: MY - 8, width: 16, height: 16, fill: K.c('bg'), stroke: K.c('fg'), 'stroke-width': 2 }, gm));
+    dia(TL.data_decision, 10, K.c('bg'));
+    K.s('path', { d: `M ${mx(TL.defense)} ${MY + 12} L ${mx(TL.defense)} ${MY - 22} L ${mx(TL.defense) - 22} ${MY - 15} L ${mx(TL.defense)} ${MY - 8}`, fill: K.c('fg'), stroke: K.c('fg'), 'stroke-width': 2 }, gm);
+    TL.papers.forEach((p) => dia(p.month, 14, K.c('fg')));
+    const pl = { at: 'papers', out: 'score-0.15', cls: 'small' };
+    XK.lab(ctx, TL.papers[0].label, mx(10) - 12, 778, pl);
+    XK.lab(ctx, TL.papers[2].label, PX1 + 20, 778, { ...pl, anchor: 'r' });
+    XK.lab(ctx, TL.papers[1].label, mx(22) - 12, 814, pl);
+    XK.lab(ctx, TL.visits[0].label, mx(9) - 4, 778, { ...pl, anchor: 'r', color: 'muted', at: 'papers+0.6' });
+    XK.lab(ctx, TL.visits[1].label, mx(22) - 40, 814, { ...pl, anchor: 'r', color: 'muted', at: 'papers+0.6' });
+    // legend line
+    const lg = grp(0, 'papers+1.0', 'score-0.15'), LY = 872; let lx = 200;
+    [['circle', L[31]], ['square', L[32]], ['diamond', L[35]], ['flag', L[36]]].forEach(([kind, txt]) => {
+      if (kind === 'circle') K.s('circle', { cx: lx, cy: LY, r: 9, fill: 'none', stroke: K.c('fg'), 'stroke-width': 2 }, lg);
+      else if (kind === 'square') K.s('rect', { x: lx - 8, y: LY - 8, width: 16, height: 16, fill: 'none', stroke: K.c('fg'), 'stroke-width': 2 }, lg);
+      else if (kind === 'diamond') K.s('path', { d: `M ${lx} ${LY - 10} L ${lx + 10} ${LY} L ${lx} ${LY + 10} L ${lx - 10} ${LY} Z`, fill: 'none', stroke: K.c('fg'), 'stroke-width': 2 }, lg);
+      else K.s('path', { d: `M ${lx} ${LY + 12} L ${lx} ${LY - 14} L ${lx - 18} ${LY - 8} L ${lx} ${LY - 2}`, fill: K.c('fg'), stroke: K.c('fg'), 'stroke-width': 2 }, lg);
+      XK.lab(ctx, txt, lx + 20, LY - 18, { cls: 'small', color: 'muted', at: 'papers+1.0', out: 'score-0.15' }); lx += 70 + txt.length * 14; });
+    K.chip(ctx, { text: ctx.script.onscreen.chips[0], kind: 'plain', x: 330, y: 690, at: 'papers+1.4', out: 'score-0.15' });
+    // the shrink: SVG groups and HTML labels move with one eased progress
+    ctx.add({ render(t) { const e = S.seg(t, tS, tS + 0.8, S.ease.inOutSine);
+      mov.forEach((m) => { if (m.g) m.g.setAttribute('transform', `translate(0 ${(m.dy * e).toFixed(1)})`); else m.e.style.top = (m.y + m.dy * e).toFixed(1) + 'px'; }); } });
+    // scores (bottom-left)
+    const SC = P.scores, sx = 180;
+    SC.rows.forEach((r, k) => { const y = 566 + k * 46, hi = k < 2, g = grp(0, XK.at(ctx, 'score', 0.6 + 0.2 * k));
+      K.s('rect', { x: sx + 150, y: y + 8, width: r.score * 60, height: 24, rx: 4, fill: hi ? K.c('fg') : K.c('infra') }, g);
+      XK.lab(ctx, `${r.dir} ${r.score.toFixed(2)}`, sx, y, { cls: 'mono', color: hi ? 'fg' : 'muted', at: XK.at(ctx, 'score', 0.6 + 0.2 * k) }); });
+    const bx = sx + 150 + 4.2 * 60 + 16, bg = K.s('path', { d: `M ${bx} 574 L ${bx + 12} 574 L ${bx + 12} 652 L ${bx} 652 M ${bx + 12} 613 L ${bx + 24} 613`, fill: 'none', stroke: K.c('fg'), 'stroke-width': 2 }, svg);
+    XK.timed(ctx, bg, 'score+1.4', null);
+    XK.lab(ctx, SC.merged, bx + 32, 594, { at: 'score+1.5', w: 230, cls: 'small' });
+    XK.lab(ctx, SC.robust, sx, 712, { cls: 'small', w: 640, at: 'score+2.6' });
+    XK.lab(ctx, SC.caveat, sx, 770, { cls: 'small', color: 'muted', w: 640, at: 'score+3.4', out: 'caveat-0.2' });
+    // risk rows (bottom-right)
+    const RX = 880, RW = 940, lvl = { low: 1, medium: 2, high: 3 };
+    XK.lab(ctx, L[50], RX, 478, { cls: 'small', color: 'muted', at: 'risks-0.15' });
+    XK.lab(ctx, L[47], 1520, 522, { cls: 'small', color: 'muted', anchor: 'c', at: 'risks-0.15' });
+    XK.lab(ctx, L[48], 1680, 522, { cls: 'small', color: 'muted', anchor: 'c', at: 'risks-0.15' });
+    const pips = (g, cx, y, n, dashed) => { for (let i = 0; i < 3; i++) K.s('circle', { cx: cx - 22 + 22 * i, cy: y, r: 7, fill: i < n ? K.c('fg') : 'none', stroke: K.c(dashed ? 'muted' : 'fg-2'), 'stroke-width': 2, 'stroke-dasharray': dashed ? '3 3' : null }, g); };
+    P.risks.forEach((r, k) => { const y = 566 + k * 58, fund = r.style === 'dashed', at = fund ? 'funding-0.15' : XK.at(ctx, 'risks', 0.3 * k - 0.15), g = K.s('g', {}, svg);
+      K.s('rect', { x: RX, y, width: RW, height: 50, rx: 8, fill: K.c('panel'), stroke: K.c(fund ? 'fg' : 'grid'), 'stroke-width': 2, 'stroke-dasharray': fund ? '8 6' : null }, g);
+      if (lvl[r.p]) pips(g, 1520, y + 25, lvl[r.p]); pips(g, 1680, y + 25, lvl[r.impact]);
+      XK.timed(ctx, g, at, null, { dx: 40 });
+      XK.lab(ctx, r.risk, RX + 14, y + 7, { cls: 'small', at, dx: 40, w: 520 });
+      if (!lvl[r.p]) XK.lab(ctx, L[49], 1520, y + 7, { cls: 'small', color: 'muted', anchor: 'c', at });
+      if (r.link && /^X/.test(r.link)) XK.lab(ctx, r.link, RX + RW - 14, y + 7, { cls: 'mono', color: 'muted', anchor: 'r', at, dx: 40 }); });
+    // MilaDy's nominal end: soft band 26-28, hatched overhang to 36 (on the shrunk timeline)
+    const og = K.s('g', {}, svg), oy0 = 110, oy1 = TY - 250 + 6 * RH + 4;
+    K.s('rect', { x: mx(26), y: oy0, width: mx(28) - mx(26), height: oy1 - oy0, fill: K.rgba(K.c('fg'), 0.12) }, og);
+    for (let xx = mx(28); xx < mx(36); xx += 18) K.s('line', { x1: xx, y1: oy1, x2: Math.min(mx(36), xx + 40), y2: oy1 - 40 * (Math.min(mx(36), xx + 40) - xx) / 40, stroke: K.rgba(K.c('fg'), 0.25), 'stroke-width': 2 }, og);
+    K.s('rect', { x: mx(28), y: oy0, width: mx(36) - mx(28), height: oy1 - oy0, fill: 'none', stroke: K.c('fg-2'), 'stroke-width': 1.5, 'stroke-dasharray': '6 6' }, og);
+    XK.timed(ctx, og, 'funding-0.15', null);
+    XK.lab(ctx, L[51], mx(26) - 12, TY - 250 + 4, { anchor: 'r', cls: 'small', at: 'funding+0.2' });
+    K.chip(ctx, { text: P.caveat_chip, kind: 'plain', x: 180, y: 852, at: 'caveat-0.15' });
+  },
+});
+</script></body></html>
