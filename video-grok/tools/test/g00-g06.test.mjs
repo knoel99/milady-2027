@@ -129,6 +129,10 @@ test("les repères nommés du plan sont dans le script, dans l'ordre des scènes
   const earth = chapters.g01.find((beat) => beat.id === "g01.rate");
   assert.equal(earth.cues[0].id, "cue.g01.rate.predict");
   assert.equal(earth.cues[0].pause, 3);
+  assert.equal(
+    ratio.cues[0].text.join(" "),
+    "If the flow gets faster, which wins: induction or diffusion?",
+  );
 });
 
 test("chaque beat g00-g06 reste à 156 mots par minute, avec le tokenizer g07", () => {
