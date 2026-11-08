@@ -9,7 +9,7 @@ import { cleCache, ecrire } from "../cache.mjs";
 import { ecrireWav } from "../kit-voix/aligner.mjs";
 import { VOIX, preparer } from "../parole.mjs";
 import { ecrireManifeste } from "../pilote.mjs";
-import { syntheseMot } from "../calage.mjs";
+import { alignerTextes, syntheseMot } from "../calage.mjs";
 import { dureeTableau, sousTitresNarration, tableau, texteSousTitre } from "../film.mjs";
 import { lireScenes, placer } from "../pilote.mjs";
 
@@ -91,9 +91,17 @@ function estNombreSeul(texte) {
 test("chaque sous-titre couvre le premier et le dernier mot dit", async () => {
   const dir = await mkdtemp(join(tmpdir(), "sync-"));
   const preuves = [
+    ["en", "V0 leaves a divergence of 0.408."],
+    ["en", "A soft penalty leaves 0.34 on the velocity and 0.162 on the magnetic field, and the magnetic energy is too high."],
+    ["en", "Potentials and the final projection fall to about 10 to the minus 17."],
     ["en", "The projected flow falls to 2.03 times 10 to the minus 8."],
+    ["en", "Those constructions force the rule in the architecture or at the last step."],
     ["en", "The honest floor, on the training values of eta, the magnetic diffusivity, is 0.0304."],
     ["en", "Dissipation spread divided by reference spread is 8.64 times 10 to the minus 4."],
+    ["fr", "V0 laisse une divergence de 0,408."],
+    ["fr", "Une pénalité souple laisse 0,34 sur la vitesse et 0,162 sur le champ magnétique, et l’énergie magnétique est trop haute."],
+    ["fr", "Les potentiels et la projection finale tombent à environ 10 à la puissance moins 17."],
+    ["fr", "Le flot projeté tombe à 2,03 fois 10 à la puissance moins 8."],
     ["fr", "E2, résidu de 8,27 fois 10 à la puissance moins 6."],
     ["fr", "L’écart-type de dissipation sur l’écart-type de référence vaut 8,64 fois 10 à la puissance moins 4."],
   ];
@@ -103,20 +111,19 @@ test("chaque sous-titre couvre le premier et le dernier mot dit", async () => {
     const lignes = tableau(chapitre);
     const durees = new Map();
     const fichiers = new Map();
-    const echantillons = new Map();
-    const motsConnus = [];
     for (const paragraphe of chapitre.paragraphes) {
+      const dites = phrases(paragraphe.brut);
       const parties = [];
-      for (const mot of paragraphe.brut.split(/\s+/).filter(Boolean)) {
-        if (/\d/.test(mot)) parties.push(silence(0.55, 22050));
-        const rendu = await syntheseMot(mot, lang);
-        motsConnus.push({ mot, samples: rendu.samples, rate: rendu.sampleRate });
+      for (let index = 0; index < dites.length; index += 1) {
+        if (index > 0) {
+          const pause = /\d/.test(dites[index]) ? 0.9 : 0.35 + (index % 4) * 0.22;
+          parties.push(silence(pause, 22050));
+        }
+        const rendu = await syntheseMot(dites[index], lang);
         parties.push(rendu.samples);
-        parties.push(silence(/[.!?]$/.test(mot) ? 0.3 : 0.06, rendu.sampleRate));
       }
-      parties.push(silence(0.2, 22050));
+      parties.push(silence(0.25, 22050));
       const samples = coller(parties);
-      echantillons.set(paragraphe.id, samples);
       const chemin = join(dir, `${lang}-${paragraphe.id.replaceAll(".", "-")}.wav`);
       await ecrireWav(chemin, samples, 22050);
       durees.set(paragraphe.id, samples.length / 22050);
@@ -132,29 +139,32 @@ test("chaque sous-titre couvre le premier et le dernier mot dit", async () => {
       for (const pose of place.poses) posesMix.push({ id: pose.id, at: origine + pose.at });
       origine += ligne.slot;
     }
-    const mix = new Float64Array(Math.ceil((origine + 1) * 22050));
-    for (const pose of posesMix) mix.set(echantillons.get(pose.id), Math.round(pose.at * 22050));
+    const reference = alignerTextes(
+      chapitre.paragraphes.map((paragraphe) => ({
+        id: paragraphe.id,
+        audio: fichiers.get(paragraphe.id),
+        texte: paragraphe.brut,
+        langue: lang,
+      })),
+    );
     const cues = await sousTitresNarration(lignes, chapitre, durees, fichiers);
-    const dites = chapitre.paragraphes.flatMap((paragraphe) => phrases(paragraphe.brut));
-    let curseurMot = 0;
-    let depart = 0;
     const paroles = [];
-    for (const phrase of dites) {
-      const groupe = [];
-      for (const mot of phrase.split(/\s+/).filter(Boolean)) {
-        const connu = motsConnus[curseurMot];
-        curseurMot += 1;
-        const place = correler(mix, connu.samples, depart);
-        assert.ok(place >= 0, `${lang} ${mot}`);
-        const coupe = voixUtile(connu.samples, connu.rate);
-        groupe.push({
-          mot,
-          debut: (place + coupe.debut) / 22050,
-          fin: (place + coupe.fin) / 22050,
+    for (const pose of posesMix) {
+      const paragraphe = chapitre.paragraphes.find((item) => item.id === pose.id);
+      const mots = reference[pose.id];
+      let indexMot = 0;
+      for (const phrase of phrases(paragraphe.brut)) {
+        const nombre = phrase.split(/\s+/).filter(Boolean).length;
+        const groupe = mots.slice(indexMot, indexMot + nombre);
+        indexMot += nombre;
+        assert.equal(groupe.length, nombre, `${lang} ${phrase}`);
+        paroles.push({
+          phrase,
+          debut: pose.at + groupe[0].debut,
+          fin: pose.at + groupe[groupe.length - 1].fin,
         });
-        depart = place + connu.samples.length;
       }
-      paroles.push({ phrase, debut: groupe[0].debut, fin: groupe[groupe.length - 1].fin });
+      assert.equal(indexMot, mots.length, pose.id);
     }
     let pireDepart = 0;
     let pireFin = 0;
@@ -210,41 +220,6 @@ function coller(parties) {
     curseur += partie.length;
   }
   return samples;
-}
-
-function voixUtile(samples, rate) {
-  const hop = Math.max(1, Math.round(rate * 0.01));
-  let debut = 0;
-  let fin = samples.length;
-  const actif = (index) => {
-    let energie = 0;
-    const nombre = Math.min(hop, samples.length - index);
-    for (let offset = 0; offset < nombre; offset += 1) energie += samples[index + offset] ** 2;
-    return Math.sqrt(energie / nombre) > 0.05;
-  };
-  while (debut < samples.length && !actif(debut)) debut += hop;
-  while (fin > debut && !actif(fin - hop)) fin -= hop;
-  const gauche = Math.max(0, debut);
-  const droite = Math.max(gauche + hop, fin);
-  return { samples: samples.subarray(gauche, droite), debut: gauche, fin: droite };
-}
-
-function correler(mix, mot, depart) {
-  const n = mot.length;
-  const fin = Math.min(mix.length - n, depart + Math.round(6 * 22050));
-  const pas = Math.max(1, Math.floor(n / 12));
-  for (let index = Math.max(0, depart); index <= fin; index += 1) {
-    if (mix[index] !== mot[0] || mix[index + n - 1] !== mot[n - 1]) continue;
-    let ok = true;
-    for (let k = pas; k < n; k += pas) {
-      if (mix[index + k] !== mot[k]) {
-        ok = false;
-        break;
-      }
-    }
-    if (ok) return index;
-  }
-  return -1;
 }
 
 test("aucun sous-titre n'est trop court pour se lire", async () => {

@@ -7,7 +7,7 @@ import { capturer } from "./capture.mjs";
 import { preparer } from "./parole.mjs";
 import { bords, dureeFichier, lireScenes, placer, projeter } from "./pilote.mjs";
 import { servir } from "./servir.mjs";
-import { calerPhrases } from "./calage.mjs";
+import { alignerTextes, calerPhrasesDepuisMots } from "./calage.mjs";
 import { garderCle } from "./tts.mjs";
 
 const ici = dirname(fileURLToPath(import.meta.url));
@@ -363,35 +363,47 @@ function fusionner(cues) {
 }
 
 export async function sousTitresNarration(lignes, chapitre, durees, fichiers = new Map()) {
+  const prepares = [];
+  const taches = [];
   let origine = 0;
-  const cues = [];
   for (const ligne of lignes) {
     const beat = chapitre.beats.find((item) => item.id === ligne.id);
     const place = placer(beat.paragraphes, durees);
     for (const pose of place.poses) {
       const paragraphe = beat.paragraphes.find((item) => item.id === pose.id);
       const fichier = fichiers.get(paragraphe.id);
+      const cle = `${origine}:${pose.id}`;
+      if (fichier) {
+        taches.push({ id: cle, audio: fichier, texte: paragraphe.brut, langue: chapitre.lang });
+      }
+      prepares.push({ origine, pose, paragraphe, fichier, beat, cle });
+    }
+    origine += ligne.slot;
+  }
+  const aligne = alignerTextes(taches);
+  const cues = [];
+  for (const item of prepares) {
+    const { pose, paragraphe, fichier, beat } = item;
+    origine = item.origine;
       const alignes = fichier
-        ? await calerPhrases(fichier, paragraphe.brut, chapitre.lang, phrases)
+        ? calerPhrasesDepuisMots(aligne[item.cle] ?? [], paragraphe.brut, phrases)
         : [{ phrase: paragraphe.brut, debut: 0, fin: Math.max(pose.audio, pose.fin - pose.at) }];
       const posesBloc = alignes.map((item, index) => {
         const debut = origine + pose.at + item.debut;
         const suivant = alignes[index + 1];
         const finMot = origine + pose.at + item.fin;
         const finAudio = origine + pose.fin;
-        const finBrute = fichier ? finMot + 0.55 : finMot;
-        const plafond = suivant ? Math.min(finAudio, origine + pose.at + suivant.debut) : finAudio;
+        const tenue = fichier ? finMot + 0.2 : finMot;
+        const debutSuivant = suivant ? origine + pose.at + suivant.debut : finAudio;
         return {
           debut,
-          fin: Math.min(plafond, Math.max(finMot, finBrute)),
+          fin: Math.max(finMot, Math.min(finAudio, debutSuivant, tenue)),
           text: lignesDe(notationNombres(item.phrase)).join("\n"),
           beat: beat.id,
           phrase: item.phrase,
         };
       });
       cues.push(...fusionner(posesBloc));
-    }
-    origine += ligne.slot;
   }
   return cues;
 }
