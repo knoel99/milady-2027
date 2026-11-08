@@ -1,0 +1,379 @@
+@font-face {
+  font-family: Inter;
+  src: url("../vendor/fonts/inter-latin-wght-normal.woff2") format("woff2");
+  font-weight: 100 900;
+  font-style: normal;
+  font-display: block;
+}
+
+@font-face {
+  font-family: "Inter Display";
+  src: url("../vendor/fonts/inter-latin-opsz-normal.woff2") format("woff2");
+  font-weight: 100 900;
+  font-style: normal;
+  font-display: block;
+}
+
+@font-face {
+  font-family: "JetBrains Mono";
+  src: url("../vendor/fonts/jetbrains-mono-latin-wght-normal.woff2") format("woff2");
+  font-weight: 100 800;
+  font-style: normal;
+  font-display: block;
+}
+
+* {
+  box-sizing: border-box;
+  margin: 0;
+  padding: 0;
+}
+
+html,
+body {
+  width: 1920px;
+  height: 1080px;
+  overflow: hidden;
+  background: #0b0f14;
+}
+
+.stage {
+  position: relative;
+  width: 1920px;
+  height: 1080px;
+  overflow: hidden;
+}
+
+.matters,
+.matter {
+  position: absolute;
+  inset: 0;
+}
+
+.matter-night {
+  background: #0b0f14;
+}
+
+.matter-paper {
+  background:
+    linear-gradient(#ffffff, #ffffff) 80px 80px / 1760px 920px no-repeat,
+    #f6f4ef;
+}
+
+.matter-blueprint {
+  background-color: #121821;
+  background-image:
+    linear-gradient(to right, rgb(107 122 140 / 40%) 1px, transparent 1px),
+    linear-gradient(to bottom, rgb(107 122 140 / 40%) 1px, transparent 1px);
+  background-size: 32px 32px;
+}
+
+.safe {
+  position: absolute;
+  left: 80px;
+  top: 80px;
+  width: 1760px;
+  height: 920px;
+  font-family: Inter, sans-serif;
+  font-size: 32px;
+  line-height: 1.2;
+}
+
+.badges {
+  position: absolute;
+  top: 8px;
+  left: 8px;
+  display: flex;
+  gap: 16px;
+}
+
+.badge {
+  height: 28px;
+  font-family: Inter, sans-serif;
+  font-size: 28px;
+  font-weight: 560;
+  line-height: 28px;
+  padding: 0 12px;
+  border-radius: 14px;
+  white-space: nowrap;
+}
+
+.badge-note {
+  margin-left: 10px;
+}
+
+.level-banner {
+  position: absolute;
+  top: 8px;
+  right: 12px;
+  font-family: Inter, sans-serif;
+  font-size: 32px;
+  font-weight: 560;
+  line-height: 32px;
+}
+
+.chapter-card,
+.question-card {
+  position: absolute;
+  left: 180px;
+  right: 180px;
+  top: 230px;
+  text-align: center;
+}
+
+.chapter-number,
+.chapter-level,
+.chapter-asks-label,
+.chapter-asks,
+.question-class {
+  font-size: 32px;
+  line-height: 40px;
+}
+
+.chapter-title {
+  font-family: "Inter Display", Inter, sans-serif;
+  font-size: 64px;
+  font-weight: 560;
+  font-variation-settings: "opsz" 32, "wght" 560;
+  line-height: 76px;
+}
+
+.question-card .badge {
+  display: inline-block;
+}
+
+.question-sentence {
+  margin-top: 28px;
+  font-size: 40px;
+  line-height: 52px;
+}
+
+.needle {
+  position: absolute;
+  top: 150px;
+  left: 8px;
+  width: 700px;
+}
+
+.needle-label {
+  margin-top: 12px;
+  font-size: 28px;
+  line-height: 34px;
+}
+
+.spots {
+  position: absolute;
+  top: 250px;
+  left: 520px;
+  width: 360px;
+  height: 180px;
+}
+
+.spot {
+  position: absolute;
+  top: 30px;
+  width: 120px;
+  height: 120px;
+  border-radius: 50%;
+  background: #d55e00;
+}
+
+.spot:last-child {
+  right: 0;
+}
+
+.axis {
+  position: absolute;
+  top: 220px;
+  right: 0;
+  width: 620px;
+}
+
+.axis-param {
+  color: #009e73;
+  font-size: 32px;
+  line-height: 40px;
+}
+
+.axis-line {
+  display: flex;
+  justify-content: space-between;
+  margin-top: 28px;
+  border-top: 4px solid #009e73;
+  padding-top: 16px;
+}
+
+.tick {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 8px;
+}
+
+.tick-mark {
+  width: 18px;
+  height: 18px;
+  border: 4px solid #009e73;
+  border-radius: 50%;
+}
+
+.tick.trained .tick-mark {
+  background: #009e73;
+}
+
+.tick-value {
+  font-family: "JetBrains Mono", monospace;
+  font-size: 32px;
+  font-variant-numeric: tabular-nums;
+  line-height: 36px;
+}
+
+.bars {
+  position: absolute;
+  top: 88px;
+  left: 0;
+  width: 980px;
+}
+
+.bars-title,
+.waiting-title {
+  font-size: 32px;
+  font-weight: 560;
+  line-height: 40px;
+}
+
+.bars-seeds,
+.bars-floor,
+.bars-schematic {
+  margin-top: 8px;
+  font-size: 28px;
+  line-height: 34px;
+}
+
+.bars-n {
+  margin-left: 16px;
+  font-family: "JetBrains Mono", monospace;
+  font-variant-numeric: tabular-nums;
+}
+
+.plot {
+  position: relative;
+  margin-top: 18px;
+}
+
+.floor-line {
+  position: absolute;
+  top: 0;
+  bottom: 0;
+  border-left: 4px dashed #c98a00;
+}
+
+.bar-row {
+  display: grid;
+  grid-template-columns: 48px 1fr 90px;
+  align-items: center;
+  gap: 16px;
+  height: 52px;
+}
+
+.bar-name,
+.bar-value {
+  font-family: "JetBrains Mono", monospace;
+  font-size: 32px;
+  font-variant-numeric: tabular-nums;
+  line-height: 36px;
+}
+
+.bar-track {
+  display: block;
+  height: 28px;
+  background: rgb(107 122 140 / 35%);
+}
+
+.bar-fill {
+  display: block;
+  height: 28px;
+}
+
+.field {
+  position: absolute;
+  top: 120px;
+  right: 0;
+  width: 560px;
+}
+
+.field-label {
+  font-family: "JetBrains Mono", monospace;
+  font-size: 32px;
+  line-height: 36px;
+  color: #d55e00;
+}
+
+.field canvas {
+  display: block;
+  width: 520px;
+  height: 300px;
+  margin-top: 12px;
+}
+
+.formula {
+  position: absolute;
+  top: 300px;
+  left: 0;
+  right: 0;
+  font-size: 36px;
+  line-height: 48px;
+  text-align: center;
+}
+
+.formula .term {
+  display: inline-block;
+  margin: 0 12px;
+}
+
+.formula .katex {
+  font-size: 1em;
+}
+
+.subtitle {
+  position: absolute;
+  right: 0;
+  bottom: 12px;
+  left: 0;
+  font-size: 32px;
+  line-height: 40px;
+  color: #f5f7fa;
+  text-align: center;
+}
+
+.subtitle-band {
+  position: absolute;
+  right: 0;
+  bottom: 0;
+  left: 0;
+  height: 140px;
+  background: rgb(11 15 20 / 72%);
+}
+
+.waiting {
+  position: absolute;
+  top: 160px;
+  left: 160px;
+  width: 1280px;
+  height: 520px;
+  padding: 36px;
+  border: 3px solid #6b7a8c;
+  background: #121821;
+}
+
+.waiting-criterion,
+.waiting-confidence,
+.waiting-label {
+  margin-top: 20px;
+  font-size: 32px;
+  line-height: 40px;
+}
+
+.waiting-label {
+  font-size: 40px;
+  line-height: 48px;
+}
