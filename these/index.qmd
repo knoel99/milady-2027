@@ -154,7 +154,7 @@ Le sujet s'appuie sur des résultats publiés qu'il faut citer et non revendique
 Ce que ce travail revendique est formulé avec prudence : **à notre connaissance, après une recherche bibliographique au 6 novembre 2026**, aucune publication ne combine les éléments suivants.
 
 1. Les identités de stationnarité d'une **EDP de champs** (MHD : bilans d'énergie, d'hélicité croisée, de $\langle a^2\rangle$ en 2D) utilisées comme contraintes **en loi** d'un modèle génératif **conditionnel paramétrique**, imposables à des paramètres sans données, et qui sont des identités **sans valeur cible** (contrairement aux moments externes de Khalifa et al. 2021 ou de Mun 2026).
-2. L'énoncé et la **mesure** de l'incohérence d'une contrainte par échantillon pour un bilan stationnaire (Corollaire 6 de la note, mesuré dans E1 et E2).
+2. L'énoncé et la **mesure** de l'incohérence d'une contrainte par échantillon pour un bilan stationnaire (Corollaire 6 de la note, mesuré dans E1 et E2) ; à distinguer du compromis entre exactitude en loi et exactitude physique de Baldan et al. (2026), qui porte sur des résidus d'EDP valables pour chaque échantillon.
 3. La formule de Rice appliquée à un générateur d'instantanés pour prédire la fréquence des renversements sans intégration temporelle (aucune antériorité trouvée).
 4. La complémentarité entre symétrie et stationnarité : les identités ne fixent pas les poids des composantes ergodiques symétriques, l'équivariance est nécessaire.
 5. Un point technique : l'estimateur naïf (carré d'une moyenne de mini-lot) d'une perte de stationnarité vaut en espérance $(\mathbb{E}g)^2 + \mathrm{Var}(g)/n$ et pénalise la dispersion de la loi ; l'estimateur par produit des moyennes de deux demi-lots supprime ce biais.
@@ -1199,6 +1199,7 @@ Les références ont été vérifiées dans les fiches de recherche du site (Cro
 - Karras T., Aittala M., Aila T., Laine S. (2022). Elucidating the design space of diffusion-based generative models. *NeurIPS 2022*. <https://arxiv.org/abs/2206.00364>
 - Chung H., Kim J., McCann M. T., Klasky M. L., Ye J. C. (2023). Diffusion posterior sampling for general noisy inverse problems. *ICLR 2023*. <https://arxiv.org/abs/2209.14687>
 - Wang S., Dou Z., Shan S., Liu T.-R., Lu L. (2026). FunDiff: diffusion models over function spaces for physics-informed generative modeling. *Nature Communications* 17, 5749. <https://doi.org/10.1038/s41467-026-72292-0>
+- Baldan G., Liu Q., Guardone A., Thuerey N. (2026). Physics vs distributions: Pareto optimal flow matching with physics constraints. *ICLR 2026*. <https://arxiv.org/abs/2506.08604>
 - Bastek J.-H., Sun W., Kochmann D. M. (2025). Physics-informed diffusion models. *ICLR 2025*. <https://arxiv.org/abs/2403.14404>
 - Genuist W., Savin É., Gatti F., Clouteau D. (2026). Divergence-free diffusion models for incompressible fluid flows. Préprint arXiv:2601.19368. <https://arxiv.org/abs/2601.19368>
 - Li T., Buzzicotti M., Bonaccorso F., Biferale L. (2026). Physics-constrained diffusion model for synthesis of 3D turbulent data. Préprint arXiv:2603.12834. <https://arxiv.org/abs/2603.12834>
