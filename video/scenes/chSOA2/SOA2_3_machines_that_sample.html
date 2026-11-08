@@ -1,0 +1,38 @@
+<!doctype html>
+<html lang="en"><head><meta charset="utf-8">
+<title>SOA2.3 Machines that sample</title>
+<link rel="stylesheet" href="../../vendor/katex/katex.min.css">
+<link rel="stylesheet" href="../../runtime/theme.css">
+<link rel="stylesheet" href="chSOA2.css">
+<script src="../../vendor/katex/katex.min.js"></script>
+<script src="../../runtime/scene.js"></script>
+<script src="../../runtime/components/kit.js"></script>
+<script src="../../runtime/components/hud.js"></script>
+<script src="../../runtime/components/plot.js"></script>
+<script src="../../runtime/components/field.js"></script>
+<script src="../../runtime/components/equation.js"></script>
+<script src="../../runtime/components/motifs.js"></script>
+<script src="../../runtime/components/cards.js"></script>
+<script src="../../runtime/components/seat.js"></script>
+<script src="../../runtime/components/threemodes.js"></script>
+<script src="chSOA2_kit.js"></script>
+</head><body><div id="stage"></div>
+<script>
+/* SOA2.3 Machines that sample (L4, NIGHT, CONTEXT). GENERATIVE MODELS lane focused; the families land on their nouns,
+   then the 2024-2026 results; the dashed empty slot 'dynamo fields · none found'; the GENERATIVE row of gate cells. */
+Scene.define({
+  duration: 25,
+  register: 'night',
+  cues: { sample: 0.4, families: 4.2, dream: 9.4, none: 17.0 },
+  params: { lane: 'generative', pins: [], verdicts: { '3d': 'yes', walls: 'partly', lowpm: 'no', rare: 'partly' }, verdict_at: 'none+0.6', neg_chip: 'none found · literature search to 6 Nov 2026, re-checked 8 Nov 2026', lower_thirds: [] },
+  setup(ctx) {
+    const K = Kit, P = ctx.params;
+    const M = SM.laneScene(ctx, P);
+    // the empty slot is linked up to the DYNAMO TRACKS band by a thin dashed line
+    const em = P.pins.find((p) => p.glyph === 'dashed'), ln = K.s('line', { stroke: K.c('model'), 'stroke-width': 2, 'stroke-dasharray': '5 7' }, M.svg), tN = ctx.at('none');
+    if (em) ctx.add({ render(t) { const r = M.rowBox(P.lane, t), d = M.rowBox('dynamo', t), x = M.x(em.year) + 22; ln.setAttribute('x1', x); ln.setAttribute('x2', x); ln.setAttribute('y1', r.y1 - 30); ln.setAttribute('y2', d.y1 - 4); ln.style.opacity = t >= tN ? 0.8 : 0; } });
+    K.chip(ctx, { text: P.neg_chip, kind: 'schematic', x: 96, y: 752, at: 'none+0.3' });
+    K.badge(ctx, { kind: 'CONTEXT', at: -0.3 });
+  },
+});
+</script></body></html>

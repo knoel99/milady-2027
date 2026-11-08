@@ -1,0 +1,40 @@
+<!doctype html>
+<html lang="en"><head><meta charset="utf-8">
+<title>SOA2.4 Making samples obey</title>
+<link rel="stylesheet" href="../../vendor/katex/katex.min.css">
+<link rel="stylesheet" href="../../runtime/theme.css">
+<link rel="stylesheet" href="chSOA2.css">
+<script src="../../vendor/katex/katex.min.js"></script>
+<script src="../../runtime/scene.js"></script>
+<script src="../../runtime/components/kit.js"></script>
+<script src="../../runtime/components/hud.js"></script>
+<script src="../../runtime/components/plot.js"></script>
+<script src="../../runtime/components/field.js"></script>
+<script src="../../runtime/components/equation.js"></script>
+<script src="../../runtime/components/motifs.js"></script>
+<script src="../../runtime/components/cards.js"></script>
+<script src="../../runtime/components/seat.js"></script>
+<script src="../../runtime/components/threemodes.js"></script>
+<script src="chSOA2_kit.js"></script>
+</head><body><div id="stage"></div>
+<script>
+/* SOA2.4 Making samples obey (L5, NIGHT, CONTEXT). CONSTRAINTS lane: one strand focused at a time (HARD, SOFT,
+   DISTRIBUTIONAL, SYMMETRY) with its pins; the 2026 comparison; the two 3D exactly divergence-free preprints back on
+   HARD; the dashed empty slot for walls, vacuum and iron; the CONSTRAINTS row of gate cells. Checkpoint L4 -> L5. */
+Scene.define({
+  duration: 52,
+  register: 'night',
+  cues: { obey: 0.4, hard: 4.6, soft: 13.6, crowd: 17.6, mirror: 25.4, nowinner: 30.0, periodic: 37.0, walls: 46.0 },
+  params: { lane: 'constraints', pins: [], verdicts: { '3d': 'partly', walls: 'no', lowpm: 'no', rare: 'no' }, verdict_at: 'walls+0.6',
+    rail: { from: 'L4', to: 'L5', at: 'obey-0.4', hold: 3 }, lower_thirds: [] },
+  setup(ctx) {
+    const K = Kit, P = ctx.params;
+    const f = (at, key) => ({ at, key });
+    SM.laneScene(ctx, P, { focus: [f(-1, 'constraints.HARD'), f('hard-0.3', 'constraints.HARD'), f('soft-0.3', 'constraints.SOFT'), f('crowd-0.3', 'constraints.DISTRIBUTIONAL'),
+      f('mirror-0.3', 'constraints.SYMMETRY'), f('periodic-0.3', 'constraints.HARD')] });
+    K.rail(ctx, { from: P.rail.from, to: P.rail.to, at: P.rail.at, hold: P.rail.hold });
+    K.badge(ctx, { kind: 'CONTEXT', at: -0.3 });
+    UK.formulaLayers(ctx, 'Formula');
+  },
+});
+</script></body></html>

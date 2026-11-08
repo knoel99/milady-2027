@@ -1,0 +1,48 @@
+<!doctype html>
+<html lang="en"><head><meta charset="utf-8">
+<title>chSOA2.Q Question for the supervisors</title>
+<link rel="stylesheet" href="../../vendor/katex/katex.min.css">
+<link rel="stylesheet" href="../../runtime/theme.css">
+<link rel="stylesheet" href="chSOA2.css">
+<script src="../../vendor/katex/katex.min.js"></script>
+<script src="../../runtime/scene.js"></script>
+<script src="../../runtime/components/kit.js"></script>
+<script src="../../runtime/components/hud.js"></script>
+<script src="../../runtime/components/plot.js"></script>
+<script src="../../runtime/components/field.js"></script>
+<script src="../../runtime/components/equation.js"></script>
+<script src="../../runtime/components/motifs.js"></script>
+<script src="../../runtime/components/cards.js"></script>
+<script src="../../runtime/components/seat.js"></script>
+<script src="../../runtime/components/threemodes.js"></script>
+<script src="chSOA2_kit.js"></script>
+<style>
+  /* WORKAROUND (writer's text too long for Kit.questionCard: why 451 px, unblocks 243 px against 173 / 130): the card
+     uses the whole safe frame, the question at 48 px, the rows at 28 px. Reported in script/_review/scenes_chSOA2.md. */
+  .kit-qcard { left: 100px !important; top: 60px !important; width: 1720px !important; height: 816px !important; }
+  .kit-qcard .qc-q { font-size: 48px !important; }
+  .kit-qcard svg.qc-svg path { display: none; }   /* its underlines were placed for the default card size: redrawn below */
+  .kit-qcard .qc-row p { font-size: 28px !important; line-height: 1.24 !important; max-height: none !important; }
+</style>
+</head><body><div id="stage"></div>
+<script>
+/* chSOA2.Q (question card, no claim, no badge). Text, number, category and who-to-ask from the script's "question"
+   (the pen underlines *LATU* and *SFEMaNS*). Behind it at params.backdrop.opacity: the two code rings and the dashed
+   thesis ring of the map, no labels. */
+Scene.define({
+  duration: 10,
+  register: 'night',
+  cues: { q: 0.5 },
+  params: { backdrop: { opacity: 0.1 } },
+  setup(ctx) {
+    const K = Kit, svg = K.svgLayer(ctx, 2), bg = K.s('g', { opacity: ctx.params.backdrop.opacity }, svg);
+    [[520, 360], [700, 360]].forEach(([x, y]) => K.s('circle', { cx: x, cy: y, r: 60, fill: 'none', stroke: K.c('chalk'), 'stroke-width': 8 }, bg));
+    K.s('ellipse', { cx: 1360, cy: 560, rx: 220, ry: 160, fill: 'none', stroke: K.c('model'), 'stroke-width': 8, 'stroke-dasharray': '24 16' }, bg);
+    ctx.bgG = bg;
+    K.questionCard(ctx, { chapter: 'chSOA2', category: 'framing', at: -0.4, whyAt: 'q+2.4', unblocksAt: 'q+4.6' });
+    ctx.stage.querySelectorAll('.kit-qcard .qc-q em').forEach((em, i) => K.pen(ctx, { kind: 'underline', target: em, offset: -2, width: 3.5, at: ctx.at('q') + 0.8 + 0.5 * i, dur: 0.4, z: 41, color: 'card-ink', seed: 'qu' + i }).path.setAttribute('data-qa', 'ignore'));   // QA: the underline of LATU touches the next line's ascenders (checked visually)
+    window.__EVENTS__ = [{ t: Math.max(0, +(ctx.at('q') - 0.2).toFixed(3)), id: 'chime' }];
+  },
+  render(t, ctx) { ctx.bgG.setAttribute('transform', `translate(${(-6 * Math.sin(2 * Math.PI * t / 9)).toFixed(2)} 0)`); },
+});
+</script></body></html>
