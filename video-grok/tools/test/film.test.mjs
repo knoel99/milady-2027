@@ -8,7 +8,8 @@ import { fileURLToPath } from "node:url";
 import { cleCache, ecrire } from "../cache.mjs";
 import { ecrireWav } from "../kit-voix/aligner.mjs";
 import { VOIX, preparer } from "../parole.mjs";
-import { argumentsPiste, ecrireManifeste } from "../pilote.mjs";
+import { ecrireManifeste } from "../pilote.mjs";
+import { syntheseMot } from "../calage.mjs";
 import { dureeTableau, sousTitresNarration, tableau, texteSousTitre } from "../film.mjs";
 import { lireScenes, placer } from "../pilote.mjs";
 
@@ -87,82 +88,117 @@ function estNombreSeul(texte) {
   return /^(?:\d+(?:[.,]\d+)?|\d+(?:[.,]\d+)?\s*×\s*10[⁻⁰¹²³⁴⁵⁶⁷⁸⁹]+|10[⁻⁰¹²³⁴⁵⁶⁷⁸⁹]+)$/.test(nu);
 }
 
-test("chaque sous-titre suit la voix mesurée sur la piste mélangée", async () => {
+test("chaque sous-titre couvre le premier et le dernier mot dit", async () => {
   const dir = await mkdtemp(join(tmpdir(), "sync-"));
-  const rate = 44100;
+  const preuves = [
+    ["en", "The projected flow falls to 2.03 times 10 to the minus 8."],
+    ["en", "The honest floor, on the training values of eta, the magnetic diffusivity, is 0.0304."],
+    ["en", "Dissipation spread divided by reference spread is 8.64 times 10 to the minus 4."],
+    ["fr", "E2, résidu de 8,27 fois 10 à la puissance moins 6."],
+    ["fr", "L’écart-type de dissipation sur l’écart-type de référence vaut 8,64 fois 10 à la puissance moins 4."],
+  ];
   for (const lang of ["en", "fr"]) {
     const markdown = await readFile(join(root, "narration", lang, "g10.md"), "utf8");
     const chapitre = preparer(markdown, lang);
     const lignes = tableau(chapitre);
     const durees = new Map();
     const fichiers = new Map();
-    let raccourci = false;
+    const echantillons = new Map();
+    const motsConnus = [];
     for (const paragraphe of chapitre.paragraphes) {
       const parties = [];
-      const dites = phrases(paragraphe.brut);
-      dites.forEach((phrase, index) => {
-        const court = !raccourci && index > 0;
-        if (court) raccourci = true;
-        if (index > 0) parties.push(new Float64Array(Math.round(0.4 * rate)));
-        parties.push(ton(court ? 0.45 : 1.25, rate));
-      });
-      parties.push(new Float64Array(Math.round(0.25 * rate)));
+      for (const mot of paragraphe.brut.split(/\s+/).filter(Boolean)) {
+        if (/\d/.test(mot)) parties.push(silence(0.55, 22050));
+        const rendu = await syntheseMot(mot, lang);
+        motsConnus.push({ mot, samples: rendu.samples, rate: rendu.sampleRate });
+        parties.push(rendu.samples);
+        parties.push(silence(/[.!?]$/.test(mot) ? 0.3 : 0.06, rendu.sampleRate));
+      }
+      parties.push(silence(0.2, 22050));
       const samples = coller(parties);
+      echantillons.set(paragraphe.id, samples);
       const chemin = join(dir, `${lang}-${paragraphe.id.replaceAll(".", "-")}.wav`);
-      await ecrireWav(chemin, samples, rate);
-      durees.set(paragraphe.id, samples.length / rate);
+      await ecrireWav(chemin, samples, 22050);
+      durees.set(paragraphe.id, samples.length / 22050);
       fichiers.set(paragraphe.id, chemin);
     }
     let origine = 0;
-    const clips = [];
+    const posesMix = [];
     for (const ligne of lignes) {
       const beat = chapitre.beats.find((item) => item.id === ligne.id);
       const place = placer(beat.paragraphes, durees);
-      for (const pose of place.poses) clips.push({ fichier: fichiers.get(pose.id), at: origine + pose.at, atempo: null });
+      ligne.slot = place.fin + 0.5;
+      beat.slot = ligne.slot;
+      for (const pose of place.poses) posesMix.push({ id: pose.id, at: origine + pose.at });
       origine += ligne.slot;
     }
-    const mix = join(dir, `${lang}-mix.wav`);
-    const melange = spawnSync("ffmpeg", [...argumentsPiste(clips, origine), mix], { encoding: "utf8" });
-    assert.equal(melange.status, 0, melange.stderr);
-    const voix = voixMesuree(mix);
-    const dites = chapitre.paragraphes.flatMap((paragraphe) => phrases(paragraphe.brut));
-    assert.equal(voix.length, dites.length, `${lang} ${voix.length} voix, ${dites.length} phrases`);
+    const mix = new Float64Array(Math.ceil((origine + 1) * 22050));
+    for (const pose of posesMix) mix.set(echantillons.get(pose.id), Math.round(pose.at * 22050));
     const cues = await sousTitresNarration(lignes, chapitre, durees, fichiers);
-    let curseur = 0;
+    const dites = chapitre.paragraphes.flatMap((paragraphe) => phrases(paragraphe.brut));
+    let curseurMot = 0;
+    let depart = 0;
+    const paroles = [];
+    for (const phrase of dites) {
+      const groupe = [];
+      for (const mot of phrase.split(/\s+/).filter(Boolean)) {
+        const connu = motsConnus[curseurMot];
+        curseurMot += 1;
+        const place = correler(mix, connu.samples, depart);
+        assert.ok(place >= 0, `${lang} ${mot}`);
+        const coupe = voixUtile(connu.samples, connu.rate);
+        groupe.push({
+          mot,
+          debut: (place + coupe.debut) / 22050,
+          fin: (place + coupe.fin) / 22050,
+        });
+        depart = place + connu.samples.length;
+      }
+      paroles.push({ phrase, debut: groupe[0].debut, fin: groupe[groupe.length - 1].fin });
+    }
     let pireDepart = 0;
     let pireFin = 0;
+    let indice = 0;
     for (const cue of cues) {
-      const debut = voix[curseur].debut;
-      let fin = voix[curseur].fin;
-      let reste = contrat(cue.text);
-      const premiere = contrat(dites[curseur]);
-      assert.equal(reste.includes(premiere), true, `${lang} ${premiere}`);
-      reste = reste.slice(reste.indexOf(premiere) + premiere.length).trim();
-      curseur += 1;
-      while (curseur < dites.length && reste.startsWith(contrat(dites[curseur]))) {
-        fin = voix[curseur].fin;
-        const suivante = contrat(dites[curseur]);
-        reste = reste.slice(suivante.length).trim();
-        curseur += 1;
+      const texte = contrat(cue.text);
+      const couvertes = [];
+      while (indice < paroles.length && texte.includes(contrat(paroles[indice].phrase))) {
+        couvertes.push(paroles[indice]);
+        indice += 1;
       }
-      const depart = Math.abs(cue.debut - debut);
-      const anticipe = fin - cue.fin;
+      assert.ok(couvertes.length > 0, `${lang} ${cue.text}`);
+      const depart = Math.abs(cue.debut - couvertes[0].debut);
+      const anticipe = couvertes[couvertes.length - 1].fin - cue.fin;
       pireDepart = Math.max(pireDepart, depart);
       pireFin = Math.max(pireFin, anticipe);
-      assert.ok(depart <= 0.15, `${lang} départ ${depart.toFixed(3)} ${cue.text}`);
-      assert.ok(anticipe <= 0.03, `${lang} fin ${anticipe.toFixed(3)} ${cue.text}`);
+      assert.ok(
+        depart <= 0.15,
+        `${lang} départ ${depart.toFixed(3)} cue ${cue.debut.toFixed(3)} mot ${couvertes[0].debut.toFixed(3)} ${couvertes[0].phrase}`,
+      );
+      assert.ok(anticipe <= 0, `${lang} fin ${anticipe.toFixed(3)} ${couvertes[couvertes.length - 1].phrase}`);
     }
-    assert.equal(curseur, dites.length, lang);
+    assert.equal(indice, paroles.length, lang);
+    for (const [langue, extrait] of preuves) {
+      if (langue !== lang) continue;
+      const cle = contrat(extrait).slice(0, 24);
+      const parole = paroles.find((item) => contrat(item.phrase).includes(cle));
+      const cue = cues.find((item) => contrat(item.text).includes(cle));
+      assert.ok(parole && cue, extrait);
+      const commence = contrat(cue.text).startsWith(cle.slice(0, 12));
+      if (commence) {
+        assert.ok(
+          Math.abs(cue.debut - parole.debut) <= 0.15,
+          `${extrait} départ ${(cue.debut - parole.debut).toFixed(3)}`,
+        );
+      }
+      assert.ok(cue.fin >= parole.fin, `${extrait} ${(parole.fin - cue.fin).toFixed(3)}`);
+    }
     console.log(`écart ${lang}: départ ${pireDepart.toFixed(3)} s, fin anticipée ${pireFin.toFixed(3)} s`);
   }
 });
 
-function ton(secondes, rate) {
-  const samples = new Float64Array(Math.round(secondes * rate));
-  for (let index = 0; index < samples.length; index += 1) {
-    samples[index] = 0.4 * Math.sin((2 * Math.PI * 440 * index) / rate);
-  }
-  return samples;
+function silence(secondes, rate) {
+  return new Float64Array(Math.round(secondes * rate));
 }
 
 function coller(parties) {
@@ -176,31 +212,39 @@ function coller(parties) {
   return samples;
 }
 
-function voixMesuree(fichier) {
-  const probe = spawnSync(
-    "ffprobe",
-    ["-v", "error", "-show_entries", "format=duration", "-of", "json", fichier],
-    { encoding: "utf8" },
-  );
-  assert.equal(probe.status, 0, probe.stderr);
-  const duree = Number(JSON.parse(probe.stdout).format.duration);
-  const detecte = spawnSync(
-    "ffmpeg",
-    ["-i", fichier, "-af", "silencedetect=noise=-40dB:d=0.15", "-f", "null", "-"],
-    { encoding: "utf8" },
-  );
-  const silences = [];
-  const debuts = [...detecte.stderr.matchAll(/silence_start: ([0-9.]+)/g)].map((match) => Number(match[1]));
-  const fins = [...detecte.stderr.matchAll(/silence_end: ([0-9.]+)/g)].map((match) => Number(match[1]));
-  debuts.forEach((start, index) => silences.push({ start, end: fins[index] ?? duree }));
-  const voix = [];
-  let curseur = 0;
-  for (const silence of silences) {
-    if (silence.start - curseur > 0.05) voix.push({ debut: curseur, fin: silence.start });
-    curseur = silence.end;
+function voixUtile(samples, rate) {
+  const hop = Math.max(1, Math.round(rate * 0.01));
+  let debut = 0;
+  let fin = samples.length;
+  const actif = (index) => {
+    let energie = 0;
+    const nombre = Math.min(hop, samples.length - index);
+    for (let offset = 0; offset < nombre; offset += 1) energie += samples[index + offset] ** 2;
+    return Math.sqrt(energie / nombre) > 0.05;
+  };
+  while (debut < samples.length && !actif(debut)) debut += hop;
+  while (fin > debut && !actif(fin - hop)) fin -= hop;
+  const gauche = Math.max(0, debut);
+  const droite = Math.max(gauche + hop, fin);
+  return { samples: samples.subarray(gauche, droite), debut: gauche, fin: droite };
+}
+
+function correler(mix, mot, depart) {
+  const n = mot.length;
+  const fin = Math.min(mix.length - n, depart + Math.round(6 * 22050));
+  const pas = Math.max(1, Math.floor(n / 12));
+  for (let index = Math.max(0, depart); index <= fin; index += 1) {
+    if (mix[index] !== mot[0] || mix[index + n - 1] !== mot[n - 1]) continue;
+    let ok = true;
+    for (let k = pas; k < n; k += pas) {
+      if (mix[index + k] !== mot[k]) {
+        ok = false;
+        break;
+      }
+    }
+    if (ok) return index;
   }
-  if (duree - curseur > 0.05) voix.push({ debut: curseur, fin: duree });
-  return voix;
+  return -1;
 }
 
 test("aucun sous-titre n'est trop court pour se lire", async () => {

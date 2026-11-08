@@ -7,6 +7,7 @@ import { capturer } from "./capture.mjs";
 import { preparer } from "./parole.mjs";
 import { bords, dureeFichier, lireScenes, placer, projeter } from "./pilote.mjs";
 import { servir } from "./servir.mjs";
+import { calerPhrases } from "./calage.mjs";
 import { garderCle } from "./tts.mjs";
 
 const ici = dirname(fileURLToPath(import.meta.url));
@@ -361,42 +362,6 @@ function fusionner(cues) {
   return suite;
 }
 
-export async function segmentsVoix(fichier) {
-  const duree = await dureeFichier(fichier);
-  const journal = await executer("ffmpeg", ["-i", fichier, "-af", "silencedetect=noise=-40dB:d=0.15", "-f", "null", "-"]);
-  const debuts = [...String(journal).matchAll(/silence_start: ([0-9.]+)/g)].map((match) => Number(match[1]));
-  const fins = [...String(journal).matchAll(/silence_end: ([0-9.]+)/g)].map((match) => Number(match[1]));
-  const silences = debuts.map((start, index) => ({ start, end: fins[index] ?? duree }));
-  const voix = [];
-  let curseur = 0;
-  for (const silence of silences) {
-    if (silence.start - curseur > 0.05) voix.push({ debut: curseur, fin: silence.start });
-    curseur = silence.end;
-  }
-  if (duree - curseur > 0.05) voix.push({ debut: curseur, fin: duree });
-  return voix.length > 0 ? voix : [{ debut: 0, fin: duree }];
-}
-
-function aligner(dites, voix) {
-  if (voix.length >= dites.length) {
-    return dites.map((phrase, index) => {
-      const dernier = index === dites.length - 1 ? voix.length - 1 : index;
-      return { phrase, debut: voix[index].debut, fin: voix[dernier].fin };
-    });
-  }
-  const groupes = [];
-  let index = 0;
-  for (let voixIndex = 0; voixIndex < voix.length; voixIndex += 1) {
-    const reste = dites.length - index;
-    const regions = voix.length - voixIndex;
-    const nombre = Math.ceil(reste / regions);
-    const groupe = dites.slice(index, index + nombre);
-    index += nombre;
-    groupes.push({ phrase: groupe.join(" "), debut: voix[voixIndex].debut, fin: voix[voixIndex].fin });
-  }
-  return groupes;
-}
-
 export async function sousTitresNarration(lignes, chapitre, durees, fichiers = new Map()) {
   let origine = 0;
   const cues = [];
@@ -406,18 +371,24 @@ export async function sousTitresNarration(lignes, chapitre, durees, fichiers = n
     for (const pose of place.poses) {
       const paragraphe = beat.paragraphes.find((item) => item.id === pose.id);
       const fichier = fichiers.get(paragraphe.id);
-      const voix = fichier
-        ? await segmentsVoix(fichier)
-        : [{ debut: 0, fin: Math.max(pose.audio, pose.fin - pose.at) }];
-      const dites = phrases(notationNombres(paragraphe.brut));
-      const alignes = aligner(dites.length > 0 ? dites : [paragraphe.brut], voix);
-      const posesBloc = alignes.map((item) => ({
-        debut: origine + pose.at + item.debut,
-        fin: origine + pose.at + item.fin,
-        text: lignesDe(item.phrase).join("\n"),
-        beat: beat.id,
-        phrase: item.phrase,
-      }));
+      const alignes = fichier
+        ? await calerPhrases(fichier, paragraphe.brut, chapitre.lang, phrases)
+        : [{ phrase: paragraphe.brut, debut: 0, fin: Math.max(pose.audio, pose.fin - pose.at) }];
+      const posesBloc = alignes.map((item, index) => {
+        const debut = origine + pose.at + item.debut;
+        const suivant = alignes[index + 1];
+        const finMot = origine + pose.at + item.fin;
+        const finAudio = origine + pose.fin;
+        const finBrute = fichier ? finMot + 0.55 : finMot;
+        const plafond = suivant ? Math.min(finAudio, origine + pose.at + suivant.debut) : finAudio;
+        return {
+          debut,
+          fin: Math.min(plafond, Math.max(finMot, finBrute)),
+          text: lignesDe(notationNombres(item.phrase)).join("\n"),
+          beat: beat.id,
+          phrase: item.phrase,
+        };
+      });
       cues.push(...fusionner(posesBloc));
     }
     origine += ligne.slot;

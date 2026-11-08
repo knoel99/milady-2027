@@ -428,26 +428,49 @@ test("aucune étiquette n'entre dans la bande du plus long sous-titre", async ()
     }
   }
   const hauteur = (lignes + 1) * 56 + 48;
+  const pages = [
+    ["classes.html", classesRaw.cues.map((cue) => cue.id)],
+    ["hard.html", hardRaw.cues.map((cue) => cue.id)],
+    ["sym.html", symRaw.cues.map((cue) => cue.id)],
+    ["law.html", lawRaw.cues.map((cue) => cue.id)],
+    ["sample.html", sampleRaw.cues.map((cue) => cue.id)],
+    ["bias.html", biasRaw.cues.map((cue) => cue.id)],
+    ["close.html", closeRaw.cues.map((cue) => cue.id)],
+    ["card.html", cardRaw.cues.map((cue) => cue.id)],
+  ];
   const server = await servir(root);
   const { browser, page } = await ouvrir(`http://127.0.0.1:${server.port}/scenes/g10/law.html`);
   try {
-    for (const id of ["cue.g10.law.show", "cue.g10.law.floor"]) {
-      await page.evaluate((cue) => window.seek(window.__scene.cue(cue)), id);
-      const rapport = await page.evaluate((haut) => {
-        const bande = document.querySelector(".subtitle-band").getBoundingClientRect();
-        const top = Math.min(bande.top, 1080 - haut);
-        const etiquettes = [...document.querySelectorAll(".bars-scale, .bars-title, .bar-name, .bar-value, .bars-tick-label")]
-          .filter((node) => node.textContent.trim())
-          .map((node) => {
-            const rect = node.getBoundingClientRect();
-            return { text: node.textContent.trim(), bottom: rect.bottom, top: rect.top };
-          });
-        return { top, bottom: 1080, etiquettes, bande: bande.height };
-      }, hauteur);
-      assert.ok(rapport.bande + 0.5 >= hauteur, `bande ${rapport.bande} < ${hauteur}`);
-      for (const etiquette of rapport.etiquettes) {
-        const coupe = etiquette.bottom > rapport.top + 0.5 && etiquette.top < rapport.bottom - 0.5;
-        assert.equal(coupe, false, `${id} ${etiquette.text} ${etiquette.bottom} / bande ${rapport.top}`);
+    for (const [file, cues] of pages) {
+      await page.goto(`http://127.0.0.1:${server.port}/scenes/g10/${file}`, { waitUntil: "load" });
+      await page.waitForFunction(() => window.__scene);
+      await page.evaluate(() => document.fonts.ready);
+      for (const id of cues) {
+        await page.evaluate((cue) => window.seek(window.__scene.cue(cue)), id);
+        const rapport = await page.evaluate((haut) => {
+          const bande = document.querySelector(".subtitle-band");
+          if (!bande) return { top: 1080, etiquettes: [], bande: haut };
+          const boite = bande.getBoundingClientRect();
+          const top = Math.min(boite.top, 1080 - haut);
+          const etiquettes = [];
+          const walker = document.createTreeWalker(document.body, NodeFilter.SHOW_TEXT);
+          while (walker.nextNode()) {
+            const node = walker.currentNode;
+            if (node.parentElement?.closest(".subtitle-band, .subtitle")) continue;
+            const text = node.textContent.replace(/\s+/g, " ").trim();
+            if (!text) continue;
+            const range = document.createRange();
+            range.selectNodeContents(node);
+            for (const rect of range.getClientRects()) {
+              if (rect.width > 0.5 && rect.height > 0.5) etiquettes.push({ text, bottom: rect.bottom });
+            }
+          }
+          return { top, etiquettes, bande: boite.height };
+        }, hauteur);
+        assert.ok(rapport.bande + 0.5 >= hauteur, `bande ${rapport.bande} < ${hauteur}`);
+        for (const etiquette of rapport.etiquettes) {
+          assert.ok(etiquette.bottom <= rapport.top - 12, `${id} ${etiquette.text} ${etiquette.bottom.toFixed(1)} / bande ${rapport.top.toFixed(1)}`);
+        }
       }
     }
   } finally {
