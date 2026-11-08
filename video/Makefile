@@ -3,8 +3,11 @@
 #   make film  CUT=core|extended          full build: TTS (live, cached) + render changed scenes + mix + MP4
 #   make films                            both cuts
 #   make draft CUT=...                    960x540 15 fps review build (cached voice, placeholder where none)
+#   make draft U=ch04 [S=id,id]           960x540 15 fps review video of ONE unit, narration muxed (never writes audio/)
 #   make scene S=04.1 [CUT=...]           re-render one scene (forced), then re-assemble
-#   make check U=ch04                     one still per cue for every scene of a unit + page errors + layout QA
+#   make check U=ch04 [S=..] [TIMING=auto|estimate|audio] [EVERY=1.0]   stills around every cue of a unit's scenes
+#                                         + page errors + layout QA (never writes audio/, script/_build/ or subs/)
+#   make det U=ch04 [S=..] [TIMING=..]    determinism of a unit's scenes (after make check: uses its timeline)
 #   make narration VOICE=<id>|default     re-synthesise every paragraph with another voice, rebuild both cuts
 #   make narration-script CUT=...         reading script for an external narrator (out/narration_script_<cut>.md)
 #   make fit DIR=takes/ [CUT=..] [RETIME=auto]   fit an external recording (NARRATION.md)
@@ -36,10 +39,10 @@ TTS ?=
 OPTS ?=
 BUILD = node build.js --workers $(WORKERS) --narration $(NARRATION) $(LFLAG) $(if $(TTS),--tts $(TTS)) $(OPTS)
 
-.PHONY: help data plan film films draft scene check narration narration-script fit tts-dry tts-test stills test test-fr serve sfx-demo clean clean-draft
+.PHONY: help data plan film films draft scene check det narration narration-script fit tts-dry tts-test stills test test-fr serve sfx-demo clean clean-draft
 
 help:
-	@sed -n '1,14p' Makefile
+	@sed -n '1,17p' Makefile
 
 data:                       ## refresh data/*.json from the repository's existing results (unchanged content is not rewritten)
 	python3 -I tools/data_existing.py
@@ -55,15 +58,20 @@ films: data
 	@set -e; for c in $(CUTS); do $(BUILD) --cut $$c; done
 
 draft: data
-	$(BUILD) --cut $(CUT) --draft
+	$(if $(U),node build.js --unit $(U) --draft --workers $(WORKERS) $(LFLAG) $(if $(S),--only $(S)) $(if $(TIMING),--timing $(TIMING)) $(OPTS),$(BUILD) --cut $(CUT) --draft)
 
 scene: data
 	@test -n "$(S)" || (echo "usage: make scene S=<scene id> [CUT=core|extended] [LANG=fr]"; exit 2)
 	$(BUILD) --cut $(CUT) --only $(S) --force
 
 check:
-	@test -n "$(U)" || (echo "usage: make check U=<unit> [S=id,id] [LANG=fr]"; exit 2)
-	node build.js --unit $(U) --check $(LFLAG) $(if $(S),--only $(S)) $(OPTS)
+	@test -n "$(U)" || (echo "usage: make check U=<unit> [S=id,id] [TIMING=auto|estimate|audio] [EVERY=1.0] [LANG=fr]"; exit 2)
+	node build.js --unit $(U) --check $(LFLAG) $(if $(S),--only $(S)) $(if $(TIMING),--timing $(TIMING)) $(if $(EVERY),--every $(EVERY)) $(OPTS)
+
+EST := $(if $(filter estimate,$(TIMING)),_est,)
+det:                        ## make det U=ch04 [S=04.2] [TIMING=estimate]: run make check U=… first (it writes the timeline)
+	@test -n "$(U)" || (echo "usage: make det U=<unit> [S=id,id] [TIMING=estimate] [LANG=fr]"; exit 2)
+	node tools/determinism.js --timeline out/check/unit_$(U)$(LSFX)$(EST)/build/unit_$(U)$(LSFX)_timeline.json $(if $(S),--only $(S))
 
 narration: data
 	@test -n "$(VOICE)" || (echo "usage: make narration VOICE=<reference_id>|default [LANG=fr] [CUTS='core extended']"; exit 2)

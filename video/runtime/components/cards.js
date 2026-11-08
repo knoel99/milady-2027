@@ -9,7 +9,15 @@
  *       the "ask your supervisor" ticket: warm card, perforated stub with the question number, the
  *       question (<= 18 words; *word* gets the pen underline), WHY IT MATTERS and WHAT IT UNBLOCKS.
  *       category: runs (which simulations, which parameters) | framing (constraints, metrics, criteria)
- *       | logistics (data access, GPUs, Jean Zay, budget). Reads ctx.script.question when present.
+ *       | logistics (data access, GPUs, Jean Zay, budget). Reads ctx.script.question when present: the script
+ *       wins for every field (n, chapter, category, text, who); opts are the fallback. In a preview without a
+ *       script question (make serve), a placeholder ticket is drawn instead of an error.
+ *   Kit.predictCard(ctx, {x, y, w, anchor: 'c' | 'l', question, options: ['A · …', 'B · …'], at, out, answerAt,
+ *                         pick, parent, z})
+ *       the PREDICT beat (CONTRACT §3): mono kicker, the question in Inter Display 44, two (or more) grey
+ *       outline buttons; on answerAt the picked button lights and the others dim. question: '' gives the
+ *       compact card (kicker and buttons) for the answer beat. Put the question on its cue and answerAt on the
+ *       next paragraph's cue: the hold between them is the script's hold_after, never a number in the scene.
  */
 (function () {
   'use strict';
@@ -60,8 +68,15 @@
   };
   K.questionCard = function (ctx, o = {}) {
     const sq = (ctx.script && ctx.script.question) || {};
-    const q = { n: o.n ?? sq.n, chapter: o.chapter ?? sq.chapter ?? (ctx.script && ctx.script.unit), question: sq.en || o.question, why: sq.why || o.why,
+    // the script wins for every field (CONTRACT §4: "n and category from opts unless the script has them")
+    const q = { n: sq.n ?? o.n, chapter: sq.chapter ?? o.chapter ?? (ctx.script && ctx.script.unit), question: sq.en || o.question, why: sq.why || o.why,
       unblocks: sq.unblocks || o.unblocks, category: sq.category || o.category, ask: sq.ask_who || o.ask || 'the supervisors' };
+    if ((!q.question || !q.why || !q.unblocks) && !(ctx.script && ctx.script.id)) {
+      // preview without a built entry (make serve): a placeholder ticket, so the page still renders
+      S.warn('questionCard: no script question (preview): placeholder text drawn');
+      q.question = q.question || 'The *question* comes from the script (question.en) in a built entry';
+      q.why = q.why || 'question.why of the script.'; q.unblocks = q.unblocks || 'question.unblocks of the script.';
+    }
     if (!q.question || !q.why || !q.unblocks) throw new Error('questionCard needs question, why, unblocks (script "question" or opts)');
     const words = q.question.replace(/[*{}/]|\b(u|b|param|model|metric)\b(?=\})/g, '').split(/\s+/).filter(Boolean).length;
     if (words > 18) S.warn(`question card: ${words} words on screen (brief: at most 18)`);
@@ -77,7 +92,9 @@
     K.el('div', { class: 'qc-ask' }, stub, 'ASK');
     const num = K.el('div', { class: 'qc-num' }, stub, q.n !== undefined && q.n !== null ? 'Q' + q.n : 'Q');
     if (q.chapter) K.el('div', { class: 'qc-ch' }, stub, String(q.chapter).toUpperCase());
-    K.el('div', { class: 'qc-who', html: `<small>WHO</small>${K.esc(q.ask)}` }, stub);
+    // who to ask: one unbreakable group per name ("D. Lucor" never splits after the initial), breaks only at " / " and ", "
+    const who = String(q.ask).split(/(\s*\/\s*|,\s+)/).map((x, i) => (i % 2 ? K.esc(x) : `<span style="white-space:nowrap">${K.esc(x)}</span>`)).join('');
+    K.el('div', { class: 'qc-who', html: `<small>WHO</small>${who}` }, stub);
     const main = K.el('div', { class: 'qc-main' }, root);
     K.el('div', { class: 'qc-kicker' }, main, 'A QUESTION TO SETTLE BEFORE WE COMPUTE');
     const qq = K.el('div', { class: 'qc-q', html: K.markup(q.question) }, main);
@@ -108,6 +125,38 @@
         num.style.opacity = st; num.style.transform = `scale(${(1.04 - 0.04 * S.spring(st, 0.03)).toFixed(4)})`;
         r1.style.opacity = S.seg(t, tw, tw + 0.4, S.ease.linear); r1.style.transform = `translateY(${(10 * (1 - S.seg(t, tw, tw + 0.4, S.ease.outCubic))).toFixed(2)}px)`;
         r2.style.opacity = S.seg(t, tu, tu + 0.4, S.ease.linear); r2.style.transform = `translateY(${(10 * (1 - S.seg(t, tu, tu + 0.4, S.ease.outCubic))).toFixed(2)}px)`;
+      },
+    });
+  };
+
+  // ---------- PREDICT card (predict beats, CONTRACT §3; promoted from the ch04 pilot, C4.predict) ----------
+  K.predictCard = function (ctx, o = {}) {
+    const w = o.w ?? 1000;
+    const root = K.el('div', { class: 'kit-predict', 'data-kit': 'predict' }, o.parent || ctx.stage);
+    root.style.left = (o.x ?? 960) + 'px'; root.style.top = (o.y ?? 96) + 'px'; root.style.width = w + 'px';
+    if (o.z !== undefined) root.style.zIndex = o.z;
+    if ((o.anchor || 'c') === 'c') root.style.marginLeft = (-w / 2) + 'px';
+    K.el('div', { class: 'kp-kicker' }, root, o.kicker ? K.upper(o.kicker) : 'PREDICT');
+    const q = K.el('div', { class: 'kp-q', html: K.markup(o.question || '') }, root);
+    if (!o.question) q.style.display = 'none';   // compact card (the answer beat): kicker and buttons only
+    const row = K.el('div', { class: 'kp-row' }, root);
+    const btns = (o.options || []).map((t) => K.el('div', { class: 'kp-btn', html: K.markup(t) }, row));
+    if (!btns.length) S.warn('predictCard: no options');
+    const t0 = ctx.at(o.at ?? 0), t1 = o.out !== undefined ? ctx.at(o.out) : Infinity, ta = o.answerAt !== undefined ? ctx.at(o.answerAt) : Infinity;
+    if (o.question) K.fit(q, w - 64, null, 36, ctx);
+    if (ta < Infinity && t1 < Infinity && t1 - ta < 1.2) S.warn(`predictCard: the answer is lit for only ${(t1 - ta).toFixed(2)} s before the card leaves (give it >= 1.2 s)`);
+    return ctx.add({
+      root, buttons: btns, question: q,
+      render(t) {
+        const e = K.env(t, t0, t1, 0.35, 0.3); K.show(root, e.on); if (!e.on) return;
+        root.style.opacity = e.o; root.style.transform = `translateY(${(-18 * (1 - e.p) - 24 * e.q).toFixed(2)}px)`;
+        const a = S.seg(t, ta, ta + 0.25, S.ease.linear);
+        btns.forEach((b, i) => {
+          const lit = i === o.pick ? a : 0;
+          b.style.borderColor = lit > 0 ? K.c('fg') : ''; b.style.color = lit > 0 ? K.c('fg') : '';
+          b.style.background = lit > 0 ? K.rgba(K.c('fg'), 0.14 * lit) : '';
+          b.style.opacity = (i !== o.pick && a > 0) ? (1 - 0.5 * a) : 1;
+        });
       },
     });
   };

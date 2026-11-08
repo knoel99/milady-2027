@@ -2,10 +2,15 @@
  *
  *   M1  Kit.needle(ctx, {x, y, size, corner, start, flips: ['cue', …], dur, at, out})   compass needle, flips
  *       Kit.barcode(ctx, {box, segments: [{a, b, s}] | series: {t, D}, domain, at, dur})  polarity strip
- *   M2  Kit.knob(ctx, {x, y, r, min, max, value | keys: [{at, v, dur}], window, label, fmt, at})
+ *   M2  Kit.knob(ctx, {x, y, r, min, max, value | keys: [{at, v, dur}], window, windowLabel, windowTick, windowMinDeg,
+ *                      label, labelDy, fmt, showValue, at})
  *   M3  Kit.twoInks(ctx, {box, cells, amp, at, lineY, maxPoints})   blue flow carries a vermillion line
  *   M4  Kit.cloud(ctx, {box, targets: [{pts, at, dur}], range, n, strings, at, size})  violet samples
- *   M5  Kit.histogram(ctx, {box, values, range, bins, ref, at, dur, morph: {values, at, dur}, label})
+ *   M5  Kit.histogram(ctx, {box, values, range, bins, ref, at, dur, morph: {values, at, dur}, label, xLabel,
+ *                           live: (t) => counts | {counts, lo, hi}, liveMax, manual, outline: true | {at, dur}, edges})
+ *       live: the bars follow a count that grows with t (accumulating visits, falling marbles); manual: the scene
+ *       calls H.set(counts, lo, hi) in its render; outline: a step outline instead of (or morphing from) bars;
+ *       edges: values outside the range collect into two small edge markers instead of being dropped.
  *   M6  Kit.projector(ctx, {x, y, at, drop, field, gauge: {label, value}})   vector dropped onto a plane
  *   M7  Kit.staircase(ctx, {x, y, w, h, lit, pending, at})   tiers 0 → 4
  *   M9  Kit.pen(ctx, {kind, box | target | from/to, at, dur, color})   circle, underline, arrow, brace, box, check, cross
@@ -84,15 +89,27 @@
     const arc = (a, b, r) => { const p = pol(a, r), q = pol(b, r); return `M${p[0]},${p[1]} A${r},${r} 0 ${b - a > 180 ? 1 : 0} 1 ${q[0]},${q[1]}`; };
     const green = K.c('param');
     K.s('path', { d: arc(A0, A1, R + 18), fill: 'none', stroke: K.c('matter-dark'), 'stroke-width': 4 }, g);
-    if (o.window) K.s('path', { d: arc(ang(o.window[0]), ang(Math.min(max, o.window[1])), R + 18), fill: 'none', stroke: K.rgba(green, 0.32), 'stroke-width': 22 }, g);
+    if (o.window) {
+      let a0 = ang(Math.max(min, o.window[0])), a1 = ang(Math.min(max, o.window[1]));
+      const minDeg = o.windowMinDeg ?? 0;   // opt-in: widen a very thin window around its centre (schematic knobs)
+      if (a1 - a0 < minDeg) { const c = (a0 + a1) / 2; a0 = c - minDeg / 2; a1 = c + minDeg / 2; }
+      K.s('path', { d: arc(a0, a1, R + 18), fill: 'none', stroke: K.rgba(green, 0.32), 'stroke-width': 22 }, g);
+      // a thin window (< 12°, e.g. the E1 threshold [0.86, 0.865]) also gets a full-green tick across the track
+      if (o.windowTick ?? (a1 - a0 < 12)) { const p = pol(a0, R + 4), q = pol(a0, R + 46); K.s('line', { x1: p[0], y1: p[1], x2: q[0], y2: q[1], stroke: green, 'stroke-width': 4, 'stroke-linecap': 'round' }, g); }
+      if (o.windowLabel) {   // the threshold value beside the window, outside the tick ring
+        const am = (a0 + a1) / 2, p = pol(am, R + 74), side = Math.sin(am * Math.PI / 180);
+        const tl = K.s('text', { x: p[0], y: p[1] + 10, 'text-anchor': side > 0.3 ? 'start' : side < -0.3 ? 'end' : 'middle', class: 'kt-tick' }, g, o.windowLabel);
+        tl.style.fill = green;
+      }
+    }
     const nt = o.ticks ?? 10;
     for (let i = 0; i <= nt; i++) { const a = A0 + (A1 - A0) * i / nt, p = pol(a, R + 32), q = pol(a, R + 44); K.s('line', { x1: p[0], y1: p[1], x2: q[0], y2: q[1], stroke: K.c('muted'), 'stroke-width': 2 }, g); }
     K.s('circle', { r: R, fill: K.c('panel'), stroke: K.c('matter'), 'stroke-width': 5 }, g);
     const ptr = K.s('g', {}, g);
     K.s('line', { x1: 0, y1: -R * 0.25, x2: 0, y2: -R + 12, stroke: green, 'stroke-width': 9, 'stroke-linecap': 'round' }, ptr);
     K.s('circle', { r: 10, fill: K.c('matter') }, g);
-    const lab = o.label ? K.s('text', { x: 0, y: R + 92, 'text-anchor': 'middle', class: 'kt-axis' }, g, '') : null;
-    if (lab) lab.style.fill = green;
+    const lab = o.label ? K.s('text', { x: 0, y: R + (o.labelDy ?? 92), 'text-anchor': 'middle', class: 'kt-axis' }, g, '') : null;
+    if (lab) { lab.style.fill = green; lab.style.fontVariantNumeric = 'tabular-nums'; }   // the value changes: tabular figures
     const keys = (o.keys || [{ at: o.at ?? 0, v: o.value ?? min, dur: 0 }]).map((k) => ({ t: ctx.at(k.at), v: k.v, d: k.dur ?? 1.2 }));
     const val = (t) => { let v = keys[0].v; for (let i = 1; i < keys.length; i++) { const k = keys[i]; v = v + (k.v - v) * S.spring((t - k.t) / k.d, 0.02); } return v; };
     const { t0, t1 } = K.times(ctx, o, 0);
@@ -198,22 +215,43 @@
   K.histogram = function (ctx, o = {}) {
     const box = Object.assign({ x: 560, y: 260, w: 800, h: 420 }, o.box || {});
     const bins = o.bins ?? 31, range = o.range || [-1, 1];   // odd: 0 sits in the middle of a bin
+    const bwv = (range[1] - range[0]) / bins;
+    const count = (vals) => {   // counts per bin, plus the values below / above the range
+      const v = S.f32(vals), c = new Float64Array(bins); let lo = 0, hi = 0;
+      for (let i = 0; i < v.length; i++) { const x = v[i]; if (!Number.isFinite(x)) continue; const k = Math.floor((x - range[0]) / bwv);
+        if (k >= 0 && k < bins) c[k]++; else if (x < range[0]) lo++; else hi++; }
+      return { c, lo, hi };
+    };
+    // density; with edges the out-of-range values count in the total (their share shows on the edge markers),
+    // without (the original behaviour) the bars are normalised over the values inside the range only
     const dens = (vals) => {
-      const v = S.f32(vals), h = new Float64Array(bins), w = (range[1] - range[0]) / bins; let n = 0;
-      for (let i = 0; i < v.length; i++) { const k = Math.floor((v[i] - range[0]) / w); if (k >= 0 && k < bins) { h[k]++; n++; } }
-      for (let k = 0; k < bins; k++) h[k] = n ? h[k] / (n * w) : 0;
+      const { c, lo, hi } = count(vals), n = c.reduce((a, x) => a + x, 0) + (o.edges ? lo + hi : 0), h = new Float64Array(bins);
+      for (let k = 0; k < bins; k++) h[k] = n ? c[k] / (n * bwv) : 0;
+      h.lo = n ? lo / (n * bwv) : 0; h.hi = n ? hi / (n * bwv) : 0;
       return h;
     };
-    const H1 = dens(o.values), H2 = o.morph ? dens(o.morph.values) : null, HR = o.ref ? dens(o.ref) : null;
+    const live = typeof o.live === 'function' ? o.live : null, manual = !!o.manual;
+    const H1 = o.values ? dens(o.values) : new Float64Array(bins), H2 = o.morph ? dens(o.morph.values) : null, HR = o.ref ? dens(o.ref) : null;
+    if (!o.values && !live && !manual) throw new Error('histogram needs values (or live / manual)');
     // the morph target (e.g. the spike of per-sample rescaling) may go off scale: it is clipped at the top of the
     // box with an "off scale" mark, so the reference stays readable (clipSpike: false to rescale instead)
     let ymax = o.yMax || Math.max(...H1, ...(HR || [0])) * 1.12;
     if (H2 && !o.yMax && o.clipSpike === false) ymax = Math.max(ymax, Math.max(...H2) * 1.05);
+    // live / manual bars are in COUNT units: liveMax (default: 1.12 x the largest final count)
+    let cmax = o.liveMax;
+    if ((live || manual) && !cmax) {
+      const fin = o.values ? count(o.values) : live ? live(ctx.duration) : null;
+      const fc = fin ? (fin.c || fin.counts || fin) : [1];
+      cmax = Math.max(1, ...Array.from(fc)) * 1.12;
+    }
     const svg = o.svg || K.svgLayer(ctx, o.z ?? 12, o.parent); const g = K.s('g', { 'data-kit': 'histogram' }, svg);
-    const bw = box.w / bins, Y = (d) => box.y + box.h - box.h * Math.min(1, d / ymax);
+    const bw = box.w / bins, Y = (d, m = ymax) => box.y + box.h - box.h * Math.min(1, d / m);
     const col = K.c(o.color || 'metric');
     K.s('line', { x1: box.x, x2: box.x + box.w, y1: box.y + box.h, y2: box.y + box.h, stroke: K.c('muted'), 'stroke-width': 2 }, g);
-    const bars = []; for (let k = 0; k < bins; k++) bars.push(K.s('rect', { x: box.x + k * bw + 1.5, width: bw - 3, fill: col }, g));
+    const barsG = K.s('g', {}, g);
+    const bars = []; for (let k = 0; k < bins; k++) bars.push(K.s('rect', { x: box.x + k * bw + 1.5, width: bw - 3, fill: col }, barsG));
+    const outline = o.outline ? K.s('path', { fill: 'none', stroke: col, 'stroke-width': 3, 'stroke-linejoin': 'round' }, g) : null;
+    const edgeR = o.edges ? [box.x - 0.8 * bw - 6, box.x + box.w + 6].map((x) => K.s('rect', { x, width: 0.8 * bw, fill: K.rgba(col, 0.45), stroke: col, 'stroke-width': 1.5, 'stroke-dasharray': '4 3' }, g)) : null;
     let refPath = null;
     if (HR) {
       let d = `M${box.x},${box.y + box.h}`; for (let k = 0; k < bins; k++) d += `L${box.x + k * bw},${Y(HR[k])}L${box.x + (k + 1) * bw},${Y(HR[k])}`;
@@ -226,24 +264,43 @@
     const { t0, t1 } = K.times(ctx, o, 0); const dur = o.dur ?? 1.4;
     const tm = o.morph ? ctx.at(o.morph.at) : Infinity, dm = o.morph ? o.morph.dur ?? 1.5 : 1;
     const tr = o.refAt !== undefined ? ctx.at(o.refAt) : t0;
-    return ctx.add({
-      root: g,
+    const to = o.outline && typeof o.outline === 'object' ? ctx.at(o.outline.at) : -Infinity, dO = (o.outline && o.outline.dur) || 0.6;
+    const ys = new Float64Array(bins);
+    const draw = (lo, hi) => {   // bars and outline from ys (top y of each bin)
+      for (let k = 0; k < bins; k++) { bars[k].setAttribute('y', ys[k].toFixed(2)); bars[k].setAttribute('height', (box.y + box.h - ys[k]).toFixed(2)); }
+      if (outline) { let d = `M${box.x},${box.y + box.h}`; for (let k = 0; k < bins; k++) d += `L${(box.x + k * bw).toFixed(1)},${ys[k].toFixed(1)}L${(box.x + (k + 1) * bw).toFixed(1)},${ys[k].toFixed(1)}`; outline.setAttribute('d', d + `L${box.x + box.w},${box.y + box.h}`); }
+      if (edgeR) [lo, hi].forEach((y, i) => { edgeR[i].setAttribute('y', y.toFixed(2)); edgeR[i].setAttribute('height', (box.y + box.h - y).toFixed(2)); edgeR[i].style.display = y < box.y + box.h - 0.5 ? '' : 'none'; });
+    };
+    const H = {
+      root: g, bars, outline, ymax, cmax,
+      /** manual mode: bar heights from counts (count units, scaled by liveMax), drawn at once */
+      set(counts, lo = 0, hi = 0) { for (let k = 0; k < bins; k++) ys[k] = Y(counts[k] || 0, cmax); draw(Y(lo, cmax), Y(hi, cmax)); },
       render(t) {
         const e = K.env(t, t0, t1, 0.3, 0.3); g.style.display = e.on ? '' : 'none'; g.style.opacity = e.o;
-        const m = S.seg(t, tm, tm + dm, S.ease.inOutCubic);
-        for (let k = 0; k < bins; k++) {
-          const grow = S.seg(t, t0 + dur * 0.6 * k / bins, t0 + dur * 0.6 * k / bins + dur * 0.4, S.ease.outCubic);
-          const d = (H2 ? H1[k] + (H2[k] - H1[k]) * m : H1[k]) * grow, y = Y(d);
-          bars[k].setAttribute('y', y.toFixed(2)); bars[k].setAttribute('height', (box.y + box.h - y).toFixed(2));
-        }
-        if (off) {   // mark the tallest clipped bar
-          let kk = -1, best = 0;
-          for (let k = 0; k < bins; k++) { const d = H1[k] + (H2[k] - H1[k]) * m; if (d > ymax && d > best) { best = d; kk = k; } }
-          off.style.display = kk >= 0 ? '' : 'none'; if (kk >= 0) off.setAttribute('x', box.x + (kk + 1) * bw + 12);
+        if (outline) { const p = to === -Infinity ? 1 : S.seg(t, to, to + dO, S.ease.inOutSine); barsG.style.opacity = (1 - p).toFixed(3); outline.style.opacity = p.toFixed(3); }
+        if (manual) return;
+        if (live) {
+          const r = live(t), c = r.counts || r.c || r;
+          for (let k = 0; k < bins; k++) ys[k] = Y(c[k] || 0, cmax);
+          draw(Y(r.lo || 0, cmax), Y(r.hi || 0, cmax));
+        } else {
+          const m = S.seg(t, tm, tm + dm, S.ease.inOutCubic);
+          for (let k = 0; k < bins; k++) {
+            const grow = S.seg(t, t0 + dur * 0.6 * k / bins, t0 + dur * 0.6 * k / bins + dur * 0.4, S.ease.outCubic);
+            ys[k] = Y((H2 ? H1[k] + (H2[k] - H1[k]) * m : H1[k]) * grow);
+          }
+          const gE = S.seg(t, t0 + dur * 0.6, t0 + dur, S.ease.outCubic);
+          draw(Y((H2 ? H1.lo + (H2.lo - H1.lo) * m : H1.lo) * gE), Y((H2 ? H1.hi + (H2.hi - H1.hi) * m : H1.hi) * gE));
+          if (off) {   // mark the tallest clipped bar
+            let kk = -1, best = 0;
+            for (let k = 0; k < bins; k++) { const d = H1[k] + (H2[k] - H1[k]) * m; if (d > ymax && d > best) { best = d; kk = k; } }
+            off.style.display = kk >= 0 ? '' : 'none'; if (kk >= 0) off.setAttribute('x', box.x + (kk + 1) * bw + 12);
+          }
         }
         if (refPath) refPath.style.opacity = S.seg(t, tr, tr + 0.5, S.ease.linear);
       },
-    });
+    };
+    return ctx.add(H);
   };
 
   // ======================= M6 projector =======================
@@ -253,6 +310,7 @@
     const g = K.s('g', { transform: `translate(${x},${y}) scale(${s})` }, svg);
     const plane = K.s('path', { d: 'M-380,40 L180,40 L380,-80 L-180,-80 Z', fill: K.rgba(K.c('infra'), 0.18), stroke: K.c('infra'), 'stroke-width': 3 }, g);
     const lab = K.s('text', { x: -360, y: 92, class: 'kt-mono' }, g, K.upper(o.planeLabel || 'divergence-free fields'));
+    if (s < 1) lab.style.fontSize = (28 / s).toFixed(2) + 'px';   // the plane may be scaled down, its label never below 28 px
     const col = K.c(o.field || 'b'), tip = [60, -330], foot = [60, -20];
     const v = K.s('line', { x1: -120, y1: -20, x2: tip[0], y2: tip[1], stroke: col, 'stroke-width': 7, 'stroke-linecap': 'round' }, g);
     const drop = K.s('line', { x1: tip[0], y1: tip[1], x2: foot[0], y2: foot[1], stroke: K.c('muted'), 'stroke-width': 3, 'stroke-dasharray': '10 8' }, g);
@@ -354,7 +412,7 @@
       d = `M${x0},${y0} L${x1},${y1} M${x1},${y0} L${x0},${y1}`;
     } else throw new Error('pen kind: circle | underline | box | brace | arrow | check | cross');
     const svg = o.svg || K.svgLayer(ctx, o.z ?? 30, o.parent);
-    const p = K.s('path', { d, fill: 'none', stroke: K.c(o.color || 'chalk'), 'stroke-width': o.width ?? 4.5, 'stroke-linecap': 'round', 'stroke-linejoin': 'round', 'data-kit': 'pen' }, svg);
+    const p = K.s('path', { d, fill: 'none', stroke: K.c(o.color || 'chalk'), 'stroke-width': o.width ?? 4.5, 'stroke-linecap': 'round', 'stroke-linejoin': 'round', 'data-kit': 'pen', 'data-pen-kind': kind }, svg);
     const len = p.getTotalLength(); p.style.strokeDasharray = `${len} ${len + 10}`;
     const { t0, t1 } = K.times(ctx, o, 0), dur = o.dur ?? 0.6;
     return ctx.add({

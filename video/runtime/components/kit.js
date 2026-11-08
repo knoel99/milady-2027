@@ -63,12 +63,32 @@
     svg.style.zIndex = z; svg.style.overflow = 'visible';
     return svg;
   };
-  /** Canvas layer with a hi-DPI backing store: {canvas, g} (drawn in CSS px) */
-  Kit.canvasLayer = function (ctx, z = 5, box = null, parent = null) {
+  /** Canvas layer with a hi-DPI backing store: {canvas, g, w, h, reset()} (drawn in CSS px).
+   *  opts.reset: true resets the context STATE (transform, alpha, composite, line and text settings, dash, shadow,
+   *  filter; never the pixels) at the start of every seek, before any component or the scene draws: a setting left
+   *  behind by one frame (lineCap, globalAlpha, a dash) can then never leak into the next one (determinism, CONTRACT
+   *  §9). Without it, call L.reset() first in your render. Keep the pixels yourself (clearRect) as before. */
+  Kit.canvasLayer = function (ctx, z = 5, box = null, parent = null, opts = {}) {
     const c = Kit.el('canvas', {}, parent || ctx.stage);
     const w = box ? box.w : 1920, h = box ? box.h : 1080;
     c.style.cssText = `position:absolute;left:${box ? box.x : 0}px;top:${box ? box.y : 0}px;width:${w}px;height:${h}px;z-index:${z}`;
-    return { canvas: c, g: S.hidpi(c, w, h), w, h };
+    const g = S.hidpi(c, w, h), d = c.width / w;
+    const L = { canvas: c, g, w, h, reset: () => Kit.resetCanvas(g, d) };
+    if (opts.reset) ctx.add({ render: L.reset });
+    return L;
+  };
+  /** restore a 2D context's default state (keeps the pixels): transform = scale(d) (hi-DPI), source-over, alpha 1,
+   *  butt caps, miter joins, width 1, no dash, no shadow, no filter, default font and alignment, smoothing on */
+  Kit.resetCanvas = function (g, d = window.devicePixelRatio || 1) {
+    g.setTransform(d, 0, 0, d, 0, 0);
+    g.globalAlpha = 1; g.globalCompositeOperation = 'source-over';
+    g.lineWidth = 1; g.lineCap = 'butt'; g.lineJoin = 'miter'; g.miterLimit = 10; g.setLineDash([]); g.lineDashOffset = 0;
+    g.fillStyle = '#000'; g.strokeStyle = '#000';
+    g.shadowBlur = 0; g.shadowColor = 'rgba(0,0,0,0)'; g.shadowOffsetX = 0; g.shadowOffsetY = 0;
+    if ('filter' in g) g.filter = 'none';
+    g.font = '10px sans-serif'; g.textAlign = 'start'; g.textBaseline = 'alphabetic';
+    g.imageSmoothingEnabled = true;
+    return g;
   };
   /** box of an element in stage coordinates (works in preview, where the stage is scaled) */
   Kit.box = function (el, ctx) {
@@ -159,11 +179,78 @@
     '\\vth': '\\htmlClass{k-model}{v_\\theta}', '\\Edist': '\\htmlClass{k-metric}{\\mathcal{E}}',
     '\\cu': '\\htmlClass{k-u}{#1}', '\\cb': '\\htmlClass{k-b}{#1}', '\\cp': '\\htmlClass{k-param}{#1}',
     '\\cm': '\\htmlClass{k-model}{#1}', '\\ck': '\\htmlClass{k-metric}{#1}', '\\cg': '\\htmlClass{k-muted}{#1}',
+    // the quadrupole Q (light vermillion, --b-light) and the other polarity of B (--b-neg, a shade)
+    '\\cq': '\\htmlClass{k-q}{#1}', '\\cbn': '\\htmlClass{k-b-neg}{#1}',
   };
   Kit.tex = function (tex, display = true, extraMacros = {}) {
     if (!window.katex) throw new Error('KaTeX not loaded (add vendor/katex/katex.min.js and katex.min.css)');
     return katex.renderToString(tex, { displayMode: display, output: 'html', strict: 'ignore', throwOnError: true,
       macros: Object.assign({}, Kit.MACROS, extraMacros), trust: (c) => ['\\htmlClass', '\\htmlId', '\\htmlData'].includes(c.command) });
+  };
+
+  /** places where a long inline formula may be split into two lines WITHOUT breaking a relation: after ";" ":" ","
+   *  followed by a space (top level or inside \text{…}), or at \quad / \qquad. Returns [{left, right}] (TeX).
+   *  (KaTeX itself can only wrap after a relation or an operator: "Γ ≤ | 0.86", "16 runs × | 3000 units".) */
+  Kit.breakCandidates = function (tex) {
+    const out = [];
+    let depth = 0;
+    for (let i = 0; i < tex.length; i++) {
+      if (depth === 0 && tex.startsWith('\\text{', i)) {
+        let j = i + 6, d = 1; while (j < tex.length && d > 0) { if (tex[j] === '{') d++; else if (tex[j] === '}') d--; j++; }
+        const inner = tex.slice(i + 6, j - 1), re = /[;:,]\s+/g; let m;
+        while ((m = re.exec(inner))) {
+          const q = m.index + 1, rest = inner.slice(q).replace(/^\s+/, '');
+          out.push({ left: tex.slice(0, i) + (q > 0 ? '\\text{' + inner.slice(0, q) + '}' : ''), right: (rest ? '\\text{' + rest + '}' : '') + tex.slice(j) });
+        }
+        i = j - 1; continue;
+      }
+      const ch = tex[i];
+      if (ch === '\\' && depth === 0 && /^\\q?quad/.test(tex.slice(i))) { const n = tex.startsWith('\\qquad', i) ? 6 : 5; out.push({ left: tex.slice(0, i), right: tex.slice(i + n).replace(/^\s+/, '') }); i += n - 1; continue; }
+      if (ch === '\\') { i++; continue; }   // skip the escaped character (\{, \;, \,)
+      if (ch === '{') depth++; else if (ch === '}') depth--;
+      else if (depth === 0 && /[;:,]/.test(ch)) {
+        const m = tex.slice(i + 1).match(/^(?:\s*(?:\\[ ,;:!]|\\quad|\\qquad|~))+\s*/);
+        if (m) out.push({ left: tex.slice(0, i + 1), right: tex.slice(i + 1 + m[0].length) });
+      }
+    }
+    return out.filter((c) => c.left.trim() && c.right.trim());
+  };
+  /** fit an inline formula into `row` (an element already holding Kit.tex(tex, false)) within maxW px: if it is
+   *  wider, split it at its most balanced break candidate (one KaTeX line per half) and, if a half is still too
+   *  wide, shrink it (never below minPx, 28: warns instead). A formula that fits is left untouched.
+   *  Returns {lines: 1 | 2, px}. o: {px (current size, 32), minPx, macros} */
+  Kit.fitFormula = function (row, tex, maxW, o = {}) {
+    const px = o.px || parseFloat(getComputedStyle(row).fontSize) || 32, minPx = o.minPx ?? 28;
+    const probe = Kit.el('span', {}, row.parentElement || row);
+    probe.style.cssText = `position:absolute;left:0;top:0;visibility:hidden;white-space:nowrap;display:inline-block;font-size:${px}px`;
+    const wOf = (x) => { probe.innerHTML = Kit.tex(x, false, o.macros); return probe.getBoundingClientRect().width / (Kit._stageScale() || 1); };
+    let res = { lines: 1, px };
+    const w0 = wOf(tex);
+    if (w0 > maxW + 0.5) {
+      let best = null;
+      for (const c of Kit.breakCandidates(tex)) { const w = Math.max(wOf(c.left), wOf(c.right)); if (!best || w < best.w) best = { c, w }; }
+      if (best && best.w < w0) {
+        row.innerHTML = ''; row.style.whiteSpace = 'nowrap'; row.classList.add('fl-split');
+        [best.c.left, best.c.right].forEach((x) => Kit.el('div', { html: Kit.tex(x, false, o.macros) }, row));
+        res = { lines: 2, px };
+        if (best.w > maxW + 0.5) res.px = Math.max(minPx, Math.floor(px * maxW / best.w));
+      } else res.px = Math.max(minPx, Math.floor(px * maxW / w0));
+      if (res.px !== px) row.style.fontSize = res.px + 'px';
+      const wEnd = (best && best.w < w0 ? best.w : w0) * res.px / px;
+      if (wEnd > maxW + 0.5) S.warn(`formula does not fit in ${maxW}px even at ${minPx}px: "${tex.slice(0, 60)}…" — shorten it or split it with ";" / \\quad`);
+    }
+    probe.remove();
+    return res;
+  };
+  Kit._stageScale = () => { const st = document.getElementById('stage'); return st ? st.getBoundingClientRect().width / 1920 : 1; };
+
+  /** replace a hyphen between two letters by U+2011 (non-breaking hyphen) in every text node of root outside KaTeX:
+   *  keeps "north-south" on one line (Kit.fit, wrapped labels). Not needed for width since the theme dropped the
+   *  global tabular figures (the tabular hyphen was a figure wide). */
+  Kit.nbhy = function (root) {
+    const w = document.createTreeWalker(root, NodeFilter.SHOW_TEXT, { acceptNode: (n) => (n.parentElement && n.parentElement.closest('.katex') ? NodeFilter.FILTER_REJECT : NodeFilter.FILTER_ACCEPT) });
+    for (let n = w.nextNode(); n; n = w.nextNode()) if (/\p{L}-\p{L}/u.test(n.nodeValue)) n.nodeValue = n.nodeValue.replace(/(\p{L})-(?=\p{L})/gu, '$1‑');
+    return root;
   };
 
   // ---------- registry checks run by the runtime after setup ----------

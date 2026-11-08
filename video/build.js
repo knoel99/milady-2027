@@ -16,7 +16,16 @@
  * Usage (normally through the Makefile):
  *   node build.js --cut core|extended [--draft] [--plan] [--only id,id] [--force] [--tts live|auto|placeholder]
  *                 [--narration tts|external] [--voice ID] [--variant auto|pending|result] [--workers 4] [--lang en|fr]
- *   node build.js --unit ch04 --check          one still per cue for every scene of a unit, page errors reported
+ *   node build.js --unit ch04 --check [--timing auto|estimate|audio] [--only id,id] [--every 1.0] [--no-pre]
+ *        stills around every cue of every scene of a unit (stills.js check mode), page errors, warnings, layout QA
+ *   node build.js --unit ch04 --draft [--timing …] [--only id,id]   960x540 15 fps review video of one unit, narration muxed
+ *   Unit checks and unit drafts NEVER write into audio/, script/_build/ or subs/ (another agent may be synthesising
+ *   narration at the same time): they read audio/scenes<_lang>/<id>.align.json READ-ONLY when its sentences match the
+ *   script (timing "audio"; a changed hold_after is re-applied), else estimate the timing at 146 raw wpm as
+ *   align.py --allow-missing does (timing "estimated"). --timing estimate forces the estimate, --timing audio fails
+ *   when a scene has no matching narration. Outputs: out/check/<unit>[_est]/ (stills, sheets, report.json, build/)
+ *   and out/draft/<unit>[_est]/ (scenes/, <unit>_draft.mp4). --audio-write restores the old check (tts --mode auto +
+ *   align.py, writing placeholders into audio/).
  * --lang fr (BRIEF section 9): French narration over the same English visuals. The cut merges script/fr/<unit>.json
  *   (tools/assemble_cut.py --lang fr), the French voice, lexicon and Fish "language": "fr" (audio/tts.py), its own
  *   timeline and renders: name <cut>_fr (film_<cut>_fr.mp4, stems/<cut>_fr_*, subs/<cut>_fr.*, <cut>_fr_cues.json),
@@ -43,6 +52,11 @@ const LSFX = LANG === 'en' ? '' : '_' + LANG;                    // every output
 const NAME0 = opt.name || (opt.unit ? `unit_${opt.unit}` : opt.cut);
 const NAME = LSFX && !NAME0.endsWith(LSFX) ? NAME0 + LSFX : NAME0;
 const DRAFT = !!opt.draft, PLAN = !!opt.plan, CHECK = !!opt.check;
+// unit check / unit draft: no TTS, no alignment, no write into audio/, script/_build/ or subs/ (see the header)
+const UNITBUILD = !!opt.unit && (CHECK || DRAFT) && !opt['audio-write'];
+const TIMING = String(opt.timing || 'auto');
+if (!['auto', 'estimate', 'audio'].includes(TIMING)) { console.error(`[build] --timing ${TIMING}: auto, estimate or audio`); process.exit(2); }
+const UOUT = path.join(ROOT, CHECK ? 'out/check' : 'out/draft', NAME + (TIMING === 'estimate' ? '_est' : ''));
 const TTS = opt.tts || (PLAN ? 'dry-run' : (DRAFT || CHECK) ? 'auto' : 'live');
 const RENDER = DRAFT
   ? { fps: 15, scale: 0.5, crf: 23, preset: 'veryfast', maxrate: '2M', bufsize: '4M', profile: 'high', level: '4.1', x264: 'stitchable=1', gpu: 'cpu', img: 'png' }
@@ -51,12 +65,12 @@ const fps = RENDER.fps;
 const WORKERS = +(opt.workers || (DRAFT ? 3 : 4));
 const SIZE_LIMIT = 1.9e9;
 const OUT = path.join(ROOT, DRAFT ? 'out/draft' : 'out');
-const SCN = path.join(OUT, 'scenes' + LSFX);                   // one render per scene and language (subtitles burned in)
+const SCN = UNITBUILD && DRAFT ? path.join(UOUT, 'scenes') : path.join(OUT, 'scenes' + LSFX);   // one render per scene and language (subtitles burned in)
 const ASCN = path.join(ROOT, 'audio', 'scenes' + LSFX);        // narration tracks (audio/align.py)
 const AEXT = path.join(ROOT, 'audio', 'external' + LSFX);      // external narration (tools/fit_narration.py)
-const BUILD = path.join(ROOT, 'script/_build');
-const META = DRAFT ? OUT : BUILD;                      // draft timings (15 fps) never overwrite the official cue sheet
-const SUBS = DRAFT ? path.join(OUT, 'subs') : path.join(ROOT, 'subs');
+const BUILD = UNITBUILD ? path.join(UOUT, 'build') : path.join(ROOT, 'script/_build');
+const META = UNITBUILD ? BUILD : DRAFT ? OUT : BUILD;   // draft timings (15 fps) never overwrite the official cue sheet
+const SUBS = UNITBUILD ? path.join(BUILD, 'subs') : DRAFT ? path.join(OUT, 'subs') : path.join(ROOT, 'subs');
 const sha = (x) => crypto.createHash('sha256').update(x).digest('hex');
 const rel = (p) => path.relative(ROOT, p);
 const log = (...a) => console.log('[build]', ...a);
@@ -69,17 +83,64 @@ const run = (cmd, args, o = {}) => { const r = spawnSync(cmd, args, { stdio: 'in
 
 // ---------------------------------------------------------------- 1. script: assemble the cut
 const filmPath = path.join(BUILD, `film_${NAME}.json`);
-timed('assemble_s', () => run('python3', ['-I', 'tools/assemble_cut.py', ...(opt.unit ? ['--unit', opt.unit] : ['--cut', opt.cut]), '--name', NAME,
+timed('assemble_s', () => run('python3', ['-I', 'tools/assemble_cut.py', ...(opt.unit ? ['--unit', opt.unit] : ['--cut', opt.cut]), '--name', NAME, '--out', BUILD,
   '--units', opt.units || 'script', '--cuts', opt.cuts || 'plan/outline.json', ...(opt.voice ? ['--voice', opt.voice] : []),
   ...(opt.variant ? ['--variant', opt.variant] : []), ...(opt.strict ? ['--strict'] : []), ...(LSFX ? ['--lang', LANG] : [])]));
 const film = JSON.parse(fs.readFileSync(filmPath, 'utf8'));
 if (!film.scenes.length) { log('no scene in this cut yet (no unit script found)'); process.exit(PLAN ? 0 : 1); }
 
 // ---------------------------------------------------------------- 2. narration: TTS + alignment (both cached)
-timed('tts_align_s', () => {
+if (!UNITBUILD) timed('tts_align_s', () => {
   run('python3', ['-I', 'audio/tts.py', filmPath, '--mode', TTS, '--quiet']);
   run('python3', ['-I', 'audio/align.py', filmPath, ...(TTS === 'dry-run' ? ['--allow-missing'] : [])]);
 });
+
+// unit check / draft timing, read-only: the narration's alignment when it matches the script, else the estimate of
+// audio/align.py --allow-missing (146 raw wpm, 0.9 s [long pause] between paragraphs, holds), computed here
+const RAW_WPM = 146.0, LONG_PAUSE_S = 0.9;
+const plainText = (t) => String(t).replace(/\{(u|b|param|model|metric)\}(.*?)\{\/\}/g, '$2');
+const nWords = (t) => (plainText(t).match(/[\p{L}\p{N}\p{M}_'’-]+/gu) || []).length;
+function estimateAlign(sc) {
+  const sents = [], paras = []; let tt = 0; const n = sc.paragraphs.length;
+  sc.paragraphs.forEach((p, pi) => {
+    const ss = p.sentences, w = ss.reduce((a, x) => a + nWords(x.text), 0), d = Math.max(0.6, w / RAW_WPM * 60);
+    const chars = ss.map((x) => plainText(x.text).length), tot = chars.reduce((a, b) => a + b, 0) || 1; let c0 = 0;
+    ss.forEach((x, i) => { const u = c0 / tot * d, v = (c0 + chars[i]) / tot * d - 0.3;
+      sents.push({ id: x.id, cue: x.cue || null, text: x.text, start: +(tt + u).toFixed(3), end: +(tt + Math.max(u + 0.3, v)).toFixed(3) }); c0 += chars[i]; });
+    const gap = p.hold_after + (pi < n - 1 ? LONG_PAUSE_S : 0);
+    paras.push({ start: +tt.toFixed(3), end: +(tt + d).toFixed(3), hold_after: p.hold_after, gap_after: +gap.toFixed(3) });
+    tt += d + gap;
+  });
+  return { scene: sc.id, duration: +tt.toFixed(4), estimated: true, method: 'estimated', paragraphs: paras, sentences: sents, wav: null, key: null, sources: ['estimate'] };
+}
+function readAlign(sc) {   // audio/scenes<_lang>/<id>.align.json, read only; null when absent, estimated or stale
+  const p = path.join(ASCN, sc.id + '.align.json');
+  if (!fs.existsSync(p)) return { al: null, why: 'no narration yet' };
+  const a = JSON.parse(fs.readFileSync(p, 'utf8'));
+  if (a.estimated) return { al: null, why: 'narration not synthesised yet' };
+  const want = sc.paragraphs.flatMap((q) => q.sentences.map((x) => [x.id, x.text]));
+  if (JSON.stringify(a.sentences.map((x) => [x.id, x.text])) !== JSON.stringify(want)) return { al: null, why: 'script text changed since the narration' };
+  if (!a.paragraphs || a.paragraphs.length !== sc.paragraphs.length) return { al: null, why: 'paragraphs changed since the narration' };
+  // a hold_after changed in the script since the alignment: shift the later paragraphs (the speech is unchanged)
+  const al = JSON.parse(JSON.stringify(a)); let shift = 0, k = 0;
+  sc.paragraphs.forEach((q, i) => {
+    for (let j = 0; j < q.sentences.length; j++, k++) { al.sentences[k].start = +(al.sentences[k].start + shift).toFixed(3); al.sentences[k].end = +(al.sentences[k].end + shift).toFixed(3); }
+    shift += (q.hold_after || 0) - (a.paragraphs[i].hold_after || 0);
+  });
+  al.duration = +(a.duration + shift).toFixed(4);
+  if (shift) al.method = (a.method || 'audio') + '+holds';
+  return { al, why: shift ? 'holds re-applied' : '' };
+}
+const timingNotes = {};
+function unitAlign(sc) {
+  if (TIMING !== 'estimate') {
+    const r = readAlign(sc);
+    if (r.al) { timingNotes[sc.id] = 'audio' + (r.why ? ` (${r.why})` : ''); return r.al; }
+    if (TIMING === 'audio') { console.error(`[build] ${sc.id}: --timing audio but ${r.why}`); process.exit(1); }
+    timingNotes[sc.id] = `estimated (${r.why})`;
+  } else timingNotes[sc.id] = 'estimated (forced)';
+  return estimateAlign(sc);
+}
 
 // ---------------------------------------------------------------- 3. timeline
 const scriptText = (sc) => JSON.stringify(sc.paragraphs.map((p) => [p.hold_after, p.sentences.map((s) => [s.id, s.text])]));
@@ -95,7 +156,7 @@ const scenes = film.scenes.map((sc) => {
       else warn(`${sc.id}: external narration is stale (script text changed since the fit): TTS used`);
     }
   }
-  const al = JSON.parse(fs.readFileSync(alp, 'utf8'));
+  const al = UNITBUILD ? unitAlign(sc) : JSON.parse(fs.readFileSync(alp, 'utf8'));
   const silent = !al.sentences.length;
   const frames = silent ? Math.round(Math.max(sc.lead_in + sc.tail, sc.target_s || 3) * fps) : Math.round((sc.lead_in + al.duration + sc.tail) * fps);
   const duration = frames / fps;
@@ -187,9 +248,14 @@ if (PLAN) {
   process.exit(0);
 }
 
+if (UNITBUILD) for (const e of scenes) if (!only || only.has(e.id)) log(`  ${e.id.padEnd(10)} ${e.duration.toFixed(2).padStart(6)} s  timing: ${timingNotes[e.id]}`);
 if (CHECK) {
-  const outdir = path.join(ROOT, 'out/check', NAME);
-  const r = spawnSync('node', ['stills.js', '--timeline', tlPath, '--outdir', outdir, ...(opt.only ? ['--only', opt.only] : [])], { stdio: 'inherit', cwd: ROOT, env: process.env });
+  const outdir = UNITBUILD ? UOUT : path.join(ROOT, 'out/check', NAME);
+  fs.mkdirSync(outdir, { recursive: true });
+  // stale stills of an earlier run would mix into the review: clear this check's PNGs first (only)
+  for (const f of fs.readdirSync(outdir)) if (/\.png$/.test(f) && (!only || only.has(f.split('_')[0]))) fs.unlinkSync(path.join(outdir, f));
+  const r = spawnSync('node', ['stills.js', '--timeline', tlPath, '--outdir', outdir, ...(opt.only ? ['--only', opt.only] : []),
+    ...(opt.every ? ['--every', String(opt.every)] : []), ...(opt['no-pre'] ? ['--no-pre'] : [])], { stdio: 'inherit', cwd: ROOT, env: process.env });
   process.exit(r.status);
 }
 
@@ -214,6 +280,29 @@ for (const e of todo) {
   fs.writeFileSync(path.join(SCN, e.id + '.hash.json'), JSON.stringify({ hash: e.hash, parts: e.hash_parts }));
   renders.push({ id: e.id, frames: e.frames, wall_s: (Date.now() - t0) / 1000, mb: m.size_mb, kbps: m.kbps });
   log(`rendered ${e.id}: ${e.frames} frames in ${((Date.now() - t0) / 1000).toFixed(1)} s (${m.capture_fps} fps, ${m.kbps} kb/s)`);
+}
+if (UNITBUILD && DRAFT) {   // unit draft: the scenes in order, narration muxed from audio/scenes (read only) where the timing is real
+  const parts = [];
+  for (const e of scenes) {
+    if (only && !only.has(e.id)) continue;
+    const v = path.join(ROOT, e.render), wav = e.audio.wav && !e.audio.estimated ? path.join(ROOT, e.audio.wav) : null;
+    const out = path.join(SCN, e.id + '_av.mp4');
+    const args = ['-hide_banner', '-loglevel', 'error', '-y', '-i', v];
+    const real = !!(wav && fs.existsSync(wav));
+    if (real) args.push('-i', wav); else args.push('-f', 'lavfi', '-i', 'anullsrc=r=48000:cl=mono');
+    // the narration track starts at lead_in (as in the final mix), padded with silence to the scene's frame-exact length
+    args.push('-map', '0:v', '-map', '1:a', '-c:v', 'copy', '-c:a', 'aac', '-b:a', '128k', '-ar', '48000', '-ac', '1',
+      '-af', real ? `adelay=${Math.round(e.lead_in * 1000)}:all=1,apad` : 'apad', '-t', String(e.duration), out);
+    execFileSync('ffmpeg', args);
+    parts.push(out);
+  }
+  const list = path.join(UOUT, 'concat.txt'), film = path.join(UOUT, `${NAME}_draft.mp4`);
+  fs.writeFileSync(list, parts.map((f) => `file '${f}'`).join('\n'));
+  execFileSync('ffmpeg', ['-hide_banner', '-loglevel', 'error', '-y', '-f', 'concat', '-safe', '0', '-i', list, '-c', 'copy', '-movflags', '+faststart', film]);
+  const pe = Object.keys(pageErrors);
+  log(`unit draft: ${rel(film)} (${parts.length} scenes, ${fmt(scenes.filter((e) => !only || only.has(e.id)).reduce((a, e) => a + e.duration, 0))}; narration: `
+    + `${scenes.filter((e) => (!only || only.has(e.id)) && e.audio.wav && !e.audio.estimated).length} scenes, the others silent)` + (pe.length ? `, PAGE ERRORS in ${pe.join(', ')}` : ''));
+  process.exit(pe.length ? 1 : 0);
 }
 if (opt['no-mix']) process.exit(0);
 const missing = scenes.filter((e) => !fs.existsSync(path.join(ROOT, e.render)));

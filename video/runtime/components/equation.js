@@ -7,7 +7,8 @@
  *     reveal: [['lhs', 'c1'], [['eq', 'adv'], 'c2'], ['diff', 'c3']],   // NARRATIVE order, on cues
  *     focus: [{ids: ['adv'], at: 'c4', out: 'c5'}],                     // other terms drop to 35 %
  *     labels: [{id: 'adv', text: 'carried and stretched by the flow', color: 'u', at: 'c2+0.3', out, side: 'below'}],
- *     out: 'cue'                            // optional exit
+ *     out: 'cue',                           // optional exit
+ *     macros: {'\\Q': '\\cq{Q}'}             // optional extra KaTeX macros (kit macros always available)
  *   })
  * \term{id}{…} makes a term addressable; colour by role with the kit macros (\U \B \Rm \etaP \Gam \vth
  * \Edist, \cu{} \cb{} \cp{} \cm{} \ck{}). Untagged parts appear with the first reveal. A term is
@@ -25,7 +26,8 @@
   K.equation = function (ctx, o = {}) {
     if (!o.tex) throw new Error('equation needs tex');
     const id = 'eq' + (++uid) + '-';
-    const html = K.tex(o.tex, true, { '\\term': `\\htmlId{${id}#1}{#2}` });
+    // o.macros: extra KaTeX macros for this equation (e.g. {'\\Q': '\\cq{Q}'}); the kit macros and \\term stay
+    const html = K.tex(o.tex, true, Object.assign({}, o.macros || {}, { '\\term': `\\htmlId{${id}#1}{#2}` }));
     const mk = (cls) => {
       const d = K.el('div', { class: 'kit-eq ' + (cls || ''), 'data-kit': 'equation', html }, o.parent || ctx.stage);
       d.style.fontSize = (o.size || 72) + 'px'; d.style.top = (o.y ?? 300) + 'px'; d.style.left = (o.x ?? 960) + 'px';

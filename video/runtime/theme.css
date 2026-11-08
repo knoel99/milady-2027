@@ -19,6 +19,7 @@
   --u: #3987E5;       /* velocity u, vorticity ω, flow (site #0072B2) */
   --b: #EB6834;       /* magnetic field B, current j (site #D55E00) */
   --b-neg: #9C3F18;   /* the other polarity: a shade of vermillion, never a new hue */
+  --b-light: #EEA082; /* the quadrupole Q beside the dipole D: --b mixed with --fg (60 %), lighter, never --b-neg */
   --model: #B49CF0;   /* generative model, v_θ, samples, "generated" (site #6C4BA0) */
   --metric: #EDA100;  /* distribution-level metrics, histograms, distribution distance (site #E69F00) */
   --infra: #6B7A8C;   /* infrastructure lines and boxes */
@@ -33,6 +34,7 @@
   --fg: #0A0A0A; --fg-2: #1F2937; --muted: #4B5563; --chalk: #1F2937;   /* graphite pen on paper */
   --matter: #6B7280; --matter-dark: #9CA3AF;
   --param: #007A5A; --u: #0072B2; --b: #B34D00; --b-neg: #7A3500; --model: #6C4BA0; --metric: #8F6200; --infra: #4B5563;
+  --b-light: #DD833B;   /* strokes and fills only on paper (2.5:1 as text) */
   --silver: #8C96A3; --u-hi: #0072B2; --b-hi: #D55E00;
   --panel-a: rgba(255,255,255,0.86);
   --card: #FFFFFF; --card-rule: #D6D0C2;   /* the question card stays a white ticket on paper */
@@ -42,7 +44,9 @@ html, body { margin: 0; padding: 0; background: #0B0F14; overflow: hidden; }
 #stage {
   position: relative; width: 1920px; height: 1080px; overflow: hidden;
   background: var(--bg); color: var(--fg);
-  font-family: "Inter", sans-serif; font-weight: 500; font-size: var(--fs-body); font-feature-settings: "tnum";
+  font-family: "Inter", sans-serif; font-weight: 500; font-size: var(--fs-body);
+  /* no global tabular figures: Inter's "tnum" also widens the hyphen to a figure ("north - south"), the asterisk and,
+     in Inter Display, every word space (+19 %). Use .tnum (or font-variant-numeric) where digits change or align. */
   -webkit-font-smoothing: antialiased; text-rendering: geometricPrecision;
 }
 #stage[data-register="blueprint"] {
@@ -54,6 +58,8 @@ html, body { margin: 0; padding: 0; background: #0B0F14; overflow: hidden; }
 
 /* ---------- colour key (text, KaTeX macros) ---------- */
 .k-u { color: var(--u); } .k-b { color: var(--b); } .k-param { color: var(--param); }
+.k-b-neg { color: var(--b-neg); } .k-q, .k-b-light { color: var(--b-light); }   /* \cbn{…}, \cq{…} */
+.tnum { font-variant-numeric: tabular-nums !important; }   /* counters, readouts, aligned columns (beats a later font: shorthand) */
 .k-model { color: var(--model); } .k-metric { color: var(--metric); } .k-infra { color: var(--infra); }
 .k-chalk { color: var(--chalk); } .k-muted { color: var(--muted); }
 
@@ -67,7 +73,11 @@ html, body { margin: 0; padding: 0; background: #0B0F14; overflow: hidden; }
 /* mono labels: write them in capitals (or Kit.upper(text)); never CSS text-transform, which would turn ω into Ω */
 .mono { font-family: "JetBrains Mono", monospace; font-weight: 500; font-size: var(--fs-min); letter-spacing: var(--mono-track); }
 
-/* ---------- kit layers ---------- */
+/* ---------- kit layers ----------
+   z ladder (stage-level z-index; a label must sit ABOVE the canvas it annotates, __QA__ reports "under-canvas"):
+     1–2 backgrounds, chapter-card lines · 5–9 canvases (fields, tracers, clouds, two inks, maps) · 10–16 SVG layers
+     (plots, knob 14, needle 15, staircase 16) · 20–21 equations · 30 pen · 40 question card · 45 chips ·
+     50–55 rail, corner needle 52, formula layer 54, lower-thirds 55 · 58 PREDICT card · 60 badge · 90 dither */
 .kit-layer { position: absolute; inset: 0; pointer-events: none; }
 .kit-abs { position: absolute; }
 
@@ -95,12 +105,14 @@ html, body { margin: 0; padding: 0; background: #0B0F14; overflow: hidden; }
 .kit-lt.stamp { border-left-style: dashed; }
 .kit-lt.reference .l2 { font-weight: 500; font-style: normal; }
 
-/* formula layer (D8): full statements in small type, never narrated, never in subtitles */
+/* formula layer (D8): full statements in small type, never narrated, never in subtitles; one item at a time,
+   each fitted on at most two lines (Kit.fitFormula) */
 .kit-formula { position: absolute; right: 96px; bottom: 200px; max-width: 760px; padding: 10px 20px 12px; box-sizing: border-box;
   background: var(--panel-a); border-top: 2px solid var(--muted); z-index: 54; color: var(--fg-2); }
 .kit-formula .fl-label { font-family: "JetBrains Mono"; font-size: 28px; letter-spacing: .07em; color: var(--muted); }
 .kit-formula .fl-item { font-size: 32px; margin-top: 6px; }
 .kit-formula .katex { font-size: 1em; }
+.kit-formula .fl-item.fl-split > div { line-height: 1.25; }
 
 /* altitude rail (M8) — left edge, only at chapter cards and checkpoints */
 .kit-rail { position: absolute; left: 0; top: 0; width: 92px; height: 1080px; z-index: 50; }
@@ -114,6 +126,8 @@ html, body { margin: 0; padding: 0; background: #0B0F14; overflow: hidden; }
 .kit-chip.schematic { border-color: var(--muted); color: var(--muted); border-style: dashed; }
 .kit-chip.measured { border-radius: 23px; }
 .kit-chip.plain { border-color: transparent; background: transparent; color: var(--muted); padding: 0; }
+.kit-chip.param { border-color: var(--param); color: var(--param); }            /* "Γ = 0.93": a control-parameter value */
+.kit-chip.wrap { height: auto; white-space: normal; line-height: 1.25; padding-top: 6px; padding-bottom: 6px; }   /* maxWidth */
 
 /* question card */
 .kit-qcard { position: absolute; left: 160px; top: 132px; width: 1600px; height: 676px; z-index: 40; color: var(--card-ink); }
@@ -135,6 +149,14 @@ html, body { margin: 0; padding: 0; background: #0B0F14; overflow: hidden; }
   font-family: "JetBrains Mono"; font-size: 28px; letter-spacing: .06em; }
 .kit-qcard svg.qc-svg { position: absolute; inset: 0; width: 100%; height: 100%; overflow: visible; }
 
+/* PREDICT card (Kit.predictCard) */
+.kit-predict { position: absolute; z-index: 58; box-sizing: border-box; padding: 26px 32px 30px; background: var(--panel);
+  border: 2px solid var(--fg-2); border-radius: 12px; color: var(--fg); }
+.kit-predict .kp-kicker { font-family: "JetBrains Mono"; font-size: 28px; letter-spacing: .14em; color: var(--chalk); }
+.kit-predict .kp-q { margin-top: 10px; font-family: "Inter Display"; font-weight: 600; font-size: 44px; line-height: 1.18; }
+.kit-predict .kp-row { margin-top: 24px; display: flex; gap: 24px; flex-wrap: wrap; }
+.kit-predict .kp-btn { padding: 10px 22px 12px; border: 2px solid var(--muted); border-radius: 8px; font-size: 32px; color: var(--fg-2); white-space: nowrap; }
+
 /* empty seat (pending results) */
 .kit-seat-col { position: absolute; left: 1216px; top: 150px; width: 608px; display: flex; flex-direction: column; gap: 26px; z-index: 30; }
 .kit-seat-col h4 { margin: 0 0 6px; font-family: "JetBrains Mono"; font-weight: 500; font-size: 28px; letter-spacing: .07em; color: var(--muted); display: flex; align-items: center; gap: 14px; }
@@ -153,6 +175,7 @@ html, body { margin: 0; padding: 0; background: #0B0F14; overflow: hidden; }
 .kt-label { font: 500 32px Inter; fill: var(--fg-2); }
 .kt-mono { font: 500 28px "JetBrains Mono"; letter-spacing: .07em; fill: var(--muted); }
 .kt-big { font: 800 120px "Inter Display"; fill: var(--fg); letter-spacing: -0.01em; }
+.kt-num { font-variant-numeric: tabular-nums !important; }   /* SVG text whose digits change (readouts) */
 
 /* chapter card */
 .kit-ccard { position: absolute; inset: 0; z-index: 20; }

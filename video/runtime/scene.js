@@ -149,7 +149,7 @@
     /** JS mirror of the NIGHT tokens (theme.css); use Scene.col(name) for register-aware values */
     C: { bg: '#0B0F14', panel: '#10151C', grid: '#1A222D', fg: '#F2F4F7', fg2: '#C7D0DA', muted: '#9AA6B2', chalk: '#E8E4D8',
          param: '#1BAF7A', u: '#3987E5', b: '#EB6834', model: '#B49CF0', metric: '#EDA100', infra: '#6B7A8C',
-         matter: '#7C8794', matterDark: '#3A3F47', bNeg: '#9C3F18', silver: '#C9D3E0', uHi: '#6FB1FF', bHi: '#FF8A4C' },
+         matter: '#7C8794', matterDark: '#3A3F47', bNeg: '#9C3F18', bLight: '#EEA082', silver: '#C9D3E0', uHi: '#6FB1FF', bHi: '#FF8A4C' },
     W: 1920, H: 1080, ROOT, CAPTURE, entry,
     clamp, lerp, ease, seg, spring, stepper, mulberry32, hash, url, f32, warn,
     /** independent seeded stream for a component or a use: Scene.rng('cloud') */
@@ -191,6 +191,10 @@
     if (!(duration > 0)) throw new Error('scene duration missing (spec.duration or entry.duration)');
     const specCues = spec.cues || {};
     const cues = Object.assign({}, specCues, entry.cues || {});
+    // the build always injects _speech_end and _tail; a preview (make serve) or a hand-made entry gets them from the
+    // duration (default tail 0.8 s), so a scene that hangs its exit on them also runs without a built entry
+    if (!('_tail' in cues)) cues._tail = +Math.max(0, duration - 0.8).toFixed(3);
+    if (!('_speech_end' in cues)) cues._speech_end = cues._tail;
     const status = entry.status || spec.status || 'ready';
     const register = entry.register || (entry.params && entry.params.register) || spec.register || 'night';
     stage.dataset.register = String(register).toLowerCase();
@@ -212,8 +216,12 @@
       }
       if (typeof s === 'number') return s;
       if (typeof s === 'object') return at(s.cue) + (s.dt || 0);
-      const m = String(s).match(/^\s*([A-Za-z_][\w.:-]*)\s*(?:([+-])\s*([\d.]+))?\s*$/);
-      if (!m) { const n = Number(s); if (Number.isFinite(n)) return n; throw new Error('bad time spec: ' + s); }
+      const str = String(s).trim();
+      // an exact cue name wins (cue names may contain "-" and ".": "step-2", "s_04.1.s3"); otherwise
+      // "name+0.4" / "name-0.15": a name whose hyphenated parts start with a letter, then a signed offset
+      if (str in cues) { used.add(str); return cues[str]; }
+      const m = str.match(/^([A-Za-z_][\w.:]*(?:-[A-Za-z_][\w.:]*)*)\s*(?:([+-])\s*(\d+(?:\.\d*)?|\.\d+))?$/);
+      if (!m) { const n = Number(str); if (str !== '' && Number.isFinite(n)) return n; throw new Error('bad time spec: ' + s); }
       const name = m[1];
       let base;
       if (name in cues) { base = cues[name]; used.add(name); }
@@ -279,6 +287,12 @@
   window.seek = window.__seek = seek;
 
   // ---------- layout QA (reviewers, stills): window.__QA__(t) -> list of issues ----------
+  // Issue kinds (CONTRACT §11): small-text / small-formula (effective size, transforms included), clipped,
+  // subtitle-band, overlap (text boxes, one box per line of a wrapped inline element), under-canvas (text painted
+  // below a canvas that has ink over it), text-over-data (text without a backing drawn over canvas ink),
+  // pen-over-text (a chalk mark of Kit.pen running through text). Opt-outs: data-qa="ignore" on a subtree (all
+  // checks), data-qa="over-ok" (text deliberately over canvas data, e.g. labels inside a map with a halo).
+  // opts: {minPx: 28, band: 900, canvas: true, pen: true}
   window.__QA__ = async function (t, opts = {}) {
     if (t !== undefined) await seek(t);
     const stage = document.getElementById('stage'), sr = stage.getBoundingClientRect(), k = sr.width / 1920;
@@ -291,29 +305,57 @@
       }
       return true;
     };
+    const opacityOf = (el) => { let o = 1; for (let e = el; e && e !== stage; e = e.parentElement) o *= +getComputedStyle(e).opacity; return o; };
+    const toStage = (r) => ({ x: (r.left - sr.left) / k, y: (r.top - sr.top) / k, w: r.width / k, h: r.height / k });
+    // boxes of an element's text: one per line fragment for a wrapped inline element, each shrunk to its line box
+    // (an inline box's content area is taller than a tight line-height, so two lines would "overlap" otherwise)
+    const fragments = (el, cs) => {
+      if (!(el instanceof SVGElement) && cs.display === 'inline') {
+        const rs = Array.from(el.getClientRects()).filter((r) => r.width >= 1 && r.height >= 1);
+        const lh = cs.lineHeight === 'normal' ? null : parseFloat(cs.lineHeight) * k;
+        if (rs.length) return rs.map((r) => { const s = lh ? Math.max(0, (r.height - lh) / 2) : 0;
+          return toStage({ left: r.left, top: r.top + s, width: r.width, height: r.height - 2 * s }); });
+      }
+      const r = el.getBoundingClientRect();
+      return r.width >= 1 && r.height >= 1 ? [toStage(r)] : [];
+    };
+    // effective font size in stage px: CSS/SVG transforms of the element and of its ancestors included
+    const scaleOf = (el) => {
+      if (el instanceof SVGElement) { const m = el.getScreenCTM && el.getScreenCTM(); return m ? Math.sqrt(Math.abs(m.a * m.d - m.b * m.c)) / k : 1; }
+      let s = 1;   // product of the CSS transforms between the element and the stage (the stage's own preview scale excluded)
+      for (let e = el; e && e !== stage; e = e.parentElement) {
+        const tr = getComputedStyle(e).transform;
+        if (tr && tr !== 'none') { const m = new DOMMatrixReadOnly(tr); s *= Math.sqrt(Math.abs(m.a * m.d - m.b * m.c)); }
+      }
+      return s;
+    };
     const all = stage.querySelectorAll('*');
     for (const el of all) {
       if (el.closest('#__hud,[data-qa="ignore"]')) continue;
       const own = Array.from(el.childNodes).some((n) => n.nodeType === 3 && n.textContent.trim());
       if (!own || !visible(el)) continue;
       const inKatex = el.closest('.katex');
-      const r = el.getBoundingClientRect();
-      if (r.width < 1 || r.height < 1) continue;
+      const cs = getComputedStyle(el);
+      const frs = fragments(el, cs);
+      if (!frs.length) continue;
       const kitEl = el.closest('[data-kit]');
-      const box = { x: (r.left - sr.left) / k, y: (r.top - sr.top) / k, w: r.width / k, h: r.height / k,
-        text: el.textContent.trim().slice(0, 40), owner: (kitEl && kitEl.dataset.kit) || el.id || el.tagName.toLowerCase(),
-        node: inKatex ? inKatex : el, katex: !!inKatex };
+      const base = { text: el.textContent.trim().slice(0, 40), owner: (kitEl && kitEl.dataset.kit) || el.id || el.tagName.toLowerCase(),
+        node: inKatex ? inKatex : el, el, katex: !!inKatex, overOk: !!el.closest('[data-qa="over-ok"]') };
+      const b0 = frs[0];
       if (!inKatex) {
-        const fs = parseFloat(getComputedStyle(el).fontSize) * (el instanceof SVGElement ? (el.ownerSVGElement?.getScreenCTM()?.a || k) / k : 1);
-        if (fs < MIN - 0.01) issues.push({ kind: 'small-text', px: +fs.toFixed(1), ...box });
+        const fs = parseFloat(cs.fontSize) * scaleOf(el);
+        if (fs < MIN - 0.01) issues.push({ kind: 'small-text', px: +fs.toFixed(1), ...b0, ...base });
       } else {
         const root = inKatex.closest('.katex-display, .katex');
-        const fs = parseFloat(getComputedStyle(root).fontSize);
-        if (fs < MIN - 0.01) issues.push({ kind: 'small-formula', px: +fs.toFixed(1), ...box });
+        const fs = parseFloat(getComputedStyle(root).fontSize) * scaleOf(root);
+        if (fs < MIN - 0.01) issues.push({ kind: 'small-formula', px: +fs.toFixed(1), ...b0, ...base });
       }
-      if (box.x < -0.5 || box.y < -0.5 || box.x + box.w > 1920.5 || box.y + box.h > 1080.5) issues.push({ kind: 'clipped', ...box });
-      else if (box.y + box.h > BAND + 0.5 && !el.closest('[data-band="ok"]')) issues.push({ kind: 'subtitle-band', ...box });
-      boxes.push(box);
+      for (const fr of frs) {
+        const box = { ...fr, ...base };
+        if (box.x < -0.5 || box.y < -0.5 || box.x + box.w > 1920.5 || box.y + box.h > 1080.5) issues.push({ kind: 'clipped', ...box });
+        else if (box.y + box.h > BAND + 0.5 && !el.closest('[data-band="ok"]')) issues.push({ kind: 'subtitle-band', ...box });
+        boxes.push(box);
+      }
     }
     // overlaps between text boxes (pieces of one formula are one box; an element and its own descendants
     // are not compared): catches a legend over a band label inside one plot as well as two components
@@ -323,7 +365,74 @@
       const ox = Math.min(a.x + a.w, b.x + b.w) - Math.max(a.x, b.x), oy = Math.min(a.y + a.h, b.y + b.h) - Math.max(a.y, b.y);
       if (ox > 2 && oy > 2) issues.push({ kind: 'overlap', a: a.owner + ': ' + a.text, b: b.owner + ': ' + b.text, x: Math.round(a.x), y: Math.round(a.y) });
     }
-    return { t: vt, issues: issues.map(({ node, ...rest }) => rest), warnings: warnings.slice() };
+    // canvas ink against text: which paints on top (approximate CSS stacking: the outermost stacking context below
+    // the common ancestor, then document order), and how much of the text box the canvas covers
+    if (opts.canvas !== false) {
+      const ctxZ = (el, stop) => {   // z-index of the outermost stacking context of el below `stop`
+        let z = 0;
+        for (let e = el; e && e !== stop; e = e.parentElement) {
+          const c = getComputedStyle(e), zi = parseInt(c.zIndex, 10);
+          if (c.position !== 'static' && Number.isFinite(zi)) z = zi;
+          else if (+c.opacity < 1 || c.transform !== 'none' || c.filter !== 'none') z = 0;
+        }
+        return z;
+      };
+      const paintsAbove = (a, b) => {   // does a paint above b?
+        const anc = new Set(); for (let e = b; e; e = e.parentElement) anc.add(e);
+        let ca = a, childA = a; while (ca && !anc.has(ca)) { childA = ca; ca = ca.parentElement; }
+        if (ca === a) return false; if (ca === b) return true;
+        let childB = b; for (let e = b; e && e !== ca; e = e.parentElement) childB = e;
+        const za = ctxZ(a, ca), zb = ctxZ(b, ca);
+        if (za !== zb) return za > zb;
+        return !!(childB.compareDocumentPosition(childA) & Node.DOCUMENT_POSITION_FOLLOWING);
+      };
+      const backed = (el) => {   // the text has its own backing: a background, a halo, or a stroke under it
+        for (let e = el; e && e !== stage; e = e.parentElement) {
+          const c = getComputedStyle(e);
+          if (c.textShadow !== 'none' || (c.paintOrder && c.paintOrder.startsWith('stroke'))) return true;
+          const bg = c.backgroundColor.match(/[\d.]+/g);
+          if (bg && (bg.length < 4 || +bg[3] > 0.5)) return true;
+          if (e.dataset && e.dataset.kit && e !== el) break;
+        }
+        return false;
+      };
+      const scratch = document.createElement('canvas'), sg = scratch.getContext('2d', { willReadFrequently: true });
+      const canvases = Array.from(stage.querySelectorAll('canvas')).filter((c) => c.width && c.height && !c.closest('[data-qa="ignore"]') && visible(c));
+      for (const cv of canvases) {
+        const cb = toStage(cv.getBoundingClientRect()), op = opacityOf(cv); if (op < 0.05 || cb.w < 1) continue;
+        const sx = cv.width / cb.w, sy = cv.height / cb.h, owner = (cv.closest('[data-kit]') && cv.closest('[data-kit]').dataset.kit) || cv.dataset.kit || 'canvas';
+        for (const b of boxes) {
+          const x0 = Math.max(b.x + b.w * 0.1, cb.x), x1 = Math.min(b.x + b.w * 0.9, cb.x + cb.w);
+          const y0 = Math.max(b.y + b.h * 0.15, cb.y), y1 = Math.min(b.y + b.h * 0.85, cb.y + cb.h);
+          if (x1 - x0 < 4 || y1 - y0 < 4) continue;
+          const w = Math.max(1, Math.round((x1 - x0) / 3)), h = Math.max(1, Math.round((y1 - y0) / 3));
+          scratch.width = w; scratch.height = h; sg.clearRect(0, 0, w, h);
+          try { sg.drawImage(cv, (x0 - cb.x) * sx, (y0 - cb.y) * sy, (x1 - x0) * sx, (y1 - y0) * sy, 0, 0, w, h); } catch (e) { continue; }
+          const px = sg.getImageData(0, 0, w, h).data; let ink = 0;
+          for (let q = 3; q < px.length; q += 4) if (px[q] * op > 64) ink++;
+          const cover = ink / (w * h) * ((x1 - x0) * (y1 - y0)) / (b.w * 0.8 * b.h * 0.7);
+          if (cover < 0.12) continue;
+          if (paintsAbove(cv, b.el)) issues.push({ kind: 'under-canvas', a: b.owner + ': ' + b.text, b: owner + ' canvas', x: Math.round(b.x), y: Math.round(b.y), cover: +cover.toFixed(2) });
+          else if (!b.overOk && !b.katex && !backed(b.el)) issues.push({ kind: 'text-over-data', a: b.owner + ': ' + b.text, b: owner + ' canvas', x: Math.round(b.x), y: Math.round(b.y), cover: +cover.toFixed(2) });
+        }
+      }
+    }
+    // chalk marks (Kit.pen) running through text that is not their target (circles, boxes, arrows, underlines)
+    if (opts.pen !== false) {
+      for (const p of stage.querySelectorAll('path[data-kit="pen"]')) {
+        const kind = p.dataset.penKind || '';
+        if (kind === 'cross' || kind === 'check' || p.closest('[data-qa="ignore"]') || !visible(p)) continue;
+        const len = p.getTotalLength(), drawn = len - (parseFloat(p.style.strokeDashoffset) || 0), m = p.getScreenCTM();
+        if (drawn < 2 || !m) continue;
+        const hits = new Map();
+        for (let s = 0; s <= drawn; s += 6) {
+          const q = p.getPointAtLength(s), P = new DOMPoint(q.x, q.y).matrixTransform(m), X = (P.x - sr.left) / k, Y = (P.y - sr.top) / k;
+          for (const b of boxes) if (X > b.x + 3 && X < b.x + b.w - 3 && Y > b.y + 3 && Y < b.y + b.h - 3) hits.set(b, (hits.get(b) || 0) + 1);
+        }
+        for (const [b, n] of hits) if (n >= 2) issues.push({ kind: 'pen-over-text', a: 'pen ' + (kind || '?'), b: b.owner + ': ' + b.text, x: Math.round(b.x), y: Math.round(b.y) });
+      }
+    }
+    return { t: vt, issues: issues.map(({ node, el, overOk, ...rest }) => rest), warnings: warnings.slice() };
   };
 
   // ---------- preview mode (a normal browser tab): real-time loop with a scrub bar ----------

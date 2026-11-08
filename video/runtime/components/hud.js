@@ -2,13 +2,21 @@
  *
  *   Kit.badge(ctx, {kind, confidence, note, at, out})
  *       kind: MEASURED | PROVED | CONJECTURE | PLANNED | CONTEXT (| SCHEMATIC for metaphors)
- *       confidence: high | medium | low (CONJECTURE only). The script's "badge" wins over opts.
+ *       confidence: high | medium | low (CONJECTURE only). The script's "badge" (kind, confidence, note) wins
+ *       over opts; opts.note is used when the script has no note.
  *   Kit.lowerThird(ctx, {kind, l1, l2, color, data, at, hold, out})
  *       kind: chapter | source | reference | stamp. With kind "source" and `data` (a data/*.json
- *       object), l1/l2 default to its meta.stamp and "source: <path> · <sha8>".
+ *       object), l1/l2 default to its meta.stamp and "source: <path> · <sha8>"; that line is kept on ONE
+ *       line (shrunk to >= 28 px, then the path's basename), so the box never grows into the scene.
  *   Kit.rail(ctx, {from, to, at, hold})          levels "L0"…"L5", left edge, 3 s by default
- *   Kit.formulaLayer(ctx, {items: [{tex, at, out}], label, at})   small-type statements (D8)
- *   Kit.chip(ctx, {text, kind, x, y, at, out, anchor})   kind: plain | simulated | generated | schematic | measured
+ *   Kit.formulaLayer(ctx, {items: [{tex, at, out}], label, at, out, stack, maxWidth})   small-type statements (D8)
+ *       Items show ONE AT A TIME: an item without `out` leaves at the next item's `at` (stack: true keeps the
+ *       old behaviour, every item stays to the end). Each item is fitted (Kit.fitFormula: split at its most
+ *       balanced ";" ":" "," or \quad, then shrunk, never below 28 px). Without items (no `items` and no
+ *       script onscreen.formulas, e.g. a preview) it returns null (warned in a built entry).
+ *   Kit.chip(ctx, {text, kind, x, y, at, out, anchor, maxWidth, z})
+ *       kind: plain | simulated ('') | generated | schematic | measured | param (green: "Γ = 0.93").
+ *       maxWidth (px): the chip wraps to two lines within that width instead of growing on one line.
  */
 (function () {
   'use strict';
@@ -40,7 +48,8 @@
       [12, 19, 26].forEach((h, i) => { const e = K.el('i', { class: i < n ? '' : 'off' }, p); e.style.height = h + 'px'; });
       K.el('span', { class: 'kb-note' }, root, String(conf).toLowerCase());
     }
-    if (o.note) K.el('span', { class: 'kb-note' }, root, '· ' + o.note);
+    const note = (sb && sb.note) || o.note;   // the script's note wins (consistency editor), opts as fallback
+    if (note) K.el('span', { class: 'kb-note' }, root, '· ' + note);
     return ctx.add({
       root, kind, confidence: conf,
       render(t) {
@@ -68,7 +77,23 @@
     const root = K.el('div', { class: 'kit-lt ' + kind, 'data-kit': 'lower-third' }, o.parent || ctx.stage);
     root.style.borderLeftColor = K.c(o.color || LT_COLOR[kind]);
     if (l1) K.el('div', { class: 'l1' }, root, K.upper(l1));
-    if (l2) K.el('div', { class: 'l2', html: K.markup(l2) }, root);
+    if (l2) {
+      const e2 = K.el('div', { class: 'l2', html: K.markup(l2) }, root);
+      if (kind === 'source' && o.data && o.data.meta && o.l2 === undefined) {
+        // the auto source line stays on one line: shrink (>= 28 px), else print the file's basename
+        e2.style.whiteSpace = 'nowrap';
+        const maxW = (o.maxWidth ?? 900) - 42, m = o.data.meta;
+        if (e2.scrollWidth > maxW + 0.5) {
+          const fs0 = parseFloat(getComputedStyle(e2).fontSize);
+          let fs = fs0; while (e2.scrollWidth > maxW + 0.5 && fs > 28) { fs = Math.max(28, fs - 1); e2.style.fontSize = fs + 'px'; }
+          if (e2.scrollWidth > maxW + 0.5) {
+            e2.style.fontSize = fs0 + 'px';
+            e2.innerHTML = K.markup(`source: ${String(m.source).split('/').pop()}${m.sha256 ? ' · ' + m.sha256.slice(0, 8) : ''}`);
+            fs = fs0; while (e2.scrollWidth > maxW + 0.5 && fs > 28) { fs = Math.max(28, fs - 1); e2.style.fontSize = fs + 'px'; }
+          }
+        }
+      }
+    }
     return ctx.add({
       root,
       render(t) {
@@ -122,23 +147,38 @@
     if (!items && ctx.script && ctx.script.onscreen && ctx.script.onscreen.formulas) {
       items = ctx.script.onscreen.formulas.map((f) => ({ tex: f.tex, at: f.cue, out: f.out }));
     }
-    if (!items || !items.length) throw new Error('formulaLayer needs items [{tex, at}] (or onscreen.formulas in the script)');
+    if (!items || !items.length) {
+      // preview (no built entry) or a script without formulas: no layer; a built entry that has none is worth a warning
+      if (ctx.script && ctx.script.id) S.warn('formulaLayer: no items and no onscreen.formulas in the script: no formula layer drawn');
+      return null;
+    }
+    // one item at a time: an item without `out` leaves when the next one comes in (stack: true = all stay)
+    const ts = items.map((it) => ctx.at(it.at ?? 0));
     const t0 = ctx.at(o.at ?? items[0].at ?? 0);
     const root = K.el('div', { class: 'kit-formula', 'data-kit': 'formula' }, o.parent || ctx.stage);
+    if (o.maxWidth) root.style.maxWidth = o.maxWidth + 'px';
     if (o.label !== false) K.el('div', { class: 'fl-label' }, root, K.upper(o.label || 'Formula'));
-    const rows = items.map((it) => {
-      const d = K.el('div', { class: 'fl-item', html: K.tex(it.tex, false) }, root);
-      return { d, a: ctx.at(it.at ?? 0), b: it.out !== undefined ? ctx.at(it.out) : Infinity };
+    const rows = items.map((it, i) => {
+      const d = K.el('div', { class: 'fl-item', html: K.tex(it.tex, false, o.macros) }, root);
+      let b = it.out !== undefined && it.out !== null ? ctx.at(it.out) : Infinity;
+      if (b === Infinity && !o.stack) { const nxt = ts.filter((x, j) => j > i && x > ts[i]); if (nxt.length) b = Math.min(...nxt); }
+      return { d, tex: it.tex, a: ts[i], b };
     });
+    // fit every item in the layer's width (at most two lines, never below 28 px)
+    const cs = getComputedStyle(root);
+    const avail = parseFloat(cs.maxWidth || '760') - parseFloat(cs.paddingLeft) - parseFloat(cs.paddingRight) - 4;
+    if (o.fit !== false) rows.forEach((r) => K.fitFormula(r.d, r.tex, avail, { macros: o.macros }));
     const tEnd = o.out !== undefined ? ctx.at(o.out) : Infinity;
     K.claim('formula layer', t0, tEnd, 'formula');
     return ctx.add({
-      root,
+      root, rows,
       render(t) {
         const e = K.env(t, t0, tEnd, 0.3, 0.25);
         K.show(root, e.on); root.style.opacity = e.o;
         for (const r of rows) {
-          const on = t >= r.a && t < r.b + 0.25;
+          // one at a time: the outgoing item is removed at once when the next one starts (no two rows stacked)
+          const nextOn = !o.stack && rows.some((q) => q !== r && q.a > r.a && t >= q.a && q.a <= r.b);
+          const on = t >= r.a && t < r.b + 0.25 && !nextOn;
           r.d.style.display = on ? '' : 'none';
           r.d.style.opacity = S.seg(t, r.a, r.a + 0.25, S.ease.linear) * (1 - S.seg(t, r.b, r.b + 0.25, S.ease.linear));
         }
@@ -152,6 +192,10 @@
     const { t0, t1 } = K.times(ctx, o, 0.3);
     const root = K.el('div', { class: 'kit-chip ' + (o.kind || ''), 'data-kit': 'chip' }, o.parent || ctx.stage, o.caps === false ? o.text : K.upper(o.text));
     root.style.position = 'absolute';
+    if (o.maxWidth) {   // two lines within maxWidth instead of one long line
+      root.classList.add('wrap'); root.style.maxWidth = o.maxWidth + 'px';
+      if (root.scrollHeight > 2 * 1.25 * 28 + 16) S.warn(`chip "${o.text.slice(0, 40)}…" needs more than two lines at maxWidth ${o.maxWidth}: shorten it`);
+    }
     const anchor = o.anchor || 'tl';   // tl | tr | bl | br | c: which corner sits at (x, y)
     const tx = anchor.includes('r') ? '-100%' : anchor === 'c' ? '-50%' : '0';
     const ty = anchor.includes('b') ? '-100%' : anchor === 'c' ? '-50%' : '0';
