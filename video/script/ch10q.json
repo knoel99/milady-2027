@@ -1,0 +1,1723 @@
+{
+ "schema": 2,
+ "unit": "ch10q",
+ "title": "Before we compute",
+ "cut": "core",
+ "insert_after": {
+  "core": "ch10.Q",
+  "extended": "X5b.Q"
+ },
+ "level_range": "L3-L4",
+ "voice": {
+  "provider": "fish",
+  "model": "drama-3",
+  "reference_id": "536d3a5e000945adb7038665781a4aca"
+ },
+ "learning_goal": "Leave with the questions to bring to the supervisors before any computing, ranked by what each answer unblocks, each tied to the scene that raised it.",
+ "takeaway": "Every bet on the staircase hangs on decisions due before the first run; the cheapest experiment is a good question asked before renting a graphics card.",
+ "notes": "New unit (BRIEF section 3.3), both cuts, before ch11. PLACEMENT: tools/assemble_cut.py already places ch10q before ch11 (EXTRA_UNITS) in both cuts; insert_after is informational: {'core': 'ch10.Q', 'extended': 'X5b.Q'}. In the core cut ch10's last scene is ch10.Q (10.9-bridge is extended-only); in the extended cut the modules anchored inside ch10 (X6 after 10.9-bridge, X5b after X6) are inserted before ch10q, so ch10q follows X5b.Q (checked by assembling both cuts into a scratch folder). SHAPE: six scenes, about 2 min 50 s (≈ 171 s at the assembler's estimate, 367 words; the continuity budget was 150 s: the trim option of continuity.md section 6, 'ch10q at 2 min', would drop 10q.5's spoken list and keep its board). 10q.1 recaps the bets as a staircase of decisions (every register question hangs under the step it shapes); 10q.2-10q.4 the first shelf, priority 1, by category a, b, c (13 questions, each focused with a callback thumbnail of the scene that raised it); 10q.5 shelves 2 and 3 (17 questions, four spoken); 10q.6 the first shelf as one message to write before renting, the ranking flagged as a proposal, the closing line, then the handover frame of 11.1. ORDER: the board follows order_for_ch10q exactly (priority, then category a, b, c, then register order); narration groups Q17 with Q24 (run length near a threshold) and Q8 with Q16 (statistics, topology included). REGISTER: params.board of 10q.1 mirrors script/_shared/question_register.json (ids, category, priority, card or ask, extended-only flag); labels of at most 28 characters are this unit's short forms of the register's texts; the register wins on any difference and the builder writes the board once in scenes/ch10q/board.js. Q15: the label 'Positioning the first paper?' follows the register; script/chSOA2.json (written in parallel) currently carries a different chSOA2.Q (LATU grid or SFEMaNS mesh, n null): the consistency editor reconciles, then the label follows. NARRATION: questions are spoken only when both cuts motivate them (Q17's callback is 10.4, Q19's is 03.5 and the report's question 2, Q21's is 10.2); cards and ask boxes that play only in the extended cut (Q11, Q12, Q14, Q16, Q17, Q19, Q20; Q21, Q27, Q28, Q29, Q30) get a double outline and a legend, so the visual is the same in both cuts (a scene does not know its cut). The question cards' numbers are never spoken. No digits, no parentheses, no 'GPU' in narration ('graphics card'; no lexicon entry exists for GPU); 'Jean Zay', 'Pm', 'Reynolds' are pinned in audio/lexicon.json. NO QUESTION CARD: the chapter is the register; a ch10q.Q would repeat a card or add a 31st question; deviation from BRIEF 3.1 to confirm by the lead, as for ch11 (the film's last card stays ch10.Q in the core cut and X5b.Q in the extended cut; 10q.1 opens right after it and 11.1 follows 10q.6). LEVELS: the chapter card steps down from L5 to L4 (declared side-step, rail tag 'step back: the questions', as 10.1's), 10q.4 is L3 (logistics, no physics) with music false so that the chapter stays silent until the bed returns in 11.2, and the unit ends at L4. EDIT IN ch11 (minimal, this pass): 11.1's chapter card levelFrom 'L5' -> 'L4' (the rail climbs back to L5 for the two-column recap, then descends in 11.2) and its visual sentence on the rail; its narration is unchanged: 'Questions first, then computing. Here is what those questions rest on' follows 10q.6's last line, and 10q.6 ends on the three category tickets that 11.1 fans in at 'first'. This replaces the continuity note 'ch10q should end at L5' (the lead's brief for this unit asked L3-L4). BADGES: PLANNED for the bets and the configured campaigns (10q.1-10q.3), CONJECTURE medium for the logistics claim (renting shrinks to a trial only if the repository, never run on a graphics card, works as designed on lab GPUs or Jean Zay), for the ranking (10q.5) and for the closing claim (10q.6). DATA: none (deps empty, all scenes ready); no number on screen except ticket numbers, step and bet names already used in ch10 ('BOX 64³'). THUMBNAILS: schematic redraws of earlier motifs (no data), each window headed 'CALLBACK · SCHEMATIC'; captions name chapters, never scene ids. REQUESTS. (1) Scene builder: scenes/ch10q/board.js (tickets, columns, shelves, legend, the 30 glyph drawers, reusable by the French cut since visuals stay English); keep the ticket drawing consistent with Kit.questionCard (notch, mono number). (2) Consistency editor: add ch10q to continuity.md sections 1, 2, 5, 6 (levels, ≈ 2.7 min), and decide the chapter number ('ASK'). (3) French sheet: ch10q introduces no new question.",
+ "scenes": [
+  {
+   "id": "10q.1",
+   "was": null,
+   "title": "A staircase of decisions",
+   "file": "scenes/ch10q/10q_1_staircase_of_decisions.html",
+   "status": "ready",
+   "level": "L4",
+   "register": "NIGHT",
+   "badge": {
+    "kind": "PLANNED",
+    "confidence": null,
+    "note": "PhD plan bets · seat asks · T:57, T:878-953"
+   },
+   "target_s": 36,
+   "lead_in": 3.2,
+   "tail": 0.8,
+   "deps": [],
+   "entry": {
+    "data": {},
+    "params": {
+     "chapter_card": {
+      "num": "ASK",
+      "title": "Before we compute",
+      "level": "L4",
+      "levelFrom": "L5",
+      "tier": 1,
+      "pending": [
+       2,
+       3,
+       4
+      ],
+      "at": 0.2,
+      "out": "cards-0.4",
+      "rail_tag": "step back: the questions",
+      "note": "num 'ASK' is the stub word of every question card (chSOA2 uses 'MAP'); the consistency editor may prefer '10b'"
+     },
+     "staircase": {
+      "labels": [
+       "three numbers",
+       "a flat sheet",
+       "a periodic box",
+       "the VKS cylinder",
+       "a precessing cylinder"
+      ],
+      "lit": [
+       0,
+       1
+      ],
+      "preview": 2,
+      "bets": [
+       2,
+       3,
+       4
+      ],
+      "box": {
+       "x0": 120,
+       "x1": 1720,
+       "y0": 150,
+       "y1": 520
+      },
+      "step2_slots": [
+       "bet1",
+       "bet2",
+       "gen"
+      ]
+     },
+     "hooks": [
+      {
+       "id": "tier0",
+       "step": 0,
+       "label": "THREE DIALS"
+      },
+      {
+       "id": "every",
+       "step": 0,
+       "label": "EVERY STEP",
+       "where": "left of step 0's hook, its own column"
+      },
+      {
+       "id": "tier1",
+       "step": 1,
+       "label": "FIRST CAMPAIGN"
+      },
+      {
+       "id": "bet1",
+       "step": 2,
+       "label": "BET 1 · BOX 64³"
+      },
+      {
+       "id": "bet2",
+       "step": 2,
+       "label": "BET 2 · TAYLOR–GREEN"
+      },
+      {
+       "id": "gen",
+       "step": 2,
+       "label": "3D GENERATOR"
+      },
+      {
+       "id": "vks",
+       "step": 3,
+       "label": "VKS"
+      },
+      {
+       "id": "dresdyn",
+       "step": 4,
+       "label": "DRESDYN"
+      }
+     ],
+     "hang": {
+      "y0": 562,
+      "y_max": 860,
+      "string": "1.5 px --infra",
+      "column_w": 80,
+      "gap": 8
+     },
+     "board": [
+      {
+       "id": "Q2",
+       "cat": "a",
+       "pri": 1,
+       "kind": "card",
+       "ext": false,
+       "hook": "bet2",
+       "label": "Tiny seed, strong, or both?",
+       "from": "01.3",
+       "caption": "CHAPTER 1 · THE SQUEAL",
+       "glyph": "a seed curve: flat, then exponential growth past a green threshold tick (vermillion line)"
+      },
+      {
+       "id": "Q3",
+       "cat": "a",
+       "pri": 1,
+       "kind": "card",
+       "ext": false,
+       "hook": "bet2",
+       "label": "Which Pm values in 3D?",
+       "from": "02.3",
+       "caption": "CHAPTER 2 · THE SODIUM PROBLEM",
+       "glyph": "a green log ruler, a grey dot 'sodium' at its far left, a grey band 'simulations' near its right end, no tick labels"
+      },
+      {
+       "id": "Q5",
+       "cat": "a",
+       "pri": 1,
+       "kind": "card",
+       "ext": false,
+       "hook": "bet1",
+       "label": "Settings spread or packed?",
+       "from": "03.6",
+       "caption": "CHAPTER 3 · A HANDFUL OF DOTS",
+       "glyph": "two rows of grey dots on a green knob axis: evenly spread, then packed around a green threshold band (the ch03.Q backdrop)"
+      },
+      {
+       "id": "Q6",
+       "cat": "a",
+       "pri": 1,
+       "kind": "card",
+       "ext": false,
+       "hook": "gen",
+       "label": "Snapshots per setting?",
+       "from": "04.6",
+       "caption": "CHAPTER 4 · THE SHOEBOX",
+       "glyph": "the shoebox with a few frames; two neighbouring frames joined by a chalk bracket (alike, so not independent)"
+      },
+      {
+       "id": "Q17",
+       "cat": "a",
+       "pri": 1,
+       "kind": "card",
+       "ext": true,
+       "hook": "bet1",
+       "label": "Fit growth, or run longer?",
+       "from": "10.4",
+       "caption": "CHAPTER 10 · BET ONE",
+       "glyph": "a wobbling vermillion growth line with two fit segments, long (grey) and late (chalk), disagreeing in slope"
+      },
+      {
+       "id": "Q18",
+       "cat": "a",
+       "pri": 1,
+       "kind": "card",
+       "ext": false,
+       "hook": "bet2",
+       "label": "Taylor–Green: forcing, grid?",
+       "from": "10.5",
+       "caption": "CHAPTER 10 · BET TWO",
+       "glyph": "the 4 x 3 grid of dashed Taylor–Green frames of 10.5, green axis ticks without labels"
+      },
+      {
+       "id": "Q22",
+       "cat": "a",
+       "pri": 1,
+       "kind": "seat",
+       "ext": false,
+       "hook": "tier1",
+       "label": "Which campaigns first?",
+       "from": "10.3",
+       "caption": "CHAPTER 10 · FIRST PRODUCT",
+       "glyph": "the staircase in miniature, step 1 lit, a dashed arrow toward step 2 with a chalk question mark"
+      },
+      {
+       "id": "Q24",
+       "cat": "a",
+       "pri": 1,
+       "kind": "seat",
+       "ext": false,
+       "hook": "bet2",
+       "label": "Unsaturated: extend or drop?",
+       "from": "10.5",
+       "caption": "CHAPTER 10 · BET TWO",
+       "glyph": "a vermillion magnetic-energy curve still rising across the grey kept window (SCHEMATIC, as 10.5)"
+      },
+      {
+       "id": "Q8",
+       "cat": "b",
+       "pri": 1,
+       "kind": "card",
+       "ext": false,
+       "hook": "gen",
+       "label": "Which statistics, how close?",
+       "from": "06.5",
+       "caption": "CHAPTER 6 · THE NOISE FLOOR",
+       "glyph": "two amber sand piles side by side and the dashed amber noise-floor line"
+      },
+      {
+       "id": "Q9",
+       "cat": "b",
+       "pri": 1,
+       "kind": "card",
+       "ext": false,
+       "hook": "gen",
+       "label": "Which budgets? Spread too?",
+       "from": "07.5",
+       "caption": "CHAPTER 7 · THE SPIKE",
+       "glyph": "a wide amber pile collapsing into a spike at zero (the ch07.Q backdrop)"
+      },
+      {
+       "id": "Q16",
+       "cat": "b",
+       "pri": 1,
+       "kind": "card",
+       "ext": true,
+       "hook": "gen",
+       "label": "Which topology metric?",
+       "from": "X5.4",
+       "caption": "EXTENDED CUT · COUNTING X-POINTS",
+       "glyph": "vermillion contour loops with one chalk O mark and one chalk X mark"
+      },
+      {
+       "id": "Q21",
+       "cat": "c",
+       "pri": 1,
+       "kind": "seat",
+       "ext": true,
+       "hook": "every",
+       "label": "Lab GPUs, Jean Zay, or rent?",
+       "from": "10.2",
+       "caption": "CHAPTER 10 · THE DATA FACTORY",
+       "glyph": "the factory oven of 10.2 with its grey tag 'CPU only · never on a GPU'"
+      },
+      {
+       "id": "Q23",
+       "cat": "c",
+       "pri": 1,
+       "kind": "seat",
+       "ext": false,
+       "hook": "vks",
+       "label": "Partner data: what, when?",
+       "from": "10.9",
+       "caption": "CHAPTER 10 · THE TOP STEPS",
+       "glyph": "the VKS cylinder with its two impellers and the tilted precessing cylinder, both dashed"
+      },
+      {
+       "id": "Q1",
+       "cat": "a",
+       "pri": 2,
+       "kind": "card",
+       "ext": false,
+       "hook": "every",
+       "label": "How often, or warning signs?",
+       "from": "00.4",
+       "caption": "OPENING · TWO QUESTIONS",
+       "glyph": "the two cards of 00.4: a grey clock and amber tally marks"
+      },
+      {
+       "id": "Q4",
+       "cat": "a",
+       "pri": 2,
+       "kind": "planned",
+       "ext": false,
+       "hook": "vks",
+       "label": "Which wall properties?",
+       "from": "03.5",
+       "caption": "CHAPTER 3 · A PANEL OF KNOBS",
+       "glyph": "a grey cylinder wall with a thin hatched outer layer"
+      },
+      {
+       "id": "Q13",
+       "cat": "a",
+       "pri": 2,
+       "kind": "card",
+       "ext": false,
+       "hook": "every",
+       "label": "Where to count reversals?",
+       "from": "09.1",
+       "caption": "CHAPTER 9 · THE TOLL COUNTER",
+       "glyph": "the counted crossing-rate curve (vermillion) and the dashed generated Rice curve (the ch09.Q backdrop)"
+      },
+      {
+       "id": "Q7",
+       "cat": "b",
+       "pri": 2,
+       "kind": "card",
+       "ext": false,
+       "hook": "vks",
+       "label": "Which dipole for Rice?",
+       "from": "05.4",
+       "caption": "CHAPTER 5 · CROSSINGS AND REVERSALS",
+       "glyph": "a vermillion dipole trace with a dashed far level on the other side of zero"
+      },
+      {
+       "id": "Q10",
+       "cat": "b",
+       "pri": 2,
+       "kind": "card",
+       "ext": false,
+       "hook": "vks",
+       "label": "Exact under which operator?",
+       "from": "08.3",
+       "caption": "CHAPTER 8 · THE BOX TEST",
+       "glyph": "the box with lines in equal to lines out, and a small grey gauge"
+      },
+      {
+       "id": "Q12",
+       "cat": "b",
+       "pri": 2,
+       "kind": "card",
+       "ext": true,
+       "hook": "tier0",
+       "label": "Fallback if the loss fails?",
+       "from": "08.5",
+       "caption": "CHAPTER 8 · THE POLL",
+       "glyph": "a row of grey poll figures shrinking to one"
+      },
+      {
+       "id": "Q19",
+       "cat": "b",
+       "pri": 2,
+       "kind": "card",
+       "ext": true,
+       "hook": "vks",
+       "label": "Labels on each VKS snapshot?",
+       "from": "03.5",
+       "caption": "CHAPTER 3 · A PANEL OF KNOBS",
+       "glyph": "a snapshot frame with three grey tags: 'Rm?', 'wall?', 'iron?'"
+      },
+      {
+       "id": "Q25",
+       "cat": "b",
+       "pri": 2,
+       "kind": "seat",
+       "ext": false,
+       "hook": "vks",
+       "label": "Full fields or coefficients?",
+       "from": "08.7",
+       "caption": "CHAPTER 8 · THE PROPOSED MACHINE",
+       "glyph": "the decoder box with three outlets: a full field, an averaged field, a short bar of coefficients"
+      },
+      {
+       "id": "Q20",
+       "cat": "c",
+       "pri": 2,
+       "kind": "card",
+       "ext": true,
+       "hook": "every",
+       "label": "Who funds the last months?",
+       "from": "X5.6",
+       "caption": "EXTENDED CUT · THE PLAN",
+       "glyph": "a timeline bar with a hatched overhang past a grey end tick"
+      },
+      {
+       "id": "Q26",
+       "cat": "c",
+       "pri": 2,
+       "kind": "seat",
+       "ext": false,
+       "hook": "every",
+       "label": "Publish results in the film?",
+       "from": "00.5",
+       "caption": "THIS FILM · VERSION 2",
+       "glyph": "the title card in miniature with a grey 'v2' tag"
+      },
+      {
+       "id": "Q27",
+       "cat": "c",
+       "pri": 2,
+       "kind": "seat",
+       "ext": true,
+       "hook": "every",
+       "label": "Reference runs: whose CPUs?",
+       "from": "X5.5",
+       "caption": "EXTENDED CUT · THE BILL",
+       "glyph": "a grey processor block outside a dashed graphics-card bill frame"
+      },
+      {
+       "id": "Q11",
+       "cat": "a",
+       "pri": 3,
+       "kind": "card",
+       "ext": true,
+       "hook": "vks",
+       "label": "Simulate one asymmetry sign?",
+       "from": "X2.4",
+       "caption": "EXTENDED CUT · THE IMPELLER SWAP",
+       "glyph": "the VKS cylinder with a green asymmetry knob and its mirror image"
+      },
+      {
+       "id": "Q14",
+       "cat": "a",
+       "pri": 3,
+       "kind": "card",
+       "ext": true,
+       "hook": "vks",
+       "label": "Target waiting times too?",
+       "from": "X4.3",
+       "caption": "EXTENDED CUT · WAITING TIMES",
+       "glyph": "the amber waiting-time histogram: a comb, then a tail"
+      },
+      {
+       "id": "Q30",
+       "cat": "a",
+       "pri": 3,
+       "kind": "seat",
+       "ext": true,
+       "hook": "dresdyn",
+       "label": "How many precession ratios?",
+       "from": "10.9",
+       "caption": "CHAPTER 10 · THE TOP STEPS",
+       "glyph": "the tilted precessing cylinder with a few green ticks on its knob"
+      },
+      {
+       "id": "Q15",
+       "cat": "b",
+       "pri": 3,
+       "kind": "planned",
+       "ext": false,
+       "hook": "every",
+       "label": "Positioning the first paper?",
+       "from": "SOA2.8",
+       "caption": "THE MAP · NEIGHBOURS",
+       "glyph": "the map with the dashed thesis ring and one neighbour pin"
+      },
+      {
+       "id": "Q28",
+       "cat": "b",
+       "pri": 3,
+       "kind": "seat",
+       "ext": true,
+       "hook": "tier0",
+       "label": "Level bound: plateau width?",
+       "from": "05.4",
+       "caption": "CHAPTER 5 · CROSSINGS AND REVERSALS",
+       "glyph": "a dipole trace with a band of levels and a chalk bracket on the band's width"
+      },
+      {
+       "id": "Q29",
+       "cat": "b",
+       "pri": 3,
+       "kind": "seat",
+       "ext": true,
+       "hook": "tier0",
+       "label": "Mirror verdict: a test?",
+       "from": "07.3",
+       "caption": "CHAPTER 7 · ONLY WHERE THE DATA ARE",
+       "glyph": "a small balance resting on the dashed amber noise floor, tipping slightly"
+      }
+     ],
+     "ticket": {
+      "w": 80,
+      "h": 40,
+      "gap": 8,
+      "number_font": "JetBrains Mono 28",
+      "outline": {
+       "card": "solid --fg-2",
+       "planned": "solid --fg-2, number in --muted until its unit exists",
+       "seat": "dashed --fg-2",
+       "ext": "double outline in the ticket's own style (2 x 1.5 px, 3 px apart)"
+      },
+      "notch": "a half-moon notch on the left edge: the question card's perforation in miniature"
+     },
+     "legend": [
+      "solid: a question card",
+      "dashed: asked without a card",
+      "double: asked in the extended cut only"
+     ],
+     "first_shelf": {
+      "tickets": [
+       "Q2",
+       "Q3",
+       "Q5",
+       "Q6",
+       "Q17",
+       "Q18",
+       "Q22",
+       "Q24",
+       "Q8",
+       "Q9",
+       "Q16",
+       "Q21",
+       "Q23"
+      ],
+      "mark": "chalk outline, 100 %",
+      "others": "60 %"
+     },
+     "board_note": "params.board mirrors script/_shared/question_register.json (order_for_ch10q). Write it ONCE in scenes/ch10q/board.js (with ticket, columns, shelves, legend and the glyph drawers), shared by the six scenes of the unit; the register wins on any difference."
+    }
+   },
+   "sfx": [
+    "whoosh@0.1",
+    {
+     "id": "pop",
+     "cue": "stairs",
+     "offset": 0.4,
+     "gain_db": -28
+    },
+    {
+     "id": "pop",
+     "cue": "decisions",
+     "offset": 0.3,
+     "gain_db": -28
+    }
+   ],
+   "paragraphs": [
+    {
+     "hold_after": 0.0,
+     "sentences": [
+      {
+       "id": "10q.1.s1",
+       "cue": "cards",
+       "text": "Every chapter so far has ended on a question."
+      },
+      {
+       "id": "10q.1.s2",
+       "cue": "seats",
+       "text": "The empty seats raised more."
+      }
+     ]
+    },
+    {
+     "hold_after": 0.0,
+     "sentences": [
+      {
+       "id": "10q.1.s3",
+       "cue": "stairs",
+       "text": "Hang each one under the step it shapes."
+      },
+      {
+       "id": "10q.1.s4",
+       "cue": "bet1",
+       "text": "Bet one: whether to add settings between seventeen and eighteen."
+      },
+      {
+       "id": "10q.1.s5",
+       "cue": "bet2",
+       "text": "Bet two: the {b}seed{/}, the {param}Reynolds number{/}, the length of each run."
+      },
+      {
+       "id": "10q.1.s6",
+       "cue": "gen",
+       "text": "The {model}generator{/}: what it must match."
+      },
+      {
+       "id": "10q.1.s7",
+       "cue": "top",
+       "text": "The top steps: the partners' data."
+      }
+     ]
+    },
+    {
+     "hold_after": 0.6,
+     "sentences": [
+      {
+       "id": "10q.1.s8",
+       "cue": "decisions",
+       "text": "A staircase of bets is a staircase of decisions, and the first ones come before any run."
+      }
+     ]
+    }
+   ],
+   "onscreen": {
+    "title": "Before we compute",
+    "labels": [
+     "CHAPTER ASK",
+     "Before we compute",
+     "LEVEL L4",
+     "three numbers",
+     "a flat sheet",
+     "a periodic box",
+     "the VKS cylinder",
+     "a precessing cylinder",
+     "BET",
+     "BET 1 · BOX 64³",
+     "BET 2 · TAYLOR–GREEN",
+     "3D GENERATOR",
+     "VKS",
+     "DRESDYN",
+     "THREE DIALS",
+     "FIRST CAMPAIGN",
+     "EVERY STEP",
+     "Q1 … Q30 (ticket stubs)"
+    ],
+    "formulas": [],
+    "chips": [
+     "Independent PhD proposal · not requested or validated by the supervisors"
+    ]
+   },
+   "visual": "Render class flat (DOM/SVG). No data file: the 30 tickets come from params.board (a mirror of the question register, in order_for_ch10q), written once in scenes/ch10q/board.js and shared by the six scenes (params.board_note). Ticket: params.ticket (80 x 40, --panel fill, a half-moon notch on its left edge, the number in JetBrains Mono 28, e.g. 'Q7'); outline solid for a question card, dashed for a register-only ask (kind 'seat'), double for a ticket whose card or ask box plays only in the extended cut (ext: true; the same drawing in both cuts, explained by the legend in 10q.5). LEAD-IN (3.2 s, no voice): Kit.chapterCard(ctx, params.chapter_card): 'CHAPTER ASK', title 'Before we compute', staircase with tier 1 lit and tiers 2-4 dashed (as 11.1), and the rail M8 stepping DOWN from L5 to L4 with the tag 'step back: the questions' (a declared side-step like 10.1's: the scene before, ch10.Q in the core cut and X5b.Q in the extended cut, is at L5); whoosh at 0.1. P1. On 'cards-0.15': the 20 card tickets (kind 'card' or 'planned', Q1-Q20) deal in as a loose fan at the centre of the frame (y 300-620), 0.04 s apart, in number order. On 'seats-0.15': ten small grey dashed frames (the seats' 'ASK BEFORE WE COMPUTE' box in miniature) blink in along the bottom of the fan; out of each slides a dashed register-only ticket (Q21-Q30) that joins the fan, and the frame fades. P2. On 'stairs-0.15': T1 morph: the fan lifts to the top edge while the staircase M7 draws large (Kit.staircase in params.staircase.box; labels exactly as in 03.7 and 10.1; steps 0-1 lit, step 2 at 40 % with a dashed outline, steps 2-4 dashed, each with the small grey BET seat icon of 10.1); step 2 splits into three bet slots labelled in mono 28 'BET 1 · BOX 64³', 'BET 2 · TAYLOR–GREEN', '3D GENERATOR'. Then every ticket flies (0.03 s apart, 0.6 s each) to its hook (ticket.hook, params.hooks) and hangs under that step's base on a short grey string (params.hang): columns of 80-px tickets, 8 px apart, from y 562 down, never below y 860; hook labels in mono 28 (--muted) above each column; the hook 'every' hangs at the far left, labelled 'EVERY STEP'. Soft pop at 'stairs+0.4'. Then, one hook per sentence: on 'bet1-0.15', 'bet2-0.15', 'gen-0.15' that hook's tickets brighten to --fg and swing once (about 3 degrees, critically damped), and its bet slot's dashed outline turns chalk for 1.2 s; every other ticket dims to 45 %; on 'top-0.15' the hooks of steps 3 and 4 (VKS, DRESDYN) light together. P3. On 'decisions-0.15': the BET icons of steps 2-4 turn over (a 0.5-s flip about their vertical axis) and show a small ticket glyph instead; then, on the words 'the first ones' (about 1.5 s before the sentence ends; use the sentence's end), the 13 priority-1 tickets (params.first_shelf) take a chalk outline at 100 % while the other 17 settle at 60 %: a preview of the first shelf of 10q.2; soft pop. The chip 'Independent PhD proposal · not requested or validated by the supervisors' (Kit.chip kind 'plain', top centre, y about 112) enters at 'stairs+0.8' and holds. Badge PLANNED (top-right) from 'stairs', note from the script. Idle motion: the hanging tickets sway by half a degree, out of phase. Key colours: none (greys, chalk, --fg); the thumbnails' colours wait for 10q.2. No lower-third, no formula layer, no corner needle. Music: none (L4).",
+   "assets": [],
+   "sources": [
+    "video/BRIEF.md section 3.3 (ch10q: questions gathered and ranked by what they unblock, (a) runs and parameters, (b) framing, (c) logistics; points to infra/cloud/RECOMMANDATION-CLOUD.md section 0)",
+    "video/script/_shared/question_register.json (entries Q1-Q30: text, category, priority; order_for_ch10q; motivated_in for each callback)",
+    "video/script/_shared/continuity.md section 7 (cards Q1-Q20 numbered in the extended running order; Q21-Q30 without card) and section 3 (M7 staircase, empty seats and their ASK boxes)",
+    "video/script/ch10.json 10.3-10.9 (seat ASK boxes: 10.3 2D tier or straight to 3D, Q22; 10.4 D17 Rm 17.25, 17.5, 17.75, Q5; 10.5 D18 lengthen or flag and exclude, Q24; 10.7 hold out a whole Pm, Q3; 10.9 VKS and precession snapshots, Q23) and 10.1 (staircase labels, BET icons, PhD-proposal chip)",
+    "video/BRIEF.md D17 (Bet one stated as s(17) > 0 > s(18); adding Rm 17.25, 17.5, 17.75 is a question for the supervisors) and D18 (lengthening near-threshold Taylor–Green runs is a question for the supervisors)",
+    "infra/configs/palier2_abc3d.yaml:36 (Rm from 4 to 40 in steps of 1: no setting between seventeen and eighteen)",
+    "infra/configs/palier2_tg3d.yaml:3-8 (Reynolds number Re = U_ref L_ref / nu with L_ref = 1/kf; effective Reynolds read a posteriori), :34 (seed rms 1e-3), :41-43 (t_burn 100, t_keep 40, 40 snapshots)",
+    "en/these/index.qmd:878-953 (tiers 0-4, each with criteria written before the data), :917 (3D generator: spectra within 0.1 decade), :929-933 (tier 3 data are the partners', not public)",
+    "en/these/index.qmd:57 (independent proposal, neither requested nor validated by S. Cheng, D. Lucor, C. Nore, Y. Ponty or the consortium; the internship has not taken place)",
+    "video/script/_shared/symbols.md section 5 (bet, confidence, criterion, ask; 'Bet one' = ABC at 64³, 'Bet two' = Taylor–Green; 'the staircase', never 'the map')"
+   ],
+   "variants": null,
+   "question": null
+  },
+  {
+   "id": "10q.2",
+   "was": null,
+   "title": "Runs first",
+   "file": "scenes/ch10q/10q_2_runs_first.html",
+   "status": "ready",
+   "level": "L4",
+   "register": "NIGHT",
+   "badge": {
+    "kind": "PLANNED",
+    "confidence": null,
+    "note": "configured campaigns · not yet run · infra/configs"
+   },
+   "target_s": 32,
+   "lead_in": 0.6,
+   "tail": 0.8,
+   "deps": [],
+   "entry": {
+    "data": {},
+    "params": {
+     "board": "scenes/ch10q/board.js (from 10q.1 params.board)",
+     "state": "A",
+     "columns": {
+      "a": {
+       "head": "RUNS · PARAMETERS",
+       "glyph": "runs",
+       "x0": 110,
+       "x1": 650
+      },
+      "b": {
+       "head": "METRICS · CRITERIA",
+       "glyph": "framing",
+       "x0": 690,
+       "x1": 1230
+      },
+      "c": {
+       "head": "DATA · GPUs · BUDGET",
+       "glyph": "logistics",
+       "x0": 1270,
+       "x1": 1810
+      }
+     },
+     "shelves": {
+      "1": {
+       "label": "1 · BEFORE RENTING",
+       "sub": "changes what is computed, how or where"
+      },
+      "2": {
+       "label": "2 · FOR THE PLAN AND THE DATA REQUEST",
+       "sub": "not needed for the first campaigns"
+      },
+      "3": {
+       "label": "3 · CAN WAIT",
+       "sub": "the top steps, verdict rules, the first paper"
+      }
+     },
+     "layout": {
+      "header_y": [
+       110,
+       150
+      ],
+      "shelf1": {
+       "label_y": [
+        160,
+        192
+       ],
+       "rows_y0": 204,
+       "row_h": 44
+      },
+      "row": "ticket 80 x 40 · 8 px · 32-px callback icon · 8 px · label (Inter Medium 30, Kit.fit, never below 28; labels have at most 28 characters)",
+      "callback_window": {
+       "x0": 700,
+       "x1": 1300,
+       "y0": 596,
+       "y1": 850,
+       "thumb": [
+        300,
+        160
+       ],
+       "rows": "header 36 px · thumbnail 160 px · caption 36 px"
+      },
+      "later_pile": {
+       "x0": 1560,
+       "x1": 1800,
+       "y0": 690,
+       "y1": 850,
+       "label": "LATER"
+      }
+     },
+     "column_on": "a",
+     "focus": [
+      {
+       "cue": "seed",
+       "tickets": [
+        "Q2"
+       ]
+      },
+      {
+       "cue": "pm",
+       "tickets": [
+        "Q3"
+       ]
+      },
+      {
+       "cue": "spread",
+       "tickets": [
+        "Q5"
+       ]
+      },
+      {
+       "cue": "snaps",
+       "tickets": [
+        "Q6"
+       ]
+      },
+      {
+       "cue": "long",
+       "tickets": [
+        "Q17",
+        "Q24"
+       ]
+      },
+      {
+       "cue": "tg",
+       "tickets": [
+        "Q18"
+       ]
+      },
+      {
+       "cue": "first",
+       "tickets": [
+        "Q22"
+       ]
+      }
+     ],
+     "window_header": "CALLBACK · SCHEMATIC"
+    }
+   },
+   "sfx": [
+    {
+     "id": "pop",
+     "cue": "runs",
+     "offset": -0.1,
+     "gain_db": -28
+    }
+   ],
+   "paragraphs": [
+    {
+     "hold_after": 0.0,
+     "sentences": [
+      {
+       "id": "10q.2.s1",
+       "cue": "runs",
+       "text": "First, the runs: these answers change what gets computed."
+      }
+     ]
+    },
+    {
+     "hold_after": 0.0,
+     "sentences": [
+      {
+       "id": "10q.2.s2",
+       "cue": "seed",
+       "text": "Near a threshold, start from a tiny {b}seed{/}, a strong one, or both?"
+      },
+      {
+       "id": "10q.2.s3",
+       "cue": "pm",
+       "text": "Which values of {param}Pm{/}, since sodium's is out of reach?"
+      },
+      {
+       "id": "10q.2.s4",
+       "cue": "spread",
+       "text": "Settings spread evenly, or packed near each threshold?"
+      },
+      {
+       "id": "10q.2.s5",
+       "cue": "snaps",
+       "text": "How many independent snapshots per setting?"
+      },
+      {
+       "id": "10q.2.s6",
+       "cue": "long",
+       "text": "How long must runs near a threshold last?"
+      },
+      {
+       "id": "10q.2.s7",
+       "cue": "tg",
+       "text": "Which forcing, Reynolds number and grid make the Taylor-Green threshold comparable with published ones?"
+      },
+      {
+       "id": "10q.2.s8",
+       "cue": "first",
+       "text": "And which campaign comes first?"
+      }
+     ]
+    }
+   ],
+   "onscreen": {
+    "title": "",
+    "labels": [
+     "RUNS · PARAMETERS",
+     "METRICS · CRITERIA",
+     "DATA · GPUs · BUDGET",
+     "1 · BEFORE RENTING",
+     "changes what is computed, how or where",
+     "LATER",
+     "CALLBACK · SCHEMATIC",
+     "Q2 Tiny seed, strong, or both?",
+     "Q3 Which Pm values in 3D?",
+     "Q5 Settings spread or packed?",
+     "Q6 Snapshots per setting?",
+     "Q17 Fit growth, or run longer?",
+     "Q18 Taylor–Green: forcing, grid?",
+     "Q22 Which campaigns first?",
+     "Q24 Unsaturated: extend or drop?",
+     "CHAPTER 1 · THE SQUEAL",
+     "CHAPTER 2 · THE SODIUM PROBLEM",
+     "CHAPTER 3 · A HANDFUL OF DOTS",
+     "CHAPTER 4 · THE SHOEBOX",
+     "CHAPTER 10 · BET ONE",
+     "CHAPTER 10 · BET TWO",
+     "CHAPTER 10 · FIRST PRODUCT"
+    ],
+    "formulas": [],
+    "chips": []
+   },
+   "visual": "Render class flat. Board state A (params.layout). ON ENTRY (0.6-s lead-in, from the last frame of 10q.1): T1 morph: the staircase fades out while the tickets unhook. The 13 tickets of priority 1 fly to their rows: column by category (params.columns: a x 110-650, b x 690-1230, c x 1270-1810), row by register order (a: Q2, Q3, Q5, Q6, Q17, Q18, Q22, Q24; b: Q8, Q9, Q16; c: Q21, Q23), rows from y 204, 44 px apart. The other 17 slide into a dim stack at the bottom right (layout.later_pile, 45 %), labelled 'LATER' in mono 28. Column heads type in at y 110-150: the question card's category tags with their pictograms (cards.js CAT and GLY: 'RUNS · PARAMETERS', 'METRICS · CRITERIA', 'DATA · GPUs · BUDGET'; mono 28, --fg-2); the shelf label '1 · BEFORE RENTING' (mono 28, --fg) with its sub-line 'changes what is computed, how or where' (Inter 28, --fg-2) at y 160-192, left. Each row: the ticket, a 32-px callback icon (the ticket's glyph in miniature) and the label (Inter Medium 30, Kit.fit, never below 28), the label hidden until the row is focused; rows at 45 %. P1. On 'runs-0.15': the RUNS column head brightens, its eight rows rise to 70 %, the pen M9 underlines 'RUNS · PARAMETERS'. P2. On each cue of params.focus ('seed', 'pm', 'spread', 'snaps', 'long', 'tg', 'first', at cue-0.15): the row brightens to 100 % and its label wipes in (0.4 s); the callback window opens (layout.callback_window, x 700-1300, y 596-850, --panel fill, 1-px --grid outline, header 'CALLBACK · SCHEMATIC' in mono 28 --muted): the row's icon grows into a 300 x 160 thumbnail, a schematic redraw of the motif of the scene the question came from (ticket.glyph; no data, no number), captioned with ticket.caption in mono 28 (Kit.upper), e.g. 'CHAPTER 1 · THE SQUEAL'; a chalk leader line runs from the row's right end to the window for 1.5 s. The next focus cue cuts the thumbnail to the next one in 0.2 s (montage grammar, no crossfade). On 'long', two tickets (Q17, Q24) light together and the window splits into two 270 x 150 halves with their two captions. Focused rows stay at 100 % with their labels; the window closes at 'first+2.2' (it shrinks back into Q22's icon). Q17 keeps its double outline (extended-cut card); its callback is 10.4, which both cuts show. Badge PLANNED (top-right), note from the script. Key colours: green (the Pm ruler, the knob axes), vermillion (the seed and growth curves), never more than three in one frame; the board itself in --fg, --fg-2 and greys. Idle: the LATER stack breathes (opacity 40-48 %). Music: none (L4).",
+   "assets": [],
+   "sources": [
+    "video/script/_shared/question_register.json (entries Q1-Q30: text, category, priority; order_for_ch10q; motivated_in for each callback) (priority 1, category a: Q2, Q3, Q5, Q6, Q17, Q18, Q22, Q24)",
+    "video/script/ch01.json ch01.Q (Q2: tiny seed, strong seed, or both); video/script/X4b.json X4.4 (subcritical branch, merged into Q2)",
+    "video/script/ch02.json ch02.Q (Q3: which Pm values; sodium's Pm about 10⁻⁵ is out of reach) and 02.3",
+    "video/script/ch03.json ch03.Q (Q5: spread evenly or packed near each threshold) and 03.6 (a handful of dots)",
+    "video/script/ch04.json ch04.Q (Q6: how many independent snapshots per setting, how far apart) and 04.6 (neighbouring frames look alike)",
+    "video/script/X1.json X1.Q (Q17: oscillation term or run longer near the thresholds) and video/script/ch10.json 10.4 (two fits must agree at seventeen and eighteen)",
+    "video/script/ch10.json ch10.Q (Q18: forcing, Reynolds-number definition and resolution of the Taylor–Green campaign), 10.5 ask (Q24, D18) and 10.3 ask (Q22)",
+    "infra/configs/palier2_tg3d.yaml:12-14 (check the resolution at Re = 200, Pm = 2; move to N = 128 if needed), :34 (seed rms 1e-3), :36-37 (Re 25, 50, 100, 200; Pm 0.5, 1, 2), :41-45 (t_burn 100, t_keep 40, every 1, n_traj 1)",
+    "infra/configs/palier2_abc3d.yaml:36, :40-41 (Rm 4 to 40 in steps of 1; t_burn 150, t_keep 100)",
+    "infra/cloud/RECOMMANDATION-CLOUD.md:19-36 (section 0: talk to the supervisors before any computing; several answers can make renting unnecessary or change what to compute, l. 23; computing means, l. 25-27; priorities, l. 28-29; parameters, l. 30-31; measures, l. 32-33; publication, l. 34)",
+    "infra/cloud/RECOMMANDATION-CLOUD.md:251-261 (section 4.2: decisions to write to the supervisors before renting: resolution of M4, n_traj 4, Jean Zay project, publication)",
+    "en/these/index.qmd:917 (the plan wants 5,000 snapshots per 3D point) and :898 (tier 1 at 128²)"
+   ],
+   "variants": null,
+   "question": null
+  },
+  {
+   "id": "10q.3",
+   "was": null,
+   "title": "How results will be judged",
+   "file": "scenes/ch10q/10q_3_how_results_will_be_judged.html",
+   "status": "ready",
+   "level": "L4",
+   "register": "NIGHT",
+   "badge": {
+    "kind": "PLANNED",
+    "confidence": null,
+    "note": "PhD plan criteria · open points · T:878-953"
+   },
+   "target_s": 22,
+   "lead_in": 0.4,
+   "tail": 0.8,
+   "deps": [],
+   "entry": {
+    "data": {},
+    "params": {
+     "board": "scenes/ch10q/board.js (from 10q.1 params.board)",
+     "state": "A",
+     "columns": {
+      "a": {
+       "head": "RUNS · PARAMETERS",
+       "glyph": "runs",
+       "x0": 110,
+       "x1": 650
+      },
+      "b": {
+       "head": "METRICS · CRITERIA",
+       "glyph": "framing",
+       "x0": 690,
+       "x1": 1230
+      },
+      "c": {
+       "head": "DATA · GPUs · BUDGET",
+       "glyph": "logistics",
+       "x0": 1270,
+       "x1": 1810
+      }
+     },
+     "shelves": {
+      "1": {
+       "label": "1 · BEFORE RENTING",
+       "sub": "changes what is computed, how or where"
+      },
+      "2": {
+       "label": "2 · FOR THE PLAN AND THE DATA REQUEST",
+       "sub": "not needed for the first campaigns"
+      },
+      "3": {
+       "label": "3 · CAN WAIT",
+       "sub": "the top steps, verdict rules, the first paper"
+      }
+     },
+     "layout": {
+      "header_y": [
+       110,
+       150
+      ],
+      "shelf1": {
+       "label_y": [
+        160,
+        192
+       ],
+       "rows_y0": 204,
+       "row_h": 44
+      },
+      "row": "ticket 80 x 40 · 8 px · 32-px callback icon · 8 px · label (Inter Medium 30, Kit.fit, never below 28; labels have at most 28 characters)",
+      "callback_window": {
+       "x0": 700,
+       "x1": 1300,
+       "y0": 596,
+       "y1": 850,
+       "thumb": [
+        300,
+        160
+       ],
+       "rows": "header 36 px · thumbnail 160 px · caption 36 px"
+      },
+      "later_pile": {
+       "x0": 1560,
+       "x1": 1800,
+       "y0": 690,
+       "y1": 850,
+       "label": "LATER"
+      }
+     },
+     "column_on": "b",
+     "focus": [
+      {
+       "cue": "stats",
+       "tickets": [
+        "Q8",
+        "Q16"
+       ]
+      },
+      {
+       "cue": "budgets",
+       "tickets": [
+        "Q9"
+       ]
+      }
+     ],
+     "window_header": "CALLBACK · SCHEMATIC"
+    }
+   },
+   "sfx": [],
+   "paragraphs": [
+    {
+     "hold_after": 0.0,
+     "sentences": [
+      {
+       "id": "10q.3.s1",
+       "cue": "framing",
+       "text": "Then the framing: how each result will be judged, decided before the data exist."
+      },
+      {
+       "id": "10q.3.s2",
+       "cue": "stats",
+       "text": "Which statistics must generated fields match, down to the shape of their field lines, and how close to the {metric}noise floor{/} counts as success?"
+      },
+      {
+       "id": "10q.3.s3",
+       "cue": "budgets",
+       "text": "Which budgets must hold {metric}on average{/}, and must their spread match too?"
+      }
+     ]
+    }
+   ],
+   "onscreen": {
+    "title": "",
+    "labels": [
+     "METRICS · CRITERIA",
+     "Q8 Which statistics, how close?",
+     "Q9 Which budgets? Spread too?",
+     "Q16 Which topology metric?",
+     "CHAPTER 6 · THE NOISE FLOOR",
+     "CHAPTER 7 · THE SPIKE",
+     "EXTENDED CUT · COUNTING X-POINTS",
+     "CALLBACK · SCHEMATIC"
+    ],
+    "formulas": [],
+    "chips": []
+   },
+   "visual": "Render class flat. Board state A, as 10q.2 left it: the RUNS rows at 85 % with their labels, the callback window closed. On 'framing-0.15': the RUNS column dims to 45 %; the METRICS · CRITERIA head brightens and its three rows (Q8, Q9, Q16) rise to 70 %; the pen M9 underlines the head. On 'stats-0.15': rows Q8 and Q16 light, labels wipe in, and the callback window splits in two: left 'CHAPTER 6 · THE NOISE FLOOR' (two amber sand piles and the dashed amber floor line), right 'EXTENDED CUT · COUNTING X-POINTS' (vermillion contour loops with one chalk O and one chalk X); Q16 keeps its double outline. On 'budgets-0.15': Q9 lights, its label wipes in, the window cuts to a single thumbnail 'CHAPTER 7 · THE SPIKE' (a wide amber pile collapsing into a spike at zero, 0.8-s morph); the window closes at '_speech_end+0.3' into Q9's icon. Badge PLANNED, note from the script. Key colours: amber, vermillion (X-point contours only). Idle: the LATER stack breathes. Music: none (L4).",
+   "assets": [],
+   "sources": [
+    "video/script/_shared/question_register.json (entries Q1-Q30: text, category, priority; order_for_ch10q; motivated_in for each callback) (priority 1, category b: Q8, Q9, Q16)",
+    "video/script/ch06.json ch06.Q (Q8: which statistics, how close to the noise floor; the 3D floor and the missing topology metric) and 06.5",
+    "video/script/ch07.json ch07.Q (Q9: which budgets on average, must their spread match) and 07.5 (the spike)",
+    "video/script/X5a.json X5a.Q (Q16: which topology metric, what gap in X-point counts fails a model) and X5.4; en/rapport/index.qmd:1213 (report question 5: topology metrics)",
+    "en/these/index.qmd:878-953 (criteria of tiers 0-4, written before the data; no spread criterion and no pass mark for X-point counts)",
+    "infra/cloud/RECOMMANDATION-CLOUD.md:32-33 (section 0, measures: helicities, topology, spread of the budgets; coded before renting, section 4.1)"
+   ],
+   "variants": null,
+   "question": null
+  },
+  {
+   "id": "10q.4",
+   "was": null,
+   "title": "Where, and with whose data",
+   "file": "scenes/ch10q/10q_4_where_and_whose_data.html",
+   "status": "ready",
+   "level": "L3",
+   "register": "NIGHT",
+   "badge": {
+    "kind": "CONJECTURE",
+    "confidence": "medium",
+    "note": "cloud recommendation §0 · pipeline never run on a GPU (C:45)"
+   },
+   "target_s": 28,
+   "lead_in": 0.4,
+   "tail": 0.8,
+   "deps": [],
+   "music": false,
+   "entry": {
+    "data": {},
+    "params": {
+     "board": "scenes/ch10q/board.js (from 10q.1 params.board)",
+     "state": "A",
+     "columns": {
+      "a": {
+       "head": "RUNS · PARAMETERS",
+       "glyph": "runs",
+       "x0": 110,
+       "x1": 650
+      },
+      "b": {
+       "head": "METRICS · CRITERIA",
+       "glyph": "framing",
+       "x0": 690,
+       "x1": 1230
+      },
+      "c": {
+       "head": "DATA · GPUs · BUDGET",
+       "glyph": "logistics",
+       "x0": 1270,
+       "x1": 1810
+      }
+     },
+     "shelves": {
+      "1": {
+       "label": "1 · BEFORE RENTING",
+       "sub": "changes what is computed, how or where"
+      },
+      "2": {
+       "label": "2 · FOR THE PLAN AND THE DATA REQUEST",
+       "sub": "not needed for the first campaigns"
+      },
+      "3": {
+       "label": "3 · CAN WAIT",
+       "sub": "the top steps, verdict rules, the first paper"
+      }
+     },
+     "layout": {
+      "header_y": [
+       110,
+       150
+      ],
+      "shelf1": {
+       "label_y": [
+        160,
+        192
+       ],
+       "rows_y0": 204,
+       "row_h": 44
+      },
+      "row": "ticket 80 x 40 · 8 px · 32-px callback icon · 8 px · label (Inter Medium 30, Kit.fit, never below 28; labels have at most 28 characters)",
+      "callback_window": {
+       "x0": 700,
+       "x1": 1300,
+       "y0": 596,
+       "y1": 850,
+       "thumb": [
+        300,
+        160
+       ],
+       "rows": "header 36 px · thumbnail 160 px · caption 36 px"
+      },
+      "later_pile": {
+       "x0": 1560,
+       "x1": 1800,
+       "y0": 690,
+       "y1": 850,
+       "label": "LATER"
+      }
+     },
+     "column_on": "c",
+     "predict": {
+      "title": "PREDICT",
+      "question": "Which answer could make most renting unnecessary?",
+      "box": {
+       "x0": 700,
+       "x1": 1300,
+       "y0": 620,
+       "y1": 800
+      }
+     },
+     "focus": [
+      {
+       "cue": "where",
+       "tickets": [
+        "Q21"
+       ]
+      },
+      {
+       "cue": "data",
+       "tickets": [
+        "Q23"
+       ]
+      }
+     ],
+     "options": [
+      {
+       "label": "LAB",
+       "icon": "a grey rack with one small card (CEREA or LISN)"
+      },
+      {
+       "label": "JEAN ZAY",
+       "icon": "a grey cluster block"
+      },
+      {
+       "label": "RENTED",
+       "icon": "the dashed oven of 10.2, no price"
+      }
+     ],
+     "trial_tag": "TRIAL",
+     "window_header": "CALLBACK · SCHEMATIC"
+    }
+   },
+   "sfx": [],
+   "paragraphs": [
+    {
+     "hold_after": 2.5,
+     "sentences": [
+      {
+       "id": "10q.4.s1",
+       "cue": "predict",
+       "text": "One answer, not about physics, could make most renting unnecessary."
+      },
+      {
+       "id": "10q.4.s2",
+       "cue": "which",
+       "text": "Which question is it?"
+      }
+     ]
+    },
+    {
+     "hold_after": 0.0,
+     "sentences": [
+      {
+       "id": "10q.4.s3",
+       "cue": "where",
+       "text": "Where the computing happens."
+      },
+      {
+       "id": "10q.4.s4",
+       "cue": "lab",
+       "text": "If a lab has graphics cards an intern can use, or there is already a Jean Zay project to join, renting shrinks to a short trial."
+      },
+      {
+       "id": "10q.4.s5",
+       "cue": "data",
+       "text": "And for the top steps: which partner simulations, in what form, and by when?"
+      }
+     ]
+    }
+   ],
+   "onscreen": {
+    "title": "",
+    "labels": [
+     "DATA · GPUs · BUDGET",
+     "PREDICT",
+     "Which answer could make most renting unnecessary?",
+     "Q21 Lab GPUs, Jean Zay, or rent?",
+     "Q23 Partner data: what, when?",
+     "LAB",
+     "JEAN ZAY",
+     "RENTED",
+     "TRIAL",
+     "CHAPTER 10 · THE DATA FACTORY",
+     "CHAPTER 10 · THE TOP STEPS",
+     "CALLBACK · SCHEMATIC"
+    ],
+    "formulas": [],
+    "chips": []
+   },
+   "visual": "Render class flat. Board state A. P1, predict (no music: the level is L3 but the chapter stays silent until the bed returns in 11.2). On 'predict-0.15': the RUNS and METRICS columns dim to 35 %; the DATA · GPUs · BUDGET head brightens; its two rows show as blank dashed tickets with a chalk '?' instead of a number. On 'which-0.15': the PREDICT card (params.predict: title 'PREDICT', the question 'Which answer could make most renting unnecessary?', in the box x 700-1300, y 620-800, as the PREDICT cards of 03.4 and 07.5). During the 2.5-s hold only the '?' tickets breathe. P2. On 'where-0.15': the PREDICT card writes 'where the computing happens' in chalk and folds away; row Q21 fills in (number and label 'Lab GPUs, Jean Zay, or rent?'; double dashed outline: its ask box is X5.3's, extended cut only, while 10.2 motivates it in both cuts) and the pen M9 circles it. On 'lab-0.15': the callback window opens, captioned 'CHAPTER 10 · THE DATA FACTORY'; inside the thumbnail, three small grey machines type in left to right, each with a one-word mono 28 label (params.options: a rack with one card 'LAB', a cluster block 'JEAN ZAY', the dashed oven of 10.2 'RENTED'); on the words 'renting shrinks' (about 1.6 s before the sentence ends; use the sentence's end) the RENTED oven shrinks to a small dashed tag 'TRIAL' (params.trial_tag). The fact that the pipeline has never run on a graphics card is in the badge note (no extra chip: the window ends at y 850). On 'data-0.15': row Q23 fills in ('Partner data: what, when?'), the window cuts to 'CHAPTER 10 · THE TOP STEPS': the VKS cylinder with its two impellers and the tilted precessing cylinder, both dashed, with a grey calendar glyph; window closes at '_speech_end+0.3'. Badge CONJECTURE, confidence medium (renting shrinks to a trial only if the repository runs as designed on lab GPUs or Jean Zay: it has never run on a graphics card), note from the script. Key colours: none beyond chalk and greys (vermillion only for the soft-iron impellers of the VKS drawing). No lower-third.",
+   "assets": [],
+   "sources": [
+    "video/script/_shared/question_register.json (entries Q1-Q30: text, category, priority; order_for_ch10q; motivated_in for each callback) (priority 1, category c: Q21, Q23)",
+    "infra/cloud/RECOMMANDATION-CLOUD.md:19-36 (section 0: talk to the supervisors before any computing; several answers can make renting unnecessary or change what to compute, l. 23; computing means, l. 25-27; priorities, l. 28-29; parameters, l. 30-31; measures, l. 32-33; publication, l. 34)",
+    "infra/cloud/RECOMMANDATION-CLOUD.md:25-27 (do CEREA or LISN have GPUs an intern can use; is there a GENCI project on Jean Zay to join; if so, the repository is ready for Slurm and Apptainer and renting only serves for a trial)",
+    "en/rapport/index.qmd:1214 (report question 6: GPU resources at CEREA or LISN) and :1209 (report question 1: which simulations, for which parameters, in what form)",
+    "en/calcul/index.qmd:45 (pipeline run end to end without a GPU; not run: a GPU card, a real Slurm cluster, Apptainer, a rented VM)",
+    "video/script/ch10.json 10.2 (chip: not yet run on a GPU or a real cluster) and 10.9 (the top steps' simulations belong to the partners, are not public and must be requested; ask box Q23)",
+    "en/these/index.qmd:929-933 (tier 3 data come from the partners and are not public)"
+   ],
+   "variants": null,
+   "question": null
+  },
+  {
+   "id": "10q.5",
+   "was": null,
+   "title": "What can wait",
+   "file": "scenes/ch10q/10q_5_what_can_wait.html",
+   "status": "ready",
+   "level": "L4",
+   "register": "NIGHT",
+   "badge": {
+    "kind": "CONJECTURE",
+    "confidence": "medium",
+    "note": "a proposed ranking, not the supervisors'"
+   },
+   "target_s": 28,
+   "lead_in": 0.4,
+   "tail": 0.8,
+   "deps": [],
+   "entry": {
+    "data": {},
+    "params": {
+     "board": "scenes/ch10q/board.js (from 10q.1 params.board)",
+     "state": "B",
+     "columns": {
+      "a": {
+       "head": "RUNS · PARAMETERS",
+       "glyph": "runs",
+       "x0": 110,
+       "x1": 650
+      },
+      "b": {
+       "head": "METRICS · CRITERIA",
+       "glyph": "framing",
+       "x0": 690,
+       "x1": 1230
+      },
+      "c": {
+       "head": "DATA · GPUs · BUDGET",
+       "glyph": "logistics",
+       "x0": 1270,
+       "x1": 1810
+      }
+     },
+     "shelves": {
+      "1": {
+       "label": "1 · BEFORE RENTING",
+       "sub": "changes what is computed, how or where"
+      },
+      "2": {
+       "label": "2 · FOR THE PLAN AND THE DATA REQUEST",
+       "sub": "not needed for the first campaigns"
+      },
+      "3": {
+       "label": "3 · CAN WAIT",
+       "sub": "the top steps, verdict rules, the first paper"
+      }
+     },
+     "layout": {
+      "header_y": [
+       110,
+       150
+      ],
+      "shelf1": {
+       "label_y": [
+        160,
+        192
+       ],
+       "stubs_y": [
+        196,
+        288
+       ],
+       "per_row": 4
+      },
+      "shelf2": {
+       "label_y": [
+        304,
+        336
+       ],
+       "rows_y0": 344,
+       "row_h": 44
+      },
+      "shelf3": {
+       "label_y": [
+        576,
+        608
+       ],
+       "rows_y0": 616,
+       "row_h": 44
+      },
+      "callback_window": {
+       "x0": 700,
+       "x1": 1300,
+       "y0": 596,
+       "y1": 850,
+       "thumb": [
+        300,
+        160
+       ],
+       "until": "wait-0.3"
+      },
+      "legend_y": [
+       800,
+       840
+      ]
+     },
+     "legend": [
+      "solid: a question card",
+      "dashed: asked without a card",
+      "double: asked in the extended cut only"
+     ],
+     "focus": [
+      {
+       "cue": "count",
+       "tickets": [
+        "Q13"
+       ]
+      },
+      {
+       "cue": "exact",
+       "tickets": [
+        "Q10"
+       ]
+      },
+      {
+       "cue": "labels",
+       "tickets": [
+        "Q19"
+       ]
+      },
+      {
+       "cue": "publish",
+       "tickets": [
+        "Q26"
+       ]
+      }
+     ],
+     "shelf2_order": {
+      "a": [
+       "Q1",
+       "Q4",
+       "Q13"
+      ],
+      "b": [
+       "Q7",
+       "Q10",
+       "Q12",
+       "Q19",
+       "Q25"
+      ],
+      "c": [
+       "Q20",
+       "Q26",
+       "Q27"
+      ]
+     },
+     "shelf3_order": {
+      "a": [
+       "Q11",
+       "Q14",
+       "Q30"
+      ],
+      "b": [
+       "Q15",
+       "Q28",
+       "Q29"
+      ],
+      "c": []
+     },
+     "window_header": "CALLBACK · SCHEMATIC"
+    }
+   },
+   "sfx": [
+    {
+     "id": "pop",
+     "cue": "later",
+     "offset": 0.2,
+     "gain_db": -28
+    },
+    {
+     "id": "pop",
+     "cue": "wait",
+     "offset": 0.2,
+     "gain_db": -28
+    }
+   ],
+   "paragraphs": [
+    {
+     "hold_after": 0.0,
+     "sentences": [
+      {
+       "id": "10q.5.s1",
+       "cue": "later",
+       "text": "The second shelf matters for the internship plan and the data request, not for the first campaigns."
+      },
+      {
+       "id": "10q.5.s2",
+       "cue": "count",
+       "text": "Which settings get runs long enough to count reversals?"
+      },
+      {
+       "id": "10q.5.s3",
+       "cue": "exact",
+       "text": "Which operator decides what exact means?"
+      },
+      {
+       "id": "10q.5.s4",
+       "cue": "labels",
+       "text": "Which labels must each snapshot carry?"
+      },
+      {
+       "id": "10q.5.s5",
+       "cue": "publish",
+       "text": "And may new results appear in this film?"
+      }
+     ]
+    },
+    {
+     "hold_after": 0.0,
+     "sentences": [
+      {
+       "id": "10q.5.s6",
+       "cue": "wait",
+       "text": "The last shelf can wait: the top steps' details, and how to frame a first paper."
+      }
+     ]
+    }
+   ],
+   "onscreen": {
+    "title": "",
+    "labels": [
+     "1 · BEFORE RENTING",
+     "2 · FOR THE PLAN AND THE DATA REQUEST",
+     "not needed for the first campaigns",
+     "3 · CAN WAIT",
+     "the top steps, verdict rules, the first paper",
+     "Q1 How often, or warning signs?",
+     "Q4 Which wall properties?",
+     "Q13 Where to count reversals?",
+     "Q7 Which dipole for Rice?",
+     "Q10 Exact under which operator?",
+     "Q12 Fallback if the loss fails?",
+     "Q19 Labels on each VKS snapshot?",
+     "Q25 Full fields or coefficients?",
+     "Q20 Who funds the last months?",
+     "Q26 Publish results in the film?",
+     "Q27 Reference runs: whose CPUs?",
+     "Q11 Simulate one asymmetry sign?",
+     "Q14 Target waiting times too?",
+     "Q30 How many precession ratios?",
+     "Q15 Positioning the first paper?",
+     "Q28 Level bound: plateau width?",
+     "Q29 Mirror verdict: a test?",
+     "CHAPTER 9 · THE TOLL COUNTER",
+     "CHAPTER 8 · THE BOX TEST",
+     "CHAPTER 3 · A PANEL OF KNOBS",
+     "THIS FILM · VERSION 2",
+     "CALLBACK · SCHEMATIC",
+     "solid: a question card",
+     "dashed: asked without a card",
+     "double: asked in the extended cut only"
+    ],
+    "formulas": [],
+    "chips": []
+   },
+   "visual": "Render class flat. Board state B (params.layout). P1. On 'later-0.15': the priority-1 shelf compresses (0.6 s): its labels fade and its tickets regroup as stubs, four per row (a: two rows of four; b, c: one row), y 196-288, at 85 %; the shelf label '1 · BEFORE RENTING' stays. The LATER stack deals the 11 priority-2 tickets into shelf 2 (params.shelf2_order; label '2 · FOR THE PLAN AND THE DATA REQUEST', sub-line 'not needed for the first campaigns'), rows from y 344, 44 px apart, each with its icon and label at 60 %; soft pop. On 'count-0.15', 'exact-0.15', 'labels-0.15', 'publish-0.15' (params.focus): that row lights to 100 % and the callback window opens in the still-empty lower area (layout.callback_window, x 700-1300, y 596-850) on its thumbnail: 'CHAPTER 9 · THE TOLL COUNTER' (the counted crossing-rate curve in vermillion and the dashed generated Rice curve), 'CHAPTER 8 · THE BOX TEST' (lines in equal lines out, a small grey gauge), 'CHAPTER 3 · A PANEL OF KNOBS' (a snapshot frame with three grey tags 'Rm?', 'wall?', 'iron?'; Q19 keeps its double outline: its card is in the extended cut, the report's question 2 behind it concerns both), 'THIS FILM · VERSION 2' (the title card of 00.5 in miniature with a grey 'v2' tag); cuts of 0.2 s between them. P2. On 'wait-0.15': the window closes (shrinks into Q26's icon); the six priority-3 tickets deal into shelf 3 (params.shelf3_order; label '3 · CAN WAIT', sub-line 'the top steps, verdict rules, the first paper'), rows from y 616, at 60 %, labels shown; then the legend types in along y 800-840 (params.legend, mono 28, --fg-2, each item preceded by a 40 x 22 ticket outline in that style: solid, dashed, double). The LATER stack is gone. Hold: every label on screen is readable for the last 2 s (the frame a viewer may pause on). Badge CONJECTURE, confidence medium (the ranking is a proposal; the supervisors may reorder it), note from the script. Key colours: vermillion and amber in the thumbnails only. Music: none (L4).",
+   "assets": [],
+   "sources": [
+    "video/script/_shared/question_register.json (entries Q1-Q30: text, category, priority; order_for_ch10q; motivated_in for each callback) (priority 2: Q1, Q4, Q13 | Q7, Q10, Q12, Q19, Q25 | Q20, Q26, Q27; priority 3: Q11, Q14, Q30 | Q15, Q28, Q29; priorities defined in its 'priorities' field)",
+    "video/script/ch09.json ch09.Q (Q13: which settings get runs long enough to count reversals) and 09.1",
+    "video/script/ch08.json ch08.Q (Q10: which laws hold exactly, under which discrete operator) and 08.3 (measured with the very operator used to enforce it); en/rapport/index.qmd:1212 (report question 4)",
+    "en/rapport/index.qmd:1210 (report question 2: which control parameters label the generator's conditioning) and video/script/X6.json X6.Q (Q19)",
+    "infra/cloud/RECOMMANDATION-CLOUD.md:34 and :261 (may these results be published on the site and in the video) and video/BRIEF.md D5 (Results update episode, v2 of the film): Q26",
+    "en/these/index.qmd:889 (tier-0 criteria (a) and (d): Q28, Q29), :952-953 and :999 (DRESDYN ratios, tier dropped first: Q30); en/rapport/index.qmd:121 and en/these/index.qmd:157 (the claim to position: Q15)",
+    "video/script/X2.json X2.Q (Q11), X4a.json X4a.Q (Q14), X5b.json X5b.Q (Q20), X5b.json X5.5 ask (Q27): extended-cut cards and asks, drawn with a double outline"
+   ],
+   "variants": null,
+   "question": null
+  },
+  {
+   "id": "10q.6",
+   "was": null,
+   "title": "The cheapest experiment",
+   "file": "scenes/ch10q/10q_6_the_cheapest_experiment.html",
+   "status": "ready",
+   "level": "L4",
+   "register": "NIGHT",
+   "badge": {
+    "kind": "CONJECTURE",
+    "confidence": "medium",
+    "note": "answers may change what is computed · cloud recommendation §0 · nothing rented yet"
+   },
+   "target_s": 24,
+   "lead_in": 0.4,
+   "tail": 1.4,
+   "deps": [],
+   "entry": {
+    "data": {},
+    "params": {
+     "board": "scenes/ch10q/board.js (from 10q.1 params.board)",
+     "state": "C",
+     "columns": {
+      "a": {
+       "head": "RUNS · PARAMETERS",
+       "glyph": "runs",
+       "x0": 110,
+       "x1": 650
+      },
+      "b": {
+       "head": "METRICS · CRITERIA",
+       "glyph": "framing",
+       "x0": 690,
+       "x1": 1230
+      },
+      "c": {
+       "head": "DATA · GPUs · BUDGET",
+       "glyph": "logistics",
+       "x0": 1270,
+       "x1": 1810
+      }
+     },
+     "message": {
+      "box": {
+       "x0": 240,
+       "x1": 1340,
+       "y0": 200,
+       "y1": 620
+      },
+      "header": "BEFORE RENTING · TO THE SUPERVISORS",
+      "tickets": [
+       "Q2",
+       "Q3",
+       "Q5",
+       "Q6",
+       "Q17",
+       "Q18",
+       "Q22",
+       "Q24",
+       "Q8",
+       "Q9",
+       "Q16",
+       "Q21",
+       "Q23"
+      ],
+      "two_columns": true,
+      "swap": [
+       "Q22",
+       "Q21"
+      ]
+     },
+     "order_chip": "ranking: a proposal",
+     "machine": {
+      "x0": 1400,
+      "x1": 1760,
+      "y0": 300,
+      "y1": 560,
+      "label": "rented GPU?"
+     },
+     "pointer": {
+      "lines": [
+       "every question, with why and what it unblocks:",
+       "companion question sheet (French) · infra/cloud/RECOMMANDATION-CLOUD.md §0"
+      ],
+      "box": {
+       "x0": 240,
+       "x1": 1760,
+       "y0": 720,
+       "y1": 800
+      },
+      "style": "JetBrains Mono 28, --fg-2, NOT upper-cased (the file path keeps its case)"
+     },
+     "handover": {
+      "tickets": [
+       "RUNS",
+       "FRAMING",
+       "LOGISTICS"
+      ],
+      "w": 150,
+      "h": 84,
+      "x0": 120,
+      "x1": 640,
+      "y0": 64,
+      "y1": 150,
+      "at": "_speech_end+0.2",
+      "note": "the exact geometry 11.1 fans in at 'first' (script/ch11.json 11.1 visual): the cut lands on the same three tickets"
+     }
+    }
+   },
+   "sfx": [
+    {
+     "id": "chime",
+     "cue": "_speech_end",
+     "offset": 0.3,
+     "gain_db": -22
+    }
+   ],
+   "paragraphs": [
+    {
+     "hold_after": 0.0,
+     "sentences": [
+      {
+       "id": "10q.6.s1",
+       "cue": "message",
+       "text": "The first shelf fits in one message, to write before renting anything."
+      },
+      {
+       "id": "10q.6.s2",
+       "cue": "order",
+       "text": "This ranking is only a proposal."
+      },
+      {
+       "id": "10q.6.s3",
+       "cue": "reorder",
+       "text": "The supervisors may well change it."
+      }
+     ]
+    },
+    {
+     "hold_after": 0.8,
+     "sentences": [
+      {
+       "id": "10q.6.s4",
+       "cue": "change",
+       "text": "Several answers could change what gets computed, or whether anything is rented at all."
+      },
+      {
+       "id": "10q.6.s5",
+       "cue": "cheapest",
+       "text": "The cheapest experiment is a good question, asked before renting a graphics card."
+      }
+     ]
+    }
+   ],
+   "onscreen": {
+    "title": "",
+    "labels": [
+     "BEFORE RENTING · TO THE SUPERVISORS",
+     "ranking: a proposal",
+     "rented GPU?",
+     "every question, with why and what it unblocks:",
+     "companion question sheet (French) · infra/cloud/RECOMMANDATION-CLOUD.md §0",
+     "RUNS",
+     "FRAMING",
+     "LOGISTICS"
+    ],
+    "formulas": [],
+    "chips": []
+   },
+   "visual": "Render class flat. Board state C. P1. On 'message-0.15': shelves 2 and 3 fold into one dim row of their 17 stubs (y 650-690, 25 %; labels and legend gone); the 13 priority-1 stubs lift out of shelf 1 and fly (0.04 s apart) into a plain message card (params.message: x 240-1340, y 200-620, --panel fill, 1-px --fg-2 outline, header 'BEFORE RENTING · TO THE SUPERVISORS' in mono 28), laid out in two columns of stub + label (Inter 28, labels as on the board), seven rows 44 px apart; no names on the card. On 'order-0.15': two tickets of the card (params.message.swap: Q22 and Q21) trade places in a 0.6-s slide; the chip 'ranking: a proposal' (Kit.chip plain) appears right-aligned in the card's header line. On 'reorder-0.15': a chalk pen arrow (M9) draws beside the card from the bottom row to the top row, as a reader's correction, and fades after 1.2 s. P2. On 'change-0.15': to the right of the card a grey dashed machine outline (params.machine: a rack with one graphics card, label 'rented GPU?' in mono 28) draws in; a dashed grey arrow from the card to it; its outline flickers once between dashed and absent (whether anything is rented at all). On 'cheapest-0.15': the machine outline fades to 30 %; the card's header gets a pen underline (M9); the pointer text (params.pointer: two lines of plain mono 28 text in --fg-2, NOT a Kit.chip, so that the file path keeps its case; x 240-1760, y 720-800) types in. HANDOVER (params.handover): at '_speech_end+0.2' every ticket of the frame, the card's 13 and the dim row's 17, streams by category into three small tickets in the question-card shape (150 x 84, --fg-2 outline, stubs 'RUNS', 'FRAMING', 'LOGISTICS' in mono 28 via Kit.upper) at top-left (x 120-640, y 64-150); everything else fades out; the pointer text stays. That is the frame 11.1 starts from after its chapter card ('Questions first, then computing'). Soft chime at '_speech_end+0.3' (the question cards' sound, quieter). Badge CONJECTURE, confidence medium (the answers may change what is computed or make renting unnecessary; nothing has been asked or rented yet), note from the script. Key colours: none (greys, chalk, --fg). Music: none (L4); the bed returns in 11.2.",
+   "assets": [],
+   "sources": [
+    "infra/cloud/RECOMMANDATION-CLOUD.md:19-36 (section 0: talk to the supervisors before any computing; several answers can make renting unnecessary or change what to compute, l. 23; computing means, l. 25-27; priorities, l. 28-29; parameters, l. 30-31; measures, l. 32-33; publication, l. 34)",
+    "infra/cloud/RECOMMANDATION-CLOUD.md:251-261 (section 4.2: decisions to write to the supervisors before renting: resolution of M4, n_traj 4, Jean Zay project, publication)",
+    "video/script/_shared/question_register.json (entries Q1-Q30: text, category, priority; order_for_ch10q; motivated_in for each callback) (priority 1 = 'must be answered before renting compute: it changes what is computed, how, or where')",
+    "video/script/ch11.json 11.1 (first sentence 'Questions first, then computing.'; on 'first', three tickets RUNS, FRAMING, LOGISTICS, 150 x 84, fan in at x 120-640, y 64-150)",
+    "en/calcul/index.qmd:45 (nothing has run on a GPU, a real cluster or a rented VM)",
+    "en/these/index.qmd:57 (independent proposal, neither requested nor validated by S. Cheng, D. Lucor, C. Nore, Y. Ponty or the consortium; the internship has not taken place)"
+   ],
+   "variants": null,
+   "question": null
+  }
+ ]
+}

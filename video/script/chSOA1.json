@@ -1,0 +1,1816 @@
+{
+ "schema": 2,
+ "unit": "chSOA1",
+ "title": "A century of dynamo hunting",
+ "cut": "core",
+ "insert_after": "ch02.Q",
+ "level_range": "L1-L2",
+ "voice": {
+  "provider": "fish",
+  "model": "drama-3",
+  "reference_id": "536d3a5e000945adb7038665781a4aca"
+ },
+ "voice_fr": {
+  "provider": "fish",
+  "model": "drama-3",
+  "reference_id": "536d3a5e000945adb7038665781a4aca"
+ },
+ "learning_goal": "See the five tracks the community followed for a century (the Earth's record, theory, laboratory dynamos, simulations, reduced models, with a thin data-driven lane), where the three sodium dynamos of ch02 and the supervisors' own papers sit among them, and where MilaDy, the internship and the proposed thesis stand.",
+ "takeaway": "For a hundred years, theory, laboratory tanks, computer simulations and few-dial models have chased the dynamo together; MilaDy brings machine learning where the tanks, the simulations and the few-dial models meet, and the internship and the proposed thesis bet on machines that generate dynamo fields.",
+ "notes": "New unit (BRIEF section 10; writers' brief plan/state_of_the_art.md section 2), inserted after ch02 and before ch03 in both cuts: insert_after is the string 'ch02.Q' (BRIEF section 5 form; reviewer 2026-11-08 replaced the object form, which tools/assemble_cut.py cannot use as a module anchor), the last scene of ch02, its question card, in the core and the extended cut alike (the extended running order puts no module between ch02 and ch03). tools/assemble_cut.py places modules only in the extended cut and reads insert_after as a string; for the core cut the foundation engineer can add {'unit': 'chSOA1', 'before': 'ch03'} to EXTRA_UNITS (as ch10q before ch11). NO QUESTION CARD (task instruction for this unit): the plan's chSOA1.Q (which wall and outer-layer properties the simulation campaign must vary; ask C. Nore / Y. Ponty; why: VKS simulations reversed only with a conducting surrounding medium, Bousquet et al. 2026, and wall conditions shift onset, Botez et al. 2026, vacuum versus pseudo-vacuum about 40 % on Rm_c, R:143) is handed to the consistency editor for the question register or ch10q. CONTINUITY: the first line ('Those three tanks...') picks up 02.4 and the cold open's stripes (00.3, thumbnail in SOA1.1); the last line ('Every lane starts from the same race: stretching against smudging') hands over to 03.1, which the consistency editor already changed to open with 'Back to the race' and a chapter card levelFrom L2 (this unit climbs L1 to L2 at SOA1.4). BADGES: CONTEXT everywhere (published history, BRIEF 3.4); SOA1.6 adds a PLANNED chip for the internship and the proposed thesis (T:57). No MEASURED, no PROVED: this unit quotes no E1-E3 number. THE MAP: a new recurring device (motif id to be assigned in styles.md 3.5); its geometry, glyphs, label states and the full pin catalog are in SOA1.1 entry.params (map, catalog), to be copied verbatim into scenes/chSOA1/map.js so the six scenes and chSOA2 draw the same canvas; later scenes list 'present', 'add' (pin id and cue) and 'keep_named'. Every pin carries its reference on screen (line 2 of its label, BRIEF D7). SUPERVISORS (D6): names in text only, on pins and on the SOA1.4 roster box; no photos, no logos, no opinions or intentions; rings say only what each paper showed; the narration never speaks their names (no lexicon entries needed); a grey chip says the summary is independent and not reviewed. Diamonds are the two dynamo papers that declare the MilaDy grant (Bousquet et al. 2026, Botez et al. 2026); Barré and Horii 2026 (off-topic) gets no pin. Bousquet, Nore, Lucor 2025 is NOT a MilaDy paper and is left to chSOA2. WORDING TRAPS AVOIDED (plan/state_of_the_art.md section 6): no 'first' for Lowes and Wilkinson, the 2001 benchmark or DQVU; 'first' only for the 1958 mathematical examples (Rincon) and the first laboratory flips (R:149); DRESDYN 'aims at a dynamo driven by precession alone' (Stefani et al. 2012), no 2026 status; no Larmor title; Glatzmaier and Roberts 1995 by title only; no sodium mass, no Permian dates, no last-reversal date. DRESDYN is not narrated (02.4.s5 already says it aims to join the three); its dashed pin lands silently in SOA1.3. Dropped from the plan to keep the unit near 2.5 min and the map legible: the 2001 benchmark and Iskakov et al. 2007 / Warnecke et al. 2023 pins (low-Pm small-scale dynamos; chSOA2 may use them). SPOKEN NAMES: only place and code names already pinned or requested (Riga, Karlsruhe, VKS, DRESDYN, MilaDy, Reynolds, Pm); Karlsruhe is requested by ch02. FRENCH (BRIEF 9): every sentence has text_fr (same id and cue), a first draft for the French reviewer; 'lane' is rendered 'piste', echoing the author's own question ('quelles pistes la communauté a explorées'); map labels stay in English. PACE: words budgeted with the assembler formula (146 raw words per minute, 0.9 s per paragraph break, holds, lead-in and tail): after review (2026-11-08): SOA1.1 41 words, SOA1.2 53, SOA1.3 42 (target 20 s), SOA1.4 86, SOA1.5 50, SOA1.6 64 (target 30 s); total 336 words, about 155 s for a target of 159 s (assembler estimate), 127 effective words per minute. External facts were checked on 2026-11-08 (Crossref for every DOI cited, OpenAlex abstracts for Cox 1968, Nore et al. 1997, Rikitake 1958, Meneguzzi et al. 1981, Stefani et al. 2012, Gwirtz et al. 2022, and the arXiv full texts of Rincon 2019 and Stefani et al. 2018); log: /tmp/claude-0/-home-user/7f944193-0bd4-5776-8423-148e13f15fcf/scratchpad/soa/soa1chk/. UNVERIFIED, kept off screen: Larmor 1919 title and pages, the Glatzmaier-Roberts abstract, DRESDYN's 2026 status. REVIEW 2026-11-08: changelog in script/_review/chSOA1.md.",
+ "scenes": [
+  {
+   "id": "SOA1.1",
+   "was": null,
+   "title": "The empty map",
+   "file": "scenes/chSOA1/SOA1_1_the_empty_map.html",
+   "status": "ready",
+   "level": "L1",
+   "register": "NIGHT",
+   "badge": {
+    "kind": "CONTEXT",
+    "confidence": null,
+    "note": "Brunhes 1906 · Vine & Matthews 1963 · Cox 1968"
+   },
+   "target_s": 21,
+   "lead_in": 3.4,
+   "tail": 0.8,
+   "deps": [],
+   "entry": {
+    "data": {},
+    "params": {
+     "chapter": {
+      "num": "02+",
+      "title": "A century of dynamo hunting",
+      "level": "L1",
+      "levelFrom": "L1",
+      "note_num": "num is a proposal: the consistency editor fixes how inserted chapters are numbered"
+     },
+     "map": {
+      "note": "Shared canvas of chSOA1, reopened by chSOA2 (plan/state_of_the_art.md section 1). Coordinates in 1920x1080 px. The altitude rail (Kit.rail) owns x 0-92 at chapter cards and level changes, so the gutter starts at x 110.",
+      "register": "NIGHT",
+      "ink": {
+       "lanes": "--grid",
+       "lane_labels": "--muted",
+       "lane_label_lit": "--fg",
+       "pins": "--chalk",
+       "years": "--muted",
+       "model": "--model",
+       "flip_glyph": "--b",
+       "knob_tick": "--param"
+      },
+      "gutter": {
+       "x0": 110,
+       "x1": 430,
+       "label_font": "Inter SemiBold 28px",
+       "align": "right",
+       "label_x": 414
+      },
+      "axis": {
+       "y": 150,
+       "x0": 450,
+       "x1": 1800,
+       "segments": [
+        {
+         "from": 1900,
+         "to": 1990,
+         "x0": 450,
+         "x1": 1125
+        },
+        {
+         "from": 1990,
+         "to": 2026,
+         "x0": 1125,
+         "x1": 1638
+        },
+        {
+         "from": 2026,
+         "to": 2031,
+         "x0": 1638,
+         "x1": 1800,
+         "dashed": true
+        }
+       ],
+       "ticks": [
+        1900,
+        1920,
+        1940,
+        1960,
+        1980,
+        2000,
+        2010,
+        2020
+       ],
+       "tick_font": "JetBrains Mono 28px",
+       "now": {
+        "year": 2026.85,
+        "label": "NOW · NOV 2026"
+       }
+      },
+      "lanes": [
+       {
+        "id": "earth",
+        "label": "EARTH'S RECORD",
+        "y0": 180,
+        "y1": 292
+       },
+       {
+        "id": "theory",
+        "label": "THEORY",
+        "y0": 292,
+        "y1": 404
+       },
+       {
+        "id": "lab",
+        "label": "LAB DYNAMOS",
+        "y0": 404,
+        "y1": 516
+       },
+       {
+        "id": "sim",
+        "label": "SIMULATIONS",
+        "y0": 516,
+        "y1": 628
+       },
+       {
+        "id": "reduced",
+        "label": "REDUCED MODELS",
+        "y0": 628,
+        "y1": 740
+       },
+       {
+        "id": "data",
+        "label": "DATA-DRIVEN",
+        "y0": 744,
+        "y1": 812,
+        "dashed": true,
+        "from_year": 2016,
+        "appears": "SOA1.5 at cue 'four'"
+       }
+      ],
+      "glyphs": {
+       "dot": "filled dot r 9 px: community landmark",
+       "ring": "ring r 11 px, stroke 3 px: paper co-signed by a supervisor of the project",
+       "diamond": "diamond 22 px: paper that declares the MilaDy grant (ANR-25-CE51-0077)",
+       "cross": "x 20 px: no-go theorem or negative result",
+       "dashed_ring": "dashed ring r 14 px: planned or not yet achieved",
+       "flip": "small vermillion two-headed arrow above the pin: the paper is about reversals",
+       "tick": "small green tick: the paper is about a knob or a threshold"
+      },
+      "label_states": {
+       "active": "two lines in a callout next to the pin, panel rgba(16,21,28,0.75), thin chalk leader: line 1 Inter Medium 28 px --fg ('year · words'), line 2 JetBrains Mono 28 px --muted (the reference, no uppercase transform on code names such as SFEMaNS)",
+       "named": "line 1 only, --fg-2",
+       "year": "the year only, JetBrains Mono 28 px --muted, under the pin"
+      },
+      "label_rule": "A pin is active from its cue until the next pin's cue in the same scene (at least 2.5 s), the last pin of a scene until the scene's end; then it drops to 'year'. Pins listed in a scene's params.keep_named stay 'named'. Never more than eight pins in 'active' or 'named' state at once; callouts never overlap each other, a lane label or the NOW hairline (Kit.fit plus a bounding-box check at build time). Pins of earlier scenes are present from frame 0 in 'year' state.",
+      "arrows": [
+       {
+        "from": "T1958",
+        "to": "L1963",
+        "scene": "SOA1.3",
+        "cue": "cylinders",
+        "why": "Lowes and Wilkinson built on Herzenberg's working dynamo (Stefani et al. 2018, section 2.1)"
+       },
+       {
+        "from": "T1973",
+        "to": "L1999R",
+        "scene": "SOA1.2",
+        "cue": "blueprints",
+        "complete_in": "SOA1.3 at 'sodium'",
+        "why": "Riga realizes the Ponomarenko flow (R:139, P3:1149)"
+       },
+       {
+        "from": "T1972",
+        "to": "L1999K",
+        "scene": "SOA1.2",
+        "cue": "blueprints",
+        "complete_in": "SOA1.3 at 'sodium'",
+        "why": "Karlsruhe realizes the two-scale dynamo of Roberts and Busse (R:139, P3:1213)"
+       },
+       {
+        "from": "L2006",
+        "to": "S2016",
+        "scene": "SOA1.4",
+        "cue": "vkssim",
+        "why": "the VKS tank simulated with its impellers (R:143)"
+       },
+       {
+        "from": "D2016",
+        "to": "R2026",
+        "scene": "SOA1.5",
+        "cue": "four",
+        "why": "DQVU identified by constrained sparse regression with PySINDy (R:161)"
+       },
+       {
+        "from": "S2026C",
+        "to": "LDRES",
+        "scene": "SOA1.6",
+        "cue": "milady",
+        "why": "Botez et al. 2026 apply to DRESDYN (S:236-240)"
+       }
+      ],
+      "ties": [
+       {
+        "a": "S2026B",
+        "b": "R2026",
+        "style": "dotted vertical",
+        "why": "same paper, Bousquet et al. 2026"
+       }
+      ],
+      "arrow_style": "thin --muted, 2 px, arrowhead 10 px, drawn on in 0.6 s"
+     },
+     "catalog": [
+      {
+       "id": "E1906",
+       "lane": "earth",
+       "year": 1906.0,
+       "year_label": "1906",
+       "glyph": "dot",
+       "flip": true,
+       "tick": false,
+       "tint": "chalk",
+       "line1": "1906 · reversed lavas",
+       "line2": "BRUNHES 1906",
+       "scene": "SOA1.1",
+       "cue": "record",
+       "narrated": true
+      },
+      {
+       "id": "E1963",
+       "lane": "earth",
+       "year": 1963.0,
+       "year_label": "1963",
+       "glyph": "dot",
+       "flip": true,
+       "tick": false,
+       "tint": "chalk",
+       "line1": "1963 · seafloor stripes",
+       "line2": "VINE & MATTHEWS 1963",
+       "scene": "SOA1.1",
+       "cue": "stripes",
+       "narrated": true
+      },
+      {
+       "id": "E1968",
+       "lane": "earth",
+       "year": 1968.0,
+       "year_label": "1968",
+       "glyph": "dot",
+       "flip": true,
+       "tick": false,
+       "tint": "chalk",
+       "line1": "1968 · flips as chance events",
+       "line2": "COX 1968",
+       "scene": "SOA1.1",
+       "cue": "chance",
+       "narrated": true
+      },
+      {
+       "id": "T1919",
+       "lane": "theory",
+       "year": 1919.0,
+       "year_label": "1919",
+       "glyph": "dot",
+       "flip": false,
+       "tick": false,
+       "tint": "chalk",
+       "line1": "1919 · the idea",
+       "line2": "LARMOR 1919 · VIA RINCON 2019",
+       "scene": "SOA1.2",
+       "cue": "idea",
+       "narrated": true
+      },
+      {
+       "id": "T1933",
+       "lane": "theory",
+       "year": 1933.9,
+       "year_label": "1933",
+       "glyph": "cross",
+       "flip": false,
+       "tick": false,
+       "tint": "chalk",
+       "line1": "1933 · no axisymmetric dynamo",
+       "line2": "COWLING 1933",
+       "scene": "SOA1.2",
+       "cue": "nogo",
+       "narrated": true
+      },
+      {
+       "id": "T1958",
+       "lane": "theory",
+       "year": 1958.0,
+       "year_label": "1958",
+       "glyph": "dot",
+       "flip": false,
+       "tick": false,
+       "tint": "chalk",
+       "line1": "1958 · first working examples",
+       "line2": "HERZENBERG 1958 · BACKUS 1958",
+       "scene": "SOA1.2",
+       "cue": "proofs",
+       "narrated": true
+      },
+      {
+       "id": "T1966",
+       "lane": "theory",
+       "year": 1966.0,
+       "year_label": "1966",
+       "glyph": "dot",
+       "flip": false,
+       "tick": false,
+       "tint": "chalk",
+       "line1": "1966 · mean-field theory",
+       "line2": "STEENBECK, KRAUSE, RÄDLER 1966",
+       "scene": "SOA1.2",
+       "cue": "proofs+1.8",
+       "narrated": false
+      },
+      {
+       "id": "T1972",
+       "lane": "theory",
+       "year": 1972.0,
+       "year_label": "1972",
+       "glyph": "dot",
+       "flip": false,
+       "tick": false,
+       "tint": "chalk",
+       "line1": "1972 · Roberts flow",
+       "line2": "G. O. ROBERTS 1972",
+       "scene": "SOA1.2",
+       "cue": "blueprints",
+       "narrated": true
+      },
+      {
+       "id": "T1973",
+       "lane": "theory",
+       "year": 1973.0,
+       "year_label": "1973",
+       "glyph": "dot",
+       "flip": false,
+       "tick": false,
+       "tint": "chalk",
+       "line1": "1973 · Ponomarenko flow",
+       "line2": "PONOMARENKO 1973",
+       "scene": "SOA1.2",
+       "cue": "blueprints+0.5",
+       "narrated": true
+      },
+      {
+       "id": "L1963",
+       "lane": "lab",
+       "year": 1963.0,
+       "year_label": "1963",
+       "glyph": "dot",
+       "flip": false,
+       "tick": false,
+       "tint": "chalk",
+       "line1": "1963 · spinning iron cylinders",
+       "line2": "LOWES & WILKINSON 1963",
+       "scene": "SOA1.3",
+       "cue": "cylinders",
+       "narrated": true
+      },
+      {
+       "id": "L1999R",
+       "lane": "lab",
+       "year": 1999.85,
+       "year_label": "1999",
+       "glyph": "dot",
+       "flip": false,
+       "tick": false,
+       "tint": "chalk",
+       "line1": "1999 · Riga",
+       "line2": "GAILITIS ET AL. 2000",
+       "scene": "SOA1.3",
+       "cue": "sodium",
+       "narrated": true
+      },
+      {
+       "id": "L1999K",
+       "lane": "lab",
+       "year": 1999.95,
+       "year_label": "1999",
+       "glyph": "dot",
+       "flip": false,
+       "tick": false,
+       "tint": "chalk",
+       "line1": "1999 · Karlsruhe",
+       "line2": "STIEGLITZ & MÜLLER 2001",
+       "scene": "SOA1.3",
+       "cue": "sodium+1.4",
+       "narrated": true
+      },
+      {
+       "id": "L2006",
+       "lane": "lab",
+       "year": 2006.5,
+       "year_label": "2006",
+       "glyph": "dot",
+       "flip": true,
+       "tick": false,
+       "tint": "chalk",
+       "line1": "2006 · VKS: iron discs, flips",
+       "line2": "MONCHAUX ET AL. 2007 · BERHANU ET AL. 2007",
+       "scene": "SOA1.3",
+       "cue": "vks",
+       "narrated": true
+      },
+      {
+       "id": "LDRES",
+       "lane": "lab",
+       "year": 2027.6,
+       "year_label": "planned",
+       "glyph": "dashed_ring",
+       "flip": false,
+       "tick": false,
+       "tint": "chalk",
+       "line1": "DRESDYN · precession only",
+       "line2": "STEFANI ET AL. 2012",
+       "scene": "SOA1.3",
+       "cue": "vks+4.2",
+       "narrated": false
+      },
+      {
+       "id": "S1981",
+       "lane": "sim",
+       "year": 1981.0,
+       "year_label": "1981",
+       "glyph": "dot",
+       "flip": false,
+       "tick": false,
+       "tint": "chalk",
+       "line1": "1981 · turbulent dynamos",
+       "line2": "MENEGUZZI, FRISCH, POUQUET 1981",
+       "scene": "SOA1.4",
+       "cue": "turbulent",
+       "narrated": true
+      },
+      {
+       "id": "S1995",
+       "lane": "sim",
+       "year": 1995.7,
+       "year_label": "1995",
+       "glyph": "dot",
+       "flip": true,
+       "tick": false,
+       "tint": "chalk",
+       "line1": "1995 · a simulated geodynamo reverses",
+       "line2": "GLATZMAIER & ROBERTS 1995",
+       "scene": "SOA1.4",
+       "cue": "geodynamo",
+       "narrated": true
+      },
+      {
+       "id": "S1997",
+       "lane": "sim",
+       "year": 1997.0,
+       "year_label": "1997",
+       "glyph": "ring",
+       "flip": false,
+       "tick": false,
+       "tint": "chalk",
+       "line1": "C. NORE et al. · 1997",
+       "line2": "TAYLOR–GREEN DYNAMO · NORE ET AL.",
+       "scene": "SOA1.4",
+       "cue": "swirl",
+       "narrated": true
+      },
+      {
+       "id": "S2005",
+       "lane": "sim",
+       "year": 2005.3,
+       "year_label": "2005",
+       "glyph": "ring",
+       "flip": false,
+       "tick": true,
+       "tint": "chalk",
+       "line1": "Y. PONTY et al. · 2005",
+       "line2": "DYNAMOS DOWN TO Pm = 0.01, DNS + LES · PONTY ET AL.",
+       "scene": "SOA1.4",
+       "cue": "lowpm",
+       "narrated": true
+      },
+      {
+       "id": "S2016",
+       "lane": "sim",
+       "year": 2016.5,
+       "year_label": "2016",
+       "glyph": "ring",
+       "flip": false,
+       "tick": false,
+       "tint": "chalk",
+       "line1": "C. NORE et al. · 2016",
+       "line2": "VKS IN SFEMaNS · NORE ET AL.",
+       "scene": "SOA1.4",
+       "cue": "vkssim",
+       "narrated": true
+      },
+      {
+       "id": "S2017",
+       "lane": "sim",
+       "year": 2017.9,
+       "year_label": "2017",
+       "glyph": "ring",
+       "flip": false,
+       "tick": false,
+       "tint": "chalk",
+       "line1": "KREUZAHLER, Y. PONTY et al. · 2017",
+       "line2": "VKS IN LATU · PHYS. REV. LETT. 119",
+       "scene": "SOA1.4",
+       "cue": "vkssim+0.6",
+       "narrated": true
+      },
+      {
+       "id": "S2026B",
+       "lane": "sim",
+       "year": 2026.46,
+       "year_label": "2026",
+       "glyph": "diamond",
+       "flip": true,
+       "tick": false,
+       "tint": "chalk",
+       "line1": "BOUSQUET, Y. PONTY … C. NORE · 2026",
+       "line2": "VKS FLIPS, TWO CODES · PHYS. REV. FLUIDS 11",
+       "scene": "SOA1.4",
+       "cue": "flipsim",
+       "narrated": true
+      },
+      {
+       "id": "R1958",
+       "lane": "reduced",
+       "year": 1958.0,
+       "year_label": "1958",
+       "glyph": "dot",
+       "flip": true,
+       "tick": false,
+       "tint": "chalk",
+       "line1": "1958 · coupled discs flip",
+       "line2": "RIKITAKE 1958",
+       "scene": "SOA1.5",
+       "cue": "discs",
+       "narrated": true
+      },
+      {
+       "id": "R2008",
+       "lane": "reduced",
+       "year": 2008.0,
+       "year_label": "2008",
+       "glyph": "dot",
+       "flip": true,
+       "tick": false,
+       "tint": "chalk",
+       "line1": "2008 · dipole and quadrupole",
+       "line2": "PÉTRÉLIS & FAUVE 2008",
+       "scene": "SOA1.5",
+       "cue": "three-0.6",
+       "narrated": false
+      },
+      {
+       "id": "R2012",
+       "lane": "reduced",
+       "year": 2012.0,
+       "year_label": "2012",
+       "glyph": "dot",
+       "flip": true,
+       "tick": false,
+       "tint": "chalk",
+       "line1": "2012 · three dials",
+       "line2": "GISSINGER 2012",
+       "scene": "SOA1.5",
+       "cue": "three",
+       "narrated": true
+      },
+      {
+       "id": "D2016",
+       "lane": "data",
+       "year": 2016.2,
+       "year_label": "2016",
+       "glyph": "dot",
+       "flip": false,
+       "tick": false,
+       "tint": "chalk",
+       "line1": "2016 · equations from data",
+       "line2": "BRUNTON, PROCTOR, KUTZ 2016",
+       "scene": "SOA1.5",
+       "cue": "four",
+       "narrated": true
+      },
+      {
+       "id": "R2026",
+       "lane": "reduced",
+       "year": 2026.46,
+       "year_label": "2026",
+       "glyph": "diamond",
+       "flip": true,
+       "tick": false,
+       "tint": "chalk",
+       "line1": "2026 · four dials, DQVU",
+       "line2": "BOUSQUET ET AL. 2026",
+       "scene": "SOA1.5",
+       "cue": "four+1.2",
+       "narrated": true
+      },
+      {
+       "id": "S2026C",
+       "lane": "sim",
+       "year": 2026.62,
+       "year_label": "2026",
+       "glyph": "diamond",
+       "flip": false,
+       "tick": true,
+       "tint": "chalk",
+       "line1": "BOTEZ, GIESECKE, C. NORE et al. · 2026",
+       "line2": "WALLS SHIFT PRECESSION ONSET · PHYS. REV. FLUIDS 11",
+       "scene": "SOA1.6",
+       "cue": "milady+1.6",
+       "narrated": false
+      },
+      {
+       "id": "D2022",
+       "lane": "data",
+       "year": 2022.6,
+       "year_label": "2022",
+       "glyph": "cross",
+       "flip": false,
+       "tick": false,
+       "tint": "chalk",
+       "line1": "2022 · no reliable precursor",
+       "line2": "GWIRTZ ET AL. 2022",
+       "scene": "SOA1.6",
+       "cue": "thin",
+       "narrated": true
+      },
+      {
+       "id": "INTERN",
+       "lane": "data",
+       "year": 2027.3,
+       "year_label": "2027",
+       "glyph": "dashed_ring",
+       "flip": false,
+       "tick": false,
+       "tint": "model",
+       "line1": "internship · spring 2027",
+       "line2": "PLANNED",
+       "scene": "SOA1.6",
+       "cue": "bet",
+       "narrated": true
+      },
+      {
+       "id": "THESIS",
+       "lane": "data",
+       "year": 2029.2,
+       "year_label": "2027–2030",
+       "glyph": "dashed_ring",
+       "flip": false,
+       "tick": false,
+       "tint": "model",
+       "line1": "PhD proposal · 2027–2030 · ?",
+       "line2": "PLANNED · INDEPENDENT PROPOSAL",
+       "scene": "SOA1.6",
+       "cue": "bet+0.6",
+       "narrated": true
+      }
+     ],
+     "present": [],
+     "keep_named": [
+      "E1963",
+      "E1968"
+     ],
+     "cards_02_4": [
+      "RIGA",
+      "KARLSRUHE",
+      "VKS"
+     ],
+     "seafloor": {
+      "window_Ma": [
+       0,
+       5
+      ],
+      "normal_Ma": [
+       [
+        0.0,
+        0.78
+       ],
+       [
+        0.99,
+        1.07
+       ],
+       [
+        1.201,
+        1.211
+       ],
+       [
+        1.77,
+        1.95
+       ],
+       [
+        2.14,
+        2.15
+       ],
+       [
+        2.581,
+        3.04
+       ],
+       [
+        3.11,
+        3.22
+       ],
+       [
+        3.33,
+        3.58
+       ],
+       [
+        4.18,
+        4.29
+       ],
+       [
+        4.48,
+        4.62
+       ],
+       [
+        4.8,
+        4.89
+       ],
+       [
+        4.98,
+        5.23
+       ]
+      ],
+      "source": "copied from script/ch00.json 00.3 (Cande and Kent 1995 via Gee and Kent 2007, Tauxe Table 15.1)"
+     },
+     "chance_strip": {
+      "seed": 1968,
+      "length_px": 520,
+      "rate_left": 0.15,
+      "rate_right": 1.0,
+      "note": "SCHEMATIC: a polarity barcode drawn from a Poisson process whose rate rises left to right, seed fixed; illustrates 'odds that change over the ages' (Cox 1968: p about 0.05 over the last 10 Myr, at least 100 times smaller in the Permian), not data"
+     }
+    }
+   },
+   "sfx": [
+    "whoosh@0.1",
+    "tick@record+0.1",
+    "tick@stripes+0.1",
+    "tick@chance+0.1"
+   ],
+   "paragraphs": [
+    {
+     "hold_after": 0.0,
+     "sentences": [
+      {
+       "id": "SOA1.1.s1",
+       "cue": "hunt",
+       "text": "Riga, Karlsruhe and VKS crowned a hunt of nearly a century.",
+       "text_fr": "Riga, Karlsruhe et VKS ont couronné une traque de près d'un siècle."
+      },
+      {
+       "id": "SOA1.1.s2",
+       "cue": "map",
+       "text": "Here is its map.",
+       "text_fr": "En voici la carte."
+      }
+     ]
+    },
+    {
+     "hold_after": 0.0,
+     "sentences": [
+      {
+       "id": "SOA1.1.s3",
+       "cue": "record",
+       "text": "Lane one, the Earth's record: lavas magnetized backwards, nineteen oh six.",
+       "text_fr": "Première piste, les archives de la Terre : des laves aimantées à l'envers, mille neuf cent six."
+      },
+      {
+       "id": "SOA1.1.s4",
+       "cue": "stripes",
+       "text": "Seafloor stripes, nineteen sixty-three.",
+       "text_fr": "Les bandes du plancher océanique, mille neuf cent soixante-trois."
+      },
+      {
+       "id": "SOA1.1.s5",
+       "cue": "chance",
+       "text": "Then flips as chance events, whose odds change over the ages.",
+       "text_fr": "Puis des inversions vues comme des tirages au hasard, dont la probabilité change au fil des âges."
+      }
+     ]
+    }
+   ],
+   "onscreen": {
+    "title": "A century of dynamo hunting",
+    "labels": [
+     "CHAPTER 02+",
+     "LEVEL L1",
+     "RIGA",
+     "KARLSRUHE",
+     "VKS",
+     "1900",
+     "1920",
+     "1940",
+     "1960",
+     "1980",
+     "2000",
+     "2010",
+     "2020",
+     "NOW · NOV 2026",
+     "EARTH'S RECORD",
+     "THEORY",
+     "LAB DYNAMOS",
+     "SIMULATIONS",
+     "REDUCED MODELS",
+     "1906 · reversed lavas",
+     "1963 · seafloor stripes",
+     "1968 · flips as chance events"
+    ],
+    "formulas": [],
+    "chips": [
+     "BRUNHES 1906",
+     "VINE & MATTHEWS 1963",
+     "COX 1968",
+     "SCHEMATIC"
+    ]
+   },
+   "visual": "Render class flat (SVG). NIGHT, the map drawn in chalk ink (--chalk, --fg-2) on --bg; a new recurring device, 'the map' (the consistency editor gives it a motif id in styles.md 3.5, e.g. M11; chSOA2 reopens the same canvas). Geometry, glyphs, label states and every pin come from params.map and params.catalog; put both in scenes/chSOA1/map.js (copied verbatim) so the six scenes and chSOA2 draw the identical map; x of a pin is the piecewise-linear map of its year (params.map.axis.segments). LEAD-IN (3.4 s, no voice): chapter card T4, Kit.chapterCard(ctx, {num: params.chapter.num, title: onscreen.title, level: 'L1', levelFrom: 'L1', at: 0.2, out: 'hunt-0.4'}) with the tier left undefined (no staircase); whoosh at 0.1. On 'hunt-0.15': the three cards of 02.4 return as small thumbnails, titles only (RIGA, KARLSRUHE, VKS; grey outlines, VKS at 100 %, the others at 60 %), in a row at centre (y 470-610). On 'map-0.15': the cards slide off to the right edge and out (they come back as pins in SOA1.3); the time axis draws itself left to right in 1.6 s at y 150: piecewise-linear, decade ticks only, tick labels 28 px JetBrains Mono --muted, the dashed stub 2026-2031, then the hairline 'NOW · NOV 2026' (--fg-2, full height of the lanes). Then the lane separators (--grid hairlines) draw on top to bottom, 0.08 s apart, and the five lane labels type into the left gutter (Inter SemiBold 28 px, --muted, right-aligned at x 414). The sixth lane, DATA-DRIVEN, is NOT drawn yet (it unfolds in SOA1.5). On 'record-0.15': lane 1 'EARTH'S RECORD' brightens to --fg for the rest of the scene (the others stay --muted); pin E1906 drops in (filled dot with its small vermillion flip glyph) with its active label ('1906 · reversed lavas' / 'BRUNHES 1906'). On 'stripes-0.15': the 0-5 Myr seafloor strip of 00.3 (params.seafloor, drawn exactly as in 00.3: solid vermillion = normal, near-background = reversed, 360 x 44 px) fades in above lane 1 near x 900, then shrinks into pin E1963 over 0.8 s (T1 callback to the cold open); active label '1963 · seafloor stripes' / 'VINE & MATTHEWS 1963'. On 'chance-0.15': pin E1968 with its active label ('1968 · flips as chance events' / 'COX 1968'); under lane 1, between x 1000 and 1520, a thin polarity barcode (vermillion and --b-neg) draws on left to right in 2 s, its flips sparse on the left and dense on the right (params.chance_strip, fixed seed), with the grey dashed chip SCHEMATIC at its right end; it fades at the end of the sentence. End state: five lanes labelled, three pins in lane 1, E1963 and E1968 'named' (params.keep_named), E1906 'year'. Idle: a 1.00 to 1.02 push over the scene, the NOW hairline breathing (opacity 0.6 to 0.8, 4 s period). Soft tick (sfx) when each pin lands. Badge CONTEXT top-right. Key colours: vermillion only (flip glyphs, seafloor strip, barcode); everything else chalk and greys.",
+   "assets": [],
+   "sources": [
+    "script/ch02.json 02.4 (the three liquid-sodium dynamos, Riga, Karlsruhe and VKS: the first line continues from them)",
+    "en/rapport/index.qmd:139 and en/prep/p3-mhd-dynamo/index.qmd:1212-1214 (first dynamos November 1999, December 1999, 2006: 'nearly a century' after 1906 and 1919)",
+    "en/prep/p3-mhd-dynamo/index.qmd:1230 (the Earth's field has reversed many times, irregularly)",
+    "external: Brunhes 1906, J. Phys. Théor. Appl. 5, 705-724, doi:10.1051/jphystap:019060050070500 (checked 2026-11-08, Crossref; content, volcanic rocks magnetized opposite to the present field: Constable 2003, The Fluid Mechanics of Astrophysics and Geophysics vol. 11, ch. 4, section 1, doi:10.1201/9780203207611.ch4, full text read 2026-11-08 by the state-of-the-art research, plan/state_of_the_art.md:232-235)",
+    "external: Vine & Matthews 1963, Nature 199, 947-949, doi:10.1038/199947a0 (checked 2026-11-08, Crossref: 'Magnetic anomalies over oceanic ridges')",
+    "external: Cox 1968, J. Geophys. Res. 73, 3247-3260, doi:10.1029/JB073i010p03247 (checked 2026-11-08; abstract read via OpenAlex: polarity intervals analysed with a probability model based on Bernoulli trials; p, the probability of a reversal per cycle, about 0.05 over the past 10 Myr and at least two orders of magnitude smaller in the Permian)",
+    "script/ch00.json 00.3 (seafloor strip: Cande and Kent 1995 via the composite GPTS of Gee and Kent 2007, Tauxe, Essentials of Paleomagnetism, Table 15.1)",
+    "plan/state_of_the_art.md:35-75 (the shared map: register, axis, lanes, glyphs, legibility)"
+   ],
+   "variants": null,
+   "question": null
+  },
+  {
+   "id": "SOA1.2",
+   "was": null,
+   "title": "Can a fluid make a magnet?",
+   "file": "scenes/chSOA1/SOA1_2_can_a_fluid_make_a_magnet.html",
+   "status": "ready",
+   "level": "L1",
+   "register": "NIGHT",
+   "badge": {
+    "kind": "CONTEXT",
+    "confidence": null,
+    "note": "Larmor 1919 via Rincon 2019 · Cowling 1933 · Herzenberg, Backus 1958"
+   },
+   "target_s": 24,
+   "lead_in": 0.4,
+   "tail": 0.8,
+   "deps": [],
+   "entry": {
+    "data": {},
+    "params": {
+     "map": "params.map of SOA1.1 (scenes/chSOA1/map.js)",
+     "present": [
+      "E1906",
+      "E1963",
+      "E1968"
+     ],
+     "add": [
+      {
+       "id": "T1919",
+       "cue": "idea"
+      },
+      {
+       "id": "T1933",
+       "cue": "nogo"
+      },
+      {
+       "id": "T1958",
+       "cue": "proofs"
+      },
+      {
+       "id": "T1966",
+       "cue": "proofs+1.8"
+      },
+      {
+       "id": "T1972",
+       "cue": "blueprints"
+      },
+      {
+       "id": "T1973",
+       "cue": "blueprints+0.5"
+      }
+     ],
+     "keep_named": [
+      "T1933",
+      "T1958"
+     ],
+     "pictograms": {
+      "axisymmetric": "a vertical axis with six vermillion field-line loops drawn identically on both sides (a field symmetric around the axis), 220 x 160 px",
+      "corkscrew": "a short blue (--u) helix, 120 x 60 px",
+      "spiral_cells": "a 3 x 3 grid of small blue spiral cells, 120 x 120 px"
+     }
+    }
+   },
+   "sfx": [
+    "tick@idea+0.1",
+    "tick@nogo+0.1",
+    "tick@proofs+0.1",
+    "tick@blueprints+0.1"
+   ],
+   "paragraphs": [
+    {
+     "hold_after": 0.0,
+     "sentences": [
+      {
+       "id": "SOA1.2.s1",
+       "cue": "theory",
+       "text": "Lane two, theory.",
+       "text_fr": "Deuxième piste, la théorie."
+      },
+      {
+       "id": "SOA1.2.s2",
+       "cue": "idea",
+       "text": "Nineteen nineteen: a moving, conducting fluid might keep the Sun's field alive.",
+       "text_fr": "Mille neuf cent dix-neuf : un fluide conducteur en mouvement pourrait entretenir le champ du Soleil."
+      },
+      {
+       "id": "SOA1.2.s3",
+       "cue": "nogo",
+       "text": "Nineteen thirty-three: no flow can sustain a field that is symmetric around an axis.",
+       "text_fr": "Mille neuf cent trente-trois : aucun écoulement ne peut entretenir un champ symétrique autour d'un axe."
+      }
+     ]
+    },
+    {
+     "hold_after": 0.0,
+     "sentences": [
+      {
+       "id": "SOA1.2.s4",
+       "cue": "proofs",
+       "text": "Nineteen fifty-eight: the first proven examples of flows that can.",
+       "text_fr": "Mille neuf cent cinquante-huit : les premiers exemples démontrés d'écoulements qui y parviennent."
+      },
+      {
+       "id": "SOA1.2.s5",
+       "cue": "blueprints",
+       "text": "In the seventies came simple dynamo flows, later the blueprints of Riga and Karlsruhe.",
+       "text_fr": "Les années soixante-dix apportent des écoulements dynamos très simples, futurs plans de Riga et de Karlsruhe."
+      }
+     ]
+    }
+   ],
+   "onscreen": {
+    "title": "",
+    "labels": [
+     "THEORY",
+     "1919 · the idea",
+     "1933 · no axisymmetric dynamo",
+     "1958 · first working examples",
+     "1966 · mean-field theory",
+     "1972 · Roberts flow",
+     "1973 · Ponomarenko flow",
+     "Riga",
+     "Karlsruhe"
+    ],
+    "formulas": [
+     {
+      "cue": "nogo",
+      "tex": "\\partial_\\varphi \\B = 0 \\;\\Longrightarrow\\; \\text{no dynamo (Cowling 1933)}"
+     }
+    ],
+    "chips": [
+     "LARMOR 1919 · VIA RINCON 2019",
+     "COWLING 1933",
+     "HERZENBERG 1958 · BACKUS 1958",
+     "STEENBECK, KRAUSE, RÄDLER 1966",
+     "G. O. ROBERTS 1972",
+     "PONOMARENKO 1973"
+    ]
+   },
+   "visual": "Render class flat (SVG), the shared map (scenes/chSOA1/map.js), lane 1 pins present from frame 0 in 'year' state except params.keep_named of SOA1.1 ('named'). On 'theory-0.15': lane 2 'THEORY' brightens to --fg, lane 1 drops back to --muted. On 'idea-0.15': pin T1919 with its active label ('1919 · the idea' / 'LARMOR 1919 · VIA RINCON 2019'). No Sun picture, no portrait. On 'nogo-0.15': above lane 2 near x 700, the pictogram params.pictograms.axisymmetric draws on (0.6 s); the pen (M9) strikes it with a chalk cross; the pin T1933 lands as an x glyph with its active label ('1933 · no axisymmetric dynamo' / 'COWLING 1933'); formula layer item (small type, never narrated). The pictogram fades at 'proofs'. On 'proofs-0.15': pin T1958 ('1958 · first working examples' / 'HERZENBERG 1958 · BACKUS 1958'); at 'proofs+1.8' the silent pin T1966 ('1966 · mean-field theory' / 'STEENBECK, KRAUSE, RÄDLER 1966') appears with an active label for 2.5 s, then 'year'. On 'blueprints-0.15': pins T1972 and T1973 0.5 s apart (each active for 2 s: '1972 · Roberts flow' / 'G. O. ROBERTS 1972', '1973 · Ponomarenko flow' / 'PONOMARENKO 1973'); from each a thin --muted arrow starts down toward lane 3 at the year 1999 and stops as a dashed stub at the top of lane 3 (the 1999 pins do not exist yet; SOA1.3 completes both arrows); at the stubs' ends the pictograms params.pictograms.corkscrew (under the Ponomarenko arrow) and spiral_cells (under the Roberts arrow) appear with the small chalk words 'Riga' and 'Karlsruhe' (28 px), 2.5 s, then fade. End state: lane 2 holds six pins, T1933 and T1958 'named', the others 'year'. Soft tick on each narrated pin. Badge CONTEXT. Key colours: vermillion for the field loops, blue for the two flow pictograms; everything else chalk.",
+   "assets": [],
+   "sources": [
+    "external: Rincon 2019, J. Plasma Phys. 85, 205850401, doi:10.1017/S0022377819000539 (checked 2026-11-08; arXiv:1903.07829 read 2026-11-08: 'This idea of self-exciting fluid dynamos was first put forward a century ago by Larmor (1919) in the context of solar (sunspot) magnetism'; 'the demonstration by Cowling (1933) that axisymmetric dynamo action is not possible'; 'Herzenberg (1958) and Backus (1958) found the first mathematical working examples of fluid dynamos'). Larmor 1919 itself not read: title and pages unverified (plan/state_of_the_art.md section 6), so only 'the idea, 1919' is said.",
+    "en/prep/p3-mhd-dynamo/index.qmd:866-867 (Theorem 5.3, Cowling 1933: an axisymmetric magnetic field that vanishes at infinity cannot be sustained by dynamo action)",
+    "external: Cowling 1933, Mon. Not. R. Astron. Soc. 94, 39-48, doi:10.1093/mnras/94.1.39 (checked 2026-11-08, Crossref)",
+    "external: Herzenberg 1958, Phil. Trans. R. Soc. A 250, 543-583, doi:10.1098/rsta.1958.0007; Backus 1958, Ann. Phys. 4, 372-447, doi:10.1016/0003-4916(58)90054-X (checked 2026-11-08, Crossref)",
+    "en/prep/p3-mhd-dynamo/index.qmd:918 (mean-field theory of Steenbeck, Krause and Rädler 1966); external: Z. Naturforsch. A 21, 369-376, doi:10.1515/zna-1966-0401 (checked 2026-11-08, Crossref)",
+    "en/prep/p3-mhd-dynamo/index.qmd:908-911 (Example 5.5: Ponomarenko 1973 and G. O. Roberts 1972 flows are dynamos)",
+    "en/rapport/index.qmd:139 (Riga: a Ponomarenko-type helical flow; Karlsruhe: 52 vortex generators realize the two-scale dynamo of Roberts and Busse)",
+    "en/prep/p3-mhd-dynamo/index.qmd:1149 and :1213 (Riga realizes the Ponomarenko flow; Karlsruhe: 52 helical cells, Roberts–Busse)",
+    "external: G. O. Roberts 1972, Phil. Trans. R. Soc. A 271, 411-454, doi:10.1098/rsta.1972.0015; Ponomarenko 1973, J. Appl. Mech. Tech. Phys. 14, 775-778, doi:10.1007/BF00853190 (checked 2026-11-08, Crossref)"
+   ],
+   "variants": null,
+   "question": null
+  },
+  {
+   "id": "SOA1.3",
+   "was": null,
+   "title": "Building one",
+   "file": "scenes/chSOA1/SOA1_3_building_one.html",
+   "status": "ready",
+   "level": "L1",
+   "register": "NIGHT",
+   "badge": {
+    "kind": "CONTEXT",
+    "confidence": null,
+    "note": "published experiments · R:139, R:149"
+   },
+   "target_s": 20,
+   "lead_in": 0.4,
+   "tail": 1.2,
+   "deps": [],
+   "entry": {
+    "data": {},
+    "params": {
+     "map": "params.map of SOA1.1 (scenes/chSOA1/map.js)",
+     "present": [
+      "E1906",
+      "E1963",
+      "E1968",
+      "T1919",
+      "T1933",
+      "T1958",
+      "T1966",
+      "T1972",
+      "T1973"
+     ],
+     "add": [
+      {
+       "id": "L1963",
+       "cue": "cylinders"
+      },
+      {
+       "id": "L1999R",
+       "cue": "sodium"
+      },
+      {
+       "id": "L1999K",
+       "cue": "sodium+1.4"
+      },
+      {
+       "id": "L2006",
+       "cue": "vks"
+      },
+      {
+       "id": "LDRES",
+       "cue": "vks+4.2"
+      }
+     ],
+     "keep_named": [
+      "L1999R",
+      "L1999K",
+      "L2006",
+      "LDRES"
+     ],
+     "vks_flip_offset_s": 1.6,
+     "cards_from_02_4": {
+      "L1999R": "RIGA",
+      "L1999K": "KARLSRUHE",
+      "L2006": "VKS"
+     }
+    }
+   },
+   "sfx": [
+    "tick@cylinders+0.1",
+    "tick@sodium+0.1",
+    "tick@sodium+1.5",
+    {
+     "id": "needle",
+     "cue": "vks",
+     "offset": 1.6,
+     "gain_db": -20
+    },
+    "tick@vks+4.3"
+   ],
+   "paragraphs": [
+    {
+     "hold_after": 0.0,
+     "sentences": [
+      {
+       "id": "SOA1.3.s1",
+       "cue": "build",
+       "text": "Lane three: building a dynamo.",
+       "text_fr": "Troisième piste : construire une dynamo."
+      },
+      {
+       "id": "SOA1.3.s2",
+       "cue": "cylinders",
+       "text": "Nineteen sixty-three: a model dynamo of spinning iron cylinders.",
+       "text_fr": "Mille neuf cent soixante-trois : une maquette de dynamo en cylindres de fer qui tournent."
+      },
+      {
+       "id": "SOA1.3.s3",
+       "cue": "sodium",
+       "text": "Nineteen ninety-nine: sodium makes its own field, in Riga, then Karlsruhe.",
+       "text_fr": "Mille neuf cent quatre-vingt-dix-neuf : le sodium crée son propre champ, à Riga, puis à Karlsruhe."
+      }
+     ]
+    },
+    {
+     "hold_after": 0.0,
+     "sentences": [
+      {
+       "id": "SOA1.3.s4",
+       "cue": "vks",
+       "text": "Two thousand six: VKS, only with iron discs, then the first flips of a turbulent sodium dynamo.",
+       "text_fr": "Deux mille six : VKS, seulement avec des disques en fer, puis les premières inversions d'une dynamo turbulente au sodium."
+      }
+     ]
+    }
+   ],
+   "onscreen": {
+    "title": "",
+    "labels": [
+     "LAB DYNAMOS",
+     "1963 · spinning iron cylinders",
+     "1999 · Riga",
+     "1999 · Karlsruhe",
+     "2006 · VKS: iron discs, flips",
+     "DRESDYN · precession only",
+     "planned"
+    ],
+    "formulas": [],
+    "chips": [
+     "LOWES & WILKINSON 1963",
+     "GAILITIS ET AL. 2000",
+     "STIEGLITZ & MÜLLER 2001",
+     "MONCHAUX ET AL. 2007 · BERHANU ET AL. 2007",
+     "STEFANI ET AL. 2012"
+    ]
+   },
+   "visual": "Render class flat (SVG), the shared map; lanes 1-2 pins present in 'year' state (plus keep_named of SOA1.1 and SOA1.2 'named'), the two dashed arrow stubs of SOA1.2 waiting at the top of lane 3. On 'build-0.15': lane 3 'LAB DYNAMOS' brightens, lane 2 back to --muted. On 'cylinders-0.15': pin L1963 with its active label ('1963 · spinning iron cylinders' / 'LOWES & WILKINSON 1963') and, beside it for 2.5 s, a small grey pictogram (two cylinders set in a grey block, each with a curved rotation arrow; matter is grey); a thin --muted arrow draws from T1958 (lane 2) down to L1963 (they built on Herzenberg's working dynamo). On 'sodium-0.15': the RIGA thumbnail card of 02.4 slides in from the right edge and shrinks into pin L1999R (0.8 s, T1 callback), the Ponomarenko arrow stub completes into it; at 'sodium+1.4' the KARLSRUHE card does the same into L1999K (18 px to the right), the Roberts arrow completes; both labels active then 'named' ('1999 · Riga' / 'GAILITIS ET AL. 2000'; '1999 · Karlsruhe' / 'STIEGLITZ & MÜLLER 2001'). On 'vks-0.15': the VKS card shrinks into pin L2006 ('2006 · VKS: iron discs, flips' / 'MONCHAUX ET AL. 2007 · BERHANU ET AL. 2007'); at 'vks+1.6' its vermillion flip glyph turns over once (180 degrees, overshoot at most 3 %) with the soft two-note needle sound (-20 dB). At 'vks+4.2' (not narrated here: 02.4 already said that DRESDYN aims to join the three) a dashed ring LDRES lands in the dashed future stub of lane 3 (x about 1690), active label 'DRESDYN · precession only' / 'STEFANI ET AL. 2012' and the chip 'planned' (dashed outline) until the end; beside it the tiny precession pictogram of 02.4 (grey cylinder whose axis slowly sweeps a cone, no impeller). Do NOT write a date or a status for DRESDYN in 2026 (unverified, plan/state_of_the_art.md section 6). End state: lane 3 holds five pins, Riga, Karlsruhe, VKS and DRESDYN 'named'. Badge CONTEXT. Key colours: vermillion (flip glyph) only; matter grey.",
+   "assets": [],
+   "sources": [
+    "external: Lowes & Wilkinson 1963, Nature 198, 1158-1160, doi:10.1038/1981158a0 (checked 2026-11-08, Crossref: 'Geomagnetic dynamo: a laboratory model'); content from Stefani et al. 2018, arXiv:1803.03421, section 2.1, read 2026-11-08: 'based on Herzenberg's theoretical derivation of a working dynamo (Herzenberg 1958), Lowes and Wilkinson (1963, 1967) conducted a series of quasi-homogeneous dynamo experiments consisting of two or more rotating soft-iron cylinders embedded into blocks of the same material' (no 'first' claimed)",
+    "en/rapport/index.qmd:139 (Riga: first detection of a self-excited eigenmode in November 1999; Karlsruhe: first successful run in December 1999; VKS: dynamo only with soft-iron impellers, none with stainless steel)",
+    "en/prep/p3-mhd-dynamo/index.qmd:1212-1214 (Riga November 1999, Karlsruhe December 1999, VKS 2006 published in 2007, VKS reversals)",
+    "en/rapport/index.qmd:149 (Berhanu et al. 2007 observed the first B to -B reversals in the laboratory, in VKS)",
+    "external: Gailitis et al. 2000, Phys. Rev. Lett. 84, 4365-4368, doi:10.1103/PhysRevLett.84.4365; Stieglitz & Müller 2001, Phys. Fluids 13, 561-564, doi:10.1063/1.1331315; Monchaux et al. 2007, Phys. Rev. Lett. 98, 044502, doi:10.1103/PhysRevLett.98.044502; Berhanu et al. 2007, EPL 77, 59001, doi:10.1209/0295-5075/77/59001 (checked 2026-11-08, Crossref)",
+    "en/prep/p3-mhd-dynamo/index.qmd:1208 and en/encadrants/index.qmd:78 (DRESDYN, HZDR Dresden: a precessing cylinder, no propeller or impeller)",
+    "external: Stefani et al. 2012, Magnetohydrodynamics 48, 103-114, doi:10.22364/mhd.48.1.13 (checked 2026-11-08; abstract read via OpenAlex: 'a homogeneous hydromagnetic dynamo driven solely by precession'). DRESDYN's status in 2026 is unverified (last source: 'being set up', Giesecke et al., arXiv:2410.14449v3, April 2025): not shown.",
+    "script/ch02.json 02.4 (the RIGA, KARLSRUHE and VKS cards reused as pins; DRESDYN 'aims to join them')",
+    "external: Berhanu et al. 2007, EPL 77, 59001, doi:10.1209/0295-5075/77/59001, abstract read 2026-11-08 via OpenAlex: 'We report the first experimental observation of reversals of a dynamo field generated in a laboratory experiment based on a turbulent flow of liquid sodium' (hence 'the first flips of a turbulent sodium dynamo', not 'the first flips seen in a laboratory': Stefani et al. 2018, arXiv:1803.03421 section 2.1, read 2026-11-08, report that the iron-cylinder models of Lowes and Wilkinson 'even led to a sort of reversals similar to those of the geomagnetic field (Wilkinson 1984)')"
+   ],
+   "variants": null,
+   "question": null
+  },
+  {
+   "id": "SOA1.4",
+   "was": null,
+   "title": "Computing one",
+   "file": "scenes/chSOA1/SOA1_4_computing_one.html",
+   "status": "ready",
+   "level": "L2",
+   "register": "NIGHT",
+   "badge": {
+    "kind": "CONTEXT",
+    "confidence": null,
+    "note": "published simulations · rings: papers co-signed by C. Nore or Y. Ponty"
+   },
+   "target_s": 40,
+   "lead_in": 0.4,
+   "tail": 0.8,
+   "deps": [],
+   "entry": {
+    "data": {},
+    "params": {
+     "map": "params.map of SOA1.1 (scenes/chSOA1/map.js)",
+     "rail": {
+      "from": "L1",
+      "to": "L2",
+      "at": 0.1
+     },
+     "present": [
+      "E1906",
+      "E1963",
+      "E1968",
+      "T1919",
+      "T1933",
+      "T1958",
+      "T1966",
+      "T1972",
+      "T1973",
+      "L1963",
+      "L1999R",
+      "L1999K",
+      "L2006",
+      "LDRES"
+     ],
+     "add": [
+      {
+       "id": "S1981",
+       "cue": "turbulent"
+      },
+      {
+       "id": "S1995",
+       "cue": "geodynamo"
+      },
+      {
+       "id": "S1997",
+       "cue": "swirl"
+      },
+      {
+       "id": "S2005",
+       "cue": "lowpm"
+      },
+      {
+       "id": "S2016",
+       "cue": "vkssim"
+      },
+      {
+       "id": "S2017",
+       "cue": "vkssim+0.6"
+      },
+      {
+       "id": "S2026B",
+       "cue": "flipsim"
+      }
+     ],
+     "keep_named": [
+      "S2026B"
+     ],
+     "roster": {
+      "title": "PAPERS CO-SIGNED BY THE PROJECT'S SUPERVISORS",
+      "box": {
+       "x0": 470,
+       "x1": 1180,
+       "y0": 184,
+       "y1": 404
+      },
+      "rows": [
+       {
+        "pin": "S1997",
+        "glyph": "ring",
+        "text": "C. NORE et al. · 1997 · Taylor–Green dynamo",
+        "cue": "swirl"
+       },
+       {
+        "pin": "S2005",
+        "glyph": "ring",
+        "text": "Y. PONTY et al. · 2005 · dynamos down to Pm = 0.01",
+        "cue": "lowpm"
+       },
+       {
+        "pin": "S2016",
+        "glyph": "ring",
+        "text": "C. NORE et al. · 2016 · VKS in SFEMaNS",
+        "cue": "vkssim"
+       },
+       {
+        "pin": "S2017",
+        "glyph": "ring",
+        "text": "KREUZAHLER, Y. PONTY et al. · 2017 · VKS in LATU",
+        "cue": "vkssim+0.6"
+       },
+       {
+        "pin": "S2026B",
+        "glyph": "diamond",
+        "text": "BOUSQUET, Y. PONTY … C. NORE · 2026 · VKS flips",
+        "cue": "flipsim"
+       }
+      ]
+     },
+     "pm_dial": {
+      "log10_from": 0,
+      "log10_to": -2,
+      "labels": [
+       "Pm 1",
+       "Pm 0.01"
+      ]
+     },
+     "re_gauge": {
+      "log10_min": 3,
+      "log10_max": 7,
+      "sim": {
+       "value": 1594,
+       "label": "reference run · 1594"
+      },
+      "vks": {
+       "from": 1000000.0,
+       "to": 5000000.0,
+       "label": "VKS sodium · millions"
+      }
+     },
+     "lower_thirds": [
+      {
+       "id": "bousquet",
+       "kind": "reference",
+       "l1": "Reference",
+       "l2": "Bousquet et al. 2026 · Phys. Rev. Fluids 11, 063703",
+       "at": "flipsim-0.2",
+       "hold": 5.0
+      }
+     ],
+     "chips": {
+      "independent": "INDEPENDENT SUMMARY · NOT REVIEWED BY THE PEOPLE NAMED",
+      "explored": "IN THE RUNS EXPLORED"
+     }
+    }
+   },
+   "sfx": [
+    "tick@turbulent+0.1",
+    {
+     "id": "needle",
+     "cue": "geodynamo",
+     "offset": 1.2,
+     "gain_db": -24
+    },
+    "pop@rings",
+    "tick@swirl+0.1",
+    "tick@lowpm+0.1",
+    "tick@vkssim+0.1",
+    {
+     "id": "needle",
+     "cue": "flipsim",
+     "offset": 1.0,
+     "gain_db": -20
+    }
+   ],
+   "paragraphs": [
+    {
+     "hold_after": 0.0,
+     "sentences": [
+      {
+       "id": "SOA1.4.s1",
+       "cue": "computers",
+       "text": "Lane four, computers.",
+       "text_fr": "Quatrième piste, les ordinateurs."
+      },
+      {
+       "id": "SOA1.4.s2",
+       "cue": "turbulent",
+       "text": "Nineteen eighty-one: simulated turbulence grows dynamos.",
+       "text_fr": "Mille neuf cent quatre-vingt-un : une turbulence simulée fait naître des dynamos."
+      },
+      {
+       "id": "SOA1.4.s3",
+       "cue": "geodynamo",
+       "text": "Nineteen ninety-five: a simulated Earth's core reverses its field.",
+       "text_fr": "Mille neuf cent quatre-vingt-quinze : un noyau terrestre simulé inverse son champ."
+      },
+      {
+       "id": "SOA1.4.s4",
+       "cue": "rings",
+       "text": "Ringed pins mark papers co-signed by this project's supervisors.",
+       "text_fr": "Les repères cerclés signalent des articles cosignés par les encadrants de ce projet."
+      },
+      {
+       "id": "SOA1.4.s5",
+       "cue": "swirl",
+       "text": "Nineteen ninety-seven: two simulated counter-rotating eddies make a dynamo.",
+       "text_fr": "Mille neuf cent quatre-vingt-dix-sept : deux tourbillons contrarotatifs simulés produisent une dynamo."
+      },
+      {
+       "id": "SOA1.4.s6",
+       "cue": "lowpm",
+       "text": "Two thousand five: such dynamos still work at a {param}Pm{/} of one hundredth.",
+       "text_fr": "Deux mille cinq : ces dynamos fonctionnent encore pour un {param}Pm{/} d'un centième."
+      }
+     ]
+    },
+    {
+     "hold_after": 0.0,
+     "sentences": [
+      {
+       "id": "SOA1.4.s7",
+       "cue": "vkssim",
+       "text": "From twenty sixteen, two codes simulate the VKS tank, iron impellers included.",
+       "text_fr": "À partir de deux mille seize, deux codes simulent la cuve VKS, turbines en fer comprises."
+      },
+      {
+       "id": "SOA1.4.s8",
+       "cue": "flipsim",
+       "text": "Twenty twenty-six: both make it flip, in the runs explored only with conducting surroundings.",
+       "text_fr": "Deux mille vingt-six : les deux codes obtiennent des inversions, dans les cas explorés seulement avec un milieu conducteur autour."
+      },
+      {
+       "id": "SOA1.4.s9",
+       "cue": "reference",
+       "text": "Their reference run: a {param}Reynolds number{/} near sixteen hundred, not millions.",
+       "text_fr": "Leur simulation de référence : un {param}nombre de Reynolds{/} proche de mille six cents, pas de plusieurs millions."
+      }
+     ]
+    }
+   ],
+   "onscreen": {
+    "title": "",
+    "labels": [
+     "SIMULATIONS",
+     "1981 · turbulent dynamos",
+     "1995 · a simulated geodynamo reverses",
+     "PAPERS CO-SIGNED BY THE PROJECT'S SUPERVISORS",
+     "C. NORE et al. · 1997 · Taylor–Green dynamo",
+     "Y. PONTY et al. · 2005 · dynamos down to Pm = 0.01",
+     "C. NORE et al. · 2016 · VKS in SFEMaNS",
+     "KREUZAHLER, Y. PONTY et al. · 2017 · VKS in LATU",
+     "BOUSQUET, Y. PONTY … C. NORE · 2026 · VKS flips",
+     "Pm 1",
+     "Pm 0.01",
+     "conducting surroundings",
+     "reference run · 1594",
+     "VKS sodium · millions",
+     "○ papers co-signed by the project's supervisors",
+     "◆ paper declaring the MilaDy grant"
+    ],
+    "formulas": [
+     {
+      "cue": "lowpm",
+      "tex": "Pm = \\nu/\\eta:\\ 1 \\to 10^{-2}\\ \\text{(Taylor–Green; DNS, Lagrangian-averaged model, LES; Ponty et al. 2005)}"
+     },
+     {
+      "cue": "reference",
+      "tex": "Re = 1594,\\ Rm = 531\\ \\text{(reference reversal run)}\\quad\\text{vs}\\quad Re \\le 5\\times10^{6}\\ \\text{(VKS)}"
+     }
+    ],
+    "chips": [
+     "MENEGUZZI, FRISCH, POUQUET 1981",
+     "GLATZMAIER & ROBERTS 1995",
+     "INDEPENDENT SUMMARY · NOT REVIEWED BY THE PEOPLE NAMED",
+     "IN THE RUNS EXPLORED",
+     "REFERENCE · Bousquet et al. 2026 · Phys. Rev. Fluids 11, 063703"
+    ]
+   },
+   "visual": "Render class flat (SVG), the shared map; lanes 1-3 present in 'year' state (keep_named of earlier scenes 'named'). At 0.1 s the altitude rail climbs L1 to L2 (Kit.rail(ctx, params.rail), 3 s, brightens to 80 %). On 'computers-0.15': lane 4 'SIMULATIONS' brightens; lanes 1-2 dim to 35 % for the whole scene (the roster box will sit over them). On 'turbulent-0.15': pin S1981 ('1981 · turbulent dynamos' / 'MENEGUZZI, FRISCH, POUQUET 1981'). On 'geodynamo-0.15': pin S1995 ('1995 · a simulated geodynamo reverses' / 'GLATZMAIER & ROBERTS 1995'); its flip glyph turns over once at 'geodynamo+1.2' (needle, -24 dB). Use only the paper's title for this pin (its abstract was not read: plan/state_of_the_art.md section 6). On 'rings-0.15': the roster box (params.roster.box, panel rgba(16,21,28,0.75), thin --fg-2 frame) opens over the dimmed lanes 1-2 with its title in JetBrains Mono 28 px --muted; the legend line '○ papers co-signed by the project's supervisors' appears under the axis at right (28 px), and the grey chip 'INDEPENDENT SUMMARY · NOT REVIEWED BY THE PEOPLE NAMED' sits at the bottom-right corner of the box for the rest of the scene (D6, en/these/index.qmd:57). Rings never carry photos or logos; names are text only. On 'swirl-0.15': ring S1997 lands in lane 4 and roster row 1 types in (Inter Medium 28 px, the ring glyph at its start); a chalk leader joins row and ring for 1.5 s; beside the ring for 2.5 s a pictogram of the Taylor–Green cell: two blue (--u) eddies turning in opposite directions, 140 x 70 px. On 'lowpm-0.15': ring S2005 (with its small green tick) and roster row 2, with 'Pm' in green; beside the ring for 3 s a small green dial (M2) on a log scale whose needle drops from 'Pm 1' to 'Pm 0.01' (params.pm_dial; a recall of the Pm dial of 02.3 and of the question card ch02.Q); formula layer item. On 'vkssim-0.15': a thin --muted arrow draws from the VKS pin L2006 (lane 3) down to lane 4 at 2016; ring S2016 lands at its tip with roster row 3, and at 'vkssim+0.6' ring S2017 with row 4 (the two rings 20 px apart, years under them). On 'flipsim-0.15': diamond S2026B lands at 2026 in lane 4 with roster row 5 (diamond glyph); the legend gains '◆ paper declaring the MilaDy grant'; its flip glyph turns over at 'flipsim+1.0' (needle, -20 dB); beside it for the rest of the scene a small grey side view of the VKS cylinder wrapped in a thin grey shell labelled 'conducting surroundings' (Bousquet et al. 2026: 'a conductive surrounding medium'), with the chip 'IN THE RUNS EXPLORED'; lower-third params.lower_thirds[0] for 5 s. On 'reference-0.15': a green log gauge (params.re_gauge) opens in a callout under lane 4 near x 1100-1620 (y 640-720, over the dimmed lane 5): ticks 10³, 10⁵, 10⁷ (28 px), a green mark at 1594 labelled 'reference run · 1594' and a green band from 10⁶ to 5 × 10⁶ labelled 'VKS sodium · millions'; the gap between them shaded faint green; formula layer item. Re is a control parameter: green, never blue. End state: lane 4 holds seven pins, S2026B 'named', the roster box full (five rows). Badge CONTEXT. Key colours: blue (eddies), green (Pm dial, Re gauge, tick), vermillion (flip glyphs); everything else chalk.",
+   "assets": [],
+   "sources": [
+    "external: Meneguzzi, Frisch, Pouquet 1981, Phys. Rev. Lett. 47, 1060-1064, doi:10.1103/PhysRevLett.47.1060 (checked 2026-11-08; abstract read: direct numerical simulations of 3D MHD turbulence, 'Helical and nonhelical turbulent dynamos'; Rincon 2019, arXiv:1903.07829, read 2026-11-08: they 'numerically demonstrated both the excitation of a large-scale magnetic field in small-scale homogeneous helical fluid turbulence, and that of small-scale magnetic fields in non-helical turbulence')",
+    "external: Glatzmaier & Roberts 1995, Nature 377, 203-209, doi:10.1038/377203a0 (checked 2026-11-08, Crossref title: 'A three-dimensional self-consistent computer simulation of a geomagnetic field reversal'; abstract not read, only the title is used)",
+    "external: Nore, Brachet, Politano, Pouquet 1997, Phys. Plasmas 4, 1-3, doi:10.1063/1.872578 (checked 2026-11-08; abstract read via OpenAlex: 'Dynamo action is demonstrated numerically in the forced Taylor–Green (TG) vortex made up of a confined swirling flow composed of a shear layer between two counter-rotating eddies')",
+    "en/encadrants/index.qmd:205 (Ponty et al. 2005: Taylor–Green dynamos from P_M = 1 down to P_M = 10^-2); external: Phys. Rev. Lett. 94, 164502, doi:10.1103/PhysRevLett.94.164502 (checked 2026-11-08, Crossref)",
+    "en/rapport/index.qmd:143 (direct numerical simulation of VKS with the impellers in SFEMaNS, Nore et al. 2016; the consortium's second solver LATU, impellers and walls by penalization, Kreuzahler et al. 2017)",
+    "specs/sources/encadrants.md:221-222 (Nore et al. 2016, EPL 114, 65002: 'For the first time', a full nonlinear MHD simulation of VKS with both counter-rotating impellers)",
+    "en/encadrants/index.qmd:210 (Kreuzahler, Ponty, Plihon, Homann, Grauer 2017, Phys. Rev. Lett. 119, 234501, doi:10.1103/PhysRevLett.119.234501, checked 2026-11-08, Crossref)",
+    "en/rapport/index.qmd:161 (Bousquet et al. 2026 obtained reversals in simulations of VKS with both of the consortium's solvers; reference simulation Re = 1594, Rm = 531)",
+    "en/encadrants/index.qmd:98 and specs/sources/encadrants.md:231 ('a conductive surrounding medium was found to be necessary for these inversions to occur', in the explored range)",
+    "en/rapport/index.qmd:137, en/prep/p3-mhd-dynamo/index.qmd:1145 and :1214 (sodium: Re of several million at threshold; VKS Re up to 5 x 10^6)",
+    "specs/sources/encadrants.md:31 and en/encadrants/index.qmd:96 (Bousquet et al. 2026 is one of the records found under the MilaDy grant ANR-25-CE51-0077: diamond glyph)",
+    "external: Bousquet, Ponty, Botez, Plihon, Nore 2026, Phys. Rev. Fluids 11, 063703, doi:10.1103/9tx2-1m13 (checked 2026-11-08, Crossref)",
+    "en/these/index.qmd:57 and en/encadrants/index.qmd:43 (independent work, neither reviewed nor endorsed by the people cited: the grey chip)",
+    "script/ch02.json ch02.Q (the Pm question card just before this unit: the Pm dial is a recall)",
+    "external: Ponty et al. 2005, abstract read 2026-11-08 via OpenAlex: 'a three-pronged numerical approach ... combining direct numerical simulations, a Lagrangian-averaged model and large-eddy simulations'; 'dynamos are observed from P_M = 1 down to P_M = 10^-2' (the method goes on the formula layer); Bousquet et al. 2026 and Kreuzahler et al. 2017 author lists checked 2026-11-08 via OpenAlex (Bousquet, Ponty, Botez, Plihon, Nore; Kreuzahler, Ponty, Plihon, Homann, Grauer): pin labels name the first author"
+   ],
+   "variants": null,
+   "question": null
+  },
+  {
+   "id": "SOA1.5",
+   "was": null,
+   "title": "A few dials",
+   "file": "scenes/chSOA1/SOA1_5_a_few_dials.html",
+   "status": "ready",
+   "level": "L2",
+   "register": "NIGHT",
+   "badge": {
+    "kind": "CONTEXT",
+    "confidence": null,
+    "note": "published reduced models · R:151-161"
+   },
+   "target_s": 24,
+   "lead_in": 0.4,
+   "tail": 0.8,
+   "deps": [],
+   "entry": {
+    "data": {},
+    "params": {
+     "map": "params.map of SOA1.1 (scenes/chSOA1/map.js)",
+     "present": [
+      "E1906",
+      "E1963",
+      "E1968",
+      "T1919",
+      "T1933",
+      "T1958",
+      "T1966",
+      "T1972",
+      "T1973",
+      "L1963",
+      "L1999R",
+      "L1999K",
+      "L2006",
+      "LDRES",
+      "S1981",
+      "S1995",
+      "S1997",
+      "S2005",
+      "S2016",
+      "S2017",
+      "S2026B"
+     ],
+     "add": [
+      {
+       "id": "R1958",
+       "cue": "discs"
+      },
+      {
+       "id": "R2008",
+       "cue": "three-0.6"
+      },
+      {
+       "id": "R2012",
+       "cue": "three"
+      },
+      {
+       "id": "D2016",
+       "cue": "four"
+      },
+      {
+       "id": "R2026",
+       "cue": "four+1.2"
+      }
+     ],
+     "keep_named": [
+      "R2012",
+      "R2026",
+      "S2026B"
+     ],
+     "data_lane_unfold": {
+      "cue": "four",
+      "from_year": 2016,
+      "duration_s": 0.8
+     },
+     "dial_wiggle": {
+      "seed": 2012,
+      "note": "SCHEMATIC idle wiggle of three small dials, one of them changing sign twice; deterministic noise, not the Gissinger integration (that is ch04)"
+     }
+    }
+   },
+   "sfx": [
+    "tick@discs+0.1",
+    {
+     "id": "needle",
+     "cue": "discs",
+     "offset": 1.4,
+     "gain_db": -22
+    },
+    "tick@three+0.1",
+    "tick@four+0.1",
+    "pop@four+1.2"
+   ],
+   "paragraphs": [
+    {
+     "hold_after": 0.0,
+     "sentences": [
+      {
+       "id": "SOA1.5.s1",
+       "cue": "dials",
+       "text": "Lane five: a few dials instead of a tank.",
+       "text_fr": "Cinquième piste : quelques cadrans au lieu d'une cuve."
+      },
+      {
+       "id": "SOA1.5.s2",
+       "cue": "discs",
+       "text": "Nineteen fifty-eight: two coupled disc dynamos already flip.",
+       "text_fr": "Mille neuf cent cinquante-huit : deux dynamos à disque couplées s'inversent déjà."
+      },
+      {
+       "id": "SOA1.5.s3",
+       "cue": "three",
+       "text": "Twenty twelve: three dials that flip by chaos alone; we will play with them soon.",
+       "text_fr": "Deux mille douze : trois cadrans qui s'inversent par le seul chaos ; nous jouerons bientôt avec eux."
+      }
+     ]
+    },
+    {
+     "hold_after": 0.0,
+     "sentences": [
+      {
+       "id": "SOA1.5.s4",
+       "cue": "four",
+       "text": "Twenty twenty-six: four dials fitted to the simulated VKS flips, by a method that finds equations in data.",
+       "text_fr": "Deux mille vingt-six : quatre cadrans ajustés sur les inversions simulées de VKS, par une méthode qui extrait des équations des données."
+      }
+     ]
+    }
+   ],
+   "onscreen": {
+    "title": "",
+    "labels": [
+     "REDUCED MODELS",
+     "DATA-DRIVEN",
+     "1958 · coupled discs flip",
+     "2008 · dipole and quadrupole",
+     "2012 · three dials",
+     "2016 · equations from data",
+     "2026 · four dials, DQVU",
+     "D",
+     "Q",
+     "V",
+     "U"
+    ],
+    "formulas": [],
+    "chips": [
+     "RIKITAKE 1958",
+     "PÉTRÉLIS & FAUVE 2008",
+     "GISSINGER 2012",
+     "BRUNTON, PROCTOR, KUTZ 2016",
+     "BOUSQUET ET AL. 2026",
+     "SCHEMATIC"
+    ]
+   },
+   "visual": "Render class flat (SVG), the shared map; lanes 1-4 present ('year' state; S2026B and earlier keep_named pins 'named'); the roster box of SOA1.4 is gone (lanes 1-2 back to 100 % of their muted ink). On 'dials-0.15': lane 5 'REDUCED MODELS' brightens; a small grey tank icon near x 700 in lane 5 collapses into three small dials (the dial glyph of 04.1, 48 px each, chalk) in 0.8 s: 'a whole tank' becomes 'a few dials'. On 'discs-0.15': pin R1958 ('1958 · coupled discs flip' / 'RIKITAKE 1958'); for 3 s beside it the copper disc of 01.3 appears twice, the two discs joined by thin wires (copper colour as in 01.3, matter grey), a vermillion field arrow above them turns over once at 'discs+1.4' (needle, -22 dB): the callback to the self-exciting disc. At 'three-0.6' the silent pin R2008 ('2008 · dipole and quadrupole' / 'PÉTRÉLIS & FAUVE 2008') with an active label for 2 s; on 'three-0.15' pin R2012 ('2012 · three dials' / 'GISSINGER 2012'), and the three small dials, now labelled D, Q, V (28 px; D's needle vermillion), wiggle with the deterministic schematic noise of params.dial_wiggle, D changing sign twice; chip SCHEMATIC; they stay until the end of the sentence. No equation here (ch04 introduces the model). On 'four-0.15': lane 6 'DATA-DRIVEN' unfolds under lane 5 (thin, dashed, starting at 2016, label typed into the gutter, 0.8 s); pin D2016 ('2016 · equations from data' / 'BRUNTON, PROCTOR, KUTZ 2016'); a thin --muted arrow from D2016 up to lane 5 at 2026, where at 'four+1.2' the diamond R2026 lands ('2026 · four dials, DQVU' / 'BOUSQUET ET AL. 2026') with a dotted vertical tie up to S2026B in lane 4 (same paper); beside it four small dials labelled D, Q, V, U. End state: lanes 1-6 drawn, R2012, R2026 and S2026B 'named'. Badge CONTEXT. Key colours: vermillion (flip glyphs, field arrow, D needle); everything else chalk, copper and greys.",
+   "assets": [],
+   "sources": [
+    "external: Rikitake 1958, Math. Proc. Camb. Phil. Soc. 54, 89-105, doi:10.1017/S0305004100033223 (checked 2026-11-08; abstract read via OpenAlex: 'The behaviour of two disk dynamos coupled to one another is examined ... It is found that reversals of electric current and magnetic field occur, unlike the case of a single disk dynamo')",
+    "script/ch01.json 01.3 (the copper disc wired to a coil: the self-exciting disc dynamo of the film)",
+    "en/rapport/index.qmd:151 (Pétrélis & Fauve 2008: VKS dynamics explained by the coupling of a dipolar mode D and a quadrupolar mode Q); external: J. Phys.: Condens. Matter 20, 494203, doi:10.1088/0953-8984/20/49/494203 (checked 2026-11-08, Crossref)",
+    "en/rapport/index.qmd:153-159 (Gissinger 2012: a deterministic three-mode model Q, D, V with chaotic reversals, the test bench E1); external: Eur. Phys. J. B 85, 137, doi:10.1140/epjb/e2012-20799-5 (checked 2026-11-08, Crossref)",
+    "script/ch04.json 04.1 ('Three dials': the forward pointer 'we will play with them soon')",
+    "en/rapport/index.qmd:161 and specs/sources/encadrants.md:233-234 (Bousquet et al. 2026: POD on 2000 snapshots, four dominant modes; reduced Galerkin model DQVU identified by constrained sparse regression with PySINDy; reproduces the asymmetric bimodal distribution of V)",
+    "external: Brunton, Proctor, Kutz 2016, Proc. Natl. Acad. Sci. 113, 3932-3937, doi:10.1073/pnas.1517384113 (checked 2026-11-08, Crossref title: 'Discovering governing equations from data by sparse identification of nonlinear dynamical systems')",
+    "plan/state_of_the_art.md:94 and section 6 (DQVU is never called 'first': its abstract says it improves upon previous three-variable versions)"
+   ],
+   "variants": null,
+   "question": null
+  },
+  {
+   "id": "SOA1.6",
+   "was": null,
+   "title": "Where MilaDy sits",
+   "file": "scenes/chSOA1/SOA1_6_where_milady_sits.html",
+   "status": "ready",
+   "level": "L2",
+   "register": "NIGHT",
+   "badge": {
+    "kind": "CONTEXT",
+    "confidence": null,
+    "note": "ANR page (S:28) · Gwirtz et al. 2022 · the violet ring is PLANNED (T:49, T:57)"
+   },
+   "target_s": 30,
+   "lead_in": 0.4,
+   "tail": 1.2,
+   "deps": [],
+   "entry": {
+    "data": {},
+    "params": {
+     "map": "params.map of SOA1.1 (scenes/chSOA1/map.js)",
+     "present": [
+      "E1906",
+      "E1963",
+      "E1968",
+      "T1919",
+      "T1933",
+      "T1958",
+      "T1966",
+      "T1972",
+      "T1973",
+      "L1963",
+      "L1999R",
+      "L1999K",
+      "L2006",
+      "LDRES",
+      "S1981",
+      "S1995",
+      "S1997",
+      "S2005",
+      "S2016",
+      "S2017",
+      "S2026B",
+      "R1958",
+      "R2008",
+      "R2012",
+      "D2016",
+      "R2026"
+     ],
+     "add": [
+      {
+       "id": "S2026C",
+       "cue": "milady+1.6"
+      },
+      {
+       "id": "D2022",
+       "cue": "thin"
+      },
+      {
+       "id": "INTERN",
+       "cue": "bet"
+      },
+      {
+       "id": "THESIS",
+       "cue": "bet+0.6"
+      }
+     ],
+     "keep_named": [
+      "LDRES",
+      "S2026B",
+      "R2026",
+      "S2026C",
+      "INTERN",
+      "THESIS"
+     ],
+     "milady": {
+      "bracket": {
+       "from_year": 2026.0,
+       "to_year": 2030.0,
+       "lanes": [
+        "lab",
+        "sim",
+        "reduced"
+       ]
+      },
+      "line1": "MILADY · ANR · 2026–2029",
+      "line2": "ANR-25-CE51-0077 · LISN · LAGRANGE · CEREA",
+      "callout": "left of the bracket, top of lane 3",
+      "subtitle": "machine learning for turbulent dynamos"
+     },
+     "thesis_leaders": [
+      "sim",
+      "reduced"
+     ],
+     "cloud": {
+      "points": 40,
+      "seed": 2027,
+      "radius_px": 26,
+      "note": "M4 violet cloud, breathing inside the thesis ring"
+     },
+     "gwirtz_chip": "FIVE REVERSALS IN THE USABLE RECORD, 0–2 MA",
+     "planned_chip": "PLANNED · INDEPENDENT PROPOSAL",
+     "race_icons": "the stretch and smudge icons of 02.1 (vermillion thread lengthening; thread blurring), 160 px each",
+     "race_caption": "one race: stretching vs smudging"
+    }
+   },
+   "sfx": [
+    "pop@milady+0.2",
+    "tick@thin+0.1",
+    "pop@bet+0.1",
+    "whoosh@race+0.2"
+   ],
+   "paragraphs": [
+    {
+     "hold_after": 0.0,
+     "sentences": [
+      {
+       "id": "SOA1.6.s1",
+       "cue": "milady",
+       "text": "MilaDy began in twenty twenty-six, bringing machine learning where tanks, computers and dials meet.",
+       "text_fr": "MilaDy a démarré en deux mille vingt-six, pour apporter l'apprentissage automatique là où se croisent les cuves, les ordinateurs et les cadrans."
+      },
+      {
+       "id": "SOA1.6.s2",
+       "cue": "thin",
+       "text": "Yet the data-driven lane is thin: in twenty twenty-two, the learning methods one study tried could not reliably foresee a geomagnetic flip.",
+       "text_fr": "Mais la piste des données reste mince : en deux mille vingt-deux, les méthodes d'apprentissage essayées par une étude n'ont pas su prévoir de façon fiable une inversion du champ terrestre."
+      }
+     ]
+    },
+    {
+     "hold_after": 0.0,
+     "sentences": [
+      {
+       "id": "SOA1.6.s3",
+       "cue": "bet",
+       "text": "The internship and a proposed thesis add a bet: {model}machines{/} that dream up dynamo fields and obey their physics.",
+       "text_fr": "Le stage et un projet de thèse y ajoutent un pari : des {model}machines{/} qui imaginent des champs de dynamo et respectent leur physique."
+      }
+     ]
+    },
+    {
+     "hold_after": 0.0,
+     "sentences": [
+      {
+       "id": "SOA1.6.s4",
+       "cue": "race",
+       "text": "Behind every lane, the same race: stretching against smudging.",
+       "text_fr": "Derrière chaque piste, la même course : l'écoulement étire le champ, la diffusion l'estompe."
+      }
+     ]
+    }
+   ],
+   "onscreen": {
+    "title": "",
+    "labels": [
+     "MILADY · ANR · 2026–2029",
+     "machine learning for turbulent dynamos",
+     "ANR-25-CE51-0077 · LISN · LAGRANGE · CEREA",
+     "BOTEZ, GIESECKE, C. NORE et al. · 2026",
+     "2022 · no reliable precursor",
+     "internship · spring 2027",
+     "PhD proposal · 2027–2030 · ?",
+     "one race: stretching vs smudging"
+    ],
+    "formulas": [],
+    "chips": [
+     "WALLS SHIFT PRECESSION ONSET · BOTEZ ET AL.",
+     "GWIRTZ ET AL. 2022",
+     "FIVE REVERSALS IN THE USABLE RECORD, 0–2 MA",
+     "PLANNED · INDEPENDENT PROPOSAL",
+     "PLANNED"
+    ]
+   },
+   "visual": "Render class flat (SVG), the whole map present (six lanes; keep_named pins of earlier scenes 'named', the rest 'year'). On 'milady-0.15': lanes 3, 4 and 5 brighten, lanes 1-2 dim to 50 %; the MilaDy bracket draws (a vertical chalk bracket at x(2026) spanning lanes 3-5, then a faint --fg band, 6 % opacity, from 2026 to 2030 over those lanes); callout to its left at the top of lane 3: 'MILADY · ANR · 2026–2029' (Inter SemiBold 28 px, --fg) / 'machine learning for turbulent dynamos' (params.milady.subtitle, Inter Medium 28 px, --fg-2) / 'ANR-25-CE51-0077 · LISN · LAGRANGE · CEREA' (JetBrains Mono 28 px, --muted); the two diamonds S2026B and R2026 pulse once (scale 1.15, 0.4 s); at 'milady+1.6' the silent diamond S2026C lands just under S2026B with its small green tick and the active label 'BOTEZ, GIESECKE, C. NORE et al. · 2026' / 'WALLS SHIFT PRECESSION ONSET · PHYS. REV. FLUIDS 11' for 3 s, and a thin --muted arrow draws from it up to the dashed DRESDYN ring LDRES in lane 3. On 'thin-0.15': lane 6 pulses once (dash brightening left to right); pin D2022 lands as an x glyph ('2022 · no reliable precursor' / 'GWIRTZ ET AL. 2022') with, under it, the grey chip 'FIVE REVERSALS IN THE USABLE RECORD, 0–2 MA' for 3 s. On 'bet-0.15': a second badge chip 'PLANNED' stacks under the top-right CONTEXT badge until the end of the scene; in lane 6 a small dashed violet dot INTERN at 2027.3 ('internship · spring 2027'), then at 'bet+0.6' the dashed violet ring THESIS spanning 2027-2030 ('PhD proposal · 2027–2030 · ?' / 'PLANNED · INDEPENDENT PROPOSAL'); inside the ring a tiny violet cloud (M4, params.cloud) breathes; two thin dashed violet leaders rise from the ring to lanes 4 and 5 (it learns from simulations; it feeds reduced models); the labels of both violet pins sit to the LEFT of the NOW hairline in lane 6 (free space before 2016 is not needed: x 1180-1620). The word 'machines' is violet in the subtitles. On 'race-0.15': every lane flashes once, left to right, 0.12 s apart (--fg at 60 %, 0.3 s each); then the map dims to 40 %; centre-bottom (y 600-760, above the subtitle zone) the chalk caption 'one race: stretching vs smudging' (Inter Medium 32 px) between the two icons of params.race_icons, held through the tail (1.2 s): the hand-off to 03.1, which opens on the same two pictures. Badge CONTEXT, plus PLANNED from 'bet'. Key colours: violet (internship, thesis, cloud), vermillion (stretch icon), green (tick); everything else chalk.",
+   "assets": [],
+   "sources": [
+    "specs/sources/encadrants.md:28 (project title: 'Machine learning modelling for turbulent Dynamos', ANR page): 'bringing machine learning'",
+    "specs/sources/encadrants.md:28 and en/encadrants/index.qmd:62 (MilaDy, ANR-25-CE51-0077: start January 2026, 48 months; partners LISN, Lagrange, CEREA)",
+    "specs/sources/encadrants.md:29 (official objectives: reduced models of reversals and bursts; parametric reduced models for DRESDYN) and :32 (data from the SFEMaNS and LATU simulations): MilaDy sits where tanks, simulations and reduced models meet",
+    "en/encadrants/index.qmd:96-100 and specs/sources/encadrants.md:236-240 (Botez et al. 2026, Phys. Rev. Fluids 11, 083701, doi:10.1103/rx1h-5zxp: simplified vanishing-tangential-field conditions systematically underestimate Rm_c; conducting or permeable walls can promote or suppress the precession dynamo; applied to DRESDYN; declares the MilaDy grant)",
+    "external: Gwirtz et al. 2022, Geophys. J. Int. 231, 520-535, doi:10.1093/gji/ggac195 (checked 2026-11-08; abstract read via OpenAlex: 'the ML techniques we tried are not currently capable of reliably identifying an axial dipole moment (ADM) precursor for geomagnetic reversals'; 'the usable observational record is limited to 0–2 Ma and contains only five reversals')",
+    "en/these/index.qmd:49 (36 months; working assumption: start in fall 2027, after the spring 2027 internship)",
+    "en/these/index.qmd:57 (the PhD topic is an independent proposal, neither requested nor validated by the supervisors or the consortium; the internship has not yet taken place): 'a proposed thesis', badge PLANNED",
+    "en/encadrants/index.qmd:106 and :114 (the 2027 internship moves on to generation: physics-constrained generative models for parameter-dependent dynamo fields, to feed the project's reduced models and data assimilation): the two violet leaders",
+    "script/ch00.json 00.4 ('machines that dream up snapshots of magnetic fields')",
+    "script/ch02.json 02.1 and script/ch03.json 03.1 (the race between stretching and smudging; 03.1 opens with 'Back to the race')",
+    "external: Gwirtz et al. 2022: 'the ML techniques we tried' (abstract, OpenAlex, re-read 2026-11-08): narrated as 'the learning methods one study tried', never as machine learning in general",
+    "script/ch03.json 03.1.s1 ('Back to the race: the flow stretches the field, and diffusion smudges it'): the French hand-off uses the same two verbs"
+   ],
+   "variants": null,
+   "question": null
+  }
+ ]
+}

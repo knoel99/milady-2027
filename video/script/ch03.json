@@ -11,7 +11,7 @@
  },
  "learning_goal": "Read the induction equation as the race in symbols; know kinematic versus dynamic and the ABC dynamo windows; see that the knob is a panel of knobs, that simulations are too costly to cover it, and what this film asks.",
  "takeaway": "A dynamo can switch on, off and on again, real dynamos depend on many knobs, and simulations cover only a handful of settings: we need something that fills the gaps, and respects the physics.",
- "notes": "The T4 chapter card plays in the 3.2-s lead-in of 03.1 (no separate scene id), without the staircase, which is planted in 03.7 (a faint tier-2 preview in 03.3). Predict beat: Q3 of the outline in 03.4 (hold 3.0 s), read PREDICT on screen to avoid a clash with the question-card numbers. Badges: PROVED for the induction equation (P3 Theorem 2.1), CONTEXT for textbook or published facts (03.2, 03.3, 03.5, 03.6), MEASURED for E3 (03.4), PLANNED for the staircase of the PhD plan (03.7, shown from 'map'), none on the recap and the question card. No external fact: every claim is on the site, so no web source is cited. The growth rate is s (never lambda; the site writes lambda in E3). Thresholds are rounded on the main layer (about 9, 17.5, about 27) and exact on the formula layer; no 48³ marker (X1.3). 03.5 keeps one boundary switch, no ± numbers on the main layer, no 44 (D19), 'iron' in words. 03.7 separates project context (lower-thirds) from the study's question (critique B1); the supervisors are named only on the disclaimer lower-third (D6). Data: 03.4 reads data/e3_growth.json and data/e3_modes.json (existing extractor outputs, CONTRACT §5); 03.8 and ch03.Q read data/e3_growth.json for faithful thumbnails; no new data file is needed. The question card is numbered n = 4 on the assumption of one card per chapter in order (ch00.Q = 1, ch01.Q = 2, ch02.Q = 3): the consistency editor may renumber. Words budgeted at about 127.5 effective words per minute against target_s; estimates use the assembler formula (146 raw words per minute, 0.9 s per paragraph break, holds, lead-in and tail). Reviewed adversarially on 2026-11-08: changes and evidence in script/_review/ch03.md.",
+ "notes": "The T4 chapter card plays in the 3.2-s lead-in of 03.1 (no separate scene id), without the staircase, which is planted in 03.7 (a faint tier-2 preview in 03.3). Predict beat: Q3 of the outline in 03.4 (hold 3.0 s), read PREDICT on screen to avoid a clash with the question-card numbers. Badges: PROVED for the induction equation (P3 Theorem 2.1), CONTEXT for textbook or published facts (03.2, 03.3, 03.5, 03.6), MEASURED for E3 (03.4), PLANNED for the staircase of the PhD plan (03.7, shown from 'map'), none on the recap and the question card. No external fact: every claim is on the site, so no web source is cited. The growth rate is s (never lambda; the site writes lambda in E3). Thresholds are rounded on the main layer (about 9, 17.5, about 27) and exact on the formula layer; no 48³ marker (X1.3). 03.5 keeps one boundary switch, no ± numbers on the main layer, no 44 (D19), 'iron' in words. 03.7 separates project context (lower-thirds) from the study's question (critique B1); the supervisors are named only on the disclaimer lower-third (D6). Data: 03.4 reads data/e3_growth.json and data/e3_modes.json (existing extractor outputs, CONTRACT §5); 03.8 and ch03.Q read data/e3_growth.json for faithful thumbnails; no new data file is needed. The question card is numbered n = 4 on the assumption of one card per chapter in order (ch00.Q = 1, ch01.Q = 2, ch02.Q = 3): the consistency editor may renumber. Words budgeted at about 127.5 effective words per minute against target_s; estimates use the assembler formula (146 raw words per minute, 0.9 s per paragraph break, holds, lead-in and tail). Reviewed adversarially on 2026-11-08: changes and evidence in script/_review/ch03.md. CONSISTENCY EDITOR (2026-11-08): 03.1.s1 no longer says 'In the last chapter' (chSOA1 is inserted between ch02 and ch03 in both cuts); chapter card levelFrom L2 (chSOA1 ends at L2); badge notes added; ch03.Q renumbered Q5 (register numbering, script/_shared/question_register.json).",
  "scenes": [
   {
    "id": "03.1",
@@ -23,7 +23,8 @@
    "register": "NIGHT",
    "badge": {
     "kind": "PROVED",
-    "confidence": null
+    "confidence": null,
+    "note": "P3 Theorem 2.1"
    },
    "target_s": 40,
    "lead_in": 3.2,
@@ -36,7 +37,7 @@
       "num": "03",
       "title": "The equation, the windows, and the question",
       "level": "L2",
-      "levelFrom": "L1"
+      "levelFrom": "L2"
      },
      "eq": {
       "x": 960,
@@ -81,7 +82,7 @@
       {
        "id": "03.1.s1",
        "cue": "race",
-       "text": "In the last chapter, the race was a picture: the {u}flow{/} stretches the field, and diffusion smudges it."
+       "text": "Back to the race: the {u}flow{/} stretches the field, and diffusion smudges it."
       },
       {
        "id": "03.1.s2",
@@ -143,7 +144,7 @@
      "η · magnetic diffusivity · m²/s (glossary chip)"
     ]
    },
-   "visual": "Render class flat. Lead-in (3.2 s, no voice): chapter card T4 from params.chapter, Kit.chapterCard(ctx, {num: '03', title: 'The equation, the windows, and the question', level: 'L2', levelFrom: 'L1', at: 0.2}) with the tier left undefined, so no staircase is drawn (the staircase map is planted in 03.7, with a faint preview in 03.3); the rail M8 climbs L1 -> L2 for 3 s; whoosh at 0.1 (sfx). Picture first (styles 3.7 protocol): on 'race-0.15' two small picture panels slide up into the lower half (y 560-740; left x 300-860, right x 1060-1620; thin --fg-2 frames). LEFT, the stretch of 02.1: two diverging --u arrows and a few drifting tracers pull a vermillion thread that lengthens and brightens as it lengthens (an SVG path whose length and stroke brightness follow a loop of params.panels.loop_s seconds, a pure function of t). RIGHT, the smudge: a vermillion thread on a still background blurs into a grey haze and dims (SVG blur radius and opacity on the same loop). Both panels keep looping as the idle motion of the scene. On 'eqs-0.15': the ghost skeleton of the equation at 15 % (Kit.equation from params.eq, x 960, y 300, size 88, ghost: true). On 'lhs-0.15': the left-hand side lights (dB/dt, B in --b) and the pen (M9) circles it. On 'stretch-0.15': '= curl(u x B)' lights (u blue, B vermillion); a thin leader line runs from the term to the stretching thread of the left panel for 1.5 s; the brace label 'carried and stretched by the flow' (--u) appears 0.3 s after the term (never 'advection', critique C1); pen circle on the term. On 'smudge-0.15': '+ eta Laplacian B' lights (eta green through \\etaP); leader line to the blurring thread of the right panel for 1.5 s; brace label 'diffusion' (--fg-2); pen circle; glossary chip 'η · magnetic diffusivity · m²/s' (Kit.chip plain, under the right panel, out at 'whole'). At most two brace labels on screen. On 'poor-0.15': the blur in the right panel speeds up for one cycle (loop period params.panels.loop_s_poor), no new label. On 'whole-0.15': focus on both right-hand terms (the left-hand side drops to 35 %), the pen draws a chalk double-headed arrow between curl(u x B) and eta Laplacian B (the race), and both panels pulse once together; the full equation is held to the end of the scene (at least 2 s + 0.5 s per term). Badge PROVED top-right from 'eqs' (Kit.badge note 'P3 Theorem 2.1'). Formula layer: item 1 from 'stretch', item 2 from 'whole', label 'Formula · P3 (2.1), (2.2)'. Key colours: blue, vermillion and green (green for eta only).",
+   "visual": "Render class flat. Lead-in (3.2 s, no voice): chapter card T4 from params.chapter, Kit.chapterCard(ctx, {num: '03', title: 'The equation, the windows, and the question', level: 'L2', levelFrom: 'L2', at: 0.2}) with the tier left undefined, so no staircase is drawn (the staircase map is planted in 03.7, with a faint preview in 03.3); the rail M8 holds at L2 for 3 s (chSOA1, which now precedes ch03 in both cuts, already climbs from L1 to L2; s1 says 'Back to the race' and not 'In the last chapter', because the last chapter is now chSOA1); whoosh at 0.1 (sfx). Picture first (styles 3.7 protocol): on 'race-0.15' two small picture panels slide up into the lower half (y 560-740; left x 300-860, right x 1060-1620; thin --fg-2 frames). LEFT, the stretch of 02.1: two diverging --u arrows and a few drifting tracers pull a vermillion thread that lengthens and brightens as it lengthens (an SVG path whose length and stroke brightness follow a loop of params.panels.loop_s seconds, a pure function of t). RIGHT, the smudge: a vermillion thread on a still background blurs into a grey haze and dims (SVG blur radius and opacity on the same loop). Both panels keep looping as the idle motion of the scene. On 'eqs-0.15': the ghost skeleton of the equation at 15 % (Kit.equation from params.eq, x 960, y 300, size 88, ghost: true). On 'lhs-0.15': the left-hand side lights (dB/dt, B in --b) and the pen (M9) circles it. On 'stretch-0.15': '= curl(u x B)' lights (u blue, B vermillion); a thin leader line runs from the term to the stretching thread of the left panel for 1.5 s; the brace label 'carried and stretched by the flow' (--u) appears 0.3 s after the term (never 'advection', critique C1); pen circle on the term. On 'smudge-0.15': '+ eta Laplacian B' lights (eta green through \\etaP); leader line to the blurring thread of the right panel for 1.5 s; brace label 'diffusion' (--fg-2); pen circle; glossary chip 'η · magnetic diffusivity · m²/s' (Kit.chip plain, under the right panel, out at 'whole'). At most two brace labels on screen. On 'poor-0.15': the blur in the right panel speeds up for one cycle (loop period params.panels.loop_s_poor), no new label. On 'whole-0.15': focus on both right-hand terms (the left-hand side drops to 35 %), the pen draws a chalk double-headed arrow between curl(u x B) and eta Laplacian B (the race), and both panels pulse once together; the full equation is held to the end of the scene (at least 2 s + 0.5 s per term). Badge PROVED top-right from 'eqs' (Kit.badge note 'P3 Theorem 2.1'). Formula layer: item 1 from 'stretch', item 2 from 'whole', label 'Formula · P3 (2.1), (2.2)'. Key colours: blue, vermillion and green (green for eta only).",
    "assets": [],
    "sources": [
     "en/prep/p3-mhd-dynamo/index.qmd:219-224 (Theorem 2.1: dB/dt = curl(u x B) + eta Laplacian B, eta = 1/(mu0 sigma) the magnetic diffusivity in m^2/s)",
@@ -413,7 +414,8 @@
    "register": "NIGHT",
    "badge": {
     "kind": "MEASURED",
-    "confidence": null
+    "confidence": null,
+    "note": "E3 · 32³ · 24 runs"
    },
    "target_s": 45,
    "lead_in": 0.4,
@@ -920,7 +922,8 @@
    "register": "NIGHT",
    "badge": {
     "kind": "PLANNED",
-    "confidence": null
+    "confidence": null,
+    "note": "PhD proposal · five tiers"
    },
    "target_s": 50,
    "lead_in": 0.4,
@@ -1225,7 +1228,7 @@
     "formulas": [],
     "chips": []
    },
-   "visual": "Render class flat. Kit.questionCard(ctx, {n: 4, chapter: 'ch03', category: 'runs', at: 'q'}) filling the frame (BRIEF 3.1): the warm ticket with its perforated stub 'ASK · Q4 · ch03 · Y. Ponty / D. Lucor'; the question with the pen underline (M9) on 'spread evenly' and on 'packed'; WHY IT MATTERS at the component's default delay after 'q', WHAT IT UNBLOCKS about 2.2 s later, with the category tag RUNS · PARAMETERS. Behind the card, at 12 % opacity (params.backdrop), two thin green axes one above the other: on the upper one params.backdrop.even_dots (9) dots evenly spaced; on the lower one the same 9 dots packed in threes (params.backdrop.packed_dots_per_threshold) around the three thresholds read from ctx.data.e3 (thresholds), with the green windows of 03.4 faintly shaded. No badge, lower-third or formula layer (a question makes no claim). Chime at 'q-0.2'.",
+   "visual": "Render class flat. Kit.questionCard(ctx, {n: 4, chapter: 'ch03', category: 'runs', at: 'q'}) filling the frame (BRIEF 3.1): the warm ticket with its perforated stub 'ASK · Q5 · ch03 · Y. Ponty / D. Lucor'; the question with the pen underline (M9) on 'spread evenly' and on 'packed'; WHY IT MATTERS at the component's default delay after 'q', WHAT IT UNBLOCKS about 2.2 s later, with the category tag RUNS · PARAMETERS. Behind the card, at 12 % opacity (params.backdrop), two thin green axes one above the other: on the upper one params.backdrop.even_dots (9) dots evenly spaced; on the lower one the same 9 dots packed in threes (params.backdrop.packed_dots_per_threshold) around the three thresholds read from ctx.data.e3 (thresholds), with the green windows of 03.4 faintly shaded. No badge, lower-third or formula layer (a question makes no claim). Chime at 'q-0.2'.",
    "assets": [],
    "sources": [
     "en/these/index.qmd:915 (tier-2 ablations of the PhD plan include the density of the parameters near Rm_c: an open choice)",
@@ -1242,7 +1245,7 @@
    ],
    "variants": null,
    "question": {
-    "n": 4,
+    "n": 5,
     "category": "runs",
     "en": "With only a handful of runs, should the settings be *spread evenly*, or *packed* near each threshold?",
     "fr": "Avec une poignée de simulations, faut-il répartir les valeurs des paramètres régulièrement, ou les resserrer près de chaque seuil ?",

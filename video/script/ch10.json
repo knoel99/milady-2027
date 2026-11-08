@@ -11,7 +11,7 @@
  },
  "learning_goal": "See the PhD proposal as a staircase of test benches and the data factory that will feed it; separate what is guaranteed by construction from what must be measured; read each upper step as a bet written down before the data exist, with its criterion, its confidence and the question to settle before computing.",
  "takeaway": "Some properties are guaranteed by construction; everything else on the staircase is a bet written down before the data exist, with the criterion that will settle it.",
- "notes": "Status (D4): 10.3, 10.4 and 10.5 were PROVISIONAL in the outline and are now pending (no CPU run); 10.7 and 10.9 pending; 10.1, 10.2, 10.6, 10.8, 10.9-bridge and ch10.Q ready. Every pending scene ships as an empty seat with a READY anchor (10.3 E2 reference map, 10.4 E3 ghost, 10.5 Taylor-Green cells and a SCHEMATIC growth curve, 10.7 lamp panel, 10.9 VKS and DRESDYN drawings), the bet, CONFIDENCE, the criterion with its source and an ASK box; seat types vary: curve (10.3, 10.4), map (10.5, 10.9 VKS), lamps (10.7), curve (10.9 DRESDYN). Seat ASK boxes: 10.3 'Is the 2D tier at 128² worth its GPU hours, or go straight to 3D?'; 10.4 D17 'Add runs at Rm 17.25, 17.5 and 17.75 to pin the edge?'; 10.5 D18 'Near the threshold: lengthen runs to saturation, or flag and exclude them?'; 10.7 'To test criterion (c), hold out a whole value of Pm?' (the configured split holds out single points, Re 100 Pm 1 and Re 50 Pm 2, so every Pm keeps training data and criterion (c) is untestable); 10.9 'Can we get VKS and precession snapshots, in what format, and when?'. Question card ch10.Q (n 11 if ch09.Q is Q10; category runs; ask Y. Ponty): forcing, Reynolds-number definition and resolution of the Taylor-Green campaign, so that its threshold can be compared with the published one; it does not repeat Q3 (which Pm) or Q4 (spread or pack the points). REQUESTS. (1) tools/data_cloud.py (foundation engineer B): the result variants use 'when': 'met' | 'not_met' | 'inconclusive'; please add these three booleans to every converter's 'fields' (exactly one true); without them the conditional sentences drop and only the 'Verdict: {{verdict}}' sentence remains (safe). 10.9 needs 'vks_verdict' and 'dresdyn_verdict' in the fields of the generic seat JSONs tier3_vks.json and tier4_dresdyn.json. (2) tools/data_existing.py: NEW data/fm3d_guarantees.json for 10.6 (milady/train/fm3d.py decoder and B-sign-symmetrised velocity field with random weights, CPU, seconds, no simulation or training: div_rel_u, div_rel_b, mirror_error, packed field-line polylines of one sample, meta.stamp 'GENERATED · fm3d · untrained weights'); torch is not installed in the system python here, so it needs the repository venv; until the file exists the assembler renders 10.6 as pending with a warning. (3) tools/assemble_cut.py lints a result variant against the pending target_s; result targets are given in variants.result.target_s (10.4 45, 10.5 45, 10.7 40, 10.9 40, 10.3 15): 10.7 (about 41 s vs 25) will warn unless the lint reads that field. (4) conv_fm3d_eval lamp (b) uses err_spectre_*_log10, a mean over all shells, while T:917 asks 'per band up to half the cutoff' (stricter): the lamp may read 'met' where the plan would not. CHANGES AGAINST THE OUTLINE. 10.5: the outline chip said 'different forcing convention'; Ponty et al. 2005 (checked on arXiv physics/0410046) use the same Taylor-Green forcing shape at k0 = 2 but define R_V from the r.m.s. velocity and the integral scale, while palier2_tg3d uses U_ref = 1 and L_ref = 1/kf: narration and chip say 'defines the Reynolds number differently'. 10.4: confidence medium, because at 32³ the whole-run and last-quarter fits already disagree at Rm 18 (|s − s_q| > |s|), which the converter would call inconclusive. 10.2: the H6 stamp sentence becomes the grey seat tag (no provisional stamps under D4); badge MEASURED refers to the test suite only (consistency editor: confirm or change). 10.3: P for the injection rate and ε for the dissipation, as in ch08 (outline wrote eps_inj); the converter gives ONE j tile, not 11, so the strips carry the per-η information; the bet is a data check, labelled as not a PhD-plan criterion. 10.1: chapter card in the 3.2-s lead-in, rail holds at L4 (the chapter reaches L5 at 10.5). Cuts: 10.8 and 10.9 'cuts': ['core']; 10.9-bridge 'cuts': ['extended'] (outline extended_variant); ch10.Q closes the chapter in both cuts. No predict beat in this chapter (the outline lists none); 0.5-0.8-s holds after the bet paragraphs let the seat column be read. No new lexicon entry (Rm, Pm, VKS, DRESDYN, Reynolds, Rice are pinned; 'eta' is avoided, 'diffusivities' is said instead). Words budgeted at about 128 effective words per minute of target_s, checked with the assembler formula (146 raw words per minute, 0.9 s per paragraph break, holds, lead-in, tail). REVIEW 2026-11-08 (adversarial script review, see script/_review/ch10.md): (5) PRECISION (foundation engineer): the fm3d decoder works and returns float32 (milady/train/data.py to_grid, fm3d.py:782; tests/test_train.py:113 asserts relative divergence < 1e-6 in float32), so (i) data/fm3d_guarantees.json should decode in float64 (cast the decoder to double) and write meta.dtype, else the 10.6 gauge reads about 1e-7, and (ii) conv_fm3d_eval with div_tol 1e-12 will mark lamp (a) not_met on float32 samples: evaluate the divergence on a float64 decode, or set the tolerance to the dtype's rounding. (6) LAMP (b): err_spectre_*_log10 is the mean |log10 E_gen - log10 E_ref| over shells k = 1..8 (milady/eval/metrics.py:600, 630-639), and fm3d truncates at |m| <= 8: the ±0.1 band drawn around the curve is a guide, not the lamp's rule; the result narration no longer says 'every spectrum inside the band'. (7) CONTINUITY (consistency editor): chSOA2 (L4-L5) now precedes ch10 in both cuts (BRIEF §10); if it ends at L5, the 10.1 card's levelFrom 'L4' is a step down and needs the side-step treatment of ch08. New cues: 10.5 'push' and 'catch' (visual updated), 10.8 'nonlocal' (visual updated); sentence ids of 10.5 and 10.8 renumbered.",
+ "notes": "Status (D4): 10.3, 10.4 and 10.5 were PROVISIONAL in the outline and are now pending (no CPU run); 10.7 and 10.9 pending; 10.1, 10.2, 10.6, 10.8, 10.9-bridge and ch10.Q ready. Every pending scene ships as an empty seat with a READY anchor (10.3 E2 reference map, 10.4 E3 ghost, 10.5 Taylor-Green cells and a SCHEMATIC growth curve, 10.7 lamp panel, 10.9 VKS and DRESDYN drawings), the bet, CONFIDENCE, the criterion with its source and an ASK box; seat types vary: curve (10.3, 10.4), map (10.5, 10.9 VKS), lamps (10.7), curve (10.9 DRESDYN). Seat ASK boxes: 10.3 'Is the 2D tier at 128² worth its GPU hours, or go straight to 3D?'; 10.4 D17 'Add runs at Rm 17.25, 17.5 and 17.75 to pin the edge?'; 10.5 D18 'Near the threshold: lengthen runs to saturation, or flag and exclude them?'; 10.7 'To test criterion (c), hold out a whole value of Pm?' (the configured split holds out single points, Re 100 Pm 1 and Re 50 Pm 2, so every Pm keeps training data and criterion (c) is untestable); 10.9 'Can we get VKS and precession snapshots, in what format, and when?'. Question card ch10.Q (n 11 if ch09.Q is Q10; category runs; ask Y. Ponty): forcing, Reynolds-number definition and resolution of the Taylor-Green campaign, so that its threshold can be compared with the published one; it does not repeat Q3 (which Pm) or Q4 (spread or pack the points). REQUESTS. (1) tools/data_cloud.py (foundation engineer B): the result variants use 'when': 'met' | 'not_met' | 'inconclusive'; please add these three booleans to every converter's 'fields' (exactly one true); without them the conditional sentences drop and only the 'Verdict: {{verdict}}' sentence remains (safe). 10.9 needs 'vks_verdict' and 'dresdyn_verdict' in the fields of the generic seat JSONs tier3_vks.json and tier4_dresdyn.json. (2) tools/data_existing.py: NEW data/fm3d_guarantees.json for 10.6 (milady/train/fm3d.py decoder and B-sign-symmetrised velocity field with random weights, CPU, seconds, no simulation or training: div_rel_u, div_rel_b, mirror_error, packed field-line polylines of one sample, meta.stamp 'GENERATED · fm3d · untrained weights'); torch is not installed in the system python here, so it needs the repository venv; until the file exists the assembler renders 10.6 as pending with a warning. (3) tools/assemble_cut.py lints a result variant against the pending target_s; result targets are given in variants.result.target_s (10.4 45, 10.5 45, 10.7 40, 10.9 40, 10.3 15): 10.7 (about 41 s vs 25) will warn unless the lint reads that field. (4) conv_fm3d_eval lamp (b) uses err_spectre_*_log10, a mean over all shells, while T:917 asks 'per band up to half the cutoff' (stricter): the lamp may read 'met' where the plan would not. CHANGES AGAINST THE OUTLINE. 10.5: the outline chip said 'different forcing convention'; Ponty et al. 2005 (checked on arXiv physics/0410046) use the same Taylor-Green forcing shape at k0 = 2 but define R_V from the r.m.s. velocity and the integral scale, while palier2_tg3d uses U_ref = 1 and L_ref = 1/kf: narration and chip say 'defines the Reynolds number differently'. 10.4: confidence medium, because at 32³ the whole-run and last-quarter fits already disagree at Rm 18 (|s − s_q| > |s|), which the converter would call inconclusive. 10.2: the H6 stamp sentence becomes the grey seat tag (no provisional stamps under D4); badge MEASURED refers to the test suite only (consistency editor: confirm or change). 10.3: P for the injection rate and ε for the dissipation, as in ch08 (outline wrote eps_inj); the converter gives ONE j tile, not 11, so the strips carry the per-η information; the bet is a data check, labelled as not a PhD-plan criterion. 10.1: chapter card in the 3.2-s lead-in, rail holds at L4 (the chapter reaches L5 at 10.5). Cuts: 10.8 and 10.9 'cuts': ['core']; 10.9-bridge 'cuts': ['extended'] (outline extended_variant); ch10.Q closes the chapter in both cuts. No predict beat in this chapter (the outline lists none); 0.5-0.8-s holds after the bet paragraphs let the seat column be read. No new lexicon entry (Rm, Pm, VKS, DRESDYN, Reynolds, Rice are pinned; 'eta' is avoided, 'diffusivities' is said instead). Words budgeted at about 128 effective words per minute of target_s, checked with the assembler formula (146 raw words per minute, 0.9 s per paragraph break, holds, lead-in, tail). REVIEW 2026-11-08 (adversarial script review, see script/_review/ch10.md): (5) PRECISION (foundation engineer): the fm3d decoder works and returns float32 (milady/train/data.py to_grid, fm3d.py:782; tests/test_train.py:113 asserts relative divergence < 1e-6 in float32), so (i) data/fm3d_guarantees.json should decode in float64 (cast the decoder to double) and write meta.dtype, else the 10.6 gauge reads about 1e-7, and (ii) conv_fm3d_eval with div_tol 1e-12 will mark lamp (a) not_met on float32 samples: evaluate the divergence on a float64 decode, or set the tolerance to the dtype's rounding. (6) LAMP (b): err_spectre_*_log10 is the mean |log10 E_gen - log10 E_ref| over shells k = 1..8 (milady/eval/metrics.py:600, 630-639), and fm3d truncates at |m| <= 8: the ±0.1 band drawn around the curve is a guide, not the lamp's rule; the result narration no longer says 'every spectrum inside the band'. (7) CONTINUITY (consistency editor): chSOA2 (L4-L5) now precedes ch10 in both cuts (BRIEF §10); if it ends at L5, the 10.1 card's levelFrom 'L4' is a step down and needs the side-step treatment of ch08. New cues: 10.5 'push' and 'catch' (visual updated), 10.8 'nonlocal' (visual updated); sentence ids of 10.5 and 10.8 renumbered. CONSISTENCY EDITOR (2026-11-08): scene order: ch10.Q now precedes 10.9-bridge in this file, so the core cut is unchanged (10.9 [core], ch10.Q) and the extended cut plays ... 10.7, X3.5, ch10.Q, 10.9-bridge, X6 ... (the card closes the Taylor-Green block and no longer lands after X6.Q and X5b.Q). 10.1 card: levelFrom L5 with the rail tag 'back on the staircase' (declared side-step after chSOA2 / X4a). 10.2.s7 no longer says 'From now on' (X4.2 and X4.5 show grey tags earlier in the extended cut). 10.4.s4 defines the two fits in the core cut (X1.3, which names them, is extended only). 10.7.r8: 'full campaign' (narration says 'step', screens say 'tier'). ch10.Q: no 'our/yours' in narration; renumbered Q18.",
  "scenes": [
   {
    "id": "10.1",
@@ -40,12 +40,13 @@
      "chapter_card": {
       "num": "10",
       "level": "L4",
-      "levelFrom": "L4",
+      "levelFrom": "L5",
       "tier": 2,
       "pending": [
        3,
        4
-      ]
+      ],
+      "rail_tag": "back on the staircase"
      },
      "staircase": {
       "labels": [
@@ -128,7 +129,7 @@
      "Independent PhD proposal · not requested or validated by the supervisors"
     ]
    },
-   "visual": "Render class flat. Data: ctx.data.plan = data/fig_plan_these.json (thumbnails computed from E1-E3 by the site figure 'plan-these', see entry.params.read); no number on screen. LEAD-IN (3.2 s, no voice): chapter card T4, Kit.chapterCard(ctx, {num: '10', title: onscreen.title, level: 'L4', levelFrom: 'L4', tier: 2, pending: [3, 4], at: 0.2, out: 'stairs-0.4'}); whoosh at 0.1; the rail M8 holds at L4 (the chapter climbs to L5 from 10.5 on; the rail shows at cards and checkpoints only). PAYOFF OF M7 (critique E1): on 'stairs-0.15' the small staircase of the card grows into the large map planted in 03.7 (Kit.staircase, about 1500 x 520 px, y 200-720, labels exactly as in 03.7: params.staircase.labels), all steps grey. On 'lit-0.15': step 0 lights (--fg) with a 140-px thumbnail, the polarity strip of D(t) (Kit.barcode from plan.data.gissinger, two vermillion shades) and the mono tag 'E1 · three dials · CPU'; 0.6 s later step 1 lights with a small current map (Kit.fieldMap kind 'b' from plan.data.mhd2d.j) and 'E2 · flat sheet · CPU'. On 'preview-0.15': T1 morph on step 2: the flat square tiles into a 3D periodic box (wire cube in --infra, ghost copies fading on two faces to say 'periodic'), holding the ABC mode slice (plan.data.abc, vermillion); the step lights at 40 % only, dashed outline, tag 'E3 · kinematic ABC · 32³ · preview'. On 'bets-0.15': the box rounds into a cylinder on step 3 (two grey impeller discs at its ends), which tilts and starts to precess slowly about an inclined axis on step 4 (one turn per params.precession_period_s; it keeps turning to the end: the idle motion); steps 2-4 get dashed outlines and a small grey 'BET' seat icon each (a dashed frame with a data tag, the device of the next scenes); the chip 'Independent PhD proposal · not requested or validated by the supervisors' (Kit.chip kind 'plain', top centre, y about 120) enters at 'bets+0.6' and holds to the end (T:57, critique B13). Badge PLANNED (top-right) with the note 'PhD proposal · T:57'. Key colours: vermillion (thumbnails) and grey only; no green, no violet.",
+   "visual": "Render class flat. Data: ctx.data.plan = data/fig_plan_these.json (thumbnails computed from E1-E3 by the site figure 'plan-these', see entry.params.read); no number on screen. LEAD-IN (3.2 s, no voice): chapter card T4, Kit.chapterCard(ctx, {num: '10', title: onscreen.title, level: 'L4', levelFrom: 'L5', tier: 2, pending: [3, 4], at: 0.2, out: 'stairs-0.4'}); whoosh at 0.1; the rail M8 steps down from L5 to L4 with the tag 'back on the staircase' (params.chapter_card.rail_tag): a declared side-step, like 08.1's, because chSOA2 (both cuts) and X4a (extended cut) end at L5; the chapter climbs back to L5 from 10.5 on; the rail shows at cards and checkpoints only. PAYOFF OF M7 (critique E1): on 'stairs-0.15' the small staircase of the card grows into the large map planted in 03.7 (Kit.staircase, about 1500 x 520 px, y 200-720, labels exactly as in 03.7: params.staircase.labels), all steps grey. On 'lit-0.15': step 0 lights (--fg) with a 140-px thumbnail, the polarity strip of D(t) (Kit.barcode from plan.data.gissinger, two vermillion shades) and the mono tag 'E1 · three dials · CPU'; 0.6 s later step 1 lights with a small current map (Kit.fieldMap kind 'b' from plan.data.mhd2d.j) and 'E2 · flat sheet · CPU'. On 'preview-0.15': T1 morph on step 2: the flat square tiles into a 3D periodic box (wire cube in --infra, ghost copies fading on two faces to say 'periodic'), holding the ABC mode slice (plan.data.abc, vermillion); the step lights at 40 % only, dashed outline, tag 'E3 · kinematic ABC · 32³ · preview'. On 'bets-0.15': the box rounds into a cylinder on step 3 (two grey impeller discs at its ends), which tilts and starts to precess slowly about an inclined axis on step 4 (one turn per params.precession_period_s; it keeps turning to the end: the idle motion); steps 2-4 get dashed outlines and a small grey 'BET' seat icon each (a dashed frame with a data tag, the device of the next scenes); the chip 'Independent PhD proposal · not requested or validated by the supervisors' (Kit.chip kind 'plain', top centre, y about 120) enters at 'bets+0.6' and holds to the end (T:57, critique B13). Badge PLANNED (top-right) with the note 'PhD proposal · T:57'. Key colours: vermillion (thumbnails) and grey only; no green, no violet.",
    "assets": [
     "figures/plan-these/figure/out/plan-these-en.svg"
    ],
@@ -261,7 +262,7 @@
       {
        "id": "10.2.s7",
        "cue": "tags",
-       "text": "From now on, a grey tag names the file each empty frame awaits."
+       "text": "A grey tag names the file each empty frame awaits."
       }
      ]
     }
@@ -584,7 +585,7 @@
       {
        "id": "10.4.s4",
        "cue": "bet",
-       "text": "The bet: growth still positive at seventeen, already negative at eighteen, with a long fit and a late fit that agree."
+       "text": "The bet: growth still positive at seventeen, already negative at eighteen, with two fits agreeing: one over the kept part of the run, one over its last quarter."
       }
      ]
     },
@@ -677,7 +678,7 @@
         {
          "id": "10.4.r3",
          "cue": "bet",
-         "text": "The bet was: growth positive at seventeen, negative at eighteen, with the long and the late fits agreeing."
+         "text": "The bet was: growth positive at seventeen, negative at eighteen, with the two fits agreeing."
         },
         {
          "id": "10.4.r4",
@@ -1318,7 +1319,7 @@
         {
          "id": "10.7.r8",
          "cue": "later",
-         "text": "The threshold at an unseen {param}Pm{/}, and the fourth lamp, need the full tier."
+         "text": "The threshold at an unseen {param}Pm{/}, and the fourth lamp, need the full campaign."
         },
         {
          "id": "10.7.r9",
@@ -1670,6 +1671,73 @@
    "question": null
   },
   {
+   "id": "ch10.Q",
+   "was": null,
+   "title": "Question for the supervisors",
+   "file": "scenes/ch10/10_Q_question.html",
+   "status": "ready",
+   "level": "L5",
+   "register": "NIGHT",
+   "badge": null,
+   "target_s": 9,
+   "lead_in": 0.5,
+   "tail": 1.2,
+   "deps": [],
+   "entry": {
+    "data": {},
+    "params": {
+     "backdrop": {
+      "opacity": 0.1,
+      "what": "the 4 x 3 grid of dashed Taylor-Green frames of 10.5 (Re x Pm), no data"
+     }
+    }
+   },
+   "sfx": [
+    "chime@q-0.2"
+   ],
+   "paragraphs": [
+    {
+     "hold_after": 0.8,
+     "sentences": [
+      {
+       "id": "ch10.Q.s1",
+       "cue": "q",
+       "text": "Before the Taylor-Green runs, which forcing, Reynolds number definition and resolution make their threshold comparable with published ones?"
+      }
+     ]
+    }
+   ],
+   "onscreen": {
+    "title": "",
+    "labels": [],
+    "formulas": [],
+    "chips": []
+   },
+   "visual": "Render class flat. Kit.questionCard(ctx, {n: 11, chapter: 'ch10', category: 'runs', at: 'q'}) filling the frame (BRIEF 3.1): the warm ticket with its perforated stub 'ASK · Q18 · CH10 · Y. Ponty'; the question with the pen underline (M9) on 'Taylor–Green' and on 'comparable'; WHY IT MATTERS at the component's default delay after 'q', WHAT IT UNBLOCKS about 2.2 s later, category tag RUNS. Behind the card, at params.backdrop.opacity, the empty 4 x 3 grid of 10.5 (the campaign this question settles). No badge, lower-third or formula layer (a question makes no claim). Chime at 'q-0.2'. n = 11 assumes ch09.Q is Q10: renumber with the question register (script/_shared) if needed.",
+   "assets": [],
+   "sources": [
+    "infra/configs/palier2_tg3d.yaml:3-8 (Re = U_ref L_ref / ν with L_ref = 1/kf = 0.5 and U_ref = 1; turbulent amplitude rule; effective Reynolds read a posteriori) and :12-14 (check the resolution at Re = 200, Pm = 2; move to N = 128 if needed)",
+    "external: Ponty et al. (2005), Phys. Rev. Lett. 94, 164502, https://arxiv.org/abs/physics/0410046 (R_V from the r.m.s. velocity and the integral scale; Taylor-Green forcing k0 = 2): verified 2026-11-08",
+    "en/these/index.qmd:908, 912, 917 (published TG thresholds Rm_c = 30 at Pm = 1 and 226 at Pm = 0.3; data 'checked against the published thresholds'; criterion (c) compares thresholds within 10 %)",
+    "infra/cloud/RECOMMANDATION-CLOUD.md:19-37 (§0: talk to the supervisors before computing; 'Paramètres: convention de forçage Taylor–Green pour comparer aux seuils publiés, plage de Re et de Pm, résolution (64³ suffit-il à Re ≥ 100 ?)') and :226-231, :253 (Kolmogorov estimate k_max η_K = 0.33-0.47 at Re = 100, 0.20-0.28 at Re = 200 at 64³; 128³ or 256³ to decide)",
+    "en/encadrants/index.qmd:199 (Y. Ponty: pseudo-spectral codes, LATU) and en/these/index.qmd:908 (the two reference flows of tier 2 come from Y. Ponty)",
+    "script/ch02.json ch02.Q (Q3 asks which Pm values the first 3D runs should cover) and script/ch03.json ch03.Q (Q4: spread or pack the settings): this card asks what makes a threshold comparable, not where to place the points"
+   ],
+   "variants": null,
+   "question": {
+    "n": 18,
+    "category": "runs",
+    "en": "Before the *Taylor–Green* runs: which forcing, Reynolds definition and resolution make their threshold *comparable* with published ones?",
+    "say": "Before the Taylor-Green runs, which forcing, Reynolds number definition and resolution make their threshold comparable with published ones?",
+    "fr": "Avant les simulations Taylor–Green : quel forçage, quelle définition du nombre de Reynolds et quelle résolution rendent leur seuil comparable aux seuils publiés ?",
+    "why": "Bet 2 and the 3D generator's data come from this campaign; our Reynolds numbers use other scales than the published Rm_c = 30, and 64³ may be too coarse at Re ≥ 100.",
+    "unblocks": "The settings of palier2_tg3d before renting: forcing amplitude, Re definition, grid (64³, or 128³ at Re ≥ 100); hence the threshold check of Bet 2 and the 3D training data.",
+    "why_fr": "Le pari 2 et les données du générateur 3D viennent de cette campagne ; nos nombres de Reynolds utilisent d'autres échelles que le Rm_c = 30 publié, et 64³ risque d'être trop grossier à Re ≥ 100.",
+    "unblocks_fr": "Les réglages de palier2_tg3d avant de louer : amplitude du forçage, définition de Re, grille (64³, ou 128³ à Re ≥ 100) ; donc la vérification du seuil du pari 2 et les données d'entraînement 3D.",
+    "ask_who": "Y. Ponty"
+   }
+  },
+  {
    "id": "10.9-bridge",
    "was": "C9.8 (extended-cut entry, critique H8)",
    "title": "The top steps: a bridge",
@@ -1743,73 +1811,6 @@
    ],
    "variants": null,
    "question": null
-  },
-  {
-   "id": "ch10.Q",
-   "was": null,
-   "title": "Question for the supervisors",
-   "file": "scenes/ch10/10_Q_question.html",
-   "status": "ready",
-   "level": "L5",
-   "register": "NIGHT",
-   "badge": null,
-   "target_s": 9,
-   "lead_in": 0.5,
-   "tail": 1.2,
-   "deps": [],
-   "entry": {
-    "data": {},
-    "params": {
-     "backdrop": {
-      "opacity": 0.1,
-      "what": "the 4 x 3 grid of dashed Taylor-Green frames of 10.5 (Re x Pm), no data"
-     }
-    }
-   },
-   "sfx": [
-    "chime@q-0.2"
-   ],
-   "paragraphs": [
-    {
-     "hold_after": 0.8,
-     "sentences": [
-      {
-       "id": "ch10.Q.s1",
-       "cue": "q",
-       "text": "Before our Taylor-Green runs, which forcing, Reynolds number definition and resolution make our threshold comparable with yours?"
-      }
-     ]
-    }
-   ],
-   "onscreen": {
-    "title": "",
-    "labels": [],
-    "formulas": [],
-    "chips": []
-   },
-   "visual": "Render class flat. Kit.questionCard(ctx, {n: 11, chapter: 'ch10', category: 'runs', at: 'q'}) filling the frame (BRIEF 3.1): the warm ticket with its perforated stub 'ASK · Q11 · CH10 · Y. Ponty'; the question with the pen underline (M9) on 'Taylor–Green' and on 'comparable'; WHY IT MATTERS at the component's default delay after 'q', WHAT IT UNBLOCKS about 2.2 s later, category tag RUNS. Behind the card, at params.backdrop.opacity, the empty 4 x 3 grid of 10.5 (the campaign this question settles). No badge, lower-third or formula layer (a question makes no claim). Chime at 'q-0.2'. n = 11 assumes ch09.Q is Q10: renumber with the question register (script/_shared) if needed.",
-   "assets": [],
-   "sources": [
-    "infra/configs/palier2_tg3d.yaml:3-8 (Re = U_ref L_ref / ν with L_ref = 1/kf = 0.5 and U_ref = 1; turbulent amplitude rule; effective Reynolds read a posteriori) and :12-14 (check the resolution at Re = 200, Pm = 2; move to N = 128 if needed)",
-    "external: Ponty et al. (2005), Phys. Rev. Lett. 94, 164502, https://arxiv.org/abs/physics/0410046 (R_V from the r.m.s. velocity and the integral scale; Taylor-Green forcing k0 = 2): verified 2026-11-08",
-    "en/these/index.qmd:908, 912, 917 (published TG thresholds Rm_c = 30 at Pm = 1 and 226 at Pm = 0.3; data 'checked against the published thresholds'; criterion (c) compares thresholds within 10 %)",
-    "infra/cloud/RECOMMANDATION-CLOUD.md:19-37 (§0: talk to the supervisors before computing; 'Paramètres: convention de forçage Taylor–Green pour comparer aux seuils publiés, plage de Re et de Pm, résolution (64³ suffit-il à Re ≥ 100 ?)') and :226-231, :253 (Kolmogorov estimate k_max η_K = 0.33-0.47 at Re = 100, 0.20-0.28 at Re = 200 at 64³; 128³ or 256³ to decide)",
-    "en/encadrants/index.qmd:199 (Y. Ponty: pseudo-spectral codes, LATU) and en/these/index.qmd:908 (the two reference flows of tier 2 come from Y. Ponty)",
-    "script/ch02.json ch02.Q (Q3 asks which Pm values the first 3D runs should cover) and script/ch03.json ch03.Q (Q4: spread or pack the settings): this card asks what makes a threshold comparable, not where to place the points"
-   ],
-   "variants": null,
-   "question": {
-    "n": 11,
-    "category": "runs",
-    "en": "Before our *Taylor–Green* runs: which forcing, Reynolds definition and resolution make our threshold *comparable* with yours?",
-    "say": "Before our Taylor-Green runs, which forcing, Reynolds number definition and resolution make our threshold comparable with yours?",
-    "fr": "Avant nos simulations Taylor–Green : quel forçage, quelle définition du nombre de Reynolds et quelle résolution rendent notre seuil comparable aux vôtres ?",
-    "why": "Bet 2 and the 3D generator's data come from this campaign; our Reynolds numbers use other scales than the published Rm_c = 30, and 64³ may be too coarse at Re ≥ 100.",
-    "unblocks": "The settings of palier2_tg3d before renting: forcing amplitude, Re definition, grid (64³, or 128³ at Re ≥ 100); hence the threshold check of Bet 2 and the 3D training data.",
-    "why_fr": "Le pari 2 et les données du générateur 3D viennent de cette campagne ; nos nombres de Reynolds utilisent d'autres échelles que le Rm_c = 30 publié, et 64³ risque d'être trop grossier à Re ≥ 100.",
-    "unblocks_fr": "Les réglages de palier2_tg3d avant de louer : amplitude du forçage, définition de Re, grille (64³, ou 128³ à Re ≥ 100) ; donc la vérification du seuil du pari 2 et les données d'entraînement 3D.",
-    "ask_who": "Y. Ponty"
-   }
   }
  ]
 }

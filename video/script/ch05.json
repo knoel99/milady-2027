@@ -11,7 +11,7 @@
  },
  "learning_goal": "Understand Rice's formula as 'a toll counter without a clock' and see it reproduce the true crossing rate from snapshots plus the equations.",
  "takeaway": "A shoebox of snapshots plus the equations gives the crossing rate without running time forward.",
- "notes": "All scenes are ready (D4): no simulation, training or benchmark; every number comes from E1 results already in the repository. The T4 chapter card sits in the 3.2-s lead-in of 05.1 (tier 0 lit, rail stays at L2; the climb to L3 is in 05.5, which is also the checkpoint). Predict beat: one unnumbered beat in 05.1 ('Can one photo, with no time in it, give you a rate?', hold 2.5 s, reads PREDICT on screen): the outline had none in ch05 and the misconception it targets (a rate needs a clock) is the chapter's whole point. Changes against the outline, to review: (1) 05.2 reopens the 04.6 shoebox at Gamma = 0.93 (outline: 0.9) so the box is the same object; it reads data/e1_samples_0.93.json plus a NEW small file data/ch05_rice.json, block strip (26 of the 8,000 snapshots fall in |D| < 0.2; 21 at 0.9). The sparse strip is shown and said, not hidden (critique C13), and it motivates 05.5 ('plenty of snapshots'); no re-integration (D4) and no Rice value of this single box is quoted. (2) 05.3 reads data/e1_finegrid.json plus the same NEW file data/ch05_rice.json, block check, with the two cumulative errors (recomputed from e1_gissinger.json grille_fine: 0.0437 and 0.0593, i.e. the report's 4% and 6%), so that no percentage is typed in a scene; the cumulative error is defined visually as shaded area / area under the counted curve (critique C7), a device 09.1 reuses. (3) The core cut loses the 'three-variable deterministic system' caveat to X4.1, so 05.3 keeps it audible in one sentence ('on three chaotic dials where the formula's fine print is not even guaranteed', R:883, R:901). (4) 05.4 adds one sentence on counting crossings of a level farther from zero (T:680), which sets up the question card; the excursion is said to add two crossings, consistent with 04.3. Badges: SCHEMATIC for the toll counter (a thought experiment with no numbers; if the lead keeps only the five BRIEF kinds, use PROVED with note 'counting formula, R:520'), PROVED for 05.2 (Proposition 8) and 05.4 (what the formula counts, R:528; T Prop. 2.30), MEASURED for 05.3 (E1), none on the bridge 05.5 and on the question card. No external fact: Kac 1943 and Rice 1944-1945 are in the report's bibliography (R:1508-1511), so no web source is needed. Symbol sheet: r_0 for the crossing rate (never nu_0), r and r_a only on the formula layer of 05.4, Gissinger coefficient as the number 0.1, 'crossing rate' on screen, 'cumulative error' never 'within'. Question card numbered n = 6 on the assumption of one card per chapter in order (ch04.Q = 5): the consistency editor may renumber. Words budgeted at 125-130 effective words per minute against target_s (minus the predict hold and the chapter-card lead-in in 05.1); estimates use the assembler formula (146 raw words per minute, 0.9 s per paragraph break, holds, lead-in and tail). Data note for the foundation engineer: data/e1_finegrid.json labels its 'bridge' block 'P(|D| < h)' with h_rice 0.2, but the stored bridge masses are P(|D| < 0.25) (experiences/e1_gissinger.py pont_* use 0.25; R:729, R:807): ch05 does not use them, 09.x and 07.x might. Review 2026-11-08 (script/_review/ch05.md): 05.1 tightened and split for a beat before the sum; 05.2 'total number of photos', formula dummy variable y (u is the fluid velocity); 05.3 y axis in crossings per 1,000 time units as in 04.3, 'counted curve', 'well-behaved' callback; 05.4 'a far level, on the other side' and r_a defined per level; 05.5 'real dynamo simulations' (05.3 just showed 41 cheap settings); ch05.Q anchored to VKS (no dipole in a periodic box).",
+ "notes": "All scenes are ready (D4): no simulation, training or benchmark; every number comes from E1 results already in the repository. The T4 chapter card sits in the 3.2-s lead-in of 05.1 (tier 0 lit, rail stays at L2; the climb to L3 is in 05.5, which is also the checkpoint). Predict beat: one unnumbered beat in 05.1 ('Can one photo, with no time in it, give you a rate?', hold 2.5 s, reads PREDICT on screen): the outline had none in ch05 and the misconception it targets (a rate needs a clock) is the chapter's whole point. Changes against the outline, to review: (1) 05.2 reopens the 04.6 shoebox at Gamma = 0.93 (outline: 0.9) so the box is the same object; it reads data/e1_samples_0.93.json plus a NEW small file data/ch05_rice.json, block strip (26 of the 8,000 snapshots fall in |D| < 0.2; 21 at 0.9). The sparse strip is shown and said, not hidden (critique C13), and it motivates 05.5 ('plenty of snapshots'); no re-integration (D4) and no Rice value of this single box is quoted. (2) 05.3 reads data/e1_finegrid.json plus the same NEW file data/ch05_rice.json, block check, with the two cumulative errors (recomputed from e1_gissinger.json grille_fine: 0.0437 and 0.0593, i.e. the report's 4% and 6%), so that no percentage is typed in a scene; the cumulative error is defined visually as shaded area / area under the counted curve (critique C7), a device 09.1 reuses. (3) The core cut loses the 'three-variable deterministic system' caveat to X4.1, so 05.3 keeps it audible in one sentence ('on three chaotic dials where the formula's fine print is not even guaranteed', R:883, R:901). (4) 05.4 adds one sentence on counting crossings of a level farther from zero (T:680), which sets up the question card; the excursion is said to add two crossings, consistent with 04.3. Badges: SCHEMATIC for the toll counter (a thought experiment with no numbers; if the lead keeps only the five BRIEF kinds, use PROVED with note 'counting formula, R:520'), PROVED for 05.2 (Proposition 8) and 05.4 (what the formula counts, R:528; T Prop. 2.30), MEASURED for 05.3 (E1), none on the bridge 05.5 and on the question card. No external fact: Kac 1943 and Rice 1944-1945 are in the report's bibliography (R:1508-1511), so no web source is needed. Symbol sheet: r_0 for the crossing rate (never nu_0), r and r_a only on the formula layer of 05.4, Gissinger coefficient as the number 0.1, 'crossing rate' on screen, 'cumulative error' never 'within'. Question card numbered n = 6 on the assumption of one card per chapter in order (ch04.Q = 5): the consistency editor may renumber. Words budgeted at 125-130 effective words per minute against target_s (minus the predict hold and the chapter-card lead-in in 05.1); estimates use the assembler formula (146 raw words per minute, 0.9 s per paragraph break, holds, lead-in and tail). Data note for the foundation engineer: data/e1_finegrid.json labels its 'bridge' block 'P(|D| < h)' with h_rice 0.2, but the stored bridge masses are P(|D| < 0.25) (experiences/e1_gissinger.py pont_* use 0.25; R:729, R:807): ch05 does not use them, 09.x and 07.x might. Review 2026-11-08 (script/_review/ch05.md): 05.1 tightened and split for a beat before the sum; 05.2 'total number of photos', formula dummy variable y (u is the fluid velocity); 05.3 y axis in crossings per 1,000 time units as in 04.3, 'counted curve', 'well-behaved' callback; 05.4 'a far level, on the other side' and r_a defined per level; 05.5 'real dynamo simulations' (05.3 just showed 41 cheap settings); ch05.Q anchored to VKS (no dipole in a periodic box). CONSISTENCY EDITOR (2026-11-08): badge notes added; ch05.Q renumbered Q7 (register numbering).",
  "scenes": [
   {
    "id": "05.1",
@@ -176,7 +176,8 @@
    "register": "NIGHT",
    "badge": {
     "kind": "PROVED",
-    "confidence": null
+    "confidence": null,
+    "note": "Proposition 8 · report"
    },
    "target_s": 50,
    "lead_in": 0.4,
@@ -373,7 +374,8 @@
    "register": "NIGHT",
    "badge": {
     "kind": "MEASURED",
-    "confidence": null
+    "confidence": null,
+    "note": "E1 · fine grid · 41 Γ"
    },
    "target_s": 35,
    "lead_in": 0.4,
@@ -536,7 +538,8 @@
    "register": "NIGHT",
    "badge": {
     "kind": "PROVED",
-    "confidence": null
+    "confidence": null,
+    "note": "Proposition 8 · what it counts"
    },
    "target_s": 15,
    "lead_in": 0.4,
@@ -789,7 +792,7 @@
     "formulas": [],
     "chips": []
    },
-   "visual": "Render class flat. Kit.questionCard(ctx, {n: 6, chapter: 'ch05', category: 'framing', at: 'q'}) filling the frame (BRIEF 3.1): the warm ticket with its perforated stub 'ASK · Q6 · CH05 · C. Nore / Y. Ponty'; the question (it opens 'For VKS,': the VKS simulations of tier 3, not the experiment, since Rice needs the equations; the dipole question is a tier-3 question; VKS is pinned in audio/lexicon.json) with the pen underline (M9) on 'dipole' and on 'reversal'; WHY IT MATTERS at the component's default delay after 'q', WHAT IT UNBLOCKS about 2.2 s later, with the category tag FRAMING · METRICS. Behind the card, at params.backdrop.opacity, the schematic D(t) trace of 05.4 (same knots) with its two dashed levels +/- a, a chalk question mark on the upper level. No badge, lower-third or formula layer (a question makes no claim). Chime at 'q-0.2'. If the question register numbers the cards differently, renumber n.",
+   "visual": "Render class flat. Kit.questionCard(ctx, {n: 6, chapter: 'ch05', category: 'framing', at: 'q'}) filling the frame (BRIEF 3.1): the warm ticket with its perforated stub 'ASK · Q7 · CH05 · C. Nore / Y. Ponty'; the question (it opens 'For VKS,': the VKS simulations of tier 3, not the experiment, since Rice needs the equations; the dipole question is a tier-3 question; VKS is pinned in audio/lexicon.json) with the pen underline (M9) on 'dipole' and on 'reversal'; WHY IT MATTERS at the component's default delay after 'q', WHAT IT UNBLOCKS about 2.2 s later, with the category tag FRAMING · METRICS. Behind the card, at params.backdrop.opacity, the schematic D(t) trace of 05.4 (same knots) with its two dashed levels +/- a, a chalk question mark on the upper level. No badge, lower-third or formula layer (a question makes no claim). Chime at 'q-0.2'. If the question register numbers the cards differently, renumber n.",
    "assets": [],
    "sources": [
     "en/these/index.qmd:645 (Definition 2.27: the dipole moment is a linear form of B, for example the coefficient of the dipolar POD mode of Bousquet et al. 2026, or the axial component of the magnetic moment: two candidates)",
@@ -805,7 +808,7 @@
    ],
    "variants": null,
    "question": {
-    "n": 6,
+    "n": 7,
     "category": "framing",
     "en": "For VKS, which *dipole* should Rice count, and what threshold turns a crossing into a *reversal*?",
     "say": "For VKS, which dipole should Rice count, and what threshold turns a crossing into a reversal?",

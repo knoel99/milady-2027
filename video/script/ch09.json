@@ -11,7 +11,7 @@
  },
  "learning_goal": "See the 'how often' payoff with its error bars, why a smooth generator must lag a steep onset, and what remains weak.",
  "takeaway": "On a toy model the crossing rate is predicted from generated snapshots and the model's equations, without running time forward: roughly right far from the threshold and poorly near it, as expected from a generator that varies smoothly with the knob.",
- "notes": "All seven scenes are ready (D4): no simulation, training or benchmark; every number comes from E1 and E2 results already in the repository (experiences/resultats/e1_gissinger.json, e2_mhd2d.json, the E1 sample cache) through data files. No pending seat, no result variant. Chapter card T4 in the 3.2-s lead-in of 09.1 (tier 0 lit, rail stays at L4: ch09 is all L4, no checkpoint; 08.7 already climbed L3 → L4 and ended on the toll counter with violet cars and 'so how well does it answer how often?', which 09.1 picks up). Predict beat Q8 in 09.2 (hold 3.0 s), PREDICT on screen. Badges: MEASURED (09.1, 09.2, 09.4, 09.5, 09.6), PROVED with the note 'E1 consistent with it' (09.3: Prop. 9 is proved; E1 only fits it, critique A5); none on the question card. No CONTEXT fact: Kac 1943, Rice 1944-1945 and Grönwall are in the report, so no web source is needed. DATA. Existing: data/e1_finegrid.json (09.1-09.3), data/e1_eval.json (09.4, 09.5), data/e2_eval.json (09.5). TWO NEW FILES are requested from tools/data_existing.py (no run; read only): (1) data/ch09_rice.json (09.1, 09.2, 09.4), from experiences/resultats/e1_gissinger.json grille_fine and config: n_settings 41, n_unseen 30 (not dans_entrainement), n_generated_per_gamma 20000 (R:801), threshold {last_zero 0.86, first_nonzero 0.865}; check.C and check.F, each {near: {gamma_min 0.865, gamma_max 0.885, n 5, cumulative_error, percent}, far: {gamma_min 0.89, gamma_max 1.0, n 23, cumulative_error, percent}, pointwise_far: {values per Γ >= 0.89 of |Rice − count| / count, mean, max, argmax (the two largest Γ)}}, with cumulative_error = Σ|taux_rice_modele(_F) − taux_simulation| / Σ taux_simulation over the range (R:883); the extractor asserts round(100 x error) = 42, 14 (C), 32, 23 (F), pointwise mean 17 and max 65 (C) as in the report (computed here: 0.4155, 0.1374, 0.3154, 0.2294, 0.170, 0.654); check.ref {near 0.0437, far 0.0593} for consistency with ch05_rice.json; below {gamma_max 0.86, C_rate_max 1.548e-4 at 0.845, C_bridge_max 3.5e-4, truth 0}; onset {gamma 0.865, count 0.0019375, C 3.04e-4, ratio 6.4}; overshoot [{gamma 0.875, count 0.002917, C 0.003775}, {gamma 0.88, count 0.003396, C 0.0050}]; counted_crossings per Γ = taux_simulation x trajectoires_par_Gamma x duree_gardee (93 at 0.865, 572 at 0.995; quoted on the question card); meta.stamp 'DATA · E1 · fine grid · Rice on model C and F, seed 0'. (2) data/ch09_sweep.json (09.3), from experiences/resultats/cache_e1/e1_echantillons_complet.npz, LOCAL_ONLY (gitignored, present on this machine only: extract it here, then the JSON travels with video/data): gammas = the 21 data Γ (G_train ∪ G_test, x.train mask); per Γ: ref = cache 'ref|Γ' (8,000 points: the first rows of the UNSYMMETRIZED half, so at Γ = 0.86 about 81 % have D > 0) SYMMETRIZED by appending x·S with S = diag(−1, −1, 1) as experiences/e1_gissinger.py:218-219 does for the evaluation (R:786), then a seeded subsample of 3,000; gen = cache 'C_equivariant|Γ' (4,000 points, seed 0), seeded subsample of 3,000; BOTH subsamples keep every point with |D| < 0.25 (the stray generated points below the threshold are the message: 1 of 4,000 at 0.80, 0.82, 0.84 and 0.85); columns Q and D only, packed f32; bridge counts n(|D| < 0.25) and masses of the full (symmetrized) arrays; plus bridge_fine = a copy of e1_finegrid bridge.reference and bridge.model_C (41 Γ, 20,000 generated per Γ) for the metaphor's ramp; meta.stamp 'DATA · E1 · (Q, D) clouds, 21 Γ · reference symmetrized · model C seed 0'. DATA BUG to fix in tools/data_existing.py (foundation engineer; already flagged by the ch05 writer): e1_finegrid.json labels its 'bridge' block 'P(|D| < h)' with h_rice 0.2, but the stored masses are P(|D| < 0.25) (experiences/e1_gissinger.py:373, :437; R:729): relabel to 'bridge mass P(|D| < 0.25)' and add h_bridge 0.25 (09.3 reads it). The same cache caveat affects the 'ref' variant of e1_samples_<Γ>.json (first 8,000 rows of the unsymmetrized half; p_positive 0.81 at Γ = 0.86 in the cache): check the 07.x scenes that show the reference cloud. CHANGES AGAINST THE OUTLINE, to review: (1) 09.1 drops model F from the chart (outline: 'model F faint'): its Rice numbers (32 % near, 23 % far, R:883) move to 09.4, where they show the crowd loss trading accuracy, one idea per shot; the promise-card tick is honest: '✓ far · ≈ near'. (2) 09.1 narrates 'most never seen in training' (30 of the 41 fine-grid Γ, R:786) and 'twenty thousand per setting' (R:801). (3) 09.2 uses crossings per 1,000 time units (as 04.3 and the narration) and quotes the leak as 'up to a tenth of the rate just above' (R:883; data max 1.55e-4 at 0.845, report bound 2e-4); the 0.005-0.01 delay is on screen only. (4) 09.3 says 'corridor' (04.2's word for the bridge |D| ≈ 0); the metaphor sheet never overshoots, and the narration says the bound explains neither the overshoot nor proves the lag (A5); the two ways out of Prop. 9 (a very supple sheet, i.e. a large K, or a machine told which state the system is in, the branch label) are named because they are thesis questions (T:913, T:917, T:996). (5) 09.4 adds the crossing-rate trade of model F; the cause of the narrowing stays a HYPOTHESIS chip, not narrated. (6) 09.5 adds E1 (best model about twice its optimistic floor, an easy problem) beside E2 (six times the honest floor), the PhD plan's 'at least three seeds' (T:861), and drops the outline's '0.07-0.23 vs 0.002-0.011' string in favour of the bars themselves (the report's numbers stay in the data). (7) 09.6 deals the eight mechanisms of R:1149-1158 with verdict icons only; the crowd-loss icon turns ✓ → ≈ ('E2 ✓ · E1 mixed') so the scoreboard does not contradict 09.4; a ninth result strip carries 'how often' (the chapter takeaway). QUESTION CARD ch09.Q (n 10 assumed after ch08.Q = Q9; category runs; ask C. Nore / Y. Ponty, who hold the reversal simulations): the chapter shows that a predicted rate is only as good as the counted truth it is checked against; E1 had 93 to 572 counted crossings per setting (16 trajectories x 3000 time units), while the 3D reversal runs hold few reversals (R:1191, risk rated high in T:995) and the configured Taylor–Green campaign keeps 40 time units per point (palier2_tg3d.yaml:41-45). Distinct from ch04.Q (snapshots: how many, how far apart), ch05.Q (which dipole, which reversal threshold) and ch03.Q (where to place the settings): this one decides run LENGTH and which settings get long runs. The branch-label question raised by Prop. 9 (T:917) is left to ch01.Q (tiny or strong seed) and X4b. SYMBOL SHEET: r_0 crossing rate, 'crossing rate' on screen, 'cumulative error' (never 'within'); Γ named and green; q violet; 'distribution distance' amber (never 'energy distance'); μ never shown (09.3 writes 'truth'); K for the steepness constant, its Lipschitz factors written Lip_Γ(v_θ) and Lip_z(v_θ) in the formula layer of 09.3 (R:545 writes L_λ, L_x; never a bare L, symbol sheet B6); σ(dE/dt) for the spread of energy changes (D4: never σ(D)). LEXICON: no new word (Gamma, Rice, PhD are already read correctly; Grönwall and Lipschitz are on screen only). Words budgeted with the assembler formula (146 raw words per minute, 0.9 s per paragraph break, holds, lead-in and tail), which lands at about 125-130 effective words per minute. REVIEW 2026-11-08 (adversarial script review): changes and evidence in script/_review/ch09.md.",
+ "notes": "All seven scenes are ready (D4): no simulation, training or benchmark; every number comes from E1 and E2 results already in the repository (experiences/resultats/e1_gissinger.json, e2_mhd2d.json, the E1 sample cache) through data files. No pending seat, no result variant. Chapter card T4 in the 3.2-s lead-in of 09.1 (tier 0 lit, rail stays at L4: ch09 is all L4, no checkpoint; 08.7 already climbed L3 → L4 and ended on the toll counter with violet cars and 'so how well does it answer how often?', which 09.1 picks up). Predict beat Q8 in 09.2 (hold 3.0 s), PREDICT on screen. Badges: MEASURED (09.1, 09.2, 09.4, 09.5, 09.6), PROVED with the note 'E1 consistent with it' (09.3: Prop. 9 is proved; E1 only fits it, critique A5); none on the question card. No CONTEXT fact: Kac 1943, Rice 1944-1945 and Grönwall are in the report, so no web source is needed. DATA. Existing: data/e1_finegrid.json (09.1-09.3), data/e1_eval.json (09.4, 09.5), data/e2_eval.json (09.5). TWO NEW FILES are requested from tools/data_existing.py (no run; read only): (1) data/ch09_rice.json (09.1, 09.2, 09.4), from experiences/resultats/e1_gissinger.json grille_fine and config: n_settings 41, n_unseen 30 (not dans_entrainement), n_generated_per_gamma 20000 (R:801), threshold {last_zero 0.86, first_nonzero 0.865}; check.C and check.F, each {near: {gamma_min 0.865, gamma_max 0.885, n 5, cumulative_error, percent}, far: {gamma_min 0.89, gamma_max 1.0, n 23, cumulative_error, percent}, pointwise_far: {values per Γ >= 0.89 of |Rice − count| / count, mean, max, argmax (the two largest Γ)}}, with cumulative_error = Σ|taux_rice_modele(_F) − taux_simulation| / Σ taux_simulation over the range (R:883); the extractor asserts round(100 x error) = 42, 14 (C), 32, 23 (F), pointwise mean 17 and max 65 (C) as in the report (computed here: 0.4155, 0.1374, 0.3154, 0.2294, 0.170, 0.654); check.ref {near 0.0437, far 0.0593} for consistency with ch05_rice.json; below {gamma_max 0.86, C_rate_max 1.548e-4 at 0.845, C_bridge_max 3.5e-4, truth 0}; onset {gamma 0.865, count 0.0019375, C 3.04e-4, ratio 6.4}; overshoot [{gamma 0.875, count 0.002917, C 0.003775}, {gamma 0.88, count 0.003396, C 0.0050}]; counted_crossings per Γ = taux_simulation x trajectoires_par_Gamma x duree_gardee (93 at 0.865, 572 at 0.995; quoted on the question card); meta.stamp 'DATA · E1 · fine grid · Rice on model C and F, seed 0'. (2) data/ch09_sweep.json (09.3), from experiences/resultats/cache_e1/e1_echantillons_complet.npz, LOCAL_ONLY (gitignored, present on this machine only: extract it here, then the JSON travels with video/data): gammas = the 21 data Γ (G_train ∪ G_test, x.train mask); per Γ: ref = cache 'ref|Γ' (8,000 points: the first rows of the UNSYMMETRIZED half, so at Γ = 0.86 about 81 % have D > 0) SYMMETRIZED by appending x·S with S = diag(−1, −1, 1) as experiences/e1_gissinger.py:218-219 does for the evaluation (R:786), then a seeded subsample of 3,000; gen = cache 'C_equivariant|Γ' (4,000 points, seed 0), seeded subsample of 3,000; BOTH subsamples keep every point with |D| < 0.25 (the stray generated points below the threshold are the message: 1 of 4,000 at 0.80, 0.82, 0.84 and 0.85); columns Q and D only, packed f32; bridge counts n(|D| < 0.25) and masses of the full (symmetrized) arrays; plus bridge_fine = a copy of e1_finegrid bridge.reference and bridge.model_C (41 Γ, 20,000 generated per Γ) for the metaphor's ramp; meta.stamp 'DATA · E1 · (Q, D) clouds, 21 Γ · reference symmetrized · model C seed 0'. DATA BUG to fix in tools/data_existing.py (foundation engineer; already flagged by the ch05 writer): e1_finegrid.json labels its 'bridge' block 'P(|D| < h)' with h_rice 0.2, but the stored masses are P(|D| < 0.25) (experiences/e1_gissinger.py:373, :437; R:729): relabel to 'bridge mass P(|D| < 0.25)' and add h_bridge 0.25 (09.3 reads it). The same cache caveat affects the 'ref' variant of e1_samples_<Γ>.json (first 8,000 rows of the unsymmetrized half; p_positive 0.81 at Γ = 0.86 in the cache): check the 07.x scenes that show the reference cloud. CHANGES AGAINST THE OUTLINE, to review: (1) 09.1 drops model F from the chart (outline: 'model F faint'): its Rice numbers (32 % near, 23 % far, R:883) move to 09.4, where they show the crowd loss trading accuracy, one idea per shot; the promise-card tick is honest: '✓ far · ≈ near'. (2) 09.1 narrates 'most never seen in training' (30 of the 41 fine-grid Γ, R:786) and 'twenty thousand per setting' (R:801). (3) 09.2 uses crossings per 1,000 time units (as 04.3 and the narration) and quotes the leak as 'up to a tenth of the rate just above' (R:883; data max 1.55e-4 at 0.845, report bound 2e-4); the 0.005-0.01 delay is on screen only. (4) 09.3 says 'corridor' (04.2's word for the bridge |D| ≈ 0); the metaphor sheet never overshoots, and the narration says the bound explains neither the overshoot nor proves the lag (A5); the two ways out of Prop. 9 (a very supple sheet, i.e. a large K, or a machine told which state the system is in, the branch label) are named because they are thesis questions (T:913, T:917, T:996). (5) 09.4 adds the crossing-rate trade of model F; the cause of the narrowing stays a HYPOTHESIS chip, not narrated. (6) 09.5 adds E1 (best model about twice its optimistic floor, an easy problem) beside E2 (six times the honest floor), the PhD plan's 'at least three seeds' (T:861), and drops the outline's '0.07-0.23 vs 0.002-0.011' string in favour of the bars themselves (the report's numbers stay in the data). (7) 09.6 deals the eight mechanisms of R:1149-1158 with verdict icons only; the crowd-loss icon turns ✓ → ≈ ('E2 ✓ · E1 mixed') so the scoreboard does not contradict 09.4; a ninth result strip carries 'how often' (the chapter takeaway). QUESTION CARD ch09.Q (n 10 assumed after ch08.Q = Q9; category runs; ask C. Nore / Y. Ponty, who hold the reversal simulations): the chapter shows that a predicted rate is only as good as the counted truth it is checked against; E1 had 93 to 572 counted crossings per setting (16 trajectories x 3000 time units), while the 3D reversal runs hold few reversals (R:1191, risk rated high in T:995) and the configured Taylor–Green campaign keeps 40 time units per point (palier2_tg3d.yaml:41-45). Distinct from ch04.Q (snapshots: how many, how far apart), ch05.Q (which dipole, which reversal threshold) and ch03.Q (where to place the settings): this one decides run LENGTH and which settings get long runs. The branch-label question raised by Prop. 9 (T:917) is left to ch01.Q (tiny or strong seed) and X4b. SYMBOL SHEET: r_0 crossing rate, 'crossing rate' on screen, 'cumulative error' (never 'within'); Γ named and green; q violet; 'distribution distance' amber (never 'energy distance'); μ never shown (09.3 writes 'truth'); K for the steepness constant, its Lipschitz factors written Lip_Γ(v_θ) and Lip_z(v_θ) in the formula layer of 09.3 (R:545 writes L_λ, L_x; never a bare L, symbol sheet B6); σ(dE/dt) for the spread of energy changes (D4: never σ(D)). LEXICON: no new word (Gamma, Rice, PhD are already read correctly; Grönwall and Lipschitz are on screen only). Words budgeted with the assembler formula (146 raw words per minute, 0.9 s per paragraph break, holds, lead-in and tail), which lands at about 125-130 effective words per minute. REVIEW 2026-11-08 (adversarial script review): changes and evidence in script/_review/ch09.md. CONSISTENCY EDITOR (2026-11-08): 09.6 rewritten: P1 keeps the scoreboard but no longer repeats the 08.6 verdicts word for word and drops 'both projections' (the core cut never names two projections); P2 pays off the three promise cards of 03.7 (card 1 had no payoff anywhere); target 40 -> 45 s. 09.1.s7 says 'training seed'. 09.4 label 'model F'. ch09.Q renumbered Q13. In the extended cut ch09.Q now plays right after 09.6, before X4a (X4a.insert_after = ch09.Q).",
  "scenes": [
   {
    "id": "09.1",
@@ -189,7 +189,7 @@
       {
        "id": "09.1.s7",
        "cue": "seed",
-       "text": "One model, one seed."
+       "text": "One model, one training seed."
       },
       {
        "id": "09.1.s8",
@@ -853,7 +853,7 @@
     "labels": [
      "good machine (C) · test values of Γ",
      "control run, same length",
-     "with the crowd loss (F)",
+     "with the crowd loss (model F)",
      "crowd laws enforced (degree ≤ 2)",
      "crowd laws not enforced (degree 3)",
      "÷ 2",
@@ -886,7 +886,7 @@
      "HYPOTHESIS · why the spread narrows (R:875)"
     ]
    },
-   "visual": "Render class flat (SVG bars). Data: ctx.data.ev = data/e1_eval.json, ctx.data.rice = data/ch09_rice.json (entry.params.read lists every field; no number typed in the scene except the 'truth = 1' reference line). Key colours: amber (metric bars), violet (GENERATED chips), grey (control bars, floors). One verdict per row, the scoreboard grammar of 08.5 (✓ / ≈ / ✗ icons at the right of each row). P1. On 'loss-0.15': panel title 'good machine (C) · test values of Γ' (Inter 36) over params.panel_good; the two-juries icon of 07.6 small beside it; legend: grey outline bar 'control run, same length' and amber filled bar 'with the crowd loss (F)'. On 'halves-0.15': row 1 'crowd laws enforced (degree ≤ 2)': the grey control bar grows to 0.0324, then the amber bar to 0.0136 on a shared log axis (params.panel_good.axis), dashed grey floor tick at 0.0083 labelled 'noise floor (optimistic)'; the pen draws a bracket '÷ 2'; row 2 'crowd laws not enforced (degree 3)': 0.0224 → 0.0113, floor 0.0078, bracket '÷ 2' (this is the surprise: the gain carries over to laws the loss never saw, R:875); verdict ✓ on both rows. On 'narrow-0.15': row 3 'spread of dE/dt ÷ truth' on its own linear mini-axis 0-1.2 with a solid chalk line at 1 ('truth = 1'): control 1.04, loss 0.75, label '1.04 → 0.75'; the amber histogram glyph of 04.7 (M5) beside the row narrows by a quarter, and the mini spike icon of 07.5 appears faint next to it (an echo, not the spike itself); verdict ≈; the cause is not narrated: chip 'HYPOTHESIS · why the spread narrows (R:875)' (pedagogy P18). Row 4, small and unnarrated: 'distribution distance: within the seed spread' with the two bars 0.00345 and 0.00310 and a whisker of the seed spread; verdict ≈. P2. On 'biased-0.15': params.panel_biased: title 'biased machine (C short)'; the same two bar kinds for the spread row: the loss bar shoots past the top of the panel (clipped with '↑ off scale', ratio 19.2 in small type) and a grey stamp 'seed 1 diverged' lands on it at the words 'one run diverged' (about biased+3.0, pop); under it the chip 'seed 0: worse than its control' (words only; the numbers of R:877, 0.0196 vs 0.0140, go to the description); verdict ✗. On 'trade-0.15': params.panel_rate: title 'crossing rate, cumulative error (seed 0)', two pairs of short horizontal bars (amber filled = with the loss, F; amber outline = without, C): 'near: 32 % with the loss vs 42 % without' (shorter amber bar wins: ✓) and 'far: 23 % vs 14 %' (longer: ✗); numbers from rice.check.F and rice.check.C. Chips: 'two seeds · means over the test values' bottom-left; 'GENERATED' on the panel titles. Badge MEASURED. No corner needle. Formula layer 'Formula · R:798, R:875'.",
+   "visual": "Render class flat (SVG bars). Data: ctx.data.ev = data/e1_eval.json, ctx.data.rice = data/ch09_rice.json (entry.params.read lists every field; no number typed in the scene except the 'truth = 1' reference line). Key colours: amber (metric bars), violet (GENERATED chips), grey (control bars, floors). One verdict per row, the scoreboard grammar of 08.5 (✓ / ≈ / ✗ icons at the right of each row). P1. On 'loss-0.15': panel title 'good machine (C) · test values of Γ' (Inter 36) over params.panel_good; the two-juries icon of 07.6 small beside it; legend: grey outline bar 'control run, same length' and amber filled bar 'with the crowd loss (model F)'. On 'halves-0.15': row 1 'crowd laws enforced (degree ≤ 2)': the grey control bar grows to 0.0324, then the amber bar to 0.0136 on a shared log axis (params.panel_good.axis), dashed grey floor tick at 0.0083 labelled 'noise floor (optimistic)'; the pen draws a bracket '÷ 2'; row 2 'crowd laws not enforced (degree 3)': 0.0224 → 0.0113, floor 0.0078, bracket '÷ 2' (this is the surprise: the gain carries over to laws the loss never saw, R:875); verdict ✓ on both rows. On 'narrow-0.15': row 3 'spread of dE/dt ÷ truth' on its own linear mini-axis 0-1.2 with a solid chalk line at 1 ('truth = 1'): control 1.04, loss 0.75, label '1.04 → 0.75'; the amber histogram glyph of 04.7 (M5) beside the row narrows by a quarter, and the mini spike icon of 07.5 appears faint next to it (an echo, not the spike itself); verdict ≈; the cause is not narrated: chip 'HYPOTHESIS · why the spread narrows (R:875)' (pedagogy P18). Row 4, small and unnarrated: 'distribution distance: within the seed spread' with the two bars 0.00345 and 0.00310 and a whisker of the seed spread; verdict ≈. P2. On 'biased-0.15': params.panel_biased: title 'biased machine (C short)'; the same two bar kinds for the spread row: the loss bar shoots past the top of the panel (clipped with '↑ off scale', ratio 19.2 in small type) and a grey stamp 'seed 1 diverged' lands on it at the words 'one run diverged' (about biased+3.0, pop); under it the chip 'seed 0: worse than its control' (words only; the numbers of R:877, 0.0196 vs 0.0140, go to the description); verdict ✗. On 'trade-0.15': params.panel_rate: title 'crossing rate, cumulative error (seed 0)', two pairs of short horizontal bars (amber filled = with the loss, F; amber outline = without, C): 'near: 32 % with the loss vs 42 % without' (shorter amber bar wins: ✓) and 'far: 23 % vs 14 %' (longer: ✗); numbers from rice.check.F and rice.check.C. Chips: 'two seeds · means over the test values' bottom-left; 'GENERATED' on the panel titles. Badge MEASURED. No corner needle. Formula layer 'Formula · R:798, R:875'.",
    "assets": [],
    "sources": [
     "en/rapport/index.qmd:875 (on model C at the test values, fine-tuning F brings the enforced residuals, degree <= 2, from 0.0324 for the control run to 0.0136, the control identities, degree 3, from 0.0224 to 0.0113, 1.5 times the floor 0.0078; the control run gains nothing; energy distance 0.00310 against 0.00345, within the seed spread of order 0.001; σ(dE/dt)/σ_ref drops from 1.04 to 0.75, not an 8-vs-50-step artefact; the explanation remains a hypothesis)",
@@ -1073,7 +1073,7 @@
     "confidence": null,
     "note": "E1, E2 · the report's summary of mechanisms"
    },
-   "target_s": 40,
+   "target_s": 45,
    "lead_in": 0.4,
    "tail": 1.5,
    "deps": [],
@@ -1145,7 +1145,7 @@
       "harmful": "✗"
      },
      "rate_row": {
-      "y": 640,
+      "y": 700,
       "text": "how often · Rice on generated snapshots: ✓ far · ≈ near the threshold"
      },
      "lessons": [
@@ -1165,7 +1165,20 @@
        "motif": "dashed floor + seed dots"
       }
      ],
-     "deal_s": 0.35
+     "deal_s": 0.35,
+     "promise_row": {
+      "y": 560,
+      "component": "the promise cards of 03.7 (params.cards of 03.7: same frames, icons and texts)",
+      "states": {
+       "1": "half tick (new here)",
+       "2": "tick from 08.6",
+       "3": "two ticks from 05.3 and 09.1"
+      },
+      "chips": {
+       "1": "≈ between the dots: right shapes · above the noise floor (× 2 three dials · × 6 flat sheet)",
+       "2": "exactly ✓ · on average ≈"
+      }
+     }
     }
    },
    "sfx": [
@@ -1188,12 +1201,12 @@
       {
        "id": "09.6.s2",
        "cue": "every",
-       "text": "For every snapshot: hill maps and both projections, exact; the penalty, approximate."
+       "text": "For every snapshot: hill maps and projection, exact; the penalty, approximate."
       },
       {
        "id": "09.6.s3",
        "cue": "crowd",
-       "text": "For the crowd: the built-in mirror, exact; the crowd loss, useful but not clean; reweighting afterwards, no gain or worse; forcing each snapshot, harmful."
+       "text": "For the crowd: the mirror, exact; the crowd loss, useful but not clean; the rest, failures."
       }
      ]
     },
@@ -1202,8 +1215,23 @@
      "sentences": [
       {
        "id": "09.6.s4",
+       "cue": "promises",
+       "text": "Back to the study's three questions."
+      },
+      {
+       "id": "09.6.s5",
+       "cue": "family",
+       "text": "One: between the dots, the shapes come out right, but no model reaches its {metric}noise floor{/}."
+      },
+      {
+       "id": "09.6.s6",
+       "cue": "where",
+       "text": "Two: each law where it holds, exactly yes, {metric}on average{/} partly."
+      },
+      {
+       "id": "09.6.s7",
        "cue": "often",
-       "text": "And how often: roughly right far from the threshold, poor near it."
+       "text": "Three, {metric}how often{/}: roughly right far from the threshold, poor near it."
       }
      ]
     },
@@ -1211,22 +1239,22 @@
      "hold_after": 0.0,
      "sentences": [
       {
-       "id": "09.6.s5",
+       "id": "09.6.s8",
        "cue": "lessons",
        "text": "Three lessons."
       },
       {
-       "id": "09.6.s6",
+       "id": "09.6.s9",
        "cue": "exact",
        "text": "Exact laws: build them in."
       },
       {
-       "id": "09.6.s7",
+       "id": "09.6.s10",
        "cue": "crowdlaw",
        "text": "Crowd laws: impose them on the crowd, never on each snapshot."
       },
       {
-       "id": "09.6.s8",
+       "id": "09.6.s11",
        "cue": "judge",
        "text": "And judge every result against the noise floor, with enough seeds."
       }
@@ -1254,6 +1282,9 @@
      "≈",
      "✗",
      "×2.7 magnetic energy",
+     "the study's three questions",
+     "≈ between the dots: right shapes · above the noise floor (× 2 three dials · × 6 flat sheet)",
+     "exactly ✓ · on average ≈",
      "how often · Rice on generated snapshots: ✓ far · ≈ near the threshold",
      "Exact laws: build them in",
      "Crowd laws: on the crowd, never on each snapshot",
@@ -1264,7 +1295,7 @@
      "full table: report §6, summary of the mechanisms (in the description)"
     ]
    },
-   "visual": "Render class flat (DOM/SVG). The recap beat of the chapter (critique F8: scoreboard and lessons merged), reusing motifs only, no new information. Reuse the shelves component of 07.1 / 08.6 (scenes/_shared/), entering in the 08.6 'full' layout with its labels 'true for every snapshot' (single-card icon, --chalk) and 'true only for the crowd' (amber stack icon); NEVER blue for per-snapshot (redrawn taxonomy). Heading 'The scoreboard' (Inter Display 60, top-left, y 70). P1. On 'board-0.15': the 08.6 cards and tags fold away (0.5 s) and eight MECHANISM cards (params.cards; 120 x 160, --panel fill, --fg-2 border, glyph + title, sub-line in Inter 28) are dealt from a deck at the bottom centre onto the two planks, params.deal_s apart, each landing with its verdict icon only (✓ exact, ≈ approximate, ✗ harmful; params.verdict_icons; icon colour --fg, never red or green: the key colours are reserved). On 'every-0.15': the four left cards pulse in turn on the words (hill maps, final projection, projected flow ✓; penalty ≈, with a tiny '×2.7 magnetic energy' grey sub-tag). On 'crowd-0.15': the four right cards pulse in turn; the crowd loss card lands with ✓ then its icon morphs to ≈ (0.4 s) under the chalk note 'E2 ✓ · E1 mixed' (the honest update of 08.6 after 09.4); 'forced on each snapshot' carries the mini spike of 07.5. On 'often-0.15': a ninth, wider strip slides under both planks (params.rate_row): the small toll-counter glyph of 05.1 with violet cars and the text 'how often · Rice on generated snapshots: ✓ far · ≈ near the threshold' (no number; it is a result row, not a mechanism). P2. On 'lessons-0.15': the shelves dim to 30 % and shift up; three lesson lines (Inter Display 48, --fg) appear one per sentence at y 600, 690, 780 (above the subtitle band), each with its motif glyph at the left (params.lessons): on 'exact' the 01.2 box with lines in = lines out (chalk, 64 px); on 'crowdlaw' the mirror M10 beside the spike of 07.5 crossed by the pen; on 'judge' the dashed grey floor with two seed dots and an open third. The pen underlines 'build them in', 'on the crowd' and 'noise floor' as they are spoken. 1.5 s breath (tail). Chip 'full table: report §6, summary of the mechanisms (in the description)' bottom-right. Badge MEASURED. No corner needle, no formula layer (recap: words and motifs only).",
+   "visual": "Render class flat (DOM/SVG). The recap beat of the chapter (critique F8: scoreboard and lessons merged), reusing motifs only, no new information. Reuse the shelves component of 07.1 / 08.6 (scenes/_shared/), entering in the 08.6 'full' layout with its labels 'true for every snapshot' (single-card icon, --chalk) and 'true only for the crowd' (amber stack icon); NEVER blue for per-snapshot (redrawn taxonomy). Heading 'The scoreboard' (Inter Display 60, top-left, y 70). P1. On 'board-0.15': the 08.6 cards and tags fold away (0.5 s) and eight MECHANISM cards (params.cards; 120 x 160, --panel fill, --fg-2 border, glyph + title, sub-line in Inter 28) are dealt from a deck at the bottom centre onto the two planks, params.deal_s apart, each landing with its verdict icon only (✓ exact, ≈ approximate, ✗ harmful; params.verdict_icons; icon colour --fg, never red or green: the key colours are reserved). On 'every-0.15': the four left cards pulse in turn (hill maps, final projection, projected flow ✓, spoken together as 'hill maps and projection'; penalty ≈, with a tiny '×2.7 magnetic energy' grey sub-tag). On 'crowd-0.15': the four right cards pulse in turn; the crowd loss card lands with ✓ then its icon morphs to ≈ (0.4 s) under the chalk note 'E2 ✓ · E1 mixed' (the honest update of 08.6 after 09.4); 'forced on each snapshot' carries the mini spike of 07.5. P2, PAYOFF OF THE PROMISE CARDS (03.7; consistency editor: card 1 was never ticked). On 'promises-0.15': the shelves dim to 50 % and shift up; the three promise cards of 03.7 slide in as a row under them (params.promise_row; same frames, icons and texts as 03.7, 05.3, 08.6 and 09.1), card 2 with its tick from 08.6, card 3 with its two ticks from 05.3 and 09.1, card 1 still empty. On 'family-0.15': card 1 lights and the pen draws a HALF tick (≈) in its box; chip under it '≈ between the dots: right shapes · above the noise floor (× 2 three dials · × 6 flat sheet)' (the two factors are 09.5's, from data/e1_eval.json and data/e2_eval.json; an honest tick, critique F6). On 'where-0.15': card 2 pulses, chip 'exactly ✓ · on average ≈'. On 'often-0.15': card 3 pulses and the wide rate row slides in under the cards (params.rate_row): the small toll-counter glyph of 05.1 with violet cars and the text 'how often · Rice on generated snapshots: ✓ far · ≈ near the threshold' (no number). No promise card is left empty after this beat. P2. On 'lessons-0.15': the shelves, the promise cards and the rate row dim to 30 % and shift up; three lesson lines (Inter Display 48, --fg) appear one per sentence at y 600, 690, 780 (above the subtitle band), each with its motif glyph at the left (params.lessons): on 'exact' the 01.2 box with lines in = lines out (chalk, 64 px); on 'crowdlaw' the mirror M10 beside the spike of 07.5 crossed by the pen; on 'judge' the dashed grey floor with two seed dots and an open third. The pen underlines 'build them in', 'on the crowd' and 'noise floor' as they are spoken. 1.5 s breath (tail). Chip 'full table: report §6, summary of the mechanisms (in the description)' bottom-right. Badge MEASURED. No corner needle, no formula layer (recap: words and motifs only).",
    "assets": [],
    "sources": [
     "en/rapport/index.qmd:1149-1158 (summary of the mechanisms: potentials, final projection, projected flow exact; penalty not exact, magnetic energy 2.7 times too high; equivariance exact by construction; stationarity loss approximate, distance 2.58 → 0.70 in E2, residuals halved but σ(dE/dt) reduced by a quarter and failure on a biased model in E1; exponential tilting: degraded distribution in E2, no distribution improved in E1; per-sample projection or rescaling: dissipation variance cancelled in E2, energy distance x9 in E1)",
@@ -1319,7 +1350,7 @@
     "formulas": [],
     "chips": []
    },
-   "visual": "Render class flat. Kit.questionCard(ctx, {n: 10, chapter: 'ch09', category: 'runs', at: 'q'}) filling the frame (BRIEF 3.1): the warm ticket with its perforated stub 'ASK · Q10 · CH09 · C. Nore / Y. Ponty'; the question with the pen underline (M9) on 'count' and on 'checked'; WHY IT MATTERS at the component's default delay after 'q', WHAT IT UNBLOCKS about 2.2 s later, category tag RUNS · WHICH SIMULATIONS. Behind the card, at params.backdrop.opacity, the 09.1 chart (counted curve and dashed generated Rice curve, no labels). No badge, lower-third or formula layer (a question makes no claim). Chime at 'q-0.2'. If the question register (script/_shared) numbers differently, renumber n.",
+   "visual": "Render class flat. Kit.questionCard(ctx, {n: 10, chapter: 'ch09', category: 'runs', at: 'q'}) filling the frame (BRIEF 3.1): the warm ticket with its perforated stub 'ASK · Q13 · CH09 · C. Nore / Y. Ponty'; the question with the pen underline (M9) on 'count' and on 'checked'; WHY IT MATTERS at the component's default delay after 'q', WHAT IT UNBLOCKS about 2.2 s later, category tag RUNS · WHICH SIMULATIONS. Behind the card, at params.backdrop.opacity, the 09.1 chart (counted curve and dashed generated Rice curve, no labels). No badge, lower-third or formula layer (a question makes no claim). Chime at 'q-0.2'. If the question register (script/_shared) numbers differently, renumber n.",
    "assets": [],
    "sources": [
     "en/rapport/index.qmd:1191 (reversals: Rice applies to the axial dipole with Ḋ from the induction equation; the simulations contain few reversals, so their observed frequency is very uncertain; conjecture: the Rice estimator has a lower variance than direct counting)",
@@ -1332,7 +1363,7 @@
    ],
    "variants": null,
    "question": {
-    "n": 10,
+    "n": 13,
     "category": "runs",
     "en": "Which settings should get runs long enough to *count* reversals, so a predicted rate can be *checked*?",
     "say": "Which settings should get runs long enough to count reversals, so a predicted rate can be checked?",

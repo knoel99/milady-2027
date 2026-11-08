@@ -1,0 +1,2068 @@
+{
+ "schema": 2,
+ "unit": "chSOA2",
+ "title": "The map of the field: where this work fits",
+ "cut": "core",
+ "insert_after": {
+  "core": "ch09.Q",
+  "extended": "X4a.Q"
+ },
+ "level_range": "L4-L5",
+ "voice": {
+  "provider": "fish",
+  "model": "drama-3",
+  "reference_id": "536d3a5e000945adb7038665781a4aca"
+ },
+ "learning_goal": "Know the four machine-learning tracks that touch this work and which of the four tests of a laboratory dynamo each fails, what the four supervisors have published, and the empty spot the internship and the thesis aim at, with its nearest neighbours and its limits.",
+ "takeaway": "Fast surrogates, field generators, constraint machinery and generative priors all exist, but none we found was built for a walled, low-Pm, reversing dynamo; the thesis targets that intersection, with the simulations, codes and tools the consortium already has.",
+ "notes": "New unit (BRIEF section 10), inserted after ch09 and before ch10 in BOTH cuts. ANCHOR (corrected in review): insert_after is {'core': 'ch09.Q', 'extended': 'X4a.Q'}: script/X4a.json has insert_after 'ch09.Q' (the unit's string overrides plan/outline.json's '09.6'), so in the extended cut X4.1-X4a.Q sit between ch09.Q and SOA2.1 (checked with tools/assemble_cut.py --cut extended on a scratch outline with the extra unit below). REQUEST (foundation engineer A, tools/assemble_cut.py): the assembler reads insert_after only for modules and as a string; place this unit like ch10q, with an extra unit {'unit': 'chSOA2', 'before': 'ch10'} in EXTRA_UNITS or plan/outline.json extra_units (both cuts), and treat the dict form as informational (or accept it: insert_after[cut]). Continuity: SOA2.1 opens on 'So far, every test ran on toy models' (true after ch09.Q in the core cut and after X4a.Q in the extended cut) and 'Before real dynamos' (the climb of ch10); the unit ends on the question card and SOA2.8 hands the dashed thesis ring to the M7 staircase glyph, so that 10.1 'Back to the staircase.' follows directly. STATUS (D4): all nine scenes ready; no simulation, training or benchmark; no data file read (deps empty). DATA: pins, years and gate verdicts are dated facts carried in entry.params with their citations (map in SOA2.1 entry.params.map, pins per scene in entry.params.pins), as X5b carries the plan's values; if CONTRACT section 5 is read strictly, tools/data_existing.py should transcribe them (with chSOA1's pins) into data/soa_map.json and the scenes read it; the MEASURED callbacks of SOA2.7 show verdict icons only, no number. LEVELS: SOA2.1-SOA2.3 L4 (ch09 is L4), checkpoint L4 -> L5 at SOA2.4 (Kit.rail in its 0.6-s lead-in), SOA2.4-chSOA2.Q L5. CONSISTENCY EDITOR: 10.1's chapter card already reads levelFrom 'L5' with the tag 'back on the staircase' (script/ch10.json); SOA2.1's card has levelFrom L4 in the core cut and L5 in the extended cut (chapter_card.levelFrom_by_cut: a declared side-step there); chapter-card num '09+' follows chSOA1's '02+'; the map motif needs an id in styles.md section 3.5; the SOA2.6 rings and diamonds are chSOA1's glyphs relit in place (pins' 'reuse'). BADGES: CONTEXT (SOA2.1-SOA2.6, external literature and the supervisors' own papers), PLANNED (SOA2.7, the independent proposal; the three MEASURED tags are E1-E2 callbacks), CONJECTURE medium (SOA2.8: the positioning rests on negative claims that cannot be proved, E:520, and on the PBFM overlap still to be settled); none on the card. NAMES (BRIEF D6, section 10): supervisors appear only as name labels on rings and diamonds and in reference lower-thirds; the narration names no person (audio/lexicon.json has no entry for them, by design) and attributes nothing but what a cited paper showed; 'none of the four has published a generative model trained on dynamo data' is said as 'in what we found' (NEG). CHANGES AGAINST video/plan/state_of_the_art.md section 3, to review: (1) targets 20/30/30/45/25/40/45/25/8 -> 28/34/23/50/29/42/52/32/10 s (about 5 min in all, inside BRIEF section 10's 4-5 min; the plan's 270 s left too few words for the five gaps and the supervisors' three ingredients); (2) SOA2.2 speaks one year only (twenty twenty-two) and drops the learned alpha closure (pin on screen only) and narrates the 'regress to the mean flow' quote as the preprint's (arXiv:2409.18359v2), never as the published abstract's; (3) SOA2.3 keeps covariance-constrained GANs for SOA2.4 (DISTRIBUTIONAL strand) and FunDiff for the HARD strand; (4) SOA2.4 says 'the turbulence generators we found with an exactly zero divergence work in a periodic box; another produces a current-free field in the Sun's corona' (PCDM; da Silva et al.), narrower than the plan's wording, because divergence-free networks (Richter-Powell et al. 2022) are not tied to a periodic box and Mohan et al. 2023 is not generative; (5) SOA2.6 narrates three ingredients without names and adds the second MilaDy-funded diamond (Botez et al. 2026, on screen only); Ponty et al. 2005 is said as 'pushed to small magnetic Prandtl numbers' because the lowest values (down to 10^-2) come from large-eddy simulations (specs/sources/dynamo.md:573-590); (6) SOA2.7 adds 'independent thesis proposal' (T:57); the date 'from fall twenty twenty-seven' was dropped in review (T:49 gives it as a working assumption; the ring shows 2027-2030); (7) SOA2.8 drops the spoken list of close neighbours (already narrated in SOA2.2-SOA2.4, shown as halos in SOA2.7) and adds the handoff to 10.1; (8) QUESTION CARD: instead of the plan's PBFM card, the card asks which consortium code the generator should learn first (the lead's example: which of the supervisors' codes to build on first), because it decides the tier-3 decoder and the first data request; it is distinct from 10.9's seat ASK (format and date), X4a.Q (short solver runs) and X6.Q (labels). The plan's PBFM question stays available for the question register (ch10q, category framing, ask S. Cheng / D. Lucor): en 'A 2026 paper claims the physics-versus-distribution trade-off first: how should our per-sample result be positioned?'; fr 'Un article de 2026 revendique ce compromis entre physique et loi : comment situer notre résultat par échantillon ?'; why: R:121, T:157 claim the statement and measurement of the inconsistency of a per-sample constraint for a stationary budget; PBFM (Baldan et al., ICLR 2026, arXiv:2506.08604) writes it is 'the first to recognize the trade-off between distributional and physical accuracy' and is not cited on the site; unblocks: the framing of paper 1 (month 10, E:495) and whether PBFM joins the tier-1 baselines. SYMBOL SHEET: q the generated law (violet), 'distribution' amber, Pm green, mu_r on the formula layer only (L5), no C1-C4 labels, P injection and epsilon dissipation as in ch08, r_0 the crossing rate (formula of ch05), the generator of the dynamics calligraphic L (never a Lipschitz constant). LEXICON: no new entry; spoken pinned words: VKS, LATU, SFEMaNS, Rice, Kármán; 'Taylor–Green', 'Prandtl' (ch02), 'Kalman', 'autoencoder' and 'equivariant' (X2) need no pin; acronyms PBFM, PCDM, ECI, PCFM, PIDM, FNO, PINN, DQVU, GLA stay on screen only. FRENCH (BRIEF section 9): map labels stay in English; text_fr per sentence comes in the French wave; lane terms in plan/state_of_the_art.md section 0. UNVERIFIED (not narrated; on screen only where noted): Botez et al. 2026 full text (abstract statements only, pin label 'walls shift onset' from S:239); Zhuang et al. 2025 (title only, which supports the label 'diffusion: sparse sensors'); 'no physical constraint' in Galletti, TurbDiff, CoNFiLD, GenCast is inferred from silent abstracts and is never said (the WALLS sub-tag reads 'no divergence constraint found'); gate verdicts are our synthesis (chip says so). VERIFIED IN REVIEW (full texts read 2026-11-08): Kacmaz et al. Pr_m = 1 and the 0.85 extrapolation error (arXiv:2507.02106); PCDM periodic domain and machine precision (arXiv:2603.12834v1); Weak Generative Sampler d = 100 (arXiv:2405.19256v2). DISCREPANCY FOR THE SITE: R:240, T:163 and L:301 say Kacmaz et al.'s generator does not enforce div B = 0, but its magnetic channel is the 2D vector potential A (B = curl A), so B would be solenoidal by representation; gap 1 no longer shows that point. WORDS AND PACE (review): 653 words for 300 s of target_s, i.e. about 131 words per minute of target_s (BRIEF D21 asks 125-130; the first draft's 671 words gave 134, not 125-130 as stated), with short holds added after the dense first paragraphs of SOA2.4 and SOA2.6 and the gap list of SOA2.7; every scene within +-15 % (tools/assemble_cut.py --unit chSOA2, no lint warning). Lower still needs either fewer words in SOA2.4-SOA2.7 or a longer unit than BRIEF section 10's 5 min.",
+ "scenes": [
+  {
+   "id": "SOA2.1",
+   "was": null,
+   "title": "Back to the map",
+   "file": "scenes/chSOA2/SOA2_1_back_to_the_map.html",
+   "status": "ready",
+   "level": "L4",
+   "register": "NIGHT",
+   "badge": {
+    "kind": "CONTEXT",
+    "confidence": null,
+    "note": "four tests · R:240, T:111, R:137, R:149"
+   },
+   "target_s": 28,
+   "lead_in": 3.2,
+   "tail": 0.8,
+   "deps": [],
+   "entry": {
+    "data": {},
+    "params": {
+     "chapter_card": {
+      "num": "09+",
+      "title": "The map of the field: where this work fits",
+      "level": "L4",
+      "levelFrom": "L4",
+      "tier": 0,
+      "pending": [
+       3,
+       4
+      ],
+      "at": 0.2,
+      "out": "map-0.4",
+      "note": "num '09+' follows chSOA1's '02+' (the consistency editor fixes how inserted chapters are numbered); tier 0 as in ch09 (the staircase is not climbed here). levelFrom: core follows ch09.Q (L4); the extended cut follows X4a.Q (L5), so there the card shows a declared side-step L5 -> L4 like 08.1's, rail tag 'back to the map'",
+      "levelFrom_by_cut": {
+       "core": "L4",
+       "extended": "L5"
+      }
+     },
+     "map": {
+      "register": "NIGHT; chalk ink (--chalk, --fg-2) on --bg; lanes neutral (--grid separators, --muted labels)",
+      "from_chSOA1": "the century map as chSOA1 leaves it at SOA1.6 (scenes/chSOA1/map.js; lanes EARTH'S RECORD, THEORY, LAB DYNAMOS, SIMULATIONS, REDUCED MODELS, DATA-DRIVEN; bracket MILADY · ANR · 2026–2029; the supervisor rings S1997, S2005, S2016, S2017 and diamonds S2026B, R2026, S2026C; on the DATA-DRIVEN lane D2016 'equations from data', the cross D2022 'no reliable precursor', the dashed violet INTERN dot 'internship · spring 2027' and the dashed violet THESIS ring 'PhD proposal · 2027–2030 · ?')",
+      "axis": {
+       "zoom_years": [
+        2012,
+        2031
+       ],
+       "x_2012": 360,
+       "x_2026": 1440,
+       "x_2031": 1560,
+       "stub": "2026-2031 dashed",
+       "now": {
+        "label": "NOW · NOV 2026",
+        "x": 1450
+       },
+       "unfold_SOA2_6": {
+        "years": [
+         1995,
+         2031
+        ],
+        "x_1995": 360,
+        "x_2012": 600,
+        "how": "T1 morph 0.8 s: the 1995-2012 segment unfolds on the left, compressed"
+       },
+       "ticks": "even years 2012-2026 (mono 28 px); 1995, 2000, 2005, 2010 when unfolded"
+      },
+      "lanes": [
+       {
+        "id": "dynamo",
+        "label": "DYNAMO TRACKS",
+        "sub": [
+         "THEORY",
+         "LAB DYNAMOS",
+         "SIMULATIONS",
+         "REDUCED MODELS"
+        ],
+        "y": [
+         120,
+         330
+        ],
+        "note": "the four century lanes, compressed into thin strips (labels 28 px, --muted); EARTH'S RECORD folds away (its pins are all pre-2012); the supervisor rings and diamonds of chSOA1 stay in their strips as small unlabelled glyphs"
+       },
+       {
+        "id": "surrogates",
+        "label": "SURROGATES",
+        "y": [
+         345,
+         435
+        ]
+       },
+       {
+        "id": "generative",
+        "label": "GENERATIVE MODELS",
+        "y": [
+         445,
+         540
+        ]
+       },
+       {
+        "id": "constraints",
+        "label": "CONSTRAINTS",
+        "y": [
+         550,
+         790
+        ],
+        "strands": [
+         "HARD",
+         "SOFT",
+         "DISTRIBUTIONAL",
+         "SYMMETRY"
+        ],
+        "strand_h": 60
+       },
+       {
+        "id": "assimilation",
+        "label": "ASSIMILATION PRIORS",
+        "y": [
+         800,
+         890
+        ]
+       }
+      ],
+      "gates": {
+       "x": [
+        1600,
+        1880
+       ],
+       "columns": [
+        {
+         "id": "3d",
+         "head": "3D",
+         "full": "three dimensions",
+         "why": "R:240"
+        },
+        {
+         "id": "walls",
+         "head": "WALLS",
+         "full": "walls · vacuum · iron",
+         "why": "T:111-117; R:143-145"
+        },
+        {
+         "id": "lowpm",
+         "head": "LOW Pm",
+         "full": "a tiny magnetic Prandtl number",
+         "why": "R:137"
+        },
+        {
+         "id": "rare",
+         "head": "RARE",
+         "full": "rare events: the flips",
+         "why": "R:149; Gwirtz et al. 2022"
+        }
+       ],
+       "cell": "one icon per (lane, gate) cell, Inter 32, --fg; never red or green (key colours reserved), as 09.6",
+       "icons": {
+        "yes": "✓",
+        "partly": "≈",
+        "no": "✗",
+        "open": "?"
+       },
+       "chip": "gate verdicts: our reading of abstracts read 2026-11-08 (synthesis, not a source statement)"
+      },
+      "glyphs": {
+       "dot": "community landmark",
+       "ring": "a paper co-signed by a supervisor (as chSOA1), name label in mono uppercase",
+       "diamond": "output that declares MilaDy funding (Bousquet et al. 2026; Botez et al. 2026)",
+       "cross": "negative result",
+       "dashed": "planned, or an empty slot 'none found'",
+       "square": "this prospective report (not peer-reviewed)"
+      },
+      "colours": "generative-model pins violet (--model); a pin about flips carries a small vermillion flip glyph (--b); a pin about a knob a green tick (--param); distribution-level pins amber outline (--metric); everything else chalk",
+      "legibility": "text >= 28 px; at most 8 labelled pins at once; when a lane fills, older pins shrink to unlabelled dots keeping their year; one reference lower-third at a time (kind 'reference'), for the pin being narrated; bottom band y 905-1060 kept for the lower-third (left) and the formula layer (right)",
+      "data": "pins are dated facts carried in entry.params with their citations (as X5b carries the plan's values); if CONTRACT section 5 is read strictly, tools/data_existing.py transcribes every entry.params.pins of this unit (and chSOA1's) into data/soa_map.json (no run, no web; meta.stamp 'SOURCES · field map · checked 2026-11-08') and the scenes read it instead",
+      "carry_over": {
+       "D2022": "becomes s_gwirtz on SURROGATES (an unlabelled cross until SOA2.2 'earth')",
+       "D2016": "an unlabelled dot on SURROGATES (learned models), year kept",
+       "INTERN, THESIS": "wait on the dashed stub (2027-2030) as unlabelled dashed violet glyphs; THESIS is the ring that SOA2.7 moves into the crossing",
+       "supervisor rings and diamonds": "keep their chSOA1 lanes and years inside the compressed DYNAMO TRACKS band; SOA2.6 relights the same glyphs (pins' 'reuse' ids)"
+      }
+     },
+     "gate_caption": {
+      "at": "gates",
+      "text": [
+       "3D · three dimensions",
+       "WALLS · walls, vacuum, iron",
+       "LOW Pm · a tiny magnetic Prandtl number",
+       "RARE · rare flips"
+      ],
+      "then": "each caption shrinks into its column head (0.5 s, 0.35 s apart)"
+     }
+    }
+   },
+   "sfx": [
+    "whoosh@0.1"
+   ],
+   "paragraphs": [
+    {
+     "hold_after": 0.0,
+     "sentences": [
+      {
+       "id": "SOA2.1.s1",
+       "cue": "map",
+       "text": "So far, every test ran on toy models. Before real dynamos, back to the map of the field."
+      },
+      {
+       "id": "SOA2.1.s2",
+       "cue": "zoom",
+       "text": "Zoom into its thin data-driven lane: it opens into four tracks."
+      }
+     ]
+    },
+    {
+     "hold_after": 0.4,
+     "sentences": [
+      {
+       "id": "SOA2.1.s3",
+       "cue": "gates",
+       "text": "A laboratory dynamo sets every track four tests: three dimensions, walls with iron and a vacuum, a tiny {param}magnetic Prandtl number{/}, and rare flips."
+      }
+     ]
+    }
+   ],
+   "onscreen": {
+    "title": "The map of the field: where this work fits",
+    "labels": [
+     "DYNAMO TRACKS",
+     "THEORY",
+     "LAB DYNAMOS",
+     "SIMULATIONS",
+     "REDUCED MODELS",
+     "SURROGATES",
+     "GENERATIVE MODELS",
+     "CONSTRAINTS",
+     "HARD",
+     "SOFT",
+     "DISTRIBUTIONAL",
+     "SYMMETRY",
+     "ASSIMILATION PRIORS",
+     "NOW · NOV 2026",
+     "MILADY · ANR · 2026-2029",
+     "3D",
+     "WALLS",
+     "LOW Pm",
+     "RARE",
+     "3D · three dimensions",
+     "WALLS · walls, vacuum, iron",
+     "LOW Pm · a tiny magnetic Prandtl number",
+     "RARE · rare flips"
+    ],
+    "formulas": [
+     {
+      "cue": "gates",
+      "tex": "\\mathrm{Pm} = \\nu/\\eta \\approx 0.82\\times10^{-5}\\ \\text{(liquid sodium)};\\ \\ \\text{no dynamo in 2D (Zel'dovich 1957)}"
+     }
+    ],
+    "chips": [
+     "gate verdicts in the next scenes: our reading of published abstracts"
+    ]
+   },
+   "visual": "Render class flat (DOM/SVG). Register NIGHT; the map of chSOA1 in chalk ink (entry.params.map). LEAD-IN (3.2 s, no voice): Kit.chapterCard(ctx, {num: '09+', title: onscreen.title, level: 'L4', levelFrom: 'L4' (core) or 'L5' (extended, params.chapter_card.levelFrom_by_cut), tier: 0, pending: [3, 4], at: 0.2, out: 'map-0.4'}); whoosh at 0.1; the rail holds at L4 in the core cut and steps down L5 -> L4 with the tag 'back to the map' in the extended cut. On 'map-0.15': T1 morph from the card to the century map exactly as chSOA1 left it (six lanes, MilaDy bracket, the INTERN dot and the dashed THESIS ring; map.from_chSOA1); the 09.6 scoreboard is NOT shown (one idea per shot). On 'zoom-0.15': T2 scale dive into the DATA-DRIVEN lane: the time axis re-spans 2012-2031 (map.axis, NOW hairline at Nov 2026, dashed stub to 2031); the four century lanes THEORY, LAB DYNAMOS, SIMULATIONS, REDUCED MODELS compress into the thin 'DYNAMO TRACKS' band at the top (y 120-330, their post-2012 pins kept as small unlabelled glyphs: the rings S2016, S2017, the diamonds S2026B, R2026, S2026C and the MilaDy bracket); EARTH'S RECORD folds away; the DATA-DRIVEN pins carry over (map.carry_over: D2022 and D2016 to SURROGATES, INTERN and THESIS on the stub); the DATA-DRIVEN lane unfolds downward into four lanes SURROGATES, GENERATIVE MODELS, CONSTRAINTS (with its four thin strands HARD · SOFT · DISTRIBUTIONAL · SYMMETRY), ASSIMILATION PRIORS; lane labels type on in the left gutter (Inter SemiBold 28, --muted). On 'gates-0.15': four arches draw at the right edge (x 1600-1880), one per test, each first spelled as a centred caption (params.gate_caption, Inter 36) and then shrinking into its column head 3D · WALLS · LOW Pm · RARE; the column cells stay empty (dashed). Small icons on the heads, key colours only: a tiny cube (chalk), a cylinder with an iron disc (grey), a green knob tick on LOW Pm (the only green), a vermillion flip glyph on RARE. Formula layer from the script on 'gates'. Badge CONTEXT. Idle motion: the NOW hairline pulses slowly (period 4 s). Key colours: green and vermillion only as glyphs; the map is chalk.",
+   "assets": [],
+   "sources": [
+    "video/plan/state_of_the_art.md §1 (the shared map: lanes, glyphs, legibility) and §3.1 (the four tests)",
+    "en/rapport/index.qmd:240 (a self-sustained dynamo needs 3D: Zel'dovich's anti-dynamo theorem 1957, recalled by Tobias 2021)",
+    "en/these/index.qmd:111-117 (walls: periodic box vs walled cylinders, vacuum matching, permeability jumps of the soft-iron impellers, SFEMaNS native representation) and en/rapport/index.qmd:143-145",
+    "en/rapport/index.qmd:137 (Pm = 0.82e-5 for sodium at 120 °C, Nore et al. 2018) and specs/sources/encadrants.md:88 (MilaDy postdoc offer: DNS 'typically restricted to Pm~1 regimes')",
+    "en/rapport/index.qmd:149 (a VKS reversal lasts about 5 s against mean polarity durations of 120 s and 50 s) and external: Gwirtz et al. 2022, Geophys. J. Int. 231, 520-535, doi:10.1093/gji/ggac195 (abstract read 2026-11-08: the 0-2 Ma record 'contains only five reversals')",
+    "script/ch09.json 09.6 (the scoreboard, last content scene of ch09) and ch09.Q (core cut); script/X4a.json X4.1-X4a.Q (extended cut: inserted after ch09.Q, so X4a.Q precedes SOA2.1; X4.5 is also toy tier 0)",
+    "script/chSOA1.json SOA1.1 entry.params.catalog and SOA1.6 (the map as chSOA1 leaves it: pin ids, lanes, INTERN and THESIS glyphs; chapter num '02+')"
+   ],
+   "variants": null,
+   "question": null
+  },
+  {
+   "id": "SOA2.2",
+   "was": null,
+   "title": "Fast, but average",
+   "file": "scenes/chSOA2/SOA2_2_fast_but_average.html",
+   "status": "ready",
+   "level": "L4",
+   "register": "NIGHT",
+   "badge": {
+    "kind": "CONTEXT",
+    "confidence": null,
+    "note": "published work · abstracts read 2026-11-08"
+   },
+   "target_s": 34,
+   "lead_in": 0.4,
+   "tail": 0.8,
+   "deps": [],
+   "entry": {
+    "data": {},
+    "params": {
+     "lane": "surrogates",
+     "pins": [
+      {
+       "id": "s_pinn",
+       "lane": "surrogates",
+       "year": "2019",
+       "label": "physics in the loss",
+       "glyph": "dot",
+       "color": "chalk",
+       "cue": "kinds",
+       "cite": "Raissi, Perdikaris, Karniadakis 2019, J. Comput. Phys. 378, 686-707, doi:10.1016/j.jcp.2018.10.045",
+       "mark": "checked 2026-11-08 (plan/state_of_the_art.md §7)",
+       "ref": "Raissi et al. 2019 · J. Comput. Phys."
+      },
+      {
+       "id": "s_ops",
+       "lane": "surrogates",
+       "year": "2021",
+       "label": "maps between fields",
+       "glyph": "dot",
+       "color": "chalk",
+       "cue": "kinds",
+       "cite": "Li et al. 2021, ICLR, arXiv:2010.08895 (title read 2026-11-08); Lu et al. 2021, Nat. Mach. Intell. 3, 218-229, doi:10.1038/s42256-021-00302-5",
+       "mark": "ABS",
+       "ref": "Li et al. 2021 · Lu et al. 2021"
+      },
+      {
+       "id": "s_found",
+       "lane": "surrogates",
+       "year": "2024",
+       "label": "pretrained on many flows",
+       "glyph": "dot",
+       "color": "chalk",
+       "cue": "kinds",
+       "cite": "McCabe et al. 2024, NeurIPS 37, arXiv:2310.02994 (title read 2026-11-08); Herde et al. 2024, NeurIPS 37, arXiv:2405.19101",
+       "mark": "ABS",
+       "ref": "McCabe et al. 2024 · Herde et al. 2024"
+      },
+      {
+       "id": "s_mhd23",
+       "lane": "surrogates",
+       "year": "2023",
+       "label": "2D MHD · laminar",
+       "glyph": "dot",
+       "color": "chalk",
+       "cue": "mhd",
+       "cite": "Rosofsky & Huerta 2023, Mach. Learn.: Sci. Technol. 4, 035002, doi:10.1088/2632-2153/ace30a",
+       "mark": "ABS"
+      },
+      {
+       "id": "s_mhd25",
+       "lane": "surrogates",
+       "year": "2025",
+       "label": "2D MHD · turbulent · diffusion correction",
+       "glyph": "dot",
+       "color": "chalk",
+       "cue": "mhd",
+       "cite": "Kacmaz, Huerta, Haas 2025, Mach. Learn.: Sci. Technol. 6, 035057, doi:10.1088/2632-2153/ae054c (abstract read 2026-11-08: 2D incompressible resistive MHD, PINO plus conditional diffusion correction); Pm = 1 ('Pr_m = 1') verified in the full text of arXiv:2507.02106 read 2026-11-08 (specs/sources/litterature.md:301)",
+       "mark": "ABS",
+       "ref": "Kacmaz, Huerta, Haas 2025 · MLST"
+      },
+      {
+       "id": "s_alpha",
+       "lane": "surrogates",
+       "year": "2019",
+       "label": "learned α effect",
+       "glyph": "dot",
+       "color": "chalk",
+       "cue": "mhd",
+       "cite": "Nauman & Nättilä 2019, A&A 629, A89, doi:10.1051/0004-6361/201935945",
+       "mark": "ABS",
+       "note": "on screen only"
+      },
+      {
+       "id": "s_gwirtz",
+       "lane": "surrogates",
+       "year": "2022",
+       "label": "no reliable precursor of flips",
+       "glyph": "cross",
+       "color": "b-flip",
+       "cue": "earth",
+       "cite": "Gwirtz, Davis, Morzfeld, Constable, Fournier, Hulot 2022, Geophys. J. Int. 231, 520-535, doi:10.1093/gji/ggac195 (abstract read 2026-11-08: 'the ML techniques we tried are not currently capable of reliably identifying an axial dipole moment precursor'; record 0-2 Ma 'contains only five reversals')",
+       "mark": "ABS",
+       "ref": "Gwirtz et al. 2022 · Geophys. J. Int."
+      },
+      {
+       "id": "s_mean",
+       "lane": "surrogates",
+       "year": "2024",
+       "label": "MSE ensembles: 'regress to the mean flow'",
+       "glyph": "dot",
+       "color": "chalk",
+       "cue": "mean",
+       "cite": "Molinaro, Lanthaler, Raonić et al. 2024, arXiv:2409.18359v2, abstract read 2026-11-08 ('ensembles of deterministic ML algorithms, trained to minimize mean square errors, regress to the mean flow'); published as Raonić et al. 2026, Nat. Commun. 17, 9846, doi:10.1038/s41467-026-76390-x, whose abstract says the MSE loss 'fails to accurately characterize statistical features of chaotic dynamics'",
+       "mark": "ABS",
+       "ref": "Molinaro et al. 2024 · arXiv preprint"
+      }
+     ],
+     "verdicts": {
+      "3d": "partly",
+      "walls": "no",
+      "lowpm": "no",
+      "rare": "no"
+     },
+     "verdict_at": "middle+0.8",
+     "two_polarity_inset": {
+      "box": [
+       1020,
+       600,
+       1560,
+       880
+      ],
+      "kind": "SCHEMATIC",
+      "what": "a two-humped cloud of D (two vermillion shades, M3) and a grey 'fit' marker that slides to D = 0 as the humps blur into one grey bump",
+      "chip": "illustration · a mean-square fit returns the average"
+     },
+     "lower_thirds": [
+      {
+       "cue": "earth",
+       "pin": "s_gwirtz",
+       "hold": 4
+      },
+      {
+       "cue": "mean",
+       "pin": "s_mean",
+       "hold": 4
+      }
+     ]
+    }
+   },
+   "sfx": [],
+   "paragraphs": [
+    {
+     "hold_after": 0.0,
+     "sentences": [
+      {
+       "id": "SOA2.2.s1",
+       "cue": "fast",
+       "text": "First track: fast surrogates, networks trained to imitate a solver."
+      },
+      {
+       "id": "SOA2.2.s2",
+       "cue": "kinds",
+       "text": "Some carry the equations in their loss; others learn maps between whole fields."
+      },
+      {
+       "id": "SOA2.2.s3",
+       "cue": "mhd",
+       "text": "For conducting fluids, they now reach flat, two-dimensional turbulence."
+      },
+      {
+       "id": "SOA2.2.s4",
+       "cue": "earth",
+       "text": "For the Earth, recall the twenty twenty-two study: the methods it tried could not reliably foresee a flip."
+      }
+     ]
+    },
+    {
+     "hold_after": 0.0,
+     "sentences": [
+      {
+       "id": "SOA2.2.s5",
+       "cue": "mean",
+       "text": "Their weak spot: trained to minimize a mean-square error, ensembles of them regress to the mean flow."
+      },
+      {
+       "id": "SOA2.2.s6",
+       "cue": "middle",
+       "text": "A cloud with two polarities collapses to its middle."
+      }
+     ]
+    }
+   ],
+   "onscreen": {
+    "title": "",
+    "labels": [
+     "2019 · physics in the loss",
+     "2021 · maps between fields",
+     "2024 · pretrained on many flows",
+     "2023 · 2D MHD · laminar",
+     "2025 · 2D MHD · turbulent · diffusion correction",
+     "2019 · learned α effect",
+     "2022 · no reliable precursor of flips",
+     "2024 · MSE ensembles: 'regress to the mean flow'",
+     "SURROGATES",
+     "✗ no reliable precursor",
+     "illustration · a mean-square fit returns the average",
+     "≈",
+     "✗"
+    ],
+    "formulas": [
+     {
+      "cue": "mean",
+      "tex": "\\arg\\min_{f}\\ \\mathbb{E}\\,\\|f(x) - y\\|^2 = \\mathbb{E}[\\,y \\mid x\\,]\\ \\ \\text{(two polarities} \\pm D \\text{ average to } 0)"
+     }
+    ],
+    "chips": [
+     "quote: arXiv preprint 2024 (Molinaro et al.) · published 2026 (Raonić et al., Nat. Commun.)",
+     "gate verdicts: our reading of abstracts"
+    ]
+   },
+   "visual": "Render class flat. The zoomed map of SOA2.1 holds; the SURROGATES lane brightens (--fg-2 to --fg), the other lanes dim to 40 %. Pins from entry.params.pins, each drawn on its cue (dot grows from 0 in 0.25 s, label types on; 'cross' glyph = a small ×). On 'fast-0.15': a thin chalk probe line runs along the lane. On 'kinds-0.15': s_pinn, s_ops, s_found land in turn (0.35 s apart, on the words 'loss', 'maps', and at the end of the sentence). On 'mhd-0.15': s_mhd23 then s_mhd25 (a small flat-square icon beside each: 2D) and the unnarrated s_alpha (small). On 'earth-0.15': s_gwirtz lands as a × with a vermillion flip glyph; reference lower-third (kind 'reference', 'Reference' / 'Gwirtz et al. 2022 · Geophys. J. Int.') for 4 s. On 'mean-0.15': s_mean lands; its label carries the quote in Inter italic 28; reference lower-third 'Molinaro et al. 2024 · arXiv preprint'; the inset params.two_polarity_inset draws (SCHEMATIC chip). On 'middle-0.15': the two humps blur into one grey bump centred on D = 0 and the grey marker slides there (1.2 s); a faint M10 mirror line at D = 0 reminds that the two polarities are mirror images. On 'middle+0.8': the probe reaches the gate columns and the SURROGATES row of cells fills: 3D ≈, WALLS ✗, LOW Pm ✗, RARE ✗ (params.verdicts; chip 'gate verdicts: our reading of abstracts'). At most 8 labelled pins (exactly 8 here); the inset sits over the dimmed CONSTRAINTS lane, not over a pin. Badge CONTEXT. Formula layer on 'mean'. Key colours: vermillion (flip glyph, humps) only; no violet in this scene (surrogates are not generative).",
+   "assets": [],
+   "sources": [
+    "external: Raissi, Perdikaris, Karniadakis 2019, J. Comput. Phys. 378, 686-707, doi:10.1016/j.jcp.2018.10.045 (checked 2026-11-08)",
+    "external: Li et al. 2021, ICLR, arXiv:2010.08895; Lu et al. 2021, Nat. Mach. Intell. 3, 218-229, doi:10.1038/s42256-021-00302-5 (checked 2026-11-08)",
+    "external: McCabe et al. 2024, NeurIPS 37, arXiv:2310.02994; Herde et al. 2024, NeurIPS 37, arXiv:2405.19101 (checked 2026-11-08)",
+    "external: Rosofsky & Huerta 2023, Mach. Learn.: Sci. Technol. 4, 035002, doi:10.1088/2632-2153/ace30a; Kacmaz, Huerta, Haas 2025, Mach. Learn.: Sci. Technol. 6, 035057, doi:10.1088/2632-2153/ae054c (abstract read 2026-11-08: 2D incompressible resistive MHD turbulence) (checked 2026-11-08)",
+    "external: Gwirtz, Davis, Morzfeld, Constable, Fournier, Hulot 2022, Geophys. J. Int. 231, 520-535, doi:10.1093/gji/ggac195 (abstract read 2026-11-08: 'the ML techniques we tried are not currently capable of reliably identifying an axial dipole moment (ADM) precursor for geomagnetic reversals')",
+    "external: Molinaro, Lanthaler, Raonić et al. 2024, arXiv:2409.18359v2 (abstract read 2026-11-08: 'ensembles of deterministic ML algorithms, trained to minimize mean square errors, regress to the mean flow'); published version Raonić et al. 2026, Nat. Commun. 17, 9846, doi:10.1038/s41467-026-76390-x (checked 2026-11-08)",
+    "external: Nauman & Nättilä 2019, A&A 629, A89, doi:10.1051/0004-6361/201935945 (on screen only; checked 2026-11-08)",
+    "en/rapport/index.qmd:296 (the mean-square minimizer is the conditional expectation) and script/ch04.json ('Yet its average sits at zero': the symmetric cloud of D averages to zero) for the schematic inset",
+    "video/plan/state_of_the_art.md §3.2 SOA2.2 (beats and gate verdicts)"
+   ],
+   "variants": null,
+   "question": null
+  },
+  {
+   "id": "SOA2.3",
+   "was": null,
+   "title": "Machines that sample",
+   "file": "scenes/chSOA2/SOA2_3_machines_that_sample.html",
+   "status": "ready",
+   "level": "L4",
+   "register": "NIGHT",
+   "badge": {
+    "kind": "CONTEXT",
+    "confidence": null,
+    "note": "published work · 'none found': search to 6 Nov 2026"
+   },
+   "target_s": 23,
+   "lead_in": 0.4,
+   "tail": 0.8,
+   "deps": [],
+   "entry": {
+    "data": {},
+    "params": {
+     "lane": "generative",
+     "pins": [
+      {
+       "id": "g_gan",
+       "lane": "generative",
+       "year": "2014",
+       "label": "adversarial networks",
+       "glyph": "dot",
+       "color": "model",
+       "cue": "families",
+       "cite": "Goodfellow et al. 2014, NIPS 27, arXiv:1406.2661 (title read 2026-11-08)",
+       "mark": "ABS"
+      },
+      {
+       "id": "g_ddpm",
+       "lane": "generative",
+       "year": "2020",
+       "label": "diffusion",
+       "glyph": "dot",
+       "color": "model",
+       "cue": "families",
+       "cite": "Ho, Jain, Abbeel 2020, arXiv:2006.11239 (title read 2026-11-08)",
+       "mark": "ABS"
+      },
+      {
+       "id": "g_fm",
+       "lane": "generative",
+       "year": "2023",
+       "label": "flow matching",
+       "glyph": "dot",
+       "color": "model",
+       "cue": "families",
+       "cite": "Lipman, Chen, Ben-Hamu, Nickel, Le 2023, ICLR, arXiv:2210.02747 (title read 2026-11-08)",
+       "mark": "ABS",
+       "ref": "Lipman et al. 2023 · ICLR"
+      },
+      {
+       "id": "g_3d",
+       "lane": "generative",
+       "year": "2024",
+       "label": "3D turbulence",
+       "glyph": "dot",
+       "color": "model",
+       "cue": "dream",
+       "cite": "Lienen, Lüdke, Hansen-Palmus, Günnemann 2024, ICLR, arXiv:2306.01776 (abstract read 2026-11-08); Du et al. 2024 (CoNFiLD), Nat. Commun. 15, 10416, doi:10.1038/s41467-024-54712-1",
+       "mark": "ABS"
+      },
+      {
+       "id": "g_gencast",
+       "lane": "generative",
+       "year": "2025",
+       "label": "weather ensembles",
+       "glyph": "dot",
+       "color": "model",
+       "cue": "dream",
+       "cite": "Price et al. 2025 (GenCast), Nature 637, 84-90, doi:10.1038/s41586-024-08252-9",
+       "mark": "ABS"
+      },
+      {
+       "id": "g_gencfd",
+       "lane": "generative",
+       "year": "2026",
+       "label": "statistics of 3D flows",
+       "glyph": "dot",
+       "color": "model",
+       "cue": "dream",
+       "cite": "Raonić et al. 2026 (GenCFD), Nat. Commun. 17, 9846, doi:10.1038/s41467-026-76390-x",
+       "mark": "ABS"
+      },
+      {
+       "id": "g_steady",
+       "lane": "generative",
+       "year": "2026",
+       "label": "steady turbulent states, conditioned · preprint",
+       "glyph": "dot",
+       "color": "model",
+       "cue": "dream",
+       "cite": "Galletti, Gutenbrunner, Hornsby, Zanisi, Carey, Pamela 2026, arXiv:2607.13022 (abstract read 2026-11-08: GyroFlow generates saturated snapshots of gyrokinetic turbulence from noise, conditioned on dimensionless operating parameters)",
+       "mark": "ABS",
+       "ref": "Galletti et al. 2026 · arXiv preprint"
+      },
+      {
+       "id": "g_empty",
+       "lane": "generative",
+       "year": "2026",
+       "label": "dynamo fields · none found",
+       "glyph": "dashed",
+       "color": "model",
+       "cue": "none",
+       "cite": "[NEG] en/encadrants/index.qmd:514; en/rapport/index.qmd:240; search closed 2026-11-06 (R:118), re-checked 2026-11-08",
+       "mark": "NEG"
+      }
+     ],
+     "verdicts": {
+      "3d": "yes",
+      "walls": "partly",
+      "lowpm": "no",
+      "rare": "partly"
+     },
+     "verdict_notes": {
+      "walls": "irregular domains · no divergence constraint found",
+      "rare": "user-defined events (Finzi et al. 2023) · none on a dynamo found"
+     },
+     "verdict_at": "none+0.6",
+     "neg_chip": "none found · literature search to 6 Nov 2026, re-checked 8 Nov 2026",
+     "lower_thirds": [
+      {
+       "cue": "families",
+       "pin": "g_fm",
+       "hold": 3.5
+      },
+      {
+       "cue": "dream",
+       "pin": "g_steady",
+       "hold": 4
+      }
+     ]
+    }
+   },
+   "sfx": [],
+   "paragraphs": [
+    {
+     "hold_after": 0.0,
+     "sentences": [
+      {
+       "id": "SOA2.3.s1",
+       "cue": "sample",
+       "text": "Second track: {model}generative models{/}, which learn the whole cloud, not just its middle."
+      },
+      {
+       "id": "SOA2.3.s2",
+       "cue": "families",
+       "text": "Adversarial networks first, then diffusion, then flow matching, the family the study used."
+      },
+      {
+       "id": "SOA2.3.s3",
+       "cue": "dream",
+       "text": "They now dream three-dimensional turbulence, global weather ensembles, and steady turbulent states for chosen {param}settings{/}."
+      }
+     ]
+    },
+    {
+     "hold_after": 0.6,
+     "sentences": [
+      {
+       "id": "SOA2.3.s4",
+       "cue": "none",
+       "text": "Trained on dynamo simulations? We found none."
+      }
+     ]
+    }
+   ],
+   "onscreen": {
+    "title": "",
+    "labels": [
+     "2014 · adversarial networks",
+     "2020 · diffusion",
+     "2023 · flow matching",
+     "2024 · 3D turbulence",
+     "2025 · weather ensembles",
+     "2026 · statistics of 3D flows",
+     "2026 · steady turbulent states, conditioned · preprint",
+     "2026 · dynamo fields · none found",
+     "GENERATIVE MODELS",
+     "irregular domains · no divergence constraint found",
+     "user-defined events · none on a dynamo found",
+     "✓",
+     "≈",
+     "✗"
+    ],
+    "formulas": [],
+    "chips": [
+     "none found · literature search to 6 Nov 2026, re-checked 8 Nov 2026",
+     "gate verdicts: our reading of abstracts"
+    ]
+   },
+   "visual": "Render class flat. The GENERATIVE MODELS lane brightens; SURROGATES keeps its pins as small unlabelled dots with years (legibility rule); its verdict row stays, dimmed. On 'sample-0.15': the two-hump inset of SOA2.2 returns for 1.5 s, now as a small violet cloud (M4, 60 points) that keeps both humps (the contrast with SOA2.2's grey bump), then fades. On 'families-0.15': g_gan, g_ddpm, g_fm land in turn on the three nouns (violet dots); g_fm gets a small chalk tag 'E1 used this' (T:88); reference lower-third 'Lipman et al. 2023 · ICLR' for 3.5 s. On 'dream-0.15': g_3d (tiny cube icon), g_gencast (tiny globe), g_gencfd, g_steady (a tiny green knob tick: conditioned on parameters) land in turn; reference lower-third 'Galletti et al. 2026 · arXiv preprint'. On 'none-0.15': a dashed violet empty slot (g_empty) at the 2026 position of the lane, label 'dynamo fields · none found', with the chip params.neg_chip (Kit.chip kind 'schematic'); a thin dashed line links the slot up to the DYNAMO TRACKS band (it crosses nothing). On 'none+0.6': the GENERATIVE row of gate cells fills: 3D ✓, WALLS ≈, LOW Pm ✗, RARE ≈, with two tiny grey sub-tags under WALLS ('irregular domains · no divergence constraint found') and RARE ('user-defined events · none on a dynamo found'; both are search results, not statements of the papers). 8 labelled pins at most (7 plus the empty slot). Badge CONTEXT. Key colours: violet (pins), green (one tick).",
+   "assets": [],
+   "sources": [
+    "external: Goodfellow et al. 2014, NIPS 27, arXiv:1406.2661; Ho, Jain, Abbeel 2020, arXiv:2006.11239; Lipman et al. 2023, ICLR, arXiv:2210.02747 (titles and dates read in the arXiv API 2026-11-08)",
+    "en/these/index.qmd:88 (E1 learns the stationary distribution by conditional flow matching) and en/rapport/index.qmd:92 (diffusion or flow matching)",
+    "external: Lienen et al. 2024, ICLR, arXiv:2306.01776 (abstract read 2026-11-08: generative modeling for 3D turbulent flow); Du et al. 2024, Nat. Commun. 15, 10416, doi:10.1038/s41467-024-54712-1 (checked 2026-11-08)",
+    "external: Price et al. 2025 (GenCast), Nature 637, 84-90, doi:10.1038/s41586-024-08252-9 (checked 2026-11-08)",
+    "external: Raonić et al. 2026 (GenCFD), Nat. Commun. 17, 9846, doi:10.1038/s41467-026-76390-x (checked 2026-11-08)",
+    "external: Galletti et al. 2026, arXiv:2607.13022, preprint (abstract read 2026-11-08: saturated snapshots of gyrokinetic turbulence generated from noise, conditioned on dimensionless operating parameters)",
+    "external: Finzi, Boral, Wilson, Sha 2023, ICML, arXiv:2306.07526 (title read 2026-11-08: user-defined event sampling; gate chip only)",
+    "en/encadrants/index.qmd:514 and en/rapport/index.qmd:240 ([NEG] no generative model found on dynamo simulations; search closed 2026-11-06, R:118); re-checked by the 2026-11-08 citation check (scratchpad soa/check_soa.md)",
+    "video/plan/state_of_the_art.md §3.2 SOA2.3"
+   ],
+   "variants": null,
+   "question": null
+  },
+  {
+   "id": "SOA2.4",
+   "was": null,
+   "title": "Making samples obey",
+   "file": "scenes/chSOA2/SOA2_4_making_samples_obey.html",
+   "status": "ready",
+   "level": "L5",
+   "register": "NIGHT",
+   "badge": {
+    "kind": "CONTEXT",
+    "confidence": null,
+    "note": "published work and preprints · read 2026-11-08"
+   },
+   "target_s": 50,
+   "lead_in": 0.6,
+   "tail": 0.8,
+   "deps": [],
+   "entry": {
+    "data": {},
+    "params": {
+     "lane": "constraints",
+     "pins": [
+      {
+       "id": "c_dfnet",
+       "lane": "constraints.HARD",
+       "year": "2022",
+       "label": "divergence-free networks",
+       "glyph": "dot",
+       "color": "chalk",
+       "cue": "hard",
+       "cite": "Richter-Powell, Lipman, Chen 2022, NeurIPS 35, doi:10.52202/068431-2759",
+       "mark": "ABS"
+      },
+      {
+       "id": "c_vecpot",
+       "lane": "constraints.HARD",
+       "year": "2023",
+       "label": "vector potential · 3D periodic · not generative",
+       "glyph": "dot",
+       "color": "chalk",
+       "cue": "hard",
+       "cite": "Mohan, Lubbers, Chertkov, Livescu 2023, Phys. Rev. Fluids 8, 014604, doi:10.1103/PhysRevFluids.8.014604 (full text of arXiv:2002.00021v2 read by the 2026-11-08 check: periodic)",
+       "mark": "ABS"
+      },
+      {
+       "id": "c_fundiff",
+       "lane": "constraints.HARD",
+       "year": "2026",
+       "label": "stream function · 2D",
+       "glyph": "dot",
+       "color": "model",
+       "cue": "hard",
+       "cite": "Wang et al. 2026 (FunDiff), Nat. Commun. 17, 5749, doi:10.1038/s41467-026-72292-0; en/encadrants/index.qmd:508",
+       "mark": "ABS"
+      },
+      {
+       "id": "c_proj",
+       "lane": "constraints.HARD",
+       "year": "2025",
+       "label": "projection at sampling time",
+       "glyph": "dot",
+       "color": "chalk",
+       "cue": "hard",
+       "cite": "Cheng C., Han, Maddix, Ansari et al. 2025 (ECI), ICLR, arXiv:2412.01786 (abstract read 2026-11-08: extrapolation, correction and interpolation 'during each iterative sampling step'; first author Chaoran Cheng, unrelated to S. Cheng); Utkarsh et al. 2025 (PCFM), NeurIPS 38, doi:10.52202/085713-5354",
+       "mark": "ABS"
+      },
+      {
+       "id": "c_pcdm",
+       "lane": "constraints.HARD",
+       "year": "2026",
+       "label": "Leray · 3D periodic · preprint",
+       "glyph": "dot",
+       "color": "model",
+       "cue": "hard",
+       "cite": "Li, Buzzicotti, Bonaccorso, Biferale 2026 (PCDM), arXiv:2603.12834 (abstract read 2026-11-08: incompressibility built into the generative dynamics, rotating turbulence); periodic domain (App. A.1) and 'divergence-free at machine precision' (§IV.3) verified in the full text of arXiv:2603.12834v1 read 2026-11-08; en/encadrants/index.qmd:509",
+       "mark": "ABS",
+       "ref": "Li, Buzzicotti, Bonaccorso, Biferale 2026 · preprint"
+      },
+      {
+       "id": "c_corona",
+       "lane": "constraints.HARD",
+       "year": "2025",
+       "label": "current-free field · Sun's corona · preprint",
+       "glyph": "dot",
+       "color": "model",
+       "cue": "periodic",
+       "cite": "da Silva, Kirk, Mathews, Muñoz-Jaramillo 2025, arXiv:2510.01441 (abstract read 2026-11-08: diffusion model in the spherical-harmonic domain, the scalar is the magnetic potential; full text read by the 2026-11-08 check: potential satisfying Laplace's equation, hence zero divergence of a current-free field)",
+       "mark": "ABS",
+       "ref": "da Silva et al. 2025 · arXiv preprint"
+      },
+      {
+       "id": "c_pidm",
+       "lane": "constraints.SOFT",
+       "year": "2025",
+       "label": "PDE residual in the loss",
+       "glyph": "dot",
+       "color": "model",
+       "cue": "soft",
+       "cite": "Bastek, Sun, Kochmann 2025 (PIDM), ICLR, arXiv:2403.14404 (title read 2026-11-08)",
+       "mark": "ABS"
+      },
+      {
+       "id": "c_pbfm",
+       "lane": "constraints.SOFT",
+       "year": "2026",
+       "label": "PBFM · physics vs distribution",
+       "glyph": "dot",
+       "color": "model",
+       "cue": "soft",
+       "cite": "Baldan, Liu, Guardone, Thuerey 2026 (PBFM), ICLR, arXiv:2506.08604v4 (abstract read 2026-11-08)",
+       "mark": "ABS",
+       "ref": "Baldan et al. 2026 · ICLR"
+      },
+      {
+       "id": "c_cov",
+       "lane": "constraints.DISTRIBUTIONAL",
+       "year": "2020",
+       "label": "covariance imposed on a generator",
+       "glyph": "dot",
+       "color": "metric",
+       "cue": "crowd",
+       "cite": "Wu et al. 2020, J. Comput. Phys. 406, 109209, doi:10.1016/j.jcp.2019.109209",
+       "mark": "ABS"
+      },
+      {
+       "id": "c_dual",
+       "lane": "constraints.DISTRIBUTIONAL",
+       "year": "2024",
+       "label": "constraints in the dual",
+       "glyph": "dot",
+       "color": "metric",
+       "cue": "crowd",
+       "cite": "Khalafi, Ding, Ribeiro 2024, NeurIPS 37, doi:10.52202/079017-0836",
+       "mark": "ABS"
+      },
+      {
+       "id": "c_wgs",
+       "lane": "constraints.DISTRIBUTIONAL",
+       "year": "2026",
+       "label": "weak Fokker–Planck as a loss · up to dimension 100",
+       "glyph": "dot",
+       "color": "metric",
+       "cue": "crowd",
+       "cite": "Cai, Cao, Huang, Zhou 2026, SIAM J. Sci. Comput. 48, C708-C735, doi:10.1137/24M1665271 (abstract read 2026-11-08); dimension 100 verified in the full text of arXiv:2405.19256v2 §4.5 (d = 40 and d = 100), read 2026-11-08; en/encadrants/index.qmd:506",
+       "mark": "ABS",
+       "ref": "Cai, Cao, Huang, Zhou 2026 · SIAM J. Sci. Comput."
+      },
+      {
+       "id": "c_tilt",
+       "lane": "constraints.DISTRIBUTIONAL",
+       "year": "2026",
+       "label": "tilt by a weak residual, per sample",
+       "glyph": "dot",
+       "color": "metric",
+       "cue": "crowd",
+       "cite": "Tauberschmidt, Fellenz, Vollmer, Duncan 2026, ICLR, arXiv:2508.09156 (abstract read 2026-11-08); residual evaluated per sample: en/encadrants/index.qmd:507",
+       "mark": "ABS"
+      },
+      {
+       "id": "c_eqflow",
+       "lane": "constraints.SYMMETRY",
+       "year": "2020",
+       "label": "equivariant flows",
+       "glyph": "dot",
+       "color": "chalk",
+       "cue": "mirror",
+       "cite": "Köhler, Klein, Noé 2020, ICML, PMLR 119, 5361-5370",
+       "mark": "ABS"
+      },
+      {
+       "id": "c_eqfm",
+       "lane": "constraints.SYMMETRY",
+       "year": "2023",
+       "label": "equivariant flow matching",
+       "glyph": "dot",
+       "color": "model",
+       "cue": "mirror",
+       "cite": "Klein, Krämer, Noé 2023, NeurIPS 36, doi:10.52202/075280-2617",
+       "mark": "ABS"
+      },
+      {
+       "id": "c_cmp",
+       "lane": "constraints",
+       "year": "2026",
+       "label": "'no single strategy dominates' · divergence only, 2D · preprint",
+       "glyph": "chip",
+       "color": "chalk",
+       "cue": "nowinner",
+       "cite": "Genuist, Savin, Gatti, Clouteau 2026, arXiv:2601.19368 (abstract read 2026-11-08: several score-based diffusion models with the Leray projector compared on a 2D Kolmogorov flow; the comparison concerns divergence alone, specs/sources/litterature.md:279); the quote is from its §6 per specs/sources/litterature.md:279; six variants, en/encadrants/index.qmd:508; divergence only, 2D: en/rapport/index.qmd:245",
+       "mark": "ABS",
+       "ref": "Genuist et al. 2026 · arXiv preprint"
+      },
+      {
+       "id": "c_empty",
+       "lane": "constraints.HARD",
+       "year": "2026",
+       "label": "walls · vacuum · iron · none found",
+       "glyph": "dashed",
+       "color": "chalk",
+       "cue": "walls",
+       "cite": "[NEG] en/rapport/index.qmd:242; en/encadrants/index.qmd:518; en/these/index.qmd:150",
+       "mark": "NEG"
+      }
+     ],
+     "rail": {
+      "from": "L4",
+      "to": "L5",
+      "at": "obey-0.4",
+      "hold": 3,
+      "note": "checkpoint: the unit reaches L5 here (constraint classes, Leray, weak forms)"
+     },
+     "verdicts": {
+      "3d": "partly",
+      "walls": "no",
+      "lowpm": "no",
+      "rare": "no"
+     },
+     "verdict_notes": {
+      "3d": "one periodic preprint · one corona preprint"
+     },
+     "verdict_at": "walls+0.6",
+     "relabel_at_periodic": [
+      "c_pcdm",
+      "c_corona"
+     ],
+     "lower_thirds": [
+      {
+       "cue": "nowinner",
+       "pin": "c_cmp",
+       "hold": 3.5
+      },
+      {
+       "cue": "periodic",
+       "pin": "c_pcdm",
+       "hold": 3.5
+      }
+     ]
+    }
+   },
+   "sfx": [],
+   "paragraphs": [
+    {
+     "hold_after": 0.4,
+     "sentences": [
+      {
+       "id": "SOA2.4.s1",
+       "cue": "obey",
+       "text": "Third track: making samples obey the laws. Four families."
+      },
+      {
+       "id": "SOA2.4.s2",
+       "cue": "hard",
+       "text": "Hard: build the law into the network, say a potential whose curl has no divergence, or project each sample while drawing it."
+      },
+      {
+       "id": "SOA2.4.s3",
+       "cue": "soft",
+       "text": "Soft: a penalty in the loss, obeyed only approximately."
+      },
+      {
+       "id": "SOA2.4.s4",
+       "cue": "crowd",
+       "text": "On the {metric}distribution{/}: constrain the crowd, by its covariance, or by the equation a steady cloud obeys."
+      },
+      {
+       "id": "SOA2.4.s5",
+       "cue": "mirror",
+       "text": "And symmetry: an equivariant flow gives a symmetric cloud."
+      }
+     ]
+    },
+    {
+     "hold_after": 0.0,
+     "sentences": [
+      {
+       "id": "SOA2.4.s6",
+       "cue": "nowinner",
+       "text": "A twenty twenty-six preprint compared ways to impose zero divergence on flat flows: no single strategy dominates."
+      },
+      {
+       "id": "SOA2.4.s7",
+       "cue": "periodic",
+       "text": "In three dimensions, we found two exactly divergence-free generators, both preprints: periodic-box turbulence, and a current-free field in the Sun's corona."
+      },
+      {
+       "id": "SOA2.4.s8",
+       "cue": "walls",
+       "text": "None handles walls, a vacuum outside and iron inside."
+      }
+     ]
+    }
+   ],
+   "onscreen": {
+    "title": "",
+    "labels": [
+     "2022 · divergence-free networks",
+     "2023 · vector potential · 3D periodic · not generative",
+     "2026 · stream function · 2D",
+     "2025 · projection at sampling time",
+     "2026 · Leray · 3D periodic · preprint",
+     "2025 · current-free field · Sun's corona · preprint",
+     "2025 · PDE residual in the loss",
+     "2026 · PBFM · physics vs distribution",
+     "2020 · covariance imposed on a generator",
+     "2024 · constraints in the dual",
+     "2026 · weak Fokker–Planck as a loss · up to dimension 100",
+     "2026 · tilt by a weak residual, per sample",
+     "2020 · equivariant flows",
+     "2023 · equivariant flow matching",
+     "2026 · 'no single strategy dominates' · divergence only, 2D · preprint",
+     "2026 · walls · vacuum · iron · none found",
+     "CONSTRAINTS",
+     "HARD",
+     "SOFT",
+     "DISTRIBUTIONAL",
+     "SYMMETRY",
+     "one periodic preprint · one corona preprint",
+     "≈",
+     "✗"
+    ],
+    "formulas": [
+     {
+      "cue": "hard",
+      "out": "soft",
+      "tex": "\\mathbf{u} = \\nabla\\times\\mathbf{A}\\ \\Rightarrow\\ \\nabla\\cdot\\mathbf{u} = 0;\\qquad \\hat{\\mathbf{u}}_{\\mathbf{k}} \\mapsto \\Big(I - \\tfrac{\\mathbf{k}\\mathbf{k}^{\\mathsf T}}{|\\mathbf{k}|^2}\\Big)\\hat{\\mathbf{u}}_{\\mathbf{k}}\\ \\ \\text{(Leray, periodic box)}"
+     },
+     {
+      "cue": "soft",
+      "out": "crowd",
+      "tex": "\\mathcal{J}_{\\text{fit}} + \\beta\\,\\mathbb{E}\\,\\|\\nabla\\cdot\\mathbf{u}\\|^2"
+     },
+     {
+      "cue": "crowd",
+      "out": "mirror",
+      "tex": "\\mathbb{E}_{q}\\big[\\mathcal{L}\\varphi\\big] = 0\\ \\ \\text{for every test function } \\varphi\\ \\ \\text{(stationary Fokker–Planck, weak form)}"
+     },
+     {
+      "cue": "mirror",
+      "out": "nowinner",
+      "tex": "q(\\mathbf{u}, -\\mathbf{B} \\mid \\lambda) = q(\\mathbf{u}, \\mathbf{B} \\mid \\lambda)"
+     },
+     {
+      "cue": "walls",
+      "tex": "\\text{walls: } [\\mathbf{B}\\cdot\\mathbf{n}] = 0,\\ \\ [\\mathbf{n}\\times\\mathbf{B}/\\mu_r] = 0 \\text{ across iron};\\ \\ \\mathbf{H} = \\nabla\\phi \\text{ in the vacuum}"
+     }
+    ],
+    "chips": [
+     "preprint: not peer-reviewed",
+     "gate verdicts: our reading of abstracts"
+    ]
+   },
+   "visual": "Render class flat. Kit.rail(ctx, params.rail): checkpoint L4 -> L5 on 'obey-0.4' (3 s). The CONSTRAINTS lane brightens and its four strands HARD, SOFT, DISTRIBUTIONAL, SYMMETRY open to 60 px each; the other lanes dim to 40 %, their pins already reduced to unlabelled dots with years. One strand lit at a time, on its cue; the previous strand's labels shrink to dots (at most 8 labels at once). On 'hard-0.15': the HARD strand lights; c_dfnet, c_vecpot, c_fundiff, c_proj, c_pcdm land in turn (0.35 s apart; c_proj on the words 'project each sample'); a tiny glyph beside the strand label: a curl arrow feeding a box with 'lines in = lines out' (box motif of 01.2) and the M6 projector. On 'soft-0.15': SOFT lights, c_pidm and c_pbfm land (c_pbfm gets a thin halo that stays dim: it returns in SOA2.8). On 'crowd-0.15': DISTRIBUTIONAL lights in amber outline (--metric), c_cov, c_dual, c_wgs, c_tilt land; a small amber stack icon (the 'crowd' of 09.6). On 'mirror-0.15': SYMMETRY lights, c_eqflow and c_eqfm land; the M10 mirror glyph flips a small two-hump cloud onto itself. On 'nowinner-0.15': the comparison chip c_cmp spans the four strands at 2026 (Kit.chip kind 'plain', with 'preprint' tag); reference lower-third 'Genuist et al. 2026 · arXiv preprint'. On 'periodic-0.15': all labels shrink except c_pcdm and c_corona, which re-label and get a small icon each (a wire cube with ghost copies = periodic; a sphere with field loops = corona); reference lower-third 'Li, Buzzicotti, Bonaccorso, Biferale 2026 · preprint'. On 'walls-0.15': a dashed empty slot c_empty on the HARD strand at 2026 with a small cylinder icon (walls, an iron disc in grey, a dotted halo for the vacuum) and the label 'walls · vacuum · iron · none found'. On 'walls+0.6': the CONSTRAINTS row of gate cells fills: 3D ≈ (sub-tag 'one periodic preprint · one corona preprint'), WALLS ✗, LOW Pm ✗, RARE ✗. Formula layer from the script, one formula at a time (cue/out). Badge CONTEXT. Key colours: violet (generator pins), amber (distributional strand), blue and vermillion only inside the formula layer.",
+   "assets": [],
+   "sources": [
+    "external: Richter-Powell, Lipman, Chen 2022, NeurIPS 35, doi:10.52202/068431-2759; Mohan, Lubbers, Chertkov, Livescu 2023, Phys. Rev. Fluids 8, 014604, doi:10.1103/PhysRevFluids.8.014604 (checked 2026-11-08)",
+    "external: Wang et al. 2026 (FunDiff), Nat. Commun. 17, 5749, doi:10.1038/s41467-026-72292-0 (checked 2026-11-08) and en/encadrants/index.qmd:508",
+    "external: Cheng C. et al. 2025 (ECI), ICLR, arXiv:2412.01786 (authors read 2026-11-08); Utkarsh et al. 2025 (PCFM), NeurIPS 38, doi:10.52202/085713-5354 (checked 2026-11-08)",
+    "external: Li, Buzzicotti, Bonaccorso, Biferale 2026 (PCDM), arXiv:2603.12834, preprint (abstract read 2026-11-08) and en/encadrants/index.qmd:509 (3D, periodic domain, rotating turbulence, zero divergence to machine precision)",
+    "external: da Silva, Kirk, Mathews, Muñoz-Jaramillo 2025, arXiv:2510.01441, preprint (abstract read 2026-11-08: spherical-harmonic domain, the scalar is the magnetic potential; full text read by the 2026-11-08 check, scratchpad soa/check_soa.md row 2)",
+    "external: Bastek, Sun, Kochmann 2025 (PIDM), ICLR, arXiv:2403.14404; Baldan, Liu, Guardone, Thuerey 2026 (PBFM), ICLR, arXiv:2506.08604 (abstracts read 2026-11-08)",
+    "external: Wu et al. 2020, J. Comput. Phys. 406, 109209, doi:10.1016/j.jcp.2019.109209; Khalafi, Ding, Ribeiro 2024, NeurIPS 37, doi:10.52202/079017-0836 (checked 2026-11-08)",
+    "external: Cai, Cao, Huang, Zhou 2026, SIAM J. Sci. Comput. 48, C708-C735, doi:10.1137/24M1665271 (abstract read 2026-11-08: loss based on the weak form of the Fokker–Planck equation) and en/encadrants/index.qmd:506",
+    "external: Tauberschmidt, Fellenz, Vollmer, Duncan 2026, ICLR, arXiv:2508.09156 (abstract read 2026-11-08: weak-form residuals) and en/encadrants/index.qmd:507 (residual evaluated on each sample)",
+    "external: Köhler, Klein, Noé 2020, ICML, PMLR 119, 5361-5370; Klein, Krämer, Noé 2023, NeurIPS 36, doi:10.52202/075280-2617 (checked 2026-11-08)",
+    "external: Genuist, Savin, Gatti, Clouteau 2026, arXiv:2601.19368v1, preprint (abstract read 2026-11-08: conditional score-based diffusion models with the divergence-free constraint imposed by the Leray spectral projector, compared on a 2D Kolmogorov flow); 'no single strategy dominates' (§6) and 'the comparison concerns divergence alone' per specs/sources/litterature.md:279; en/encadrants/index.qmd:508; en/rapport/index.qmd:245",
+    "en/rapport/index.qmd:241-242 and en/encadrants/index.qmd:518 ([NEG] no joint hard constraint on div u and div B in 3D; no bounded domain with permeability jumps); en/these/index.qmd:113-115 and specs/sources/encadrants.md:211 (formula layer: interface conditions, H = grad phi in the vacuum)",
+    "video/plan/state_of_the_art.md §3.2 SOA2.4",
+    "external: Cheng C. et al. 2025 (ECI), arXiv:2412.01786v2 abstract read 2026-11-08 (correction 'during each iterative sampling step') and specs/sources/litterature.md:270 (PCFM: projection at each step plus a final projection): hence 'project each sample while drawing it', not 'at the end'",
+    "external: full texts read 2026-11-08 for the on-screen numbers: arXiv:2603.12834v1 (PCDM: periodic domain, App. A.1; machine precision, §IV.3); arXiv:2405.19256v2 (Weak Generative Sampler, §4.5: d = 100)"
+   ],
+   "variants": null,
+   "question": null
+  },
+  {
+   "id": "SOA2.5",
+   "was": null,
+   "title": "Priors for assimilation",
+   "file": "scenes/chSOA2/SOA2_5_priors_for_assimilation.html",
+   "status": "ready",
+   "level": "L5",
+   "register": "NIGHT",
+   "badge": {
+    "kind": "CONTEXT",
+    "confidence": null,
+    "note": "published work · abstracts read 2026-11-08"
+   },
+   "target_s": 29,
+   "lead_in": 0.4,
+   "tail": 0.8,
+   "deps": [],
+   "entry": {
+    "data": {},
+    "params": {
+     "lane": "assimilation",
+     "pins": [
+      {
+       "id": "a_latent",
+       "lane": "assimilation",
+       "year": "2021",
+       "label": "latent-space assimilation",
+       "glyph": "dot",
+       "color": "chalk",
+       "cue": "priors",
+       "cite": "Amendola et al. 2021, ICCS, doi:10.1007/978-3-030-77977-1_30; Peyron et al. 2021, QJRMS 147, 3759-3777, doi:10.1002/qj.4153",
+       "mark": "ABS"
+      },
+      {
+       "id": "a_gla",
+       "lane": "assimilation",
+       "year": "2022",
+       "label": "generalised latent assimilation",
+       "glyph": "ring",
+       "color": "chalk",
+       "cue": "priors",
+       "cite": "Cheng, Chen, Anastasiou, Angeli, Matar, Guo, Pain, Arcucci 2022, J. Sci. Comput. 94, 11, doi:10.1007/s10915-022-02059-4 (abstract read 2026-11-08); specs/sources/encadrants.md:127",
+       "mark": "ABS",
+       "names": "S. CHENG",
+       "ref": "Cheng et al. 2022 · J. Sci. Comput."
+      },
+      {
+       "id": "a_sda",
+       "lane": "assimilation",
+       "year": "2023",
+       "label": "score-based assimilation",
+       "glyph": "dot",
+       "color": "model",
+       "cue": "priors",
+       "cite": "Rozet & Louppe 2023, NeurIPS 36, doi:10.52202/075280-1763",
+       "mark": "ABS"
+      },
+      {
+       "id": "a_diffda",
+       "lane": "assimilation",
+       "year": "2024",
+       "label": "diffusion priors · weather scale",
+       "glyph": "dot",
+       "color": "model",
+       "cue": "priors",
+       "cite": "Huang, Gianinazzi, Yu, Dueben 2024 (DiffDA), ICML, arXiv:2401.05932 (title read 2026-11-08); Bao, Zhang, Zhang 2024 (EnSF), CMAME 432, 117447, doi:10.1016/j.cma.2024.117447",
+       "mark": "ABS"
+      },
+      {
+       "id": "a_torchda",
+       "lane": "assimilation",
+       "year": "2025",
+       "label": "TorchDA · deep nets in Kalman and variational methods",
+       "glyph": "ring",
+       "color": "chalk",
+       "cue": "library",
+       "cite": "Cheng, Min, Liu, Arcucci, Comput. Phys. Commun. 306, 109359 (volume dated 2025 by Crossref, online 2024), doi:10.1016/j.cpc.2024.109359 (abstract read 2026-11-08 via OpenAlex: Kalman filter, EnKF, 3DVar, 4DVar with deep networks as transition and observation functions); named in the MilaDy abstract: specs/sources/encadrants.md:29, :141",
+       "mark": "ABS",
+       "names": "S. CHENG",
+       "ref": "Cheng et al. 2025 · Comput. Phys. Commun."
+      },
+      {
+       "id": "a_empty",
+       "lane": "assimilation",
+       "year": "2026",
+       "label": "conducting fluids · none found",
+       "glyph": "dashed",
+       "color": "chalk",
+       "cue": "mhd",
+       "cite": "[NEG] specs/sources/litterature.md:385 (diffusion assimilation, SDA and DiffDA, not applied to MHD)",
+       "mark": "NEG"
+      }
+     ],
+     "verdicts": {
+      "3d": "yes",
+      "walls": "partly",
+      "lowpm": "no",
+      "rare": "open"
+     },
+     "verdict_notes": {
+      "3d": "weather scale",
+      "walls": "weather grids",
+      "rare": "two polarities · none found for MHD"
+     },
+     "verdict_at": "two+0.8",
+     "posterior_inset": {
+      "box": [
+       1020,
+       560,
+       1560,
+       860
+      ],
+      "kind": "SCHEMATIC",
+      "what": "a probe icon (three magnetic probe dots) feeding an answer with two humps (+D and -D, two vermillion shades); a lopsided grey prior tips the left hump down; the M10 mirror line at D = 0",
+      "chip": "illustration · no numbers"
+     },
+     "lower_thirds": [
+      {
+       "cue": "library",
+       "pin": "a_torchda",
+       "hold": 4
+      }
+     ]
+    }
+   },
+   "sfx": [],
+   "paragraphs": [
+    {
+     "hold_after": 0.0,
+     "sentences": [
+      {
+       "id": "SOA2.5.s1",
+       "cue": "assim",
+       "text": "Fourth track: data assimilation, merging a model with a few measurements."
+      },
+      {
+       "id": "SOA2.5.s2",
+       "cue": "priors",
+       "text": "Learned priors came in through compressed latent spaces, then diffusion models."
+      },
+      {
+       "id": "SOA2.5.s3",
+       "cue": "library",
+       "text": "And a library now plugs deep networks into Kalman filters and variational methods."
+      }
+     ]
+    },
+    {
+     "hold_after": 0.0,
+     "sentences": [
+      {
+       "id": "SOA2.5.s4",
+       "cue": "mhd",
+       "text": "We found no diffusion prior used this way for conducting fluids."
+      },
+      {
+       "id": "SOA2.5.s5",
+       "cue": "two",
+       "text": "Near a flip, the answer has two polarities, and a prior that ignores the mirror could bias it toward one."
+      }
+     ]
+    }
+   ],
+   "onscreen": {
+    "title": "",
+    "labels": [
+     "2021 · latent-space assimilation",
+     "2022 · generalised latent assimilation",
+     "2023 · score-based assimilation",
+     "2024 · diffusion priors · weather scale",
+     "2025 · TorchDA · deep nets in Kalman and variational methods",
+     "2026 · conducting fluids · none found",
+     "ASSIMILATION PRIORS",
+     "S. CHENG",
+     "probes",
+     "+D",
+     "−D",
+     "prior ignores the mirror",
+     "weather scale",
+     "weather grids",
+     "two polarities · none found for MHD",
+     "✓",
+     "≈",
+     "✗",
+     "?"
+    ],
+    "formulas": [
+     {
+      "cue": "two",
+      "tex": "p(\\mathbf{B} \\mid \\text{probes}) \\propto p(\\text{probes} \\mid \\mathbf{B})\\, q(\\mathbf{B});\\ \\ q(-\\mathbf{B}) = q(\\mathbf{B}) \\Rightarrow \\text{both polarities keep their weight}"
+     }
+    ],
+    "chips": [
+     "illustration · no numbers",
+     "none found · search to 6 Nov 2026"
+    ]
+   },
+   "visual": "Render class flat. The ASSIMILATION PRIORS lane brightens; other lanes dim to 40 %. On 'assim-0.15': a small icon at the lane head: a model curve and three measurement dots merging into one line. On 'priors-0.15': a_latent lands, then the first supervisor RING of the unit, a_gla, with its name label 'S. CHENG' in JetBrains Mono uppercase (the ring glyph met in SOA1.4: the one-line legend 'ring = co-signed by a supervisor' fades in again at the lane head for 3 s); a_sda and a_diffda follow as violet dots (on 'diffusion'). On 'library-0.15': ring a_torchda lands with 'S. CHENG'; reference lower-third 'Cheng et al. 2025 · Comput. Phys. Commun.' for 4 s. On 'mhd-0.15': a dashed empty slot a_empty at 2026, label 'conducting fluids · none found' (chip 'none found · search to 6 Nov 2026'). On 'two-0.15': the inset params.posterior_inset draws (SCHEMATIC chip): two vermillion humps; on the words 'ignores the mirror' a lopsided grey prior slides under them and the left hump sinks (0.8 s); then the M10 mirror line flashes and the humps level again (the symmetric prior). On 'two+0.8': the ASSIMILATION row of gate cells fills: 3D ✓ ('weather scale'), WALLS ≈ ('weather grids'), LOW Pm ✗, RARE ? ('two polarities · none found for MHD'). Badge CONTEXT. Formula layer on 'two'. Key colours: violet (diffusion pins), vermillion (humps).",
+   "assets": [],
+   "sources": [
+    "external: Amendola et al. 2021, ICCS, doi:10.1007/978-3-030-77977-1_30; Peyron et al. 2021, QJRMS 147, 3759-3777, doi:10.1002/qj.4153 (checked 2026-11-08)",
+    "external: Cheng et al. 2022, J. Sci. Comput. 94, 11, doi:10.1007/s10915-022-02059-4 (abstract read 2026-11-08: variational assimilation in reduced latent spaces with surrogate observation functions; theoretical analysis of the cost difference) and specs/sources/encadrants.md:127",
+    "external: Rozet & Louppe 2023, NeurIPS 36, doi:10.52202/075280-1763; Huang et al. 2024 (DiffDA), ICML, arXiv:2401.05932 (title read 2026-11-08: weather-scale data assimilation); Bao, Zhang, Zhang 2024 (EnSF), CMAME 432, 117447, doi:10.1016/j.cma.2024.117447 (checked 2026-11-08)",
+    "external: Cheng, Min, Liu, Arcucci, TorchDA, Comput. Phys. Commun. 306, 109359, doi:10.1016/j.cpc.2024.109359 (abstract read 2026-11-08 via OpenAlex: Kalman filter, EnKF, 3DVar and 4DVar with deep networks as transition and observation functions) and specs/sources/encadrants.md:29, :141 (named in the MilaDy abstract)",
+    "specs/sources/litterature.md:385 ([NEG] diffusion assimilation, SDA and DiffDA, not applied to MHD)",
+    "en/encadrants/index.qmd:491 (near a reversal the posterior is bimodal; a prior that respects B -> -B gives the same weight to both polarities and avoids biasing the analysis toward one of them) and en/these/index.qmd:136",
+    "video/plan/state_of_the_art.md §3.2 SOA2.5"
+   ],
+   "variants": null,
+   "question": null
+  },
+  {
+   "id": "SOA2.6",
+   "was": null,
+   "title": "Who brings what",
+   "file": "scenes/chSOA2/SOA2_6_who_brings_what.html",
+   "status": "ready",
+   "level": "L5",
+   "register": "NIGHT",
+   "badge": {
+    "kind": "CONTEXT",
+    "confidence": null,
+    "note": "papers co-signed by the supervisors · facts only"
+   },
+   "target_s": 42,
+   "lead_in": 0.4,
+   "tail": 0.8,
+   "deps": [],
+   "entry": {
+    "data": {},
+    "params": {
+     "pins": [
+      {
+       "id": "r_nore97",
+       "lane": "dynamo.SIMULATIONS",
+       "year": "1997",
+       "label": "Taylor–Green dynamo near threshold",
+       "glyph": "ring",
+       "color": "chalk",
+       "cue": "dynamo",
+       "cite": "Nore, Brachet, Politano, Pouquet 1997, Phys. Plasmas 4, 1-3, doi:10.1063/1.872578 (abstract read 2026-11-08: threshold depends on the flow's symmetries; boundary conditions select the mode)",
+       "mark": "ABS",
+       "names": "C. NORE",
+       "ref": "Nore, Brachet, Politano, Pouquet 1997 · Phys. Plasmas",
+       "reuse": "S1997"
+      },
+      {
+       "id": "r_ponty05",
+       "lane": "dynamo.SIMULATIONS",
+       "year": "2005",
+       "label": "dynamos at low Pm",
+       "glyph": "ring",
+       "color": "param",
+       "cue": "dynamo",
+       "cite": "Ponty, Mininni, Montgomery, Pinton, Politano, Pouquet 2005, PRL 94, 164502, doi:10.1103/PhysRevLett.94.164502 (Crossref record read 2026-11-08); Pm from 1 down to 10^-2, the lowest values with a large-eddy model: specs/sources/dynamo.md:573-590; specs/sources/encadrants.md:279",
+       "mark": "ABS",
+       "names": "Y. PONTY",
+       "ref": "Ponty et al. 2005 · PRL",
+       "reuse": "S2005"
+      },
+      {
+       "id": "r_ponty07",
+       "lane": "dynamo.SIMULATIONS",
+       "year": "2007",
+       "label": "subcritical, with hysteresis",
+       "glyph": "ring",
+       "color": "chalk",
+       "cue": "dynamo",
+       "cite": "Ponty, Laval, Dubrulle, Daviaud, Pinton 2007, PRL 99, 224501, doi:10.1103/PhysRevLett.99.224501; specs/sources/encadrants.md:283",
+       "mark": "ABS",
+       "names": "Y. PONTY"
+      },
+      {
+       "id": "r_sfemans",
+       "lane": "dynamo.SIMULATIONS",
+       "year": "2007-",
+       "label": "CODE · SFEMaNS · Fourier × finite elements",
+       "glyph": "ring",
+       "color": "chalk",
+       "cue": "dynamo",
+       "cite": "Guermond, Laguerre, Léorat, Nore 2007, J. Comput. Phys. 221, 349-369, doi:10.1016/j.jcp.2006.06.045; 2009, J. Comput. Phys. 228, 2739-2757, doi:10.1016/j.jcp.2008.12.026; specs/sources/encadrants.md:210-214, :254-255; en/rapport/index.qmd:143",
+       "mark": "ABS",
+       "names": "C. NORE"
+      },
+      {
+       "id": "r_nore16",
+       "lane": "dynamo.SIMULATIONS",
+       "year": "2016 / 2018",
+       "label": "VKS with both impellers · SFEMaNS",
+       "glyph": "ring",
+       "color": "chalk",
+       "cue": "dynamo",
+       "cite": "Nore, Castanon Quiroz, Cappanera, Guermond 2016, EPL 114, 65002, doi:10.1209/0295-5075/114/65002 (Crossref record read 2026-11-08; 'For the first time': specs/sources/encadrants.md:221-222); 2018, J. Fluid Mech. 854, 164-195, doi:10.1017/jfm.2018.582; en/rapport/index.qmd:143",
+       "mark": "ABS",
+       "names": "C. NORE",
+       "ref": "Nore et al. 2016 · EPL",
+       "reuse": "S2016"
+      },
+      {
+       "id": "r_latu",
+       "lane": "dynamo.SIMULATIONS",
+       "year": "2014 / 2017",
+       "label": "CODE · LATU · VKS, iron selects the axisymmetric mode",
+       "glyph": "ring",
+       "color": "chalk",
+       "cue": "dynamo",
+       "cite": "Kreuzahler, Schulz, Homann, Ponty, Grauer 2014, New J. Phys. 16, 103001, doi:10.1088/1367-2630/16/10/103001 (abstract read 2026-11-08: von Kármán flow by volume penalization in a pseudo-spectral solver); Kreuzahler, Ponty, Plihon, Homann, Grauer 2017, PRL 119, 234501, doi:10.1103/PhysRevLett.119.234501 (abstract read 2026-11-08: axisymmetric dynamo mode above a threshold of impeller permeability); specs/sources/encadrants.md:287-291",
+       "mark": "ABS",
+       "names": "Y. PONTY",
+       "ref": "Kreuzahler et al. 2017 · PRL",
+       "reuse": "S2017"
+      },
+      {
+       "id": "d_bousquet26",
+       "lane": "dynamo.REDUCED MODELS",
+       "year": "2026",
+       "label": "VKS reversals in both codes · four-mode model DQVU",
+       "glyph": "diamond",
+       "color": "b-flip",
+       "cue": "reversals",
+       "cite": "Bousquet, Ponty, Botez, Plihon, Nore 2026, Phys. Rev. Fluids 11, 063703, doi:10.1103/9tx2-1m13 (abstract read 2026-11-08 via OpenAlex: two solvers agree; DQVU 'essential for reproducing the main features'); specs/sources/encadrants.md:227-235; en/rapport/index.qmd:161; MilaDy funding: specs/sources/encadrants.md:31, :99",
+       "mark": "ABS",
+       "names": "Y. PONTY, C. NORE et al.",
+       "ref": "Bousquet, Ponty, Botez, Plihon, Nore 2026 · Phys. Rev. Fluids",
+       "reuse": [
+        "S2026B",
+        "R2026"
+       ]
+      },
+      {
+       "id": "d_botez26",
+       "lane": "dynamo.SIMULATIONS",
+       "year": "2026",
+       "label": "precession dynamo · walls shift onset",
+       "glyph": "diamond",
+       "color": "param",
+       "cue": "reversals",
+       "cite": "Botez, Giesecke, Nore, Cappanera, Stefani 2026, Phys. Rev. Fluids 11, 083701, doi:10.1103/rx1h-5zxp (abstract statements only: specs/sources/encadrants.md:236-240; full text not read); MilaDy funding: specs/sources/encadrants.md:31, :100",
+       "mark": "ABS",
+       "names": "C. NORE et al.",
+       "note": "on screen only",
+       "reuse": "S2026C"
+      },
+      {
+       "id": "r_lucor07",
+       "lane": "surrogates",
+       "year": "2007",
+       "label": "polynomial chaos · uncertainty in LES",
+       "glyph": "ring",
+       "color": "chalk",
+       "cue": "learning",
+       "cite": "Lucor, Meyers, Sagaut 2007, J. Fluid Mech. 585, 255-279, doi:10.1017/S0022112007006751 (abstract read 2026-11-08 via OpenAlex); specs/sources/encadrants.md:198",
+       "mark": "ABS",
+       "names": "D. LUCOR"
+      },
+      {
+       "id": "r_lucor24",
+       "lane": "surrogates",
+       "year": "2024",
+       "label": "networks with Galilean and rotational invariance",
+       "glyph": "ring",
+       "color": "chalk",
+       "cue": "learning",
+       "cite": "Cai, Angeli, Martinez, Damblin, Lucor 2024, Comput. Fluids 275, 106246, doi:10.1016/j.compfluid.2024.106246; specs/sources/encadrants.md:194 (abstract of arXiv:2403.11746)",
+       "mark": "ABS",
+       "names": "D. LUCOR"
+      },
+      {
+       "id": "r_bnl25",
+       "lane": "surrogates",
+       "year": "2025",
+       "label": "autoencoders read through POD · von Kármán flow",
+       "glyph": "ring",
+       "color": "chalk",
+       "cue": "learning",
+       "cite": "Bousquet, Nore, Lucor 2025, Comput. Phys. Commun. 315, 109728, doi:10.1016/j.cpc.2025.109728 (abstract read 2026-11-08 via OpenAlex: AEs and VAEs on forced flows incl. a von Kármán swirling flow; latent space linked to POD modes; equivariance relations); consortium paper, NOT MilaDy-funded (plan/state_of_the_art.md §6); specs/sources/encadrants.md:180-181",
+       "mark": "ABS",
+       "names": "D. LUCOR, C. NORE",
+       "ref": "Bousquet, Nore, Lucor 2025 · Comput. Phys. Commun."
+      },
+      {
+       "id": "r_cheng_diff",
+       "lane": "generative",
+       "year": "2025 / 2026",
+       "label": "diffusion: sparse sensors · wildfire ensembles",
+       "glyph": "ring",
+       "color": "model",
+       "cue": "assim",
+       "cite": "Zhuang, Cheng, Duraisamy 2025, CMAME 435, 117623, doi:10.1016/j.cma.2024.117623 (title read 2026-11-08: global field reconstruction with sparse observations); Yu, Ghosh, Finn, Arcucci, Bocquet, Cheng 2026, Geosci. Model Dev. 19, 1027-1054, doi:10.5194/gmd-19-1027-2026 (abstract read 2026-11-08); specs/sources/encadrants.md:137-140",
+       "mark": "ABS",
+       "names": "S. CHENG"
+      }
+     ],
+     "relit": [
+      "a_gla",
+      "a_torchda"
+     ],
+     "name_tags": [
+      "C. NORE",
+      "Y. PONTY",
+      "D. LUCOR",
+      "S. CHENG"
+     ],
+     "ingredients": [
+      {
+       "cue": "dynamo",
+       "text": "dynamo simulations and a reversal model",
+       "names": "C. NORE · Y. PONTY"
+      },
+      {
+       "cue": "learning",
+       "text": "representation learning on von Kármán flows",
+       "names": "D. LUCOR · C. NORE"
+      },
+      {
+       "cue": "assim",
+       "text": "assimilation and generative surrogates, outside MHD",
+       "names": "S. CHENG"
+      }
+     ],
+     "neg_chip": "none of the four: a generative model trained on dynamo data · none found (search to 6 Nov 2026)",
+     "rule": "BRIEF D6 and section 10: names in text only, no photos, no logos, no opinions; a pin says what a paper showed, nothing else",
+     "lower_thirds": [
+      {
+       "cue": "dynamo",
+       "pin": "r_nore16",
+       "hold": 3.5
+      },
+      {
+       "cue": "reversals",
+       "pin": "d_bousquet26",
+       "hold": 4
+      },
+      {
+       "cue": "learning",
+       "pin": "r_bnl25",
+       "hold": 3.5
+      }
+     ],
+     "reuse_note": "pins with 'reuse' are chSOA1 glyphs (SOA1.1 entry.params.catalog) relit in place, same lane and year: the Taylor–Green rings S1997 and S2005 sit on SIMULATIONS in chSOA1, so r_ponty07 joins them there; the Bousquet et al. 2026 paper is the two diamonds S2026B (SIMULATIONS) and R2026 (REDUCED MODELS); the Botez et al. 2026 diamond S2026C keeps its green tick"
+    }
+   },
+   "sfx": [],
+   "paragraphs": [
+    {
+     "hold_after": 0.4,
+     "sentences": [
+      {
+       "id": "SOA2.6.s1",
+       "cue": "rings",
+       "text": "Now the rings: papers co-signed by the supervisors."
+      },
+      {
+       "id": "SOA2.6.s2",
+       "cue": "dynamo",
+       "text": "Dynamo side: Taylor–Green dynamos pushed to small {param}magnetic Prandtl numbers{/}, and the VKS tank with its iron impellers, simulated in two codes."
+      },
+      {
+       "id": "SOA2.6.s3",
+       "cue": "reversals",
+       "text": "In twenty twenty-six, both codes produced VKS reversals, and a four-dial model reproduces their main features."
+      },
+      {
+       "id": "SOA2.6.s4",
+       "cue": "learning",
+       "text": "Learning side: autoencoder latent spaces read through classical flow modes, von Kármán flow included."
+      },
+      {
+       "id": "SOA2.6.s5",
+       "cue": "assim",
+       "text": "And assimilation and diffusion models built on deep networks, outside conducting fluids."
+      }
+     ]
+    },
+    {
+     "hold_after": 0.0,
+     "sentences": [
+      {
+       "id": "SOA2.6.s6",
+       "cue": "gap",
+       "text": "Three ingredients are in hand. But in what we found, none of the four has published a {model}generative model{/} trained on dynamo data."
+      }
+     ]
+    }
+   ],
+   "onscreen": {
+    "title": "",
+    "labels": [
+     "C. NORE · 1997 · Taylor–Green dynamo near threshold",
+     "Y. PONTY · 2005 · dynamos at low Pm",
+     "Y. PONTY · 2007 · subcritical, with hysteresis",
+     "C. NORE · 2007- · CODE · SFEMaNS · Fourier × finite elements",
+     "C. NORE · 2016 / 2018 · VKS with both impellers · SFEMaNS",
+     "Y. PONTY · 2014 / 2017 · CODE · LATU · VKS, iron selects the axisymmetric mode",
+     "Y. PONTY, C. NORE et al. · 2026 · VKS reversals in both codes · four-mode model DQVU",
+     "C. NORE et al. · 2026 · precession dynamo · walls shift onset",
+     "D. LUCOR · 2007 · polynomial chaos · uncertainty in LES",
+     "D. LUCOR · 2024 · networks with Galilean and rotational invariance",
+     "D. LUCOR, C. NORE · 2025 · autoencoders read through POD · von Kármán flow",
+     "S. CHENG · 2025 / 2026 · diffusion: sparse sensors · wildfire ensembles",
+     "C. NORE",
+     "Y. PONTY",
+     "D. LUCOR",
+     "S. CHENG",
+     "dynamo simulations and a reversal model",
+     "representation learning on von Kármán flows",
+     "assimilation and generative surrogates, outside MHD",
+     "MilaDy-funded",
+     "not MilaDy-funded"
+    ],
+    "formulas": [],
+    "chips": [
+     "none of the four: a generative model trained on dynamo data · none found (search to 6 Nov 2026)",
+     "names in text only · what each paper showed, no opinions"
+    ]
+   },
+   "visual": "Render class flat. T1 morph (0.8 s) on 'rings-0.3': the time axis unfolds to 1995-2031 (map.axis.unfold_SOA2_6) and the DYNAMO TRACKS band re-opens into its four strips (THEORY, LAB DYNAMOS, SIMULATIONS, REDUCED MODELS, 45 px each); every community pin of SOA2.2-SOA2.5 becomes an unlabelled dot at 30 %; the gate columns dim to 20 % (not used in this scene). Only RINGS and DIAMONDS carry labels here, each with its names in JetBrains Mono uppercase (e.g. 'C. NORE · 1997 · Taylor–Green dynamo near threshold'); no photo, no logo, no institution emblem. On 'rings-0.15': the two S. CHENG rings of SOA2.5 relight (params.relit). On 'dynamo-0.15': the chSOA1 rings relight in place (params.reuse_note): r_nore97 = S1997 and r_ponty05 = S2005 (green tick: the Pm knob) on SIMULATIONS, where r_ponty07 lands beside them; r_sfemans lands and r_nore16 = S2016 (C. NORE), r_latu = S2017 (Y. PONTY) relight on SIMULATIONS; the two CODE rings get a small code-bracket icon; reference lower-third 'Nore et al. 2016 · EPL'. On 'reversals-0.15': the three chSOA1 DIAMONDS relight: d_bousquet26 = S2026B on SIMULATIONS and R2026 on REDUCED MODELS (vermillion flip glyph, a tiny four-dial icon D Q V U) and d_botez26 = S2026C on SIMULATIONS (green tick, a tiny precessing cylinder); a one-line legend 'diamond = declares MilaDy funding' (3 s); reference lower-third 'Bousquet, Ponty, Botez, Plihon, Nore 2026 · Phys. Rev. Fluids'. Labels of the dynamo rings shrink to name tags. On 'learning-0.15': r_lucor07, r_lucor24 and r_bnl25 (names 'D. LUCOR, C. NORE', a tiny 'not MilaDy-funded' grey sub-tag) land on SURROGATES; reference lower-third 'Bousquet, Nore, Lucor 2025 · Comput. Phys. Commun.'. On 'assim-0.15': r_cheng_diff lands on GENERATIVE MODELS (violet ring) and the two Cheng assimilation rings pulse. On 'gap-0.15': every ring shrinks to its name tag; three chalk brackets group them into the three ingredients (params.ingredients, Inter 28, at the right of the map where the dimmed gates were); then the dashed violet slot 'dynamo fields · none found' of SOA2.3 pulses on the GENERATIVE lane next to the diamonds, with params.neg_chip (Kit.chip kind 'schematic'). At most 8 labels at once: on each cue the previous cue's labels shrink to name tags. Badge CONTEXT. Key colours: violet (one ring, the empty slot), vermillion (flip glyph), green (one tick).",
+   "assets": [],
+   "sources": [
+    "external: Nore, Brachet, Politano, Pouquet 1997, Phys. Plasmas 4, 1-3, doi:10.1063/1.872578 (abstract read 2026-11-08)",
+    "external: Ponty et al. 2005, PRL 94, 164502, doi:10.1103/PhysRevLett.94.164502 (Crossref record read 2026-11-08) and specs/sources/dynamo.md:573-590 (dynamos from Pm 1 down to 10^-2, LES below 0.2); Ponty et al. 2007, PRL 99, 224501, doi:10.1103/PhysRevLett.99.224501 and specs/sources/encadrants.md:283",
+    "external: Nore et al. 2016, EPL 114, 65002, doi:10.1209/0295-5075/114/65002 (Crossref record read 2026-11-08) and specs/sources/encadrants.md:221-226 ('For the first time', both impellers; Nore et al. 2018, J. Fluid Mech. 854, 164-195, doi:10.1017/jfm.2018.582); en/rapport/index.qmd:143; SFEMaNS: specs/sources/encadrants.md:210-214, :254-255",
+    "external: Kreuzahler et al. 2014, New J. Phys. 16, 103001, doi:10.1088/1367-2630/16/10/103001 and Kreuzahler, Ponty, Plihon, Homann, Grauer 2017, PRL 119, 234501, doi:10.1103/PhysRevLett.119.234501 (abstracts read 2026-11-08); LATU = the solver of Kreuzahler et al. 2017: specs/sources/encadrants.md:291, en/encadrants/index.qmd:98",
+    "external: Bousquet, Ponty, Botez, Plihon, Nore 2026, Phys. Rev. Fluids 11, 063703, doi:10.1103/9tx2-1m13 (OpenAlex abstract re-read 2026-11-08: 'Two numerical solvers are used and agree well on the resulting mechanism'; the U variable and its interactions 'are shown to be essential for reproducing the main features of magnetic field dynamics'); en/rapport/index.qmd:161; MilaDy funding: specs/sources/encadrants.md:31, :99",
+    "external: Botez, Giesecke, Nore, Cappanera, Stefani 2026, Phys. Rev. Fluids 11, 083701, doi:10.1103/rx1h-5zxp (abstract statements via specs/sources/encadrants.md:236-240; full text not read); MilaDy funding: specs/sources/encadrants.md:100",
+    "external: Lucor, Meyers, Sagaut 2007, J. Fluid Mech. 585, 255-279, doi:10.1017/S0022112007006751 (abstract read 2026-11-08); Cai, Angeli, Martinez, Damblin, Lucor 2024, Comput. Fluids 275, 106246, doi:10.1016/j.compfluid.2024.106246 (specs/sources/encadrants.md:194)",
+    "external: Bousquet, Nore, Lucor 2025, Comput. Phys. Commun. 315, 109728, doi:10.1016/j.cpc.2025.109728 (abstract read 2026-11-08 via OpenAlex: AEs and VAEs on forced flows including a von Kármán swirling flow; connections between latent organisation and POD modes; equivariance relations); not MilaDy-funded: video/plan/state_of_the_art.md §6",
+    "external: Zhuang, Cheng, Duraisamy 2025, CMAME 435, 117623, doi:10.1016/j.cma.2024.117623 (title read 2026-11-08); Yu, Ghosh, Finn, Arcucci, Bocquet, Cheng 2026, Geosci. Model Dev. 19, 1027-1054, doi:10.5194/gmd-19-1027-2026 (abstract read 2026-11-08); GLA 2022 and TorchDA as in SOA2.5",
+    "specs/sources/encadrants.md:33 (links between the supervisors), :103 ([NEG] no MilaDy dynamo publication by S. Cheng or D. Lucor; arXiv searches 0 results), :299 ([NEG] no machine-learning publication by Y. Ponty); en/encadrants/index.qmd:514 ([NEG] no generative model found on dynamo simulations)",
+    "video/plan/state_of_the_art.md §4 (supervisor pins, re-checked 2026-11-08) and §6 (attribution traps: Bousquet, Nore, Lucor 2025 is not MilaDy-funded; ECI's first author is not S. Cheng)",
+    "script/chSOA1.json SOA1.1 entry.params.catalog (S1997, S2005, S2016, S2017, S2026B, R2026, S2026C: lanes, years, 'ring = paper co-signed by a supervisor of the project') and SOA1.4 ('Ringed pins mark papers co-signed by this project's supervisors')"
+   ],
+   "variants": null,
+   "question": null
+  },
+  {
+   "id": "SOA2.7",
+   "was": null,
+   "title": "The empty intersection",
+   "file": "scenes/chSOA2/SOA2_7_the_empty_intersection.html",
+   "status": "ready",
+   "level": "L5",
+   "register": "NIGHT",
+   "badge": {
+    "kind": "PLANNED",
+    "confidence": null,
+    "note": "independent PhD proposal · T:57 · callbacks E1, E2"
+   },
+   "target_s": 52,
+   "lead_in": 0.4,
+   "tail": 0.8,
+   "deps": [],
+   "entry": {
+    "data": {},
+    "params": {
+     "thesis_ring": {
+      "label": "THESIS · 2027-2030 · PLANNED",
+      "glyph": "dashed violet ring",
+      "where": "x(2027)-x(2030) on the dashed stub, spanning GENERATIVE MODELS and CONSTRAINTS, with a dashed bracket up to the DYNAMO TRACKS band",
+      "chip": "independent proposal · not requested or validated by the supervisors",
+      "from": "chSOA1's THESIS ring (SOA1.6, 'PhD proposal · 2027–2030 · ?'), moved from the dashed stub into the crossing and relabelled",
+      "years_note": "2027-2030 rests on the working assumption of a start in fall 2027 (T:49); the narration gives no date"
+     },
+     "gaps": [
+      {
+       "n": 1,
+       "cue": "gap1",
+       "label": "1 · a generator of dynamo fields",
+       "neighbour": "Kacmaz et al. 2025 · 2D MHD · Galletti et al. 2026 · steady states, preprint",
+       "lacks": "2D, where a self-sustained dynamo is ruled out (Zel'dovich); Pm = 1 only",
+       "src": "en/rapport/index.qmd:240; en/encadrants/index.qmd:514; arXiv:2507.02106 full text read 2026-11-08 (2D, Pr_m = 1). NOT SHOWN: 'no zero divergence of B in the generator' (R:240, T:163): the full text shows the model's magnetic channel is the vector potential A, so B = curl A would be solenoidal by representation"
+      },
+      {
+       "n": 2,
+       "cue": "gap2",
+       "label": "2 · ∇·u = ∇·B = 0 exactly · walls, iron, vacuum",
+       "neighbour": "PCDM 2026 · 3D periodic, preprint · da Silva et al. 2025 · corona, preprint",
+       "lacks": "no walls, no vacuum matching, no permeability jump, not u and B together",
+       "src": "en/rapport/index.qmd:241-242; en/these/index.qmd:111-117; en/encadrants/index.qmd:518"
+      },
+      {
+       "n": 3,
+       "cue": "gap3",
+       "label": "3 · budgets on the distribution · no target · no data needed",
+       "neighbour": "Cai et al. 2026 · weak Fokker–Planck, SDEs · Tauberschmidt et al. 2026 · per-sample residual",
+       "lacks": "not a parametric field generator; not target-free identities",
+       "src": "en/these/index.qmd:147, :149, :156; en/encadrants/index.qmd:506-507, :515"
+      },
+      {
+       "n": 4,
+       "cue": "gap4",
+       "label": "4 · flip rate from snapshots · Rice",
+       "neighbour": "Gwirtz et al. 2022 · time series, negative · Finzi et al. 2023 · user-defined events",
+       "lacks": "all need trajectories or a target event; none turns snapshots into a crossing rate",
+       "src": "en/these/index.qmd:152, :158; en/rapport/index.qmd:122; en/encadrants/index.qmd:517"
+      },
+      {
+       "n": 5,
+       "cue": "gap5",
+       "label": "5 · across the dynamo threshold",
+       "neighbour": "Kacmaz et al. 2025 · error above 0.85 when moved from Re 1000 to Re 100",
+       "lacks": "no generative model studies the crossing of a bifurcation or conditions on (Re, Rm) jointly",
+       "src": "en/rapport/index.qmd:244; specs/sources/litterature.md:382; en/these/index.qmd:126-129; Kacmaz et al. number verified in the full text of arXiv:2507.02106 read 2026-11-08 ('time-averaged relative L2 error exceeding 0.85' for the Re = 1000 model on the Re = 100 test set)"
+      }
+     ],
+     "measured_tags": [
+      {
+       "cue": "toys",
+       "gap": 2,
+       "text": "E2 · potentials · exact on a flat sheet",
+       "icon": "✓"
+      },
+      {
+       "cue": "toys",
+       "gap": 3,
+       "text": "E2 · budget imposed without data · still far from the data",
+       "icon": "≈"
+      },
+      {
+       "cue": "toys",
+       "gap": 4,
+       "text": "E1 · Rice on three dials · far ≈ · near ✗",
+       "icon": "≈"
+      }
+     ],
+     "thesis_gates": {
+      "3d": "open",
+      "walls": "open",
+      "lowpm": "no",
+      "rare": "open",
+      "note": "what the thesis targets; LOW Pm stays ✗ (not claimed, SOA2.8)"
+     },
+     "neg_chip": "empty = nothing found · search to 6 Nov 2026, re-checked 8 Nov 2026"
+    }
+   },
+   "sfx": [],
+   "paragraphs": [
+    {
+     "hold_after": 0.0,
+     "sentences": [
+      {
+       "id": "SOA2.7.s1",
+       "cue": "cross",
+       "text": "Where the {model}generative{/} and constraint tracks cross the dynamo tracks, we found the map empty."
+      },
+      {
+       "id": "SOA2.7.s2",
+       "cue": "thesis",
+       "text": "An independent thesis proposal aims at that spot: five gaps, each beside its nearest neighbour."
+      }
+     ]
+    },
+    {
+     "hold_after": 0.4,
+     "sentences": [
+      {
+       "id": "SOA2.7.s3",
+       "cue": "gap1",
+       "text": "One: a generator of dynamo fields."
+      },
+      {
+       "id": "SOA2.7.s4",
+       "cue": "gap2",
+       "text": "Two: {u}velocity{/} and {b}magnetic field{/} with exactly zero divergence, in a walled cylinder with iron and vacuum."
+      },
+      {
+       "id": "SOA2.7.s5",
+       "cue": "gap3",
+       "text": "Three: energy budgets imposed on the {metric}distribution{/}, with no target value, even where there are no data."
+      },
+      {
+       "id": "SOA2.7.s6",
+       "cue": "gap4",
+       "text": "Four: the flip rate read from snapshots with Rice's formula."
+      },
+      {
+       "id": "SOA2.7.s7",
+       "cue": "gap5",
+       "text": "Five: one generator that crosses the dynamo threshold."
+      }
+     ]
+    },
+    {
+     "hold_after": 0.0,
+     "sentences": [
+      {
+       "id": "SOA2.7.s8",
+       "cue": "toys",
+       "text": "The study tested pieces on toy cases: exact potentials on a flat sheet, a budget imposed without data, Rice's formula on three dials."
+      }
+     ]
+    }
+   ],
+   "onscreen": {
+    "title": "",
+    "labels": [
+     "THESIS · 2027-2030 · PLANNED",
+     "independent proposal · not requested or validated by the supervisors",
+     "1 · a generator of dynamo fields",
+     "2 · ∇·u = ∇·B = 0 exactly · walls, iron, vacuum",
+     "3 · budgets on the distribution · no target · no data needed",
+     "4 · flip rate from snapshots · Rice",
+     "5 · across the dynamo threshold",
+     "Kacmaz et al. 2025 · 2D MHD · Galletti et al. 2026 · steady states, preprint",
+     "PCDM 2026 · 3D periodic, preprint · da Silva et al. 2025 · corona, preprint",
+     "Cai et al. 2026 · weak Fokker–Planck, SDEs · Tauberschmidt et al. 2026 · per-sample residual",
+     "Gwirtz et al. 2022 · time series, negative · Finzi et al. 2023 · user-defined events",
+     "Kacmaz et al. 2025 · error above 0.85 when moved from Re 1000 to Re 100",
+     "E2 · potentials · exact on a flat sheet",
+     "E2 · budget imposed without data · still far from the data",
+     "E1 · Rice on three dials · far ≈ · near ✗",
+     "MEASURED",
+     "✓",
+     "≈",
+     "?"
+    ],
+    "formulas": [
+     {
+      "cue": "gap2",
+      "out": "gap3",
+      "tex": "\\nabla\\cdot\\mathbf{u} = \\nabla\\cdot\\mathbf{B} = 0;\\ \\ [\\mathbf{B}\\cdot\\mathbf{n}] = 0,\\ [\\mathbf{n}\\times\\mathbf{B}/\\mu_r] = 0 \\text{ on the iron};\\ \\ \\mathbf{H} = \\nabla\\phi \\text{ outside}"
+     },
+     {
+      "cue": "gap3",
+      "out": "gap4",
+      "tex": "\\mathbb{E}_{q(\\cdot\\mid\\lambda)}\\big[\\,P - \\varepsilon\\,\\big] = 0\\ \\ \\text{at every } \\lambda,\\ \\text{with or without data}"
+     },
+     {
+      "cue": "gap4",
+      "out": "toys",
+      "tex": "r_0 = \\int |y|\\,p_{D,\\dot D}(0,y)\\,dy\\ \\ \\text{(Rice), on generated snapshots}"
+     }
+    ],
+    "chips": [
+     "empty = nothing found · search to 6 Nov 2026, re-checked 8 Nov 2026",
+     "independent proposal · not requested or validated by the supervisors"
+    ]
+   },
+   "visual": "Render class flat. Back to the 2012-2031 axis (T1 morph 0.6 s on 'cross-0.3'), DYNAMO TRACKS band kept open; all pins are unlabelled dots except the supervisors' name tags (dim). On 'cross-0.15': the GENERATIVE MODELS lane and the CONSTRAINTS lane glow faintly and a vertical dashed band rises from them into the DYNAMO TRACKS band at 2027-2030: their crossing; inside it, nothing (chip params.neg_chip). On 'thesis-0.15': chSOA1's dashed violet THESIS ring glides from the stub into the crossing and relabels THESIS · 2027-2030 · PLANNED (params.thesis_ring); the chip 'independent proposal · not requested or validated by the supervisors' (Kit.chip kind 'plain', top centre) holds to the end (T:57, critique B13). On 'thesis+1.5': T2 scale dive into the ring: the map dims to 25 % behind and the ring grows to the centre (about 300 px across). On 'gap1-0.15' to 'gap5-0.15': five gap pins fan out around the ring at 72° steps (Inter 32 label, params.gaps[i].label), each followed 0.6 s later by its grey neighbour chip (mono 28, params.gaps[i].neighbour) on the outer side, linked by a thin --muted line; gap 2 carries tiny blue and vermillion arrows (u, B), gap 3 an amber stack icon, gap 4 the small toll-counter glyph of 05.1 with a vermillion flip glyph, gap 5 a green knob with a threshold window (M2). On 'toys-0.15': three MEASURED tags (pill chips, measured style) attach to gaps 2, 3 and 4 (params.measured_tags), each with its verdict icon only, never a number, as in 09.6; the small badge note switches to 'MEASURED · E1, E2 callbacks' for the tags (the scene badge stays PLANNED). On 'toys+1.5': the thesis row of the gate columns fills (params.thesis_gates: 3D ?, WALLS ?, LOW Pm ✗, RARE ?). Formula layer from the script, one at a time. Badge PLANNED. Key colours: violet (ring), blue and vermillion (gap 2), amber (gap 3), vermillion (gap 4), green (gap 5).",
+   "assets": [],
+   "sources": [
+    "en/these/index.qmd:57 (independent proposal, neither requested nor validated by S. Cheng, D. Lucor, C. Nore, Y. Ponty or the consortium) and :49 (36 months; working assumption: start in fall 2027, hence the ring's 2027-2030, not narrated)",
+    "en/encadrants/index.qmd:512-518 (what remains to be done, five points, after a literature search as of 6 Nov 2026) and en/rapport/index.qmd:238-245 (six gaps)",
+    "gap 1: en/rapport/index.qmd:240; en/encadrants/index.qmd:514; neighbours Kacmaz et al. 2025 (doi:10.1088/2632-2153/ae054c; full text arXiv:2507.02106 read 2026-11-08: 2D, Pr_m = 1, vector potential channel) and Galletti et al. 2026 (arXiv:2607.13022, abstract read 2026-11-08)",
+    "gap 2: en/rapport/index.qmd:241-242; en/these/index.qmd:111-117; en/encadrants/index.qmd:518; neighbours PCDM (arXiv:2603.12834) and da Silva et al. 2025 (arXiv:2510.01441), read 2026-11-08",
+    "gap 3: en/these/index.qmd:156 (claim 1: stationarity identities of a field PDE as distributional constraints of a parametric conditional generator, imposable at parameters without data, without target value); en/encadrants/index.qmd:506-507, :515; neighbours Cai et al. 2026 (doi:10.1137/24M1665271) and Tauberschmidt et al. 2026 (arXiv:2508.09156)",
+    "gap 4: en/these/index.qmd:158 and en/rapport/index.qmd:122 (Rice's formula applied to a snapshot generator: no prior work found); en/encadrants/index.qmd:517",
+    "gap 5: en/rapport/index.qmd:244; en/encadrants/index.qmd:518; en/these/index.qmd:126-129; specs/sources/litterature.md:382 (Kacmaz: model trained at Re 1000 applied at Re 100, error above 0.85)",
+    "MEASURED callbacks: en/these/index.qmd:92 (E2 potentials, relative divergence 1.8e-17), :94 (E2 stationarity loss imposed at eta without data: residual 0.46 -> 0.061, still far from the honest floor), en/these/index.qmd:88 (Rice: 14 % error far from the threshold, 42 % near it), en/rapport/index.qmd:122 and script/ch09.json 09.6 ('roughly right far from the threshold, poor near it': hence far ≈, near ✗); tags show verdict icons only (CONTRACT section 5: no typed numbers)",
+    "video/plan/state_of_the_art.md §3.2 SOA2.7 and §5 (gap pins and nearest neighbours)"
+   ],
+   "variants": null,
+   "question": null
+  },
+  {
+   "id": "SOA2.8",
+   "was": null,
+   "title": "Neighbours and limits",
+   "file": "scenes/chSOA2/SOA2_8_neighbours_and_limits.html",
+   "status": "ready",
+   "level": "L5",
+   "register": "NIGHT",
+   "badge": {
+    "kind": "CONJECTURE",
+    "confidence": "medium",
+    "note": "positioning · a gap is a search result, not a proof (E:520)"
+   },
+   "target_s": 32,
+   "lead_in": 0.4,
+   "tail": 1.2,
+   "deps": [],
+   "entry": {
+    "data": {},
+    "params": {
+     "pbfm_quote": {
+      "text": "“Our work is the first to recognize the trade-off between distributional and physical accuracy.”",
+      "who": "Baldan, Liu, Guardone, Thuerey · ICLR 2026",
+      "src": "arXiv:2506.08604v4 abstract, read 2026-11-08"
+     },
+     "report_pin": {
+      "glyph": "square",
+      "label": "PROSPECTIVE REPORT · NOV 2026 · per-snapshot budget: inconsistent",
+      "lane": "constraints.DISTRIBUTIONAL",
+      "src": "en/rapport/index.qmd:121; en/these/index.qmd:157"
+     },
+     "link_label": "to be positioned",
+     "not_claimed": [
+      {
+       "text": "waiting times between flips",
+       "attach": "gate rare",
+       "src": "en/these/index.qmd:80, :131"
+      },
+      {
+       "text": "sodium's Pm",
+       "attach": "gate lowpm",
+       "src": "en/rapport/index.qmd:137, :161"
+      },
+      {
+       "text": "the Earth's core",
+       "attach": "dynamo band, left",
+       "src": "en/encadrants/index.qmd:514 (geodynamo listed among the targets of no generator found; the thesis tiers stop at DRESDYN: en/these/index.qmd:68)"
+      },
+      {
+       "text": "real laboratory data",
+       "attach": "LAB DYNAMOS strip",
+       "src": "en/encadrants/index.qmd:491 (synthetic magnetic probes); en/these/index.qmd:929 (tier 3 data are the partners' simulations)"
+      }
+     ],
+     "watch_chip": "searched to 6 Nov 2026 · re-checked 8 Nov 2026 · to be re-checked before every paper",
+     "handoff": "the dashed thesis ring folds into the small staircase glyph M7 (bottom right), which 10.1 grows"
+    }
+   },
+   "sfx": [],
+   "paragraphs": [
+    {
+     "hold_after": 0.0,
+     "sentences": [
+      {
+       "id": "SOA2.8.s1",
+       "cue": "pbfm",
+       "text": "The field moves fast: a twenty twenty-six conference paper claims to be the first to recognize a trade-off between physical and {metric}distributional{/} accuracy."
+      },
+      {
+       "id": "SOA2.8.s2",
+       "cue": "place",
+       "text": "The study's lesson, never force a crowd law on each snapshot, must be placed against it."
+      }
+     ]
+    },
+    {
+     "hold_after": 0.0,
+     "sentences": [
+      {
+       "id": "SOA2.8.s3",
+       "cue": "notclaimed",
+       "text": "Not claimed: waiting times between flips, sodium's tiny {param}magnetic Prandtl number{/}, the Earth's core, real laboratory data."
+      },
+      {
+       "id": "SOA2.8.s4",
+       "cue": "watch",
+       "text": "Each empty spot is a search result, not a proof, to be checked again before every paper."
+      }
+     ]
+    }
+   ],
+   "onscreen": {
+    "title": "",
+    "labels": [
+     "2026 · PBFM · physics vs distribution",
+     "“Our work is the first to recognize the trade-off between distributional and physical accuracy.”",
+     "Baldan, Liu, Guardone, Thuerey · ICLR 2026",
+     "PROSPECTIVE REPORT · NOV 2026 · per-snapshot budget: inconsistent",
+     "to be positioned",
+     "NOT CLAIMED",
+     "waiting times between flips",
+     "sodium's Pm",
+     "the Earth's core",
+     "real laboratory data",
+     "searched to 6 Nov 2026 · re-checked 8 Nov 2026 · to be re-checked before every paper"
+    ],
+    "formulas": [],
+    "chips": [
+     "claim quoted as written by its authors",
+     "searched to 6 Nov 2026 · re-checked 8 Nov 2026 · to be re-checked before every paper"
+    ]
+   },
+   "visual": "Render class flat. T2 back out of the ring to the full 2012-2031 map (0.6 s on 'pbfm-0.3'); the five gap pins collapse into five small numbered dots around the dashed thesis ring. On 'pbfm-0.15': the PBFM pin (c_pbfm, SOFT strand) brightens with its halo and the quote card params.pbfm_quote (Inter italic 32, max two lines, centred over the dimmed SURROGATES lane) with the author line in mono; chip 'claim quoted as written by its authors'. On 'place-0.15': a hollow chalk square (params.report_pin, the 'this report' glyph) appears on the DISTRIBUTIONAL strand at Nov 2026, with the crossed-out spike of 07.5 as a tiny icon (forcing each snapshot); a thin --muted double-headed line links it to the PBFM pin, labelled 'to be positioned' (no verdict, no arrowhead colour). On 'notclaimed-0.15': the quote card leaves; a grey heading 'NOT CLAIMED' and four grey tags dealt one per noun (0.35 s apart) to their anchors (params.not_claimed): 'waiting times between flips' onto the RARE gate head, 'sodium's Pm' onto the LOW Pm gate head, 'the Earth's core' onto the left end of the DYNAMO TRACKS band, 'real laboratory data' onto the LAB DYNAMOS strip; each tag carries a small crossed circle. On 'watch-0.15': every dashed empty slot of the unit (g_empty, c_empty, a_empty and the thesis crossing) gets a small magnifier glyph that sweeps once (1 s), and the chip params.watch_chip appears (Kit.chip kind 'plain'). On 'watch+1.8' (in the tail): the handoff, the dashed thesis ring shrinks into the small staircase glyph (M7) at bottom right, which 10.1 grows into the large staircase after the question card. Badge CONJECTURE, confidence medium, note 'positioning · a gap is a search result, not a proof (E:520)'. Key colours: violet (PBFM pin, ring), amber (strand), green (the LOW Pm head only).",
+   "assets": [],
+   "sources": [
+    "external: Baldan, Liu, Guardone, Thuerey 2026 (PBFM), ICLR 2026, arXiv:2506.08604v4 (abstract read 2026-11-08: 'Our work is the first to recognize the trade-off between distributional and physical accuracy'; ICLR 2026 poster per the 2026-11-08 check on OpenReview, scratchpad soa/check_soa.md); not cited on the site (grep of en/ and the video scripts, 2026-11-08)",
+    "en/rapport/index.qmd:121 and en/these/index.qmd:157 (claim 2: statement and measurement of the inconsistency of a per-sample constraint for a stationary budget, Corollary 6, E1 and E2); en/encadrants/index.qmd:516",
+    "en/these/index.qmd:80 and :131 (waiting times need temporal information: not given by the stationary distribution); en/rapport/index.qmd:161 (the reference reversal run: Re 1594, Rm 531) and :137 (sodium Pm 0.82e-5): a generator trained on such runs inherits their Pm",
+    "en/these/index.qmd:68 (tiers stop at VKS and DRESDYN, no geodynamo) and :929 (tier 3 data are the partners' simulations); en/encadrants/index.qmd:491 (assimilation from synthetic magnetic probes)",
+    "en/encadrants/index.qmd:520 (these negative claims cannot be proven: to be rechecked through literature monitoring throughout the PhD); en/rapport/index.qmd:118 (search closed 6 Nov 2026)",
+    "script/ch10.json 10.1 ('Back to the staircase.': the handoff glyph)",
+    "video/plan/state_of_the_art.md §3.2 SOA2.8 and §5 (what the thesis does not claim)",
+    "script/ch09.json 09.6 ('Crowd laws: impose them on the crowd, never on each snapshot': the lesson recalled in SOA2.8.s2)"
+   ],
+   "variants": null,
+   "question": null
+  },
+  {
+   "id": "chSOA2.Q",
+   "was": null,
+   "title": "Question for the supervisors",
+   "file": "scenes/chSOA2/SOA2_Q_question.html",
+   "status": "ready",
+   "level": "L5",
+   "register": "NIGHT",
+   "badge": null,
+   "target_s": 10,
+   "lead_in": 0.5,
+   "tail": 1.2,
+   "deps": [],
+   "entry": {
+    "data": {},
+    "params": {
+     "backdrop": {
+      "opacity": 0.1,
+      "what": "the map of SOA2.6: the two CODE rings (SFEMaNS, LATU) and the dashed thesis ring, no labels"
+     },
+     "underline": [
+      "LATU",
+      "SFEMaNS"
+     ]
+    }
+   },
+   "sfx": [
+    "chime@q-0.2"
+   ],
+   "paragraphs": [
+    {
+     "hold_after": 0.8,
+     "sentences": [
+      {
+       "id": "chSOA2.Q.s1",
+       "cue": "q",
+       "text": "First VKS data: should the generator train on the LATU periodic grid, or the SFEMaNS cylinder mesh?"
+      }
+     ]
+    }
+   ],
+   "onscreen": {
+    "title": "",
+    "labels": [],
+    "formulas": [],
+    "chips": []
+   },
+   "visual": "Render class flat. Kit.questionCard(ctx, {chapter: 'chSOA2', category: 'framing', at: 'q'}) filling the frame (BRIEF 3.1): the warm ticket with its perforated stub 'ASK · Q15 · chSOA2 · C. Nore / Y. Ponty / D. Lucor' (n from the question register); the question with the pen underline (M9) on 'LATU' and on 'SFEMaNS'; WHY IT MATTERS and WHAT IT UNBLOCKS at the component's default delays; category tag FRAMING. Behind the card, at params.backdrop.opacity, the map with the two code rings and the dashed thesis ring. No badge, lower-third or formula layer (a question makes no claim). Chime at 'q-0.2'.",
+   "assets": [],
+   "sources": [
+    "en/rapport/index.qmd:1185 (SFEMaNS outputs: azimuthal Fourier modes on an unstructured meridian finite-element mesh, permeability jumps, matching to a scalar potential in the insulator; LATU outputs: pseudo-spectral fields in a periodic box (3 pi)^3, cylinder and impellers imposed by penalization)",
+    "en/rapport/index.qmd:161 and external: Bousquet et al. 2026, Phys. Rev. Fluids 11, 063703, doi:10.1103/9tx2-1m13 (abstract read 2026-11-08: both solvers agree on the reversal mechanism)",
+    "en/these/index.qmd:111 (in a periodic box, zero divergence by Leray projection or a Coulomb-gauge vector potential; E2 and E3 confirm it) and :113-117 (the bounded-domain sub-questions: vacuum matching, permeability kink, SFEMaNS native representation)",
+    "en/encadrants/index.qmd:496 (year 2: tier 3 from month 15, SFEMaNS and LATU: hybrid decoder, vacuum matching, interface kink); en/these/index.qmd:1028 (data readers for SFEMaNS, LATU and the periodic codes); en/these/index.qmd:929 and :982 (tier 3 data are not public; fallback: low-resolution SFEMaNS simulations)",
+    "en/rapport/index.qmd:1209 (which simulations will be accessible, LATU, SFEMaNS or both, and in what form) and script/ch10.json 10.9 seat ASK (format and date of VKS snapshots) and script/X4a.json X4a.Q (short SFEMaNS or LATU runs): distinct, this card decides the ORDER and the decoder",
+    "BRIEF 3.1 (question card); plan/pedagogy.md P15"
+   ],
+   "variants": null,
+   "question": {
+    "n": 15,
+    "category": "framing",
+    "chapter": "chSOA2",
+    "en": "First VKS data: should the generator train on *LATU*'s periodic grid or *SFEMaNS*'s cylinder mesh?",
+    "say": "First VKS data: should the generator train on the LATU periodic grid, or the SFEMaNS cylinder mesh?",
+    "fr": "Premières données VKS : le générateur doit-il s'entraîner sur la grille périodique de *LATU* ou sur le maillage cylindrique de *SFEMaNS* ?",
+    "why": "Both codes produce reversals in simulated VKS (Bousquet et al. 2026). LATU gives pseudo-spectral fields in a periodic (3π)³ box, cylinder and impellers imposed by penalization: the periodic route to exact zero divergence applies there (T:111), though the Fourier basis of E2 alone no longer suffices (R:1185). SFEMaNS gives azimuthal Fourier modes on a meridian finite-element mesh, with iron and a vacuum potential, and controls ∇·B only weakly (R:1185): the setting no generator found handles (gap 2).",
+    "unblocks": "Which data reader and decoder are written first (T:1028); whether tier 3 can start at month 15 on the periodic decoder while the hybrid decoder, vacuum matching and iron kink are built (E:496); and which solver's snapshots the first data request names (R:1209).",
+    "why_fr": "Les deux codes produisent des renversements dans VKS simulé (Bousquet et al. 2026). LATU fournit des champs pseudo-spectraux dans une boîte périodique (3π)³, cylindre et turbines imposés par pénalisation : la voie périodique vers une divergence exactement nulle s'y applique (T:111), même si la base de Fourier de E2 ne suffit plus (R:1185). SFEMaNS fournit des modes de Fourier azimutaux sur un maillage méridien d'éléments finis, avec du fer et un potentiel dans le vide, et ne contrôle ∇·B que faiblement (R:1185) : le cas qu'aucun générateur trouvé ne traite (lacune 2).",
+    "unblocks_fr": "Le lecteur de données et le décodeur à écrire d'abord (T:1028) ; la possibilité de lancer le palier 3 au mois 15 avec le décodeur périodique pendant que le décodeur hybride, le raccord au vide et le pli à l'interface du fer sont construits (E:496) ; et le solveur dont la première demande de données nomme les instantanés (R:1209).",
+    "ask_who": "C. Nore / Y. Ponty / D. Lucor"
+   }
+  }
+ ]
+}

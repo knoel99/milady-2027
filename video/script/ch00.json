@@ -7,7 +7,7 @@
   "voice": {"provider": "fish", "model": "drama-3", "reference_id": "536d3a5e000945adb7038665781a4aca"},
   "learning_goal": "Feel that Earth's field is not permanent: it has flipped many times, irregularly.",
   "takeaway": "The field has flipped many times, with no schedule; we can ask when, and we can ask how often.",
-  "notes": "Cold open, no chapter card (T4 starts with ch01). External facts (seafloor stripes, dipole shape, polarity ages) carry a reference chip and a dated source (BRIEF D7). The 'when' versus 'how often' claim is scoped to the three-mode model, where the site shows it (critique_accuracy B2). No consequence of a reversal for life on Earth is claimed (pedagogy.md 1.1). Words per scene budgeted at 127.5 effective words per minute; estimates use the assembler formula (146 raw words per minute, 0.9 s per paragraph break, holds, lead-in and tail).",
+  "notes": "Cold open, no chapter card (T4 starts with ch01). External facts (seafloor stripes, dipole shape, polarity ages) carry a reference chip and a dated source (BRIEF D7). The 'when' versus 'how often' claim is scoped to the three-mode model, where the site shows it (critique_accuracy B2). No consequence of a reversal for life on Earth is claimed (pedagogy.md 1.1). Words per scene budgeted at 127.5 effective words per minute; estimates use the assembler formula (146 raw words per minute, 0.9 s per paragraph break, holds, lead-in and tail). CONSISTENCY EDITOR (2026-11-08): badge note 'three-mode model' added to 00.4 (from params.badge_note); ch00.Q keeps Q1 in the register numbering.",
   "scenes": [
     {
       "id": "00.1",
@@ -142,7 +142,7 @@
       "status": "ready",
       "level": "L0",
       "register": "NIGHT",
-      "badge": {"kind": "MEASURED", "confidence": null},
+      "badge": {"kind": "MEASURED", "confidence": null, "note": "three-mode model"},
       "target_s": 30,
       "lead_in": 0.3,
       "tail": 0.8,

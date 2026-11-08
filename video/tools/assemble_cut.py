@@ -35,7 +35,9 @@ ROOT = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 QUESTION_CARD_FILE = "scenes/_shared/question_card.html"   # default page of a question-card scene without "file"
 RAW_WPM = 146.0          # measured raw pace of the Ethan voice incl. [long pause] (BRIEF D21)
 LONG_PAUSE_S = 0.9       # silence standing for [long pause] between two paragraphs (see audio/tts.py)
-EXTRA_UNITS = [{"unit": "ch10q", "before": "ch11"}]
+EXTRA_UNITS = [{"unit": "chSOA1", "before": "ch03"},   # BRIEF section 10: state of the art, history map
+               {"unit": "chSOA2", "before": "ch10"},   # BRIEF section 10: where this work fits
+               {"unit": "ch10q", "before": "ch11"}]    # BRIEF section 3.3: before we compute
 MARK = re.compile(r"\{(u|b|param|model|metric)\}(.*?)\{/\}")
 CUE_RE = re.compile(r"^[A-Za-z_][\w-]*$")
 

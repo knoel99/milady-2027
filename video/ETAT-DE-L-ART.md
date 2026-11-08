@@ -91,7 +91,7 @@ Le film dessine la carte comme des **couloirs** (une piste par couloir) le long 
 | 1955 | Parker : rotation différentielle et mouvements cycloniques excitent des champs à grande échelle et des ondes dynamo. Bullard : stabilité de la dynamo homopolaire à disque. | D1, D4 | `[TI : Rincon §1.4]` |
 | 1957 | Zel'dovich : un écoulement plan ne peut pas être une dynamo. | D1 | `[site Dy:441-442]` |
 | 1958 | Herzenberg (deux tourbillons dans une sphère) et Backus : premières dynamos fluides démontrées rigoureusement. Rikitake : deux dynamos à disque couplées s'inversent. | D1, D4 | `[RÉS]` ; `[TI : Rincon §1.4]` |
-| 1963 | Lowes et Wilkinson : premier modèle de dynamo de laboratoire (cylindres de fer doux en rotation). Vine et Matthews : les anomalies magnétiques des dorsales enregistrent les inversions. | D2, D5 | `[TI : Stefani et al. 2018 §2.1]` ; `[TI : Constable 2003 §1]` |
+| 1963 | Lowes et Wilkinson : un modèle de dynamo « quasi homogène » de laboratoire (cylindres de fer doux en rotation). Vine et Matthews : les anomalies magnétiques des dorsales enregistrent les inversions. | D2, D5 | `[TI : Stefani et al. 2018 §2.1]` ; `[TI : Constable 2003 §1]` |
 | 1964 | Cox, Doell et Dalrymple rassemblent des inversions globales datées par radiochronologie. | D5 | `[TI : Constable 2003 §1]` |
 | 1966 | Steenbeck, Krause et Rädler : électrodynamique de champ moyen et effet α. | D1 | `[site P3:918]` |
 | 1967-1968 | Kazantsev : modèle de dynamo à petite échelle dans un écoulement aléatoire. Cox (1968) : modèle de type épreuves de Bernoulli (Poisson) des intervalles de polarité. | D1, D5 | Kazantsev : notice JETP, texte non lu ; Cox `[RÉS]` |
@@ -99,10 +99,10 @@ Le film dessine la carte comme des **couloirs** (une piste par couloir) le long 
 | 1981 | Meneguzzi, Frisch et Pouquet : premières dynamos turbulentes numériques, hélicitaire et non hélicitaire. | D1, D3 | `[TI : Rincon §1.4]` |
 | 1983-1986 | Dynamo de l'écoulement ABC (Arnol'd et Korkina ; Galloway et Frisch). | D1 | `[site Dy:386-412]` |
 | 1987 | Soward : existence de dynamos rapides dans un écoulement stationnaire. | D1 | `[RÉS]` |
-| 1995 | Glatzmaier et Roberts : simulation 3D auto-cohérente de la géodynamo, avec inversion ; début de « l'ère moderne ». Échelle de polarité CK95 (Cande et Kent). | D3, D5 | `[TI : Tobias 2021 §8.3]` |
+| 1995 | Glatzmaier et Roberts : simulation 3D auto-cohérente de la géodynamo, avec inversion ; début de « l'ère moderne ». Échelle de polarité CK95 (Cande et Kent). | D3, D5 | `[TI : Tobias 2021 §8.3]`, qui cite l'article *PEPI* 91 de 1995 ; l'inversion est le sujet de l'article *Nature* 377 (titre) |
 | 1997 | Nore, Brachet, Politano et Pouquet : dynamo dans le tourbillon de Taylor–Green, seuil fixé par les symétries de l'écoulement. | D3 | `[RÉS]` |
 | 1999 | **Riga** (11 novembre) et **Karlsruhe** (décembre) : premières dynamos fluides auto-excitées. | D2 | `[site Dy:36, Dy:106]` |
-| 2001 | Premier benchmark communautaire de géodynamo (Christensen et al.). Hoyng et al. : la géodynamo comme oscillateur bistable à α fluctuant. | D3, D4 | Christensen : définition des cas `[NON VÉRIFIÉ]` ; Hoyng `[RÉS]` |
+| 2001 | Benchmark communautaire de géodynamo (Christensen et al.). Hoyng et al. : la géodynamo comme oscillateur bistable à α fluctuant. | D3, D4 | Christensen : définition des cas `[NON VÉRIFIÉ]` ; Hoyng `[RÉS]` |
 | 2005 | Ponty et al. : dynamos de Taylor–Green de Pm = 1 à 10⁻². Schekochihin et al. : à bas Pm, Rm_c croît avec Re sans limite visible. | D1, D3 | `[site Dy:573-595]` ; `[RÉS]` |
 | 2006 | Carbone et al. : inversions regroupées dans le temps, écart à la statistique de Poisson. | D5 | `[RÉS]` |
 | 2007 | **VKS** : première dynamo dans un écoulement pleinement turbulent, seulement avec des turbines en fer doux ; premières inversions de laboratoire. Iskakov et al. : dynamo de fluctuations à Pm ≪ 1. | D2, D1 | `[site Dy:111-153]` ; `[RÉS]` |
@@ -195,16 +195,20 @@ centaine de kilowatts `[site P3:1145]` ; Pm = 0,82·10⁻⁵ à 120 °C `[site R
    2018) `[RÉS]` ; Madison Plasma Dynamo Experiment (Cooper et al. 2014, cible Rm > 1000) `[RÉS]`.
 
 **État en 2026.** Trois dynamos au sodium seulement ; le résumé ANR de MilaDy parle de « seulement trois »
-expériences `[site S:56]`. La seule turbulente, VKS, exige des turbines ferromagnétiques, et pourquoi sa
-topologie diffère des prédictions « is still a matter of ongoing research » `[TI : Stefani et al. 2018 §2.1]` ;
-Tobias se demande même si VKS « can be classed as a dynamo in the strictest sense » `[TI : Tobias §9]`. La
-première dynamo homogène sans turbines (précession, DRESDYN) reste à obtenir.
+expériences `[site S:56]`. La seule à écoulement peu contraint (Tobias oppose les « constrained designs » de
+Riga et Karlsruhe aux « less constrained flows » de VKS `[TI : Tobias §9]`), VKS, exige des turbines
+ferromagnétiques, et pourquoi sa topologie diffère des prédictions « is still a matter of ongoing research »
+`[TI : Stefani et al. 2018 §2.1]` ; Tobias se demande même si VKS « can be classed as a dynamo in the strictest
+sense » `[TI : Tobias §9]`. Une dynamo homogène « driven solely by precession » (DRESDYN, Stefani et al. 2012)
+`[RÉS]` reste à obtenir ; Karlsruhe était déjà une dynamo homogène sans turbines, mais à écoulement guidé
+(Stieglitz et Müller 2001, « homogeneous two-scale dynamo ») `[RÉS]`.
 
 #### D3. Dynamos numériques
 
 **Géodynamo.** Glatzmaier et Roberts (1995) : convection anélastique en rotation, champ ressemblant à celui de la
 Terre, inversions ; début de « l'ère moderne » `[TI : Tobias §8.3]` (formulation exacte du résumé
-`[NON VÉRIFIÉ]`). Kageyama et Sato (1995), même année `[RÉS]`. Benchmarks communautaires : Christensen et al.
+`[NON VÉRIFIÉ]` ; Tobias cite ici l'article *PEPI* 91, 63-75, de 1995, et c'est l'article *Nature* 377 de la même
+année qui porte sur l'inversion ; « anélastique » est le mot de Tobias, non revérifié dans les articles). Kageyama et Sato (1995), même année `[RÉS]`. Benchmarks communautaires : Christensen et al.
 (2001), Jones et al. (2011, anélastique), Matsui et al. (2016, 15 codes jusqu'à 16 384 cœurs) `[RÉS]`. Kutzner et
 Christensen (2002) : dipolaire à faible nombre de Rayleigh, multipolaire à fort, inversions et excursions entre
 les deux `[RÉS]`. Schaeffer et al. (2017) : Pm = 0,1, Rm > 500, E = 10⁻⁷ `[RÉS]` ; Aubert et al. (2017) : chemin
@@ -255,9 +259,10 @@ seuils et inversions, mais à Re ≈ 10³ au lieu de 10⁶-10⁷, et leurs donn�
    identifying an axial dipole moment (ADM) precursor for geomagnetic reversals » `[RÉS]`.
 
 **État en 2026.** Les modèles de petite dimension expliquent les traits qualitatifs (bimodalité, excursions,
-rôle de la brisure de symétrie) mais restent phénoménologiques ; DQVU est le premier modèle de VKS dérivé de
-simulations et identifié sous contraintes, encore déterministe et ajusté en un seul point de paramètres
-`[site S:230-234]` `[SYNTHÈSE pour « un seul point »]`.
+rôle de la brisure de symétrie) mais restent phénoménologiques ; DQVU, obtenu par projection de Galerkin des
+équations MHD et identifié sous contraintes sur des simulations de VKS, ajoute la variable U au modèle DQV à trois
+variables (« improves upon previous three-variable versions ») `[RÉS ; site S:230-234]` ; il reste déterministe et
+ajusté en un seul point de paramètres `[SYNTHÈSE pour « un seul point »]`.
 
 #### D5. Statistique des inversions
 
@@ -285,7 +290,9 @@ regroupement à longue mémoire reste ouvert (Constable contre Carbone et al.).
   2023) ; FNO se dit « the first ML-based method to successfully model turbulent flows with zero-shot
   super-resolution » `[RÉS]`. Solveurs appris et modèles de fondation : Kochkov et al. (2021), McCabe et al.
   (2024), Herde et al. (2024, Poseidon). **Limite** : entraînés à minimiser l'erreur quadratique, des ensembles
-  de modèles déterministes « regress to the mean flow » en turbulence 3D (GenCFD, Raonić et al. 2026) `[RÉS]` ;
+  de modèles déterministes « regress to the mean flow » en turbulence 3D (GenCFD) `[RÉS de la prépublication
+  arXiv:2409.18359v2 ; le résumé publié dans *Nat. Commun.* dit seulement que la perte quadratique « fails to
+  accurately characterize statistical features of chaotic dynamics »]` ;
   un tel substitut ne peut pas représenter une loi bimodale ±B `[SYNTHÈSE]`.
 - **Bancs d'essai.** PDEBench (2022) ; The Well (2024), qui contient de la MHD 3D compressible à 64³ et 256³, de
   type milieu interstellaire et non une dynamo de laboratoire `[site L:308 ; R:226]`. Aucun banc public de
@@ -303,7 +310,9 @@ regroupement à longue mémoire reste ouvert (Constable contre Carbone et al.).
   al. (2024, FNO pour les plasmas de tokamak) `[RÉS]`. Jarolim et al. (2023, PINN pour le champ coronal ; divergence
   en pénalité selon un résumé de la prépublication `[NON VÉRIFIÉ dans la version publiée]`). Kaptanoglu et al.
   (2021, modèles réduits de MHD contraints par les lois de conservation globales). Scheinker (2026, préprint) :
-  diffusion latente conditionnelle pour la MHD compressible, sans contrainte sur ∇·B mentionnée `[RÉS]`.
+  un modèle de diffusion latente conditionnel et bidirectionnel (pas en avant ou en arrière dans le temps) dont
+  l'écart aller-retour estime ses propres erreurs de déroulement ; la MHD compressible est l'un de ses trois cas
+  tests ; aucune contrainte sur ∇·B mentionnée `[RÉS]`.
 - **Apprentissage pour les dynamos.** (a) Fermetures de champ moyen apprises : Nauman et Nättilä (2019) ;
   Illarionov et al. (2026, quenching de α par équations différentielles neuronales, dynamo solaire) `[RÉS]`.
   (b) Modèles réduits identifiés : DQVU (Bousquet et al. 2026) ; Yang et Schmid (2025, réseaux complexes,
@@ -332,14 +341,17 @@ regroupement à longue mémoire reste ouvert (Constable contre Carbone et al.).
   2D et 3D, sans contrainte de divergence) `[site L:210-214]` ; **GenCFD** (Raonić et al. 2026) `[RÉS]` ;
   **Galletti et al. (2026, préprint)** : flow matching latent qui génère les états statistiquement stationnaires
   d'une turbulence gyrocinétique conditionnés par des paramètres sans dimension, sans contrainte physique
-  `[RÉS ; site R:183]` — l'analogue le plus proche d'un générateur d'instantanés d'états saturés. **FunDiff**
-  (Wang et al. 2026) : autoencodeur fonctionnel et DiT latent, fonction de courant en 2D ; référence principale de
-  l'offre de stage `[site L:140-160]`. Finzi et al. (2023) : échantillonnage conditionnel d'événements rares
+  `[RÉS ; site R:183]` — l'analogue le plus proche d'un générateur d'instantanés d'états saturés `[SYNTHÈSE]`.
+  **FunDiff** (Wang et al. 2026) : autoencodeur fonctionnel et DiT latent, fonction de courant en 2D
+  `[site L:140-160]` ; première des deux lectures recommandées par l'offre de stage, avec Fukami et Taira (2023)
+  `[WEB : offre 2027, relue le 8 novembre 2026]`. Finzi et al. (2023) : échantillonnage conditionnel d'événements rares
   définis par l'utilisateur, « matches data statistics even when sampling from the tails » `[RÉS]`.
 - **Météorologie.** SEEDS (2024), GenCast (Price et al. 2025 : mieux que l'ensemble opérationnel sur 97,2 % de
   1320 cibles, sans contrainte physique explicite) `[site L:227-228]`, CorrDiff (2025).
 - **MHD.** Kacmaz et al. (2025) ; da Silva et al. (2025, préprint : diffusion sur les coefficients en harmoniques
-  sphériques d'un champ potentiel coronal, donc ∇·B = 0 par la représentation) `[RÉS]` ; Martin et al. (2025,
+  sphériques d'un champ potentiel coronal 3D, conditionnée par la phase du cycle solaire ; les fonctions de base
+  satisfont l'équation de Laplace, donc ∇·B = 0 par la représentation, pour un champ sans courant)
+  `[RÉS ; TI : arXiv:2510.01441v1]` ; Martin et al. (2025,
   trajectoires de particules test dans une turbulence MHD 3D) `[site R:226]`. **Aucun modèle de diffusion ou de
   flow matching entraîné sur des simulations de dynamo n'a été trouvé** (recherches arXiv et web du 8 novembre
   2026), ce qui concorde avec le site `[site R:228 ; T:163 ; E:514]` ; c'est une affirmation négative.
@@ -347,8 +359,9 @@ regroupement à longue mémoire reste ouvert (Constable contre Carbone et al.).
 #### A3. Contraintes physiques dans les modèles génératifs
 
 - **Dures, par construction.** Réseaux à divergence nulle issus des formes différentielles, universels sur le
-  tore (Richter-Powell et al. 2022) `[site L:239-243]` ; fonction de courant en 2D (FunDiff) ; potentiel en
-  harmoniques sphériques (da Silva et al. 2025) ; potentiel vecteur et rotationnel en 3D périodique (Mohan et al.
+  tore (Richter-Powell et al. 2022) `[site L:239-243]` ; fonction de courant en 2D (FunDiff) ; potentiel scalaire
+  en harmoniques sphériques, en 3D sphérique mais pour un champ potentiel sans courant (da Silva et al. 2025,
+  préprint) `[TI : arXiv:2510.01441v1]` ; potentiel vecteur et rotationnel en 3D périodique (Mohan et al.
   2023) ; **PCDM** (Li, Buzzicotti, Bonaccorso et Biferale 2026, préprint) : projection de Leray de l'estimation
   propre du débruiteur, turbulence 3D périodique en rotation à 64³, divergence nulle à la précision machine
   `[site R:193 ; L:282-287]` ; mesure de référence gaussienne à divergence nulle pour le flow matching (Li X. et
@@ -403,7 +416,8 @@ regroupement à longue mémoire reste ouvert (Constable contre Carbone et al.).
 
 1. **Dynamos à faible Pm avec écoulement moyen et fluctuations** : la dynamo à petite échelle semble possible à
    Pm ≪ 1 (Iskakov 2007 ; Warnecke 2023), mais les fluctuations relèvent les seuils des dynamos d'écoulement moyen
-   (≈ 8 fois pour Taylor–Green, Ponty et al. 2007) `[site Dy:605]` et VKS exige des turbines magnétiques
+   (≈ 8 fois pour Taylor–Green, ordre de grandeur rappelé par Ponty et al. 2007 d'après des travaux antérieurs)
+   `[site Dy:605]` et VKS exige des turbines magnétiques
    `[TI : Tobias §9]`.
 2. **L'écart de paramètres** : E ≈ 10⁻¹⁵ et Pm ≈ 10⁻⁶ dans le noyau, contre E ≈ 10⁻⁷ et Pm = 0,1 dans les
    meilleures simulations `[site P3:1353]`.
@@ -428,7 +442,7 @@ sources citées dans chaque case]` :
 
 | Épreuve | Pourquoi | A1 substituts | A2 génératifs | A3 contraintes | A4 assimilation |
 |---|---|---|---|---|---|
-| **3D** | Zel'dovich : une dynamo auto-entretenue exige trois dimensions ; la MHD 2D est un banc d'essai, pas une dynamo `[site R:240]` | parfois | oui (TurbDiff, CoNFiLD, GenCFD) | divergence dure en 3D : seulement PCDM, périodique | oui (météo) |
+| **3D** | Zel'dovich : une dynamo auto-entretenue exige trois dimensions ; la MHD 2D est un banc d'essai, pas une dynamo `[site R:240]` | parfois | oui (TurbDiff, CoNFiLD, GenCFD) | divergence dure en 3D : PCDM (périodique, champ turbulent) ; da Silva et al. 2025 (sphère, champ potentiel sans courant) | oui (météo) |
 | **Domaine borné, vide, sauts de μr, maillage non cartésien** | VKS et DRESDYN sont des cylindres à parois ; B·n et la composante tangentielle de B/μr sont continus ; SFEMaNS = modes de Fourier × éléments finis `[site T:111-117 ; R:143-145]` | surtout grilles périodiques | partiellement (CoNFiLD, TurbDiff : géométries complexes, sans divergence) | **aucune contrainte dure ne traite à la fois parois, raccord au vide et sauts de μr** `[site R:241-242 ; E:518]` | grilles météo |
 | **Faible Pm** | sodium Pm = 0,82·10⁻⁵ `[site R:137]` ; DNS « typically restricted to Pm~1 regimes » `[site S:88]` ; run de référence Re = 1594, Rm = 531, donc Pm ≈ 0,33 `[site R:161]` (calcul de ce document) | non | non | non | non |
 | **Événements rares** | inversion ≈ 5 s contre polarités de 120 s et 50 s `[site R:149]` ; cinq inversions sur 0-2 Ma `[RÉS : Gwirtz 2022]` | résultats négatifs ou partiels | échantillonnage d'événements rares (Finzi 2023), jamais sur une dynamo | non | loi a posteriori bimodale non étudiée pour la MHD |
@@ -516,8 +530,9 @@ ou du texte), sans opinion ni intention. Source principale : `specs/sources/enca
 - **Dynamos à faible Pm dans l'écoulement de Taylor–Green** (substitut de von Kármán) : induction à faible Pm
   (2004) ; dynamos de Pm = 1 à 10⁻² en combinant DNS, modèle lagrangien moyenné et LES (Ponty et al. 2005) `[RÉS]`
   (le spectre de Kazantsev en k^{3/2} n'est mentionné que dans le résumé arXiv, pas dans celui publié) ; régimes
-  oscillants « but with no reversal of the magnetic field » (Mininni et al. 2005) `[RÉS]` ; seuil à deux branches
-  selon le niveau de turbulence (Ponty et al. 2007, NJP) ; **bifurcation sous-critique avec hystérésis** (Ponty et
+  oscillants « but with no reversal of the magnetic field » (Mininni et al. 2005) `[RÉS]` ; dynamo cinématique de
+  l'écoulement moyen à deux branches, le seuil dynamique passant de la branche basse au voisinage de la branche
+  haute quand Re augmente (Ponty et al. 2007, NJP) `[RÉS]` ; **bifurcation sous-critique avec hystérésis** (Ponty et
   al. 2007, PRL) `[RÉS]` ; statistiques lagrangiennes, lois de B passant de fortement non gaussiennes à quasi
   gaussiennes (Homann et al. 2014) `[RÉS]`.
 - **Intermittence et branches sous-critiques** : intermittence on-off près du seuil de l'écoulement ABC (Alexakis
@@ -535,7 +550,8 @@ ou du texte), sans opinion ni intention. Source principale : `specs/sources/enca
 
 ### 2.4 Didier Lucor (LISN, CNRS)
 
-- **Chaos polynomial généralisé** (fondateur) : interaction fluide-structure stochastique (Xiu, Lucor, Su et
+- **Chaos polynomial généralisé** (premiers travaux d'application, co-signés avec D. Xiu et G. E. Karniadakis) :
+  interaction fluide-structure stochastique (Xiu, Lucor, Su et
   Karniadakis 2002), oscillateurs aléatoires (2004), changement de mode de lâcher tourbillonnaire induit par le
   bruit (PRL 2004), sensibilité des LES à la constante de Smagorinsky (JFM 2007) `[RÉS]`.
 - **Modèles réduits et espaces latents** : chaos polynomial en espace latent (2022) ; POD et processus gaussiens
@@ -572,7 +588,8 @@ ou du texte), sans opinion ni intention. Source principale : `specs/sources/enca
 - **Contraintes et chaos** : réseaux multi-fidélité contraints par la physique (2024) ; PFNN, « Learning Chaos in
   a Linear Way », contraction et invariance de la mesure « without any explicit knowledge of the invariant
   measure » (ICLR 2025) ; opérateur neuronal à contraintes de moments et équivariance globale (Xue et al. 2026) ;
-  revue de l'apprentissage sur maillages non structurés (2025) `[RÉS]`.
+  revue de l'apprentissage sur maillages non structurés (2025) ; représentations de Koopman (Cheng X. et al.,
+  ICLR 2026, S. Cheng co-auteur) `[RÉS ; site S:155]`.
 - **Dynamo** : aucune publication sur les dynamos ou la MHD trouvée `[site S:103 ; WEB]`. Sa page décrit le rôle
   du CEREA dans MilaDy comme « physics-aware representation learning and reduced-order modelling of
   three-dimensional velocity and magnetic fields, connecting learned representations to data assimilation » et
@@ -583,7 +600,7 @@ ou du texte), sans opinion ni intention. Source principale : `specs/sources/enca
 | Piste | C. Nore | Y. Ponty | D. Lucor | S. Cheng |
 |---|---|---|---|---|
 | D1 théorie | Taylor–Green 1997 | faible Pm 2005, sous-critique 2007, on-off 2008, transition 2011, branches 2022, intermittence 2025 | — | — |
-| D2 expériences | aucune expérience ; modèles numériques de VKS et DRESDYN | aucune expérience ; LATU de VKS | — | — |
+| D2 expériences | aucune expérience de dynamo ; expérience hydrodynamique de von Kármán en eau (2005) ; modèles numériques de VKS et DRESDYN | aucune expérience de dynamo trouvée ; LATU de VKS | — | — |
 | D3 simulations | SFEMaNS, VKS 2008-2018, précession 2011-2026, Taylor–Couette 2012, transferts locaux 2024 | LATU 2014, 2017 ; Taylor–Green 2005-2014 | LES/POD de von Kármán 2024 (avec Nore) | — |
 | D4 modèles réduits | DQVU 2026 ; POD de VKS 2025 | DQVU 2026 | AE/VAE et POD 2025 (avec Nore) | — |
 | D5 statistiques | statistiques simulées de VKS (2026) | idem | — | — |
@@ -595,8 +612,10 @@ ou du texte), sans opinion ni intention. Source principale : `specs/sources/enca
 Sources : §2.2-2.5 ; `[site S:217-299]`. **Ce qu'aucun des quatre n'a publié**, après recherches HAL, Crossref,
 arXiv et pages personnelles : un modèle génératif (diffusion ou flow matching) entraîné sur des données de dynamo
 ou de MHD ; un article d'apprentissage de Y. Ponty ; un article sur les dynamos de S. Cheng ; un article de théorie
-de la dynamo de D. Lucor `[site E:513-519, S:103, S:299]`. Aucun n'est auteur d'une expérience de laboratoire ou
-d'une statistique paléomagnétique.
+de la dynamo de D. Lucor `[site E:513-519, S:103, S:299]`. Aucun n'est auteur d'une expérience de dynamo de
+laboratoire ni d'une statistique paléomagnétique ; C. Nore a en revanche publié une expérience hydrodynamique de
+von Kármán en eau (Nore, Moisy et Quartier 2005, visualisations et PIV) et co-signé Stefani et al. (2015), qui
+présente des pré-expériences en eau pour DRESDYN `[RÉS]`.
 
 ---
 
@@ -666,7 +685,7 @@ auteurs.
 | PCDM (Li, Buzzicotti, Bonaccorso, Biferale ; 2026, préprint) | diffusion 3D à divergence nulle exacte, périodique | G2 en périodique | géométrie bornée, raccord au vide, μr ; u et B conjoints |
 | Même communauté : Martin, Lübke, Li, Buzzicotti, **Grauer**, Biferale (2025) | diffusion entraînée sur des particules test dans une turbulence MHD 3D | passage à des champs B 3D périodiques | R. Grauer est co-auteur des articles LATU avec Y. Ponty (Kreuzahler et al. 2014, 2017) : une collaboration possible plutôt qu'un concurrent, à discuter avec Y. Ponty |
 | Kacmaz, Huerta, Haas (2025) | opérateur + diffusion pour la MHD 2D | G1 si passage en 3D | dynamo (3D), ∇·B dans le générateur, inversions |
-| Scheinker (2026, préprint) | diffusion latente conditionnelle pour la MHD compressible | G1 | contraintes dures, dynamo, statistique des inversions |
+| Scheinker (2026, préprint) | diffusion latente conditionnelle bidirectionnelle qui estime ses erreurs de déroulement ; MHD compressible parmi trois cas tests | G1 (recouvrement faible) | contraintes dures, dynamo, statistique des inversions |
 | Galletti et al. (2026, préprint) | flow matching conditionnel d'états saturés | idée du générateur d'instantanés d'états stationnaires | champ magnétique, contraintes, Rice |
 | Genuist, Savin, Gatti, Clouteau (2026, préprint) | comparaison de six stratégies de divergence nulle | comparaison du stage (E2) | MHD, contraintes en loi, 3D bornée |
 | Cai et al. (2026) ; Tauberschmidt et al. (2026) | forme faible de Fokker–Planck ; résidu faible par échantillon | revendication 1 si extension aux EDP de champ conditionnelles | conditionnement paramétrique, identités sans cible, MHD |
@@ -825,6 +844,9 @@ premier article sur les contraintes en loi (paliers 0-1) avant le mois 10 ? »
   2023) et années décalées d'un an (TorchDA, VIVID, DSOVT) : citez Crossref ou PMLR.
 - Ordre des auteurs différent entre arXiv et la revue pour Mohan et al. (2023) et Illarionov et al. (2026) : citez
   la revue.
+- GenCFD : premier auteur, titre et résumé diffèrent entre arXiv:2409.18359 (Molinaro et al., « fast and
+  accurate », « regress to the mean flow ») et *Nat. Commun.* 17, 9846 (Raonić et al., « efficient ») : citez la
+  revue, et attribuez la citation « regress to the mean flow » à la prépublication.
 - Une notice HAL au nom de « Sibo Cheng » (rapport technique de physique des particules, 2025) est un homonyme ;
   elle n'est pas attribuée.
 
@@ -883,7 +905,8 @@ l'API arXiv (identifiant), sauf mention contraire.
 - Larmor J. (1919). How could a rotating body such as the Sun become a magnet? *Rep. Brit. Assoc. Adv. Sci.*,
   159-160 `[NON VÉRIFIÉ : titre et pages]`.
 - Cowling T. G. (1933). The magnetic field of sunspots. *MNRAS* 94, 39-48. doi:10.1093/mnras/94.1.39.
-- Kaiser R., Tilgner A. (2014). *SIAM J. Appl. Math.* 74(2), 571-597 `[site Dy:440]`.
+- Kaiser R., Tilgner A. (2014). The axisymmetric antidynamo theorem revisited. *SIAM J. Appl. Math.* 74(2),
+  571-597. doi:10.1137/130928376 `[site Dy:440]`.
 - Taylor G. I., Green A. E. (1937). Mechanism of the production of small eddies from large ones. *Proc. R. Soc.
   A* 158, 499-521. doi:10.1098/rspa.1937.0036.
 - Batchelor G. K. (1950). On the spontaneous magnetic field in a conducting liquid in turbulent motion. *Proc. R.
@@ -956,7 +979,9 @@ l'API arXiv (identifiant), sauf mention contraire.
 - Meneguzzi M., Frisch U., Pouquet A. (1981). Helical and nonhelical turbulent dynamos. *PRL* 47, 1060-1064.
   doi:10.1103/PhysRevLett.47.1060.
 - Glatzmaier G. A., Roberts P. H. (1995). A three-dimensional self-consistent computer simulation of a geomagnetic
-  field reversal. *Nature* 377, 203-209. doi:10.1038/377203a0.
+  field reversal. *Nature* 377, 203-209. doi:10.1038/377203a0 ; et (1995) A three-dimensional convective dynamo
+  solution with rotating and finitely conducting inner core and mantle. *PEPI* 91, 63-75.
+  doi:10.1016/0031-9201(95)03049-3 (l'article que cite Tobias §8.3 pour « l'ère moderne »).
 - Kageyama A., Sato T. (1995). *Phys. Plasmas* 2, 1421-1431. doi:10.1063/1.871485.
 - Christensen U. R. et al. (2001). A numerical dynamo benchmark. *PEPI* 128, 25-34.
   doi:10.1016/S0031-9201(01)00275-8.
@@ -1048,10 +1073,12 @@ l'API arXiv (identifiant), sauf mention contraire.
   doi:10.1038/s41550-023-02030-9.
 - Kaptanoglu A. A., Morgan K. D., Hansen C. J., Brunton S. L. (2021). *PRE* 104, 015206.
   doi:10.1103/PhysRevE.104.015206.
-- Scheinker A. (2026). arXiv:2608.00675 (préprint).
+- Scheinker A. (2026). Round-trip consistency: bidirectional diffusion models can predict their own rollout
+  errors. arXiv:2608.00675 (préprint).
 - Nauman F., Nättilä J. (2019). *A&A* 629, A89. doi:10.1051/0004-6361/201935945.
 - Illarionov E., Kisielius V., Stepanov R., Kuzanyan K. (2026). *PRE* 113, L053202. doi:10.1103/dpsp-bwkh.
-- Yang Y., Schmid P. J. (2025). *J. Fluid Mech.* 1011, A30. doi:10.1017/jfm.2025.371.
+- Yang R., Schmid P. J. (2025). Complex-network modeling of reversal events in two-dimensional turbulent thermal
+  convection. *J. Fluid Mech.* 1011, A30. doi:10.1017/jfm.2025.371.
 - Pathak J. et al. (2018). *PRL* 120, 024102. doi:10.1103/PhysRevLett.120.024102.
 - Qi D., Majda A. J. (2020). *PNAS* 117(1), 52-59. doi:10.1073/pnas.1917285117.
 - Lucente D., Rolland J., Herbert C., Bouchet F. (2022). *J. Stat. Mech.* 083201. doi:10.1088/1742-5468/ac7aa7.
@@ -1089,7 +1116,9 @@ l'API arXiv (identifiant), sauf mention contraire.
 - Du P., Parikh M. H., Fan X., Liu X.-Y., Wang J.-X. (2024). CoNFiLD. *Nat. Commun.* 15, 10416.
   doi:10.1038/s41467-024-54712-1.
 - Raonić B. et al. (2026). Generative AI for efficient statistical computation of fluids (GenCFD). *Nat. Commun.*
-  17, 9846. doi:10.1038/s41467-026-76390-x ; arXiv:2409.18359.
+  17, 9846. doi:10.1038/s41467-026-76390-x ; prépublication arXiv:2409.18359 (Molinaro R., Lanthaler S., Raonić B.
+  et al., titre « Generative AI for fast and accurate statistical computation of fluids ») : c'est son résumé, pas
+  le résumé publié, qui contient « regress to the mean flow ».
 - Galletti G. et al. (2026). A shortcut to statistically steady-state turbulence with flow matching.
   arXiv:2607.13022 (préprint).
 - Wang S., Dou Z., Shan S., Liu T.-R., Lu L. (2026). FunDiff. *Nat. Commun.* 17, 5749.
@@ -1178,8 +1207,8 @@ l'API arXiv (identifiant), sauf mention contraire.
   *Phys. Plasmas* 4, 1-3. doi:10.1063/1.872578.
 - Nore C., Tuckerman L. S., Daube O., Xin S. (2003). *J. Fluid Mech.* 477, 51-88. doi:10.1017/S0022112002003075 ;
   Nore C., Tartar M., Daube O., Tuckerman L. S. (2004). *J. Fluid Mech.* 511, 45-65.
-  doi:10.1017/S0022112004008559 ; Nore C., Moisy F., Quartier L. (2005). *Phys. Fluids* 17, 064103.
-  doi:10.1063/1.1926827.
+  doi:10.1017/S0022112004008559 ; Nore C., Moisy F., Quartier L. (2005). Experimental observation of
+  near-heteroclinic cycles in the von Kármán swirling flow. *Phys. Fluids* 17, 064103. doi:10.1063/1.1926827.
 - Guermond J.-L., Laguerre R., Léorat J., Nore C. (2007). *J. Comput. Phys.* 221, 349-369.
   doi:10.1016/j.jcp.2006.06.045 ; (2009) *J. Comput. Phys.* 228, 2739-2757. doi:10.1016/j.jcp.2008.12.026.
 - Guermond J.-L., Léorat J., Luddens F., Nore C., Ribeiro A. (2011). *J. Comput. Phys.* 230, 6299-6319.
@@ -1276,6 +1305,8 @@ l'API arXiv (identifiant), sauf mention contraire.
 - Yu W., Ghosh A., Finn T. S., Arcucci R., Bocquet M., Cheng S. (2026). *Geosci. Model Dev.* 19(2), 1027-1054.
   doi:10.5194/gmd-19-1027-2026.
 - Cheng X. et al. (2025). Learning chaos in a linear way. *ICLR 2025*. arXiv:2503.14702.
+- Cheng X., Yuan W., Yang Y., Zhang Y., Cheng S., He Y., Sun Z. (2026). Information shapes Koopman
+  representation. *ICLR 2026* (commentaire arXiv). arXiv:2510.13025.
 - Xue X. et al. (2026). *Nat. Commun.* 17, 9243. doi:10.1038/s41467-026-75730-1.
 - Bocquet M., Finn T. S., Cheng S. (2026). arXiv:2610.17333 (préprint).
 - Cheng S. et al. (17 auteurs, dont D. Lucor) (2023). Machine learning with data assimilation and uncertainty
@@ -1299,3 +1330,30 @@ l'API arXiv (identifiant), sauf mention contraire.
 - Constable (2001, prépublication) :
   https://igpppublic.ucsd.edu/~cathy/Publications/Preprints/geomag_reversals_preprint.pdf
 - API : api.crossref.org, export.arxiv.org, api.openalex.org, api.archives-ouvertes.fr.
+- Offre de stage 2027 relue le 8 novembre 2026 (texte extrait du PDF) ; HAL : dates de dépôt des trois notices
+  MilaDy ; OpenReview : acceptation de PBFM et de Tauberschmidt et al. à ICLR 2026.
+
+---
+
+## Non vérifié
+
+Contrôle adverse des citations et des attributions du 8 novembre 2026 (journal des corrections :
+`video/plan/soa/ (copies de travail non versionnées pour dl/ et work/) check_soa.md`). Les points
+ci-dessous n'ont pas pu être confirmés dans une source primaire lue ce jour ; ils reposent sur le site ou sur une
+source secondaire, et ne doivent pas être montrés à l'écran sans nouvelle lecture.
+
+- Glatzmaier et Roberts (1995) : le mot « anélastique » (Tobias) et le contenu de l'article *Nature* ; le texte
+  des deux articles de 1995 n'a pas été lu.
+- Christensen et al. (2001) : statut de « premier » benchmark et définition des cas (aucun résumé disponible).
+- Lucor, Agrawal et Sergent (2022) : la relaxation de l'incompressibilité vient du résumé de la prépublication
+  arXiv:2103.03565 (titre différent) ; le résumé de la version *J. Comput. Phys.* n'est pas disponible.
+- Nony et al. (2023) : « POD et processus gaussiens » (titre seul lu ; aucun résumé disponible).
+- Kohl et al. (2026, ACDM) : le conditionnement « par Re et Mach » n'est pas écrit dans le résumé, qui parle de
+  paramètres d'écoulement hors du domaine d'entraînement, en 2D.
+- Chiffres repris du site sans relecture du texte intégral ce jour : Kacmaz et al. (128², Pm = 1), PCDM (64³,
+  « machine precision »), Weak Generative Sampler (dimension 100), Nore et al. 2018 (Rm_c ≈ 70 ; le résumé dit
+  seulement que Rm_c tend vers une constante), Genuist et al. 2026 (six variantes).
+- Absences tirées de résumés (« sans contrainte physique » pour Galletti et al., TurbDiff, CoNFiLD, GenCast) :
+  un résumé muet ne prouve pas l'absence dans l'article.
+- Botez et al. (2026) : texte intégral non lu (PDF bloqué) ; seules les affirmations du résumé sont reprises.
+- État de DRESDYN en 2026 (dernière source lue : « being set up », avril 2025).
