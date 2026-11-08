@@ -342,13 +342,15 @@
       const base = { text: el.textContent.trim().slice(0, 40), owner: (kitEl && kitEl.dataset.kit) || el.id || el.tagName.toLowerCase(),
         node: inKatex ? inKatex : el, el, katex: !!inKatex, overOk: !!el.closest('[data-qa="over-ok"]') };
       const b0 = frs[0];
+      // a transform-scaled size gets 2 % of slack (an idle "breathing" scale of 0.996 is not a finding)
+      const small = (fs, sc) => fs < (Math.abs(sc - 1) < 1e-6 ? MIN - 0.01 : MIN * 0.98);
       if (!inKatex) {
-        const fs = parseFloat(cs.fontSize) * scaleOf(el);
-        if (fs < MIN - 0.01) issues.push({ kind: 'small-text', px: +fs.toFixed(1), ...b0, ...base });
+        const sc = scaleOf(el), fs = parseFloat(cs.fontSize) * sc;
+        if (small(fs, sc)) issues.push({ kind: 'small-text', px: +fs.toFixed(1), ...b0, ...base });
       } else {
         const root = inKatex.closest('.katex-display, .katex');
-        const fs = parseFloat(getComputedStyle(root).fontSize) * scaleOf(root);
-        if (fs < MIN - 0.01) issues.push({ kind: 'small-formula', px: +fs.toFixed(1), ...b0, ...base });
+        const sc = scaleOf(root), fs = parseFloat(getComputedStyle(root).fontSize) * sc;
+        if (small(fs, sc)) issues.push({ kind: 'small-formula', px: +fs.toFixed(1), ...b0, ...base });
       }
       for (const fr of frs) {
         const box = { ...fr, ...base };
@@ -397,6 +399,12 @@
         return false;
       };
       const scratch = document.createElement('canvas'), sg = scratch.getContext('2d', { willReadFrequently: true });
+      // "ink" = a canvas pixel that, composited over the stage background, differs from it by more than 40 levels
+      // (an opaque canvas that paints its own background is not ink; faint glows are not either)
+      // a canvas painted OVER text hides it from a small coverage on (a trajectory crossing a label); text over
+      // data without a backing is reported from a larger one (opts.inkUnder, opts.inkOver)
+      const inkUnder = opts.inkUnder ?? 0.02, inkOver = opts.inkOver ?? 0.06;
+      const bgc = (getComputedStyle(stage).backgroundColor.match(/[\d.]+/g) || [11, 15, 20]).map(Number);
       const canvases = Array.from(stage.querySelectorAll('canvas')).filter((c) => c.width && c.height && !c.closest('[data-qa="ignore"]') && visible(c));
       for (const cv of canvases) {
         const cb = toStage(cv.getBoundingClientRect()), op = opacityOf(cv); if (op < 0.05 || cb.w < 1) continue;
@@ -409,11 +417,15 @@
           scratch.width = w; scratch.height = h; sg.clearRect(0, 0, w, h);
           try { sg.drawImage(cv, (x0 - cb.x) * sx, (y0 - cb.y) * sy, (x1 - x0) * sx, (y1 - y0) * sy, 0, 0, w, h); } catch (e) { continue; }
           const px = sg.getImageData(0, 0, w, h).data; let ink = 0;
-          for (let q = 3; q < px.length; q += 4) if (px[q] * op > 64) ink++;
+          for (let q = 0; q < px.length; q += 4) {
+            const a = px[q + 3] / 255 * op; if (a < 0.1) continue;
+            const d = Math.max(Math.abs(px[q] - bgc[0]), Math.abs(px[q + 1] - bgc[1]), Math.abs(px[q + 2] - bgc[2])) * a;
+            if (d > 40) ink++;
+          }
           const cover = ink / (w * h) * ((x1 - x0) * (y1 - y0)) / (b.w * 0.8 * b.h * 0.7);
-          if (cover < 0.12) continue;
-          if (paintsAbove(cv, b.el)) issues.push({ kind: 'under-canvas', a: b.owner + ': ' + b.text, b: owner + ' canvas', x: Math.round(b.x), y: Math.round(b.y), cover: +cover.toFixed(2) });
-          else if (!b.overOk && !b.katex && !backed(b.el)) issues.push({ kind: 'text-over-data', a: b.owner + ': ' + b.text, b: owner + ' canvas', x: Math.round(b.x), y: Math.round(b.y), cover: +cover.toFixed(2) });
+          if (cover < Math.min(inkUnder, inkOver)) continue;
+          if (paintsAbove(cv, b.el)) { if (cover >= inkUnder) issues.push({ kind: 'under-canvas', a: b.owner + ': ' + b.text, b: owner + ' canvas', x: Math.round(b.x), y: Math.round(b.y), cover: +cover.toFixed(2) }); }
+          else if (cover >= inkOver && !b.overOk && !b.katex && !backed(b.el)) issues.push({ kind: 'text-over-data', a: b.owner + ': ' + b.text, b: owner + ' canvas', x: Math.round(b.x), y: Math.round(b.y), cover: +cover.toFixed(2) });
         }
       }
     }
