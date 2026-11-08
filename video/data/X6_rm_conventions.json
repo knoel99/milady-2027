@@ -1,0 +1,64 @@
+{
+ "meta": {
+  "source": "en/prep/p3-mhd-dynamo/index.qmd",
+  "stamp": "SITE · VKS Rm definitions (P3 Ex. 6.1)",
+  "generator": "tools/data_X6.py",
+  "extracted": "2026-11-08",
+  "how": "transcribed; printed values re-derived from the example formulas (tools/data_X6.py), no run"
+ },
+ "F_hz": [
+  16,
+  22
+ ],
+ "K": 0.6,
+ "radii_mm": {
+  "R_cyl": 206,
+  "R_imp": 154.5,
+  "R_o": 289
+ },
+ "defs": [
+  {
+   "key": "monchaux",
+   "card": "Monchaux et al. 2007",
+   "rule": "with K ≈ 0.6",
+   "tex": "K 2πF R_cyl²/η",
+   "at": {
+    "16": 30.9,
+    "22": 42.5
+   },
+   "threshold": {
+    "text": "Rm_c ≈ 31",
+    "value": 31
+   }
+  },
+  {
+   "key": "nore",
+   "card": "Nore et al. 2018",
+   "rule": "without K",
+   "tex": "2πF R_cyl²/η",
+   "at": {
+    "16": 51.5,
+    "22": 70.8
+   },
+   "threshold": {
+    "text": "52 ≤ Rm_c ≤ 71",
+    "lo": 52,
+    "hi": 71,
+    "note": "dynamos seen from 16 to 22 Hz"
+   }
+  },
+  {
+   "key": "miralles",
+   "card": "Miralles et al. 2013",
+   "rule": "other radii",
+   "tex": "2πF R_imp R_o/η",
+   "at": null,
+   "threshold": null,
+   "ratio_to_nore": 1.05
+  }
+ ],
+ "ratios": {
+  "nore_over_monchaux": 1.67,
+  "miralles_over_nore": 1.05
+ }
+}
