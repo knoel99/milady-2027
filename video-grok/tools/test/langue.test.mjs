@@ -65,6 +65,13 @@ test("le rendu garde la langue de chaque piste et les créneaux qu'il ne possèd
   const copieFr = join(dir, "fr-ouverture.wav");
   await copyFile(cheminFr, copieFr);
   const freqFr = await frequenceFichier(copieFr);
+  const partage = join(dir, "partage.mp3");
+  await copyFile(copieFr, partage);
+  for (const lang of ["en", "fr"]) {
+    const document = JSON.parse(await readFile(join(cache, `g10-${lang}.json`), "utf8"));
+    for (const item of document.paragraphes) item.fichier = partage;
+    await writeFile(join(cache, `g10-${lang}.json`), `${JSON.stringify(document)}\n`);
+  }
   const rendu = lancer(
     ["--chapter", "g10", "--rendre", "--cache", cache, "--sortie", sortie, "--creneaux", creneaux],
     {},

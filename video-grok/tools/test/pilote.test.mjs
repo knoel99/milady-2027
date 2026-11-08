@@ -5,7 +5,7 @@ import { tmpdir } from "node:os";
 import { dirname, join } from "node:path";
 import test from "node:test";
 import { fileURLToPath } from "node:url";
-import { cleCache } from "../cache.mjs";
+import { cleCache, ecrire } from "../cache.mjs";
 import { ecrireWav } from "../kit-voix/aligner.mjs";
 import { VOIX, preparer } from "../parole.mjs";
 import {
@@ -104,6 +104,8 @@ test("le rendu aligne les deux langues et branche le caveat qui tient", async ()
       cle: cleCache({ text: paragraphe.texte, referenceId: VOIX }),
       fichier: wav,
     }));
+    const octets = await readFile(wav);
+    for (const paragraphe of paragraphes) await ecrire(dir, paragraphe.cle, octets);
     await ecrireManifeste(join(dir, `g10-${lang}.json`), { chapter: "g10", lang, paragraphes });
     fichiers[lang] = chapitre;
   }
@@ -151,7 +153,7 @@ test("le rendu aligne les deux langues et branche le caveat qui tient", async ()
   for (const slot of document.slots) {
     assert.equal(slot.id, "cue.g10.law.caveat");
     assert.equal(slot.status, "READY");
-    assert.equal(slot.audio, wav);
+    assert.equal(slot.audio, join(dir, slot.lang, "cue.g10.law.caveat.mp3"));
   }
   const direct = await rendre({
     en: { chapitre: fichiers.en, fichiers: Object.fromEntries(fichiers.en.paragraphes.map((item) => [item.id, wav])) },

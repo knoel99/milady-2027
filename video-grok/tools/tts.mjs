@@ -190,10 +190,11 @@ async function rendreChapitre({ opts, root, cache }) {
     for (const paragraphe of chapitre.paragraphes) {
       const ligne = manifeste.paragraphes.find((item) => item.id === paragraphe.id);
       const cle = cleCache({ text: paragraphe.texte, referenceId: VOIX });
-      if (!ligne || ligne.cle !== cle || !ligne.fichier) {
-        throw Object.assign(new Error(`audio manquant: ${paragraphe.id}`), { code: "audio" });
-      }
-      fichiers[paragraphe.id] = ligne.fichier;
+      const octets = ligne && ligne.cle === cle ? await lire(cache, ligne.cle) : null;
+      if (!octets) throw Object.assign(new Error(`audio manquant: ${paragraphe.id}`), { code: "audio" });
+      const chemin = join(cache, lang, `${paragraphe.id}.mp3`);
+      await ecrireNomme(chemin, octets);
+      fichiers[paragraphe.id] = chemin;
     }
     prepares[lang] = { chapitre, fichiers };
   }
