@@ -141,7 +141,7 @@ Les résultats d'une thèse sont relationnels : campagne, simulations, fichiers,
 On interroge le catalogue en SQL ou en ligne de commande. Par exemple, les heures de calcul par campagne (des heures GPU seulement si chaque simulation a eu son propre GPU, comme dans un tableau Slurm ; sur une VM, `make sweep` fait tourner jusqu'à `resources.max_parallel` simulations à la fois sur le même GPU) :
 
 ```sql
-SELECT c.name, round(sum(s.wall_time_s * greatest(s.n_gpus, 1)) / 3600.0, 1) AS heures_gpu
+SELECT c.name, round(CAST(sum(s.wall_time_s * CASE WHEN s.n_gpus > 1 THEN s.n_gpus ELSE 1 END) / 3600.0 AS NUMERIC), 1) AS heures_gpu
 FROM simulation s JOIN campaign c ON c.id = s.campaign_id
 WHERE s.status = 'done' GROUP BY c.name ORDER BY heures_gpu DESC;
 ```

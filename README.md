@@ -40,7 +40,8 @@ Le paquet Python `milady` et le dossier `infra/` industrialisent les expérience
 format de données MFF (HDF5 compatible The Well), catalogue PostgreSQL/SQLite des simulations,
 modèles et évaluations, stockage S3, suivi MLflow, solveur MHD 3D (PyTorch), entraînement
 contraint et évaluation. Guide complet : [`infra/README.md`](infra/README.md) ; contrat :
-[`specs/infra.md`](specs/infra.md).
+[`specs/infra.md`](specs/infra.md) ; location dans le cloud :
+[`infra/cloud/RECOMMANDATION-CLOUD.md`](infra/cloud/RECOMMANDATION-CLOUD.md).
 
 ```bash
 git clone https://github.com/knoel99/milady-2027.git && cd milady-2027

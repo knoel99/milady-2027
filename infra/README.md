@@ -227,6 +227,12 @@ Docker Desktop (macOS, Windows/WSL2) convient ; prévoir 8 Go de RAM pour Docker
 Les prix varient selon le fournisseur, la région, le mode (à la demande, réservé, *spot* /
 interruptible) et changent souvent : ce guide ne donne **aucun prix**, mais une méthode.
 
+Une recommandation datée (novembre 2026), avec fournisseur, machine, prix relevés à la source,
+déroulé pas à pas, collecte et exploitation des résultats, est dans
+[`infra/cloud/RECOMMANDATION-CLOUD.md`](cloud/RECOMMANDATION-CLOUD.md) : une VM Scaleway `L4-1-24G`
+pour une session de 6 à 12 h (≈ 6 à 38 € TTC) pour les campagnes telles qu'elles sont configurées,
+à décider d'abord avec les encadrants (moyens du laboratoire, accès GENCI à Jean Zay).
+
 ### 6.1 Formule
 
 ```
@@ -249,7 +255,7 @@ la page de tarifs du fournisseur le jour de la location.
 
 ```sql
 -- heures de calcul par campagne (heures GPU seulement si chaque simulation a son propre GPU, ex. tableau Slurm)
-SELECT c.name, round(sum(s.wall_time_s * greatest(s.n_gpus, 1)) / 3600.0, 1) AS heures_gpu
+SELECT c.name, round(CAST(sum(s.wall_time_s * CASE WHEN s.n_gpus > 1 THEN s.n_gpus ELSE 1 END) / 3600.0 AS NUMERIC), 1) AS heures_gpu
 FROM simulation s JOIN campaign c ON c.id = s.campaign_id
 WHERE s.status = 'done' GROUP BY c.name ORDER BY heures_gpu DESC;
 ```
