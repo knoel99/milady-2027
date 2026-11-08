@@ -1,0 +1,102 @@
+<!doctype html>
+<html lang="en"><head><meta charset="utf-8">
+<title>08.2 Predict: does clean data make clean outputs?</title>
+<link rel="stylesheet" href="../../vendor/katex/katex.min.css">
+<link rel="stylesheet" href="../../runtime/theme.css">
+<link rel="stylesheet" href="ch08.css">
+<script src="../../vendor/katex/katex.min.js"></script>
+<script src="../../runtime/scene.js"></script>
+<script src="../../runtime/components/kit.js"></script>
+<script src="../../runtime/components/hud.js"></script>
+<script src="../../runtime/components/field.js"></script>
+<script src="../../runtime/components/motifs.js"></script>
+<script src="../../runtime/components/cards.js"></script>
+<script src="ch08_kit.js"></script>
+</head><body><div id="stage"></div>
+<script>
+/* 08.2 Predict: does clean data make clean outputs? (L3, NIGHT, MEASURED: E2 test values of η, one seed). Training
+   fields pass the box test; a plain generator V0 trained on them does not: relative divergence 0.41 (order one); a soft
+   penalty V1 only lowers it and inflates the magnetic energy. The divergence card goes on the every-snapshot shelf.
+   Numbers from data/e2_eval.json (means over the 5 test η); maps from data/e2_maps.json. */
+Scene.define({
+  duration: 42,
+  register: 'night',
+  cues: { clean: 0.5, train: 4.0, predict: 6.6, no: 12.2, box: 12.8, relative: 15.6, penalty: 22.4, energy: 28.6, shelf: 31.6 },
+  data: { maps: 'data/e2_maps.json', ev: 'data/e2_eval.json' },
+  params: { maps: { size: 420, x_left: 240, x_right: 900, y: 244 }, box: { w: 150, h: 110, rests: [[0.35, 0.4], [0.62, 0.58]] }, gauge: { x: 1440, y0: 220, y1: 640, log_min: -18, log_max: 0 }, shelves: { state: 'strip' } },
+  setup(ctx) {
+    const K = Kit, S = Scene, P = ctx.params, st = ctx.stage, M = ctx.data.maps, EV = ctx.data.ev.variants;
+    const T = {}; for (const k of ['clean', 'train', 'predict', 'no', 'box', 'relative', 'penalty', 'energy', 'shelf']) T[k] = ctx.at(k + '-0.15');
+    const MP = P.maps, bl = { x: MP.x_left, y: MP.y, w: MP.size, h: MP.size }, br = { x: MP.x_right, y: MP.y, w: MP.size, h: MP.size };
+    C8.shelves(ctx, { cards: [{ shelf: 'crowd', slot: 0, glyph: 'mirror', title: 'mirror', tag: 'built in, exactly' }, { shelf: 'crowd', slot: 1, glyph: 'budget', title: 'budget', tag: 'impose on the crowd · two juries' },
+      { shelf: 'every', slot: 1, glyph: 'div', title: 'divergence', tag: 'must hold for every snapshot', at: 'shelf-0.15', from: [br.x + br.w / 2 - 60, br.y + 60] }], bright: ['shelf-0.15'] });
+    const ref0 = C8.map(ctx, M.variants.ref.samples[0].j, 'b', M.vmax.j, bl), ref1 = C8.map(ctx, M.variants.ref.samples[1].j, 'b', M.vmax.j, bl, { z: 9 });
+    const v0 = C8.map(ctx, M.variants.V0_libre.samples[0].j, 'b', M.vmax.j, br, { generated: true }), v1 = C8.map(ctx, M.variants.V1_penalite.samples[0].j, 'b', M.vmax.j, br, { generated: true, z: 9 });
+    const DB = S.f32(M.variants.V0_libre.samples[0].div_b); let dmax = 0; for (let i = 0; i < DB.length; i++) dmax = Math.max(dmax, Math.abs(DB[i]));
+    const dv = C8.map(ctx, M.variants.V0_libre.samples[0].div_b, 'b', dmax, br, { generated: true, z: 10 });
+    K.chip(ctx, { text: 'SIMULATED', kind: '', x: bl.x + 8, y: bl.y + 8, at: 'clean', out: 'shelf-0.4' });
+    K.chip(ctx, { text: 'GENERATED', kind: 'generated', x: br.x + 8, y: br.y + 8, at: 'no+1.4', out: 'shelf-0.4' });
+    const lClean = C8.lab(ctx, 'training data · divergence-free', bl.x + bl.w / 2, bl.y + bl.h + 12, 'center');
+    // the chalk box and its balance sign
+    const svg = K.svgLayer(ctx, 30), B = P.box, boxR = K.s('rect', { width: B.w, height: B.h, fill: 'none', stroke: K.c('chalk'), 'stroke-width': 4, 'stroke-dasharray': '10 8' }, svg);
+    const sign = C8.lab(ctx, 'lines in = lines out', 0, 0, 'small halo', { z: 32 });
+    let net = 0; { const n = DB.shape[1], i0 = Math.floor(B.w * 0.5), r = P.box.rests[1]; const cx = Math.floor(r[0] * n), cy = Math.floor(r[1] * n), hw = Math.floor(B.w / br.w * n / 2), hh = Math.floor(B.h / br.h * n / 2); for (let j = cy - hh; j < cy + hh; j++) for (let i = cx - hw; i < cx + hw; i++) net += DB[((j + n) % n) * n + ((i + n) % n)]; void i0; }
+    // train: arrow and the model boxes
+    const mid = K.svgLayer(ctx, 14), arr = K.s('path', { d: `M${bl.x + bl.w + 12},${bl.y + 140} L${br.x - 20},${bl.y + 140} M${br.x - 40},${bl.y + 124} L${br.x - 20},${bl.y + 140} L${br.x - 40},${bl.y + 156}`, fill: 'none', stroke: K.c('model'), 'stroke-width': 4 }, mid);
+    const lV0 = C8.lab(ctx, 'plain generator · no constraint (V0)', (bl.x + bl.w + br.x) / 2 - 110, bl.y + 170, 'small', { w: 220 }); lV0.style.color = K.c('model'); lV0.style.textAlign = 'center';
+    const lV1 = C8.lab(ctx, 'penalty (V1)', (bl.x + bl.w + br.x) / 2 - 110, bl.y + 300, 'small'); lV1.style.color = K.c('model');
+    // predict
+    K.predictCard(ctx, { x: 900, y: 220, w: 900, anchor: 'l', question: 'Trained only on divergence-free fields: are its fields divergence-free?', options: ['A · yes: it only ever saw clean fields', 'B · no'], at: 'predict-0.15', answerAt: 'no-0.15', pick: 1, out: 'no+1.3' });
+    const lSrc = C8.lab(ctx, 'sources: lines start', br.x + 10, br.y + br.h + 12, 'small'), lSnk = C8.lab(ctx, 'sinks: lines end', br.x + 330, br.y + br.h + 12, 'small');
+    // gauge
+    const G = P.gauge, gy = (v) => G.y1 - (Math.log10(v) - G.log_min) / (G.log_max - G.log_min) * (G.y1 - G.y0), gG = K.s('g', {}, mid);
+    K.s('line', { x1: G.x, x2: G.x, y1: G.y0, y2: G.y1, stroke: K.c('muted'), 'stroke-width': 3 }, gG);
+    for (let e = G.log_max; e >= G.log_min; e -= 3) { K.s('line', { x1: G.x - 10, x2: G.x, y1: gy(Math.pow(10, e)), y2: gy(Math.pow(10, e)), stroke: K.c('muted'), 'stroke-width': 2 }, gG); K.s('text', { x: G.x - 16, y: gy(Math.pow(10, e)) + 10, 'text-anchor': 'end', class: 'kt-tick' }, gG, K.pow10(Math.pow(10, e))); }
+    K.s('rect', { x: G.x - 4, y: gy(1e-15), width: 60, height: gy(1e-17) - gy(1e-15), fill: K.c('muted'), opacity: 0.25 }, gG);
+    const lGa = C8.lab(ctx, 'relative divergence', G.x - 80, G.y0 - 52, 'small');
+    const lRound = C8.lab(ctx, 'rounding error would sit here', G.x + 70, gy(1e-16) - 20, 'small', { w: 300 });
+    const V0d = EV.V0_libre.mean.test.div_rel_b, V1u = EV.V1_penalite.mean.test.div_rel_u, V1b = EV.V1_penalite.mean.test.div_rel_b, eb = 1 + EV.V1_penalite.mean.test.err_Eb_rel;
+    const ndl = K.s('line', { x1: G.x - 60, x2: G.x + 30, stroke: K.c('model'), 'stroke-width': 5, 'stroke-linecap': 'round' }, gG);
+    const tu = K.s('line', { x1: G.x, x2: G.x + 40, y1: gy(V1u), y2: gy(V1u), stroke: K.c('u'), 'stroke-width': 5 }, gG), tb = K.s('line', { x1: G.x, x2: G.x + 40, y1: gy(V1b), y2: gy(V1b), stroke: K.c('b'), 'stroke-width': 5 }, gG);
+    const f2 = (v) => v.toFixed(2);
+    const lFree = C8.lab(ctx, `free (V0): ${f2(V0d)}`, G.x + 50, gy(V0d) - 2, 'small'), lOrd = C8.lab(ctx, 'order one', G.x + 50, gy(V0d) + 34, 'small'); lOrd.style.color = K.c('chalk');
+    const lPen = C8.lab(ctx, `penalty (V1): ${f2(V1u)} (u) / ${f2(V1b)} (B)`, G.x + 50, gy(V1b) + 70, 'small', { w: 330 });
+    const lMeans = C8.lab(ctx, 'means over the 5 test values of η · one seed per variant', G.x + 70, G.y1 - 170, 'small', { w: 330 }); lMeans.style.color = K.c('muted');
+    // magnetic energy bar
+    const ex0 = br.x, ew = 90, ey = br.y + br.h + 40, eG = K.s('g', {}, mid);
+    const eBar = K.s('rect', { x: ex0, y: ey, height: 24, width: 0, fill: K.c('b') }, eG);
+    K.s('rect', { x: ex0, y: ey - 4, width: ew, height: 32, fill: 'none', stroke: K.c('fg-2'), 'stroke-width': 2, 'stroke-dasharray': '6 5' }, eG);
+    const lE = C8.lab(ctx, `magnetic energy ×${eb.toFixed(1)} (an excess)`, ex0 + ew * eb + 16, ey - 4, 'small');
+    K.chip(ctx, { text: 'HYPOTHESIS · the penalty is a ratio: inflating the swirl part also lowers it', kind: 'schematic', x: 96, y: 770, at: 'energy+0.6', maxWidth: 940 });
+    K.lowerThird(ctx, { kind: 'source', data: ctx.data.ev, at: 'relative+0.3', hold: 4 });
+    K.badge(ctx, { kind: 'MEASURED', note: 'E2 · test values of η · one seed', at: -0.3 });
+    K.formulaLayer(ctx);
+    ctx.c = { lMeans, T, ref0, ref1, v0, v1, dv, lClean, boxR, sign, net, arr, lV0, lV1, lSrc, lSnk, gG, lGa, lRound, ndl, tu, tb, lFree, lOrd, lPen, eBar, lE, gy, V0d, eb, ew, bl, br };
+  },
+  render(t, ctx) {
+    const S = Scene, P = ctx.params, c = ctx.c, T = c.T, ease = S.ease.inOutCubic, B = P.box;
+    const on = S.seg(t, T.clean, T.clean + 0.5, S.ease.linear); c.ref0.set(on); c.ref1.set(on * (0.5 + 0.5 * Math.sin(t * 0.7)));
+    C8.fade(c.lClean, t, T.clean + 0.3, T.no);
+    const vin = S.seg(t, T.no, T.no + 0.5, S.ease.linear), pen = S.seg(t, T.penalty, T.penalty + 0.8, S.ease.linear);
+    const shd = 1 - 0.7 * S.seg(t, T.shelf - 0.3, T.shelf + 0.2, S.ease.linear);
+    c.v0.set(vin * (1 - pen) * shd); c.v1.set(vin * pen * shd); c.ref0.set(on * shd); c.ref1.set(on * shd * (0.5 + 0.5 * Math.sin(t * 0.7)));
+    c.dv.set(0.85 * S.seg(t, T.box + 1.0, T.box + 1.6, S.ease.linear) * (1 - S.seg(t, T.penalty - 0.3, T.penalty + 0.3, S.ease.linear)));
+    // the box: two rests on the reference, then onto the V0 map
+    const r = B.rests, bOn = S.seg(t, T.clean + 0.4, T.clean + 0.8, S.ease.linear) * (1 - S.seg(t, T.penalty, T.penalty + 0.4, S.ease.linear));
+    const k1 = S.seg(t, T.clean + 1.2, T.clean + 2.4, ease), k2 = S.seg(t, T.box, T.box + 0.9, ease);
+    let fx = r[0][0] + (r[1][0] - r[0][0]) * k1, fy = r[0][1] + (r[1][1] - r[0][1]) * k1;
+    const x = (c.bl.x + fx * c.bl.w) * (1 - k2) + (c.br.x + r[1][0] * c.br.w) * k2 - B.w / 2, y = (c.bl.y + fy * c.bl.h) * (1 - k2) + (c.br.y + r[1][1] * c.br.h) * k2 - B.h / 2;
+    c.boxR.setAttribute('x', x.toFixed(1)); c.boxR.setAttribute('y', y.toFixed(1)); c.boxR.setAttribute('opacity', bOn); c.boxR.setAttribute('stroke-dashoffset', (-(t * 10) % 18).toFixed(1));
+    c.sign.textContent = t < T.box + 0.9 ? 'lines in = lines out' : `lines in ≠ lines out ${c.net >= 0 ? '+' : '−'}`;
+    c.sign.style.left = x + 'px'; c.sign.style.top = (y + B.h + 6) + 'px'; C8.fade(c.sign, t, T.clean + 0.8, T.penalty);
+    C8.fadeS(c.arr, t, T.train); C8.fade(c.lV0, t, T.train + 0.2); C8.fade(c.lV1, t, T.penalty + 0.2);
+    C8.fade(c.lSrc, t, T.box + 1.4, T.penalty); C8.fade(c.lSnk, t, T.box + 1.6, T.penalty);
+    C8.fadeS(c.gG, t, T.relative); C8.fade(c.lGa, t, T.relative); C8.fade(c.lRound, t, T.relative + 1.2, T.penalty); C8.fade(c.lMeans, t, T.relative + 0.5);
+    const sw = S.seg(t, T.relative + 0.3, T.relative + 1.1, ease), ny = c.gy(1e-18) + (c.gy(c.V0d) - c.gy(1e-18)) * sw;
+    c.ndl.setAttribute('y1', ny); c.ndl.setAttribute('y2', ny);
+    C8.fade(c.lFree, t, T.relative + 1.0); C8.fade(c.lOrd, t, T.relative + 1.6, T.penalty);
+    C8.fadeS(c.tu, t, T.penalty + 0.6); C8.fadeS(c.tb, t, T.penalty + 0.8); C8.fade(c.lPen, t, T.penalty + 1.0);
+    c.eBar.setAttribute('width', (c.ew * c.eb * S.seg(t, T.energy, T.energy + 0.8, S.ease.outCubic)).toFixed(1)); C8.fadeS(c.eBar.parentNode, t, T.energy - 0.1); C8.fade(c.lE, t, T.energy + 0.6);
+  },
+});
+</script></body></html>

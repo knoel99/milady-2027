@@ -1,0 +1,123 @@
+<!doctype html>
+<html lang="en"><head><meta charset="utf-8">
+<title>08.3 Hill maps and swirl minus slope</title>
+<link rel="stylesheet" href="../../vendor/katex/katex.min.css">
+<link rel="stylesheet" href="../../runtime/theme.css">
+<link rel="stylesheet" href="ch08.css">
+<script src="../../vendor/katex/katex.min.js"></script>
+<script src="../../runtime/scene.js"></script>
+<script src="../../runtime/components/kit.js"></script>
+<script src="../../runtime/components/hud.js"></script>
+<script src="../../runtime/components/field.js"></script>
+<script src="../../runtime/components/motifs.js"></script>
+<script src="ch08_kit.js"></script>
+</head><body><div id="stage"></div>
+<script>
+/* 08.3 Hill maps and swirl minus slope (L3, NIGHT, PROVED: Proposition 1; gauges measured in E2). A generated hill map
+   ψ (V4 potentials): the flow runs along its contour lines, faster where they crowd, nothing piles up; two hill maps
+   (ψ, A) give zero divergence by construction. Second fix: the Leray projection removes, wave by wave, the part of each
+   arrow along k (real V0 modes). The gauges fall to rounding error, measured with the operator that enforces it.
+   data/ch08_hillmap.json (tools/data_ch08.py), data/e2_eval.json. */
+Scene.define({
+  duration: 50,
+  register: 'night',
+  cues: { hill: 0.5, pile: 5.4, boxok: 9.6, build: 12.2, project: 20.4, waves: 23.6, gauge: 27.6, caveat: 30.8 },
+  data: { hill: 'data/ch08_hillmap.json', ev: 'data/e2_eval.json' },
+  params: { map: { x: 360, y: 210, size: 500 }, contours: 12, tracers: 400, trail: 8, box: { w: 150, h: 110 }, kplane: { x: 1180, y: 170, size: 520, kmax: 3 }, waves_one_by_one_s: 0.3, gauges: { y0: 200, y1: 640, log_min: -18, log_max: 0 } },
+  setup(ctx) {
+    const K = Kit, S = Scene, P = ctx.params, st = ctx.stage, H = ctx.data.hill, EV = ctx.data.ev.variants;
+    const T = {}; for (const k of ['hill', 'pile', 'boxok', 'build', 'project', 'waves', 'gauge', 'caveat']) T[k] = ctx.at(k + '-0.15');
+    C8.shelves(ctx, { cards: [{ shelf: 'crowd', slot: 0, glyph: 'mirror', title: 'mirror' }, { shelf: 'crowd', slot: 1, glyph: 'budget', title: 'budget' },
+      { shelf: 'every', slot: 1, glyph: 'div', title: 'divergence', tag: 'build it in · or project · exact' }], bright: ['build+1.0', 'gauge+1.0'] });
+    const MB = P.map, mb = { x: MB.x, y: MB.y, w: MB.size, h: MB.size }, PS = S.f32(H.psi), n = PS.shape[1];
+    const mapPsi = C8.map(ctx, H.psi, 'u', H.vmax.psi, mb, { generated: true });
+    // contours of ψ (marching squares on a 64² decimation)
+    const svg = K.svgLayer(ctx, 12), N2 = 64, st2 = n / N2, val = (i, j) => PS[((Math.round(j * st2) % n) * n) + (Math.round(i * st2) % n)];
+    let cd = '';
+    for (let c = 1; c <= P.contours; c++) {
+      const lev = -H.vmax.psi + 2 * H.vmax.psi * c / (P.contours + 1);
+      const X = (i) => mb.x + i / (N2 - 1) * mb.w, Y = (j) => mb.y + j / (N2 - 1) * mb.h;
+      for (let j = 0; j < N2 - 1; j++) for (let i = 0; i < N2 - 1; i++) {
+        const v = [val(i, j), val(i + 1, j), val(i + 1, j + 1), val(i, j + 1)], code = v.map((x, k) => (x > lev ? 1 << k : 0)).reduce((a, b) => a + b, 0);
+        if (code === 0 || code === 15) continue;
+        const e = [[X(i + (lev - v[0]) / (v[1] - v[0])), Y(j)], [X(i + 1), Y(j + (lev - v[1]) / (v[2] - v[1]))], [X(i + (lev - v[3]) / (v[2] - v[3])), Y(j + 1)], [X(i), Y(j + (lev - v[0]) / (v[3] - v[0]))]];
+        const cr = [0, 1, 2, 3].filter((k) => ((code >> k) & 1) !== ((code >> ((k + 1) % 4)) & 1));
+        for (let a = 0; a + 1 < cr.length; a += 2) cd += `M${e[cr[a]][0].toFixed(1)},${e[cr[a]][1].toFixed(1)}L${e[cr[a + 1]][0].toFixed(1)},${e[cr[a + 1]][1].toFixed(1)}`;
+      }
+    }
+    const cont = K.s('path', { d: cd, fill: 'none', stroke: K.c('fg-2'), 'stroke-width': 1.6, opacity: 0.6 }, svg);
+    // tracers along the contours: u = (∂yψ, −∂xψ) by central differences (screen y points down: same sign convention as the map)
+    const h = mb.w / n, at = (x, y) => { const i = ((Math.floor((x - mb.x) / h) % n) + n) % n, j = ((Math.floor((y - mb.y) / h) % n) + n) % n; return [i, j]; };
+    const F = (x, y) => { const [i, j] = at(x, y), ip = (i + 1) % n, im = (i + n - 1) % n, jp = (j + 1) % n, jm = (j + n - 1) % n;
+      const dx = (PS[j * n + ip] - PS[j * n + im]) / 2, dy = (PS[jp * n + i] - PS[jm * n + i]) / 2, s = 3200 / H.vmax.psi; return [s * dy, -s * dx]; };
+    K.tracers(ctx, { F, box: mb, n: P.tracers, trail: P.trail, color: 'fg', at: 'pile-0.15', out: 'build', seed: 't83', z: 13, alpha: 0.9, size: 2.6 });
+    const lHill = C8.lab(ctx, 'hill map ψ · generated', mb.x + mb.w / 2, mb.y + mb.h + 12, 'center'); lHill.style.color = K.c('model');
+    const lRun = C8.lab(ctx, 'the flow runs along the contour lines', mb.x + mb.w + 40, mb.y + 40, 'small', { w: 320 });
+    const lFast = C8.lab(ctx, 'faster where the lines crowd', mb.x + mb.w + 40, mb.y + 160, 'small', { w: 320 });
+    const lPile = C8.lab(ctx, 'nothing piles up, nothing leaks', mb.x + mb.w + 40, mb.y + 260, 'small', { w: 320 });
+    K.chip(ctx, { text: `GENERATED · V4 potentials, η = ${K.fmt(H.eta, 3)}`, kind: 'generated', x: mb.x + 8, y: mb.y + 8, at: 'hill', out: 'build', maxWidth: 480 });
+    const bx = K.s('rect', { x: mb.x + 190, y: mb.y + 200, width: P.box.w, height: P.box.h, fill: 'none', stroke: K.c('chalk'), 'stroke-width': 4, 'stroke-dasharray': '10 8' }, K.svgLayer(ctx, 30));
+    const lIn = C8.lab(ctx, 'lines in = lines out', mb.x + 190, mb.y + 200 + P.box.h + 6, 'small halo', { z: 32 });
+    K.pen(ctx, { kind: 'check', box: { x: mb.x + 300, y: mb.y + 150, w: 40, h: 40 }, at: 'boxok+0.6', out: 'build', dur: 0.4, seed: 'ok83' });
+    // build: two hill maps side by side
+    const sm = { x: 160, y: 200, w: 420, h: 420 }, sa = { x: 640, y: 200, w: 420, h: 420 };
+    const mP2 = C8.map(ctx, H.psi, 'u', H.vmax.psi, sm, { generated: true, z: 9 }), mA = C8.map(ctx, H.a, 'b', H.vmax.a, sa, { generated: true, z: 9 });
+    const lP2 = C8.lab(ctx, 'hill map for the flow · ψ', sm.x + sm.w / 2, sm.y + sm.h + 10, 'small center'), lA = C8.lab(ctx, 'hill map for the field · A', sa.x + sa.w / 2, sa.y + sa.h + 10, 'small center');
+    const lZero = C8.lab(ctx, 'zero divergence by construction', 1120, 300, 'big', { w: 600 }), lWh = C8.lab(ctx, 'whatever the training', 1120, 360, 'small'); lWh.style.color = K.c('chalk');
+    // project: k-plane with the V0 waves, the part along k removed one by one
+    const KP = P.kplane, kc = { x: KP.x + KP.size / 2, y: KP.y + KP.size / 2 }, ks = KP.size / 2 / (KP.kmax + 0.4), kG = K.s('g', {}, svg);
+    K.s('line', { x1: KP.x, x2: KP.x + KP.size, y1: kc.y, y2: kc.y, stroke: K.c('grid'), 'stroke-width': 2 }, kG); K.s('line', { x1: kc.x, x2: kc.x, y1: KP.y, y2: KP.y + KP.size, stroke: K.c('grid'), 'stroke-width': 2 }, kG);
+    for (let a = -KP.kmax; a <= KP.kmax; a++) for (let b = -KP.kmax; b <= KP.kmax; b++) K.s('circle', { cx: kc.x + a * ks, cy: kc.y - b * ks, r: 3, fill: K.c('muted') }, kG);
+    const AL = 170, waves = H.waves.map((w, i) => {
+      const px = kc.x + w.kx * ks, py = kc.y - w.ky * ks, kn = Math.hypot(w.kx, w.ky), ux = w.ux_re, uy = w.uy_re, along = (ux * w.kx + uy * w.ky) / kn;
+      const ar = K.s('line', { x1: px, y1: py, stroke: K.c('u'), 'stroke-width': 4, 'stroke-linecap': 'round' }, kG), rm = K.s('line', { x1: px, y1: py, stroke: K.c('chalk'), 'stroke-width': 2.5, 'stroke-dasharray': '5 5' }, kG);
+      return { px, py, ux, uy, px2: ux - along * w.kx / kn, py2: uy - along * w.ky / kn, ar, rm, i };
+    });
+    const lK = C8.lab(ctx, 'wave vector k', KP.x + KP.size - 10, KP.y + KP.size + 10, 'small right');
+    const lSplit = C8.lab(ctx, 'any field = swirl + slope', KP.x, KP.y - 4, 'big'), lDel = C8.lab(ctx, 'delete the slope', KP.x, KP.y + 40, 'small'); lDel.style.color = K.c('chalk');
+    const lWave = C8.lab(ctx, 'remove the part along k, wave by wave', KP.x, KP.y + KP.size + 10, 'small', { w: 320 });
+    K.chip(ctx, { text: 'redrawn after prep module 1 (stream function, Helmholtz–Hodge)', kind: 'plain', x: 96, y: 790, at: 'project+0.5', out: 'gauge', caps: false, maxWidth: 900 });
+    // gauges
+    const GA = P.gauges, gy = (v) => GA.y1 - (Math.log10(v) - GA.log_min) / (GA.log_max - GA.log_min) * (GA.y1 - GA.y0), gG = K.s('g', {}, svg);
+    const gx = [1260, 1480, 1700], vals = [EV.V2_proj_finale.mean.test.div_rel_u, EV.V4_potentiels.mean.test.div_rel_u, EV.V3_flot_projete.mean.test.div_rel_u], ghost = EV.V0_libre.mean.test.div_rel_u;
+    const names = ['project at the end', 'hill maps', 'project at every step (single precision)'];
+    gx.forEach((x) => { K.s('line', { x1: x, x2: x, y1: GA.y0, y2: GA.y1, stroke: K.c('muted'), 'stroke-width': 3 }, gG); K.s('rect', { x: x - 30, y: gy(1e-15), width: 60, height: gy(1e-17) - gy(1e-15), fill: K.c('muted'), opacity: 0.25 }, gG); });
+    for (let e = GA.log_max; e > GA.log_min; e -= 6) K.s('text', { x: gx[0] - 40, y: gy(Math.pow(10, e)) + 10, 'text-anchor': 'end', class: 'kt-tick' }, gG, K.pow10(Math.pow(10, e)));
+    const ndl = gx.map((x) => K.s('line', { x1: x - 32, x2: x + 32, stroke: K.c('model'), 'stroke-width': 5, 'stroke-linecap': 'round' }, gG));
+    gx.forEach((x) => K.s('line', { x1: x - 24, x2: x + 24, y1: gy(ghost), y2: gy(ghost), stroke: K.c('muted'), 'stroke-width': 3, 'stroke-dasharray': '4 4' }, gG));
+    const gl = gx.map((x, i) => C8.lab(ctx, names[i], x, GA.y1 + 12, 'small center', { w: 210 }));
+    gl.forEach((e) => { e.style.textAlign = 'center'; });
+    const lRe = C8.lab(ctx, 'rounding error', gx[0] - 44, gy(1e-16) - 18, 'small right');
+    const lB1 = C8.lab(ctx, 'build it in · exact', 1180, 110, 'small'), lB2 = C8.lab(ctx, 'or project · exact', 1480, 110, 'small'); [lB1, lB2].forEach((e) => { e.style.color = K.c('chalk'); });
+    K.chip(ctx, { text: 'CAVEAT · divergence measured with the same spectral operator used to enforce it', kind: 'schematic', x: 96, y: 790, at: 'caveat', maxWidth: 940 });
+    K.lowerThird(ctx, { kind: 'source', data: H, at: 'hill+0.6', hold: 4 });
+    K.badge(ctx, { kind: 'PROVED', note: 'Prop. 1 · gauges measured in E2', at: -0.3 });
+    // WORKAROUND (script formula 3 too long for one layer item at 28 px): its three gauge values in turn
+    const fs = (ctx.script.onscreen && ctx.script.onscreen.formulas) || [], items = [];
+    fs.forEach((f) => { if (f.cue !== 'gauge') { items.push({ tex: f.tex, at: f.cue + '-0.15' }); return; } const parts = f.tex.split(',\\ \\ '); parts.forEach((x, i) => items.push({ tex: i ? '\\text{test }\\etaP:\\ ' + x : x, at: 'gauge' + (i ? '+' + (1.0 * i).toFixed(1) : '-0.15') })); });
+    K.formulaLayer(ctx, { items });
+    ctx.c = { T, mapPsi, cont, lHill, lRun, lFast, lPile, bx, lIn, mP2, mA, lP2, lA, lZero, lWh, kG, waves, AL, lK, lSplit, lDel, lWave, gG, ndl, vals, gy, gl, lRe, lB1, lB2 };
+  },
+  render(t, ctx) {
+    const S = Scene, P = ctx.params, c = ctx.c, T = c.T;
+    const s1 = S.seg(t, T.hill, T.hill + 0.6, S.ease.linear) * (1 - S.seg(t, T.build, T.build + 0.5, S.ease.linear));
+    c.mapPsi.set(s1 * (1 - 0.35 * S.seg(t, T.pile, T.pile + 0.5, S.ease.linear))); c.cont.setAttribute('opacity', (0.6 * s1).toFixed(3));
+    C8.fade(c.lHill, t, T.hill + 0.4, T.build); C8.fade(c.lRun, t, T.hill + 1.0, T.build); C8.fade(c.lFast, t, T.pile + 0.4, T.build); C8.fade(c.lPile, t, T.pile + 2.0, T.build);
+    C8.fadeS(c.bx, t, T.boxok, T.build); C8.fade(c.lIn, t, T.boxok + 0.3, T.build);
+    const s2 = S.seg(t, T.build, T.build + 0.6, S.ease.linear) * (1 - 0.6 * S.seg(t, T.project, T.project + 0.5, S.ease.linear)) * (1 - S.seg(t, T.gauge, T.gauge + 0.4, S.ease.linear));
+    c.mP2.set(s2); c.mA.set(s2); C8.fade(c.lP2, t, T.build + 0.3, T.gauge); C8.fade(c.lA, t, T.build + 0.3, T.gauge);
+    C8.fade(c.lZero, t, T.build + 0.8, T.project); C8.fade(c.lWh, t, T.build + 1.6, T.project);
+    C8.fadeS(c.kG, t, T.project, T.gauge); C8.fade(c.lK, t, T.project + 0.3, T.gauge); C8.fade(c.lSplit, t, T.project + 0.2, T.gauge); C8.fade(c.lDel, t, T.project + 1.6, T.gauge); C8.fade(c.lWave, t, T.waves + 0.2, T.gauge);
+    c.waves.forEach((w) => {
+      const p = S.seg(t, T.waves + w.i * P.waves_one_by_one_s, T.waves + w.i * P.waves_one_by_one_s + 0.5, S.ease.inOutCubic);
+      const ex = w.ux + (w.px2 - w.ux) * p, ey = w.uy + (w.py2 - w.uy) * p;
+      w.ar.setAttribute('x2', (w.px + c.AL * ex).toFixed(1)); w.ar.setAttribute('y2', (w.py - c.AL * ey).toFixed(1));
+      w.rm.setAttribute('x2', (w.px + c.AL * w.ux).toFixed(1)); w.rm.setAttribute('y2', (w.py - c.AL * w.uy).toFixed(1)); w.rm.setAttribute('opacity', (p > 0 ? 1 - p : 0).toFixed(3));
+    });
+    C8.fadeS(c.gG, t, T.gauge);
+    c.ndl.forEach((e, i) => { const y = c.gy(1) + (c.gy(c.vals[i]) - c.gy(1)) * S.seg(t, T.gauge + 0.3 + 0.3 * i, T.gauge + 1.3 + 0.3 * i, S.ease.inOutCubic); e.setAttribute('y1', y); e.setAttribute('y2', y); });
+    c.gl.forEach((e, i) => C8.fade(e, t, T.gauge + 0.3 + 0.3 * i)); C8.fade(c.lRe, t, T.gauge + 1.4);
+    C8.fade(c.lB1, t, T.gauge + 1.6); C8.fade(c.lB2, t, T.gauge + 1.9);
+  },
+});
+</script></body></html>

@@ -1,0 +1,113 @@
+<!doctype html>
+<html lang="en"><head><meta charset="utf-8">
+<title>08.5 Three ways to fix a budget</title>
+<link rel="stylesheet" href="../../vendor/katex/katex.min.css">
+<link rel="stylesheet" href="../../runtime/theme.css">
+<link rel="stylesheet" href="ch08.css">
+<script src="../../vendor/katex/katex.min.js"></script>
+<script src="../../runtime/scene.js"></script>
+<script src="../../runtime/components/kit.js"></script>
+<script src="../../runtime/components/hud.js"></script>
+<script src="../../runtime/components/motifs.js"></script>
+<script src="ch08_kit.js"></script>
+</head><body><div id="stage"></div>
+<script>
+/* 08.5 Three ways to fix a budget (L4, NIGHT, MEASURED: E2 test values of η, one seed per variant). The crowd law
+   E[ε] = P imposed three ways: 1 the crowd loss during training (V5 0.70 vs control 2.52), 2 reweighting afterwards
+   (the poll collapses: ESS), 3 rescaling each snapshot (a spike the spectral distance does not see). Log axis of the
+   distribution distance with the honest floor. Numbers from data/e2_eval.json; histogram shape from fig_taxonomie. */
+Scene.define({
+  duration: 62,
+  register: 'night',
+  cues: { budget: 0.5, three: 3.6, loss: 7.0, control: 10.0, nogain: 15.0, tilt: 17.0, poll: 19.6, rescale: 25.6, spike: 28.0, fooled: 32.6, kept: 36.6, honest: 41.0 },
+  data: { ev: 'data/e2_eval.json', tax: 'data/fig_taxonomie.json' },
+  params: { lanes: { x_label: 120, x_axis0: 700, x_axis1: 1640, y: [310, 450, 590], h: 100 }, axis: { log_min: -2, log_max: 1, label: 'distribution distance · 5 unseen values of η' },
+    dots: { n: 500, seed: 'poll' }, hist: { bins: 31 } },
+  setup(ctx) {
+    const K = Kit, S = Scene, P = ctx.params, st = ctx.stage, EV = ctx.data.ev, V = EV.variants, EL = EV.en_loi, TX = ctx.data.tax.data;
+    const T = {}; for (const k of ['budget', 'three', 'loss', 'control', 'nogain', 'tilt', 'poll', 'rescale', 'spike', 'fooled', 'kept', 'honest']) T[k] = ctx.at(k + '-0.15');
+    C8.shelves(ctx, { cards: [{ shelf: 'crowd', slot: 0, glyph: 'mirror', title: 'mirror' }, { shelf: 'crowd', slot: 1, glyph: 'budget', title: 'budget' }, { shelf: 'every', slot: 1, glyph: 'div', title: 'divergence' }], bright: ['budget-0.15'] });
+    const LN = P.lanes, A = P.axis, ax = (v) => LN.x_axis0 + (Math.log10(v) - A.log_min) / (A.log_max - A.log_min) * (LN.x_axis1 - LN.x_axis0);
+    const svg = K.svgLayer(ctx, 12), axG = K.s('g', {}, svg), yTop = LN.y[0] - 20, yBot = LN.y[2] + LN.h;
+    for (let e = A.log_min; e <= A.log_max; e++) { K.s('line', { x1: ax(Math.pow(10, e)), x2: ax(Math.pow(10, e)), y1: yTop, y2: yBot, stroke: K.c('grid'), 'stroke-width': 1.5 }, axG); K.s('text', { x: ax(Math.pow(10, e)), y: yBot + 34, 'text-anchor': 'middle', class: 'kt-tick' }, axG, K.fmt(Math.pow(10, e))); }
+    const lAx = C8.lab(ctx, A.label, LN.x_axis1, yTop - 46, 'small right'); lAx.style.color = K.c('metric');
+    const fl = V.reference_sous_echantillon.mean.train.dist_energie_features, flx = ax(fl);
+    const floor = K.s('line', { x1: flx, x2: flx, y1: yTop, y2: yBot, stroke: K.c('muted'), 'stroke-width': 3, 'stroke-dasharray': '10 8' }, axG);
+    const lFl = C8.lab(ctx, 'noise floor (independent simulation)', flx + 16, LN.y[2] - 36, 'small');
+    const banner = C8.lab(ctx, 'on average: energy in = energy out', 120, 214, 'big'); banner.style.color = K.c('metric');
+    const labs = ['1 · crowd loss, during training', '2 · reweight the crowd, afterwards', '3 · rescale each snapshot'].map((s, i) => C8.lab(ctx, s, LN.x_label, LN.y[i], '', { w: 540 }));
+    const bar = (i, v, o = {}) => K.s('rect', { x: LN.x_axis0, y: LN.y[i] + (o.dy ?? 12), height: o.h ?? 34, width: 0, fill: o.fill ? K.c(o.fill) : 'none', stroke: K.c(o.stroke || 'fg-2'), 'stroke-width': 3, 'data-v': v }, svg);
+    const vtick = (i, v, col) => K.s('line', { x1: ax(v), x2: ax(v), y1: LN.y[i] + 4, y2: LN.y[i] + 90, stroke: K.c(col), 'stroke-width': 4 }, svg);
+    const f2 = (v) => v.toFixed(2);
+    // lane 1
+    const ctl = V.V5_temoin.mean.test.dist_energie_features, v5 = V.V5_potentiels_stat.mean.test.dist_energie_features, v4 = V.V4_potentiels.mean.test.dist_energie_features;
+    const bCtl = bar(0, ctl), bV5 = bar(0, v5, { fill: 'metric', stroke: 'metric', dy: 56 }), tV4 = vtick(0, v4, 'muted');
+    const lCtl = C8.lab(ctx, 'control run, same length', ax(ctl) - 12, LN.y[0] + 12, 'small right'), lV5 = C8.lab(ctx, 'V5 · crowd loss', ax(v5) + 16, LN.y[0] + 54, 'small');
+    const cap1 = C8.lab(ctx, `${f2(v5)} vs ${f2(ctl)} (control)`, LN.x_label, LN.y[0] + 44, 'small');
+    K.chip(ctx, { text: 'GENERATED', kind: 'generated', x: LN.x_axis0 + 8, y: LN.y[0] + 58, at: 'control+1.2', out: 'tilt' });
+    K.pen(ctx, { kind: 'underline', box: { x: ax(Math.min(ctl, v4)) - 30, y: LN.y[0] + 40, w: Math.abs(ax(v4) - ax(ctl)) + 60, h: 52 }, at: 'nogain+0.2', out: 'tilt', dur: 0.5, seed: 'ng85' });
+    const lNo = C8.lab(ctx, 'no gain without the loss', LN.x_label, LN.y[0] + 80, 'small'); lNo.style.color = K.c('chalk');
+    // lane 2: base, the poll, reweighted
+    const base = EL.mean.base.test.dist_energie_features, rew = EL.mean.inclinaison.test.dist_energie_features, resc = EL.mean.recalage.test.dist_energie_features;
+    const bB2 = bar(1, base), bRw = bar(1, rew, { fill: 'metric', stroke: 'metric', dy: 56 });
+    const lB2 = C8.lab(ctx, 'base', ax(base) + 16, LN.y[1] + 8, 'small'), lRw = C8.lab(ctx, 'reweighted', ax(rew) - 16, LN.y[1] + 54, 'small right');
+    const iMax = EL.eta.reduce((b, e, i) => (EV.config.eta_test.some((x) => Math.abs(x - e) < 1e-6) && e > EL.eta[b] ? i : b), 0);
+    const essTest = EL.eta.map((e, i) => [e, EL.ess_frac_b[i]]).filter(([e]) => EV.config.eta_test.some((x) => Math.abs(x - e) < 1e-6));
+    const essMean = EL.ess_frac_b.reduce((a, b) => a + b, 0) / EL.ess_frac_b.length, nb = Math.round(EV.config.n_gen / 2), essMin = EL.ess_frac_b[iMax] * nb;
+    const lEss = C8.lab(ctx, `mean ESS/N ${f2(essMean)} · one effective sample in ${nb} at the largest test η`, LN.x_label, LN.y[1] + 44, 'small', { w: 540 });
+    // dots of the poll: equal sizes, then seeded heavy-tailed weights rescaled so that 1/Σw² = the ESS at the largest test η
+    const dr = S.rng(P.dots.seed), raw = Array.from({ length: P.dots.n }, () => Math.pow(dr(), 14)), sw = raw.reduce((a, b) => a + b, 0);
+    let w = raw.map((x) => x / sw); let ess = 1 / w.reduce((a, b) => a + b * b, 0), pw = 1;
+    for (let it = 0; it < 30 && Math.abs(ess - essMin) > 0.05; it++) { pw *= ess > essMin ? 1.15 : 0.9; const r2 = raw.map((x) => Math.pow(x, pw)), s2 = r2.reduce((a, b) => a + b, 0); w = r2.map((x) => x / s2); ess = 1 / w.reduce((a, b) => a + b * b, 0); }
+    const dG = K.s('g', {}, svg), dots = w.map((wi, i) => ({ e: K.s('circle', { cx: LN.x_label + 6 + (i % 50) * 10.6, cy: LN.y[1] + 50 + Math.floor(i / 50) * 5, r: 2, fill: K.c('model') }, dG), wi }));
+    // lane 3: rescaled, the spike
+    const bB3 = bar(2, base), bRs = bar(2, resc, { fill: 'metric', stroke: 'metric', dy: 56 });
+    const lRs = C8.lab(ctx, `distribution distance on spectra: ${f2(base)} → ${K.fmt(resc, 2)}`, LN.x_label, LN.y[2] + 76, 'small', { w: 530 });
+    const sp = EL.mean.recalage.test.std_diss_rel, lSp = C8.lab(ctx, `spread of ε ×${K.fmt(sp, 2)}`, LN.x_label, LN.y[2] + 44, 'small');
+    const hist = K.s('g', {}, svg), hb = { x: LN.x_label + 300, y: LN.y[2] + 44, w: 220, h: 56 }, nbin = P.hist.bins, mu = Array.from({ length: nbin }, (_, i) => TX.mu[Math.floor((i + 0.5) / nbin * TX.mu.length)]), mm = Math.max(...mu);
+    const hbars = mu.map((v, i) => K.s('rect', { x: hb.x + i * hb.w / mu.length, width: hb.w / mu.length - 1, fill: K.c('metric'), 'data-v': v / mm }, hist));
+    const stamp = C8.lab(ctx, 'FOOLED', ax(resc) + 40, LN.y[2] - 6, 'lead'); stamp.style.color = K.c('chalk'); stamp.style.border = '3px solid var(--chalk)'; stamp.style.padding = '0 12px'; stamp.style.transform = 'rotate(-6deg)';
+    const lRev = C8.lab(ctx, 'only the spread of ε reveals it', LN.x_label, LN.y[2] + 80, 'small'); lRev.style.color = K.c('chalk');
+    const lKept = C8.lab(ctx, `crowd loss (V5): spread of ε ${f2(V.V5_potentiels_stat.mean.test.std_diss_rel)} of the truth · no spike`, LN.x_axis0, LN.y[0] + 100, 'small');
+    const verd = ['✓', '✗', '✗'].map((s, i) => C8.lab(ctx, s, 1764, LN.y[i] + 10, 'lead'));
+    verd.forEach((e) => { e.style.color = K.c('metric'); });
+    const lFar = C8.lab(ctx, 'still far above the floor', flx + 16, LN.y[1] - 38, 'small'); lFar.style.color = K.c('chalk');
+    K.chip(ctx, { text: 'one seed per variant · interpolation only', kind: 'plain', x: 96, y: 836, at: 'honest+0.3', caps: false });
+    K.chip(ctx, { text: 'SCHEMATIC · histogram shape (numbers measured)', kind: 'schematic', x: 96, y: 836, at: 'spike', out: 'honest', maxWidth: 900 });
+    K.badge(ctx, { kind: 'MEASURED', note: 'E2 · test values of η · one seed per variant', at: -0.3 });
+    // WORKAROUND (long script formulas): split at top-level \quad, \qquad, double spaces or a spaced ⇒, then regrouped
+    // into brace-balanced chunks of at most ~110 characters, shown in turn
+    const items = [], bal = (x) => (x.match(/\{/g) || []).length === (x.match(/\}/g) || []).length;
+    ((ctx.script.onscreen && ctx.script.onscreen.formulas) || []).forEach((f) => {
+      const parts = f.tex.split(/(\\qquad|\\quad|\\ \\ (?=\\Rightarrow)|,\\ \\ |;\\ \\ |\\ \\ (?!\\))/).filter((x) => x && !/^(\\qquad|\\quad|\\ \\ |,\\ \\ |;\\ \\ )$/.test(x));
+      const chunks = []; let cur = '';
+      for (const p of parts) { if (cur && bal(cur) && (cur + p).length > 80) { chunks.push(cur); cur = p; } else cur = cur ? cur + '\\ \\ ' + p : p; }
+      if (cur) chunks.push(cur);
+      chunks.forEach((x, i) => items.push({ tex: x.replace(':\\ \\text{means', ':\\quad\\text{means').replace('}\\ \\Rightarrow\\ ', '}\\quad\\Rightarrow\\ '), at: f.cue + (i ? '+' + (1.2 * i).toFixed(1) : '-0.15') }));
+    });
+    K.formulaLayer(ctx, { items, maxWidth: 900 });   // wider than the default zone (no lower-third in this scene)
+    ctx.c = { T, ax, axG, lAx, floor, lFl, banner, labs, bCtl, bV5, tV4, lCtl, lV5, cap1, lNo, bB2, bRw, lB2, lRw, lEss, dG, dots, bB3, bRs, lRs, lSp, hist, hbars, hb, stamp, lRev, lKept, verd, lFar, LN };
+  },
+  render(t, ctx) {
+    const S = Scene, c = ctx.c, T = c.T, LN = c.LN;
+    const grow = (r, a, d = 0.8, to) => { const v = to ?? +r.getAttribute('data-v'); const p = S.seg(t, a, a + d, S.ease.outCubic); r.setAttribute('width', Math.max(0, (c.ax(v) - LN.x_axis0) * p).toFixed(1)); r.setAttribute('opacity', p > 0 ? 1 : 0); };
+    C8.fade(c.banner, t, T.budget);
+    c.labs.forEach((e, i) => C8.fade(e, t, T.three + 0.3 * i)); C8.fadeS(c.axG, t, T.three + 0.4); C8.fade(c.lAx, t, T.three + 0.4); C8.fade(c.lFl, t, T.three + 0.8);
+    grow(c.bCtl, T.control); grow(c.bV5, T.control + 1.0); C8.fadeS(c.tV4, t, T.control + 1.8);
+    C8.fade(c.lCtl, t, T.control + 0.6); C8.fade(c.lV5, t, T.control + 1.6); C8.fade(c.cap1, t, T.control + 1.8, T.nogain); C8.fade(c.lNo, t, T.nogain + 0.5, T.tilt);
+    grow(c.bB2, T.tilt + 0.2); C8.fade(c.lB2, t, T.tilt + 0.6); C8.fadeS(c.dG, t, T.tilt + 0.6, T.poll + 1.8);
+    const pw = S.seg(t, T.poll, T.poll + 1.6, S.ease.inOutCubic);
+    c.dots.forEach((d) => d.e.setAttribute('r', (2 + (Math.sqrt(d.wi * 500) * 2.2 - 2) * pw).toFixed(2)));
+    grow(c.bRw, T.poll + 1.8); C8.fade(c.lRw, t, T.poll + 2.4); C8.fade(c.lEss, t, T.poll + 2.0);
+    grow(c.bB3, T.rescale + 0.2); const sq = S.seg(t, T.fooled, T.fooled + 0.8, S.ease.inOutCubic);
+    c.bRs.setAttribute('width', Math.max(0, sq > 0 ? (c.ax(+c.bB3.getAttribute('data-v')) + (c.ax(+c.bRs.getAttribute('data-v')) - c.ax(+c.bB3.getAttribute('data-v'))) * sq - LN.x_axis0) : 0).toFixed(1)); c.bRs.setAttribute('opacity', sq > 0 ? 1 : 0);
+    C8.fade(c.lRs, t, T.fooled + 0.8, T.kept); C8.fade(c.stamp, t, T.fooled + 1.4);
+    const sk = S.seg(t, T.spike, T.spike + 1.2, S.ease.inOutCubic), mid = Math.floor(c.hbars.length / 2);
+    c.hbars.forEach((r, i) => { const v0 = +r.getAttribute('data-v'), v = v0 * (1 - sk) + (i === mid ? 1.6 : 0) * sk, h = Math.min(c.hb.h, c.hb.h * v / 1.2); r.setAttribute('y', (c.hb.y + c.hb.h - h).toFixed(1)); r.setAttribute('height', h.toFixed(1)); });
+    C8.fadeS(c.hist, t, T.rescale + 0.4); C8.fade(c.lSp, t, T.spike + 1.0);
+    C8.fade(c.lRev, t, T.kept + 0.3); C8.fade(c.lKept, t, T.kept + 1.6, T.honest);
+    [T.nogain + 0.8, T.poll + 3.0, T.kept + 0.8].forEach((a, i) => C8.fade(c.verd[i], t, a));
+    C8.fade(c.lFar, t, T.honest + 0.6);
+  },
+});
+</script></body></html>

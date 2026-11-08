@@ -1,0 +1,103 @@
+<!doctype html>
+<html lang="en"><head><meta charset="utf-8">
+<title>08.7 The proposed machine</title>
+<link rel="stylesheet" href="../../vendor/katex/katex.min.css">
+<link rel="stylesheet" href="../../runtime/theme.css">
+<link rel="stylesheet" href="ch08.css">
+<script src="../../vendor/katex/katex.min.js"></script>
+<script src="../../runtime/scene.js"></script>
+<script src="../../runtime/components/kit.js"></script>
+<script src="../../runtime/components/hud.js"></script>
+<script src="../../runtime/components/field.js"></script>
+<script src="../../runtime/components/motifs.js"></script>
+<script src="ch08_kit.js"></script>
+</head><body><div id="stage"></div>
+<script>
+/* 08.7 The proposed machine (L4, NIGHT, PLANNED: proposed framework, not built as a whole). Panels a, b, d of the
+   report's Figure 2 redrawn in NIGHT tokens from data/fig_cadre.json (SCHEMATIC: no number on screen): a wind to a
+   symmetric crowd of codes, a decoder into hill maps, the budget on the crowd. Then the pieces actually tested, the
+   checkpoint L3 → L4 and the open question of ch09: how well does it answer how often? */
+Scene.define({
+  duration: 35,
+  register: 'night',
+  cues: { machine: 0.6, flowpanel: 3.8, decoder: 7.6, control: 11.4, pieces: 14.4, next: 24.0 },
+  data: { cadre: 'data/fig_cadre.json' },
+  params: { panels: { y0: 210, y1: 600, x: [120, 700, 1280], w: 520 }, rail: { from: 'L3', to: 'L4', at: 'next-0.3', hold: 3 } },
+  setup(ctx) {
+    const K = Kit, S = Scene, P = ctx.params, st = ctx.stage, CD = ctx.data.cadre.data;
+    const T = {}; for (const k of ['machine', 'flowpanel', 'decoder', 'control', 'pieces', 'next']) T[k] = ctx.at(k + '-0.15');
+    const val = (v) => (typeof v === 'string' ? JSON.parse(v.replace(/'/g, '"')) : v);
+    const FL = val(CD.flow), PO = val(CD.pot), LW = val(CD.law), PN = P.panels, H = PN.y1 - PN.y0, W = PN.w;
+    const grp = K.el('div', {}, st); grp.style.cssText = 'position:absolute;left:0;top:0;width:1920px;height:1080px;transform-origin:960px 0';
+    const svg = K.svgLayer(ctx, 12, grp);
+    const frames = PN.x.map((x) => K.s('rect', { x, y: PN.y0, width: W, height: H, rx: 12, fill: 'none', stroke: K.c('fg-2'), 'stroke-width': 2 }, svg));
+    // panel a: trajectories (t across, code z up), noise profile left, two mirror bumps right, mirror line
+    const pa = K.s('g', {}, svg), ax0 = PN.x[0] + 70, ax1 = PN.x[0] + W - 70, zr = 3.2, zy = (z) => PN.y0 + H / 2 - z / zr * (H / 2 - 24);
+    const tx = (i) => ax0 + (ax1 - ax0) * i / (FL.t.length - 1);
+    FL.traj.forEach((tr) => K.s('polyline', { points: tr.map((z, i) => `${tx(i).toFixed(1)},${zy(z).toFixed(1)}`).join(' '), fill: 'none', stroke: K.c('model'), 'stroke-width': 2, opacity: 0.8 }, pa));
+    const m0 = Math.max(...FL.p0), m1 = Math.max(...FL.p1);
+    K.s('polyline', { points: FL.z.map((z, i) => `${(ax0 - 60 * FL.p0[i] / m0).toFixed(1)},${zy(z).toFixed(1)}`).join(' '), fill: 'none', stroke: K.c('fg-2'), 'stroke-width': 3 }, pa);
+    K.s('polyline', { points: FL.z.map((z, i) => `${(ax1 + 60 * FL.p1[i] / m1).toFixed(1)},${zy(z).toFixed(1)}`).join(' '), fill: 'none', stroke: K.c('model'), 'stroke-width': 3 }, pa);
+    K.s('line', { x1: ax1 - 20, x2: ax1 + 70, y1: zy(0), y2: zy(0), stroke: K.c('chalk'), 'stroke-width': 2, 'stroke-dasharray': '3 6' }, pa);
+    const kn = K.s('g', { transform: `translate(${PN.x[0] + 40} ${PN.y0 + 40})` }, pa);
+    K.s('circle', { r: 20, fill: K.c('panel'), stroke: K.c('matter'), 'stroke-width': 3 }, kn); K.s('line', { x1: 0, y1: 0, x2: 12, y2: -14, stroke: K.c('param'), 'stroke-width': 4 }, kn);
+    // panel b: decoder box and the two hill maps (ψ in the flow family, a in the field family)
+    const pb = K.s('g', {}, svg), bx = PN.x[1];
+    K.s('rect', { x: bx + 24, y: PN.y0 + H / 2 - 50, width: 90, height: 100, rx: 8, fill: K.c('panel'), stroke: K.c('fg-2'), 'stroke-width': 3 }, pb);
+    [0, 1, 2].forEach((i) => K.s('circle', { cx: bx + 50 + i * 20, cy: PN.y0 + H / 2, r: 6, fill: K.c('model') }, pb));
+    const LB = K.canvasLayer(ctx, 11, { x: bx, y: PN.y0, w: W, h: H }, grp), n = PO.n, flat = (A) => Float32Array.from(A.flat());
+    K.drawGrid(LB.g, flat(PO.psi).map((v) => v - 0.5), n, n, { x: 140, y: 40, w: 170, h: 170, kind: 'u' });
+    K.drawGrid(LB.g, flat(PO.a).map((v) => v - 0.5), n, n, { x: 330, y: 180, w: 170, h: 170, kind: 'b' });
+    // panel d: raw (shifted, grey outline) and corrected (amber) dissipation histograms, a crossed-out spike
+    const pd = K.s('g', {}, svg), dx0 = PN.x[2] + 40, dx1 = PN.x[2] + W - 40, e = LW.edges, ex = (v) => dx0 + (v - e[0]) / (e[e.length - 1] - e[0]) * (dx1 - dx0), mh = Math.max(...LW.raw, ...LW.tilt), hy = (v) => PN.y1 - 40 - (H - 100) * v / mh;
+    let dr = '', dt = ''; LW.raw.forEach((v, i) => { dr += `${i ? 'L' : 'M'}${ex(e[i]).toFixed(1)},${hy(v).toFixed(1)}L${ex(e[i + 1]).toFixed(1)},${hy(v).toFixed(1)}`; });
+    LW.tilt.forEach((v, i) => K.s('rect', { x: ex(e[i]) + 1, y: hy(v), width: ex(e[i + 1]) - ex(e[i]) - 2, height: PN.y1 - 40 - hy(v), fill: K.c('metric'), opacity: 0.85 }, pd)); void dt;
+    K.s('path', { d: dr, fill: 'none', stroke: K.c('fg-2'), 'stroke-width': 3 }, pd);
+    const spx = ex(LW.EP); K.s('line', { x1: spx, x2: spx, y1: PN.y1 - 40, y2: PN.y0 + 40, stroke: K.c('metric'), 'stroke-width': 5 }, pd);
+    K.s('path', { d: `M${spx - 30},${PN.y0 + 50} L${spx + 30},${PN.y0 + 110} M${spx + 30},${PN.y0 + 50} L${spx - 30},${PN.y0 + 110}`, stroke: K.c('chalk'), 'stroke-width': 4 }, pd);
+    const labs = ['a · a wind to a symmetric crowd of codes, mirror built in', 'b · a decoder that turns codes into hill maps: divergence-free', 'd · the energy budget, on the crowd, never on each field']
+      .map((s, i) => C8.lab(ctx, s, PN.x[i], PN.y1 + 10, 'small', { w: W, parent: grp }));
+    const honest = C8.lab(ctx, 'E2: correcting during training worked · reweighting afterwards did not', 120, 740, 'small', { w: 900 }); honest.style.color = K.c('fg-2');
+    const title = C8.lab(ctx, 'The proposed machine', 120, 80, 'head');
+    // pieces: tags over the dimmed panels, the fourth tag
+    const tags = ['mirror built in · tested on three dials (E1)', 'hill maps · tested on the flat sheet (E2, Fourier modes, no learned decoder)', 'crowd loss · tested in E1 and E2']
+      .map((s, i) => { const l = C8.lab(ctx, s, PN.x[i] + 30, PN.y0 + 30, 'small halo', { w: W - 60, parent: grp }); l.style.color = K.c('chalk'); return l; });
+    PN.x.forEach((x, i) => K.pen(ctx, { kind: 'box', box: { x: x + 4, y: PN.y0 + 4, w: W - 8, h: H - 8 }, pad: 4, at: 'pieces+' + (0.3 + 0.4 * i).toFixed(1), out: 'next', dur: 0.5, seed: 'pc' + i }));
+    const tag4 = C8.lab(ctx, 'Rice from snapshots · tested on three dials (E1) · next chapter', 120, 740, 'small');
+    K.chip(ctx, { text: 'small perceptrons · CPU only · one or two seeds', kind: 'plain', x: 96, y: 800, at: 'pieces+1.2', out: 'next', caps: false });
+    // next: rail, panels to a strip, the toll counter and the question
+    K.rail(ctx, { from: P.rail.from, to: P.rail.to, at: P.rail.at, hold: P.rail.hold });
+    const lLvl = C8.lab(ctx, 'Level 3 → Level 4', 120, 80, 'mono');
+    const toll = K.s('g', {}, K.svgLayer(ctx, 14));
+    K.s('rect', { x: 560, y: 470, width: 800, height: 120, fill: K.c('matter-dark') }, toll);
+    K.s('line', { x1: 960, x2: 960, y1: 456, y2: 604, stroke: K.c('chalk'), 'stroke-width': 4 }, toll);
+    [[640, 500], [800, 560], [1120, 500], [1250, 560]].forEach(([x, y]) => K.s('rect', { x: x - 30, y: y - 14, width: 60, height: 28, rx: 7, fill: 'none', stroke: K.c('model'), 'stroke-width': 3, 'stroke-dasharray': '7 5' }, toll));
+    K.s('rect', { x: 1400, y: 470, width: 160, height: 90, rx: 10, fill: K.c('panel'), stroke: K.c('fg-2'), 'stroke-width': 2 }, toll);
+    K.s('text', { x: 1480, y: 532, 'text-anchor': 'middle', style: 'font: 700 48px Inter Display', fill: K.c('chalk') }, toll, '?');
+    const q = C8.lab(ctx, 'so how well does it answer {metric}how often{/}?', 960, 660, 'lead center', { html: true });
+    K.chip(ctx, { text: 'PROPOSED · not implemented as a whole · E1-E3 tested pieces only', kind: 'schematic', x: 1060, y: 112, anchor: 'tl', at: 'machine', out: 'pieces', maxWidth: 760 });
+    K.chip(ctx, { text: 'SCHEMATIC · report Figure 2, panels a, b, d', kind: 'schematic', x: 96, y: 846, at: 'flowpanel', out: 'next' });
+    K.badge(ctx, { kind: 'PLANNED', note: 'proposed framework · not built as a whole', at: -0.3 });
+    K.formulaLayer(ctx);
+    ctx.c = { T, grp, svg, frames, pa, pb, pd, LB, labs, honest, title, tags, tag4, lLvl, toll, q, PN };
+  },
+  render(t, ctx) {
+    const S = Scene, c = ctx.c, T = c.T, PN = c.PN;
+    C8.fade(c.title, t, T.machine, T.next);
+    c.frames.forEach((f) => C8.fadeS(f, t, T.machine + 0.2));
+    const wipe = (a) => S.seg(t, a, a + 0.8, S.ease.inOutSine);
+    const pieces = [T.flowpanel, T.decoder, T.control];
+    [c.pa, c.pb, c.pd].forEach((g, i) => { const w = wipe(pieces[i]); g.style.clipPath = `inset(0 ${(100 - 100 * w).toFixed(1)}% 0 0)`; g.setAttribute('opacity', w > 0 ? 1 : 0); });
+    const wb = wipe(T.decoder); c.LB.canvas.style.clipPath = `inset(0 ${(100 - 100 * wb).toFixed(1)}% 0 0)`; c.LB.canvas.style.display = wb > 0 ? '' : 'none';
+    c.labs.forEach((e, i) => C8.fade(e, t, pieces[i] + 0.6)); C8.fade(c.honest, t, T.control + 1.2, T.pieces + 1.6);
+    const dim = 1 - 0.6 * S.seg(t, T.pieces, T.pieces + 0.4, S.ease.linear);
+    [c.pa, c.pb, c.pd].forEach((g, i) => { if (wipe(pieces[i]) > 0) g.setAttribute('opacity', dim.toFixed(3)); }); c.LB.canvas.style.opacity = dim.toFixed(3);
+    c.tags.forEach((e, i) => C8.fade(e, t, T.pieces + 0.5 + 0.4 * i, T.next)); C8.fade(c.tag4, t, T.pieces + 2.0, T.next);
+    const sh = S.seg(t, T.next, T.next + 1.2, S.ease.inOutCubic);
+    c.grp.style.transform = `translateY(${(-60 * sh).toFixed(1)}px) scale(${(1 - 0.55 * sh).toFixed(3)})`;
+    if (t > T.next) c.labs.forEach((e) => { e.style.opacity = (1 - Math.min(1, sh * 6)).toFixed(3); });
+    C8.fade(c.lLvl, t, T.next, T.next + 3.2);
+    C8.fadeS(c.toll, t, T.next + 0.8); C8.fade(c.q, t, T.next + 1.2);
+  },
+});
+</script></body></html>
