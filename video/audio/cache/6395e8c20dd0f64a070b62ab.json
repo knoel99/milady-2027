@@ -1,0 +1,27 @@
+{
+ "text": "[calm, natural narrator voice] One lesson remains. Enforce each law where it is true. Exactly, where it is exact. On average, where it only holds on average.",
+ "voice": "536d3a5e000945adb7038665781a4aca",
+ "words": 23,
+ "scene": "11.2",
+ "para": 3,
+ "duration": 11.2065,
+ "latency_s": 2.3,
+ "created": "2026-11-08T08:14:21",
+ "provider": "fish",
+ "request": {
+  "temperature": 0.1,
+  "format": "mp3",
+  "mp3_bitrate": 192,
+  "sample_rate": 44100,
+  "latency": "normal",
+  "language": "en",
+  "normalize": true,
+  "condition_on_previous_chunks": true,
+  "prosody": {
+   "speed": 1.0,
+   "normalize_loudness": true
+  },
+  "text": "[calm, natural narrator voice] One lesson remains. Enforce each law where it is true. Exactly, where it is exact. On average, where it only holds on average.",
+  "reference_id": "536d3a5e000945adb7038665781a4aca"
+ }
+}

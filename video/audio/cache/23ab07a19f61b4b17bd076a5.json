@@ -1,0 +1,27 @@
+{
+ "text": "[calm, natural narrator voice] Impose the budget on the crowd, during training. Draw a batch of snapshots at any Gamma, even without data. Average their energy change and square it: this penalty, the crowd loss, vanishes only when the crowd balances.",
+ "voice": "536d3a5e000945adb7038665781a4aca",
+ "words": 37,
+ "scene": "07.6",
+ "para": 0,
+ "duration": 16.0392,
+ "latency_s": 2.7,
+ "created": "2026-11-08T08:09:50",
+ "provider": "fish",
+ "request": {
+  "temperature": 0.1,
+  "format": "mp3",
+  "mp3_bitrate": 192,
+  "sample_rate": 44100,
+  "latency": "normal",
+  "language": "en",
+  "normalize": true,
+  "condition_on_previous_chunks": true,
+  "prosody": {
+   "speed": 1.0,
+   "normalize_loudness": true
+  },
+  "text": "[calm, natural narrator voice] Impose the budget on the crowd, during training. Draw a batch of snapshots at any Gamma, even without data. Average their energy change and square it: this penalty, the crowd loss, vanishes only when the crowd balances.",
+  "reference_id": "536d3a5e000945adb7038665781a4aca"
+ }
+}

@@ -1,0 +1,223 @@
+{
+"key": "272bb6ccc885b6eb52df56cf",
+"model": "small.en",
+"text": "A continuous potential on that mesh gives a divergence-free curl, wave by wave. But the solver's data are only nearly divergence-free. The generator will be cleaner than its data. Measure with the solver's yardstick.",
+"words": [
+{
+"w": "A",
+"start": 0.0,
+"end": 0.22,
+"p": 0.962
+},
+{
+"w": "continuous",
+"start": 0.22,
+"end": 0.66,
+"p": 0.997
+},
+{
+"w": "potential",
+"start": 0.66,
+"end": 1.18,
+"p": 0.999
+},
+{
+"w": "on",
+"start": 1.18,
+"end": 1.5,
+"p": 0.997
+},
+{
+"w": "that",
+"start": 1.5,
+"end": 1.66,
+"p": 0.996
+},
+{
+"w": "mesh",
+"start": 1.66,
+"end": 2.04,
+"p": 0.996
+},
+{
+"w": "gives",
+"start": 2.04,
+"end": 2.32,
+"p": 0.991
+},
+{
+"w": "a",
+"start": 2.32,
+"end": 2.54,
+"p": 0.992
+},
+{
+"w": "divergence",
+"start": 2.54,
+"end": 3.0,
+"p": 0.967
+},
+{
+"w": "-free",
+"start": 3.0,
+"end": 3.42,
+"p": 0.897
+},
+{
+"w": "curl,",
+"start": 3.42,
+"end": 3.94,
+"p": 0.987
+},
+{
+"w": "wave",
+"start": 4.44,
+"end": 4.56,
+"p": 0.999
+},
+{
+"w": "by",
+"start": 4.56,
+"end": 4.86,
+"p": 0.88
+},
+{
+"w": "wave.",
+"start": 4.86,
+"end": 5.4,
+"p": 0.999
+},
+{
+"w": "But",
+"start": 6.12,
+"end": 6.38,
+"p": 0.996
+},
+{
+"w": "the",
+"start": 6.38,
+"end": 6.56,
+"p": 0.978
+},
+{
+"w": "solver's",
+"start": 6.56,
+"end": 6.98,
+"p": 0.981
+},
+{
+"w": "data",
+"start": 6.98,
+"end": 7.2,
+"p": 1.0
+},
+{
+"w": "are",
+"start": 7.2,
+"end": 7.52,
+"p": 0.997
+},
+{
+"w": "only",
+"start": 7.52,
+"end": 7.84,
+"p": 0.973
+},
+{
+"w": "nearly",
+"start": 7.84,
+"end": 8.22,
+"p": 0.998
+},
+{
+"w": "divergence",
+"start": 8.22,
+"end": 8.84,
+"p": 0.992
+},
+{
+"w": "-free.",
+"start": 8.84,
+"end": 9.22,
+"p": 0.909
+},
+{
+"w": "The",
+"start": 9.8,
+"end": 9.94,
+"p": 0.996
+},
+{
+"w": "generator",
+"start": 9.94,
+"end": 10.36,
+"p": 0.996
+},
+{
+"w": "will",
+"start": 10.36,
+"end": 10.64,
+"p": 0.999
+},
+{
+"w": "be",
+"start": 10.64,
+"end": 10.8,
+"p": 1.0
+},
+{
+"w": "cleaner",
+"start": 10.8,
+"end": 11.16,
+"p": 0.997
+},
+{
+"w": "than",
+"start": 11.16,
+"end": 11.4,
+"p": 0.998
+},
+{
+"w": "its",
+"start": 11.4,
+"end": 11.6,
+"p": 0.99
+},
+{
+"w": "data.",
+"start": 11.6,
+"end": 11.96,
+"p": 0.998
+},
+{
+"w": "Measure",
+"start": 12.7,
+"end": 12.86,
+"p": 0.964
+},
+{
+"w": "with",
+"start": 12.86,
+"end": 13.12,
+"p": 0.999
+},
+{
+"w": "the",
+"start": 13.12,
+"end": 13.34,
+"p": 0.996
+},
+{
+"w": "solver's",
+"start": 13.34,
+"end": 13.8,
+"p": 0.999
+},
+{
+"w": "yardstick.",
+"start": 13.8,
+"end": 14.36,
+"p": 0.886
+}
+]
+}

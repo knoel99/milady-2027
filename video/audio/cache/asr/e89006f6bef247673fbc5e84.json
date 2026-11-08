@@ -1,0 +1,253 @@
+{
+"key": "e89006f6bef247673fbc5e84",
+"model": "small.en",
+"text": "Real metals let the threads smudge, like spreading ink. The smudging speed is set by the metal's magnetic diffusivity. Same flow, two metals. A good conductor smudges slowly. The threads stay sharp. A poor one smudges fast. The threads blur away.",
+"words": [
+{
+"w": "Real",
+"start": 0.0,
+"end": 0.42,
+"p": 0.893
+},
+{
+"w": "metals",
+"start": 0.42,
+"end": 0.78,
+"p": 0.997
+},
+{
+"w": "let",
+"start": 0.78,
+"end": 1.04,
+"p": 0.986
+},
+{
+"w": "the",
+"start": 1.04,
+"end": 1.26,
+"p": 0.999
+},
+{
+"w": "threads",
+"start": 1.26,
+"end": 1.56,
+"p": 0.699
+},
+{
+"w": "smudge,",
+"start": 1.56,
+"end": 2.2,
+"p": 0.997
+},
+{
+"w": "like",
+"start": 2.42,
+"end": 2.5,
+"p": 0.998
+},
+{
+"w": "spreading",
+"start": 2.5,
+"end": 2.96,
+"p": 0.998
+},
+{
+"w": "ink.",
+"start": 2.96,
+"end": 3.34,
+"p": 0.999
+},
+{
+"w": "The",
+"start": 3.98,
+"end": 4.06,
+"p": 0.996
+},
+{
+"w": "smudging",
+"start": 4.06,
+"end": 4.46,
+"p": 0.997
+},
+{
+"w": "speed",
+"start": 4.46,
+"end": 4.84,
+"p": 0.999
+},
+{
+"w": "is",
+"start": 4.84,
+"end": 5.02,
+"p": 0.999
+},
+{
+"w": "set",
+"start": 5.02,
+"end": 5.26,
+"p": 0.999
+},
+{
+"w": "by",
+"start": 5.26,
+"end": 5.44,
+"p": 0.999
+},
+{
+"w": "the",
+"start": 5.44,
+"end": 5.56,
+"p": 0.995
+},
+{
+"w": "metal's",
+"start": 5.56,
+"end": 5.92,
+"p": 0.694
+},
+{
+"w": "magnetic",
+"start": 5.92,
+"end": 6.36,
+"p": 0.999
+},
+{
+"w": "diffusivity.",
+"start": 6.36,
+"end": 7.22,
+"p": 0.999
+},
+{
+"w": "Same",
+"start": 8.1,
+"end": 8.24,
+"p": 0.991
+},
+{
+"w": "flow,",
+"start": 8.24,
+"end": 8.64,
+"p": 0.997
+},
+{
+"w": "two",
+"start": 9.08,
+"end": 9.24,
+"p": 0.891
+},
+{
+"w": "metals.",
+"start": 9.24,
+"end": 9.6,
+"p": 0.998
+},
+{
+"w": "A",
+"start": 10.3,
+"end": 10.48,
+"p": 0.997
+},
+{
+"w": "good",
+"start": 10.48,
+"end": 10.68,
+"p": 0.999
+},
+{
+"w": "conductor",
+"start": 10.68,
+"end": 11.18,
+"p": 0.995
+},
+{
+"w": "smudges",
+"start": 11.18,
+"end": 11.72,
+"p": 0.995
+},
+{
+"w": "slowly.",
+"start": 11.72,
+"end": 12.14,
+"p": 0.999
+},
+{
+"w": "The",
+"start": 12.7,
+"end": 12.84,
+"p": 0.996
+},
+{
+"w": "threads",
+"start": 12.84,
+"end": 13.18,
+"p": 0.969
+},
+{
+"w": "stay",
+"start": 13.18,
+"end": 13.52,
+"p": 0.997
+},
+{
+"w": "sharp.",
+"start": 13.52,
+"end": 13.92,
+"p": 0.999
+},
+{
+"w": "A",
+"start": 14.46,
+"end": 14.7,
+"p": 0.998
+},
+{
+"w": "poor",
+"start": 14.7,
+"end": 14.98,
+"p": 0.991
+},
+{
+"w": "one",
+"start": 14.98,
+"end": 15.26,
+"p": 0.998
+},
+{
+"w": "smudges",
+"start": 15.26,
+"end": 15.78,
+"p": 0.996
+},
+{
+"w": "fast.",
+"start": 15.78,
+"end": 16.2,
+"p": 0.999
+},
+{
+"w": "The",
+"start": 16.8,
+"end": 16.92,
+"p": 0.994
+},
+{
+"w": "threads",
+"start": 16.92,
+"end": 17.34,
+"p": 0.997
+},
+{
+"w": "blur",
+"start": 17.34,
+"end": 17.72,
+"p": 0.996
+},
+{
+"w": "away.",
+"start": 17.72,
+"end": 18.14,
+"p": 0.999
+}
+]
+}

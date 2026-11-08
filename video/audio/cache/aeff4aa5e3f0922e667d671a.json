@@ -1,0 +1,27 @@
+{
+ "text": "[calm, natural narrator voice] First fix: draw a hill map, not arrows, and let the flow run along its contour lines. Where the lines crowd, it runs faster, so nothing piles up or leaks, whatever the landscape. The box agrees: lines in, lines out.",
+ "voice": "536d3a5e000945adb7038665781a4aca",
+ "words": 40,
+ "scene": "08.3",
+ "para": 0,
+ "duration": 18.9649,
+ "latency_s": 3.6,
+ "created": "2026-11-08T08:10:03",
+ "provider": "fish",
+ "request": {
+  "temperature": 0.1,
+  "format": "mp3",
+  "mp3_bitrate": 192,
+  "sample_rate": 44100,
+  "latency": "normal",
+  "language": "en",
+  "normalize": true,
+  "condition_on_previous_chunks": true,
+  "prosody": {
+   "speed": 1.0,
+   "normalize_loudness": true
+  },
+  "text": "[calm, natural narrator voice] First fix: draw a hill map, not arrows, and let the flow run along its contour lines. Where the lines crowd, it runs faster, so nothing piles up or leaks, whatever the landscape. The box agrees: lines in, lines out.",
+  "reference_id": "536d3a5e000945adb7038665781a4aca"
+ }
+}

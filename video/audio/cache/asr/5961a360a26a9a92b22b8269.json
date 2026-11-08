@@ -1,0 +1,235 @@
+{
+"key": "5961a360a26a9a92b22b8269",
+"model": "small.en",
+"text": "Now turn gamma up. Just above 0.86, the whirlpool's touch. A narrow corridor opens. The state lingers on one side, then slips through. The dipole flips. Nothing here is random. So, will the flips come like clockwork?",
+"words": [
+{
+"w": "Now",
+"start": 0.0,
+"end": 0.3,
+"p": 0.953
+},
+{
+"w": "turn",
+"start": 0.3,
+"end": 0.58,
+"p": 0.958
+},
+{
+"w": "gamma",
+"start": 0.58,
+"end": 0.9,
+"p": 0.567
+},
+{
+"w": "up.",
+"start": 0.9,
+"end": 1.28,
+"p": 0.997
+},
+{
+"w": "Just",
+"start": 2.0,
+"end": 2.14,
+"p": 0.994
+},
+{
+"w": "above",
+"start": 2.14,
+"end": 2.4,
+"p": 0.998
+},
+{
+"w": "0",
+"start": 2.4,
+"end": 2.84,
+"p": 0.954
+},
+{
+"w": ".86,",
+"start": 2.84,
+"end": 3.7,
+"p": 0.995
+},
+{
+"w": "the",
+"start": 4.4,
+"end": 4.5,
+"p": 0.974
+},
+{
+"w": "whirlpool's",
+"start": 4.5,
+"end": 5.26,
+"p": 0.793
+},
+{
+"w": "touch.",
+"start": 5.26,
+"end": 5.54,
+"p": 0.996
+},
+{
+"w": "A",
+"start": 6.26,
+"end": 6.42,
+"p": 0.997
+},
+{
+"w": "narrow",
+"start": 6.42,
+"end": 6.76,
+"p": 0.998
+},
+{
+"w": "corridor",
+"start": 6.76,
+"end": 7.28,
+"p": 1.0
+},
+{
+"w": "opens.",
+"start": 7.28,
+"end": 7.74,
+"p": 0.998
+},
+{
+"w": "The",
+"start": 8.6,
+"end": 8.7,
+"p": 0.994
+},
+{
+"w": "state",
+"start": 8.7,
+"end": 9.0,
+"p": 0.996
+},
+{
+"w": "lingers",
+"start": 9.0,
+"end": 9.48,
+"p": 0.998
+},
+{
+"w": "on",
+"start": 9.48,
+"end": 9.66,
+"p": 0.998
+},
+{
+"w": "one",
+"start": 9.66,
+"end": 9.88,
+"p": 0.998
+},
+{
+"w": "side,",
+"start": 9.88,
+"end": 10.34,
+"p": 0.999
+},
+{
+"w": "then",
+"start": 10.76,
+"end": 10.96,
+"p": 0.997
+},
+{
+"w": "slips",
+"start": 10.96,
+"end": 11.36,
+"p": 0.997
+},
+{
+"w": "through.",
+"start": 11.36,
+"end": 11.82,
+"p": 0.993
+},
+{
+"w": "The",
+"start": 12.54,
+"end": 12.74,
+"p": 0.997
+},
+{
+"w": "dipole",
+"start": 12.74,
+"end": 13.22,
+"p": 0.991
+},
+{
+"w": "flips.",
+"start": 13.22,
+"end": 13.68,
+"p": 0.996
+},
+{
+"w": "Nothing",
+"start": 14.56,
+"end": 14.76,
+"p": 0.996
+},
+{
+"w": "here",
+"start": 14.76,
+"end": 15.08,
+"p": 0.997
+},
+{
+"w": "is",
+"start": 15.08,
+"end": 15.24,
+"p": 0.999
+},
+{
+"w": "random.",
+"start": 15.24,
+"end": 15.68,
+"p": 0.999
+},
+{
+"w": "So,",
+"start": 16.38,
+"end": 16.7,
+"p": 0.996
+},
+{
+"w": "will",
+"start": 17.0,
+"end": 17.22,
+"p": 0.997
+},
+{
+"w": "the",
+"start": 17.22,
+"end": 17.36,
+"p": 0.996
+},
+{
+"w": "flips",
+"start": 17.36,
+"end": 17.66,
+"p": 0.996
+},
+{
+"w": "come",
+"start": 17.66,
+"end": 18.0,
+"p": 0.998
+},
+{
+"w": "like",
+"start": 18.0,
+"end": 18.22,
+"p": 0.998
+},
+{
+"w": "clockwork?",
+"start": 18.22,
+"end": 18.84,
+"p": 0.993
+}
+]
+}

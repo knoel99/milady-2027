@@ -1,0 +1,27 @@
+{
+ "text": "[calm, natural narrator voice] Average every distance across the two crowds, and double it. Subtract the average distance within each crowd. Zero means the same law.",
+ "voice": "536d3a5e000945adb7038665781a4aca",
+ "words": 22,
+ "scene": "X3.0",
+ "para": 1,
+ "duration": 10.0833,
+ "latency_s": 2.1,
+ "created": "2026-11-08T08:10:47",
+ "provider": "fish",
+ "request": {
+  "temperature": 0.1,
+  "format": "mp3",
+  "mp3_bitrate": 192,
+  "sample_rate": 44100,
+  "latency": "normal",
+  "language": "en",
+  "normalize": true,
+  "condition_on_previous_chunks": true,
+  "prosody": {
+   "speed": 1.0,
+   "normalize_loudness": true
+  },
+  "text": "[calm, natural narrator voice] Average every distance across the two crowds, and double it. Subtract the average distance within each crowd. Zero means the same law.",
+  "reference_id": "536d3a5e000945adb7038665781a4aca"
+ }
+}

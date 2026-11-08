@@ -1,0 +1,27 @@
+{
+ "text": "[calm, natural narrator voice] Inside V-K-S: a cylinder holding a hundred and fifty litres of liquid sodium. At its ends, two bladed discs, the impellers, spin in opposite directions.",
+ "voice": "536d3a5e000945adb7038665781a4aca",
+ "words": 25,
+ "scene": "02.5",
+ "para": 0,
+ "duration": 11.9902,
+ "latency_s": 2.4,
+ "created": "2026-11-08T08:31:23",
+ "provider": "fish",
+ "request": {
+  "temperature": 0.1,
+  "format": "mp3",
+  "mp3_bitrate": 192,
+  "sample_rate": 44100,
+  "latency": "normal",
+  "language": "en",
+  "normalize": true,
+  "condition_on_previous_chunks": true,
+  "prosody": {
+   "speed": 1.0,
+   "normalize_loudness": true
+  },
+  "text": "[calm, natural narrator voice] Inside V-K-S: a cylinder holding a hundred and fifty litres of liquid sodium. At its ends, two bladed discs, the impellers, spin in opposite directions.",
+  "reference_id": "536d3a5e000945adb7038665781a4aca"
+ }
+}

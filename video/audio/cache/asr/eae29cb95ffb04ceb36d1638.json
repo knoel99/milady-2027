@@ -1,0 +1,151 @@
+{
+"key": "eae29cb95ffb04ceb36d1638",
+"model": "small.en",
+"text": "How much is left of a re-weighted crowd? Its effective sample size says, equal weights, the whole crowd. One giant weight, one person.",
+"words": [
+{
+"w": "How",
+"start": 0.0,
+"end": 0.24,
+"p": 0.806
+},
+{
+"w": "much",
+"start": 0.24,
+"end": 0.42,
+"p": 0.997
+},
+{
+"w": "is",
+"start": 0.42,
+"end": 0.58,
+"p": 0.999
+},
+{
+"w": "left",
+"start": 0.58,
+"end": 0.9,
+"p": 0.999
+},
+{
+"w": "of",
+"start": 0.9,
+"end": 1.12,
+"p": 0.998
+},
+{
+"w": "a",
+"start": 1.12,
+"end": 1.24,
+"p": 0.995
+},
+{
+"w": "re",
+"start": 1.24,
+"end": 1.44,
+"p": 0.991
+},
+{
+"w": "-weighted",
+"start": 1.44,
+"end": 1.8,
+"p": 0.861
+},
+{
+"w": "crowd?",
+"start": 1.8,
+"end": 2.2,
+"p": 0.997
+},
+{
+"w": "Its",
+"start": 2.86,
+"end": 2.96,
+"p": 0.916
+},
+{
+"w": "effective",
+"start": 2.96,
+"end": 3.34,
+"p": 0.984
+},
+{
+"w": "sample",
+"start": 3.34,
+"end": 3.8,
+"p": 0.998
+},
+{
+"w": "size",
+"start": 3.8,
+"end": 4.18,
+"p": 0.996
+},
+{
+"w": "says,",
+"start": 4.18,
+"end": 4.56,
+"p": 0.998
+},
+{
+"w": "equal",
+"start": 5.24,
+"end": 5.68,
+"p": 0.169
+},
+{
+"w": "weights,",
+"start": 5.68,
+"end": 6.1,
+"p": 0.993
+},
+{
+"w": "the",
+"start": 6.52,
+"end": 6.56,
+"p": 0.994
+},
+{
+"w": "whole",
+"start": 6.56,
+"end": 6.84,
+"p": 0.998
+},
+{
+"w": "crowd.",
+"start": 6.84,
+"end": 7.28,
+"p": 0.997
+},
+{
+"w": "One",
+"start": 8.12,
+"end": 8.4,
+"p": 0.968
+},
+{
+"w": "giant",
+"start": 8.4,
+"end": 8.78,
+"p": 0.993
+},
+{
+"w": "weight,",
+"start": 8.78,
+"end": 9.18,
+"p": 0.993
+},
+{
+"w": "one",
+"start": 9.82,
+"end": 9.92,
+"p": 0.99
+},
+{
+"w": "person.",
+"start": 9.92,
+"end": 10.32,
+"p": 1.0
+}
+]
+}

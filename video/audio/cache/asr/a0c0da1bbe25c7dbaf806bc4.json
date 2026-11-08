@@ -1,0 +1,127 @@
+{
+"key": "a0c0da1bbe25c7dbaf806bc4",
+"model": "small.en",
+"text": "No, the pull erases it, so the plane generator 0.41 reads as a missing pull, not a small error.",
+"words": [
+{
+"w": "No,",
+"start": 0.0,
+"end": 0.4,
+"p": 0.969
+},
+{
+"w": "the",
+"start": 0.98,
+"end": 1.18,
+"p": 0.992
+},
+{
+"w": "pull",
+"start": 1.18,
+"end": 1.42,
+"p": 0.977
+},
+{
+"w": "erases",
+"start": 1.42,
+"end": 1.96,
+"p": 0.995
+},
+{
+"w": "it,",
+"start": 1.96,
+"end": 2.36,
+"p": 0.999
+},
+{
+"w": "so",
+"start": 2.7,
+"end": 3.02,
+"p": 0.986
+},
+{
+"w": "the",
+"start": 3.02,
+"end": 3.16,
+"p": 0.987
+},
+{
+"w": "plane",
+"start": 3.16,
+"end": 3.44,
+"p": 0.967
+},
+{
+"w": "generator",
+"start": 3.44,
+"end": 3.92,
+"p": 0.975
+},
+{
+"w": "0",
+"start": 3.92,
+"end": 4.4,
+"p": 0.935
+},
+{
+"w": ".41",
+"start": 4.4,
+"end": 5.3,
+"p": 0.991
+},
+{
+"w": "reads",
+"start": 5.3,
+"end": 6.12,
+"p": 0.995
+},
+{
+"w": "as",
+"start": 6.12,
+"end": 6.32,
+"p": 0.997
+},
+{
+"w": "a",
+"start": 6.32,
+"end": 6.46,
+"p": 0.99
+},
+{
+"w": "missing",
+"start": 6.46,
+"end": 6.76,
+"p": 0.839
+},
+{
+"w": "pull,",
+"start": 6.76,
+"end": 7.3,
+"p": 0.991
+},
+{
+"w": "not",
+"start": 7.78,
+"end": 8.1,
+"p": 0.998
+},
+{
+"w": "a",
+"start": 8.1,
+"end": 8.26,
+"p": 0.995
+},
+{
+"w": "small",
+"start": 8.26,
+"end": 8.58,
+"p": 0.999
+},
+{
+"w": "error.",
+"start": 8.58,
+"end": 9.0,
+"p": 1.0
+}
+]
+}

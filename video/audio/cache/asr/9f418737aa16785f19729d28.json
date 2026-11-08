@@ -1,0 +1,169 @@
+{
+"key": "9f418737aa16785f19729d28",
+"model": "small.en",
+"text": "Chaos may lack a smooth cloud too, so nothing guarantees the limit. On the three dials, the only test so far, the answer depends on the strip.",
+"words": [
+{
+"w": "Chaos",
+"start": 0.0,
+"end": 0.44,
+"p": 0.895
+},
+{
+"w": "may",
+"start": 0.44,
+"end": 0.72,
+"p": 0.997
+},
+{
+"w": "lack",
+"start": 0.72,
+"end": 1.02,
+"p": 0.998
+},
+{
+"w": "a",
+"start": 1.02,
+"end": 1.18,
+"p": 0.996
+},
+{
+"w": "smooth",
+"start": 1.18,
+"end": 1.52,
+"p": 0.984
+},
+{
+"w": "cloud",
+"start": 1.52,
+"end": 1.86,
+"p": 0.815
+},
+{
+"w": "too,",
+"start": 1.86,
+"end": 2.34,
+"p": 0.752
+},
+{
+"w": "so",
+"start": 2.68,
+"end": 2.94,
+"p": 0.997
+},
+{
+"w": "nothing",
+"start": 2.94,
+"end": 3.3,
+"p": 0.996
+},
+{
+"w": "guarantees",
+"start": 3.3,
+"end": 3.82,
+"p": 0.999
+},
+{
+"w": "the",
+"start": 3.82,
+"end": 4.08,
+"p": 0.999
+},
+{
+"w": "limit.",
+"start": 4.08,
+"end": 4.36,
+"p": 0.998
+},
+{
+"w": "On",
+"start": 5.08,
+"end": 5.18,
+"p": 0.993
+},
+{
+"w": "the",
+"start": 5.18,
+"end": 5.3,
+"p": 0.996
+},
+{
+"w": "three",
+"start": 5.3,
+"end": 5.56,
+"p": 0.92
+},
+{
+"w": "dials,",
+"start": 5.56,
+"end": 6.16,
+"p": 0.996
+},
+{
+"w": "the",
+"start": 6.3,
+"end": 6.36,
+"p": 0.997
+},
+{
+"w": "only",
+"start": 6.36,
+"end": 6.64,
+"p": 0.999
+},
+{
+"w": "test",
+"start": 6.64,
+"end": 6.92,
+"p": 0.807
+},
+{
+"w": "so",
+"start": 6.92,
+"end": 7.24,
+"p": 0.993
+},
+{
+"w": "far,",
+"start": 7.24,
+"end": 7.6,
+"p": 1.0
+},
+{
+"w": "the",
+"start": 8.12,
+"end": 8.26,
+"p": 0.996
+},
+{
+"w": "answer",
+"start": 8.26,
+"end": 8.54,
+"p": 0.999
+},
+{
+"w": "depends",
+"start": 8.54,
+"end": 8.96,
+"p": 0.997
+},
+{
+"w": "on",
+"start": 8.96,
+"end": 9.24,
+"p": 0.999
+},
+{
+"w": "the",
+"start": 9.24,
+"end": 9.36,
+"p": 0.999
+},
+{
+"w": "strip.",
+"start": 9.36,
+"end": 9.68,
+"p": 0.981
+}
+]
+}

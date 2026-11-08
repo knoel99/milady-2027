@@ -1,0 +1,277 @@
+{
+"key": "f0b16acb300137352bed09dc",
+"model": "small.en",
+"text": "Back to the plane generator. Why does it miss trained on clean data? Follow the part of a field breaking the law. To bring it exactly to zero, the wind must act as a spring that turns infinitely stiff as the transport clock runs out.",
+"words": [
+{
+"w": "Back",
+"start": 0.0,
+"end": 0.3,
+"p": 0.923
+},
+{
+"w": "to",
+"start": 0.3,
+"end": 0.48,
+"p": 0.999
+},
+{
+"w": "the",
+"start": 0.48,
+"end": 0.6,
+"p": 0.999
+},
+{
+"w": "plane",
+"start": 0.6,
+"end": 0.88,
+"p": 0.987
+},
+{
+"w": "generator.",
+"start": 0.88,
+"end": 1.36,
+"p": 0.998
+},
+{
+"w": "Why",
+"start": 2.18,
+"end": 2.34,
+"p": 0.995
+},
+{
+"w": "does",
+"start": 2.34,
+"end": 2.52,
+"p": 0.998
+},
+{
+"w": "it",
+"start": 2.52,
+"end": 2.66,
+"p": 0.998
+},
+{
+"w": "miss",
+"start": 2.66,
+"end": 3.06,
+"p": 0.999
+},
+{
+"w": "trained",
+"start": 3.06,
+"end": 3.66,
+"p": 0.909
+},
+{
+"w": "on",
+"start": 3.66,
+"end": 3.88,
+"p": 0.942
+},
+{
+"w": "clean",
+"start": 3.88,
+"end": 4.22,
+"p": 0.988
+},
+{
+"w": "data?",
+"start": 4.22,
+"end": 4.64,
+"p": 0.999
+},
+{
+"w": "Follow",
+"start": 5.74,
+"end": 6.06,
+"p": 0.995
+},
+{
+"w": "the",
+"start": 6.06,
+"end": 6.24,
+"p": 0.998
+},
+{
+"w": "part",
+"start": 6.24,
+"end": 6.44,
+"p": 0.999
+},
+{
+"w": "of",
+"start": 6.44,
+"end": 6.58,
+"p": 0.999
+},
+{
+"w": "a",
+"start": 6.58,
+"end": 6.72,
+"p": 0.984
+},
+{
+"w": "field",
+"start": 6.72,
+"end": 7.0,
+"p": 1.0
+},
+{
+"w": "breaking",
+"start": 7.0,
+"end": 7.4,
+"p": 0.994
+},
+{
+"w": "the",
+"start": 7.4,
+"end": 7.64,
+"p": 0.999
+},
+{
+"w": "law.",
+"start": 7.64,
+"end": 7.94,
+"p": 0.994
+},
+{
+"w": "To",
+"start": 8.72,
+"end": 8.84,
+"p": 0.998
+},
+{
+"w": "bring",
+"start": 8.84,
+"end": 9.04,
+"p": 1.0
+},
+{
+"w": "it",
+"start": 9.04,
+"end": 9.14,
+"p": 0.997
+},
+{
+"w": "exactly",
+"start": 9.14,
+"end": 9.56,
+"p": 0.998
+},
+{
+"w": "to",
+"start": 9.56,
+"end": 9.88,
+"p": 0.999
+},
+{
+"w": "zero,",
+"start": 9.88,
+"end": 10.12,
+"p": 0.975
+},
+{
+"w": "the",
+"start": 10.78,
+"end": 10.82,
+"p": 0.999
+},
+{
+"w": "wind",
+"start": 10.82,
+"end": 11.1,
+"p": 1.0
+},
+{
+"w": "must",
+"start": 11.1,
+"end": 11.36,
+"p": 0.999
+},
+{
+"w": "act",
+"start": 11.36,
+"end": 11.7,
+"p": 0.999
+},
+{
+"w": "as",
+"start": 11.7,
+"end": 11.88,
+"p": 0.998
+},
+{
+"w": "a",
+"start": 11.88,
+"end": 12.02,
+"p": 0.994
+},
+{
+"w": "spring",
+"start": 12.02,
+"end": 12.46,
+"p": 0.994
+},
+{
+"w": "that",
+"start": 12.46,
+"end": 12.84,
+"p": 0.996
+},
+{
+"w": "turns",
+"start": 12.84,
+"end": 13.14,
+"p": 0.999
+},
+{
+"w": "infinitely",
+"start": 13.14,
+"end": 13.8,
+"p": 0.996
+},
+{
+"w": "stiff",
+"start": 13.8,
+"end": 14.32,
+"p": 0.999
+},
+{
+"w": "as",
+"start": 14.32,
+"end": 14.76,
+"p": 0.988
+},
+{
+"w": "the",
+"start": 14.76,
+"end": 14.92,
+"p": 0.999
+},
+{
+"w": "transport",
+"start": 14.92,
+"end": 15.42,
+"p": 0.999
+},
+{
+"w": "clock",
+"start": 15.42,
+"end": 15.84,
+"p": 0.999
+},
+{
+"w": "runs",
+"start": 15.84,
+"end": 16.16,
+"p": 0.999
+},
+{
+"w": "out.",
+"start": 16.16,
+"end": 16.54,
+"p": 1.0
+}
+]
+}

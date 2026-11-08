@@ -1,0 +1,229 @@
+{
+"key": "23ab07a19f61b4b17bd076a5",
+"model": "small.en",
+"text": "Impose the budget on the crowd during training. Draw a batch of snapshots at any gamma, even without data. Average their energy change and square it. This penalty, the crowd loss, vanishes only when the crowd balances.",
+"words": [
+{
+"w": "Impose",
+"start": 0.0,
+"end": 0.52,
+"p": 0.808
+},
+{
+"w": "the",
+"start": 0.52,
+"end": 0.72,
+"p": 0.999
+},
+{
+"w": "budget",
+"start": 0.72,
+"end": 0.96,
+"p": 0.998
+},
+{
+"w": "on",
+"start": 0.96,
+"end": 1.16,
+"p": 0.997
+},
+{
+"w": "the",
+"start": 1.16,
+"end": 1.32,
+"p": 0.999
+},
+{
+"w": "crowd",
+"start": 1.32,
+"end": 1.7,
+"p": 0.992
+},
+{
+"w": "during",
+"start": 1.7,
+"end": 2.24,
+"p": 0.909
+},
+{
+"w": "training.",
+"start": 2.24,
+"end": 2.8,
+"p": 0.999
+},
+{
+"w": "Draw",
+"start": 3.68,
+"end": 3.82,
+"p": 0.997
+},
+{
+"w": "a",
+"start": 3.82,
+"end": 4.06,
+"p": 0.999
+},
+{
+"w": "batch",
+"start": 4.06,
+"end": 4.2,
+"p": 0.998
+},
+{
+"w": "of",
+"start": 4.2,
+"end": 4.42,
+"p": 0.999
+},
+{
+"w": "snapshots",
+"start": 4.42,
+"end": 4.94,
+"p": 0.975
+},
+{
+"w": "at",
+"start": 4.94,
+"end": 5.22,
+"p": 0.997
+},
+{
+"w": "any",
+"start": 5.22,
+"end": 5.5,
+"p": 1.0
+},
+{
+"w": "gamma,",
+"start": 5.5,
+"end": 5.88,
+"p": 0.776
+},
+{
+"w": "even",
+"start": 6.2,
+"end": 6.38,
+"p": 0.999
+},
+{
+"w": "without",
+"start": 6.38,
+"end": 6.7,
+"p": 0.999
+},
+{
+"w": "data.",
+"start": 6.7,
+"end": 7.16,
+"p": 0.999
+},
+{
+"w": "Average",
+"start": 8.08,
+"end": 8.28,
+"p": 0.957
+},
+{
+"w": "their",
+"start": 8.28,
+"end": 8.52,
+"p": 0.997
+},
+{
+"w": "energy",
+"start": 8.52,
+"end": 8.86,
+"p": 0.996
+},
+{
+"w": "change",
+"start": 8.86,
+"end": 9.32,
+"p": 0.998
+},
+{
+"w": "and",
+"start": 9.32,
+"end": 9.52,
+"p": 0.963
+},
+{
+"w": "square",
+"start": 9.52,
+"end": 9.9,
+"p": 0.975
+},
+{
+"w": "it.",
+"start": 9.9,
+"end": 10.28,
+"p": 0.999
+},
+{
+"w": "This",
+"start": 10.88,
+"end": 11.1,
+"p": 0.998
+},
+{
+"w": "penalty,",
+"start": 11.1,
+"end": 11.6,
+"p": 0.999
+},
+{
+"w": "the",
+"start": 11.94,
+"end": 12.08,
+"p": 0.991
+},
+{
+"w": "crowd",
+"start": 12.08,
+"end": 12.4,
+"p": 0.905
+},
+{
+"w": "loss,",
+"start": 12.4,
+"end": 12.84,
+"p": 0.942
+},
+{
+"w": "vanishes",
+"start": 13.42,
+"end": 13.78,
+"p": 0.997
+},
+{
+"w": "only",
+"start": 13.78,
+"end": 14.16,
+"p": 0.999
+},
+{
+"w": "when",
+"start": 14.16,
+"end": 14.42,
+"p": 0.999
+},
+{
+"w": "the",
+"start": 14.42,
+"end": 14.58,
+"p": 0.999
+},
+{
+"w": "crowd",
+"start": 14.58,
+"end": 14.9,
+"p": 0.999
+},
+{
+"w": "balances.",
+"start": 14.9,
+"end": 15.44,
+"p": 0.999
+}
+]
+}

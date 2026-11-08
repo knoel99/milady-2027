@@ -1,0 +1,205 @@
+{
+"key": "8dd29f2fe4cf869470c4680a",
+"model": "small.en",
+"text": "The fix. Split the batch into two independent juries and multiply their averages. On average, the scatter drops out, leaving only the crowd's imbalance. Does it pay off? The next tests will tell.",
+"words": [
+{
+"w": "The",
+"start": 0.0,
+"end": 0.22,
+"p": 0.924
+},
+{
+"w": "fix.",
+"start": 0.22,
+"end": 0.54,
+"p": 0.802
+},
+{
+"w": "Split",
+"start": 1.26,
+"end": 1.62,
+"p": 0.989
+},
+{
+"w": "the",
+"start": 1.62,
+"end": 1.8,
+"p": 0.999
+},
+{
+"w": "batch",
+"start": 1.8,
+"end": 2.06,
+"p": 0.993
+},
+{
+"w": "into",
+"start": 2.06,
+"end": 2.32,
+"p": 0.997
+},
+{
+"w": "two",
+"start": 2.32,
+"end": 2.66,
+"p": 0.925
+},
+{
+"w": "independent",
+"start": 2.66,
+"end": 3.2,
+"p": 0.992
+},
+{
+"w": "juries",
+"start": 3.2,
+"end": 3.7,
+"p": 0.991
+},
+{
+"w": "and",
+"start": 3.7,
+"end": 4.22,
+"p": 0.883
+},
+{
+"w": "multiply",
+"start": 4.22,
+"end": 4.64,
+"p": 0.996
+},
+{
+"w": "their",
+"start": 4.64,
+"end": 5.02,
+"p": 0.998
+},
+{
+"w": "averages.",
+"start": 5.02,
+"end": 5.48,
+"p": 0.998
+},
+{
+"w": "On",
+"start": 6.5,
+"end": 6.68,
+"p": 0.997
+},
+{
+"w": "average,",
+"start": 6.68,
+"end": 7.06,
+"p": 0.998
+},
+{
+"w": "the",
+"start": 7.44,
+"end": 7.62,
+"p": 0.998
+},
+{
+"w": "scatter",
+"start": 7.62,
+"end": 7.98,
+"p": 0.985
+},
+{
+"w": "drops",
+"start": 7.98,
+"end": 8.36,
+"p": 1.0
+},
+{
+"w": "out,",
+"start": 8.36,
+"end": 8.86,
+"p": 0.999
+},
+{
+"w": "leaving",
+"start": 9.14,
+"end": 9.4,
+"p": 1.0
+},
+{
+"w": "only",
+"start": 9.4,
+"end": 9.82,
+"p": 0.999
+},
+{
+"w": "the",
+"start": 9.82,
+"end": 10.04,
+"p": 0.998
+},
+{
+"w": "crowd's",
+"start": 10.04,
+"end": 10.52,
+"p": 0.856
+},
+{
+"w": "imbalance.",
+"start": 10.52,
+"end": 10.96,
+"p": 0.993
+},
+{
+"w": "Does",
+"start": 12.0,
+"end": 12.12,
+"p": 0.994
+},
+{
+"w": "it",
+"start": 12.12,
+"end": 12.26,
+"p": 0.999
+},
+{
+"w": "pay",
+"start": 12.26,
+"end": 12.44,
+"p": 0.997
+},
+{
+"w": "off?",
+"start": 12.44,
+"end": 12.72,
+"p": 0.999
+},
+{
+"w": "The",
+"start": 13.48,
+"end": 13.68,
+"p": 0.995
+},
+{
+"w": "next",
+"start": 13.68,
+"end": 13.98,
+"p": 0.999
+},
+{
+"w": "tests",
+"start": 13.98,
+"end": 14.42,
+"p": 0.962
+},
+{
+"w": "will",
+"start": 14.42,
+"end": 14.7,
+"p": 0.998
+},
+{
+"w": "tell.",
+"start": 14.7,
+"end": 15.0,
+"p": 1.0
+}
+]
+}

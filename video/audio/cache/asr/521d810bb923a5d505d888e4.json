@@ -1,0 +1,361 @@
+{
+"key": "521d810bb923a5d505d888e4",
+"model": "small.en",
+"text": "On small test problems, it partly works. The mirror holds by construction at every setting. On three dials, the rate of zero crossings is roughly right far from the threshold and poor near it. A smooth machine rounds off a steep change. The bigger tests, in three dimensions and in the shapes of real machines, are written as bets.",
+"words": [
+{
+"w": "On",
+"start": 0.0,
+"end": 0.26,
+"p": 0.917
+},
+{
+"w": "small",
+"start": 0.26,
+"end": 0.58,
+"p": 0.996
+},
+{
+"w": "test",
+"start": 0.58,
+"end": 0.86,
+"p": 0.996
+},
+{
+"w": "problems,",
+"start": 0.86,
+"end": 1.42,
+"p": 0.998
+},
+{
+"w": "it",
+"start": 1.6,
+"end": 1.78,
+"p": 0.998
+},
+{
+"w": "partly",
+"start": 1.78,
+"end": 2.12,
+"p": 0.986
+},
+{
+"w": "works.",
+"start": 2.12,
+"end": 2.56,
+"p": 1.0
+},
+{
+"w": "The",
+"start": 3.3,
+"end": 3.4,
+"p": 0.996
+},
+{
+"w": "mirror",
+"start": 3.4,
+"end": 3.62,
+"p": 0.995
+},
+{
+"w": "holds",
+"start": 3.62,
+"end": 4.0,
+"p": 0.998
+},
+{
+"w": "by",
+"start": 4.0,
+"end": 4.22,
+"p": 0.991
+},
+{
+"w": "construction",
+"start": 4.22,
+"end": 4.72,
+"p": 0.998
+},
+{
+"w": "at",
+"start": 4.72,
+"end": 5.22,
+"p": 0.773
+},
+{
+"w": "every",
+"start": 5.22,
+"end": 5.56,
+"p": 0.999
+},
+{
+"w": "setting.",
+"start": 5.56,
+"end": 5.96,
+"p": 0.999
+},
+{
+"w": "On",
+"start": 6.66,
+"end": 6.84,
+"p": 0.997
+},
+{
+"w": "three",
+"start": 6.84,
+"end": 7.16,
+"p": 0.912
+},
+{
+"w": "dials,",
+"start": 7.16,
+"end": 7.8,
+"p": 0.998
+},
+{
+"w": "the",
+"start": 7.98,
+"end": 8.14,
+"p": 0.999
+},
+{
+"w": "rate",
+"start": 8.14,
+"end": 8.34,
+"p": 0.999
+},
+{
+"w": "of",
+"start": 8.34,
+"end": 8.5,
+"p": 0.995
+},
+{
+"w": "zero",
+"start": 8.5,
+"end": 8.78,
+"p": 0.966
+},
+{
+"w": "crossings",
+"start": 8.78,
+"end": 9.3,
+"p": 0.857
+},
+{
+"w": "is",
+"start": 9.3,
+"end": 9.52,
+"p": 0.997
+},
+{
+"w": "roughly",
+"start": 9.52,
+"end": 9.92,
+"p": 0.998
+},
+{
+"w": "right",
+"start": 9.92,
+"end": 10.26,
+"p": 0.998
+},
+{
+"w": "far",
+"start": 10.26,
+"end": 10.66,
+"p": 0.979
+},
+{
+"w": "from",
+"start": 10.66,
+"end": 10.88,
+"p": 0.999
+},
+{
+"w": "the",
+"start": 10.88,
+"end": 11.02,
+"p": 0.998
+},
+{
+"w": "threshold",
+"start": 11.02,
+"end": 11.48,
+"p": 0.998
+},
+{
+"w": "and",
+"start": 11.48,
+"end": 12.08,
+"p": 0.834
+},
+{
+"w": "poor",
+"start": 12.08,
+"end": 12.44,
+"p": 0.885
+},
+{
+"w": "near",
+"start": 12.44,
+"end": 12.78,
+"p": 0.999
+},
+{
+"w": "it.",
+"start": 12.78,
+"end": 13.16,
+"p": 0.999
+},
+{
+"w": "A",
+"start": 13.64,
+"end": 13.78,
+"p": 0.998
+},
+{
+"w": "smooth",
+"start": 13.78,
+"end": 14.16,
+"p": 0.997
+},
+{
+"w": "machine",
+"start": 14.16,
+"end": 14.64,
+"p": 0.999
+},
+{
+"w": "rounds",
+"start": 14.64,
+"end": 15.04,
+"p": 0.998
+},
+{
+"w": "off",
+"start": 15.04,
+"end": 15.38,
+"p": 0.997
+},
+{
+"w": "a",
+"start": 15.38,
+"end": 15.56,
+"p": 0.997
+},
+{
+"w": "steep",
+"start": 15.56,
+"end": 15.86,
+"p": 0.998
+},
+{
+"w": "change.",
+"start": 15.86,
+"end": 16.5,
+"p": 1.0
+},
+{
+"w": "The",
+"start": 17.1,
+"end": 17.22,
+"p": 0.927
+},
+{
+"w": "bigger",
+"start": 17.22,
+"end": 17.52,
+"p": 0.998
+},
+{
+"w": "tests,",
+"start": 17.52,
+"end": 17.98,
+"p": 0.99
+},
+{
+"w": "in",
+"start": 18.32,
+"end": 18.42,
+"p": 0.999
+},
+{
+"w": "three",
+"start": 18.42,
+"end": 18.72,
+"p": 0.935
+},
+{
+"w": "dimensions",
+"start": 18.72,
+"end": 19.16,
+"p": 0.984
+},
+{
+"w": "and",
+"start": 19.16,
+"end": 19.54,
+"p": 0.94
+},
+{
+"w": "in",
+"start": 19.54,
+"end": 19.66,
+"p": 0.992
+},
+{
+"w": "the",
+"start": 19.66,
+"end": 19.78,
+"p": 0.995
+},
+{
+"w": "shapes",
+"start": 19.78,
+"end": 20.04,
+"p": 0.993
+},
+{
+"w": "of",
+"start": 20.04,
+"end": 20.28,
+"p": 0.999
+},
+{
+"w": "real",
+"start": 20.28,
+"end": 20.56,
+"p": 0.994
+},
+{
+"w": "machines,",
+"start": 20.56,
+"end": 21.2,
+"p": 0.999
+},
+{
+"w": "are",
+"start": 21.42,
+"end": 21.82,
+"p": 0.999
+},
+{
+"w": "written",
+"start": 21.82,
+"end": 22.08,
+"p": 0.999
+},
+{
+"w": "as",
+"start": 22.08,
+"end": 22.34,
+"p": 0.999
+},
+{
+"w": "bets.",
+"start": 22.34,
+"end": 22.68,
+"p": 0.917
+}
+]
+}

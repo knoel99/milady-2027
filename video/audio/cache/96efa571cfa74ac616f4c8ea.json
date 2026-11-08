@@ -1,0 +1,28 @@
+{
+ "text": "[calm, natural narrator voice] Première : un générateur de champs de dynamo. Deuxième : une vitesse et un champ magnétique à divergence exactement nulle, dans un cylindre à parois, avec du fer et du vide. Troisième : des bilans d'énergie imposés à la distribution, sans valeur cible, même là où il n'y a pas de données. Quatrième : la fréquence des renversements, lue dans les instantanés avec la formule de Raïsse. Cinquième : un seul générateur qui franchit le seuil dynamo.",
+ "voice": "536d3a5e000945adb7038665781a4aca",
+ "words": 72,
+ "scene": "SOA2.7",
+ "para": 1,
+ "lang": "fr",
+ "duration": 32.0523,
+ "latency_s": 6.7,
+ "created": "2026-11-08T10:02:54",
+ "provider": "fish",
+ "request": {
+  "temperature": 0.1,
+  "format": "mp3",
+  "mp3_bitrate": 192,
+  "sample_rate": 44100,
+  "latency": "normal",
+  "language": "fr",
+  "normalize": true,
+  "condition_on_previous_chunks": true,
+  "prosody": {
+   "speed": 1.0,
+   "normalize_loudness": true
+  },
+  "text": "[calm, natural narrator voice] Première : un générateur de champs de dynamo. Deuxième : une vitesse et un champ magnétique à divergence exactement nulle, dans un cylindre à parois, avec du fer et du vide. Troisième : des bilans d'énergie imposés à la distribution, sans valeur cible, même là où il n'y a pas de données. Quatrième : la fréquence des renversements, lue dans les instantanés avec la formule de Raïsse. Cinquième : un seul générateur qui franchit le seuil dynamo.",
+  "reference_id": "536d3a5e000945adb7038665781a4aca"
+ }
+}

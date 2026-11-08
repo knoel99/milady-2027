@@ -1,0 +1,235 @@
+{
+"key": "d7596082151143df02244a1e",
+"model": "small.en",
+"text": "Now, spin a copper disk wired to a coil around its axle. Current makes field, and field makes current. Spin it faster and faster. Does the field grow bit by bit, or not at all until some speed?",
+"words": [
+{
+"w": "Now,",
+"start": 0.0,
+"end": 0.32,
+"p": 0.941
+},
+{
+"w": "spin",
+"start": 0.56,
+"end": 0.62,
+"p": 0.992
+},
+{
+"w": "a",
+"start": 0.62,
+"end": 0.76,
+"p": 0.997
+},
+{
+"w": "copper",
+"start": 0.76,
+"end": 1.06,
+"p": 0.995
+},
+{
+"w": "disk",
+"start": 1.06,
+"end": 1.44,
+"p": 0.537
+},
+{
+"w": "wired",
+"start": 1.44,
+"end": 1.8,
+"p": 0.943
+},
+{
+"w": "to",
+"start": 1.8,
+"end": 2.02,
+"p": 0.997
+},
+{
+"w": "a",
+"start": 2.02,
+"end": 2.14,
+"p": 0.985
+},
+{
+"w": "coil",
+"start": 2.14,
+"end": 2.42,
+"p": 0.998
+},
+{
+"w": "around",
+"start": 2.42,
+"end": 2.7,
+"p": 0.998
+},
+{
+"w": "its",
+"start": 2.7,
+"end": 2.88,
+"p": 0.974
+},
+{
+"w": "axle.",
+"start": 2.88,
+"end": 3.34,
+"p": 0.989
+},
+{
+"w": "Current",
+"start": 4.28,
+"end": 4.28,
+"p": 0.97
+},
+{
+"w": "makes",
+"start": 4.28,
+"end": 4.56,
+"p": 0.995
+},
+{
+"w": "field,",
+"start": 4.56,
+"end": 5.02,
+"p": 0.968
+},
+{
+"w": "and",
+"start": 5.28,
+"end": 5.4,
+"p": 0.998
+},
+{
+"w": "field",
+"start": 5.4,
+"end": 5.74,
+"p": 0.979
+},
+{
+"w": "makes",
+"start": 5.74,
+"end": 6.06,
+"p": 0.997
+},
+{
+"w": "current.",
+"start": 6.06,
+"end": 6.52,
+"p": 0.999
+},
+{
+"w": "Spin",
+"start": 7.42,
+"end": 7.52,
+"p": 0.98
+},
+{
+"w": "it",
+"start": 7.52,
+"end": 7.66,
+"p": 0.999
+},
+{
+"w": "faster",
+"start": 7.66,
+"end": 8.02,
+"p": 0.997
+},
+{
+"w": "and",
+"start": 8.02,
+"end": 8.36,
+"p": 0.99
+},
+{
+"w": "faster.",
+"start": 8.36,
+"end": 8.86,
+"p": 0.999
+},
+{
+"w": "Does",
+"start": 9.56,
+"end": 9.64,
+"p": 0.996
+},
+{
+"w": "the",
+"start": 9.64,
+"end": 9.8,
+"p": 0.998
+},
+{
+"w": "field",
+"start": 9.8,
+"end": 10.1,
+"p": 0.998
+},
+{
+"w": "grow",
+"start": 10.1,
+"end": 10.48,
+"p": 0.996
+},
+{
+"w": "bit",
+"start": 10.48,
+"end": 10.78,
+"p": 0.987
+},
+{
+"w": "by",
+"start": 10.78,
+"end": 11.0,
+"p": 0.942
+},
+{
+"w": "bit,",
+"start": 11.0,
+"end": 11.36,
+"p": 1.0
+},
+{
+"w": "or",
+"start": 11.68,
+"end": 11.86,
+"p": 0.999
+},
+{
+"w": "not",
+"start": 11.86,
+"end": 12.1,
+"p": 0.999
+},
+{
+"w": "at",
+"start": 12.1,
+"end": 12.22,
+"p": 0.995
+},
+{
+"w": "all",
+"start": 12.22,
+"end": 12.46,
+"p": 1.0
+},
+{
+"w": "until",
+"start": 12.46,
+"end": 12.74,
+"p": 0.963
+},
+{
+"w": "some",
+"start": 12.74,
+"end": 13.04,
+"p": 1.0
+},
+{
+"w": "speed?",
+"start": 13.04,
+"end": 13.44,
+"p": 0.999
+}
+]
+}

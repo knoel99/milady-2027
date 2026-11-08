@@ -1,0 +1,205 @@
+{
+"key": "3effc4b18230fac683fa29ad",
+"model": "small.en",
+"text": "On the right, what the staircase bets, each with the rule that will settle it. Each lamp shows a verdict only once its data file arrives, and the film is updated with it.",
+"words": [
+{
+"w": "On",
+"start": 0.0,
+"end": 0.26,
+"p": 0.828
+},
+{
+"w": "the",
+"start": 0.26,
+"end": 0.38,
+"p": 0.999
+},
+{
+"w": "right,",
+"start": 0.38,
+"end": 0.68,
+"p": 0.998
+},
+{
+"w": "what",
+"start": 1.14,
+"end": 1.32,
+"p": 0.987
+},
+{
+"w": "the",
+"start": 1.32,
+"end": 1.48,
+"p": 0.99
+},
+{
+"w": "staircase",
+"start": 1.48,
+"end": 1.9,
+"p": 0.994
+},
+{
+"w": "bets,",
+"start": 1.9,
+"end": 2.42,
+"p": 0.993
+},
+{
+"w": "each",
+"start": 2.96,
+"end": 3.3,
+"p": 0.998
+},
+{
+"w": "with",
+"start": 3.3,
+"end": 3.52,
+"p": 0.999
+},
+{
+"w": "the",
+"start": 3.52,
+"end": 3.7,
+"p": 0.994
+},
+{
+"w": "rule",
+"start": 3.7,
+"end": 3.98,
+"p": 0.997
+},
+{
+"w": "that",
+"start": 3.98,
+"end": 4.16,
+"p": 0.998
+},
+{
+"w": "will",
+"start": 4.16,
+"end": 4.32,
+"p": 0.996
+},
+{
+"w": "settle",
+"start": 4.32,
+"end": 4.6,
+"p": 0.999
+},
+{
+"w": "it.",
+"start": 4.6,
+"end": 5.08,
+"p": 0.999
+},
+{
+"w": "Each",
+"start": 5.84,
+"end": 6.1,
+"p": 0.997
+},
+{
+"w": "lamp",
+"start": 6.1,
+"end": 6.48,
+"p": 0.996
+},
+{
+"w": "shows",
+"start": 6.48,
+"end": 6.76,
+"p": 0.998
+},
+{
+"w": "a",
+"start": 6.76,
+"end": 6.98,
+"p": 0.999
+},
+{
+"w": "verdict",
+"start": 6.98,
+"end": 7.3,
+"p": 0.99
+},
+{
+"w": "only",
+"start": 7.3,
+"end": 7.7,
+"p": 0.994
+},
+{
+"w": "once",
+"start": 7.7,
+"end": 8.08,
+"p": 0.998
+},
+{
+"w": "its",
+"start": 8.08,
+"end": 8.32,
+"p": 0.956
+},
+{
+"w": "data",
+"start": 8.32,
+"end": 8.6,
+"p": 0.966
+},
+{
+"w": "file",
+"start": 8.6,
+"end": 8.9,
+"p": 0.992
+},
+{
+"w": "arrives,",
+"start": 8.9,
+"end": 9.42,
+"p": 0.999
+},
+{
+"w": "and",
+"start": 9.98,
+"end": 10.12,
+"p": 0.998
+},
+{
+"w": "the",
+"start": 10.12,
+"end": 10.24,
+"p": 0.999
+},
+{
+"w": "film",
+"start": 10.24,
+"end": 10.56,
+"p": 0.998
+},
+{
+"w": "is",
+"start": 10.56,
+"end": 10.78,
+"p": 0.999
+},
+{
+"w": "updated",
+"start": 10.78,
+"end": 11.2,
+"p": 0.999
+},
+{
+"w": "with",
+"start": 11.2,
+"end": 11.48,
+"p": 0.999
+},
+{
+"w": "it.",
+"start": 11.48,
+"end": 11.72,
+"p": 1.0
+}
+]
+}

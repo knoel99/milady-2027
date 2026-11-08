@@ -1,0 +1,27 @@
+{
+ "text": "[calm, natural narrator voice] Reaching an <|phoneme_start|>AA1 R EH1 M<|phoneme_end|> of a few tens takes violent stirring. The flow's <|phoneme_start|>R EH1 N AH0 L D Z<|phoneme_end|> number, the gauge of turbulence, reaches millions. So every laboratory dynamo is turbulent.",
+ "voice": "536d3a5e000945adb7038665781a4aca",
+ "words": 26,
+ "scene": "02.3",
+ "para": 1,
+ "duration": 11.9902,
+ "latency_s": 2.5,
+ "created": "2026-11-08T08:07:34",
+ "provider": "fish",
+ "request": {
+  "temperature": 0.1,
+  "format": "mp3",
+  "mp3_bitrate": 192,
+  "sample_rate": 44100,
+  "latency": "normal",
+  "language": "en",
+  "normalize": true,
+  "condition_on_previous_chunks": true,
+  "prosody": {
+   "speed": 1.0,
+   "normalize_loudness": true
+  },
+  "text": "[calm, natural narrator voice] Reaching an <|phoneme_start|>AA1 R EH1 M<|phoneme_end|> of a few tens takes violent stirring. The flow's <|phoneme_start|>R EH1 N AH0 L D Z<|phoneme_end|> number, the gauge of turbulence, reaches millions. So every laboratory dynamo is turbulent.",
+  "reference_id": "536d3a5e000945adb7038665781a4aca"
+ }
+}

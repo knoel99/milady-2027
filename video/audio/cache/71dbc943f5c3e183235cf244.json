@@ -1,0 +1,27 @@
+{
+ "text": "[calm, natural narrator voice] Only three liquid-sodium experiments have made their own field, each a different kind. In Riga, a corkscrew flow made a field that oscillates and slowly turns. In Karlsruhe, fifty-two spiralling cells made a steady field, close to a dipole. And only <|phoneme_start|>V IY1 K EY1 EH1 S<|phoneme_end|>, at Cadarache, made a dipole that can flip.",
+ "voice": "536d3a5e000945adb7038665781a4aca",
+ "words": 50,
+ "scene": "02.4",
+ "para": 0,
+ "duration": 22.6743,
+ "latency_s": 3.4,
+ "created": "2026-11-08T08:07:36",
+ "provider": "fish",
+ "request": {
+  "temperature": 0.1,
+  "format": "mp3",
+  "mp3_bitrate": 192,
+  "sample_rate": 44100,
+  "latency": "normal",
+  "language": "en",
+  "normalize": true,
+  "condition_on_previous_chunks": true,
+  "prosody": {
+   "speed": 1.0,
+   "normalize_loudness": true
+  },
+  "text": "[calm, natural narrator voice] Only three liquid-sodium experiments have made their own field, each a different kind. In Riga, a corkscrew flow made a field that oscillates and slowly turns. In Karlsruhe, fifty-two spiralling cells made a steady field, close to a dipole. And only <|phoneme_start|>V IY1 K EY1 EH1 S<|phoneme_end|>, at Cadarache, made a dipole that can flip.",
+  "reference_id": "536d3a5e000945adb7038665781a4aca"
+ }
+}

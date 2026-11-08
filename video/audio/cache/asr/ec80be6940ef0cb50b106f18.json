@@ -1,0 +1,61 @@
+{
+"key": "ec80be6940ef0cb50b106f18",
+"model": "small.en",
+"text": "First, the runs. These answers change what gets computed.",
+"words": [
+{
+"w": "First,",
+"start": 0.0,
+"end": 0.48,
+"p": 0.918
+},
+{
+"w": "the",
+"start": 0.74,
+"end": 0.82,
+"p": 0.986
+},
+{
+"w": "runs.",
+"start": 0.82,
+"end": 1.12,
+"p": 0.883
+},
+{
+"w": "These",
+"start": 2.02,
+"end": 2.2,
+"p": 0.996
+},
+{
+"w": "answers",
+"start": 2.2,
+"end": 2.56,
+"p": 0.998
+},
+{
+"w": "change",
+"start": 2.56,
+"end": 3.02,
+"p": 0.999
+},
+{
+"w": "what",
+"start": 3.02,
+"end": 3.34,
+"p": 0.999
+},
+{
+"w": "gets",
+"start": 3.34,
+"end": 3.54,
+"p": 0.994
+},
+{
+"w": "computed.",
+"start": 3.54,
+"end": 3.98,
+"p": 0.998
+}
+]
+}

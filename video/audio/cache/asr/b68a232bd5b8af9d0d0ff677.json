@@ -1,0 +1,187 @@
+{
+"key": "b68a232bd5b8af9d0d0ff677",
+"model": "small.en",
+"text": "Lane 5. A few dials instead of a tank. 1958. Two coupled disc dynamos already flip. 2012. Three dials that flip by chaos alone. We will play with them soon.",
+"words": [
+{
+"w": "Lane",
+"start": 0.0,
+"end": 0.54,
+"p": 0.821
+},
+{
+"w": "5.",
+"start": 0.54,
+"end": 1.0,
+"p": 0.771
+},
+{
+"w": "A",
+"start": 1.6,
+"end": 1.68,
+"p": 0.967
+},
+{
+"w": "few",
+"start": 1.68,
+"end": 1.92,
+"p": 0.979
+},
+{
+"w": "dials",
+"start": 1.92,
+"end": 2.46,
+"p": 0.987
+},
+{
+"w": "instead",
+"start": 2.46,
+"end": 2.74,
+"p": 0.982
+},
+{
+"w": "of",
+"start": 2.74,
+"end": 2.88,
+"p": 0.998
+},
+{
+"w": "a",
+"start": 2.88,
+"end": 2.96,
+"p": 0.992
+},
+{
+"w": "tank.",
+"start": 2.96,
+"end": 3.32,
+"p": 0.997
+},
+{
+"w": "1958.",
+"start": 4.16,
+"end": 4.96,
+"p": 0.99
+},
+{
+"w": "Two",
+"start": 5.94,
+"end": 6.1,
+"p": 0.951
+},
+{
+"w": "coupled",
+"start": 6.1,
+"end": 6.5,
+"p": 0.913
+},
+{
+"w": "disc",
+"start": 6.5,
+"end": 6.86,
+"p": 0.473
+},
+{
+"w": "dynamos",
+"start": 6.86,
+"end": 7.5,
+"p": 0.984
+},
+{
+"w": "already",
+"start": 7.5,
+"end": 7.94,
+"p": 0.993
+},
+{
+"w": "flip.",
+"start": 7.94,
+"end": 8.34,
+"p": 0.982
+},
+{
+"w": "2012.",
+"start": 9.04,
+"end": 9.68,
+"p": 0.998
+},
+{
+"w": "Three",
+"start": 10.54,
+"end": 10.72,
+"p": 0.9
+},
+{
+"w": "dials",
+"start": 10.72,
+"end": 11.3,
+"p": 0.999
+},
+{
+"w": "that",
+"start": 11.3,
+"end": 11.4,
+"p": 0.999
+},
+{
+"w": "flip",
+"start": 11.4,
+"end": 11.66,
+"p": 0.933
+},
+{
+"w": "by",
+"start": 11.66,
+"end": 11.96,
+"p": 0.997
+},
+{
+"w": "chaos",
+"start": 11.96,
+"end": 12.42,
+"p": 0.876
+},
+{
+"w": "alone.",
+"start": 12.42,
+"end": 12.88,
+"p": 0.998
+},
+{
+"w": "We",
+"start": 13.62,
+"end": 13.76,
+"p": 0.997
+},
+{
+"w": "will",
+"start": 13.76,
+"end": 13.9,
+"p": 0.995
+},
+{
+"w": "play",
+"start": 13.9,
+"end": 14.16,
+"p": 0.999
+},
+{
+"w": "with",
+"start": 14.16,
+"end": 14.36,
+"p": 0.999
+},
+{
+"w": "them",
+"start": 14.36,
+"end": 14.54,
+"p": 0.999
+},
+{
+"w": "soon.",
+"start": 14.54,
+"end": 14.88,
+"p": 0.999
+}
+]
+}

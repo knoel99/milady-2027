@@ -1,0 +1,27 @@
+{
+ "text": "[calm, natural narrator voice] The distribution distance to the truth grows ninefold. A short proof says why: even a perfect generator, forced this way, cannot match the truth. So the budget goes on the crowd shelf. On the next test bench, a cruder score is fooled by such a spike.",
+ "voice": "536d3a5e000945adb7038665781a4aca",
+ "words": 46,
+ "scene": "07.5",
+ "para": 3,
+ "duration": 19.2,
+ "latency_s": 3.3,
+ "created": "2026-11-08T08:09:48",
+ "provider": "fish",
+ "request": {
+  "temperature": 0.1,
+  "format": "mp3",
+  "mp3_bitrate": 192,
+  "sample_rate": 44100,
+  "latency": "normal",
+  "language": "en",
+  "normalize": true,
+  "condition_on_previous_chunks": true,
+  "prosody": {
+   "speed": 1.0,
+   "normalize_loudness": true
+  },
+  "text": "[calm, natural narrator voice] The distribution distance to the truth grows ninefold. A short proof says why: even a perfect generator, forced this way, cannot match the truth. So the budget goes on the crowd shelf. On the next test bench, a cruder score is fooled by such a spike.",
+  "reference_id": "536d3a5e000945adb7038665781a4aca"
+ }
+}

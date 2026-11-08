@@ -1,0 +1,115 @@
+{
+"key": "a41608b7afba8902c078ec02",
+"model": "small.en",
+"text": "To find out, the study's plan climbs a staircase from three numbers to the shapes of real experiments.",
+"words": [
+{
+"w": "To",
+"start": 0.0,
+"end": 0.2,
+"p": 0.949
+},
+{
+"w": "find",
+"start": 0.2,
+"end": 0.44,
+"p": 0.999
+},
+{
+"w": "out,",
+"start": 0.44,
+"end": 0.74,
+"p": 0.999
+},
+{
+"w": "the",
+"start": 1.18,
+"end": 1.24,
+"p": 0.987
+},
+{
+"w": "study's",
+"start": 1.24,
+"end": 1.66,
+"p": 0.956
+},
+{
+"w": "plan",
+"start": 1.66,
+"end": 1.96,
+"p": 0.997
+},
+{
+"w": "climbs",
+"start": 1.96,
+"end": 2.32,
+"p": 0.996
+},
+{
+"w": "a",
+"start": 2.32,
+"end": 2.52,
+"p": 0.991
+},
+{
+"w": "staircase",
+"start": 2.52,
+"end": 3.0,
+"p": 0.998
+},
+{
+"w": "from",
+"start": 3.0,
+"end": 3.7,
+"p": 0.385
+},
+{
+"w": "three",
+"start": 3.7,
+"end": 4.1,
+"p": 0.961
+},
+{
+"w": "numbers",
+"start": 4.1,
+"end": 4.46,
+"p": 0.999
+},
+{
+"w": "to",
+"start": 4.46,
+"end": 4.9,
+"p": 0.984
+},
+{
+"w": "the",
+"start": 4.9,
+"end": 5.02,
+"p": 0.995
+},
+{
+"w": "shapes",
+"start": 5.02,
+"end": 5.34,
+"p": 0.997
+},
+{
+"w": "of",
+"start": 5.34,
+"end": 5.58,
+"p": 0.999
+},
+{
+"w": "real",
+"start": 5.58,
+"end": 5.9,
+"p": 0.997
+},
+{
+"w": "experiments.",
+"start": 5.9,
+"end": 6.54,
+"p": 0.998
+}
+]
+}

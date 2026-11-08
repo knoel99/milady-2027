@@ -1,0 +1,217 @@
+{
+"key": "83930a30ff4248f77f72bf5a",
+"model": "small.en",
+"text": "Some things need no bet. In three dimensions, hill maps become potentials. The generator draws them, then takes their curl. So the flow in the field stay divergence-free to rounding, even with untrained weights.",
+"words": [
+{
+"w": "Some",
+"start": 0.0,
+"end": 0.36,
+"p": 0.923
+},
+{
+"w": "things",
+"start": 0.36,
+"end": 0.7,
+"p": 0.998
+},
+{
+"w": "need",
+"start": 0.7,
+"end": 0.98,
+"p": 0.999
+},
+{
+"w": "no",
+"start": 0.98,
+"end": 1.3,
+"p": 0.994
+},
+{
+"w": "bet.",
+"start": 1.3,
+"end": 1.64,
+"p": 0.98
+},
+{
+"w": "In",
+"start": 2.5,
+"end": 2.64,
+"p": 0.994
+},
+{
+"w": "three",
+"start": 2.64,
+"end": 2.88,
+"p": 0.728
+},
+{
+"w": "dimensions,",
+"start": 2.88,
+"end": 3.42,
+"p": 0.955
+},
+{
+"w": "hill",
+"start": 3.86,
+"end": 3.94,
+"p": 0.955
+},
+{
+"w": "maps",
+"start": 3.94,
+"end": 4.24,
+"p": 0.758
+},
+{
+"w": "become",
+"start": 4.24,
+"end": 4.6,
+"p": 0.997
+},
+{
+"w": "potentials.",
+"start": 4.6,
+"end": 5.62,
+"p": 0.972
+},
+{
+"w": "The",
+"start": 5.76,
+"end": 5.94,
+"p": 0.995
+},
+{
+"w": "generator",
+"start": 5.94,
+"end": 6.32,
+"p": 0.996
+},
+{
+"w": "draws",
+"start": 6.32,
+"end": 6.76,
+"p": 0.999
+},
+{
+"w": "them,",
+"start": 6.76,
+"end": 7.12,
+"p": 1.0
+},
+{
+"w": "then",
+"start": 7.32,
+"end": 7.64,
+"p": 0.998
+},
+{
+"w": "takes",
+"start": 7.64,
+"end": 7.92,
+"p": 0.996
+},
+{
+"w": "their",
+"start": 7.92,
+"end": 8.18,
+"p": 0.999
+},
+{
+"w": "curl.",
+"start": 8.18,
+"end": 8.54,
+"p": 0.992
+},
+{
+"w": "So",
+"start": 9.16,
+"end": 9.36,
+"p": 0.996
+},
+{
+"w": "the",
+"start": 9.36,
+"end": 9.5,
+"p": 0.918
+},
+{
+"w": "flow",
+"start": 9.5,
+"end": 9.82,
+"p": 0.995
+},
+{
+"w": "in",
+"start": 9.82,
+"end": 10.04,
+"p": 0.504
+},
+{
+"w": "the",
+"start": 10.04,
+"end": 10.16,
+"p": 0.998
+},
+{
+"w": "field",
+"start": 10.16,
+"end": 10.5,
+"p": 0.588
+},
+{
+"w": "stay",
+"start": 10.5,
+"end": 10.88,
+"p": 0.911
+},
+{
+"w": "divergence",
+"start": 10.88,
+"end": 11.42,
+"p": 0.978
+},
+{
+"w": "-free",
+"start": 11.42,
+"end": 11.82,
+"p": 0.791
+},
+{
+"w": "to",
+"start": 11.82,
+"end": 12.04,
+"p": 0.986
+},
+{
+"w": "rounding,",
+"start": 12.04,
+"end": 12.42,
+"p": 0.999
+},
+{
+"w": "even",
+"start": 13.0,
+"end": 13.24,
+"p": 0.998
+},
+{
+"w": "with",
+"start": 13.24,
+"end": 13.44,
+"p": 0.999
+},
+{
+"w": "untrained",
+"start": 13.44,
+"end": 14.06,
+"p": 0.998
+},
+{
+"w": "weights.",
+"start": 14.06,
+"end": 14.4,
+"p": 0.997
+}
+]
+}

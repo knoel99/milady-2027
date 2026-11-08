@@ -1,0 +1,79 @@
+{
+"key": "5373eed6bd1abd353563177c",
+"model": "small.en",
+"text": "Neither. Exactly as many of each. A free check on any counter.",
+"words": [
+{
+"w": "Neither.",
+"start": 0.0,
+"end": 0.48,
+"p": 0.754
+},
+{
+"w": "Exactly",
+"start": 1.52,
+"end": 1.66,
+"p": 0.986
+},
+{
+"w": "as",
+"start": 1.66,
+"end": 1.96,
+"p": 0.999
+},
+{
+"w": "many",
+"start": 1.96,
+"end": 2.22,
+"p": 0.999
+},
+{
+"w": "of",
+"start": 2.22,
+"end": 2.42,
+"p": 0.977
+},
+{
+"w": "each.",
+"start": 2.42,
+"end": 2.7,
+"p": 1.0
+},
+{
+"w": "A",
+"start": 3.34,
+"end": 3.46,
+"p": 0.993
+},
+{
+"w": "free",
+"start": 3.46,
+"end": 3.76,
+"p": 0.964
+},
+{
+"w": "check",
+"start": 3.76,
+"end": 4.1,
+"p": 0.984
+},
+{
+"w": "on",
+"start": 4.1,
+"end": 4.32,
+"p": 0.996
+},
+{
+"w": "any",
+"start": 4.32,
+"end": 4.6,
+"p": 0.991
+},
+{
+"w": "counter.",
+"start": 4.6,
+"end": 4.98,
+"p": 0.992
+}
+]
+}

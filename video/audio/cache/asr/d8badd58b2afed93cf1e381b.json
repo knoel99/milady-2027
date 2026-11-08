@@ -1,0 +1,187 @@
+{
+"key": "d8badd58b2afed93cf1e381b",
+"model": "small.en",
+"text": "Why? Picture the machine as a stiff sheet. As gamma turns, its crowd changes only so fast. The truth climbs a steep ramp. Just above 0.86, the corridor opens.",
+"words": [
+{
+"w": "Why?",
+"start": 0.0,
+"end": 0.46,
+"p": 0.924
+},
+{
+"w": "Picture",
+"start": 1.58,
+"end": 1.58,
+"p": 0.984
+},
+{
+"w": "the",
+"start": 1.58,
+"end": 1.76,
+"p": 0.996
+},
+{
+"w": "machine",
+"start": 1.76,
+"end": 2.08,
+"p": 0.992
+},
+{
+"w": "as",
+"start": 2.08,
+"end": 2.28,
+"p": 0.962
+},
+{
+"w": "a",
+"start": 2.28,
+"end": 2.42,
+"p": 0.994
+},
+{
+"w": "stiff",
+"start": 2.42,
+"end": 2.74,
+"p": 0.997
+},
+{
+"w": "sheet.",
+"start": 2.74,
+"end": 3.2,
+"p": 0.996
+},
+{
+"w": "As",
+"start": 3.76,
+"end": 3.92,
+"p": 0.998
+},
+{
+"w": "gamma",
+"start": 3.92,
+"end": 4.18,
+"p": 0.948
+},
+{
+"w": "turns,",
+"start": 4.18,
+"end": 4.68,
+"p": 0.999
+},
+{
+"w": "its",
+"start": 5.2,
+"end": 5.32,
+"p": 0.959
+},
+{
+"w": "crowd",
+"start": 5.32,
+"end": 5.7,
+"p": 0.99
+},
+{
+"w": "changes",
+"start": 5.7,
+"end": 6.16,
+"p": 0.995
+},
+{
+"w": "only",
+"start": 6.16,
+"end": 6.56,
+"p": 0.998
+},
+{
+"w": "so",
+"start": 6.56,
+"end": 6.96,
+"p": 0.998
+},
+{
+"w": "fast.",
+"start": 6.96,
+"end": 7.5,
+"p": 1.0
+},
+{
+"w": "The",
+"start": 8.2,
+"end": 8.32,
+"p": 0.998
+},
+{
+"w": "truth",
+"start": 8.32,
+"end": 8.64,
+"p": 0.984
+},
+{
+"w": "climbs",
+"start": 8.64,
+"end": 9.1,
+"p": 0.998
+},
+{
+"w": "a",
+"start": 9.1,
+"end": 9.3,
+"p": 0.995
+},
+{
+"w": "steep",
+"start": 9.3,
+"end": 9.68,
+"p": 0.999
+},
+{
+"w": "ramp.",
+"start": 9.68,
+"end": 10.14,
+"p": 1.0
+},
+{
+"w": "Just",
+"start": 10.78,
+"end": 11.02,
+"p": 0.995
+},
+{
+"w": "above",
+"start": 11.02,
+"end": 11.3,
+"p": 0.995
+},
+{
+"w": "0",
+"start": 11.3,
+"end": 11.74,
+"p": 0.963
+},
+{
+"w": ".86,",
+"start": 11.74,
+"end": 12.46,
+"p": 0.996
+},
+{
+"w": "the",
+"start": 13.16,
+"end": 13.3,
+"p": 0.998
+},
+{
+"w": "corridor",
+"start": 13.3,
+"end": 13.76,
+"p": 0.999
+},
+{
+"w": "opens.",
+"start": 13.76,
+"end": 14.34,
+"p": 0.997
+}
+]
+}

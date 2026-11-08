@@ -1,0 +1,79 @@
+{
+"key": "32b088295645ceeaf10c65a9",
+"model": "small.en",
+"text": "One question remains. From Snapshots, how well can we answer how often?",
+"words": [
+{
+"w": "One",
+"start": 0.0,
+"end": 0.34,
+"p": 0.925
+},
+{
+"w": "question",
+"start": 0.34,
+"end": 0.62,
+"p": 0.998
+},
+{
+"w": "remains.",
+"start": 0.62,
+"end": 1.22,
+"p": 0.998
+},
+{
+"w": "From",
+"start": 2.1,
+"end": 2.2,
+"p": 0.972
+},
+{
+"w": "Snapshots,",
+"start": 2.2,
+"end": 2.88,
+"p": 0.812
+},
+{
+"w": "how",
+"start": 3.5,
+"end": 3.62,
+"p": 0.839
+},
+{
+"w": "well",
+"start": 3.62,
+"end": 3.88,
+"p": 0.979
+},
+{
+"w": "can",
+"start": 3.88,
+"end": 4.12,
+"p": 0.997
+},
+{
+"w": "we",
+"start": 4.12,
+"end": 4.26,
+"p": 0.999
+},
+{
+"w": "answer",
+"start": 4.26,
+"end": 4.6,
+"p": 0.997
+},
+{
+"w": "how",
+"start": 4.6,
+"end": 4.82,
+"p": 0.934
+},
+{
+"w": "often?",
+"start": 4.82,
+"end": 5.16,
+"p": 1.0
+}
+]
+}

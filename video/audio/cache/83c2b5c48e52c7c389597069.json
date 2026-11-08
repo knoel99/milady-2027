@@ -1,0 +1,27 @@
+{
+ "text": "[calm, natural narrator voice] Everything else must be measured. First test: does the generator get the energy spectra right, within a tenth of a decade, at the settings it trained on?",
+ "voice": "536d3a5e000945adb7038665781a4aca",
+ "words": 27,
+ "scene": "10.7",
+ "para": 0,
+ "duration": 10.1878,
+ "latency_s": 2.3,
+ "created": "2026-11-08T08:13:10",
+ "provider": "fish",
+ "request": {
+  "temperature": 0.1,
+  "format": "mp3",
+  "mp3_bitrate": 192,
+  "sample_rate": 44100,
+  "latency": "normal",
+  "language": "en",
+  "normalize": true,
+  "condition_on_previous_chunks": true,
+  "prosody": {
+   "speed": 1.0,
+   "normalize_loudness": true
+  },
+  "text": "[calm, natural narrator voice] Everything else must be measured. First test: does the generator get the energy spectra right, within a tenth of a decade, at the settings it trained on?",
+  "reference_id": "536d3a5e000945adb7038665781a4aca"
+ }
+}

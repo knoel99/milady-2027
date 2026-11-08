@@ -1,0 +1,27 @@
+{
+ "text": "[calm, natural narrator voice] Back to the race: the flow stretches the field, and diffusion smudges it. Physicists write the very same race as a single equation.",
+ "voice": "536d3a5e000945adb7038665781a4aca",
+ "words": 23,
+ "scene": "03.1",
+ "para": 0,
+ "duration": 9.4563,
+ "latency_s": 2.4,
+ "created": "2026-11-08T08:08:01",
+ "provider": "fish",
+ "request": {
+  "temperature": 0.1,
+  "format": "mp3",
+  "mp3_bitrate": 192,
+  "sample_rate": 44100,
+  "latency": "normal",
+  "language": "en",
+  "normalize": true,
+  "condition_on_previous_chunks": true,
+  "prosody": {
+   "speed": 1.0,
+   "normalize_loudness": true
+  },
+  "text": "[calm, natural narrator voice] Back to the race: the flow stretches the field, and diffusion smudges it. Physicists write the very same race as a single equation.",
+  "reference_id": "536d3a5e000945adb7038665781a4aca"
+ }
+}

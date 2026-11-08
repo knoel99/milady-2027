@@ -1,0 +1,127 @@
+{
+"key": "d167397d861ba42b7c998c43",
+"model": "small.en",
+"text": "So one threshold reads about 31 or 52 to 71. A generator conditioned on RM must say which it means.",
+"words": [
+{
+"w": "So",
+"start": 0.0,
+"end": 0.3,
+"p": 0.622
+},
+{
+"w": "one",
+"start": 0.3,
+"end": 0.58,
+"p": 0.75
+},
+{
+"w": "threshold",
+"start": 0.58,
+"end": 1.04,
+"p": 0.993
+},
+{
+"w": "reads",
+"start": 1.04,
+"end": 1.38,
+"p": 0.997
+},
+{
+"w": "about",
+"start": 1.38,
+"end": 1.64,
+"p": 0.998
+},
+{
+"w": "31",
+"start": 1.64,
+"end": 2.14,
+"p": 0.943
+},
+{
+"w": "or",
+"start": 2.14,
+"end": 2.84,
+"p": 0.735
+},
+{
+"w": "52",
+"start": 2.84,
+"end": 3.5,
+"p": 0.995
+},
+{
+"w": "to",
+"start": 3.5,
+"end": 3.72,
+"p": 0.91
+},
+{
+"w": "71.",
+"start": 3.72,
+"end": 4.36,
+"p": 0.997
+},
+{
+"w": "A",
+"start": 5.26,
+"end": 5.42,
+"p": 0.994
+},
+{
+"w": "generator",
+"start": 5.42,
+"end": 5.8,
+"p": 0.994
+},
+{
+"w": "conditioned",
+"start": 5.8,
+"end": 6.32,
+"p": 0.944
+},
+{
+"w": "on",
+"start": 6.32,
+"end": 6.58,
+"p": 0.998
+},
+{
+"w": "RM",
+"start": 6.58,
+"end": 7.04,
+"p": 0.658
+},
+{
+"w": "must",
+"start": 7.04,
+"end": 7.56,
+"p": 0.971
+},
+{
+"w": "say",
+"start": 7.56,
+"end": 7.96,
+"p": 0.999
+},
+{
+"w": "which",
+"start": 7.96,
+"end": 8.2,
+"p": 0.972
+},
+{
+"w": "it",
+"start": 8.2,
+"end": 8.38,
+"p": 0.996
+},
+{
+"w": "means.",
+"start": 8.38,
+"end": 8.74,
+"p": 0.999
+}
+]
+}

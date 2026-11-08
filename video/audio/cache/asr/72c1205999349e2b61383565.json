@@ -1,0 +1,199 @@
+{
+"key": "72c1205999349e2b61383565",
+"model": "small.en",
+"text": "Now the walls. Many potentials draw the same field. Add the slope of any hill and the curl is unchanged. Choose among them without a fixed rule and the generator learns noise.",
+"words": [
+{
+"w": "Now",
+"start": 0.0,
+"end": 0.3,
+"p": 0.956
+},
+{
+"w": "the",
+"start": 0.3,
+"end": 0.48,
+"p": 0.898
+},
+{
+"w": "walls.",
+"start": 0.48,
+"end": 0.88,
+"p": 0.981
+},
+{
+"w": "Many",
+"start": 1.74,
+"end": 1.98,
+"p": 0.997
+},
+{
+"w": "potentials",
+"start": 1.98,
+"end": 2.68,
+"p": 0.988
+},
+{
+"w": "draw",
+"start": 2.68,
+"end": 2.84,
+"p": 0.996
+},
+{
+"w": "the",
+"start": 2.84,
+"end": 3.02,
+"p": 0.998
+},
+{
+"w": "same",
+"start": 3.02,
+"end": 3.3,
+"p": 1.0
+},
+{
+"w": "field.",
+"start": 3.3,
+"end": 3.76,
+"p": 0.996
+},
+{
+"w": "Add",
+"start": 4.52,
+"end": 4.68,
+"p": 0.994
+},
+{
+"w": "the",
+"start": 4.68,
+"end": 4.86,
+"p": 0.998
+},
+{
+"w": "slope",
+"start": 4.86,
+"end": 5.14,
+"p": 0.994
+},
+{
+"w": "of",
+"start": 5.14,
+"end": 5.34,
+"p": 0.998
+},
+{
+"w": "any",
+"start": 5.34,
+"end": 5.6,
+"p": 0.998
+},
+{
+"w": "hill",
+"start": 5.6,
+"end": 5.92,
+"p": 0.991
+},
+{
+"w": "and",
+"start": 5.92,
+"end": 6.38,
+"p": 0.711
+},
+{
+"w": "the",
+"start": 6.38,
+"end": 6.52,
+"p": 0.994
+},
+{
+"w": "curl",
+"start": 6.52,
+"end": 6.8,
+"p": 0.962
+},
+{
+"w": "is",
+"start": 6.8,
+"end": 7.0,
+"p": 0.998
+},
+{
+"w": "unchanged.",
+"start": 7.0,
+"end": 7.58,
+"p": 0.999
+},
+{
+"w": "Choose",
+"start": 8.64,
+"end": 8.88,
+"p": 0.991
+},
+{
+"w": "among",
+"start": 8.88,
+"end": 9.14,
+"p": 0.998
+},
+{
+"w": "them",
+"start": 9.14,
+"end": 9.4,
+"p": 0.999
+},
+{
+"w": "without",
+"start": 9.4,
+"end": 9.66,
+"p": 0.993
+},
+{
+"w": "a",
+"start": 9.66,
+"end": 9.84,
+"p": 0.996
+},
+{
+"w": "fixed",
+"start": 9.84,
+"end": 10.08,
+"p": 0.999
+},
+{
+"w": "rule",
+"start": 10.08,
+"end": 10.48,
+"p": 0.999
+},
+{
+"w": "and",
+"start": 10.48,
+"end": 11.06,
+"p": 0.717
+},
+{
+"w": "the",
+"start": 11.06,
+"end": 11.2,
+"p": 0.998
+},
+{
+"w": "generator",
+"start": 11.2,
+"end": 11.58,
+"p": 0.994
+},
+{
+"w": "learns",
+"start": 11.58,
+"end": 12.06,
+"p": 0.999
+},
+{
+"w": "noise.",
+"start": 12.06,
+"end": 12.48,
+"p": 0.997
+}
+]
+}

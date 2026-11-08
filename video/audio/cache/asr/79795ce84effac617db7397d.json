@@ -1,0 +1,145 @@
+{
+"key": "79795ce84effac617db7397d",
+"model": "small.en",
+"text": "A puzzle. How many cars cross this line each hour? No clock, just one photo from above, where every speedometer can be read.",
+"words": [
+{
+"w": "A",
+"start": 0.0,
+"end": 0.22,
+"p": 0.731
+},
+{
+"w": "puzzle.",
+"start": 0.22,
+"end": 0.56,
+"p": 0.864
+},
+{
+"w": "How",
+"start": 1.5,
+"end": 1.62,
+"p": 0.99
+},
+{
+"w": "many",
+"start": 1.62,
+"end": 1.82,
+"p": 0.999
+},
+{
+"w": "cars",
+"start": 1.82,
+"end": 2.18,
+"p": 0.998
+},
+{
+"w": "cross",
+"start": 2.18,
+"end": 2.5,
+"p": 0.989
+},
+{
+"w": "this",
+"start": 2.5,
+"end": 2.76,
+"p": 0.995
+},
+{
+"w": "line",
+"start": 2.76,
+"end": 3.1,
+"p": 0.998
+},
+{
+"w": "each",
+"start": 3.1,
+"end": 3.4,
+"p": 0.993
+},
+{
+"w": "hour?",
+"start": 3.4,
+"end": 3.82,
+"p": 0.999
+},
+{
+"w": "No",
+"start": 4.48,
+"end": 4.68,
+"p": 0.992
+},
+{
+"w": "clock,",
+"start": 4.68,
+"end": 5.06,
+"p": 0.999
+},
+{
+"w": "just",
+"start": 5.52,
+"end": 5.78,
+"p": 0.993
+},
+{
+"w": "one",
+"start": 5.78,
+"end": 6.12,
+"p": 0.985
+},
+{
+"w": "photo",
+"start": 6.12,
+"end": 6.48,
+"p": 0.999
+},
+{
+"w": "from",
+"start": 6.48,
+"end": 6.72,
+"p": 0.998
+},
+{
+"w": "above,",
+"start": 6.72,
+"end": 7.08,
+"p": 0.998
+},
+{
+"w": "where",
+"start": 7.5,
+"end": 7.76,
+"p": 0.994
+},
+{
+"w": "every",
+"start": 7.76,
+"end": 8.16,
+"p": 0.998
+},
+{
+"w": "speedometer",
+"start": 8.16,
+"end": 8.72,
+"p": 0.994
+},
+{
+"w": "can",
+"start": 8.72,
+"end": 9.0,
+"p": 0.998
+},
+{
+"w": "be",
+"start": 9.0,
+"end": 9.14,
+"p": 0.999
+},
+{
+"w": "read.",
+"start": 9.14,
+"end": 9.44,
+"p": 0.985
+}
+]
+}

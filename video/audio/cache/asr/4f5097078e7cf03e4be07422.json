@@ -1,0 +1,259 @@
+{
+"key": "4f5097078e7cf03e4be07422",
+"model": "small.en",
+"text": "But there is a trap. Even for a balanced crowd, a batch's average wobbles. Its square grows with the scatter. So training also squeezes the scatter, nudging every snapshot toward balance, toward the spike. It showed up while building this experiment. treatment.",
+"words": [
+{
+"w": "But",
+"start": 0.0,
+"end": 0.22,
+"p": 0.804
+},
+{
+"w": "there",
+"start": 0.22,
+"end": 0.38,
+"p": 0.985
+},
+{
+"w": "is",
+"start": 0.38,
+"end": 0.52,
+"p": 0.99
+},
+{
+"w": "a",
+"start": 0.52,
+"end": 0.66,
+"p": 0.997
+},
+{
+"w": "trap.",
+"start": 0.66,
+"end": 1.02,
+"p": 0.999
+},
+{
+"w": "Even",
+"start": 1.8,
+"end": 1.98,
+"p": 0.997
+},
+{
+"w": "for",
+"start": 1.98,
+"end": 2.2,
+"p": 0.999
+},
+{
+"w": "a",
+"start": 2.2,
+"end": 2.36,
+"p": 0.998
+},
+{
+"w": "balanced",
+"start": 2.36,
+"end": 2.7,
+"p": 0.997
+},
+{
+"w": "crowd,",
+"start": 2.7,
+"end": 3.18,
+"p": 0.999
+},
+{
+"w": "a",
+"start": 3.7,
+"end": 3.76,
+"p": 0.993
+},
+{
+"w": "batch's",
+"start": 3.76,
+"end": 4.2,
+"p": 0.965
+},
+{
+"w": "average",
+"start": 4.2,
+"end": 4.64,
+"p": 0.999
+},
+{
+"w": "wobbles.",
+"start": 4.64,
+"end": 5.32,
+"p": 0.996
+},
+{
+"w": "Its",
+"start": 5.84,
+"end": 5.96,
+"p": 0.775
+},
+{
+"w": "square",
+"start": 5.96,
+"end": 6.42,
+"p": 0.996
+},
+{
+"w": "grows",
+"start": 6.42,
+"end": 6.8,
+"p": 0.999
+},
+{
+"w": "with",
+"start": 6.8,
+"end": 7.1,
+"p": 0.999
+},
+{
+"w": "the",
+"start": 7.1,
+"end": 7.24,
+"p": 0.992
+},
+{
+"w": "scatter.",
+"start": 7.24,
+"end": 7.64,
+"p": 0.979
+},
+{
+"w": "So",
+"start": 8.38,
+"end": 8.52,
+"p": 0.998
+},
+{
+"w": "training",
+"start": 8.52,
+"end": 8.84,
+"p": 0.957
+},
+{
+"w": "also",
+"start": 8.84,
+"end": 9.32,
+"p": 0.999
+},
+{
+"w": "squeezes",
+"start": 9.32,
+"end": 9.92,
+"p": 0.998
+},
+{
+"w": "the",
+"start": 9.92,
+"end": 10.1,
+"p": 0.999
+},
+{
+"w": "scatter,",
+"start": 10.1,
+"end": 10.54,
+"p": 0.998
+},
+{
+"w": "nudging",
+"start": 11.08,
+"end": 11.44,
+"p": 0.999
+},
+{
+"w": "every",
+"start": 11.44,
+"end": 11.84,
+"p": 0.998
+},
+{
+"w": "snapshot",
+"start": 11.84,
+"end": 12.42,
+"p": 0.995
+},
+{
+"w": "toward",
+"start": 12.42,
+"end": 12.76,
+"p": 0.975
+},
+{
+"w": "balance,",
+"start": 12.76,
+"end": 13.3,
+"p": 0.997
+},
+{
+"w": "toward",
+"start": 13.9,
+"end": 14.14,
+"p": 0.993
+},
+{
+"w": "the",
+"start": 14.14,
+"end": 14.32,
+"p": 0.999
+},
+{
+"w": "spike.",
+"start": 14.32,
+"end": 14.66,
+"p": 0.999
+},
+{
+"w": "It",
+"start": 15.66,
+"end": 15.86,
+"p": 0.997
+},
+{
+"w": "showed",
+"start": 15.86,
+"end": 16.12,
+"p": 0.978
+},
+{
+"w": "up",
+"start": 16.12,
+"end": 16.36,
+"p": 0.999
+},
+{
+"w": "while",
+"start": 16.36,
+"end": 16.54,
+"p": 0.998
+},
+{
+"w": "building",
+"start": 16.54,
+"end": 16.94,
+"p": 0.999
+},
+{
+"w": "this",
+"start": 16.94,
+"end": 17.18,
+"p": 0.999
+},
+{
+"w": "experiment.",
+"start": 17.18,
+"end": 17.66,
+"p": 1.0
+},
+{
+"w": "treatment.",
+"start": 17.66,
+"end": 17.8,
+"p": 0.038
+}
+]
+}

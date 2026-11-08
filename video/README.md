@@ -84,6 +84,7 @@ make check U=ch04 LANG=fr        # une image par repère avec le minutage franç
   rendus de `out/scenes_fr/`, minutage `script/_build/<coupe>_fr_cues.json`, pistes de narration
   `audio/scenes_fr/`. Rien de la version anglaise n'est recalculé ni re-rendu par une construction française.
 - **Cache** : indexé par (langue, texte, voix, réglages) ; les clés anglaises sont inchangées.
+- **Cache versionné** : les `audio/cache/*.mp3` et leurs `.json` sont dans git (≈ 245 Mo, 751 paragraphes EN + FR). Après un nouveau clone, `make film` redécode les `.wav` depuis les mp3 sans appel à Fish ; seuls les paragraphes dont le texte a changé sont resynthétisés (clé `FISH` requise, voir `NARRATION.md`). Pensez à committer les nouveaux mp3 du cache après une modification.
 - Le minutage français est plus long (+15 à 20 % attendus) : `make plan LANG=fr` ne signale une scène qu'au-delà
   de +40 % de sa durée cible.
 

@@ -1,0 +1,181 @@
+{
+"key": "2623a80f6c3de41dfc30d7bf",
+"model": "small.en",
+"text": "A theorem. At a true jump, a smooth machine misses by at least half of it, unless it is very supple or told which state the system is in.",
+"words": [
+{
+"w": "A",
+"start": 0.0,
+"end": 0.26,
+"p": 0.696
+},
+{
+"w": "theorem.",
+"start": 0.26,
+"end": 0.6,
+"p": 0.867
+},
+{
+"w": "At",
+"start": 1.46,
+"end": 1.56,
+"p": 0.975
+},
+{
+"w": "a",
+"start": 1.56,
+"end": 1.76,
+"p": 0.992
+},
+{
+"w": "true",
+"start": 1.76,
+"end": 1.94,
+"p": 0.993
+},
+{
+"w": "jump,",
+"start": 1.94,
+"end": 2.34,
+"p": 0.997
+},
+{
+"w": "a",
+"start": 2.86,
+"end": 2.88,
+"p": 0.996
+},
+{
+"w": "smooth",
+"start": 2.88,
+"end": 3.22,
+"p": 0.996
+},
+{
+"w": "machine",
+"start": 3.22,
+"end": 3.66,
+"p": 0.997
+},
+{
+"w": "misses",
+"start": 3.66,
+"end": 4.04,
+"p": 0.999
+},
+{
+"w": "by",
+"start": 4.04,
+"end": 4.32,
+"p": 0.998
+},
+{
+"w": "at",
+"start": 4.32,
+"end": 4.44,
+"p": 0.997
+},
+{
+"w": "least",
+"start": 4.44,
+"end": 4.68,
+"p": 0.998
+},
+{
+"w": "half",
+"start": 4.68,
+"end": 5.0,
+"p": 0.998
+},
+{
+"w": "of",
+"start": 5.0,
+"end": 5.18,
+"p": 0.997
+},
+{
+"w": "it,",
+"start": 5.18,
+"end": 5.54,
+"p": 0.999
+},
+{
+"w": "unless",
+"start": 6.04,
+"end": 6.38,
+"p": 0.997
+},
+{
+"w": "it",
+"start": 6.38,
+"end": 6.56,
+"p": 0.998
+},
+{
+"w": "is",
+"start": 6.56,
+"end": 6.68,
+"p": 0.998
+},
+{
+"w": "very",
+"start": 6.68,
+"end": 7.04,
+"p": 0.999
+},
+{
+"w": "supple",
+"start": 7.04,
+"end": 7.64,
+"p": 0.998
+},
+{
+"w": "or",
+"start": 7.64,
+"end": 8.1,
+"p": 0.879
+},
+{
+"w": "told",
+"start": 8.1,
+"end": 8.42,
+"p": 0.997
+},
+{
+"w": "which",
+"start": 8.42,
+"end": 8.78,
+"p": 0.993
+},
+{
+"w": "state",
+"start": 8.78,
+"end": 9.1,
+"p": 0.999
+},
+{
+"w": "the",
+"start": 9.1,
+"end": 9.32,
+"p": 0.997
+},
+{
+"w": "system",
+"start": 9.32,
+"end": 9.56,
+"p": 0.999
+},
+{
+"w": "is",
+"start": 9.56,
+"end": 9.78,
+"p": 0.998
+},
+{
+"w": "in.",
+"start": 9.78,
+"end": 10.06,
+"p": 0.999
+}
+]
+}

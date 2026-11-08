@@ -1,0 +1,27 @@
+{
+ "text": "[calm, natural narrator voice] In the periodic box, two scalars, poloidal and toroidal, can replace a potential's three components. Their field is divergence-free, with no gauge: the plan stores its box data that way.",
+ "voice": "536d3a5e000945adb7038665781a4aca",
+ "words": 30,
+ "scene": "X6.3",
+ "para": 0,
+ "duration": 13.8971,
+ "latency_s": 2.4,
+ "created": "2026-11-08T08:13:31",
+ "provider": "fish",
+ "request": {
+  "temperature": 0.1,
+  "format": "mp3",
+  "mp3_bitrate": 192,
+  "sample_rate": 44100,
+  "latency": "normal",
+  "language": "en",
+  "normalize": true,
+  "condition_on_previous_chunks": true,
+  "prosody": {
+   "speed": 1.0,
+   "normalize_loudness": true
+  },
+  "text": "[calm, natural narrator voice] In the periodic box, two scalars, poloidal and toroidal, can replace a potential's three components. Their field is divergence-free, with no gauge: the plan stores its box data that way.",
+  "reference_id": "536d3a5e000945adb7038665781a4aca"
+ }
+}

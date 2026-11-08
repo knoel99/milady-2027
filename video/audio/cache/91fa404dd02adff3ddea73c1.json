@@ -1,0 +1,28 @@
+{
+ "text": "[calm, natural narrator voice] La repondération ne peut pas aller là où le modèle n'est jamais allé. La matrice des risques du projet de thèse le confirme : la repondération seule n'est pas une solution de repli.",
+ "voice": "536d3a5e000945adb7038665781a4aca",
+ "words": 32,
+ "scene": "X3.3",
+ "para": 3,
+ "lang": "fr",
+ "duration": 11.6768,
+ "latency_s": 2.4,
+ "created": "2026-11-08T10:01:26",
+ "provider": "fish",
+ "request": {
+  "temperature": 0.1,
+  "format": "mp3",
+  "mp3_bitrate": 192,
+  "sample_rate": 44100,
+  "latency": "normal",
+  "language": "fr",
+  "normalize": true,
+  "condition_on_previous_chunks": true,
+  "prosody": {
+   "speed": 1.0,
+   "normalize_loudness": true
+  },
+  "text": "[calm, natural narrator voice] La repondération ne peut pas aller là où le modèle n'est jamais allé. La matrice des risques du projet de thèse le confirme : la repondération seule n'est pas une solution de repli.",
+  "reference_id": "536d3a5e000945adb7038665781a4aca"
+ }
+}

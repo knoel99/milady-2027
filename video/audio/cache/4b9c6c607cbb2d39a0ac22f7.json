@@ -1,0 +1,28 @@
+{
+ "text": "[calm, natural narrator voice] Sur de petits cas tests, cela marche en partie. Le miroir est garanti par construction, à chaque réglage. Sur les trois cadrans, la fréquence des passages par zéro est à peu près juste loin du seuil, et médiocre tout près. Une machine qui varie en douceur arrondit un changement abrupt. Les tests à plus grande échelle, en trois dimensions et dans la géométrie d'expériences réelles, sont écrits sous forme de paris.",
+ "voice": "536d3a5e000945adb7038665781a4aca",
+ "words": 71,
+ "scene": "11.2",
+ "para": 2,
+ "lang": "fr",
+ "duration": 26.5404,
+ "latency_s": 4.9,
+ "created": "2026-11-08T10:05:25",
+ "provider": "fish",
+ "request": {
+  "temperature": 0.1,
+  "format": "mp3",
+  "mp3_bitrate": 192,
+  "sample_rate": 44100,
+  "latency": "normal",
+  "language": "fr",
+  "normalize": true,
+  "condition_on_previous_chunks": true,
+  "prosody": {
+   "speed": 1.0,
+   "normalize_loudness": true
+  },
+  "text": "[calm, natural narrator voice] Sur de petits cas tests, cela marche en partie. Le miroir est garanti par construction, à chaque réglage. Sur les trois cadrans, la fréquence des passages par zéro est à peu près juste loin du seuil, et médiocre tout près. Une machine qui varie en douceur arrondit un changement abrupt. Les tests à plus grande échelle, en trois dimensions et dans la géométrie d'expériences réelles, sont écrits sous forme de paris.",
+  "reference_id": "536d3a5e000945adb7038665781a4aca"
+ }
+}

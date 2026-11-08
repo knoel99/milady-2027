@@ -1,0 +1,289 @@
+{
+"key": "669a21c2988d78ca059cc7a3",
+"model": "small.en",
+"text": "Follow one campaign down the line. One command reads the recipe, the flat sheet, 11 diffusivities. The launcher opens one task per setting. Each integrates 16 runs side by side and writes one file. Each task adds a ledger row, its status, checksum, and wall time. time.",
+"words": [
+{
+"w": "Follow",
+"start": 0.0,
+"end": 0.36,
+"p": 0.899
+},
+{
+"w": "one",
+"start": 0.36,
+"end": 0.66,
+"p": 0.985
+},
+{
+"w": "campaign",
+"start": 0.66,
+"end": 1.14,
+"p": 0.996
+},
+{
+"w": "down",
+"start": 1.14,
+"end": 1.46,
+"p": 0.999
+},
+{
+"w": "the",
+"start": 1.46,
+"end": 1.64,
+"p": 0.999
+},
+{
+"w": "line.",
+"start": 1.64,
+"end": 1.98,
+"p": 0.999
+},
+{
+"w": "One",
+"start": 2.72,
+"end": 2.96,
+"p": 0.991
+},
+{
+"w": "command",
+"start": 2.96,
+"end": 3.32,
+"p": 0.993
+},
+{
+"w": "reads",
+"start": 3.32,
+"end": 3.64,
+"p": 0.998
+},
+{
+"w": "the",
+"start": 3.64,
+"end": 3.84,
+"p": 0.999
+},
+{
+"w": "recipe,",
+"start": 3.84,
+"end": 4.24,
+"p": 0.998
+},
+{
+"w": "the",
+"start": 4.76,
+"end": 4.94,
+"p": 0.985
+},
+{
+"w": "flat",
+"start": 4.94,
+"end": 5.22,
+"p": 0.956
+},
+{
+"w": "sheet,",
+"start": 5.22,
+"end": 5.62,
+"p": 0.996
+},
+{
+"w": "11",
+"start": 6.24,
+"end": 6.46,
+"p": 0.555
+},
+{
+"w": "diffusivities.",
+"start": 6.46,
+"end": 7.26,
+"p": 0.968
+},
+{
+"w": "The",
+"start": 8.04,
+"end": 8.18,
+"p": 0.998
+},
+{
+"w": "launcher",
+"start": 8.18,
+"end": 8.5,
+"p": 0.958
+},
+{
+"w": "opens",
+"start": 8.5,
+"end": 8.9,
+"p": 0.998
+},
+{
+"w": "one",
+"start": 8.9,
+"end": 9.3,
+"p": 0.958
+},
+{
+"w": "task",
+"start": 9.3,
+"end": 9.72,
+"p": 0.995
+},
+{
+"w": "per",
+"start": 9.72,
+"end": 10.0,
+"p": 0.998
+},
+{
+"w": "setting.",
+"start": 10.0,
+"end": 10.4,
+"p": 0.996
+},
+{
+"w": "Each",
+"start": 11.08,
+"end": 11.3,
+"p": 0.997
+},
+{
+"w": "integrates",
+"start": 11.3,
+"end": 11.78,
+"p": 0.94
+},
+{
+"w": "16",
+"start": 11.78,
+"end": 12.38,
+"p": 0.981
+},
+{
+"w": "runs",
+"start": 12.38,
+"end": 12.86,
+"p": 0.991
+},
+{
+"w": "side",
+"start": 12.86,
+"end": 13.2,
+"p": 0.978
+},
+{
+"w": "by",
+"start": 13.2,
+"end": 13.42,
+"p": 0.809
+},
+{
+"w": "side",
+"start": 13.42,
+"end": 13.88,
+"p": 1.0
+},
+{
+"w": "and",
+"start": 13.88,
+"end": 14.36,
+"p": 0.82
+},
+{
+"w": "writes",
+"start": 14.36,
+"end": 14.62,
+"p": 0.998
+},
+{
+"w": "one",
+"start": 14.62,
+"end": 15.02,
+"p": 0.967
+},
+{
+"w": "file.",
+"start": 15.02,
+"end": 15.5,
+"p": 0.999
+},
+{
+"w": "Each",
+"start": 16.34,
+"end": 16.54,
+"p": 0.997
+},
+{
+"w": "task",
+"start": 16.54,
+"end": 17.0,
+"p": 0.998
+},
+{
+"w": "adds",
+"start": 17.0,
+"end": 17.34,
+"p": 0.996
+},
+{
+"w": "a",
+"start": 17.34,
+"end": 17.5,
+"p": 0.999
+},
+{
+"w": "ledger",
+"start": 17.5,
+"end": 17.78,
+"p": 0.928
+},
+{
+"w": "row,",
+"start": 17.78,
+"end": 18.16,
+"p": 0.995
+},
+{
+"w": "its",
+"start": 18.66,
+"end": 18.82,
+"p": 0.872
+},
+{
+"w": "status,",
+"start": 18.82,
+"end": 19.3,
+"p": 0.996
+},
+{
+"w": "checksum,",
+"start": 19.94,
+"end": 20.38,
+"p": 0.976
+},
+{
+"w": "and",
+"start": 20.66,
+"end": 20.74,
+"p": 0.999
+},
+{
+"w": "wall",
+"start": 20.74,
+"end": 21.02,
+"p": 0.913
+},
+{
+"w": "time.",
+"start": 21.02,
+"end": 21.38,
+"p": 0.957
+},
+{
+"w": "time.",
+"start": 21.38,
+"end": 21.5,
+"p": 0.588
+}
+]
+}

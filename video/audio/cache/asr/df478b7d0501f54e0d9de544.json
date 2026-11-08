@@ -1,0 +1,91 @@
+{
+"key": "df478b7d0501f54e0d9de544",
+"model": "small.en",
+"text": "The plans bet. Tell it the branch, and its threshold error at least halves.",
+"words": [
+{
+"w": "The",
+"start": 0.0,
+"end": 0.2,
+"p": 0.867
+},
+{
+"w": "plans",
+"start": 0.2,
+"end": 0.5,
+"p": 0.98
+},
+{
+"w": "bet.",
+"start": 0.5,
+"end": 0.84,
+"p": 0.978
+},
+{
+"w": "Tell",
+"start": 1.7,
+"end": 1.7,
+"p": 0.952
+},
+{
+"w": "it",
+"start": 1.7,
+"end": 1.84,
+"p": 0.994
+},
+{
+"w": "the",
+"start": 1.84,
+"end": 1.96,
+"p": 0.996
+},
+{
+"w": "branch,",
+"start": 1.96,
+"end": 2.3,
+"p": 0.967
+},
+{
+"w": "and",
+"start": 2.6,
+"end": 2.74,
+"p": 0.997
+},
+{
+"w": "its",
+"start": 2.74,
+"end": 2.9,
+"p": 0.763
+},
+{
+"w": "threshold",
+"start": 2.9,
+"end": 3.36,
+"p": 0.985
+},
+{
+"w": "error",
+"start": 3.36,
+"end": 3.7,
+"p": 0.997
+},
+{
+"w": "at",
+"start": 3.7,
+"end": 3.96,
+"p": 0.993
+},
+{
+"w": "least",
+"start": 3.96,
+"end": 4.26,
+"p": 0.998
+},
+{
+"w": "halves.",
+"start": 4.26,
+"end": 4.74,
+"p": 0.972
+}
+]
+}

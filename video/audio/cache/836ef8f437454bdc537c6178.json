@@ -1,0 +1,27 @@
+{
+ "text": "[calm, natural narrator voice] So one threshold reads about thirty-one, or fifty-two to seventy-one. A generator conditioned on <|phoneme_start|>AA1 R EH1 M<|phoneme_end|> must say which it means.",
+ "voice": "536d3a5e000945adb7038665781a4aca",
+ "words": 20,
+ "scene": "X6.0",
+ "para": 1,
+ "duration": 9.587,
+ "latency_s": 2.1,
+ "created": "2026-11-08T08:13:20",
+ "provider": "fish",
+ "request": {
+  "temperature": 0.1,
+  "format": "mp3",
+  "mp3_bitrate": 192,
+  "sample_rate": 44100,
+  "latency": "normal",
+  "language": "en",
+  "normalize": true,
+  "condition_on_previous_chunks": true,
+  "prosody": {
+   "speed": 1.0,
+   "normalize_loudness": true
+  },
+  "text": "[calm, natural narrator voice] So one threshold reads about thirty-one, or fifty-two to seventy-one. A generator conditioned on <|phoneme_start|>AA1 R EH1 M<|phoneme_end|> must say which it means.",
+  "reference_id": "536d3a5e000945adb7038665781a4aca"
+ }
+}

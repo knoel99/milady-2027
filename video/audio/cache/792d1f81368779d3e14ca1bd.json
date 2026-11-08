@@ -1,0 +1,27 @@
+{
+ "text": "[calm, natural narrator voice] But a strong field pushes back on the flow, as it braked the copper disc: the line bends into a plateau. These are the kinematic and dynamic regimes. Flips live on the plateau.",
+ "voice": "536d3a5e000945adb7038665781a4aca",
+ "words": 33,
+ "scene": "03.2",
+ "para": 1,
+ "duration": 12.9306,
+ "latency_s": 2.7,
+ "created": "2026-11-08T08:08:07",
+ "provider": "fish",
+ "request": {
+  "temperature": 0.1,
+  "format": "mp3",
+  "mp3_bitrate": 192,
+  "sample_rate": 44100,
+  "latency": "normal",
+  "language": "en",
+  "normalize": true,
+  "condition_on_previous_chunks": true,
+  "prosody": {
+   "speed": 1.0,
+   "normalize_loudness": true
+  },
+  "text": "[calm, natural narrator voice] But a strong field pushes back on the flow, as it braked the copper disc: the line bends into a plateau. These are the kinematic and dynamic regimes. Flips live on the plateau.",
+  "reference_id": "536d3a5e000945adb7038665781a4aca"
+ }
+}

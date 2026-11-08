@@ -1,0 +1,27 @@
+{
+ "text": "[calm, natural narrator voice] Picture the flow as a conveyor belt that does not feel its cargo. A weak field rides on the imposed flow, and fades or grows exponentially. On a log scale: a straight line, whose slope is the growth rate.",
+ "voice": "536d3a5e000945adb7038665781a4aca",
+ "words": 39,
+ "scene": "03.2",
+ "para": 0,
+ "duration": 15.8563,
+ "latency_s": 3.2,
+ "created": "2026-11-08T08:08:05",
+ "provider": "fish",
+ "request": {
+  "temperature": 0.1,
+  "format": "mp3",
+  "mp3_bitrate": 192,
+  "sample_rate": 44100,
+  "latency": "normal",
+  "language": "en",
+  "normalize": true,
+  "condition_on_previous_chunks": true,
+  "prosody": {
+   "speed": 1.0,
+   "normalize_loudness": true
+  },
+  "text": "[calm, natural narrator voice] Picture the flow as a conveyor belt that does not feel its cargo. A weak field rides on the imposed flow, and fades or grows exponentially. On a log scale: a straight line, whose slope is the growth rate.",
+  "reference_id": "536d3a5e000945adb7038665781a4aca"
+ }
+}

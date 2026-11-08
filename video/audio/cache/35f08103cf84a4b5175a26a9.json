@@ -1,0 +1,28 @@
+{
+ "text": "[calm, natural narrator voice] La formule de Raïsse ne demande donc que des instantanés et les équations, mais des instantanés nombreux et bon marché. Pourtant, les simulations de vraies dynamos n'existent que pour quelques réglages. Entre les points, pas la moindre boîte à chaussures. Comment obtenir des instantanés pour un réglage que personne n'a simulé ?",
+ "voice": "536d3a5e000945adb7038665781a4aca",
+ "words": 51,
+ "scene": "05.5",
+ "para": 0,
+ "lang": "fr",
+ "duration": 20.3233,
+ "latency_s": 4.4,
+ "created": "2026-11-08T09:59:21",
+ "provider": "fish",
+ "request": {
+  "temperature": 0.1,
+  "format": "mp3",
+  "mp3_bitrate": 192,
+  "sample_rate": 44100,
+  "latency": "normal",
+  "language": "fr",
+  "normalize": true,
+  "condition_on_previous_chunks": true,
+  "prosody": {
+   "speed": 1.0,
+   "normalize_loudness": true
+  },
+  "text": "[calm, natural narrator voice] La formule de Raïsse ne demande donc que des instantanés et les équations, mais des instantanés nombreux et bon marché. Pourtant, les simulations de vraies dynamos n'existent que pour quelques réglages. Entre les points, pas la moindre boîte à chaussures. Comment obtenir des instantanés pour un réglage que personne n'a simulé ?",
+  "reference_id": "536d3a5e000945adb7038665781a4aca"
+ }
+}

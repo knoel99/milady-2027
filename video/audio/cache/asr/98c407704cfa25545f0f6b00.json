@@ -1,0 +1,181 @@
+{
+"key": "98c407704cfa25545f0f6b00",
+"model": "small.en",
+"text": "The VKS bet would train a generator on the partner simulations of the sodium experiment. In their reference run, four patterns dominate—a dipole, a quadrupole, and two flow patterns.",
+"words": [
+{
+"w": "The",
+"start": 0.0,
+"end": 0.22,
+"p": 0.955
+},
+{
+"w": "VKS",
+"start": 0.22,
+"end": 0.82,
+"p": 0.956
+},
+{
+"w": "bet",
+"start": 0.82,
+"end": 1.16,
+"p": 0.467
+},
+{
+"w": "would",
+"start": 1.16,
+"end": 1.44,
+"p": 0.995
+},
+{
+"w": "train",
+"start": 1.44,
+"end": 1.7,
+"p": 0.999
+},
+{
+"w": "a",
+"start": 1.7,
+"end": 1.86,
+"p": 0.998
+},
+{
+"w": "generator",
+"start": 1.86,
+"end": 2.26,
+"p": 0.998
+},
+{
+"w": "on",
+"start": 2.26,
+"end": 2.5,
+"p": 0.995
+},
+{
+"w": "the",
+"start": 2.5,
+"end": 2.66,
+"p": 0.991
+},
+{
+"w": "partner",
+"start": 2.66,
+"end": 2.9,
+"p": 0.918
+},
+{
+"w": "simulations",
+"start": 2.9,
+"end": 3.6,
+"p": 0.831
+},
+{
+"w": "of",
+"start": 3.6,
+"end": 3.86,
+"p": 0.997
+},
+{
+"w": "the",
+"start": 3.86,
+"end": 3.98,
+"p": 0.998
+},
+{
+"w": "sodium",
+"start": 3.98,
+"end": 4.36,
+"p": 0.971
+},
+{
+"w": "experiment.",
+"start": 4.36,
+"end": 5.0,
+"p": 0.999
+},
+{
+"w": "In",
+"start": 5.82,
+"end": 5.94,
+"p": 0.996
+},
+{
+"w": "their",
+"start": 5.94,
+"end": 6.1,
+"p": 0.997
+},
+{
+"w": "reference",
+"start": 6.1,
+"end": 6.54,
+"p": 0.996
+},
+{
+"w": "run,",
+"start": 6.54,
+"end": 6.88,
+"p": 0.988
+},
+{
+"w": "four",
+"start": 7.34,
+"end": 7.6,
+"p": 0.861
+},
+{
+"w": "patterns",
+"start": 7.6,
+"end": 8.1,
+"p": 0.991
+},
+{
+"w": "dominate—a",
+"start": 8.1,
+"end": 9.4,
+"p": 0.504
+},
+{
+"w": "dipole,",
+"start": 9.4,
+"end": 9.98,
+"p": 0.999
+},
+{
+"w": "a",
+"start": 10.4,
+"end": 10.48,
+"p": 0.997
+},
+{
+"w": "quadrupole,",
+"start": 10.48,
+"end": 11.24,
+"p": 0.956
+},
+{
+"w": "and",
+"start": 11.64,
+"end": 11.78,
+"p": 0.999
+},
+{
+"w": "two",
+"start": 11.78,
+"end": 12.1,
+"p": 0.992
+},
+{
+"w": "flow",
+"start": 12.1,
+"end": 12.44,
+"p": 0.995
+},
+{
+"w": "patterns.",
+"start": 12.44,
+"end": 12.88,
+"p": 0.996
+}
+]
+}

@@ -1,0 +1,28 @@
+{
+ "text": "[calm, natural narrator voice] Dans un vrai métal, le fil s'estompe, comme de l'encre qui s'étale. La vitesse de cet estompage est fixée par la diffusivité magnétique du métal. Même écoulement, deux métaux. Dans un bon conducteur, l'estompage est lent : le fil reste net. Dans un mauvais conducteur, il est rapide : le fil se fond dans le flou.",
+ "voice": "536d3a5e000945adb7038665781a4aca",
+ "words": 54,
+ "scene": "02.1",
+ "para": 1,
+ "lang": "fr",
+ "duration": 24.529,
+ "latency_s": 4.9,
+ "created": "2026-11-08T09:57:28",
+ "provider": "fish",
+ "request": {
+  "temperature": 0.1,
+  "format": "mp3",
+  "mp3_bitrate": 192,
+  "sample_rate": 44100,
+  "latency": "normal",
+  "language": "fr",
+  "normalize": true,
+  "condition_on_previous_chunks": true,
+  "prosody": {
+   "speed": 1.0,
+   "normalize_loudness": true
+  },
+  "text": "[calm, natural narrator voice] Dans un vrai métal, le fil s'estompe, comme de l'encre qui s'étale. La vitesse de cet estompage est fixée par la diffusivité magnétique du métal. Même écoulement, deux métaux. Dans un bon conducteur, l'estompage est lent : le fil reste net. Dans un mauvais conducteur, il est rapide : le fil se fond dans le flou.",
+  "reference_id": "536d3a5e000945adb7038665781a4aca"
+ }
+}

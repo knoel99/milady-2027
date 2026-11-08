@@ -1,0 +1,85 @@
+{
+"key": "9a149e7a0f14cda8946bfdb9",
+"model": "small.en",
+"text": "At an open dot, the network snapshots join the shoebox beside simulated ones.",
+"words": [
+{
+"w": "At",
+"start": 0.0,
+"end": 0.22,
+"p": 0.928
+},
+{
+"w": "an",
+"start": 0.22,
+"end": 0.36,
+"p": 0.998
+},
+{
+"w": "open",
+"start": 0.36,
+"end": 0.64,
+"p": 0.995
+},
+{
+"w": "dot,",
+"start": 0.64,
+"end": 0.98,
+"p": 0.982
+},
+{
+"w": "the",
+"start": 1.44,
+"end": 1.5,
+"p": 0.996
+},
+{
+"w": "network",
+"start": 1.5,
+"end": 1.86,
+"p": 0.983
+},
+{
+"w": "snapshots",
+"start": 1.86,
+"end": 2.54,
+"p": 0.827
+},
+{
+"w": "join",
+"start": 2.54,
+"end": 3.0,
+"p": 0.968
+},
+{
+"w": "the",
+"start": 3.0,
+"end": 3.2,
+"p": 0.999
+},
+{
+"w": "shoebox",
+"start": 3.2,
+"end": 3.84,
+"p": 0.826
+},
+{
+"w": "beside",
+"start": 3.84,
+"end": 4.36,
+"p": 0.44
+},
+{
+"w": "simulated",
+"start": 4.36,
+"end": 4.9,
+"p": 0.996
+},
+{
+"w": "ones.",
+"start": 4.9,
+"end": 5.34,
+"p": 0.993
+}
+]
+}

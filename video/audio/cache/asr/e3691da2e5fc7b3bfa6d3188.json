@@ -1,0 +1,223 @@
+{
+"key": "e3691da2e5fc7b3bfa6d3188",
+"model": "small.en",
+"text": "A new instrument for the critic. In the flat sheet, field lines are contours of one potential. Lines loop around O points and cross at X points. On this periodic square, which kind is more common?",
+"words": [
+{
+"w": "A",
+"start": 0.0,
+"end": 0.24,
+"p": 0.681
+},
+{
+"w": "new",
+"start": 0.24,
+"end": 0.48,
+"p": 0.977
+},
+{
+"w": "instrument",
+"start": 0.48,
+"end": 0.9,
+"p": 0.994
+},
+{
+"w": "for",
+"start": 0.9,
+"end": 1.16,
+"p": 0.997
+},
+{
+"w": "the",
+"start": 1.16,
+"end": 1.3,
+"p": 0.996
+},
+{
+"w": "critic.",
+"start": 1.3,
+"end": 1.6,
+"p": 0.947
+},
+{
+"w": "In",
+"start": 2.54,
+"end": 2.58,
+"p": 0.989
+},
+{
+"w": "the",
+"start": 2.58,
+"end": 2.7,
+"p": 0.992
+},
+{
+"w": "flat",
+"start": 2.7,
+"end": 2.98,
+"p": 0.969
+},
+{
+"w": "sheet,",
+"start": 2.98,
+"end": 3.4,
+"p": 0.996
+},
+{
+"w": "field",
+"start": 4.02,
+"end": 4.16,
+"p": 0.99
+},
+{
+"w": "lines",
+"start": 4.16,
+"end": 4.46,
+"p": 0.994
+},
+{
+"w": "are",
+"start": 4.46,
+"end": 4.7,
+"p": 0.999
+},
+{
+"w": "contours",
+"start": 4.7,
+"end": 5.28,
+"p": 0.999
+},
+{
+"w": "of",
+"start": 5.28,
+"end": 5.46,
+"p": 0.999
+},
+{
+"w": "one",
+"start": 5.46,
+"end": 5.72,
+"p": 0.985
+},
+{
+"w": "potential.",
+"start": 5.72,
+"end": 6.3,
+"p": 0.998
+},
+{
+"w": "Lines",
+"start": 7.48,
+"end": 7.48,
+"p": 0.994
+},
+{
+"w": "loop",
+"start": 7.48,
+"end": 7.8,
+"p": 0.998
+},
+{
+"w": "around",
+"start": 7.8,
+"end": 8.12,
+"p": 0.999
+},
+{
+"w": "O",
+"start": 8.12,
+"end": 8.48,
+"p": 0.621
+},
+{
+"w": "points",
+"start": 8.48,
+"end": 8.82,
+"p": 0.734
+},
+{
+"w": "and",
+"start": 8.82,
+"end": 9.2,
+"p": 0.934
+},
+{
+"w": "cross",
+"start": 9.2,
+"end": 9.52,
+"p": 0.999
+},
+{
+"w": "at",
+"start": 9.52,
+"end": 9.74,
+"p": 0.997
+},
+{
+"w": "X",
+"start": 9.74,
+"end": 10.04,
+"p": 0.9
+},
+{
+"w": "points.",
+"start": 10.04,
+"end": 10.46,
+"p": 0.982
+},
+{
+"w": "On",
+"start": 11.38,
+"end": 11.52,
+"p": 0.995
+},
+{
+"w": "this",
+"start": 11.52,
+"end": 11.74,
+"p": 0.999
+},
+{
+"w": "periodic",
+"start": 11.74,
+"end": 12.24,
+"p": 0.997
+},
+{
+"w": "square,",
+"start": 12.24,
+"end": 12.84,
+"p": 0.999
+},
+{
+"w": "which",
+"start": 13.46,
+"end": 13.62,
+"p": 0.998
+},
+{
+"w": "kind",
+"start": 13.62,
+"end": 14.02,
+"p": 0.999
+},
+{
+"w": "is",
+"start": 14.02,
+"end": 14.22,
+"p": 0.999
+},
+{
+"w": "more",
+"start": 14.22,
+"end": 14.48,
+"p": 0.995
+},
+{
+"w": "common?",
+"start": 14.48,
+"end": 14.84,
+"p": 1.0
+}
+]
+}

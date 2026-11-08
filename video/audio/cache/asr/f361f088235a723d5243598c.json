@@ -1,0 +1,151 @@
+{
+"key": "f361f088235a723d5243598c",
+"model": "small.en",
+"text": "On the flat sheet, at the smallest test eta, the pole keeps 99%. At the three largest, it bottoms out. One snapshot in 500.",
+"words": [
+{
+"w": "On",
+"start": 0.0,
+"end": 0.24,
+"p": 0.948
+},
+{
+"w": "the",
+"start": 0.24,
+"end": 0.36,
+"p": 0.999
+},
+{
+"w": "flat",
+"start": 0.36,
+"end": 0.62,
+"p": 0.96
+},
+{
+"w": "sheet,",
+"start": 0.62,
+"end": 1.0,
+"p": 0.993
+},
+{
+"w": "at",
+"start": 1.26,
+"end": 1.4,
+"p": 0.996
+},
+{
+"w": "the",
+"start": 1.4,
+"end": 1.54,
+"p": 0.998
+},
+{
+"w": "smallest",
+"start": 1.54,
+"end": 1.96,
+"p": 0.996
+},
+{
+"w": "test",
+"start": 1.96,
+"end": 2.28,
+"p": 0.99
+},
+{
+"w": "eta,",
+"start": 2.28,
+"end": 2.78,
+"p": 0.763
+},
+{
+"w": "the",
+"start": 3.18,
+"end": 3.28,
+"p": 0.995
+},
+{
+"w": "pole",
+"start": 3.28,
+"end": 3.52,
+"p": 0.928
+},
+{
+"w": "keeps",
+"start": 3.52,
+"end": 3.86,
+"p": 0.998
+},
+{
+"w": "99%.",
+"start": 3.86,
+"end": 5.3,
+"p": 0.831
+},
+{
+"w": "At",
+"start": 5.3,
+"end": 6.02,
+"p": 0.994
+},
+{
+"w": "the",
+"start": 6.02,
+"end": 6.16,
+"p": 0.995
+},
+{
+"w": "three",
+"start": 6.16,
+"end": 6.42,
+"p": 0.739
+},
+{
+"w": "largest,",
+"start": 6.42,
+"end": 6.88,
+"p": 0.983
+},
+{
+"w": "it",
+"start": 7.26,
+"end": 7.44,
+"p": 0.998
+},
+{
+"w": "bottoms",
+"start": 7.44,
+"end": 7.84,
+"p": 0.999
+},
+{
+"w": "out.",
+"start": 7.84,
+"end": 8.14,
+"p": 0.995
+},
+{
+"w": "One",
+"start": 8.72,
+"end": 9.0,
+"p": 0.911
+},
+{
+"w": "snapshot",
+"start": 9.0,
+"end": 9.58,
+"p": 0.982
+},
+{
+"w": "in",
+"start": 9.58,
+"end": 9.92,
+"p": 0.98
+},
+{
+"w": "500.",
+"start": 9.92,
+"end": 10.44,
+"p": 0.965
+}
+]
+}

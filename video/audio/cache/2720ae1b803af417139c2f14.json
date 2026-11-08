@@ -1,0 +1,27 @@
+{
+ "text": "[calm, natural narrator voice] Which labels must each <|phoneme_start|>V IY1 K EY1 EH1 S<|phoneme_end|> snapshot carry: which <|phoneme_start|>AA1 R EH1 M<|phoneme_end|> definition, which wall condition, which iron permeability?",
+ "voice": "536d3a5e000945adb7038665781a4aca",
+ "words": 16,
+ "scene": "X6.Q",
+ "para": 0,
+ "duration": 8.4637,
+ "latency_s": 1.8,
+ "created": "2026-11-08T08:13:45",
+ "provider": "fish",
+ "request": {
+  "temperature": 0.1,
+  "format": "mp3",
+  "mp3_bitrate": 192,
+  "sample_rate": 44100,
+  "latency": "normal",
+  "language": "en",
+  "normalize": true,
+  "condition_on_previous_chunks": true,
+  "prosody": {
+   "speed": 1.0,
+   "normalize_loudness": true
+  },
+  "text": "[calm, natural narrator voice] Which labels must each <|phoneme_start|>V IY1 K EY1 EH1 S<|phoneme_end|> snapshot carry: which <|phoneme_start|>AA1 R EH1 M<|phoneme_end|> definition, which wall condition, which iron permeability?",
+  "reference_id": "536d3a5e000945adb7038665781a4aca"
+ }
+}

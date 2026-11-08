@@ -1,0 +1,27 @@
+{
+ "text": "[calm, natural narrator voice] On the right, what the staircase bets, each with the rule that will settle it. Each lamp shows a verdict only once its data file arrives, and the film is updated with it.",
+ "voice": "536d3a5e000945adb7038665781a4aca",
+ "words": 33,
+ "scene": "11.1",
+ "para": 1,
+ "duration": 12.6433,
+ "latency_s": 2.4,
+ "created": "2026-11-08T08:14:14",
+ "provider": "fish",
+ "request": {
+  "temperature": 0.1,
+  "format": "mp3",
+  "mp3_bitrate": 192,
+  "sample_rate": 44100,
+  "latency": "normal",
+  "language": "en",
+  "normalize": true,
+  "condition_on_previous_chunks": true,
+  "prosody": {
+   "speed": 1.0,
+   "normalize_loudness": true
+  },
+  "text": "[calm, natural narrator voice] On the right, what the staircase bets, each with the rule that will settle it. Each lamp shows a verdict only once its data file arrives, and the film is updated with it.",
+  "reference_id": "536d3a5e000945adb7038665781a4aca"
+ }
+}

@@ -1,0 +1,265 @@
+{
+"key": "867cc18b47162aa17bf7fc84",
+"model": "small.en",
+"text": "Outside, the field must match a current free field in the vacuum. The rule is linear but non-local. The field at one point of the wall depends on the whole wall. Imposing it exactly and cheaply for every sample is still open.",
+"words": [
+{
+"w": "Outside,",
+"start": 0.0,
+"end": 0.6,
+"p": 0.984
+},
+{
+"w": "the",
+"start": 1.02,
+"end": 1.16,
+"p": 0.999
+},
+{
+"w": "field",
+"start": 1.16,
+"end": 1.44,
+"p": 0.997
+},
+{
+"w": "must",
+"start": 1.44,
+"end": 1.68,
+"p": 0.999
+},
+{
+"w": "match",
+"start": 1.68,
+"end": 2.04,
+"p": 0.999
+},
+{
+"w": "a",
+"start": 2.04,
+"end": 2.3,
+"p": 0.996
+},
+{
+"w": "current",
+"start": 2.3,
+"end": 2.54,
+"p": 0.996
+},
+{
+"w": "free",
+"start": 2.54,
+"end": 2.88,
+"p": 0.919
+},
+{
+"w": "field",
+"start": 2.88,
+"end": 3.32,
+"p": 0.995
+},
+{
+"w": "in",
+"start": 3.32,
+"end": 3.5,
+"p": 0.999
+},
+{
+"w": "the",
+"start": 3.5,
+"end": 3.6,
+"p": 0.996
+},
+{
+"w": "vacuum.",
+"start": 3.6,
+"end": 4.02,
+"p": 0.999
+},
+{
+"w": "The",
+"start": 4.82,
+"end": 4.98,
+"p": 0.997
+},
+{
+"w": "rule",
+"start": 4.98,
+"end": 5.2,
+"p": 0.999
+},
+{
+"w": "is",
+"start": 5.2,
+"end": 5.4,
+"p": 0.999
+},
+{
+"w": "linear",
+"start": 5.4,
+"end": 5.8,
+"p": 0.998
+},
+{
+"w": "but",
+"start": 5.8,
+"end": 6.2,
+"p": 0.58
+},
+{
+"w": "non",
+"start": 6.2,
+"end": 6.5,
+"p": 0.994
+},
+{
+"w": "-local.",
+"start": 6.5,
+"end": 6.8,
+"p": 0.955
+},
+{
+"w": "The",
+"start": 7.54,
+"end": 7.64,
+"p": 0.997
+},
+{
+"w": "field",
+"start": 7.64,
+"end": 7.94,
+"p": 0.999
+},
+{
+"w": "at",
+"start": 7.94,
+"end": 8.1,
+"p": 0.99
+},
+{
+"w": "one",
+"start": 8.1,
+"end": 8.4,
+"p": 0.992
+},
+{
+"w": "point",
+"start": 8.4,
+"end": 8.66,
+"p": 0.998
+},
+{
+"w": "of",
+"start": 8.66,
+"end": 8.78,
+"p": 0.994
+},
+{
+"w": "the",
+"start": 8.78,
+"end": 8.9,
+"p": 0.998
+},
+{
+"w": "wall",
+"start": 8.9,
+"end": 9.16,
+"p": 0.999
+},
+{
+"w": "depends",
+"start": 9.16,
+"end": 9.62,
+"p": 0.995
+},
+{
+"w": "on",
+"start": 9.62,
+"end": 9.9,
+"p": 0.998
+},
+{
+"w": "the",
+"start": 9.9,
+"end": 10.02,
+"p": 0.999
+},
+{
+"w": "whole",
+"start": 10.02,
+"end": 10.32,
+"p": 0.997
+},
+{
+"w": "wall.",
+"start": 10.32,
+"end": 10.82,
+"p": 0.998
+},
+{
+"w": "Imposing",
+"start": 11.68,
+"end": 12.04,
+"p": 0.949
+},
+{
+"w": "it",
+"start": 12.04,
+"end": 12.22,
+"p": 0.998
+},
+{
+"w": "exactly",
+"start": 12.22,
+"end": 12.66,
+"p": 0.999
+},
+{
+"w": "and",
+"start": 12.66,
+"end": 13.02,
+"p": 0.996
+},
+{
+"w": "cheaply",
+"start": 13.02,
+"end": 13.52,
+"p": 0.999
+},
+{
+"w": "for",
+"start": 13.52,
+"end": 13.96,
+"p": 0.773
+},
+{
+"w": "every",
+"start": 13.96,
+"end": 14.3,
+"p": 0.999
+},
+{
+"w": "sample",
+"start": 14.3,
+"end": 14.8,
+"p": 0.999
+},
+{
+"w": "is",
+"start": 14.8,
+"end": 15.3,
+"p": 0.955
+},
+{
+"w": "still",
+"start": 15.3,
+"end": 15.66,
+"p": 0.998
+},
+{
+"w": "open.",
+"start": 15.66,
+"end": 16.08,
+"p": 0.998
+}
+]
+}

@@ -1,0 +1,28 @@
+{
+ "text": "[calm, natural narrator voice] Quatrième piste, les ordinateurs. Mille neuf cent quatre-vingt-un : une turbulence simulée fait naître des dynamos. Mille neuf cent quatre-vingt-quinze : dans un noyau terrestre simulé, le champ se renverse. Les repères cerclés signalent les articles cosignés par les encadrants du projet. Mille neuf cent quatre-vingt-dix-sept : en simulation, deux tourbillons contrarotatifs produisent un effet dynamo. Deux mille cinq : ces dynamos fonctionnent encore à un pé ème d'un centième.",
+ "voice": "536d3a5e000945adb7038665781a4aca",
+ "words": 65,
+ "scene": "SOA1.4",
+ "para": 0,
+ "lang": "fr",
+ "duration": 33.8808,
+ "latency_s": 7.0,
+ "created": "2026-11-08T09:57:59",
+ "provider": "fish",
+ "request": {
+  "temperature": 0.1,
+  "format": "mp3",
+  "mp3_bitrate": 192,
+  "sample_rate": 44100,
+  "latency": "normal",
+  "language": "fr",
+  "normalize": true,
+  "condition_on_previous_chunks": true,
+  "prosody": {
+   "speed": 1.0,
+   "normalize_loudness": true
+  },
+  "text": "[calm, natural narrator voice] Quatrième piste, les ordinateurs. Mille neuf cent quatre-vingt-un : une turbulence simulée fait naître des dynamos. Mille neuf cent quatre-vingt-quinze : dans un noyau terrestre simulé, le champ se renverse. Les repères cerclés signalent les articles cosignés par les encadrants du projet. Mille neuf cent quatre-vingt-dix-sept : en simulation, deux tourbillons contrarotatifs produisent un effet dynamo. Deux mille cinq : ces dynamos fonctionnent encore à un pé ème d'un centième.",
+  "reference_id": "536d3a5e000945adb7038665781a4aca"
+ }
+}

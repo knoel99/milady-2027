@@ -1,0 +1,27 @@
+{
+ "text": "[calm, natural narrator voice] Where does the dipole spend its time? Two humps, the same for both. This reproducible glow is the stationary distribution. Below the threshold, each start paints its own whirlpool.",
+ "voice": "536d3a5e000945adb7038665781a4aca",
+ "words": 29,
+ "scene": "04.5",
+ "para": 1,
+ "duration": 13.6359,
+ "latency_s": 2.9,
+ "created": "2026-11-08T08:08:44",
+ "provider": "fish",
+ "request": {
+  "temperature": 0.1,
+  "format": "mp3",
+  "mp3_bitrate": 192,
+  "sample_rate": 44100,
+  "latency": "normal",
+  "language": "en",
+  "normalize": true,
+  "condition_on_previous_chunks": true,
+  "prosody": {
+   "speed": 1.0,
+   "normalize_loudness": true
+  },
+  "text": "[calm, natural narrator voice] Where does the dipole spend its time? Two humps, the same for both. This reproducible glow is the stationary distribution. Below the threshold, each start paints its own whirlpool.",
+  "reference_id": "536d3a5e000945adb7038665781a4aca"
+ }
+}

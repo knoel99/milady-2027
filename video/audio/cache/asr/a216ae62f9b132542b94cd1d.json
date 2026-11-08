@@ -1,0 +1,67 @@
+{
+"key": "a216ae62f9b132542b94cd1d",
+"model": "small.en",
+"text": "So once the dynamo switches on, it stays on, right?",
+"words": [
+{
+"w": "So",
+"start": 0.0,
+"end": 0.26,
+"p": 0.911
+},
+{
+"w": "once",
+"start": 0.26,
+"end": 0.5,
+"p": 0.883
+},
+{
+"w": "the",
+"start": 0.5,
+"end": 0.68,
+"p": 0.998
+},
+{
+"w": "dynamo",
+"start": 0.68,
+"end": 1.16,
+"p": 0.966
+},
+{
+"w": "switches",
+"start": 1.16,
+"end": 1.38,
+"p": 0.589
+},
+{
+"w": "on,",
+"start": 1.38,
+"end": 1.78,
+"p": 0.983
+},
+{
+"w": "it",
+"start": 2.2,
+"end": 2.34,
+"p": 0.993
+},
+{
+"w": "stays",
+"start": 2.34,
+"end": 2.64,
+"p": 0.939
+},
+{
+"w": "on,",
+"start": 2.64,
+"end": 3.16,
+"p": 0.995
+},
+{
+"w": "right?",
+"start": 3.5,
+"end": 3.74,
+"p": 0.997
+}
+]
+}

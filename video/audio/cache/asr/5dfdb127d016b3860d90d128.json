@@ -1,0 +1,277 @@
+{
+"key": "5dfdb127d016b3860d90d128",
+"model": "small.en",
+"text": "Back to the study's three questions. One, between the dots, the shapes come out right, but no model reaches its noise floor. Two, each law where it holds, exactly yes, on average partly. Three, how often? Roughly right, far from the threshold, poor near it.",
+"words": [
+{
+"w": "Back",
+"start": 0.0,
+"end": 0.3,
+"p": 0.973
+},
+{
+"w": "to",
+"start": 0.3,
+"end": 0.46,
+"p": 0.999
+},
+{
+"w": "the",
+"start": 0.46,
+"end": 0.6,
+"p": 0.997
+},
+{
+"w": "study's",
+"start": 0.6,
+"end": 1.02,
+"p": 0.978
+},
+{
+"w": "three",
+"start": 1.02,
+"end": 1.26,
+"p": 0.912
+},
+{
+"w": "questions.",
+"start": 1.26,
+"end": 1.86,
+"p": 0.999
+},
+{
+"w": "One,",
+"start": 2.8,
+"end": 2.92,
+"p": 0.795
+},
+{
+"w": "between",
+"start": 3.62,
+"end": 3.92,
+"p": 0.975
+},
+{
+"w": "the",
+"start": 3.92,
+"end": 4.1,
+"p": 0.999
+},
+{
+"w": "dots,",
+"start": 4.1,
+"end": 4.44,
+"p": 0.998
+},
+{
+"w": "the",
+"start": 4.84,
+"end": 4.92,
+"p": 0.998
+},
+{
+"w": "shapes",
+"start": 4.92,
+"end": 5.18,
+"p": 0.998
+},
+{
+"w": "come",
+"start": 5.18,
+"end": 5.44,
+"p": 0.999
+},
+{
+"w": "out",
+"start": 5.44,
+"end": 5.66,
+"p": 0.992
+},
+{
+"w": "right,",
+"start": 5.66,
+"end": 5.98,
+"p": 0.996
+},
+{
+"w": "but",
+"start": 6.44,
+"end": 6.64,
+"p": 0.998
+},
+{
+"w": "no",
+"start": 6.64,
+"end": 6.94,
+"p": 0.998
+},
+{
+"w": "model",
+"start": 6.94,
+"end": 7.3,
+"p": 0.999
+},
+{
+"w": "reaches",
+"start": 7.3,
+"end": 7.64,
+"p": 0.999
+},
+{
+"w": "its",
+"start": 7.64,
+"end": 7.92,
+"p": 0.985
+},
+{
+"w": "noise",
+"start": 7.92,
+"end": 8.24,
+"p": 0.995
+},
+{
+"w": "floor.",
+"start": 8.24,
+"end": 8.66,
+"p": 0.999
+},
+{
+"w": "Two,",
+"start": 9.5,
+"end": 9.88,
+"p": 0.999
+},
+{
+"w": "each",
+"start": 10.54,
+"end": 10.82,
+"p": 0.998
+},
+{
+"w": "law",
+"start": 10.82,
+"end": 11.18,
+"p": 0.94
+},
+{
+"w": "where",
+"start": 11.18,
+"end": 11.4,
+"p": 0.972
+},
+{
+"w": "it",
+"start": 11.4,
+"end": 11.56,
+"p": 0.999
+},
+{
+"w": "holds,",
+"start": 11.56,
+"end": 11.96,
+"p": 0.999
+},
+{
+"w": "exactly",
+"start": 12.24,
+"end": 12.66,
+"p": 0.998
+},
+{
+"w": "yes,",
+"start": 12.66,
+"end": 13.18,
+"p": 0.891
+},
+{
+"w": "on",
+"start": 13.8,
+"end": 13.94,
+"p": 0.999
+},
+{
+"w": "average",
+"start": 13.94,
+"end": 14.4,
+"p": 1.0
+},
+{
+"w": "partly.",
+"start": 14.4,
+"end": 14.84,
+"p": 0.835
+},
+{
+"w": "Three,",
+"start": 15.82,
+"end": 16.22,
+"p": 0.998
+},
+{
+"w": "how",
+"start": 16.82,
+"end": 17.08,
+"p": 0.994
+},
+{
+"w": "often?",
+"start": 17.08,
+"end": 17.56,
+"p": 1.0
+},
+{
+"w": "Roughly",
+"start": 18.28,
+"end": 18.62,
+"p": 0.995
+},
+{
+"w": "right,",
+"start": 18.62,
+"end": 18.96,
+"p": 0.997
+},
+{
+"w": "far",
+"start": 19.02,
+"end": 19.34,
+"p": 0.999
+},
+{
+"w": "from",
+"start": 19.34,
+"end": 19.54,
+"p": 0.999
+},
+{
+"w": "the",
+"start": 19.54,
+"end": 19.66,
+"p": 0.997
+},
+{
+"w": "threshold,",
+"start": 19.66,
+"end": 20.16,
+"p": 0.999
+},
+{
+"w": "poor",
+"start": 20.76,
+"end": 21.04,
+"p": 0.928
+},
+{
+"w": "near",
+"start": 21.04,
+"end": 21.34,
+"p": 0.889
+},
+{
+"w": "it.",
+"start": 21.34,
+"end": 21.64,
+"p": 0.987
+}
+]
+}

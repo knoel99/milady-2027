@@ -1,0 +1,349 @@
+{
+"key": "3d2c0a34b61570aa05d0fefb",
+"model": "small.en",
+"text": "No, the long fit says growing, the late fit and finer grid fading. This edge is known to about 0.1, the third near 27 to about 1. A likely cause still unchecked, the modes oscillate, so the growth curve wobbles. The divergence, at least, stays at rounding error. That unresolved sign is where Bet One begins.",
+"words": [
+{
+"w": "No,",
+"start": 0.0,
+"end": 0.38,
+"p": 0.976
+},
+{
+"w": "the",
+"start": 0.78,
+"end": 0.94,
+"p": 0.993
+},
+{
+"w": "long",
+"start": 0.94,
+"end": 1.22,
+"p": 0.973
+},
+{
+"w": "fit",
+"start": 1.22,
+"end": 1.48,
+"p": 0.967
+},
+{
+"w": "says",
+"start": 1.48,
+"end": 1.78,
+"p": 0.998
+},
+{
+"w": "growing,",
+"start": 1.78,
+"end": 2.18,
+"p": 0.338
+},
+{
+"w": "the",
+"start": 2.66,
+"end": 2.86,
+"p": 0.988
+},
+{
+"w": "late",
+"start": 2.86,
+"end": 3.12,
+"p": 0.922
+},
+{
+"w": "fit",
+"start": 3.12,
+"end": 3.42,
+"p": 0.864
+},
+{
+"w": "and",
+"start": 3.42,
+"end": 3.64,
+"p": 0.992
+},
+{
+"w": "finer",
+"start": 3.64,
+"end": 4.02,
+"p": 0.986
+},
+{
+"w": "grid",
+"start": 4.02,
+"end": 4.44,
+"p": 0.998
+},
+{
+"w": "fading.",
+"start": 4.44,
+"end": 5.0,
+"p": 0.825
+},
+{
+"w": "This",
+"start": 5.88,
+"end": 6.1,
+"p": 0.997
+},
+{
+"w": "edge",
+"start": 6.1,
+"end": 6.4,
+"p": 0.996
+},
+{
+"w": "is",
+"start": 6.4,
+"end": 6.6,
+"p": 0.999
+},
+{
+"w": "known",
+"start": 6.6,
+"end": 6.82,
+"p": 0.995
+},
+{
+"w": "to",
+"start": 6.82,
+"end": 7.04,
+"p": 0.998
+},
+{
+"w": "about",
+"start": 7.04,
+"end": 7.28,
+"p": 0.993
+},
+{
+"w": "0",
+"start": 7.28,
+"end": 7.68,
+"p": 0.937
+},
+{
+"w": ".1,",
+"start": 7.68,
+"end": 8.42,
+"p": 0.994
+},
+{
+"w": "the",
+"start": 8.92,
+"end": 9.08,
+"p": 0.994
+},
+{
+"w": "third",
+"start": 9.08,
+"end": 9.5,
+"p": 0.945
+},
+{
+"w": "near",
+"start": 9.5,
+"end": 9.92,
+"p": 0.779
+},
+{
+"w": "27",
+"start": 9.92,
+"end": 10.54,
+"p": 0.992
+},
+{
+"w": "to",
+"start": 10.54,
+"end": 11.08,
+"p": 0.977
+},
+{
+"w": "about",
+"start": 11.08,
+"end": 11.36,
+"p": 0.999
+},
+{
+"w": "1.",
+"start": 11.36,
+"end": 11.82,
+"p": 0.683
+},
+{
+"w": "A",
+"start": 12.58,
+"end": 12.8,
+"p": 0.993
+},
+{
+"w": "likely",
+"start": 12.8,
+"end": 13.14,
+"p": 0.999
+},
+{
+"w": "cause",
+"start": 13.14,
+"end": 13.62,
+"p": 0.995
+},
+{
+"w": "still",
+"start": 13.62,
+"end": 14.1,
+"p": 0.885
+},
+{
+"w": "unchecked,",
+"start": 14.1,
+"end": 14.64,
+"p": 0.998
+},
+{
+"w": "the",
+"start": 15.1,
+"end": 15.28,
+"p": 0.997
+},
+{
+"w": "modes",
+"start": 15.28,
+"end": 15.64,
+"p": 0.998
+},
+{
+"w": "oscillate,",
+"start": 15.64,
+"end": 16.42,
+"p": 0.996
+},
+{
+"w": "so",
+"start": 16.58,
+"end": 16.74,
+"p": 0.998
+},
+{
+"w": "the",
+"start": 16.74,
+"end": 16.88,
+"p": 0.997
+},
+{
+"w": "growth",
+"start": 16.88,
+"end": 17.18,
+"p": 0.998
+},
+{
+"w": "curve",
+"start": 17.18,
+"end": 17.58,
+"p": 0.999
+},
+{
+"w": "wobbles.",
+"start": 17.58,
+"end": 18.16,
+"p": 0.996
+},
+{
+"w": "The",
+"start": 18.72,
+"end": 18.92,
+"p": 0.997
+},
+{
+"w": "divergence,",
+"start": 18.92,
+"end": 19.4,
+"p": 0.998
+},
+{
+"w": "at",
+"start": 19.58,
+"end": 19.72,
+"p": 1.0
+},
+{
+"w": "least,",
+"start": 19.72,
+"end": 20.02,
+"p": 0.999
+},
+{
+"w": "stays",
+"start": 20.1,
+"end": 20.56,
+"p": 0.997
+},
+{
+"w": "at",
+"start": 20.56,
+"end": 20.76,
+"p": 0.993
+},
+{
+"w": "rounding",
+"start": 20.76,
+"end": 21.08,
+"p": 0.999
+},
+{
+"w": "error.",
+"start": 21.08,
+"end": 21.56,
+"p": 0.997
+},
+{
+"w": "That",
+"start": 22.18,
+"end": 22.36,
+"p": 0.996
+},
+{
+"w": "unresolved",
+"start": 22.36,
+"end": 22.88,
+"p": 0.999
+},
+{
+"w": "sign",
+"start": 22.88,
+"end": 23.46,
+"p": 0.993
+},
+{
+"w": "is",
+"start": 23.46,
+"end": 23.66,
+"p": 0.999
+},
+{
+"w": "where",
+"start": 23.66,
+"end": 23.88,
+"p": 0.999
+},
+{
+"w": "Bet",
+"start": 23.88,
+"end": 24.14,
+"p": 0.414
+},
+{
+"w": "One",
+"start": 24.14,
+"end": 24.54,
+"p": 0.277
+},
+{
+"w": "begins.",
+"start": 24.54,
+"end": 24.98,
+"p": 0.991
+}
+]
+}

@@ -1,0 +1,175 @@
+{
+"key": "bf056d5dda6a6ed1193cf3f0",
+"model": "small.en",
+"text": "Moving iron. A loop with a threshold. No favorite direction. But the disc had wires. Liquid iron has none. Then what motion can do it? And how fast?",
+"words": [
+{
+"w": "Moving",
+"start": 0.0,
+"end": 0.44,
+"p": 0.582
+},
+{
+"w": "iron.",
+"start": 0.44,
+"end": 0.84,
+"p": 0.946
+},
+{
+"w": "A",
+"start": 1.42,
+"end": 1.52,
+"p": 0.991
+},
+{
+"w": "loop",
+"start": 1.52,
+"end": 1.74,
+"p": 0.992
+},
+{
+"w": "with",
+"start": 1.74,
+"end": 1.96,
+"p": 0.997
+},
+{
+"w": "a",
+"start": 1.96,
+"end": 2.1,
+"p": 0.98
+},
+{
+"w": "threshold.",
+"start": 2.1,
+"end": 2.5,
+"p": 0.987
+},
+{
+"w": "No",
+"start": 3.26,
+"end": 3.42,
+"p": 0.995
+},
+{
+"w": "favorite",
+"start": 3.42,
+"end": 3.76,
+"p": 0.919
+},
+{
+"w": "direction.",
+"start": 3.76,
+"end": 4.32,
+"p": 0.998
+},
+{
+"w": "But",
+"start": 5.1,
+"end": 5.3,
+"p": 0.992
+},
+{
+"w": "the",
+"start": 5.3,
+"end": 5.46,
+"p": 0.989
+},
+{
+"w": "disc",
+"start": 5.46,
+"end": 5.7,
+"p": 0.608
+},
+{
+"w": "had",
+"start": 5.7,
+"end": 5.94,
+"p": 0.987
+},
+{
+"w": "wires.",
+"start": 5.94,
+"end": 6.38,
+"p": 0.999
+},
+{
+"w": "Liquid",
+"start": 7.4,
+"end": 7.4,
+"p": 0.99
+},
+{
+"w": "iron",
+"start": 7.4,
+"end": 7.74,
+"p": 0.955
+},
+{
+"w": "has",
+"start": 7.74,
+"end": 8.0,
+"p": 0.996
+},
+{
+"w": "none.",
+"start": 8.0,
+"end": 8.32,
+"p": 0.994
+},
+{
+"w": "Then",
+"start": 9.26,
+"end": 9.44,
+"p": 0.991
+},
+{
+"w": "what",
+"start": 9.44,
+"end": 9.68,
+"p": 0.972
+},
+{
+"w": "motion",
+"start": 9.68,
+"end": 10.1,
+"p": 0.999
+},
+{
+"w": "can",
+"start": 10.1,
+"end": 10.32,
+"p": 0.998
+},
+{
+"w": "do",
+"start": 10.32,
+"end": 10.54,
+"p": 0.999
+},
+{
+"w": "it?",
+"start": 10.54,
+"end": 10.74,
+"p": 0.999
+},
+{
+"w": "And",
+"start": 11.14,
+"end": 11.26,
+"p": 0.974
+},
+{
+"w": "how",
+"start": 11.26,
+"end": 11.46,
+"p": 0.995
+},
+{
+"w": "fast?",
+"start": 11.46,
+"end": 11.84,
+"p": 0.999
+}
+]
+}

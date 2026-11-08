@@ -1,0 +1,151 @@
+{
+"key": "e1bf707854eab2169c2db42e",
+"model": "small.en",
+"text": "Physics hands the machine two kinds of laws. Some hold for every single snapshot. Others hold only for the crowd. Two shelves, still empty.",
+"words": [
+{
+"w": "Physics",
+"start": 0.0,
+"end": 0.42,
+"p": 0.848
+},
+{
+"w": "hands",
+"start": 0.42,
+"end": 0.76,
+"p": 0.982
+},
+{
+"w": "the",
+"start": 0.76,
+"end": 0.96,
+"p": 0.998
+},
+{
+"w": "machine",
+"start": 0.96,
+"end": 1.28,
+"p": 0.987
+},
+{
+"w": "two",
+"start": 1.28,
+"end": 1.66,
+"p": 0.979
+},
+{
+"w": "kinds",
+"start": 1.66,
+"end": 1.96,
+"p": 0.994
+},
+{
+"w": "of",
+"start": 1.96,
+"end": 2.18,
+"p": 1.0
+},
+{
+"w": "laws.",
+"start": 2.18,
+"end": 2.52,
+"p": 0.986
+},
+{
+"w": "Some",
+"start": 3.4,
+"end": 3.52,
+"p": 0.997
+},
+{
+"w": "hold",
+"start": 3.52,
+"end": 3.82,
+"p": 0.999
+},
+{
+"w": "for",
+"start": 3.82,
+"end": 4.04,
+"p": 0.999
+},
+{
+"w": "every",
+"start": 4.04,
+"end": 4.46,
+"p": 0.998
+},
+{
+"w": "single",
+"start": 4.46,
+"end": 4.84,
+"p": 0.999
+},
+{
+"w": "snapshot.",
+"start": 4.84,
+"end": 5.4,
+"p": 0.99
+},
+{
+"w": "Others",
+"start": 6.2,
+"end": 6.42,
+"p": 0.99
+},
+{
+"w": "hold",
+"start": 6.42,
+"end": 6.74,
+"p": 0.999
+},
+{
+"w": "only",
+"start": 6.74,
+"end": 7.1,
+"p": 0.998
+},
+{
+"w": "for",
+"start": 7.1,
+"end": 7.38,
+"p": 0.999
+},
+{
+"w": "the",
+"start": 7.38,
+"end": 7.52,
+"p": 0.999
+},
+{
+"w": "crowd.",
+"start": 7.52,
+"end": 7.9,
+"p": 0.998
+},
+{
+"w": "Two",
+"start": 8.78,
+"end": 8.92,
+"p": 0.981
+},
+{
+"w": "shelves,",
+"start": 8.92,
+"end": 9.48,
+"p": 0.996
+},
+{
+"w": "still",
+"start": 9.78,
+"end": 10.14,
+"p": 0.998
+},
+{
+"w": "empty.",
+"start": 10.14,
+"end": 10.48,
+"p": 1.0
+}
+]
+}

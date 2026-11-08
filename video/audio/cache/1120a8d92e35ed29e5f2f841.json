@@ -1,0 +1,28 @@
+{
+ "text": "[calm, natural narrator voice] Les dynamos de laboratoire utilisent du sodium liquide. Il coule aussi facilement que l'eau. Mais un champ s'y estompe environ cent mille fois plus vite que ses tourbillons. Le rapport de ces deux vitesses, un sur cent mille, c'est le nombre de Prantl magnétique, pé ème.",
+ "voice": "536d3a5e000945adb7038665781a4aca",
+ "words": 45,
+ "scene": "02.3",
+ "para": 0,
+ "lang": "fr",
+ "duration": 18.3119,
+ "latency_s": 3.4,
+ "created": "2026-11-08T09:57:32",
+ "provider": "fish",
+ "request": {
+  "temperature": 0.1,
+  "format": "mp3",
+  "mp3_bitrate": 192,
+  "sample_rate": 44100,
+  "latency": "normal",
+  "language": "fr",
+  "normalize": true,
+  "condition_on_previous_chunks": true,
+  "prosody": {
+   "speed": 1.0,
+   "normalize_loudness": true
+  },
+  "text": "[calm, natural narrator voice] Les dynamos de laboratoire utilisent du sodium liquide. Il coule aussi facilement que l'eau. Mais un champ s'y estompe environ cent mille fois plus vite que ses tourbillons. Le rapport de ces deux vitesses, un sur cent mille, c'est le nombre de Prantl magnétique, pé ème.",
+  "reference_id": "536d3a5e000945adb7038665781a4aca"
+ }
+}

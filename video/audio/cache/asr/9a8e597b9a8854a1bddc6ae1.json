@@ -1,0 +1,103 @@
+{
+"key": "9a8e597b9a8854a1bddc6ae1",
+"model": "small.en",
+"text": "Simulations cannot reach sodium's tiny PM. Which PM values should the first three-dimensional runs cover?",
+"words": [
+{
+"w": "Simulations",
+"start": 0.0,
+"end": 0.82,
+"p": 0.849
+},
+{
+"w": "cannot",
+"start": 0.82,
+"end": 1.14,
+"p": 0.967
+},
+{
+"w": "reach",
+"start": 1.14,
+"end": 1.56,
+"p": 0.999
+},
+{
+"w": "sodium's",
+"start": 1.56,
+"end": 2.2,
+"p": 0.973
+},
+{
+"w": "tiny",
+"start": 2.2,
+"end": 2.52,
+"p": 0.996
+},
+{
+"w": "PM.",
+"start": 2.52,
+"end": 2.98,
+"p": 0.546
+},
+{
+"w": "Which",
+"start": 3.7,
+"end": 3.88,
+"p": 0.994
+},
+{
+"w": "PM",
+"start": 3.88,
+"end": 4.26,
+"p": 0.998
+},
+{
+"w": "values",
+"start": 4.26,
+"end": 4.7,
+"p": 0.93
+},
+{
+"w": "should",
+"start": 4.7,
+"end": 4.96,
+"p": 0.999
+},
+{
+"w": "the",
+"start": 4.96,
+"end": 5.16,
+"p": 0.994
+},
+{
+"w": "first",
+"start": 5.16,
+"end": 5.46,
+"p": 0.996
+},
+{
+"w": "three",
+"start": 5.46,
+"end": 5.88,
+"p": 0.754
+},
+{
+"w": "-dimensional",
+"start": 5.88,
+"end": 6.26,
+"p": 0.88
+},
+{
+"w": "runs",
+"start": 6.26,
+"end": 6.68,
+"p": 0.978
+},
+{
+"w": "cover?",
+"start": 6.68,
+"end": 7.08,
+"p": 1.0
+}
+]
+}

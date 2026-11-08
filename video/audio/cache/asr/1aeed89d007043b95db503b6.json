@@ -1,0 +1,61 @@
+{
+"key": "1aeed89d007043b95db503b6",
+"model": "small.en",
+"text": "At a gamma neither has seen. Who stays balanced?",
+"words": [
+{
+"w": "At",
+"start": 0.0,
+"end": 0.22,
+"p": 0.345
+},
+{
+"w": "a",
+"start": 0.22,
+"end": 0.36,
+"p": 0.989
+},
+{
+"w": "gamma",
+"start": 0.36,
+"end": 0.6,
+"p": 0.742
+},
+{
+"w": "neither",
+"start": 0.6,
+"end": 0.92,
+"p": 0.978
+},
+{
+"w": "has",
+"start": 0.92,
+"end": 1.16,
+"p": 0.996
+},
+{
+"w": "seen.",
+"start": 1.16,
+"end": 1.54,
+"p": 0.999
+},
+{
+"w": "Who",
+"start": 2.22,
+"end": 2.34,
+"p": 0.988
+},
+{
+"w": "stays",
+"start": 2.34,
+"end": 2.62,
+"p": 0.968
+},
+{
+"w": "balanced?",
+"start": 2.62,
+"end": 3.16,
+"p": 0.995
+}
+]
+}

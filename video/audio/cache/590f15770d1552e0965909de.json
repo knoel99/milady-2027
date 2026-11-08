@@ -1,0 +1,27 @@
+{
+ "text": "[calm, natural narrator voice] The first is almost too simple. Suppose every field a decoder can draw obeys a linear law, like zero divergence. Then every sample obeys it, whatever the crowd of codes, however badly trained.",
+ "voice": "536d3a5e000945adb7038665781a4aca",
+ "words": 33,
+ "scene": "X2.1",
+ "para": 1,
+ "duration": 14.3674,
+ "latency_s": 2.7,
+ "created": "2026-11-08T08:10:25",
+ "provider": "fish",
+ "request": {
+  "temperature": 0.1,
+  "format": "mp3",
+  "mp3_bitrate": 192,
+  "sample_rate": 44100,
+  "latency": "normal",
+  "language": "en",
+  "normalize": true,
+  "condition_on_previous_chunks": true,
+  "prosody": {
+   "speed": 1.0,
+   "normalize_loudness": true
+  },
+  "text": "[calm, natural narrator voice] The first is almost too simple. Suppose every field a decoder can draw obeys a linear law, like zero divergence. Then every sample obeys it, whatever the crowd of codes, however badly trained.",
+  "reference_id": "536d3a5e000945adb7038665781a4aca"
+ }
+}

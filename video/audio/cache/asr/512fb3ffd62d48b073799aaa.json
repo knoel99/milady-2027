@@ -1,0 +1,181 @@
+{
+"key": "512fb3ffd62d48b073799aaa",
+"model": "small.en",
+"text": "Three lessons, exact laws, build them in, crowd laws, impose them on the crowd, never on each snapshot, and judge every result against the noise floor with enough seeds.",
+"words": [
+{
+"w": "Three",
+"start": 0.0,
+"end": 0.4,
+"p": 0.7
+},
+{
+"w": "lessons,",
+"start": 0.4,
+"end": 0.8,
+"p": 0.752
+},
+{
+"w": "exact",
+"start": 2.08,
+"end": 2.2,
+"p": 0.952
+},
+{
+"w": "laws,",
+"start": 2.2,
+"end": 2.74,
+"p": 0.994
+},
+{
+"w": "build",
+"start": 3.28,
+"end": 3.42,
+"p": 0.985
+},
+{
+"w": "them",
+"start": 3.42,
+"end": 3.66,
+"p": 0.991
+},
+{
+"w": "in,",
+"start": 3.66,
+"end": 4.12,
+"p": 0.998
+},
+{
+"w": "crowd",
+"start": 5.0,
+"end": 5.14,
+"p": 0.979
+},
+{
+"w": "laws,",
+"start": 5.14,
+"end": 5.6,
+"p": 0.944
+},
+{
+"w": "impose",
+"start": 6.1,
+"end": 6.54,
+"p": 0.985
+},
+{
+"w": "them",
+"start": 6.54,
+"end": 6.76,
+"p": 0.999
+},
+{
+"w": "on",
+"start": 6.76,
+"end": 6.9,
+"p": 0.999
+},
+{
+"w": "the",
+"start": 6.9,
+"end": 7.04,
+"p": 0.999
+},
+{
+"w": "crowd,",
+"start": 7.04,
+"end": 7.5,
+"p": 0.999
+},
+{
+"w": "never",
+"start": 7.9,
+"end": 8.16,
+"p": 0.997
+},
+{
+"w": "on",
+"start": 8.16,
+"end": 8.46,
+"p": 0.998
+},
+{
+"w": "each",
+"start": 8.46,
+"end": 8.7,
+"p": 0.999
+},
+{
+"w": "snapshot,",
+"start": 8.7,
+"end": 9.28,
+"p": 0.988
+},
+{
+"w": "and",
+"start": 10.02,
+"end": 10.26,
+"p": 0.996
+},
+{
+"w": "judge",
+"start": 10.26,
+"end": 10.6,
+"p": 0.999
+},
+{
+"w": "every",
+"start": 10.6,
+"end": 11.06,
+"p": 0.999
+},
+{
+"w": "result",
+"start": 11.06,
+"end": 11.5,
+"p": 0.998
+},
+{
+"w": "against",
+"start": 11.5,
+"end": 11.82,
+"p": 0.999
+},
+{
+"w": "the",
+"start": 11.82,
+"end": 12.08,
+"p": 0.999
+},
+{
+"w": "noise",
+"start": 12.08,
+"end": 12.36,
+"p": 0.996
+},
+{
+"w": "floor",
+"start": 12.36,
+"end": 12.74,
+"p": 0.995
+},
+{
+"w": "with",
+"start": 12.74,
+"end": 13.28,
+"p": 0.832
+},
+{
+"w": "enough",
+"start": 13.28,
+"end": 13.56,
+"p": 0.999
+},
+{
+"w": "seeds.",
+"start": 13.56,
+"end": 14.02,
+"p": 0.993
+}
+]
+}

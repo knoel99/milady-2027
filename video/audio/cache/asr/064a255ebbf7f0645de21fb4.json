@@ -1,0 +1,241 @@
+{
+"key": "064a255ebbf7f0645de21fb4",
+"model": "small.en",
+"text": "Two ways to teach the mirror. The first student, Data Augmentation, sees each training snapshot flipped half the time. The second, Equivariance, has the mirror built into its wind. A mirrored noise point always lands on the mirrored snapshot.",
+"words": [
+{
+"w": "Two",
+"start": 0.0,
+"end": 0.32,
+"p": 0.902
+},
+{
+"w": "ways",
+"start": 0.32,
+"end": 0.58,
+"p": 0.993
+},
+{
+"w": "to",
+"start": 0.58,
+"end": 0.86,
+"p": 0.999
+},
+{
+"w": "teach",
+"start": 0.86,
+"end": 1.1,
+"p": 0.995
+},
+{
+"w": "the",
+"start": 1.1,
+"end": 1.34,
+"p": 0.99
+},
+{
+"w": "mirror.",
+"start": 1.34,
+"end": 1.66,
+"p": 0.905
+},
+{
+"w": "The",
+"start": 2.42,
+"end": 2.54,
+"p": 0.994
+},
+{
+"w": "first",
+"start": 2.54,
+"end": 2.78,
+"p": 0.996
+},
+{
+"w": "student,",
+"start": 2.78,
+"end": 3.24,
+"p": 0.999
+},
+{
+"w": "Data",
+"start": 3.74,
+"end": 3.86,
+"p": 0.719
+},
+{
+"w": "Augmentation,",
+"start": 3.86,
+"end": 4.58,
+"p": 0.806
+},
+{
+"w": "sees",
+"start": 5.06,
+"end": 5.36,
+"p": 0.996
+},
+{
+"w": "each",
+"start": 5.36,
+"end": 5.72,
+"p": 0.999
+},
+{
+"w": "training",
+"start": 5.72,
+"end": 6.12,
+"p": 0.995
+},
+{
+"w": "snapshot",
+"start": 6.12,
+"end": 6.72,
+"p": 0.996
+},
+{
+"w": "flipped",
+"start": 6.72,
+"end": 7.1,
+"p": 0.994
+},
+{
+"w": "half",
+"start": 7.1,
+"end": 7.42,
+"p": 0.996
+},
+{
+"w": "the",
+"start": 7.42,
+"end": 7.62,
+"p": 0.993
+},
+{
+"w": "time.",
+"start": 7.62,
+"end": 7.98,
+"p": 1.0
+},
+{
+"w": "The",
+"start": 8.76,
+"end": 8.9,
+"p": 0.998
+},
+{
+"w": "second,",
+"start": 8.9,
+"end": 9.32,
+"p": 0.998
+},
+{
+"w": "Equivariance,",
+"start": 9.72,
+"end": 10.46,
+"p": 0.83
+},
+{
+"w": "has",
+"start": 10.72,
+"end": 10.98,
+"p": 0.998
+},
+{
+"w": "the",
+"start": 10.98,
+"end": 11.18,
+"p": 0.995
+},
+{
+"w": "mirror",
+"start": 11.18,
+"end": 11.42,
+"p": 0.993
+},
+{
+"w": "built",
+"start": 11.42,
+"end": 11.74,
+"p": 0.998
+},
+{
+"w": "into",
+"start": 11.74,
+"end": 12.04,
+"p": 0.982
+},
+{
+"w": "its",
+"start": 12.04,
+"end": 12.22,
+"p": 0.984
+},
+{
+"w": "wind.",
+"start": 12.22,
+"end": 12.54,
+"p": 0.996
+},
+{
+"w": "A",
+"start": 13.24,
+"end": 13.32,
+"p": 0.997
+},
+{
+"w": "mirrored",
+"start": 13.32,
+"end": 13.68,
+"p": 0.986
+},
+{
+"w": "noise",
+"start": 13.68,
+"end": 14.06,
+"p": 0.978
+},
+{
+"w": "point",
+"start": 14.06,
+"end": 14.42,
+"p": 0.988
+},
+{
+"w": "always",
+"start": 14.42,
+"end": 14.9,
+"p": 0.998
+},
+{
+"w": "lands",
+"start": 14.9,
+"end": 15.3,
+"p": 0.995
+},
+{
+"w": "on",
+"start": 15.3,
+"end": 15.54,
+"p": 0.998
+},
+{
+"w": "the",
+"start": 15.54,
+"end": 15.66,
+"p": 0.991
+},
+{
+"w": "mirrored",
+"start": 15.66,
+"end": 15.96,
+"p": 0.996
+},
+{
+"w": "snapshot.",
+"start": 15.96,
+"end": 16.5,
+"p": 0.998
+}
+]
+}

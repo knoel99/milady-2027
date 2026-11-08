@@ -1,0 +1,271 @@
+{
+"key": "fb0fb65a86c6745a435c68f1",
+"model": "small.en",
+"text": "Questions first then computing. Here is what those questions rest on in two columns on the left What three small experiments measured on an ordinary processor toy problems one or two training seeds and Machines tested only between the settings they were trained on",
+"words": [
+{
+"w": "Questions",
+"start": 0.0,
+"end": 0.44,
+"p": 0.948
+},
+{
+"w": "first",
+"start": 0.44,
+"end": 0.82,
+"p": 0.946
+},
+{
+"w": "then",
+"start": 0.82,
+"end": 1.38,
+"p": 0.23
+},
+{
+"w": "computing.",
+"start": 1.38,
+"end": 1.86,
+"p": 0.91
+},
+{
+"w": "Here",
+"start": 2.6,
+"end": 2.82,
+"p": 0.992
+},
+{
+"w": "is",
+"start": 2.82,
+"end": 2.96,
+"p": 0.402
+},
+{
+"w": "what",
+"start": 2.96,
+"end": 3.1,
+"p": 0.998
+},
+{
+"w": "those",
+"start": 3.1,
+"end": 3.3,
+"p": 0.994
+},
+{
+"w": "questions",
+"start": 3.3,
+"end": 3.68,
+"p": 0.996
+},
+{
+"w": "rest",
+"start": 3.68,
+"end": 4.02,
+"p": 0.971
+},
+{
+"w": "on",
+"start": 4.02,
+"end": 4.36,
+"p": 0.995
+},
+{
+"w": "in",
+"start": 4.36,
+"end": 4.78,
+"p": 0.924
+},
+{
+"w": "two",
+"start": 4.78,
+"end": 5.02,
+"p": 0.973
+},
+{
+"w": "columns",
+"start": 5.02,
+"end": 5.54,
+"p": 0.999
+},
+{
+"w": "on",
+"start": 5.54,
+"end": 6.46,
+"p": 0.22
+},
+{
+"w": "the",
+"start": 6.46,
+"end": 6.58,
+"p": 0.953
+},
+{
+"w": "left",
+"start": 6.58,
+"end": 6.92,
+"p": 0.906
+},
+{
+"w": "What",
+"start": 6.92,
+"end": 7.52,
+"p": 0.254
+},
+{
+"w": "three",
+"start": 7.52,
+"end": 7.92,
+"p": 0.983
+},
+{
+"w": "small",
+"start": 7.92,
+"end": 8.32,
+"p": 0.998
+},
+{
+"w": "experiments",
+"start": 8.32,
+"end": 8.86,
+"p": 0.972
+},
+{
+"w": "measured",
+"start": 8.86,
+"end": 9.36,
+"p": 0.994
+},
+{
+"w": "on",
+"start": 9.36,
+"end": 9.54,
+"p": 0.997
+},
+{
+"w": "an",
+"start": 9.54,
+"end": 9.66,
+"p": 0.999
+},
+{
+"w": "ordinary",
+"start": 9.66,
+"end": 10.14,
+"p": 0.997
+},
+{
+"w": "processor",
+"start": 10.14,
+"end": 10.74,
+"p": 0.946
+},
+{
+"w": "toy",
+"start": 10.74,
+"end": 11.66,
+"p": 0.504
+},
+{
+"w": "problems",
+"start": 11.66,
+"end": 12.28,
+"p": 0.976
+},
+{
+"w": "one",
+"start": 12.28,
+"end": 12.98,
+"p": 0.58
+},
+{
+"w": "or",
+"start": 12.98,
+"end": 13.1,
+"p": 0.982
+},
+{
+"w": "two",
+"start": 13.1,
+"end": 13.3,
+"p": 0.997
+},
+{
+"w": "training",
+"start": 13.3,
+"end": 13.7,
+"p": 0.983
+},
+{
+"w": "seeds",
+"start": 13.7,
+"end": 14.14,
+"p": 0.977
+},
+{
+"w": "and",
+"start": 14.14,
+"end": 14.76,
+"p": 0.983
+},
+{
+"w": "Machines",
+"start": 14.76,
+"end": 15.08,
+"p": 0.298
+},
+{
+"w": "tested",
+"start": 15.08,
+"end": 15.56,
+"p": 0.99
+},
+{
+"w": "only",
+"start": 15.56,
+"end": 15.94,
+"p": 0.998
+},
+{
+"w": "between",
+"start": 15.94,
+"end": 16.36,
+"p": 1.0
+},
+{
+"w": "the",
+"start": 16.36,
+"end": 16.54,
+"p": 0.999
+},
+{
+"w": "settings",
+"start": 16.54,
+"end": 16.86,
+"p": 0.999
+},
+{
+"w": "they",
+"start": 16.86,
+"end": 17.06,
+"p": 0.564
+},
+{
+"w": "were",
+"start": 17.06,
+"end": 17.2,
+"p": 1.0
+},
+{
+"w": "trained",
+"start": 17.2,
+"end": 17.52,
+"p": 1.0
+},
+{
+"w": "on",
+"start": 17.52,
+"end": 17.82,
+"p": 0.999
+}
+]
+}

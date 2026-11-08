@@ -1,0 +1,103 @@
+{
+"key": "28f7decc4424f559e15df307",
+"model": "small.en",
+"text": "A fourth, Dresden and Dresden aims to join them, a spinning cylinder whose axis slowly turns.",
+"words": [
+{
+"w": "A",
+"start": 0.0,
+"end": 0.26,
+"p": 0.886
+},
+{
+"w": "fourth,",
+"start": 0.26,
+"end": 0.6,
+"p": 0.969
+},
+{
+"w": "Dresden",
+"start": 1.06,
+"end": 1.22,
+"p": 0.601
+},
+{
+"w": "and",
+"start": 1.22,
+"end": 1.58,
+"p": 0.803
+},
+{
+"w": "Dresden",
+"start": 1.58,
+"end": 1.94,
+"p": 0.98
+},
+{
+"w": "aims",
+"start": 1.94,
+"end": 2.6,
+"p": 0.491
+},
+{
+"w": "to",
+"start": 2.6,
+"end": 2.86,
+"p": 0.999
+},
+{
+"w": "join",
+"start": 2.86,
+"end": 3.1,
+"p": 0.998
+},
+{
+"w": "them,",
+"start": 3.1,
+"end": 3.42,
+"p": 0.998
+},
+{
+"w": "a",
+"start": 3.86,
+"end": 4.06,
+"p": 0.978
+},
+{
+"w": "spinning",
+"start": 4.06,
+"end": 4.4,
+"p": 0.997
+},
+{
+"w": "cylinder",
+"start": 4.4,
+"end": 4.94,
+"p": 0.995
+},
+{
+"w": "whose",
+"start": 4.94,
+"end": 5.22,
+"p": 0.985
+},
+{
+"w": "axis",
+"start": 5.22,
+"end": 5.66,
+"p": 0.84
+},
+{
+"w": "slowly",
+"start": 5.66,
+"end": 6.2,
+"p": 0.999
+},
+{
+"w": "turns.",
+"start": 6.2,
+"end": 6.76,
+"p": 0.999
+}
+]
+}

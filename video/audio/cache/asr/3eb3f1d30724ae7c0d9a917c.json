@@ -1,0 +1,91 @@
+{
+"key": "3eb3f1d30724ae7c0d9a917c",
+"model": "small.en",
+"text": "In the partners' solver snapshots, which laws hold exactly, and under which discrete operator?",
+"words": [
+{
+"w": "In",
+"start": 0.0,
+"end": 0.26,
+"p": 0.605
+},
+{
+"w": "the",
+"start": 0.26,
+"end": 0.4,
+"p": 0.991
+},
+{
+"w": "partners'",
+"start": 0.4,
+"end": 0.74,
+"p": 0.573
+},
+{
+"w": "solver",
+"start": 1.0,
+"end": 1.24,
+"p": 0.854
+},
+{
+"w": "snapshots,",
+"start": 1.24,
+"end": 1.8,
+"p": 0.996
+},
+{
+"w": "which",
+"start": 2.42,
+"end": 2.56,
+"p": 0.995
+},
+{
+"w": "laws",
+"start": 2.56,
+"end": 2.94,
+"p": 0.993
+},
+{
+"w": "hold",
+"start": 2.94,
+"end": 3.32,
+"p": 0.998
+},
+{
+"w": "exactly,",
+"start": 3.32,
+"end": 3.8,
+"p": 0.99
+},
+{
+"w": "and",
+"start": 4.44,
+"end": 4.6,
+"p": 0.998
+},
+{
+"w": "under",
+"start": 4.6,
+"end": 4.84,
+"p": 0.994
+},
+{
+"w": "which",
+"start": 4.84,
+"end": 5.18,
+"p": 0.998
+},
+{
+"w": "discrete",
+"start": 5.18,
+"end": 5.66,
+"p": 0.911
+},
+{
+"w": "operator?",
+"start": 5.66,
+"end": 6.24,
+"p": 0.998
+}
+]
+}

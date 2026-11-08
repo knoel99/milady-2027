@@ -1,0 +1,103 @@
+{
+"key": "9a6f46c83cf275d6319a57fb",
+"model": "small.en",
+"text": "The last shelf can wait, the top steps details, and how to frame a first paper.",
+"words": [
+{
+"w": "The",
+"start": 0.0,
+"end": 0.22,
+"p": 0.726
+},
+{
+"w": "last",
+"start": 0.22,
+"end": 0.56,
+"p": 0.973
+},
+{
+"w": "shelf",
+"start": 0.56,
+"end": 0.9,
+"p": 0.998
+},
+{
+"w": "can",
+"start": 0.9,
+"end": 1.14,
+"p": 0.999
+},
+{
+"w": "wait,",
+"start": 1.14,
+"end": 1.46,
+"p": 0.972
+},
+{
+"w": "the",
+"start": 2.16,
+"end": 2.26,
+"p": 0.982
+},
+{
+"w": "top",
+"start": 2.26,
+"end": 2.52,
+"p": 0.984
+},
+{
+"w": "steps",
+"start": 2.52,
+"end": 2.9,
+"p": 0.962
+},
+{
+"w": "details,",
+"start": 2.9,
+"end": 3.42,
+"p": 0.966
+},
+{
+"w": "and",
+"start": 4.08,
+"end": 4.12,
+"p": 0.996
+},
+{
+"w": "how",
+"start": 4.12,
+"end": 4.32,
+"p": 0.998
+},
+{
+"w": "to",
+"start": 4.32,
+"end": 4.5,
+"p": 0.999
+},
+{
+"w": "frame",
+"start": 4.5,
+"end": 4.78,
+"p": 0.999
+},
+{
+"w": "a",
+"start": 4.78,
+"end": 5.0,
+"p": 0.995
+},
+{
+"w": "first",
+"start": 5.0,
+"end": 5.28,
+"p": 0.991
+},
+{
+"w": "paper.",
+"start": 5.28,
+"end": 5.72,
+"p": 0.999
+}
+]
+}

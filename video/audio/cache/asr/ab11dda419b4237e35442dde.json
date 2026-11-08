@@ -1,0 +1,157 @@
+{
+"key": "ab11dda419b4237e35442dde",
+"model": "small.en",
+"text": "The proof is one line. The work is in the decoder. Hill maps in two dimensions, a vector potential in three, with its gauge fixed.",
+"words": [
+{
+"w": "The",
+"start": 0.0,
+"end": 0.22,
+"p": 0.94
+},
+{
+"w": "proof",
+"start": 0.22,
+"end": 0.5,
+"p": 0.993
+},
+{
+"w": "is",
+"start": 0.5,
+"end": 0.78,
+"p": 0.999
+},
+{
+"w": "one",
+"start": 0.78,
+"end": 1.1,
+"p": 0.994
+},
+{
+"w": "line.",
+"start": 1.1,
+"end": 1.5,
+"p": 0.924
+},
+{
+"w": "The",
+"start": 2.12,
+"end": 2.28,
+"p": 0.994
+},
+{
+"w": "work",
+"start": 2.28,
+"end": 2.52,
+"p": 0.998
+},
+{
+"w": "is",
+"start": 2.52,
+"end": 2.72,
+"p": 0.997
+},
+{
+"w": "in",
+"start": 2.72,
+"end": 2.84,
+"p": 0.998
+},
+{
+"w": "the",
+"start": 2.84,
+"end": 2.96,
+"p": 0.998
+},
+{
+"w": "decoder.",
+"start": 2.96,
+"end": 3.68,
+"p": 0.996
+},
+{
+"w": "Hill",
+"start": 4.26,
+"end": 4.3,
+"p": 0.542
+},
+{
+"w": "maps",
+"start": 4.3,
+"end": 4.6,
+"p": 0.825
+},
+{
+"w": "in",
+"start": 4.6,
+"end": 4.82,
+"p": 0.996
+},
+{
+"w": "two",
+"start": 4.82,
+"end": 5.04,
+"p": 0.886
+},
+{
+"w": "dimensions,",
+"start": 5.04,
+"end": 5.56,
+"p": 0.993
+},
+{
+"w": "a",
+"start": 6.14,
+"end": 6.24,
+"p": 0.989
+},
+{
+"w": "vector",
+"start": 6.24,
+"end": 6.52,
+"p": 0.997
+},
+{
+"w": "potential",
+"start": 6.52,
+"end": 7.0,
+"p": 0.996
+},
+{
+"w": "in",
+"start": 7.0,
+"end": 7.24,
+"p": 0.998
+},
+{
+"w": "three,",
+"start": 7.24,
+"end": 7.64,
+"p": 0.905
+},
+{
+"w": "with",
+"start": 7.9,
+"end": 8.22,
+"p": 0.999
+},
+{
+"w": "its",
+"start": 8.22,
+"end": 8.42,
+"p": 0.988
+},
+{
+"w": "gauge",
+"start": 8.42,
+"end": 8.78,
+"p": 0.965
+},
+{
+"w": "fixed.",
+"start": 8.78,
+"end": 9.24,
+"p": 0.998
+}
+]
+}

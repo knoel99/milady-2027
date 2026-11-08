@@ -1,0 +1,73 @@
+{
+"key": "a7de3d70319680a92c4e74d3",
+"model": "small.en",
+"text": "Will its crossing rates switch on early, late, or on time?",
+"words": [
+{
+"w": "Will",
+"start": 0.0,
+"end": 0.24,
+"p": 0.918
+},
+{
+"w": "its",
+"start": 0.24,
+"end": 0.4,
+"p": 0.964
+},
+{
+"w": "crossing",
+"start": 0.4,
+"end": 0.84,
+"p": 0.998
+},
+{
+"w": "rates",
+"start": 0.84,
+"end": 1.12,
+"p": 0.636
+},
+{
+"w": "switch",
+"start": 1.12,
+"end": 1.38,
+"p": 0.999
+},
+{
+"w": "on",
+"start": 1.38,
+"end": 1.68,
+"p": 0.998
+},
+{
+"w": "early,",
+"start": 1.68,
+"end": 2.12,
+"p": 0.984
+},
+{
+"w": "late,",
+"start": 2.46,
+"end": 2.7,
+"p": 0.999
+},
+{
+"w": "or",
+"start": 3.18,
+"end": 3.2,
+"p": 0.999
+},
+{
+"w": "on",
+"start": 3.2,
+"end": 3.4,
+"p": 0.994
+},
+{
+"w": "time?",
+"start": 3.4,
+"end": 3.74,
+"p": 0.997
+}
+]
+}

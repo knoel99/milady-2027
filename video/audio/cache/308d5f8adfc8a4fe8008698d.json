@@ -1,0 +1,27 @@
+{
+ "text": "[calm, natural narrator voice] So <|phoneme_start|>R AY1 S<|phoneme_end|> needs only snapshots and the equations, but plenty of snapshots, and cheap ones. Yet real dynamo simulations exist at only a few knob settings. Between the dots, there is no shoebox at all. How do you get snapshots at a setting nobody simulated?",
+ "voice": "536d3a5e000945adb7038665781a4aca",
+ "words": 45,
+ "scene": "05.5",
+ "para": 0,
+ "duration": 19.5657,
+ "latency_s": 3.9,
+ "created": "2026-11-08T08:09:09",
+ "provider": "fish",
+ "request": {
+  "temperature": 0.1,
+  "format": "mp3",
+  "mp3_bitrate": 192,
+  "sample_rate": 44100,
+  "latency": "normal",
+  "language": "en",
+  "normalize": true,
+  "condition_on_previous_chunks": true,
+  "prosody": {
+   "speed": 1.0,
+   "normalize_loudness": true
+  },
+  "text": "[calm, natural narrator voice] So <|phoneme_start|>R AY1 S<|phoneme_end|> needs only snapshots and the equations, but plenty of snapshots, and cheap ones. Yet real dynamo simulations exist at only a few knob settings. Between the dots, there is no shoebox at all. How do you get snapshots at a setting nobody simulated?",
+  "reference_id": "536d3a5e000945adb7038665781a4aca"
+ }
+}

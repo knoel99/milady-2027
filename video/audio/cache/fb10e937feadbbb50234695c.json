@@ -1,0 +1,27 @@
+{
+ "text": "[calm, natural narrator voice] Two: after training, reweight the generated crowd. Where the model is worst, a poll of five hundred shrinks to one person, and the crowd gets worse.",
+ "voice": "536d3a5e000945adb7038665781a4aca",
+ "words": 26,
+ "scene": "08.5",
+ "para": 2,
+ "duration": 11.7551,
+ "latency_s": 2.4,
+ "created": "2026-11-08T08:10:12",
+ "provider": "fish",
+ "request": {
+  "temperature": 0.1,
+  "format": "mp3",
+  "mp3_bitrate": 192,
+  "sample_rate": 44100,
+  "latency": "normal",
+  "language": "en",
+  "normalize": true,
+  "condition_on_previous_chunks": true,
+  "prosody": {
+   "speed": 1.0,
+   "normalize_loudness": true
+  },
+  "text": "[calm, natural narrator voice] Two: after training, reweight the generated crowd. Where the model is worst, a poll of five hundred shrinks to one person, and the crowd gets worse.",
+  "reference_id": "536d3a5e000945adb7038665781a4aca"
+ }
+}

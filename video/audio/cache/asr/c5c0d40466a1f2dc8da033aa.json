@@ -1,0 +1,115 @@
+{
+"key": "c5c0d40466a1f2dc8da033aa",
+"model": "small.en",
+"text": "Many weightings hit the target. The least distorting one is an exponential tilt, known as the eye projection.",
+"words": [
+{
+"w": "Many",
+"start": 0.0,
+"end": 0.42,
+"p": 0.88
+},
+{
+"w": "weightings",
+"start": 0.42,
+"end": 0.88,
+"p": 0.965
+},
+{
+"w": "hit",
+"start": 0.88,
+"end": 1.06,
+"p": 0.998
+},
+{
+"w": "the",
+"start": 1.06,
+"end": 1.24,
+"p": 0.999
+},
+{
+"w": "target.",
+"start": 1.24,
+"end": 1.58,
+"p": 0.999
+},
+{
+"w": "The",
+"start": 2.34,
+"end": 2.44,
+"p": 0.995
+},
+{
+"w": "least",
+"start": 2.44,
+"end": 2.66,
+"p": 0.994
+},
+{
+"w": "distorting",
+"start": 2.66,
+"end": 3.2,
+"p": 0.981
+},
+{
+"w": "one",
+"start": 3.2,
+"end": 3.5,
+"p": 0.996
+},
+{
+"w": "is",
+"start": 3.5,
+"end": 3.74,
+"p": 0.994
+},
+{
+"w": "an",
+"start": 3.74,
+"end": 3.88,
+"p": 0.991
+},
+{
+"w": "exponential",
+"start": 3.88,
+"end": 4.46,
+"p": 0.968
+},
+{
+"w": "tilt,",
+"start": 4.46,
+"end": 5.0,
+"p": 0.994
+},
+{
+"w": "known",
+"start": 5.44,
+"end": 5.66,
+"p": 0.997
+},
+{
+"w": "as",
+"start": 5.66,
+"end": 5.88,
+"p": 0.999
+},
+{
+"w": "the",
+"start": 5.88,
+"end": 6.0,
+"p": 0.987
+},
+{
+"w": "eye",
+"start": 6.0,
+"end": 6.3,
+"p": 0.72
+},
+{
+"w": "projection.",
+"start": 6.3,
+"end": 6.82,
+"p": 0.993
+}
+]
+}

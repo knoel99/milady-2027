@@ -1,0 +1,157 @@
+{
+"key": "612bf40badd60f9aee76ec7d",
+"model": "small.en",
+"text": "No. Now lines appear and vanish inside the box. Relative to the field's own variations, the divergence is 0.41, a defect of order 1.",
+"words": [
+{
+"w": "No.",
+"start": 0.0,
+"end": 0.4,
+"p": 0.967
+},
+{
+"w": "Now",
+"start": 1.12,
+"end": 1.34,
+"p": 0.992
+},
+{
+"w": "lines",
+"start": 1.34,
+"end": 1.7,
+"p": 0.962
+},
+{
+"w": "appear",
+"start": 1.7,
+"end": 2.04,
+"p": 0.995
+},
+{
+"w": "and",
+"start": 2.04,
+"end": 2.38,
+"p": 0.989
+},
+{
+"w": "vanish",
+"start": 2.38,
+"end": 2.74,
+"p": 0.997
+},
+{
+"w": "inside",
+"start": 2.74,
+"end": 3.2,
+"p": 0.998
+},
+{
+"w": "the",
+"start": 3.2,
+"end": 3.38,
+"p": 0.997
+},
+{
+"w": "box.",
+"start": 3.38,
+"end": 3.76,
+"p": 0.996
+},
+{
+"w": "Relative",
+"start": 4.76,
+"end": 4.76,
+"p": 0.979
+},
+{
+"w": "to",
+"start": 4.76,
+"end": 5.08,
+"p": 1.0
+},
+{
+"w": "the",
+"start": 5.08,
+"end": 5.22,
+"p": 0.998
+},
+{
+"w": "field's",
+"start": 5.22,
+"end": 5.64,
+"p": 0.952
+},
+{
+"w": "own",
+"start": 5.64,
+"end": 5.84,
+"p": 0.998
+},
+{
+"w": "variations,",
+"start": 5.84,
+"end": 6.44,
+"p": 0.997
+},
+{
+"w": "the",
+"start": 7.14,
+"end": 7.18,
+"p": 0.996
+},
+{
+"w": "divergence",
+"start": 7.18,
+"end": 7.6,
+"p": 0.99
+},
+{
+"w": "is",
+"start": 7.6,
+"end": 7.96,
+"p": 0.998
+},
+{
+"w": "0",
+"start": 7.96,
+"end": 8.36,
+"p": 0.941
+},
+{
+"w": ".41,",
+"start": 8.36,
+"end": 9.26,
+"p": 0.992
+},
+{
+"w": "a",
+"start": 10.14,
+"end": 10.28,
+"p": 0.995
+},
+{
+"w": "defect",
+"start": 10.28,
+"end": 10.7,
+"p": 0.998
+},
+{
+"w": "of",
+"start": 10.7,
+"end": 11.06,
+"p": 0.999
+},
+{
+"w": "order",
+"start": 11.06,
+"end": 11.28,
+"p": 0.872
+},
+{
+"w": "1.",
+"start": 11.28,
+"end": 11.72,
+"p": 0.611
+}
+]
+}

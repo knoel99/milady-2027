@@ -1,0 +1,27 @@
+{
+ "text": "[calm, natural narrator voice] The two curves almost coincide. Shade the gap, and divide by the area under the counted curve: the cumulative error. Four percent near the threshold, six percent above it. A good sign, on three chaotic dials that are not even guaranteed to be well-behaved.",
+ "voice": "536d3a5e000945adb7038665781a4aca",
+ "words": 44,
+ "scene": "05.3",
+ "para": 1,
+ "duration": 18.547,
+ "latency_s": 4.0,
+ "created": "2026-11-08T08:09:05",
+ "provider": "fish",
+ "request": {
+  "temperature": 0.1,
+  "format": "mp3",
+  "mp3_bitrate": 192,
+  "sample_rate": 44100,
+  "latency": "normal",
+  "language": "en",
+  "normalize": true,
+  "condition_on_previous_chunks": true,
+  "prosody": {
+   "speed": 1.0,
+   "normalize_loudness": true
+  },
+  "text": "[calm, natural narrator voice] The two curves almost coincide. Shade the gap, and divide by the area under the counted curve: the cumulative error. Four percent near the threshold, six percent above it. A good sign, on three chaotic dials that are not even guaranteed to be well-behaved.",
+  "reference_id": "536d3a5e000945adb7038665781a4aca"
+ }
+}

@@ -1,0 +1,27 @@
+{
+ "text": "[calm, natural narrator voice] Lane four, computers. Nineteen eighty-one: simulated turbulence grows dynamos. Nineteen ninety-five: a simulated Earth's core reverses its field. Ringed pins mark papers co-signed by this project's supervisors. Nineteen ninety-seven: two simulated counter-rotating eddies make a dynamo. Two thousand five: such dynamos still work at a <|phoneme_start|>P IY1 EH1 M<|phoneme_end|> of one hundredth.",
+ "voice": "536d3a5e000945adb7038665781a4aca",
+ "words": 49,
+ "scene": "SOA1.4",
+ "para": 0,
+ "duration": 29.3616,
+ "latency_s": 5.2,
+ "created": "2026-11-08T08:07:54",
+ "provider": "fish",
+ "request": {
+  "temperature": 0.1,
+  "format": "mp3",
+  "mp3_bitrate": 192,
+  "sample_rate": 44100,
+  "latency": "normal",
+  "language": "en",
+  "normalize": true,
+  "condition_on_previous_chunks": true,
+  "prosody": {
+   "speed": 1.0,
+   "normalize_loudness": true
+  },
+  "text": "[calm, natural narrator voice] Lane four, computers. Nineteen eighty-one: simulated turbulence grows dynamos. Nineteen ninety-five: a simulated Earth's core reverses its field. Ringed pins mark papers co-signed by this project's supervisors. Nineteen ninety-seven: two simulated counter-rotating eddies make a dynamo. Two thousand five: such dynamos still work at a <|phoneme_start|>P IY1 EH1 M<|phoneme_end|> of one hundredth.",
+  "reference_id": "536d3a5e000945adb7038665781a4aca"
+ }
+}

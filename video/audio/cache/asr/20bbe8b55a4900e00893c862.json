@@ -1,0 +1,301 @@
+{
+"key": "20bbe8b55a4900e00893c862",
+"model": "small.en",
+"text": "A 2026 preprint compared ways to impose zero divergence on flat flows. No single strategy dominates. In three dimensions, we found two exactly divergence-free generators, both preprints, periodic box turbulence, and a current free field in the sun's corona. None handles walls, a vacuum outside and iron inside.",
+"words": [
+{
+"w": "A",
+"start": 0.0,
+"end": 0.24,
+"p": 0.858
+},
+{
+"w": "2026",
+"start": 0.24,
+"end": 1.06,
+"p": 0.992
+},
+{
+"w": "preprint",
+"start": 1.06,
+"end": 1.62,
+"p": 0.923
+},
+{
+"w": "compared",
+"start": 1.62,
+"end": 2.1,
+"p": 0.986
+},
+{
+"w": "ways",
+"start": 2.1,
+"end": 2.42,
+"p": 0.999
+},
+{
+"w": "to",
+"start": 2.42,
+"end": 2.64,
+"p": 0.999
+},
+{
+"w": "impose",
+"start": 2.64,
+"end": 3.08,
+"p": 0.997
+},
+{
+"w": "zero",
+"start": 3.08,
+"end": 3.5,
+"p": 0.982
+},
+{
+"w": "divergence",
+"start": 3.5,
+"end": 4.06,
+"p": 0.981
+},
+{
+"w": "on",
+"start": 4.06,
+"end": 4.34,
+"p": 0.999
+},
+{
+"w": "flat",
+"start": 4.34,
+"end": 4.7,
+"p": 0.998
+},
+{
+"w": "flows.",
+"start": 4.7,
+"end": 5.06,
+"p": 0.989
+},
+{
+"w": "No",
+"start": 5.92,
+"end": 6.16,
+"p": 0.997
+},
+{
+"w": "single",
+"start": 6.16,
+"end": 6.54,
+"p": 1.0
+},
+{
+"w": "strategy",
+"start": 6.54,
+"end": 7.12,
+"p": 0.998
+},
+{
+"w": "dominates.",
+"start": 7.12,
+"end": 7.62,
+"p": 0.998
+},
+{
+"w": "In",
+"start": 8.64,
+"end": 8.8,
+"p": 0.997
+},
+{
+"w": "three",
+"start": 8.8,
+"end": 9.08,
+"p": 0.862
+},
+{
+"w": "dimensions,",
+"start": 9.08,
+"end": 9.56,
+"p": 0.987
+},
+{
+"w": "we",
+"start": 9.56,
+"end": 10.2,
+"p": 0.999
+},
+{
+"w": "found",
+"start": 10.2,
+"end": 10.48,
+"p": 0.991
+},
+{
+"w": "two",
+"start": 10.48,
+"end": 10.9,
+"p": 0.988
+},
+{
+"w": "exactly",
+"start": 10.9,
+"end": 11.5,
+"p": 0.983
+},
+{
+"w": "divergence",
+"start": 11.5,
+"end": 12.22,
+"p": 0.8
+},
+{
+"w": "-free",
+"start": 12.22,
+"end": 12.58,
+"p": 0.914
+},
+{
+"w": "generators,",
+"start": 12.58,
+"end": 13.2,
+"p": 0.998
+},
+{
+"w": "both",
+"start": 13.92,
+"end": 14.2,
+"p": 0.998
+},
+{
+"w": "preprints,",
+"start": 14.2,
+"end": 14.82,
+"p": 0.978
+},
+{
+"w": "periodic",
+"start": 15.62,
+"end": 16.02,
+"p": 0.991
+},
+{
+"w": "box",
+"start": 16.02,
+"end": 16.4,
+"p": 0.93
+},
+{
+"w": "turbulence,",
+"start": 16.4,
+"end": 16.96,
+"p": 0.996
+},
+{
+"w": "and",
+"start": 17.44,
+"end": 17.7,
+"p": 0.999
+},
+{
+"w": "a",
+"start": 17.7,
+"end": 17.8,
+"p": 0.993
+},
+{
+"w": "current",
+"start": 17.8,
+"end": 18.12,
+"p": 0.999
+},
+{
+"w": "free",
+"start": 18.12,
+"end": 18.46,
+"p": 0.861
+},
+{
+"w": "field",
+"start": 18.46,
+"end": 18.88,
+"p": 0.992
+},
+{
+"w": "in",
+"start": 18.88,
+"end": 19.1,
+"p": 0.998
+},
+{
+"w": "the",
+"start": 19.1,
+"end": 19.26,
+"p": 0.998
+},
+{
+"w": "sun's",
+"start": 19.26,
+"end": 19.6,
+"p": 0.89
+},
+{
+"w": "corona.",
+"start": 19.6,
+"end": 20.02,
+"p": 0.994
+},
+{
+"w": "None",
+"start": 20.74,
+"end": 20.84,
+"p": 0.991
+},
+{
+"w": "handles",
+"start": 20.84,
+"end": 21.34,
+"p": 1.0
+},
+{
+"w": "walls,",
+"start": 21.34,
+"end": 21.78,
+"p": 0.998
+},
+{
+"w": "a",
+"start": 22.4,
+"end": 22.52,
+"p": 0.998
+},
+{
+"w": "vacuum",
+"start": 22.52,
+"end": 22.9,
+"p": 0.999
+},
+{
+"w": "outside",
+"start": 22.9,
+"end": 23.42,
+"p": 0.999
+},
+{
+"w": "and",
+"start": 23.42,
+"end": 23.8,
+"p": 0.78
+},
+{
+"w": "iron",
+"start": 23.8,
+"end": 24.22,
+"p": 0.988
+},
+{
+"w": "inside.",
+"start": 24.22,
+"end": 24.78,
+"p": 0.998
+}
+]
+}

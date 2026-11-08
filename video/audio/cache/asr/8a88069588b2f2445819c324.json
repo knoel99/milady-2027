@@ -1,0 +1,145 @@
+{
+"key": "8a88069588b2f2445819c324",
+"model": "small.en",
+"text": "Confidence, low. Statistical stability along branches is unproven in turbulence. No downward sweep is configured, from which saturated runs, and how far down.",
+"words": [
+{
+"w": "Confidence,",
+"start": 0.0,
+"end": 0.74,
+"p": 0.948
+},
+{
+"w": "low.",
+"start": 1.14,
+"end": 1.42,
+"p": 0.915
+},
+{
+"w": "Statistical",
+"start": 2.7,
+"end": 2.7,
+"p": 0.975
+},
+{
+"w": "stability",
+"start": 2.7,
+"end": 3.28,
+"p": 0.998
+},
+{
+"w": "along",
+"start": 3.28,
+"end": 3.64,
+"p": 0.995
+},
+{
+"w": "branches",
+"start": 3.64,
+"end": 4.1,
+"p": 0.999
+},
+{
+"w": "is",
+"start": 4.1,
+"end": 4.34,
+"p": 0.999
+},
+{
+"w": "unproven",
+"start": 4.34,
+"end": 4.96,
+"p": 0.994
+},
+{
+"w": "in",
+"start": 4.96,
+"end": 5.2,
+"p": 0.999
+},
+{
+"w": "turbulence.",
+"start": 5.2,
+"end": 5.68,
+"p": 0.999
+},
+{
+"w": "No",
+"start": 6.46,
+"end": 6.68,
+"p": 0.998
+},
+{
+"w": "downward",
+"start": 6.68,
+"end": 7.12,
+"p": 0.997
+},
+{
+"w": "sweep",
+"start": 7.12,
+"end": 7.48,
+"p": 0.998
+},
+{
+"w": "is",
+"start": 7.48,
+"end": 7.7,
+"p": 0.999
+},
+{
+"w": "configured,",
+"start": 7.7,
+"end": 8.2,
+"p": 0.998
+},
+{
+"w": "from",
+"start": 8.64,
+"end": 8.82,
+"p": 0.998
+},
+{
+"w": "which",
+"start": 8.82,
+"end": 9.02,
+"p": 0.999
+},
+{
+"w": "saturated",
+"start": 9.02,
+"end": 9.58,
+"p": 0.995
+},
+{
+"w": "runs,",
+"start": 9.58,
+"end": 10.02,
+"p": 0.999
+},
+{
+"w": "and",
+"start": 10.52,
+"end": 10.62,
+"p": 0.999
+},
+{
+"w": "how",
+"start": 10.62,
+"end": 10.84,
+"p": 0.999
+},
+{
+"w": "far",
+"start": 10.84,
+"end": 11.12,
+"p": 0.998
+},
+{
+"w": "down.",
+"start": 11.12,
+"end": 11.46,
+"p": 0.999
+}
+]
+}

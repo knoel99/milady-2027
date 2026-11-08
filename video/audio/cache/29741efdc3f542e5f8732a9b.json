@@ -1,0 +1,28 @@
+{
+ "text": "[calm, natural narrator voice] Le pari : les résidus non imposés sont encore divisés par deux, à peu près. Au premier tour, c'était par un virgule neuf huit, pour une barre à deux : pile ou face. Confiance : moyenne. Seul hic : un modèle parfaitement symétrique dépasse le plancher de bruit presque une fois sur deux ; ce plancher est sa moyenne. À demander d'abord : faut-il un test statistique pour le premier voyant ?",
+ "voice": "536d3a5e000945adb7038665781a4aca",
+ "words": 65,
+ "scene": "X4.5",
+ "para": 2,
+ "lang": "fr",
+ "duration": 27.742,
+ "latency_s": 4.9,
+ "created": "2026-11-08T10:02:24",
+ "provider": "fish",
+ "request": {
+  "temperature": 0.1,
+  "format": "mp3",
+  "mp3_bitrate": 192,
+  "sample_rate": 44100,
+  "latency": "normal",
+  "language": "fr",
+  "normalize": true,
+  "condition_on_previous_chunks": true,
+  "prosody": {
+   "speed": 1.0,
+   "normalize_loudness": true
+  },
+  "text": "[calm, natural narrator voice] Le pari : les résidus non imposés sont encore divisés par deux, à peu près. Au premier tour, c'était par un virgule neuf huit, pour une barre à deux : pile ou face. Confiance : moyenne. Seul hic : un modèle parfaitement symétrique dépasse le plancher de bruit presque une fois sur deux ; ce plancher est sa moyenne. À demander d'abord : faut-il un test statistique pour le premier voyant ?",
+  "reference_id": "536d3a5e000945adb7038665781a4aca"
+ }
+}

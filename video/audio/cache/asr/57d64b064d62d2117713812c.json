@@ -1,0 +1,169 @@
+{
+"key": "57d64b064d62d2117713812c",
+"model": "small.en",
+"text": "Several answers could change what gets computed or whether anything is rented at all. The cheapest experiment is a good question asked before renting a graphics card.",
+"words": [
+{
+"w": "Several",
+"start": 0.0,
+"end": 0.48,
+"p": 0.93
+},
+{
+"w": "answers",
+"start": 0.48,
+"end": 0.84,
+"p": 0.999
+},
+{
+"w": "could",
+"start": 0.84,
+"end": 1.06,
+"p": 0.998
+},
+{
+"w": "change",
+"start": 1.06,
+"end": 1.42,
+"p": 0.999
+},
+{
+"w": "what",
+"start": 1.42,
+"end": 1.66,
+"p": 0.999
+},
+{
+"w": "gets",
+"start": 1.66,
+"end": 1.86,
+"p": 0.996
+},
+{
+"w": "computed",
+"start": 1.86,
+"end": 2.32,
+"p": 0.999
+},
+{
+"w": "or",
+"start": 2.32,
+"end": 2.9,
+"p": 0.536
+},
+{
+"w": "whether",
+"start": 2.9,
+"end": 3.12,
+"p": 0.998
+},
+{
+"w": "anything",
+"start": 3.12,
+"end": 3.44,
+"p": 0.999
+},
+{
+"w": "is",
+"start": 3.44,
+"end": 3.7,
+"p": 0.998
+},
+{
+"w": "rented",
+"start": 3.7,
+"end": 3.96,
+"p": 0.998
+},
+{
+"w": "at",
+"start": 3.96,
+"end": 4.16,
+"p": 0.998
+},
+{
+"w": "all.",
+"start": 4.16,
+"end": 4.48,
+"p": 1.0
+},
+{
+"w": "The",
+"start": 5.12,
+"end": 5.24,
+"p": 0.979
+},
+{
+"w": "cheapest",
+"start": 5.24,
+"end": 5.56,
+"p": 0.997
+},
+{
+"w": "experiment",
+"start": 5.56,
+"end": 6.1,
+"p": 1.0
+},
+{
+"w": "is",
+"start": 6.1,
+"end": 6.4,
+"p": 0.999
+},
+{
+"w": "a",
+"start": 6.4,
+"end": 6.54,
+"p": 0.999
+},
+{
+"w": "good",
+"start": 6.54,
+"end": 6.7,
+"p": 0.999
+},
+{
+"w": "question",
+"start": 6.7,
+"end": 7.2,
+"p": 0.999
+},
+{
+"w": "asked",
+"start": 7.2,
+"end": 7.96,
+"p": 0.652
+},
+{
+"w": "before",
+"start": 7.96,
+"end": 8.38,
+"p": 0.999
+},
+{
+"w": "renting",
+"start": 8.38,
+"end": 8.7,
+"p": 0.999
+},
+{
+"w": "a",
+"start": 8.7,
+"end": 8.92,
+"p": 0.999
+},
+{
+"w": "graphics",
+"start": 8.92,
+"end": 9.18,
+"p": 0.999
+},
+{
+"w": "card.",
+"start": 9.18,
+"end": 9.66,
+"p": 1.0
+}
+]
+}

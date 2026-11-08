@@ -1,0 +1,307 @@
+{
+"key": "aee67dc8ea05e234da93bec7",
+"model": "small.en",
+"text": "First track. Fast surrogates. Networks trained to imitate a solver. Some carry the equations in their loss. Others learn maps between whole fields. For conducting fluids, they now reach flat, two-dimensional turbulence. For the Earth, recall the 2022 study. The methods it tried could not reliably foresee a flip.",
+"words": [
+{
+"w": "First",
+"start": 0.0,
+"end": 0.4,
+"p": 0.879
+},
+{
+"w": "track.",
+"start": 0.4,
+"end": 0.78,
+"p": 0.92
+},
+{
+"w": "Fast",
+"start": 1.86,
+"end": 1.86,
+"p": 0.977
+},
+{
+"w": "surrogates.",
+"start": 1.86,
+"end": 2.6,
+"p": 0.992
+},
+{
+"w": "Networks",
+"start": 3.38,
+"end": 3.38,
+"p": 0.981
+},
+{
+"w": "trained",
+"start": 3.38,
+"end": 3.9,
+"p": 0.961
+},
+{
+"w": "to",
+"start": 3.9,
+"end": 4.14,
+"p": 0.999
+},
+{
+"w": "imitate",
+"start": 4.14,
+"end": 4.5,
+"p": 0.985
+},
+{
+"w": "a",
+"start": 4.5,
+"end": 4.74,
+"p": 0.999
+},
+{
+"w": "solver.",
+"start": 4.74,
+"end": 5.22,
+"p": 0.998
+},
+{
+"w": "Some",
+"start": 5.9,
+"end": 6.14,
+"p": 0.999
+},
+{
+"w": "carry",
+"start": 6.14,
+"end": 6.44,
+"p": 0.999
+},
+{
+"w": "the",
+"start": 6.44,
+"end": 6.64,
+"p": 0.999
+},
+{
+"w": "equations",
+"start": 6.64,
+"end": 7.04,
+"p": 0.995
+},
+{
+"w": "in",
+"start": 7.04,
+"end": 7.3,
+"p": 0.484
+},
+{
+"w": "their",
+"start": 7.3,
+"end": 7.44,
+"p": 0.999
+},
+{
+"w": "loss.",
+"start": 7.44,
+"end": 7.84,
+"p": 0.996
+},
+{
+"w": "Others",
+"start": 8.52,
+"end": 8.7,
+"p": 0.987
+},
+{
+"w": "learn",
+"start": 8.7,
+"end": 9.04,
+"p": 0.988
+},
+{
+"w": "maps",
+"start": 9.04,
+"end": 9.42,
+"p": 0.997
+},
+{
+"w": "between",
+"start": 9.42,
+"end": 9.84,
+"p": 0.999
+},
+{
+"w": "whole",
+"start": 9.84,
+"end": 10.18,
+"p": 0.994
+},
+{
+"w": "fields.",
+"start": 10.18,
+"end": 10.76,
+"p": 0.998
+},
+{
+"w": "For",
+"start": 11.62,
+"end": 11.78,
+"p": 0.996
+},
+{
+"w": "conducting",
+"start": 11.78,
+"end": 12.22,
+"p": 0.997
+},
+{
+"w": "fluids,",
+"start": 12.22,
+"end": 12.78,
+"p": 0.999
+},
+{
+"w": "they",
+"start": 13.14,
+"end": 13.38,
+"p": 0.998
+},
+{
+"w": "now",
+"start": 13.38,
+"end": 13.66,
+"p": 0.997
+},
+{
+"w": "reach",
+"start": 13.66,
+"end": 13.94,
+"p": 0.999
+},
+{
+"w": "flat,",
+"start": 13.94,
+"end": 14.48,
+"p": 0.981
+},
+{
+"w": "two",
+"start": 14.86,
+"end": 15.06,
+"p": 0.883
+},
+{
+"w": "-dimensional",
+"start": 15.06,
+"end": 15.5,
+"p": 0.943
+},
+{
+"w": "turbulence.",
+"start": 15.5,
+"end": 16.06,
+"p": 0.998
+},
+{
+"w": "For",
+"start": 16.82,
+"end": 16.92,
+"p": 0.998
+},
+{
+"w": "the",
+"start": 16.92,
+"end": 17.06,
+"p": 0.998
+},
+{
+"w": "Earth,",
+"start": 17.06,
+"end": 17.36,
+"p": 0.831
+},
+{
+"w": "recall",
+"start": 17.9,
+"end": 18.16,
+"p": 0.995
+},
+{
+"w": "the",
+"start": 18.16,
+"end": 18.42,
+"p": 0.999
+},
+{
+"w": "2022",
+"start": 18.42,
+"end": 18.96,
+"p": 0.978
+},
+{
+"w": "study.",
+"start": 18.96,
+"end": 19.64,
+"p": 0.985
+},
+{
+"w": "The",
+"start": 20.24,
+"end": 20.48,
+"p": 0.997
+},
+{
+"w": "methods",
+"start": 20.48,
+"end": 20.82,
+"p": 0.997
+},
+{
+"w": "it",
+"start": 20.82,
+"end": 21.0,
+"p": 0.997
+},
+{
+"w": "tried",
+"start": 21.0,
+"end": 21.44,
+"p": 0.999
+},
+{
+"w": "could",
+"start": 21.44,
+"end": 21.72,
+"p": 0.988
+},
+{
+"w": "not",
+"start": 21.72,
+"end": 22.06,
+"p": 0.806
+},
+{
+"w": "reliably",
+"start": 22.06,
+"end": 22.66,
+"p": 0.995
+},
+{
+"w": "foresee",
+"start": 22.66,
+"end": 23.24,
+"p": 0.995
+},
+{
+"w": "a",
+"start": 23.24,
+"end": 23.46,
+"p": 0.996
+},
+{
+"w": "flip.",
+"start": 23.46,
+"end": 23.72,
+"p": 0.92
+}
+]
+}

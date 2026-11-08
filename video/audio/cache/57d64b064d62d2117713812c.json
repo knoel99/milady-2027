@@ -1,0 +1,27 @@
+{
+ "text": "[calm, natural narrator voice] Several answers could change what gets computed, or whether anything is rented at all. The cheapest experiment is a good question, asked before renting a graphics card.",
+ "voice": "536d3a5e000945adb7038665781a4aca",
+ "words": 27,
+ "scene": "10q.6",
+ "para": 1,
+ "duration": 10.2922,
+ "latency_s": 2.1,
+ "created": "2026-11-08T08:14:11",
+ "provider": "fish",
+ "request": {
+  "temperature": 0.1,
+  "format": "mp3",
+  "mp3_bitrate": 192,
+  "sample_rate": 44100,
+  "latency": "normal",
+  "language": "en",
+  "normalize": true,
+  "condition_on_previous_chunks": true,
+  "prosody": {
+   "speed": 1.0,
+   "normalize_loudness": true
+  },
+  "text": "[calm, natural narrator voice] Several answers could change what gets computed, or whether anything is rented at all. The cheapest experiment is a good question, asked before renting a graphics card.",
+  "reference_id": "536d3a5e000945adb7038665781a4aca"
+ }
+}

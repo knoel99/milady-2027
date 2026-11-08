@@ -1,0 +1,28 @@
+{
+ "text": "[calm, natural narrator voice] Pour la foule : le bilan d'énergie. Imposez-le à la foule, pendant l'entraînement. Repondérer après coup échoue là où le modèle est mauvais ; l'imposer de force à chaque instantané crée un pic.",
+ "voice": "536d3a5e000945adb7038665781a4aca",
+ "words": 31,
+ "scene": "08.6",
+ "para": 1,
+ "lang": "fr",
+ "duration": 13.009,
+ "latency_s": 2.8,
+ "created": "2026-11-08T10:00:37",
+ "provider": "fish",
+ "request": {
+  "temperature": 0.1,
+  "format": "mp3",
+  "mp3_bitrate": 192,
+  "sample_rate": 44100,
+  "latency": "normal",
+  "language": "fr",
+  "normalize": true,
+  "condition_on_previous_chunks": true,
+  "prosody": {
+   "speed": 1.0,
+   "normalize_loudness": true
+  },
+  "text": "[calm, natural narrator voice] Pour la foule : le bilan d'énergie. Imposez-le à la foule, pendant l'entraînement. Repondérer après coup échoue là où le modèle est mauvais ; l'imposer de force à chaque instantané crée un pic.",
+  "reference_id": "536d3a5e000945adb7038665781a4aca"
+ }
+}

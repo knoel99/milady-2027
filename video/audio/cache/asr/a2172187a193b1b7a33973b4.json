@@ -1,0 +1,43 @@
+{
+"key": "a2172187a193b1b7a33973b4",
+"model": "small.en",
+"text": "Will its fields be divergence-free?",
+"words": [
+{
+"w": "Will",
+"start": 0.0,
+"end": 0.26,
+"p": 0.925
+},
+{
+"w": "its",
+"start": 0.26,
+"end": 0.44,
+"p": 0.957
+},
+{
+"w": "fields",
+"start": 0.44,
+"end": 0.82,
+"p": 0.971
+},
+{
+"w": "be",
+"start": 0.82,
+"end": 1.08,
+"p": 0.999
+},
+{
+"w": "divergence",
+"start": 1.08,
+"end": 1.6,
+"p": 0.845
+},
+{
+"w": "-free?",
+"start": 1.6,
+"end": 2.04,
+"p": 0.765
+}
+]
+}

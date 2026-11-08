@@ -1,0 +1,27 @@
+{
+ "text": "[calm, natural narrator voice] The field moves fast: a twenty twenty-six conference paper claims to be the first to recognize a trade-off between physical and distributional accuracy. The study's lesson, never force a crowd law on each snapshot, must be placed against it.",
+ "voice": "536d3a5e000945adb7038665781a4aca",
+ "words": 39,
+ "scene": "SOA2.8",
+ "para": 0,
+ "duration": 16.8229,
+ "latency_s": 3.3,
+ "created": "2026-11-08T08:12:14",
+ "provider": "fish",
+ "request": {
+  "temperature": 0.1,
+  "format": "mp3",
+  "mp3_bitrate": 192,
+  "sample_rate": 44100,
+  "latency": "normal",
+  "language": "en",
+  "normalize": true,
+  "condition_on_previous_chunks": true,
+  "prosody": {
+   "speed": 1.0,
+   "normalize_loudness": true
+  },
+  "text": "[calm, natural narrator voice] The field moves fast: a twenty twenty-six conference paper claims to be the first to recognize a trade-off between physical and distributional accuracy. The study's lesson, never force a crowd law on each snapshot, must be placed against it.",
+  "reference_id": "536d3a5e000945adb7038665781a4aca"
+ }
+}

@@ -1,0 +1,28 @@
+{
+ "text": "[calm, natural narrator voice] Real dynamos have not one knob, but a panel. How hard the metal is stirred; how well it conducts. What the discs are made of: remember the iron. How unequal their speeds are: that is when V-K-S flipped. For <|phoneme_start|>D R EH1 S D AY1 N<|phoneme_end|>, a <|phoneme_start|>P R IY0 S EH1 S IH0 NG<|phoneme_end|> tank: how fast its axis turns.",
+ "voice": "536d3a5e000945adb7038665781a4aca",
+ "scene": "03.5",
+ "para": 0,
+ "words": 48,
+ "ab_test": "A",
+ "duration": 20.5323,
+ "latency_s": 3.5,
+ "created": "2026-11-08T08:27:14",
+ "provider": "fish",
+ "request": {
+  "temperature": 0.1,
+  "format": "mp3",
+  "mp3_bitrate": 192,
+  "sample_rate": 44100,
+  "latency": "normal",
+  "language": "en",
+  "normalize": true,
+  "condition_on_previous_chunks": true,
+  "prosody": {
+   "speed": 1.0,
+   "normalize_loudness": true
+  },
+  "text": "[calm, natural narrator voice] Real dynamos have not one knob, but a panel. How hard the metal is stirred; how well it conducts. What the discs are made of: remember the iron. How unequal their speeds are: that is when V-K-S flipped. For <|phoneme_start|>D R EH1 S D AY1 N<|phoneme_end|>, a <|phoneme_start|>P R IY0 S EH1 S IH0 NG<|phoneme_end|> tank: how fast its axis turns.",
+  "reference_id": "536d3a5e000945adb7038665781a4aca"
+ }
+}

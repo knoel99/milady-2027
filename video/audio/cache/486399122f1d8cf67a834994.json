@@ -1,0 +1,28 @@
+{
+ "text": "[calm, natural narrator voice] Ouvrez un four : le solveur garde l'écoulement et le champ sous forme d'ondes, et un rotationnel y devient une multiplication. Les produits sont plus simples sur la grille : chaque pas fait l'aller-retour. Il coupe le tiers extérieur des ondes : les produits ne peuvent plus se replier en ondes factices. Une projection garde les deux champs à divergence nulle ; l'estompage, lui, est résolu exactement.",
+ "voice": "536d3a5e000945adb7038665781a4aca",
+ "words": 63,
+ "scene": "X5.1",
+ "para": 0,
+ "lang": "fr",
+ "duration": 25.6522,
+ "latency_s": 5.8,
+ "created": "2026-11-08T10:03:12",
+ "provider": "fish",
+ "request": {
+  "temperature": 0.1,
+  "format": "mp3",
+  "mp3_bitrate": 192,
+  "sample_rate": 44100,
+  "latency": "normal",
+  "language": "fr",
+  "normalize": true,
+  "condition_on_previous_chunks": true,
+  "prosody": {
+   "speed": 1.0,
+   "normalize_loudness": true
+  },
+  "text": "[calm, natural narrator voice] Ouvrez un four : le solveur garde l'écoulement et le champ sous forme d'ondes, et un rotationnel y devient une multiplication. Les produits sont plus simples sur la grille : chaque pas fait l'aller-retour. Il coupe le tiers extérieur des ondes : les produits ne peuvent plus se replier en ondes factices. Une projection garde les deux champs à divergence nulle ; l'estompage, lui, est résolu exactement.",
+  "reference_id": "536d3a5e000945adb7038665781a4aca"
+ }
+}

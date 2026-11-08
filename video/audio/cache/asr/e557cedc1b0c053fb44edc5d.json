@@ -1,0 +1,265 @@
+{
+"key": "e557cedc1b0c053fb44edc5d",
+"model": "small.en",
+"text": "Can the energy budget catch the tilt? No. Each whirlpool balances its own budget, so a mix of the two passes in any proportion. On a check of crowd laws, the most lopsided machine even edges ahead. The mirror needs its own tool.",
+"words": [
+{
+"w": "Can",
+"start": 0.0,
+"end": 0.26,
+"p": 0.948
+},
+{
+"w": "the",
+"start": 0.26,
+"end": 0.38,
+"p": 0.996
+},
+{
+"w": "energy",
+"start": 0.38,
+"end": 0.68,
+"p": 0.984
+},
+{
+"w": "budget",
+"start": 0.68,
+"end": 1.04,
+"p": 0.998
+},
+{
+"w": "catch",
+"start": 1.04,
+"end": 1.36,
+"p": 0.996
+},
+{
+"w": "the",
+"start": 1.36,
+"end": 1.58,
+"p": 0.998
+},
+{
+"w": "tilt?",
+"start": 1.58,
+"end": 1.84,
+"p": 0.991
+},
+{
+"w": "No.",
+"start": 2.74,
+"end": 3.04,
+"p": 0.987
+},
+{
+"w": "Each",
+"start": 3.78,
+"end": 3.96,
+"p": 0.993
+},
+{
+"w": "whirlpool",
+"start": 3.96,
+"end": 4.48,
+"p": 0.922
+},
+{
+"w": "balances",
+"start": 4.48,
+"end": 5.0,
+"p": 0.999
+},
+{
+"w": "its",
+"start": 5.0,
+"end": 5.28,
+"p": 0.983
+},
+{
+"w": "own",
+"start": 5.28,
+"end": 5.56,
+"p": 0.998
+},
+{
+"w": "budget,",
+"start": 5.56,
+"end": 6.0,
+"p": 0.998
+},
+{
+"w": "so",
+"start": 6.5,
+"end": 6.72,
+"p": 0.992
+},
+{
+"w": "a",
+"start": 6.72,
+"end": 6.88,
+"p": 0.997
+},
+{
+"w": "mix",
+"start": 6.88,
+"end": 7.06,
+"p": 0.999
+},
+{
+"w": "of",
+"start": 7.06,
+"end": 7.26,
+"p": 0.999
+},
+{
+"w": "the",
+"start": 7.26,
+"end": 7.36,
+"p": 0.996
+},
+{
+"w": "two",
+"start": 7.36,
+"end": 7.6,
+"p": 0.994
+},
+{
+"w": "passes",
+"start": 7.6,
+"end": 8.06,
+"p": 0.999
+},
+{
+"w": "in",
+"start": 8.06,
+"end": 8.52,
+"p": 0.818
+},
+{
+"w": "any",
+"start": 8.52,
+"end": 8.82,
+"p": 0.999
+},
+{
+"w": "proportion.",
+"start": 8.82,
+"end": 9.32,
+"p": 0.996
+},
+{
+"w": "On",
+"start": 10.28,
+"end": 10.4,
+"p": 0.996
+},
+{
+"w": "a",
+"start": 10.4,
+"end": 10.54,
+"p": 0.998
+},
+{
+"w": "check",
+"start": 10.54,
+"end": 10.74,
+"p": 0.993
+},
+{
+"w": "of",
+"start": 10.74,
+"end": 10.92,
+"p": 0.999
+},
+{
+"w": "crowd",
+"start": 10.92,
+"end": 11.2,
+"p": 0.975
+},
+{
+"w": "laws,",
+"start": 11.2,
+"end": 11.56,
+"p": 0.755
+},
+{
+"w": "the",
+"start": 12.08,
+"end": 12.14,
+"p": 0.998
+},
+{
+"w": "most",
+"start": 12.14,
+"end": 12.38,
+"p": 0.999
+},
+{
+"w": "lopsided",
+"start": 12.38,
+"end": 13.06,
+"p": 0.99
+},
+{
+"w": "machine",
+"start": 13.06,
+"end": 13.5,
+"p": 0.998
+},
+{
+"w": "even",
+"start": 13.5,
+"end": 13.98,
+"p": 0.994
+},
+{
+"w": "edges",
+"start": 13.98,
+"end": 14.34,
+"p": 0.997
+},
+{
+"w": "ahead.",
+"start": 14.34,
+"end": 14.76,
+"p": 0.993
+},
+{
+"w": "The",
+"start": 15.54,
+"end": 15.66,
+"p": 0.996
+},
+{
+"w": "mirror",
+"start": 15.66,
+"end": 16.0,
+"p": 0.952
+},
+{
+"w": "needs",
+"start": 16.0,
+"end": 16.36,
+"p": 0.998
+},
+{
+"w": "its",
+"start": 16.36,
+"end": 16.58,
+"p": 0.994
+},
+{
+"w": "own",
+"start": 16.58,
+"end": 16.86,
+"p": 0.999
+},
+{
+"w": "tool.",
+"start": 16.86,
+"end": 17.26,
+"p": 1.0
+}
+]
+}

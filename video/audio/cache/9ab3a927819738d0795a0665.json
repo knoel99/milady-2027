@@ -1,0 +1,27 @@
+{
+ "text": "[calm, natural narrator voice] The internship and a proposed thesis add a bet: machines that dream up dynamo fields and obey their physics.",
+ "voice": "536d3a5e000945adb7038665781a4aca",
+ "words": 19,
+ "scene": "SOA1.6",
+ "para": 1,
+ "duration": 7.9674,
+ "latency_s": 1.9,
+ "created": "2026-11-08T08:07:58",
+ "provider": "fish",
+ "request": {
+  "temperature": 0.1,
+  "format": "mp3",
+  "mp3_bitrate": 192,
+  "sample_rate": 44100,
+  "latency": "normal",
+  "language": "en",
+  "normalize": true,
+  "condition_on_previous_chunks": true,
+  "prosody": {
+   "speed": 1.0,
+   "normalize_loudness": true
+  },
+  "text": "[calm, natural narrator voice] The internship and a proposed thesis add a bet: machines that dream up dynamo fields and obey their physics.",
+  "reference_id": "536d3a5e000945adb7038665781a4aca"
+ }
+}

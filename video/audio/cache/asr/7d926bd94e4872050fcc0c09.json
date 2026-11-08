@@ -1,0 +1,139 @@
+{
+"key": "7d926bd94e4872050fcc0c09",
+"model": "small.en",
+"text": "Here, a ramp, not a jump, and one seed, consistent with the theorem, not proof. Nor does the theorem explain the overshoot.",
+"words": [
+{
+"w": "Here,",
+"start": 0.0,
+"end": 0.38,
+"p": 0.875
+},
+{
+"w": "a",
+"start": 0.74,
+"end": 0.82,
+"p": 0.996
+},
+{
+"w": "ramp,",
+"start": 0.82,
+"end": 1.18,
+"p": 0.982
+},
+{
+"w": "not",
+"start": 1.48,
+"end": 1.7,
+"p": 0.998
+},
+{
+"w": "a",
+"start": 1.7,
+"end": 1.84,
+"p": 0.997
+},
+{
+"w": "jump,",
+"start": 1.84,
+"end": 2.12,
+"p": 0.998
+},
+{
+"w": "and",
+"start": 2.66,
+"end": 2.82,
+"p": 0.984
+},
+{
+"w": "one",
+"start": 2.82,
+"end": 3.12,
+"p": 0.959
+},
+{
+"w": "seed,",
+"start": 3.12,
+"end": 3.58,
+"p": 0.981
+},
+{
+"w": "consistent",
+"start": 4.34,
+"end": 4.64,
+"p": 0.963
+},
+{
+"w": "with",
+"start": 4.64,
+"end": 4.94,
+"p": 0.999
+},
+{
+"w": "the",
+"start": 4.94,
+"end": 5.08,
+"p": 0.995
+},
+{
+"w": "theorem,",
+"start": 5.08,
+"end": 5.44,
+"p": 0.971
+},
+{
+"w": "not",
+"start": 5.98,
+"end": 6.08,
+"p": 0.994
+},
+{
+"w": "proof.",
+"start": 6.08,
+"end": 6.5,
+"p": 0.993
+},
+{
+"w": "Nor",
+"start": 7.42,
+"end": 7.64,
+"p": 0.995
+},
+{
+"w": "does",
+"start": 7.64,
+"end": 7.88,
+"p": 0.996
+},
+{
+"w": "the",
+"start": 7.88,
+"end": 8.06,
+"p": 0.997
+},
+{
+"w": "theorem",
+"start": 8.06,
+"end": 8.34,
+"p": 0.993
+},
+{
+"w": "explain",
+"start": 8.34,
+"end": 8.86,
+"p": 0.996
+},
+{
+"w": "the",
+"start": 8.86,
+"end": 9.06,
+"p": 0.999
+},
+{
+"w": "overshoot.",
+"start": 9.06,
+"end": 9.6,
+"p": 0.994
+}
+]
+}

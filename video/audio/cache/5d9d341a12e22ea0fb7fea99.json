@@ -1,0 +1,27 @@
+{
+ "text": "[calm, natural narrator voice] Not claimed: waiting times between flips, sodium's tiny magnetic Prandtl number, the Earth's core, real laboratory data. Each empty spot is a search result, not a proof, to be checked again before every paper.",
+ "voice": "536d3a5e000945adb7038665781a4aca",
+ "words": 34,
+ "scene": "SOA2.8",
+ "para": 1,
+ "duration": 16.6923,
+ "latency_s": 3.5,
+ "created": "2026-11-08T08:12:15",
+ "provider": "fish",
+ "request": {
+  "temperature": 0.1,
+  "format": "mp3",
+  "mp3_bitrate": 192,
+  "sample_rate": 44100,
+  "latency": "normal",
+  "language": "en",
+  "normalize": true,
+  "condition_on_previous_chunks": true,
+  "prosody": {
+   "speed": 1.0,
+   "normalize_loudness": true
+  },
+  "text": "[calm, natural narrator voice] Not claimed: waiting times between flips, sodium's tiny magnetic Prandtl number, the Earth's core, real laboratory data. Each empty spot is a search result, not a proof, to be checked again before every paper.",
+  "reference_id": "536d3a5e000945adb7038665781a4aca"
+ }
+}

@@ -1,0 +1,28 @@
+{
+ "text": "[calm, natural narrator voice] Y a-t-il un aimant géant caché à l'intérieur de la Terre ? Loin sous la surface, le noyau externe est un océan de fer liquide. Livré à lui-même, un champ s'y éteindrait en quelques dizaines de milliers d'années. Pourtant, le champ de la Terre existe depuis plusieurs milliards d'années. Le fer en mouvement doit donc le fabriquer, en permanence.",
+ "voice": "536d3a5e000945adb7038665781a4aca",
+ "words": 58,
+ "scene": "01.1",
+ "para": 0,
+ "lang": "fr",
+ "duration": 24.2678,
+ "latency_s": 4.9,
+ "created": "2026-11-08T09:57:07",
+ "provider": "fish",
+ "request": {
+  "temperature": 0.1,
+  "format": "mp3",
+  "mp3_bitrate": 192,
+  "sample_rate": 44100,
+  "latency": "normal",
+  "language": "fr",
+  "normalize": true,
+  "condition_on_previous_chunks": true,
+  "prosody": {
+   "speed": 1.0,
+   "normalize_loudness": true
+  },
+  "text": "[calm, natural narrator voice] Y a-t-il un aimant géant caché à l'intérieur de la Terre ? Loin sous la surface, le noyau externe est un océan de fer liquide. Livré à lui-même, un champ s'y éteindrait en quelques dizaines de milliers d'années. Pourtant, le champ de la Terre existe depuis plusieurs milliards d'années. Le fer en mouvement doit donc le fabriquer, en permanence.",
+  "reference_id": "536d3a5e000945adb7038665781a4aca"
+ }
+}

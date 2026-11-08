@@ -1,0 +1,115 @@
+{
+"key": "5aea10445888c6102482f920",
+"model": "small.en",
+"text": "Beyond how often, for VKS, should we also target waiting times with short solver runs from generated states?",
+"words": [
+{
+"w": "Beyond",
+"start": 0.0,
+"end": 0.44,
+"p": 0.964
+},
+{
+"w": "how",
+"start": 0.44,
+"end": 0.7,
+"p": 0.997
+},
+{
+"w": "often,",
+"start": 0.7,
+"end": 1.16,
+"p": 0.999
+},
+{
+"w": "for",
+"start": 1.66,
+"end": 1.78,
+"p": 0.998
+},
+{
+"w": "VKS,",
+"start": 1.78,
+"end": 2.44,
+"p": 0.962
+},
+{
+"w": "should",
+"start": 3.18,
+"end": 3.26,
+"p": 0.996
+},
+{
+"w": "we",
+"start": 3.26,
+"end": 3.4,
+"p": 0.998
+},
+{
+"w": "also",
+"start": 3.4,
+"end": 3.74,
+"p": 0.998
+},
+{
+"w": "target",
+"start": 3.74,
+"end": 4.16,
+"p": 0.998
+},
+{
+"w": "waiting",
+"start": 4.16,
+"end": 4.48,
+"p": 0.954
+},
+{
+"w": "times",
+"start": 4.48,
+"end": 5.06,
+"p": 0.994
+},
+{
+"w": "with",
+"start": 5.06,
+"end": 5.62,
+"p": 0.791
+},
+{
+"w": "short",
+"start": 5.62,
+"end": 6.02,
+"p": 0.99
+},
+{
+"w": "solver",
+"start": 6.02,
+"end": 6.5,
+"p": 0.972
+},
+{
+"w": "runs",
+"start": 6.5,
+"end": 6.76,
+"p": 0.988
+},
+{
+"w": "from",
+"start": 6.76,
+"end": 7.02,
+"p": 0.999
+},
+{
+"w": "generated",
+"start": 7.02,
+"end": 7.46,
+"p": 0.997
+},
+{
+"w": "states?",
+"start": 7.46,
+"end": 7.92,
+"p": 0.993
+}
+]
+}

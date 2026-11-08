@@ -1,0 +1,115 @@
+{
+"key": "c83ee74333eca360d4083aba",
+"model": "small.en",
+"text": "That wind is a generative model. New, plausible examples, on demand. The whole game is learning the wind.",
+"words": [
+{
+"w": "That",
+"start": 0.0,
+"end": 0.34,
+"p": 0.946
+},
+{
+"w": "wind",
+"start": 0.34,
+"end": 0.64,
+"p": 0.997
+},
+{
+"w": "is",
+"start": 0.64,
+"end": 0.9,
+"p": 0.998
+},
+{
+"w": "a",
+"start": 0.9,
+"end": 1.04,
+"p": 0.999
+},
+{
+"w": "generative",
+"start": 1.04,
+"end": 1.6,
+"p": 0.993
+},
+{
+"w": "model.",
+"start": 1.6,
+"end": 1.96,
+"p": 0.999
+},
+{
+"w": "New,",
+"start": 2.68,
+"end": 2.9,
+"p": 0.996
+},
+{
+"w": "plausible",
+"start": 2.92,
+"end": 3.46,
+"p": 0.998
+},
+{
+"w": "examples,",
+"start": 3.46,
+"end": 4.06,
+"p": 0.991
+},
+{
+"w": "on",
+"start": 4.5,
+"end": 4.68,
+"p": 0.987
+},
+{
+"w": "demand.",
+"start": 4.68,
+"end": 5.08,
+"p": 0.842
+},
+{
+"w": "The",
+"start": 5.94,
+"end": 6.1,
+"p": 0.996
+},
+{
+"w": "whole",
+"start": 6.1,
+"end": 6.38,
+"p": 0.999
+},
+{
+"w": "game",
+"start": 6.38,
+"end": 6.76,
+"p": 0.998
+},
+{
+"w": "is",
+"start": 6.76,
+"end": 7.04,
+"p": 0.996
+},
+{
+"w": "learning",
+"start": 7.04,
+"end": 7.38,
+"p": 0.986
+},
+{
+"w": "the",
+"start": 7.38,
+"end": 7.64,
+"p": 0.998
+},
+{
+"w": "wind.",
+"start": 7.64,
+"end": 7.94,
+"p": 0.998
+}
+]
+}

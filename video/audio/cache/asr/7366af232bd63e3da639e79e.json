@@ -1,0 +1,199 @@
+{
+"key": "7366af232bd63e3da639e79e",
+"model": "small.en",
+"text": "Near a subcritical threshold, two states coexist. In published Taylor Green runs, a dynamo, once on, survived down to a third of its threshold. Told only the knob, a machine blends them.",
+"words": [
+{
+"w": "Near",
+"start": 0.0,
+"end": 0.32,
+"p": 0.899
+},
+{
+"w": "a",
+"start": 0.32,
+"end": 0.54,
+"p": 0.999
+},
+{
+"w": "subcritical",
+"start": 0.54,
+"end": 1.08,
+"p": 0.939
+},
+{
+"w": "threshold,",
+"start": 1.08,
+"end": 1.74,
+"p": 0.994
+},
+{
+"w": "two",
+"start": 2.32,
+"end": 2.42,
+"p": 0.99
+},
+{
+"w": "states",
+"start": 2.42,
+"end": 2.84,
+"p": 0.988
+},
+{
+"w": "coexist.",
+"start": 2.84,
+"end": 3.48,
+"p": 0.914
+},
+{
+"w": "In",
+"start": 4.5,
+"end": 4.64,
+"p": 0.996
+},
+{
+"w": "published",
+"start": 4.64,
+"end": 5.06,
+"p": 0.997
+},
+{
+"w": "Taylor",
+"start": 5.06,
+"end": 5.5,
+"p": 0.953
+},
+{
+"w": "Green",
+"start": 5.5,
+"end": 5.8,
+"p": 0.611
+},
+{
+"w": "runs,",
+"start": 5.8,
+"end": 6.28,
+"p": 0.848
+},
+{
+"w": "a",
+"start": 6.78,
+"end": 6.82,
+"p": 0.981
+},
+{
+"w": "dynamo,",
+"start": 6.82,
+"end": 7.44,
+"p": 0.997
+},
+{
+"w": "once",
+"start": 7.6,
+"end": 7.86,
+"p": 0.999
+},
+{
+"w": "on,",
+"start": 7.86,
+"end": 8.32,
+"p": 0.973
+},
+{
+"w": "survived",
+"start": 8.8,
+"end": 9.1,
+"p": 0.981
+},
+{
+"w": "down",
+"start": 9.1,
+"end": 9.54,
+"p": 0.998
+},
+{
+"w": "to",
+"start": 9.54,
+"end": 9.72,
+"p": 0.998
+},
+{
+"w": "a",
+"start": 9.72,
+"end": 9.86,
+"p": 0.965
+},
+{
+"w": "third",
+"start": 9.86,
+"end": 10.14,
+"p": 0.996
+},
+{
+"w": "of",
+"start": 10.14,
+"end": 10.32,
+"p": 0.998
+},
+{
+"w": "its",
+"start": 10.32,
+"end": 10.46,
+"p": 0.985
+},
+{
+"w": "threshold.",
+"start": 10.46,
+"end": 11.02,
+"p": 0.998
+},
+{
+"w": "Told",
+"start": 11.92,
+"end": 12.2,
+"p": 0.972
+},
+{
+"w": "only",
+"start": 12.2,
+"end": 12.6,
+"p": 0.996
+},
+{
+"w": "the",
+"start": 12.6,
+"end": 12.78,
+"p": 0.996
+},
+{
+"w": "knob,",
+"start": 12.78,
+"end": 13.16,
+"p": 0.948
+},
+{
+"w": "a",
+"start": 13.64,
+"end": 13.72,
+"p": 0.99
+},
+{
+"w": "machine",
+"start": 13.72,
+"end": 14.1,
+"p": 0.999
+},
+{
+"w": "blends",
+"start": 14.1,
+"end": 14.52,
+"p": 0.996
+},
+{
+"w": "them.",
+"start": 14.52,
+"end": 14.9,
+"p": 0.999
+}
+]
+}

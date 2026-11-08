@@ -1,0 +1,28 @@
+{
+ "text": "[calm, natural narrator voice] Confiance : faible. Le plan lui-même annonce une incertitude d'au moins un facteur deux. À demander d'abord : les simulations de référence, vingt mille heures cé pé u ou plus, ne figurent pas sur cette facture. Qui fournira les machines ?",
+ "voice": "536d3a5e000945adb7038665781a4aca",
+ "words": 36,
+ "scene": "X5.5",
+ "para": 2,
+ "lang": "fr",
+ "duration": 17.1102,
+ "latency_s": 3.4,
+ "created": "2026-11-08T10:04:54",
+ "provider": "fish",
+ "request": {
+  "temperature": 0.1,
+  "format": "mp3",
+  "mp3_bitrate": 192,
+  "sample_rate": 44100,
+  "latency": "normal",
+  "language": "fr",
+  "normalize": true,
+  "condition_on_previous_chunks": true,
+  "prosody": {
+   "speed": 1.0,
+   "normalize_loudness": true
+  },
+  "text": "[calm, natural narrator voice] Confiance : faible. Le plan lui-même annonce une incertitude d'au moins un facteur deux. À demander d'abord : les simulations de référence, vingt mille heures cé pé u ou plus, ne figurent pas sur cette facture. Qui fournira les machines ?",
+  "reference_id": "536d3a5e000945adb7038665781a4aca"
+ }
+}

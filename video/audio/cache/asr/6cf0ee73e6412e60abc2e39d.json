@@ -1,0 +1,103 @@
+{
+"key": "6cf0ee73e6412e60abc2e39d",
+"model": "small.en",
+"text": "Same values where the poll collapsed. Training moved the crowd. Weights could not. One seed though.",
+"words": [
+{
+"w": "Same",
+"start": 0.0,
+"end": 0.42,
+"p": 0.944
+},
+{
+"w": "values",
+"start": 0.42,
+"end": 0.84,
+"p": 0.955
+},
+{
+"w": "where",
+"start": 0.84,
+"end": 1.06,
+"p": 0.946
+},
+{
+"w": "the",
+"start": 1.06,
+"end": 1.18,
+"p": 0.999
+},
+{
+"w": "poll",
+"start": 1.18,
+"end": 1.44,
+"p": 0.528
+},
+{
+"w": "collapsed.",
+"start": 1.44,
+"end": 2.04,
+"p": 0.998
+},
+{
+"w": "Training",
+"start": 2.84,
+"end": 2.96,
+"p": 0.994
+},
+{
+"w": "moved",
+"start": 2.96,
+"end": 3.3,
+"p": 0.98
+},
+{
+"w": "the",
+"start": 3.3,
+"end": 3.5,
+"p": 0.999
+},
+{
+"w": "crowd.",
+"start": 3.5,
+"end": 3.86,
+"p": 0.999
+},
+{
+"w": "Weights",
+"start": 4.5,
+"end": 4.76,
+"p": 0.936
+},
+{
+"w": "could",
+"start": 4.76,
+"end": 4.94,
+"p": 0.999
+},
+{
+"w": "not.",
+"start": 4.94,
+"end": 5.3,
+"p": 0.999
+},
+{
+"w": "One",
+"start": 6.02,
+"end": 6.3,
+"p": 0.972
+},
+{
+"w": "seed",
+"start": 6.3,
+"end": 6.64,
+"p": 0.988
+},
+{
+"w": "though.",
+"start": 6.64,
+"end": 6.96,
+"p": 0.6
+}
+]
+}

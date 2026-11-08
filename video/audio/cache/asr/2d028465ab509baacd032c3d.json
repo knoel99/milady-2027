@@ -1,0 +1,241 @@
+{
+"key": "2d028465ab509baacd032c3d",
+"model": "small.en",
+"text": "The built-in mirror. The first student tilts a little. Yet in the mirror's crowd, each snapshot still points one way. The mirror balances the crowd, not each snapshot. Its card goes on the crowd's shelf. Built-in, exactly.",
+"words": [
+{
+"w": "The",
+"start": 0.0,
+"end": 0.2,
+"p": 0.887
+},
+{
+"w": "built",
+"start": 0.2,
+"end": 0.42,
+"p": 0.975
+},
+{
+"w": "-in",
+"start": 0.42,
+"end": 0.7,
+"p": 0.93
+},
+{
+"w": "mirror.",
+"start": 0.7,
+"end": 1.06,
+"p": 0.962
+},
+{
+"w": "The",
+"start": 1.92,
+"end": 2.02,
+"p": 0.994
+},
+{
+"w": "first",
+"start": 2.02,
+"end": 2.26,
+"p": 0.995
+},
+{
+"w": "student",
+"start": 2.26,
+"end": 2.7,
+"p": 0.998
+},
+{
+"w": "tilts",
+"start": 2.7,
+"end": 3.1,
+"p": 0.997
+},
+{
+"w": "a",
+"start": 3.1,
+"end": 3.2,
+"p": 0.998
+},
+{
+"w": "little.",
+"start": 3.2,
+"end": 3.42,
+"p": 0.999
+},
+{
+"w": "Yet",
+"start": 4.0,
+"end": 4.18,
+"p": 0.994
+},
+{
+"w": "in",
+"start": 4.18,
+"end": 4.36,
+"p": 0.826
+},
+{
+"w": "the",
+"start": 4.36,
+"end": 4.52,
+"p": 0.998
+},
+{
+"w": "mirror's",
+"start": 4.52,
+"end": 4.9,
+"p": 0.827
+},
+{
+"w": "crowd,",
+"start": 4.9,
+"end": 5.3,
+"p": 0.994
+},
+{
+"w": "each",
+"start": 5.76,
+"end": 5.94,
+"p": 0.998
+},
+{
+"w": "snapshot",
+"start": 5.94,
+"end": 6.58,
+"p": 0.992
+},
+{
+"w": "still",
+"start": 6.58,
+"end": 6.98,
+"p": 0.998
+},
+{
+"w": "points",
+"start": 6.98,
+"end": 7.36,
+"p": 0.998
+},
+{
+"w": "one",
+"start": 7.36,
+"end": 7.74,
+"p": 0.995
+},
+{
+"w": "way.",
+"start": 7.74,
+"end": 8.08,
+"p": 0.951
+},
+{
+"w": "The",
+"start": 8.84,
+"end": 8.98,
+"p": 0.998
+},
+{
+"w": "mirror",
+"start": 8.98,
+"end": 9.3,
+"p": 0.998
+},
+{
+"w": "balances",
+"start": 9.3,
+"end": 9.88,
+"p": 0.999
+},
+{
+"w": "the",
+"start": 9.88,
+"end": 10.06,
+"p": 0.999
+},
+{
+"w": "crowd,",
+"start": 10.06,
+"end": 10.48,
+"p": 0.998
+},
+{
+"w": "not",
+"start": 10.94,
+"end": 11.1,
+"p": 0.998
+},
+{
+"w": "each",
+"start": 11.1,
+"end": 11.38,
+"p": 0.999
+},
+{
+"w": "snapshot.",
+"start": 11.38,
+"end": 12.0,
+"p": 0.999
+},
+{
+"w": "Its",
+"start": 12.72,
+"end": 12.88,
+"p": 0.887
+},
+{
+"w": "card",
+"start": 12.88,
+"end": 13.26,
+"p": 0.998
+},
+{
+"w": "goes",
+"start": 13.26,
+"end": 13.5,
+"p": 0.999
+},
+{
+"w": "on",
+"start": 13.5,
+"end": 13.7,
+"p": 0.999
+},
+{
+"w": "the",
+"start": 13.7,
+"end": 13.82,
+"p": 0.998
+},
+{
+"w": "crowd's",
+"start": 13.82,
+"end": 14.26,
+"p": 0.742
+},
+{
+"w": "shelf.",
+"start": 14.26,
+"end": 14.58,
+"p": 0.999
+},
+{
+"w": "Built",
+"start": 15.36,
+"end": 15.46,
+"p": 0.968
+},
+{
+"w": "-in,",
+"start": 15.46,
+"end": 15.82,
+"p": 0.864
+},
+{
+"w": "exactly.",
+"start": 16.1,
+"end": 16.6,
+"p": 0.995
+}
+]
+}

@@ -1,0 +1,145 @@
+{
+"key": "7fca0125e2109255eaf02766",
+"model": "small.en",
+"text": "Lane 1, the Earth's record. Lava's magnetized backwards, 1906. Seafloor stripes, 1963. Then flips as chance events whose odds change over the ages.",
+"words": [
+{
+"w": "Lane",
+"start": 0.0,
+"end": 0.34,
+"p": 0.794
+},
+{
+"w": "1,",
+"start": 0.34,
+"end": 0.78,
+"p": 0.45
+},
+{
+"w": "the",
+"start": 1.22,
+"end": 1.3,
+"p": 0.72
+},
+{
+"w": "Earth's",
+"start": 1.3,
+"end": 1.74,
+"p": 0.843
+},
+{
+"w": "record.",
+"start": 1.74,
+"end": 2.04,
+"p": 0.899
+},
+{
+"w": "Lava's",
+"start": 2.88,
+"end": 3.18,
+"p": 0.88
+},
+{
+"w": "magnetized",
+"start": 3.18,
+"end": 3.84,
+"p": 0.978
+},
+{
+"w": "backwards,",
+"start": 3.84,
+"end": 4.34,
+"p": 0.994
+},
+{
+"w": "1906.",
+"start": 4.88,
+"end": 5.68,
+"p": 0.994
+},
+{
+"w": "Seafloor",
+"start": 6.94,
+"end": 7.28,
+"p": 0.888
+},
+{
+"w": "stripes,",
+"start": 7.28,
+"end": 7.72,
+"p": 0.744
+},
+{
+"w": "1963.",
+"start": 8.2,
+"end": 9.14,
+"p": 1.0
+},
+{
+"w": "Then",
+"start": 10.26,
+"end": 10.44,
+"p": 0.996
+},
+{
+"w": "flips",
+"start": 10.44,
+"end": 10.88,
+"p": 0.978
+},
+{
+"w": "as",
+"start": 10.88,
+"end": 11.36,
+"p": 0.963
+},
+{
+"w": "chance",
+"start": 11.36,
+"end": 11.66,
+"p": 0.968
+},
+{
+"w": "events",
+"start": 11.66,
+"end": 12.22,
+"p": 0.991
+},
+{
+"w": "whose",
+"start": 12.22,
+"end": 12.76,
+"p": 0.711
+},
+{
+"w": "odds",
+"start": 12.76,
+"end": 13.12,
+"p": 0.998
+},
+{
+"w": "change",
+"start": 13.12,
+"end": 13.6,
+"p": 0.998
+},
+{
+"w": "over",
+"start": 13.6,
+"end": 13.9,
+"p": 0.999
+},
+{
+"w": "the",
+"start": 13.9,
+"end": 14.06,
+"p": 1.0
+},
+{
+"w": "ages.",
+"start": 14.06,
+"end": 14.3,
+"p": 0.999
+}
+]
+}

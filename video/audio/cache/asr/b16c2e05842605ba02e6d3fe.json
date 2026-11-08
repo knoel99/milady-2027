@@ -1,0 +1,241 @@
+{
+"key": "b16c2e05842605ba02e6d3fe",
+"model": "small.en",
+"text": "How wide should Rice's strip be? Widen it. The estimate blurs, its bias growing like the width squared. Narrow it. The estimate jitters as fewer snapshots land inside. The three-dial experiment used snapshots within 0.2 of zero.",
+"words": [
+{
+"w": "How",
+"start": 0.0,
+"end": 0.26,
+"p": 0.834
+},
+{
+"w": "wide",
+"start": 0.26,
+"end": 0.66,
+"p": 0.997
+},
+{
+"w": "should",
+"start": 0.66,
+"end": 0.94,
+"p": 0.996
+},
+{
+"w": "Rice's",
+"start": 0.94,
+"end": 1.38,
+"p": 0.816
+},
+{
+"w": "strip",
+"start": 1.38,
+"end": 1.64,
+"p": 0.927
+},
+{
+"w": "be?",
+"start": 1.64,
+"end": 2.06,
+"p": 0.994
+},
+{
+"w": "Widen",
+"start": 3.04,
+"end": 3.2,
+"p": 0.939
+},
+{
+"w": "it.",
+"start": 3.2,
+"end": 3.46,
+"p": 0.997
+},
+{
+"w": "The",
+"start": 3.92,
+"end": 4.0,
+"p": 0.995
+},
+{
+"w": "estimate",
+"start": 4.0,
+"end": 4.38,
+"p": 0.996
+},
+{
+"w": "blurs,",
+"start": 4.38,
+"end": 4.9,
+"p": 0.995
+},
+{
+"w": "its",
+"start": 5.14,
+"end": 5.32,
+"p": 0.906
+},
+{
+"w": "bias",
+"start": 5.32,
+"end": 5.68,
+"p": 0.998
+},
+{
+"w": "growing",
+"start": 5.68,
+"end": 6.1,
+"p": 0.995
+},
+{
+"w": "like",
+"start": 6.1,
+"end": 6.38,
+"p": 0.991
+},
+{
+"w": "the",
+"start": 6.38,
+"end": 6.54,
+"p": 0.997
+},
+{
+"w": "width",
+"start": 6.54,
+"end": 6.78,
+"p": 0.999
+},
+{
+"w": "squared.",
+"start": 6.78,
+"end": 7.3,
+"p": 0.981
+},
+{
+"w": "Narrow",
+"start": 8.18,
+"end": 8.4,
+"p": 0.996
+},
+{
+"w": "it.",
+"start": 8.4,
+"end": 8.68,
+"p": 0.999
+},
+{
+"w": "The",
+"start": 9.04,
+"end": 9.14,
+"p": 0.994
+},
+{
+"w": "estimate",
+"start": 9.14,
+"end": 9.54,
+"p": 0.996
+},
+{
+"w": "jitters",
+"start": 9.54,
+"end": 9.96,
+"p": 0.995
+},
+{
+"w": "as",
+"start": 9.96,
+"end": 10.36,
+"p": 0.695
+},
+{
+"w": "fewer",
+"start": 10.36,
+"end": 10.74,
+"p": 0.998
+},
+{
+"w": "snapshots",
+"start": 10.74,
+"end": 11.4,
+"p": 0.958
+},
+{
+"w": "land",
+"start": 11.4,
+"end": 11.82,
+"p": 0.999
+},
+{
+"w": "inside.",
+"start": 11.82,
+"end": 12.34,
+"p": 0.998
+},
+{
+"w": "The",
+"start": 13.26,
+"end": 13.4,
+"p": 0.994
+},
+{
+"w": "three",
+"start": 13.4,
+"end": 13.68,
+"p": 0.818
+},
+{
+"w": "-dial",
+"start": 13.68,
+"end": 13.98,
+"p": 0.905
+},
+{
+"w": "experiment",
+"start": 13.98,
+"end": 14.54,
+"p": 0.996
+},
+{
+"w": "used",
+"start": 14.54,
+"end": 14.94,
+"p": 0.996
+},
+{
+"w": "snapshots",
+"start": 14.94,
+"end": 15.64,
+"p": 0.995
+},
+{
+"w": "within",
+"start": 15.64,
+"end": 16.04,
+"p": 0.995
+},
+{
+"w": "0",
+"start": 16.04,
+"end": 16.46,
+"p": 0.972
+},
+{
+"w": ".2",
+"start": 16.46,
+"end": 17.18,
+"p": 0.995
+},
+{
+"w": "of",
+"start": 17.18,
+"end": 17.4,
+"p": 0.965
+},
+{
+"w": "zero.",
+"start": 17.4,
+"end": 17.66,
+"p": 0.715
+}
+]
+}

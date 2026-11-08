@@ -1,0 +1,28 @@
+{
+ "text": "[calm, natural narrator voice] Leurs paris sont déjà écrits. Pour vé ka esse : les quatre motifs principaux, avec les bonnes parts d'énergie, et la fréquence des renversements prédite par Raïsse, dans les barres d'erreur du comptage simulé. Pour Dresdine : le seuil à un taux de précession jamais vu, à dix pour cent près.",
+ "voice": "536d3a5e000945adb7038665781a4aca",
+ "words": 47,
+ "scene": "10.9",
+ "para": 1,
+ "lang": "fr",
+ "duration": 18.547,
+ "latency_s": 4.0,
+ "created": "2026-11-08T10:06:07",
+ "provider": "fish",
+ "request": {
+  "temperature": 0.1,
+  "format": "mp3",
+  "mp3_bitrate": 192,
+  "sample_rate": 44100,
+  "latency": "normal",
+  "language": "fr",
+  "normalize": true,
+  "condition_on_previous_chunks": true,
+  "prosody": {
+   "speed": 1.0,
+   "normalize_loudness": true
+  },
+  "text": "[calm, natural narrator voice] Leurs paris sont déjà écrits. Pour vé ka esse : les quatre motifs principaux, avec les bonnes parts d'énergie, et la fréquence des renversements prédite par Raïsse, dans les barres d'erreur du comptage simulé. Pour Dresdine : le seuil à un taux de précession jamais vu, à dix pour cent près.",
+  "reference_id": "536d3a5e000945adb7038665781a4aca"
+ }
+}

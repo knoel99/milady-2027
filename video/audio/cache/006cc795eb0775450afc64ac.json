@@ -1,0 +1,27 @@
+{
+ "text": "[calm, natural narrator voice] Bet one: the twisting box. At thirty-two cubed, the small sweep matched the published windows, but near seventeen and a half the sign of growth stayed unresolved.",
+ "voice": "536d3a5e000945adb7038665781a4aca",
+ "words": 27,
+ "scene": "10.4",
+ "para": 0,
+ "duration": 11.9902,
+ "latency_s": 2.6,
+ "created": "2026-11-08T08:12:53",
+ "provider": "fish",
+ "request": {
+  "temperature": 0.1,
+  "format": "mp3",
+  "mp3_bitrate": 192,
+  "sample_rate": 44100,
+  "latency": "normal",
+  "language": "en",
+  "normalize": true,
+  "condition_on_previous_chunks": true,
+  "prosody": {
+   "speed": 1.0,
+   "normalize_loudness": true
+  },
+  "text": "[calm, natural narrator voice] Bet one: the twisting box. At thirty-two cubed, the small sweep matched the published windows, but near seventeen and a half the sign of growth stayed unresolved.",
+  "reference_id": "536d3a5e000945adb7038665781a4aca"
+ }
+}

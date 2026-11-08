@@ -1,0 +1,145 @@
+{
+"key": "60f42b08b0cc812c86d33b76",
+"model": "small.en",
+"text": "It also serves as a prior. A probe reads the dipole near zero, midreversal. Where does the average of the matching states sit?",
+"words": [
+{
+"w": "It",
+"start": 0.0,
+"end": 0.22,
+"p": 0.948
+},
+{
+"w": "also",
+"start": 0.22,
+"end": 0.48,
+"p": 0.999
+},
+{
+"w": "serves",
+"start": 0.48,
+"end": 0.82,
+"p": 0.999
+},
+{
+"w": "as",
+"start": 0.82,
+"end": 1.1,
+"p": 0.998
+},
+{
+"w": "a",
+"start": 1.1,
+"end": 1.22,
+"p": 0.996
+},
+{
+"w": "prior.",
+"start": 1.22,
+"end": 1.54,
+"p": 0.957
+},
+{
+"w": "A",
+"start": 2.26,
+"end": 2.46,
+"p": 0.992
+},
+{
+"w": "probe",
+"start": 2.46,
+"end": 2.8,
+"p": 0.999
+},
+{
+"w": "reads",
+"start": 2.8,
+"end": 3.16,
+"p": 0.995
+},
+{
+"w": "the",
+"start": 3.16,
+"end": 3.38,
+"p": 0.999
+},
+{
+"w": "dipole",
+"start": 3.38,
+"end": 3.86,
+"p": 0.998
+},
+{
+"w": "near",
+"start": 3.86,
+"end": 4.16,
+"p": 0.996
+},
+{
+"w": "zero,",
+"start": 4.16,
+"end": 4.66,
+"p": 0.876
+},
+{
+"w": "midreversal.",
+"start": 5.08,
+"end": 5.8,
+"p": 0.783
+},
+{
+"w": "Where",
+"start": 6.8,
+"end": 7.0,
+"p": 0.994
+},
+{
+"w": "does",
+"start": 7.0,
+"end": 7.14,
+"p": 0.998
+},
+{
+"w": "the",
+"start": 7.14,
+"end": 7.32,
+"p": 0.999
+},
+{
+"w": "average",
+"start": 7.32,
+"end": 7.72,
+"p": 0.999
+},
+{
+"w": "of",
+"start": 7.72,
+"end": 7.92,
+"p": 0.999
+},
+{
+"w": "the",
+"start": 7.92,
+"end": 8.04,
+"p": 0.995
+},
+{
+"w": "matching",
+"start": 8.04,
+"end": 8.4,
+"p": 0.996
+},
+{
+"w": "states",
+"start": 8.4,
+"end": 8.74,
+"p": 0.817
+},
+{
+"w": "sit?",
+"start": 8.74,
+"end": 9.18,
+"p": 0.998
+}
+]
+}

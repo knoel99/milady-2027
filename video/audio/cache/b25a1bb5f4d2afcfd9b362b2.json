@@ -1,0 +1,28 @@
+{
+ "text": "[calm, natural narrator voice] Un instantané généré n'a pas de vrai jumeau : on compare donc des foules. Imaginez chaque foule comme un tas de sable. Une distance entre distributions mesure à quel point les deux tas diffèrent. Par exemple, la distance du terrassier compte combien de sable il faut déplacer, et jusqu'où.",
+ "voice": "536d3a5e000945adb7038665781a4aca",
+ "words": 48,
+ "scene": "06.5",
+ "para": 0,
+ "lang": "fr",
+ "duration": 19.2,
+ "latency_s": 3.6,
+ "created": "2026-11-08T09:59:38",
+ "provider": "fish",
+ "request": {
+  "temperature": 0.1,
+  "format": "mp3",
+  "mp3_bitrate": 192,
+  "sample_rate": 44100,
+  "latency": "normal",
+  "language": "fr",
+  "normalize": true,
+  "condition_on_previous_chunks": true,
+  "prosody": {
+   "speed": 1.0,
+   "normalize_loudness": true
+  },
+  "text": "[calm, natural narrator voice] Un instantané généré n'a pas de vrai jumeau : on compare donc des foules. Imaginez chaque foule comme un tas de sable. Une distance entre distributions mesure à quel point les deux tas diffèrent. Par exemple, la distance du terrassier compte combien de sable il faut déplacer, et jusqu'où.",
+  "reference_id": "536d3a5e000945adb7038665781a4aca"
+ }
+}

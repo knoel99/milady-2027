@@ -1,0 +1,295 @@
+{
+"key": "1b5efaeb224f50d9706d3090",
+"model": "small.en",
+"text": "Real dynamos have not one knob, but a panel. How hard the metal is stirred. How well it conducts. What the discs are made of. Remember the iron. How unequal their speeds are. That is when VKS flipped. For Dresden, a precessing tank. How fast its axis turns.",
+"words": [
+{
+"w": "Real",
+"start": 0.0,
+"end": 0.38,
+"p": 0.812
+},
+{
+"w": "dynamos",
+"start": 0.38,
+"end": 0.96,
+"p": 0.983
+},
+{
+"w": "have",
+"start": 0.96,
+"end": 1.12,
+"p": 0.997
+},
+{
+"w": "not",
+"start": 1.12,
+"end": 1.36,
+"p": 0.998
+},
+{
+"w": "one",
+"start": 1.36,
+"end": 1.72,
+"p": 0.99
+},
+{
+"w": "knob,",
+"start": 1.72,
+"end": 2.14,
+"p": 0.991
+},
+{
+"w": "but",
+"start": 2.48,
+"end": 2.58,
+"p": 0.998
+},
+{
+"w": "a",
+"start": 2.58,
+"end": 2.72,
+"p": 0.998
+},
+{
+"w": "panel.",
+"start": 2.72,
+"end": 3.08,
+"p": 0.998
+},
+{
+"w": "How",
+"start": 3.88,
+"end": 4.0,
+"p": 0.989
+},
+{
+"w": "hard",
+"start": 4.0,
+"end": 4.3,
+"p": 0.999
+},
+{
+"w": "the",
+"start": 4.3,
+"end": 4.46,
+"p": 0.998
+},
+{
+"w": "metal",
+"start": 4.46,
+"end": 4.66,
+"p": 0.997
+},
+{
+"w": "is",
+"start": 4.66,
+"end": 4.86,
+"p": 0.999
+},
+{
+"w": "stirred.",
+"start": 4.86,
+"end": 5.24,
+"p": 0.998
+},
+{
+"w": "How",
+"start": 5.72,
+"end": 5.88,
+"p": 0.992
+},
+{
+"w": "well",
+"start": 5.88,
+"end": 6.12,
+"p": 0.998
+},
+{
+"w": "it",
+"start": 6.12,
+"end": 6.28,
+"p": 0.999
+},
+{
+"w": "conducts.",
+"start": 6.28,
+"end": 6.7,
+"p": 0.999
+},
+{
+"w": "What",
+"start": 7.44,
+"end": 7.6,
+"p": 0.996
+},
+{
+"w": "the",
+"start": 7.6,
+"end": 7.78,
+"p": 0.997
+},
+{
+"w": "discs",
+"start": 7.78,
+"end": 8.04,
+"p": 0.64
+},
+{
+"w": "are",
+"start": 8.04,
+"end": 8.28,
+"p": 0.999
+},
+{
+"w": "made",
+"start": 8.28,
+"end": 8.46,
+"p": 0.999
+},
+{
+"w": "of.",
+"start": 8.46,
+"end": 8.76,
+"p": 0.998
+},
+{
+"w": "Remember",
+"start": 9.18,
+"end": 9.42,
+"p": 0.993
+},
+{
+"w": "the",
+"start": 9.42,
+"end": 9.64,
+"p": 0.984
+},
+{
+"w": "iron.",
+"start": 9.64,
+"end": 10.0,
+"p": 0.987
+},
+{
+"w": "How",
+"start": 10.72,
+"end": 10.9,
+"p": 0.996
+},
+{
+"w": "unequal",
+"start": 10.9,
+"end": 11.38,
+"p": 0.999
+},
+{
+"w": "their",
+"start": 11.38,
+"end": 11.7,
+"p": 0.994
+},
+{
+"w": "speeds",
+"start": 11.7,
+"end": 12.06,
+"p": 0.994
+},
+{
+"w": "are.",
+"start": 12.06,
+"end": 12.48,
+"p": 0.999
+},
+{
+"w": "That",
+"start": 13.04,
+"end": 13.28,
+"p": 0.996
+},
+{
+"w": "is",
+"start": 13.28,
+"end": 13.44,
+"p": 0.995
+},
+{
+"w": "when",
+"start": 13.44,
+"end": 13.62,
+"p": 0.996
+},
+{
+"w": "VKS",
+"start": 13.62,
+"end": 14.44,
+"p": 0.948
+},
+{
+"w": "flipped.",
+"start": 14.44,
+"end": 14.96,
+"p": 0.982
+},
+{
+"w": "For",
+"start": 15.72,
+"end": 15.9,
+"p": 0.992
+},
+{
+"w": "Dresden,",
+"start": 15.9,
+"end": 16.32,
+"p": 0.421
+},
+{
+"w": "a",
+"start": 16.94,
+"end": 17.08,
+"p": 0.992
+},
+{
+"w": "precessing",
+"start": 17.08,
+"end": 17.72,
+"p": 0.93
+},
+{
+"w": "tank.",
+"start": 17.72,
+"end": 18.0,
+"p": 1.0
+},
+{
+"w": "How",
+"start": 18.62,
+"end": 18.76,
+"p": 0.993
+},
+{
+"w": "fast",
+"start": 18.76,
+"end": 19.16,
+"p": 0.998
+},
+{
+"w": "its",
+"start": 19.16,
+"end": 19.42,
+"p": 0.907
+},
+{
+"w": "axis",
+"start": 19.42,
+"end": 19.76,
+"p": 0.98
+},
+{
+"w": "turns.",
+"start": 19.76,
+"end": 20.26,
+"p": 0.997
+}
+]
+}

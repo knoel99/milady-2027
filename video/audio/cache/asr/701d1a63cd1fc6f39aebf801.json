@@ -1,0 +1,145 @@
+{
+"key": "701d1a63cd1fc6f39aebf801",
+"model": "small.en",
+"text": "The gauges fall to rounding error, down to 10 to the minus 17. Measured though, with the very operator used to enforce it.",
+"words": [
+{
+"w": "The",
+"start": 0.0,
+"end": 0.22,
+"p": 0.904
+},
+{
+"w": "gauges",
+"start": 0.22,
+"end": 0.58,
+"p": 0.984
+},
+{
+"w": "fall",
+"start": 0.58,
+"end": 0.9,
+"p": 0.995
+},
+{
+"w": "to",
+"start": 0.9,
+"end": 1.16,
+"p": 0.997
+},
+{
+"w": "rounding",
+"start": 1.16,
+"end": 1.5,
+"p": 0.995
+},
+{
+"w": "error,",
+"start": 1.5,
+"end": 1.98,
+"p": 0.993
+},
+{
+"w": "down",
+"start": 2.4,
+"end": 2.6,
+"p": 0.999
+},
+{
+"w": "to",
+"start": 2.6,
+"end": 2.82,
+"p": 0.996
+},
+{
+"w": "10",
+"start": 2.82,
+"end": 3.1,
+"p": 0.913
+},
+{
+"w": "to",
+"start": 3.1,
+"end": 3.28,
+"p": 0.666
+},
+{
+"w": "the",
+"start": 3.28,
+"end": 3.4,
+"p": 0.978
+},
+{
+"w": "minus",
+"start": 3.4,
+"end": 3.7,
+"p": 0.65
+},
+{
+"w": "17.",
+"start": 3.7,
+"end": 4.38,
+"p": 0.89
+},
+{
+"w": "Measured",
+"start": 5.26,
+"end": 5.62,
+"p": 0.967
+},
+{
+"w": "though,",
+"start": 5.62,
+"end": 5.9,
+"p": 0.615
+},
+{
+"w": "with",
+"start": 6.32,
+"end": 6.46,
+"p": 0.998
+},
+{
+"w": "the",
+"start": 6.46,
+"end": 6.64,
+"p": 0.996
+},
+{
+"w": "very",
+"start": 6.64,
+"end": 6.94,
+"p": 0.847
+},
+{
+"w": "operator",
+"start": 6.94,
+"end": 7.52,
+"p": 0.993
+},
+{
+"w": "used",
+"start": 7.52,
+"end": 7.86,
+"p": 0.95
+},
+{
+"w": "to",
+"start": 7.86,
+"end": 8.1,
+"p": 0.999
+},
+{
+"w": "enforce",
+"start": 8.1,
+"end": 8.46,
+"p": 0.996
+},
+{
+"w": "it.",
+"start": 8.46,
+"end": 8.78,
+"p": 0.999
+}
+]
+}

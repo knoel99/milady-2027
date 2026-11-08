@@ -1,0 +1,205 @@
+{
+"key": "51ff82263ca052bc5dddad6e",
+"model": "small.en",
+"text": "How precise are those edges? Each run gets a long fit over its second half, a late fit over its last quarter. A finer grid rechecks two settings. At RM12, all three agree.",
+"words": [
+{
+"w": "How",
+"start": 0.0,
+"end": 0.3,
+"p": 0.958
+},
+{
+"w": "precise",
+"start": 0.3,
+"end": 0.76,
+"p": 0.999
+},
+{
+"w": "are",
+"start": 0.76,
+"end": 1.02,
+"p": 0.999
+},
+{
+"w": "those",
+"start": 1.02,
+"end": 1.22,
+"p": 0.993
+},
+{
+"w": "edges?",
+"start": 1.22,
+"end": 1.56,
+"p": 0.998
+},
+{
+"w": "Each",
+"start": 2.66,
+"end": 2.84,
+"p": 0.989
+},
+{
+"w": "run",
+"start": 2.84,
+"end": 3.16,
+"p": 0.996
+},
+{
+"w": "gets",
+"start": 3.16,
+"end": 3.4,
+"p": 0.997
+},
+{
+"w": "a",
+"start": 3.4,
+"end": 3.6,
+"p": 0.998
+},
+{
+"w": "long",
+"start": 3.6,
+"end": 3.9,
+"p": 0.996
+},
+{
+"w": "fit",
+"start": 3.9,
+"end": 4.24,
+"p": 0.987
+},
+{
+"w": "over",
+"start": 4.24,
+"end": 4.52,
+"p": 0.998
+},
+{
+"w": "its",
+"start": 4.52,
+"end": 4.68,
+"p": 0.989
+},
+{
+"w": "second",
+"start": 4.68,
+"end": 5.02,
+"p": 0.991
+},
+{
+"w": "half,",
+"start": 5.02,
+"end": 5.42,
+"p": 0.996
+},
+{
+"w": "a",
+"start": 5.96,
+"end": 6.14,
+"p": 0.994
+},
+{
+"w": "late",
+"start": 6.14,
+"end": 6.4,
+"p": 0.994
+},
+{
+"w": "fit",
+"start": 6.4,
+"end": 6.74,
+"p": 0.972
+},
+{
+"w": "over",
+"start": 6.74,
+"end": 7.02,
+"p": 0.999
+},
+{
+"w": "its",
+"start": 7.02,
+"end": 7.2,
+"p": 0.995
+},
+{
+"w": "last",
+"start": 7.2,
+"end": 7.54,
+"p": 0.999
+},
+{
+"w": "quarter.",
+"start": 7.54,
+"end": 7.98,
+"p": 0.998
+},
+{
+"w": "A",
+"start": 8.74,
+"end": 8.88,
+"p": 0.996
+},
+{
+"w": "finer",
+"start": 8.88,
+"end": 9.24,
+"p": 0.996
+},
+{
+"w": "grid",
+"start": 9.24,
+"end": 9.64,
+"p": 0.999
+},
+{
+"w": "rechecks",
+"start": 9.64,
+"end": 10.28,
+"p": 0.918
+},
+{
+"w": "two",
+"start": 10.28,
+"end": 10.54,
+"p": 0.969
+},
+{
+"w": "settings.",
+"start": 10.54,
+"end": 11.06,
+"p": 0.996
+},
+{
+"w": "At",
+"start": 11.76,
+"end": 11.9,
+"p": 0.996
+},
+{
+"w": "RM12,",
+"start": 11.9,
+"end": 12.66,
+"p": 0.776
+},
+{
+"w": "all",
+"start": 13.26,
+"end": 13.5,
+"p": 0.998
+},
+{
+"w": "three",
+"start": 13.5,
+"end": 13.84,
+"p": 0.953
+},
+{
+"w": "agree.",
+"start": 13.84,
+"end": 14.26,
+"p": 0.998
+}
+]
+}

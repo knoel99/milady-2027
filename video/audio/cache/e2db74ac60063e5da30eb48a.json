@@ -1,0 +1,27 @@
+{
+ "text": "[calm, natural narrator voice] The path is lost, so leave the shutter open. Each pass leaves a little light: a glow builds. A copy started on the other side first paints the mirror image. Given time, both paint the same glow.",
+ "voice": "536d3a5e000945adb7038665781a4aca",
+ "words": 37,
+ "scene": "04.5",
+ "para": 0,
+ "duration": 15.6212,
+ "latency_s": 3.2,
+ "created": "2026-11-08T08:08:42",
+ "provider": "fish",
+ "request": {
+  "temperature": 0.1,
+  "format": "mp3",
+  "mp3_bitrate": 192,
+  "sample_rate": 44100,
+  "latency": "normal",
+  "language": "en",
+  "normalize": true,
+  "condition_on_previous_chunks": true,
+  "prosody": {
+   "speed": 1.0,
+   "normalize_loudness": true
+  },
+  "text": "[calm, natural narrator voice] The path is lost, so leave the shutter open. Each pass leaves a little light: a glow builds. A copy started on the other side first paints the mirror image. Given time, both paint the same glow.",
+  "reference_id": "536d3a5e000945adb7038665781a4aca"
+ }
+}

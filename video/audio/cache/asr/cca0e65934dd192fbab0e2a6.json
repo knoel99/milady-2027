@@ -1,0 +1,163 @@
+{
+"key": "cca0e65934dd192fbab0e2a6",
+"model": "small.en",
+"text": "Reaching an RM of a few tens takes violent stirring. The flow's Reynolds number, the gauge of turbulence, reaches millions. So every laboratory dynamo is turbulent.",
+"words": [
+{
+"w": "Reaching",
+"start": 0.0,
+"end": 0.44,
+"p": 0.938
+},
+{
+"w": "an",
+"start": 0.44,
+"end": 0.62,
+"p": 0.992
+},
+{
+"w": "RM",
+"start": 0.62,
+"end": 0.98,
+"p": 0.712
+},
+{
+"w": "of",
+"start": 0.98,
+"end": 1.18,
+"p": 0.995
+},
+{
+"w": "a",
+"start": 1.18,
+"end": 1.32,
+"p": 0.993
+},
+{
+"w": "few",
+"start": 1.32,
+"end": 1.58,
+"p": 0.996
+},
+{
+"w": "tens",
+"start": 1.58,
+"end": 1.92,
+"p": 0.694
+},
+{
+"w": "takes",
+"start": 1.92,
+"end": 2.32,
+"p": 0.972
+},
+{
+"w": "violent",
+"start": 2.32,
+"end": 2.88,
+"p": 0.974
+},
+{
+"w": "stirring.",
+"start": 2.88,
+"end": 3.36,
+"p": 0.996
+},
+{
+"w": "The",
+"start": 4.04,
+"end": 4.22,
+"p": 0.993
+},
+{
+"w": "flow's",
+"start": 4.22,
+"end": 4.66,
+"p": 0.658
+},
+{
+"w": "Reynolds",
+"start": 4.66,
+"end": 4.88,
+"p": 0.985
+},
+{
+"w": "number,",
+"start": 4.88,
+"end": 5.34,
+"p": 0.93
+},
+{
+"w": "the",
+"start": 5.68,
+"end": 5.78,
+"p": 0.996
+},
+{
+"w": "gauge",
+"start": 5.78,
+"end": 6.06,
+"p": 0.927
+},
+{
+"w": "of",
+"start": 6.06,
+"end": 6.26,
+"p": 0.999
+},
+{
+"w": "turbulence,",
+"start": 6.26,
+"end": 6.74,
+"p": 0.998
+},
+{
+"w": "reaches",
+"start": 7.04,
+"end": 7.46,
+"p": 0.997
+},
+{
+"w": "millions.",
+"start": 7.46,
+"end": 8.04,
+"p": 0.995
+},
+{
+"w": "So",
+"start": 8.96,
+"end": 9.0,
+"p": 0.993
+},
+{
+"w": "every",
+"start": 9.0,
+"end": 9.38,
+"p": 0.831
+},
+{
+"w": "laboratory",
+"start": 9.38,
+"end": 9.92,
+"p": 0.989
+},
+{
+"w": "dynamo",
+"start": 9.92,
+"end": 10.58,
+"p": 0.998
+},
+{
+"w": "is",
+"start": 10.58,
+"end": 10.76,
+"p": 0.999
+},
+{
+"w": "turbulent.",
+"start": 10.76,
+"end": 11.22,
+"p": 0.994
+}
+]
+}

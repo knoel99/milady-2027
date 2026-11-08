@@ -1,0 +1,109 @@
+{
+"key": "b6e0d1aa27de6a02e2e68c76",
+"model": "small.en",
+"text": "A thesis starting in fall 2027 would end after Milliday's nominal end. Who funds its last months?",
+"words": [
+{
+"w": "A",
+"start": 0.0,
+"end": 0.22,
+"p": 0.867
+},
+{
+"w": "thesis",
+"start": 0.22,
+"end": 0.5,
+"p": 0.991
+},
+{
+"w": "starting",
+"start": 0.5,
+"end": 0.94,
+"p": 0.977
+},
+{
+"w": "in",
+"start": 0.94,
+"end": 1.18,
+"p": 0.997
+},
+{
+"w": "fall",
+"start": 1.18,
+"end": 1.4,
+"p": 0.556
+},
+{
+"w": "2027",
+"start": 1.4,
+"end": 2.42,
+"p": 0.897
+},
+{
+"w": "would",
+"start": 2.42,
+"end": 2.96,
+"p": 0.947
+},
+{
+"w": "end",
+"start": 2.96,
+"end": 3.32,
+"p": 0.999
+},
+{
+"w": "after",
+"start": 3.32,
+"end": 3.64,
+"p": 0.998
+},
+{
+"w": "Milliday's",
+"start": 3.64,
+"end": 4.22,
+"p": 0.719
+},
+{
+"w": "nominal",
+"start": 4.22,
+"end": 4.54,
+"p": 0.99
+},
+{
+"w": "end.",
+"start": 4.54,
+"end": 5.1,
+"p": 0.997
+},
+{
+"w": "Who",
+"start": 5.78,
+"end": 5.9,
+"p": 0.983
+},
+{
+"w": "funds",
+"start": 5.9,
+"end": 6.24,
+"p": 0.991
+},
+{
+"w": "its",
+"start": 6.24,
+"end": 6.44,
+"p": 0.968
+},
+{
+"w": "last",
+"start": 6.44,
+"end": 6.82,
+"p": 0.998
+},
+{
+"w": "months?",
+"start": 6.82,
+"end": 7.2,
+"p": 0.965
+}
+]
+}

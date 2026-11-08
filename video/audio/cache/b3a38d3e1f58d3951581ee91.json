@@ -1,0 +1,27 @@
+{
+ "text": "[calm, natural narrator voice] Riga, Karlsruhe and <|phoneme_start|>V IY1 K EY1 EH1 S<|phoneme_end|> crowned a hunt of nearly a century. Here is its map.",
+ "voice": "536d3a5e000945adb7038665781a4aca",
+ "words": 15,
+ "scene": "SOA1.1",
+ "para": 0,
+ "duration": 7.262,
+ "latency_s": 1.7,
+ "created": "2026-11-08T08:07:43",
+ "provider": "fish",
+ "request": {
+  "temperature": 0.1,
+  "format": "mp3",
+  "mp3_bitrate": 192,
+  "sample_rate": 44100,
+  "latency": "normal",
+  "language": "en",
+  "normalize": true,
+  "condition_on_previous_chunks": true,
+  "prosody": {
+   "speed": 1.0,
+   "normalize_loudness": true
+  },
+  "text": "[calm, natural narrator voice] Riga, Karlsruhe and <|phoneme_start|>V IY1 K EY1 EH1 S<|phoneme_end|> crowned a hunt of nearly a century. Here is its map.",
+  "reference_id": "536d3a5e000945adb7038665781a4aca"
+ }
+}

@@ -1,0 +1,193 @@
+{
+"key": "58136e161c3730b133bcf9b3",
+"model": "small.en",
+"text": "Worse. Push each snapshot until its energy stops changing. The wide pile collapses into a spike at zero. A ledger where every single day balances. No real account looks like that.",
+"words": [
+{
+"w": "Worse.",
+"start": 0.0,
+"end": 0.4,
+"p": 0.965
+},
+{
+"w": "Push",
+"start": 1.26,
+"end": 1.46,
+"p": 0.99
+},
+{
+"w": "each",
+"start": 1.46,
+"end": 1.82,
+"p": 0.999
+},
+{
+"w": "snapshot",
+"start": 1.82,
+"end": 2.5,
+"p": 0.986
+},
+{
+"w": "until",
+"start": 2.5,
+"end": 2.92,
+"p": 0.989
+},
+{
+"w": "its",
+"start": 2.92,
+"end": 3.08,
+"p": 0.953
+},
+{
+"w": "energy",
+"start": 3.08,
+"end": 3.42,
+"p": 0.989
+},
+{
+"w": "stops",
+"start": 3.42,
+"end": 3.86,
+"p": 0.996
+},
+{
+"w": "changing.",
+"start": 3.86,
+"end": 4.44,
+"p": 0.998
+},
+{
+"w": "The",
+"start": 5.12,
+"end": 5.26,
+"p": 0.994
+},
+{
+"w": "wide",
+"start": 5.26,
+"end": 5.66,
+"p": 0.976
+},
+{
+"w": "pile",
+"start": 5.66,
+"end": 6.06,
+"p": 0.995
+},
+{
+"w": "collapses",
+"start": 6.06,
+"end": 6.72,
+"p": 0.999
+},
+{
+"w": "into",
+"start": 6.72,
+"end": 7.04,
+"p": 0.997
+},
+{
+"w": "a",
+"start": 7.04,
+"end": 7.2,
+"p": 0.999
+},
+{
+"w": "spike",
+"start": 7.2,
+"end": 7.6,
+"p": 0.996
+},
+{
+"w": "at",
+"start": 7.6,
+"end": 7.9,
+"p": 0.995
+},
+{
+"w": "zero.",
+"start": 7.9,
+"end": 8.3,
+"p": 0.938
+},
+{
+"w": "A",
+"start": 9.08,
+"end": 9.22,
+"p": 0.996
+},
+{
+"w": "ledger",
+"start": 9.22,
+"end": 9.56,
+"p": 0.994
+},
+{
+"w": "where",
+"start": 9.56,
+"end": 9.86,
+"p": 0.977
+},
+{
+"w": "every",
+"start": 9.86,
+"end": 10.36,
+"p": 0.998
+},
+{
+"w": "single",
+"start": 10.36,
+"end": 10.78,
+"p": 0.998
+},
+{
+"w": "day",
+"start": 10.78,
+"end": 11.14,
+"p": 0.997
+},
+{
+"w": "balances.",
+"start": 11.14,
+"end": 11.8,
+"p": 0.994
+},
+{
+"w": "No",
+"start": 12.64,
+"end": 12.88,
+"p": 0.996
+},
+{
+"w": "real",
+"start": 12.88,
+"end": 13.2,
+"p": 0.998
+},
+{
+"w": "account",
+"start": 13.2,
+"end": 13.64,
+"p": 0.999
+},
+{
+"w": "looks",
+"start": 13.64,
+"end": 13.9,
+"p": 0.997
+},
+{
+"w": "like",
+"start": 13.9,
+"end": 14.16,
+"p": 0.999
+},
+{
+"w": "that.",
+"start": 14.16,
+"end": 14.5,
+"p": 0.999
+}
+]
+}

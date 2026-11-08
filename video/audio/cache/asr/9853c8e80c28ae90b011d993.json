@@ -1,0 +1,109 @@
+{
+"key": "9853c8e80c28ae90b011d993",
+"model": "small.en",
+"text": "First, VICUS data. Should the generator train on the LaTU periodic grid or the SMN cylinder mesh?",
+"words": [
+{
+"w": "First,",
+"start": 0.0,
+"end": 0.34,
+"p": 0.921
+},
+{
+"w": "VICUS",
+"start": 0.52,
+"end": 0.76,
+"p": 0.454
+},
+{
+"w": "data.",
+"start": 0.76,
+"end": 1.04,
+"p": 0.982
+},
+{
+"w": "Should",
+"start": 1.68,
+"end": 1.86,
+"p": 0.994
+},
+{
+"w": "the",
+"start": 1.86,
+"end": 2.02,
+"p": 0.997
+},
+{
+"w": "generator",
+"start": 2.02,
+"end": 2.36,
+"p": 0.951
+},
+{
+"w": "train",
+"start": 2.36,
+"end": 2.8,
+"p": 0.995
+},
+{
+"w": "on",
+"start": 2.8,
+"end": 3.02,
+"p": 0.996
+},
+{
+"w": "the",
+"start": 3.02,
+"end": 3.16,
+"p": 0.992
+},
+{
+"w": "LaTU",
+"start": 3.16,
+"end": 3.56,
+"p": 0.563
+},
+{
+"w": "periodic",
+"start": 3.56,
+"end": 4.04,
+"p": 0.919
+},
+{
+"w": "grid",
+"start": 4.04,
+"end": 4.48,
+"p": 0.998
+},
+{
+"w": "or",
+"start": 4.48,
+"end": 5.06,
+"p": 0.749
+},
+{
+"w": "the",
+"start": 5.06,
+"end": 5.22,
+"p": 0.997
+},
+{
+"w": "SMN",
+"start": 5.22,
+"end": 5.84,
+"p": 0.963
+},
+{
+"w": "cylinder",
+"start": 5.84,
+"end": 6.24,
+"p": 0.842
+},
+{
+"w": "mesh?",
+"start": 6.24,
+"end": 6.62,
+"p": 0.998
+}
+]
+}

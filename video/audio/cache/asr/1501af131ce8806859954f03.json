@@ -1,0 +1,121 @@
+{
+"key": "1501af131ce8806859954f03",
+"model": "small.en",
+"text": "So, two questions. When will it flip next? And how often does it flip? Which one can we answer?",
+"words": [
+{
+"w": "So,",
+"start": 0.0,
+"end": 0.38,
+"p": 0.975
+},
+{
+"w": "two",
+"start": 0.58,
+"end": 0.78,
+"p": 0.929
+},
+{
+"w": "questions.",
+"start": 0.78,
+"end": 1.22,
+"p": 0.998
+},
+{
+"w": "When",
+"start": 2.24,
+"end": 2.38,
+"p": 0.98
+},
+{
+"w": "will",
+"start": 2.38,
+"end": 2.56,
+"p": 0.998
+},
+{
+"w": "it",
+"start": 2.56,
+"end": 2.72,
+"p": 0.998
+},
+{
+"w": "flip",
+"start": 2.72,
+"end": 2.94,
+"p": 0.997
+},
+{
+"w": "next?",
+"start": 2.94,
+"end": 3.34,
+"p": 0.998
+},
+{
+"w": "And",
+"start": 3.92,
+"end": 4.02,
+"p": 0.923
+},
+{
+"w": "how",
+"start": 4.02,
+"end": 4.24,
+"p": 0.959
+},
+{
+"w": "often",
+"start": 4.24,
+"end": 4.62,
+"p": 0.999
+},
+{
+"w": "does",
+"start": 4.62,
+"end": 4.84,
+"p": 0.996
+},
+{
+"w": "it",
+"start": 4.84,
+"end": 4.98,
+"p": 0.999
+},
+{
+"w": "flip?",
+"start": 4.98,
+"end": 5.26,
+"p": 0.998
+},
+{
+"w": "Which",
+"start": 6.18,
+"end": 6.4,
+"p": 0.99
+},
+{
+"w": "one",
+"start": 6.4,
+"end": 6.62,
+"p": 0.997
+},
+{
+"w": "can",
+"start": 6.62,
+"end": 6.82,
+"p": 0.998
+},
+{
+"w": "we",
+"start": 6.82,
+"end": 6.98,
+"p": 0.999
+},
+{
+"w": "answer?",
+"start": 6.98,
+"end": 7.3,
+"p": 0.999
+}
+]
+}

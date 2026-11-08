@@ -1,0 +1,27 @@
+{
+ "text": "[calm, natural narrator voice] One knob, eta: how fast the field smudges. But a flat world cannot sustain a dynamo. Here a random forcing keeps the field alive: a training ground for laws, not a dynamo.",
+ "voice": "536d3a5e000945adb7038665781a4aca",
+ "words": 32,
+ "scene": "08.1",
+ "para": 1,
+ "duration": 13.8188,
+ "latency_s": 2.9,
+ "created": "2026-11-08T08:09:56",
+ "provider": "fish",
+ "request": {
+  "temperature": 0.1,
+  "format": "mp3",
+  "mp3_bitrate": 192,
+  "sample_rate": 44100,
+  "latency": "normal",
+  "language": "en",
+  "normalize": true,
+  "condition_on_previous_chunks": true,
+  "prosody": {
+   "speed": 1.0,
+   "normalize_loudness": true
+  },
+  "text": "[calm, natural narrator voice] One knob, eta: how fast the field smudges. But a flat world cannot sustain a dynamo. Here a random forcing keeps the field alive: a training ground for laws, not a dynamo.",
+  "reference_id": "536d3a5e000945adb7038665781a4aca"
+ }
+}

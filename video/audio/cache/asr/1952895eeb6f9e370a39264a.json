@@ -1,0 +1,91 @@
+{
+"key": "1952895eeb6f9e370a39264a",
+"model": "small.en",
+"text": "Those simulations belong to the project's partners, are not public, and must be requested.",
+"words": [
+{
+"w": "Those",
+"start": 0.0,
+"end": 0.34,
+"p": 0.824
+},
+{
+"w": "simulations",
+"start": 0.34,
+"end": 0.88,
+"p": 0.998
+},
+{
+"w": "belong",
+"start": 0.88,
+"end": 1.32,
+"p": 0.983
+},
+{
+"w": "to",
+"start": 1.32,
+"end": 1.52,
+"p": 0.999
+},
+{
+"w": "the",
+"start": 1.52,
+"end": 1.66,
+"p": 0.996
+},
+{
+"w": "project's",
+"start": 1.66,
+"end": 2.2,
+"p": 0.945
+},
+{
+"w": "partners,",
+"start": 2.2,
+"end": 2.64,
+"p": 0.999
+},
+{
+"w": "are",
+"start": 2.88,
+"end": 3.14,
+"p": 0.997
+},
+{
+"w": "not",
+"start": 3.14,
+"end": 3.38,
+"p": 0.998
+},
+{
+"w": "public,",
+"start": 3.38,
+"end": 3.76,
+"p": 0.998
+},
+{
+"w": "and",
+"start": 4.14,
+"end": 4.3,
+"p": 0.999
+},
+{
+"w": "must",
+"start": 4.3,
+"end": 4.54,
+"p": 0.998
+},
+{
+"w": "be",
+"start": 4.54,
+"end": 4.78,
+"p": 1.0
+},
+{
+"w": "requested.",
+"start": 4.78,
+"end": 5.26,
+"p": 0.998
+}
+]
+}

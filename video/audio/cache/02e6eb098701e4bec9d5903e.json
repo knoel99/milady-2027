@@ -1,0 +1,27 @@
+{
+ "text": "[calm, natural narrator voice] Then the framing: how each result will be judged, decided before the data exist. Which statistics must generated fields match, down to the shape of their field lines, and how close to the noise floor counts as success? Which budgets must hold on average, and must their spread match too?",
+ "voice": "536d3a5e000945adb7038665781a4aca",
+ "words": 50,
+ "scene": "10q.3",
+ "para": 0,
+ "duration": 20.1665,
+ "latency_s": 4.1,
+ "created": "2026-11-08T08:14:03",
+ "provider": "fish",
+ "request": {
+  "temperature": 0.1,
+  "format": "mp3",
+  "mp3_bitrate": 192,
+  "sample_rate": 44100,
+  "latency": "normal",
+  "language": "en",
+  "normalize": true,
+  "condition_on_previous_chunks": true,
+  "prosody": {
+   "speed": 1.0,
+   "normalize_loudness": true
+  },
+  "text": "[calm, natural narrator voice] Then the framing: how each result will be judged, decided before the data exist. Which statistics must generated fields match, down to the shape of their field lines, and how close to the noise floor counts as success? Which budgets must hold on average, and must their spread match too?",
+  "reference_id": "536d3a5e000945adb7038665781a4aca"
+ }
+}

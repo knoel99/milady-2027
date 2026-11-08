@@ -1,0 +1,27 @@
+{
+ "text": "[calm, natural narrator voice] Near a gentle threshold, the truth rises like a square root, vertical at first. A stiff machine rounds the corner; a supple one errs less, but turns jumpy everywhere.",
+ "voice": "536d3a5e000945adb7038665781a4aca",
+ "words": 29,
+ "scene": "X4.4",
+ "para": 0,
+ "duration": 12.8,
+ "latency_s": 2.5,
+ "created": "2026-11-08T08:13:01",
+ "provider": "fish",
+ "request": {
+  "temperature": 0.1,
+  "format": "mp3",
+  "mp3_bitrate": 192,
+  "sample_rate": 44100,
+  "latency": "normal",
+  "language": "en",
+  "normalize": true,
+  "condition_on_previous_chunks": true,
+  "prosody": {
+   "speed": 1.0,
+   "normalize_loudness": true
+  },
+  "text": "[calm, natural narrator voice] Near a gentle threshold, the truth rises like a square root, vertical at first. A stiff machine rounds the corner; a supple one errs less, but turns jumpy everywhere.",
+  "reference_id": "536d3a5e000945adb7038665781a4aca"
+ }
+}

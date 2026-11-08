@@ -1,0 +1,27 @@
+{
+ "text": "[calm, natural narrator voice] Back to the plain generator: why does it miss, trained on clean data? Follow the part of a field breaking the law. To bring it exactly to zero, the wind must act as a spring that turns infinitely stiff as the transport clock runs out.",
+ "voice": "536d3a5e000945adb7038665781a4aca",
+ "words": 45,
+ "scene": "08.4",
+ "para": 0,
+ "duration": 17.1102,
+ "latency_s": 3.6,
+ "created": "2026-11-08T08:10:08",
+ "provider": "fish",
+ "request": {
+  "temperature": 0.1,
+  "format": "mp3",
+  "mp3_bitrate": 192,
+  "sample_rate": 44100,
+  "latency": "normal",
+  "language": "en",
+  "normalize": true,
+  "condition_on_previous_chunks": true,
+  "prosody": {
+   "speed": 1.0,
+   "normalize_loudness": true
+  },
+  "text": "[calm, natural narrator voice] Back to the plain generator: why does it miss, trained on clean data? Follow the part of a field breaking the law. To bring it exactly to zero, the wind must act as a spring that turns infinitely stiff as the transport clock runs out.",
+  "reference_id": "536d3a5e000945adb7038665781a4aca"
+ }
+}

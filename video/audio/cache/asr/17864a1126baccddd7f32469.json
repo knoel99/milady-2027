@@ -1,0 +1,109 @@
+{
+"key": "17864a1126baccddd7f32469",
+"model": "small.en",
+"text": "Which settings should get runs long enough to count reversals, so a predicted rate can be checked.",
+"words": [
+{
+"w": "Which",
+"start": 0.0,
+"end": 0.32,
+"p": 0.736
+},
+{
+"w": "settings",
+"start": 0.32,
+"end": 0.66,
+"p": 0.951
+},
+{
+"w": "should",
+"start": 0.66,
+"end": 0.92,
+"p": 0.997
+},
+{
+"w": "get",
+"start": 0.92,
+"end": 1.1,
+"p": 0.997
+},
+{
+"w": "runs",
+"start": 1.1,
+"end": 1.48,
+"p": 0.974
+},
+{
+"w": "long",
+"start": 1.48,
+"end": 1.78,
+"p": 0.999
+},
+{
+"w": "enough",
+"start": 1.78,
+"end": 2.0,
+"p": 0.999
+},
+{
+"w": "to",
+"start": 2.0,
+"end": 2.22,
+"p": 0.999
+},
+{
+"w": "count",
+"start": 2.22,
+"end": 2.46,
+"p": 0.998
+},
+{
+"w": "reversals,",
+"start": 2.46,
+"end": 3.12,
+"p": 0.997
+},
+{
+"w": "so",
+"start": 3.46,
+"end": 3.66,
+"p": 0.997
+},
+{
+"w": "a",
+"start": 3.66,
+"end": 3.78,
+"p": 0.995
+},
+{
+"w": "predicted",
+"start": 3.78,
+"end": 4.12,
+"p": 0.998
+},
+{
+"w": "rate",
+"start": 4.12,
+"end": 4.48,
+"p": 0.998
+},
+{
+"w": "can",
+"start": 4.48,
+"end": 4.7,
+"p": 0.998
+},
+{
+"w": "be",
+"start": 4.7,
+"end": 4.84,
+"p": 0.999
+},
+{
+"w": "checked.",
+"start": 4.84,
+"end": 5.12,
+"p": 1.0
+}
+]
+}

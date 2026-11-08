@@ -1,0 +1,211 @@
+{
+"key": "380724b6812bbacd85383976",
+"model": "small.en",
+"text": "An equation, windows, a panel of knobs, a handful of dots. Full simulations cost too much, so we start with a three-dial caricature that already flips. Can anyone say when it flips next?",
+"words": [
+{
+"w": "An",
+"start": 0.0,
+"end": 0.22,
+"p": 0.804
+},
+{
+"w": "equation,",
+"start": 0.22,
+"end": 0.72,
+"p": 0.976
+},
+{
+"w": "windows,",
+"start": 1.28,
+"end": 1.64,
+"p": 0.816
+},
+{
+"w": "a",
+"start": 2.14,
+"end": 2.18,
+"p": 0.995
+},
+{
+"w": "panel",
+"start": 2.18,
+"end": 2.44,
+"p": 0.997
+},
+{
+"w": "of",
+"start": 2.44,
+"end": 2.66,
+"p": 0.997
+},
+{
+"w": "knobs,",
+"start": 2.66,
+"end": 3.16,
+"p": 0.998
+},
+{
+"w": "a",
+"start": 3.52,
+"end": 3.64,
+"p": 0.993
+},
+{
+"w": "handful",
+"start": 3.64,
+"end": 3.98,
+"p": 0.996
+},
+{
+"w": "of",
+"start": 3.98,
+"end": 4.22,
+"p": 0.999
+},
+{
+"w": "dots.",
+"start": 4.22,
+"end": 4.6,
+"p": 0.995
+},
+{
+"w": "Full",
+"start": 5.64,
+"end": 5.92,
+"p": 0.994
+},
+{
+"w": "simulations",
+"start": 5.92,
+"end": 6.52,
+"p": 0.995
+},
+{
+"w": "cost",
+"start": 6.52,
+"end": 6.86,
+"p": 0.964
+},
+{
+"w": "too",
+"start": 6.86,
+"end": 7.2,
+"p": 0.996
+},
+{
+"w": "much,",
+"start": 7.2,
+"end": 7.6,
+"p": 1.0
+},
+{
+"w": "so",
+"start": 7.9,
+"end": 8.16,
+"p": 0.996
+},
+{
+"w": "we",
+"start": 8.16,
+"end": 8.28,
+"p": 0.997
+},
+{
+"w": "start",
+"start": 8.28,
+"end": 8.54,
+"p": 0.998
+},
+{
+"w": "with",
+"start": 8.54,
+"end": 8.72,
+"p": 0.999
+},
+{
+"w": "a",
+"start": 8.72,
+"end": 8.86,
+"p": 0.975
+},
+{
+"w": "three",
+"start": 8.86,
+"end": 9.2,
+"p": 0.876
+},
+{
+"w": "-dial",
+"start": 9.2,
+"end": 9.52,
+"p": 0.884
+},
+{
+"w": "caricature",
+"start": 9.52,
+"end": 9.96,
+"p": 0.994
+},
+{
+"w": "that",
+"start": 9.96,
+"end": 10.32,
+"p": 0.997
+},
+{
+"w": "already",
+"start": 10.32,
+"end": 10.78,
+"p": 0.999
+},
+{
+"w": "flips.",
+"start": 10.78,
+"end": 11.18,
+"p": 0.998
+},
+{
+"w": "Can",
+"start": 12.08,
+"end": 12.2,
+"p": 0.997
+},
+{
+"w": "anyone",
+"start": 12.2,
+"end": 12.46,
+"p": 0.998
+},
+{
+"w": "say",
+"start": 12.46,
+"end": 12.82,
+"p": 0.997
+},
+{
+"w": "when",
+"start": 12.82,
+"end": 13.0,
+"p": 0.996
+},
+{
+"w": "it",
+"start": 13.0,
+"end": 13.12,
+"p": 0.999
+},
+{
+"w": "flips",
+"start": 13.12,
+"end": 13.38,
+"p": 0.998
+},
+{
+"w": "next?",
+"start": 13.38,
+"end": 13.74,
+"p": 0.995
+}
+]
+}

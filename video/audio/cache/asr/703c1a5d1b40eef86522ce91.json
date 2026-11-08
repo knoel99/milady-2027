@@ -1,0 +1,157 @@
+{
+"key": "703c1a5d1b40eef86522ce91",
+"model": "small.en",
+"text": "No shoebox holds that shape, it takes the movie. The open question, can short runs launched from generated states in the corridor supply the weights?",
+"words": [
+{
+"w": "No",
+"start": 0.0,
+"end": 0.32,
+"p": 0.856
+},
+{
+"w": "shoebox",
+"start": 0.32,
+"end": 0.88,
+"p": 0.827
+},
+{
+"w": "holds",
+"start": 0.88,
+"end": 1.18,
+"p": 0.995
+},
+{
+"w": "that",
+"start": 1.18,
+"end": 1.42,
+"p": 0.999
+},
+{
+"w": "shape,",
+"start": 1.42,
+"end": 1.82,
+"p": 0.999
+},
+{
+"w": "it",
+"start": 2.22,
+"end": 2.44,
+"p": 0.981
+},
+{
+"w": "takes",
+"start": 2.44,
+"end": 2.7,
+"p": 0.996
+},
+{
+"w": "the",
+"start": 2.7,
+"end": 2.94,
+"p": 0.998
+},
+{
+"w": "movie.",
+"start": 2.94,
+"end": 3.28,
+"p": 0.998
+},
+{
+"w": "The",
+"start": 4.18,
+"end": 4.28,
+"p": 0.981
+},
+{
+"w": "open",
+"start": 4.28,
+"end": 4.56,
+"p": 0.975
+},
+{
+"w": "question,",
+"start": 4.56,
+"end": 5.06,
+"p": 0.994
+},
+{
+"w": "can",
+"start": 5.68,
+"end": 5.8,
+"p": 0.907
+},
+{
+"w": "short",
+"start": 5.8,
+"end": 6.14,
+"p": 0.995
+},
+{
+"w": "runs",
+"start": 6.14,
+"end": 6.66,
+"p": 0.982
+},
+{
+"w": "launched",
+"start": 6.66,
+"end": 7.2,
+"p": 0.692
+},
+{
+"w": "from",
+"start": 7.2,
+"end": 7.46,
+"p": 0.998
+},
+{
+"w": "generated",
+"start": 7.46,
+"end": 7.88,
+"p": 0.987
+},
+{
+"w": "states",
+"start": 7.88,
+"end": 8.3,
+"p": 0.989
+},
+{
+"w": "in",
+"start": 8.3,
+"end": 8.5,
+"p": 0.998
+},
+{
+"w": "the",
+"start": 8.5,
+"end": 8.62,
+"p": 0.997
+},
+{
+"w": "corridor",
+"start": 8.62,
+"end": 9.08,
+"p": 0.993
+},
+{
+"w": "supply",
+"start": 9.08,
+"end": 9.92,
+"p": 0.813
+},
+{
+"w": "the",
+"start": 9.92,
+"end": 10.14,
+"p": 0.999
+},
+{
+"w": "weights?",
+"start": 10.14,
+"end": 10.44,
+"p": 0.988
+}
+]
+}

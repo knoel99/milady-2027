@@ -1,0 +1,205 @@
+{
+"key": "bf5d94afbd891684b7d73600",
+"model": "small.en",
+"text": "One number keeps the score, the magnetic Reynolds number, Rm. It is the flow's speed times its size divided by the magnetic diffusivity. Large Rm, stretching out paces smudging. Small Rm, smudging winds.",
+"words": [
+{
+"w": "One",
+"start": 0.0,
+"end": 0.36,
+"p": 0.924
+},
+{
+"w": "number",
+"start": 0.36,
+"end": 0.66,
+"p": 0.998
+},
+{
+"w": "keeps",
+"start": 0.66,
+"end": 0.96,
+"p": 0.999
+},
+{
+"w": "the",
+"start": 0.96,
+"end": 1.2,
+"p": 0.999
+},
+{
+"w": "score,",
+"start": 1.2,
+"end": 1.56,
+"p": 1.0
+},
+{
+"w": "the",
+"start": 2.1,
+"end": 2.24,
+"p": 0.989
+},
+{
+"w": "magnetic",
+"start": 2.24,
+"end": 2.7,
+"p": 0.944
+},
+{
+"w": "Reynolds",
+"start": 2.7,
+"end": 3.1,
+"p": 0.964
+},
+{
+"w": "number,",
+"start": 3.1,
+"end": 3.62,
+"p": 0.948
+},
+{
+"w": "Rm.",
+"start": 4.06,
+"end": 4.64,
+"p": 0.802
+},
+{
+"w": "It",
+"start": 5.38,
+"end": 5.56,
+"p": 0.991
+},
+{
+"w": "is",
+"start": 5.56,
+"end": 5.68,
+"p": 0.997
+},
+{
+"w": "the",
+"start": 5.68,
+"end": 5.86,
+"p": 0.998
+},
+{
+"w": "flow's",
+"start": 5.86,
+"end": 6.32,
+"p": 0.733
+},
+{
+"w": "speed",
+"start": 6.32,
+"end": 6.76,
+"p": 1.0
+},
+{
+"w": "times",
+"start": 6.76,
+"end": 7.36,
+"p": 0.722
+},
+{
+"w": "its",
+"start": 7.36,
+"end": 7.58,
+"p": 0.988
+},
+{
+"w": "size",
+"start": 7.58,
+"end": 8.16,
+"p": 0.998
+},
+{
+"w": "divided",
+"start": 8.16,
+"end": 8.92,
+"p": 0.829
+},
+{
+"w": "by",
+"start": 8.92,
+"end": 9.22,
+"p": 0.999
+},
+{
+"w": "the",
+"start": 9.22,
+"end": 9.32,
+"p": 0.998
+},
+{
+"w": "magnetic",
+"start": 9.32,
+"end": 9.82,
+"p": 0.999
+},
+{
+"w": "diffusivity.",
+"start": 9.82,
+"end": 10.7,
+"p": 0.999
+},
+{
+"w": "Large",
+"start": 11.78,
+"end": 12.02,
+"p": 0.989
+},
+{
+"w": "Rm,",
+"start": 12.02,
+"end": 12.8,
+"p": 0.984
+},
+{
+"w": "stretching",
+"start": 13.16,
+"end": 13.52,
+"p": 0.981
+},
+{
+"w": "out",
+"start": 13.52,
+"end": 13.9,
+"p": 0.785
+},
+{
+"w": "paces",
+"start": 13.9,
+"end": 14.3,
+"p": 0.858
+},
+{
+"w": "smudging.",
+"start": 14.3,
+"end": 14.82,
+"p": 0.962
+},
+{
+"w": "Small",
+"start": 15.84,
+"end": 16.16,
+"p": 0.995
+},
+{
+"w": "Rm,",
+"start": 16.16,
+"end": 16.88,
+"p": 0.954
+},
+{
+"w": "smudging",
+"start": 17.34,
+"end": 17.7,
+"p": 0.999
+},
+{
+"w": "winds.",
+"start": 17.7,
+"end": 18.04,
+"p": 0.437
+}
+]
+}

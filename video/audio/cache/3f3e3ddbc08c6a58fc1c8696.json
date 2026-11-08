@@ -1,0 +1,27 @@
+{
+ "text": "[calm, natural narrator voice] To test ideas, physicists need a flow simple enough to write on one line, yet able to make a dynamo. One classic choice: the <|phoneme_start|>EY1 B IY1 S IY1<|phoneme_end|> flow.",
+ "voice": "536d3a5e000945adb7038665781a4aca",
+ "words": 26,
+ "scene": "03.3",
+ "para": 0,
+ "duration": 11.0237,
+ "latency_s": 2.5,
+ "created": "2026-11-08T08:08:07",
+ "provider": "fish",
+ "request": {
+  "temperature": 0.1,
+  "format": "mp3",
+  "mp3_bitrate": 192,
+  "sample_rate": 44100,
+  "latency": "normal",
+  "language": "en",
+  "normalize": true,
+  "condition_on_previous_chunks": true,
+  "prosody": {
+   "speed": 1.0,
+   "normalize_loudness": true
+  },
+  "text": "[calm, natural narrator voice] To test ideas, physicists need a flow simple enough to write on one line, yet able to make a dynamo. One classic choice: the <|phoneme_start|>EY1 B IY1 S IY1<|phoneme_end|> flow.",
+  "reference_id": "536d3a5e000945adb7038665781a4aca"
+ }
+}

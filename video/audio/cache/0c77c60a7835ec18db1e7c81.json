@@ -1,0 +1,28 @@
+{
+ "text": "[calm, natural narrator voice] Faites maintenant tourner les deux disques à des vitesses différentes. Pour certains réglages, le dipôle se renverse encore et encore, sans aucun calendrier. Comme l'aiguille de la boussole du début, mais à une ou deux minutes d'intervalle.",
+ "voice": "536d3a5e000945adb7038665781a4aca",
+ "words": 37,
+ "scene": "02.6",
+ "para": 0,
+ "lang": "fr",
+ "duration": 15.8041,
+ "latency_s": 3.3,
+ "created": "2026-11-08T09:57:43",
+ "provider": "fish",
+ "request": {
+  "temperature": 0.1,
+  "format": "mp3",
+  "mp3_bitrate": 192,
+  "sample_rate": 44100,
+  "latency": "normal",
+  "language": "fr",
+  "normalize": true,
+  "condition_on_previous_chunks": true,
+  "prosody": {
+   "speed": 1.0,
+   "normalize_loudness": true
+  },
+  "text": "[calm, natural narrator voice] Faites maintenant tourner les deux disques à des vitesses différentes. Pour certains réglages, le dipôle se renverse encore et encore, sans aucun calendrier. Comme l'aiguille de la boussole du début, mais à une ou deux minutes d'intervalle.",
+  "reference_id": "536d3a5e000945adb7038665781a4aca"
+ }
+}

@@ -1,0 +1,181 @@
+{
+"key": "ffa38efbcd401498c7b3e1f6",
+"model": "small.en",
+"text": "Where does the dipole spend its time? Two humps, the same for both. This reproducible glow is the stationary distribution. Below the threshold, each start paints its own whirlpool.",
+"words": [
+{
+"w": "Where",
+"start": 0.0,
+"end": 0.24,
+"p": 0.863
+},
+{
+"w": "does",
+"start": 0.24,
+"end": 0.4,
+"p": 0.997
+},
+{
+"w": "the",
+"start": 0.4,
+"end": 0.56,
+"p": 0.997
+},
+{
+"w": "dipole",
+"start": 0.56,
+"end": 0.96,
+"p": 0.75
+},
+{
+"w": "spend",
+"start": 0.96,
+"end": 1.28,
+"p": 0.995
+},
+{
+"w": "its",
+"start": 1.28,
+"end": 1.5,
+"p": 0.988
+},
+{
+"w": "time?",
+"start": 1.5,
+"end": 1.84,
+"p": 0.996
+},
+{
+"w": "Two",
+"start": 2.7,
+"end": 2.98,
+"p": 0.97
+},
+{
+"w": "humps,",
+"start": 2.98,
+"end": 3.48,
+"p": 0.988
+},
+{
+"w": "the",
+"start": 3.7,
+"end": 3.76,
+"p": 0.994
+},
+{
+"w": "same",
+"start": 3.76,
+"end": 4.02,
+"p": 1.0
+},
+{
+"w": "for",
+"start": 4.02,
+"end": 4.22,
+"p": 0.999
+},
+{
+"w": "both.",
+"start": 4.22,
+"end": 4.5,
+"p": 1.0
+},
+{
+"w": "This",
+"start": 5.42,
+"end": 5.66,
+"p": 0.997
+},
+{
+"w": "reproducible",
+"start": 5.66,
+"end": 6.44,
+"p": 0.994
+},
+{
+"w": "glow",
+"start": 6.44,
+"end": 6.8,
+"p": 0.998
+},
+{
+"w": "is",
+"start": 6.8,
+"end": 7.06,
+"p": 0.998
+},
+{
+"w": "the",
+"start": 7.06,
+"end": 7.2,
+"p": 0.981
+},
+{
+"w": "stationary",
+"start": 7.2,
+"end": 7.7,
+"p": 0.974
+},
+{
+"w": "distribution.",
+"start": 7.7,
+"end": 8.4,
+"p": 0.999
+},
+{
+"w": "Below",
+"start": 9.48,
+"end": 9.72,
+"p": 0.998
+},
+{
+"w": "the",
+"start": 9.72,
+"end": 9.92,
+"p": 0.999
+},
+{
+"w": "threshold,",
+"start": 9.92,
+"end": 10.42,
+"p": 0.991
+},
+{
+"w": "each",
+"start": 10.94,
+"end": 11.12,
+"p": 0.999
+},
+{
+"w": "start",
+"start": 11.12,
+"end": 11.5,
+"p": 0.971
+},
+{
+"w": "paints",
+"start": 11.5,
+"end": 11.88,
+"p": 0.997
+},
+{
+"w": "its",
+"start": 11.88,
+"end": 12.12,
+"p": 0.995
+},
+{
+"w": "own",
+"start": 12.12,
+"end": 12.42,
+"p": 0.999
+},
+{
+"w": "whirlpool.",
+"start": 12.42,
+"end": 12.98,
+"p": 0.963
+}
+]
+}

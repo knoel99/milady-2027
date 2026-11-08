@@ -1,0 +1,27 @@
+{
+ "text": "[calm, natural narrator voice] Fourth track: data assimilation, merging a model with a few measurements. Learned priors came in through compressed latent spaces, then diffusion models. And a library now plugs deep networks into Kalman filters and variational methods.",
+ "voice": "536d3a5e000945adb7038665781a4aca",
+ "words": 35,
+ "scene": "SOA2.5",
+ "para": 0,
+ "duration": 16.8229,
+ "latency_s": 3.1,
+ "created": "2026-11-08T08:12:03",
+ "provider": "fish",
+ "request": {
+  "temperature": 0.1,
+  "format": "mp3",
+  "mp3_bitrate": 192,
+  "sample_rate": 44100,
+  "latency": "normal",
+  "language": "en",
+  "normalize": true,
+  "condition_on_previous_chunks": true,
+  "prosody": {
+   "speed": 1.0,
+   "normalize_loudness": true
+  },
+  "text": "[calm, natural narrator voice] Fourth track: data assimilation, merging a model with a few measurements. Learned priors came in through compressed latent spaces, then diffusion models. And a library now plugs deep networks into Kalman filters and variational methods.",
+  "reference_id": "536d3a5e000945adb7038665781a4aca"
+ }
+}

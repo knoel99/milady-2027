@@ -1,0 +1,115 @@
+{
+"key": "2d1dd0f08a906221c55e59c5",
+"model": "small.en",
+"text": "First, VKS data. Should the generator train on the LaTU periodic grid or the S -Femin cylinder mesh?",
+"words": [
+{
+"w": "First,",
+"start": 0.0,
+"end": 0.42,
+"p": 0.84
+},
+{
+"w": "VKS",
+"start": 0.66,
+"end": 1.1,
+"p": 0.963
+},
+{
+"w": "data.",
+"start": 1.1,
+"end": 1.48,
+"p": 0.977
+},
+{
+"w": "Should",
+"start": 2.24,
+"end": 2.34,
+"p": 0.994
+},
+{
+"w": "the",
+"start": 2.34,
+"end": 2.5,
+"p": 0.998
+},
+{
+"w": "generator",
+"start": 2.5,
+"end": 2.84,
+"p": 0.978
+},
+{
+"w": "train",
+"start": 2.84,
+"end": 3.28,
+"p": 0.996
+},
+{
+"w": "on",
+"start": 3.28,
+"end": 3.48,
+"p": 0.997
+},
+{
+"w": "the",
+"start": 3.48,
+"end": 3.66,
+"p": 0.99
+},
+{
+"w": "LaTU",
+"start": 3.66,
+"end": 4.02,
+"p": 0.553
+},
+{
+"w": "periodic",
+"start": 4.02,
+"end": 4.5,
+"p": 0.943
+},
+{
+"w": "grid",
+"start": 4.5,
+"end": 4.92,
+"p": 0.998
+},
+{
+"w": "or",
+"start": 4.92,
+"end": 5.52,
+"p": 0.665
+},
+{
+"w": "the",
+"start": 5.52,
+"end": 5.66,
+"p": 0.992
+},
+{
+"w": "S",
+"start": 5.66,
+"end": 5.92,
+"p": 0.541
+},
+{
+"w": "-Femin",
+"start": 5.92,
+"end": 6.3,
+"p": 0.656
+},
+{
+"w": "cylinder",
+"start": 6.3,
+"end": 6.74,
+"p": 0.962
+},
+{
+"w": "mesh?",
+"start": 6.74,
+"end": 7.12,
+"p": 0.999
+}
+]
+}

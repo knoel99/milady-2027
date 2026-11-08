@@ -1,0 +1,199 @@
+{
+"key": "7a2c13c19a4f55b8f1b0d3ac",
+"model": "small.en",
+"text": "Follow the averaged wind, not the strings. The paths bend and drawn against the clock, they never cross. Learn the average exactly and the noise lands exactly on the data's crowd. out.",
+"words": [
+{
+"w": "Follow",
+"start": 0.0,
+"end": 0.42,
+"p": 0.893
+},
+{
+"w": "the",
+"start": 0.42,
+"end": 0.64,
+"p": 0.999
+},
+{
+"w": "averaged",
+"start": 0.64,
+"end": 1.08,
+"p": 0.974
+},
+{
+"w": "wind,",
+"start": 1.08,
+"end": 1.52,
+"p": 0.999
+},
+{
+"w": "not",
+"start": 1.94,
+"end": 2.12,
+"p": 0.998
+},
+{
+"w": "the",
+"start": 2.12,
+"end": 2.3,
+"p": 0.999
+},
+{
+"w": "strings.",
+"start": 2.3,
+"end": 2.72,
+"p": 0.997
+},
+{
+"w": "The",
+"start": 3.46,
+"end": 3.62,
+"p": 0.998
+},
+{
+"w": "paths",
+"start": 3.62,
+"end": 3.96,
+"p": 0.991
+},
+{
+"w": "bend",
+"start": 3.96,
+"end": 4.4,
+"p": 0.998
+},
+{
+"w": "and",
+"start": 4.4,
+"end": 5.06,
+"p": 0.668
+},
+{
+"w": "drawn",
+"start": 5.06,
+"end": 5.36,
+"p": 0.815
+},
+{
+"w": "against",
+"start": 5.36,
+"end": 5.64,
+"p": 0.999
+},
+{
+"w": "the",
+"start": 5.64,
+"end": 5.88,
+"p": 0.998
+},
+{
+"w": "clock,",
+"start": 5.88,
+"end": 6.2,
+"p": 0.999
+},
+{
+"w": "they",
+"start": 6.44,
+"end": 6.54,
+"p": 0.998
+},
+{
+"w": "never",
+"start": 6.54,
+"end": 6.9,
+"p": 1.0
+},
+{
+"w": "cross.",
+"start": 6.9,
+"end": 7.3,
+"p": 0.999
+},
+{
+"w": "Learn",
+"start": 8.3,
+"end": 8.48,
+"p": 0.998
+},
+{
+"w": "the",
+"start": 8.48,
+"end": 8.66,
+"p": 0.999
+},
+{
+"w": "average",
+"start": 8.66,
+"end": 9.02,
+"p": 0.996
+},
+{
+"w": "exactly",
+"start": 9.02,
+"end": 9.68,
+"p": 0.996
+},
+{
+"w": "and",
+"start": 9.68,
+"end": 10.26,
+"p": 0.558
+},
+{
+"w": "the",
+"start": 10.26,
+"end": 10.42,
+"p": 0.998
+},
+{
+"w": "noise",
+"start": 10.42,
+"end": 10.76,
+"p": 0.999
+},
+{
+"w": "lands",
+"start": 10.76,
+"end": 11.08,
+"p": 0.995
+},
+{
+"w": "exactly",
+"start": 11.08,
+"end": 11.7,
+"p": 0.998
+},
+{
+"w": "on",
+"start": 11.7,
+"end": 12.0,
+"p": 0.999
+},
+{
+"w": "the",
+"start": 12.0,
+"end": 12.14,
+"p": 0.998
+},
+{
+"w": "data's",
+"start": 12.14,
+"end": 12.54,
+"p": 0.974
+},
+{
+"w": "crowd.",
+"start": 12.54,
+"end": 12.9,
+"p": 0.991
+},
+{
+"w": "out.",
+"start": 12.9,
+"end": 13.02,
+"p": 0.145
+}
+]
+}

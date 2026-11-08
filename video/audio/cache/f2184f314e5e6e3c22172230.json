@@ -1,0 +1,28 @@
+{
+ "text": "[calm, natural narrator voice] À erre ème égal huit, il s'éteint. À douze et à seize, dans la fenêtre, il grandit. À vingt, juste au-delà, il s'éteint de nouveau. Sur ces instantanés, à huit, seize et vingt, il se concentre dans quatre tubes fins. Leur intensité culmine en des points où l'écoulement est immobile. À douze, il s'étale.",
+ "voice": "536d3a5e000945adb7038665781a4aca",
+ "words": 53,
+ "scene": "X1.2",
+ "para": 1,
+ "lang": "fr",
+ "duration": 24.8163,
+ "latency_s": 4.8,
+ "created": "2026-11-08T10:03:36",
+ "provider": "fish",
+ "request": {
+  "temperature": 0.1,
+  "format": "mp3",
+  "mp3_bitrate": 192,
+  "sample_rate": 44100,
+  "latency": "normal",
+  "language": "fr",
+  "normalize": true,
+  "condition_on_previous_chunks": true,
+  "prosody": {
+   "speed": 1.0,
+   "normalize_loudness": true
+  },
+  "text": "[calm, natural narrator voice] À erre ème égal huit, il s'éteint. À douze et à seize, dans la fenêtre, il grandit. À vingt, juste au-delà, il s'éteint de nouveau. Sur ces instantanés, à huit, seize et vingt, il se concentre dans quatre tubes fins. Leur intensité culmine en des points où l'écoulement est immobile. À douze, il s'étale.",
+  "reference_id": "536d3a5e000945adb7038665781a4aca"
+ }
+}

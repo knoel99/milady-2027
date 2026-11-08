@@ -1,0 +1,27 @@
+{
+ "text": "[calm, natural narrator voice] And the mirror? Each snapshot is lopsided, so it is a crowd law, yet a network can carry it exactly, built in.",
+ "voice": "536d3a5e000945adb7038665781a4aca",
+ "words": 22,
+ "scene": "08.6",
+ "para": 2,
+ "duration": 8.8033,
+ "latency_s": 1.8,
+ "created": "2026-11-08T08:10:17",
+ "provider": "fish",
+ "request": {
+  "temperature": 0.1,
+  "format": "mp3",
+  "mp3_bitrate": 192,
+  "sample_rate": 44100,
+  "latency": "normal",
+  "language": "en",
+  "normalize": true,
+  "condition_on_previous_chunks": true,
+  "prosody": {
+   "speed": 1.0,
+   "normalize_loudness": true
+  },
+  "text": "[calm, natural narrator voice] And the mirror? Each snapshot is lopsided, so it is a crowd law, yet a network can carry it exactly, built in.",
+  "reference_id": "536d3a5e000945adb7038665781a4aca"
+ }
+}

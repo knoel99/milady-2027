@@ -1,0 +1,187 @@
+{
+"key": "5d3880829a7f9b9f840bbe0a",
+"model": "small.en",
+"text": "Confidence, low. The data are not public, no file reader exists yet, and few reversals mean wide error bars. Worth asking first, how many snapshots per configuration and by when?",
+"words": [
+{
+"w": "Confidence,",
+"start": 0.0,
+"end": 0.62,
+"p": 0.957
+},
+{
+"w": "low.",
+"start": 0.86,
+"end": 1.18,
+"p": 0.969
+},
+{
+"w": "The",
+"start": 1.88,
+"end": 2.0,
+"p": 0.994
+},
+{
+"w": "data",
+"start": 2.0,
+"end": 2.24,
+"p": 0.999
+},
+{
+"w": "are",
+"start": 2.24,
+"end": 2.44,
+"p": 0.996
+},
+{
+"w": "not",
+"start": 2.44,
+"end": 2.68,
+"p": 0.999
+},
+{
+"w": "public,",
+"start": 2.68,
+"end": 3.08,
+"p": 0.999
+},
+{
+"w": "no",
+"start": 3.56,
+"end": 3.78,
+"p": 0.993
+},
+{
+"w": "file",
+"start": 3.78,
+"end": 4.14,
+"p": 0.984
+},
+{
+"w": "reader",
+"start": 4.14,
+"end": 4.42,
+"p": 0.988
+},
+{
+"w": "exists",
+"start": 4.42,
+"end": 4.8,
+"p": 0.99
+},
+{
+"w": "yet,",
+"start": 4.8,
+"end": 5.18,
+"p": 0.995
+},
+{
+"w": "and",
+"start": 5.76,
+"end": 5.8,
+"p": 0.998
+},
+{
+"w": "few",
+"start": 5.8,
+"end": 6.1,
+"p": 0.996
+},
+{
+"w": "reversals",
+"start": 6.1,
+"end": 6.7,
+"p": 0.998
+},
+{
+"w": "mean",
+"start": 6.7,
+"end": 6.96,
+"p": 0.997
+},
+{
+"w": "wide",
+"start": 6.96,
+"end": 7.42,
+"p": 0.993
+},
+{
+"w": "error",
+"start": 7.42,
+"end": 7.76,
+"p": 0.977
+},
+{
+"w": "bars.",
+"start": 7.76,
+"end": 8.24,
+"p": 0.997
+},
+{
+"w": "Worth",
+"start": 9.18,
+"end": 9.32,
+"p": 0.98
+},
+{
+"w": "asking",
+"start": 9.32,
+"end": 9.76,
+"p": 0.998
+},
+{
+"w": "first,",
+"start": 9.76,
+"end": 10.14,
+"p": 0.991
+},
+{
+"w": "how",
+"start": 10.82,
+"end": 10.98,
+"p": 0.909
+},
+{
+"w": "many",
+"start": 10.98,
+"end": 11.2,
+"p": 0.999
+},
+{
+"w": "snapshots",
+"start": 11.2,
+"end": 11.76,
+"p": 0.984
+},
+{
+"w": "per",
+"start": 11.76,
+"end": 12.1,
+"p": 0.998
+},
+{
+"w": "configuration",
+"start": 12.1,
+"end": 12.68,
+"p": 0.998
+},
+{
+"w": "and",
+"start": 12.68,
+"end": 13.44,
+"p": 0.599
+},
+{
+"w": "by",
+"start": 13.44,
+"end": 13.6,
+"p": 0.999
+},
+{
+"w": "when?",
+"start": 13.6,
+"end": 13.94,
+"p": 0.994
+}
+]
+}

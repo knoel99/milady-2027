@@ -1,0 +1,109 @@
+{
+"key": "f4ca45bc8ce89561b857c497",
+"model": "small.en",
+"text": "With only a handful of runs, should the settings be spread evenly or packed near each threshold?",
+"words": [
+{
+"w": "With",
+"start": 0.0,
+"end": 0.26,
+"p": 0.94
+},
+{
+"w": "only",
+"start": 0.26,
+"end": 0.52,
+"p": 0.998
+},
+{
+"w": "a",
+"start": 0.52,
+"end": 0.7,
+"p": 0.998
+},
+{
+"w": "handful",
+"start": 0.7,
+"end": 1.02,
+"p": 0.997
+},
+{
+"w": "of",
+"start": 1.02,
+"end": 1.28,
+"p": 0.998
+},
+{
+"w": "runs,",
+"start": 1.28,
+"end": 1.6,
+"p": 0.994
+},
+{
+"w": "should",
+"start": 2.16,
+"end": 2.28,
+"p": 0.997
+},
+{
+"w": "the",
+"start": 2.28,
+"end": 2.44,
+"p": 0.998
+},
+{
+"w": "settings",
+"start": 2.44,
+"end": 2.7,
+"p": 0.989
+},
+{
+"w": "be",
+"start": 2.7,
+"end": 2.92,
+"p": 0.996
+},
+{
+"w": "spread",
+"start": 2.92,
+"end": 3.22,
+"p": 0.998
+},
+{
+"w": "evenly",
+"start": 3.22,
+"end": 3.74,
+"p": 0.988
+},
+{
+"w": "or",
+"start": 3.74,
+"end": 4.3,
+"p": 0.893
+},
+{
+"w": "packed",
+"start": 4.3,
+"end": 4.66,
+"p": 0.993
+},
+{
+"w": "near",
+"start": 4.66,
+"end": 4.96,
+"p": 0.998
+},
+{
+"w": "each",
+"start": 4.96,
+"end": 5.26,
+"p": 0.999
+},
+{
+"w": "threshold?",
+"start": 5.26,
+"end": 5.74,
+"p": 0.985
+}
+]
+}

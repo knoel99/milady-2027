@@ -1,0 +1,27 @@
+{
+ "text": "[calm, natural narrator voice] One caution: <|phoneme_start|>R AY1 S<|phoneme_end|> counts crossings, not reversals. An excursion across zero and back adds two crossings, but no reversal. To isolate reversals, the PhD plan counts crossings of a far level, on the other side.",
+ "voice": "536d3a5e000945adb7038665781a4aca",
+ "words": 35,
+ "scene": "05.4",
+ "para": 0,
+ "duration": 16.5878,
+ "latency_s": 3.5,
+ "created": "2026-11-08T08:09:05",
+ "provider": "fish",
+ "request": {
+  "temperature": 0.1,
+  "format": "mp3",
+  "mp3_bitrate": 192,
+  "sample_rate": 44100,
+  "latency": "normal",
+  "language": "en",
+  "normalize": true,
+  "condition_on_previous_chunks": true,
+  "prosody": {
+   "speed": 1.0,
+   "normalize_loudness": true
+  },
+  "text": "[calm, natural narrator voice] One caution: <|phoneme_start|>R AY1 S<|phoneme_end|> counts crossings, not reversals. An excursion across zero and back adds two crossings, but no reversal. To isolate reversals, the PhD plan counts crossings of a far level, on the other side.",
+  "reference_id": "536d3a5e000945adb7038665781a4aca"
+ }
+}

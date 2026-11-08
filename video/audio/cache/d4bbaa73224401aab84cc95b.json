@@ -1,0 +1,27 @@
+{
+ "text": "[calm, natural narrator voice] So the threshold depends on more than <|phoneme_start|>AA1 R EH1 M<|phoneme_end|>: materials count too.",
+ "voice": "536d3a5e000945adb7038665781a4aca",
+ "words": 11,
+ "scene": "02.5",
+ "para": 3,
+ "duration": 5.4596,
+ "latency_s": 1.2,
+ "created": "2026-11-08T08:07:39",
+ "provider": "fish",
+ "request": {
+  "temperature": 0.1,
+  "format": "mp3",
+  "mp3_bitrate": 192,
+  "sample_rate": 44100,
+  "latency": "normal",
+  "language": "en",
+  "normalize": true,
+  "condition_on_previous_chunks": true,
+  "prosody": {
+   "speed": 1.0,
+   "normalize_loudness": true
+  },
+  "text": "[calm, natural narrator voice] So the threshold depends on more than <|phoneme_start|>AA1 R EH1 M<|phoneme_end|>: materials count too.",
+  "reference_id": "536d3a5e000945adb7038665781a4aca"
+ }
+}

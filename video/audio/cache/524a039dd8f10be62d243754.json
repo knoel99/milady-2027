@@ -1,0 +1,28 @@
+{
+ "text": "[calm, natural narrator voice] Sur les trois cadrans, Jissinjé a trouvé une forme dans les temps d'attente entre renversements : un peigne d'attentes courtes et quantifiées, puis une queue exponentielle, sans mémoire.",
+ "voice": "536d3a5e000945adb7038665781a4aca",
+ "words": 27,
+ "scene": "X4.3",
+ "para": 1,
+ "lang": "fr",
+ "duration": 11.9902,
+ "latency_s": 2.7,
+ "created": "2026-11-08T10:02:16",
+ "provider": "fish",
+ "request": {
+  "temperature": 0.1,
+  "format": "mp3",
+  "mp3_bitrate": 192,
+  "sample_rate": 44100,
+  "latency": "normal",
+  "language": "fr",
+  "normalize": true,
+  "condition_on_previous_chunks": true,
+  "prosody": {
+   "speed": 1.0,
+   "normalize_loudness": true
+  },
+  "text": "[calm, natural narrator voice] Sur les trois cadrans, Jissinjé a trouvé une forme dans les temps d'attente entre renversements : un peigne d'attentes courtes et quantifiées, puis une queue exponentielle, sans mémoire.",
+  "reference_id": "536d3a5e000945adb7038665781a4aca"
+ }
+}

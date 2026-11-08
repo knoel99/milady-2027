@@ -1,0 +1,349 @@
+{
+"key": "f48981fc366ed0dc48e0437a",
+"model": "small.en",
+"text": "Add the speeds inside the strip, then divide by its width and by the total number of photos. Out comes the crossing rate. Shrink the strip to nothing. And for well-behaved systems, the recipe is exact, Rice's formula. The catch, few photos land in a thin strip. Here, about two dozen out of 8,000. end.",
+"words": [
+{
+"w": "Add",
+"start": 0.0,
+"end": 0.3,
+"p": 0.891
+},
+{
+"w": "the",
+"start": 0.3,
+"end": 0.46,
+"p": 0.997
+},
+{
+"w": "speeds",
+"start": 0.46,
+"end": 0.78,
+"p": 0.987
+},
+{
+"w": "inside",
+"start": 0.78,
+"end": 1.2,
+"p": 0.999
+},
+{
+"w": "the",
+"start": 1.2,
+"end": 1.38,
+"p": 0.998
+},
+{
+"w": "strip,",
+"start": 1.38,
+"end": 1.72,
+"p": 0.992
+},
+{
+"w": "then",
+"start": 2.18,
+"end": 2.36,
+"p": 0.996
+},
+{
+"w": "divide",
+"start": 2.36,
+"end": 2.7,
+"p": 0.994
+},
+{
+"w": "by",
+"start": 2.7,
+"end": 2.98,
+"p": 0.996
+},
+{
+"w": "its",
+"start": 2.98,
+"end": 3.14,
+"p": 0.97
+},
+{
+"w": "width",
+"start": 3.14,
+"end": 3.42,
+"p": 0.998
+},
+{
+"w": "and",
+"start": 3.42,
+"end": 3.8,
+"p": 0.887
+},
+{
+"w": "by",
+"start": 3.8,
+"end": 3.96,
+"p": 0.995
+},
+{
+"w": "the",
+"start": 3.96,
+"end": 4.1,
+"p": 0.998
+},
+{
+"w": "total",
+"start": 4.1,
+"end": 4.36,
+"p": 0.999
+},
+{
+"w": "number",
+"start": 4.36,
+"end": 4.66,
+"p": 0.999
+},
+{
+"w": "of",
+"start": 4.66,
+"end": 4.84,
+"p": 0.999
+},
+{
+"w": "photos.",
+"start": 4.84,
+"end": 5.3,
+"p": 0.999
+},
+{
+"w": "Out",
+"start": 6.08,
+"end": 6.26,
+"p": 0.998
+},
+{
+"w": "comes",
+"start": 6.26,
+"end": 6.56,
+"p": 0.988
+},
+{
+"w": "the",
+"start": 6.56,
+"end": 6.76,
+"p": 0.999
+},
+{
+"w": "crossing",
+"start": 6.76,
+"end": 7.12,
+"p": 0.996
+},
+{
+"w": "rate.",
+"start": 7.12,
+"end": 7.52,
+"p": 0.998
+},
+{
+"w": "Shrink",
+"start": 8.52,
+"end": 8.68,
+"p": 0.982
+},
+{
+"w": "the",
+"start": 8.68,
+"end": 8.86,
+"p": 0.995
+},
+{
+"w": "strip",
+"start": 8.86,
+"end": 9.1,
+"p": 0.995
+},
+{
+"w": "to",
+"start": 9.1,
+"end": 9.3,
+"p": 0.999
+},
+{
+"w": "nothing.",
+"start": 9.3,
+"end": 9.64,
+"p": 0.997
+},
+{
+"w": "And",
+"start": 10.18,
+"end": 10.32,
+"p": 0.996
+},
+{
+"w": "for",
+"start": 10.32,
+"end": 10.48,
+"p": 0.984
+},
+{
+"w": "well",
+"start": 10.48,
+"end": 10.7,
+"p": 0.995
+},
+{
+"w": "-behaved",
+"start": 10.7,
+"end": 11.1,
+"p": 0.928
+},
+{
+"w": "systems,",
+"start": 11.1,
+"end": 11.54,
+"p": 0.998
+},
+{
+"w": "the",
+"start": 11.76,
+"end": 11.82,
+"p": 0.998
+},
+{
+"w": "recipe",
+"start": 11.82,
+"end": 12.2,
+"p": 1.0
+},
+{
+"w": "is",
+"start": 12.2,
+"end": 12.46,
+"p": 0.999
+},
+{
+"w": "exact,",
+"start": 12.46,
+"end": 13.0,
+"p": 0.991
+},
+{
+"w": "Rice's",
+"start": 13.78,
+"end": 14.08,
+"p": 0.748
+},
+{
+"w": "formula.",
+"start": 14.08,
+"end": 14.44,
+"p": 0.828
+},
+{
+"w": "The",
+"start": 15.44,
+"end": 15.56,
+"p": 0.995
+},
+{
+"w": "catch,",
+"start": 15.56,
+"end": 15.88,
+"p": 0.987
+},
+{
+"w": "few",
+"start": 16.5,
+"end": 16.82,
+"p": 0.991
+},
+{
+"w": "photos",
+"start": 16.82,
+"end": 17.3,
+"p": 0.999
+},
+{
+"w": "land",
+"start": 17.3,
+"end": 17.64,
+"p": 0.999
+},
+{
+"w": "in",
+"start": 17.64,
+"end": 17.82,
+"p": 0.998
+},
+{
+"w": "a",
+"start": 17.82,
+"end": 17.92,
+"p": 0.998
+},
+{
+"w": "thin",
+"start": 17.92,
+"end": 18.22,
+"p": 1.0
+},
+{
+"w": "strip.",
+"start": 18.22,
+"end": 18.72,
+"p": 0.998
+},
+{
+"w": "Here,",
+"start": 19.44,
+"end": 19.76,
+"p": 0.997
+},
+{
+"w": "about",
+"start": 20.12,
+"end": 20.36,
+"p": 0.999
+},
+{
+"w": "two",
+"start": 20.36,
+"end": 20.68,
+"p": 0.821
+},
+{
+"w": "dozen",
+"start": 20.68,
+"end": 21.1,
+"p": 0.993
+},
+{
+"w": "out",
+"start": 21.1,
+"end": 21.32,
+"p": 0.993
+},
+{
+"w": "of",
+"start": 21.32,
+"end": 21.52,
+"p": 0.999
+},
+{
+"w": "8",
+"start": 21.52,
+"end": 21.72,
+"p": 0.809
+},
+{
+"w": ",000.",
+"start": 21.72,
+"end": 22.24,
+"p": 0.993
+},
+{
+"w": "end.",
+"start": 22.24,
+"end": 22.36,
+"p": 0.794
+}
+]
+}

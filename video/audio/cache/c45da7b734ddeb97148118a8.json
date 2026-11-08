@@ -1,0 +1,27 @@
+{
+ "text": "[calm, natural narrator voice] If every true crowd is symmetric, averaging a wind with its mirror never raises the expected loss. The cost: two network passes instead of one.",
+ "voice": "536d3a5e000945adb7038665781a4aca",
+ "words": 25,
+ "scene": "X2.4",
+ "para": 2,
+ "duration": 10.7886,
+ "latency_s": 2.3,
+ "created": "2026-11-08T08:10:39",
+ "provider": "fish",
+ "request": {
+  "temperature": 0.1,
+  "format": "mp3",
+  "mp3_bitrate": 192,
+  "sample_rate": 44100,
+  "latency": "normal",
+  "language": "en",
+  "normalize": true,
+  "condition_on_previous_chunks": true,
+  "prosody": {
+   "speed": 1.0,
+   "normalize_loudness": true
+  },
+  "text": "[calm, natural narrator voice] If every true crowd is symmetric, averaging a wind with its mirror never raises the expected loss. The cost: two network passes instead of one.",
+  "reference_id": "536d3a5e000945adb7038665781a4aca"
+ }
+}

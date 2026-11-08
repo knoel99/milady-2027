@@ -1,0 +1,187 @@
+{
+"key": "c0e1dfae2be689ab2f6b691e",
+"model": "small.en",
+"text": "The report, the code, and every result in this film are on the project's site, with their limits written out. The rest of the staircase is still to be computed.",
+"words": [
+{
+"w": "The",
+"start": 0.0,
+"end": 0.24,
+"p": 0.942
+},
+{
+"w": "report,",
+"start": 0.24,
+"end": 0.64,
+"p": 0.983
+},
+{
+"w": "the",
+"start": 0.98,
+"end": 1.08,
+"p": 0.996
+},
+{
+"w": "code,",
+"start": 1.08,
+"end": 1.44,
+"p": 0.986
+},
+{
+"w": "and",
+"start": 1.68,
+"end": 1.78,
+"p": 0.999
+},
+{
+"w": "every",
+"start": 1.78,
+"end": 2.14,
+"p": 0.998
+},
+{
+"w": "result",
+"start": 2.14,
+"end": 2.54,
+"p": 0.998
+},
+{
+"w": "in",
+"start": 2.54,
+"end": 2.74,
+"p": 0.997
+},
+{
+"w": "this",
+"start": 2.74,
+"end": 2.88,
+"p": 0.994
+},
+{
+"w": "film",
+"start": 2.88,
+"end": 3.22,
+"p": 0.998
+},
+{
+"w": "are",
+"start": 3.22,
+"end": 3.56,
+"p": 0.964
+},
+{
+"w": "on",
+"start": 3.56,
+"end": 3.7,
+"p": 0.998
+},
+{
+"w": "the",
+"start": 3.7,
+"end": 3.84,
+"p": 0.997
+},
+{
+"w": "project's",
+"start": 3.84,
+"end": 4.34,
+"p": 0.833
+},
+{
+"w": "site,",
+"start": 4.34,
+"end": 4.62,
+"p": 0.994
+},
+{
+"w": "with",
+"start": 4.94,
+"end": 5.22,
+"p": 0.999
+},
+{
+"w": "their",
+"start": 5.22,
+"end": 5.42,
+"p": 0.996
+},
+{
+"w": "limits",
+"start": 5.42,
+"end": 5.74,
+"p": 0.998
+},
+{
+"w": "written",
+"start": 5.74,
+"end": 6.12,
+"p": 0.998
+},
+{
+"w": "out.",
+"start": 6.12,
+"end": 6.48,
+"p": 0.998
+},
+{
+"w": "The",
+"start": 7.3,
+"end": 7.46,
+"p": 0.997
+},
+{
+"w": "rest",
+"start": 7.46,
+"end": 7.66,
+"p": 0.999
+},
+{
+"w": "of",
+"start": 7.66,
+"end": 7.86,
+"p": 0.999
+},
+{
+"w": "the",
+"start": 7.86,
+"end": 7.98,
+"p": 0.993
+},
+{
+"w": "staircase",
+"start": 7.98,
+"end": 8.38,
+"p": 0.997
+},
+{
+"w": "is",
+"start": 8.38,
+"end": 8.7,
+"p": 0.998
+},
+{
+"w": "still",
+"start": 8.7,
+"end": 9.04,
+"p": 0.998
+},
+{
+"w": "to",
+"start": 9.04,
+"end": 9.24,
+"p": 0.999
+},
+{
+"w": "be",
+"start": 9.24,
+"end": 9.38,
+"p": 1.0
+},
+{
+"w": "computed.",
+"start": 9.38,
+"end": 9.8,
+"p": 0.991
+}
+]
+}

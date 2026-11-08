@@ -1,0 +1,27 @@
+{
+ "text": "[calm, natural narrator voice] Now let a wind blow through the cloud. Each point drifts, bends, and lands inside the shape of the data. Fresh noise in, fresh snapshots out, as many as you like.",
+ "voice": "536d3a5e000945adb7038665781a4aca",
+ "words": 31,
+ "scene": "06.1",
+ "para": 1,
+ "duration": 13.5314,
+ "latency_s": 3.0,
+ "created": "2026-11-08T08:09:12",
+ "provider": "fish",
+ "request": {
+  "temperature": 0.1,
+  "format": "mp3",
+  "mp3_bitrate": 192,
+  "sample_rate": 44100,
+  "latency": "normal",
+  "language": "en",
+  "normalize": true,
+  "condition_on_previous_chunks": true,
+  "prosody": {
+   "speed": 1.0,
+   "normalize_loudness": true
+  },
+  "text": "[calm, natural narrator voice] Now let a wind blow through the cloud. Each point drifts, bends, and lands inside the shape of the data. Fresh noise in, fresh snapshots out, as many as you like.",
+  "reference_id": "536d3a5e000945adb7038665781a4aca"
+ }
+}

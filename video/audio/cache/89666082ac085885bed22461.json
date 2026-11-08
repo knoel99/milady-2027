@@ -1,0 +1,28 @@
+{
+ "text": "[calm, natural narrator voice] Aux turbines en fer doux, les lignes de champ changent brusquement de direction à la surface du fer ; un potentiel lisse ne peut donc pas être exact : il lui faut un pli à cet endroit.",
+ "voice": "536d3a5e000945adb7038665781a4aca",
+ "words": 35,
+ "scene": "10.8",
+ "para": 1,
+ "lang": "fr",
+ "duration": 12.5127,
+ "latency_s": 3.3,
+ "created": "2026-11-08T10:06:01",
+ "provider": "fish",
+ "request": {
+  "temperature": 0.1,
+  "format": "mp3",
+  "mp3_bitrate": 192,
+  "sample_rate": 44100,
+  "latency": "normal",
+  "language": "fr",
+  "normalize": true,
+  "condition_on_previous_chunks": true,
+  "prosody": {
+   "speed": 1.0,
+   "normalize_loudness": true
+  },
+  "text": "[calm, natural narrator voice] Aux turbines en fer doux, les lignes de champ changent brusquement de direction à la surface du fer ; un potentiel lisse ne peut donc pas être exact : il lui faut un pli à cet endroit.",
+  "reference_id": "536d3a5e000945adb7038665781a4aca"
+ }
+}

@@ -1,0 +1,313 @@
+{
+"key": "5b9260da5f12e8f397e4264d",
+"model": "small.en",
+"text": "It merges the two best scored of six directions. They stay on top under all three weightings tried. Among its named risks, non -public data, a bill over budget, an unstable crowd loss in three dimensions, the error near thresholds. One risk it cannot yet rate, funding after Malady's nominal end.",
+"words": [
+{
+"w": "It",
+"start": 0.0,
+"end": 0.22,
+"p": 0.784
+},
+{
+"w": "merges",
+"start": 0.22,
+"end": 0.66,
+"p": 0.998
+},
+{
+"w": "the",
+"start": 0.66,
+"end": 0.88,
+"p": 0.998
+},
+{
+"w": "two",
+"start": 0.88,
+"end": 1.16,
+"p": 0.977
+},
+{
+"w": "best",
+"start": 1.16,
+"end": 1.56,
+"p": 0.987
+},
+{
+"w": "scored",
+"start": 1.56,
+"end": 1.94,
+"p": 0.688
+},
+{
+"w": "of",
+"start": 1.94,
+"end": 2.16,
+"p": 0.995
+},
+{
+"w": "six",
+"start": 2.16,
+"end": 2.44,
+"p": 0.911
+},
+{
+"w": "directions.",
+"start": 2.44,
+"end": 3.02,
+"p": 0.998
+},
+{
+"w": "They",
+"start": 3.78,
+"end": 3.86,
+"p": 0.994
+},
+{
+"w": "stay",
+"start": 3.86,
+"end": 4.12,
+"p": 0.998
+},
+{
+"w": "on",
+"start": 4.12,
+"end": 4.32,
+"p": 0.999
+},
+{
+"w": "top",
+"start": 4.32,
+"end": 4.58,
+"p": 0.998
+},
+{
+"w": "under",
+"start": 4.58,
+"end": 4.86,
+"p": 0.989
+},
+{
+"w": "all",
+"start": 4.86,
+"end": 5.2,
+"p": 0.998
+},
+{
+"w": "three",
+"start": 5.2,
+"end": 5.5,
+"p": 0.992
+},
+{
+"w": "weightings",
+"start": 5.5,
+"end": 5.94,
+"p": 0.818
+},
+{
+"w": "tried.",
+"start": 5.94,
+"end": 6.4,
+"p": 0.988
+},
+{
+"w": "Among",
+"start": 7.38,
+"end": 7.58,
+"p": 0.996
+},
+{
+"w": "its",
+"start": 7.58,
+"end": 7.8,
+"p": 0.979
+},
+{
+"w": "named",
+"start": 7.8,
+"end": 8.12,
+"p": 0.99
+},
+{
+"w": "risks,",
+"start": 8.12,
+"end": 8.6,
+"p": 0.997
+},
+{
+"w": "non",
+"start": 9.24,
+"end": 9.42,
+"p": 0.99
+},
+{
+"w": "-public",
+"start": 9.42,
+"end": 9.7,
+"p": 0.839
+},
+{
+"w": "data,",
+"start": 9.7,
+"end": 10.14,
+"p": 0.999
+},
+{
+"w": "a",
+"start": 10.66,
+"end": 10.76,
+"p": 0.998
+},
+{
+"w": "bill",
+"start": 10.76,
+"end": 11.04,
+"p": 0.992
+},
+{
+"w": "over",
+"start": 11.04,
+"end": 11.32,
+"p": 0.973
+},
+{
+"w": "budget,",
+"start": 11.32,
+"end": 11.72,
+"p": 0.984
+},
+{
+"w": "an",
+"start": 12.22,
+"end": 12.36,
+"p": 0.647
+},
+{
+"w": "unstable",
+"start": 12.36,
+"end": 12.88,
+"p": 0.999
+},
+{
+"w": "crowd",
+"start": 12.88,
+"end": 13.32,
+"p": 0.998
+},
+{
+"w": "loss",
+"start": 13.32,
+"end": 13.64,
+"p": 0.956
+},
+{
+"w": "in",
+"start": 13.64,
+"end": 13.86,
+"p": 0.997
+},
+{
+"w": "three",
+"start": 13.86,
+"end": 14.12,
+"p": 0.968
+},
+{
+"w": "dimensions,",
+"start": 14.12,
+"end": 14.62,
+"p": 0.988
+},
+{
+"w": "the",
+"start": 15.22,
+"end": 15.36,
+"p": 0.997
+},
+{
+"w": "error",
+"start": 15.36,
+"end": 15.7,
+"p": 0.992
+},
+{
+"w": "near",
+"start": 15.7,
+"end": 15.98,
+"p": 0.999
+},
+{
+"w": "thresholds.",
+"start": 15.98,
+"end": 16.58,
+"p": 0.958
+},
+{
+"w": "One",
+"start": 17.62,
+"end": 17.98,
+"p": 0.992
+},
+{
+"w": "risk",
+"start": 17.98,
+"end": 18.28,
+"p": 0.997
+},
+{
+"w": "it",
+"start": 18.28,
+"end": 18.46,
+"p": 0.902
+},
+{
+"w": "cannot",
+"start": 18.46,
+"end": 18.82,
+"p": 0.982
+},
+{
+"w": "yet",
+"start": 18.82,
+"end": 19.06,
+"p": 0.996
+},
+{
+"w": "rate,",
+"start": 19.06,
+"end": 19.48,
+"p": 0.992
+},
+{
+"w": "funding",
+"start": 19.98,
+"end": 20.34,
+"p": 0.998
+},
+{
+"w": "after",
+"start": 20.34,
+"end": 20.8,
+"p": 0.998
+},
+{
+"w": "Malady's",
+"start": 20.8,
+"end": 21.44,
+"p": 0.753
+},
+{
+"w": "nominal",
+"start": 21.44,
+"end": 21.78,
+"p": 0.996
+},
+{
+"w": "end.",
+"start": 21.78,
+"end": 22.32,
+"p": 0.997
+}
+]
+}

@@ -1,0 +1,295 @@
+{
+"key": "b545ec8fc19892295faa7e48",
+"model": "small.en",
+"text": "Three, rescale every snapshot onto the budget. Each snapshot now dissipates the same, a spike under a thousandth of the true spread. Yet the same distribution distance built on spectra improves. It is fooled. Only the spread gives the spike away. The crowd loss shows no spike. week.",
+"words": [
+{
+"w": "Three,",
+"start": 0.0,
+"end": 0.46,
+"p": 0.53
+},
+{
+"w": "rescale",
+"start": 1.32,
+"end": 1.8,
+"p": 0.981
+},
+{
+"w": "every",
+"start": 1.8,
+"end": 2.24,
+"p": 0.998
+},
+{
+"w": "snapshot",
+"start": 2.24,
+"end": 2.88,
+"p": 0.992
+},
+{
+"w": "onto",
+"start": 2.88,
+"end": 3.22,
+"p": 0.978
+},
+{
+"w": "the",
+"start": 3.22,
+"end": 3.42,
+"p": 0.999
+},
+{
+"w": "budget.",
+"start": 3.42,
+"end": 3.76,
+"p": 0.997
+},
+{
+"w": "Each",
+"start": 4.54,
+"end": 4.74,
+"p": 0.996
+},
+{
+"w": "snapshot",
+"start": 4.74,
+"end": 5.34,
+"p": 0.999
+},
+{
+"w": "now",
+"start": 5.34,
+"end": 5.66,
+"p": 0.996
+},
+{
+"w": "dissipates",
+"start": 5.66,
+"end": 6.3,
+"p": 0.998
+},
+{
+"w": "the",
+"start": 6.3,
+"end": 6.5,
+"p": 0.999
+},
+{
+"w": "same,",
+"start": 6.5,
+"end": 6.9,
+"p": 1.0
+},
+{
+"w": "a",
+"start": 7.26,
+"end": 7.48,
+"p": 0.997
+},
+{
+"w": "spike",
+"start": 7.48,
+"end": 7.9,
+"p": 0.999
+},
+{
+"w": "under",
+"start": 7.9,
+"end": 8.44,
+"p": 0.987
+},
+{
+"w": "a",
+"start": 8.44,
+"end": 8.58,
+"p": 0.889
+},
+{
+"w": "thousandth",
+"start": 8.58,
+"end": 9.24,
+"p": 0.985
+},
+{
+"w": "of",
+"start": 9.24,
+"end": 9.32,
+"p": 0.999
+},
+{
+"w": "the",
+"start": 9.32,
+"end": 9.5,
+"p": 0.999
+},
+{
+"w": "true",
+"start": 9.5,
+"end": 9.76,
+"p": 0.998
+},
+{
+"w": "spread.",
+"start": 9.76,
+"end": 10.26,
+"p": 0.998
+},
+{
+"w": "Yet",
+"start": 10.98,
+"end": 11.14,
+"p": 0.997
+},
+{
+"w": "the",
+"start": 11.14,
+"end": 11.32,
+"p": 0.917
+},
+{
+"w": "same",
+"start": 11.32,
+"end": 11.64,
+"p": 1.0
+},
+{
+"w": "distribution",
+"start": 11.64,
+"end": 12.18,
+"p": 0.999
+},
+{
+"w": "distance",
+"start": 12.18,
+"end": 12.84,
+"p": 0.998
+},
+{
+"w": "built",
+"start": 12.84,
+"end": 13.22,
+"p": 0.946
+},
+{
+"w": "on",
+"start": 13.22,
+"end": 13.48,
+"p": 0.998
+},
+{
+"w": "spectra",
+"start": 13.48,
+"end": 14.18,
+"p": 0.777
+},
+{
+"w": "improves.",
+"start": 14.18,
+"end": 14.86,
+"p": 0.98
+},
+{
+"w": "It",
+"start": 15.54,
+"end": 15.7,
+"p": 0.997
+},
+{
+"w": "is",
+"start": 15.7,
+"end": 15.82,
+"p": 0.965
+},
+{
+"w": "fooled.",
+"start": 15.82,
+"end": 16.26,
+"p": 0.993
+},
+{
+"w": "Only",
+"start": 17.1,
+"end": 17.32,
+"p": 0.996
+},
+{
+"w": "the",
+"start": 17.32,
+"end": 17.52,
+"p": 0.998
+},
+{
+"w": "spread",
+"start": 17.52,
+"end": 17.96,
+"p": 0.999
+},
+{
+"w": "gives",
+"start": 17.96,
+"end": 18.26,
+"p": 0.996
+},
+{
+"w": "the",
+"start": 18.26,
+"end": 18.44,
+"p": 0.999
+},
+{
+"w": "spike",
+"start": 18.44,
+"end": 18.72,
+"p": 0.998
+},
+{
+"w": "away.",
+"start": 18.72,
+"end": 19.1,
+"p": 0.999
+},
+{
+"w": "The",
+"start": 19.72,
+"end": 19.9,
+"p": 0.997
+},
+{
+"w": "crowd",
+"start": 19.9,
+"end": 20.22,
+"p": 0.996
+},
+{
+"w": "loss",
+"start": 20.22,
+"end": 20.64,
+"p": 0.967
+},
+{
+"w": "shows",
+"start": 20.64,
+"end": 21.06,
+"p": 0.997
+},
+{
+"w": "no",
+"start": 21.06,
+"end": 21.44,
+"p": 0.998
+},
+{
+"w": "spike.",
+"start": 21.44,
+"end": 21.84,
+"p": 0.998
+},
+{
+"w": "week.",
+"start": 21.84,
+"end": 22.02,
+"p": 0.248
+}
+]
+}

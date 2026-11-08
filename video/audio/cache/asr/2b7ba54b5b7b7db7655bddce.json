@@ -1,0 +1,175 @@
+{
+"key": "2b7ba54b5b7b7db7655bddce",
+"model": "small.en",
+"text": "Wobbles across the level loosen the cap. The conjecture. If a flip lasts far longer than a wobble, the cap is nearly exact on a plateau of levels.",
+"words": [
+{
+"w": "Wobbles",
+"start": 0.0,
+"end": 0.5,
+"p": 0.91
+},
+{
+"w": "across",
+"start": 0.5,
+"end": 0.78,
+"p": 0.998
+},
+{
+"w": "the",
+"start": 0.78,
+"end": 1.08,
+"p": 0.998
+},
+{
+"w": "level",
+"start": 1.08,
+"end": 1.36,
+"p": 0.995
+},
+{
+"w": "loosen",
+"start": 1.36,
+"end": 1.76,
+"p": 0.957
+},
+{
+"w": "the",
+"start": 1.76,
+"end": 2.04,
+"p": 0.999
+},
+{
+"w": "cap.",
+"start": 2.04,
+"end": 2.36,
+"p": 0.996
+},
+{
+"w": "The",
+"start": 3.2,
+"end": 3.28,
+"p": 0.985
+},
+{
+"w": "conjecture.",
+"start": 3.28,
+"end": 3.58,
+"p": 0.811
+},
+{
+"w": "If",
+"start": 4.3,
+"end": 4.54,
+"p": 0.99
+},
+{
+"w": "a",
+"start": 4.54,
+"end": 4.68,
+"p": 0.997
+},
+{
+"w": "flip",
+"start": 4.68,
+"end": 4.94,
+"p": 0.992
+},
+{
+"w": "lasts",
+"start": 4.94,
+"end": 5.38,
+"p": 0.998
+},
+{
+"w": "far",
+"start": 5.38,
+"end": 5.76,
+"p": 0.993
+},
+{
+"w": "longer",
+"start": 5.76,
+"end": 6.08,
+"p": 0.998
+},
+{
+"w": "than",
+"start": 6.08,
+"end": 6.32,
+"p": 0.998
+},
+{
+"w": "a",
+"start": 6.32,
+"end": 6.46,
+"p": 0.998
+},
+{
+"w": "wobble,",
+"start": 6.46,
+"end": 6.92,
+"p": 0.996
+},
+{
+"w": "the",
+"start": 7.34,
+"end": 7.42,
+"p": 0.998
+},
+{
+"w": "cap",
+"start": 7.42,
+"end": 7.66,
+"p": 0.999
+},
+{
+"w": "is",
+"start": 7.66,
+"end": 7.84,
+"p": 0.999
+},
+{
+"w": "nearly",
+"start": 7.84,
+"end": 8.18,
+"p": 0.999
+},
+{
+"w": "exact",
+"start": 8.18,
+"end": 8.74,
+"p": 0.999
+},
+{
+"w": "on",
+"start": 8.74,
+"end": 8.98,
+"p": 0.997
+},
+{
+"w": "a",
+"start": 8.98,
+"end": 9.14,
+"p": 0.998
+},
+{
+"w": "plateau",
+"start": 9.14,
+"end": 9.5,
+"p": 1.0
+},
+{
+"w": "of",
+"start": 9.5,
+"end": 9.76,
+"p": 0.999
+},
+{
+"w": "levels.",
+"start": 9.76,
+"end": 10.08,
+"p": 0.999
+}
+]
+}

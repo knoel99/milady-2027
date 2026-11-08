@@ -1,0 +1,28 @@
+{
+ "text": "[calm, natural narrator voice] In the V K S cylinder, a half-turn swapping the two impellers is a second symmetry. If their speeds differ, it also flips the sign of that difference, the forcing asymmetry. The same proof covers it, untested so far.",
+ "voice": "536d3a5e000945adb7038665781a4aca",
+ "scene": "X2.4",
+ "para": 3,
+ "words": 37,
+ "ab_test": "B",
+ "duration": 16.3527,
+ "latency_s": 3.6,
+ "created": "2026-11-08T08:28:48",
+ "provider": "fish",
+ "request": {
+  "temperature": 0.1,
+  "format": "mp3",
+  "mp3_bitrate": 192,
+  "sample_rate": 44100,
+  "latency": "normal",
+  "language": "en",
+  "normalize": true,
+  "condition_on_previous_chunks": true,
+  "prosody": {
+   "speed": 1.0,
+   "normalize_loudness": true
+  },
+  "text": "[calm, natural narrator voice] In the V K S cylinder, a half-turn swapping the two impellers is a second symmetry. If their speeds differ, it also flips the sign of that difference, the forcing asymmetry. The same proof covers it, untested so far.",
+  "reference_id": "536d3a5e000945adb7038665781a4aca"
+ }
+}

@@ -1,0 +1,28 @@
+{
+ "text": "[calm, natural narrator voice] Le tableau des scores : huit mécanismes, chacun avec son verdict. Pour chaque instantané : les cartes de relief et la projection, exactes ; la pénalité, approximative. Pour la foule : le miroir, exact ; la perte en loi, utile mais imparfaite ; le reste, des échecs.",
+ "voice": "536d3a5e000945adb7038665781a4aca",
+ "words": 41,
+ "scene": "09.6",
+ "para": 0,
+ "lang": "fr",
+ "duration": 22.4914,
+ "latency_s": 4.9,
+ "created": "2026-11-08T10:01:58",
+ "provider": "fish",
+ "request": {
+  "temperature": 0.1,
+  "format": "mp3",
+  "mp3_bitrate": 192,
+  "sample_rate": 44100,
+  "latency": "normal",
+  "language": "fr",
+  "normalize": true,
+  "condition_on_previous_chunks": true,
+  "prosody": {
+   "speed": 1.0,
+   "normalize_loudness": true
+  },
+  "text": "[calm, natural narrator voice] Le tableau des scores : huit mécanismes, chacun avec son verdict. Pour chaque instantané : les cartes de relief et la projection, exactes ; la pénalité, approximative. Pour la foule : le miroir, exact ; la perte en loi, utile mais imparfaite ; le reste, des échecs.",
+  "reference_id": "536d3a5e000945adb7038665781a4aca"
+ }
+}

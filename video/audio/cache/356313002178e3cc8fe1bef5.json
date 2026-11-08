@@ -1,0 +1,28 @@
+{
+ "text": "[calm, natural narrator voice] Quelle précision sur ces seuils ? Pour chaque simulation, un ajustement long, sur la seconde moitié, et un ajustement tardif, sur le dernier quart. Deux réglages sont recalculés sur une grille plus fine. À erre ème égal douze, les trois valeurs concordent.",
+ "voice": "536d3a5e000945adb7038665781a4aca",
+ "words": 40,
+ "scene": "X1.3",
+ "para": 0,
+ "lang": "fr",
+ "duration": 17.8939,
+ "latency_s": 3.9,
+ "created": "2026-11-08T10:03:40",
+ "provider": "fish",
+ "request": {
+  "temperature": 0.1,
+  "format": "mp3",
+  "mp3_bitrate": 192,
+  "sample_rate": 44100,
+  "latency": "normal",
+  "language": "fr",
+  "normalize": true,
+  "condition_on_previous_chunks": true,
+  "prosody": {
+   "speed": 1.0,
+   "normalize_loudness": true
+  },
+  "text": "[calm, natural narrator voice] Quelle précision sur ces seuils ? Pour chaque simulation, un ajustement long, sur la seconde moitié, et un ajustement tardif, sur le dernier quart. Deux réglages sont recalculés sur une grille plus fine. À erre ème égal douze, les trois valeurs concordent.",
+  "reference_id": "536d3a5e000945adb7038665781a4aca"
+ }
+}

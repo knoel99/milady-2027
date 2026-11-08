@@ -1,0 +1,217 @@
+{
+"key": "4ecc9bde7118e1adcdaff79d",
+"model": "small.en",
+"text": "Milady began in 2026, bringing machine learning where tanks, computers, and dials meet. Yet the data-driven lane is thin. In 2022, the learning methods one study tried could not reliably foresee a geomagnetic flip.",
+"words": [
+{
+"w": "Milady",
+"start": 0.0,
+"end": 0.5,
+"p": 0.647
+},
+{
+"w": "began",
+"start": 0.5,
+"end": 0.88,
+"p": 0.996
+},
+{
+"w": "in",
+"start": 0.88,
+"end": 1.06,
+"p": 0.999
+},
+{
+"w": "2026,",
+"start": 1.06,
+"end": 2.08,
+"p": 0.972
+},
+{
+"w": "bringing",
+"start": 2.56,
+"end": 2.82,
+"p": 0.996
+},
+{
+"w": "machine",
+"start": 2.82,
+"end": 3.24,
+"p": 0.992
+},
+{
+"w": "learning",
+"start": 3.24,
+"end": 3.66,
+"p": 0.978
+},
+{
+"w": "where",
+"start": 3.66,
+"end": 3.9,
+"p": 0.982
+},
+{
+"w": "tanks,",
+"start": 3.9,
+"end": 4.36,
+"p": 0.994
+},
+{
+"w": "computers,",
+"start": 4.64,
+"end": 5.02,
+"p": 1.0
+},
+{
+"w": "and",
+"start": 5.34,
+"end": 5.46,
+"p": 0.999
+},
+{
+"w": "dials",
+"start": 5.46,
+"end": 6.0,
+"p": 0.979
+},
+{
+"w": "meet.",
+"start": 6.0,
+"end": 6.2,
+"p": 0.998
+},
+{
+"w": "Yet",
+"start": 7.1,
+"end": 7.18,
+"p": 0.998
+},
+{
+"w": "the",
+"start": 7.18,
+"end": 7.36,
+"p": 0.883
+},
+{
+"w": "data",
+"start": 7.36,
+"end": 7.68,
+"p": 0.999
+},
+{
+"w": "-driven",
+"start": 7.68,
+"end": 7.9,
+"p": 0.955
+},
+{
+"w": "lane",
+"start": 7.9,
+"end": 8.26,
+"p": 0.993
+},
+{
+"w": "is",
+"start": 8.26,
+"end": 8.48,
+"p": 0.999
+},
+{
+"w": "thin.",
+"start": 8.48,
+"end": 8.88,
+"p": 0.999
+},
+{
+"w": "In",
+"start": 9.64,
+"end": 9.76,
+"p": 0.995
+},
+{
+"w": "2022,",
+"start": 9.76,
+"end": 10.48,
+"p": 0.995
+},
+{
+"w": "the",
+"start": 11.32,
+"end": 11.36,
+"p": 0.994
+},
+{
+"w": "learning",
+"start": 11.36,
+"end": 11.64,
+"p": 0.978
+},
+{
+"w": "methods",
+"start": 11.64,
+"end": 12.06,
+"p": 0.991
+},
+{
+"w": "one",
+"start": 12.06,
+"end": 12.38,
+"p": 0.994
+},
+{
+"w": "study",
+"start": 12.38,
+"end": 12.72,
+"p": 0.999
+},
+{
+"w": "tried",
+"start": 12.72,
+"end": 13.3,
+"p": 1.0
+},
+{
+"w": "could",
+"start": 13.3,
+"end": 13.74,
+"p": 0.984
+},
+{
+"w": "not",
+"start": 13.74,
+"end": 13.98,
+"p": 0.999
+},
+{
+"w": "reliably",
+"start": 13.98,
+"end": 14.56,
+"p": 0.999
+},
+{
+"w": "foresee",
+"start": 14.56,
+"end": 15.1,
+"p": 0.996
+},
+{
+"w": "a",
+"start": 15.1,
+"end": 15.38,
+"p": 0.999
+},
+{
+"w": "geomagnetic",
+"start": 15.38,
+"end": 16.1,
+"p": 0.987
+},
+{
+"w": "flip.",
+"start": 16.1,
+"end": 16.54,
+"p": 0.996
+}
+]
+}

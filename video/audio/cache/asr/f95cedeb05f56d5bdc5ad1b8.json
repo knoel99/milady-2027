@@ -1,0 +1,253 @@
+{
+"key": "f95cedeb05f56d5bdc5ad1b8",
+"model": "small.en",
+"text": "Use two dials as a map, quadruple across, dipole up. With the knob low, the state circles in one whirlpool and stays. A mirror twin circles the mirror whirlpool, dipole down. Each start is trapped, the dipole never changes sign. sign.",
+"words": [
+{
+"w": "Use",
+"start": 0.0,
+"end": 0.32,
+"p": 0.919
+},
+{
+"w": "two",
+"start": 0.32,
+"end": 0.64,
+"p": 0.904
+},
+{
+"w": "dials",
+"start": 0.64,
+"end": 1.16,
+"p": 0.995
+},
+{
+"w": "as",
+"start": 1.16,
+"end": 1.26,
+"p": 0.997
+},
+{
+"w": "a",
+"start": 1.26,
+"end": 1.42,
+"p": 0.995
+},
+{
+"w": "map,",
+"start": 1.42,
+"end": 1.68,
+"p": 0.99
+},
+{
+"w": "quadruple",
+"start": 2.54,
+"end": 2.96,
+"p": 0.794
+},
+{
+"w": "across,",
+"start": 2.96,
+"end": 3.34,
+"p": 0.993
+},
+{
+"w": "dipole",
+"start": 4.1,
+"end": 4.44,
+"p": 0.995
+},
+{
+"w": "up.",
+"start": 4.44,
+"end": 4.82,
+"p": 0.998
+},
+{
+"w": "With",
+"start": 5.62,
+"end": 5.82,
+"p": 0.996
+},
+{
+"w": "the",
+"start": 5.82,
+"end": 6.0,
+"p": 0.991
+},
+{
+"w": "knob",
+"start": 6.0,
+"end": 6.2,
+"p": 0.97
+},
+{
+"w": "low,",
+"start": 6.2,
+"end": 6.6,
+"p": 0.995
+},
+{
+"w": "the",
+"start": 7.04,
+"end": 7.14,
+"p": 0.998
+},
+{
+"w": "state",
+"start": 7.14,
+"end": 7.42,
+"p": 0.994
+},
+{
+"w": "circles",
+"start": 7.42,
+"end": 7.86,
+"p": 0.997
+},
+{
+"w": "in",
+"start": 7.86,
+"end": 8.1,
+"p": 0.998
+},
+{
+"w": "one",
+"start": 8.1,
+"end": 8.44,
+"p": 0.988
+},
+{
+"w": "whirlpool",
+"start": 8.44,
+"end": 8.96,
+"p": 0.988
+},
+{
+"w": "and",
+"start": 8.96,
+"end": 9.48,
+"p": 0.834
+},
+{
+"w": "stays.",
+"start": 9.48,
+"end": 9.94,
+"p": 0.999
+},
+{
+"w": "A",
+"start": 10.88,
+"end": 11.04,
+"p": 0.996
+},
+{
+"w": "mirror",
+"start": 11.04,
+"end": 11.34,
+"p": 0.929
+},
+{
+"w": "twin",
+"start": 11.34,
+"end": 11.76,
+"p": 0.978
+},
+{
+"w": "circles",
+"start": 11.76,
+"end": 12.2,
+"p": 0.994
+},
+{
+"w": "the",
+"start": 12.2,
+"end": 12.44,
+"p": 0.997
+},
+{
+"w": "mirror",
+"start": 12.44,
+"end": 12.74,
+"p": 0.993
+},
+{
+"w": "whirlpool,",
+"start": 12.74,
+"end": 13.46,
+"p": 0.996
+},
+{
+"w": "dipole",
+"start": 14.1,
+"end": 14.44,
+"p": 0.999
+},
+{
+"w": "down.",
+"start": 14.44,
+"end": 14.88,
+"p": 0.999
+},
+{
+"w": "Each",
+"start": 15.76,
+"end": 15.96,
+"p": 0.997
+},
+{
+"w": "start",
+"start": 15.96,
+"end": 16.34,
+"p": 0.993
+},
+{
+"w": "is",
+"start": 16.34,
+"end": 16.58,
+"p": 0.999
+},
+{
+"w": "trapped,",
+"start": 16.58,
+"end": 17.04,
+"p": 0.998
+},
+{
+"w": "the",
+"start": 17.66,
+"end": 17.84,
+"p": 0.995
+},
+{
+"w": "dipole",
+"start": 17.84,
+"end": 18.38,
+"p": 0.999
+},
+{
+"w": "never",
+"start": 18.38,
+"end": 18.72,
+"p": 0.999
+},
+{
+"w": "changes",
+"start": 18.72,
+"end": 19.14,
+"p": 0.995
+},
+{
+"w": "sign.",
+"start": 19.14,
+"end": 19.64,
+"p": 0.997
+},
+{
+"w": "sign.",
+"start": 19.64,
+"end": 19.7,
+"p": 0.054
+}
+]
+}

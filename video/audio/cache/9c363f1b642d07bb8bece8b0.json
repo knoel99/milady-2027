@@ -1,0 +1,27 @@
+{
+ "text": "[calm, natural narrator voice] Hold a microphone near its own speaker, and turn up the gain. Below a certain point, a whisper fades. Past it, the loop feeds itself.",
+ "voice": "536d3a5e000945adb7038665781a4aca",
+ "words": 25,
+ "scene": "01.3",
+ "para": 1,
+ "duration": 10.5012,
+ "latency_s": 1.9,
+ "created": "2026-11-08T08:07:16",
+ "provider": "fish",
+ "request": {
+  "temperature": 0.1,
+  "format": "mp3",
+  "mp3_bitrate": 192,
+  "sample_rate": 44100,
+  "latency": "normal",
+  "language": "en",
+  "normalize": true,
+  "condition_on_previous_chunks": true,
+  "prosody": {
+   "speed": 1.0,
+   "normalize_loudness": true
+  },
+  "text": "[calm, natural narrator voice] Hold a microphone near its own speaker, and turn up the gain. Below a certain point, a whisper fades. Past it, the loop feeds itself.",
+  "reference_id": "536d3a5e000945adb7038665781a4aca"
+ }
+}

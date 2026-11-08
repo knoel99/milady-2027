@@ -1,0 +1,27 @@
+{
+ "text": "[calm, natural narrator voice] Now the rings: papers co-signed by the supervisors. Dynamo side: Taylor–Green dynamos pushed to small magnetic Prandtl numbers, and the V-K-S tank with its iron impellers, simulated in two codes. In twenty twenty-six, both codes produced V-K-S reversals, and a four-dial model reproduces their main features. Learning side: autoencoder latent spaces read through classical flow modes, von <|phoneme_start|>K AA1 R M AA0 N<|phoneme_end|> flow included. And assimilation and diffusion models built on deep networks, outside conducting fluids.",
+ "voice": "536d3a5e000945adb7038665781a4aca",
+ "words": 73,
+ "scene": "SOA2.6",
+ "para": 0,
+ "duration": 38.9747,
+ "latency_s": 7.5,
+ "created": "2026-11-08T08:31:41",
+ "provider": "fish",
+ "request": {
+  "temperature": 0.1,
+  "format": "mp3",
+  "mp3_bitrate": 192,
+  "sample_rate": 44100,
+  "latency": "normal",
+  "language": "en",
+  "normalize": true,
+  "condition_on_previous_chunks": true,
+  "prosody": {
+   "speed": 1.0,
+   "normalize_loudness": true
+  },
+  "text": "[calm, natural narrator voice] Now the rings: papers co-signed by the supervisors. Dynamo side: Taylor–Green dynamos pushed to small magnetic Prandtl numbers, and the V-K-S tank with its iron impellers, simulated in two codes. In twenty twenty-six, both codes produced V-K-S reversals, and a four-dial model reproduces their main features. Learning side: autoencoder latent spaces read through classical flow modes, von <|phoneme_start|>K AA1 R M AA0 N<|phoneme_end|> flow included. And assimilation and diffusion models built on deep networks, outside conducting fluids.",
+  "reference_id": "536d3a5e000945adb7038665781a4aca"
+ }
+}

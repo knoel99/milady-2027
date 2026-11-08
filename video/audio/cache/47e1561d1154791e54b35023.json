@@ -1,0 +1,27 @@
+{
+ "text": "[calm, natural narrator voice] Hang each one under the step it shapes. Bet one: whether to add settings between seventeen and eighteen. Bet two: the seed, the <|phoneme_start|>R EH1 N AH0 L D Z<|phoneme_end|> number, the length of each run. The generator: what it must match. The top steps: the partners' data.",
+ "voice": "536d3a5e000945adb7038665781a4aca",
+ "words": 42,
+ "scene": "10q.1",
+ "para": 1,
+ "duration": 19.2,
+ "latency_s": 3.7,
+ "created": "2026-11-08T08:13:59",
+ "provider": "fish",
+ "request": {
+  "temperature": 0.1,
+  "format": "mp3",
+  "mp3_bitrate": 192,
+  "sample_rate": 44100,
+  "latency": "normal",
+  "language": "en",
+  "normalize": true,
+  "condition_on_previous_chunks": true,
+  "prosody": {
+   "speed": 1.0,
+   "normalize_loudness": true
+  },
+  "text": "[calm, natural narrator voice] Hang each one under the step it shapes. Bet one: whether to add settings between seventeen and eighteen. Bet two: the seed, the <|phoneme_start|>R EH1 N AH0 L D Z<|phoneme_end|> number, the length of each run. The generator: what it must match. The top steps: the partners' data.",
+  "reference_id": "536d3a5e000945adb7038665781a4aca"
+ }
+}

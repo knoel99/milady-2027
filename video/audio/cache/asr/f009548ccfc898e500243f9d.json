@@ -1,0 +1,109 @@
+{
+"key": "f009548ccfc898e500243f9d",
+"model": "small.en",
+"text": "The top steps are simulations of real machines, the VKS cylinder, and dress dine, a precessing cylinder.",
+"words": [
+{
+"w": "The",
+"start": 0.0,
+"end": 0.22,
+"p": 0.937
+},
+{
+"w": "top",
+"start": 0.22,
+"end": 0.42,
+"p": 0.973
+},
+{
+"w": "steps",
+"start": 0.42,
+"end": 0.76,
+"p": 0.993
+},
+{
+"w": "are",
+"start": 0.76,
+"end": 0.96,
+"p": 0.995
+},
+{
+"w": "simulations",
+"start": 0.96,
+"end": 1.44,
+"p": 0.984
+},
+{
+"w": "of",
+"start": 1.44,
+"end": 1.76,
+"p": 0.999
+},
+{
+"w": "real",
+"start": 1.76,
+"end": 2.0,
+"p": 0.959
+},
+{
+"w": "machines,",
+"start": 2.0,
+"end": 2.62,
+"p": 0.996
+},
+{
+"w": "the",
+"start": 3.22,
+"end": 3.28,
+"p": 0.975
+},
+{
+"w": "VKS",
+"start": 3.28,
+"end": 3.9,
+"p": 0.946
+},
+{
+"w": "cylinder,",
+"start": 3.9,
+"end": 4.38,
+"p": 0.81
+},
+{
+"w": "and",
+"start": 4.8,
+"end": 5.02,
+"p": 0.997
+},
+{
+"w": "dress",
+"start": 5.02,
+"end": 5.3,
+"p": 0.257
+},
+{
+"w": "dine,",
+"start": 5.3,
+"end": 5.72,
+"p": 0.782
+},
+{
+"w": "a",
+"start": 6.18,
+"end": 6.24,
+"p": 0.997
+},
+{
+"w": "precessing",
+"start": 6.24,
+"end": 6.96,
+"p": 0.959
+},
+{
+"w": "cylinder.",
+"start": 6.96,
+"end": 7.36,
+"p": 0.999
+}
+]
+}

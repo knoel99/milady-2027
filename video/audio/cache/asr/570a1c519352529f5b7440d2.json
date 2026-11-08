@@ -1,0 +1,175 @@
+{
+"key": "570a1c519352529f5b7440d2",
+"model": "small.en",
+"text": "The bet, written before the data, from the PhD plan. On the staircase's first step, the cap comes within 30% of the counted rate on that plateau.",
+"words": [
+{
+"w": "The",
+"start": 0.0,
+"end": 0.26,
+"p": 0.789
+},
+{
+"w": "bet,",
+"start": 0.26,
+"end": 0.54,
+"p": 0.217
+},
+{
+"w": "written",
+"start": 0.92,
+"end": 1.12,
+"p": 0.998
+},
+{
+"w": "before",
+"start": 1.12,
+"end": 1.56,
+"p": 0.998
+},
+{
+"w": "the",
+"start": 1.56,
+"end": 1.76,
+"p": 0.997
+},
+{
+"w": "data,",
+"start": 1.76,
+"end": 2.08,
+"p": 0.997
+},
+{
+"w": "from",
+"start": 2.46,
+"end": 2.66,
+"p": 0.996
+},
+{
+"w": "the",
+"start": 2.66,
+"end": 2.8,
+"p": 0.997
+},
+{
+"w": "PhD",
+"start": 2.8,
+"end": 3.22,
+"p": 0.586
+},
+{
+"w": "plan.",
+"start": 3.22,
+"end": 3.78,
+"p": 0.792
+},
+{
+"w": "On",
+"start": 4.7,
+"end": 4.82,
+"p": 0.986
+},
+{
+"w": "the",
+"start": 4.82,
+"end": 4.96,
+"p": 0.999
+},
+{
+"w": "staircase's",
+"start": 4.96,
+"end": 5.62,
+"p": 0.926
+},
+{
+"w": "first",
+"start": 5.62,
+"end": 5.9,
+"p": 0.997
+},
+{
+"w": "step,",
+"start": 5.9,
+"end": 6.34,
+"p": 0.999
+},
+{
+"w": "the",
+"start": 6.84,
+"end": 6.9,
+"p": 0.994
+},
+{
+"w": "cap",
+"start": 6.9,
+"end": 7.18,
+"p": 0.903
+},
+{
+"w": "comes",
+"start": 7.18,
+"end": 7.5,
+"p": 0.998
+},
+{
+"w": "within",
+"start": 7.5,
+"end": 7.82,
+"p": 0.998
+},
+{
+"w": "30",
+"start": 7.82,
+"end": 8.24,
+"p": 0.926
+},
+{
+"w": "%",
+"start": 8.24,
+"end": 8.64,
+"p": 0.767
+},
+{
+"w": "of",
+"start": 8.64,
+"end": 8.88,
+"p": 0.997
+},
+{
+"w": "the",
+"start": 8.88,
+"end": 9.02,
+"p": 1.0
+},
+{
+"w": "counted",
+"start": 9.02,
+"end": 9.3,
+"p": 0.988
+},
+{
+"w": "rate",
+"start": 9.3,
+"end": 9.66,
+"p": 0.998
+},
+{
+"w": "on",
+"start": 9.66,
+"end": 9.9,
+"p": 0.996
+},
+{
+"w": "that",
+"start": 9.9,
+"end": 10.1,
+"p": 0.996
+},
+{
+"w": "plateau.",
+"start": 10.1,
+"end": 10.46,
+"p": 0.998
+}
+]
+}

@@ -1,0 +1,27 @@
+{
+ "text": "[calm, natural narrator voice] From twenty sixteen, two codes simulate the V-K-S tank, iron impellers included. Twenty twenty-six: both make it flip, in the runs explored only with conducting surroundings. Their reference run: a <|phoneme_start|>R EH1 N AH0 L D Z<|phoneme_end|> number near sixteen hundred, not millions.",
+ "voice": "536d3a5e000945adb7038665781a4aca",
+ "words": 37,
+ "scene": "SOA1.4",
+ "para": 1,
+ "duration": 19.4351,
+ "latency_s": 3.8,
+ "created": "2026-11-08T08:31:29",
+ "provider": "fish",
+ "request": {
+  "temperature": 0.1,
+  "format": "mp3",
+  "mp3_bitrate": 192,
+  "sample_rate": 44100,
+  "latency": "normal",
+  "language": "en",
+  "normalize": true,
+  "condition_on_previous_chunks": true,
+  "prosody": {
+   "speed": 1.0,
+   "normalize_loudness": true
+  },
+  "text": "[calm, natural narrator voice] From twenty sixteen, two codes simulate the V-K-S tank, iron impellers included. Twenty twenty-six: both make it flip, in the runs explored only with conducting surroundings. Their reference run: a <|phoneme_start|>R EH1 N AH0 L D Z<|phoneme_end|> number near sixteen hundred, not millions.",
+  "reference_id": "536d3a5e000945adb7038665781a4aca"
+ }
+}

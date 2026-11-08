@@ -1,7 +1,12 @@
 out/
 .tmp/
 node_modules/
-audio/cache/
+# Cache TTS : les mp3 payés et leurs .json sont versionnés (relance sans nouvel appel Fish) ;
+# les .wav se redécodent depuis les mp3, musique et placeholder se régénèrent.
+audio/cache/*.wav
+audio/cache/*.part.wav
+audio/cache/music/
+audio/cache/placeholder/
 audio/chunks/
 audio/requests/
 audio/scenes/

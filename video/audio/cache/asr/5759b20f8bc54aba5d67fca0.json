@@ -1,0 +1,91 @@
+{
+"key": "5759b20f8bc54aba5d67fca0",
+"model": "small.en",
+"text": "One answer, not about physics, could make most renting unnecessary. Which question is it?",
+"words": [
+{
+"w": "One",
+"start": 0.0,
+"end": 0.34,
+"p": 0.917
+},
+{
+"w": "answer,",
+"start": 0.34,
+"end": 0.7,
+"p": 0.999
+},
+{
+"w": "not",
+"start": 1.12,
+"end": 1.22,
+"p": 0.991
+},
+{
+"w": "about",
+"start": 1.22,
+"end": 1.46,
+"p": 1.0
+},
+{
+"w": "physics,",
+"start": 1.46,
+"end": 1.88,
+"p": 0.997
+},
+{
+"w": "could",
+"start": 2.24,
+"end": 2.4,
+"p": 0.996
+},
+{
+"w": "make",
+"start": 2.4,
+"end": 2.6,
+"p": 0.999
+},
+{
+"w": "most",
+"start": 2.6,
+"end": 2.96,
+"p": 0.997
+},
+{
+"w": "renting",
+"start": 2.96,
+"end": 3.44,
+"p": 0.996
+},
+{
+"w": "unnecessary.",
+"start": 3.44,
+"end": 4.12,
+"p": 0.995
+},
+{
+"w": "Which",
+"start": 5.22,
+"end": 5.34,
+"p": 0.993
+},
+{
+"w": "question",
+"start": 5.34,
+"end": 5.6,
+"p": 0.996
+},
+{
+"w": "is",
+"start": 5.6,
+"end": 5.94,
+"p": 0.999
+},
+{
+"w": "it?",
+"start": 5.94,
+"end": 6.16,
+"p": 1.0
+}
+]
+}

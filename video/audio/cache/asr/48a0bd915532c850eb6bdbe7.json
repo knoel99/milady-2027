@@ -1,0 +1,199 @@
+{
+"key": "48a0bd915532c850eb6bdbe7",
+"model": "small.en",
+"text": "Before the walls, one convention. In the sodium experiment, Rm has no single definition. One paper multiplies by an impeller efficiency near 0.6. Another does not. A third uses other radii.",
+"words": [
+{
+"w": "Before",
+"start": 0.0,
+"end": 0.36,
+"p": 0.946
+},
+{
+"w": "the",
+"start": 0.36,
+"end": 0.54,
+"p": 0.993
+},
+{
+"w": "walls,",
+"start": 0.54,
+"end": 0.88,
+"p": 0.856
+},
+{
+"w": "one",
+"start": 1.32,
+"end": 1.46,
+"p": 0.979
+},
+{
+"w": "convention.",
+"start": 1.46,
+"end": 1.96,
+"p": 0.995
+},
+{
+"w": "In",
+"start": 2.68,
+"end": 2.8,
+"p": 0.995
+},
+{
+"w": "the",
+"start": 2.8,
+"end": 2.92,
+"p": 0.987
+},
+{
+"w": "sodium",
+"start": 2.92,
+"end": 3.24,
+"p": 0.975
+},
+{
+"w": "experiment,",
+"start": 3.24,
+"end": 3.9,
+"p": 0.999
+},
+{
+"w": "Rm",
+"start": 4.46,
+"end": 4.78,
+"p": 0.699
+},
+{
+"w": "has",
+"start": 4.78,
+"end": 5.0,
+"p": 0.995
+},
+{
+"w": "no",
+"start": 5.0,
+"end": 5.36,
+"p": 0.998
+},
+{
+"w": "single",
+"start": 5.36,
+"end": 5.76,
+"p": 1.0
+},
+{
+"w": "definition.",
+"start": 5.76,
+"end": 6.34,
+"p": 0.999
+},
+{
+"w": "One",
+"start": 7.18,
+"end": 7.42,
+"p": 0.996
+},
+{
+"w": "paper",
+"start": 7.42,
+"end": 7.74,
+"p": 0.998
+},
+{
+"w": "multiplies",
+"start": 7.74,
+"end": 8.46,
+"p": 0.998
+},
+{
+"w": "by",
+"start": 8.46,
+"end": 8.66,
+"p": 0.999
+},
+{
+"w": "an",
+"start": 8.66,
+"end": 8.76,
+"p": 0.997
+},
+{
+"w": "impeller",
+"start": 8.76,
+"end": 9.16,
+"p": 0.998
+},
+{
+"w": "efficiency",
+"start": 9.16,
+"end": 9.66,
+"p": 0.996
+},
+{
+"w": "near",
+"start": 9.66,
+"end": 9.98,
+"p": 0.997
+},
+{
+"w": "0",
+"start": 9.98,
+"end": 10.44,
+"p": 0.899
+},
+{
+"w": ".6.",
+"start": 10.44,
+"end": 11.1,
+"p": 0.997
+},
+{
+"w": "Another",
+"start": 11.8,
+"end": 12.0,
+"p": 0.994
+},
+{
+"w": "does",
+"start": 12.0,
+"end": 12.3,
+"p": 0.998
+},
+{
+"w": "not.",
+"start": 12.3,
+"end": 12.64,
+"p": 1.0
+},
+{
+"w": "A",
+"start": 13.28,
+"end": 13.36,
+"p": 0.991
+},
+{
+"w": "third",
+"start": 13.36,
+"end": 13.66,
+"p": 0.997
+},
+{
+"w": "uses",
+"start": 13.66,
+"end": 14.08,
+"p": 0.998
+},
+{
+"w": "other",
+"start": 14.08,
+"end": 14.4,
+"p": 0.996
+},
+{
+"w": "radii.",
+"start": 14.4,
+"end": 14.94,
+"p": 0.995
+}
+]
+}

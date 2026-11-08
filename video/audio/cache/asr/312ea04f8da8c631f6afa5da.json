@@ -1,0 +1,223 @@
+{
+"key": "312ea04f8da8c631f6afa5da",
+"model": "small.en",
+"text": "Take a bar magnet, north at one end, south at the other. Cut it in half. You get two magnets, each with a north and a south. No one has ever found a lone magnetic pole.",
+"words": [
+{
+"w": "Take",
+"start": 0.0,
+"end": 0.28,
+"p": 0.955
+},
+{
+"w": "a",
+"start": 0.28,
+"end": 0.44,
+"p": 0.999
+},
+{
+"w": "bar",
+"start": 0.44,
+"end": 0.66,
+"p": 0.986
+},
+{
+"w": "magnet,",
+"start": 0.66,
+"end": 1.14,
+"p": 0.998
+},
+{
+"w": "north",
+"start": 1.88,
+"end": 1.88,
+"p": 0.838
+},
+{
+"w": "at",
+"start": 1.88,
+"end": 2.1,
+"p": 0.995
+},
+{
+"w": "one",
+"start": 2.1,
+"end": 2.3,
+"p": 0.996
+},
+{
+"w": "end,",
+"start": 2.3,
+"end": 2.66,
+"p": 0.999
+},
+{
+"w": "south",
+"start": 3.1,
+"end": 3.18,
+"p": 0.993
+},
+{
+"w": "at",
+"start": 3.18,
+"end": 3.42,
+"p": 0.995
+},
+{
+"w": "the",
+"start": 3.42,
+"end": 3.56,
+"p": 0.999
+},
+{
+"w": "other.",
+"start": 3.56,
+"end": 3.82,
+"p": 1.0
+},
+{
+"w": "Cut",
+"start": 4.56,
+"end": 4.66,
+"p": 0.992
+},
+{
+"w": "it",
+"start": 4.66,
+"end": 4.78,
+"p": 0.994
+},
+{
+"w": "in",
+"start": 4.78,
+"end": 4.92,
+"p": 0.999
+},
+{
+"w": "half.",
+"start": 4.92,
+"end": 5.22,
+"p": 0.999
+},
+{
+"w": "You",
+"start": 5.78,
+"end": 5.88,
+"p": 0.997
+},
+{
+"w": "get",
+"start": 5.88,
+"end": 6.06,
+"p": 0.998
+},
+{
+"w": "two",
+"start": 6.06,
+"end": 6.36,
+"p": 0.943
+},
+{
+"w": "magnets,",
+"start": 6.36,
+"end": 6.88,
+"p": 0.996
+},
+{
+"w": "each",
+"start": 7.3,
+"end": 7.58,
+"p": 0.999
+},
+{
+"w": "with",
+"start": 7.58,
+"end": 7.82,
+"p": 0.998
+},
+{
+"w": "a",
+"start": 7.82,
+"end": 7.94,
+"p": 0.994
+},
+{
+"w": "north",
+"start": 7.94,
+"end": 8.26,
+"p": 0.958
+},
+{
+"w": "and",
+"start": 8.26,
+"end": 8.62,
+"p": 0.993
+},
+{
+"w": "a",
+"start": 8.62,
+"end": 8.74,
+"p": 0.994
+},
+{
+"w": "south.",
+"start": 8.74,
+"end": 9.08,
+"p": 0.998
+},
+{
+"w": "No",
+"start": 9.96,
+"end": 10.18,
+"p": 0.997
+},
+{
+"w": "one",
+"start": 10.18,
+"end": 10.4,
+"p": 0.997
+},
+{
+"w": "has",
+"start": 10.4,
+"end": 10.56,
+"p": 0.999
+},
+{
+"w": "ever",
+"start": 10.56,
+"end": 10.88,
+"p": 0.999
+},
+{
+"w": "found",
+"start": 10.88,
+"end": 11.26,
+"p": 0.999
+},
+{
+"w": "a",
+"start": 11.26,
+"end": 11.42,
+"p": 0.999
+},
+{
+"w": "lone",
+"start": 11.42,
+"end": 11.78,
+"p": 0.998
+},
+{
+"w": "magnetic",
+"start": 11.78,
+"end": 12.32,
+"p": 0.995
+},
+{
+"w": "pole.",
+"start": 12.32,
+"end": 12.72,
+"p": 0.995
+}
+]
+}

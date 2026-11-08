@@ -1,0 +1,175 @@
+{
+"key": "763fbfbf373e9ca91728b3ad",
+"model": "small.en",
+"text": "Back to the staircase. The first two steps are lit by small experiments. Three numbers, then a flat sheet. The third, the twisting box, has only a preview.",
+"words": [
+{
+"w": "Back",
+"start": 0.0,
+"end": 0.3,
+"p": 0.964
+},
+{
+"w": "to",
+"start": 0.3,
+"end": 0.46,
+"p": 0.998
+},
+{
+"w": "the",
+"start": 0.46,
+"end": 0.58,
+"p": 0.998
+},
+{
+"w": "staircase.",
+"start": 0.58,
+"end": 0.96,
+"p": 0.985
+},
+{
+"w": "The",
+"start": 1.96,
+"end": 2.1,
+"p": 0.993
+},
+{
+"w": "first",
+"start": 2.1,
+"end": 2.34,
+"p": 0.999
+},
+{
+"w": "two",
+"start": 2.34,
+"end": 2.62,
+"p": 0.969
+},
+{
+"w": "steps",
+"start": 2.62,
+"end": 3.0,
+"p": 0.999
+},
+{
+"w": "are",
+"start": 3.0,
+"end": 3.2,
+"p": 0.999
+},
+{
+"w": "lit",
+"start": 3.2,
+"end": 3.42,
+"p": 0.993
+},
+{
+"w": "by",
+"start": 3.42,
+"end": 3.64,
+"p": 0.999
+},
+{
+"w": "small",
+"start": 3.64,
+"end": 4.04,
+"p": 0.998
+},
+{
+"w": "experiments.",
+"start": 4.04,
+"end": 4.72,
+"p": 0.998
+},
+{
+"w": "Three",
+"start": 5.4,
+"end": 5.68,
+"p": 0.976
+},
+{
+"w": "numbers,",
+"start": 5.68,
+"end": 6.12,
+"p": 0.999
+},
+{
+"w": "then",
+"start": 6.6,
+"end": 6.8,
+"p": 0.998
+},
+{
+"w": "a",
+"start": 6.8,
+"end": 6.96,
+"p": 0.997
+},
+{
+"w": "flat",
+"start": 6.96,
+"end": 7.22,
+"p": 0.999
+},
+{
+"w": "sheet.",
+"start": 7.22,
+"end": 7.62,
+"p": 0.999
+},
+{
+"w": "The",
+"start": 8.5,
+"end": 8.64,
+"p": 0.997
+},
+{
+"w": "third,",
+"start": 8.64,
+"end": 9.02,
+"p": 0.997
+},
+{
+"w": "the",
+"start": 9.4,
+"end": 9.56,
+"p": 0.994
+},
+{
+"w": "twisting",
+"start": 9.56,
+"end": 9.98,
+"p": 0.958
+},
+{
+"w": "box,",
+"start": 9.98,
+"end": 10.4,
+"p": 0.996
+},
+{
+"w": "has",
+"start": 10.7,
+"end": 11.04,
+"p": 0.997
+},
+{
+"w": "only",
+"start": 11.04,
+"end": 11.42,
+"p": 0.999
+},
+{
+"w": "a",
+"start": 11.42,
+"end": 11.64,
+"p": 1.0
+},
+{
+"w": "preview.",
+"start": 11.64,
+"end": 11.96,
+"p": 0.999
+}
+]
+}

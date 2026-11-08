@@ -1,0 +1,28 @@
+{
+ "text": "[calm, natural narrator voice] À l'extérieur, le champ doit se raccorder, dans le vide, à un champ sans courant. La règle est linéaire, mais non locale : le champ en un point de la paroi dépend de toute la paroi. L'imposer exactement et à moindre coût, pour chaque échantillon, reste une question ouverte.",
+ "voice": "536d3a5e000945adb7038665781a4aca",
+ "words": 48,
+ "scene": "10.8",
+ "para": 2,
+ "lang": "fr",
+ "duration": 19.7486,
+ "latency_s": 4.1,
+ "created": "2026-11-08T10:06:05",
+ "provider": "fish",
+ "request": {
+  "temperature": 0.1,
+  "format": "mp3",
+  "mp3_bitrate": 192,
+  "sample_rate": 44100,
+  "latency": "normal",
+  "language": "fr",
+  "normalize": true,
+  "condition_on_previous_chunks": true,
+  "prosody": {
+   "speed": 1.0,
+   "normalize_loudness": true
+  },
+  "text": "[calm, natural narrator voice] À l'extérieur, le champ doit se raccorder, dans le vide, à un champ sans courant. La règle est linéaire, mais non locale : le champ en un point de la paroi dépend de toute la paroi. L'imposer exactement et à moindre coût, pour chaque échantillon, reste une question ouverte.",
+  "reference_id": "536d3a5e000945adb7038665781a4aca"
+ }
+}

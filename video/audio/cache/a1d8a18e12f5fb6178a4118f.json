@@ -1,0 +1,27 @@
+{
+ "text": "[calm, natural narrator voice] Before trusting the solver, test it on a known answer. The twisting flow offers one: a field shaped exactly like it. Its lines follow the flow's own lines, so carrying and stretching cancel. Only diffusion acts: its growth rate is exactly minus one over <|phoneme_start|>AA1 R EH1 M<|phoneme_end|>.",
+ "voice": "536d3a5e000945adb7038665781a4aca",
+ "words": 45,
+ "scene": "X1.1",
+ "para": 0,
+ "duration": 20.3233,
+ "latency_s": 3.6,
+ "created": "2026-11-08T08:12:42",
+ "provider": "fish",
+ "request": {
+  "temperature": 0.1,
+  "format": "mp3",
+  "mp3_bitrate": 192,
+  "sample_rate": 44100,
+  "latency": "normal",
+  "language": "en",
+  "normalize": true,
+  "condition_on_previous_chunks": true,
+  "prosody": {
+   "speed": 1.0,
+   "normalize_loudness": true
+  },
+  "text": "[calm, natural narrator voice] Before trusting the solver, test it on a known answer. The twisting flow offers one: a field shaped exactly like it. Its lines follow the flow's own lines, so carrying and stretching cancel. Only diffusion acts: its growth rate is exactly minus one over <|phoneme_start|>AA1 R EH1 M<|phoneme_end|>.",
+  "reference_id": "536d3a5e000945adb7038665781a4aca"
+ }
+}

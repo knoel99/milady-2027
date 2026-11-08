@@ -1,0 +1,187 @@
+{
+"key": "1926c6cbb34b86a88e58637e",
+"model": "small.en",
+"text": "New snapshots start as pure noise, a round cloud of random points. Over it, the crowd we want, one point per snapshot. Here, two mirror blobs, like the two whirlpools.",
+"words": [
+{
+"w": "New",
+"start": 0.0,
+"end": 0.32,
+"p": 0.913
+},
+{
+"w": "snapshots",
+"start": 0.32,
+"end": 0.86,
+"p": 0.904
+},
+{
+"w": "start",
+"start": 0.86,
+"end": 1.32,
+"p": 0.995
+},
+{
+"w": "as",
+"start": 1.32,
+"end": 1.52,
+"p": 0.996
+},
+{
+"w": "pure",
+"start": 1.52,
+"end": 1.86,
+"p": 0.985
+},
+{
+"w": "noise,",
+"start": 1.86,
+"end": 2.38,
+"p": 0.999
+},
+{
+"w": "a",
+"start": 2.92,
+"end": 3.08,
+"p": 0.964
+},
+{
+"w": "round",
+"start": 3.08,
+"end": 3.42,
+"p": 0.998
+},
+{
+"w": "cloud",
+"start": 3.42,
+"end": 3.8,
+"p": 0.998
+},
+{
+"w": "of",
+"start": 3.8,
+"end": 4.02,
+"p": 0.999
+},
+{
+"w": "random",
+"start": 4.02,
+"end": 4.4,
+"p": 0.999
+},
+{
+"w": "points.",
+"start": 4.4,
+"end": 5.0,
+"p": 0.998
+},
+{
+"w": "Over",
+"start": 5.78,
+"end": 6.14,
+"p": 0.996
+},
+{
+"w": "it,",
+"start": 6.14,
+"end": 6.36,
+"p": 0.999
+},
+{
+"w": "the",
+"start": 6.66,
+"end": 6.8,
+"p": 0.998
+},
+{
+"w": "crowd",
+"start": 6.8,
+"end": 7.12,
+"p": 0.997
+},
+{
+"w": "we",
+"start": 7.12,
+"end": 7.34,
+"p": 0.998
+},
+{
+"w": "want,",
+"start": 7.34,
+"end": 7.72,
+"p": 0.999
+},
+{
+"w": "one",
+"start": 8.32,
+"end": 8.6,
+"p": 0.917
+},
+{
+"w": "point",
+"start": 8.6,
+"end": 8.96,
+"p": 0.991
+},
+{
+"w": "per",
+"start": 8.96,
+"end": 9.26,
+"p": 0.998
+},
+{
+"w": "snapshot.",
+"start": 9.26,
+"end": 9.86,
+"p": 0.999
+},
+{
+"w": "Here,",
+"start": 10.78,
+"end": 11.12,
+"p": 0.998
+},
+{
+"w": "two",
+"start": 11.7,
+"end": 11.9,
+"p": 0.988
+},
+{
+"w": "mirror",
+"start": 11.9,
+"end": 12.3,
+"p": 0.987
+},
+{
+"w": "blobs,",
+"start": 12.3,
+"end": 12.92,
+"p": 0.994
+},
+{
+"w": "like",
+"start": 13.26,
+"end": 13.46,
+"p": 0.999
+},
+{
+"w": "the",
+"start": 13.46,
+"end": 13.62,
+"p": 0.998
+},
+{
+"w": "two",
+"start": 13.62,
+"end": 13.9,
+"p": 0.993
+},
+{
+"w": "whirlpools.",
+"start": 13.9,
+"end": 14.82,
+"p": 0.967
+}
+]
+}

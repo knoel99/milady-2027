@@ -1,0 +1,27 @@
+{
+ "text": "[calm, natural narrator voice] Is there a giant magnet hidden inside the Earth? Deep down, the outer core is an ocean of liquid iron. Left alone, a field there would fade away within tens of thousands of years. Yet Earth's field is several billion years old. So the moving iron must keep making it, all the time.",
+ "voice": "536d3a5e000945adb7038665781a4aca",
+ "words": 53,
+ "scene": "01.1",
+ "para": 0,
+ "duration": 20.8196,
+ "latency_s": 3.9,
+ "created": "2026-11-08T08:07:12",
+ "provider": "fish",
+ "request": {
+  "temperature": 0.1,
+  "format": "mp3",
+  "mp3_bitrate": 192,
+  "sample_rate": 44100,
+  "latency": "normal",
+  "language": "en",
+  "normalize": true,
+  "condition_on_previous_chunks": true,
+  "prosody": {
+   "speed": 1.0,
+   "normalize_loudness": true
+  },
+  "text": "[calm, natural narrator voice] Is there a giant magnet hidden inside the Earth? Deep down, the outer core is an ocean of liquid iron. Left alone, a field there would fade away within tens of thousands of years. Yet Earth's field is several billion years old. So the moving iron must keep making it, all the time.",
+  "reference_id": "536d3a5e000945adb7038665781a4aca"
+ }
+}

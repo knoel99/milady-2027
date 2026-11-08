@@ -1,0 +1,193 @@
+{
+"key": "9ff83828c603e9d431fe32c0",
+"model": "small.en",
+"text": "Each photo also needs a speedometer. No clock required. The dipole's equation turns the photo's three dial readings into a speed. Up or down, both count, so keep only its size.",
+"words": [
+{
+"w": "Each",
+"start": 0.0,
+"end": 0.32,
+"p": 0.966
+},
+{
+"w": "photo",
+"start": 0.32,
+"end": 0.72,
+"p": 1.0
+},
+{
+"w": "also",
+"start": 0.72,
+"end": 1.08,
+"p": 0.996
+},
+{
+"w": "needs",
+"start": 1.08,
+"end": 1.42,
+"p": 0.997
+},
+{
+"w": "a",
+"start": 1.42,
+"end": 1.62,
+"p": 0.999
+},
+{
+"w": "speedometer.",
+"start": 1.62,
+"end": 2.2,
+"p": 0.994
+},
+{
+"w": "No",
+"start": 3.0,
+"end": 3.24,
+"p": 0.997
+},
+{
+"w": "clock",
+"start": 3.24,
+"end": 3.52,
+"p": 1.0
+},
+{
+"w": "required.",
+"start": 3.52,
+"end": 4.08,
+"p": 1.0
+},
+{
+"w": "The",
+"start": 4.66,
+"end": 4.8,
+"p": 0.994
+},
+{
+"w": "dipole's",
+"start": 4.8,
+"end": 5.36,
+"p": 0.971
+},
+{
+"w": "equation",
+"start": 5.36,
+"end": 5.72,
+"p": 0.998
+},
+{
+"w": "turns",
+"start": 5.72,
+"end": 6.14,
+"p": 0.999
+},
+{
+"w": "the",
+"start": 6.14,
+"end": 6.36,
+"p": 0.998
+},
+{
+"w": "photo's",
+"start": 6.36,
+"end": 6.84,
+"p": 0.873
+},
+{
+"w": "three",
+"start": 6.84,
+"end": 7.12,
+"p": 0.918
+},
+{
+"w": "dial",
+"start": 7.12,
+"end": 7.44,
+"p": 0.994
+},
+{
+"w": "readings",
+"start": 7.44,
+"end": 7.78,
+"p": 0.992
+},
+{
+"w": "into",
+"start": 7.78,
+"end": 8.14,
+"p": 0.999
+},
+{
+"w": "a",
+"start": 8.14,
+"end": 8.32,
+"p": 0.998
+},
+{
+"w": "speed.",
+"start": 8.32,
+"end": 8.68,
+"p": 0.998
+},
+{
+"w": "Up",
+"start": 9.54,
+"end": 9.7,
+"p": 0.994
+},
+{
+"w": "or",
+"start": 9.7,
+"end": 9.92,
+"p": 0.996
+},
+{
+"w": "down,",
+"start": 9.92,
+"end": 10.3,
+"p": 0.994
+},
+{
+"w": "both",
+"start": 10.7,
+"end": 10.9,
+"p": 0.999
+},
+{
+"w": "count,",
+"start": 10.9,
+"end": 11.3,
+"p": 1.0
+},
+{
+"w": "so",
+"start": 11.84,
+"end": 12.04,
+"p": 0.999
+},
+{
+"w": "keep",
+"start": 12.04,
+"end": 12.28,
+"p": 0.996
+},
+{
+"w": "only",
+"start": 12.28,
+"end": 12.66,
+"p": 0.999
+},
+{
+"w": "its",
+"start": 12.66,
+"end": 12.92,
+"p": 0.957
+},
+{
+"w": "size.",
+"start": 12.92,
+"end": 13.3,
+"p": 0.999
+}
+]
+}

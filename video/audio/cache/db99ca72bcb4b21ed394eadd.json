@@ -1,0 +1,27 @@
+{
+ "text": "[calm, natural narrator voice] At <|phoneme_start|>AA1 R EH1 M<|phoneme_end|> eight, it fades. At twelve and sixteen, inside the window, it grows. At twenty, just past it, it fades again. In these snapshots, at eight, sixteen and twenty, it gathers in four slim tubes. They peak at points where the flow stands still. At twelve, it spreads out.",
+ "voice": "536d3a5e000945adb7038665781a4aca",
+ "words": 50,
+ "scene": "X1.2",
+ "para": 1,
+ "duration": 23.3796,
+ "latency_s": 4.1,
+ "created": "2026-11-08T08:12:46",
+ "provider": "fish",
+ "request": {
+  "temperature": 0.1,
+  "format": "mp3",
+  "mp3_bitrate": 192,
+  "sample_rate": 44100,
+  "latency": "normal",
+  "language": "en",
+  "normalize": true,
+  "condition_on_previous_chunks": true,
+  "prosody": {
+   "speed": 1.0,
+   "normalize_loudness": true
+  },
+  "text": "[calm, natural narrator voice] At <|phoneme_start|>AA1 R EH1 M<|phoneme_end|> eight, it fades. At twelve and sixteen, inside the window, it grows. At twenty, just past it, it fades again. In these snapshots, at eight, sixteen and twenty, it gathers in four slim tubes. They peak at points where the flow stands still. At twelve, it spreads out.",
+  "reference_id": "536d3a5e000945adb7038665781a4aca"
+ }
+}

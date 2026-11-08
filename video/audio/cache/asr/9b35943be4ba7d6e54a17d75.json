@@ -1,0 +1,397 @@
+{
+"key": "9b35943be4ba7d6e54a17d75",
+"model": "small.en",
+"text": "Here is the growth rate, computed at 24 settings. Below about nine, every field fades. Then growth turns positive. The dynamo is on. Near 17 and a half, it switches off again. Above about 27, it comes back. Not one threshold, but windows. Turning a knob further does not always help. It agrees with published results. No machine learning yet. This only tests the solver.",
+"words": [
+{
+"w": "Here",
+"start": 0.0,
+"end": 0.24,
+"p": 0.981
+},
+{
+"w": "is",
+"start": 0.24,
+"end": 0.38,
+"p": 0.761
+},
+{
+"w": "the",
+"start": 0.38,
+"end": 0.5,
+"p": 0.998
+},
+{
+"w": "growth",
+"start": 0.5,
+"end": 0.76,
+"p": 0.965
+},
+{
+"w": "rate,",
+"start": 0.76,
+"end": 1.14,
+"p": 0.998
+},
+{
+"w": "computed",
+"start": 1.36,
+"end": 1.64,
+"p": 0.993
+},
+{
+"w": "at",
+"start": 1.64,
+"end": 1.9,
+"p": 0.998
+},
+{
+"w": "24",
+"start": 1.9,
+"end": 2.38,
+"p": 0.974
+},
+{
+"w": "settings.",
+"start": 2.38,
+"end": 2.9,
+"p": 0.989
+},
+{
+"w": "Below",
+"start": 3.78,
+"end": 3.96,
+"p": 0.997
+},
+{
+"w": "about",
+"start": 3.96,
+"end": 4.3,
+"p": 0.986
+},
+{
+"w": "nine,",
+"start": 4.3,
+"end": 4.7,
+"p": 0.253
+},
+{
+"w": "every",
+"start": 5.12,
+"end": 5.42,
+"p": 0.998
+},
+{
+"w": "field",
+"start": 5.42,
+"end": 5.82,
+"p": 0.998
+},
+{
+"w": "fades.",
+"start": 5.82,
+"end": 6.22,
+"p": 0.996
+},
+{
+"w": "Then",
+"start": 6.94,
+"end": 7.16,
+"p": 0.996
+},
+{
+"w": "growth",
+"start": 7.16,
+"end": 7.46,
+"p": 0.789
+},
+{
+"w": "turns",
+"start": 7.46,
+"end": 7.82,
+"p": 0.998
+},
+{
+"w": "positive.",
+"start": 7.82,
+"end": 8.34,
+"p": 0.997
+},
+{
+"w": "The",
+"start": 8.94,
+"end": 9.08,
+"p": 0.994
+},
+{
+"w": "dynamo",
+"start": 9.08,
+"end": 9.54,
+"p": 0.95
+},
+{
+"w": "is",
+"start": 9.54,
+"end": 9.72,
+"p": 0.999
+},
+{
+"w": "on.",
+"start": 9.72,
+"end": 10.08,
+"p": 0.993
+},
+{
+"w": "Near",
+"start": 10.96,
+"end": 11.12,
+"p": 0.983
+},
+{
+"w": "17",
+"start": 11.12,
+"end": 11.66,
+"p": 0.962
+},
+{
+"w": "and",
+"start": 11.66,
+"end": 11.82,
+"p": 0.513
+},
+{
+"w": "a",
+"start": 11.82,
+"end": 11.92,
+"p": 0.952
+},
+{
+"w": "half,",
+"start": 11.92,
+"end": 12.18,
+"p": 0.991
+},
+{
+"w": "it",
+"start": 12.4,
+"end": 12.54,
+"p": 0.998
+},
+{
+"w": "switches",
+"start": 12.54,
+"end": 12.86,
+"p": 0.997
+},
+{
+"w": "off",
+"start": 12.86,
+"end": 13.16,
+"p": 0.999
+},
+{
+"w": "again.",
+"start": 13.16,
+"end": 13.52,
+"p": 0.998
+},
+{
+"w": "Above",
+"start": 14.44,
+"end": 14.54,
+"p": 0.99
+},
+{
+"w": "about",
+"start": 14.54,
+"end": 14.82,
+"p": 0.998
+},
+{
+"w": "27,",
+"start": 14.82,
+"end": 15.24,
+"p": 0.988
+},
+{
+"w": "it",
+"start": 15.7,
+"end": 15.9,
+"p": 0.999
+},
+{
+"w": "comes",
+"start": 15.9,
+"end": 16.12,
+"p": 0.999
+},
+{
+"w": "back.",
+"start": 16.12,
+"end": 16.52,
+"p": 1.0
+},
+{
+"w": "Not",
+"start": 17.04,
+"end": 17.22,
+"p": 0.998
+},
+{
+"w": "one",
+"start": 17.22,
+"end": 17.58,
+"p": 0.994
+},
+{
+"w": "threshold,",
+"start": 17.58,
+"end": 18.06,
+"p": 0.993
+},
+{
+"w": "but",
+"start": 18.34,
+"end": 18.5,
+"p": 0.999
+},
+{
+"w": "windows.",
+"start": 18.5,
+"end": 19.02,
+"p": 0.634
+},
+{
+"w": "Turning",
+"start": 19.72,
+"end": 19.9,
+"p": 0.991
+},
+{
+"w": "a",
+"start": 19.9,
+"end": 20.1,
+"p": 0.991
+},
+{
+"w": "knob",
+"start": 20.1,
+"end": 20.3,
+"p": 0.998
+},
+{
+"w": "further",
+"start": 20.3,
+"end": 20.68,
+"p": 0.999
+},
+{
+"w": "does",
+"start": 20.68,
+"end": 20.96,
+"p": 0.979
+},
+{
+"w": "not",
+"start": 20.96,
+"end": 21.24,
+"p": 1.0
+},
+{
+"w": "always",
+"start": 21.24,
+"end": 21.62,
+"p": 1.0
+},
+{
+"w": "help.",
+"start": 21.62,
+"end": 21.98,
+"p": 1.0
+},
+{
+"w": "It",
+"start": 22.64,
+"end": 22.78,
+"p": 0.998
+},
+{
+"w": "agrees",
+"start": 22.78,
+"end": 23.12,
+"p": 0.999
+},
+{
+"w": "with",
+"start": 23.12,
+"end": 23.4,
+"p": 1.0
+},
+{
+"w": "published",
+"start": 23.4,
+"end": 23.74,
+"p": 0.997
+},
+{
+"w": "results.",
+"start": 23.74,
+"end": 24.26,
+"p": 1.0
+},
+{
+"w": "No",
+"start": 25.0,
+"end": 25.26,
+"p": 0.997
+},
+{
+"w": "machine",
+"start": 25.26,
+"end": 25.62,
+"p": 0.993
+},
+{
+"w": "learning",
+"start": 25.62,
+"end": 25.98,
+"p": 0.982
+},
+{
+"w": "yet.",
+"start": 25.98,
+"end": 26.3,
+"p": 0.99
+},
+{
+"w": "This",
+"start": 26.9,
+"end": 27.04,
+"p": 0.998
+},
+{
+"w": "only",
+"start": 27.04,
+"end": 27.38,
+"p": 1.0
+},
+{
+"w": "tests",
+"start": 27.38,
+"end": 27.78,
+"p": 0.996
+},
+{
+"w": "the",
+"start": 27.78,
+"end": 28.08,
+"p": 0.998
+},
+{
+"w": "solver.",
+"start": 28.08,
+"end": 28.54,
+"p": 0.987
+}
+]
+}

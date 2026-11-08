@@ -1,0 +1,181 @@
+{
+"key": "ef9a789a7645499ed123ccba",
+"model": "small.en",
+"text": "Second fix, for any field, split it into swirl plus slope and delete the slope. Wave by wave, remove the part of each arrow along the wave's own direction.",
+"words": [
+{
+"w": "Second",
+"start": 0.0,
+"end": 0.48,
+"p": 0.918
+},
+{
+"w": "fix,",
+"start": 0.48,
+"end": 0.8,
+"p": 0.949
+},
+{
+"w": "for",
+"start": 1.24,
+"end": 1.4,
+"p": 0.991
+},
+{
+"w": "any",
+"start": 1.4,
+"end": 1.68,
+"p": 0.994
+},
+{
+"w": "field,",
+"start": 1.68,
+"end": 2.14,
+"p": 0.995
+},
+{
+"w": "split",
+"start": 2.94,
+"end": 3.0,
+"p": 0.997
+},
+{
+"w": "it",
+"start": 3.0,
+"end": 3.14,
+"p": 0.994
+},
+{
+"w": "into",
+"start": 3.14,
+"end": 3.4,
+"p": 0.995
+},
+{
+"w": "swirl",
+"start": 3.4,
+"end": 3.8,
+"p": 0.955
+},
+{
+"w": "plus",
+"start": 3.8,
+"end": 4.2,
+"p": 0.836
+},
+{
+"w": "slope",
+"start": 4.2,
+"end": 4.66,
+"p": 0.985
+},
+{
+"w": "and",
+"start": 4.66,
+"end": 5.3,
+"p": 0.779
+},
+{
+"w": "delete",
+"start": 5.3,
+"end": 5.62,
+"p": 0.999
+},
+{
+"w": "the",
+"start": 5.62,
+"end": 5.84,
+"p": 0.999
+},
+{
+"w": "slope.",
+"start": 5.84,
+"end": 6.24,
+"p": 0.999
+},
+{
+"w": "Wave",
+"start": 7.4,
+"end": 7.48,
+"p": 0.985
+},
+{
+"w": "by",
+"start": 7.48,
+"end": 7.76,
+"p": 0.972
+},
+{
+"w": "wave,",
+"start": 7.76,
+"end": 8.26,
+"p": 0.99
+},
+{
+"w": "remove",
+"start": 8.68,
+"end": 8.96,
+"p": 0.998
+},
+{
+"w": "the",
+"start": 8.96,
+"end": 9.2,
+"p": 0.998
+},
+{
+"w": "part",
+"start": 9.2,
+"end": 9.42,
+"p": 0.999
+},
+{
+"w": "of",
+"start": 9.42,
+"end": 9.56,
+"p": 0.999
+},
+{
+"w": "each",
+"start": 9.56,
+"end": 9.82,
+"p": 1.0
+},
+{
+"w": "arrow",
+"start": 9.82,
+"end": 10.26,
+"p": 0.995
+},
+{
+"w": "along",
+"start": 10.26,
+"end": 10.66,
+"p": 0.997
+},
+{
+"w": "the",
+"start": 10.66,
+"end": 10.86,
+"p": 0.999
+},
+{
+"w": "wave's",
+"start": 10.86,
+"end": 11.28,
+"p": 0.967
+},
+{
+"w": "own",
+"start": 11.28,
+"end": 11.5,
+"p": 0.998
+},
+{
+"w": "direction.",
+"start": 11.5,
+"end": 12.0,
+"p": 0.999
+}
+]
+}

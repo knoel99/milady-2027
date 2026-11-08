@@ -1,0 +1,205 @@
+{
+"key": "792d1f81368779d3e14ca1bd",
+"model": "small.en",
+"text": "But a strong field pushes back on the flow. As it break the copper disk, the line bends into a plateau. These are the kinematic and dynamic regimes. Flips live on the plateau.",
+"words": [
+{
+"w": "But",
+"start": 0.0,
+"end": 0.2,
+"p": 0.579
+},
+{
+"w": "a",
+"start": 0.2,
+"end": 0.34,
+"p": 0.992
+},
+{
+"w": "strong",
+"start": 0.34,
+"end": 0.68,
+"p": 1.0
+},
+{
+"w": "field",
+"start": 0.68,
+"end": 1.06,
+"p": 0.998
+},
+{
+"w": "pushes",
+"start": 1.06,
+"end": 1.44,
+"p": 1.0
+},
+{
+"w": "back",
+"start": 1.44,
+"end": 1.78,
+"p": 1.0
+},
+{
+"w": "on",
+"start": 1.78,
+"end": 1.98,
+"p": 0.999
+},
+{
+"w": "the",
+"start": 1.98,
+"end": 2.1,
+"p": 1.0
+},
+{
+"w": "flow.",
+"start": 2.1,
+"end": 2.42,
+"p": 0.999
+},
+{
+"w": "As",
+"start": 3.0,
+"end": 3.12,
+"p": 0.998
+},
+{
+"w": "it",
+"start": 3.12,
+"end": 3.28,
+"p": 0.999
+},
+{
+"w": "break",
+"start": 3.28,
+"end": 3.52,
+"p": 0.506
+},
+{
+"w": "the",
+"start": 3.52,
+"end": 3.78,
+"p": 0.98
+},
+{
+"w": "copper",
+"start": 3.78,
+"end": 4.1,
+"p": 0.992
+},
+{
+"w": "disk,",
+"start": 4.1,
+"end": 4.46,
+"p": 0.742
+},
+{
+"w": "the",
+"start": 4.98,
+"end": 5.06,
+"p": 0.994
+},
+{
+"w": "line",
+"start": 5.06,
+"end": 5.36,
+"p": 0.995
+},
+{
+"w": "bends",
+"start": 5.36,
+"end": 5.78,
+"p": 0.996
+},
+{
+"w": "into",
+"start": 5.78,
+"end": 6.06,
+"p": 0.995
+},
+{
+"w": "a",
+"start": 6.06,
+"end": 6.24,
+"p": 0.997
+},
+{
+"w": "plateau.",
+"start": 6.24,
+"end": 6.66,
+"p": 1.0
+},
+{
+"w": "These",
+"start": 7.56,
+"end": 7.86,
+"p": 0.995
+},
+{
+"w": "are",
+"start": 7.86,
+"end": 8.0,
+"p": 0.998
+},
+{
+"w": "the",
+"start": 8.0,
+"end": 8.14,
+"p": 0.986
+},
+{
+"w": "kinematic",
+"start": 8.14,
+"end": 8.7,
+"p": 0.993
+},
+{
+"w": "and",
+"start": 8.7,
+"end": 8.94,
+"p": 0.996
+},
+{
+"w": "dynamic",
+"start": 8.94,
+"end": 9.42,
+"p": 0.998
+},
+{
+"w": "regimes.",
+"start": 9.42,
+"end": 9.98,
+"p": 0.993
+},
+{
+"w": "Flips",
+"start": 11.02,
+"end": 11.22,
+"p": 0.984
+},
+{
+"w": "live",
+"start": 11.22,
+"end": 11.62,
+"p": 0.995
+},
+{
+"w": "on",
+"start": 11.62,
+"end": 11.8,
+"p": 0.997
+},
+{
+"w": "the",
+"start": 11.8,
+"end": 11.92,
+"p": 0.997
+},
+{
+"w": "plateau.",
+"start": 11.92,
+"end": 12.3,
+"p": 0.998
+}
+]
+}

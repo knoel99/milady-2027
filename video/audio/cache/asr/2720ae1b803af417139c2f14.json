@@ -1,0 +1,109 @@
+{
+"key": "2720ae1b803af417139c2f14",
+"model": "small.en",
+"text": "Which labels must each VK snapshot carry? Which are M definition, which wall condition, which iron permeability?",
+"words": [
+{
+"w": "Which",
+"start": 0.0,
+"end": 0.28,
+"p": 0.644
+},
+{
+"w": "labels",
+"start": 0.28,
+"end": 0.62,
+"p": 0.995
+},
+{
+"w": "must",
+"start": 0.62,
+"end": 0.96,
+"p": 0.998
+},
+{
+"w": "each",
+"start": 0.96,
+"end": 1.26,
+"p": 0.999
+},
+{
+"w": "VK",
+"start": 1.26,
+"end": 1.66,
+"p": 0.73
+},
+{
+"w": "snapshot",
+"start": 1.66,
+"end": 2.32,
+"p": 0.925
+},
+{
+"w": "carry?",
+"start": 2.32,
+"end": 2.72,
+"p": 0.997
+},
+{
+"w": "Which",
+"start": 3.42,
+"end": 3.54,
+"p": 0.973
+},
+{
+"w": "are",
+"start": 3.54,
+"end": 3.7,
+"p": 0.97
+},
+{
+"w": "M",
+"start": 3.7,
+"end": 3.96,
+"p": 0.747
+},
+{
+"w": "definition,",
+"start": 3.96,
+"end": 4.28,
+"p": 0.792
+},
+{
+"w": "which",
+"start": 5.04,
+"end": 5.16,
+"p": 0.963
+},
+{
+"w": "wall",
+"start": 5.16,
+"end": 5.48,
+"p": 0.978
+},
+{
+"w": "condition,",
+"start": 5.48,
+"end": 5.96,
+"p": 0.995
+},
+{
+"w": "which",
+"start": 6.48,
+"end": 6.7,
+"p": 0.997
+},
+{
+"w": "iron",
+"start": 6.7,
+"end": 7.12,
+"p": 0.979
+},
+{
+"w": "permeability?",
+"start": 7.12,
+"end": 7.86,
+"p": 0.994
+}
+]
+}

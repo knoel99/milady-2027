@@ -1,0 +1,193 @@
+{
+"key": "f0c82e607f9c8603efd815bf",
+"model": "small.en",
+"text": "We found no diffusion prior used this way for conducting fluids. Near a flip, the answer has two polarities, and a prior that ignores the mirror could bias it toward one.",
+"words": [
+{
+"w": "We",
+"start": 0.0,
+"end": 0.2,
+"p": 0.684
+},
+{
+"w": "found",
+"start": 0.2,
+"end": 0.46,
+"p": 0.985
+},
+{
+"w": "no",
+"start": 0.46,
+"end": 0.78,
+"p": 0.991
+},
+{
+"w": "diffusion",
+"start": 0.78,
+"end": 1.2,
+"p": 0.996
+},
+{
+"w": "prior",
+"start": 1.2,
+"end": 1.64,
+"p": 0.862
+},
+{
+"w": "used",
+"start": 1.64,
+"end": 2.0,
+"p": 0.972
+},
+{
+"w": "this",
+"start": 2.0,
+"end": 2.24,
+"p": 0.999
+},
+{
+"w": "way",
+"start": 2.24,
+"end": 2.48,
+"p": 0.999
+},
+{
+"w": "for",
+"start": 2.48,
+"end": 2.66,
+"p": 0.996
+},
+{
+"w": "conducting",
+"start": 2.66,
+"end": 3.04,
+"p": 0.994
+},
+{
+"w": "fluids.",
+"start": 3.04,
+"end": 3.6,
+"p": 0.999
+},
+{
+"w": "Near",
+"start": 4.44,
+"end": 4.6,
+"p": 0.983
+},
+{
+"w": "a",
+"start": 4.6,
+"end": 4.76,
+"p": 0.999
+},
+{
+"w": "flip,",
+"start": 4.76,
+"end": 5.0,
+"p": 0.993
+},
+{
+"w": "the",
+"start": 5.48,
+"end": 5.62,
+"p": 0.997
+},
+{
+"w": "answer",
+"start": 5.62,
+"end": 5.9,
+"p": 0.997
+},
+{
+"w": "has",
+"start": 5.9,
+"end": 6.18,
+"p": 0.998
+},
+{
+"w": "two",
+"start": 6.18,
+"end": 6.48,
+"p": 0.935
+},
+{
+"w": "polarities,",
+"start": 6.48,
+"end": 7.16,
+"p": 0.996
+},
+{
+"w": "and",
+"start": 7.66,
+"end": 7.78,
+"p": 0.993
+},
+{
+"w": "a",
+"start": 7.78,
+"end": 7.9,
+"p": 0.994
+},
+{
+"w": "prior",
+"start": 7.9,
+"end": 8.2,
+"p": 0.959
+},
+{
+"w": "that",
+"start": 8.2,
+"end": 8.42,
+"p": 0.998
+},
+{
+"w": "ignores",
+"start": 8.42,
+"end": 8.78,
+"p": 0.999
+},
+{
+"w": "the",
+"start": 8.78,
+"end": 9.02,
+"p": 0.998
+},
+{
+"w": "mirror",
+"start": 9.02,
+"end": 9.32,
+"p": 0.998
+},
+{
+"w": "could",
+"start": 9.32,
+"end": 9.54,
+"p": 0.989
+},
+{
+"w": "bias",
+"start": 9.54,
+"end": 9.94,
+"p": 0.996
+},
+{
+"w": "it",
+"start": 9.94,
+"end": 10.18,
+"p": 0.999
+},
+{
+"w": "toward",
+"start": 10.18,
+"end": 10.36,
+"p": 0.963
+},
+{
+"w": "one.",
+"start": 10.36,
+"end": 10.72,
+"p": 0.966
+}
+]
+}

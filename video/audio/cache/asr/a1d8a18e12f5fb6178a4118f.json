@@ -1,0 +1,277 @@
+{
+"key": "a1d8a18e12f5fb6178a4118f",
+"model": "small.en",
+"text": "Before trusting the solver, test it on a known answer. The twisting flow offers one, a field shaped exactly like it. Its lines follow the flow's own lines, so carrying and stretching cancel. Only diffusion acts. Its growth rate is exactly minus one over Rm.",
+"words": [
+{
+"w": "Before",
+"start": 0.0,
+"end": 0.4,
+"p": 0.87
+},
+{
+"w": "trusting",
+"start": 0.4,
+"end": 0.8,
+"p": 0.998
+},
+{
+"w": "the",
+"start": 0.8,
+"end": 1.02,
+"p": 0.998
+},
+{
+"w": "solver,",
+"start": 1.02,
+"end": 1.44,
+"p": 0.992
+},
+{
+"w": "test",
+"start": 1.76,
+"end": 2.02,
+"p": 0.999
+},
+{
+"w": "it",
+"start": 2.02,
+"end": 2.22,
+"p": 0.998
+},
+{
+"w": "on",
+"start": 2.22,
+"end": 2.36,
+"p": 0.999
+},
+{
+"w": "a",
+"start": 2.36,
+"end": 2.52,
+"p": 0.998
+},
+{
+"w": "known",
+"start": 2.52,
+"end": 2.74,
+"p": 0.998
+},
+{
+"w": "answer.",
+"start": 2.74,
+"end": 3.22,
+"p": 1.0
+},
+{
+"w": "The",
+"start": 4.18,
+"end": 4.26,
+"p": 0.988
+},
+{
+"w": "twisting",
+"start": 4.26,
+"end": 4.66,
+"p": 0.959
+},
+{
+"w": "flow",
+"start": 4.66,
+"end": 5.04,
+"p": 0.992
+},
+{
+"w": "offers",
+"start": 5.04,
+"end": 5.5,
+"p": 0.997
+},
+{
+"w": "one,",
+"start": 5.5,
+"end": 5.8,
+"p": 0.965
+},
+{
+"w": "a",
+"start": 6.28,
+"end": 6.42,
+"p": 0.994
+},
+{
+"w": "field",
+"start": 6.42,
+"end": 6.8,
+"p": 0.998
+},
+{
+"w": "shaped",
+"start": 6.8,
+"end": 7.18,
+"p": 0.988
+},
+{
+"w": "exactly",
+"start": 7.18,
+"end": 7.72,
+"p": 0.997
+},
+{
+"w": "like",
+"start": 7.72,
+"end": 8.16,
+"p": 0.999
+},
+{
+"w": "it.",
+"start": 8.16,
+"end": 8.52,
+"p": 0.999
+},
+{
+"w": "Its",
+"start": 9.22,
+"end": 9.36,
+"p": 0.923
+},
+{
+"w": "lines",
+"start": 9.36,
+"end": 9.76,
+"p": 0.999
+},
+{
+"w": "follow",
+"start": 9.76,
+"end": 10.12,
+"p": 0.997
+},
+{
+"w": "the",
+"start": 10.12,
+"end": 10.38,
+"p": 0.997
+},
+{
+"w": "flow's",
+"start": 10.38,
+"end": 10.82,
+"p": 0.949
+},
+{
+"w": "own",
+"start": 10.82,
+"end": 11.02,
+"p": 0.998
+},
+{
+"w": "lines,",
+"start": 11.02,
+"end": 11.56,
+"p": 0.999
+},
+{
+"w": "so",
+"start": 11.88,
+"end": 12.14,
+"p": 0.998
+},
+{
+"w": "carrying",
+"start": 12.14,
+"end": 12.56,
+"p": 0.989
+},
+{
+"w": "and",
+"start": 12.56,
+"end": 12.84,
+"p": 0.998
+},
+{
+"w": "stretching",
+"start": 12.84,
+"end": 13.3,
+"p": 0.999
+},
+{
+"w": "cancel.",
+"start": 13.3,
+"end": 13.8,
+"p": 0.998
+},
+{
+"w": "Only",
+"start": 14.7,
+"end": 15.0,
+"p": 0.997
+},
+{
+"w": "diffusion",
+"start": 15.0,
+"end": 15.48,
+"p": 0.997
+},
+{
+"w": "acts.",
+"start": 15.48,
+"end": 16.04,
+"p": 0.999
+},
+{
+"w": "Its",
+"start": 16.62,
+"end": 16.76,
+"p": 0.953
+},
+{
+"w": "growth",
+"start": 16.76,
+"end": 17.1,
+"p": 0.999
+},
+{
+"w": "rate",
+"start": 17.1,
+"end": 17.4,
+"p": 0.999
+},
+{
+"w": "is",
+"start": 17.4,
+"end": 17.6,
+"p": 0.999
+},
+{
+"w": "exactly",
+"start": 17.6,
+"end": 18.2,
+"p": 0.998
+},
+{
+"w": "minus",
+"start": 18.2,
+"end": 18.58,
+"p": 0.506
+},
+{
+"w": "one",
+"start": 18.58,
+"end": 19.04,
+"p": 0.536
+},
+{
+"w": "over",
+"start": 19.04,
+"end": 19.44,
+"p": 0.991
+},
+{
+"w": "Rm.",
+"start": 19.44,
+"end": 19.96,
+"p": 0.822
+}
+]
+}

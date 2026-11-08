@@ -1,0 +1,103 @@
+{
+"key": "178eb27e44f444f8008c1045",
+"model": "small.en",
+"text": "For VKS, which dipole should rice count and what threshold turns a crossing into a reversal?",
+"words": [
+{
+"w": "For",
+"start": 0.0,
+"end": 0.2,
+"p": 0.914
+},
+{
+"w": "VKS,",
+"start": 0.2,
+"end": 0.76,
+"p": 0.962
+},
+{
+"w": "which",
+"start": 1.4,
+"end": 1.66,
+"p": 0.991
+},
+{
+"w": "dipole",
+"start": 1.66,
+"end": 2.2,
+"p": 0.991
+},
+{
+"w": "should",
+"start": 2.2,
+"end": 2.46,
+"p": 0.998
+},
+{
+"w": "rice",
+"start": 2.46,
+"end": 2.72,
+"p": 0.818
+},
+{
+"w": "count",
+"start": 2.72,
+"end": 3.06,
+"p": 0.98
+},
+{
+"w": "and",
+"start": 3.06,
+"end": 3.68,
+"p": 0.404
+},
+{
+"w": "what",
+"start": 3.68,
+"end": 3.88,
+"p": 0.999
+},
+{
+"w": "threshold",
+"start": 3.88,
+"end": 4.4,
+"p": 0.996
+},
+{
+"w": "turns",
+"start": 4.4,
+"end": 4.76,
+"p": 0.999
+},
+{
+"w": "a",
+"start": 4.76,
+"end": 4.94,
+"p": 0.998
+},
+{
+"w": "crossing",
+"start": 4.94,
+"end": 5.36,
+"p": 0.999
+},
+{
+"w": "into",
+"start": 5.36,
+"end": 5.64,
+"p": 0.998
+},
+{
+"w": "a",
+"start": 5.64,
+"end": 5.8,
+"p": 0.998
+},
+{
+"w": "reversal?",
+"start": 5.8,
+"end": 6.12,
+"p": 0.999
+}
+]
+}

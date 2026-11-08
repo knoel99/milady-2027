@@ -1,0 +1,27 @@
+{
+ "text": "[calm, natural narrator voice] Now the strictest judge: the noise floor. On three dials, the best machine sits at about twice its floor; but three numbers are easy. On the flat sheet of plasma, every model's spectra miss far more than two data samples differ: at best, sixfold.",
+ "voice": "536d3a5e000945adb7038665781a4aca",
+ "words": 44,
+ "scene": "09.5",
+ "para": 0,
+ "duration": 18.782,
+ "latency_s": 3.9,
+ "created": "2026-11-08T08:11:23",
+ "provider": "fish",
+ "request": {
+  "temperature": 0.1,
+  "format": "mp3",
+  "mp3_bitrate": 192,
+  "sample_rate": 44100,
+  "latency": "normal",
+  "language": "en",
+  "normalize": true,
+  "condition_on_previous_chunks": true,
+  "prosody": {
+   "speed": 1.0,
+   "normalize_loudness": true
+  },
+  "text": "[calm, natural narrator voice] Now the strictest judge: the noise floor. On three dials, the best machine sits at about twice its floor; but three numbers are easy. On the flat sheet of plasma, every model's spectra miss far more than two data samples differ: at best, sixfold.",
+  "reference_id": "536d3a5e000945adb7038665781a4aca"
+ }
+}

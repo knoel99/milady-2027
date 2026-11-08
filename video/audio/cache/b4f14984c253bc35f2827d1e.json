@@ -1,0 +1,28 @@
+{
+ "text": "[calm, natural narrator voice] Où se fera le calcul. Si un laboratoire a des cartes graphiques accessibles à un stagiaire, ou s'il existe déjà un projet sur Jean Zay à rejoindre, la location ne sert plus qu'à un court essai. Et pour les dernières marches : quelles simulations des partenaires, sous quelle forme, et pour quand ?",
+ "voice": "536d3a5e000945adb7038665781a4aca",
+ "words": 51,
+ "scene": "10q.4",
+ "para": 1,
+ "lang": "fr",
+ "duration": 18.8343,
+ "latency_s": 3.8,
+ "created": "2026-11-08T10:05:13",
+ "provider": "fish",
+ "request": {
+  "temperature": 0.1,
+  "format": "mp3",
+  "mp3_bitrate": 192,
+  "sample_rate": 44100,
+  "latency": "normal",
+  "language": "fr",
+  "normalize": true,
+  "condition_on_previous_chunks": true,
+  "prosody": {
+   "speed": 1.0,
+   "normalize_loudness": true
+  },
+  "text": "[calm, natural narrator voice] Où se fera le calcul. Si un laboratoire a des cartes graphiques accessibles à un stagiaire, ou s'il existe déjà un projet sur Jean Zay à rejoindre, la location ne sert plus qu'à un court essai. Et pour les dernières marches : quelles simulations des partenaires, sous quelle forme, et pour quand ?",
+  "reference_id": "536d3a5e000945adb7038665781a4aca"
+ }
+}

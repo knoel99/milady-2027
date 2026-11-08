@@ -1,0 +1,27 @@
+{
+ "text": "[calm, natural narrator voice] To climb, the study first built a factory for the data. A recipe card sets the knobs. Ovens run one simulation per setting, on a laptop or a cluster. Each result is sealed in a labelled jar: a unique number, the code version, a checksum.",
+ "voice": "536d3a5e000945adb7038665781a4aca",
+ "words": 45,
+ "scene": "10.2",
+ "para": 0,
+ "duration": 18.0768,
+ "latency_s": 3.5,
+ "created": "2026-11-08T08:12:21",
+ "provider": "fish",
+ "request": {
+  "temperature": 0.1,
+  "format": "mp3",
+  "mp3_bitrate": 192,
+  "sample_rate": 44100,
+  "latency": "normal",
+  "language": "en",
+  "normalize": true,
+  "condition_on_previous_chunks": true,
+  "prosody": {
+   "speed": 1.0,
+   "normalize_loudness": true
+  },
+  "text": "[calm, natural narrator voice] To climb, the study first built a factory for the data. A recipe card sets the knobs. Ovens run one simulation per setting, on a laptop or a cluster. Each result is sealed in a labelled jar: a unique number, the code version, a checksum.",
+  "reference_id": "536d3a5e000945adb7038665781a4aca"
+ }
+}

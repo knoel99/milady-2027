@@ -1,0 +1,169 @@
+{
+"key": "e6ad5a2418aed6897a44e4b5",
+"model": "small.en",
+"text": "Run long enough and one field takes over, the slowest to fade or the fastest to grow. The surface wraps its strong parts, threads trace its lines.",
+"words": [
+{
+"w": "Run",
+"start": 0.0,
+"end": 0.32,
+"p": 0.633
+},
+{
+"w": "long",
+"start": 0.32,
+"end": 0.58,
+"p": 0.999
+},
+{
+"w": "enough",
+"start": 0.58,
+"end": 0.88,
+"p": 1.0
+},
+{
+"w": "and",
+"start": 0.88,
+"end": 1.48,
+"p": 0.54
+},
+{
+"w": "one",
+"start": 1.48,
+"end": 1.72,
+"p": 0.992
+},
+{
+"w": "field",
+"start": 1.72,
+"end": 2.12,
+"p": 0.998
+},
+{
+"w": "takes",
+"start": 2.12,
+"end": 2.38,
+"p": 0.998
+},
+{
+"w": "over,",
+"start": 2.38,
+"end": 2.84,
+"p": 0.999
+},
+{
+"w": "the",
+"start": 3.3,
+"end": 3.62,
+"p": 0.983
+},
+{
+"w": "slowest",
+"start": 3.62,
+"end": 4.1,
+"p": 0.998
+},
+{
+"w": "to",
+"start": 4.1,
+"end": 4.24,
+"p": 0.999
+},
+{
+"w": "fade",
+"start": 4.24,
+"end": 4.62,
+"p": 0.998
+},
+{
+"w": "or",
+"start": 4.62,
+"end": 5.12,
+"p": 0.828
+},
+{
+"w": "the",
+"start": 5.12,
+"end": 5.26,
+"p": 0.992
+},
+{
+"w": "fastest",
+"start": 5.26,
+"end": 5.68,
+"p": 0.994
+},
+{
+"w": "to",
+"start": 5.68,
+"end": 6.0,
+"p": 0.999
+},
+{
+"w": "grow.",
+"start": 6.0,
+"end": 6.3,
+"p": 0.999
+},
+{
+"w": "The",
+"start": 7.18,
+"end": 7.36,
+"p": 0.996
+},
+{
+"w": "surface",
+"start": 7.36,
+"end": 7.76,
+"p": 0.999
+},
+{
+"w": "wraps",
+"start": 7.76,
+"end": 8.22,
+"p": 0.997
+},
+{
+"w": "its",
+"start": 8.22,
+"end": 8.46,
+"p": 0.922
+},
+{
+"w": "strong",
+"start": 8.46,
+"end": 8.86,
+"p": 0.997
+},
+{
+"w": "parts,",
+"start": 8.86,
+"end": 9.38,
+"p": 0.998
+},
+{
+"w": "threads",
+"start": 10.06,
+"end": 10.3,
+"p": 0.994
+},
+{
+"w": "trace",
+"start": 10.3,
+"end": 10.74,
+"p": 0.997
+},
+{
+"w": "its",
+"start": 10.74,
+"end": 11.0,
+"p": 0.993
+},
+{
+"w": "lines.",
+"start": 11.0,
+"end": 11.42,
+"p": 0.999
+}
+]
+}

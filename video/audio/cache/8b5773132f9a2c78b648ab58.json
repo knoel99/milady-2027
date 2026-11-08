@@ -1,0 +1,27 @@
+{
+ "text": "[calm, natural narrator voice] Now the iron that made V-K-S work. At its surface, the part of the field crossing it is continuous, and so is the part along it, divided by the permeability.",
+ "voice": "536d3a5e000945adb7038665781a4aca",
+ "words": 30,
+ "scene": "X6.2",
+ "para": 0,
+ "duration": 10.9714,
+ "latency_s": 2.3,
+ "created": "2026-11-08T08:31:49",
+ "provider": "fish",
+ "request": {
+  "temperature": 0.1,
+  "format": "mp3",
+  "mp3_bitrate": 192,
+  "sample_rate": 44100,
+  "latency": "normal",
+  "language": "en",
+  "normalize": true,
+  "condition_on_previous_chunks": true,
+  "prosody": {
+   "speed": 1.0,
+   "normalize_loudness": true
+  },
+  "text": "[calm, natural narrator voice] Now the iron that made V-K-S work. At its surface, the part of the field crossing it is continuous, and so is the part along it, divided by the permeability.",
+  "reference_id": "536d3a5e000945adb7038665781a4aca"
+ }
+}

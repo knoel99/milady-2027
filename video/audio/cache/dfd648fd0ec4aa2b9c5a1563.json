@@ -1,0 +1,27 @@
+{
+ "text": "[calm, natural narrator voice] It fills space with identical twisting rooms. Three crossed winds make the fluid corkscrew: it spins around the direction it moves. This box returns higher on our climb.",
+ "voice": "536d3a5e000945adb7038665781a4aca",
+ "words": 28,
+ "scene": "03.3",
+ "para": 1,
+ "duration": 12.4604,
+ "latency_s": 2.8,
+ "created": "2026-11-08T08:08:10",
+ "provider": "fish",
+ "request": {
+  "temperature": 0.1,
+  "format": "mp3",
+  "mp3_bitrate": 192,
+  "sample_rate": 44100,
+  "latency": "normal",
+  "language": "en",
+  "normalize": true,
+  "condition_on_previous_chunks": true,
+  "prosody": {
+   "speed": 1.0,
+   "normalize_loudness": true
+  },
+  "text": "[calm, natural narrator voice] It fills space with identical twisting rooms. Three crossed winds make the fluid corkscrew: it spins around the direction it moves. This box returns higher on our climb.",
+  "reference_id": "536d3a5e000945adb7038665781a4aca"
+ }
+}

@@ -1,0 +1,27 @@
+{
+ "text": "[calm, natural narrator voice] At an open dot, the network's snapshots join the shoebox, beside simulated ones.",
+ "voice": "536d3a5e000945adb7038665781a4aca",
+ "words": 13,
+ "scene": "06.4",
+ "para": 2,
+ "duration": 6.0082,
+ "latency_s": 1.4,
+ "created": "2026-11-08T08:09:22",
+ "provider": "fish",
+ "request": {
+  "temperature": 0.1,
+  "format": "mp3",
+  "mp3_bitrate": 192,
+  "sample_rate": 44100,
+  "latency": "normal",
+  "language": "en",
+  "normalize": true,
+  "condition_on_previous_chunks": true,
+  "prosody": {
+   "speed": 1.0,
+   "normalize_loudness": true
+  },
+  "text": "[calm, natural narrator voice] At an open dot, the network's snapshots join the shoebox, beside simulated ones.",
+  "reference_id": "536d3a5e000945adb7038665781a4aca"
+ }
+}

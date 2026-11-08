@@ -1,0 +1,28 @@
+{
+ "text": "[calm, natural narrator voice] En avance et en retard, mais jamais à l'heure. Sous le seuil, la machine laisse échapper de faux passages : jusqu'à un dixième de la vraie fréquence, juste au-dessus. À zéro virgule huit six cinq, elle est en retard : moins d'un sixième de la fréquence comptée. Juste au-dessus, elle surestime : cinq passages pour mille unités de temps, contre trois virgule quatre.",
+ "voice": "536d3a5e000945adb7038665781a4aca",
+ "words": 60,
+ "scene": "09.2",
+ "para": 2,
+ "lang": "fr",
+ "duration": 25.7045,
+ "latency_s": 4.4,
+ "created": "2026-11-08T10:01:43",
+ "provider": "fish",
+ "request": {
+  "temperature": 0.1,
+  "format": "mp3",
+  "mp3_bitrate": 192,
+  "sample_rate": 44100,
+  "latency": "normal",
+  "language": "fr",
+  "normalize": true,
+  "condition_on_previous_chunks": true,
+  "prosody": {
+   "speed": 1.0,
+   "normalize_loudness": true
+  },
+  "text": "[calm, natural narrator voice] En avance et en retard, mais jamais à l'heure. Sous le seuil, la machine laisse échapper de faux passages : jusqu'à un dixième de la vraie fréquence, juste au-dessus. À zéro virgule huit six cinq, elle est en retard : moins d'un sixième de la fréquence comptée. Juste au-dessus, elle surestime : cinq passages pour mille unités de temps, contre trois virgule quatre.",
+  "reference_id": "536d3a5e000945adb7038665781a4aca"
+ }
+}

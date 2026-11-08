@@ -1,0 +1,27 @@
+{
+ "text": "[calm, natural narrator voice] No: a smooth potential keeps the field continuous, breaking the second rule unless the field meets the iron head-on. The plan proposes an untested fix: a potential deliberately kinked at the surface.",
+ "voice": "536d3a5e000945adb7038665781a4aca",
+ "words": 32,
+ "scene": "X6.2",
+ "para": 2,
+ "duration": 14.3151,
+ "latency_s": 3.1,
+ "created": "2026-11-08T08:13:29",
+ "provider": "fish",
+ "request": {
+  "temperature": 0.1,
+  "format": "mp3",
+  "mp3_bitrate": 192,
+  "sample_rate": 44100,
+  "latency": "normal",
+  "language": "en",
+  "normalize": true,
+  "condition_on_previous_chunks": true,
+  "prosody": {
+   "speed": 1.0,
+   "normalize_loudness": true
+  },
+  "text": "[calm, natural narrator voice] No: a smooth potential keeps the field continuous, breaking the second rule unless the field meets the iron head-on. The plan proposes an untested fix: a potential deliberately kinked at the surface.",
+  "reference_id": "536d3a5e000945adb7038665781a4aca"
+ }
+}

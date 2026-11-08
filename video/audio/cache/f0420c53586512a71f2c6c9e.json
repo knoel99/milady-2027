@@ -1,0 +1,27 @@
+{
+ "text": "[calm, natural narrator voice] For the crowd: the energy budget. Impose it on the crowd during training. Reweighting afterwards fails where the model is poor; forcing it onto each snapshot makes a spike.",
+ "voice": "536d3a5e000945adb7038665781a4aca",
+ "words": 29,
+ "scene": "08.6",
+ "para": 1,
+ "duration": 12.1731,
+ "latency_s": 2.3,
+ "created": "2026-11-08T08:10:17",
+ "provider": "fish",
+ "request": {
+  "temperature": 0.1,
+  "format": "mp3",
+  "mp3_bitrate": 192,
+  "sample_rate": 44100,
+  "latency": "normal",
+  "language": "en",
+  "normalize": true,
+  "condition_on_previous_chunks": true,
+  "prosody": {
+   "speed": 1.0,
+   "normalize_loudness": true
+  },
+  "text": "[calm, natural narrator voice] For the crowd: the energy budget. Impose it on the crowd during training. Reweighting afterwards fails where the model is poor; forcing it onto each snapshot makes a spike.",
+  "reference_id": "536d3a5e000945adb7038665781a4aca"
+ }
+}

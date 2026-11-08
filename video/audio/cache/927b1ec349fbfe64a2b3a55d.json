@@ -1,0 +1,28 @@
+{
+ "text": "[calm, natural narrator voice] Un seul modèle, une seule graine aléatoire. La formule de Raïsse exige les équations, et donne une fréquence, pas des temps d'attente. Alors, troisième question de l'étude : une machine peut-elle nous dire à quelle fréquence le champ se renverse ? Pour les passages par zéro, sur trois cadrans : loin du seuil, à peu près, oui ; près du seuil, pas encore.",
+ "voice": "536d3a5e000945adb7038665781a4aca",
+ "words": 59,
+ "scene": "09.1",
+ "para": 2,
+ "lang": "fr",
+ "duration": 25.182,
+ "latency_s": 4.9,
+ "created": "2026-11-08T10:01:39",
+ "provider": "fish",
+ "request": {
+  "temperature": 0.1,
+  "format": "mp3",
+  "mp3_bitrate": 192,
+  "sample_rate": 44100,
+  "latency": "normal",
+  "language": "fr",
+  "normalize": true,
+  "condition_on_previous_chunks": true,
+  "prosody": {
+   "speed": 1.0,
+   "normalize_loudness": true
+  },
+  "text": "[calm, natural narrator voice] Un seul modèle, une seule graine aléatoire. La formule de Raïsse exige les équations, et donne une fréquence, pas des temps d'attente. Alors, troisième question de l'étude : une machine peut-elle nous dire à quelle fréquence le champ se renverse ? Pour les passages par zéro, sur trois cadrans : loin du seuil, à peu près, oui ; près du seuil, pas encore.",
+  "reference_id": "536d3a5e000945adb7038665781a4aca"
+ }
+}

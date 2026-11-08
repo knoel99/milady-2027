@@ -1,0 +1,115 @@
+{
+"key": "3f9b9f10016893d89332d415",
+"model": "small.en",
+"text": "Confidence, medium. The cap is proved, the plateau is not. Ask first, how wide must that plateau be?",
+"words": [
+{
+"w": "Confidence,",
+"start": 0.0,
+"end": 0.76,
+"p": 0.92
+},
+{
+"w": "medium.",
+"start": 1.28,
+"end": 1.54,
+"p": 0.712
+},
+{
+"w": "The",
+"start": 2.48,
+"end": 2.58,
+"p": 0.978
+},
+{
+"w": "cap",
+"start": 2.58,
+"end": 2.78,
+"p": 0.938
+},
+{
+"w": "is",
+"start": 2.78,
+"end": 3.0,
+"p": 0.996
+},
+{
+"w": "proved,",
+"start": 3.0,
+"end": 3.44,
+"p": 0.983
+},
+{
+"w": "the",
+"start": 3.86,
+"end": 3.96,
+"p": 0.995
+},
+{
+"w": "plateau",
+"start": 3.96,
+"end": 4.36,
+"p": 0.992
+},
+{
+"w": "is",
+"start": 4.36,
+"end": 4.6,
+"p": 0.999
+},
+{
+"w": "not.",
+"start": 4.6,
+"end": 4.96,
+"p": 0.99
+},
+{
+"w": "Ask",
+"start": 5.92,
+"end": 6.12,
+"p": 0.987
+},
+{
+"w": "first,",
+"start": 6.12,
+"end": 6.52,
+"p": 0.997
+},
+{
+"w": "how",
+"start": 7.14,
+"end": 7.34,
+"p": 0.974
+},
+{
+"w": "wide",
+"start": 7.34,
+"end": 7.8,
+"p": 0.999
+},
+{
+"w": "must",
+"start": 7.8,
+"end": 8.02,
+"p": 0.998
+},
+{
+"w": "that",
+"start": 8.02,
+"end": 8.26,
+"p": 0.995
+},
+{
+"w": "plateau",
+"start": 8.26,
+"end": 8.68,
+"p": 0.999
+},
+{
+"w": "be?",
+"start": 8.68,
+"end": 9.04,
+"p": 0.999
+}
+]
+}

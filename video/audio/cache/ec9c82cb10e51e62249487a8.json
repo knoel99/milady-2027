@@ -1,0 +1,28 @@
+{
+ "text": "[calm, natural narrator voice] One number keeps the score: the magnetic <|phoneme_start|>R EH1 N AH0 L D Z<|phoneme_end|> number, R M. It is the flow's speed, times its size, divided by the magnetic diffusivity. Large R M: stretching outpaces smudging. Small R M: smudging wins.",
+ "voice": "536d3a5e000945adb7038665781a4aca",
+ "scene": "02.2",
+ "para": 0,
+ "words": 32,
+ "ab_test": "B",
+ "duration": 18.1812,
+ "latency_s": 3.7,
+ "created": "2026-11-08T08:28:56",
+ "provider": "fish",
+ "request": {
+  "temperature": 0.1,
+  "format": "mp3",
+  "mp3_bitrate": 192,
+  "sample_rate": 44100,
+  "latency": "normal",
+  "language": "en",
+  "normalize": true,
+  "condition_on_previous_chunks": true,
+  "prosody": {
+   "speed": 1.0,
+   "normalize_loudness": true
+  },
+  "text": "[calm, natural narrator voice] One number keeps the score: the magnetic <|phoneme_start|>R EH1 N AH0 L D Z<|phoneme_end|> number, R M. It is the flow's speed, times its size, divided by the magnetic diffusivity. Large R M: stretching outpaces smudging. Small R M: smudging wins.",
+  "reference_id": "536d3a5e000945adb7038665781a4aca"
+ }
+}

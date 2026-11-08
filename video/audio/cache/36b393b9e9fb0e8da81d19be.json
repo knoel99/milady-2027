@@ -1,0 +1,27 @@
+{
+ "text": "[calm, natural narrator voice] The partners' solver slices space instead: around the axis, waves of zero, one, two, three bumps per turn; across each half-plane, a triangle mesh.",
+ "voice": "536d3a5e000945adb7038665781a4aca",
+ "words": 24,
+ "scene": "X6.3",
+ "para": 1,
+ "duration": 12.591,
+ "latency_s": 2.3,
+ "created": "2026-11-08T08:13:31",
+ "provider": "fish",
+ "request": {
+  "temperature": 0.1,
+  "format": "mp3",
+  "mp3_bitrate": 192,
+  "sample_rate": 44100,
+  "latency": "normal",
+  "language": "en",
+  "normalize": true,
+  "condition_on_previous_chunks": true,
+  "prosody": {
+   "speed": 1.0,
+   "normalize_loudness": true
+  },
+  "text": "[calm, natural narrator voice] The partners' solver slices space instead: around the axis, waves of zero, one, two, three bumps per turn; across each half-plane, a triangle mesh.",
+  "reference_id": "536d3a5e000945adb7038665781a4aca"
+ }
+}

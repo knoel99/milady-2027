@@ -1,0 +1,187 @@
+{
+"key": "dc843ae6385e5ca0a35ae9fe",
+"model": "small.en",
+"text": "In the periodic box, two scalars—palloidal and toroidal— can replace a potential's three components. Their field is divergence-free, with no gauge. The plan stores its box data that way.",
+"words": [
+{
+"w": "In",
+"start": 0.0,
+"end": 0.2,
+"p": 0.964
+},
+{
+"w": "the",
+"start": 0.2,
+"end": 0.32,
+"p": 0.997
+},
+{
+"w": "periodic",
+"start": 0.32,
+"end": 0.7,
+"p": 0.873
+},
+{
+"w": "box,",
+"start": 0.7,
+"end": 1.18,
+"p": 0.997
+},
+{
+"w": "two",
+"start": 1.6,
+"end": 1.84,
+"p": 0.972
+},
+{
+"w": "scalars—palloidal",
+"start": 1.84,
+"end": 3.18,
+"p": 0.501
+},
+{
+"w": "and",
+"start": 3.18,
+"end": 3.52,
+"p": 0.998
+},
+{
+"w": "toroidal—",
+"start": 3.52,
+"end": 4.46,
+"p": 0.983
+},
+{
+"w": "can",
+"start": 4.46,
+"end": 4.54,
+"p": 0.177
+},
+{
+"w": "replace",
+"start": 4.54,
+"end": 4.9,
+"p": 0.999
+},
+{
+"w": "a",
+"start": 4.9,
+"end": 5.08,
+"p": 0.996
+},
+{
+"w": "potential's",
+"start": 5.08,
+"end": 5.7,
+"p": 0.983
+},
+{
+"w": "three",
+"start": 5.7,
+"end": 5.94,
+"p": 0.966
+},
+{
+"w": "components.",
+"start": 5.94,
+"end": 6.48,
+"p": 0.996
+},
+{
+"w": "Their",
+"start": 7.5,
+"end": 7.6,
+"p": 0.994
+},
+{
+"w": "field",
+"start": 7.6,
+"end": 7.94,
+"p": 0.999
+},
+{
+"w": "is",
+"start": 7.94,
+"end": 8.18,
+"p": 1.0
+},
+{
+"w": "divergence",
+"start": 8.18,
+"end": 8.66,
+"p": 0.983
+},
+{
+"w": "-free,",
+"start": 8.66,
+"end": 9.1,
+"p": 0.91
+},
+{
+"w": "with",
+"start": 9.5,
+"end": 9.64,
+"p": 0.999
+},
+{
+"w": "no",
+"start": 9.64,
+"end": 9.96,
+"p": 0.999
+},
+{
+"w": "gauge.",
+"start": 9.96,
+"end": 10.32,
+"p": 0.982
+},
+{
+"w": "The",
+"start": 11.04,
+"end": 11.18,
+"p": 0.996
+},
+{
+"w": "plan",
+"start": 11.18,
+"end": 11.48,
+"p": 0.976
+},
+{
+"w": "stores",
+"start": 11.48,
+"end": 11.88,
+"p": 0.999
+},
+{
+"w": "its",
+"start": 11.88,
+"end": 12.12,
+"p": 0.99
+},
+{
+"w": "box",
+"start": 12.12,
+"end": 12.42,
+"p": 0.788
+},
+{
+"w": "data",
+"start": 12.42,
+"end": 12.74,
+"p": 0.99
+},
+{
+"w": "that",
+"start": 12.74,
+"end": 13.0,
+"p": 0.998
+},
+{
+"w": "way.",
+"start": 13.0,
+"end": 13.3,
+"p": 1.0
+}
+]
+}

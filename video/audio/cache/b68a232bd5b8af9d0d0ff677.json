@@ -1,0 +1,27 @@
+{
+ "text": "[calm, natural narrator voice] Lane five: a few dials instead of a tank. Nineteen fifty-eight: two coupled disc dynamos already flip. Twenty twelve: three dials that flip by chaos alone; we will play with them soon.",
+ "voice": "536d3a5e000945adb7038665781a4aca",
+ "words": 32,
+ "scene": "SOA1.5",
+ "para": 0,
+ "duration": 15.4906,
+ "latency_s": 3.3,
+ "created": "2026-11-08T08:07:56",
+ "provider": "fish",
+ "request": {
+  "temperature": 0.1,
+  "format": "mp3",
+  "mp3_bitrate": 192,
+  "sample_rate": 44100,
+  "latency": "normal",
+  "language": "en",
+  "normalize": true,
+  "condition_on_previous_chunks": true,
+  "prosody": {
+   "speed": 1.0,
+   "normalize_loudness": true
+  },
+  "text": "[calm, natural narrator voice] Lane five: a few dials instead of a tank. Nineteen fifty-eight: two coupled disc dynamos already flip. Twenty twelve: three dials that flip by chaos alone; we will play with them soon.",
+  "reference_id": "536d3a5e000945adb7038665781a4aca"
+ }
+}

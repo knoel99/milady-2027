@@ -1,0 +1,199 @@
+{
+"key": "312c13e8f119abcf4e937125",
+"model": "small.en",
+"text": "First product off the line. The flat sheet. 11 diffusivities. 16 runs each. The bet. A check on the data. At every setting, the average dissipation matches the injected power within 5%.",
+"words": [
+{
+"w": "First",
+"start": 0.0,
+"end": 0.34,
+"p": 0.829
+},
+{
+"w": "product",
+"start": 0.34,
+"end": 0.7,
+"p": 0.98
+},
+{
+"w": "off",
+"start": 0.7,
+"end": 0.94,
+"p": 0.971
+},
+{
+"w": "the",
+"start": 0.94,
+"end": 1.1,
+"p": 0.967
+},
+{
+"w": "line.",
+"start": 1.1,
+"end": 1.42,
+"p": 0.999
+},
+{
+"w": "The",
+"start": 1.88,
+"end": 1.98,
+"p": 0.987
+},
+{
+"w": "flat",
+"start": 1.98,
+"end": 2.28,
+"p": 0.878
+},
+{
+"w": "sheet.",
+"start": 2.28,
+"end": 2.68,
+"p": 0.993
+},
+{
+"w": "11",
+"start": 3.46,
+"end": 3.62,
+"p": 0.759
+},
+{
+"w": "diffusivities.",
+"start": 3.62,
+"end": 4.4,
+"p": 0.974
+},
+{
+"w": "16",
+"start": 5.08,
+"end": 5.38,
+"p": 0.978
+},
+{
+"w": "runs",
+"start": 5.38,
+"end": 5.78,
+"p": 0.997
+},
+{
+"w": "each.",
+"start": 5.78,
+"end": 6.2,
+"p": 0.997
+},
+{
+"w": "The",
+"start": 6.94,
+"end": 7.08,
+"p": 0.99
+},
+{
+"w": "bet.",
+"start": 7.08,
+"end": 7.32,
+"p": 0.735
+},
+{
+"w": "A",
+"start": 7.74,
+"end": 7.86,
+"p": 0.991
+},
+{
+"w": "check",
+"start": 7.86,
+"end": 8.1,
+"p": 0.99
+},
+{
+"w": "on",
+"start": 8.1,
+"end": 8.3,
+"p": 0.998
+},
+{
+"w": "the",
+"start": 8.3,
+"end": 8.42,
+"p": 0.999
+},
+{
+"w": "data.",
+"start": 8.42,
+"end": 8.68,
+"p": 0.999
+},
+{
+"w": "At",
+"start": 9.42,
+"end": 9.58,
+"p": 0.995
+},
+{
+"w": "every",
+"start": 9.58,
+"end": 9.94,
+"p": 0.998
+},
+{
+"w": "setting,",
+"start": 9.94,
+"end": 10.32,
+"p": 0.999
+},
+{
+"w": "the",
+"start": 10.72,
+"end": 10.82,
+"p": 0.994
+},
+{
+"w": "average",
+"start": 10.82,
+"end": 11.22,
+"p": 0.997
+},
+{
+"w": "dissipation",
+"start": 11.22,
+"end": 11.86,
+"p": 0.991
+},
+{
+"w": "matches",
+"start": 11.86,
+"end": 12.36,
+"p": 0.996
+},
+{
+"w": "the",
+"start": 12.36,
+"end": 12.62,
+"p": 0.999
+},
+{
+"w": "injected",
+"start": 12.62,
+"end": 13.02,
+"p": 0.998
+},
+{
+"w": "power",
+"start": 13.02,
+"end": 13.54,
+"p": 0.997
+},
+{
+"w": "within",
+"start": 13.54,
+"end": 14.16,
+"p": 0.77
+},
+{
+"w": "5%.",
+"start": 14.16,
+"end": 15.1,
+"p": 0.786
+}
+]
+}

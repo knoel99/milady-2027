@@ -1,0 +1,229 @@
+{
+"key": "c0ee5e7f928f65190aeb4189",
+"model": "small.en",
+"text": "The bill. About 11,000 graphics card hours, counting a 20% reserve for failed runs. The three-dimensional box takes the biggest share. Most lines are scaled from one published training run, about 1,150 hours.",
+"words": [
+{
+"w": "The",
+"start": 0.0,
+"end": 0.22,
+"p": 0.854
+},
+{
+"w": "bill.",
+"start": 0.22,
+"end": 0.5,
+"p": 0.845
+},
+{
+"w": "About",
+"start": 1.18,
+"end": 1.34,
+"p": 0.988
+},
+{
+"w": "11",
+"start": 1.34,
+"end": 1.72,
+"p": 0.934
+},
+{
+"w": ",000",
+"start": 1.72,
+"end": 2.26,
+"p": 0.971
+},
+{
+"w": "graphics",
+"start": 2.26,
+"end": 2.6,
+"p": 0.997
+},
+{
+"w": "card",
+"start": 2.6,
+"end": 2.94,
+"p": 0.985
+},
+{
+"w": "hours,",
+"start": 2.94,
+"end": 3.36,
+"p": 0.991
+},
+{
+"w": "counting",
+"start": 4.0,
+"end": 4.12,
+"p": 0.988
+},
+{
+"w": "a",
+"start": 4.12,
+"end": 4.34,
+"p": 0.972
+},
+{
+"w": "20",
+"start": 4.34,
+"end": 4.64,
+"p": 0.947
+},
+{
+"w": "%",
+"start": 4.64,
+"end": 5.0,
+"p": 0.849
+},
+{
+"w": "reserve",
+"start": 5.0,
+"end": 5.36,
+"p": 0.986
+},
+{
+"w": "for",
+"start": 5.36,
+"end": 5.62,
+"p": 0.998
+},
+{
+"w": "failed",
+"start": 5.62,
+"end": 5.94,
+"p": 0.999
+},
+{
+"w": "runs.",
+"start": 5.94,
+"end": 6.34,
+"p": 0.999
+},
+{
+"w": "The",
+"start": 7.36,
+"end": 7.46,
+"p": 0.995
+},
+{
+"w": "three",
+"start": 7.46,
+"end": 7.74,
+"p": 0.872
+},
+{
+"w": "-dimensional",
+"start": 7.74,
+"end": 8.1,
+"p": 0.92
+},
+{
+"w": "box",
+"start": 8.1,
+"end": 8.6,
+"p": 0.999
+},
+{
+"w": "takes",
+"start": 8.6,
+"end": 8.86,
+"p": 0.997
+},
+{
+"w": "the",
+"start": 8.86,
+"end": 9.12,
+"p": 1.0
+},
+{
+"w": "biggest",
+"start": 9.12,
+"end": 9.4,
+"p": 0.999
+},
+{
+"w": "share.",
+"start": 9.4,
+"end": 9.84,
+"p": 0.999
+},
+{
+"w": "Most",
+"start": 10.68,
+"end": 10.86,
+"p": 0.998
+},
+{
+"w": "lines",
+"start": 10.86,
+"end": 11.24,
+"p": 0.999
+},
+{
+"w": "are",
+"start": 11.24,
+"end": 11.38,
+"p": 0.999
+},
+{
+"w": "scaled",
+"start": 11.38,
+"end": 11.72,
+"p": 0.999
+},
+{
+"w": "from",
+"start": 11.72,
+"end": 11.98,
+"p": 0.998
+},
+{
+"w": "one",
+"start": 11.98,
+"end": 12.34,
+"p": 0.936
+},
+{
+"w": "published",
+"start": 12.34,
+"end": 12.74,
+"p": 0.994
+},
+{
+"w": "training",
+"start": 12.74,
+"end": 13.12,
+"p": 0.996
+},
+{
+"w": "run,",
+"start": 13.12,
+"end": 13.48,
+"p": 0.998
+},
+{
+"w": "about",
+"start": 14.06,
+"end": 14.26,
+"p": 0.999
+},
+{
+"w": "1",
+"start": 14.26,
+"end": 14.54,
+"p": 0.651
+},
+{
+"w": ",150",
+"start": 14.54,
+"end": 15.06,
+"p": 0.995
+},
+{
+"w": "hours.",
+"start": 15.06,
+"end": 15.92,
+"p": 0.999
+}
+]
+}

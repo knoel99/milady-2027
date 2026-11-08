@@ -1,0 +1,27 @@
+{
+ "text": "[calm, natural narrator voice] Lane three: building a dynamo. Nineteen sixty-three: a model dynamo of spinning iron cylinders. Nineteen ninety-nine: sodium makes its own field, in Riga, then Karlsruhe.",
+ "voice": "536d3a5e000945adb7038665781a4aca",
+ "words": 25,
+ "scene": "SOA1.3",
+ "para": 0,
+ "duration": 15.0988,
+ "latency_s": 2.8,
+ "created": "2026-11-08T08:07:48",
+ "provider": "fish",
+ "request": {
+  "temperature": 0.1,
+  "format": "mp3",
+  "mp3_bitrate": 192,
+  "sample_rate": 44100,
+  "latency": "normal",
+  "language": "en",
+  "normalize": true,
+  "condition_on_previous_chunks": true,
+  "prosody": {
+   "speed": 1.0,
+   "normalize_loudness": true
+  },
+  "text": "[calm, natural narrator voice] Lane three: building a dynamo. Nineteen sixty-three: a model dynamo of spinning iron cylinders. Nineteen ninety-nine: sodium makes its own field, in Riga, then Karlsruhe.",
+  "reference_id": "536d3a5e000945adb7038665781a4aca"
+ }
+}

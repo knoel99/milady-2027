@@ -1,0 +1,28 @@
+{
+ "text": "[calm, natural narrator voice] Au départ, les nouveaux instantanés ne sont que du bruit pur : un nuage rond de points aléatoires. Par-dessus, la foule que l'on veut obtenir : un point par instantané. Ici, deux amas en miroir, comme les deux tourbillons.",
+ "voice": "536d3a5e000945adb7038665781a4aca",
+ "words": 37,
+ "scene": "06.1",
+ "para": 0,
+ "lang": "fr",
+ "duration": 17.0057,
+ "latency_s": 3.6,
+ "created": "2026-11-08T09:59:22",
+ "provider": "fish",
+ "request": {
+  "temperature": 0.1,
+  "format": "mp3",
+  "mp3_bitrate": 192,
+  "sample_rate": 44100,
+  "latency": "normal",
+  "language": "fr",
+  "normalize": true,
+  "condition_on_previous_chunks": true,
+  "prosody": {
+   "speed": 1.0,
+   "normalize_loudness": true
+  },
+  "text": "[calm, natural narrator voice] Au départ, les nouveaux instantanés ne sont que du bruit pur : un nuage rond de points aléatoires. Par-dessus, la foule que l'on veut obtenir : un point par instantané. Ici, deux amas en miroir, comme les deux tourbillons.",
+  "reference_id": "536d3a5e000945adb7038665781a4aca"
+ }
+}
