@@ -1,0 +1,99 @@
+<!doctype html>
+<html lang="en"><head><meta charset="utf-8">
+<title>02.2 One number for the race</title>
+<link rel="stylesheet" href="../../vendor/katex/katex.min.css">
+<link rel="stylesheet" href="../../runtime/theme.css">
+<link rel="stylesheet" href="ch02.css">
+<script src="../../vendor/katex/katex.min.js"></script>
+<script src="../../runtime/scene.js"></script>
+<script src="../../runtime/components/kit.js"></script>
+<script src="../../runtime/components/hud.js"></script>
+<script src="../../runtime/components/plot.js"></script>
+<script src="../../runtime/components/equation.js"></script>
+<script src="../../runtime/components/motifs.js"></script>
+<script src="ch02_kit.js"></script>
+</head><body><div id="stage"></div>
+<script>
+/* 02.2 One number for the race (L1, NIGHT, CONTEXT, SCHEMATIC). Tokens 'stretching' / 'smudging' from 02.1; the Rm
+   knob; the hero equation Rm = U L / eta built term by term; high / low Rm thread glyphs; a schematic s(Rm) curve
+   (params.curve, no numbers) traced by a point as the knob turns up; the seed in an inset dies, then grows. */
+Scene.define({
+  duration: 30,
+  register: 'night',
+  cues: { score: 0.4, ratio: 4.2, large: 8.6, small: 11.0, knob: 14.2, dies: 17.0, threshold: 19.4 },
+  params: { s_min: -1.0, s_max: 0.6, rm_c_frac: 0.45, width: 0.22, knob_detents: 10 },
+  setup(ctx) {
+    const K = Kit, S = Scene, P = ctx.params, st = ctx.stage, lab = (s) => C2.labOf(ctx, s, s);
+    const T = {}; ['score', 'ratio', 'large', 'small', 'knob', 'dies', 'threshold'].forEach((k) => { T[k] = ctx.at(k + '-0.15'); });
+    // tokens (top): a sharp thread pulled by a blue arrow; a grey-haloed thread
+    const svg = K.svgLayer(ctx, 12);
+    const tok = K.s('g', {}, svg);
+    const t1 = K.s('g', { transform: 'translate(560 110)' }, tok); K.s('path', { d: 'M-90,0 C-40,-26 40,26 90,0', fill: 'none', stroke: K.c('b'), 'stroke-width': 4 }, t1);
+    K.s('path', { d: 'M100,-34 L170,-34 M156,-46 L172,-34 L156,-22', fill: 'none', stroke: K.c('u'), 'stroke-width': 4, 'stroke-linecap': 'round' }, t1);
+    const t2 = K.s('g', { transform: 'translate(1360 110)' }, tok); K.s('path', { d: 'M-90,0 C-40,-26 40,26 90,0', fill: 'none', stroke: K.c('matter'), 'stroke-width': 26, opacity: 0.45, 'stroke-linecap': 'round' }, t2);
+    K.s('path', { d: 'M-90,0 C-40,-26 40,26 90,0', fill: 'none', stroke: K.c('b'), 'stroke-width': 2.5 }, t2);
+    const lT1 = C2.label(st, lab('stretching'), 560, 150, 'center'), lT2 = C2.label(st, lab('smudging'), 1360, 150, 'center');
+    // knob
+    const KX = 1600, KY = 470;
+    const keys = [{ at: 'score-0.15', v: 0.3 }, { at: 'large-0.15', v: 0.9, dur: 1.0 }, { at: 'small-0.15', v: 0.12, dur: 1.0 }, { at: 'knob-0.15', v: 0.02, dur: 0.8 }];
+    const tUp0 = T.knob + 0.8, tUp1 = Math.max(tUp0 + 3, T.threshold + 2.5);
+    K.knob(ctx, { x: KX, y: KY, r: 90, min: 0, max: 1, label: 'Rm', showValue: false, labelDy: 128, at: 'score-0.15', keys: [...keys, { at: tUp0, v: 0.98, dur: tUp1 - tUp0 }] });
+    // after 'knob' the pointer is driven by the same progress that moves the point on the curve: a second knob face
+    // equation
+    const E = K.equation(ctx, { x: 960, y: 270, size: 84, tex: '\\term{lhs}{\\Rm}\\;\\term{eq}{=}\\;\\dfrac{\\term{U}{\\cu{U}}\\,\\term{L}{L}}{\\term{eta}{\\etaP}}',
+      reveal: [[['lhs', 'eq'], 'score'], ['U', 'ratio+0.3'], ['L', 'ratio+1.2'], ['eta', 'ratio+2.1']],
+      labels: [{ id: 'U', text: lab('flow speed'), color: 'u', at: 'ratio+0.4', out: 'ratio+2.0' }, { id: 'L', text: lab('size'), at: 'ratio+1.3', out: 'ratio+2.0' }, { id: 'eta', text: lab('magnetic diffusivity'), color: 'param', at: 'ratio+2.2', out: 'knob-0.3' }] });
+    const eqWrap = E.root || null;
+    // thread glyph beside the knob (sharp on 'large', blurred on 'small')
+    const gl = K.s('g', { transform: `translate(${KX - 230} ${KY - 10})` }, svg);
+    const glH = K.s('path', { d: 'M-60,0 C-20,-30 20,30 60,0', fill: 'none', stroke: K.c('matter'), 'stroke-width': 30, 'stroke-linecap': 'round', opacity: 0 }, gl);
+    const glC = K.s('path', { d: 'M-60,0 C-20,-30 20,30 60,0', fill: 'none', stroke: K.c('b'), 'stroke-width': 4 }, gl);
+    const lLarge = C2.label(st, lab('stretching outpaces smudging'), 1824, KY - 190, 'big right'), lSmall = C2.label(st, lab('smudging wins'), 1824, KY - 190, 'big right');
+    // plot (no numeric ticks: schematic)
+    const PL = K.plot(ctx, { box: { x0: 240, x1: 1080, y0: 470, y1: 680 }, at: 'knob-0.15', grid: false,
+      x: { label: lab('Rm, magnetic Reynolds number'), min: 0, max: 1, ticks: [], param: true }, y: { label: lab('s, growth rate'), min: P.s_min * 1.05, max: P.s_max * 1.15, ticks: [] } });
+    const sOf = (x) => P.s_min + (P.s_max - P.s_min) * (1 + Math.tanh((x - P.rm_c_frac) / P.width)) / 2;
+    const xc = P.rm_c_frac + P.width * Math.atanh(2 * (0 - P.s_min) / (P.s_max - P.s_min) - 1);   // s(xc) = 0
+    const g = K.s('g', {}, PL.root);
+    K.s('line', { x1: PL.sx(0), x2: PL.sx(1), y1: PL.sy(0), y2: PL.sy(0), stroke: K.c('fg-2'), 'stroke-width': 2 }, g);
+    const curve = K.s('path', { fill: 'none', stroke: K.c('fg'), 'stroke-width': 5, 'stroke-linecap': 'round' }, g);
+    const dot = K.s('circle', { r: 10, fill: K.c('fg') }, g);
+    const vline = K.s('line', { x1: PL.sx(xc), x2: PL.sx(xc), y1: PL.sy(P.s_max * 1.1), y2: PL.sy(P.s_min), stroke: K.c('param'), 'stroke-width': 3, 'stroke-dasharray': '10 8' }, g);
+    const lDies = C2.label(st, lab('seed dies'), PL.sx(0.06), PL.sy(-0.25) , ''), lGrows = C2.label(st, lab('seed grows'), PL.sx(0.74), PL.sy(0.36), '');
+    const lThr = K.el('div', { class: 'c2-label big right', html: K.esc(lab('threshold Rm_c')).replace('Rm_c', 'Rm<sub>c</sub>') }, st); Object.assign(lThr.style, { left: (PL.sx(xc) - 14) + 'px', top: (PL.sy(0.62)) + 'px', color: 'var(--param)' });
+    // inset: a weak seed arrow above the knob
+    const ins = K.s('g', { transform: `translate(${KX} 250)` }, svg); K.s('rect', { x: -90, y: -50, width: 180, height: 100, rx: 10, fill: 'none', stroke: K.c('matter-dark'), 'stroke-width': 2 }, ins);
+    const seed = K.s('path', { d: 'M-30,0 H30 M18,-10 L32,0 L18,10', fill: 'none', stroke: K.c('b'), 'stroke-width': 4, 'stroke-linecap': 'round' }, ins);
+    const spk = K.s('path', { d: 'M110,-16 H124 L140,-32 V32 L124,16 H110 Z', fill: 'none', stroke: K.c('fg-2'), 'stroke-width': 3 }, ins);
+    K.chip(ctx, { text: 'SCHEMATIC', kind: 'schematic', x: 240, y: 400, anchor: 'bl', at: 'knob' });
+    K.badge(ctx, { kind: 'CONTEXT', at: -0.3 });
+    K.formulaLayer(ctx);
+    const det = Array.from({ length: P.knob_detents }, (_, i) => ({ t: +(tUp0 + (tUp1 - tUp0) * (i + 0.5) / P.knob_detents).toFixed(3), id: 'detent', gain_db: -24 }));
+    window.__EVENTS__ = det;
+    ctx.c2 = { T, tok, lT1, lT2, glH, glC, lLarge, lSmall, curve, dot, vline, lDies, lGrows, lThr, seed, spk, PL, sOf, xc, tUp0, tUp1, eqWrap };
+  },
+  render(t, ctx) {
+    const S = Scene, K = Kit, c = ctx.c2, T = c.T, fade = C2.fadeEl;
+    const tk = S.seg(t, -0.4, -0.1, S.ease.linear) * (1 - S.seg(t, T.ratio + 2.4, T.ratio + 2.8, S.ease.linear));
+    c.tok.style.opacity = tk.toFixed(3); c.lT1.style.opacity = c.lT2.style.opacity = tk.toFixed(3); K.show(c.lT1, tk > 0); K.show(c.lT2, tk > 0);
+    // glyph and labels for large / small
+    const gOn = S.seg(t, T.large, T.large + 0.3, S.ease.linear) * (1 - S.seg(t, T.knob - 0.3, T.knob, S.ease.linear));
+    const blur = S.seg(t, T.small, T.small + 0.8, S.ease.inOutSine);
+    c.glC.parentNode.style.opacity = gOn.toFixed(3); c.glH.setAttribute('opacity', (0.5 * blur).toFixed(3)); c.glC.setAttribute('stroke-width', (4 + 6 * blur).toFixed(2)); c.glC.setAttribute('opacity', (1 - 0.6 * blur).toFixed(3));
+    fade(c.lLarge, t, T.large + 0.3, T.small - 0.1); fade(c.lSmall, t, T.small + 0.3, T.knob - 0.3);
+    // the point rides the curve as the knob turns up
+    const u = S.seg(t, c.tUp0, c.tUp1, S.ease.linear), x = 0.02 + 0.96 * Scene.spring(u, 0.02);   // the knob's own spring: the point follows the pointer
+    let d = ''; const n = 120; for (let i = 0; i <= n; i++) { const xx = 0.02 + (x - 0.02) * i / n; d += `${i ? 'L' : 'M'}${c.PL.sx(xx).toFixed(1)},${c.PL.sy(c.sOf(xx)).toFixed(1)}`; }
+    const on = t >= c.tUp0; c.curve.setAttribute('d', d); c.curve.style.opacity = on ? 1 : 0;
+    c.dot.setAttribute('cx', c.PL.sx(x).toFixed(1)); c.dot.setAttribute('cy', c.PL.sy(c.sOf(x)).toFixed(1)); c.dot.style.opacity = on ? 1 : 0;
+    const past = x >= c.xc;
+    fade(c.lDies, t, T.dies); c.vline.style.opacity = past && t >= T.threshold - 0.3 ? 1 : 0; fade(c.lThr, t, Math.max(T.threshold, past ? 0 : 1e9)); fade(c.lGrows, t, Math.max(T.threshold + 0.3, past ? 0 : 1e9));
+    // seed: fades while below threshold, grows (then held) past it
+    const sOn = S.seg(t, T.knob, T.knob + 0.3, S.ease.linear), s = c.sOf(x);
+    const amp = past && t >= T.threshold - 0.3 ? Math.min(2.4, Math.exp(1.2 * Math.max(0, t - Math.max(T.threshold - 0.3, c.tUp0)))) : Math.max(0.15, 1 + 0.8 * s * (t > T.dies ? 1 : 0.2));
+    c.seed.setAttribute('transform', `scale(${amp.toFixed(3)} ${Math.min(1.6, amp).toFixed(3)})`); c.seed.style.opacity = (sOn * (past ? 1 : Math.max(0.15, 1 + s))).toFixed(3);
+    c.seed.parentNode.style.opacity = sOn.toFixed(3);
+    c.spk.style.opacity = Math.sin(Math.PI * S.seg(t, T.threshold + 0.6, T.threshold + 1.2, S.ease.linear)).toFixed(3);
+  },
+});
+</script></body></html>

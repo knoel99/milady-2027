@@ -1,0 +1,95 @@
+<!doctype html>
+<html lang="en"><head><meta charset="utf-8">
+<title>02.5 VKS: two impellers and an iron surprise</title>
+<link rel="stylesheet" href="../../runtime/theme.css">
+<link rel="stylesheet" href="ch02.css">
+<script src="../../runtime/scene.js"></script>
+<script src="../../runtime/components/kit.js"></script>
+<script src="../../runtime/components/hud.js"></script>
+<script src="../../runtime/components/motifs.js"></script>
+<script src="../../runtime/components/cards.js"></script>
+<script src="ch02_kit.js"></script>
+</head><body><div id="stage"></div>
+<script>
+/* 02.5 VKS (L1, NIGHT, CONTEXT, SCHEMATIC). Flat cutaway (not WebGL): the cylinder in side view with proportions
+   from params.geometry_mm, two bladed impellers counter-rotating (blade ticks), blue flow: toroidal rings turning
+   opposite ways in each half and four poloidal recirculation loops. PREDICT (unnumbered); stainless steel: the
+   speed gauge climbs, params.seed_decays faint seeds fade; soft iron: the dipole grows from the lines of
+   data/fig_vks.json (shapes only, in cylinder radii, mirrored below the axis); 'more': knobs Rm and material. */
+Scene.define({
+  duration: 35,
+  register: 'night',
+  cues: { inside: 0.4, discs: 4.2, predict: 8.4, steel: 14.2, iron: 18.4, more: 24.4 },
+  data: { vks: 'data/fig_vks.json' },
+  params: { geometry_mm: { inner_diameter: 412, disc_radius: 154.5, disc_gap: 371 }, blades: 8, disc_turn_s: 2.0, orbit_deg: 10, fieldline_azimuths: 6, seed_decays: 2 },
+  setup(ctx) {
+    const K = Kit, S = Scene, P = ctx.params, st = ctx.stage, lab = (s) => C2.labOf(ctx, s, s), G = P.geometry_mm;
+    const T = {}; ['inside', 'discs', 'predict', 'steel', 'iron', 'more'].forEach((k) => { T[k] = ctx.at(k + '-0.15'); });
+    const CX = 960, CY = 430, sc = 1.1, R = G.inner_diameter / 2 * sc, DX = G.disc_gap / 2 * sc, DR = G.disc_radius * sc, HL = DX + 70;
+    const svg = K.svgLayer(ctx, 12), grey = K.c('fg-2');
+    const body = K.s('g', {}, svg);
+    K.s('rect', { x: CX - HL, y: CY - R, width: 2 * HL, height: 2 * R, fill: K.rgba(K.c('matter'), 0.16), stroke: grey, 'stroke-width': 5 }, body);
+    [-1, 1].forEach((s) => K.s('ellipse', { cx: CX + s * HL, cy: CY, rx: 26, ry: R, fill: 'none', stroke: grey, 'stroke-width': 3, 'stroke-dasharray': s < 0 ? '' : '8 8' }, body));
+    K.s('line', { x1: CX - HL - 60, x2: CX + HL + 60, y1: CY, y2: CY, stroke: K.c('muted'), 'stroke-width': 2, 'stroke-dasharray': '6 10' }, body);
+    // impellers: discs seen edge-on with blade ticks sliding (rotation)
+    const discs = [-1, 1].map((s) => { const g = K.s('g', {}, svg); const d = K.s('line', { x1: CX + s * DX, x2: CX + s * DX, y1: CY - DR, y2: CY + DR, stroke: K.c('fg-2'), 'stroke-width': 9, 'stroke-linecap': 'round' }, g);
+      const bl = Array.from({ length: P.blades }, () => K.s('line', { stroke: K.c('fg-2'), 'stroke-width': 4 }, g)); return { g, d, bl, s }; });
+    // flow: poloidal loops (dash offset moves) and toroidal rings (dots on ellipses)
+    const fl = K.s('g', {}, svg), loops = [];
+    [-1, 1].forEach((s) => [-1, 1].forEach((v) => {
+      const xd = CX + s * (DX - 24), xm = CX + s * 40, yi = CY + v * 34, yo = CY + v * (R - 30);
+      // out along the disc, along the wall to the midplane, in at the midplane, back along the axis to the disc
+      const d = `M${xd},${yi} L${xd},${yo} Q${xd},${yo + v * 0} ${xd - s * 40},${yo} L${xm + s * 30},${yo} Q${xm},${yo} ${xm},${yo - v * 40} L${xm},${yi + v * 10} Q${xm},${yi} ${xm + s * 40},${yi} Z`;
+      loops.push(K.s('path', { d, fill: 'none', stroke: K.c('u'), 'stroke-width': 4, 'stroke-dasharray': '18 16', 'stroke-linejoin': 'round' }, fl)); }));
+    const rings = [-1, 1].map((s) => { const xs = [0.35, 0.65].map((f) => CX + s * DX * f); return xs.map((x) => ({ x, s, dots: Array.from({ length: 10 }, () => K.s('circle', { r: 5, fill: K.c('u') }, fl)) })); }).flat();
+    // seeds (steel) and the dipole (iron): fig_vks field lines, mirrored, in cylinder radii
+    const Ldat = (ctx.data.vks && ctx.data.vks.data && ctx.data.vks.data.fieldlines) || [];
+    const fg = K.s('g', {}, svg); K.s('rect', { x: 0, y: 150, width: 1920, height: 560 }, K.s('clipPath', { id: 'c2vclip' }, K.s('defs', {}, svg))); fg.setAttribute('clip-path', 'url(#c2vclip)');
+    const fLines = []; Ldat.forEach((ln) => [1, -1].forEach((m) => { const d = 'M' + ln.pts.map(([x, y]) => `${(CX + x * R).toFixed(1)},${(CY - m * y * R).toFixed(1)}`).join(' L');
+      const p = K.s('path', { d, fill: 'none', stroke: K.c('b'), 'stroke-width': 4 }, fg); const l = p.getTotalLength(); p.style.strokeDasharray = `${l} ${l + 10}`; fLines.push({ p, l }); }));
+    const seeds = Array.from({ length: P.seed_decays }, (_, i) => K.s('line', { x1: CX - DX * 0.8, x2: CX + DX * 0.8, y1: CY + (i ? 16 : -16), y2: CY + (i ? 16 : -16), stroke: K.c('b'), 'stroke-width': 3 }, svg));
+    // labels
+    const lVol = C2.label(st, lab('150 L of liquid sodium'), CX, 112, 'big center');
+    const lImp = C2.label(st, lab('two impellers, counter-rotating · motors up to 300 kW'), CX, CY + R + 28, 'big center');
+    const lSteel = C2.label(st, lab('stainless steel'), CX + HL + 50, CY - 24, 'big c2-halo'), lIron = C2.label(st, lab('soft iron'), CX + HL + 50, CY - 24, 'big c2-halo');
+    const lNo = C2.label(st, lab('stainless steel: no dynamo'), CX, CY + R + 28, 'big center c2-halo'), lYes = C2.label(st, lab('soft iron: dynamo'), CX, CY + R + 28, 'big center c2-halo');
+    lYes.setAttribute('data-qa', 'over-ok'); lIron.setAttribute('data-qa', 'over-ok');   // haloed over the field lines
+    K.knob(ctx, { x: 1640, y: 600, r: 46, min: 0, max: 1, label: lab('full speed'), showValue: false, labelDy: 100, at: 'steel-0.15', out: 'more-0.3', keys: [{ at: 'steel-0.15', v: 0.1 }, { at: 'steel+0.2', v: 0.98, dur: 1.4 }] });
+    K.knob(ctx, { x: 1480, y: 600, r: 46, min: 0, max: 1, label: 'Rm', showValue: false, labelDy: 100, at: 'more-0.15', value: 0.6 });
+    K.knob(ctx, { x: 1700, y: 600, r: 46, min: 0, max: 1, label: lab('material'), showValue: false, labelDy: 100, at: 'more-0.15', keys: [{ at: 'more-0.15', v: 0.2 }, { at: 'more+0.6', v: 0.8, dur: 1.0 }] });
+    // PREDICT without answer buttons (Kit.predictCard warns without options): a page card in the same style
+    const pc = K.el('div', { class: 'kit-predict' }, st); Object.assign(pc.style, { left: '96px', top: '96px', width: '560px' });
+    K.el('div', { class: 'kp-kicker' }, pc, K.upper(lab('Predict'))); K.el('div', { class: 'kp-q' }, pc, lab("Does the discs' metal matter?"));
+    K.chip(ctx, { text: C2.chipOf(ctx, /SCHEMATIC/, 'SCHEMATIC · geometry after Monchaux et al. 2007'), kind: 'schematic', x: 1824, y: 880, anchor: 'br', at: 'inside' });
+    K.lowerThird(ctx, { kind: 'reference', l1: 'Reference', l2: C2.refL2(C2.chipOf(ctx, /REFERENCE/, 'REFERENCE · Monchaux et al. 2007 · soft-iron impellers')), at: 'steel+0.4', hold: 4 });
+    K.badge(ctx, { kind: 'CONTEXT', at: -0.3 });
+    ctx.c2 = { pc, T, body, discs, fl, loops, rings, fLines, seeds, lVol, lImp, lSteel, lIron, lNo, lYes, CX, CY, R, DX, DR };
+  },
+  render(t, ctx) {
+    const S = Scene, K = Kit, P = ctx.params, c = ctx.c2, T = c.T, fade = C2.fadeEl;
+    const bo = S.seg(t, -0.4, -0.1, S.ease.linear);
+    const pco = S.seg(t, T.predict, T.predict + 0.35, S.ease.outCubic) * (1 - S.seg(t, T.steel - 0.3, T.steel, S.ease.linear)); c.pc.style.opacity = pco.toFixed(3); K.show(c.pc, pco > 0);
+    c.pc.style.transform = `translateY(${(16 * (1 - pco)).toFixed(1)}px) scale(${(1 + 0.008 * Math.sin(2 * Math.PI * t / 2.4)).toFixed(4)})`;
+    c.body.style.opacity = bo; fade(c.lVol, t, T.inside + 0.3, T.iron);
+    // discs: in on 'discs'; swap (slide out and back, darker) on 'iron'
+    const dOn = S.seg(t, T.discs, T.discs + 0.4, S.ease.linear), sw = Math.sin(Math.PI * S.seg(t, T.iron, T.iron + 0.8, S.ease.inOutCubic)), iron = t >= T.iron + 0.4;
+    const om = 2 * Math.PI / P.disc_turn_s;
+    c.discs.forEach((q) => { q.g.style.opacity = dOn; q.g.setAttribute('transform', `translate(${(q.s * 140 * sw).toFixed(1)} 0)`);
+      const col = iron ? K.c('matter') : K.c('fg-2'); q.d.setAttribute('stroke', col);
+      q.bl.forEach((b, i) => { const a = q.s * om * t + i * 2 * Math.PI / P.blades, y = c.CY + c.DR * Math.cos(a), vis = Math.sin(a) > 0;
+        b.setAttribute('x1', c.CX + q.s * c.DX); b.setAttribute('x2', c.CX + q.s * (c.DX - 26)); b.setAttribute('y1', y.toFixed(1)); b.setAttribute('y2', y.toFixed(1)); b.style.opacity = vis ? 1 : 0.25; b.setAttribute('stroke', col); }); });
+    fade(c.lImp, t, T.discs + 0.3, T.steel);
+    // flow from 'discs+1'
+    const fo = S.seg(t, T.discs + 1.0, T.discs + 1.5, S.ease.linear); c.fl.style.opacity = (0.85 * fo).toFixed(3);
+    c.loops.forEach((p) => { p.style.strokeDashoffset = (-60 * t).toFixed(1); });
+    c.rings.forEach((r) => r.dots.forEach((d, i) => { const a = r.s * 1.6 * t + i * 2 * Math.PI / 10; d.setAttribute('cx', (r.x + 22 * Math.sin(a)).toFixed(1)); d.setAttribute('cy', (c.CY + (c.R - 50) * Math.cos(a)).toFixed(1)); d.style.opacity = Math.sin(a) > 0 ? 1 : 0.3; }));
+    // steel: seeds appear and fade, twice
+    c.seeds.forEach((sd, i) => { const a = T.steel + 0.8 + 1.4 * i, p = S.seg(t, a, a + 0.3, S.ease.linear) * (1 - S.seg(t, a + 0.4, a + 1.2, S.ease.linear)); sd.style.opacity = (0.6 * p).toFixed(3); });
+    fade(c.lSteel, t, T.steel + 0.2, T.iron); fade(c.lNo, t, T.steel + 2.2, T.iron);
+    // iron: the dipole grows (drawn on from the axis, brightness exponential then level)
+    fade(c.lIron, t, T.iron + 0.6); fade(c.lYes, t, T.iron + 2.4);
+    const g0 = T.iron + 0.9, pg = S.seg(t, g0, g0 + 2.0, S.ease.inOutSine), br = Math.min(1, Math.exp(2.2 * (t - g0 - 2.0)));
+    c.fLines.forEach((q) => { q.p.style.strokeDashoffset = (q.l * (1 - pg)).toFixed(1); q.p.style.opacity = t >= g0 ? (0.25 + 0.75 * br).toFixed(3) : 0; q.p.setAttribute('stroke-width', (2 + 2.5 * br).toFixed(2)); });
+  },
+});
+</script></body></html>

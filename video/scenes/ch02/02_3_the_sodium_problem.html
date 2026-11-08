@@ -1,0 +1,116 @@
+<!doctype html>
+<html lang="en"><head><meta charset="utf-8">
+<title>02.3 The sodium problem</title>
+<link rel="stylesheet" href="../../vendor/katex/katex.min.css">
+<link rel="stylesheet" href="../../runtime/theme.css">
+<link rel="stylesheet" href="ch02.css">
+<script src="../../vendor/katex/katex.min.js"></script>
+<script src="../../runtime/scene.js"></script>
+<script src="../../runtime/components/kit.js"></script>
+<script src="../../runtime/components/hud.js"></script>
+<script src="../../runtime/components/motifs.js"></script>
+<script src="ch02_kit.js"></script>
+</head><body><div id="stage"></div>
+<script>
+/* 02.3 The sodium problem (L1, NIGHT, CONTEXT, SCHEMATIC). A grey tank of liquid sodium; two identical grey pours
+   (sodium, water); a blue swirl and a vermillion blob start to smudge together, the blob is gone in about 1 s;
+   the green ratio Pm; two green dials, Rm (linear, params.rm_dial, window params.rm_window) and Re (log,
+   params.re_dial_log10), driven together through Re = Rm / Pm (params.pm_value), over a blue turbulent texture. */
+Scene.define({
+  duration: 30,
+  register: 'night',
+  cues: { sodium: 0.4, water: 2.6, fast: 4.8, pm: 9.8, stir: 14.6, re: 17.8, turbulent: 22.6 },
+  params: { sodium_temperature_C: 120, pm_label: 'Pm = ν / η ≈ 1 / 100 000', pm_value: 8.2e-6, rm_dial: [0, 60], rm_window: [10, 50], re_dial_log10: [3, 7], rm_needle_end: 30, texture_max_opacity: 0.35 },
+  setup(ctx) {
+    const K = Kit, S = Scene, P = ctx.params, st = ctx.stage, lab = (s) => C2.labOf(ctx, s, s);
+    const T = {}; ['sodium', 'water', 'fast', 'pm', 'stir', 're', 'turbulent'].forEach((k) => { T[k] = ctx.at(k + '-0.15'); });
+    const svg = K.svgLayer(ctx, 12), grey = K.c('fg-2');
+    // tank
+    const tank = K.s('g', {}, svg);
+    K.s('path', { d: 'M760,260 V560 Q760,600 800,600 H1120 Q1160,600 1160,560 V260', fill: 'none', stroke: grey, 'stroke-width': 5 }, tank);
+    K.s('rect', { x: 766, y: 330, width: 388, height: 264, rx: 30, fill: K.c('matter') }, tank);
+    const surf = K.s('path', { fill: 'none', stroke: K.c('fg'), 'stroke-width': 3 }, tank);
+    const lNa = C2.label(st, lab('liquid sodium'), 960, 640, 'big center');
+    // pours: identical animations, two greys
+    const pours = [[700, 'matter'], [1220, 'fg-2']].map(([x, col]) => { const g = K.s('g', {}, svg); const p = K.s('path', { fill: 'none', stroke: K.c(col), 'stroke-width': 26, 'stroke-linecap': 'round' }, g);
+      const sp = K.s('ellipse', { cx: x, cy: 620, rx: 0, ry: 0, fill: 'none', stroke: K.c(col), 'stroke-width': 5 }, g); return { g, p, sp, x }; });
+    const lPs = [C2.label(st, lab('sodium'), 700, 660, 'big center'), C2.label(st, lab('water'), 1220, 660, 'big center')];
+    const lRun = C2.label(st, lab('about as runny as water'), 960, 170, 'big center');
+    // blobs
+    const bsw = K.s('g', { transform: 'translate(560 440)' }, svg), streaks = [];
+    for (let i = 0; i < 18; i++) { const r = 20 + 6 * i, a0 = i * 0.9; streaks.push(K.s('path', { d: `M${r},0 A${r},${r} 0 0 1 ${(r * Math.cos(1.1)).toFixed(1)},${(r * Math.sin(1.1)).toFixed(1)}`, fill: 'none', stroke: K.c('u'), 'stroke-width': 4, 'stroke-linecap': 'round', transform: `rotate(${(a0 * 57.3).toFixed(1)})` }, bsw)); }
+    const defs = K.s('defs', {}, svg), gr = K.s('radialGradient', { id: 'c2blob' }, defs);
+    K.s('stop', { offset: '0%', 'stop-color': K.c('b'), 'stop-opacity': 1 }, gr); K.s('stop', { offset: '100%', 'stop-color': K.c('b'), 'stop-opacity': 0 }, gr);
+    const blob = K.s('circle', { cx: 1360, cy: 440, r: 60, fill: 'url(#c2blob)' }, svg);
+    const lFast = C2.label(st, lab('field smudges about 100 000 × faster than swirls'), 960, 170, 'big center');
+    const lPm = C2.label(st, P.pm_label, 960, 410, 'big center'); lPm.style.color = 'var(--param)'; lPm.classList.add('c2-halo');
+    const mkL = (html, x) => { const e = K.el('div', { class: 'c2-label center', html }, st); e.style.left = x + 'px'; e.style.top = '640px'; return e; };
+    const lSw = mkL('ν · ' + K.esc(lab('swirl smudging')), 560), lFs = mkL('<span class="k-param">η</span> · ' + K.esc(lab('field smudging')), 1360);
+    // dials (own: Re is driven through Re = Rm / Pm every frame)
+    const dial = (cx, cy, R, frac0, frac1, tickVals, tickLab) => { const g = K.s('g', { transform: `translate(${cx} ${cy})` }, svg), A0 = -135, A1 = 135;
+      const pol = (a, r) => [r * Math.sin(a * Math.PI / 180), -r * Math.cos(a * Math.PI / 180)];
+      const arc = (a, b, r) => { const p = pol(a, r), q = pol(b, r); return `M${p[0]},${p[1]} A${r},${r} 0 ${b - a > 180 ? 1 : 0} 1 ${q[0]},${q[1]}`; };
+      K.s('path', { d: arc(A0, A1, R + 18), fill: 'none', stroke: K.c('matter-dark'), 'stroke-width': 4 }, g);
+      if (frac1 > frac0) K.s('path', { d: arc(A0 + 270 * frac0, A0 + 270 * frac1, R + 18), fill: 'none', stroke: K.rgba(K.c('param'), 0.32), 'stroke-width': 22 }, g);
+      tickVals.forEach((f, i) => { const a = A0 + 270 * f, p = pol(a, R + 32), q = pol(a, R + 44), tl = pol(a, R + 80); K.s('line', { x1: p[0], y1: p[1], x2: q[0], y2: q[1], stroke: K.c('muted'), 'stroke-width': 2 }, g);
+        if (tickLab[i]) { const tt = K.s('text', { x: tl[0], y: tl[1] + 10, 'text-anchor': 'middle', class: 'kt-tick', 'data-qa': 'over-ok' }, g, tickLab[i]); tt.style.paintOrder = 'stroke'; tt.style.stroke = K.c('bg'); tt.style.strokeWidth = '8px'; } });   // haloed over the texture
+      K.s('circle', { r: R, fill: K.c('panel'), stroke: K.c('matter'), 'stroke-width': 5 }, g);
+      const ptr = K.s('line', { x1: 0, y1: -R * 0.2, x2: 0, y2: -R + 14, stroke: K.c('param'), 'stroke-width': 9, 'stroke-linecap': 'round' }, g); K.s('circle', { r: 10, fill: K.c('matter') }, g);
+      return { g, set: (f) => ptr.setAttribute('transform', `rotate(${(A0 + 270 * Math.max(0, Math.min(1, f))).toFixed(2)})`) }; };
+    const [r0, r1] = P.rm_dial, [e0, e1] = P.re_dial_log10, rmF = (v) => (v - r0) / (r1 - r0), reF = (v) => (Math.log10(v) - e0) / (e1 - e0);
+    const rmTicks = [0, 1, 2, 3, 4, 5, 6].map((i) => i / 6), rmLab = rmTicks.map((f, i) => (i % 2 === 0 ? String(Math.round(r0 + f * (r1 - r0))) : ''));
+    const reVals = []; for (let e = e0; e <= e1; e++) reVals.push(e);
+    const dRm = dial(620, 450, 130, rmF(P.rm_window[0]), rmF(P.rm_window[1]), rmTicks, rmLab);
+    const dRe = dial(1300, 450, 130, 0, 0, reVals.map((e) => (e - e0) / (e1 - e0)), reVals.map((e) => K.pow10(Math.pow(10, e))));
+    const lRm = C2.label(st, lab('Rm'), 620, 660, 'big center'), lRe = C2.label(st, lab('Re, Reynolds number'), 1300, 660, 'big center'); [lRm, lRe].forEach((e) => { e.style.color = 'var(--param)'; });
+    const lMil = C2.label(st, lab('millions'), 1300, 710, 'big center');
+    const motor = K.s('g', { transform: 'translate(960 640)' }, svg); K.s('circle', { r: 34, fill: 'none', stroke: grey, 'stroke-width': 4 }, motor);
+    const rotor = K.s('g', {}, motor); [0, 120, 240].forEach((a) => K.s('line', { x1: 0, y1: 0, x2: 0, y2: -26, stroke: grey, 'stroke-width': 5, transform: `rotate(${a})` }, rotor));
+    const lCap = C2.label(st, lab('Rm ~ 10–50 needs Re ~ millions'), 960, 120, 'big center'), lTurb = C2.label(st, lab('every laboratory dynamo is turbulent'), 960, 176, 'big center');
+    // turbulent texture (closed form): short blue streaks on a few drifting eddies
+    const L = K.canvasLayer(ctx, 5, { x: 200, y: 200, w: 1520, h: 560 }, null, { reset: true }), rs = S.rng('turb'), nS = 900;
+    const tx = Array.from({ length: nS }, () => [1520 * rs(), 560 * rs(), 6.283 * rs(), 0.6 + rs()]);
+    K.lowerThird(ctx, { kind: 'reference', l1: 'Reference', l2: C2.refL2(C2.chipOf(ctx, /Nore/, 'REFERENCE · Nore et al. 2018 · sodium at 120 °C')), at: 'pm+0.3', hold: 4 });
+    K.chip(ctx, { text: 'SCHEMATIC', kind: 'schematic', x: 96, y: 124, at: 'fast' });
+    K.badge(ctx, { kind: 'CONTEXT', at: -0.3 });
+    K.formulaLayer(ctx);
+    const tS0 = T.stir + 0.6, tS1 = Math.max(tS0 + 2.5, T.re + 0.4);
+    const rmAt = (t) => 0.2 + (P.rm_needle_end - 0.2) * S.spring(S.seg(t, tS0, tS1, S.ease.linear), 0.02);
+    ctx.c2 = { T, tank, surf, lNa, pours, lPs, lRun, bsw, streaks, blob, lFast, lPm, lSw, lFs, dRm, dRe, rmF, reF, lRm, lRe, lMil, motor, rotor, lCap, lTurb, L, tx, rmAt, tS0 };
+  },
+  render(t, ctx) {
+    const S = Scene, K = Kit, P = ctx.params, c = ctx.c2, T = c.T, fade = C2.fadeEl;
+    // tank (base layout from frame 0), tilts out on 'water'
+    const tk = S.seg(t, -0.4, -0.1, S.ease.linear) * (1 - S.seg(t, T.water + 0.3, T.water + 0.8, S.ease.linear));
+    c.tank.style.opacity = tk.toFixed(3); K.show(c.tank, tk > 0);
+    c.tank.setAttribute('transform', `rotate(${(-18 * S.seg(t, T.water, T.water + 0.8, S.ease.inOutCubic)).toFixed(2)} 960 430)`);
+    let d = ''; for (let i = 0; i <= 40; i++) { const x = 766 + 388 * i / 40; d += `${i ? 'L' : 'M'}${x.toFixed(1)},${(330 + 4 * Math.sin(x / 40 + 2.2 * t)).toFixed(1)}`; } c.surf.setAttribute('d', d);
+    fade(c.lNa, t, T.sodium, T.water + 0.3);
+    // pours: identical
+    const pp = S.seg(t, T.water + 0.4, T.water + 1.0, S.ease.inOutSine), po = 1 - S.seg(t, T.fast - 0.3, T.fast + 0.1, S.ease.linear);
+    c.pours.forEach((q) => { let dd = ''; const yb = 220 + 400 * pp; for (let i = 0; i <= 30; i++) { const y = 220 + (yb - 220) * i / 30; dd += `${i ? 'L' : 'M'}${(q.x + 5 * Math.sin(y / 30 - 6 * t)).toFixed(1)},${y.toFixed(1)}`; }
+      q.p.setAttribute('d', dd); const sp = S.seg(t, T.water + 1.0, T.water + 1.4, S.ease.outCubic); q.sp.setAttribute('rx', Math.max(0, 60 * sp + 6 * Math.sin(5 * t) * sp).toFixed(1)); q.sp.setAttribute('ry', (14 * sp).toFixed(1));
+      q.g.style.opacity = (pp > 0 ? 1 : 0) * po; });
+    c.lPs.forEach((e) => fade(e, t, T.water + 0.6, T.fast - 0.3)); fade(c.lRun, t, T.water + 0.8, T.fast - 0.3);
+    // blobs: swirl barely widens, the field blob spreads within ~1 s
+    const bo = S.seg(t, T.fast, T.fast + 0.3, S.ease.linear) * (1 - S.seg(t, T.stir, T.stir + 0.6, S.ease.linear)), slide = S.seg(t, T.stir, T.stir + 0.6, S.ease.inOutCubic);
+    c.bsw.style.opacity = bo.toFixed(3); c.bsw.setAttribute('transform', `translate(${560 - 300 * slide} 440) rotate(${(40 * t).toFixed(1)}) scale(${(1 + 0.002 * Math.max(0, t - T.fast)).toFixed(4)})`);
+    const sp = S.seg(t, T.fast + 0.3, T.fast + 1.4, S.ease.outCubic);
+    c.blob.setAttribute('r', (60 + 260 * sp).toFixed(1)); c.blob.style.opacity = (bo * (1 - 0.92 * sp)).toFixed(3); c.blob.setAttribute('cx', (1360 + 300 * slide).toFixed(1));
+    fade(c.lFast, t, T.fast + 0.4, T.stir); fade(c.lPm, t, T.pm, T.stir); fade(c.lSw, t, T.pm + 0.4, T.stir); fade(c.lFs, t, T.pm + 0.4, T.stir);
+    // dials: Rm drives Re = Rm / Pm
+    const dOn = S.seg(t, T.stir + 0.2, T.stir + 0.6, S.ease.linear);
+    [c.dRm.g, c.dRe.g, c.motor].forEach((g) => { g.style.opacity = dOn.toFixed(3); });
+    const rm = c.rmAt(t), re = rm / P.pm_value; c.dRm.set(c.rmF(rm)); c.dRe.set(c.reF(re));
+    c.rotor.setAttribute('transform', `rotate(${(360 * 3 * Math.max(0, t - c.tS0) * Math.min(1, rm / P.rm_needle_end)).toFixed(1)})`);
+    fade(c.lRm, t, T.stir + 0.3); fade(c.lRe, t, T.stir + 0.3); fade(c.lMil, t, T.re + 0.2);
+    fade(c.lCap, t, T.turbulent); fade(c.lTurb, t, T.turbulent + 0.4);
+    // turbulence behind the dials: opacity tied to the Re needle
+    const g = c.L.g; g.clearRect(0, 0, 1520, 560);
+    const op = P.texture_max_opacity * Math.max(0, Math.min(1, (c.reF(re) - 0.3) / 0.6)) * dOn;
+    if (op > 0.01) { g.strokeStyle = K.rgba(K.c('u'), op); g.lineWidth = 2.5; g.beginPath();
+      for (const [x0, y0, ph, w] of c.tx) { const a = ph + 1.7 * Math.sin(x0 / 140 + 0.7 * t * w) + Math.cos(y0 / 110 - 0.9 * t), x = x0 + 30 * Math.sin(t * w + ph), y = y0 + 22 * Math.cos(0.8 * t * w + ph);
+        g.moveTo(x, y); g.lineTo(x + 18 * Math.cos(a), y + 18 * Math.sin(a)); } g.stroke(); }
+  },
+});
+</script></body></html>
