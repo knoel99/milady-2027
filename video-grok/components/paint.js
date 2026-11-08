@@ -20,7 +20,6 @@ export function paint(stage, view) {
   if (view.field) safe.append(paintField(view.field));
   if (view.formula) safe.append(paintFormula(view.formula));
   if (view.waiting) safe.append(paintWaiting(view.waiting));
-  if (view.subtitle) safe.append(paintSubtitle(view.subtitle));
   stage.append(safe);
 }
 
@@ -220,12 +219,6 @@ function paintWaiting(waiting) {
   box.append(el("p", "waiting-confidence", waiting.confidence));
   box.append(el("p", "waiting-label", waiting.label));
   return box;
-}
-
-function paintSubtitle(subtitle) {
-  const langue = document.documentElement.lang;
-  const value = langue === "fr" && subtitle.fr ? subtitle.fr : subtitle.text;
-  return el("p", "subtitle", value);
 }
 
 function subtitleBand() {

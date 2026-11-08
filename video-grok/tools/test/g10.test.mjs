@@ -454,6 +454,11 @@ test("le texte reste à 28 px, hors marge, et ne coupe pas les barres", async ()
         }
         assert.ok(report.items.length > 0, cue);
         for (const item of report.items) {
+          for (const rect of item.rects) {
+            assert.ok(rect.bottom <= 880, `${cue} ${item.text} entre dans la bande ${rect.bottom}`);
+          }
+        }
+        for (const item of report.items) {
           assert.ok(item.size >= 28, `${cue} ${item.text} ${item.size}`);
           for (const rect of item.rects) {
             assert.ok(rect.x >= 80, `${cue} ${item.text} x ${rect.x}`);

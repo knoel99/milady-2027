@@ -82,6 +82,19 @@ function phrases(texte) {
   return trouvees;
 }
 
+test("la piste entière égale le script parlé", async () => {
+  for (const lang of ["en", "fr"]) {
+    const markdown = await readFile(join(root, "narration", lang, "g10.md"), "utf8");
+    const chapitre = preparer(markdown, lang);
+    const durees = new Map(chapitre.paragraphes.map((paragraphe) => [paragraphe.id, 8]));
+    const cues = sousTitresNarration(tableau(chapitre), chapitre, durees);
+    const lu = contrat(cues.map((cue) => cue.text).join(" "));
+    const voulu = contrat(chapitre.paragraphes.map((paragraphe) => paragraphe.brut).join(" "));
+    assert.equal(lu, voulu, lang);
+    assert.equal(chapitre.paragraphes.some((paragraphe) => paragraphe.id === "cue.g10.sample.formula"), false);
+  }
+});
+
 test("chaque beat porte le texte parlé, l'exposant et la conclusion", async () => {
   for (const lang of ["en", "fr"]) {
     const markdown = await readFile(join(root, "narration", lang, "g10.md"), "utf8");
