@@ -12,5 +12,5 @@ Style: Sub,Inter Medium,42,&H00F7F4F2,&H00F7F4F2,&H38140F0B,&H00000000,0,0,0,0,1
 
 [Events]
 Format: Layer, Start, End, Style, Name, MarginL, MarginR, MarginV, Effect, Text
-Dialogue: 0,0:00:00.42,0:00:03.80,Sub,,0,0,0,,{\fad(120,100)\move(960,1020,960,1016,0,120)}In the partners' solver snapshots,\Nwhich laws hold exactly,
-Dialogue: 0,0:00:03.88,0:00:06.20,Sub,,0,0,0,,{\fad(120,100)\move(960,1020,960,1016,0,120)}and under which discrete operator?
+Dialogue: 0,0:00:00.47,0:00:03.07,Sub,,0,0,0,,{\fad(120,100)\move(960,1020,960,1016,0,120)}Dans les instantanés\Ndes codes du consortium,
+Dialogue: 0,0:00:03.15,0:00:07.29,Sub,,0,0,0,,{\fad(120,100)\move(960,1020,960,1016,0,120)}quelles lois valent exactement,\Net pour quel opérateur discret ?

@@ -12,5 +12,5 @@ Style: Sub,Inter Medium,42,&H00F7F4F2,&H00F7F4F2,&H38140F0B,&H00000000,0,0,0,0,1
 
 [Events]
 Format: Layer, Start, End, Style, Name, MarginL, MarginR, MarginV, Effect, Text
-Dialogue: 0,0:00:00.42,0:00:04.06,Sub,,0,0,0,,{\fad(120,100)\move(960,1020,960,1016,0,120)}How many independent snapshots\Ndoes each setting need,
-Dialogue: 0,0:00:04.14,0:00:07.03,Sub,,0,0,0,,{\fad(120,100)\move(960,1020,960,1016,0,120)}and how far apart must they be saved?
+Dialogue: 0,0:00:00.47,0:00:04.06,Sub,,0,0,0,,{\fad(120,100)\move(960,1020,960,1016,0,120)}Combien d'instantanés indépendants\Nfaut-il pour chaque réglage,
+Dialogue: 0,0:00:04.14,0:00:07.15,Sub,,0,0,0,,{\fad(120,100)\move(960,1020,960,1016,0,120)}et à quel intervalle\Nfaut-il les enregistrer ?

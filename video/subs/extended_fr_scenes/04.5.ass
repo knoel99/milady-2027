@@ -1,0 +1,21 @@
+[Script Info]
+ScriptType: v4.00+
+PlayResX: 1920
+PlayResY: 1080
+WrapStyle: 2
+ScaledBorderAndShadow: yes
+YCbCr Matrix: TV.709
+
+[V4+ Styles]
+Format: Name, Fontname, Fontsize, PrimaryColour, SecondaryColour, OutlineColour, BackColour, Bold, Italic, Underline, StrikeOut, ScaleX, ScaleY, Spacing, Angle, BorderStyle, Outline, Shadow, Alignment, MarginL, MarginR, MarginV, Encoding
+Style: Sub,Inter Medium,42,&H00F7F4F2,&H00F7F4F2,&H38140F0B,&H00000000,0,0,0,0,100,100,0,0,3,12,0,2,240,240,64,1
+
+[Events]
+Format: Layer, Start, End, Style, Name, MarginL, MarginR, MarginV, Effect, Text
+Dialogue: 0,0:00:00.37,0:00:04.36,Sub,,0,0,0,,{\fad(120,100)\move(960,1020,960,1016,0,120)}La trajectoire nous échappe :\Nlaissez donc l'obturateur ouvert.
+Dialogue: 0,0:00:04.70,0:00:08.63,Sub,,0,0,0,,{\fad(120,100)\move(960,1020,960,1016,0,120)}Chaque tour laisse un peu de\Nlumière : un halo se forme.
+Dialogue: 0,0:00:08.94,0:00:13.50,Sub,,0,0,0,,{\fad(120,100)\move(960,1020,960,1016,0,120)}Une copie lancée de l'autre côté\Ndessine d'abord l'image en miroir.
+Dialogue: 0,0:00:13.74,0:00:16.96,Sub,,0,0,0,,{\fad(120,100)\move(960,1020,960,1016,0,120)}Avec le temps, les deux\Ndessinent le même halo.
+Dialogue: 0,0:00:17.70,0:00:22.84,Sub,,0,0,0,,{\fad(120,100)\move(960,1020,960,1016,0,120)}Où le {\c&H3468EB&}dipôle{\c&HF7F4F2&} passe-t-il son temps ?\NDeux bosses, les mêmes pour les deux.
+Dialogue: 0,0:00:23.33,0:00:26.93,Sub,,0,0,0,,{\fad(120,100)\move(960,1020,960,1016,0,120)}Ce halo reproductible,\Nc'est la loi stationnaire.
+Dialogue: 0,0:00:27.32,0:00:31.49,Sub,,0,0,0,,{\fad(120,100)\move(960,1020,960,1016,0,120)}Sous le seuil, chaque départ\Ndessine son propre tourbillon.

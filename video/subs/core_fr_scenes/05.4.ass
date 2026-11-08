@@ -12,7 +12,8 @@ Style: Sub,Inter Medium,42,&H00F7F4F2,&H00F7F4F2,&H38140F0B,&H00000000,0,0,0,0,1
 
 [Events]
 Format: Layer, Start, End, Style, Name, MarginL, MarginR, MarginV, Effect, Text
-Dialogue: 0,0:00:00.32,0:00:03.73,Sub,,0,0,0,,{\fad(120,100)\move(960,1020,960,1016,0,120)}One caution: Rice counts\Ncrossings, not reversals.
-Dialogue: 0,0:00:03.81,0:00:08.62,Sub,,0,0,0,,{\fad(120,100)\move(960,1020,960,1016,0,120)}An excursion across zero and back\Nadds two crossings, but no reversal.
-Dialogue: 0,0:00:08.70,0:00:11.37,Sub,,0,0,0,,{\fad(120,100)\move(960,1020,960,1016,0,120)}To isolate reversals, the PhD plan counts
-Dialogue: 0,0:00:11.45,0:00:14.73,Sub,,0,0,0,,{\fad(120,100)\move(960,1020,960,1016,0,120)}crossings of a far level,\Non the other side.
+Dialogue: 0,0:00:00.37,0:00:05.16,Sub,,0,0,0,,{\fad(120,100)\move(960,1020,960,1016,0,120)}Attention : la formule de Rice compte\Nles passages, pas les renversements.
+Dialogue: 0,0:00:05.71,0:00:08.53,Sub,,0,0,0,,{\fad(120,100)\move(960,1020,960,1016,0,120)}Une excursion qui\Nfranchit zéro puis revient
+Dialogue: 0,0:00:08.61,0:00:11.97,Sub,,0,0,0,,{\fad(120,100)\move(960,1020,960,1016,0,120)}ajoute deux passages,\Nmais aucun renversement.
+Dialogue: 0,0:00:12.51,0:00:15.84,Sub,,0,0,0,,{\fad(120,100)\move(960,1020,960,1016,0,120)}Pour isoler les renversements,\Nle projet de thèse compte les
+Dialogue: 0,0:00:15.92,0:00:19.43,Sub,,0,0,0,,{\fad(120,100)\move(960,1020,960,1016,0,120)}passages par un niveau éloigné,\Nde l'autre côté de zéro.

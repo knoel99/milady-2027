@@ -12,5 +12,5 @@ Style: Sub,Inter Medium,42,&H00F7F4F2,&H00F7F4F2,&H38140F0B,&H00000000,0,0,0,0,1
 
 [Events]
 Format: Layer, Start, End, Style, Name, MarginL, MarginR, MarginV, Effect, Text
-Dialogue: 0,0:00:00.42,0:00:03.73,Sub,,0,0,0,,{\fad(120,100)\move(960,1020,960,1016,0,120)}Près du seuil, les simulations\Nde dynamo doivent-elles
-Dialogue: 0,0:00:03.81,0:00:07.85,Sub,,0,0,0,,{\fad(120,100)\move(960,1020,960,1016,0,120)}partir d'un germe minuscule,\Nd'un germe fort, ou des deux ?
+Dialogue: 0,0:00:00.47,0:00:04.00,Sub,,0,0,0,,{\fad(120,100)\move(960,1020,960,1016,0,120)}Près du seuil, les simulations\Nde dynamo doivent-elles
+Dialogue: 0,0:00:04.08,0:00:08.35,Sub,,0,0,0,,{\fad(120,100)\move(960,1020,960,1016,0,120)}partir d'un germe minuscule,\Nd'un germe fort, ou des deux ?

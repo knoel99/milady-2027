@@ -1,0 +1,24 @@
+[Script Info]
+ScriptType: v4.00+
+PlayResX: 1920
+PlayResY: 1080
+WrapStyle: 2
+ScaledBorderAndShadow: yes
+YCbCr Matrix: TV.709
+
+[V4+ Styles]
+Format: Name, Fontname, Fontsize, PrimaryColour, SecondaryColour, OutlineColour, BackColour, Bold, Italic, Underline, StrikeOut, ScaleX, ScaleY, Spacing, Angle, BorderStyle, Outline, Shadow, Alignment, MarginL, MarginR, MarginV, Encoding
+Style: Sub,Inter Medium,42,&H00F7F4F2,&H00F7F4F2,&H38140F0B,&H00000000,0,0,0,0,100,100,0,0,3,12,0,2,240,240,64,1
+
+[Events]
+Format: Layer, Start, End, Style, Name, MarginL, MarginR, MarginV, Effect, Text
+Dialogue: 0,0:00:00.37,0:00:03.36,Sub,,0,0,0,,{\fad(120,100)\move(960,1020,960,1016,0,120)}Retour aux deux étagères,\Ndésormais pleines.
+Dialogue: 0,0:00:03.66,0:00:07.60,Sub,,0,0,0,,{\fad(120,100)\move(960,1020,960,1016,0,120)}Pour chaque instantané :\Nla divergence nulle. Intégrez-la
+Dialogue: 0,0:00:07.68,0:00:12.11,Sub,,0,0,0,,{\fad(120,100)\move(960,1020,960,1016,0,120)}par construction, ou projetez,\Net elle est vérifiée exactement ;
+Dialogue: 0,0:00:12.19,0:00:15.34,Sub,,0,0,0,,{\fad(120,100)\move(960,1020,960,1016,0,120)}avec une pénalité, seulement à peu près.
+Dialogue: 0,0:00:16.08,0:00:19.82,Sub,,0,0,0,,{\fad(120,100)\move(960,1020,960,1016,0,120)}Pour la foule : le bilan d'énergie.\NImposez-le à la foule,
+Dialogue: 0,0:00:19.90,0:00:25.21,Sub,,0,0,0,,{\fad(120,100)\move(960,1020,960,1016,0,120)}pendant l'entraînement. Repondérer après\Ncoup échoue là où le modèle est mauvais ;
+Dialogue: 0,0:00:25.29,0:00:28.98,Sub,,0,0,0,,{\fad(120,100)\move(960,1020,960,1016,0,120)}l'imposer de force à chaque\Ninstantané crée un pic.
+Dialogue: 0,0:00:29.72,0:00:35.51,Sub,,0,0,0,,{\fad(120,100)\move(960,1020,960,1016,0,120)}Et le miroir ? Chaque instantané pointe\Nd'un seul côté : c'est donc une loi
+Dialogue: 0,0:00:35.59,0:00:41.59,Sub,,0,0,0,,{\fad(120,100)\move(960,1020,960,1016,0,120)}de la foule. Pourtant, intégré au réseau,\Nil peut être respecté exactement.
+Dialogue: 0,0:00:42.52,0:00:47.80,Sub,,0,0,0,,{\fad(120,100)\move(960,1020,960,1016,0,120)}Une seule règle suffit à tout ranger :\Nimposez chaque loi là où elle est vraie.

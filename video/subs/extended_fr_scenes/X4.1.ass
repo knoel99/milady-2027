@@ -1,0 +1,26 @@
+[Script Info]
+ScriptType: v4.00+
+PlayResX: 1920
+PlayResY: 1080
+WrapStyle: 2
+ScaledBorderAndShadow: yes
+YCbCr Matrix: TV.709
+
+[V4+ Styles]
+Format: Name, Fontname, Fontsize, PrimaryColour, SecondaryColour, OutlineColour, BackColour, Bold, Italic, Underline, StrikeOut, ScaleX, ScaleY, Spacing, Angle, BorderStyle, Outline, Shadow, Alignment, MarginL, MarginR, MarginV, Encoding
+Style: Sub,Inter Medium,42,&H00F7F4F2,&H00F7F4F2,&H38140F0B,&H00000000,0,0,0,0,100,100,0,0,3,12,0,2,240,240,64,1
+
+[Events]
+Format: Layer, Start, End, Style, Name, MarginL, MarginR, MarginV, Effect, Text
+Dialogue: 0,0:00:00.57,0:00:03.09,Sub,,0,0,0,,{\fad(120,100)\move(960,1020,960,1016,0,120)}Quelle largeur donner à la bande de Rice ?
+Dialogue: 0,0:00:03.56,0:00:05.95,Sub,,0,0,0,,{\fad(120,100)\move(960,1020,960,1016,0,120)}Élargissez-la : l'estimation se décale,
+Dialogue: 0,0:00:06.03,0:00:09.40,Sub,,0,0,0,,{\fad(120,100)\move(960,1020,960,1016,0,120)}et son biais croît comme\Nle carré de la largeur.
+Dialogue: 0,0:00:09.96,0:00:15.03,Sub,,0,0,0,,{\fad(120,100)\move(960,1020,960,1016,0,120)}Rétrécissez-la : l'estimation fluctue,\Ncar moins d'instantanés y tombent.
+Dialogue: 0,0:00:15.11,0:00:17.67,Sub,,0,0,0,,{\fad(120,100)\move(960,1020,960,1016,0,120)}L'expérience des trois\Ncadrans a pris une bande
+Dialogue: 0,0:00:17.75,0:00:20.77,Sub,,0,0,0,,{\fad(120,100)\move(960,1020,960,1016,0,120)}de zéro virgule deux de\Npart et d'autre de zéro.
+Dialogue: 0,0:00:21.51,0:00:26.31,Sub,,0,0,0,,{\fad(120,100)\move(960,1020,960,1016,0,120)}Avec des instantanés à volonté, pourquoi\Nne pas la rendre infiniment fine ?
+Dialogue: 0,0:00:26.75,0:00:32.19,Sub,,0,0,0,,{\fad(120,100)\move(960,1020,960,1016,0,120)}La formule exacte suppose un nuage lisse.\NUn cosinus ne dessine qu'un anneau mince,
+Dialogue: 0,0:00:32.27,0:00:36.65,Sub,,0,0,0,,{\fad(120,100)\move(960,1020,960,1016,0,120)}et pourtant la formule trouve\Nbien deux passages par période.
+Dialogue: 0,0:00:37.39,0:00:40.08,Sub,,0,0,0,,{\fad(120,100)\move(960,1020,960,1016,0,120)}Le chaos aussi peut\Nmanquer de nuage lisse,
+Dialogue: 0,0:00:40.16,0:00:44.52,Sub,,0,0,0,,{\fad(120,100)\move(960,1020,960,1016,0,120)}donc rien ne garantit le passage à\Nla limite : sur les trois cadrans,
+Dialogue: 0,0:00:44.60,0:00:49.12,Sub,,0,0,0,,{\fad(120,100)\move(960,1020,960,1016,0,120)}seul test à ce jour, la réponse\Ndépend de la largeur de la bande.

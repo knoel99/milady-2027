@@ -12,10 +12,12 @@ Style: Sub,Inter Medium,42,&H00F7F4F2,&H00F7F4F2,&H38140F0B,&H00000000,0,0,0,0,1
 
 [Events]
 Format: Layer, Start, End, Style, Name, MarginL, MarginR, MarginV, Effect, Text
-Dialogue: 0,0:00:00.32,0:00:03.46,Sub,,0,0,0,,{\fad(120,100)\move(960,1020,960,1016,0,120)}The second shelf matters\Nfor the internship plan
-Dialogue: 0,0:00:03.54,0:00:07.12,Sub,,0,0,0,,{\fad(120,100)\move(960,1020,960,1016,0,120)}and the data request,\Nnot for the first campaigns.
-Dialogue: 0,0:00:07.20,0:00:10.94,Sub,,0,0,0,,{\fad(120,100)\move(960,1020,960,1016,0,120)}Which settings get runs long\Nenough to count reversals?
-Dialogue: 0,0:00:11.02,0:00:13.72,Sub,,0,0,0,,{\fad(120,100)\move(960,1020,960,1016,0,120)}Which operator decides what exact means?
-Dialogue: 0,0:00:13.80,0:00:16.36,Sub,,0,0,0,,{\fad(120,100)\move(960,1020,960,1016,0,120)}Which labels must each snapshot carry?
-Dialogue: 0,0:00:16.44,0:00:19.25,Sub,,0,0,0,,{\fad(120,100)\move(960,1020,960,1016,0,120)}And may new results appear in this film?
-Dialogue: 0,0:00:20.12,0:00:26.12,Sub,,0,0,0,,{\fad(120,100)\move(960,1020,960,1016,0,120)}The last shelf can wait: the top steps'\Ndetails, and how to frame a first paper.
+Dialogue: 0,0:00:00.37,0:00:02.99,Sub,,0,0,0,,{\fad(120,100)\move(960,1020,960,1016,0,120)}La deuxième étagère sert\Nau plan de stage et à la
+Dialogue: 0,0:00:03.07,0:00:06.04,Sub,,0,0,0,,{\fad(120,100)\move(960,1020,960,1016,0,120)}demande de données,\Npas aux premières campagnes.
+Dialogue: 0,0:00:06.49,0:00:08.41,Sub,,0,0,0,,{\fad(120,100)\move(960,1020,960,1016,0,120)}Quels réglages auront\Ndes simulations assez
+Dialogue: 0,0:00:08.49,0:00:10.68,Sub,,0,0,0,,{\fad(120,100)\move(960,1020,960,1016,0,120)}longues pour compter les renversements ?
+Dialogue: 0,0:00:11.08,0:00:14.04,Sub,,0,0,0,,{\fad(120,100)\move(960,1020,960,1016,0,120)}Quel opérateur définit\Nce que veut dire exact ?
+Dialogue: 0,0:00:14.28,0:00:17.41,Sub,,0,0,0,,{\fad(120,100)\move(960,1020,960,1016,0,120)}Quelles étiquettes chaque\Ninstantané doit-il porter ?
+Dialogue: 0,0:00:17.57,0:00:20.82,Sub,,0,0,0,,{\fad(120,100)\move(960,1020,960,1016,0,120)}Et de nouveaux résultats\Npeuvent-ils figurer dans ce film ?
+Dialogue: 0,0:00:21.56,0:00:23.62,Sub,,0,0,0,,{\fad(120,100)\move(960,1020,960,1016,0,120)}La troisième étagère peut attendre :
+Dialogue: 0,0:00:23.70,0:00:28.07,Sub,,0,0,0,,{\fad(120,100)\move(960,1020,960,1016,0,120)}le détail des dernières marches,\Net le cadrage d'un premier article.

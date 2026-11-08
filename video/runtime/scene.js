@@ -403,7 +403,7 @@
       // (an opaque canvas that paints its own background is not ink; faint glows are not either)
       // a canvas painted OVER text hides it from a small coverage on (a trajectory crossing a label); text over
       // data without a backing is reported from a larger one (opts.inkUnder, opts.inkOver)
-      const inkUnder = opts.inkUnder ?? 0.02, inkOver = opts.inkOver ?? 0.06;
+      const inkUnder = opts.inkUnder ?? 0.01, inkOver = opts.inkOver ?? 0.06;
       const bgc = (getComputedStyle(stage).backgroundColor.match(/[\d.]+/g) || [11, 15, 20]).map(Number);
       const canvases = Array.from(stage.querySelectorAll('canvas')).filter((c) => c.width && c.height && !c.closest('[data-qa="ignore"]') && visible(c));
       for (const cv of canvases) {

@@ -12,11 +12,11 @@ Style: Sub,Inter Medium,42,&H00F7F4F2,&H00F7F4F2,&H38140F0B,&H00000000,0,0,0,0,1
 
 [Events]
 Format: Layer, Start, End, Style, Name, MarginL, MarginR, MarginV, Effect, Text
-Dialogue: 0,0:00:00.32,0:00:03.69,Sub,,0,0,0,,{\fad(120,100)\move(960,1020,960,1016,0,120)}Cinquième piste : quelques\Ncadrans au lieu d'une cuve.
-Dialogue: 0,0:00:03.77,0:00:05.64,Sub,,0,0,0,,{\fad(120,100)\move(960,1020,960,1016,0,120)}Mille neuf cent cinquante-huit :
-Dialogue: 0,0:00:05.72,0:00:09.12,Sub,,0,0,0,,{\fad(120,100)\move(960,1020,960,1016,0,120)}deux dynamos à disque,\Ncouplées, se renversent déjà.
-Dialogue: 0,0:00:09.20,0:00:12.51,Sub,,0,0,0,,{\fad(120,100)\move(960,1020,960,1016,0,120)}Deux mille douze : trois\Ncadrans qui se renversent sous
-Dialogue: 0,0:00:12.59,0:00:16.38,Sub,,0,0,0,,{\fad(120,100)\move(960,1020,960,1016,0,120)}le seul effet du chaos ;\Nnous jouerons bientôt avec eux.
-Dialogue: 0,0:00:17.25,0:00:20.18,Sub,,0,0,0,,{\fad(120,100)\move(960,1020,960,1016,0,120)}Deux mille vingt-six :\Nquatre cadrans ajustés sur
-Dialogue: 0,0:00:20.26,0:00:22.21,Sub,,0,0,0,,{\fad(120,100)\move(960,1020,960,1016,0,120)}les renversements simulés de VKS,
-Dialogue: 0,0:00:22.29,0:00:26.32,Sub,,0,0,0,,{\fad(120,100)\move(960,1020,960,1016,0,120)}par une méthode qui découvre\Nles équations dans les données.
+Dialogue: 0,0:00:00.37,0:00:03.91,Sub,,0,0,0,,{\fad(120,100)\move(960,1020,960,1016,0,120)}Cinquième piste : quelques\Ncadrans au lieu d'une cuve.
+Dialogue: 0,0:00:04.34,0:00:06.23,Sub,,0,0,0,,{\fad(120,100)\move(960,1020,960,1016,0,120)}Mille neuf cent cinquante-huit :
+Dialogue: 0,0:00:06.31,0:00:10.52,Sub,,0,0,0,,{\fad(120,100)\move(960,1020,960,1016,0,120)}avec deux dynamos à disque couplées,\Nle champ se renverse déjà.
+Dialogue: 0,0:00:10.83,0:00:14.19,Sub,,0,0,0,,{\fad(120,100)\move(960,1020,960,1016,0,120)}Deux mille douze : trois\Ncadrans, où le chaos suffit à
+Dialogue: 0,0:00:14.27,0:00:17.91,Sub,,0,0,0,,{\fad(120,100)\move(960,1020,960,1016,0,120)}renverser le champ ; nous\Njouerons bientôt avec eux.
+Dialogue: 0,0:00:18.65,0:00:21.53,Sub,,0,0,0,,{\fad(120,100)\move(960,1020,960,1016,0,120)}Deux mille vingt-six :\Nquatre cadrans ajustés sur
+Dialogue: 0,0:00:21.61,0:00:23.53,Sub,,0,0,0,,{\fad(120,100)\move(960,1020,960,1016,0,120)}les renversements simulés de VKS,
+Dialogue: 0,0:00:23.61,0:00:27.57,Sub,,0,0,0,,{\fad(120,100)\move(960,1020,960,1016,0,120)}par une méthode qui découvre\Ndes équations dans les données.

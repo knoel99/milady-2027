@@ -1,0 +1,36 @@
+[Script Info]
+ScriptType: v4.00+
+PlayResX: 1920
+PlayResY: 1080
+WrapStyle: 2
+ScaledBorderAndShadow: yes
+YCbCr Matrix: TV.709
+
+[V4+ Styles]
+Format: Name, Fontname, Fontsize, PrimaryColour, SecondaryColour, OutlineColour, BackColour, Bold, Italic, Underline, StrikeOut, ScaleX, ScaleY, Spacing, Angle, BorderStyle, Outline, Shadow, Alignment, MarginL, MarginR, MarginV, Encoding
+Style: Sub,Inter Medium,42,&H00F7F4F2,&H00F7F4F2,&H38140F0B,&H00000000,0,0,0,0,100,100,0,0,3,12,0,2,240,240,64,1
+
+[Events]
+Format: Layer, Start, End, Style, Name, MarginL, MarginR, MarginV, Effect, Text
+Dialogue: 0,0:00:00.77,0:00:03.62,Sub,,0,0,0,,{\fad(120,100)\move(960,1020,960,1016,0,120)}Retour à la boussole,\Net aux deux questions.
+Dialogue: 0,0:00:04.86,0:00:06.99,Sub,,0,0,0,,{\fad(120,100)\move(960,1020,960,1016,0,120)}Quand cette aiguille\Nva-t-elle se retourner ?
+Dialogue: 0,0:00:07.46,0:00:10.04,Sub,,0,0,0,,{\fad(120,100)\move(960,1020,960,1016,0,120)}Pour la Terre, personne ne peut le dire.
+Dialogue: 0,0:00:10.56,0:00:13.31,Sub,,0,0,0,,{\fad(120,100)\move(960,1020,960,1016,0,120)}Dans un modèle numérique\Nsimple, le chaos efface
+Dialogue: 0,0:00:13.39,0:00:16.50,Sub,,0,0,0,,{\fad(120,100)\move(960,1020,960,1016,0,120)}la prévision avant la\Nfin de l'attente moyenne.
+Dialogue: 0,0:00:16.71,0:00:19.51,Sub,,0,0,0,,{\fad(120,100)\move(960,1020,960,1016,0,120)}Mais {\c&H00A1ED&}à quelle fréquence{\c&HF7F4F2&}\Nle champ se renverse,
+Dialogue: 0,0:00:19.59,0:00:24.27,Sub,,0,0,0,,{\fad(120,100)\move(960,1020,960,1016,0,120)}en comptant les passages par zéro :\Nà cela, on peut encore répondre.
+Dialogue: 0,0:00:24.92,0:00:28.54,Sub,,0,0,0,,{\fad(120,100)\move(960,1020,960,1016,0,120)}La réponse se cache dans une boîte\Nà chaussures pleine d'instantanés,
+Dialogue: 0,0:00:28.62,0:00:31.25,Sub,,0,0,0,,{\fad(120,100)\move(960,1020,960,1016,0,120)}à condition de les lire\Navec les équations.
+Dialogue: 0,0:00:31.37,0:00:33.75,Sub,,0,0,0,,{\fad(120,100)\move(960,1020,960,1016,0,120)}Et une {\c&HF09CB4&}machine{\c&HF7F4F2&} peut\Napprendre à imaginer de
+Dialogue: 0,0:00:33.83,0:00:36.74,Sub,,0,0,0,,{\fad(120,100)\move(960,1020,960,1016,0,120)}tels instantanés,\Nentre les réglages simulés.
+Dialogue: 0,0:00:37.88,0:00:40.67,Sub,,0,0,0,,{\fad(120,100)\move(960,1020,960,1016,0,120)}Sur de petits cas tests,\Ncela marche en partie.
+Dialogue: 0,0:00:40.89,0:00:44.53,Sub,,0,0,0,,{\fad(120,100)\move(960,1020,960,1016,0,120)}Le miroir est garanti par\Nconstruction, à chaque réglage.
+Dialogue: 0,0:00:44.86,0:00:48.27,Sub,,0,0,0,,{\fad(120,100)\move(960,1020,960,1016,0,120)}Sur les trois cadrans,\Nla {\c&H00A1ED&}fréquence des passages par zéro{\c&HF7F4F2&}
+Dialogue: 0,0:00:48.35,0:00:52.24,Sub,,0,0,0,,{\fad(120,100)\move(960,1020,960,1016,0,120)}est à peu près juste loin du\Nseuil, et médiocre tout près.
+Dialogue: 0,0:00:52.76,0:00:56.65,Sub,,0,0,0,,{\fad(120,100)\move(960,1020,960,1016,0,120)}Une machine qui varie en douceur\Narrondit un changement abrupt.
+Dialogue: 0,0:00:56.73,0:01:00.11,Sub,,0,0,0,,{\fad(120,100)\move(960,1020,960,1016,0,120)}Les tests à plus grande échelle,\Nen trois dimensions et dans la
+Dialogue: 0,0:01:00.19,0:01:04.10,Sub,,0,0,0,,{\fad(120,100)\move(960,1020,960,1016,0,120)}géométrie d'expériences réelles,\Nsont écrits sous forme de paris.
+Dialogue: 0,0:01:05.44,0:01:06.81,Sub,,0,0,0,,{\fad(120,100)\move(960,1020,960,1016,0,120)}Il reste une leçon.
+Dialogue: 0,0:01:07.04,0:01:09.72,Sub,,0,0,0,,{\fad(120,100)\move(960,1020,960,1016,0,120)}Imposez chaque loi là où elle est vraie.
+Dialogue: 0,0:01:09.91,0:01:12.46,Sub,,0,0,0,,{\fad(120,100)\move(960,1020,960,1016,0,120)}Exactement, là où elle est exacte.
+Dialogue: 0,0:01:12.78,0:01:15.92,Sub,,0,0,0,,{\fad(120,100)\move(960,1020,960,1016,0,120)}{\c&H00A1ED&}En moyenne{\c&HF7F4F2&}, là où elle\Nn'est vraie qu'en moyenne.

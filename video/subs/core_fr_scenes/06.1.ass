@@ -12,11 +12,14 @@ Style: Sub,Inter Medium,42,&H00F7F4F2,&H00F7F4F2,&H38140F0B,&H00000000,0,0,0,0,1
 
 [Events]
 Format: Layer, Start, End, Style, Name, MarginL, MarginR, MarginV, Effect, Text
-Dialogue: 0,0:00:03.12,0:00:07.94,Sub,,0,0,0,,{\fad(120,100)\move(960,1020,960,1016,0,120)}New snapshots start as pure noise:\Na round cloud of random points.
-Dialogue: 0,0:00:08.02,0:00:12.05,Sub,,0,0,0,,{\fad(120,100)\move(960,1020,960,1016,0,120)}Over it, the crowd we want:\None point per snapshot. Here,
-Dialogue: 0,0:00:12.13,0:00:15.48,Sub,,0,0,0,,{\fad(120,100)\move(960,1020,960,1016,0,120)}two mirror blobs, like the two whirlpools.
-Dialogue: 0,0:00:16.35,0:00:19.29,Sub,,0,0,0,,{\fad(120,100)\move(960,1020,960,1016,0,120)}Now let a {\c&HF09CB4&}wind{\c&HF7F4F2&} blow through the cloud.
-Dialogue: 0,0:00:19.37,0:00:24.47,Sub,,0,0,0,,{\fad(120,100)\move(960,1020,960,1016,0,120)}Each point drifts, bends,\Nand lands inside the shape of the data.
-Dialogue: 0,0:00:24.55,0:00:29.12,Sub,,0,0,0,,{\fad(120,100)\move(960,1020,960,1016,0,120)}Fresh noise in, fresh snapshots\Nout, as many as you like.
-Dialogue: 0,0:00:29.99,0:00:34.74,Sub,,0,0,0,,{\fad(120,100)\move(960,1020,960,1016,0,120)}That wind is a {\c&HF09CB4&}generative model{\c&HF7F4F2&}:\Nnew, plausible examples, on demand.
-Dialogue: 0,0:00:34.82,0:00:37.42,Sub,,0,0,0,,{\fad(120,100)\move(960,1020,960,1016,0,120)}The whole game is learning the wind.
+Dialogue: 0,0:00:03.17,0:00:07.17,Sub,,0,0,0,,{\fad(120,100)\move(960,1020,960,1016,0,120)}Au départ, les nouveaux instantanés\Nne sont que du bruit pur :
+Dialogue: 0,0:00:07.25,0:00:09.88,Sub,,0,0,0,,{\fad(120,100)\move(960,1020,960,1016,0,120)}un nuage rond de points aléatoires.
+Dialogue: 0,0:00:10.25,0:00:15.87,Sub,,0,0,0,,{\fad(120,100)\move(960,1020,960,1016,0,120)}Par-dessus, la foule que l'on veut\Nobtenir : un point par instantané. Ici,
+Dialogue: 0,0:00:15.95,0:00:19.98,Sub,,0,0,0,,{\fad(120,100)\move(960,1020,960,1016,0,120)}deux amas en miroir,\Ncomme les deux tourbillons.
+Dialogue: 0,0:00:20.72,0:00:23.85,Sub,,0,0,0,,{\fad(120,100)\move(960,1020,960,1016,0,120)}Faites maintenant souffler\Nun {\c&HF09CB4&}vent{\c&HF7F4F2&} à travers le nuage.
+Dialogue: 0,0:00:24.16,0:00:29.61,Sub,,0,0,0,,{\fad(120,100)\move(960,1020,960,1016,0,120)}Chaque point dérive, prend un virage, et\Nvient se poser dans la forme des données.
+Dialogue: 0,0:00:30.05,0:00:31.60,Sub,,0,0,0,,{\fad(120,100)\move(960,1020,960,1016,0,120)}Nouveau bruit à l'entrée,
+Dialogue: 0,0:00:31.68,0:00:35.74,Sub,,0,0,0,,{\fad(120,100)\move(960,1020,960,1016,0,120)}nouveaux instantanés à la sortie,\Nautant que vous voulez.
+Dialogue: 0,0:00:36.48,0:00:38.66,Sub,,0,0,0,,{\fad(120,100)\move(960,1020,960,1016,0,120)}Ce vent, c'est un {\c&HF09CB4&}modèle génératif{\c&HF7F4F2&} :
+Dialogue: 0,0:00:38.74,0:00:42.21,Sub,,0,0,0,,{\fad(120,100)\move(960,1020,960,1016,0,120)}des exemples nouveaux et\Nplausibles, à la demande.
+Dialogue: 0,0:00:42.76,0:00:45.20,Sub,,0,0,0,,{\fad(120,100)\move(960,1020,960,1016,0,120)}Tout l'enjeu, c'est d'apprendre ce vent.

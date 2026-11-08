@@ -12,12 +12,13 @@ Style: Sub,Inter Medium,42,&H00F7F4F2,&H00F7F4F2,&H38140F0B,&H00000000,0,0,0,0,1
 
 [Events]
 Format: Layer, Start, End, Style, Name, MarginL, MarginR, MarginV, Effect, Text
-Dialogue: 0,0:00:00.32,0:00:04.37,Sub,,0,0,0,,{\fad(120,100)\move(960,1020,960,1016,0,120)}Now film the trajectory,\None frame every two time units.
-Dialogue: 0,0:00:04.45,0:00:06.65,Sub,,0,0,0,,{\fad(120,100)\move(960,1020,960,1016,0,120)}Neighbouring frames look alike.
-Dialogue: 0,0:00:06.73,0:00:08.50,Sub,,0,0,0,,{\fad(120,100)\move(960,1020,960,1016,0,120)}Cut the film into frames.
-Dialogue: 0,0:00:08.58,0:00:12.99,Sub,,0,0,0,,{\fad(120,100)\move(960,1020,960,1016,0,120)}Drop them in a shoebox, shake,\Nand throw away the timestamps.
-Dialogue: 0,0:00:13.07,0:00:16.79,Sub,,0,0,0,,{\fad(120,100)\move(960,1020,960,1016,0,120)}Pour the box out:\Nthe frames redraw the same glow.
-Dialogue: 0,0:00:17.66,0:00:21.60,Sub,,0,0,0,,{\fad(120,100)\move(960,1020,960,1016,0,120)}Each frame is a snapshot:\Nthree dial readings, nothing more.
-Dialogue: 0,0:00:21.68,0:00:24.41,Sub,,0,0,0,,{\fad(120,100)\move(960,1020,960,1016,0,120)}It carries no timestamp and no time order.
-Dialogue: 0,0:00:24.49,0:00:28.43,Sub,,0,0,0,,{\fad(120,100)\move(960,1020,960,1016,0,120)}Yet the shoebox, plus the equations,\Nanswers many questions.
-Dialogue: 0,0:00:28.51,0:00:32.89,Sub,,0,0,0,,{\fad(120,100)\move(960,1020,960,1016,0,120)}Averages, energy budgets, even\Nhow often the dipole crosses zero.
+Dialogue: 0,0:00:00.37,0:00:04.88,Sub,,0,0,0,,{\fad(120,100)\move(960,1020,960,1016,0,120)}Filmez maintenant la trajectoire,\Nune image toutes les deux unités de temps.
+Dialogue: 0,0:00:05.37,0:00:07.55,Sub,,0,0,0,,{\fad(120,100)\move(960,1020,960,1016,0,120)}Deux images voisines se ressemblent.
+Dialogue: 0,0:00:07.80,0:00:09.59,Sub,,0,0,0,,{\fad(120,100)\move(960,1020,960,1016,0,120)}Découpez le film en images.
+Dialogue: 0,0:00:09.86,0:00:14.78,Sub,,0,0,0,,{\fad(120,100)\move(960,1020,960,1016,0,120)}Mettez-les dans une boîte à chaussures,\Nsecouez, et jetez les horodatages.
+Dialogue: 0,0:00:15.17,0:00:19.15,Sub,,0,0,0,,{\fad(120,100)\move(960,1020,960,1016,0,120)}Videz la boîte : les images\Nredessinent le même halo.
+Dialogue: 0,0:00:19.89,0:00:25.14,Sub,,0,0,0,,{\fad(120,100)\move(960,1020,960,1016,0,120)}Chaque image est un instantané : les\Nvaleurs des trois cadrans, rien de plus.
+Dialogue: 0,0:00:25.34,0:00:28.88,Sub,,0,0,0,,{\fad(120,100)\move(960,1020,960,1016,0,120)}Il ne porte ni horodatage,\Nni ordre temporel.
+Dialogue: 0,0:00:29.28,0:00:34.21,Sub,,0,0,0,,{\fad(120,100)\move(960,1020,960,1016,0,120)}Pourtant, avec les équations, la boîte à\Nchaussures répond à bien des questions.
+Dialogue: 0,0:00:34.40,0:00:36.51,Sub,,0,0,0,,{\fad(120,100)\move(960,1020,960,1016,0,120)}Des moyennes, des bilans d'énergie,
+Dialogue: 0,0:00:36.59,0:00:40.24,Sub,,0,0,0,,{\fad(120,100)\move(960,1020,960,1016,0,120)}et même la fréquence des\Npassages du dipôle par zéro.

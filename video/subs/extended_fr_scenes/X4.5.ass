@@ -1,0 +1,27 @@
+[Script Info]
+ScriptType: v4.00+
+PlayResX: 1920
+PlayResY: 1080
+WrapStyle: 2
+ScaledBorderAndShadow: yes
+YCbCr Matrix: TV.709
+
+[V4+ Styles]
+Format: Name, Fontname, Fontsize, PrimaryColour, SecondaryColour, OutlineColour, BackColour, Bold, Italic, Underline, StrikeOut, ScaleX, ScaleY, Spacing, Angle, BorderStyle, Outline, Shadow, Alignment, MarginL, MarginR, MarginV, Encoding
+Style: Sub,Inter Medium,42,&H00F7F4F2,&H00F7F4F2,&H38140F0B,&H00000000,0,0,0,0,100,100,0,0,3,12,0,2,240,240,64,1
+
+[Events]
+Format: Layer, Start, End, Style, Name, MarginL, MarginR, MarginV, Effect, Text
+Dialogue: 0,0:00:00.37,0:00:03.12,Sub,,0,0,0,,{\fad(120,100)\move(960,1020,960,1016,0,120)}Deuxième tour pour la\Npremière marche de l'escalier.
+Dialogue: 0,0:00:03.59,0:00:06.01,Sub,,0,0,0,,{\fad(120,100)\move(960,1020,960,1016,0,120)}Trois graines aléatoires, pas deux.
+Dialogue: 0,0:00:06.42,0:00:10.28,Sub,,0,0,0,,{\fad(120,100)\move(960,1020,960,1016,0,120)}Un second modèle réduit,\Ntiré de simulations de VKS.
+Dialogue: 0,0:00:10.63,0:00:15.39,Sub,,0,0,0,,{\fad(120,100)\move(960,1020,960,1016,0,120)}Et le miroir de l'échange des turbines,\Nqui inverse aussi le signe de {\c&H7AAF1B&}Gamma{\c&HF7F4F2&}.
+Dialogue: 0,0:00:16.13,0:00:19.80,Sub,,0,0,0,,{\fad(120,100)\move(960,1020,960,1016,0,120)}Quatre voyants doivent\Ns'allumer : déséquilibre,
+Dialogue: 0,0:00:19.88,0:00:24.35,Sub,,0,0,0,,{\fad(120,100)\move(960,1020,960,1016,0,120)}lois non imposées, formule\Nde Rice, borne par niveau.
+Dialogue: 0,0:00:25.69,0:00:29.96,Sub,,0,0,0,,{\fad(120,100)\move(960,1020,960,1016,0,120)}Le pari : les résidus non imposés\Nsont encore divisés par deux,
+Dialogue: 0,0:00:30.04,0:00:32.93,Sub,,0,0,0,,{\fad(120,100)\move(960,1020,960,1016,0,120)}à peu près. Au premier\Ntour, c'était par un
+Dialogue: 0,0:00:33.01,0:00:37.20,Sub,,0,0,0,,{\fad(120,100)\move(960,1020,960,1016,0,120)}virgule neuf huit, pour une\Nbarre à deux : pile ou face.
+Dialogue: 0,0:00:37.75,0:00:39.68,Sub,,0,0,0,,{\fad(120,100)\move(960,1020,960,1016,0,120)}Confiance : moyenne.
+Dialogue: 0,0:00:40.10,0:00:43.40,Sub,,0,0,0,,{\fad(120,100)\move(960,1020,960,1016,0,120)}Seul hic : un modèle parfaitement\Nsymétrique dépasse le
+Dialogue: 0,0:00:43.48,0:00:48.29,Sub,,0,0,0,,{\fad(120,100)\move(960,1020,960,1016,0,120)}{\c&H00A1ED&}plancher de bruit{\c&HF7F4F2&} presque une fois\Nsur deux ; ce plancher est sa moyenne.
+Dialogue: 0,0:00:48.87,0:00:53.37,Sub,,0,0,0,,{\fad(120,100)\move(960,1020,960,1016,0,120)}À demander d'abord : faut-il un test\Nstatistique pour le premier voyant ?

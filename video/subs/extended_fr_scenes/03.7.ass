@@ -1,0 +1,27 @@
+[Script Info]
+ScriptType: v4.00+
+PlayResX: 1920
+PlayResY: 1080
+WrapStyle: 2
+ScaledBorderAndShadow: yes
+YCbCr Matrix: TV.709
+
+[V4+ Styles]
+Format: Name, Fontname, Fontsize, PrimaryColour, SecondaryColour, OutlineColour, BackColour, Bold, Italic, Underline, StrikeOut, ScaleX, ScaleY, Spacing, Angle, BorderStyle, Outline, Shadow, Alignment, MarginL, MarginR, MarginV, Encoding
+Style: Sub,Inter Medium,42,&H00F7F4F2,&H00F7F4F2,&H38140F0B,&H00000000,0,0,0,0,100,100,0,0,3,12,0,2,240,240,64,1
+
+[Events]
+Format: Layer, Start, End, Style, Name, MarginL, MarginR, MarginV, Effect, Text
+Dialogue: 0,0:00:00.37,0:00:02.63,Sub,,0,0,0,,{\fad(120,100)\move(960,1020,960,1016,0,120)}C'est dans ces vides que se joue ce film.
+Dialogue: 0,0:00:03.02,0:00:05.98,Sub,,0,0,0,,{\fad(120,100)\move(960,1020,960,1016,0,120)}L'étude sur laquelle il\Ns'appuie pose trois questions.
+Dialogue: 0,0:00:06.72,0:00:10.66,Sub,,0,0,0,,{\fad(120,100)\move(960,1020,960,1016,0,120)}Première : une {\c&HF09CB4&}machine{\c&HF7F4F2&} peut-elle\Napprendre toute la famille des champs,
+Dialogue: 0,0:00:10.74,0:00:13.79,Sub,,0,0,0,,{\fad(120,100)\move(960,1020,960,1016,0,120)}même pour des réglages\Nsitués entre les points ?
+Dialogue: 0,0:00:14.57,0:00:18.44,Sub,,0,0,0,,{\fad(120,100)\move(960,1020,960,1016,0,120)}Deuxième : peut-elle respecter\Nchaque loi là où elle est vraie,
+Dialogue: 0,0:00:18.52,0:00:23.11,Sub,,0,0,0,,{\fad(120,100)\move(960,1020,960,1016,0,120)}exactement dans chaque champ,\Nou {\c&H00A1ED&}en moyenne{\c&HF7F4F2&} sur de nombreux champs ?
+Dialogue: 0,0:00:23.47,0:00:28.09,Sub,,0,0,0,,{\fad(120,100)\move(960,1020,960,1016,0,120)}Troisième : peut-elle nous dire\N{\c&H00A1ED&}à quelle fréquence{\c&HF7F4F2&} le champ se renverse ?
+Dialogue: 0,0:00:28.83,0:00:32.11,Sub,,0,0,0,,{\fad(120,100)\move(960,1020,960,1016,0,120)}Pour le savoir, le plan de\Nl'étude gravit un escalier :
+Dialogue: 0,0:00:32.19,0:00:36.18,Sub,,0,0,0,,{\fad(120,100)\move(960,1020,960,1016,0,120)}de trois nombres jusqu'à la\Ngéométrie d'expériences réelles.
+Dialogue: 0,0:00:36.92,0:00:40.52,Sub,,0,0,0,,{\fad(120,100)\move(960,1020,960,1016,0,120)}En toute honnêteté : cette étude\Nindépendante est prospective,
+Dialogue: 0,0:00:40.60,0:00:43.13,Sub,,0,0,0,,{\fad(120,100)\move(960,1020,960,1016,0,120)}fondée sur de petites\Nexpériences menées sur
+Dialogue: 0,0:00:43.21,0:00:46.57,Sub,,0,0,0,,{\fad(120,100)\move(960,1020,960,1016,0,120)}un simple ordinateur, et elle\Nn'est validée ni par MilaDy,
+Dialogue: 0,0:00:46.65,0:00:49.71,Sub,,0,0,0,,{\fad(120,100)\move(960,1020,960,1016,0,120)}ni par ses partenaires,\Nni par les encadrants.

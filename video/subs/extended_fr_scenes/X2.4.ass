@@ -1,0 +1,28 @@
+[Script Info]
+ScriptType: v4.00+
+PlayResX: 1920
+PlayResY: 1080
+WrapStyle: 2
+ScaledBorderAndShadow: yes
+YCbCr Matrix: TV.709
+
+[V4+ Styles]
+Format: Name, Fontname, Fontsize, PrimaryColour, SecondaryColour, OutlineColour, BackColour, Bold, Italic, Underline, StrikeOut, ScaleX, ScaleY, Spacing, Angle, BorderStyle, Outline, Shadow, Alignment, MarginL, MarginR, MarginV, Encoding
+Style: Sub,Inter Medium,42,&H00F7F4F2,&H00F7F4F2,&H38140F0B,&H00000000,0,0,0,0,100,100,0,0,3,12,0,2,240,240,64,1
+
+[Events]
+Format: Layer, Start, End, Style, Name, MarginL, MarginR, MarginV, Effect, Text
+Dialogue: 0,0:00:00.37,0:00:04.44,Sub,,0,0,0,,{\fad(120,100)\move(960,1020,960,1016,0,120)}Quatrième énoncé : le miroir,\Nsous forme de théorème.
+Dialogue: 0,0:00:04.87,0:00:10.14,Sub,,0,0,0,,{\fad(120,100)\move(960,1020,960,1016,0,120)}Rendez le {\c&HF09CB4&}vent{\c&HF7F4F2&} équivariant : au reflet\Nd'un point répond le reflet de sa flèche.
+Dialogue: 0,0:00:10.64,0:00:13.69,Sub,,0,0,0,,{\fad(120,100)\move(960,1020,960,1016,0,120)}Partez d'un bruit qui a la\Nmême allure dans le miroir.
+Dialogue: 0,0:00:14.43,0:00:17.27,Sub,,0,0,0,,{\fad(120,100)\move(960,1020,960,1016,0,120)}Alors chaque trajectoire\Na sa jumelle en miroir.
+Dialogue: 0,0:00:17.71,0:00:21.00,Sub,,0,0,0,,{\fad(120,100)\move(960,1020,960,1016,0,120)}La foule générée est donc\Nexactement symétrique à chaque
+Dialogue: 0,0:00:21.08,0:00:25.50,Sub,,0,0,0,,{\fad(120,100)\move(960,1020,960,1016,0,120)}{\c&H7AAF1B&}réglage du bouton{\c&HF7F4F2&}, même avec des\Ndonnées déséquilibrées ou absentes.
+Dialogue: 0,0:00:26.24,0:00:29.78,Sub,,0,0,0,,{\fad(120,100)\move(960,1020,960,1016,0,120)}Si chaque vraie foule est\Nsymétrique, moyenner un vent
+Dialogue: 0,0:00:29.86,0:00:34.02,Sub,,0,0,0,,{\fad(120,100)\move(960,1020,960,1016,0,120)}avec son reflet n'augmente\Njamais la perte, en espérance.
+Dialogue: 0,0:00:34.53,0:00:38.58,Sub,,0,0,0,,{\fad(120,100)\move(960,1020,960,1016,0,120)}Le prix : deux évaluations\Ndu réseau au lieu d'une.
+Dialogue: 0,0:00:39.32,0:00:42.49,Sub,,0,0,0,,{\fad(120,100)\move(960,1020,960,1016,0,120)}Dans le cylindre de VKS,\Nun demi-tour qui échange
+Dialogue: 0,0:00:42.57,0:00:45.76,Sub,,0,0,0,,{\fad(120,100)\move(960,1020,960,1016,0,120)}les deux turbines est\Nune seconde symétrie.
+Dialogue: 0,0:00:46.07,0:00:49.61,Sub,,0,0,0,,{\fad(120,100)\move(960,1020,960,1016,0,120)}Si leurs vitesses diffèrent,\Nle demi-tour inverse aussi
+Dialogue: 0,0:00:49.69,0:00:53.58,Sub,,0,0,0,,{\fad(120,100)\move(960,1020,960,1016,0,120)}le signe de cette différence :\Nl'{\c&H7AAF1B&}asymétrie de forçage{\c&HF7F4F2&}.
+Dialogue: 0,0:00:53.96,0:00:58.43,Sub,,0,0,0,,{\fad(120,100)\move(960,1020,960,1016,0,120)}La même démonstration couvre ce cas,\Nqui n'a pas encore été testé.

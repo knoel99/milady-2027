@@ -1,0 +1,26 @@
+[Script Info]
+ScriptType: v4.00+
+PlayResX: 1920
+PlayResY: 1080
+WrapStyle: 2
+ScaledBorderAndShadow: yes
+YCbCr Matrix: TV.709
+
+[V4+ Styles]
+Format: Name, Fontname, Fontsize, PrimaryColour, SecondaryColour, OutlineColour, BackColour, Bold, Italic, Underline, StrikeOut, ScaleX, ScaleY, Spacing, Angle, BorderStyle, Outline, Shadow, Alignment, MarginL, MarginR, MarginV, Encoding
+Style: Sub,Inter Medium,42,&H00F7F4F2,&H00F7F4F2,&H38140F0B,&H00000000,0,0,0,0,100,100,0,0,3,12,0,2,240,240,64,1
+
+[Events]
+Format: Layer, Start, End, Style, Name, MarginL, MarginR, MarginV, Effect, Text
+Dialogue: 0,0:00:00.37,0:00:03.34,Sub,,0,0,0,,{\fad(120,100)\move(960,1020,960,1016,0,120)}En aval, le {\c&HF09CB4&}générateur{\c&HF7F4F2&}\Nalimente des modèles réduits :
+Dialogue: 0,0:00:03.42,0:00:06.96,Sub,,0,0,0,,{\fad(120,100)\move(960,1020,960,1016,0,120)}leur meilleure dérive est la\Nmoyenne de celle des équations sur
+Dialogue: 0,0:00:07.04,0:00:10.77,Sub,,0,0,0,,{\fad(120,100)\move(960,1020,960,1016,0,120)}les instantanés de même état\Nréduit, sans série temporelle.
+Dialogue: 0,0:00:11.51,0:00:13.22,Sub,,0,0,0,,{\fad(120,100)\move(960,1020,960,1016,0,120)}Il sert aussi d'a priori.
+Dialogue: 0,0:00:13.63,0:00:17.80,Sub,,0,0,0,,{\fad(120,100)\move(960,1020,960,1016,0,120)}Une sonde mesure un dipôle presque\Nnul, en plein renversement.
+Dialogue: 0,0:00:18.33,0:00:21.61,Sub,,0,0,0,,{\fad(120,100)\move(960,1020,960,1016,0,120)}Où tombe la moyenne des états\Ncompatibles avec la mesure ?
+Dialogue: 0,0:00:24.85,0:00:28.73,Sub,,0,0,0,,{\fad(120,100)\move(960,1020,960,1016,0,120)}Entre deux bosses en miroir,\Nlà où la dynamo n'est presque jamais.
+Dialogue: 0,0:00:29.22,0:00:32.05,Sub,,0,0,0,,{\fad(120,100)\move(960,1020,960,1016,0,120)}Les méthodes qui ne retiennent\Nqu'une moyenne et une
+Dialogue: 0,0:00:32.13,0:00:34.13,Sub,,0,0,0,,{\fad(120,100)\move(960,1020,960,1016,0,120)}dispersion courent après ce fantôme ;
+Dialogue: 0,0:00:34.21,0:00:38.01,Sub,,0,0,0,,{\fad(120,100)\move(960,1020,960,1016,0,120)}un a priori déséquilibré\Nfavoriserait à tort l'une des bosses.
+Dialogue: 0,0:00:38.25,0:00:42.42,Sub,,0,0,0,,{\fad(120,100)\move(960,1020,960,1016,0,120)}Un miroir intégré règle cela exactement :\Ntirer des paires en miroir,
+Dialogue: 0,0:00:42.50,0:00:45.78,Sub,,0,0,0,,{\fad(120,100)\move(960,1020,960,1016,0,120)}ou chercher à partir d'un\Ncode et de son reflet.

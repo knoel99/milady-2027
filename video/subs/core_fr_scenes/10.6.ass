@@ -12,10 +12,10 @@ Style: Sub,Inter Medium,42,&H00F7F4F2,&H00F7F4F2,&H38140F0B,&H00000000,0,0,0,0,1
 
 [Events]
 Format: Layer, Start, End, Style, Name, MarginL, MarginR, MarginV, Effect, Text
-Dialogue: 0,0:00:00.32,0:00:01.84,Sub,,0,0,0,,{\fad(120,100)\move(960,1020,960,1016,0,120)}Some things need no bet.
-Dialogue: 0,0:00:01.92,0:00:04.98,Sub,,0,0,0,,{\fad(120,100)\move(960,1020,960,1016,0,120)}In three dimensions,\Nhill maps become potentials:
-Dialogue: 0,0:00:05.06,0:00:08.36,Sub,,0,0,0,,{\fad(120,100)\move(960,1020,960,1016,0,120)}the {\c&HF09CB4&}generator{\c&HF7F4F2&} draws them,\Nthen takes their curl.
-Dialogue: 0,0:00:08.44,0:00:12.13,Sub,,0,0,0,,{\fad(120,100)\move(960,1020,960,1016,0,120)}So the {\c&HE58739&}flow{\c&HF7F4F2&} and the field stay\Ndivergence-free to rounding,
-Dialogue: 0,0:00:12.21,0:00:14.32,Sub,,0,0,0,,{\fad(120,100)\move(960,1020,960,1016,0,120)}even with untrained weights.
-Dialogue: 0,0:00:15.19,0:00:20.38,Sub,,0,0,0,,{\fad(120,100)\move(960,1020,960,1016,0,120)}Mirror the starting noise, and the\Nsample comes out with its {\c&H3468EB&}field{\c&HF7F4F2&} flipped.
-Dialogue: 0,0:00:20.46,0:00:23.44,Sub,,0,0,0,,{\fad(120,100)\move(960,1020,960,1016,0,120)}That shows the mechanism, not the quality.
+Dialogue: 0,0:00:00.37,0:00:03.05,Sub,,0,0,0,,{\fad(120,100)\move(960,1020,960,1016,0,120)}Pour certaines choses, pas besoin de pari.
+Dialogue: 0,0:00:03.56,0:00:07.89,Sub,,0,0,0,,{\fad(120,100)\move(960,1020,960,1016,0,120)}En trois dimensions, les cartes de\Nrelief deviennent des potentiels :
+Dialogue: 0,0:00:07.97,0:00:11.95,Sub,,0,0,0,,{\fad(120,100)\move(960,1020,960,1016,0,120)}le {\c&HF09CB4&}générateur{\c&HF7F4F2&} les dessine,\Npuis calcule leur rotationnel.
+Dialogue: 0,0:00:12.19,0:00:15.98,Sub,,0,0,0,,{\fad(120,100)\move(960,1020,960,1016,0,120)}Ainsi, l'{\c&HE58739&}écoulement{\c&HF7F4F2&} et le champ\Nrestent à divergence nulle,
+Dialogue: 0,0:00:16.06,0:00:20.39,Sub,,0,0,0,,{\fad(120,100)\move(960,1020,960,1016,0,120)}à l'erreur d'arrondi près,\Nmême avec des poids non entraînés.
+Dialogue: 0,0:00:21.13,0:00:26.12,Sub,,0,0,0,,{\fad(120,100)\move(960,1020,960,1016,0,120)}Prenez le reflet du bruit de départ, et\Nl'échantillon sort avec son {\c&H3468EB&}champ{\c&HF7F4F2&} inversé.
+Dialogue: 0,0:00:26.66,0:00:29.48,Sub,,0,0,0,,{\fad(120,100)\move(960,1020,960,1016,0,120)}Cela montre le mécanisme, pas la qualité.

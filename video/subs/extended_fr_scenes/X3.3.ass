@@ -1,0 +1,23 @@
+[Script Info]
+ScriptType: v4.00+
+PlayResX: 1920
+PlayResY: 1080
+WrapStyle: 2
+ScaledBorderAndShadow: yes
+YCbCr Matrix: TV.709
+
+[V4+ Styles]
+Format: Name, Fontname, Fontsize, PrimaryColour, SecondaryColour, OutlineColour, BackColour, Bold, Italic, Underline, StrikeOut, ScaleX, ScaleY, Spacing, Angle, BorderStyle, Outline, Shadow, Alignment, MarginL, MarginR, MarginV, Encoding
+Style: Sub,Inter Medium,42,&H00F7F4F2,&H00F7F4F2,&H38140F0B,&H00000000,0,0,0,0,100,100,0,0,3,12,0,2,240,240,64,1
+
+[Events]
+Format: Layer, Start, End, Style, Name, MarginL, MarginR, MarginV, Effect, Text
+Dialogue: 0,0:00:00.37,0:00:03.34,Sub,,0,0,0,,{\fad(120,100)\move(960,1020,960,1016,0,120)}Imaginez un {\c&HF09CB4&}modèle{\c&HF7F4F2&} qui ne\Nvisite jamais le pont entre
+Dialogue: 0,0:00:03.42,0:00:06.81,Sub,,0,0,0,,{\fad(120,100)\move(960,1020,960,1016,0,120)}les deux polarités, là où\Nont lieu tous les passages.
+Dialogue: 0,0:00:07.55,0:00:11.17,Sub,,0,0,0,,{\fad(120,100)\move(960,1020,960,1016,0,120)}La repondération peut-elle rétablir\Nla {\c&H00A1ED&}fréquence des passages{\c&HF7F4F2&} ?
+Dialogue: 0,0:00:14.41,0:00:18.56,Sub,,0,0,0,,{\fad(120,100)\move(960,1020,960,1016,0,120)}Non. La formule de Rice lit\Nla fréquence dans la bande,
+Dialogue: 0,0:00:18.64,0:00:24.12,Sub,,0,0,0,,{\fad(120,100)\move(960,1020,960,1016,0,120)}qui est vide. Zéro, multiplié par\Nn'importe quel poids, reste zéro.
+Dialogue: 0,0:00:24.60,0:00:29.61,Sub,,0,0,0,,{\fad(120,100)\move(960,1020,960,1016,0,120)}Insistez, et le poids s'entasse sur\Nquelques instantanés au bord de la bande.
+Dialogue: 0,0:00:30.35,0:00:34.38,Sub,,0,0,0,,{\fad(120,100)\move(960,1020,960,1016,0,120)}La repondération ne peut pas aller\Nlà où le modèle n'est jamais allé.
+Dialogue: 0,0:00:34.87,0:00:38.13,Sub,,0,0,0,,{\fad(120,100)\move(960,1020,960,1016,0,120)}La matrice des risques du\Nprojet de thèse le confirme :
+Dialogue: 0,0:00:38.21,0:00:41.88,Sub,,0,0,0,,{\fad(120,100)\move(960,1020,960,1016,0,120)}la repondération seule n'est\Npas une solution de repli.

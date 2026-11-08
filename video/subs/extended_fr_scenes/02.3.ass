@@ -1,0 +1,23 @@
+[Script Info]
+ScriptType: v4.00+
+PlayResX: 1920
+PlayResY: 1080
+WrapStyle: 2
+ScaledBorderAndShadow: yes
+YCbCr Matrix: TV.709
+
+[V4+ Styles]
+Format: Name, Fontname, Fontsize, PrimaryColour, SecondaryColour, OutlineColour, BackColour, Bold, Italic, Underline, StrikeOut, ScaleX, ScaleY, Spacing, Angle, BorderStyle, Outline, Shadow, Alignment, MarginL, MarginR, MarginV, Encoding
+Style: Sub,Inter Medium,42,&H00F7F4F2,&H00F7F4F2,&H38140F0B,&H00000000,0,0,0,0,100,100,0,0,3,12,0,2,240,240,64,1
+
+[Events]
+Format: Layer, Start, End, Style, Name, MarginL, MarginR, MarginV, Effect, Text
+Dialogue: 0,0:00:00.37,0:00:03.93,Sub,,0,0,0,,{\fad(120,100)\move(960,1020,960,1016,0,120)}Les dynamos de laboratoire\Nutilisent du sodium liquide.
+Dialogue: 0,0:00:04.16,0:00:06.38,Sub,,0,0,0,,{\fad(120,100)\move(960,1020,960,1016,0,120)}Il coule aussi facilement que l'eau.
+Dialogue: 0,0:00:06.74,0:00:11.01,Sub,,0,0,0,,{\fad(120,100)\move(960,1020,960,1016,0,120)}Mais un champ s'y estompe environ cent\Nmille fois plus vite que ses tourbillons.
+Dialogue: 0,0:00:11.54,0:00:15.06,Sub,,0,0,0,,{\fad(120,100)\move(960,1020,960,1016,0,120)}Le rapport de ces deux\Nvitesses, un sur cent mille,
+Dialogue: 0,0:00:15.14,0:00:18.44,Sub,,0,0,0,,{\fad(120,100)\move(960,1020,960,1016,0,120)}c'est le {\c&H7AAF1B&}nombre de Prandtl magnétique{\c&HF7F4F2&}, Pm.
+Dialogue: 0,0:00:19.18,0:00:23.21,Sub,,0,0,0,,{\fad(120,100)\move(960,1020,960,1016,0,120)}Pour atteindre un Rm de quelques\Ndizaines, il faut brasser violemment.
+Dialogue: 0,0:00:23.56,0:00:25.61,Sub,,0,0,0,,{\fad(120,100)\move(960,1020,960,1016,0,120)}Le {\c&H7AAF1B&}nombre de Reynolds{\c&HF7F4F2&} de l'écoulement,
+Dialogue: 0,0:00:25.69,0:00:29.15,Sub,,0,0,0,,{\fad(120,100)\move(960,1020,960,1016,0,120)}la jauge de la turbulence,\Nse chiffre alors en millions.
+Dialogue: 0,0:00:29.53,0:00:32.77,Sub,,0,0,0,,{\fad(120,100)\move(960,1020,960,1016,0,120)}Toute dynamo de laboratoire\Nest donc turbulente.

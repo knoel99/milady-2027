@@ -1,0 +1,21 @@
+[Script Info]
+ScriptType: v4.00+
+PlayResX: 1920
+PlayResY: 1080
+WrapStyle: 2
+ScaledBorderAndShadow: yes
+YCbCr Matrix: TV.709
+
+[V4+ Styles]
+Format: Name, Fontname, Fontsize, PrimaryColour, SecondaryColour, OutlineColour, BackColour, Bold, Italic, Underline, StrikeOut, ScaleX, ScaleY, Spacing, Angle, BorderStyle, Outline, Shadow, Alignment, MarginL, MarginR, MarginV, Encoding
+Style: Sub,Inter Medium,42,&H00F7F4F2,&H00F7F4F2,&H38140F0B,&H00000000,0,0,0,0,100,100,0,0,3,12,0,2,240,240,64,1
+
+[Events]
+Format: Layer, Start, End, Style, Name, MarginL, MarginR, MarginV, Effect, Text
+Dialogue: 0,0:00:00.37,0:00:02.33,Sub,,0,0,0,,{\fad(120,100)\move(960,1020,960,1016,0,120)}Tout le reste doit être mesuré.
+Dialogue: 0,0:00:02.69,0:00:06.57,Sub,,0,0,0,,{\fad(120,100)\move(960,1020,960,1016,0,120)}Premier test : le {\c&HF09CB4&}générateur{\c&HF7F4F2&}\Nreproduit-il les spectres d'énergie
+Dialogue: 0,0:00:06.65,0:00:10.94,Sub,,0,0,0,,{\fad(120,100)\move(960,1020,960,1016,0,120)}à un dixième de décade près,\Naux réglages vus à l'entraînement ?
+Dialogue: 0,0:00:11.68,0:00:13.46,Sub,,0,0,0,,{\fad(120,100)\move(960,1020,960,1016,0,120)}Confiance : faible.
+Dialogue: 0,0:00:13.81,0:00:17.20,Sub,,0,0,0,,{\fad(120,100)\move(960,1020,960,1016,0,120)}En deux dimensions,\Nles meilleurs modèles y sont tout
+Dialogue: 0,0:00:17.28,0:00:20.35,Sub,,0,0,0,,{\fad(120,100)\move(960,1020,960,1016,0,120)}juste parvenus ; et ici,\Nchaque simulation garde
+Dialogue: 0,0:00:20.43,0:00:24.23,Sub,,0,0,0,,{\fad(120,100)\move(960,1020,960,1016,0,120)}quarante instantanés,\Ncontre cinq mille dans le plan.

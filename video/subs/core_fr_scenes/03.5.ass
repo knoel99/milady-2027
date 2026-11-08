@@ -12,10 +12,10 @@ Style: Sub,Inter Medium,42,&H00F7F4F2,&H00F7F4F2,&H38140F0B,&H00000000,0,0,0,0,1
 
 [Events]
 Format: Layer, Start, End, Style, Name, MarginL, MarginR, MarginV, Effect, Text
-Dialogue: 0,0:00:00.32,0:00:03.67,Sub,,0,0,0,,{\fad(120,100)\move(960,1020,960,1016,0,120)}Real dynamos have not\None {\c&H7AAF1B&}knob{\c&HF7F4F2&}, but a panel.
-Dialogue: 0,0:00:03.75,0:00:07.73,Sub,,0,0,0,,{\fad(120,100)\move(960,1020,960,1016,0,120)}How hard the metal is stirred;\Nhow well it conducts.
-Dialogue: 0,0:00:07.81,0:00:11.31,Sub,,0,0,0,,{\fad(120,100)\move(960,1020,960,1016,0,120)}What the discs are made\Nof: remember the iron.
-Dialogue: 0,0:00:11.39,0:00:15.60,Sub,,0,0,0,,{\fad(120,100)\move(960,1020,960,1016,0,120)}How unequal their speeds are:\Nthat is when VKS flipped.
-Dialogue: 0,0:00:15.68,0:00:20.08,Sub,,0,0,0,,{\fad(120,100)\move(960,1020,960,1016,0,120)}For DRESDYN, a precessing tank:\Nhow fast its axis turns.
-Dialogue: 0,0:00:20.95,0:00:24.50,Sub,,0,0,0,,{\fad(120,100)\move(960,1020,960,1016,0,120)}Even the wall counts: in VKS\Nsimulations, changing only its
-Dialogue: 0,0:00:24.58,0:00:28.78,Sub,,0,0,0,,{\fad(120,100)\move(960,1020,960,1016,0,120)}magnetic condition raised the\Nthreshold by about forty percent.
+Dialogue: 0,0:00:00.37,0:00:04.44,Sub,,0,0,0,,{\fad(120,100)\move(960,1020,960,1016,0,120)}Les vraies dynamos n'ont pas un seul\N{\c&H7AAF1B&}bouton{\c&HF7F4F2&}, mais tout un tableau de bord.
+Dialogue: 0,0:00:04.52,0:00:08.92,Sub,,0,0,0,,{\fad(120,100)\move(960,1020,960,1016,0,120)}Avec quelle force on brasse le métal ;\Ns'il conduit plus ou moins bien.
+Dialogue: 0,0:00:09.26,0:00:12.31,Sub,,0,0,0,,{\fad(120,100)\move(960,1020,960,1016,0,120)}Le matériau des disques :\Nsouvenez-vous du fer.
+Dialogue: 0,0:00:12.50,0:00:17.40,Sub,,0,0,0,,{\fad(120,100)\move(960,1020,960,1016,0,120)}L'écart entre leurs vitesses : c'est\Nlà que le champ de VKS s'est renversé.
+Dialogue: 0,0:00:18.00,0:00:23.11,Sub,,0,0,0,,{\fad(120,100)\move(960,1020,960,1016,0,120)}Pour DRESDYN, une cuve en précession :\Nà quelle vitesse tourne son axe.
+Dialogue: 0,0:00:23.85,0:00:27.96,Sub,,0,0,0,,{\fad(120,100)\move(960,1020,960,1016,0,120)}Même la paroi compte : dans des\Nsimulations de VKS, changer seulement
+Dialogue: 0,0:00:28.04,0:00:32.68,Sub,,0,0,0,,{\fad(120,100)\move(960,1020,960,1016,0,120)}sa condition magnétique a relevé le\Nseuil d'environ quarante pour cent.

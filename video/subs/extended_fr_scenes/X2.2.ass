@@ -1,0 +1,30 @@
+[Script Info]
+ScriptType: v4.00+
+PlayResX: 1920
+PlayResY: 1080
+WrapStyle: 2
+ScaledBorderAndShadow: yes
+YCbCr Matrix: TV.709
+
+[V4+ Styles]
+Format: Name, Fontname, Fontsize, PrimaryColour, SecondaryColour, OutlineColour, BackColour, Bold, Italic, Underline, StrikeOut, ScaleX, ScaleY, Spacing, Angle, BorderStyle, Outline, Shadow, Alignment, MarginL, MarginR, MarginV, Encoding
+Style: Sub,Inter Medium,42,&H00F7F4F2,&H00F7F4F2,&H38140F0B,&H00000000,0,0,0,0,100,100,0,0,3,12,0,2,240,240,64,1
+
+[Events]
+Format: Layer, Start, End, Style, Name, MarginL, MarginR, MarginV, Effect, Text
+Dialogue: 0,0:00:00.37,0:00:04.55,Sub,,0,0,0,,{\fad(120,100)\move(960,1020,960,1016,0,120)}Deuxième énoncé : le ressort,\Ncette fois en entier.
+Dialogue: 0,0:00:04.95,0:00:08.04,Sub,,0,0,0,,{\fad(120,100)\move(960,1020,960,1016,0,120)}Si les données vivent dans\Nun sous-espace linéaire,
+Dialogue: 0,0:00:08.12,0:00:10.63,Sub,,0,0,0,,{\fad(120,100)\move(960,1020,960,1016,0,120)}le {\c&HF09CB4&}vent{\c&HF7F4F2&} idéal se décompose en deux.
+Dialogue: 0,0:00:10.99,0:00:14.87,Sub,,0,0,0,,{\fad(120,100)\move(960,1020,960,1016,0,120)}Le long du sous-espace, une partie\Nqu'un réseau peut apprendre.
+Dialogue: 0,0:00:15.12,0:00:17.82,Sub,,0,0,0,,{\fad(120,100)\move(960,1020,960,1016,0,120)}Perpendiculairement, une force de rappel :
+Dialogue: 0,0:00:17.90,0:00:22.40,Sub,,0,0,0,,{\fad(120,100)\move(960,1020,960,1016,0,120)}la composante parasite, divisée\Npar ce qu'il reste à l'horloge.
+Dialogue: 0,0:00:23.14,0:00:28.21,Sub,,0,0,0,,{\fad(120,100)\move(960,1020,960,1016,0,120)}Suivie exactement, cette force dépose\Nchaque échantillon dans le sous-espace.
+Dialogue: 0,0:00:28.58,0:00:31.76,Sub,,0,0,0,,{\fad(120,100)\move(960,1020,960,1016,0,120)}Avec un entraînement parfait,\Nle générateur de base,
+Dialogue: 0,0:00:31.84,0:00:36.36,Sub,,0,0,0,,{\fad(120,100)\move(960,1020,960,1016,0,120)}les deux projections et les cartes\Nde relief donnent la même foule.
+Dialogue: 0,0:00:37.10,0:00:41.71,Sub,,0,0,0,,{\fad(120,100)\move(960,1020,960,1016,0,120)}Plafonnez le rappel, et une composante\Nparasite d'ordre un subsiste.
+Dialogue: 0,0:00:42.72,0:00:46.53,Sub,,0,0,0,,{\fad(120,100)\move(960,1020,960,1016,0,120)}Ajoutez maintenant au rappel\Nexact une petite erreur,
+Dialogue: 0,0:00:46.61,0:00:50.54,Sub,,0,0,0,,{\fad(120,100)\move(960,1020,960,1016,0,120)}bornée. Une composante\Nparasite subsiste-t-elle ?
+Dialogue: 0,0:00:53.78,0:00:56.04,Sub,,0,0,0,,{\fad(120,100)\move(960,1020,960,1016,0,120)}Non. Le rappel l'efface.
+Dialogue: 0,0:00:56.42,0:00:59.89,Sub,,0,0,0,,{\fad(120,100)\move(960,1020,960,1016,0,120)}Le zéro virgule quatre un du\Ngénérateur de base se lit donc
+Dialogue: 0,0:00:59.97,0:01:03.55,Sub,,0,0,0,,{\fad(120,100)\move(960,1020,960,1016,0,120)}comme un rappel manquant,\Npas comme une petite erreur.
+Dialogue: 0,0:01:04.29,0:01:09.99,Sub,,0,0,0,,{\fad(120,100)\move(960,1020,960,1016,0,120)}Et le résidu infime du flot projeté ?\NLa simple précision du calcul.

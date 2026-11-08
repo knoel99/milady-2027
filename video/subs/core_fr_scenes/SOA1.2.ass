@@ -12,12 +12,12 @@ Style: Sub,Inter Medium,42,&H00F7F4F2,&H00F7F4F2,&H38140F0B,&H00000000,0,0,0,0,1
 
 [Events]
 Format: Layer, Start, End, Style, Name, MarginL, MarginR, MarginV, Effect, Text
-Dialogue: 0,0:00:00.32,0:00:01.88,Sub,,0,0,0,,{\fad(120,100)\move(960,1020,960,1016,0,120)}Deuxième piste, la théorie.
-Dialogue: 0,0:00:01.96,0:00:04.80,Sub,,0,0,0,,{\fad(120,100)\move(960,1020,960,1016,0,120)}Mille neuf cent dix-neuf :\Nun fluide conducteur en
-Dialogue: 0,0:00:04.88,0:00:07.96,Sub,,0,0,0,,{\fad(120,100)\move(960,1020,960,1016,0,120)}mouvement pourrait entretenir\Nle champ du Soleil.
-Dialogue: 0,0:00:08.04,0:00:10.88,Sub,,0,0,0,,{\fad(120,100)\move(960,1020,960,1016,0,120)}Mille neuf cent trente-trois :\Naucun écoulement ne
-Dialogue: 0,0:00:10.96,0:00:14.32,Sub,,0,0,0,,{\fad(120,100)\move(960,1020,960,1016,0,120)}peut entretenir un champ\Nsymétrique autour d'un axe.
-Dialogue: 0,0:00:15.19,0:00:16.88,Sub,,0,0,0,,{\fad(120,100)\move(960,1020,960,1016,0,120)}Mille neuf cent cinquante-huit :
-Dialogue: 0,0:00:16.96,0:00:20.88,Sub,,0,0,0,,{\fad(120,100)\move(960,1020,960,1016,0,120)}les premiers exemples démontrés\Nd'écoulements qui en sont capables.
-Dialogue: 0,0:00:20.96,0:00:24.77,Sub,,0,0,0,,{\fad(120,100)\move(960,1020,960,1016,0,120)}Dans les années soixante-dix arrivent\Ndes écoulements dynamos simples,
-Dialogue: 0,0:00:24.85,0:00:27.96,Sub,,0,0,0,,{\fad(120,100)\move(960,1020,960,1016,0,120)}qui deviendront les plans\Nde Riga et de Karlsruhe.
+Dialogue: 0,0:00:00.37,0:00:02.67,Sub,,0,0,0,,{\fad(120,100)\move(960,1020,960,1016,0,120)}Deuxième piste, la théorie.
+Dialogue: 0,0:00:03.21,0:00:06.01,Sub,,0,0,0,,{\fad(120,100)\move(960,1020,960,1016,0,120)}Mille neuf cent dix-neuf :\Nun fluide conducteur en
+Dialogue: 0,0:00:06.09,0:00:09.24,Sub,,0,0,0,,{\fad(120,100)\move(960,1020,960,1016,0,120)}mouvement pourrait entretenir\Nle champ du Soleil.
+Dialogue: 0,0:00:09.71,0:00:12.58,Sub,,0,0,0,,{\fad(120,100)\move(960,1020,960,1016,0,120)}Mille neuf cent trente-trois :\Naucun écoulement ne
+Dialogue: 0,0:00:12.66,0:00:16.05,Sub,,0,0,0,,{\fad(120,100)\move(960,1020,960,1016,0,120)}peut entretenir un champ\Nsymétrique autour d'un axe.
+Dialogue: 0,0:00:16.79,0:00:19.65,Sub,,0,0,0,,{\fad(120,100)\move(960,1020,960,1016,0,120)}Mille neuf cent cinquante-huit :\Nles premiers exemples
+Dialogue: 0,0:00:19.73,0:00:23.06,Sub,,0,0,0,,{\fad(120,100)\move(960,1020,960,1016,0,120)}rigoureux d'écoulements\Ncapables d'entretenir un champ.
+Dialogue: 0,0:00:23.69,0:00:27.40,Sub,,0,0,0,,{\fad(120,100)\move(960,1020,960,1016,0,120)}Dans les années soixante-dix arrivent\Ndes écoulements dynamos simples,
+Dialogue: 0,0:00:27.48,0:00:30.51,Sub,,0,0,0,,{\fad(120,100)\move(960,1020,960,1016,0,120)}qui deviendront les plans\Nde Riga et de Karlsruhe.

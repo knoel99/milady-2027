@@ -12,5 +12,5 @@ Style: Sub,Inter Medium,42,&H00F7F4F2,&H00F7F4F2,&H38140F0B,&H00000000,0,0,0,0,1
 
 [Events]
 Format: Layer, Start, End, Style, Name, MarginL, MarginR, MarginV, Effect, Text
-Dialogue: 0,0:00:00.42,0:00:03.68,Sub,,0,0,0,,{\fad(120,100)\move(960,1020,960,1016,0,120)}With only a handful of runs,\Nshould the {\c&H7AAF1B&}settings{\c&HF7F4F2&}
-Dialogue: 0,0:00:03.76,0:00:07.44,Sub,,0,0,0,,{\fad(120,100)\move(960,1020,960,1016,0,120)}be spread evenly,\Nor packed near each threshold?
+Dialogue: 0,0:00:00.47,0:00:03.49,Sub,,0,0,0,,{\fad(120,100)\move(960,1020,960,1016,0,120)}Avec seulement une poignée de\Nsimulations, faut-il espacer
+Dialogue: 0,0:00:03.57,0:00:07.48,Sub,,0,0,0,,{\fad(120,100)\move(960,1020,960,1016,0,120)}régulièrement les {\c&H7AAF1B&}réglages{\c&HF7F4F2&}, ou les\Nresserrer près de chaque seuil ?

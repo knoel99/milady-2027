@@ -12,15 +12,16 @@ Style: Sub,Inter Medium,42,&H00F7F4F2,&H00F7F4F2,&H38140F0B,&H00000000,0,0,0,0,1
 
 [Events]
 Format: Layer, Start, End, Style, Name, MarginL, MarginR, MarginV, Effect, Text
-Dialogue: 0,0:00:00.32,0:00:03.02,Sub,,0,0,0,,{\fad(120,100)\move(960,1020,960,1016,0,120)}Those gaps are where this film lives.
-Dialogue: 0,0:00:03.10,0:00:06.51,Sub,,0,0,0,,{\fad(120,100)\move(960,1020,960,1016,0,120)}The study behind this\Nfilm asks three things.
-Dialogue: 0,0:00:07.38,0:00:11.27,Sub,,0,0,0,,{\fad(120,100)\move(960,1020,960,1016,0,120)}One: can a {\c&HF09CB4&}machine{\c&HF7F4F2&} learn\Nthe whole family of fields,
-Dialogue: 0,0:00:11.35,0:00:14.55,Sub,,0,0,0,,{\fad(120,100)\move(960,1020,960,1016,0,120)}even at knob settings between the dots?
-Dialogue: 0,0:00:14.63,0:00:17.92,Sub,,0,0,0,,{\fad(120,100)\move(960,1020,960,1016,0,120)}Two: can it respect\Neach law where it holds,
-Dialogue: 0,0:00:18.00,0:00:22.43,Sub,,0,0,0,,{\fad(120,100)\move(960,1020,960,1016,0,120)}exactly in every field,\Nor {\c&H00A1ED&}on average{\c&HF7F4F2&} over many fields?
-Dialogue: 0,0:00:22.51,0:00:26.32,Sub,,0,0,0,,{\fad(120,100)\move(960,1020,960,1016,0,120)}Three: can it tell us\N{\c&H00A1ED&}how often{\c&HF7F4F2&} the field flips?
-Dialogue: 0,0:00:27.19,0:00:30.52,Sub,,0,0,0,,{\fad(120,100)\move(960,1020,960,1016,0,120)}To find out, the study's\Nplan climbs a staircase,
-Dialogue: 0,0:00:30.60,0:00:34.62,Sub,,0,0,0,,{\fad(120,100)\move(960,1020,960,1016,0,120)}from three numbers to the\Nshapes of real experiments.
-Dialogue: 0,0:00:35.49,0:00:38.85,Sub,,0,0,0,,{\fad(120,100)\move(960,1020,960,1016,0,120)}One honest note: this\Nindependent study is prospective,
-Dialogue: 0,0:00:38.93,0:00:42.04,Sub,,0,0,0,,{\fad(120,100)\move(960,1020,960,1016,0,120)}built on small experiments\Non an ordinary computer,
-Dialogue: 0,0:00:42.12,0:00:46.20,Sub,,0,0,0,,{\fad(120,100)\move(960,1020,960,1016,0,120)}and not endorsed by MilaDy,\Nits partners or the supervisors.
+Dialogue: 0,0:00:00.37,0:00:02.63,Sub,,0,0,0,,{\fad(120,100)\move(960,1020,960,1016,0,120)}C'est dans ces vides que se joue ce film.
+Dialogue: 0,0:00:03.02,0:00:05.98,Sub,,0,0,0,,{\fad(120,100)\move(960,1020,960,1016,0,120)}L'étude sur laquelle il\Ns'appuie pose trois questions.
+Dialogue: 0,0:00:06.72,0:00:10.66,Sub,,0,0,0,,{\fad(120,100)\move(960,1020,960,1016,0,120)}Première : une {\c&HF09CB4&}machine{\c&HF7F4F2&} peut-elle\Napprendre toute la famille des champs,
+Dialogue: 0,0:00:10.74,0:00:13.79,Sub,,0,0,0,,{\fad(120,100)\move(960,1020,960,1016,0,120)}même pour des réglages\Nsitués entre les points ?
+Dialogue: 0,0:00:14.57,0:00:18.44,Sub,,0,0,0,,{\fad(120,100)\move(960,1020,960,1016,0,120)}Deuxième : peut-elle respecter\Nchaque loi là où elle est vraie,
+Dialogue: 0,0:00:18.52,0:00:23.11,Sub,,0,0,0,,{\fad(120,100)\move(960,1020,960,1016,0,120)}exactement dans chaque champ,\Nou {\c&H00A1ED&}en moyenne{\c&HF7F4F2&} sur de nombreux champs ?
+Dialogue: 0,0:00:23.47,0:00:28.09,Sub,,0,0,0,,{\fad(120,100)\move(960,1020,960,1016,0,120)}Troisième : peut-elle nous dire\N{\c&H00A1ED&}à quelle fréquence{\c&HF7F4F2&} le champ se renverse ?
+Dialogue: 0,0:00:28.83,0:00:32.11,Sub,,0,0,0,,{\fad(120,100)\move(960,1020,960,1016,0,120)}Pour le savoir, le plan de\Nl'étude gravit un escalier :
+Dialogue: 0,0:00:32.19,0:00:36.18,Sub,,0,0,0,,{\fad(120,100)\move(960,1020,960,1016,0,120)}de trois nombres jusqu'à la\Ngéométrie d'expériences réelles.
+Dialogue: 0,0:00:36.92,0:00:40.52,Sub,,0,0,0,,{\fad(120,100)\move(960,1020,960,1016,0,120)}En toute honnêteté : cette étude\Nindépendante est prospective,
+Dialogue: 0,0:00:40.60,0:00:43.13,Sub,,0,0,0,,{\fad(120,100)\move(960,1020,960,1016,0,120)}fondée sur de petites\Nexpériences menées sur
+Dialogue: 0,0:00:43.21,0:00:46.57,Sub,,0,0,0,,{\fad(120,100)\move(960,1020,960,1016,0,120)}un simple ordinateur, et elle\Nn'est validée ni par MilaDy,
+Dialogue: 0,0:00:46.65,0:00:49.71,Sub,,0,0,0,,{\fad(120,100)\move(960,1020,960,1016,0,120)}ni par ses partenaires,\Nni par les encadrants.

@@ -12,14 +12,18 @@ Style: Sub,Inter Medium,42,&H00F7F4F2,&H00F7F4F2,&H38140F0B,&H00000000,0,0,0,0,1
 
 [Events]
 Format: Layer, Start, End, Style, Name, MarginL, MarginR, MarginV, Effect, Text
-Dialogue: 0,0:00:00.32,0:00:03.15,Sub,,0,0,0,,{\fad(120,100)\move(960,1020,960,1016,0,120)}First fix: draw a hill map, not arrows,
-Dialogue: 0,0:00:03.23,0:00:06.80,Sub,,0,0,0,,{\fad(120,100)\move(960,1020,960,1016,0,120)}and let the {\c&HE58739&}flow{\c&HF7F4F2&} run\Nalong its contour lines.
-Dialogue: 0,0:00:06.88,0:00:09.64,Sub,,0,0,0,,{\fad(120,100)\move(960,1020,960,1016,0,120)}Where the lines crowd, it runs faster,
-Dialogue: 0,0:00:09.72,0:00:13.90,Sub,,0,0,0,,{\fad(120,100)\move(960,1020,960,1016,0,120)}so nothing piles up or leaks,\Nwhatever the landscape.
-Dialogue: 0,0:00:13.98,0:00:16.79,Sub,,0,0,0,,{\fad(120,100)\move(960,1020,960,1016,0,120)}The box agrees: lines in, lines out.
-Dialogue: 0,0:00:17.66,0:00:22.02,Sub,,0,0,0,,{\fad(120,100)\move(960,1020,960,1016,0,120)}So the {\c&HF09CB4&}machine{\c&HF7F4F2&} draws two hill maps,\Nfor the flow and the field:
-Dialogue: 0,0:00:22.10,0:00:26.73,Sub,,0,0,0,,{\fad(120,100)\move(960,1020,960,1016,0,120)}zero divergence by construction,\Nhowever badly it is trained.
-Dialogue: 0,0:00:27.60,0:00:33.60,Sub,,0,0,0,,{\fad(120,100)\move(960,1020,960,1016,0,120)}Second fix, for any field: split it into\Nswirl plus slope, and delete the slope.
-Dialogue: 0,0:00:33.75,0:00:39.55,Sub,,0,0,0,,{\fad(120,100)\move(960,1020,960,1016,0,120)}Wave by wave, remove the part of each\Narrow along the wave's own direction.
-Dialogue: 0,0:00:40.42,0:00:45.43,Sub,,0,0,0,,{\fad(120,100)\move(960,1020,960,1016,0,120)}The gauges fall to rounding error,\Ndown to ten to the minus seventeen.
-Dialogue: 0,0:00:45.51,0:00:49.90,Sub,,0,0,0,,{\fad(120,100)\move(960,1020,960,1016,0,120)}Measured, though, with the very\Noperator used to enforce it.
+Dialogue: 0,0:00:00.37,0:00:04.12,Sub,,0,0,0,,{\fad(120,100)\move(960,1020,960,1016,0,120)}Premier remède : dessinez une carte\Nde relief plutôt que des flèches,
+Dialogue: 0,0:00:04.20,0:00:07.47,Sub,,0,0,0,,{\fad(120,100)\move(960,1020,960,1016,0,120)}et laissez l'{\c&HE58739&}écoulement{\c&HF7F4F2&}\Nsuivre ses courbes de niveau.
+Dialogue: 0,0:00:07.91,0:00:11.67,Sub,,0,0,0,,{\fad(120,100)\move(960,1020,960,1016,0,120)}Là où les courbes se resserrent,\Nil va plus vite : ainsi,
+Dialogue: 0,0:00:11.75,0:00:15.79,Sub,,0,0,0,,{\fad(120,100)\move(960,1020,960,1016,0,120)}rien ne s'accumule ni ne fuit,\Nquel que soit le relief.
+Dialogue: 0,0:00:16.06,0:00:19.94,Sub,,0,0,0,,{\fad(120,100)\move(960,1020,960,1016,0,120)}La boîte le confirme : il entre\Nautant de lignes qu'il en sort.
+Dialogue: 0,0:00:20.68,0:00:23.46,Sub,,0,0,0,,{\fad(120,100)\move(960,1020,960,1016,0,120)}La {\c&HF09CB4&}machine{\c&HF7F4F2&} dessine donc\Ndeux cartes de relief,
+Dialogue: 0,0:00:23.54,0:00:26.06,Sub,,0,0,0,,{\fad(120,100)\move(960,1020,960,1016,0,120)}une pour l'{\c&HE58739&}écoulement{\c&HF7F4F2&}, une pour le champ :
+Dialogue: 0,0:00:26.14,0:00:30.51,Sub,,0,0,0,,{\fad(120,100)\move(960,1020,960,1016,0,120)}divergence nulle par construction,\Naussi mal entraînée soit-elle.
+Dialogue: 0,0:00:31.25,0:00:34.09,Sub,,0,0,0,,{\fad(120,100)\move(960,1020,960,1016,0,120)}Second remède, valable pour tout champ :
+Dialogue: 0,0:00:34.17,0:00:38.88,Sub,,0,0,0,,{\fad(120,100)\move(960,1020,960,1016,0,120)}décomposez-le en tourbillon\Nplus pente, et effacez la pente.
+Dialogue: 0,0:00:39.31,0:00:44.43,Sub,,0,0,0,,{\fad(120,100)\move(960,1020,960,1016,0,120)}Onde par onde, retirez de chaque flèche\Nsa composante dans la direction de l'onde.
+Dialogue: 0,0:00:45.17,0:00:48.11,Sub,,0,0,0,,{\fad(120,100)\move(960,1020,960,1016,0,120)}Les jauges tombent au niveau\Nde l'erreur d'arrondi,
+Dialogue: 0,0:00:48.19,0:00:50.71,Sub,,0,0,0,,{\fad(120,100)\move(960,1020,960,1016,0,120)}jusqu'à dix puissance moins dix-sept.
+Dialogue: 0,0:00:51.37,0:00:54.36,Sub,,0,0,0,,{\fad(120,100)\move(960,1020,960,1016,0,120)}Une réserve, toutefois :\Nla divergence est mesurée
+Dialogue: 0,0:00:54.44,0:00:57.41,Sub,,0,0,0,,{\fad(120,100)\move(960,1020,960,1016,0,120)}avec l'opérateur même\Nqui sert à l'imposer.

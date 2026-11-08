@@ -12,16 +12,19 @@ Style: Sub,Inter Medium,42,&H00F7F4F2,&H00F7F4F2,&H38140F0B,&H00000000,0,0,0,0,1
 
 [Events]
 Format: Layer, Start, End, Style, Name, MarginL, MarginR, MarginV, Effect, Text
-Dialogue: 0,0:00:00.32,0:00:03.47,Sub,,0,0,0,,{\fad(120,100)\move(960,1020,960,1016,0,120)}How is the wind learned?\NWith a simple trick.
-Dialogue: 0,0:00:03.55,0:00:09.22,Sub,,0,0,0,,{\fad(120,100)\move(960,1020,960,1016,0,120)}Keep one coordinate of each point, and\Nlay the transport clock out to the right.
-Dialogue: 0,0:00:09.30,0:00:12.32,Sub,,0,0,0,,{\fad(120,100)\move(960,1020,960,1016,0,120)}Pair each noise point\Nwith a random snapshot;
-Dialogue: 0,0:00:12.40,0:00:14.89,Sub,,0,0,0,,{\fad(120,100)\move(960,1020,960,1016,0,120)}join them with a straight string.
-Dialogue: 0,0:00:14.97,0:00:18.02,Sub,,0,0,0,,{\fad(120,100)\move(960,1020,960,1016,0,120)}Thousands of strings, crossing everywhere.
-Dialogue: 0,0:00:18.89,0:00:20.72,Sub,,0,0,0,,{\fad(120,100)\move(960,1020,960,1016,0,120)}Pick one place, at one moment.
-Dialogue: 0,0:00:20.80,0:00:24.16,Sub,,0,0,0,,{\fad(120,100)\move(960,1020,960,1016,0,120)}Several strings pass through,\Npointing different ways.
-Dialogue: 0,0:00:24.24,0:00:27.98,Sub,,0,0,0,,{\fad(120,100)\move(960,1020,960,1016,0,120)}The network learns one arrow\Nthere: their {\c&HF09CB4&}average direction{\c&HF7F4F2&}.
-Dialogue: 0,0:00:28.06,0:00:30.71,Sub,,0,0,0,,{\fad(120,100)\move(960,1020,960,1016,0,120)}That is the whole training:\Nplain regression,
-Dialogue: 0,0:00:30.79,0:00:33.30,Sub,,0,0,0,,{\fad(120,100)\move(960,1020,960,1016,0,120)}like fitting a curve through points.
-Dialogue: 0,0:00:34.17,0:00:37.08,Sub,,0,0,0,,{\fad(120,100)\move(960,1020,960,1016,0,120)}Follow the averaged wind, not the strings.
-Dialogue: 0,0:00:37.16,0:00:41.50,Sub,,0,0,0,,{\fad(120,100)\move(960,1020,960,1016,0,120)}The paths bend, and drawn against\Nthe clock, they never cross.
-Dialogue: 0,0:00:41.58,0:00:46.94,Sub,,0,0,0,,{\fad(120,100)\move(960,1020,960,1016,0,120)}Learn the average exactly, and the\Nnoise lands exactly on the data's crowd.
+Dialogue: 0,0:00:00.37,0:00:04.35,Sub,,0,0,0,,{\fad(120,100)\move(960,1020,960,1016,0,120)}Comment apprend-on ce vent ?\NGrâce à une astuce toute simple.
+Dialogue: 0,0:00:04.68,0:00:07.06,Sub,,0,0,0,,{\fad(120,100)\move(960,1020,960,1016,0,120)}Gardez une seule\Ncoordonnée de chaque point,
+Dialogue: 0,0:00:07.14,0:00:10.26,Sub,,0,0,0,,{\fad(120,100)\move(960,1020,960,1016,0,120)}et déroulez l'horloge de\Ntransport vers la droite.
+Dialogue: 0,0:00:10.88,0:00:14.70,Sub,,0,0,0,,{\fad(120,100)\move(960,1020,960,1016,0,120)}Associez chaque point de bruit\Nà un instantané pris au hasard,
+Dialogue: 0,0:00:14.78,0:00:17.43,Sub,,0,0,0,,{\fad(120,100)\move(960,1020,960,1016,0,120)}et reliez-les par une ficelle tendue.
+Dialogue: 0,0:00:17.69,0:00:21.00,Sub,,0,0,0,,{\fad(120,100)\move(960,1020,960,1016,0,120)}Des milliers de ficelles,\Nqui se croisent partout.
+Dialogue: 0,0:00:21.74,0:00:24.65,Sub,,0,0,0,,{\fad(120,100)\move(960,1020,960,1016,0,120)}Choisissez un endroit, à un moment précis.
+Dialogue: 0,0:00:25.09,0:00:28.68,Sub,,0,0,0,,{\fad(120,100)\move(960,1020,960,1016,0,120)}Plusieurs ficelles y passent,\Ndans des directions différentes.
+Dialogue: 0,0:00:29.22,0:00:33.76,Sub,,0,0,0,,{\fad(120,100)\move(960,1020,960,1016,0,120)}Le réseau y apprend une seule\Nflèche : leur {\c&HF09CB4&}direction moyenne{\c&HF7F4F2&}.
+Dialogue: 0,0:00:34.32,0:00:37.87,Sub,,0,0,0,,{\fad(120,100)\move(960,1020,960,1016,0,120)}L'entraînement se résume à\Ncela : une simple régression,
+Dialogue: 0,0:00:37.95,0:00:41.27,Sub,,0,0,0,,{\fad(120,100)\move(960,1020,960,1016,0,120)}comme quand on ajuste\Nune courbe à des points.
+Dialogue: 0,0:00:42.01,0:00:44.61,Sub,,0,0,0,,{\fad(120,100)\move(960,1020,960,1016,0,120)}Suivez le vent moyen, pas les ficelles.
+Dialogue: 0,0:00:44.98,0:00:46.75,Sub,,0,0,0,,{\fad(120,100)\move(960,1020,960,1016,0,120)}Les trajectoires se courbent et,
+Dialogue: 0,0:00:46.83,0:00:50.73,Sub,,0,0,0,,{\fad(120,100)\move(960,1020,960,1016,0,120)}tracées en fonction de l'horloge,\Nelles ne se croisent jamais.
+Dialogue: 0,0:00:51.39,0:00:54.23,Sub,,0,0,0,,{\fad(120,100)\move(960,1020,960,1016,0,120)}Apprenez exactement la\Nmoyenne, et le bruit vient
+Dialogue: 0,0:00:54.31,0:00:57.32,Sub,,0,0,0,,{\fad(120,100)\move(960,1020,960,1016,0,120)}se poser exactement sur\Nla foule des données.

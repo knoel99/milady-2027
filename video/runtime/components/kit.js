@@ -188,9 +188,11 @@
       macros: Object.assign({}, Kit.MACROS, extraMacros), trust: (c) => ['\\htmlClass', '\\htmlId', '\\htmlData'].includes(c.command) });
   };
 
-  /** places where a long inline formula may be split into two lines WITHOUT breaking a relation: after ";" ":" ","
-   *  followed by a space (top level or inside \text{…}), or at \quad / \qquad. Returns [{left, right}] (TeX).
-   *  (KaTeX itself can only wrap after a relation or an operator: "Γ ≤ | 0.86", "16 runs × | 3000 units".) */
+  /** places where a long inline formula may be split into two lines: after ";" ":" "," followed by a space (top
+   *  level or inside \text{…}), at \quad / \qquad, and (rel: true) after a top-level relation (= < > \le \ge
+   *  \approx \sim \ne \to …). Returns [{left, right, rel}] (TeX). Kit.fitFormula prefers the separators and takes a
+   *  relation only when both halves are substantial, so "Γ ≤ | 0.86" or "16 runs × | 3000 units" (KaTeX's own wrap)
+   *  never happens, while "time average along one run = | average over the glow" stays possible. */
   Kit.breakCandidates = function (tex) {
     const out = [];
     let depth = 0;
@@ -206,7 +208,12 @@
       }
       const ch = tex[i];
       if (ch === '\\' && depth === 0 && /^\\q?quad/.test(tex.slice(i))) { const n = tex.startsWith('\\qquad', i) ? 6 : 5; out.push({ left: tex.slice(0, i), right: tex.slice(i + n).replace(/^\s+/, '') }); i += n - 1; continue; }
+      if (ch === '\\' && depth === 0) {   // a relation command at the top level: a (weak) break candidate after it
+        const m = tex.slice(i).match(/^\\(leq?|geq?|approx|sim|simeq|neq?|to|equiv|propto|ll|gg)(?![A-Za-z])/);
+        if (m) { const j = i + m[0].length; out.push({ left: tex.slice(0, j), right: tex.slice(j).replace(/^\s+/, ''), rel: true }); i = j - 1; continue; }
+      }
       if (ch === '\\') { i++; continue; }   // skip the escaped character (\{, \;, \,)
+      if (depth === 0 && /[=<>]/.test(ch)) { out.push({ left: tex.slice(0, i + 1), right: tex.slice(i + 1).replace(/^\s+/, ''), rel: true }); continue; }
       if (ch === '{') depth++; else if (ch === '}') depth--;
       else if (depth === 0 && /[;:,]/.test(ch)) {
         const m = tex.slice(i + 1).match(/^(?:\s*(?:\\[ ,;:!]|\\quad|\\qquad|~))+\s*/);
@@ -223,12 +230,20 @@
     const px = o.px || parseFloat(getComputedStyle(row).fontSize) || 32, minPx = o.minPx ?? 28;
     const probe = Kit.el('span', {}, row.parentElement || row);
     probe.style.cssText = `position:absolute;left:0;top:0;visibility:hidden;white-space:nowrap;display:inline-block;font-size:${px}px`;
-    const wOf = (x) => { probe.innerHTML = Kit.tex(x, false, o.macros); return probe.getBoundingClientRect().width / (Kit._stageScale() || 1); };
+    // a half that is not valid TeX on its own (a split inside \left( … \right)) is not a candidate
+    const wOf = (x) => { try { probe.innerHTML = Kit.tex(x, false, o.macros); } catch (e) { return Infinity; } return probe.getBoundingClientRect().width / (Kit._stageScale() || 1); };
     let res = { lines: 1, px };
     const w0 = wOf(tex);
     if (w0 > maxW + 0.5) {
-      let best = null;
-      for (const c of Kit.breakCandidates(tex)) { const w = Math.max(wOf(c.left), wOf(c.right)); if (!best || w < best.w) best = { c, w }; }
+      // the most balanced separator split; a relation split only if no separator fits and both halves are
+      // substantial (the shorter at least 35 % of the longer: never "Γ ≤ | 0.86")
+      let best = null, bestRel = null;
+      for (const c of Kit.breakCandidates(tex)) {
+        const a = wOf(c.left), b = wOf(c.right), w = Math.max(a, b);
+        if (!c.rel) { if (!best || w < best.w) best = { c, w }; }
+        else if (Math.min(a, b) >= 0.35 * w && (!bestRel || w < bestRel.w)) bestRel = { c, w };
+      }
+      if (bestRel && (!best || (best.w > maxW + 0.5 && bestRel.w < best.w))) best = bestRel;
       if (best && best.w < w0) {
         row.innerHTML = ''; row.style.whiteSpace = 'nowrap'; row.classList.add('fl-split');
         [best.c.left, best.c.right].forEach((x) => Kit.el('div', { html: Kit.tex(x, false, o.macros) }, row));

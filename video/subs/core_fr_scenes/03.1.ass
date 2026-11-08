@@ -12,11 +12,12 @@ Style: Sub,Inter Medium,42,&H00F7F4F2,&H00F7F4F2,&H38140F0B,&H00000000,0,0,0,0,1
 
 [Events]
 Format: Layer, Start, End, Style, Name, MarginL, MarginR, MarginV, Effect, Text
-Dialogue: 0,0:00:03.12,0:00:08.35,Sub,,0,0,0,,{\fad(120,100)\move(960,1020,960,1016,0,120)}Back to the race: the {\c&HE58739&}flow{\c&HF7F4F2&} stretches\Nthe field, and diffusion smudges it.
-Dialogue: 0,0:00:08.43,0:00:12.60,Sub,,0,0,0,,{\fad(120,100)\move(960,1020,960,1016,0,120)}Physicists write the very same\Nrace as a single equation.
-Dialogue: 0,0:00:13.47,0:00:17.98,Sub,,0,0,0,,{\fad(120,100)\move(960,1020,960,1016,0,120)}On the left: how fast the\N{\c&H3468EB&}magnetic field{\c&HF7F4F2&} changes, at each point.
-Dialogue: 0,0:00:18.06,0:00:21.09,Sub,,0,0,0,,{\fad(120,100)\move(960,1020,960,1016,0,120)}First term on the right:\Nthe flow carries the
-Dialogue: 0,0:00:21.17,0:00:24.65,Sub,,0,0,0,,{\fad(120,100)\move(960,1020,960,1016,0,120)}field along and stretches\Nit, like the threads.
-Dialogue: 0,0:00:24.73,0:00:30.17,Sub,,0,0,0,,{\fad(120,100)\move(960,1020,960,1016,0,120)}Second term: diffusion smudges it,\Nat a pace set by the magnetic diffusivity.
-Dialogue: 0,0:00:30.25,0:00:32.32,Sub,,0,0,0,,{\fad(120,100)\move(960,1020,960,1016,0,120)}A poor conductor smudges fast.
-Dialogue: 0,0:00:32.40,0:00:36.52,Sub,,0,0,0,,{\fad(120,100)\move(960,1020,960,1016,0,120)}Stretching against smudging:\Nthe whole race, in one line.
+Dialogue: 0,0:00:03.17,0:00:08.47,Sub,,0,0,0,,{\fad(120,100)\move(960,1020,960,1016,0,120)}Retour à la course : l'{\c&HE58739&}écoulement{\c&HF7F4F2&} étire\Nle champ, et la diffusion l'estompe.
+Dialogue: 0,0:00:09.01,0:00:12.83,Sub,,0,0,0,,{\fad(120,100)\move(960,1020,960,1016,0,120)}Les physiciens écrivent cette\Nmême course en une seule équation.
+Dialogue: 0,0:00:13.57,0:00:18.06,Sub,,0,0,0,,{\fad(120,100)\move(960,1020,960,1016,0,120)}À gauche : à quel rythme le\N{\c&H3468EB&}champ magnétique{\c&HF7F4F2&} varie, en chaque point.
+Dialogue: 0,0:00:18.58,0:00:20.05,Sub,,0,0,0,,{\fad(120,100)\move(960,1020,960,1016,0,120)}Premier terme à droite :
+Dialogue: 0,0:00:20.13,0:00:24.19,Sub,,0,0,0,,{\fad(120,100)\move(960,1020,960,1016,0,120)}l'écoulement transporte le\Nchamp et l'étire, comme un fil.
+Dialogue: 0,0:00:24.67,0:00:27.19,Sub,,0,0,0,,{\fad(120,100)\move(960,1020,960,1016,0,120)}Deuxième terme : la diffusion l'estompe,
+Dialogue: 0,0:00:27.27,0:00:30.86,Sub,,0,0,0,,{\fad(120,100)\move(960,1020,960,1016,0,120)}à une vitesse fixée par\Nla diffusivité magnétique.
+Dialogue: 0,0:00:31.19,0:00:34.56,Sub,,0,0,0,,{\fad(120,100)\move(960,1020,960,1016,0,120)}Dans un mauvais conducteur,\Nle champ s'estompe vite.
+Dialogue: 0,0:00:34.91,0:00:39.37,Sub,,0,0,0,,{\fad(120,100)\move(960,1020,960,1016,0,120)}L'étirement contre l'estompage :\Ntoute la course, en une ligne.

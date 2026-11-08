@@ -1,0 +1,24 @@
+[Script Info]
+ScriptType: v4.00+
+PlayResX: 1920
+PlayResY: 1080
+WrapStyle: 2
+ScaledBorderAndShadow: yes
+YCbCr Matrix: TV.709
+
+[V4+ Styles]
+Format: Name, Fontname, Fontsize, PrimaryColour, SecondaryColour, OutlineColour, BackColour, Bold, Italic, Underline, StrikeOut, ScaleX, ScaleY, Spacing, Angle, BorderStyle, Outline, Shadow, Alignment, MarginL, MarginR, MarginV, Encoding
+Style: Sub,Inter Medium,42,&H00F7F4F2,&H00F7F4F2,&H38140F0B,&H00000000,0,0,0,0,100,100,0,0,3,12,0,2,240,240,64,1
+
+[Events]
+Format: Layer, Start, End, Style, Name, MarginL, MarginR, MarginV, Effect, Text
+Dialogue: 0,0:00:02.17,0:00:05.73,Sub,,0,0,0,,{\fad(120,100)\move(960,1020,960,1016,0,120)}Une parenthèse : les cinq\Nénoncés derrière ces images.
+Dialogue: 0,0:00:05.91,0:00:10.37,Sub,,0,0,0,,{\fad(120,100)\move(960,1020,960,1016,0,120)}Chacun est élémentaire ; ce qui\Ncompte, c'est sa portée exacte.
+Dialogue: 0,0:00:11.11,0:00:13.18,Sub,,0,0,0,,{\fad(120,100)\move(960,1020,960,1016,0,120)}Le premier est presque trop simple.
+Dialogue: 0,0:00:13.45,0:00:16.43,Sub,,0,0,0,,{\fad(120,100)\move(960,1020,960,1016,0,120)}Supposez que tout champ que\Nsait dessiner un {\c&HF09CB4&}décodeur{\c&HF7F4F2&}
+Dialogue: 0,0:00:16.51,0:00:19.95,Sub,,0,0,0,,{\fad(120,100)\move(960,1020,960,1016,0,120)}obéisse à une loi linéaire,\Ncomme la divergence nulle.
+Dialogue: 0,0:00:20.40,0:00:23.27,Sub,,0,0,0,,{\fad(120,100)\move(960,1020,960,1016,0,120)}Alors chaque échantillon y\Nobéit, quelle que soit la
+Dialogue: 0,0:00:23.35,0:00:26.75,Sub,,0,0,0,,{\fad(120,100)\move(960,1020,960,1016,0,120)}{\c&HF09CB4&}foule de codes{\c&HF7F4F2&}, aussi mauvais\Nque soit l'entraînement.
+Dialogue: 0,0:00:27.49,0:00:29.64,Sub,,0,0,0,,{\fad(120,100)\move(960,1020,960,1016,0,120)}La démonstration tient en une ligne.
+Dialogue: 0,0:00:30.11,0:00:35.08,Sub,,0,0,0,,{\fad(120,100)\move(960,1020,960,1016,0,120)}Tout le travail est dans le décodeur :\Ndes cartes de relief en deux dimensions,
+Dialogue: 0,0:00:35.16,0:00:38.87,Sub,,0,0,0,,{\fad(120,100)\move(960,1020,960,1016,0,120)}un potentiel vecteur en trois,\Ndont on fixe la jauge.

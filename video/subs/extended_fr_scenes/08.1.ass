@@ -1,0 +1,23 @@
+[Script Info]
+ScriptType: v4.00+
+PlayResX: 1920
+PlayResY: 1080
+WrapStyle: 2
+ScaledBorderAndShadow: yes
+YCbCr Matrix: TV.709
+
+[V4+ Styles]
+Format: Name, Fontname, Fontsize, PrimaryColour, SecondaryColour, OutlineColour, BackColour, Bold, Italic, Underline, StrikeOut, ScaleX, ScaleY, Spacing, Angle, BorderStyle, Outline, Shadow, Alignment, MarginL, MarginR, MarginV, Encoding
+Style: Sub,Inter Medium,42,&H00F7F4F2,&H00F7F4F2,&H38140F0B,&H00000000,0,0,0,0,100,100,0,0,3,12,0,2,240,240,64,1
+
+[Events]
+Format: Layer, Start, End, Style, Name, MarginL, MarginR, MarginV, Effect, Text
+Dialogue: 0,0:00:03.17,0:00:08.04,Sub,,0,0,0,,{\fad(120,100)\move(960,1020,960,1016,0,120)}Nouveau banc d'essai : des champs\Nentiers, et non plus trois cadrans.
+Dialogue: 0,0:00:08.56,0:00:10.86,Sub,,0,0,0,,{\fad(120,100)\move(960,1020,960,1016,0,120)}Une nappe plane de fluide conducteur :
+Dialogue: 0,0:00:10.94,0:00:14.16,Sub,,0,0,0,,{\fad(120,100)\move(960,1020,960,1016,0,120)}un carré dont les bords\Nopposés se rejoignent.
+Dialogue: 0,0:00:14.64,0:00:18.47,Sub,,0,0,0,,{\fad(120,100)\move(960,1020,960,1016,0,120)}En bleu, la rotation locale de\Nl'{\c&HE58739&}écoulement{\c&HF7F4F2&} ; en vermillon,
+Dialogue: 0,0:00:18.55,0:00:21.86,Sub,,0,0,0,,{\fad(120,100)\move(960,1020,960,1016,0,120)}les courants électriques\Nqui créent le {\c&H3468EB&}champ{\c&HF7F4F2&}.
+Dialogue: 0,0:00:22.60,0:00:27.34,Sub,,0,0,0,,{\fad(120,100)\move(960,1020,960,1016,0,120)}Un seul bouton, {\c&H7AAF1B&}êta{\c&HF7F4F2&} : la vitesse\Nà laquelle le champ s'estompe.
+Dialogue: 0,0:00:27.81,0:00:30.97,Sub,,0,0,0,,{\fad(120,100)\move(960,1020,960,1016,0,120)}Mais un monde plat ne peut\Npas entretenir d'effet dynamo.
+Dialogue: 0,0:00:31.52,0:00:35.21,Sub,,0,0,0,,{\fad(120,100)\move(960,1020,960,1016,0,120)}Ici, un forçage aléatoire\Nmaintient le champ en vie :
+Dialogue: 0,0:00:35.29,0:00:39.60,Sub,,0,0,0,,{\fad(120,100)\move(960,1020,960,1016,0,120)}un terrain d'entraînement\Npour les lois, pas une dynamo.

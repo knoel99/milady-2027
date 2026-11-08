@@ -1,0 +1,25 @@
+[Script Info]
+ScriptType: v4.00+
+PlayResX: 1920
+PlayResY: 1080
+WrapStyle: 2
+ScaledBorderAndShadow: yes
+YCbCr Matrix: TV.709
+
+[V4+ Styles]
+Format: Name, Fontname, Fontsize, PrimaryColour, SecondaryColour, OutlineColour, BackColour, Bold, Italic, Underline, StrikeOut, ScaleX, ScaleY, Spacing, Angle, BorderStyle, Outline, Shadow, Alignment, MarginL, MarginR, MarginV, Encoding
+Style: Sub,Inter Medium,42,&H00F7F4F2,&H00F7F4F2,&H38140F0B,&H00000000,0,0,0,0,100,100,0,0,3,12,0,2,240,240,64,1
+
+[Events]
+Format: Layer, Start, End, Style, Name, MarginL, MarginR, MarginV, Effect, Text
+Dialogue: 0,0:00:03.17,0:00:07.17,Sub,,0,0,0,,{\fad(120,100)\move(960,1020,960,1016,0,120)}Au départ, les nouveaux instantanés\Nne sont que du bruit pur :
+Dialogue: 0,0:00:07.25,0:00:09.88,Sub,,0,0,0,,{\fad(120,100)\move(960,1020,960,1016,0,120)}un nuage rond de points aléatoires.
+Dialogue: 0,0:00:10.25,0:00:15.87,Sub,,0,0,0,,{\fad(120,100)\move(960,1020,960,1016,0,120)}Par-dessus, la foule que l'on veut\Nobtenir : un point par instantané. Ici,
+Dialogue: 0,0:00:15.95,0:00:19.98,Sub,,0,0,0,,{\fad(120,100)\move(960,1020,960,1016,0,120)}deux amas en miroir,\Ncomme les deux tourbillons.
+Dialogue: 0,0:00:20.72,0:00:23.85,Sub,,0,0,0,,{\fad(120,100)\move(960,1020,960,1016,0,120)}Faites maintenant souffler\Nun {\c&HF09CB4&}vent{\c&HF7F4F2&} à travers le nuage.
+Dialogue: 0,0:00:24.16,0:00:29.61,Sub,,0,0,0,,{\fad(120,100)\move(960,1020,960,1016,0,120)}Chaque point dérive, prend un virage, et\Nvient se poser dans la forme des données.
+Dialogue: 0,0:00:30.05,0:00:31.60,Sub,,0,0,0,,{\fad(120,100)\move(960,1020,960,1016,0,120)}Nouveau bruit à l'entrée,
+Dialogue: 0,0:00:31.68,0:00:35.74,Sub,,0,0,0,,{\fad(120,100)\move(960,1020,960,1016,0,120)}nouveaux instantanés à la sortie,\Nautant que vous voulez.
+Dialogue: 0,0:00:36.48,0:00:38.66,Sub,,0,0,0,,{\fad(120,100)\move(960,1020,960,1016,0,120)}Ce vent, c'est un {\c&HF09CB4&}modèle génératif{\c&HF7F4F2&} :
+Dialogue: 0,0:00:38.74,0:00:42.21,Sub,,0,0,0,,{\fad(120,100)\move(960,1020,960,1016,0,120)}des exemples nouveaux et\Nplausibles, à la demande.
+Dialogue: 0,0:00:42.76,0:00:45.20,Sub,,0,0,0,,{\fad(120,100)\move(960,1020,960,1016,0,120)}Tout l'enjeu, c'est d'apprendre ce vent.

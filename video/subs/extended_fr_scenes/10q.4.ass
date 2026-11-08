@@ -1,0 +1,23 @@
+[Script Info]
+ScriptType: v4.00+
+PlayResX: 1920
+PlayResY: 1080
+WrapStyle: 2
+ScaledBorderAndShadow: yes
+YCbCr Matrix: TV.709
+
+[V4+ Styles]
+Format: Name, Fontname, Fontsize, PrimaryColour, SecondaryColour, OutlineColour, BackColour, Bold, Italic, Underline, StrikeOut, ScaleX, ScaleY, Spacing, Angle, BorderStyle, Outline, Shadow, Alignment, MarginL, MarginR, MarginV, Encoding
+Style: Sub,Inter Medium,42,&H00F7F4F2,&H00F7F4F2,&H38140F0B,&H00000000,0,0,0,0,100,100,0,0,3,12,0,2,240,240,64,1
+
+[Events]
+Format: Layer, Start, End, Style, Name, MarginL, MarginR, MarginV, Effect, Text
+Dialogue: 0,0:00:00.37,0:00:02.91,Sub,,0,0,0,,{\fad(120,100)\move(960,1020,960,1016,0,120)}Une réponse, qui ne porte\Npas sur la physique,
+Dialogue: 0,0:00:02.99,0:00:05.83,Sub,,0,0,0,,{\fad(120,100)\move(960,1020,960,1016,0,120)}pourrait rendre la\Nlocation presque inutile.
+Dialogue: 0,0:00:06.23,0:00:07.96,Sub,,0,0,0,,{\fad(120,100)\move(960,1020,960,1016,0,120)}De quelle question s'agit-il ?
+Dialogue: 0,0:00:11.20,0:00:12.67,Sub,,0,0,0,,{\fad(120,100)\move(960,1020,960,1016,0,120)}Où se fera le calcul.
+Dialogue: 0,0:00:13.17,0:00:17.12,Sub,,0,0,0,,{\fad(120,100)\move(960,1020,960,1016,0,120)}Si un laboratoire a des cartes\Ngraphiques accessibles à un stagiaire,
+Dialogue: 0,0:00:17.20,0:00:20.32,Sub,,0,0,0,,{\fad(120,100)\move(960,1020,960,1016,0,120)}ou s'il existe déjà un projet\Nsur Jean Zay à rejoindre,
+Dialogue: 0,0:00:20.40,0:00:23.36,Sub,,0,0,0,,{\fad(120,100)\move(960,1020,960,1016,0,120)}la location ne sert plus\Nqu'à un court essai.
+Dialogue: 0,0:00:23.69,0:00:26.47,Sub,,0,0,0,,{\fad(120,100)\move(960,1020,960,1016,0,120)}Et pour les dernières marches :\Nquelles simulations
+Dialogue: 0,0:00:26.55,0:00:29.74,Sub,,0,0,0,,{\fad(120,100)\move(960,1020,960,1016,0,120)}des partenaires, sous quelle\Nforme, et pour quand ?

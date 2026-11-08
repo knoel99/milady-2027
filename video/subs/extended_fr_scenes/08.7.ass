@@ -1,0 +1,26 @@
+[Script Info]
+ScriptType: v4.00+
+PlayResX: 1920
+PlayResY: 1080
+WrapStyle: 2
+ScaledBorderAndShadow: yes
+YCbCr Matrix: TV.709
+
+[V4+ Styles]
+Format: Name, Fontname, Fontsize, PrimaryColour, SecondaryColour, OutlineColour, BackColour, Bold, Italic, Underline, StrikeOut, ScaleX, ScaleY, Spacing, Angle, BorderStyle, Outline, Shadow, Alignment, MarginL, MarginR, MarginV, Encoding
+Style: Sub,Inter Medium,42,&H00F7F4F2,&H00F7F4F2,&H38140F0B,&H00000000,0,0,0,0,100,100,0,0,3,12,0,2,240,240,64,1
+
+[Events]
+Format: Layer, Start, End, Style, Name, MarginL, MarginR, MarginV, Effect, Text
+Dialogue: 0,0:00:00.57,0:00:04.48,Sub,,0,0,0,,{\fad(120,100)\move(960,1020,960,1016,0,120)}Assemblez les pièces : voici\Nla machine que propose l'étude.
+Dialogue: 0,0:00:04.85,0:00:07.20,Sub,,0,0,0,,{\fad(120,100)\move(960,1020,960,1016,0,120)}Un {\c&HF09CB4&}vent{\c&HF7F4F2&} transporte le bruit vers une foule
+Dialogue: 0,0:00:07.28,0:00:10.16,Sub,,0,0,0,,{\fad(120,100)\move(960,1020,960,1016,0,120)}symétrique de codes,\Navec le miroir intégré.
+Dialogue: 0,0:00:10.62,0:00:14.10,Sub,,0,0,0,,{\fad(120,100)\move(960,1020,960,1016,0,120)}Un décodeur transforme chaque\Ncode en cartes de relief :
+Dialogue: 0,0:00:14.18,0:00:17.12,Sub,,0,0,0,,{\fad(120,100)\move(960,1020,960,1016,0,120)}chaque champ est donc à divergence nulle.
+Dialogue: 0,0:00:17.22,0:00:20.05,Sub,,0,0,0,,{\fad(120,100)\move(960,1020,960,1016,0,120)}Et le bilan d'énergie\Nest imposé à la foule.
+Dialogue: 0,0:00:20.79,0:00:23.40,Sub,,0,0,0,,{\fad(120,100)\move(960,1020,960,1016,0,120)}Elle n'a pas été construite\Ndans son ensemble :
+Dialogue: 0,0:00:23.48,0:00:25.70,Sub,,0,0,0,,{\fad(120,100)\move(960,1020,960,1016,0,120)}les expériences en ont testé des pièces,
+Dialogue: 0,0:00:25.78,0:00:28.22,Sub,,0,0,0,,{\fad(120,100)\move(960,1020,960,1016,0,120)}sur les trois cadrans\Net sur la nappe plane,
+Dialogue: 0,0:00:28.30,0:00:31.61,Sub,,0,0,0,,{\fad(120,100)\move(960,1020,960,1016,0,120)}avec de petits réseaux,\Nsur un processeur ordinaire.
+Dialogue: 0,0:00:32.35,0:00:34.86,Sub,,0,0,0,,{\fad(120,100)\move(960,1020,960,1016,0,120)}Reste une question :\Nà partir d'instantanés,
+Dialogue: 0,0:00:34.94,0:00:39.75,Sub,,0,0,0,,{\fad(120,100)\move(960,1020,960,1016,0,120)}avec quelle précision peut-on dire\N{\c&H00A1ED&}à quelle fréquence{\c&HF7F4F2&} le champ se renverse ?

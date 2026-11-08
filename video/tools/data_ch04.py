@@ -17,7 +17,7 @@ import datetime, hashlib, json, os, re, sys
 
 HERE = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 ARGS = sys.argv[1:]
-REPO = ARGS[ARGS.index("--repo") + 1] if "--repo" in ARGS else "/home/user/milady-2027"
+REPO = ARGS[ARGS.index("--repo") + 1] if "--repo" in ARGS else os.path.dirname(HERE)   # the repository root (video/..)
 OUT = ARGS[ARGS.index("--out") + 1] if "--out" in ARGS else os.path.join(HERE, "data")
 CHECK = "--check" in ARGS
 GEN = "tools/data_ch04.py"

@@ -12,11 +12,13 @@ Style: Sub,Inter Medium,42,&H00F7F4F2,&H00F7F4F2,&H38140F0B,&H00000000,0,0,0,0,1
 
 [Events]
 Format: Layer, Start, End, Style, Name, MarginL, MarginR, MarginV, Effect, Text
-Dialogue: 0,0:00:00.32,0:00:04.50,Sub,,0,0,0,,{\fad(120,100)\move(960,1020,960,1016,0,120)}First track: fast surrogates,\Nnetworks trained to imitate a solver.
-Dialogue: 0,0:00:04.58,0:00:09.53,Sub,,0,0,0,,{\fad(120,100)\move(960,1020,960,1016,0,120)}Some carry the equations in their loss;\Nothers learn maps between whole fields.
-Dialogue: 0,0:00:09.61,0:00:14.04,Sub,,0,0,0,,{\fad(120,100)\move(960,1020,960,1016,0,120)}For conducting fluids, they now reach\Nflat, two-dimensional turbulence.
-Dialogue: 0,0:00:14.12,0:00:17.11,Sub,,0,0,0,,{\fad(120,100)\move(960,1020,960,1016,0,120)}For the Earth, recall the\Ntwenty twenty-two study:
-Dialogue: 0,0:00:17.19,0:00:20.90,Sub,,0,0,0,,{\fad(120,100)\move(960,1020,960,1016,0,120)}the methods it tried could\Nnot reliably foresee a flip.
-Dialogue: 0,0:00:21.77,0:00:25.54,Sub,,0,0,0,,{\fad(120,100)\move(960,1020,960,1016,0,120)}Their weak spot: trained to\Nminimize a mean-square error,
-Dialogue: 0,0:00:25.62,0:00:28.74,Sub,,0,0,0,,{\fad(120,100)\move(960,1020,960,1016,0,120)}ensembles of them\Nregress to the mean flow.
-Dialogue: 0,0:00:28.82,0:00:32.48,Sub,,0,0,0,,{\fad(120,100)\move(960,1020,960,1016,0,120)}A cloud with two polarities\Ncollapses to its middle.
+Dialogue: 0,0:00:00.37,0:00:05.87,Sub,,0,0,0,,{\fad(120,100)\move(960,1020,960,1016,0,120)}Première piste : les substituts rapides,\Ndes réseaux entraînés à imiter un solveur.
+Dialogue: 0,0:00:06.15,0:00:08.59,Sub,,0,0,0,,{\fad(120,100)\move(960,1020,960,1016,0,120)}Certains intègrent les\Néquations dans leur perte ;
+Dialogue: 0,0:00:08.67,0:00:12.07,Sub,,0,0,0,,{\fad(120,100)\move(960,1020,960,1016,0,120)}d'autres apprennent des\Ncorrespondances entre champs entiers.
+Dialogue: 0,0:00:12.37,0:00:13.82,Sub,,0,0,0,,{\fad(120,100)\move(960,1020,960,1016,0,120)}Pour les fluides conducteurs,
+Dialogue: 0,0:00:13.90,0:00:17.25,Sub,,0,0,0,,{\fad(120,100)\move(960,1020,960,1016,0,120)}ils atteignent désormais la\Nturbulence à deux dimensions.
+Dialogue: 0,0:00:17.50,0:00:21.01,Sub,,0,0,0,,{\fad(120,100)\move(960,1020,960,1016,0,120)}Pour la Terre, rappelez-vous\Nl'étude de deux mille vingt-deux :
+Dialogue: 0,0:00:21.09,0:00:25.69,Sub,,0,0,0,,{\fad(120,100)\move(960,1020,960,1016,0,120)}les méthodes essayées n'ont pas su\Nprévoir un renversement de façon fiable.
+Dialogue: 0,0:00:26.43,0:00:30.00,Sub,,0,0,0,,{\fad(120,100)\move(960,1020,960,1016,0,120)}Leur point faible : entraînés sur\Nune erreur quadratique moyenne,
+Dialogue: 0,0:00:30.08,0:00:33.89,Sub,,0,0,0,,{\fad(120,100)\move(960,1020,960,1016,0,120)}leurs ensembles de modèles\Nrégressent vers l'écoulement moyen.
+Dialogue: 0,0:00:34.40,0:00:37.91,Sub,,0,0,0,,{\fad(120,100)\move(960,1020,960,1016,0,120)}Un nuage à deux polarités\Ns'effondre sur son milieu.

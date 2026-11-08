@@ -12,10 +12,10 @@ Style: Sub,Inter Medium,42,&H00F7F4F2,&H00F7F4F2,&H38140F0B,&H00000000,0,0,0,0,1
 
 [Events]
 Format: Layer, Start, End, Style, Name, MarginL, MarginR, MarginV, Effect, Text
-Dialogue: 0,0:00:00.32,0:00:04.22,Sub,,0,0,0,,{\fad(120,100)\move(960,1020,960,1016,0,120)}To test ideas, physicists\Nneed a {\c&HE58739&}flow{\c&HF7F4F2&} simple enough
-Dialogue: 0,0:00:04.30,0:00:08.27,Sub,,0,0,0,,{\fad(120,100)\move(960,1020,960,1016,0,120)}to write on one line,\Nyet able to make a dynamo.
-Dialogue: 0,0:00:08.35,0:00:11.03,Sub,,0,0,0,,{\fad(120,100)\move(960,1020,960,1016,0,120)}One classic choice: the ABC flow.
-Dialogue: 0,0:00:11.91,0:00:14.93,Sub,,0,0,0,,{\fad(120,100)\move(960,1020,960,1016,0,120)}It fills space with\Nidentical twisting rooms.
-Dialogue: 0,0:00:15.01,0:00:17.90,Sub,,0,0,0,,{\fad(120,100)\move(960,1020,960,1016,0,120)}Three crossed winds make\Nthe fluid corkscrew:
-Dialogue: 0,0:00:17.98,0:00:20.78,Sub,,0,0,0,,{\fad(120,100)\move(960,1020,960,1016,0,120)}it spins around the direction it moves.
-Dialogue: 0,0:00:20.86,0:00:23.44,Sub,,0,0,0,,{\fad(120,100)\move(960,1020,960,1016,0,120)}This box returns higher on our climb.
+Dialogue: 0,0:00:00.37,0:00:04.24,Sub,,0,0,0,,{\fad(120,100)\move(960,1020,960,1016,0,120)}Pour tester leurs idées, les physiciens\Nont besoin d'un {\c&HE58739&}écoulement{\c&HF7F4F2&} assez
+Dialogue: 0,0:00:04.32,0:00:08.81,Sub,,0,0,0,,{\fad(120,100)\move(960,1020,960,1016,0,120)}simple pour s'écrire en une ligne,\Nmais capable de produire un effet dynamo.
+Dialogue: 0,0:00:09.37,0:00:12.68,Sub,,0,0,0,,{\fad(120,100)\move(960,1020,960,1016,0,120)}Un choix classique : l'écoulement ABC.
+Dialogue: 0,0:00:13.42,0:00:17.53,Sub,,0,0,0,,{\fad(120,100)\move(960,1020,960,1016,0,120)}Il remplit l'espace de pièces identiques,\Noù le fluide tourbillonne.
+Dialogue: 0,0:00:17.97,0:00:21.43,Sub,,0,0,0,,{\fad(120,100)\move(960,1020,960,1016,0,120)}Trois courants croisés font\Navancer le fluide en tire-bouchon :
+Dialogue: 0,0:00:21.51,0:00:24.54,Sub,,0,0,0,,{\fad(120,100)\move(960,1020,960,1016,0,120)}il tourne autour de sa\Ndirection de déplacement.
+Dialogue: 0,0:00:24.96,0:00:29.13,Sub,,0,0,0,,{\fad(120,100)\move(960,1020,960,1016,0,120)}Cette boîte tourbillonnante reviendra\Nplus haut dans notre ascension.

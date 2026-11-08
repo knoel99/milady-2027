@@ -12,9 +12,11 @@ Style: Sub,Inter Medium,42,&H00F7F4F2,&H00F7F4F2,&H38140F0B,&H00000000,0,0,0,0,1
 
 [Events]
 Format: Layer, Start, End, Style, Name, MarginL, MarginR, MarginV, Effect, Text
-Dialogue: 0,0:00:00.32,0:00:05.69,Sub,,0,0,0,,{\fad(120,100)\move(960,1020,960,1016,0,120)}Le {\c&H3468EB&}champ{\c&HF7F4F2&} de la Terre pointe aujourd'hui\Ndans un sens. Lequel devrait-il préférer ?
-Dialogue: 0,0:00:09.06,0:00:14.65,Sub,,0,0,0,,{\fad(120,100)\move(960,1020,960,1016,0,120)}Inversez chaque ligne de champ : les\Néquations de la dynamo restent les mêmes.
-Dialogue: 0,0:00:14.73,0:00:20.73,Sub,,0,0,0,,{\fad(120,100)\move(960,1020,960,1016,0,120)}Donc, aucun des deux. Ce sont des jumeaux\Nen miroir, tout aussi permis par les lois.
-Dialogue: 0,0:00:20.84,0:00:23.78,Sub,,0,0,0,,{\fad(120,100)\move(960,1020,960,1016,0,120)}Le sens qu'on obtient\Nrelève de l'histoire,
-Dialogue: 0,0:00:23.86,0:00:28.02,Sub,,0,0,0,,{\fad(120,100)\move(960,1020,960,1016,0,120)}pas des lois : dans le disque,\Nle signe du germe décide.
-Dialogue: 0,0:00:28.10,0:00:31.69,Sub,,0,0,0,,{\fad(120,100)\move(960,1020,960,1016,0,120)}Et rien dans les lois\Nn'interdit un renversement.
+Dialogue: 0,0:00:00.37,0:00:05.50,Sub,,0,0,0,,{\fad(120,100)\move(960,1020,960,1016,0,120)}Le {\c&H3468EB&}champ{\c&HF7F4F2&} de la Terre pointe aujourd'hui\Ndans un sens. Lequel devrait-il préférer ?
+Dialogue: 0,0:00:08.74,0:00:11.49,Sub,,0,0,0,,{\fad(120,100)\move(960,1020,960,1016,0,120)}Inversez le sens de\Nchaque ligne de champ :
+Dialogue: 0,0:00:11.57,0:00:14.84,Sub,,0,0,0,,{\fad(120,100)\move(960,1020,960,1016,0,120)}les équations de la\Ndynamo restent les mêmes.
+Dialogue: 0,0:00:14.92,0:00:18.07,Sub,,0,0,0,,{\fad(120,100)\move(960,1020,960,1016,0,120)}Donc, aucun des deux.\NCe sont des jumeaux en miroir,
+Dialogue: 0,0:00:18.15,0:00:20.77,Sub,,0,0,0,,{\fad(120,100)\move(960,1020,960,1016,0,120)}autorisés au même titre par les lois.
+Dialogue: 0,0:00:21.18,0:00:24.17,Sub,,0,0,0,,{\fad(120,100)\move(960,1020,960,1016,0,120)}Le sens qu'on obtient\Nrelève de l'histoire,
+Dialogue: 0,0:00:24.25,0:00:28.57,Sub,,0,0,0,,{\fad(120,100)\move(960,1020,960,1016,0,120)}pas des lois : dans le disque,\Nle signe du germe décide.
+Dialogue: 0,0:00:28.72,0:00:31.74,Sub,,0,0,0,,{\fad(120,100)\move(960,1020,960,1016,0,120)}Et rien dans les lois\Nn'interdit un renversement.

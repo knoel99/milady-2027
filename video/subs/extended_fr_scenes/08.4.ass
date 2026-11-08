@@ -1,0 +1,22 @@
+[Script Info]
+ScriptType: v4.00+
+PlayResX: 1920
+PlayResY: 1080
+WrapStyle: 2
+ScaledBorderAndShadow: yes
+YCbCr Matrix: TV.709
+
+[V4+ Styles]
+Format: Name, Fontname, Fontsize, PrimaryColour, SecondaryColour, OutlineColour, BackColour, Bold, Italic, Underline, StrikeOut, ScaleX, ScaleY, Spacing, Angle, BorderStyle, Outline, Shadow, Alignment, MarginL, MarginR, MarginV, Encoding
+Style: Sub,Inter Medium,42,&H00F7F4F2,&H00F7F4F2,&H38140F0B,&H00000000,0,0,0,0,100,100,0,0,3,12,0,2,240,240,64,1
+
+[Events]
+Format: Layer, Start, End, Style, Name, MarginL, MarginR, MarginV, Effect, Text
+Dialogue: 0,0:00:00.37,0:00:03.07,Sub,,0,0,0,,{\fad(120,100)\move(960,1020,960,1016,0,120)}Retour au {\c&HF09CB4&}générateur{\c&HF7F4F2&} de base :\Npourquoi échoue-t-il,
+Dialogue: 0,0:00:03.15,0:00:06.27,Sub,,0,0,0,,{\fad(120,100)\move(960,1020,960,1016,0,120)}alors qu'il a été entraîné\Nsur des données propres ?
+Dialogue: 0,0:00:06.71,0:00:09.56,Sub,,0,0,0,,{\fad(120,100)\move(960,1020,960,1016,0,120)}Suivez la partie d'un\Nchamp qui enfreint la loi.
+Dialogue: 0,0:00:09.78,0:00:14.27,Sub,,0,0,0,,{\fad(120,100)\move(960,1020,960,1016,0,120)}Pour la ramener exactement à zéro,\Nle {\c&HF09CB4&}vent{\c&HF7F4F2&} doit agir comme un ressort dont
+Dialogue: 0,0:00:14.35,0:00:19.06,Sub,,0,0,0,,{\fad(120,100)\move(960,1020,960,1016,0,120)}la raideur devient infinie quand\Nl'horloge de transport arrive au bout.
+Dialogue: 0,0:00:19.80,0:00:22.90,Sub,,0,0,0,,{\fad(120,100)\move(960,1020,960,1016,0,120)}Un réseau borné en est incapable,\Net un échantillonneur
+Dialogue: 0,0:00:22.98,0:00:26.38,Sub,,0,0,0,,{\fad(120,100)\move(960,1020,960,1016,0,120)}qui avance par pas finis ne\Npeut pas suivre non plus.
+Dialogue: 0,0:00:26.82,0:00:31.57,Sub,,0,0,0,,{\fad(120,100)\move(960,1020,960,1016,0,120)}Il reste un écart d'ordre un :\Npresque, ce n'est pas exactement.

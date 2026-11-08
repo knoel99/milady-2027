@@ -1,0 +1,1290 @@
+[Script Info]
+ScriptType: v4.00+
+PlayResX: 1920
+PlayResY: 1080
+WrapStyle: 2
+ScaledBorderAndShadow: yes
+YCbCr Matrix: TV.709
+
+[V4+ Styles]
+Format: Name, Fontname, Fontsize, PrimaryColour, SecondaryColour, OutlineColour, BackColour, Bold, Italic, Underline, StrikeOut, ScaleX, ScaleY, Spacing, Angle, BorderStyle, Outline, Shadow, Alignment, MarginL, MarginR, MarginV, Encoding
+Style: Sub,Inter Medium,42,&H00F7F4F2,&H00F7F4F2,&H38140F0B,&H00000000,0,0,0,0,100,100,0,0,3,12,0,2,240,240,64,1
+
+[Events]
+Format: Layer, Start, End, Style, Name, MarginL, MarginR, MarginV, Effect, Text
+Dialogue: 0,0:00:00.97,0:00:04.31,Sub,,0,0,0,,{\fad(120,100)\move(960,1020,960,1016,0,120)}Toute votre vie, cette\Naiguille a indiqué le nord.
+Dialogue: 0,0:00:04.81,0:00:09.29,Sub,,0,0,0,,{\fad(120,100)\move(960,1020,960,1016,0,120)}Mais les fonds marins ont\Nla mémoire plus longue.
+Dialogue: 0,0:00:09.37,0:00:10.83,Sub,,0,0,0,,{\fad(120,100)\move(960,1020,960,1016,0,120)}Nord et sud se sont inversés.
+Dialogue: 0,0:00:11.21,0:00:14.87,Sub,,0,0,0,,{\fad(120,100)\move(960,1020,960,1016,0,120)}Encore et encore, sans aucun calendrier.
+Dialogue: 0,0:00:15.60,0:00:19.34,Sub,,0,0,0,,{\fad(120,100)\move(960,1020,960,1016,0,120)}Cette aiguille suit un {\c&H3468EB&}champ magnétique{\c&HF7F4F2&}\Nqui enveloppe toute la planète.
+Dialogue: 0,0:00:19.79,0:00:21.36,Sub,,0,0,0,,{\fad(120,100)\move(960,1020,960,1016,0,120)}On le croirait permanent.
+Dialogue: 0,0:00:22.09,0:00:23.29,Sub,,0,0,0,,{\fad(120,100)\move(960,1020,960,1016,0,120)}Il ne l'est pas.
+Dialogue: 0,0:00:23.90,0:00:29.08,Sub,,0,0,0,,{\fad(120,100)\move(960,1020,960,1016,0,120)}Aux dorsales océaniques, la lave qui\Nremonte refroidit et se fige en roche.
+Dialogue: 0,0:00:29.55,0:00:33.54,Sub,,0,0,0,,{\fad(120,100)\move(960,1020,960,1016,0,120)}De minuscules grains magnétiques y\Nenregistrent la direction du {\c&H3468EB&}champ{\c&HF7F4F2&}.
+Dialogue: 0,0:00:34.07,0:00:38.91,Sub,,0,0,0,,{\fad(120,100)\move(960,1020,960,1016,0,120)}Les fonds marins s'écartent, et chaque\Nrenversement commence une nouvelle bande.
+Dialogue: 0,0:00:39.12,0:00:42.61,Sub,,0,0,0,,{\fad(120,100)\move(960,1020,960,1016,0,120)}Cinq millions d'années,\Nune vingtaine de renversements,
+Dialogue: 0,0:00:42.69,0:00:45.55,Sub,,0,0,0,,{\fad(120,100)\move(960,1020,960,1016,0,120)}et des intervalles extrêmement inégaux.
+Dialogue: 0,0:00:46.50,0:00:48.23,Sub,,0,0,0,,{\fad(120,100)\move(960,1020,960,1016,0,120)}Alors, deux questions.
+Dialogue: 0,0:00:48.85,0:00:51.10,Sub,,0,0,0,,{\fad(120,100)\move(960,1020,960,1016,0,120)}Quand aura lieu le prochain renversement ?
+Dialogue: 0,0:00:51.47,0:00:54.41,Sub,,0,0,0,,{\fad(120,100)\move(960,1020,960,1016,0,120)}Et {\c&H00A1ED&}à quelle fréquence{\c&HF7F4F2&} le\Nchamp se renverse-t-il ?
+Dialogue: 0,0:00:54.84,0:00:56.60,Sub,,0,0,0,,{\fad(120,100)\move(960,1020,960,1016,0,120)}À laquelle peut-on répondre ?
+Dialogue: 0,0:00:58.84,0:01:02.10,Sub,,0,0,0,,{\fad(120,100)\move(960,1020,960,1016,0,120)}Dans un modèle numérique simple\Nd'un {\c&H3468EB&}champ{\c&HF7F4F2&} qui se renverse,
+Dialogue: 0,0:01:02.18,0:01:04.26,Sub,,0,0,0,,{\fad(120,100)\move(960,1020,960,1016,0,120)}la première est hors de portée.
+Dialogue: 0,0:01:04.56,0:01:06.31,Sub,,0,0,0,,{\fad(120,100)\move(960,1020,960,1016,0,120)}La seconde, non.
+Dialogue: 0,0:01:07.05,0:01:11.28,Sub,,0,0,0,,{\fad(120,100)\move(960,1020,960,1016,0,120)}Pour comprendre pourquoi, nous passerons\Npar le métal liquide et le chaos.
+Dialogue: 0,0:01:11.70,0:01:15.50,Sub,,0,0,0,,{\fad(120,100)\move(960,1020,960,1016,0,120)}Puis par des {\c&HF09CB4&}machines{\c&HF7F4F2&} qui imaginent\Ndes instantanés de champs magnétiques.
+Dialogue: 0,0:01:16.21,0:01:21.38,Sub,,0,0,0,,{\fad(120,100)\move(960,1020,960,1016,0,120)}Elles doivent obéir exactement à certaines\Nlois, et à d'autres seulement en moyenne.
+Dialogue: 0,0:01:22.64,0:01:25.26,Sub,,0,0,0,,{\fad(120,100)\move(960,1020,960,1016,0,120)}À quelle fréquence le\N{\c&H3468EB&}champ{\c&HF7F4F2&} se renverse-t-il ?
+Dialogue: 0,0:01:25.64,0:01:28.06,Sub,,0,0,0,,{\fad(120,100)\move(960,1020,960,1016,0,120)}Une carte pour s'initier au projet MilaDy,
+Dialogue: 0,0:01:28.14,0:01:31.45,Sub,,0,0,0,,{\fad(120,100)\move(960,1020,960,1016,0,120)}de la boussole jusqu'à la\Nrecherche d'aujourd'hui.
+Dialogue: 0,0:01:34.00,0:01:36.12,Sub,,0,0,0,,{\fad(120,100)\move(960,1020,960,1016,0,120)}Les premières simulations\Ndoivent-elles viser
+Dialogue: 0,0:01:36.20,0:01:38.07,Sub,,0,0,0,,{\fad(120,100)\move(960,1020,960,1016,0,120)}{\c&H00A1ED&}la fréquence{\c&HF7F4F2&} des renversements du champ,
+Dialogue: 0,0:01:38.15,0:01:41.25,Sub,,0,0,0,,{\fad(120,100)\move(960,1020,960,1016,0,120)}ou les signes annonciateurs\Njuste avant un renversement ?
+Dialogue: 0,0:01:46.30,0:01:49.44,Sub,,0,0,0,,{\fad(120,100)\move(960,1020,960,1016,0,120)}Y a-t-il un aimant géant caché\Nà l'intérieur de la Terre ?
+Dialogue: 0,0:01:50.31,0:01:55.24,Sub,,0,0,0,,{\fad(120,100)\move(960,1020,960,1016,0,120)}Loin sous la surface, le noyau\Nexterne est un océan de fer liquide.
+Dialogue: 0,0:01:55.86,0:02:00.88,Sub,,0,0,0,,{\fad(120,100)\move(960,1020,960,1016,0,120)}Livré à lui-même, un {\c&H3468EB&}champ{\c&HF7F4F2&} s'y éteindrait\Nen quelques dizaines de milliers d'années.
+Dialogue: 0,0:02:01.53,0:02:06.32,Sub,,0,0,0,,{\fad(120,100)\move(960,1020,960,1016,0,120)}Pourtant, le champ de la Terre existe\Ndepuis plusieurs milliards d'années.
+Dialogue: 0,0:02:06.54,0:02:10.51,Sub,,0,0,0,,{\fad(120,100)\move(960,1020,960,1016,0,120)}Le fer en mouvement doit donc\Nle fabriquer, en permanence.
+Dialogue: 0,0:02:11.57,0:02:16.77,Sub,,0,0,0,,{\fad(120,100)\move(960,1020,960,1016,0,120)}Prenez un barreau aimanté : un pôle\Nnord à un bout, un pôle sud à l'autre.
+Dialogue: 0,0:02:17.14,0:02:18.34,Sub,,0,0,0,,{\fad(120,100)\move(960,1020,960,1016,0,120)}Coupez-le en deux.
+Dialogue: 0,0:02:18.56,0:02:22.56,Sub,,0,0,0,,{\fad(120,100)\move(960,1020,960,1016,0,120)}Vous obtenez deux aimants,\Nchacun avec son nord et son sud.
+Dialogue: 0,0:02:22.99,0:02:26.02,Sub,,0,0,0,,{\fad(120,100)\move(960,1020,960,1016,0,120)}Personne n'a jamais trouvé\Nde pôle magnétique isolé.
+Dialogue: 0,0:02:26.76,0:02:31.14,Sub,,0,0,0,,{\fad(120,100)\move(960,1020,960,1016,0,120)}Les {\c&H3468EB&}lignes de champ{\c&HF7F4F2&} disent la même\Nchose : elles n'ont ni début ni fin.
+Dialogue: 0,0:02:31.56,0:02:34.73,Sub,,0,0,0,,{\fad(120,100)\move(960,1020,960,1016,0,120)}Tracez une boîte,\Nn'importe laquelle, et comptez.
+Dialogue: 0,0:02:35.14,0:02:37.69,Sub,,0,0,0,,{\fad(120,100)\move(960,1020,960,1016,0,120)}Il entre autant de lignes qu'il en sort.
+Dialogue: 0,0:02:38.17,0:02:39.86,Sub,,0,0,0,,{\fad(120,100)\move(960,1020,960,1016,0,120)}Gardez cette boîte en tête.
+Dialogue: 0,0:02:40.90,0:02:46.35,Sub,,0,0,0,,{\fad(120,100)\move(960,1020,960,1016,0,120)}Une dynamo de vélo transforme le mouvement\Nen électricité, grâce à un aimant intégré.
+Dialogue: 0,0:02:46.85,0:02:52.03,Sub,,0,0,0,,{\fad(120,100)\move(960,1020,960,1016,0,120)}La Terre, elle, doit fabriquer\Nle sien. L'astuce : une boucle.
+Dialogue: 0,0:02:52.77,0:02:56.75,Sub,,0,0,0,,{\fad(120,100)\move(960,1020,960,1016,0,120)}Approchez un micro du haut-parleur\Nqui le diffuse, et montez le {\c&H7AAF1B&}gain{\c&HF7F4F2&}.
+Dialogue: 0,0:02:57.26,0:03:00.44,Sub,,0,0,0,,{\fad(120,100)\move(960,1020,960,1016,0,120)}En dessous d'un certain point,\Nun murmure s'éteint.
+Dialogue: 0,0:03:00.77,0:03:03.88,Sub,,0,0,0,,{\fad(120,100)\move(960,1020,960,1016,0,120)}Au-delà, la boucle s'alimente elle-même.
+Dialogue: 0,0:03:06.62,0:03:09.04,Sub,,0,0,0,,{\fad(120,100)\move(960,1020,960,1016,0,120)}Faites maintenant tourner\Nun disque de cuivre,
+Dialogue: 0,0:03:09.12,0:03:11.95,Sub,,0,0,0,,{\fad(120,100)\move(960,1020,960,1016,0,120)}relié par un fil à une\Nbobine autour de l'axe.
+Dialogue: 0,0:03:12.24,0:03:15.71,Sub,,0,0,0,,{\fad(120,100)\move(960,1020,960,1016,0,120)}Le courant crée le {\c&H3468EB&}champ{\c&HF7F4F2&},\Net le champ crée le courant.
+Dialogue: 0,0:03:16.13,0:03:19.50,Sub,,0,0,0,,{\fad(120,100)\move(960,1020,960,1016,0,120)}Faites-le tourner de plus en\Nplus vite. Le champ grandit-il
+Dialogue: 0,0:03:19.58,0:03:23.30,Sub,,0,0,0,,{\fad(120,100)\move(960,1020,960,1016,0,120)}petit à petit, ou pas du tout\Navant une certaine vitesse ?
+Dialogue: 0,0:03:27.04,0:03:29.19,Sub,,0,0,0,,{\fad(120,100)\move(960,1020,960,1016,0,120)}Pas du tout, jusqu'à un seuil.
+Dialogue: 0,0:03:29.48,0:03:33.06,Sub,,0,0,0,,{\fad(120,100)\move(960,1020,960,1016,0,120)}Au-delà, chaque tour multiplie\Nun minuscule {\c&H3468EB&}champ germe{\c&HF7F4F2&}
+Dialogue: 0,0:03:33.14,0:03:37.25,Sub,,0,0,0,,{\fad(120,100)\move(960,1020,960,1016,0,120)}par le même facteur : c'est\Nune croissance exponentielle.
+Dialogue: 0,0:03:37.61,0:03:40.76,Sub,,0,0,0,,{\fad(120,100)\move(960,1020,960,1016,0,120)}Juste au-dessus du seuil,\Nla croissance est lente.
+Dialogue: 0,0:03:41.10,0:03:44.90,Sub,,0,0,0,,{\fad(120,100)\move(960,1020,960,1016,0,120)}Puis le champ freine le disque,\Net la croissance s'arrête.
+Dialogue: 0,0:03:46.14,0:03:47.42,Sub,,0,0,0,,{\fad(120,100)\move(960,1020,960,1016,0,120)}Qui paie la facture ?
+Dialogue: 0,0:03:47.82,0:03:52.02,Sub,,0,0,0,,{\fad(120,100)\move(960,1020,960,1016,0,120)}Un moteur entraîne l'{\c&HE58739&}écoulement{\c&HF7F4F2&} ;\Ndans la Terre, c'est la convection.
+Dialogue: 0,0:03:52.41,0:03:56.11,Sub,,0,0,0,,{\fad(120,100)\move(960,1020,960,1016,0,120)}L'écoulement étire le champ ;\Nle champ freine l'écoulement.
+Dialogue: 0,0:03:56.59,0:03:59.33,Sub,,0,0,0,,{\fad(120,100)\move(960,1020,960,1016,0,120)}Une fois la croissance\Narrêtée, chaque watt qui
+Dialogue: 0,0:03:59.41,0:04:02.62,Sub,,0,0,0,,{\fad(120,100)\move(960,1020,960,1016,0,120)}entre ressort sous forme\Nde chaleur, en moyenne.
+Dialogue: 0,0:04:03.05,0:04:07.80,Sub,,0,0,0,,{\fad(120,100)\move(960,1020,960,1016,0,120)}Une dynamo transforme le mouvement en\Nchamp ; elle ne crée aucune énergie.
+Dialogue: 0,0:04:08.84,0:04:13.97,Sub,,0,0,0,,{\fad(120,100)\move(960,1020,960,1016,0,120)}Le {\c&H3468EB&}champ{\c&HF7F4F2&} de la Terre pointe aujourd'hui\Ndans un sens. Lequel devrait-il préférer ?
+Dialogue: 0,0:04:17.21,0:04:19.96,Sub,,0,0,0,,{\fad(120,100)\move(960,1020,960,1016,0,120)}Inversez le sens de\Nchaque ligne de champ :
+Dialogue: 0,0:04:20.04,0:04:23.31,Sub,,0,0,0,,{\fad(120,100)\move(960,1020,960,1016,0,120)}les équations de la\Ndynamo restent les mêmes.
+Dialogue: 0,0:04:23.39,0:04:26.53,Sub,,0,0,0,,{\fad(120,100)\move(960,1020,960,1016,0,120)}Donc, aucun des deux.\NCe sont des jumeaux en miroir,
+Dialogue: 0,0:04:26.61,0:04:29.24,Sub,,0,0,0,,{\fad(120,100)\move(960,1020,960,1016,0,120)}autorisés au même titre par les lois.
+Dialogue: 0,0:04:29.65,0:04:32.63,Sub,,0,0,0,,{\fad(120,100)\move(960,1020,960,1016,0,120)}Le sens qu'on obtient\Nrelève de l'histoire,
+Dialogue: 0,0:04:32.71,0:04:37.04,Sub,,0,0,0,,{\fad(120,100)\move(960,1020,960,1016,0,120)}pas des lois : dans le disque,\Nle signe du germe décide.
+Dialogue: 0,0:04:37.19,0:04:40.21,Sub,,0,0,0,,{\fad(120,100)\move(960,1020,960,1016,0,120)}Et rien dans les lois\Nn'interdit un renversement.
+Dialogue: 0,0:04:41.64,0:04:47.18,Sub,,0,0,0,,{\fad(120,100)\move(960,1020,960,1016,0,120)}Du fer en mouvement, une boucle avec\Nun seuil, aucun sens privilégié.
+Dialogue: 0,0:04:47.59,0:04:51.84,Sub,,0,0,0,,{\fad(120,100)\move(960,1020,960,1016,0,120)}Mais le disque avait des fils ;\Nle fer liquide n'en a aucun.
+Dialogue: 0,0:04:52.32,0:04:56.92,Sub,,0,0,0,,{\fad(120,100)\move(960,1020,960,1016,0,120)}Alors, quel mouvement en est\Ncapable, et à quelle vitesse ?
+Dialogue: 0,0:04:58.27,0:05:01.80,Sub,,0,0,0,,{\fad(120,100)\move(960,1020,960,1016,0,120)}Près du seuil, les simulations\Nde dynamo doivent-elles
+Dialogue: 0,0:05:01.88,0:05:06.15,Sub,,0,0,0,,{\fad(120,100)\move(960,1020,960,1016,0,120)}partir d'un germe minuscule,\Nd'un germe fort, ou des deux ?
+Dialogue: 0,0:05:11.60,0:05:14.34,Sub,,0,0,0,,{\fad(120,100)\move(960,1020,960,1016,0,120)}Quel mouvement peut faire\Ncroître un {\c&H3468EB&}champ magnétique{\c&HF7F4F2&} ?
+Dialogue: 0,0:05:14.80,0:05:16.26,Sub,,0,0,0,,{\fad(120,100)\move(960,1020,960,1016,0,120)}Dans un conducteur parfait,
+Dialogue: 0,0:05:16.34,0:05:19.86,Sub,,0,0,0,,{\fad(120,100)\move(960,1020,960,1016,0,120)}chaque ligne de champ serait\Nun fil gelé dans le fluide.
+Dialogue: 0,0:05:20.32,0:05:24.35,Sub,,0,0,0,,{\fad(120,100)\move(960,1020,960,1016,0,120)}Partout où l'{\c&HE58739&}écoulement{\c&HF7F4F2&} étire\Nun fil, le champ s'y renforce.
+Dialogue: 0,0:05:25.09,0:05:29.86,Sub,,0,0,0,,{\fad(120,100)\move(960,1020,960,1016,0,120)}Dans un vrai métal, le fil s'estompe,\Ncomme de l'encre qui s'étale.
+Dialogue: 0,0:05:30.34,0:05:35.36,Sub,,0,0,0,,{\fad(120,100)\move(960,1020,960,1016,0,120)}La vitesse de cet estompage est fixée\Npar la {\c&H7AAF1B&}diffusivité magnétique{\c&HF7F4F2&} du métal.
+Dialogue: 0,0:05:35.91,0:05:38.08,Sub,,0,0,0,,{\fad(120,100)\move(960,1020,960,1016,0,120)}Même écoulement, deux métaux.
+Dialogue: 0,0:05:38.58,0:05:43.91,Sub,,0,0,0,,{\fad(120,100)\move(960,1020,960,1016,0,120)}Dans un bon conducteur, l'estompage\Nest lent : le fil reste net.
+Dialogue: 0,0:05:44.20,0:05:49.40,Sub,,0,0,0,,{\fad(120,100)\move(960,1020,960,1016,0,120)}Dans un mauvais conducteur, il est\Nrapide : le fil se fond dans le flou.
+Dialogue: 0,0:05:50.44,0:05:55.71,Sub,,0,0,0,,{\fad(120,100)\move(960,1020,960,1016,0,120)}Un seul nombre compte les points :\Nle {\c&H7AAF1B&}nombre de Reynolds magnétique{\c&HF7F4F2&}, Rm.
+Dialogue: 0,0:05:56.12,0:05:58.10,Sub,,0,0,0,,{\fad(120,100)\move(960,1020,960,1016,0,120)}C'est la {\c&HE58739&}vitesse de l'écoulement{\c&HF7F4F2&},
+Dialogue: 0,0:05:58.18,0:06:02.50,Sub,,0,0,0,,{\fad(120,100)\move(960,1020,960,1016,0,120)}multipliée par sa taille, divisée\Npar la {\c&H7AAF1B&}diffusivité magnétique{\c&HF7F4F2&}.
+Dialogue: 0,0:06:03.04,0:06:07.05,Sub,,0,0,0,,{\fad(120,100)\move(960,1020,960,1016,0,120)}À grand Rm, l'étirement va\Nplus vite que l'estompage.
+Dialogue: 0,0:06:07.37,0:06:10.50,Sub,,0,0,0,,{\fad(120,100)\move(960,1020,960,1016,0,120)}À petit Rm, l'estompage l'emporte.
+Dialogue: 0,0:06:11.24,0:06:16.03,Sub,,0,0,0,,{\fad(120,100)\move(960,1020,960,1016,0,120)}Tournez le bouton pour augmenter Rm,\Net observez un faible champ germe.
+Dialogue: 0,0:06:16.56,0:06:19.31,Sub,,0,0,0,,{\fad(120,100)\move(960,1020,960,1016,0,120)}À petit Rm, le germe s'éteint.
+Dialogue: 0,0:06:19.79,0:06:23.61,Sub,,0,0,0,,{\fad(120,100)\move(960,1020,960,1016,0,120)}Au-delà d'un seuil, le taux\Nde croissance franchit zéro,
+Dialogue: 0,0:06:23.69,0:06:26.61,Sub,,0,0,0,,{\fad(120,100)\move(960,1020,960,1016,0,120)}et le germe grandit, comme le larsen.
+Dialogue: 0,0:06:27.64,0:06:31.20,Sub,,0,0,0,,{\fad(120,100)\move(960,1020,960,1016,0,120)}Les dynamos de laboratoire\Nutilisent du sodium liquide.
+Dialogue: 0,0:06:31.43,0:06:33.65,Sub,,0,0,0,,{\fad(120,100)\move(960,1020,960,1016,0,120)}Il coule aussi facilement que l'eau.
+Dialogue: 0,0:06:34.01,0:06:38.28,Sub,,0,0,0,,{\fad(120,100)\move(960,1020,960,1016,0,120)}Mais un champ s'y estompe environ cent\Nmille fois plus vite que ses tourbillons.
+Dialogue: 0,0:06:38.81,0:06:42.33,Sub,,0,0,0,,{\fad(120,100)\move(960,1020,960,1016,0,120)}Le rapport de ces deux\Nvitesses, un sur cent mille,
+Dialogue: 0,0:06:42.41,0:06:45.71,Sub,,0,0,0,,{\fad(120,100)\move(960,1020,960,1016,0,120)}c'est le {\c&H7AAF1B&}nombre de Prandtl magnétique{\c&HF7F4F2&}, Pm.
+Dialogue: 0,0:06:46.45,0:06:50.48,Sub,,0,0,0,,{\fad(120,100)\move(960,1020,960,1016,0,120)}Pour atteindre un Rm de quelques\Ndizaines, il faut brasser violemment.
+Dialogue: 0,0:06:50.83,0:06:52.87,Sub,,0,0,0,,{\fad(120,100)\move(960,1020,960,1016,0,120)}Le {\c&H7AAF1B&}nombre de Reynolds{\c&HF7F4F2&} de l'écoulement,
+Dialogue: 0,0:06:52.95,0:06:56.42,Sub,,0,0,0,,{\fad(120,100)\move(960,1020,960,1016,0,120)}la jauge de la turbulence,\Nse chiffre alors en millions.
+Dialogue: 0,0:06:56.80,0:07:00.04,Sub,,0,0,0,,{\fad(120,100)\move(960,1020,960,1016,0,120)}Toute dynamo de laboratoire\Nest donc turbulente.
+Dialogue: 0,0:07:01.07,0:07:03.98,Sub,,0,0,0,,{\fad(120,100)\move(960,1020,960,1016,0,120)}Seules trois expériences au\Nsodium liquide ont fabriqué
+Dialogue: 0,0:07:04.06,0:07:07.21,Sub,,0,0,0,,{\fad(120,100)\move(960,1020,960,1016,0,120)}leur propre champ, chaque\Nfois d'un genre différent.
+Dialogue: 0,0:07:07.78,0:07:11.11,Sub,,0,0,0,,{\fad(120,100)\move(960,1020,960,1016,0,120)}À Riga, un écoulement\Nen tire-bouchon a fait
+Dialogue: 0,0:07:11.19,0:07:15.21,Sub,,0,0,0,,{\fad(120,100)\move(960,1020,960,1016,0,120)}naître un champ qui oscille\Net tourne lentement.
+Dialogue: 0,0:07:15.29,0:07:17.79,Sub,,0,0,0,,{\fad(120,100)\move(960,1020,960,1016,0,120)}À Karlsruhe, cinquante-deux\Ncellules en spirale ont
+Dialogue: 0,0:07:17.87,0:07:20.72,Sub,,0,0,0,,{\fad(120,100)\move(960,1020,960,1016,0,120)}produit un champ stationnaire,\Nproche d'un {\c&H3468EB&}dipôle{\c&HF7F4F2&}.
+Dialogue: 0,0:07:21.24,0:07:27.24,Sub,,0,0,0,,{\fad(120,100)\move(960,1020,960,1016,0,120)}Et seule l'expérience VKS, à Cadarache,\Na donné un dipôle capable de se renverser.
+Dialogue: 0,0:07:28.36,0:07:32.63,Sub,,0,0,0,,{\fad(120,100)\move(960,1020,960,1016,0,120)}Une quatrième, DRESDYN, à Dresde,\Ncherche à les rejoindre :
+Dialogue: 0,0:07:32.71,0:07:36.87,Sub,,0,0,0,,{\fad(120,100)\move(960,1020,960,1016,0,120)}un cylindre en rotation\Ndont l'axe tourne lentement.
+Dialogue: 0,0:07:37.90,0:07:40.93,Sub,,0,0,0,,{\fad(120,100)\move(960,1020,960,1016,0,120)}À l'intérieur de VKS :\Nun cylindre qui contient
+Dialogue: 0,0:07:41.01,0:07:43.98,Sub,,0,0,0,,{\fad(120,100)\move(960,1020,960,1016,0,120)}cent cinquante litres de sodium liquide.
+Dialogue: 0,0:07:44.49,0:07:50.33,Sub,,0,0,0,,{\fad(120,100)\move(960,1020,960,1016,0,120)}À ses extrémités, deux disques à pales,\Nles turbines, tournent en sens opposés.
+Dialogue: 0,0:07:51.07,0:07:54.31,Sub,,0,0,0,,{\fad(120,100)\move(960,1020,960,1016,0,120)}Le métal des disques devrait-il\Navoir de l'importance ?
+Dialogue: 0,0:07:57.55,0:07:59.72,Sub,,0,0,0,,{\fad(120,100)\move(960,1020,960,1016,0,120)}Avec des disques en acier inoxydable,
+Dialogue: 0,0:07:59.80,0:08:03.41,Sub,,0,0,0,,{\fad(120,100)\move(960,1020,960,1016,0,120)}il n'y a eu aucun effet dynamo,\Nmême à pleine vitesse.
+Dialogue: 0,0:08:03.89,0:08:08.84,Sub,,0,0,0,,{\fad(120,100)\move(960,1020,960,1016,0,120)}Remplacez-les par des disques en fer doux,\Net un dipôle grandit le long de l'axe.
+Dialogue: 0,0:08:10.58,0:08:15.13,Sub,,0,0,0,,{\fad(120,100)\move(960,1020,960,1016,0,120)}Le seuil ne dépend donc pas seulement\Nde Rm : les matériaux comptent aussi.
+Dialogue: 0,0:08:16.17,0:08:19.71,Sub,,0,0,0,,{\fad(120,100)\move(960,1020,960,1016,0,120)}Faites maintenant tourner les deux\Ndisques à des vitesses différentes.
+Dialogue: 0,0:08:20.23,0:08:23.26,Sub,,0,0,0,,{\fad(120,100)\move(960,1020,960,1016,0,120)}Pour certains réglages,\Nle dipôle se renverse
+Dialogue: 0,0:08:23.34,0:08:26.43,Sub,,0,0,0,,{\fad(120,100)\move(960,1020,960,1016,0,120)}encore et encore, sans aucun calendrier.
+Dialogue: 0,0:08:26.74,0:08:31.70,Sub,,0,0,0,,{\fad(120,100)\move(960,1020,960,1016,0,120)}Comme l'aiguille de la boussole du début,\Nmais à une ou deux minutes d'intervalle.
+Dialogue: 0,0:08:32.44,0:08:36.23,Sub,,0,0,0,,{\fad(120,100)\move(960,1020,960,1016,0,120)}Chaque renversement, lui,\Nne dure qu'environ cinq secondes.
+Dialogue: 0,0:08:36.48,0:08:39.23,Sub,,0,0,0,,{\fad(120,100)\move(960,1020,960,1016,0,120)}Des bandes inégales,\Ncomme celles des fonds marins,
+Dialogue: 0,0:08:39.31,0:08:42.42,Sub,,0,0,0,,{\fad(120,100)\move(960,1020,960,1016,0,120)}mais écrites en minutes,\Npas en millions d'années.
+Dialogue: 0,0:08:43.57,0:08:46.86,Sub,,0,0,0,,{\fad(120,100)\move(960,1020,960,1016,0,120)}Les simulations n'atteignent\Npas le très petit {\c&H7AAF1B&}Pm{\c&HF7F4F2&} du sodium :
+Dialogue: 0,0:08:46.94,0:08:51.53,Sub,,0,0,0,,{\fad(120,100)\move(960,1020,960,1016,0,120)}quelles valeurs de Pm couvrir dans les\Npremiers calculs en trois dimensions ?
+Dialogue: 0,0:08:56.97,0:09:02.50,Sub,,0,0,0,,{\fad(120,100)\move(960,1020,960,1016,0,120)}Riga, Karlsruhe et VKS ont couronné\Nprès d'un siècle de chasse à la dynamo.
+Dialogue: 0,0:09:02.91,0:09:04.20,Sub,,0,0,0,,{\fad(120,100)\move(960,1020,960,1016,0,120)}En voici la carte.
+Dialogue: 0,0:09:04.94,0:09:07.66,Sub,,0,0,0,,{\fad(120,100)\move(960,1020,960,1016,0,120)}Première piste, les archives de la Terre :
+Dialogue: 0,0:09:07.74,0:09:11.54,Sub,,0,0,0,,{\fad(120,100)\move(960,1020,960,1016,0,120)}des laves aimantées à l'envers,\Nmille neuf cent six.
+Dialogue: 0,0:09:12.20,0:09:15.89,Sub,,0,0,0,,{\fad(120,100)\move(960,1020,960,1016,0,120)}Les bandes des fonds marins,\Nmille neuf cent soixante-trois.
+Dialogue: 0,0:09:16.82,0:09:20.15,Sub,,0,0,0,,{\fad(120,100)\move(960,1020,960,1016,0,120)}Puis les renversements vus\Ncomme des événements aléatoires,
+Dialogue: 0,0:09:20.23,0:09:23.05,Sub,,0,0,0,,{\fad(120,100)\move(960,1020,960,1016,0,120)}dont la probabilité\Nchange au fil des âges.
+Dialogue: 0,0:09:24.10,0:09:26.40,Sub,,0,0,0,,{\fad(120,100)\move(960,1020,960,1016,0,120)}Deuxième piste, la théorie.
+Dialogue: 0,0:09:26.94,0:09:29.74,Sub,,0,0,0,,{\fad(120,100)\move(960,1020,960,1016,0,120)}Mille neuf cent dix-neuf :\Nun fluide conducteur en
+Dialogue: 0,0:09:29.82,0:09:32.97,Sub,,0,0,0,,{\fad(120,100)\move(960,1020,960,1016,0,120)}mouvement pourrait entretenir\Nle champ du Soleil.
+Dialogue: 0,0:09:33.44,0:09:36.31,Sub,,0,0,0,,{\fad(120,100)\move(960,1020,960,1016,0,120)}Mille neuf cent trente-trois :\Naucun écoulement ne
+Dialogue: 0,0:09:36.39,0:09:39.78,Sub,,0,0,0,,{\fad(120,100)\move(960,1020,960,1016,0,120)}peut entretenir un champ\Nsymétrique autour d'un axe.
+Dialogue: 0,0:09:40.52,0:09:43.39,Sub,,0,0,0,,{\fad(120,100)\move(960,1020,960,1016,0,120)}Mille neuf cent cinquante-huit :\Nles premiers exemples
+Dialogue: 0,0:09:43.47,0:09:46.79,Sub,,0,0,0,,{\fad(120,100)\move(960,1020,960,1016,0,120)}rigoureux d'écoulements\Ncapables d'entretenir un champ.
+Dialogue: 0,0:09:47.42,0:09:51.13,Sub,,0,0,0,,{\fad(120,100)\move(960,1020,960,1016,0,120)}Dans les années soixante-dix arrivent\Ndes écoulements dynamos simples,
+Dialogue: 0,0:09:51.21,0:09:54.24,Sub,,0,0,0,,{\fad(120,100)\move(960,1020,960,1016,0,120)}qui deviendront les plans\Nde Riga et de Karlsruhe.
+Dialogue: 0,0:09:55.27,0:09:58.07,Sub,,0,0,0,,{\fad(120,100)\move(960,1020,960,1016,0,120)}Troisième piste : construire une dynamo.
+Dialogue: 0,0:09:58.47,0:10:00.25,Sub,,0,0,0,,{\fad(120,100)\move(960,1020,960,1016,0,120)}Mille neuf cent soixante-trois :
+Dialogue: 0,0:10:00.33,0:10:03.81,Sub,,0,0,0,,{\fad(120,100)\move(960,1020,960,1016,0,120)}une maquette de dynamo à\Ncylindres de fer en rotation.
+Dialogue: 0,0:10:04.42,0:10:06.94,Sub,,0,0,0,,{\fad(120,100)\move(960,1020,960,1016,0,120)}Mille neuf cent quatre-vingt-dix-neuf :
+Dialogue: 0,0:10:07.02,0:10:11.48,Sub,,0,0,0,,{\fad(120,100)\move(960,1020,960,1016,0,120)}le sodium fabrique son propre\Nchamp, à Riga, puis à Karlsruhe.
+Dialogue: 0,0:10:12.22,0:10:15.48,Sub,,0,0,0,,{\fad(120,100)\move(960,1020,960,1016,0,120)}Deux mille six : dans VKS,\Nl'effet dynamo n'apparaît
+Dialogue: 0,0:10:15.56,0:10:19.02,Sub,,0,0,0,,{\fad(120,100)\move(960,1020,960,1016,0,120)}qu'avec des disques en fer ;\Npuis viennent les premiers
+Dialogue: 0,0:10:19.10,0:10:22.51,Sub,,0,0,0,,{\fad(120,100)\move(960,1020,960,1016,0,120)}renversements d'une dynamo\Nturbulente au sodium.
+Dialogue: 0,0:10:23.94,0:10:26.53,Sub,,0,0,0,,{\fad(120,100)\move(960,1020,960,1016,0,120)}Quatrième piste, les ordinateurs.
+Dialogue: 0,0:10:27.15,0:10:28.92,Sub,,0,0,0,,{\fad(120,100)\move(960,1020,960,1016,0,120)}Mille neuf cent quatre-vingt-un :
+Dialogue: 0,0:10:29.00,0:10:31.98,Sub,,0,0,0,,{\fad(120,100)\move(960,1020,960,1016,0,120)}une turbulence simulée\Nfait naître des dynamos.
+Dialogue: 0,0:10:32.49,0:10:34.80,Sub,,0,0,0,,{\fad(120,100)\move(960,1020,960,1016,0,120)}Mille neuf cent quatre-vingt-quinze :
+Dialogue: 0,0:10:34.88,0:10:38.63,Sub,,0,0,0,,{\fad(120,100)\move(960,1020,960,1016,0,120)}dans un noyau terrestre simulé,\Nle champ se renverse.
+Dialogue: 0,0:10:38.96,0:10:44.96,Sub,,0,0,0,,{\fad(120,100)\move(960,1020,960,1016,0,120)}Les repères cerclés signalent les articles\Ncosignés par les encadrants du projet.
+Dialogue: 0,0:10:46.17,0:10:49.31,Sub,,0,0,0,,{\fad(120,100)\move(960,1020,960,1016,0,120)}Mille neuf cent quatre-vingt-dix-sept :\Nen simulation,
+Dialogue: 0,0:10:49.39,0:10:53.24,Sub,,0,0,0,,{\fad(120,100)\move(960,1020,960,1016,0,120)}deux tourbillons contrarotatifs\Nproduisent un effet dynamo.
+Dialogue: 0,0:10:53.43,0:10:57.76,Sub,,0,0,0,,{\fad(120,100)\move(960,1020,960,1016,0,120)}Deux mille cinq : ces dynamos\Nfonctionnent encore à un {\c&H7AAF1B&}Pm{\c&HF7F4F2&} d'un centième.
+Dialogue: 0,0:10:58.50,0:11:00.46,Sub,,0,0,0,,{\fad(120,100)\move(960,1020,960,1016,0,120)}À partir de deux mille seize,
+Dialogue: 0,0:11:00.54,0:11:05.23,Sub,,0,0,0,,{\fad(120,100)\move(960,1020,960,1016,0,120)}deux codes simulent la cuve de\NVKS, turbines en fer comprises.
+Dialogue: 0,0:11:05.68,0:11:09.30,Sub,,0,0,0,,{\fad(120,100)\move(960,1020,960,1016,0,120)}Deux mille vingt-six : tous deux\Nobtiennent des renversements ;
+Dialogue: 0,0:11:09.38,0:11:13.86,Sub,,0,0,0,,{\fad(120,100)\move(960,1020,960,1016,0,120)}dans les cas explorés, seulement avec\Nun milieu conducteur tout autour.
+Dialogue: 0,0:11:13.94,0:11:15.71,Sub,,0,0,0,,{\fad(120,100)\move(960,1020,960,1016,0,120)}Leur simulation de référence :
+Dialogue: 0,0:11:15.79,0:11:20.37,Sub,,0,0,0,,{\fad(120,100)\move(960,1020,960,1016,0,120)}un {\c&H7AAF1B&}nombre de Reynolds{\c&HF7F4F2&} d'environ\Nmille six cents, et non des millions.
+Dialogue: 0,0:11:21.40,0:11:24.94,Sub,,0,0,0,,{\fad(120,100)\move(960,1020,960,1016,0,120)}Cinquième piste : quelques\Ncadrans au lieu d'une cuve.
+Dialogue: 0,0:11:25.37,0:11:27.26,Sub,,0,0,0,,{\fad(120,100)\move(960,1020,960,1016,0,120)}Mille neuf cent cinquante-huit :
+Dialogue: 0,0:11:27.34,0:11:31.55,Sub,,0,0,0,,{\fad(120,100)\move(960,1020,960,1016,0,120)}avec deux dynamos à disque couplées,\Nle champ se renverse déjà.
+Dialogue: 0,0:11:31.86,0:11:35.22,Sub,,0,0,0,,{\fad(120,100)\move(960,1020,960,1016,0,120)}Deux mille douze : trois\Ncadrans, où le chaos suffit à
+Dialogue: 0,0:11:35.30,0:11:38.94,Sub,,0,0,0,,{\fad(120,100)\move(960,1020,960,1016,0,120)}renverser le champ ; nous\Njouerons bientôt avec eux.
+Dialogue: 0,0:11:39.68,0:11:42.57,Sub,,0,0,0,,{\fad(120,100)\move(960,1020,960,1016,0,120)}Deux mille vingt-six :\Nquatre cadrans ajustés sur
+Dialogue: 0,0:11:42.65,0:11:44.56,Sub,,0,0,0,,{\fad(120,100)\move(960,1020,960,1016,0,120)}les renversements simulés de VKS,
+Dialogue: 0,0:11:44.64,0:11:48.60,Sub,,0,0,0,,{\fad(120,100)\move(960,1020,960,1016,0,120)}par une méthode qui découvre\Ndes équations dans les données.
+Dialogue: 0,0:11:49.64,0:11:54.13,Sub,,0,0,0,,{\fad(120,100)\move(960,1020,960,1016,0,120)}MilaDy, lancé en deux mille vingt-six,\Napporte l'apprentissage automatique
+Dialogue: 0,0:11:54.21,0:11:58.43,Sub,,0,0,0,,{\fad(120,100)\move(960,1020,960,1016,0,120)}là où se rencontrent les cuves,\Nles ordinateurs et les cadrans.
+Dialogue: 0,0:11:58.69,0:12:02.88,Sub,,0,0,0,,{\fad(120,100)\move(960,1020,960,1016,0,120)}Pourtant, la piste des données reste\Nmince : en deux mille vingt-deux,
+Dialogue: 0,0:12:02.96,0:12:06.35,Sub,,0,0,0,,{\fad(120,100)\move(960,1020,960,1016,0,120)}les méthodes d'apprentissage\Nessayées par une étude n'ont
+Dialogue: 0,0:12:06.43,0:12:10.79,Sub,,0,0,0,,{\fad(120,100)\move(960,1020,960,1016,0,120)}pas su prévoir de façon fiable un\Nrenversement du champ terrestre.
+Dialogue: 0,0:12:11.53,0:12:14.40,Sub,,0,0,0,,{\fad(120,100)\move(960,1020,960,1016,0,120)}Le stage et un projet de\Nthèse y ajoutent un pari :
+Dialogue: 0,0:12:14.48,0:12:19.26,Sub,,0,0,0,,{\fad(120,100)\move(960,1020,960,1016,0,120)}des {\c&HF09CB4&}machines{\c&HF7F4F2&} qui imaginent des champs\Nde dynamo et obéissent à leur physique.
+Dialogue: 0,0:12:20.00,0:12:24.89,Sub,,0,0,0,,{\fad(120,100)\move(960,1020,960,1016,0,120)}Derrière chaque piste, la même course :\Nl'étirement contre l'estompage.
+Dialogue: 0,0:12:29.14,0:12:34.44,Sub,,0,0,0,,{\fad(120,100)\move(960,1020,960,1016,0,120)}Retour à la course : l'{\c&HE58739&}écoulement{\c&HF7F4F2&} étire\Nle champ, et la diffusion l'estompe.
+Dialogue: 0,0:12:34.98,0:12:38.80,Sub,,0,0,0,,{\fad(120,100)\move(960,1020,960,1016,0,120)}Les physiciens écrivent cette\Nmême course en une seule équation.
+Dialogue: 0,0:12:39.54,0:12:44.03,Sub,,0,0,0,,{\fad(120,100)\move(960,1020,960,1016,0,120)}À gauche : à quel rythme le\N{\c&H3468EB&}champ magnétique{\c&HF7F4F2&} varie, en chaque point.
+Dialogue: 0,0:12:44.55,0:12:46.01,Sub,,0,0,0,,{\fad(120,100)\move(960,1020,960,1016,0,120)}Premier terme à droite :
+Dialogue: 0,0:12:46.09,0:12:50.16,Sub,,0,0,0,,{\fad(120,100)\move(960,1020,960,1016,0,120)}l'écoulement transporte le\Nchamp et l'étire, comme un fil.
+Dialogue: 0,0:12:50.64,0:12:53.16,Sub,,0,0,0,,{\fad(120,100)\move(960,1020,960,1016,0,120)}Deuxième terme : la diffusion l'estompe,
+Dialogue: 0,0:12:53.24,0:12:56.83,Sub,,0,0,0,,{\fad(120,100)\move(960,1020,960,1016,0,120)}à une vitesse fixée par\Nla diffusivité magnétique.
+Dialogue: 0,0:12:57.16,0:13:00.53,Sub,,0,0,0,,{\fad(120,100)\move(960,1020,960,1016,0,120)}Dans un mauvais conducteur,\Nle champ s'estompe vite.
+Dialogue: 0,0:13:00.88,0:13:05.34,Sub,,0,0,0,,{\fad(120,100)\move(960,1020,960,1016,0,120)}L'étirement contre l'estompage :\Ntoute la course, en une ligne.
+Dialogue: 0,0:13:06.37,0:13:08.60,Sub,,0,0,0,,{\fad(120,100)\move(960,1020,960,1016,0,120)}Imaginez l'{\c&HE58739&}écoulement{\c&HF7F4F2&}\Ncomme un tapis roulant
+Dialogue: 0,0:13:08.68,0:13:10.90,Sub,,0,0,0,,{\fad(120,100)\move(960,1020,960,1016,0,120)}qui ne sent pas ce qu'il transporte.
+Dialogue: 0,0:13:11.64,0:13:15.21,Sub,,0,0,0,,{\fad(120,100)\move(960,1020,960,1016,0,120)}Un {\c&H3468EB&}champ{\c&HF7F4F2&} faible se laisse porter\Npar cet écoulement imposé,
+Dialogue: 0,0:13:15.29,0:13:18.15,Sub,,0,0,0,,{\fad(120,100)\move(960,1020,960,1016,0,120)}et s'éteint ou grandit exponentiellement.
+Dialogue: 0,0:13:18.91,0:13:24.33,Sub,,0,0,0,,{\fad(120,100)\move(960,1020,960,1016,0,120)}En échelle logarithmique : une droite,\Ndont la pente est le taux de croissance.
+Dialogue: 0,0:13:25.07,0:13:28.00,Sub,,0,0,0,,{\fad(120,100)\move(960,1020,960,1016,0,120)}Mais un champ fort agit en\Nretour sur l'écoulement,
+Dialogue: 0,0:13:28.08,0:13:33.12,Sub,,0,0,0,,{\fad(120,100)\move(960,1020,960,1016,0,120)}comme il a freiné le disque de cuivre :\Nla droite se courbe et forme un plateau.
+Dialogue: 0,0:13:33.39,0:13:36.01,Sub,,0,0,0,,{\fad(120,100)\move(960,1020,960,1016,0,120)}Ce sont les régimes\Ncinématique et dynamique.
+Dialogue: 0,0:13:36.27,0:13:39.25,Sub,,0,0,0,,{\fad(120,100)\move(960,1020,960,1016,0,120)}C'est sur le plateau que se\Nproduisent les renversements.
+Dialogue: 0,0:13:40.30,0:13:44.17,Sub,,0,0,0,,{\fad(120,100)\move(960,1020,960,1016,0,120)}Pour tester leurs idées, les physiciens\Nont besoin d'un {\c&HE58739&}écoulement{\c&HF7F4F2&} assez
+Dialogue: 0,0:13:44.25,0:13:48.74,Sub,,0,0,0,,{\fad(120,100)\move(960,1020,960,1016,0,120)}simple pour s'écrire en une ligne,\Nmais capable de produire un effet dynamo.
+Dialogue: 0,0:13:49.30,0:13:52.61,Sub,,0,0,0,,{\fad(120,100)\move(960,1020,960,1016,0,120)}Un choix classique : l'écoulement ABC.
+Dialogue: 0,0:13:53.35,0:13:57.46,Sub,,0,0,0,,{\fad(120,100)\move(960,1020,960,1016,0,120)}Il remplit l'espace de pièces identiques,\Noù le fluide tourbillonne.
+Dialogue: 0,0:13:57.90,0:14:01.36,Sub,,0,0,0,,{\fad(120,100)\move(960,1020,960,1016,0,120)}Trois courants croisés font\Navancer le fluide en tire-bouchon :
+Dialogue: 0,0:14:01.44,0:14:04.47,Sub,,0,0,0,,{\fad(120,100)\move(960,1020,960,1016,0,120)}il tourne autour de sa\Ndirection de déplacement.
+Dialogue: 0,0:14:04.89,0:14:09.06,Sub,,0,0,0,,{\fad(120,100)\move(960,1020,960,1016,0,120)}Cette boîte tourbillonnante reviendra\Nplus haut dans notre ascension.
+Dialogue: 0,0:14:10.10,0:14:14.41,Sub,,0,0,0,,{\fad(120,100)\move(960,1020,960,1016,0,120)}Sur cet écoulement, tournez\Nmaintenant un seul {\c&H7AAF1B&}bouton{\c&HF7F4F2&} :
+Dialogue: 0,0:14:14.49,0:14:18.32,Sub,,0,0,0,,{\fad(120,100)\move(960,1020,960,1016,0,120)}Rm. L'augmenter, c'est\Nréduire la diffusion.
+Dialogue: 0,0:14:18.74,0:14:21.59,Sub,,0,0,0,,{\fad(120,100)\move(960,1020,960,1016,0,120)}Moins d'estompage ne devrait\Nqu'aider l'étirement.
+Dialogue: 0,0:14:22.33,0:14:26.75,Sub,,0,0,0,,{\fad(120,100)\move(960,1020,960,1016,0,120)}Donc, une fois lancée, la dynamo\Nne s'arrête plus. N'est-ce pas ?
+Dialogue: 0,0:14:30.49,0:14:34.62,Sub,,0,0,0,,{\fad(120,100)\move(960,1020,960,1016,0,120)}Voici le taux de croissance,\Ncalculé pour vingt-quatre réglages.
+Dialogue: 0,0:14:35.02,0:14:38.16,Sub,,0,0,0,,{\fad(120,100)\move(960,1020,960,1016,0,120)}En dessous d'environ neuf,\Ntout {\c&H3468EB&}champ{\c&HF7F4F2&} s'éteint.
+Dialogue: 0,0:14:38.24,0:14:41.92,Sub,,0,0,0,,{\fad(120,100)\move(960,1020,960,1016,0,120)}Puis le taux devient positif :\Nla dynamo démarre.
+Dialogue: 0,0:14:42.33,0:14:45.40,Sub,,0,0,0,,{\fad(120,100)\move(960,1020,960,1016,0,120)}Autour de dix-sept et demi,\Nelle s'arrête à nouveau.
+Dialogue: 0,0:14:45.73,0:14:48.60,Sub,,0,0,0,,{\fad(120,100)\move(960,1020,960,1016,0,120)}Au-delà d'environ vingt-sept, elle repart.
+Dialogue: 0,0:14:48.83,0:14:51.09,Sub,,0,0,0,,{\fad(120,100)\move(960,1020,960,1016,0,120)}Pas un seul seuil, mais des fenêtres :
+Dialogue: 0,0:14:51.17,0:14:54.45,Sub,,0,0,0,,{\fad(120,100)\move(960,1020,960,1016,0,120)}tourner un bouton plus\Nloin n'aide pas toujours.
+Dialogue: 0,0:14:54.74,0:14:58.00,Sub,,0,0,0,,{\fad(120,100)\move(960,1020,960,1016,0,120)}Cela concorde avec les\Nrésultats publiés. Pas encore
+Dialogue: 0,0:14:58.08,0:15:02.33,Sub,,0,0,0,,{\fad(120,100)\move(960,1020,960,1016,0,120)}d'apprentissage automatique :\Non ne teste ici que le solveur.
+Dialogue: 0,0:15:03.57,0:15:07.64,Sub,,0,0,0,,{\fad(120,100)\move(960,1020,960,1016,0,120)}Les vraies dynamos n'ont pas un seul\N{\c&H7AAF1B&}bouton{\c&HF7F4F2&}, mais tout un tableau de bord.
+Dialogue: 0,0:15:07.72,0:15:12.12,Sub,,0,0,0,,{\fad(120,100)\move(960,1020,960,1016,0,120)}Avec quelle force on brasse le métal ;\Ns'il conduit plus ou moins bien.
+Dialogue: 0,0:15:12.46,0:15:15.51,Sub,,0,0,0,,{\fad(120,100)\move(960,1020,960,1016,0,120)}Le matériau des disques :\Nsouvenez-vous du fer.
+Dialogue: 0,0:15:15.70,0:15:20.60,Sub,,0,0,0,,{\fad(120,100)\move(960,1020,960,1016,0,120)}L'écart entre leurs vitesses : c'est\Nlà que le champ de VKS s'est renversé.
+Dialogue: 0,0:15:21.20,0:15:26.31,Sub,,0,0,0,,{\fad(120,100)\move(960,1020,960,1016,0,120)}Pour DRESDYN, une cuve en précession :\Nà quelle vitesse tourne son axe.
+Dialogue: 0,0:15:27.05,0:15:31.16,Sub,,0,0,0,,{\fad(120,100)\move(960,1020,960,1016,0,120)}Même la paroi compte : dans des\Nsimulations de VKS, changer seulement
+Dialogue: 0,0:15:31.24,0:15:35.88,Sub,,0,0,0,,{\fad(120,100)\move(960,1020,960,1016,0,120)}sa condition magnétique a relevé le\Nseuil d'environ quarante pour cent.
+Dialogue: 0,0:15:36.90,0:15:41.68,Sub,,0,0,0,,{\fad(120,100)\move(960,1020,960,1016,0,120)}Chaque simulation de dynamo turbulente\Nen trois dimensions coûte très cher.
+Dialogue: 0,0:15:42.14,0:15:44.77,Sub,,0,0,0,,{\fad(120,100)\move(960,1020,960,1016,0,120)}On ne simule donc qu'une\Npoignée de réglages.
+Dialogue: 0,0:15:45.36,0:15:48.15,Sub,,0,0,0,,{\fad(120,100)\move(960,1020,960,1016,0,120)}Chacun représente une\Nmontagne de données :
+Dialogue: 0,0:15:48.23,0:15:51.89,Sub,,0,0,0,,{\fad(120,100)\move(960,1020,960,1016,0,120)}un seul instantané peut\Npeser plus d'un gigaoctet.
+Dialogue: 0,0:15:52.63,0:15:55.61,Sub,,0,0,0,,{\fad(120,100)\move(960,1020,960,1016,0,120)}Chaque simulation ne contient\Nque quelques renversements.
+Dialogue: 0,0:15:55.85,0:15:58.45,Sub,,0,0,0,,{\fad(120,100)\move(960,1020,960,1016,0,120)}Et entre les points,\Nil n'y a rien du tout.
+Dialogue: 0,0:15:59.50,0:16:01.76,Sub,,0,0,0,,{\fad(120,100)\move(960,1020,960,1016,0,120)}C'est dans ces vides que se joue ce film.
+Dialogue: 0,0:16:02.15,0:16:05.11,Sub,,0,0,0,,{\fad(120,100)\move(960,1020,960,1016,0,120)}L'étude sur laquelle il\Ns'appuie pose trois questions.
+Dialogue: 0,0:16:05.85,0:16:09.79,Sub,,0,0,0,,{\fad(120,100)\move(960,1020,960,1016,0,120)}Première : une {\c&HF09CB4&}machine{\c&HF7F4F2&} peut-elle\Napprendre toute la famille des champs,
+Dialogue: 0,0:16:09.87,0:16:12.92,Sub,,0,0,0,,{\fad(120,100)\move(960,1020,960,1016,0,120)}même pour des réglages\Nsitués entre les points ?
+Dialogue: 0,0:16:13.70,0:16:17.57,Sub,,0,0,0,,{\fad(120,100)\move(960,1020,960,1016,0,120)}Deuxième : peut-elle respecter\Nchaque loi là où elle est vraie,
+Dialogue: 0,0:16:17.65,0:16:22.24,Sub,,0,0,0,,{\fad(120,100)\move(960,1020,960,1016,0,120)}exactement dans chaque champ,\Nou {\c&H00A1ED&}en moyenne{\c&HF7F4F2&} sur de nombreux champs ?
+Dialogue: 0,0:16:22.60,0:16:27.22,Sub,,0,0,0,,{\fad(120,100)\move(960,1020,960,1016,0,120)}Troisième : peut-elle nous dire\N{\c&H00A1ED&}à quelle fréquence{\c&HF7F4F2&} le champ se renverse ?
+Dialogue: 0,0:16:27.96,0:16:31.24,Sub,,0,0,0,,{\fad(120,100)\move(960,1020,960,1016,0,120)}Pour le savoir, le plan de\Nl'étude gravit un escalier :
+Dialogue: 0,0:16:31.32,0:16:35.31,Sub,,0,0,0,,{\fad(120,100)\move(960,1020,960,1016,0,120)}de trois nombres jusqu'à la\Ngéométrie d'expériences réelles.
+Dialogue: 0,0:16:36.05,0:16:39.65,Sub,,0,0,0,,{\fad(120,100)\move(960,1020,960,1016,0,120)}En toute honnêteté : cette étude\Nindépendante est prospective,
+Dialogue: 0,0:16:39.73,0:16:42.26,Sub,,0,0,0,,{\fad(120,100)\move(960,1020,960,1016,0,120)}fondée sur de petites\Nexpériences menées sur
+Dialogue: 0,0:16:42.34,0:16:45.70,Sub,,0,0,0,,{\fad(120,100)\move(960,1020,960,1016,0,120)}un simple ordinateur, et elle\Nn'est validée ni par MilaDy,
+Dialogue: 0,0:16:45.78,0:16:48.84,Sub,,0,0,0,,{\fad(120,100)\move(960,1020,960,1016,0,120)}ni par ses partenaires,\Nni par les encadrants.
+Dialogue: 0,0:16:50.47,0:16:55.77,Sub,,0,0,0,,{\fad(120,100)\move(960,1020,960,1016,0,120)}Une équation, des fenêtres,\Nun tableau de bord, une poignée de points.
+Dialogue: 0,0:16:56.21,0:16:59.77,Sub,,0,0,0,,{\fad(120,100)\move(960,1020,960,1016,0,120)}Les simulations complètes coûtent\Ntrop cher : nous commençons
+Dialogue: 0,0:16:59.85,0:17:03.87,Sub,,0,0,0,,{\fad(120,100)\move(960,1020,960,1016,0,120)}donc par une caricature à trois\Ncadrans, qui se renverse déjà.
+Dialogue: 0,0:17:04.39,0:17:07.35,Sub,,0,0,0,,{\fad(120,100)\move(960,1020,960,1016,0,120)}Qui peut dire quand aura lieu\Nson prochain renversement ?
+Dialogue: 0,0:17:08.70,0:17:11.72,Sub,,0,0,0,,{\fad(120,100)\move(960,1020,960,1016,0,120)}Avec seulement une poignée de\Nsimulations, faut-il espacer
+Dialogue: 0,0:17:11.80,0:17:15.71,Sub,,0,0,0,,{\fad(120,100)\move(960,1020,960,1016,0,120)}régulièrement les {\c&H7AAF1B&}réglages{\c&HF7F4F2&}, ou les\Nresserrer près de chaque seuil ?
+Dialogue: 0,0:17:20.94,0:17:25.47,Sub,,0,0,0,,{\fad(120,100)\move(960,1020,960,1016,0,120)}Voici la caricature : trois cadrans,\Nreliés par des ressorts.
+Dialogue: 0,0:17:25.77,0:17:29.07,Sub,,0,0,0,,{\fad(120,100)\move(960,1020,960,1016,0,120)}L'un est le {\c&H3468EB&}dipôle{\c&HF7F4F2&},\Nla partie nord-sud du champ.
+Dialogue: 0,0:17:29.39,0:17:33.12,Sub,,0,0,0,,{\fad(120,100)\move(960,1020,960,1016,0,120)}Un autre est le {\c&H3468EB&}quadrupôle{\c&HF7F4F2&},\Nune partie à quatre pôles.
+Dialogue: 0,0:17:33.40,0:17:37.94,Sub,,0,0,0,,{\fad(120,100)\move(960,1020,960,1016,0,120)}Le troisième est un motif d'{\c&HE58739&}écoulement{\c&HF7F4F2&},\Npiloté par un bouton, Gamma.
+Dialogue: 0,0:17:38.68,0:17:42.91,Sub,,0,0,0,,{\fad(120,100)\move(960,1020,960,1016,0,120)}Trois courtes équations, dues à\NGissinger, les lient entre eux.
+Dialogue: 0,0:17:43.45,0:17:47.64,Sub,,0,0,0,,{\fad(120,100)\move(960,1020,960,1016,0,120)}Inversez les deux cadrans du champ :\Nles équations restent les mêmes.
+Dialogue: 0,0:17:48.19,0:17:52.67,Sub,,0,0,0,,{\fad(120,100)\move(960,1020,960,1016,0,120)}Trois cadrans, trois nombres :\Nla première marche de l'escalier.
+Dialogue: 0,0:17:53.70,0:17:55.92,Sub,,0,0,0,,{\fad(120,100)\move(960,1020,960,1016,0,120)}Faites de deux cadrans une carte :
+Dialogue: 0,0:17:56.00,0:18:00.12,Sub,,0,0,0,,{\fad(120,100)\move(960,1020,960,1016,0,120)}le {\c&H3468EB&}quadrupôle{\c&HF7F4F2&} à l'horizontale,\Nle dipôle à la verticale.
+Dialogue: 0,0:18:00.59,0:18:05.66,Sub,,0,0,0,,{\fad(120,100)\move(960,1020,960,1016,0,120)}Bouton baissé, l'état tourne dans\Nun seul tourbillon, et y reste.
+Dialogue: 0,0:18:06.16,0:18:11.30,Sub,,0,0,0,,{\fad(120,100)\move(960,1020,960,1016,0,120)}Un jumeau en miroir tourne dans le\Ntourbillon miroir : dipôle vers le bas.
+Dialogue: 0,0:18:11.80,0:18:17.80,Sub,,0,0,0,,{\fad(120,100)\move(960,1020,960,1016,0,120)}D'où qu'il parte, l'état reste piégé.\NLe dipôle ne change jamais de signe.
+Dialogue: 0,0:18:18.56,0:18:20.39,Sub,,0,0,0,,{\fad(120,100)\move(960,1020,960,1016,0,120)}Augmentez maintenant {\c&H7AAF1B&}Gamma{\c&HF7F4F2&}.
+Dialogue: 0,0:18:20.68,0:18:23.18,Sub,,0,0,0,,{\fad(120,100)\move(960,1020,960,1016,0,120)}Juste au-dessus de zéro virgule huit six,
+Dialogue: 0,0:18:23.26,0:18:27.11,Sub,,0,0,0,,{\fad(120,100)\move(960,1020,960,1016,0,120)}les tourbillons se touchent :\Nun couloir étroit s'ouvre.
+Dialogue: 0,0:18:27.32,0:18:29.08,Sub,,0,0,0,,{\fad(120,100)\move(960,1020,960,1016,0,120)}L'état s'attarde d'un côté,
+Dialogue: 0,0:18:29.16,0:18:33.15,Sub,,0,0,0,,{\fad(120,100)\move(960,1020,960,1016,0,120)}puis se faufile par le couloir.\NLe {\c&H3468EB&}dipôle{\c&HF7F4F2&} se renverse.
+Dialogue: 0,0:18:33.35,0:18:35.22,Sub,,0,0,0,,{\fad(120,100)\move(960,1020,960,1016,0,120)}Rien n'est aléatoire ici. Alors,
+Dialogue: 0,0:18:35.30,0:18:38.97,Sub,,0,0,0,,{\fad(120,100)\move(960,1020,960,1016,0,120)}les renversements seront-ils\Nréglés comme une horloge ?
+Dialogue: 0,0:18:42.21,0:18:46.58,Sub,,0,0,0,,{\fad(120,100)\move(960,1020,960,1016,0,120)}Non. Des attentes longues,\Nd'autres courtes, sans régularité.
+Dialogue: 0,0:18:46.88,0:18:51.48,Sub,,0,0,0,,{\fad(120,100)\move(960,1020,960,1016,0,120)}Le signe du dipôle imprime des bandes\Ninégales, comme celles des fonds marins.
+Dialogue: 0,0:18:52.54,0:18:56.88,Sub,,0,0,0,,{\fad(120,100)\move(960,1020,960,1016,0,120)}Comptez maintenant : un clic chaque\Nfois que le {\c&H3468EB&}dipôle{\c&HF7F4F2&} passe par zéro.
+Dialogue: 0,0:18:57.35,0:18:59.78,Sub,,0,0,0,,{\fad(120,100)\move(960,1020,960,1016,0,120)}Tous les clics ne sont\Npas des renversements :
+Dialogue: 0,0:18:59.86,0:19:03.19,Sub,,0,0,0,,{\fad(120,100)\move(960,1020,960,1016,0,120)}une excursion peut passer\Npar zéro et revenir aussitôt.
+Dialogue: 0,0:19:03.51,0:19:07.84,Sub,,0,0,0,,{\fad(120,100)\move(960,1020,960,1016,0,120)}Le nombre de clics par unité de temps,\Nc'est la {\c&H00A1ED&}fréquence des passages{\c&HF7F4F2&}.
+Dialogue: 0,0:19:08.58,0:19:12.20,Sub,,0,0,0,,{\fad(120,100)\move(960,1020,960,1016,0,120)}Jusqu'à zéro virgule\Nhuit six : le silence.
+Dialogue: 0,0:19:12.97,0:19:16.95,Sub,,0,0,0,,{\fad(120,100)\move(960,1020,960,1016,0,120)}Juste au-dessus, environ deux\Nclics pour mille unités de temps.
+Dialogue: 0,0:19:17.45,0:19:20.77,Sub,,0,0,0,,{\fad(120,100)\move(960,1020,960,1016,0,120)}À {\c&H7AAF1B&}Gamma{\c&HF7F4F2&} égal à un, environ onze.
+Dialogue: 0,0:19:21.80,0:19:23.94,Sub,,0,0,0,,{\fad(120,100)\move(960,1020,960,1016,0,120)}Réglez {\c&H7AAF1B&}Gamma{\c&HF7F4F2&} à zéro virgule neuf,
+Dialogue: 0,0:19:24.02,0:19:27.70,Sub,,0,0,0,,{\fad(120,100)\move(960,1020,960,1016,0,120)}et lancez deux copies,\Ndistantes d'un millionième.
+Dialogue: 0,0:19:28.09,0:19:30.88,Sub,,0,0,0,,{\fad(120,100)\move(960,1020,960,1016,0,120)}On connaît l'état à six\Ndécimales près. Peut-on
+Dialogue: 0,0:19:30.96,0:19:33.85,Sub,,0,0,0,,{\fad(120,100)\move(960,1020,960,1016,0,120)}prédire la date du prochain renversement ?
+Dialogue: 0,0:19:37.59,0:19:40.67,Sub,,0,0,0,,{\fad(120,100)\move(960,1020,960,1016,0,120)}Au début, les deux copies\Navancent d'un même pas.
+Dialogue: 0,0:19:41.01,0:19:44.65,Sub,,0,0,0,,{\fad(120,100)\move(960,1020,960,1016,0,120)}Mais leur écart triple presque\Ntoutes les onze unités de temps.
+Dialogue: 0,0:19:45.02,0:19:48.84,Sub,,0,0,0,,{\fad(120,100)\move(960,1020,960,1016,0,120)}Au bout d'environ cent cinquante,\Nelles n'ont plus rien en commun.
+Dialogue: 0,0:19:49.58,0:19:54.54,Sub,,0,0,0,,{\fad(120,100)\move(960,1020,960,1016,0,120)}L'attente moyenne entre deux passages par\Nzéro est plus longue : plus de deux cents.
+Dialogue: 0,0:19:55.21,0:19:59.41,Sub,,0,0,0,,{\fad(120,100)\move(960,1020,960,1016,0,120)}Chaque décimale de plus ne fait gagner\Nqu'environ vingt-cinq unités de temps.
+Dialogue: 0,0:20:00.01,0:20:03.17,Sub,,0,0,0,,{\fad(120,100)\move(960,1020,960,1016,0,120)}La prévision s'efface donc\Navant la fin de l'attente
+Dialogue: 0,0:20:03.25,0:20:06.26,Sub,,0,0,0,,{\fad(120,100)\move(960,1020,960,1016,0,120)}moyenne. Seules les\Nstatistiques survivent.
+Dialogue: 0,0:20:07.30,0:20:11.29,Sub,,0,0,0,,{\fad(120,100)\move(960,1020,960,1016,0,120)}La trajectoire nous échappe :\Nlaissez donc l'obturateur ouvert.
+Dialogue: 0,0:20:11.63,0:20:15.56,Sub,,0,0,0,,{\fad(120,100)\move(960,1020,960,1016,0,120)}Chaque tour laisse un peu de\Nlumière : un halo se forme.
+Dialogue: 0,0:20:15.87,0:20:20.43,Sub,,0,0,0,,{\fad(120,100)\move(960,1020,960,1016,0,120)}Une copie lancée de l'autre côté\Ndessine d'abord l'image en miroir.
+Dialogue: 0,0:20:20.67,0:20:23.89,Sub,,0,0,0,,{\fad(120,100)\move(960,1020,960,1016,0,120)}Avec le temps, les deux\Ndessinent le même halo.
+Dialogue: 0,0:20:24.63,0:20:29.77,Sub,,0,0,0,,{\fad(120,100)\move(960,1020,960,1016,0,120)}Où le {\c&H3468EB&}dipôle{\c&HF7F4F2&} passe-t-il son temps ?\NDeux bosses, les mêmes pour les deux.
+Dialogue: 0,0:20:30.26,0:20:33.86,Sub,,0,0,0,,{\fad(120,100)\move(960,1020,960,1016,0,120)}Ce halo reproductible,\Nc'est la loi stationnaire.
+Dialogue: 0,0:20:34.25,0:20:38.42,Sub,,0,0,0,,{\fad(120,100)\move(960,1020,960,1016,0,120)}Sous le seuil, chaque départ\Ndessine son propre tourbillon.
+Dialogue: 0,0:20:39.47,0:20:43.98,Sub,,0,0,0,,{\fad(120,100)\move(960,1020,960,1016,0,120)}Filmez maintenant la trajectoire,\Nune image toutes les deux unités de temps.
+Dialogue: 0,0:20:44.47,0:20:46.65,Sub,,0,0,0,,{\fad(120,100)\move(960,1020,960,1016,0,120)}Deux images voisines se ressemblent.
+Dialogue: 0,0:20:46.90,0:20:48.69,Sub,,0,0,0,,{\fad(120,100)\move(960,1020,960,1016,0,120)}Découpez le film en images.
+Dialogue: 0,0:20:48.96,0:20:53.88,Sub,,0,0,0,,{\fad(120,100)\move(960,1020,960,1016,0,120)}Mettez-les dans une boîte à chaussures,\Nsecouez, et jetez les horodatages.
+Dialogue: 0,0:20:54.27,0:20:58.25,Sub,,0,0,0,,{\fad(120,100)\move(960,1020,960,1016,0,120)}Videz la boîte : les images\Nredessinent le même halo.
+Dialogue: 0,0:20:58.99,0:21:04.24,Sub,,0,0,0,,{\fad(120,100)\move(960,1020,960,1016,0,120)}Chaque image est un instantané : les\Nvaleurs des trois cadrans, rien de plus.
+Dialogue: 0,0:21:04.44,0:21:07.98,Sub,,0,0,0,,{\fad(120,100)\move(960,1020,960,1016,0,120)}Il ne porte ni horodatage,\Nni ordre temporel.
+Dialogue: 0,0:21:08.38,0:21:13.31,Sub,,0,0,0,,{\fad(120,100)\move(960,1020,960,1016,0,120)}Pourtant, avec les équations, la boîte à\Nchaussures répond à bien des questions.
+Dialogue: 0,0:21:13.50,0:21:15.61,Sub,,0,0,0,,{\fad(120,100)\move(960,1020,960,1016,0,120)}Des moyennes, des bilans d'énergie,
+Dialogue: 0,0:21:15.69,0:21:19.34,Sub,,0,0,0,,{\fad(120,100)\move(960,1020,960,1016,0,120)}et même la fréquence des\Npassages du dipôle par zéro.
+Dialogue: 0,0:21:20.37,0:21:24.94,Sub,,0,0,0,,{\fad(120,100)\move(960,1020,960,1016,0,120)}Choisissez une photo. Les valeurs de\Nses trois cadrans donnent son énergie.
+Dialogue: 0,0:21:25.32,0:21:26.97,Sub,,0,0,0,,{\fad(120,100)\move(960,1020,960,1016,0,120)}À partir de cette seule photo,
+Dialogue: 0,0:21:27.05,0:21:30.61,Sub,,0,0,0,,{\fad(120,100)\move(960,1020,960,1016,0,120)}les équations disent à quelle\Nvitesse son énergie varie.
+Dialogue: 0,0:21:31.02,0:21:34.37,Sub,,0,0,0,,{\fad(120,100)\move(960,1020,960,1016,0,120)}Pour chaque photo, lâchez\Nune bille à cette valeur.
+Dialogue: 0,0:21:35.11,0:21:37.56,Sub,,0,0,0,,{\fad(120,100)\move(960,1020,960,1016,0,120)}Certaines photos gagnent de l'énergie,
+Dialogue: 0,0:21:37.64,0:21:41.03,Sub,,0,0,0,,{\fad(120,100)\move(960,1020,960,1016,0,120)}d'autres en perdent.\NLe tas s'étale largement.
+Dialogue: 0,0:21:41.41,0:21:43.79,Sub,,0,0,0,,{\fad(120,100)\move(960,1020,960,1016,0,120)}Pourtant, sa moyenne est à zéro.
+Dialogue: 0,0:21:44.24,0:21:47.51,Sub,,0,0,0,,{\fad(120,100)\move(960,1020,960,1016,0,120)}Autant d'énergie entre\Nqu'il en sort, en moyenne.
+Dialogue: 0,0:21:48.25,0:21:52.13,Sub,,0,0,0,,{\fad(120,100)\move(960,1020,960,1016,0,120)}Comme un compte en banque :\Nau fil des ans, revenus et dépenses
+Dialogue: 0,0:21:52.21,0:21:56.19,Sub,,0,0,0,,{\fad(120,100)\move(960,1020,960,1016,0,120)}s'équilibrent, mais chaque jour,\Nle solde monte ou baisse.
+Dialogue: 0,0:21:56.42,0:21:58.12,Sub,,0,0,0,,{\fad(120,100)\move(960,1020,960,1016,0,120)}C'est une {\c&H00A1ED&}loi de la foule{\c&HF7F4F2&}. Elle
+Dialogue: 0,0:21:58.20,0:22:01.69,Sub,,0,0,0,,{\fad(120,100)\move(960,1020,960,1016,0,120)}vaut pour la boîte à chaussures,\Npas pour chaque photo.
+Dialogue: 0,0:22:02.84,0:22:06.43,Sub,,0,0,0,,{\fad(120,100)\move(960,1020,960,1016,0,120)}Combien d'instantanés indépendants\Nfaut-il pour chaque réglage,
+Dialogue: 0,0:22:06.51,0:22:09.52,Sub,,0,0,0,,{\fad(120,100)\move(960,1020,960,1016,0,120)}et à quel intervalle\Nfaut-il les enregistrer ?
+Dialogue: 0,0:22:14.77,0:22:19.36,Sub,,0,0,0,,{\fad(120,100)\move(960,1020,960,1016,0,120)}Une énigme. Combien de voitures\Nfranchissent cette ligne chaque heure ?
+Dialogue: 0,0:22:19.88,0:22:22.53,Sub,,0,0,0,,{\fad(120,100)\move(960,1020,960,1016,0,120)}Pas d'horloge. Rien qu'une\Nphoto prise d'en haut,
+Dialogue: 0,0:22:22.61,0:22:25.44,Sub,,0,0,0,,{\fad(120,100)\move(960,1020,960,1016,0,120)}où l'on peut lire chaque\Ncompteur de vitesse.
+Dialogue: 0,0:22:26.18,0:22:28.89,Sub,,0,0,0,,{\fad(120,100)\move(960,1020,960,1016,0,120)}Une seule photo, sans\Naucune notion de temps,
+Dialogue: 0,0:22:28.97,0:22:31.60,Sub,,0,0,0,,{\fad(120,100)\move(960,1020,960,1016,0,120)}peut-elle vous donner une fréquence ?
+Dialogue: 0,0:22:34.84,0:22:38.26,Sub,,0,0,0,,{\fad(120,100)\move(960,1020,960,1016,0,120)}Oui. Tracez une fine\Nbande autour de la ligne.
+Dialogue: 0,0:22:38.64,0:22:41.68,Sub,,0,0,0,,{\fad(120,100)\move(960,1020,960,1016,0,120)}Une voiture rapide reste\Npeu de temps dans la bande :
+Dialogue: 0,0:22:41.76,0:22:44.45,Sub,,0,0,0,,{\fad(120,100)\move(960,1020,960,1016,0,120)}en surprendre une compte donc davantage.
+Dialogue: 0,0:22:45.19,0:22:49.65,Sub,,0,0,0,,{\fad(120,100)\move(960,1020,960,1016,0,120)}Additionnez les vitesses des voitures dans\Nla bande, puis divisez par sa largeur.
+Dialogue: 0,0:22:50.06,0:22:52.30,Sub,,0,0,0,,{\fad(120,100)\move(960,1020,960,1016,0,120)}En moyenne, cela donne\Nle nombre de voitures
+Dialogue: 0,0:22:52.38,0:22:54.60,Sub,,0,0,0,,{\fad(120,100)\move(960,1020,960,1016,0,120)}qui franchissent la ligne par heure.
+Dialogue: 0,0:22:55.64,0:23:00.74,Sub,,0,0,0,,{\fad(120,100)\move(960,1020,960,1016,0,120)}Retour à la boîte à chaussures. Étalez\Nses photos selon la valeur de leur {\c&H3468EB&}dipôle{\c&HF7F4F2&}.
+Dialogue: 0,0:23:01.17,0:23:05.71,Sub,,0,0,0,,{\fad(120,100)\move(960,1020,960,1016,0,120)}La ligne à franchir, c'est zéro :\Ntracez une fine bande autour.
+Dialogue: 0,0:23:06.45,0:23:09.52,Sub,,0,0,0,,{\fad(120,100)\move(960,1020,960,1016,0,120)}Chaque photo a aussi besoin\Nd'un compteur de vitesse.
+Dialogue: 0,0:23:09.92,0:23:12.82,Sub,,0,0,0,,{\fad(120,100)\move(960,1020,960,1016,0,120)}Pas besoin d'horloge :\Nl'équation du dipôle calcule
+Dialogue: 0,0:23:12.90,0:23:16.22,Sub,,0,0,0,,{\fad(120,100)\move(960,1020,960,1016,0,120)}une vitesse à partir des\Ntrois cadrans de la photo.
+Dialogue: 0,0:23:16.52,0:23:20.91,Sub,,0,0,0,,{\fad(120,100)\move(960,1020,960,1016,0,120)}Montée ou descente, les deux\Ncomptent : oubliez le signe.
+Dialogue: 0,0:23:21.65,0:23:23.63,Sub,,0,0,0,,{\fad(120,100)\move(960,1020,960,1016,0,120)}Additionnez les vitesses dans la bande,
+Dialogue: 0,0:23:23.71,0:23:27.28,Sub,,0,0,0,,{\fad(120,100)\move(960,1020,960,1016,0,120)}puis divisez par sa largeur et\Npar le nombre total de photos.
+Dialogue: 0,0:23:27.60,0:23:30.18,Sub,,0,0,0,,{\fad(120,100)\move(960,1020,960,1016,0,120)}On obtient la\N{\c&H00A1ED&}fréquence des passages par zéro{\c&HF7F4F2&}.
+Dialogue: 0,0:23:30.54,0:23:35.47,Sub,,0,0,0,,{\fad(120,100)\move(960,1020,960,1016,0,120)}Rendez la bande infiniment fine et,\Npour les systèmes qui se comportent bien,
+Dialogue: 0,0:23:35.55,0:23:39.08,Sub,,0,0,0,,{\fad(120,100)\move(960,1020,960,1016,0,120)}la recette est exacte :\Nc'est la formule de Rice.
+Dialogue: 0,0:23:39.31,0:23:43.07,Sub,,0,0,0,,{\fad(120,100)\move(960,1020,960,1016,0,120)}Le hic : peu de photos tombent\Ndans une bande fine. Ici,
+Dialogue: 0,0:23:43.15,0:23:46.09,Sub,,0,0,0,,{\fad(120,100)\move(960,1020,960,1016,0,120)}environ deux douzaines sur huit mille.
+Dialogue: 0,0:23:47.14,0:23:49.62,Sub,,0,0,0,,{\fad(120,100)\move(960,1020,960,1016,0,120)}Confrontez maintenant\Nla formule à la vérité.
+Dialogue: 0,0:23:50.08,0:23:53.01,Sub,,0,0,0,,{\fad(120,100)\move(960,1020,960,1016,0,120)}Pour quarante et un réglages de\N{\c&H7AAF1B&}Gamma{\c&HF7F4F2&}, de longues simulations
+Dialogue: 0,0:23:53.09,0:23:56.00,Sub,,0,0,0,,{\fad(120,100)\move(960,1020,960,1016,0,120)}comptent les passages à\Nmesure qu'ils se produisent.
+Dialogue: 0,0:23:56.45,0:23:59.14,Sub,,0,0,0,,{\fad(120,100)\move(960,1020,960,1016,0,120)}La formule de Rice, elle, n'a droit qu'aux
+Dialogue: 0,0:23:59.22,0:24:02.59,Sub,,0,0,0,,{\fad(120,100)\move(960,1020,960,1016,0,120)}vrais instantanés,\Nmélangés, et aux équations.
+Dialogue: 0,0:24:03.33,0:24:05.67,Sub,,0,0,0,,{\fad(120,100)\move(960,1020,960,1016,0,120)}Les deux courbes se superposent presque.
+Dialogue: 0,0:24:06.05,0:24:08.90,Sub,,0,0,0,,{\fad(120,100)\move(960,1020,960,1016,0,120)}Colorez l'écart, puis\Ndivisez son aire par l'aire
+Dialogue: 0,0:24:08.98,0:24:12.42,Sub,,0,0,0,,{\fad(120,100)\move(960,1020,960,1016,0,120)}sous la courbe du comptage :\Nc'est l'{\c&H00A1ED&}erreur cumulée{\c&HF7F4F2&}.
+Dialogue: 0,0:24:12.88,0:24:17.42,Sub,,0,0,0,,{\fad(120,100)\move(960,1020,960,1016,0,120)}Près du seuil, quatre pour cent ;\Nau-dessus, six pour cent.
+Dialogue: 0,0:24:17.71,0:24:20.31,Sub,,0,0,0,,{\fad(120,100)\move(960,1020,960,1016,0,120)}C'est bon signe, d'autant\Nque rien ne garantit que
+Dialogue: 0,0:24:20.39,0:24:23.30,Sub,,0,0,0,,{\fad(120,100)\move(960,1020,960,1016,0,120)}ces trois cadrans chaotiques\Nse comportent bien.
+Dialogue: 0,0:24:24.74,0:24:29.53,Sub,,0,0,0,,{\fad(120,100)\move(960,1020,960,1016,0,120)}Attention : la formule de Rice compte\Nles passages, pas les renversements.
+Dialogue: 0,0:24:30.08,0:24:32.90,Sub,,0,0,0,,{\fad(120,100)\move(960,1020,960,1016,0,120)}Une excursion qui\Nfranchit zéro puis revient
+Dialogue: 0,0:24:32.98,0:24:36.34,Sub,,0,0,0,,{\fad(120,100)\move(960,1020,960,1016,0,120)}ajoute deux passages,\Nmais aucun renversement.
+Dialogue: 0,0:24:36.88,0:24:40.21,Sub,,0,0,0,,{\fad(120,100)\move(960,1020,960,1016,0,120)}Pour isoler les renversements,\Nle projet de thèse compte les
+Dialogue: 0,0:24:40.29,0:24:43.80,Sub,,0,0,0,,{\fad(120,100)\move(960,1020,960,1016,0,120)}passages par un niveau éloigné,\Nde l'autre côté de zéro.
+Dialogue: 0,0:24:45.04,0:24:49.17,Sub,,0,0,0,,{\fad(120,100)\move(960,1020,960,1016,0,120)}La formule de Rice ne demande donc\Nque des instantanés et les équations,
+Dialogue: 0,0:24:49.25,0:24:52.16,Sub,,0,0,0,,{\fad(120,100)\move(960,1020,960,1016,0,120)}mais des instantanés\Nnombreux et bon marché.
+Dialogue: 0,0:24:52.66,0:24:54.82,Sub,,0,0,0,,{\fad(120,100)\move(960,1020,960,1016,0,120)}Pourtant, les simulations\Nde vraies dynamos
+Dialogue: 0,0:24:54.90,0:24:57.21,Sub,,0,0,0,,{\fad(120,100)\move(960,1020,960,1016,0,120)}n'existent que pour quelques {\c&H7AAF1B&}réglages{\c&HF7F4F2&}.
+Dialogue: 0,0:24:57.71,0:25:00.92,Sub,,0,0,0,,{\fad(120,100)\move(960,1020,960,1016,0,120)}Entre les points, pas la\Nmoindre boîte à chaussures.
+Dialogue: 0,0:25:01.08,0:25:05.17,Sub,,0,0,0,,{\fad(120,100)\move(960,1020,960,1016,0,120)}Comment obtenir des instantanés pour\Nun réglage que personne n'a simulé ?
+Dialogue: 0,0:25:06.70,0:25:10.38,Sub,,0,0,0,,{\fad(120,100)\move(960,1020,960,1016,0,120)}Pour VKS, quel dipôle la formule\Nde Rice doit-elle suivre,
+Dialogue: 0,0:25:10.46,0:25:14.55,Sub,,0,0,0,,{\fad(120,100)\move(960,1020,960,1016,0,120)}et quel seuil fait d'un passage\Npar zéro un renversement ?
+Dialogue: 0,0:25:19.80,0:25:23.80,Sub,,0,0,0,,{\fad(120,100)\move(960,1020,960,1016,0,120)}Au départ, les nouveaux instantanés\Nne sont que du bruit pur :
+Dialogue: 0,0:25:23.88,0:25:26.51,Sub,,0,0,0,,{\fad(120,100)\move(960,1020,960,1016,0,120)}un nuage rond de points aléatoires.
+Dialogue: 0,0:25:26.88,0:25:32.50,Sub,,0,0,0,,{\fad(120,100)\move(960,1020,960,1016,0,120)}Par-dessus, la foule que l'on veut\Nobtenir : un point par instantané. Ici,
+Dialogue: 0,0:25:32.58,0:25:36.61,Sub,,0,0,0,,{\fad(120,100)\move(960,1020,960,1016,0,120)}deux amas en miroir,\Ncomme les deux tourbillons.
+Dialogue: 0,0:25:37.35,0:25:40.48,Sub,,0,0,0,,{\fad(120,100)\move(960,1020,960,1016,0,120)}Faites maintenant souffler\Nun {\c&HF09CB4&}vent{\c&HF7F4F2&} à travers le nuage.
+Dialogue: 0,0:25:40.79,0:25:46.24,Sub,,0,0,0,,{\fad(120,100)\move(960,1020,960,1016,0,120)}Chaque point dérive, prend un virage, et\Nvient se poser dans la forme des données.
+Dialogue: 0,0:25:46.68,0:25:48.24,Sub,,0,0,0,,{\fad(120,100)\move(960,1020,960,1016,0,120)}Nouveau bruit à l'entrée,
+Dialogue: 0,0:25:48.32,0:25:52.37,Sub,,0,0,0,,{\fad(120,100)\move(960,1020,960,1016,0,120)}nouveaux instantanés à la sortie,\Nautant que vous voulez.
+Dialogue: 0,0:25:53.11,0:25:55.29,Sub,,0,0,0,,{\fad(120,100)\move(960,1020,960,1016,0,120)}Ce vent, c'est un {\c&HF09CB4&}modèle génératif{\c&HF7F4F2&} :
+Dialogue: 0,0:25:55.37,0:25:58.84,Sub,,0,0,0,,{\fad(120,100)\move(960,1020,960,1016,0,120)}des exemples nouveaux et\Nplausibles, à la demande.
+Dialogue: 0,0:25:59.39,0:26:01.83,Sub,,0,0,0,,{\fad(120,100)\move(960,1020,960,1016,0,120)}Tout l'enjeu, c'est d'apprendre ce vent.
+Dialogue: 0,0:26:02.87,0:26:05.28,Sub,,0,0,0,,{\fad(120,100)\move(960,1020,960,1016,0,120)}Une mise en garde, avant les formules.
+Dialogue: 0,0:26:05.79,0:26:10.02,Sub,,0,0,0,,{\fad(120,100)\move(960,1020,960,1016,0,120)}Le vent suit sa propre\N{\c&HF09CB4&}horloge de transport{\c&HF7F4F2&}, de zéro à un.
+Dialogue: 0,0:26:10.35,0:26:15.99,Sub,,0,0,0,,{\fad(120,100)\move(960,1020,960,1016,0,120)}Ce n'est pas le temps physique : à la fin,\Nvous obtenez un instantané, pas un film.
+Dialogue: 0,0:26:16.73,0:26:19.56,Sub,,0,0,0,,{\fad(120,100)\move(960,1020,960,1016,0,120)}Et les {\c&HF09CB4&}flèches du vent{\c&HF7F4F2&}\Ndéplacent des instantanés,
+Dialogue: 0,0:26:19.64,0:26:23.70,Sub,,0,0,0,,{\fad(120,100)\move(960,1020,960,1016,0,120)}pas du fluide : elles ne représentent\Npas la {\c&HE58739&}vitesse du fluide{\c&HF7F4F2&}.
+Dialogue: 0,0:26:24.74,0:26:28.72,Sub,,0,0,0,,{\fad(120,100)\move(960,1020,960,1016,0,120)}Comment apprend-on ce vent ?\NGrâce à une astuce toute simple.
+Dialogue: 0,0:26:29.05,0:26:31.42,Sub,,0,0,0,,{\fad(120,100)\move(960,1020,960,1016,0,120)}Gardez une seule\Ncoordonnée de chaque point,
+Dialogue: 0,0:26:31.50,0:26:34.63,Sub,,0,0,0,,{\fad(120,100)\move(960,1020,960,1016,0,120)}et déroulez l'horloge de\Ntransport vers la droite.
+Dialogue: 0,0:26:35.25,0:26:39.06,Sub,,0,0,0,,{\fad(120,100)\move(960,1020,960,1016,0,120)}Associez chaque point de bruit\Nà un instantané pris au hasard,
+Dialogue: 0,0:26:39.14,0:26:41.80,Sub,,0,0,0,,{\fad(120,100)\move(960,1020,960,1016,0,120)}et reliez-les par une ficelle tendue.
+Dialogue: 0,0:26:42.06,0:26:45.37,Sub,,0,0,0,,{\fad(120,100)\move(960,1020,960,1016,0,120)}Des milliers de ficelles,\Nqui se croisent partout.
+Dialogue: 0,0:26:46.11,0:26:49.02,Sub,,0,0,0,,{\fad(120,100)\move(960,1020,960,1016,0,120)}Choisissez un endroit, à un moment précis.
+Dialogue: 0,0:26:49.46,0:26:53.05,Sub,,0,0,0,,{\fad(120,100)\move(960,1020,960,1016,0,120)}Plusieurs ficelles y passent,\Ndans des directions différentes.
+Dialogue: 0,0:26:53.59,0:26:58.13,Sub,,0,0,0,,{\fad(120,100)\move(960,1020,960,1016,0,120)}Le réseau y apprend une seule\Nflèche : leur {\c&HF09CB4&}direction moyenne{\c&HF7F4F2&}.
+Dialogue: 0,0:26:58.69,0:27:02.24,Sub,,0,0,0,,{\fad(120,100)\move(960,1020,960,1016,0,120)}L'entraînement se résume à\Ncela : une simple régression,
+Dialogue: 0,0:27:02.32,0:27:05.64,Sub,,0,0,0,,{\fad(120,100)\move(960,1020,960,1016,0,120)}comme quand on ajuste\Nune courbe à des points.
+Dialogue: 0,0:27:06.38,0:27:08.98,Sub,,0,0,0,,{\fad(120,100)\move(960,1020,960,1016,0,120)}Suivez le vent moyen, pas les ficelles.
+Dialogue: 0,0:27:09.35,0:27:11.11,Sub,,0,0,0,,{\fad(120,100)\move(960,1020,960,1016,0,120)}Les trajectoires se courbent et,
+Dialogue: 0,0:27:11.19,0:27:15.10,Sub,,0,0,0,,{\fad(120,100)\move(960,1020,960,1016,0,120)}tracées en fonction de l'horloge,\Nelles ne se croisent jamais.
+Dialogue: 0,0:27:15.76,0:27:18.60,Sub,,0,0,0,,{\fad(120,100)\move(960,1020,960,1016,0,120)}Apprenez exactement la\Nmoyenne, et le bruit vient
+Dialogue: 0,0:27:18.68,0:27:21.69,Sub,,0,0,0,,{\fad(120,100)\move(960,1020,960,1016,0,120)}se poser exactement sur\Nla foule des données.
+Dialogue: 0,0:27:22.74,0:27:24.79,Sub,,0,0,0,,{\fad(120,100)\move(960,1020,960,1016,0,120)}Donnez maintenant un {\c&H7AAF1B&}bouton{\c&HF7F4F2&} au vent.
+Dialogue: 0,0:27:25.15,0:27:29.30,Sub,,0,0,0,,{\fad(120,100)\move(960,1020,960,1016,0,120)}Tournez-le : la cible change\Nde forme, et le {\c&HF09CB4&}nuage{\c&HF7F4F2&} suit.
+Dialogue: 0,0:27:29.62,0:27:32.38,Sub,,0,0,0,,{\fad(120,100)\move(960,1020,960,1016,0,120)}Un seul réseau, pour tous les réglages.
+Dialogue: 0,0:27:33.12,0:27:37.27,Sub,,0,0,0,,{\fad(120,100)\move(960,1020,960,1016,0,120)}Sur les trois cadrans, un vrai réseau\Na été entraîné aux points pleins.
+Dialogue: 0,0:27:37.50,0:27:41.16,Sub,,0,0,0,,{\fad(120,100)\move(960,1020,960,1016,0,120)}Il a été testé aux points vides,\Njamais vus à l'entraînement.
+Dialogue: 0,0:27:41.50,0:27:44.92,Sub,,0,0,0,,{\fad(120,100)\move(960,1020,960,1016,0,120)}Entre les points, aucun\Nthéorème ne promet la réussite :
+Dialogue: 0,0:27:45.00,0:27:47.40,Sub,,0,0,0,,{\fad(120,100)\move(960,1020,960,1016,0,120)}seuls les tests peuvent trancher.
+Dialogue: 0,0:27:47.84,0:27:50.97,Sub,,0,0,0,,{\fad(120,100)\move(960,1020,960,1016,0,120)}Au-delà de cette plage,\Nrien n'a été testé.
+Dialogue: 0,0:27:51.71,0:27:54.93,Sub,,0,0,0,,{\fad(120,100)\move(960,1020,960,1016,0,120)}En un point vide,\Nles {\c&HF09CB4&}instantanés{\c&HF7F4F2&} du réseau rejoignent
+Dialogue: 0,0:27:55.01,0:27:58.53,Sub,,0,0,0,,{\fad(120,100)\move(960,1020,960,1016,0,120)}la boîte à chaussures,\Nà côté d'instantanés simulés.
+Dialogue: 0,0:27:59.57,0:28:04.12,Sub,,0,0,0,,{\fad(120,100)\move(960,1020,960,1016,0,120)}Un instantané généré n'a pas de vrai\Njumeau : on compare donc des foules.
+Dialogue: 0,0:28:04.49,0:28:07.16,Sub,,0,0,0,,{\fad(120,100)\move(960,1020,960,1016,0,120)}Imaginez chaque foule\Ncomme un tas de sable.
+Dialogue: 0,0:28:07.50,0:28:12.16,Sub,,0,0,0,,{\fad(120,100)\move(960,1020,960,1016,0,120)}Une {\c&H00A1ED&}distance entre distributions{\c&HF7F4F2&} mesure\Nà quel point les deux tas diffèrent.
+Dialogue: 0,0:28:12.46,0:28:15.28,Sub,,0,0,0,,{\fad(120,100)\move(960,1020,960,1016,0,120)}Par exemple, la distance\Ndu terrassier compte
+Dialogue: 0,0:28:15.36,0:28:18.72,Sub,,0,0,0,,{\fad(120,100)\move(960,1020,960,1016,0,120)}combien de sable il faut\Ndéplacer, et jusqu'où.
+Dialogue: 0,0:28:19.46,0:28:23.93,Sub,,0,0,0,,{\fad(120,100)\move(960,1020,960,1016,0,120)}Un modèle parfait, comparé aux\Ndonnées : obtiendra-t-il zéro ?
+Dialogue: 0,0:28:27.17,0:28:32.57,Sub,,0,0,0,,{\fad(120,100)\move(960,1020,960,1016,0,120)}Non. Lancez un dé équilibré mille\Nfois, puis encore mille fois.
+Dialogue: 0,0:28:33.02,0:28:37.87,Sub,,0,0,0,,{\fad(120,100)\move(960,1020,960,1016,0,120)}Même dé, même vérité, et pourtant\Nles deux histogrammes diffèrent.
+Dialogue: 0,0:28:38.30,0:28:43.53,Sub,,0,0,0,,{\fad(120,100)\move(960,1020,960,1016,0,120)}Cet écart, c'est le {\c&H00A1ED&}plancher de bruit{\c&HF7F4F2&} :\Nà peu près le score d'un modèle parfait.
+Dialogue: 0,0:28:43.74,0:28:46.32,Sub,,0,0,0,,{\fad(120,100)\move(960,1020,960,1016,0,120)}Jugez chaque modèle face à ce plancher,
+Dialogue: 0,0:28:46.40,0:28:50.07,Sub,,0,0,0,,{\fad(120,100)\move(960,1020,960,1016,0,120)}à taille d'échantillon égale,\Njamais face à zéro.
+Dialogue: 0,0:28:50.81,0:28:54.54,Sub,,0,0,0,,{\fad(120,100)\move(960,1020,960,1016,0,120)}Un hic, toutefois : les échantillons\Ndoivent être indépendants.
+Dialogue: 0,0:28:54.87,0:28:59.62,Sub,,0,0,0,,{\fad(120,100)\move(960,1020,960,1016,0,120)}S'ils se recouvrent, le plancher tombe\Ntrop bas, comme le signale le rapport.
+Dialogue: 0,0:29:00.77,0:29:03.90,Sub,,0,0,0,,{\fad(120,100)\move(960,1020,960,1016,0,120)}Quelles statistiques les champs\Ngénérés doivent-ils reproduire,
+Dialogue: 0,0:29:03.98,0:29:07.57,Sub,,0,0,0,,{\fad(120,100)\move(960,1020,960,1016,0,120)}et à quelle distance du plancher\Nde bruit parle-t-on de succès ?
+Dialogue: 0,0:29:12.60,0:29:15.52,Sub,,0,0,0,,{\fad(120,100)\move(960,1020,960,1016,0,120)}La physique fournit à la\Nmachine deux sortes de lois.
+Dialogue: 0,0:29:15.78,0:29:19.22,Sub,,0,0,0,,{\fad(120,100)\move(960,1020,960,1016,0,120)}Certaines valent pour chaque\Ninstantané, sans exception.
+Dialogue: 0,0:29:19.58,0:29:21.75,Sub,,0,0,0,,{\fad(120,100)\move(960,1020,960,1016,0,120)}D'autres ne valent que pour la foule.
+Dialogue: 0,0:29:22.16,0:29:24.47,Sub,,0,0,0,,{\fad(120,100)\move(960,1020,960,1016,0,120)}Deux étagères, encore vides.
+Dialogue: 0,0:29:25.21,0:29:29.10,Sub,,0,0,0,,{\fad(120,100)\move(960,1020,960,1016,0,120)}Retour aux trois cadrans, à un\N{\c&H7AAF1B&}Gamma{\c&HF7F4F2&} jamais vu à l'entraînement.
+Dialogue: 0,0:29:29.42,0:29:31.73,Sub,,0,0,0,,{\fad(120,100)\move(960,1020,960,1016,0,120)}En gris, de vrais instantanés.
+Dialogue: 0,0:29:32.00,0:29:34.54,Sub,,0,0,0,,{\fad(120,100)\move(960,1020,960,1016,0,120)}En violet, un {\c&HF09CB4&}générateur{\c&HF7F4F2&} de base.
+Dialogue: 0,0:29:34.77,0:29:36.44,Sub,,0,0,0,,{\fad(120,100)\move(960,1020,960,1016,0,120)}La forme est la bonne.
+Dialogue: 0,0:29:37.18,0:29:38.91,Sub,,0,0,0,,{\fad(120,100)\move(960,1020,960,1016,0,120)}Pesez maintenant les deux côtés.
+Dialogue: 0,0:29:39.46,0:29:43.16,Sub,,0,0,0,,{\fad(120,100)\move(960,1020,960,1016,0,120)}La vérité est équilibrée ;\Nla machine, non.
+Dialogue: 0,0:29:43.58,0:29:48.28,Sub,,0,0,0,,{\fad(120,100)\move(960,1020,960,1016,0,120)}Seuls quatre de ses instantanés sur\Ndix, environ, pointent vers le haut.
+Dialogue: 0,0:29:48.53,0:29:53.08,Sub,,0,0,0,,{\fad(120,100)\move(960,1020,960,1016,0,120)}Elle a recopié ses données : sous le\Nseuil, chaque simulation reste dans un
+Dialogue: 0,0:29:53.16,0:29:58.06,Sub,,0,0,0,,{\fad(120,100)\move(960,1020,960,1016,0,120)}seul tourbillon, et les simulations\Nne se répartissent pas à parts égales.
+Dialogue: 0,0:29:59.10,0:30:01.32,Sub,,0,0,0,,{\fad(120,100)\move(960,1020,960,1016,0,120)}Deux façons d'enseigner le miroir.
+Dialogue: 0,0:30:01.56,0:30:04.08,Sub,,0,0,0,,{\fad(120,100)\move(960,1020,960,1016,0,120)}Le premier élève,\Nl'augmentation de données,
+Dialogue: 0,0:30:04.16,0:30:08.26,Sub,,0,0,0,,{\fad(120,100)\move(960,1020,960,1016,0,120)}voit chaque instantané d'entraînement\Ninversé une fois sur deux.
+Dialogue: 0,0:30:08.66,0:30:12.38,Sub,,0,0,0,,{\fad(120,100)\move(960,1020,960,1016,0,120)}Le second, l'équivariance,\Na le miroir intégré à son vent :
+Dialogue: 0,0:30:12.46,0:30:17.93,Sub,,0,0,0,,{\fad(120,100)\move(960,1020,960,1016,0,120)}le reflet d'un point de bruit atterrit\Ntoujours sur le reflet de son instantané.
+Dialogue: 0,0:30:18.67,0:30:22.81,Sub,,0,0,0,,{\fad(120,100)\move(960,1020,960,1016,0,120)}À un {\c&H7AAF1B&}Gamma{\c&HF7F4F2&} qu'aucun des deux\Nn'a vu, lequel reste équilibré ?
+Dialogue: 0,0:30:26.55,0:30:28.08,Sub,,0,0,0,,{\fad(120,100)\move(960,1020,960,1016,0,120)}Le miroir intégré.
+Dialogue: 0,0:30:28.76,0:30:30.72,Sub,,0,0,0,,{\fad(120,100)\move(960,1020,960,1016,0,120)}Le premier élève penche un peu.
+Dialogue: 0,0:30:31.15,0:30:36.78,Sub,,0,0,0,,{\fad(120,100)\move(960,1020,960,1016,0,120)}Pourtant, dans la foule du miroir, chaque\Ninstantané pointe encore d'un seul côté.
+Dialogue: 0,0:30:37.32,0:30:41.11,Sub,,0,0,0,,{\fad(120,100)\move(960,1020,960,1016,0,120)}Le miroir équilibre la foule,\Npas chaque instantané.
+Dialogue: 0,0:30:41.35,0:30:46.00,Sub,,0,0,0,,{\fad(120,100)\move(960,1020,960,1016,0,120)}Sa carte va sur l'étagère de\Nla foule : intégré, et exact.
+Dialogue: 0,0:30:47.04,0:30:50.77,Sub,,0,0,0,,{\fad(120,100)\move(960,1020,960,1016,0,120)}Voici ce déséquilibre,\Nréglage par réglage.
+Dialogue: 0,0:30:51.20,0:30:55.53,Sub,,0,0,0,,{\fad(120,100)\move(960,1020,960,1016,0,120)}Sous le seuil, les simulations se\Nrépartissent souvent inégalement :
+Dialogue: 0,0:30:55.61,0:31:00.42,Sub,,0,0,0,,{\fad(120,100)\move(960,1020,960,1016,0,120)}à zéro virgule huit six, seules cinq\Nsur seize pointent vers le haut.
+Dialogue: 0,0:31:00.90,0:31:03.45,Sub,,0,0,0,,{\fad(120,100)\move(960,1020,960,1016,0,120)}La {\c&HF09CB4&}machine{\c&HF7F4F2&} de base\Nrecopie ce déséquilibre,
+Dialogue: 0,0:31:03.53,0:31:06.80,Sub,,0,0,0,,{\fad(120,100)\move(960,1020,960,1016,0,120)}et le fait déborder sur\Ndes réglages jamais vus.
+Dialogue: 0,0:31:07.54,0:31:11.11,Sub,,0,0,0,,{\fad(120,100)\move(960,1020,960,1016,0,120)}L'augmentation reste au {\c&H00A1ED&}plancher de bruit{\c&HF7F4F2&}\Nà ses réglages d'entraînement.
+Dialogue: 0,0:31:11.56,0:31:16.42,Sub,,0,0,0,,{\fad(120,100)\move(960,1020,960,1016,0,120)}Entre ces réglages, elle dérive :\Nle réseau comble les vides à sa guise.
+Dialogue: 0,0:31:16.99,0:31:20.57,Sub,,0,0,0,,{\fad(120,100)\move(960,1020,960,1016,0,120)}Le miroir intégré, lui,\Nreste partout au plancher.
+Dialogue: 0,0:31:21.04,0:31:24.83,Sub,,0,0,0,,{\fad(120,100)\move(960,1020,960,1016,0,120)}Les copies inversées n'enseignent le\Nmiroir que là où il y a des données.
+Dialogue: 0,0:31:25.87,0:31:28.94,Sub,,0,0,0,,{\fad(120,100)\move(960,1020,960,1016,0,120)}Le bilan d'énergie peut-il\Ndétecter ce déséquilibre ?
+Dialogue: 0,0:31:29.45,0:31:34.09,Sub,,0,0,0,,{\fad(120,100)\move(960,1020,960,1016,0,120)}Non. Chaque tourbillon,\Nà lui seul, équilibre son bilan.
+Dialogue: 0,0:31:34.63,0:31:38.55,Sub,,0,0,0,,{\fad(120,100)\move(960,1020,960,1016,0,120)}Un mélange des deux passe donc,\Ndans n'importe quelle proportion.
+Dialogue: 0,0:31:39.08,0:31:41.09,Sub,,0,0,0,,{\fad(120,100)\move(960,1020,960,1016,0,120)}Sur un contrôle de lois de la foule,
+Dialogue: 0,0:31:41.17,0:31:45.45,Sub,,0,0,0,,{\fad(120,100)\move(960,1020,960,1016,0,120)}la machine la plus déséquilibrée\Ndevance même légèrement les autres.
+Dialogue: 0,0:31:45.63,0:31:48.15,Sub,,0,0,0,,{\fad(120,100)\move(960,1020,960,1016,0,120)}Le miroir demande un outil à part.
+Dialogue: 0,0:31:49.20,0:31:51.88,Sub,,0,0,0,,{\fad(120,100)\move(960,1020,960,1016,0,120)}Souvenez-vous du bilan\Nde la boîte à chaussures.
+Dialogue: 0,0:31:52.21,0:31:56.25,Sub,,0,0,0,,{\fad(120,100)\move(960,1020,960,1016,0,120)}Instantané par instantané,\Nl'énergie monte ou baisse.
+Dialogue: 0,0:31:56.57,0:32:01.63,Sub,,0,0,0,,{\fad(120,100)\move(960,1020,960,1016,0,120)}Seule la foule s'équilibre, en moyenne,\Ncomme un compte en banque sur des années.
+Dialogue: 0,0:32:02.37,0:32:05.56,Sub,,0,0,0,,{\fad(120,100)\move(960,1020,960,1016,0,120)}Maintenant, une solution\Ntentante pour la machine.
+Dialogue: 0,0:32:05.78,0:32:09.24,Sub,,0,0,0,,{\fad(120,100)\move(960,1020,960,1016,0,120)}Forcez chaque instantané\Ngénéré à équilibrer
+Dialogue: 0,0:32:09.32,0:32:12.70,Sub,,0,0,0,,{\fad(120,100)\move(960,1020,960,1016,0,120)}exactement son bilan. Mieux, ou pire ?
+Dialogue: 0,0:32:16.44,0:32:17.37,Sub,,0,0,0,,{\fad(120,100)\move(960,1020,960,1016,0,120)}Pire.
+Dialogue: 0,0:32:17.45,0:32:22.13,Sub,,0,0,0,,{\fad(120,100)\move(960,1020,960,1016,0,120)}Poussez chaque instantané jusqu'à\Nce que son énergie cesse de varier :
+Dialogue: 0,0:32:22.21,0:32:25.67,Sub,,0,0,0,,{\fad(120,100)\move(960,1020,960,1016,0,120)}le tas, si large,\Ns'effondre en un pic à zéro.
+Dialogue: 0,0:32:25.96,0:32:30.42,Sub,,0,0,0,,{\fad(120,100)\move(960,1020,960,1016,0,120)}Un livre de comptes où chaque jour,\Nsans exception, est à l'équilibre.
+Dialogue: 0,0:32:30.70,0:32:33.18,Sub,,0,0,0,,{\fad(120,100)\move(960,1020,960,1016,0,120)}Aucun vrai compte ne ressemble à ça.
+Dialogue: 0,0:32:33.92,0:32:37.52,Sub,,0,0,0,,{\fad(120,100)\move(960,1020,960,1016,0,120)}La {\c&H00A1ED&}distance à la vraie distribution{\c&HF7F4F2&}\Nest multipliée par neuf.
+Dialogue: 0,0:32:37.84,0:32:42.04,Sub,,0,0,0,,{\fad(120,100)\move(960,1020,960,1016,0,120)}Une courte démonstration explique\Npourquoi : même un générateur parfait,
+Dialogue: 0,0:32:42.12,0:32:45.95,Sub,,0,0,0,,{\fad(120,100)\move(960,1020,960,1016,0,120)}contraint de cette façon,\Nne peut pas reproduire la vérité.
+Dialogue: 0,0:32:46.36,0:32:48.88,Sub,,0,0,0,,{\fad(120,100)\move(960,1020,960,1016,0,120)}Le bilan va donc sur\Nl'étagère de la foule.
+Dialogue: 0,0:32:48.96,0:32:53.93,Sub,,0,0,0,,{\fad(120,100)\move(960,1020,960,1016,0,120)}Sur le banc d'essai suivant, un score plus\Ngrossier se laisse tromper par un tel pic.
+Dialogue: 0,0:32:54.97,0:32:58.12,Sub,,0,0,0,,{\fad(120,100)\move(960,1020,960,1016,0,120)}Imposez le bilan à la foule,\Npendant l'entraînement.
+Dialogue: 0,0:32:58.48,0:33:02.90,Sub,,0,0,0,,{\fad(120,100)\move(960,1020,960,1016,0,120)}Tirez un lot d'instantanés à n'importe\Nquel {\c&H7AAF1B&}Gamma{\c&HF7F4F2&}, même sans données.
+Dialogue: 0,0:33:03.32,0:33:08.13,Sub,,0,0,0,,{\fad(120,100)\move(960,1020,960,1016,0,120)}Prenez la moyenne de leurs variations\Nd'énergie, puis élevez-la au carré :
+Dialogue: 0,0:33:08.21,0:33:13.57,Sub,,0,0,0,,{\fad(120,100)\move(960,1020,960,1016,0,120)}cette pénalité, la perte en loi, ne\Ns'annule que si la foule est équilibrée.
+Dialogue: 0,0:33:14.31,0:33:15.70,Sub,,0,0,0,,{\fad(120,100)\move(960,1020,960,1016,0,120)}Mais il y a un piège.
+Dialogue: 0,0:33:16.01,0:33:19.70,Sub,,0,0,0,,{\fad(120,100)\move(960,1020,960,1016,0,120)}Même pour une foule équilibrée,\Nla moyenne d'un lot fluctue ;
+Dialogue: 0,0:33:19.78,0:33:22.40,Sub,,0,0,0,,{\fad(120,100)\move(960,1020,960,1016,0,120)}son carré grandit avec la dispersion.
+Dialogue: 0,0:33:22.78,0:33:25.76,Sub,,0,0,0,,{\fad(120,100)\move(960,1020,960,1016,0,120)}L'entraînement resserre\Ndonc aussi la dispersion,
+Dialogue: 0,0:33:25.84,0:33:30.42,Sub,,0,0,0,,{\fad(120,100)\move(960,1020,960,1016,0,120)}et pousse doucement chaque instantané\Nvers l'équilibre : vers le pic.
+Dialogue: 0,0:33:30.50,0:33:34.12,Sub,,0,0,0,,{\fad(120,100)\move(960,1020,960,1016,0,120)}Le piège est apparu pendant la\Nmise au point de cette expérience.
+Dialogue: 0,0:33:34.86,0:33:37.98,Sub,,0,0,0,,{\fad(120,100)\move(960,1020,960,1016,0,120)}La parade : coupez le lot\Nen deux jurys indépendants,
+Dialogue: 0,0:33:38.06,0:33:40.14,Sub,,0,0,0,,{\fad(120,100)\move(960,1020,960,1016,0,120)}et multipliez leurs moyennes.
+Dialogue: 0,0:33:40.61,0:33:43.43,Sub,,0,0,0,,{\fad(120,100)\move(960,1020,960,1016,0,120)}En moyenne, la dispersion\Ndisparaît du calcul ;
+Dialogue: 0,0:33:43.51,0:33:46.55,Sub,,0,0,0,,{\fad(120,100)\move(960,1020,960,1016,0,120)}il ne reste que le\Ndéséquilibre de la foule.
+Dialogue: 0,0:33:47.08,0:33:50.32,Sub,,0,0,0,,{\fad(120,100)\move(960,1020,960,1016,0,120)}Est-ce payant ? Les\Nprochains tests le diront.
+Dialogue: 0,0:33:51.67,0:33:54.59,Sub,,0,0,0,,{\fad(120,100)\move(960,1020,960,1016,0,120)}En trois dimensions, quels\Nbilans les champs générés
+Dialogue: 0,0:33:54.67,0:33:56.49,Sub,,0,0,0,,{\fad(120,100)\move(960,1020,960,1016,0,120)}doivent-ils respecter en moyenne,
+Dialogue: 0,0:33:56.57,0:34:00.54,Sub,,0,0,0,,{\fad(120,100)\move(960,1020,960,1016,0,120)}et leur dispersion doit-elle\Naussi être celle des simulations ?
+Dialogue: 0,0:34:05.77,0:34:10.64,Sub,,0,0,0,,{\fad(120,100)\move(960,1020,960,1016,0,120)}Nouveau banc d'essai : des champs\Nentiers, et non plus trois cadrans.
+Dialogue: 0,0:34:11.16,0:34:13.46,Sub,,0,0,0,,{\fad(120,100)\move(960,1020,960,1016,0,120)}Une nappe plane de fluide conducteur :
+Dialogue: 0,0:34:13.54,0:34:16.76,Sub,,0,0,0,,{\fad(120,100)\move(960,1020,960,1016,0,120)}un carré dont les bords\Nopposés se rejoignent.
+Dialogue: 0,0:34:17.24,0:34:21.07,Sub,,0,0,0,,{\fad(120,100)\move(960,1020,960,1016,0,120)}En bleu, la rotation locale de\Nl'{\c&HE58739&}écoulement{\c&HF7F4F2&} ; en vermillon,
+Dialogue: 0,0:34:21.15,0:34:24.46,Sub,,0,0,0,,{\fad(120,100)\move(960,1020,960,1016,0,120)}les courants électriques\Nqui créent le {\c&H3468EB&}champ{\c&HF7F4F2&}.
+Dialogue: 0,0:34:25.20,0:34:29.94,Sub,,0,0,0,,{\fad(120,100)\move(960,1020,960,1016,0,120)}Un seul bouton, {\c&H7AAF1B&}êta{\c&HF7F4F2&} : la vitesse\Nà laquelle le champ s'estompe.
+Dialogue: 0,0:34:30.41,0:34:33.57,Sub,,0,0,0,,{\fad(120,100)\move(960,1020,960,1016,0,120)}Mais un monde plat ne peut\Npas entretenir d'effet dynamo.
+Dialogue: 0,0:34:34.12,0:34:37.81,Sub,,0,0,0,,{\fad(120,100)\move(960,1020,960,1016,0,120)}Ici, un forçage aléatoire\Nmaintient le champ en vie :
+Dialogue: 0,0:34:37.89,0:34:42.20,Sub,,0,0,0,,{\fad(120,100)\move(960,1020,960,1016,0,120)}un terrain d'entraînement\Npour les lois, pas une dynamo.
+Dialogue: 0,0:34:43.24,0:34:48.25,Sub,,0,0,0,,{\fad(120,100)\move(960,1020,960,1016,0,120)}Chaque champ d'entraînement passe le test\Nde la boîte : sa divergence est nulle.
+Dialogue: 0,0:34:48.74,0:34:51.30,Sub,,0,0,0,,{\fad(120,100)\move(960,1020,960,1016,0,120)}Entraînez un {\c&HF09CB4&}générateur{\c&HF7F4F2&}\Nde base sur ces champs.
+Dialogue: 0,0:34:52.04,0:34:54.52,Sub,,0,0,0,,{\fad(120,100)\move(960,1020,960,1016,0,120)}Ses champs seront-ils à divergence nulle ?
+Dialogue: 0,0:34:58.26,0:34:59.05,Sub,,0,0,0,,{\fad(120,100)\move(960,1020,960,1016,0,120)}Non.
+Dialogue: 0,0:34:59.13,0:35:03.54,Sub,,0,0,0,,{\fad(120,100)\move(960,1020,960,1016,0,120)}Cette fois, des lignes apparaissent et\Ndisparaissent à l'intérieur de la boîte.
+Dialogue: 0,0:35:04.15,0:35:06.97,Sub,,0,0,0,,{\fad(120,100)\move(960,1020,960,1016,0,120)}Rapportée aux variations\Ndu champ lui-même,
+Dialogue: 0,0:35:07.05,0:35:11.76,Sub,,0,0,0,,{\fad(120,100)\move(960,1020,960,1016,0,120)}la divergence vaut zéro virgule\Nquatre un : un défaut d'ordre un.
+Dialogue: 0,0:35:12.50,0:35:15.92,Sub,,0,0,0,,{\fad(120,100)\move(960,1020,960,1016,0,120)}Une pénalité douce ne la ramène\Nqu'à zéro virgule trois quatre
+Dialogue: 0,0:35:16.00,0:35:19.61,Sub,,0,0,0,,{\fad(120,100)\move(960,1020,960,1016,0,120)}pour l'{\c&HE58739&}écoulement{\c&HF7F4F2&}, et à zéro\Nvirgule un six pour le champ.
+Dialogue: 0,0:35:19.98,0:35:23.75,Sub,,0,0,0,,{\fad(120,100)\move(960,1020,960,1016,0,120)}Et l'énergie magnétique est deux\Nvirgule sept fois trop élevée.
+Dialogue: 0,0:35:24.22,0:35:28.16,Sub,,0,0,0,,{\fad(120,100)\move(960,1020,960,1016,0,120)}Cette loi va sur l'étagère des\Nlois vraies pour chaque instantané.
+Dialogue: 0,0:35:29.20,0:35:32.95,Sub,,0,0,0,,{\fad(120,100)\move(960,1020,960,1016,0,120)}Premier remède : dessinez une carte\Nde relief plutôt que des flèches,
+Dialogue: 0,0:35:33.03,0:35:36.30,Sub,,0,0,0,,{\fad(120,100)\move(960,1020,960,1016,0,120)}et laissez l'{\c&HE58739&}écoulement{\c&HF7F4F2&}\Nsuivre ses courbes de niveau.
+Dialogue: 0,0:35:36.74,0:35:40.51,Sub,,0,0,0,,{\fad(120,100)\move(960,1020,960,1016,0,120)}Là où les courbes se resserrent,\Nil va plus vite : ainsi,
+Dialogue: 0,0:35:40.59,0:35:44.62,Sub,,0,0,0,,{\fad(120,100)\move(960,1020,960,1016,0,120)}rien ne s'accumule ni ne fuit,\Nquel que soit le relief.
+Dialogue: 0,0:35:44.89,0:35:48.77,Sub,,0,0,0,,{\fad(120,100)\move(960,1020,960,1016,0,120)}La boîte le confirme : il entre\Nautant de lignes qu'il en sort.
+Dialogue: 0,0:35:49.51,0:35:52.29,Sub,,0,0,0,,{\fad(120,100)\move(960,1020,960,1016,0,120)}La {\c&HF09CB4&}machine{\c&HF7F4F2&} dessine donc\Ndeux cartes de relief,
+Dialogue: 0,0:35:52.37,0:35:54.90,Sub,,0,0,0,,{\fad(120,100)\move(960,1020,960,1016,0,120)}une pour l'{\c&HE58739&}écoulement{\c&HF7F4F2&}, une pour le champ :
+Dialogue: 0,0:35:54.98,0:35:59.34,Sub,,0,0,0,,{\fad(120,100)\move(960,1020,960,1016,0,120)}divergence nulle par construction,\Naussi mal entraînée soit-elle.
+Dialogue: 0,0:36:00.08,0:36:02.92,Sub,,0,0,0,,{\fad(120,100)\move(960,1020,960,1016,0,120)}Second remède, valable pour tout champ :
+Dialogue: 0,0:36:03.00,0:36:07.71,Sub,,0,0,0,,{\fad(120,100)\move(960,1020,960,1016,0,120)}décomposez-le en tourbillon\Nplus pente, et effacez la pente.
+Dialogue: 0,0:36:08.14,0:36:13.26,Sub,,0,0,0,,{\fad(120,100)\move(960,1020,960,1016,0,120)}Onde par onde, retirez de chaque flèche\Nsa composante dans la direction de l'onde.
+Dialogue: 0,0:36:14.00,0:36:16.94,Sub,,0,0,0,,{\fad(120,100)\move(960,1020,960,1016,0,120)}Les jauges tombent au niveau\Nde l'erreur d'arrondi,
+Dialogue: 0,0:36:17.02,0:36:19.54,Sub,,0,0,0,,{\fad(120,100)\move(960,1020,960,1016,0,120)}jusqu'à dix puissance moins dix-sept.
+Dialogue: 0,0:36:20.20,0:36:23.19,Sub,,0,0,0,,{\fad(120,100)\move(960,1020,960,1016,0,120)}Une réserve, toutefois :\Nla divergence est mesurée
+Dialogue: 0,0:36:23.27,0:36:26.24,Sub,,0,0,0,,{\fad(120,100)\move(960,1020,960,1016,0,120)}avec l'opérateur même\Nqui sert à l'imposer.
+Dialogue: 0,0:36:27.27,0:36:29.98,Sub,,0,0,0,,{\fad(120,100)\move(960,1020,960,1016,0,120)}Retour au {\c&HF09CB4&}générateur{\c&HF7F4F2&} de base :\Npourquoi échoue-t-il,
+Dialogue: 0,0:36:30.05,0:36:33.17,Sub,,0,0,0,,{\fad(120,100)\move(960,1020,960,1016,0,120)}alors qu'il a été entraîné\Nsur des données propres ?
+Dialogue: 0,0:36:33.61,0:36:36.46,Sub,,0,0,0,,{\fad(120,100)\move(960,1020,960,1016,0,120)}Suivez la partie d'un\Nchamp qui enfreint la loi.
+Dialogue: 0,0:36:36.68,0:36:41.17,Sub,,0,0,0,,{\fad(120,100)\move(960,1020,960,1016,0,120)}Pour la ramener exactement à zéro,\Nle {\c&HF09CB4&}vent{\c&HF7F4F2&} doit agir comme un ressort dont
+Dialogue: 0,0:36:41.25,0:36:45.96,Sub,,0,0,0,,{\fad(120,100)\move(960,1020,960,1016,0,120)}la raideur devient infinie quand\Nl'horloge de transport arrive au bout.
+Dialogue: 0,0:36:46.70,0:36:49.80,Sub,,0,0,0,,{\fad(120,100)\move(960,1020,960,1016,0,120)}Un réseau borné en est incapable,\Net un échantillonneur
+Dialogue: 0,0:36:49.88,0:36:53.28,Sub,,0,0,0,,{\fad(120,100)\move(960,1020,960,1016,0,120)}qui avance par pas finis ne\Npeut pas suivre non plus.
+Dialogue: 0,0:36:53.72,0:36:58.47,Sub,,0,0,0,,{\fad(120,100)\move(960,1020,960,1016,0,120)}Il reste un écart d'ordre un :\Npresque, ce n'est pas exactement.
+Dialogue: 0,0:36:59.50,0:37:02.33,Sub,,0,0,0,,{\fad(120,100)\move(960,1020,960,1016,0,120)}Maintenant, la loi de\Nla foule : en moyenne,
+Dialogue: 0,0:37:02.41,0:37:05.18,Sub,,0,0,0,,{\fad(120,100)\move(960,1020,960,1016,0,120)}autant d'énergie entre qu'il en sort.
+Dialogue: 0,0:37:05.67,0:37:09.90,Sub,,0,0,0,,{\fad(120,100)\move(960,1020,960,1016,0,120)}Trois façons de l'imposer,\Nà des valeurs d'{\c&H7AAF1B&}êta{\c&HF7F4F2&} jamais vues.
+Dialogue: 0,0:37:10.64,0:37:15.78,Sub,,0,0,0,,{\fad(120,100)\move(960,1020,960,1016,0,120)}Première : pendant l'entraînement,\Nla perte en loi, avec ses deux jurys.
+Dialogue: 0,0:37:16.27,0:37:19.00,Sub,,0,0,0,,{\fad(120,100)\move(960,1020,960,1016,0,120)}Face à un entraînement\Ntémoin de même durée,
+Dialogue: 0,0:37:19.08,0:37:24.46,Sub,,0,0,0,,{\fad(120,100)\move(960,1020,960,1016,0,120)}la {\c&H00A1ED&}distance entre distributions{\c&HF7F4F2&} tombe de\Ndeux virgule cinq à zéro virgule sept.
+Dialogue: 0,0:37:24.94,0:37:27.77,Sub,,0,0,0,,{\fad(120,100)\move(960,1020,960,1016,0,120)}Le témoin, lui, ne gagne rien.
+Dialogue: 0,0:37:28.51,0:37:33.08,Sub,,0,0,0,,{\fad(120,100)\move(960,1020,960,1016,0,120)}Deuxième : après l'entraînement,\Nrepondérez la foule générée.
+Dialogue: 0,0:37:33.68,0:37:37.06,Sub,,0,0,0,,{\fad(120,100)\move(960,1020,960,1016,0,120)}Là où le modèle est le moins\Nbon, un sondage de cinq cents
+Dialogue: 0,0:37:37.14,0:37:40.81,Sub,,0,0,0,,{\fad(120,100)\move(960,1020,960,1016,0,120)}personnes se réduit à une seule,\Net la foule se dégrade.
+Dialogue: 0,0:37:41.55,0:37:46.50,Sub,,0,0,0,,{\fad(120,100)\move(960,1020,960,1016,0,120)}Troisième : remettez chaque instantané à\Nl'échelle, pour qu'il respecte le bilan.
+Dialogue: 0,0:37:47.17,0:37:51.05,Sub,,0,0,0,,{\fad(120,100)\move(960,1020,960,1016,0,120)}Tous les instantanés dissipent\Ndésormais autant : un pic,
+Dialogue: 0,0:37:51.13,0:37:54.89,Sub,,0,0,0,,{\fad(120,100)\move(960,1020,960,1016,0,120)}plus étroit qu'un millième\Nde la vraie dispersion.
+Dialogue: 0,0:37:54.97,0:37:57.56,Sub,,0,0,0,,{\fad(120,100)\move(960,1020,960,1016,0,120)}Pourtant, la même\N{\c&H00A1ED&}distance entre distributions{\c&HF7F4F2&},
+Dialogue: 0,0:37:57.64,0:38:01.54,Sub,,0,0,0,,{\fad(120,100)\move(960,1020,960,1016,0,120)}calculée sur les spectres,\Ns'améliore : elle se laisse tromper.
+Dialogue: 0,0:38:01.88,0:38:07.46,Sub,,0,0,0,,{\fad(120,100)\move(960,1020,960,1016,0,120)}Seule la dispersion trahit le pic.\NAvec la perte en loi, pas de pic.
+Dialogue: 0,0:38:08.20,0:38:12.32,Sub,,0,0,0,,{\fad(120,100)\move(960,1020,960,1016,0,120)}Une seule graine d'entraînement par\Nvariante, de l'interpolation seulement,
+Dialogue: 0,0:38:12.40,0:38:16.02,Sub,,0,0,0,,{\fad(120,100)\move(960,1020,960,1016,0,120)}et chaque modèle reste loin\Nau-dessus du plancher de bruit.
+Dialogue: 0,0:38:17.07,0:38:20.06,Sub,,0,0,0,,{\fad(120,100)\move(960,1020,960,1016,0,120)}Retour aux deux étagères,\Ndésormais pleines.
+Dialogue: 0,0:38:20.36,0:38:24.30,Sub,,0,0,0,,{\fad(120,100)\move(960,1020,960,1016,0,120)}Pour chaque instantané :\Nla divergence nulle. Intégrez-la
+Dialogue: 0,0:38:24.38,0:38:28.81,Sub,,0,0,0,,{\fad(120,100)\move(960,1020,960,1016,0,120)}par construction, ou projetez,\Net elle est vérifiée exactement ;
+Dialogue: 0,0:38:28.89,0:38:32.04,Sub,,0,0,0,,{\fad(120,100)\move(960,1020,960,1016,0,120)}avec une pénalité, seulement à peu près.
+Dialogue: 0,0:38:32.78,0:38:36.52,Sub,,0,0,0,,{\fad(120,100)\move(960,1020,960,1016,0,120)}Pour la foule : le bilan d'énergie.\NImposez-le à la foule,
+Dialogue: 0,0:38:36.60,0:38:41.91,Sub,,0,0,0,,{\fad(120,100)\move(960,1020,960,1016,0,120)}pendant l'entraînement. Repondérer après\Ncoup échoue là où le modèle est mauvais ;
+Dialogue: 0,0:38:41.99,0:38:45.68,Sub,,0,0,0,,{\fad(120,100)\move(960,1020,960,1016,0,120)}l'imposer de force à chaque\Ninstantané crée un pic.
+Dialogue: 0,0:38:46.42,0:38:52.21,Sub,,0,0,0,,{\fad(120,100)\move(960,1020,960,1016,0,120)}Et le miroir ? Chaque instantané pointe\Nd'un seul côté : c'est donc une loi
+Dialogue: 0,0:38:52.29,0:38:58.29,Sub,,0,0,0,,{\fad(120,100)\move(960,1020,960,1016,0,120)}de la foule. Pourtant, intégré au réseau,\Nil peut être respecté exactement.
+Dialogue: 0,0:38:59.22,0:39:04.50,Sub,,0,0,0,,{\fad(120,100)\move(960,1020,960,1016,0,120)}Une seule règle suffit à tout ranger :\Nimposez chaque loi là où elle est vraie.
+Dialogue: 0,0:39:07.44,0:39:11.35,Sub,,0,0,0,,{\fad(120,100)\move(960,1020,960,1016,0,120)}Assemblez les pièces : voici\Nla machine que propose l'étude.
+Dialogue: 0,0:39:11.72,0:39:14.07,Sub,,0,0,0,,{\fad(120,100)\move(960,1020,960,1016,0,120)}Un {\c&HF09CB4&}vent{\c&HF7F4F2&} transporte le bruit vers une foule
+Dialogue: 0,0:39:14.15,0:39:17.03,Sub,,0,0,0,,{\fad(120,100)\move(960,1020,960,1016,0,120)}symétrique de codes,\Navec le miroir intégré.
+Dialogue: 0,0:39:17.49,0:39:20.97,Sub,,0,0,0,,{\fad(120,100)\move(960,1020,960,1016,0,120)}Un décodeur transforme chaque\Ncode en cartes de relief :
+Dialogue: 0,0:39:21.05,0:39:23.99,Sub,,0,0,0,,{\fad(120,100)\move(960,1020,960,1016,0,120)}chaque champ est donc à divergence nulle.
+Dialogue: 0,0:39:24.09,0:39:26.92,Sub,,0,0,0,,{\fad(120,100)\move(960,1020,960,1016,0,120)}Et le bilan d'énergie\Nest imposé à la foule.
+Dialogue: 0,0:39:27.66,0:39:30.27,Sub,,0,0,0,,{\fad(120,100)\move(960,1020,960,1016,0,120)}Elle n'a pas été construite\Ndans son ensemble :
+Dialogue: 0,0:39:30.35,0:39:32.56,Sub,,0,0,0,,{\fad(120,100)\move(960,1020,960,1016,0,120)}les expériences en ont testé des pièces,
+Dialogue: 0,0:39:32.64,0:39:35.09,Sub,,0,0,0,,{\fad(120,100)\move(960,1020,960,1016,0,120)}sur les trois cadrans\Net sur la nappe plane,
+Dialogue: 0,0:39:35.17,0:39:38.48,Sub,,0,0,0,,{\fad(120,100)\move(960,1020,960,1016,0,120)}avec de petits réseaux,\Nsur un processeur ordinaire.
+Dialogue: 0,0:39:39.22,0:39:41.73,Sub,,0,0,0,,{\fad(120,100)\move(960,1020,960,1016,0,120)}Reste une question :\Nà partir d'instantanés,
+Dialogue: 0,0:39:41.81,0:39:46.62,Sub,,0,0,0,,{\fad(120,100)\move(960,1020,960,1016,0,120)}avec quelle précision peut-on dire\N{\c&H00A1ED&}à quelle fréquence{\c&HF7F4F2&} le champ se renverse ?
+Dialogue: 0,0:39:47.77,0:39:50.37,Sub,,0,0,0,,{\fad(120,100)\move(960,1020,960,1016,0,120)}Dans les instantanés\Ndes codes du consortium,
+Dialogue: 0,0:39:50.45,0:39:54.59,Sub,,0,0,0,,{\fad(120,100)\move(960,1020,960,1016,0,120)}quelles lois valent exactement,\Net pour quel opérateur discret ?
+Dialogue: 0,0:39:58.64,0:40:02.20,Sub,,0,0,0,,{\fad(120,100)\move(960,1020,960,1016,0,120)}Une parenthèse : les cinq\Nénoncés derrière ces images.
+Dialogue: 0,0:40:02.38,0:40:06.84,Sub,,0,0,0,,{\fad(120,100)\move(960,1020,960,1016,0,120)}Chacun est élémentaire ; ce qui\Ncompte, c'est sa portée exacte.
+Dialogue: 0,0:40:07.58,0:40:09.65,Sub,,0,0,0,,{\fad(120,100)\move(960,1020,960,1016,0,120)}Le premier est presque trop simple.
+Dialogue: 0,0:40:09.92,0:40:12.89,Sub,,0,0,0,,{\fad(120,100)\move(960,1020,960,1016,0,120)}Supposez que tout champ que\Nsait dessiner un {\c&HF09CB4&}décodeur{\c&HF7F4F2&}
+Dialogue: 0,0:40:12.97,0:40:16.42,Sub,,0,0,0,,{\fad(120,100)\move(960,1020,960,1016,0,120)}obéisse à une loi linéaire,\Ncomme la divergence nulle.
+Dialogue: 0,0:40:16.87,0:40:19.74,Sub,,0,0,0,,{\fad(120,100)\move(960,1020,960,1016,0,120)}Alors chaque échantillon y\Nobéit, quelle que soit la
+Dialogue: 0,0:40:19.82,0:40:23.22,Sub,,0,0,0,,{\fad(120,100)\move(960,1020,960,1016,0,120)}{\c&HF09CB4&}foule de codes{\c&HF7F4F2&}, aussi mauvais\Nque soit l'entraînement.
+Dialogue: 0,0:40:23.96,0:40:26.11,Sub,,0,0,0,,{\fad(120,100)\move(960,1020,960,1016,0,120)}La démonstration tient en une ligne.
+Dialogue: 0,0:40:26.58,0:40:31.54,Sub,,0,0,0,,{\fad(120,100)\move(960,1020,960,1016,0,120)}Tout le travail est dans le décodeur :\Ndes cartes de relief en deux dimensions,
+Dialogue: 0,0:40:31.62,0:40:35.34,Sub,,0,0,0,,{\fad(120,100)\move(960,1020,960,1016,0,120)}un potentiel vecteur en trois,\Ndont on fixe la jauge.
+Dialogue: 0,0:40:36.37,0:40:40.55,Sub,,0,0,0,,{\fad(120,100)\move(960,1020,960,1016,0,120)}Deuxième énoncé : le ressort,\Ncette fois en entier.
+Dialogue: 0,0:40:40.95,0:40:44.04,Sub,,0,0,0,,{\fad(120,100)\move(960,1020,960,1016,0,120)}Si les données vivent dans\Nun sous-espace linéaire,
+Dialogue: 0,0:40:44.12,0:40:46.63,Sub,,0,0,0,,{\fad(120,100)\move(960,1020,960,1016,0,120)}le {\c&HF09CB4&}vent{\c&HF7F4F2&} idéal se décompose en deux.
+Dialogue: 0,0:40:46.99,0:40:50.87,Sub,,0,0,0,,{\fad(120,100)\move(960,1020,960,1016,0,120)}Le long du sous-espace, une partie\Nqu'un réseau peut apprendre.
+Dialogue: 0,0:40:51.12,0:40:53.82,Sub,,0,0,0,,{\fad(120,100)\move(960,1020,960,1016,0,120)}Perpendiculairement, une force de rappel :
+Dialogue: 0,0:40:53.90,0:40:58.40,Sub,,0,0,0,,{\fad(120,100)\move(960,1020,960,1016,0,120)}la composante parasite, divisée\Npar ce qu'il reste à l'horloge.
+Dialogue: 0,0:40:59.14,0:41:04.21,Sub,,0,0,0,,{\fad(120,100)\move(960,1020,960,1016,0,120)}Suivie exactement, cette force dépose\Nchaque échantillon dans le sous-espace.
+Dialogue: 0,0:41:04.58,0:41:07.76,Sub,,0,0,0,,{\fad(120,100)\move(960,1020,960,1016,0,120)}Avec un entraînement parfait,\Nle générateur de base,
+Dialogue: 0,0:41:07.84,0:41:12.36,Sub,,0,0,0,,{\fad(120,100)\move(960,1020,960,1016,0,120)}les deux projections et les cartes\Nde relief donnent la même foule.
+Dialogue: 0,0:41:13.10,0:41:17.71,Sub,,0,0,0,,{\fad(120,100)\move(960,1020,960,1016,0,120)}Plafonnez le rappel, et une composante\Nparasite d'ordre un subsiste.
+Dialogue: 0,0:41:18.72,0:41:22.53,Sub,,0,0,0,,{\fad(120,100)\move(960,1020,960,1016,0,120)}Ajoutez maintenant au rappel\Nexact une petite erreur,
+Dialogue: 0,0:41:22.61,0:41:26.54,Sub,,0,0,0,,{\fad(120,100)\move(960,1020,960,1016,0,120)}bornée. Une composante\Nparasite subsiste-t-elle ?
+Dialogue: 0,0:41:29.78,0:41:32.04,Sub,,0,0,0,,{\fad(120,100)\move(960,1020,960,1016,0,120)}Non. Le rappel l'efface.
+Dialogue: 0,0:41:32.42,0:41:35.89,Sub,,0,0,0,,{\fad(120,100)\move(960,1020,960,1016,0,120)}Le zéro virgule quatre un du\Ngénérateur de base se lit donc
+Dialogue: 0,0:41:35.97,0:41:39.55,Sub,,0,0,0,,{\fad(120,100)\move(960,1020,960,1016,0,120)}comme un rappel manquant,\Npas comme une petite erreur.
+Dialogue: 0,0:41:40.29,0:41:45.99,Sub,,0,0,0,,{\fad(120,100)\move(960,1020,960,1016,0,120)}Et le résidu infime du flot projeté ?\NLa simple précision du calcul.
+Dialogue: 0,0:41:47.04,0:41:51.95,Sub,,0,0,0,,{\fad(120,100)\move(960,1020,960,1016,0,120)}Troisième énoncé : les pénalités.\NUne pénalité courante teste la
+Dialogue: 0,0:41:52.03,0:41:57.13,Sub,,0,0,0,,{\fad(120,100)\move(960,1020,960,1016,0,120)}{\c&HF09CB4&}prédiction du modèle{\c&HF7F4F2&} : le point\Noù sa trajectoire va aboutir.
+Dialogue: 0,0:41:57.75,0:42:00.27,Sub,,0,0,0,,{\fad(120,100)\move(960,1020,960,1016,0,120)}Avec le vent idéal,\Ncette prédiction est la
+Dialogue: 0,0:42:00.35,0:42:03.64,Sub,,0,0,0,,{\fad(120,100)\move(960,1020,960,1016,0,120)}moyenne des données encore\Npossibles à l'arrivée.
+Dialogue: 0,0:42:04.38,0:42:08.74,Sub,,0,0,0,,{\fad(120,100)\move(960,1020,960,1016,0,120)}Pour une loi linéaire, une moyenne\Nde champs conformes reste conforme :
+Dialogue: 0,0:42:08.82,0:42:12.47,Sub,,0,0,0,,{\fad(120,100)\move(960,1020,960,1016,0,120)}la pénalité s'annule à l'optimum,\Net ne déplace rien.
+Dialogue: 0,0:42:13.08,0:42:17.92,Sub,,0,0,0,,{\fad(120,100)\move(960,1020,960,1016,0,120)}Hors de l'optimum, dans un vrai réseau,\Nelle n'impose la loi qu'à peu près.
+Dialogue: 0,0:42:18.66,0:42:20.96,Sub,,0,0,0,,{\fad(120,100)\move(960,1020,960,1016,0,120)}Pour une loi non linéaire, cela échoue :
+Dialogue: 0,0:42:21.04,0:42:24.82,Sub,,0,0,0,,{\fad(120,100)\move(960,1020,960,1016,0,120)}la moyenne de deux points d'un\Ncercle tombe à l'intérieur.
+Dialogue: 0,0:42:25.16,0:42:30.76,Sub,,0,0,0,,{\fad(120,100)\move(960,1020,960,1016,0,120)}C'est l'écart de Jensen : cette fois,\Nla pénalité biaise l'optimum lui-même.
+Dialogue: 0,0:42:31.80,0:42:35.87,Sub,,0,0,0,,{\fad(120,100)\move(960,1020,960,1016,0,120)}Quatrième énoncé : le miroir,\Nsous forme de théorème.
+Dialogue: 0,0:42:36.30,0:42:41.57,Sub,,0,0,0,,{\fad(120,100)\move(960,1020,960,1016,0,120)}Rendez le {\c&HF09CB4&}vent{\c&HF7F4F2&} équivariant : au reflet\Nd'un point répond le reflet de sa flèche.
+Dialogue: 0,0:42:42.07,0:42:45.12,Sub,,0,0,0,,{\fad(120,100)\move(960,1020,960,1016,0,120)}Partez d'un bruit qui a la\Nmême allure dans le miroir.
+Dialogue: 0,0:42:45.86,0:42:48.70,Sub,,0,0,0,,{\fad(120,100)\move(960,1020,960,1016,0,120)}Alors chaque trajectoire\Na sa jumelle en miroir.
+Dialogue: 0,0:42:49.14,0:42:52.43,Sub,,0,0,0,,{\fad(120,100)\move(960,1020,960,1016,0,120)}La foule générée est donc\Nexactement symétrique à chaque
+Dialogue: 0,0:42:52.51,0:42:56.93,Sub,,0,0,0,,{\fad(120,100)\move(960,1020,960,1016,0,120)}{\c&H7AAF1B&}réglage du bouton{\c&HF7F4F2&}, même avec des\Ndonnées déséquilibrées ou absentes.
+Dialogue: 0,0:42:57.67,0:43:01.22,Sub,,0,0,0,,{\fad(120,100)\move(960,1020,960,1016,0,120)}Si chaque vraie foule est\Nsymétrique, moyenner un vent
+Dialogue: 0,0:43:01.30,0:43:05.45,Sub,,0,0,0,,{\fad(120,100)\move(960,1020,960,1016,0,120)}avec son reflet n'augmente\Njamais la perte, en espérance.
+Dialogue: 0,0:43:05.96,0:43:10.01,Sub,,0,0,0,,{\fad(120,100)\move(960,1020,960,1016,0,120)}Le prix : deux évaluations\Ndu réseau au lieu d'une.
+Dialogue: 0,0:43:10.75,0:43:13.93,Sub,,0,0,0,,{\fad(120,100)\move(960,1020,960,1016,0,120)}Dans le cylindre de VKS,\Nun demi-tour qui échange
+Dialogue: 0,0:43:14.01,0:43:17.19,Sub,,0,0,0,,{\fad(120,100)\move(960,1020,960,1016,0,120)}les deux turbines est\Nune seconde symétrie.
+Dialogue: 0,0:43:17.50,0:43:21.05,Sub,,0,0,0,,{\fad(120,100)\move(960,1020,960,1016,0,120)}Si leurs vitesses diffèrent,\Nle demi-tour inverse aussi
+Dialogue: 0,0:43:21.13,0:43:25.01,Sub,,0,0,0,,{\fad(120,100)\move(960,1020,960,1016,0,120)}le signe de cette différence :\Nl'{\c&H7AAF1B&}asymétrie de forçage{\c&HF7F4F2&}.
+Dialogue: 0,0:43:25.39,0:43:29.86,Sub,,0,0,0,,{\fad(120,100)\move(960,1020,960,1016,0,120)}La même démonstration couvre ce cas,\Nqui n'a pas encore été testé.
+Dialogue: 0,0:43:30.90,0:43:34.93,Sub,,0,0,0,,{\fad(120,100)\move(960,1020,960,1016,0,120)}Dernier énoncé : les lois de la\Nfoule. Pour chaque instantané,
+Dialogue: 0,0:43:35.01,0:43:39.97,Sub,,0,0,0,,{\fad(120,100)\move(960,1020,960,1016,0,120)}les équations disent à quelle vitesse\Nvarie n'importe quelle grandeur.
+Dialogue: 0,0:43:40.37,0:43:44.21,Sub,,0,0,0,,{\fad(120,100)\move(960,1020,960,1016,0,120)}Si la foule est stationnaire,\Ncette vitesse {\c&H00A1ED&}s'annule en moyenne{\c&HF7F4F2&},
+Dialogue: 0,0:43:44.29,0:43:48.72,Sub,,0,0,0,,{\fad(120,100)\move(960,1020,960,1016,0,120)}pour toute grandeur ; le bilan\Nd'énergie en est un cas particulier.
+Dialogue: 0,0:43:49.46,0:43:53.57,Sub,,0,0,0,,{\fad(120,100)\move(960,1020,960,1016,0,120)}La démonstration : laissez chaque\Ninstantané évoluer un moment.
+Dialogue: 0,0:43:54.00,0:43:57.78,Sub,,0,0,0,,{\fad(120,100)\move(960,1020,960,1016,0,120)}La foule garde la même allure,\Ndonc aucune moyenne ne bouge :
+Dialogue: 0,0:43:57.86,0:44:00.85,Sub,,0,0,0,,{\fad(120,100)\move(960,1020,960,1016,0,120)}la vitesse moyenne de variation est nulle.
+Dialogue: 0,0:44:01.59,0:44:04.21,Sub,,0,0,0,,{\fad(120,100)\move(960,1020,960,1016,0,120)}Condition nécessaire, pas suffisante :
+Dialogue: 0,0:44:04.29,0:44:09.36,Sub,,0,0,0,,{\fad(120,100)\move(960,1020,960,1016,0,120)}une foule massée sur un point fixe\Ninstable réussit tous ces tests.
+Dialogue: 0,0:44:09.70,0:44:11.66,Sub,,0,0,0,,{\fad(120,100)\move(960,1020,960,1016,0,120)}Une boucle instable aussi.
+Dialogue: 0,0:44:12.07,0:44:15.88,Sub,,0,0,0,,{\fad(120,100)\move(960,1020,960,1016,0,120)}Le terme d'attache aux données\Ndoit donc rester dans la perte.
+Dialogue: 0,0:44:17.04,0:44:20.35,Sub,,0,0,0,,{\fad(120,100)\move(960,1020,960,1016,0,120)}Peut-on ne simuler qu'un seul\Nsigne de l'asymétrie de forçage,
+Dialogue: 0,0:44:20.43,0:44:23.55,Sub,,0,0,0,,{\fad(120,100)\move(960,1020,960,1016,0,120)}et laisser l'échange des\Nturbines fournir l'autre ?
+Dialogue: 0,0:44:26.40,0:44:29.02,Sub,,0,0,0,,{\fad(120,100)\move(960,1020,960,1016,0,120)}Plus tôt,\Nune {\c&H00A1ED&}distance entre distributions{\c&HF7F4F2&},
+Dialogue: 0,0:44:29.10,0:44:31.18,Sub,,0,0,0,,{\fad(120,100)\move(960,1020,960,1016,0,120)}c'était du sable à déplacer.
+Dialogue: 0,0:44:31.64,0:44:35.89,Sub,,0,0,0,,{\fad(120,100)\move(960,1020,960,1016,0,120)}Les expériences utilisent surtout\Nune cousine, fondée sur des paires.
+Dialogue: 0,0:44:36.34,0:44:38.58,Sub,,0,0,0,,{\fad(120,100)\move(960,1020,960,1016,0,120)}Chaque point est un instantané.
+Dialogue: 0,0:44:39.32,0:44:43.21,Sub,,0,0,0,,{\fad(120,100)\move(960,1020,960,1016,0,120)}Moyennez toutes les distances d'une\Nfoule à l'autre, puis doublez.
+Dialogue: 0,0:44:43.55,0:44:46.76,Sub,,0,0,0,,{\fad(120,100)\move(960,1020,960,1016,0,120)}Soustrayez la distance moyenne\Nau sein de chaque foule.
+Dialogue: 0,0:44:47.04,0:44:50.49,Sub,,0,0,0,,{\fad(120,100)\move(960,1020,960,1016,0,120)}Zéro : les deux foules\Nsuivent la même loi.
+Dialogue: 0,0:44:52.74,0:44:55.01,Sub,,0,0,0,,{\fad(120,100)\move(960,1020,960,1016,0,120)}La repondération, vue de près.
+Dialogue: 0,0:44:55.46,0:44:58.13,Sub,,0,0,0,,{\fad(120,100)\move(960,1020,960,1016,0,120)}La foule du {\c&HF09CB4&}modèle{\c&HF7F4F2&} n'atteint\Npas la moyenne visée.
+Dialogue: 0,0:44:58.62,0:45:02.81,Sub,,0,0,0,,{\fad(120,100)\move(960,1020,960,1016,0,120)}Laissez chaque instantané à sa\Nplace ; ne changez que son poids.
+Dialogue: 0,0:45:03.55,0:45:06.13,Sub,,0,0,0,,{\fad(120,100)\move(960,1020,960,1016,0,120)}Bien des pondérations atteignent la cible.
+Dialogue: 0,0:45:06.40,0:45:09.59,Sub,,0,0,0,,{\fad(120,100)\move(960,1020,960,1016,0,120)}La moins déformante est une\Ninclinaison exponentielle,
+Dialogue: 0,0:45:09.67,0:45:11.76,Sub,,0,0,0,,{\fad(120,100)\move(960,1020,960,1016,0,120)}qu'on appelle l'I-projection.
+Dialogue: 0,0:45:12.50,0:45:14.45,Sub,,0,0,0,,{\fad(120,100)\move(960,1020,960,1016,0,120)}Imaginez chaque foule comme un point :
+Dialogue: 0,0:45:14.53,0:45:17.59,Sub,,0,0,0,,{\fad(120,100)\move(960,1020,960,1016,0,120)}celles qui ont la bonne\Nmoyenne forment une droite.
+Dialogue: 0,0:45:17.99,0:45:21.30,Sub,,0,0,0,,{\fad(120,100)\move(960,1020,960,1016,0,120)}La foule inclinée est le\Npied de la perpendiculaire.
+Dialogue: 0,0:45:21.86,0:45:25.63,Sub,,0,0,0,,{\fad(120,100)\move(960,1020,960,1016,0,120)}Toute autre correction paie\Nle coût de l'inclinaison,
+Dialogue: 0,0:45:25.71,0:45:30.12,Sub,,0,0,0,,{\fad(120,100)\move(960,1020,960,1016,0,120)}plus un supplément, comme\Ndans le théorème de Pythagore.
+Dialogue: 0,0:45:30.36,0:45:34.69,Sub,,0,0,0,,{\fad(120,100)\move(960,1020,960,1016,0,120)}Et rien ne bouge : la foule inclinée ne\Nvit que là où vivait la foule du modèle.
+Dialogue: 0,0:45:35.74,0:45:38.04,Sub,,0,0,0,,{\fad(120,100)\move(960,1020,960,1016,0,120)}Que reste-t-il d'une foule repondérée ?
+Dialogue: 0,0:45:38.64,0:45:41.29,Sub,,0,0,0,,{\fad(120,100)\move(960,1020,960,1016,0,120)}Sa {\c&H00A1ED&}taille effective d'échantillon{\c&HF7F4F2&}\Nle mesure.
+Dialogue: 0,0:45:41.51,0:45:43.77,Sub,,0,0,0,,{\fad(120,100)\move(960,1020,960,1016,0,120)}Poids égaux : toute la foule.
+Dialogue: 0,0:45:44.02,0:45:46.70,Sub,,0,0,0,,{\fad(120,100)\move(960,1020,960,1016,0,120)}Un poids géant : une seule personne.
+Dialogue: 0,0:45:47.44,0:45:51.23,Sub,,0,0,0,,{\fad(120,100)\move(960,1020,960,1016,0,120)}Sur la nappe plane, à la plus\Npetite valeur de test d'{\c&H7AAF1B&}êta{\c&HF7F4F2&},
+Dialogue: 0,0:45:51.31,0:45:54.91,Sub,,0,0,0,,{\fad(120,100)\move(960,1020,960,1016,0,120)}le sondage garde\Nquatre-vingt-dix-neuf pour cent.
+Dialogue: 0,0:45:55.44,0:46:00.81,Sub,,0,0,0,,{\fad(120,100)\move(960,1020,960,1016,0,120)}Aux trois plus grandes, il touche le\Nfond : un instantané sur cinq cents.
+Dialogue: 0,0:46:01.55,0:46:04.89,Sub,,0,0,0,,{\fad(120,100)\move(960,1020,960,1016,0,120)}Classez les valeurs selon\Nl'erreur du {\c&HF09CB4&}modèle{\c&HF7F4F2&} sur son bilan :
+Dialogue: 0,0:46:04.97,0:46:08.33,Sub,,0,0,0,,{\fad(120,100)\move(960,1020,960,1016,0,120)}le sondage se réduit dans\Nun ordre presque identique.
+Dialogue: 0,0:46:08.78,0:46:12.36,Sub,,0,0,0,,{\fad(120,100)\move(960,1020,960,1016,0,120)}Là où le sondage survit,\Nil y avait peu à corriger.
+Dialogue: 0,0:46:12.68,0:46:16.94,Sub,,0,0,0,,{\fad(120,100)\move(960,1020,960,1016,0,120)}Là où il y avait beaucoup à\Ncorriger, le sondage s'effondre.
+Dialogue: 0,0:46:17.68,0:46:22.11,Sub,,0,0,0,,{\fad(120,100)\move(960,1020,960,1016,0,120)}Sur les trois cadrans aussi, la\Nrepondération n'a amélioré aucune foule :
+Dialogue: 0,0:46:22.19,0:46:25.86,Sub,,0,0,0,,{\fad(120,100)\move(960,1020,960,1016,0,120)}un instantané pesait\Ntrente-trois fois le poids moyen.
+Dialogue: 0,0:46:26.90,0:46:29.88,Sub,,0,0,0,,{\fad(120,100)\move(960,1020,960,1016,0,120)}Imaginez un {\c&HF09CB4&}modèle{\c&HF7F4F2&} qui ne\Nvisite jamais le pont entre
+Dialogue: 0,0:46:29.96,0:46:33.34,Sub,,0,0,0,,{\fad(120,100)\move(960,1020,960,1016,0,120)}les deux polarités, là où\Nont lieu tous les passages.
+Dialogue: 0,0:46:34.08,0:46:37.70,Sub,,0,0,0,,{\fad(120,100)\move(960,1020,960,1016,0,120)}La repondération peut-elle rétablir\Nla {\c&H00A1ED&}fréquence des passages{\c&HF7F4F2&} ?
+Dialogue: 0,0:46:40.94,0:46:45.09,Sub,,0,0,0,,{\fad(120,100)\move(960,1020,960,1016,0,120)}Non. La formule de Rice lit\Nla fréquence dans la bande,
+Dialogue: 0,0:46:45.17,0:46:50.65,Sub,,0,0,0,,{\fad(120,100)\move(960,1020,960,1016,0,120)}qui est vide. Zéro, multiplié par\Nn'importe quel poids, reste zéro.
+Dialogue: 0,0:46:51.13,0:46:56.14,Sub,,0,0,0,,{\fad(120,100)\move(960,1020,960,1016,0,120)}Insistez, et le poids s'entasse sur\Nquelques instantanés au bord de la bande.
+Dialogue: 0,0:46:56.88,0:47:00.91,Sub,,0,0,0,,{\fad(120,100)\move(960,1020,960,1016,0,120)}La repondération ne peut pas aller\Nlà où le modèle n'est jamais allé.
+Dialogue: 0,0:47:01.40,0:47:04.66,Sub,,0,0,0,,{\fad(120,100)\move(960,1020,960,1016,0,120)}La matrice des risques du\Nprojet de thèse le confirme :
+Dialogue: 0,0:47:04.74,0:47:08.41,Sub,,0,0,0,,{\fad(120,100)\move(960,1020,960,1016,0,120)}la repondération seule n'est\Npas une solution de repli.
+Dialogue: 0,0:47:09.47,0:47:12.45,Sub,,0,0,0,,{\fad(120,100)\move(960,1020,960,1016,0,120)}Les valeurs de test d'{\c&H7AAF1B&}êta{\c&HF7F4F2&}, une à une.
+Dialogue: 0,0:47:12.88,0:47:16.92,Sub,,0,0,0,,{\fad(120,100)\move(960,1020,960,1016,0,120)}À la plus grande, les instantanés\Ndu {\c&HF09CB4&}modèle{\c&HF7F4F2&} de base dissipent,
+Dialogue: 0,0:47:17.00,0:47:20.58,Sub,,0,0,0,,{\fad(120,100)\move(960,1020,960,1016,0,120)}en moyenne, plus de deux\Nfois l'énergie injectée.
+Dialogue: 0,0:47:21.16,0:47:24.58,Sub,,0,0,0,,{\fad(120,100)\move(960,1020,960,1016,0,120)}La perte en loi ramène la\N{\c&H00A1ED&}distance entre distributions{\c&HF7F4F2&}
+Dialogue: 0,0:47:24.66,0:47:27.64,Sub,,0,0,0,,{\fad(120,100)\move(960,1020,960,1016,0,120)}de sept virgule sept à deux virgule deux.
+Dialogue: 0,0:47:28.38,0:47:31.73,Sub,,0,0,0,,{\fad(120,100)\move(960,1020,960,1016,0,120)}À la plus petite, c'est\Ndéjà bon : aucun changement.
+Dialogue: 0,0:47:32.08,0:47:34.27,Sub,,0,0,0,,{\fad(120,100)\move(960,1020,960,1016,0,120)}Le témoin, lui, ne bouge pas.
+Dialogue: 0,0:47:35.01,0:47:38.30,Sub,,0,0,0,,{\fad(120,100)\move(960,1020,960,1016,0,120)}Ce sont justement les valeurs\Noù le sondage s'effondrait :
+Dialogue: 0,0:47:38.38,0:47:42.48,Sub,,0,0,0,,{\fad(120,100)\move(960,1020,960,1016,0,120)}l'entraînement a déplacé la foule ;\Nles poids n'y pouvaient rien.
+Dialogue: 0,0:47:42.98,0:47:44.74,Sub,,0,0,0,,{\fad(120,100)\move(960,1020,960,1016,0,120)}Une seule graine, toutefois.
+Dialogue: 0,0:47:45.87,0:47:49.36,Sub,,0,0,0,,{\fad(120,100)\move(960,1020,960,1016,0,120)}Si la perte en loi échoue,\Nquelle est la solution de repli,
+Dialogue: 0,0:47:49.44,0:47:53.47,Sub,,0,0,0,,{\fad(120,100)\move(960,1020,960,1016,0,120)}puisque la repondération échoue\Nlà où le modèle est mauvais ?
+Dialogue: 0,0:47:58.50,0:48:03.48,Sub,,0,0,0,,{\fad(120,100)\move(960,1020,960,1016,0,120)}Revoici la route et sa ligne :\Ncette fois, chaque voiture est {\c&HF09CB4&}générée{\c&HF7F4F2&}.
+Dialogue: 0,0:48:03.84,0:48:07.88,Sub,,0,0,0,,{\fad(120,100)\move(960,1020,960,1016,0,120)}Elles sortent de la machine au miroir\Nintégré : vingt mille à chacun des
+Dialogue: 0,0:48:07.96,0:48:12.47,Sub,,0,0,0,,{\fad(120,100)\move(960,1020,960,1016,0,120)}quarante et un réglages de {\c&H7AAF1B&}Gamma{\c&HF7F4F2&},\Nla plupart jamais vus à l'entraînement.
+Dialogue: 0,0:48:12.64,0:48:17.51,Sub,,0,0,0,,{\fad(120,100)\move(960,1020,960,1016,0,120)}Avec les équations, la formule de Rice\Nen déduit une {\c&H00A1ED&}fréquence des passages{\c&HF7F4F2&}.
+Dialogue: 0,0:48:18.25,0:48:20.48,Sub,,0,0,0,,{\fad(120,100)\move(960,1020,960,1016,0,120)}Face au vrai comptage, loin du seuil,
+Dialogue: 0,0:48:20.56,0:48:23.57,Sub,,0,0,0,,{\fad(120,100)\move(960,1020,960,1016,0,120)}l'{\c&H00A1ED&}erreur cumulée{\c&HF7F4F2&} est\Nde quatorze pour cent.
+Dialogue: 0,0:48:24.03,0:48:28.13,Sub,,0,0,0,,{\fad(120,100)\move(960,1020,960,1016,0,120)}Réglage par réglage, l'écart est\Nen moyenne de dix-sept pour cent,
+Dialogue: 0,0:48:28.21,0:48:31.76,Sub,,0,0,0,,{\fad(120,100)\move(960,1020,960,1016,0,120)}et atteint soixante-cinq\Npour cent à deux réglages.
+Dialogue: 0,0:48:32.37,0:48:36.10,Sub,,0,0,0,,{\fad(120,100)\move(960,1020,960,1016,0,120)}Près du seuil, l'erreur grimpe\Nà quarante-deux pour cent.
+Dialogue: 0,0:48:36.84,0:48:39.96,Sub,,0,0,0,,{\fad(120,100)\move(960,1020,960,1016,0,120)}Un seul modèle,\Nune seule graine aléatoire.
+Dialogue: 0,0:48:40.32,0:48:42.63,Sub,,0,0,0,,{\fad(120,100)\move(960,1020,960,1016,0,120)}La formule de Rice exige les équations,
+Dialogue: 0,0:48:42.71,0:48:45.98,Sub,,0,0,0,,{\fad(120,100)\move(960,1020,960,1016,0,120)}et donne une fréquence,\Npas des temps d'attente.
+Dialogue: 0,0:48:46.29,0:48:48.48,Sub,,0,0,0,,{\fad(120,100)\move(960,1020,960,1016,0,120)}Alors, troisième question de l'étude :
+Dialogue: 0,0:48:48.56,0:48:53.24,Sub,,0,0,0,,{\fad(120,100)\move(960,1020,960,1016,0,120)}une machine peut-elle nous dire\N{\c&H00A1ED&}à quelle fréquence{\c&HF7F4F2&} le champ se renverse ?
+Dialogue: 0,0:48:53.45,0:48:56.89,Sub,,0,0,0,,{\fad(120,100)\move(960,1020,960,1016,0,120)}Pour les passages par zéro,\Nsur trois cadrans :
+Dialogue: 0,0:48:56.97,0:49:01.71,Sub,,0,0,0,,{\fad(120,100)\move(960,1020,960,1016,0,120)}loin du seuil, à peu près,\Noui ; près du seuil, pas encore.
+Dialogue: 0,0:49:03.17,0:49:08.89,Sub,,0,0,0,,{\fad(120,100)\move(960,1020,960,1016,0,120)}Zoomons. Jusqu'à zéro virgule\Nhuit six, la vérité reste muette.
+Dialogue: 0,0:49:09.30,0:49:13.15,Sub,,0,0,0,,{\fad(120,100)\move(960,1020,960,1016,0,120)}Mais la machine, elle,\Nvarie en douceur avec {\c&H7AAF1B&}Gamma{\c&HF7F4F2&}.
+Dialogue: 0,0:49:13.89,0:49:17.18,Sub,,0,0,0,,{\fad(120,100)\move(960,1020,960,1016,0,120)}Sa fréquence des passages\Nva-t-elle se déclencher en avance,
+Dialogue: 0,0:49:17.26,0:49:18.99,Sub,,0,0,0,,{\fad(120,100)\move(960,1020,960,1016,0,120)}en retard, ou à l'heure ?
+Dialogue: 0,0:49:22.73,0:49:25.74,Sub,,0,0,0,,{\fad(120,100)\move(960,1020,960,1016,0,120)}En avance et en retard,\Nmais jamais à l'heure.
+Dialogue: 0,0:49:26.12,0:49:29.72,Sub,,0,0,0,,{\fad(120,100)\move(960,1020,960,1016,0,120)}Sous le seuil, la machine laisse\Néchapper de faux passages :
+Dialogue: 0,0:49:29.80,0:49:33.68,Sub,,0,0,0,,{\fad(120,100)\move(960,1020,960,1016,0,120)}jusqu'à un dixième de la vraie\Nfréquence, juste au-dessus.
+Dialogue: 0,0:49:34.15,0:49:37.42,Sub,,0,0,0,,{\fad(120,100)\move(960,1020,960,1016,0,120)}À zéro virgule huit six cinq,\Nelle est en retard :
+Dialogue: 0,0:49:37.50,0:49:40.72,Sub,,0,0,0,,{\fad(120,100)\move(960,1020,960,1016,0,120)}moins d'un sixième de\Nla fréquence comptée.
+Dialogue: 0,0:49:40.89,0:49:44.41,Sub,,0,0,0,,{\fad(120,100)\move(960,1020,960,1016,0,120)}Juste au-dessus, elle surestime :\Ncinq passages pour
+Dialogue: 0,0:49:44.49,0:49:48.35,Sub,,0,0,0,,{\fad(120,100)\move(960,1020,960,1016,0,120)}mille unités de temps,\Ncontre trois virgule quatre.
+Dialogue: 0,0:49:49.40,0:49:53.16,Sub,,0,0,0,,{\fad(120,100)\move(960,1020,960,1016,0,120)}Pourquoi ? Imaginez la machine\Ncomme une plaque rigide :
+Dialogue: 0,0:49:53.24,0:49:57.88,Sub,,0,0,0,,{\fad(120,100)\move(960,1020,960,1016,0,120)}quand on tourne {\c&H7AAF1B&}Gamma{\c&HF7F4F2&}, sa foule\Nne change qu'à vitesse limitée.
+Dialogue: 0,0:49:58.36,0:50:01.75,Sub,,0,0,0,,{\fad(120,100)\move(960,1020,960,1016,0,120)}La vérité, elle,\Ngravit une rampe abrupte :
+Dialogue: 0,0:50:01.83,0:50:07.07,Sub,,0,0,0,,{\fad(120,100)\move(960,1020,960,1016,0,120)}juste au-dessus de zéro virgule\Nhuit six, le couloir s'ouvre.
+Dialogue: 0,0:50:07.81,0:50:11.54,Sub,,0,0,0,,{\fad(120,100)\move(960,1020,960,1016,0,120)}La plaque arrondit l'angle :\Ntrop tôt, puis trop bas.
+Dialogue: 0,0:50:11.84,0:50:14.87,Sub,,0,0,0,,{\fad(120,100)\move(960,1020,960,1016,0,120)}Les données montrent les deux :\Ndes instantanés égarés
+Dialogue: 0,0:50:14.95,0:50:18.10,Sub,,0,0,0,,{\fad(120,100)\move(960,1020,960,1016,0,120)}trop tôt dans le couloir,\Npuis trop peu au seuil.
+Dialogue: 0,0:50:18.84,0:50:22.49,Sub,,0,0,0,,{\fad(120,100)\move(960,1020,960,1016,0,120)}Un théorème : face à un vrai\Nsaut, une machine qui varie
+Dialogue: 0,0:50:22.57,0:50:26.22,Sub,,0,0,0,,{\fad(120,100)\move(960,1020,960,1016,0,120)}en douceur se trompe d'au\Nmoins la moitié du saut.
+Dialogue: 0,0:50:26.50,0:50:30.66,Sub,,0,0,0,,{\fad(120,100)\move(960,1020,960,1016,0,120)}Sauf si elle est très souple,\Nou si on lui indique l'état du système.
+Dialogue: 0,0:50:31.40,0:50:34.92,Sub,,0,0,0,,{\fad(120,100)\move(960,1020,960,1016,0,120)}Ici, une rampe, pas un saut,\Net une seule graine :
+Dialogue: 0,0:50:35.00,0:50:38.86,Sub,,0,0,0,,{\fad(120,100)\move(960,1020,960,1016,0,120)}compatible avec le théorème,\Nmais pas une preuve.
+Dialogue: 0,0:50:39.32,0:50:42.47,Sub,,0,0,0,,{\fad(120,100)\move(960,1020,960,1016,0,120)}Le théorème n'explique pas\Nnon plus la surestimation.
+Dialogue: 0,0:50:43.90,0:50:48.14,Sub,,0,0,0,,{\fad(120,100)\move(960,1020,960,1016,0,120)}La perte en loi, sur les trois\Ncadrans, à des réglages jamais vus.
+Dialogue: 0,0:50:48.62,0:50:52.75,Sub,,0,0,0,,{\fad(120,100)\move(960,1020,960,1016,0,120)}Sur la bonne machine, elle divise par\Ndeux les résidus des lois de la foule,
+Dialogue: 0,0:50:52.83,0:50:55.76,Sub,,0,0,0,,{\fad(120,100)\move(960,1020,960,1016,0,120)}même pour les lois qu'elle\Nn'a jamais imposées.
+Dialogue: 0,0:50:56.15,0:50:58.71,Sub,,0,0,0,,{\fad(120,100)\move(960,1020,960,1016,0,120)}Mais la dispersion des\Nvariations d'énergie
+Dialogue: 0,0:50:58.79,0:51:01.76,Sub,,0,0,0,,{\fad(120,100)\move(960,1020,960,1016,0,120)}diminue d'un quart :\Nun faible écho du pic.
+Dialogue: 0,0:51:02.50,0:51:05.79,Sub,,0,0,0,,{\fad(120,100)\move(960,1020,960,1016,0,120)}Sur une machine volontairement\Nbiaisée, elle échoue :
+Dialogue: 0,0:51:05.87,0:51:09.00,Sub,,0,0,0,,{\fad(120,100)\move(960,1020,960,1016,0,120)}un entraînement a divergé,\Nl'autre a empiré.
+Dialogue: 0,0:51:09.23,0:51:12.40,Sub,,0,0,0,,{\fad(120,100)\move(960,1020,960,1016,0,120)}Sur la fréquence des passages,\Navec une seule graine :
+Dialogue: 0,0:51:12.48,0:51:16.72,Sub,,0,0,0,,{\fad(120,100)\move(960,1020,960,1016,0,120)}légèrement mieux près du seuil,\Nmoins bien quand on s'en éloigne.
+Dialogue: 0,0:51:18.17,0:51:22.25,Sub,,0,0,0,,{\fad(120,100)\move(960,1020,960,1016,0,120)}Maintenant, le juge le plus\Nsévère : le {\c&H00A1ED&}plancher de bruit{\c&HF7F4F2&}.
+Dialogue: 0,0:51:22.80,0:51:26.41,Sub,,0,0,0,,{\fad(120,100)\move(960,1020,960,1016,0,120)}Sur les trois cadrans,\Nla meilleure machine se situe à environ
+Dialogue: 0,0:51:26.49,0:51:30.28,Sub,,0,0,0,,{\fad(120,100)\move(960,1020,960,1016,0,120)}deux fois son plancher ;\Nmais trois nombres, c'est facile.
+Dialogue: 0,0:51:30.57,0:51:35.07,Sub,,0,0,0,,{\fad(120,100)\move(960,1020,960,1016,0,120)}Sur la nappe de plasma, tous les modèles\Nse trompent sur les spectres bien
+Dialogue: 0,0:51:35.15,0:51:40.25,Sub,,0,0,0,,{\fad(120,100)\move(960,1020,960,1016,0,120)}plus que ne diffèrent deux échantillons\Nde données : au mieux, six fois plus.
+Dialogue: 0,0:51:40.99,0:51:43.87,Sub,,0,0,0,,{\fad(120,100)\move(960,1020,960,1016,0,120)}Deux graines sur les cadrans,\Nune seule sur la nappe ;
+Dialogue: 0,0:51:43.95,0:51:46.75,Sub,,0,0,0,,{\fad(120,100)\move(960,1020,960,1016,0,120)}le projet de thèse en\Ndemande au moins trois.
+Dialogue: 0,0:51:47.03,0:51:50.21,Sub,,0,0,0,,{\fad(120,100)\move(960,1020,960,1016,0,120)}Chaque test se situe entre\Ndeux réglages d'entraînement.
+Dialogue: 0,0:51:51.64,0:51:56.41,Sub,,0,0,0,,{\fad(120,100)\move(960,1020,960,1016,0,120)}Le tableau des scores : huit\Nmécanismes, chacun avec son verdict.
+Dialogue: 0,0:51:56.94,0:52:01.34,Sub,,0,0,0,,{\fad(120,100)\move(960,1020,960,1016,0,120)}Pour chaque instantané :\Nles cartes de relief et la projection,
+Dialogue: 0,0:52:01.42,0:52:04.38,Sub,,0,0,0,,{\fad(120,100)\move(960,1020,960,1016,0,120)}exactes ; la pénalité, approximative.
+Dialogue: 0,0:52:04.89,0:52:09.40,Sub,,0,0,0,,{\fad(120,100)\move(960,1020,960,1016,0,120)}Pour la foule : le miroir,\Nexact ; la perte en loi,
+Dialogue: 0,0:52:09.48,0:52:13.86,Sub,,0,0,0,,{\fad(120,100)\move(960,1020,960,1016,0,120)}utile mais imparfaite ;\Nle reste, des échecs.
+Dialogue: 0,0:52:14.60,0:52:16.90,Sub,,0,0,0,,{\fad(120,100)\move(960,1020,960,1016,0,120)}Revenons aux trois questions de l'étude.
+Dialogue: 0,0:52:17.41,0:52:20.69,Sub,,0,0,0,,{\fad(120,100)\move(960,1020,960,1016,0,120)}Première : entre les points,\Nles formes sont les bonnes,
+Dialogue: 0,0:52:20.77,0:52:24.11,Sub,,0,0,0,,{\fad(120,100)\move(960,1020,960,1016,0,120)}mais aucun modèle n'atteint\Nson {\c&H00A1ED&}plancher de bruit{\c&HF7F4F2&}.
+Dialogue: 0,0:52:24.79,0:52:29.13,Sub,,0,0,0,,{\fad(120,100)\move(960,1020,960,1016,0,120)}Deuxième, chaque loi\Nlà où elle s'applique :
+Dialogue: 0,0:52:29.21,0:52:33.47,Sub,,0,0,0,,{\fad(120,100)\move(960,1020,960,1016,0,120)}exactement, oui ; {\c&H00A1ED&}en moyenne{\c&HF7F4F2&}, en partie.
+Dialogue: 0,0:52:33.55,0:52:39.17,Sub,,0,0,0,,{\fad(120,100)\move(960,1020,960,1016,0,120)}Troisième, {\c&H00A1ED&}à quelle fréquence{\c&HF7F4F2&} : à peu près\Njuste loin du seuil, médiocre tout près.
+Dialogue: 0,0:52:39.91,0:52:41.11,Sub,,0,0,0,,{\fad(120,100)\move(960,1020,960,1016,0,120)}Trois leçons.
+Dialogue: 0,0:52:41.24,0:52:44.16,Sub,,0,0,0,,{\fad(120,100)\move(960,1020,960,1016,0,120)}Lois exactes : intégrez-les au modèle.
+Dialogue: 0,0:52:44.57,0:52:49.69,Sub,,0,0,0,,{\fad(120,100)\move(960,1020,960,1016,0,120)}Lois de la foule : imposez-les à la\Nfoule, jamais à chaque instantané.
+Dialogue: 0,0:52:50.08,0:52:55.14,Sub,,0,0,0,,{\fad(120,100)\move(960,1020,960,1016,0,120)}Et jugez chaque résultat face au plancher\Nde bruit, avec suffisamment de graines.
+Dialogue: 0,0:52:56.97,0:53:00.11,Sub,,0,0,0,,{\fad(120,100)\move(960,1020,960,1016,0,120)}Pour quels réglages faut-il des\Nsimulations assez longues pour
+Dialogue: 0,0:53:00.19,0:53:03.64,Sub,,0,0,0,,{\fad(120,100)\move(960,1020,960,1016,0,120)}compter les renversements,\Nafin de vérifier un taux prédit ?
+Dialogue: 0,0:53:06.07,0:53:08.59,Sub,,0,0,0,,{\fad(120,100)\move(960,1020,960,1016,0,120)}Quelle largeur donner à la bande de Rice ?
+Dialogue: 0,0:53:09.06,0:53:11.45,Sub,,0,0,0,,{\fad(120,100)\move(960,1020,960,1016,0,120)}Élargissez-la : l'estimation se décale,
+Dialogue: 0,0:53:11.53,0:53:14.90,Sub,,0,0,0,,{\fad(120,100)\move(960,1020,960,1016,0,120)}et son biais croît comme\Nle carré de la largeur.
+Dialogue: 0,0:53:15.46,0:53:20.53,Sub,,0,0,0,,{\fad(120,100)\move(960,1020,960,1016,0,120)}Rétrécissez-la : l'estimation fluctue,\Ncar moins d'instantanés y tombent.
+Dialogue: 0,0:53:20.61,0:53:23.17,Sub,,0,0,0,,{\fad(120,100)\move(960,1020,960,1016,0,120)}L'expérience des trois\Ncadrans a pris une bande
+Dialogue: 0,0:53:23.25,0:53:26.27,Sub,,0,0,0,,{\fad(120,100)\move(960,1020,960,1016,0,120)}de zéro virgule deux de\Npart et d'autre de zéro.
+Dialogue: 0,0:53:27.01,0:53:31.81,Sub,,0,0,0,,{\fad(120,100)\move(960,1020,960,1016,0,120)}Avec des instantanés à volonté, pourquoi\Nne pas la rendre infiniment fine ?
+Dialogue: 0,0:53:32.25,0:53:37.69,Sub,,0,0,0,,{\fad(120,100)\move(960,1020,960,1016,0,120)}La formule exacte suppose un nuage lisse.\NUn cosinus ne dessine qu'un anneau mince,
+Dialogue: 0,0:53:37.77,0:53:42.15,Sub,,0,0,0,,{\fad(120,100)\move(960,1020,960,1016,0,120)}et pourtant la formule trouve\Nbien deux passages par période.
+Dialogue: 0,0:53:42.89,0:53:45.58,Sub,,0,0,0,,{\fad(120,100)\move(960,1020,960,1016,0,120)}Le chaos aussi peut\Nmanquer de nuage lisse,
+Dialogue: 0,0:53:45.66,0:53:50.02,Sub,,0,0,0,,{\fad(120,100)\move(960,1020,960,1016,0,120)}donc rien ne garantit le passage à\Nla limite : sur les trois cadrans,
+Dialogue: 0,0:53:50.10,0:53:54.62,Sub,,0,0,0,,{\fad(120,100)\move(960,1020,960,1016,0,120)}seul test à ce jour, la réponse\Ndépend de la largeur de la bande.
+Dialogue: 0,0:53:55.87,0:53:59.02,Sub,,0,0,0,,{\fad(120,100)\move(960,1020,960,1016,0,120)}Pour compter les renversements,\Net non les passages,
+Dialogue: 0,0:53:59.10,0:54:02.62,Sub,,0,0,0,,{\fad(120,100)\move(960,1020,960,1016,0,120)}relevez la barre : un renversement\Ndoit partir d'au-dessus
+Dialogue: 0,0:54:02.70,0:54:05.88,Sub,,0,0,0,,{\fad(120,100)\move(960,1020,960,1016,0,120)}d'un certain niveau et\Npasser sous son reflet.
+Dialogue: 0,0:54:06.45,0:54:08.71,Sub,,0,0,0,,{\fad(120,100)\move(960,1020,960,1016,0,120)}La {\c&H00A1ED&}fréquence des passages{\c&HF7F4F2&} par ce niveau,
+Dialogue: 0,0:54:08.79,0:54:10.52,Sub,,0,0,0,,{\fad(120,100)\move(960,1020,960,1016,0,120)}que la formule de Rice lit dans
+Dialogue: 0,0:54:10.60,0:54:14.03,Sub,,0,0,0,,{\fad(120,100)\move(960,1020,960,1016,0,120)}les instantanés, majore donc\Ncelle des renversements.
+Dialogue: 0,0:54:14.77,0:54:18.42,Sub,,0,0,0,,{\fad(120,100)\move(960,1020,960,1016,0,120)}Les petites oscillations autour\Ndu niveau desserrent cette borne.
+Dialogue: 0,0:54:18.72,0:54:23.58,Sub,,0,0,0,,{\fad(120,100)\move(960,1020,960,1016,0,120)}La conjecture : si un renversement dure\Nbien plus longtemps qu'une oscillation,
+Dialogue: 0,0:54:23.66,0:54:28.06,Sub,,0,0,0,,{\fad(120,100)\move(960,1020,960,1016,0,120)}la borne est presque exacte sur\Nune plage de niveaux, un plateau.
+Dialogue: 0,0:54:28.80,0:54:32.34,Sub,,0,0,0,,{\fad(120,100)\move(960,1020,960,1016,0,120)}Le pari, écrit avant les données,\Nvient du projet de thèse :
+Dialogue: 0,0:54:32.42,0:54:36.26,Sub,,0,0,0,,{\fad(120,100)\move(960,1020,960,1016,0,120)}sur la première marche de l'escalier,\Nla borne s'approche à moins
+Dialogue: 0,0:54:36.34,0:54:40.29,Sub,,0,0,0,,{\fad(120,100)\move(960,1020,960,1016,0,120)}de trente pour cent de la\Nfréquence comptée, sur ce plateau.
+Dialogue: 0,0:54:41.83,0:54:46.94,Sub,,0,0,0,,{\fad(120,100)\move(960,1020,960,1016,0,120)}Confiance : moyenne ; la borne est\Ndémontrée, le plateau ne l'est pas.
+Dialogue: 0,0:54:47.30,0:54:51.01,Sub,,0,0,0,,{\fad(120,100)\move(960,1020,960,1016,0,120)}À demander d'abord : quelle\Nlargeur doit avoir ce plateau ?
+Dialogue: 0,0:54:52.24,0:54:54.82,Sub,,0,0,0,,{\fad(120,100)\move(960,1020,960,1016,0,120)}Encore une limite, démontrée celle-là.
+Dialogue: 0,0:54:55.13,0:54:59.69,Sub,,0,0,0,,{\fad(120,100)\move(960,1020,960,1016,0,120)}Ces deux signaux aléatoires et lisses\Nont des instantanés de même loi,
+Dialogue: 0,0:54:59.77,0:55:03.61,Sub,,0,0,0,,{\fad(120,100)\move(960,1020,960,1016,0,120)}valeur et vitesse comprises :\Nmême fréquence de Rice.
+Dialogue: 0,0:55:03.95,0:55:07.12,Sub,,0,0,0,,{\fad(120,100)\move(960,1020,960,1016,0,120)}Pourtant, l'un passe par\Nzéro comme un métronome,
+Dialogue: 0,0:55:07.20,0:55:09.79,Sub,,0,0,0,,{\fad(120,100)\move(960,1020,960,1016,0,120)}l'autre à intervalles irréguliers.
+Dialogue: 0,0:55:10.53,0:55:14.11,Sub,,0,0,0,,{\fad(120,100)\move(960,1020,960,1016,0,120)}Sur les trois cadrans, Gissinger\Na trouvé une forme dans les
+Dialogue: 0,0:55:14.19,0:55:18.14,Sub,,0,0,0,,{\fad(120,100)\move(960,1020,960,1016,0,120)}temps d'attente entre renversements :\Nun peigne d'attentes courtes
+Dialogue: 0,0:55:18.22,0:55:22.16,Sub,,0,0,0,,{\fad(120,100)\move(960,1020,960,1016,0,120)}et quantifiées, puis une queue\Nexponentielle, sans mémoire.
+Dialogue: 0,0:55:22.90,0:55:27.10,Sub,,0,0,0,,{\fad(120,100)\move(960,1020,960,1016,0,120)}Aucune boîte à chaussures ne contient\Ncette forme : il faut le film.
+Dialogue: 0,0:55:27.79,0:55:31.74,Sub,,0,0,0,,{\fad(120,100)\move(960,1020,960,1016,0,120)}La question ouverte : de courtes\Nsimulations, lancées depuis des états
+Dialogue: 0,0:55:31.82,0:55:36.08,Sub,,0,0,0,,{\fad(120,100)\move(960,1020,960,1016,0,120)}générés dans le couloir, peuvent-elles\Nfournir les temps d'attente ?
+Dialogue: 0,0:55:37.10,0:55:39.85,Sub,,0,0,0,,{\fad(120,100)\move(960,1020,960,1016,0,120)}Deuxième tour pour la\Npremière marche de l'escalier.
+Dialogue: 0,0:55:40.32,0:55:42.74,Sub,,0,0,0,,{\fad(120,100)\move(960,1020,960,1016,0,120)}Trois graines aléatoires, pas deux.
+Dialogue: 0,0:55:43.15,0:55:47.01,Sub,,0,0,0,,{\fad(120,100)\move(960,1020,960,1016,0,120)}Un second modèle réduit,\Ntiré de simulations de VKS.
+Dialogue: 0,0:55:47.36,0:55:52.12,Sub,,0,0,0,,{\fad(120,100)\move(960,1020,960,1016,0,120)}Et le miroir de l'échange des turbines,\Nqui inverse aussi le signe de {\c&H7AAF1B&}Gamma{\c&HF7F4F2&}.
+Dialogue: 0,0:55:52.86,0:55:56.53,Sub,,0,0,0,,{\fad(120,100)\move(960,1020,960,1016,0,120)}Quatre voyants doivent\Ns'allumer : déséquilibre,
+Dialogue: 0,0:55:56.61,0:56:01.08,Sub,,0,0,0,,{\fad(120,100)\move(960,1020,960,1016,0,120)}lois non imposées, formule\Nde Rice, borne par niveau.
+Dialogue: 0,0:56:02.42,0:56:06.69,Sub,,0,0,0,,{\fad(120,100)\move(960,1020,960,1016,0,120)}Le pari : les résidus non imposés\Nsont encore divisés par deux,
+Dialogue: 0,0:56:06.77,0:56:09.66,Sub,,0,0,0,,{\fad(120,100)\move(960,1020,960,1016,0,120)}à peu près. Au premier\Ntour, c'était par un
+Dialogue: 0,0:56:09.74,0:56:13.93,Sub,,0,0,0,,{\fad(120,100)\move(960,1020,960,1016,0,120)}virgule neuf huit, pour une\Nbarre à deux : pile ou face.
+Dialogue: 0,0:56:14.48,0:56:16.41,Sub,,0,0,0,,{\fad(120,100)\move(960,1020,960,1016,0,120)}Confiance : moyenne.
+Dialogue: 0,0:56:16.83,0:56:20.13,Sub,,0,0,0,,{\fad(120,100)\move(960,1020,960,1016,0,120)}Seul hic : un modèle parfaitement\Nsymétrique dépasse le
+Dialogue: 0,0:56:20.21,0:56:25.02,Sub,,0,0,0,,{\fad(120,100)\move(960,1020,960,1016,0,120)}{\c&H00A1ED&}plancher de bruit{\c&HF7F4F2&} presque une fois\Nsur deux ; ce plancher est sa moyenne.
+Dialogue: 0,0:56:25.60,0:56:30.10,Sub,,0,0,0,,{\fad(120,100)\move(960,1020,960,1016,0,120)}À demander d'abord : faut-il un test\Nstatistique pour le premier voyant ?
+Dialogue: 0,0:56:31.44,0:56:36.40,Sub,,0,0,0,,{\fad(120,100)\move(960,1020,960,1016,0,120)}Au-delà de la fréquence : pour VKS,\Nfaut-il aussi viser les temps d'attente,
+Dialogue: 0,0:56:36.48,0:56:40.93,Sub,,0,0,0,,{\fad(120,100)\move(960,1020,960,1016,0,120)}avec de courtes simulations\Nlancées depuis des états générés ?
+Dialogue: 0,0:56:45.97,0:56:49.55,Sub,,0,0,0,,{\fad(120,100)\move(960,1020,960,1016,0,120)}Jusqu'ici, tous les tests ont\Nporté sur des modèles jouets.
+Dialogue: 0,0:56:49.63,0:56:53.37,Sub,,0,0,0,,{\fad(120,100)\move(960,1020,960,1016,0,120)}Avant les vraies dynamos,\Nretour à la carte du domaine.
+Dialogue: 0,0:56:53.75,0:56:58.01,Sub,,0,0,0,,{\fad(120,100)\move(960,1020,960,1016,0,120)}Zoomons sur sa mince piste des\Ndonnées : elle se divise en quatre.
+Dialogue: 0,0:56:58.75,0:57:02.85,Sub,,0,0,0,,{\fad(120,100)\move(960,1020,960,1016,0,120)}Une dynamo de laboratoire pose\Nà chaque piste quatre épreuves :
+Dialogue: 0,0:57:02.93,0:57:06.30,Sub,,0,0,0,,{\fad(120,100)\move(960,1020,960,1016,0,120)}trois dimensions, des parois\Navec du fer et du vide,
+Dialogue: 0,0:57:06.38,0:57:11.36,Sub,,0,0,0,,{\fad(120,100)\move(960,1020,960,1016,0,120)}un {\c&H7AAF1B&}nombre de Prandtl magnétique{\c&HF7F4F2&}\Nminuscule, et des renversements rares.
+Dialogue: 0,0:57:12.80,0:57:18.30,Sub,,0,0,0,,{\fad(120,100)\move(960,1020,960,1016,0,120)}Première piste : les substituts rapides,\Ndes réseaux entraînés à imiter un solveur.
+Dialogue: 0,0:57:18.58,0:57:21.02,Sub,,0,0,0,,{\fad(120,100)\move(960,1020,960,1016,0,120)}Certains intègrent les\Néquations dans leur perte ;
+Dialogue: 0,0:57:21.10,0:57:24.50,Sub,,0,0,0,,{\fad(120,100)\move(960,1020,960,1016,0,120)}d'autres apprennent des\Ncorrespondances entre champs entiers.
+Dialogue: 0,0:57:24.80,0:57:26.26,Sub,,0,0,0,,{\fad(120,100)\move(960,1020,960,1016,0,120)}Pour les fluides conducteurs,
+Dialogue: 0,0:57:26.34,0:57:29.68,Sub,,0,0,0,,{\fad(120,100)\move(960,1020,960,1016,0,120)}ils atteignent désormais la\Nturbulence à deux dimensions.
+Dialogue: 0,0:57:29.93,0:57:33.44,Sub,,0,0,0,,{\fad(120,100)\move(960,1020,960,1016,0,120)}Pour la Terre, rappelez-vous\Nl'étude de deux mille vingt-deux :
+Dialogue: 0,0:57:33.52,0:57:38.12,Sub,,0,0,0,,{\fad(120,100)\move(960,1020,960,1016,0,120)}les méthodes essayées n'ont pas su\Nprévoir un renversement de façon fiable.
+Dialogue: 0,0:57:38.86,0:57:42.43,Sub,,0,0,0,,{\fad(120,100)\move(960,1020,960,1016,0,120)}Leur point faible : entraînés sur\Nune erreur quadratique moyenne,
+Dialogue: 0,0:57:42.51,0:57:46.32,Sub,,0,0,0,,{\fad(120,100)\move(960,1020,960,1016,0,120)}leurs ensembles de modèles\Nrégressent vers l'écoulement moyen.
+Dialogue: 0,0:57:46.83,0:57:50.34,Sub,,0,0,0,,{\fad(120,100)\move(960,1020,960,1016,0,120)}Un nuage à deux polarités\Ns'effondre sur son milieu.
+Dialogue: 0,0:57:51.37,0:57:53.72,Sub,,0,0,0,,{\fad(120,100)\move(960,1020,960,1016,0,120)}Deuxième piste : les {\c&HF09CB4&}modèles génératifs{\c&HF7F4F2&},
+Dialogue: 0,0:57:53.80,0:57:57.48,Sub,,0,0,0,,{\fad(120,100)\move(960,1020,960,1016,0,120)}qui apprennent tout le nuage,\Npas seulement son milieu.
+Dialogue: 0,0:57:58.11,0:58:02.76,Sub,,0,0,0,,{\fad(120,100)\move(960,1020,960,1016,0,120)}D'abord les réseaux antagonistes,\Npuis la diffusion, puis le flow matching,
+Dialogue: 0,0:58:02.84,0:58:07.96,Sub,,0,0,0,,{\fad(120,100)\move(960,1020,960,1016,0,120)}qui apprend un vent du bruit aux données :\Nla famille qu'a utilisée l'étude.
+Dialogue: 0,0:58:08.10,0:58:11.58,Sub,,0,0,0,,{\fad(120,100)\move(960,1020,960,1016,0,120)}Ils imaginent désormais de la\Nturbulence en trois dimensions,
+Dialogue: 0,0:58:11.66,0:58:14.03,Sub,,0,0,0,,{\fad(120,100)\move(960,1020,960,1016,0,120)}des prévisions météo d'ensemble mondiales,
+Dialogue: 0,0:58:14.11,0:58:18.18,Sub,,0,0,0,,{\fad(120,100)\move(960,1020,960,1016,0,120)}et des états turbulents stationnaires\Npour des {\c&H7AAF1B&}réglages{\c&HF7F4F2&} choisis.
+Dialogue: 0,0:58:18.92,0:58:23.32,Sub,,0,0,0,,{\fad(120,100)\move(960,1020,960,1016,0,120)}Entraînés sur des dynamos simulées ?\NNous n'en avons trouvé aucun.
+Dialogue: 0,0:58:25.17,0:58:30.41,Sub,,0,0,0,,{\fad(120,100)\move(960,1020,960,1016,0,120)}Troisième piste : faire obéir les\Néchantillons aux lois. Quatre familles.
+Dialogue: 0,0:58:30.66,0:58:33.74,Sub,,0,0,0,,{\fad(120,100)\move(960,1020,960,1016,0,120)}Contraintes dures :\Nintégrer la loi au réseau,
+Dialogue: 0,0:58:33.82,0:58:38.40,Sub,,0,0,0,,{\fad(120,100)\move(960,1020,960,1016,0,120)}par exemple un potentiel dont le\Nrotationnel est à divergence nulle,
+Dialogue: 0,0:58:38.48,0:58:42.45,Sub,,0,0,0,,{\fad(120,100)\move(960,1020,960,1016,0,120)}ou projeter chaque échantillon\Npendant sa génération.
+Dialogue: 0,0:58:42.62,0:58:46.51,Sub,,0,0,0,,{\fad(120,100)\move(960,1020,960,1016,0,120)}Contraintes souples : une pénalité dans\Nla perte, respectée seulement à peu près.
+Dialogue: 0,0:58:47.08,0:58:51.03,Sub,,0,0,0,,{\fad(120,100)\move(960,1020,960,1016,0,120)}Contraintes en {\c&H00A1ED&}loi{\c&HF7F4F2&} : on agit\Nsur la foule, par sa covariance,
+Dialogue: 0,0:58:51.11,0:58:54.88,Sub,,0,0,0,,{\fad(120,100)\move(960,1020,960,1016,0,120)}ou par l'équation que vérifie\Nun nuage stationnaire.
+Dialogue: 0,0:58:55.31,0:59:00.36,Sub,,0,0,0,,{\fad(120,100)\move(960,1020,960,1016,0,120)}Et la symétrie : un vent équivariant\Ndonne un nuage symétrique.
+Dialogue: 0,0:59:01.50,0:59:06.02,Sub,,0,0,0,,{\fad(120,100)\move(960,1020,960,1016,0,120)}Une prépublication de deux mille vingt-six\Na comparé des façons d'imposer une
+Dialogue: 0,0:59:06.10,0:59:10.97,Sub,,0,0,0,,{\fad(120,100)\move(960,1020,960,1016,0,120)}divergence nulle en écoulement plan :\Naucune stratégie ne l'emporte partout.
+Dialogue: 0,0:59:11.23,0:59:15.32,Sub,,0,0,0,,{\fad(120,100)\move(960,1020,960,1016,0,120)}En trois dimensions, nous avons\Ntrouvé deux générateurs à divergence
+Dialogue: 0,0:59:15.40,0:59:19.25,Sub,,0,0,0,,{\fad(120,100)\move(960,1020,960,1016,0,120)}exactement nulle, tous deux en\Nprépublication : la turbulence en
+Dialogue: 0,0:59:19.33,0:59:23.83,Sub,,0,0,0,,{\fad(120,100)\move(960,1020,960,1016,0,120)}boîte périodique, et un champ sans\Ncourant dans la couronne solaire.
+Dialogue: 0,0:59:24.29,0:59:28.88,Sub,,0,0,0,,{\fad(120,100)\move(960,1020,960,1016,0,120)}Aucun ne traite des parois, avec\Ndu vide dehors et du fer dedans.
+Dialogue: 0,0:59:29.90,0:59:32.37,Sub,,0,0,0,,{\fad(120,100)\move(960,1020,960,1016,0,120)}Quatrième piste :\Nl'assimilation de données,
+Dialogue: 0,0:59:32.45,0:59:35.21,Sub,,0,0,0,,{\fad(120,100)\move(960,1020,960,1016,0,120)}qui combine un modèle et quelques mesures.
+Dialogue: 0,0:59:35.62,0:59:38.47,Sub,,0,0,0,,{\fad(120,100)\move(960,1020,960,1016,0,120)}Les a priori appris y sont\Nentrés par des espaces
+Dialogue: 0,0:59:38.55,0:59:41.39,Sub,,0,0,0,,{\fad(120,100)\move(960,1020,960,1016,0,120)}latents compressés, puis par la diffusion.
+Dialogue: 0,0:59:41.47,0:59:44.51,Sub,,0,0,0,,{\fad(120,100)\move(960,1020,960,1016,0,120)}Et une bibliothèque logicielle\Nbranche désormais des réseaux
+Dialogue: 0,0:59:44.59,0:59:48.40,Sub,,0,0,0,,{\fad(120,100)\move(960,1020,960,1016,0,120)}profonds sur les filtres de Kalman\Net les méthodes variationnelles.
+Dialogue: 0,0:59:49.14,0:59:51.76,Sub,,0,0,0,,{\fad(120,100)\move(960,1020,960,1016,0,120)}Nous n'avons trouvé aucun\Na priori par diffusion
+Dialogue: 0,0:59:51.84,0:59:54.58,Sub,,0,0,0,,{\fad(120,100)\move(960,1020,960,1016,0,120)}utilisé ainsi pour les\Nfluides conducteurs.
+Dialogue: 0,0:59:55.18,0:59:58.17,Sub,,0,0,0,,{\fad(120,100)\move(960,1020,960,1016,0,120)}Près d'un renversement,\Nla réponse a deux polarités,
+Dialogue: 0,0:59:58.25,1:00:02.82,Sub,,0,0,0,,{\fad(120,100)\move(960,1020,960,1016,0,120)}et un a priori qui ignore le miroir\Npourrait la faire pencher d'un côté.
+Dialogue: 0,1:00:03.87,1:00:07.84,Sub,,0,0,0,,{\fad(120,100)\move(960,1020,960,1016,0,120)}Place aux repères cerclés :\Ndes articles cosignés par les encadrants.
+Dialogue: 0,1:00:08.23,1:00:11.71,Sub,,0,0,0,,{\fad(120,100)\move(960,1020,960,1016,0,120)}Côté dynamo : des dynamos de\NTaylor–Green poussées vers
+Dialogue: 0,1:00:11.79,1:00:14.37,Sub,,0,0,0,,{\fad(120,100)\move(960,1020,960,1016,0,120)}de petits {\c&H7AAF1B&}nombres de Prandtl magnétiques{\c&HF7F4F2&},
+Dialogue: 0,1:00:14.45,1:00:19.19,Sub,,0,0,0,,{\fad(120,100)\move(960,1020,960,1016,0,120)}et la cuve de VKS avec ses turbines\Nen fer, simulée dans deux codes.
+Dialogue: 0,1:00:19.41,1:00:23.38,Sub,,0,0,0,,{\fad(120,100)\move(960,1020,960,1016,0,120)}En deux mille vingt-six, les deux\Ncodes y ont obtenu des renversements,
+Dialogue: 0,1:00:23.46,1:00:26.93,Sub,,0,0,0,,{\fad(120,100)\move(960,1020,960,1016,0,120)}et un modèle à quatre cadrans\Nen reproduit l'essentiel.
+Dialogue: 0,1:00:27.75,1:00:31.34,Sub,,0,0,0,,{\fad(120,100)\move(960,1020,960,1016,0,120)}Côté apprentissage :\Ndes espaces latents d'autoencodeurs,
+Dialogue: 0,1:00:31.42,1:00:37.15,Sub,,0,0,0,,{\fad(120,100)\move(960,1020,960,1016,0,120)}interprétés grâce aux modes classiques des\Nécoulements, celui de von Kármán compris.
+Dialogue: 0,1:00:37.39,1:00:40.39,Sub,,0,0,0,,{\fad(120,100)\move(960,1020,960,1016,0,120)}Et de l'assimilation et des\Nmodèles de diffusion fondés
+Dialogue: 0,1:00:40.47,1:00:43.88,Sub,,0,0,0,,{\fad(120,100)\move(960,1020,960,1016,0,120)}sur des réseaux profonds,\Nhors des fluides conducteurs.
+Dialogue: 0,1:00:45.02,1:00:48.90,Sub,,0,0,0,,{\fad(120,100)\move(960,1020,960,1016,0,120)}Trois ingrédients sont réunis.\NMais, dans ce que nous avons trouvé,
+Dialogue: 0,1:00:48.98,1:00:51.32,Sub,,0,0,0,,{\fad(120,100)\move(960,1020,960,1016,0,120)}aucun des quatre encadrants n'a publié de
+Dialogue: 0,1:00:51.40,1:00:54.80,Sub,,0,0,0,,{\fad(120,100)\move(960,1020,960,1016,0,120)}{\c&HF09CB4&}modèle génératif{\c&HF7F4F2&} entraîné\Nsur des données de dynamo.
+Dialogue: 0,1:00:55.84,1:00:58.81,Sub,,0,0,0,,{\fad(120,100)\move(960,1020,960,1016,0,120)}Là où les modèles {\c&HF09CB4&}génératifs{\c&HF7F4F2&}\Net les contraintes croisent
+Dialogue: 0,1:00:58.89,1:01:02.34,Sub,,0,0,0,,{\fad(120,100)\move(960,1020,960,1016,0,120)}les pistes de la dynamo,\Nnous avons trouvé la carte vide.
+Dialogue: 0,1:01:02.74,1:01:05.84,Sub,,0,0,0,,{\fad(120,100)\move(960,1020,960,1016,0,120)}Un projet de thèse\Nindépendant vise cet endroit :
+Dialogue: 0,1:01:05.92,1:01:09.82,Sub,,0,0,0,,{\fad(120,100)\move(960,1020,960,1016,0,120)}cinq lacunes, chacune à côté\Nde son plus proche voisin.
+Dialogue: 0,1:01:10.56,1:01:13.63,Sub,,0,0,0,,{\fad(120,100)\move(960,1020,960,1016,0,120)}Première : un générateur\Nde champs de dynamo.
+Dialogue: 0,1:01:14.24,1:01:18.01,Sub,,0,0,0,,{\fad(120,100)\move(960,1020,960,1016,0,120)}Deuxième : une {\c&HE58739&}vitesse{\c&HF7F4F2&} et un\Nchamp magnétique à divergence
+Dialogue: 0,1:01:18.09,1:01:22.94,Sub,,0,0,0,,{\fad(120,100)\move(960,1020,960,1016,0,120)}exactement nulle, dans un cylindre\Nà parois, avec du fer et du vide.
+Dialogue: 0,1:01:23.10,1:01:26.77,Sub,,0,0,0,,{\fad(120,100)\move(960,1020,960,1016,0,120)}Troisième : des bilans d'énergie\Nimposés à la {\c&H00A1ED&}distribution{\c&HF7F4F2&},
+Dialogue: 0,1:01:26.85,1:01:30.61,Sub,,0,0,0,,{\fad(120,100)\move(960,1020,960,1016,0,120)}sans valeur cible, même là\Noù il n'y a pas de données.
+Dialogue: 0,1:01:31.34,1:01:33.96,Sub,,0,0,0,,{\fad(120,100)\move(960,1020,960,1016,0,120)}Quatrième : la fréquence\Ndes renversements,
+Dialogue: 0,1:01:34.04,1:01:37.45,Sub,,0,0,0,,{\fad(120,100)\move(960,1020,960,1016,0,120)}lue dans les instantanés\Navec la formule de Rice.
+Dialogue: 0,1:01:38.10,1:01:42.57,Sub,,0,0,0,,{\fad(120,100)\move(960,1020,960,1016,0,120)}Cinquième : un seul générateur\Nqui franchit le seuil dynamo.
+Dialogue: 0,1:01:43.71,1:01:46.77,Sub,,0,0,0,,{\fad(120,100)\move(960,1020,960,1016,0,120)}L'étude en a testé des\Npièces sur des cas jouets :
+Dialogue: 0,1:01:46.85,1:01:49.35,Sub,,0,0,0,,{\fad(120,100)\move(960,1020,960,1016,0,120)}des potentiels exacts sur la nappe plane,
+Dialogue: 0,1:01:49.43,1:01:53.98,Sub,,0,0,0,,{\fad(120,100)\move(960,1020,960,1016,0,120)}un bilan imposé sans données,\Nla formule de Rice sur trois cadrans.
+Dialogue: 0,1:01:55.00,1:01:58.84,Sub,,0,0,0,,{\fad(120,100)\move(960,1020,960,1016,0,120)}Le domaine avance vite :\Nun article de conférence de deux mille
+Dialogue: 0,1:01:58.92,1:02:02.57,Sub,,0,0,0,,{\fad(120,100)\move(960,1020,960,1016,0,120)}vingt-six affirme être le premier\Nà reconnaître un compromis
+Dialogue: 0,1:02:02.65,1:02:06.59,Sub,,0,0,0,,{\fad(120,100)\move(960,1020,960,1016,0,120)}entre précision physique et\Nprécision sur la {\c&H00A1ED&}distribution{\c&HF7F4F2&}.
+Dialogue: 0,1:02:06.71,1:02:10.60,Sub,,0,0,0,,{\fad(120,100)\move(960,1020,960,1016,0,120)}La leçon de l'étude, ne jamais\Nimposer une loi de la foule
+Dialogue: 0,1:02:10.68,1:02:14.76,Sub,,0,0,0,,{\fad(120,100)\move(960,1020,960,1016,0,120)}à chaque instantané, reste\Nà situer face à cet article.
+Dialogue: 0,1:02:15.50,1:02:19.07,Sub,,0,0,0,,{\fad(120,100)\move(960,1020,960,1016,0,120)}Non revendiqués : les temps\Nd'attente entre renversements,
+Dialogue: 0,1:02:19.15,1:02:22.33,Sub,,0,0,0,,{\fad(120,100)\move(960,1020,960,1016,0,120)}le minuscule\N{\c&H7AAF1B&}nombre de Prandtl magnétique{\c&HF7F4F2&} du sodium,
+Dialogue: 0,1:02:22.41,1:02:26.13,Sub,,0,0,0,,{\fad(120,100)\move(960,1020,960,1016,0,120)}le noyau terrestre,\Nles vraies données de laboratoire.
+Dialogue: 0,1:02:26.50,1:02:30.48,Sub,,0,0,0,,{\fad(120,100)\move(960,1020,960,1016,0,120)}Chaque zone vide est le résultat\Nd'une recherche bibliographique,
+Dialogue: 0,1:02:30.56,1:02:34.01,Sub,,0,0,0,,{\fad(120,100)\move(960,1020,960,1016,0,120)}pas une preuve, à revérifier\Navant chaque article.
+Dialogue: 0,1:02:35.57,1:02:39.48,Sub,,0,0,0,,{\fad(120,100)\move(960,1020,960,1016,0,120)}Premières données VKS :\Nle générateur doit-il s'entraîner sur la
+Dialogue: 0,1:02:39.56,1:02:44.25,Sub,,0,0,0,,{\fad(120,100)\move(960,1020,960,1016,0,120)}grille périodique de LATU, ou sur\Nle maillage cylindrique de SFEMaNS ?
+Dialogue: 0,1:02:49.30,1:02:50.70,Sub,,0,0,0,,{\fad(120,100)\move(960,1020,960,1016,0,120)}Retour à l'escalier.
+Dialogue: 0,1:02:51.09,1:02:54.26,Sub,,0,0,0,,{\fad(120,100)\move(960,1020,960,1016,0,120)}Les deux premières marches\Nsont éclairées par de petites
+Dialogue: 0,1:02:54.34,1:02:57.56,Sub,,0,0,0,,{\fad(120,100)\move(960,1020,960,1016,0,120)}expériences : trois nombres,\Npuis une nappe plane.
+Dialogue: 0,1:02:58.03,1:03:02.91,Sub,,0,0,0,,{\fad(120,100)\move(960,1020,960,1016,0,120)}La troisième, la boîte tourbillonnante,\Nn'a droit qu'à un aperçu.
+Dialogue: 0,1:03:03.65,1:03:07.13,Sub,,0,0,0,,{\fad(120,100)\move(960,1020,960,1016,0,120)}À partir de là, chaque marche\Nest un pari, écrit avant que
+Dialogue: 0,1:03:07.21,1:03:11.21,Sub,,0,0,0,,{\fad(120,100)\move(960,1020,960,1016,0,120)}les données n'existent, dans\Nun projet de thèse indépendant.
+Dialogue: 0,1:03:12.27,1:03:16.03,Sub,,0,0,0,,{\fad(120,100)\move(960,1020,960,1016,0,120)}Pour grimper, l'étude a d'abord\Nconstruit une usine à données.
+Dialogue: 0,1:03:16.49,1:03:18.68,Sub,,0,0,0,,{\fad(120,100)\move(960,1020,960,1016,0,120)}Une fiche recette règle les {\c&H7AAF1B&}boutons{\c&HF7F4F2&}.
+Dialogue: 0,1:03:19.05,1:03:22.08,Sub,,0,0,0,,{\fad(120,100)\move(960,1020,960,1016,0,120)}Des fours font tourner une\Nsimulation par réglage,
+Dialogue: 0,1:03:22.16,1:03:25.92,Sub,,0,0,0,,{\fad(120,100)\move(960,1020,960,1016,0,120)}sur un ordinateur portable\Nou sur un cluster de calcul.
+Dialogue: 0,1:03:26.17,1:03:29.63,Sub,,0,0,0,,{\fad(120,100)\move(960,1020,960,1016,0,120)}Chaque résultat est scellé\Ndans un bocal étiqueté :
+Dialogue: 0,1:03:29.71,1:03:34.20,Sub,,0,0,0,,{\fad(120,100)\move(960,1020,960,1016,0,120)}un numéro unique, la version\Ndu code, une somme de contrôle.
+Dialogue: 0,1:03:34.94,1:03:40.55,Sub,,0,0,0,,{\fad(120,100)\move(960,1020,960,1016,0,120)}Un registre recense chaque bocal, un menu\Nles répartit entre entraînement et test,
+Dialogue: 0,1:03:40.63,1:03:44.36,Sub,,0,0,0,,{\fad(120,100)\move(960,1020,960,1016,0,120)}le {\c&HF09CB4&}chef{\c&HF7F4F2&} apprend, et un\Ncritique note le résultat.
+Dialogue: 0,1:03:45.10,1:03:48.51,Sub,,0,0,0,,{\fad(120,100)\move(960,1020,960,1016,0,120)}Tout fonctionne de bout en bout\Nsur un processeur ordinaire ;
+Dialogue: 0,1:03:48.59,1:03:52.99,Sub,,0,0,0,,{\fad(120,100)\move(960,1020,960,1016,0,120)}rien n'a encore tourné sur une carte\Ngraphique, ni sur un vrai cluster.
+Dialogue: 0,1:03:53.54,1:03:57.46,Sub,,0,0,0,,{\fad(120,100)\move(960,1020,960,1016,0,120)}Une étiquette grise indique le\Nfichier qu'attend chaque cadre vide.
+Dialogue: 0,1:03:58.50,1:04:02.11,Sub,,0,0,0,,{\fad(120,100)\move(960,1020,960,1016,0,120)}Premier produit sorti de\Nla chaîne : la nappe plane,
+Dialogue: 0,1:04:02.19,1:04:05.71,Sub,,0,0,0,,{\fad(120,100)\move(960,1020,960,1016,0,120)}onze {\c&H7AAF1B&}diffusivités{\c&HF7F4F2&},\Nseize simulations chacune.
+Dialogue: 0,1:04:06.15,1:04:09.83,Sub,,0,0,0,,{\fad(120,100)\move(960,1020,960,1016,0,120)}Le pari, ici un contrôle des\Ndonnées : à chaque réglage,
+Dialogue: 0,1:04:09.91,1:04:15.68,Sub,,0,0,0,,{\fad(120,100)\move(960,1020,960,1016,0,120)}la {\c&H00A1ED&}dissipation moyenne{\c&HF7F4F2&} correspond à la\Npuissance injectée, à cinq pour cent près.
+Dialogue: 0,1:04:18.14,1:04:21.67,Sub,,0,0,0,,{\fad(120,100)\move(960,1020,960,1016,0,120)}Ouvrez un four : le solveur garde\Nl'{\c&HE58739&}écoulement{\c&HF7F4F2&} et le champ sous
+Dialogue: 0,1:04:21.75,1:04:25.63,Sub,,0,0,0,,{\fad(120,100)\move(960,1020,960,1016,0,120)}forme d'ondes, et un rotationnel\Ny devient une multiplication.
+Dialogue: 0,1:04:26.17,1:04:30.51,Sub,,0,0,0,,{\fad(120,100)\move(960,1020,960,1016,0,120)}Les produits sont plus simples sur la\Ngrille : chaque pas fait l'aller-retour.
+Dialogue: 0,1:04:30.69,1:04:32.75,Sub,,0,0,0,,{\fad(120,100)\move(960,1020,960,1016,0,120)}Il coupe le tiers extérieur des ondes :
+Dialogue: 0,1:04:32.83,1:04:36.36,Sub,,0,0,0,,{\fad(120,100)\move(960,1020,960,1016,0,120)}les produits ne peuvent plus\Nse replier en ondes factices.
+Dialogue: 0,1:04:36.65,1:04:40.42,Sub,,0,0,0,,{\fad(120,100)\move(960,1020,960,1016,0,120)}Une projection garde les deux\Nchamps à divergence nulle ;
+Dialogue: 0,1:04:40.50,1:04:43.54,Sub,,0,0,0,,{\fad(120,100)\move(960,1020,960,1016,0,120)}l'estompage, lui, est résolu exactement.
+Dialogue: 0,1:04:44.28,1:04:46.32,Sub,,0,0,0,,{\fad(120,100)\move(960,1020,960,1016,0,120)}Un pas en soixante-quatre au cube :
+Dialogue: 0,1:04:46.40,1:04:50.08,Sub,,0,0,0,,{\fad(120,100)\move(960,1020,960,1016,0,120)}huit centièmes de seconde,\Nsur un processeur ordinaire.
+Dialogue: 0,1:04:50.55,1:04:53.60,Sub,,0,0,0,,{\fad(120,100)\move(960,1020,960,1016,0,120)}Le pic de mémoire,\Nenviron quinze fois l'état,
+Dialogue: 0,1:04:53.68,1:04:58.31,Sub,,0,0,0,,{\fad(120,100)\move(960,1020,960,1016,0,120)}est estimé à six gigaoctets en\Ndeux cent cinquante-six au cube.
+Dialogue: 0,1:04:59.34,1:05:03.87,Sub,,0,0,0,,{\fad(120,100)\move(960,1020,960,1016,0,120)}Ouvrez un bocal : une simulation,\Nun fichier, organisé comme The Well,
+Dialogue: 0,1:05:03.95,1:05:08.23,Sub,,0,0,0,,{\fad(120,100)\move(960,1020,960,1016,0,120)}un jeu de données de référence\Nen apprentissage automatique.
+Dialogue: 0,1:05:08.63,1:05:11.75,Sub,,0,0,0,,{\fad(120,100)\move(960,1020,960,1016,0,120)}À l'intérieur : la {\c&HE58739&}vitesse{\c&HF7F4F2&}\Net le champ magnétique,
+Dialogue: 0,1:05:11.83,1:05:17.54,Sub,,0,0,0,,{\fad(120,100)\move(960,1020,960,1016,0,120)}instantané après instantané, et des séries\Ntemporelles d'énergies et de divergences.
+Dialogue: 0,1:05:17.74,1:05:21.55,Sub,,0,0,0,,{\fad(120,100)\move(960,1020,960,1016,0,120)}Le fichier porte un identifiant\Nunique et le commit du code.
+Dialogue: 0,1:05:22.29,1:05:26.36,Sub,,0,0,0,,{\fad(120,100)\move(960,1020,960,1016,0,120)}Le catalogue reprend cet identifiant\Net ajoute une somme de contrôle.
+Dialogue: 0,1:05:26.71,1:05:29.50,Sub,,0,0,0,,{\fad(120,100)\move(960,1020,960,1016,0,120)}Ainsi, un cluster sans\Nréseau peut reconstruire
+Dialogue: 0,1:05:29.58,1:05:32.96,Sub,,0,0,0,,{\fad(120,100)\move(960,1020,960,1016,0,120)}ses lignes de catalogue\Ndepuis les seuls fichiers.
+Dialogue: 0,1:05:33.38,1:05:39.17,Sub,,0,0,0,,{\fad(120,100)\move(960,1020,960,1016,0,120)}Une somme de contrôle, pas un scellé :\Nune réécriture forcée la met à jour.
+Dialogue: 0,1:05:40.20,1:05:44.14,Sub,,0,0,0,,{\fad(120,100)\move(960,1020,960,1016,0,120)}Suivez une campagne tout au\Nlong de la chaîne. Une commande
+Dialogue: 0,1:05:44.22,1:05:48.43,Sub,,0,0,0,,{\fad(120,100)\move(960,1020,960,1016,0,120)}lit la fiche recette :\Nla nappe plane, onze {\c&H7AAF1B&}diffusivités{\c&HF7F4F2&}.
+Dialogue: 0,1:05:48.71,1:05:51.38,Sub,,0,0,0,,{\fad(120,100)\move(960,1020,960,1016,0,120)}Le lanceur ouvre une tâche par réglage ;
+Dialogue: 0,1:05:51.46,1:05:56.74,Sub,,0,0,0,,{\fad(120,100)\move(960,1020,960,1016,0,120)}chacune fait avancer seize simulations\Nde front, et écrit un seul fichier.
+Dialogue: 0,1:05:56.82,1:06:02.25,Sub,,0,0,0,,{\fad(120,100)\move(960,1020,960,1016,0,120)}Chaque tâche inscrit au registre son\Nstatut, sa somme de contrôle et sa durée.
+Dialogue: 0,1:06:02.99,1:06:07.98,Sub,,0,0,0,,{\fad(120,100)\move(960,1020,960,1016,0,120)}Cette campagne n'a pas encore tourné.\NLe pari : les onze tâches aboutissent,
+Dialogue: 0,1:06:08.06,1:06:11.58,Sub,,0,0,0,,{\fad(120,100)\move(960,1020,960,1016,0,120)}chacune avec un fichier\Net sa somme de contrôle.
+Dialogue: 0,1:06:11.87,1:06:14.90,Sub,,0,0,0,,{\fad(120,100)\move(960,1020,960,1016,0,120)}Confiance : élevée.\NDe petites campagnes de
+Dialogue: 0,1:06:14.98,1:06:18.42,Sub,,0,0,0,,{\fad(120,100)\move(960,1020,960,1016,0,120)}test ont déjà abouti,\Nen quelques secondes.
+Dialogue: 0,1:06:18.51,1:06:23.63,Sub,,0,0,0,,{\fad(120,100)\move(960,1020,960,1016,0,120)}Les données du rapport, issues du même\Nsolveur, ont pris environ une demi-heure.
+Dialogue: 0,1:06:26.27,1:06:29.60,Sub,,0,0,0,,{\fad(120,100)\move(960,1020,960,1016,0,120)}Un nouvel instrument pour le\N{\c&H00A1ED&}critique{\c&HF7F4F2&} : sur la nappe plane,
+Dialogue: 0,1:06:29.68,1:06:33.60,Sub,,0,0,0,,{\fad(120,100)\move(960,1020,960,1016,0,120)}les {\c&H3468EB&}lignes de champ{\c&HF7F4F2&} sont les\Ncourbes de niveau d'un potentiel.
+Dialogue: 0,1:06:34.01,1:06:37.92,Sub,,0,0,0,,{\fad(120,100)\move(960,1020,960,1016,0,120)}Elles tournent autour des points\NO et se croisent aux points X.
+Dialogue: 0,1:06:38.42,1:06:42.03,Sub,,0,0,0,,{\fad(120,100)\move(960,1020,960,1016,0,120)}Sur ce carré périodique,\Nlesquels sont les plus nombreux ?
+Dialogue: 0,1:06:45.27,1:06:48.21,Sub,,0,0,0,,{\fad(120,100)\move(960,1020,960,1016,0,120)}Aucun des deux : il y\Nen a exactement autant,
+Dialogue: 0,1:06:48.29,1:06:50.96,Sub,,0,0,0,,{\fad(120,100)\move(960,1020,960,1016,0,120)}un test gratuit pour tout compteur.
+Dialogue: 0,1:06:51.70,1:06:56.23,Sub,,0,0,0,,{\fad(120,100)\move(960,1020,960,1016,0,120)}L'offre de stage demande de la topologie ;\Nle rapport n'en a rien calculé.
+Dialogue: 0,1:06:56.56,1:07:01.45,Sub,,0,0,0,,{\fad(120,100)\move(960,1020,960,1016,0,120)}Un pari à faible confiance : les champs\Ngénérés retrouvent le comptage simulé.
+Dialogue: 0,1:07:01.80,1:07:06.14,Sub,,0,0,0,,{\fad(120,100)\move(960,1020,960,1016,0,120)}Le plan retient ce comptage,\Nmais ne fixe aucun seuil de réussite.
+Dialogue: 0,1:07:08.07,1:07:11.41,Sub,,0,0,0,,{\fad(120,100)\move(960,1020,960,1016,0,120)}Quelle métrique de topologie\Ndoit juger les champs générés,
+Dialogue: 0,1:07:11.49,1:07:15.29,Sub,,0,0,0,,{\fad(120,100)\move(960,1020,960,1016,0,120)}et quel écart du nombre de\Npoints X fait échouer un modèle ?
+Dialogue: 0,1:07:17.74,1:07:21.73,Sub,,0,0,0,,{\fad(120,100)\move(960,1020,960,1016,0,120)}Avant de se fier au solveur,\Non le teste sur une solution connue.
+Dialogue: 0,1:07:22.23,1:07:28.12,Sub,,0,0,0,,{\fad(120,100)\move(960,1020,960,1016,0,120)}L'{\c&HE58739&}écoulement{\c&HF7F4F2&} tourbillonnant en offre une :\Nun champ qui épouse exactement sa forme.
+Dialogue: 0,1:07:28.46,1:07:31.89,Sub,,0,0,0,,{\fad(120,100)\move(960,1020,960,1016,0,120)}Ses lignes suivent celles de l'écoulement,
+Dialogue: 0,1:07:31.97,1:07:36.16,Sub,,0,0,0,,{\fad(120,100)\move(960,1020,960,1016,0,120)}si bien que transport\Net étirement s'annulent.
+Dialogue: 0,1:07:36.38,1:07:37.59,Sub,,0,0,0,,{\fad(120,100)\move(960,1020,960,1016,0,120)}Seule la diffusion agit :
+Dialogue: 0,1:07:37.67,1:07:40.81,Sub,,0,0,0,,{\fad(120,100)\move(960,1020,960,1016,0,120)}le taux de croissance vaut\Nexactement moins un sur {\c&H7AAF1B&}Rm{\c&HF7F4F2&}.
+Dialogue: 0,1:07:41.55,1:07:45.49,Sub,,0,0,0,,{\fad(120,100)\move(960,1020,960,1016,0,120)}Le taux mesuré, celui du champ\Nle plus lent à s'éteindre,
+Dialogue: 0,1:07:45.57,1:07:50.34,Sub,,0,0,0,,{\fad(120,100)\move(960,1020,960,1016,0,120)}ne peut donc pas être plus bas :\Nà {\c&H7AAF1B&}Rm{\c&HF7F4F2&} égal deux, moins un demi.
+Dialogue: 0,1:07:50.87,1:07:55.03,Sub,,0,0,0,,{\fad(120,100)\move(960,1020,960,1016,0,120)}Le solveur trouve moins zéro\Nvirgule cinq zéro zéro un :
+Dialogue: 0,1:07:55.11,1:07:58.85,Sub,,0,0,0,,{\fad(120,100)\move(960,1020,960,1016,0,120)}sur la borne, à environ\Nun dix-millième près.
+Dialogue: 0,1:07:59.90,1:08:03.64,Sub,,0,0,0,,{\fad(120,100)\move(960,1020,960,1016,0,120)}Laissez tourner assez longtemps,\Net un seul {\c&H3468EB&}champ{\c&HF7F4F2&} l'emporte :
+Dialogue: 0,1:08:03.72,1:08:07.49,Sub,,0,0,0,,{\fad(120,100)\move(960,1020,960,1016,0,120)}le plus lent à s'éteindre,\Nou le plus rapide à grandir.
+Dialogue: 0,1:08:08.03,1:08:13.29,Sub,,0,0,0,,{\fad(120,100)\move(960,1020,960,1016,0,120)}La surface enveloppe ses zones intenses ;\Ndes filaments tracent ses lignes de champ.
+Dialogue: 0,1:08:14.03,1:08:16.50,Sub,,0,0,0,,{\fad(120,100)\move(960,1020,960,1016,0,120)}À {\c&H7AAF1B&}Rm{\c&HF7F4F2&} égal huit, il s'éteint.
+Dialogue: 0,1:08:16.85,1:08:20.81,Sub,,0,0,0,,{\fad(120,100)\move(960,1020,960,1016,0,120)}À douze et à seize,\Ndans la fenêtre, il grandit.
+Dialogue: 0,1:08:21.26,1:08:24.73,Sub,,0,0,0,,{\fad(120,100)\move(960,1020,960,1016,0,120)}À vingt, juste au-delà,\Nil s'éteint de nouveau.
+Dialogue: 0,1:08:25.26,1:08:28.44,Sub,,0,0,0,,{\fad(120,100)\move(960,1020,960,1016,0,120)}Sur ces instantanés,\Nà huit, seize et vingt,
+Dialogue: 0,1:08:28.52,1:08:31.74,Sub,,0,0,0,,{\fad(120,100)\move(960,1020,960,1016,0,120)}il se concentre dans quatre tubes fins.
+Dialogue: 0,1:08:32.17,1:08:36.19,Sub,,0,0,0,,{\fad(120,100)\move(960,1020,960,1016,0,120)}Leur intensité culmine en des\Npoints où l'{\c&HE58739&}écoulement{\c&HF7F4F2&} est immobile.
+Dialogue: 0,1:08:36.48,1:08:38.47,Sub,,0,0,0,,{\fad(120,100)\move(960,1020,960,1016,0,120)}À douze, il s'étale.
+Dialogue: 0,1:08:39.21,1:08:42.22,Sub,,0,0,0,,{\fad(120,100)\move(960,1020,960,1016,0,120)}La littérature décrit de tels\Ntubes en forme de cigare,
+Dialogue: 0,1:08:42.30,1:08:45.43,Sub,,0,0,0,,{\fad(120,100)\move(960,1020,960,1016,0,120)}et des symétries que le\Nrapport n'a pas vérifiées.
+Dialogue: 0,1:08:45.97,1:08:48.57,Sub,,0,0,0,,{\fad(120,100)\move(960,1020,960,1016,0,120)}Une forme par réglage :\Nde premières cibles,
+Dialogue: 0,1:08:48.65,1:08:51.95,Sub,,0,0,0,,{\fad(120,100)\move(960,1020,960,1016,0,120)}proposées pour un {\c&HF09CB4&}générateur{\c&HF7F4F2&}\Nen trois dimensions.
+Dialogue: 0,1:08:53.20,1:08:58.21,Sub,,0,0,0,,{\fad(120,100)\move(960,1020,960,1016,0,120)}Quelle précision sur ces seuils ? Pour\Nchaque simulation, un ajustement long,
+Dialogue: 0,1:08:58.29,1:09:03.18,Sub,,0,0,0,,{\fad(120,100)\move(960,1020,960,1016,0,120)}sur la seconde moitié, et un ajustement\Ntardif, sur le dernier quart.
+Dialogue: 0,1:09:03.62,1:09:06.85,Sub,,0,0,0,,{\fad(120,100)\move(960,1020,960,1016,0,120)}Deux réglages sont recalculés\Nsur une grille plus
+Dialogue: 0,1:09:06.93,1:09:10.77,Sub,,0,0,0,,{\fad(120,100)\move(960,1020,960,1016,0,120)}fine. À {\c&H7AAF1B&}Rm{\c&HF7F4F2&} égal douze,\Nles trois valeurs concordent.
+Dialogue: 0,1:09:11.51,1:09:15.86,Sub,,0,0,0,,{\fad(120,100)\move(960,1020,960,1016,0,120)}À dix-sept et demi, pile sur le\Nseuil : même signe pour les trois ?
+Dialogue: 0,1:09:19.10,1:09:22.61,Sub,,0,0,0,,{\fad(120,100)\move(960,1020,960,1016,0,120)}Non : selon l'ajustement\Nlong, le champ grandit ;
+Dialogue: 0,1:09:22.69,1:09:27.20,Sub,,0,0,0,,{\fad(120,100)\move(960,1020,960,1016,0,120)}selon l'ajustement tardif et\Nla grille fine, il s'éteint.
+Dialogue: 0,1:09:27.89,1:09:31.84,Sub,,0,0,0,,{\fad(120,100)\move(960,1020,960,1016,0,120)}Ce seuil-là est connu à\Nenviron zéro virgule un près ;
+Dialogue: 0,1:09:31.92,1:09:35.91,Sub,,0,0,0,,{\fad(120,100)\move(960,1020,960,1016,0,120)}le troisième, vers vingt-sept,\Nà environ un près.
+Dialogue: 0,1:09:36.02,1:09:38.84,Sub,,0,0,0,,{\fad(120,100)\move(960,1020,960,1016,0,120)}Une cause probable, pas encore vérifiée :
+Dialogue: 0,1:09:38.92,1:09:43.27,Sub,,0,0,0,,{\fad(120,100)\move(960,1020,960,1016,0,120)}les modes oscillent, donc la\Ncourbe de croissance ondule.
+Dialogue: 0,1:09:43.68,1:09:47.89,Sub,,0,0,0,,{\fad(120,100)\move(960,1020,960,1016,0,120)}La divergence, au moins, reste\Nau niveau de l'erreur d'arrondi.
+Dialogue: 0,1:09:48.46,1:09:52.28,Sub,,0,0,0,,{\fad(120,100)\move(960,1020,960,1016,0,120)}C'est de ce signe indéterminé\Nque part le premier pari.
+Dialogue: 0,1:09:53.44,1:09:56.64,Sub,,0,0,0,,{\fad(120,100)\move(960,1020,960,1016,0,120)}Près des seuils, faut-il ajuster\Nles taux de croissance avec
+Dialogue: 0,1:09:56.72,1:10:00.45,Sub,,0,0,0,,{\fad(120,100)\move(960,1020,960,1016,0,120)}un terme d'oscillation,\Nou simplement simuler plus longtemps ?
+Dialogue: 0,1:10:02.70,1:10:05.71,Sub,,0,0,0,,{\fad(120,100)\move(960,1020,960,1016,0,120)}Premier pari : la boîte tourbillonnante.
+Dialogue: 0,1:10:06.20,1:10:10.83,Sub,,0,0,0,,{\fad(120,100)\move(960,1020,960,1016,0,120)}En trente-deux au cube, le petit balayage\Na retrouvé les fenêtres publiées,
+Dialogue: 0,1:10:10.91,1:10:16.01,Sub,,0,0,0,,{\fad(120,100)\move(960,1020,960,1016,0,120)}mais vers dix-sept et demi, le signe\Nde la croissance est resté indéterminé.
+Dialogue: 0,1:10:16.75,1:10:19.40,Sub,,0,0,0,,{\fad(120,100)\move(960,1020,960,1016,0,120)}La campagne double la\Nrésolution et parcourt
+Dialogue: 0,1:10:19.48,1:10:22.59,Sub,,0,0,0,,{\fad(120,100)\move(960,1020,960,1016,0,120)}les valeurs entières de\N{\c&H7AAF1B&}Rm{\c&HF7F4F2&}, jusqu'à quarante.
+Dialogue: 0,1:10:23.05,1:10:26.43,Sub,,0,0,0,,{\fad(120,100)\move(960,1020,960,1016,0,120)}Le pari : une croissance\Nencore positive à dix-sept,
+Dialogue: 0,1:10:26.51,1:10:30.49,Sub,,0,0,0,,{\fad(120,100)\move(960,1020,960,1016,0,120)}déjà négative à dix-huit, avec\Ndeux ajustements concordants :
+Dialogue: 0,1:10:30.57,1:10:36.02,Sub,,0,0,0,,{\fad(120,100)\move(960,1020,960,1016,0,120)}l'un sur la partie conservée de la\Nsimulation, l'autre sur son dernier quart.
+Dialogue: 0,1:10:37.56,1:10:41.21,Sub,,0,0,0,,{\fad(120,100)\move(960,1020,960,1016,0,120)}Confiance : moyenne. À dix-huit,\Ndans le petit balayage,
+Dialogue: 0,1:10:41.29,1:10:43.47,Sub,,0,0,0,,{\fad(120,100)\move(960,1020,960,1016,0,120)}l'écart entre les deux ajustements
+Dialogue: 0,1:10:43.55,1:10:46.94,Sub,,0,0,0,,{\fad(120,100)\move(960,1020,960,1016,0,120)}dépassait déjà le taux\Nde croissance lui-même.
+Dialogue: 0,1:10:47.32,1:10:49.10,Sub,,0,0,0,,{\fad(120,100)\move(960,1020,960,1016,0,120)}À demander avant le lancement :
+Dialogue: 0,1:10:49.18,1:10:52.91,Sub,,0,0,0,,{\fad(120,100)\move(960,1020,960,1016,0,120)}faut-il ajouter trois points\Nentre dix-sept et dix-huit ?
+Dialogue: 0,1:10:54.14,1:10:56.80,Sub,,0,0,0,,{\fad(120,100)\move(960,1020,960,1016,0,120)}Deuxième pari, la première vraie dynamo :
+Dialogue: 0,1:10:56.88,1:11:01.64,Sub,,0,0,0,,{\fad(120,100)\move(960,1020,960,1016,0,120)}un écoulement de Taylor-Green,\Nfait de tourbillons contrarotatifs.
+Dialogue: 0,1:11:02.16,1:11:05.63,Sub,,0,0,0,,{\fad(120,100)\move(960,1020,960,1016,0,120)}Cette fois, le {\c&H3468EB&}champ{\c&HF7F4F2&} agit\Nen retour sur l'écoulement.
+Dialogue: 0,1:11:06.13,1:11:11.05,Sub,,0,0,0,,{\fad(120,100)\move(960,1020,960,1016,0,120)}Au-dessus d'un seuil, un {\c&H3468EB&}germe{\c&HF7F4F2&} minuscule\Ndevrait croître, puis plafonner.
+Dialogue: 0,1:11:11.79,1:11:17.20,Sub,,0,0,0,,{\fad(120,100)\move(960,1020,960,1016,0,120)}Douze simulations croisent quatre nombres\Nde Reynolds et trois valeurs de {\c&H7AAF1B&}Pm{\c&HF7F4F2&}.
+Dialogue: 0,1:11:17.65,1:11:23.65,Sub,,0,0,0,,{\fad(120,100)\move(960,1020,960,1016,0,120)}Le pari : un seuil en {\c&H7AAF1B&}Rm{\c&HF7F4F2&}, encadré\Npour au moins deux valeurs de Pm.
+Dialogue: 0,1:11:25.35,1:11:28.06,Sub,,0,0,0,,{\fad(120,100)\move(960,1020,960,1016,0,120)}Confiance : moyenne.\NLes simulations publiées
+Dialogue: 0,1:11:28.14,1:11:30.78,Sub,,0,0,0,,{\fad(120,100)\move(960,1020,960,1016,0,120)}définissent le nombre\Nde Reynolds autrement,
+Dialogue: 0,1:11:30.86,1:11:34.79,Sub,,0,0,0,,{\fad(120,100)\move(960,1020,960,1016,0,120)}si bien que le seuil pourrait\Ntomber hors de cette grille.
+Dialogue: 0,1:11:35.20,1:11:37.93,Sub,,0,0,0,,{\fad(120,100)\move(960,1020,960,1016,0,120)}Près du seuil, une simulation\Npeut encore croître
+Dialogue: 0,1:11:38.01,1:11:40.75,Sub,,0,0,0,,{\fad(120,100)\move(960,1020,960,1016,0,120)}au moment où l'on prélève ses instantanés.
+Dialogue: 0,1:11:40.97,1:11:45.07,Sub,,0,0,0,,{\fad(120,100)\move(960,1020,960,1016,0,120)}Faut-il allonger ces simulations,\Nou les signaler et les exclure ?
+Dialogue: 0,1:11:46.70,1:11:49.32,Sub,,0,0,0,,{\fad(120,100)\move(960,1020,960,1016,0,120)}Près d'un seuil doux,\Nla vérité monte comme
+Dialogue: 0,1:11:49.40,1:11:52.18,Sub,,0,0,0,,{\fad(120,100)\move(960,1020,960,1016,0,120)}une racine carrée, verticale au départ.
+Dialogue: 0,1:11:52.66,1:11:55.63,Sub,,0,0,0,,{\fad(120,100)\move(960,1020,960,1016,0,120)}Une {\c&HF09CB4&}machine{\c&HF7F4F2&} rigide arrondit\Nl'angle ; une autre,
+Dialogue: 0,1:11:55.71,1:11:59.84,Sub,,0,0,0,,{\fad(120,100)\move(960,1020,960,1016,0,120)}plus souple, se trompe moins,\Nmais devient nerveuse partout.
+Dialogue: 0,1:12:00.58,1:12:03.83,Sub,,0,0,0,,{\fad(120,100)\move(960,1020,960,1016,0,120)}Près d'un seuil sous-critique,\Ndeux états coexistent.
+Dialogue: 0,1:12:04.16,1:12:07.67,Sub,,0,0,0,,{\fad(120,100)\move(960,1020,960,1016,0,120)}Dans des simulations de\NTaylor-Green publiées, une dynamo,
+Dialogue: 0,1:12:07.75,1:12:11.36,Sub,,0,0,0,,{\fad(120,100)\move(960,1020,960,1016,0,120)}une fois amorcée, a tenu\Njusqu'au tiers de son seuil.
+Dialogue: 0,1:12:11.69,1:12:15.85,Sub,,0,0,0,,{\fad(120,100)\move(960,1020,960,1016,0,120)}Avec le {\c&H7AAF1B&}bouton{\c&HF7F4F2&} pour seule indication,\Nune machine mélange les deux.
+Dialogue: 0,1:12:16.59,1:12:19.13,Sub,,0,0,0,,{\fad(120,100)\move(960,1020,960,1016,0,120)}Le pari du plan : indiquez-lui la branche,
+Dialogue: 0,1:12:19.21,1:12:22.90,Sub,,0,0,0,,{\fad(120,100)\move(960,1020,960,1016,0,120)}et son erreur au seuil sera\Nau moins divisée par deux.
+Dialogue: 0,1:12:24.24,1:12:27.18,Sub,,0,0,0,,{\fad(120,100)\move(960,1020,960,1016,0,120)}Confiance : faible.\NLa stabilité statistique le long
+Dialogue: 0,1:12:27.26,1:12:30.66,Sub,,0,0,0,,{\fad(120,100)\move(960,1020,960,1016,0,120)}des branches n'est pas\Ndémontrée en régime turbulent.
+Dialogue: 0,1:12:31.10,1:12:33.61,Sub,,0,0,0,,{\fad(120,100)\move(960,1020,960,1016,0,120)}Aucun balayage descendant\Nn'est configuré :
+Dialogue: 0,1:12:33.69,1:12:37.93,Sub,,0,0,0,,{\fad(120,100)\move(960,1020,960,1016,0,120)}à partir de quelles simulations\Nsaturées, et jusqu'où descendre ?
+Dialogue: 0,1:12:39.37,1:12:42.05,Sub,,0,0,0,,{\fad(120,100)\move(960,1020,960,1016,0,120)}Pour certaines choses, pas besoin de pari.
+Dialogue: 0,1:12:42.56,1:12:46.89,Sub,,0,0,0,,{\fad(120,100)\move(960,1020,960,1016,0,120)}En trois dimensions, les cartes de\Nrelief deviennent des potentiels :
+Dialogue: 0,1:12:46.97,1:12:50.95,Sub,,0,0,0,,{\fad(120,100)\move(960,1020,960,1016,0,120)}le {\c&HF09CB4&}générateur{\c&HF7F4F2&} les dessine,\Npuis calcule leur rotationnel.
+Dialogue: 0,1:12:51.19,1:12:54.98,Sub,,0,0,0,,{\fad(120,100)\move(960,1020,960,1016,0,120)}Ainsi, l'{\c&HE58739&}écoulement{\c&HF7F4F2&} et le champ\Nrestent à divergence nulle,
+Dialogue: 0,1:12:55.06,1:12:59.39,Sub,,0,0,0,,{\fad(120,100)\move(960,1020,960,1016,0,120)}à l'erreur d'arrondi près,\Nmême avec des poids non entraînés.
+Dialogue: 0,1:13:00.13,1:13:05.12,Sub,,0,0,0,,{\fad(120,100)\move(960,1020,960,1016,0,120)}Prenez le reflet du bruit de départ, et\Nl'échantillon sort avec son {\c&H3468EB&}champ{\c&HF7F4F2&} inversé.
+Dialogue: 0,1:13:05.66,1:13:08.48,Sub,,0,0,0,,{\fad(120,100)\move(960,1020,960,1016,0,120)}Cela montre le mécanisme, pas la qualité.
+Dialogue: 0,1:13:09.54,1:13:11.50,Sub,,0,0,0,,{\fad(120,100)\move(960,1020,960,1016,0,120)}Tout le reste doit être mesuré.
+Dialogue: 0,1:13:11.86,1:13:15.74,Sub,,0,0,0,,{\fad(120,100)\move(960,1020,960,1016,0,120)}Premier test : le {\c&HF09CB4&}générateur{\c&HF7F4F2&}\Nreproduit-il les spectres d'énergie
+Dialogue: 0,1:13:15.82,1:13:20.11,Sub,,0,0,0,,{\fad(120,100)\move(960,1020,960,1016,0,120)}à un dixième de décade près,\Naux réglages vus à l'entraînement ?
+Dialogue: 0,1:13:20.85,1:13:22.63,Sub,,0,0,0,,{\fad(120,100)\move(960,1020,960,1016,0,120)}Confiance : faible.
+Dialogue: 0,1:13:22.98,1:13:26.37,Sub,,0,0,0,,{\fad(120,100)\move(960,1020,960,1016,0,120)}En deux dimensions,\Nles meilleurs modèles y sont tout
+Dialogue: 0,1:13:26.45,1:13:29.51,Sub,,0,0,0,,{\fad(120,100)\move(960,1020,960,1016,0,120)}juste parvenus ; et ici,\Nchaque simulation garde
+Dialogue: 0,1:13:29.59,1:13:33.40,Sub,,0,0,0,,{\fad(120,100)\move(960,1020,960,1016,0,120)}quarante instantanés,\Ncontre cinq mille dans le plan.
+Dialogue: 0,1:13:35.74,1:13:39.00,Sub,,0,0,0,,{\fad(120,100)\move(960,1020,960,1016,0,120)}Maintenant, la loi de la\Nfoule en trois dimensions :
+Dialogue: 0,1:13:39.08,1:13:42.56,Sub,,0,0,0,,{\fad(120,100)\move(960,1020,960,1016,0,120)}en moyenne, autant d'énergie\Nentre qu'il en sort.
+Dialogue: 0,1:13:43.03,1:13:47.02,Sub,,0,0,0,,{\fad(120,100)\move(960,1020,960,1016,0,120)}En deux dimensions, la perte en\Nloi a ramené l'{\c&H00A1ED&}erreur de bilan{\c&HF7F4F2&}
+Dialogue: 0,1:13:47.10,1:13:51.71,Sub,,0,0,0,,{\fad(120,100)\move(960,1020,960,1016,0,120)}à six pour cent ; un témoin de\Nmême durée restait à quarante-six.
+Dialogue: 0,1:13:52.45,1:13:56.25,Sub,,0,0,0,,{\fad(120,100)\move(960,1020,960,1016,0,120)}Le pari : moins de cinq pour\Ncent aux réglages jamais vus,
+Dialogue: 0,1:13:56.33,1:14:01.56,Sub,,0,0,0,,{\fad(120,100)\move(960,1020,960,1016,0,120)}un témoin moins bon, la {\c&H00A1ED&}dispersion{\c&HF7F4F2&} de\Nla dissipation à un cinquième près.
+Dialogue: 0,1:14:02.90,1:14:07.25,Sub,,0,0,0,,{\fad(120,100)\move(960,1020,960,1016,0,120)}Confiance : faible. Sur les trois\Ncadrans, la perte a resserré la
+Dialogue: 0,1:14:07.33,1:14:12.44,Sub,,0,0,0,,{\fad(120,100)\move(960,1020,960,1016,0,120)}dispersion des variations d'énergie,\Net a échoué sur un modèle biaisé.
+Dialogue: 0,1:14:13.01,1:14:17.20,Sub,,0,0,0,,{\fad(120,100)\move(960,1020,960,1016,0,120)}À demander d'abord : là où les\Nsimulations croissent peut-être encore,
+Dialogue: 0,1:14:17.28,1:14:20.24,Sub,,0,0,0,,{\fad(120,100)\move(960,1020,960,1016,0,120)}croire les données,\Nou la loi de la foule ?
+Dialogue: 0,1:14:21.77,1:14:24.66,Sub,,0,0,0,,{\fad(120,100)\move(960,1020,960,1016,0,120)}Avant les simulations\NTaylor-Green : quel forçage,
+Dialogue: 0,1:14:24.74,1:14:28.21,Sub,,0,0,0,,{\fad(120,100)\move(960,1020,960,1016,0,120)}quelle définition du nombre de\NReynolds et quelle résolution
+Dialogue: 0,1:14:28.29,1:14:31.59,Sub,,0,0,0,,{\fad(120,100)\move(960,1020,960,1016,0,120)}rendent leur seuil comparable\Naux seuils publiés ?
+Dialogue: 0,1:14:33.84,1:14:36.92,Sub,,0,0,0,,{\fad(120,100)\move(960,1020,960,1016,0,120)}Il reste deux marches :\Nle cylindre de VKS,
+Dialogue: 0,1:14:37.00,1:14:42.05,Sub,,0,0,0,,{\fad(120,100)\move(960,1020,960,1016,0,120)}avec ses turbines en fer, et DRESDYN,\Nun cylindre en précession.
+Dialogue: 0,1:14:42.43,1:14:46.10,Sub,,0,0,0,,{\fad(120,100)\move(960,1020,960,1016,0,120)}D'abord, ce que signifie\Nêtre exact avec des parois,
+Dialogue: 0,1:14:46.18,1:14:50.20,Sub,,0,0,0,,{\fad(120,100)\move(960,1020,960,1016,0,120)}des métaux et des maillages ;\Nensuite, leurs paris.
+Dialogue: 0,1:14:52.84,1:14:55.10,Sub,,0,0,0,,{\fad(120,100)\move(960,1020,960,1016,0,120)}Avant les parois, une convention :
+Dialogue: 0,1:14:55.18,1:14:59.72,Sub,,0,0,0,,{\fad(120,100)\move(960,1020,960,1016,0,120)}dans l'expérience au sodium,\N{\c&H7AAF1B&}Rm{\c&HF7F4F2&} n'a pas de définition unique.
+Dialogue: 0,1:15:00.08,1:15:04.71,Sub,,0,0,0,,{\fad(120,100)\move(960,1020,960,1016,0,120)}Un article multiplie par l'efficacité\Ndes turbines, proche de zéro
+Dialogue: 0,1:15:04.79,1:15:09.77,Sub,,0,0,0,,{\fad(120,100)\move(960,1020,960,1016,0,120)}virgule six ; un autre, non ;\Nun troisième prend d'autres rayons.
+Dialogue: 0,1:15:10.51,1:15:13.02,Sub,,0,0,0,,{\fad(120,100)\move(960,1020,960,1016,0,120)}Un même seuil vaut donc\Nenviron trente et un,
+Dialogue: 0,1:15:13.10,1:15:15.73,Sub,,0,0,0,,{\fad(120,100)\move(960,1020,960,1016,0,120)}ou de cinquante-deux à soixante et onze.
+Dialogue: 0,1:15:16.32,1:15:21.66,Sub,,0,0,0,,{\fad(120,100)\move(960,1020,960,1016,0,120)}Un {\c&HF09CB4&}générateur{\c&HF7F4F2&} conditionné sur Rm doit\Npréciser de quelle définition il s'agit.
+Dialogue: 0,1:15:22.70,1:15:24.17,Sub,,0,0,0,,{\fad(120,100)\move(960,1020,960,1016,0,120)}Venons-en aux parois.
+Dialogue: 0,1:15:24.52,1:15:27.94,Sub,,0,0,0,,{\fad(120,100)\move(960,1020,960,1016,0,120)}Bien des potentiels donnent le\Nmême {\c&H3468EB&}champ{\c&HF7F4F2&} : ajoutez la pente
+Dialogue: 0,1:15:28.02,1:15:31.73,Sub,,0,0,0,,{\fad(120,100)\move(960,1020,960,1016,0,120)}d'une colline quelconque,\Net le rotationnel ne change pas.
+Dialogue: 0,1:15:32.39,1:15:37.40,Sub,,0,0,0,,{\fad(120,100)\move(960,1020,960,1016,0,120)}Choisissez parmi eux sans règle fixe,\Net le {\c&HF09CB4&}générateur{\c&HF7F4F2&} apprend du bruit.
+Dialogue: 0,1:15:38.14,1:15:41.27,Sub,,0,0,0,,{\fad(120,100)\move(960,1020,960,1016,0,120)}Fixez donc la jauge :\Npas de divergence à l'intérieur,
+Dialogue: 0,1:15:41.35,1:15:44.18,Sub,,0,0,0,,{\fad(120,100)\move(960,1020,960,1016,0,120)}et pas de potentiel qui traverse la paroi.
+Dialogue: 0,1:15:44.67,1:15:48.68,Sub,,0,0,0,,{\fad(120,100)\move(960,1020,960,1016,0,120)}Un théorème publié donne alors\Nà chaque {\c&H3468EB&}champ{\c&HF7F4F2&} admissible un
+Dialogue: 0,1:15:48.76,1:15:53.17,Sub,,0,0,0,,{\fad(120,100)\move(960,1020,960,1016,0,120)}seul potentiel : aucun champ\Nperdu, aucun compté deux fois.
+Dialogue: 0,1:15:53.49,1:15:55.76,Sub,,0,0,0,,{\fad(120,100)\move(960,1020,960,1016,0,120)}Si le {\c&H3468EB&}champ{\c&HF7F4F2&} ne traverse jamais la paroi,
+Dialogue: 0,1:15:55.84,1:15:59.27,Sub,,0,0,0,,{\fad(120,100)\move(960,1020,960,1016,0,120)}le potentiel peut plutôt la\Nrencontrer à angle droit.
+Dialogue: 0,1:16:00.01,1:16:04.64,Sub,,0,0,0,,{\fad(120,100)\move(960,1020,960,1016,0,120)}Une {\c&H00A1ED&}métrique{\c&HF7F4F2&} change de signification :\Nlà où le champ traverse la paroi,
+Dialogue: 0,1:16:04.72,1:16:10.22,Sub,,0,0,0,,{\fad(120,100)\move(960,1020,960,1016,0,120)}l'hélicité magnétique dépend de la jauge ;\Nil faut alors une hélicité relative.
+Dialogue: 0,1:16:11.27,1:16:15.15,Sub,,0,0,0,,{\fad(120,100)\move(960,1020,960,1016,0,120)}Au tour du fer, celui\Nqui a fait marcher VKS.
+Dialogue: 0,1:16:15.74,1:16:20.00,Sub,,0,0,0,,{\fad(120,100)\move(960,1020,960,1016,0,120)}À sa surface, la composante du\N{\c&H3468EB&}champ{\c&HF7F4F2&} qui la traverse est continue,
+Dialogue: 0,1:16:20.08,1:16:24.81,Sub,,0,0,0,,{\fad(120,100)\move(960,1020,960,1016,0,120)}tout comme la composante qui la longe,\Ndivisée par la perméabilité.
+Dialogue: 0,1:16:25.55,1:16:28.79,Sub,,0,0,0,,{\fad(120,100)\move(960,1020,960,1016,0,120)}Un potentiel lisse peut-il\Nrespecter les deux règles ?
+Dialogue: 0,1:16:32.03,1:16:35.11,Sub,,0,0,0,,{\fad(120,100)\move(960,1020,960,1016,0,120)}Non : un potentiel lisse\Ngarde le {\c&H3468EB&}champ{\c&HF7F4F2&} continu,
+Dialogue: 0,1:16:35.19,1:16:40.39,Sub,,0,0,0,,{\fad(120,100)\move(960,1020,960,1016,0,120)}ce qui viole la seconde règle, sauf\Nsi le {\c&H3468EB&}champ{\c&HF7F4F2&} arrive de face sur le fer.
+Dialogue: 0,1:16:40.88,1:16:43.41,Sub,,0,0,0,,{\fad(120,100)\move(960,1020,960,1016,0,120)}Le plan propose un remède non testé :
+Dialogue: 0,1:16:43.49,1:16:47.14,Sub,,0,0,0,,{\fad(120,100)\move(960,1020,960,1016,0,120)}donner exprès au potentiel\Nun pli à la surface.
+Dialogue: 0,1:16:47.88,1:16:51.12,Sub,,0,0,0,,{\fad(120,100)\move(960,1020,960,1016,0,120)}À l'extérieur, le {\c&H3468EB&}champ{\c&HF7F4F2&}\Ndoit se raccorder à un champ
+Dialogue: 0,1:16:51.20,1:16:54.06,Sub,,0,0,0,,{\fad(120,100)\move(960,1020,960,1016,0,120)}sans courant : règle\Nlinéaire mais non locale,
+Dialogue: 0,1:16:54.14,1:16:57.67,Sub,,0,0,0,,{\fad(120,100)\move(960,1020,960,1016,0,120)}chaque point de la paroi\Ndépend de toute la paroi.
+Dialogue: 0,1:16:58.11,1:17:00.61,Sub,,0,0,0,,{\fad(120,100)\move(960,1020,960,1016,0,120)}Comment l'imposer reste\Nune question ouverte.
+Dialogue: 0,1:17:01.64,1:17:05.65,Sub,,0,0,0,,{\fad(120,100)\move(960,1020,960,1016,0,120)}Dans la boîte périodique, deux\Nscalaires, poloïdal et toroïdal,
+Dialogue: 0,1:17:05.73,1:17:09.63,Sub,,0,0,0,,{\fad(120,100)\move(960,1020,960,1016,0,120)}peuvent remplacer les trois\Ncomposantes d'un potentiel.
+Dialogue: 0,1:17:10.00,1:17:12.64,Sub,,0,0,0,,{\fad(120,100)\move(960,1020,960,1016,0,120)}Leur {\c&H3468EB&}champ{\c&HF7F4F2&} est à divergence\Nnulle, sans jauge :
+Dialogue: 0,1:17:12.72,1:17:16.24,Sub,,0,0,0,,{\fad(120,100)\move(960,1020,960,1016,0,120)}c'est ainsi que le plan stocke\Nses données périodiques.
+Dialogue: 0,1:17:16.98,1:17:20.61,Sub,,0,0,0,,{\fad(120,100)\move(960,1020,960,1016,0,120)}Le solveur des partenaires\Ndécoupe plutôt l'espace :
+Dialogue: 0,1:17:20.69,1:17:25.54,Sub,,0,0,0,,{\fad(120,100)\move(960,1020,960,1016,0,120)}autour de l'axe, des ondes à zéro,\Nune, deux, trois crêtes par tour ;
+Dialogue: 0,1:17:25.62,1:17:29.38,Sub,,0,0,0,,{\fad(120,100)\move(960,1020,960,1016,0,120)}dans chaque demi-plan,\Nun maillage de triangles.
+Dialogue: 0,1:17:30.12,1:17:32.98,Sub,,0,0,0,,{\fad(120,100)\move(960,1020,960,1016,0,120)}Un potentiel continu\Nsur ce maillage donne un
+Dialogue: 0,1:17:33.06,1:17:36.41,Sub,,0,0,0,,{\fad(120,100)\move(960,1020,960,1016,0,120)}rotationnel à divergence\Nnulle, onde par onde.
+Dialogue: 0,1:17:36.90,1:17:40.68,Sub,,0,0,0,,{\fad(120,100)\move(960,1020,960,1016,0,120)}Mais les données du solveur ne sont\Nqu'à peu près à divergence nulle :
+Dialogue: 0,1:17:40.76,1:17:43.68,Sub,,0,0,0,,{\fad(120,100)\move(960,1020,960,1016,0,120)}le {\c&HF09CB4&}générateur{\c&HF7F4F2&} sera plus\Npropre que ses données.
+Dialogue: 0,1:17:44.05,1:17:46.71,Sub,,0,0,0,,{\fad(120,100)\move(960,1020,960,1016,0,120)}Mesurez donc avec l'étalon du solveur.
+Dialogue: 0,1:17:49.14,1:17:52.41,Sub,,0,0,0,,{\fad(120,100)\move(960,1020,960,1016,0,120)}Le pari VKS consisterait à\Nentraîner un {\c&HF09CB4&}générateur{\c&HF7F4F2&} sur les
+Dialogue: 0,1:17:52.49,1:17:56.76,Sub,,0,0,0,,{\fad(120,100)\move(960,1020,960,1016,0,120)}simulations de l'expérience au\Nsodium réalisées par les partenaires.
+Dialogue: 0,1:17:57.27,1:18:01.20,Sub,,0,0,0,,{\fad(120,100)\move(960,1020,960,1016,0,120)}Dans leur simulation de référence,\Nquatre motifs dominent :
+Dialogue: 0,1:18:01.28,1:18:05.22,Sub,,0,0,0,,{\fad(120,100)\move(960,1020,960,1016,0,120)}un dipôle, un quadrupôle et\Ndeux motifs d'{\c&HE58739&}écoulement{\c&HF7F4F2&}.
+Dialogue: 0,1:18:05.96,1:18:09.17,Sub,,0,0,0,,{\fad(120,100)\move(960,1020,960,1016,0,120)}Le pari : leurs parts\Nd'énergie à dix pour cent près,
+Dialogue: 0,1:18:09.25,1:18:11.46,Sub,,0,0,0,,{\fad(120,100)\move(960,1020,960,1016,0,120)}et la {\c&H00A1ED&}distance entre distributions{\c&HF7F4F2&} du
+Dialogue: 0,1:18:11.54,1:18:15.66,Sub,,0,0,0,,{\fad(120,100)\move(960,1020,960,1016,0,120)}couple dipôle-quadrupôle sous\Nle double du {\c&H00A1ED&}plancher de bruit{\c&HF7F4F2&}.
+Dialogue: 0,1:18:16.06,1:18:19.79,Sub,,0,0,0,,{\fad(120,100)\move(960,1020,960,1016,0,120)}Ajoutez la règle du fer, à un pour\Ncent près, et la fréquence des
+Dialogue: 0,1:18:19.87,1:18:24.67,Sub,,0,0,0,,{\fad(120,100)\move(960,1020,960,1016,0,120)}renversements prédite par Rice, dans\Nles barres d'erreur du comptage simulé.
+Dialogue: 0,1:18:25.91,1:18:30.74,Sub,,0,0,0,,{\fad(120,100)\move(960,1020,960,1016,0,120)}Confiance : faible. Les données ne sont\Npas publiques, aucun lecteur de fichiers
+Dialogue: 0,1:18:30.82,1:18:35.75,Sub,,0,0,0,,{\fad(120,100)\move(960,1020,960,1016,0,120)}n'existe encore, et peu de renversements\Ndonnent de larges barres d'erreur.
+Dialogue: 0,1:18:36.34,1:18:41.54,Sub,,0,0,0,,{\fad(120,100)\move(960,1020,960,1016,0,120)}À demander d'abord : combien d'instantanés\Npar configuration, et pour quand ?
+Dialogue: 0,1:18:42.97,1:18:48.92,Sub,,0,0,0,,{\fad(120,100)\move(960,1020,960,1016,0,120)}Le pari DRESDYN : un cylindre de sodium\Nen rotation, dont l'axe pivote lentement.
+Dialogue: 0,1:18:49.37,1:18:52.75,Sub,,0,0,0,,{\fad(120,100)\move(960,1020,960,1016,0,120)}Son {\c&H7AAF1B&}bouton{\c&HF7F4F2&} : le taux de\Nprécession, soit la vitesse à
+Dialogue: 0,1:18:52.83,1:18:56.81,Sub,,0,0,0,,{\fad(120,100)\move(960,1020,960,1016,0,120)}laquelle l'axe pivote,\Nrapportée à celle de la rotation.
+Dialogue: 0,1:18:57.55,1:19:01.45,Sub,,0,0,0,,{\fad(120,100)\move(960,1020,960,1016,0,120)}Le {\c&HF09CB4&}générateur{\c&HF7F4F2&} ne dessine que\Nl'écoulement ; un solveur trouve le
+Dialogue: 0,1:19:01.53,1:19:05.83,Sub,,0,0,0,,{\fad(120,100)\move(960,1020,960,1016,0,120)}seuil et la symétrie du {\c&H3468EB&}champ{\c&HF7F4F2&} que\Ncet écoulement ferait croître.
+Dialogue: 0,1:19:05.91,1:19:09.11,Sub,,0,0,0,,{\fad(120,100)\move(960,1020,960,1016,0,120)}Le pari : seuil et symétrie\Njustes à un taux jamais vu,
+Dialogue: 0,1:19:09.19,1:19:11.31,Sub,,0,0,0,,{\fad(120,100)\move(960,1020,960,1016,0,120)}le seuil à dix pour cent près.
+Dialogue: 0,1:19:12.55,1:19:16.21,Sub,,0,0,0,,{\fad(120,100)\move(960,1020,960,1016,0,120)}Confiance : faible. Peu de\Nvaleurs du taux sont prévues,
+Dialogue: 0,1:19:16.29,1:19:19.69,Sub,,0,0,0,,{\fad(120,100)\move(960,1020,960,1016,0,120)}et cette marche serait\Nla première abandonnée.
+Dialogue: 0,1:19:20.16,1:19:25.26,Sub,,0,0,0,,{\fad(120,100)\move(960,1020,960,1016,0,120)}À demander dès maintenant : combien\Nde valeurs, et espacées de combien ?
+Dialogue: 0,1:19:26.70,1:19:29.67,Sub,,0,0,0,,{\fad(120,100)\move(960,1020,960,1016,0,120)}En aval, le {\c&HF09CB4&}générateur{\c&HF7F4F2&}\Nalimente des modèles réduits :
+Dialogue: 0,1:19:29.75,1:19:33.30,Sub,,0,0,0,,{\fad(120,100)\move(960,1020,960,1016,0,120)}leur meilleure dérive est la\Nmoyenne de celle des équations sur
+Dialogue: 0,1:19:33.38,1:19:37.10,Sub,,0,0,0,,{\fad(120,100)\move(960,1020,960,1016,0,120)}les instantanés de même état\Nréduit, sans série temporelle.
+Dialogue: 0,1:19:37.84,1:19:39.55,Sub,,0,0,0,,{\fad(120,100)\move(960,1020,960,1016,0,120)}Il sert aussi d'a priori.
+Dialogue: 0,1:19:39.96,1:19:44.13,Sub,,0,0,0,,{\fad(120,100)\move(960,1020,960,1016,0,120)}Une sonde mesure un dipôle presque\Nnul, en plein renversement.
+Dialogue: 0,1:19:44.66,1:19:47.94,Sub,,0,0,0,,{\fad(120,100)\move(960,1020,960,1016,0,120)}Où tombe la moyenne des états\Ncompatibles avec la mesure ?
+Dialogue: 0,1:19:51.18,1:19:55.06,Sub,,0,0,0,,{\fad(120,100)\move(960,1020,960,1016,0,120)}Entre deux bosses en miroir,\Nlà où la dynamo n'est presque jamais.
+Dialogue: 0,1:19:55.55,1:19:58.39,Sub,,0,0,0,,{\fad(120,100)\move(960,1020,960,1016,0,120)}Les méthodes qui ne retiennent\Nqu'une moyenne et une
+Dialogue: 0,1:19:58.47,1:20:00.46,Sub,,0,0,0,,{\fad(120,100)\move(960,1020,960,1016,0,120)}dispersion courent après ce fantôme ;
+Dialogue: 0,1:20:00.54,1:20:04.34,Sub,,0,0,0,,{\fad(120,100)\move(960,1020,960,1016,0,120)}un a priori déséquilibré\Nfavoriserait à tort l'une des bosses.
+Dialogue: 0,1:20:04.58,1:20:08.75,Sub,,0,0,0,,{\fad(120,100)\move(960,1020,960,1016,0,120)}Un miroir intégré règle cela exactement :\Ntirer des paires en miroir,
+Dialogue: 0,1:20:08.83,1:20:12.11,Sub,,0,0,0,,{\fad(120,100)\move(960,1020,960,1016,0,120)}ou chercher à partir d'un\Ncode et de son reflet.
+Dialogue: 0,1:20:13.47,1:20:17.34,Sub,,0,0,0,,{\fad(120,100)\move(960,1020,960,1016,0,120)}Quelles étiquettes chaque\Ninstantané VKS doit-il porter :
+Dialogue: 0,1:20:17.42,1:20:23.29,Sub,,0,0,0,,{\fad(120,100)\move(960,1020,960,1016,0,120)}quelle définition de Rm, quelle condition\Nde paroi, quelle perméabilité du fer ?
+Dialogue: 0,1:20:26.74,1:20:29.15,Sub,,0,0,0,,{\fad(120,100)\move(960,1020,960,1016,0,120)}La facture : environ\Nonze mille heures GPU,
+Dialogue: 0,1:20:29.23,1:20:33.75,Sub,,0,0,0,,{\fad(120,100)\move(960,1020,960,1016,0,120)}en comptant une réserve de vingt pour\Ncent pour les entraînements ratés.
+Dialogue: 0,1:20:34.30,1:20:37.60,Sub,,0,0,0,,{\fad(120,100)\move(960,1020,960,1016,0,120)}La plus grosse part revient à\Nla boîte en trois dimensions.
+Dialogue: 0,1:20:38.00,1:20:41.04,Sub,,0,0,0,,{\fad(120,100)\move(960,1020,960,1016,0,120)}La plupart des postes sont\Nextrapolés à partir d'un seul
+Dialogue: 0,1:20:41.12,1:20:44.69,Sub,,0,0,0,,{\fad(120,100)\move(960,1020,960,1016,0,120)}entraînement publié : environ\Nmille cent cinquante heures.
+Dialogue: 0,1:20:45.43,1:20:48.07,Sub,,0,0,0,,{\fad(120,100)\move(960,1020,960,1016,0,120)}Aucune heure GPU n'a encore été mesurée.
+Dialogue: 0,1:20:48.54,1:20:53.93,Sub,,0,0,0,,{\fad(120,100)\move(960,1020,960,1016,0,120)}Le pari : les coûts mesurés correspondront\Nau plan, à un facteur deux près.
+Dialogue: 0,1:20:55.17,1:20:58.07,Sub,,0,0,0,,{\fad(120,100)\move(960,1020,960,1016,0,120)}Confiance : faible.\NLe plan lui-même annonce
+Dialogue: 0,1:20:58.15,1:21:01.40,Sub,,0,0,0,,{\fad(120,100)\move(960,1020,960,1016,0,120)}une incertitude d'au\Nmoins un facteur deux.
+Dialogue: 0,1:21:02.14,1:21:07.52,Sub,,0,0,0,,{\fad(120,100)\move(960,1020,960,1016,0,120)}À demander d'abord : les simulations de\Nréférence, vingt mille heures CPU ou plus,
+Dialogue: 0,1:21:07.60,1:21:12.06,Sub,,0,0,0,,{\fad(120,100)\move(960,1020,960,1016,0,120)}ne figurent pas sur cette facture.\NQui fournira les machines ?
+Dialogue: 0,1:21:14.30,1:21:20.23,Sub,,0,0,0,,{\fad(120,100)\move(960,1020,960,1016,0,120)}Tout le plan sur une seule page :\Ntrente-six mois, trois axes, cinq marches.
+Dialogue: 0,1:21:20.65,1:21:24.84,Sub,,0,0,0,,{\fad(120,100)\move(960,1020,960,1016,0,120)}Contraintes dures, lois de la\Nfoule, seuils et renversements,
+Dialogue: 0,1:21:24.92,1:21:28.47,Sub,,0,0,0,,{\fad(120,100)\move(960,1020,960,1016,0,120)}des trois cadrans à un\Ncylindre en précession.
+Dialogue: 0,1:21:28.99,1:21:31.05,Sub,,0,0,0,,{\fad(120,100)\move(960,1020,960,1016,0,120)}Trois articles, aux mois dix,
+Dialogue: 0,1:21:31.13,1:21:35.57,Sub,,0,0,0,,{\fad(120,100)\move(960,1020,960,1016,0,120)}vingt-deux et trente-trois,\Nsans promesse d'acceptation.
+Dialogue: 0,1:21:36.31,1:21:39.51,Sub,,0,0,0,,{\fad(120,100)\move(960,1020,960,1016,0,120)}Le plan fusionne les deux directions\Nles mieux notées sur six ;
+Dialogue: 0,1:21:39.59,1:21:42.98,Sub,,0,0,0,,{\fad(120,100)\move(960,1020,960,1016,0,120)}elles restent en tête sous les\Ntrois pondérations essayées.
+Dialogue: 0,1:21:43.47,1:21:47.17,Sub,,0,0,0,,{\fad(120,100)\move(960,1020,960,1016,0,120)}Parmi les risques qu'il recense :\Ndes données non publiques,
+Dialogue: 0,1:21:47.25,1:21:49.75,Sub,,0,0,0,,{\fad(120,100)\move(960,1020,960,1016,0,120)}une facture hors budget, une perte en loi
+Dialogue: 0,1:21:49.83,1:21:53.62,Sub,,0,0,0,,{\fad(120,100)\move(960,1020,960,1016,0,120)}instable en trois dimensions,\Nl'erreur près des seuils.
+Dialogue: 0,1:21:53.80,1:21:56.28,Sub,,0,0,0,,{\fad(120,100)\move(960,1020,960,1016,0,120)}Un risque qu'il ne peut\Npas encore évaluer :
+Dialogue: 0,1:21:56.36,1:21:59.42,Sub,,0,0,0,,{\fad(120,100)\move(960,1020,960,1016,0,120)}le financement après la\Nfin nominale de MilaDy.
+Dialogue: 0,1:22:00.56,1:22:05.24,Sub,,0,0,0,,{\fad(120,100)\move(960,1020,960,1016,0,120)}Un projet de thèse indépendant,\Nni demandé ni validé par les encadrants.
+Dialogue: 0,1:22:06.77,1:22:10.27,Sub,,0,0,0,,{\fad(120,100)\move(960,1020,960,1016,0,120)}Une thèse commencée à l'automne\Ndeux mille vingt-sept finirait
+Dialogue: 0,1:22:10.35,1:22:14.43,Sub,,0,0,0,,{\fad(120,100)\move(960,1020,960,1016,0,120)}après la fin nominale de MilaDy :\Nqui finance ses derniers mois ?
+Dialogue: 0,1:22:19.47,1:22:23.09,Sub,,0,0,0,,{\fad(120,100)\move(960,1020,960,1016,0,120)}Jusqu'ici, chaque chapitre\Ns'est terminé sur une question.
+Dialogue: 0,1:22:23.50,1:22:26.03,Sub,,0,0,0,,{\fad(120,100)\move(960,1020,960,1016,0,120)}Les cadres vides en ont soulevé d'autres.
+Dialogue: 0,1:22:26.77,1:22:29.34,Sub,,0,0,0,,{\fad(120,100)\move(960,1020,960,1016,0,120)}Accrochez chacune sous\Nla marche qui en dépend.
+Dialogue: 0,1:22:29.87,1:22:34.49,Sub,,0,0,0,,{\fad(120,100)\move(960,1020,960,1016,0,120)}Premier pari : ajouter ou non des\Nréglages entre dix-sept et dix-huit.
+Dialogue: 0,1:22:34.99,1:22:36.70,Sub,,0,0,0,,{\fad(120,100)\move(960,1020,960,1016,0,120)}Deuxième pari : le {\c&H3468EB&}germe{\c&HF7F4F2&},
+Dialogue: 0,1:22:36.78,1:22:40.90,Sub,,0,0,0,,{\fad(120,100)\move(960,1020,960,1016,0,120)}le {\c&H7AAF1B&}nombre de Reynolds{\c&HF7F4F2&},\Nla durée de chaque simulation.
+Dialogue: 0,1:22:41.45,1:22:44.22,Sub,,0,0,0,,{\fad(120,100)\move(960,1020,960,1016,0,120)}Le {\c&HF09CB4&}générateur{\c&HF7F4F2&} : ce qu'il doit reproduire.
+Dialogue: 0,1:22:44.49,1:22:47.47,Sub,,0,0,0,,{\fad(120,100)\move(960,1020,960,1016,0,120)}Les dernières marches :\Nles données des partenaires.
+Dialogue: 0,1:22:48.21,1:22:51.09,Sub,,0,0,0,,{\fad(120,100)\move(960,1020,960,1016,0,120)}Un escalier de paris est\Nun escalier de décisions,
+Dialogue: 0,1:22:51.17,1:22:54.58,Sub,,0,0,0,,{\fad(120,100)\move(960,1020,960,1016,0,120)}et les premières se prennent\Navant toute simulation.
+Dialogue: 0,1:22:56.44,1:23:01.34,Sub,,0,0,0,,{\fad(120,100)\move(960,1020,960,1016,0,120)}D'abord, les simulations :\Nces réponses changent ce qui sera calculé.
+Dialogue: 0,1:23:02.08,1:23:07.75,Sub,,0,0,0,,{\fad(120,100)\move(960,1020,960,1016,0,120)}Près d'un seuil, partir d'un {\c&H3468EB&}germe{\c&HF7F4F2&}\Nminuscule, d'un germe fort, ou des deux ?
+Dialogue: 0,1:23:08.43,1:23:12.36,Sub,,0,0,0,,{\fad(120,100)\move(960,1020,960,1016,0,120)}Quelles valeurs de {\c&H7AAF1B&}Pm{\c&HF7F4F2&}, puisque celle\Ndu sodium est hors d'atteinte ?
+Dialogue: 0,1:23:12.76,1:23:17.22,Sub,,0,0,0,,{\fad(120,100)\move(960,1020,960,1016,0,120)}Des réglages espacés régulièrement,\Nou resserrés près de chaque seuil ?
+Dialogue: 0,1:23:17.81,1:23:20.79,Sub,,0,0,0,,{\fad(120,100)\move(960,1020,960,1016,0,120)}Combien d'instantanés\Nindépendants par réglage ?
+Dialogue: 0,1:23:20.96,1:23:24.14,Sub,,0,0,0,,{\fad(120,100)\move(960,1020,960,1016,0,120)}Combien de temps doivent durer\Nles simulations près d'un seuil ?
+Dialogue: 0,1:23:24.52,1:23:28.29,Sub,,0,0,0,,{\fad(120,100)\move(960,1020,960,1016,0,120)}Quel forçage, quel nombre de\NReynolds et quelle grille de calcul
+Dialogue: 0,1:23:28.37,1:23:32.56,Sub,,0,0,0,,{\fad(120,100)\move(960,1020,960,1016,0,120)}rendent le seuil de Taylor-Green\Ncomparable aux seuils publiés ?
+Dialogue: 0,1:23:33.10,1:23:35.23,Sub,,0,0,0,,{\fad(120,100)\move(960,1020,960,1016,0,120)}Et quelle campagne passe en premier ?
+Dialogue: 0,1:23:36.27,1:23:40.32,Sub,,0,0,0,,{\fad(120,100)\move(960,1020,960,1016,0,120)}Ensuite, le cadrage : la façon\Ndont chaque résultat sera jugé,
+Dialogue: 0,1:23:40.40,1:23:43.32,Sub,,0,0,0,,{\fad(120,100)\move(960,1020,960,1016,0,120)}fixée avant que les données n'existent.
+Dialogue: 0,1:23:43.81,1:23:47.10,Sub,,0,0,0,,{\fad(120,100)\move(960,1020,960,1016,0,120)}Quelles statistiques les champs\Ngénérés doivent-ils reproduire,
+Dialogue: 0,1:23:47.18,1:23:49.34,Sub,,0,0,0,,{\fad(120,100)\move(960,1020,960,1016,0,120)}jusqu'à la forme de leurs lignes de champ,
+Dialogue: 0,1:23:49.42,1:23:53.17,Sub,,0,0,0,,{\fad(120,100)\move(960,1020,960,1016,0,120)}et à quelle distance du\N{\c&H00A1ED&}plancher de bruit{\c&HF7F4F2&} parle-t-on de succès ?
+Dialogue: 0,1:23:53.31,1:23:55.86,Sub,,0,0,0,,{\fad(120,100)\move(960,1020,960,1016,0,120)}Quels bilans doivent être\Nrespectés {\c&H00A1ED&}en moyenne{\c&HF7F4F2&},
+Dialogue: 0,1:23:55.94,1:23:59.07,Sub,,0,0,0,,{\fad(120,100)\move(960,1020,960,1016,0,120)}et faut-il aussi que leur\Ndispersion corresponde ?
+Dialogue: 0,1:24:00.10,1:24:02.65,Sub,,0,0,0,,{\fad(120,100)\move(960,1020,960,1016,0,120)}Une réponse, qui ne porte\Npas sur la physique,
+Dialogue: 0,1:24:02.73,1:24:05.56,Sub,,0,0,0,,{\fad(120,100)\move(960,1020,960,1016,0,120)}pourrait rendre la\Nlocation presque inutile.
+Dialogue: 0,1:24:05.96,1:24:07.69,Sub,,0,0,0,,{\fad(120,100)\move(960,1020,960,1016,0,120)}De quelle question s'agit-il ?
+Dialogue: 0,1:24:10.93,1:24:12.40,Sub,,0,0,0,,{\fad(120,100)\move(960,1020,960,1016,0,120)}Où se fera le calcul.
+Dialogue: 0,1:24:12.90,1:24:16.85,Sub,,0,0,0,,{\fad(120,100)\move(960,1020,960,1016,0,120)}Si un laboratoire a des cartes\Ngraphiques accessibles à un stagiaire,
+Dialogue: 0,1:24:16.93,1:24:20.06,Sub,,0,0,0,,{\fad(120,100)\move(960,1020,960,1016,0,120)}ou s'il existe déjà un projet\Nsur Jean Zay à rejoindre,
+Dialogue: 0,1:24:20.14,1:24:23.09,Sub,,0,0,0,,{\fad(120,100)\move(960,1020,960,1016,0,120)}la location ne sert plus\Nqu'à un court essai.
+Dialogue: 0,1:24:23.42,1:24:26.20,Sub,,0,0,0,,{\fad(120,100)\move(960,1020,960,1016,0,120)}Et pour les dernières marches :\Nquelles simulations
+Dialogue: 0,1:24:26.28,1:24:29.47,Sub,,0,0,0,,{\fad(120,100)\move(960,1020,960,1016,0,120)}des partenaires, sous quelle\Nforme, et pour quand ?
+Dialogue: 0,1:24:30.50,1:24:33.12,Sub,,0,0,0,,{\fad(120,100)\move(960,1020,960,1016,0,120)}La deuxième étagère sert\Nau plan de stage et à la
+Dialogue: 0,1:24:33.20,1:24:36.17,Sub,,0,0,0,,{\fad(120,100)\move(960,1020,960,1016,0,120)}demande de données,\Npas aux premières campagnes.
+Dialogue: 0,1:24:36.62,1:24:38.54,Sub,,0,0,0,,{\fad(120,100)\move(960,1020,960,1016,0,120)}Quels réglages auront\Ndes simulations assez
+Dialogue: 0,1:24:38.62,1:24:40.81,Sub,,0,0,0,,{\fad(120,100)\move(960,1020,960,1016,0,120)}longues pour compter les renversements ?
+Dialogue: 0,1:24:41.21,1:24:44.17,Sub,,0,0,0,,{\fad(120,100)\move(960,1020,960,1016,0,120)}Quel opérateur définit\Nce que veut dire exact ?
+Dialogue: 0,1:24:44.41,1:24:47.54,Sub,,0,0,0,,{\fad(120,100)\move(960,1020,960,1016,0,120)}Quelles étiquettes chaque\Ninstantané doit-il porter ?
+Dialogue: 0,1:24:47.70,1:24:50.95,Sub,,0,0,0,,{\fad(120,100)\move(960,1020,960,1016,0,120)}Et de nouveaux résultats\Npeuvent-ils figurer dans ce film ?
+Dialogue: 0,1:24:51.69,1:24:53.75,Sub,,0,0,0,,{\fad(120,100)\move(960,1020,960,1016,0,120)}La troisième étagère peut attendre :
+Dialogue: 0,1:24:53.83,1:24:58.20,Sub,,0,0,0,,{\fad(120,100)\move(960,1020,960,1016,0,120)}le détail des dernières marches,\Net le cadrage d'un premier article.
+Dialogue: 0,1:24:59.24,1:25:04.53,Sub,,0,0,0,,{\fad(120,100)\move(960,1020,960,1016,0,120)}La première étagère tient en un seul\Nmessage, à écrire avant toute location.
+Dialogue: 0,1:25:04.98,1:25:07.12,Sub,,0,0,0,,{\fad(120,100)\move(960,1020,960,1016,0,120)}Ce classement n'est qu'une proposition.
+Dialogue: 0,1:25:07.40,1:25:09.70,Sub,,0,0,0,,{\fad(120,100)\move(960,1020,960,1016,0,120)}Les encadrants pourraient\Nbien le modifier.
+Dialogue: 0,1:25:10.44,1:25:13.72,Sub,,0,0,0,,{\fad(120,100)\move(960,1020,960,1016,0,120)}Plusieurs réponses pourraient\Nchanger ce qui sera calculé,
+Dialogue: 0,1:25:13.80,1:25:16.34,Sub,,0,0,0,,{\fad(120,100)\move(960,1020,960,1016,0,120)}ou même rendre toute location inutile.
+Dialogue: 0,1:25:16.97,1:25:20.17,Sub,,0,0,0,,{\fad(120,100)\move(960,1020,960,1016,0,120)}L'expérience la moins chère,\Nc'est une bonne question,
+Dialogue: 0,1:25:20.25,1:25:23.08,Sub,,0,0,0,,{\fad(120,100)\move(960,1020,960,1016,0,120)}posée avant de louer une carte graphique.
+Dialogue: 0,1:25:28.50,1:25:31.58,Sub,,0,0,0,,{\fad(120,100)\move(960,1020,960,1016,0,120)}D'abord les questions, ensuite le calcul.
+Dialogue: 0,1:25:32.11,1:25:35.70,Sub,,0,0,0,,{\fad(120,100)\move(960,1020,960,1016,0,120)}Voici sur quoi reposent ces\Nquestions, en deux colonnes.
+Dialogue: 0,1:25:36.10,1:25:41.47,Sub,,0,0,0,,{\fad(120,100)\move(960,1020,960,1016,0,120)}À gauche, ce qu'ont mesuré trois petites\Nexpériences, sur un processeur ordinaire.
+Dialogue: 0,1:25:41.55,1:25:44.35,Sub,,0,0,0,,{\fad(120,100)\move(960,1020,960,1016,0,120)}Des problèmes jouets,\Nune ou deux graines aléatoires,
+Dialogue: 0,1:25:44.43,1:25:48.61,Sub,,0,0,0,,{\fad(120,100)\move(960,1020,960,1016,0,120)}et des machines testées uniquement\Nentre leurs réglages d'entraînement.
+Dialogue: 0,1:25:49.35,1:25:54.19,Sub,,0,0,0,,{\fad(120,100)\move(960,1020,960,1016,0,120)}À droite, les paris de l'escalier,\Nchacun avec le critère qui en décidera.
+Dialogue: 0,1:25:54.51,1:25:57.30,Sub,,0,0,0,,{\fad(120,100)\move(960,1020,960,1016,0,120)}Chaque voyant n'affiche un\Nverdict qu'à l'arrivée de son
+Dialogue: 0,1:25:57.38,1:26:00.36,Sub,,0,0,0,,{\fad(120,100)\move(960,1020,960,1016,0,120)}fichier de données, et le\Nfilm est alors mis à jour.
+Dialogue: 0,1:26:02.00,1:26:04.85,Sub,,0,0,0,,{\fad(120,100)\move(960,1020,960,1016,0,120)}Retour à la boussole,\Net aux deux questions.
+Dialogue: 0,1:26:06.09,1:26:08.22,Sub,,0,0,0,,{\fad(120,100)\move(960,1020,960,1016,0,120)}Quand cette aiguille\Nva-t-elle se retourner ?
+Dialogue: 0,1:26:08.69,1:26:11.27,Sub,,0,0,0,,{\fad(120,100)\move(960,1020,960,1016,0,120)}Pour la Terre, personne ne peut le dire.
+Dialogue: 0,1:26:11.79,1:26:14.55,Sub,,0,0,0,,{\fad(120,100)\move(960,1020,960,1016,0,120)}Dans un modèle numérique\Nsimple, le chaos efface
+Dialogue: 0,1:26:14.63,1:26:17.73,Sub,,0,0,0,,{\fad(120,100)\move(960,1020,960,1016,0,120)}la prévision avant la\Nfin de l'attente moyenne.
+Dialogue: 0,1:26:17.94,1:26:20.74,Sub,,0,0,0,,{\fad(120,100)\move(960,1020,960,1016,0,120)}Mais {\c&H00A1ED&}à quelle fréquence{\c&HF7F4F2&}\Nle champ se renverse,
+Dialogue: 0,1:26:20.82,1:26:25.50,Sub,,0,0,0,,{\fad(120,100)\move(960,1020,960,1016,0,120)}en comptant les passages par zéro :\Nà cela, on peut encore répondre.
+Dialogue: 0,1:26:26.15,1:26:29.77,Sub,,0,0,0,,{\fad(120,100)\move(960,1020,960,1016,0,120)}La réponse se cache dans une boîte\Nà chaussures pleine d'instantanés,
+Dialogue: 0,1:26:29.85,1:26:32.48,Sub,,0,0,0,,{\fad(120,100)\move(960,1020,960,1016,0,120)}à condition de les lire\Navec les équations.
+Dialogue: 0,1:26:32.60,1:26:34.99,Sub,,0,0,0,,{\fad(120,100)\move(960,1020,960,1016,0,120)}Et une {\c&HF09CB4&}machine{\c&HF7F4F2&} peut\Napprendre à imaginer de
+Dialogue: 0,1:26:35.07,1:26:37.97,Sub,,0,0,0,,{\fad(120,100)\move(960,1020,960,1016,0,120)}tels instantanés,\Nentre les réglages simulés.
+Dialogue: 0,1:26:39.11,1:26:41.90,Sub,,0,0,0,,{\fad(120,100)\move(960,1020,960,1016,0,120)}Sur de petits cas tests,\Ncela marche en partie.
+Dialogue: 0,1:26:42.12,1:26:45.76,Sub,,0,0,0,,{\fad(120,100)\move(960,1020,960,1016,0,120)}Le miroir est garanti par\Nconstruction, à chaque réglage.
+Dialogue: 0,1:26:46.09,1:26:49.51,Sub,,0,0,0,,{\fad(120,100)\move(960,1020,960,1016,0,120)}Sur les trois cadrans,\Nla {\c&H00A1ED&}fréquence des passages par zéro{\c&HF7F4F2&}
+Dialogue: 0,1:26:49.59,1:26:53.47,Sub,,0,0,0,,{\fad(120,100)\move(960,1020,960,1016,0,120)}est à peu près juste loin du\Nseuil, et médiocre tout près.
+Dialogue: 0,1:26:53.99,1:26:57.88,Sub,,0,0,0,,{\fad(120,100)\move(960,1020,960,1016,0,120)}Une machine qui varie en douceur\Narrondit un changement abrupt.
+Dialogue: 0,1:26:57.96,1:27:01.35,Sub,,0,0,0,,{\fad(120,100)\move(960,1020,960,1016,0,120)}Les tests à plus grande échelle,\Nen trois dimensions et dans la
+Dialogue: 0,1:27:01.43,1:27:05.33,Sub,,0,0,0,,{\fad(120,100)\move(960,1020,960,1016,0,120)}géométrie d'expériences réelles,\Nsont écrits sous forme de paris.
+Dialogue: 0,1:27:06.67,1:27:08.04,Sub,,0,0,0,,{\fad(120,100)\move(960,1020,960,1016,0,120)}Il reste une leçon.
+Dialogue: 0,1:27:08.27,1:27:10.95,Sub,,0,0,0,,{\fad(120,100)\move(960,1020,960,1016,0,120)}Imposez chaque loi là où elle est vraie.
+Dialogue: 0,1:27:11.14,1:27:13.69,Sub,,0,0,0,,{\fad(120,100)\move(960,1020,960,1016,0,120)}Exactement, là où elle est exacte.
+Dialogue: 0,1:27:14.01,1:27:17.15,Sub,,0,0,0,,{\fad(120,100)\move(960,1020,960,1016,0,120)}{\c&H00A1ED&}En moyenne{\c&HF7F4F2&}, là où elle\Nn'est vraie qu'en moyenne.
+Dialogue: 0,1:27:20.80,1:27:24.71,Sub,,0,0,0,,{\fad(120,100)\move(960,1020,960,1016,0,120)}Le rapport, le code et chaque\Nrésultat de ce film sont sur le
+Dialogue: 0,1:27:24.79,1:27:28.91,Sub,,0,0,0,,{\fad(120,100)\move(960,1020,960,1016,0,120)}site du projet, avec leurs\Nlimites écrites noir sur blanc.
+Dialogue: 0,1:27:29.32,1:27:32.28,Sub,,0,0,0,,{\fad(120,100)\move(960,1020,960,1016,0,120)}Le reste de l'escalier\Nest encore à calculer.

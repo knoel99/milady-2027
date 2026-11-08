@@ -12,18 +12,19 @@ Style: Sub,Inter Medium,42,&H00F7F4F2,&H00F7F4F2,&H38140F0B,&H00000000,0,0,0,0,1
 
 [Events]
 Format: Layer, Start, End, Style, Name, MarginL, MarginR, MarginV, Effect, Text
-Dialogue: 0,0:00:00.32,0:00:02.72,Sub,,0,0,0,,{\fad(120,100)\move(960,1020,960,1016,0,120)}Remember the budget of the shoebox.
-Dialogue: 0,0:00:02.80,0:00:05.83,Sub,,0,0,0,,{\fad(120,100)\move(960,1020,960,1016,0,120)}Snapshot by snapshot,\Nenergy rises or falls.
-Dialogue: 0,0:00:05.91,0:00:11.03,Sub,,0,0,0,,{\fad(120,100)\move(960,1020,960,1016,0,120)}Only the crowd balances, on average,\Nlike a bank account over the years.
-Dialogue: 0,0:00:11.90,0:00:14.27,Sub,,0,0,0,,{\fad(120,100)\move(960,1020,960,1016,0,120)}Now, a tempting fix for the machine.
-Dialogue: 0,0:00:14.35,0:00:19.74,Sub,,0,0,0,,{\fad(120,100)\move(960,1020,960,1016,0,120)}Force every generated snapshot to balance\Nits budget exactly. Better, or worse?
-Dialogue: 0,0:00:23.61,0:00:24.11,Sub,,0,0,0,,{\fad(120,100)\move(960,1020,960,1016,0,120)}Worse.
-Dialogue: 0,0:00:24.05,0:00:27.54,Sub,,0,0,0,,{\fad(120,100)\move(960,1020,960,1016,0,120)}Push each snapshot until\Nits energy stops changing:
-Dialogue: 0,0:00:27.62,0:00:30.99,Sub,,0,0,0,,{\fad(120,100)\move(960,1020,960,1016,0,120)}the wide pile collapses\Ninto a spike at zero.
-Dialogue: 0,0:00:31.07,0:00:33.96,Sub,,0,0,0,,{\fad(120,100)\move(960,1020,960,1016,0,120)}A ledger where every single day balances.
-Dialogue: 0,0:00:34.04,0:00:36.38,Sub,,0,0,0,,{\fad(120,100)\move(960,1020,960,1016,0,120)}No real account looks like that.
-Dialogue: 0,0:00:37.25,0:00:41.31,Sub,,0,0,0,,{\fad(120,100)\move(960,1020,960,1016,0,120)}The {\c&H00A1ED&}distribution distance{\c&HF7F4F2&}\Nto the truth grows ninefold.
-Dialogue: 0,0:00:41.39,0:00:44.93,Sub,,0,0,0,,{\fad(120,100)\move(960,1020,960,1016,0,120)}A short proof says why:\Neven a perfect generator,
-Dialogue: 0,0:00:45.01,0:00:48.19,Sub,,0,0,0,,{\fad(120,100)\move(960,1020,960,1016,0,120)}forced this way, cannot match the truth.
-Dialogue: 0,0:00:48.27,0:00:51.10,Sub,,0,0,0,,{\fad(120,100)\move(960,1020,960,1016,0,120)}So the budget goes on the crowd shelf.
-Dialogue: 0,0:00:51.18,0:00:56.19,Sub,,0,0,0,,{\fad(120,100)\move(960,1020,960,1016,0,120)}On the next test bench, a cruder\Nscore is fooled by such a spike.
+Dialogue: 0,0:00:00.37,0:00:03.05,Sub,,0,0,0,,{\fad(120,100)\move(960,1020,960,1016,0,120)}Souvenez-vous du bilan\Nde la boîte à chaussures.
+Dialogue: 0,0:00:03.38,0:00:07.42,Sub,,0,0,0,,{\fad(120,100)\move(960,1020,960,1016,0,120)}Instantané par instantané,\Nl'énergie monte ou baisse.
+Dialogue: 0,0:00:07.74,0:00:12.80,Sub,,0,0,0,,{\fad(120,100)\move(960,1020,960,1016,0,120)}Seule la foule s'équilibre, en moyenne,\Ncomme un compte en banque sur des années.
+Dialogue: 0,0:00:13.54,0:00:16.73,Sub,,0,0,0,,{\fad(120,100)\move(960,1020,960,1016,0,120)}Maintenant, une solution\Ntentante pour la machine.
+Dialogue: 0,0:00:16.95,0:00:20.41,Sub,,0,0,0,,{\fad(120,100)\move(960,1020,960,1016,0,120)}Forcez chaque instantané\Ngénéré à équilibrer
+Dialogue: 0,0:00:20.49,0:00:23.87,Sub,,0,0,0,,{\fad(120,100)\move(960,1020,960,1016,0,120)}exactement son bilan. Mieux, ou pire ?
+Dialogue: 0,0:00:27.61,0:00:28.54,Sub,,0,0,0,,{\fad(120,100)\move(960,1020,960,1016,0,120)}Pire.
+Dialogue: 0,0:00:28.62,0:00:33.30,Sub,,0,0,0,,{\fad(120,100)\move(960,1020,960,1016,0,120)}Poussez chaque instantané jusqu'à\Nce que son énergie cesse de varier :
+Dialogue: 0,0:00:33.38,0:00:36.84,Sub,,0,0,0,,{\fad(120,100)\move(960,1020,960,1016,0,120)}le tas, si large,\Ns'effondre en un pic à zéro.
+Dialogue: 0,0:00:37.13,0:00:41.59,Sub,,0,0,0,,{\fad(120,100)\move(960,1020,960,1016,0,120)}Un livre de comptes où chaque jour,\Nsans exception, est à l'équilibre.
+Dialogue: 0,0:00:41.87,0:00:44.35,Sub,,0,0,0,,{\fad(120,100)\move(960,1020,960,1016,0,120)}Aucun vrai compte ne ressemble à ça.
+Dialogue: 0,0:00:45.09,0:00:48.69,Sub,,0,0,0,,{\fad(120,100)\move(960,1020,960,1016,0,120)}La {\c&H00A1ED&}distance à la vraie distribution{\c&HF7F4F2&}\Nest multipliée par neuf.
+Dialogue: 0,0:00:49.01,0:00:53.21,Sub,,0,0,0,,{\fad(120,100)\move(960,1020,960,1016,0,120)}Une courte démonstration explique\Npourquoi : même un générateur parfait,
+Dialogue: 0,0:00:53.29,0:00:57.12,Sub,,0,0,0,,{\fad(120,100)\move(960,1020,960,1016,0,120)}contraint de cette façon,\Nne peut pas reproduire la vérité.
+Dialogue: 0,0:00:57.53,0:01:00.05,Sub,,0,0,0,,{\fad(120,100)\move(960,1020,960,1016,0,120)}Le bilan va donc sur\Nl'étagère de la foule.
+Dialogue: 0,0:01:00.13,0:01:05.10,Sub,,0,0,0,,{\fad(120,100)\move(960,1020,960,1016,0,120)}Sur le banc d'essai suivant, un score plus\Ngrossier se laisse tromper par un tel pic.

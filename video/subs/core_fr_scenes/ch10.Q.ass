@@ -12,5 +12,6 @@ Style: Sub,Inter Medium,42,&H00F7F4F2,&H00F7F4F2,&H38140F0B,&H00000000,0,0,0,0,1
 
 [Events]
 Format: Layer, Start, End, Style, Name, MarginL, MarginR, MarginV, Effect, Text
-Dialogue: 0,0:00:00.42,0:00:03.99,Sub,,0,0,0,,{\fad(120,100)\move(960,1020,960,1016,0,120)}Before the Taylor-Green runs, which\Nforcing, Reynolds number definition
-Dialogue: 0,0:00:04.07,0:00:07.85,Sub,,0,0,0,,{\fad(120,100)\move(960,1020,960,1016,0,120)}and resolution make their threshold\Ncomparable with published ones?
+Dialogue: 0,0:00:00.47,0:00:03.36,Sub,,0,0,0,,{\fad(120,100)\move(960,1020,960,1016,0,120)}Avant les simulations\NTaylor-Green : quel forçage,
+Dialogue: 0,0:00:03.44,0:00:06.91,Sub,,0,0,0,,{\fad(120,100)\move(960,1020,960,1016,0,120)}quelle définition du nombre de\NReynolds et quelle résolution
+Dialogue: 0,0:00:06.99,0:00:10.29,Sub,,0,0,0,,{\fad(120,100)\move(960,1020,960,1016,0,120)}rendent leur seuil comparable\Naux seuils publiés ?

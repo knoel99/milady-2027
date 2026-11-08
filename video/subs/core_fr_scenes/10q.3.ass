@@ -12,7 +12,10 @@ Style: Sub,Inter Medium,42,&H00F7F4F2,&H00F7F4F2,&H38140F0B,&H00000000,0,0,0,0,1
 
 [Events]
 Format: Layer, Start, End, Style, Name, MarginL, MarginR, MarginV, Effect, Text
-Dialogue: 0,0:00:00.32,0:00:06.01,Sub,,0,0,0,,{\fad(120,100)\move(960,1020,960,1016,0,120)}Then the framing: how each result will\Nbe judged, decided before the data exist.
-Dialogue: 0,0:00:06.09,0:00:10.66,Sub,,0,0,0,,{\fad(120,100)\move(960,1020,960,1016,0,120)}Which statistics must generated\Nfields match, down to the shape of
-Dialogue: 0,0:00:10.74,0:00:15.89,Sub,,0,0,0,,{\fad(120,100)\move(960,1020,960,1016,0,120)}their field lines, and how close to\Nthe {\c&H00A1ED&}noise floor{\c&HF7F4F2&} counts as success?
-Dialogue: 0,0:00:15.97,0:00:20.90,Sub,,0,0,0,,{\fad(120,100)\move(960,1020,960,1016,0,120)}Which budgets must hold {\c&H00A1ED&}on average{\c&HF7F4F2&},\Nand must their spread match too?
+Dialogue: 0,0:00:00.37,0:00:04.41,Sub,,0,0,0,,{\fad(120,100)\move(960,1020,960,1016,0,120)}Ensuite, le cadrage : la façon\Ndont chaque résultat sera jugé,
+Dialogue: 0,0:00:04.49,0:00:07.42,Sub,,0,0,0,,{\fad(120,100)\move(960,1020,960,1016,0,120)}fixée avant que les données n'existent.
+Dialogue: 0,0:00:07.91,0:00:11.20,Sub,,0,0,0,,{\fad(120,100)\move(960,1020,960,1016,0,120)}Quelles statistiques les champs\Ngénérés doivent-ils reproduire,
+Dialogue: 0,0:00:11.28,0:00:13.44,Sub,,0,0,0,,{\fad(120,100)\move(960,1020,960,1016,0,120)}jusqu'à la forme de leurs lignes de champ,
+Dialogue: 0,0:00:13.52,0:00:17.27,Sub,,0,0,0,,{\fad(120,100)\move(960,1020,960,1016,0,120)}et à quelle distance du\N{\c&H00A1ED&}plancher de bruit{\c&HF7F4F2&} parle-t-on de succès ?
+Dialogue: 0,0:00:17.41,0:00:19.96,Sub,,0,0,0,,{\fad(120,100)\move(960,1020,960,1016,0,120)}Quels bilans doivent être\Nrespectés {\c&H00A1ED&}en moyenne{\c&HF7F4F2&},
+Dialogue: 0,0:00:20.04,0:00:23.17,Sub,,0,0,0,,{\fad(120,100)\move(960,1020,960,1016,0,120)}et faut-il aussi que leur\Ndispersion corresponde ?

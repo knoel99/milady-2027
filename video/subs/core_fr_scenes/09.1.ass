@@ -12,17 +12,19 @@ Style: Sub,Inter Medium,42,&H00F7F4F2,&H00F7F4F2,&H38140F0B,&H00000000,0,0,0,0,1
 
 [Events]
 Format: Layer, Start, End, Style, Name, MarginL, MarginR, MarginV, Effect, Text
-Dialogue: 0,0:00:03.12,0:00:06.79,Sub,,0,0,0,,{\fad(120,100)\move(960,1020,960,1016,0,120)}The toll counter is back:\Nevery car is now {\c&HF09CB4&}generated{\c&HF7F4F2&}.
-Dialogue: 0,0:00:06.87,0:00:10.40,Sub,,0,0,0,,{\fad(120,100)\move(960,1020,960,1016,0,120)}They come from the machine\Nwith the built-in mirror:
-Dialogue: 0,0:00:10.48,0:00:12.91,Sub,,0,0,0,,{\fad(120,100)\move(960,1020,960,1016,0,120)}twenty thousand at each of forty-one
-Dialogue: 0,0:00:12.99,0:00:16.20,Sub,,0,0,0,,{\fad(120,100)\move(960,1020,960,1016,0,120)}settings of {\c&H7AAF1B&}Gamma{\c&HF7F4F2&},\Nmost unseen in training.
-Dialogue: 0,0:00:16.28,0:00:20.41,Sub,,0,0,0,,{\fad(120,100)\move(960,1020,960,1016,0,120)}Rice, with the equations,\Nturns them into a {\c&H00A1ED&}crossing rate{\c&HF7F4F2&}.
-Dialogue: 0,0:00:21.28,0:00:24.14,Sub,,0,0,0,,{\fad(120,100)\move(960,1020,960,1016,0,120)}Against the counted truth,\Nfar from the threshold,
-Dialogue: 0,0:00:24.22,0:00:26.86,Sub,,0,0,0,,{\fad(120,100)\move(960,1020,960,1016,0,120)}the {\c&H00A1ED&}cumulative error{\c&HF7F4F2&} is fourteen percent.
-Dialogue: 0,0:00:26.94,0:00:30.17,Sub,,0,0,0,,{\fad(120,100)\move(960,1020,960,1016,0,120)}Setting by setting, the miss\Naverages seventeen percent,
-Dialogue: 0,0:00:30.25,0:00:33.25,Sub,,0,0,0,,{\fad(120,100)\move(960,1020,960,1016,0,120)}and reaches sixty-five\Npercent at two settings.
-Dialogue: 0,0:00:33.33,0:00:36.93,Sub,,0,0,0,,{\fad(120,100)\move(960,1020,960,1016,0,120)}Near the threshold, the error\Nclimbs to forty-two percent.
-Dialogue: 0,0:00:37.80,0:00:39.86,Sub,,0,0,0,,{\fad(120,100)\move(960,1020,960,1016,0,120)}One model, one training seed.
-Dialogue: 0,0:00:39.94,0:00:44.45,Sub,,0,0,0,,{\fad(120,100)\move(960,1020,960,1016,0,120)}Rice needs the equations,\Nand gives a rate, not waiting times.
-Dialogue: 0,0:00:44.53,0:00:49.18,Sub,,0,0,0,,{\fad(120,100)\move(960,1020,960,1016,0,120)}So, the study's third question:\Ncan a machine tell us {\c&H00A1ED&}how often{\c&HF7F4F2&}?
-Dialogue: 0,0:00:49.26,0:00:55.26,Sub,,0,0,0,,{\fad(120,100)\move(960,1020,960,1016,0,120)}For crossings on three dials: far from the\Nthreshold, roughly yes; near it, not yet.
+Dialogue: 0,0:00:03.17,0:00:08.15,Sub,,0,0,0,,{\fad(120,100)\move(960,1020,960,1016,0,120)}Revoici la route et sa ligne :\Ncette fois, chaque voiture est {\c&HF09CB4&}générée{\c&HF7F4F2&}.
+Dialogue: 0,0:00:08.51,0:00:12.55,Sub,,0,0,0,,{\fad(120,100)\move(960,1020,960,1016,0,120)}Elles sortent de la machine au miroir\Nintégré : vingt mille à chacun des
+Dialogue: 0,0:00:12.63,0:00:17.14,Sub,,0,0,0,,{\fad(120,100)\move(960,1020,960,1016,0,120)}quarante et un réglages de {\c&H7AAF1B&}Gamma{\c&HF7F4F2&},\Nla plupart jamais vus à l'entraînement.
+Dialogue: 0,0:00:17.31,0:00:22.18,Sub,,0,0,0,,{\fad(120,100)\move(960,1020,960,1016,0,120)}Avec les équations, la formule de Rice\Nen déduit une {\c&H00A1ED&}fréquence des passages{\c&HF7F4F2&}.
+Dialogue: 0,0:00:22.92,0:00:25.15,Sub,,0,0,0,,{\fad(120,100)\move(960,1020,960,1016,0,120)}Face au vrai comptage, loin du seuil,
+Dialogue: 0,0:00:25.23,0:00:28.24,Sub,,0,0,0,,{\fad(120,100)\move(960,1020,960,1016,0,120)}l'{\c&H00A1ED&}erreur cumulée{\c&HF7F4F2&} est\Nde quatorze pour cent.
+Dialogue: 0,0:00:28.70,0:00:32.79,Sub,,0,0,0,,{\fad(120,100)\move(960,1020,960,1016,0,120)}Réglage par réglage, l'écart est\Nen moyenne de dix-sept pour cent,
+Dialogue: 0,0:00:32.87,0:00:36.43,Sub,,0,0,0,,{\fad(120,100)\move(960,1020,960,1016,0,120)}et atteint soixante-cinq\Npour cent à deux réglages.
+Dialogue: 0,0:00:37.04,0:00:40.77,Sub,,0,0,0,,{\fad(120,100)\move(960,1020,960,1016,0,120)}Près du seuil, l'erreur grimpe\Nà quarante-deux pour cent.
+Dialogue: 0,0:00:41.51,0:00:44.63,Sub,,0,0,0,,{\fad(120,100)\move(960,1020,960,1016,0,120)}Un seul modèle,\Nune seule graine aléatoire.
+Dialogue: 0,0:00:44.99,0:00:47.30,Sub,,0,0,0,,{\fad(120,100)\move(960,1020,960,1016,0,120)}La formule de Rice exige les équations,
+Dialogue: 0,0:00:47.38,0:00:50.65,Sub,,0,0,0,,{\fad(120,100)\move(960,1020,960,1016,0,120)}et donne une fréquence,\Npas des temps d'attente.
+Dialogue: 0,0:00:50.96,0:00:53.15,Sub,,0,0,0,,{\fad(120,100)\move(960,1020,960,1016,0,120)}Alors, troisième question de l'étude :
+Dialogue: 0,0:00:53.23,0:00:57.91,Sub,,0,0,0,,{\fad(120,100)\move(960,1020,960,1016,0,120)}une machine peut-elle nous dire\N{\c&H00A1ED&}à quelle fréquence{\c&HF7F4F2&} le champ se renverse ?
+Dialogue: 0,0:00:58.12,0:01:01.56,Sub,,0,0,0,,{\fad(120,100)\move(960,1020,960,1016,0,120)}Pour les passages par zéro,\Nsur trois cadrans :
+Dialogue: 0,0:01:01.64,0:01:06.38,Sub,,0,0,0,,{\fad(120,100)\move(960,1020,960,1016,0,120)}loin du seuil, à peu près,\Noui ; près du seuil, pas encore.

@@ -1,0 +1,22 @@
+[Script Info]
+ScriptType: v4.00+
+PlayResX: 1920
+PlayResY: 1080
+WrapStyle: 2
+ScaledBorderAndShadow: yes
+YCbCr Matrix: TV.709
+
+[V4+ Styles]
+Format: Name, Fontname, Fontsize, PrimaryColour, SecondaryColour, OutlineColour, BackColour, Bold, Italic, Underline, StrikeOut, ScaleX, ScaleY, Spacing, Angle, BorderStyle, Outline, Shadow, Alignment, MarginL, MarginR, MarginV, Encoding
+Style: Sub,Inter Medium,42,&H00F7F4F2,&H00F7F4F2,&H38140F0B,&H00000000,0,0,0,0,100,100,0,0,3,12,0,2,240,240,64,1
+
+[Events]
+Format: Layer, Start, End, Style, Name, MarginL, MarginR, MarginV, Effect, Text
+Dialogue: 0,0:00:00.37,0:00:04.45,Sub,,0,0,0,,{\fad(120,100)\move(960,1020,960,1016,0,120)}Maintenant, le juge le plus\Nsévère : le {\c&H00A1ED&}plancher de bruit{\c&HF7F4F2&}.
+Dialogue: 0,0:00:05.00,0:00:08.61,Sub,,0,0,0,,{\fad(120,100)\move(960,1020,960,1016,0,120)}Sur les trois cadrans,\Nla meilleure machine se situe à environ
+Dialogue: 0,0:00:08.69,0:00:12.48,Sub,,0,0,0,,{\fad(120,100)\move(960,1020,960,1016,0,120)}deux fois son plancher ;\Nmais trois nombres, c'est facile.
+Dialogue: 0,0:00:12.77,0:00:17.27,Sub,,0,0,0,,{\fad(120,100)\move(960,1020,960,1016,0,120)}Sur la nappe de plasma, tous les modèles\Nse trompent sur les spectres bien
+Dialogue: 0,0:00:17.35,0:00:22.45,Sub,,0,0,0,,{\fad(120,100)\move(960,1020,960,1016,0,120)}plus que ne diffèrent deux échantillons\Nde données : au mieux, six fois plus.
+Dialogue: 0,0:00:23.19,0:00:26.07,Sub,,0,0,0,,{\fad(120,100)\move(960,1020,960,1016,0,120)}Deux graines sur les cadrans,\Nune seule sur la nappe ;
+Dialogue: 0,0:00:26.15,0:00:28.95,Sub,,0,0,0,,{\fad(120,100)\move(960,1020,960,1016,0,120)}le projet de thèse en\Ndemande au moins trois.
+Dialogue: 0,0:00:29.23,0:00:32.41,Sub,,0,0,0,,{\fad(120,100)\move(960,1020,960,1016,0,120)}Chaque test se situe entre\Ndeux réglages d'entraînement.

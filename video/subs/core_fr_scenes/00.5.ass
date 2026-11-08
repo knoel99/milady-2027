@@ -12,6 +12,6 @@ Style: Sub,Inter Medium,42,&H00F7F4F2,&H00F7F4F2,&H38140F0B,&H00000000,0,0,0,0,1
 
 [Events]
 Format: Layer, Start, End, Style, Name, MarginL, MarginR, MarginV, Effect, Text
-Dialogue: 0,0:00:00.52,0:00:03.30,Sub,,0,0,0,,{\fad(120,100)\move(960,1020,960,1016,0,120)}À quelle fréquence le\N{\c&H3468EB&}champ{\c&HF7F4F2&} se renverse-t-il ?
-Dialogue: 0,0:00:03.38,0:00:05.80,Sub,,0,0,0,,{\fad(120,100)\move(960,1020,960,1016,0,120)}Une carte pour s'initier au projet MilaDy,
-Dialogue: 0,0:00:05.88,0:00:09.18,Sub,,0,0,0,,{\fad(120,100)\move(960,1020,960,1016,0,120)}de la boussole jusqu'à la\Nrecherche d'aujourd'hui.
+Dialogue: 0,0:00:00.57,0:00:03.19,Sub,,0,0,0,,{\fad(120,100)\move(960,1020,960,1016,0,120)}À quelle fréquence le\N{\c&H3468EB&}champ{\c&HF7F4F2&} se renverse-t-il ?
+Dialogue: 0,0:00:03.57,0:00:05.99,Sub,,0,0,0,,{\fad(120,100)\move(960,1020,960,1016,0,120)}Une carte pour s'initier au projet MilaDy,
+Dialogue: 0,0:00:06.07,0:00:09.38,Sub,,0,0,0,,{\fad(120,100)\move(960,1020,960,1016,0,120)}de la boussole jusqu'à la\Nrecherche d'aujourd'hui.

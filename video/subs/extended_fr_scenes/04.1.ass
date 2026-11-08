@@ -1,0 +1,21 @@
+[Script Info]
+ScriptType: v4.00+
+PlayResX: 1920
+PlayResY: 1080
+WrapStyle: 2
+ScaledBorderAndShadow: yes
+YCbCr Matrix: TV.709
+
+[V4+ Styles]
+Format: Name, Fontname, Fontsize, PrimaryColour, SecondaryColour, OutlineColour, BackColour, Bold, Italic, Underline, StrikeOut, ScaleX, ScaleY, Spacing, Angle, BorderStyle, Outline, Shadow, Alignment, MarginL, MarginR, MarginV, Encoding
+Style: Sub,Inter Medium,42,&H00F7F4F2,&H00F7F4F2,&H38140F0B,&H00000000,0,0,0,0,100,100,0,0,3,12,0,2,240,240,64,1
+
+[Events]
+Format: Layer, Start, End, Style, Name, MarginL, MarginR, MarginV, Effect, Text
+Dialogue: 0,0:00:03.17,0:00:07.70,Sub,,0,0,0,,{\fad(120,100)\move(960,1020,960,1016,0,120)}Voici la caricature : trois cadrans,\Nreliés par des ressorts.
+Dialogue: 0,0:00:08.00,0:00:11.30,Sub,,0,0,0,,{\fad(120,100)\move(960,1020,960,1016,0,120)}L'un est le {\c&H3468EB&}dipôle{\c&HF7F4F2&},\Nla partie nord-sud du champ.
+Dialogue: 0,0:00:11.62,0:00:15.35,Sub,,0,0,0,,{\fad(120,100)\move(960,1020,960,1016,0,120)}Un autre est le {\c&H3468EB&}quadrupôle{\c&HF7F4F2&},\Nune partie à quatre pôles.
+Dialogue: 0,0:00:15.63,0:00:20.17,Sub,,0,0,0,,{\fad(120,100)\move(960,1020,960,1016,0,120)}Le troisième est un motif d'{\c&HE58739&}écoulement{\c&HF7F4F2&},\Npiloté par un bouton, Gamma.
+Dialogue: 0,0:00:20.91,0:00:25.14,Sub,,0,0,0,,{\fad(120,100)\move(960,1020,960,1016,0,120)}Trois courtes équations, dues à\NGissinger, les lient entre eux.
+Dialogue: 0,0:00:25.68,0:00:29.87,Sub,,0,0,0,,{\fad(120,100)\move(960,1020,960,1016,0,120)}Inversez les deux cadrans du champ :\Nles équations restent les mêmes.
+Dialogue: 0,0:00:30.42,0:00:34.90,Sub,,0,0,0,,{\fad(120,100)\move(960,1020,960,1016,0,120)}Trois cadrans, trois nombres :\Nla première marche de l'escalier.

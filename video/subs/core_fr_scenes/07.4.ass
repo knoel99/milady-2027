@@ -12,8 +12,9 @@ Style: Sub,Inter Medium,42,&H00F7F4F2,&H00F7F4F2,&H38140F0B,&H00000000,0,0,0,0,1
 
 [Events]
 Format: Layer, Start, End, Style, Name, MarginL, MarginR, MarginV, Effect, Text
-Dialogue: 0,0:00:00.32,0:00:03.15,Sub,,0,0,0,,{\fad(120,100)\move(960,1020,960,1016,0,120)}Can the energy budget catch the tilt?
-Dialogue: 0,0:00:03.23,0:00:06.52,Sub,,0,0,0,,{\fad(120,100)\move(960,1020,960,1016,0,120)}No. Each whirlpool\Nbalances its own budget.
-Dialogue: 0,0:00:06.60,0:00:10.14,Sub,,0,0,0,,{\fad(120,100)\move(960,1020,960,1016,0,120)}So a mix of the two passes,\Nin any proportion.
-Dialogue: 0,0:00:10.22,0:00:15.55,Sub,,0,0,0,,{\fad(120,100)\move(960,1020,960,1016,0,120)}On a check of crowd laws, the most\Nlopsided machine even edges ahead.
-Dialogue: 0,0:00:15.63,0:00:18.02,Sub,,0,0,0,,{\fad(120,100)\move(960,1020,960,1016,0,120)}The mirror needs its own tool.
+Dialogue: 0,0:00:00.37,0:00:03.44,Sub,,0,0,0,,{\fad(120,100)\move(960,1020,960,1016,0,120)}Le bilan d'énergie peut-il\Ndétecter ce déséquilibre ?
+Dialogue: 0,0:00:03.95,0:00:08.59,Sub,,0,0,0,,{\fad(120,100)\move(960,1020,960,1016,0,120)}Non. Chaque tourbillon,\Nà lui seul, équilibre son bilan.
+Dialogue: 0,0:00:09.13,0:00:13.05,Sub,,0,0,0,,{\fad(120,100)\move(960,1020,960,1016,0,120)}Un mélange des deux passe donc,\Ndans n'importe quelle proportion.
+Dialogue: 0,0:00:13.58,0:00:15.59,Sub,,0,0,0,,{\fad(120,100)\move(960,1020,960,1016,0,120)}Sur un contrôle de lois de la foule,
+Dialogue: 0,0:00:15.67,0:00:19.95,Sub,,0,0,0,,{\fad(120,100)\move(960,1020,960,1016,0,120)}la machine la plus déséquilibrée\Ndevance même légèrement les autres.
+Dialogue: 0,0:00:20.13,0:00:22.65,Sub,,0,0,0,,{\fad(120,100)\move(960,1020,960,1016,0,120)}Le miroir demande un outil à part.

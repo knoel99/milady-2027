@@ -12,14 +12,16 @@ Style: Sub,Inter Medium,42,&H00F7F4F2,&H00F7F4F2,&H38140F0B,&H00000000,0,0,0,0,1
 
 [Events]
 Format: Layer, Start, End, Style, Name, MarginL, MarginR, MarginV, Effect, Text
-Dialogue: 0,0:00:00.32,0:00:03.36,Sub,,0,0,0,,{\fad(120,100)\move(960,1020,960,1016,0,120)}Now the rings: papers\Nco-signed by the supervisors.
-Dialogue: 0,0:00:03.44,0:00:07.81,Sub,,0,0,0,,{\fad(120,100)\move(960,1020,960,1016,0,120)}Dynamo side: Taylor–Green dynamos pushed\Nto small {\c&H7AAF1B&}magnetic Prandtl numbers{\c&HF7F4F2&},
-Dialogue: 0,0:00:07.89,0:00:11.97,Sub,,0,0,0,,{\fad(120,100)\move(960,1020,960,1016,0,120)}and the VKS tank with its iron\Nimpellers, simulated in two codes.
-Dialogue: 0,0:00:12.05,0:00:15.27,Sub,,0,0,0,,{\fad(120,100)\move(960,1020,960,1016,0,120)}In twenty twenty-six, both\Ncodes produced VKS reversals,
-Dialogue: 0,0:00:15.35,0:00:18.69,Sub,,0,0,0,,{\fad(120,100)\move(960,1020,960,1016,0,120)}and a four-dial model\Nreproduces their main features.
-Dialogue: 0,0:00:18.77,0:00:21.80,Sub,,0,0,0,,{\fad(120,100)\move(960,1020,960,1016,0,120)}Learning side: autoencoder\Nlatent spaces read through
-Dialogue: 0,0:00:21.88,0:00:24.86,Sub,,0,0,0,,{\fad(120,100)\move(960,1020,960,1016,0,120)}classical flow modes,\Nvon Kármán flow included.
-Dialogue: 0,0:00:24.94,0:00:27.37,Sub,,0,0,0,,{\fad(120,100)\move(960,1020,960,1016,0,120)}And assimilation and\Ndiffusion models built
-Dialogue: 0,0:00:27.45,0:00:30.35,Sub,,0,0,0,,{\fad(120,100)\move(960,1020,960,1016,0,120)}on deep networks,\Noutside conducting fluids.
-Dialogue: 0,0:00:31.62,0:00:35.35,Sub,,0,0,0,,{\fad(120,100)\move(960,1020,960,1016,0,120)}Three ingredients are in hand.\NBut in what we found,
-Dialogue: 0,0:00:35.43,0:00:41.10,Sub,,0,0,0,,{\fad(120,100)\move(960,1020,960,1016,0,120)}none of the four has published a\N{\c&HF09CB4&}generative model{\c&HF7F4F2&} trained on dynamo data.
+Dialogue: 0,0:00:00.37,0:00:04.34,Sub,,0,0,0,,{\fad(120,100)\move(960,1020,960,1016,0,120)}Place aux repères cerclés :\Ndes articles cosignés par les encadrants.
+Dialogue: 0,0:00:04.73,0:00:08.21,Sub,,0,0,0,,{\fad(120,100)\move(960,1020,960,1016,0,120)}Côté dynamo : des dynamos de\NTaylor–Green poussées vers
+Dialogue: 0,0:00:08.29,0:00:10.87,Sub,,0,0,0,,{\fad(120,100)\move(960,1020,960,1016,0,120)}de petits {\c&H7AAF1B&}nombres de Prandtl magnétiques{\c&HF7F4F2&},
+Dialogue: 0,0:00:10.95,0:00:15.69,Sub,,0,0,0,,{\fad(120,100)\move(960,1020,960,1016,0,120)}et la cuve de VKS avec ses turbines\Nen fer, simulée dans deux codes.
+Dialogue: 0,0:00:15.91,0:00:19.88,Sub,,0,0,0,,{\fad(120,100)\move(960,1020,960,1016,0,120)}En deux mille vingt-six, les deux\Ncodes y ont obtenu des renversements,
+Dialogue: 0,0:00:19.96,0:00:23.43,Sub,,0,0,0,,{\fad(120,100)\move(960,1020,960,1016,0,120)}et un modèle à quatre cadrans\Nen reproduit l'essentiel.
+Dialogue: 0,0:00:24.25,0:00:27.84,Sub,,0,0,0,,{\fad(120,100)\move(960,1020,960,1016,0,120)}Côté apprentissage :\Ndes espaces latents d'autoencodeurs,
+Dialogue: 0,0:00:27.92,0:00:33.65,Sub,,0,0,0,,{\fad(120,100)\move(960,1020,960,1016,0,120)}interprétés grâce aux modes classiques des\Nécoulements, celui de von Kármán compris.
+Dialogue: 0,0:00:33.89,0:00:36.89,Sub,,0,0,0,,{\fad(120,100)\move(960,1020,960,1016,0,120)}Et de l'assimilation et des\Nmodèles de diffusion fondés
+Dialogue: 0,0:00:36.97,0:00:40.38,Sub,,0,0,0,,{\fad(120,100)\move(960,1020,960,1016,0,120)}sur des réseaux profonds,\Nhors des fluides conducteurs.
+Dialogue: 0,0:00:41.52,0:00:45.40,Sub,,0,0,0,,{\fad(120,100)\move(960,1020,960,1016,0,120)}Trois ingrédients sont réunis.\NMais, dans ce que nous avons trouvé,
+Dialogue: 0,0:00:45.48,0:00:47.82,Sub,,0,0,0,,{\fad(120,100)\move(960,1020,960,1016,0,120)}aucun des quatre encadrants n'a publié de
+Dialogue: 0,0:00:47.90,0:00:51.30,Sub,,0,0,0,,{\fad(120,100)\move(960,1020,960,1016,0,120)}{\c&HF09CB4&}modèle génératif{\c&HF7F4F2&} entraîné\Nsur des données de dynamo.

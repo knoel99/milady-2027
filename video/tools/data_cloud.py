@@ -48,7 +48,7 @@ import tempfile
 import numpy as np
 
 HERE = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
-REPO = os.environ.get("MILADY_REPO", "/home/user/milady-2027")
+REPO = os.environ.get("MILADY_REPO", os.path.dirname(HERE))   # the repository root (video/..)
 GEN = "tools/data_cloud.py"
 TODAY = datetime.date.today().isoformat()
 VERDICTS = ("met", "not_met", "inconclusive")

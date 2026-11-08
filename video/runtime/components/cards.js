@@ -92,8 +92,8 @@
     K.el('div', { class: 'qc-ask' }, stub, 'ASK');
     const num = K.el('div', { class: 'qc-num' }, stub, q.n !== undefined && q.n !== null ? 'Q' + q.n : 'Q');
     if (q.chapter) K.el('div', { class: 'qc-ch' }, stub, String(q.chapter).toUpperCase());
-    // who to ask: one unbreakable group per name ("D. Lucor" never splits after the initial), breaks only at " / " and ", "
-    const who = String(q.ask).split(/(\s*\/\s*|,\s+)/).map((x, i) => (i % 2 ? K.esc(x) : `<span style="white-space:nowrap">${K.esc(x)}</span>`)).join('');
+    // who to ask: an initial stays with its name ("D. Lucor" never splits after "D."): no-break space after "X."
+    const who = K.esc(q.ask).replace(/\b([A-Z])\. +/g, '$1.\u00a0');
     K.el('div', { class: 'qc-who', html: `<small>WHO</small>${who}` }, stub);
     const main = K.el('div', { class: 'qc-main' }, root);
     K.el('div', { class: 'qc-kicker' }, main, 'A QUESTION TO SETTLE BEFORE WE COMPUTE');

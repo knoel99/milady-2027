@@ -12,13 +12,16 @@ Style: Sub,Inter Medium,42,&H00F7F4F2,&H00F7F4F2,&H38140F0B,&H00000000,0,0,0,0,1
 
 [Events]
 Format: Layer, Start, End, Style, Name, MarginL, MarginR, MarginV, Effect, Text
-Dialogue: 0,0:00:00.32,0:00:05.48,Sub,,0,0,0,,{\fad(120,100)\move(960,1020,960,1016,0,120)}Now turn one {\c&H7AAF1B&}knob{\c&HF7F4F2&} on this flow: Rm.\NTurning it up means less diffusion.
-Dialogue: 0,0:00:05.56,0:00:08.98,Sub,,0,0,0,,{\fad(120,100)\move(960,1020,960,1016,0,120)}Less smudging should\Nonly help the stretching.
-Dialogue: 0,0:00:09.85,0:00:13.99,Sub,,0,0,0,,{\fad(120,100)\move(960,1020,960,1016,0,120)}So once the dynamo switches\Non, it stays on. Right?
-Dialogue: 0,0:00:17.86,0:00:21.74,Sub,,0,0,0,,{\fad(120,100)\move(960,1020,960,1016,0,120)}Here is the growth rate,\Ncomputed at twenty-four settings.
-Dialogue: 0,0:00:21.82,0:00:27.34,Sub,,0,0,0,,{\fad(120,100)\move(960,1020,960,1016,0,120)}Below about nine, every {\c&H3468EB&}field{\c&HF7F4F2&} fades. Then\Ngrowth turns positive: the dynamo is on.
-Dialogue: 0,0:00:27.42,0:00:30.69,Sub,,0,0,0,,{\fad(120,100)\move(960,1020,960,1016,0,120)}Near seventeen and a half,\Nit switches off again.
-Dialogue: 0,0:00:30.77,0:00:33.43,Sub,,0,0,0,,{\fad(120,100)\move(960,1020,960,1016,0,120)}Above about twenty-seven, it comes back.
-Dialogue: 0,0:00:33.51,0:00:38.62,Sub,,0,0,0,,{\fad(120,100)\move(960,1020,960,1016,0,120)}Not one threshold, but windows: turning\Na knob further does not always help.
-Dialogue: 0,0:00:38.70,0:00:41.50,Sub,,0,0,0,,{\fad(120,100)\move(960,1020,960,1016,0,120)}It agrees with published\Nresults. No machine
-Dialogue: 0,0:00:41.58,0:00:44.60,Sub,,0,0,0,,{\fad(120,100)\move(960,1020,960,1016,0,120)}learning yet: this only tests the solver.
+Dialogue: 0,0:00:00.37,0:00:04.67,Sub,,0,0,0,,{\fad(120,100)\move(960,1020,960,1016,0,120)}Sur cet écoulement, tournez\Nmaintenant un seul {\c&H7AAF1B&}bouton{\c&HF7F4F2&} :
+Dialogue: 0,0:00:04.75,0:00:08.59,Sub,,0,0,0,,{\fad(120,100)\move(960,1020,960,1016,0,120)}Rm. L'augmenter, c'est\Nréduire la diffusion.
+Dialogue: 0,0:00:09.01,0:00:11.86,Sub,,0,0,0,,{\fad(120,100)\move(960,1020,960,1016,0,120)}Moins d'estompage ne devrait\Nqu'aider l'étirement.
+Dialogue: 0,0:00:12.60,0:00:17.02,Sub,,0,0,0,,{\fad(120,100)\move(960,1020,960,1016,0,120)}Donc, une fois lancée, la dynamo\Nne s'arrête plus. N'est-ce pas ?
+Dialogue: 0,0:00:20.76,0:00:24.89,Sub,,0,0,0,,{\fad(120,100)\move(960,1020,960,1016,0,120)}Voici le taux de croissance,\Ncalculé pour vingt-quatre réglages.
+Dialogue: 0,0:00:25.29,0:00:28.43,Sub,,0,0,0,,{\fad(120,100)\move(960,1020,960,1016,0,120)}En dessous d'environ neuf,\Ntout {\c&H3468EB&}champ{\c&HF7F4F2&} s'éteint.
+Dialogue: 0,0:00:28.51,0:00:32.19,Sub,,0,0,0,,{\fad(120,100)\move(960,1020,960,1016,0,120)}Puis le taux devient positif :\Nla dynamo démarre.
+Dialogue: 0,0:00:32.60,0:00:35.67,Sub,,0,0,0,,{\fad(120,100)\move(960,1020,960,1016,0,120)}Autour de dix-sept et demi,\Nelle s'arrête à nouveau.
+Dialogue: 0,0:00:36.00,0:00:38.87,Sub,,0,0,0,,{\fad(120,100)\move(960,1020,960,1016,0,120)}Au-delà d'environ vingt-sept, elle repart.
+Dialogue: 0,0:00:39.10,0:00:41.36,Sub,,0,0,0,,{\fad(120,100)\move(960,1020,960,1016,0,120)}Pas un seul seuil, mais des fenêtres :
+Dialogue: 0,0:00:41.44,0:00:44.72,Sub,,0,0,0,,{\fad(120,100)\move(960,1020,960,1016,0,120)}tourner un bouton plus\Nloin n'aide pas toujours.
+Dialogue: 0,0:00:45.01,0:00:48.27,Sub,,0,0,0,,{\fad(120,100)\move(960,1020,960,1016,0,120)}Cela concorde avec les\Nrésultats publiés. Pas encore
+Dialogue: 0,0:00:48.35,0:00:52.60,Sub,,0,0,0,,{\fad(120,100)\move(960,1020,960,1016,0,120)}d'apprentissage automatique :\Non ne teste ici que le solveur.

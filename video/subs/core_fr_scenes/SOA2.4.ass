@@ -12,16 +12,17 @@ Style: Sub,Inter Medium,42,&H00F7F4F2,&H00F7F4F2,&H38140F0B,&H00000000,0,0,0,0,1
 
 [Events]
 Format: Layer, Start, End, Style, Name, MarginL, MarginR, MarginV, Effect, Text
-Dialogue: 0,0:00:00.52,0:00:04.35,Sub,,0,0,0,,{\fad(120,100)\move(960,1020,960,1016,0,120)}Third track: making samples\Nobey the laws. Four families.
-Dialogue: 0,0:00:04.43,0:00:08.63,Sub,,0,0,0,,{\fad(120,100)\move(960,1020,960,1016,0,120)}Hard: build the law into the network,\Nsay a potential whose curl
-Dialogue: 0,0:00:08.71,0:00:12.87,Sub,,0,0,0,,{\fad(120,100)\move(960,1020,960,1016,0,120)}has no divergence, or project\Neach sample while drawing it.
-Dialogue: 0,0:00:12.95,0:00:16.64,Sub,,0,0,0,,{\fad(120,100)\move(960,1020,960,1016,0,120)}Soft: a penalty in the loss,\Nobeyed only approximately.
-Dialogue: 0,0:00:16.72,0:00:19.37,Sub,,0,0,0,,{\fad(120,100)\move(960,1020,960,1016,0,120)}On the {\c&H00A1ED&}distribution{\c&HF7F4F2&}: constrain the crowd,
-Dialogue: 0,0:00:19.45,0:00:23.58,Sub,,0,0,0,,{\fad(120,100)\move(960,1020,960,1016,0,120)}by its covariance, or by the\Nequation a steady cloud obeys.
-Dialogue: 0,0:00:23.66,0:00:27.67,Sub,,0,0,0,,{\fad(120,100)\move(960,1020,960,1016,0,120)}And symmetry: an equivariant\Nflow gives a symmetric cloud.
-Dialogue: 0,0:00:28.94,0:00:32.16,Sub,,0,0,0,,{\fad(120,100)\move(960,1020,960,1016,0,120)}A twenty twenty-six preprint\Ncompared ways to impose zero
-Dialogue: 0,0:00:32.24,0:00:35.64,Sub,,0,0,0,,{\fad(120,100)\move(960,1020,960,1016,0,120)}divergence on flat flows:\Nno single strategy dominates.
-Dialogue: 0,0:00:35.72,0:00:39.70,Sub,,0,0,0,,{\fad(120,100)\move(960,1020,960,1016,0,120)}In three dimensions, we found two\Nexactly divergence-free generators,
-Dialogue: 0,0:00:39.78,0:00:42.05,Sub,,0,0,0,,{\fad(120,100)\move(960,1020,960,1016,0,120)}both preprints: periodic-box turbulence,
-Dialogue: 0,0:00:42.13,0:00:45.00,Sub,,0,0,0,,{\fad(120,100)\move(960,1020,960,1016,0,120)}and a current-free field\Nin the Sun's corona.
-Dialogue: 0,0:00:45.08,0:00:48.29,Sub,,0,0,0,,{\fad(120,100)\move(960,1020,960,1016,0,120)}None handles walls, a vacuum\Noutside and iron inside.
+Dialogue: 0,0:00:00.57,0:00:05.81,Sub,,0,0,0,,{\fad(120,100)\move(960,1020,960,1016,0,120)}Troisième piste : faire obéir les\Néchantillons aux lois. Quatre familles.
+Dialogue: 0,0:00:06.06,0:00:09.14,Sub,,0,0,0,,{\fad(120,100)\move(960,1020,960,1016,0,120)}Contraintes dures :\Nintégrer la loi au réseau,
+Dialogue: 0,0:00:09.22,0:00:13.80,Sub,,0,0,0,,{\fad(120,100)\move(960,1020,960,1016,0,120)}par exemple un potentiel dont le\Nrotationnel est à divergence nulle,
+Dialogue: 0,0:00:13.88,0:00:17.85,Sub,,0,0,0,,{\fad(120,100)\move(960,1020,960,1016,0,120)}ou projeter chaque échantillon\Npendant sa génération.
+Dialogue: 0,0:00:18.02,0:00:21.91,Sub,,0,0,0,,{\fad(120,100)\move(960,1020,960,1016,0,120)}Contraintes souples : une pénalité dans\Nla perte, respectée seulement à peu près.
+Dialogue: 0,0:00:22.48,0:00:26.43,Sub,,0,0,0,,{\fad(120,100)\move(960,1020,960,1016,0,120)}Contraintes en {\c&H00A1ED&}loi{\c&HF7F4F2&} : on agit\Nsur la foule, par sa covariance,
+Dialogue: 0,0:00:26.51,0:00:30.28,Sub,,0,0,0,,{\fad(120,100)\move(960,1020,960,1016,0,120)}ou par l'équation que vérifie\Nun nuage stationnaire.
+Dialogue: 0,0:00:30.71,0:00:35.76,Sub,,0,0,0,,{\fad(120,100)\move(960,1020,960,1016,0,120)}Et la symétrie : un vent équivariant\Ndonne un nuage symétrique.
+Dialogue: 0,0:00:36.90,0:00:41.42,Sub,,0,0,0,,{\fad(120,100)\move(960,1020,960,1016,0,120)}Une prépublication de deux mille vingt-six\Na comparé des façons d'imposer une
+Dialogue: 0,0:00:41.50,0:00:46.37,Sub,,0,0,0,,{\fad(120,100)\move(960,1020,960,1016,0,120)}divergence nulle en écoulement plan :\Naucune stratégie ne l'emporte partout.
+Dialogue: 0,0:00:46.63,0:00:50.72,Sub,,0,0,0,,{\fad(120,100)\move(960,1020,960,1016,0,120)}En trois dimensions, nous avons\Ntrouvé deux générateurs à divergence
+Dialogue: 0,0:00:50.80,0:00:54.65,Sub,,0,0,0,,{\fad(120,100)\move(960,1020,960,1016,0,120)}exactement nulle, tous deux en\Nprépublication : la turbulence en
+Dialogue: 0,0:00:54.73,0:00:59.23,Sub,,0,0,0,,{\fad(120,100)\move(960,1020,960,1016,0,120)}boîte périodique, et un champ sans\Ncourant dans la couronne solaire.
+Dialogue: 0,0:00:59.69,0:01:04.28,Sub,,0,0,0,,{\fad(120,100)\move(960,1020,960,1016,0,120)}Aucun ne traite des parois, avec\Ndu vide dehors et du fer dedans.

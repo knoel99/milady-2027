@@ -12,8 +12,9 @@ Style: Sub,Inter Medium,42,&H00F7F4F2,&H00F7F4F2,&H38140F0B,&H00000000,0,0,0,0,1
 
 [Events]
 Format: Layer, Start, End, Style, Name, MarginL, MarginR, MarginV, Effect, Text
-Dialogue: 0,0:00:00.32,0:00:05.23,Sub,,0,0,0,,{\fad(120,100)\move(960,1020,960,1016,0,120)}Every turbulent dynamo simulation\Nin three dimensions is very costly.
-Dialogue: 0,0:00:05.31,0:00:08.77,Sub,,0,0,0,,{\fad(120,100)\move(960,1020,960,1016,0,120)}So only a handful of knob\Nsettings get simulated.
-Dialogue: 0,0:00:08.85,0:00:14.73,Sub,,0,0,0,,{\fad(120,100)\move(960,1020,960,1016,0,120)}Each one is a mountain of data: a single\Nsnapshot can weigh more than a gigabyte.
-Dialogue: 0,0:00:15.60,0:00:18.22,Sub,,0,0,0,,{\fad(120,100)\move(960,1020,960,1016,0,120)}Each run holds only a few flips.
-Dialogue: 0,0:00:18.30,0:00:22.21,Sub,,0,0,0,,{\fad(120,100)\move(960,1020,960,1016,0,120)}And between the dots,\Nthere is nothing at all.
+Dialogue: 0,0:00:00.37,0:00:05.15,Sub,,0,0,0,,{\fad(120,100)\move(960,1020,960,1016,0,120)}Chaque simulation de dynamo turbulente\Nen trois dimensions coûte très cher.
+Dialogue: 0,0:00:05.61,0:00:08.24,Sub,,0,0,0,,{\fad(120,100)\move(960,1020,960,1016,0,120)}On ne simule donc qu'une\Npoignée de réglages.
+Dialogue: 0,0:00:08.83,0:00:11.62,Sub,,0,0,0,,{\fad(120,100)\move(960,1020,960,1016,0,120)}Chacun représente une\Nmontagne de données :
+Dialogue: 0,0:00:11.70,0:00:15.36,Sub,,0,0,0,,{\fad(120,100)\move(960,1020,960,1016,0,120)}un seul instantané peut\Npeser plus d'un gigaoctet.
+Dialogue: 0,0:00:16.10,0:00:19.08,Sub,,0,0,0,,{\fad(120,100)\move(960,1020,960,1016,0,120)}Chaque simulation ne contient\Nque quelques renversements.
+Dialogue: 0,0:00:19.32,0:00:21.92,Sub,,0,0,0,,{\fad(120,100)\move(960,1020,960,1016,0,120)}Et entre les points,\Nil n'y a rien du tout.

@@ -12,10 +12,12 @@ Style: Sub,Inter Medium,42,&H00F7F4F2,&H00F7F4F2,&H38140F0B,&H00000000,0,0,0,0,1
 
 [Events]
 Format: Layer, Start, End, Style, Name, MarginL, MarginR, MarginV, Effect, Text
-Dialogue: 0,0:00:00.32,0:00:05.40,Sub,,0,0,0,,{\fad(120,100)\move(960,1020,960,1016,0,120)}Picture the {\c&HE58739&}flow{\c&HF7F4F2&} as a conveyor\Nbelt that does not feel its cargo.
-Dialogue: 0,0:00:05.48,0:00:11.19,Sub,,0,0,0,,{\fad(120,100)\move(960,1020,960,1016,0,120)}A weak {\c&H3468EB&}field{\c&HF7F4F2&} rides on the imposed flow,\Nand fades or grows exponentially.
-Dialogue: 0,0:00:11.27,0:00:16.38,Sub,,0,0,0,,{\fad(120,100)\move(960,1020,960,1016,0,120)}On a log scale: a straight line,\Nwhose slope is the growth rate.
-Dialogue: 0,0:00:17.25,0:00:20.43,Sub,,0,0,0,,{\fad(120,100)\move(960,1020,960,1016,0,120)}But a strong field\Npushes back on the flow,
-Dialogue: 0,0:00:20.51,0:00:25.27,Sub,,0,0,0,,{\fad(120,100)\move(960,1020,960,1016,0,120)}as it braked the copper disc:\Nthe line bends into a plateau.
-Dialogue: 0,0:00:25.35,0:00:28.70,Sub,,0,0,0,,{\fad(120,100)\move(960,1020,960,1016,0,120)}These are the kinematic\Nand dynamic regimes.
-Dialogue: 0,0:00:28.78,0:00:30.84,Sub,,0,0,0,,{\fad(120,100)\move(960,1020,960,1016,0,120)}Flips live on the plateau.
+Dialogue: 0,0:00:00.37,0:00:02.60,Sub,,0,0,0,,{\fad(120,100)\move(960,1020,960,1016,0,120)}Imaginez l'{\c&HE58739&}écoulement{\c&HF7F4F2&}\Ncomme un tapis roulant
+Dialogue: 0,0:00:02.68,0:00:04.90,Sub,,0,0,0,,{\fad(120,100)\move(960,1020,960,1016,0,120)}qui ne sent pas ce qu'il transporte.
+Dialogue: 0,0:00:05.64,0:00:09.21,Sub,,0,0,0,,{\fad(120,100)\move(960,1020,960,1016,0,120)}Un {\c&H3468EB&}champ{\c&HF7F4F2&} faible se laisse porter\Npar cet écoulement imposé,
+Dialogue: 0,0:00:09.29,0:00:12.15,Sub,,0,0,0,,{\fad(120,100)\move(960,1020,960,1016,0,120)}et s'éteint ou grandit exponentiellement.
+Dialogue: 0,0:00:12.91,0:00:18.33,Sub,,0,0,0,,{\fad(120,100)\move(960,1020,960,1016,0,120)}En échelle logarithmique : une droite,\Ndont la pente est le taux de croissance.
+Dialogue: 0,0:00:19.07,0:00:22.00,Sub,,0,0,0,,{\fad(120,100)\move(960,1020,960,1016,0,120)}Mais un champ fort agit en\Nretour sur l'écoulement,
+Dialogue: 0,0:00:22.08,0:00:27.12,Sub,,0,0,0,,{\fad(120,100)\move(960,1020,960,1016,0,120)}comme il a freiné le disque de cuivre :\Nla droite se courbe et forme un plateau.
+Dialogue: 0,0:00:27.39,0:00:30.01,Sub,,0,0,0,,{\fad(120,100)\move(960,1020,960,1016,0,120)}Ce sont les régimes\Ncinématique et dynamique.
+Dialogue: 0,0:00:30.27,0:00:33.25,Sub,,0,0,0,,{\fad(120,100)\move(960,1020,960,1016,0,120)}C'est sur le plateau que se\Nproduisent les renversements.

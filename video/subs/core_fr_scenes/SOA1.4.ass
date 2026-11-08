@@ -12,18 +12,18 @@ Style: Sub,Inter Medium,42,&H00F7F4F2,&H00F7F4F2,&H38140F0B,&H00000000,0,0,0,0,1
 
 [Events]
 Format: Layer, Start, End, Style, Name, MarginL, MarginR, MarginV, Effect, Text
-Dialogue: 0,0:00:00.32,0:00:02.10,Sub,,0,0,0,,{\fad(120,100)\move(960,1020,960,1016,0,120)}Quatrième piste, les ordinateurs.
-Dialogue: 0,0:00:02.18,0:00:03.85,Sub,,0,0,0,,{\fad(120,100)\move(960,1020,960,1016,0,120)}Mille neuf cent quatre-vingt-un :
-Dialogue: 0,0:00:03.93,0:00:06.65,Sub,,0,0,0,,{\fad(120,100)\move(960,1020,960,1016,0,120)}une turbulence simulée\Nfait naître des dynamos.
-Dialogue: 0,0:00:06.73,0:00:08.63,Sub,,0,0,0,,{\fad(120,100)\move(960,1020,960,1016,0,120)}Mille neuf cent quatre-vingt-quinze :
-Dialogue: 0,0:00:08.71,0:00:11.77,Sub,,0,0,0,,{\fad(120,100)\move(960,1020,960,1016,0,120)}dans un noyau terrestre simulé,\Nle champ se renverse.
-Dialogue: 0,0:00:11.85,0:00:16.32,Sub,,0,0,0,,{\fad(120,100)\move(960,1020,960,1016,0,120)}Les repères cerclés signalent les articles\Ncosignés par les encadrants du projet.
-Dialogue: 0,0:00:16.40,0:00:19.24,Sub,,0,0,0,,{\fad(120,100)\move(960,1020,960,1016,0,120)}Mille neuf cent quatre-vingt-dix-sept :\Nen simulation,
-Dialogue: 0,0:00:19.32,0:00:22.73,Sub,,0,0,0,,{\fad(120,100)\move(960,1020,960,1016,0,120)}deux tourbillons contrarotatifs\Nproduisent un effet dynamo.
-Dialogue: 0,0:00:22.81,0:00:27.06,Sub,,0,0,0,,{\fad(120,100)\move(960,1020,960,1016,0,120)}Deux mille cinq : ces dynamos fonctionnent\Nencore pour un {\c&H7AAF1B&}Pm{\c&HF7F4F2&} d'un centième.
-Dialogue: 0,0:00:27.93,0:00:29.67,Sub,,0,0,0,,{\fad(120,100)\move(960,1020,960,1016,0,120)}À partir de deux mille seize,
-Dialogue: 0,0:00:29.75,0:00:33.86,Sub,,0,0,0,,{\fad(120,100)\move(960,1020,960,1016,0,120)}deux codes simulent la cuve de\NVKS, turbines en fer comprises.
-Dialogue: 0,0:00:33.94,0:00:37.87,Sub,,0,0,0,,{\fad(120,100)\move(960,1020,960,1016,0,120)}Deux mille vingt-six : tous deux\Nobtiennent des renversements ;
-Dialogue: 0,0:00:37.95,0:00:42.69,Sub,,0,0,0,,{\fad(120,100)\move(960,1020,960,1016,0,120)}dans les cas explorés, seulement avec\Nun milieu conducteur tout autour.
-Dialogue: 0,0:00:42.77,0:00:44.58,Sub,,0,0,0,,{\fad(120,100)\move(960,1020,960,1016,0,120)}Leur simulation de référence :
-Dialogue: 0,0:00:44.66,0:00:49.33,Sub,,0,0,0,,{\fad(120,100)\move(960,1020,960,1016,0,120)}un {\c&H7AAF1B&}nombre de Reynolds{\c&HF7F4F2&} d'environ\Nmille six cents, et non des millions.
+Dialogue: 0,0:00:00.37,0:00:02.96,Sub,,0,0,0,,{\fad(120,100)\move(960,1020,960,1016,0,120)}Quatrième piste, les ordinateurs.
+Dialogue: 0,0:00:03.58,0:00:05.36,Sub,,0,0,0,,{\fad(120,100)\move(960,1020,960,1016,0,120)}Mille neuf cent quatre-vingt-un :
+Dialogue: 0,0:00:05.44,0:00:08.41,Sub,,0,0,0,,{\fad(120,100)\move(960,1020,960,1016,0,120)}une turbulence simulée\Nfait naître des dynamos.
+Dialogue: 0,0:00:08.92,0:00:11.23,Sub,,0,0,0,,{\fad(120,100)\move(960,1020,960,1016,0,120)}Mille neuf cent quatre-vingt-quinze :
+Dialogue: 0,0:00:11.31,0:00:15.06,Sub,,0,0,0,,{\fad(120,100)\move(960,1020,960,1016,0,120)}dans un noyau terrestre simulé,\Nle champ se renverse.
+Dialogue: 0,0:00:15.39,0:00:21.39,Sub,,0,0,0,,{\fad(120,100)\move(960,1020,960,1016,0,120)}Les repères cerclés signalent les articles\Ncosignés par les encadrants du projet.
+Dialogue: 0,0:00:22.60,0:00:25.74,Sub,,0,0,0,,{\fad(120,100)\move(960,1020,960,1016,0,120)}Mille neuf cent quatre-vingt-dix-sept :\Nen simulation,
+Dialogue: 0,0:00:25.82,0:00:29.67,Sub,,0,0,0,,{\fad(120,100)\move(960,1020,960,1016,0,120)}deux tourbillons contrarotatifs\Nproduisent un effet dynamo.
+Dialogue: 0,0:00:29.86,0:00:34.19,Sub,,0,0,0,,{\fad(120,100)\move(960,1020,960,1016,0,120)}Deux mille cinq : ces dynamos\Nfonctionnent encore à un {\c&H7AAF1B&}Pm{\c&HF7F4F2&} d'un centième.
+Dialogue: 0,0:00:34.93,0:00:36.89,Sub,,0,0,0,,{\fad(120,100)\move(960,1020,960,1016,0,120)}À partir de deux mille seize,
+Dialogue: 0,0:00:36.97,0:00:41.66,Sub,,0,0,0,,{\fad(120,100)\move(960,1020,960,1016,0,120)}deux codes simulent la cuve de\NVKS, turbines en fer comprises.
+Dialogue: 0,0:00:42.11,0:00:45.74,Sub,,0,0,0,,{\fad(120,100)\move(960,1020,960,1016,0,120)}Deux mille vingt-six : tous deux\Nobtiennent des renversements ;
+Dialogue: 0,0:00:45.82,0:00:50.29,Sub,,0,0,0,,{\fad(120,100)\move(960,1020,960,1016,0,120)}dans les cas explorés, seulement avec\Nun milieu conducteur tout autour.
+Dialogue: 0,0:00:50.37,0:00:52.14,Sub,,0,0,0,,{\fad(120,100)\move(960,1020,960,1016,0,120)}Leur simulation de référence :
+Dialogue: 0,0:00:52.22,0:00:56.80,Sub,,0,0,0,,{\fad(120,100)\move(960,1020,960,1016,0,120)}un {\c&H7AAF1B&}nombre de Reynolds{\c&HF7F4F2&} d'environ\Nmille six cents, et non des millions.

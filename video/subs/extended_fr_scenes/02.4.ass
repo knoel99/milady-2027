@@ -1,0 +1,23 @@
+[Script Info]
+ScriptType: v4.00+
+PlayResX: 1920
+PlayResY: 1080
+WrapStyle: 2
+ScaledBorderAndShadow: yes
+YCbCr Matrix: TV.709
+
+[V4+ Styles]
+Format: Name, Fontname, Fontsize, PrimaryColour, SecondaryColour, OutlineColour, BackColour, Bold, Italic, Underline, StrikeOut, ScaleX, ScaleY, Spacing, Angle, BorderStyle, Outline, Shadow, Alignment, MarginL, MarginR, MarginV, Encoding
+Style: Sub,Inter Medium,42,&H00F7F4F2,&H00F7F4F2,&H38140F0B,&H00000000,0,0,0,0,100,100,0,0,3,12,0,2,240,240,64,1
+
+[Events]
+Format: Layer, Start, End, Style, Name, MarginL, MarginR, MarginV, Effect, Text
+Dialogue: 0,0:00:00.37,0:00:03.28,Sub,,0,0,0,,{\fad(120,100)\move(960,1020,960,1016,0,120)}Seules trois expériences au\Nsodium liquide ont fabriqué
+Dialogue: 0,0:00:03.36,0:00:06.51,Sub,,0,0,0,,{\fad(120,100)\move(960,1020,960,1016,0,120)}leur propre champ, chaque\Nfois d'un genre différent.
+Dialogue: 0,0:00:07.08,0:00:10.41,Sub,,0,0,0,,{\fad(120,100)\move(960,1020,960,1016,0,120)}À Riga, un écoulement\Nen tire-bouchon a fait
+Dialogue: 0,0:00:10.49,0:00:14.51,Sub,,0,0,0,,{\fad(120,100)\move(960,1020,960,1016,0,120)}naître un champ qui oscille\Net tourne lentement.
+Dialogue: 0,0:00:14.59,0:00:17.09,Sub,,0,0,0,,{\fad(120,100)\move(960,1020,960,1016,0,120)}À Karlsruhe, cinquante-deux\Ncellules en spirale ont
+Dialogue: 0,0:00:17.17,0:00:20.02,Sub,,0,0,0,,{\fad(120,100)\move(960,1020,960,1016,0,120)}produit un champ stationnaire,\Nproche d'un {\c&H3468EB&}dipôle{\c&HF7F4F2&}.
+Dialogue: 0,0:00:20.54,0:00:26.54,Sub,,0,0,0,,{\fad(120,100)\move(960,1020,960,1016,0,120)}Et seule l'expérience VKS, à Cadarache,\Na donné un dipôle capable de se renverser.
+Dialogue: 0,0:00:27.66,0:00:31.93,Sub,,0,0,0,,{\fad(120,100)\move(960,1020,960,1016,0,120)}Une quatrième, DRESDYN, à Dresde,\Ncherche à les rejoindre :
+Dialogue: 0,0:00:32.01,0:00:36.17,Sub,,0,0,0,,{\fad(120,100)\move(960,1020,960,1016,0,120)}un cylindre en rotation\Ndont l'axe tourne lentement.

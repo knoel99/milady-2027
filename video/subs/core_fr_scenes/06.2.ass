@@ -12,7 +12,8 @@ Style: Sub,Inter Medium,42,&H00F7F4F2,&H00F7F4F2,&H38140F0B,&H00000000,0,0,0,0,1
 
 [Events]
 Format: Layer, Start, End, Style, Name, MarginL, MarginR, MarginV, Effect, Text
-Dialogue: 0,0:00:00.32,0:00:02.75,Sub,,0,0,0,,{\fad(120,100)\move(960,1020,960,1016,0,120)}One warning before the formulas.
-Dialogue: 0,0:00:02.83,0:00:07.39,Sub,,0,0,0,,{\fad(120,100)\move(960,1020,960,1016,0,120)}The wind runs on its own\N{\c&HF09CB4&}transport clock{\c&HF7F4F2&}, from zero to one.
-Dialogue: 0,0:00:07.47,0:00:12.68,Sub,,0,0,0,,{\fad(120,100)\move(960,1020,960,1016,0,120)}Not physical time: at the end,\Nyou hold one snapshot, not a movie.
-Dialogue: 0,0:00:13.55,0:00:19.33,Sub,,0,0,0,,{\fad(120,100)\move(960,1020,960,1016,0,120)}And the {\c&HF09CB4&}wind's arrows{\c&HF7F4F2&} move snapshots, not\Nfluid: they are not the fluid's velocity.
+Dialogue: 0,0:00:00.37,0:00:02.78,Sub,,0,0,0,,{\fad(120,100)\move(960,1020,960,1016,0,120)}Une mise en garde, avant les formules.
+Dialogue: 0,0:00:03.29,0:00:07.52,Sub,,0,0,0,,{\fad(120,100)\move(960,1020,960,1016,0,120)}Le vent suit sa propre\N{\c&HF09CB4&}horloge de transport{\c&HF7F4F2&}, de zéro à un.
+Dialogue: 0,0:00:07.85,0:00:13.49,Sub,,0,0,0,,{\fad(120,100)\move(960,1020,960,1016,0,120)}Ce n'est pas le temps physique : à la fin,\Nvous obtenez un instantané, pas un film.
+Dialogue: 0,0:00:14.23,0:00:17.05,Sub,,0,0,0,,{\fad(120,100)\move(960,1020,960,1016,0,120)}Et les {\c&HF09CB4&}flèches du vent{\c&HF7F4F2&}\Ndéplacent des instantanés,
+Dialogue: 0,0:00:17.13,0:00:21.20,Sub,,0,0,0,,{\fad(120,100)\move(960,1020,960,1016,0,120)}pas du fluide : elles ne représentent\Npas la {\c&HE58739&}vitesse du fluide{\c&HF7F4F2&}.

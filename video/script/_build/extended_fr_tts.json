@@ -11,14 +11,14 @@
   "lang": "fr",
   "paragraphs": 333,
   "words": 11404,
-  "cached_paragraphs": 0,
-  "new_paragraphs": 333,
-  "new_words": 11404,
-  "new_audio_min_est": 78.1,
+  "cached_paragraphs": 333,
+  "new_paragraphs": 0,
+  "new_words": 0,
+  "new_audio_min_est": 0.0,
   "untranslated_paragraphs": 0,
-  "fish": 0,
+  "fish": 333,
   "placeholder": 0,
-  "missing": 333
+  "missing": 0
  },
  "scenes": {
   "00.1": [
@@ -26,9 +26,10 @@
     "para": 0,
     "key": "bc7484a640bc87d49be0fc67",
     "words": 30,
-    "source": null,
-    "wav": null,
-    "truth": null
+    "source": "fish",
+    "wav": "audio/cache/bc7484a640bc87d49be0fc67.wav",
+    "truth": null,
+    "duration": 14.2368
    }
   ],
   "00.2": [
@@ -36,9 +37,10 @@
     "para": 0,
     "key": "e498768b220f1d8ea11810aa",
     "words": 19,
-    "source": null,
-    "wav": null,
-    "truth": null
+    "source": "fish",
+    "wav": "audio/cache/e498768b220f1d8ea11810aa.wav",
+    "truth": null,
+    "duration": 7.8106
    }
   ],
   "00.3": [
@@ -46,9 +48,10 @@
     "para": 0,
     "key": "70c8df18ba447f847ea602bf",
     "words": 46,
-    "source": null,
-    "wav": null,
-    "truth": null
+    "source": "fish",
+    "wav": "audio/cache/70c8df18ba447f847ea602bf.wav",
+    "truth": null,
+    "duration": 21.76
    }
   ],
   "00.4": [
@@ -56,25 +59,28 @@
     "para": 0,
     "key": "761091283d72a3fcc57342b0",
     "words": 21,
-    "source": null,
-    "wav": null,
-    "truth": null
+    "source": "fish",
+    "wav": "audio/cache/761091283d72a3fcc57342b0.wav",
+    "truth": null,
+    "duration": 10.4229
    },
    {
     "para": 1,
     "key": "39b5f9c001b3f74ecc8d746a",
     "words": 19,
-    "source": null,
-    "wav": null,
-    "truth": null
+    "source": "fish",
+    "wav": "audio/cache/39b5f9c001b3f74ecc8d746a.wav",
+    "truth": null,
+    "duration": 7.6278
    },
    {
     "para": 2,
     "key": "c49a9eb9378c12111b428f85",
     "words": 36,
-    "source": null,
-    "wav": null,
-    "truth": null
+    "source": "fish",
+    "wav": "audio/cache/c49a9eb9378c12111b428f85.wav",
+    "truth": null,
+    "duration": 14.5502
    }
   ],
   "00.5": [
@@ -82,9 +88,10 @@
     "para": 0,
     "key": "8df19d8a8dc5c1985c57b18b",
     "words": 21,
-    "source": null,
-    "wav": null,
-    "truth": null
+    "source": "fish",
+    "wav": "audio/cache/8df19d8a8dc5c1985c57b18b.wav",
+    "truth": null,
+    "duration": 9.0645
    }
   ],
   "ch00.Q": [
@@ -92,9 +99,10 @@
     "para": 0,
     "key": "4566b850a4b6fefb98438998",
     "words": 19,
-    "source": null,
-    "wav": null,
-    "truth": null
+    "source": "fish",
+    "wav": "audio/cache/4566b850a4b6fefb98438998.wav",
+    "truth": null,
+    "duration": 7.5494
    }
   ],
   "01.1": [
@@ -102,9 +110,10 @@
     "para": 0,
     "key": "964e71a086710565faddf127",
     "words": 58,
-    "source": null,
-    "wav": null,
-    "truth": null
+    "source": "fish",
+    "wav": "audio/cache/964e71a086710565faddf127.wav",
+    "truth": null,
+    "duration": 24.2678
    }
   ],
   "01.2": [
@@ -112,17 +121,19 @@
     "para": 0,
     "key": "1e6228dbfc7307d752d85659",
     "words": 37,
-    "source": null,
-    "wav": null,
-    "truth": null
+    "source": "fish",
+    "wav": "audio/cache/1e6228dbfc7307d752d85659.wav",
+    "truth": null,
+    "duration": 14.9159
    },
    {
     "para": 1,
     "key": "af5239e522e7aa34bfa047cd",
     "words": 34,
-    "source": null,
-    "wav": null,
-    "truth": null
+    "source": "fish",
+    "wav": "audio/cache/af5239e522e7aa34bfa047cd.wav",
+    "truth": null,
+    "duration": 13.4008
    }
   ],
   "01.3": [
@@ -130,33 +141,37 @@
     "para": 0,
     "key": "230076c4fd34e9b07b613cad",
     "words": 24,
-    "source": null,
-    "wav": null,
-    "truth": null
+    "source": "fish",
+    "wav": "audio/cache/230076c4fd34e9b07b613cad.wav",
+    "truth": null,
+    "duration": 11.3371
    },
    {
     "para": 1,
     "key": "1056843b11fb3d0b805cdf00",
     "words": 25,
-    "source": null,
-    "wav": null,
-    "truth": null
+    "source": "fish",
+    "wav": "audio/cache/1056843b11fb3d0b805cdf00.wav",
+    "truth": null,
+    "duration": 11.311
    },
    {
     "para": 2,
     "key": "fc61945f9768703870c6c91a",
     "words": 49,
-    "source": null,
-    "wav": null,
-    "truth": null
+    "source": "fish",
+    "wav": "audio/cache/fc61945f9768703870c6c91a.wav",
+    "truth": null,
+    "duration": 17.2408
    },
    {
     "para": 3,
     "key": "4d03aee4af6a33651b78c8aa",
     "words": 40,
-    "source": null,
-    "wav": null,
-    "truth": null
+    "source": "fish",
+    "wav": "audio/cache/4d03aee4af6a33651b78c8aa.wav",
+    "truth": null,
+    "duration": 17.9461
    }
   ],
   "01.4": [
@@ -164,9 +179,10 @@
     "para": 0,
     "key": "72e443328afeb70525347973",
     "words": 50,
-    "source": null,
-    "wav": null,
-    "truth": null
+    "source": "fish",
+    "wav": "audio/cache/72e443328afeb70525347973.wav",
+    "truth": null,
+    "duration": 22.2041
    }
   ],
   "01.5": [
@@ -174,17 +190,19 @@
     "para": 0,
     "key": "f718c5a61523b2f0f121298a",
     "words": 13,
-    "source": null,
-    "wav": null,
-    "truth": null
+    "source": "fish",
+    "wav": "audio/cache/f718c5a61523b2f0f121298a.wav",
+    "truth": null,
+    "duration": 5.6947
    },
    {
     "para": 1,
     "key": "d9cfe6b9f571df9185bdf2ce",
     "words": 59,
-    "source": null,
-    "wav": null,
-    "truth": null
+    "source": "fish",
+    "wav": "audio/cache/d9cfe6b9f571df9185bdf2ce.wav",
+    "truth": null,
+    "duration": 23.1968
    }
   ],
   "01.6": [
@@ -192,9 +210,10 @@
     "para": 0,
     "key": "b499f5c300d3b90db0b5d495",
     "words": 34,
-    "source": null,
-    "wav": null,
-    "truth": null
+    "source": "fish",
+    "wav": "audio/cache/b499f5c300d3b90db0b5d495.wav",
+    "truth": null,
+    "duration": 15.569
    }
   ],
   "ch01.Q": [
@@ -202,9 +221,10 @@
     "para": 0,
     "key": "9784c2b230d0780b9916c386",
     "words": 18,
-    "source": null,
-    "wav": null,
-    "truth": null
+    "source": "fish",
+    "wav": "audio/cache/9784c2b230d0780b9916c386.wav",
+    "truth": null,
+    "duration": 8.8033
    }
   ],
   "02.1": [
@@ -212,17 +232,19 @@
     "para": 0,
     "key": "b3e992e12e4f8a5169a00289",
     "words": 33,
-    "source": null,
-    "wav": null,
-    "truth": null
+    "source": "fish",
+    "wav": "audio/cache/b3e992e12e4f8a5169a00289.wav",
+    "truth": null,
+    "duration": 13.0612
    },
    {
     "para": 1,
     "key": "76d12246813c60f00492cfbf",
     "words": 54,
-    "source": null,
-    "wav": null,
-    "truth": null
+    "source": "fish",
+    "wav": "audio/cache/76d12246813c60f00492cfbf.wav",
+    "truth": null,
+    "duration": 24.529
    }
   ],
   "02.2": [
@@ -230,17 +252,19 @@
     "para": 0,
     "key": "49f59d84827a20a888437c06",
     "words": 40,
-    "source": null,
-    "wav": null,
-    "truth": null
+    "source": "fish",
+    "wav": "audio/cache/49f59d84827a20a888437c06.wav",
+    "truth": null,
+    "duration": 20.0882
    },
    {
     "para": 1,
     "key": "6f546634c72cb00ebb36b016",
     "words": 34,
-    "source": null,
-    "wav": null,
-    "truth": null
+    "source": "fish",
+    "wav": "audio/cache/6f546634c72cb00ebb36b016.wav",
+    "truth": null,
+    "duration": 15.4384
    }
   ],
   "02.3": [
@@ -248,17 +272,19 @@
     "para": 0,
     "key": "1120a8d92e35ed29e5f2f841",
     "words": 45,
-    "source": null,
-    "wav": null,
-    "truth": null
+    "source": "fish",
+    "wav": "audio/cache/1120a8d92e35ed29e5f2f841.wav",
+    "truth": null,
+    "duration": 18.3119
    },
    {
     "para": 1,
     "key": "8ce1c85850f6cfc0887fc14b",
     "words": 34,
-    "source": null,
-    "wav": null,
-    "truth": null
+    "source": "fish",
+    "wav": "audio/cache/8ce1c85850f6cfc0887fc14b.wav",
+    "truth": null,
+    "duration": 13.7143
    }
   ],
   "02.4": [
@@ -266,17 +292,19 @@
     "para": 0,
     "key": "cff8929c7bc86e8dd1ce3817",
     "words": 60,
-    "source": null,
-    "wav": null,
-    "truth": null
+    "source": "fish",
+    "wav": "audio/cache/cff8929c7bc86e8dd1ce3817.wav",
+    "truth": null,
+    "duration": 27.0106
    },
    {
     "para": 1,
     "key": "46dc3ef0a4997966275f0d76",
     "words": 17,
-    "source": null,
-    "wav": null,
-    "truth": null
+    "source": "fish",
+    "wav": "audio/cache/46dc3ef0a4997966275f0d76.wav",
+    "truth": null,
+    "duration": 8.6988
    }
   ],
   "02.5": [
@@ -284,33 +312,37 @@
     "para": 0,
     "key": "a8c61247d9329f9a3d99cdf1",
     "words": 27,
-    "source": null,
-    "wav": null,
-    "truth": null
+    "source": "fish",
+    "wav": "audio/cache/a8c61247d9329f9a3d99cdf1.wav",
+    "truth": null,
+    "duration": 12.6955
    },
    {
     "para": 1,
     "key": "69c0b2a21409576f20e71b0e",
     "words": 8,
-    "source": null,
-    "wav": null,
-    "truth": null
+    "source": "fish",
+    "wav": "audio/cache/69c0b2a21409576f20e71b0e.wav",
+    "truth": null,
+    "duration": 3.5004
    },
    {
     "para": 2,
     "key": "f344b3aaa6aacca00ddabb3a",
     "words": 32,
-    "source": null,
-    "wav": null,
-    "truth": null
+    "source": "fish",
+    "wav": "audio/cache/f344b3aaa6aacca00ddabb3a.wav",
+    "truth": null,
+    "duration": 11.7551
    },
    {
     "para": 3,
     "key": "213c30bd5668e323fd48cf14",
     "words": 13,
-    "source": null,
-    "wav": null,
-    "truth": null
+    "source": "fish",
+    "wav": "audio/cache/213c30bd5668e323fd48cf14.wav",
+    "truth": null,
+    "duration": 5.1723
    }
   ],
   "02.6": [
@@ -318,17 +350,19 @@
     "para": 0,
     "key": "0c77c60a7835ec18db1e7c81",
     "words": 37,
-    "source": null,
-    "wav": null,
-    "truth": null
+    "source": "fish",
+    "wav": "audio/cache/0c77c60a7835ec18db1e7c81.wav",
+    "truth": null,
+    "duration": 15.8041
    },
    {
     "para": 1,
     "key": "7fa9329c2fd7991bf1e6b318",
     "words": 24,
-    "source": null,
-    "wav": null,
-    "truth": null
+    "source": "fish",
+    "wav": "audio/cache/7fa9329c2fd7991bf1e6b318.wav",
+    "truth": null,
+    "duration": 10.1878
    }
   ],
   "ch02.Q": [
@@ -336,9 +370,10 @@
     "para": 0,
     "key": "ee983c092042e7502e90d89c",
     "words": 22,
-    "source": null,
-    "wav": null,
-    "truth": null
+    "source": "fish",
+    "wav": "audio/cache/ee983c092042e7502e90d89c.wav",
+    "truth": null,
+    "duration": 7.9935
    }
   ],
   "SOA1.1": [
@@ -346,17 +381,19 @@
     "para": 0,
     "key": "efd79c80eac840948237eb9c",
     "words": 18,
-    "source": null,
-    "wav": null,
-    "truth": null
+    "source": "fish",
+    "wav": "audio/cache/efd79c80eac840948237eb9c.wav",
+    "truth": null,
+    "duration": 7.6278
    },
    {
     "para": 1,
     "key": "50319e4106fc645ce3c11ec6",
     "words": 41,
-    "source": null,
-    "wav": null,
-    "truth": null
+    "source": "fish",
+    "wav": "audio/cache/50319e4106fc645ce3c11ec6.wav",
+    "truth": null,
+    "duration": 18.3119
    }
   ],
   "SOA1.2": [
@@ -364,17 +401,19 @@
     "para": 0,
     "key": "c91f74147a6db66912e55a6f",
     "words": 34,
-    "source": null,
-    "wav": null,
-    "truth": null
+    "source": "fish",
+    "wav": "audio/cache/c91f74147a6db66912e55a6f.wav",
+    "truth": null,
+    "duration": 15.9086
    },
    {
     "para": 1,
     "key": "93f734bf734fe25b4e0e73a8",
     "words": 31,
-    "source": null,
-    "wav": null,
-    "truth": null
+    "source": "fish",
+    "wav": "audio/cache/93f734bf734fe25b4e0e73a8.wav",
+    "truth": null,
+    "duration": 14.1845
    }
   ],
   "SOA1.3": [
@@ -382,17 +421,19 @@
     "para": 0,
     "key": "432edbdf07edafd098d8b80c",
     "words": 34,
-    "source": null,
-    "wav": null,
-    "truth": null
+    "source": "fish",
+    "wav": "audio/cache/432edbdf07edafd098d8b80c.wav",
+    "truth": null,
+    "duration": 16.3265
    },
    {
     "para": 1,
     "key": "736028720a91fe7862ff6ae7",
     "words": 23,
-    "source": null,
-    "wav": null,
-    "truth": null
+    "source": "fish",
+    "wav": "audio/cache/736028720a91fe7862ff6ae7.wav",
+    "truth": null,
+    "duration": 10.5535
    }
   ],
   "SOA1.4": [
@@ -400,17 +441,19 @@
     "para": 0,
     "key": "c9093f0b9652982fc91c903b",
     "words": 65,
-    "source": null,
-    "wav": null,
-    "truth": null
+    "source": "fish",
+    "wav": "audio/cache/c9093f0b9652982fc91c903b.wav",
+    "truth": null,
+    "duration": 33.8808
    },
    {
     "para": 1,
     "key": "743ef1a5038b64865c9f4ff1",
     "words": 52,
-    "source": null,
-    "wav": null,
-    "truth": null
+    "source": "fish",
+    "wav": "audio/cache/743ef1a5038b64865c9f4ff1.wav",
+    "truth": null,
+    "duration": 21.9951
    }
   ],
   "SOA1.5": [
@@ -418,17 +461,19 @@
     "para": 0,
     "key": "83714cd7afb5265de483da6b",
     "words": 41,
-    "source": null,
-    "wav": null,
-    "truth": null
+    "source": "fish",
+    "wav": "audio/cache/83714cd7afb5265de483da6b.wav",
+    "truth": null,
+    "duration": 17.7633
    },
    {
     "para": 1,
     "key": "5b9111ade471e41ec6b3cfa8",
     "words": 22,
-    "source": null,
-    "wav": null,
-    "truth": null
+    "source": "fish",
+    "wav": "audio/cache/5b9111ade471e41ec6b3cfa8.wav",
+    "truth": null,
+    "duration": 9.1167
    }
   ],
   "SOA1.6": [
@@ -436,25 +481,28 @@
     "para": 0,
     "key": "55b230da95959f7d903b78b8",
     "words": 50,
-    "source": null,
-    "wav": null,
-    "truth": null
+    "source": "fish",
+    "wav": "audio/cache/55b230da95959f7d903b78b8.wav",
+    "truth": null,
+    "duration": 21.4204
    },
    {
     "para": 1,
     "key": "33d147b54baaeb7d2da0ffab",
     "words": 24,
-    "source": null,
-    "wav": null,
-    "truth": null
+    "source": "fish",
+    "wav": "audio/cache/33d147b54baaeb7d2da0ffab.wav",
+    "truth": null,
+    "duration": 8.3853
    },
    {
     "para": 2,
     "key": "4e56bfda21b7f0ed6355cafe",
     "words": 9,
-    "source": null,
-    "wav": null,
-    "truth": null
+    "source": "fish",
+    "wav": "audio/cache/4e56bfda21b7f0ed6355cafe.wav",
+    "truth": null,
+    "duration": 5.1723
    }
   ],
   "03.1": [
@@ -462,17 +510,19 @@
     "para": 0,
     "key": "bb95dce18dd65e25b01ad07e",
     "words": 22,
-    "source": null,
-    "wav": null,
-    "truth": null
+    "source": "fish",
+    "wav": "audio/cache/bb95dce18dd65e25b01ad07e.wav",
+    "truth": null,
+    "duration": 9.9004
    },
    {
     "para": 1,
     "key": "812ce0265a9cf285b1cefdac",
     "words": 55,
-    "source": null,
-    "wav": null,
-    "truth": null
+    "source": "fish",
+    "wav": "audio/cache/812ce0265a9cf285b1cefdac.wav",
+    "truth": null,
+    "duration": 26.018
    }
   ],
   "03.2": [
@@ -480,17 +530,19 @@
     "para": 0,
     "key": "14cd543358f7cace1d1ebdf2",
     "words": 41,
-    "source": null,
-    "wav": null,
-    "truth": null
+    "source": "fish",
+    "wav": "audio/cache/14cd543358f7cace1d1ebdf2.wav",
+    "truth": null,
+    "duration": 18.547
    },
    {
     "para": 1,
     "key": "b2e6f33135094f0e6c2aa2c2",
     "words": 41,
-    "source": null,
-    "wav": null,
-    "truth": null
+    "source": "fish",
+    "wav": "audio/cache/b2e6f33135094f0e6c2aa2c2.wav",
+    "truth": null,
+    "duration": 14.3151
    }
   ],
   "03.3": [
@@ -498,17 +550,19 @@
     "para": 0,
     "key": "8221873f8bd00abc6a484b04",
     "words": 29,
-    "source": null,
-    "wav": null,
-    "truth": null
+    "source": "fish",
+    "wav": "audio/cache/8221873f8bd00abc6a484b04.wav",
+    "truth": null,
+    "duration": 12.6433
    },
    {
     "para": 1,
     "key": "60ccd299af897d55bbe848d4",
     "words": 36,
-    "source": null,
-    "wav": null,
-    "truth": null
+    "source": "fish",
+    "wav": "audio/cache/60ccd299af897d55bbe848d4.wav",
+    "truth": null,
+    "duration": 15.8041
    }
   ],
   "03.4": [
@@ -516,25 +570,28 @@
     "para": 0,
     "key": "98dd6ce09a04b5310f87654d",
     "words": 20,
-    "source": null,
-    "wav": null,
-    "truth": null
+    "source": "fish",
+    "wav": "audio/cache/98dd6ce09a04b5310f87654d.wav",
+    "truth": null,
+    "duration": 11.7551
    },
    {
     "para": 1,
     "key": "cd34c14e7d46359b0e41c79d",
     "words": 11,
-    "source": null,
-    "wav": null,
-    "truth": null
+    "source": "fish",
+    "wav": "audio/cache/cd34c14e7d46359b0e41c79d.wav",
+    "truth": null,
+    "duration": 4.9371
    },
    {
     "para": 2,
     "key": "df5039ee555b3eef39a22e22",
     "words": 70,
-    "source": null,
-    "wav": null,
-    "truth": null
+    "source": "fish",
+    "wav": "audio/cache/df5039ee555b3eef39a22e22.wav",
+    "truth": null,
+    "duration": 32.209
    }
   ],
   "03.5": [
@@ -542,17 +599,19 @@
     "para": 0,
     "key": "74f107dce4d98bef03e7cd8c",
     "words": 59,
-    "source": null,
-    "wav": null,
-    "truth": null
+    "source": "fish",
+    "wav": "audio/cache/74f107dce4d98bef03e7cd8c.wav",
+    "truth": null,
+    "duration": 23.0922
    },
    {
     "para": 1,
     "key": "f5e4bb426bc600827470dde6",
     "words": 22,
-    "source": null,
-    "wav": null,
-    "truth": null
+    "source": "fish",
+    "wav": "audio/cache/f5e4bb426bc600827470dde6.wav",
+    "truth": null,
+    "duration": 9.4825
    }
   ],
   "03.6": [
@@ -560,17 +619,19 @@
     "para": 0,
     "key": "9a0bcc06d845609908ae66f2",
     "words": 33,
-    "source": null,
-    "wav": null,
-    "truth": null
+    "source": "fish",
+    "wav": "audio/cache/9a0bcc06d845609908ae66f2.wav",
+    "truth": null,
+    "duration": 15.2033
    },
    {
     "para": 1,
     "key": "01aa368f394026ae2749b969",
     "words": 17,
-    "source": null,
-    "wav": null,
-    "truth": null
+    "source": "fish",
+    "wav": "audio/cache/01aa368f394026ae2749b969.wav",
+    "truth": null,
+    "duration": 6.1127
    }
   ],
   "03.7": [
@@ -578,33 +639,37 @@
     "para": 0,
     "key": "71f1ff5c41506c1880f6366f",
     "words": 17,
-    "source": null,
-    "wav": null,
-    "truth": null
+    "source": "fish",
+    "wav": "audio/cache/71f1ff5c41506c1880f6366f.wav",
+    "truth": null,
+    "duration": 5.8253
    },
    {
     "para": 1,
     "key": "f2ec7eb73d313427c60d5bca",
     "words": 50,
-    "source": null,
-    "wav": null,
-    "truth": null
+    "source": "fish",
+    "wav": "audio/cache/f2ec7eb73d313427c60d5bca.wav",
+    "truth": null,
+    "duration": 21.7078
    },
    {
     "para": 2,
     "key": "2550aa24630f41dfddda6761",
     "words": 18,
-    "source": null,
-    "wav": null,
-    "truth": null
+    "source": "fish",
+    "wav": "audio/cache/2550aa24630f41dfddda6761.wav",
+    "truth": null,
+    "duration": 7.8629
    },
    {
     "para": 3,
     "key": "dbc466bf65059ed3d7a27037",
     "words": 33,
-    "source": null,
-    "wav": null,
-    "truth": null
+    "source": "fish",
+    "wav": "audio/cache/dbc466bf65059ed3d7a27037.wav",
+    "truth": null,
+    "duration": 12.8784
    }
   ],
   "03.8": [
@@ -612,9 +677,10 @@
     "para": 0,
     "key": "63fbc362ce6a7f4c432199b6",
     "words": 40,
-    "source": null,
-    "wav": null,
-    "truth": null
+    "source": "fish",
+    "wav": "audio/cache/63fbc362ce6a7f4c432199b6.wav",
+    "truth": null,
+    "duration": 17.1886
    }
   ],
   "ch03.Q": [
@@ -622,9 +688,10 @@
     "para": 0,
     "key": "a774b451fd76c7067b1d266d",
     "words": 18,
-    "source": null,
-    "wav": null,
-    "truth": null
+    "source": "fish",
+    "wav": "audio/cache/a774b451fd76c7067b1d266d.wav",
+    "truth": null,
+    "duration": 7.3143
    }
   ],
   "04.1": [
@@ -632,17 +699,19 @@
     "para": 0,
     "key": "cf111924fc70ba447a44975a",
     "words": 39,
-    "source": null,
-    "wav": null,
-    "truth": null
+    "source": "fish",
+    "wav": "audio/cache/cf111924fc70ba447a44975a.wav",
+    "truth": null,
+    "duration": 17.3453
    },
    {
     "para": 1,
     "key": "f4d65629aa158a71955f9c36",
     "words": 30,
-    "source": null,
-    "wav": null,
-    "truth": null
+    "source": "fish",
+    "wav": "audio/cache/f4d65629aa158a71955f9c36.wav",
+    "truth": null,
+    "duration": 14.2368
    }
   ],
   "04.2": [
@@ -650,25 +719,28 @@
     "para": 0,
     "key": "d6283a689207d3d678ac12da",
     "words": 52,
-    "source": null,
-    "wav": null,
-    "truth": null
+    "source": "fish",
+    "wav": "audio/cache/d6283a689207d3d678ac12da.wav",
+    "truth": null,
+    "duration": 24.2678
    },
    {
     "para": 1,
     "key": "938f1fcda5530b2251ba46b0",
     "words": 44,
-    "source": null,
-    "wav": null,
-    "truth": null
+    "source": "fish",
+    "wav": "audio/cache/938f1fcda5530b2251ba46b0.wav",
+    "truth": null,
+    "duration": 20.5845
    },
    {
     "para": 2,
     "key": "cae0b432a926f0cb9099d16b",
     "words": 21,
-    "source": null,
-    "wav": null,
-    "truth": null
+    "source": "fish",
+    "wav": "audio/cache/cae0b432a926f0cb9099d16b.wav",
+    "truth": null,
+    "duration": 9.4825
    }
   ],
   "04.3": [
@@ -676,17 +748,19 @@
     "para": 0,
     "key": "bfe425e0bd4e464838024975",
     "words": 42,
-    "source": null,
-    "wav": null,
-    "truth": null
+    "source": "fish",
+    "wav": "audio/cache/bfe425e0bd4e464838024975.wav",
+    "truth": null,
+    "duration": 15.569
    },
    {
     "para": 1,
     "key": "b910cfc2363621444f8103b5",
     "words": 24,
-    "source": null,
-    "wav": null,
-    "truth": null
+    "source": "fish",
+    "wav": "audio/cache/b910cfc2363621444f8103b5.wav",
+    "truth": null,
+    "duration": 12.382
    }
   ],
   "04.4": [
@@ -694,25 +768,28 @@
     "para": 0,
     "key": "44536c26329e818cbab5b6a6",
     "words": 27,
-    "source": null,
-    "wav": null,
-    "truth": null
+    "source": "fish",
+    "wav": "audio/cache/44536c26329e818cbab5b6a6.wav",
+    "truth": null,
+    "duration": 12.4082
    },
    {
     "para": 1,
     "key": "a14c3b9d047507a49fe0b838",
     "words": 31,
-    "source": null,
-    "wav": null,
-    "truth": null
+    "source": "fish",
+    "wav": "audio/cache/a14c3b9d047507a49fe0b838.wav",
+    "truth": null,
+    "duration": 11.3894
    },
    {
     "para": 2,
     "key": "1fa5e5209276d6a07c51b79c",
     "words": 40,
-    "source": null,
-    "wav": null,
-    "truth": null
+    "source": "fish",
+    "wav": "audio/cache/1fa5e5209276d6a07c51b79c.wav",
+    "truth": null,
+    "duration": 16.7706
    }
   ],
   "04.5": [
@@ -720,17 +797,19 @@
     "para": 0,
     "key": "5db359a0451fd6d2dda49d08",
     "words": 39,
-    "source": null,
-    "wav": null,
-    "truth": null
+    "source": "fish",
+    "wav": "audio/cache/5db359a0451fd6d2dda49d08.wav",
+    "truth": null,
+    "duration": 17.058
    },
    {
     "para": 1,
     "key": "f9b58c7b7bd854f1e922e7b9",
     "words": 29,
-    "source": null,
-    "wav": null,
-    "truth": null
+    "source": "fish",
+    "wav": "audio/cache/f9b58c7b7bd854f1e922e7b9.wav",
+    "truth": null,
+    "duration": 14.0016
    }
   ],
   "04.6": [
@@ -738,17 +817,19 @@
     "para": 0,
     "key": "1cbad874ac01cb05c309faa0",
     "words": 42,
-    "source": null,
-    "wav": null,
-    "truth": null
+    "source": "fish",
+    "wav": "audio/cache/1cbad874ac01cb05c309faa0.wav",
+    "truth": null,
+    "duration": 19.0694
    },
    {
     "para": 1,
     "key": "ccefc0c5bcc612a389d74631",
     "words": 49,
-    "source": null,
-    "wav": null,
-    "truth": null
+    "source": "fish",
+    "wav": "audio/cache/ccefc0c5bcc612a389d74631.wav",
+    "truth": null,
+    "duration": 20.6367
    }
   ],
   "04.7": [
@@ -756,25 +837,28 @@
     "para": 0,
     "key": "3166a23ba99cefb7f4e93a0e",
     "words": 36,
-    "source": null,
-    "wav": null,
-    "truth": null
+    "source": "fish",
+    "wav": "audio/cache/3166a23ba99cefb7f4e93a0e.wav",
+    "truth": null,
+    "duration": 14.1845
    },
    {
     "para": 1,
     "key": "47db334e074f727601fccf09",
     "words": 26,
-    "source": null,
-    "wav": null,
-    "truth": null
+    "source": "fish",
+    "wav": "audio/cache/47db334e074f727601fccf09.wav",
+    "truth": null,
+    "duration": 12.4604
    },
    {
     "para": 2,
     "key": "486f82606a08e2a7217edab8",
     "words": 38,
-    "source": null,
-    "wav": null,
-    "truth": null
+    "source": "fish",
+    "wav": "audio/cache/486f82606a08e2a7217edab8.wav",
+    "truth": null,
+    "duration": 13.5314
    }
   ],
   "ch04.Q": [
@@ -782,9 +866,10 @@
     "para": 0,
     "key": "fa217cfd8afbc114e58347de",
     "words": 14,
-    "source": null,
-    "wav": null,
-    "truth": null
+    "source": "fish",
+    "wav": "audio/cache/fa217cfd8afbc114e58347de.wav",
+    "truth": null,
+    "duration": 7.1576
    }
   ],
   "05.1": [
@@ -792,33 +877,37 @@
     "para": 0,
     "key": "2e6910ec6a48845d4412291e",
     "words": 26,
-    "source": null,
-    "wav": null,
-    "truth": null
+    "source": "fish",
+    "wav": "audio/cache/2e6910ec6a48845d4412291e.wav",
+    "truth": null,
+    "duration": 10.7886
    },
    {
     "para": 1,
     "key": "4e224aa04325387d253efa05",
     "words": 13,
-    "source": null,
-    "wav": null,
-    "truth": null
+    "source": "fish",
+    "wav": "audio/cache/4e224aa04325387d253efa05.wav",
+    "truth": null,
+    "duration": 5.8776
    },
    {
     "para": 2,
     "key": "334bcd4b515813d6bf1f8c0e",
     "words": 25,
-    "source": null,
-    "wav": null,
-    "truth": null
+    "source": "fish",
+    "wav": "audio/cache/334bcd4b515813d6bf1f8c0e.wav",
+    "truth": null,
+    "duration": 9.9004
    },
    {
     "para": 3,
     "key": "9a87c17d2d52196904346e5d",
     "words": 27,
-    "source": null,
-    "wav": null,
-    "truth": null
+    "source": "fish",
+    "wav": "audio/cache/9a87c17d2d52196904346e5d.wav",
+    "truth": null,
+    "duration": 9.7698
    }
   ],
   "05.2": [
@@ -826,25 +915,28 @@
     "para": 0,
     "key": "cf6c5c6dd8c51c0a17de0a28",
     "words": 26,
-    "source": null,
-    "wav": null,
-    "truth": null
+    "source": "fish",
+    "wav": "audio/cache/cf6c5c6dd8c51c0a17de0a28.wav",
+    "truth": null,
+    "duration": 10.3706
    },
    {
     "para": 1,
     "key": "8494d0449b660ed1306fc0cb",
     "words": 35,
-    "source": null,
-    "wav": null,
-    "truth": null
+    "source": "fish",
+    "wav": "audio/cache/8494d0449b660ed1306fc0cb.wav",
+    "truth": null,
+    "duration": 14.7853
    },
    {
     "para": 2,
     "key": "830b52fa70ad538504280ee1",
     "words": 65,
-    "source": null,
-    "wav": null,
-    "truth": null
+    "source": "fish",
+    "wav": "audio/cache/830b52fa70ad538504280ee1.wav",
+    "truth": null,
+    "duration": 24.6857
    }
   ],
   "05.3": [
@@ -852,17 +944,19 @@
     "para": 0,
     "key": "f7d2c1fb54b6a0710718c5c9",
     "words": 39,
-    "source": null,
-    "wav": null,
-    "truth": null
+    "source": "fish",
+    "wav": "audio/cache/f7d2c1fb54b6a0710718c5c9.wav",
+    "truth": null,
+    "duration": 15.8563
    },
    {
     "para": 1,
     "key": "4ec2b3b1934c55763c76c4cc",
     "words": 48,
-    "source": null,
-    "wav": null,
-    "truth": null
+    "source": "fish",
+    "wav": "audio/cache/4ec2b3b1934c55763c76c4cc.wav",
+    "truth": null,
+    "duration": 20.3233
    }
   ],
   "05.4": [
@@ -870,9 +964,10 @@
     "para": 0,
     "key": "f31787dc085c13d93f5d34e0",
     "words": 44,
-    "source": null,
-    "wav": null,
-    "truth": null
+    "source": "fish",
+    "wav": "audio/cache/f31787dc085c13d93f5d34e0.wav",
+    "truth": null,
+    "duration": 19.2
    }
   ],
   "05.5": [
@@ -880,9 +975,10 @@
     "para": 0,
     "key": "35f08103cf84a4b5175a26a9",
     "words": 51,
-    "source": null,
-    "wav": null,
-    "truth": null
+    "source": "fish",
+    "wav": "audio/cache/35f08103cf84a4b5175a26a9.wav",
+    "truth": null,
+    "duration": 20.3233
    }
   ],
   "ch05.Q": [
@@ -890,9 +986,10 @@
     "para": 0,
     "key": "190a2250cbbd389e3fbb631a",
     "words": 20,
-    "source": null,
-    "wav": null,
-    "truth": null
+    "source": "fish",
+    "wav": "audio/cache/190a2250cbbd389e3fbb631a.wav",
+    "truth": null,
+    "duration": 7.9935
    }
   ],
   "06.1": [
@@ -900,25 +997,28 @@
     "para": 0,
     "key": "4f4f71788499b2640312d9b5",
     "words": 37,
-    "source": null,
-    "wav": null,
-    "truth": null
+    "source": "fish",
+    "wav": "audio/cache/4f4f71788499b2640312d9b5.wav",
+    "truth": null,
+    "duration": 17.0057
    },
    {
     "para": 1,
     "key": "a6a1df95f294e4ff9ccbcdef",
     "words": 37,
-    "source": null,
-    "wav": null,
-    "truth": null
+    "source": "fish",
+    "wav": "audio/cache/a6a1df95f294e4ff9ccbcdef.wav",
+    "truth": null,
+    "duration": 15.2033
    },
    {
     "para": 2,
     "key": "1b300d00d4b32ac59fa71a96",
     "words": 20,
-    "source": null,
-    "wav": null,
-    "truth": null
+    "source": "fish",
+    "wav": "audio/cache/1b300d00d4b32ac59fa71a96.wav",
+    "truth": null,
+    "duration": 8.9861
    }
   ],
   "06.2": [
@@ -926,17 +1026,19 @@
     "para": 0,
     "key": "9ce64b6a6d495d62f5f1e4cf",
     "words": 35,
-    "source": null,
-    "wav": null,
-    "truth": null
+    "source": "fish",
+    "wav": "audio/cache/9ce64b6a6d495d62f5f1e4cf.wav",
+    "truth": null,
+    "duration": 13.218
    },
    {
     "para": 1,
     "key": "e41faf8143aa8220810f6872",
     "words": 19,
-    "source": null,
-    "wav": null,
-    "truth": null
+    "source": "fish",
+    "wav": "audio/cache/e41faf8143aa8220810f6872.wav",
+    "truth": null,
+    "duration": 7.4449
    }
   ],
   "06.3": [
@@ -944,25 +1046,28 @@
     "para": 0,
     "key": "3c1a1a6c8d96492d77d4ab7d",
     "words": 50,
-    "source": null,
-    "wav": null,
-    "truth": null
+    "source": "fish",
+    "wav": "audio/cache/3c1a1a6c8d96492d77d4ab7d.wav",
+    "truth": null,
+    "duration": 20.8719
    },
    {
     "para": 1,
     "key": "07c538a727e54ee50eca69b8",
     "words": 42,
-    "source": null,
-    "wav": null,
-    "truth": null
+    "source": "fish",
+    "wav": "audio/cache/07c538a727e54ee50eca69b8.wav",
+    "truth": null,
+    "duration": 19.5657
    },
    {
     "para": 2,
     "key": "c3b653eaa24d8c74e90d9016",
     "words": 38,
-    "source": null,
-    "wav": null,
-    "truth": null
+    "source": "fish",
+    "wav": "audio/cache/c3b653eaa24d8c74e90d9016.wav",
+    "truth": null,
+    "duration": 15.3339
    }
   ],
   "06.4": [
@@ -970,25 +1075,28 @@
     "para": 0,
     "key": "a010d70aed913a76342142b1",
     "words": 23,
-    "source": null,
-    "wav": null,
-    "truth": null
+    "source": "fish",
+    "wav": "audio/cache/a010d70aed913a76342142b1.wav",
+    "truth": null,
+    "duration": 9.8743
    },
    {
     "para": 1,
     "key": "c826be015efc6da7f242ac57",
     "words": 46,
-    "source": null,
-    "wav": null,
-    "truth": null
+    "source": "fish",
+    "wav": "audio/cache/c826be015efc6da7f242ac57.wav",
+    "truth": null,
+    "duration": 17.8939
    },
    {
     "para": 2,
     "key": "d80121e38c4fa4874cd1a6ea",
     "words": 17,
-    "source": null,
-    "wav": null,
-    "truth": null
+    "source": "fish",
+    "wav": "audio/cache/d80121e38c4fa4874cd1a6ea.wav",
+    "truth": null,
+    "duration": 6.8441
    }
   ],
   "06.5": [
@@ -996,33 +1104,37 @@
     "para": 0,
     "key": "b25a1bb5f4d2afcfd9b362b2",
     "words": 48,
-    "source": null,
-    "wav": null,
-    "truth": null
+    "source": "fish",
+    "wav": "audio/cache/b25a1bb5f4d2afcfd9b362b2.wav",
+    "truth": null,
+    "duration": 19.2
    },
    {
     "para": 1,
     "key": "c61e03826495687051dde04c",
     "words": 8,
-    "source": null,
-    "wav": null,
-    "truth": null
+    "source": "fish",
+    "wav": "audio/cache/c61e03826495687051dde04c.wav",
+    "truth": null,
+    "duration": 4.702
    },
    {
     "para": 2,
     "key": "c30fd6648dac985f4238381b",
     "words": 51,
-    "source": null,
-    "wav": null,
-    "truth": null
+    "source": "fish",
+    "wav": "audio/cache/c30fd6648dac985f4238381b.wav",
+    "truth": null,
+    "duration": 23.1968
    },
    {
     "para": 3,
     "key": "37ea6d1726ac6fd5374b773d",
     "words": 21,
-    "source": null,
-    "wav": null,
-    "truth": null
+    "source": "fish",
+    "wav": "audio/cache/37ea6d1726ac6fd5374b773d.wav",
+    "truth": null,
+    "duration": 9.0645
    }
   ],
   "ch06.Q": [
@@ -1030,9 +1142,10 @@
     "para": 0,
     "key": "d75c33a812197db4ed6d9942",
     "words": 18,
-    "source": null,
-    "wav": null,
-    "truth": null
+    "source": "fish",
+    "wav": "audio/cache/d75c33a812197db4ed6d9942.wav",
+    "truth": null,
+    "duration": 6.9747
    }
   ],
   "07.1": [
@@ -1040,25 +1153,28 @@
     "para": 0,
     "key": "e69e370fbfb980c1188e30fa",
     "words": 28,
-    "source": null,
-    "wav": null,
-    "truth": null
+    "source": "fish",
+    "wav": "audio/cache/e69e370fbfb980c1188e30fa.wav",
+    "truth": null,
+    "duration": 12.147
    },
    {
     "para": 1,
     "key": "f4e8fb5d41471a3659ff80a2",
     "words": 27,
-    "source": null,
-    "wav": null,
-    "truth": null
+    "source": "fish",
+    "wav": "audio/cache/f4e8fb5d41471a3659ff80a2.wav",
+    "truth": null,
+    "duration": 11.2588
    },
    {
     "para": 2,
     "key": "63d234bd7324bf4d7c08f22b",
     "words": 49,
-    "source": null,
-    "wav": null,
-    "truth": null
+    "source": "fish",
+    "wav": "audio/cache/63d234bd7324bf4d7c08f22b.wav",
+    "truth": null,
+    "duration": 21.0547
    }
   ],
   "07.2": [
@@ -1066,25 +1182,28 @@
     "para": 0,
     "key": "1b3d55bf340fb0fb8f0df4f5",
     "words": 44,
-    "source": null,
-    "wav": null,
-    "truth": null
+    "source": "fish",
+    "wav": "audio/cache/1b3d55bf340fb0fb8f0df4f5.wav",
+    "truth": null,
+    "duration": 18.9649
    },
    {
     "para": 1,
     "key": "80cca277223d7ef23ee0348e",
     "words": 11,
-    "source": null,
-    "wav": null,
-    "truth": null
+    "source": "fish",
+    "wav": "audio/cache/80cca277223d7ef23ee0348e.wav",
+    "truth": null,
+    "duration": 4.7543
    },
    {
     "para": 2,
     "key": "f726cfe9666bdc72483065ed",
     "words": 41,
-    "source": null,
-    "wav": null,
-    "truth": null
+    "source": "fish",
+    "wav": "audio/cache/f726cfe9666bdc72483065ed.wav",
+    "truth": null,
+    "duration": 19.5135
    }
   ],
   "07.3": [
@@ -1092,17 +1211,19 @@
     "para": 0,
     "key": "b10793e92a803052f51496b2",
     "words": 44,
-    "source": null,
-    "wav": null,
-    "truth": null
+    "source": "fish",
+    "wav": "audio/cache/b10793e92a803052f51496b2.wav",
+    "truth": null,
+    "duration": 19.6963
    },
    {
     "para": 1,
     "key": "24d931afb061585de10b062b",
     "words": 45,
-    "source": null,
-    "wav": null,
-    "truth": null
+    "source": "fish",
+    "wav": "audio/cache/24d931afb061585de10b062b.wav",
+    "truth": null,
+    "duration": 17.4759
    }
   ],
   "07.4": [
@@ -1110,9 +1231,10 @@
     "para": 0,
     "key": "9c84447db492c8aa50101a3a",
     "words": 51,
-    "source": null,
-    "wav": null,
-    "truth": null
+    "source": "fish",
+    "wav": "audio/cache/9c84447db492c8aa50101a3a.wav",
+    "truth": null,
+    "duration": 22.622
    }
   ],
   "07.5": [
@@ -1120,33 +1242,37 @@
     "para": 0,
     "key": "f2b96114039575a762da2b90",
     "words": 29,
-    "source": null,
-    "wav": null,
-    "truth": null
+    "source": "fish",
+    "wav": "audio/cache/f2b96114039575a762da2b90.wav",
+    "truth": null,
+    "duration": 12.6433
    },
    {
     "para": 1,
     "key": "0f3b977a7597003edc3192f0",
     "words": 19,
-    "source": null,
-    "wav": null,
-    "truth": null
+    "source": "fish",
+    "wav": "audio/cache/0f3b977a7597003edc3192f0.wav",
+    "truth": null,
+    "duration": 10.6057
    },
    {
     "para": 2,
     "key": "7c95c8fcd1c57dd30719228c",
     "words": 41,
-    "source": null,
-    "wav": null,
-    "truth": null
+    "source": "fish",
+    "wav": "audio/cache/7c95c8fcd1c57dd30719228c.wav",
+    "truth": null,
+    "duration": 17.058
    },
    {
     "para": 3,
     "key": "656ee4148cd2e3495b91d75c",
     "words": 54,
-    "source": null,
-    "wav": null,
-    "truth": null
+    "source": "fish",
+    "wav": "audio/cache/656ee4148cd2e3495b91d75c.wav",
+    "truth": null,
+    "duration": 20.0882
    }
   ],
   "07.6": [
@@ -1154,25 +1280,28 @@
     "para": 0,
     "key": "596ffde6df29678d0d25dd64",
     "words": 44,
-    "source": null,
-    "wav": null,
-    "truth": null
+    "source": "fish",
+    "wav": "audio/cache/596ffde6df29678d0d25dd64.wav",
+    "truth": null,
+    "duration": 18.6514
    },
    {
     "para": 1,
     "key": "9646e5ec56eb298443724d3d",
     "words": 50,
-    "source": null,
-    "wav": null,
-    "truth": null
+    "source": "fish",
+    "wav": "audio/cache/9646e5ec56eb298443724d3d.wav",
+    "truth": null,
+    "duration": 19.8531
    },
    {
     "para": 2,
     "key": "86d2206aee51dfaf111c3cef",
     "words": 36,
-    "source": null,
-    "wav": null,
-    "truth": null
+    "source": "fish",
+    "wav": "audio/cache/86d2206aee51dfaf111c3cef.wav",
+    "truth": null,
+    "duration": 15.6735
    }
   ],
   "ch07.Q": [
@@ -1180,9 +1309,10 @@
     "para": 0,
     "key": "67c8d3623be6510d9c5c390a",
     "words": 21,
-    "source": null,
-    "wav": null,
-    "truth": null
+    "source": "fish",
+    "wav": "audio/cache/67c8d3623be6510d9c5c390a.wav",
+    "truth": null,
+    "duration": 9.169
    }
   ],
   "08.1": [
@@ -1190,17 +1320,19 @@
     "para": 0,
     "key": "253d2ea8979015c0439a8ef1",
     "words": 41,
-    "source": null,
-    "wav": null,
-    "truth": null
+    "source": "fish",
+    "wav": "audio/cache/253d2ea8979015c0439a8ef1.wav",
+    "truth": null,
+    "duration": 18.9127
    },
    {
     "para": 1,
     "key": "66cd58df8dc05c8807bd08f7",
     "words": 39,
-    "source": null,
-    "wav": null,
-    "truth": null
+    "source": "fish",
+    "wav": "audio/cache/66cd58df8dc05c8807bd08f7.wav",
+    "truth": null,
+    "duration": 17.2931
    }
   ],
   "08.2": [
@@ -1208,33 +1340,37 @@
     "para": 0,
     "key": "239011e9c8a2ee3e7d5ed3f4",
     "words": 21,
-    "source": null,
-    "wav": null,
-    "truth": null
+    "source": "fish",
+    "wav": "audio/cache/239011e9c8a2ee3e7d5ed3f4.wav",
+    "truth": null,
+    "duration": 8.2286
    },
    {
     "para": 1,
     "key": "a4913a457456e5f9efed8dcd",
     "words": 6,
-    "source": null,
-    "wav": null,
-    "truth": null
+    "source": "fish",
+    "wav": "audio/cache/a4913a457456e5f9efed8dcd.wav",
+    "truth": null,
+    "duration": 2.6122
    },
    {
     "para": 2,
     "key": "bd4348dc96dd92c5bd2579e0",
     "words": 30,
-    "source": null,
-    "wav": null,
-    "truth": null
+    "source": "fish",
+    "wav": "audio/cache/bd4348dc96dd92c5bd2579e0.wav",
+    "truth": null,
+    "duration": 13.6359
    },
    {
     "para": 3,
     "key": "bba54eabd61ab25e4e777eaa",
     "words": 43,
-    "source": null,
-    "wav": null,
-    "truth": null
+    "source": "fish",
+    "wav": "audio/cache/bba54eabd61ab25e4e777eaa.wav",
+    "truth": null,
+    "duration": 15.8041
    }
   ],
   "08.3": [
@@ -1242,33 +1378,37 @@
     "para": 0,
     "key": "d0ba771d89dd35e601da4b37",
     "words": 53,
-    "source": null,
-    "wav": null,
-    "truth": null
+    "source": "fish",
+    "wav": "audio/cache/d0ba771d89dd35e601da4b37.wav",
+    "truth": null,
+    "duration": 19.9053
    },
    {
     "para": 1,
     "key": "23a78a7467d0f698a1960ff2",
     "words": 23,
-    "source": null,
-    "wav": null,
-    "truth": null
+    "source": "fish",
+    "wav": "audio/cache/23a78a7467d0f698a1960ff2.wav",
+    "truth": null,
+    "duration": 10.1355
    },
    {
     "para": 2,
     "key": "2ad38252f428fb57643068c7",
     "words": 29,
-    "source": null,
-    "wav": null,
-    "truth": null
+    "source": "fish",
+    "wav": "audio/cache/2ad38252f428fb57643068c7.wav",
+    "truth": null,
+    "duration": 13.3486
    },
    {
     "para": 3,
     "key": "88254b3a07feba9483fb9d8d",
     "words": 27,
-    "source": null,
-    "wav": null,
-    "truth": null
+    "source": "fish",
+    "wav": "audio/cache/88254b3a07feba9483fb9d8d.wav",
+    "truth": null,
+    "duration": 12.2253
    }
   ],
   "08.4": [
@@ -1276,17 +1416,19 @@
     "para": 0,
     "key": "f2c3fa159029e729c655510b",
     "words": 50,
-    "source": null,
-    "wav": null,
-    "truth": null
+    "source": "fish",
+    "wav": "audio/cache/f2c3fa159029e729c655510b.wav",
+    "truth": null,
+    "duration": 19.0694
    },
    {
     "para": 1,
     "key": "83429efe2c7c1770a06cef2a",
     "words": 31,
-    "source": null,
-    "wav": null,
-    "truth": null
+    "source": "fish",
+    "wav": "audio/cache/83429efe2c7c1770a06cef2a.wav",
+    "truth": null,
+    "duration": 11.9902
    }
   ],
   "08.5": [
@@ -1294,41 +1436,46 @@
     "para": 0,
     "key": "be9638d026d0b9a9d360f3db",
     "words": 24,
-    "source": null,
-    "wav": null,
-    "truth": null
+    "source": "fish",
+    "wav": "audio/cache/be9638d026d0b9a9d360f3db.wav",
+    "truth": null,
+    "duration": 10.6057
    },
    {
     "para": 1,
     "key": "8c289ce73cb874756021f4fc",
     "words": 38,
-    "source": null,
-    "wav": null,
-    "truth": null
+    "source": "fish",
+    "wav": "audio/cache/8c289ce73cb874756021f4fc.wav",
+    "truth": null,
+    "duration": 17.3976
    },
    {
     "para": 2,
     "key": "3b8abe834e5c84c25e2dfcfd",
     "words": 31,
-    "source": null,
-    "wav": null,
-    "truth": null
+    "source": "fish",
+    "wav": "audio/cache/3b8abe834e5c84c25e2dfcfd.wav",
+    "truth": null,
+    "duration": 12.8261
    },
    {
     "para": 3,
     "key": "18d06026bc2fbb56910d569c",
     "words": 56,
-    "source": null,
-    "wav": null,
-    "truth": null
+    "source": "fish",
+    "wav": "audio/cache/18d06026bc2fbb56910d569c.wav",
+    "truth": null,
+    "duration": 26.0702
    },
    {
     "para": 4,
     "key": "afeef1d5f5d37f95cec90e48",
     "words": 19,
-    "source": null,
-    "wav": null,
-    "truth": null
+    "source": "fish",
+    "wav": "audio/cache/afeef1d5f5d37f95cec90e48.wav",
+    "truth": null,
+    "duration": 8.0457
    }
   ],
   "08.6": [
@@ -1336,33 +1483,37 @@
     "para": 0,
     "key": "09312ce6e31c547ddca25b58",
     "words": 29,
-    "source": null,
-    "wav": null,
-    "truth": null
+    "source": "fish",
+    "wav": "audio/cache/09312ce6e31c547ddca25b58.wav",
+    "truth": null,
+    "duration": 15.3078
    },
    {
     "para": 1,
     "key": "5e720e3e82deb27566e69887",
     "words": 31,
-    "source": null,
-    "wav": null,
-    "truth": null
+    "source": "fish",
+    "wav": "audio/cache/5e720e3e82deb27566e69887.wav",
+    "truth": null,
+    "duration": 13.009
    },
    {
     "para": 2,
     "key": "c752a118f26057dc3257d502",
     "words": 25,
-    "source": null,
-    "wav": null,
-    "truth": null
+    "source": "fish",
+    "wav": "audio/cache/c752a118f26057dc3257d502.wav",
+    "truth": null,
+    "duration": 12.2253
    },
    {
     "para": 3,
     "key": "c3d4c98af6970607afc17d81",
     "words": 15,
-    "source": null,
-    "wav": null,
-    "truth": null
+    "source": "fish",
+    "wav": "audio/cache/c3d4c98af6970607afc17d81.wav",
+    "truth": null,
+    "duration": 5.5902
    }
   ],
   "08.7": [
@@ -1370,25 +1521,28 @@
     "para": 0,
     "key": "37dae4020094500ce176a978",
     "words": 49,
-    "source": null,
-    "wav": null,
-    "truth": null
+    "source": "fish",
+    "wav": "audio/cache/37dae4020094500ce176a978.wav",
+    "truth": null,
+    "duration": 19.6963
    },
    {
     "para": 1,
     "key": "1e6fb6a2f457f8b4a78ede39",
     "words": 32,
-    "source": null,
-    "wav": null,
-    "truth": null
+    "source": "fish",
+    "wav": "audio/cache/1e6fb6a2f457f8b4a78ede39.wav",
+    "truth": null,
+    "duration": 11.4416
    },
    {
     "para": 2,
     "key": "482db24721338ebe38e2d05e",
     "words": 18,
-    "source": null,
-    "wav": null,
-    "truth": null
+    "source": "fish",
+    "wav": "audio/cache/482db24721338ebe38e2d05e.wav",
+    "truth": null,
+    "duration": 7.6278
    }
   ],
   "ch08.Q": [
@@ -1396,9 +1550,10 @@
     "para": 0,
     "key": "16a5523c279474c2df59ae99",
     "words": 16,
-    "source": null,
-    "wav": null,
-    "truth": null
+    "source": "fish",
+    "wav": "audio/cache/16a5523c279474c2df59ae99.wav",
+    "truth": null,
+    "duration": 6.9747
    }
   ],
   "X2.1": [
@@ -1406,25 +1561,28 @@
     "para": 0,
     "key": "f3442d6e6293d287b14f4dfa",
     "words": 18,
-    "source": null,
-    "wav": null,
-    "truth": null
+    "source": "fish",
+    "wav": "audio/cache/f3442d6e6293d287b14f4dfa.wav",
+    "truth": null,
+    "duration": 8.2286
    },
    {
     "para": 1,
     "key": "af9e16bbd0f2b80da6f31395",
     "words": 41,
-    "source": null,
-    "wav": null,
-    "truth": null
+    "source": "fish",
+    "wav": "audio/cache/af9e16bbd0f2b80da6f31395.wav",
+    "truth": null,
+    "duration": 16.0914
    },
    {
     "para": 2,
     "key": "8d8a657f294b72c17509d307",
     "words": 30,
-    "source": null,
-    "wav": null,
-    "truth": null
+    "source": "fish",
+    "wav": "audio/cache/8d8a657f294b72c17509d307.wav",
+    "truth": null,
+    "duration": 11.6768
    }
   ],
   "X2.2": [
@@ -1432,41 +1590,46 @@
     "para": 0,
     "key": "3f452a2dbcbcf47eec770fc0",
     "words": 48,
-    "source": null,
-    "wav": null,
-    "truth": null
+    "source": "fish",
+    "wav": "audio/cache/3f452a2dbcbcf47eec770fc0.wav",
+    "truth": null,
+    "duration": 22.2041
    },
    {
     "para": 1,
     "key": "cd0b18bfcb0ba31101794ea5",
     "words": 30,
-    "source": null,
-    "wav": null,
-    "truth": null
+    "source": "fish",
+    "wav": "audio/cache/cd0b18bfcb0ba31101794ea5.wav",
+    "truth": null,
+    "duration": 13.5314
    },
    {
     "para": 2,
     "key": "2d21b7401a5791b3537d2a06",
     "words": 23,
-    "source": null,
-    "wav": null,
-    "truth": null
+    "source": "fish",
+    "wav": "audio/cache/2d21b7401a5791b3537d2a06.wav",
+    "truth": null,
+    "duration": 13.6359
    },
    {
     "para": 3,
     "key": "37ded87d4a8e97afe2a10baa",
     "words": 25,
-    "source": null,
-    "wav": null,
-    "truth": null
+    "source": "fish",
+    "wav": "audio/cache/37ded87d4a8e97afe2a10baa.wav",
+    "truth": null,
+    "duration": 10.0049
    },
    {
     "para": 4,
     "key": "8e80e2a697c9433c1ec3c671",
     "words": 12,
-    "source": null,
-    "wav": null,
-    "truth": null
+    "source": "fish",
+    "wav": "audio/cache/8e80e2a697c9433c1ec3c671.wav",
+    "truth": null,
+    "duration": 5.9037
    }
   ],
   "X2.3": [
@@ -1474,25 +1637,28 @@
     "para": 0,
     "key": "1353646c260990d6900daf98",
     "words": 34,
-    "source": null,
-    "wav": null,
-    "truth": null
+    "source": "fish",
+    "wav": "audio/cache/1353646c260990d6900daf98.wav",
+    "truth": null,
+    "duration": 16.6923
    },
    {
     "para": 1,
     "key": "a2a14ef58a3ca41833711686",
     "words": 34,
-    "source": null,
-    "wav": null,
-    "truth": null
+    "source": "fish",
+    "wav": "audio/cache/a2a14ef58a3ca41833711686.wav",
+    "truth": null,
+    "duration": 14.0539
    },
    {
     "para": 2,
     "key": "55b0e97e365ad13538306dd3",
     "words": 28,
-    "source": null,
-    "wav": null,
-    "truth": null
+    "source": "fish",
+    "wav": "audio/cache/55b0e97e365ad13538306dd3.wav",
+    "truth": null,
+    "duration": 12.2776
    }
   ],
   "X2.4": [
@@ -1500,33 +1666,37 @@
     "para": 0,
     "key": "ba053ba163c194f765ad0de0",
     "words": 33,
-    "source": null,
-    "wav": null,
-    "truth": null
+    "source": "fish",
+    "wav": "audio/cache/ba053ba163c194f765ad0de0.wav",
+    "truth": null,
+    "duration": 13.5837
    },
    {
     "para": 1,
     "key": "928dd412944bf3126dc2b674",
     "words": 27,
-    "source": null,
-    "wav": null,
-    "truth": null
+    "source": "fish",
+    "wav": "audio/cache/928dd412944bf3126dc2b674.wav",
+    "truth": null,
+    "duration": 11.2588
    },
    {
     "para": 2,
     "key": "2f9717a8493af4e2aebe979b",
     "words": 27,
-    "source": null,
-    "wav": null,
-    "truth": null
+    "source": "fish",
+    "wav": "audio/cache/2f9717a8493af4e2aebe979b.wav",
+    "truth": null,
+    "duration": 12.382
    },
    {
     "para": 3,
     "key": "54d13d9a7331286e458d82f2",
     "words": 44,
-    "source": null,
-    "wav": null,
-    "truth": null
+    "source": "fish",
+    "wav": "audio/cache/54d13d9a7331286e458d82f2.wav",
+    "truth": null,
+    "duration": 19.2523
    }
   ],
   "X2.5": [
@@ -1534,25 +1704,28 @@
     "para": 0,
     "key": "5b87e7db525fe160aa129c6e",
     "words": 41,
-    "source": null,
-    "wav": null,
-    "truth": null
+    "source": "fish",
+    "wav": "audio/cache/5b87e7db525fe160aa129c6e.wav",
+    "truth": null,
+    "duration": 18.0245
    },
    {
     "para": 1,
     "key": "c59adc473347cbf1b13d2816",
     "words": 26,
-    "source": null,
-    "wav": null,
-    "truth": null
+    "source": "fish",
+    "wav": "audio/cache/c59adc473347cbf1b13d2816.wav",
+    "truth": null,
+    "duration": 11.729
    },
    {
     "para": 2,
     "key": "98a1d1c0dbd080a246f5e61a",
     "words": 31,
-    "source": null,
-    "wav": null,
-    "truth": null
+    "source": "fish",
+    "wav": "audio/cache/98a1d1c0dbd080a246f5e61a.wav",
+    "truth": null,
+    "duration": 14.5502
    }
   ],
   "X2.Q": [
@@ -1560,9 +1733,10 @@
     "para": 0,
     "key": "4d97518ae056fbe03f6533ce",
     "words": 17,
-    "source": null,
-    "wav": null,
-    "truth": null
+    "source": "fish",
+    "wav": "audio/cache/4d97518ae056fbe03f6533ce.wav",
+    "truth": null,
+    "duration": 6.7396
    }
   ],
   "X3.0": [
@@ -1570,17 +1744,19 @@
     "para": 0,
     "key": "10d915535424d6a0aea0f21e",
     "words": 26,
-    "source": null,
-    "wav": null,
-    "truth": null
+    "source": "fish",
+    "wav": "audio/cache/10d915535424d6a0aea0f21e.wav",
+    "truth": null,
+    "duration": 12.6433
    },
    {
     "para": 1,
     "key": "c32a3724c3ffec21e94c17c8",
     "words": 27,
-    "source": null,
-    "wav": null,
-    "truth": null
+    "source": "fish",
+    "wav": "audio/cache/c32a3724c3ffec21e94c17c8.wav",
+    "truth": null,
+    "duration": 11.3894
    }
   ],
   "X3.1": [
@@ -1588,25 +1764,28 @@
     "para": 0,
     "key": "aefe25b1a651a8cc9490ce67",
     "words": 25,
-    "source": null,
-    "wav": null,
-    "truth": null
+    "source": "fish",
+    "wav": "audio/cache/aefe25b1a651a8cc9490ce67.wav",
+    "truth": null,
+    "duration": 10.24
    },
    {
     "para": 1,
     "key": "76ea40f1829f07664801ba5d",
     "words": 16,
-    "source": null,
-    "wav": null,
-    "truth": null
+    "source": "fish",
+    "wav": "audio/cache/76ea40f1829f07664801ba5d.wav",
+    "truth": null,
+    "duration": 8.6204
    },
    {
     "para": 2,
     "key": "97156026f1f49d0d6599293f",
     "words": 58,
-    "source": null,
-    "wav": null,
-    "truth": null
+    "source": "fish",
+    "wav": "audio/cache/97156026f1f49d0d6599293f.wav",
+    "truth": null,
+    "duration": 22.2041
    }
   ],
   "X3.2": [
@@ -1614,33 +1793,37 @@
     "para": 0,
     "key": "853b5f79d1d16adabd2f3d90",
     "words": 22,
-    "source": null,
-    "wav": null,
-    "truth": null
+    "source": "fish",
+    "wav": "audio/cache/853b5f79d1d16adabd2f3d90.wav",
+    "truth": null,
+    "duration": 11.4939
    },
    {
     "para": 1,
     "key": "5b6a53494a73a70959546c08",
     "words": 31,
-    "source": null,
-    "wav": null,
-    "truth": null
+    "source": "fish",
+    "wav": "audio/cache/5b6a53494a73a70959546c08.wav",
+    "truth": null,
+    "duration": 13.6359
    },
    {
     "para": 2,
     "key": "ef2657f0999048a4d2388cf6",
     "words": 41,
-    "source": null,
-    "wav": null,
-    "truth": null
+    "source": "fish",
+    "wav": "audio/cache/ef2657f0999048a4d2388cf6.wav",
+    "truth": null,
+    "duration": 15.9347
    },
    {
     "para": 3,
     "key": "d6744c105b9d7a367ab531bf",
     "words": 19,
-    "source": null,
-    "wav": null,
-    "truth": null
+    "source": "fish",
+    "wav": "audio/cache/d6744c105b9d7a367ab531bf.wav",
+    "truth": null,
+    "duration": 8.4637
    }
   ],
   "X3.3": [
@@ -1648,33 +1831,37 @@
     "para": 0,
     "key": "cfae1e43bd9a815d5e2b93fe",
     "words": 20,
-    "source": null,
-    "wav": null,
-    "truth": null
+    "source": "fish",
+    "wav": "audio/cache/cfae1e43bd9a815d5e2b93fe.wav",
+    "truth": null,
+    "duration": 6.6612
    },
    {
     "para": 1,
     "key": "10b05c904390728679c8cea2",
     "words": 8,
-    "source": null,
-    "wav": null,
-    "truth": null
+    "source": "fish",
+    "wav": "audio/cache/10b05c904390728679c8cea2.wav",
+    "truth": null,
+    "duration": 3.9706
    },
    {
     "para": 2,
     "key": "d904821adb2b7acc90611a08",
     "words": 35,
-    "source": null,
-    "wav": null,
-    "truth": null
+    "source": "fish",
+    "wav": "audio/cache/d904821adb2b7acc90611a08.wav",
+    "truth": null,
+    "duration": 15.4906
    },
    {
     "para": 3,
     "key": "91fa404dd02adff3ddea73c1",
     "words": 32,
-    "source": null,
-    "wav": null,
-    "truth": null
+    "source": "fish",
+    "wav": "audio/cache/91fa404dd02adff3ddea73c1.wav",
+    "truth": null,
+    "duration": 11.6768
    }
   ],
   "X3.4": [
@@ -1682,25 +1869,28 @@
     "para": 0,
     "key": "c7dfb5da4dfb28aab9f44622",
     "words": 44,
-    "source": null,
-    "wav": null,
-    "truth": null
+    "source": "fish",
+    "wav": "audio/cache/c7dfb5da4dfb28aab9f44622.wav",
+    "truth": null,
+    "duration": 18.3119
    },
    {
     "para": 1,
     "key": "0e52dcf90a6e4e9174db1f5c",
     "words": 15,
-    "source": null,
-    "wav": null,
-    "truth": null
+    "source": "fish",
+    "wav": "audio/cache/0e52dcf90a6e4e9174db1f5c.wav",
+    "truth": null,
+    "duration": 6.5306
    },
    {
     "para": 2,
     "key": "a15dc6a9e5087da7f54cebfe",
     "words": 23,
-    "source": null,
-    "wav": null,
-    "truth": null
+    "source": "fish",
+    "wav": "audio/cache/a15dc6a9e5087da7f54cebfe.wav",
+    "truth": null,
+    "duration": 10.2922
    }
   ],
   "X3a.Q": [
@@ -1708,9 +1898,10 @@
     "para": 0,
     "key": "ebf1419513bff8ca91e878fc",
     "words": 22,
-    "source": null,
-    "wav": null,
-    "truth": null
+    "source": "fish",
+    "wav": "audio/cache/ebf1419513bff8ca91e878fc.wav",
+    "truth": null,
+    "duration": 7.8106
    }
   ],
   "09.1": [
@@ -1718,25 +1909,28 @@
     "para": 0,
     "key": "9eed15671a657674e86bd25e",
     "words": 50,
-    "source": null,
-    "wav": null,
-    "truth": null
+    "source": "fish",
+    "wav": "audio/cache/9eed15671a657674e86bd25e.wav",
+    "truth": null,
+    "duration": 19.2
    },
    {
     "para": 1,
     "key": "b18423b2ee63fdd0b3198a4a",
     "words": 42,
-    "source": null,
-    "wav": null,
-    "truth": null
+    "source": "fish",
+    "wav": "audio/cache/b18423b2ee63fdd0b3198a4a.wav",
+    "truth": null,
+    "duration": 18.0245
    },
    {
     "para": 2,
     "key": "927b1ec349fbfe64a2b3a55d",
     "words": 59,
-    "source": null,
-    "wav": null,
-    "truth": null
+    "source": "fish",
+    "wav": "audio/cache/927b1ec349fbfe64a2b3a55d.wav",
+    "truth": null,
+    "duration": 25.182
    }
   ],
   "09.2": [
@@ -1744,25 +1938,28 @@
     "para": 0,
     "key": "7f541405dfe605e44f943dd9",
     "words": 19,
-    "source": null,
-    "wav": null,
-    "truth": null
+    "source": "fish",
+    "wav": "audio/cache/7f541405dfe605e44f943dd9.wav",
+    "truth": null,
+    "duration": 10.1355
    },
    {
     "para": 1,
     "key": "5ee7dd17474ae1f25e1d4365",
     "words": 14,
-    "source": null,
-    "wav": null,
-    "truth": null
+    "source": "fish",
+    "wav": "audio/cache/5ee7dd17474ae1f25e1d4365.wav",
+    "truth": null,
+    "duration": 5.5902
    },
    {
     "para": 2,
     "key": "385bb016a6d8b405f4af49e7",
     "words": 60,
-    "source": null,
-    "wav": null,
-    "truth": null
+    "source": "fish",
+    "wav": "audio/cache/385bb016a6d8b405f4af49e7.wav",
+    "truth": null,
+    "duration": 25.7045
    }
   ],
   "09.3": [
@@ -1770,33 +1967,37 @@
     "para": 0,
     "key": "5b355138a93af2f8cb2dd9f3",
     "words": 36,
-    "source": null,
-    "wav": null,
-    "truth": null
+    "source": "fish",
+    "wav": "audio/cache/5b355138a93af2f8cb2dd9f3.wav",
+    "truth": null,
+    "duration": 17.9984
    },
    {
     "para": 1,
     "key": "357607cc110e108a09388396",
     "words": 27,
-    "source": null,
-    "wav": null,
-    "truth": null
+    "source": "fish",
+    "wav": "audio/cache/357607cc110e108a09388396.wav",
+    "truth": null,
+    "duration": 10.7102
    },
    {
     "para": 2,
     "key": "6773b4f42aba3e3083516aa9",
     "words": 35,
-    "source": null,
-    "wav": null,
-    "truth": null
+    "source": "fish",
+    "wav": "audio/cache/6773b4f42aba3e3083516aa9.wav",
+    "truth": null,
+    "duration": 12.0425
    },
    {
     "para": 3,
     "key": "8699e5efb46ad409730afce2",
     "words": 26,
-    "source": null,
-    "wav": null,
-    "truth": null
+    "source": "fish",
+    "wav": "audio/cache/8699e5efb46ad409730afce2.wav",
+    "truth": null,
+    "duration": 11.4939
    }
   ],
   "09.4": [
@@ -1804,17 +2005,19 @@
     "para": 0,
     "key": "90d251309ee787fda34978df",
     "words": 50,
-    "source": null,
-    "wav": null,
-    "truth": null
+    "source": "fish",
+    "wav": "audio/cache/90d251309ee787fda34978df.wav",
+    "truth": null,
+    "duration": 18.0768
    },
    {
     "para": 1,
     "key": "6baf1f020c83690e12d8b7b6",
     "words": 34,
-    "source": null,
-    "wav": null,
-    "truth": null
+    "source": "fish",
+    "wav": "audio/cache/6baf1f020c83690e12d8b7b6.wav",
+    "truth": null,
+    "duration": 14.4719
    }
   ],
   "09.5": [
@@ -1822,17 +2025,19 @@
     "para": 0,
     "key": "771bc0ed6b38a2df6ba3250b",
     "words": 57,
-    "source": null,
-    "wav": null,
-    "truth": null
+    "source": "fish",
+    "wav": "audio/cache/771bc0ed6b38a2df6ba3250b.wav",
+    "truth": null,
+    "duration": 22.3086
    },
    {
     "para": 1,
     "key": "cb41804694d6427c2b482415",
     "words": 27,
-    "source": null,
-    "wav": null,
-    "truth": null
+    "source": "fish",
+    "wav": "audio/cache/cb41804694d6427c2b482415.wav",
+    "truth": null,
+    "duration": 9.4041
    }
   ],
   "09.6": [
@@ -1840,25 +2045,28 @@
     "para": 0,
     "key": "0bb56b07c57cb0cd3b46ac22",
     "words": 41,
-    "source": null,
-    "wav": null,
-    "truth": null
+    "source": "fish",
+    "wav": "audio/cache/0bb56b07c57cb0cd3b46ac22.wav",
+    "truth": null,
+    "duration": 22.4914
    },
    {
     "para": 1,
     "key": "579cfb5596d9be621cc7af09",
     "words": 50,
-    "source": null,
-    "wav": null,
-    "truth": null
+    "source": "fish",
+    "wav": "audio/cache/579cfb5596d9be621cc7af09.wav",
+    "truth": null,
+    "duration": 24.7119
    },
    {
     "para": 2,
     "key": "beb7d6482e43a4ef73e593fe",
     "words": 32,
-    "source": null,
-    "wav": null,
-    "truth": null
+    "source": "fish",
+    "wav": "audio/cache/beb7d6482e43a4ef73e593fe.wav",
+    "truth": null,
+    "duration": 15.3078
    }
   ],
   "ch09.Q": [
@@ -1866,9 +2074,10 @@
     "para": 0,
     "key": "8a065e423008c94e7e4c27b8",
     "words": 18,
-    "source": null,
-    "wav": null,
-    "truth": null
+    "source": "fish",
+    "wav": "audio/cache/8a065e423008c94e7e4c27b8.wav",
+    "truth": null,
+    "duration": 7.4449
    }
   ],
   "X4.1": [
@@ -1876,25 +2085,28 @@
     "para": 0,
     "key": "830cd111241ffb3d02d83dea",
     "words": 48,
-    "source": null,
-    "wav": null,
-    "truth": null
+    "source": "fish",
+    "wav": "audio/cache/830cd111241ffb3d02d83dea.wav",
+    "truth": null,
+    "duration": 20.2188
    },
    {
     "para": 1,
     "key": "97f25e3597f7681d206a41d0",
     "words": 36,
-    "source": null,
-    "wav": null,
-    "truth": null
+    "source": "fish",
+    "wav": "audio/cache/97f25e3597f7681d206a41d0.wav",
+    "truth": null,
+    "duration": 15.3339
    },
    {
     "para": 2,
     "key": "13fd415bd4caa4e366149a69",
     "words": 35,
-    "source": null,
-    "wav": null,
-    "truth": null
+    "source": "fish",
+    "wav": "audio/cache/13fd415bd4caa4e366149a69.wav",
+    "truth": null,
+    "duration": 12.1731
    }
   ],
   "X4.2": [
@@ -1902,33 +2114,37 @@
     "para": 0,
     "key": "952742c08e65299f481a64c7",
     "words": 45,
-    "source": null,
-    "wav": null,
-    "truth": null
+    "source": "fish",
+    "wav": "audio/cache/952742c08e65299f481a64c7.wav",
+    "truth": null,
+    "duration": 18.3119
    },
    {
     "para": 1,
     "key": "c18f801ab821bdcec686838e",
     "words": 32,
-    "source": null,
-    "wav": null,
-    "truth": null
+    "source": "fish",
+    "wav": "audio/cache/c18f801ab821bdcec686838e.wav",
+    "truth": null,
+    "duration": 13.5314
    },
    {
     "para": 2,
     "key": "56a8301cff67ce2d875b9339",
     "words": 33,
-    "source": null,
-    "wav": null,
-    "truth": null
+    "source": "fish",
+    "wav": "audio/cache/56a8301cff67ce2d875b9339.wav",
+    "truth": null,
+    "duration": 11.6768
    },
    {
     "para": 3,
     "key": "8fcacaf1a862c676da9291bb",
     "words": 20,
-    "source": null,
-    "wav": null,
-    "truth": null
+    "source": "fish",
+    "wav": "audio/cache/8fcacaf1a862c676da9291bb.wav",
+    "truth": null,
+    "duration": 9.4041
    }
   ],
   "X4.3": [
@@ -1936,25 +2152,28 @@
     "para": 0,
     "key": "e1c2f594540568c97b70b82c",
     "words": 37,
-    "source": null,
-    "wav": null,
-    "truth": null
+    "source": "fish",
+    "wav": "audio/cache/e1c2f594540568c97b70b82c.wav",
+    "truth": null,
+    "duration": 17.9461
    },
    {
     "para": 1,
     "key": "524a039dd8f10be62d243754",
     "words": 27,
-    "source": null,
-    "wav": null,
-    "truth": null
+    "source": "fish",
+    "wav": "audio/cache/524a039dd8f10be62d243754.wav",
+    "truth": null,
+    "duration": 11.9902
    },
    {
     "para": 2,
     "key": "0092b5ab9dcdd3cfd6ce6868",
     "words": 31,
-    "source": null,
-    "wav": null,
-    "truth": null
+    "source": "fish",
+    "wav": "audio/cache/0092b5ab9dcdd3cfd6ce6868.wav",
+    "truth": null,
+    "duration": 13.427
    }
   ],
   "X4.5": [
@@ -1962,25 +2181,28 @@
     "para": 0,
     "key": "a72d505c5167dc48b49def3b",
     "words": 36,
-    "source": null,
-    "wav": null,
-    "truth": null
+    "source": "fish",
+    "wav": "audio/cache/a72d505c5167dc48b49def3b.wav",
+    "truth": null,
+    "duration": 15.3078
    },
    {
     "para": 1,
     "key": "0c3538b38454c43b9a7b2b18",
     "words": 14,
-    "source": null,
-    "wav": null,
-    "truth": null
+    "source": "fish",
+    "wav": "audio/cache/0c3538b38454c43b9a7b2b18.wav",
+    "truth": null,
+    "duration": 8.4114
    },
    {
     "para": 2,
     "key": "29741efdc3f542e5f8732a9b",
     "words": 65,
-    "source": null,
-    "wav": null,
-    "truth": null
+    "source": "fish",
+    "wav": "audio/cache/29741efdc3f542e5f8732a9b.wav",
+    "truth": null,
+    "duration": 27.742
    }
   ],
   "X4a.Q": [
@@ -1988,9 +2210,10 @@
     "para": 0,
     "key": "6055143c9957c52805495683",
     "words": 21,
-    "source": null,
-    "wav": null,
-    "truth": null
+    "source": "fish",
+    "wav": "audio/cache/6055143c9957c52805495683.wav",
+    "truth": null,
+    "duration": 10.0049
    }
   ],
   "SOA2.1": [
@@ -1998,17 +2221,19 @@
     "para": 0,
     "key": "74316e301094316652c2a5c9",
     "words": 32,
-    "source": null,
-    "wav": null,
-    "truth": null
+    "source": "fish",
+    "wav": "audio/cache/74316e301094316652c2a5c9.wav",
+    "truth": null,
+    "duration": 12.2776
    },
    {
     "para": 1,
     "key": "0143f0edad027c82ddd35c59",
     "words": 30,
-    "source": null,
-    "wav": null,
-    "truth": null
+    "source": "fish",
+    "wav": "audio/cache/0143f0edad027c82ddd35c59.wav",
+    "truth": null,
+    "duration": 12.8
    }
   ],
   "SOA2.2": [
@@ -2016,17 +2241,19 @@
     "para": 0,
     "key": "4202f7619d298fa13908bf57",
     "words": 59,
-    "source": null,
-    "wav": null,
-    "truth": null
+    "source": "fish",
+    "wav": "audio/cache/4202f7619d298fa13908bf57.wav",
+    "truth": null,
+    "duration": 25.9396
    },
    {
     "para": 1,
     "key": "a3b32fef5089a0765a91e8ac",
     "words": 26,
-    "source": null,
-    "wav": null,
-    "truth": null
+    "source": "fish",
+    "wav": "audio/cache/a3b32fef5089a0765a91e8ac.wav",
+    "truth": null,
+    "duration": 11.8074
    }
   ],
   "SOA2.3": [
@@ -2034,17 +2261,19 @@
     "para": 0,
     "key": "ac13047a2e8a16e5921fb891",
     "words": 61,
-    "source": null,
-    "wav": null,
-    "truth": null
+    "source": "fish",
+    "wav": "audio/cache/ac13047a2e8a16e5921fb891.wav",
+    "truth": null,
+    "duration": 27.0106
    },
    {
     "para": 1,
     "key": "20b4df69cfbd910ecdc42cc6",
     "words": 10,
-    "source": null,
-    "wav": null,
-    "truth": null
+    "source": "fish",
+    "wav": "audio/cache/20b4df69cfbd910ecdc42cc6.wav",
+    "truth": null,
+    "duration": 4.5714
    }
   ],
   "SOA2.4": [
@@ -2052,17 +2281,19 @@
     "para": 0,
     "key": "fbf01f9ec43469a39c216e0e",
     "words": 76,
-    "source": null,
-    "wav": null,
-    "truth": null
+    "source": "fish",
+    "wav": "audio/cache/fbf01f9ec43469a39c216e0e.wav",
+    "truth": null,
+    "duration": 35.4482
    },
    {
     "para": 1,
     "key": "63030de6257659166d3f3235",
     "words": 65,
-    "source": null,
-    "wav": null,
-    "truth": null
+    "source": "fish",
+    "wav": "audio/cache/63030de6257659166d3f3235.wav",
+    "truth": null,
+    "duration": 27.6376
    }
   ],
   "SOA2.5": [
@@ -2070,17 +2301,19 @@
     "para": 0,
     "key": "f06939d967942479cfe39ba9",
     "words": 46,
-    "source": null,
-    "wav": null,
-    "truth": null
+    "source": "fish",
+    "wav": "audio/cache/f06939d967942479cfe39ba9.wav",
+    "truth": null,
+    "duration": 18.6776
    },
    {
     "para": 1,
     "key": "19cc55e288e55e86e47f962f",
     "words": 36,
-    "source": null,
-    "wav": null,
-    "truth": null
+    "source": "fish",
+    "wav": "audio/cache/19cc55e288e55e86e47f962f.wav",
+    "truth": null,
+    "duration": 13.7665
    }
   ],
   "SOA2.6": [
@@ -2088,17 +2321,19 @@
     "para": 0,
     "key": "75e02fc352f3e129d776018b",
     "words": 95,
-    "source": null,
-    "wav": null,
-    "truth": null
+    "source": "fish",
+    "wav": "audio/cache/75e02fc352f3e129d776018b.wav",
+    "truth": null,
+    "duration": 40.1763
    },
    {
     "para": 1,
     "key": "8a98713853ee9a2c77fa440b",
     "words": 26,
-    "source": null,
-    "wav": null,
-    "truth": null
+    "source": "fish",
+    "wav": "audio/cache/8a98713853ee9a2c77fa440b.wav",
+    "truth": null,
+    "duration": 10.1355
    }
   ],
   "SOA2.7": [
@@ -2106,25 +2341,28 @@
     "para": 0,
     "key": "935bec16483bd4791f62cf1c",
     "words": 38,
-    "source": null,
-    "wav": null,
-    "truth": null
+    "source": "fish",
+    "wav": "audio/cache/935bec16483bd4791f62cf1c.wav",
+    "truth": null,
+    "duration": 14.08
    },
    {
     "para": 1,
     "key": "96efa571cfa74ac616f4c8ea",
     "words": 72,
-    "source": null,
-    "wav": null,
-    "truth": null
+    "source": "fish",
+    "wav": "audio/cache/96efa571cfa74ac616f4c8ea.wav",
+    "truth": null,
+    "duration": 32.0523
    },
    {
     "para": 2,
     "key": "b01bb6d95623980ad9e782b4",
     "words": 29,
-    "source": null,
-    "wav": null,
-    "truth": null
+    "source": "fish",
+    "wav": "audio/cache/b01bb6d95623980ad9e782b4.wav",
+    "truth": null,
+    "duration": 10.5012
    }
   ],
   "SOA2.8": [
@@ -2132,17 +2370,19 @@
     "para": 0,
     "key": "d8e541a1cb6748a7b385dfbc",
     "words": 50,
-    "source": null,
-    "wav": null,
-    "truth": null
+    "source": "fish",
+    "wav": "audio/cache/d8e541a1cb6748a7b385dfbc.wav",
+    "truth": null,
+    "duration": 19.9314
    },
    {
     "para": 1,
     "key": "56c4e0b56c00794de2b9a192",
     "words": 40,
-    "source": null,
-    "wav": null,
-    "truth": null
+    "source": "fish",
+    "wav": "audio/cache/56c4e0b56c00794de2b9a192.wav",
+    "truth": null,
+    "duration": 18.7298
    }
   ],
   "chSOA2.Q": [
@@ -2150,9 +2390,10 @@
     "para": 0,
     "key": "5e187f2ca82c7c581a8a416a",
     "words": 20,
-    "source": null,
-    "wav": null,
-    "truth": null
+    "source": "fish",
+    "wav": "audio/cache/5e187f2ca82c7c581a8a416a.wav",
+    "truth": null,
+    "duration": 8.9339
    }
   ],
   "10.1": [
@@ -2160,17 +2401,19 @@
     "para": 0,
     "key": "887cd08b6fa5ed97eeb7ced7",
     "words": 29,
-    "source": null,
-    "wav": null,
-    "truth": null
+    "source": "fish",
+    "wav": "audio/cache/887cd08b6fa5ed97eeb7ced7.wav",
+    "truth": null,
+    "duration": 13.8971
    },
    {
     "para": 1,
     "key": "7afab68bb00326d9abc6c47b",
     "words": 21,
-    "source": null,
-    "wav": null,
-    "truth": null
+    "source": "fish",
+    "wav": "audio/cache/7afab68bb00326d9abc6c47b.wav",
+    "truth": null,
+    "duration": 7.8629
    }
   ],
   "10.2": [
@@ -2178,25 +2421,28 @@
     "para": 0,
     "key": "142b7cd0095e0037013451a5",
     "words": 53,
-    "source": null,
-    "wav": null,
-    "truth": null
+    "source": "fish",
+    "wav": "audio/cache/142b7cd0095e0037013451a5.wav",
+    "truth": null,
+    "duration": 22.2041
    },
    {
     "para": 1,
     "key": "e25be4aee7a6f114e0cb3519",
     "words": 22,
-    "source": null,
-    "wav": null,
-    "truth": null
+    "source": "fish",
+    "wav": "audio/cache/e25be4aee7a6f114e0cb3519.wav",
+    "truth": null,
+    "duration": 10.0049
    },
    {
     "para": 2,
     "key": "5a9664a89827227721d69bf7",
     "words": 33,
-    "source": null,
-    "wav": null,
-    "truth": null
+    "source": "fish",
+    "wav": "audio/cache/5a9664a89827227721d69bf7.wav",
+    "truth": null,
+    "duration": 12.5127
    }
   ],
   "10.3": [
@@ -2204,9 +2450,10 @@
     "para": 0,
     "key": "e27484d9661c839a42ee9492",
     "words": 37,
-    "source": null,
-    "wav": null,
-    "truth": null
+    "source": "fish",
+    "wav": "audio/cache/e27484d9661c839a42ee9492.wav",
+    "truth": null,
+    "duration": 17.3976
    }
   ],
   "X5.1": [
@@ -2214,17 +2461,19 @@
     "para": 0,
     "key": "486399122f1d8cf67a834994",
     "words": 63,
-    "source": null,
-    "wav": null,
-    "truth": null
+    "source": "fish",
+    "wav": "audio/cache/486399122f1d8cf67a834994.wav",
+    "truth": null,
+    "duration": 25.6522
    },
    {
     "para": 1,
     "key": "ea50f47add578d0adc5fccd0",
     "words": 33,
-    "source": null,
-    "wav": null,
-    "truth": null
+    "source": "fish",
+    "wav": "audio/cache/ea50f47add578d0adc5fccd0.wav",
+    "truth": null,
+    "duration": 14.2629
    }
   ],
   "X5.2": [
@@ -2232,17 +2481,19 @@
     "para": 0,
     "key": "4f60a39092909268fff0521e",
     "words": 50,
-    "source": null,
-    "wav": null,
-    "truth": null
+    "source": "fish",
+    "wav": "audio/cache/4f60a39092909268fff0521e.wav",
+    "truth": null,
+    "duration": 22.4392
    },
    {
     "para": 1,
     "key": "57eda8d1f6a4a95c4c60048e",
     "words": 40,
-    "source": null,
-    "wav": null,
-    "truth": null
+    "source": "fish",
+    "wav": "audio/cache/57eda8d1f6a4a95c4c60048e.wav",
+    "truth": null,
+    "duration": 17.1625
    }
   ],
   "X5.3": [
@@ -2250,17 +2501,19 @@
     "para": 0,
     "key": "9a93de5bd922edd1f055233a",
     "words": 53,
-    "source": null,
-    "wav": null,
-    "truth": null
+    "source": "fish",
+    "wav": "audio/cache/9a93de5bd922edd1f055233a.wav",
+    "truth": null,
+    "duration": 22.2563
    },
    {
     "para": 1,
     "key": "46dd5b006e6debbdbd5341b2",
     "words": 47,
-    "source": null,
-    "wav": null,
-    "truth": null
+    "source": "fish",
+    "wav": "audio/cache/46dd5b006e6debbdbd5341b2.wav",
+    "truth": null,
+    "duration": 20.8196
    }
   ],
   "X5.4": [
@@ -2268,25 +2521,28 @@
     "para": 0,
     "key": "f49cb39a15a96312b0eedfdc",
     "words": 42,
-    "source": null,
-    "wav": null,
-    "truth": null
+    "source": "fish",
+    "wav": "audio/cache/f49cb39a15a96312b0eedfdc.wav",
+    "truth": null,
+    "duration": 15.9347
    },
    {
     "para": 1,
     "key": "b3cc061f92521b05e0ecd082",
     "words": 15,
-    "source": null,
-    "wav": null,
-    "truth": null
+    "source": "fish",
+    "wav": "audio/cache/b3cc061f92521b05e0ecd082.wav",
+    "truth": null,
+    "duration": 5.9037
    },
    {
     "para": 2,
     "key": "4d9e04f1c07cf0379e012ccd",
     "words": 37,
-    "source": null,
-    "wav": null,
-    "truth": null
+    "source": "fish",
+    "wav": "audio/cache/4d9e04f1c07cf0379e012ccd.wav",
+    "truth": null,
+    "duration": 14.6547
    }
   ],
   "X5a.Q": [
@@ -2294,9 +2550,10 @@
     "para": 0,
     "key": "6e2d48d02b582f0afb9ea3cf",
     "words": 21,
-    "source": null,
-    "wav": null,
-    "truth": null
+    "source": "fish",
+    "wav": "audio/cache/6e2d48d02b582f0afb9ea3cf.wav",
+    "truth": null,
+    "duration": 7.3927
    }
   ],
   "X1.1": [
@@ -2304,17 +2561,19 @@
     "para": 0,
     "key": "5292a5b616f5599c71a02d54",
     "words": 52,
-    "source": null,
-    "wav": null,
-    "truth": null
+    "source": "fish",
+    "wav": "audio/cache/5292a5b616f5599c71a02d54.wav",
+    "truth": null,
+    "duration": 23.1968
    },
    {
     "para": 1,
     "key": "66d1a0f8ac5246630caeaf9a",
     "words": 43,
-    "source": null,
-    "wav": null,
-    "truth": null
+    "source": "fish",
+    "wav": "audio/cache/66d1a0f8ac5246630caeaf9a.wav",
+    "truth": null,
+    "duration": 17.5804
    }
   ],
   "X1.2": [
@@ -2322,25 +2581,28 @@
     "para": 0,
     "key": "c86d9da8183c4f1647a5aa85",
     "words": 33,
-    "source": null,
-    "wav": null,
-    "truth": null
+    "source": "fish",
+    "wav": "audio/cache/c86d9da8183c4f1647a5aa85.wav",
+    "truth": null,
+    "duration": 14.1323
    },
    {
     "para": 1,
     "key": "f2184f314e5e6e3c22172230",
     "words": 53,
-    "source": null,
-    "wav": null,
-    "truth": null
+    "source": "fish",
+    "wav": "audio/cache/f2184f314e5e6e3c22172230.wav",
+    "truth": null,
+    "duration": 24.8163
    },
    {
     "para": 2,
     "key": "afd9f0261249675cd5e93f6f",
     "words": 33,
-    "source": null,
-    "wav": null,
-    "truth": null
+    "source": "fish",
+    "wav": "audio/cache/afd9f0261249675cd5e93f6f.wav",
+    "truth": null,
+    "duration": 13.1135
    }
   ],
   "X1.3": [
@@ -2348,25 +2610,28 @@
     "para": 0,
     "key": "356313002178e3cc8fe1bef5",
     "words": 40,
-    "source": null,
-    "wav": null,
-    "truth": null
+    "source": "fish",
+    "wav": "audio/cache/356313002178e3cc8fe1bef5.wav",
+    "truth": null,
+    "duration": 17.8939
    },
    {
     "para": 1,
     "key": "fc4b383334db79b8502509ae",
     "words": 13,
-    "source": null,
-    "wav": null,
-    "truth": null
+    "source": "fish",
+    "wav": "audio/cache/fc4b383334db79b8502509ae.wav",
+    "truth": null,
+    "duration": 4.5714
    },
    {
     "para": 2,
     "key": "53fbd8117f73e982824536ca",
     "words": 69,
-    "source": null,
-    "wav": null,
-    "truth": null
+    "source": "fish",
+    "wav": "audio/cache/53fbd8117f73e982824536ca.wav",
+    "truth": null,
+    "duration": 33.4106
    }
   ],
   "X1.Q": [
@@ -2374,9 +2639,10 @@
     "para": 0,
     "key": "a8bcbd007465d1e61f5c191b",
     "words": 18,
-    "source": null,
-    "wav": null,
-    "truth": null
+    "source": "fish",
+    "wav": "audio/cache/a8bcbd007465d1e61f5c191b.wav",
+    "truth": null,
+    "duration": 7.1576
    }
   ],
   "10.4": [
@@ -2384,25 +2650,28 @@
     "para": 0,
     "key": "af634cc8e238c0813fc1c394",
     "words": 30,
-    "source": null,
-    "wav": null,
-    "truth": null
+    "source": "fish",
+    "wav": "audio/cache/af634cc8e238c0813fc1c394.wav",
+    "truth": null,
+    "duration": 13.4792
    },
    {
     "para": 1,
     "key": "27a67b26ecec808c898e8f81",
     "words": 43,
-    "source": null,
-    "wav": null,
-    "truth": null
+    "source": "fish",
+    "wav": "audio/cache/27a67b26ecec808c898e8f81.wav",
+    "truth": null,
+    "duration": 19.2523
    },
    {
     "para": 2,
     "key": "86ca6cf59c4d4a72660147e7",
     "words": 33,
-    "source": null,
-    "wav": null,
-    "truth": null
+    "source": "fish",
+    "wav": "audio/cache/86ca6cf59c4d4a72660147e7.wav",
+    "truth": null,
+    "duration": 15.6735
    }
   ],
   "10.5": [
@@ -2410,25 +2679,28 @@
     "para": 0,
     "key": "167688f33064d4d7d0b43824",
     "words": 33,
-    "source": null,
-    "wav": null,
-    "truth": null
+    "source": "fish",
+    "wav": "audio/cache/167688f33064d4d7d0b43824.wav",
+    "truth": null,
+    "duration": 17.1625
    },
    {
     "para": 1,
     "key": "924a4f61ab5b873ef4dce466",
     "words": 26,
-    "source": null,
-    "wav": null,
-    "truth": null
+    "source": "fish",
+    "wav": "audio/cache/924a4f61ab5b873ef4dce466.wav",
+    "truth": null,
+    "duration": 12.4082
    },
    {
     "para": 2,
     "key": "e7badba6e07fcc270551cf19",
     "words": 47,
-    "source": null,
-    "wav": null,
-    "truth": null
+    "source": "fish",
+    "wav": "audio/cache/e7badba6e07fcc270551cf19.wav",
+    "truth": null,
+    "duration": 19.9053
    }
   ],
   "X4.4": [
@@ -2436,33 +2708,37 @@
     "para": 0,
     "key": "3ba80c34fdbdf07cedd1b274",
     "words": 30,
-    "source": null,
-    "wav": null,
-    "truth": null
+    "source": "fish",
+    "wav": "audio/cache/3ba80c34fdbdf07cedd1b274.wav",
+    "truth": null,
+    "duration": 13.7143
    },
    {
     "para": 1,
     "key": "503eb19c847d74a58e991161",
     "words": 36,
-    "source": null,
-    "wav": null,
-    "truth": null
+    "source": "fish",
+    "wav": "audio/cache/503eb19c847d74a58e991161.wav",
+    "truth": null,
+    "duration": 15.4906
    },
    {
     "para": 2,
     "key": "c05f6c0b9a2b4eba1082037e",
     "words": 18,
-    "source": null,
-    "wav": null,
-    "truth": null
+    "source": "fish",
+    "wav": "audio/cache/c05f6c0b9a2b4eba1082037e.wav",
+    "truth": null,
+    "duration": 6.5306
    },
    {
     "para": 3,
     "key": "fcb4b004a0d658842207c54d",
     "words": 29,
-    "source": null,
-    "wav": null,
-    "truth": null
+    "source": "fish",
+    "wav": "audio/cache/fcb4b004a0d658842207c54d.wav",
+    "truth": null,
+    "duration": 14.1845
    }
   ],
   "10.6": [
@@ -2470,17 +2746,19 @@
     "para": 0,
     "key": "37f247ba5b9dd0592f28ee13",
     "words": 44,
-    "source": null,
-    "wav": null,
-    "truth": null
+    "source": "fish",
+    "wav": "audio/cache/37f247ba5b9dd0592f28ee13.wav",
+    "truth": null,
+    "duration": 20.4539
    },
    {
     "para": 1,
     "key": "b740bb674f5487b04b5c53b2",
     "words": 21,
-    "source": null,
-    "wav": null,
-    "truth": null
+    "source": "fish",
+    "wav": "audio/cache/b740bb674f5487b04b5c53b2.wav",
+    "truth": null,
+    "duration": 8.5682
    }
   ],
   "10.7": [
@@ -2488,17 +2766,19 @@
     "para": 0,
     "key": "fb55b75c2bd5cbd971a47630",
     "words": 25,
-    "source": null,
-    "wav": null,
-    "truth": null
+    "source": "fish",
+    "wav": "audio/cache/fb55b75c2bd5cbd971a47630.wav",
+    "truth": null,
+    "duration": 10.7102
    },
    {
     "para": 1,
     "key": "675ba6ba5612935d64a5bc7c",
     "words": 26,
-    "source": null,
-    "wav": null,
-    "truth": null
+    "source": "fish",
+    "wav": "audio/cache/675ba6ba5612935d64a5bc7c.wav",
+    "truth": null,
+    "duration": 12.9306
    }
   ],
   "X3.5": [
@@ -2506,25 +2786,28 @@
     "para": 0,
     "key": "8e1738e13a064ae1394bf44b",
     "words": 41,
-    "source": null,
-    "wav": null,
-    "truth": null
+    "source": "fish",
+    "wav": "audio/cache/8e1738e13a064ae1394bf44b.wav",
+    "truth": null,
+    "duration": 16.2743
    },
    {
     "para": 1,
     "key": "f58f93418ad3bc183918ac87",
     "words": 24,
-    "source": null,
-    "wav": null,
-    "truth": null
+    "source": "fish",
+    "wav": "audio/cache/f58f93418ad3bc183918ac87.wav",
+    "truth": null,
+    "duration": 9.4563
    },
    {
     "para": 2,
     "key": "2c85f4bb48622fb2cdb1b1c1",
     "words": 41,
-    "source": null,
-    "wav": null,
-    "truth": null
+    "source": "fish",
+    "wav": "audio/cache/2c85f4bb48622fb2cdb1b1c1.wav",
+    "truth": null,
+    "duration": 17.9461
    }
   ],
   "ch10.Q": [
@@ -2532,9 +2815,10 @@
     "para": 0,
     "key": "e07a0774b6fa65c6a9d55ad4",
     "words": 22,
-    "source": null,
-    "wav": null,
-    "truth": null
+    "source": "fish",
+    "wav": "audio/cache/e07a0774b6fa65c6a9d55ad4.wav",
+    "truth": null,
+    "duration": 10.0049
    }
   ],
   "10.9-bridge": [
@@ -2542,9 +2826,10 @@
     "para": 0,
     "key": "da7e99b1709bfb55e38728e9",
     "words": 36,
-    "source": null,
-    "wav": null,
-    "truth": null
+    "source": "fish",
+    "wav": "audio/cache/da7e99b1709bfb55e38728e9.wav",
+    "truth": null,
+    "duration": 16.64
    }
   ],
   "X6.0": [
@@ -2552,17 +2837,19 @@
     "para": 0,
     "key": "eba609e377be4691d796b907",
     "words": 35,
-    "source": null,
-    "wav": null,
-    "truth": null
+    "source": "fish",
+    "wav": "audio/cache/eba609e377be4691d796b907.wav",
+    "truth": null,
+    "duration": 16.9274
    },
    {
     "para": 1,
     "key": "5fdca8eb461aac60ed622893",
     "words": 28,
-    "source": null,
-    "wav": null,
-    "truth": null
+    "source": "fish",
+    "wav": "audio/cache/5fdca8eb461aac60ed622893.wav",
+    "truth": null,
+    "duration": 11.3894
    }
   ],
   "X6.1": [
@@ -2570,25 +2857,28 @@
     "para": 0,
     "key": "f757102b5172ec07f072ceea",
     "words": 34,
-    "source": null,
-    "wav": null,
-    "truth": null
+    "source": "fish",
+    "wav": "audio/cache/f757102b5172ec07f072ceea.wav",
+    "truth": null,
+    "duration": 14.9159
    },
    {
     "para": 1,
     "key": "0ee6f390de28034192219466",
     "words": 53,
-    "source": null,
-    "wav": null,
-    "truth": null
+    "source": "fish",
+    "wav": "audio/cache/0ee6f390de28034192219466.wav",
+    "truth": null,
+    "duration": 21.4727
    },
    {
     "para": 2,
     "key": "8c853cb099efad3cee2641af",
     "words": 24,
-    "source": null,
-    "wav": null,
-    "truth": null
+    "source": "fish",
+    "wav": "audio/cache/8c853cb099efad3cee2641af.wav",
+    "truth": null,
+    "duration": 10.6057
    }
   ],
   "X6.2": [
@@ -2596,33 +2886,37 @@
     "para": 0,
     "key": "180d41cb454882ba15895c5b",
     "words": 33,
-    "source": null,
-    "wav": null,
-    "truth": null
+    "source": "fish",
+    "wav": "audio/cache/180d41cb454882ba15895c5b.wav",
+    "truth": null,
+    "duration": 13.7143
    },
    {
     "para": 1,
     "key": "a362ddee9862b92f6ff4fe5c",
     "words": 8,
-    "source": null,
-    "wav": null,
-    "truth": null
+    "source": "fish",
+    "wav": "audio/cache/a362ddee9862b92f6ff4fe5c.wav",
+    "truth": null,
+    "duration": 3.6049
    },
    {
     "para": 2,
     "key": "3528fa3eadc35146aad5c995",
     "words": 40,
-    "source": null,
-    "wav": null,
-    "truth": null
+    "source": "fish",
+    "wav": "audio/cache/3528fa3eadc35146aad5c995.wav",
+    "truth": null,
+    "duration": 15.569
    },
    {
     "para": 3,
     "key": "15e416a27ff91e01d79d9100",
     "words": 33,
-    "source": null,
-    "wav": null,
-    "truth": null
+    "source": "fish",
+    "wav": "audio/cache/15e416a27ff91e01d79d9100.wav",
+    "truth": null,
+    "duration": 12.9306
    }
   ],
   "X6.3": [
@@ -2630,25 +2924,28 @@
     "para": 0,
     "key": "126463e9655e9813386f369e",
     "words": 33,
-    "source": null,
-    "wav": null,
-    "truth": null
+    "source": "fish",
+    "wav": "audio/cache/126463e9655e9813386f369e.wav",
+    "truth": null,
+    "duration": 14.6808
    },
    {
     "para": 1,
     "key": "39cd02a02ad9270944acd004",
     "words": 27,
-    "source": null,
-    "wav": null,
-    "truth": null
+    "source": "fish",
+    "wav": "audio/cache/39cd02a02ad9270944acd004.wav",
+    "truth": null,
+    "duration": 12.6433
    },
    {
     "para": 2,
     "key": "06e2a865eafa2ce855aa2415",
     "words": 42,
-    "source": null,
-    "wav": null,
-    "truth": null
+    "source": "fish",
+    "wav": "audio/cache/06e2a865eafa2ce855aa2415.wav",
+    "truth": null,
+    "duration": 16.9796
    }
   ],
   "X6.4": [
@@ -2656,25 +2953,28 @@
     "para": 0,
     "key": "40a164137bee6a70b679a19f",
     "words": 35,
-    "source": null,
-    "wav": null,
-    "truth": null
+    "source": "fish",
+    "wav": "audio/cache/40a164137bee6a70b679a19f.wav",
+    "truth": null,
+    "duration": 16.3527
    },
    {
     "para": 1,
     "key": "651ae363355d02a3882f6838",
     "words": 50,
-    "source": null,
-    "wav": null,
-    "truth": null
+    "source": "fish",
+    "wav": "audio/cache/651ae363355d02a3882f6838.wav",
+    "truth": null,
+    "duration": 19.0955
    },
    {
     "para": 2,
     "key": "723679d93d356d4968cd32db",
     "words": 33,
-    "source": null,
-    "wav": null,
-    "truth": null
+    "source": "fish",
+    "wav": "audio/cache/723679d93d356d4968cd32db.wav",
+    "truth": null,
+    "duration": 15.9347
    }
   ],
   "X6.5": [
@@ -2682,25 +2982,28 @@
     "para": 0,
     "key": "4610b4a730635bcdbc56e7fe",
     "words": 32,
-    "source": null,
-    "wav": null,
-    "truth": null
+    "source": "fish",
+    "wav": "audio/cache/4610b4a730635bcdbc56e7fe.wav",
+    "truth": null,
+    "duration": 14.3151
    },
    {
     "para": 1,
     "key": "26c13dd06ea26945ebd87633",
     "words": 39,
-    "source": null,
-    "wav": null,
-    "truth": null
+    "source": "fish",
+    "wav": "audio/cache/26c13dd06ea26945ebd87633.wav",
+    "truth": null,
+    "duration": 13.9494
    },
    {
     "para": 2,
     "key": "3280991a60b6b0e6a797c487",
     "words": 27,
-    "source": null,
-    "wav": null,
-    "truth": null
+    "source": "fish",
+    "wav": "audio/cache/3280991a60b6b0e6a797c487.wav",
+    "truth": null,
+    "duration": 13.009
    }
   ],
   "X6.6": [
@@ -2708,25 +3011,28 @@
     "para": 0,
     "key": "14a1d52e024db1077de46e31",
     "words": 28,
-    "source": null,
-    "wav": null,
-    "truth": null
+    "source": "fish",
+    "wav": "audio/cache/14a1d52e024db1077de46e31.wav",
+    "truth": null,
+    "duration": 10.7102
    },
    {
     "para": 1,
     "key": "9c51ca5477717a65054ac51f",
     "words": 25,
-    "source": null,
-    "wav": null,
-    "truth": null
+    "source": "fish",
+    "wav": "audio/cache/9c51ca5477717a65054ac51f.wav",
+    "truth": null,
+    "duration": 10.4751
    },
    {
     "para": 2,
     "key": "63733d7b8f7703f793e8f689",
     "words": 57,
-    "source": null,
-    "wav": null,
-    "truth": null
+    "source": "fish",
+    "wav": "audio/cache/63733d7b8f7703f793e8f689.wav",
+    "truth": null,
+    "duration": 21.1592
    }
   ],
   "X6.Q": [
@@ -2734,9 +3040,10 @@
     "para": 0,
     "key": "84aee4ea3624c606182f974d",
     "words": 19,
-    "source": null,
-    "wav": null,
-    "truth": null
+    "source": "fish",
+    "wav": "audio/cache/84aee4ea3624c606182f974d.wav",
+    "truth": null,
+    "duration": 10.1355
    }
   ],
   "X5.5": [
@@ -2744,25 +3051,28 @@
     "para": 0,
     "key": "65baaa9a6b90530b1afe83bd",
     "words": 47,
-    "source": null,
-    "wav": null,
-    "truth": null
+    "source": "fish",
+    "wav": "audio/cache/65baaa9a6b90530b1afe83bd.wav",
+    "truth": null,
+    "duration": 18.6776
    },
    {
     "para": 1,
     "key": "1ad4fb932d0e31f1ce410410",
     "words": 20,
-    "source": null,
-    "wav": null,
-    "truth": null
+    "source": "fish",
+    "wav": "audio/cache/1ad4fb932d0e31f1ce410410.wav",
+    "truth": null,
+    "duration": 8.8816
    },
    {
     "para": 2,
     "key": "1040426450951b56ae90d50b",
     "words": 36,
-    "source": null,
-    "wav": null,
-    "truth": null
+    "source": "fish",
+    "wav": "audio/cache/1040426450951b56ae90d50b.wav",
+    "truth": null,
+    "duration": 17.1102
    }
   ],
   "X5.6": [
@@ -2770,25 +3080,28 @@
     "para": 0,
     "key": "6d6055b9ef718e58815f830a",
     "words": 41,
-    "source": null,
-    "wav": null,
-    "truth": null
+    "source": "fish",
+    "wav": "audio/cache/6d6055b9ef718e58815f830a.wav",
+    "truth": null,
+    "duration": 21.4727
    },
    {
     "para": 1,
     "key": "a47fa9efb70d43f86e9a5727",
     "words": 61,
-    "source": null,
-    "wav": null,
-    "truth": null
+    "source": "fish",
+    "wav": "audio/cache/a47fa9efb70d43f86e9a5727.wav",
+    "truth": null,
+    "duration": 23.3274
    },
    {
     "para": 2,
     "key": "a1a48e9a0e5ca63fe8690ffc",
     "words": 12,
-    "source": null,
-    "wav": null,
-    "truth": null
+    "source": "fish",
+    "wav": "audio/cache/a1a48e9a0e5ca63fe8690ffc.wav",
+    "truth": null,
+    "duration": 5.3551
    }
   ],
   "X5b.Q": [
@@ -2796,9 +3109,10 @@
     "para": 0,
     "key": "03745cc20ed8ecc1a601588f",
     "words": 20,
-    "source": null,
-    "wav": null,
-    "truth": null
+    "source": "fish",
+    "wav": "audio/cache/03745cc20ed8ecc1a601588f.wav",
+    "truth": null,
+    "duration": 7.8629
    }
   ],
   "10q.1": [
@@ -2806,25 +3120,28 @@
     "para": 0,
     "key": "176a2942acba9417bb95fcc7",
     "words": 15,
-    "source": null,
-    "wav": null,
-    "truth": null
+    "source": "fish",
+    "wav": "audio/cache/176a2942acba9417bb95fcc7.wav",
+    "truth": null,
+    "duration": 6.9486
    },
    {
     "para": 1,
     "key": "f3ed44f75e9b869ac3bf9e8c",
     "words": 45,
-    "source": null,
-    "wav": null,
-    "truth": null
+    "source": "fish",
+    "wav": "audio/cache/f3ed44f75e9b869ac3bf9e8c.wav",
+    "truth": null,
+    "duration": 21.0547
    },
    {
     "para": 2,
     "key": "33ee34ba1cdec40720a98a35",
     "words": 17,
-    "source": null,
-    "wav": null,
-    "truth": null
+    "source": "fish",
+    "wav": "audio/cache/33ee34ba1cdec40720a98a35.wav",
+    "truth": null,
+    "duration": 6.6612
    }
   ],
   "10q.2": [
@@ -2832,17 +3149,19 @@
     "para": 0,
     "key": "9ee918db804061cc77069920",
     "words": 10,
-    "source": null,
-    "wav": null,
-    "truth": null
+    "source": "fish",
+    "wav": "audio/cache/9ee918db804061cc77069920.wav",
+    "truth": null,
+    "duration": 5.12
    },
    {
     "para": 1,
     "key": "62aa90b714fbebb46044410a",
     "words": 75,
-    "source": null,
-    "wav": null,
-    "truth": null
+    "source": "fish",
+    "wav": "audio/cache/62aa90b714fbebb46044410a.wav",
+    "truth": null,
+    "duration": 33.28
    }
   ],
   "10q.3": [
@@ -2850,9 +3169,10 @@
     "para": 0,
     "key": "12c3d3ce7f0ab37aa2a7c125",
     "words": 56,
-    "source": null,
-    "wav": null,
-    "truth": null
+    "source": "fish",
+    "wav": "audio/cache/12c3d3ce7f0ab37aa2a7c125.wav",
+    "truth": null,
+    "duration": 22.9616
    }
   ],
   "10q.4": [
@@ -2860,17 +3180,19 @@
     "para": 0,
     "key": "268b878341e6409f7a99c71e",
     "words": 19,
-    "source": null,
-    "wav": null,
-    "truth": null
+    "source": "fish",
+    "wav": "audio/cache/268b878341e6409f7a99c71e.wav",
+    "truth": null,
+    "duration": 7.7845
    },
    {
     "para": 1,
     "key": "b4f14984c253bc35f2827d1e",
     "words": 51,
-    "source": null,
-    "wav": null,
-    "truth": null
+    "source": "fish",
+    "wav": "audio/cache/b4f14984c253bc35f2827d1e.wav",
+    "truth": null,
+    "duration": 18.8343
    }
   ],
   "10q.5": [
@@ -2878,17 +3200,19 @@
     "para": 0,
     "key": "f57d71f6676fc86a18907fad",
     "words": 52,
-    "source": null,
-    "wav": null,
-    "truth": null
+    "source": "fish",
+    "wav": "audio/cache/f57d71f6676fc86a18907fad.wav",
+    "truth": null,
+    "duration": 20.6367
    },
    {
     "para": 1,
     "key": "e10ce21cb9340470fa22eb27",
     "words": 16,
-    "source": null,
-    "wav": null,
-    "truth": null
+    "source": "fish",
+    "wav": "audio/cache/e10ce21cb9340470fa22eb27.wav",
+    "truth": null,
+    "duration": 7.1576
    }
   ],
   "10q.6": [
@@ -2896,17 +3220,19 @@
     "para": 0,
     "key": "e9b5ba68b2e5e5d71e67ad40",
     "words": 24,
-    "source": null,
-    "wav": null,
-    "truth": null
+    "source": "fish",
+    "wav": "audio/cache/e9b5ba68b2e5e5d71e67ad40.wav",
+    "truth": null,
+    "duration": 10.4751
    },
    {
     "para": 1,
     "key": "51676e481545d23318857190",
     "words": 29,
-    "source": null,
-    "wav": null,
-    "truth": null
+    "source": "fish",
+    "wav": "audio/cache/51676e481545d23318857190.wav",
+    "truth": null,
+    "duration": 12.8
    }
   ],
   "11.1": [
@@ -2914,17 +3240,19 @@
     "para": 0,
     "key": "ad984f3a6b472e650429583e",
     "words": 44,
-    "source": null,
-    "wav": null,
-    "truth": null
+    "source": "fish",
+    "wav": "audio/cache/ad984f3a6b472e650429583e.wav",
+    "truth": null,
+    "duration": 20.1665
    },
    {
     "para": 1,
     "key": "c142b7f02c1cb2e7490c71d0",
     "words": 33,
-    "source": null,
-    "wav": null,
-    "truth": null
+    "source": "fish",
+    "wav": "audio/cache/c142b7f02c1cb2e7490c71d0.wav",
+    "truth": null,
+    "duration": 11.3371
    }
   ],
   "11.2": [
@@ -2932,33 +3260,37 @@
     "para": 0,
     "key": "1e937e9ec0208372ba9253db",
     "words": 8,
-    "source": null,
-    "wav": null,
-    "truth": null
+    "source": "fish",
+    "wav": "audio/cache/1e937e9ec0208372ba9253db.wav",
+    "truth": null,
+    "duration": 3.0825
    },
    {
     "para": 1,
     "key": "abe2eb0ef5b8bd450210a781",
     "words": 83,
-    "source": null,
-    "wav": null,
-    "truth": null
+    "source": "fish",
+    "wav": "audio/cache/abe2eb0ef5b8bd450210a781.wav",
+    "truth": null,
+    "duration": 32.0261
    },
    {
     "para": 2,
     "key": "4b9c6c607cbb2d39a0ac22f7",
     "words": 71,
-    "source": null,
-    "wav": null,
-    "truth": null
+    "source": "fish",
+    "wav": "audio/cache/4b9c6c607cbb2d39a0ac22f7.wav",
+    "truth": null,
+    "duration": 26.5404
    },
    {
     "para": 3,
     "key": "e5f9fc485e4e68d5f0dea4ae",
     "words": 27,
-    "source": null,
-    "wav": null,
-    "truth": null
+    "source": "fish",
+    "wav": "audio/cache/e5f9fc485e4e68d5f0dea4ae.wav",
+    "truth": null,
+    "duration": 10.7886
    }
   ],
   "11.3": [
@@ -2966,9 +3298,10 @@
     "para": 0,
     "key": "6bdea972270b34e4fb688351",
     "words": 31,
-    "source": null,
-    "wav": null,
-    "truth": null
+    "source": "fish",
+    "wav": "audio/cache/6bdea972270b34e4fb688351.wav",
+    "truth": null,
+    "duration": 11.4416
    }
   ]
  }

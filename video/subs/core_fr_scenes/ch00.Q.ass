@@ -12,6 +12,6 @@ Style: Sub,Inter Medium,42,&H00F7F4F2,&H00F7F4F2,&H38140F0B,&H00000000,0,0,0,0,1
 
 [Events]
 Format: Layer, Start, End, Style, Name, MarginL, MarginR, MarginV, Effect, Text
-Dialogue: 0,0:00:00.42,0:00:02.72,Sub,,0,0,0,,{\fad(120,100)\move(960,1020,960,1016,0,120)}Les premières simulations\Ndoivent-elles viser
-Dialogue: 0,0:00:02.80,0:00:04.83,Sub,,0,0,0,,{\fad(120,100)\move(960,1020,960,1016,0,120)}{\c&H00A1ED&}la fréquence{\c&HF7F4F2&} des renversements du champ,
-Dialogue: 0,0:00:04.91,0:00:08.26,Sub,,0,0,0,,{\fad(120,100)\move(960,1020,960,1016,0,120)}ou les signes annonciateurs\Njuste avant un renversement ?
+Dialogue: 0,0:00:00.47,0:00:02.58,Sub,,0,0,0,,{\fad(120,100)\move(960,1020,960,1016,0,120)}Les premières simulations\Ndoivent-elles viser
+Dialogue: 0,0:00:02.66,0:00:04.53,Sub,,0,0,0,,{\fad(120,100)\move(960,1020,960,1016,0,120)}{\c&H00A1ED&}la fréquence{\c&HF7F4F2&} des renversements du champ,
+Dialogue: 0,0:00:04.61,0:00:07.72,Sub,,0,0,0,,{\fad(120,100)\move(960,1020,960,1016,0,120)}ou les signes annonciateurs\Njuste avant un renversement ?

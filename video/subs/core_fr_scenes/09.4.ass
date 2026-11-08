@@ -12,11 +12,12 @@ Style: Sub,Inter Medium,42,&H00F7F4F2,&H00F7F4F2,&H38140F0B,&H00000000,0,0,0,0,1
 
 [Events]
 Format: Layer, Start, End, Style, Name, MarginL, MarginR, MarginV, Effect, Text
-Dialogue: 0,0:00:00.32,0:00:04.05,Sub,,0,0,0,,{\fad(120,100)\move(960,1020,960,1016,0,120)}The crowd loss, on three\Ndials, at unseen settings.
-Dialogue: 0,0:00:04.13,0:00:08.02,Sub,,0,0,0,,{\fad(120,100)\move(960,1020,960,1016,0,120)}On the good machine,\Nit halves the crowd-law residuals,
-Dialogue: 0,0:00:08.10,0:00:10.63,Sub,,0,0,0,,{\fad(120,100)\move(960,1020,960,1016,0,120)}even for laws it never enforced.
-Dialogue: 0,0:00:10.71,0:00:16.71,Sub,,0,0,0,,{\fad(120,100)\move(960,1020,960,1016,0,120)}But the spread of energy changes shrinks\Nby a quarter: a faint echo of the spike.
-Dialogue: 0,0:00:17.66,0:00:20.52,Sub,,0,0,0,,{\fad(120,100)\move(960,1020,960,1016,0,120)}On a deliberately biased\Nmachine, it fails:
-Dialogue: 0,0:00:20.60,0:00:23.42,Sub,,0,0,0,,{\fad(120,100)\move(960,1020,960,1016,0,120)}one run diverged, the other got worse.
-Dialogue: 0,0:00:23.50,0:00:25.90,Sub,,0,0,0,,{\fad(120,100)\move(960,1020,960,1016,0,120)}On the crossing rate, with one seed:
-Dialogue: 0,0:00:25.98,0:00:30.02,Sub,,0,0,0,,{\fad(120,100)\move(960,1020,960,1016,0,120)}slightly better near the\Nthreshold, worse far from it.
+Dialogue: 0,0:00:00.37,0:00:04.61,Sub,,0,0,0,,{\fad(120,100)\move(960,1020,960,1016,0,120)}La perte en loi, sur les trois\Ncadrans, à des réglages jamais vus.
+Dialogue: 0,0:00:05.09,0:00:09.22,Sub,,0,0,0,,{\fad(120,100)\move(960,1020,960,1016,0,120)}Sur la bonne machine, elle divise par\Ndeux les résidus des lois de la foule,
+Dialogue: 0,0:00:09.30,0:00:12.23,Sub,,0,0,0,,{\fad(120,100)\move(960,1020,960,1016,0,120)}même pour les lois qu'elle\Nn'a jamais imposées.
+Dialogue: 0,0:00:12.62,0:00:15.18,Sub,,0,0,0,,{\fad(120,100)\move(960,1020,960,1016,0,120)}Mais la dispersion des\Nvariations d'énergie
+Dialogue: 0,0:00:15.26,0:00:18.23,Sub,,0,0,0,,{\fad(120,100)\move(960,1020,960,1016,0,120)}diminue d'un quart :\Nun faible écho du pic.
+Dialogue: 0,0:00:18.97,0:00:22.26,Sub,,0,0,0,,{\fad(120,100)\move(960,1020,960,1016,0,120)}Sur une machine volontairement\Nbiaisée, elle échoue :
+Dialogue: 0,0:00:22.34,0:00:25.47,Sub,,0,0,0,,{\fad(120,100)\move(960,1020,960,1016,0,120)}un entraînement a divergé,\Nl'autre a empiré.
+Dialogue: 0,0:00:25.70,0:00:28.87,Sub,,0,0,0,,{\fad(120,100)\move(960,1020,960,1016,0,120)}Sur la fréquence des passages,\Navec une seule graine :
+Dialogue: 0,0:00:28.95,0:00:33.19,Sub,,0,0,0,,{\fad(120,100)\move(960,1020,960,1016,0,120)}légèrement mieux près du seuil,\Nmoins bien quand on s'en éloigne.

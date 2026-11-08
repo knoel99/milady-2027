@@ -12,8 +12,8 @@ Style: Sub,Inter Medium,42,&H00F7F4F2,&H00F7F4F2,&H38140F0B,&H00000000,0,0,0,0,1
 
 [Events]
 Format: Layer, Start, End, Style, Name, MarginL, MarginR, MarginV, Effect, Text
-Dialogue: 0,0:00:00.22,0:00:04.33,Sub,,0,0,0,,{\fad(120,100)\move(960,1020,960,1016,0,120)}Aux dorsales océaniques, la lave\Nfraîche refroidit et se fige en roche.
-Dialogue: 0,0:00:04.41,0:00:08.47,Sub,,0,0,0,,{\fad(120,100)\move(960,1020,960,1016,0,120)}De minuscules grains magnétiques y\Nenregistrent la direction du {\c&H3468EB&}champ{\c&HF7F4F2&}.
-Dialogue: 0,0:00:08.55,0:00:13.02,Sub,,0,0,0,,{\fad(120,100)\move(960,1020,960,1016,0,120)}Les fonds marins s'écartent, et chaque\Nrenversement ouvre une nouvelle bande.
-Dialogue: 0,0:00:13.10,0:00:16.13,Sub,,0,0,0,,{\fad(120,100)\move(960,1020,960,1016,0,120)}Cinq millions d'années,\Nune vingtaine de renversements,
-Dialogue: 0,0:00:16.21,0:00:18.74,Sub,,0,0,0,,{\fad(120,100)\move(960,1020,960,1016,0,120)}et des intervalles extrêmement inégaux.
+Dialogue: 0,0:00:00.27,0:00:05.45,Sub,,0,0,0,,{\fad(120,100)\move(960,1020,960,1016,0,120)}Aux dorsales océaniques, la lave qui\Nremonte refroidit et se fige en roche.
+Dialogue: 0,0:00:05.92,0:00:09.91,Sub,,0,0,0,,{\fad(120,100)\move(960,1020,960,1016,0,120)}De minuscules grains magnétiques y\Nenregistrent la direction du {\c&H3468EB&}champ{\c&HF7F4F2&}.
+Dialogue: 0,0:00:10.44,0:00:15.28,Sub,,0,0,0,,{\fad(120,100)\move(960,1020,960,1016,0,120)}Les fonds marins s'écartent, et chaque\Nrenversement commence une nouvelle bande.
+Dialogue: 0,0:00:15.49,0:00:18.98,Sub,,0,0,0,,{\fad(120,100)\move(960,1020,960,1016,0,120)}Cinq millions d'années,\Nune vingtaine de renversements,
+Dialogue: 0,0:00:19.06,0:00:21.92,Sub,,0,0,0,,{\fad(120,100)\move(960,1020,960,1016,0,120)}et des intervalles extrêmement inégaux.

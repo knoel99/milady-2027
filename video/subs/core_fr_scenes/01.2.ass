@@ -12,11 +12,11 @@ Style: Sub,Inter Medium,42,&H00F7F4F2,&H00F7F4F2,&H38140F0B,&H00000000,0,0,0,0,1
 
 [Events]
 Format: Layer, Start, End, Style, Name, MarginL, MarginR, MarginV, Effect, Text
-Dialogue: 0,0:00:00.32,0:00:05.12,Sub,,0,0,0,,{\fad(120,100)\move(960,1020,960,1016,0,120)}Prenez un barreau aimanté :\Nle nord à un bout, le sud à l'autre.
-Dialogue: 0,0:00:05.20,0:00:06.49,Sub,,0,0,0,,{\fad(120,100)\move(960,1020,960,1016,0,120)}Coupez-le en deux.
-Dialogue: 0,0:00:06.57,0:00:11.07,Sub,,0,0,0,,{\fad(120,100)\move(960,1020,960,1016,0,120)}Vous obtenez deux aimants,\Nqui ont chacun un nord et un sud.
-Dialogue: 0,0:00:11.15,0:00:15.14,Sub,,0,0,0,,{\fad(120,100)\move(960,1020,960,1016,0,120)}Personne n'a jamais trouvé\Nde pôle magnétique isolé.
-Dialogue: 0,0:00:16.01,0:00:21.24,Sub,,0,0,0,,{\fad(120,100)\move(960,1020,960,1016,0,120)}Les {\c&H3468EB&}lignes de champ{\c&HF7F4F2&} disent la même\Nchose : elles n'ont ni début ni fin.
-Dialogue: 0,0:00:21.32,0:00:24.90,Sub,,0,0,0,,{\fad(120,100)\move(960,1020,960,1016,0,120)}Tracez une boîte,\Nn'importe laquelle, et comptez.
-Dialogue: 0,0:00:24.98,0:00:27.89,Sub,,0,0,0,,{\fad(120,100)\move(960,1020,960,1016,0,120)}Il entre autant de lignes qu'il en sort.
-Dialogue: 0,0:00:27.97,0:00:30.02,Sub,,0,0,0,,{\fad(120,100)\move(960,1020,960,1016,0,120)}Gardez cette boîte en tête.
+Dialogue: 0,0:00:00.37,0:00:05.57,Sub,,0,0,0,,{\fad(120,100)\move(960,1020,960,1016,0,120)}Prenez un barreau aimanté : un pôle\Nnord à un bout, un pôle sud à l'autre.
+Dialogue: 0,0:00:05.94,0:00:07.14,Sub,,0,0,0,,{\fad(120,100)\move(960,1020,960,1016,0,120)}Coupez-le en deux.
+Dialogue: 0,0:00:07.36,0:00:11.36,Sub,,0,0,0,,{\fad(120,100)\move(960,1020,960,1016,0,120)}Vous obtenez deux aimants,\Nchacun avec son nord et son sud.
+Dialogue: 0,0:00:11.79,0:00:14.82,Sub,,0,0,0,,{\fad(120,100)\move(960,1020,960,1016,0,120)}Personne n'a jamais trouvé\Nde pôle magnétique isolé.
+Dialogue: 0,0:00:15.56,0:00:19.94,Sub,,0,0,0,,{\fad(120,100)\move(960,1020,960,1016,0,120)}Les {\c&H3468EB&}lignes de champ{\c&HF7F4F2&} disent la même\Nchose : elles n'ont ni début ni fin.
+Dialogue: 0,0:00:20.36,0:00:23.53,Sub,,0,0,0,,{\fad(120,100)\move(960,1020,960,1016,0,120)}Tracez une boîte,\Nn'importe laquelle, et comptez.
+Dialogue: 0,0:00:23.94,0:00:26.49,Sub,,0,0,0,,{\fad(120,100)\move(960,1020,960,1016,0,120)}Il entre autant de lignes qu'il en sort.
+Dialogue: 0,0:00:26.97,0:00:28.66,Sub,,0,0,0,,{\fad(120,100)\move(960,1020,960,1016,0,120)}Gardez cette boîte en tête.

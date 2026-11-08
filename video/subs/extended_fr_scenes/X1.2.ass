@@ -1,0 +1,28 @@
+[Script Info]
+ScriptType: v4.00+
+PlayResX: 1920
+PlayResY: 1080
+WrapStyle: 2
+ScaledBorderAndShadow: yes
+YCbCr Matrix: TV.709
+
+[V4+ Styles]
+Format: Name, Fontname, Fontsize, PrimaryColour, SecondaryColour, OutlineColour, BackColour, Bold, Italic, Underline, StrikeOut, ScaleX, ScaleY, Spacing, Angle, BorderStyle, Outline, Shadow, Alignment, MarginL, MarginR, MarginV, Encoding
+Style: Sub,Inter Medium,42,&H00F7F4F2,&H00F7F4F2,&H38140F0B,&H00000000,0,0,0,0,100,100,0,0,3,12,0,2,240,240,64,1
+
+[Events]
+Format: Layer, Start, End, Style, Name, MarginL, MarginR, MarginV, Effect, Text
+Dialogue: 0,0:00:00.37,0:00:04.11,Sub,,0,0,0,,{\fad(120,100)\move(960,1020,960,1016,0,120)}Laissez tourner assez longtemps,\Net un seul {\c&H3468EB&}champ{\c&HF7F4F2&} l'emporte :
+Dialogue: 0,0:00:04.19,0:00:07.96,Sub,,0,0,0,,{\fad(120,100)\move(960,1020,960,1016,0,120)}le plus lent à s'éteindre,\Nou le plus rapide à grandir.
+Dialogue: 0,0:00:08.50,0:00:13.76,Sub,,0,0,0,,{\fad(120,100)\move(960,1020,960,1016,0,120)}La surface enveloppe ses zones intenses ;\Ndes filaments tracent ses lignes de champ.
+Dialogue: 0,0:00:14.50,0:00:16.97,Sub,,0,0,0,,{\fad(120,100)\move(960,1020,960,1016,0,120)}À {\c&H7AAF1B&}Rm{\c&HF7F4F2&} égal huit, il s'éteint.
+Dialogue: 0,0:00:17.32,0:00:21.28,Sub,,0,0,0,,{\fad(120,100)\move(960,1020,960,1016,0,120)}À douze et à seize,\Ndans la fenêtre, il grandit.
+Dialogue: 0,0:00:21.73,0:00:25.20,Sub,,0,0,0,,{\fad(120,100)\move(960,1020,960,1016,0,120)}À vingt, juste au-delà,\Nil s'éteint de nouveau.
+Dialogue: 0,0:00:25.73,0:00:28.91,Sub,,0,0,0,,{\fad(120,100)\move(960,1020,960,1016,0,120)}Sur ces instantanés,\Nà huit, seize et vingt,
+Dialogue: 0,0:00:28.99,0:00:32.21,Sub,,0,0,0,,{\fad(120,100)\move(960,1020,960,1016,0,120)}il se concentre dans quatre tubes fins.
+Dialogue: 0,0:00:32.64,0:00:36.66,Sub,,0,0,0,,{\fad(120,100)\move(960,1020,960,1016,0,120)}Leur intensité culmine en des\Npoints où l'{\c&HE58739&}écoulement{\c&HF7F4F2&} est immobile.
+Dialogue: 0,0:00:36.95,0:00:38.94,Sub,,0,0,0,,{\fad(120,100)\move(960,1020,960,1016,0,120)}À douze, il s'étale.
+Dialogue: 0,0:00:39.68,0:00:42.68,Sub,,0,0,0,,{\fad(120,100)\move(960,1020,960,1016,0,120)}La littérature décrit de tels\Ntubes en forme de cigare,
+Dialogue: 0,0:00:42.76,0:00:45.90,Sub,,0,0,0,,{\fad(120,100)\move(960,1020,960,1016,0,120)}et des symétries que le\Nrapport n'a pas vérifiées.
+Dialogue: 0,0:00:46.44,0:00:49.03,Sub,,0,0,0,,{\fad(120,100)\move(960,1020,960,1016,0,120)}Une forme par réglage :\Nde premières cibles,
+Dialogue: 0,0:00:49.11,0:00:52.42,Sub,,0,0,0,,{\fad(120,100)\move(960,1020,960,1016,0,120)}proposées pour un {\c&HF09CB4&}générateur{\c&HF7F4F2&}\Nen trois dimensions.

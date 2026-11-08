@@ -1,0 +1,19 @@
+[Script Info]
+ScriptType: v4.00+
+PlayResX: 1920
+PlayResY: 1080
+WrapStyle: 2
+ScaledBorderAndShadow: yes
+YCbCr Matrix: TV.709
+
+[V4+ Styles]
+Format: Name, Fontname, Fontsize, PrimaryColour, SecondaryColour, OutlineColour, BackColour, Bold, Italic, Underline, StrikeOut, ScaleX, ScaleY, Spacing, Angle, BorderStyle, Outline, Shadow, Alignment, MarginL, MarginR, MarginV, Encoding
+Style: Sub,Inter Medium,42,&H00F7F4F2,&H00F7F4F2,&H38140F0B,&H00000000,0,0,0,0,100,100,0,0,3,12,0,2,240,240,64,1
+
+[Events]
+Format: Layer, Start, End, Style, Name, MarginL, MarginR, MarginV, Effect, Text
+Dialogue: 0,0:00:03.17,0:00:06.31,Sub,,0,0,0,,{\fad(120,100)\move(960,1020,960,1016,0,120)}Y a-t-il un aimant géant caché\Nà l'intérieur de la Terre ?
+Dialogue: 0,0:00:07.18,0:00:12.11,Sub,,0,0,0,,{\fad(120,100)\move(960,1020,960,1016,0,120)}Loin sous la surface, le noyau\Nexterne est un océan de fer liquide.
+Dialogue: 0,0:00:12.73,0:00:17.75,Sub,,0,0,0,,{\fad(120,100)\move(960,1020,960,1016,0,120)}Livré à lui-même, un {\c&H3468EB&}champ{\c&HF7F4F2&} s'y éteindrait\Nen quelques dizaines de milliers d'années.
+Dialogue: 0,0:00:18.40,0:00:23.19,Sub,,0,0,0,,{\fad(120,100)\move(960,1020,960,1016,0,120)}Pourtant, le champ de la Terre existe\Ndepuis plusieurs milliards d'années.
+Dialogue: 0,0:00:23.41,0:00:27.38,Sub,,0,0,0,,{\fad(120,100)\move(960,1020,960,1016,0,120)}Le fer en mouvement doit donc\Nle fabriquer, en permanence.

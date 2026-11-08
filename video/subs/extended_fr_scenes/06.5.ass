@@ -1,0 +1,27 @@
+[Script Info]
+ScriptType: v4.00+
+PlayResX: 1920
+PlayResY: 1080
+WrapStyle: 2
+ScaledBorderAndShadow: yes
+YCbCr Matrix: TV.709
+
+[V4+ Styles]
+Format: Name, Fontname, Fontsize, PrimaryColour, SecondaryColour, OutlineColour, BackColour, Bold, Italic, Underline, StrikeOut, ScaleX, ScaleY, Spacing, Angle, BorderStyle, Outline, Shadow, Alignment, MarginL, MarginR, MarginV, Encoding
+Style: Sub,Inter Medium,42,&H00F7F4F2,&H00F7F4F2,&H38140F0B,&H00000000,0,0,0,0,100,100,0,0,3,12,0,2,240,240,64,1
+
+[Events]
+Format: Layer, Start, End, Style, Name, MarginL, MarginR, MarginV, Effect, Text
+Dialogue: 0,0:00:00.37,0:00:04.92,Sub,,0,0,0,,{\fad(120,100)\move(960,1020,960,1016,0,120)}Un instantané généré n'a pas de vrai\Njumeau : on compare donc des foules.
+Dialogue: 0,0:00:05.29,0:00:07.96,Sub,,0,0,0,,{\fad(120,100)\move(960,1020,960,1016,0,120)}Imaginez chaque foule\Ncomme un tas de sable.
+Dialogue: 0,0:00:08.30,0:00:12.96,Sub,,0,0,0,,{\fad(120,100)\move(960,1020,960,1016,0,120)}Une {\c&H00A1ED&}distance entre distributions{\c&HF7F4F2&} mesure\Nà quel point les deux tas diffèrent.
+Dialogue: 0,0:00:13.26,0:00:16.08,Sub,,0,0,0,,{\fad(120,100)\move(960,1020,960,1016,0,120)}Par exemple, la distance\Ndu terrassier compte
+Dialogue: 0,0:00:16.16,0:00:19.52,Sub,,0,0,0,,{\fad(120,100)\move(960,1020,960,1016,0,120)}combien de sable il faut\Ndéplacer, et jusqu'où.
+Dialogue: 0,0:00:20.26,0:00:24.73,Sub,,0,0,0,,{\fad(120,100)\move(960,1020,960,1016,0,120)}Un modèle parfait, comparé aux\Ndonnées : obtiendra-t-il zéro ?
+Dialogue: 0,0:00:27.97,0:00:33.37,Sub,,0,0,0,,{\fad(120,100)\move(960,1020,960,1016,0,120)}Non. Lancez un dé équilibré mille\Nfois, puis encore mille fois.
+Dialogue: 0,0:00:33.82,0:00:38.67,Sub,,0,0,0,,{\fad(120,100)\move(960,1020,960,1016,0,120)}Même dé, même vérité, et pourtant\Nles deux histogrammes diffèrent.
+Dialogue: 0,0:00:39.10,0:00:44.33,Sub,,0,0,0,,{\fad(120,100)\move(960,1020,960,1016,0,120)}Cet écart, c'est le {\c&H00A1ED&}plancher de bruit{\c&HF7F4F2&} :\Nà peu près le score d'un modèle parfait.
+Dialogue: 0,0:00:44.54,0:00:47.12,Sub,,0,0,0,,{\fad(120,100)\move(960,1020,960,1016,0,120)}Jugez chaque modèle face à ce plancher,
+Dialogue: 0,0:00:47.20,0:00:50.87,Sub,,0,0,0,,{\fad(120,100)\move(960,1020,960,1016,0,120)}à taille d'échantillon égale,\Njamais face à zéro.
+Dialogue: 0,0:00:51.61,0:00:55.34,Sub,,0,0,0,,{\fad(120,100)\move(960,1020,960,1016,0,120)}Un hic, toutefois : les échantillons\Ndoivent être indépendants.
+Dialogue: 0,0:00:55.67,0:01:00.42,Sub,,0,0,0,,{\fad(120,100)\move(960,1020,960,1016,0,120)}S'ils se recouvrent, le plancher tombe\Ntrop bas, comme le signale le rapport.

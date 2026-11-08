@@ -1,0 +1,26 @@
+[Script Info]
+ScriptType: v4.00+
+PlayResX: 1920
+PlayResY: 1080
+WrapStyle: 2
+ScaledBorderAndShadow: yes
+YCbCr Matrix: TV.709
+
+[V4+ Styles]
+Format: Name, Fontname, Fontsize, PrimaryColour, SecondaryColour, OutlineColour, BackColour, Bold, Italic, Underline, StrikeOut, ScaleX, ScaleY, Spacing, Angle, BorderStyle, Outline, Shadow, Alignment, MarginL, MarginR, MarginV, Encoding
+Style: Sub,Inter Medium,42,&H00F7F4F2,&H00F7F4F2,&H38140F0B,&H00000000,0,0,0,0,100,100,0,0,3,12,0,2,240,240,64,1
+
+[Events]
+Format: Layer, Start, End, Style, Name, MarginL, MarginR, MarginV, Effect, Text
+Dialogue: 0,0:00:00.37,0:00:03.04,Sub,,0,0,0,,{\fad(120,100)\move(960,1020,960,1016,0,120)}Deuxième pari, la première vraie dynamo :
+Dialogue: 0,0:00:03.12,0:00:07.87,Sub,,0,0,0,,{\fad(120,100)\move(960,1020,960,1016,0,120)}un écoulement de Taylor-Green,\Nfait de tourbillons contrarotatifs.
+Dialogue: 0,0:00:08.39,0:00:11.86,Sub,,0,0,0,,{\fad(120,100)\move(960,1020,960,1016,0,120)}Cette fois, le {\c&H3468EB&}champ{\c&HF7F4F2&} agit\Nen retour sur l'écoulement.
+Dialogue: 0,0:00:12.36,0:00:17.28,Sub,,0,0,0,,{\fad(120,100)\move(960,1020,960,1016,0,120)}Au-dessus d'un seuil, un {\c&H3468EB&}germe{\c&HF7F4F2&} minuscule\Ndevrait croître, puis plafonner.
+Dialogue: 0,0:00:18.02,0:00:23.43,Sub,,0,0,0,,{\fad(120,100)\move(960,1020,960,1016,0,120)}Douze simulations croisent quatre nombres\Nde Reynolds et trois valeurs de {\c&H7AAF1B&}Pm{\c&HF7F4F2&}.
+Dialogue: 0,0:00:23.88,0:00:29.88,Sub,,0,0,0,,{\fad(120,100)\move(960,1020,960,1016,0,120)}Le pari : un seuil en {\c&H7AAF1B&}Rm{\c&HF7F4F2&}, encadré\Npour au moins deux valeurs de Pm.
+Dialogue: 0,0:00:31.58,0:00:34.29,Sub,,0,0,0,,{\fad(120,100)\move(960,1020,960,1016,0,120)}Confiance : moyenne.\NLes simulations publiées
+Dialogue: 0,0:00:34.37,0:00:37.02,Sub,,0,0,0,,{\fad(120,100)\move(960,1020,960,1016,0,120)}définissent le nombre\Nde Reynolds autrement,
+Dialogue: 0,0:00:37.10,0:00:41.02,Sub,,0,0,0,,{\fad(120,100)\move(960,1020,960,1016,0,120)}si bien que le seuil pourrait\Ntomber hors de cette grille.
+Dialogue: 0,0:00:41.43,0:00:44.16,Sub,,0,0,0,,{\fad(120,100)\move(960,1020,960,1016,0,120)}Près du seuil, une simulation\Npeut encore croître
+Dialogue: 0,0:00:44.24,0:00:46.98,Sub,,0,0,0,,{\fad(120,100)\move(960,1020,960,1016,0,120)}au moment où l'on prélève ses instantanés.
+Dialogue: 0,0:00:47.20,0:00:51.30,Sub,,0,0,0,,{\fad(120,100)\move(960,1020,960,1016,0,120)}Faut-il allonger ces simulations,\Nou les signaler et les exclure ?

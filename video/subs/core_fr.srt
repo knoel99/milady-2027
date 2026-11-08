@@ -1,3817 +1,4414 @@
 1
-00:00:00,920 --> 00:00:04,509
+00:00:00,970 --> 00:00:04,310
 Toute votre vie, cette
 aiguille a indiqué le nord.
 
 2
-00:00:04,589 --> 00:00:08,105
+00:00:04,810 --> 00:00:09,290
 Mais les fonds marins ont
 la mémoire plus longue.
 
 3
-00:00:08,185 --> 00:00:10,233
+00:00:09,370 --> 00:00:10,830
 Nord et sud se sont inversés.
 
 4
-00:00:10,313 --> 00:00:13,279
+00:00:11,210 --> 00:00:14,870
 Encore et encore, sans aucun calendrier.
 
 5
-00:00:14,153 --> 00:00:18,467
-Cette aiguille suit un champ
+00:00:15,603 --> 00:00:19,343
+Cette aiguille suit un champ magnétique
 qui enveloppe toute la planète.
 
 6
-00:00:18,547 --> 00:00:20,298
+00:00:19,793 --> 00:00:21,363
 On le croirait permanent.
 
 7
-00:00:20,378 --> 00:00:21,580
+00:00:22,093 --> 00:00:23,293
 Il ne l'est pas.
 
 8
-00:00:22,453 --> 00:00:26,568
-Aux dorsales océaniques, la lave
-fraîche refroidit et se fige en roche.
+00:00:23,903 --> 00:00:29,083
+Aux dorsales océaniques, la lave qui
+remonte refroidit et se fige en roche.
 
 9
-00:00:26,648 --> 00:00:30,704
+00:00:29,553 --> 00:00:33,543
 De minuscules grains magnétiques y
 enregistrent la direction du champ.
 
 10
-00:00:30,784 --> 00:00:35,253
+00:00:34,073 --> 00:00:38,913
 Les fonds marins s'écartent, et chaque
-renversement ouvre une nouvelle bande.
+renversement commence une nouvelle bande.
 
 11
-00:00:35,333 --> 00:00:38,362
+00:00:39,123 --> 00:00:42,612
 Cinq millions d'années,
 une vingtaine de renversements,
 
 12
-00:00:38,442 --> 00:00:40,976
+00:00:42,692 --> 00:00:45,553
 et des intervalles extrêmement inégaux.
 
 13
-00:00:42,053 --> 00:00:43,310
+00:00:46,503 --> 00:00:48,233
 Alors, deux questions.
 
 14
-00:00:43,390 --> 00:00:45,863
+00:00:48,853 --> 00:00:51,103
 Quand aura lieu le prochain renversement ?
 
 15
-00:00:45,943 --> 00:00:48,841
+00:00:51,473 --> 00:00:54,413
 Et à quelle fréquence le
 champ se renverse-t-il ?
 
 16
-00:00:48,921 --> 00:00:50,713
+00:00:54,843 --> 00:00:56,603
 À laquelle peut-on répondre ?
 
 17
-00:00:53,083 --> 00:00:57,044
+00:00:58,843 --> 00:01:02,100
 Dans un modèle numérique simple
 d'un champ qui se renverse,
 
 18
-00:00:57,124 --> 00:00:59,262
-la première est sans espoir.
+00:01:02,180 --> 00:01:04,263
+la première est hors de portée.
 
 19
-00:00:59,342 --> 00:01:00,542
+00:01:04,563 --> 00:01:06,313
 La seconde, non.
 
 20
-00:01:01,380 --> 00:01:06,019
+00:01:07,053 --> 00:01:11,283
 Pour comprendre pourquoi, nous passerons
 par le métal liquide et le chaos.
 
 21
-00:01:06,099 --> 00:01:10,738
+00:01:11,703 --> 00:01:15,503
 Puis par des machines qui imaginent
 des instantanés de champs magnétiques.
 
 22
-00:01:10,818 --> 00:01:16,205
+00:01:16,213 --> 00:01:21,383
 Elles doivent obéir exactement à certaines
 lois, et à d'autres seulement en moyenne.
 
 23
-00:01:17,587 --> 00:01:20,363
+00:01:22,637 --> 00:01:25,257
 À quelle fréquence le
 champ se renverse-t-il ?
 
 24
-00:01:20,443 --> 00:01:22,862
+00:01:25,637 --> 00:01:28,059
 Une carte pour s'initier au projet MilaDy,
 
 25
-00:01:22,942 --> 00:01:26,247
+00:01:28,139 --> 00:01:31,447
 de la boussole jusqu'à la
 recherche d'aujourd'hui.
 
 26
-00:01:28,920 --> 00:01:31,219
+00:01:34,003 --> 00:01:36,116
 Les premières simulations
 doivent-elles viser
 
 27
-00:01:31,299 --> 00:01:33,334
+00:01:36,196 --> 00:01:38,065
 la fréquence des renversements du champ,
 
 28
-00:01:33,414 --> 00:01:36,758
+00:01:38,145 --> 00:01:41,253
 ou les signes annonciateurs
 juste avant un renversement ?
 
 29
-00:01:41,920 --> 00:01:45,920
+00:01:46,303 --> 00:01:49,443
 Y a-t-il un aimant géant caché
 à l'intérieur de la Terre ?
 
 30
-00:01:46,000 --> 00:01:50,070
-Tout au fond, le noyau externe
-est un océan de fer liquide.
+00:01:50,313 --> 00:01:55,243
+Loin sous la surface, le noyau
+externe est un océan de fer liquide.
 
 31
-00:01:50,150 --> 00:01:55,979
+00:01:55,863 --> 00:02:00,883
 Livré à lui-même, un champ s'y éteindrait
 en quelques dizaines de milliers d'années.
 
 32
-00:01:56,059 --> 00:02:01,185
+00:02:01,533 --> 00:02:06,323
 Pourtant, le champ de la Terre existe
 depuis plusieurs milliards d'années.
 
 33
-00:02:01,265 --> 00:02:05,375
+00:02:06,543 --> 00:02:10,513
 Le fer en mouvement doit donc
 le fabriquer, en permanence.
 
 34
-00:02:06,553 --> 00:02:11,354
-Prenez un barreau aimanté :
-le nord à un bout, le sud à l'autre.
+00:02:11,570 --> 00:02:16,770
+Prenez un barreau aimanté : un pôle
+nord à un bout, un pôle sud à l'autre.
 
 35
-00:02:11,434 --> 00:02:12,726
+00:02:17,140 --> 00:02:18,340
 Coupez-le en deux.
 
 36
-00:02:12,806 --> 00:02:17,302
+00:02:18,560 --> 00:02:22,560
 Vous obtenez deux aimants,
-qui ont chacun un nord et un sud.
+chacun avec son nord et son sud.
 
 37
-00:02:17,382 --> 00:02:21,378
+00:02:22,990 --> 00:02:26,020
 Personne n'a jamais trouvé
 de pôle magnétique isolé.
 
 38
-00:02:22,248 --> 00:02:27,473
+00:02:26,760 --> 00:02:31,140
 Les lignes de champ disent la même
 chose : elles n'ont ni début ni fin.
 
 39
-00:02:27,553 --> 00:02:31,134
+00:02:31,560 --> 00:02:34,730
 Tracez une boîte,
 n'importe laquelle, et comptez.
 
 40
-00:02:31,214 --> 00:02:34,123
+00:02:35,140 --> 00:02:37,690
 Il entre autant de lignes qu'il en sort.
 
 41
-00:02:34,203 --> 00:02:36,250
+00:02:38,170 --> 00:02:39,860
 Gardez cette boîte en tête.
 
 42
-00:02:37,420 --> 00:02:43,043
+00:02:40,903 --> 00:02:46,353
 Une dynamo de vélo transforme le mouvement
 en électricité, grâce à un aimant intégré.
 
 43
-00:02:43,123 --> 00:02:47,313
+00:02:46,853 --> 00:02:52,033
 La Terre, elle, doit fabriquer
 le sien. L'astuce : une boucle.
 
 44
-00:02:48,183 --> 00:02:52,534
+00:02:52,773 --> 00:02:56,753
 Approchez un micro du haut-parleur
 qui le diffuse, et montez le gain.
 
 45
-00:02:52,614 --> 00:02:55,808
+00:02:57,263 --> 00:03:00,443
 En dessous d'un certain point,
 un murmure s'éteint.
 
 46
-00:02:55,888 --> 00:02:58,487
+00:03:00,773 --> 00:03:03,883
 Au-delà, la boucle s'alimente elle-même.
 
 47
-00:03:01,357 --> 00:03:04,589
+00:03:06,623 --> 00:03:09,043
 Faites maintenant tourner
 un disque de cuivre,
 
 48
-00:03:04,669 --> 00:03:08,200
-relié à une bobine
-enroulée autour de son axe.
+00:03:09,123 --> 00:03:11,953
+relié par un fil à une
+bobine autour de l'axe.
 
 49
-00:03:08,280 --> 00:03:12,219
+00:03:12,243 --> 00:03:15,713
 Le courant crée le champ,
 et le champ crée le courant.
 
 50
-00:03:12,299 --> 00:03:16,497
+00:03:16,133 --> 00:03:19,502
 Faites-le tourner de plus en
 plus vite. Le champ grandit-il
 
 51
-00:03:16,577 --> 00:03:21,113
+00:03:19,582 --> 00:03:23,303
 petit à petit, ou pas du tout
 avant une certaine vitesse ?
 
 52
-00:03:24,983 --> 00:03:26,868
+00:03:27,043 --> 00:03:29,193
 Pas du tout, jusqu'à un seuil.
 
 53
-00:03:26,948 --> 00:03:30,355
+00:03:29,483 --> 00:03:33,057
 Au-delà, chaque tour multiplie
 un minuscule champ germe
 
 54
-00:03:30,435 --> 00:03:34,268
+00:03:33,137 --> 00:03:37,253
 par le même facteur : c'est
 une croissance exponentielle.
 
 55
-00:03:34,348 --> 00:03:37,543
+00:03:37,613 --> 00:03:40,763
 Juste au-dessus du seuil,
 la croissance est lente.
 
 56
-00:03:37,623 --> 00:03:41,451
+00:03:41,103 --> 00:03:44,903
 Puis le champ freine le disque,
 et la croissance s'arrête.
 
 57
-00:03:42,820 --> 00:03:44,093
+00:03:46,137 --> 00:03:47,417
 Qui paie la facture ?
 
 58
-00:03:44,173 --> 00:03:48,537
+00:03:47,817 --> 00:03:52,017
 Un moteur entraîne l'écoulement ;
 dans la Terre, c'est la convection.
 
 59
-00:03:48,617 --> 00:03:52,338
+00:03:52,407 --> 00:03:56,107
 L'écoulement étire le champ ;
 le champ freine l'écoulement.
 
 60
-00:03:52,418 --> 00:03:55,249
+00:03:56,587 --> 00:03:59,327
 Une fois la croissance
 arrêtée, chaque watt qui
 
 61
-00:03:55,329 --> 00:03:58,521
+00:03:59,407 --> 00:04:02,617
 entre ressort sous forme
 de chaleur, en moyenne.
 
 62
-00:03:58,601 --> 00:04:03,398
+00:04:03,047 --> 00:04:07,797
 Une dynamo transforme le mouvement en
 champ ; elle ne crée aucune énergie.
 
 63
-00:04:04,553 --> 00:04:09,925
+00:04:08,837 --> 00:04:13,967
 Le champ de la Terre pointe aujourd'hui
 dans un sens. Lequel devrait-il préférer ?
 
 64
-00:04:13,295 --> 00:04:18,884
-Inversez chaque ligne de champ : les
-équations de la dynamo restent les mêmes.
+00:04:17,207 --> 00:04:19,956
+Inversez le sens de
+chaque ligne de champ :
 
 65
-00:04:18,964 --> 00:04:24,964
-Donc, aucun des deux. Ce sont des jumeaux
-en miroir, tout aussi permis par les lois.
+00:04:20,036 --> 00:04:23,307
+les équations de la
+dynamo restent les mêmes.
 
 66
-00:04:25,069 --> 00:04:28,016
+00:04:23,387 --> 00:04:26,532
+Donc, aucun des deux.
+Ce sont des jumeaux en miroir,
+
+67
+00:04:26,612 --> 00:04:29,237
+autorisés au même titre par les lois.
+
+68
+00:04:29,647 --> 00:04:32,633
 Le sens qu'on obtient
 relève de l'histoire,
 
-67
-00:04:28,096 --> 00:04:32,257
+69
+00:04:32,713 --> 00:04:37,037
 pas des lois : dans le disque,
 le signe du germe décide.
 
-68
-00:04:32,337 --> 00:04:35,928
+70
+00:04:37,187 --> 00:04:40,207
 Et rien dans les lois
 n'interdit un renversement.
 
-69
-00:04:37,487 --> 00:04:42,535
+71
+00:04:41,637 --> 00:04:47,177
 Du fer en mouvement, une boucle avec
 un seuil, aucun sens privilégié.
 
-70
-00:04:42,615 --> 00:04:46,995
+72
+00:04:47,587 --> 00:04:51,837
 Mais le disque avait des fils ;
 le fer liquide n'en a aucun.
 
-71
-00:04:47,075 --> 00:04:51,490
+73
+00:04:52,317 --> 00:04:56,917
 Alors, quel mouvement en est
 capable, et à quelle vitesse ?
 
-72
-00:04:52,953 --> 00:04:56,264
+74
+00:04:58,270 --> 00:05:01,798
 Près du seuil, les simulations
 de dynamo doivent-elles
 
-73
-00:04:56,344 --> 00:05:00,380
+75
+00:05:01,878 --> 00:05:06,150
 partir d'un germe minuscule,
 d'un germe fort, ou des deux ?
 
-74
-00:05:05,953 --> 00:05:09,566
+76
+00:05:11,603 --> 00:05:14,343
 Quel mouvement peut faire
 croître un champ magnétique ?
 
-75
-00:05:09,646 --> 00:05:11,305
+77
+00:05:14,803 --> 00:05:16,262
 Dans un conducteur parfait,
 
-76
-00:05:11,385 --> 00:05:15,406
-les lignes de champ seraient
-des fils gelés dans le fluide.
+78
+00:05:16,342 --> 00:05:19,863
+chaque ligne de champ serait
+un fil gelé dans le fluide.
 
-77
-00:05:15,486 --> 00:05:19,545
+79
+00:05:20,323 --> 00:05:24,353
 Partout où l'écoulement étire
 un fil, le champ s'y renforce.
 
-78
-00:05:20,415 --> 00:05:25,291
-Dans un vrai métal, les fils s'estompent,
+80
+00:05:25,093 --> 00:05:29,863
+Dans un vrai métal, le fil s'estompe,
 comme de l'encre qui s'étale.
 
-79
-00:05:25,371 --> 00:05:30,667
+81
+00:05:30,343 --> 00:05:35,363
 La vitesse de cet estompage est fixée
 par la diffusivité magnétique du métal.
 
-80
-00:05:30,747 --> 00:05:32,691
+82
+00:05:35,913 --> 00:05:38,083
 Même écoulement, deux métaux.
 
-81
-00:05:32,771 --> 00:05:37,508
-Dans un bon conducteur, l'estompage
-est lent : les fils restent nets.
-
-82
-00:05:37,588 --> 00:05:42,225
-Dans un mauvais, il est rapide :
-les fils se fondent dans le flou.
-
 83
-00:05:43,387 --> 00:05:47,912
+00:05:38,583 --> 00:05:43,913
+Dans un bon conducteur, l'estompage
+est lent : le fil reste net.
+
+84
+00:05:44,203 --> 00:05:49,403
+Dans un mauvais conducteur, il est
+rapide : le fil se fond dans le flou.
+
+85
+00:05:50,437 --> 00:05:55,707
 Un seul nombre compte les points :
 le nombre de Reynolds magnétique, Rm.
 
-84
-00:05:47,992 --> 00:05:49,943
+86
+00:05:56,117 --> 00:05:58,095
 C'est la vitesse de l'écoulement,
 
-85
-00:05:50,023 --> 00:05:54,181
+87
+00:05:58,175 --> 00:06:02,497
 multipliée par sa taille, divisée
 par la diffusivité magnétique.
 
-86
-00:05:54,261 --> 00:05:57,571
+88
+00:06:03,037 --> 00:06:07,047
 À grand Rm, l'étirement va
 plus vite que l'estompage.
 
-87
-00:05:57,651 --> 00:05:59,855
+89
+00:06:07,367 --> 00:06:10,497
 À petit Rm, l'estompage l'emporte.
 
-88
-00:06:00,725 --> 00:06:05,733
+90
+00:06:11,237 --> 00:06:16,027
 Tournez le bouton pour augmenter Rm,
 et observez un faible champ germe.
 
-89
-00:06:05,813 --> 00:06:07,882
+91
+00:06:16,557 --> 00:06:19,307
 À petit Rm, le germe s'éteint.
 
-90
-00:06:07,962 --> 00:06:11,757
+92
+00:06:19,787 --> 00:06:23,615
 Au-delà d'un seuil, le taux
 de croissance franchit zéro,
 
-91
-00:06:11,837 --> 00:06:14,728
+93
+00:06:23,695 --> 00:06:26,607
 et le germe grandit, comme le larsen.
 
-92
-00:06:15,887 --> 00:06:19,645
+94
+00:06:27,637 --> 00:06:31,197
 Les dynamos de laboratoire
 utilisent du sodium liquide.
 
-93
-00:06:19,725 --> 00:06:22,157
+95
+00:06:31,427 --> 00:06:33,647
 Il coule aussi facilement que l'eau.
 
-94
-00:06:22,237 --> 00:06:27,740
+96
+00:06:34,007 --> 00:06:38,277
 Mais un champ s'y estompe environ cent
 mille fois plus vite que ses tourbillons.
 
-95
-00:06:27,820 --> 00:06:31,173
+97
+00:06:38,807 --> 00:06:42,330
 Le rapport de ces deux
 vitesses, un sur cent mille,
 
-96
-00:06:31,253 --> 00:06:34,410
+98
+00:06:42,410 --> 00:06:45,707
 c'est le nombre de Prandtl magnétique, Pm.
 
-97
-00:06:35,280 --> 00:06:39,792
+99
+00:06:46,447 --> 00:06:50,477
 Pour atteindre un Rm de quelques
 dizaines, il faut brasser violemment.
 
-98
-00:06:39,872 --> 00:06:42,190
+100
+00:06:50,827 --> 00:06:52,873
 Le nombre de Reynolds de l'écoulement,
 
-99
-00:06:42,270 --> 00:06:46,024
+101
+00:06:52,953 --> 00:06:56,417
 la jauge de la turbulence,
 se chiffre alors en millions.
 
-100
-00:06:46,104 --> 00:06:49,283
+102
+00:06:56,797 --> 00:07:00,037
 Toute dynamo de laboratoire
 est donc turbulente.
 
-101
-00:06:50,453 --> 00:06:53,774
+103
+00:07:01,070 --> 00:07:03,976
 Seules trois expériences au
 sodium liquide ont fabriqué
 
-102
-00:06:53,854 --> 00:06:57,290
+104
+00:07:04,056 --> 00:07:07,210
 leur propre champ, chaque
 fois d'un genre différent.
 
-103
-00:06:57,370 --> 00:06:59,995
+105
+00:07:07,780 --> 00:07:11,105
 À Riga, un écoulement
 en tire-bouchon a fait
 
-104
-00:07:00,075 --> 00:07:03,246
+106
+00:07:11,185 --> 00:07:15,210
 naître un champ qui oscille
 et tourne lentement.
 
-105
-00:07:03,326 --> 00:07:06,393
+107
+00:07:15,290 --> 00:07:17,785
 À Karlsruhe, cinquante-deux
 cellules en spirale ont
 
-106
-00:07:06,473 --> 00:07:09,779
+108
+00:07:17,865 --> 00:07:20,720
 produit un champ stationnaire,
 proche d'un dipôle.
 
-107
-00:07:09,859 --> 00:07:15,141
+109
+00:07:21,240 --> 00:07:27,240
 Et seule l'expérience VKS, à Cadarache,
 a donné un dipôle capable de se renverser.
 
-108
-00:07:16,011 --> 00:07:19,485
+110
+00:07:28,360 --> 00:07:32,628
 Une quatrième, DRESDYN, à Dresde,
 cherche à les rejoindre :
 
-109
-00:07:19,565 --> 00:07:23,027
+111
+00:07:32,708 --> 00:07:36,870
 un cylindre en rotation
 dont l'axe tourne lentement.
 
-110
-00:07:24,187 --> 00:07:27,104
+112
+00:07:37,903 --> 00:07:40,929
 À l'intérieur de VKS :
 un cylindre qui contient
 
-111
-00:07:27,184 --> 00:07:29,954
+113
+00:07:41,009 --> 00:07:43,983
 cent cinquante litres de sodium liquide.
 
-112
-00:07:30,034 --> 00:07:35,313
+114
+00:07:44,493 --> 00:07:50,333
 À ses extrémités, deux disques à pales,
 les turbines, tournent en sens opposés.
 
-113
-00:07:36,183 --> 00:07:39,501
+115
+00:07:51,073 --> 00:07:54,313
 Le métal des disques devrait-il
 avoir de l'importance ?
 
-114
-00:07:42,871 --> 00:07:45,500
+116
+00:07:57,553 --> 00:07:59,721
 Avec des disques en acier inoxydable,
 
-115
-00:07:45,580 --> 00:07:49,388
-il n'y a eu aucune dynamo,
+117
+00:07:59,801 --> 00:08:03,413
+il n'y a eu aucun effet dynamo,
 même à pleine vitesse.
 
-116
-00:07:49,468 --> 00:07:55,468
+118
+00:08:03,893 --> 00:08:08,843
 Remplacez-les par des disques en fer doux,
 et un dipôle grandit le long de l'axe.
 
-117
-00:07:57,510 --> 00:08:02,883
-Le seuil ne dépend donc pas que de
-Rm : les matériaux comptent aussi.
+119
+00:08:10,583 --> 00:08:15,133
+Le seuil ne dépend donc pas seulement
+de Rm : les matériaux comptent aussi.
 
-118
-00:08:04,053 --> 00:08:08,541
+120
+00:08:16,170 --> 00:08:19,710
 Faites maintenant tourner les deux
 disques à des vitesses différentes.
 
-119
-00:08:08,621 --> 00:08:11,353
+121
+00:08:20,230 --> 00:08:23,258
 Pour certains réglages,
 le dipôle se renverse
 
-120
-00:08:11,433 --> 00:08:14,153
+122
+00:08:23,338 --> 00:08:26,430
 encore et encore, sans aucun calendrier.
 
-121
-00:08:14,233 --> 00:08:19,288
+123
+00:08:26,740 --> 00:08:31,700
 Comme l'aiguille de la boussole du début,
-mais toutes les une à deux minutes.
+mais à une ou deux minutes d'intervalle.
 
-122
-00:08:20,158 --> 00:08:23,693
+124
+00:08:32,440 --> 00:08:36,230
 Chaque renversement, lui,
 ne dure qu'environ cinq secondes.
 
-123
-00:08:23,773 --> 00:08:26,696
+125
+00:08:36,480 --> 00:08:39,233
 Des bandes inégales,
 comme celles des fonds marins,
 
-124
-00:08:26,776 --> 00:08:30,051
+126
+00:08:39,313 --> 00:08:42,420
 mais écrites en minutes,
 pas en millions d'années.
 
-125
-00:08:31,320 --> 00:08:35,405
-Impossible de simuler le tout petit
-Pm du sodium : quelles valeurs
-
-126
-00:08:35,485 --> 00:08:39,980
-de Pm couvrir dans les premières
-simulations en trois dimensions ?
-
 127
-00:08:45,553 --> 00:08:50,656
-Riga, Karlsruhe et VKS ont couronné
-une traque de près d'un siècle.
+00:08:43,570 --> 00:08:46,863
+Les simulations n'atteignent
+pas le très petit Pm du sodium :
 
 128
-00:08:50,736 --> 00:08:52,158
-En voici la carte.
+00:08:46,943 --> 00:08:51,530
+quelles valeurs de Pm couvrir dans les
+premiers calculs en trois dimensions ?
 
 129
-00:08:53,028 --> 00:08:55,586
-Première piste, les archives de la Terre :
+00:08:56,970 --> 00:09:02,500
+Riga, Karlsruhe et VKS ont couronné
+près d'un siècle de chasse à la dynamo.
 
 130
-00:08:55,666 --> 00:08:59,153
+00:09:02,910 --> 00:09:04,200
+En voici la carte.
+
+131
+00:09:04,940 --> 00:09:07,661
+Première piste, les archives de la Terre :
+
+132
+00:09:07,741 --> 00:09:11,540
 des laves aimantées à l'envers,
 mille neuf cent six.
 
-131
-00:08:59,233 --> 00:09:03,071
+133
+00:09:12,200 --> 00:09:15,890
 Les bandes des fonds marins,
 mille neuf cent soixante-trois.
 
-132
-00:09:03,151 --> 00:09:06,789
+134
+00:09:16,820 --> 00:09:20,153
 Puis les renversements vus
 comme des événements aléatoires,
 
-133
-00:09:06,869 --> 00:09:09,908
+135
+00:09:20,233 --> 00:09:23,050
 dont la probabilité
 change au fil des âges.
 
-134
-00:09:11,087 --> 00:09:12,647
+136
+00:09:24,103 --> 00:09:26,403
 Deuxième piste, la théorie.
 
-135
-00:09:12,727 --> 00:09:15,564
+137
+00:09:26,943 --> 00:09:29,742
 Mille neuf cent dix-neuf :
 un fluide conducteur en
 
-136
-00:09:15,644 --> 00:09:18,722
+138
+00:09:29,822 --> 00:09:32,973
 mouvement pourrait entretenir
 le champ du Soleil.
 
-137
-00:09:18,802 --> 00:09:21,643
+139
+00:09:33,443 --> 00:09:36,309
 Mille neuf cent trente-trois :
 aucun écoulement ne
 
-138
-00:09:21,723 --> 00:09:25,090
+140
+00:09:36,389 --> 00:09:39,783
 peut entretenir un champ
 symétrique autour d'un axe.
 
-139
-00:09:25,960 --> 00:09:27,646
-Mille neuf cent cinquante-huit :
-
-140
-00:09:27,726 --> 00:09:31,644
-les premiers exemples démontrés
-d'écoulements qui en sont capables.
-
 141
-00:09:31,724 --> 00:09:35,538
+00:09:40,523 --> 00:09:43,386
+Mille neuf cent cinquante-huit :
+les premiers exemples
+
+142
+00:09:43,466 --> 00:09:46,793
+rigoureux d'écoulements
+capables d'entretenir un champ.
+
+143
+00:09:47,423 --> 00:09:51,129
 Dans les années soixante-dix arrivent
 des écoulements dynamos simples,
 
-142
-00:09:35,618 --> 00:09:38,729
+144
+00:09:51,209 --> 00:09:54,243
 qui deviendront les plans
 de Riga et de Karlsruhe.
 
-143
-00:09:39,887 --> 00:09:42,248
+145
+00:09:55,270 --> 00:09:58,070
 Troisième piste : construire une dynamo.
 
-144
-00:09:42,328 --> 00:09:44,111
+146
+00:09:58,470 --> 00:10:00,254
 Mille neuf cent soixante-trois :
 
-145
-00:09:44,191 --> 00:09:47,556
+147
+00:10:00,334 --> 00:10:03,810
 une maquette de dynamo à
 cylindres de fer en rotation.
 
-146
-00:09:47,636 --> 00:09:49,843
+148
+00:10:04,420 --> 00:10:06,939
 Mille neuf cent quatre-vingt-dix-neuf :
 
-147
-00:09:49,923 --> 00:09:53,890
+149
+00:10:07,019 --> 00:10:11,480
 le sodium fabrique son propre
 champ, à Riga, puis à Karlsruhe.
 
-148
-00:09:54,760 --> 00:09:57,750
+150
+00:10:12,220 --> 00:10:15,481
 Deux mille six : dans VKS,
 l'effet dynamo n'apparaît
 
-149
-00:09:57,830 --> 00:10:00,998
+151
+00:10:15,561 --> 00:10:19,016
 qu'avec des disques en fer ;
 puis viennent les premiers
 
-150
-00:10:01,078 --> 00:10:04,242
+152
+00:10:19,096 --> 00:10:22,510
 renversements d'une dynamo
 turbulente au sodium.
 
-151
-00:10:05,820 --> 00:10:07,596
+153
+00:10:23,937 --> 00:10:26,527
 Quatrième piste, les ordinateurs.
 
-152
-00:10:07,676 --> 00:10:09,351
+154
+00:10:27,147 --> 00:10:28,923
 Mille neuf cent quatre-vingt-un :
 
-153
-00:10:09,431 --> 00:10:12,151
+155
+00:10:29,003 --> 00:10:31,977
 une turbulence simulée
 fait naître des dynamos.
 
-154
-00:10:12,231 --> 00:10:14,131
+156
+00:10:32,487 --> 00:10:34,796
 Mille neuf cent quatre-vingt-quinze :
 
-155
-00:10:14,211 --> 00:10:17,268
+157
+00:10:34,876 --> 00:10:38,627
 dans un noyau terrestre simulé,
 le champ se renverse.
 
-156
-00:10:17,348 --> 00:10:21,824
+158
+00:10:38,957 --> 00:10:44,957
 Les repères cerclés signalent les articles
 cosignés par les encadrants du projet.
 
-157
-00:10:21,904 --> 00:10:24,744
+159
+00:10:46,167 --> 00:10:49,308
 Mille neuf cent quatre-vingt-dix-sept :
 en simulation,
 
-158
-00:10:24,824 --> 00:10:28,235
+160
+00:10:49,388 --> 00:10:53,237
 deux tourbillons contrarotatifs
 produisent un effet dynamo.
 
-159
-00:10:28,315 --> 00:10:32,562
-Deux mille cinq : ces dynamos fonctionnent
-encore pour un Pm d'un centième.
+161
+00:10:53,427 --> 00:10:57,757
+Deux mille cinq : ces dynamos
+fonctionnent encore à un Pm d'un centième.
 
-160
-00:10:33,432 --> 00:10:35,173
+162
+00:10:58,497 --> 00:11:00,457
 À partir de deux mille seize,
 
-161
-00:10:35,253 --> 00:10:39,365
+163
+00:11:00,537 --> 00:11:05,227
 deux codes simulent la cuve de
 VKS, turbines en fer comprises.
 
-162
-00:10:39,445 --> 00:10:43,372
+164
+00:11:05,677 --> 00:11:09,302
 Deux mille vingt-six : tous deux
 obtiennent des renversements ;
 
-163
-00:10:43,452 --> 00:10:48,187
+165
+00:11:09,382 --> 00:11:13,857
 dans les cas explorés, seulement avec
 un milieu conducteur tout autour.
 
-164
-00:10:48,267 --> 00:10:50,076
+166
+00:11:13,937 --> 00:11:15,705
 Leur simulation de référence :
 
-165
-00:10:50,156 --> 00:10:54,832
+167
+00:11:15,785 --> 00:11:20,367
 un nombre de Reynolds d'environ
 mille six cents, et non des millions.
 
-166
-00:10:55,987 --> 00:10:59,355
+168
+00:11:21,403 --> 00:11:24,943
 Cinquième piste : quelques
 cadrans au lieu d'une cuve.
 
-167
-00:10:59,435 --> 00:11:01,309
+169
+00:11:25,373 --> 00:11:27,264
 Mille neuf cent cinquante-huit :
 
-168
-00:11:01,389 --> 00:11:04,783
-deux dynamos à disque,
-couplées, se renversent déjà.
-
-169
-00:11:04,863 --> 00:11:08,178
-Deux mille douze : trois
-cadrans qui se renversent sous
-
 170
-00:11:08,258 --> 00:11:12,044
-le seul effet du chaos ;
-nous jouerons bientôt avec eux.
+00:11:27,344 --> 00:11:31,553
+avec deux dynamos à disque couplées,
+le champ se renverse déjà.
 
 171
-00:11:12,914 --> 00:11:15,850
+00:11:31,863 --> 00:11:35,222
+Deux mille douze : trois
+cadrans, où le chaos suffit à
+
+172
+00:11:35,302 --> 00:11:38,943
+renverser le champ ; nous
+jouerons bientôt avec eux.
+
+173
+00:11:39,683 --> 00:11:42,567
 Deux mille vingt-six :
 quatre cadrans ajustés sur
 
-172
-00:11:15,930 --> 00:11:17,882
+174
+00:11:42,647 --> 00:11:44,563
 les renversements simulés de VKS,
 
-173
-00:11:17,962 --> 00:11:21,985
+175
+00:11:44,643 --> 00:11:48,603
 par une méthode qui découvre
-les équations dans les données.
+des équations dans les données.
 
-174
-00:11:23,153 --> 00:11:27,394
+176
+00:11:49,637 --> 00:11:54,127
 MilaDy, lancé en deux mille vingt-six,
 apporte l'apprentissage automatique
 
-175
-00:11:27,474 --> 00:11:31,372
+177
+00:11:54,207 --> 00:11:58,427
 là où se rencontrent les cuves,
 les ordinateurs et les cadrans.
 
-176
-00:11:31,452 --> 00:11:35,515
+178
+00:11:58,687 --> 00:12:02,876
 Pourtant, la piste des données reste
 mince : en deux mille vingt-deux,
 
-177
-00:11:35,595 --> 00:11:38,889
+179
+00:12:02,956 --> 00:12:06,352
 les méthodes d'apprentissage
 essayées par une étude n'ont
 
-178
-00:11:38,969 --> 00:11:42,909
-pas su prévoir de façon fiable
-un renversement géomagnétique.
+180
+00:12:06,432 --> 00:12:10,787
+pas su prévoir de façon fiable un
+renversement du champ terrestre.
 
-179
-00:11:43,779 --> 00:11:47,509
+181
+00:12:11,527 --> 00:12:14,395
 Le stage et un projet de
 thèse y ajoutent un pari :
 
-180
-00:11:47,589 --> 00:11:53,589
+182
+00:12:14,475 --> 00:12:19,257
 des machines qui imaginent des champs
 de dynamo et obéissent à leur physique.
 
-181
-00:11:54,542 --> 00:11:58,271
+183
+00:12:19,997 --> 00:12:24,887
 Derrière chaque piste, la même course :
 l'étirement contre l'estompage.
 
-182
-00:12:02,653 --> 00:12:07,881
-Back to the race: the flow stretches
-the field, and diffusion smudges it.
-
-183
-00:12:07,961 --> 00:12:12,135
-Physicists write the very same
-race as a single equation.
-
 184
-00:12:13,005 --> 00:12:17,513
-On the left: how fast the magnetic
-field changes, at each point.
+00:12:29,137 --> 00:12:34,437
+Retour à la course : l'écoulement étire
+le champ, et la diffusion l'estompe.
 
 185
-00:12:17,593 --> 00:12:20,628
-First term on the right:
-the flow carries the
+00:12:34,977 --> 00:12:38,797
+Les physiciens écrivent cette
+même course en une seule équation.
 
 186
-00:12:20,708 --> 00:12:24,181
-field along and stretches
-it, like the threads.
+00:12:39,537 --> 00:12:44,027
+À gauche : à quel rythme le champ
+magnétique varie, en chaque point.
 
 187
-00:12:24,261 --> 00:12:29,701
-Second term: diffusion smudges it,
-at a pace set by the magnetic diffusivity.
+00:12:44,547 --> 00:12:46,012
+Premier terme à droite :
 
 188
-00:12:29,781 --> 00:12:31,852
-A poor conductor smudges fast.
+00:12:46,092 --> 00:12:50,157
+l'écoulement transporte le
+champ et l'étire, comme un fil.
 
 189
-00:12:31,932 --> 00:12:36,049
-Stretching against smudging:
-the whole race, in one line.
+00:12:50,637 --> 00:12:53,161
+Deuxième terme : la diffusion l'estompe,
 
 190
-00:12:37,220 --> 00:12:42,297
-Picture the flow as a conveyor
-belt that does not feel its cargo.
+00:12:53,241 --> 00:12:56,827
+à une vitesse fixée par
+la diffusivité magnétique.
 
 191
-00:12:42,377 --> 00:12:48,089
-A weak field rides on the imposed flow,
-and fades or grows exponentially.
+00:12:57,157 --> 00:13:00,527
+Dans un mauvais conducteur,
+le champ s'estompe vite.
 
 192
-00:12:48,169 --> 00:12:53,277
-On a log scale: a straight line,
-whose slope is the growth rate.
+00:13:00,877 --> 00:13:05,337
+L'étirement contre l'estompage :
+toute la course, en une ligne.
 
 193
-00:12:54,147 --> 00:12:57,326
-But a strong field
-pushes back on the flow,
+00:13:06,370 --> 00:13:08,600
+Imaginez l'écoulement
+comme un tapis roulant
 
 194
-00:12:57,406 --> 00:13:02,173
-as it braked the copper disc:
-the line bends into a plateau.
+00:13:08,680 --> 00:13:10,900
+qui ne sent pas ce qu'il transporte.
 
 195
-00:13:02,253 --> 00:13:05,603
-These are the kinematic
-and dynamic regimes.
+00:13:11,640 --> 00:13:15,206
+Un champ faible se laisse porter
+par cet écoulement imposé,
 
 196
-00:13:05,683 --> 00:13:07,739
-Flips live on the plateau.
+00:13:15,286 --> 00:13:18,150
+et s'éteint ou grandit exponentiellement.
 
 197
-00:13:08,920 --> 00:13:12,824
-To test ideas, physicists
-need a flow simple enough
+00:13:18,910 --> 00:13:24,330
+En échelle logarithmique : une droite,
+dont la pente est le taux de croissance.
 
 198
-00:13:12,904 --> 00:13:16,874
-to write on one line,
-yet able to make a dynamo.
+00:13:25,070 --> 00:13:27,995
+Mais un champ fort agit en
+retour sur l'écoulement,
 
 199
-00:13:16,954 --> 00:13:19,635
-One classic choice: the ABC flow.
+00:13:28,075 --> 00:13:33,120
+comme il a freiné le disque de cuivre :
+la droite se courbe et forme un plateau.
 
 200
-00:13:20,505 --> 00:13:23,526
-It fills space with
-identical twisting rooms.
+00:13:33,390 --> 00:13:36,010
+Ce sont les régimes
+cinématique et dynamique.
 
 201
-00:13:23,606 --> 00:13:26,502
-Three crossed winds make
-the fluid corkscrew:
+00:13:36,270 --> 00:13:39,250
+C'est sur le plateau que se
+produisent les renversements.
 
 202
-00:13:26,582 --> 00:13:29,382
-it spins around the direction it moves.
+00:13:40,303 --> 00:13:44,168
+Pour tester leurs idées, les physiciens
+ont besoin d'un écoulement assez
 
 203
-00:13:29,462 --> 00:13:32,042
-This box returns higher on our climb.
+00:13:44,248 --> 00:13:48,743
+simple pour s'écrire en une ligne,
+mais capable de produire un effet dynamo.
 
 204
-00:13:33,220 --> 00:13:38,377
-Now turn one knob on this flow: Rm.
-Turning it up means less diffusion.
+00:13:49,303 --> 00:13:52,613
+Un choix classique : l'écoulement ABC.
 
 205
-00:13:38,457 --> 00:13:41,880
-Less smudging should
-only help the stretching.
+00:13:53,353 --> 00:13:57,463
+Il remplit l'espace de pièces identiques,
+où le fluide tourbillonne.
 
 206
-00:13:42,750 --> 00:13:46,890
-So once the dynamo switches
-on, it stays on. Right?
+00:13:57,903 --> 00:14:01,365
+Trois courants croisés font
+avancer le fluide en tire-bouchon :
 
 207
-00:13:50,760 --> 00:13:54,642
-Here is the growth rate,
-computed at twenty-four settings.
+00:14:01,445 --> 00:14:04,473
+il tourne autour de sa
+direction de déplacement.
 
 208
-00:13:54,722 --> 00:14:00,244
-Below about nine, every field fades. Then
-growth turns positive: the dynamo is on.
+00:14:04,893 --> 00:14:09,063
+Cette boîte tourbillonnante reviendra
+plus haut dans notre ascension.
 
 209
-00:14:00,324 --> 00:14:03,592
-Near seventeen and a half,
-it switches off again.
+00:14:10,103 --> 00:14:14,406
+Sur cet écoulement, tournez
+maintenant un seul bouton :
 
 210
-00:14:03,672 --> 00:14:06,325
-Above about twenty-seven, it comes back.
+00:14:14,486 --> 00:14:18,323
+Rm. L'augmenter, c'est
+réduire la diffusion.
 
 211
-00:14:06,405 --> 00:14:11,517
-Not one threshold, but windows: turning
-a knob further does not always help.
+00:14:18,743 --> 00:14:21,593
+Moins d'estompage ne devrait
+qu'aider l'étirement.
 
 212
-00:14:11,597 --> 00:14:14,403
-It agrees with published
-results. No machine
+00:14:22,333 --> 00:14:26,753
+Donc, une fois lancée, la dynamo
+ne s'arrête plus. N'est-ce pas ?
 
 213
-00:14:14,483 --> 00:14:17,502
-learning yet: this only tests the solver.
+00:14:30,493 --> 00:14:34,623
+Voici le taux de croissance,
+calculé pour vingt-quatre réglages.
 
 214
-00:14:18,887 --> 00:14:22,238
-Real dynamos have not
-one knob, but a panel.
+00:14:35,023 --> 00:14:38,160
+En dessous d'environ neuf,
+tout champ s'éteint.
 
 215
-00:14:22,318 --> 00:14:26,292
-How hard the metal is stirred;
-how well it conducts.
+00:14:38,240 --> 00:14:41,923
+Puis le taux devient positif :
+la dynamo démarre.
 
 216
-00:14:26,372 --> 00:14:29,879
-What the discs are made
-of: remember the iron.
+00:14:42,333 --> 00:14:45,403
+Autour de dix-sept et demi,
+elle s'arrête à nouveau.
 
 217
-00:14:29,959 --> 00:14:34,167
-How unequal their speeds are:
-that is when VKS flipped.
+00:14:45,733 --> 00:14:48,603
+Au-delà d'environ vingt-sept, elle repart.
 
 218
-00:14:34,247 --> 00:14:38,643
-For DRESDYN, a precessing tank:
-how fast its axis turns.
+00:14:48,833 --> 00:14:51,090
+Pas un seul seuil, mais des fenêtres :
 
 219
-00:14:39,513 --> 00:14:43,064
-Even the wall counts: in VKS
-simulations, changing only its
+00:14:51,170 --> 00:14:54,453
+tourner un bouton plus
+loin n'aide pas toujours.
 
 220
-00:14:43,144 --> 00:14:47,351
-magnetic condition raised the
-threshold by about forty percent.
+00:14:54,743 --> 00:14:58,004
+Cela concorde avec les
+résultats publiés. Pas encore
 
 221
-00:14:48,520 --> 00:14:53,427
-Every turbulent dynamo simulation
-in three dimensions is very costly.
+00:14:58,084 --> 00:15:02,333
+d'apprentissage automatique :
+on ne teste ici que le solveur.
 
 222
-00:14:53,507 --> 00:14:56,969
-So only a handful of knob
-settings get simulated.
+00:15:03,570 --> 00:15:07,640
+Les vraies dynamos n'ont pas un seul
+bouton, mais tout un tableau de bord.
 
 223
-00:14:57,049 --> 00:15:02,934
-Each one is a mountain of data: a single
-snapshot can weigh more than a gigabyte.
+00:15:07,720 --> 00:15:12,120
+Avec quelle force on brasse le métal ;
+s'il conduit plus ou moins bien.
 
 224
-00:15:03,804 --> 00:15:06,421
-Each run holds only a few flips.
+00:15:12,460 --> 00:15:15,510
+Le matériau des disques :
+souvenez-vous du fer.
 
 225
-00:15:06,501 --> 00:15:10,409
-And between the dots,
-there is nothing at all.
+00:15:15,700 --> 00:15:20,600
+L'écart entre leurs vitesses : c'est
+là que le champ de VKS s'est renversé.
 
 226
-00:15:11,587 --> 00:15:14,288
-Those gaps are where this film lives.
+00:15:21,200 --> 00:15:26,310
+Pour DRESDYN, une cuve en précession :
+à quelle vitesse tourne son axe.
 
 227
-00:15:14,368 --> 00:15:17,781
-The study behind this
-film asks three things.
+00:15:27,050 --> 00:15:31,159
+Même la paroi compte : dans des
+simulations de VKS, changer seulement
 
 228
-00:15:18,651 --> 00:15:22,541
-One: can a machine learn
-the whole family of fields,
+00:15:31,239 --> 00:15:35,880
+sa condition magnétique a relevé le
+seuil d'environ quarante pour cent.
 
 229
-00:15:22,621 --> 00:15:25,818
-even at knob settings between the dots?
+00:15:36,903 --> 00:15:41,683
+Chaque simulation de dynamo turbulente
+en trois dimensions coûte très cher.
 
 230
-00:15:25,898 --> 00:15:29,186
-Two: can it respect
-each law where it holds,
+00:15:42,143 --> 00:15:44,773
+On ne simule donc qu'une
+poignée de réglages.
 
 231
-00:15:29,266 --> 00:15:33,695
-exactly in every field,
-or on average over many fields?
+00:15:45,363 --> 00:15:48,150
+Chacun représente une
+montagne de données :
 
 232
-00:15:33,775 --> 00:15:37,585
-Three: can it tell us how
-often the field flips?
+00:15:48,230 --> 00:15:51,893
+un seul instantané peut
+peser plus d'un gigaoctet.
 
 233
-00:15:38,455 --> 00:15:41,785
-To find out, the study's
-plan climbs a staircase,
+00:15:52,633 --> 00:15:55,613
+Chaque simulation ne contient
+que quelques renversements.
 
 234
-00:15:41,865 --> 00:15:45,883
-from three numbers to the
-shapes of real experiments.
+00:15:55,853 --> 00:15:58,453
+Et entre les points,
+il n'y a rien du tout.
 
 235
-00:15:46,753 --> 00:15:50,114
-One honest note: this
-independent study is prospective,
+00:15:59,503 --> 00:16:01,763
+C'est dans ces vides que se joue ce film.
 
 236
-00:15:50,194 --> 00:15:53,304
-built on small experiments
-on an ordinary computer,
+00:16:02,153 --> 00:16:05,113
+L'étude sur laquelle il
+s'appuie pose trois questions.
 
 237
-00:15:53,384 --> 00:15:57,468
-and not endorsed by MilaDy,
-its partners or the supervisors.
+00:16:05,853 --> 00:16:09,794
+Première : une machine peut-elle
+apprendre toute la famille des champs,
 
 238
-00:15:59,253 --> 00:16:03,448
-An equation, windows, a panel
-of knobs, a handful of dots.
+00:16:09,874 --> 00:16:12,923
+même pour des réglages
+situés entre les points ?
 
 239
-00:16:03,528 --> 00:16:05,656
-Full simulations cost too much,
+00:16:13,703 --> 00:16:17,571
+Deuxième : peut-elle respecter
+chaque loi là où elle est vraie,
 
 240
-00:16:05,736 --> 00:16:10,229
-so we start with a three-dial
-caricature that already flips.
+00:16:17,651 --> 00:16:22,243
+exactement dans chaque champ,
+ou en moyenne sur de nombreux champs ?
 
 241
-00:16:10,309 --> 00:16:12,845
-Can anyone say when it flips next?
+00:16:22,603 --> 00:16:27,223
+Troisième : peut-elle nous dire à
+quelle fréquence le champ se renverse ?
 
 242
-00:16:14,320 --> 00:16:17,583
-With only a handful of runs,
-should the settings
+00:16:27,963 --> 00:16:31,240
+Pour le savoir, le plan de
+l'étude gravit un escalier :
 
 243
-00:16:17,663 --> 00:16:21,336
-be spread evenly,
-or packed near each threshold?
+00:16:31,320 --> 00:16:35,313
+de trois nombres jusqu'à la
+géométrie d'expériences réelles.
 
 244
-00:16:26,720 --> 00:16:30,801
-Here is the caricature:
-three dials, linked by springs.
+00:16:36,053 --> 00:16:39,652
+En toute honnêteté : cette étude
+indépendante est prospective,
 
 245
-00:16:30,881 --> 00:16:34,810
-One is the dipole,
-the north-south part of the field.
+00:16:39,732 --> 00:16:42,262
+fondée sur de petites
+expériences menées sur
 
 246
-00:16:34,890 --> 00:16:37,836
-One is the quadrupole, a four-pole part.
+00:16:42,342 --> 00:16:45,704
+un simple ordinateur, et elle
+n'est validée ni par MilaDy,
 
 247
-00:16:37,916 --> 00:16:41,955
-The third is a flow pattern,
-driven by a knob, Gamma.
+00:16:45,784 --> 00:16:48,843
+ni par ses partenaires,
+ni par les encadrants.
 
 248
-00:16:42,825 --> 00:16:46,537
-Three short equations, from
-Gissinger, tie them together.
+00:16:50,470 --> 00:16:55,770
+Une équation, des fenêtres,
+un tableau de bord, une poignée de points.
 
 249
-00:16:46,617 --> 00:16:50,195
-Flip both field dials,
-and the equations read the same.
+00:16:56,210 --> 00:16:59,765
+Les simulations complètes coûtent
+trop cher : nous commençons
 
 250
-00:16:50,275 --> 00:16:54,362
-Three dials, three numbers:
-the bottom step of the staircase.
+00:16:59,845 --> 00:17:03,870
+donc par une caricature à trois
+cadrans, qui se renverse déjà.
 
 251
-00:16:55,520 --> 00:16:59,278
-Use two dials as a map:
-quadrupole across, dipole up.
+00:17:04,390 --> 00:17:07,350
+Qui peut dire quand aura lieu
+son prochain renversement ?
 
 252
-00:16:59,358 --> 00:17:03,985
-With the knob low, the state
-circles in one whirlpool, and stays.
+00:17:08,703 --> 00:17:11,723
+Avec seulement une poignée de
+simulations, faut-il espacer
 
 253
-00:17:04,065 --> 00:17:08,040
-A mirror twin circles the
-mirror whirlpool: dipole down.
+00:17:11,803 --> 00:17:15,713
+régulièrement les réglages, ou les
+resserrer près de chaque seuil ?
 
 254
-00:17:08,120 --> 00:17:11,988
-Each start is trapped.
-The dipole never changes sign.
+00:17:20,937 --> 00:17:25,467
+Voici la caricature : trois cadrans,
+reliés par des ressorts.
 
 255
-00:17:12,858 --> 00:17:14,076
-Now turn Gamma up.
+00:17:25,767 --> 00:17:29,067
+L'un est le dipôle,
+la partie nord-sud du champ.
 
 256
-00:17:14,156 --> 00:17:19,772
-Just above zero point eight six, the
-whirlpools touch: a narrow corridor opens.
+00:17:29,387 --> 00:17:33,117
+Un autre est le quadrupôle,
+une partie à quatre pôles.
 
 257
-00:17:19,852 --> 00:17:24,675
-The state lingers on one side,
-then slips through. The dipole flips.
+00:17:33,397 --> 00:17:37,937
+Le troisième est un motif d'écoulement,
+piloté par un bouton, Gamma.
 
 258
-00:17:24,755 --> 00:17:29,327
-Nothing here is random. So,
-will the flips come like clockwork?
+00:17:38,677 --> 00:17:42,907
+Trois courtes équations, dues à
+Gissinger, les lient entre eux.
 
 259
-00:17:32,697 --> 00:17:35,389
-No. Long waits and
-short ones, irregularly.
+00:17:43,447 --> 00:17:47,637
+Inversez les deux cadrans du champ :
+les équations restent les mêmes.
 
 260
-00:17:35,469 --> 00:17:39,302
-The dipole's sign prints uneven
-stripes, like the seafloor.
+00:17:48,187 --> 00:17:52,667
+Trois cadrans, trois nombres :
+la première marche de l'escalier.
 
 261
-00:17:40,487 --> 00:17:44,634
-Now count: one tick each
-time the dipole crosses zero.
+00:17:53,703 --> 00:17:55,924
+Faites de deux cadrans une carte :
 
 262
-00:17:44,714 --> 00:17:50,270
-Not every tick is a flip: an excursion
-can cross and come straight back.
+00:17:56,004 --> 00:18:00,123
+le quadrupôle à l'horizontale,
+le dipôle à la verticale.
 
 263
-00:17:50,350 --> 00:17:53,668
-Ticks per unit of time: the crossing rate.
+00:18:00,593 --> 00:18:05,663
+Bouton baissé, l'état tourne dans
+un seul tourbillon, et y reste.
 
 264
-00:17:54,538 --> 00:17:57,202
-Up to zero point eight six: silence.
+00:18:06,163 --> 00:18:11,303
+Un jumeau en miroir tourne dans le
+tourbillon miroir : dipôle vers le bas.
 
 265
-00:17:57,282 --> 00:18:01,166
-Just above, about two ticks
-per thousand time units.
+00:18:11,803 --> 00:18:17,803
+D'où qu'il parte, l'état reste piégé.
+Le dipôle ne change jamais de signe.
 
 266
-00:18:01,246 --> 00:18:04,020
-At Gamma equal to one, about eleven.
+00:18:18,563 --> 00:18:20,393
+Augmentez maintenant Gamma.
 
 267
-00:18:05,187 --> 00:18:10,946
-Set Gamma at zero point nine, and
-launch two copies, one millionth apart.
+00:18:20,683 --> 00:18:23,181
+Juste au-dessus de zéro virgule huit six,
 
 268
-00:18:11,026 --> 00:18:17,026
-We know the state to six decimals.
-Can we predict the date of the next flip?
+00:18:23,261 --> 00:18:27,113
+les tourbillons se touchent :
+un couloir étroit s'ouvre.
 
 269
-00:18:21,005 --> 00:18:23,279
-At first, the copies move as one.
+00:18:27,323 --> 00:18:29,076
+L'état s'attarde d'un côté,
 
 270
-00:18:23,359 --> 00:18:27,061
-But their gap nearly triples
-every eleven time units.
+00:18:29,156 --> 00:18:33,153
+puis se faufile par le couloir.
+Le dipôle se renverse.
 
 271
-00:18:27,141 --> 00:18:31,309
-After about a hundred and fifty,
-they disagree completely.
+00:18:33,353 --> 00:18:35,219
+Rien n'est aléatoire ici. Alors,
 
 272
-00:18:32,179 --> 00:18:36,246
-The average wait between crossings
-is longer: over two hundred.
+00:18:35,299 --> 00:18:38,973
+les renversements seront-ils
+réglés comme une horloge ?
 
 273
-00:18:36,326 --> 00:18:40,394
-Each extra decimal buys only
-about twenty-five more time units.
+00:18:42,213 --> 00:18:46,583
+Non. Des attentes longues,
+d'autres courtes, sans régularité.
 
 274
-00:18:40,474 --> 00:18:45,770
-So the forecast fades before the average
-wait ends. Only the statistics survive.
+00:18:46,883 --> 00:18:51,483
+Le signe du dipôle imprime des bandes
+inégales, comme celles des fonds marins.
 
 275
-00:18:46,953 --> 00:18:50,376
-The path is lost,
-so leave the shutter open.
+00:18:52,537 --> 00:18:56,877
+Comptez maintenant : un clic chaque
+fois que le dipôle passe par zéro.
 
 276
-00:18:50,456 --> 00:18:54,117
-Each pass leaves a little
-light: a glow builds.
+00:18:57,347 --> 00:18:59,777
+Tous les clics ne sont
+pas des renversements :
 
 277
-00:18:54,197 --> 00:18:59,133
-A copy started on the other side
-first paints the mirror image.
+00:18:59,857 --> 00:19:03,187
+une excursion peut passer
+par zéro et revenir aussitôt.
 
 278
-00:18:59,213 --> 00:19:02,188
-Given time, both paint the same glow.
+00:19:03,507 --> 00:19:07,837
+Le nombre de clics par unité de temps,
+c'est la fréquence des passages.
 
 279
-00:19:03,058 --> 00:19:07,464
-Where does the dipole spend its
-time? Two humps, the same for both.
+00:19:08,577 --> 00:19:12,197
+Jusqu'à zéro virgule
+huit six : le silence.
 
 280
-00:19:07,544 --> 00:19:11,080
-This reproducible glow is
-the stationary distribution.
+00:19:12,967 --> 00:19:16,947
+Juste au-dessus, environ deux
+clics pour mille unités de temps.
 
 281
-00:19:11,160 --> 00:19:15,006
-Below the threshold, each
-start paints its own whirlpool.
+00:19:17,447 --> 00:19:20,767
+À Gamma égal à un, environ onze.
 
 282
-00:19:16,187 --> 00:19:20,235
-Now film the trajectory,
-one frame every two time units.
+00:19:21,803 --> 00:19:23,938
+Réglez Gamma à zéro virgule neuf,
 
 283
-00:19:20,315 --> 00:19:22,520
-Neighbouring frames look alike.
+00:19:24,018 --> 00:19:27,703
+et lancez deux copies,
+distantes d'un millionième.
 
 284
-00:19:22,600 --> 00:19:24,363
-Cut the film into frames.
+00:19:28,093 --> 00:19:30,881
+On connaît l'état à six
+décimales près. Peut-on
 
 285
-00:19:24,443 --> 00:19:28,860
-Drop them in a shoebox, shake,
-and throw away the timestamps.
+00:19:30,961 --> 00:19:33,853
+prédire la date du prochain renversement ?
 
 286
-00:19:28,940 --> 00:19:32,655
-Pour the box out:
-the frames redraw the same glow.
+00:19:37,593 --> 00:19:40,673
+Au début, les deux copies
+avancent d'un même pas.
 
 287
-00:19:33,525 --> 00:19:37,464
-Each frame is a snapshot:
-three dial readings, nothing more.
+00:19:41,013 --> 00:19:44,653
+Mais leur écart triple presque
+toutes les onze unités de temps.
 
 288
-00:19:37,544 --> 00:19:40,278
-It carries no timestamp and no time order.
+00:19:45,023 --> 00:19:48,843
+Au bout d'environ cent cinquante,
+elles n'ont plus rien en commun.
 
 289
-00:19:40,358 --> 00:19:44,297
-Yet the shoebox, plus the equations,
-answers many questions.
+00:19:49,583 --> 00:19:54,543
+L'attente moyenne entre deux passages par
+zéro est plus longue : plus de deux cents.
 
 290
-00:19:44,377 --> 00:19:48,761
-Averages, energy budgets, even
-how often the dipole crosses zero.
+00:19:55,213 --> 00:19:59,413
+Chaque décimale de plus ne fait gagner
+qu'environ vingt-cinq unités de temps.
 
 291
-00:19:49,920 --> 00:19:53,999
-Pick one photo. Its three
-dial readings give its energy.
+00:20:00,013 --> 00:20:03,173
+La prévision s'efface donc
+avant la fin de l'attente
 
 292
-00:19:54,079 --> 00:19:59,198
-From that photo alone, the equations
-tell how fast its energy changes.
+00:20:03,253 --> 00:20:06,263
+moyenne. Seules les
+statistiques survivent.
 
 293
-00:19:59,278 --> 00:20:02,279
-Drop one marble per photo at that value.
+00:20:07,303 --> 00:20:11,293
+La trajectoire nous échappe :
+laissez donc l'obturateur ouvert.
 
 294
-00:20:03,149 --> 00:20:08,315
-Some photos are gaining energy,
-others losing it. The pile spreads wide.
+00:20:11,633 --> 00:20:15,563
+Chaque tour laisse un peu de
+lumière : un halo se forme.
 
 295
-00:20:08,395 --> 00:20:10,428
-Yet its average sits at zero.
+00:20:15,873 --> 00:20:20,433
+Une copie lancée de l'autre côté
+dessine d'abord l'image en miroir.
 
 296
-00:20:10,508 --> 00:20:13,453
-Energy in equals energy out, on average.
+00:20:20,673 --> 00:20:23,893
+Avec le temps, les deux
+dessinent le même halo.
 
 297
-00:20:14,323 --> 00:20:17,059
-Like a bank account: over the years,
+00:20:24,633 --> 00:20:29,773
+Où le dipôle passe-t-il son temps ?
+Deux bosses, les mêmes pour les deux.
 
 298
-00:20:17,139 --> 00:20:21,504
-income matches spending,
-yet each day gains or loses.
+00:20:30,263 --> 00:20:33,863
+Ce halo reproductible,
+c'est la loi stationnaire.
 
 299
-00:20:21,584 --> 00:20:27,503
-This is a law of the crowd. It holds
-for the shoebox, not for each photo.
+00:20:34,253 --> 00:20:38,423
+Sous le seuil, chaque départ
+dessine son propre tourbillon.
 
 300
-00:20:28,787 --> 00:20:32,431
-How many independent snapshots
-does each setting need,
+00:20:39,470 --> 00:20:43,980
+Filmez maintenant la trajectoire,
+une image toutes les deux unités de temps.
 
 301
-00:20:32,511 --> 00:20:35,392
-and how far apart must they be saved?
+00:20:44,470 --> 00:20:46,650
+Deux images voisines se ressemblent.
 
 302
-00:20:40,753 --> 00:20:44,515
-A puzzle. How many cars
-cross this line each hour?
+00:20:46,900 --> 00:20:48,690
+Découpez le film en images.
 
 303
-00:20:44,595 --> 00:20:50,235
-No clock. Just one photo from above,
-where every speedometer can be read.
+00:20:48,960 --> 00:20:53,880
+Mettez-les dans une boîte à chaussures,
+secouez, et jetez les horodatages.
 
 304
-00:20:51,105 --> 00:20:56,067
-Can one photo, with no time
-in it, give you a rate?
+00:20:54,270 --> 00:20:58,250
+Videz la boîte : les images
+redessinent le même halo.
 
 305
-00:20:59,437 --> 00:21:02,721
-It can. Draw a thin strip around the line.
+00:20:58,990 --> 00:21:04,240
+Chaque image est un instantané : les
+valeurs des trois cadrans, rien de plus.
 
 306
-00:21:02,801 --> 00:21:08,801
-A fast car spends little time inside,
-so catching one there counts for more.
+00:21:04,440 --> 00:21:07,980
+Il ne porte ni horodatage,
+ni ordre temporel.
 
 307
-00:21:09,789 --> 00:21:15,510
-Add up the speeds of the cars inside,
-and divide by the strip's width.
+00:21:08,380 --> 00:21:13,310
+Pourtant, avec les équations, la boîte à
+chaussures répond à bien des questions.
 
 308
-00:21:15,590 --> 00:21:19,682
-On average, that is how
-many cars cross per hour.
+00:21:13,500 --> 00:21:15,611
+Des moyennes, des bilans d'énergie,
 
 309
-00:21:20,853 --> 00:21:26,190
-Back to the shoebox. Spread its
-photos out by their dipole reading.
+00:21:15,691 --> 00:21:19,340
+et même la fréquence des
+passages du dipôle par zéro.
 
 310
-00:21:26,270 --> 00:21:30,746
-The line to cross is zero:
-draw a thin strip around it.
+00:21:20,370 --> 00:21:24,940
+Choisissez une photo. Les valeurs de
+ses trois cadrans donnent son énergie.
 
 311
-00:21:31,616 --> 00:21:34,172
-Each photo also needs a speedometer.
+00:21:25,320 --> 00:21:26,970
+À partir de cette seule photo,
 
 312
-00:21:34,252 --> 00:21:37,425
-No clock required:
-the dipole's equation turns
+00:21:27,050 --> 00:21:30,610
+les équations disent à quelle
+vitesse son énergie varie.
 
 313
-00:21:37,505 --> 00:21:40,908
-the photo's three dial
-readings into a speed.
+00:21:31,020 --> 00:21:34,370
+Pour chaque photo, lâchez
+une bille à cette valeur.
 
 314
-00:21:40,988 --> 00:21:44,386
-Up or down, both count,
-so keep only its size.
+00:21:35,110 --> 00:21:37,559
+Certaines photos gagnent de l'énergie,
 
 315
-00:21:45,256 --> 00:21:47,492
-Add the speeds inside the strip,
+00:21:37,639 --> 00:21:41,030
+d'autres en perdent.
+Le tas s'étale largement.
 
 316
-00:21:47,572 --> 00:21:52,061
-then divide by its width and
-by the total number of photos.
+00:21:41,410 --> 00:21:43,790
+Pourtant, sa moyenne est à zéro.
 
 317
-00:21:52,141 --> 00:21:54,157
-Out comes the crossing rate.
+00:21:44,240 --> 00:21:47,510
+Autant d'énergie entre
+qu'il en sort, en moyenne.
 
 318
-00:21:54,237 --> 00:21:57,706
-Shrink the strip to nothing,
-and for well-behaved
+00:21:48,250 --> 00:21:52,132
+Comme un compte en banque :
+au fil des ans, revenus et dépenses
 
 319
-00:21:57,786 --> 00:22:01,192
-systems the recipe is
-exact: Rice's formula.
+00:21:52,212 --> 00:21:56,190
+s'équilibrent, mais chaque jour,
+le solde monte ou baisse.
 
 320
-00:22:01,272 --> 00:22:04,732
-The catch: few photos land
-in a thin strip. Here,
+00:21:56,420 --> 00:21:58,121
+C'est une loi de la foule. Elle
 
 321
-00:22:04,812 --> 00:22:07,888
-about two dozen out of eight thousand.
+00:21:58,201 --> 00:22:01,690
+vaut pour la boîte à chaussures,
+pas pour chaque photo.
 
 322
-00:22:09,053 --> 00:22:10,982
-Now test it against the truth.
+00:22:02,837 --> 00:22:06,427
+Combien d'instantanés indépendants
+faut-il pour chaque réglage,
 
 323
-00:22:11,062 --> 00:22:12,970
-At forty-one settings of Gamma,
+00:22:06,507 --> 00:22:09,517
+et à quel intervalle
+faut-il les enregistrer ?
 
 324
-00:22:13,050 --> 00:22:16,606
-long simulations count the
-crossings as they happen.
+00:22:14,770 --> 00:22:19,360
+Une énigme. Combien de voitures
+franchissent cette ligne chaque heure ?
 
 325
-00:22:16,686 --> 00:22:21,001
-Rice gets only the true snapshots,
-shuffled, plus the equations.
+00:22:19,880 --> 00:22:22,526
+Pas d'horloge. Rien qu'une
+photo prise d'en haut,
 
 326
-00:22:21,871 --> 00:22:24,006
-The two curves almost coincide.
+00:22:22,606 --> 00:22:25,440
+où l'on peut lire chaque
+compteur de vitesse.
 
 327
-00:22:24,086 --> 00:22:26,961
-Shade the gap,
-and divide by the area under
+00:22:26,180 --> 00:22:28,893
+Une seule photo, sans
+aucune notion de temps,
 
 328
-00:22:27,041 --> 00:22:30,010
-the counted curve: the cumulative error.
+00:22:28,973 --> 00:22:31,600
+peut-elle vous donner une fréquence ?
 
 329
-00:22:30,090 --> 00:22:33,869
-Four percent near the threshold,
-six percent above it.
+00:22:34,840 --> 00:22:38,260
+Oui. Tracez une fine
+bande autour de la ligne.
 
 330
-00:22:33,949 --> 00:22:36,618
-A good sign, on three chaotic dials that
+00:22:38,640 --> 00:22:41,683
+Une voiture rapide reste
+peu de temps dans la bande :
 
 331
-00:22:36,698 --> 00:22:39,983
-are not even guaranteed
-to be well-behaved.
+00:22:41,763 --> 00:22:44,450
+en surprendre une compte donc davantage.
 
 332
-00:22:41,553 --> 00:22:44,964
-One caution: Rice counts
-crossings, not reversals.
+00:22:45,190 --> 00:22:49,650
+Additionnez les vitesses des voitures dans
+la bande, puis divisez par sa largeur.
 
 333
-00:22:45,044 --> 00:22:49,852
-An excursion across zero and back
-adds two crossings, but no reversal.
+00:22:50,060 --> 00:22:52,296
+En moyenne, cela donne
+le nombre de voitures
 
 334
-00:22:49,932 --> 00:22:52,604
-To isolate reversals, the PhD plan counts
+00:22:52,376 --> 00:22:54,600
+qui franchissent la ligne par heure.
 
 335
-00:22:52,684 --> 00:22:55,967
-crossings of a far level,
-on the other side.
+00:22:55,637 --> 00:23:00,737
+Retour à la boîte à chaussures. Étalez
+ses photos selon la valeur de leur dipôle.
 
 336
-00:22:57,353 --> 00:23:00,628
-So Rice needs only
-snapshots and the equations,
+00:23:01,167 --> 00:23:05,707
+La ligne à franchir, c'est zéro :
+tracez une fine bande autour.
 
 337
-00:23:00,708 --> 00:23:03,783
-but plenty of snapshots, and cheap ones.
+00:23:06,447 --> 00:23:09,517
+Chaque photo a aussi besoin
+d'un compteur de vitesse.
 
 338
-00:23:03,863 --> 00:23:08,369
-Yet real dynamo simulations exist
-at only a few knob settings.
+00:23:09,917 --> 00:23:12,822
+Pas besoin d'horloge :
+l'équation du dipôle calcule
 
 339
-00:23:08,449 --> 00:23:11,698
-Between the dots,
-there is no shoebox at all.
+00:23:12,902 --> 00:23:16,217
+une vitesse à partir des
+trois cadrans de la photo.
 
 340
-00:23:11,778 --> 00:23:15,876
-How do you get snapshots at
-a setting nobody simulated?
+00:23:16,517 --> 00:23:20,907
+Montée ou descente, les deux
+comptent : oubliez le signe.
 
 341
-00:23:17,553 --> 00:23:20,201
-For VKS, which dipole should Rice count,
+00:23:21,647 --> 00:23:23,634
+Additionnez les vitesses dans la bande,
 
 342
-00:23:20,281 --> 00:23:24,158
-and what threshold turns a
-crossing into a reversal?
+00:23:23,714 --> 00:23:27,277
+puis divisez par sa largeur et
+par le nombre total de photos.
 
 343
-00:23:29,520 --> 00:23:34,342
-New snapshots start as pure noise:
-a round cloud of random points.
+00:23:27,597 --> 00:23:30,177
+On obtient la fréquence
+des passages par zéro.
 
 344
-00:23:34,422 --> 00:23:38,445
-Over it, the crowd we want:
-one point per snapshot. Here,
+00:23:30,537 --> 00:23:35,474
+Rendez la bande infiniment fine et,
+pour les systèmes qui se comportent bien,
 
 345
-00:23:38,525 --> 00:23:41,879
-two mirror blobs, like the two whirlpools.
+00:23:35,554 --> 00:23:39,077
+la recette est exacte :
+c'est la formule de Rice.
 
 346
-00:23:42,749 --> 00:23:45,694
-Now let a wind blow through the cloud.
+00:23:39,307 --> 00:23:43,070
+Le hic : peu de photos tombent
+dans une bande fine. Ici,
 
 347
-00:23:45,774 --> 00:23:50,870
-Each point drifts, bends,
-and lands inside the shape of the data.
+00:23:43,150 --> 00:23:46,087
+environ deux douzaines sur huit mille.
 
 348
-00:23:50,950 --> 00:23:55,518
-Fresh noise in, fresh snapshots
-out, as many as you like.
+00:23:47,137 --> 00:23:49,617
+Confrontez maintenant
+la formule à la vérité.
 
 349
-00:23:56,388 --> 00:24:01,145
-That wind is a generative model:
-new, plausible examples, on demand.
+00:23:50,077 --> 00:23:53,015
+Pour quarante et un réglages de
+Gamma, de longues simulations
 
 350
-00:24:01,225 --> 00:24:03,816
-The whole game is learning the wind.
+00:23:53,095 --> 00:23:55,997
+comptent les passages à
+mesure qu'ils se produisent.
 
 351
-00:24:04,987 --> 00:24:07,420
-One warning before the formulas.
+00:23:56,447 --> 00:23:59,140
+La formule de Rice, elle, n'a droit qu'aux
 
 352
-00:24:07,500 --> 00:24:12,053
-The wind runs on its own
-transport clock, from zero to one.
+00:23:59,220 --> 00:24:02,587
+vrais instantanés,
+mélangés, et aux équations.
 
 353
-00:24:12,133 --> 00:24:17,346
-Not physical time: at the end,
-you hold one snapshot, not a movie.
+00:24:03,327 --> 00:24:05,667
+Les deux courbes se superposent presque.
 
 354
-00:24:18,216 --> 00:24:23,999
-And the wind's arrows move snapshots, not
-fluid: they are not the fluid's velocity.
+00:24:06,047 --> 00:24:08,897
+Colorez l'écart, puis
+divisez son aire par l'aire
 
 355
-00:24:25,153 --> 00:24:28,306
-How is the wind learned?
-With a simple trick.
+00:24:08,977 --> 00:24:12,417
+sous la courbe du comptage :
+c'est l'erreur cumulée.
 
 356
-00:24:28,386 --> 00:24:34,052
-Keep one coordinate of each point, and
-lay the transport clock out to the right.
+00:24:12,877 --> 00:24:17,417
+Près du seuil, quatre pour cent ;
+au-dessus, six pour cent.
 
 357
-00:24:34,132 --> 00:24:37,153
-Pair each noise point
-with a random snapshot;
+00:24:17,707 --> 00:24:20,311
+C'est bon signe, d'autant
+que rien ne garantit que
 
 358
-00:24:37,233 --> 00:24:39,727
-join them with a straight string.
+00:24:20,391 --> 00:24:23,297
+ces trois cadrans chaotiques
+se comportent bien.
 
 359
-00:24:39,807 --> 00:24:42,854
-Thousands of strings, crossing everywhere.
+00:24:24,737 --> 00:24:29,527
+Attention : la formule de Rice compte
+les passages, pas les renversements.
 
 360
-00:24:43,724 --> 00:24:45,554
-Pick one place, at one moment.
+00:24:30,077 --> 00:24:32,896
+Une excursion qui
+franchit zéro puis revient
 
 361
-00:24:45,634 --> 00:24:48,990
-Several strings pass through,
-pointing different ways.
+00:24:32,976 --> 00:24:36,337
+ajoute deux passages,
+mais aucun renversement.
 
 362
-00:24:49,070 --> 00:24:52,809
-The network learns one arrow
-there: their average direction.
+00:24:36,877 --> 00:24:40,206
+Pour isoler les renversements,
+le projet de thèse compte les
 
 363
-00:24:52,889 --> 00:24:55,542
-That is the whole training:
-plain regression,
+00:24:40,286 --> 00:24:43,797
+passages par un niveau éloigné,
+de l'autre côté de zéro.
 
 364
-00:24:55,622 --> 00:24:58,138
-like fitting a curve through points.
+00:24:45,037 --> 00:24:49,171
+La formule de Rice ne demande donc
+que des instantanés et les équations,
 
 365
-00:24:59,008 --> 00:25:01,917
-Follow the averaged wind, not the strings.
+00:24:49,251 --> 00:24:52,157
+mais des instantanés
+nombreux et bon marché.
 
 366
-00:25:01,997 --> 00:25:06,330
-The paths bend, and drawn against
-the clock, they never cross.
+00:24:52,657 --> 00:24:54,817
+Pourtant, les simulations
+de vraies dynamos
 
 367
-00:25:06,410 --> 00:25:11,778
-Learn the average exactly, and the
-noise lands exactly on the data's crowd.
+00:24:54,897 --> 00:24:57,207
+n'existent que pour quelques réglages.
 
 368
-00:25:12,953 --> 00:25:14,758
-Now give the wind a knob.
+00:24:57,707 --> 00:25:00,917
+Entre les points, pas la
+moindre boîte à chaussures.
 
 369
-00:25:14,838 --> 00:25:19,056
-Turn it: the target changes
-shape, and the cloud follows.
+00:25:01,077 --> 00:25:05,167
+Comment obtenir des instantanés pour
+un réglage que personne n'a simulé ?
 
 370
-00:25:19,136 --> 00:25:21,202
-One network, every setting.
+00:25:06,703 --> 00:25:10,383
+Pour VKS, quel dipôle la formule
+de Rice doit-elle suivre,
 
 371
-00:25:22,072 --> 00:25:26,614
-On the three dials, a real network
-trained at the filled dots.
+00:25:10,463 --> 00:25:14,553
+et quel seuil fait d'un passage
+par zéro un renversement ?
 
 372
-00:25:26,694 --> 00:25:30,714
-It was tested at the open dots,
-never seen in training.
+00:25:19,803 --> 00:25:23,801
+Au départ, les nouveaux instantanés
+ne sont que du bruit pur :
 
 373
-00:25:30,794 --> 00:25:35,261
-In between, no theorem promises
-success: only tests can tell.
+00:25:23,881 --> 00:25:26,513
+un nuage rond de points aléatoires.
 
 374
-00:25:35,341 --> 00:25:38,130
-Beyond the range, nothing was tested.
+00:25:26,883 --> 00:25:32,505
+Par-dessus, la foule que l'on veut
+obtenir : un point par instantané. Ici,
 
 375
-00:25:39,000 --> 00:25:44,372
-At an open dot, the network's snapshots
-join the shoebox, beside simulated ones.
+00:25:32,585 --> 00:25:36,613
+deux amas en miroir,
+comme les deux tourbillons.
 
 376
-00:25:45,553 --> 00:25:49,966
-A generated snapshot has no
-true twin, so we compare crowds.
+00:25:37,353 --> 00:25:40,483
+Faites maintenant souffler
+un vent à travers le nuage.
 
 377
-00:25:50,046 --> 00:25:52,737
-Picture each crowd as a pile of sand.
+00:25:40,793 --> 00:25:46,243
+Chaque point dérive, prend un virage, et
+vient se poser dans la forme des données.
 
 378
-00:25:52,817 --> 00:25:57,455
-A distribution distance scores
-how different the two piles are.
+00:25:46,683 --> 00:25:48,237
+Nouveau bruit à l'entrée,
 
 379
-00:25:57,535 --> 00:26:02,432
-The earth-mover kind counts how
-much sand must move, and how far.
+00:25:48,317 --> 00:25:52,373
+nouveaux instantanés à la sortie,
+autant que vous voulez.
 
 380
-00:26:03,302 --> 00:26:07,853
-A perfect model, scored against
-the data: will it get zero?
+00:25:53,113 --> 00:25:55,293
+Ce vent, c'est un modèle génératif :
 
 381
-00:26:11,223 --> 00:26:15,596
-No. Roll a fair die a thousand
-times, then a thousand more.
+00:25:55,373 --> 00:25:58,843
+des exemples nouveaux et
+plausibles, à la demande.
 
 382
-00:26:15,676 --> 00:26:19,521
-Same die, same truth,
-yet the two histograms differ.
+00:25:59,393 --> 00:26:01,833
+Tout l'enjeu, c'est d'apprendre ce vent.
 
 383
-00:26:19,601 --> 00:26:24,277
-That gap is the noise floor,
-about what a perfect model scores.
+00:26:02,870 --> 00:26:05,280
+Une mise en garde, avant les formules.
 
 384
-00:26:24,357 --> 00:26:29,746
-Judge every model against it,
-at equal sample size, never against zero.
+00:26:05,790 --> 00:26:10,020
+Le vent suit sa propre horloge
+de transport, de zéro à un.
 
 385
-00:26:30,616 --> 00:26:33,703
-One catch: the samples
-must be independent.
+00:26:10,350 --> 00:26:15,990
+Ce n'est pas le temps physique : à la fin,
+vous obtenez un instantané, pas un film.
 
 386
-00:26:33,783 --> 00:26:38,454
-Overlap them, and the floor drops
-too low, as the report warns.
+00:26:16,730 --> 00:26:19,555
+Et les flèches du vent
+déplacent des instantanés,
 
 387
-00:26:39,720 --> 00:26:42,916
-Which statistics must the
-generated fields match,
+00:26:19,635 --> 00:26:23,700
+pas du fluide : elles ne représentent
+pas la vitesse du fluide.
 
 388
-00:26:42,996 --> 00:26:46,736
-and how close to the noise
-floor counts as success?
+00:26:24,737 --> 00:26:28,717
+Comment apprend-on ce vent ?
+Grâce à une astuce toute simple.
 
 389
-00:26:51,920 --> 00:26:55,031
-Physics hands the machine
-two kinds of laws.
+00:26:29,047 --> 00:26:31,424
+Gardez une seule
+coordonnée de chaque point,
 
 390
-00:26:55,111 --> 00:26:57,642
-Some hold for every single snapshot.
+00:26:31,504 --> 00:26:34,627
+et déroulez l'horloge de
+transport vers la droite.
 
 391
-00:26:57,722 --> 00:26:59,890
-Others hold only for the crowd.
+00:26:35,247 --> 00:26:39,062
+Associez chaque point de bruit
+à un instantané pris au hasard,
 
 392
-00:26:59,970 --> 00:27:01,813
-Two shelves, still empty.
+00:26:39,142 --> 00:26:41,797
+et reliez-les par une ficelle tendue.
 
 393
-00:27:02,683 --> 00:27:07,064
-Back to the three dials, at a
-Gamma never seen in training.
+00:26:42,057 --> 00:26:45,367
+Des milliers de ficelles,
+qui se croisent partout.
 
 394
-00:27:07,144 --> 00:27:08,652
-Grey: true snapshots.
+00:26:46,107 --> 00:26:49,017
+Choisissez un endroit, à un moment précis.
 
 395
-00:27:08,732 --> 00:27:10,618
-Violet: a plain generator.
+00:26:49,457 --> 00:26:53,047
+Plusieurs ficelles y passent,
+dans des directions différentes.
 
 396
-00:27:10,698 --> 00:27:12,165
-The shape is right.
+00:26:53,587 --> 00:26:58,127
+Le réseau y apprend une seule
+flèche : leur direction moyenne.
 
 397
-00:27:13,035 --> 00:27:14,499
-Now weigh the sides.
+00:26:58,687 --> 00:27:02,242
+L'entraînement se résume à
+cela : une simple régression,
 
 398
-00:27:14,579 --> 00:27:17,740
-The truth is balanced; the machine is not.
+00:27:02,322 --> 00:27:05,637
+comme quand on ajuste
+une courbe à des points.
 
 399
-00:27:17,820 --> 00:27:21,522
-Only about four in ten of
-its snapshots point up.
+00:27:06,377 --> 00:27:08,977
+Suivez le vent moyen, pas les ficelles.
 
 400
-00:27:21,602 --> 00:27:24,520
-It copied its data: below the threshold,
+00:27:09,347 --> 00:27:11,112
+Les trajectoires se courbent et,
 
 401
-00:27:24,600 --> 00:27:29,503
-each run stays in one whirlpool,
-and the runs split unevenly.
+00:27:11,192 --> 00:27:15,097
+tracées en fonction de l'horloge,
+elles ne se croisent jamais.
 
 402
-00:27:30,687 --> 00:27:32,544
-Two ways to teach the mirror.
+00:27:15,757 --> 00:27:18,596
+Apprenez exactement la
+moyenne, et le bruit vient
 
 403
-00:27:32,624 --> 00:27:34,915
-The first student, data augmentation,
+00:27:18,676 --> 00:27:21,687
+se poser exactement sur
+la foule des données.
 
 404
-00:27:34,995 --> 00:27:38,420
-sees each training snapshot
-flipped half the time.
+00:27:22,737 --> 00:27:24,787
+Donnez maintenant un bouton au vent.
 
 405
-00:27:38,500 --> 00:27:42,377
-The second, equivariance,
-has the mirror built into its wind:
+00:27:25,147 --> 00:27:29,297
+Tournez-le : la cible change
+de forme, et le nuage suit.
 
 406
-00:27:42,457 --> 00:27:46,744
-a mirrored noise point always
-lands on the mirrored snapshot.
+00:27:29,617 --> 00:27:32,377
+Un seul réseau, pour tous les réglages.
 
 407
-00:27:47,614 --> 00:27:51,343
-At a Gamma neither has seen,
-who stays balanced?
+00:27:33,117 --> 00:27:37,267
+Sur les trois cadrans, un vrai réseau
+a été entraîné aux points pleins.
 
 408
-00:27:55,213 --> 00:27:56,579
-The built-in mirror.
+00:27:37,497 --> 00:27:41,157
+Il a été testé aux points vides,
+jamais vus à l'entraînement.
 
 409
-00:27:56,659 --> 00:27:58,965
-The first student tilts a little.
+00:27:41,497 --> 00:27:44,922
+Entre les points, aucun
+théorème ne promet la réussite :
 
 410
-00:27:59,045 --> 00:28:03,447
-Yet in the mirror's crowd,
-each snapshot still points one way.
+00:27:45,002 --> 00:27:47,397
+seuls les tests peuvent trancher.
 
 411
-00:28:03,527 --> 00:28:06,990
-The mirror balances the
-crowd, not each snapshot.
+00:27:47,837 --> 00:27:50,967
+Au-delà de cette plage,
+rien n'a été testé.
 
 412
-00:28:07,070 --> 00:28:10,859
-Its card goes on the crowd
-shelf: built in, exactly.
+00:27:51,707 --> 00:27:54,933
+En un point vide,
+les instantanés du réseau rejoignent
 
 413
-00:28:12,020 --> 00:28:14,625
-Here is that tilt, setting by setting.
+00:27:55,013 --> 00:27:58,527
+la boîte à chaussures,
+à côté d'instantanés simulés.
 
 414
-00:28:14,705 --> 00:28:17,846
-Below the threshold,
-runs often split unevenly:
+00:27:59,570 --> 00:28:04,120
+Un instantané généré n'a pas de vrai
+jumeau : on compare donc des foules.
 
 415
-00:28:17,926 --> 00:28:22,257
-at zero point eight six, only
-five of sixteen runs point up.
+00:28:04,490 --> 00:28:07,160
+Imaginez chaque foule
+comme un tas de sable.
 
 416
-00:28:22,337 --> 00:28:27,666
-The plain machine copies the imbalance,
-and spills it onto unseen settings.
+00:28:07,500 --> 00:28:12,160
+Une distance entre distributions mesure
+à quel point les deux tas diffèrent.
 
 417
-00:28:28,536 --> 00:28:32,684
-Augmentation sits on the noise
-floor at its training settings.
+00:28:12,460 --> 00:28:15,281
+Par exemple, la distance
+du terrassier compte
 
 418
-00:28:32,764 --> 00:28:36,708
-Between them, it drifts:
-the network fills the gaps freely.
+00:28:15,361 --> 00:28:18,720
+combien de sable il faut
+déplacer, et jusqu'où.
 
 419
-00:28:36,788 --> 00:28:40,118
-The built-in mirror stays
-on the floor everywhere.
+00:28:19,460 --> 00:28:23,930
+Un modèle parfait, comparé aux
+données : obtiendra-t-il zéro ?
 
 420
-00:28:40,198 --> 00:28:44,183
-Flipped copies teach the mirror
-only where there are data.
+00:28:27,170 --> 00:28:32,570
+Non. Lancez un dé équilibré mille
+fois, puis encore mille fois.
 
 421
-00:28:45,353 --> 00:28:48,179
-Can the energy budget catch the tilt?
+00:28:33,020 --> 00:28:37,870
+Même dé, même vérité, et pourtant
+les deux histogrammes diffèrent.
 
 422
-00:28:48,259 --> 00:28:51,556
-No. Each whirlpool
-balances its own budget.
+00:28:38,300 --> 00:28:43,530
+Cet écart, c'est le plancher de bruit :
+à peu près le score d'un modèle parfait.
 
 423
-00:28:51,636 --> 00:28:55,169
-So a mix of the two passes,
-in any proportion.
+00:28:43,740 --> 00:28:46,319
+Jugez chaque modèle face à ce plancher,
 
 424
-00:28:55,249 --> 00:29:00,588
-On a check of crowd laws, the most
-lopsided machine even edges ahead.
+00:28:46,399 --> 00:28:50,070
+à taille d'échantillon égale,
+jamais face à zéro.
 
 425
-00:29:00,668 --> 00:29:03,054
-The mirror needs its own tool.
+00:28:50,810 --> 00:28:54,540
+Un hic, toutefois : les échantillons
+doivent être indépendants.
 
 426
-00:29:04,220 --> 00:29:06,617
-Remember the budget of the shoebox.
+00:28:54,870 --> 00:28:59,620
+S'ils se recouvrent, le plancher tombe
+trop bas, comme le signale le rapport.
 
 427
-00:29:06,697 --> 00:29:09,730
-Snapshot by snapshot,
-energy rises or falls.
+00:29:00,770 --> 00:29:03,900
+Quelles statistiques les champs
+générés doivent-ils reproduire,
 
 428
-00:29:09,810 --> 00:29:14,935
-Only the crowd balances, on average,
-like a bank account over the years.
+00:29:03,980 --> 00:29:07,570
+et à quelle distance du plancher
+de bruit parle-t-on de succès ?
 
 429
-00:29:15,805 --> 00:29:18,169
-Now, a tempting fix for the machine.
+00:29:12,603 --> 00:29:15,523
+La physique fournit à la
+machine deux sortes de lois.
 
 430
-00:29:18,249 --> 00:29:23,643
-Force every generated snapshot to balance
-its budget exactly. Better, or worse?
+00:29:15,783 --> 00:29:19,223
+Certaines valent pour chaque
+instantané, sans exception.
 
 431
-00:29:27,513 --> 00:29:28,013
-Worse.
+00:29:19,583 --> 00:29:21,753
+D'autres ne valent que pour la foule.
 
 432
-00:29:27,947 --> 00:29:31,438
-Push each snapshot until
-its energy stops changing:
+00:29:22,163 --> 00:29:24,473
+Deux étagères, encore vides.
 
 433
-00:29:31,518 --> 00:29:34,889
-the wide pile collapses
-into a spike at zero.
+00:29:25,213 --> 00:29:29,103
+Retour aux trois cadrans, à un
+Gamma jamais vu à l'entraînement.
 
 434
-00:29:34,969 --> 00:29:37,857
-A ledger where every single day balances.
+00:29:29,423 --> 00:29:31,733
+En gris, de vrais instantanés.
 
 435
-00:29:37,937 --> 00:29:40,283
-No real account looks like that.
+00:29:32,003 --> 00:29:34,543
+En violet, un générateur de base.
 
 436
-00:29:41,153 --> 00:29:45,206
-The distribution distance
-to the truth grows ninefold.
+00:29:34,773 --> 00:29:36,443
+La forme est la bonne.
 
 437
-00:29:45,286 --> 00:29:48,833
-A short proof says why:
-even a perfect generator,
+00:29:37,183 --> 00:29:38,913
+Pesez maintenant les deux côtés.
 
 438
-00:29:48,913 --> 00:29:52,094
-forced this way, cannot match the truth.
+00:29:39,463 --> 00:29:43,163
+La vérité est équilibrée ;
+la machine, non.
 
 439
-00:29:52,174 --> 00:29:55,002
-So the budget goes on the crowd shelf.
+00:29:43,583 --> 00:29:48,283
+Seuls quatre de ses instantanés sur
+dix, environ, pointent vers le haut.
 
 440
-00:29:55,082 --> 00:30:00,087
-On the next test bench, a cruder
-score is fooled by such a spike.
+00:29:48,533 --> 00:29:53,084
+Elle a recopié ses données : sous le
+seuil, chaque simulation reste dans un
 
 441
-00:30:01,253 --> 00:30:04,536
-Impose the budget on the
-crowd, during training.
+00:29:53,164 --> 00:29:58,063
+seul tourbillon, et les simulations
+ne se répartissent pas à parts égales.
 
 442
-00:30:04,616 --> 00:30:08,601
-Draw a batch of snapshots at
-any Gamma, even without data.
+00:29:59,103 --> 00:30:01,323
+Deux façons d'enseigner le miroir.
 
 443
-00:30:08,681 --> 00:30:12,407
-Average their energy change
-and square it: this penalty,
+00:30:01,563 --> 00:30:04,078
+Le premier élève,
+l'augmentation de données,
 
 444
-00:30:12,487 --> 00:30:16,488
-the crowd loss, vanishes
-only when the crowd balances.
+00:30:04,158 --> 00:30:08,263
+voit chaque instantané d'entraînement
+inversé une fois sur deux.
 
 445
-00:30:17,358 --> 00:30:18,643
-But there is a trap.
+00:30:08,663 --> 00:30:12,378
+Le second, l'équivariance,
+a le miroir intégré à son vent :
 
 446
-00:30:18,723 --> 00:30:22,117
-Even for a balanced crowd,
-a batch's average wobbles;
+00:30:12,458 --> 00:30:17,933
+le reflet d'un point de bruit atterrit
+toujours sur le reflet de son instantané.
 
 447
-00:30:22,197 --> 00:30:24,646
-its square grows with the scatter.
+00:30:18,673 --> 00:30:22,813
+À un Gamma qu'aucun des deux
+n'a vu, lequel reste équilibré ?
 
 448
-00:30:24,726 --> 00:30:27,144
-So training also squeezes the scatter,
+00:30:26,553 --> 00:30:28,083
+Le miroir intégré.
 
 449
-00:30:27,224 --> 00:30:31,126
-nudging every snapshot toward
-balance: toward the spike.
+00:30:28,763 --> 00:30:30,723
+Le premier élève penche un peu.
 
 450
-00:30:31,206 --> 00:30:34,238
-It showed up while
-building this experiment.
+00:30:31,153 --> 00:30:36,783
+Pourtant, dans la foule du miroir, chaque
+instantané pointe encore d'un seul côté.
 
 451
-00:30:35,108 --> 00:30:38,060
-The fix: split the batch
-into two independent
+00:30:37,323 --> 00:30:41,113
+Le miroir équilibre la foule,
+pas chaque instantané.
 
 452
-00:30:38,140 --> 00:30:40,719
-juries and multiply their averages.
+00:30:41,353 --> 00:30:46,003
+Sa carte va sur l'étagère de
+la foule : intégré, et exact.
 
 453
-00:30:40,799 --> 00:30:45,638
-On average, the scatter drops out,
-leaving only the crowd's imbalance.
+00:30:47,037 --> 00:30:50,767
+Voici ce déséquilibre,
+réglage par réglage.
 
 454
-00:30:45,718 --> 00:30:48,699
-Does it pay off? The next tests will tell.
+00:30:51,197 --> 00:30:55,530
+Sous le seuil, les simulations se
+répartissent souvent inégalement :
 
 455
-00:30:50,153 --> 00:30:53,260
-In three dimensions,
-which budgets should generated
+00:30:55,610 --> 00:31:00,417
+à zéro virgule huit six, seules cinq
+sur seize pointent vers le haut.
 
 456
-00:30:53,340 --> 00:30:57,169
-fields meet on average,
-and must their spread match too?
+00:31:00,897 --> 00:31:03,449
+La machine de base
+recopie ce déséquilibre,
 
 457
-00:31:02,553 --> 00:31:05,705
-New test bench: whole
-fields, not three dials.
+00:31:03,529 --> 00:31:06,797
+et le fait déborder sur
+des réglages jamais vus.
 
 458
-00:31:05,785 --> 00:31:09,992
-A flat square of conducting fluid,
-its edges wrapping around.
+00:31:07,537 --> 00:31:11,107
+L'augmentation reste au plancher de
+bruit à ses réglages d'entraînement.
 
 459
-00:31:10,072 --> 00:31:13,100
-In blue, the swirl of
-the flow; in vermillion,
+00:31:11,557 --> 00:31:16,417
+Entre ces réglages, elle dérive :
+le réseau comble les vides à sa guise.
 
 460
-00:31:13,180 --> 00:31:16,145
-the electric currents behind the field.
+00:31:16,987 --> 00:31:20,567
+Le miroir intégré, lui,
+reste partout au plancher.
 
 461
-00:31:17,015 --> 00:31:20,203
-One knob, eta: how fast the field smudges.
+00:31:21,037 --> 00:31:24,827
+Les copies inversées n'enseignent le
+miroir que là où il y a des données.
 
 462
-00:31:20,283 --> 00:31:23,393
-But a flat world cannot sustain a dynamo.
+00:31:25,870 --> 00:31:28,940
+Le bilan d'énergie peut-il
+détecter ce déséquilibre ?
 
 463
-00:31:23,473 --> 00:31:26,702
-Here a random forcing
-keeps the field alive:
+00:31:29,450 --> 00:31:34,090
+Non. Chaque tourbillon,
+à lui seul, équilibre son bilan.
 
 464
-00:31:26,782 --> 00:31:30,195
-a training ground for laws, not a dynamo.
+00:31:34,630 --> 00:31:38,550
+Un mélange des deux passe donc,
+dans n'importe quelle proportion.
 
 465
-00:31:31,353 --> 00:31:35,657
-Every training field passes the
-box test: it is divergence-free.
+00:31:39,080 --> 00:31:41,091
+Sur un contrôle de lois de la foule,
 
 466
-00:31:35,737 --> 00:31:37,958
-Train a plain generator on them.
+00:31:41,171 --> 00:31:45,450
+la machine la plus déséquilibrée
+devance même légèrement les autres.
 
 467
-00:31:38,828 --> 00:31:40,913
-Will its fields be divergence-free?
+00:31:45,630 --> 00:31:48,150
+Le miroir demande un outil à part.
 
 468
-00:31:44,783 --> 00:31:45,283
-No.
+00:31:49,203 --> 00:31:51,883
+Souvenez-vous du bilan
+de la boîte à chaussures.
 
 469
-00:31:45,010 --> 00:31:48,175
-Now lines appear and
-vanish inside the box.
+00:31:52,213 --> 00:31:56,253
+Instantané par instantané,
+l'énergie monte ou baisse.
 
 470
-00:31:48,255 --> 00:31:51,031
-Relative to the field's own variations,
+00:31:56,573 --> 00:32:01,633
+Seule la foule s'équilibre, en moyenne,
+comme un compte en banque sur des années.
 
 471
-00:31:51,111 --> 00:31:55,909
-the divergence is zero point
-four one: a defect of order one.
+00:32:02,373 --> 00:32:05,563
+Maintenant, une solution
+tentante pour la machine.
 
 472
-00:31:56,779 --> 00:32:00,508
-A soft penalty only lowers
-it to zero point three
+00:32:05,783 --> 00:32:09,239
+Forcez chaque instantané
+généré à équilibrer
 
 473
-00:32:00,588 --> 00:32:04,850
-four for the flow, zero
-point one six for the field.
+00:32:09,319 --> 00:32:12,703
+exactement son bilan. Mieux, ou pire ?
 
 474
-00:32:04,930 --> 00:32:10,044
-And the magnetic energy comes out
-two point seven times too high.
+00:32:16,443 --> 00:32:17,373
+Pire.
 
 475
-00:32:10,124 --> 00:32:14,069
-This law belongs on the
-shelf for every snapshot.
+00:32:17,453 --> 00:32:22,134
+Poussez chaque instantané jusqu'à
+ce que son énergie cesse de varier :
 
 476
-00:32:15,253 --> 00:32:18,079
-First fix: draw a hill map, not arrows,
+00:32:22,214 --> 00:32:25,673
+le tas, si large,
+s'effondre en un pic à zéro.
 
 477
-00:32:18,159 --> 00:32:21,733
-and let the flow run
-along its contour lines.
+00:32:25,963 --> 00:32:30,423
+Un livre de comptes où chaque jour,
+sans exception, est à l'équilibre.
 
 478
-00:32:21,813 --> 00:32:24,573
-Where the lines crowd, it runs faster,
+00:32:30,703 --> 00:32:33,183
+Aucun vrai compte ne ressemble à ça.
 
 479
-00:32:24,653 --> 00:32:28,833
-so nothing piles up or leaks,
-whatever the landscape.
+00:32:33,923 --> 00:32:37,523
+La distance à la vraie distribution
+est multipliée par neuf.
 
 480
-00:32:28,913 --> 00:32:31,721
-The box agrees: lines in, lines out.
+00:32:37,843 --> 00:32:42,039
+Une courte démonstration explique
+pourquoi : même un générateur parfait,
 
 481
-00:32:32,591 --> 00:32:36,952
-So the machine draws two hill maps,
-for the flow and the field:
+00:32:42,119 --> 00:32:45,953
+contraint de cette façon,
+ne peut pas reproduire la vérité.
 
 482
-00:32:37,032 --> 00:32:41,662
-zero divergence by construction,
-however badly it is trained.
+00:32:46,363 --> 00:32:48,883
+Le bilan va donc sur
+l'étagère de la foule.
 
 483
-00:32:42,532 --> 00:32:48,532
-Second fix, for any field: split it into
-swirl plus slope, and delete the slope.
+00:32:48,963 --> 00:32:53,933
+Sur le banc d'essai suivant, un score plus
+grossier se laisse tromper par un tel pic.
 
 484
-00:32:48,684 --> 00:32:54,480
-Wave by wave, remove the part of each
-arrow along the wave's own direction.
+00:32:54,970 --> 00:32:58,120
+Imposez le bilan à la foule,
+pendant l'entraînement.
 
 485
-00:32:55,350 --> 00:33:00,360
-The gauges fall to rounding error,
-down to ten to the minus seventeen.
+00:32:58,480 --> 00:33:02,900
+Tirez un lot d'instantanés à n'importe
+quel Gamma, même sans données.
 
 486
-00:33:00,440 --> 00:33:04,832
-Measured, though, with the very
-operator used to enforce it.
+00:33:03,320 --> 00:33:08,134
+Prenez la moyenne de leurs variations
+d'énergie, puis élevez-la au carré :
 
 487
-00:33:05,987 --> 00:33:11,407
-Back to the plain generator:
-why does it miss, trained on clean data?
+00:33:08,214 --> 00:33:13,570
+cette pénalité, la perte en loi, ne
+s'annule que si la foule est équilibrée.
 
 488
-00:33:11,487 --> 00:33:14,914
-Follow the part of a
-field breaking the law.
+00:33:14,310 --> 00:33:15,700
+Mais il y a un piège.
 
 489
-00:33:14,994 --> 00:33:19,429
-To bring it exactly to zero,
-the wind must act as a spring
+00:33:16,010 --> 00:33:19,702
+Même pour une foule équilibrée,
+la moyenne d'un lot fluctue ;
 
 490
-00:33:19,509 --> 00:33:24,510
-that turns infinitely stiff as
-the transport clock runs out.
+00:33:19,782 --> 00:33:22,400
+son carré grandit avec la dispersion.
 
 491
-00:33:25,380 --> 00:33:31,089
-A bounded network cannot, and a sampler
-with finite steps cannot follow either.
+00:33:22,780 --> 00:33:25,760
+L'entraînement resserre
+donc aussi la dispersion,
 
 492
-00:33:31,169 --> 00:33:34,862
-A gap of order one remains:
-almost is not exactly.
+00:33:25,840 --> 00:33:30,420
+et pousse doucement chaque instantané
+vers l'équilibre : vers le pic.
 
 493
-00:33:36,020 --> 00:33:40,619
-Now the crowd law: on average,
-energy in equals energy out.
+00:33:30,500 --> 00:33:34,120
+Le piège est apparu pendant la
+mise au point de cette expérience.
 
 494
-00:33:40,699 --> 00:33:45,091
-Three ways to impose it,
-at settings of eta never seen.
+00:33:34,860 --> 00:33:37,979
+La parade : coupez le lot
+en deux jurys indépendants,
 
 495
-00:33:45,961 --> 00:33:49,893
-One: during training, the crowd
-loss, with its two juries.
+00:33:38,059 --> 00:33:40,140
+et multipliez leurs moyennes.
 
 496
-00:33:49,973 --> 00:33:52,442
-Against a control run of equal length,
+00:33:40,610 --> 00:33:43,427
+En moyenne, la dispersion
+disparaît du calcul ;
 
 497
-00:33:52,522 --> 00:33:57,571
-the distribution distance drops from
-two point five to zero point seven.
+00:33:43,507 --> 00:33:46,550
+il ne reste que le
+déséquilibre de la foule.
 
 498
-00:33:57,651 --> 00:33:59,964
-The control itself gains nothing.
+00:33:47,080 --> 00:33:50,320
+Est-ce payant ? Les
+prochains tests le diront.
 
 499
-00:34:00,834 --> 00:34:04,388
-Two: after training,
-reweight the generated crowd.
+00:33:51,670 --> 00:33:54,591
+En trois dimensions, quels
+bilans les champs générés
 
 500
-00:34:04,468 --> 00:34:07,764
-Where the model is worst,
-a poll of five hundred
+00:33:54,671 --> 00:33:56,495
+doivent-ils respecter en moyenne,
 
 501
-00:34:07,844 --> 00:34:11,549
-shrinks to one person,
-and the crowd gets worse.
+00:33:56,575 --> 00:34:00,540
+et leur dispersion doit-elle
+aussi être celle des simulations ?
 
 502
-00:34:12,419 --> 00:34:15,546
-Three: rescale every
-snapshot onto the budget.
+00:34:05,770 --> 00:34:10,640
+Nouveau banc d'essai : des champs
+entiers, et non plus trois cadrans.
 
 503
-00:34:15,626 --> 00:34:18,696
-Each snapshot now dissipates
-the same: a spike,
+00:34:11,160 --> 00:34:13,464
+Une nappe plane de fluide conducteur :
 
 504
-00:34:18,776 --> 00:34:21,543
-under a thousandth of the true spread.
+00:34:13,544 --> 00:34:16,760
+un carré dont les bords
+opposés se rejoignent.
 
 505
-00:34:21,623 --> 00:34:26,912
-Yet the same distribution distance,
-built on spectra, improves: it is fooled.
+00:34:17,240 --> 00:34:21,069
+En bleu, la rotation locale de
+l'écoulement ; en vermillon,
 
 506
-00:34:26,992 --> 00:34:31,764
-Only the spread gives the spike away.
-The crowd loss shows no spike.
+00:34:21,149 --> 00:34:24,460
+les courants électriques
+qui créent le champ.
 
 507
-00:34:32,634 --> 00:34:35,231
-One training seed each,
-interpolation only,
+00:34:25,200 --> 00:34:29,940
+Un seul bouton, êta : la vitesse
+à laquelle le champ s'estompe.
 
 508
-00:34:35,311 --> 00:34:38,006
-every model far above the noise floor.
+00:34:30,410 --> 00:34:33,570
+Mais un monde plat ne peut
+pas entretenir d'effet dynamo.
 
 509
-00:34:39,187 --> 00:34:41,584
-Back to the two shelves, now full.
+00:34:34,120 --> 00:34:37,808
+Ici, un forçage aléatoire
+maintient le champ en vie :
 
 510
-00:34:41,664 --> 00:34:45,050
-For every snapshot: zero
-divergence. Build it in,
+00:34:37,888 --> 00:34:42,200
+un terrain d'entraînement
+pour les lois, pas une dynamo.
 
 511
-00:34:45,130 --> 00:34:49,491
-or project, and it holds exactly;
-a penalty only roughly.
+00:34:43,237 --> 00:34:48,247
+Chaque champ d'entraînement passe le test
+de la boîte : sa divergence est nulle.
 
 512
-00:34:50,361 --> 00:34:54,108
-For the crowd: the energy budget.
-Impose it on the crowd
+00:34:48,737 --> 00:34:51,297
+Entraînez un générateur
+de base sur ces champs.
 
 513
-00:34:54,188 --> 00:34:58,892
-during training. Reweighting afterwards
-fails where the model is poor;
+00:34:52,037 --> 00:34:54,517
+Ses champs seront-ils à divergence nulle ?
 
 514
-00:34:58,972 --> 00:35:02,309
-forcing it onto each
-snapshot makes a spike.
+00:34:58,257 --> 00:34:59,047
+Non.
 
 515
-00:35:03,179 --> 00:35:08,231
-And the mirror? Each snapshot is
-lopsided, so it is a crowd law,
+00:34:59,127 --> 00:35:03,537
+Cette fois, des lignes apparaissent et
+disparaissent à l'intérieur de la boîte.
 
 516
-00:35:08,311 --> 00:35:12,250
-yet a network can carry
-it exactly, built in.
+00:35:04,147 --> 00:35:06,966
+Rapportée aux variations
+du champ lui-même,
 
 517
-00:35:13,120 --> 00:35:18,081
-One rule sorts them all:
-enforce each law where it is true.
+00:35:07,046 --> 00:35:11,757
+la divergence vaut zéro virgule
+quatre un : un défaut d'ordre un.
 
 518
-00:35:21,153 --> 00:35:25,246
-Put the pieces together:
-the machine this study proposes.
+00:35:12,497 --> 00:35:15,920
+Une pénalité douce ne la ramène
+qu'à zéro virgule trois quatre
 
 519
-00:35:25,326 --> 00:35:30,224
-A wind carries noise to a symmetric
-crowd of codes, mirror built in.
+00:35:16,000 --> 00:35:19,607
+pour l'écoulement, et à zéro
+virgule un six pour le champ.
 
 520
-00:35:30,304 --> 00:35:35,788
-A decoder turns each code into hill maps,
-so every field is divergence-free.
+00:35:19,977 --> 00:35:23,747
+Et l'énergie magnétique est deux
+virgule sept fois trop élevée.
 
 521
-00:35:35,868 --> 00:35:39,265
-And the energy budget
-is imposed on the crowd.
+00:35:24,217 --> 00:35:28,157
+Cette loi va sur l'étagère des
+lois vraies pour chaque instantané.
 
 522
-00:35:40,135 --> 00:35:44,736
-It has not been built as a whole:
-the experiments tested pieces,
+00:35:29,203 --> 00:35:32,952
+Premier remède : dessinez une carte
+de relief plutôt que des flèches,
 
 523
-00:35:44,816 --> 00:35:50,816
-on three dials and a flat sheet, with
-small networks on an ordinary processor.
+00:35:33,032 --> 00:35:36,303
+et laissez l'écoulement
+suivre ses courbes de niveau.
 
 524
-00:35:51,720 --> 00:35:56,682
-One question remains: from snapshots,
-how well can we answer how often?
+00:35:36,743 --> 00:35:40,505
+Là où les courbes se resserrent,
+il va plus vite : ainsi,
 
 525
-00:35:57,953 --> 00:36:01,332
-In the partners' solver snapshots,
-which laws hold exactly,
+00:35:40,585 --> 00:35:44,623
+rien ne s'accumule ni ne fuit,
+quel que soit le relief.
 
 526
-00:36:01,412 --> 00:36:03,736
-and under which discrete operator?
+00:35:44,893 --> 00:35:48,773
+La boîte le confirme : il entre
+autant de lignes qu'il en sort.
 
 527
-00:36:08,920 --> 00:36:12,589
-The toll counter is back:
-every car is now generated.
+00:35:49,513 --> 00:35:52,289
+La machine dessine donc
+deux cartes de relief,
 
 528
-00:36:12,669 --> 00:36:16,204
-They come from the machine
-with the built-in mirror:
+00:35:52,369 --> 00:35:54,897
+une pour l'écoulement, une pour le champ :
 
 529
-00:36:16,284 --> 00:36:18,707
-twenty thousand at each of forty-one
+00:35:54,977 --> 00:35:59,343
+divergence nulle par construction,
+aussi mal entraînée soit-elle.
 
 530
-00:36:18,787 --> 00:36:21,997
-settings of Gamma,
-most unseen in training.
+00:36:00,083 --> 00:36:02,923
+Second remède, valable pour tout champ :
 
 531
-00:36:22,077 --> 00:36:26,210
-Rice, with the equations,
-turns them into a crossing rate.
+00:36:03,003 --> 00:36:07,713
+décomposez-le en tourbillon
+plus pente, et effacez la pente.
 
 532
-00:36:27,080 --> 00:36:29,943
-Against the counted truth,
-far from the threshold,
+00:36:08,143 --> 00:36:13,263
+Onde par onde, retirez de chaque flèche
+sa composante dans la direction de l'onde.
 
 533
-00:36:30,023 --> 00:36:32,657
-the cumulative error is fourteen percent.
+00:36:14,003 --> 00:36:16,942
+Les jauges tombent au niveau
+de l'erreur d'arrondi,
 
 534
-00:36:32,737 --> 00:36:35,970
-Setting by setting, the miss
-averages seventeen percent,
+00:36:17,022 --> 00:36:19,543
+jusqu'à dix puissance moins dix-sept.
 
 535
-00:36:36,050 --> 00:36:39,051
-and reaches sixty-five
-percent at two settings.
+00:36:20,203 --> 00:36:23,193
+Une réserve, toutefois :
+la divergence est mesurée
 
 536
-00:36:39,131 --> 00:36:42,727
-Near the threshold, the error
-climbs to forty-two percent.
+00:36:23,273 --> 00:36:26,243
+avec l'opérateur même
+qui sert à l'imposer.
 
 537
-00:36:43,597 --> 00:36:45,661
-One model, one training seed.
+00:36:27,270 --> 00:36:29,975
+Retour au générateur de base :
+pourquoi échoue-t-il,
 
 538
-00:36:45,741 --> 00:36:50,245
-Rice needs the equations,
-and gives a rate, not waiting times.
+00:36:30,055 --> 00:36:33,170
+alors qu'il a été entraîné
+sur des données propres ?
 
 539
-00:36:50,325 --> 00:36:54,977
-So, the study's third question:
-can a machine tell us how often?
+00:36:33,610 --> 00:36:36,460
+Suivez la partie d'un
+champ qui enfreint la loi.
 
 540
-00:36:55,057 --> 00:37:01,057
-For crossings on three dials: far from the
-threshold, roughly yes; near it, not yet.
+00:36:36,680 --> 00:36:41,168
+Pour la ramener exactement à zéro,
+le vent doit agir comme un ressort dont
 
 541
-00:37:02,853 --> 00:37:07,146
-Zoom in. The truth is silent
-up to zero point eight six.
+00:36:41,248 --> 00:36:45,960
+la raideur devient infinie quand
+l'horloge de transport arrive au bout.
 
 542
-00:37:07,226 --> 00:37:10,691
-But the machine changes
-smoothly with Gamma.
+00:36:46,700 --> 00:36:49,803
+Un réseau borné en est incapable,
+et un échantillonneur
 
 543
-00:37:11,561 --> 00:37:16,112
-Will its crossing rate switch
-on early, late, or on time?
+00:36:49,883 --> 00:36:53,280
+qui avance par pas finis ne
+peut pas suivre non plus.
 
 544
-00:37:19,982 --> 00:37:22,504
-Early and late, but never on time.
+00:36:53,720 --> 00:36:58,470
+Il reste un écart d'ordre un :
+presque, ce n'est pas exactement.
 
 545
-00:37:22,584 --> 00:37:25,900
-Below the threshold,
-it leaks false crossings:
+00:36:59,503 --> 00:37:02,329
+Maintenant, la loi de
+la foule : en moyenne,
 
 546
-00:37:25,980 --> 00:37:28,932
-up to a tenth of the rate just above.
+00:37:02,409 --> 00:37:05,183
+autant d'énergie entre qu'il en sort.
 
 547
-00:37:29,012 --> 00:37:35,012
-At zero point eight six five, it is late:
-less than a sixth of the counted rate.
+00:37:05,673 --> 00:37:09,903
+Trois façons de l'imposer,
+à des valeurs d'êta jamais vues.
 
 548
-00:37:35,133 --> 00:37:38,386
-Just above, it overshoots:
-five crossings per
+00:37:10,643 --> 00:37:15,783
+Première : pendant l'entraînement,
+la perte en loi, avec ses deux jurys.
 
 549
-00:37:38,466 --> 00:37:42,204
-thousand time units,
-against three point four.
+00:37:16,273 --> 00:37:19,005
+Face à un entraînement
+témoin de même durée,
 
 550
-00:37:43,387 --> 00:37:46,394
-Why? Picture the machine as a stiff sheet:
+00:37:19,085 --> 00:37:24,463
+la distance entre distributions tombe de
+deux virgule cinq à zéro virgule sept.
 
 551
-00:37:46,474 --> 00:37:50,148
-as Gamma turns, its crowd
-changes only so fast.
+00:37:24,943 --> 00:37:27,773
+Le témoin, lui, ne gagne rien.
 
 552
-00:37:50,228 --> 00:37:56,228
-The truth climbs a steep ramp: just above
-zero point eight six, the corridor opens.
+00:37:28,513 --> 00:37:33,083
+Deuxième : après l'entraînement,
+repondérez la foule générée.
 
 553
-00:37:57,438 --> 00:38:01,452
-The sheet rounds the corner:
-too early, then too low.
+00:37:33,683 --> 00:37:37,063
+Là où le modèle est le moins
+bon, un sondage de cinq cents
 
 554
-00:38:01,532 --> 00:38:07,532
-The data show both: early strays in the
-corridor, then too few at the threshold.
+00:37:37,143 --> 00:37:40,813
+personnes se réduit à une seule,
+et la foule se dégrade.
 
 555
-00:38:08,612 --> 00:38:14,612
-A theorem: at a true jump, a smooth
-machine misses by at least half of it.
+00:37:41,553 --> 00:37:46,503
+Troisième : remettez chaque instantané à
+l'échelle, pour qu'il respecte le bilan.
 
 556
-00:38:15,049 --> 00:38:20,559
-Unless it is very supple,
-or told which state the system is in.
+00:37:47,173 --> 00:37:51,051
+Tous les instantanés dissipent
+désormais autant : un pic,
 
 557
-00:38:21,429 --> 00:38:27,204
-Here, a ramp, not a jump, and one seed:
-consistent with the theorem, not proof.
+00:37:51,131 --> 00:37:54,893
+plus étroit qu'un millième
+de la vraie dispersion.
 
 558
-00:38:27,284 --> 00:38:30,501
-Nor does the theorem
-explain the overshoot.
+00:37:54,973 --> 00:37:57,559
+Pourtant, la même distance
+entre distributions,
 
 559
-00:38:32,087 --> 00:38:35,818
-The crowd loss, on three
-dials, at unseen settings.
+00:37:57,639 --> 00:38:01,543
+calculée sur les spectres,
+s'améliore : elle se laisse tromper.
 
 560
-00:38:35,898 --> 00:38:39,785
-On the good machine,
-it halves the crowd-law residuals,
+00:38:01,883 --> 00:38:07,463
+Seule la dispersion trahit le pic.
+Avec la perte en loi, pas de pic.
 
 561
-00:38:39,865 --> 00:38:42,393
-even for laws it never enforced.
+00:38:08,203 --> 00:38:12,315
+Une seule graine d'entraînement par
+variante, de l'interpolation seulement,
 
 562
-00:38:42,473 --> 00:38:48,473
-But the spread of energy changes shrinks
-by a quarter: a faint echo of the spike.
+00:38:12,395 --> 00:38:16,023
+et chaque modèle reste loin
+au-dessus du plancher de bruit.
 
 563
-00:38:49,425 --> 00:38:52,288
-On a deliberately biased
-machine, it fails:
+00:38:17,070 --> 00:38:20,060
+Retour aux deux étagères,
+désormais pleines.
 
 564
-00:38:52,368 --> 00:38:55,189
-one run diverged, the other got worse.
+00:38:20,360 --> 00:38:24,298
+Pour chaque instantané :
+la divergence nulle. Intégrez-la
 
 565
-00:38:55,269 --> 00:38:57,663
-On the crossing rate, with one seed:
+00:38:24,378 --> 00:38:28,810
+par construction, ou projetez,
+et elle est vérifiée exactement ;
 
 566
-00:38:57,743 --> 00:39:01,784
-slightly better near the
-threshold, worse far from it.
+00:38:28,890 --> 00:38:32,040
+avec une pénalité, seulement à peu près.
 
 567
-00:39:03,353 --> 00:39:06,311
-Now the strictest judge: the noise floor.
+00:38:32,780 --> 00:38:36,517
+Pour la foule : le bilan d'énergie.
+Imposez-le à la foule,
 
 568
-00:39:06,391 --> 00:39:09,605
-On three dials, the best
-machine sits at about
+00:38:36,597 --> 00:38:41,914
+pendant l'entraînement. Repondérer après
+coup échoue là où le modèle est mauvais ;
 
 569
-00:39:09,685 --> 00:39:13,055
-twice its floor;
-but three numbers are easy.
+00:38:41,994 --> 00:38:45,680
+l'imposer de force à chaque
+instantané crée un pic.
 
 570
-00:39:13,135 --> 00:39:17,019
-On the flat sheet of plasma,
-every model's spectra miss
+00:38:46,420 --> 00:38:52,205
+Et le miroir ? Chaque instantané pointe
+d'un seul côté : c'est donc une loi
 
 571
-00:39:17,099 --> 00:39:21,465
-far more than two data samples
-differ: at best, sixfold.
+00:38:52,285 --> 00:38:58,285
+de la foule. Pourtant, intégré au réseau,
+il peut être respecté exactement.
 
 572
-00:39:22,335 --> 00:39:28,335
-Two seeds on the dials, one on the sheet;
-the PhD plan asks for at least three.
+00:38:59,220 --> 00:39:04,500
+Une seule règle suffit à tout ranger :
+imposez chaque loi là où elle est vraie.
 
 573
-00:39:28,558 --> 00:39:31,817
-Every test sits between trained settings.
+00:39:07,437 --> 00:39:11,347
+Assemblez les pièces : voici
+la machine que propose l'étude.
 
 574
-00:39:33,387 --> 00:39:36,790
-The scoreboard: eight mechanisms,
-each with a verdict.
+00:39:11,717 --> 00:39:14,069
+Un vent transporte le bruit vers une foule
 
 575
-00:39:36,870 --> 00:39:39,555
-For every snapshot:
-hill maps and projection,
+00:39:14,149 --> 00:39:17,027
+symétrique de codes,
+avec le miroir intégré.
 
 576
-00:39:39,635 --> 00:39:41,821
-exact; the penalty, approximate.
+00:39:17,487 --> 00:39:20,969
+Un décodeur transforme chaque
+code en cartes de relief :
 
 577
-00:39:41,901 --> 00:39:44,854
-For the crowd: the mirror,
-exact; the crowd loss,
+00:39:21,049 --> 00:39:23,987
+chaque champ est donc à divergence nulle.
 
 578
-00:39:44,934 --> 00:39:47,801
-useful but not clean; the rest, failures.
+00:39:24,087 --> 00:39:26,917
+Et le bilan d'énergie
+est imposé à la foule.
 
 579
-00:39:48,671 --> 00:39:51,222
-Back to the study's three questions.
+00:39:27,657 --> 00:39:30,271
+Elle n'a pas été construite
+dans son ensemble :
 
 580
-00:39:51,302 --> 00:39:54,674
-One: between the dots,
-the shapes come out right,
+00:39:30,351 --> 00:39:32,564
+les expériences en ont testé des pièces,
 
 581
-00:39:54,754 --> 00:39:57,581
-but no model reaches its noise floor.
+00:39:32,644 --> 00:39:35,086
+sur les trois cadrans
+et sur la nappe plane,
 
 582
-00:39:57,661 --> 00:40:02,040
-Two: each law where it holds,
-exactly yes, on average partly.
+00:39:35,166 --> 00:39:38,477
+avec de petits réseaux,
+sur un processeur ordinaire.
 
 583
-00:40:02,120 --> 00:40:07,194
-Three, how often: roughly right far
-from the threshold, poor near it.
+00:39:39,217 --> 00:39:41,729
+Reste une question :
+à partir d'instantanés,
 
 584
-00:40:08,064 --> 00:40:08,983
-Three lessons.
+00:39:41,809 --> 00:39:46,617
+avec quelle précision peut-on dire à
+quelle fréquence le champ se renverse ?
 
 585
-00:40:09,063 --> 00:40:10,838
-Exact laws: build them in.
+00:39:47,770 --> 00:39:50,369
+Dans les instantanés
+des codes du consortium,
 
 586
-00:40:10,918 --> 00:40:15,191
-Crowd laws: impose them on the
-crowd, never on each snapshot.
+00:39:50,449 --> 00:39:54,590
+quelles lois valent exactement,
+et pour quel opérateur discret ?
 
 587
-00:40:15,271 --> 00:40:20,012
-And judge every result against the
-noise floor, with enough seeds.
+00:39:59,637 --> 00:40:04,617
+Revoici la route et sa ligne :
+cette fois, chaque voiture est générée.
 
 588
-00:40:21,987 --> 00:40:26,181
-Which settings should get runs
-long enough to count reversals,
+00:40:04,977 --> 00:40:09,018
+Elles sortent de la machine au miroir
+intégré : vingt mille à chacun des
 
 589
-00:40:26,261 --> 00:40:29,003
-so a predicted rate can be checked?
+00:40:09,098 --> 00:40:13,607
+quarante et un réglages de Gamma,
+la plupart jamais vus à l'entraînement.
 
 590
-00:40:34,187 --> 00:40:37,468
-So far, every test ran
-on toy models. Before
+00:40:13,777 --> 00:40:18,647
+Avec les équations, la formule de Rice
+en déduit une fréquence des passages.
 
 591
-00:40:37,548 --> 00:40:41,052
-real dynamos, back to
-the map of the field.
+00:40:19,387 --> 00:40:21,615
+Face au vrai comptage, loin du seuil,
 
 592
-00:40:41,132 --> 00:40:46,135
-Zoom into its thin data-driven
-lane: it opens into four tracks.
+00:40:21,695 --> 00:40:24,707
+l'erreur cumulée est
+de quatorze pour cent.
 
 593
-00:40:47,005 --> 00:40:51,339
-A laboratory dynamo sets every
-track four tests: three dimensions,
+00:40:25,167 --> 00:40:29,261
+Réglage par réglage, l'écart est
+en moyenne de dix-sept pour cent,
 
 594
-00:40:51,419 --> 00:40:56,898
-walls with iron and a vacuum, a tiny
-magnetic Prandtl number, and rare flips.
+00:40:29,341 --> 00:40:32,897
+et atteint soixante-cinq
+pour cent à deux réglages.
 
 595
-00:40:58,453 --> 00:41:02,635
-First track: fast surrogates,
-networks trained to imitate a solver.
+00:40:33,507 --> 00:40:37,237
+Près du seuil, l'erreur grimpe
+à quarante-deux pour cent.
 
 596
-00:41:02,715 --> 00:41:07,661
-Some carry the equations in their loss;
-others learn maps between whole fields.
+00:40:37,977 --> 00:40:41,097
+Un seul modèle,
+une seule graine aléatoire.
 
 597
-00:41:07,741 --> 00:41:12,178
-For conducting fluids, they now reach
-flat, two-dimensional turbulence.
+00:40:41,457 --> 00:40:43,766
+La formule de Rice exige les équations,
 
 598
-00:41:12,258 --> 00:41:15,246
-For the Earth, recall the
-twenty twenty-two study:
+00:40:43,846 --> 00:40:47,117
+et donne une fréquence,
+pas des temps d'attente.
 
 599
-00:41:15,326 --> 00:41:19,031
-the methods it tried could
-not reliably foresee a flip.
+00:40:47,427 --> 00:40:49,613
+Alors, troisième question de l'étude :
 
 600
-00:41:19,901 --> 00:41:23,670
-Their weak spot: trained to
-minimize a mean-square error,
+00:40:49,693 --> 00:40:54,377
+une machine peut-elle nous dire à
+quelle fréquence le champ se renverse ?
 
 601
-00:41:23,750 --> 00:41:26,874
-ensembles of them
-regress to the mean flow.
+00:40:54,587 --> 00:40:58,023
+Pour les passages par zéro,
+sur trois cadrans :
 
 602
-00:41:26,954 --> 00:41:30,616
-A cloud with two polarities
-collapses to its middle.
+00:40:58,103 --> 00:41:02,847
+loin du seuil, à peu près,
+oui ; près du seuil, pas encore.
 
 603
-00:41:31,787 --> 00:41:33,464
-Second track: generative models,
+00:41:04,303 --> 00:41:10,023
+Zoomons. Jusqu'à zéro virgule
+huit six, la vérité reste muette.
 
 604
-00:41:33,544 --> 00:41:36,455
-which learn the whole cloud,
-not just its middle.
+00:41:10,433 --> 00:41:14,283
+Mais la machine, elle,
+varie en douceur avec Gamma.
 
 605
-00:41:36,535 --> 00:41:38,828
-Adversarial networks
-first, then diffusion,
+00:41:15,023 --> 00:41:18,310
+Sa fréquence des passages
+va-t-elle se déclencher en avance,
 
 606
-00:41:38,908 --> 00:41:41,666
-then flow matching,
-the family the study used.
+00:41:18,390 --> 00:41:20,123
+en retard, ou à l'heure ?
 
 607
-00:41:41,746 --> 00:41:45,575
-They now dream three-dimensional
-turbulence, global weather ensembles,
+00:41:23,863 --> 00:41:26,873
+En avance et en retard,
+mais jamais à l'heure.
 
 608
-00:41:45,655 --> 00:41:48,666
-and steady turbulent
-states for chosen settings.
+00:41:27,253 --> 00:41:30,849
+Sous le seuil, la machine laisse
+échapper de faux passages :
 
 609
-00:41:49,536 --> 00:41:52,443
-Trained on dynamo
-simulations? We found none.
+00:41:30,929 --> 00:41:34,813
+jusqu'à un dixième de la vraie
+fréquence, juste au-dessus.
 
 610
-00:41:54,420 --> 00:41:58,254
-Third track: making samples
-obey the laws. Four families.
+00:41:35,283 --> 00:41:38,558
+À zéro virgule huit six cinq,
+elle est en retard :
 
 611
-00:41:58,334 --> 00:42:02,528
-Hard: build the law into the network,
-say a potential whose curl
+00:41:38,638 --> 00:41:41,853
+moins d'un sixième de
+la fréquence comptée.
 
 612
-00:42:02,608 --> 00:42:06,769
-has no divergence, or project
-each sample while drawing it.
+00:41:42,023 --> 00:41:45,543
+Juste au-dessus, elle surestime :
+cinq passages pour
 
 613
-00:42:06,849 --> 00:42:10,545
-Soft: a penalty in the loss,
-obeyed only approximately.
+00:41:45,623 --> 00:41:49,483
+mille unités de temps,
+contre trois virgule quatre.
 
 614
-00:42:10,625 --> 00:42:13,266
-On the distribution: constrain the crowd,
+00:41:50,537 --> 00:41:54,292
+Pourquoi ? Imaginez la machine
+comme une plaque rigide :
 
 615
-00:42:13,346 --> 00:42:17,481
-by its covariance, or by the
-equation a steady cloud obeys.
+00:41:54,372 --> 00:41:59,017
+quand on tourne Gamma, sa foule
+ne change qu'à vitesse limitée.
 
 616
-00:42:17,561 --> 00:42:21,573
-And symmetry: an equivariant
-flow gives a symmetric cloud.
+00:41:59,497 --> 00:42:02,882
+La vérité, elle,
+gravit une rampe abrupte :
 
 617
-00:42:22,843 --> 00:42:26,060
-A twenty twenty-six preprint
-compared ways to impose zero
+00:42:02,962 --> 00:42:08,207
+juste au-dessus de zéro virgule
+huit six, le couloir s'ouvre.
 
 618
-00:42:26,140 --> 00:42:29,542
-divergence on flat flows:
-no single strategy dominates.
+00:42:08,947 --> 00:42:12,677
+La plaque arrondit l'angle :
+trop tôt, puis trop bas.
 
 619
-00:42:29,622 --> 00:42:33,600
-In three dimensions, we found two
-exactly divergence-free generators,
+00:42:12,977 --> 00:42:16,006
+Les données montrent les deux :
+des instantanés égarés
 
 620
-00:42:33,680 --> 00:42:35,952
-both preprints: periodic-box turbulence,
+00:42:16,086 --> 00:42:19,237
+trop tôt dans le couloir,
+puis trop peu au seuil.
 
 621
-00:42:36,032 --> 00:42:38,899
-and a current-free field
-in the Sun's corona.
+00:42:19,977 --> 00:42:23,622
+Un théorème : face à un vrai
+saut, une machine qui varie
 
 622
-00:42:38,979 --> 00:42:42,188
-None handles walls, a vacuum
-outside and iron inside.
+00:42:23,702 --> 00:42:27,357
+en douceur se trompe d'au
+moins la moitié du saut.
 
 623
-00:42:43,353 --> 00:42:47,760
-Fourth track: data assimilation,
-merging a model with a few measurements.
+00:42:27,637 --> 00:42:31,797
+Sauf si elle est très souple,
+ou si on lui indique l'état du système.
 
 624
-00:42:47,840 --> 00:42:52,616
-Learned priors came in through compressed
-latent spaces, then diffusion models.
+00:42:32,537 --> 00:42:36,058
+Ici, une rampe, pas un saut,
+et une seule graine :
 
 625
-00:42:52,696 --> 00:42:57,767
-And a library now plugs deep networks into
-Kalman filters and variational methods.
+00:42:36,138 --> 00:42:39,997
+compatible avec le théorème,
+mais pas une preuve.
 
 626
-00:42:58,637 --> 00:43:03,381
-We found no diffusion prior used
-this way for conducting fluids.
+00:42:40,457 --> 00:42:43,607
+Le théorème n'explique pas
+non plus la surestimation.
 
 627
-00:43:03,461 --> 00:43:06,530
-Near a flip, the answer
-has two polarities,
+00:42:45,037 --> 00:42:49,277
+La perte en loi, sur les trois
+cadrans, à des réglages jamais vus.
 
 628
-00:43:06,610 --> 00:43:11,406
-and a prior that ignores the
-mirror could bias it toward one.
+00:42:49,757 --> 00:42:53,885
+Sur la bonne machine, elle divise par
+deux les résidus des lois de la foule,
 
 629
-00:43:12,587 --> 00:43:15,623
-Now the rings: papers
-co-signed by the supervisors.
+00:42:53,965 --> 00:42:56,897
+même pour les lois qu'elle
+n'a jamais imposées.
 
 630
-00:43:15,703 --> 00:43:20,077
-Dynamo side: Taylor–Green dynamos pushed
-to small magnetic Prandtl numbers,
+00:42:57,287 --> 00:42:59,847
+Mais la dispersion des
+variations d'énergie
 
 631
-00:43:20,157 --> 00:43:24,238
-and the VKS tank with its iron
-impellers, simulated in two codes.
+00:42:59,927 --> 00:43:02,897
+diminue d'un quart :
+un faible écho du pic.
 
 632
-00:43:24,318 --> 00:43:27,537
-In twenty twenty-six, both
-codes produced VKS reversals,
+00:43:03,637 --> 00:43:06,928
+Sur une machine volontairement
+biaisée, elle échoue :
 
 633
-00:43:27,617 --> 00:43:30,959
-and a four-dial model
-reproduces their main features.
+00:43:07,008 --> 00:43:10,137
+un entraînement a divergé,
+l'autre a empiré.
 
 634
-00:43:31,039 --> 00:43:34,071
-Learning side: autoencoder
-latent spaces read through
+00:43:10,367 --> 00:43:13,536
+Sur la fréquence des passages,
+avec une seule graine :
 
 635
-00:43:34,151 --> 00:43:37,130
-classical flow modes,
-von Kármán flow included.
+00:43:13,616 --> 00:43:17,857
+légèrement mieux près du seuil,
+moins bien quand on s'en éloigne.
 
 636
-00:43:37,210 --> 00:43:39,639
-And assimilation and
-diffusion models built
+00:43:19,303 --> 00:43:23,383
+Maintenant, le juge le plus
+sévère : le plancher de bruit.
 
 637
-00:43:39,719 --> 00:43:42,617
-on deep networks,
-outside conducting fluids.
+00:43:23,933 --> 00:43:27,547
+Sur les trois cadrans,
+la meilleure machine se situe à environ
 
 638
-00:43:43,887 --> 00:43:47,614
-Three ingredients are in hand.
-But in what we found,
+00:43:27,627 --> 00:43:31,413
+deux fois son plancher ;
+mais trois nombres, c'est facile.
 
 639
-00:43:47,694 --> 00:43:53,369
-none of the four has published a
-generative model trained on dynamo data.
+00:43:31,703 --> 00:43:36,205
+Sur la nappe de plasma, tous les modèles
+se trompent sur les spectres bien
 
 640
-00:43:54,553 --> 00:43:57,530
-Where the generative and
-constraint tracks cross
+00:43:36,285 --> 00:43:41,383
+plus que ne diffèrent deux échantillons
+de données : au mieux, six fois plus.
 
 641
-00:43:57,610 --> 00:44:00,505
-the dynamo tracks, we found the map empty.
+00:43:42,123 --> 00:43:45,005
+Deux graines sur les cadrans,
+une seule sur la nappe ;
 
 642
-00:44:00,585 --> 00:44:03,631
-An independent thesis
-proposal aims at that spot:
+00:43:45,085 --> 00:43:47,883
+le projet de thèse en
+demande au moins trois.
 
 643
-00:44:03,711 --> 00:44:06,912
-five gaps, each beside
-its nearest neighbour.
+00:43:48,163 --> 00:43:51,343
+Chaque test se situe entre
+deux réglages d'entraînement.
 
 644
-00:44:07,782 --> 00:44:09,985
-One: a generator of dynamo fields.
+00:43:52,770 --> 00:43:57,540
+Le tableau des scores : huit
+mécanismes, chacun avec son verdict.
 
 645
-00:44:10,065 --> 00:44:12,906
-Two: velocity and magnetic
-field with exactly
+00:43:58,070 --> 00:44:02,469
+Pour chaque instantané :
+les cartes de relief et la projection,
 
 646
-00:44:12,986 --> 00:44:17,035
-zero divergence, in a walled
-cylinder with iron and vacuum.
+00:44:02,549 --> 00:44:05,510
+exactes ; la pénalité, approximative.
 
 647
-00:44:17,115 --> 00:44:20,277
-Three: energy budgets
-imposed on the distribution,
+00:44:06,020 --> 00:44:10,530
+Pour la foule : le miroir,
+exact ; la perte en loi,
 
 648
-00:44:20,357 --> 00:44:23,883
-with no target value,
-even where there are no data.
+00:44:10,610 --> 00:44:14,990
+utile mais imparfaite ;
+le reste, des échecs.
 
 649
-00:44:23,963 --> 00:44:27,912
-Four: the flip rate read from
-snapshots with Rice's formula.
+00:44:15,730 --> 00:44:18,030
+Revenons aux trois questions de l'étude.
 
 650
-00:44:27,992 --> 00:44:31,647
-Five: one generator that
-crosses the dynamo threshold.
+00:44:18,540 --> 00:44:21,825
+Première : entre les points,
+les formes sont les bonnes,
 
 651
-00:44:32,917 --> 00:44:37,760
-The study tested pieces on toy cases:
-exact potentials on a flat sheet,
+00:44:21,905 --> 00:44:25,240
+mais aucun modèle n'atteint
+son plancher de bruit.
 
 652
-00:44:37,840 --> 00:44:42,399
-a budget imposed without data,
-Rice's formula on three dials.
+00:44:25,920 --> 00:44:30,266
+Deuxième, chaque loi
+là où elle s'applique :
 
 653
-00:44:43,553 --> 00:44:48,366
-The field moves fast: a twenty twenty-six
-conference paper claims to be the
+00:44:30,346 --> 00:44:34,600
+exactement, oui ; en moyenne, en partie.
 
 654
-00:44:48,446 --> 00:44:53,624
-first to recognize a trade-off between
-physical and distributional accuracy.
+00:44:34,680 --> 00:44:40,300
+Troisième, à quelle fréquence : à peu près
+juste loin du seuil, médiocre tout près.
 
 655
-00:44:53,704 --> 00:44:56,380
-The study's lesson,
-never force a crowd law
+00:44:41,040 --> 00:44:42,240
+Trois leçons.
 
 656
-00:44:56,460 --> 00:44:59,610
-on each snapshot,
-must be placed against it.
+00:44:42,370 --> 00:44:45,290
+Lois exactes : intégrez-les au modèle.
 
 657
-00:45:00,480 --> 00:45:03,074
-Not claimed: waiting times between flips,
+00:44:45,700 --> 00:44:50,820
+Lois de la foule : imposez-les à la
+foule, jamais à chaque instantané.
 
 658
-00:45:03,154 --> 00:45:08,462
-sodium's tiny magnetic Prandtl number,
-the Earth's core, real laboratory data.
+00:44:51,210 --> 00:44:56,270
+Et jugez chaque résultat face au plancher
+de bruit, avec suffisamment de graines.
 
 659
-00:45:08,542 --> 00:45:11,558
-Each empty spot is a
-search result, not a proof,
+00:44:58,103 --> 00:45:01,245
+Pour quels réglages faut-il des
+simulations assez longues pour
 
 660
-00:45:11,638 --> 00:45:14,483
-to be checked again before every paper.
+00:45:01,325 --> 00:45:04,773
+compter les renversements,
+afin de vérifier un taux prédit ?
 
 661
-00:45:16,153 --> 00:45:19,416
-First VKS data: should
-the generator train on the
+00:45:09,803 --> 00:45:13,382
+Jusqu'ici, tous les tests ont
+porté sur des modèles jouets.
 
 662
-00:45:19,496 --> 00:45:23,169
-LATU periodic grid,
-or the SFEMaNS cylinder mesh?
+00:45:13,462 --> 00:45:17,203
+Avant les vraies dynamos,
+retour à la carte du domaine.
 
 663
-00:45:28,353 --> 00:45:29,928
-Back to the staircase.
+00:45:17,583 --> 00:45:21,843
+Zoomons sur sa mince piste des
+données : elle se divise en quatre.
 
 664
-00:45:30,008 --> 00:45:33,479
-The first two steps are
-lit by small experiments:
+00:45:22,583 --> 00:45:26,685
+Une dynamo de laboratoire pose
+à chaque piste quatre épreuves :
 
 665
-00:45:33,559 --> 00:45:36,170
-three numbers, then a flat sheet.
+00:45:26,765 --> 00:45:30,137
+trois dimensions, des parois
+avec du fer et du vide,
 
 666
-00:45:36,250 --> 00:45:39,890
-The third, the twisting
-box, has only a preview.
+00:45:30,217 --> 00:45:35,193
+un nombre de Prandtl magnétique
+minuscule, et des renversements rares.
 
 667
-00:45:40,760 --> 00:45:43,256
-From there up, every step is a bet,
+00:45:36,637 --> 00:45:42,137
+Première piste : les substituts rapides,
+des réseaux entraînés à imiter un solveur.
 
 668
-00:45:43,336 --> 00:45:48,598
-written down before the data exist,
-in an independent PhD proposal.
+00:45:42,417 --> 00:45:44,855
+Certains intègrent les
+équations dans leur perte ;
 
 669
-00:45:49,753 --> 00:45:54,020
-To climb, the study first
-built a factory for the data.
+00:45:44,935 --> 00:45:48,337
+d'autres apprennent des
+correspondances entre champs entiers.
 
 670
-00:45:54,100 --> 00:45:56,312
-A recipe card sets the knobs.
+00:45:48,637 --> 00:45:50,091
+Pour les fluides conducteurs,
 
 671
-00:45:56,392 --> 00:46:01,290
-Ovens run one simulation per setting,
-on a laptop or a cluster.
+00:45:50,171 --> 00:45:53,517
+ils atteignent désormais la
+turbulence à deux dimensions.
 
 672
-00:46:01,370 --> 00:46:04,349
-Each result is sealed in a labelled jar:
+00:45:53,767 --> 00:45:57,275
+Pour la Terre, rappelez-vous
+l'étude de deux mille vingt-deux :
 
 673
-00:46:04,429 --> 00:46:08,276
-a unique number,
-the code version, a checksum.
+00:45:57,355 --> 00:46:01,957
+les méthodes essayées n'ont pas su
+prévoir un renversement de façon fiable.
 
 674
-00:46:09,146 --> 00:46:14,311
-A ledger records every jar, a menu
-splits them for training and testing,
+00:46:02,697 --> 00:46:06,266
+Leur point faible : entraînés sur
+une erreur quadratique moyenne,
 
 675
-00:46:14,391 --> 00:46:18,217
-the chef learns, and a
-critic scores the result.
+00:46:06,346 --> 00:46:10,157
+leurs ensembles de modèles
+régressent vers l'écoulement moyen.
 
 676
-00:46:19,087 --> 00:46:22,952
-It all runs end to end
-on an ordinary processor,
+00:46:10,667 --> 00:46:14,177
+Un nuage à deux polarités
+s'effondre sur son milieu.
 
 677
-00:46:23,032 --> 00:46:27,114
-never yet on a graphics
-card or a real cluster.
+00:46:15,203 --> 00:46:17,557
+Deuxième piste : les modèles génératifs,
 
 678
-00:46:27,194 --> 00:46:31,446
-A grey tag names the file
-each empty frame awaits.
+00:46:17,637 --> 00:46:21,313
+qui apprennent tout le nuage,
+pas seulement son milieu.
 
 679
-00:46:32,620 --> 00:46:35,277
-First product off the
-line: the flat sheet,
+00:46:21,943 --> 00:46:26,591
+D'abord les réseaux antagonistes,
+puis la diffusion, puis le flow matching,
 
 680
-00:46:35,357 --> 00:46:38,124
-eleven diffusivities, sixteen runs each.
+00:46:26,671 --> 00:46:31,793
+qui apprend un vent du bruit aux données :
+la famille qu'a utilisée l'étude.
 
 681
-00:46:38,204 --> 00:46:41,156
-The bet, a check on the
-data: at every setting,
+00:46:31,933 --> 00:46:35,414
+Ils imaginent désormais de la
+turbulence en trois dimensions,
 
 682
-00:46:41,236 --> 00:46:46,212
-the average dissipation matches the
-injected power, within five percent.
+00:46:35,494 --> 00:46:37,866
+des prévisions météo d'ensemble mondiales,
 
 683
-00:46:47,587 --> 00:46:49,299
-Bet one: the twisting box.
+00:46:37,946 --> 00:46:42,013
+et des états turbulents stationnaires
+pour des réglages choisis.
 
 684
-00:46:49,379 --> 00:46:53,801
-At thirty-two cubed, the small
-sweep matched the published windows,
+00:46:42,753 --> 00:46:47,153
+Entraînés sur des dynamos simulées ?
+Nous n'en avons trouvé aucun.
 
 685
-00:46:53,881 --> 00:46:58,713
-but near seventeen and a half the
-sign of growth stayed unresolved.
+00:46:49,003 --> 00:46:54,243
+Troisième piste : faire obéir les
+échantillons aux lois. Quatre familles.
 
 686
-00:46:59,583 --> 00:47:05,160
-The campaign doubles the resolution and
-steps Rm by whole numbers up to forty.
+00:46:54,493 --> 00:46:57,570
+Contraintes dures :
+intégrer la loi au réseau,
 
 687
-00:47:05,240 --> 00:47:08,308
-The bet: growth still
-positive at seventeen,
+00:46:57,650 --> 00:47:02,236
+par exemple un potentiel dont le
+rotationnel est à divergence nulle,
 
 688
-00:47:08,388 --> 00:47:12,099
-already negative at eighteen,
-with two fits agreeing:
+00:47:02,316 --> 00:47:06,283
+ou projeter chaque échantillon
+pendant sa génération.
 
 689
-00:47:12,179 --> 00:47:16,873
-one over the kept part of the run,
-one over its last quarter.
+00:47:06,453 --> 00:47:10,343
+Contraintes souples : une pénalité dans
+la perte, respectée seulement à peu près.
 
 690
-00:47:18,543 --> 00:47:21,859
-Confidence: medium. At eighteen,
-the small sweep's two
+00:47:10,913 --> 00:47:14,865
+Contraintes en loi : on agit
+sur la foule, par sa covariance,
 
 691
-00:47:21,939 --> 00:47:25,366
-fits already differed by
-more than the rate itself.
+00:47:14,945 --> 00:47:18,713
+ou par l'équation que vérifie
+un nuage stationnaire.
 
 692
-00:47:25,446 --> 00:47:30,491
-Worth asking before the run: add three
-points between seventeen and eighteen?
+00:47:19,143 --> 00:47:24,193
+Et la symétrie : un vent équivariant
+donne un nuage symétrique.
 
 693
-00:47:31,853 --> 00:47:33,926
-Bet two, the first true dynamo:
+00:47:25,333 --> 00:47:29,853
+Une prépublication de deux mille vingt-six
+a comparé des façons d'imposer une
 
 694
-00:47:34,006 --> 00:47:37,491
-a Taylor-Green flow of
-counter-rotating eddies.
+00:47:29,933 --> 00:47:34,803
+divergence nulle en écoulement plan :
+aucune stratégie ne l'emporte partout.
 
 695
-00:47:37,571 --> 00:47:40,242
-Now the field pushes back on the flow.
+00:47:35,063 --> 00:47:39,155
+En trois dimensions, nous avons
+trouvé deux générateurs à divergence
 
 696
-00:47:40,322 --> 00:47:44,623
-Above a threshold, a tiny seed
-should grow, then level off.
+00:47:39,235 --> 00:47:43,081
+exactement nulle, tous deux en
+prépublication : la turbulence en
 
 697
-00:47:45,493 --> 00:47:50,394
-Twelve runs cross four Reynolds
-numbers with three values of Pm.
+00:47:43,161 --> 00:47:47,663
+boîte périodique, et un champ sans
+courant dans la couronne solaire.
 
 698
-00:47:50,474 --> 00:47:55,797
-The bet: a threshold in Rm,
-bracketed for at least two values of Pm.
+00:47:48,123 --> 00:47:52,713
+Aucun ne traite des parois, avec
+du vide dehors et du fer dedans.
 
 699
-00:47:57,467 --> 00:48:02,217
-Confidence: medium. Published runs
-define the Reynolds number differently,
+00:47:53,737 --> 00:47:56,205
+Quatrième piste :
+l'assimilation de données,
 
 700
-00:48:02,297 --> 00:48:05,128
-so the threshold may fall off this grid.
+00:47:56,285 --> 00:47:59,047
+qui combine un modèle et quelques mesures.
 
 701
-00:48:05,208 --> 00:48:09,907
-Near threshold, a run may still be
-growing when its snapshots are kept.
+00:47:59,457 --> 00:48:02,306
+Les a priori appris y sont
+entrés par des espaces
 
 702
-00:48:09,987 --> 00:48:13,113
-Lengthen those runs,
-or flag and exclude them?
+00:48:02,386 --> 00:48:05,227
+latents compressés, puis par la diffusion.
 
 703
-00:48:14,487 --> 00:48:16,004
-Some things need no bet.
+00:48:05,307 --> 00:48:08,345
+Et une bibliothèque logicielle
+branche désormais des réseaux
 
 704
-00:48:16,084 --> 00:48:19,146
-In three dimensions,
-hill maps become potentials:
+00:48:08,425 --> 00:48:12,237
+profonds sur les filtres de Kalman
+et les méthodes variationnelles.
 
 705
-00:48:19,226 --> 00:48:22,524
-the generator draws them,
-then takes their curl.
+00:48:12,977 --> 00:48:15,592
+Nous n'avons trouvé aucun
+a priori par diffusion
 
 706
-00:48:22,604 --> 00:48:26,292
-So the flow and the field stay
-divergence-free to rounding,
+00:48:15,672 --> 00:48:18,417
+utilisé ainsi pour les
+fluides conducteurs.
 
 707
-00:48:26,372 --> 00:48:28,490
-even with untrained weights.
+00:48:19,017 --> 00:48:22,002
+Près d'un renversement,
+la réponse a deux polarités,
 
 708
-00:48:29,360 --> 00:48:34,548
-Mirror the starting noise, and the
-sample comes out with its field flipped.
+00:48:22,082 --> 00:48:26,657
+et un a priori qui ignore le miroir
+pourrait la faire pencher d'un côté.
 
 709
-00:48:34,628 --> 00:48:37,609
-That shows the mechanism, not the quality.
+00:48:27,703 --> 00:48:31,673
+Place aux repères cerclés :
+des articles cosignés par les encadrants.
 
 710
-00:48:38,787 --> 00:48:41,116
-Everything else must be measured.
+00:48:32,063 --> 00:48:35,548
+Côté dynamo : des dynamos de
+Taylor–Green poussées vers
 
 711
-00:48:41,196 --> 00:48:45,381
-First test: does the generator
-get the energy spectra right,
+00:48:35,628 --> 00:48:38,205
+de petits nombres de Prandtl magnétiques,
 
 712
-00:48:45,461 --> 00:48:49,913
-within a tenth of a decade,
-at the settings it trained on?
+00:48:38,285 --> 00:48:43,023
+et la cuve de VKS avec ses turbines
+en fer, simulée dans deux codes.
 
 713
-00:48:50,783 --> 00:48:51,821
-Confidence: low.
+00:48:43,243 --> 00:48:47,215
+En deux mille vingt-six, les deux
+codes y ont obtenu des renversements,
 
 714
-00:48:51,901 --> 00:48:55,568
-In two dimensions, the best
-models only just got there,
+00:48:47,295 --> 00:48:50,763
+et un modèle à quatre cadrans
+en reproduit l'essentiel.
 
 715
-00:48:55,648 --> 00:49:01,087
-and here each run keeps forty snapshots,
-against five thousand in the plan.
+00:48:51,583 --> 00:48:55,170
+Côté apprentissage :
+des espaces latents d'autoencodeurs,
 
 716
-00:49:03,153 --> 00:49:07,937
-Leave the periodic box for a real
-vessel, and exact gets harder.
+00:48:55,250 --> 00:49:00,983
+interprétés grâce aux modes classiques des
+écoulements, celui de von Kármán compris.
 
 717
-00:49:08,017 --> 00:49:11,525
-The potential needs a
-gauge and a wall condition;
+00:49:01,223 --> 00:49:04,223
+Et de l'assimilation et des
+modèles de diffusion fondés
 
 718
-00:49:11,605 --> 00:49:14,279
-then each field has exactly one.
+00:49:04,303 --> 00:49:07,713
+sur des réseaux profonds,
+hors des fluides conducteurs.
 
 719
-00:49:15,149 --> 00:49:20,343
-At the soft-iron impellers, field lines
-bend sharply at the iron's surface,
+00:49:08,853 --> 00:49:12,730
+Trois ingrédients sont réunis.
+Mais, dans ce que nous avons trouvé,
 
 720
-00:49:20,423 --> 00:49:25,042
-so a smooth potential cannot be
-exact: it needs a kink there.
+00:49:12,810 --> 00:49:15,152
+aucun des quatre encadrants n'a publié de
 
 721
-00:49:26,412 --> 00:49:31,221
-Outside, the field must match a
-current-free field in the vacuum.
+00:49:15,232 --> 00:49:18,633
+modèle génératif entraîné
+sur des données de dynamo.
 
 722
-00:49:31,301 --> 00:49:33,551
-The rule is linear but nonlocal:
+00:49:19,670 --> 00:49:22,648
+Là où les modèles génératifs
+et les contraintes croisent
 
 723
-00:49:33,631 --> 00:49:38,292
-the field at one point of the
-wall depends on the whole wall.
+00:49:22,728 --> 00:49:26,170
+les pistes de la dynamo,
+nous avons trouvé la carte vide.
 
 724
-00:49:38,372 --> 00:49:43,291
-Imposing it exactly and cheaply,
-for every sample, is still open.
+00:49:26,570 --> 00:49:29,670
+Un projet de thèse
+indépendant vise cet endroit :
 
 725
-00:49:44,453 --> 00:49:47,322
-The top steps are
-simulations of real machines:
+00:49:29,750 --> 00:49:33,650
+cinq lacunes, chacune à côté
+de son plus proche voisin.
 
 726
-00:49:47,402 --> 00:49:51,058
-the VKS cylinder, and DRESDYN,
-a precessing cylinder.
+00:49:34,390 --> 00:49:37,460
+Première : un générateur
+de champs de dynamo.
 
 727
-00:49:51,928 --> 00:49:53,917
-Their bets are already written.
+00:49:38,070 --> 00:49:41,843
+Deuxième : une vitesse et un
+champ magnétique à divergence
 
 728
-00:49:53,997 --> 00:49:57,875
-For VKS: the four main patterns
-with the right energy shares,
+00:49:41,923 --> 00:49:46,770
+exactement nulle, dans un cylindre
+à parois, avec du fer et du vide.
 
 729
-00:49:57,955 --> 00:50:02,393
-and Rice's reversal rate inside
-the simulated count's error bars.
+00:49:46,930 --> 00:49:50,599
+Troisième : des bilans d'énergie
+imposés à la distribution,
 
 730
-00:50:02,473 --> 00:50:07,575
-For DRESDYN: the threshold at an unseen
-precession rate, within ten percent.
+00:49:50,679 --> 00:49:54,440
+sans valeur cible, même là
+où il n'y a pas de données.
 
 731
-00:50:08,945 --> 00:50:11,990
-Those simulations belong
-to the project's partners,
+00:49:55,170 --> 00:49:57,792
+Quatrième : la fréquence
+des renversements,
 
 732
-00:50:12,070 --> 00:50:14,728
-are not public, and must be requested.
+00:49:57,872 --> 00:50:01,280
+lue dans les instantanés
+avec la formule de Rice.
 
 733
-00:50:16,387 --> 00:50:19,958
-Before the Taylor-Green runs, which
-forcing, Reynolds number definition
+00:50:01,930 --> 00:50:06,400
+Cinquième : un seul générateur
+qui franchit le seuil dynamo.
 
 734
-00:50:20,038 --> 00:50:23,814
-and resolution make their threshold
-comparable with published ones?
+00:50:07,540 --> 00:50:10,606
+L'étude en a testé des
+pièces sur des cas jouets :
 
 735
-00:50:28,987 --> 00:50:32,454
-Every chapter so far
-has ended on a question.
+00:50:10,686 --> 00:50:13,185
+des potentiels exacts sur la nappe plane,
 
 736
-00:50:32,534 --> 00:50:34,770
-The empty seats raised more.
+00:50:13,265 --> 00:50:17,810
+un bilan imposé sans données,
+la formule de Rice sur trois cadrans.
 
 737
-00:50:35,640 --> 00:50:38,437
-Hang each one under the step it shapes.
+00:50:18,837 --> 00:50:22,676
+Le domaine avance vite :
+un article de conférence de deux mille
 
 738
-00:50:38,517 --> 00:50:43,158
-Bet one: whether to add settings
-between seventeen and eighteen.
+00:50:22,756 --> 00:50:26,409
+vingt-six affirme être le premier
+à reconnaître un compromis
 
 739
-00:50:43,238 --> 00:50:47,805
-Bet two: the seed, the Reynolds
-number, the length of each run.
+00:50:26,489 --> 00:50:30,427
+entre précision physique et
+précision sur la distribution.
 
 740
-00:50:47,885 --> 00:50:50,313
-The generator: what it must match.
+00:50:30,547 --> 00:50:34,429
+La leçon de l'étude, ne jamais
+imposer une loi de la foule
 
 741
-00:50:50,393 --> 00:50:52,931
-The top steps: the partners' data.
+00:50:34,509 --> 00:50:38,597
+à chaque instantané, reste
+à situer face à cet article.
 
 742
-00:50:53,801 --> 00:50:57,410
-A staircase of bets is a
-staircase of decisions,
+00:50:39,337 --> 00:50:42,900
+Non revendiqués : les temps
+d'attente entre renversements,
 
 743
-00:50:57,490 --> 00:51:00,817
-and the first ones come before any run.
+00:50:42,980 --> 00:50:46,166
+le minuscule nombre de
+Prandtl magnétique du sodium,
 
 744
-00:51:02,787 --> 00:51:06,516
-First, the runs: these answers
-change what gets computed.
+00:50:46,246 --> 00:50:49,967
+le noyau terrestre,
+les vraies données de laboratoire.
 
 745
-00:51:07,386 --> 00:51:11,655
-Near a threshold, start from a
-tiny seed, a strong one, or both?
+00:50:50,337 --> 00:50:54,315
+Chaque zone vide est le résultat
+d'une recherche bibliographique,
 
 746
-00:51:11,735 --> 00:51:15,121
-Which values of Pm, since
-sodium's is out of reach?
+00:50:54,395 --> 00:50:57,847
+pas une preuve, à revérifier
+avant chaque article.
 
 747
-00:51:15,201 --> 00:51:18,791
-Settings spread evenly,
-or packed near each threshold?
+00:50:59,403 --> 00:51:03,311
+Premières données VKS :
+le générateur doit-il s'entraîner sur la
 
 748
-00:51:18,871 --> 00:51:21,714
-How many independent
-snapshots per setting?
+00:51:03,391 --> 00:51:08,083
+grille périodique de LATU, ou sur
+le maillage cylindrique de SFEMaNS ?
 
 749
-00:51:21,794 --> 00:51:24,500
-How long must runs near a threshold last?
+00:51:13,137 --> 00:51:14,537
+Retour à l'escalier.
 
 750
-00:51:24,580 --> 00:51:27,653
-Which forcing, Reynolds
-number and grid make the
+00:51:14,927 --> 00:51:18,091
+Les deux premières marches
+sont éclairées par de petites
 
 751
-00:51:27,733 --> 00:51:31,500
-Taylor-Green threshold
-comparable with published ones?
+00:51:18,171 --> 00:51:21,397
+expériences : trois nombres,
+puis une nappe plane.
 
 752
-00:51:31,580 --> 00:51:33,717
-And which campaign comes first?
+00:51:21,867 --> 00:51:26,747
+La troisième, la boîte tourbillonnante,
+n'a droit qu'à un aperçu.
 
 753
-00:51:34,887 --> 00:51:40,575
-Then the framing: how each result will
-be judged, decided before the data exist.
+00:51:27,487 --> 00:51:30,961
+À partir de là, chaque marche
+est un pari, écrit avant que
 
 754
-00:51:40,655 --> 00:51:45,223
-Which statistics must generated
-fields match, down to the shape of
+00:51:31,041 --> 00:51:35,047
+les données n'existent, dans
+un projet de thèse indépendant.
 
 755
-00:51:45,303 --> 00:51:50,452
-their field lines, and how close to
-the noise floor counts as success?
+00:51:36,103 --> 00:51:39,863
+Pour grimper, l'étude a d'abord
+construit une usine à données.
 
 756
-00:51:50,532 --> 00:51:55,465
-Which budgets must hold on average,
-and must their spread match too?
+00:51:40,323 --> 00:51:42,513
+Une fiche recette règle les boutons.
 
 757
-00:51:56,620 --> 00:52:00,920
-One answer, not about physics,
-could make most renting unnecessary.
+00:51:42,883 --> 00:51:45,917
+Des fours font tourner une
+simulation par réglage,
 
 758
-00:52:01,000 --> 00:52:02,403
-Which question is it?
+00:51:45,997 --> 00:51:49,753
+sur un ordinateur portable
+ou sur un cluster de calcul.
 
 759
-00:52:05,773 --> 00:52:07,876
-Where the computing happens.
+00:51:50,003 --> 00:51:53,461
+Chaque résultat est scellé
+dans un bocal étiqueté :
 
 760
-00:52:07,956 --> 00:52:12,904
-If a lab has graphics cards an
-intern can use, or there is already
+00:51:53,541 --> 00:51:58,033
+un numéro unique, la version
+du code, une somme de contrôle.
 
 761
-00:52:12,984 --> 00:52:17,852
-a Jean Zay project to join,
-renting shrinks to a short trial.
+00:51:58,773 --> 00:52:04,383
+Un registre recense chaque bocal, un menu
+les répartit entre entraînement et test,
 
 762
-00:52:17,932 --> 00:52:23,886
-And for the top steps: which partner
-simulations, in what form, and by when?
+00:52:04,463 --> 00:52:08,193
+le chef apprend, et un
+critique note le résultat.
 
 763
-00:52:25,053 --> 00:52:28,196
-The second shelf matters
-for the internship plan
+00:52:08,933 --> 00:52:12,347
+Tout fonctionne de bout en bout
+sur un processeur ordinaire ;
 
 764
-00:52:28,276 --> 00:52:31,854
-and the data request,
-not for the first campaigns.
+00:52:12,427 --> 00:52:16,823
+rien n'a encore tourné sur une carte
+graphique, ni sur un vrai cluster.
 
 765
-00:52:31,934 --> 00:52:35,676
-Which settings get runs long
-enough to count reversals?
+00:52:17,373 --> 00:52:21,293
+Une étiquette grise indique le
+fichier qu'attend chaque cadre vide.
 
 766
-00:52:35,756 --> 00:52:38,456
-Which operator decides what exact means?
+00:52:22,337 --> 00:52:25,945
+Premier produit sorti de
+la chaîne : la nappe plane,
 
 767
-00:52:38,536 --> 00:52:41,097
-Which labels must each snapshot carry?
+00:52:26,025 --> 00:52:29,547
+onze diffusivités,
+seize simulations chacune.
 
 768
-00:52:41,177 --> 00:52:43,987
-And may new results appear in this film?
+00:52:29,987 --> 00:52:33,668
+Le pari, ici un contrôle des
+données : à chaque réglage,
 
 769
-00:52:44,857 --> 00:52:50,857
-The last shelf can wait: the top steps'
-details, and how to frame a first paper.
+00:52:33,748 --> 00:52:39,517
+la dissipation moyenne correspond à la
+puissance injectée, à cinq pour cent près.
 
 770
-00:52:52,620 --> 00:52:57,579
-The first shelf fits in one message,
-to write before renting anything.
+00:52:40,770 --> 00:52:43,780
+Premier pari : la boîte tourbillonnante.
 
 771
-00:52:57,659 --> 00:52:59,883
-This ranking is only a proposal.
+00:52:44,270 --> 00:52:48,899
+En trente-deux au cube, le petit balayage
+a retrouvé les fenêtres publiées,
 
 772
-00:52:59,963 --> 00:53:02,513
-The supervisors may well change it.
+00:52:48,979 --> 00:52:54,080
+mais vers dix-sept et demi, le signe
+de la croissance est resté indéterminé.
 
 773
-00:53:03,383 --> 00:53:06,360
-Several answers could
-change what gets computed,
+00:52:54,820 --> 00:52:57,464
+La campagne double la
+résolution et parcourt
 
 774
-00:53:06,440 --> 00:53:09,017
-or whether anything is rented at all.
+00:52:57,544 --> 00:53:00,660
+les valeurs entières de
+Rm, jusqu'à quarante.
 
 775
-00:53:09,097 --> 00:53:11,749
-The cheapest experiment
-is a good question,
+00:53:01,120 --> 00:53:04,499
+Le pari : une croissance
+encore positive à dix-sept,
 
 776
-00:53:11,829 --> 00:53:14,509
-asked before renting a graphics card.
+00:53:04,579 --> 00:53:08,557
+déjà négative à dix-huit, avec
+deux ajustements concordants :
 
 777
-00:53:20,087 --> 00:53:22,158
-Questions first, then computing.
+00:53:08,637 --> 00:53:14,090
+l'un sur la partie conservée de la
+simulation, l'autre sur son dernier quart.
 
 778
-00:53:22,238 --> 00:53:25,721
-Here is what those questions
-rest on, in two columns.
+00:53:15,630 --> 00:53:19,276
+Confiance : moyenne. À dix-huit,
+dans le petit balayage,
 
 779
-00:53:25,801 --> 00:53:30,829
-On the left, what three small experiments
-measured on an ordinary processor.
+00:53:19,356 --> 00:53:21,539
+l'écart entre les deux ajustements
 
 780
-00:53:30,909 --> 00:53:33,431
-Toy problems, one or two training seeds,
+00:53:21,619 --> 00:53:25,010
+dépassait déjà le taux
+de croissance lui-même.
 
 781
-00:53:33,511 --> 00:53:38,199
-and machines tested only between
-the settings they were trained on.
+00:53:25,390 --> 00:53:27,163
+À demander avant le lancement :
 
 782
-00:53:39,069 --> 00:53:45,069
-On the right, what the staircase bets,
-each with the rule that will settle it.
+00:53:27,243 --> 00:53:30,980
+faut-il ajouter trois points
+entre dix-sept et dix-huit ?
 
 783
-00:53:45,328 --> 00:53:49,761
-Each lamp shows a verdict only
-once its data file arrives,
+00:53:32,203 --> 00:53:34,870
+Deuxième pari, la première vraie dynamo :
 
 784
-00:53:49,841 --> 00:53:52,661
-and the film is updated with it.
+00:53:34,950 --> 00:53:39,703
+un écoulement de Taylor-Green,
+fait de tourbillons contrarotatifs.
 
 785
-00:53:54,420 --> 00:53:58,149
-Back to the compass,
-and to the two questions.
+00:53:40,223 --> 00:53:43,693
+Cette fois, le champ agit
+en retour sur l'écoulement.
 
 786
-00:53:59,519 --> 00:54:01,421
-When will this needle turn?
+00:53:44,193 --> 00:53:49,113
+Au-dessus d'un seuil, un germe minuscule
+devrait croître, puis plafonner.
 
 787
-00:54:01,501 --> 00:54:03,624
-For the Earth, no one can say.
+00:53:49,853 --> 00:53:55,263
+Douze simulations croisent quatre nombres
+de Reynolds et trois valeurs de Pm.
 
 788
-00:54:03,704 --> 00:54:06,668
-In a simple computer
-model, chaos makes the
+00:53:55,713 --> 00:54:01,713
+Le pari : un seuil en Rm, encadré
+pour au moins deux valeurs de Pm.
 
 789
-00:54:06,748 --> 00:54:10,012
-forecast fade before
-the average wait ends.
+00:54:03,413 --> 00:54:06,122
+Confiance : moyenne.
+Les simulations publiées
 
 790
-00:54:10,092 --> 00:54:16,092
-But how often the field flips, counted as
-crossings of zero, can still be answered.
+00:54:06,202 --> 00:54:08,849
+définissent le nombre
+de Reynolds autrement,
 
 791
-00:54:16,186 --> 00:54:21,099
-The answer hides in a shoebox of
-snapshots, read with the equations.
+00:54:08,929 --> 00:54:12,853
+si bien que le seuil pourrait
+tomber hors de cette grille.
 
 792
-00:54:21,179 --> 00:54:27,083
-And a machine can learn to dream such
-snapshots, between the simulated settings.
+00:54:13,263 --> 00:54:15,994
+Près du seuil, une simulation
+peut encore croître
 
 793
-00:54:28,353 --> 00:54:31,221
-On small test problems, it partly works.
+00:54:16,074 --> 00:54:18,813
+au moment où l'on prélève ses instantanés.
 
 794
-00:54:31,301 --> 00:54:34,979
-The mirror holds by construction,
-at every setting.
+00:54:19,033 --> 00:54:23,133
+Faut-il allonger ces simulations,
+ou les signaler et les exclure ?
 
 795
-00:54:35,059 --> 00:54:37,979
-On three dials, the rate of zero crossings
+00:54:24,370 --> 00:54:27,050
+Pour certaines choses, pas besoin de pari.
 
 796
-00:54:38,059 --> 00:54:42,423
-is roughly right far from the
-threshold, and poor near it.
+00:54:27,560 --> 00:54:31,894
+En trois dimensions, les cartes de
+relief deviennent des potentiels :
 
 797
-00:54:42,503 --> 00:54:45,592
-A smooth machine rounds
-off a steep change.
+00:54:31,974 --> 00:54:35,950
+le générateur les dessine,
+puis calcule leur rotationnel.
 
 798
-00:54:45,672 --> 00:54:49,012
-The bigger tests,
-in three dimensions and in the
+00:54:36,190 --> 00:54:39,979
+Ainsi, l'écoulement et le champ
+restent à divergence nulle,
 
 799
-00:54:49,092 --> 00:54:52,629
-shapes of real machines,
-are written as bets.
+00:54:40,059 --> 00:54:44,390
+à l'erreur d'arrondi près,
+même avec des poids non entraînés.
 
 800
-00:54:54,099 --> 00:54:55,480
-One lesson remains.
+00:54:45,130 --> 00:54:50,120
+Prenez le reflet du bruit de départ, et
+l'échantillon sort avec son champ inversé.
 
 801
-00:54:55,560 --> 00:54:58,092
-Enforce each law where it is true.
+00:54:50,660 --> 00:54:53,480
+Cela montre le mécanisme, pas la qualité.
 
 802
-00:54:58,172 --> 00:55:00,167
-Exactly, where it is exact.
+00:54:54,537 --> 00:54:56,497
+Tout le reste doit être mesuré.
 
 803
-00:55:00,247 --> 00:55:03,582
-On average, where it
-only holds on average.
+00:54:56,857 --> 00:55:00,737
+Premier test : le générateur
+reproduit-il les spectres d'énergie
 
 804
-00:55:07,353 --> 00:55:11,424
-The report, the code,
-and every result in this film are
+00:55:00,817 --> 00:55:05,107
+à un dixième de décade près,
+aux réglages vus à l'entraînement ?
 
 805
-00:55:11,504 --> 00:55:15,725
-on the project's site,
-with their limits written out.
+00:55:05,847 --> 00:55:07,627
+Confiance : faible.
 
 806
-00:55:15,805 --> 00:55:19,712
-The rest of the staircase
-is still to be computed.
+00:55:07,977 --> 00:55:11,370
+En deux dimensions,
+les meilleurs modèles y sont tout
+
+807
+00:55:11,450 --> 00:55:14,514
+juste parvenus ; et ici,
+chaque simulation garde
+
+808
+00:55:14,594 --> 00:55:18,397
+quarante instantanés,
+contre cinq mille dans le plan.
+
+809
+00:55:20,337 --> 00:55:23,148
+Quittez la boîte périodique
+pour une vraie cuve,
+
+810
+00:55:23,228 --> 00:55:25,907
+et rester exact devient plus difficile.
+
+811
+00:55:26,327 --> 00:55:30,671
+Le potentiel a besoin d'une jauge
+et d'une condition à la paroi ;
+
+812
+00:55:30,751 --> 00:55:33,667
+chaque champ en a alors exactement un.
+
+813
+00:55:34,407 --> 00:55:37,870
+Aux turbines en fer doux,
+les lignes de champ changent
+
+814
+00:55:37,950 --> 00:55:40,887
+brusquement de direction
+à la surface du fer ;
+
+815
+00:55:40,967 --> 00:55:46,677
+un potentiel lisse ne peut donc pas être
+exact : il lui faut un pli à cet endroit.
+
+816
+00:55:47,917 --> 00:55:53,367
+À l'extérieur, le champ doit se raccorder,
+dans le vide, à un champ sans courant.
+
+817
+00:55:53,897 --> 00:55:56,454
+La règle est linéaire, mais non locale :
+
+818
+00:55:56,534 --> 00:56:00,687
+le champ en un point de la
+paroi dépend de toute la paroi.
+
+819
+00:56:01,287 --> 00:56:03,748
+L'imposer exactement et à moindre coût,
+
+820
+00:56:03,828 --> 00:56:07,547
+pour chaque échantillon,
+reste une question ouverte.
+
+821
+00:56:08,570 --> 00:56:12,716
+Les dernières marches sont des
+simulations d'expériences réelles :
+
+822
+00:56:12,796 --> 00:56:16,840
+le cylindre de VKS, et DRESDYN,
+un cylindre en précession.
+
+823
+00:56:17,580 --> 00:56:19,400
+Leurs paris sont déjà écrits.
+
+824
+00:56:19,860 --> 00:56:23,110
+Pour VKS : les quatre motifs
+principaux, avec les bonnes
+
+825
+00:56:23,190 --> 00:56:27,154
+parts d'énergie, et la fréquence
+des renversements prédite par Rice,
+
+826
+00:56:27,234 --> 00:56:30,180
+dans les barres d'erreur
+du comptage simulé.
+
+827
+00:56:30,350 --> 00:56:32,621
+Pour DRESDYN : le seuil à un taux de
+
+828
+00:56:32,701 --> 00:56:35,840
+précession jamais vu,
+à dix pour cent près.
+
+829
+00:56:37,080 --> 00:56:39,912
+Ces simulations appartiennent
+aux partenaires du projet :
+
+830
+00:56:39,992 --> 00:56:43,080
+elles ne sont pas publiques
+et doivent être demandées.
+
+831
+00:56:44,637 --> 00:56:47,523
+Avant les simulations
+Taylor-Green : quel forçage,
+
+832
+00:56:47,603 --> 00:56:51,081
+quelle définition du nombre de
+Reynolds et quelle résolution
+
+833
+00:56:51,161 --> 00:56:54,457
+rendent leur seuil comparable
+aux seuils publiés ?
+
+834
+00:56:59,503 --> 00:57:03,123
+Jusqu'ici, chaque chapitre
+s'est terminé sur une question.
+
+835
+00:57:03,533 --> 00:57:06,063
+Les cadres vides en ont soulevé d'autres.
+
+836
+00:57:06,803 --> 00:57:09,373
+Accrochez chacune sous
+la marche qui en dépend.
+
+837
+00:57:09,903 --> 00:57:14,523
+Premier pari : ajouter ou non des
+réglages entre dix-sept et dix-huit.
+
+838
+00:57:15,023 --> 00:57:16,731
+Deuxième pari : le germe,
+
+839
+00:57:16,811 --> 00:57:20,933
+le nombre de Reynolds,
+la durée de chaque simulation.
+
+840
+00:57:21,483 --> 00:57:24,253
+Le générateur : ce qu'il doit reproduire.
+
+841
+00:57:24,523 --> 00:57:27,503
+Les dernières marches :
+les données des partenaires.
+
+842
+00:57:28,243 --> 00:57:31,124
+Un escalier de paris est
+un escalier de décisions,
+
+843
+00:57:31,204 --> 00:57:34,613
+et les premières se prennent
+avant toute simulation.
+
+844
+00:57:36,470 --> 00:57:41,370
+D'abord, les simulations :
+ces réponses changent ce qui sera calculé.
+
+845
+00:57:42,110 --> 00:57:47,780
+Près d'un seuil, partir d'un germe
+minuscule, d'un germe fort, ou des deux ?
+
+846
+00:57:48,460 --> 00:57:52,390
+Quelles valeurs de Pm, puisque celle
+du sodium est hors d'atteinte ?
+
+847
+00:57:52,790 --> 00:57:57,250
+Des réglages espacés régulièrement,
+ou resserrés près de chaque seuil ?
+
+848
+00:57:57,840 --> 00:58:00,820
+Combien d'instantanés
+indépendants par réglage ?
+
+849
+00:58:00,990 --> 00:58:04,170
+Combien de temps doivent durer
+les simulations près d'un seuil ?
+
+850
+00:58:04,550 --> 00:58:08,325
+Quel forçage, quel nombre de
+Reynolds et quelle grille de calcul
+
+851
+00:58:08,405 --> 00:58:12,590
+rendent le seuil de Taylor-Green
+comparable aux seuils publiés ?
+
+852
+00:58:13,130 --> 00:58:15,260
+Et quelle campagne passe en premier ?
+
+853
+00:58:16,303 --> 00:58:20,348
+Ensuite, le cadrage : la façon
+dont chaque résultat sera jugé,
+
+854
+00:58:20,428 --> 00:58:23,353
+fixée avant que les données n'existent.
+
+855
+00:58:23,843 --> 00:58:27,129
+Quelles statistiques les champs
+générés doivent-ils reproduire,
+
+856
+00:58:27,209 --> 00:58:29,373
+jusqu'à la forme de leurs lignes de champ,
+
+857
+00:58:29,453 --> 00:58:33,203
+et à quelle distance du plancher
+de bruit parle-t-on de succès ?
+
+858
+00:58:33,343 --> 00:58:35,894
+Quels bilans doivent être
+respectés en moyenne,
+
+859
+00:58:35,974 --> 00:58:39,103
+et faut-il aussi que leur
+dispersion corresponde ?
+
+860
+00:58:40,137 --> 00:58:42,679
+Une réponse, qui ne porte
+pas sur la physique,
+
+861
+00:58:42,759 --> 00:58:45,597
+pourrait rendre la
+location presque inutile.
+
+862
+00:58:45,997 --> 00:58:47,727
+De quelle question s'agit-il ?
+
+863
+00:58:50,967 --> 00:58:52,437
+Où se fera le calcul.
+
+864
+00:58:52,937 --> 00:58:56,883
+Si un laboratoire a des cartes
+graphiques accessibles à un stagiaire,
+
+865
+00:58:56,963 --> 00:59:00,092
+ou s'il existe déjà un projet
+sur Jean Zay à rejoindre,
+
+866
+00:59:00,172 --> 00:59:03,127
+la location ne sert plus
+qu'à un court essai.
+
+867
+00:59:03,457 --> 00:59:06,237
+Et pour les dernières marches :
+quelles simulations
+
+868
+00:59:06,317 --> 00:59:09,507
+des partenaires, sous quelle
+forme, et pour quand ?
+
+869
+00:59:10,537 --> 00:59:13,155
+La deuxième étagère sert
+au plan de stage et à la
+
+870
+00:59:13,235 --> 00:59:16,207
+demande de données,
+pas aux premières campagnes.
+
+871
+00:59:16,657 --> 00:59:18,577
+Quels réglages auront
+des simulations assez
+
+872
+00:59:18,657 --> 00:59:20,847
+longues pour compter les renversements ?
+
+873
+00:59:21,247 --> 00:59:24,207
+Quel opérateur définit
+ce que veut dire exact ?
+
+874
+00:59:24,447 --> 00:59:27,577
+Quelles étiquettes chaque
+instantané doit-il porter ?
+
+875
+00:59:27,737 --> 00:59:30,987
+Et de nouveaux résultats
+peuvent-ils figurer dans ce film ?
+
+876
+00:59:31,727 --> 00:59:33,786
+La troisième étagère peut attendre :
+
+877
+00:59:33,866 --> 00:59:38,237
+le détail des dernières marches,
+et le cadrage d'un premier article.
+
+878
+00:59:39,270 --> 00:59:44,560
+La première étagère tient en un seul
+message, à écrire avant toute location.
+
+879
+00:59:45,010 --> 00:59:47,150
+Ce classement n'est qu'une proposition.
+
+880
+00:59:47,430 --> 00:59:49,730
+Les encadrants pourraient
+bien le modifier.
+
+881
+00:59:50,470 --> 00:59:53,755
+Plusieurs réponses pourraient
+changer ce qui sera calculé,
+
+882
+00:59:53,835 --> 00:59:56,370
+ou même rendre toute location inutile.
+
+883
+00:59:57,000 --> 01:00:00,205
+L'expérience la moins chère,
+c'est une bonne question,
+
+884
+01:00:00,285 --> 01:00:03,110
+posée avant de louer une carte graphique.
+
+885
+01:00:08,537 --> 01:00:11,617
+D'abord les questions, ensuite le calcul.
+
+886
+01:00:12,147 --> 01:00:15,737
+Voici sur quoi reposent ces
+questions, en deux colonnes.
+
+887
+01:00:16,137 --> 01:00:21,507
+À gauche, ce qu'ont mesuré trois petites
+expériences, sur un processeur ordinaire.
+
+888
+01:00:21,587 --> 01:00:24,384
+Des problèmes jouets,
+une ou deux graines aléatoires,
+
+889
+01:00:24,464 --> 01:00:28,647
+et des machines testées uniquement
+entre leurs réglages d'entraînement.
+
+890
+01:00:29,387 --> 01:00:34,227
+À droite, les paris de l'escalier,
+chacun avec le critère qui en décidera.
+
+891
+01:00:34,547 --> 01:00:37,329
+Chaque voyant n'affiche un
+verdict qu'à l'arrivée de son
+
+892
+01:00:37,409 --> 01:00:40,397
+fichier de données, et le
+film est alors mis à jour.
+
+893
+01:00:42,037 --> 01:00:44,887
+Retour à la boussole,
+et aux deux questions.
+
+894
+01:00:46,127 --> 01:00:48,257
+Quand cette aiguille
+va-t-elle se retourner ?
+
+895
+01:00:48,727 --> 01:00:51,307
+Pour la Terre, personne ne peut le dire.
+
+896
+01:00:51,827 --> 01:00:54,582
+Dans un modèle numérique
+simple, le chaos efface
+
+897
+01:00:54,662 --> 01:00:57,767
+la prévision avant la
+fin de l'attente moyenne.
+
+898
+01:00:57,977 --> 01:01:00,776
+Mais à quelle fréquence
+le champ se renverse,
+
+899
+01:01:00,856 --> 01:01:05,537
+en comptant les passages par zéro :
+à cela, on peut encore répondre.
+
+900
+01:01:06,187 --> 01:01:09,803
+La réponse se cache dans une boîte
+à chaussures pleine d'instantanés,
+
+901
+01:01:09,883 --> 01:01:12,517
+à condition de les lire
+avec les équations.
+
+902
+01:01:12,637 --> 01:01:15,020
+Et une machine peut
+apprendre à imaginer de
+
+903
+01:01:15,100 --> 01:01:18,007
+tels instantanés,
+entre les réglages simulés.
+
+904
+01:01:19,147 --> 01:01:21,937
+Sur de petits cas tests,
+cela marche en partie.
+
+905
+01:01:22,157 --> 01:01:25,797
+Le miroir est garanti par
+construction, à chaque réglage.
+
+906
+01:01:26,127 --> 01:01:29,541
+Sur les trois cadrans,
+la fréquence des passages par zéro
+
+907
+01:01:29,621 --> 01:01:33,507
+est à peu près juste loin du
+seuil, et médiocre tout près.
+
+908
+01:01:34,027 --> 01:01:37,917
+Une machine qui varie en douceur
+arrondit un changement abrupt.
+
+909
+01:01:37,997 --> 01:01:41,382
+Les tests à plus grande échelle,
+en trois dimensions et dans la
+
+910
+01:01:41,462 --> 01:01:45,367
+géométrie d'expériences réelles,
+sont écrits sous forme de paris.
+
+911
+01:01:46,707 --> 01:01:48,077
+Il reste une leçon.
+
+912
+01:01:48,307 --> 01:01:50,987
+Imposez chaque loi là où elle est vraie.
+
+913
+01:01:51,177 --> 01:01:53,727
+Exactement, là où elle est exacte.
+
+914
+01:01:54,047 --> 01:01:57,187
+En moyenne, là où elle
+n'est vraie qu'en moyenne.
+
+915
+01:02:00,837 --> 01:02:04,745
+Le rapport, le code et chaque
+résultat de ce film sont sur le
+
+916
+01:02:04,825 --> 01:02:08,947
+site du projet, avec leurs
+limites écrites noir sur blanc.
+
+917
+01:02:09,357 --> 01:02:12,317
+Le reste de l'escalier
+est encore à calculer.

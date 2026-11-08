@@ -12,13 +12,15 @@ Style: Sub,Inter Medium,42,&H00F7F4F2,&H00F7F4F2,&H38140F0B,&H00000000,0,0,0,0,1
 
 [Events]
 Format: Layer, Start, End, Style, Name, MarginL, MarginR, MarginV, Effect, Text
-Dialogue: 0,0:00:00.32,0:00:02.39,Sub,,0,0,0,,{\fad(120,100)\move(960,1020,960,1016,0,120)}Bet two, the first true dynamo:
-Dialogue: 0,0:00:02.47,0:00:05.96,Sub,,0,0,0,,{\fad(120,100)\move(960,1020,960,1016,0,120)}a Taylor-Green flow of\Ncounter-rotating eddies.
-Dialogue: 0,0:00:06.04,0:00:08.71,Sub,,0,0,0,,{\fad(120,100)\move(960,1020,960,1016,0,120)}Now the {\c&H3468EB&}field{\c&HF7F4F2&} pushes back on the flow.
-Dialogue: 0,0:00:08.79,0:00:13.09,Sub,,0,0,0,,{\fad(120,100)\move(960,1020,960,1016,0,120)}Above a threshold, a tiny {\c&H3468EB&}seed{\c&HF7F4F2&}\Nshould grow, then level off.
-Dialogue: 0,0:00:13.96,0:00:18.86,Sub,,0,0,0,,{\fad(120,100)\move(960,1020,960,1016,0,120)}Twelve runs cross four Reynolds\Nnumbers with three values of {\c&H7AAF1B&}Pm{\c&HF7F4F2&}.
-Dialogue: 0,0:00:18.94,0:00:24.26,Sub,,0,0,0,,{\fad(120,100)\move(960,1020,960,1016,0,120)}The bet: a threshold in {\c&H7AAF1B&}Rm{\c&HF7F4F2&},\Nbracketed for at least two values of Pm.
-Dialogue: 0,0:00:25.93,0:00:30.68,Sub,,0,0,0,,{\fad(120,100)\move(960,1020,960,1016,0,120)}Confidence: medium. Published runs\Ndefine the Reynolds number differently,
-Dialogue: 0,0:00:30.76,0:00:33.59,Sub,,0,0,0,,{\fad(120,100)\move(960,1020,960,1016,0,120)}so the threshold may fall off this grid.
-Dialogue: 0,0:00:33.67,0:00:38.37,Sub,,0,0,0,,{\fad(120,100)\move(960,1020,960,1016,0,120)}Near threshold, a run may still be\Ngrowing when its snapshots are kept.
-Dialogue: 0,0:00:38.45,0:00:41.58,Sub,,0,0,0,,{\fad(120,100)\move(960,1020,960,1016,0,120)}Lengthen those runs,\Nor flag and exclude them?
+Dialogue: 0,0:00:00.37,0:00:03.04,Sub,,0,0,0,,{\fad(120,100)\move(960,1020,960,1016,0,120)}Deuxième pari, la première vraie dynamo :
+Dialogue: 0,0:00:03.12,0:00:07.87,Sub,,0,0,0,,{\fad(120,100)\move(960,1020,960,1016,0,120)}un écoulement de Taylor-Green,\Nfait de tourbillons contrarotatifs.
+Dialogue: 0,0:00:08.39,0:00:11.86,Sub,,0,0,0,,{\fad(120,100)\move(960,1020,960,1016,0,120)}Cette fois, le {\c&H3468EB&}champ{\c&HF7F4F2&} agit\Nen retour sur l'écoulement.
+Dialogue: 0,0:00:12.36,0:00:17.28,Sub,,0,0,0,,{\fad(120,100)\move(960,1020,960,1016,0,120)}Au-dessus d'un seuil, un {\c&H3468EB&}germe{\c&HF7F4F2&} minuscule\Ndevrait croître, puis plafonner.
+Dialogue: 0,0:00:18.02,0:00:23.43,Sub,,0,0,0,,{\fad(120,100)\move(960,1020,960,1016,0,120)}Douze simulations croisent quatre nombres\Nde Reynolds et trois valeurs de {\c&H7AAF1B&}Pm{\c&HF7F4F2&}.
+Dialogue: 0,0:00:23.88,0:00:29.88,Sub,,0,0,0,,{\fad(120,100)\move(960,1020,960,1016,0,120)}Le pari : un seuil en {\c&H7AAF1B&}Rm{\c&HF7F4F2&}, encadré\Npour au moins deux valeurs de Pm.
+Dialogue: 0,0:00:31.58,0:00:34.29,Sub,,0,0,0,,{\fad(120,100)\move(960,1020,960,1016,0,120)}Confiance : moyenne.\NLes simulations publiées
+Dialogue: 0,0:00:34.37,0:00:37.02,Sub,,0,0,0,,{\fad(120,100)\move(960,1020,960,1016,0,120)}définissent le nombre\Nde Reynolds autrement,
+Dialogue: 0,0:00:37.10,0:00:41.02,Sub,,0,0,0,,{\fad(120,100)\move(960,1020,960,1016,0,120)}si bien que le seuil pourrait\Ntomber hors de cette grille.
+Dialogue: 0,0:00:41.43,0:00:44.16,Sub,,0,0,0,,{\fad(120,100)\move(960,1020,960,1016,0,120)}Près du seuil, une simulation\Npeut encore croître
+Dialogue: 0,0:00:44.24,0:00:46.98,Sub,,0,0,0,,{\fad(120,100)\move(960,1020,960,1016,0,120)}au moment où l'on prélève ses instantanés.
+Dialogue: 0,0:00:47.20,0:00:51.30,Sub,,0,0,0,,{\fad(120,100)\move(960,1020,960,1016,0,120)}Faut-il allonger ces simulations,\Nou les signaler et les exclure ?

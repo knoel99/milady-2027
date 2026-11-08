@@ -12,5 +12,5 @@ Style: Sub,Inter Medium,42,&H00F7F4F2,&H00F7F4F2,&H38140F0B,&H00000000,0,0,0,0,1
 
 [Events]
 Format: Layer, Start, End, Style, Name, MarginL, MarginR, MarginV, Effect, Text
-Dialogue: 0,0:00:00.42,0:00:03.07,Sub,,0,0,0,,{\fad(120,100)\move(960,1020,960,1016,0,120)}For VKS, which dipole should Rice count,
-Dialogue: 0,0:00:03.15,0:00:07.02,Sub,,0,0,0,,{\fad(120,100)\move(960,1020,960,1016,0,120)}and what threshold turns a\Ncrossing into a reversal?
+Dialogue: 0,0:00:00.47,0:00:04.15,Sub,,0,0,0,,{\fad(120,100)\move(960,1020,960,1016,0,120)}Pour VKS, quel dipôle la formule\Nde Rice doit-elle suivre,
+Dialogue: 0,0:00:04.23,0:00:08.32,Sub,,0,0,0,,{\fad(120,100)\move(960,1020,960,1016,0,120)}et quel seuil fait d'un passage\Npar zéro un renversement ?

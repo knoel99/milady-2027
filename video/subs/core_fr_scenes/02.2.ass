@@ -12,12 +12,12 @@ Style: Sub,Inter Medium,42,&H00F7F4F2,&H00F7F4F2,&H38140F0B,&H00000000,0,0,0,0,1
 
 [Events]
 Format: Layer, Start, End, Style, Name, MarginL, MarginR, MarginV, Effect, Text
-Dialogue: 0,0:00:00.32,0:00:04.85,Sub,,0,0,0,,{\fad(120,100)\move(960,1020,960,1016,0,120)}Un seul nombre compte les points :\Nle {\c&H7AAF1B&}nombre de Reynolds magnétique{\c&HF7F4F2&}, Rm.
-Dialogue: 0,0:00:04.93,0:00:06.88,Sub,,0,0,0,,{\fad(120,100)\move(960,1020,960,1016,0,120)}C'est la {\c&HE58739&}vitesse de l'écoulement{\c&HF7F4F2&},
-Dialogue: 0,0:00:06.96,0:00:11.11,Sub,,0,0,0,,{\fad(120,100)\move(960,1020,960,1016,0,120)}multipliée par sa taille, divisée\Npar la {\c&H7AAF1B&}diffusivité magnétique{\c&HF7F4F2&}.
-Dialogue: 0,0:00:11.19,0:00:14.50,Sub,,0,0,0,,{\fad(120,100)\move(960,1020,960,1016,0,120)}À grand Rm, l'étirement va\Nplus vite que l'estompage.
-Dialogue: 0,0:00:14.58,0:00:16.79,Sub,,0,0,0,,{\fad(120,100)\move(960,1020,960,1016,0,120)}À petit Rm, l'estompage l'emporte.
-Dialogue: 0,0:00:17.66,0:00:22.67,Sub,,0,0,0,,{\fad(120,100)\move(960,1020,960,1016,0,120)}Tournez le bouton pour augmenter Rm,\Net observez un faible champ germe.
-Dialogue: 0,0:00:22.75,0:00:24.82,Sub,,0,0,0,,{\fad(120,100)\move(960,1020,960,1016,0,120)}À petit Rm, le germe s'éteint.
-Dialogue: 0,0:00:24.90,0:00:28.69,Sub,,0,0,0,,{\fad(120,100)\move(960,1020,960,1016,0,120)}Au-delà d'un seuil, le taux\Nde croissance franchit zéro,
-Dialogue: 0,0:00:28.77,0:00:31.66,Sub,,0,0,0,,{\fad(120,100)\move(960,1020,960,1016,0,120)}et le germe grandit, comme le larsen.
+Dialogue: 0,0:00:00.37,0:00:05.64,Sub,,0,0,0,,{\fad(120,100)\move(960,1020,960,1016,0,120)}Un seul nombre compte les points :\Nle {\c&H7AAF1B&}nombre de Reynolds magnétique{\c&HF7F4F2&}, Rm.
+Dialogue: 0,0:00:06.05,0:00:08.03,Sub,,0,0,0,,{\fad(120,100)\move(960,1020,960,1016,0,120)}C'est la {\c&HE58739&}vitesse de l'écoulement{\c&HF7F4F2&},
+Dialogue: 0,0:00:08.11,0:00:12.43,Sub,,0,0,0,,{\fad(120,100)\move(960,1020,960,1016,0,120)}multipliée par sa taille, divisée\Npar la {\c&H7AAF1B&}diffusivité magnétique{\c&HF7F4F2&}.
+Dialogue: 0,0:00:12.97,0:00:16.98,Sub,,0,0,0,,{\fad(120,100)\move(960,1020,960,1016,0,120)}À grand Rm, l'étirement va\Nplus vite que l'estompage.
+Dialogue: 0,0:00:17.30,0:00:20.43,Sub,,0,0,0,,{\fad(120,100)\move(960,1020,960,1016,0,120)}À petit Rm, l'estompage l'emporte.
+Dialogue: 0,0:00:21.17,0:00:25.96,Sub,,0,0,0,,{\fad(120,100)\move(960,1020,960,1016,0,120)}Tournez le bouton pour augmenter Rm,\Net observez un faible champ germe.
+Dialogue: 0,0:00:26.49,0:00:29.24,Sub,,0,0,0,,{\fad(120,100)\move(960,1020,960,1016,0,120)}À petit Rm, le germe s'éteint.
+Dialogue: 0,0:00:29.72,0:00:33.55,Sub,,0,0,0,,{\fad(120,100)\move(960,1020,960,1016,0,120)}Au-delà d'un seuil, le taux\Nde croissance franchit zéro,
+Dialogue: 0,0:00:33.63,0:00:36.54,Sub,,0,0,0,,{\fad(120,100)\move(960,1020,960,1016,0,120)}et le germe grandit, comme le larsen.

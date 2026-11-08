@@ -1,0 +1,27 @@
+[Script Info]
+ScriptType: v4.00+
+PlayResX: 1920
+PlayResY: 1080
+WrapStyle: 2
+ScaledBorderAndShadow: yes
+YCbCr Matrix: TV.709
+
+[V4+ Styles]
+Format: Name, Fontname, Fontsize, PrimaryColour, SecondaryColour, OutlineColour, BackColour, Bold, Italic, Underline, StrikeOut, ScaleX, ScaleY, Spacing, Angle, BorderStyle, Outline, Shadow, Alignment, MarginL, MarginR, MarginV, Encoding
+Style: Sub,Inter Medium,42,&H00F7F4F2,&H00F7F4F2,&H38140F0B,&H00000000,0,0,0,0,100,100,0,0,3,12,0,2,240,240,64,1
+
+[Events]
+Format: Layer, Start, End, Style, Name, MarginL, MarginR, MarginV, Effect, Text
+Dialogue: 0,0:00:03.17,0:00:06.09,Sub,,0,0,0,,{\fad(120,100)\move(960,1020,960,1016,0,120)}La physique fournit à la\Nmachine deux sortes de lois.
+Dialogue: 0,0:00:06.35,0:00:09.79,Sub,,0,0,0,,{\fad(120,100)\move(960,1020,960,1016,0,120)}Certaines valent pour chaque\Ninstantané, sans exception.
+Dialogue: 0,0:00:10.15,0:00:12.32,Sub,,0,0,0,,{\fad(120,100)\move(960,1020,960,1016,0,120)}D'autres ne valent que pour la foule.
+Dialogue: 0,0:00:12.73,0:00:15.04,Sub,,0,0,0,,{\fad(120,100)\move(960,1020,960,1016,0,120)}Deux étagères, encore vides.
+Dialogue: 0,0:00:15.78,0:00:19.67,Sub,,0,0,0,,{\fad(120,100)\move(960,1020,960,1016,0,120)}Retour aux trois cadrans, à un\N{\c&H7AAF1B&}Gamma{\c&HF7F4F2&} jamais vu à l'entraînement.
+Dialogue: 0,0:00:19.99,0:00:22.30,Sub,,0,0,0,,{\fad(120,100)\move(960,1020,960,1016,0,120)}En gris, de vrais instantanés.
+Dialogue: 0,0:00:22.57,0:00:25.11,Sub,,0,0,0,,{\fad(120,100)\move(960,1020,960,1016,0,120)}En violet, un {\c&HF09CB4&}générateur{\c&HF7F4F2&} de base.
+Dialogue: 0,0:00:25.34,0:00:27.01,Sub,,0,0,0,,{\fad(120,100)\move(960,1020,960,1016,0,120)}La forme est la bonne.
+Dialogue: 0,0:00:27.75,0:00:29.48,Sub,,0,0,0,,{\fad(120,100)\move(960,1020,960,1016,0,120)}Pesez maintenant les deux côtés.
+Dialogue: 0,0:00:30.03,0:00:33.73,Sub,,0,0,0,,{\fad(120,100)\move(960,1020,960,1016,0,120)}La vérité est équilibrée ;\Nla machine, non.
+Dialogue: 0,0:00:34.15,0:00:38.85,Sub,,0,0,0,,{\fad(120,100)\move(960,1020,960,1016,0,120)}Seuls quatre de ses instantanés sur\Ndix, environ, pointent vers le haut.
+Dialogue: 0,0:00:39.10,0:00:43.65,Sub,,0,0,0,,{\fad(120,100)\move(960,1020,960,1016,0,120)}Elle a recopié ses données : sous le\Nseuil, chaque simulation reste dans un
+Dialogue: 0,0:00:43.73,0:00:48.63,Sub,,0,0,0,,{\fad(120,100)\move(960,1020,960,1016,0,120)}seul tourbillon, et les simulations\Nne se répartissent pas à parts égales.

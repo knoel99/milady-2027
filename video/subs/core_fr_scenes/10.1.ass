@@ -12,9 +12,9 @@ Style: Sub,Inter Medium,42,&H00F7F4F2,&H00F7F4F2,&H38140F0B,&H00000000,0,0,0,0,1
 
 [Events]
 Format: Layer, Start, End, Style, Name, MarginL, MarginR, MarginV, Effect, Text
-Dialogue: 0,0:00:03.12,0:00:04.69,Sub,,0,0,0,,{\fad(120,100)\move(960,1020,960,1016,0,120)}Back to the staircase.
-Dialogue: 0,0:00:04.77,0:00:08.25,Sub,,0,0,0,,{\fad(120,100)\move(960,1020,960,1016,0,120)}The first two steps are\Nlit by small experiments:
-Dialogue: 0,0:00:08.33,0:00:10.94,Sub,,0,0,0,,{\fad(120,100)\move(960,1020,960,1016,0,120)}three numbers, then a flat sheet.
-Dialogue: 0,0:00:11.02,0:00:14.66,Sub,,0,0,0,,{\fad(120,100)\move(960,1020,960,1016,0,120)}The third, the twisting\Nbox, has only a preview.
-Dialogue: 0,0:00:15.53,0:00:18.02,Sub,,0,0,0,,{\fad(120,100)\move(960,1020,960,1016,0,120)}From there up, every step is a bet,
-Dialogue: 0,0:00:18.10,0:00:23.36,Sub,,0,0,0,,{\fad(120,100)\move(960,1020,960,1016,0,120)}written down before the data exist,\Nin an independent PhD proposal.
+Dialogue: 0,0:00:03.17,0:00:04.57,Sub,,0,0,0,,{\fad(120,100)\move(960,1020,960,1016,0,120)}Retour à l'escalier.
+Dialogue: 0,0:00:04.96,0:00:08.12,Sub,,0,0,0,,{\fad(120,100)\move(960,1020,960,1016,0,120)}Les deux premières marches\Nsont éclairées par de petites
+Dialogue: 0,0:00:08.20,0:00:11.43,Sub,,0,0,0,,{\fad(120,100)\move(960,1020,960,1016,0,120)}expériences : trois nombres,\Npuis une nappe plane.
+Dialogue: 0,0:00:11.90,0:00:16.78,Sub,,0,0,0,,{\fad(120,100)\move(960,1020,960,1016,0,120)}La troisième, la boîte tourbillonnante,\Nn'a droit qu'à un aperçu.
+Dialogue: 0,0:00:17.52,0:00:20.99,Sub,,0,0,0,,{\fad(120,100)\move(960,1020,960,1016,0,120)}À partir de là, chaque marche\Nest un pari, écrit avant que
+Dialogue: 0,0:00:21.07,0:00:25.08,Sub,,0,0,0,,{\fad(120,100)\move(960,1020,960,1016,0,120)}les données n'existent, dans\Nun projet de thèse indépendant.

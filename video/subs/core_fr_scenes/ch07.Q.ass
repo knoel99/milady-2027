@@ -12,5 +12,6 @@ Style: Sub,Inter Medium,42,&H00F7F4F2,&H00F7F4F2,&H38140F0B,&H00000000,0,0,0,0,1
 
 [Events]
 Format: Layer, Start, End, Style, Name, MarginL, MarginR, MarginV, Effect, Text
-Dialogue: 0,0:00:00.42,0:00:03.53,Sub,,0,0,0,,{\fad(120,100)\move(960,1020,960,1016,0,120)}In three dimensions,\Nwhich budgets should generated
-Dialogue: 0,0:00:03.61,0:00:07.44,Sub,,0,0,0,,{\fad(120,100)\move(960,1020,960,1016,0,120)}fields meet on average,\Nand must their spread match too?
+Dialogue: 0,0:00:00.47,0:00:03.39,Sub,,0,0,0,,{\fad(120,100)\move(960,1020,960,1016,0,120)}En trois dimensions, quels\Nbilans les champs générés
+Dialogue: 0,0:00:03.47,0:00:05.29,Sub,,0,0,0,,{\fad(120,100)\move(960,1020,960,1016,0,120)}doivent-ils respecter en moyenne,
+Dialogue: 0,0:00:05.37,0:00:09.34,Sub,,0,0,0,,{\fad(120,100)\move(960,1020,960,1016,0,120)}et leur dispersion doit-elle\Naussi être celle des simulations ?

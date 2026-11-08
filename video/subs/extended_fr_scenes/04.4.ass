@@ -1,0 +1,25 @@
+[Script Info]
+ScriptType: v4.00+
+PlayResX: 1920
+PlayResY: 1080
+WrapStyle: 2
+ScaledBorderAndShadow: yes
+YCbCr Matrix: TV.709
+
+[V4+ Styles]
+Format: Name, Fontname, Fontsize, PrimaryColour, SecondaryColour, OutlineColour, BackColour, Bold, Italic, Underline, StrikeOut, ScaleX, ScaleY, Spacing, Angle, BorderStyle, Outline, Shadow, Alignment, MarginL, MarginR, MarginV, Encoding
+Style: Sub,Inter Medium,42,&H00F7F4F2,&H00F7F4F2,&H38140F0B,&H00000000,0,0,0,0,100,100,0,0,3,12,0,2,240,240,64,1
+
+[Events]
+Format: Layer, Start, End, Style, Name, MarginL, MarginR, MarginV, Effect, Text
+Dialogue: 0,0:00:00.37,0:00:02.50,Sub,,0,0,0,,{\fad(120,100)\move(960,1020,960,1016,0,120)}Réglez {\c&H7AAF1B&}Gamma{\c&HF7F4F2&} à zéro virgule neuf,
+Dialogue: 0,0:00:02.58,0:00:06.27,Sub,,0,0,0,,{\fad(120,100)\move(960,1020,960,1016,0,120)}et lancez deux copies,\Ndistantes d'un millionième.
+Dialogue: 0,0:00:06.66,0:00:09.45,Sub,,0,0,0,,{\fad(120,100)\move(960,1020,960,1016,0,120)}On connaît l'état à six\Ndécimales près. Peut-on
+Dialogue: 0,0:00:09.53,0:00:12.42,Sub,,0,0,0,,{\fad(120,100)\move(960,1020,960,1016,0,120)}prédire la date du prochain renversement ?
+Dialogue: 0,0:00:16.16,0:00:19.24,Sub,,0,0,0,,{\fad(120,100)\move(960,1020,960,1016,0,120)}Au début, les deux copies\Navancent d'un même pas.
+Dialogue: 0,0:00:19.58,0:00:23.22,Sub,,0,0,0,,{\fad(120,100)\move(960,1020,960,1016,0,120)}Mais leur écart triple presque\Ntoutes les onze unités de temps.
+Dialogue: 0,0:00:23.59,0:00:27.41,Sub,,0,0,0,,{\fad(120,100)\move(960,1020,960,1016,0,120)}Au bout d'environ cent cinquante,\Nelles n'ont plus rien en commun.
+Dialogue: 0,0:00:28.15,0:00:33.11,Sub,,0,0,0,,{\fad(120,100)\move(960,1020,960,1016,0,120)}L'attente moyenne entre deux passages par\Nzéro est plus longue : plus de deux cents.
+Dialogue: 0,0:00:33.78,0:00:37.98,Sub,,0,0,0,,{\fad(120,100)\move(960,1020,960,1016,0,120)}Chaque décimale de plus ne fait gagner\Nqu'environ vingt-cinq unités de temps.
+Dialogue: 0,0:00:38.58,0:00:41.74,Sub,,0,0,0,,{\fad(120,100)\move(960,1020,960,1016,0,120)}La prévision s'efface donc\Navant la fin de l'attente
+Dialogue: 0,0:00:41.82,0:00:44.83,Sub,,0,0,0,,{\fad(120,100)\move(960,1020,960,1016,0,120)}moyenne. Seules les\Nstatistiques survivent.

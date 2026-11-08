@@ -1,0 +1,30 @@
+[Script Info]
+ScriptType: v4.00+
+PlayResX: 1920
+PlayResY: 1080
+WrapStyle: 2
+ScaledBorderAndShadow: yes
+YCbCr Matrix: TV.709
+
+[V4+ Styles]
+Format: Name, Fontname, Fontsize, PrimaryColour, SecondaryColour, OutlineColour, BackColour, Bold, Italic, Underline, StrikeOut, ScaleX, ScaleY, Spacing, Angle, BorderStyle, Outline, Shadow, Alignment, MarginL, MarginR, MarginV, Encoding
+Style: Sub,Inter Medium,42,&H00F7F4F2,&H00F7F4F2,&H38140F0B,&H00000000,0,0,0,0,100,100,0,0,3,12,0,2,240,240,64,1
+
+[Events]
+Format: Layer, Start, End, Style, Name, MarginL, MarginR, MarginV, Effect, Text
+Dialogue: 0,0:00:00.37,0:00:03.05,Sub,,0,0,0,,{\fad(120,100)\move(960,1020,960,1016,0,120)}Souvenez-vous du bilan\Nde la boîte à chaussures.
+Dialogue: 0,0:00:03.38,0:00:07.42,Sub,,0,0,0,,{\fad(120,100)\move(960,1020,960,1016,0,120)}Instantané par instantané,\Nl'énergie monte ou baisse.
+Dialogue: 0,0:00:07.74,0:00:12.80,Sub,,0,0,0,,{\fad(120,100)\move(960,1020,960,1016,0,120)}Seule la foule s'équilibre, en moyenne,\Ncomme un compte en banque sur des années.
+Dialogue: 0,0:00:13.54,0:00:16.73,Sub,,0,0,0,,{\fad(120,100)\move(960,1020,960,1016,0,120)}Maintenant, une solution\Ntentante pour la machine.
+Dialogue: 0,0:00:16.95,0:00:20.41,Sub,,0,0,0,,{\fad(120,100)\move(960,1020,960,1016,0,120)}Forcez chaque instantané\Ngénéré à équilibrer
+Dialogue: 0,0:00:20.49,0:00:23.87,Sub,,0,0,0,,{\fad(120,100)\move(960,1020,960,1016,0,120)}exactement son bilan. Mieux, ou pire ?
+Dialogue: 0,0:00:27.61,0:00:28.54,Sub,,0,0,0,,{\fad(120,100)\move(960,1020,960,1016,0,120)}Pire.
+Dialogue: 0,0:00:28.62,0:00:33.30,Sub,,0,0,0,,{\fad(120,100)\move(960,1020,960,1016,0,120)}Poussez chaque instantané jusqu'à\Nce que son énergie cesse de varier :
+Dialogue: 0,0:00:33.38,0:00:36.84,Sub,,0,0,0,,{\fad(120,100)\move(960,1020,960,1016,0,120)}le tas, si large,\Ns'effondre en un pic à zéro.
+Dialogue: 0,0:00:37.13,0:00:41.59,Sub,,0,0,0,,{\fad(120,100)\move(960,1020,960,1016,0,120)}Un livre de comptes où chaque jour,\Nsans exception, est à l'équilibre.
+Dialogue: 0,0:00:41.87,0:00:44.35,Sub,,0,0,0,,{\fad(120,100)\move(960,1020,960,1016,0,120)}Aucun vrai compte ne ressemble à ça.
+Dialogue: 0,0:00:45.09,0:00:48.69,Sub,,0,0,0,,{\fad(120,100)\move(960,1020,960,1016,0,120)}La {\c&H00A1ED&}distance à la vraie distribution{\c&HF7F4F2&}\Nest multipliée par neuf.
+Dialogue: 0,0:00:49.01,0:00:53.21,Sub,,0,0,0,,{\fad(120,100)\move(960,1020,960,1016,0,120)}Une courte démonstration explique\Npourquoi : même un générateur parfait,
+Dialogue: 0,0:00:53.29,0:00:57.12,Sub,,0,0,0,,{\fad(120,100)\move(960,1020,960,1016,0,120)}contraint de cette façon,\Nne peut pas reproduire la vérité.
+Dialogue: 0,0:00:57.53,0:01:00.05,Sub,,0,0,0,,{\fad(120,100)\move(960,1020,960,1016,0,120)}Le bilan va donc sur\Nl'étagère de la foule.
+Dialogue: 0,0:01:00.13,0:01:05.10,Sub,,0,0,0,,{\fad(120,100)\move(960,1020,960,1016,0,120)}Sur le banc d'essai suivant, un score plus\Ngrossier se laisse tromper par un tel pic.

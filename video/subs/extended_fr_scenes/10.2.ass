@@ -1,0 +1,25 @@
+[Script Info]
+ScriptType: v4.00+
+PlayResX: 1920
+PlayResY: 1080
+WrapStyle: 2
+ScaledBorderAndShadow: yes
+YCbCr Matrix: TV.709
+
+[V4+ Styles]
+Format: Name, Fontname, Fontsize, PrimaryColour, SecondaryColour, OutlineColour, BackColour, Bold, Italic, Underline, StrikeOut, ScaleX, ScaleY, Spacing, Angle, BorderStyle, Outline, Shadow, Alignment, MarginL, MarginR, MarginV, Encoding
+Style: Sub,Inter Medium,42,&H00F7F4F2,&H00F7F4F2,&H38140F0B,&H00000000,0,0,0,0,100,100,0,0,3,12,0,2,240,240,64,1
+
+[Events]
+Format: Layer, Start, End, Style, Name, MarginL, MarginR, MarginV, Effect, Text
+Dialogue: 0,0:00:00.37,0:00:04.13,Sub,,0,0,0,,{\fad(120,100)\move(960,1020,960,1016,0,120)}Pour grimper, l'étude a d'abord\Nconstruit une usine à données.
+Dialogue: 0,0:00:04.59,0:00:06.78,Sub,,0,0,0,,{\fad(120,100)\move(960,1020,960,1016,0,120)}Une fiche recette règle les {\c&H7AAF1B&}boutons{\c&HF7F4F2&}.
+Dialogue: 0,0:00:07.15,0:00:10.18,Sub,,0,0,0,,{\fad(120,100)\move(960,1020,960,1016,0,120)}Des fours font tourner une\Nsimulation par réglage,
+Dialogue: 0,0:00:10.26,0:00:14.02,Sub,,0,0,0,,{\fad(120,100)\move(960,1020,960,1016,0,120)}sur un ordinateur portable\Nou sur un cluster de calcul.
+Dialogue: 0,0:00:14.27,0:00:17.73,Sub,,0,0,0,,{\fad(120,100)\move(960,1020,960,1016,0,120)}Chaque résultat est scellé\Ndans un bocal étiqueté :
+Dialogue: 0,0:00:17.81,0:00:22.30,Sub,,0,0,0,,{\fad(120,100)\move(960,1020,960,1016,0,120)}un numéro unique, la version\Ndu code, une somme de contrôle.
+Dialogue: 0,0:00:23.04,0:00:28.65,Sub,,0,0,0,,{\fad(120,100)\move(960,1020,960,1016,0,120)}Un registre recense chaque bocal, un menu\Nles répartit entre entraînement et test,
+Dialogue: 0,0:00:28.73,0:00:32.46,Sub,,0,0,0,,{\fad(120,100)\move(960,1020,960,1016,0,120)}le {\c&HF09CB4&}chef{\c&HF7F4F2&} apprend, et un\Ncritique note le résultat.
+Dialogue: 0,0:00:33.20,0:00:36.61,Sub,,0,0,0,,{\fad(120,100)\move(960,1020,960,1016,0,120)}Tout fonctionne de bout en bout\Nsur un processeur ordinaire ;
+Dialogue: 0,0:00:36.69,0:00:41.09,Sub,,0,0,0,,{\fad(120,100)\move(960,1020,960,1016,0,120)}rien n'a encore tourné sur une carte\Ngraphique, ni sur un vrai cluster.
+Dialogue: 0,0:00:41.64,0:00:45.56,Sub,,0,0,0,,{\fad(120,100)\move(960,1020,960,1016,0,120)}Une étiquette grise indique le\Nfichier qu'attend chaque cadre vide.

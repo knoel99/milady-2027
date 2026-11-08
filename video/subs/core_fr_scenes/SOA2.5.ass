@@ -12,9 +12,13 @@ Style: Sub,Inter Medium,42,&H00F7F4F2,&H00F7F4F2,&H38140F0B,&H00000000,0,0,0,0,1
 
 [Events]
 Format: Layer, Start, End, Style, Name, MarginL, MarginR, MarginV, Effect, Text
-Dialogue: 0,0:00:00.32,0:00:04.73,Sub,,0,0,0,,{\fad(120,100)\move(960,1020,960,1016,0,120)}Fourth track: data assimilation,\Nmerging a model with a few measurements.
-Dialogue: 0,0:00:04.81,0:00:09.58,Sub,,0,0,0,,{\fad(120,100)\move(960,1020,960,1016,0,120)}Learned priors came in through compressed\Nlatent spaces, then diffusion models.
-Dialogue: 0,0:00:09.66,0:00:14.73,Sub,,0,0,0,,{\fad(120,100)\move(960,1020,960,1016,0,120)}And a library now plugs deep networks into\NKalman filters and variational methods.
-Dialogue: 0,0:00:15.60,0:00:20.35,Sub,,0,0,0,,{\fad(120,100)\move(960,1020,960,1016,0,120)}We found no diffusion prior used\Nthis way for conducting fluids.
-Dialogue: 0,0:00:20.43,0:00:23.50,Sub,,0,0,0,,{\fad(120,100)\move(960,1020,960,1016,0,120)}Near a flip, the answer\Nhas two polarities,
-Dialogue: 0,0:00:23.58,0:00:28.37,Sub,,0,0,0,,{\fad(120,100)\move(960,1020,960,1016,0,120)}and a prior that ignores the\Nmirror could bias it toward one.
+Dialogue: 0,0:00:00.37,0:00:02.84,Sub,,0,0,0,,{\fad(120,100)\move(960,1020,960,1016,0,120)}Quatrième piste :\Nl'assimilation de données,
+Dialogue: 0,0:00:02.92,0:00:05.68,Sub,,0,0,0,,{\fad(120,100)\move(960,1020,960,1016,0,120)}qui combine un modèle et quelques mesures.
+Dialogue: 0,0:00:06.09,0:00:08.94,Sub,,0,0,0,,{\fad(120,100)\move(960,1020,960,1016,0,120)}Les a priori appris y sont\Nentrés par des espaces
+Dialogue: 0,0:00:09.02,0:00:11.86,Sub,,0,0,0,,{\fad(120,100)\move(960,1020,960,1016,0,120)}latents compressés, puis par la diffusion.
+Dialogue: 0,0:00:11.94,0:00:14.98,Sub,,0,0,0,,{\fad(120,100)\move(960,1020,960,1016,0,120)}Et une bibliothèque logicielle\Nbranche désormais des réseaux
+Dialogue: 0,0:00:15.06,0:00:18.87,Sub,,0,0,0,,{\fad(120,100)\move(960,1020,960,1016,0,120)}profonds sur les filtres de Kalman\Net les méthodes variationnelles.
+Dialogue: 0,0:00:19.61,0:00:22.23,Sub,,0,0,0,,{\fad(120,100)\move(960,1020,960,1016,0,120)}Nous n'avons trouvé aucun\Na priori par diffusion
+Dialogue: 0,0:00:22.31,0:00:25.05,Sub,,0,0,0,,{\fad(120,100)\move(960,1020,960,1016,0,120)}utilisé ainsi pour les\Nfluides conducteurs.
+Dialogue: 0,0:00:25.65,0:00:28.64,Sub,,0,0,0,,{\fad(120,100)\move(960,1020,960,1016,0,120)}Près d'un renversement,\Nla réponse a deux polarités,
+Dialogue: 0,0:00:28.72,0:00:33.29,Sub,,0,0,0,,{\fad(120,100)\move(960,1020,960,1016,0,120)}et un a priori qui ignore le miroir\Npourrait la faire pencher d'un côté.

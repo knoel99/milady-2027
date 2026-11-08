@@ -1,0 +1,21 @@
+[Script Info]
+ScriptType: v4.00+
+PlayResX: 1920
+PlayResY: 1080
+WrapStyle: 2
+ScaledBorderAndShadow: yes
+YCbCr Matrix: TV.709
+
+[V4+ Styles]
+Format: Name, Fontname, Fontsize, PrimaryColour, SecondaryColour, OutlineColour, BackColour, Bold, Italic, Underline, StrikeOut, ScaleX, ScaleY, Spacing, Angle, BorderStyle, Outline, Shadow, Alignment, MarginL, MarginR, MarginV, Encoding
+Style: Sub,Inter Medium,42,&H00F7F4F2,&H00F7F4F2,&H38140F0B,&H00000000,0,0,0,0,100,100,0,0,3,12,0,2,240,240,64,1
+
+[Events]
+Format: Layer, Start, End, Style, Name, MarginL, MarginR, MarginV, Effect, Text
+Dialogue: 0,0:00:00.37,0:00:04.24,Sub,,0,0,0,,{\fad(120,100)\move(960,1020,960,1016,0,120)}Pour tester leurs idées, les physiciens\Nont besoin d'un {\c&HE58739&}écoulement{\c&HF7F4F2&} assez
+Dialogue: 0,0:00:04.32,0:00:08.81,Sub,,0,0,0,,{\fad(120,100)\move(960,1020,960,1016,0,120)}simple pour s'écrire en une ligne,\Nmais capable de produire un effet dynamo.
+Dialogue: 0,0:00:09.37,0:00:12.68,Sub,,0,0,0,,{\fad(120,100)\move(960,1020,960,1016,0,120)}Un choix classique : l'écoulement ABC.
+Dialogue: 0,0:00:13.42,0:00:17.53,Sub,,0,0,0,,{\fad(120,100)\move(960,1020,960,1016,0,120)}Il remplit l'espace de pièces identiques,\Noù le fluide tourbillonne.
+Dialogue: 0,0:00:17.97,0:00:21.43,Sub,,0,0,0,,{\fad(120,100)\move(960,1020,960,1016,0,120)}Trois courants croisés font\Navancer le fluide en tire-bouchon :
+Dialogue: 0,0:00:21.51,0:00:24.54,Sub,,0,0,0,,{\fad(120,100)\move(960,1020,960,1016,0,120)}il tourne autour de sa\Ndirection de déplacement.
+Dialogue: 0,0:00:24.96,0:00:29.13,Sub,,0,0,0,,{\fad(120,100)\move(960,1020,960,1016,0,120)}Cette boîte tourbillonnante reviendra\Nplus haut dans notre ascension.

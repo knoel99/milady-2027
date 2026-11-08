@@ -12,12 +12,13 @@ Style: Sub,Inter Medium,42,&H00F7F4F2,&H00F7F4F2,&H38140F0B,&H00000000,0,0,0,0,1
 
 [Events]
 Format: Layer, Start, End, Style, Name, MarginL, MarginR, MarginV, Effect, Text
-Dialogue: 0,0:00:03.12,0:00:06.59,Sub,,0,0,0,,{\fad(120,100)\move(960,1020,960,1016,0,120)}Every chapter so far\Nhas ended on a question.
-Dialogue: 0,0:00:06.67,0:00:08.90,Sub,,0,0,0,,{\fad(120,100)\move(960,1020,960,1016,0,120)}The empty seats raised more.
-Dialogue: 0,0:00:09.77,0:00:12.57,Sub,,0,0,0,,{\fad(120,100)\move(960,1020,960,1016,0,120)}Hang each one under the step it shapes.
-Dialogue: 0,0:00:12.65,0:00:17.29,Sub,,0,0,0,,{\fad(120,100)\move(960,1020,960,1016,0,120)}Bet one: whether to add settings\Nbetween seventeen and eighteen.
-Dialogue: 0,0:00:17.37,0:00:21.94,Sub,,0,0,0,,{\fad(120,100)\move(960,1020,960,1016,0,120)}Bet two: the {\c&H3468EB&}seed{\c&HF7F4F2&}, the Reynolds number,\Nthe length of each run.
-Dialogue: 0,0:00:22.02,0:00:24.45,Sub,,0,0,0,,{\fad(120,100)\move(960,1020,960,1016,0,120)}The {\c&HF09CB4&}generator{\c&HF7F4F2&}: what it must match.
-Dialogue: 0,0:00:24.53,0:00:27.06,Sub,,0,0,0,,{\fad(120,100)\move(960,1020,960,1016,0,120)}The top steps: the partners' data.
-Dialogue: 0,0:00:27.93,0:00:31.54,Sub,,0,0,0,,{\fad(120,100)\move(960,1020,960,1016,0,120)}A staircase of bets is a\Nstaircase of decisions,
-Dialogue: 0,0:00:31.62,0:00:34.95,Sub,,0,0,0,,{\fad(120,100)\move(960,1020,960,1016,0,120)}and the first ones come before any run.
+Dialogue: 0,0:00:03.17,0:00:06.79,Sub,,0,0,0,,{\fad(120,100)\move(960,1020,960,1016,0,120)}Jusqu'ici, chaque chapitre\Ns'est terminé sur une question.
+Dialogue: 0,0:00:07.20,0:00:09.73,Sub,,0,0,0,,{\fad(120,100)\move(960,1020,960,1016,0,120)}Les cadres vides en ont soulevé d'autres.
+Dialogue: 0,0:00:10.47,0:00:13.04,Sub,,0,0,0,,{\fad(120,100)\move(960,1020,960,1016,0,120)}Accrochez chacune sous\Nla marche qui en dépend.
+Dialogue: 0,0:00:13.57,0:00:18.19,Sub,,0,0,0,,{\fad(120,100)\move(960,1020,960,1016,0,120)}Premier pari : ajouter ou non des\Nréglages entre dix-sept et dix-huit.
+Dialogue: 0,0:00:18.69,0:00:20.40,Sub,,0,0,0,,{\fad(120,100)\move(960,1020,960,1016,0,120)}Deuxième pari : le {\c&H3468EB&}germe{\c&HF7F4F2&},
+Dialogue: 0,0:00:20.48,0:00:24.60,Sub,,0,0,0,,{\fad(120,100)\move(960,1020,960,1016,0,120)}le {\c&H7AAF1B&}nombre de Reynolds{\c&HF7F4F2&},\Nla durée de chaque simulation.
+Dialogue: 0,0:00:25.15,0:00:27.92,Sub,,0,0,0,,{\fad(120,100)\move(960,1020,960,1016,0,120)}Le {\c&HF09CB4&}générateur{\c&HF7F4F2&} : ce qu'il doit reproduire.
+Dialogue: 0,0:00:28.19,0:00:31.17,Sub,,0,0,0,,{\fad(120,100)\move(960,1020,960,1016,0,120)}Les dernières marches :\Nles données des partenaires.
+Dialogue: 0,0:00:31.91,0:00:34.79,Sub,,0,0,0,,{\fad(120,100)\move(960,1020,960,1016,0,120)}Un escalier de paris est\Nun escalier de décisions,
+Dialogue: 0,0:00:34.87,0:00:38.28,Sub,,0,0,0,,{\fad(120,100)\move(960,1020,960,1016,0,120)}et les premières se prennent\Navant toute simulation.

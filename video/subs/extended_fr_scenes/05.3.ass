@@ -1,0 +1,25 @@
+[Script Info]
+ScriptType: v4.00+
+PlayResX: 1920
+PlayResY: 1080
+WrapStyle: 2
+ScaledBorderAndShadow: yes
+YCbCr Matrix: TV.709
+
+[V4+ Styles]
+Format: Name, Fontname, Fontsize, PrimaryColour, SecondaryColour, OutlineColour, BackColour, Bold, Italic, Underline, StrikeOut, ScaleX, ScaleY, Spacing, Angle, BorderStyle, Outline, Shadow, Alignment, MarginL, MarginR, MarginV, Encoding
+Style: Sub,Inter Medium,42,&H00F7F4F2,&H00F7F4F2,&H38140F0B,&H00000000,0,0,0,0,100,100,0,0,3,12,0,2,240,240,64,1
+
+[Events]
+Format: Layer, Start, End, Style, Name, MarginL, MarginR, MarginV, Effect, Text
+Dialogue: 0,0:00:00.37,0:00:02.85,Sub,,0,0,0,,{\fad(120,100)\move(960,1020,960,1016,0,120)}Confrontez maintenant\Nla formule à la vérité.
+Dialogue: 0,0:00:03.31,0:00:06.25,Sub,,0,0,0,,{\fad(120,100)\move(960,1020,960,1016,0,120)}Pour quarante et un réglages de\N{\c&H7AAF1B&}Gamma{\c&HF7F4F2&}, de longues simulations
+Dialogue: 0,0:00:06.33,0:00:09.23,Sub,,0,0,0,,{\fad(120,100)\move(960,1020,960,1016,0,120)}comptent les passages à\Nmesure qu'ils se produisent.
+Dialogue: 0,0:00:09.68,0:00:12.37,Sub,,0,0,0,,{\fad(120,100)\move(960,1020,960,1016,0,120)}La formule de Rice, elle, n'a droit qu'aux
+Dialogue: 0,0:00:12.45,0:00:15.82,Sub,,0,0,0,,{\fad(120,100)\move(960,1020,960,1016,0,120)}vrais instantanés,\Nmélangés, et aux équations.
+Dialogue: 0,0:00:16.56,0:00:18.90,Sub,,0,0,0,,{\fad(120,100)\move(960,1020,960,1016,0,120)}Les deux courbes se superposent presque.
+Dialogue: 0,0:00:19.28,0:00:22.13,Sub,,0,0,0,,{\fad(120,100)\move(960,1020,960,1016,0,120)}Colorez l'écart, puis\Ndivisez son aire par l'aire
+Dialogue: 0,0:00:22.21,0:00:25.65,Sub,,0,0,0,,{\fad(120,100)\move(960,1020,960,1016,0,120)}sous la courbe du comptage :\Nc'est l'{\c&H00A1ED&}erreur cumulée{\c&HF7F4F2&}.
+Dialogue: 0,0:00:26.11,0:00:30.65,Sub,,0,0,0,,{\fad(120,100)\move(960,1020,960,1016,0,120)}Près du seuil, quatre pour cent ;\Nau-dessus, six pour cent.
+Dialogue: 0,0:00:30.94,0:00:33.54,Sub,,0,0,0,,{\fad(120,100)\move(960,1020,960,1016,0,120)}C'est bon signe, d'autant\Nque rien ne garantit que
+Dialogue: 0,0:00:33.62,0:00:36.53,Sub,,0,0,0,,{\fad(120,100)\move(960,1020,960,1016,0,120)}ces trois cadrans chaotiques\Nse comportent bien.
