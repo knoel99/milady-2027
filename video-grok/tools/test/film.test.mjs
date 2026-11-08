@@ -9,7 +9,8 @@ import { cleCache, ecrire } from "../cache.mjs";
 import { ecrireWav } from "../kit-voix/aligner.mjs";
 import { VOIX, preparer } from "../parole.mjs";
 import { ecrireManifeste } from "../pilote.mjs";
-import { dureeTableau, tableau } from "../film.mjs";
+import { dureeTableau, tableau, texteSousTitre } from "../film.mjs";
+import { lireScenes } from "../pilote.mjs";
 
 const here = dirname(fileURLToPath(import.meta.url));
 const root = join(here, "../..");
@@ -32,6 +33,20 @@ test("le tableau du film suit les créneaux de g10", async () => {
     ],
   );
   assert.equal(dureeTableau(lignes), 252);
+});
+
+test("chaque sous-titre français vient du script français", async () => {
+  const anglais = await readFile(join(root, "narration/en/g10.md"), "utf8");
+  const francais = await readFile(join(root, "narration/fr/g10.md"), "utf8");
+  const scenes = await lireScenes(join(root, "scenes/g10"));
+  const couches = scenes.flatMap((scene) => (scene.layers ?? []).filter((layer) => layer.kind === "subtitle"));
+  assert.equal(couches.length, 47);
+  for (const layer of couches) {
+    const en = texteSousTitre(layer, "en");
+    const fr = texteSousTitre(layer, "fr");
+    assert.equal(francais.includes(fr), true, fr);
+    if (fr === en) assert.equal(anglais.includes(fr), true, fr);
+  }
 });
 
 test("le film tient 248 s et marque les pistes eng et fra", async () => {

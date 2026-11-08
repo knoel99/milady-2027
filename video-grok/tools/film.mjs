@@ -272,12 +272,17 @@ function segments(scenes, lignes, chapitre, durees, lang) {
     for (const layer of (scene.layers ?? []).filter((item) => item.kind === "subtitle")) {
       const debut = instant.get(layer.from);
       const fin = Math.max(instant.get(layer.until), debut + 0.05);
-      const text = lang === "fr" && layer.fr ? layer.fr : layer.text;
+      const text = texteSousTitre(layer, lang);
       cues.push({ debut, fin, text });
     }
     origine += ligne.slot;
   }
   return cues;
+}
+
+export function texteSousTitre(layer, lang) {
+  if (lang === "fr" && layer.fr) return layer.fr;
+  return layer.text;
 }
 
 function texteSrt(cues) {

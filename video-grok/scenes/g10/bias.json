@@ -27,31 +27,36 @@
       "kind": "subtitle",
       "from": "cue.g10.bias.show",
       "until": "cue.g10.bias.variance",
-      "text": "The square of an empirical mean"
+      "text": "The square of an empirical mean",
+      "fr": "Le carré d’une moyenne empirique"
     },
     {
       "kind": "subtitle",
       "from": "cue.g10.bias.variance",
       "until": "cue.g10.bias.halves",
-      "text": "penalizes variance."
+      "text": "penalizes variance.",
+      "fr": "pénalise la variance."
     },
     {
       "kind": "subtitle",
       "from": "cue.g10.bias.halves",
       "until": "cue.g10.bias.removes",
-      "text": "two independent half-batch means"
+      "text": "two independent half-batch means",
+      "fr": "deux moyennes indépendantes de demi-lot"
     },
     {
       "kind": "subtitle",
       "from": "cue.g10.bias.removes",
       "until": "cue.g10.bias.model",
-      "text": "removes that bias."
+      "text": "removes that bias.",
+      "fr": "retire ce biais."
     },
     {
       "kind": "subtitle",
       "from": "cue.g10.bias.model",
       "until": "cue.g10.bias.end",
-      "text": "It does not by itself pick a model."
+      "text": "It does not by itself pick a model.",
+      "fr": "Elle ne choisit pas un modèle à elle seule."
     },
     {
       "kind": "bars",

@@ -396,6 +396,7 @@ test("le texte reste à 28 px, hors marge, et ne coupe pas les barres", async ()
   try {
     for (const [file, cues] of pages) {
       await page.goto(`http://127.0.0.1:${server.port}/scenes/g10/${file}`, { waitUntil: "load" });
+      await page.waitForFunction(() => window.__scene);
       await page.evaluate(() => document.fonts.ready);
       for (const cue of cues) {
         const report = await page.evaluate((id) => {
@@ -526,6 +527,7 @@ test("deux captures du même repère donnent la même image, carte comprise", as
     for (const [file, cue, name] of shots) {
       if (file !== previous) {
         await page.goto(`http://127.0.0.1:${server.port}/scenes/g10/${file}`, { waitUntil: "load" });
+        await page.waitForFunction(() => window.__scene);
         await page.evaluate(() => document.fonts.ready);
         previous = file;
       }

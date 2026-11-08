@@ -29,7 +29,8 @@
       "kind": "subtitle",
       "from": "cue.g10.law.show",
       "until": "cue.g10.law.witness",
-      "text": "V5 reaches an energy distance of 0.699."
+      "text": "V5 reaches an energy distance of 0.699.",
+      "fr": "V5 atteint une distance d’énergie de 0,699."
     },
     {
       "kind": "subtitle",
@@ -49,25 +50,29 @@
       "kind": "subtitle",
       "from": "cue.g10.law.caveat",
       "until": "cue.g10.law.seed",
-      "text": "E2 is two-dimensional and forced."
+      "text": "E2 is two-dimensional and forced.",
+      "fr": "E2 est bidimensionnel et forcé."
     },
     {
       "kind": "subtitle",
       "from": "cue.g10.law.seed",
       "until": "cue.g10.law.interpolation",
-      "text": "One seed."
+      "text": "One seed.",
+      "fr": "Une seule graine"
     },
     {
       "kind": "subtitle",
       "from": "cue.g10.law.interpolation",
       "until": "cue.g10.law.dynamo",
-      "text": "The tests are interpolation."
+      "text": "The tests are interpolation.",
+      "fr": "Valeurs intermédiaires dans la plage"
     },
     {
       "kind": "subtitle",
       "from": "cue.g10.law.dynamo",
       "until": "cue.g10.law.end",
-      "text": "This is not a dynamo."
+      "text": "This is not a dynamo.",
+      "fr": "Pas une dynamo."
     },
     {
       "kind": "bars",

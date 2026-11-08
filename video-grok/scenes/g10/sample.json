@@ -39,85 +39,99 @@
       "kind": "subtitle",
       "from": "cue.g10.sample.div",
       "until": "cue.g10.sample.div.order",
-      "text": "Read the bars in a fixed order."
+      "text": "Read the bars in a fixed order.",
+      "fr": "Lire les barres dans un ordre fixe."
     },
     {
       "kind": "subtitle",
       "from": "cue.g10.sample.div.order",
       "until": "cue.g10.sample.e2",
-      "text": "Do not sort them by a winner."
+      "text": "Do not sort them by a winner.",
+      "fr": "Ne pas les trier par un gagnant."
     },
     {
       "kind": "subtitle",
       "from": "cue.g10.sample.e2",
       "until": "cue.g10.sample.e2.tail",
-      "text": "E2 leaves a residue of 8.27 times 10"
+      "text": "E2 leaves a residue of 8.27 times 10",
+      "fr": "E2, résidu de 8,27 fois 10"
     },
     {
       "kind": "subtitle",
       "from": "cue.g10.sample.e2.tail",
       "until": "cue.g10.sample.e2.spread",
-      "text": "to the minus 6."
+      "text": "to the minus 6.",
+      "fr": "à la puissance moins 6."
     },
     {
       "kind": "subtitle",
       "from": "cue.g10.sample.e2.spread",
       "until": "cue.g10.sample.e2.spread.mid",
-      "text": "Dissipation spread divided by"
+      "text": "Dissipation spread divided by",
+      "fr": "écart-type de dissipation"
     },
     {
       "kind": "subtitle",
       "from": "cue.g10.sample.e2.spread.mid",
       "until": "cue.g10.sample.e2.spread.tail",
-      "text": "reference spread is 8.64 times 10"
+      "text": "reference spread is 8.64 times 10",
+      "fr": "écart-type de référence vaut 8,64 fois 10"
     },
     {
       "kind": "subtitle",
       "from": "cue.g10.sample.e2.spread.tail",
       "until": "cue.g10.sample.e2.dissipation",
-      "text": "to the minus 4."
+      "text": "to the minus 4.",
+      "fr": "à la puissance moins 4."
     },
     {
       "kind": "subtitle",
       "from": "cue.g10.sample.e2.dissipation",
       "until": "cue.g10.sample.predict",
-      "text": "D is dissipation, not the dipole."
+      "text": "D is dissipation, not the dipole.",
+      "fr": "D est la dissipation, pas le dipôle."
     },
     {
       "kind": "subtitle",
       "from": "cue.g10.sample.predict",
       "until": "cue.g10.sample.e1",
-      "text": "Does the crushed bar help?"
+      "text": "Does the crushed bar help?",
+      "fr": "Cette barre aide-t-elle ?"
     },
     {
       "kind": "subtitle",
       "from": "cue.g10.sample.e1",
       "until": "cue.g10.sample.e1.tail",
-      "text": "E1 distance goes from 0.00257"
+      "text": "E1 distance goes from 0.00257",
+      "fr": "distance d’énergie passe de 0,00257"
     },
     {
       "kind": "subtitle",
       "from": "cue.g10.sample.e1.tail",
       "until": "cue.g10.sample.e1.spread",
-      "text": "to 0.0231, a factor of 9."
+      "text": "to 0.0231, a factor of 9.",
+      "fr": "0,0231, un facteur"
     },
     {
       "kind": "subtitle",
       "from": "cue.g10.sample.e1.spread",
       "until": "cue.g10.sample.e1.spread.tail",
-      "text": "The energy-budget spread falls"
+      "text": "The energy-budget spread falls",
+      "fr": "écart-type du bilan d’énergie tombe"
     },
     {
       "kind": "subtitle",
       "from": "cue.g10.sample.e1.spread.tail",
       "until": "cue.g10.sample.e1.variance",
-      "text": "to 4.17 times 10 to the minus 17."
+      "text": "to 4.17 times 10 to the minus 17.",
+      "fr": "4,17 fois 10 à la puissance moins 17."
     },
     {
       "kind": "subtitle",
       "from": "cue.g10.sample.e1.variance",
       "until": "cue.g10.sample.formula",
-      "text": "A positive variance does not prove"
+      "text": "A positive variance does not prove",
+      "fr": "Une variance positive ne prouve pas"
     },
     {
       "kind": "bars",

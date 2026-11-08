@@ -29,43 +29,50 @@
       "kind": "subtitle",
       "from": "cue.g10.hard.show",
       "until": "cue.g10.hard.penalty",
-      "text": "V0 leaves a divergence of 0.408."
+      "text": "V0 leaves a divergence of 0.408.",
+      "fr": "V0 laisse une divergence de 0,408."
     },
     {
       "kind": "subtitle",
       "from": "cue.g10.hard.penalty",
       "until": "cue.g10.hard.magnetic",
-      "text": "A soft penalty leaves 0.34 on the"
+      "text": "A soft penalty leaves 0.34 on the",
+      "fr": "Une pénalité souple laisse 0,34 sur la"
     },
     {
       "kind": "subtitle",
       "from": "cue.g10.hard.magnetic",
       "until": "cue.g10.hard.projection",
-      "text": "velocity and 0.162 on the magnetic"
+      "text": "velocity and 0.162 on the magnetic",
+      "fr": "vitesse et 0,162 sur le champ"
     },
     {
       "kind": "subtitle",
       "from": "cue.g10.hard.projection",
       "until": "cue.g10.hard.flow",
-      "text": "Potentials and the final projection"
+      "text": "Potentials and the final projection",
+      "fr": "Les potentiels et la projection finale"
     },
     {
       "kind": "subtitle",
       "from": "cue.g10.hard.flow",
       "until": "cue.g10.hard.order",
-      "text": "The projected flow falls to 2.03"
+      "text": "The projected flow falls to 2.03",
+      "fr": "Le flot projeté tombe à 2,03"
     },
     {
       "kind": "subtitle",
       "from": "cue.g10.hard.order",
       "until": "cue.g10.hard.winner",
-      "text": "Read the bars in a fixed order."
+      "text": "Read the bars in a fixed order.",
+      "fr": "Lire les barres dans un ordre fixe."
     },
     {
       "kind": "subtitle",
       "from": "cue.g10.hard.winner",
       "until": "cue.g10.hard.end",
-      "text": "Do not sort them by a winner."
+      "text": "Do not sort them by a winner.",
+      "fr": "Ne pas les trier par un gagnant."
     },
     {
       "kind": "bars",

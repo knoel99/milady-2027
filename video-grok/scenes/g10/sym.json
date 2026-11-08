@@ -27,31 +27,36 @@
       "kind": "subtitle",
       "from": "cue.g10.sym.show",
       "until": "cue.g10.sym.sign",
-      "text": "Changing the sign of the magnetic"
+      "text": "Changing the sign of the magnetic",
+      "fr": "Changer le signe du champ magnétique"
     },
     {
       "kind": "subtitle",
       "from": "cue.g10.sym.sign",
       "until": "cue.g10.sym.equivariance",
-      "text": "field B is a symmetry of the law."
+      "text": "field B is a symmetry of the law.",
+      "fr": "B est une symétrie de la loi."
     },
     {
       "kind": "subtitle",
       "from": "cue.g10.sym.equivariance",
       "until": "cue.g10.sym.budget",
-      "text": "Equivariance holds that symmetry"
+      "text": "Equivariance holds that symmetry",
+      "fr": "équivariance tient cette symétrie"
     },
     {
       "kind": "subtitle",
       "from": "cue.g10.sym.budget",
       "until": "cue.g10.sym.weights",
-      "text": "Budget identities do not set the"
+      "text": "Budget identities do not set the",
+      "fr": "Les identités de budget ne fixent pas"
     },
     {
       "kind": "subtitle",
       "from": "cue.g10.sym.weights",
       "until": "cue.g10.sym.end",
-      "text": "weights of the two polarities."
+      "text": "weights of the two polarities.",
+      "fr": "les poids des deux polarités."
     },
     { "kind": "field", "from": "cue.g10.sym.show", "until": "cue.g10.sym.end", "quantity": "B" },
     {

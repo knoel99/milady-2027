@@ -29,43 +29,50 @@
       "kind": "subtitle",
       "from": "cue.g10.classes.show",
       "until": "cue.g10.classes.c1",
-      "text": "A constraint can sit in four places."
+      "text": "A constraint can sit in four places.",
+      "fr": "Une contrainte peut occuper quatre places."
     },
     {
       "kind": "subtitle",
       "from": "cue.g10.classes.c1",
       "until": "cue.g10.classes.c2",
-      "text": "C1 is a linear local constraint"
+      "text": "C1 is a linear local constraint",
+      "fr": "C1 est une contrainte locale linéaire"
     },
     {
       "kind": "subtitle",
       "from": "cue.g10.classes.c2",
       "until": "cue.g10.classes.c3",
-      "text": "C2 is a nonlinear local constraint"
+      "text": "C2 is a nonlinear local constraint",
+      "fr": "C2 est une contrainte locale non linéaire"
     },
     {
       "kind": "subtitle",
       "from": "cue.g10.classes.c3",
       "until": "cue.g10.classes.c4",
-      "text": "C3 is a symmetry of the law."
+      "text": "C3 is a symmetry of the law.",
+      "fr": "C3 est une symétrie de la loi."
     },
     {
       "kind": "subtitle",
       "from": "cue.g10.classes.c4",
       "until": "cue.g10.classes.bar",
-      "text": "C4 is a stationarity identity"
+      "text": "C4 is a stationarity identity",
+      "fr": "C4 est une identité de stationnarité"
     },
     {
       "kind": "subtitle",
       "from": "cue.g10.classes.bar",
       "until": "cue.g10.classes.claim",
-      "text": "A short bar is not a prize."
+      "text": "A short bar is not a prize.",
+      "fr": "Une barre courte n’est pas une récompense."
     },
     {
       "kind": "subtitle",
       "from": "cue.g10.classes.claim",
       "until": "cue.g10.classes.end",
-      "text": "The place of the constraint is the claim."
+      "text": "The place of the constraint is the claim.",
+      "fr": "La place de la contrainte est l’affirmation."
     },
     {
       "kind": "bars",
