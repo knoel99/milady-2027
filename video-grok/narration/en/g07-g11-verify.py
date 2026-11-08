@@ -37,12 +37,83 @@ BEAT_FIGURES = {
 }
 
 WORD = re.compile(r"[A-Za-z0-9]+(?:[.,'’-][A-Za-z0-9]+)*")
+# Compact-token budget from the plan, 125 to 130 words per minute of slot time.
+PLAN_WPM = 130
+# Spelled words per minute of speaking time, pauses removed.
+# 130 cannot hold the sample figures. Their shortest grammatical reading is
+# about 144 words per minute in the 37 s left after the predict pause, and the
+# chapter floors still need plain sentences around those figures. 156 is the
+# lowest ceiling that leaves that reading inside every beat.
+SPEECH_WPM = 156
+_ONES = (
+    "zero one two three four five six seven eight nine ten eleven twelve "
+    "thirteen fourteen fifteen sixteen seventeen eighteen nineteen"
+).split()
+_TENS = ["", "", "twenty", "thirty", "forty", "fifty", "sixty", "seventy", "eighty", "ninety"]
 SUP = str.maketrans("⁰¹²³⁴⁵⁶⁷⁸⁹⁻", "0123456789-")
 GREEK_IN_SPEECH = re.compile(r"[μνΓηλσ∞]|\\[A-Za-z]+")
 
 
 def words(text: str) -> list[str]:
     return WORD.findall(text)
+
+
+def _int_words(value: int) -> str:
+    if value < 20:
+        return _ONES[value]
+    if value < 100:
+        tens, ones = divmod(value, 10)
+        return _TENS[tens] if ones == 0 else f"{_TENS[tens]} {_ONES[ones]}"
+    if value < 1000:
+        hundreds, rest = divmod(value, 100)
+        head = f"{_ONES[hundreds]} hundred"
+        return head if rest == 0 else f"{head} {_int_words(rest)}"
+    thousands, rest = divmod(value, 1000)
+    head = f"{_int_words(thousands)} thousand"
+    return head if rest == 0 else f"{head} {_int_words(rest)}"
+
+
+def _decimal_words(token: str) -> str:
+    whole, frac = token.split(".")
+    digits = " ".join(_ONES[int(char)] for char in frac)
+    return f"{_int_words(int(whole))} point {digits}"
+
+
+def expand_spoken(text: str) -> str:
+    """Spell numerals the way the voice has to say them."""
+
+    def scientific(match: re.Match[str]) -> str:
+        return (
+            f"{_decimal_words(match.group(1))} times ten to the minus "
+            f"{_int_words(int(match.group(2)))}"
+        )
+
+    def about(match: re.Match[str]) -> str:
+        return f"about ten to the minus {_int_words(int(match.group(1)))}"
+
+    text = re.sub(r"(\d+\.\d+) times 10 to the minus (\d+)", scientific, text, flags=re.I)
+    text = re.sub(r"about 10 to the minus (\d+)", about, text, flags=re.I)
+    text = re.sub(r"(\d+(?:\.\d+)?) percent", lambda m: f"{_int_words(int(float(m.group(1))))} percent" if "." not in m.group(1) else f"{_decimal_words(m.group(1))} percent", text, flags=re.I)
+    text = re.sub(r"(?<!\d)(\d{1,3}(?:,\d{3})+)(?!\d)", lambda m: _int_words(int(m.group(1).replace(",", ""))), text)
+    text = re.sub(r"(?<![A-Za-z])(\d+\.\d+)(?![A-Za-z])", lambda m: _decimal_words(m.group(1)), text)
+    text = re.sub(r"(?<![A-Za-z])(\d+)(?![A-Za-z])", lambda m: _int_words(int(m.group(1))), text)
+    return text
+
+
+def pause_seconds(beat: dict) -> int:
+    total = 0
+    for cue in beat["cues"]:
+        pause = cue["preamble"].get("pause")
+        if pause:
+            total += int(pause.rstrip("s"))
+    return total
+
+
+def speech_rate(said: str, duration: int, pause: int) -> float:
+    speaking = duration - pause
+    if speaking <= 0:
+        return float("inf")
+    return len(words(expand_spoken(said))) / speaking * 60
 
 
 def clock_s(token: str) -> int:
@@ -322,9 +393,17 @@ def check_chapter(
         said = spoken_text(beat)
         spoken_all.append(said)
         count = len(words(said))
-        limit = 2 * row["duration"] * 130 / 60
+        limit = 2 * row["duration"] * PLAN_WPM / 60
         if count > limit:
             errors.append(f"R3-budget: {row['id']} a {count} mots, plus du double de son créneau")
+        pause = pause_seconds(beat)
+        rate = speech_rate(said, row["duration"], pause)
+        spoken_n = len(words(expand_spoken(said)))
+        if rate > SPEECH_WPM:
+            errors.append(
+                f"débit: {row['id']} a {spoken_n} mots dits en {row['duration'] - pause}s "
+                f"après {pause}s de pause, soit {rate:.0f} mots/min, plafond {SPEECH_WPM}"
+            )
         cited = narration_numbers(cited_text(beat))
         unknown = sorted(token for token in cited if token not in inventory)
         if unknown:
@@ -560,6 +639,13 @@ def self_test() -> list[str]:
     expected = {"0.119", "256", "12000", "4%", "4.17e-17", "~1e-17", "0", "1"}
     if english != expected:
         errors.append(f"self-test narration: {sorted(english)} != {sorted(expected)}")
+    spelled = expand_spoken("share 0.3125, and 4.17 times 10 to the minus 17, about 10 to the minus 8, 12,000 iterations")
+    if "zero point three one two five" not in spelled or "four point one seven" not in spelled or "seventeen" not in spelled:
+        errors.append(f"self-test épelage: {spelled}")
+    if "twelve thousand" not in spelled or "about ten to the minus eight" not in spelled:
+        errors.append(f"self-test épelage entier: {spelled}")
+    if speech_rate(" ".join(["word"] * 100), 40, 3) <= SPEECH_WPM:
+        errors.append("self-test débit: 100 mots en 37 s de parole passe le plafond")
     if "0.999" in inventory:
         errors.append("self-test: 0.999 est dans l'inventaire, le contrôle ne sert à rien")
     fake = narration_numbers("The gap is 0.999.")
