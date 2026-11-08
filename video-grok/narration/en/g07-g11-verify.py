@@ -560,8 +560,14 @@ def check_reservations(chapters: dict, errors: list[str]) -> None:
         errors.append("S19: le calque colle une KL ou un quasi-zéro à l'hypothèse")
     if "does not prove" not in sample or "no mass at 0" not in sample:
         errors.append("S19: la voix ne dit pas que la variance mesurée ne prouve pas l'hypothèse")
-    if "dissipation" not in cues.get("cue.g10.sample.e2", {"text": ""})["text"]:
+    e2 = cues.get("cue.g10.sample.e2", {"text": ""})["text"]
+    e1 = cues.get("cue.g10.sample.e1", {"text": ""})["text"]
+    if "dissipation" not in e2:
         errors.append("STYLE §6: g10.sample.e2 ne dit pas dissipation pour D")
+    if "Dissipation spread divided by reference spread is" not in e2:
+        errors.append("science: 8.64e-4 n'est pas le rapport des écarts-types de dissipation")
+    if "energy-budget spread" not in e1:
+        errors.append("science: g10.sample.e1 ne nomme pas l'écart du bilan d'énergie")
     if "winner" not in spoken.get("g10", ""):
         errors.append("pilote: g10 ne refuse pas le tri par gagnant")
     g10 = spoken.get("g10", "")
@@ -570,8 +576,8 @@ def check_reservations(chapters: dict, errors: list[str]) -> None:
     if "empirical mean over a finite batch" not in g10 or "two independent half-batch means" not in g10:
         errors.append("science: le biais de variance n'est pas celui d'une moyenne empirique")
     g10_close = cues.get("cue.g10.close.show")
-    if not g10_close or "not all stacked on zero" not in g10_close["text"] or "Anchoring means" not in g10_close["text"]:
-        errors.append("pédagogie: g10.close n'explique pas no mass at 0 ni l'ancrage")
+    if not g10_close or "No mass at zero means zero probability of the constraint value landing exactly on zero." not in g10_close["text"] or "Anchoring limits how far fine-tuning can move from the starting model." not in g10_close["text"]:
+        errors.append("science: g10.close confond encore la masse en 0 ou l'ancrage")
     g10_close = cues.get("cue.g10.close.show")
     if not g10_close or "does not prove" not in g10_close["text"]:
         errors.append("couture: g10.close ne dit pas qu'il énonce sans prouver")
