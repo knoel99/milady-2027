@@ -1,0 +1,32 @@
+<!doctype html>
+<html lang="en"><head><meta charset="utf-8">
+<title>ch07.Q Question for the supervisors</title>
+<link rel="stylesheet" href="../../runtime/theme.css">
+<link rel="stylesheet" href="ch07.css">
+<script src="../../runtime/scene.js"></script>
+<script src="../../runtime/components/kit.js"></script>
+<script src="../../runtime/components/hud.js"></script>
+<script src="../../runtime/components/motifs.js"></script>
+<script src="../../runtime/components/cards.js"></script>
+<script src="ch07_kit.js"></script>
+</head><body><div id="stage"></div>
+<script>
+/* ch07.Q Question for the supervisors (framing). The card fills the frame; behind it at 10 %, a schematic of 07.5 in
+   --fg-2 (a wide bell outline and a spike at its centre; no data, no number). */
+Scene.define({
+  duration: 9.2,
+  register: 'night',
+  cues: { q: 0.5 },
+  params: { backdrop: { opacity: 0.1 } },
+  setup(ctx) {
+    const K = Kit, P = ctx.params, svg = K.svgLayer(ctx, 2), bg = K.s('g', { opacity: P.backdrop.opacity }, svg);
+    svg.setAttribute('data-qa', 'ignore');   // a 10 % backdrop under the card
+    let d = ''; for (let i = 0; i <= 120; i++) { const x = -3 + 6 * i / 120; d += `${i ? 'L' : 'M'}${(960 + x * 260).toFixed(1)},${(820 - 380 * Math.exp(-x * x / 1.2)).toFixed(1)}`; }
+    K.s('path', { d, fill: 'none', stroke: K.c('fg-2'), 'stroke-width': 6 }, bg);
+    K.s('path', { d: 'M930,820 L950,820 L950,180 L970,180 L970,820 L990,820', fill: 'none', stroke: K.c('fg-2'), 'stroke-width': 6 }, bg);
+    ctx.bgG = bg;
+    K.questionCard(ctx, { chapter: 'ch07', category: 'framing', at: -0.4, whyAt: 'q+2.4', unblocksAt: 'q+4.6' });
+  },
+  render(t, ctx) { ctx.bgG.setAttribute('transform', `translate(${(-6 * Math.sin(2 * Math.PI * t / 9)).toFixed(2)} 0)`); },
+});
+</script></body></html>

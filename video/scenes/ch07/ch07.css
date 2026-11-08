@@ -1,0 +1,17 @@
+/* ch07.css: styles shared by the scenes of unit ch07 (tokens only, no transitions, no animations). */
+.c7-label { position: absolute; z-index: 30; font-weight: 500; font-size: 32px; color: var(--fg-2); white-space: nowrap; }
+.c7-label.big { font-size: 36px; color: var(--fg); }
+.c7-label.lead { font-size: 44px; color: var(--fg); font-family: "Inter Display"; font-weight: 600; }
+.c7-label.head { font-size: 60px; color: var(--fg); font-family: "Inter Display"; font-weight: 700; }
+.c7-label.mono { font-family: "JetBrains Mono"; font-size: 28px; letter-spacing: .07em; color: var(--muted); }
+.c7-label.center { transform: translateX(-50%); text-align: center; }
+.c7-label.right { transform: translateX(-100%); text-align: right; }
+.c7-label.halo { text-shadow: 0 0 3px var(--bg), 0 0 6px var(--bg), 0 0 10px var(--bg); }
+.c7-card { position: absolute; z-index: 58; box-sizing: border-box; padding: 22px 30px 26px; background: var(--panel);
+  border: 2px solid var(--fg-2); border-radius: 12px; color: var(--fg); transform-origin: 0 0; }
+.c7-card .k { font-family: "JetBrains Mono"; font-size: 28px; letter-spacing: .14em; color: var(--chalk); }
+.c7-card .q { margin-top: 8px; font-family: "Inter Display"; font-weight: 600; font-size: 44px; line-height: 1.18; }
+.c7-eq { position: absolute; z-index: 30; }
+.c7-shelf-lab { position: absolute; z-index: 22; font-weight: 600; color: var(--fg); white-space: nowrap; }
+.c7-tag { position: absolute; z-index: 22; font-size: 28px; color: var(--chalk); white-space: nowrap; transform: translateX(-50%); }
+.c7-label.small { font-size: 28px; }

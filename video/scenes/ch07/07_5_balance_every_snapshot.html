@@ -1,0 +1,118 @@
+<!doctype html>
+<html lang="en"><head><meta charset="utf-8">
+<title>07.5 Predict: balance every snapshot?</title>
+<link rel="stylesheet" href="../../vendor/katex/katex.min.css">
+<link rel="stylesheet" href="../../runtime/theme.css">
+<link rel="stylesheet" href="ch07.css">
+<script src="../../vendor/katex/katex.min.js"></script>
+<script src="../../runtime/scene.js"></script>
+<script src="../../runtime/components/kit.js"></script>
+<script src="../../runtime/components/hud.js"></script>
+<script src="../../runtime/components/motifs.js"></script>
+<script src="../../runtime/components/threemodes.js"></script>
+<script src="ch07_kit.js"></script>
+</head><body><div id="stage"></div>
+<script>
+/* 07.5 Predict: balance every snapshot? (L4, NIGHT, PROVED: Corollary 6; E1 measures it). The dE/dt histogram of the
+   shoebox (truth outline), model C's generated values, then C forced snapshot by snapshot (variant E): the wide pile
+   collapses into a spike (shapes only: float32 storage). The distance to the truth grows ninefold (data/ch07_spike.json).
+   The budget card goes back to the crowd shelf. */
+Scene.define({
+  duration: 58,
+  register: 'night',
+  cues: { remember: 0.5, rises: 2.4, average: 4.6, tempting: 12.2, predict: 14.0, worse: 22.4, push: 23.2, ledger: 28.0, never: 30.0, distance: 32.4, proof: 35.4, shelf: 40.6, next: 43.0 },
+  data: { s093: 'data/e1_samples_0.93.json', spike: 'data/ch07_spike.json' },
+  params: { hist: { box: { x0: 240, x1: 1240, y0: 250, y1: 640 }, range: [-1.6, 1.6], bins: 33 }, truth_variant: 'ref', model_variant: 'C_equivariant', forced_variant: 'E_projection_C',
+    ledger: { x0: 1340, x1: 1800, y0: 200, y1: 420, days: 24, seed: 'ch07-ledger' }, predict: { title: 'PREDICT', question: 'Force every snapshot to balance exactly: better or worse?', box: { x0: 1340, x1: 1800, y0: 450, y1: 640 } },
+    bars: { x0: 1340, x1: 1800, y0: 220, y1: 560 }, morph_s: 1.4 },
+  setup(ctx) {
+    const K = Kit, S = Scene, P = ctx.params, st = ctx.stage, SB = ctx.data.s093, SP = ctx.data.spike;
+    const T = {}; for (const k of ['remember', 'rises', 'average', 'tempting', 'predict', 'worse', 'push', 'ledger', 'never', 'distance', 'proof', 'shelf', 'next']) T[k] = ctx.at(k + '-0.15');
+    C7.shelves(ctx, { cards: [{ shelf: 'crowd', slot: 0, glyph: 'mirror', title: 'mirror', tag: 'built in, exactly' }, { shelf: 'crowd', slot: 1, glyph: 'budget', title: 'budget', hover: ['predict-0.15', 'shelf+0.4', 'every'] }], bright: ['predict-0.15', 'shelf-0.15'] });
+    K.pen(ctx, { kind: 'cross', box: { x: 380, y: 52, w: 60, h: 60 }, at: 'shelf', out: 'shelf+1.6', dur: 0.35, seed: 'x75', z: 31 });
+    const H = P.hist, B = H.box, nb = H.bins, lo = H.range[0], hi = H.range[1], bw = (hi - lo) / nb;
+    const hist = (v) => { const c = new Float32Array(nb); for (let i = 0; i < v.length; i++) { const k = Math.floor((v[i] - lo) / bw); if (k >= 0 && k < nb) c[k]++; } const n = v.length; for (let k = 0; k < nb; k++) c[k] /= n; return c; };
+    const vT = S.f32(SB.variants[P.truth_variant].dEdt), vC = S.f32(SB.variants[P.model_variant].dEdt), vE = S.f32(SB.variants[P.forced_variant].dEdt);
+    const hT = hist(vT), hC = hist(vC), hE = hist(vE), top = Math.max(...hT, ...hC) * 1.15;
+    let mean = 0; for (let i = 0; i < vT.length; i++) mean += vT[i]; mean /= vT.length;
+    const X = (v) => B.x0 + (v - lo) / (hi - lo) * (B.x1 - B.x0), Hh = (f) => (B.y1 - B.y0) * f / top;
+    const svg = K.svgLayer(ctx, 12), hg = K.s('g', {}, svg);
+    K.s('line', { x1: B.x0, x2: B.x1, y1: B.y1, y2: B.y1, stroke: K.c('muted'), 'stroke-width': 3 }, hg);
+    K.s('line', { x1: X(0), x2: X(0), y1: B.y1, y2: B.y1 + 14, stroke: K.c('muted'), 'stroke-width': 3 }, hg);
+    K.s('text', { x: X(0), y: B.y1 + 46, 'text-anchor': 'middle', class: 'kt-tick' }, hg, '0');
+    const bars = Array.from({ length: nb }, (_, k) => K.s('rect', { x: X(lo + k * bw) + 2, width: (B.x1 - B.x0) / nb - 4, fill: K.c('metric') }, hg));
+    let d = ''; for (let k = 0; k < nb; k++) { const y = B.y1 - Hh(hT[k]); d += `${k ? 'L' : 'M'}${X(lo + k * bw).toFixed(1)},${y.toFixed(1)}L${X(lo + (k + 1) * bw).toFixed(1)},${y.toFixed(1)}`; }
+    const outline = K.s('path', { d, fill: 'none', stroke: K.c('silver'), 'stroke-width': 3 }, svg);
+    const lAx = C7.lab(ctx, 'rate of change of energy, dE/dt', (B.x0 + B.x1) / 2, B.y1 + 62, 'center');
+    const lLose = C7.lab(ctx, 'losing energy', B.x0, B.y1 + 14, ''), lGain = C7.lab(ctx, 'gaining energy', B.x1, B.y1 + 14, 'right');
+    const boxIcon = K.s('g', {}, svg); K.shoebox(boxIcon, { x: B.x0 + 50, y: B.y0 + 10, w: 80, h: 40 });
+    const meanM = K.s('line', { x1: X(mean), x2: X(mean), y1: B.y0 + 30, y2: B.y1, stroke: K.c('metric'), 'stroke-width': 3, 'stroke-dasharray': '8 6' }, svg);
+    const lMean = C7.lab(ctx, 'mean ≈ 0', X(mean) + 12, B.y0 + 20, 'big'); lMean.style.color = K.c('metric');
+    const lTruth = C7.lab(ctx, 'truth', X(0.75), B.y1 - Hh(hT[Math.floor((0.75 - lo) / bw)]) - 52, 'halo');
+    const frame = K.s('rect', { x: B.x0 - 14, y: B.y0 - 14, width: B.x1 - B.x0 + 28, height: B.y1 - B.y0 + 28, rx: 8, fill: 'none', stroke: K.c('model'), 'stroke-width': 3, 'stroke-dasharray': '16 11' }, svg);
+    K.chip(ctx, { text: 'GENERATED · model C · Γ = 0.93', kind: 'generated', x: B.x0, y: B.y0 + 4, anchor: 'tl', at: 'tempting', out: 'distance', caps: true });
+    const lOff = C7.lab(ctx, '↑ off scale', X(0) + 30, B.y0 + 50, 'halo'); lOff.style.color = K.c('metric');
+    // ledger
+    const LG = P.ledger, lr = S.rng(LG.seed), days = []; let acc = 0;
+    for (let i = 0; i < LG.days; i++) { const v = (lr() - 0.5) * 2; days.push(v); }
+    const mD = days.reduce((a, b) => a + b, 0) / LG.days; for (let i = 0; i < LG.days; i++) days[i] -= mD;
+    const led = K.s('g', {}, svg), ldw = (LG.x1 - LG.x0 - 40) / LG.days, ly0 = (LG.y0 + LG.y1) / 2 + 20;
+    K.s('rect', { x: LG.x0, y: LG.y0, width: LG.x1 - LG.x0, height: LG.y1 - LG.y0, rx: 10, fill: K.c('panel'), stroke: K.c('fg-2'), 'stroke-width': 2 }, led);
+    K.s('line', { x1: LG.x0 + 20, x2: LG.x1 - 20, y1: ly0, y2: ly0, stroke: K.c('muted'), 'stroke-width': 2 }, led);
+    const dbar = days.map((v, i) => K.s('rect', { x: LG.x0 + 20 + i * ldw + 2, width: ldw - 4, fill: K.c('fg-2') }, led));
+    const run = K.s('polyline', { fill: 'none', stroke: K.c('chalk'), 'stroke-width': 3 }, led);
+    K.chip(ctx, { text: 'SCHEMATIC · ledger', kind: 'schematic', x: LG.x1, y: LG.y0 - 10, anchor: 'br', at: 'average', out: 'distance' });
+    const lInc = C7.lab(ctx, 'income = spending, on average', LG.x0, LG.y1 + 8, 'small', { w: LG.x1 - LG.x0 });
+    const lDay = C7.lab(ctx, 'every day balanced', LG.x0, LG.y1 + 8, 'small', { w: LG.x1 - LG.x0 });
+    K.pen(ctx, { kind: 'cross', box: { x: LG.x0 + 60, y: LG.y0 + 30, w: LG.x1 - LG.x0 - 120, h: LG.y1 - LG.y0 - 60 }, at: 'never', out: 'distance', dur: 0.4, seed: 'xl75' });
+    // predict card
+    const PB = P.predict.box, pc = K.el('div', { class: 'c7-card' }, st); pc.style.left = PB.x0 + 'px'; pc.style.top = PB.y0 + 'px'; pc.style.width = (PB.x1 - PB.x0) + 'px';
+    K.el('div', { class: 'k' }, pc, K.upper(P.predict.title)); const pq = K.el('div', { class: 'q' }, pc, P.predict.question); pq.style.fontSize = '36px';
+    const worse = K.el('div', { class: 'q' }, pc, 'worse'); worse.style.color = K.c('chalk');
+    // distance bars
+    const D = SP.distance, BR = P.bars, dmax = D.E * 1.12, dx = (v) => BR.x0 + (BR.x1 - BR.x0) * v / dmax, dist = K.s('g', {}, svg);
+    const lDist = C7.lab(ctx, 'distribution distance to the truth', BR.x0, BR.y0 - 6, '', { w: BR.x1 - BR.x0 }); lDist.style.color = K.c('metric');
+    const rowY = [BR.y0 + 120, BR.y0 + 290];
+    const dbars = [D.C, D.E].map((v, i) => K.s('rect', { x: BR.x0, y: rowY[i], height: 40, width: 0, fill: K.c('metric') }, dist));
+    const lC = C7.lab(ctx, 'model C', BR.x0, rowY[0] - 42, 'small'), lE = C7.lab(ctx, 'C, forced snapshot by snapshot', BR.x0, rowY[1] - 42, 'small');
+    K.s('line', { x1: dx(D.floor), x2: dx(D.floor), y1: rowY[0] - 50, y2: rowY[1] + 60, stroke: K.c('muted'), 'stroke-width': 3, 'stroke-dasharray': '10 8' }, dist);
+    const lFl = C7.lab(ctx, 'noise floor', dx(D.floor) + 8, rowY[1] + 50, 'small');
+    const lX = C7.lab(ctx, `× ${D.ratio}`, BR.x0 + 220, rowY[0] + 52, 'lead'); lX.style.color = K.c('chalk');
+    K.chip(ctx, { text: `spread of dE/dt after forcing: ${K.fmt(SP.spread.E, 2)}`, kind: 'plain', x: BR.x0, y: rowY[1] + 100, at: 'distance+1.6', caps: false, maxWidth: 460 });
+    const lAny = C7.lab(ctx, 'any generator, even a perfect one', BR.x0, rowY[1] + 190, 'small'); lAny.style.color = K.c('chalk');
+    K.lowerThird(ctx, { kind: 'source', data: SP, at: 'distance+0.3', hold: 4 });
+    // next: a small ghost of the spike
+    const ghost = K.s('path', { d: `M${B.x1 - 220},${B.y1} L${B.x1 - 120},${B.y1} L${B.x1 - 120},${B.y1 - 6} L${B.x1 - 112},${B.y1 - 6} L${B.x1 - 112},${B.y1 - 120} L${B.x1 - 104},${B.y1 - 120} L${B.x1 - 104},${B.y1 - 6} L${B.x1 - 96},${B.y1 - 6} L${B.x1 - 96},${B.y1} L${B.x1 - 20},${B.y1}`, fill: 'none', stroke: K.c('metric'), 'stroke-width': 3, opacity: 0.6 }, svg);
+    K.chip(ctx, { text: 'next: a test bench with whole fields', kind: 'plain', x: B.x1, y: B.y1 + 100, anchor: 'tr', at: 'next+0.3', caps: false });
+    K.badge(ctx, { kind: 'PROVED', note: 'Corollary 6 · E1 measures it', at: -0.3 });
+    // WORKAROUND (script formula too long for one layer item at 28 px): its three clauses in turn
+    const f0 = ((ctx.script.onscreen && ctx.script.onscreen.formulas) || [])[0];
+    if (f0) { const a = f0.tex.split('\\;\\Rightarrow\\;'), b = (a[1] || '').split(',\\quad W_1'); K.formulaLayer(ctx, { label: 'Formula · R:448-455', items: [{ tex: a[0], at: 'proof-0.15' }, { tex: '\\Rightarrow\\; ' + b[0], at: 'proof+1.6' }, { tex: 'W_1' + (b[1] || ''), at: 'shelf-0.15' }] }); }
+    ctx.c = { T, B, bars, hT, hC, hE, Hh, top, nb, outline, lAx, lLose, lGain, boxIcon, meanM, lMean, lTruth, frame, lOff, led, dbar, days, run, lInc, lDay, LG, ldw, ly0, pc, worse, dist, dbars, D, dx, lDist, lC, lE, lFl, lX, lAny, ghost, rowY };
+  },
+  render(t, ctx) {
+    const S = Scene, P = ctx.params, c = ctx.c, T = c.T, B = c.B;
+    const toC = S.seg(t, T.tempting, T.tempting + 0.8, S.ease.inOutCubic), toE = S.seg(t, T.push, T.push + P.morph_s, S.ease.inOutCubic);
+    const on = S.seg(t, T.remember, T.remember + 0.5, S.ease.linear), br = 1 + 0.01 * Math.sin(t * 2.4) * (t > T.rises ? 1 : 0);
+    let off = false;
+    c.bars.forEach((r, k) => { const f = c.hT[k] + (c.hC[k] - c.hT[k]) * toC, g = f + (c.hE[k] - f) * toE; let h = c.Hh(g) * br * on; if (h > B.y1 - B.y0) { h = B.y1 - B.y0; off = true; } r.setAttribute('y', (B.y1 - h).toFixed(1)); r.setAttribute('height', Math.max(0, h).toFixed(1)); });
+    c.outline.setAttribute('opacity', (on * (t > T.tempting ? 1 : 0.9)).toFixed(3));
+    [c.lAx, c.lLose, c.lGain].forEach((e) => C7.fade(e, t, T.remember + 0.3)); C7.fadeS(c.boxIcon, t, T.remember, T.tempting);
+    C7.fadeS(c.meanM, t, T.average, T.tempting); C7.fade(c.lMean, t, T.average + 0.2, T.tempting);
+    C7.fade(c.lTruth, t, T.tempting + 0.5); C7.fadeS(c.frame, t, T.tempting, T.distance);
+    c.lOff.style.display = off ? '' : 'none';
+    // ledger: wanders and returns; flattened on 'ledger'
+    const lOn = C7.fadeS(c.led, t, T.average + 0.4, T.distance), flat = S.seg(t, T.ledger, T.ledger + 0.8, S.ease.inOutCubic); void lOn;
+    let acc = 0, pts = `${c.LG.x0 + 20},${c.ly0}`;
+    c.dbar.forEach((r, i) => { const v = c.days[i] * (1 - flat) * 40; r.setAttribute('y', (c.ly0 - Math.max(0, v)).toFixed(1)); r.setAttribute('height', Math.abs(v).toFixed(1)); acc += c.days[i] * (1 - flat) * 14; pts += ` ${(c.LG.x0 + 20 + (i + 1) * c.ldw).toFixed(1)},${(c.ly0 - 40 - acc).toFixed(1)}`; });
+    c.run.setAttribute('points', pts);
+    C7.fade(c.lInc, t, T.average + 0.8, T.ledger); C7.fade(c.lDay, t, T.ledger + 0.6, T.distance);
+    C7.fade(c.pc, t, T.predict, T.distance); c.worse.style.opacity = S.seg(t, T.worse, T.worse + 0.3, S.ease.linear).toFixed(3);
+    // distance bars
+    C7.fadeS(c.dist, t, T.distance + 0.2); [c.lDist, c.lC, c.lE, c.lFl].forEach((e) => C7.fade(e, t, T.distance + 0.2));
+    c.dbars.forEach((r, i) => r.setAttribute('width', ((c.dx([c.D.C, c.D.E][i]) - P.bars.x0) * S.seg(t, T.distance + 0.3 + 0.4 * i, T.distance + 0.9 + 0.4 * i, S.ease.outCubic)).toFixed(1)));
+    C7.fade(c.lX, t, T.distance + 1.6); C7.fade(c.lAny, t, T.proof + 0.4);
+    const gh = S.seg(t, T.next, T.next + 0.6, S.ease.linear); c.ghost.setAttribute('opacity', (0.6 * gh).toFixed(3));
+  },
+});
+</script></body></html>

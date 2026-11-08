@@ -1,0 +1,111 @@
+<!doctype html>
+<html lang="en"><head><meta charset="utf-8">
+<title>07.6 Enforce it on the crowd, with two juries</title>
+<link rel="stylesheet" href="../../vendor/katex/katex.min.css">
+<link rel="stylesheet" href="../../runtime/theme.css">
+<link rel="stylesheet" href="ch07.css">
+<script src="../../vendor/katex/katex.min.js"></script>
+<script src="../../runtime/scene.js"></script>
+<script src="../../runtime/components/kit.js"></script>
+<script src="../../runtime/components/hud.js"></script>
+<script src="../../runtime/components/equation.js"></script>
+<script src="../../runtime/components/motifs.js"></script>
+<script src="../../runtime/components/threemodes.js"></script>
+<script src="ch07_kit.js"></script>
+</head><body><div id="stage"></div>
+<script>
+/* 07.6 Enforce it on the crowd, with two juries (L4, NIGHT, PROVED: Example 4.2). A batch of model C snapshots at an
+   unseen Γ votes with its energy changes; the crowd loss squares their average, which hides a scatter term (a pull
+   toward the spike); two independent juries multiply their averages and the scatter drops out. Votes are real values
+   of data/e1_samples_0.93.json (C, no number shown); E1's settings from data/ch07_spike.json. */
+Scene.define({
+  duration: 50,
+  register: 'night',
+  cues: { impose: 0.5, draw: 2.8, square: 6.0, trap: 13.4, scatter: 14.8, squeeze: 18.8, found: 23.6, juries: 26.4, drops: 31.0, tell: 34.4 },
+  data: { s093: 'data/e1_samples_0.93.json', spike: 'data/ch07_spike.json', rates: 'data/e1_data_rates.json' },
+  params: { gamma: 0.93, variant: 'C_equivariant', n_show: 8, ruler: { x0: 1460, x1: 1800, y: 210, min: 0.8, max: 1.0 }, row: { x0: 240, x1: 1440, y_glyph: 290, y_zero: 400, bar_px_per_unit: 70 },
+    juries: { y_a: 280, y_b: 420 }, eq1: { x: 820, y: 560, size: 72 }, eq2: { x: 820, y: 670, size: 72 } },
+  setup(ctx) {
+    const K = Kit, S = Scene, P = ctx.params, st = ctx.stage, SB = ctx.data.s093, SP = ctx.data.spike, RT = ctx.data.rates;
+    const T = {}; for (const k of ['impose', 'draw', 'square', 'trap', 'scatter', 'squeeze', 'found', 'juries', 'drops', 'tell']) T[k] = ctx.at(k + '-0.15');
+    C7.shelves(ctx, { cards: [{ shelf: 'crowd', slot: 0, glyph: 'mirror', title: 'mirror', tag: 'built in, exactly' }, { shelf: 'crowd', slot: 1, glyph: 'budget', title: 'budget', tag: 'impose on the crowd · two juries' }],
+      empty: [{ shelf: 'every', slot: 1, label: '?', at: 'tell' }], bright: ['impose-0.15'], big: 'tell-0.15' });
+    if (Math.abs(SB.gamma - P.gamma) > 1e-9) S.warn('07.6: data Γ differs from params.gamma');
+    const V = SB.variants[P.variant], DE = S.f32(V.dEdt), XS = S.f32(V.x), N = 2 * P.n_show, votes = Array.from(DE.slice(0, N));
+    const meanAll = votes.reduce((a, b) => a + b, 0) / N, mA = votes.slice(0, P.n_show).reduce((a, b) => a + b, 0) / P.n_show, mB = votes.slice(P.n_show).reduce((a, b) => a + b, 0) / P.n_show;
+    // Γ ruler
+    const RU = P.ruler, rx = (g) => RU.x0 + (g - RU.min) / (RU.max - RU.min) * (RU.x1 - RU.x0), svg = K.svgLayer(ctx, 12), ruler = K.s('g', {}, svg);
+    K.s('line', { x1: RU.x0, x2: RU.x1, y1: RU.y, y2: RU.y, stroke: K.c('param'), 'stroke-width': 4 }, ruler);
+    RT.x.values.forEach((g, i) => { const tr = RT.x.train[i]; K.s('circle', { cx: rx(g), cy: RU.y, r: tr ? 7 : 6, fill: tr ? K.c('param') : K.c('bg'), stroke: K.c('param'), 'stroke-width': 3 }, ruler); });
+    const ptr = K.s('path', { d: 'M0,-16 L11,-36 L-11,-36 Z', fill: K.c('param') }, svg);
+    const lNo = C7.lab(ctx, 'no data here', rx(P.gamma), RU.y + 22, 'center small'); lNo.style.color = K.c('param');
+    // the row of snapshots and their votes
+    const RW = P.row, step = (RW.x1 - RW.x0) / N, kv = RW.bar_px_per_unit;
+    const zero = K.s('line', { x1: RW.x0, x2: RW.x1 - 120, y1: RW.y_zero, y2: RW.y_zero, stroke: K.c('chalk'), 'stroke-width': 2.5 }, svg);
+    const items = votes.map((v, i) => {
+      const g = K.s('g', {}, svg), ph = K.photo(g, { x: -32, y: -23, w: 64, h: 46, q: XS[3 * i], d: XS[3 * i + 1], v: XS[3 * i + 2], vmax: 3 });
+      ph.g.firstChild.setAttribute('stroke', K.c('model')); ph.g.firstChild.setAttribute('stroke-width', 3);
+      const bar = K.s('rect', { width: step * 0.42, fill: K.c('metric') }, svg);
+      return { g, bar, v, i, x: RW.x0 + step * (i + 0.5) };
+    });
+    const lG = C7.lab(ctx, 'g: energy change of one snapshot', RW.x0, RW.y_glyph - 80, 'small');
+    const avgBar = K.s('rect', { width: 26, fill: K.c('metric') }, svg), sq = K.s('rect', { width: 34, height: 34, fill: K.c('metric') }, svg);
+    const lPen = C7.lab(ctx, 'penalty = (average)²', RW.x1 - 110, RW.y_zero + 40, 'small center'), lZero = C7.lab(ctx, 'zero only when the crowd balances', RW.x1 - 110, RW.y_zero + 80, 'small center'); lZero.style.color = K.c('chalk');
+    K.lowerThird(ctx, { kind: 'source', data: SB, at: 'draw+0.6', hold: 3.5 });
+    // equations
+    const E1 = K.equation(ctx, { x: P.eq1.x, y: P.eq1.y, size: P.eq1.size, tex: '\\term{a}{\\mathbb{E}\\big[\\bar g^{\\,2}\\big]}\\term{e}{\\;=\\;}\\term{b}{(\\mathbb{E} g)^2}\\term{c}{\\;+\\;\\mathrm{Var}(g)/n}', reveal: [[['a', 'e', 'b'], 'trap-0.15'], ['c', 'scatter-0.15']], out: 'tell-0.15' });
+    const E2 = K.equation(ctx, { x: P.eq2.x, y: P.eq2.y, size: P.eq2.size, tex: '\\term{a}{\\mathbb{E}\\big[\\bar g_a\\,\\bar g_b\\big]}\\term{e}{\\;=\\;}\\term{b}{(\\mathbb{E} g)^2}', reveal: [[['a', 'e', 'b'], 'drops-0.15']], out: 'tell-0.15' });
+    // WORKAROUND (E.box in setup misplaced pens on this equation, see kit issues): chalk box and cross placed in render
+    const penL = K.svgLayer(ctx, 30), bxR = K.s('rect', { fill: 'none', stroke: K.c('chalk'), 'stroke-width': 4.5, rx: 6 }, penL), cx1 = K.s('line', { stroke: K.c('chalk'), 'stroke-width': 4.5, 'stroke-linecap': 'round' }, penL), cx2 = K.s('line', { stroke: K.c('chalk'), 'stroke-width': 4.5, 'stroke-linecap': 'round' }, penL);
+    const lSc = C7.lab(ctx, 'scatter', 0, 0, 'big center');
+    const ghost = K.s('path', { d: `M1300,640 Q1360,630 1390,560 L1396,470 L1404,470 L1410,560 Q1440,630 1500,640`, fill: 'none', stroke: K.c('metric'), 'stroke-width': 3, opacity: 0.3 }, svg);
+    const lSpk = C7.lab(ctx, 'hidden spike-maker', 1400, 650, 'small center');
+    K.chip(ctx, { text: 'found while building E1 (quick version) · R:124', kind: 'plain', x: 120, y: 770, at: 'found', out: 'drops', caps: false });
+    // juries
+    const JY = P.juries, lJa = C7.lab(ctx, 'jury a', RW.x0 - 20, JY.y_a - 46, 'small right'), lJb = C7.lab(ctx, 'jury b', RW.x0 - 20, JY.y_b - 46, 'small right');
+    const mkA = K.s('rect', { width: 26, fill: K.c('metric') }, svg), mkB = K.s('rect', { width: 26, fill: K.c('metric') }, svg);
+    const times = K.s('text', { 'text-anchor': 'middle', style: 'font: 700 52px Inter Display', fill: K.c('chalk') }, svg, '×');
+    const J = SP.juries;
+    K.chip(ctx, { text: `E1: ${J.gammas_per_step} values of Γ per step · two juries of ${J.half} · nine crowd laws`, kind: 'plain', x: 120, y: 770, at: 'drops+0.8', out: 'tell', caps: false, maxWidth: 900 });
+    K.badge(ctx, { kind: 'PROVED', note: 'Example 4.2 · unbiased estimator', at: -0.3 });
+    K.formulaLayer(ctx);
+    ctx.c = { E1, bxR, cx1, cx2, T, ruler, ptr, lNo, rx, zero, items, lG, avgBar, sq, lPen, lZero, meanAll, mA, mB, kv, step, lSc, ghost, lSpk, lJa, lJb, mkA, mkB, times };
+  },
+  render(t, ctx) {
+    const S = Scene, P = ctx.params, c = ctx.c, T = c.T, RW = P.row, JY = P.juries, ease = S.ease.inOutCubic;
+    const gone = 1 - S.seg(t, T.tell, T.tell + 0.5, S.ease.linear);
+    C7.fadeS(c.ruler, t, T.draw - 0.2, T.tell);
+    const pl = S.seg(t, T.draw, T.draw + 0.8, ease), px = c.rx(P.ruler.min) + (c.rx(P.gamma) - c.rx(P.ruler.min)) * pl;
+    c.ptr.setAttribute('transform', `translate(${px.toFixed(1)} ${P.ruler.y})`); c.ptr.setAttribute('opacity', S.seg(t, T.draw - 0.2, T.draw, S.ease.linear) * gone);
+    C7.fade(c.lNo, t, T.draw + 0.8, T.tell);
+    const sl = S.seg(t, T.square, T.square + 1.0, ease), squeeze = S.seg(t, T.squeeze, T.squeeze + 1.2, ease) * (1 - S.seg(t, T.juries, T.juries + 0.8, ease)), split = S.seg(t, T.juries, T.juries + 1.0, ease);
+    const keep = 1 - 0.85 * squeeze;
+    C7.fadeS(c.zero, t, T.draw + 0.4, T.juries); C7.fade(c.lG, t, T.draw + 0.8, T.trap);
+    const nS = P.n_show, endX = RW.x1 - 110;
+    c.items.forEach((it) => {
+      const drop = S.seg(t, T.draw + 0.5 + 0.08 * it.i, T.draw + 0.8 + 0.08 * it.i, S.ease.outCubic);
+      const ja = it.i < nS, j = ja ? it.i : it.i - nS, jx = RW.x0 + (RW.x1 - RW.x0 - 160) / nS * (j + 0.5), gyS = RW.y_glyph, gyJ = (ja ? JY.y_a : JY.y_b) - 30;
+      const x = it.x + (jx - it.x) * split, gy = gyS + (gyJ - gyS) * split, zy = RW.y_zero + ((ja ? JY.y_a : JY.y_b) + 40 - RW.y_zero) * split;
+      it.g.setAttribute('transform', `translate(${x.toFixed(1)} ${(gy - 40 * (1 - drop)).toFixed(1)})`); it.g.setAttribute('opacity', drop * gone);
+      const h = Math.max(-90, Math.min(90, it.v * c.kv)) * keep, bx = x - c.step * 0.21 + (endX - x) * sl * (1 - split);
+      it.bar.setAttribute('x', bx.toFixed(1)); it.bar.setAttribute('y', (h > 0 ? zy - h : zy).toFixed(1)); it.bar.setAttribute('height', Math.abs(h).toFixed(1));
+      it.bar.setAttribute('opacity', (gone * drop * (1 - 0.8 * sl * (1 - S.seg(t, T.trap, T.trap + 0.6, S.ease.linear)) * (1 - split))).toFixed(3));
+    });
+    const avg = Math.max(-90, Math.min(90, c.meanAll * c.kv * 4)), aOn = S.seg(t, T.square + 0.8, T.square + 1.1, S.ease.linear) * (1 - S.seg(t, T.trap, T.trap + 0.4, S.ease.linear));
+    c.avgBar.setAttribute('x', endX - 13); c.avgBar.setAttribute('y', (avg > 0 ? RW.y_zero - avg : RW.y_zero).toFixed(1)); c.avgBar.setAttribute('height', Math.max(3, Math.abs(avg)).toFixed(1)); c.avgBar.setAttribute('opacity', aOn * (1 - S.seg(t, T.square + 1.6, T.square + 2.0, S.ease.linear)));
+    c.sq.setAttribute('x', endX - 17); c.sq.setAttribute('y', RW.y_zero - 17); c.sq.setAttribute('opacity', S.seg(t, T.square + 1.6, T.square + 2.0, S.ease.linear) * (1 - S.seg(t, T.trap, T.trap + 0.4, S.ease.linear)));
+    C7.fade(c.lPen, t, T.square + 1.8, T.trap); C7.fade(c.lZero, t, T.square + 2.4, T.trap);
+    const cb = c.E1.box('c'), bOn = S.seg(t, T.scatter + 0.4, T.scatter + 0.7, S.ease.linear) * (1 - S.seg(t, T.juries, T.juries + 0.3, S.ease.linear)), xOn = S.seg(t, T.drops + 0.6, T.drops + 0.9, S.ease.linear) * (1 - S.seg(t, T.tell, T.tell + 0.3, S.ease.linear));
+    if (cb.w > 0) { c.bxR.setAttribute('x', cb.x - 10); c.bxR.setAttribute('y', cb.y - 10); c.bxR.setAttribute('width', cb.w + 20); c.bxR.setAttribute('height', cb.h + 20);
+      [[c.cx1, cb.x, cb.y + cb.h, cb.x + cb.w, cb.y], [c.cx2, cb.x, cb.y, cb.x + cb.w, cb.y + cb.h]].forEach(([e, a, b, d, f]) => { e.setAttribute('x1', a); e.setAttribute('y1', b); e.setAttribute('x2', d); e.setAttribute('y2', f); });
+      c.lSc.style.left = (cb.x + cb.w / 2) + 'px'; c.lSc.style.top = (cb.y - 60) + 'px'; }
+    c.bxR.setAttribute('opacity', bOn); c.cx1.setAttribute('opacity', xOn); c.cx2.setAttribute('opacity', xOn);
+    C7.fade(c.lSc, t, T.scatter + 0.6, T.juries);
+    c.ghost.setAttribute('opacity', (0.3 * S.seg(t, T.squeeze + 0.6, T.squeeze + 1.2, S.ease.linear) * (1 - S.seg(t, T.drops, T.drops + 0.6, S.ease.linear))).toFixed(3)); C7.fade(c.lSpk, t, T.squeeze + 0.8, T.drops);
+    C7.fade(c.lJa, t, T.juries + 0.8, T.tell); C7.fade(c.lJb, t, T.juries + 0.8, T.tell);
+    const mk = S.seg(t, T.juries + 1.2, T.juries + 1.6, S.ease.linear), mx = RW.x1 - 80;
+    [[c.mkA, c.mA, JY.y_a + 40], [c.mkB, c.mB, JY.y_b + 40]].forEach(([e, m, zy]) => { const h = Math.max(-60, Math.min(60, m * c.kv * 4)); e.setAttribute('x', mx - 13); e.setAttribute('y', (h > 0 ? zy - h : zy).toFixed(1)); e.setAttribute('height', Math.max(3, Math.abs(h)).toFixed(1)); e.setAttribute('opacity', mk * gone); });
+    c.times.setAttribute('x', mx); c.times.setAttribute('y', (JY.y_a + JY.y_b) / 2 + 58); c.times.setAttribute('opacity', S.seg(t, T.juries + 1.8, T.juries + 2.1, S.ease.linear) * gone);
+  },
+});
+</script></body></html>
