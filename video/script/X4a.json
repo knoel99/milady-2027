@@ -12,7 +12,7 @@
  },
  "learning_goal": "Know the Rice estimator's bias and variance and its test conditions, the threshold bound on reversal rates, why waiting times need dynamics, and what the next round of tier 0 must show.",
  "takeaway": "A snapshot generator bounds and estimates rates, but waiting times need the dynamics; tier 0 needs more seeds, a second reversal model, a joint mirror, and criteria that survive the noise.",
- "notes": "Extension module, extended cut only, inserted after 09.6 (so before ch09.Q, CONTRACT P1). Five scenes: X4.1 and X4.3 ready; X4.2 and X4.5 were PROVISIONAL in the outline and are now pending (D4: no CPU run, no re-integration, no training), each an empty seat with a READY anchor, THE BET, CONFIDENCE, SUCCESS CRITERION with source and ASK BEFORE WE COMPUTE, plus a result variant written for every outcome; one NEW question card X4a.Q. Register NIGHT throughout (09.6 and ch09.Q are NIGHT). Modules are asides: no chapter card; X4.1 carries the lower-third tag 'EXTENSION X4a · LEVEL 4–5 · AN ASIDE' and the rail at L4; X4.2 shows the rail climbing L4 -> L5 in its lead-in (the first L5 scene of the extended cut). Badges: PROVED (X4.1: Prop. 8 of the report and Prop. 2.31 of the PhD plan; X4.3: Prop. 2.32, with the waiting-time shape credited to Gissinger 2012 on a reference lower-third), CONJECTURE medium (X4.2, X4.5), none on the card. Narration never says 'E1', 'tier zero', 'DQVU', 'POD' or 'R pi' (no lexicon pin needed): it says 'the three-dial experiment', 'the first round', 'the staircase's first step', 'a second model, distilled from simulations of the sodium experiment' and 'a mirror that also flips the forcing'; the symbols are on screen. Narration words budgeted at 125-130 effective words per minute against target_s; estimates with the assembler formula (146 raw words per minute, 0.9 s per paragraph break, holds, lead-in, tail). CHANGES AGAINST THE OUTLINE, to review: (1) targets: X4.2 40 -> 45 s and X4.5 30 -> 40 s (pending framing of BRIEF 3.2: bet, reasoning, criterion, confidence and ask must all be said); result variants 45 s and 40 s (variants.result.target_s); module 2:25 -> 2:40 plus the 9-s card (2:49; assembler estimate 2:55). (2) SYMBOL SHEET, r_a: defined here as the Rice rate of crossings of ONE level a, counted both ways (= the rate at -a under the mirror), so that r <= r_a is exactly Prop. 2.30 (T:684: r_{+->-} <= nu_{-a}/2, r_{-->+} <= nu_a/2, hence r <= nu_a for a symmetric law). The outline's sheet ('rate of crossings of +/- a') and the 05.4 formula layer ('crossings of +-a') can be read as the sum over both levels, which would make r <= r_a loose by a factor two: consistency editor, please align the sheet and 05.4 on 'crossings of the level a (either way)'. (3) X4.1 shows the bias / variance trade-off on SYNTHETIC Gaussian snapshots whose true rate is known (computed in the page, grey dashed chip, no number on screen), not on re-estimated E1 values (no new result); E1's own strip is shown from data (Gamma 0.93, 26 of 8,000, as in 05.2). 'Needs F' (already said in 09.1) is a chip only; 'tested on a 3-variable deterministic system' is narrated with its reason (singular physical measure, R:528). (4) X4.3 adds the picture of Prop. 2.32's counterexample (two Gaussian signals, same snapshot law, metronome vs uneven gaps) before the Gissinger histogram; the histogram is a live in-browser integration (illustration, as in ch04 and the site widget), its SHAPE credited to Gissinger 2012 Fig. 12 (checked at the source); the closing line states T:131 as an open question, not as a method. (5) X4.5 puts the first-round (E1, two seeds) value on each of the four tier-0 lamps and says two things the author should take to the supervisors: the never-imposed residual cut is 1.98 against a bar of 2 (R:875; two seeds cannot tell which side), and criterion (a) 'below the Monte Carlo floor at all Gamma' fails by chance for an exactly symmetric model, because the floor is the EXPECTED value of |p - 1/2| for such a model (R:832): with one seed of n = 10,000, P(|p - 1/2| > floor) = P(|Z| > sqrt(2/pi)) ~ 0.42 at each Gamma (E1's model C, symmetric by construction, reads 0.0037-0.00485 against 0.0040). That catch is the seat's ASK. (6) NEW question card X4a.Q (category runs, ask C. Nore / Y. Ponty): waiting times in scope, with short solver runs launched from generated states? Distinct from ch09.Q (long runs to count reversals) and X2.Q (impeller swap); in the extended cut it plays just before ch09.Q, so the two cards are back to back: the question register may merge or reorder them; n is left null. DATA. Existing: data/e1_samples_0.93.json, data/e1_samples_0.9.json, data/e1_finegrid.json. Requested from ch05 (not yet in data/): data/ch05_rice.json, block strip (X4.1 reuses it). NEW, READY, for tools/data_existing.py (foundation engineer; read only, no run): data/X4a_tier0_anchor.json, from experiences/resultats/e1_gissinger.json: first_round = {n_seeds 2, gammas_test (10), asym_C (variants C_equivariant per test Gamma, mean of seeds: 0.0043 ... 0.00485), asym_floor = sqrt(2/pi)*0.5/sqrt(n_gen) with n_gen = config.n_gen = 10000 (0.00399, R:832), p_above_floor_one_seed = 2*(1 - Phi(sqrt(2/pi))) = 0.425, resid_loss = resume.F_stationnarite_C.test.liou_test_moy (0.0113194), resid_control = resume.F0_temoin_C.test.liou_test_moy (0.0224436), resid_ratio = resid_control / resid_loss (1.983), rice_far_cumulative 0.137 and rice_near_cumulative 0.416 and rice_far_pointwise_max 0.654 (model C, seed 0, as data/ch09_rice.json)}, meta.stamp 'DATA · E1 · first round · 2 seeds'; keys nested under first_round so they never collide with the {{fields}} of x4_tier0.json. PENDING files (never written by hand; their arrival flips the scenes to provisional + result): data/x4_rice_levels.json (generic seat JSON via tools/data_cloud.py seat --name x4_rice_levels; content in X4.2 'visual') and data/x4_tier0.json (tools/data_cloud.py tier0). REQUESTS to foundation engineer B (data_cloud.py): (a) as asked by ch10, add the booleans met, not_met, inconclusive to 'fields' (exactly one true); (b) conv_tier0: write NUMBERS, not strings, for n_seeds (int), cumulative_error_percent (int) and a new resid_ratio (float, never-imposed residual control / loss at the test Gamma, mean over seeds), plus resid_met (bool, ratio >= 2) and asym_n_above_floor / n_gamma; strings from say() put digits in the narration (BRIEF 6); (c) note that E1's fine-grid Rice uses seed 0 only (experiences/e1_gissinger.py:423), so a three-seed rerun does not change the Rice curve: the result narration says so. LEXICON: no new entry (Gissinger and Rice are pinned). MUSIC: none (L4-L5).",
+ "notes": "Extension module, extended cut only, inserted after 09.6 (so before ch09.Q, CONTRACT P1). Five scenes: X4.1 and X4.3 ready; X4.2 and X4.5 were PROVISIONAL in the outline and are now pending (D4: no CPU run, no re-integration, no training), each an empty seat with a READY anchor, THE BET, CONFIDENCE, SUCCESS CRITERION with source and ASK BEFORE WE COMPUTE, plus a result variant written for every outcome; one NEW question card X4a.Q. Register NIGHT throughout (09.6 and ch09.Q are NIGHT). Modules are asides: no chapter card; X4.1 carries the lower-third tag 'EXTENSION X4a · LEVEL 4–5 · AN ASIDE' and the rail at L4; X4.2 shows the rail climbing L4 -> L5 in its lead-in (the first L5 scene of the extended cut). Badges: PROVED (X4.1: Prop. 8 of the report and Prop. 2.31 of the PhD plan; X4.3: Prop. 2.32, with the waiting-time shape credited to Gissinger 2012 on a reference lower-third), CONJECTURE medium (X4.2, X4.5), none on the card. Narration never says 'E1', 'tier zero', 'DQVU', 'POD' or 'R pi' (no lexicon pin needed): it says 'the three-dial experiment', 'the first round', 'the staircase's first step', 'a second model, distilled from VKS simulations' and 'the impeller-swap mirror, which also flips Gamma' (its sign: the knob turns from +Γ to −Γ on screen) (X2.4 introduced the impeller swap); the symbols are on screen. Narration words budgeted at 125-130 effective words per minute against target_s; estimates with the assembler formula (146 raw words per minute, 0.9 s per paragraph break, holds, lead-in, tail). CHANGES AGAINST THE OUTLINE, to review: (1) targets: X4.2 40 -> 45 s and X4.5 30 -> 40 s (pending framing of BRIEF 3.2: bet, reasoning, criterion, confidence and ask must all be said); result variants 45 s and 40 s (variants.result.target_s); module 2:25 -> 2:40 plus the 9-s card (2:49; assembler estimate 2:55). Review 2026-11-08: X4.1 40 -> 42 s (motivating question, a non-sequitur fixed); module targets 2:42 plus the card (2:51); assembler estimate 3:00 (395 words); every scene within +12 % of target at 127.5 effective words per minute (changelog script/_review/X4a.md). (2) SYMBOL SHEET, r_a: defined here as the Rice rate of crossings of ONE level a, counted both ways (= the rate at -a under the mirror), so that r <= r_a is exactly Prop. 2.30 (T:684: r_{+->-} <= nu_{-a}/2, r_{-->+} <= nu_a/2, hence r <= nu_a for a symmetric law). The outline's sheet ('rate of crossings of +/- a') and the 05.4 formula layer ('crossings of +-a') can be read as the sum over both levels, which would make r <= r_a loose by a factor two: consistency editor, please align the sheet and 05.4 on 'crossings of the level a (either way)'. (3) X4.1 shows the bias / variance trade-off on SYNTHETIC Gaussian snapshots whose true rate is known (computed in the page, grey dashed chip, no number on screen), not on re-estimated E1 values (no new result); E1's own strip is shown from data (Gamma 0.93, 26 of 8,000, as in 05.2). 'Needs F' (already said in 09.1) is a chip only; 'tested on a 3-variable deterministic system' is narrated with its reason (singular physical measure, R:528). (4) X4.3 adds the picture of Prop. 2.32's counterexample (two Gaussian signals, same snapshot law, metronome vs uneven gaps) before the Gissinger histogram; the histogram is a live in-browser integration (illustration, as in ch04 and the site widget), its SHAPE credited to Gissinger 2012 Fig. 12 (checked at the source); the closing line states T:131 as an open question, not as a method. (5) X4.5 puts the first-round (E1, two seeds) value on each of the four tier-0 lamps and says two things the author should take to the supervisors: the never-imposed residual cut is 1.98 against a bar of 2 (R:875; two seeds cannot tell which side), and criterion (a) 'below the Monte Carlo floor at all Gamma' fails by chance for an exactly symmetric model, because the floor is the EXPECTED value of |p - 1/2| for such a model (R:832): with one seed of n = 10,000, P(|p - 1/2| > floor) = P(|Z| > sqrt(2/pi)) ~ 0.42 at each Gamma (E1's model C, symmetric by construction, reads 0.0037-0.00485 against 0.0040; per seed, one seed sits near 0.002 and the other near 0.006-0.007 at EVERY Gamma, because the generator is reseeded identically at each Gamma, e1_gissinger.py:284; the mean of two seeds is above 0.0040 at 19 of 21 Gamma; for a mean of 2-3 seeds P is about 0.45). That catch is the seat's ASK (review 2026-11-08: narrated as a catch sentence, cue 'catch', then the ask, cue 'ask'). (6) NEW question card X4a.Q (category runs, ask C. Nore / Y. Ponty): waiting times in scope, with short solver runs launched from generated states? Distinct from ch09.Q (long runs to count reversals) and X2.Q (impeller swap); in the extended cut it plays just before ch09.Q, so the two cards are back to back: the question register may merge or reorder them; n is left null. DATA. Existing: data/e1_samples_0.93.json, data/e1_samples_0.9.json, data/e1_finegrid.json. Requested from ch05 (not yet in data/): data/ch05_rice.json, block strip (X4.1 reuses it). NEW, READY, for tools/data_existing.py (foundation engineer; read only, no run): data/X4a_tier0_anchor.json, from experiences/resultats/e1_gissinger.json: first_round = {n_seeds 2, gammas_test (10), asym_C (variants C_equivariant per test Gamma, mean of seeds: 0.0043 ... 0.00485), asym_floor = sqrt(2/pi)*0.5/sqrt(n_gen) with n_gen = config.n_gen = 10000 (0.00399, R:832), p_above_floor_one_seed = 2*(1 - Phi(sqrt(2/pi))) = 0.425, resid_loss = resume.F_stationnarite_C.test.liou_test_moy (0.0113194), resid_control = resume.F0_temoin_C.test.liou_test_moy (0.0224436), resid_ratio = resid_control / resid_loss (1.983), rice_far_cumulative 0.137 and rice_near_cumulative 0.416 and rice_far_pointwise_max 0.654 (model C, seed 0, as data/ch09_rice.json)}, meta.stamp 'DATA · E1 · first round · 2 seeds'; keys nested under first_round so they never collide with the {{fields}} of x4_tier0.json. PENDING files (never written by hand; their arrival flips the scenes to provisional + result): data/x4_rice_levels.json (generic seat JSON via tools/data_cloud.py seat --name x4_rice_levels; content in X4.2 'visual') and data/x4_tier0.json (tools/data_cloud.py tier0). REQUESTS to foundation engineer B (data_cloud.py): (a) as asked by ch10, add the booleans met, not_met, inconclusive to 'fields' (exactly one true); (b) conv_tier0: write NUMBERS, not strings, for n_seeds (int), cumulative_error_percent (int) and a new resid_ratio (float, never-imposed residual control / loss at the test Gamma, mean over seeds), plus resid_met (bool, ratio >= 2) and asym_n_above_floor / n_gamma; strings from say() put digits in the narration (BRIEF 6); (c) note that E1's fine-grid Rice uses seed 0 only (experiences/e1_gissinger.py:423), so a three-seed rerun does not change the Rice curve: the result narration says so. LEXICON: no new entry (Gissinger and Rice are pinned). MUSIC: none (L4-L5).",
  "scenes": [
   {
    "id": "X4.1",
@@ -27,7 +27,7 @@
     "confidence": null,
     "note": "Prop. 8 (report) · Prop. 2.31 (PhD plan) · E1 window h = 0.2"
    },
-   "target_s": 40,
+   "target_s": 42,
    "lead_in": 0.6,
    "tail": 0.8,
    "deps": [
@@ -154,12 +154,12 @@
       {
        "id": "X4.1.s1",
        "cue": "aside",
-       "text": "Rice's formula, as an estimator."
+       "text": "How wide should Rice's strip be?"
       },
       {
        "id": "X4.1.s2",
        "cue": "wide",
-       "text": "Widen the strip: the estimate blurs, its bias growing like the width squared."
+       "text": "Widen it: the estimate blurs, its bias growing like the width squared."
       },
       {
        "id": "X4.1.s3",
@@ -169,7 +169,7 @@
       {
        "id": "X4.1.s4",
        "cue": "e1",
-       "text": "The three-dial experiment kept snapshots within zero point two of zero."
+       "text": "The three-dial experiment used snapshots within zero point two of zero."
       }
      ]
     },
@@ -179,12 +179,12 @@
       {
        "id": "X4.1.s5",
        "cue": "why",
-       "text": "Why not shrink it to nothing?"
+       "text": "With endless snapshots, why not shrink it to nothing?"
       },
       {
        "id": "X4.1.s6",
        "cue": "cosine",
-       "text": "The formula assumes a smooth cloud of states. A cosine has only a thin ring, yet the formula still finds two crossings per period."
+       "text": "The exact formula assumes a smooth cloud. A cosine has only a thin ring, yet the formula still finds two crossings per period."
       }
      ]
     },
@@ -194,7 +194,7 @@
       {
        "id": "X4.1.s7",
        "cue": "chaos",
-       "text": "Chaos may lack a smooth cloud too. So on three chaotic dials, the only test so far, the answer depends on the strip."
+       "text": "Chaos may lack a smooth cloud too, so nothing guarantees the limit: on the three dials, the only test so far, the answer depends on the strip."
       }
      ]
     }
@@ -412,7 +412,7 @@
       "ghost": "READY anchors: (1) the folded histogram of |D| from snaps.variants.ref (8,000 reference snapshots at Γ = 0.9), 40 bins on [0, 2.5], grey 30 % silhouette along the bottom of the frame on its own height scale (≤ 80 px, no y numbers), label 'where snapshots sit · |D| at Γ = 0.9'; (2) a grey filled dot at a = 0, y = fine.series[0].y at fine.x.values = 0.9 (the counted zero-crossing rate), label 'a = 0: every zero crossing, counted'",
       "bet": "the cap holds and comes within 30 % on a plateau of levels",
       "confidence": "medium",
-      "why": "the cap is proved; the plateau is untested",
+      "why": "the cap is proved; the plateau is untested, on dials without turbulent jitter (T:1006)",
       "criterion": "tier 0 (d): bound of Prop. 2.30 holds, tight within 30 % on a plateau",
       "source": "T:889 · Conj. 2.33, T:727",
       "ask": "Tight within 30 % on a plateau: how wide must the plateau be?",
@@ -446,7 +446,7 @@
       {
        "id": "X4.2.s2",
        "cue": "cap",
-       "text": "So the level's crossing rate, which Rice reads from snapshots, caps the reversal rate."
+       "text": "So the level's {metric}crossing rate{/}, which Rice reads from snapshots, caps the reversal rate."
       }
      ]
     },
@@ -461,7 +461,7 @@
       {
        "id": "X4.2.s4",
        "cue": "plateau",
-       "text": "The conjecture: with slow flips and fast jitter, a band of levels makes it nearly exact, a plateau."
+       "text": "The conjecture: if a flip lasts far longer than a wobble, the cap is nearly exact on a plateau of levels."
       }
      ]
     },
@@ -471,7 +471,7 @@
       {
        "id": "X4.2.s5",
        "cue": "bet",
-       "text": "The bet, from the PhD plan: on the staircase's first step, the cap comes within thirty percent of the counted rate on such a plateau."
+       "text": "The bet, from the PhD plan: on the staircase's first step, the cap comes within thirty percent of the counted rate on that plateau."
       }
      ]
     },
@@ -501,7 +501,7 @@
      "a reversal: from above a to below −a",
      "wobble: crosses a, no reversal",
      "r · reversals per unit time",
-     "r_a · crossings of the level a, either way (Rice: from snapshots)",
+     "r_a · crossings of the level a, either way (Rice: snapshots + equations)",
      "a, level (units of D)",
      "crossings per unit time",
      "where snapshots sit · |D| at Γ = 0.9",
@@ -541,7 +541,7 @@
      "bet written before the data · tier-0 campaign: up to 10⁶ snapshots per setting, 3 seeds, about 10³ CPU hours (assumption, T:967)"
     ]
    },
-   "visual": "Render class flat. Data: ctx.data.snaps (READY anchor, |D| histogram), ctx.data.fine (READY anchor, the counted zero-crossing rate at Γ = 0.9), ctx.data.seat = data/x4_rice_levels.json (optional; result variant). Kit.seat type 'curve' from entry.params.seat in the lower left (frame y1 = 640 so the x title clears the lower-third zone), right column x 1200-1780. Key colours: vermillion (the D trace, counted crossings), amber (Rice rates), violet only in the result variant (generated), grey and chalk; no green. Lead-in 0.6 s: rail climbs L4 → L5 (params.rail), label 'Level 4 → Level 5' on the rail. PENDING variant. On 'level-0.15': the top band (params.trace) draws a SCHEMATIC D(t) trace (spline through the knots, small seeded wiggle, vermillion by sign; grey dashed chip 'SCHEMATIC · drawn trace, no data'), the dashed chalk lines '+a' and '−a' and 'D = 0'; the reversal gets a filled chalk dot where it crosses −a, label 'a reversal: from above a to below −a' (picks up 05.4). On 'cap-0.15': the seat frame draws (dashed grey, axes labelled, tag 'DATA · X4_RICE_LEVELS · AWAITING') with the two READY anchors of params.seat.ghost (|D| silhouette, counted dot at a = 0); two chalk labels to the right of the dot: 'r_a · crossings of the level a, either way (Rice: from snapshots)' and 'r · reversals per unit time' with a small '≥' between them; formula layer (Prop. 2.30). Source lower-third (kind 'source', data ctx.data.snaps) at 'cap+0.8' for 4 s. On 'loose-0.15': back in the top band, the wobble that crosses +a and returns gets two hollow chalk ticks and a pen circle (M9), label 'wobble: crosses a, no reversal'. On 'plateau-0.15': the top band's trace slides left and fades; the SCHEMATIC pictogram (params.pictogram) draws on in its place: chalk curve of r_a against a, high at a = 0, dipping onto a flat stretch above a dashed floor 'r', rising near the polarity level; the flat stretch shaded with the kit's success band 'within 30 % of r', label 'plateau (Conjecture 2.33)', grey dashed chip 'SCHEMATIC · the conjecture's picture, no data'. On 'bet-0.15': the right column shows THE BET, then SUCCESS CRITERION with its source (params.seat.criterion, source); the 0.8-s hold lets it be read. On 'why-0.15': CONFIDENCE (two of three pips) with params.seat.why. On 'ask-0.15': the boxed ASK BEFORE WE COMPUTE (params.seat.ask). Chip with the campaign size (onscreen.chips[1]) under the frame from 'bet'. No number of the missing result anywhere. RESULT variant (data present; cues data, floor, bet, verdict, meaning, generated): the frame turns solid; on 'data-0.15' the seat's series draw on left to right: 'counted level crossings · simulation' (vermillion, solid), 'Rice at level a · true snapshots' (amber, solid), 'Rice at level a · generated snapshots' (violet, dashed, violet chip); on 'floor-0.15' the floor r draws as a solid grey line with its confidence band, label 'r · counted reversals'; on 'verdict-0.15' the kit's success band [r, 1.3 r] and, if seat.plateau is not null, the plateau range shaded on x with label 'plateau'; the RESULT block shows the converter's verdict and verdict_text (never computed in the page); on 'generated-0.15' the pen underlines the dashed violet curve. WHAT THE DATA FILE MUST CONTAIN (generic seat JSON, type 'curve', produced from the tier-0 campaign or, provisionally, from re-integrated Gissinger trajectories plus the E1 snapshot cache; producer not run, D4): gamma (0.9 at least); x.values = levels a in units of D (0 to 2.5); series = [counted level crossings per unit time (simulated), Rice at level a on reference snapshots, Rice at level a on generated snapshots (model name)]; floor = {r, lo, hi} with n_reversals (reversal = passage from D ≥ a to D ≤ −a, counted per level or at the plateau); plateau = [a_lo, a_hi] or null; verdict met | not_met | inconclusive with verdict_rule 'r ≤ r_a everywhere and (r_a − r)/r ≤ 0.3 on a plateau' and verdict_text; fields as NUMBERS: curve_gamma (the Γ of the curve), n_reversals, plateau_lo, plateau_hi, best_gap_percent, plus the booleans met, not_met, inconclusive (exactly one true).",
+   "visual": "Render class flat. Data: ctx.data.snaps (READY anchor, |D| histogram), ctx.data.fine (READY anchor, the counted zero-crossing rate at Γ = 0.9), ctx.data.seat = data/x4_rice_levels.json (optional; result variant). Kit.seat type 'curve' from entry.params.seat in the lower left (frame y1 = 640 so the x title clears the lower-third zone), right column x 1200-1780. Key colours: vermillion (the D trace, counted crossings), amber (Rice rates), violet only in the result variant (generated), grey and chalk; no green. Lead-in 0.6 s: rail climbs L4 → L5 (params.rail), label 'Level 4 → Level 5' on the rail. PENDING variant. On 'level-0.15': the top band (params.trace) draws a SCHEMATIC D(t) trace (spline through the knots, small seeded wiggle, vermillion by sign; grey dashed chip 'SCHEMATIC · drawn trace, no data'), the dashed chalk lines '+a' and '−a' and 'D = 0'; the reversal gets a filled chalk dot where it crosses −a, label 'a reversal: from above a to below −a' (picks up 05.4). On 'cap-0.15': the seat frame draws (dashed grey, axes labelled, tag 'DATA · X4_RICE_LEVELS · AWAITING') with the two READY anchors of params.seat.ghost (|D| silhouette, counted dot at a = 0); two chalk labels to the right of the dot: 'r_a · crossings of the level a, either way (Rice: snapshots + equations)' and 'r · reversals per unit time' with a small '≥' between them; formula layer (Prop. 2.30). Source lower-third (kind 'source', data ctx.data.snaps) at 'cap+0.8' for 4 s. On 'loose-0.15': back in the top band, the wobble that crosses +a and returns gets two hollow chalk ticks and a pen circle (M9), label 'wobble: crosses a, no reversal'. On 'plateau-0.15': the top band's trace slides left and fades; the SCHEMATIC pictogram (params.pictogram) draws on in its place: chalk curve of r_a against a, high at a = 0, dipping onto a flat stretch above a dashed floor 'r', rising near the polarity level; the flat stretch shaded with the kit's success band 'within 30 % of r', label 'plateau (Conjecture 2.33)', grey dashed chip 'SCHEMATIC · the conjecture's picture, no data'. On 'bet-0.15': the right column shows THE BET, then SUCCESS CRITERION with its source (params.seat.criterion, source); the 0.8-s hold lets it be read. On 'why-0.15': CONFIDENCE (two of three pips) with params.seat.why. On 'ask-0.15': the boxed ASK BEFORE WE COMPUTE (params.seat.ask). Chip with the campaign size (onscreen.chips[1]) under the frame from 'bet'. No number of the missing result anywhere. RESULT variant (data present; cues data, floor, bet, verdict, meaning, generated): the frame turns solid; on 'data-0.15' the seat's series draw on left to right: 'counted level crossings · simulation' (vermillion, solid), 'Rice at level a · true snapshots' (amber, solid), 'Rice at level a · generated snapshots' (violet, dashed, violet chip); on 'floor-0.15' the floor r draws as a solid grey line with its confidence band, label 'r · counted reversals'; on 'verdict-0.15' the kit's success band [r, 1.3 r] and, if seat.plateau is not null, the plateau range shaded on x with label 'plateau'; the RESULT block shows the converter's verdict and verdict_text (never computed in the page); on 'generated-0.15' the pen underlines the dashed violet curve. WHAT THE DATA FILE MUST CONTAIN (generic seat JSON, type 'curve', produced from the tier-0 campaign or, provisionally, from re-integrated Gissinger trajectories plus the E1 snapshot cache; producer not run, D4): gamma (0.9 at least); x.values = levels a in units of D (0 to 2.5); series = [counted level crossings per unit time (simulated), Rice at level a on reference snapshots, Rice at level a on generated snapshots (model name)]; floor = {r, lo, hi} with n_reversals (reversal = passage from D ≥ a to D ≤ −a, counted per level or at the plateau); plateau = [a_lo, a_hi] or null; verdict met | not_met | inconclusive with verdict_rule 'r ≤ r_a everywhere and (r_a − r)/r ≤ 0.3 on a plateau' and verdict_text; fields as NUMBERS: curve_gamma (the Γ of the curve), n_reversals, plateau_lo, plateau_hi, best_gap_percent (the SMALLEST gap (r_a − r)/r on the plateau, in percent; the narration says 'within thirty percent … as close as best_gap_percent'), (plateau_lo, plateau_hi and best_gap_percent may be null unless met: they are read only by the 'met' sentence, so they are not listed in data_fields), plus the booleans met, not_met, inconclusive (exactly one true).",
    "assets": [],
    "sources": [
     "en/these/index.qmd:680 (Rice counts all crossings, reversals, excursions and chattering; to isolate reversals, threshold crossings are counted)",
@@ -553,7 +553,8 @@
     "en/these/index.qmd:995 (risk table: too few reversals to validate Rice; mitigation: tier 0, Poisson intervals, thresholds +-a)",
     "data/e1_samples_0.9.json (8,000 reference snapshots at Gamma 0.9: |D| median about 1.06, 99 % below about 2.3, 21 inside |D| < 0.2) and data/e1_finegrid.json (counted zero-crossing rate at Gamma 0.9: 0.00442 per unit time)",
     "plan/outline.md X4.2 regeneration hook (rice_levels(), final run 10^6 snapshots per parameter and 3 seeds) and video/tools/data_cloud.py conv_seat (generic seat JSON)",
-    "script/ch05.json 05.4 (the +-a picture picked up here) and ch05.Q (which threshold turns a crossing into a reversal: not repeated; this ASK is about judging the plateau)"
+    "script/ch05.json 05.4 (the +-a picture picked up here) and ch05.Q (which threshold turns a crossing into a reversal: not repeated; this ASK is about judging the plateau)",
+    "en/these/index.qmd:1006 (E1: the Rice formula is tested on a low-dimensional deterministic system, without turbulent chattering: the scale separation of Conjecture 2.33 is only loosely mimicked at tier 0)"
    ],
    "variants": {
     "result": {
@@ -595,13 +596,13 @@
         {
          "id": "X4.2.r5",
          "cue": "meaning",
-         "text": "Between levels {{plateau_lo}} and {{plateau_hi}}, the cap sits within {{best_gap_percent}} percent of the truth: Rice can count reversals, not just crossings.",
+         "text": "Between levels {{plateau_lo}} and {{plateau_hi}}, the cap stays within thirty percent of the counted rate, and comes as close as {{best_gap_percent}} percent: on this model, the plateau is real.",
          "when": "met"
         },
         {
          "id": "X4.2.r6",
          "cue": "meaning",
-         "text": "No level brings the cap within thirty percent: on this model the plateau is missing, and the conjecture waits for the next step.",
+         "text": "No band of levels passes the test, so on this model the plateau is missing; the conjecture waits for the sodium experiment's simulations.",
          "when": "not_met"
         },
         {
@@ -618,7 +619,7 @@
         {
          "id": "X4.2.r8",
          "cue": "generated",
-         "text": "The dashed curve is the generator's answer, read from snapshots alone."
+         "text": "The dashed curve is the generator's answer, from its snapshots and the equations, with no time series."
         }
        ]
       }
@@ -927,7 +928,7 @@
        },
        {
         "id": "b",
-        "label": "never-imposed residuals ÷ 2 vs control, Γ without data",
+        "label": "crowd laws not enforced: residuals ÷ 2 vs control, Γ without data",
         "rule": "T:889 (b)",
         "anchor": "first round: ×anchor.first_round.resid_ratio (resid_loss vs resid_control)"
        },
@@ -935,7 +936,7 @@
         "id": "c",
         "label": "Rice within 20 % of the count, where the count is known to 5 %",
         "rule": "T:889 (c)",
-        "anchor": "first round, seed 0: rice_far_cumulative far from the threshold, rice_near_cumulative near"
+        "anchor": "first round, seed 0: rice_far_cumulative far from the threshold (pointwise up to rice_far_pointwise_max), rice_near_cumulative near"
        },
        {
         "id": "d",
@@ -944,12 +945,12 @@
         "anchor": "not measured yet"
        }
       ],
-      "bet": "never-imposed residual cut stays near ×2 (first round ×1.98): a toss-up",
+      "bet": "unenforced residuals halve again, roughly (first round ×1.98, the '÷ 2' of 09.4): a toss-up",
       "confidence": "medium",
       "why": "×1.98 on two seeds; tens of percent sit within seed spread (R:901)",
-      "criterion": "lamp (b): never-imposed residuals ÷ 2 vs control, at Γ without data",
+      "criterion": "lamp (b): crowd laws not enforced, residuals ÷ 2 vs control, at Γ without data",
       "source": "T:889",
-      "ask": "Floor = a perfect mirror's average: judge lamp (a) by a test instead?",
+      "ask": "Floor = a symmetric model's average: judge lamp (a) by a statistical test?",
       "column_y1": 740,
       "cues": {
        "frame": "lamps",
@@ -986,12 +987,12 @@
       {
        "id": "X4.5.s3",
        "cue": "model",
-       "text": "A second model, distilled from simulations of the sodium experiment."
+       "text": "A second model, distilled from VKS simulations."
       },
       {
        "id": "X4.5.s4",
        "cue": "mirror",
-       "text": "And a mirror that also flips the forcing."
+       "text": "And the impeller-swap mirror, which also flips {param}Gamma{/}."
       }
      ]
     },
@@ -1001,7 +1002,7 @@
       {
        "id": "X4.5.s5",
        "cue": "lamps",
-       "text": "Four lamps must light: lopsidedness, never-imposed residuals, Rice, and the level bound."
+       "text": "Four lamps must light: lopsidedness, unenforced laws, Rice, the level bound."
       }
      ]
     },
@@ -1011,7 +1012,7 @@
       {
        "id": "X4.5.s6",
        "cue": "bet",
-       "text": "The bet: the cut in never-imposed residuals stays near two, like the first round's one point nine eight, so that lamp is a toss-up."
+       "text": "The bet: unenforced residuals halve again, roughly. Last time, halving meant one point nine eight, against a bar of two: a toss-up."
       },
       {
        "id": "X4.5.s7",
@@ -1020,8 +1021,13 @@
       },
       {
        "id": "X4.5.s8",
+       "cue": "catch",
+       "text": "One catch: a perfectly symmetric model lands above the {metric}noise floor{/} nearly half the time; the floor is its average."
+      },
+      {
+       "id": "X4.5.s9",
        "cue": "ask",
-       "text": "One catch to settle first: the noise floor is a perfect mirror's average lopsidedness, so even a perfect model often lands above it."
+       "text": "Ask first: should the first lamp use a statistical test?"
       }
      ]
     }
@@ -1040,17 +1046,17 @@
      "Re 1594 · Rm 531 · asymmetry 0.058 · μ_r 16 in the impellers",
      "POD of 2000 snapshots · coefficients published (Tables I–II)",
      "no DQVU code in this repository yet",
-     "joint mirror R_π",
+     "joint mirror R_π · the impeller swap",
      "R_π: D → −D, V → −V and Γ → −Γ",
      "runs at Γ < 0",
      "tier 0 · success criteria of the PhD plan",
      "mirror · |P(D>0) − ½| below the noise floor, every Γ",
-     "never-imposed residuals ÷ 2 vs control, Γ without data",
+     "crowd laws not enforced: residuals ÷ 2 vs control, Γ without data",
      "Rice within 20 % of the count, where the count is known to 5 %",
      "level bound r ≤ r_a, tight within 30 % on a plateau",
      "first round, 2 seeds: 0.0037 to 0.0048 vs floor 0.0040",
      "first round: ×1.98 (0.0113 vs 0.0224)",
-     "first round, seed 0: 14 % cumulative far from the threshold, 42 % near",
+     "first round, seed 0: cumulative 14 % far from the threshold (pointwise up to 65 %), 42 % near",
      "not measured yet",
      "DATA · X4_TIER0 · AWAITING",
      "THE BET",
@@ -1066,12 +1072,12 @@
      },
      {
       "cue": "bet",
-      "out": "ask",
-      "tex": "\\text{first round, test } \\Gamma:\\ \\ \\text{never-imposed residual } 0.0113\\ \\text{(loss) vs } 0.0224\\ \\text{(control)} \\Rightarrow \\times 1.98;\\ \\ \\text{criterion (b): } \\times 2\\quad (\\text{R:875; T:889})"
+      "out": "catch",
+      "tex": "\\text{first round, test } \\Gamma:\\ \\ \\text{residual of the crowd laws not enforced (degree 3): } 0.0113\\ \\text{(loss) vs } 0.0224\\ \\text{(control)} \\Rightarrow \\times 1.98;\\ \\ \\text{criterion (b): } \\times 2\\quad (\\text{R:875; T:889})"
      },
      {
-      "cue": "ask",
-      "tex": "\\text{floor} = \\mathbb E\\,|\\hat p - \\tfrac12| = \\sqrt{2/\\pi}\\cdot\\tfrac{1}{2\\sqrt n} \\approx 0.0040\\ \\ (n = 10\\,000,\\ \\text{exact mirror; R:832})\\ \\Rightarrow\\ P\\big(|\\hat p - \\tfrac12| > \\text{floor}\\big) = P\\big(|Z| > \\sqrt{2/\\pi}\\big) \\approx 0.42\\ \\text{at each } \\Gamma"
+      "cue": "catch",
+      "tex": "\\text{floor} = \\mathbb E\\,|\\hat p - \\tfrac12| = \\sqrt{2/\\pi}\\cdot\\tfrac{1}{2\\sqrt n} \\approx 0.0040\\ \\ (n = 10\\,000,\\ \\text{exact mirror; R:832})\\ \\Rightarrow\\ P\\big(|\\hat p - \\tfrac12| > \\text{floor}\\big) = P\\big(|Z| > \\sqrt{2/\\pi}\\big) \\approx 0.42\\ \\text{(one seed; about 0.45 for a mean of 2 or 3 seeds), at each } \\Gamma"
      }
     ],
     "chips": [
@@ -1080,7 +1086,7 @@
      "bet written before the data · tier 0: perceptrons on CPU, simulations about 10³ CPU hours (assumption, T:967)"
     ]
    },
-   "visual": "Render class flat. Data: ctx.data.anchor = data/X4a_tier0_anchor.json (NEW, READY, the first-round values on the lamps; every number on screen from it via Kit.fmt), ctx.data.seat = data/x4_tier0.json (optional; result variant). Key colours: vermillion (D, Q in the mirror tile), green (the Γ knob only), amber (lamps' metrics), grey and chalk; at most three at once (the mirror tile leaves before the lamps). PENDING variant. On 'next-0.15': the staircase (M7, params.staircase) top-left with tier 0 lit, label 'tier 0 · three numbers', chalk chip 'second round'. On 'seeds-0.15': tile 1 (params.tiles): three horizontal lanes 'seed 0', 'seed 1' filled grey-white, 'seed 2 · awaiting' dashed, small label 'first round: 2 seeds'. On 'model-0.15': tile 2, the DQVU card (onscreen labels 'DQVU · Bousquet et al. 2026' … 'no DQVU code in this repository yet'), a schematic VKS cylinder outline (grey, no field) at its left; reference lower-third (kind 'reference', l1 'Reference', l2 'Bousquet, Ponty, Botez, Plihon, Nore 2026 · PRFluids 11, 063703') at 'model+0.4' for 4 s. On 'mirror-0.15': tile 3, a small (Q, D) plane with a chalk mirror line along the Q axis; a vermillion point reflects to (Q, −D) while the green knob (M2, params.tiles.mirror.knob) turns from +Γ to −Γ in step (Scene.spring, ≤ 3 % overshoot); labels 'joint mirror R_π', 'R_π: D → −D, V → −V and Γ → −Γ', 'runs at Γ < 0'; formula layer. On 'lamps-0.15': the three tiles shrink into small icons in the top strip; Kit.seat type 'lamps' fills params.seat.box with lampsTitle and the four lamps (grey, dashed, 'AWAITING'), each with its label and, under it, a grey 32-px anchor chip with the first-round value from ctx.data.anchor.first_round (a: min–max of asym_C vs asym_floor; b: ×resid_ratio with resid_loss vs resid_control; c: rice_far_cumulative and rice_near_cumulative; d: 'not measured yet'); the data tag 'DATA · X4_TIER0 · AWAITING'; source lower-third (kind 'source', data ctx.data.anchor) at 'lamps+0.6' for 4 s. The 0.6-s hold lets the lamps be read. On 'bet-0.15': the right column (x 1200-1780, ending above y 740 because the formula layer comes at 'ask') shows THE BET and SUCCESS CRITERION (lamp b, source T:889); the pen (M9) circles lamp b's '×1.98' chip. On 'why-0.15': CONFIDENCE, two of three pips, with params.seat.why. On 'ask-0.15': the boxed ASK BEFORE WE COMPUTE; lamp a's anchor chip gets a pen underline; formula layer with the floor arithmetic. No number of the missing result anywhere. RESULT variant (data present; cues next, adds, bet, value, meaning, rice, verdict): the seed-2 lane fills on 'next'; on 'value-0.15' lamp b's chip updates to the new ratio (seat field resid_ratio) next to the first-round one, and its lamp shows the state the converter wrote (never computed here); on 'rice-0.15' a small inset curve draws the seat's series (counted solid vermillion, Rice generated dashed violet) with the chip 'Rice: seed 0 only'; on 'verdict-0.15' the RESULT block shows verdict and verdict_text. WHAT x4_tier0.json MUST CONTAIN (tools/data_cloud.py tier0, plus the requests in the notes): fields n_seeds (int), resid_ratio (float), resid_met (bool), cumulative_error_percent (int), verdict and the booleans met, not_met, inconclusive; optional lamps [{id a-d, state, value}].",
+   "visual": "Render class flat. Data: ctx.data.anchor = data/X4a_tier0_anchor.json (NEW, READY, the first-round values on the lamps; every number on screen from it via Kit.fmt), ctx.data.seat = data/x4_tier0.json (optional; result variant). Key colours: vermillion (D, Q in the mirror tile), green (the Γ knob only), amber (lamps' metrics), grey and chalk; at most three at once (the mirror tile leaves before the lamps). PENDING variant. On 'next-0.15': the staircase (M7, params.staircase) top-left with tier 0 lit, label 'tier 0 · three numbers', chalk chip 'second round'. On 'seeds-0.15': tile 1 (params.tiles): three horizontal lanes 'seed 0', 'seed 1' filled grey-white, 'seed 2 · awaiting' dashed, small label 'first round: 2 seeds'. On 'model-0.15': tile 2, the DQVU card (onscreen labels 'DQVU · Bousquet et al. 2026' … 'no DQVU code in this repository yet'), a schematic VKS cylinder outline (grey, no field) at its left; reference lower-third (kind 'reference', l1 'Reference', l2 'Bousquet, Ponty, Botez, Plihon, Nore 2026 · PRFluids 11, 063703') at 'model+0.4' for 4 s. On 'mirror-0.15': tile 3, a small (Q, D) plane with a chalk mirror line along the Q axis; a vermillion point reflects to (Q, −D) (the two-impeller glyph of X2.4, small, flips half a turn beside it) while the green knob (M2, params.tiles.mirror.knob) turns from +Γ to −Γ in step (Scene.spring, ≤ 3 % overshoot); labels 'joint mirror R_π', 'R_π: D → −D, V → −V and Γ → −Γ', 'runs at Γ < 0'; formula layer. On 'lamps-0.15': the three tiles shrink into small icons in the top strip; Kit.seat type 'lamps' fills params.seat.box with lampsTitle and the four lamps (grey, dashed, 'AWAITING'), each with its label and, under it, a grey 32-px anchor chip with the first-round value from ctx.data.anchor.first_round (a: min–max of asym_C vs asym_floor; b: ×resid_ratio with resid_loss vs resid_control; c: rice_far_cumulative and rice_near_cumulative; d: 'not measured yet'); the data tag 'DATA · X4_TIER0 · AWAITING'; source lower-third (kind 'source', data ctx.data.anchor) at 'lamps+0.6' for 4 s. The 0.6-s hold lets the lamps be read. On 'bet-0.15': the right column (x 1200-1780, ending above y 740 because the formula layer comes at 'catch') shows THE BET and SUCCESS CRITERION (lamp b, source T:889); the pen (M9) circles lamp b's '×1.98' chip. On 'why-0.15': CONFIDENCE, two of three pips, with params.seat.why. On 'catch-0.15': lamp a's anchor chip ('0.0037 to 0.0048 vs floor 0.0040') gets a pen underline; formula layer with the floor arithmetic. On 'ask-0.15': the boxed ASK BEFORE WE COMPUTE. No number of the missing result anywhere. RESULT variant (data present; cues next, adds, bet, value, meaning, rice, verdict): the seed-2 lane fills on 'next'; on 'value-0.15' lamp b's chip updates to the new ratio (seat field resid_ratio) next to the first-round one, and its lamp shows the state the converter wrote (never computed here); on 'rice-0.15' a small inset curve draws the seat's series (counted solid vermillion, Rice generated dashed violet) with the chip 'Rice: seed 0 only'; on 'verdict-0.15' the RESULT block shows verdict and verdict_text. WHAT x4_tier0.json MUST CONTAIN (tools/data_cloud.py tier0, plus the requests in the notes): fields n_seeds (int), resid_ratio (float), resid_met (bool), cumulative_error_percent (int), verdict and the booleans met, not_met, inconclusive; optional lamps [{id a-d, state, value}].",
    "assets": [],
    "sources": [
     "en/these/index.qmd:878-890 (tier 0: Gissinger on a fine grid of Gamma and at Gamma < 0 for the joint R_pi symmetry; DQVU simulated with the coefficients published in Bousquet et al. 2026, Tables I and II; up to 10^6 snapshots per parameter; equivariant field for S_B and R_pi; criteria (a)-(d); stopping: '(b) fails with the unbiased estimator and three seeds')",
@@ -1089,11 +1095,13 @@
     "en/rapport/index.qmd:832 and :853 (noise floors; asymmetry floor = expectation of |p - 1/2| for an exactly symmetric law, sqrt(2/pi) x 1/2 / sqrt(n) ~ 0.0040 with n = 10,000; two seeds instead of the three planned)",
     "en/rapport/index.qmd:873 and data/e1_eval.json variants.C_equivariant.per_gamma.test.asym (model C at the ten test Gamma, mean of two seeds: 0.0037 to 0.00485)",
     "en/rapport/index.qmd:875 (stationarity loss on model C at the test Gamma: never-imposed residuals 0.0113 against 0.0224 for the control, ratio 1.98; experiences/resultats/e1_gissinger.json resume F_stationnarite_C / F0_temoin_C test liou_test_moy 0.0113194 / 0.0224436)",
-    "en/rapport/index.qmd:883 (Rice on model C, seed 0: 14 % cumulative for Gamma >= 0.89, up to 65 % at one value, 42 % near the threshold) and :901 (two seeds: tens of percent lie within seed spread)",
+    "en/rapport/index.qmd:883 (Rice on model C, seed 0: 14 % cumulative for Gamma >= 0.89, pointwise mean 17 % and up to 65 % at Gamma = 0.905 and 0.91, 42 % near the threshold) and :901 (two seeds: tens of percent lie within seed spread)",
     "en/these/index.qmd:967 (tier 0: perceptrons on CPU, about 0 GPU h; simulations about 10^3 CPU h, assumption)",
     "en/experiences/index.qmd:71 and :75 (E1 takes about 2 to 3 h; seeds fixed in the code, 0 and 1); experiences/e1_gissinger.py:259 and :423 (seeds [0, 1]; the fine-grid Rice uses seeds[0] only)",
     "plan/inventory.md M9 (no DQVU implementation in the repository; DQVU needs the published coefficients) and video/tools/data_cloud.py conv_tier0 (verdict inconclusive by design)",
-    "script/X2.json X2.Q (impeller swap at one sign of the asymmetry: not repeated here)"
+    "script/X2.json X2.Q (impeller swap at one sign of the asymmetry: not repeated here)",
+    "experiences/resultats/e1_gissinger.json evaluation.C_equivariant.{train,test}[].asym = [mean, spread] over seeds 0 and 1: about 0.002 for one seed and 0.006-0.007 for the other at every Gamma; mean above 0.0040 at 19 of 21 Gamma (all 11 training values, 8 of 10 test values); experiences/e1_gissinger.py:284 (torch.manual_seed(1000 + seed) before generating at each Gamma: the same noise at every Gamma, so the 21 values are not independent draws)",
+    "script/ch09.json 09.4 ('it halves the crowd-law residuals, even for laws it never enforced': the 1.98 named here) and script/X2.json X2.4 (the impeller swap that flips the forcing asymmetry; in the Gissinger model, the sign of Gamma, T:603)"
    ],
    "variants": {
     "result": {
@@ -1126,12 +1134,12 @@
         {
          "id": "X4.5.r3",
          "cue": "bet",
-         "text": "The bet was a cut in never-imposed residuals near two."
+         "text": "The bet was that unenforced residuals halve again, roughly."
         },
         {
          "id": "X4.5.r4",
          "cue": "value",
-         "text": "With {{n_seeds}} seeds, it is {{resid_ratio:2}}."
+         "text": "With {{n_seeds}} seeds, the cut is {{resid_ratio:2}}."
         },
         {
          "id": "X4.5.r5",
@@ -1203,7 +1211,7 @@
       {
        "id": "X4a.Q.s1",
        "cue": "q",
-       "text": "Beyond how often: should we also target waiting times, with short solver runs launched from generated states?"
+       "text": "Beyond how often: for VKS, should we also target waiting times, with short solver runs from generated states?"
       }
      ]
     }
@@ -1228,12 +1236,12 @@
     "n": null,
     "category": "runs",
     "chapter": "X4a",
-    "en": "Beyond *how often*: should we also target *waiting times*, with short solver runs launched from generated states?",
-    "say": "Beyond how often: should we also target waiting times, with short solver runs launched from generated states?",
-    "fr": "Au-delà de la fréquence : faut-il aussi viser les *temps d'attente*, avec de courtes simulations lancées depuis des états générés ?",
-    "why": "Snapshots fix how often the dipole flips, never how long it waits (Prop. 2.32): waits need dynamics, and MilaDy's objective (i) is about reversal dynamics, precursor to recovery.",
+    "en": "Beyond *how often*: for VKS, should we also target *waiting times*, with short solver runs from generated states?",
+    "say": "Beyond how often: for VKS, should we also target waiting times, with short solver runs from generated states?",
+    "fr": "Au-delà de la fréquence : pour VKS, faut-il aussi viser les *temps d'attente*, avec de courtes simulations lancées depuis des états générés ?",
+    "why": "Snapshots plus the equations fix how often the dipole crosses zero, never how long it waits (Prop. 2.32): waits need dynamics. Tier 0 already plans them cheaply (T:888); for VKS they cost solver time, and MilaDy's objective (i) is about reversal dynamics, precursor to recovery.",
     "unblocks": "Runs: whether the VKS tier budgets short SFEMaNS or LATU runs started from generated states in the corridor (how many, how long), and whether such states are valid starts. Framing: waiting-time laws as a criterion, or left to a temporal model.",
-    "why_fr": "Les instantanés fixent la fréquence des renversements, jamais la durée de l'attente (proposition 2.32) : l'attente demande la dynamique, et l'objectif (i) de MilaDy porte sur la dynamique des renversements, du précurseur à la récupération.",
+    "why_fr": "Les instantanés et les équations fixent la fréquence des passages par zéro du dipôle, jamais la durée de l'attente (proposition 2.32) : l'attente demande la dynamique. Le palier 0 la prévoit déjà à faible coût (T:888) ; pour VKS elle coûte du temps de solveur, et l'objectif (i) de MilaDy porte sur la dynamique des renversements, du précurseur à la récupération.",
     "unblocks_fr": "Simulations : le palier VKS prévoit-il de courtes simulations SFEMaNS ou LATU lancées depuis des états générés dans le couloir (combien, quelle durée), et ces états sont-ils des départs valides ? Cadrage : les lois des temps d'attente comme critère, ou laissées à un modèle temporel.",
     "ask_who": "C. Nore / Y. Ponty"
    }

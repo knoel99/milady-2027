@@ -12,7 +12,7 @@
  },
  "learning_goal": "Meet the specialist frontier: conventions for Rm, gauges in bounded domains, permeability jumps, vacuum matching, hybrid meshes, the VKS and DRESDYN bets, and downstream assimilation; leave with the labels a VKS dataset must carry.",
  "takeaway": "Leaving the periodic box changes what 'exact' means, and the real tests (VKS, DRESDYN) are written down as bets.",
- "notes": "Extension module, extended cut only, inserted after 10.9 (in the extended cut 10.9 is replaced by 10.9-bridge, which the assembler aliases; X5b follows, then ch10.Q closes the chapter). Status (D4): X6.0-X6.3, X6.6 and X6.Q ready; X6.4 and X6.5 pending (empty seats with a READY anchor, THE BET, CONFIDENCE, SUCCESS CRITERION with source, ASK BEFORE WE COMPUTE, and a result variant written for met, not met and inconclusive). Badges: CONTEXT (X6.0), PROVED (X6.1, X6.2 with the kink marked proposed and untested, X6.3, X6.6), CONJECTURE low (X6.4, X6.5), none on the card. REGISTERS: X6.0 PAPER with the T3 ink change in its 2.0-s lead-in (10.9-bridge's visual already announces a PAPER ink change at X6.0; the outline had X6.0 NIGHT), X6.1-X6.3 PAPER, T3 back to NIGHT in X6.4's 1.8-s lead-in, X6.5, X6.6 and X6.Q NIGHT. Modules are asides: no chapter card; X6.0 carries the lower-third 'EXTENSION X6 · LEVEL 5 · AN ASIDE' and the rail held at L5. DATA. X6.4 reads data/tier3_vks.json and X6.5 data/tier4_dresdyn.json (generic seat JSONs, shared with 10.9; the content each must hold is in entry.params.data_contract). X6.6 reads the existing data/e1_samples_0.9.json (model C) and data/e1_finegrid.json (mu) and computes the reduced drift and the posterior in the page (checked: with sigma 0.2 and mirror pairs the humps sit near Q = ±2.2 and no snapshot lies near the origin). X6.0 reads a NEW small file data/X6_rm_conventions.json (a transcription of P3 Example 6.1 and R:141 by tools/data_existing.py, no run; content in its entry.params.data_contract), so that no number is typed in the scene (CONTRACT 5); until it exists the assembler renders X6.0 as pending. CHANGES AGAINST THE OUTLINE, to review: (1) targets: X6.2 40 -> 43 s (predict beat 'can a smooth potential obey both rules?', hold 2.5 s); X6.4 30 -> 42 s and X6.5 25 -> 37 s (the pending framing of BRIEF 3.2: bet, reasoning, criterion, confidence and ask are all said); X6.6 35 -> 42 s (predict beat 'where does the average of the matching states sit?', hold 2.5 s); result variants 45 s (X6.4) and 37 s (X6.5); new card X6.Q 9 s. Module 4:43 of targets now (outline 4:00 without a card), 4:46 with results; assembler estimate about 4:44. (2) X6.0: the published thresholds 31 and 52-71 are shown with the fixed ratio 1/K = 1.67 between the two definitions at the same rotation (P3:1202); Miralles keeps no number (D19, B15); 16 Hz is shown as the shared rotation. (3) X6.1 adds the helicity consequence (Prop. 2.7, T:319): with field crossing the wall the raw magnetic helicity depends on the gauge, a metric that changes meaning. (4) X6.2 calls back the iron of 02.5 and the 40 % wall-condition shift of 03.5 (formula layer). (5) X6.6 illustrates Props 2.40 and 2.41 on real E1 snapshots of model C instead of a pure schematic; only the lopsided prior is SCHEMATIC. The outline's 'latent 4D-Var' becomes 'start the search from a code and from its mirror': T:843 describes a variational cost in the latent z, with no time window. (6) New question card X6.Q (category framing, ask C. Nore / Y. Ponty, n null until the question register numbers it): which labels each VKS snapshot must carry (Rm convention, wall condition, permeability). Seat ASK boxes: X6.4 logistics ('How many VKS snapshots per configuration can we get, and by when?', from the month-18 stopping rule), X6.5 runs ('How many precession ratios will be simulated, and how closely spaced?', from the five-Po stopping rule). The 10.9 ASK (core only) is not repeated word for word. SYMBOL SHEET: s and lambda unused; D, Q as in ch04; 'distribution distance' in narration and on screen, the amber \\Edist on the formula layer; q violet for the generated law and the prior; Po green; mu_r allowed at L5 (on screen only; narration says 'permeability'); permeabilities on each side written mu_r^+ and mu_r^- (mu_+- belongs to X2/X4); calligraphic P and T for the poloidal and toroidal scalars (P is the injection rate of ch08); eta for the magnetic diffusivity of sodium in X6.0 (no sigma: sigma is the spread); 'the vessel' and 'the wall' instead of Omega and Gamma (Gamma is the Gissinger knob); the observation operator is calligraphic H; POD_r for the reduced coordinates (Pi is X2's projector); no C1-C4 class labels. LEXICON: no new entry. Spoken: VKS, DRESDYN, Rm (pinned); 'Poincaré', 'SFEMaNS', 'POD', 'LATU', 'R pi' are on screen only. REQUESTS (foundation engineer B, tools/data_cloud.py): conv_seat could derive the booleans met / not_met / inconclusive from 'verdict' into 'fields' (as it already adds fields.verdict), so the 'when' sentences of X6.4, X6.5 (and 10.9) work for any producer. Words budgeted at about 128 effective words per minute of target_s and checked with the assembler formula (146 raw words per minute, 0.9 s per paragraph break, holds, lead-in, tail).",
+ "notes": "Extension module, extended cut only, inserted after 10.9 (in the extended cut 10.9 is replaced by 10.9-bridge, which the assembler aliases; X5b follows, then ch10.Q closes the chapter). Status (D4): X6.0-X6.3, X6.6 and X6.Q ready; X6.4 and X6.5 pending (empty seats with a READY anchor, THE BET, CONFIDENCE, SUCCESS CRITERION with source, ASK BEFORE WE COMPUTE, and a result variant written for met, not met and inconclusive). Badges: CONTEXT (X6.0), PROVED (X6.1, X6.2 with the kink marked proposed and untested, X6.3, X6.6), CONJECTURE low (X6.4, X6.5), none on the card. REGISTERS: X6.0 PAPER with the T3 ink change in its 2.0-s lead-in (10.9-bridge's visual already announces a PAPER ink change at X6.0; the outline had X6.0 NIGHT), X6.1-X6.3 PAPER, T3 back to NIGHT in X6.4's 1.8-s lead-in, X6.5, X6.6 and X6.Q NIGHT. Modules are asides: no chapter card; X6.0 carries the lower-third 'EXTENSION X6 · LEVEL 5 · AN ASIDE' and the rail held at L5. DATA. X6.4 reads data/tier3_vks.json and X6.5 data/tier4_dresdyn.json (generic seat JSONs, shared with 10.9; the content each must hold is in entry.params.data_contract). X6.6 reads the existing data/e1_samples_0.9.json (model C) and data/e1_finegrid.json (mu) and computes the reduced drift and the posterior in the page (checked: with sigma 0.2 and mirror pairs the humps sit near Q = ±2.2 and no snapshot lies near the origin). X6.0 reads a NEW small file data/X6_rm_conventions.json (a transcription of P3 Example 6.1 and R:141 by tools/data_existing.py, no run; content in its entry.params.data_contract), so that no number is typed in the scene (CONTRACT 5); until it exists the assembler renders X6.0 as pending. CHANGES AGAINST THE OUTLINE, to review: (1) targets: X6.2 40 -> 43 s (predict beat 'can a smooth potential obey both rules?', hold 2.5 s); X6.4 30 -> 45 s and X6.5 25 -> 38 s (after review) (the pending framing of BRIEF 3.2: bet, reasoning, criterion, confidence and ask are all said); X6.6 35 -> 42 s (predict beat 'where does the average of the matching states sit?', hold 2.5 s); result variants 43 s (X6.4, after review) and 37 s (X6.5); new card X6.Q 9 s. Module 4:47 of targets now (outline 4:00 without a card), 4:44 with results; assembler estimate about 4:49 (after review). (2) X6.0: the published thresholds 31 and 52-71 are shown with the fixed ratio 1/K = 1.67 between the two definitions at the same rotation (P3:1202); Miralles keeps no number (D19, B15); 16 Hz is shown as the shared rotation. (3) X6.1 adds the helicity consequence (Prop. 2.7, T:319): with field crossing the wall the raw magnetic helicity depends on the gauge, a metric that changes meaning. (4) X6.2 calls back the iron of 02.5 and the 40 % wall-condition shift of 03.5 (formula layer). (5) X6.6 illustrates Props 2.40 and 2.41 on real E1 snapshots of model C instead of a pure schematic; only the lopsided prior is SCHEMATIC. The outline's 'latent 4D-Var' becomes 'start the search from a code and from its mirror': T:843 describes a variational cost in the latent z, with no time window. (6) New question card X6.Q (category framing, ask C. Nore / Y. Ponty, n null until the question register numbers it): which labels each VKS snapshot must carry (Rm convention, wall condition, permeability). Seat ASK boxes: X6.4 logistics ('How many VKS snapshots per configuration can we get, and by when?', from the month-18 stopping rule), X6.5 runs ('How many precession ratios will be simulated, and how closely spaced?', from the five-Po stopping rule). The 10.9 ASK (core only) is not repeated word for word. SYMBOL SHEET: s and lambda unused; D, Q as in ch04; 'distribution distance' in narration and on screen, the amber \\Edist on the formula layer; q violet for the generated law and the prior; Po green; mu_r allowed at L5 (on screen only; narration says 'permeability'); permeabilities on each side written mu_r^+ and mu_r^- (mu_+- belongs to X2/X4); calligraphic P and T for the poloidal and toroidal scalars (P is the injection rate of ch08); eta for the magnetic diffusivity of sodium in X6.0 (no sigma: sigma is the spread); 'the vessel' and 'the wall' instead of Omega and Gamma (Gamma is the Gissinger knob); the observation operator is calligraphic H; POD_r for the reduced coordinates (Pi is X2's projector); no C1-C4 class labels. LEXICON: no new entry. Spoken: VKS, DRESDYN, Rm (pinned); 'Poincaré', 'SFEMaNS', 'POD', 'LATU', 'R pi' are on screen only. REQUESTS (foundation engineer B, tools/data_cloud.py): conv_seat could derive the booleans met / not_met / inconclusive from 'verdict' into 'fields' (as it already adds fields.verdict), so the 'when' sentences of X6.4, X6.5 (and 10.9) work for any producer. Words budgeted at about 128 effective words per minute of target_s and checked with the assembler formula (146 raw words per minute, 0.9 s per paragraph break, holds, lead-in, tail). REVIEW 2026-11-08 (script/_review/X6.md): no spoken bet number in X6.4/X6.5 (the film never says 'Bet three'; titles now 'Bet: ...' as X3.5); X6.4 says the generator is trained on the partners' simulations (not the experiment), its 35-word criteria sentence is split (new cue 'iron'), target 42 -> 45 s (result 45 -> 43 s); X6.5 target 37 -> 38 s, the result says 'held-out ratio' (it is simulated, kept out of training); X6.3 lists m = 0; X6.6 says the drift is averaged per reduced state and its posterior formula no longer reuses N (X6.2's Neumann-to-Dirichlet map) or Sigma (X6.2's interface).",
  "scenes": [
   {
    "id": "X6.0",
@@ -475,7 +475,7 @@
       {
        "id": "X6.2.s5",
        "cue": "fix",
-       "text": "The plan proposes a fix, untested: a deliberate kink on the surface."
+       "text": "The plan proposes an untested fix: a potential deliberately kinked at the surface."
       }
      ]
     },
@@ -590,14 +590,15 @@
      },
      "rings": {
       "m": [
+       0,
        1,
        2,
        3
       ],
       "x": 1600,
-      "y0": 320,
-      "dy": 140,
-      "r": 56
+      "y0": 300,
+      "dy": 125,
+      "r": 50
      },
      "meters": {
       "generator": {
@@ -634,7 +635,7 @@
       {
        "id": "X6.3.s3",
        "cue": "slices",
-       "text": "The partners' solver slices space instead: around the axis, waves of one, two, three bumps per turn; across each half-plane, a triangle mesh."
+       "text": "The partners' solver slices space instead: around the axis, waves of zero, one, two, three bumps per turn; across each half-plane, a triangle mesh."
       }
      ]
     },
@@ -668,6 +669,7 @@
      "div B = 0 · no gauge",
      "axis",
      "meridian half-plane · triangles",
+     "m = 0",
      "m = 1",
      "m = 2",
      "m = 3",
@@ -701,7 +703,7 @@
      "MFF extension milady_fourier_fe · writer and interpolators exist · native SFEMaNS reader not implemented"
     ]
    },
-   "visual": "Render class flat (SVG + KaTeX). PAPER. On 'scalars-0.15': left (x 160-860), a small ink wire cube with a bundle of vermillion field lines; beside it three grey component strips 'A_x, A_y, A_z' (three small contour maps) collapse into TWO ink contour sheets labelled 'poloidal 𝒫' and 'toroidal 𝒯' (T1 morph 1.2 s; calligraphic letters avoid the injection rate P of ch08). On 'nogauge-0.15': a pen check (M9) beside the cube, label 'div B = 0 · no gauge'; the cube and sheets dim to 40 %. On 'slices-0.15': right half: the cylinder in ink; a meridian half-plane (params.mesh.box) opens and is filled with the triangle mesh (params.mesh: seeded Delaunay, denser near the two impeller discs, drawn on in 1.0 s), label 'meridian half-plane · triangles', axis dash-dot labelled 'axis'; on the words 'one, two, three' three rings (params.rings) appear one by one to the right, each a circle carrying a vermillion wave with m bumps around it (m = 1, 2, 3, two shades of vermillion for the two signs), labels 'm = 1', 'm = 2', 'm = 3'; the half-plane then sweeps once around the axis (2 s) to show that mesh times waves fills the cylinder. On 'exact-0.15': grey potential arrows appear on the mesh nodes; a curl gate (the M6 'potential → curl' gate of 10.6, ink) turns them into a vermillion field; a vertical ink meter beside the mesh falls to its bottom mark 'generated · zero by construction' (no number). On 'weak-0.15': a second meter next to it, 'solver data · small, not zero', settles in a shaded band just above the bottom (schematic, no number). On 'yardstick-0.15': both meters' shared caption relabels itself 'measured with the solver's operator' (the outline's relabelling beat, pitfall P16) and the pen underlines it; plain chip with params.mff_chip bottom-left at 'yardstick+0.8'. Formula layer from the script. Badge PROVED with the script's note. Key colours: vermillion (B) and violet only on the word 'generator' (meter caption tint); ink grey for the rest. No corner needle.",
+   "visual": "Render class flat (SVG + KaTeX). PAPER. On 'scalars-0.15': left (x 160-860), a small ink wire cube with a bundle of vermillion field lines; beside it three grey component strips 'A_x, A_y, A_z' (three small contour maps) collapse into TWO ink contour sheets labelled 'poloidal 𝒫' and 'toroidal 𝒯' (T1 morph 1.2 s; calligraphic letters avoid the injection rate P of ch08). On 'nogauge-0.15': a pen check (M9) beside the cube, label 'div B = 0 · no gauge'; the cube and sheets dim to 40 %. On 'slices-0.15': right half: the cylinder in ink; a meridian half-plane (params.mesh.box) opens and is filled with the triangle mesh (params.mesh: seeded Delaunay, denser near the two impeller discs, drawn on in 1.0 s), label 'meridian half-plane · triangles', axis dash-dot labelled 'axis'; on the words 'zero, one, two, three' four rings (params.rings) appear one by one to the right, each a circle carrying a vermillion wave with m bumps around it (m = 0: a uniform ring, the axisymmetric part that carries the VKS dipole; m = 1, 2, 3: two shades of vermillion for the two signs), labels 'm = 0', 'm = 1', 'm = 2', 'm = 3'; the half-plane then sweeps once around the axis (2 s) to show that mesh times waves fills the cylinder. On 'exact-0.15': grey potential arrows appear on the mesh nodes; a curl gate (the M6 'potential → curl' gate of 10.6, ink) turns them into a vermillion field; a vertical ink meter beside the mesh falls to its bottom mark 'generated · zero by construction' (no number). On 'weak-0.15': a second meter next to it, 'solver data · small, not zero', settles in a shaded band just above the bottom (schematic, no number). On 'yardstick-0.15': both meters' shared caption relabels itself 'measured with the solver's operator' (the outline's relabelling beat, pitfall P16) and the pen underlines it; plain chip with params.mff_chip bottom-left at 'yardstick+0.8'. Formula layer from the script. Badge PROVED with the script's note. Key colours: vermillion (B) and violet only on the word 'generator' (meter caption tint); ink grey for the rest. No corner needle.",
    "assets": [],
    "sources": [
     "en/these/index.qmd:321-331 (three components for two degrees of freedom per mode, hence the gauge; Proposition 2.8: poloidal-toroidal decomposition in a triply periodic domain, two scalars, exactly solenoidal) and :338 (no gauge to fix; in a cylinder the matching couples the scalars to the exterior field, a sub-question to address with C. Nore)",
@@ -709,7 +711,8 @@
     "en/these/index.qmd:341-348 (Remark 2.9: SFEMaNS uses azimuthal Fourier modes times Lagrange finite elements in the meridian plane; the curl acts mode by mode; continuous finite-element potentials give exactly solenoidal fields mode by mode; axis regularity r^|m|; SFEMaNS data are not exactly divergence-free, divergence controlled in a negative Sobolev norm; the generator will be more solenoidal than its data; divergence must be measured with the code's discrete operator)",
     "en/rapport/index.qmd:1185 (SFEMaNS outputs: azimuthal Fourier modes on an unstructured meridian mesh; div B weakly controlled; decide on which operator to enforce the constraint)",
     "milady/data/convert.py:9-12 (MFF extension fourier_fe_axisym: writer and interpolators exist; reading native SFEMaNS files is not implemented, data not public) and specs/format-donnees.md:293-351",
-    "plan/pedagogy.md P16 (zero divergence must be redefined with the solver's operator for finite-element data); script/ch08.json ch08.Q (the discrete-operator question is already asked there, so this scene asks none)"
+    "plan/pedagogy.md P16 (zero divergence must be redefined with the solver's operator for finite-element data); script/ch08.json ch08.Q (the discrete-operator question is already asked there, so this scene asks none)",
+    "en/rapport/index.qmd:161 and en/encadrants/index.qmd:98 (the four dominant POD modes of the reference VKS simulation are axisymmetric, m = 0: hence the m = 0 ring)"
    ],
    "variants": null,
    "question": null
@@ -717,7 +720,7 @@
   {
    "id": "X6.4",
    "was": "X6.4",
-   "title": "Bet 4: VKS in the generator",
+   "title": "Bet: VKS in the generator",
    "file": "scenes/X6/X6_4_bet_vks.html",
    "status": "pending",
    "level": "L5",
@@ -727,7 +730,7 @@
     "confidence": "low",
     "note": "bet · tier-3 criteria of the PhD plan · no consortium data"
    },
-   "target_s": 42,
+   "target_s": 45,
    "lead_in": 1.8,
    "tail": 1.2,
    "deps": [
@@ -784,7 +787,7 @@
       "bet": "Pattern shares, (D, Q) cloud, iron rule and reversal rate all pass",
       "confidence": "low",
       "why": "data not public; no SFEMaNS reader yet; few reversals (T:995)",
-      "criterion": "(a) 4 POD fractions ± 10 % · (b) (D, Q) distance < 2 × floor · (c) interface < 1 % · (d) Rice in 95 % Poisson CI",
+      "criterion": "(a) POD shares ±10 % · (b) (D, Q) distance < 2× floor · (c) interface < 1 % · (d) Rice in Poisson 95 %",
       "source": "T:938",
       "ask": "How many VKS snapshots per configuration can we get, and by when?",
       "cues": {
@@ -826,12 +829,12 @@
       {
        "id": "X6.4.s1",
        "cue": "anchor",
-       "text": "Bet four puts the sodium experiment inside the {model}generator{/}."
+       "text": "The VKS bet trains a {model}generator{/} on the partners' simulations of the sodium experiment."
       },
       {
        "id": "X6.4.s2",
        "cue": "patterns",
-       "text": "In the partners' reference simulation, four patterns dominate: a dipole, a quadrupole, and two {u}flow{/} patterns."
+       "text": "In their reference run, four patterns dominate: a dipole, a quadrupole, and two {u}flow{/} patterns."
       }
      ]
     },
@@ -841,7 +844,12 @@
       {
        "id": "X6.4.s3",
        "cue": "bet",
-       "text": "The bet: their energy shares within ten percent; the {metric}distribution distance{/} of dipole and quadrupole under twice the noise floor; the iron rule within one percent; Rice's reversal rate inside the simulated count's error bars."
+       "text": "The bet: their energy shares within ten percent, and the {metric}distribution distance{/} of dipole and quadrupole under twice the {metric}noise floor{/}."
+      },
+      {
+       "id": "X6.4.s4",
+       "cue": "iron",
+       "text": "Plus the iron rule within one percent, and Rice's reversal rate inside the simulated count's error bars."
       }
      ]
     },
@@ -849,12 +857,12 @@
      "hold_after": 0.0,
      "sentences": [
       {
-       "id": "X6.4.s4",
+       "id": "X6.4.s5",
        "cue": "confidence",
-       "text": "Confidence: low. The data are not public, no reader for them exists yet, and few reversals mean wide error bars."
+       "text": "Confidence: low. The data are not public, no file reader exists yet, and few reversals mean wide error bars."
       },
       {
-       "id": "X6.4.s5",
+       "id": "X6.4.s6",
        "cue": "ask",
        "text": "Worth asking first: how many snapshots per configuration, and by when?"
       }
@@ -901,7 +909,7 @@
      "joint mirror R_π: swapping the impellers also flips the forcing asymmetry (Prop. 2.24, untested)"
     ]
    },
-   "visual": "Render class webgl (Three.js anchor) + flat seat (SVG). T3 INK CHANGE PAPER -> NIGHT in the 1.8-s lead-in (params.ink_change; whoosh at 0.2 s). READY ANCHOR (H3) on 'anchor-0.15': the VKS cylinder (params.anchor; Three.js, fat lines, at most params.anchor.max_segments segments, matte, slow camera orbit of 20° as the idle motion) centred, the two soft-iron discs counter-rotating; chip 'SCHEMATIC · VKS cylinder and mode shapes, after the site figure'; label 'VKS · reference simulation'. On 'patterns-0.15': four glyphs peel off the cylinder into a row above it, one per noun of the sentence (pop at patterns+1.2): 'ψ_D dipole' (vermillion axial loops), 'ψ_Q quadrupole' (vermillion, two opposed loops, the other polarity in the --b-neg shade), 'φ_V, φ_U flow modes' (blue swirl and recirculation); then the cylinder shrinks to a corner icon (top-left) and THE SEAT opens: Kit.seat(ctx, {type: 'lamps', variant: ctx.variant, data: ctx.data.seat, ...params.seat}) with the 2 x 2 lamp panel (params.seat.layout): each lamp has its label, its rule and a dashed grey mini-frame (params.seat.lamps[].mini): (a) four dashed bars with ± 10 % bands; (b) a dashed (D, Q) frame, axes 'D, dipole' and 'Q, quadrupole' in vermillion shades, empty; (c) a hatched iron edge with one field line and a tiny gauge band below 1 %; (d) a grey band 'simulated count · 95 % Poisson' with an empty dashed slot 'Rice (generated)'. Grey data tag 'DATA · TIER3_VKS · AWAITING'. On 'bet-0.15' (pending): THE BET in the right column, the lamps light their outlines one by one on the four clauses (a, b, c, d) of the sentence; the CRITERION line with its source at 'bet+2.0'; formula layer swaps to the Davis-Kahan line. On 'confidence-0.15': CONFIDENCE pips (low) with params.seat.why; caveat chip 'CAVEAT · no MilaDy data used · consortium simulations, not public (T:929)'; plain chip params.joint_mirror_chip appears at 'confidence+1.5' for 3 s (callback of X2.4: the mirror the generator would build in). On 'ask-0.15': the boxed ASK BEFORE WE COMPUTE with params.seat.ask. No number of the missing result anywhere; lamps stay grey. RESULT VARIANT (ctx.variant = 'result'; cues from params.seat.cues_result): the same panel solid; each mini-frame draws its data (bars simulated solid / generated dashed violet; (D, Q) densities side by side; interface gauge value; Rice marker against the Poisson band), each lamp shows its state colour and value from the data, the RESULT block shows the converter's verdict and verdict_text (never computed in the scene); source lower-third with the data stamp and SHA-256 prefix at 'verdict+0.5'. FORMULA LAYER: pending variant Kit.formulaLayer(ctx) with onscreen.formulas; result variant Kit.formulaLayer(ctx, {items: [first formula at 'anchor', out 'verdict']}), because the pending cues 'patterns', 'bet' and 'confidence' do not exist in the result narration. Badge CONJECTURE, confidence low. Key colours: vermillion (modes, D and Q), blue (flow modes, anchor only), violet (generated, result only). Corner needle: none in pending (no D value drawn); in the result variant the corner needle shows while the (D, Q) density is on screen.",
+   "visual": "Render class webgl (Three.js anchor) + flat seat (SVG). T3 INK CHANGE PAPER -> NIGHT in the 1.8-s lead-in (params.ink_change; whoosh at 0.2 s). READY ANCHOR (H3) on 'anchor-0.15': the VKS cylinder (params.anchor; Three.js, fat lines, at most params.anchor.max_segments segments, matte, slow camera orbit of 20° as the idle motion) centred, the two soft-iron discs counter-rotating; chip 'SCHEMATIC · VKS cylinder and mode shapes, after the site figure'; label 'VKS · reference simulation'. On 'patterns-0.15': four glyphs peel off the cylinder into a row above it, one per noun of the sentence (pop at patterns+1.2): 'ψ_D dipole' (vermillion axial loops), 'ψ_Q quadrupole' (vermillion, two opposed loops, the other polarity in the --b-neg shade), 'φ_V, φ_U flow modes' (blue swirl and recirculation); then the cylinder shrinks to a corner icon (top-left) and THE SEAT opens: Kit.seat(ctx, {type: 'lamps', variant: ctx.variant, data: ctx.data.seat, ...params.seat}) with the 2 x 2 lamp panel (params.seat.layout): each lamp has its label, its rule and a dashed grey mini-frame (params.seat.lamps[].mini): (a) four dashed bars with ± 10 % bands; (b) a dashed (D, Q) frame, axes 'D, dipole' and 'Q, quadrupole' in vermillion shades, empty; (c) a hatched iron edge with one field line and a tiny gauge band below 1 %; (d) a grey band 'simulated count · 95 % Poisson' with an empty dashed slot 'Rice (generated)'. Grey data tag 'DATA · TIER3_VKS · AWAITING'. On 'bet-0.15' (pending): THE BET in the right column, lamps a and b light their outlines one by one on the two clauses of the 'bet' sentence, lamps c and d on the two clauses of the 'iron' sentence; the CRITERION line with its source at 'bet+2.0'; formula layer swaps to the Davis-Kahan line. On 'confidence-0.15': CONFIDENCE pips (low) with params.seat.why; caveat chip 'CAVEAT · no MilaDy data used · consortium simulations, not public (T:929)'; plain chip params.joint_mirror_chip appears at 'confidence+1.5' for 3 s (callback of X2.4: the mirror the generator would build in). On 'ask-0.15': the boxed ASK BEFORE WE COMPUTE with params.seat.ask. No number of the missing result anywhere; lamps stay grey. RESULT VARIANT (ctx.variant = 'result'; cues from params.seat.cues_result): the same panel solid; each mini-frame draws its data (bars simulated solid / generated dashed violet; (D, Q) densities side by side; interface gauge value; Rice marker against the Poisson band), each lamp shows its state colour and value from the data, the RESULT block shows the converter's verdict and verdict_text (never computed in the scene); source lower-third with the data stamp and SHA-256 prefix at 'verdict+0.5'. FORMULA LAYER: pending variant Kit.formulaLayer(ctx) with onscreen.formulas; result variant Kit.formulaLayer(ctx, {items: [first formula at 'anchor', out 'verdict']}), because the pending cues 'patterns', 'bet' and 'confidence' do not exist in the result narration. Badge CONJECTURE, confidence low. Key colours: vermillion (modes, D and Q), blue (flow modes, anchor only), violet (generated, result only). Corner needle: none in pending (no D value drawn); in the result variant the corner needle shows while the (D, Q) density is on screen.",
    "assets": [
     "figures/vks/figure/out/vks-en.svg"
    ],
@@ -909,16 +917,17 @@
     "en/these/index.qmd:927-929 (tier 3, the target of the topic: SFEMaNS simulations by C. Nore, LATU and SFEMaNS reversals of Bousquet et al. 2026; not public, available upon reasonable request; access to request at the very start)",
     "en/these/index.qmd:933 (reference simulation Re = 1594, Rm = 531, asymmetry 0.058, μ_r = 16, 2000 snapshots for the POD; sizes: about 1.4 GB per 384³ snapshot, filtered 128³ about 100 GB) and :934 (models: hybrid representation, kinked decoder, vacuum matching, joint equivariance S_B and R_π, Proposition 2.24)",
     "en/these/index.qmd:938 (success criteria: (a) energy fractions of the four dominant POD modes within 10 %; (b) energy distance of the (D, Q) distribution below twice the Monte Carlo floor; (c) interface residual below 1 % of the jump of n × B; (d) Rice frequency of reversals, thresholds ± a, within the 95 % Poisson interval of the simulated count) and :939 (stopping: no access by month 18 or fewer than a few hundred snapshots per configuration -> low-resolution SFEMaNS runs, one configuration; kink failing (c) -> decoder by material subdomains)",
-    "en/rapport/index.qmd:155 (Bousquet et al. 2026: four dominant axisymmetric POD modes, a dipole, a quadrupole and two velocity modes; data not public) and en/encadrants/index.qmd:98",
+    "en/rapport/index.qmd:161 (Bousquet et al. 2026: four dominant axisymmetric POD modes, a dipole, a quadrupole and two velocity modes; data not public) and en/encadrants/index.qmd:98",
     "en/rapport/index.qmd:1191 (the simulations contain few reversals, so their observed frequency is very uncertain) and en/these/index.qmd:995 (risk 'too few reversals to validate Rice', probability high) and :990 (late or partial access: request in the first quarter; decision at month 18)",
     "en/these/index.qmd:805-813 (a generator close in W2 gives a close POD basis when the modes are separated: Davis-Kahan; the four dominant VKS modes, to be checked on their eigenvalues)",
     "milady/data/convert.py:9-12 (native SFEMaNS reader not implemented) and en/these/index.qmd:970 (tier 3 about 3200 GPU hours)",
     "en/rapport/index.qmd:1187 and en/these/index.qmd:584-603, :613 (R_π swaps the impellers and flips the sign of the forcing asymmetry; joint equivariance, untested)",
-    "plan/pedagogy.md P3 (no MilaDy data used), P26 (no invented number in a pending beat); tools/data_cloud.py conv_seat (generic seat JSON)"
+    "plan/pedagogy.md P3 (no MilaDy data used), P26 (no invented number in a pending beat); tools/data_cloud.py conv_seat (generic seat JSON)",
+    "en/these/index.qmd:939 (stopping: if the interface kink does not pass (c), one moves to a decoder by material subdomains: the fallback named in X6.4.r5)"
    ],
    "variants": {
     "result": {
-     "target_s": 45,
+     "target_s": 43,
      "data_fields": [
       "verdict"
      ],
@@ -929,7 +938,7 @@
         {
          "id": "X6.4.r1",
          "cue": "anchor",
-         "text": "Bet four now has data: simulations of the sodium experiment, and a {model}generator{/} trained on them."
+         "text": "The VKS bet now has data: the partners' simulations, and a {model}generator{/} trained on them."
         },
         {
          "id": "X6.4.r2",
@@ -944,7 +953,7 @@
         {
          "id": "X6.4.r3",
          "cue": "verdict",
-         "text": "Against criteria written before the data arrived: {{verdict}}."
+         "text": "Against the plan's four criteria: {{verdict}}."
         },
         {
          "id": "X6.4.r4",
@@ -955,13 +964,13 @@
         {
          "id": "X6.4.r5",
          "cue": "meaning",
-         "text": "At least one lamp is red; the screen shows which, and the plan names the next step, such as a decoder built region by region.",
+         "text": "At least one lamp is red; the screen shows which, and if it is the iron rule, the plan switches to a decoder built material by material.",
          "when": "not_met"
         },
         {
          "id": "X6.4.r6",
          "cue": "meaning",
-         "text": "Some lamps stay grey: the data could not decide them, often because too few reversals leave the error bars too wide.",
+         "text": "Some lamps stay grey: the data could not decide them, for instance when too few reversals leave the error bars too wide.",
          "when": "inconclusive"
         }
        ]
@@ -984,7 +993,7 @@
   {
    "id": "X6.5",
    "was": "X6.5",
-   "title": "Bet 5: DRESDYN, the precession knob",
+   "title": "Bet: DRESDYN, the precession knob",
    "file": "scenes/X6/X6_5_bet_dresdyn.html",
    "status": "pending",
    "level": "L5",
@@ -994,7 +1003,7 @@
     "confidence": "low",
     "note": "bet · tier-4 criteria of the PhD plan · no partner data"
    },
-   "target_s": 37,
+   "target_s": 38,
    "lead_in": 0.4,
    "tail": 1.2,
    "deps": [
@@ -1037,7 +1046,7 @@
       "bet": "Rm_c within 10 % and the right symmetry at an unseen Po",
       "confidence": "low",
       "why": "few Po values; narrow window; first tier dropped on delay (T:953, T:999)",
-      "criterion": "(a) Rm_c ± 10 %, same symmetry class, Po without data inside a branch · (b) transitions within one Po gap",
+      "criterion": "(a) Rm_c ±10 % and same symmetry at an unseen Po · (b) transitions within one Po gap",
       "source": "T:952",
       "ask": "How many precession ratios will be simulated, and how closely spaced?",
       "cues": {
@@ -1073,12 +1082,12 @@
       {
        "id": "X6.5.s1",
        "cue": "anchor",
-       "text": "Bet five: DRESDYN, a sodium cylinder spinning while its axis slowly turns."
+       "text": "The DRESDYN bet: a sodium cylinder spinning while its axis slowly turns."
       },
       {
        "id": "X6.5.s2",
        "cue": "knob",
-       "text": "Its {param}knob{/}: the precession ratio, how fast the axis turns against the spin."
+       "text": "Its {param}knob{/}: the precession ratio, how fast the axis turns relative to the spin."
       }
      ]
     },
@@ -1088,7 +1097,7 @@
       {
        "id": "X6.5.s3",
        "cue": "flow",
-       "text": "The {model}generator{/} draws only the {u}flow{/}; a solver finds the threshold and the symmetry of the {b}field{/} it would grow."
+       "text": "The {model}generator{/} draws only the {u}flow{/}; a solver finds the threshold and the symmetry of the {b}field{/} that flow would grow."
       },
       {
        "id": "X6.5.s4",
@@ -1160,7 +1169,8 @@
     "en/these/index.qmd:999 (overall delay: tier 4 is the first dropped) and :971 (tier 4 about 1200 GPU hours)",
     "en/prep/p3-mhd-dynamo/index.qmd:1208 (DRESDYN at HZDR: a cylinder rotating about its axis, the axis itself driven in slow rotation; the Poincaré number is the ratio of the precession and rotation frequencies; experiment ongoing)",
     "en/encadrants/index.qmd:78 (objective (ii): optimise DRESDYN with parametric reduced models) and :100 (Botez et al. 2026, narrow window of Poincaré numbers; simplified conditions underestimate Rm_c) and :283, :370 (abrupt transitions; few configurations simulated)",
-    "script/ch02.json 02.4 and script/ch03.json 03.5 (DRESDYN introduced as a spinning cylinder whose axis slowly turns; the precession knob)"
+    "script/ch02.json 02.4 and script/ch03.json 03.5 (DRESDYN introduced as a spinning cylinder whose axis slowly turns; the precession knob)",
+    "en/these/index.qmd:950 (ablation: conditioning on the hydrodynamic branch, Remark 2.37, if abrupt transitions appear in Po: 'one remedy the plan lists' in X6.5.r5; the held-out Po is simulated, only kept out of training, so the result says 'held-out', not 'never simulated')"
    ],
    "variants": {
     "result": {
@@ -1175,7 +1185,7 @@
         {
          "id": "X6.5.r1",
          "cue": "anchor",
-         "text": "Bet five now has data: precessing {u}flows{/} from the partners, and a {model}generator{/} of {u}flows{/} trained between them."
+         "text": "The DRESDYN bet now has data: precessing {u}flows{/} from the partners, and a {model}generator{/} of {u}flows{/} trained on them."
         },
         {
          "id": "X6.5.r2",
@@ -1190,7 +1200,7 @@
         {
          "id": "X6.5.r3",
          "cue": "verdict",
-         "text": "At the ratio never simulated: {{verdict}}."
+         "text": "At the held-out ratio, unseen in training: {{verdict}}."
         },
         {
          "id": "X6.5.r4",
@@ -1201,13 +1211,13 @@
         {
          "id": "X6.5.r5",
          "cue": "meaning",
-         "text": "The threshold misses the band, or the symmetry differs; the plan's next step is to condition on the branch of the {u}flow{/}.",
+         "text": "The threshold misses the band, or the symmetry differs; one remedy the plan lists is to condition on the branch of the {u}flow{/}.",
          "when": "not_met"
         },
         {
          "id": "X6.5.r6",
          "cue": "meaning",
-         "text": "Most likely, too few ratios were simulated to hold one out inside a branch; the lamp stays grey.",
+         "text": "The data could not decide, for instance because too few ratios were simulated to hold one out inside a branch.",
          "when": "inconclusive"
         }
        ]
@@ -1334,7 +1344,7 @@
       {
        "id": "X6.6.s1",
        "cue": "drift",
-       "text": "Downstream, the {model}generator{/} feeds reduced models: their best drift is the equations' drift averaged over snapshots, with no time series."
+       "text": "Downstream, the {model}generator{/} feeds reduced models: their best drift averages the equations' drift over snapshots sharing a reduced state, no time series needed."
       }
      ]
     },
@@ -1385,7 +1395,7 @@
      "Q, quadrupole",
      "D, dipole",
      "prior · generated",
-     "best reduced drift: the equations' drift averaged over snapshots · no time series",
+     "best reduced drift: the equations' drift averaged per reduced state · no time series",
      "probe: D ≈ 0",
      "PREDICT",
      "posterior",
@@ -1405,7 +1415,7 @@
      {
       "cue": "prior",
       "out": "humps",
-      "tex": "p(\\mathbf{x}\\mid\\mathbf{y}) \\propto \\cm{q}(\\mathbf{x})\\,\\mathcal{N}\\big(\\mathbf{y};\\,\\mathcal{H}(\\mathbf{x}),\\,\\Sigma_{\\text{obs}}\\big),\\qquad \\mathcal{H}(S\\mathbf{x}) = -\\mathcal{H}(\\mathbf{x})\\ \\ (\\text{magnetic probes})"
+      "tex": "p(\\mathbf{x}\\mid\\mathbf{y}) \\propto \\cm{q}(\\mathbf{x})\\,\\exp\\!\\Big(-\\frac{\\lVert\\mathbf{y} - \\mathcal{H}(\\mathbf{x})\\rVert^2}{2\\sigma_{\\text{obs}}^2}\\Big),\\qquad \\mathcal{H}(S\\mathbf{x}) = -\\mathcal{H}(\\mathbf{x})\\ \\ (\\text{magnetic probes})"
      },
      {
       "cue": "humps",
@@ -1423,11 +1433,11 @@
      "in VKS: magnetic probes, a generated prior of 3D fields (T:843)"
     ]
    },
-   "visual": "Render class flat (Canvas for points, SVG, KaTeX). NIGHT. Data: ctx.data.s.variants[params.variant] (x packed f32 [4000, 3]: Q, D, V; Ddot packed f32) and ctx.data.fg.config.mu (Qdot = mu Q − V D, computed in the page); everything drawn is computed from these at setup, no number on screen. THE PLANE (params.plane.box): axes 'Q, quadrupole' across and 'D, dipole' up (axis letters in vermillion shades, as in X2.4), corner needle M1 on while D is on screen. On 'drift-0.15': the 4000 violet dots of model C fade in (generated chip 'generated · model C · Γ = 0.9 · the three dials'); then a grid of light-grey ink arrows (params.drift) draws on bin by bin: the conditional mean of (Qdot, Ddot) over each bin, so the two whirlpools appear as arrow fields; label 'best reduced drift: the equations' drift averaged over snapshots · no time series'. On 'prior-0.15': the arrows fade and the violet cloud is relabelled 'prior · generated'. On 'probe-0.15': a small vermillion probe icon on the left edge reads 'probe: D ≈ 0' and a horizontal band |D| < params.observation.sigma_obs lights across the plane (grey 12 %); tick at probe+0.4. PREDICT on 'predict-0.15': tag 'PREDICT' top-left; dots outside the band fade to 15 %; a dashed ring with a '?' sits at the centre of the band (the hold is the script's hold_after). On 'humps-0.15': ANSWER: the mirror-completed sample (params.pairs) is weighted by the likelihood: dots inside the band grow by weight (params.posterior.dot_scale) and gather into TWO HUMPS, one on each side, at large |Q| (label 'posterior'); a white cross slides to the weighted mean, at the centre (label 'mean'), and a thin ring around it counts the snapshots inside (computed; label 'no snapshot here' only if the count is zero, else 'almost no snapshot here'); pop at humps+0.3. On 'ghost-0.15': a dashed grey ellipse centred on the cross ('mean and spread only'); then, SCHEMATIC (grey dashed chip 'SCHEMATIC · a lopsided prior'), the two humps reweight to params.lopsided.weights (one grows, one shrinks) for 1.5 s, pen cross (M9), and they return to equal size. On 'pairs-0.15': M10 mirror in POINT mode (Kit.mirror mode 'point': (Q, D) -> (−Q, −D)): dashed links join params.pairs.n_links snapshot pairs across the centre, label 'mirror pairs: x and S x'; the latent inset (params.latent_inset) shows two violet start points 'z' and 'S z' with dashed search paths ending one in each hump, label 'search from z and from S z'; plain chip 'in VKS: magnetic probes, a generated prior of 3D fields (T:843)'. Formula layer from the script. Badge PROVED with the script's note. Key colours: violet (generated prior), vermillion (D, Q axes and the probe), grey; no amber. Callback of the mirror (M10, ch07) and of the two whirlpools (ch04).",
+   "visual": "Render class flat (Canvas for points, SVG, KaTeX). NIGHT. Data: ctx.data.s.variants[params.variant] (x packed f32 [4000, 3]: Q, D, V; Ddot packed f32) and ctx.data.fg.config.mu (Qdot = mu Q − V D, computed in the page); everything drawn is computed from these at setup, no number on screen. THE PLANE (params.plane.box): axes 'Q, quadrupole' across and 'D, dipole' up (axis letters in vermillion shades, as in X2.4), corner needle M1 on while D is on screen. On 'drift-0.15': the 4000 violet dots of model C fade in (generated chip 'generated · model C · Γ = 0.9 · the three dials'); then a grid of light-grey ink arrows (params.drift) draws on bin by bin: the conditional mean of (Qdot, Ddot) over each bin, so the two whirlpools appear as arrow fields; label 'best reduced drift: the equations' drift averaged per reduced state · no time series'. On 'prior-0.15': the arrows fade and the violet cloud is relabelled 'prior · generated'. On 'probe-0.15': a small vermillion probe icon on the left edge reads 'probe: D ≈ 0' and a horizontal band |D| < params.observation.sigma_obs lights across the plane (grey 12 %); tick at probe+0.4. PREDICT on 'predict-0.15': tag 'PREDICT' top-left; dots outside the band fade to 15 %; a dashed ring with a '?' sits at the centre of the band (the hold is the script's hold_after). On 'humps-0.15': ANSWER: the mirror-completed sample (params.pairs) is weighted by the likelihood: dots inside the band grow by weight (params.posterior.dot_scale) and gather into TWO HUMPS, one on each side, at large |Q| (label 'posterior'); a white cross slides to the weighted mean, at the centre (label 'mean'), and a thin ring around it counts the snapshots inside (computed; label 'no snapshot here' only if the count is zero, else 'almost no snapshot here'); pop at humps+0.3. On 'ghost-0.15': a dashed grey ellipse centred on the cross ('mean and spread only'); then, SCHEMATIC (grey dashed chip 'SCHEMATIC · a lopsided prior'), the two humps reweight to params.lopsided.weights (one grows, one shrinks) for 1.5 s, pen cross (M9), and they return to equal size. On 'pairs-0.15': M10 mirror in POINT mode (Kit.mirror mode 'point': (Q, D) -> (−Q, −D)): dashed links join params.pairs.n_links snapshot pairs across the centre, label 'mirror pairs: x and S x'; the latent inset (params.latent_inset) shows two violet start points 'z' and 'S z' with dashed search paths ending one in each hump, label 'search from z and from S z'; plain chip 'in VKS: magnetic probes, a generated prior of 3D fields (T:843)'. Formula layer from the script. Badge PROVED with the script's note. Key colours: violet (generated prior), vermillion (D, Q axes and the probe), grey; no amber. Callback of the mirror (M10, ch07) and of the two whirlpools (ch04).",
    "assets": [],
    "sources": [
     "en/these/index.qmd:796 (generated fields must serve reduced models and assimilation; three elementary results, probably known in other forms)",
-    "en/these/index.qmd:816-821 (Proposition 2.40: among Markovian reduced drifts the best is the conditional expectation of ΠF given Πx; estimable by regression on snapshots and F(x_i), without time series or numerical time derivatives; the reduced law satisfies the stationary identities) and :829 (DQVU and its third-moment constraint read as such an identity; Markovian closure, memory ignored)",
+    "en/these/index.qmd:816-821 (Proposition 2.40: among Markovian reduced drifts the best is the conditional expectation of ΠF given Πx; estimable by regression on snapshots and F(x_i), without time series or numerical time derivatives; the reduced law satisfies the stationary identities) and :828 (DQVU and its third-moment constraint read as such an identity; Markovian closure, memory ignored)",
     "en/these/index.qmd:831-838 (Proposition 2.41: prior invariant under S_B; odd observation operator (magnetic probes): p(Sx | −y) = p(x | y); for y = 0 every odd functional, the dipole included, has zero posterior mean; even operator: polarity unobservable)",
     "en/these/index.qmd:843 (near a reversal the posterior is bimodal if the prior is; its mean is not a typical state; mean-and-covariance methods, EnKF and 3D-Var with a unimodal background, are biased toward a nonphysical mean; two exact remedies with an equivariant prior: importance sampling by symmetric pairs, and variational assimilation in the latent variable launched from z and S z; TorchDA)",
     "en/encadrants/index.qmd:68 (the ANR abstract: data assimilation with ML, TorchDA) ",
@@ -1488,6 +1498,7 @@
    "assets": [],
    "sources": [
     "en/rapport/index.qmd:141 (a generative model conditioned on Rm must fix its convention: 31 vs 52-71) and :143 (wall condition: Rm_c = 90 ± 5 with pseudo-vacuum vs 130 ± 10 with vacuum, about 40 % more, Nore et al. 2018) and :145 (μ_r and the electromagnetic conditions shift the threshold as much as Re and Rm)",
+    "en/encadrants/index.qmd:98 (Bousquet et al. 2026: a conducting outer medium proved necessary for reversals in the explored range: the wall condition is a label the reversal data cannot do without)",
     "en/these/index.qmd:934 (tier-3 generator conditioned on (Re, Rm, μ_r, asymmetry)) and :302 (moving impellers: the phase as a condition or a variable)",
     "en/these/index.qmd:933 (sweeps in μ_r and Re of Nore et al. 2016, 2018 among the requested data) and :990 (data request in the first quarter through C. Nore and Y. Ponty)",
     "en/these/index.qmd:943 and en/encadrants/index.qmd:100 (precession: simplified wall conditions underestimate Rm_c; conducting or permeable walls favour or suppress the dynamo)",
