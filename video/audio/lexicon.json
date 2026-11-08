@@ -1,0 +1,19 @@
+{
+  "comment": "Phoneme pins (ARPAbet, CMUdict stress digits) inserted as <|phoneme_start|>...<|phoneme_end|> before TTS. Entries marked CHECK need the user's or supervisors' preferred pronunciation.",
+  "entries": {
+    "MHD": "EH1 M EY1 CH D IY1",
+    "ABC": "EY1 B IY1 S IY1",
+    "Gissinger": "ZH IY0 S AE0 N ZH EY1",
+    "Reynolds": "R EH1 N AH0 L D Z",
+    "Rm": "AA1 R EH1 M",
+    "VKS": "V IY1 K EY1 EH1 S",
+    "DRESDYN": "D R EH1 Z D AY2 N",
+    "SFEMaNS": "EH1 S F EH2 M AH0 N Z",
+    "MilaDy": "M IH1 L AH0 D IY0",
+    "Kármán": "K AA1 R M AA0 N",
+    "Ohmic": "OW1 M IH0 K",
+    "Rice": "R AY1 S",
+    "Slurm": "S L ER1 M"
+  },
+  "check": ["Gissinger", "DRESDYN", "SFEMaNS", "MilaDy", "Kármán"]
+}

@@ -1,0 +1,50 @@
+/* theme.css: shared visual identity for every scene (NIGHT register by default).
+   Tokens follow video_plan/styles.md section 3.2 (site colour key, dark-tuned values). */
+@font-face { font-family: "Inter"; font-weight: 400; src: url("../vendor/fonts/Inter-Regular.otf") format("opentype"); }
+@font-face { font-family: "Inter"; font-weight: 500; src: url("../vendor/fonts/Inter-Medium.otf") format("opentype"); }
+@font-face { font-family: "Inter"; font-weight: 600; src: url("../vendor/fonts/Inter-SemiBold.otf") format("opentype"); }
+@font-face { font-family: "Inter Display"; font-weight: 600; src: url("../vendor/fonts/InterDisplay-SemiBold.otf") format("opentype"); }
+@font-face { font-family: "Inter Display"; font-weight: 800; src: url("../vendor/fonts/InterDisplay-ExtraBold.otf") format("opentype"); }
+@font-face { font-family: "JetBrains Mono"; font-weight: 500; src: url("../vendor/fonts/JetBrainsMono-Medium.ttf") format("truetype"); }
+
+:root {
+  --bg: #0B0F14; --panel: #10151C; --grid: #1A222D;
+  --fg: #F2F4F7; --fg-2: #C7D0DA; --muted: #9AA6B2; --chalk: #E8E4D8;
+  --param: #1BAF7A;   /* control parameter (site #009E73) */
+  --u: #3987E5;       /* velocity u (site #0072B2) */
+  --b: #EB6834;       /* magnetic field B (site #D55E00) */
+  --model: #B49CF0;   /* generative model (site #6C4BA0) */
+  --metric: #EDA100;  /* distribution-level metrics (site #E69F00) */
+  --infra: #6B7A8C;
+}
+[data-register="paper"] { --bg: #F4F1EA; --panel: #FFFFFF; --grid: #E3DED2; --fg: #0A0A0A; --fg-2: #1F2937; --muted: #4B5563; --chalk: #1F2937; }
+
+html, body { margin: 0; padding: 0; background: var(--bg); overflow: hidden; }
+#stage {
+  position: relative; width: 1920px; height: 1080px; overflow: hidden;
+  background: var(--bg); color: var(--fg);
+  font-family: "Inter", sans-serif; font-feature-settings: "tnum";
+  -webkit-font-smoothing: antialiased;
+}
+#stage canvas, #stage svg.full { position: absolute; inset: 0; width: 1920px; height: 1080px; display: block; }
+.k-u { color: var(--u); } .k-b { color: var(--b); } .k-param { color: var(--param); }
+.k-model { color: var(--model); } .k-metric { color: var(--metric); }
+.title-xl { font-family: "Inter Display"; font-weight: 800; font-size: 112px; letter-spacing: -0.01em; }
+.heading { font-family: "Inter Display"; font-weight: 600; font-size: 60px; }
+.label { font-weight: 500; font-size: 30px; }
+.mono { font-family: "JetBrains Mono", monospace; font-weight: 500; font-size: 22px; letter-spacing: 0.07em; text-transform: uppercase; }
+
+/* lower-third / provenance chip (styles.md 3.5) */
+.lower-third { position: absolute; left: 96px; top: 800px; max-width: 760px; padding: 10px 18px 12px 18px;
+  background: rgba(16,21,28,0.55); border-left: 3px solid var(--infra); }
+.lower-third .l1 { font-family: "JetBrains Mono"; font-weight: 500; font-size: 20px; letter-spacing: .07em; text-transform: uppercase; color: var(--muted); }
+.lower-third .l2 { font-weight: 600; font-size: 28px; color: var(--fg); margin-top: 4px; }
+
+/* runtime overlays for provisional / pending status */
+#__stamp { position: absolute; right: 48px; top: 40px; font-family: "JetBrains Mono"; font-weight: 500; font-size: 20px;
+  letter-spacing: .08em; text-transform: uppercase; padding: 6px 12px; border: 1.5px solid var(--metric); color: var(--metric);
+  background: rgba(11,15,20,.7); z-index: 50; }
+#__hud { position: fixed; left: 0; right: 0; bottom: 0; height: 28px; background: rgba(0,0,0,.6); color: #ddd;
+  font: 13px "JetBrains Mono", monospace; display: flex; align-items: center; gap: 12px; padding: 0 10px; z-index: 100; }
+#__hud .bar { flex: 1; height: 6px; background: #333; position: relative; cursor: pointer; }
+#__hud .bar i { position: absolute; left: 0; top: 0; bottom: 0; background: var(--param); }

@@ -1,0 +1,7 @@
+out/
+.tmp/
+node_modules/
+audio/cache/
+audio/chunks/
+audio/requests/
+__pycache__/

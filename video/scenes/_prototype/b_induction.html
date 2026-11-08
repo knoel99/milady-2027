@@ -1,0 +1,90 @@
+<!doctype html>
+<html lang="en"><head><meta charset="utf-8">
+<title>The induction equation</title>
+<link rel="stylesheet" href="../vendor/katex/katex.min.css">
+<link rel="stylesheet" href="../runtime/theme.css">
+<script src="../vendor/katex/katex.min.js"></script>
+<script src="../vendor/gsap/gsap.min.js"></script>
+<script src="../runtime/scene.js"></script>
+<style>
+  #eq { position: absolute; left: 0; right: 0; top: 300px; text-align: center; font-size: 84px; color: var(--fg); }
+  #eq .katex { font-size: 1em; }
+  #ann { position: absolute; inset: 0; pointer-events: none; }
+  .ann-label { position: absolute; text-align: center; font-weight: 500; font-size: 32px; transform: translateX(-50%); white-space: nowrap; }
+  #rm { position: absolute; left: 0; right: 0; top: 640px; text-align: center; font-size: 64px; }
+  #kicker { position: absolute; left: 96px; top: 72px; }
+  #tug { position: absolute; left: 560px; top: 872px; width: 800px; height: 14px; border-radius: 7px; background: var(--grid); overflow: hidden; }
+  #tug i { position: absolute; top: 0; bottom: 0; left: 0; background: var(--u); }
+</style></head>
+<body><div id="stage">
+  <div id="kicker" class="mono" style="color:var(--muted)">Level 2 · How a flow makes a field</div>
+  <div id="eq"></div>
+  <svg id="ann" class="full" viewBox="0 0 1920 1080"></svg>
+  <div id="labels"></div>
+  <div id="rm"></div>
+  <div id="tug"><i></i></div>
+</div>
+<script>
+/* SVG + text + KaTeX test scene. Terms are addressable through \htmlId, revealed by clip-path wipes
+   computed from t; braces are SVG paths drawn on with stroke-dashoffset; the Rm reveal is a paused
+   GSAP timeline driven by tl.seek(t) to show that GSAP can be made deterministic. */
+const MACROS = {
+  '\\U': '\\htmlClass{k-u}{\\mathbf{u}}', '\\B': '\\htmlClass{k-b}{\\mathbf{B}}',
+  '\\etaP': '\\htmlClass{k-param}{\\eta}', '\\Rm': '\\htmlClass{k-param}{\\mathrm{Rm}}',
+};
+const KOPT = { displayMode: true, output: 'html', strict: 'ignore', macros: MACROS,
+  trust: (c) => ['\\htmlClass', '\\htmlId'].includes(c.command) };
+Scene.define({
+  duration: 6,
+  cues: { lhs: 0.3, adv: 1.2, diff: 2.6, rm: 3.9 },
+  fonts: ['500 30px Inter', '500 20px "JetBrains Mono"', '400 40px KaTeX_Main', 'italic 400 40px KaTeX_Math', '700 40px KaTeX_Main'],
+  setup(ctx) {
+    katex.render('\\htmlId{t-lhs}{\\frac{\\partial \\B}{\\partial t}}\\htmlId{t-eq}{\\;=\\;}'
+      + '\\htmlId{t-adv}{\\nabla\\times(\\U\\times\\B)}\\htmlId{t-plus}{\\;+\\;}\\htmlId{t-diff}{\\etaP\\,\\nabla^{2}\\B}',
+      document.getElementById('eq'), KOPT);
+    katex.render('\\Rm \\;=\\; \\frac{\\htmlClass{k-u}{U}\\,L}{\\etaP}', document.getElementById('rm'), KOPT);
+    const stage = document.getElementById('stage').getBoundingClientRect();
+    const box = (id) => { const r = document.getElementById(id).getBoundingClientRect();
+      return { x: r.left - stage.left, y: r.top - stage.top, w: r.width, h: r.height }; };
+    ctx.terms = ['t-lhs', 't-eq', 't-adv', 't-plus', 't-diff'].map((id) => document.getElementById(id));
+    // braces under the two right-hand terms
+    const svg = document.getElementById('ann'), NS = 'http://www.w3.org/2000/svg';
+    ctx.braces = [['t-adv', Scene.C.u, 'stretching by the flow'], ['t-diff', Scene.C.param, 'diffusion (Ohmic decay)']].map(([id, col, text]) => {
+      const b = box(id), y = b.y + b.h + 18, x0 = b.x + 6, x1 = b.x + b.w - 6, xm = (x0 + x1) / 2;
+      const p = document.createElementNS(NS, 'path');
+      p.setAttribute('d', `M${x0},${y} q0,22 22,22 L${xm - 22},${y + 22} q22,0 22,22 q0,-22 22,-22 L${x1 - 22},${y + 22} q22,0 22,-22`);
+      p.setAttribute('fill', 'none'); p.setAttribute('stroke', col); p.setAttribute('stroke-width', 4); p.setAttribute('stroke-linecap', 'round');
+      svg.appendChild(p);
+      const L = p.getTotalLength(); p.style.strokeDasharray = L;
+      const lab = document.createElement('div'); lab.className = 'ann-label'; lab.textContent = text;
+      lab.style.left = xm + 'px'; lab.style.top = (y + 62) + 'px'; lab.style.color = col;
+      document.getElementById('labels').appendChild(lab);
+      return { p, L, lab };
+    });
+    // a paused GSAP timeline for the Rm reveal and the tug-of-war bar
+    const rm = document.getElementById('rm'), bar = document.querySelector('#tug i');
+    ctx.tl = gsap.timeline({ paused: true })
+      .fromTo(rm, { opacity: 0, y: 30 }, { opacity: 1, y: 0, duration: 0.6, ease: 'power2.out' }, ctx.cue('rm', 3.9))
+      .fromTo('#tug', { opacity: 0 }, { opacity: 1, duration: 0.3 }, ctx.cue('rm', 3.9) + 0.4)
+      .fromTo(bar, { width: '50%' }, { width: '82%', duration: 1.2, ease: 'power1.inOut' }, ctx.cue('rm', 3.9) + 0.6);
+  },
+  render(t, ctx) {
+    const c = ctx.cue.bind(ctx);
+    const wipes = [[0, c('lhs', 0.3)], [1, c('adv', 1.2) - 0.25], [2, c('adv', 1.2)], [3, c('diff', 2.6) - 0.25], [4, c('diff', 2.6)]];
+    for (const [i, t0] of wipes) {
+      const p = Scene.seg(t, t0, t0 + 0.5, Scene.ease.outCubic);
+      ctx.terms[i].style.clipPath = `inset(-150% ${100 - 100 * p}% -150% -5%)`;
+    }
+    ctx.braces.forEach((b, i) => {
+      const t0 = (i === 0 ? c('adv', 1.2) : c('diff', 2.6)) + 0.45;
+      const p = Scene.seg(t, t0, t0 + 0.6);
+      b.p.style.strokeDashoffset = b.L * (1 - p);
+      b.lab.style.opacity = Scene.seg(t, t0 + 0.3, t0 + 0.7);
+    });
+    // dim the diffusion side when the flow wins (Rm large): one idea at a time
+    const dim = Scene.seg(t, c('rm', 3.9) + 0.6, c('rm', 3.9) + 1.8);
+    ctx.terms[4].style.opacity = 1 - 0.55 * dim; ctx.braces[1].lab.style.opacity *= 1 - 0.55 * dim;
+    ctx.tl.seek(t, false);
+  },
+});
+</script></body></html>

@@ -1,0 +1,21 @@
+{
+  "name": "milady-video-pipeline-proto",
+  "version": "1.0.0",
+  "description": "Deterministic HTML-scene renderer, subtitles, narration assembly (prototype)",
+  "scripts": {
+    "build": "node build.js script/demo_script.json",
+    "plan": "node build.js script/demo_script.json --plan",
+    "capture": "node capture.js",
+    "stills": "node stills.js",
+    "bench": "bash bench/run_scaling.sh"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "dependencies": {
+    "gsap": "3.12.5",
+    "katex": "0.16.11",
+    "three": "0.160.0"
+  },
+  "private": true
+}
