@@ -80,7 +80,7 @@ Le défaut est ce que l’auteur du stage ferait **sans réponse**, pas ce que l
 - Défaut : flow matching, comme le code du dépôt.
 - À lire : `en/rapport/index.qmd:601`, `infra/configs/train_fm3d.yaml:22-26`.
 
-### q.g10 — carte 27:47–27:55 — A
+### q.g10 — carte 27:49–27:57 — A
 
 - Écran : `Must stationarity fine-tuning be anchored first?` (7)
 - Pourquoi : en E1, la même perte échoue sur un modèle biaisé.
@@ -88,7 +88,7 @@ Le défaut est ce que l’auteur du stage ferait **sans réponse**, pas ce que l
 - Défaut : pas de réglage fin 3D sans ancrage, sans témoin à β = 0, et sans partir d’un modèle déjà bon.
 - À lire : `en/rapport/index.qmd:877`, `en/calcul/index.qmd:166`.
 
-### q.g11 — carte 31:27–31:35 — B
+### q.g11 — carte 31:29–31:37 — B
 
 - Écran : `Which gap counts, once the noise floor is drawn?` (10)
 - Pourquoi : deux graines et une graine ne portent pas les mêmes écarts.
@@ -96,7 +96,7 @@ Le défaut est ce que l’auteur du stage ferait **sans réponse**, pas ce que l
 - Défaut : E1, facteur ≥ 2 ; E2, facteur ≥ 3 ; toujours le plancher. Une seule graine 3D ne suffira pas au critère de trois graines du palier 0.
 - À lire : `en/rapport/index.qmd:901`, `en/rapport/index.qmd:1175`, `en/these/index.qmd:861`.
 
-### q.g12 — carte 35:27–35:35 — B
+### q.g12 — carte 35:29–35:37 — B
 
 - Écran : `Which nearby paper would make this redundant?` (7)
 - Pourquoi : l’absence datée du 6 novembre 2026 expire.
@@ -104,7 +104,7 @@ Le défaut est ce que l’auteur du stage ferait **sans réponse**, pas ce que l
 - Défaut : relire Cai 2026, Tauberschmidt 2026, Mun 2026, FunDiff, PCDM, Genuist, Kacmaz, avant toute phrase « à notre connaissance ».
 - À lire : `en/rapport/index.qmd:228`, `en/these/index.qmd:998`.
 
-### q.g13 — carte 37:37–37:45 — A
+### q.g13 — carte 37:39–37:47 — A
 
 - Écran : `Drop Re = 200 at 64 cubed, or refine it?` (11)
 - Pourquoi : Rm = 400 à Re = 200, Pm = 2, et 64³ n’est pas vérifié.
@@ -112,7 +112,7 @@ Le défaut est ce que l’auteur du stage ferait **sans réponse**, pas ce que l
 - Défaut : un seul pilote spectral avant la grille ; Re ≥ 100 à 64³ reste provisoire ; pas de 256³ sans accord.
 - À lire : `infra/configs/palier2_tg3d.yaml:12-14`, `infra/cloud/RECOMMANDATION-CLOUD.md:253-254`.
 
-### q.g14 — carte 39:57–40:05 — C
+### q.g14 — carte 39:59–40:07 — C
 
 - Écran : `Is a lab GPU or Jean Zay already open?` (10)
 - Pourquoi : si oui, la location ne sert qu’à un essai.
@@ -120,7 +120,7 @@ Le défaut est ce que l’auteur du stage ferait **sans réponse**, pas ce que l
 - Défaut : ne pas louer tant que cette réponse manque. Le film ne montre pas un achat.
 - À lire : `infra/cloud/RECOMMANDATION-CLOUD.md:19-27`, `en/rapport/index.qmd:1214`.
 
-### q.g15 — carte 40:52–41:00 — C
+### q.g15 — carte 40:54–41:02 — C
 
 - Écran : `What do we ask before any paid hour?` (8)
 - Pourquoi : referme sur la fiche, pas sur une nouvelle physique.

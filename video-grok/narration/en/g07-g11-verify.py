@@ -721,7 +721,7 @@ def main(argv: list[str]) -> int:
         print("\n".join(errors))
         return 1
     scope = only or "g07-g11"
-    print(f"{scope}: chiffres, repères, cartes, horloges 41:00 et 60:00 tenus")
+    print(f"{scope}: chiffres, repères, cartes et horloges tenus")
     print("tokenizer: un mot est un jeton [A-Za-z0-9] avec point, virgule interne, ou trait d'union")
     return 0
 

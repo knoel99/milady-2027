@@ -145,7 +145,8 @@ test("le caveat de g10.law reste sans voix", async () => {
   assert.equal(french.source, "narration/fr/g10.law.caveat.md");
   assert.match(narration, /cue\.g10\.law\.caveat/);
   assert.equal(parole(narration, "cue.g10.law.caveat"), CAVEAT_EN);
-  await assert.rejects(readFile(join(root, "narration/fr/g10.md"), "utf8"));
+  const chapitre = await readFile(join(root, "narration/fr/g10.md"), "utf8");
+  assert.equal(parole(chapitre, "cue.g10.law.caveat"), CAVEAT_FR);
   const tree = await readFile(join(root, "scenes/g10/cues.json"), "utf8");
   assert.equal(tree.includes("One seed"), false);
   assert.equal(tree.includes("dynamo"), false);
@@ -179,6 +180,85 @@ test("le beat g10.law avec le caveat français reste à 156 mots par minute", as
   assert.ok(count <= 91, `${count} mots dits`);
   assert.ok(rate <= 156, `${rate} mots/min`);
 });
+
+test("chaque beat g10 en français entier reste à 156 mots par minute", async () => {
+  const chapter = await readFile(join(root, "narration/fr/g10.md"), "utf8");
+  const beats = beatsOraux(chapter);
+  assert.deepEqual(
+    beats.map((beat) => beat.id),
+    ["g10.classes", "g10.hard", "g10.sym", "g10.law", "g10.sample", "g10.bias", "g10.close", "g10.card"],
+  );
+  const law = beats.find((beat) => beat.id === "g10.law");
+  const show = law.cues.find((cue) => cue.id === "cue.g10.law.show");
+  const caveat = law.cues.find((cue) => cue.id === "cue.g10.law.caveat");
+  assert.equal(show.role, "spoken");
+  assert.equal(caveat.role, "spoken");
+  assert.equal(caveat.text.join(" "), CAVEAT_FR);
+  assert.equal(show.text.join(" ").includes("energy distance"), false);
+  for (const beat of beats) {
+    const spoken = beat.cues.filter((cue) => cue.role === "spoken");
+    const text = spoken.map((cue) => cue.text.join(" ")).join("\n");
+    const pause = spoken.reduce((sum, cue) => sum + cue.pause, 0);
+    if (beat.id === "g10.law") {
+      assert.equal(text.includes(show.text.join(" ")), true);
+      assert.equal(text.includes(CAVEAT_FR), true);
+      assert.equal(text.includes(parole(narration, "cue.g10.law.show")), false);
+    }
+    const result = debitFrancais(text, beat.duration, pause);
+    assert.ok(result.rate <= 156, `${beat.id}: ${result.count} mots, ${result.rate} mots/min`);
+  }
+  const spelled = debitFrancais("divergence de 0,408.", 40, 0);
+  assert.ok(spelled.count >= 5, `${spelled.count} mots pour 0,408`);
+  const tooFast = debitFrancais(Array.from({ length: 100 }, () => "mot").join(" "), 30, 0);
+  assert.ok(tooFast.rate > 156, `${tooFast.rate} mots/min`);
+  const report = execFileSync("python3", [join(root, "narration/fr/g10-verify.py")], { encoding: "utf8" });
+  assert.match(report, /g10\.law:/);
+  assert.match(report, /débit ≤ 156/);
+});
+
+function beatsOraux(markdown) {
+  const beats = [];
+  let beat = null;
+  let cue = null;
+  for (const line of markdown.split(/\r?\n/)) {
+    if (line.startsWith("## ")) {
+      beat = { id: line.slice(3).trim(), duration: 0, cues: [] };
+      beats.push(beat);
+      cue = null;
+      continue;
+    }
+    if (line.startsWith("### ")) {
+      cue = { id: line.slice(4).trim(), role: "", pause: 0, text: [] };
+      beat.cues.push(cue);
+      continue;
+    }
+    if (beat && line.startsWith("duration:")) {
+      const [minutes, seconds] = line.slice("duration:".length).trim().split(":");
+      beat.duration = Number(minutes) * 60 + Number(seconds);
+      continue;
+    }
+    if (!cue) continue;
+    if (line.startsWith("role:")) {
+      cue.role = line.slice("role:".length).trim();
+      continue;
+    }
+    if (line.startsWith("pause:")) {
+      cue.pause = Number(line.slice("pause:".length).trim().replace(/s$/, ""));
+      continue;
+    }
+    if (line.startsWith("screen:") || line.trim() === "") continue;
+    cue.text.push(line.trim());
+  }
+  return beats;
+}
+
+function debitFrancais(text, duration, pause) {
+  const out = execFileSync("python3", [join(root, "narration/fr/g10-verify.py"), "--rate"], {
+    input: JSON.stringify({ text, duration, pause }),
+    encoding: "utf8",
+  });
+  return JSON.parse(out);
+}
 
 function duree(markdown, beatId) {
   const lines = markdown.split(/\r?\n/);
