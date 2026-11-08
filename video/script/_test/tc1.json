@@ -1,0 +1,96 @@
+{
+  "schema": 2,
+  "unit": "tc1",
+  "title": "Test chapter one",
+  "cut": "core",
+  "level_range": "L0-L1",
+  "voice": {"provider": "fish", "model": "drama-3", "reference_id": "536d3a5e000945adb7038665781a4aca"},
+  "scenes": [
+    {
+      "id": "T1.1",
+      "was": null,
+      "title": "A needle that turns",
+      "file": "scenes/_test/t_title.html",
+      "status": "ready",
+      "level": "L0",
+      "register": "NIGHT",
+      "badge": {"kind": "CONTEXT", "confidence": null},
+      "target_s": 12,
+      "lead_in": 0.4,
+      "tail": 0.8,
+      "deps": [],
+      "entry": {"data": {}, "params": {"heading": "Test chapter one", "kicker": "PIPELINE TEST"}},
+      "sfx": ["whoosh@0", "impact@title-0.1", {"id": "needle", "cue": "flip", "offset": 0.3, "gain_db": -12}],
+      "paragraphs": [
+        {"hold_after": 0.0, "sentences": [
+          {"id": "T1.1.s1", "cue": "title", "text": "This short film only tests the pipeline."},
+          {"id": "T1.1.s2", "cue": "flip", "text": "Watch the {b}needle{/} turn around, then settle."}
+        ]},
+        {"hold_after": 1.5, "sentences": [
+          {"id": "T1.1.s3", "cue": "predict", "text": "Before it moves again, will it turn back?"}
+        ]}
+      ],
+      "onscreen": {"title": "Test chapter one", "labels": [], "formulas": [{"cue": "flip", "tex": "D(t) \\to -D(t)"}], "chips": ["illustration, not to time scale"]},
+      "visual": "Title card, then a needle that flips on the cue 'flip'.",
+      "assets": [],
+      "sources": ["external: none (test)"],
+      "variants": null,
+      "question": null
+    },
+    {
+      "id": "T1.2",
+      "title": "An empty seat",
+      "file": "scenes/_test/t_plot.html",
+      "status": "pending",
+      "level": "L1",
+      "register": "NIGHT",
+      "badge": {"kind": "CONJECTURE", "confidence": "medium"},
+      "target_s": 12,
+      "lead_in": 0.3,
+      "tail": 0.8,
+      "deps": ["script/_test/data/result.json"],
+      "entry": {"data": {"curve": "/script/_test/data/result.json"}, "params": {"x_label": "Rm, magnetic Reynolds number", "y_label": "growth rate s"}},
+      "paragraphs": [
+        {"hold_after": 0.0, "sentences": [
+          {"id": "T1.2.s1", "cue": "frame", "text": "This seat is still empty: the run has not been made."},
+          {"id": "T1.2.s2", "cue": "bet", "text": "The bet is that the {param}growth rate{/} changes sign between seventeen and eighteen."}
+        ]}
+      ],
+      "variants": {"result": {
+        "data_fields": ["s17", "s18", "verdict"],
+        "paragraphs": [
+          {"hold_after": 0.0, "sentences": [
+            {"id": "T1.2.s1", "cue": "frame", "text": "The run is in, and the seat is filled."},
+            {"id": "T1.2.s2", "cue": "bet", "text": "At seventeen the growth rate is {{s17:2}}, at eighteen it is {{s18:2}}: {{verdict}}."}
+          ]},
+          {"when": "!bet_holds", "hold_after": 0.0, "sentences": [
+            {"id": "T1.2.s3", "cue": "why", "text": "So the threshold sits elsewhere, and the question changes."}
+          ]}
+        ]
+      }},
+      "question": null
+    },
+    {
+      "id": "tc1.Q",
+      "title": "Question for the supervisors",
+      "file": "scenes/_test/t_card.html",
+      "status": "ready",
+      "level": "L1",
+      "register": "NIGHT",
+      "badge": null,
+      "target_s": 8,
+      "lead_in": 0.5,
+      "tail": 1.2,
+      "deps": [],
+      "sfx": ["chime@q-0.2"],
+      "question": {
+        "en": "Should the threshold sweep add Rm = 17.25, 17.5 and 17.75?",
+        "say": "Should the threshold sweep add Rm seventeen and a quarter, seventeen and a half, and seventeen and three quarters?",
+        "fr": "Faut-il ajouter Rm = 17,25, 17,5 et 17,75 au balayage du seuil ?",
+        "why": "Integer steps only bracket the sign change.",
+        "unblocks": "The parameter list of the 64-cubed ABC campaign.",
+        "ask_who": "the supervisors"
+      }
+    }
+  ]
+}

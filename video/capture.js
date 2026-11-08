@@ -3,14 +3,18 @@
  * every frame time t = (f0 + i) / fps, grabs the frame with CDP Page.captureScreenshot and pipes it
  * to ffmpeg (libx264). Nothing runs in real time, so the result does not depend on machine speed.
  *
- * Usage: NODE_PATH=/opt/node22/lib/node_modules node capture.js --scene scenes/a_fieldlines.html \
+ * Usage: NODE_PATH=/opt/node22/lib/node_modules node capture.js --scene scenes/<unit>/<file>.html \
  *          --out out/a_30.mp4 [--fps 30] [--duration 6] [--workers 1] [--img png|jpeg] [--quality 92]
- *          [--scale 1] [--crf 18] [--preset medium] [--tune animation] [--gpu cpu|swgl|hw]
+ *          [--scale 1] [--crf 21] [--preset medium] [--tune none] [--gpu cpu|swgl|hw]
+ *          [--maxrate 6M --bufsize 12M] [--level 4.1] [--x264-params stitchable=1]   (scene files must share
+ *          SPS/PPS to be joined by stream copy: stitchable=1, the same preset/tune/level/resolution everywhere)
+ *          [--events-out out/x.events.json]  (sound events exported by the page as window.__EVENTS__)
  *          [--ass subs/film.ass --ass-offset <scene start on the film clock, s>]
  *          [--entry '{"cues":{...},"status":"provisional"}'] [--metrics out/x.json] [--save-frames dir]
  *          [--frames N]  (limit for benchmarks)  [--isolate]  (one browser per worker)
  */
 'use strict';
+if (!process.env.NODE_PATH) { process.env.NODE_PATH = '/opt/node22/lib/node_modules'; require('module').Module._initPaths(); }
 const { chromium } = require('playwright');
 const http = require('http'), fs = require('fs'), path = require('path'), os = require('os');
 const { spawn, execFileSync } = require('child_process');
@@ -21,9 +25,10 @@ const argv = process.argv.slice(2), opt = {};
 for (let i = 0; i < argv.length; i++) if (argv[i].startsWith('--')) { const k = argv[i].slice(2); const v = argv[i + 1]; if (v === undefined || v.startsWith('--')) opt[k] = true; else { opt[k] = v; i++; } }
 const fps = +(opt.fps || 30), scale = +(opt.scale || 1), workers = +(opt.workers || 1);
 const img = opt.img || 'png', quality = +(opt.quality || 92);
-const crf = opt.crf || '18', preset = opt.preset || 'medium', tune = opt.tune === undefined ? 'animation' : opt.tune;
+const crf = opt.crf || '21', preset = opt.preset || 'medium', tune = (opt.tune === undefined || opt.tune === 'none') ? null : opt.tune;
+const maxrate = opt.maxrate || null, bufsize = opt.bufsize || null, level = opt.level || '4.1', x264p = opt['x264-params'] || 'stitchable=1';
 const entry = opt.entry ? JSON.parse(opt.entry.startsWith('{') ? opt.entry : fs.readFileSync(opt.entry, 'utf8')) : {};
-const W = 1920, H = 1080;
+const W = 1920, H = 1080;   // CSS px; the frame is W*scale x H*scale (scale 0.5 = draft 960x540)
 // GPU modes (no GPU on this machine):
 //  cpu   : 2D canvas, SVG and DOM rasterised by Skia on the CPU, compositing in software; WebGL still available through SwiftShader
 //  swgl  : everything through SwiftShader (ANGLE). Needed only if a scene requires GPU-accelerated 2D canvas features (rare)
@@ -35,20 +40,8 @@ const GPU_FLAGS = {
   hw: ['--use-angle=default', '--ignore-gpu-blocklist', '--enable-gpu-rasterization'],
 };
 
-// ---------- tiny static server rooted at the prototype (fetch() of data files needs http, not file://) ----------
-const MIME = { '.html': 'text/html', '.js': 'text/javascript', '.mjs': 'text/javascript', '.css': 'text/css', '.json': 'application/json',
-  '.woff2': 'font/woff2', '.woff': 'font/woff', '.ttf': 'font/ttf', '.otf': 'font/otf', '.png': 'image/png', '.svg': 'image/svg+xml', '.f32': 'application/octet-stream' };
-function serve() {
-  return new Promise((resolve) => {
-    const srv = http.createServer((req, res) => {
-      const p = path.join(ROOT, decodeURIComponent(new URL(req.url, 'http://x').pathname));
-      if (!p.startsWith(ROOT) || !fs.existsSync(p) || fs.statSync(p).isDirectory()) { res.writeHead(404); return res.end(); }
-      res.writeHead(200, { 'content-type': MIME[path.extname(p)] || 'application/octet-stream' });
-      fs.createReadStream(p).pipe(res);
-    });
-    srv.listen(0, '127.0.0.1', () => resolve(srv));
-  });
-}
+// ---------- static server (tools/server.js): video/ at /, the repository at /site/ (fetch() of data needs http)
+const { serve } = require('./tools/server');
 
 // ---------- CPU accounting ----------
 const sysCpu = () => { const l = fs.readFileSync('/proc/stat', 'utf8').split('\n')[0].trim().split(/\s+/).slice(1).map(Number);
@@ -72,6 +65,8 @@ function startFfmpeg(out, statFile, ass) {
   if (ass) vf.unshift(`ass=${ass}:fontsdir=${path.join(ROOT, 'vendor/fonts')}`);
   const args = ['-hide_banner', '-loglevel', 'error', '-y', '-f', 'image2pipe', '-framerate', String(fps), '-c:v', { png: 'png', jpeg: 'mjpeg', webp: 'webp' }[img], '-i', '-',
     '-vf', vf.join(','), '-c:v', 'libx264', '-preset', preset, '-crf', String(crf), ...(tune ? ['-tune', tune] : []),
+    '-profile:v', 'high', '-level:v', String(level), '-x264-params', x264p,
+    ...(maxrate ? ['-maxrate', String(maxrate), '-bufsize', String(bufsize || maxrate)] : []),
     '-pix_fmt', 'yuv420p', '-colorspace', 'bt709', '-color_primaries', 'bt709', '-color_trc', 'bt709', '-color_range', 'tv',
     '-g', String(fps * 2), '-movflags', '+faststart', out];
   // run ffmpeg under sh so that the shell's cutime/cstime (fields 16-17 of /proc/$$/stat) give ffmpeg's CPU time
@@ -87,8 +82,13 @@ async function runWorker(browser0, url, f0, f1, segOut, w, stats) {
   const context = await browser.newContext({ viewport: { width: W, height: H }, deviceScaleFactor: scale });
   const page = await context.newPage();
   const errors = [];
+  // page errors; a 404 on a data file is expected only while the scene is pending (empty seat)
+  const dataLike = (u) => /\/data\/|\.(json|f32|bin)(\?|$)/.test(u);
   page.on('pageerror', (e) => errors.push(String(e)));
-  page.on('console', (m) => { if (m.type() === 'error') errors.push(m.text()); });
+  page.on('console', (m) => { if (m.type() === 'error' && !/^Failed to load resource/.test(m.text())) errors.push(m.text()); });
+  page.on('response', (r) => { if (r.status() >= 400 && !(entry.status === 'pending' && dataLike(r.url())))
+    errors.push(`HTTP ${r.status()} ${r.url().replace(/^http:\/\/127\.0\.0\.1:\d+/, '')}`); });
+  page.on('requestfailed', (r) => { if (!(entry.status === 'pending' && dataLike(r.url()))) errors.push('request failed: ' + r.url().replace(/^http:\/\/127\.0\.0\.1:\d+/, '')); });
   await page.addInitScript(`window.__CAPTURE__ = true; window.__ENTRY__ = ${JSON.stringify(entry)};`);
   const tLoad = Date.now();
   await page.goto(url, { waitUntil: 'load' });
@@ -123,6 +123,10 @@ async function runWorker(browser0, url, f0, f1, segOut, w, stats) {
   }
   ff.stdin.end();
   await ff.done;
+  if (w === 0) {
+    stats.events = await page.evaluate(() => { const ev = window.__EVENTS__;
+      try { return typeof ev === 'function' ? ev(window.DURATION) : (Array.isArray(ev) ? ev : null); } catch (e) { return { error: String(e) }; } });
+  }
   const st = fs.readFileSync(statFile, 'utf8').split(' ');
   stats.ffmpeg_cpu_s = (stats.ffmpeg_cpu_s || 0) + (+st[15] + +st[16]) / HZ;
   stats.seek_ms = (stats.seek_ms || 0) + tSeek; stats.shot_ms = (stats.shot_ms || 0) + tShot; stats.write_ms = (stats.write_ms || 0) + tWrite;
@@ -185,6 +189,8 @@ const launch = () => chromium.launch({
     size_mb: +(size / 1e6).toFixed(2), mb_per_min: +(size / 1e6 / (nFrames / fps) * 60).toFixed(1), kbps: Math.round(size * 8 / 1000 / (nFrames / fps)),
     page_errors: stats.page_errors || [],
   };
+  if (stats.events && stats.events.error) m.page_errors.push('window.__EVENTS__: ' + stats.events.error);
+  if (opt['events-out']) fs.writeFileSync(opt['events-out'], JSON.stringify(Array.isArray(stats.events) ? stats.events : [], null, 1));
   if (opt.metrics) fs.writeFileSync(opt.metrics, JSON.stringify(m, null, 2));
   console.log(JSON.stringify(m));
 })().catch((e) => { console.error(e); process.exit(1); });

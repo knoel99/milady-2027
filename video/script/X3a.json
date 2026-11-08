@@ -1,0 +1,1005 @@
+{
+ "schema": 2,
+ "unit": "X3a",
+ "title": "Crowd laws, deeper",
+ "cut": "extension",
+ "insert_after": "X2",
+ "level_range": "L4",
+ "voice": {
+  "provider": "fish",
+  "model": "drama-3",
+  "reference_id": "536d3a5e000945adb7038665781a4aca"
+ },
+ "learning_goal": "Define the distribution distance, understand exponential tilting as an I-projection and why it cannot create mass, and read the per-eta detail.",
+ "takeaway": "Reweighting cannot visit places the model never went.",
+ "notes": "All five scenes of the outline are ready (D4): E1 and E2 results exist; no pending seat, no result variant. Running time about 2:50 for X3.0-X3.4 (outline target 170 s) plus 9 s for the new question card X3a.Q. DATA: no new data file. X3.2 and X3.4 read data/e2_eval.json (en_loi: eta, split, ess_frac_b, base.residu_bilan_energie, mean.ess_frac_b_moy; per_eta V4 / control / V5 at the test values; variants.reference_sous_echantillon floor; config.n_gen); X3.3 reads data/e1_samples_0.93.json (model C, column D and Ddot). X3.0 and X3.1 compute SCHEMATIC toys in the page from entry.params (X3.1: the law of the report's interactive diagram contrainte-loi, its constants copied into params, the tilt solved by Newton as the widget does; every toy number is drawn as a size or a bar, never as digits). REGISTERS: X3.0 PAPER (continues X2), ink change T3 in the 1.6-s lead-in of X3.1, then NIGHT to the end. CHANGES AGAINST THE OUTLINE, to review: (1) X3.0 badge CONTEXT (published definition, Székely & Rizzo 2013) and one sentence that separates the experiments' score from the sand picture of 06.5 (a cousin built from pairs), so the extended cut does not contradict the core; the 21 descriptors go on the formula layer. (2) X3.1 redraws the tilt on the widget's toy r = dE/dt (the energy budget) instead of showing the module-5 and module-8 PNG figures (white ground; the module-5 toy tilts the average of a two-polarity variable, which the mirror forbids for the dipole); a 'many weightings' beat shows two other admissible weightings with larger costs, so minimality is seen, not asserted; KL appears only on the formula layer and as 'cost' on screen. (3) X3.2 adds a measured relation: ESS/N against the base model's energy-budget error, per η (both from en_loi, same half b): the order holds at 10 of 11 values; it is drawn as dots, never as a fitted curve. (4) X3.3 transposes the widget's 'missing support' toggle to the bridge |D| < h of 05.2 (R:485 names that very case) and uses the pedagogy's optional L4 predict beat (hold 2.5 s; on screen it reads PREDICT only, as 08.2); the widget itself is not loaded. (5) X3.4 shows all five test values and ends on the payoff of the module: the values where the poll collapsed (X3.2) are those where the loss gains most. (6) New question card X3a.Q (category framing): the plan's tier-0 stopping rule (T:890) and tier-1 rules (T:901, T:904) still name reweighting as the alternative, while its risk table (T:992) rules it out; that is a decision for S. Cheng / D. Lucor before tier 0 is budgeted. NUMBERING AND PLACEMENT: n is null until the question register numbers it; with insert_after 'X2', the assembler plays 08.7, X2, X3a (ending on X3a.Q), then ch08.Q: two ASK cards back to back (three if X2 adds one). The consistency editor may prefer to fold X3a.Q into ch10q, or to move it; the card stands on its own either way. OPEN POINT: the E1 numbers of X3.2 (ESS/N 0.67 and one weight 33× the mean, model C, seed 0, Γ = 0.85) exist only in the report text (R:879), not in data/e1_eval.json (which stores seed means: 0.817 at Γ = 0.85); they are shown as a quotation of the report (reference lower-third) and spoken once; if CONTRACT §5 is read strictly, tools/data_existing.py could add a 'report_quotes' block, or the quote can be cut to words only. SYMBOLS: q generated law, q* tilted law (never ν*), p a generic other law (formula layer only), ε dissipation and P injection (as 08.5), β the tilt multipliers (the report's Proposition 7; 08.5 also uses β for the loss weight on its formula layer: flag for the symbol sheet), η named and green, 'distribution distance' amber in narration and on screen, 'energy distance' only on the X3.0 chip. LEXICON: 'eta' (already requested by ch08: EY1 T AH0 or IY1 T AH0); 'I-projection' should be read 'eye projection' (please pin if the voice spells it oddly). PACE: words budgeted with the assembler's formula (146 raw words per minute, 0.9 s per paragraph break, holds, lead-in and tail); every content scene lands within ±6 % of its target and at 126-131 effective words per minute (X3.0 42 words / 20 s, X3.1 85 / 40, X3.2 98 / 45, X3.3 74 / 35, X3.4 65 / 30; card 17 words, about 9.5 s).",
+ "scenes": [
+  {
+   "id": "X3.0",
+   "was": "new (from C6.5)",
+   "title": "The distribution distance, defined",
+   "file": "scenes/X3a/X3_0_distribution_distance.html",
+   "status": "ready",
+   "level": "L4",
+   "register": "PAPER",
+   "badge": {
+    "kind": "CONTEXT",
+    "confidence": null
+   },
+   "target_s": 20,
+   "lead_in": 1.0,
+   "tail": 0.8,
+   "deps": [],
+   "entry": {
+    "data": {},
+    "params": {
+     "module_tag": {
+      "l1": "EXTENSION · X3a",
+      "l2": "Crowd laws, deeper",
+      "hold": 3.0
+     },
+     "clouds": {
+      "n": 36,
+      "seed": "x30-clouds",
+      "sim": {
+       "cx": 760,
+       "cy": 600,
+       "sx": 150,
+       "sy": 115
+      },
+      "gen": {
+       "cx": 1160,
+       "cy": 570,
+       "sx": 150,
+       "sy": 115
+      }
+     },
+     "lines": {
+      "cross_opacity": 0.06,
+      "within_opacity": 0.08
+     },
+     "equation": {
+      "x": 960,
+      "y": 230,
+      "size": 64
+     },
+     "gauge": {
+      "box": [
+       1420,
+       330,
+       320,
+       34
+      ]
+     }
+    }
+   },
+   "paragraphs": [
+    {
+     "hold_after": 0.0,
+     "sentences": [
+      {
+       "id": "X3.0.s1",
+       "cue": "sand",
+       "text": "Earlier, the {metric}distribution distance{/} meant moving sand."
+      },
+      {
+       "id": "X3.0.s2",
+       "cue": "pairs",
+       "text": "The experiments use a cousin, built from pairs."
+      },
+      {
+       "id": "X3.0.s3",
+       "cue": "dots",
+       "text": "Each dot is a snapshot."
+      }
+     ]
+    },
+    {
+     "hold_after": 0.0,
+     "sentences": [
+      {
+       "id": "X3.0.s4",
+       "cue": "cross",
+       "text": "Average every distance across the two crowds, and double it."
+      },
+      {
+       "id": "X3.0.s5",
+       "cue": "within",
+       "text": "Subtract the average distance within each crowd."
+      },
+      {
+       "id": "X3.0.s6",
+       "cue": "zero",
+       "text": "Zero means the same law."
+      }
+     ]
+    }
+   ],
+   "onscreen": {
+    "title": "",
+    "labels": [
+     "EXTENSION · X3a",
+     "Crowd laws, deeper",
+     "distribution distance",
+     "simulated crowd",
+     "generated crowd",
+     "one dot = one snapshot",
+     "$\\ck{\\mathcal{E}}(P, Q) = \\term{cross}{2\\,\\mathbb{E}\\|X - Y\\|}\\ \\term{w1}{-\\ \\mathbb{E}\\|X - X'\\|}\\ \\term{w2}{-\\ \\mathbb{E}\\|Y - Y'\\|}$",
+     "across the two crowds · ×2",
+     "within each crowd",
+     "0 ⇔ same law",
+     "noise floor"
+    ],
+    "formulas": [
+     {
+      "cue": "dots",
+      "tex": "\\text{E2: one point} = 21 \\text{ numbers per snapshot: } \\log_{10} \\text{ energies of } \\cu{\\mathbf{u}} \\text{ and } \\cb{\\mathbf{B}} \\text{ in the shells } |\\mathbf{k}| = 1, \\dots, 10, \\text{ and } 10\\,H_C,\\ \\text{standardized};\\ \\ \\text{E1: the state } (Q, D, V),\\ 3000 \\text{ points}"
+     },
+     {
+      "cue": "within",
+      "tex": "\\ck{\\mathcal{E}}(P, Q) = 2\\,\\mathbb{E}\\|X - Y\\| - \\mathbb{E}\\|X - X'\\| - \\mathbb{E}\\|Y - Y'\\|,\\quad X, X' \\sim P,\\ \\ Y, Y' \\sim Q \\text{ independent};\\quad \\ck{\\mathcal{E}}(P, Q) = 0 \\iff P = Q"
+     },
+     {
+      "cue": "zero",
+      "tex": "\\mathbb{E}\\big[\\hat{\\ck{\\mathcal{E}}}_n\\big] = \\ck{\\mathcal{E}}(P, Q) + \\big(\\mathbb{E}\\|X - X'\\| + \\mathbb{E}\\|Y - Y'\\|\\big)/n > 0 \\ \\text{(all pairs, diagonal included): compare with the floor, never with zero};\\ \\ \\ck{\\mathcal{E}} = 2\\,\\mathrm{MMD}^2 \\text{ for the distance kernel}"
+     }
+    ],
+    "chips": [
+     "technical name: energy distance · REFERENCE · Székely & Rizzo 2013",
+     "SCHEMATIC · two toy crowds"
+    ]
+   },
+   "visual": "Render class flat (SVG; the hairlines on one Canvas layer). Register PAPER, continuing the paper of X2 (no ink change here); the ink change to NIGHT happens in the lead-in of X3.1. Module opener: during the 1.0-s lead-in, Kit.lowerThird({kind: 'chapter', l1: params.module_tag.l1, l2: params.module_tag.l2, hold: 3}) and Kit.rail({from: 'L4', to: 'L4'}) shown as an aside (the module stays at L4, as X2). Layout: equation band at the top (y 170-300, params.equation), the two crowds below (y 400-800), a small amber bar gauge at the right of the equation (params.gauge). P1. On 'sand-0.15': the grey sand-pile glyph of 06.5 (ink line art, top-left) with the amber words 'distribution distance' beside it (callback to the earth-mover picture). On 'pairs-0.15': the pile slides out to the left (0.5 s) while the two crowds fade in: params.clouds.n ink dots (label 'simulated crowd') around params.clouds.sim, and n PAPER-violet dots with a dashed ring each (generated convention, label 'generated crowd') around params.clouds.gen; seeded 2D Gaussians (Scene.rng(params.clouds.seed)), overlapping by about a third. On 'dots-0.15': one violet dot swells for 0.8 s with a leader label 'one dot = one snapshot' (the formula layer says what the 21 numbers are), then shrinks back. P2. Kit.equation with the tex of onscreen.labels (three \\term ids: cross, w1, w2), reveal in narrative order. On 'cross-0.15': all n x n cross pairs drawn as amber hairlines at params.lines.cross_opacity (draw-on 0.8 s, seeded random order), term 'cross' writes on, brace label 'across the two crowds · ×2'. On 'within-0.15': hairlines inside each crowd (ink inside the simulated one, violet inside the generated one, params.lines.within_opacity), terms 'w1' and 'w2' write on together, brace label 'within each crowd' (at most two labels at once: the 'cross' label leaves first). On 'zero-0.15': the violet dots glide (1.2 s, inOutSine) to new positions drawn from the SIMULATED blob (same Gaussian, new seeded stream): the cross lines now look like the within lines; the amber gauge, computed live from the dot positions with the plug-in estimator of the formula (no digits), shrinks and stops just above zero at a dashed grey tick 'noise floor' (the 06.5 lesson: finite crowds never give exactly zero); label '0 ⇔ same law' beside the equation. Chips: 'technical name: energy distance · REFERENCE · Székely & Rizzo 2013' (plain, bottom-left, from 'pairs' to the end: with 06.5, the only place the technical name appears, critique D2) and 'SCHEMATIC · two toy crowds' (schematic). Badge CONTEXT (a published definition and property), note 'the score used in E1 and E2'. Key colours: amber (the distance, cross lines, gauge), violet (generated), ink (simulated). No corner needle, no sound effect. Hand-off: the last frame (two crowds on paper) is the first frame of the X3.1 ink change.",
+   "assets": [],
+   "sources": [
+    "en/rapport/index.qmd:713 (the metrics compare distributions: a generated field has no associated true field)",
+    "en/rapport/index.qmd:715-721 (energy distance, zero if and only if P = Q, Székely & Rizzo 2013; twice the squared MMD for the distance-induced kernel, Sejdinovic et al. 2013; E1 on the normalized state (Q, D, V) with 3000 points; E2 on 21 descriptors per sample, base-10 logs of the energies of u and B in the shells |k| = 1 to 10 and 10 H_C, standardized by the reference, up to 1000 points)",
+    "en/rapport/index.qmd:723 (all pairs with the diagonal: the expectation is E(P, Q) + (E||X - X'|| + E||Y - Y'||)/n, strictly positive even when P = Q; compare with the floor at equal size, never with zero)",
+    "en/rapport/index.qmd:1512-1513 (bibliography: Sejdinovic et al. 2013, Annals of Statistics 41(5); Székely & Rizzo 2013, Journal of Statistical Planning and Inference 143(8), DOI 10.1016/j.jspi.2013.03.018)",
+    "script/ch06.json 06.5 (the sand picture of the distribution distance in the core cut, W1 and the energy distance on its formula layer and chip; this scene must not contradict it: the experiments' score is a cousin of the sand picture)",
+    "plan/outline.md X3.0; plan/critique_pedagogy.md D2 (distribution distance in narration; technical name only on a chip in 06.5 and X3.0) and table F row C6.5 (the formula moved to X3); plan/styles.md reference 4 (two clouds, pairwise lines, the three terms one by one)"
+   ],
+   "variants": null,
+   "question": null
+  },
+  {
+   "id": "X3.1",
+   "was": "X3.1",
+   "title": "The least-distorting correction",
+   "file": "scenes/X3a/X3_1_least_distorting_correction.html",
+   "status": "ready",
+   "level": "L4",
+   "register": "NIGHT",
+   "badge": {
+    "kind": "PROVED",
+    "confidence": null
+   },
+   "target_s": 40,
+   "lead_in": 1.6,
+   "tail": 0.8,
+   "deps": [],
+   "entry": {
+    "data": {},
+    "params": {
+     "toy": {
+      "what": "r = dE/dt = P - eps of one snapshot; true law mu = sum p_k N(m_k, s_k^2) (mean exactly 0: the energy budget); model q = law of r + bias; constants from assets/interactif/contrainte-loi.js (formula 1 and slider default b = 0.4)",
+      "p": [
+       0.7,
+       0.3
+      ],
+      "m": [
+       -0.45,
+       1.05
+      ],
+      "s": [
+       0.5,
+       0.8
+      ],
+      "bias": 0.4,
+      "n": 160,
+      "dots": "x_j = F_mu^-1((j - 0.5)/n) + bias, j = 1..n (deterministic quantiles; F_mu^-1 by bisection on the exact CDF)",
+      "jitter_seed": "x31-jitter"
+     },
+     "axis": {
+      "x0": 260,
+      "x1": 1660,
+      "y": 680,
+      "rmin": -2.5,
+      "rmax": 3.5,
+      "ticks": [
+       -2,
+       -1,
+       0,
+       1,
+       2,
+       3
+      ]
+     },
+     "strip": {
+      "y0": 540,
+      "y1": 640,
+      "r_min_px": 3,
+      "r_max_px": 26
+     },
+     "hist": {
+      "box": [
+       260,
+       300,
+       1400,
+       210
+      ],
+      "bins": 24
+     },
+     "alternatives": [
+      {
+       "id": "drop_top",
+       "label": "drop the top",
+       "rule": "uniform weights on the lowest k dots, one fractional weight at the boundary, so that the weighted mean is exactly 0"
+      },
+      {
+       "id": "linear",
+       "label": "linear",
+       "rule": "w proportional to max(0, 1 - a r), a > 0 by bisection so that the weighted mean is exactly 0"
+      }
+     ],
+     "cost": "KL(w || uniform) = sum_i w_i log(n w_i), with 0 log 0 = 0; bars proportional, no digits",
+     "tilt": "w proportional to exp(beta r), beta < 0 by Newton on log sum exp(beta r_i) (contrainte-loi.js formula 4); assert in setup that its cost is the smallest of the three (Proposition 7 on the sample), Scene.warn otherwise",
+     "cost_bars": {
+      "x": 1700,
+      "y0": 300,
+      "w": 160,
+      "h": 26,
+      "gap": 16
+     },
+     "inset": {
+      "box": [
+       1060,
+       170,
+       660,
+       390
+      ]
+     }
+    }
+   },
+   "paragraphs": [
+    {
+     "hold_after": 0.0,
+     "sentences": [
+      {
+       "id": "X3.1.s1",
+       "cue": "route",
+       "text": "Reweighting, up close."
+      },
+      {
+       "id": "X3.1.s2",
+       "cue": "off",
+       "text": "The {model}model's{/} crowd misses its target average."
+      },
+      {
+       "id": "X3.1.s3",
+       "cue": "stay",
+       "text": "Leave every snapshot in place; change only how much each counts."
+      }
+     ]
+    },
+    {
+     "hold_after": 0.0,
+     "sentences": [
+      {
+       "id": "X3.1.s4",
+       "cue": "many",
+       "text": "Many weightings hit the target."
+      },
+      {
+       "id": "X3.1.s5",
+       "cue": "least",
+       "text": "The least distorting one: weights that grow exponentially with the quantity being fixed, the I-projection."
+      }
+     ]
+    },
+    {
+     "hold_after": 0.0,
+     "sentences": [
+      {
+       "id": "X3.1.s6",
+       "cue": "line",
+       "text": "Picture every crowd with the right average as a line."
+      },
+      {
+       "id": "X3.1.s7",
+       "cue": "foot",
+       "text": "The tilted crowd is the foot of the perpendicular: any other fix costs more; the costs add up as in Pythagoras."
+      },
+      {
+       "id": "X3.1.s8",
+       "cue": "moves",
+       "text": "And nothing moves: the tilted crowd lives only where the model's crowd was."
+      }
+     ]
+    }
+   ],
+   "onscreen": {
+    "title": "",
+    "labels": [
+     "energy change of one snapshot · r = dE/dt",
+     "truth",
+     "model q",
+     "target: average 0 (energy budget)",
+     "misses the target",
+     "no snapshot moves · only its weight",
+     "drop the top",
+     "linear",
+     "w ∝ exp(β r)",
+     "cost: how much the crowd is distorted",
+     "I-projection",
+     "every crowd with average 0",
+     "model q",
+     "tilted q*",
+     "another fix p",
+     "cost of q*",
+     "extra",
+     "cost of p",
+     "no dot here: no mass, before or after"
+    ],
+    "formulas": [
+     {
+      "cue": "least",
+      "tex": "\\cm{q}^{*}(x) = \\frac{e^{\\boldsymbol\\beta^{*}\\cdot\\mathbf{g}(x)}}{Z(\\boldsymbol\\beta^{*})}\\,\\cm{q}(x),\\qquad \\boldsymbol\\beta^{*} = \\arg\\min_{\\boldsymbol\\beta}\\ \\log Z(\\boldsymbol\\beta) - \\boldsymbol\\beta\\cdot\\mathbf{c},\\qquad Z(\\boldsymbol\\beta) = \\mathbb{E}_{\\cm{q}}\\big[e^{\\boldsymbol\\beta\\cdot\\mathbf{g}}\\big]\\quad \\text{(Proposition 7; I-projection, Csiszár 1975)}"
+     },
+     {
+      "cue": "foot",
+      "tex": "\\mathrm{KL}(p\\,\\|\\,\\cm{q}) = \\mathrm{KL}(p\\,\\|\\,\\cm{q}^{*}) + \\mathrm{KL}(\\cm{q}^{*}\\,\\|\\,\\cm{q}) \\ \\ge\\ \\mathrm{KL}(\\cm{q}^{*}\\,\\|\\,\\cm{q})\\quad \\text{for every } p \\ll \\cm{q} \\text{ with } \\mathbb{E}_p[\\mathbf{g}] = \\mathbf{c}"
+     },
+     {
+      "cue": "moves",
+      "tex": "\\operatorname{supp}\\cm{q}^{*} = \\operatorname{supp}\\cm{q};\\ \\ \\text{on samples: } w_i \\propto e^{\\boldsymbol\\beta\\cdot\\mathbf{g}(x_i)},\\ \\textstyle\\sum_i w_i = 1;\\ \\ \\boldsymbol\\beta^{*} \\text{ exists only if } \\mathbf{c} \\text{ lies inside the convex hull of the values of } \\mathbf{g}"
+     }
+    ],
+    "chips": [
+     "SCHEMATIC · toy law of the report's interactive diagram",
+     "REFERENCE · Csiszár 1975"
+    ]
+   },
+   "visual": "Render class flat (SVG axis, dots, inset and bars; one Canvas layer for the histograms). Lead-in 1.6 s = transition T3 (ink change) from X3.0: the two paper crowds are redrawn in NIGHT ink along a diagonal chalk wipe, and the violet crowd collapses onto the horizontal axis to become this scene's dots (a match cut, never a crossfade). Toy (SCHEMATIC, params.toy, the law of the report's interactive diagram contrainte-loi): the quantity is r = dE/dt = P - ε of one snapshot; truth μ = 0.7 N(-0.45, 0.5²) + 0.3 N(1.05, 0.8²), mean exactly 0 (the energy budget); model q = μ shifted by params.toy.bias (its average energy change is too high); params.toy.n dots at the shifted quantiles of μ (deterministic), vertical jitter in params.strip from Scene.rng(params.toy.jitter_seed). Layout: axis params.axis (amber title 'energy change of one snapshot · r = dE/dt'), dot strip above it (params.strip, dot area ∝ n·w, radius clamped to params.strip r_min_px..r_max_px), weighted histogram outline (violet, params.hist) above the dots, the exact truth density μ as a faint grey dashed curve (label 'truth'). P1. On 'route-0.15': axis, dots (all the same size), histogram (label 'model q') and the faint truth draw on (0.8 s). On 'off-0.15': two triangles under the axis: violet at the crowd's weighted average (computed), amber at 0 with the label 'target: average 0 (energy budget)'; a pen arrow from violet to amber, label 'misses the target'. On 'stay-0.15': every dot gets a tiny pin (stagger left to right, 0.5 s in all), label 'no snapshot moves · only its weight'. P2. On 'many-0.15': the two alternatives of params.alternatives, each solved in setup so that the weighted average is exactly 0: dot sizes switch to 'drop the top' (1.2 s; the top dots shrink to a dot outline, the rest swell evenly), then to 'linear' (1.2 s); for each, the histogram re-forms, the violet triangle sits on the amber one, and a grey cost bar fills in the column params.cost_bars (labelled with the alternative's name; length ∝ KL(w || uniform) computed from the weights, no digits; column title 'cost: how much the crowd is distorted'). On 'least-0.15': the I-projection (params.tilt): sizes morph continuously from uniform as β goes from 0 to β* (1.4 s): dots at low r swell, dots at high r shrink, nobody moves; the histogram outline slides until the violet triangle lands on the amber one; its amber cost bar fills last and is visibly the shortest (setup asserts it); the label 'w ∝ exp(β r)' sits over the dots and 'I-projection' (amber) beside the shortest bar. P3. On 'line-0.15': the strip, histogram and bars dim to 35 %; the inset params.inset draws on: an amber straight line 'every crowd with average 0', a violet point 'model q' above it, and a second point 'another fix p' on the line. On 'foot-0.15': a dashed perpendicular drops from q to the line; its foot 'tilted q*' lands with a right-angle mark (pen tick); the three sides take the labels 'cost of q*' (q to q*), 'extra' (q* to p) and 'cost of p' (q to p), one after the other (0.4 s apart; at most two brace labels at once, so 'cost of q*' stays and the others are plain side labels); the formula layer shows the Pythagorean identity. On 'moves-0.15': the inset fades, the strip returns to full opacity; the parts of the axis beyond the extreme dots on both sides are hatched grey with the label 'no dot here: no mass, before or after'; the pins pulse once (scale 1.15, 0.3 s). Badge PROVED (Proposition 7), note 'exact on the sample, when β* exists'. Chips: 'SCHEMATIC · toy law of the report's interactive diagram' (schematic) and 'REFERENCE · Csiszár 1975' (plain). Key colours: violet (model, weights, histogram), amber (target, line of admissible crowds, cost of the I-projection), grey (truth, alternatives). KL appears only on the formula layer; on screen it is 'cost'. No corner needle. The hatched 'no dot here' motif returns in X3.3. The prep figures fig-inclinaison-en.png (modules 5 and 8) are not shown: white ground, and the module-5 toy tilts the average of a two-polarity variable, which the mirror of ch07 forbids for the dipole.",
+   "assets": [],
+   "sources": [
+    "en/rapport/index.qmd:462 (the identities must be enforced at the distribution level; two routes: tilt the generated distribution afterwards, or modify the training)",
+    "en/rapport/index.qmd:465-472 (Proposition 7: among the distributions absolutely continuous with respect to q whose mean of g is c, the closest to q in KL is the tilted distribution e^{β*·g} q / Z(β*), β* minimizing the convex dual log Z(β) - β·c; I-projection due to Csiszár 1975; on a sample, self-normalized weights w_i ∝ e^{β·g(x_i)}, ESS = 1/Σ w_i²; a reweighting does not create mass: the support of the tilted law is that of q)",
+    "en/rapport/index.qmd:474-482 (proof; Pythagorean identity KL(ν||q) = KL(ν||ν*) + KL(ν*||q) ≥ KL(ν*||q), equality only for ν = ν*; the support cannot grow)",
+    "en/rapport/index.qmd:485 (β* exists only if c lies inside the convex hull of the values of g under q)",
+    "en/rapport/index.qmd:1477 (bibliography: Csiszár 1975, Annals of Probability 3(1), 146-158, DOI 10.1214/aop/1176996454)",
+    "en/these/index.qmd:579 (exponential tilting is the minimal correction in the Kullback-Leibler sense, but it does not create mass)",
+    "assets/interactif/contrainte-loi.js:10-16 (toy law of r = dE/dt: 0.7 N(-0.45, 0.5²) + 0.3 N(1.05, 0.8²), mean exactly 0), :26-30 (model q: shift by the bias b) and :40-51 (exponential tilting by Newton on the convex dual; ESS = 1/Σ w², Kish 1965); default bias b = 0.4 at :97",
+    "plan/outline.md X3.1; plan/pedagogy.md K15 (reweighting a poll; I-projection; support of q* = support of q); plan/critique_pedagogy.md D3 (q* for the tilted law, never ν*), B6 (KL on the formula layer only)"
+   ],
+   "variants": null,
+   "question": null
+  },
+  {
+   "id": "X3.2",
+   "was": "X3.2",
+   "title": "The poll that shrank",
+   "file": "scenes/X3a/X3_2_poll_that_shrank.html",
+   "status": "ready",
+   "level": "L4",
+   "register": "NIGHT",
+   "badge": {
+    "kind": "MEASURED",
+    "confidence": null
+   },
+   "target_s": 45,
+   "lead_in": 0.4,
+   "tail": 0.8,
+   "deps": [
+    "data/e2_eval.json"
+   ],
+   "entry": {
+    "data": {
+     "ev": "data/e2_eval.json"
+    },
+    "params": {
+     "read": "ev.en_loi.eta (11 values), ev.en_loi.split ('train' | 'test'), ev.en_loi.ess_frac_b (ESS/N of the tilt of V4 on half b, per η), ev.en_loi.mean.ess_frac_b_moy (0.287, chip), ev.en_loi.base.residu_bilan_energie (signed energy-budget error of the untilted V4 on the same half b, per η; plot its absolute value), ev.config.n_gen (1000 per η, so half b holds n_gen / 2 = 500 and the smallest possible ESS/N is 2 / n_gen)",
+     "poll": {
+      "n": 20,
+      "box": [
+       110,
+       230,
+       440,
+       330
+      ],
+      "weights": {
+       "equal": "all 1/20",
+       "giant": "one dot 0.97, the rest share 0.03"
+      },
+      "counter": "ESS = 1/Σ w², computed live from the drawn weights, shown with Kit.fmt"
+     },
+     "bars": {
+      "box": [
+       660,
+       190,
+       1120,
+       470
+      ],
+      "y_log": [
+       -3,
+       0
+      ],
+      "y_ticks": [
+       0.001,
+       0.01,
+       0.1,
+       1
+      ],
+      "x": "η on a log axis, green, filled dots = training, open dots = test (06.4 convention)"
+     },
+     "scatter": {
+      "box": [
+       660,
+       190,
+       1120,
+       470
+      ],
+      "x_log": [
+       -4.3,
+       0.5
+      ],
+      "x_ticks": [
+       0.0001,
+       0.001,
+       0.01,
+       0.1,
+       1
+      ],
+      "y_log": [
+       -3,
+       0
+      ]
+     },
+     "quote": {
+      "kind": "reference",
+      "hold": 5.0
+     }
+    }
+   },
+   "paragraphs": [
+    {
+     "hold_after": 0.0,
+     "sentences": [
+      {
+       "id": "X3.2.s1",
+       "cue": "left",
+       "text": "How much is left of a reweighted crowd?"
+      },
+      {
+       "id": "X3.2.s2",
+       "cue": "ess",
+       "text": "Its {metric}effective sample size{/} says."
+      },
+      {
+       "id": "X3.2.s3",
+       "cue": "equal",
+       "text": "Equal weights: the whole crowd."
+      },
+      {
+       "id": "X3.2.s4",
+       "cue": "giant",
+       "text": "One giant weight: one person."
+      }
+     ]
+    },
+    {
+     "hold_after": 0.0,
+     "sentences": [
+      {
+       "id": "X3.2.s5",
+       "cue": "sheet",
+       "text": "On the flat sheet, at the smallest test {param}eta{/}, the poll keeps ninety-nine percent."
+      },
+      {
+       "id": "X3.2.s6",
+       "cue": "bottom",
+       "text": "At the three largest, it bottoms out: one snapshot out of five hundred."
+      }
+     ]
+    },
+    {
+     "hold_after": 0.0,
+     "sentences": [
+      {
+       "id": "X3.2.s7",
+       "cue": "rank",
+       "text": "Rank the values by how far the {model}model's{/} budget was off: the further off, the smaller the poll."
+      },
+      {
+       "id": "X3.2.s8",
+       "cue": "little",
+       "text": "Where the poll survives, little needed fixing."
+      },
+      {
+       "id": "X3.2.s9",
+       "cue": "much",
+       "text": "Where much needed fixing, it collapses."
+      }
+     ]
+    },
+    {
+     "hold_after": 0.0,
+     "sentences": [
+      {
+       "id": "X3.2.s10",
+       "cue": "e1",
+       "text": "The three-dial tests agree: no crowd improved, and one snapshot came to weigh thirty-three times the average."
+      }
+     ]
+    }
+   ],
+   "onscreen": {
+    "title": "",
+    "labels": [
+     "a poll of 20",
+     "effective sample size",
+     "equal weights: the whole crowd",
+     "one giant weight: one person",
+     "ESS/N of the tilt · 500 snapshots per η (half b)",
+     "η",
+     "training",
+     "test",
+     "one snapshot: the minimum",
+     "the poll keeps 99 %",
+     "one snapshot in 500",
+     "how far the base model's energy budget was off",
+     "little to fix",
+     "much to fix: the poll collapses",
+     "REPORT · E1, model C, seed 0, Γ = 0.85",
+     "ESS/N 0.67 · one weight 33× the mean · no distribution improved"
+    ],
+    "formulas": [
+     {
+      "cue": "ess",
+      "tex": "\\mathrm{ESS} = 1\\Big/\\textstyle\\sum_i w_i^2\\ \\ \\big(\\textstyle\\sum_i w_i = 1\\big),\\qquad 1 \\le \\mathrm{ESS} \\le N"
+     },
+     {
+      "cue": "sheet",
+      "tex": "\\text{E2: } \\cm{q}^{*} \\propto e^{\\boldsymbol\\beta\\cdot\\mathbf{g}}\\,\\cm{q} \\text{ on 3 budgets (energy, cross helicity, } \\langle a^2\\rangle\\text{), regularized; } \\boldsymbol\\beta \\text{ tuned on half } a, \\text{ applied to half } b \\ (N = 500);\\ \\ \\mathrm{ESS}/N = 1\\big/\\big(N\\textstyle\\sum_i w_i^2\\big)"
+     },
+     {
+      "cue": "rank",
+      "tex": "x = \\big|\\mathbb{E}_{\\cm{q}}[\\varepsilon] - P\\big|/P \\text{ of the untilted V4 on the same half } b\\quad (\\varepsilon: \\text{dissipation of a snapshot};\\ P: \\text{injection rate})"
+     }
+    ],
+    "chips": [
+     "SCHEMATIC · a poll of 20 (weights for illustration)",
+     "GENERATED · V4, one seed",
+     "mean over the 11 values: 0.29",
+     "the tilt fixes three budgets: energy, cross helicity, ⟨a²⟩",
+     "REFERENCE · effective sample size: Kish 1965"
+    ]
+   },
+   "visual": "Render class flat (SVG). Data: ctx.data.ev = data/e2_eval.json (params.read). Every E2 number on screen comes from the data (Kit.fmt); the only typed numbers are the E1 quote of P4, from the script's onscreen labels (report text R:879, see open issue in notes). P1 (left third, params.poll). On 'left-0.15': a 'poll' of params.poll.n violet dots (4 x 5 grid, label 'a poll of 20'), all the same size; an amber counter 'effective sample size' under it shows 1/Σw² computed live from the drawn weights (20 at the start). On 'equal-0.15': label 'equal weights: the whole crowd' (counter stays at its maximum). On 'giant-0.15': the weights morph over 1.2 s to params.poll.weights.giant: one dot swells, the others shrink to faint outlines; the counter rolls down live to about 1; label 'one giant weight: one person'. The ESS formula sits on the formula layer (cue 'ess'). Chip 'SCHEMATIC · a poll of 20 (weights for illustration)'. P2 (right two thirds, params.bars). On 'sheet-0.15': the poll shrinks to an icon at top-left; a green log η axis with the 11 values (filled dots training, open dots test) and a log y axis 'ESS/N of the tilt · 500 snapshots per η (half b)' (ticks 0.001 to 1); a dashed grey line at y = 2 / ev.config.n_gen labelled 'one snapshot: the minimum'; eleven amber bars grow from the bottom (0.1 s apart, left to right), each bar's top = ev.en_loi.ess_frac_b; then the pen circles the bar of the smallest TEST η (0.99), label 'the poll keeps 99 %'. Chip 'GENERATED · V4, one seed'; source lower-third (kind 'source', data ev) for 4 s. On 'bottom-0.15': the pen draws one bracket over the three largest TEST values (their bars touch the dashed line), label 'one snapshot in 500'; chip 'mean over the 11 values: 0.29' (ev.en_loi.mean.ess_frac_b_moy) small under the axis. P3. On 'rank-0.15': transition T1 (morph): each bar's top becomes a dot (same fill convention: filled training, open test; each keeps a small green η tag) and the dots glide to a scatter (params.scatter): x = |ev.en_loi.base.residu_bilan_energie| on a log axis titled 'how far the base model's energy budget was off', y = ESS/N (same log axis, same dashed minimum line). No fitted curve: the falling order reads from the dots alone. Chip 'the tilt fixes three budgets: energy, cross helicity, ⟨a²⟩' (the energy error is plotted; the ⟨a²⟩ error follows the same order in the data). On 'little-0.15': soft amber highlight (pen circle) around the upper-left dots, label 'little to fix'. On 'much-0.15': pen circle around the lower-right dots on the dashed line, label 'much to fix: the poll collapses'. P4. On 'e1-0.15': the scatter dims to 50 %; a reference lower-third (Kit.lowerThird, kind 'reference', params.quote.hold) with l1 'REPORT · E1, model C, seed 0, Γ = 0.85' and l2 'ESS/N 0.67 · one weight 33× the mean · no distribution improved', with the three-dial glyph of 04.1 (small, grey) at its left. Chip 'REFERENCE · effective sample size: Kish 1965' (plain, from 'ess' to the end of P1 only). Badge MEASURED, note 'E2 · tilt of V4 on half b · one seed'. Key colours: amber (ESS bars and dots, counter), violet (the poll's dots, generated), green (η), grey (minimum line). No corner needle. The η axis and the bar layout are reused in X3.4 (same params.bars box) so the two scenes read as a pair.",
+   "assets": [],
+   "sources": [
+    "en/rapport/index.qmd:1033 (tilting on half b of V4 at the test values: residual 0.47 → 0.193 but distance 2.62 → 4.15; mean ESS/N 0.287 hides two regimes: 0.99 at η = 0.00476, where V4 is already close to the reference, and 0.002 at the three largest test values, about one effective sample out of 500; the limit of Proposition 7: a reweighting does not create mass and fails precisely where the model lacks it; degenerate weights reduce the resampled law to a few duplicated samples)",
+    "en/rapport/index.qmd:995 (mean ESS/N 0.287 over the eleven values of η) and en/rapport/index.qmd:999-1013 (Table 7: per-η ESS/N 0.0758, 0.99, 0.526, 0.116, 0.892, 0.00215, 0.507, 0.002, 0.0469, 0.002, 0.002; signed V4 residuals; training and test sets)",
+    "en/rapport/index.qmd:687-695 (regularized tilting; β tuned on half a, applied to half b; ESS/N = 1/(N Σ w²) on half b; E1: the 9 terms of degree at most 2; E2: the three identities of Example 3.8) and en/rapport/index.qmd:923 (1000 samples per η, so half b holds 500)",
+    "en/rapport/index.qmd:736 (the three budget residuals: energy, cross helicity, ⟨a²⟩)",
+    "en/rapport/index.qmd:879 (E1: a posteriori tilting improves no distribution; at Γ = 0.85, model C, seed 0, ESS/N of half b 0.67, one sample weighs 33 times the mean weight, the enforced residual doubles; on average over the two seeds ESS/N 0.82; where the ESS stays close to 1 the gain is small because model C is already close to the floor; consistent with E2)",
+    "experiences/resultats/digest.md:142-143 (base and tilting rows at the test values) and :162 (mean ESS/N 0.287)",
+    "data/e2_eval.json en_loi (eta, split, ess_frac_b, base.residu_bilan_energie, mean.ess_frac_b_moy) and config.n_gen; checked 2026-11-08: ESS/N falls in the order of |base energy residual| at 10 of the 11 values (one swap between η = 0.004 and 0.00673)",
+    "assets/interactif/contrainte-loi.js:50 and :76 (ESS = 1/Σ w², Kish 1965; Liu 2001 §2.5)",
+    "external: Kish L. 1965, Survey Sampling, John Wiley & Sons, New York (catalogue record: https://dev-www.nypl.org/research/research-catalog/bib/pb9915555243506421; effective sample size of unequal weights; checked 2026-11-08)",
+    "plan/outline.md X3.2; plan/pedagogy.md K15 (poll metaphor, ESS counter, 'fails exactly where the model is poor'); plan/critique_accuracy.md B10 (one effective sample in 500, not two people)"
+   ],
+   "variants": null,
+   "question": null
+  },
+  {
+   "id": "X3.3",
+   "was": "X3.3",
+   "title": "Where the model never went",
+   "file": "scenes/X3a/X3_3_where_the_model_never_went.html",
+   "status": "ready",
+   "level": "L4",
+   "register": "NIGHT",
+   "badge": {
+    "kind": "PROVED",
+    "confidence": null
+   },
+   "target_s": 35,
+   "lead_in": 0.4,
+   "tail": 0.8,
+   "deps": [
+    "data/e1_samples_0.93.json"
+   ],
+   "entry": {
+    "data": {
+     "shoebox": "data/e1_samples_0.93.json"
+    },
+    "params": {
+     "read": "shoebox.variants[params.variant].x (n x 3 f32, columns Q, D, V; decode with Scene.f32; use column D), .Ddot (n f32, computed from the model's equation on each snapshot, no time integration), .n; shoebox.gamma (label)",
+     "variant": "C_equivariant",
+     "h": 0.2,
+     "axis": {
+      "x0": 200,
+      "x1": 1500,
+      "y": 640,
+      "dmin": -3,
+      "dmax": 3
+     },
+     "strip_plot": {
+      "y0": 420,
+      "y1": 610,
+      "jitter_seed": "x33-jitter",
+      "r_px": 2.2,
+      "r_max_px": 22
+     },
+     "gauge": {
+      "x": 1700,
+      "y": 430,
+      "r": 120,
+      "label": "crossing rate read in the strip"
+     },
+     "push": {
+      "weights": "w_i ∝ exp(-beta (|D_i| - h)) on the remaining snapshots, beta ramped from 0 to beta_max",
+      "beta_max": 8,
+      "dur": 2.4
+     },
+     "poll_bar": {
+      "x": 1580,
+      "y": 640,
+      "w": 240,
+      "h": 22
+     },
+     "predict": {
+      "options": [
+       "A · yes, with big enough weights",
+       "B · no"
+      ],
+      "answer": 1
+     }
+    }
+   },
+   "sfx": [
+    {
+     "id": "pop",
+     "cue": "hole",
+     "offset": 0.7,
+     "gain_db": -24
+    }
+   ],
+   "paragraphs": [
+    {
+     "hold_after": 0.0,
+     "sentences": [
+      {
+       "id": "X3.3.s1",
+       "cue": "hole",
+       "text": "Now a {model}model{/} that never visits the bridge between the two polarities, where every crossing happens."
+      }
+     ]
+    },
+    {
+     "hold_after": 2.5,
+     "sentences": [
+      {
+       "id": "X3.3.s2",
+       "cue": "predict",
+       "text": "Can reweighting bring back the {metric}crossing rate{/}?"
+      }
+     ]
+    },
+    {
+     "hold_after": 0.0,
+     "sentences": [
+      {
+       "id": "X3.3.s3",
+       "cue": "no",
+       "text": "No. Rice reads the rate inside the strip, and the strip is empty: zero, times any weight, is zero."
+      },
+      {
+       "id": "X3.3.s4",
+       "cue": "push",
+       "text": "Push harder, and the weight piles onto a few snapshots at the edge."
+      }
+     ]
+    },
+    {
+     "hold_after": 0.0,
+     "sentences": [
+      {
+       "id": "X3.3.s5",
+       "cue": "never",
+       "text": "Reweighting cannot visit places the model never went."
+      },
+      {
+       "id": "X3.3.s6",
+       "cue": "fallback",
+       "text": "The thesis plan's risk table agrees: reweighting alone is no fallback."
+      }
+     ]
+    }
+   ],
+   "onscreen": {
+    "title": "",
+    "labels": [
+     "D · dipole",
+     "D = 0",
+     "the bridge · |D| < h",
+     "missing support",
+     "crossing rate read in the strip",
+     "PREDICT",
+     "Can reweighting bring back the crossing rate?",
+     "A · yes, with big enough weights",
+     "B · no",
+     "empty strip: 0 × any weight = 0",
+     "still 0",
+     "weights pile up at the edge",
+     "effective sample size",
+     "reweighting cannot create mass",
+     "PhD plan · risk table",
+     "tilting alone is not a fallback"
+    ],
+    "formulas": [
+     {
+      "cue": "no",
+      "tex": "\\hat{\\ck{r}}_0 = \\frac{1}{2h}\\textstyle\\sum_i w_i\\,|\\dot D_i|\\,\\mathbf{1}_{|D_i| < h} = 0 \\ \\text{ for every choice of weights } w \\text{ when no snapshot has } |D_i| < h"
+     },
+     {
+      "cue": "push",
+      "tex": "\\operatorname{supp}\\cm{q}^{*} = \\operatorname{supp}\\cm{q}\\ \\ \\text{(Proposition 7): a reweighting does not create mass;}\\ \\ \\mathrm{ESS} = 1\\big/\\textstyle\\sum_i w_i^2 \\to 1 \\text{ as the weights pile up}"
+     }
+    ],
+    "chips": [
+     "GENERATED · model C, Γ = 0.93",
+     "SCHEMATIC · the bridge removed by hand · weights for illustration"
+    ]
+   },
+   "visual": "Render class flat (one Canvas layer for the points, SVG for axis, strip, gauge and labels). Data: ctx.data.shoebox = data/e1_samples_0.93.json, variant params.variant (model C, 4000 generated snapshots at Γ = 0.93, the 05.2 shoebox but violet). Callback to 05.2: same horizontal D axis, same 1D strip plot, same chalk strip |D| < h (params.h = 0.2, as in 05.2). No digits on the gauge or the poll bar (schematic weights). P1. In the lead-in the strip plot is already there: points along the D axis (params.axis; two vermillion shades by sign of D, each point with the violet generated ring at 30 %; seeded vertical jitter params.strip_plot), the chalk strip |D| < h with dashed edges, label 'the bridge · |D| < h' and the tick 'D = 0'; at right an amber half-dial gauge 'crossing rate read in the strip' (the 05.1/05.2 speedometer glyph) whose needle sits at the Rice estimate computed live from the points in the strip (Σ |Ddot| 1{|D| < h} / (2 h n), needle angle only, no digits). On 'hole-0.15': a pill toggle labelled 'missing support' (the widget's UI, grey, top-left of the strip) flips ON; the points inside the strip fade out (0.6 s; pop at hole+0.7); the strip fills with grey hatching (the 'no dot here' motif of X3.1); the gauge needle falls to 0 (1.0 s). Chip 'SCHEMATIC · the bridge removed by hand · weights for illustration' (schematic) and 'GENERATED · model C, Γ = 0.93' (generated). P2. On 'predict-0.15': the predict card of the film (top band): 'PREDICT' and the question 'Can reweighting bring back the crossing rate?' with params.predict.options; a 3-ring countdown during the 2.5-s hold_after. P3. On 'no-0.15': option B lights (amber check), A greys out; the pen writes 'empty strip: 0 × any weight = 0' over the hatched strip; the gauge keeps reading 0. On 'push-0.15': the remaining points take the weights of params.push (β ramped over params.push.dur): the points nearest both edges of the strip swell (radius ∝ sqrt(n w), clamped at r_max_px), the far ones shrink; a short amber bar 'effective sample size' under the gauge (params.poll_bar) shrinks with 1/Σw² (no digits); the gauge needle does not move: label 'still 0'; pen arrow 'weights pile up at the edge'. P4. On 'never-0.15': the swollen points relax back to equal size; the hatched strip pulses once; centred label 'reweighting cannot create mass' (amber, 44 px). On 'fallback-0.15': a reference lower-third (Kit.lowerThird kind 'reference'), l1 'PhD plan · risk table', l2 'tilting alone is not a fallback', 4 s. Badge PROVED (Proposition 7, support), note 'any weights, any model'. Key colours: vermillion (D), violet ring (generated), amber (crossing rate, ESS bar, the lesson), grey (hatching, toggle). Corner needle OFF (snapshots carry no time, as in 05.2).",
+   "assets": [],
+   "sources": [
+    "en/rapport/index.qmd:465-472 (Proposition 7: a reweighting does not create mass; the support of the tilted law is that of q)",
+    "en/rapport/index.qmd:485 (practical limit: if q misses a region where μ puts mass, for example the bridge |D| ≈ 0 of Gissinger's model near the reversal threshold, the weights concentrate on a few samples and the ESS collapses; hence the second route, which acts during training)",
+    "en/rapport/index.qmd:826 (E1 expectation: tilting should see its ESS collapse where the model misses a region, in particular the bridge |D| ≈ 0 near the threshold)",
+    "en/rapport/index.qmd:507 and :514-517 (Proposition 8, Rice: the crossing frequency is read from the snapshots with |D| < h and the field F, without integrating in time)",
+    "en/rapport/index.qmd:581 (summary: exponential tilting does not create mass, Proposition 7)",
+    "en/these/index.qmd:564 (a tilt does not create mass; if q misses the bridge |D| ≈ 0, the effective sample size collapses and the correction is useless; the stationarity loss modifies the model and can move mass)",
+    "en/these/index.qmd:992 (risk table: tilting alone is not a fallback, since it improved no distribution in E1 and E2) and en/these/index.qmd:1007 (E2: tilting alone is not enough when the model is far from the data)",
+    "data/e1_samples_0.93.json variants.C_equivariant (4000 snapshots; 31 in |D| < 0.2, checked 2026-11-08) and script/ch05.json 05.2 (the strip |D| < h with h = 0.2 on the same Γ = 0.93 shoebox)",
+    "assets/interactif/contrainte-loi.js:27 and :207-215 (the 'missing support' option: the model never produces a region; no weights can create mass there; the ESS drops; tilting becomes impossible when nothing lies beyond the target)",
+    "plan/outline.md X3.3; plan/pedagogy.md K15 (a group that never answered) and section 3 'Optional L4 bonus for the tilting scene' (the predict beat used here)"
+   ],
+   "variants": null,
+   "question": null
+  },
+  {
+   "id": "X3.4",
+   "was": "X3.4",
+   "title": "Per-eta detail",
+   "file": "scenes/X3a/X3_4_per_eta_detail.html",
+   "status": "ready",
+   "level": "L4",
+   "register": "NIGHT",
+   "badge": {
+    "kind": "MEASURED",
+    "confidence": null
+   },
+   "target_s": 30,
+   "lead_in": 0.4,
+   "tail": 0.8,
+   "deps": [
+    "data/e2_eval.json"
+   ],
+   "entry": {
+    "data": {
+     "ev": "data/e2_eval.json"
+    },
+    "params": {
+     "read": "ev.per_eta.V4_potentiels.test.{eta, dist_energie_features, residu_bilan_energie (signed)}, ev.per_eta.V5_temoin.test.dist_energie_features (control run), ev.per_eta.V5_potentiels_stat.test.dist_energie_features (V5, crowd loss); honest floor ev.variants.reference_sous_echantillon.mean.train.dist_energie_features (0.030); ESS strip: ev.en_loi.ess_frac_b at the indices where ev.en_loi.split == 'test'; cost chip: ev.per_eta.V4_potentiels.train.dist_energie_features[0] and ev.per_eta.V5_potentiels_stat.train.dist_energie_features[0] with ev.per_eta.V4_potentiels.train.eta[0]",
+     "bars": {
+      "box": [
+       660,
+       190,
+       1120,
+       470
+      ],
+      "y_log": [
+       -2,
+       1.3
+      ],
+      "y_ticks": [
+       0.01,
+       0.1,
+       1,
+       10
+      ],
+      "group_gap": 0.35
+     },
+     "series": [
+      {
+       "key": "V4_potentiels",
+       "label": "V4 · base",
+       "style": "violet outline, dashed (generated)"
+      },
+      {
+       "key": "V5_temoin",
+       "label": "control · same length, no loss",
+       "style": "grey outline"
+      },
+      {
+       "key": "V5_potentiels_stat",
+       "label": "V5 · crowd loss",
+       "style": "amber fill, violet GENERATED edge"
+      }
+     ],
+     "ess_strip": {
+      "y": 720,
+      "h": 26
+     }
+    }
+   },
+   "paragraphs": [
+    {
+     "hold_after": 0.0,
+     "sentences": [
+      {
+       "id": "X3.4.s1",
+       "cue": "one",
+       "text": "One test value of {param}eta{/} at a time."
+      },
+      {
+       "id": "X3.4.s2",
+       "cue": "largest",
+       "text": "At the largest, the base {model}model{/} dissipates over twice the energy it receives, and the crowd loss cuts the {metric}distribution distance{/} from seven point seven to two point two."
+      }
+     ]
+    },
+    {
+     "hold_after": 0.0,
+     "sentences": [
+      {
+       "id": "X3.4.s3",
+       "cue": "smallest",
+       "text": "At the smallest, already good: no change."
+      },
+      {
+       "id": "X3.4.s4",
+       "cue": "control",
+       "text": "The control run stays put."
+      }
+     ]
+    },
+    {
+     "hold_after": 0.0,
+     "sentences": [
+      {
+       "id": "X3.4.s5",
+       "cue": "same",
+       "text": "Same values where the poll collapsed: training moved the crowd; weights could not."
+      },
+      {
+       "id": "X3.4.s6",
+       "cue": "seed",
+       "text": "One seed, though."
+      }
+     ]
+    }
+   ],
+   "onscreen": {
+    "title": "",
+    "labels": [
+     "distribution distance · test values of η (never seen)",
+     "V4 · base",
+     "control · same length, no loss",
+     "V5 · crowd loss",
+     "η",
+     "base budget error",
+     "dissipates 2.2× the energy it receives",
+     "7.7 → 2.2",
+     "no change",
+     "stays put",
+     "ESS/N of the tilt (X3.2)",
+     "honest noise floor (training values)",
+     "the loss moves the crowd · weights cannot"
+    ],
+    "formulas": [
+     {
+      "cue": "largest",
+      "tex": "\\text{base budget error} = \\big(\\mathbb{E}_{\\cm{q}}[\\varepsilon] - P\\big)/P = +1.22 \\text{ for V4 at } \\etaP = 0.0190 \\ \\Rightarrow\\ \\mathbb{E}_{\\cm{q}}[\\varepsilon] = 2.22\\,P"
+     },
+     {
+      "cue": "control",
+      "tex": "\\text{V5: 600 iterations from V4 with the crowd loss } (\\beta = 50,\\ \\text{two half-batches of 32});\\ \\ \\text{control: the same 600 iterations with } \\beta = 0"
+     }
+    ],
+    "chips": [
+     "GENERATED · one seed per variant",
+     "interpolation only",
+     "part of the gain could be a global rescaling of the energy level: argued against, not ruled out",
+     "slight cost at small training η"
+    ]
+   },
+   "visual": "Render class flat (SVG). Data: ctx.data.ev = data/e2_eval.json (params.read); every number from the data (Kit.fmt, 2 significant digits on bar labels). Same frame as X3.2's bars (params.bars box), so the pair reads as one. P1. On 'one-0.15': the green log η axis now shows only the five TEST values (open dots, labels from ev, e.g. 0.0048 … 0.019) and a log y axis titled 'distribution distance · test values of η (never seen)' (amber title, ticks 0.01 to 10); a dashed grey line at the honest floor (ev reference_sous_echantillon mean.train), label 'honest noise floor (training values)'. For each η, three bars grow together (params.series: V4 violet dashed outline, control grey outline, V5 amber fill with violet edge), 0.12 s apart from left to right; legend top-left; above each group a small amber chip with V4's signed budget error from ev (e.g. '+0.02 %' … '+122 %'), row title 'base budget error'. Chip 'GENERATED · one seed per variant'. On 'largest-0.15': the right-most group brightens (others to 45 %); the pen braces the V4 chip, label 'dissipates 2.2× the energy it receives' (1 + residual, from data); the V5 bar is redrawn from the control bar's height down to its own (0.8 s), label '7.7 → 2.2' (V4 → V5, from data). P2. On 'smallest-0.15': the left-most group brightens, the right-most dims; label 'no change' over its three equal bars. On 'control-0.15': all groups back to full; the pen underlines the five grey control bars, each next to its V4 bar, label 'stays put'. P3. On 'same-0.15': under the η axis, the ESS strip (params.ess_strip) slides in: at each test η an amber square whose size ∝ ESS/N of the tilt (from ev.en_loi, the X3.2 values), title 'ESS/N of the tilt (X3.2)'; the three smallest squares (largest η) line up under the three largest V5 gains; centred label 'the loss moves the crowd · weights cannot'. On 'seed-0.15': chips 'interpolation only' and 'part of the gain could be a global rescaling of the energy level: argued against, not ruled out' fade in bottom-left; plain chip 'slight cost at small training η' with its two values from data (V4 vs V5 at the smallest training η). Badge MEASURED, note 'E2 · test values of η · one seed per variant'. Key colours: amber (distances, V5, ESS squares), violet (generated outlines), green (η), grey (control, floor). No corner needle. Last frame = backdrop of the question card X3a.Q.",
+   "assets": [],
+   "sources": [
+    "en/rapport/index.qmd:1031 (per-η detail of the JSON: at η = 0.0190 the distance goes from 7.74 (V4) and 7.63 (control) to 2.22; at 0.0135 from 3.63 and 3.51 to 0.79; at 0.00476, where V4 is already good, no gain, 0.184 against 0.186; V4's errors concentrate at large η, where its mean dissipation exceeds the injection by 122 % at η = 0.0190, exactly where the loss acts; the control run, the same 600 iterations without the loss, stays at V4's level; at small training η a slight cost, 0.41 against 0.364 at η = 0.004)",
+    "en/rapport/index.qmd:999-1013 (Table 7: distances of V4, control and V5, signed residuals of V4 and V5, ESS/N, for the eleven values of η)",
+    "en/rapport/index.qmd:681-683 (V5: product of the relative residuals of two half-batches of 32, β = 50, 600 iterations from V4; control with β = 0)",
+    "en/rapport/index.qmd:747 (honest floor at the training values from an independent simulation; optimistic floor at the test values)",
+    "en/rapport/index.qmd:1175 (one seed per variant in E2; factor-3 differences such as V5 against V4 probably real; part of the V5 gain could come from a global rescaling of the energy level, argued against, not ruled out) and en/rapport/index.qmd:1039 (limitations: weak models, interpolation only, 8-step sampler for the loss)",
+    "en/these/index.qmd:564 (the stationarity loss modifies the model and can move mass; nothing in the identities says where to move it)",
+    "data/e2_eval.json per_eta.{V4_potentiels, V5_temoin, V5_potentiels_stat}.test, variants.reference_sous_echantillon.mean.train, en_loi.ess_frac_b (values checked 2026-11-08 against Table 7)",
+    "plan/outline.md X3.4; plan/critique_pedagogy.md F row C7.9 (the per-η numbers moved out of 08.5 into X3.4), D2 (distribution distance)"
+   ],
+   "variants": null,
+   "question": null
+  },
+  {
+   "id": "X3a.Q",
+   "was": null,
+   "title": "Question for the supervisors",
+   "file": "scenes/X3a/X3a_Q_question.html",
+   "status": "ready",
+   "level": "L4",
+   "register": "NIGHT",
+   "badge": null,
+   "target_s": 9,
+   "lead_in": 0.5,
+   "tail": 1.2,
+   "deps": [],
+   "entry": {
+    "data": {},
+    "params": {
+     "backdrop": {
+      "opacity": 0.1,
+      "what": "the last frame of X3.4: grouped bars with the ESS strip under them"
+     }
+    }
+   },
+   "sfx": [
+    "chime@q-0.2"
+   ],
+   "paragraphs": [
+    {
+     "hold_after": 0.8,
+     "sentences": [
+      {
+       "id": "X3a.Q.s1",
+       "cue": "q",
+       "text": "If the crowd loss fails, what is the fallback, since reweighting fails where the model is poor?"
+      }
+     ]
+    }
+   ],
+   "onscreen": {
+    "title": "",
+    "labels": [],
+    "formulas": [],
+    "chips": []
+   },
+   "visual": "Render class flat. Kit.questionCard(ctx, {n: null, chapter: 'X3a', category: 'framing', at: 'q'}) filling the frame (BRIEF 3.1); it reads ctx.script.question. The stub reads 'ASK · Q · X3A · S. Cheng / D. Lucor' until the question register gives this card its number (n). Pen underline (M9) on 'fallback' and 'reweighting'. WHY IT MATTERS at the component's default delay after 'q', WHAT IT UNBLOCKS about 2.2 s later, category tag FRAMING · CONSTRAINTS. Behind the card, at params.backdrop.opacity, the last frame of X3.4 (bars and the ESS strip). No badge, lower-third or formula layer (a question makes no claim). Chime at 'q-0.2'. In the extended cut this card is followed by ch08.Q (ch08's card ends the chapter after its modules): see the unit notes.",
+   "assets": [],
+   "sources": [
+    "en/these/index.qmd:890 (tier-0 stopping rule: if criterion (b) fails with the unbiased estimator and three seeds, the stationarity loss is abandoned in favor of tilting at the following tiers)",
+    "en/these/index.qmd:901 and :904 (tier-1 ablations: tilting alone, loss alone, both; stopping rule: if (b) is reached neither by the loss nor by tilting, the negative result is published)",
+    "en/these/index.qmd:992 (risk table: stationarity loss unstable in 3D, one seed of two diverged from a biased model in E1; mitigation: larger batches, anchoring to the starting model with a Kullback-Leibler term or a trust region, gradual ramp-up of β, fine-tuning only from a good model; tilting alone is not a fallback, since it improved no distribution in E1 and E2)",
+    "en/rapport/index.qmd:879 (E1: tilting improves no distribution; one weight 33 times the mean) and en/rapport/index.qmd:1033 (E2: ESS/N 0.002 at the three largest test values, one effective sample in 500; distance 2.62 → 4.15)",
+    "en/rapport/index.qmd:877 (E1: on the deliberately biased model, the loss fails: one seed diverged, the other got worse; proposed corrections: a proximity term to the starting model, a gradual ramp of β)",
+    "en/encadrants/index.qmd:110 (S. Cheng and D. Lucor supervise the internship at CEREA; the PhD would be co-supervised by them)",
+    "script/ch07.json ch07.Q (Q8: which budgets in 3D, must the spread match) and script/ch08.json ch08.Q (Q9: which laws hold exactly, under which operator): this card asks a different decision, the fallback of the crowd law",
+    "BRIEF section 3.1 (question card); plan/pedagogy.md K15 callback ('tilting alone is not a fallback')"
+   ],
+   "variants": null,
+   "question": {
+    "n": null,
+    "category": "framing",
+    "en": "If the crowd loss fails, what is the *fallback*, since *reweighting* fails where the model is poor?",
+    "say": "If the crowd loss fails, what is the fallback, since reweighting fails where the model is poor?",
+    "fr": "Si la perte sur la foule échoue, quel est le *repli*, puisque la *repondération* échoue là où le modèle est mauvais ?",
+    "why": "The plan's tier-0 stopping rule falls back on reweighting, yet its risk table rules reweighting out: in E1 and E2 it improved no crowd, shrinking to one effective snapshot in 500.",
+    "unblocks": "The tier-0 and tier-1 stopping rules and ablations; whether to budget anchored fine-tuning (proximity term, ramp of the loss weight, three seeds) instead; ESS/N as a reported diagnostic.",
+    "why_fr": "La règle d'arrêt du palier 0 se replie sur la repondération, mais la table des risques du plan l'exclut : dans E1 et E2 elle n'a amélioré aucune foule, tombant à un échantillon effectif sur 500.",
+    "unblocks_fr": "Les règles d'arrêt et les ablations des paliers 0 et 1 ; le choix de budgéter plutôt un affinage ancré (terme de proximité, montée progressive du poids de la perte, trois graines) ; l'ESS/N comme diagnostic rapporté.",
+    "ask_who": "S. Cheng / D. Lucor"
+   }
+  }
+ ]
+}

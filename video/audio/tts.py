@@ -1,144 +1,346 @@
 #!/usr/bin/env python3
-"""tts.py: narration step. One TTS request per *spoken sequence* (here: one scene's narration),
-never one request per sentence (prosody would reset) and never the whole film at once (a fix
-would force a full re-synthesis).
+"""tts.py: narration synthesis, ONE Fish Audio request per paragraph, cached so that an unchanged
+paragraph is never synthesised (nor billed) twice.
 
-Modes
-  --dry-run (default when FISH_API_KEY is unset): writes the exact Fish Audio requests to
-            audio/requests/<scene>.json and synthesises a speech-like PLACEHOLDER (numpy) so the
-            rest of the pipeline (durations, alignment, subtitles, loudness) can be tested.
-  --live    : POST https://api.fish.audio/v1/tts with the validated drama-3 settings and save
-            audio/chunks/<scene>.mp3, then decode to 44.1 kHz WAV (exact sample count).
+Request (validated settings, /home/user/videobook/BRAINSTORM.md "Parametrage valide", BRIEF D1, D2):
+  POST https://api.fish.audio/v1/tts, headers  model: drama-3,  Authorization: Bearer proxy-injected
+  (the network proxy injects the real key for api.fish.audio; FISH_API_KEY, if set, is used instead),
+  body: temperature 0.1, format mp3, mp3_bitrate 192, sample_rate 44100, latency normal, language en,
+        normalize true, condition_on_previous_chunks true, prosody {speed 1.0, normalize_loudness true},
+        reference_id = the script's voice.reference_id (never hard-coded here), text.
+Text of a request = "[calm, natural narrator voice] " + the paragraph's sentences, subtitle markup
+  stripped, technical words pinned with phonemes from audio/lexicon.json. A paragraph is one request, so
+  no request contains a paragraph break: the "[long pause]" between paragraphs is realised by align.py as
+  LONG_PAUSE_S of silence (+ the paragraph's hold_after). No short/medium pauses, no <emphasis>/<stress>.
+Cache: audio/cache/<key>.mp3 (as received), <key>.wav (decoded once to 48 kHz mono PCM: exact durations),
+  <key>.json (text, voice, settings, words, duration). key = sha256 of (text, voice, model, settings).
 
-Text preparation (Videobook brainstorm, validated 2026-11-01):
-  * one sober acting cue at the start of the sequence: [calm, natural narrator voice]
-  * [long pause] only between main paragraphs, no short/medium pauses, no <emphasis>/<stress>
-  * <slow> only for a title; technical words pinned with phonemes from lexicon.json
-  * key-term markup {u}...{/} used for subtitle colours is stripped from the spoken text
-Usage: python3 -I audio/tts.py script/demo_script.json [--live] [--only scene_id]
+Modes (--mode):
+  live         cached audio, else a request to the API (retries with exponential backoff)
+  auto         cached audio, else a speech-like PLACEHOLDER (never calls the API: drafts, checks)
+  placeholder  always the placeholder (tests; audio/cache/placeholder/)
+  dry-run      no audio: prints every request (text) and word counts, cached or not, and the cost guard
+Usage:
+  python3 -I audio/tts.py script/_build/film_core.json [--mode live] [--only 04.1,04.2 (synthesise only these)] [--jobs 2]
+                          [--max-new-words 15000] [--manifest script/_build/core_tts.json]
+  python3 -I audio/tts.py --test "One short sentence." --voice-from script/ch00.json   (one live request)
+Writes the manifest script/_build/<name>_tts.json read by align.py.
 """
-import hashlib, json, math, os, re, subprocess, sys, wave
+import argparse, hashlib, json, math, os, random, re, subprocess, sys, time, urllib.error, urllib.request, wave
+from concurrent.futures import ThreadPoolExecutor
+
 import numpy as np
 
 HERE = os.path.dirname(os.path.abspath(__file__))
 ROOT = os.path.dirname(HERE)
-SR = 44100
-
+CACHE = os.path.join(HERE, "cache")
+SR = 48000                                   # every narration file is decoded to 48 kHz mono
 FISH_URL = "https://api.fish.audio/v1/tts"
-FISH_HEADERS = {"model": "drama-3", "content-type": "application/json"}   # + authorization: Bearer $FISH_API_KEY
+MODEL = "drama-3"
 FISH_BODY = {
     "temperature": 0.1, "format": "mp3", "mp3_bitrate": 192, "sample_rate": 44100, "latency": "normal",
     "language": "en", "normalize": True, "condition_on_previous_chunks": True,
     "prosody": {"speed": 1.0, "normalize_loudness": True},
 }
+ACTING_CUE = "[calm, natural narrator voice]"
+LONG_PAUSE_S = 0.9                           # silence standing for [long pause] between paragraphs (align.py)
+RAW_WPM = 146.0                              # measured raw pace of the Ethan voice (BRIEF D21)
+MARK = re.compile(r"\{(u|b|param|model|metric)\}(.*?)\{/\}")
+RETRY_CODES = {408, 409, 425, 429, 500, 502, 503, 504}
 
 
+def plain(text):
+    return MARK.sub(r"\2", text)
+
+
+def nwords(text):
+    return len(re.findall(r"[\w'’-]+", plain(text)))
+
+
+# ----------------------------------------------------------------------------- text
 def load_lexicon():
-    with open(os.path.join(HERE, "lexicon.json")) as f:
-        return json.load(f)["entries"]
+    d = json.load(open(os.path.join(HERE, "lexicon.json")))
+    out = {}
+    for word, v in d["entries"].items():
+        if isinstance(v, str):
+            out[word] = ("phonemes", v)
+        elif v.get("phonemes"):
+            out[word] = ("phonemes", v["phonemes"])
+        elif v.get("say"):
+            out[word] = ("say", v["say"])
+    return out
 
 
-def spoken_text(scene, lex):
-    """Join a scene's paragraphs into one spoken sequence with Fish control tags."""
-    paras = []
-    for para in scene["paragraphs"]:
-        s = " ".join(re.sub(r"\{(u|b|param|model|metric)\}(.*?)\{/\}", r"\2", x["text"]) for x in para)
-        paras.append(s)
-    text = " [long pause] ".join(paras)
-    for word, ph in sorted(lex.items(), key=lambda kv: -len(kv[0])):          # phoneme pinning
-        text = re.sub(r"(?<![\w>])" + re.escape(word) + r"(?![\w<])",
-                      "<|phoneme_start|>" + ph + "<|phoneme_end|>", text)
-    return "[calm, natural narrator voice] " + text
+def pin(text, lex):
+    """Replace lexicon words (case-sensitive, whole words, longest first) by phoneme pins or respellings."""
+    keys = sorted(lex, key=len, reverse=True)
+    if not keys:
+        return text
+    rx = re.compile(r"(?<![\w>|])(" + "|".join(re.escape(k) for k in keys) + r")(?![\w<|])")
+
+    def rep(m):
+        kind, v = lex[m.group(1)]
+        return f"<|phoneme_start|>{v}<|phoneme_end|>" if kind == "phonemes" else v
+    return rx.sub(rep, text)
 
 
-# ---------------- placeholder voice (no API key): speech-like bursts with realistic pauses ----------------
-def placeholder(scene, rng):
-    """Returns (samples, truth) with word bursts ~150 wpm, comma pauses ~0.2 s, sentence pauses ~0.45 s,
-    paragraph pauses ~1.1 s ([long pause]) and a -55 dBFS room-noise floor."""
+def spoken_text(paragraph, lex):
+    s = " ".join(plain(x["text"]).strip() for x in paragraph["sentences"])
+    s = re.sub(r"\s+", " ", s).strip()
+    return ACTING_CUE + " " + pin(s, lex)
+
+
+def request_body(text, voice_id):
+    return dict(FISH_BODY, text=text, reference_id=voice_id)
+
+
+def cache_key(body):
+    blob = json.dumps({"v": 1, "url": FISH_URL, "model": MODEL, "body": body}, sort_keys=True, ensure_ascii=False)
+    return hashlib.sha256(blob.encode()).hexdigest()[:24]
+
+
+# ----------------------------------------------------------------------------- audio helpers
+def write_wav(path, x):
+    x = np.clip(np.asarray(x, dtype=np.float64), -1, 1)
+    tmp = path + ".part"
+    with wave.open(tmp, "wb") as w:
+        w.setnchannels(1)
+        w.setsampwidth(2)
+        w.setframerate(SR)
+        w.writeframes((x * 32767).astype("<i2").tobytes())
+    os.replace(tmp, path)
+
+
+def wav_duration(path):
+    with wave.open(path) as w:
+        return w.getnframes() / w.getframerate()
+
+
+def decode(mp3, wav):
+    tmp = wav + ".part.wav"
+    subprocess.run(["ffmpeg", "-v", "error", "-y", "-i", mp3, "-ac", "1", "-ar", str(SR), "-c:a", "pcm_s16le", tmp], check=True)
+    os.replace(tmp, wav)
+
+
+# ----------------------------------------------------------------------------- placeholder voice
+def placeholder(paragraph, rng):
+    """Speech-like bursts (harmonic buzz) at about the measured raw pace, comma pauses ~0.2 s, sentence
+    pauses ~0.45 s, -55 dBFS floor. Returns (samples, truth) with the true sentence times (align tests)."""
     out, truth, t = [], [], 0.0
 
     def add(x):
         nonlocal t
-        out.append(x); t += len(x) / SR
+        out.append(x)
+        t += len(x) / SR
 
     def silence(d):
         add(rng.normal(0, 10 ** (-55 / 20), int(d * SR)))
 
-    silence(0.12)
-    for pi, para in enumerate(scene["paragraphs"]):
-        if pi:
-            silence(1.1)
-        for si, sent in enumerate(para):
-            if si:   # HARD=1: sentence pauses as short as commas, to stress the aligner
-                silence(rng.uniform(0.22, 0.40) if os.environ.get("PLACEHOLDER_HARD") else rng.uniform(0.38, 0.55))
-            words = re.sub(r"\{(u|b|param|model|metric)\}(.*?)\{/\}", r"\2", sent["text"]).split()
-            start = t
-            for wi, w in enumerate(words):
-                n = len(re.sub(r"\W", "", w)) or 1
-                d = 0.075 + 0.052 * n
-                k = np.arange(int(d * SR)) / SR
-                f0 = 105 + 25 * math.sin(2 * math.pi * 0.7 * t) + rng.uniform(-8, 8)
-                env = np.sin(np.pi * k / d) ** 0.6 * (0.6 + 0.4 * np.sin(2 * np.pi * 4.5 * k) ** 2)
-                v = sum((0.5 / h) * np.sin(2 * np.pi * f0 * h * k) for h in range(1, 12))
-                v += rng.normal(0, 0.04, len(k))
-                add(0.30 * env * v)
-                if wi < len(words) - 1:
-                    comma = w.endswith(",") or w.endswith(":") or w.endswith(";")
-                    hard = os.environ.get("PLACEHOLDER_HARD")
-                    silence((rng.uniform(0.2, 0.32) if hard else 0.2) if comma else rng.uniform(0.03, 0.07))
-            truth.append({"id": sent["id"], "start": round(start, 3), "end": round(t, 3)})
-    silence(0.25)
+    silence(0.15)
+    for si, sent in enumerate(paragraph["sentences"]):
+        if si:
+            silence(rng.uniform(0.38, 0.55))
+        ws = plain(sent["text"]).split()
+        start = t
+        for wi, w in enumerate(ws):
+            n = len(re.sub(r"\W", "", w)) or 1
+            d = 0.075 + 0.05 * n
+            k = np.arange(int(d * SR)) / SR
+            f0 = 105 + 25 * math.sin(2 * math.pi * 0.7 * t) + rng.uniform(-8, 8)
+            env = np.sin(np.pi * k / d) ** 0.6 * (0.6 + 0.4 * np.sin(2 * np.pi * 4.5 * k) ** 2)
+            v = sum((0.5 / h) * np.sin(2 * np.pi * f0 * h * k) for h in range(1, 10))
+            v = v + rng.normal(0, 0.04, len(k))
+            add(0.30 * env * v)
+            if wi < len(ws) - 1:
+                silence(0.2 if re.search(r"[,;:]$", w) else rng.uniform(0.03, 0.07))
+        truth.append({"id": sent["id"], "start": round(start, 3), "end": round(t, 3)})
+    silence(0.3)
     return np.concatenate(out), truth
 
 
-def write_wav(path, x):
-    x = np.clip(x, -1, 1)
-    with wave.open(path, "wb") as w:
-        w.setnchannels(1); w.setsampwidth(2); w.setframerate(SR)
-        w.writeframes((x * 32767).astype("<i2").tobytes())
+# ----------------------------------------------------------------------------- API
+class TTSError(Exception):
+    pass
+
+
+def call_fish(body, attempts=6):
+    key = os.environ.get("FISH_API_KEY") or "proxy-injected"
+    data = json.dumps(body, ensure_ascii=False).encode()
+    last = None
+    for a in range(attempts):
+        req = urllib.request.Request(FISH_URL, data=data, method="POST", headers={
+            "authorization": "Bearer " + key, "model": MODEL, "content-type": "application/json"})
+        try:
+            with urllib.request.urlopen(req, timeout=600) as r:
+                audio = r.read()
+            if len(audio) < 1000 or not (audio[:3] == b"ID3" or (audio[0] == 0xFF and (audio[1] & 0xE0) == 0xE0)):
+                raise TTSError(f"response is not mp3 audio ({len(audio)} bytes): {audio[:200]!r}")
+            return audio
+        except urllib.error.HTTPError as e:
+            msg = e.read()[:400].decode("utf8", "replace")
+            if e.code not in RETRY_CODES:
+                raise TTSError(f"HTTP {e.code}: {msg}")
+            last = f"HTTP {e.code}: {msg}"
+        except (urllib.error.URLError, TimeoutError, ConnectionError, OSError) as e:
+            last = repr(e)
+        wait = min(120, 2 ** (a + 1)) + random.uniform(0, 1.5)
+        print(f"[tts] retry {a + 1}/{attempts - 1} in {wait:.0f} s ({last})", file=sys.stderr)
+        time.sleep(wait)
+    raise TTSError(f"giving up after {attempts} attempts: {last}")
+
+
+def synth_live(key, body, meta):
+    mp3, wav = os.path.join(CACHE, key + ".mp3"), os.path.join(CACHE, key + ".wav")
+    t0 = time.time()
+    audio = call_fish(body)
+    with open(mp3 + ".part", "wb") as f:
+        f.write(audio)
+    os.replace(mp3 + ".part", mp3)
+    decode(mp3, wav)
+    dur = wav_duration(wav)
+    meta = dict(meta, duration=round(dur, 4), latency_s=round(time.time() - t0, 1),
+                created=time.strftime("%Y-%m-%dT%H:%M:%S"), provider="fish", request=body)
+    json.dump(meta, open(os.path.join(CACHE, key + ".json"), "w"), indent=1, ensure_ascii=False)
+    return dur
+
+
+def cached(key):
+    w = os.path.join(CACHE, key + ".wav")
+    if os.path.exists(w) and os.path.exists(os.path.join(CACHE, key + ".json")):
+        return w
+    mp3 = os.path.join(CACHE, key + ".mp3")
+    if os.path.exists(mp3) and os.path.exists(os.path.join(CACHE, key + ".json")):
+        decode(mp3, w)                         # the wav was deleted: decode again, never re-request
+        return w
+    return None
+
+
+# ----------------------------------------------------------------------------- main
+def plan_requests(film, lex, voice_id, only=None):
+    reqs = []
+    for sc in film["scenes"]:
+        if only and sc["id"] not in only:
+            continue
+        for pi, p in enumerate(sc["paragraphs"]):
+            text = spoken_text(p, lex)
+            body = request_body(text, voice_id)
+            reqs.append({"scene": sc["id"], "para": pi, "key": cache_key(body), "body": body,
+                         "words": sum(nwords(x["text"]) for x in p["sentences"]), "paragraph": p})
+    return reqs
+
+
+def run_test(sentence, voice_from):
+    unit = json.load(open(voice_from))
+    voice_id = (unit.get("voice") or {}).get("reference_id")
+    if not voice_id or not re.fullmatch(r"[0-9a-f]{32}", voice_id):
+        sys.exit(f"no valid voice.reference_id in {voice_from}")
+    os.makedirs(CACHE, exist_ok=True)
+    lex = load_lexicon()
+    p = {"sentences": [{"id": "test.s1", "text": sentence}]}
+    body = request_body(spoken_text(p, lex), voice_id)
+    key = cache_key(body)
+    print("[tts] test request:", json.dumps({"url": FISH_URL, "headers": {"model": MODEL, "authorization": "Bearer ***"},
+                                               "body": body}, ensure_ascii=False))
+    src = "cache"
+    if not cached(key):
+        synth_live(key, body, {"text": body["text"], "voice": voice_id, "words": nwords(sentence), "test": True})
+        src = "live"
+    dur = wav_duration(os.path.join(CACHE, key + ".wav"))
+    w = nwords(sentence)
+    print(json.dumps({"ok": True, "source": src, "key": key, "words": w, "duration_s": round(dur, 2),
+                      "raw_wpm": round(w / dur * 60, 1), "wav": os.path.relpath(os.path.join(CACHE, key + ".wav"), ROOT)}))
 
 
 def main():
-    args = sys.argv[1:]
-    script = json.load(open(args[0]))
-    live = "--live" in args
-    only = args[args.index("--only") + 1] if "--only" in args else None
-    if live and not os.environ.get("FISH_API_KEY"):
-        sys.exit("FISH_API_KEY is not set: run without --live for the dry run")
+    ap = argparse.ArgumentParser()
+    ap.add_argument("film", nargs="?")
+    ap.add_argument("--mode", choices=["live", "auto", "placeholder", "dry-run"], default="auto")
+    ap.add_argument("--only", help="comma-separated scene ids")
+    ap.add_argument("--jobs", type=int, default=2, help="concurrent API requests")
+    ap.add_argument("--max-new-words", type=int, default=int(os.environ.get("TTS_MAX_NEW_WORDS", 15000)),
+                    help="refuse a live run that would synthesise more new words than this (cost guard)")
+    ap.add_argument("--manifest")
+    ap.add_argument("--quiet", action="store_true")
+    ap.add_argument("--test", help="one live request for this sentence (setup check)")
+    ap.add_argument("--voice-from", help="with --test: the script file whose voice.reference_id is used")
+    a = ap.parse_args()
+    if a.test:
+        return run_test(a.test, a.voice_from or sys.exit("--voice-from script/<unit>.json is required"))
+    film = json.load(open(a.film))
+    name = film.get("name") or os.path.basename(a.film).replace("film_", "").replace(".json", "")
+    manifest = a.manifest or os.path.join(ROOT, "script", "_build", f"{name}_tts.json")
+    voice_id = (film.get("voice") or {}).get("reference_id")
+    if a.mode == "live" and (not voice_id or not re.fullmatch(r"[0-9a-f]{32}", str(voice_id))):
+        sys.exit(f"[tts] live mode needs a voice.reference_id (32 hex characters) in the script, got {voice_id!r}")
+    only = set(a.only.split(",")) if a.only else None
     lex = load_lexicon()
-    os.makedirs(os.path.join(HERE, "requests"), exist_ok=True)
-    os.makedirs(os.path.join(HERE, "chunks"), exist_ok=True)
-    voice = script["voice"]["reference_id"]
-    for sc in script["scenes"]:
-        if only and sc["id"] != only:
-            continue
-        body = dict(FISH_BODY, text=spoken_text(sc, lex), reference_id=voice)
-        key = hashlib.sha256(json.dumps(body, sort_keys=True).encode()).hexdigest()[:16]
-        req = {"url": FISH_URL, "headers": FISH_HEADERS, "body": body, "cache_key": key}
-        json.dump(req, open(os.path.join(HERE, "requests", sc["id"] + ".json"), "w"), indent=2, ensure_ascii=False)
-        wav = os.path.join(HERE, "chunks", sc["id"] + ".wav")
-        meta_p = os.path.join(HERE, "chunks", sc["id"] + ".meta.json")
-        if os.path.exists(meta_p) and json.load(open(meta_p)).get("cache_key") == key and os.path.exists(wav):
-            continue                                                  # unchanged text: no new TTS call
-        if live:
-            import urllib.request
-            r = urllib.request.Request(FISH_URL, data=json.dumps(body).encode(), method="POST",
-                                       headers=dict(FISH_HEADERS, authorization="Bearer " + os.environ["FISH_API_KEY"]))
-            mp3 = wav[:-4] + ".mp3"
-            with urllib.request.urlopen(r, timeout=600) as resp, open(mp3, "wb") as f:
-                f.write(resp.read())
-            # decode once to PCM: exact durations (mp3 headers are approximate; encoder delay ~ 1105 samples)
-            subprocess.run(["ffmpeg", "-v", "error", "-y", "-i", mp3, "-ac", "1", "-ar", str(SR), wav], check=True)
-            truth = None
-        else:
-            rng = np.random.default_rng(int(key[:8], 16))
-            x, truth = placeholder(sc, rng)
-            write_wav(wav, x)
-        with wave.open(wav) as w:
-            dur = w.getnframes() / w.getframerate()
-        json.dump({"cache_key": key, "duration": round(dur, 4), "placeholder": not live, "truth": truth},
-                  open(meta_p, "w"), indent=2)
-        print(f"{sc['id']}: {dur:.2f} s ({'live' if live else 'placeholder'})")
+    os.makedirs(CACHE, exist_ok=True)
+    os.makedirs(os.path.join(CACHE, "placeholder"), exist_ok=True)
+    reqs = plan_requests(film, lex, voice_id or "NO_VOICE", None)
+    for r in reqs:
+        r["cached"] = cached(r["key"]) is not None
+    new = [r for r in reqs if not r["cached"] and (not only or r["scene"] in only)]
+    nw = sum(r["words"] for r in new)
+    summary = {"name": name, "mode": a.mode, "voice": voice_id, "paragraphs": len(reqs),
+               "words": sum(r["words"] for r in reqs), "cached_paragraphs": len(reqs) - len(new),
+               "new_paragraphs": len(new), "new_words": nw, "new_audio_min_est": round(nw / RAW_WPM, 1)}
+    if a.mode == "dry-run":
+        os.makedirs(os.path.join(HERE, "requests"), exist_ok=True)
+        with open(os.path.join(HERE, "requests", f"{name}.jsonl"), "w") as f:
+            for r in reqs:
+                f.write(json.dumps({"scene": r["scene"], "para": r["para"], "key": r["key"], "cached": r["cached"],
+                                    "words": r["words"], "url": FISH_URL, "headers": {"model": MODEL},
+                                    "body": r["body"]}, ensure_ascii=False) + "\n")
+                if not a.quiet:
+                    print(f"{r['scene']} p{r['para'] + 1} {r['words']:3d} words {'cached' if r['cached'] else 'NEW   '} | {r['body']['text']}")
+    if a.mode == "live" and nw > a.max_new_words:
+        print(json.dumps(summary))
+        sys.exit(f"[tts] {nw} new words to synthesise > --max-new-words {a.max_new_words}: run --mode dry-run to "
+                 "review, then raise the limit (TTS_MAX_NEW_WORDS=...) on purpose")
+    if a.mode == "live" and new:
+        todo = {}
+        for r in new:                     # identical paragraphs share one request
+            todo.setdefault(r["key"], r)
+        print(f"[tts] {len(todo)} new requests ({nw} words), {a.jobs} at a time")
+        fails = []
+
+        def job(r):
+            try:
+                d = synth_live(r["key"], r["body"], {"text": r["body"]["text"], "voice": voice_id, "words": r["words"],
+                                                     "scene": r["scene"], "para": r["para"]})
+                print(f"[tts] {r['scene']} p{r['para'] + 1}: {d:.2f} s, {r['words'] / d * 60:.0f} raw wpm")
+            except Exception as e:      # keep going: the other paragraphs are paid for and cached
+                fails.append((r["scene"], r["para"], str(e)))
+                print(f"[tts] FAILED {r['scene']} p{r['para'] + 1}: {e}", file=sys.stderr)
+        with ThreadPoolExecutor(max(1, a.jobs)) as ex:
+            list(ex.map(job, todo.values()))
+        if fails:
+            sys.exit(f"[tts] {len(fails)} requests failed; rerun to retry them (successful ones are cached)")
+    # manifest
+    scenes = {}
+    for r in reqs:
+        e = {"para": r["para"], "key": r["key"], "words": r["words"], "source": None, "wav": None, "truth": None}
+        w = None if a.mode == "placeholder" else cached(r["key"])
+        if w:
+            e["source"], e["wav"] = "fish", os.path.relpath(w, ROOT)
+        elif a.mode in ("auto", "placeholder"):
+            pw = os.path.join(CACHE, "placeholder", r["key"] + ".wav")
+            pm = pw[:-4] + ".json"
+            if not (os.path.exists(pw) and os.path.exists(pm)):
+                rng = np.random.default_rng(int(r["key"][:8], 16))
+                x, truth = placeholder(r["paragraph"], rng)
+                write_wav(pw, x)
+                json.dump({"truth": truth, "placeholder": True}, open(pm, "w"))
+            e["source"], e["wav"], e["truth"] = "placeholder", os.path.relpath(pw, ROOT), json.load(open(pm))["truth"]
+        if e["wav"]:
+            e["duration"] = round(wav_duration(os.path.join(ROOT, e["wav"])), 4)
+        scenes.setdefault(r["scene"], []).append(e)
+    sources = [e["source"] for v in scenes.values() for e in v]
+    summary.update(fish=sources.count("fish"), placeholder=sources.count("placeholder"), missing=sources.count(None))
+    os.makedirs(os.path.dirname(manifest), exist_ok=True)
+    json.dump({"name": name, "voice": voice_id, "mode": a.mode, "long_pause_s": LONG_PAUSE_S, "summary": summary,
+               "scenes": scenes}, open(manifest, "w"), indent=1)
+    print("[tts]", json.dumps(summary))
 
 
 if __name__ == "__main__":

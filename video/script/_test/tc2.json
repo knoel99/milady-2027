@@ -1,0 +1,38 @@
+{
+  "schema": 2,
+  "unit": "tc2",
+  "title": "Test closing",
+  "cut": "core",
+  "level_range": "L1",
+  "voice": {"provider": "fish", "model": "drama-3", "reference_id": "536d3a5e000945adb7038665781a4aca"},
+  "scenes": [
+    {
+      "id": "T2.1",
+      "title": "End",
+      "file": "scenes/_test/t_title.html",
+      "status": "ready",
+      "level": "L1",
+      "register": "NIGHT",
+      "badge": null,
+      "target_s": 5,
+      "deps": [],
+      "entry": {"params": {"heading": "End of the test", "kicker": "MILADY 2027"}},
+      "paragraphs": [
+        {"hold_after": 0.0, "sentences": [
+          {"id": "T2.1.s1", "cue": "title", "text": "That is the whole pipeline, from script to film."}
+        ]}
+      ]
+    },
+    {
+      "id": "T2.2",
+      "title": "Core-only coda",
+      "file": "scenes/_test/t_title.html",
+      "status": "ready",
+      "level": "L1",
+      "target_s": 4,
+      "deps": [],
+      "entry": {"params": {"heading": "Core cut only", "kicker": "CODA"}},
+      "paragraphs": [{"hold_after": 0.0, "sentences": [{"id": "T2.2.s1", "cue": "title", "text": "This coda plays in the core cut only."}]}]
+    }
+  ]
+}

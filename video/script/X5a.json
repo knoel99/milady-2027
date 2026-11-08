@@ -1,0 +1,1308 @@
+{
+ "schema": 2,
+ "unit": "X5a",
+ "title": "The factory floor",
+ "cut": "extension",
+ "insert_after": "10.3",
+ "level_range": "L4",
+ "voice": {
+  "provider": "fish",
+  "model": "drama-3",
+  "reference_id": "536d3a5e000945adb7038665781a4aca"
+ },
+ "learning_goal": "Open the data factory one station at a time: one solver step, one labelled file, the life of one campaign, and a new instrument for the critic; see which parts are measured, which are estimated, and which wait for a run.",
+ "takeaway": "Reproducibility is designed in: every number on screen traces back to a file, a commit and a catalog row.",
+ "notes": "Status (D4): X5.1, X5.2 and X5a.Q ready; X5.3 and X5.4 were PROVISIONAL in the outline and are now pending (no CPU run: the palier1 sweep and the X-point extractor are not run for the film). Each pending scene ships as an empty seat with a READY anchor (X5.3: the pipeline walk-through, SCHEMATIC, plus the measured test campaigns of infra/README.md:375 and :389; X5.4: an analytic toy potential whose X- and O-points are exact), the bet, CONFIDENCE, the criterion with its source and an ASK box, and a result variant written for both outcomes. Seat types: X5.3 gauge (tasks finished, 0 to 11), X5.4 curve (histograms of X-point counts); ch10 already uses curve, map and lamps. Seat ASK boxes: X5.3 'Where do campaigns run first: lab GPUs, Jean Zay, or a rented VM?' (logistics, R:1218, RECOMMANDATION-CLOUD §0); X5.4 'Which topology metric, and what gap in counts fails a model?', expanded into the question card X5a.Q (category framing, ask C. Nore / Y. Ponty, n null until the question register numbers it; distinct from ch06.Q, which asks which statistics in general). DATA. No data file for X5.1 and X5.2: the CPU step time (C:153) and the memory figures (C:176) are quoted from the computing page and carried in entry.params with their sources, as 10.2 carries '68 automated tests' in a chip; if CONTRACT §5 is read strictly, tools/data_existing.py could add a small 'site_facts' file (step time, peak factor, 717 MB, 0.4 / 6 / 48 GB). X5.3 reads data/x5_campaign_trace.json (converter trace) and data/palier1_sweep.json (converter palier1, the same file as 10.3); X5.4 reads data/x5_xpoints.json (converter xpoints). REQUESTS (foundation engineer B, tools/data_cloud.py). (1) As ch10 asked: add the booleans met / not_met / inconclusive to every converter's 'fields' (exactly one true); the 'meaning' sentences of X5.3 and X5.4 use them and drop silently without them. (2) conv_trace: a 'value' (= totals.done) for the gauge seat, and a 'verdict' entry in 'fields' (today only the root has it, with an underscore). (3) xpoint_count over-counts saddles on a generic smooth field: on the toy of X5.4 (7 saddles, found by Newton's method on the closed form) it returns 11, 8, 10, 10 at 32², 64², 128², 256²; on a second toy with 9 saddles, 9, 11, 13, 11. The test 'both components of grad a change sign on the cell corners' accepts cells where the two zero lines pass without crossing; the selftest (cos x cos y) cannot see it. Suggest a bilinear-zero test per cell (the 2D Haynes–Parnell method of P8:1497) or Newton refinement with de-duplication, an O-point count with the free check #X = #O per snapshot, and a selftest on a non-separable field. CHANGES AGAINST THE OUTLINE. X5.1: memory drawn as measured (solid, 128³ peak 717 MB) versus estimated (dashed, 6 and 48 GB) with the 15x factor apart from the state (B14), the GPU-card lines of C:176, and the chip 'no GPU timing yet'. X5.2: the checksum is placed in the catalog (file table), not in the file, as the site says; 'checksummed, not tamper-proof' (C10); the ingest route and what it does not restore (C:98). X5.3: the trace becomes the bet 'all eleven tasks finish' (the converter's rule, a factory check, not a PhD-plan criterion); the full per-η sweep (F7) is drawn only in the result variant, from palier1_sweep.json. X5.4: the E2 samples are no longer used (counting X-points on them would be a new run, D4); the anchor is an analytic toy on the periodic square; a predict beat is added (hold 2.5 s: more X-points or more O-points?), answered by the Poincaré–Hopf balance; the criterion states that the plan lists the metric without a pass mark (T:902-903), hence the question card. Register: X5.1 opens the module with a T3 ink change NIGHT to BLUEPRINT in its 1.6-s lead-in (10.3 is NIGHT), with the module tag and the rail L4 to L4; X5.4 changes back to NIGHT in its 1.0-s lead-in; X1 after the module is NIGHT. CUES. In X5.3 and X5.4 the seat paragraph opens on the cue 'seat' in both variants, and every formula sits on a cue that both variants share (rows; lines, answer, seat); Kit.seat resolves every cue it is given, so each seat carries two cue maps, params.seat.cues (pending) and params.seat.cues_result (result). SYMBOLS. η is said 'diffusivities' (green), as ch10; P injection and ε dissipation in the result strips, as 10.3; no s, no λ. LEXICON (audio engineer): 'X-point' and 'O-point' should be read 'ex point' and 'oh point' (pin if the voice hesitates); 'The Well' as words; no other new term in the narration (Fourier, FFT, Lawson, Leray, Poincaré–Hopf, HDF5 and UUID stay on screen only). PACE. Words budgeted with the assembler's formula (146 raw words per minute, 0.9 s per paragraph break, holds, lead-in and tail): see the table in the writer's report; every scene within ±10 % of its target.",
+ "scenes": [
+  {
+   "id": "X5.1",
+   "was": "X5.1",
+   "title": "One solver step",
+   "file": "scenes/X5a/X5_1_one_solver_step.html",
+   "status": "ready",
+   "level": "L4",
+   "register": "BLUEPRINT",
+   "badge": {
+    "kind": "MEASURED",
+    "confidence": null,
+    "note": "CPU timing and memory · estimates dashed · C:153, C:176"
+   },
+   "target_s": 40,
+   "lead_in": 1.6,
+   "tail": 0.8,
+   "deps": [],
+   "entry": {
+    "data": {},
+    "params": {
+     "note": "no data file: the two CPU measurements and the memory estimates are quoted from the computing page (C:153, C:176) and carried here with their sources; the bars are drawn from these values, never typed in the page",
+     "ink_change": {
+      "from": "NIGHT",
+      "to": "BLUEPRINT",
+      "t0": 0.2,
+      "t1": 1.4,
+      "pen_y": 540,
+      "how": "T3: a thin --infra line drawn left to right; the blueprint grid wipes in behind its tip"
+     },
+     "rail": {
+      "from": "L4",
+      "to": "L4",
+      "at": 0.3,
+      "hold": 3
+     },
+     "module_tag": {
+      "kind": "chapter",
+      "at": 0.6,
+      "hold": 5,
+      "l1": "EXTENSION X5a · LEVEL 4 · AN ASIDE",
+      "l2": "The factory floor"
+     },
+     "layout": {
+      "fourier": [
+       120,
+       170,
+       860,
+       490
+      ],
+      "physical": [
+       1060,
+       170,
+       740,
+       490
+      ],
+      "loop_small": [
+       120,
+       110,
+       860,
+       230
+      ],
+      "memory_box": {
+       "x0": 360,
+       "x1": 1500,
+       "y0": 430,
+       "y1": 640
+      }
+     },
+     "grid": {
+      "points_drawn": 11,
+      "cutoff": "|m| ≤ 21 at 64³",
+      "shape": "(n_traj, 3, 64, 64, 33)",
+      "note": "11 points per direction drawn, as the site figure; the real cutoff is |m| ≤ 21 at 64³ (C:155)"
+     },
+     "step_time": {
+      "seconds": 0.08,
+      "grid": 64,
+      "mode": "dynamic",
+      "threads": 2,
+      "device": "development CPU",
+      "source": "C:153"
+     },
+     "memory": {
+      "axis": {
+       "label": "memory, GB",
+       "min": 0.1,
+       "max": 100,
+       "log": true,
+       "ticks": [
+        0.1,
+        1,
+        10,
+        100
+       ]
+      },
+      "rows": [
+       {
+        "label": "128³",
+        "peak_gb": 0.717,
+        "kind": "measured",
+        "text": "peak 717 MB · measured on CPU",
+        "source": "C:176"
+       },
+       {
+        "label": "256³",
+        "state_gb": 0.4,
+        "peak_gb": 6,
+        "kind": "estimate",
+        "text": "state 0.4 GB · peak ≈ 6 GB (estimate)",
+        "source": "C:176"
+       },
+       {
+        "label": "512³",
+        "peak_gb": 48,
+        "kind": "estimate",
+        "text": "peak ≈ 48 GB (estimate)",
+        "source": "C:176"
+       }
+      ],
+      "cards": [
+       {
+        "gb": 24,
+        "label": "24 GB card: enough at 256³"
+       },
+       {
+        "gb": 80,
+        "label": "80 GB card: needed at 512³"
+       }
+      ]
+     }
+    }
+   },
+   "sfx": [
+    {
+     "id": "whoosh",
+     "t": 0.2,
+     "gain_db": -20
+    }
+   ],
+   "paragraphs": [
+    {
+     "hold_after": 0.0,
+     "sentences": [
+      {
+       "id": "X5.1.s1",
+       "cue": "oven",
+       "text": "Open one oven: the solver keeps {u}flow{/} and {b}field{/} as waves, where a curl is a multiplication."
+      },
+      {
+       "id": "X5.1.s2",
+       "cue": "hop",
+       "text": "Products are easier on the grid, so each step hops over and back."
+      },
+      {
+       "id": "X5.1.s3",
+       "cue": "trim",
+       "text": "It trims the outer third of the waves, so products cannot fold back as fakes."
+      },
+      {
+       "id": "X5.1.s4",
+       "cue": "smudge",
+       "text": "A projection keeps both fields divergence-free; the smudging is solved exactly."
+      }
+     ]
+    },
+    {
+     "hold_after": 0.0,
+     "sentences": [
+      {
+       "id": "X5.1.s5",
+       "cue": "cost",
+       "text": "One step at sixty-four cubed: eight hundredths of a second, on a processor."
+      },
+      {
+       "id": "X5.1.s6",
+       "cue": "memory",
+       "text": "The memory peak, about fifteen times the state, is an estimated six gigabytes at two hundred fifty-six cubed."
+      }
+     ]
+    }
+   ],
+   "onscreen": {
+    "title": "",
+    "labels": [
+     "EXTENSION X5a · LEVEL 4 · AN ASIDE",
+     "The factory floor",
+     "Fourier space",
+     "physical space (grid)",
+     "û, B̂ · (n_traj, 3, 64, 64, 33)",
+     "curl = multiply by ik ×",
+     "inverse FFT",
+     "FFT",
+     "u × ω + j × B · u × B",
+     "2/3 dealiasing · |m| ≤ 21 at 64³",
+     "projection · ∇·u = ∇·B = 0 to machine precision",
+     "Lawson RK4 · diffusion solved exactly · 4 evaluations per step",
+     "milady.sim.mhd3d · periodic 3D MHD · PyTorch, CPU or GPU",
+     "64³ dynamic step: 0.08 s · development CPU, 2 threads",
+     "memory, GB",
+     "128³ · peak 717 MB · measured on CPU",
+     "256³ · state 0.4 GB · peak ≈ 6 GB (estimate)",
+     "512³ · peak ≈ 48 GB (estimate)",
+     "state 6 N³ × 4 bytes",
+     "peak ≈ 15 × state",
+     "24 GB card: enough at 256³",
+     "80 GB card: needed at 512³"
+    ],
+    "formulas": [
+     {
+      "cue": "oven",
+      "tex": "\\partial_t \\U = \\U\\times\\cu{\\boldsymbol\\omega} + \\cb{\\mathbf j}\\times\\B - \\nabla\\Pi + \\cp{\\nu}\\,\\nabla^{2}\\U + \\mathbf f,\\qquad \\partial_t \\B = \\nabla\\times(\\U\\times\\B) + \\etaP\\,\\nabla^{2}\\B,\\qquad \\nabla\\cdot\\U = \\nabla\\cdot\\B = 0"
+     },
+     {
+      "cue": "trim",
+      "tex": "\\text{kept: } |m_i| \\le \\lfloor (N-1)/3 \\rfloor \\ \\ (= 21 \\text{ at } N = 64):\\ \\text{quadratic products cannot alias onto kept modes (2/3 rule)}"
+     },
+     {
+      "cue": "smudge",
+      "tex": "\\hat{\\mathbf P}(\\mathbf k) = \\mathbf I - \\mathbf k\\mathbf k^{\\mathsf T}/|\\mathbf k|^{2};\\qquad \\text{Lawson RK4: RK4 on } e^{\\cp{\\nu} k^{2} t}\\,\\hat{\\U}\\ \\text{and}\\ e^{\\etaP k^{2} t}\\,\\hat{\\B}\\text{: diffusion integrated exactly, 4 right-hand sides per step}"
+     },
+     {
+      "cue": "memory",
+      "tex": "\\text{state } (\\U, \\B) = 6\\,N^{3} \\times 4 \\text{ bytes (float32)} \\approx 0.4 \\text{ GB at } N = 256;\\ \\ \\text{peak} \\approx 15 \\times \\text{state (measured once, CPU, } 128^{3}\\text{: 717 MB)} \\Rightarrow \\approx 6 \\text{ GB at } 256^{3},\\ \\approx 48 \\text{ GB at } 512^{3}"
+     }
+    ],
+    "chips": [
+     "no GPU timing yet · python -m milady.sim.mhd3d bench --device cuda measures it on site",
+     "peak ≈ 15 × state: measured once at 128³ on CPU, extrapolated · check with nvidia-smi"
+    ]
+   },
+   "visual": "Render class flat (SVG, plus two small Canvas dot grids). Register BLUEPRINT (greys only, plus the two field colours). MODULE OPENER in the 1.6-s lead-in: the first frame is the NIGHT background of 10.3; from params.ink_change.t0 to t1, T3 ink change: a thin --infra line is drawn left to right at y = params.ink_change.pen_y and the blueprint grid wipes in behind its tip (whoosh at 0.2 s, -20 dB, from sfx). At 0.3 s Kit.rail(ctx, params.rail): L4 to L4, no climb, the rail only marks the aside. At 0.6 s Kit.lowerThird(ctx, params.module_tag) (kind 'chapter', hold 5 s); it is gone before 'cost'. No chapter card: modules are asides. LAYOUT (params.layout): panel 'Fourier space' x 120-980, panel 'physical space (grid)' x 1060-1800, both y 170-660, thin grey rounded frames with mono titles. P1. On 'oven-0.15': the small grey oven glyph of 10.2 appears top-left (x 120, y 100) and its door line swings open (0.6 s); the two panels draw on out of it (0.8 s). In the Fourier panel, two 11 x 11 dot grids (params.grid: 11 points drawn per direction, as the site figure), one --u blue labelled 'û', one --b vermillion labelled 'B̂', and the mono label 'û, B̂ · (n_traj, 3, 64, 64, 33)'. At 55 % of sentence X5.1.s1 (ctx.script.sentences start/end; the words 'a curl is just a multiplication'): a grey box 'ik ×' between the grids lights, label 'curl = multiply by ik ×' (Inter 32), and the dots of the B̂ grid flicker once in a seeded order (0.6 s), each 'multiplied'. On 'hop-0.15': a 160 x 160 copy of the two grids travels along an upper arrow labelled 'inverse FFT' into the physical panel (0.9 s, inOutCubic) and becomes a grey 64-px checker texture labelled 'u, B, ω, j' (u and ω in blue, B and j in vermillion, as the site figure); the products box 'u × ω + j × B · u × B' lights; the tile comes back along a lower arrow labelled 'FFT' (0.9 s). The arrows stay drawn. On 'trim-0.15': in Fourier space a grey 11 x 11 dot grid gets a square mask over its inner two thirds (2-px grey); the outer-third dots fade to 15 % and vanish (0.6 s); label '2/3 dealiasing · |m| ≤ 21 at 64³'. On 'smudge-0.15', two beats, the second at 50 % of the sentence: (1) the projection glyph of the site figure (a short vector whose dashed component along k is removed), label 'projection · ∇·u = ∇·B = 0 to machine precision'; (2) the box 'Lawson RK4' with a small grey decaying curve e^(−νk²Δt) drawn on, label 'Lawson RK4 · diffusion solved exactly · 4 evaluations per step'. Then the whole loop (state, curl, inverse FFT, products, FFT, trim, projection, RK4, state) lights stage after stage, one lap per 1.2 s: this lap is the idle motion until P2. P2. On 'cost-0.15': the loop shrinks into the top band (params.layout.loop_small, 1.0 s) and keeps lapping at 30 % opacity. A grey stopwatch glyph with the label '64³ dynamic step: 0.08 s · development CPU, 2 threads' (params.step_time) and, under it, Kit.chip kind 'plain' 'no GPU timing yet · python -m milady.sim.mhd3d bench --device cuda measures it on site'. On 'memory-0.15': a horizontal bar chart (Kit.plot, box params.layout.memory_box, x on a log axis 'memory, GB' from 0.1 to 100, ticks 0.1, 1, 10, 100) with the three rows of params.memory.rows, drawn left to right 0.4 s apart: '128³' a SOLID grey bar to 0.717 GB with Kit.chip kind 'measured' 'measured on CPU'; '256³' a short solid bar for the state (0.4 GB, label 'state 6 N³ × 4 bytes') continued by a DASHED bar to 6 GB (label 'peak ≈ 15 × state · estimate'); '512³' a DASHED bar to 48 GB ('estimate'). Two dashed vertical grey lines at 24 and 80 GB with the labels of params.memory.cards. Measured is solid, estimated is dashed: the 15x factor is drawn apart from the state (critique B14). The chip 'peak ≈ 15 × state: measured once at 128³ on CPU, extrapolated · check with nvidia-smi' replaces the stopwatch chip. Badge MEASURED with the note 'CPU timing and memory · estimates dashed · C:153, C:176'. Key colours: blue (u) and vermillion (B) only; everything else grey. No corner needle. Layout reference: figures/solveur/figure/out/solveur-en.svg panel a (redraw in BLUEPRINT; never show the white figure).",
+   "assets": [
+    "figures/solveur/figure/out/solveur-en.svg"
+   ],
+   "sources": [
+    "en/calcul/index.qmd:153 (milady.sim.mhd3d: periodic 3D incompressible MHD, pseudo-spectral, PyTorch on CPU or GPU; fourth-order Runge-Kutta with an integrating factor; 2/3 dealiasing; Leray projection of u and of B, both divergences at machine precision; one step 0.08 s at 64³ in dynamic mode on the development CPU, 2 threads; no GPU timing; bench --device cuda measures it on site)",
+    "en/calcul/index.qmd:155 (Figure 2a: curls in Fourier space, products u × ω + j × B and u × B in physical space, back to Fourier space, 2/3 dealiasing, Leray projection, curl of the induction term; the Lawson RK4 integrates the diffusion exactly, four right-hand-side evaluations per step; 11 points per direction drawn, actual cutoff |m| ≤ 21 at 64³)",
+    "en/calcul/index.qmd:176 (state 6 × N³ × 4 bytes in single precision, about 0.4 GB at 256³; peak measured on CPU about 15 times the state at 128³, 717 MB; about 6 GB at 256³ and 48 GB at 512³; a 24 GB GPU is enough at 256³, an 80 GB GPU is needed at 512³; an estimate to check with nvidia-smi)",
+    "figures/solveur/docs/facts.md (shape (n_traj, 3, 64, 64, 33); rfftn / irfftn; |m| ≤ 21 at 64³; Lawson RK4 factors e^(−νk²Δt), e^(−ηk²Δt); four calls to the right-hand side; each label traced to milady/sim/mhd3d.py)",
+    "plan/inventory.md K18 and the timing table (bench 0.073-0.083 s per dynamic step at 64³, float32, 2 threads; milady/sim/mhd3d.py:75-90)",
+    "plan/critique_accuracy.md B14 (state 0.4 GB at 256³; the peak is about 15 times the state, an estimate from a 128³ measurement, drawn separately; 48 GB at 512³ treated the same way)",
+    "script/ch10.json 10.2 (the kitchen line: ovens, labelled jars, ledger, critic: this module opens its stations one by one)"
+   ],
+   "variants": null,
+   "question": null
+  },
+  {
+   "id": "X5.2",
+   "was": "X5.2",
+   "title": "A jar with a label",
+   "file": "scenes/X5a/X5_2_a_jar_with_a_label.html",
+   "status": "ready",
+   "level": "L4",
+   "register": "BLUEPRINT",
+   "badge": {
+    "kind": "MEASURED",
+    "confidence": null,
+    "note": "format checks · The Well loader replayed · C:124"
+   },
+   "target_s": 35,
+   "lead_in": 0.4,
+   "tail": 0.8,
+   "deps": [],
+   "entry": {
+    "data": {},
+    "params": {
+     "note": "a file layout and a database schema, drawn as they are; no measured number on screen; identifiers drawn as x's (no fake UUID or hash), as in 10.2",
+     "file_card": {
+      "box": [
+       120,
+       140,
+       860,
+       620
+      ],
+      "path": "{campaign}/{uuid}/fields.h5"
+     },
+     "tree": [
+      {
+       "node": "dataset_name, grid_type, n_spatial_dims, n_trajectories …",
+       "well": true,
+       "cue": "jar"
+      },
+      {
+       "node": "dimensions/  time, x, y, z",
+       "well": true,
+       "cue": "jar"
+      },
+      {
+       "node": "boundary_conditions/  periodic",
+       "well": true,
+       "cue": "jar"
+      },
+      {
+       "node": "scalars/  physical parameters",
+       "well": true,
+       "cue": "jar"
+      },
+      {
+       "node": "t1_fields/",
+       "well": true,
+       "cue": "jar"
+      },
+      {
+       "node": "velocity",
+       "parent": "t1_fields/",
+       "color": "u",
+       "cue": "inside"
+      },
+      {
+       "node": "magnetic_field",
+       "parent": "t1_fields/",
+       "color": "b",
+       "cue": "inside"
+      },
+      {
+       "node": "milady_diagnostics/  energies · dissipations · helicities · growth rates · max |∇·u| · max |∇·B|",
+       "cue": "inside"
+      },
+      {
+       "node": "milady_spectral/  (optional)",
+       "cue": "inside"
+      },
+      {
+       "node": "milady_uuid  xxxxxxxx-xxxx-…",
+       "label": true,
+       "cue": "labels"
+      },
+      {
+       "node": "milady_parameters  {…}",
+       "label": true,
+       "cue": "labels"
+      },
+      {
+       "node": "milady_git_commit  xxxxxxx",
+       "label": true,
+       "cue": "labels"
+      }
+     ],
+     "ledger": {
+      "box": [
+       1060,
+       140,
+       740,
+       620
+      ],
+      "tables_strip": [
+       "campaign",
+       "simulation",
+       "file",
+       "diagnostic",
+       "dataset",
+       "model",
+       "evaluation",
+       "job"
+      ],
+      "cards": {
+       "simulation": [
+        "id",
+        "parameters",
+        "git_commit",
+        "status",
+        "wall_time_s"
+       ],
+       "file": [
+        "uri",
+        "sha256",
+        "size_bytes",
+        "n_t"
+       ],
+       "diagnostic": [
+        "name",
+        "t",
+        "value"
+       ]
+      },
+      "links": [
+       [
+        "milady_uuid",
+        "simulation.id"
+       ],
+       [
+        "milady_parameters",
+        "simulation.parameters"
+       ],
+       [
+        "milady_git_commit",
+        "simulation.git_commit"
+       ],
+       [
+        "milady_diagnostics/",
+        "diagnostic"
+       ],
+       [
+        "path",
+        "file.uri"
+       ]
+      ],
+      "catalog_only": [
+       "dataset",
+       "model",
+       "evaluation"
+      ]
+     },
+     "rewrite": {
+      "before": "xxxxxxxx",
+      "after": "yyyyyyyy"
+     }
+    }
+   },
+   "paragraphs": [
+    {
+     "hold_after": 0.0,
+     "sentences": [
+      {
+       "id": "X5.2.s1",
+       "cue": "jar",
+       "text": "Open one jar: each run seals one file, laid out like The Well, a reference collection of simulations for machine learning."
+      },
+      {
+       "id": "X5.2.s2",
+       "cue": "inside",
+       "text": "Inside: the {u}velocity{/} and the {b}magnetic field{/}, snapshot after snapshot, and time series of energies and divergences."
+      },
+      {
+       "id": "X5.2.s3",
+       "cue": "labels",
+       "text": "The file carries a unique identifier and the code's commit."
+      }
+     ]
+    },
+    {
+     "hold_after": 0.0,
+     "sentences": [
+      {
+       "id": "X5.2.s4",
+       "cue": "row",
+       "text": "The catalog row repeats that identifier and adds a checksum; the simulation rows can be rebuilt from files alone."
+      },
+      {
+       "id": "X5.2.s5",
+       "cue": "force",
+       "text": "Checksummed, not sealed: a forced rewrite updates the checksum."
+      }
+     ]
+    }
+   ],
+   "onscreen": {
+    "title": "",
+    "labels": [
+     "fields.h5",
+     "{campaign}/{uuid}/fields.h5",
+     "in grey: The Well convention",
+     "t1_fields/velocity · t1_fields/magnetic_field",
+     "(trajectories, time, x, y, z, components)",
+     "milady_diagnostics/",
+     "milady_uuid",
+     "milady_parameters",
+     "milady_git_commit",
+     "campaign · simulation · file · diagnostic · dataset · model · evaluation · job",
+     "same UUID in the file and in the catalog",
+     "the checksum lives in the catalog",
+     "ingest",
+     "only in the catalog",
+     "--force",
+     "checksummed, not tamper-proof"
+    ],
+    "formulas": [],
+    "chips": [
+     "MFF · HDF5 following The Well (Ohana et al. 2024) · read back by replaying The Well's loader",
+     "rebuilt from the files: simulations, files, diagnostics · not restored: compute time, resources, campaign YAML",
+     "validation flags all 18 corruptions tested"
+    ]
+   },
+   "visual": "Render class flat (SVG). BLUEPRINT, continuing X5.1 (no ink change). Two halves: the file on the left (params.file_card.box), the ledger on the right (params.ledger.box). P1. On 'jar-0.15': the labelled jar of 10.2 (grey line drawing, centre) zooms (T2 scale dive, 1.2 s) until its label fills the left half and becomes a file card 'fields.h5' (mono 32) with the path '{campaign}/{uuid}/fields.h5' above it; Kit.chip kind 'plain' 'MFF · HDF5 following The Well (Ohana et al. 2024) · read back by replaying The Well's loader' at the bottom left (until 'labels'). The tree of params.tree types on line by line (40 ms per line, mono 30): the entries with well: true in grey, with the small legend 'in grey: The Well convention'. On 'inside-0.15': under t1_fields/, 'velocity' (--u) and 'magnetic_field' (--b) type on with the mono shape '(trajectories, time, x, y, z, components)'; behind each, a strip of six tiny tiles slides in (grey checker textures tinted blue or vermillion; SCHEMATIC, not data): snapshot after snapshot; then 'milady_diagnostics/' with its leaves and a tiny grey sparkline (schematic), then 'milady_spectral/ (optional)' at 60 %. On 'labels-0.15': the three MilaDy attributes (label: true) type on in white with a 2-px left rule, identifiers as x's; Kit.pen kind 'box' around milady_uuid and milady_git_commit. P2. On 'row-0.15': the ledger slides in from the right (0.6 s): the strip of the eight table names on top (params.ledger.tables_strip, mono 28) and three table cards 'simulation', 'file', 'diagnostic' with their columns (params.ledger.cards, as the site figure 2c). Grey connector curves draw from each tree node to its column (params.ledger.links, 0.15 s apart); 'milady_uuid' and 'simulation.id' highlight together for 1.2 s with the label 'same UUID in the file and in the catalog'; then the 'sha256' cell of the file card lights, label 'the checksum lives in the catalog'. At 60 % of sentence X5.2.s4 (ctx.script.sentences): three small file cards stack under the tree and a grey arrow labelled 'ingest' runs from them back to the simulation card (the offline-cluster route); Kit.chip kind 'plain' 'rebuilt from the files: simulations, files, diagnostics · not restored: compute time, resources, campaign YAML' at the top; in the table strip, 'dataset', 'model' and 'evaluation' dim to 40 % with the small label 'only in the catalog'. On 'force-0.15': a mono line '--force' types under the file card; the card flickers once (0.3 s); the sha256 cell changes from params.rewrite.before to params.rewrite.after (a drawn update, never a real hash); the label 'checksummed, not tamper-proof' appears under the ledger (critique C10). The chip 'validation flags all 18 corruptions tested' sits for the last 3 s at the bottom left (C:124). Badge MEASURED with the note 'format checks · The Well loader replayed · C:124'. Key colours: blue (velocity) and vermillion (magnetic_field) only; everything else grey. No corner needle. Layout reference: figures/solveur/figure/out/solveur-en.svg panel c (redraw in BLUEPRINT).",
+   "assets": [
+    "figures/solveur/figure/out/solveur-en.svg"
+   ],
+   "sources": [
+    "en/calcul/index.qmd:109 (MFF: an HDF5 file that follows exactly the convention of The Well, Ohana et al., NeurIPS 2024, the reference collection of physics simulations for machine learning, plus metadata prefixed milady_)",
+    "en/calcul/index.qmd:112-121 (the tree: attributes dataset_name, grid_type, n_spatial_dims, n_trajectories, simulation_parameters, milady_uuid, milady_code, milady_git_commit, milady_parameters; dimensions/, boundary_conditions/, scalars/, t0_fields/, t1_fields/ u and B as (trajectories, time, x, y, z, components); milady_diagnostics/ energies, dissipations, helicities, growth rates, max |∇·u|, max |∇·B|; milady_spectral/ optional)",
+    "en/calcul/index.qmd:124 (read back identically by replaying the HDF5 accesses of The Well's loader, the_well 1.2.0; the 18 corruptions tested are all flagged)",
+    "en/calcul/index.qmd:84 (each step writes its record under a UUID; simulations, files and models carry the code commit) and :93 (file {campaign}/{uuid}/fields.h5, never modified in normal use; --force rewrites it and its SHA-256 is updated in the catalog: 'checksummed', critique C10)",
+    "en/calcul/index.qmd:98 (same UUID in the file and in the catalog: the simulation part of the catalog, simulations, files, diagnostics, can be rebuilt from the files alone; compute time, resources and campaign YAML are not restored; datasets, models and evaluations exist only in the catalog; this makes an offline cluster usable) and :78 (Jean Zay nodes have no Internet access: SQLite on $WORK, then python -m milady.catalog ingest)",
+    "en/calcul/index.qmd:130-139 (catalog tables campaign, simulation, file with SHA-256 and size, diagnostic, dataset and dataset_member, model, evaluation, job)",
+    "figures/solveur/docs/facts.md (catalog columns simulation.id, parameters, git_commit, status, wall_time_s; file.uri, sha256, size_bytes, n_t; diagnostic.name, t, value; links milady_uuid → simulation.id, milady_parameters → simulation.parameters, milady_diagnostics/ → diagnostic)"
+   ],
+   "variants": null,
+   "question": null
+  },
+  {
+   "id": "X5.3",
+   "was": "X5.3",
+   "title": "The life of one campaign",
+   "file": "scenes/X5a/X5_3_the_life_of_one_campaign.html",
+   "status": "pending",
+   "level": "L4",
+   "register": "BLUEPRINT",
+   "badge": {
+    "kind": "CONJECTURE",
+    "confidence": "high",
+    "note": "factory check · palier1_mhd2d · not a PhD-plan criterion"
+   },
+   "target_s": 40,
+   "lead_in": 0.4,
+   "tail": 1.0,
+   "deps": [
+    "data/x5_campaign_trace.json",
+    "data/palier1_sweep.json"
+   ],
+   "entry": {
+    "data": {
+     "trace": "data/x5_campaign_trace.json",
+     "sweep": "data/palier1_sweep.json"
+    },
+    "params": {
+     "campaign": {
+      "name": "palier1_mhd2d",
+      "config": "infra/configs/palier1_mhd2d.yaml",
+      "command": "make sweep CONFIG=infra/configs/palier1_mhd2d.yaml",
+      "eta": {
+       "start": 0.004,
+       "stop": 0.0226274,
+       "num": 11,
+       "scale": "log"
+      },
+      "n_traj": 16,
+      "grid": 32,
+      "t_burn": 30,
+      "t_keep": 150,
+      "every": 1.0,
+      "solver": "experiences/mhd2d.py (NumPy, CPU)",
+      "note": "known parameters of the campaign file (axis values), not results"
+     },
+     "stages": [
+      "1 campaign",
+      "2 launch",
+      "3 simulation",
+      "4 storage",
+      "5 dataset",
+      "6 training",
+      "7 evaluation"
+     ],
+     "stages_active": 4,
+     "layout": {
+      "strip": [
+       120,
+       120,
+       1680,
+       90
+      ],
+      "terminal": [
+       120,
+       260,
+       900,
+       470
+      ],
+      "ledger": [
+       1080,
+       260,
+       720,
+       470
+      ],
+      "shrunk": [
+       120,
+       200,
+       760,
+       500
+      ],
+      "seat_frame_x": [
+       900,
+       1460
+      ]
+     },
+     "ledger_columns": [
+      "simulation id",
+      "η",
+      "status",
+      "file sha256",
+      "wall_time_s"
+     ],
+     "pending_cell": "—",
+     "seat": {
+      "type": "gauge",
+      "tag": "x5_campaign_trace",
+      "gauge": {
+       "label": "tasks finished",
+       "min": 0,
+       "max": 11,
+       "band": [
+        10.5,
+        11
+       ],
+       "ticks": [
+        0,
+        11
+       ],
+       "log": false,
+       "unit": "tasks",
+       "band_label": "all eleven"
+      },
+      "bet": "All eleven tasks finish, each with a checksummed file and a catalog row.",
+      "confidence": "high",
+      "why": "test campaigns: 4 of 4 done in 4 s (IR:375) · same workload ≈ 30 min CPU (X:68)",
+      "criterion": "every simulation finished, its file checksummed in the catalog · a factory check, not a PhD-plan criterion",
+      "source": "C:93 · tools/data_cloud.py trace",
+      "ask": "Where do campaigns run first: lab GPUs, Jean Zay, or a rented VM?",
+      "cues": {
+       "frame": "seat",
+       "bet": "seat",
+       "criterion": "why",
+       "ask": "why+1.6",
+       "data": "seat"
+      },
+      "cues_result": {
+       "frame": "seat",
+       "bet": "seat",
+       "criterion": "seat+1.0",
+       "ask": "seat+2.0",
+       "data": "files"
+      }
+     },
+     "measured_anchor": "test campaigns: 4 simulations done in 4 s on a laptop, 10 s in Docker · IR:375, IR:389",
+     "sweep_grid": {
+      "cols": 4,
+      "rows": 3,
+      "box": [
+       120,
+       140,
+       1680,
+       600
+      ],
+      "strip": [
+       380,
+       120
+      ],
+      "hist_h": 50
+     }
+    }
+   },
+   "sfx": [
+    {
+     "id": "pop",
+     "cue": "seat",
+     "offset": 0.3,
+     "gain_db": -24
+    }
+   ],
+   "paragraphs": [
+    {
+     "hold_after": 0.0,
+     "sentences": [
+      {
+       "id": "X5.3.s1",
+       "cue": "command",
+       "text": "Follow one campaign down the line. One command reads the recipe: the flat sheet, eleven {param}diffusivities{/}."
+      },
+      {
+       "id": "X5.3.s2",
+       "cue": "tasks",
+       "text": "The launcher opens one task per setting; each integrates sixteen runs side by side and seals one file."
+      },
+      {
+       "id": "X5.3.s3",
+       "cue": "rows",
+       "text": "For each task, the ledger gains a row with its status, its file's checksum and its wall time."
+      }
+     ]
+    },
+    {
+     "hold_after": 0.8,
+     "sentences": [
+      {
+       "id": "X5.3.s4",
+       "cue": "seat",
+       "text": "None of this has run yet. The bet: all eleven tasks finish, each with a checksummed file."
+      },
+      {
+       "id": "X5.3.s5",
+       "cue": "why",
+       "text": "Small test campaigns already did, in seconds, and a comparable workload once took about half an hour."
+      }
+     ]
+    }
+   ],
+   "onscreen": {
+    "title": "",
+    "labels": [
+     "1 campaign",
+     "2 launch",
+     "3 simulation",
+     "4 storage",
+     "5 dataset",
+     "6 training",
+     "7 evaluation",
+     "later",
+     "$ make sweep CONFIG=infra/configs/palier1_mhd2d.yaml",
+     "η: 11 values, log-spaced, 0.004 → 0.0226 · 16 runs each · 32² · burn-in 30 · 150 snapshots",
+     "task k/11 · η = … · queued",
+     "simulation id",
+     "η",
+     "status",
+     "file sha256",
+     "wall_time_s",
+     "tasks finished",
+     "all eleven",
+     "DATA · x5_campaign_trace · AWAITING",
+     "the check of 10.3, in full",
+     "dissipation ε(t)",
+     "injection P (Itô rate, constant)",
+     "P − ε"
+    ],
+    "formulas": [
+     {
+      "cue": "rows",
+      "tex": "\\text{hours per campaign} = \\textstyle\\sum_{\\text{done}} \\texttt{wall\\_time\\_s} \\times \\max(n_{\\text{GPU}}, 1) / 3600 \\quad (\\text{catalog query, C:144})"
+     }
+    ],
+    "chips": [
+     "SCHEMATIC · walk-through, no run yet",
+     "test campaigns: 4 simulations done in 4 s on a laptop, 10 s in Docker · IR:375, IR:389",
+     "a factory check, not a criterion of the PhD plan"
+    ]
+   },
+   "visual": "Render class flat (SVG, one small Canvas for the result strips). BLUEPRINT, continuing X5.2. PENDING (now). Top band (params.layout.strip): the seven stages of the pipeline as small grey boxes, from the site's architecture figure, numbered '1 campaign' to '7 evaluation'; stages 5-7 at 30 % with the label 'later' (this campaign only feeds stages 1-4). A grey cursor moves to the stage of each cue. P1. On 'command-0.15': stage 1 lit; a terminal panel (params.layout.terminal, dark grey box, mono 30) types '$ make sweep CONFIG=infra/configs/palier1_mhd2d.yaml' in 1.2 s; above it a small recipe card with the line 'η: 11 values, log-spaced, 0.004 → 0.0226 · 16 runs each · 32² · burn-in 30 · 150 snapshots' and 11 green dots on a tiny log axis (params.campaign.eta: the campaign's own settings, not results). Kit.chip kind 'schematic' 'SCHEMATIC · walk-through, no run yet' (top right, until 'bet'). On 'tasks-0.15': stages 2-3 lit; the terminal prints 11 grey lines 'task 01/11 · η = 0.00400 · queued' (η from params.campaign.eta, five significant digits); beside the terminal, 11 small oven glyphs light in turn, each running 16 thin parallel grey lines (the 16 runs integrated together), then closing into a small jar 'fields.h5'. The motion is schematic (a pure function of t), no time or duration is shown. On 'rows-0.15': stage 4 lit; the ledger table (params.layout.ledger) draws its header params.ledger_columns and 11 rows; in pending, the id is 'xxxxxxxx', the η column is filled from the config, status reads 'queued' in grey, and the sha256 and wall_time_s cells are dashed '—' (no fake number). P2. On 'seat-0.15': terminal and ledger shrink together into the left column (params.layout.shrunk, 0.8 s) and dim to 50 %; Kit.seat(ctx, {...params.seat, cues: ctx.variant === 'result' ? params.seat.cues_result : params.seat.cues, variant: ctx.variant, data: ctx.data.trace}) of type 'gauge' (every cue of a seat must exist in the variant played: hence two cue maps) opens on the right (frame x 900-1460): a half-dial 'tasks finished' from 0 to 11, the success band 'all eleven' shaded at the top end, no needle value, grey tag 'DATA · X5_CAMPAIGN_TRACE · AWAITING'; the seat's right column: THE BET, CONFIDENCE high (pips) with the small line params.seat.why; pop at 'seat+0.3'. Pending only (the result has no 'why' cue), on 'why-0.15': SUCCESS CRITERION with its source; Kit.chip kind 'measured' 'test campaigns: 4 simulations done in 4 s on a laptop, 10 s in Docker · IR:375, IR:389' under the frame; at 'why+1.6' the boxed ASK BEFORE WE COMPUTE (params.seat.ask). The chip 'a factory check, not a criterion of the PhD plan' sits under the gauge. RESULT (when data/x5_campaign_trace.json and data/palier1_sweep.json both exist; the result narration has the cues command, tasks, rows, seat, files, meaning (one of two sentences, or none when the converter gives no booleans), sweep): P1 as pending, but the ledger ids, η and status come from data.trace.simulations. On 'seat-0.15': the seat opens as in pending (cue map cues_result), solid; the terminal lines turn 'done' one by one in the order of simulations[i].finished_at, each line ending with its wall_time_s (Kit.fmt) and the size of its file (files[0].size_bytes, Kit.fmt in MB). On 'files-0.15': the jars fill and the ledger cells fill (id first 8 characters, files[0].sha256 first 8 characters, wall_time_s); the gauge needle moves to data.trace.totals.done (read from the file, never computed); the seat shows the converter's verdict and verdict_text; Kit.lowerThird kind 'source' with data.trace (meta.stamp 'CATALOG · palier1_mhd2d', SHA-256 prefix). On 'sweep-0.15': terminal, ledger and seat slide out (0.8 s) and the trace lower-third leaves; the full sweep of 10.3 fills the frame (params.sweep_grid, 4 x 3 grid, 11 cells): in each cell, the dissipation per_eta[i].dissipation against per_eta[i].t (--fg line: a crowd quantity, not vermillion), the flat grey injection line at per_eta[i].injection, the green label 'η = …' (per_eta[i].eta), and under it a small amber histogram of P − ε (per_eta[i].residual_hist over data.sweep.hist_edges) with a grey zero tick; the chip 'the check of 10.3, in full'; Kit.lowerThird kind 'source' with data.sweep (stamp 'SIMULATED · palier1_mhd2d · 2D MHD'). The verdict of the sweep is the one 10.3 shows; nothing is computed here. DATA. x5_campaign_trace.json (converter tools/data_cloud.py trace, from 'python -m milady.catalog sims --campaign palier1_mhd2d'): simulations[] {id, parameters.eta, status, wall_time_s, started_at, finished_at, files[] {uri, sha256 (12 characters), size_bytes}}, totals {n, done, wall_time_h, bytes}, verdict, verdict_text, fields {n_sims, n_done, hours, gigabytes} plus the booleans met / not_met / inconclusive requested by ch10 (exactly one true). palier1_sweep.json (converter palier1, as 10.3): per_eta[] {eta, injection, t, dissipation, residual_hist}, hist_edges. Badge CONJECTURE, confidence high, note 'factory check · palier1_mhd2d · not a PhD-plan criterion'. Key colours: green (η), amber (histograms in the result), grey; violet never. Layout reference: assets/interactif/architecture.js and figures/architecture/figure/out/architecture-en.svg (redraw in BLUEPRINT; the widget itself is not loaded).",
+   "assets": [
+    "assets/interactif/architecture.js",
+    "figures/architecture/figure/out/architecture-en.svg"
+   ],
+   "sources": [
+    "infra/configs/palier1_mhd2d.yaml:10 (launch: make sweep CONFIG=infra/configs/palier1_mhd2d.yaml), :12-15 (11 values of η from 4e-3 to 2.26e-2, 16 independent trajectories per value, 150 snapshots after 30 time units of burn-in), :18 (32²), :28 (η log sweep, 11 values), :35 (n_traj 16, integrated together), :37-42 (CPU only, max_parallel 11)",
+    "en/calcul/index.qmd:157 and :161 (palier1_mhd2d reuses the E2 dataset: 32², fixed ν, 11 values of η, 16 trajectories per value; not yet the 128² plan)",
+    "en/calcul/index.qmd:88-96 (pipeline: campaign, launch with one task per grid point, simulation, storage with SHA-256, dataset, training, evaluation, each in the catalog) and :133 (simulation table: status, duration, commit)",
+    "en/calcul/index.qmd:143-149 (hours per campaign from wall_time_s in SQL; python -m milady.catalog sims --campaign lists a campaign's simulations)",
+    "infra/README.md:375 (make sweep on a reduced 2 x 2 campaign at 12³: 4 s, 4 simulations done, MFF files and sha256 in the catalog) and :389 (reduced campaign in Docker: 10 s, 4 simulations, files in S3 storage); measured 2026-11-07 on a machine without GPU (infra/README.md:364-366)",
+    "en/experiences/index.qmd:68 (E2 data generation: about 30 min on CPU; same solver, grid and η values as palier1_mhd2d, other seeds: 'a comparable workload')",
+    "video/tools/data_cloud.py conv_trace (verdict 'met' when every simulation of the campaign finished, with a checksummed file; fields n_sims, n_done, hours, gigabytes; totals n, done, wall_time_h, bytes) and conv_palier1 (per_eta series, hist_edges)",
+    "en/rapport/index.qmd:1218 (question 6: GPU resources at CEREA or LISN) and infra/cloud/RECOMMANDATION-CLOUD.md:25-27 and :259 (§0 and §4.2: lab GPUs, an existing GENCI project on Jean Zay, or renting): the seat's ASK",
+    "script/ch10.json 10.3 (the first product's check and the note 'the full sweep lives in X5.3'); plan/critique_pedagogy.md F7 (full sweep moved to X5.3)"
+   ],
+   "variants": {
+    "result": {
+     "target_s": 40,
+     "data_fields": [
+      "totals.done",
+      "totals.n",
+      "hours"
+     ],
+     "paragraphs": [
+      {
+       "hold_after": 0.0,
+       "sentences": [
+        {
+         "id": "X5.3.r1",
+         "cue": "command",
+         "text": "Follow one campaign down the line: one command, the flat sheet, eleven {param}diffusivities{/}."
+        },
+        {
+         "id": "X5.3.r2",
+         "cue": "tasks",
+         "text": "One task per setting, sixteen runs side by side, one file each."
+        },
+        {
+         "id": "X5.3.r3",
+         "cue": "rows",
+         "text": "The ledger gains a row per task."
+        }
+       ]
+      },
+      {
+       "hold_after": 0.6,
+       "sentences": [
+        {
+         "id": "X5.3.r4",
+         "cue": "seat",
+         "text": "Here is the real trace: {{totals.done}} of {{totals.n}} tasks finished, about {{hours}} hours of computing in all."
+        },
+        {
+         "id": "X5.3.r5",
+         "cue": "files",
+         "text": "Each finished task left a checksummed file and a row in the ledger."
+        },
+        {
+         "id": "X5.3.r6",
+         "cue": "meaning",
+         "text": "These measured hours now replace an estimate.",
+         "when": "met"
+        },
+        {
+         "id": "X5.3.r7",
+         "cue": "meaning",
+         "text": "The ledger shows which tasks stopped, before anything is trained on them.",
+         "when": "not_met"
+        }
+       ]
+      },
+      {
+       "hold_after": 0.0,
+       "sentences": [
+        {
+         "id": "X5.3.r8",
+         "cue": "sweep",
+         "text": "And here is the whole sweep, one strip per setting: the check you just saw, in full."
+        }
+       ]
+      }
+     ]
+    }
+   },
+   "question": null
+  },
+  {
+   "id": "X5.4",
+   "was": "X5.4",
+   "title": "A new instrument for the critic: counting X-points",
+   "file": "scenes/X5a/X5_4_counting_x_points.html",
+   "status": "pending",
+   "level": "L4",
+   "register": "NIGHT",
+   "badge": {
+    "kind": "CONJECTURE",
+    "confidence": "low",
+    "note": "tier-1 metric · no pass mark yet"
+   },
+   "target_s": 35,
+   "lead_in": 1.0,
+   "tail": 1.0,
+   "deps": [
+    "data/x5_xpoints.json"
+   ],
+   "entry": {
+    "data": {
+     "seat": "data/x5_xpoints.json"
+    },
+    "params": {
+     "ink_change": {
+      "from": "BLUEPRINT",
+      "to": "NIGHT",
+      "t0": 0.1,
+      "t1": 0.9,
+      "how": "T3: the blueprint grid wipes out behind a drawn grey line"
+     },
+     "toy": {
+      "note": "SCHEMATIC toy potential on the periodic square [0, 2π)², a(x, y) = Σ A cos(kx x + ky y + φ); its critical points were found by Newton's method on the closed form (7 X-points, 7 O-points, all non-degenerate: min |det ∇²a| ≈ 0.98); no simulation, no data",
+      "modes": [
+       [
+        0.5,
+        1,
+        1,
+        0.0
+       ],
+       [
+        0.5,
+        1,
+        -1,
+        0.0
+       ],
+       [
+        0.32,
+        2,
+        1,
+        -1.27
+       ],
+       [
+        0.28,
+        2,
+        -1,
+        -0.47
+       ],
+       [
+        0.3,
+        1,
+        -2,
+        2.1
+       ]
+      ],
+      "points": [
+       [
+        0.2248,
+        0.5439,
+        "O",
+        1.477
+       ],
+       [
+        0.3616,
+        3.0841,
+        "O",
+        -1.717
+       ],
+       [
+        1.3285,
+        4.9501,
+        "X",
+        0.411
+       ],
+       [
+        1.3952,
+        1.7662,
+        "X",
+        0.187
+       ],
+       [
+        2.261,
+        0.3895,
+        "O",
+        -1.384
+       ],
+       [
+        2.5589,
+        2.7712,
+        "O",
+        1.187
+       ],
+       [
+        3.1191,
+        5.3176,
+        "X",
+        -0.331
+       ],
+       [
+        3.6623,
+        4.7296,
+        "O",
+        -0.484
+       ],
+       [
+        3.8084,
+        1.0805,
+        "X",
+        -0.211
+       ],
+       [
+        4.007,
+        0.0213,
+        "O",
+        0.019
+       ],
+       [
+        4.0488,
+        3.0151,
+        "X",
+        0.589
+       ],
+       [
+        4.694,
+        0.1578,
+        "X",
+        -0.075
+       ],
+       [
+        4.7119,
+        3.4582,
+        "O",
+        0.681
+       ],
+       [
+        5.7121,
+        4.8181,
+        "X",
+        0.053
+       ]
+      ],
+      "highlight": {
+       "O": 0,
+       "X": 10
+      },
+      "box": [
+       140,
+       160,
+       600,
+       600
+      ],
+      "grid": 200,
+      "levels": 16,
+      "mapping": "px = x0 + w·x/(2π); py = y0 + h·(1 − y/(2π))"
+     },
+     "predict_card": {
+      "box": [
+       880,
+       190,
+       880,
+       150
+      ],
+      "kicker": "PREDICT",
+      "line": "periodic box: more X-points or more O-points?"
+     },
+     "tally": {
+      "box": [
+       780,
+       360,
+       80,
+       320
+      ]
+     },
+     "seat": {
+      "type": "curve",
+      "tag": "x5_xpoints",
+      "x": {
+       "label": "X-points per snapshot",
+       "ticks": "none until data: 'fewer ← → more'",
+       "param": false
+      },
+      "y": {
+       "label": "share of snapshots",
+       "min": 0,
+       "max": 1
+      },
+      "band": {
+       "kind": "tolerance",
+       "label": "tolerance: not set",
+       "dashed": true
+      },
+      "bet": "Generated fields carry as many X-points as simulated ones, on average.",
+      "confidence": "low",
+      "why": "no count yet · E2's models sit far above the noise floor on spectra (R:1039)",
+      "criterion": "X-point counts, generated vs simulated: a tier-1 metric with no pass mark",
+      "source": "T:876 · T:902-903",
+      "ask": "Which topology metric, and what gap in counts fails a model?",
+      "cues": {
+       "frame": "seat",
+       "bet": "seat",
+       "criterion": "criterion",
+       "ask": "criterion+1.6",
+       "data": "seat"
+      },
+      "cues_result": {
+       "frame": "seat",
+       "bet": "seat",
+       "criterion": "seat+1.0",
+       "ask": "seat+2.0",
+       "data": "seat+0.4"
+      }
+     }
+    }
+   },
+   "sfx": [
+    {
+     "id": "whoosh",
+     "t": 0.1,
+     "gain_db": -22
+    },
+    {
+     "id": "pop",
+     "cue": "answer",
+     "offset": 0.2,
+     "gain_db": -24
+    }
+   ],
+   "paragraphs": [
+    {
+     "hold_after": 2.5,
+     "sentences": [
+      {
+       "id": "X5.4.s1",
+       "cue": "lines",
+       "text": "A new instrument for the critic: in the flat sheet, {b}field lines{/} are contours of one potential."
+      },
+      {
+       "id": "X5.4.s2",
+       "cue": "points",
+       "text": "Each island has an O-point at its centre; where lines cross, an X-point."
+      },
+      {
+       "id": "X5.4.s3",
+       "cue": "predict",
+       "text": "In this periodic box, which kind is more common?"
+      }
+     ]
+    },
+    {
+     "hold_after": 0.0,
+     "sentences": [
+      {
+       "id": "X5.4.s4",
+       "cue": "answer",
+       "text": "Neither: exactly as many of each, a free check on any counter."
+      }
+     ]
+    },
+    {
+     "hold_after": 0.6,
+     "sentences": [
+      {
+       "id": "X5.4.s5",
+       "cue": "seat",
+       "text": "The internship offer asks for topology; the report's experiments computed none."
+      },
+      {
+       "id": "X5.4.s6",
+       "cue": "criterion",
+       "text": "The plan lists X-point counts among its metrics, but sets no pass mark."
+      }
+     ]
+    }
+   ],
+   "onscreen": {
+    "title": "",
+    "labels": [
+     "field lines = contours of the potential a",
+     "O-point · island centre",
+     "X-point · lines cross",
+     "PREDICT",
+     "periodic box: more X-points or more O-points?",
+     "O",
+     "X",
+     "saddles = extrema on the torus · Poincaré–Hopf",
+     "X-points per snapshot",
+     "share of snapshots",
+     "tolerance: not set",
+     "DATA · x5_xpoints · AWAITING",
+     "simulated",
+     "generated"
+    ],
+    "formulas": [
+     {
+      "cue": "lines",
+      "tex": "\\B = \\nabla^{\\perp} a = (\\partial_y a,\\ -\\partial_x a):\\ \\text{field lines are level curves of } a;\\ \\ \\text{null points of } \\B = \\text{critical points of } a"
+     },
+     {
+      "cue": "answer",
+      "tex": "\\operatorname{ind}_p \\B = \\operatorname{sign}\\det\\nabla^{2}a(p) = +1 \\text{ (O)},\\ -1 \\text{ (X)};\\quad \\textstyle\\sum_p \\operatorname{ind}_p \\B = \\chi(\\mathbb{T}^{2}) = 0 \\ \\Rightarrow\\ \\#\\mathrm{O} = \\#\\mathrm{X} \\ \\text{for a Morse function } a"
+     },
+     {
+      "cue": "seat",
+      "tex": "\\text{tier 1 (T:902): number of X-points of } a \\text{ among the metrics; criteria (a)–(d) (T:903) set no threshold for it}"
+     }
+    ],
+    "chips": [
+     "SCHEMATIC · toy field on the periodic square",
+     "a metric requested by the internship offer · none computed in the report (R:739)"
+    ]
+   },
+   "visual": "Render class flat (one Canvas for the contour lines, SVG for marks, cards and the seat). Register NIGHT: T3 ink change from BLUEPRINT in the 1.0-s lead-in (params.ink_change; whoosh at 0.1 s, -22 dB). LEFT, the toy (params.toy, a 600 x 600 square at x 140-740, y 160-760): the potential a(x, y) = Σ A cos(kx x + ky y + φ) with params.toy.modes is evaluated in setup on a params.toy.grid² grid and contoured (marching squares, params.toy.levels levels, precomputed polylines): positive levels in --b, negative levels in --b-neg (two senses of circulation, shades of one hue, never a new colour). The square's edges are dashed grey with small paired arrow ticks marking that opposite edges are glued (periodic box). Kit.chip kind 'schematic' 'SCHEMATIC · toy field on the periodic square' under the tile. P1. On 'lines-0.15': the contours draw on (1.2 s, innermost first); label 'field lines = contours of the potential a'. On 'points-0.15': the O-point params.toy.points[highlight.O] gets a filled vermillion dot that pulses once, leader label 'O-point · island centre'; at 55 % of the sentence the X-point points[highlight.X] gets a cross, the contour through it (the separatrix, level = its a value) brightens to 100 % while the others drop to 50 %, leader label 'X-point · lines cross'. On 'predict-0.15': a predict card at params.predict_card (the film's predict style, as 08.2: kicker 'PREDICT', line 'periodic box: more X-points or more O-points?'); the hold comes from the script (hold_after 2.5 s); during the hold the contours breathe (opacity ±8 %, 2-s period). On 'answer-0.15': the predict card leaves; every critical point of params.toy.points appears in a seeded order (60 ms apart), dots for O, crosses for X; two tally columns rise beside the tile (params.tally: one of dots, one of crosses, one mark per point) and stop at the same height (no digits); Kit.pen kind 'check' beside them with the label 'saddles = extrema on the torus · Poincaré–Hopf'; pop at 'answer+0.2'. P3. On 'seat-0.15': the toy and the tally shrink to the left third (x 140-620, 0.8 s); Kit.seat(ctx, {...params.seat, cues: ctx.variant === 'result' ? params.seat.cues_result : params.seat.cues, variant: ctx.variant, data: ctx.data.seat}) of type 'curve' opens on the right (frame x 860-1420, y 200-640): dashed grey frame, x axis 'X-points per snapshot' with no ticks yet (only the end words 'fewer' and 'more'), y axis 'share of snapshots' from 0 to 1, a dashed amber bracket over an empty band labelled 'tolerance: not set' (the success band exists, its width is the question), grey tag 'DATA · X5_XPOINTS · AWAITING'; right column: THE BET and CONFIDENCE low with the line params.seat.why. Kit.chip kind 'plain' 'a metric requested by the internship offer · none computed in the report (R:739)' under the frame. Pending only (the result has no 'criterion' cue), on 'criterion-0.15': SUCCESS CRITERION with its source; at 'criterion+1.6' the boxed ASK BEFORE WE COMPUTE (params.seat.ask). RESULT (when data/x5_xpoints.json exists; the result narration keeps the cues lines, points, predict, answer and seat, then verdict and meaning): on 'seat-0.15' the seat opens with params.seat.cues_result, its frame solid, the x axis takes the integer ticks of data.seat.bins, and two step histograms draw on: data.seat.counts_reference as a white solid outline (simulated, white chip 'simulated') and data.seat.counts_generated as a violet dashed outline (violet chip 'generated'), each normalized to a share; the seat's RESULT block shows the converter's verdict and verdict_text (no verdict computed in the page); Kit.lowerThird kind 'source' with data.seat (meta.stamp 'SIMULATED vs GENERATED · X-points', SHA-256 prefix). If the file gives a tolerance (verdict_rule), the amber band is drawn at that width around the reference mean; otherwise it keeps the label 'tolerance: not set'. DATA. x5_xpoints.json (converter tools/data_cloud.py xpoints, from reference MFF fields of palier1_mhd2d or tier 1 and an npz of generated B fields): counts_reference[], counts_generated[], bins[], verdict, verdict_rule, verdict_text, fields {mean_reference, mean_generated, verdict} plus the booleans met / not_met / inconclusive (exactly one true). Requested: O-point counts too, so the free check of this scene can run on real snapshots (see notes). Badge CONJECTURE, confidence low, note 'tier-1 metric · no pass mark yet'. Key colours: vermillion (field lines), amber (the distribution of counts and its tolerance), violet only in the result (generated). No corner needle.",
+   "assets": [],
+   "sources": [
+    "en/these/index.qmd:876 (in 2D the null points of B = ∇⊥a are the critical points of a: extrema, O-points, and saddles, X-points; on the torus, for a Morse function, saddles = extrema, Poincaré–Hopf, zero Euler characteristic; the distribution of the number of X-points is a simple and verifiable topological metric)",
+    "en/these/index.qmd:872 (topology metrics of the plan: persistence diagrams of |B| or j·B, number and type of magnetic null points)",
+    "en/these/index.qmd:902-903 (tier 1 metrics include the number of X-points of a; success criteria (a)-(d) set no threshold for it)",
+    "en/prep/p8-contraintes-physiques/index.qmd:1482-1491 (Proposition 7.7: for a Morse function a on the torus, B = ∇⊥a has as many O-type as X-type null points; index = sign det ∇²a, +1 at an extremum, −1 at a saddle)",
+    "en/rapport/index.qmd:232 (the offer asks for topology preservation among the metrics) and :739 (the internship offer also asks for topology metrics; we computed none)",
+    "en/rapport/index.qmd:1039 (E2's models are weak: spectrum errors 0.07 to 0.23 in log10 at the test values against 0.002 to 0.011 for the data; even V5 six times above): the reason for the low confidence",
+    "video/tools/data_cloud.py conv_xpoints (verdict 'inconclusive' unless a tolerance is passed: 'no threshold in the plan (T:872-876)'; fields mean_reference, mean_generated, verdict) and CONTRACT.md §5 (xpoints row: 'needs a tolerance (none in the plan: ask)')",
+    "toy field: computed for this script from the closed form (Newton's method on ∇a = 0, 7 X-points and 7 O-points, min |det ∇²a| ≈ 0.98); SCHEMATIC, no simulation",
+    "plan/outline.md X5.4 (contours of a with X- and O-points, check badge Poincaré–Hopf); plan/inventory.md K57 and M11; plan/critique_pedagogy.md G7 (E2 fields are 32²: any real map shown in the result needs the chip 'display interpolation (spectral) · native grid 32²')"
+   ],
+   "variants": {
+    "result": {
+     "target_s": 35,
+     "data_fields": [
+      "mean_reference",
+      "mean_generated",
+      "verdict"
+     ],
+     "paragraphs": [
+      {
+       "hold_after": 2.5,
+       "sentences": [
+        {
+         "id": "X5.4.r1",
+         "cue": "lines",
+         "text": "A new instrument for the critic: in the flat sheet, {b}field lines{/} are contours of one potential."
+        },
+        {
+         "id": "X5.4.r2",
+         "cue": "points",
+         "text": "Each island has an O-point at its centre; where lines cross, an X-point."
+        },
+        {
+         "id": "X5.4.r3",
+         "cue": "predict",
+         "text": "In this periodic box, which kind is more common?"
+        }
+       ]
+      },
+      {
+       "hold_after": 0.0,
+       "sentences": [
+        {
+         "id": "X5.4.r4",
+         "cue": "answer",
+         "text": "Neither: exactly as many of each, a free check on any counter."
+        }
+       ]
+      },
+      {
+       "hold_after": 0.6,
+       "sentences": [
+        {
+         "id": "X5.4.r5",
+         "cue": "seat",
+         "text": "Counted at last: on average {{mean_reference}} X-points per simulated snapshot, {{mean_generated}} per generated one."
+        },
+        {
+         "id": "X5.4.r6",
+         "cue": "verdict",
+         "text": "Verdict: {{verdict}}."
+        },
+        {
+         "id": "X5.4.r7",
+         "cue": "meaning",
+         "text": "With no agreed tolerance, the counts can only be compared, not judged.",
+         "when": "inconclusive"
+        },
+        {
+         "id": "X5.4.r8",
+         "cue": "meaning",
+         "text": "Within tolerance: the model joins its field lines like the simulation.",
+         "when": "met"
+        },
+        {
+         "id": "X5.4.r9",
+         "cue": "meaning",
+         "text": "Outside tolerance: the model joins its field lines differently.",
+         "when": "not_met"
+        }
+       ]
+      }
+     ]
+    }
+   },
+   "question": null
+  },
+  {
+   "id": "X5a.Q",
+   "was": null,
+   "title": "Question for the supervisors",
+   "file": "scenes/X5a/X5a_Q_question.html",
+   "status": "ready",
+   "level": "L4",
+   "register": "NIGHT",
+   "badge": null,
+   "target_s": 9,
+   "lead_in": 0.5,
+   "tail": 1.2,
+   "deps": [],
+   "entry": {
+    "data": {},
+    "params": {
+     "backdrop": {
+      "opacity": 0.1,
+      "what": "the last frame of X5.4: the toy contours with their X and O marks and the empty seat"
+     }
+    }
+   },
+   "sfx": [
+    "chime@q-0.2"
+   ],
+   "paragraphs": [
+    {
+     "hold_after": 0.8,
+     "sentences": [
+      {
+       "id": "X5a.Q.s1",
+       "cue": "q",
+       "text": "Which topology metric should judge generated fields, and what gap in X-point counts fails a model?"
+      }
+     ]
+    }
+   ],
+   "onscreen": {
+    "title": "",
+    "labels": [],
+    "formulas": [],
+    "chips": []
+   },
+   "visual": "Render class flat. Kit.questionCard(ctx, {n: null, chapter: 'X5a', category: 'framing', at: 'q'}) filling the frame (BRIEF 3.1); it reads ctx.script.question. The stub reads 'ASK · Q · X5A · C. Nore / Y. Ponty' until the question register numbers the card. Pen underline (M9) on 'topology' and on 'X-point counts'. WHY IT MATTERS at the component's default delay after 'q', WHAT IT UNBLOCKS about 2.2 s later, category tag FRAMING. Behind the card, at params.backdrop.opacity, the last frame of X5.4. No badge, lower-third or formula layer (a question makes no claim). Chime at 'q-0.2'. In the extended cut the next scene is X1.1 (NIGHT): no ASK card follows directly.",
+   "assets": [],
+   "sources": [
+    "en/rapport/index.qmd:1213 (open question 5 for the supervisors: which topology metrics are most relevant for the project's dynamos: persistent homology, null points, relative helicity?)",
+    "en/rapport/index.qmd:739 (topology metrics asked by the offer, none computed) and :1222 (roadmap, month 1: add topology and helicity metrics)",
+    "en/these/index.qmd:872, :876, :902-903 (topology metrics of the plan; X-point count as a tier-1 metric with no pass mark)",
+    "infra/cloud/RECOMMANDATION-CLOUD.md:32-33 (§0: which measures do they want on generated fields, helicities, topology, spread of the budgets; they are programmed before renting)",
+    "en/encadrants/index.qmd:233 (skills matrix, physical metrics: C. Nore, local energy transfers; Y. Ponty, kurtosis, skewness and the Kazantsev spectrum): ask_who",
+    "video/tools/data_cloud.py conv_xpoints and CONTRACT.md §5 (the X-point converter needs a tolerance; without one every verdict is 'inconclusive')",
+    "script/ch06.json ch06.Q (Q7: which statistics and how close to the noise floor, topology named among metrics to code): this card asks the topology-specific decision, the metric and its pass mark"
+   ],
+   "variants": null,
+   "question": {
+    "n": null,
+    "category": "framing",
+    "chapter": "X5a",
+    "en": "Which *topology* metric should judge generated fields, and what gap in *X-point counts* fails a model?",
+    "say": "Which topology metric should judge generated fields, and what gap in X-point counts fails a model?",
+    "fr": "Quelle métrique de *topologie* doit juger les champs générés, et quel écart du *nombre de points X* fait échouer un modèle ?",
+    "why": "The offer asks for topology, yet the report computed none; the plan lists X-point counts at tier 1 with no pass mark, so any verdict stays inconclusive.",
+    "unblocks": "Framing: which topology code to write before renting (X-point counts, persistence diagrams, 3D null points), on which field, and the tolerance the X-point check needs to give a verdict.",
+    "why_fr": "L'offre demande la topologie, mais le rapport n'en a calculé aucune ; le plan liste le nombre de points X au palier 1 sans seuil de réussite : tout verdict reste non concluant.",
+    "unblocks_fr": "Cadrage : quel code de topologie écrire avant de louer (points X, diagrammes de persistance, points nuls en 3D), sur quel champ, et la tolérance dont la vérification des points X a besoin pour rendre un verdict.",
+    "ask_who": "C. Nore / Y. Ponty"
+   }
+  }
+ ]
+}

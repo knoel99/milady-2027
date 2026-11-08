@@ -1,21 +1,20 @@
 {
-  "name": "milady-video-pipeline-proto",
-  "version": "1.0.0",
-  "description": "Deterministic HTML-scene renderer, subtitles, narration assembly (prototype)",
+  "name": "milady-2027-film",
+  "version": "2.0.0",
+  "description": "MilaDy 2027 explainer film: deterministic HTML scenes, Fish Audio narration, incremental render (see README.md)",
+  "private": true,
   "scripts": {
-    "build": "node build.js script/demo_script.json",
-    "plan": "node build.js script/demo_script.json --plan",
-    "capture": "node capture.js",
-    "stills": "node stills.js",
-    "bench": "bash bench/run_scaling.sh"
+    "plan": "node build.js --cut extended --plan",
+    "film": "node build.js --cut extended",
+    "draft": "node build.js --cut extended --draft",
+    "test": "bash tools/test_pipeline.sh",
+    "serve": "node tools/server.js 8765"
   },
-  "keywords": [],
-  "author": "",
-  "license": "ISC",
+  "license": "UNLICENSED",
   "dependencies": {
     "gsap": "3.12.5",
     "katex": "0.16.11",
     "three": "0.160.0"
   },
-  "private": true
+  "comment": "The libraries are vendored in vendor/ (nothing is loaded from a CDN at render time). Playwright comes from /opt/node22/lib/node_modules (NODE_PATH)."
 }

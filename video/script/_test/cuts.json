@@ -1,0 +1,16 @@
+{
+  "comment": "Running orders of the pipeline TEST film (same shape as plan/outline.json). Not part of the real film.",
+  "title": "Pipeline test film",
+  "subtitle": "A tiny cut that exercises every feature of the pipeline",
+  "cuts": {
+    "core": {"chapters": ["tc1", "tc2"]},
+    "extensions": {"modules": ["tx"]},
+    "extended": {"scene_order": ["T1.1", "TX.1", "T1.2", "T2.1"]}
+  },
+  "extra_units": [{"unit": "tq", "before": "tc2"}],
+  "chapters": [
+    {"id": "tc1", "scenes": [{"id": "T1.1"}, {"id": "T1.2"}]},
+    {"id": "tc2", "scenes": [{"id": "T2.1"}, {"id": "T2.2", "extended_variant": {"skip": true}}]}
+  ],
+  "modules": [{"id": "tx", "insert_after": "T1.1"}]
+}

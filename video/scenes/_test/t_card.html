@@ -1,0 +1,29 @@
+<!doctype html>
+<html lang="en"><head><meta charset="utf-8">
+<title>Test: question card</title>
+<link rel="stylesheet" href="/runtime/theme.css">
+<script src="/runtime/scene.js"></script>
+<style>
+  #k { position: absolute; left: 200px; top: 250px; color: var(--metric); }
+  #q { position: absolute; left: 200px; top: 300px; width: 1500px; font: 600 64px "Inter Display"; line-height: 1.2; }
+  #w { position: absolute; left: 200px; top: 620px; width: 1400px; color: var(--fg-2); font-size: 30px; line-height: 1.5; }
+</style></head>
+<body><div id="stage"><div id="k" class="mono">Question for the supervisors</div><div id="q"></div><div id="w"></div></div>
+<script>
+/* Pipeline test stand-in for the question-card component: reads entry.question. */
+Scene.define({
+  duration: 8,
+  cues: { q: 0.5 },
+  setup(ctx) {
+    const Q = (window.__ENTRY__ || {}).question || { en: '(no question in the entry)' };
+    document.getElementById('q').textContent = Q.en;
+    document.getElementById('w').innerHTML = `Why: ${Q.why || ''}<br>Unblocks: ${Q.unblocks || ''}<br>Ask: ${Q.ask_who || ''}`;
+  },
+  render(t, ctx) {
+    const c = ctx.cue('q', 0.5);
+    document.getElementById('k').style.opacity = Scene.seg(t, c - 0.4, c);
+    document.getElementById('q').style.opacity = Scene.seg(t, c - 0.2, c + 0.4);
+    document.getElementById('w').style.opacity = Scene.seg(t, c + 1.5, c + 2.2);
+  },
+});
+</script></body></html>

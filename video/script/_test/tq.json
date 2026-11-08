@@ -1,0 +1,50 @@
+{
+  "schema": 2,
+  "unit": "tq",
+  "title": "Before we compute (test)",
+  "cut": "core",
+  "level_range": "L2",
+  "voice": {
+    "provider": "fish",
+    "model": "drama-3",
+    "reference_id": "536d3a5e000945adb7038665781a4aca"
+  },
+  "scenes": [
+    {
+      "id": "T9.1",
+      "title": "Questions, ranked",
+      "file": "scenes/_test/t_title.html",
+      "status": "ready",
+      "level": "L2",
+      "register": "BLUEPRINT",
+      "badge": {
+        "kind": "PLANNED",
+        "confidence": null
+      },
+      "target_s": 4,
+      "deps": [],
+      "entry": {
+        "params": {
+          "heading": "Before we compute",
+          "kicker": "TEST UNIT ch10q"
+        }
+      },
+      "paragraphs": [
+        {
+          "hold_after": 0.0,
+          "sentences": [
+            {
+              "id": "T9.1.s1",
+              "cue": "title",
+              "text": "Three questions decide which runs to rent."
+            }
+          ]
+        }
+      ],
+      "encode": {
+        "crf": 23,
+        "maxrate": "4M"
+      }
+    }
+  ]
+}

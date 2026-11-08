@@ -4,4 +4,6 @@ node_modules/
 audio/cache/
 audio/chunks/
 audio/requests/
+audio/scenes/
+audio/external/
 __pycache__/

@@ -1,0 +1,38 @@
+<!doctype html>
+<html lang="en"><head><meta charset="utf-8">
+<title>Test: empty seat / result</title>
+<link rel="stylesheet" href="/runtime/theme.css">
+<script src="/runtime/scene.js"></script>
+<style>.ax { font: 500 28px Inter; } .tk { font: 500 28px Inter; fill: var(--muted); } .aw { font: 500 26px "JetBrains Mono"; letter-spacing: .07em; fill: var(--muted); }</style>
+</head>
+<body><div id="stage"><svg id="plot" class="full" viewBox="0 0 1920 1080"></svg></div>
+<script>
+/* Pipeline test scene: a PENDING seat (dashed frame, success band, AWAITING tag) that fills itself with
+   the points of entry.data.curve as soon as the data file exists (status provisional). */
+Scene.define({
+  duration: 8,
+  cues: { frame: 0.5, bet: 3 },
+  data: { curve: '/script/_test/data/result.json' },
+  requireData: false,
+  setup(ctx) {
+    const NS = 'http://www.w3.org/2000/svg', svg = document.getElementById('plot'), C = Scene.C;
+    const el = (tag, at) => { const e = document.createElementNS(NS, tag); for (const [k, v] of Object.entries(at)) e.setAttribute(k, v); svg.appendChild(e); return e; };
+    const D = ctx.data.curve;
+    if (!D && ctx.status !== 'pending') throw new Error('missing data for a non-pending scene');
+    const X0 = 300, X1 = 1600, Y0 = 700, Y1 = 180, sx = (x) => X0 + (X1 - X0) * (x - 15) / 5, sy = (y) => (Y0 + Y1) / 2 - y * 2000;
+    ctx.frame = el('rect', { x: X0, y: Y1, width: X1 - X0, height: Y0 - Y1, fill: 'none', stroke: C.muted, 'stroke-width': 2, 'stroke-dasharray': D ? '0' : '12 10' });
+    el('rect', { x: sx(17), y: Y1, width: sx(18) - sx(17), height: Y0 - Y1, fill: C.param, opacity: 0.12 });
+    el('line', { x1: X0, x2: X1, y1: sy(0), y2: sy(0), stroke: C.muted, 'stroke-width': 1.5 });
+    const xl = el('text', { x: (X0 + X1) / 2, y: Y0 + 70, 'text-anchor': 'middle', class: 'ax', fill: C.param }); xl.textContent = ctx.params.x_label || 'x';
+    for (let x = 15; x <= 20; x++) { const tk = el('text', { x: sx(x), y: Y0 + 34, 'text-anchor': 'middle', class: 'tk' }); tk.textContent = x; }
+    ctx.dots = [];
+    if (D) for (const [x, y] of D.points) ctx.dots.push(el('circle', { cx: sx(x), cy: sy(y), r: 11, fill: C.b }));
+    else { const aw = el('text', { x: (X0 + X1) / 2, y: (Y0 + Y1) / 2 - 40, 'text-anchor': 'middle', class: 'aw' }); aw.textContent = 'AWAITING · ABC 64³ THRESHOLD CAMPAIGN'; ctx.aw = aw; }
+  },
+  render(t, ctx) {
+    ctx.frame.style.opacity = Scene.seg(t, ctx.cue('frame', 0.5) - 0.3, ctx.cue('frame', 0.5) + 0.4);
+    ctx.dots.forEach((d, i) => { d.style.opacity = Scene.seg(t, ctx.cue('bet', 3) + 0.25 * i, ctx.cue('bet', 3) + 0.25 * i + 0.3); });
+    if (ctx.aw) ctx.aw.style.opacity = 0.5 + 0.5 * Scene.seg(t, ctx.cue('bet', 3), ctx.cue('bet', 3) + 0.5);
+  },
+});
+</script></body></html>

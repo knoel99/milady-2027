@@ -1,0 +1,793 @@
+{
+ "schema": 2,
+ "unit": "ch11",
+ "title": "Back to the compass",
+ "cut": "core",
+ "level_range": "L5-L0",
+ "voice": {
+  "provider": "fish",
+  "model": "drama-3",
+  "reference_id": "536d3a5e000945adb7038665781a4aca"
+ },
+ "learning_goal": "Separate what was measured from what is bet, and leave with the one-sentence lesson.",
+ "takeaway": "No one can say when the needle will turn, but in models we can learn how often, by enforcing each law where it is true.",
+ "notes": "Closing chapter, L5 → L0, no question card (BRIEF: ch11 closes the film; the questions were gathered in ch10q 'Before we compute', which plays just before, so 11.1's first line, 'Questions first, then computing.', lands right after that list). Chapter card T4 in the 3.4-s lead-in of 11.1 (tiers 0-1 lit, 2-4 dashed, rail at L5); the rail descends L5 → L0 in 11.2, the film's one declared descent. Music: off in 11.1 (L5), full from 11.2 (L0): the bed returns with the compass. STATUS AND RELEASE MODEL (critique H2, BRIEF D4/D5). 11.1 is PENDING, not ready: its right column is a row of empty seats, and its narration has a 'result' variant. 11.2 and 11.3 are READY and their narration is written to stay true when results arrive ('are written as bets', 'the rest of the staircase is still to be computed'), so the outline's results-in variant of the closing paragraph moves from 11.2 to 11.1, where the verdicts are on screen. 11.1 reads ONE aggregate file instead of the six cloud files, because (i) a scene's re-render hash covers only its deps, and (ii) assemble_cut switches to the result variant only when EVERY dep exists: with the six files as deps, the variant would wait for the VKS and DRESDYN consortium data, years away. DATA, TWO NEW FILES requested from the foundation engineer (read-only extraction, no run). (1) data/ch11_measured.json (READY, tools/data_existing.py, from experiences/resultats/e1_gissinger.json, e2_mhd2d.json, e3_abc.json and digest.md): meta.stamp 'DATA · E1–E3 · headline results' (≤ 44 characters); e1 {seeds 2, mirror {asym_C_min 0.0037, asym_C_max 0.0048, floor 0.0040}, distance {A 0.0118, C 0.00257, ratio 4.6}, per_snapshot {E 0.0231, C 0.00257, ratio 9}, rice {model 'C', seed 0, n_per_gamma 20000, far {gamma_min 0.89, percent 14}, near {gamma_min 0.865, gamma_max 0.885, percent 42}, pointwise_max_percent 65}} (rice: the same computation as data/ch09_rice.json check.C, asserting 14 and 42 as in R:883; copy it if that file exists); e2 {seeds 1, grid '32²', dynamo false, divergence {free 0.408, potentials 1.7e-17 (V4 mean of u and B, R:1027)}, crowd {V4 2.58, control 2.52, V5 0.699}, per_snapshot {sigma_ratio 8.64e-4}}; e3 {grid '32³', thresholds [8.87, 17.6, 26.8] (digest.json e3_thresholds), published [8.9, 17.5, 27], published_third_approx true, unresolved_at 17.5, divergence_max 1.52e-16}; caveats ['toy problems', 'interpolation only', 'CPU, 4 cores, no GPU', 'prospective report']. Used by 11.1 (left column) and 11.2 (the rate chip). (2) data/ch11_ledger.json (the BET column; written by tools/data_existing.py or tools/data_cloud.py, refreshed after EVERY data_cloud conversion, ideally by data_cloud.py itself): rows, one per bet of params.bets, matched by id [tier1_check → data/palier1_sweep.json, abc64 → palier2_abc3d.json, tg → palier2_tg3d.json, fm3d → fm3d_eval.json, vks → tier3_vks.json, dresdyn → tier4_dresdyn.json], each {id, scene, file, state: 'awaiting' | the file's own verdict (met | not_met | inconclusive, copied, never recomputed; a file with pending: true counts as awaiting), verdict_text, stamp (the file's meta.stamp), sha8 (first 8 hex of its meta.sha256)}; meta.sources = [{path, sha256}] of every present bet file, so the ledger changes whenever one of them changes (that re-renders 11.1); fields {n_bets 6, n_in, n_met, n_not_met, n_inconclusive, n_awaiting (integers: the build speaks them as words), any_met, any_not_met, any_inconclusive, top_awaiting (booleans; top_awaiting = VKS and DRESDYN both awaiting)}; and pending: true at the root as long as NONE of the three tier-2 files (palier2_abc3d, palier2_tg3d, fm3d_eval) is present: the result narration starts when the first 3D bet is in (the outline's rule), not for the 2D data check alone. Until then 11.1 renders its pending narration, and its lamps still update on screen. Writing the ledger now, with every row 'awaiting' and pending: true, is safe (load_data treats it as missing). BETS: wording, confidence (10.3 high, 10.4 medium, 10.5 medium, 10.7 low, 10.9 low) and tags copied from script/ch10.json; if ch10 changes, update entry.params.bets of 11.1. CHANGES AGAINST THE OUTLINE, to review: (1) 11.1 pending with a result variant (above); 11.2 ready and timeless, 'You have seen the bets' and 'still ahead' dropped. (2) 11.2 opens on the two questions of 00.4 and scopes 'when': Earth through NOAA NCEI (CONTEXT, reference chip, the ch00 source) and the three-mode model through P4:1627, never 'the dynamos we can compute' (critique B2; ch00 says 'a simple computer model'). (3) 'Read with the equations' added to the shoebox line: Rice needs the right-hand side (pitfall P15). (4) Montage motifs: barcode, whirlpools, toll counter, shoebox, violet cloud, mirror, rate chart, stiff sheet, staircase; the threads of ch02 are dropped (no closing sentence about stretching) and the amber histogram moves to the third lesson line. (5) 11.3 gets one spoken sentence pair and a 3-s silent tail for reading; the disclaimer text is composed from H:45, R:51, R:59 and T:57 (D14 says 'as drafted in the outline', which gives only the 03.7 lower-third). SYMBOL SHEET: crossing rate on screen, 'rate of zero crossings' in narration (B16); s for growth rate; Γ, η, Rm, Pm, Po green; 'distribution distance' amber, never 'energy distance'; no μ or ν; model C, seed 0 on every Rice number. LEXICON: no new word (no acronym is spoken). Words budgeted with the assembler formula (146 raw words per minute, 0.9 s per paragraph break, holds, lead-in and tail); effective pace 125-131 words per minute on 11.1 and 11.2; 11.3 is deliberately slower (reading tail).",
+ "scenes": [
+  {
+   "id": "11.1",
+   "was": "C10.1",
+   "title": "Measured, and bet",
+   "file": "scenes/ch11/11_1_measured_and_bet.html",
+   "status": "pending",
+   "level": "L5",
+   "register": "NIGHT",
+   "badge": {
+    "kind": "MEASURED",
+    "confidence": null,
+    "note": "left: E1–E3 · CPU · right: bets (CONJECTURE)"
+   },
+   "target_s": 35,
+   "lead_in": 3.4,
+   "tail": 1.0,
+   "deps": [
+    "data/ch11_ledger.json",
+    "data/ch11_measured.json"
+   ],
+   "entry": {
+    "data": {},
+    "params": {
+     "chapter_card": {
+      "num": "11",
+      "title": "Back to the compass",
+      "level": "L5",
+      "levelFrom": "L5",
+      "tier": 1,
+      "pending": [
+       2,
+       3,
+       4
+      ],
+      "at": 0.2,
+      "out": "first-0.4"
+     },
+     "tickets": [
+      "RUNS",
+      "FRAMING",
+      "LOGISTICS"
+     ],
+     "columns": {
+      "left": {
+       "x0": 120,
+       "x1": 920,
+       "y0": 150,
+       "y1": 860
+      },
+      "right": {
+       "x0": 1000,
+       "x1": 1800,
+       "y0": 150,
+       "y1": 860
+      },
+      "divider_x": 960
+     },
+     "measured_rows": [
+      {
+       "id": "e1",
+       "title": "three dials (E1)",
+       "glyph": "three-dials",
+       "lines": [
+        "mirror",
+        "per_snapshot",
+        "rice"
+       ],
+       "chip": "2 seeds · rate: model C, seed 0"
+      },
+      {
+       "id": "e2",
+       "title": "flat sheet (E2)",
+       "glyph": "flat-sheet",
+       "lines": [
+        "divergence",
+        "crowd",
+        "per_snapshot"
+       ],
+       "chip": "1 seed · 32² · not a dynamo"
+      },
+      {
+       "id": "e3",
+       "title": "twisting box (E3)",
+       "glyph": "box",
+       "lines": [
+        "thresholds",
+        "divergence"
+       ],
+       "chip": "32³ · kinematic · sign at 17.5 unresolved"
+      }
+     ],
+     "bets": [
+      {
+       "id": "tier1_check",
+       "tier": 1,
+       "scene": "10.3",
+       "name": "tier 1 · flat sheet, first campaign",
+       "bet": "check: mean dissipation = injection, within 5 % at every {param}η{/}",
+       "confidence": "high",
+       "tag": "palier1_sweep",
+       "file": "data/palier1_sweep.json"
+      },
+      {
+       "id": "abc64",
+       "tier": 2,
+       "scene": "10.4",
+       "name": "tier 2 · twisting box at 64³",
+       "bet": "s(17) > 0 > s(18), long and late fits agreeing",
+       "confidence": "medium",
+       "tag": "palier2_abc3d",
+       "file": "data/palier2_abc3d.json"
+      },
+      {
+       "id": "tg",
+       "tier": 2,
+       "scene": "10.5",
+       "name": "tier 2 · Taylor–Green dynamo",
+       "bet": "a threshold in {param}Rm{/} bracketed at ≥ 2 values of {param}Pm{/}",
+       "confidence": "medium",
+       "tag": "palier2_tg3d",
+       "file": "data/palier2_tg3d.json"
+      },
+      {
+       "id": "fm3d",
+       "tier": 2,
+       "scene": "10.7",
+       "name": "tier 2 · 3D generator",
+       "bet": "energy spectra within 0.1 decade at the training settings",
+       "confidence": "low",
+       "tag": "fm3d_eval",
+       "file": "data/fm3d_eval.json"
+      },
+      {
+       "id": "vks",
+       "tier": 3,
+       "scene": "10.9",
+       "name": "tier 3 · VKS cylinder",
+       "bet": "4 POD energy shares within 10 % · Rice rate in the 95 % Poisson interval",
+       "confidence": "low",
+       "tag": "tier3_vks",
+       "file": "data/tier3_vks.json"
+      },
+      {
+       "id": "dresdyn",
+       "tier": 4,
+       "scene": "10.9",
+       "name": "tier 4 · DRESDYN",
+       "bet": "{param}Rm{/}_c within 10 % and right symmetry at an unseen {param}Po{/}",
+       "confidence": "low",
+       "tag": "tier4_dresdyn",
+       "file": "data/tier4_dresdyn.json"
+      }
+     ],
+     "confidence_pips": {
+      "high": 3,
+      "medium": 2,
+      "low": 1
+     },
+     "deal_s": 0.35,
+     "note": "bet texts and confidences mirror script/ch10.json (10.3 high, 10.4 medium, 10.5 medium, 10.7 low, 10.9 low): keep them in sync; every result number on the left comes from data/ch11_measured.json; every verdict on the right comes from data/ch11_ledger.json rows (copied from the converters' outputs, never computed here)"
+    }
+   },
+   "sfx": [
+    "whoosh@0.1",
+    "pop@bets+0.2",
+    {
+     "id": "pop",
+     "cue": "lights",
+     "offset": 0.3,
+     "gain_db": -28
+    }
+   ],
+   "paragraphs": [
+    {
+     "hold_after": 0.0,
+     "sentences": [
+      {
+       "id": "11.1.s1",
+       "cue": "first",
+       "text": "Questions first, then computing."
+      },
+      {
+       "id": "11.1.s2",
+       "cue": "columns",
+       "text": "Here is what those questions rest on, in two columns."
+      },
+      {
+       "id": "11.1.s3",
+       "cue": "measured",
+       "text": "On the left, what three small experiments measured on an ordinary processor, with one or two training seeds."
+      },
+      {
+       "id": "11.1.s4",
+       "cue": "limits",
+       "text": "Toy problems, and machines tested only between the settings they were trained on."
+      }
+     ]
+    },
+    {
+     "hold_after": 0.0,
+     "sentences": [
+      {
+       "id": "11.1.s5",
+       "cue": "bets",
+       "text": "On the right, what the staircase bets, each with the rule that will settle it."
+      },
+      {
+       "id": "11.1.s6",
+       "cue": "lights",
+       "text": "Each light shows a verdict only once its data file arrives, and the film is updated with it."
+      }
+     ]
+    }
+   ],
+   "onscreen": {
+    "title": "Back to the compass",
+    "labels": [
+     "CHAPTER 11",
+     "Back to the compass",
+     "LEVEL L5",
+     "RUNS",
+     "FRAMING",
+     "LOGISTICS",
+     "MEASURED",
+     "small experiments · CPU",
+     "BET",
+     "written before the data · CONJECTURE",
+     "three dials (E1)",
+     "built-in mirror: balanced at every Γ · distribution distance ÷ 4.6 vs plain",
+     "forced on each snapshot: distance × 9",
+     "crossing rate, cumulative error: 14 % far from the threshold · 42 % near it",
+     "flat sheet (E2)",
+     "divergence 0.41 free → 10⁻¹⁷ with hill maps",
+     "crowd loss: distance 2.58 → 0.70 · control 2.52",
+     "forced on each snapshot: dissipation spread → 0",
+     "twisting box (E3)",
+     "thresholds 8.87 · 17.6 · 26.8 · published 8.9 · 17.5 · about 27",
+     "divergence ≤ 1.5 × 10⁻¹⁶",
+     "tier 1 · flat sheet, first campaign",
+     "tier 2 · twisting box at 64³",
+     "tier 2 · Taylor–Green dynamo",
+     "tier 2 · 3D generator",
+     "tier 3 · VKS cylinder",
+     "tier 4 · DRESDYN",
+     "check: mean dissipation = injection, within 5 % at every η",
+     "s(17) > 0 > s(18), long and late fits agreeing",
+     "a threshold in Rm bracketed at ≥ 2 values of Pm",
+     "energy spectra within 0.1 decade at the training settings",
+     "4 POD energy shares within 10 % · Rice rate in the 95 % Poisson interval",
+     "Rm_c within 10 % and right symmetry at an unseen Po",
+     "CONFIDENCE",
+     "DATA · palier1_sweep · AWAITING",
+     "DATA · palier2_abc3d · AWAITING",
+     "DATA · palier2_tg3d · AWAITING",
+     "DATA · fm3d_eval · AWAITING",
+     "DATA · tier3_vks · AWAITING",
+     "DATA · tier4_dresdyn · AWAITING",
+     "MET",
+     "NOT MET",
+     "INCONCLUSIVE",
+     "→ what to ask before computing: chapter “Before we compute”"
+    ],
+    "formulas": [],
+    "chips": [
+     "questions first · chapter “Before we compute”",
+     "2 seeds · rate: model C, seed 0",
+     "1 seed · 32² · not a dynamo",
+     "32³ · kinematic · sign at 17.5 unresolved",
+     "toy problems · interpolation only · CPU, 4 cores, no GPU · prospective report"
+    ]
+   },
+   "visual": "Render class flat (DOM/SVG). Data, declared in Scene.define: ledger = {url: 'data/ch11_ledger.json', optional: true} and measured = 'data/ch11_measured.json' (both NEW, specified in the unit notes). The ledger may be absent or carry pending: true: every bet then shows AWAITING. No number typed in the scene: every result on the left is read from ctx.data.measured and formatted with Kit.fmt (U+2212 minus, × 10ⁿ); the criteria on the right are script text (entry.params.bets, Kit.markup for the green knob symbols); every verdict is read from the ledger, never computed. Key colours: green (Γ, η, Rm, Pm, Po through markup), amber (the words 'distribution distance' and 'crossing rate'), violet only on the 'model C' chip; result numbers in --fg; at most three key colours in the frame. LEAD-IN (3.4 s, no voice): Kit.chapterCard(ctx, params.chapter_card): number 11, title 'Back to the compass', staircase tiers 0-1 lit and 2-4 dashed (tier 2 carries only the E3 preview), rail at L5 without moving (the descent to L0 is in 11.2); whoosh at 0.1. Music is off (L5): it returns in 11.2. P1. On 'first-0.15' (the voice lands right after the question list of ch10q): three small ticket outlines in the question-card shape (150 × 84, --fg-2 outline, stubs RUNS, FRAMING, LOGISTICS in mono 28 via Kit.upper) fan in at top-left (x 120-640, y 64-150), then fold into one plain chip 'questions first · chapter “Before we compute”' that stays there. On 'columns-0.15': a chalk divider draws top to bottom at x 960 (y 150-860, 0.6 s); headers type in: left 'MEASURED' as a measured pill (Kit.chip kind 'measured') with the sub-line 'small experiments · CPU' (28, --fg-2); right 'BET' in a grey dashed outline with the sub-line 'written before the data · CONJECTURE' (28) and, at the column's right edge, the mono label CONFIDENCE over the pip column. On 'measured-0.15': three cards deal in on the left (params.measured_rows, 0.5 s apart; --panel fill, about 190 px high, 16 px gaps): a 64-px grey glyph (three small dials; a flat square sheet with a faint vermillion contour; a wireframe box), the title (32, semibold) and up to three result lines (30 px, Kit.fit, never below 28): E1 'built-in mirror: balanced at every Γ · distribution distance ÷ 4.6 vs plain' (measured.e1.mirror, measured.e1.distance.ratio), 'forced on each snapshot: distance × 9' (measured.e1.per_snapshot.ratio), 'crossing rate, cumulative error: 14 % far from the threshold · 42 % near it' (measured.e1.rice); E2 'divergence 0.41 free → 10⁻¹⁷ with hill maps' (measured.e2.divergence), 'crowd loss: distance 2.58 → 0.70 · control 2.52' (measured.e2.crowd), 'forced on each snapshot: dissipation spread → 0' (measured.e2.per_snapshot); E3 'thresholds 8.87 · 17.6 · 26.8 · published 8.9 · 17.5 · about 27' (measured.e3), 'divergence ≤ 1.5 × 10⁻¹⁶' (measured.e3.divergence_max). Each card ends with its caveat chip (plain, mono 28, bottom-right of the card: params.measured_rows[i].chip). On 'limits-0.15': under the left column (y 800-860) one plain chip 'toy problems · interpolation only · CPU, 4 cores, no GPU · prospective report' (text from measured.caveats) and the pen (M9) underlines 'interpolation only'. P2. On 'bets-0.15': six bet rows deal in on the right (x 1000-1800, y 200-800, params.deal_s apart), top to bottom from tier 1 to tier 4, from params.bets: a small grey step glyph with the tier number (the M7 staircase in miniature; the three tier-2 rows share one taller step), the name (32, semibold), the bet (28, --fg-2, markup), confidence pips at the right (three pips, filled per params.confidence_pips), and the grey data tag 'DATA · <tag> · AWAITING' (mono 28) with a lamp drawn in the Kit.seat lamp style (dashed empty circle, r 22). Row height about 96 px; if a row overflows 800 px, the tag moves to a third line and the rows tighten, never below 28 px. On 'lights-0.15': the lamps pulse once top to bottom (0.15 s apart). For every row whose ledger row (ctx.data.ledger.rows, matched by id) has state met, not_met or inconclusive, the lamp takes the seat's result marks (filled --fg disc with a check; a cross; a question mark), the tag becomes the row's stamp and the first 8 hex digits of its SHA-256 (row.stamp, row.sha8) and the word AWAITING becomes MET, NOT MET or INCONCLUSIVE (row.state, Kit.upper); rows still awaiting stay dashed. Then a plain chip under the right column (y 820-860): '→ what to ask before computing: chapter “Before we compute”'. Result variant only: the cues 'met', 'failed', 'open' and 'top' exist only when their sentence is kept, so test ctx.script.cues before ctx.at; on each, the rows in that state (met, not_met, inconclusive; on 'top' the VKS and DRESDYN rows) brighten for 1.2 s while the others dim to 50 %. When the status is provisional, the runtime adds the PROVISIONAL DATA stamp with the ledger's stamp: keep the top-centre strip clear for it. Badge MEASURED top-right from 'columns' (note from the script). No corner needle (D is not on screen), no lower-third, no formula layer: the caveat chips carry the provenance. Never more than 3 s of stillness: the lamps breathe faintly (opacity 85-100 %) after 'lights'.",
+   "assets": [],
+   "sources": [
+    "en/index.qmd:80-87 (what the experiments show: E1, E2, E3 headline numbers; CPU, no GPU)",
+    "en/rapport/index.qmd:78 (abstract: equivariance divides the energy distance at test values by 4.6; per-sample projection multiplies it by 9; Rice 14 % for Γ ≥ 0.89, up to 65 % at one value, 42 % near the threshold; free divergence 0.41; stationarity loss 2.58 → 0.70; thresholds 8.87, 17.6, 26.8; divergence of order 10⁻¹⁶)",
+    "en/rapport/index.qmd:873 (model C at the asymmetry floor at every Γ, 0.0037 to 0.0048 against 0.0040: 'balanced at every Γ')",
+    "en/rapport/index.qmd:881 (per-sample projection: energy distance × 9, 0.0231 against 0.00257)",
+    "en/rapport/index.qmd:883 (Rice on model C, seed 0, 20,000 samples per value: cumulative error 14 % for Γ ≥ 0.89, 42 % near the threshold)",
+    "en/rapport/index.qmd:1023 (free generation: relative divergence 0.408) and :1027 (potentials V4: 1.7 × 10⁻¹⁷)",
+    "en/rapport/index.qmd:1031 (stationarity loss V5: energy distance 0.699 against 2.58 for V4 and 2.52 for its control run)",
+    "en/rapport/index.qmd:1035 (per-sample rescaling: σ(D)/σ_ref = 8.64 × 10⁻⁴, the dissipation becomes a Dirac)",
+    "en/rapport/index.qmd:1099, :1112, :1114, :1127 (E3 thresholds 8.87, 17.6, 26.8 against published 8.9, 17.5, about 27; sign at 17.5 unresolved) and :1118 (divergence 3 × 10⁻¹⁹ to 1.52 × 10⁻¹⁶)",
+    "en/rapport/index.qmd:57 (4-core processor without a GPU, toy models), :745 (E1 two seeds, E2 one seed), :743 and :1179 (unseen test values interleaved between training values; interpolation only; toy test benches), :51 (prospective)",
+    "experiences/resultats/digest.md (E1 test-Γ table: A 0.0118, C 0.00257, E 0.0231; E3 thresholds) via data/digest.json",
+    "en/these/index.qmd:903 (tier 1 criteria), :917 (tier 2 criterion (b): log-spectrum error < 0.1 decade at the training parameters), :938 (VKS: four POD energy fractions within 10 %, Rice in the 95 % Poisson interval), :952 (DRESDYN: Rm_c within 10 % and correct symmetry class at a Po without data)",
+    "script/ch10.json 10.3-10.9 (the bets, their wording, confidences high / medium / medium / low / low / low and data tags; 10.3 is a data check, not a criterion of the PhD plan)",
+    "BRIEF D17 (Bet 1 stated as s(17) > 0 > s(18)), D5 (re-render the affected scenes and publish a v2 when the results arrive), section 3.4 (honesty badges)",
+    "tools/data_cloud.py (each converter writes verdict met | not_met | inconclusive, verdict_text, meta.stamp and sha256; outputs palier1_sweep, palier2_abc3d, palier2_tg3d, fm3d_eval, tier3_vks, tier4_dresdyn)",
+    "plan/critique_pedagogy.md H2 (closing scenes depend on every regenerable file), E9 (recaps: keep this one lean)"
+   ],
+   "variants": {
+    "result": {
+     "data_fields": [
+      "n_in",
+      "n_bets"
+     ],
+     "paragraphs": [
+      {
+       "hold_after": 0.0,
+       "sentences": [
+        {
+         "id": "11.1.s1",
+         "cue": "first",
+         "text": "Questions first, then computing."
+        },
+        {
+         "id": "11.1.s2",
+         "cue": "columns",
+         "text": "Here is what those questions rest on, in two columns."
+        },
+        {
+         "id": "11.1.s3",
+         "cue": "measured",
+         "text": "On the left, what three small experiments measured on an ordinary processor, with one or two training seeds."
+        },
+        {
+         "id": "11.1.s4",
+         "cue": "limits",
+         "text": "Toy problems, and machines tested only between the settings they were trained on."
+        }
+       ]
+      },
+      {
+       "hold_after": 0.0,
+       "sentences": [
+        {
+         "id": "11.1.s5",
+         "cue": "bets",
+         "text": "On the right, the bets, each with a rule written first."
+        },
+        {
+         "id": "11.1.s6",
+         "cue": "lights",
+         "text": "Bets with data so far: {{n_in}} of {{n_bets}}."
+        },
+        {
+         "id": "11.1.s7",
+         "cue": "met",
+         "text": "Rules met: {{n_met}}.",
+         "when": "any_met"
+        },
+        {
+         "id": "11.1.s8",
+         "cue": "failed",
+         "text": "Rules missed: {{n_not_met}}.",
+         "when": "any_not_met"
+        },
+        {
+         "id": "11.1.s9",
+         "cue": "open",
+         "text": "Still undecided: {{n_inconclusive}}.",
+         "when": "any_inconclusive"
+        },
+        {
+         "id": "11.1.s10",
+         "cue": "top",
+         "text": "The top two steps still await the partners' data.",
+         "when": "top_awaiting"
+        }
+       ]
+      }
+     ]
+    }
+   },
+   "question": null
+  },
+  {
+   "id": "11.2",
+   "was": "C10.2",
+   "title": "The compass again",
+   "file": "scenes/ch11/11_2_the_compass_again.html",
+   "status": "ready",
+   "level": "L0",
+   "register": "NIGHT",
+   "badge": {
+    "kind": "MEASURED",
+    "confidence": null,
+    "note": "E1–E3 · toy problems · Earth: NOAA NCEI"
+   },
+   "target_s": 70,
+   "lead_in": 0.8,
+   "tail": 3.0,
+   "deps": [
+    "data/ch11_measured.json",
+    "data/e1_finegrid.json",
+    "data/e1_samples_0.93.json"
+   ],
+   "entry": {
+    "data": {},
+    "params": {
+     "normal_Ma": [
+      [
+       0.0,
+       0.78
+      ],
+      [
+       0.99,
+       1.07
+      ],
+      [
+       1.201,
+       1.211
+      ],
+      [
+       1.77,
+       1.95
+      ],
+      [
+       2.14,
+       2.15
+      ],
+      [
+       2.581,
+       3.04
+      ],
+      [
+       3.11,
+       3.22
+      ],
+      [
+       3.33,
+       3.58
+      ],
+      [
+       4.18,
+       4.29
+      ],
+      [
+       4.48,
+       4.62
+      ],
+      [
+       4.8,
+       4.89
+      ],
+      [
+       4.98,
+       5.23
+      ]
+     ],
+     "polarity_source": "same intervals as 00.3 (Cande and Kent 1995, composite GPTS of Gee and Kent 2007, Tauxe Table 15.1); no axis numbers here",
+     "montage_box": {
+      "x0": 360,
+      "x1": 1560,
+      "y0": 180,
+      "y1": 780
+     },
+     "chaos": {
+      "gamma": 0.93,
+      "dt": 0.01,
+      "transient_units": 600,
+      "delta": 0.001,
+      "units_per_s": 24,
+      "trail_units": 40,
+      "seed": 11
+     },
+     "cloud": {
+      "variant": "C_equivariant",
+      "n": 2000,
+      "strings": 80,
+      "range": "from the data, symmetric"
+     },
+     "shoebox": {
+      "variant": "ref",
+      "photos": 12,
+      "seed": 7
+     },
+     "histogram": {
+      "variant": "C_equivariant",
+      "field": "dEdt",
+      "bins": 31
+     },
+     "rate_chart": {
+      "series": [
+       "simulation (counted crossings)",
+       "Rice, generated (model C)"
+      ]
+     },
+     "staircase": {
+      "lit": 1,
+      "pending": [
+       2,
+       3,
+       4
+      ],
+      "labels": [
+       "three numbers",
+       "a flat sheet",
+       "a periodic box",
+       "the VKS cylinder",
+       "a precessing cylinder"
+      ]
+     },
+     "rail": {
+      "from": "L5",
+      "to": "L0",
+      "at": "compass",
+      "hold": 4
+     },
+     "note": "Γ = 0.93 is the setting of 04.5-04.7 and a test value (never trained on), so the generated cloud sits 'between the simulated settings'; chips read ctx.data.measured.e1.rice"
+    }
+   },
+   "sfx": [
+    {
+     "id": "tick",
+     "cue": "often",
+     "offset": 0.7,
+     "gain_db": -24
+    },
+    {
+     "id": "tick",
+     "cue": "often",
+     "offset": 1.5,
+     "gain_db": -24
+    },
+    {
+     "id": "tick",
+     "cue": "often",
+     "offset": 2.4,
+     "gain_db": -24
+    },
+    {
+     "id": "hiss",
+     "cue": "cloud",
+     "offset": 0.1,
+     "dur": 1.6,
+     "gain_db": -30
+    }
+   ],
+   "paragraphs": [
+    {
+     "hold_after": 0.5,
+     "sentences": [
+      {
+       "id": "11.2.s1",
+       "cue": "compass",
+       "text": "Back to the compass, and to the two questions."
+      }
+     ]
+    },
+    {
+     "hold_after": 0.4,
+     "sentences": [
+      {
+       "id": "11.2.s2",
+       "cue": "when",
+       "text": "When will this needle turn?"
+      },
+      {
+       "id": "11.2.s3",
+       "cue": "earth",
+       "text": "For the Earth, no one can say yet."
+      },
+      {
+       "id": "11.2.s4",
+       "cue": "chaos",
+       "text": "In a simple computer model, chaos erases the memory of the present too fast."
+      },
+      {
+       "id": "11.2.s5",
+       "cue": "often",
+       "text": "But it does answer {metric}how often{/} it flips, counted as crossings of zero."
+      },
+      {
+       "id": "11.2.s6",
+       "cue": "shoebox",
+       "text": "The answer hides in a shoebox of snapshots, read with the equations."
+      },
+      {
+       "id": "11.2.s7",
+       "cue": "cloud",
+       "text": "And a {model}machine{/} can learn to dream such snapshots, between the simulated settings."
+      }
+     ]
+    },
+    {
+     "hold_after": 0.6,
+     "sentences": [
+      {
+       "id": "11.2.s8",
+       "cue": "partly",
+       "text": "On small test problems, it partly works."
+      },
+      {
+       "id": "11.2.s9",
+       "cue": "mirror",
+       "text": "The mirror holds by construction, at every setting."
+      },
+      {
+       "id": "11.2.s10",
+       "cue": "rate",
+       "text": "On three dials, the {metric}rate of zero crossings{/} is roughly right far from the tipping point, and poor right at it."
+      },
+      {
+       "id": "11.2.s11",
+       "cue": "steep",
+       "text": "A smooth machine cannot follow a steep change."
+      },
+      {
+       "id": "11.2.s12",
+       "cue": "bets",
+       "text": "The bigger tests, in three dimensions and in the shapes of real machines, are written as bets."
+      }
+     ]
+    },
+    {
+     "hold_after": 0.0,
+     "sentences": [
+      {
+       "id": "11.2.s13",
+       "cue": "lesson",
+       "text": "One lesson remains."
+      },
+      {
+       "id": "11.2.s14",
+       "cue": "where",
+       "text": "Enforce each law where it is true."
+      },
+      {
+       "id": "11.2.s15",
+       "cue": "exact",
+       "text": "Exactly, where it is exact."
+      },
+      {
+       "id": "11.2.s16",
+       "cue": "average",
+       "text": "{metric}On average{/}, where it only holds on average."
+      }
+     ]
+    }
+   ],
+   "onscreen": {
+    "title": "",
+    "labels": [
+     "When will it flip next?",
+     "How often does it flip?",
+     "seafloor record · no schedule",
+     "two starts, a hair apart",
+     "crossings of zero",
+     "no clock",
+     "between the simulated settings",
+     "E1",
+     "E2",
+     "E3",
+     "Γ",
+     "counted",
+     "generated",
+     "too early",
+     "too low",
+     "three numbers",
+     "a flat sheet",
+     "a periodic box",
+     "the VKS cylinder",
+     "a precessing cylinder",
+     "BET · rule written first",
+     "Enforce each law where it is true.",
+     "Exactly, where it is exact.",
+     "On average, where it only holds on average."
+    ],
+    "formulas": [],
+    "chips": [
+     "for Earth: no one can say when yet · NOAA NCEI",
+     "REFERENCE · NOAA NCEI · polarity ages: Cande & Kent 1995",
+     "three-mode model (Gissinger 2012)",
+     "generated · model C",
+     "toy problems · CPU",
+     "built in · Proposition 4",
+     "GENERATED",
+     "cumulative error: 14 % far from the threshold · 42 % near it · model C, seed 0",
+     "SCHEMATIC"
+    ]
+   },
+   "visual": "Render class webgl for the compass shots only (P1, 'when', P4), flat or dense 2D for the montage in between: the Three.js compass of 00.1 (same model, same framing, matte grey body, vermillion north tip, no hand: critique G3) stops rendering and is hidden from 'chaos-0.4' to 'lesson-0.6' (give it an out and an in, so the WebGL cost covers about 20 s, not 70). Data: measured = data/ch11_measured.json (chips), e1 = data/e1_finegrid.json (config for the whirlpools, the two series and the threshold for the rate chart), s093 = data/e1_samples_0.93.json (variants.ref.x for the shoebox photos, variants.C_equivariant.x for the cloud and the mirror, variants.C_equivariant.dEdt for the histogram; meta.stamp). No number typed in the scene. Montage grammar (critique G6): one motif per sentence, 3 to 4 s or the sentence's length, inside params.montage_box; the previous motif leaves in 0.2 s as the next one cuts in (no blur crossfade); at most three key colours per motif; music at full level (L0) from the first frame, rising out of the silence of 11.1 (the bed's 3-s crossfade). P1. Lead-in (0.8 s): black, then the compass fades up; the needle swings in from east and settles on north (Kit.needle, corner false, Scene.spring, at most 3 % overshoot), then idles with a faint wobble. On 'compass-0.15': the two cards of 00.4 slide in small under the compass (each about 520 × 130, y 720-850): left 'When will it flip next?' with the grey clock icon, right 'How often does it flip?' with amber tally marks; the rail (M8, Kit.rail(params.rail)) shows in the left gutter and descends L5 → L0 over 4 s, the film's one declared descent (pedagogy rule 1). P2. On 'when-0.15': the left card lights; a translucent ghost needle (30 %) starts to swing toward south and fades halfway, while the real needle stays on north (callback to the ghost needles of 00.1). On 'earth-0.15': the compass slides to the top-left and shrinks (it stays there, small, until 'chaos-0.4'); the polarity strip of 00.3 draws in across the box (Kit.barcode built from params.normal_Ma exactly as in 00.3, two vermillion shades, NO axis and no numbers) with the chalk label 'seafloor record · no schedule'; the plain chip 'for Earth: no one can say when yet · NOAA NCEI' (the ch00 chip, verbatim) sits under the strip, and the reference lower-third 'Reference' / 'NOAA NCEI · polarity ages: Cande & Kent 1995' shows for 4 s (BRIEF D7). On 'chaos-0.15': the whirlpools of 04.2: the three-mode model integrated in the scene as in 04.2 (Scene.stepper, RK4, params.chaos.dt, coefficients from ctx.data.e1.config, Γ = params.chaos.gamma, pre-integrated onto the attractor in setup); two runs start params.chaos.delta apart, one --fg and one --silver, with short trails; they trace the same loops, then visibly part within about two loops; chalk label 'two starts, a hair apart'; plain chip 'three-mode model (Gissinger 2012)'. No axes and no D label, so no corner needle. The 'When' card comes back small at the top-left and dims to 40 % with a dashed border. On 'often-0.15': the toll counter of 05.1 in miniature (road, chalk line, grey cars crossing it, the counter clicking up: three ticks from the script sfx), chalk label 'crossings of zero'; the 'How often' card returns small at the top-right, lights amber, and the pen (M9) underlines 'How often'. On 'shoebox-0.15': the shoebox of 04.6, reused as is (scenes/_shared if it was moved there): params.shoebox.photos three-dial photos, their readings from s093.variants.ref.x (seeded picks), drop into the open grey box in shuffled order; chalk label 'no clock'. On 'cloud-0.15': the photos dissolve into points; a seeded round violet Gaussian flows along params.cloud.strings straight strings (Kit.cloud) onto the generated (Q, D) cloud at Γ = 0.93 (s093.variants.C_equivariant.x, first params.cloud.n points, Q across and D up, no axes); under it a green ruler with five filled dots (simulated settings) and the pointer landing on an open dot between two of them (schematic, no numbers); violet chip 'generated · model C' and the label 'between the simulated settings'; a soft granular hiss (script sfx). P3. On 'partly-0.15': the cloud shrinks to the left; three small grey bench glyphs in a row (three dials, a flat sheet, a wireframe box; 160 px) with the labels 'E1', 'E2', 'E3' and the plain chip 'toy problems · CPU'. On 'mirror-0.15': the violet cloud returns at centre; Kit.mirror({mode: 'point'}) sends it through the origin (S: (Q, D) → (−Q, −D), a point reflection, never a line mirror): the reflected copy lands on the cloud itself; a small polarity balance (the 07.1 glyph, two pans in the two vermillion shades) levels; chip 'built in · Proposition 4'. On 'rate-0.15': the 09.1 chart in miniature (Kit.plot in the montage box, y1 ≤ 640): x axis 'Γ' in green with the threshold band (e1.threshold) and no tick numbers, counted crossings solid --b ('simulation (counted crossings)', label 'counted'), Rice on generated snapshots dashed amber with the violet GENERATED chip ('Rice, generated (model C)', label 'generated'), both read from params.rate_chart.series; the area between the curves shaded amber at 20 %; at the end of the words 'far from the tipping point' (word timing from ctx.script.sentences; fallback 'rate+2.6') a bracket over the right part, and at the sentence's end a bracket at the threshold; then the chip 'cumulative error: 14 % far from the threshold · 42 % near it · model C, seed 0' (numbers from measured.e1.rice). On 'steep-0.15': the 09.3 metaphor glyph replaces the chart: a violet stiff sheet that rounds the corner of a steep amber ramp, labels 'too early' and 'too low', grey dashed SCHEMATIC chip. On 'bets-0.15': the staircase (M7, Kit.staircase(params.staircase)) with the 03.7 tier labels: tiers 0-1 lit, tier 2 with the faint E3 preview mark, tiers 2-4 dashed, each upper step tagged with a grey dashed 'BET · rule written first' (no AWAITING tag: this scene stays true when results arrive; the verdicts live in 11.1). P4. On 'lesson-0.6': every motif clears in 0.5 s; the clean compass returns at left-centre (x 300-900), WebGL, needle on north, idle breathing. On 'where-0.15': line 1 'Enforce each law where it is true.' (Inter Display 60, --fg) types in at the right (x 980-1800, y about 300). On 'exact-0.15': line 2 'Exactly, where it is exact.' (44) with a small single-card glyph in a solid --chalk outline (the 'exact' tag of 00.4 and the per-snapshot shelf of 07.1, never blue). On 'average-0.15': line 3 'On average, where it only holds on average.' (44, 'On average' in amber) with the amber stack-of-cards glyph and a small amber histogram (M5, Kit.histogram, values s093.variants.C_equivariant.dEdt, params.histogram.bins, no axis numbers) whose bars breathe while its width stays put: the histogram that keeps its width. Tail (3.0 s): hold; the needle gives one faint tremor of about 2 degrees and settles on north again (no flip: no one can say when). Badge MEASURED top-right from 'partly' to 'bets' only (hidden over the compass and the lesson, which make no new claim).",
+   "assets": [
+    "assets/interactif/gissinger.js"
+   ],
+   "sources": [
+    "external: NOAA National Centers for Environmental Information, Geomagnetism frequently asked questions (accessed 2026-11-08): 'we cannot state for certain if or when a magnetic reversal will occur', https://www.ncei.noaa.gov/products/geomagnetism-frequently-asked-questions (formerly https://www.ngdc.noaa.gov/geomag/faqgeom.shtml)",
+    "external: Cande S. C. and Kent D. V. 1995, Revised calibration of the geomagnetic polarity timescale for the Late Cretaceous and Cenozoic, J. Geophys. Res. 100(B4), 6093-6095, https://doi.org/10.1029/94JB03098 (the polarity strip of 00.3, intervals as in script/ch00.json 00.3)",
+    "en/prep/p4-systemes-dynamiques/index.qmd:1627 (three-mode model: Lyapunov time about 11 against more than 100 between zero crossings; impossible to predict when, possible to predict how often, from the distribution alone)",
+    "en/rapport/index.qmd:883 (Rice counts zero crossings of D; on the reference distribution 4 to 6 %; on model C, seed 0: cumulative error 14 % for Γ ≥ 0.89, 42 % near the threshold)",
+    "en/these/index.qmd:66 (Rice gives the frequency of zero crossings of the dipole from the stationary distribution and from the right-hand side of the equations, computable on a snapshot: 'read with the equations')",
+    "en/rapport/index.qmd:873 (equivariant model C at the asymmetry floor at every value of Γ, as Proposition 4 guarantees) and :397-412 (Proposition 4, exact symmetry through equivariance)",
+    "en/rapport/index.qmd:743 (test values interleaved between training values: 'between the simulated settings'), :1179 (interpolation only, toy test benches)",
+    "en/rapport/index.qmd:1135 (P1: a generator regular in Γ delays the onset then overshoots; 14 % far from the threshold against 42 % near it; Proposition 9)",
+    "en/these/index.qmd:68 (five tiers up to VKS and DRESDYN) and script/ch10.json 10.9 ('the top steps model the real machines')",
+    "en/rapport/index.qmd:1199 (central thesis: a constraint must be enforced where it is true; local constraints exactly, symmetries and stationarity identities on the distribution) and :577",
+    "plan/critique_accuracy.md B2 (the 'when' claim scoped: Earth via NOAA, the computable model via P4:1627), B16 ('crosses zero', model C, seed 0)",
+    "plan/critique_pedagogy.md G3 (stylized compass, no hand), G6 (sequenced montage), J and section C10.2 (numbers on chips, not spoken), H2 (no sentence that turns false once results arrive)",
+    "plan/pedagogy.md 1.7 (closing: compass and motifs; obey a law exactly where it is exact, on average where it is only true on average)"
+   ],
+   "variants": null,
+   "question": null
+  },
+  {
+   "id": "11.3",
+   "was": "C10.3",
+   "title": "End card",
+   "file": "scenes/ch11/11_3_end_card.html",
+   "status": "ready",
+   "level": "L0",
+   "register": "NIGHT",
+   "badge": null,
+   "target_s": 15,
+   "lead_in": 0.8,
+   "tail": 3.0,
+   "deps": [],
+   "entry": {
+    "data": {},
+    "params": {
+     "title": "How Often Does the Field Flip?",
+     "subtitle": "Physics-constrained generative models for turbulent dynamos — a learner's map of the MilaDy project.",
+     "site": "knoel99.github.io/milady-2027",
+     "code": "github.com/knoel99/milady-2027",
+     "credits": [
+      "narration: original synthetic voice (Fish Audio library voice “Ethan”), imitating no real person",
+      "animations, music and sound generated in code",
+      "every result: experiences/resultats on the site · external sources: in the description"
+     ],
+     "version": "film v1 · November 2026 · the empty seats are filled in v2, when the cloud results arrive",
+     "supervision": "Internship supervision, as listed in the public offer: Sibo Cheng (ENPC, CEREA) and Didier Lucor (LISN, Université Paris-Saclay), with Caroline Nore (LISN) and Yannick Ponty (Observatoire de la Côte d'Azur, CNRS)",
+     "disclaimer": "An independent project, prepared to apply for the M2 internship “Physics-Constrained Generative AI Modelling of Parametric Dynamical Systems” of the ANR MilaDy project (ANR-25-CE51-0077). It is neither produced nor endorsed by the École nationale des ponts et chaussées, the LISN, the Observatoire de la Côte d'Azur, the ANR, the MilaDy consortium or the supervisors. The internship report is prospective: the internship has not taken place, and its results come from small experiments run on an ordinary processor, reproducible from the repository. No MilaDy consortium data were used. Nothing here was reviewed, discussed or validated by Sibo Cheng, Didier Lucor, Caroline Nore or Yannick Ponty, and no sentence expresses their opinion. The PhD topic is an independent proposal, neither requested nor validated by them.",
+     "fade_out_s": 0.8,
+     "note": "params.version is the only line to edit for v2 (the entry hash re-renders this card); names in text only, no photo, no logo, no opinion attributed (BRIEF D6)"
+    }
+   },
+   "paragraphs": [
+    {
+     "hold_after": 0.0,
+     "sentences": [
+      {
+       "id": "11.3.s1",
+       "cue": "site",
+       "text": "The report, the code, and every result in this film are on the project's site, with their limits written out."
+      },
+      {
+       "id": "11.3.s2",
+       "cue": "rest",
+       "text": "The rest of the staircase is still to be computed."
+      }
+     ]
+    }
+   ],
+   "onscreen": {
+    "title": "How Often Does the Field Flip?",
+    "labels": [
+     "Physics-constrained generative models for turbulent dynamos — a learner's map of the MilaDy project.",
+     "knoel99.github.io/milady-2027",
+     "code · github.com/knoel99/milady-2027",
+     "narration: original synthetic voice (Fish Audio library voice “Ethan”), imitating no real person",
+     "animations, music and sound generated in code",
+     "every result: experiences/resultats on the site · external sources: in the description",
+     "film v1 · November 2026 · the empty seats are filled in v2, when the cloud results arrive",
+     "Internship supervision, as listed in the public offer: Sibo Cheng (ENPC, CEREA) and Didier Lucor (LISN, Université Paris-Saclay), with Caroline Nore (LISN) and Yannick Ponty (Observatoire de la Côte d'Azur, CNRS)",
+     "DISCLAIMER",
+     "An independent project, prepared to apply for the M2 internship “Physics-Constrained Generative AI Modelling of Parametric Dynamical Systems” of the ANR MilaDy project (ANR-25-CE51-0077). It is neither produced nor endorsed by the École nationale des ponts et chaussées, the LISN, the Observatoire de la Côte d'Azur, the ANR, the MilaDy consortium or the supervisors. The internship report is prospective: the internship has not taken place, and its results come from small experiments run on an ordinary processor, reproducible from the repository. No MilaDy consortium data were used. Nothing here was reviewed, discussed or validated by Sibo Cheng, Didier Lucor, Caroline Nore or Yannick Ponty, and no sentence expresses their opinion. The PhD topic is an independent proposal, neither requested nor validated by them."
+    ],
+    "formulas": [],
+    "chips": []
+   },
+   "visual": "Render class flat. A static card on NIGHT over a slow field-line drift: the faint vermillion dipole lines of the 00.5 title card (Kit.fieldLines, about 25 % opacity), drifting about 20 px over the whole scene, no flip, the lines parting around the two text columns. Left column (x 120-900, y 110-860): the title (Inter Display ExtraBold 64, two lines), the subtitle (Inter 32, at most two lines), the site URL (JetBrains Mono 36, --fg) and 'code · github.com/knoel99/milady-2027' (mono 28), then the three credit lines (Inter 28, --fg-2), the version line (mono 28, --muted) and the supervision line (Inter 28: names in text only, no photo, no logo, no opinion: BRIEF D6). Right column (x 1000-1800, y 110-860): the mono heading 'DISCLAIMER' (Kit.upper, 28) and params.disclaimer (Inter 28, line height 1.35, Kit.fit to the box, never below 28 px: if it does not fit, widen the column to x 960-1824 before anything else). Entrance: the left column fades in from 'site-0.2' (0.6 s), the right column 0.4 s later; everything holds through the tail (3 s of silence after the voice, for reading), then a fade to black over the last params.fade_out_s inside the scene (no crossfade between scenes). No badge (no claim), no lower-third, no corner needle. The music bed plays at full level (L0) and ends on its own tail with the fade.",
+   "assets": [],
+   "sources": [
+    "BRIEF D13 (title and subtitle), D14 (full disclaimer on the end card), D6 (supervisors' names in text only, no photos, no logos, no opinions), D1 (original library voice imitating no real person), D5 (v2 when the results arrive)",
+    "en/index.qmd:45 (an independent project, prepared to apply for the M2 internship of the ANR MilaDy project; neither produced nor endorsed by ENPC, LISN, OCA, the ANR or the supervisors; the report is prospective, small-scale experiments on an ordinary processor, reproducible from the repository)",
+    "en/index.qmd:72 (supervision as listed in the public offer: Sibo Cheng (ENPC) and Didier Lucor (LISN, Université Paris-Saclay), in collaboration with Caroline Nore (LISN) and Yannick Ponty (Observatoire de la Côte d'Azur, CNRS))",
+    "en/index.qmd:78 (ANR-25-CE51-0077) and en/index.qmd:94 (code and sources of the site: github.com/knoel99/milady-2027)",
+    "README.md:5 (site: https://knoel99.github.io/milady-2027/)",
+    "en/rapport/index.qmd:51 (status: prospective; nothing reviewed or validated by the supervisors) and :59 (no MilaDy consortium data; nothing reviewed, discussed or validated by S. Cheng, D. Lucor, C. Nore or Y. Ponty; no sentence expresses their opinion)",
+    "en/these/index.qmd:57 (the PhD topic is an independent proposal, neither requested nor validated by the supervisors)",
+    "en/rapport/index.qmd:1175-1179 (threats to validity: 'their limits written out')"
+   ],
+   "variants": null,
+   "question": null
+  }
+ ]
+}

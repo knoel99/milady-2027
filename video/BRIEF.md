@@ -172,3 +172,34 @@ The narration must be replaceable without touching the animations:
 - Visual clarity: one idea per shot, text ≥ 28 px at 1080p, nothing overlapping, nothing cut at the
   frame edge, colour key respected, deterministic frames.
 - Every scene renders without page errors; no blank frames; cues line up with the narration.
+
+## 9. French narration (added 2026-11-08, user's request)
+
+- A **French narration** of the whole film, with the **visuals kept in English** (on-screen text,
+  labels and formulas unchanged). French subtitles (burned in on the French versions), English
+  subtitles on the English versions.
+- Produced in a later wave, from the final English scripts: each sentence gets a `text_fr` (same `id`,
+  same `cue`), translated for the ear (natural spoken French, technical terms as French physicists and
+  ML researchers say them: "nombre de Reynolds magnétique", "flow matching" kept in English with a
+  gloss the first time, "contrainte en loi", "bilan d'énergie"…), checked by a native-quality reviewer.
+- French voice (user's choice, 2026-11-08): **Ethan speaking French**, the same original Fish Audio voice
+  as the English narration (`voice_fr.reference_id` = `536d3a5e000945adb7038665781a4aca`, same drama-3
+  settings). Measured on the French opening: 95 words → 39.2 s. Expect French text ≈ 15–20 % longer than
+  English; the French timeline absorbs it.
+- The French cut has its own timeline (French speech is longer): scenes animate on cue names, so the
+  same scene pages are re-rendered with the French timing. Deliverables per language: extended and
+  core cuts.
+- Tools must take `--lang en|fr` (text field, voice, lexicon, subtitles, output names).
+
+## 10. State of the art and the supervisors' contributions (added 2026-11-08, user's request)
+
+Two new units show where the internship and the PhD fit in the discipline:
+- `chSOA1` "A century of dynamo hunting" (L1-L2, ≈ 2.5 min), inserted after ch02 in both cuts: the
+  main tracks the community explored (theory, laboratory dynamos, numerical dynamos, reduced models
+  of reversals, data-driven methods), as a map that the rest of the film keeps returning to.
+- `chSOA2` "The map of the field: where this work fits" (L4-L5, ≈ 4-5 min), inserted after ch09 in
+  both cuts: machine learning for turbulence and MHD, generative models for physical fields, physics
+  constraints in generative models (hard, soft, distributional, symmetries), generative priors in data
+  assimilation; the supervisors' published contributions (factual, cited, names in text only, no
+  opinions attributed); the gaps the thesis targets and the closest prior work.
+- Companion document in French for the user: `video/ETAT-DE-L-ART.md`.

@@ -1,0 +1,733 @@
+{
+  "schema": 2,
+  "unit": "ch02",
+  "title": "Stretch, smudge, and three tanks of sodium",
+  "cut": "core",
+  "level_range": "L1",
+  "voice": {
+    "provider": "fish",
+    "model": "drama-3",
+    "reference_id": "536d3a5e000945adb7038665781a4aca"
+  },
+  "learning_goal": "See a dynamo as a race between stretching and smudging measured by Rm, understand why liquid-sodium dynamos are hard and turbulent, and meet the three that worked, including VKS, which flips.",
+  "takeaway": "A flow amplifies a field when stretching beats smudging; only three sodium experiments got there, and one of them, VKS, flips like the Earth.",
+  "notes": "Every scene is ready (no simulation, D4); every fact is on the site (report, thesis plan, prep module 3, supervisors page), so all claim-bearing scenes carry the CONTEXT badge; the only external citations are the seafloor ages reused from 00.3. The chapter card (T4) sits in the 3.4-s lead-in of 02.1 (no staircase: it is planted in 03.7). Changes against the outline, to review: (1) 02.5 gains an unnumbered predict beat ('Should it matter what metal the discs are made of?', hold 2.5 s): the pacing grammar asks 1-2 per chapter and ch02 had none; Q1-Q8 keep their numbers. (2) 02.3 names Pm in the narration (the question card needs it) and draws the Re dial green, not blue (Re is a control parameter in the colour key). (3) 02.1 says 'in a perfect conductor, field lines would be threads frozen into the fluid' (frozen flux holds only as eta goes to zero, P3:214, P3:305). (4) The VKS numbers sit on a separate lab card and on the formula layer, never on the qualitative curve (C6, F5). Words budgeted at 125-130 effective words per minute of target; estimates use the assembler formula (146 raw words per minute, 0.9 s per paragraph break, holds, lead-in and tail). Lexicon pins wanted: Cadarache, Karlsruhe, Prandtl (audio/lexicon.json; Rm, Pm, VKS, DRESDYN are already pinned). Adversarial review 2026-11-08: changes and evidence in script/_review/ch02.md.",
+  "scenes": [
+    {
+      "id": "02.1",
+      "was": "C2.1",
+      "title": "Frozen threads",
+      "file": "scenes/ch02/02_1_frozen_threads.html",
+      "status": "ready",
+      "level": "L1",
+      "register": "NIGHT",
+      "badge": {
+        "kind": "CONTEXT",
+        "confidence": null
+      },
+      "target_s": 35,
+      "lead_in": 3.4,
+      "tail": 0.8,
+      "deps": [],
+      "entry": {
+        "data": {},
+        "params": {
+          "cells": [
+            4,
+            2
+          ],
+          "amp_px_s": 240,
+          "line_y_frac": 0.4,
+          "tracers": 1500,
+          "trail": 12,
+          "seed": 7,
+          "stretch_clip": 8.0,
+          "kappa_px2_s": {
+            "small": 2.0,
+            "large": 180.0
+          },
+          "note": "schematic tuning values (pixels, scene seconds), not physical data; the two panels differ only by kappa"
+        }
+      },
+      "sfx": [
+        "whoosh@0.2"
+      ],
+      "paragraphs": [
+        {
+          "hold_after": 0.0,
+          "sentences": [
+            {"id": "02.1.s1", "cue": "motion", "text": "What kind of motion can grow a {b}magnetic field{/}?"},
+            {"id": "02.1.s2", "cue": "threads", "text": "In a perfect conductor, field lines would be threads frozen into the fluid."},
+            {"id": "02.1.s3", "cue": "stretch", "text": "Wherever the {u}flow{/} stretches a thread, the field along it grows stronger."}
+          ]
+        },
+        {
+          "hold_after": 0.0,
+          "sentences": [
+            {"id": "02.1.s4", "cue": "smudge", "text": "Real metals let the threads smudge, like spreading ink."},
+            {"id": "02.1.s5", "cue": "diffusivity", "text": "The smudging speed is set by the metal's {param}magnetic diffusivity{/}."},
+            {"id": "02.1.s6", "cue": "split", "text": "Same flow, two metals."},
+            {"id": "02.1.s7", "cue": "sharp", "text": "A good conductor smudges slowly: the threads stay sharp."},
+            {"id": "02.1.s8", "cue": "blur", "text": "A poor one smudges fast: the threads blur away."}
+          ]
+        }
+      ],
+      "onscreen": {
+        "title": "Stretch, smudge, and three tanks of sodium",
+        "labels": [
+          "CHAPTER 02",
+          "LEVEL L1",
+          "stretching",
+          "diffusion",
+          "magnetic diffusivity",
+          "small diffusivity",
+          "large diffusivity",
+          "good conductor",
+          "poor conductor",
+          "stretching wins",
+          "diffusion wins"
+        ],
+        "formulas": [],
+        "chips": [
+          "SCHEMATIC",
+          "REFERENCE · Alfvén 1942 · frozen flux"
+        ]
+      },
+      "visual": "Render class dense2d (Canvas 2D; Kit.twoInks, motif M3 two inks). Starting point: scenes/_prototype/a_fieldlines.html, which already integrates a cellular flow and a frozen material line with Scene.stepper (fixed step, identical frames whatever the seek order). LEAD-IN (3.4 s, no voice): Kit.chapterCard(ctx, {num: '02', title: onscreen.title, level: 'L1', levelFrom: 'L1', at: 0.2, out: 'motion-0.3'}) with no tier, so no staircase is drawn (the staircase M7 is planted in 03.7, E1); the rail (left gutter) shows L1 for 3 s; whoosh at 0.2 (sfx). On 'motion-0.3': the card's faint vermillion dipole lines thin out and the whole frame becomes the two-inks field: a blue (--u) cellular flow of params.cells = 4 x 2 cells drawn as faint aligned blue segments, params.tracers blue tracer particles with short trails, and ONE horizontal vermillion (--b) material line across the frame at params.line_y_frac of the height. On 'threads': the line starts to be carried by the flow with no diffusion at all (the ideal, perfect-conductor limit); the reference lower-third 'Reference' / 'Alfvén 1942 · frozen flux' for 4 s. On 'stretch': the line is stretched and folded around the cells; each segment's brightness follows its local stretch factor (log scale, clipped at params.stretch_clip), so the longest folds glow brightest; label 'stretching' and a chalk pen arrow (M9) along the brightest fold. On 'smudge': diffusion switches on: the line becomes a Gaussian ribbon whose width grows like the square root of 2 x kappa x (t - t_smudge) and whose peak brightness falls as it spreads (kappa = params.kappa_px2_s.small for now); a light grey halo grows around it; label 'diffusion' in grey. On 'diffusivity': the green (--param) label 'magnetic diffusivity' appears under 'diffusion' (the word only: the symbol eta waits for 02.2). On 'split': T1 split in 1.2 s: the frame divides into two panels of about 860 x 620 px side by side (40 px gutter), both running the SAME flow from the SAME initial line (same seed, same stepper), so the panels differ only by kappa; green labels above them, 'small diffusivity' (left) and 'large diffusivity' (right), with 'good conductor' and 'poor conductor' under them in --fg-2. On 'sharp': left panel, kappa = params.kappa_px2_s.small: the thread stays a few pixels wide, folds sharp and bright; tag 'stretching wins'. On 'blur': right panel, kappa = params.kappa_px2_s.large: the ribbon swells into a diffuse haze whose colour fades from vermillion toward the grey of the halo as its peak drops below 30 % (the grey blur wins); tag 'diffusion wins'. Tracers keep drifting in both panels to the end (idle motion; never 3 s of stillness). No viscosity, honey or water metaphor (critique_accuracy B5): the only difference between the panels is the magnetic diffusivity. Chip SCHEMATIC (grey dashed) from 'motion', bottom-right of the stage, above y 880. Badge CONTEXT top-right from 'motion'. Key colours: blue, vermillion, green (three). Look reference for field lines wound and expelled by eddies: prep/p3-mhd-dynamo/figures/expulsion-en.svg (not loaded). Dense particle scene: encode {crf: 23} if the file is heavy.",
+      "assets": [],
+      "sources": [
+        "en/prep/p3-mhd-dynamo/index.qmd:214 (depending on Rm, the field behaves like a diffusing dye or like a set of elastic threads attached to the fluid)",
+        "en/prep/p3-mhd-dynamo/index.qmd:305 (Theorem 2.5, frozen flux, Alfvén 1942: if eta = 0, field lines are material lines)",
+        "en/prep/p3-mhd-dynamo/index.qmd:313 (field strength proportional to the stretching of material lines; diffusion steps in at small scales)",
+        "en/prep/p3-mhd-dynamo/index.qmd:254 (the flow transports and stretches the lines; the Laplacian diffuses them)",
+        "en/prep/p3-mhd-dynamo/index.qmd:181 (magnetic diffusivity eta = 1 / (mu0 sigma): a better conductor has a smaller diffusivity)",
+        "plan/outline.md section 9, accuracy B5 and pedagogy J (same flow, two diffusivities, ink metaphor, no honey)"
+      ],
+      "variants": null,
+      "question": null
+    },
+    {
+      "id": "02.2",
+      "was": "C2.2",
+      "title": "One number for the race",
+      "file": "scenes/ch02/02_2_one_number_for_the_race.html",
+      "status": "ready",
+      "level": "L1",
+      "register": "NIGHT",
+      "badge": {
+        "kind": "CONTEXT",
+        "confidence": null
+      },
+      "target_s": 30,
+      "lead_in": 0.4,
+      "tail": 0.8,
+      "deps": [],
+      "entry": {
+        "data": {},
+        "params": {
+          "curve": "schematic: s(x) = s_min + (s_max - s_min) * (1 + tanh((x - rm_c_frac) / width)) / 2 on a 0-1 axis",
+          "s_min": -1.0,
+          "s_max": 0.6,
+          "rm_c_frac": 0.45,
+          "width": 0.22,
+          "knob_detents": 10
+        }
+      },
+      "paragraphs": [
+        {
+          "hold_after": 0.0,
+          "sentences": [
+            {"id": "02.2.s1", "cue": "score", "text": "One number keeps the score: the {param}magnetic Reynolds number{/}, Rm."},
+            {"id": "02.2.s2", "cue": "ratio", "text": "It is the {u}flow's speed{/}, times its size, divided by the {param}magnetic diffusivity{/}."},
+            {"id": "02.2.s3", "cue": "large", "text": "Large Rm: stretching outpaces smudging."},
+            {"id": "02.2.s4", "cue": "small", "text": "Small Rm: smudging wins."}
+          ]
+        },
+        {
+          "hold_after": 0.0,
+          "sentences": [
+            {"id": "02.2.s5", "cue": "knob", "text": "Turn the Rm knob up, and watch a weak seed field."},
+            {"id": "02.2.s6", "cue": "dies", "text": "At low Rm, the seed dies away."},
+            {"id": "02.2.s7", "cue": "threshold", "text": "Past a threshold, the growth rate crosses zero and the seed grows, like the squeal."}
+          ]
+        }
+      ],
+      "onscreen": {
+        "title": "",
+        "labels": [
+          "Rm = U L / η",
+          "flow speed",
+          "size",
+          "magnetic diffusivity",
+          "stretching",
+          "smudging",
+          "stretching outpaces smudging",
+          "smudging wins",
+          "Rm, magnetic Reynolds number",
+          "s, growth rate",
+          "seed dies",
+          "seed grows",
+          "threshold Rm_c"
+        ],
+        "formulas": [
+          {
+            "cue": "ratio",
+            "tex": "\\Rm = \\frac{\\cu{U}\\,L}{\\etaP} = \\frac{\\tau_\\eta}{\\tau_u},\\qquad \\tau_\\eta = \\frac{L^2}{\\etaP},\\quad \\tau_u = \\frac{L}{\\cu{U}}"
+          },
+          {
+            "cue": "threshold",
+            "tex": "s(\\Rm_c) = 0:\\quad s < 0 \\text{ below},\\ s > 0 \\text{ above}"
+          }
+        ],
+        "chips": [
+          "SCHEMATIC"
+        ]
+      },
+      "visual": "Render class flat. Opens on the two panels of 02.1, which shrink (T1, 1.2 s) into two tokens at the top: a sharp vermillion thread pulled by a blue arrow (tag 'stretching') and a grey-haloed thread (tag 'smudging'). On 'score': the green knob M2 (Kit.knob, label 'Rm', no numbers on its dial) appears left of centre, and the hero equation builds at top centre with Kit.equation (84 px), tex '\\term{lhs}{\\Rm}\\term{eq}{\\;=\\;}\\dfrac{\\term{U}{\\cu{U}}\\,\\term{L}{L}}{\\term{eta}{\\etaP}}': 'lhs' and 'eq' on 'score'. On 'ratio': the terms light in narrative order, U in blue with the label 'flow speed', L in --fg with 'size', then eta in green with 'magnetic diffusivity' (at most two labels at once: the U and L labels fade when eta's appears); the 'stretching' token slides above the fraction bar and the 'smudging' token below it for 1.5 s (leader lines), then both fade. Formula layer item 1. On 'large': the knob turns high (Scene.spring, at most 3 % overshoot); a mini thread glyph beside the knob stays sharp; label 'stretching outpaces smudging'. On 'small': the knob turns low; the glyph blurs; label 'smudging wins'. On 'knob': the knob returns to its minimum; Kit.plot appears on the right (box x 760-1660, y 300-640): x axis 'Rm, magnetic Reynolds number' (param: true, NO numeric ticks: schematic), y axis 's, growth rate' with the zero line in --fg-2; a weak seed field glyph (a short thin vermillion arrow) sits in a small inset above the knob. From 'knob' to 'threshold+2.5' the knob turns slowly up and a point rides the schematic curve s(Rm) (params.curve, s_min, s_max, rm_c_frac, width), drawing it left to right; soft detent ticks (page events, params.knob_detents over the travel). On 'dies': the curve is below zero; the band under the zero line is labelled 'seed dies' and the seed arrow in the inset fades. On 'threshold': where the curve crosses zero, a green dashed vertical line and the label 'threshold Rm_c'; the band above zero is labelled 'seed grows'; in the inset the seed arrow grows (exponential in scene time, then held); squeal callback: the small speaker glyph of 01.3 flashes once beside the inset (no squeal sound). Formula layer item 2. Chip SCHEMATIC on the plot (the curve is a shape, not data; one threshold only here, the windows of 03.4 come later). Badge CONTEXT. Key colours: green, blue, vermillion (three). The growth rate is s (symbol sheet D1), never lambda.",
+      "assets": [],
+      "sources": [
+        "en/rapport/index.qmd:137 (Rm = UL/eta compares induction to the diffusion of the field; a dynamo appears only above a threshold Rm_c)",
+        "en/prep/p3-mhd-dynamo/index.qmd:259-263 (Definition 2.3: Rm = UL/eta = tau_eta / tau_u)",
+        "en/prep/p3-mhd-dynamo/index.qmd:269 (Rm much below 1: diffusion dominates; Rm much above 1: induction dominates; a field that nothing sustains decays)",
+        "plan/outline.md section 2 symbol sheet (s = growth rate, never lambda) and 01.3 (s introduced as the growth rate of the squeal)"
+      ],
+      "variants": null,
+      "question": null
+    },
+    {
+      "id": "02.3",
+      "was": "C3.1",
+      "title": "The sodium problem",
+      "file": "scenes/ch02/02_3_the_sodium_problem.html",
+      "status": "ready",
+      "level": "L1",
+      "register": "NIGHT",
+      "badge": {
+        "kind": "CONTEXT",
+        "confidence": null
+      },
+      "target_s": 30,
+      "lead_in": 0.4,
+      "tail": 0.8,
+      "deps": [],
+      "entry": {
+        "data": {},
+        "params": {
+          "sodium_temperature_C": 120,
+          "pm_label": "Pm = ν / η ≈ 1 / 100 000",
+          "pm_value": 8.2e-06,
+          "rm_dial": [
+            0,
+            60
+          ],
+          "rm_window": [
+            10,
+            50
+          ],
+          "re_dial_log10": [
+            3,
+            7
+          ],
+          "rm_needle_end": 30,
+          "texture_max_opacity": 0.35
+        }
+      },
+      "paragraphs": [
+        {
+          "hold_after": 0.0,
+          "sentences": [
+            {"id": "02.3.s1", "cue": "sodium", "text": "Laboratory dynamos use liquid sodium."},
+            {"id": "02.3.s2", "cue": "water", "text": "It flows as easily as water."},
+            {"id": "02.3.s3", "cue": "fast", "text": "But a field smudges in it about a hundred thousand times faster than its swirls do."},
+            {"id": "02.3.s4", "cue": "pm", "text": "Their ratio, one in a hundred thousand, is the {param}magnetic Prandtl number{/}, Pm."}
+          ]
+        },
+        {
+          "hold_after": 0.0,
+          "sentences": [
+            {"id": "02.3.s5", "cue": "stir", "text": "Reaching an Rm of a few tens takes violent stirring."},
+            {"id": "02.3.s6", "cue": "re", "text": "The flow's {param}Reynolds number{/}, the gauge of turbulence, reaches millions."},
+            {"id": "02.3.s7", "cue": "turbulent", "text": "So every laboratory dynamo is turbulent."}
+          ]
+        }
+      ],
+      "onscreen": {
+        "title": "",
+        "labels": [
+          "liquid sodium",
+          "sodium",
+          "water",
+          "about as runny as water",
+          "field smudges about 100 000 × faster than swirls",
+          "Pm = ν / η ≈ 1 / 100 000",
+          "swirl smudging",
+          "field smudging",
+          "Rm",
+          "Re, Reynolds number",
+          "millions",
+          "Rm ~ 10–50 needs Re ~ millions",
+          "every laboratory dynamo is turbulent"
+        ],
+        "formulas": [
+          {
+            "cue": "water",
+            "tex": "\\nu_{\\mathrm{Na}} \\approx 6.8\\times10^{-7}\\ \\mathrm{m^2/s}\\ (120\\,{}^{\\circ}\\mathrm{C}),\\qquad \\nu_{\\mathrm{water}} \\approx 1\\times10^{-6}\\ \\mathrm{m^2/s}"
+          },
+          {
+            "cue": "pm",
+            "tex": "\\PM = \\frac{\\nu}{\\etaP} = 0.82\\times10^{-5}\\quad \\text{(sodium, } 120\\,{}^{\\circ}\\mathrm{C}\\text{; Nore et al. 2018)}"
+          },
+          {
+            "cue": "re",
+            "tex": "\\RE = \\frac{\\Rm}{\\PM} \\sim 10^{6}\\text{ to }10^{7}\\quad \\text{for } \\Rm \\sim 10\\text{ to }50"
+          }
+        ],
+        "chips": [
+          "SCHEMATIC",
+          "REFERENCE · Nore et al. 2018 · sodium at 120 °C"
+        ]
+      },
+      "visual": "Render class flat. On 'sodium': a grey tank of liquid metal in cutaway (matter grey --matter, a silvery surface line), label 'liquid sodium' (no temperature on the tank: params.sodium_temperature_C = 120 °C is the VKS working temperature of Nore et al. 2018, not that of every experiment, Riga first ran at 205 °C, so it appears only on the formula layer). On 'water': the tank tilts and pours; two streams side by side, 'sodium' (mid grey) and 'water' (light grey; matter is grey, water is NOT blue: blue means velocity), same width, same speed, same splash (identical spline animations); label 'about as runny as water'; formula layer item 1. On 'fast': the pours clear; two soft blobs side by side start to spread by diffusion at the same moment: a blue swirl (a small vortex of rotating blue streaks: the flow) and a vermillion field blob; the vermillion blob spreads and fades within about 1 s while the blue swirl has barely widened by the end of the scene (visually static: its spreading is about 100 000 times slower); label 'field smudges about 100 000 × faster than swirls'. On 'pm': the green ratio params.pm_label appears between the blobs, nu under the blue swirl with the words 'swirl smudging' and eta under the vermillion blob with 'field smudging'; the reference lower-third 'Reference' / 'Nore et al. 2018 · sodium at 120 °C' for 4 s; formula layer item 2. On 'stir': the blobs slide away; two round dials side by side (about 300 px each), BOTH GREEN because both are control parameters in the colour key (the outline said 'Re blue'; the flow itself is the blue texture): left 'Rm' on a linear dial params.rm_dial with the window params.rm_window shaded green at 12 %; right 'Re, Reynolds number' on a log dial with ticks 10³ to 10⁷ (params.re_dial_log10). A grey motor icon under them spins up; the two needles move together, linked by Re = Rm / Pm with Pm = params.pm_value: as the Rm needle creeps into the window (to params.rm_needle_end), the Re needle races past 10⁶ (Scene.spring on both, at most 3 % overshoot). Behind the dials a blue turbulent texture builds up (Canvas 2D advected noise, G5: no full-screen shader), its opacity tied to the Re needle, at most params.texture_max_opacity. On 're': the word 'millions' under the Re dial; formula layer item 3. On 'turbulent': the caption 'Rm ~ 10–50 needs Re ~ millions' at top centre and, under it, 'every laboratory dynamo is turbulent'; the texture at full strength to the end. No exponents in the narration (outline: level lowered to L1); the exact values live on the formula layer. Chip SCHEMATIC on the blobs and dials (pictures, not measurements). Badge CONTEXT. Key colours: green, blue, vermillion (vermillion only in the 'fast' and 'pm' beats).",
+      "assets": [],
+      "sources": [
+        "en/prep/p3-mhd-dynamo/index.qmd:169 (liquid sodium is the working fluid of all three laboratory dynamos; at about 120 °C, nu = 6.78e-7 m²/s, Nore et al. 2018)",
+        "en/prep/p2-mecanique-fluides/index.qmd:1343 (kinematic viscosity of water, 1e-6 m²/s: sodium is about as runny as water)",
+        "en/prep/p3-mhd-dynamo/index.qmd:197 and :201 (Pm = nu/eta = 8.2e-6, the 0.82e-5 of Nore et al. 2018; Re = 2.9e6 at Rm = 24 for U = 10 m/s, L = 0.2 m)",
+        "en/rapport/index.qmd:137 (Pm = 0.82e-5 for sodium at 120 °C; Re = Rm/Pm reaches several million at the threshold; the flow is fully turbulent when the field appears)",
+        "en/prep/p3-mhd-dynamo/index.qmd:281 (to reach Rm ~ 50 in sodium one needs Re ~ 1e6 to 1e7: the flow of a laboratory dynamo is always turbulent)",
+        "en/prep/p3-mhd-dynamo/index.qmd:1145 (Pm ~ 1e-5: reaching Rm ~ 10 to 50 requires Re ~ 1e6 to 1e7)",
+        "en/prep/p3-mhd-dynamo/index.qmd:1221 (every laboratory dynamo is turbulent and power-hungry)",
+        "en/prep/p3-mhd-dynamo/index.qmd:1149 (Riga's first self-excitation at 205 °C: 120 °C is the VKS working temperature, not every experiment's, so the tank label carries no temperature)"
+      ],
+      "variants": null,
+      "question": null
+    },
+    {
+      "id": "02.4",
+      "was": "C3.2",
+      "title": "Three tanks that worked",
+      "file": "scenes/ch02/02_4_three_tanks_that_worked.html",
+      "status": "ready",
+      "level": "L1",
+      "register": "NIGHT",
+      "badge": {
+        "kind": "CONTEXT",
+        "confidence": null
+      },
+      "target_s": 30,
+      "lead_in": 0.4,
+      "tail": 0.8,
+      "deps": [],
+      "entry": {
+        "data": {},
+        "params": {
+          "cards": [
+            {
+              "name": "RIGA",
+              "place": "Latvia",
+              "year": "first dynamo: November 1999",
+              "line": "corkscrew flow → a field that oscillates and turns",
+              "glyph": "rotating-oscillating",
+              "ref": "Gailitis et al. 2000",
+              "solid": true
+            },
+            {
+              "name": "KARLSRUHE",
+              "place": "Germany",
+              "year": "first dynamo: December 1999",
+              "line": "52 spiralling cells → a steady, dipole-like field",
+              "glyph": "steady-dipole",
+              "cells": 52,
+              "ref": "Stieglitz & Müller 2001",
+              "solid": true
+            },
+            {
+              "name": "VKS",
+              "place": "CEA Cadarache",
+              "year": "2006 (published 2007)",
+              "line": "two counter-rotating impellers · 150 L of sodium · up to 300 kW → a dipole that can flip",
+              "glyph": "flipping-dipole",
+              "ref": "Monchaux et al. 2007",
+              "solid": true
+            },
+            {
+              "name": "DRESDYN",
+              "place": "HZDR, Dresden",
+              "year": "under way",
+              "line": "precessing cylinder, no impeller",
+              "glyph": "none",
+              "ref": "Stefani et al. 2015",
+              "solid": false
+            }
+          ],
+          "vks_flip_offset_s": 1.4
+        }
+      },
+      "sfx": [
+        {
+          "id": "needle",
+          "cue": "vks",
+          "offset": 1.4,
+          "gain_db": -20
+        }
+      ],
+      "paragraphs": [
+        {
+          "hold_after": 0.0,
+          "sentences": [
+            {"id": "02.4.s1", "cue": "three", "text": "Only three liquid-sodium experiments have made their own field, each a different kind."},
+            {"id": "02.4.s2", "cue": "riga", "text": "In Riga, a corkscrew flow made a field that oscillates and slowly turns."},
+            {"id": "02.4.s3", "cue": "karlsruhe", "text": "In Karlsruhe, fifty-two spiralling cells made a steady field, close to a {b}dipole{/}."},
+            {"id": "02.4.s4", "cue": "vks", "text": "And only VKS, at Cadarache, made a dipole that can flip."}
+          ]
+        },
+        {
+          "hold_after": 0.0,
+          "sentences": [
+            {"id": "02.4.s5", "cue": "dresdyn", "text": "A fourth, DRESDYN in Dresden, aims to join them: a spinning cylinder whose axis slowly turns."}
+          ]
+        }
+      ],
+      "onscreen": {
+        "title": "",
+        "labels": [
+          "the only three liquid-sodium dynamos",
+          "RIGA · Latvia",
+          "first dynamo: November 1999",
+          "corkscrew flow → a field that oscillates and turns",
+          "KARLSRUHE · Germany",
+          "first dynamo: December 1999",
+          "52 spiralling cells → a steady, dipole-like field",
+          "VKS · CEA Cadarache",
+          "2006 (published 2007)",
+          "two counter-rotating impellers · 150 L of sodium · up to 300 kW → a dipole that can flip",
+          "DRESDYN · HZDR, Dresden",
+          "under way",
+          "precessing cylinder, no impeller"
+        ],
+        "formulas": [],
+        "chips": [
+          "Gailitis et al. 2000",
+          "Stieglitz & Müller 2001",
+          "Monchaux et al. 2007",
+          "Stefani et al. 2015"
+        ]
+      },
+      "visual": "Render class flat. Four cards in a row on a thin grey timeline (x 96-1824; each card about 400 x 520 px, 24 px gaps; one moment per card), every word and number read from params.cards (nothing typed in the scene). On 'three': the first three cards slide in from the right, 0.25 s apart, titles only, solid grey outlines; a mono caption above them 'the only three liquid-sodium dynamos'. On 'riga': card 1 lights (the others drop to 40 %): 'RIGA · Latvia', year chip 'first dynamo: November 1999'; pictogram: a grey pipe in cutaway with a blue corkscrew arrow inside (the helical flow) and, beside it, a small vermillion arrow that turns slowly around the pipe's axis while its length oscillates (an alternating, rotating field: NOT a flip); one line 'corkscrew flow → a field that oscillates and turns'; mono footer 'Gailitis et al. 2000'. On 'karlsruhe': card 2 lights: 'KARLSRUHE · Germany', 'first dynamo: December 1999'; pictogram: a grey drum seen from above holding a grid of params.cards[1].cells = 52 small blue spiral cells (draw all 52), and one steady vermillion dipole arrow across it (idle breathing only, never flips); line '52 spiralling cells → a steady, dipole-like field'; footer 'Stieglitz & Müller 2001'. On 'vks': card 3 lights: 'VKS · CEA Cadarache', '2006 (published 2007)'; pictogram redrawn in the palette from the proportions of prep/p3-mhd-dynamo/figures/vks-en.svg: a grey horizontal cylinder, two impellers with two opposed blue rotation arrows, a vermillion axial dipole arrow that flips once at 'vks+1.4' (180 degrees, at most 3 % overshoot) with a soft two-note needle sound (sfx, -20 dB); line 'two counter-rotating impellers · 150 L of sodium · up to 300 kW → a dipole that can flip'; footer 'Monchaux et al. 2007'; a chalk pen circle (M9) around the flipping arrow: the only one that flips (critique_accuracy B3). On 'dresdyn': card 4 slides in with a DASHED grey outline, everything in it grey: 'DRESDYN · HZDR, Dresden', chip 'under way'; pictogram: a grey cylinder spinning about its own axis while that axis slowly sweeps a cone (precession), no impeller, a dashed empty circle where a field glyph would be; line 'precessing cylinder, no impeller'; footer 'Stefani et al. 2015'. End state: cards 1, 2 and 4 at 70 %, card 3 at 100 % (it grows into the 3D model of 02.5, T1). Text at least 28 px: the VKS line may wrap to three lines (Kit.fit). Badge CONTEXT. Key colours: blue and vermillion only.",
+      "assets": [],
+      "sources": [
+        "en/rapport/index.qmd:86 (only three liquid-sodium experiments, including Cadarache, have achieved a dynamo; DRESDYN, under way, seeks one with a precessing cylinder)",
+        "en/encadrants/index.qmd:68 (ANR abstract: only three experiments, including Cadarache, have achieved it with liquid sodium)",
+        "en/rapport/index.qmd:139 (Riga: helical flow, first self-excited mode in November 1999; Karlsruhe: 52 vortex generators, first run December 1999, stationary dipole with two quasi-equivalent states; Cadarache VKS: two counter-rotating soft-iron impellers)",
+        "en/prep/p3-mhd-dynamo/index.qmd:1149 (Riga, Latvia: helical flow; the field is alternating, of low frequency, and rotates slowly around the axis)",
+        "en/prep/p3-mhd-dynamo/index.qmd:1153 (Karlsruhe, Germany: 52 spin generators in which the sodium flows helically; the saturated field is steady and dipole-like)",
+        "en/prep/p3-mhd-dynamo/index.qmd:1157 and :1161 (VKS, CEA Cadarache: two counter-rotating impellers, 150 litres of sodium, motors up to 300 kW)",
+        "en/prep/p3-mhd-dynamo/index.qmd:1208 and en/encadrants/index.qmd:78 (DRESDYN, HZDR Dresden: a cylinder rotating about an axis that precesses, no propeller or impeller; ongoing)",
+        "en/prep/p3-mhd-dynamo/index.qmd:1212-1215 (table: first dynamos November 1999, December 1999, 2006 published in 2007; DRESDYN ongoing)",
+        "en/rapport/index.qmd:149 (the first laboratory reversals were observed in VKS: of the three, only VKS flips; critique_accuracy B3)"
+      ],
+      "variants": null,
+      "question": null
+    },
+    {
+      "id": "02.5",
+      "was": "C3.3",
+      "title": "VKS: two impellers and an iron surprise",
+      "file": "scenes/ch02/02_5_vks_two_impellers.html",
+      "status": "ready",
+      "level": "L1",
+      "register": "NIGHT",
+      "badge": {
+        "kind": "CONTEXT",
+        "confidence": null
+      },
+      "target_s": 35,
+      "lead_in": 0.4,
+      "tail": 0.8,
+      "deps": [
+        "data/fig_vks.json"
+      ],
+      "entry": {
+        "data": {
+          "vks": "data/fig_vks.json"
+        },
+        "params": {
+          "geometry_mm": {
+            "inner_diameter": 412,
+            "disc_radius": 154.5,
+            "disc_gap": 371
+          },
+          "blades": 8,
+          "disc_turn_s": 2.0,
+          "orbit_deg": 10,
+          "fieldline_azimuths": 6,
+          "seed_decays": 2
+        }
+      },
+      "paragraphs": [
+        {
+          "hold_after": 0.0,
+          "sentences": [
+            {"id": "02.5.s1", "cue": "inside", "text": "Inside VKS: a cylinder holding a hundred and fifty litres of liquid sodium."},
+            {"id": "02.5.s2", "cue": "discs", "text": "At its ends, two bladed discs, the impellers, spin in opposite directions."}
+          ]
+        },
+        {
+          "hold_after": 2.5,
+          "sentences": [
+            {"id": "02.5.s3", "cue": "predict", "text": "Should it matter what metal the discs are made of?"}
+          ]
+        },
+        {
+          "hold_after": 1.0,
+          "sentences": [
+            {"id": "02.5.s4", "cue": "steel", "text": "With stainless steel discs, there was no dynamo, even at full speed."},
+            {"id": "02.5.s5", "cue": "iron", "text": "Swap in discs of soft iron, and a dipole grows along the axis."}
+          ]
+        },
+        {
+          "hold_after": 0.0,
+          "sentences": [
+            {"id": "02.5.s6", "cue": "more", "text": "So the threshold depends on more than Rm: materials count too."}
+          ]
+        }
+      ],
+      "onscreen": {
+        "title": "",
+        "labels": [
+          "150 L of liquid sodium",
+          "two impellers, counter-rotating · motors up to 300 kW",
+          "Predict",
+          "Does the discs' metal matter?",
+          "stainless steel",
+          "full speed",
+          "stainless steel: no dynamo",
+          "soft iron",
+          "soft iron: dynamo",
+          "Rm",
+          "material"
+        ],
+        "formulas": [],
+        "chips": [
+          "SCHEMATIC · geometry after Monchaux et al. 2007",
+          "REFERENCE · Monchaux et al. 2007 · soft-iron impellers"
+        ]
+      },
+      "visual": "Render class webgl (Three.js r160 vendored, Line2 fat lines 2-4 px for field lines, matte materials, long lens about 30 degrees, slow orbit of params.orbit_deg over the whole scene, at most 15 degrees per second). T1 from 02.4: the VKS card's pictogram grows into the 3D model. On 'inside': a horizontal cylinder in cutaway (front half removed), matte grey walls (--matter), the sodium volume a faint grey fill (matter is grey, never blue), proportions from params.geometry_mm (inner diameter 412 mm, discs of radius 154.5 mm, 371 mm apart); label '150 L of liquid sodium'; chip 'SCHEMATIC · geometry after Monchaux et al. 2007'. On 'discs': two impeller discs with params.blades = 8 curved blades each, near the two ends, spin in opposite directions (one turn per params.disc_turn_s seconds, visual only); label 'two impellers, counter-rotating · motors up to 300 kW'. From 'discs+1.0' the blue flow (--u): short moving blue dashes swirling around the axis in each half, each half turning with its own disc (two cells turning opposite ways), plus the poloidal recirculation loops in the cut plane, drawn as in the site figure figures/vks panel a (same topology and arrow directions). On 'predict' (predict beat; hold 2.5 s from the script): a predict card at top left, the film's predict style with the kicker 'Predict' and the line 'Does the discs' metal matter?', UNNUMBERED (the Q1-Q8 numbering of the outline is kept); during the hold nothing new appears, the discs and the blue dashes keep moving (idle). On 'steel': the predict card leaves; the discs are tagged 'stainless steel' (light grey, faint brushed sheen); a small green speed gauge (M2) climbs to its top, 'full speed'; params.seed_decays times, a few thin faint vermillion seed lines appear along the axis and fade away (decay); tag 'stainless steel: no dynamo'; the reference lower-third 'Reference' / 'Monchaux et al. 2007 · soft-iron impellers' for 4 s. On 'iron': the discs slide out along the axis and back in, darker grey (0.8 s), tag 'soft iron'; then the vermillion axial dipole grows over about 2 s: the field lines of data/fig_vks.json (data.fieldlines[k].pts, in units of the cylinder radius, upper half-plane; mirror them below the axis and revolve the set about the axis at params.fieldline_azimuths angles) are drawn on from the axis outward, axial inside the sodium and closing outside, their brightness rising like an exponential that then levels off; tag 'soft iron: dynamo'. The hold of 1.0 s after this paragraph is a breath: nothing new appears. No corner needle (the dipole is not labelled D here). On 'more': two small green knobs appear side by side at bottom right for the rest of the scene, 'Rm' and 'material' (the narration says the threshold depends on more than Rm: same sodium and same speed, hence the same Rm, with steel and with iron; a teaser of the knob panel of 03.5; no numbers). Use the fig_vks file for SHAPES only (meta.note: show the SCHEMATIC chip, never numbers from it). Badge CONTEXT. Key colours: blue, vermillion, green (three; green only for the gauge and the knobs).",
+      "assets": [],
+      "sources": [
+        "en/rapport/index.qmd:139 (VKS: dynamo in a strongly turbulent flow between two counter-rotating impellers, with soft-iron impellers; no dynamo with stainless-steel impellers; Monchaux et al. 2007)",
+        "en/rapport/index.qmd:90 (the onset threshold depends on Rm but also on the materials and the boundary conditions; VKS only worked with soft-iron impellers)",
+        "en/prep/p3-mhd-dynamo/index.qmd:1157 (mean flow: two toroidal cells rotating in opposite directions and a poloidal recirculation)",
+        "en/prep/p3-mhd-dynamo/index.qmd:1161 (inner diameter 412 mm, discs of radius 154.5 mm, 371 mm apart, 8 curved blades, 150 litres of sodium, motors up to 300 kW, up to 26 Hz)",
+        "en/prep/p3-mhd-dynamo/index.qmd:1165 (soft-iron impellers: dynamo; stainless-steel disks: none up to 26 Hz, the top speed; the mode is essentially axisymmetric)",
+        "en/rapport/index.qmd:143 (the field is an essentially axisymmetric axial dipole, as in the experiment)",
+        "en/these/index.qmd:138 (figure: the mean field is dominated by an axial dipole, sustained by dynamo action with soft-iron impellers)",
+        "data/fig_vks.json (field lines of the site figure figures/vks, schematic: shapes only)"
+      ],
+      "variants": null,
+      "question": null
+    },
+    {
+      "id": "02.6",
+      "was": "C3.4",
+      "title": "VKS flips too",
+      "file": "scenes/ch02/02_6_vks_flips_too.html",
+      "status": "ready",
+      "level": "L1",
+      "register": "NIGHT",
+      "badge": {
+        "kind": "CONTEXT",
+        "confidence": null
+      },
+      "target_s": 25,
+      "lead_in": 0.4,
+      "tail": 0.8,
+      "deps": [
+        "data/fig_vks.json"
+      ],
+      "entry": {
+        "data": {
+          "vks": "data/fig_vks.json"
+        },
+        "params": {
+          "draw_from": "flips",
+          "draw_to": "quick+1.0",
+          "lab_card": "discs at 16 and 22 turns per second · polarities last 120 s and 50 s on average · a flip takes about 5 s",
+          "seafloor_window_Ma": [
+            0,
+            5
+          ],
+          "seafloor_normal_Ma": [
+            [
+              0.0,
+              0.78
+            ],
+            [
+              0.99,
+              1.07
+            ],
+            [
+              1.201,
+              1.211
+            ],
+            [
+              1.77,
+              1.95
+            ],
+            [
+              2.14,
+              2.15
+            ],
+            [
+              2.581,
+              3.04
+            ],
+            [
+              3.11,
+              3.22
+            ],
+            [
+              3.33,
+              3.58
+            ],
+            [
+              4.18,
+              4.29
+            ],
+            [
+              4.48,
+              4.62
+            ],
+            [
+              4.8,
+              4.89
+            ],
+            [
+              4.98,
+              5.23
+            ]
+          ],
+          "seafloor_source": "copied from script/ch00.json 00.3 (Cande and Kent 1995, as tabulated in the composite GPTS of Gee and Kent 2007: Tauxe, Essentials of Paleomagnetism, Table 15.1)"
+        }
+      },
+      "paragraphs": [
+        {
+          "hold_after": 0.0,
+          "sentences": [
+            {"id": "02.6.s1", "cue": "speeds", "text": "Now spin the two discs at different speeds."},
+            {"id": "02.6.s2", "cue": "flips", "text": "At some settings, the dipole flips again and again, with no schedule."},
+            {"id": "02.6.s3", "cue": "needle", "text": "Like the compass needle at the start, but every minute or two."}
+          ]
+        },
+        {
+          "hold_after": 0.0,
+          "sentences": [
+            {"id": "02.6.s4", "cue": "quick", "text": "Each flip itself takes only about five seconds."},
+            {"id": "02.6.s5", "cue": "stripes", "text": "Uneven stripes, like the seafloor's, but written in minutes, not millions of years."}
+          ]
+        }
+      ],
+      "onscreen": {
+        "title": "",
+        "labels": [
+          "disc 1",
+          "disc 2",
+          "D, dipole",
+          "time",
+          "flips every minute or two, irregularly",
+          "LAB MEASUREMENT",
+          "discs at 16 and 22 turns per second · polarities last 120 s and 50 s on average · a flip takes about 5 s",
+          "seafloor · millions of years",
+          "VKS, qualitative · minutes"
+        ],
+        "formulas": [
+          {
+            "cue": "quick",
+            "tex": "F_1 = 16\\ \\mathrm{Hz},\\ F_2 = 22\\ \\mathrm{Hz}:\\quad \\langle T_+\\rangle = 120\\ \\mathrm{s},\\ \\langle T_-\\rangle = 50\\ \\mathrm{s};\\quad \\tau_{\\mathrm{rev}} \\approx 5\\ \\mathrm{s} \\gg \\tau_{\\mathrm{ohmic}} \\approx 0.4\\ \\mathrm{s}"
+          }
+        ],
+        "chips": [
+          "qualitative (normal form): durations are not those of VKS",
+          "LAB MEASUREMENT · Berhanu et al. 2007"
+        ]
+      },
+      "visual": "Render class flat. T1 from 02.5: the 3D cylinder flattens into a small grey side-view icon at top left (cylinder, two impellers). On 'speeds': two small green knobs (M2) under the icon, 'disc 1' and 'disc 2', start equal, then disc 2 turns higher (Scene.spring); soft detent ticks. On 'flips': Kit.plot (box x 260-1640, y 200-560): x 'time' (NO numeric ticks), y 'D, dipole' with the zero line; the qualitative series of data/fig_vks.json (data.series.t, data.series.D) draws on left to right from params.draw_from to params.draw_to as a vermillion line; under the plot, Kit.barcode (y 600-640, same x range) built from the sign of series.D grows with the drawing head (solid vermillion for one polarity, --b-neg for the other). The corner needle (Kit.needle, corner: true; x 1720-1824, y 124-228) appears with the plot because D is on screen, and flips 180 degrees each time the drawing head passes a sign change of D (two in this series, found from the data at setup, never typed), with the two-note needle sound (page events in window.__EVENTS__). The excursion of the series (data.series.events, kind 'excursion': a dip that comes back without crossing zero) is drawn but NOT labelled (crossings versus reversals is 05.4). Grey dashed chip on the curve, from 'flips': 'qualitative (normal form): durations are not those of VKS' (R:163). On 'needle': the corner needle pulses once (scale 1.06, 0.4 s); label above the plot 'flips every minute or two, irregularly'. On 'quick': a SEPARATE card slides in at the right edge, outside the plot (critique_accuracy C6: the measured numbers never sit on the qualitative curve): measured pill chip 'LAB MEASUREMENT', text params.lab_card, mono footer 'Berhanu et al. 2007'; formula layer item (with the ohmic time). Lay the plot and the card out so that the card does not cover the curve (shrink the plot box to x 260-1240 at 'quick' with a 0.6 s ease if needed). On 'stripes': the 0-5 million-year seafloor strip of 00.3 (params.seafloor_normal_Ma, drawn exactly as in 00.3: solid vermillion = normal, near-background = reversed, the two short subchrons at least 2 px) fades in under the VKS strip at the same width, labels at its left 'seafloor · millions of years' and, for the VKS strip, 'VKS, qualitative · minutes': the callback to the cold open at about 6 min (B2). Badge CONTEXT. Key colours: vermillion and green only.",
+      "assets": [],
+      "sources": [
+        "en/rapport/index.qmd:149 (Berhanu et al. 2007: first B to -B reversals in the laboratory, in VKS, when the impellers rotate at different frequencies; at 16 and 22 Hz, mean polarity durations 120 s and 50 s; a reversal lasts about 5 s, against an ohmic time of about 0.4 s)",
+        "en/prep/p3-mhd-dynamo/index.qmd:1166 (when the two impellers rotate at different frequencies, the field can reverse irregularly)",
+        "en/rapport/index.qmd:163 (figure 1, panel b: qualitative curves from the normal form of Pétrélis and Fauve 2008; neither durations nor amplitudes are those of VKS)",
+        "en/prep/p3-mhd-dynamo/index.qmd:1230 (the Earth's field has reversed many times, irregularly, a hundred thousand to a million years apart; the VKS dynamo reverses too)",
+        "data/fig_vks.json (series t, D, events: qualitative normal-form curve of the site figure figures/vks)",
+        "external: Cande S. C. and Kent D. V. 1995, Revised calibration of the geomagnetic polarity timescale for the Late Cretaceous and Cenozoic, J. Geophys. Res. 100(B4), 6093-6095, https://doi.org/10.1029/94JB03098 (seafloor strip, as in 00.3)",
+        "external: Tauxe L., Essentials of Paleomagnetism, web edition, chapter 15, Table 15.1 'Composite GPTS of Gee & Kent (2007)' (ages of params.seafloor_normal_Ma, as in 00.3), https://pmagpy.github.io/Essentials-JupyterBook/chapter15"
+      ],
+      "variants": null,
+      "question": null
+    },
+    {
+      "id": "ch02.Q",
+      "was": null,
+      "title": "Question for the supervisors",
+      "file": "scenes/ch02/02_Q_question.html",
+      "status": "ready",
+      "level": "L1",
+      "register": "NIGHT",
+      "badge": null,
+      "target_s": 9,
+      "lead_in": 0.5,
+      "tail": 1.2,
+      "deps": [],
+      "entry": {
+        "data": {},
+        "params": {}
+      },
+      "sfx": [
+        "chime@q-0.2"
+      ],
+      "paragraphs": [
+        {
+          "hold_after": 1.0,
+          "sentences": [
+            {"id": "ch02.Q.s1", "cue": "q", "text": "Simulations cannot reach sodium's tiny {param}Pm{/}: which Pm values should the first three-dimensional runs cover?"}
+          ]
+        }
+      ],
+      "onscreen": {
+        "title": "",
+        "labels": [],
+        "formulas": [],
+        "chips": []
+      },
+      "visual": "Render class flat. Kit.questionCard(ctx, {n: 3, chapter: 'ch02', category: 'runs', at: 'q'}) filling the frame (BRIEF 3.1): the warm ticket with its perforated stub 'ASK · Q3 · ch02 · Y. Ponty / C. Nore'; the question with the pen underline (M9) on 'tiny Pm'; WHY IT MATTERS at the component's default delay after 'q', WHAT IT UNBLOCKS about 2.2 s later, with the category tag RUNS · PARAMETERS. The two green dials of 02.3 (Rm and Re) may sit faintly (10 %) behind the card. No badge, lower-third or formula layer (a question makes no claim). Chime at 'q-0.2'.",
+      "assets": [],
+      "sources": [
+        "en/rapport/index.qmd:137 (Pm = 0.82e-5 for sodium at 120 °C)",
+        "en/prep/p3-mhd-dynamo/index.qmd:275-279 (table: sodium Pm 0.82e-5; usual numerical simulations Pm 0.1 to 10; reference VKS simulation with LATU Pm about 0.33)",
+        "en/prep/p3-mhd-dynamo/index.qmd:281 (a small Pm makes the dynamo harder to obtain than at Pm ~ 1; Ponty et al. 2005)",
+        "en/these/index.qmd:908 (tier 2: Taylor-Green thresholds known as a function of Pm, Rm_c = 30 at Pm = 1 and 226 at Pm = 0.3, Ponty et al. 2005)",
+        "en/these/index.qmd:912 (tier 2 data: Rm on both sides of the threshold for two values of Pm)",
+        "en/these/index.qmd:917 (criterion (c): threshold Rm_c from the generator within 10 % of the simulated one, at a Pm without data)",
+        "en/these/index.qmd:918 (stopping rule: if Taylor-Green runs at low Pm exceed the budget, restrict to Pm = 1 and ABC)",
+        "infra/configs/palier2_tg3d.yaml:36-37 (the campaign sweeps Re in {25, 50, 100, 200} and Pm in {0.5, 1, 2})",
+        "en/calcul/index.qmd:86 (train_fm3d split: validation Re = 100, Pm = 1; test Re = 50, Pm = 2)",
+        "en/encadrants/index.qmd:201 and :205 (Y. Ponty: dynamos at low magnetic Prandtl number; Ponty et al. 2005, Taylor-Green from Pm = 1 down to 1e-2, threshold rising steeply as Pm falls)",
+        "infra/cloud/RECOMMANDATION-CLOUD.md:30 (section 0: the range of Re and Pm is a question for the supervisors before renting compute)"
+      ],
+      "variants": null,
+      "question": {
+        "n": 3,
+        "category": "runs",
+        "en": "Simulations cannot reach sodium's *tiny Pm*: which Pm values should the first 3D runs cover?",
+        "say": "Simulations cannot reach sodium's tiny Pm: which Pm values should the first three-dimensional runs cover?",
+        "fr": "Les simulations n'atteignent pas le Pm minuscule du sodium : quelles valeurs de Pm les premières simulations 3D doivent-elles couvrir ?",
+        "why": "Sodium's Pm is about 10⁻⁵, simulations sit near 1, and the Taylor–Green threshold moves from Rm 30 at Pm 1 to 226 at Pm 0.3.",
+        "unblocks": "The Pm values of the Taylor–Green campaign (now 0.5, 1, 2), and which Pm is held out to test the threshold.",
+        "why_fr": "Le Pm du sodium vaut environ 10⁻⁵, les simulations restent proches de 1, et le seuil de Taylor–Green passe de Rm = 30 pour Pm = 1 à Rm = 226 pour Pm = 0,3.",
+        "unblocks_fr": "Les valeurs de Pm de la campagne Taylor–Green (aujourd'hui 0,5 ; 1 ; 2) et la valeur de Pm réservée pour tester le seuil.",
+        "ask_who": "Y. Ponty / C. Nore"
+      }
+    }
+  ]
+}

@@ -1,0 +1,30 @@
+{
+  "schema": 2,
+  "unit": "tx",
+  "title": "Test extension module",
+  "cut": "extension",
+  "insert_after": "T1.1",
+  "level_range": "L4",
+  "voice": {"provider": "fish", "model": "drama-3", "reference_id": "536d3a5e000945adb7038665781a4aca"},
+  "scenes": [
+    {
+      "id": "TX.1",
+      "title": "Ticks at every crossing",
+      "file": "scenes/_test/t_ticks.html",
+      "status": "ready",
+      "level": "L4",
+      "register": "PAPER",
+      "badge": {"kind": "PROVED", "confidence": null},
+      "target_s": 9,
+      "lead_in": 0.4,
+      "tail": 0.8,
+      "deps": [],
+      "paragraphs": [
+        {"hold_after": 0.0, "sentences": [
+          {"id": "TX.1.s1", "cue": "signal", "text": "Each time the dipole crosses zero, you hear a tick."},
+          {"id": "TX.1.s2", "cue": "count", "text": "Counting the ticks gives the {metric}crossing rate{/}."}
+        ]}
+      ]
+    }
+  ]
+}
