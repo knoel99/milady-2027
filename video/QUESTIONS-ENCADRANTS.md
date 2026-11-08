@@ -20,11 +20,10 @@ jour pour une première réunion de 45 minutes la termine.
 
 **Le lien avec le film.** Chaque chapitre du film se termine par une carte « ASK · Qn » ; les scènes dont
 les résultats n'existent pas encore (les « sièges vides ») portent un encadré de question ; le chapitre
-« Before we compute » [vidéo : ch10q, mm:ss] les regroupe et les classe. Les numéros Qn de cette fiche sont
+« Before we compute » [vidéo : ch10q, 82:16] les regroupe et les classe. Les numéros Qn de cette fiche sont
 ceux du film et du registre ; si le registre change, il fait foi. Les repères `[vidéo : unité, mm:ss]`
-renvoient à la version longue en anglais, la seule qui contienne toutes les scènes ; ils seront remplis
-après le rendu final à partir de `video/script/_build/*_cues.json`, grâce à l'identifiant de scène indiqué
-à côté de chaque repère.
+renvoient au début de la scène citée dans la version longue à narration française (87 min 35 s), la seule
+qui contienne toutes les scènes ; ils sont tirés de `video/script/_build/extended_fr_timeline.json`.
 
 **Le lien avec la recommandation cloud.** Son §0 demande cet échange avant tout calcul, et son §4.2 liste
 les décisions à écrire aux encadrants avant de louer. Tout y est repris : moyens de calcul et Jean Zay
@@ -83,7 +82,7 @@ configurées, `infra/configs/palier2_tg3d.yaml` (Taylor–Green, 12 simulations 
   ≈ 6 / 16 / 38 € TTC en bas / probable / haut) ; une demande d'accès dynamique sur Jean Zay (≈ 500 à
   1 500 h H100) à faire déposer par S. Cheng ou D. Lucor en janvier ou février 2027, pour le 128³, le 256³
   et la thèse ; pas de 256³ sur un compte personnel.
-- [vidéo : ch10, mm:ss] — scène `10.2` (encadré de `X5.3` dans la version longue)
+- [vidéo : ch10, 63:11] — scène `10.2` (encadré de `X5.3` dans la version longue)
 - **Décision** :
 
 ### A2. Quelles campagnes d'abord ? · Q22 · P1 · les quatre encadrants
@@ -101,7 +100,7 @@ configurées, `infra/configs/palier2_tg3d.yaml` (Taylor–Green, 12 simulations 
   contrôle (`palier1_mhd2d`, 32², 11 valeurs de η), Taylor–Green 64³, ABC 64³, puis entraînement,
   évaluation et réglage fin du générateur 3D ; pas de palier 1 à 128² ; rien sur les données des partenaires
   avant leur accord.
-- [vidéo : ch10, mm:ss] — scène `10.3`
+- [vidéo : ch10, 63:58] — scène `10.3`
 - **Décision** :
 
 ### A3. Taylor–Green : forçage, définition de Re, résolution · Q18 · P1 · Y. Ponty
@@ -121,7 +120,7 @@ configurées, `infra/configs/palier2_tg3d.yaml` (Taylor–Green, 12 simulations 
   décades avant k_max (règle d'usage, à valider), sinon Re ≥ 100 en 64³ est étiqueté « sous-résolu,
   provisoire », Re = 100 passe en 128³ et Re = 200 en 256³ est renvoyé à Jean Zay ; la comparaison à
   Rm_c = 30 reste qualitative.
-- [vidéo : ch10, mm:ss] — carte `ch10.Q`
+- [vidéo : ch10, 74:21] — carte `ch10.Q`
 - **Décision** :
 
 ### A4. Près du seuil : allonger les simulations, ou les exclure ? · Q24 · P1 · Y. Ponty
@@ -137,7 +136,7 @@ configurées, `infra/configs/palier2_tg3d.yaml` (Taylor–Green, 12 simulations 
   et les simulations qui alimentent la perte de stationnarité 3D et le pari 2.
 - **Par défaut** : signaler et exclure (décision du film) : une simulation n'est retenue que si la pente de
   ln E_B sur la fenêtre gardée est proche de zéro ; aucune simulation n'est allongée.
-- [vidéo : ch10, mm:ss] — scène `10.5` (et `X3.5`, version longue)
+- [vidéo : ch10, 70:53] — scène `10.5` (et `X3.5`, version longue)
 - **Décision** :
 
 ### A5. Germe minuscule, germe fort, ou les deux ? · Q2 · P1 · Y. Ponty, C. Nore
@@ -153,7 +152,7 @@ configurées, `infra/configs/palier2_tg3d.yaml` (Taylor–Green, 12 simulations 
   éventuel étiquetage des branches dans les données.
 - **Par défaut** : germe de rms 10⁻³ seulement, pas de balayage descendant, pas d'étiquette de branche : la
   région sous-critique n'est pas explorée par la première campagne.
-- [vidéo : ch01, mm:ss] — carte `ch01.Q` (et `X4.4`, version longue)
+- [vidéo : ch01, 4:57] — carte `ch01.Q` (et `X4.4`, version longue)
 - **Décision** :
 
 ### A6. Quelles valeurs de Pm ? · Q3 · P1 · Y. Ponty, C. Nore
@@ -170,7 +169,7 @@ configurées, `infra/configs/palier2_tg3d.yaml` (Taylor–Green, 12 simulations 
   test.
 - **Par défaut** : Re ∈ {25, 50, 100, 200} × Pm ∈ {0,5 ; 1 ; 2} et la séparation configurée ; le critère (c)
   n'est alors pas testé, et les spectres au point de test restent un diagnostic sans critère.
-- [vidéo : ch02, mm:ss] — carte `ch02.Q` (et `10.7`)
+- [vidéo : ch02, 8:43] — carte `ch02.Q` (et `10.7`)
 - **Décision** :
 
 ### A7. Combien d'instantanés indépendants par réglage ? · Q6 · P1 · Y. Ponty, D. Lucor
@@ -187,7 +186,7 @@ configurées, `infra/configs/palier2_tg3d.yaml` (Taylor–Green, 12 simulations 
   Taylor–Green, donc volume de données et heures GPU.
 - **Par défaut** : la configuration actuelle (`n_traj: 1`, 40 instantanés espacés d'une unité de temps) ;
   les verdicts 3D sont alors « indicatifs » (12 × 40 instantanés, contre ≈ 20 × 5 000 dans le plan).
-- [vidéo : ch04, mm:ss] — carte `ch04.Q` (et `10.7`)
+- [vidéo : ch04, 22:02] — carte `ch04.Q` (et `10.7`)
 - **Décision** :
 
 ### A8. Points répartis, ou resserrés près des seuils ? · Q5 · P1 · Y. Ponty, D. Lucor
@@ -203,7 +202,7 @@ configurées, `infra/configs/palier2_tg3d.yaml` (Taylor–Green, 12 simulations 
   Taylor–Green.
 - **Par défaut** : Rm de 4 à 40 par pas de 1, deux germes par Rm ; le pari 1 est énoncé s(17) > 0 > s(18),
   sans point entre 17 et 18 ; Re ∈ {25, 50, 100, 200} à chaque Pm.
-- [vidéo : ch03, mm:ss] — carte `ch03.Q` (et `10.4`)
+- [vidéo : ch03, 17:08] — carte `ch03.Q` (et `10.4`)
 - **Décision** :
 
 ### A9. Terme d'oscillation, ou simulations plus longues ? · Q17 · P1 · Y. Ponty, C. Nore
@@ -221,7 +220,7 @@ configurées, `infra/configs/palier2_tg3d.yaml` (Taylor–Green, 12 simulations 
   estimateur.
 - **Par défaut** : la configuration actuelle et les deux ajustements sans terme d'oscillation ; si leurs
   signes diffèrent à Rm = 17 ou 18, le pari 1 est déclaré « non concluant ».
-- [vidéo : X1, mm:ss] — carte `X1.Q`, version longue seulement (rappel dans `10.4`)
+- [vidéo : X1, 69:52] — carte `X1.Q`, version longue seulement (rappel dans `10.4`)
 - **Décision** :
 
 ---
@@ -253,7 +252,7 @@ symétries et les règles de verdict des paliers suivants.
   distance d'énergie et son plancher par demi-référence, hélicités, résidus moyens des bilans), plus
   σ(ε)/σ_ref, à ajouter (recommandation cloud §4.1, point 1) ; le critère (b) jugé aux seuls points
   d'entraînement ; pas de topologie en 3D.
-- [vidéo : ch06, mm:ss] — carte `ch06.Q`
+- [vidéo : ch06, 29:00] — carte `ch06.Q`
 - **Décision** :
 
 ### B2. Quels bilans en moyenne, et leur dispersion ? · Q9 · P1 · Y. Ponty, D. Lucor
@@ -272,7 +271,7 @@ symétries et les règles de verdict des paliers suivants.
   règle de verdict du réglage fin M7.
 - **Par défaut** : bilan d'énergie seul ; verdict de M7 contre son témoin au même ancrage ; σ(ε)/σ_ref dans
   [0,8 ; 1,2], critère du palier 1 (2D) repris à titre indicatif, puisque le plan n'en fixe pas en 3D.
-- [vidéo : ch07, mm:ss] — carte `ch07.Q`
+- [vidéo : ch07, 33:51] — carte `ch07.Q`
 - **Décision** :
 
 ### B3. Quelle métrique de topologie ? · Q16 · P1 · C. Nore, Y. Ponty
@@ -289,7 +288,7 @@ symétries et les règles de verdict des paliers suivants.
 - **Par défaut** : pas de topologie en 3D pour les premières campagnes ; en 2D, le nombre de points X du
   potentiel a, avec la vérification de Poincaré–Hopf (autant de cols que d'extrema sur le tore), rapporté
   comme diagnostic sans verdict.
-- [vidéo : X5a, mm:ss] — carte `X5a.Q`, version longue seulement (rappel dans `10q.3`)
+- [vidéo : X5a, 67:07] — carte `X5a.Q`, version longue seulement (rappel dans `10q.3`)
 - **Décision** :
 
 **B.2 · Ce que le générateur représente et impose**
@@ -310,7 +309,7 @@ symétries et les règles de verdict des paliers suivants.
 - **Par défaut** : le vecteur (Re, Rm, μ_r, asymétrie) du plan de thèse, avec la convention de Rm des
   fichiers reçus écrite dans les métadonnées ; condition de paroi et phase des turbines en métadonnées, pas
   en conditionnement.
-- [vidéo : X6, mm:ss] — carte `X6.Q`, version longue seulement (la question est motivée dans les deux
+- [vidéo : X6, 80:13] — carte `X6.Q`, version longue seulement (la question est motivée dans les deux
   versions par `03.5`)
 - **Décision** :
 
@@ -327,7 +326,7 @@ symétries et les règles de verdict des paliers suivants.
   conditionnement.
 - **Par défaut** : aucun paramètre ajouté ; parois et milieu extérieur pris tels qu'ils sont dans les
   simulations reçues, et notés en métadonnées.
-- [vidéo : chSOA1, mm:ss] — scène `SOA1.4` (pas de carte)
+- [vidéo : chSOA1, 10:23] — scène `SOA1.4` (pas de carte)
 - **Décision** :
 
 ### B6. Quelles lois exactes, pour quel opérateur discret ? · Q10 · P2 · C. Nore, Y. Ponty
@@ -345,7 +344,7 @@ symétries et les règles de verdict des paliers suivants.
 - **Par défaut** : le protocole du plan : divergence mesurée avec l'opérateur du solveur et comparée au
   niveau des données ; bilans recalculés sur les données avec ce même opérateur avant tout entraînement
   (feuille de route du rapport, mois 3).
-- [vidéo : ch08, mm:ss] — carte `ch08.Q`
+- [vidéo : ch08, 39:47] — carte `ch08.Q`
 - **Décision** :
 
 ### B7. LATU ou SFEMaNS d'abord ? · Q15 · P2 · C. Nore, Y. Ponty, D. Lucor
@@ -365,7 +364,7 @@ symétries et les règles de verdict des paliers suivants.
   la première demande de données.
 - **Par défaut** : LATU d'abord, « dont la grille cartésienne est la plus simple » (page Encadrants), puis
   SFEMaNS.
-- [vidéo : chSOA2, mm:ss] — carte `chSOA2.Q`
+- [vidéo : chSOA2, 62:35] — carte `chSOA2.Q`
 - **Décision** :
 
 ### B8. Champs complets, moyennés, ou coefficients ? · Q25 · P2 · S. Cheng, C. Nore
@@ -379,7 +378,7 @@ symétries et les règles de verdict des paliers suivants.
   l'évaluation.
 - **Par défaut** : le plan de thèse : champs complets décodés depuis un espace latent par des potentiels,
   et énergies des quatre modes POD dominants calculées sur les champs générés (critère (a) du palier 3).
-- [vidéo : ch08, mm:ss] — scène `08.7` (pas de carte ; aussi `X6.6`, version longue)
+- [vidéo : ch08, 39:06] — scène `08.7` (pas de carte ; aussi `X6.6`, version longue)
 - **Décision** :
 
 ### B9. Espace latent : POD, autoencodeur polynomial ou VAE ? · Q36 · P2 · D. Lucor
@@ -396,7 +395,7 @@ symétries et les règles de verdict des paliers suivants.
 - **Par défaut** : le plan de thèse : autoencodeur fonctionnel de type FunDiff, avec la POD (tirage
   gaussien des coefficients) et les autoencodeurs de Bousquet, Nore et Lucor (2025) comme méthodes de
   comparaison.
-- [vidéo : chSOA2, mm:ss] — scène `SOA2.6` (pas de carte)
+- [vidéo : chSOA2, 60:03] — scène `SOA2.6` (pas de carte)
 - **Décision** :
 
 ### B10. Un seul signe de l'asymétrie de forçage ? · Q11 · P3 · C. Nore, Y. Ponty
@@ -412,7 +411,7 @@ symétries et les règles de verdict des paliers suivants.
   intègre (deux ou quatre passes du réseau) ; la symétrie exigée du maillage.
 - **Par défaut** : demander les deux signes quand ils existent, et se servir de l'image par R_π pour tester
   l'équivariance plutôt que pour économiser des simulations.
-- [vidéo : X2, mm:ss] — carte `X2.Q`, version longue seulement
+- [vidéo : X2, 44:16] — carte `X2.Q`, version longue seulement
 - **Décision** :
 
 ### B11. Imposer R_π, ou seulement B → −B ? · Q33 · P3 · C. Nore, D. Lucor
@@ -427,7 +426,7 @@ symétries et les règles de verdict des paliers suivants.
 - **Débloque** : l'architecture du champ de vitesse du flow matching au palier 3.
 - **Par défaut** : le plan : équivariance conjointe pour B → −B et R_π, avec l'équivariance simple ou
   conjointe en ablation, comme au palier 0.
-- [vidéo : X2, mm:ss] — scène `X2.4`, version longue (aussi `SOA2.5`)
+- [vidéo : X2, 42:31] — scène `X2.4`, version longue (aussi `SOA2.5`)
 - **Décision** :
 
 **B.3 · Renversements : ce que l'on vise, et comment on le juge**
@@ -444,7 +443,7 @@ symétries et les règles de verdict des paliers suivants.
 - **Débloque** : la durée des simulations et la cadence de sauvegarde (instantanés espacés, ou séries denses
   autour de chaque renversement), et le périmètre de la question Q3 de la thèse.
 - **Par défaut** : la fréquence, par la formule de Rice, à partir d'instantanés ; pas de précurseurs.
-- [vidéo : ch00, mm:ss] — carte `ch00.Q`
+- [vidéo : ch00, 1:33] — carte `ch00.Q`
 - **Décision** :
 
 ### B13. Quel dipôle, et quel seuil pour un renversement ? · Q7 · P2 · C. Nore, Y. Ponty
@@ -460,7 +459,7 @@ symétries et les règles de verdict des paliers suivants.
   seuils du critère (d) du palier 3.
 - **Par défaut** : le coefficient de ψ_D, premier exemple du plan ; r₀ et, séparément, le taux des passages
   de ±a pour quelques seuils choisis sur un plateau, comme au palier 0.
-- [vidéo : ch05, mm:ss] — carte `ch05.Q`
+- [vidéo : ch05, 25:06] — carte `ch05.Q`
 - **Décision** :
 
 ### B14. Quels réglages reçoivent de longues simulations ? · Q13 · P2 · C. Nore, Y. Ponty
@@ -477,7 +476,7 @@ symétries et les règles de verdict des paliers suivants.
 - **Par défaut** : la parade du plan : validation principale de Rice au palier 0, où la vérité est exacte ;
   pour VKS, un taux jugé par l'intervalle de confiance poissonien à 95 % du comptage simulé (critère (d) du
   palier 3) ; pas de longue simulation Taylor–Green.
-- [vidéo : ch09, mm:ss] — carte `ch09.Q`
+- [vidéo : ch09, 52:56] — carte `ch09.Q`
 - **Décision** :
 
 ### B15. Viser aussi les temps d'attente ? · Q14 · P3 · C. Nore, Y. Ponty
@@ -493,7 +492,7 @@ symétries et les règles de verdict des paliers suivants.
   durée), et si les temps d'attente deviennent un critère ou restent l'affaire d'un modèle temporel.
 - **Par défaut** : temps d'attente au palier 0 seulement, en intégrant le modèle depuis des états générés ;
   rien pour VKS.
-- [vidéo : X4a, mm:ss] — carte `X4a.Q`, version longue seulement
+- [vidéo : X4a, 56:30] — carte `X4a.Q`, version longue seulement
 - **Décision** :
 
 ### B16. Quelle largeur pour le plateau de seuils ? · Q28 · P3 · les encadrants
@@ -506,7 +505,7 @@ symétries et les règles de verdict des paliers suivants.
 - **Débloque** : la règle de verdict du critère (d), et la durée des simulations du palier 0 qui comptent
   les passages à plusieurs seuils.
 - **Par défaut** : une largeur fixée par l'auteur et publiée avant les simulations du palier 0.
-- [vidéo : X4a, mm:ss] — scène `X4.2`, version longue seulement
+- [vidéo : X4a, 53:55] — scène `X4.2`, version longue seulement
 - **Décision** :
 
 ### B17. Juger la symétrie par un test statistique ? · Q29 · P3 · les encadrants
@@ -523,7 +522,7 @@ symétries et les règles de verdict des paliers suivants.
   plancher.
 - **Par défaut** : un test de |p̂ − ½| sous l'hypothèse de symétrie exacte, à un niveau annoncé avant les
   données et corrigé pour le nombre de valeurs de Γ.
-- [vidéo : X4a, mm:ss] — scène `X4.5`, version longue seulement
+- [vidéo : X4a, 55:36] — scène `X4.5`, version longue seulement
 - **Décision** :
 
 **B.4 · Repli, usages en aval, positionnement**
@@ -543,7 +542,7 @@ symétries et les règles de verdict des paliers suivants.
 - **Par défaut** : la parade de la matrice des risques (réglage fin ancré au modèle de départ, lots plus
   grands, montée progressive du poids), l'inclinaison n'étant gardée que comme diagnostic (ESS/N) ; la règle
   d'arrêt du palier 0 serait réécrite en ce sens.
-- [vidéo : X3a, mm:ss] — carte `X3a.Q`, version longue seulement
+- [vidéo : X3a, 47:45] — carte `X3a.Q`, version longue seulement
 - **Décision** :
 
 ### B19. La contrainte de moment d'ordre 3 de DQVU · Q34 · P3 · C. Nore, Y. Ponty
@@ -558,7 +557,7 @@ symétries et les règles de verdict des paliers suivants.
 - **Débloque** : le protocole de la question Q4 de la thèse : quels invariants préserver quand on identifie
   un modèle réduit depuis un générateur.
 - **Par défaut** : les mêmes contraintes que l'identification publiée, pour comparer à l'identique.
-- [vidéo : chSOA1, mm:ss] — scène `SOA1.5`
+- [vidéo : chSOA1, 11:21] — scène `SOA1.5`
 - **Décision** :
 
 ### B20. Assimilation : quelles sondes, quelle méthode ? · Q35 · P3 · S. Cheng, C. Nore
@@ -573,7 +572,7 @@ symétries et les règles de verdict des paliers suivants.
   « Ouvertures : pistes C et D » ; `ETAT-DE-L-ART.md` §4 (Q-9).
 - **Débloque** : la conception de l'étude d'assimilation (mois 25 à 27 du plan).
 - **Par défaut** : choix reporté au début de cette étude ; aucun travail préparatoire avant.
-- [vidéo : chSOA2, mm:ss] — scène `SOA2.5`
+- [vidéo : chSOA2, 59:29] — scène `SOA2.5`
 - **Décision** :
 
 ### B21. Comment situer notre résultat face à PBFM ? · Q31 · P3 · S. Cheng, D. Lucor
@@ -589,7 +588,7 @@ symétries et les règles de verdict des paliers suivants.
   du palier 1.
 - **Par défaut** : citer PBFM, restreindre la revendication à l'énoncé et à la mesure pour un bilan
   stationnaire, et ajouter PBFM au palier 1 si son code est disponible.
-- [vidéo : chSOA2, mm:ss] — scène `SOA2.8`
+- [vidéo : chSOA2, 61:54] — scène `SOA2.8`
 - **Décision** :
 
 ---
@@ -613,7 +612,7 @@ symétries et les règles de verdict des paliers suivants.
 - **Par défaut** : la parade du plan : demande au premier trimestre par C. Nore et Y. Ponty, paliers 0 à 2
   sur des données produites par la thèse, repli sur des simulations SFEMaNS à basse résolution, décision au
   mois 18 ; les campagnes périodiques n'attendent pas ces données.
-- [vidéo : ch10, mm:ss] — scène `10.9` (et `X6.4`, version longue)
+- [vidéo : ch10, 77:47] — scène `10.9` (et `X6.4`, version longue)
 - **Décision** :
 
 ### C2. Des simulations des grandes échelles comme données d'entraînement ? · Q32 · P2 · C. Nore, Y. Ponty
@@ -627,7 +626,7 @@ symétries et les règles de verdict des paliers suivants.
   Encadrants, « Caroline Nore » et « Yannick Ponty » ; `ETAT-DE-L-ART.md` §1.5 et §4 (Q-5).
 - **Débloque** : les données des paliers 2 et 3 : simulations directes seulement, ou directes et LES.
 - **Par défaut** : simulations directes seulement ; le faible Pm reste hors du périmètre revendiqué.
-- [vidéo : chSOA2, mm:ss] — scène `SOA2.6`
+- [vidéo : chSOA2, 60:03] — scène `SOA2.6`
 - **Décision** :
 
 ### C3. Les simulations de référence : sur quelles machines ? · Q27 · P2 · C. Nore, Y. Ponty
@@ -641,7 +640,7 @@ symétries et les règles de verdict des paliers suivants.
 - **Débloque** : si ces simulations utilisent les allocations des partenaires ou doivent être budgétées,
   donc le coût total du plan et la part CPU d'une demande GENCI.
 - **Par défaut** : l'hypothèse H4 telle qu'écrite, sans budget propre.
-- [vidéo : X5b, mm:ss] — scène `X5.5`, version longue seulement
+- [vidéo : X5b, 80:25] — scène `X5.5`, version longue seulement
 - **Décision** :
 
 ### C4. Qui financerait les derniers mois d'une thèse ? · Q20 · P2 · S. Cheng, D. Lucor, C. Nore
@@ -655,7 +654,7 @@ symétries et les règles de verdict des paliers suivants.
 - **Débloque** : si le plan de 36 mois tient tel quel ou doit être resserré (le palier 4 tombe en premier),
   et l'engagement dans la thèse.
 - **Par défaut** : aucun ; le plan reste une proposition tant que ce point n'est pas clarifié.
-- [vidéo : X5b, mm:ss] — carte `X5b.Q`, version longue seulement
+- [vidéo : X5b, 82:06] — carte `X5b.Q`, version longue seulement
 - **Décision** :
 
 ### C5. Peut-on publier les nouveaux résultats ? · Q26 · P2 · les encadrants
@@ -669,7 +668,7 @@ symétries et les règles de verdict des paliers suivants.
 - **Débloque** : si l'épisode de mise à jour et les pages du site montrent de nouveaux chiffres, et avec
   quels crédits.
 - **Par défaut** : rien de nouveau n'est publié sans votre accord ; les sièges vides du film restent vides.
-- [vidéo : ch11, mm:ss] — scène `11.3` (carton de fin)
+- [vidéo : ch11, 87:20] — scène `11.3` (carton de fin)
 - **Décision** :
 
 ### C6. DRESDYN : combien de rapports de précession ? · Q30 · P3 · C. Nore, Y. Ponty
@@ -684,7 +683,7 @@ symétries et les règles de verdict des paliers suivants.
   budget (≈ 1 200 h GPU).
 - **Par défaut** : la règle d'arrêt du plan : sous environ cinq valeurs de Po, une étude d'interpolation
   sur une branche ; palier 4 abandonné en premier en cas de retard.
-- [vidéo : X6, mm:ss] — scène `X6.5`, version longue seulement (rappel dans `10.9`)
+- [vidéo : X6, 78:42] — scène `X6.5`, version longue seulement (rappel dans `10.9`)
 - **Décision** :
 
 ### C7. Veille bibliographique et premier article · Q37 · P3 · les encadrants
@@ -697,7 +696,7 @@ symétries et les règles de verdict des paliers suivants.
   premier article dès le mois 10. À lire : thèse §4.2 et §4.4 ; `ETAT-DE-L-ART.md` §3.4.
 - **Débloque** : l'ordre des articles et la première échéance.
 - **Par défaut** : le plan tel qu'écrit : veille avant chaque soumission, premier article au mois 10.
-- [vidéo : chSOA2, mm:ss] — scène `SOA2.8`
+- [vidéo : chSOA2, 61:54] — scène `SOA2.8`
 - **Décision** :
 
 ---
@@ -708,7 +707,7 @@ symétries et les règles de verdict des paliers suivants.
 tranchera et une date. Les questions P2 et P3 partent ensuite par écrit.
 
 **Avant la réunion** (une semaine avant, par courriel) : cette fiche, en signalant les questions P1 ; le
-lien du chapitre « Before we compute » [vidéo : ch10q, mm:ss] ; le tableau de budget de la recommandation
+lien du chapitre « Before we compute » [vidéo : ch10q, 82:16] ; le tableau de budget de la recommandation
 cloud (§1).
 
 | Minutes | Sujet | Questions | Surtout pour |
@@ -733,5 +732,5 @@ inutile, la seconde fixe le calendrier des paliers 3 et 4.
   location utile.
 - Envoyer par écrit les questions P2 (Q1, Q4, Q7, Q10, Q12, Q13, Q15, Q19, Q20, Q25, Q27, Q32, Q36) et P3
   (Q11, Q14, Q28, Q29, Q30, Q31, Q33, Q34, Q35, Q37), groupées comme dans cette fiche.
-- Après le rendu final du film, remplir les repères `[vidéo : …, mm:ss]` à partir de
-  `video/script/_build/*_cues.json`.
+- Si le montage change, régénérer les repères `[vidéo : …, mm:ss]` à partir de
+  `video/script/_build/extended_fr_timeline.json` (début de chaque scène citée).
