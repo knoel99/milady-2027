@@ -8,7 +8,7 @@ import { fileURLToPath } from "node:url";
 import { cleCache, ecrire } from "../cache.mjs";
 import { ecrireWav } from "../kit-voix/aligner.mjs";
 import { VOIX, preparer } from "../parole.mjs";
-import { ecrireManifeste } from "../pilote.mjs";
+import { argumentsPiste, ecrireManifeste } from "../pilote.mjs";
 import { dureeTableau, sousTitresNarration, tableau, texteSousTitre } from "../film.mjs";
 import { lireScenes, placer } from "../pilote.mjs";
 
@@ -87,12 +87,128 @@ function estNombreSeul(texte) {
   return /^(?:\d+(?:[.,]\d+)?|\d+(?:[.,]\d+)?\s*×\s*10[⁻⁰¹²³⁴⁵⁶⁷⁸⁹]+|10[⁻⁰¹²³⁴⁵⁶⁷⁸⁹]+)$/.test(nu);
 }
 
+test("chaque sous-titre suit la voix mesurée sur la piste mélangée", async () => {
+  const dir = await mkdtemp(join(tmpdir(), "sync-"));
+  const rate = 44100;
+  for (const lang of ["en", "fr"]) {
+    const markdown = await readFile(join(root, "narration", lang, "g10.md"), "utf8");
+    const chapitre = preparer(markdown, lang);
+    const lignes = tableau(chapitre);
+    const durees = new Map();
+    const fichiers = new Map();
+    let raccourci = false;
+    for (const paragraphe of chapitre.paragraphes) {
+      const parties = [];
+      const dites = phrases(paragraphe.brut);
+      dites.forEach((phrase, index) => {
+        const court = !raccourci && index > 0;
+        if (court) raccourci = true;
+        if (index > 0) parties.push(new Float64Array(Math.round(0.4 * rate)));
+        parties.push(ton(court ? 0.45 : 1.25, rate));
+      });
+      parties.push(new Float64Array(Math.round(0.25 * rate)));
+      const samples = coller(parties);
+      const chemin = join(dir, `${lang}-${paragraphe.id.replaceAll(".", "-")}.wav`);
+      await ecrireWav(chemin, samples, rate);
+      durees.set(paragraphe.id, samples.length / rate);
+      fichiers.set(paragraphe.id, chemin);
+    }
+    let origine = 0;
+    const clips = [];
+    for (const ligne of lignes) {
+      const beat = chapitre.beats.find((item) => item.id === ligne.id);
+      const place = placer(beat.paragraphes, durees);
+      for (const pose of place.poses) clips.push({ fichier: fichiers.get(pose.id), at: origine + pose.at, atempo: null });
+      origine += ligne.slot;
+    }
+    const mix = join(dir, `${lang}-mix.wav`);
+    const melange = spawnSync("ffmpeg", [...argumentsPiste(clips, origine), mix], { encoding: "utf8" });
+    assert.equal(melange.status, 0, melange.stderr);
+    const voix = voixMesuree(mix);
+    const dites = chapitre.paragraphes.flatMap((paragraphe) => phrases(paragraphe.brut));
+    assert.equal(voix.length, dites.length, `${lang} ${voix.length} voix, ${dites.length} phrases`);
+    const cues = await sousTitresNarration(lignes, chapitre, durees, fichiers);
+    let curseur = 0;
+    let pireDepart = 0;
+    let pireFin = 0;
+    for (const cue of cues) {
+      const debut = voix[curseur].debut;
+      let fin = voix[curseur].fin;
+      let reste = contrat(cue.text);
+      const premiere = contrat(dites[curseur]);
+      assert.equal(reste.includes(premiere), true, `${lang} ${premiere}`);
+      reste = reste.slice(reste.indexOf(premiere) + premiere.length).trim();
+      curseur += 1;
+      while (curseur < dites.length && reste.startsWith(contrat(dites[curseur]))) {
+        fin = voix[curseur].fin;
+        const suivante = contrat(dites[curseur]);
+        reste = reste.slice(suivante.length).trim();
+        curseur += 1;
+      }
+      const depart = Math.abs(cue.debut - debut);
+      const anticipe = fin - cue.fin;
+      pireDepart = Math.max(pireDepart, depart);
+      pireFin = Math.max(pireFin, anticipe);
+      assert.ok(depart <= 0.15, `${lang} départ ${depart.toFixed(3)} ${cue.text}`);
+      assert.ok(anticipe <= 0.03, `${lang} fin ${anticipe.toFixed(3)} ${cue.text}`);
+    }
+    assert.equal(curseur, dites.length, lang);
+    console.log(`écart ${lang}: départ ${pireDepart.toFixed(3)} s, fin anticipée ${pireFin.toFixed(3)} s`);
+  }
+});
+
+function ton(secondes, rate) {
+  const samples = new Float64Array(Math.round(secondes * rate));
+  for (let index = 0; index < samples.length; index += 1) {
+    samples[index] = 0.4 * Math.sin((2 * Math.PI * 440 * index) / rate);
+  }
+  return samples;
+}
+
+function coller(parties) {
+  const total = parties.reduce((somme, partie) => somme + partie.length, 0);
+  const samples = new Float64Array(total);
+  let curseur = 0;
+  for (const partie of parties) {
+    samples.set(partie, curseur);
+    curseur += partie.length;
+  }
+  return samples;
+}
+
+function voixMesuree(fichier) {
+  const probe = spawnSync(
+    "ffprobe",
+    ["-v", "error", "-show_entries", "format=duration", "-of", "json", fichier],
+    { encoding: "utf8" },
+  );
+  assert.equal(probe.status, 0, probe.stderr);
+  const duree = Number(JSON.parse(probe.stdout).format.duration);
+  const detecte = spawnSync(
+    "ffmpeg",
+    ["-i", fichier, "-af", "silencedetect=noise=-40dB:d=0.15", "-f", "null", "-"],
+    { encoding: "utf8" },
+  );
+  const silences = [];
+  const debuts = [...detecte.stderr.matchAll(/silence_start: ([0-9.]+)/g)].map((match) => Number(match[1]));
+  const fins = [...detecte.stderr.matchAll(/silence_end: ([0-9.]+)/g)].map((match) => Number(match[1]));
+  debuts.forEach((start, index) => silences.push({ start, end: fins[index] ?? duree }));
+  const voix = [];
+  let curseur = 0;
+  for (const silence of silences) {
+    if (silence.start - curseur > 0.05) voix.push({ debut: curseur, fin: silence.start });
+    curseur = silence.end;
+  }
+  if (duree - curseur > 0.05) voix.push({ debut: curseur, fin: duree });
+  return voix;
+}
+
 test("aucun sous-titre n'est trop court pour se lire", async () => {
   for (const lang of ["en", "fr"]) {
     const markdown = await readFile(join(root, "narration", lang, "g10.md"), "utf8");
     const chapitre = preparer(markdown, lang);
     const durees = new Map(chapitre.paragraphes.map((paragraphe) => [paragraphe.id, 8]));
-    const cues = sousTitresNarration(tableau(chapitre), chapitre, durees);
+    const cues = await sousTitresNarration(tableau(chapitre), chapitre, durees);
     const lignes = new Set(
       phrases(contrat(chapitre.paragraphes.map((paragraphe) => paragraphe.brut).join(" "))).filter(
         (phrase) => phrase.replace(/[.!?]+$/g, "").trim().split(/\s+/).length <= 1,
@@ -114,7 +230,7 @@ test("la piste entière égale le script parlé", async () => {
     const markdown = await readFile(join(root, "narration", lang, "g10.md"), "utf8");
     const chapitre = preparer(markdown, lang);
     const durees = new Map(chapitre.paragraphes.map((paragraphe) => [paragraphe.id, 8]));
-    const cues = sousTitresNarration(tableau(chapitre), chapitre, durees);
+    const cues = await sousTitresNarration(tableau(chapitre), chapitre, durees);
     const lu = contrat(cues.map((cue) => cue.text).join(" "));
     const voulu = contrat(chapitre.paragraphes.map((paragraphe) => paragraphe.brut).join(" "));
     assert.equal(lu, voulu, lang);
@@ -175,9 +291,9 @@ test("chaque beat porte le texte parlé, l'exposant et la conclusion", async () 
     [cuesAnglais, "A positive variance does not prove", "there is no mass at 0"],
     [cuesFrancais, "Une variance positive ne prouve pas", "absence de masse en 0"],
   ]) {
-    const index = cues.findIndex((cue) => cue.text.includes(amorce));
+    const index = cues.findIndex((cue) => contrat(cue.text).includes(amorce));
     assert.ok(index >= 0, amorce);
-    const voisin = [cues[index], cues[index + 1]].filter(Boolean).map((cue) => cue.text.replaceAll("\n", " ")).join(" ");
+    const voisin = [cues[index], cues[index + 1]].filter(Boolean).map((cue) => contrat(cue.text)).join(" ");
     assert.equal(voisin.includes(conclusion), true, amorce);
   }
 });

@@ -6,6 +6,7 @@ import { dirname, join } from "node:path";
 import test from "node:test";
 import { fileURLToPath } from "node:url";
 import { loadScene, viewAt, cueTime } from "../../engine/scene.js";
+import { preparer } from "../parole.mjs";
 import { ouvrir } from "../navigateur.mjs";
 import { servir } from "../servir.mjs";
 import classesRaw from "../../scenes/g10/classes.json" with { type: "json" };
@@ -384,6 +385,77 @@ function parole(markdown, cueId) {
   return body.join(" ");
 }
 
+function decouper(texte) {
+  const trouvees = [];
+  let courant = "";
+  for (let index = 0; index < texte.length; index += 1) {
+    const char = texte[index];
+    if (char === "\n" && courant.trim() === "") {
+      courant = "";
+      continue;
+    }
+    courant += char;
+    const decimal = char === "." && /\d/.test(texte[index - 1] ?? "") && /\d/.test(texte[index + 1] ?? "");
+    if ((char === "." || char === "?" || char === "!") && !decimal) {
+      const phrase = courant.trim();
+      if (phrase && !phrase.startsWith("#") && !phrase.startsWith("duration") && !phrase.startsWith("role") && !phrase.startsWith("badge") && !phrase.startsWith("pause") && !phrase.startsWith("screen") && !phrase.startsWith("class:")) {
+        trouvees.push(phrase);
+      }
+      courant = "";
+    }
+  }
+  return trouvees;
+}
+
+test("aucune étiquette n'entre dans la bande du plus long sous-titre", async () => {
+  let lignes = 1;
+  for (const lang of ["en", "fr"]) {
+    const markdown = await readFile(join(root, "narration", lang, "g10.md"), "utf8");
+    const chapitre = preparer(markdown, lang);
+    for (const phrase of chapitre.paragraphes.flatMap((paragraphe) => decouper(paragraphe.brut))) {
+      const mots = phrase.split(/\s+/).filter(Boolean);
+      let ligne = "";
+      let compte = mots.length ? 1 : 0;
+      for (const mot of mots) {
+        const suivant = ligne ? `${ligne} ${mot}` : mot;
+        if (suivant.length <= 42) ligne = suivant;
+        else {
+          compte += 1;
+          ligne = mot;
+        }
+      }
+      lignes = Math.max(lignes, compte);
+    }
+  }
+  const hauteur = (lignes + 1) * 56 + 48;
+  const server = await servir(root);
+  const { browser, page } = await ouvrir(`http://127.0.0.1:${server.port}/scenes/g10/law.html`);
+  try {
+    for (const id of ["cue.g10.law.show", "cue.g10.law.floor"]) {
+      await page.evaluate((cue) => window.seek(window.__scene.cue(cue)), id);
+      const rapport = await page.evaluate((haut) => {
+        const bande = document.querySelector(".subtitle-band").getBoundingClientRect();
+        const top = Math.min(bande.top, 1080 - haut);
+        const etiquettes = [...document.querySelectorAll(".bars-scale, .bars-title, .bar-name, .bar-value, .bars-tick-label")]
+          .filter((node) => node.textContent.trim())
+          .map((node) => {
+            const rect = node.getBoundingClientRect();
+            return { text: node.textContent.trim(), bottom: rect.bottom, top: rect.top };
+          });
+        return { top, bottom: 1080, etiquettes, bande: bande.height };
+      }, hauteur);
+      assert.ok(rapport.bande + 0.5 >= hauteur, `bande ${rapport.bande} < ${hauteur}`);
+      for (const etiquette of rapport.etiquettes) {
+        const coupe = etiquette.bottom > rapport.top + 0.5 && etiquette.top < rapport.bottom - 0.5;
+        assert.equal(coupe, false, `${id} ${etiquette.text} ${etiquette.bottom} / bande ${rapport.top}`);
+      }
+    }
+  } finally {
+    await browser.close();
+    await server.close();
+  }
+});
+
 test("le texte reste à 28 px, hors marge, et ne coupe pas les barres", async () => {
   const server = await servir(root);
   const pages = [
@@ -401,7 +473,7 @@ test("le texte reste à 28 px, hors marge, et ne coupe pas les barres", async ()
     ],
     ["hard.html", ["cue.g10.hard.show", "cue.g10.hard.flow", "cue.g10.hard.winner"]],
     ["sym.html", ["cue.g10.sym.show", "cue.g10.sym.weights"]],
-    ["law.html", ["cue.g10.law.show", "cue.g10.law.caveat", "cue.g10.law.dynamo"]],
+    ["law.html", ["cue.g10.law.show", "cue.g10.law.floor", "cue.g10.law.caveat", "cue.g10.law.dynamo"]],
     ["bias.html", ["cue.g10.bias.show", "cue.g10.bias.model"]],
     ["close.html", ["cue.g10.close.show", "cue.g10.close.anchor"]],
     ["card.html", ["cue.g10.card"]],
