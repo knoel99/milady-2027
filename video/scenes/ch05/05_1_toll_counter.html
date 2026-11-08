@@ -1,0 +1,170 @@
+<!doctype html>
+<html lang="en"><head><meta charset="utf-8">
+<title>05.1 A toll counter without a clock</title>
+<link rel="stylesheet" href="../../runtime/theme.css">
+<link rel="stylesheet" href="ch05.css">
+<script src="../../runtime/scene.js"></script>
+<script src="../../runtime/components/kit.js"></script>
+<script src="../../runtime/components/hud.js"></script>
+<script src="../../runtime/components/field.js"></script>
+<script src="../../runtime/components/motifs.js"></script>
+<script src="../../runtime/components/cards.js"></script>
+<script src="ch05_kit.js"></script>
+<style>
+  .ctr { position: absolute; z-index: 30; left: 1460px; top: 130px; width: 360px; height: 120px; box-sizing: border-box; border: 2px solid var(--fg-2); border-radius: 10px; background: var(--panel); }
+  .ctr .t { position: absolute; left: 16px; top: 8px; font-family: "JetBrains Mono"; font-size: 28px; letter-spacing: .04em; color: var(--muted); white-space: nowrap; }
+  .ctr .v { position: absolute; left: 0; right: 0; top: 52px; text-align: center; font-family: "Inter Display"; font-weight: 700; font-size: 52px; line-height: 56px; color: var(--chalk); }
+</style>
+</head><body><div id="stage"></div>
+<script>
+/* 05.1 A toll counter without a clock (L2, NIGHT, SCHEMATIC). Thought experiment, no data: a two-way road, one aerial
+   photo with readable speedometers, a thin strip around the line, the speeds of the cars inside summed and divided by
+   the strip width = crossings per hour on average. Greys only (a metaphor). */
+Scene.define({
+  duration: 40,
+  register: 'night',
+  cues: { puzzle: 3.4, photo: 6.4, predict: 10.6, strip: 16.3, fast: 18.6, sum: 22.6, rate: 27.2 },
+  params: { chapter_card: { num: '05', level: 'L2', levelFrom: 'L2', tier: 0, pending: [3, 4] },
+    road: { x0: 96, x1: 1824, y0: 360, y1: 640, lane_split: 500 }, line_x: 960, strip_half_width_px: 60,
+    cars: { n: 22, in_strip: 5, seed: 'ch05-cars', w: 64, h: 30, speed_min: 0.5, speed_max: 1.5, px_per_s_at_speed_1: 140 },
+    speed_bar_px_per_unit: 160, stack: { x0: 300, y: 250 }, predict: { title: 'PREDICT', question: 'One photo, no clock: can it give a rate?' } },
+  setup(ctx) {
+    const K = Kit, S = Scene, P = ctx.params, st = ctx.stage, R = P.road, CP = P.cars;
+    const title = (ctx.script.onscreen && ctx.script.onscreen.title) || 'Counting crossings from still photographs';
+    const cc = P.chapter_card;
+    K.chapterCard(ctx, { num: cc.num, title, level: cc.level, levelFrom: cc.levelFrom, tier: cc.tier, pending: cc.pending, at: -0.3, out: 'puzzle-0.4', railHold: 2.6 });
+    K.badge(ctx, { kind: 'SCHEMATIC', at: 'puzzle-0.15' });
+    const T = { in: ctx.at('puzzle-0.15'), photo: ctx.at('photo-0.15'), pred: ctx.at('predict-0.15'), strip: ctx.at('strip-0.15'),
+      fast: ctx.at('fast-0.15'), sum: ctx.at('sum-0.15'), rate: ctx.at('rate-0.15') };
+    const L = R.x1 - R.x0, XL = P.line_x, HW = P.strip_half_width_px, lanes = [R.y0 + 40, R.lane_split - 40, R.lane_split + 40, R.y1 - 40];
+    const pps = CP.px_per_s_at_speed_1, wrap = (x) => R.x0 + (((x - R.x0) % L) + L) % L;
+
+    // ---- seeded placement: positions at the photo time; exactly in_strip cars inside the strip, one per carriageway at least;
+    //      no two cars of a lane overlap from the road's entrance to the photo (cars keep their lane and speed)
+    const rng = S.rng(CP.seed), NS = 24, dts = [];
+    for (let s = 0; s <= NS; s++) dts.push(-0.3 - s * Math.max(0.2, (T.photo - T.in + 0.6) / NS));
+    const clash = (c, cs) => cs.some((o) => o.lane === c.lane && dts.some((dt) => {
+      const a = wrap(c.xp + c.dir * c.v * pps * dt), b = wrap(o.xp + o.dir * o.v * pps * dt), dx = Math.min(Math.abs(a - b), L - Math.abs(a - b));
+      return dx < CP.w + 14; }) );
+    const cars = [];
+    const add = (lane, xpf, n) => { for (let k = 0; k < n; k++) { const c = { lane, xp: xpf(), dir: lane < 2 ? 1 : -1, v: CP.speed_min + rng() * (CP.speed_max - CP.speed_min) }; if (!clash(c, cars)) { cars.push(c); return true; } } return false; };
+    [[0, -42], [2, -20], [1, 18], [3, 4], [0, 42]].slice(0, CP.in_strip).forEach(([ln, dx]) => { if (!add(ln, () => XL + dx + (rng() - 0.5) * 6, 200)) S.warn('05.1: in-strip car not placed'); });
+    for (let k = 0; k < 4000 && cars.length < CP.n; k++) add(Math.floor(rng() * 4), () => { let x; do { x = R.x0 + 40 + rng() * (L - 80); } while (Math.abs(x - XL) < HW + 50); return x; }, 1);
+    cars.forEach((c) => { c.in = Math.abs(c.xp - XL) < HW - 12; });
+    if (cars.length < CP.n || cars.filter((c) => c.in).length !== CP.in_strip) S.warn(`05.1: placed ${cars.length} cars, ${cars.filter((c) => c.in).length} in the strip`);
+
+    const svg = K.svgLayer(ctx, 12), roadG = K.s('g', {}, svg);
+    K.s('rect', { x: R.x0, y: R.y0, width: L, height: R.y1 - R.y0, fill: K.c('matter-dark') }, roadG);
+    [R.y0, R.y1].forEach((y) => K.s('line', { x1: R.x0, x2: R.x1, y1: y, y2: y, stroke: K.c('fg-2'), 'stroke-width': 3 }, roadG));
+    const centre = K.s('line', { x1: R.x0, x2: R.x1, y1: R.lane_split, y2: R.lane_split, stroke: K.c('fg-2'), 'stroke-width': 3, 'stroke-dasharray': '30 26' }, roadG);
+    const stripG = K.s('g', {}, roadG);
+    K.s('rect', { x: XL - HW, y: R.y0, width: 2 * HW, height: R.y1 - R.y0, fill: K.c('fg'), opacity: 0.08 }, stripG);
+    const edges = [XL - HW, XL + HW].map((x) => K.s('line', { x1: x, x2: x, y1: R.y0, y2: R.y1, stroke: K.c('chalk'), 'stroke-width': 3, 'stroke-dasharray': '10 9' }, stripG));
+    const carG = K.s('g', {}, svg);
+    const els = (cars || []).map((c) => {
+      const g = K.s('g', {}, carG), body = C5.car(g, CP.w, CP.h);
+      if (c.dir < 0) body.setAttribute('transform', 'scale(-1 1)');
+      const sp = C5.speedo(g, 0, -CP.h / 2 - 4, 20);
+      const bar = K.s('rect', { x: c.dir > 0 ? CP.w / 2 : -CP.w / 2, y: -5, width: 0, height: 10, fill: K.c('fg') }, svg);
+      return { c, g, sp, bar };
+    });
+    const line = K.s('line', { x1: XL, x2: XL, y1: R.y0 - 14, y2: R.y1 + 14, stroke: K.c('chalk'), 'stroke-width': 4 }, svg);
+    const lLine = C5.lab(ctx, 'the line', XL, R.y0 - 62, 'center');
+    const lStrip = C5.lab(ctx, 'thin strip', XL + HW + 22, R.y0 - 62, '');
+    // counter box
+    const ctr = K.el('div', { class: 'ctr' }, st); K.el('div', { class: 't' }, ctr, 'crossings per hour');
+    const ctrQ = K.el('div', { class: 'v' }, ctr, '?');
+    const ctrSvg = K.s('svg', { viewBox: "0 0 360 120", width: 360, height: 120, style: 'position:absolute;left:0;top:0;overflow:visible' }, ctr);
+    // photo frame, clock
+    const frame = K.s('rect', { x: R.x0 + 3, y: R.y0 - 26, width: L - 6, height: R.y1 - R.y0 + 52, fill: 'none', stroke: K.c('fg-2'), 'stroke-width': 6, rx: 4 }, svg);
+    const clock = C5.clock(svg, R.x0 + 34, R.y0 - 66, 22);
+    K.pen(ctx, { kind: 'cross', box: { x: R.x0 + 6, y: R.y0 - 94, w: 56, h: 56 }, at: 'photo+0.25', dur: 0.4, seed: 'clock51' });
+    const lPhoto = C5.lab(ctx, 'one photo · no clock', R.x0 + 74, R.y0 - 86, '');
+    // predict card
+    const card = K.el('div', { class: 'c5-card' }, st); card.style.left = '330px'; card.style.top = '120px'; card.style.width = '1000px';
+    K.el('div', { class: 'k' }, card, K.upper(P.predict.title)); K.el('div', { class: 'q' }, card, P.predict.question);
+    // the strip: brace, width label; recipe
+    K.pen(ctx, { kind: 'brace', box: { x: XL - HW, y: R.y1 - 8, w: 2 * HW, h: 8 }, at: 'strip+0.2', out: 'sum+0.6', dur: 0.5, seed: 'brace51' });
+    const lWidth = C5.lab(ctx, 'width', XL, R.y1 + 44, 'center');
+    const lRecipe = C5.lab(ctx, 'crossings per hour = sum of speeds in the strip ÷ strip width', 960, 740, 'big center');
+    // fastest in-strip car, speed label
+    const ins = els.filter((e) => e.c.in), fastest = ins.reduce((a, b) => (b.c.v > a.c.v ? b : a), ins[0]);
+    const posAt = (c, t) => wrap(c.xp + c.dir * c.v * pps * (Math.min(t, T.photo) - T.photo));
+    const fx = posAt(fastest.c, T.photo), fy = lanes[fastest.c.lane];
+    K.pen(ctx, { kind: 'circle', box: { x: fx - CP.w / 2, y: fy - CP.h / 2 - 24, w: CP.w, h: CP.h + 24 }, pad: 6, at: 'fast+0.5', out: 'sum', dur: 0.5, seed: 'fast51' });
+    const lSpeed = C5.lab(ctx, 'speed', 0, 0, 'halo');
+    // stack geometry: the in-strip bars end to end from stack.x0 (directions forgotten), ticks of the width
+    let acc = P.stack.x0; ins.forEach((e) => { e.sx = acc; acc += e.c.v * P.speed_bar_px_per_unit; });
+    const stackEnd = acc, nT = Math.floor((stackEnd - P.stack.x0) / (2 * HW));
+    const tickG = K.s('g', {}, svg), ticks = [];
+    for (let k = 1; k <= nT; k++) { const x = P.stack.x0 + k * 2 * HW; ticks.push(K.s('line', { x1: x, x2: x, y1: P.stack.y - 22, y2: P.stack.y + 22, stroke: K.c('chalk'), 'stroke-width': 4, 'stroke-linecap': 'round' }, tickG)); }
+    const mbrace = K.s('path', { d: `M0,0 q0,-16 16,-16 L${HW - 16},-16 q16,0 16,-16 q0,16 16,16 L${2 * HW - 16},-16 q16,0 16,16`, fill: 'none', stroke: K.c('chalk'), 'stroke-width': 4, 'stroke-linecap': 'round' }, svg);
+    const ctrTicks = []; for (let k = 0; k < nT; k++) { const x = 180 - (nT - 1) * 11 + k * 22; ctrTicks.push(K.s("line", { x1: x, x2: x, y1: 60, y2: 104, stroke: K.c('chalk'), 'stroke-width': 4, 'stroke-linecap': 'round' }, ctrSvg)); }
+    const lAvg = C5.lab(ctx, "on average", 1460, 262, '');
+    K.chip(ctx, { text: 'SCHEMATIC · thought experiment, no data', kind: 'schematic', x: 96, y: 860, anchor: 'bl', at: 'strip' });
+    const stepDt = 0.32, tLay = T.sum + 1.5;
+    ctx.c = { T, els, roadG, centre, stripG, edges, line, lLine, lStrip, ctr, ctrQ, frame, clock, lPhoto, card, lWidth, lRecipe, fastest, lSpeed, posAt, lanes, ticks, mbrace, ctrTicks, lAvg, nT, stepDt, tLay, HW };
+  },
+  render(t, ctx) {
+    const S = Scene, K = Kit, c = ctx.c, T = c.T, P = ctx.params, CP = P.cars;
+    const road = S.seg(t, T.in, T.in + 0.5, S.ease.linear);
+    c.roadG.setAttribute('opacity', road.toFixed(3)); c.line.setAttribute('opacity', road.toFixed(3));
+    C5.fade(c.lLine, t, T.in + 0.3);
+    c.centre.setAttribute('stroke-dashoffset', (-(t * 12) % 56).toFixed(1));
+    C5.fade(c.ctr, t, T.in + 0.4);
+    // traffic, frozen at the photo
+    const stripP = S.seg(t, T.strip, T.strip + 0.5, S.ease.linear), fastP = S.seg(t, T.fast, T.fast + 0.4, S.ease.linear);
+    const fly = S.seg(t, T.sum, T.sum + 1.2, S.ease.inOutCubic);
+    for (const e of c.els) {
+      const x = c.posAt(e.c, t), y = c.lanes[e.c.lane];
+      e.g.setAttribute('transform', `translate(${x.toFixed(1)},${y})`);
+      let op = road;
+      if (!e.c.in) op *= 1 - 0.65 * stripP; else op *= 1 - 0.65 * stripP * (1 - fastP);
+      e.g.setAttribute('opacity', op.toFixed(3));
+      const quiver = t > T.photo ? Math.sin(t * 7.3 + x * 0.05) * (1 / 180) : 0;
+      e.sp.set((e.c.v - CP.speed_min) / (CP.speed_max - CP.speed_min) * 0.8 + 0.1 + quiver);
+      e.sp.g.setAttribute('opacity', S.seg(t, T.photo + 0.2, T.photo + 0.5, S.ease.linear).toFixed(3));
+      if (e.c.in) {
+        const len = e.c.v * P.speed_bar_px_per_unit * S.seg(t, T.fast + 0.1, T.fast + 0.7, S.ease.outCubic);
+        const nose = x + e.c.dir * CP.w / 2, bx0 = e.c.dir > 0 ? nose : nose - len;
+        const X = bx0 + (e.sx - bx0) * fly, Y = y - 5 + (P.stack.y - 5 - y + 5) * fly;
+        e.bar.setAttribute('x', X.toFixed(1)); e.bar.setAttribute('y', Y.toFixed(1)); e.bar.setAttribute('width', len.toFixed(1));
+        e.bar.setAttribute('opacity', (fastP * (1 - 0.6 * S.seg(t, T.rate, T.rate + 0.6, S.ease.linear))).toFixed(3));
+      } else e.bar.setAttribute('opacity', 0);
+    }
+    // the photo
+    const ph = S.seg(t, T.photo, T.photo + 0.2, S.ease.linear);
+    c.frame.setAttribute('opacity', ph.toFixed(3));
+    const pulse = 1 + 0.12 * Math.sin(Math.PI * S.seg(t, T.rate + 0.8, T.rate + 1.4, S.ease.linear));
+    c.clock.setAttribute('opacity', ph.toFixed(3)); c.clock.setAttribute('transform', `translate(${P.road.x0 + 34},${P.road.y0 - 66}) scale(${pulse.toFixed(3)})`);
+    C5.fade(c.lPhoto, t, T.photo + 0.2);
+    // predict card: in on its cue, out when the strip is drawn
+    const cp = C5.fade(c.card, t, T.pred, T.strip, 0.25);
+    c.card.style.transform = `translateY(${(-20 * (1 - S.ease.outCubic(S.seg(t, T.pred, T.pred + 0.3)))).toFixed(1)}px)`; void cp;
+    // the strip
+    c.stripG.setAttribute('opacity', stripP.toFixed(3));
+    c.edges.forEach((e) => e.setAttribute('stroke-dashoffset', (-(t * 6) % 19).toFixed(1)));
+    C5.fade(c.lStrip, t, T.strip + 0.3);
+    C5.fade(c.lWidth, t, T.strip + 0.6, T.sum + 0.6);
+    // speed label on the fastest bar
+    const f = c.fastest, fx = c.posAt(f.c, t), fy = c.lanes[f.c.lane];
+    c.lSpeed.style.left = (fx + f.c.dir * (CP.w / 2 + f.c.v * P.speed_bar_px_per_unit / 2) - 40) + 'px'; c.lSpeed.style.top = (fy + 18) + 'px';
+    C5.fade(c.lSpeed, t, T.fast + 0.6, T.sum);
+    // the brace lays itself along the stack, a tick at each step
+    const k = Math.floor((t - c.tLay) / c.stepDt), within = S.seg(t, c.tLay, c.tLay + c.nT * c.stepDt + 0.3, S.ease.linear);
+    const step = Math.max(0, Math.min(c.nT - 1, k));
+    c.mbrace.setAttribute('transform', `translate(${(P.stack.x0 + step * 2 * c.HW + (t > c.tLay ? S.seg((t - c.tLay) % c.stepDt, 0, c.stepDt * 0.6, S.ease.inOutCubic) * 0 : 0)).toFixed(1)},${P.stack.y - 26})`);
+    c.mbrace.setAttribute('opacity', (t >= c.tLay - 0.2 && within < 1 ? 1 : 0));
+    const flow = S.seg(t, T.rate, T.rate + 0.9, S.ease.inOutCubic);
+    c.ticks.forEach((e, i) => {
+      const on = t >= c.tLay + (i + 1) * c.stepDt;
+      e.setAttribute('opacity', on ? (1 - flow).toFixed(3) : 0);
+    });
+    c.ctrTicks.forEach((e, i) => e.setAttribute('opacity', S.seg(t, T.rate + 0.3 + i * 0.08, T.rate + 0.5 + i * 0.08, S.ease.linear).toFixed(3)));
+    c.ctrQ.style.opacity = (1 - S.seg(t, T.rate + 0.2, T.rate + 0.4, S.ease.linear)).toFixed(3);
+    C5.fade(c.lRecipe, t, T.sum + 1.2);
+    c.lRecipe.style.clipPath = `inset(-10px ${(100 - 100 * S.seg(t, T.sum + 1.2, T.sum + 2.4, S.ease.linear)).toFixed(1)}% -10px -10px)`;
+    C5.fade(c.lAvg, t, T.rate + 0.9);
+  },
+});
+</script></body></html>

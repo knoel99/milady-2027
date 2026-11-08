@@ -1,0 +1,208 @@
+<!doctype html>
+<html lang="en"><head><meta charset="utf-8">
+<title>05.2 Rice for the dipole</title>
+<link rel="stylesheet" href="../../vendor/katex/katex.min.css">
+<link rel="stylesheet" href="../../runtime/theme.css">
+<link rel="stylesheet" href="ch05.css">
+<script src="../../vendor/katex/katex.min.js"></script>
+<script src="../../runtime/scene.js"></script>
+<script src="../../runtime/components/kit.js"></script>
+<script src="../../runtime/components/hud.js"></script>
+<script src="../../runtime/components/equation.js"></script>
+<script src="../../runtime/components/motifs.js"></script>
+<script src="../../runtime/components/threemodes.js"></script>
+<script src="ch05_kit.js"></script>
+<style>
+  .grp { position: absolute; left: 0; top: 0; width: 1920px; height: 1080px; z-index: 32; transform-origin: 1640px 140px; }
+  .fgrp { position: absolute; left: 0; top: 0; width: 1920px; height: 1080px; z-index: 32; transform-origin: 960px 120px; }
+  .recipe em { font-style: normal; }
+</style>
+</head><body><div id="stage"></div>
+<script>
+/* 05.2 Rice for the dipole (L3, NIGHT, PROVED: Proposition 8). The 8,000 reference snapshots of the 04.6 shoebox
+   (Γ = 0.93) spread along D, a thin strip |D| < h, each snapshot's speed Ḋ from the model's equation (stored in the
+   data, no time integration), folded to |Ḋ|, the in-strip speeds summed ÷ width ÷ number of photos = the crossing
+   rate; the limit h → 0 is Rice's formula; only 26 of 8,000 photos land in the strip. Numbers from data only. */
+Scene.define({
+  duration: 50,
+  register: 'night',
+  cues: { box: 0.5, strip: 4.6, speed: 7.8, eq: 9.6, abs: 14.6, sum: 17.4, rate: 22.4, rice: 24.0, few: 30.0 },
+  data: { shoebox: 'data/e1_samples_0.93.json', rice: 'data/ch05_rice.json' },
+  params: { variant: 'ref', plane: { x0: 260, x1: 1660, y0: 160, y1: 680, D_range: [-3, 3], Ddot_range_signed: [-1.5, 1.5], speed_range: [0, 1.5] },
+    strip_plot_band: { y0: 560, y1: 640 }, photo_card: { x0: 1180, x1: 1640, y0: 150, y1: 330 }, equation: { x: 1410, y: 400, size: 64 },
+    stack: { x0: 260, y: 120, length_px: 1300 }, rice_formula: { x: 960, y: 300, size: 84 }, zoom_x: 3.0, point_px: 2, point_alpha: 0.5 },
+  setup(ctx) {
+    const K = Kit, S = Scene, P = ctx.params, st = ctx.stage, PL = P.plane;
+    const SB = ctx.data.shoebox, RS = ctx.data.rice.strip, V = SB.variants[P.variant], XS = S.f32(V.x), DD = S.f32(V.Ddot), N = V.n;
+    if (Math.abs(SB.gamma - RS.gamma) > 1e-9 || N !== RS.n_total) S.warn(`05.2: shoebox Γ ${SB.gamma} / n ${N} vs rice strip Γ ${RS.gamma} / n ${RS.n_total}`);
+    const T = {}; for (const k of ['box', 'strip', 'speed', 'eq', 'abs', 'sum', 'rate', 'rice', 'few']) T[k] = ctx.at(k + '-0.15');
+    const sent = (cue) => (ctx.script.sentences || []).find((s) => s.cue === cue);
+    const frac = (cue, f, fb) => { const s = sent(cue); return s ? s.start + f * (s.end - s.start) : ctx.at(cue) + fb; };
+    const xD = (d) => PL.x0 + (d - PL.D_range[0]) / (PL.D_range[1] - PL.D_range[0]) * (PL.x1 - PL.x0);
+    const kD = (PL.x1 - PL.x0) / (PL.D_range[1] - PL.D_range[0]);
+    const ySigned = (v) => (PL.y0 + PL.y1) / 2 - v / PL.Ddot_range_signed[1] * (PL.y1 - PL.y0) / 2;
+    const ySpeed = (v) => PL.y1 - v / PL.speed_range[1] * (PL.y1 - PL.y0);
+    const inStrip = new Uint8Array(N); RS.strip_index.forEach((i) => { inStrip[i] = 1; });
+    const rng = S.rng('ch05-jitter'), jit = new Float32Array(N), launch = new Float32Array(N);
+    for (let k = 0; k < N; k++) { jit[k] = rng(); launch[k] = rng(); }
+    const hPx = RS.h * kD, X0 = xD(0);
+
+    // ---- layers
+    const LP = K.canvasLayer(ctx, 8, null, null, { reset: true });
+    const svg = K.svgLayer(ctx, 14), axG = K.s('g', {}, svg);
+    const axis = K.s('line', { x1: PL.x0, x2: PL.x1, y1: 0, y2: 0, stroke: K.c('b'), 'stroke-width': 3 }, axG);
+    const zline = K.s('line', { x1: PL.x0, x2: PL.x1, stroke: K.c('fg-2'), 'stroke-width': 2, 'stroke-dasharray': '8 8' }, svg);
+    const lD = C5.lab(ctx, 'D · dipole', PL.x1, 0, 'right halo'); lD.innerHTML = '<span class="k-b">D</span> · dipole';
+    const lD0 = C5.lab(ctx, 'D = 0', X0, 0, 'center halo');
+    const lYs = C5.lab(ctx, '', PL.x0 - 10, PL.y0 - 52, 'halo'); lYs.innerHTML = '<span class="k-b">Ḋ</span> · how fast <span class="k-b">D</span> changes';
+    const lYa = C5.lab(ctx, '', PL.x0 - 10, PL.y0 - 52, 'halo'); lYa.innerHTML = '|<span class="k-b">Ḋ</span>| · speed, either direction';
+    // the strip (arrives at the 05.1 width, narrows to ±h)
+    const stripG = K.s('g', {}, svg);
+    const sFill = K.s('rect', { y: PL.y0 - 20, height: PL.y1 - PL.y0 + 40, fill: K.c('fg'), opacity: 0.08 }, stripG);
+    const sE = [0, 1].map(() => K.s('line', { y1: PL.y0 - 20, y2: PL.y1 + 20, stroke: K.c('chalk'), 'stroke-width': 3, 'stroke-dasharray': '10 9' }, stripG));
+    const lStrip = C5.lab(ctx, 'thin strip · |D| < h', X0 + 60, PL.y0 - 4, 'halo');
+    lStrip.innerHTML = 'thin strip · |<span class="k-b">D</span>| &lt; h';
+    const lH = C5.lab(ctx, `h = ${K.fmt(RS.h)}`, X0 + 60, PL.y0 + 36, 'halo');
+    // the shoebox that pours
+    const boxG = K.s('g', {}, svg), box = K.shoebox(boxG, { x: 250, y: 610, w: 220, h: 100 });
+    // ---- the highlighted snapshot: photo card with the three dials and a speedometer; the equation
+    const hi = RS.highlight_index, hq = XS[3 * hi], hd = XS[3 * hi + 1], hv = XS[3 * hi + 2], hdd = DD[hi];
+    const grp = K.el('div', { class: 'grp' }, st), gsvg = K.svgLayer(ctx, 1, grp), PC = P.photo_card;
+    const card = K.s('g', {}, gsvg);
+    K.s('rect', { x: PC.x0, y: PC.y0, width: PC.x1 - PC.x0, height: PC.y1 - PC.y0, rx: 10, fill: K.c('panel'), stroke: K.c('fg-2'), 'stroke-width': 2 }, card);
+    K.photo(card, { x: PC.x0 + 14, y: PC.y0 + 14, w: 290, h: PC.y1 - PC.y0 - 28, q: hq, d: hd, v: hv, vmax: 3 });
+    const sp = C5.speedo(card, PC.x1 - 74, PC.y0 + 112, 54, { needle: 'fg', sw: 3, nw: 4 });
+    const lSpeedo = C5.lab(ctx, 'speedometer', PC.x1 - 74, PC.y1 + 10, 'center', { parent: grp });
+    const leader = K.s('line', { stroke: K.c('chalk'), 'stroke-width': 2.5, 'stroke-dasharray': '4 6' }, svg);
+    const eqWrap = K.el('div', {}, grp); eqWrap.style.cssText = 'position:absolute;left:0;top:0;width:1920px;height:1080px';
+    const cD = K.fmt(RS.coef_D);
+    K.equation(ctx, { parent: eqWrap, x: P.equation.x, y: P.equation.y, size: P.equation.size,
+      tex: `\\term{l}{\\cb{\\dot D}}\\term{e}{\\;=\\;}\\term{a}{-${cD}\\,\\cb{D}}\\term{p}{\\;+\\;}\\term{b}{\\cu{V}\\,\\cq{Q}}`, reveal: [[['l', 'e', 'a', 'p', 'b'], 'eq-0.15']] });
+    // ---- the sum: bars of the in-strip speeds, the stack, the recipe
+    const sIdx = RS.strip_index, bars = sIdx.map(() => K.s('rect', { width: 8, fill: K.c('fg') }, svg));
+    const spd = sIdx.map((i) => Math.abs(DD[i])), tot = spd.reduce((a, b) => a + b, 0), kS = P.stack.length_px / tot;
+    let acc = P.stack.x0; const sx = spd.map((v) => { const x = acc; acc += v * kS; return x; });
+    const recipe = C5.lab(ctx, '', 960, P.stack.y + 30, 'big center recipe halo');
+    recipe.innerHTML = 'sum of speeds in the strip ÷ <em class="u1">strip width</em> ÷ <em class="u2">total number of photos</em>';
+    const tU1 = frac('sum', 0.55, 1.6), tU2 = frac('sum', 0.8, 2.6);
+    K.pen(ctx, { kind: 'underline', target: recipe.querySelector('.u1'), at: tU1, out: 'rice-0.3', dur: 0.4, seed: 'u1' });
+    K.pen(ctx, { kind: 'underline', target: recipe.querySelector('.u2'), at: tU2, out: 'rice-0.3', dur: 0.4, seed: 'u2' });
+    const amber = K.s('rect', { x: P.stack.x0, y: P.stack.y - 7, height: 14, fill: K.c('metric') }, svg);
+    const lRate = C5.lab(ctx, 'crossing rate', P.stack.x0, P.stack.y + 18, 'big'); lRate.style.color = K.c('metric');
+    // ---- Rice's formula
+    const fgrp = K.el('div', { class: 'fgrp' }, st), RF = P.rice_formula;
+    const E = K.equation(ctx, { parent: fgrp, x: RF.x, y: RF.y, size: RF.size,
+      tex: '\\term{r}{\\ck{r_0}}\\term{e}{\\;=\\;}\\term{lim}{\\lim_{h\\to 0}\\,}\\term{width}{\\frac{1}{2h}}\\,\\term{avg}{\\mathbb{E}}\\big[\\,\\term{speed}{|\\cb{\\dot D}|}\\,\\term{strip}{\\mathbf{1}_{|\\cb{D}|<h}}\\big]',
+      reveal: [[['r', 'e', 'lim', 'width', 'avg', 'speed', 'strip'], 'rice-0.15']] });
+    const beats = [['speed', 'circle', 'speedometer'], ['strip', 'brace', 'in the strip'], ['width', 'underline', '÷ width'], ['avg', 'underline', 'average over photos']];
+    const beatT = beats.map((_, i) => frac('rice', 0.3 + 0.16 * i, 1.0 + 0.8 * i));
+    beats.forEach((b, i) => { if (i > 1) return; const bx = E.box(b[0]); K.pen(ctx, { kind: b[1], box: bx, pad: 8, at: beatT[i], out: i + 2 < beats.length ? beatT[i + 2] : 'few-0.2', dur: 0.4, seed: 'beat' + i }); });
+    const beatLab = beats.map((b) => C5.lab(ctx, b[2], 0, 0, 'big center halo', { z: 34 }));
+    // ---- few: label, chip, circle
+    const lFew = C5.lab(ctx, `in the strip: ${RS.n_in_strip} of ${RS.n_total.toLocaleString('en-US')} snapshots`, 960, 250, 'lead center halo');
+    K.chip(ctx, { text: `Γ = ${RS.gamma} · the shoebox of chapter 04`, kind: 'plain', x: PL.x0, y: PL.y1 + 26, at: 'few+0.4', caps: false });
+    K.pen(ctx, { kind: 'circle', box: { x: X0 - hPx * P.zoom_x, y: PL.y1 - 170, w: 2 * hPx * P.zoom_x, h: 170 }, pad: 10, at: 'few+1.4', dur: 0.7, seed: 'few' });
+    // ---- HUD
+    K.badge(ctx, { kind: 'PROVED', note: 'Proposition 8 · report', at: -0.3 });
+    K.chip(ctx, { text: 'SIMULATED · reference snapshots of E1', kind: '', x: 1824, y: PL.y1 + 70, anchor: 'tr', at: 'box+0.6', out: 'rice' });
+    K.lowerThird(ctx, { kind: 'source', data: SB, at: 'box+0.8', hold: 4 });
+    K.lowerThird(ctx, { kind: 'reference', l1: 'Reference', l2: 'Kac 1943 · Rice 1944, 1945', at: 'rice+0.4', hold: 4 });
+    // WORKAROUND (script formula 1 too long for the layer even at 28 px): the same tex, a \\quad break before its condition
+    const fl = ((ctx.script.onscreen && ctx.script.onscreen.formulas) || []).map((f) => ({ tex: f.tex.replace('\\ \\ \\text{if }', ';\\quad\\text{if }'), at: f.cue + '-0.15' }));
+    K.formulaLayer(ctx, fl.length ? { label: 'Formula · R, Proposition 8 and §m-rice', items: fl } : { label: 'Formula · R, Proposition 8 and §m-rice' });
+    ctx.c = { T, LP, XS, DD, N, inStrip, jit, launch, xD, ySigned, ySpeed, axis, zline, lD, lD0, lYs, lYa, sFill, sE, lStrip, lH, boxG, box, grp, lSpeedo, leader,
+      sp, hi, hd, hdd, bars, sIdx, spd, kS, sx, recipe, tU1, tU2, amber, lRate, fgrp, E, beats, beatT, beatLab, lFew, hPx, X0 };
+  },
+  render(t, ctx) {
+    const S = Scene, K = Kit, c = ctx.c, T = c.T, P = ctx.params, PL = P.plane, g = c.LP.g;
+    const ease = S.ease.inOutCubic;
+    const rise = S.seg(t, T.eq + 0.9, T.eq + 2.3, ease), fold = S.seg(t, T.abs, T.abs + 0.8, ease), zoom = S.seg(t, T.few, T.few + 1.2, ease);
+    const dimAll = 1 - 0.7 * S.seg(t, T.rice, T.rice + 0.6, S.ease.linear) * (1 - zoom);
+    const stripOn = S.seg(t, T.strip, T.strip + 0.6, ease), sumOn = S.seg(t, T.sum, T.sum + 0.4, S.ease.linear);
+    const yBase = (1 - rise) * ((P.strip_plot_band.y0 + P.strip_plot_band.y1) / 2) + rise * ((1 - fold) * c.ySigned(0) + fold * PL.y1);
+    const zx = (x) => c.X0 + (x - c.X0) * (1 + (P.zoom_x - 1) * zoom);
+    // axis, labels
+    const axOn = S.seg(t, T.box + 0.2, T.box + 0.6, S.ease.linear);
+    c.axis.setAttribute('y1', yBase); c.axis.setAttribute('y2', yBase); c.axis.setAttribute('opacity', axOn * dimAll);
+    c.zline.setAttribute('y1', c.ySigned(0)); c.zline.setAttribute('y2', c.ySigned(0)); c.zline.setAttribute('opacity', (rise * (1 - fold) * 0.8).toFixed(3));
+    C5.fade(c.lD, t, T.box + 0.4); c.lD.style.top = (yBase + 12) + 'px'; c.lD.style.opacity = (axOn * dimAll).toFixed(3);
+    C5.fade(c.lD0, t, T.box + 0.4, T.few); c.lD0.style.top = (yBase + 12) + 'px';
+    C5.fade(c.lYs, t, T.eq + 1.5, T.abs); C5.fade(c.lYa, t, T.abs + 0.6, T.sum); 
+    // the strip
+    const hw = (1 - stripOn) * 60 + stripOn * c.hPx * (1 + (P.zoom_x - 1) * zoom);
+    c.sFill.setAttribute('x', c.X0 - hw); c.sFill.setAttribute('width', 2 * hw);
+    c.sE.forEach((e, i) => { const x = c.X0 + (i ? hw : -hw); e.setAttribute('x1', x); e.setAttribute('x2', x); e.setAttribute('stroke-dashoffset', (-(t * 6) % 19).toFixed(1)); });
+    c.sFill.parentNode.setAttribute('opacity', (dimAll).toFixed(3));
+    C5.fade(c.lStrip, t, T.strip + 0.4, T.sum); C5.fade(c.lH, t, T.strip + 0.6, T.sum);
+    c.lStrip.style.left = c.lH.style.left = (c.X0 + hw + 16) + 'px';
+    // the shoebox tips and pours, then leaves
+    const tip = S.seg(t, T.box, T.box + 0.4, ease);
+    c.box.g.setAttribute('transform', `rotate(${(40 * tip).toFixed(2)} 250 610)`);
+    C5.fadeS(c.boxG, t, -1, T.box + 1.6, 0.4);
+    // points
+    c.LP.g.clearRect(0, 0, 1920, 1080);
+    const mouth = [250 + 60, 560], N = c.N, L = P.point_px;
+    const cols = [Scene.col('b'), Scene.col('b-neg')];
+    for (let pass = 0; pass < 2; pass++) {
+      for (let k = 0; k < N; k++) {
+        const d = c.XS[3 * k + 1], dd = c.DD[k];
+        const tl = T.box + 0.15 + c.launch[k] * 1.0, fl = S.seg(t, tl, tl + 0.6, S.ease.outCubic);
+        if (fl <= 0) continue;
+        const inS = c.inStrip[k];
+        let a = P.point_alpha;
+        if (!inS) a *= 1 - 0.6 * stripOn; else a = Math.min(1, a + 0.5 * sumOn);
+        a *= dimAll;
+        if (k === c.hi && t > T.speed) a = 1;
+        const xs = c.xD(d), ys = P.strip_plot_band.y0 + c.jit[k] * (P.strip_plot_band.y1 - P.strip_plot_band.y0);
+        const yp = (1 - fold) * c.ySigned(dd) + fold * c.ySpeed(Math.abs(dd));
+        const xt = zx(xs), yt = (1 - rise) * ys + rise * yp;
+        const x = mouth[0] + (xt - mouth[0]) * fl, y = mouth[1] + (yt - mouth[1]) * fl;
+        if (x < PL.x0 - 4 || x > PL.x1 + 4 || y < PL.y0 - 4 || y > PL.y1 + 40) continue;
+        g.globalAlpha = a; g.fillStyle = cols[d < 0 ? 1 : 0];
+        const s = (k === c.hi && t > T.speed) || (inS && sumOn > 0) ? L + 3 : L;
+        if ((pass === 1) === !!((k === c.hi && t > T.speed) || inS)) g.fillRect(x - s / 2, y - s / 2, s, s);
+      }
+    }
+    // the photo card and the equation, then they shrink to the corner
+    const cardOn = S.seg(t, T.speed, T.speed + 0.4, S.ease.linear), shrink = S.seg(t, T.eq + 1.0, T.eq + 2.2, ease);
+    const gOut = 1 - S.seg(t, T.sum, T.sum + 0.4, S.ease.linear);
+    c.grp.style.opacity = (cardOn * gOut).toFixed(3); c.grp.style.display = cardOn * gOut > 0 ? '' : 'none';
+    const sc = 1 - 0.42 * shrink; c.grp.style.transform = `translate(${(160 * shrink).toFixed(1)}px,${(-20 * shrink).toFixed(1)}px) scale(${sc.toFixed(3)})`;
+    c.lSpeedo.style.opacity = (1 - shrink).toFixed(3);
+    c.sp.set(0.5 + 0.5 * Math.max(-1, Math.min(1, c.hdd / P.plane.speed_range[1])) * S.seg(t, T.eq + 0.5, T.eq + 0.9, ease));
+    const hx = c.xD(c.hd), hy = (1 - rise) * (P.strip_plot_band.y0 + c.jit[c.hi] * 80) + rise * c.ySigned(c.hdd);
+    c.leader.setAttribute('x1', hx); c.leader.setAttribute('y1', hy); c.leader.setAttribute('x2', P.photo_card.x0); c.leader.setAttribute('y2', P.photo_card.y1 - 20);
+    c.leader.setAttribute('opacity', (cardOn * (1 - shrink)).toFixed(3));
+    // bars and stack
+    const lift = S.seg(t, T.sum + 0.9, T.sum + 1.9, ease), barOn = S.seg(t, T.sum + 0.1, T.sum + 0.6, S.ease.outCubic);
+    const st1 = S.seg(t, c.tU1 + 0.3, c.tU1 + 0.8, ease), st2 = S.seg(t, c.tU2 + 0.3, c.tU2 + 0.8, ease);
+    const shrinkK = 1 - 0.45 * st1 - 0.35 * st2;
+    const toAmber = S.seg(t, T.rate, T.rate + 0.5, ease), stackOut = S.seg(t, T.rice, T.rice + 0.4, S.ease.linear);
+    c.bars.forEach((b, i) => {
+      const k = c.sIdx[i], x0 = c.xD(c.XS[3 * k + 1]) - 4, h = Math.abs(c.DD[k]) / PL.speed_range[1] * (PL.y1 - PL.y0) * barOn;
+      const len = c.spd[i] * c.kS;
+      // vertical bar (x0, y1 - h) → horizontal piece of the stack
+      const X = x0 + (P.stack.x0 + (c.sx[i] - P.stack.x0) * shrinkK - x0) * lift, Y = (PL.y1 - h) + (P.stack.y - 6 - (PL.y1 - h)) * lift;
+      const W = 8 + (len * shrinkK - 8) * lift, H = h + (12 - h) * lift;
+      b.setAttribute('x', X.toFixed(1)); b.setAttribute('y', Y.toFixed(1)); b.setAttribute('width', Math.max(0, W).toFixed(1)); b.setAttribute('height', Math.max(0, H).toFixed(1));
+      b.setAttribute('opacity', (sumOn * (1 - toAmber)).toFixed(3));
+    });
+    const stackLen = P.stack.length_px * shrinkK;
+    c.amber.setAttribute('width', (stackLen * (1 - 0.3 * toAmber)).toFixed(1)); c.amber.setAttribute('opacity', (toAmber * (1 - stackOut)).toFixed(3));
+    C5.fade(c.lRate, t, T.rate + 0.3, T.rice); c.lRate.style.left = (P.stack.x0 + stackLen * 0.7 + 24) + 'px'; c.lRate.style.top = (P.stack.y - 24) + 'px';
+    C5.fade(c.recipe, t, T.sum + 1.6, T.rice - 0.1, 0.3);
+    c.recipe.style.clipPath = `inset(-10px ${(100 - 100 * S.seg(t, T.sum + 1.6, T.sum + 2.6, S.ease.linear)).toFixed(1)}% -10px -10px)`;
+    // Rice's formula: shrinks to the top on 'few'
+    const fs = S.seg(t, T.few, T.few + 0.8, ease);
+    c.fgrp.style.transform = `translate(0px,${(-120 * fs).toFixed(1)}px) scale(${(1 - 0.38 * fs).toFixed(3)})`;
+    c.beats.forEach((b, i) => {
+      const lab = c.beatLab[i], bx = c.E.box(b[0]);
+      const a = c.beatT[i], z = i + 2 < c.beats.length ? c.beatT[i + 2] : T.few;
+      lab.style.left = (bx.x + bx.w / 2) + 'px'; const bot = P.rice_formula.y + P.rice_formula.size * 2.1;
+      lab.style.top = (bot + 24 + (i % 2) * 52) + 'px';
+      C5.fade(lab, t, a + 0.3, Math.min(z, T.few), 0.2);
+    });
+    C5.fade(c.lFew, t, T.few + 0.9);
+  },
+});
+</script></body></html>
