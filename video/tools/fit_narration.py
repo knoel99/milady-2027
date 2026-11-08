@@ -22,9 +22,12 @@ Input: --dir takes/  one file per scene named <scene id>.wav|flac|mp3|m4a|ogg (r
 Output: audio/external/<scene>.wav + <scene>.align.json (same format as audio/align.py), a report
         audio/external/<name>_fit_report.json; then `make film CUT=<cut> NARRATION=external`.
 The take is levelled to the loudness of the TTS narration (one gain for the whole take).
+French narration: --lang fr works on the French build (<cut>_fr: script/_build/film_<cut>_fr.json, timing in
+audio/scenes_fr/, output in audio/external_fr/, out/narration_script_<cut>_fr.md); then
+`make film CUT=<cut> LANG=fr NARRATION=external`.
 Usage: python3 -I tools/fit_narration.py --cut core --export      (reading script for the narrator: out/narration_script_core.md)
        python3 -I tools/fit_narration.py --cut core (--dir takes/ | --audio take.wav) [--retime none|auto|all]
-                                          [--tol 0.12] [--dry-run]
+                                          [--tol 0.12] [--dry-run] [--lang en|fr]
 """
 import argparse, hashlib, json, os, subprocess, sys
 
@@ -32,11 +35,12 @@ import numpy as np
 
 ROOT = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 sys.path.insert(0, os.path.join(ROOT, "audio"))
-from align import split_sentences, read_wav, write_wav, PAD0, PAD1  # noqa: E402
+from align import split_sentences, read_wav, write_wav, scenes_dir, PAD0, PAD1  # noqa: E402
 from mix import ff_measure  # noqa: E402
 from tts import LONG_PAUSE_S, SR  # noqa: E402
 
-EXT = os.path.join(ROOT, "audio", "external")
+EXT = os.path.join(ROOT, "audio", "external")      # English; audio/external_<lang> for another narration language
+SCENES = scenes_dir("en")                          # current TTS timing (audio/scenes, or audio/scenes_<lang>)
 AUDIO_EXT = (".wav", ".flac", ".mp3", ".m4a", ".ogg", ".aif", ".aiff")
 
 
@@ -147,7 +151,7 @@ def export(film, scenes, name):
          "Leave a clear pause (about one second) between paragraphs; the times in brackets are the length",
          "of each sentence in the current film (+-12 % is absorbed by tools/fit_narration.py).", ""]
     for sc in scenes:
-        ap = os.path.join(ROOT, "audio", "scenes", sc["id"] + ".align.json")
+        ap = os.path.join(SCENES, sc["id"] + ".align.json")
         al = {x["id"]: x for x in json.load(open(ap))["sentences"]} if os.path.exists(ap) else {}
         L.append(f"## {sc['id']}  {sc.get('title') or ''}  -> `{sc['id']}.wav`")
         for pi, p in enumerate(sc["paragraphs"]):
@@ -173,8 +177,14 @@ def main():
     ap.add_argument("--retime", choices=["none", "auto", "all"], default="none")
     ap.add_argument("--tol", type=float, default=0.12)
     ap.add_argument("--dry-run", action="store_true", help="report only, write nothing")
+    ap.add_argument("--lang", choices=["en", "fr"], default="en", help="narration language (fr: the <cut>_fr build)")
     a = ap.parse_args()
+    global EXT, SCENES
     name = a.name or a.cut
+    if a.lang != "en":
+        EXT, SCENES = os.path.join(ROOT, "audio", f"external_{a.lang}"), scenes_dir(a.lang)
+        if not name.endswith("_" + a.lang):
+            name += "_" + a.lang
     fp = os.path.join(ROOT, "script", "_build", f"film_{name}.json")
     if not os.path.exists(fp):
         sys.exit(f"{fp} not found: build the cut first (make plan CUT={a.cut} or make film)")
@@ -184,7 +194,7 @@ def main():
         return export(film, scenes, name)
     refs = {}
     for sc in scenes:
-        rp = os.path.join(ROOT, "audio", "scenes", sc["id"] + ".align.json")
+        rp = os.path.join(SCENES, sc["id"] + ".align.json")
         if not os.path.exists(rp):
             sys.exit(f"{sc['id']}: no current timing ({rp}); build the cut first")
         refs[sc["id"]] = json.load(open(rp))
@@ -266,11 +276,11 @@ def main():
     report["summary"] = {"fitted": n_fit, "retimed": n_ret, "not_applied": n_bad, "no_recording": sum(1 for v in report["scenes"].values() if v["result"].startswith("no rec"))}
     if not a.dry_run:
         json.dump(report, open(os.path.join(EXT, f"{name}_fit_report.json"), "w"), indent=1, ensure_ascii=False)
-    print(f"[fit] {name}: {report['summary']}; gain {report['gain_db']} dB; report audio/external/{name}_fit_report.json")
+    print(f"[fit] {name}: {report['summary']}; gain {report['gain_db']} dB; report {os.path.relpath(EXT, ROOT)}/{name}_fit_report.json")
     if n_bad:
         print(f"[fit] {n_bad} scenes kept the TTS narration: re-record the listed sentences closer to their slot, "
               f"or rerun with --retime auto to re-time those scenes (they will re-render).")
-    print(f"[fit] next: make film CUT={a.cut} NARRATION=external")
+    print(f"[fit] next: make film CUT={a.cut}{'' if a.lang == 'en' else ' LANG=' + a.lang} NARRATION=external")
 
 
 if __name__ == "__main__":

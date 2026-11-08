@@ -1,0 +1,23 @@
+[Script Info]
+ScriptType: v4.00+
+PlayResX: 1920
+PlayResY: 1080
+WrapStyle: 2
+ScaledBorderAndShadow: yes
+YCbCr Matrix: TV.709
+
+[V4+ Styles]
+Format: Name, Fontname, Fontsize, PrimaryColour, SecondaryColour, OutlineColour, BackColour, Bold, Italic, Underline, StrikeOut, ScaleX, ScaleY, Spacing, Angle, BorderStyle, Outline, Shadow, Alignment, MarginL, MarginR, MarginV, Encoding
+Style: Sub,Inter Medium,42,&H00F7F4F2,&H00F7F4F2,&H38140F0B,&H00000000,0,0,0,0,100,100,0,0,3,12,0,2,240,240,64,1
+
+[Events]
+Format: Layer, Start, End, Style, Name, MarginL, MarginR, MarginV, Effect, Text
+Dialogue: 0,0:00:00.37,0:00:04.69,Sub,,0,0,0,,{\fad(120,100)\move(960,1020,960,1016,0,120)}Now film the trajectory,\None frame every two time units.
+Dialogue: 0,0:00:05.14,0:00:07.07,Sub,,0,0,0,,{\fad(120,100)\move(960,1020,960,1016,0,120)}Neighbouring frames look alike.
+Dialogue: 0,0:00:07.65,0:00:09.48,Sub,,0,0,0,,{\fad(120,100)\move(960,1020,960,1016,0,120)}Cut the film into frames.
+Dialogue: 0,0:00:09.66,0:00:14.27,Sub,,0,0,0,,{\fad(120,100)\move(960,1020,960,1016,0,120)}Drop them in a shoebox, shake,\Nand throw away the timestamps.
+Dialogue: 0,0:00:14.69,0:00:19.05,Sub,,0,0,0,,{\fad(120,100)\move(960,1020,960,1016,0,120)}Pour the box out:\Nthe frames redraw the same glow.
+Dialogue: 0,0:00:19.79,0:00:24.05,Sub,,0,0,0,,{\fad(120,100)\move(960,1020,960,1016,0,120)}Each frame is a snapshot:\Nthree dial readings, nothing more.
+Dialogue: 0,0:00:24.35,0:00:27.37,Sub,,0,0,0,,{\fad(120,100)\move(960,1020,960,1016,0,120)}It carries no timestamp and no time order.
+Dialogue: 0,0:00:27.66,0:00:31.73,Sub,,0,0,0,,{\fad(120,100)\move(960,1020,960,1016,0,120)}Yet the shoebox, plus the equations,\Nanswers many questions.
+Dialogue: 0,0:00:32.07,0:00:37.05,Sub,,0,0,0,,{\fad(120,100)\move(960,1020,960,1016,0,120)}Averages, energy budgets, even\Nhow often the dipole crosses zero.

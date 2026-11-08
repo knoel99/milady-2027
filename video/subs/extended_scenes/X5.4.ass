@@ -1,0 +1,22 @@
+[Script Info]
+ScriptType: v4.00+
+PlayResX: 1920
+PlayResY: 1080
+WrapStyle: 2
+ScaledBorderAndShadow: yes
+YCbCr Matrix: TV.709
+
+[V4+ Styles]
+Format: Name, Fontname, Fontsize, PrimaryColour, SecondaryColour, OutlineColour, BackColour, Bold, Italic, Underline, StrikeOut, ScaleX, ScaleY, Spacing, Angle, BorderStyle, Outline, Shadow, Alignment, MarginL, MarginR, MarginV, Encoding
+Style: Sub,Inter Medium,42,&H00F7F4F2,&H00F7F4F2,&H38140F0B,&H00000000,0,0,0,0,100,100,0,0,3,12,0,2,240,240,64,1
+
+[Events]
+Format: Layer, Start, End, Style, Name, MarginL, MarginR, MarginV, Effect, Text
+Dialogue: 0,0:00:00.97,0:00:04.35,Sub,,0,0,0,,{\fad(120,100)\move(960,1020,960,1016,0,120)}A new instrument for the\N{\c&H00A1ED&}critic{\c&HF7F4F2&}: in the flat sheet,
+Dialogue: 0,0:00:04.43,0:00:07.60,Sub,,0,0,0,,{\fad(120,100)\move(960,1020,960,1016,0,120)}{\c&H3468EB&}field lines{\c&HF7F4F2&} are contours of one potential.
+Dialogue: 0,0:00:07.94,0:00:11.77,Sub,,0,0,0,,{\fad(120,100)\move(960,1020,960,1016,0,120)}Lines loop around O-points\Nand cross at X-points.
+Dialogue: 0,0:00:12.22,0:00:16.17,Sub,,0,0,0,,{\fad(120,100)\move(960,1020,960,1016,0,120)}On this periodic square,\Nwhich kind is more common?
+Dialogue: 0,0:00:19.41,0:00:24.71,Sub,,0,0,0,,{\fad(120,100)\move(960,1020,960,1016,0,120)}Neither: exactly as many of each,\Na free check on any counter.
+Dialogue: 0,0:00:25.45,0:00:30.17,Sub,,0,0,0,,{\fad(120,100)\move(960,1020,960,1016,0,120)}The internship offer asks for\Ntopology; the report computed none.
+Dialogue: 0,0:00:30.40,0:00:35.05,Sub,,0,0,0,,{\fad(120,100)\move(960,1020,960,1016,0,120)}A low-confidence bet: generated\Nfields match the simulated count.
+Dialogue: 0,0:00:35.31,0:00:38.79,Sub,,0,0,0,,{\fad(120,100)\move(960,1020,960,1016,0,120)}The plan lists the count,\Nbut sets no pass mark.

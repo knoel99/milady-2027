@@ -1,0 +1,19 @@
+/* ch04.css: styles shared by the scenes of unit ch04 (tokens only, no transitions, no animations). */
+.k-q { color: var(--q); }                        /* quadrupole: light vermillion (C4.qcol), set on #stage by C4.tokens */
+.c4-abs { position: absolute; }
+.c4-label { position: absolute; font-weight: 500; font-size: 32px; color: var(--fg-2); white-space: nowrap; }
+.c4-label.big { font-size: 36px; color: var(--fg); }
+.c4-label.small { font-size: 28px; }
+.c4-label.mono { font-family: "JetBrains Mono"; font-size: 28px; letter-spacing: .07em; color: var(--muted); }
+.c4-label.center { transform: translateX(-50%); text-align: center; }
+.c4-label.right { transform: translateX(-100%); text-align: right; }
+.c4-chip-param { border-color: var(--param) !important; color: var(--param) !important; }
+.c4-chip-wrap { height: auto !important; white-space: normal !important; line-height: 1.25; padding-top: 6px !important; padding-bottom: 6px !important; }
+
+/* PREDICT card (C4.predict) */
+.c4-predict { position: absolute; z-index: 58; box-sizing: border-box; padding: 26px 32px 30px; background: var(--panel);
+  border: 2px solid var(--fg-2); border-radius: 12px; color: var(--fg); }
+.c4-predict .c4p-kicker { font-family: "JetBrains Mono"; font-size: 28px; letter-spacing: .14em; color: var(--chalk); }
+.c4-predict .c4p-q { margin-top: 10px; font-family: "Inter Display"; font-weight: 600; font-size: 44px; line-height: 1.18; }
+.c4-predict .c4p-row { margin-top: 24px; display: flex; gap: 24px; flex-wrap: wrap; }
+.c4-predict .c4p-btn { padding: 10px 22px 12px; border: 2px solid var(--muted); border-radius: 8px; font-size: 32px; color: var(--fg-2); white-space: nowrap; }

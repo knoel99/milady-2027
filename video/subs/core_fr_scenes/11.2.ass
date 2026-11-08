@@ -1,0 +1,33 @@
+[Script Info]
+ScriptType: v4.00+
+PlayResX: 1920
+PlayResY: 1080
+WrapStyle: 2
+ScaledBorderAndShadow: yes
+YCbCr Matrix: TV.709
+
+[V4+ Styles]
+Format: Name, Fontname, Fontsize, PrimaryColour, SecondaryColour, OutlineColour, BackColour, Bold, Italic, Underline, StrikeOut, ScaleX, ScaleY, Spacing, Angle, BorderStyle, Outline, Shadow, Alignment, MarginL, MarginR, MarginV, Encoding
+Style: Sub,Inter Medium,42,&H00F7F4F2,&H00F7F4F2,&H38140F0B,&H00000000,0,0,0,0,100,100,0,0,3,12,0,2,240,240,64,1
+
+[Events]
+Format: Layer, Start, End, Style, Name, MarginL, MarginR, MarginV, Effect, Text
+Dialogue: 0,0:00:00.72,0:00:04.45,Sub,,0,0,0,,{\fad(120,100)\move(960,1020,960,1016,0,120)}Back to the compass,\Nand to the two questions.
+Dialogue: 0,0:00:05.82,0:00:07.72,Sub,,0,0,0,,{\fad(120,100)\move(960,1020,960,1016,0,120)}When will this needle turn?
+Dialogue: 0,0:00:07.80,0:00:09.92,Sub,,0,0,0,,{\fad(120,100)\move(960,1020,960,1016,0,120)}For the Earth, no one can say.
+Dialogue: 0,0:00:10.00,0:00:12.97,Sub,,0,0,0,,{\fad(120,100)\move(960,1020,960,1016,0,120)}In a simple computer\Nmodel, chaos makes the
+Dialogue: 0,0:00:13.05,0:00:16.31,Sub,,0,0,0,,{\fad(120,100)\move(960,1020,960,1016,0,120)}forecast fade before\Nthe average wait ends.
+Dialogue: 0,0:00:16.39,0:00:22.39,Sub,,0,0,0,,{\fad(120,100)\move(960,1020,960,1016,0,120)}But {\c&H00A1ED&}how often{\c&HF7F4F2&} the field flips, counted as\Ncrossings of zero, can still be answered.
+Dialogue: 0,0:00:22.49,0:00:27.40,Sub,,0,0,0,,{\fad(120,100)\move(960,1020,960,1016,0,120)}The answer hides in a shoebox of\Nsnapshots, read with the equations.
+Dialogue: 0,0:00:27.48,0:00:33.38,Sub,,0,0,0,,{\fad(120,100)\move(960,1020,960,1016,0,120)}And a {\c&HF09CB4&}machine{\c&HF7F4F2&} can learn to dream such\Nsnapshots, between the simulated settings.
+Dialogue: 0,0:00:34.65,0:00:37.52,Sub,,0,0,0,,{\fad(120,100)\move(960,1020,960,1016,0,120)}On small test problems, it partly works.
+Dialogue: 0,0:00:37.60,0:00:41.28,Sub,,0,0,0,,{\fad(120,100)\move(960,1020,960,1016,0,120)}The mirror holds by construction,\Nat every setting.
+Dialogue: 0,0:00:41.36,0:00:44.28,Sub,,0,0,0,,{\fad(120,100)\move(960,1020,960,1016,0,120)}On three dials, the {\c&H00A1ED&}rate of zero crossings{\c&HF7F4F2&}
+Dialogue: 0,0:00:44.36,0:00:48.72,Sub,,0,0,0,,{\fad(120,100)\move(960,1020,960,1016,0,120)}is roughly right far from the\Nthreshold, and poor near it.
+Dialogue: 0,0:00:48.80,0:00:51.89,Sub,,0,0,0,,{\fad(120,100)\move(960,1020,960,1016,0,120)}A smooth machine rounds\Noff a steep change.
+Dialogue: 0,0:00:51.97,0:00:55.31,Sub,,0,0,0,,{\fad(120,100)\move(960,1020,960,1016,0,120)}The bigger tests,\Nin three dimensions and in the
+Dialogue: 0,0:00:55.39,0:00:58.93,Sub,,0,0,0,,{\fad(120,100)\move(960,1020,960,1016,0,120)}shapes of real machines,\Nare written as bets.
+Dialogue: 0,0:01:00.40,0:01:01.78,Sub,,0,0,0,,{\fad(120,100)\move(960,1020,960,1016,0,120)}One lesson remains.
+Dialogue: 0,0:01:01.86,0:01:04.39,Sub,,0,0,0,,{\fad(120,100)\move(960,1020,960,1016,0,120)}Enforce each law where it is true.
+Dialogue: 0,0:01:04.47,0:01:06.47,Sub,,0,0,0,,{\fad(120,100)\move(960,1020,960,1016,0,120)}Exactly, where it is exact.
+Dialogue: 0,0:01:06.55,0:01:09.88,Sub,,0,0,0,,{\fad(120,100)\move(960,1020,960,1016,0,120)}{\c&H00A1ED&}On average{\c&HF7F4F2&}, where it\Nonly holds on average.

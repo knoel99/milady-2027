@@ -15,8 +15,13 @@
  *
  * Usage (normally through the Makefile):
  *   node build.js --cut core|extended [--draft] [--plan] [--only id,id] [--force] [--tts live|auto|placeholder]
- *                 [--narration tts|external] [--voice ID] [--variant auto|pending|result] [--workers 4]
+ *                 [--narration tts|external] [--voice ID] [--variant auto|pending|result] [--workers 4] [--lang en|fr]
  *   node build.js --unit ch04 --check          one still per cue for every scene of a unit, page errors reported
+ * --lang fr (BRIEF section 9): French narration over the same English visuals. The cut merges script/fr/<unit>.json
+ *   (tools/assemble_cut.py --lang fr), the French voice, lexicon and Fish "language": "fr" (audio/tts.py), its own
+ *   timeline and renders: name <cut>_fr (film_<cut>_fr.mp4, stems/<cut>_fr_*, subs/<cut>_fr.*, <cut>_fr_cues.json),
+ *   scene renders in out/scenes_fr/ (French subtitles burned in), tracks in audio/scenes_fr/, external narration
+ *   in audio/external_fr/. --lang en (default) is exactly the English build.
  *   options for tests: --units script/_test --cuts script/_test/cuts.json --name _test_core
  */
 'use strict';
@@ -31,8 +36,12 @@ for (let i = 0; i < argv.length; i++) if (argv[i].startsWith('--')) {
   const k = argv[i].slice(2), v = argv[i + 1];
   if (v === undefined || v.startsWith('--')) opt[k] = true; else { opt[k] = v; i++; }
 }
-if (!opt.cut && !opt.unit) { console.error('usage: node build.js --cut core|extended | --unit <unit> [--check]'); process.exit(2); }
-const NAME = opt.name || (opt.unit ? `unit_${opt.unit}` : opt.cut);
+if (!opt.cut && !opt.unit) { console.error('usage: node build.js --cut core|extended | --unit <unit> [--check] [--lang en|fr]'); process.exit(2); }
+const LANG = String(opt.lang || 'en');
+if (!['en', 'fr'].includes(LANG)) { console.error(`[build] --lang ${LANG}: en or fr`); process.exit(2); }
+const LSFX = LANG === 'en' ? '' : '_' + LANG;                    // every output of a French build is suffixed _fr
+const NAME0 = opt.name || (opt.unit ? `unit_${opt.unit}` : opt.cut);
+const NAME = LSFX && !NAME0.endsWith(LSFX) ? NAME0 + LSFX : NAME0;
 const DRAFT = !!opt.draft, PLAN = !!opt.plan, CHECK = !!opt.check;
 const TTS = opt.tts || (PLAN ? 'dry-run' : (DRAFT || CHECK) ? 'auto' : 'live');
 const RENDER = DRAFT
@@ -42,7 +51,9 @@ const fps = RENDER.fps;
 const WORKERS = +(opt.workers || (DRAFT ? 3 : 4));
 const SIZE_LIMIT = 1.9e9;
 const OUT = path.join(ROOT, DRAFT ? 'out/draft' : 'out');
-const SCN = path.join(OUT, 'scenes');
+const SCN = path.join(OUT, 'scenes' + LSFX);                   // one render per scene and language (subtitles burned in)
+const ASCN = path.join(ROOT, 'audio', 'scenes' + LSFX);        // narration tracks (audio/align.py)
+const AEXT = path.join(ROOT, 'audio', 'external' + LSFX);      // external narration (tools/fit_narration.py)
 const BUILD = path.join(ROOT, 'script/_build');
 const META = DRAFT ? OUT : BUILD;                      // draft timings (15 fps) never overwrite the official cue sheet
 const SUBS = DRAFT ? path.join(OUT, 'subs') : path.join(ROOT, 'subs');
@@ -60,7 +71,7 @@ const run = (cmd, args, o = {}) => { const r = spawnSync(cmd, args, { stdio: 'in
 const filmPath = path.join(BUILD, `film_${NAME}.json`);
 timed('assemble_s', () => run('python3', ['-I', 'tools/assemble_cut.py', ...(opt.unit ? ['--unit', opt.unit] : ['--cut', opt.cut]), '--name', NAME,
   '--units', opt.units || 'script', '--cuts', opt.cuts || 'plan/outline.json', ...(opt.voice ? ['--voice', opt.voice] : []),
-  ...(opt.variant ? ['--variant', opt.variant] : []), ...(opt.strict ? ['--strict'] : [])]));
+  ...(opt.variant ? ['--variant', opt.variant] : []), ...(opt.strict ? ['--strict'] : []), ...(LSFX ? ['--lang', LANG] : [])]));
 const film = JSON.parse(fs.readFileSync(filmPath, 'utf8'));
 if (!film.scenes.length) { log('no scene in this cut yet (no unit script found)'); process.exit(PLAN ? 0 : 1); }
 
@@ -72,12 +83,12 @@ timed('tts_align_s', () => {
 
 // ---------------------------------------------------------------- 3. timeline
 const scriptText = (sc) => JSON.stringify(sc.paragraphs.map((p) => [p.hold_after, p.sentences.map((s) => [s.id, s.text])]));
-const cueSheet = { name: NAME, cut: film.cut, fps, voice: film.voice && film.voice.reference_id, scenes: [], sentences: [] };
+const cueSheet = { name: NAME, cut: film.cut, lang: LANG, fps, voice: film.voice && film.voice.reference_id, scenes: [], sentences: [] };
 let t = 0;
 const scenes = film.scenes.map((sc) => {
-  let alp = path.join(ROOT, 'audio/scenes', sc.id + '.align.json'), narration = 'tts';
+  let alp = path.join(ASCN, sc.id + '.align.json'), narration = 'tts';
   if (opt.narration === 'external') {
-    const ex = path.join(ROOT, 'audio/external', sc.id + '.align.json');
+    const ex = path.join(AEXT, sc.id + '.align.json');
     if (fs.existsSync(ex)) {
       const ej = JSON.parse(fs.readFileSync(ex, 'utf8'));
       if (JSON.stringify(ej.script_text) === scriptText(sc)) { alp = ex; narration = 'external'; }
@@ -105,6 +116,7 @@ const scenes = film.scenes.map((sc) => {
     stamp: sc.stamp || null, level: sc.level || null, register: sc.register || null,
     badge: sc.badge || null, question: sc.question || null, title: sc.title || null, onscreen: sc.onscreen || null, sources: sc.sources || [],
     data: (sc.entry && sc.entry.data) || {}, params: (sc.entry && sc.entry.params) || {}, seed: (sc.entry && sc.entry.seed) || 12345,
+    ...(LSFX ? { lang: LANG } : {}),                          // narration language (visuals stay English); absent = en
   };
   const e = { id: sc.id, unit: sc.unit, file: sc.file, title: sc.title, status: sc.status, variant: sc.variant, level: sc.level, register: sc.register,
     start: +t.toFixed(4), duration, frames, lead_in: sc.lead_in, tail: sc.tail, target_s: sc.target_s || null,
@@ -156,11 +168,12 @@ for (const e of scenes) {
 const only = opt.only ? new Set(String(opt.only).split(',')) : null;
 const todo = scenes.filter((e) => (only ? only.has(e.id) && (opt.force || !e.up_to_date) : !e.up_to_date));
 const tlPath = path.join(META, `${NAME}_timeline.json`);
-const timeline = { name: NAME, cut: film.cut, draft: DRAFT, fps, width: Math.round(1920 * RENDER.scale), height: Math.round(1080 * RENDER.scale),
+const timeline = { name: NAME, cut: film.cut, lang: LANG, draft: DRAFT, fps, width: Math.round(1920 * RENDER.scale), height: Math.round(1080 * RENDER.scale),
   total_s, total_frames: scenes.reduce((a, e) => a + e.frames, 0), voice: film.voice, scenes };
 fs.writeFileSync(tlPath, JSON.stringify(timeline, null, 1));
 const fmt = (s) => `${Math.floor(s / 60)}:${String(Math.round(s % 60)).padStart(2, '0')}`;
-log(`${NAME}${DRAFT ? ' (draft 960x540, 15 fps)' : ''}: ${scenes.length} scenes, ${fmt(total_s)}; to render: ${todo.length}`);
+log(`${NAME}${LSFX ? ` (${LANG} narration)` : ''}${DRAFT ? ' (draft 960x540, 15 fps)' : ''}: ${scenes.length} scenes, ${fmt(total_s)}; to render: ${todo.length}`);
+if (LSFX && film.totals && film.totals.untranslated) warn(`${film.totals.untranslated} sentences are not translated into ${LANG} yet (English text kept; live TTS refuses them)`);
 
 if (PLAN) {
   const est = scenes.filter((e) => e.audio.estimated).length;
@@ -242,6 +255,9 @@ const stems = (k) => path.join(OUT, 'stems', `${NAME}_${k}.m4a`);
 
 // ---------------------------------------------------------------- 8. assembly: stream copy + two audio tracks + soft subtitles + chapters
 const filmOut = path.join(OUT, `film_${NAME}.mp4`);
+const ISO = { en: 'eng', fr: 'fra' };                         // ISO 639-2 audio language of track 1
+const TRACK = { en: ['Narration, music and effects', 'Music and effects (no narration)'],
+  fr: ['Narration française, musique et effets', 'Musique et effets (sans narration)'] };
 timed('assemble_mp4_s', () => {
   const list = path.join(ROOT, '.tmp', `concat_${NAME}${DRAFT ? '_draft' : ''}.txt`);
   fs.writeFileSync(list, scenes.map((e) => `file '${path.join(ROOT, e.render)}'`).join('\n'));
@@ -250,15 +266,16 @@ timed('assemble_mp4_s', () => {
   chapters.forEach((c, i) => { c.end = i + 1 < chapters.length ? chapters[i + 1].start : total_s; });
   const meta = path.join(ROOT, '.tmp', `chapters_${NAME}.txt`);
   const esc = (s) => String(s).replace(/([=;#\\\n])/g, '\\$1');
-  fs.writeFileSync(meta, ';FFMETADATA1\n' + `title=${esc(film.title || 'MilaDy 2027 film')}\n` + chapters.map((c) =>
+  const ftitle = (film.title || 'MilaDy 2027 film') + (LANG === 'fr' ? ' (narration française)' : '');
+  fs.writeFileSync(meta, ';FFMETADATA1\n' + `title=${esc(ftitle)}\n` + (LSFX ? `language=${ISO[LANG]}\n` : '') + chapters.map((c) =>
     `[CHAPTER]\nTIMEBASE=1/1000\nSTART=${Math.round(c.start * 1000)}\nEND=${Math.round(c.end * 1000)}\ntitle=${esc(c.title)}\n`).join(''));
   fs.writeFileSync(path.join(OUT, `film_${NAME}_chapters.txt`), chapters.map((c) => `${fmt(c.start)} ${c.title}`).join('\n') + '\n');
   const tmp = filmOut.replace(/\.mp4$/, '.part.mp4');
   execFileSync('ffmpeg', ['-hide_banner', '-loglevel', 'error', '-y', '-f', 'concat', '-safe', '0', '-i', list, '-i', stems('full'), '-i', stems('nonarration'),
     '-i', meta, '-map', '0:v', '-map', '1:a', '-map', '2:a', '-map_metadata', '3', '-map_chapters', '3',
     '-c:v', 'copy', '-c:a', 'copy',
-    '-metadata:s:a:0', 'title=Narration, music and effects', '-metadata:s:a:0', 'language=eng', '-disposition:a:0', 'default',
-    '-metadata:s:a:1', 'title=Music and effects (no narration)', '-metadata:s:a:1', 'language=zxx', '-disposition:a:1', '0',
+    '-metadata:s:a:0', `title=${TRACK[LANG][0]}`, '-metadata:s:a:0', `language=${ISO[LANG]}`, '-disposition:a:0', 'default',
+    '-metadata:s:a:1', `title=${TRACK[LANG][1]}`, '-metadata:s:a:1', 'language=zxx', '-disposition:a:1', '0',
     '-movflags', '+faststart', tmp]);
   fs.renameSync(tmp, filmOut);
 });

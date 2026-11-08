@@ -1,0 +1,27 @@
+[Script Info]
+ScriptType: v4.00+
+PlayResX: 1920
+PlayResY: 1080
+WrapStyle: 2
+ScaledBorderAndShadow: yes
+YCbCr Matrix: TV.709
+
+[V4+ Styles]
+Format: Name, Fontname, Fontsize, PrimaryColour, SecondaryColour, OutlineColour, BackColour, Bold, Italic, Underline, StrikeOut, ScaleX, ScaleY, Spacing, Angle, BorderStyle, Outline, Shadow, Alignment, MarginL, MarginR, MarginV, Encoding
+Style: Sub,Inter Medium,42,&H00F7F4F2,&H00F7F4F2,&H38140F0B,&H00000000,0,0,0,0,100,100,0,0,3,12,0,2,240,240,64,1
+
+[Events]
+Format: Layer, Start, End, Style, Name, MarginL, MarginR, MarginV, Effect, Text
+Dialogue: 0,0:00:00.37,0:00:03.38,Sub,,0,0,0,,{\fad(120,100)\move(960,1020,960,1016,0,120)}Fourth: the mirror, as a theorem.
+Dialogue: 0,0:00:03.87,0:00:09.29,Sub,,0,0,0,,{\fad(120,100)\move(960,1020,960,1016,0,120)}Make the {\c&HF09CB4&}wind{\c&HF7F4F2&} equivariant: mirror\Na point, and its arrow mirrors too.
+Dialogue: 0,0:00:09.67,0:00:12.71,Sub,,0,0,0,,{\fad(120,100)\move(960,1020,960,1016,0,120)}Start from noise that looks\Nthe same in the mirror.
+Dialogue: 0,0:00:13.45,0:00:15.86,Sub,,0,0,0,,{\fad(120,100)\move(960,1020,960,1016,0,120)}Then every path has a mirror twin.
+Dialogue: 0,0:00:15.94,0:00:19.19,Sub,,0,0,0,,{\fad(120,100)\move(960,1020,960,1016,0,120)}So the generated crowd is\Nexactly symmetric at every
+Dialogue: 0,0:00:19.27,0:00:22.73,Sub,,0,0,0,,{\fad(120,100)\move(960,1020,960,1016,0,120)}{\c&H7AAF1B&}knob setting{\c&HF7F4F2&}, even with\Nlopsided or missing data.
+Dialogue: 0,0:00:23.47,0:00:26.68,Sub,,0,0,0,,{\fad(120,100)\move(960,1020,960,1016,0,120)}If every true crowd is\Nsymmetric, averaging a wind
+Dialogue: 0,0:00:26.76,0:00:30.18,Sub,,0,0,0,,{\fad(120,100)\move(960,1020,960,1016,0,120)}with its mirror never\Nraises the expected loss.
+Dialogue: 0,0:00:30.48,0:00:33.96,Sub,,0,0,0,,{\fad(120,100)\move(960,1020,960,1016,0,120)}The cost: two network\Npasses instead of one.
+Dialogue: 0,0:00:34.70,0:00:40.22,Sub,,0,0,0,,{\fad(120,100)\move(960,1020,960,1016,0,120)}In the VKS cylinder, a half-turn swapping\Nthe two impellers is a second symmetry.
+Dialogue: 0,0:00:40.68,0:00:43.57,Sub,,0,0,0,,{\fad(120,100)\move(960,1020,960,1016,0,120)}If their speeds differ,\Nit also flips the sign
+Dialogue: 0,0:00:43.65,0:00:46.69,Sub,,0,0,0,,{\fad(120,100)\move(960,1020,960,1016,0,120)}of that difference, the {\c&H7AAF1B&}forcing asymmetry{\c&HF7F4F2&}.
+Dialogue: 0,0:00:47.11,0:00:50.52,Sub,,0,0,0,,{\fad(120,100)\move(960,1020,960,1016,0,120)}The same proof covers it, untested so far.

@@ -1,0 +1,27 @@
+[Script Info]
+ScriptType: v4.00+
+PlayResX: 1920
+PlayResY: 1080
+WrapStyle: 2
+ScaledBorderAndShadow: yes
+YCbCr Matrix: TV.709
+
+[V4+ Styles]
+Format: Name, Fontname, Fontsize, PrimaryColour, SecondaryColour, OutlineColour, BackColour, Bold, Italic, Underline, StrikeOut, ScaleX, ScaleY, Spacing, Angle, BorderStyle, Outline, Shadow, Alignment, MarginL, MarginR, MarginV, Encoding
+Style: Sub,Inter Medium,42,&H00F7F4F2,&H00F7F4F2,&H38140F0B,&H00000000,0,0,0,0,100,100,0,0,3,12,0,2,240,240,64,1
+
+[Events]
+Format: Layer, Start, End, Style, Name, MarginL, MarginR, MarginV, Effect, Text
+Dialogue: 0,0:00:00.57,0:00:05.67,Sub,,0,0,0,,{\fad(120,100)\move(960,1020,960,1016,0,120)}Third track: making samples\Nobey the laws. Four families.
+Dialogue: 0,0:00:06.06,0:00:10.33,Sub,,0,0,0,,{\fad(120,100)\move(960,1020,960,1016,0,120)}Hard: build the law into the network,\Nsay a potential whose curl
+Dialogue: 0,0:00:10.41,0:00:14.74,Sub,,0,0,0,,{\fad(120,100)\move(960,1020,960,1016,0,120)}has no divergence, or project\Neach sample while drawing it.
+Dialogue: 0,0:00:15.12,0:00:20.04,Sub,,0,0,0,,{\fad(120,100)\move(960,1020,960,1016,0,120)}Soft: a penalty in the loss,\Nobeyed only approximately.
+Dialogue: 0,0:00:20.27,0:00:23.24,Sub,,0,0,0,,{\fad(120,100)\move(960,1020,960,1016,0,120)}On the {\c&H00A1ED&}distribution{\c&HF7F4F2&}: constrain the crowd,
+Dialogue: 0,0:00:23.32,0:00:28.05,Sub,,0,0,0,,{\fad(120,100)\move(960,1020,960,1016,0,120)}by its covariance, or by the\Nequation a steady cloud obeys.
+Dialogue: 0,0:00:28.49,0:00:33.33,Sub,,0,0,0,,{\fad(120,100)\move(960,1020,960,1016,0,120)}And symmetry: an equivariant\Nflow gives a symmetric cloud.
+Dialogue: 0,0:00:34.47,0:00:38.35,Sub,,0,0,0,,{\fad(120,100)\move(960,1020,960,1016,0,120)}A twenty twenty-six preprint\Ncompared ways to impose zero
+Dialogue: 0,0:00:38.43,0:00:42.59,Sub,,0,0,0,,{\fad(120,100)\move(960,1020,960,1016,0,120)}divergence on flat flows:\Nno single strategy dominates.
+Dialogue: 0,0:00:43.03,0:00:48.08,Sub,,0,0,0,,{\fad(120,100)\move(960,1020,960,1016,0,120)}In three dimensions, we found two\Nexactly divergence-free generators,
+Dialogue: 0,0:00:48.16,0:00:51.06,Sub,,0,0,0,,{\fad(120,100)\move(960,1020,960,1016,0,120)}both preprints: periodic-box turbulence,
+Dialogue: 0,0:00:51.14,0:00:54.82,Sub,,0,0,0,,{\fad(120,100)\move(960,1020,960,1016,0,120)}and a current-free field\Nin the Sun's corona.
+Dialogue: 0,0:00:54.91,0:00:59.63,Sub,,0,0,0,,{\fad(120,100)\move(960,1020,960,1016,0,120)}None handles walls, a vacuum\Noutside and iron inside.

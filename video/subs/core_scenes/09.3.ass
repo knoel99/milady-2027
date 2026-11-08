@@ -1,0 +1,23 @@
+[Script Info]
+ScriptType: v4.00+
+PlayResX: 1920
+PlayResY: 1080
+WrapStyle: 2
+ScaledBorderAndShadow: yes
+YCbCr Matrix: TV.709
+
+[V4+ Styles]
+Format: Name, Fontname, Fontsize, PrimaryColour, SecondaryColour, OutlineColour, BackColour, Bold, Italic, Underline, StrikeOut, ScaleX, ScaleY, Spacing, Angle, BorderStyle, Outline, Shadow, Alignment, MarginL, MarginR, MarginV, Encoding
+Style: Sub,Inter Medium,42,&H00F7F4F2,&H00F7F4F2,&H38140F0B,&H00000000,0,0,0,0,100,100,0,0,3,12,0,2,240,240,64,1
+
+[Events]
+Format: Layer, Start, End, Style, Name, MarginL, MarginR, MarginV, Effect, Text
+Dialogue: 0,0:00:00.37,0:00:03.80,Sub,,0,0,0,,{\fad(120,100)\move(960,1020,960,1016,0,120)}Why? Picture the machine as a stiff sheet:
+Dialogue: 0,0:00:03.88,0:00:08.13,Sub,,0,0,0,,{\fad(120,100)\move(960,1020,960,1016,0,120)}as {\c&H7AAF1B&}Gamma{\c&HF7F4F2&} turns, its crowd\Nchanges only so fast.
+Dialogue: 0,0:00:08.45,0:00:14.45,Sub,,0,0,0,,{\fad(120,100)\move(960,1020,960,1016,0,120)}The truth climbs a steep ramp: just above\Nzero point eight six, the corridor opens.
+Dialogue: 0,0:00:15.92,0:00:19.92,Sub,,0,0,0,,{\fad(120,100)\move(960,1020,960,1016,0,120)}The sheet rounds the corner:\Ntoo early, then too low.
+Dialogue: 0,0:00:20.29,0:00:26.07,Sub,,0,0,0,,{\fad(120,100)\move(960,1020,960,1016,0,120)}The data show both: early strays in the\Ncorridor, then too few at the threshold.
+Dialogue: 0,0:00:26.81,0:00:32.38,Sub,,0,0,0,,{\fad(120,100)\move(960,1020,960,1016,0,120)}A theorem: at a true jump, a smooth\Nmachine misses by at least half of it.
+Dialogue: 0,0:00:32.79,0:00:37.19,Sub,,0,0,0,,{\fad(120,100)\move(960,1020,960,1016,0,120)}Unless it is very supple,\Nor told which state the system is in.
+Dialogue: 0,0:00:37.93,0:00:43.93,Sub,,0,0,0,,{\fad(120,100)\move(960,1020,960,1016,0,120)}Here, a ramp, not a jump, and one seed:\Nconsistent with the theorem, not proof.
+Dialogue: 0,0:00:45.23,0:00:47.85,Sub,,0,0,0,,{\fad(120,100)\move(960,1020,960,1016,0,120)}Nor does the theorem\Nexplain the overshoot.

@@ -1,0 +1,22 @@
+[Script Info]
+ScriptType: v4.00+
+PlayResX: 1920
+PlayResY: 1080
+WrapStyle: 2
+ScaledBorderAndShadow: yes
+YCbCr Matrix: TV.709
+
+[V4+ Styles]
+Format: Name, Fontname, Fontsize, PrimaryColour, SecondaryColour, OutlineColour, BackColour, Bold, Italic, Underline, StrikeOut, ScaleX, ScaleY, Spacing, Angle, BorderStyle, Outline, Shadow, Alignment, MarginL, MarginR, MarginV, Encoding
+Style: Sub,Inter Medium,42,&H00F7F4F2,&H00F7F4F2,&H38140F0B,&H00000000,0,0,0,0,100,100,0,0,3,12,0,2,240,240,64,1
+
+[Events]
+Format: Layer, Start, End, Style, Name, MarginL, MarginR, MarginV, Effect, Text
+Dialogue: 0,0:00:00.37,0:00:02.17,Sub,,0,0,0,,{\fad(120,100)\move(960,1020,960,1016,0,120)}Now give the wind a {\c&H7AAF1B&}knob{\c&HF7F4F2&}.
+Dialogue: 0,0:00:02.36,0:00:06.46,Sub,,0,0,0,,{\fad(120,100)\move(960,1020,960,1016,0,120)}Turn it: the target changes\Nshape, and the {\c&HF09CB4&}cloud{\c&HF7F4F2&} follows.
+Dialogue: 0,0:00:06.65,0:00:09.01,Sub,,0,0,0,,{\fad(120,100)\move(960,1020,960,1016,0,120)}One network, every setting.
+Dialogue: 0,0:00:09.75,0:00:14.01,Sub,,0,0,0,,{\fad(120,100)\move(960,1020,960,1016,0,120)}On the three dials, a real network\Ntrained at the filled dots.
+Dialogue: 0,0:00:14.27,0:00:18.02,Sub,,0,0,0,,{\fad(120,100)\move(960,1020,960,1016,0,120)}It was tested at the open dots,\Nnever seen in training.
+Dialogue: 0,0:00:18.32,0:00:23.66,Sub,,0,0,0,,{\fad(120,100)\move(960,1020,960,1016,0,120)}In between, no theorem promises\Nsuccess: only tests can tell.
+Dialogue: 0,0:00:24.07,0:00:26.86,Sub,,0,0,0,,{\fad(120,100)\move(960,1020,960,1016,0,120)}Beyond the range, nothing was tested.
+Dialogue: 0,0:00:27.60,0:00:33.27,Sub,,0,0,0,,{\fad(120,100)\move(960,1020,960,1016,0,120)}At an open dot, the network's {\c&HF09CB4&}snapshots{\c&HF7F4F2&}\Njoin the shoebox, beside simulated ones.

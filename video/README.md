@@ -12,10 +12,11 @@ les décisions ; `CONTRACT.md` décrit le contrat technique entre le pipeline et
 | Dossier | Contenu |
 |---|---|
 | `script/<unité>.json` | texte de la narration et description des scènes (schéma 2), une unité par chapitre ou module |
+| `script/fr/<unité>.json` | narration française de l'unité (surcouche : mêmes identifiants de phrases, mêmes repères ; voir « Version française ») |
 | `script/_build/` | coupes assemblées (`film_core.json`, `film_extended.json`), temps de chaque phrase (`<coupe>_cues.json`), liste des questions (`questions_<coupe>.json`) |
 | `scenes/<unité>/` | une page HTML par scène ; `runtime/` : moteur déterministe et composants partagés |
 | `data/` | données des scènes, extraites des résultats existants du dépôt (`make data`) |
-| `audio/` | synthèse vocale (`tts.py`), minutage des phrases (`align.py`), mixage (`mix.py`), prononciations (`lexicon.json`), cache des voix déjà payées (`cache/`, à conserver) |
+| `audio/` | synthèse vocale (`tts.py`), minutage des phrases (`align.py`), mixage (`mix.py`), prononciations (`lexicon.json`, `lexicon_fr.json`), cache des voix déjà payées (`cache/`, à conserver), pistes de narration par scène (`scenes/`, `scenes_fr/`) |
 | `subs/` | sous-titres `.srt`, `.vtt`, `.ass` de chaque coupe, tirés du texte du script |
 | `out/` | rendus : `film_<coupe>.mp4`, pistes séparées `stems/`, brouillons `draft/`, vérifications `check/` |
 
@@ -32,6 +33,8 @@ make data                     # régénérer data/*.json depuis les résultats e
 make film CUT=update          # épisode « Results update » (scènes dont les résultats sont arrivés)
 make test                     # test complet du pipeline sur script/_test (voix factice, sans API)
 make serve                    # prévisualiser une scène : http://127.0.0.1:8765/scenes/<unité>/<page>.html
+make film CUT=extended LANG=fr   # la même chose avec la narration française (LANG=fr vaut pour toutes les commandes)
+make test LANG=fr             # test complet de la version française sur script/_test (voix factice, sans API)
 ```
 
 Le film sort en `out/film_<coupe>.mp4` (H.264 1080p30, moins de 1,9 Go, AAC 192 kb/s), avec deux pistes
@@ -40,6 +43,45 @@ dans le MP4 et listés dans `out/film_<coupe>_chapters.txt` (format des descript
 à −16 LUFS, crête vraie ≤ −1 dBTP. Rien n'est refait inutilement : une scène n'est re-rendue que si sa
 page, ses données, son texte, son minutage ou les réglages changent, et un paragraphe déjà synthétisé
 n'est jamais refacturé.
+
+## Version française
+
+La narration française (BRIEF §9) passe sur **les mêmes images** : textes à l'écran, étiquettes et formules
+restent en anglais ; seuls la voix et les sous-titres changent. Toutes les commandes ci-dessus acceptent
+`LANG=fr` (`LANG=en` par défaut) :
+
+```bash
+make plan  CUT=core LANG=fr      # phrases encore non traduites, mots à synthétiser, scènes à rendre
+make draft CUT=core LANG=fr      # brouillon français (voix du cache ou factice, jamais l'API)
+make film  CUT=extended LANG=fr  # out/film_extended_fr.mp4
+make check U=ch04 LANG=fr        # une image par repère avec le minutage français
+```
+
+- **Texte** : `script/fr/<unité>.json` (une surcouche par unité, les scripts anglais ne sont pas modifiés) :
+  `{"schema": 2, "unit", "lang": "fr", "voice", "sentences": {identifiant: texte}, "variants": {scène:
+  {identifiant: texte}}, "notes"}`, et un `"title"` facultatif (nom du chapitre dans le MP4). Chaque phrase
+  garde son identifiant et son repère : les scènes s'animent sur les noms de repères, jamais sur des temps.
+  Le balisage des sous-titres (`{u}…{/}`, `{b}…{/}`, `{param}…{/}`, `{model}…{/}`, `{metric}…{/}`) entoure
+  les mots français correspondants et les champs `{{…}}` sont gardés tels quels (l'assembleur signale tout
+  écart avec la phrase anglaise). À défaut de surcouche, un champ `text_fr` du script anglais est repris ;
+  sinon la phrase reste en anglais, signalée « untranslated » par `make plan` (et `make film` refuse de la
+  facturer). Les cartes-questions sans paragraphe sont dites à partir de `question.fr`.
+- **Résultats** : les champs `{{…}}` des variantes `result` sont dits en français (« zéro virgule
+  quatre-vingt-six ») ; un champ texte des convertisseurs est pris dans sa version `<champ>_fr` s'il existe.
+- **Voix** : « Ethan » parlant français (même voix, mêmes réglages drama-3, corps `"language": "fr"`),
+  lue dans la surcouche (`voice`), puis `voice_fr` du script ; `make narration LANG=fr VOICE=<id>` la remplace
+  pour tout le film français (`audio/voice_fr.json`, voir `NARRATION.md`).
+- **Prononciation** : `audio/lexicon_fr.json` (réécritures, la voix française n'accepte pas les phonèmes
+  ARPAbet) : sigles épelés à la française (MHD, ABC, VKS, ENPC, LISN), noms dits comme un physicien français
+  (Gissinger, Reynolds, Prandtl, Kármán, Rice, Leray), termes d'apprentissage automatique gardés en anglais
+  (*flow matching*).
+- **Sorties séparées**, suffixe `_fr` : `out/film_<coupe>_fr.mp4` (piste 1 marquée française), pistes
+  `out/stems/<coupe>_fr_*.m4a`, sous-titres français `subs/<coupe>_fr.{srt,vtt,ass}` incrustés dans les
+  rendus de `out/scenes_fr/`, minutage `script/_build/<coupe>_fr_cues.json`, pistes de narration
+  `audio/scenes_fr/`. Rien de la version anglaise n'est recalculé ni re-rendu par une construction française.
+- **Cache** : indexé par (langue, texte, voix, réglages) ; les clés anglaises sont inchangées.
+- Le minutage français est plus long (+15 à 20 % attendus) : `make plan LANG=fr` ne signale une scène qu'au-delà
+  de +40 % de sa durée cible.
 
 ## Quand les résultats du cloud arrivent
 
@@ -62,7 +104,8 @@ champs `{{…}}` remplis depuis les données).
 
 ## Changer la voix ou enregistrer une narration
 
-Voir **`NARRATION.md`** : `make narration VOICE=<reference_id>` pour une autre voix Fish Audio,
+Voir **`NARRATION.md`** : `make narration VOICE=<reference_id>` pour une autre voix Fish Audio
+(`make narration LANG=fr VOICE=<reference_id>` pour la version française),
 `make narration-script` puis `make fit DIR=prises/` pour ajuster une narration enregistrée ailleurs
 (étirement phrase par phrase dans ±12 %, ou re-minutage des scènes).
 

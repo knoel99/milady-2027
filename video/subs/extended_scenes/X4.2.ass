@@ -1,0 +1,25 @@
+[Script Info]
+ScriptType: v4.00+
+PlayResX: 1920
+PlayResY: 1080
+WrapStyle: 2
+ScaledBorderAndShadow: yes
+YCbCr Matrix: TV.709
+
+[V4+ Styles]
+Format: Name, Fontname, Fontsize, PrimaryColour, SecondaryColour, OutlineColour, BackColour, Bold, Italic, Underline, StrikeOut, ScaleX, ScaleY, Spacing, Angle, BorderStyle, Outline, Shadow, Alignment, MarginL, MarginR, MarginV, Encoding
+Style: Sub,Inter Medium,42,&H00F7F4F2,&H00F7F4F2,&H38140F0B,&H00000000,0,0,0,0,100,100,0,0,3,12,0,2,240,240,64,1
+
+[Events]
+Format: Layer, Start, End, Style, Name, MarginL, MarginR, MarginV, Effect, Text
+Dialogue: 0,0:00:00.57,0:00:04.13,Sub,,0,0,0,,{\fad(120,100)\move(960,1020,960,1016,0,120)}To count reversals,\Nnot crossings, raise the bar:
+Dialogue: 0,0:00:04.21,0:00:09.58,Sub,,0,0,0,,{\fad(120,100)\move(960,1020,960,1016,0,120)}a reversal must run from above some\Nlevel to below its mirror image.
+Dialogue: 0,0:00:09.80,0:00:11.56,Sub,,0,0,0,,{\fad(120,100)\move(960,1020,960,1016,0,120)}So the level's {\c&H00A1ED&}crossing rate{\c&HF7F4F2&},
+Dialogue: 0,0:00:11.64,0:00:15.51,Sub,,0,0,0,,{\fad(120,100)\move(960,1020,960,1016,0,120)}which Rice reads from snapshots,\Ncaps the reversal rate.
+Dialogue: 0,0:00:16.25,0:00:18.78,Sub,,0,0,0,,{\fad(120,100)\move(960,1020,960,1016,0,120)}Wobbles across the level loosen the cap.
+Dialogue: 0,0:00:19.32,0:00:23.18,Sub,,0,0,0,,{\fad(120,100)\move(960,1020,960,1016,0,120)}The conjecture: if a flip\Nlasts far longer than a wobble,
+Dialogue: 0,0:00:23.26,0:00:26.84,Sub,,0,0,0,,{\fad(120,100)\move(960,1020,960,1016,0,120)}the cap is nearly exact\Non a plateau of levels.
+Dialogue: 0,0:00:27.58,0:00:33.21,Sub,,0,0,0,,{\fad(120,100)\move(960,1020,960,1016,0,120)}The bet, written before the data, from the\NPhD plan: on the staircase's first step,
+Dialogue: 0,0:00:33.29,0:00:38.57,Sub,,0,0,0,,{\fad(120,100)\move(960,1020,960,1016,0,120)}the cap comes within thirty percent\Nof the counted rate on that plateau.
+Dialogue: 0,0:00:40.11,0:00:45.34,Sub,,0,0,0,,{\fad(120,100)\move(960,1020,960,1016,0,120)}Confidence: medium; the cap\Nis proved, the plateau is not.
+Dialogue: 0,0:00:45.82,0:00:49.43,Sub,,0,0,0,,{\fad(120,100)\move(960,1020,960,1016,0,120)}Ask first: how wide must that plateau be?

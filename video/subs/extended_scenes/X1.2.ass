@@ -1,0 +1,26 @@
+[Script Info]
+ScriptType: v4.00+
+PlayResX: 1920
+PlayResY: 1080
+WrapStyle: 2
+ScaledBorderAndShadow: yes
+YCbCr Matrix: TV.709
+
+[V4+ Styles]
+Format: Name, Fontname, Fontsize, PrimaryColour, SecondaryColour, OutlineColour, BackColour, Bold, Italic, Underline, StrikeOut, ScaleX, ScaleY, Spacing, Angle, BorderStyle, Outline, Shadow, Alignment, MarginL, MarginR, MarginV, Encoding
+Style: Sub,Inter Medium,42,&H00F7F4F2,&H00F7F4F2,&H38140F0B,&H00000000,0,0,0,0,100,100,0,0,3,12,0,2,240,240,64,1
+
+[Events]
+Format: Layer, Start, End, Style, Name, MarginL, MarginR, MarginV, Effect, Text
+Dialogue: 0,0:00:00.37,0:00:03.40,Sub,,0,0,0,,{\fad(120,100)\move(960,1020,960,1016,0,120)}Run long enough, and one {\c&H3468EB&}field{\c&HF7F4F2&} takes over:
+Dialogue: 0,0:00:03.48,0:00:07.06,Sub,,0,0,0,,{\fad(120,100)\move(960,1020,960,1016,0,120)}the slowest to fade,\Nor the fastest to grow.
+Dialogue: 0,0:00:07.51,0:00:12.27,Sub,,0,0,0,,{\fad(120,100)\move(960,1020,960,1016,0,120)}The surface wraps its strong\Nparts; threads trace its lines.
+Dialogue: 0,0:00:13.01,0:00:15.31,Sub,,0,0,0,,{\fad(120,100)\move(960,1020,960,1016,0,120)}At {\c&H7AAF1B&}Rm{\c&HF7F4F2&} eight, it fades.
+Dialogue: 0,0:00:15.63,0:00:19.76,Sub,,0,0,0,,{\fad(120,100)\move(960,1020,960,1016,0,120)}At twelve and sixteen,\Ninside the window, it grows.
+Dialogue: 0,0:00:20.15,0:00:23.51,Sub,,0,0,0,,{\fad(120,100)\move(960,1020,960,1016,0,120)}At twenty, just past it, it fades again.
+Dialogue: 0,0:00:24.07,0:00:30.07,Sub,,0,0,0,,{\fad(120,100)\move(960,1020,960,1016,0,120)}In these snapshots, at eight, sixteen and\Ntwenty, it gathers in four slim tubes.
+Dialogue: 0,0:00:30.53,0:00:33.57,Sub,,0,0,0,,{\fad(120,100)\move(960,1020,960,1016,0,120)}They peak at points where\Nthe {\c&HE58739&}flow{\c&HF7F4F2&} stands still.
+Dialogue: 0,0:00:33.90,0:00:36.19,Sub,,0,0,0,,{\fad(120,100)\move(960,1020,960,1016,0,120)}At twelve, it spreads out.
+Dialogue: 0,0:00:36.93,0:00:39.98,Sub,,0,0,0,,{\fad(120,100)\move(960,1020,960,1016,0,120)}Published work describes\Nsuch cigar-shaped tubes,
+Dialogue: 0,0:00:40.06,0:00:42.94,Sub,,0,0,0,,{\fad(120,100)\move(960,1020,960,1016,0,120)}and symmetries the report did not check.
+Dialogue: 0,0:00:43.26,0:00:48.85,Sub,,0,0,0,,{\fad(120,100)\move(960,1020,960,1016,0,120)}One shape per setting: proposed first\Ntargets for a three-dimensional {\c&HF09CB4&}generator{\c&HF7F4F2&}.

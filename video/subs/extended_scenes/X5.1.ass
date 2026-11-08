@@ -1,0 +1,24 @@
+[Script Info]
+ScriptType: v4.00+
+PlayResX: 1920
+PlayResY: 1080
+WrapStyle: 2
+ScaledBorderAndShadow: yes
+YCbCr Matrix: TV.709
+
+[V4+ Styles]
+Format: Name, Fontname, Fontsize, PrimaryColour, SecondaryColour, OutlineColour, BackColour, Bold, Italic, Underline, StrikeOut, ScaleX, ScaleY, Spacing, Angle, BorderStyle, Outline, Shadow, Alignment, MarginL, MarginR, MarginV, Encoding
+Style: Sub,Inter Medium,42,&H00F7F4F2,&H00F7F4F2,&H38140F0B,&H00000000,0,0,0,0,100,100,0,0,3,12,0,2,240,240,64,1
+
+[Events]
+Format: Layer, Start, End, Style, Name, MarginL, MarginR, MarginV, Effect, Text
+Dialogue: 0,0:00:01.57,0:00:05.40,Sub,,0,0,0,,{\fad(120,100)\move(960,1020,960,1016,0,120)}Open one oven: the solver\Nkeeps {\c&HE58739&}flow{\c&HF7F4F2&} and field as waves,
+Dialogue: 0,0:00:05.48,0:00:08.12,Sub,,0,0,0,,{\fad(120,100)\move(960,1020,960,1016,0,120)}where a curl is a multiplication.
+Dialogue: 0,0:00:08.50,0:00:12.70,Sub,,0,0,0,,{\fad(120,100)\move(960,1020,960,1016,0,120)}Products are easier on the grid:\Neach step hops over and back.
+Dialogue: 0,0:00:13.05,0:00:18.23,Sub,,0,0,0,,{\fad(120,100)\move(960,1020,960,1016,0,120)}It trims the outer third of the waves,\Nso products cannot fold back as fakes.
+Dialogue: 0,0:00:18.45,0:00:21.80,Sub,,0,0,0,,{\fad(120,100)\move(960,1020,960,1016,0,120)}A projection keeps both\Nfields divergence-free;
+Dialogue: 0,0:00:21.88,0:00:24.47,Sub,,0,0,0,,{\fad(120,100)\move(960,1020,960,1016,0,120)}the smudging is solved exactly.
+Dialogue: 0,0:00:25.21,0:00:27.16,Sub,,0,0,0,,{\fad(120,100)\move(960,1020,960,1016,0,120)}One step at sixty-four cubed:
+Dialogue: 0,0:00:27.24,0:00:31.41,Sub,,0,0,0,,{\fad(120,100)\move(960,1020,960,1016,0,120)}eight hundredths of a second,\Non an ordinary processor.
+Dialogue: 0,0:00:31.75,0:00:34.84,Sub,,0,0,0,,{\fad(120,100)\move(960,1020,960,1016,0,120)}The memory peak, about\Nfifteen times the state,
+Dialogue: 0,0:00:34.92,0:00:39.37,Sub,,0,0,0,,{\fad(120,100)\move(960,1020,960,1016,0,120)}is an estimated six gigabytes\Nat two hundred fifty-six cubed.

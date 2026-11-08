@@ -1,0 +1,191 @@
+<!doctype html>
+<html lang="en"><head><meta charset="utf-8">
+<title>04.3 Listen to the rate</title>
+<link rel="stylesheet" href="../../vendor/katex/katex.min.css">
+<link rel="stylesheet" href="../../runtime/theme.css">
+<link rel="stylesheet" href="ch04.css">
+<script src="../../vendor/katex/katex.min.js"></script>
+<script src="../../runtime/scene.js"></script>
+<script src="../../runtime/components/kit.js"></script>
+<script src="../../runtime/components/hud.js"></script>
+<script src="../../runtime/components/plot.js"></script>
+<script src="../../runtime/components/field.js"></script>
+<script src="../../runtime/components/motifs.js"></script>
+<script src="ch04_kit.js"></script>
+<style>
+  .cnt { position: absolute; font-size: 36px; font-weight: 600; color: var(--fg); white-space: nowrap; }
+  .cnt small { font-size: 28px; font-weight: 500; color: var(--muted); display: block; }
+</style>
+</head><body><div id="stage"></div>
+<script>
+/* 04.3 Listen to the rate (L2, NIGHT, MEASURED). Part 1: the D(t) strip of 04.2 at Γ = params.strip_gamma
+   (live integration, illustration) scrolls; a tick drops at each zero crossing (heard), a real excursion
+   found by a seeded search is circled. Part 2: E1's counted crossing rate against Γ (data/e1_finegrid.json):
+   silence up to the threshold, then the rate grows, heard as a tick stream that follows the last point. */
+Scene.define({
+  duration: 24.7,
+  register: 'night',
+  cues: { count: 0.4, excursion: 4.63, rate: 10.26, silence: 14.45, switch: 17.2, grows: 21.16 },
+  data: { rate: 'data/e1_finegrid.json' },
+  params: { series: 'simulation (counted crossings)', y_scale: 1000, y_max: 13, y_ticks: [0, 4, 8, 12], x_ticks: [0.8, 0.85, 0.9, 0.95, 1.0],
+    strip_gamma: 1.0, strip_units: 2000, land_interval_s: 0.15, ticks_per_s_at_max: 8, tick_gain_db: -22,
+    window_units: 400, scroll_units_per_s: 40, dt: 0.01, transient_units: 600, excursion_max_units: 15 },
+  setup(ctx) {
+    const K = Kit, S = Scene, P = ctx.params, st = ctx.stage, Dd = ctx.data.rate;
+    C4.fixAt(ctx); C4.tokens(ctx, 0.6);
+    const ser = Dd.series.find((s) => s.name === P.series);
+    if (!ser) throw new Error('04.3: series not found: ' + P.series);
+    K.badge(ctx, { kind: 'MEASURED', note: ctx.script.badge && ctx.script.badge.note, at: 'count' });
+    const events = [];
+
+    // ================= part 1: the strip =================
+    const tC = ctx.at('count-0.15'), tEx = ctx.at('excursion-0.15'), tSil = ctx.at('silence-0.15');
+    const STRIP = { x: 260, y: 250, w: 1380, h: 200 }, BAR = { x: 260, y: 470, w: 1380, h: 36 }, TRAY = { y: 524, h: 40 };
+    const M = C4.model(Dd.config.mu, Dd.config.nu), G = P.strip_gamma;
+    const s = M.seed(G, +1, S.rng('strip-ic')); M.run(s, G, P.transient_units, P.dt);
+    const HD = 0.1, NU = Math.max(P.strip_units, 6000), N = Math.round(NU / HD), Darr = new Float32Array(N + 1);
+    Darr[0] = s[1]; const cr = [];
+    for (let i = 1; i <= N; i++) { M.run(s, G, HD, P.dt); Darr[i] = s[1]; if ((Darr[i] > 0) !== (Darr[i - 1] > 0)) cr.push((i - 1 + Math.abs(Darr[i - 1]) / (Math.abs(Darr[i - 1]) + Math.abs(Darr[i]))) * HD); }
+    // excursions: two consecutive crossings less than excursion_max_units apart, isolated from the others
+    const W = P.window_units, v = P.scroll_units_per_s;
+    const exc = []; for (let k = 1; k + 1 < cr.length; k++) if (cr[k + 1] - cr[k] < P.excursion_max_units && cr[k] - cr[k - 1] > 30 && (k + 2 >= cr.length || cr[k + 2] - cr[k + 1] > 30)) exc.push((cr[k] + cr[k + 1]) / 2);
+    // the excursion sits at 72 % of the window at 'excursion': tauNow(t) = tau0 + v (t - tC)
+    const fit = exc.filter((e) => e + 0.28 * W - v * (tEx - tC) - W > 0 && e + 0.28 * W + v * (tSil - tEx) < NU);
+    let tau0, excTau = null;
+    if (fit.length) { excTau = fit[Math.floor(S.rng('strip')() * fit.length)]; tau0 = excTau + 0.28 * W - v * (tEx - tC); }
+    else { tau0 = W + 50; S.warn('04.3: no isolated excursion in the precomputed stretch: schematic inset shown instead'); }
+    const tauNow = (t) => tau0 + v * Math.max(0, t - tC);
+    const Dat = (tau) => { const x = tau / HD, i = Math.max(0, Math.min(N - 1, Math.floor(x))), f = x - i; return Darr[i] + (Darr[i + 1] - Darr[i]) * f; };
+    // ticks: a crossing is counted when it enters at the right edge ("now")
+    const counted = cr.filter((c) => c > tau0 && c < tauNow(tSil)).map((c) => ({ tau: c, t: tC + (c - tau0) / v }));
+    counted.forEach((c) => events.push({ t: +c.t.toFixed(3), id: 'tick', gain_db: P.tick_gain_db }));
+    const grp1 = K.el('div', { class: 'c4-abs' }, st); grp1.style.cssText += ';inset:0;z-index:12';
+    const L1 = K.canvasLayer(ctx, 8, { x: STRIP.x - 20, y: STRIP.y - 20, w: STRIP.w + 40, h: TRAY.y + TRAY.h - STRIP.y + 40 }, grp1);
+    const lab = (text, x, y, cls, par = grp1) => { const e = K.el('div', { class: cls || 'c4-label' }, par, text); e.style.left = x + 'px'; e.style.top = y + 'px'; return e; };
+    const lD = lab('D', STRIP.x - 50, STRIP.y + STRIP.h / 2 - 22); lD.style.color = K.c('b');
+    const lTime = lab('time →', STRIP.x + STRIP.w, STRIP.y - 46, 'c4-label small right');
+    const cnt = K.el('div', { class: 'cnt' }, grp1); cnt.style.left = (STRIP.x + STRIP.w + 24) + 'px'; cnt.style.top = (TRAY.y - 30) + 'px';
+    const cntSmall = K.el('small', {}, cnt, 'ticks'), cntN = K.el('span', {}, cnt, '0'); void cntSmall;
+    const lRate = K.el('div', { class: 'c4-label big right', html: '<span class="k-metric">crossing rate</span> = ticks per unit of time' }, grp1);
+    lRate.style.left = (STRIP.x + STRIP.w) + 'px'; lRate.style.top = (excTau === null ? 650 : 640) + 'px';
+    // the excursion: a pen circle that rides with the strip, and its label
+    const exG = K.s('g', {}, K.svgLayer(ctx, 14, grp1));
+    const pxPerU = STRIP.w / W;
+    let exLab = null;
+    if (excTau !== null) {
+      const ex0 = STRIP.x + STRIP.w - 0.28 * W * pxPerU;   // screen x of the excursion at 'excursion-0.15'
+      K.pen(ctx, { kind: 'circle', box: { x: ex0 - 40, y: STRIP.y + STRIP.h / 2 - 60, w: 80, h: 120 }, at: 'excursion', dur: 0.6, svg: exG, pad: 8, seed: 'exc' });
+      exLab = lab('excursion: counted too', ex0, STRIP.y - 64, 'c4-label center');
+    } else {   // fallback (prescribed by the script): a small schematic inset, never pretend the strip has one
+      const IN = { x: 260, y: 600, w: 520, h: 150 };
+      const isv = K.svgLayer(ctx, 14, grp1), ig = K.s('g', {}, isv);
+      K.s('rect', { x: IN.x, y: IN.y, width: IN.w, height: IN.h, fill: 'none', stroke: K.c('muted'), 'stroke-width': 2, 'stroke-dasharray': '8 6', rx: 6 }, ig);
+      const zy = IN.y + 92, f = (u) => 34 * (0.75 + 0.25 * Math.cos(9 * u)) - 74 * Math.exp(-Math.pow((u - 0.5) / 0.07, 2));   // D > 0, one quick dip below zero
+      let dp = '', dn = '';
+      const N = 120, pts = []; for (let i = 0; i <= N; i++) { const u = i / N; pts.push([IN.x + 20 + (IN.w - 40) * u, zy - f(u)]); }
+      for (let i = 0; i < N; i++) { const seg = `M${pts[i][0].toFixed(1)},${pts[i][1].toFixed(1)}L${pts[i + 1][0].toFixed(1)},${pts[i + 1][1].toFixed(1)}`; if ((zy - pts[i][1]) + (zy - pts[i + 1][1]) > 0) dp += seg; else dn += seg; }
+      K.s('line', { x1: IN.x + 20, x2: IN.x + IN.w - 20, y1: zy, y2: zy, stroke: K.c('muted'), 'stroke-width': 2, 'stroke-dasharray': '6 6' }, ig);
+      K.s('path', { d: dp, stroke: K.c('b'), 'stroke-width': 3.5, fill: 'none', 'stroke-linecap': 'round' }, ig);
+      K.s('path', { d: dn, stroke: K.c('b-neg'), 'stroke-width': 3.5, fill: 'none', 'stroke-linecap': 'round' }, ig);
+      const xs = []; for (let i = 0; i < N; i++) if ((zy - pts[i][1] > 0) !== (zy - pts[i + 1][1] > 0)) xs.push(pts[i][0]);
+      xs.forEach((x) => K.s('line', { x1: x, x2: x, y1: IN.y + IN.h - 30, y2: IN.y + IN.h - 8, stroke: K.c('fg'), 'stroke-width': 4, 'stroke-linecap': 'round' }, ig));
+      ctx.c43inset = { ig };
+      exLab = lab('excursion: counted too', IN.x + 16, IN.y + 10);
+      K.chip(ctx, { text: 'SCHEMATIC · excursion', kind: 'schematic', x: IN.x, y: IN.y + IN.h + 14, at: 'excursion-0.15', out: 'silence-0.15', parent: grp1 });
+      K.pen(ctx, { kind: 'circle', box: { x: (xs[0] || 500) - 10, y: zy - 20, w: (xs[1] || 540) - (xs[0] || 500) + 20, h: 64 }, at: 'excursion+0.3', dur: 0.6, svg: ig, pad: 8, seed: 'exc-inset' });
+    }
+    // ================= part 2: the rate against Γ =================
+    const X = Dd.x.values, Y = ser.y.map((y) => y * P.y_scale), train = Dd.x.train;
+    const plot = K.plot(ctx, { box: { x0: 260, x1: 1640, y0: 200, y1: 620 }, at: 'silence-0.15',
+      x: { label: 'Γ, control parameter', min: 0.8, max: 1.0, ticks: P.x_ticks, param: true, fmt: (v) => v.toFixed(2) },
+      y: { label: 'crossings per ' + P.y_scale.toLocaleString('en-US') + ' time units', min: 0, max: P.y_max, ticks: P.y_ticks } });
+    const thr = Dd.threshold, iT = X.findIndex((x) => x >= thr.first_nonzero - 1e-9), nZero = X.filter((x) => x <= thr.last_zero + 1e-9).length;
+    plot.band({ x: [thr.last_zero, thr.first_nonzero], kind: 'window', label: 'threshold', at: 'switch-0.15', labelX: plot.sx(thr.first_nonzero) + 14, labelY: 246 });
+    const tSw = ctx.at('switch-0.15'), tGr = ctx.at('grows-0.1'), tEnd = ctx.at('_tail');
+    const dl = Math.min(0.12, Math.max(0.05, (tEnd - tGr - 0.6) / Math.max(1, X.length - iT - 1)));
+    const landT = X.map((x, i) => (i < nZero ? tSil + 0.45 + P.land_interval_s * i : i === iT ? tSw + 0.2 : tGr + dl * (i - iT - 1)));
+    plot.curve({ x: X.slice(0, iT + 1), y: Y.slice(0, iT + 1), field: ser.field, kind: 'simulated', at: tSw + 0.1, dur: 0.5 });
+    plot.curve({ x: X.slice(iT), y: Y.slice(iT), field: ser.field, kind: 'simulated', at: tGr, dur: dl * (X.length - iT - 1) + 0.15 });
+    const dots = X.map((x, i) => K.s('circle', { cx: plot.sx(x), cy: plot.sy(Y[i]), r: 8, fill: train[i] ? K.c(ser.field) : K.c('bg'), stroke: K.c(ser.field), 'stroke-width': 3 }, plot.root));
+    const ring = K.s('circle', { r: 12, fill: 'none', stroke: K.c('fg'), 'stroke-width': 2.5 }, plot.root);
+    const lSil = lab('silence', plot.sx(0.83), plot.sy(0) - 70, 'c4-label big center', st);
+    const n2 = Math.round(Y[iT]), nEnd = Math.round(Y[X.length - 1]), per = P.y_scale.toLocaleString('en-US');
+    const c1 = lab(`about ${n2} per ${per} at Γ = ${X[iT]}`, plot.sx(X[iT]) + 40, plot.sy(0) - 58, 'c4-label', st);
+    const c2 = lab(`about ${nEnd} per ${per} at Γ = ${X[X.length - 1].toFixed(2)}`, plot.sx(X[X.length - 1]), 150, 'c4-label right', st);
+    const lead = K.svgLayer(ctx, 13);
+    const l1 = K.s('line', { x1: plot.sx(X[iT]) + 36, y1: plot.sy(0) - 40, x2: plot.sx(X[iT]) + 9, y2: plot.sy(Y[iT]) + 4, stroke: K.c('fg-2'), 'stroke-width': 2 }, lead);
+    const l2 = K.s('line', { x1: plot.sx(X[X.length - 1]) - 40, y1: 196, x2: plot.sx(X[X.length - 1]) - 6, y2: plot.sy(Y[X.length - 1]) - 14, stroke: K.c('fg-2'), 'stroke-width': 2 }, lead);
+    [lSil, c1, c2].forEach((e) => { e.style.zIndex = 30; });
+    K.chip(ctx, { text: 'SIMULATED', kind: '', x: 290, y: 212, at: 'grows' });
+    K.lowerThird(ctx, { kind: 'source', data: Dd, at: 'switch+0.6', hold: 5 });
+    C4.formulas(ctx);
+    // tick stream: rate proportional to the last landed point (ticks_per_s_at_max at the largest y)
+    const yMax = Math.max(...Y), lastY = (t) => { let y = 0; for (let i = iT; i < X.length; i++) if (landT[i] <= t) y = Y[i]; return y; };
+    const streamTicks = []; let ph = 0;
+    for (let t = tSw + 0.2; t < tEnd; t += 1 / 240) { ph += P.ticks_per_s_at_max * lastY(t) / yMax / 240; if (ph >= 1) { ph -= 1; streamTicks.push(+t.toFixed(3)); } }
+    streamTicks.forEach((t) => events.push({ t, id: 'tick', gain_db: P.tick_gain_db }));
+    window.__EVENTS__ = events.sort((a, b) => a.t - b.t);
+
+    ctx.c43 = { STRIP, BAR, TRAY, L1, grp1, Dat, tauNow, W, v, pxPerU, counted, cntN, lRate, exG, exLab, excTau, tau0, lD, lTime,
+      plot, X, Y, dots, landT, ring, streamTicks, lSil, c1, c2, l1, l2, iT, nZero,
+      T: { c: tC, ex: tEx, rate: ctx.at('rate-0.15'), sil: tSil, sw: tSw, gr: tGr, end: tEnd } };
+  },
+  render(t, ctx) {
+    const S = Scene, K = Kit, c = ctx.c43, T = c.T;
+    // ---------- part 1 ----------
+    const pIn = S.seg(t, T.c, T.c + 0.5, S.ease.outCubic), pOut = S.seg(t, T.sil, T.sil + 1.0, S.ease.inOutCubic);
+    c.grp1.style.transform = `translateY(${(-30 * (1 - pIn) - 520 * pOut).toFixed(2)}px)`; c.grp1.style.opacity = (pIn * (1 - S.seg(t, T.sil, T.sil + 0.4, S.ease.linear))).toFixed(3);
+    K.show(c.grp1, pIn > 0 && t < T.sil + 0.4);
+    if (pIn > 0 && t < T.sil + 0.4) {
+      const g = c.L1.g, st = c.STRIP, ox = st.x - 20, oy = st.y - 20, tn = c.tauNow(t);
+      g.clearRect(0, 0, c.L1.w, c.L1.h);
+      g.strokeStyle = K.c('matter-dark'); g.lineWidth = 2; g.strokeRect(st.x - ox, st.y - oy, st.w, st.h);
+      const zy = st.y + st.h / 2 - oy;
+      g.setLineDash([8, 8]); g.strokeStyle = K.c('muted'); g.beginPath(); g.moveTo(st.x - ox, zy); g.lineTo(st.x + st.w - ox, zy); g.stroke(); g.setLineDash([]);
+      const NP = 460, ds = new Float32Array(NP + 1); for (let i = 0; i <= NP; i++) ds[i] = c.Dat(tn - c.W + c.W * i / NP);
+      const yD = (d) => zy - d * (st.h / 2 - 8) / 3;
+      g.lineWidth = 2.8; g.lineJoin = 'round';
+      for (let i = 0; i < NP; i++) { g.strokeStyle = ds[i] + ds[i + 1] > 0 ? K.c('b') : K.c('b-neg'); g.beginPath(); g.moveTo(st.x - ox + st.w * i / NP, yD(ds[i])); g.lineTo(st.x - ox + st.w * (i + 1) / NP, yD(ds[i + 1])); g.stroke(); }
+      let i0 = 0; const br = c.BAR;
+      for (let i = 1; i <= NP; i++) if (i === NP || (ds[i] > 0) !== (ds[i0] > 0)) { g.fillStyle = ds[i0] > 0 ? K.c('b') : K.c('b-neg'); g.fillRect(br.x - ox + br.w * i0 / NP, br.y - oy, br.w * (i - i0) / NP + 0.5, br.h); i0 = i; }
+      g.strokeStyle = K.c('matter-dark'); g.lineWidth = 2; g.strokeRect(br.x - ox, br.y - oy, br.w, br.h);
+      // ticks: a white mark drops from the zero line into the tray when a crossing is counted, then scrolls left
+      let n = 0;
+      g.strokeStyle = K.c('fg'); g.lineWidth = 4; g.lineCap = 'round';
+      for (const k of c.counted) {
+        if (k.t > t) break; n++;
+        const x = st.x + st.w - (tn - k.tau) * c.pxPerU - ox; if (x < st.x - ox) continue;
+        const drop = S.seg(t, k.t, k.t + 0.3, S.ease.outCubic), y0 = zy, y1 = c.TRAY.y - oy + c.TRAY.h;
+        g.globalAlpha = 0.95; g.beginPath(); g.moveTo(x, S.lerp(y0, y1 - c.TRAY.h, drop)); g.lineTo(x, S.lerp(y0 + 12, y1, drop)); g.stroke();
+      }
+      g.globalAlpha = 1;
+      c.cntN.textContent = String(n);
+      // excursion pen and label ride with the strip
+      if (c.excTau !== null) {
+        const dx = -(tn - c.tauNow(T.ex)) * c.pxPerU;
+        c.exG.setAttribute('transform', `translate(${dx.toFixed(2)} 0)`);
+        const pl = S.seg(t, T.ex + 0.45, T.ex + 0.7, S.ease.linear) * (1 - S.seg(t, T.sil - 0.6, T.sil - 0.2, S.ease.linear)); c.exLab.style.opacity = pl; K.show(c.exLab, pl > 0);
+        c.exLab.style.transform = `translateX(calc(-50% + ${dx.toFixed(2)}px))`;
+      } else { const pl = S.seg(t, T.ex, T.ex + 0.25, S.ease.linear); c.exLab.style.opacity = pl; K.show(c.exLab, pl > 0);
+        const ig = ctx.c43inset.ig; ig.style.opacity = pl; ig.style.display = pl > 0 ? '' : 'none'; }
+      const pr = S.seg(t, T.rate, T.rate + 0.3, S.ease.outCubic); c.lRate.style.opacity = pr; K.show(c.lRate, pr > 0);
+    }
+    // ---------- part 2 ----------
+    let latest = -1;
+    c.dots.forEach((d, i) => {
+      const a = c.landT[i], p = S.seg(t, a, a + 0.35, S.ease.outCubic);
+      d.style.display = p > 0 ? '' : 'none'; if (p <= 0) return;
+      if (t >= a) latest = i;
+      d.setAttribute('transform', `translate(0 ${(-70 * (1 - p)).toFixed(2)})`); d.style.opacity = Math.min(1, p * 1.6).toFixed(3);
+    });
+    // a soft ring on the latest point at each tick of the stream (seen and heard)
+    let ringA = 0; for (const tk of c.streamTicks) { if (tk > t) break; if (t - tk < 0.25) ringA = 1 - (t - tk) / 0.25; }
+    if (latest >= c.iT && ringA > 0) { c.ring.setAttribute('cx', c.plot.sx(c.X[latest])); c.ring.setAttribute('cy', c.plot.sy(c.Y[latest])); c.ring.setAttribute('r', (10 + 10 * (1 - ringA)).toFixed(1)); c.ring.style.opacity = (0.8 * ringA).toFixed(3); c.ring.style.display = ''; }
+    else c.ring.style.display = 'none';
+    const show = (el, a, b = Infinity) => { const p = S.seg(t, a, a + 0.25, S.ease.linear) * (b === Infinity ? 1 : 1 - S.seg(t, b, b + 0.3, S.ease.linear)); el.style.opacity = p; K.show(el, p > 0); };
+    show(c.lSil, c.landT[c.nZero - 1] - 0.2, T.gr + 0.6);
+    show(c.c1, c.landT[c.iT] + 0.2); show(c.l1, c.landT[c.iT] + 0.2);
+    show(c.c2, c.landT[c.X.length - 1] + 0.2); show(c.l2, c.landT[c.X.length - 1] + 0.2);
+  },
+});
+</script></body></html>

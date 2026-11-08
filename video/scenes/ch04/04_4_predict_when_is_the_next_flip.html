@@ -1,0 +1,162 @@
+<!doctype html>
+<html lang="en"><head><meta charset="utf-8">
+<title>04.4 Predict: when is the next flip?</title>
+<link rel="stylesheet" href="../../vendor/katex/katex.min.css">
+<link rel="stylesheet" href="../../runtime/theme.css">
+<link rel="stylesheet" href="ch04.css">
+<script src="../../vendor/katex/katex.min.js"></script>
+<script src="../../runtime/scene.js"></script>
+<script src="../../runtime/components/kit.js"></script>
+<script src="../../runtime/components/hud.js"></script>
+<script src="../../runtime/components/plot.js"></script>
+<script src="../../runtime/components/field.js"></script>
+<script src="../../runtime/components/motifs.js"></script>
+<script src="ch04_kit.js"></script>
+<style>
+  .leg { position: absolute; display: flex; gap: 36px; align-items: center; font-size: 32px; color: var(--fg-2); white-space: nowrap; }
+  .leg i { display: inline-block; width: 48px; height: 0; border-top: 5px solid; vertical-align: middle; margin-right: 12px; }
+</style>
+</head><body><div id="stage"></div>
+<script>
+/* 04.4 Predict: when is the next flip? (L2, NIGHT, MEASURED). Two copies of the three-mode model at
+   Γ = params.gamma, 10⁻⁶ apart (live integration, one typical pair chosen by a seeded search), their D traces,
+   the gap on a log axis against the Lyapunov slope (exponent from data/ch04_lyapunov.json, P4 exercise 14),
+   the horizon, the mean wait between crossings (data/e1_finegrid.json) and what one extra decimal buys. */
+Scene.define({
+  duration: 41.77,
+  register: 'night',
+  cues: { twins: 0.4, predict: 6.24, together: 16.22, apart: 18.57, lost: 22.35, wait: 27.39, decimal: 31.54, answer: 35.69 },
+  data: { e1: 'data/e1_finegrid.json', lyap: 'data/ch04_lyapunov.json' },
+  params: { gamma: 0.9, delta0: 1e-6, dt: 0.01, transient_units: 600, attractor_size: 1.0, t_max_units: 300, candidates: 32, seed: 9 },
+  setup(ctx) {
+    const K = Kit, S = Scene, P = ctx.params, st = ctx.stage, E1 = ctx.data.e1, LY = ctx.data.lyap;
+    C4.fixAt(ctx); C4.tokens(ctx, 0.6);
+    const G = P.gamma, lam = LY.largest;
+    if (Math.abs(LY.model.Gamma - G) > 1e-9) S.warn(`04.4: the Lyapunov exponent was measured at Γ = ${LY.model.Gamma}, the scene runs at Γ = ${G}`);
+    const M = C4.model(E1.config.mu, E1.config.nu);
+    // derived numbers (all from data): Lyapunov time, horizon, mean wait, one decimal
+    const Tl = 1 / lam, TlR = Math.round(Tl), digits = Math.round(-Math.log10(P.delta0));
+    const horizon = Math.log(P.attractor_size / P.delta0) / lam;                 // exact, for the geometry
+    const horizonLab = +(TlR * Math.log(P.attractor_size / P.delta0)).toPrecision(2);   // as the formula layer: 11 ln 10⁶ ≈ 150
+    const ser = E1.series.find((s) => s.name === 'simulation (counted crossings)');
+    const iG = E1.x.values.findIndex((x) => Math.abs(x - G) < 1e-9), meanWait = 1 / ser.y[iG], waitLab = +meanWait.toPrecision(2);
+    const dec = Math.log(10) / lam, decLab = Math.round(TlR * Math.log(10));
+    const WORDS = ['zero', 'one', 'two', 'three', 'four', 'five', 'six', 'seven', 'eight', 'nine', 'ten'];
+
+    // ---------- the pair: seeded candidates on the attractor, keep a typical one ----------
+    const rng = S.rng('pair' + P.seed), base = M.seed(G, +1, rng); M.run(base, G, P.transient_units, P.dt);
+    const TM = P.t_max_units, HD = 0.1, NH = Math.round(TM / HD);
+    const runPair = (a0, rec) => {
+      const a = Float64Array.from(a0), b = Float64Array.from(a0); b[1] += P.delta0;
+      const k = Math.round(HD / P.dt); let sep = null, opp = false, oppAt = null;
+      for (let i = 1; i <= NH; i++) {
+        for (let j = 0; j < k; j++) { M.step(a, G, P.dt); M.step(b, G, P.dt); }
+        const gap = Math.hypot(a[0] - b[0], a[1] - b[1], a[2] - b[2]);
+        if (sep === null && gap > 0.5) sep = i * HD;
+        if (sep !== null && (a[1] > 0) !== (b[1] > 0)) { opp = true; if (oppAt === null) oppAt = i * HD; }
+        if (rec) { rec.dA[i] = a[1]; rec.dB[i] = b[1]; rec.gap[i] = gap; }
+      }
+      return { sep: sep ?? Infinity, opp, oppAt: oppAt ?? Infinity };
+    };
+    const cands = []; const st0 = Float64Array.from(base);
+    for (let k = 0; k < P.candidates; k++) { M.run(st0, G, 9.7, P.dt); cands.push(Float64Array.from(st0)); }
+    let best = null;
+    cands.forEach((c, i) => { const r = runPair(c, null), score = Math.abs(r.sep - horizon) + (r.opp ? 0.5 * Math.abs(r.oppAt - (horizon + 15)) : 80); if (!best || score < best.score) best = { i, score, r }; });
+    const R = { dA: new Float32Array(NH + 1), dB: new Float32Array(NH + 1), gap: new Float32Array(NH + 1) };
+    R.dA[0] = cands[best.i][1]; R.dB[0] = cands[best.i][1] + P.delta0; R.gap[0] = P.delta0;
+    runPair(cands[best.i], R);
+    // a long run of copy A for the faint histogram of D at the end (bridge to 04.5)
+    const hs = Float64Array.from(cands[best.i]), hD = []; for (let i = 0; i < 6000; i++) { M.run(hs, G, 0.5, P.dt); hD.push(hs[1]); }
+
+    // ---------- time: runs from 'together' so that the horizon is reached at 'lost+0.3' ----------
+    const tTog = ctx.at('together'), tH = ctx.at('lost+0.3'), rate = horizon / Math.max(0.5, tH - tTog);
+    const tau = (t) => Math.max(0, Math.min(TM, (t - tTog) * rate));
+
+    // ---------- layout ----------
+    const PX0 = 200, PX1 = 1680, DP = { y0: 124, y1: 274 };
+    const X = (u) => PX0 + (PX1 - PX0) * u / TM;
+    K.badge(ctx, { kind: 'MEASURED', note: ctx.script.badge && ctx.script.badge.note, at: 'twins' });
+    const gch = K.chip(ctx, { text: `Γ = ${G}`, kind: 'plain', x: PX0, y: 56, at: 'twins-0.1' }); gch.root.classList.add('c4-chip-param'); gch.root.style.border = '2px solid'; gch.root.style.padding = '0 16px';
+    const leg = K.el('div', { class: 'leg' }, st); leg.style.left = (PX0 + 190) + 'px'; leg.style.top = '62px'; leg.style.zIndex = 30;
+    const legA = K.el('span', { html: `<i style="border-color:${K.c('b')}"></i>copy A` }, leg);
+    const legB = K.el('span', { html: `<i style="border-color:${K.c('fg-2')}"></i>copy B · ${K.pow10(P.delta0)} away` }, leg);
+    K.chip(ctx, { text: 'one example pair', kind: 'plain', x: PX1, y: DP.y1 + 12, anchor: 'tr', at: 'together' });
+    const svg = K.svgLayer(ctx, 12);
+    // D panel: zero line, label, two traces revealed by a clip that follows the model time
+    const yD = (d) => (DP.y0 + DP.y1) / 2 - d * (DP.y1 - DP.y0) / 2 / 3.1;
+    K.s('rect', { x: PX0, y: DP.y0, width: PX1 - PX0, height: DP.y1 - DP.y0, fill: 'none', stroke: K.c('matter-dark'), 'stroke-width': 2 }, svg);
+    K.s('line', { x1: PX0, x2: PX1, y1: yD(0), y2: yD(0), stroke: K.c('muted'), 'stroke-width': 2, 'stroke-dasharray': '8 8' }, svg);
+    const lD = K.el('div', { class: 'c4-label right' }, st, 'D'); lD.style.left = (PX0 - 16) + 'px'; lD.style.top = (yD(0) - 22) + 'px'; lD.style.color = K.c('b');
+    const path = (arr, yf) => { let d = ''; for (let i = 0; i <= NH; i += 2) d += `${i ? 'L' : 'M'}${X(i * HD).toFixed(1)},${yf(arr[i]).toFixed(1)}`; return d; };
+    const defs = K.s('defs', {}, svg), cp = K.s('clipPath', { id: 'c44clip' }, defs), cpr = K.s('rect', { x: PX0 - 6, y: 0, height: 1080, width: 0 }, cp);
+    const gTr = K.s('g', { 'clip-path': 'url(#c44clip)' }, svg);
+    const trB = K.s('path', { d: path(R.dB, yD), fill: 'none', stroke: K.c('fg-2'), 'stroke-width': 2.5, opacity: 0.75, 'stroke-linejoin': 'round' }, gTr);
+    const trA = K.s('path', { d: path(R.dA, yD), fill: 'none', stroke: K.c('b'), 'stroke-width': 3.2, 'stroke-linejoin': 'round' }, gTr);
+    void trB; void trA;
+    const dotA = K.s('circle', { r: 9, fill: K.c('b'), stroke: K.c('fg'), 'stroke-width': 2 }, svg), dotB = K.s('circle', { r: 6, fill: K.c('fg-2') }, svg);
+    // gap plot (log), same time axis
+    const plot = K.plot(ctx, { box: { x0: PX0, x1: PX1, y0: 352, y1: 532 }, at: 'together-0.4',
+      x: { label: '', min: 0, max: TM, ticks: [0, 50, 100, 150, 200, 250, 300] },
+      y: { label: 'gap between the copies', min: P.delta0, max: 10, log: true, ticks: [1e-6, 1e-4, 1e-2, 1] } });
+    const gpath = (() => { let d = ''; for (let i = 0; i <= NH; i++) d += `${i ? 'L' : 'M'}${X(i * HD).toFixed(1)},${plot.sy(Math.max(P.delta0 * 0.8, R.gap[i])).toFixed(1)}`; return d; })();
+    const gG = K.s('g', { 'clip-path': 'url(#c44clip)' }, plot.root);
+    const gapLine = K.s('path', { d: gpath, fill: 'none', stroke: K.c('fg'), 'stroke-width': 3.2, 'stroke-linejoin': 'round' }, gG);
+    const uRef = Math.log(10 / P.delta0) / lam;   // the dashed reference: δ0 e^{λ t}, up to the top of the axis
+    const refLine = K.s('line', { x1: X(0), y1: plot.sy(P.delta0), x2: X(Math.min(TM, uRef)), y2: plot.sy(Math.min(10, P.delta0 * Math.exp(lam * Math.min(TM, uRef)))), stroke: K.c('muted'), 'stroke-width': 2.5, 'stroke-dasharray': '10 8' }, plot.root);
+    // slope triangle on the reference line: ×e every Lyapunov time
+    const u0 = 15, tri = K.s('path', { d: `M${X(u0)},${plot.sy(P.delta0 * Math.exp(lam * u0))} H${X(u0 + Tl)} V${plot.sy(P.delta0 * Math.exp(lam * (u0 + Tl)))}`, fill: 'none', stroke: K.c('chalk'), 'stroke-width': 3 }, plot.root);
+    const lab = (text, x, y, cls) => { const e = K.el('div', { class: cls || 'c4-label' }, st, text); e.style.left = x + 'px'; e.style.top = y + 'px'; e.style.zIndex = 30; return e; };
+    const lSlope = lab(`×e every ${TlR} time units`, X(u0) - 10, 396);
+    const lTimeAx = lab('time (model units)', 300, 598);
+    // marks (vertical lines through both panels) and their labels under the axis
+    const vline = (u, y0, y1, dash) => K.s('line', { x1: X(u), x2: X(u), y1: y0, y2: y1, stroke: K.c('chalk'), 'stroke-width': 2.5, 'stroke-dasharray': dash || '6 6' }, svg);
+    const RA = 598, RB = 650, RC = 698;   // rows under the axis: A (axis title, decimal hops), B (Lyapunov time, wait), C (horizon)
+    const mH = vline(horizon, DP.y0 - 4, RC - 4, '2 0'), mL = vline(Tl, 352, RB - 4), mW = vline(meanWait, DP.y0 - 4, RB - 4);
+    const lH = lab(`${WORDS[digits] || digits} decimals used up · ≈ ${horizonLab}`, X(horizon), RC, 'c4-label center');
+    const lL = lab(`Lyapunov time ≈ ${TlR}`, X(Tl) - 8, RB);
+    const lW = lab(`average wait between crossings ≈ ${waitLab}`, X(meanWait), RB, 'c4-label center');
+    // bracket: the wait reaches past the horizon
+    const by = 512, brk = K.s('path', { d: `M${X(horizon)},${by - 10} V${by} H${X(meanWait)} V${by - 10}`, fill: 'none', stroke: K.c('muted'), 'stroke-width': 3 }, svg);
+    // one more decimal: two hops of ln(10)/λ on row A (never a third: it would pass the wait mark)
+    const hop = (a, b, at) => K.pen(ctx, { kind: 'arrow', from: [X(a) + 4, RA + 26], to: [X(b) - 2, RA + 26], bend: 0.3, at, dur: 0.45, seed: 'hop' + at });
+    hop(horizon, horizon + dec, 'decimal-0.1'); hop(horizon + dec, horizon + 2 * dec, 'decimal+0.9');
+    const mD1 = vline(horizon + dec, 352, RA + 8), mD2 = vline(horizon + 2 * dec, 352, RA + 8);
+    const lDec = lab(`+1 decimal ≈ +${decLab}`, X(horizon) - 14, RA, 'c4-label right');
+    // the faint amber histogram of D at the end (bridge to 04.5), bottom right inside the gap plot
+    const H = K.histogram(ctx, { box: { x: 1372, y: 398, w: 300, h: 100 }, values: Float32Array.from(hD), range: [-3, 3], bins: 31, at: 'answer+0.3', dur: 0.8 });
+    // corner needle on copy A's crossings, mapped to scene time
+    const flips = []; for (let i = 1; i <= NH; i++) if ((R.dA[i] > 0) !== (R.dA[i - 1] > 0)) flips.push(+(tTog + i * HD / rate).toFixed(3));
+    K.needle(ctx, { corner: true, start: R.dA[0] > 0 ? 'north' : 'south', flips, dur: 0.6, at: 'twins' });
+    window.__EVENTS__ = flips.map((t) => ({ t, id: 'needle', gain_db: -18 }));
+    // PREDICT: the card, then B lights on 'answer'
+    const q = 'We know the state to six decimals. Can we predict the date of the next flip?';
+    C4.predict(ctx, { x: 960, y: 108, w: 1180, question: q, options: ['A · yes: the equations are exact', 'B · only a short way ahead'], at: 'predict', out: 'together-0.3' });
+    C4.predict(ctx, { x: 960, y: 108, w: 980, question: '', options: ['A · yes: the equations are exact', 'B · only a short way ahead'], at: 'answer-0.1', answerAt: 'answer+0.2', pick: 1 });
+    K.lowerThird(ctx, { kind: 'source', data: E1, at: 'wait+0.4', hold: 4 });
+    C4.formulas(ctx);
+    void H; void q;
+    ctx.c44 = { H, lTimeAx, tau, X, yD, R, HD, cpr, dotA, dotB, gapLine, gTr, refLine, tri, lSlope, mH, mL, mW, lH, lL, lW, brk, mD1, mD2, lDec, plot, legA, legB, P,
+      T: { tw: ctx.at('twins-0.15'), pr: ctx.at('predict'), tog: tTog, ap: ctx.at('apart-0.15'), lost: ctx.at('lost-0.15'), wait: ctx.at('wait-0.15'), dec: ctx.at('decimal-0.15'), ans: ctx.at('answer') } };
+  },
+  render(t, ctx) {
+    const S = Scene, K = Kit, c = ctx.c44, T = c.T;
+    const u = c.tau(t), i = Math.min(c.R.dA.length - 1, Math.round(u / c.HD));
+    c.cpr.setAttribute('width', Math.max(0, c.X(u) - c.X(0) + 6).toFixed(1));
+    // dots: launch together at 'twins', breathe during the predict hold, ride the traces once time runs
+    const pd = S.seg(t, T.tw, T.tw + 0.4, S.ease.outCubic), br = 1 + 0.12 * Math.sin(2 * Math.PI * t / 1.6) * S.seg(t, T.pr, T.pr + 0.5, S.ease.linear) * (1 - S.seg(t, T.tog, T.tog + 0.3, S.ease.linear));
+    const dim = 1 - 0.65 * S.seg(t, T.ans, T.ans + 0.6, S.ease.inOutSine);
+    c.dotA.setAttribute('cx', c.X(u)); c.dotA.setAttribute('cy', c.yD(c.R.dA[i])); c.dotA.setAttribute('r', (9 * br).toFixed(2));
+    c.dotB.setAttribute('cx', c.X(u)); c.dotB.setAttribute('cy', c.yD(c.R.dB[i])); c.dotB.setAttribute('r', (6 * br).toFixed(2));
+    c.dotA.style.opacity = c.dotB.style.opacity = (pd * dim).toFixed(3);
+    c.legA.style.opacity = c.legB.style.opacity = pd;
+    c.gTr.style.opacity = dim; c.gapLine.style.opacity = dim;
+    const f = (el, a, b = Infinity, base = 1) => { const p = S.seg(t, a, a + 0.3, S.ease.linear) * (b === Infinity ? 1 : 1 - S.seg(t, b, b + 0.3, S.ease.linear)); el.style.opacity = (p * base).toFixed(3); el.style.display = p > 0 ? '' : 'none'; };
+    f(c.refLine, T.tog, Infinity, 0.9 * dim);
+    f(c.tri, T.ap, T.wait - 0.3); f(c.lSlope, T.ap, T.wait - 0.3); f(c.lTimeAx, T.tog - 0.4);
+    c.H.root.style.opacity = (+c.H.root.style.opacity * 0.45).toFixed(3);
+    f(c.mH, T.lost); f(c.lH, T.lost);
+    f(c.mL, T.wait); f(c.lL, T.wait); f(c.mW, T.wait + 0.3); f(c.lW, T.wait + 0.3); f(c.brk, T.wait + 0.8);
+    f(c.mD1, T.dec + 0.4, Infinity, 0.7); f(c.mD2, T.dec + 1.4, Infinity, 0.7); f(c.lDec, T.dec + 0.2);
+  },
+});
+</script></body></html>

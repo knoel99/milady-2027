@@ -1,0 +1,25 @@
+[Script Info]
+ScriptType: v4.00+
+PlayResX: 1920
+PlayResY: 1080
+WrapStyle: 2
+ScaledBorderAndShadow: yes
+YCbCr Matrix: TV.709
+
+[V4+ Styles]
+Format: Name, Fontname, Fontsize, PrimaryColour, SecondaryColour, OutlineColour, BackColour, Bold, Italic, Underline, StrikeOut, ScaleX, ScaleY, Spacing, Angle, BorderStyle, Outline, Shadow, Alignment, MarginL, MarginR, MarginV, Encoding
+Style: Sub,Inter Medium,42,&H00F7F4F2,&H00F7F4F2,&H38140F0B,&H00000000,0,0,0,0,100,100,0,0,3,12,0,2,240,240,64,1
+
+[Events]
+Format: Layer, Start, End, Style, Name, MarginL, MarginR, MarginV, Effect, Text
+Dialogue: 0,0:00:00.32,0:00:02.18,Sub,,0,0,0,,{\fad(120,100)\move(960,1020,960,1016,0,120)}Two ways to teach the mirror.
+Dialogue: 0,0:00:02.26,0:00:04.55,Sub,,0,0,0,,{\fad(120,100)\move(960,1020,960,1016,0,120)}The first student, data augmentation,
+Dialogue: 0,0:00:04.63,0:00:08.05,Sub,,0,0,0,,{\fad(120,100)\move(960,1020,960,1016,0,120)}sees each training snapshot\Nflipped half the time.
+Dialogue: 0,0:00:08.13,0:00:12.01,Sub,,0,0,0,,{\fad(120,100)\move(960,1020,960,1016,0,120)}The second, equivariance,\Nhas the mirror built into its wind:
+Dialogue: 0,0:00:12.09,0:00:16.38,Sub,,0,0,0,,{\fad(120,100)\move(960,1020,960,1016,0,120)}a mirrored noise point always\Nlands on the mirrored snapshot.
+Dialogue: 0,0:00:17.25,0:00:20.98,Sub,,0,0,0,,{\fad(120,100)\move(960,1020,960,1016,0,120)}At a {\c&H7AAF1B&}Gamma{\c&HF7F4F2&} neither has seen,\Nwho stays balanced?
+Dialogue: 0,0:00:24.85,0:00:26.21,Sub,,0,0,0,,{\fad(120,100)\move(960,1020,960,1016,0,120)}The built-in mirror.
+Dialogue: 0,0:00:26.29,0:00:28.60,Sub,,0,0,0,,{\fad(120,100)\move(960,1020,960,1016,0,120)}The first student tilts a little.
+Dialogue: 0,0:00:28.68,0:00:33.08,Sub,,0,0,0,,{\fad(120,100)\move(960,1020,960,1016,0,120)}Yet in the mirror's crowd,\Neach snapshot still points one way.
+Dialogue: 0,0:00:33.16,0:00:36.62,Sub,,0,0,0,,{\fad(120,100)\move(960,1020,960,1016,0,120)}The mirror balances the\Ncrowd, not each snapshot.
+Dialogue: 0,0:00:36.70,0:00:40.49,Sub,,0,0,0,,{\fad(120,100)\move(960,1020,960,1016,0,120)}Its card goes on the crowd\Nshelf: built in, exactly.

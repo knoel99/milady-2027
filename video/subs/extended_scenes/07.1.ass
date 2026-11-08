@@ -1,0 +1,27 @@
+[Script Info]
+ScriptType: v4.00+
+PlayResX: 1920
+PlayResY: 1080
+WrapStyle: 2
+ScaledBorderAndShadow: yes
+YCbCr Matrix: TV.709
+
+[V4+ Styles]
+Format: Name, Fontname, Fontsize, PrimaryColour, SecondaryColour, OutlineColour, BackColour, Bold, Italic, Underline, StrikeOut, ScaleX, ScaleY, Spacing, Angle, BorderStyle, Outline, Shadow, Alignment, MarginL, MarginR, MarginV, Encoding
+Style: Sub,Inter Medium,42,&H00F7F4F2,&H00F7F4F2,&H38140F0B,&H00000000,0,0,0,0,100,100,0,0,3,12,0,2,240,240,64,1
+
+[Events]
+Format: Layer, Start, End, Style, Name, MarginL, MarginR, MarginV, Effect, Text
+Dialogue: 0,0:00:03.17,0:00:06.12,Sub,,0,0,0,,{\fad(120,100)\move(960,1020,960,1016,0,120)}Physics hands the machine\Ntwo kinds of laws.
+Dialogue: 0,0:00:06.32,0:00:08.88,Sub,,0,0,0,,{\fad(120,100)\move(960,1020,960,1016,0,120)}Some hold for every single snapshot.
+Dialogue: 0,0:00:09.21,0:00:11.32,Sub,,0,0,0,,{\fad(120,100)\move(960,1020,960,1016,0,120)}Others hold only for the crowd.
+Dialogue: 0,0:00:11.78,0:00:14.00,Sub,,0,0,0,,{\fad(120,100)\move(960,1020,960,1016,0,120)}Two shelves, still empty.
+Dialogue: 0,0:00:14.74,0:00:18.90,Sub,,0,0,0,,{\fad(120,100)\move(960,1020,960,1016,0,120)}Back to the three dials, at a\N{\c&H7AAF1B&}Gamma{\c&HF7F4F2&} never seen in training.
+Dialogue: 0,0:00:19.32,0:00:21.60,Sub,,0,0,0,,{\fad(120,100)\move(960,1020,960,1016,0,120)}Grey: true snapshots.
+Dialogue: 0,0:00:21.93,0:00:24.47,Sub,,0,0,0,,{\fad(120,100)\move(960,1020,960,1016,0,120)}Violet: a plain {\c&HF09CB4&}generator{\c&HF7F4F2&}.
+Dialogue: 0,0:00:24.74,0:00:26.13,Sub,,0,0,0,,{\fad(120,100)\move(960,1020,960,1016,0,120)}The shape is right.
+Dialogue: 0,0:00:26.87,0:00:28.44,Sub,,0,0,0,,{\fad(120,100)\move(960,1020,960,1016,0,120)}Now weigh the sides.
+Dialogue: 0,0:00:28.96,0:00:31.99,Sub,,0,0,0,,{\fad(120,100)\move(960,1020,960,1016,0,120)}The truth is balanced; the machine is not.
+Dialogue: 0,0:00:32.47,0:00:35.52,Sub,,0,0,0,,{\fad(120,100)\move(960,1020,960,1016,0,120)}Only about four in ten of\Nits snapshots point up.
+Dialogue: 0,0:00:36.04,0:00:38.88,Sub,,0,0,0,,{\fad(120,100)\move(960,1020,960,1016,0,120)}It copied its data: below the threshold,
+Dialogue: 0,0:00:38.96,0:00:43.74,Sub,,0,0,0,,{\fad(120,100)\move(960,1020,960,1016,0,120)}each run stays in one whirlpool,\Nand the runs split unevenly.

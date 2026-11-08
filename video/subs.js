@@ -10,6 +10,9 @@
  * subtitles do not depend on its neighbours or on the cut it is in (one render serves both cuts).
  * Rules (styles.md 3.9): ≤ 2 lines of ≤ 42 characters, 1.2–6 s per cue, ≤ 17 characters/s when possible,
  *         cue = first word − 80 ms … last word + 250 ms, min gap 80 ms, 120 ms fade in, 100 ms fade out.
+ * French (cue sheet "lang": "fr", BRIEF section 9): the same rules on the French script text; a space before
+ *         ? ! : ; » and after « becomes a no-break space, so a line never starts with that punctuation.
+ *         Words are split on ordinary spaces only: a no-break space always glues its two words.
  * Usage : node subs.js cues.json subs/<name> [--style box|outline] [--size 42]
  */
 'use strict';
@@ -24,7 +27,7 @@ const bgr = (hex) => '&H' + hex.slice(4, 6) + hex.slice(2, 4) + hex.slice(0, 2) 
 const plain = (s) => s.replace(/\{(u|b|param|model|metric)\}(.*?)\{\/\}/g, '$2');
 /** split a sentence into n balanced cue texts of at most 2 lines x MAXL chars, preferring punctuation breaks */
 function chunks(text) {
-  const words = text.split(/\s+/).filter(Boolean), L = plain(text).length;
+  const words = text.split(/[ \t\r\n]+/).filter(Boolean), L = plain(text).length;
   if (wrap(text, true)) return [text];
   const ends = [], depth = []; let c = 0, d = 0;
   words.forEach((w, i) => { c += plain(w).length + (i ? 1 : 0); ends.push(c);
@@ -114,6 +117,8 @@ const assDoc = (cues) => [
 ].join('\n') + '\n';
 
 const sheet = JSON.parse(fs.readFileSync(inp, 'utf8'));
+const NBSP = '\u00a0';
+if (sheet.lang === 'fr') for (const s of sheet.sentences) s.text = s.text.replace(/[ \t]+([?!:;»])/g, NBSP + '$1').replace(/«[ \t]+/g, '«' + NBSP);
 const scenes = sheet.scenes || [{ id: '_all', start: 0, duration: Infinity }];
 const dir = base + '_scenes';
 fs.mkdirSync(dir, { recursive: true });

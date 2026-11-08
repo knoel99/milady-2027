@@ -1,0 +1,29 @@
+[Script Info]
+ScriptType: v4.00+
+PlayResX: 1920
+PlayResY: 1080
+WrapStyle: 2
+ScaledBorderAndShadow: yes
+YCbCr Matrix: TV.709
+
+[V4+ Styles]
+Format: Name, Fontname, Fontsize, PrimaryColour, SecondaryColour, OutlineColour, BackColour, Bold, Italic, Underline, StrikeOut, ScaleX, ScaleY, Spacing, Angle, BorderStyle, Outline, Shadow, Alignment, MarginL, MarginR, MarginV, Encoding
+Style: Sub,Inter Medium,42,&H00F7F4F2,&H00F7F4F2,&H38140F0B,&H00000000,0,0,0,0,100,100,0,0,3,12,0,2,240,240,64,1
+
+[Events]
+Format: Layer, Start, End, Style, Name, MarginL, MarginR, MarginV, Effect, Text
+Dialogue: 0,0:00:00.32,0:00:05.94,Sub,,0,0,0,,{\fad(120,100)\move(960,1020,960,1016,0,120)}Une dynamo de vélo transforme le mouvement\Nen électricité, grâce à un aimant intégré.
+Dialogue: 0,0:00:06.02,0:00:10.21,Sub,,0,0,0,,{\fad(120,100)\move(960,1020,960,1016,0,120)}La Terre, elle, doit fabriquer\Nle sien. L'astuce : une boucle.
+Dialogue: 0,0:00:11.08,0:00:15.43,Sub,,0,0,0,,{\fad(120,100)\move(960,1020,960,1016,0,120)}Approchez un micro du haut-parleur\Nqui le diffuse, et montez le {\c&H7AAF1B&}gain{\c&HF7F4F2&}.
+Dialogue: 0,0:00:15.51,0:00:18.71,Sub,,0,0,0,,{\fad(120,100)\move(960,1020,960,1016,0,120)}En dessous d'un certain point,\Nun murmure s'éteint.
+Dialogue: 0,0:00:18.79,0:00:21.39,Sub,,0,0,0,,{\fad(120,100)\move(960,1020,960,1016,0,120)}Au-delà, la boucle s'alimente elle-même.
+Dialogue: 0,0:00:24.26,0:00:27.49,Sub,,0,0,0,,{\fad(120,100)\move(960,1020,960,1016,0,120)}Faites maintenant tourner\Nun disque de cuivre,
+Dialogue: 0,0:00:27.57,0:00:31.10,Sub,,0,0,0,,{\fad(120,100)\move(960,1020,960,1016,0,120)}relié à une bobine\Nenroulée autour de son axe.
+Dialogue: 0,0:00:31.18,0:00:35.12,Sub,,0,0,0,,{\fad(120,100)\move(960,1020,960,1016,0,120)}Le courant crée le {\c&H3468EB&}champ{\c&HF7F4F2&},\Net le champ crée le courant.
+Dialogue: 0,0:00:35.20,0:00:39.40,Sub,,0,0,0,,{\fad(120,100)\move(960,1020,960,1016,0,120)}Faites-le tourner de plus en\Nplus vite. Le champ grandit-il
+Dialogue: 0,0:00:39.48,0:00:44.01,Sub,,0,0,0,,{\fad(120,100)\move(960,1020,960,1016,0,120)}petit à petit, ou pas du tout\Navant une certaine vitesse ?
+Dialogue: 0,0:00:47.88,0:00:49.77,Sub,,0,0,0,,{\fad(120,100)\move(960,1020,960,1016,0,120)}Pas du tout, jusqu'à un seuil.
+Dialogue: 0,0:00:49.85,0:00:53.25,Sub,,0,0,0,,{\fad(120,100)\move(960,1020,960,1016,0,120)}Au-delà, chaque tour multiplie\Nun minuscule {\c&H3468EB&}champ germe{\c&HF7F4F2&}
+Dialogue: 0,0:00:53.33,0:00:57.17,Sub,,0,0,0,,{\fad(120,100)\move(960,1020,960,1016,0,120)}par le même facteur : c'est\Nune croissance exponentielle.
+Dialogue: 0,0:00:57.25,0:01:00.44,Sub,,0,0,0,,{\fad(120,100)\move(960,1020,960,1016,0,120)}Juste au-dessus du seuil,\Nla croissance est lente.
+Dialogue: 0,0:01:00.52,0:01:04.35,Sub,,0,0,0,,{\fad(120,100)\move(960,1020,960,1016,0,120)}Puis le champ freine le disque,\Net la croissance s'arrête.

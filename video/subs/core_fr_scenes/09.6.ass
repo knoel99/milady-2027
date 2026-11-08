@@ -1,0 +1,28 @@
+[Script Info]
+ScriptType: v4.00+
+PlayResX: 1920
+PlayResY: 1080
+WrapStyle: 2
+ScaledBorderAndShadow: yes
+YCbCr Matrix: TV.709
+
+[V4+ Styles]
+Format: Name, Fontname, Fontsize, PrimaryColour, SecondaryColour, OutlineColour, BackColour, Bold, Italic, Underline, StrikeOut, ScaleX, ScaleY, Spacing, Angle, BorderStyle, Outline, Shadow, Alignment, MarginL, MarginR, MarginV, Encoding
+Style: Sub,Inter Medium,42,&H00F7F4F2,&H00F7F4F2,&H38140F0B,&H00000000,0,0,0,0,100,100,0,0,3,12,0,2,240,240,64,1
+
+[Events]
+Format: Layer, Start, End, Style, Name, MarginL, MarginR, MarginV, Effect, Text
+Dialogue: 0,0:00:00.32,0:00:03.72,Sub,,0,0,0,,{\fad(120,100)\move(960,1020,960,1016,0,120)}The scoreboard: eight mechanisms,\Neach with a verdict.
+Dialogue: 0,0:00:03.80,0:00:06.49,Sub,,0,0,0,,{\fad(120,100)\move(960,1020,960,1016,0,120)}For every snapshot:\Nhill maps and projection,
+Dialogue: 0,0:00:06.57,0:00:08.75,Sub,,0,0,0,,{\fad(120,100)\move(960,1020,960,1016,0,120)}exact; the penalty, approximate.
+Dialogue: 0,0:00:08.83,0:00:11.79,Sub,,0,0,0,,{\fad(120,100)\move(960,1020,960,1016,0,120)}For the crowd: the mirror,\Nexact; the crowd loss,
+Dialogue: 0,0:00:11.87,0:00:14.73,Sub,,0,0,0,,{\fad(120,100)\move(960,1020,960,1016,0,120)}useful but not clean; the rest, failures.
+Dialogue: 0,0:00:15.60,0:00:18.16,Sub,,0,0,0,,{\fad(120,100)\move(960,1020,960,1016,0,120)}Back to the study's three questions.
+Dialogue: 0,0:00:18.24,0:00:21.61,Sub,,0,0,0,,{\fad(120,100)\move(960,1020,960,1016,0,120)}One: between the dots,\Nthe shapes come out right,
+Dialogue: 0,0:00:21.69,0:00:24.51,Sub,,0,0,0,,{\fad(120,100)\move(960,1020,960,1016,0,120)}but no model reaches its {\c&H00A1ED&}noise floor{\c&HF7F4F2&}.
+Dialogue: 0,0:00:24.59,0:00:28.97,Sub,,0,0,0,,{\fad(120,100)\move(960,1020,960,1016,0,120)}Two: each law where it holds,\Nexactly yes, {\c&H00A1ED&}on average{\c&HF7F4F2&} partly.
+Dialogue: 0,0:00:29.05,0:00:34.13,Sub,,0,0,0,,{\fad(120,100)\move(960,1020,960,1016,0,120)}Three, {\c&H00A1ED&}how often{\c&HF7F4F2&}: roughly right far\Nfrom the threshold, poor near it.
+Dialogue: 0,0:00:35.00,0:00:35.92,Sub,,0,0,0,,{\fad(120,100)\move(960,1020,960,1016,0,120)}Three lessons.
+Dialogue: 0,0:00:36.00,0:00:37.77,Sub,,0,0,0,,{\fad(120,100)\move(960,1020,960,1016,0,120)}Exact laws: build them in.
+Dialogue: 0,0:00:37.85,0:00:42.12,Sub,,0,0,0,,{\fad(120,100)\move(960,1020,960,1016,0,120)}Crowd laws: impose them on the\Ncrowd, never on each snapshot.
+Dialogue: 0,0:00:42.20,0:00:46.95,Sub,,0,0,0,,{\fad(120,100)\move(960,1020,960,1016,0,120)}And judge every result against the\Nnoise floor, with enough seeds.

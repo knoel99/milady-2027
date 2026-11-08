@@ -1,0 +1,23 @@
+[Script Info]
+ScriptType: v4.00+
+PlayResX: 1920
+PlayResY: 1080
+WrapStyle: 2
+ScaledBorderAndShadow: yes
+YCbCr Matrix: TV.709
+
+[V4+ Styles]
+Format: Name, Fontname, Fontsize, PrimaryColour, SecondaryColour, OutlineColour, BackColour, Bold, Italic, Underline, StrikeOut, ScaleX, ScaleY, Spacing, Angle, BorderStyle, Outline, Shadow, Alignment, MarginL, MarginR, MarginV, Encoding
+Style: Sub,Inter Medium,42,&H00F7F4F2,&H00F7F4F2,&H38140F0B,&H00000000,0,0,0,0,100,100,0,0,3,12,0,2,240,240,64,1
+
+[Events]
+Format: Layer, Start, End, Style, Name, MarginL, MarginR, MarginV, Effect, Text
+Dialogue: 0,0:00:00.57,0:00:02.84,Sub,,0,0,0,,{\fad(120,100)\move(960,1020,960,1016,0,120)}How wide should Rice's strip be?
+Dialogue: 0,0:00:03.29,0:00:08.23,Sub,,0,0,0,,{\fad(120,100)\move(960,1020,960,1016,0,120)}Widen it: the estimate blurs,\Nits bias growing like the width squared.
+Dialogue: 0,0:00:08.56,0:00:13.31,Sub,,0,0,0,,{\fad(120,100)\move(960,1020,960,1016,0,120)}Narrow it: the estimate jitters,\Nas fewer snapshots land inside.
+Dialogue: 0,0:00:13.74,0:00:18.69,Sub,,0,0,0,,{\fad(120,100)\move(960,1020,960,1016,0,120)}The three-dial experiment used\Nsnapshots within zero point two of zero.
+Dialogue: 0,0:00:19.43,0:00:23.19,Sub,,0,0,0,,{\fad(120,100)\move(960,1020,960,1016,0,120)}With endless snapshots,\Nwhy not shrink it to nothing?
+Dialogue: 0,0:00:23.60,0:00:28.65,Sub,,0,0,0,,{\fad(120,100)\move(960,1020,960,1016,0,120)}The exact formula assumes a smooth\Ncloud. A cosine has only a thin ring,
+Dialogue: 0,0:00:28.73,0:00:32.83,Sub,,0,0,0,,{\fad(120,100)\move(960,1020,960,1016,0,120)}yet the formula still finds\Ntwo crossings per period.
+Dialogue: 0,0:00:33.57,0:00:38.09,Sub,,0,0,0,,{\fad(120,100)\move(960,1020,960,1016,0,120)}Chaos may lack a smooth cloud too,\Nso nothing guarantees the limit:
+Dialogue: 0,0:00:38.17,0:00:43.58,Sub,,0,0,0,,{\fad(120,100)\move(960,1020,960,1016,0,120)}on the three dials, the only test so\Nfar, the answer depends on the strip.

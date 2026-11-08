@@ -393,6 +393,12 @@ script/<unit>.json ─ tools/assemble_cut.py ─▶ script/_build/film_<cut>.jso
    ─ build.js ─▶ out/film_<cut>.mp4   stream copy; audio 1 = full mix, audio 2 = no narration; chapters
 ```
 
+French narration (`--lang fr`, `make … LANG=fr`, BRIEF §9): the same chain on `script/<unit>.json` + the overlay
+`script/fr/<unit>.json` (same sentence ids and cues, French text), Fish `"language": "fr"`, `audio/lexicon_fr.json`;
+every output is suffixed `_fr` (`film_<cut>_fr.json`, `<cut>_fr_cues.json`, `subs/<cut>_fr.*`, `stems/<cut>_fr_*`,
+`out/film_<cut>_fr.mp4`) and kept apart (`audio/scenes_fr/`, `out/scenes_fr/`). The visuals stay English: a page
+needs no change, it simply receives the French timing (longer: hang everything on cues, never on durations).
+
 Cuts: `core` = `plan/outline.json` cuts.core.chapters + `ch10q` before `ch11`; `extended` = the same + every module
 inserted after its `insert_after` (scene id, `chXX.Q`, or unit id = after that unit's last scene), so a chapter's
 question card comes after the modules inserted inside the chapter; `update` = the "Results update" episode.
@@ -418,6 +424,7 @@ sources, data, params, seed`.
   `meta.pending` counts as missing); `stamp` = the `meta.stamp` of its first data file.
 - `data`, `params`, `seed`: the script's `entry.data` (name → URL overrides), `entry.params`, `entry.seed` (12345).
 - `badge`, `question`, `onscreen`, `sources`, `level`, `register`, `title`: copied from the script.
+- `lang`: present only in a French build (`"fr"`); the on-screen text stays English (`question.en`, labels, chips).
 
 ### P3. Paths and what makes a scene re-render
 

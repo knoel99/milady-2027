@@ -1,0 +1,19 @@
+[Script Info]
+ScriptType: v4.00+
+PlayResX: 1920
+PlayResY: 1080
+WrapStyle: 2
+ScaledBorderAndShadow: yes
+YCbCr Matrix: TV.709
+
+[V4+ Styles]
+Format: Name, Fontname, Fontsize, PrimaryColour, SecondaryColour, OutlineColour, BackColour, Bold, Italic, Underline, StrikeOut, ScaleX, ScaleY, Spacing, Angle, BorderStyle, Outline, Shadow, Alignment, MarginL, MarginR, MarginV, Encoding
+Style: Sub,Inter Medium,42,&H00F7F4F2,&H00F7F4F2,&H38140F0B,&H00000000,0,0,0,0,100,100,0,0,3,12,0,2,240,240,64,1
+
+[Events]
+Format: Layer, Start, End, Style, Name, MarginL, MarginR, MarginV, Effect, Text
+Dialogue: 0,0:00:00.37,0:00:03.21,Sub,,0,0,0,,{\fad(120,100)\move(960,1020,960,1016,0,120)}Now spin the two discs\Nat different speeds.
+Dialogue: 0,0:00:03.75,0:00:08.48,Sub,,0,0,0,,{\fad(120,100)\move(960,1020,960,1016,0,120)}At some settings, the dipole flips\Nagain and again, with no schedule.
+Dialogue: 0,0:00:08.81,0:00:12.48,Sub,,0,0,0,,{\fad(120,100)\move(960,1020,960,1016,0,120)}Like the compass needle at the\Nstart, but every minute or two.
+Dialogue: 0,0:00:13.22,0:00:16.41,Sub,,0,0,0,,{\fad(120,100)\move(960,1020,960,1016,0,120)}Each flip itself takes\Nonly about five seconds.
+Dialogue: 0,0:00:16.79,0:00:22.79,Sub,,0,0,0,,{\fad(120,100)\move(960,1020,960,1016,0,120)}Uneven stripes, like the seafloor's, but\Nwritten in minutes, not millions of years.

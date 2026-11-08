@@ -1,0 +1,24 @@
+[Script Info]
+ScriptType: v4.00+
+PlayResX: 1920
+PlayResY: 1080
+WrapStyle: 2
+ScaledBorderAndShadow: yes
+YCbCr Matrix: TV.709
+
+[V4+ Styles]
+Format: Name, Fontname, Fontsize, PrimaryColour, SecondaryColour, OutlineColour, BackColour, Bold, Italic, Underline, StrikeOut, ScaleX, ScaleY, Spacing, Angle, BorderStyle, Outline, Shadow, Alignment, MarginL, MarginR, MarginV, Encoding
+Style: Sub,Inter Medium,42,&H00F7F4F2,&H00F7F4F2,&H38140F0B,&H00000000,0,0,0,0,100,100,0,0,3,12,0,2,240,240,64,1
+
+[Events]
+Format: Layer, Start, End, Style, Name, MarginL, MarginR, MarginV, Effect, Text
+Dialogue: 0,0:00:00.32,0:00:02.25,Sub,,0,0,0,,{\fad(120,100)\move(960,1020,960,1016,0,120)}Now test it against the truth.
+Dialogue: 0,0:00:02.33,0:00:04.24,Sub,,0,0,0,,{\fad(120,100)\move(960,1020,960,1016,0,120)}At forty-one settings of {\c&H7AAF1B&}Gamma{\c&HF7F4F2&},
+Dialogue: 0,0:00:04.32,0:00:07.87,Sub,,0,0,0,,{\fad(120,100)\move(960,1020,960,1016,0,120)}long simulations count the\Ncrossings as they happen.
+Dialogue: 0,0:00:07.95,0:00:12.27,Sub,,0,0,0,,{\fad(120,100)\move(960,1020,960,1016,0,120)}Rice gets only the true snapshots,\Nshuffled, plus the equations.
+Dialogue: 0,0:00:13.14,0:00:15.27,Sub,,0,0,0,,{\fad(120,100)\move(960,1020,960,1016,0,120)}The two curves almost coincide.
+Dialogue: 0,0:00:15.35,0:00:18.23,Sub,,0,0,0,,{\fad(120,100)\move(960,1020,960,1016,0,120)}Shade the gap,\Nand divide by the area under
+Dialogue: 0,0:00:18.31,0:00:21.28,Sub,,0,0,0,,{\fad(120,100)\move(960,1020,960,1016,0,120)}the counted curve: the {\c&H00A1ED&}cumulative error{\c&HF7F4F2&}.
+Dialogue: 0,0:00:21.36,0:00:25.14,Sub,,0,0,0,,{\fad(120,100)\move(960,1020,960,1016,0,120)}Four percent near the threshold,\Nsix percent above it.
+Dialogue: 0,0:00:25.22,0:00:27.88,Sub,,0,0,0,,{\fad(120,100)\move(960,1020,960,1016,0,120)}A good sign, on three chaotic dials that
+Dialogue: 0,0:00:27.96,0:00:31.25,Sub,,0,0,0,,{\fad(120,100)\move(960,1020,960,1016,0,120)}are not even guaranteed\Nto be well-behaved.

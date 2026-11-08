@@ -23,10 +23,24 @@ Per scene
   * question cards: "question": {...}; without paragraphs, the spoken sentence is question.en.
   * lint: ids, cues, markup, TTS tags, parentheses, word budget against target_s (BRIEF D21, section 6).
 
+French narration (--lang fr, BRIEF section 9; the visuals stay in English)
+  * overlay <units>/fr/<unit>.json: {"schema": 2, "unit", "lang": "fr", "voice": {...}, "sentences": {id: text},
+    "variants": {scene id: {id: text}}, "notes", optional "title" (chapter name in the MP4)}. Every sentence keeps
+    its id and cue (the scenes animate on cue names); the French text replaces the English one, before {{field}}
+    filling for result variants. Fallbacks, in order: the overlay, an inline "text_fr" in the English script, then
+    the English text (flagged "untranslated": true, warned; audio/tts.py refuses to bill such a paragraph live).
+  * question card without paragraphs: overlay "<scene>.s1", else question.say_fr, else question.fr.
+  * {{field}}: numbers spoken in French ("zéro virgule quatre-vingt-six"), a string field <name>_fr first.
+  * voice: audio/voice_fr.json (make narration LANG=fr VOICE=...), else the overlay's "voice", else the
+    script's "voice_fr", else the English voice (warned). --voice overrides all.
+  * lint: markup kinds and {{field}} names must match the English sentence; length checked against target_s
+    with the French allowance (+15-20 % expected, warned beyond +40 %).
+  * outputs are suffixed: film_<name>_fr.json, questions_<name>_fr.json.
+
 Usage
   python3 -I tools/assemble_cut.py --cut core|extended [--name N] [--units script] [--cuts plan/outline.json]
-                                    [--voice REFERENCE_ID] [--variant auto|pending|result] [--strict]
-  python3 -I tools/assemble_cut.py --unit ch04
+                                    [--voice REFERENCE_ID] [--variant auto|pending|result] [--lang en|fr] [--strict]
+  python3 -I tools/assemble_cut.py --unit ch04 [--lang fr]
 Outputs script/_build/film_<name>.json and script/_build/questions_<name>.json (question register).
 """
 import argparse, datetime, hashlib, json, os, re, sys
@@ -42,6 +56,10 @@ MARK = re.compile(r"\{(u|b|param|model|metric)\}(.*?)\{/\}")
 CUE_RE = re.compile(r"^[A-Za-z_][\w-]*$")
 
 warnings, errors = [], []
+LANG = "en"              # narration language (--lang); "en" builds exactly the same film as before
+LANGS = ("en", "fr")
+UNTRANSLATED = []        # sentence ids of the cut still in English in a non-English build
+FR_TARGET_BAND = (0.85, 1.40)   # French narration vs target_s: +15-20 % expected (BRIEF section 9)
 
 
 def warn(msg):
@@ -103,6 +121,65 @@ def speak_number(x, digits=None):
     return out
 
 
+FR_ONES = ("zéro un deux trois quatre cinq six sept huit neuf dix onze douze treize quatorze quinze seize "
+           "dix-sept dix-huit dix-neuf").split()
+FR_TENS = {2: "vingt", 3: "trente", 4: "quarante", 5: "cinquante", 6: "soixante"}
+
+
+def int_words_fr(n):
+    """French cardinal, traditional spelling: 21 'vingt et un', 71 'soixante et onze', 80 'quatre-vingts'."""
+    if n < 0:
+        return "moins " + int_words_fr(-n)
+    if n < 20:
+        return FR_ONES[n]
+    if n < 100:
+        t, u = divmod(n, 10)
+        if t in (7, 9):
+            base = "soixante" if t == 7 else "quatre-vingt"
+            return base + (" et " if t == 7 and u == 1 else "-") + FR_ONES[10 + u]
+        if t == 8:
+            return "quatre-vingts" if u == 0 else "quatre-vingt-" + FR_ONES[u]
+        return FR_TENS[t] + ("" if u == 0 else " et un" if u == 1 else "-" + FR_ONES[u])
+    if n < 1000:
+        h, r = divmod(n, 100)
+        head = "cent" if h == 1 else FR_ONES[h] + (" cents" if r == 0 else " cent")
+        return head + ("" if r == 0 else " " + int_words_fr(r))
+    if n < 10 ** 6:
+        k, r = divmod(n, 1000)
+        head = "mille" if k == 1 else re.sub(r"(cent|vingt)s$", r"\1", int_words_fr(k)) + " mille"
+        return head + ("" if r == 0 else " " + int_words_fr(r))
+    div, word = (10 ** 9, "milliard") if n >= 10 ** 9 else (10 ** 6, "million")
+    q, r = divmod(n, div)
+    return int_words_fr(q) + " " + word + ("s" if q > 1 else "") + ("" if r == 0 else " " + int_words_fr(r))
+
+
+def speak_number_fr(x, digits=None):
+    """0.86 -> 'zéro virgule quatre-vingt-six'; 0.0123 -> 'zéro virgule zéro cent vingt-trois'; 17 -> 'dix-sept'.
+    The decimal part is read as a number (leading zeros said) up to three digits, digit by digit beyond."""
+    if isinstance(x, bool):
+        return "oui" if x else "non"
+    if isinstance(x, int) or (isinstance(x, float) and x.is_integer() and digits is None):
+        return int_words_fr(int(x))
+    s = f"{x:.{digits}f}" if digits is not None else repr(float(x))
+    if "e" in s or "E" in s:
+        s = f"{x:.6f}".rstrip("0")
+    neg = s.startswith("-")
+    a, _, b = s.lstrip("-").partition(".")
+    out = ("moins " if neg else "") + int_words_fr(int(a))
+    if b:
+        z = len(b) - len(b.lstrip("0"))
+        r = b[z:]
+        if r and len(r) <= 3:
+            out += " virgule " + " ".join(["zéro"] * z + [int_words_fr(int(r))])
+        else:
+            out += " virgule " + " ".join(FR_ONES[int(c)] for c in b)
+    return out
+
+
+def say_number(x, digits=None):
+    return speak_number_fr(x, digits) if LANG == "fr" else speak_number(x, digits)
+
+
 # ----------------------------------------------------------------------------- data files
 def load_data(dep):
     """Returns the parsed data file, or None if it is missing or flagged pending."""
@@ -159,10 +236,18 @@ def fill(text, datas, sid):
         mod = m.group(2)
         if isinstance(v, (int, float)) and not isinstance(v, bool):
             if mod == "digits":
-                return str(v)
+                return str(v) if LANG == "en" else str(v).replace(".", ",")
             if mod and mod.isdigit():
-                return speak_number(float(v), int(mod))
-            return speak_number(v)
+                return say_number(float(v), int(mod))
+            return say_number(v)
+        if LANG != "en":                       # a string field: its translation <name>_<lang> first
+            ok_l, v_l = lookup(datas, f"{m.group(1)}_{LANG}")
+            if ok_l and isinstance(v_l, str):
+                return v_l
+            if isinstance(v, str):
+                warn(f"{sid}: string field '{m.group(1)}' has no '{m.group(1)}_{LANG}': English text in the {LANG} narration")
+            elif isinstance(v, bool):
+                return say_number(v)
         return str(v)
 
     out = PLACE.sub(rep, text)
@@ -189,8 +274,39 @@ def norm_paragraphs(paras, sid):
     return out
 
 
+MARK_OPEN = re.compile(r"\{(u|b|param|model|metric)\}")
+
+
+def translate(paras, table, sid, unit_name, implicit_ids=True):
+    """Non-English build: put the translation into each sentence's "text" (same id, same cue). Source order:
+    the overlay table {sentence id: text}, then an inline "text_<lang>" of the English script; otherwise the
+    English text stays, flagged "untranslated" (collected in UNTRANSLATED, warned per unit in main())."""
+    n = 0
+    for p in paras:
+        for x in p["sentences"]:
+            n += 1
+            key = x.get("id") or (f"{sid}.s{n}" if implicit_ids else None)
+            en = x.get("text", "")
+            tr = (table or {}).get(key) if key else None
+            if tr is None:
+                tr = x.get(f"text_{LANG}")
+            x.pop(f"text_{LANG}", None)
+            if not isinstance(tr, str) or not tr.strip():
+                x["untranslated"] = True
+                UNTRANSLATED.append((unit_name, key or f"{sid}.?"))
+                continue
+            if sorted(MARK_OPEN.findall(en)) != sorted(MARK_OPEN.findall(tr)):
+                warn(f"{key}: subtitle markup differs from the English ({sorted(MARK_OPEN.findall(en))} -> "
+                     f"{sorted(MARK_OPEN.findall(tr))})")
+            fe, ft = sorted({m.group(1) for m in PLACE.finditer(en)}), sorted({m.group(1) for m in PLACE.finditer(tr)})
+            if fe != ft:
+                warn(f"{key}: {{{{field}}}} placeholders differ from the English ({fe} -> {ft})")
+            x["text"] = tr
+
+
 def resolve_scene(sc, unit, opts):
     sid = sc["id"]
+    ov = unit.get("_overlay") or {}
     s = dict(sc)
     s["unit"] = unit["unit"]
     s["status_script"] = sc.get("status", "ready")
@@ -211,6 +327,8 @@ def resolve_scene(sc, unit, opts):
     variants = sc.get("variants") or {}
     variant = "main"
     paras = norm_paragraphs(sc.get("paragraphs"), sid)
+    if LANG != "en":
+        translate(paras, ov.get("sentences"), sid, unit["unit"])
     if status == "pending" and variants:
         variant = "pending"
     want = opts.variant
@@ -221,6 +339,8 @@ def resolve_scene(sc, unit, opts):
         for p in rp:
             p["sentences"] = [x for x in p["sentences"] if cond_ok(x.get("when"), datas)]
         rp = [p for p in rp if p["sentences"]]
+        if LANG != "en":
+            translate(rp, (ov.get("variants") or {}).get(sid), sid, unit["unit"], implicit_ids=False)
         miss = []
         for p in rp:
             for x in p["sentences"]:
@@ -239,6 +359,11 @@ def resolve_scene(sc, unit, opts):
         q = sc["question"]
         paras = [{"hold_after": 0.0, "when": None,
                   "sentences": [{"id": f"{sid}.s1", "cue": "q", "text": q.get("say") or q.get("en", "")}]}]
+        if LANG != "en":                            # overlay "<scene>.s1", else question.say_<lang>, else question.<lang>
+            spoken = q.get(f"say_{LANG}") or q.get(LANG)
+            if spoken:
+                paras[0]["sentences"][0][f"text_{LANG}"] = spoken
+            translate(paras, ov.get("sentences"), sid, unit["unit"])
     # ids, cues and lint
     cues = set()
     n = 0
@@ -290,10 +415,18 @@ def resolve_scene(sc, unit, opts):
         + s["lead_in"] + s["tail"]
     s["estimated_s"] = round(est, 1)
     tgt = sc.get("target_s")
-    if tgt and not sc.get("question") and abs(est - tgt) > 0.15 * tgt:
-        warn(f"{sid}: about {est:.0f} s for {w} words, target {tgt} s +-15 % (BRIEF D21)")
-    if sc.get("question") and not (5 <= est <= 11):
-        warn(f"{sid}: question card about {est:.1f} s, the brief asks 6-10 s")
+    if LANG == "en":
+        if tgt and not sc.get("question") and abs(est - tgt) > 0.15 * tgt:
+            warn(f"{sid}: about {est:.0f} s for {w} words, target {tgt} s +-15 % (BRIEF D21)")
+        if sc.get("question") and not (5 <= est <= 11):
+            warn(f"{sid}: question card about {est:.1f} s, the brief asks 6-10 s")
+    else:                       # the French timeline absorbs +15-20 % (BRIEF section 9): warn only beyond the band
+        lo, hi = FR_TARGET_BAND
+        if tgt and not sc.get("question") and not (lo * tgt <= est <= hi * tgt):
+            warn(f"{sid}: about {est:.0f} s for {w} {LANG} words, target {tgt} s (expected +15-20 %, "
+                 f"band {lo:.2f}-{hi:.2f} x target)")
+        if sc.get("question") and not (5 <= est <= 13):
+            warn(f"{sid}: question card about {est:.1f} s in {LANG}, the brief asks 6-10 s (+20 % allowed)")
     if sc.get("question"):
         q = sc["question"]
         if len(plain(q.get("en", "")).split()) > 18:
@@ -318,7 +451,67 @@ def load_unit(units_dir, name, required=True):
     u.setdefault("unit", name)
     u["_sha"] = hashlib.sha256(open(p, "rb").read()).hexdigest()[:16]
     u["_path"] = rel(p)
+    if LANG != "en":
+        u["_overlay"] = load_overlay(units_dir, u)
     return u
+
+
+def unit_sentence_ids(u):
+    """{"main": ids of the main paragraphs (+ the generated '<scene>.s1' of a bare question card),
+        "variants": {scene id: ids of its result variant}} of every scene of the unit, whatever the cut."""
+    main, var = set(), {}
+    for sc in u.get("scenes", []):
+        paras = norm_paragraphs(sc.get("paragraphs"), sc["id"])
+        n = 0
+        for p in paras:
+            for x in p["sentences"]:
+                n += 1
+                main.add(x.get("id") or f"{sc['id']}.s{n}")
+        if not paras and sc.get("question"):
+            main.add(f"{sc['id']}.s1")
+        r = (sc.get("variants") or {}).get("result")
+        if r:
+            var[sc["id"]] = {x.get("id") for p in norm_paragraphs(r.get("paragraphs"), sc["id"]) for x in p["sentences"]}
+    return {"main": main, "variants": var}
+
+
+def load_overlay(units_dir, u):
+    """<units>/<lang>/<unit>.json (translation overlay, BRIEF section 9), checked against the English unit."""
+    name = u["unit"]
+    p = os.path.join(units_dir, LANG, name + ".json")
+    if not os.path.exists(p):
+        inline = sum(1 for sc in u.get("scenes", []) for x in
+                     [x for pp in norm_paragraphs(sc.get("paragraphs"), sc["id"]) for x in pp["sentences"]] if x.get(f"text_{LANG}"))
+        warn(f"unit {name}: no {LANG} overlay {rel(p)}"
+             + (f" ({inline} inline text_{LANG} used)" if inline else ": the English text is kept"))
+        return {"_path": None}
+    try:
+        ov = json.load(open(p))
+    except Exception as e:
+        err(f"overlay {rel(p)} is not valid JSON: {e}")
+        return {"_path": None}
+    if ov.get("schema") != 2:
+        warn(f"overlay {rel(p)}: schema {ov.get('schema')} (expected 2)")
+    if ov.get("unit") not in (None, name):
+        warn(f"overlay {rel(p)}: unit '{ov.get('unit')}' (expected '{name}')")
+    if ov.get("lang") not in (None, LANG):
+        warn(f"overlay {rel(p)}: lang '{ov.get('lang')}' (expected '{LANG}')")
+    ids = unit_sentence_ids(u)
+    for k, v in (ov.get("sentences") or {}).items():
+        if k not in ids["main"]:
+            warn(f"overlay {rel(p)}: sentence id {k} is not in the unit's main paragraphs (ignored)")
+        if not isinstance(v, str):
+            err(f"overlay {rel(p)}: sentence {k} is not a string")
+    for scid, tab in (ov.get("variants") or {}).items():
+        if scid not in ids["variants"]:
+            warn(f"overlay {rel(p)}: variants of {scid}, which has no result variant (ignored)")
+            continue
+        for k in tab or {}:
+            if k not in ids["variants"][scid]:
+                warn(f"overlay {rel(p)}: variant sentence id {k} is not in {scid}'s result variant (ignored)")
+    ov["_path"] = rel(p)
+    ov["_sha"] = hashlib.sha256(open(p, "rb").read()).hexdigest()[:16]
+    return ov
 
 
 def in_cut(sc, cut, ext_rules, unit_ids):
@@ -351,9 +544,12 @@ def main():
     ap.add_argument("--out", default="script/_build")
     ap.add_argument("--voice", help="override voice.reference_id (narration swap); default: audio/voice.json, else the units")
     ap.add_argument("--variant", choices=["auto", "pending", "result"], default="auto")
+    ap.add_argument("--lang", choices=LANGS, default="en",
+                    help="narration language: fr merges <units>/fr/<unit>.json (BRIEF section 9); outputs suffixed _fr")
     ap.add_argument("--strict", action="store_true", help="missing units and lint warnings are errors")
-    global OPTS
+    global OPTS, LANG
     OPTS = opts = ap.parse_args()
+    LANG = opts.lang
     if not opts.cut and not opts.unit:
         ap.error("--cut or --unit")
     units_dir = os.path.join(ROOT, opts.units)
@@ -381,6 +577,8 @@ def main():
                 i = chapters.index(e["before"]) if e["before"] in chapters else len(chapters)
                 chapters.insert(i, e["unit"])
         modules = list(cuts.get("extensions", {}).get("modules", [])) if cut == "extended" else []
+    if LANG != "en" and not name.endswith("_" + LANG):     # separate builds per language: film_core_fr.json ...
+        name += "_" + LANG
 
     seq, units = [], []          # seq: list of (unit_id, raw scene)
 
@@ -444,17 +642,21 @@ def main():
                  + ", ".join(f"{a}!={b}" for a, b in zip(got, refp) if a != b)[:400])
 
     voice = None
-    vfile = os.path.join(ROOT, "audio", "voice.json")
+    vfile = os.path.join(ROOT, "audio", "voice.json" if LANG == "en" else f"voice_{LANG}.json")
     for u in units:
-        v = u.get("voice")
+        v = u.get("voice") if LANG == "en" else ((u.get("_overlay") or {}).get("voice") or u.get(f"voice_{LANG}"))
         if v and voice and v.get("reference_id") != voice.get("reference_id"):
             err(f"unit {u['unit']}: voice {v.get('reference_id')} differs from {voice.get('reference_id')}")
         voice = voice or v
+    if LANG != "en" and not voice:
+        voice = next((u.get("voice") for u in units if u.get("voice")), None)
+        if voice:
+            warn(f"no voice_{LANG} in the overlays or scripts: the English voice {voice.get('reference_id')} is used")
     voice = dict(voice or {"provider": "fish", "model": "drama-3", "reference_id": None})
     if os.path.exists(vfile) and not opts.voice:
         ov = json.load(open(vfile))
         if ov.get("reference_id"):
-            voice["reference_id"], voice["override"] = ov["reference_id"], "audio/voice.json"
+            voice["reference_id"], voice["override"] = ov["reference_id"], rel(vfile)
     if opts.voice:
         voice["reference_id"], voice["override"] = opts.voice, "--voice"
 
@@ -473,11 +675,18 @@ def main():
         scenes.append(r)
 
     questions = [{"scene": s["id"], "unit": s["unit"], **s["question"]} for s in scenes if s.get("question")]
+    if LANG != "en" and UNTRANSLATED:
+        per = {}
+        for un, k in UNTRANSLATED:
+            per.setdefault(un, []).append(k)
+        for un, ks in per.items():
+            warn(f"unit {un}: {len(ks)} sentences not translated into {LANG} (English kept): "
+                 + ", ".join(ks[:6]) + (" ..." if len(ks) > 6 else ""))
     film = {
         "schema": 2, "kind": "film", "name": name, "cut": cut,
         "title": outline.get("title"), "subtitle": outline.get("subtitle"),
         "built": datetime.datetime.now().isoformat(timespec="seconds"),
-        "fps": 30, "voice": voice,
+        "fps": 30, "lang": LANG, "voice": voice,
         "units": [{"unit": u["unit"], "title": u.get("title"), "level_range": u.get("level_range"),
                    "cut": u.get("cut"), "insert_after": u.get("insert_after"), "path": u["_path"], "sha": u["_sha"],
                    "scenes": [s["id"] for s in scenes if s["unit"] == u["unit"]]} for u in units],
@@ -488,6 +697,13 @@ def main():
                    "question_cards": len(questions)},
         "warnings": warnings, "errors": errors,
     }
+    if LANG != "en":            # chapter names of the MP4 from the overlay's optional "title"; overlay provenance
+        for fu, u in zip(film["units"], units):
+            ov = u.get("_overlay") or {}
+            fu.update(title_en=u.get("title"), title=ov.get("title") or u.get("title"),
+                      overlay=ov.get("_path"), overlay_sha=ov.get("_sha"))
+        film["totals"]["untranslated"] = len(UNTRANSLATED)
+        film["untranslated"] = [k for _, k in UNTRANSLATED]
     out = os.path.join(ROOT, opts.out)
     os.makedirs(out, exist_ok=True)
     json.dump(film, open(os.path.join(out, f"film_{name}.json"), "w"), indent=1, ensure_ascii=False)
@@ -496,7 +712,8 @@ def main():
     t = film["totals"]
     print(f"[assemble] {name}: {len(units)} units, {t['scenes']} scenes, {t['words']} words, "
           f"~{t['estimated_s'] / 60:.1f} min estimated, status {t['status']}, {t['question_cards']} question cards"
-          f" -> {opts.out}/film_{name}.json")
+          + (f", {t['untranslated']} sentences untranslated" if LANG != "en" else "")
+          + f" -> {opts.out}/film_{name}.json")
     for w in warnings:
         print("[assemble] warning:", w)
     for e in errors:

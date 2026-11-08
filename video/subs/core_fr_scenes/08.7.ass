@@ -1,0 +1,21 @@
+[Script Info]
+ScriptType: v4.00+
+PlayResX: 1920
+PlayResY: 1080
+WrapStyle: 2
+ScaledBorderAndShadow: yes
+YCbCr Matrix: TV.709
+
+[V4+ Styles]
+Format: Name, Fontname, Fontsize, PrimaryColour, SecondaryColour, OutlineColour, BackColour, Bold, Italic, Underline, StrikeOut, ScaleX, ScaleY, Spacing, Angle, BorderStyle, Outline, Shadow, Alignment, MarginL, MarginR, MarginV, Encoding
+Style: Sub,Inter Medium,42,&H00F7F4F2,&H00F7F4F2,&H38140F0B,&H00000000,0,0,0,0,100,100,0,0,3,12,0,2,240,240,64,1
+
+[Events]
+Format: Layer, Start, End, Style, Name, MarginL, MarginR, MarginV, Effect, Text
+Dialogue: 0,0:00:00.52,0:00:04.61,Sub,,0,0,0,,{\fad(120,100)\move(960,1020,960,1016,0,120)}Put the pieces together:\Nthe machine this study proposes.
+Dialogue: 0,0:00:04.69,0:00:09.59,Sub,,0,0,0,,{\fad(120,100)\move(960,1020,960,1016,0,120)}A {\c&HF09CB4&}wind{\c&HF7F4F2&} carries noise to a symmetric\Ncrowd of codes, mirror built in.
+Dialogue: 0,0:00:09.67,0:00:15.15,Sub,,0,0,0,,{\fad(120,100)\move(960,1020,960,1016,0,120)}A decoder turns each code into hill maps,\Nso every field is divergence-free.
+Dialogue: 0,0:00:15.23,0:00:18.63,Sub,,0,0,0,,{\fad(120,100)\move(960,1020,960,1016,0,120)}And the energy budget\Nis imposed on the crowd.
+Dialogue: 0,0:00:19.50,0:00:24.10,Sub,,0,0,0,,{\fad(120,100)\move(960,1020,960,1016,0,120)}It has not been built as a whole:\Nthe experiments tested pieces,
+Dialogue: 0,0:00:24.18,0:00:30.18,Sub,,0,0,0,,{\fad(120,100)\move(960,1020,960,1016,0,120)}on three dials and a flat sheet, with\Nsmall networks on an ordinary processor.
+Dialogue: 0,0:00:31.09,0:00:36.05,Sub,,0,0,0,,{\fad(120,100)\move(960,1020,960,1016,0,120)}One question remains: from snapshots,\Nhow well can we answer {\c&H00A1ED&}how often{\c&HF7F4F2&}?

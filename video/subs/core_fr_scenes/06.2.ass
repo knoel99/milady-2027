@@ -1,0 +1,18 @@
+[Script Info]
+ScriptType: v4.00+
+PlayResX: 1920
+PlayResY: 1080
+WrapStyle: 2
+ScaledBorderAndShadow: yes
+YCbCr Matrix: TV.709
+
+[V4+ Styles]
+Format: Name, Fontname, Fontsize, PrimaryColour, SecondaryColour, OutlineColour, BackColour, Bold, Italic, Underline, StrikeOut, ScaleX, ScaleY, Spacing, Angle, BorderStyle, Outline, Shadow, Alignment, MarginL, MarginR, MarginV, Encoding
+Style: Sub,Inter Medium,42,&H00F7F4F2,&H00F7F4F2,&H38140F0B,&H00000000,0,0,0,0,100,100,0,0,3,12,0,2,240,240,64,1
+
+[Events]
+Format: Layer, Start, End, Style, Name, MarginL, MarginR, MarginV, Effect, Text
+Dialogue: 0,0:00:00.32,0:00:02.75,Sub,,0,0,0,,{\fad(120,100)\move(960,1020,960,1016,0,120)}One warning before the formulas.
+Dialogue: 0,0:00:02.83,0:00:07.39,Sub,,0,0,0,,{\fad(120,100)\move(960,1020,960,1016,0,120)}The wind runs on its own\N{\c&HF09CB4&}transport clock{\c&HF7F4F2&}, from zero to one.
+Dialogue: 0,0:00:07.47,0:00:12.68,Sub,,0,0,0,,{\fad(120,100)\move(960,1020,960,1016,0,120)}Not physical time: at the end,\Nyou hold one snapshot, not a movie.
+Dialogue: 0,0:00:13.55,0:00:19.33,Sub,,0,0,0,,{\fad(120,100)\move(960,1020,960,1016,0,120)}And the {\c&HF09CB4&}wind's arrows{\c&HF7F4F2&} move snapshots, not\Nfluid: they are not the fluid's velocity.

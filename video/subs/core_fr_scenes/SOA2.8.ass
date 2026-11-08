@@ -1,0 +1,22 @@
+[Script Info]
+ScriptType: v4.00+
+PlayResX: 1920
+PlayResY: 1080
+WrapStyle: 2
+ScaledBorderAndShadow: yes
+YCbCr Matrix: TV.709
+
+[V4+ Styles]
+Format: Name, Fontname, Fontsize, PrimaryColour, SecondaryColour, OutlineColour, BackColour, Bold, Italic, Underline, StrikeOut, ScaleX, ScaleY, Spacing, Angle, BorderStyle, Outline, Shadow, Alignment, MarginL, MarginR, MarginV, Encoding
+Style: Sub,Inter Medium,42,&H00F7F4F2,&H00F7F4F2,&H38140F0B,&H00000000,0,0,0,0,100,100,0,0,3,12,0,2,240,240,64,1
+
+[Events]
+Format: Layer, Start, End, Style, Name, MarginL, MarginR, MarginV, Effect, Text
+Dialogue: 0,0:00:00.32,0:00:05.13,Sub,,0,0,0,,{\fad(120,100)\move(960,1020,960,1016,0,120)}The field moves fast: a twenty twenty-six\Nconference paper claims to be the
+Dialogue: 0,0:00:05.21,0:00:10.39,Sub,,0,0,0,,{\fad(120,100)\move(960,1020,960,1016,0,120)}first to recognize a trade-off between\Nphysical and {\c&H00A1ED&}distributional{\c&HF7F4F2&} accuracy.
+Dialogue: 0,0:00:10.47,0:00:13.15,Sub,,0,0,0,,{\fad(120,100)\move(960,1020,960,1016,0,120)}The study's lesson,\Nnever force a crowd law
+Dialogue: 0,0:00:13.23,0:00:16.38,Sub,,0,0,0,,{\fad(120,100)\move(960,1020,960,1016,0,120)}on each snapshot,\Nmust be placed against it.
+Dialogue: 0,0:00:17.25,0:00:19.84,Sub,,0,0,0,,{\fad(120,100)\move(960,1020,960,1016,0,120)}Not claimed: waiting times between flips,
+Dialogue: 0,0:00:19.92,0:00:25.23,Sub,,0,0,0,,{\fad(120,100)\move(960,1020,960,1016,0,120)}sodium's tiny {\c&H7AAF1B&}magnetic Prandtl number{\c&HF7F4F2&},\Nthe Earth's core, real laboratory data.
+Dialogue: 0,0:00:25.31,0:00:28.32,Sub,,0,0,0,,{\fad(120,100)\move(960,1020,960,1016,0,120)}Each empty spot is a\Nsearch result, not a proof,
+Dialogue: 0,0:00:28.40,0:00:31.25,Sub,,0,0,0,,{\fad(120,100)\move(960,1020,960,1016,0,120)}to be checked again before every paper.

@@ -1,0 +1,22 @@
+[Script Info]
+ScriptType: v4.00+
+PlayResX: 1920
+PlayResY: 1080
+WrapStyle: 2
+ScaledBorderAndShadow: yes
+YCbCr Matrix: TV.709
+
+[V4+ Styles]
+Format: Name, Fontname, Fontsize, PrimaryColour, SecondaryColour, OutlineColour, BackColour, Bold, Italic, Underline, StrikeOut, ScaleX, ScaleY, Spacing, Angle, BorderStyle, Outline, Shadow, Alignment, MarginL, MarginR, MarginV, Encoding
+Style: Sub,Inter Medium,42,&H00F7F4F2,&H00F7F4F2,&H38140F0B,&H00000000,0,0,0,0,100,100,0,0,3,12,0,2,240,240,64,1
+
+[Events]
+Format: Layer, Start, End, Style, Name, MarginL, MarginR, MarginV, Effect, Text
+Dialogue: 0,0:00:03.17,0:00:07.13,Sub,,0,0,0,,{\fad(120,100)\move(960,1020,960,1016,0,120)}New test bench: whole\Nfields, not three dials.
+Dialogue: 0,0:00:07.58,0:00:11.80,Sub,,0,0,0,,{\fad(120,100)\move(960,1020,960,1016,0,120)}A flat square of conducting fluid,\Nits edges wrapping around.
+Dialogue: 0,0:00:12.15,0:00:15.15,Sub,,0,0,0,,{\fad(120,100)\move(960,1020,960,1016,0,120)}In blue, the swirl of\Nthe {\c&HE58739&}flow{\c&HF7F4F2&}; in vermillion,
+Dialogue: 0,0:00:15.23,0:00:18.17,Sub,,0,0,0,,{\fad(120,100)\move(960,1020,960,1016,0,120)}the electric currents behind the {\c&H3468EB&}field{\c&HF7F4F2&}.
+Dialogue: 0,0:00:18.91,0:00:22.66,Sub,,0,0,0,,{\fad(120,100)\move(960,1020,960,1016,0,120)}One knob, {\c&H7AAF1B&}eta{\c&HF7F4F2&}: how fast the field smudges.
+Dialogue: 0,0:00:22.87,0:00:25.85,Sub,,0,0,0,,{\fad(120,100)\move(960,1020,960,1016,0,120)}But a flat world cannot sustain a dynamo.
+Dialogue: 0,0:00:26.06,0:00:29.17,Sub,,0,0,0,,{\fad(120,100)\move(960,1020,960,1016,0,120)}Here a random forcing\Nkeeps the field alive:
+Dialogue: 0,0:00:29.25,0:00:32.56,Sub,,0,0,0,,{\fad(120,100)\move(960,1020,960,1016,0,120)}a training ground for laws, not a dynamo.

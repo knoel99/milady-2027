@@ -22,6 +22,13 @@ scènes suivent toutes seules. Seules les scènes dont le minutage a bougé sont
 
 `<coupe>` vaut `core` (≈ 41 min) ou `extended` (≈ 60 min).
 
+Narration française (`LANG=fr`, §6) : mêmes éléments avec le suffixe `_fr` ou `fr` : texte
+`script/fr/<unité>.json`, voix `audio/voice_fr.json` puis `voice` de la surcouche, prononciations
+`audio/lexicon_fr.json`, pistes `audio/scenes_fr/`, narration externe `audio/external_fr/`, minutage
+`script/_build/<coupe>_fr_cues.json`, sous-titres `subs/<coupe>_fr.*`, pistes séparées
+`out/stems/<coupe>_fr_*.m4a`, film `out/film_<coupe>_fr.mp4`. Le cache `audio/cache/` est commun aux deux
+langues (la langue fait partie de la clé).
+
 ## 2. Changer de voix Fish Audio
 
 ```bash
@@ -42,7 +49,7 @@ Avant de lancer, `make plan CUT=extended` affiche le nombre de paragraphes et de
 Un garde-fou refuse une synthèse de plus de 15 000 mots nouveaux d'un coup
 (`TTS_MAX_NEW_WORDS=20000 make narration …` pour le relever volontairement).
 
-Le cache est indexé par (texte, voix, réglages) : revenir à une voix déjà utilisée ne coûte rien, et un
+Le cache est indexé par (langue, texte, voix, réglages) : revenir à une voix déjà utilisée ne coûte rien, et un
 paragraphe inchangé n'est jamais refacturé. Pour écouter une voix avant de tout lancer, une seule phrase :
 `make tts-test SENTENCE="Une phrase en anglais." UNIT=ch00` (avec la voix de `script/ch00.json`), ou
 `make narration VOICE=<id>` puis `make draft` sur une seule unité (`make check U=ch00`).
@@ -97,3 +104,46 @@ droits (narrateur consentant). Jamais un clone ni une imitation d'une personne r
 Corriger une entrée de `audio/lexicon.json` (par exemple MilaDy, DRESDYN, LATU, GENCI, marqués à
 vérifier) ne resynthétise que les paragraphes qui contiennent ce mot. Une entrée est soit une suite de
 phonèmes ARPAbet, soit `{"say": "réécriture"}` pour une simple réécriture.
+
+Pour la narration française, `audio/lexicon_fr.json` ne contient que des réécritures (les épingles de
+phonèmes de Fish Audio ne valent que pour l'anglais) : sigles épelés à la française (« ème hache dé » pour
+MHD, « a bé cé », « vé ka esse », « eu ène pé cé »), noms dits comme un physicien français (« Jissinjé »,
+« Rénolds », « Prantl », « Karmane », « Raïsse », « Lerè », « Milédi »). Une entrée `{"keep": true}` documente
+un mot laissé tel quel, par exemple les termes d'apprentissage automatique gardés en anglais (*flow
+matching*) : la voix multilingue les lit en anglais ; `alt` propose une réécriture si une prise sonne mal.
+Les entrées de la liste `check` (MilaDy, LATU, LISN, SFEMaNS, GENCI, Gissinger…) attendent une confirmation.
+
+## 6. Narration française
+
+La version française garde les images anglaises et change la voix et les sous-titres. Toutes les commandes
+de ce kit prennent `LANG=fr` :
+
+```bash
+make plan CUT=extended LANG=fr               # phrases non traduites, mots à synthétiser (rien n'est appelé)
+make narration LANG=fr VOICE=<reference_id>  # voix française de tout le film (audio/voice_fr.json), deux coupes
+make narration LANG=fr VOICE=default         # revenir à la voix des surcouches (« Ethan », 536d3a5e…)
+make tts-test SENTENCE="Une phrase en français." UNIT=ch00 LANG=fr   # une seule requête, voix de script/fr/ch00.json
+make narration-script CUT=extended LANG=fr   # texte de lecture français -> out/narration_script_extended_fr.md
+make fit DIR=prises_fr/ CUT=extended LANG=fr # ajuster une narration française enregistrée ailleurs
+make film CUT=extended LANG=fr NARRATION=external
+```
+
+- **Texte** : `script/fr/<unité>.json`, une surcouche par unité, les scripts anglais restent figés.
+  `sentences` donne le texte de chaque phrase des paragraphes principaux (même identifiant, même repère :
+  ne jamais fusionner ni couper une phrase) ; `variants` celui des variantes `result` des scènes PENDING,
+  avec les champs `{{…}}` tels quels (les nombres sont dits en français : « zéro virgule quatre-vingt-six ») ;
+  `voice` la voix ; `notes` les choix de traduction ; `title` (facultatif) le nom du chapitre dans le MP4.
+  Le balisage des sous-titres entoure les mots français correspondants. Une phrase sans traduction reste en
+  anglais : `make plan LANG=fr` la signale et `make film LANG=fr` refuse de la facturer
+  (`TTS_ALLOW_UNTRANSLATED=1` pour passer outre).
+- **Voix** : « Ethan » parlant français (`536d3a5e000945adb7038665781a4aca`), corps de requête validé
+  inchangé sauf `"language": "fr"` (même `[calm, natural narrator voice]` en tête, même `[long pause]` entre
+  paragraphes, température 0.1). Priorité : `audio/voice_fr.json` (`make narration LANG=fr VOICE=…`), puis la
+  `voice` de la surcouche, puis `voice_fr` du script anglais. La règle de la §2 vaut aussi : jamais un clone.
+- **Minutage** : le français est plus long (≈ +15 à 20 %) ; la coupe française a son propre minutage
+  (`script/_build/<coupe>_fr_cues.json`) et ses propres rendus (`out/scenes_fr/`, sous-titres français
+  incrustés). Une construction française ne touche ni aux rendus ni aux pistes anglaises.
+- **Coût** : environ autant de mots que la version anglaise, plus 15 à 20 % ; `make plan LANG=fr` donne le
+  compte exact avant de lancer.
+- **Doublage depuis la piste 2** : la piste audio 2 du film anglais (musique et effets sans voix) reste la base
+  d'un doublage fait ailleurs ; `make fit LANG=fr` ajuste alors une prise française sur le minutage français.

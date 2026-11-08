@@ -1,0 +1,37 @@
+{
+  "schema": 2,
+  "unit": "ch00",
+  "lang": "fr",
+  "voice": {
+    "provider": "fish",
+    "model": "drama-3",
+    "reference_id": "536d3a5e000945adb7038665781a4aca"
+  },
+  "sentences": {
+    "00.1.s1": "Toute votre vie, cette aiguille a indiqué le nord.",
+    "00.1.s2": "Mais les fonds marins ont la mémoire plus longue.",
+    "00.1.s3": "Nord et sud se sont inversés.",
+    "00.1.s4": "Encore et encore, sans aucun calendrier.",
+    "00.2.s1": "Cette aiguille suit un {b}champ{/} qui enveloppe toute la planète.",
+    "00.2.s2": "On le croirait permanent.",
+    "00.2.s3": "Il ne l'est pas.",
+    "00.3.s1": "Aux dorsales océaniques, la lave fraîche refroidit et se fige en roche.",
+    "00.3.s2": "De minuscules grains magnétiques y enregistrent la direction du {b}champ{/}.",
+    "00.3.s3": "Les fonds marins s'écartent, et chaque renversement ouvre une nouvelle bande.",
+    "00.3.s4": "Cinq millions d'années, une vingtaine de renversements, et des intervalles extrêmement inégaux.",
+    "00.4.s1": "Alors, deux questions.",
+    "00.4.s2": "Quand aura lieu le prochain renversement ?",
+    "00.4.s3": "Et {metric}à quelle fréquence{/} le champ se renverse-t-il ?",
+    "00.4.s4": "À laquelle peut-on répondre ?",
+    "00.4.s5": "Dans un modèle numérique simple d'un {b}champ{/} qui se renverse, la première est sans espoir.",
+    "00.4.s6": "La seconde, non.",
+    "00.4.s7": "Pour comprendre pourquoi, nous passerons par le métal liquide et le chaos.",
+    "00.4.s8": "Puis par des {model}machines{/} qui imaginent des instantanés de {b}champs magnétiques{/}.",
+    "00.4.s9": "Elles doivent obéir exactement à certaines lois, et à d'autres seulement en moyenne.",
+    "00.5.s1": "À quelle fréquence le {b}champ{/} se renverse-t-il ?",
+    "00.5.s2": "Une carte pour s'initier au projet MilaDy, de la boussole jusqu'à la recherche d'aujourd'hui.",
+    "ch00.Q.s1": "Les premières simulations doivent-elles viser {metric}la fréquence{/} des renversements du champ, ou les signes annonciateurs juste avant un renversement ?"
+  },
+  "variants": {},
+  "notes": "Translator notes, ch00 (2026-11-08). Terms: flip = renversement / se renverser (never 'inversion', never 'bascule', so the whole film keeps one word; the French question sheet uses 'renversements'); the field = le champ; snapshots = instantanés (planted here, key word of ch04-ch06); machines = machines (L0 word for the generative model, violet); seafloor = les fonds marins (L0), ocean ridges = dorsales océaniques; seafloor spreading rendered as 'les fonds marins s'écartent'. Choices: vouvoiement in 00.1.s1 ('Toute votre vie'); 'we' rendered as 'on' (00.4.s4) and 'nous' (00.4.s7), meaning the viewer and the narrator only. 00.1.s2 'remembers further back' = 'ont la mémoire plus longue' (idiomatic, keeps the swap in the past, as the review intended). 00.1.s4 and the on-screen 'no schedule': 'sans aucun calendrier'. 00.3.s2 'lock in' = 'enregistrent' (fits the scene's tape-recorder image). 00.3.s4 'about twenty' = 'une vingtaine'; 'wildly uneven gaps' = 'intervalles extrêmement inégaux'. 00.4.s5 keeps the scope hedge 'modèle numérique simple' (the claim is for the three-mode model only, never for Earth); 'hopeless' = 'sans espoir'. 00.4.s8 'dream up' = 'imaginent' ('rêvent' would be a calque). 00.4.s9 'exactement' / 'en moyenne' match the on-screen tags 'exact' / 'on average'. 00.5.s1 is the spoken French title (the on-screen title stays English); 00.5.s2 'learner's map' = 'une carte pour s'initier au projet MilaDy' (the narrator does not present itself as a learner). ch00.Q.s1 follows question.fr of the English script word for word, with {metric} on 'la fréquence' (pen underline on 'how often' and 'just before' on the English card). Markup: {b} on champ / champs magnétiques, {metric} on the 'how often' phrases, {model} on machines. Typography: no-break space (U+00A0) before '?', per French usage, so a subtitle line never starts with '?'. Flow matching does not occur in ch00 (the 00.4 cloud teaser is not named): its gloss belongs to its first narrated use, in film order. TTS: MilaDy has an English lexicon pin; for the French voice check whether 'mi-lé-di' is wanted. Length: 213 French words for 181 English (+18 %); the needle flip cue (00.1.s3) lands about 1.5 s later than the English 7 s, absorbed by the French timeline."
+}

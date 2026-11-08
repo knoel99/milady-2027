@@ -1,0 +1,18 @@
+[Script Info]
+ScriptType: v4.00+
+PlayResX: 1920
+PlayResY: 1080
+WrapStyle: 2
+ScaledBorderAndShadow: yes
+YCbCr Matrix: TV.709
+
+[V4+ Styles]
+Format: Name, Fontname, Fontsize, PrimaryColour, SecondaryColour, OutlineColour, BackColour, Bold, Italic, Underline, StrikeOut, ScaleX, ScaleY, Spacing, Angle, BorderStyle, Outline, Shadow, Alignment, MarginL, MarginR, MarginV, Encoding
+Style: Sub,Inter Medium,42,&H00F7F4F2,&H00F7F4F2,&H38140F0B,&H00000000,0,0,0,0,100,100,0,0,3,12,0,2,240,240,64,1
+
+[Events]
+Format: Layer, Start, End, Style, Name, MarginL, MarginR, MarginV, Effect, Text
+Dialogue: 0,0:00:00.32,0:00:02.98,Sub,,0,0,0,,{\fad(120,100)\move(960,1020,960,1016,0,120)}First product off the\Nline: the flat sheet,
+Dialogue: 0,0:00:03.06,0:00:05.82,Sub,,0,0,0,,{\fad(120,100)\move(960,1020,960,1016,0,120)}eleven {\c&H7AAF1B&}diffusivities{\c&HF7F4F2&}, sixteen runs each.
+Dialogue: 0,0:00:05.90,0:00:08.86,Sub,,0,0,0,,{\fad(120,100)\move(960,1020,960,1016,0,120)}The bet, a check on the\Ndata: at every setting,
+Dialogue: 0,0:00:08.94,0:00:13.91,Sub,,0,0,0,,{\fad(120,100)\move(960,1020,960,1016,0,120)}the {\c&H00A1ED&}average dissipation{\c&HF7F4F2&} matches the\Ninjected power, within five percent.

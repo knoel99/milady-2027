@@ -13,7 +13,13 @@ Text of a request = "[calm, natural narrator voice] " + the paragraph's sentence
   no request contains a paragraph break: the "[long pause]" between paragraphs is realised by align.py as
   LONG_PAUSE_S of silence (+ the paragraph's hold_after). No short/medium pauses, no <emphasis>/<stress>.
 Cache: audio/cache/<key>.mp3 (as received), <key>.wav (decoded once to 48 kHz mono PCM: exact durations),
-  <key>.json (text, voice, settings, words, duration). key = sha256 of (text, voice, model, settings).
+  <key>.json (text, voice, settings, words, duration). key = sha256 of (text, voice, model, settings); the
+  settings hold the language, and a non-English key also hashes the language explicitly: key = (lang, text,
+  voice, settings). English keys are unchanged, so the paid English cache stays valid.
+Language (the film's "lang", set by tools/assemble_cut.py --lang): "en" (default) as above; "fr" = body
+  "language": "fr" (every other validated setting unchanged, acting cue included), lexicon audio/lexicon_fr.json
+  (respellings: Fish phoneme pins are English-only), and a live run refuses to bill a paragraph that still
+  contains an untranslated (English) sentence (TTS_ALLOW_UNTRANSLATED=1 to force).
 
 Modes (--mode):
   live         cached audio, else a request to the API (retries with exponential backoff)
@@ -24,9 +30,10 @@ Usage:
   python3 -I audio/tts.py script/_build/film_core.json [--mode live] [--only 04.1,04.2 (synthesise only these)] [--jobs 2]
                           [--max-new-words 15000] [--manifest script/_build/core_tts.json]
   python3 -I audio/tts.py --test "One short sentence." --voice-from script/ch00.json   (one live request)
+  python3 -I audio/tts.py --test "Une phrase." --voice-from script/fr/ch00.json --lang fr
 Writes the manifest script/_build/<name>_tts.json read by align.py.
 """
-import argparse, hashlib, json, math, os, random, re, subprocess, sys, time, urllib.error, urllib.request, wave
+import argparse, hashlib, json, math, os, random, re, subprocess, sys, threading, time, urllib.error, urllib.request, wave
 from concurrent.futures import ThreadPoolExecutor
 
 import numpy as np
@@ -43,6 +50,7 @@ FISH_BODY = {
     "prosody": {"speed": 1.0, "normalize_loudness": True},
 }
 ACTING_CUE = "[calm, natural narrator voice]"
+LANGS = ("en", "fr")
 LONG_PAUSE_S = 0.9                           # silence standing for [long pause] between paragraphs (align.py)
 RAW_WPM = 146.0                              # measured raw pace of the Ethan voice (BRIEF D21)
 MARK = re.compile(r"\{(u|b|param|model|metric)\}(.*?)\{/\}")
@@ -58,12 +66,24 @@ def nwords(text):
 
 
 # ----------------------------------------------------------------------------- text
-def load_lexicon():
-    d = json.load(open(os.path.join(HERE, "lexicon.json")))
+def lexicon_path(lang="en"):
+    return os.path.join(HERE, "lexicon.json" if lang == "en" else f"lexicon_{lang}.json")
+
+
+def load_lexicon(lang="en"):
+    """{word: (kind, value)}. kind "phonemes" (ARPAbet pin) or "say" (respelling); an entry {"keep": true} is
+    documentation only (a word deliberately left as written, e.g. an English ML term in the French narration)."""
+    p = lexicon_path(lang)
+    if lang != "en" and not os.path.exists(p):
+        print(f"[tts] warning: no {os.path.relpath(p, ROOT)}: no pronunciation pins for '{lang}'", file=sys.stderr)
+        return {}
+    d = json.load(open(p))
     out = {}
     for word, v in d["entries"].items():
         if isinstance(v, str):
             out[word] = ("phonemes", v)
+        elif v.get("keep"):
+            continue
         elif v.get("phonemes"):
             out[word] = ("phonemes", v["phonemes"])
         elif v.get("say"):
@@ -90,12 +110,17 @@ def spoken_text(paragraph, lex):
     return ACTING_CUE + " " + pin(s, lex)
 
 
-def request_body(text, voice_id):
-    return dict(FISH_BODY, text=text, reference_id=voice_id)
+def request_body(text, voice_id, lang="en"):
+    """The validated body; only "language" follows the narration language (BRIEF section 9)."""
+    return dict(FISH_BODY, text=text, reference_id=voice_id, language=lang)
 
 
-def cache_key(body):
-    blob = json.dumps({"v": 1, "url": FISH_URL, "model": MODEL, "body": body}, sort_keys=True, ensure_ascii=False)
+def cache_key(body, lang="en"):
+    """(lang, text, voice, settings). English keys are exactly the historical ones (paid cache)."""
+    d = {"v": 1, "url": FISH_URL, "model": MODEL, "body": body}
+    if lang != "en":
+        d["lang"] = lang
+    blob = json.dumps(d, sort_keys=True, ensure_ascii=False)
     return hashlib.sha256(blob.encode()).hexdigest()[:24]
 
 
@@ -163,6 +188,14 @@ class TTSError(Exception):
     pass
 
 
+class TTSRefused(TTSError):
+    """The API refused the account (bad key, no credit, quota): stop the whole run, never loop."""
+
+
+FATAL_CODES = {401, 402, 403}
+ABORT = threading.Event()
+
+
 def call_fish(body, attempts=6):
     key = os.environ.get("FISH_API_KEY") or "proxy-injected"
     data = json.dumps(body, ensure_ascii=False).encode()
@@ -178,6 +211,9 @@ def call_fish(body, attempts=6):
             return audio
         except urllib.error.HTTPError as e:
             msg = e.read()[:400].decode("utf8", "replace")
+            if e.code in FATAL_CODES or re.search(r"quota|insufficient|balance|credit", msg, re.I):
+                ABORT.set()
+                raise TTSRefused(f"HTTP {e.code}: {msg}")
             if e.code not in RETRY_CODES:
                 raise TTSError(f"HTTP {e.code}: {msg}")
             last = f"HTTP {e.code}: {msg}"
@@ -216,34 +252,36 @@ def cached(key):
 
 
 # ----------------------------------------------------------------------------- main
-def plan_requests(film, lex, voice_id, only=None):
+def plan_requests(film, lex, voice_id, only=None, lang="en"):
     reqs = []
     for sc in film["scenes"]:
         if only and sc["id"] not in only:
             continue
         for pi, p in enumerate(sc["paragraphs"]):
             text = spoken_text(p, lex)
-            body = request_body(text, voice_id)
-            reqs.append({"scene": sc["id"], "para": pi, "key": cache_key(body), "body": body,
-                         "words": sum(nwords(x["text"]) for x in p["sentences"]), "paragraph": p})
+            body = request_body(text, voice_id, lang)
+            reqs.append({"scene": sc["id"], "para": pi, "key": cache_key(body, lang), "body": body,
+                         "words": sum(nwords(x["text"]) for x in p["sentences"]), "paragraph": p,
+                         "untranslated": [x["id"] for x in p["sentences"] if x.get("untranslated")]})
     return reqs
 
 
-def run_test(sentence, voice_from):
+def run_test(sentence, voice_from, lang="en"):
     unit = json.load(open(voice_from))
-    voice_id = (unit.get("voice") or {}).get("reference_id")
+    # an overlay script/fr/<unit>.json carries "voice"; an English script may carry "voice_fr"
+    voice_id = ((unit.get(f"voice_{lang}") if lang != "en" else None) or unit.get("voice") or {}).get("reference_id")
     if not voice_id or not re.fullmatch(r"[0-9a-f]{32}", voice_id):
         sys.exit(f"no valid voice.reference_id in {voice_from}")
     os.makedirs(CACHE, exist_ok=True)
-    lex = load_lexicon()
+    lex = load_lexicon(lang)
     p = {"sentences": [{"id": "test.s1", "text": sentence}]}
-    body = request_body(spoken_text(p, lex), voice_id)
-    key = cache_key(body)
+    body = request_body(spoken_text(p, lex), voice_id, lang)
+    key = cache_key(body, lang)
     print("[tts] test request:", json.dumps({"url": FISH_URL, "headers": {"model": MODEL, "authorization": "Bearer ***"},
                                                "body": body}, ensure_ascii=False))
     src = "cache"
     if not cached(key):
-        synth_live(key, body, {"text": body["text"], "voice": voice_id, "words": nwords(sentence), "test": True})
+        synth_live(key, body, {"text": body["text"], "voice": voice_id, "lang": lang, "words": nwords(sentence), "test": True})
         src = "live"
     dur = wav_duration(os.path.join(CACHE, key + ".wav"))
     w = nwords(sentence)
@@ -263,26 +301,31 @@ def main():
     ap.add_argument("--quiet", action="store_true")
     ap.add_argument("--test", help="one live request for this sentence (setup check)")
     ap.add_argument("--voice-from", help="with --test: the script file whose voice.reference_id is used")
+    ap.add_argument("--lang", choices=LANGS, help="with --test: the narration language (else the film's 'lang')")
     a = ap.parse_args()
     if a.test:
-        return run_test(a.test, a.voice_from or sys.exit("--voice-from script/<unit>.json is required"))
+        return run_test(a.test, a.voice_from or sys.exit("--voice-from script/<unit>.json is required"), a.lang or "en")
     film = json.load(open(a.film))
+    lang = film.get("lang") or "en"
+    if lang not in LANGS:
+        sys.exit(f"[tts] unknown narration language {lang!r} (one of {LANGS})")
     name = film.get("name") or os.path.basename(a.film).replace("film_", "").replace(".json", "")
     manifest = a.manifest or os.path.join(ROOT, "script", "_build", f"{name}_tts.json")
     voice_id = (film.get("voice") or {}).get("reference_id")
     if a.mode == "live" and (not voice_id or not re.fullmatch(r"[0-9a-f]{32}", str(voice_id))):
         sys.exit(f"[tts] live mode needs a voice.reference_id (32 hex characters) in the script, got {voice_id!r}")
     only = set(a.only.split(",")) if a.only else None
-    lex = load_lexicon()
+    lex = load_lexicon(lang)
     os.makedirs(CACHE, exist_ok=True)
     os.makedirs(os.path.join(CACHE, "placeholder"), exist_ok=True)
-    reqs = plan_requests(film, lex, voice_id or "NO_VOICE", None)
+    reqs = plan_requests(film, lex, voice_id or "NO_VOICE", None, lang)
     for r in reqs:
         r["cached"] = cached(r["key"]) is not None
     new = [r for r in reqs if not r["cached"] and (not only or r["scene"] in only)]
     nw = sum(r["words"] for r in new)
-    summary = {"name": name, "mode": a.mode, "voice": voice_id, "paragraphs": len(reqs),
-               "words": sum(r["words"] for r in reqs), "cached_paragraphs": len(reqs) - len(new),
+    summary = {"name": name, "mode": a.mode, "voice": voice_id, **({"lang": lang} if lang != "en" else {}),
+               "paragraphs": len(reqs),
+               "words": sum(r["words"] for r in reqs), "cached_paragraphs": sum(r["cached"] for r in reqs),
                "new_paragraphs": len(new), "new_words": nw, "new_audio_min_est": round(nw / RAW_WPM, 1)}
     if a.mode == "dry-run":
         os.makedirs(os.path.join(HERE, "requests"), exist_ok=True)
@@ -292,7 +335,16 @@ def main():
                                     "words": r["words"], "url": FISH_URL, "headers": {"model": MODEL},
                                     "body": r["body"]}, ensure_ascii=False) + "\n")
                 if not a.quiet:
-                    print(f"{r['scene']} p{r['para'] + 1} {r['words']:3d} words {'cached' if r['cached'] else 'NEW   '} | {r['body']['text']}")
+                    print(f"{r['scene']} p{r['para'] + 1} {r['words']:3d} words {'cached' if r['cached'] else 'NEW   '}"
+                          f"{' UNTRANSLATED' if r['untranslated'] else ''} | {r['body']['text']}")
+    untr = [r for r in new if r["untranslated"]]
+    if lang != "en":
+        summary["untranslated_paragraphs"] = sum(1 for r in reqs if r["untranslated"])
+    if a.mode == "live" and untr and os.environ.get("TTS_ALLOW_UNTRANSLATED") != "1":
+        print(json.dumps(summary))
+        sys.exit(f"[tts] {len(untr)} new {lang} paragraphs still contain English (untranslated) sentences, e.g. "
+                 + ", ".join(i for r in untr[:3] for i in r["untranslated"][:2])
+                 + f": translate them in script/{lang}/<unit>.json first (TTS_ALLOW_UNTRANSLATED=1 to bill them anyway)")
     if a.mode == "live" and nw > a.max_new_words:
         print(json.dumps(summary))
         sys.exit(f"[tts] {nw} new words to synthesise > --max-new-words {a.max_new_words}: run --mode dry-run to "
@@ -305,15 +357,22 @@ def main():
         fails = []
 
         def job(r):
+            if ABORT.is_set():            # the API refused the account: send nothing more
+                fails.append((r["scene"], r["para"], "skipped after refusal"))
+                return
             try:
                 d = synth_live(r["key"], r["body"], {"text": r["body"]["text"], "voice": voice_id, "words": r["words"],
-                                                     "scene": r["scene"], "para": r["para"]})
+                                                     "scene": r["scene"], "para": r["para"],
+                                                     **({"lang": lang} if lang != "en" else {})})
                 print(f"[tts] {r['scene']} p{r['para'] + 1}: {d:.2f} s, {r['words'] / d * 60:.0f} raw wpm")
             except Exception as e:      # keep going: the other paragraphs are paid for and cached
                 fails.append((r["scene"], r["para"], str(e)))
                 print(f"[tts] FAILED {r['scene']} p{r['para'] + 1}: {e}", file=sys.stderr)
         with ThreadPoolExecutor(max(1, a.jobs)) as ex:
             list(ex.map(job, todo.values()))
+        if ABORT.is_set():
+            sys.exit(f"[tts] the API refused the request (401/402/403 or quota): run stopped, "
+                     f"{len(todo) - len(fails)} paragraphs synthesised and cached, {len(fails)} not done")
         if fails:
             sys.exit(f"[tts] {len(fails)} requests failed; rerun to retry them (successful ones are cached)")
     # manifest
@@ -338,8 +397,8 @@ def main():
     sources = [e["source"] for v in scenes.values() for e in v]
     summary.update(fish=sources.count("fish"), placeholder=sources.count("placeholder"), missing=sources.count(None))
     os.makedirs(os.path.dirname(manifest), exist_ok=True)
-    json.dump({"name": name, "voice": voice_id, "mode": a.mode, "long_pause_s": LONG_PAUSE_S, "summary": summary,
-               "scenes": scenes}, open(manifest, "w"), indent=1)
+    json.dump({"name": name, "voice": voice_id, "mode": a.mode, **({"lang": lang} if lang != "en" else {}),
+               "long_pause_s": LONG_PAUSE_S, "summary": summary, "scenes": scenes}, open(manifest, "w"), indent=1)
     print("[tts]", json.dumps(summary))
 
 

@@ -1,0 +1,22 @@
+[Script Info]
+ScriptType: v4.00+
+PlayResX: 1920
+PlayResY: 1080
+WrapStyle: 2
+ScaledBorderAndShadow: yes
+YCbCr Matrix: TV.709
+
+[V4+ Styles]
+Format: Name, Fontname, Fontsize, PrimaryColour, SecondaryColour, OutlineColour, BackColour, Bold, Italic, Underline, StrikeOut, ScaleX, ScaleY, Spacing, Angle, BorderStyle, Outline, Shadow, Alignment, MarginL, MarginR, MarginV, Encoding
+Style: Sub,Inter Medium,42,&H00F7F4F2,&H00F7F4F2,&H38140F0B,&H00000000,0,0,0,0,100,100,0,0,3,12,0,2,240,240,64,1
+
+[Events]
+Format: Layer, Start, End, Style, Name, MarginL, MarginR, MarginV, Effect, Text
+Dialogue: 0,0:00:00.32,0:00:04.56,Sub,,0,0,0,,{\fad(120,100)\move(960,1020,960,1016,0,120)}MilaDy, lancé en deux mille vingt-six,\Napporte l'apprentissage automatique
+Dialogue: 0,0:00:04.64,0:00:08.54,Sub,,0,0,0,,{\fad(120,100)\move(960,1020,960,1016,0,120)}là où se rencontrent les cuves,\Nles ordinateurs et les cadrans.
+Dialogue: 0,0:00:08.62,0:00:12.68,Sub,,0,0,0,,{\fad(120,100)\move(960,1020,960,1016,0,120)}Pourtant, la piste des données reste\Nmince : en deux mille vingt-deux,
+Dialogue: 0,0:00:12.76,0:00:16.06,Sub,,0,0,0,,{\fad(120,100)\move(960,1020,960,1016,0,120)}les méthodes d'apprentissage\Nessayées par une étude n'ont
+Dialogue: 0,0:00:16.14,0:00:20.08,Sub,,0,0,0,,{\fad(120,100)\move(960,1020,960,1016,0,120)}pas su prévoir de façon fiable\Nun renversement géomagnétique.
+Dialogue: 0,0:00:20.95,0:00:24.68,Sub,,0,0,0,,{\fad(120,100)\move(960,1020,960,1016,0,120)}Le stage et un projet de\Nthèse y ajoutent un pari :
+Dialogue: 0,0:00:24.76,0:00:30.76,Sub,,0,0,0,,{\fad(120,100)\move(960,1020,960,1016,0,120)}des {\c&HF09CB4&}machines{\c&HF7F4F2&} qui imaginent des champs\Nde dynamo et obéissent à leur physique.
+Dialogue: 0,0:00:31.71,0:00:35.44,Sub,,0,0,0,,{\fad(120,100)\move(960,1020,960,1016,0,120)}Derrière chaque piste, la même course :\Nl'étirement contre l'estompage.

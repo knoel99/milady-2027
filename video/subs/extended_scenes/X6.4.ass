@@ -1,0 +1,26 @@
+[Script Info]
+ScriptType: v4.00+
+PlayResX: 1920
+PlayResY: 1080
+WrapStyle: 2
+ScaledBorderAndShadow: yes
+YCbCr Matrix: TV.709
+
+[V4+ Styles]
+Format: Name, Fontname, Fontsize, PrimaryColour, SecondaryColour, OutlineColour, BackColour, Bold, Italic, Underline, StrikeOut, ScaleX, ScaleY, Spacing, Angle, BorderStyle, Outline, Shadow, Alignment, MarginL, MarginR, MarginV, Encoding
+Style: Sub,Inter Medium,42,&H00F7F4F2,&H00F7F4F2,&H38140F0B,&H00000000,0,0,0,0,100,100,0,0,3,12,0,2,240,240,64,1
+
+[Events]
+Format: Layer, Start, End, Style, Name, MarginL, MarginR, MarginV, Effect, Text
+Dialogue: 0,0:00:01.77,0:00:04.04,Sub,,0,0,0,,{\fad(120,100)\move(960,1020,960,1016,0,120)}The VKS bet would train a {\c&HF09CB4&}generator{\c&HF7F4F2&} on the
+Dialogue: 0,0:00:04.12,0:00:07.08,Sub,,0,0,0,,{\fad(120,100)\move(960,1020,960,1016,0,120)}partners' simulations of\Nthe sodium experiment.
+Dialogue: 0,0:00:07.48,0:00:11.06,Sub,,0,0,0,,{\fad(120,100)\move(960,1020,960,1016,0,120)}In their reference run,\Nfour patterns dominate:
+Dialogue: 0,0:00:11.14,0:00:15.06,Sub,,0,0,0,,{\fad(120,100)\move(960,1020,960,1016,0,120)}a dipole, a quadrupole,\Nand two {\c&HE58739&}flow{\c&HF7F4F2&} patterns.
+Dialogue: 0,0:00:15.80,0:00:18.75,Sub,,0,0,0,,{\fad(120,100)\move(960,1020,960,1016,0,120)}The bet: their energy\Nshares within ten percent,
+Dialogue: 0,0:00:18.83,0:00:20.58,Sub,,0,0,0,,{\fad(120,100)\move(960,1020,960,1016,0,120)}and the {\c&H00A1ED&}distribution distance{\c&HF7F4F2&}
+Dialogue: 0,0:00:20.66,0:00:24.33,Sub,,0,0,0,,{\fad(120,100)\move(960,1020,960,1016,0,120)}of dipole and quadrupole\Nunder twice the {\c&H00A1ED&}noise floor{\c&HF7F4F2&}.
+Dialogue: 0,0:00:24.67,0:00:27.07,Sub,,0,0,0,,{\fad(120,100)\move(960,1020,960,1016,0,120)}Plus the iron rule within one percent,
+Dialogue: 0,0:00:27.15,0:00:31.72,Sub,,0,0,0,,{\fad(120,100)\move(960,1020,960,1016,0,120)}and Rice's reversal rate inside\Nthe simulated count's error bars.
+Dialogue: 0,0:00:32.96,0:00:36.04,Sub,,0,0,0,,{\fad(120,100)\move(960,1020,960,1016,0,120)}Confidence: low. The data are not public,
+Dialogue: 0,0:00:36.12,0:00:41.54,Sub,,0,0,0,,{\fad(120,100)\move(960,1020,960,1016,0,120)}no file reader exists yet, and few\Nreversals mean wide error bars.
+Dialogue: 0,0:00:42.00,0:00:47.26,Sub,,0,0,0,,{\fad(120,100)\move(960,1020,960,1016,0,120)}Worth asking first: how many snapshots\Nper configuration, and by when?

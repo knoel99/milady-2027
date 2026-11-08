@@ -1,0 +1,23 @@
+[Script Info]
+ScriptType: v4.00+
+PlayResX: 1920
+PlayResY: 1080
+WrapStyle: 2
+ScaledBorderAndShadow: yes
+YCbCr Matrix: TV.709
+
+[V4+ Styles]
+Format: Name, Fontname, Fontsize, PrimaryColour, SecondaryColour, OutlineColour, BackColour, Bold, Italic, Underline, StrikeOut, ScaleX, ScaleY, Spacing, Angle, BorderStyle, Outline, Shadow, Alignment, MarginL, MarginR, MarginV, Encoding
+Style: Sub,Inter Medium,42,&H00F7F4F2,&H00F7F4F2,&H38140F0B,&H00000000,0,0,0,0,100,100,0,0,3,12,0,2,240,240,64,1
+
+[Events]
+Format: Layer, Start, End, Style, Name, MarginL, MarginR, MarginV, Effect, Text
+Dialogue: 0,0:00:03.32,0:00:06.93,Sub,,0,0,0,,{\fad(120,100)\move(960,1020,960,1016,0,120)}Quel mouvement peut faire\Ncroître un {\c&H3468EB&}champ magnétique{\c&HF7F4F2&} ?
+Dialogue: 0,0:00:07.01,0:00:08.67,Sub,,0,0,0,,{\fad(120,100)\move(960,1020,960,1016,0,120)}Dans un conducteur parfait,
+Dialogue: 0,0:00:08.75,0:00:12.77,Sub,,0,0,0,,{\fad(120,100)\move(960,1020,960,1016,0,120)}les lignes de champ seraient\Ndes fils gelés dans le fluide.
+Dialogue: 0,0:00:12.85,0:00:16.91,Sub,,0,0,0,,{\fad(120,100)\move(960,1020,960,1016,0,120)}Partout où l'{\c&HE58739&}écoulement{\c&HF7F4F2&} étire\Nun fil, le champ s'y renforce.
+Dialogue: 0,0:00:17.78,0:00:22.66,Sub,,0,0,0,,{\fad(120,100)\move(960,1020,960,1016,0,120)}Dans un vrai métal, les fils s'estompent,\Ncomme de l'encre qui s'étale.
+Dialogue: 0,0:00:22.74,0:00:28.03,Sub,,0,0,0,,{\fad(120,100)\move(960,1020,960,1016,0,120)}La vitesse de cet estompage est fixée\Npar la {\c&H7AAF1B&}diffusivité magnétique{\c&HF7F4F2&} du métal.
+Dialogue: 0,0:00:28.11,0:00:30.06,Sub,,0,0,0,,{\fad(120,100)\move(960,1020,960,1016,0,120)}Même écoulement, deux métaux.
+Dialogue: 0,0:00:30.14,0:00:34.87,Sub,,0,0,0,,{\fad(120,100)\move(960,1020,960,1016,0,120)}Dans un bon conducteur, l'estompage\Nest lent : les fils restent nets.
+Dialogue: 0,0:00:34.95,0:00:39.59,Sub,,0,0,0,,{\fad(120,100)\move(960,1020,960,1016,0,120)}Dans un mauvais, il est rapide :\Nles fils se fondent dans le flou.

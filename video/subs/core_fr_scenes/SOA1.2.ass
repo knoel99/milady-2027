@@ -1,0 +1,23 @@
+[Script Info]
+ScriptType: v4.00+
+PlayResX: 1920
+PlayResY: 1080
+WrapStyle: 2
+ScaledBorderAndShadow: yes
+YCbCr Matrix: TV.709
+
+[V4+ Styles]
+Format: Name, Fontname, Fontsize, PrimaryColour, SecondaryColour, OutlineColour, BackColour, Bold, Italic, Underline, StrikeOut, ScaleX, ScaleY, Spacing, Angle, BorderStyle, Outline, Shadow, Alignment, MarginL, MarginR, MarginV, Encoding
+Style: Sub,Inter Medium,42,&H00F7F4F2,&H00F7F4F2,&H38140F0B,&H00000000,0,0,0,0,100,100,0,0,3,12,0,2,240,240,64,1
+
+[Events]
+Format: Layer, Start, End, Style, Name, MarginL, MarginR, MarginV, Effect, Text
+Dialogue: 0,0:00:00.32,0:00:01.88,Sub,,0,0,0,,{\fad(120,100)\move(960,1020,960,1016,0,120)}Deuxième piste, la théorie.
+Dialogue: 0,0:00:01.96,0:00:04.80,Sub,,0,0,0,,{\fad(120,100)\move(960,1020,960,1016,0,120)}Mille neuf cent dix-neuf :\Nun fluide conducteur en
+Dialogue: 0,0:00:04.88,0:00:07.96,Sub,,0,0,0,,{\fad(120,100)\move(960,1020,960,1016,0,120)}mouvement pourrait entretenir\Nle champ du Soleil.
+Dialogue: 0,0:00:08.04,0:00:10.88,Sub,,0,0,0,,{\fad(120,100)\move(960,1020,960,1016,0,120)}Mille neuf cent trente-trois :\Naucun écoulement ne
+Dialogue: 0,0:00:10.96,0:00:14.32,Sub,,0,0,0,,{\fad(120,100)\move(960,1020,960,1016,0,120)}peut entretenir un champ\Nsymétrique autour d'un axe.
+Dialogue: 0,0:00:15.19,0:00:16.88,Sub,,0,0,0,,{\fad(120,100)\move(960,1020,960,1016,0,120)}Mille neuf cent cinquante-huit :
+Dialogue: 0,0:00:16.96,0:00:20.88,Sub,,0,0,0,,{\fad(120,100)\move(960,1020,960,1016,0,120)}les premiers exemples démontrés\Nd'écoulements qui en sont capables.
+Dialogue: 0,0:00:20.96,0:00:24.77,Sub,,0,0,0,,{\fad(120,100)\move(960,1020,960,1016,0,120)}Dans les années soixante-dix arrivent\Ndes écoulements dynamos simples,
+Dialogue: 0,0:00:24.85,0:00:27.96,Sub,,0,0,0,,{\fad(120,100)\move(960,1020,960,1016,0,120)}qui deviendront les plans\Nde Riga et de Karlsruhe.

@@ -1,0 +1,21 @@
+[Script Info]
+ScriptType: v4.00+
+PlayResX: 1920
+PlayResY: 1080
+WrapStyle: 2
+ScaledBorderAndShadow: yes
+YCbCr Matrix: TV.709
+
+[V4+ Styles]
+Format: Name, Fontname, Fontsize, PrimaryColour, SecondaryColour, OutlineColour, BackColour, Bold, Italic, Underline, StrikeOut, ScaleX, ScaleY, Spacing, Angle, BorderStyle, Outline, Shadow, Alignment, MarginL, MarginR, MarginV, Encoding
+Style: Sub,Inter Medium,42,&H00F7F4F2,&H00F7F4F2,&H38140F0B,&H00000000,0,0,0,0,100,100,0,0,3,12,0,2,240,240,64,1
+
+[Events]
+Format: Layer, Start, End, Style, Name, MarginL, MarginR, MarginV, Effect, Text
+Dialogue: 0,0:00:00.32,0:00:05.28,Sub,,0,0,0,,{\fad(120,100)\move(960,1020,960,1016,0,120)}The first shelf fits in one message,\Nto write before renting anything.
+Dialogue: 0,0:00:05.36,0:00:07.58,Sub,,0,0,0,,{\fad(120,100)\move(960,1020,960,1016,0,120)}This ranking is only a proposal.
+Dialogue: 0,0:00:07.66,0:00:10.21,Sub,,0,0,0,,{\fad(120,100)\move(960,1020,960,1016,0,120)}The supervisors may well change it.
+Dialogue: 0,0:00:11.08,0:00:14.06,Sub,,0,0,0,,{\fad(120,100)\move(960,1020,960,1016,0,120)}Several answers could\Nchange what gets computed,
+Dialogue: 0,0:00:14.14,0:00:16.72,Sub,,0,0,0,,{\fad(120,100)\move(960,1020,960,1016,0,120)}or whether anything is rented at all.
+Dialogue: 0,0:00:16.80,0:00:19.45,Sub,,0,0,0,,{\fad(120,100)\move(960,1020,960,1016,0,120)}The cheapest experiment\Nis a good question,
+Dialogue: 0,0:00:19.53,0:00:22.21,Sub,,0,0,0,,{\fad(120,100)\move(960,1020,960,1016,0,120)}asked before renting a graphics card.

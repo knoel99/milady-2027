@@ -10,7 +10,23 @@
 #   make fit DIR=takes/ [CUT=..] [RETIME=auto]   fit an external recording (NARRATION.md)
 #   make tts-dry CUT=...                  print every TTS request and the word counts
 #   make test                             end-to-end test on script/_test (placeholder audio, draft, no API)
+#   LANG=fr on any target above           French narration over the same English visuals (script/fr/<unit>.json):
+#                                         out/film_<cut>_fr.mp4, subs/<cut>_fr.*, stems <cut>_fr_*; LANG=en is the default
 export NODE_PATH := /opt/node22/lib/node_modules
+# Narration language. LANG is also the locale variable: only the values en and fr select the narration (command
+# line or environment); any other value is a locale and means English. The commands themselves then run with
+# LANG=C.UTF-8, never with the bare "fr". FILM_LANG=fr is accepted too.
+ifneq ($(filter en fr,$(LANG)),)
+  FILM_LANG := $(LANG)
+  override LANG := C.UTF-8
+  export LANG
+endif
+FILM_LANG ?= en
+ifeq ($(filter en fr,$(FILM_LANG)),)
+  $(error narration language "$(FILM_LANG)": LANG=en or LANG=fr)
+endif
+LSFX := $(if $(filter fr,$(FILM_LANG)),_fr,)
+LFLAG := --lang $(FILM_LANG)
 CUT ?= extended
 CUTS ?= core extended
 WORKERS ?= 4
@@ -18,12 +34,12 @@ NARRATION ?= tts
 RETIME ?= none
 TTS ?=
 OPTS ?=
-BUILD = node build.js --workers $(WORKERS) --narration $(NARRATION) $(if $(TTS),--tts $(TTS)) $(OPTS)
+BUILD = node build.js --workers $(WORKERS) --narration $(NARRATION) $(LFLAG) $(if $(TTS),--tts $(TTS)) $(OPTS)
 
-.PHONY: help data plan film films draft scene check narration narration-script fit tts-dry tts-test stills test serve sfx-demo clean clean-draft
+.PHONY: help data plan film films draft scene check narration narration-script fit tts-dry tts-test stills test test-fr serve sfx-demo clean clean-draft
 
 help:
-	@sed -n '1,13p' Makefile
+	@sed -n '1,14p' Makefile
 
 data:                       ## refresh data/*.json from the repository's existing results (unchanged content is not rewritten)
 	python3 -I tools/data_existing.py
@@ -42,37 +58,40 @@ draft: data
 	$(BUILD) --cut $(CUT) --draft
 
 scene: data
-	@test -n "$(S)" || (echo "usage: make scene S=<scene id> [CUT=core|extended]"; exit 2)
+	@test -n "$(S)" || (echo "usage: make scene S=<scene id> [CUT=core|extended] [LANG=fr]"; exit 2)
 	$(BUILD) --cut $(CUT) --only $(S) --force
 
 check:
-	@test -n "$(U)" || (echo "usage: make check U=<unit> [S=id,id]"; exit 2)
-	node build.js --unit $(U) --check $(if $(S),--only $(S)) $(OPTS)
+	@test -n "$(U)" || (echo "usage: make check U=<unit> [S=id,id] [LANG=fr]"; exit 2)
+	node build.js --unit $(U) --check $(LFLAG) $(if $(S),--only $(S)) $(OPTS)
 
 narration: data
-	@test -n "$(VOICE)" || (echo "usage: make narration VOICE=<reference_id>|default [CUTS='core extended']"; exit 2)
-	python3 -I tools/set_voice.py $(VOICE)
+	@test -n "$(VOICE)" || (echo "usage: make narration VOICE=<reference_id>|default [LANG=fr] [CUTS='core extended']"; exit 2)
+	python3 -I tools/set_voice.py $(LFLAG) $(VOICE)
 	@set -e; for c in $(CUTS); do $(BUILD) --cut $$c; done
 
 narration-script:
-	python3 -I tools/fit_narration.py --cut $(CUT) --export
+	python3 -I tools/fit_narration.py --cut $(CUT) --export $(LFLAG)
 
 fit:
-	@test -n "$(DIR)$(AUDIO)" || (echo "usage: make fit DIR=<folder of <scene id>.wav> | AUDIO=<one file> [CUT=..] [RETIME=none|auto|all]"; exit 2)
-	python3 -I tools/fit_narration.py --cut $(CUT) $(if $(DIR),--dir $(DIR)) $(if $(AUDIO),--audio $(AUDIO)) --retime $(RETIME)
+	@test -n "$(DIR)$(AUDIO)" || (echo "usage: make fit DIR=<folder of <scene id>.wav> | AUDIO=<one file> [CUT=..] [RETIME=none|auto|all] [LANG=fr]"; exit 2)
+	python3 -I tools/fit_narration.py --cut $(CUT) $(LFLAG) $(if $(DIR),--dir $(DIR)) $(if $(AUDIO),--audio $(AUDIO)) --retime $(RETIME)
 
 tts-dry:
-	python3 -I tools/assemble_cut.py --cut $(CUT)
-	python3 -I audio/tts.py script/_build/film_$(CUT).json --mode dry-run
+	python3 -I tools/assemble_cut.py --cut $(CUT) $(LFLAG)
+	python3 -I audio/tts.py script/_build/film_$(CUT)$(LSFX).json --mode dry-run
 
-tts-test:                   ## ONE live request: make tts-test SENTENCE="..." UNIT=ch00
-	python3 -I audio/tts.py --test "$(SENTENCE)" --voice-from script/$(UNIT).json
+tts-test:                   ## ONE live request: make tts-test SENTENCE="..." UNIT=ch00 [LANG=fr: voice of script/fr/<unit>.json]
+	python3 -I audio/tts.py --test "$(SENTENCE)" $(LFLAG) --voice-from $(if $(LSFX),$(firstword $(wildcard script/fr/$(UNIT).json) script/$(UNIT).json),script/$(UNIT).json)
 
 stills:                     ## make stills S=scenes/ch04/04_1_x.html T=0.5,2,4 [ENTRY=file.json]
 	node stills.js --scene $(S) --times $(T) --outdir out/stills $(if $(ENTRY),--entry $(ENTRY))
 
-test:
-	bash tools/test_pipeline.sh
+test:                       ## LANG=fr: the French test (tools/test_pipeline_fr.sh)
+	bash tools/test_pipeline$(LSFX).sh
+
+test-fr:
+	bash tools/test_pipeline_fr.sh
 
 serve:                      ## preview scenes in a browser: http://127.0.0.1:8765/scenes/<unit>/<file>.html
 	node tools/server.js 8765
@@ -84,4 +103,4 @@ clean-draft:
 	rm -rf out/draft out/check
 
 clean:                      ## renders and builds only (keeps audio/cache: paid TTS)
-	rm -rf out/scenes out/draft out/check out/stems out/film_* out/*_build_report.json .tmp
+	rm -rf out/scenes out/scenes_fr out/draft out/check out/stems out/film_* out/*_build_report.json .tmp

@@ -1,0 +1,28 @@
+[Script Info]
+ScriptType: v4.00+
+PlayResX: 1920
+PlayResY: 1080
+WrapStyle: 2
+ScaledBorderAndShadow: yes
+YCbCr Matrix: TV.709
+
+[V4+ Styles]
+Format: Name, Fontname, Fontsize, PrimaryColour, SecondaryColour, OutlineColour, BackColour, Bold, Italic, Underline, StrikeOut, ScaleX, ScaleY, Spacing, Angle, BorderStyle, Outline, Shadow, Alignment, MarginL, MarginR, MarginV, Encoding
+Style: Sub,Inter Medium,42,&H00F7F4F2,&H00F7F4F2,&H38140F0B,&H00000000,0,0,0,0,100,100,0,0,3,12,0,2,240,240,64,1
+
+[Events]
+Format: Layer, Start, End, Style, Name, MarginL, MarginR, MarginV, Effect, Text
+Dialogue: 0,0:00:00.37,0:00:03.41,Sub,,0,0,0,,{\fad(120,100)\move(960,1020,960,1016,0,120)}Impose the budget on the\Ncrowd, during training.
+Dialogue: 0,0:00:03.85,0:00:07.81,Sub,,0,0,0,,{\fad(120,100)\move(960,1020,960,1016,0,120)}Draw a batch of snapshots at\Nany {\c&H7AAF1B&}Gamma{\c&HF7F4F2&}, even without data.
+Dialogue: 0,0:00:08.25,0:00:12.12,Sub,,0,0,0,,{\fad(120,100)\move(960,1020,960,1016,0,120)}Average their energy change\Nand square it: this penalty,
+Dialogue: 0,0:00:12.20,0:00:16.34,Sub,,0,0,0,,{\fad(120,100)\move(960,1020,960,1016,0,120)}the crowd loss, vanishes\Nonly when the crowd balances.
+Dialogue: 0,0:00:17.08,0:00:18.28,Sub,,0,0,0,,{\fad(120,100)\move(960,1020,960,1016,0,120)}But there is a trap.
+Dialogue: 0,0:00:18.72,0:00:22.31,Sub,,0,0,0,,{\fad(120,100)\move(960,1020,960,1016,0,120)}Even for a balanced crowd,\Na batch's average wobbles;
+Dialogue: 0,0:00:22.39,0:00:25.08,Sub,,0,0,0,,{\fad(120,100)\move(960,1020,960,1016,0,120)}its square grows with the scatter.
+Dialogue: 0,0:00:25.29,0:00:27.82,Sub,,0,0,0,,{\fad(120,100)\move(960,1020,960,1016,0,120)}So training also squeezes the scatter,
+Dialogue: 0,0:00:27.90,0:00:32.08,Sub,,0,0,0,,{\fad(120,100)\move(960,1020,960,1016,0,120)}nudging every snapshot toward\Nbalance: toward the spike.
+Dialogue: 0,0:00:32.70,0:00:35.17,Sub,,0,0,0,,{\fad(120,100)\move(960,1020,960,1016,0,120)}It showed up while\Nbuilding this experiment.
+Dialogue: 0,0:00:35.91,0:00:39.00,Sub,,0,0,0,,{\fad(120,100)\move(960,1020,960,1016,0,120)}The fix: split the batch\Ninto two independent
+Dialogue: 0,0:00:39.08,0:00:41.88,Sub,,0,0,0,,{\fad(120,100)\move(960,1020,960,1016,0,120)}juries and multiply their averages.
+Dialogue: 0,0:00:42.30,0:00:47.40,Sub,,0,0,0,,{\fad(120,100)\move(960,1020,960,1016,0,120)}On average, the scatter drops out,\Nleaving only the crowd's imbalance.
+Dialogue: 0,0:00:47.78,0:00:51.31,Sub,,0,0,0,,{\fad(120,100)\move(960,1020,960,1016,0,120)}Does it pay off? The next tests will tell.

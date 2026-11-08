@@ -1,0 +1,24 @@
+[Script Info]
+ScriptType: v4.00+
+PlayResX: 1920
+PlayResY: 1080
+WrapStyle: 2
+ScaledBorderAndShadow: yes
+YCbCr Matrix: TV.709
+
+[V4+ Styles]
+Format: Name, Fontname, Fontsize, PrimaryColour, SecondaryColour, OutlineColour, BackColour, Bold, Italic, Underline, StrikeOut, ScaleX, ScaleY, Spacing, Angle, BorderStyle, Outline, Shadow, Alignment, MarginL, MarginR, MarginV, Encoding
+Style: Sub,Inter Medium,42,&H00F7F4F2,&H00F7F4F2,&H38140F0B,&H00000000,0,0,0,0,100,100,0,0,3,12,0,2,240,240,64,1
+
+[Events]
+Format: Layer, Start, End, Style, Name, MarginL, MarginR, MarginV, Effect, Text
+Dialogue: 0,0:00:00.37,0:00:03.99,Sub,,0,0,0,,{\fad(120,100)\move(960,1020,960,1016,0,120)}How precise are those edges?\NEach run gets a long fit
+Dialogue: 0,0:00:04.07,0:00:08.24,Sub,,0,0,0,,{\fad(120,100)\move(960,1020,960,1016,0,120)}over its second half, a late\Nfit over its last quarter.
+Dialogue: 0,0:00:08.56,0:00:14.29,Sub,,0,0,0,,{\fad(120,100)\move(960,1020,960,1016,0,120)}A finer grid rechecks two settings.\NAt {\c&H7AAF1B&}Rm{\c&HF7F4F2&} twelve, all three agree.
+Dialogue: 0,0:00:15.03,0:00:18.95,Sub,,0,0,0,,{\fad(120,100)\move(960,1020,960,1016,0,120)}At seventeen and a half,\Nright on the edge: same sign?
+Dialogue: 0,0:00:22.19,0:00:27.67,Sub,,0,0,0,,{\fad(120,100)\move(960,1020,960,1016,0,120)}No: the long fit says growing;\Nthe late fit and finer grid, fading.
+Dialogue: 0,0:00:27.98,0:00:30.91,Sub,,0,0,0,,{\fad(120,100)\move(960,1020,960,1016,0,120)}This edge is known to\Nabout zero point one;
+Dialogue: 0,0:00:30.99,0:00:34.33,Sub,,0,0,0,,{\fad(120,100)\move(960,1020,960,1016,0,120)}the third, near twenty-seven,\Nto about one.
+Dialogue: 0,0:00:34.75,0:00:40.70,Sub,,0,0,0,,{\fad(120,100)\move(960,1020,960,1016,0,120)}A likely cause, still unchecked: the modes\Noscillate, so the growth curve wobbles.
+Dialogue: 0,0:00:40.89,0:00:44.05,Sub,,0,0,0,,{\fad(120,100)\move(960,1020,960,1016,0,120)}The divergence, at least,\Nstays at rounding error.
+Dialogue: 0,0:00:44.22,0:00:47.74,Sub,,0,0,0,,{\fad(120,100)\move(960,1020,960,1016,0,120)}That unresolved sign is\Nwhere Bet one begins.

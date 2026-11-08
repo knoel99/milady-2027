@@ -1,0 +1,27 @@
+[Script Info]
+ScriptType: v4.00+
+PlayResX: 1920
+PlayResY: 1080
+WrapStyle: 2
+ScaledBorderAndShadow: yes
+YCbCr Matrix: TV.709
+
+[V4+ Styles]
+Format: Name, Fontname, Fontsize, PrimaryColour, SecondaryColour, OutlineColour, BackColour, Bold, Italic, Underline, StrikeOut, ScaleX, ScaleY, Spacing, Angle, BorderStyle, Outline, Shadow, Alignment, MarginL, MarginR, MarginV, Encoding
+Style: Sub,Inter Medium,42,&H00F7F4F2,&H00F7F4F2,&H38140F0B,&H00000000,0,0,0,0,100,100,0,0,3,12,0,2,240,240,64,1
+
+[Events]
+Format: Layer, Start, End, Style, Name, MarginL, MarginR, MarginV, Effect, Text
+Dialogue: 0,0:00:00.32,0:00:03.30,Sub,,0,0,0,,{\fad(120,100)\move(960,1020,960,1016,0,120)}Where the {\c&HF09CB4&}generative{\c&HF7F4F2&} and\Nconstraint tracks cross
+Dialogue: 0,0:00:03.38,0:00:06.27,Sub,,0,0,0,,{\fad(120,100)\move(960,1020,960,1016,0,120)}the dynamo tracks, we found the map empty.
+Dialogue: 0,0:00:06.35,0:00:09.40,Sub,,0,0,0,,{\fad(120,100)\move(960,1020,960,1016,0,120)}An independent thesis\Nproposal aims at that spot:
+Dialogue: 0,0:00:09.48,0:00:12.68,Sub,,0,0,0,,{\fad(120,100)\move(960,1020,960,1016,0,120)}five gaps, each beside\Nits nearest neighbour.
+Dialogue: 0,0:00:13.55,0:00:15.75,Sub,,0,0,0,,{\fad(120,100)\move(960,1020,960,1016,0,120)}One: a generator of dynamo fields.
+Dialogue: 0,0:00:15.83,0:00:18.67,Sub,,0,0,0,,{\fad(120,100)\move(960,1020,960,1016,0,120)}Two: {\c&HE58739&}velocity{\c&HF7F4F2&} and\Nmagnetic field with exactly
+Dialogue: 0,0:00:18.75,0:00:22.80,Sub,,0,0,0,,{\fad(120,100)\move(960,1020,960,1016,0,120)}zero divergence, in a walled\Ncylinder with iron and vacuum.
+Dialogue: 0,0:00:22.88,0:00:26.04,Sub,,0,0,0,,{\fad(120,100)\move(960,1020,960,1016,0,120)}Three: energy budgets\Nimposed on the {\c&H00A1ED&}distribution{\c&HF7F4F2&},
+Dialogue: 0,0:00:26.12,0:00:29.65,Sub,,0,0,0,,{\fad(120,100)\move(960,1020,960,1016,0,120)}with no target value,\Neven where there are no data.
+Dialogue: 0,0:00:29.73,0:00:33.68,Sub,,0,0,0,,{\fad(120,100)\move(960,1020,960,1016,0,120)}Four: the flip rate read from\Nsnapshots with Rice's formula.
+Dialogue: 0,0:00:33.76,0:00:37.41,Sub,,0,0,0,,{\fad(120,100)\move(960,1020,960,1016,0,120)}Five: one generator that\Ncrosses the dynamo threshold.
+Dialogue: 0,0:00:38.68,0:00:43.53,Sub,,0,0,0,,{\fad(120,100)\move(960,1020,960,1016,0,120)}The study tested pieces on toy cases:\Nexact potentials on a flat sheet,
+Dialogue: 0,0:00:43.61,0:00:48.17,Sub,,0,0,0,,{\fad(120,100)\move(960,1020,960,1016,0,120)}a budget imposed without data,\NRice's formula on three dials.

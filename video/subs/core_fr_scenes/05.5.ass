@@ -1,0 +1,19 @@
+[Script Info]
+ScriptType: v4.00+
+PlayResX: 1920
+PlayResY: 1080
+WrapStyle: 2
+ScaledBorderAndShadow: yes
+YCbCr Matrix: TV.709
+
+[V4+ Styles]
+Format: Name, Fontname, Fontsize, PrimaryColour, SecondaryColour, OutlineColour, BackColour, Bold, Italic, Underline, StrikeOut, ScaleX, ScaleY, Spacing, Angle, BorderStyle, Outline, Shadow, Alignment, MarginL, MarginR, MarginV, Encoding
+Style: Sub,Inter Medium,42,&H00F7F4F2,&H00F7F4F2,&H38140F0B,&H00000000,0,0,0,0,100,100,0,0,3,12,0,2,240,240,64,1
+
+[Events]
+Format: Layer, Start, End, Style, Name, MarginL, MarginR, MarginV, Effect, Text
+Dialogue: 0,0:00:00.52,0:00:03.79,Sub,,0,0,0,,{\fad(120,100)\move(960,1020,960,1016,0,120)}So Rice needs only\Nsnapshots and the equations,
+Dialogue: 0,0:00:03.87,0:00:06.95,Sub,,0,0,0,,{\fad(120,100)\move(960,1020,960,1016,0,120)}but plenty of snapshots, and cheap ones.
+Dialogue: 0,0:00:07.03,0:00:11.54,Sub,,0,0,0,,{\fad(120,100)\move(960,1020,960,1016,0,120)}Yet real dynamo simulations exist\Nat only a few {\c&H7AAF1B&}knob settings{\c&HF7F4F2&}.
+Dialogue: 0,0:00:11.62,0:00:14.86,Sub,,0,0,0,,{\fad(120,100)\move(960,1020,960,1016,0,120)}Between the dots,\Nthere is no shoebox at all.
+Dialogue: 0,0:00:14.94,0:00:19.04,Sub,,0,0,0,,{\fad(120,100)\move(960,1020,960,1016,0,120)}How do you get snapshots at\Na setting nobody simulated?

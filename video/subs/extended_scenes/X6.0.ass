@@ -1,0 +1,20 @@
+[Script Info]
+ScriptType: v4.00+
+PlayResX: 1920
+PlayResY: 1080
+WrapStyle: 2
+ScaledBorderAndShadow: yes
+YCbCr Matrix: TV.709
+
+[V4+ Styles]
+Format: Name, Fontname, Fontsize, PrimaryColour, SecondaryColour, OutlineColour, BackColour, Bold, Italic, Underline, StrikeOut, ScaleX, ScaleY, Spacing, Angle, BorderStyle, Outline, Shadow, Alignment, MarginL, MarginR, MarginV, Encoding
+Style: Sub,Inter Medium,42,&H00F7F4F2,&H00F7F4F2,&H38140F0B,&H00000000,0,0,0,0,100,100,0,0,3,12,0,2,240,240,64,1
+
+[Events]
+Format: Layer, Start, End, Style, Name, MarginL, MarginR, MarginV, Effect, Text
+Dialogue: 0,0:00:01.97,0:00:04.34,Sub,,0,0,0,,{\fad(120,100)\move(960,1020,960,1016,0,120)}Before the walls, one convention:
+Dialogue: 0,0:00:04.42,0:00:08.75,Sub,,0,0,0,,{\fad(120,100)\move(960,1020,960,1016,0,120)}in the sodium experiment,\N{\c&H7AAF1B&}Rm{\c&HF7F4F2&} has no single definition.
+Dialogue: 0,0:00:09.07,0:00:13.80,Sub,,0,0,0,,{\fad(120,100)\move(960,1020,960,1016,0,120)}One paper multiplies by an impeller\Nefficiency near zero point six,
+Dialogue: 0,0:00:13.88,0:00:17.29,Sub,,0,0,0,,{\fad(120,100)\move(960,1020,960,1016,0,120)}another does not,\Na third uses other radii.
+Dialogue: 0,0:00:18.03,0:00:23.04,Sub,,0,0,0,,{\fad(120,100)\move(960,1020,960,1016,0,120)}So one threshold reads about thirty-one,\Nor fifty-two to seventy-one.
+Dialogue: 0,0:00:23.41,0:00:27.50,Sub,,0,0,0,,{\fad(120,100)\move(960,1020,960,1016,0,120)}A {\c&HF09CB4&}generator{\c&HF7F4F2&} conditioned on\NRm must say which it means.

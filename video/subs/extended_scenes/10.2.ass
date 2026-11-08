@@ -1,0 +1,24 @@
+[Script Info]
+ScriptType: v4.00+
+PlayResX: 1920
+PlayResY: 1080
+WrapStyle: 2
+ScaledBorderAndShadow: yes
+YCbCr Matrix: TV.709
+
+[V4+ Styles]
+Format: Name, Fontname, Fontsize, PrimaryColour, SecondaryColour, OutlineColour, BackColour, Bold, Italic, Underline, StrikeOut, ScaleX, ScaleY, Spacing, Angle, BorderStyle, Outline, Shadow, Alignment, MarginL, MarginR, MarginV, Encoding
+Style: Sub,Inter Medium,42,&H00F7F4F2,&H00F7F4F2,&H38140F0B,&H00000000,0,0,0,0,100,100,0,0,3,12,0,2,240,240,64,1
+
+[Events]
+Format: Layer, Start, End, Style, Name, MarginL, MarginR, MarginV, Effect, Text
+Dialogue: 0,0:00:00.37,0:00:03.84,Sub,,0,0,0,,{\fad(120,100)\move(960,1020,960,1016,0,120)}To climb, the study first\Nbuilt a factory for the data.
+Dialogue: 0,0:00:04.12,0:00:06.38,Sub,,0,0,0,,{\fad(120,100)\move(960,1020,960,1016,0,120)}A recipe card sets the {\c&H7AAF1B&}knobs{\c&HF7F4F2&}.
+Dialogue: 0,0:00:06.59,0:00:11.27,Sub,,0,0,0,,{\fad(120,100)\move(960,1020,960,1016,0,120)}Ovens run one simulation per setting,\Non a laptop or a cluster.
+Dialogue: 0,0:00:11.78,0:00:14.63,Sub,,0,0,0,,{\fad(120,100)\move(960,1020,960,1016,0,120)}Each result is sealed in a labelled jar:
+Dialogue: 0,0:00:14.71,0:00:18.40,Sub,,0,0,0,,{\fad(120,100)\move(960,1020,960,1016,0,120)}a unique number,\Nthe code version, a checksum.
+Dialogue: 0,0:00:19.14,0:00:23.91,Sub,,0,0,0,,{\fad(120,100)\move(960,1020,960,1016,0,120)}A ledger records every jar, a menu\Nsplits them for training and testing,
+Dialogue: 0,0:00:23.99,0:00:27.55,Sub,,0,0,0,,{\fad(120,100)\move(960,1020,960,1016,0,120)}the {\c&HF09CB4&}chef{\c&HF7F4F2&} learns, and a\Ncritic scores the result.
+Dialogue: 0,0:00:28.29,0:00:31.57,Sub,,0,0,0,,{\fad(120,100)\move(960,1020,960,1016,0,120)}It all runs end to end\Non an ordinary processor,
+Dialogue: 0,0:00:31.65,0:00:35.26,Sub,,0,0,0,,{\fad(120,100)\move(960,1020,960,1016,0,120)}never yet on a graphics\Ncard or a real cluster.
+Dialogue: 0,0:00:35.84,0:00:40.45,Sub,,0,0,0,,{\fad(120,100)\move(960,1020,960,1016,0,120)}A grey tag names the file\Neach empty frame awaits.

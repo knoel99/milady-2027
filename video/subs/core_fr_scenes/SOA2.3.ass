@@ -1,0 +1,21 @@
+[Script Info]
+ScriptType: v4.00+
+PlayResX: 1920
+PlayResY: 1080
+WrapStyle: 2
+ScaledBorderAndShadow: yes
+YCbCr Matrix: TV.709
+
+[V4+ Styles]
+Format: Name, Fontname, Fontsize, PrimaryColour, SecondaryColour, OutlineColour, BackColour, Bold, Italic, Underline, StrikeOut, ScaleX, ScaleY, Spacing, Angle, BorderStyle, Outline, Shadow, Alignment, MarginL, MarginR, MarginV, Encoding
+Style: Sub,Inter Medium,42,&H00F7F4F2,&H00F7F4F2,&H38140F0B,&H00000000,0,0,0,0,100,100,0,0,3,12,0,2,240,240,64,1
+
+[Events]
+Format: Layer, Start, End, Style, Name, MarginL, MarginR, MarginV, Effect, Text
+Dialogue: 0,0:00:00.32,0:00:02.00,Sub,,0,0,0,,{\fad(120,100)\move(960,1020,960,1016,0,120)}Second track: {\c&HF09CB4&}generative models{\c&HF7F4F2&},
+Dialogue: 0,0:00:02.08,0:00:04.99,Sub,,0,0,0,,{\fad(120,100)\move(960,1020,960,1016,0,120)}which learn the whole cloud,\Nnot just its middle.
+Dialogue: 0,0:00:05.07,0:00:07.36,Sub,,0,0,0,,{\fad(120,100)\move(960,1020,960,1016,0,120)}Adversarial networks\Nfirst, then diffusion,
+Dialogue: 0,0:00:07.44,0:00:10.20,Sub,,0,0,0,,{\fad(120,100)\move(960,1020,960,1016,0,120)}then flow matching,\Nthe family the study used.
+Dialogue: 0,0:00:10.28,0:00:14.11,Sub,,0,0,0,,{\fad(120,100)\move(960,1020,960,1016,0,120)}They now dream three-dimensional\Nturbulence, global weather ensembles,
+Dialogue: 0,0:00:14.19,0:00:17.20,Sub,,0,0,0,,{\fad(120,100)\move(960,1020,960,1016,0,120)}and steady turbulent\Nstates for chosen {\c&H7AAF1B&}settings{\c&HF7F4F2&}.
+Dialogue: 0,0:00:18.07,0:00:20.98,Sub,,0,0,0,,{\fad(120,100)\move(960,1020,960,1016,0,120)}Trained on dynamo\Nsimulations? We found none.

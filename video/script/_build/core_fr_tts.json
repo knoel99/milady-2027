@@ -1,0 +1,2099 @@
+{
+ "name": "core_fr",
+ "voice": "536d3a5e000945adb7038665781a4aca",
+ "mode": "dry-run",
+ "lang": "fr",
+ "long_pause_s": 0.9,
+ "summary": {
+  "name": "core_fr",
+  "mode": "dry-run",
+  "voice": "536d3a5e000945adb7038665781a4aca",
+  "lang": "fr",
+  "paragraphs": 233,
+  "words": 7199,
+  "cached_paragraphs": 0,
+  "new_paragraphs": 233,
+  "new_words": 7199,
+  "new_audio_min_est": 49.3,
+  "untranslated_paragraphs": 185,
+  "fish": 0,
+  "placeholder": 0,
+  "missing": 233
+ },
+ "scenes": {
+  "00.1": [
+   {
+    "para": 0,
+    "key": "bc7484a640bc87d49be0fc67",
+    "words": 30,
+    "source": null,
+    "wav": null,
+    "truth": null
+   }
+  ],
+  "00.2": [
+   {
+    "para": 0,
+    "key": "b5d478ebd8ab182453a8bcec",
+    "words": 18,
+    "source": null,
+    "wav": null,
+    "truth": null
+   }
+  ],
+  "00.3": [
+   {
+    "para": 0,
+    "key": "e8ce9990958234397820004c",
+    "words": 45,
+    "source": null,
+    "wav": null,
+    "truth": null
+   }
+  ],
+  "00.4": [
+   {
+    "para": 0,
+    "key": "761091283d72a3fcc57342b0",
+    "words": 21,
+    "source": null,
+    "wav": null,
+    "truth": null
+   },
+   {
+    "para": 1,
+    "key": "a1601e9b5313555a85160181",
+    "words": 18,
+    "source": null,
+    "wav": null,
+    "truth": null
+   },
+   {
+    "para": 2,
+    "key": "c49a9eb9378c12111b428f85",
+    "words": 36,
+    "source": null,
+    "wav": null,
+    "truth": null
+   }
+  ],
+  "00.5": [
+   {
+    "para": 0,
+    "key": "8df19d8a8dc5c1985c57b18b",
+    "words": 21,
+    "source": null,
+    "wav": null,
+    "truth": null
+   }
+  ],
+  "ch00.Q": [
+   {
+    "para": 0,
+    "key": "4566b850a4b6fefb98438998",
+    "words": 19,
+    "source": null,
+    "wav": null,
+    "truth": null
+   }
+  ],
+  "01.1": [
+   {
+    "para": 0,
+    "key": "a14be00622f921fbdab411b2",
+    "words": 57,
+    "source": null,
+    "wav": null,
+    "truth": null
+   }
+  ],
+  "01.2": [
+   {
+    "para": 0,
+    "key": "ec4449c8abc6546b82275924",
+    "words": 36,
+    "source": null,
+    "wav": null,
+    "truth": null
+   },
+   {
+    "para": 1,
+    "key": "af5239e522e7aa34bfa047cd",
+    "words": 34,
+    "source": null,
+    "wav": null,
+    "truth": null
+   }
+  ],
+  "01.3": [
+   {
+    "para": 0,
+    "key": "230076c4fd34e9b07b613cad",
+    "words": 24,
+    "source": null,
+    "wav": null,
+    "truth": null
+   },
+   {
+    "para": 1,
+    "key": "1056843b11fb3d0b805cdf00",
+    "words": 25,
+    "source": null,
+    "wav": null,
+    "truth": null
+   },
+   {
+    "para": 2,
+    "key": "c26dca50357df9c69943f467",
+    "words": 48,
+    "source": null,
+    "wav": null,
+    "truth": null
+   },
+   {
+    "para": 3,
+    "key": "4d03aee4af6a33651b78c8aa",
+    "words": 40,
+    "source": null,
+    "wav": null,
+    "truth": null
+   }
+  ],
+  "01.4": [
+   {
+    "para": 0,
+    "key": "72e443328afeb70525347973",
+    "words": 50,
+    "source": null,
+    "wav": null,
+    "truth": null
+   }
+  ],
+  "01.5": [
+   {
+    "para": 0,
+    "key": "f718c5a61523b2f0f121298a",
+    "words": 13,
+    "source": null,
+    "wav": null,
+    "truth": null
+   },
+   {
+    "para": 1,
+    "key": "7e7450dadd254a027c0c60b8",
+    "words": 55,
+    "source": null,
+    "wav": null,
+    "truth": null
+   }
+  ],
+  "01.6": [
+   {
+    "para": 0,
+    "key": "b499f5c300d3b90db0b5d495",
+    "words": 34,
+    "source": null,
+    "wav": null,
+    "truth": null
+   }
+  ],
+  "ch01.Q": [
+   {
+    "para": 0,
+    "key": "9784c2b230d0780b9916c386",
+    "words": 18,
+    "source": null,
+    "wav": null,
+    "truth": null
+   }
+  ],
+  "02.1": [
+   {
+    "para": 0,
+    "key": "779baa2688191a0256d0966b",
+    "words": 33,
+    "source": null,
+    "wav": null,
+    "truth": null
+   },
+   {
+    "para": 1,
+    "key": "b0c1cbd80c9362e09dfdcef4",
+    "words": 53,
+    "source": null,
+    "wav": null,
+    "truth": null
+   }
+  ],
+  "02.2": [
+   {
+    "para": 0,
+    "key": "49f59d84827a20a888437c06",
+    "words": 40,
+    "source": null,
+    "wav": null,
+    "truth": null
+   },
+   {
+    "para": 1,
+    "key": "6f546634c72cb00ebb36b016",
+    "words": 34,
+    "source": null,
+    "wav": null,
+    "truth": null
+   }
+  ],
+  "02.3": [
+   {
+    "para": 0,
+    "key": "1120a8d92e35ed29e5f2f841",
+    "words": 45,
+    "source": null,
+    "wav": null,
+    "truth": null
+   },
+   {
+    "para": 1,
+    "key": "8ce1c85850f6cfc0887fc14b",
+    "words": 34,
+    "source": null,
+    "wav": null,
+    "truth": null
+   }
+  ],
+  "02.4": [
+   {
+    "para": 0,
+    "key": "cff8929c7bc86e8dd1ce3817",
+    "words": 60,
+    "source": null,
+    "wav": null,
+    "truth": null
+   },
+   {
+    "para": 1,
+    "key": "46dc3ef0a4997966275f0d76",
+    "words": 17,
+    "source": null,
+    "wav": null,
+    "truth": null
+   }
+  ],
+  "02.5": [
+   {
+    "para": 0,
+    "key": "a8c61247d9329f9a3d99cdf1",
+    "words": 27,
+    "source": null,
+    "wav": null,
+    "truth": null
+   },
+   {
+    "para": 1,
+    "key": "69c0b2a21409576f20e71b0e",
+    "words": 8,
+    "source": null,
+    "wav": null,
+    "truth": null
+   },
+   {
+    "para": 2,
+    "key": "5525143390683518ae845e3a",
+    "words": 31,
+    "source": null,
+    "wav": null,
+    "truth": null
+   },
+   {
+    "para": 3,
+    "key": "3a29ae1e4b473cf7f4196e8c",
+    "words": 13,
+    "source": null,
+    "wav": null,
+    "truth": null
+   }
+  ],
+  "02.6": [
+   {
+    "para": 0,
+    "key": "58af205a266d9c131eca47e6",
+    "words": 37,
+    "source": null,
+    "wav": null,
+    "truth": null
+   },
+   {
+    "para": 1,
+    "key": "7fa9329c2fd7991bf1e6b318",
+    "words": 24,
+    "source": null,
+    "wav": null,
+    "truth": null
+   }
+  ],
+  "ch02.Q": [
+   {
+    "para": 0,
+    "key": "aa81a76a7f74dee1c2be9a18",
+    "words": 21,
+    "source": null,
+    "wav": null,
+    "truth": null
+   }
+  ],
+  "SOA1.1": [
+   {
+    "para": 0,
+    "key": "7062846d1cecd7d396386822",
+    "words": 16,
+    "source": null,
+    "wav": null,
+    "truth": null
+   },
+   {
+    "para": 1,
+    "key": "50319e4106fc645ce3c11ec6",
+    "words": 41,
+    "source": null,
+    "wav": null,
+    "truth": null
+   }
+  ],
+  "SOA1.2": [
+   {
+    "para": 0,
+    "key": "c91f74147a6db66912e55a6f",
+    "words": 34,
+    "source": null,
+    "wav": null,
+    "truth": null
+   },
+   {
+    "para": 1,
+    "key": "9a5137cdfb4a5032cdb2f233",
+    "words": 31,
+    "source": null,
+    "wav": null,
+    "truth": null
+   }
+  ],
+  "SOA1.3": [
+   {
+    "para": 0,
+    "key": "432edbdf07edafd098d8b80c",
+    "words": 34,
+    "source": null,
+    "wav": null,
+    "truth": null
+   },
+   {
+    "para": 1,
+    "key": "736028720a91fe7862ff6ae7",
+    "words": 23,
+    "source": null,
+    "wav": null,
+    "truth": null
+   }
+  ],
+  "SOA1.4": [
+   {
+    "para": 0,
+    "key": "e4461c7952a13499f98f485a",
+    "words": 65,
+    "source": null,
+    "wav": null,
+    "truth": null
+   },
+   {
+    "para": 1,
+    "key": "743ef1a5038b64865c9f4ff1",
+    "words": 52,
+    "source": null,
+    "wav": null,
+    "truth": null
+   }
+  ],
+  "SOA1.5": [
+   {
+    "para": 0,
+    "key": "4f9f73c7b4426b3d35e42dbb",
+    "words": 39,
+    "source": null,
+    "wav": null,
+    "truth": null
+   },
+   {
+    "para": 1,
+    "key": "3b20659544791986bba8b206",
+    "words": 22,
+    "source": null,
+    "wav": null,
+    "truth": null
+   }
+  ],
+  "SOA1.6": [
+   {
+    "para": 0,
+    "key": "8b0ae9010a387b1e2478dac3",
+    "words": 48,
+    "source": null,
+    "wav": null,
+    "truth": null
+   },
+   {
+    "para": 1,
+    "key": "33d147b54baaeb7d2da0ffab",
+    "words": 24,
+    "source": null,
+    "wav": null,
+    "truth": null
+   },
+   {
+    "para": 2,
+    "key": "4e56bfda21b7f0ed6355cafe",
+    "words": 9,
+    "source": null,
+    "wav": null,
+    "truth": null
+   }
+  ],
+  "03.1": [
+   {
+    "para": 0,
+    "key": "6698989a28b6897759057635",
+    "words": 23,
+    "source": null,
+    "wav": null,
+    "truth": null
+   },
+   {
+    "para": 1,
+    "key": "f26bc8efe2647152826f4869",
+    "words": 56,
+    "source": null,
+    "wav": null,
+    "truth": null
+   }
+  ],
+  "03.2": [
+   {
+    "para": 0,
+    "key": "a76fffc0e2d6c9da0e6947f3",
+    "words": 39,
+    "source": null,
+    "wav": null,
+    "truth": null
+   },
+   {
+    "para": 1,
+    "key": "2ef99fa26f9ad13d0d76231f",
+    "words": 33,
+    "source": null,
+    "wav": null,
+    "truth": null
+   }
+  ],
+  "03.3": [
+   {
+    "para": 0,
+    "key": "62727115070646ffc34e4bad",
+    "words": 26,
+    "source": null,
+    "wav": null,
+    "truth": null
+   },
+   {
+    "para": 1,
+    "key": "0fad1e666d763ce8736edcee",
+    "words": 28,
+    "source": null,
+    "wav": null,
+    "truth": null
+   }
+  ],
+  "03.4": [
+   {
+    "para": 0,
+    "key": "cbf5adc4853d8436a799d757",
+    "words": 21,
+    "source": null,
+    "wav": null,
+    "truth": null
+   },
+   {
+    "para": 1,
+    "key": "715d0e3df823e2e65d85c1ec",
+    "words": 10,
+    "source": null,
+    "wav": null,
+    "truth": null
+   },
+   {
+    "para": 2,
+    "key": "1a22a8eb6e1081ed40af4f66",
+    "words": 65,
+    "source": null,
+    "wav": null,
+    "truth": null
+   }
+  ],
+  "03.5": [
+   {
+    "para": 0,
+    "key": "6c2045dc525179e20eaebb4d",
+    "words": 48,
+    "source": null,
+    "wav": null,
+    "truth": null
+   },
+   {
+    "para": 1,
+    "key": "b1a53235d99a4ec85fc0f96a",
+    "words": 19,
+    "source": null,
+    "wav": null,
+    "truth": null
+   }
+  ],
+  "03.6": [
+   {
+    "para": 0,
+    "key": "6d3b0096fca1f7ba00536726",
+    "words": 35,
+    "source": null,
+    "wav": null,
+    "truth": null
+   },
+   {
+    "para": 1,
+    "key": "3925af6346b092f91119d881",
+    "words": 16,
+    "source": null,
+    "wav": null,
+    "truth": null
+   }
+  ],
+  "03.7": [
+   {
+    "para": 0,
+    "key": "375ffce3b2a5c71da423a23c",
+    "words": 15,
+    "source": null,
+    "wav": null,
+    "truth": null
+   },
+   {
+    "para": 1,
+    "key": "d54dfde6501129ccab98fb76",
+    "words": 46,
+    "source": null,
+    "wav": null,
+    "truth": null
+   },
+   {
+    "para": 2,
+    "key": "a237d908d592da13c1439d64",
+    "words": 18,
+    "source": null,
+    "wav": null,
+    "truth": null
+   },
+   {
+    "para": 3,
+    "key": "b309414c94f02a9164d4eda6",
+    "words": 26,
+    "source": null,
+    "wav": null,
+    "truth": null
+   }
+  ],
+  "03.8": [
+   {
+    "para": 0,
+    "key": "a5dd1492cd35c04f7dee3608",
+    "words": 33,
+    "source": null,
+    "wav": null,
+    "truth": null
+   }
+  ],
+  "ch03.Q": [
+   {
+    "para": 0,
+    "key": "e18ba004f1d9dfeca2a3edac",
+    "words": 17,
+    "source": null,
+    "wav": null,
+    "truth": null
+   }
+  ],
+  "04.1": [
+   {
+    "para": 0,
+    "key": "ad7b090717b2df4ea63ca1ad",
+    "words": 37,
+    "source": null,
+    "wav": null,
+    "truth": null
+   },
+   {
+    "para": 1,
+    "key": "7d8c67c38303407891af28b4",
+    "words": 28,
+    "source": null,
+    "wav": null,
+    "truth": null
+   }
+  ],
+  "04.2": [
+   {
+    "para": 0,
+    "key": "784487e77d93a494d0aa2e3f",
+    "words": 40,
+    "source": null,
+    "wav": null,
+    "truth": null
+   },
+   {
+    "para": 1,
+    "key": "383d2ee6779b862ffef7ef00",
+    "words": 40,
+    "source": null,
+    "wav": null,
+    "truth": null
+   },
+   {
+    "para": 2,
+    "key": "28d5e4bfe6a53cb437d1e03a",
+    "words": 16,
+    "source": null,
+    "wav": null,
+    "truth": null
+   }
+  ],
+  "04.3": [
+   {
+    "para": 0,
+    "key": "cee9d9d09f8013a8bccf315b",
+    "words": 32,
+    "source": null,
+    "wav": null,
+    "truth": null
+   },
+   {
+    "para": 1,
+    "key": "58fec8241ac56c20403c97b1",
+    "words": 23,
+    "source": null,
+    "wav": null,
+    "truth": null
+   }
+  ],
+  "04.4": [
+   {
+    "para": 0,
+    "key": "0b46dbcdf440981bea767859",
+    "words": 29,
+    "source": null,
+    "wav": null,
+    "truth": null
+   },
+   {
+    "para": 1,
+    "key": "d352dcaf15245033a631d4be",
+    "words": 25,
+    "source": null,
+    "wav": null,
+    "truth": null
+   },
+   {
+    "para": 2,
+    "key": "638c87c1498eb54dca14f5aa",
+    "words": 33,
+    "source": null,
+    "wav": null,
+    "truth": null
+   }
+  ],
+  "04.5": [
+   {
+    "para": 0,
+    "key": "eb8a9f0f4a50613b943ce8a0",
+    "words": 37,
+    "source": null,
+    "wav": null,
+    "truth": null
+   },
+   {
+    "para": 1,
+    "key": "b6f02385c283ad578364c700",
+    "words": 29,
+    "source": null,
+    "wav": null,
+    "truth": null
+   }
+  ],
+  "04.6": [
+   {
+    "para": 0,
+    "key": "59e17aad80595968219875d1",
+    "words": 40,
+    "source": null,
+    "wav": null,
+    "truth": null
+   },
+   {
+    "para": 1,
+    "key": "84df4a3cc5a3f64d32422d0b",
+    "words": 37,
+    "source": null,
+    "wav": null,
+    "truth": null
+   }
+  ],
+  "04.7": [
+   {
+    "para": 0,
+    "key": "7cf72b90c4e2ef33a83877e3",
+    "words": 30,
+    "source": null,
+    "wav": null,
+    "truth": null
+   },
+   {
+    "para": 1,
+    "key": "fa86d4ac1e7149e81f8d9258",
+    "words": 25,
+    "source": null,
+    "wav": null,
+    "truth": null
+   },
+   {
+    "para": 2,
+    "key": "f4fed4bc2975d8ed30057643",
+    "words": 32,
+    "source": null,
+    "wav": null,
+    "truth": null
+   }
+  ],
+  "ch04.Q": [
+   {
+    "para": 0,
+    "key": "228ab2ba0255f3508d59935f",
+    "words": 16,
+    "source": null,
+    "wav": null,
+    "truth": null
+   }
+  ],
+  "05.1": [
+   {
+    "para": 0,
+    "key": "996bb7f0232ac21d6cef50e2",
+    "words": 23,
+    "source": null,
+    "wav": null,
+    "truth": null
+   },
+   {
+    "para": 1,
+    "key": "59b026d8dbe6406372f7109b",
+    "words": 12,
+    "source": null,
+    "wav": null,
+    "truth": null
+   },
+   {
+    "para": 2,
+    "key": "6721b2263e3f9a43d73704c3",
+    "words": 23,
+    "source": null,
+    "wav": null,
+    "truth": null
+   },
+   {
+    "para": 3,
+    "key": "a7819d0b82cd0e94e219c81d",
+    "words": 24,
+    "source": null,
+    "wav": null,
+    "truth": null
+   }
+  ],
+  "05.2": [
+   {
+    "para": 0,
+    "key": "0e3ebf3b19f40478a9f479dd",
+    "words": 24,
+    "source": null,
+    "wav": null,
+    "truth": null
+   },
+   {
+    "para": 1,
+    "key": "8beb745fe36e48a115840982",
+    "words": 31,
+    "source": null,
+    "wav": null,
+    "truth": null
+   },
+   {
+    "para": 2,
+    "key": "2a88f73541d9cffe67b340de",
+    "words": 55,
+    "source": null,
+    "wav": null,
+    "truth": null
+   }
+  ],
+  "05.3": [
+   {
+    "para": 0,
+    "key": "d6c03d985c04d9f829ea2922",
+    "words": 29,
+    "source": null,
+    "wav": null,
+    "truth": null
+   },
+   {
+    "para": 1,
+    "key": "32d8783e0b18a51d85ad17db",
+    "words": 44,
+    "source": null,
+    "wav": null,
+    "truth": null
+   }
+  ],
+  "05.4": [
+   {
+    "para": 0,
+    "key": "cd3e1ebcafdb00156a77b1e0",
+    "words": 35,
+    "source": null,
+    "wav": null,
+    "truth": null
+   }
+  ],
+  "05.5": [
+   {
+    "para": 0,
+    "key": "924b9ecea51116adc3fb1e41",
+    "words": 45,
+    "source": null,
+    "wav": null,
+    "truth": null
+   }
+  ],
+  "ch05.Q": [
+   {
+    "para": 0,
+    "key": "a9661d6ce1c6dc09d3f18bb4",
+    "words": 16,
+    "source": null,
+    "wav": null,
+    "truth": null
+   }
+  ],
+  "06.1": [
+   {
+    "para": 0,
+    "key": "5222a2b268633879df379003",
+    "words": 30,
+    "source": null,
+    "wav": null,
+    "truth": null
+   },
+   {
+    "para": 1,
+    "key": "eed19935153811b9f06756a5",
+    "words": 31,
+    "source": null,
+    "wav": null,
+    "truth": null
+   },
+   {
+    "para": 2,
+    "key": "8dfd42816cdee5a2674a6512",
+    "words": 18,
+    "source": null,
+    "wav": null,
+    "truth": null
+   }
+  ],
+  "06.2": [
+   {
+    "para": 0,
+    "key": "c359748910707271100978e8",
+    "words": 30,
+    "source": null,
+    "wav": null,
+    "truth": null
+   },
+   {
+    "para": 1,
+    "key": "e4035c9a0f631733f7d57822",
+    "words": 14,
+    "source": null,
+    "wav": null,
+    "truth": null
+   }
+  ],
+  "06.3": [
+   {
+    "para": 0,
+    "key": "1f8d9a6ec9549dd7ae8b84e0",
+    "words": 43,
+    "source": null,
+    "wav": null,
+    "truth": null
+   },
+   {
+    "para": 1,
+    "key": "b9a8321e96ea8237ed7d5c48",
+    "words": 35,
+    "source": null,
+    "wav": null,
+    "truth": null
+   },
+   {
+    "para": 2,
+    "key": "8f6ccf7d2e98cdd482cd1305",
+    "words": 31,
+    "source": null,
+    "wav": null,
+    "truth": null
+   }
+  ],
+  "06.4": [
+   {
+    "para": 0,
+    "key": "2e7198b238b6b2986f14a1ce",
+    "words": 20,
+    "source": null,
+    "wav": null,
+    "truth": null
+   },
+   {
+    "para": 1,
+    "key": "e3f663ecccd33b263ef1ef69",
+    "words": 39,
+    "source": null,
+    "wav": null,
+    "truth": null
+   },
+   {
+    "para": 2,
+    "key": "af8850d2ce8be92f358bbbd2",
+    "words": 13,
+    "source": null,
+    "wav": null,
+    "truth": null
+   }
+  ],
+  "06.5": [
+   {
+    "para": 0,
+    "key": "19cca8defc8f7f9aef6cad32",
+    "words": 41,
+    "source": null,
+    "wav": null,
+    "truth": null
+   },
+   {
+    "para": 1,
+    "key": "0b94c5d5747de90c8ae36358",
+    "words": 11,
+    "source": null,
+    "wav": null,
+    "truth": null
+   },
+   {
+    "para": 2,
+    "key": "1d1f6df2f8486a51dd484967",
+    "words": 45,
+    "source": null,
+    "wav": null,
+    "truth": null
+   },
+   {
+    "para": 3,
+    "key": "acfb3b942a46f833e6d41252",
+    "words": 19,
+    "source": null,
+    "wav": null,
+    "truth": null
+   }
+  ],
+  "ch06.Q": [
+   {
+    "para": 0,
+    "key": "bb70939687c29600e60131e3",
+    "words": 17,
+    "source": null,
+    "wav": null,
+    "truth": null
+   }
+  ],
+  "07.1": [
+   {
+    "para": 0,
+    "key": "c9b769956fd024fa6607cdfd",
+    "words": 24,
+    "source": null,
+    "wav": null,
+    "truth": null
+   },
+   {
+    "para": 1,
+    "key": "65f180aa07d363497a69cbe0",
+    "words": 23,
+    "source": null,
+    "wav": null,
+    "truth": null
+   },
+   {
+    "para": 2,
+    "key": "24f1aa6d8c133626229611de",
+    "words": 40,
+    "source": null,
+    "wav": null,
+    "truth": null
+   }
+  ],
+  "07.2": [
+   {
+    "para": 0,
+    "key": "2fc30208e1443d84e64d7aa5",
+    "words": 39,
+    "source": null,
+    "wav": null,
+    "truth": null
+   },
+   {
+    "para": 1,
+    "key": "98d1a8fb732990419f9117fb",
+    "words": 9,
+    "source": null,
+    "wav": null,
+    "truth": null
+   },
+   {
+    "para": 2,
+    "key": "6fb6d106f300efc0514902da",
+    "words": 38,
+    "source": null,
+    "wav": null,
+    "truth": null
+   }
+  ],
+  "07.3": [
+   {
+    "para": 0,
+    "key": "55763e00a17ce387b3998388",
+    "words": 38,
+    "source": null,
+    "wav": null,
+    "truth": null
+   },
+   {
+    "para": 1,
+    "key": "967a1cab64b7e7e533dca3c1",
+    "words": 38,
+    "source": null,
+    "wav": null,
+    "truth": null
+   }
+  ],
+  "07.4": [
+   {
+    "para": 0,
+    "key": "ad7ebd76acbb08134a315ae3",
+    "words": 43,
+    "source": null,
+    "wav": null,
+    "truth": null
+   }
+  ],
+  "07.5": [
+   {
+    "para": 0,
+    "key": "284cb4a0eef771629235aa33",
+    "words": 26,
+    "source": null,
+    "wav": null,
+    "truth": null
+   },
+   {
+    "para": 1,
+    "key": "21164c136384ac0b7be2bfa3",
+    "words": 19,
+    "source": null,
+    "wav": null,
+    "truth": null
+   },
+   {
+    "para": 2,
+    "key": "b3b74f899d0a382c29ac40c0",
+    "words": 31,
+    "source": null,
+    "wav": null,
+    "truth": null
+   },
+   {
+    "para": 3,
+    "key": "b89248c66a3b7761b603158b",
+    "words": 46,
+    "source": null,
+    "wav": null,
+    "truth": null
+   }
+  ],
+  "07.6": [
+   {
+    "para": 0,
+    "key": "961063b98fb3a956a1724a93",
+    "words": 37,
+    "source": null,
+    "wav": null,
+    "truth": null
+   },
+   {
+    "para": 1,
+    "key": "c029aff95f3b1e0f9001f8dc",
+    "words": 41,
+    "source": null,
+    "wav": null,
+    "truth": null
+   },
+   {
+    "para": 2,
+    "key": "8844654e92ad15495fc47aae",
+    "words": 33,
+    "source": null,
+    "wav": null,
+    "truth": null
+   }
+  ],
+  "ch07.Q": [
+   {
+    "para": 0,
+    "key": "bba9ff8e2ae0172db81fad7d",
+    "words": 17,
+    "source": null,
+    "wav": null,
+    "truth": null
+   }
+  ],
+  "08.1": [
+   {
+    "para": 0,
+    "key": "812c3274d08a862296e85e6e",
+    "words": 33,
+    "source": null,
+    "wav": null,
+    "truth": null
+   },
+   {
+    "para": 1,
+    "key": "62051c63d69e62ff810446af",
+    "words": 32,
+    "source": null,
+    "wav": null,
+    "truth": null
+   }
+  ],
+  "08.2": [
+   {
+    "para": 0,
+    "key": "34a11684452523428bbf79ba",
+    "words": 16,
+    "source": null,
+    "wav": null,
+    "truth": null
+   },
+   {
+    "para": 1,
+    "key": "fe575127f9c77f5de7fdf77a",
+    "words": 5,
+    "source": null,
+    "wav": null,
+    "truth": null
+   },
+   {
+    "para": 2,
+    "key": "a9288e485153e002829a2f1b",
+    "words": 27,
+    "source": null,
+    "wav": null,
+    "truth": null
+   },
+   {
+    "para": 3,
+    "key": "4fc0051cffd527afb89a2f25",
+    "words": 42,
+    "source": null,
+    "wav": null,
+    "truth": null
+   }
+  ],
+  "08.3": [
+   {
+    "para": 0,
+    "key": "21391a8bf7b0f25d55b9f1ad",
+    "words": 40,
+    "source": null,
+    "wav": null,
+    "truth": null
+   },
+   {
+    "para": 1,
+    "key": "dfc03251f91390d48bf3dad3",
+    "words": 22,
+    "source": null,
+    "wav": null,
+    "truth": null
+   },
+   {
+    "para": 2,
+    "key": "4948b222c25b30996a53314a",
+    "words": 29,
+    "source": null,
+    "wav": null,
+    "truth": null
+   },
+   {
+    "para": 3,
+    "key": "93d78e0ff246f293ff343daf",
+    "words": 23,
+    "source": null,
+    "wav": null,
+    "truth": null
+   }
+  ],
+  "08.4": [
+   {
+    "para": 0,
+    "key": "2d343653169dbe4b35957146",
+    "words": 45,
+    "source": null,
+    "wav": null,
+    "truth": null
+   },
+   {
+    "para": 1,
+    "key": "0f36cc356a7991495b563c54",
+    "words": 23,
+    "source": null,
+    "wav": null,
+    "truth": null
+   }
+  ],
+  "08.5": [
+   {
+    "para": 0,
+    "key": "066c177d4b114c7de07f6702",
+    "words": 22,
+    "source": null,
+    "wav": null,
+    "truth": null
+   },
+   {
+    "para": 1,
+    "key": "2e6856d37e549773e25abdd0",
+    "words": 34,
+    "source": null,
+    "wav": null,
+    "truth": null
+   },
+   {
+    "para": 2,
+    "key": "a5121b10d95dd0b8ebb26780",
+    "words": 26,
+    "source": null,
+    "wav": null,
+    "truth": null
+   },
+   {
+    "para": 3,
+    "key": "d2eddb66e0a2b20bffef3312",
+    "words": 47,
+    "source": null,
+    "wav": null,
+    "truth": null
+   },
+   {
+    "para": 4,
+    "key": "b9931fd23b7629887ae731a5",
+    "words": 13,
+    "source": null,
+    "wav": null,
+    "truth": null
+   }
+  ],
+  "08.6": [
+   {
+    "para": 0,
+    "key": "5cd3aea08a604178bf4ba721",
+    "words": 25,
+    "source": null,
+    "wav": null,
+    "truth": null
+   },
+   {
+    "para": 1,
+    "key": "b117cc3fe188794a0f639a1e",
+    "words": 29,
+    "source": null,
+    "wav": null,
+    "truth": null
+   },
+   {
+    "para": 2,
+    "key": "9e7500d06314616d0a8979ab",
+    "words": 22,
+    "source": null,
+    "wav": null,
+    "truth": null
+   },
+   {
+    "para": 3,
+    "key": "542c9644e074b297f02bd994",
+    "words": 12,
+    "source": null,
+    "wav": null,
+    "truth": null
+   }
+  ],
+  "08.7": [
+   {
+    "para": 0,
+    "key": "5076ea57c0da35281b10eee8",
+    "words": 44,
+    "source": null,
+    "wav": null,
+    "truth": null
+   },
+   {
+    "para": 1,
+    "key": "44f925db90823c73c131e125",
+    "words": 26,
+    "source": null,
+    "wav": null,
+    "truth": null
+   },
+   {
+    "para": 2,
+    "key": "44a4f3cb59e342d3bb6ace8f",
+    "words": 12,
+    "source": null,
+    "wav": null,
+    "truth": null
+   }
+  ],
+  "ch08.Q": [
+   {
+    "para": 0,
+    "key": "afe1fea69730a351a89eb922",
+    "words": 14,
+    "source": null,
+    "wav": null,
+    "truth": null
+   }
+  ],
+  "09.1": [
+   {
+    "para": 0,
+    "key": "b553f1a639e98003d547a9a9",
+    "words": 42,
+    "source": null,
+    "wav": null,
+    "truth": null
+   },
+   {
+    "para": 1,
+    "key": "e0f6c951ef6909425c106a56",
+    "words": 38,
+    "source": null,
+    "wav": null,
+    "truth": null
+   },
+   {
+    "para": 2,
+    "key": "c50f82c1a1398b43e3f8a6b1",
+    "words": 43,
+    "source": null,
+    "wav": null,
+    "truth": null
+   }
+  ],
+  "09.2": [
+   {
+    "para": 0,
+    "key": "7accabe339131560821a1d00",
+    "words": 19,
+    "source": null,
+    "wav": null,
+    "truth": null
+   },
+   {
+    "para": 1,
+    "key": "63409dc966c2d41803dc5dfd",
+    "words": 11,
+    "source": null,
+    "wav": null,
+    "truth": null
+   },
+   {
+    "para": 2,
+    "key": "3f631a9b55210e8c15b4e4b2",
+    "words": 54,
+    "source": null,
+    "wav": null,
+    "truth": null
+   }
+  ],
+  "09.3": [
+   {
+    "para": 0,
+    "key": "2a138db3cec106c0eb6dc38b",
+    "words": 32,
+    "source": null,
+    "wav": null,
+    "truth": null
+   },
+   {
+    "para": 1,
+    "key": "d30481b26729e1295cc019ee",
+    "words": 25,
+    "source": null,
+    "wav": null,
+    "truth": null
+   },
+   {
+    "para": 2,
+    "key": "9668fb0fdf0e2e456cf93343",
+    "words": 29,
+    "source": null,
+    "wav": null,
+    "truth": null
+   },
+   {
+    "para": 3,
+    "key": "0b0fde438183180b83cb0980",
+    "words": 22,
+    "source": null,
+    "wav": null,
+    "truth": null
+   }
+  ],
+  "09.4": [
+   {
+    "para": 0,
+    "key": "f8f8c011a0351479c4e39b5c",
+    "words": 40,
+    "source": null,
+    "wav": null,
+    "truth": null
+   },
+   {
+    "para": 1,
+    "key": "42259a189e475d2f090470eb",
+    "words": 30,
+    "source": null,
+    "wav": null,
+    "truth": null
+   }
+  ],
+  "09.5": [
+   {
+    "para": 0,
+    "key": "bcc91889ca799c79fdb47818",
+    "words": 44,
+    "source": null,
+    "wav": null,
+    "truth": null
+   },
+   {
+    "para": 1,
+    "key": "516a361cb34560d6cab04953",
+    "words": 23,
+    "source": null,
+    "wav": null,
+    "truth": null
+   }
+  ],
+  "09.6": [
+   {
+    "para": 0,
+    "key": "5d0087064b983b414b5805c5",
+    "words": 35,
+    "source": null,
+    "wav": null,
+    "truth": null
+   },
+   {
+    "para": 1,
+    "key": "af1e4b8fdb09b86f17369fd3",
+    "words": 45,
+    "source": null,
+    "wav": null,
+    "truth": null
+   },
+   {
+    "para": 2,
+    "key": "4e88e636782c4de8d5faba68",
+    "words": 29,
+    "source": null,
+    "wav": null,
+    "truth": null
+   }
+  ],
+  "ch09.Q": [
+   {
+    "para": 0,
+    "key": "6886b6d1defa5c8239d6e419",
+    "words": 17,
+    "source": null,
+    "wav": null,
+    "truth": null
+   }
+  ],
+  "SOA2.1": [
+   {
+    "para": 0,
+    "key": "edded66797b54da06c839153",
+    "words": 29,
+    "source": null,
+    "wav": null,
+    "truth": null
+   },
+   {
+    "para": 1,
+    "key": "749ab31c3e2ece711644236a",
+    "words": 24,
+    "source": null,
+    "wav": null,
+    "truth": null
+   }
+  ],
+  "SOA2.2": [
+   {
+    "para": 0,
+    "key": "248fc8aced7dd624088e0eae",
+    "words": 50,
+    "source": null,
+    "wav": null,
+    "truth": null
+   },
+   {
+    "para": 1,
+    "key": "76df93e48fe9936de672b7b4",
+    "words": 26,
+    "source": null,
+    "wav": null,
+    "truth": null
+   }
+  ],
+  "SOA2.3": [
+   {
+    "para": 0,
+    "key": "8917fe8d914deb0127529ae2",
+    "words": 41,
+    "source": null,
+    "wav": null,
+    "truth": null
+   },
+   {
+    "para": 1,
+    "key": "9f8c37d35a4d5396b8bcc23b",
+    "words": 7,
+    "source": null,
+    "wav": null,
+    "truth": null
+   }
+  ],
+  "SOA2.4": [
+   {
+    "para": 0,
+    "key": "021d441229f18a1156a7414f",
+    "words": 66,
+    "source": null,
+    "wav": null,
+    "truth": null
+   },
+   {
+    "para": 1,
+    "key": "6e264f25db983b4ad2a5a9a8",
+    "words": 47,
+    "source": null,
+    "wav": null,
+    "truth": null
+   }
+  ],
+  "SOA2.5": [
+   {
+    "para": 0,
+    "key": "e4d50b4cad8ca3f0480507be",
+    "words": 35,
+    "source": null,
+    "wav": null,
+    "truth": null
+   },
+   {
+    "para": 1,
+    "key": "1e0a0467c0b1a98bf844e720",
+    "words": 31,
+    "source": null,
+    "wav": null,
+    "truth": null
+   }
+  ],
+  "SOA2.6": [
+   {
+    "para": 0,
+    "key": "1e3e41eb1a6970d01c6fa047",
+    "words": 73,
+    "source": null,
+    "wav": null,
+    "truth": null
+   },
+   {
+    "para": 1,
+    "key": "db45e56360ed2d4f2c6c50a3",
+    "words": 23,
+    "source": null,
+    "wav": null,
+    "truth": null
+   }
+  ],
+  "SOA2.7": [
+   {
+    "para": 0,
+    "key": "2d682686a8c7c88ea187bc49",
+    "words": 30,
+    "source": null,
+    "wav": null,
+    "truth": null
+   },
+   {
+    "para": 1,
+    "key": "413f97c47740ed32920e22de",
+    "words": 58,
+    "source": null,
+    "wav": null,
+    "truth": null
+   },
+   {
+    "para": 2,
+    "key": "8a5499f5fdeaa21dd2ef5192",
+    "words": 23,
+    "source": null,
+    "wav": null,
+    "truth": null
+   }
+  ],
+  "SOA2.8": [
+   {
+    "para": 0,
+    "key": "a1b4d7ae319f9068e05bb992",
+    "words": 39,
+    "source": null,
+    "wav": null,
+    "truth": null
+   },
+   {
+    "para": 1,
+    "key": "883097cf7a8dad8fefe59c15",
+    "words": 34,
+    "source": null,
+    "wav": null,
+    "truth": null
+   }
+  ],
+  "chSOA2.Q": [
+   {
+    "para": 0,
+    "key": "0b21f760e7719925311c1b45",
+    "words": 17,
+    "source": null,
+    "wav": null,
+    "truth": null
+   }
+  ],
+  "10.1": [
+   {
+    "para": 0,
+    "key": "f0f8ea4203ecf934d241aaad",
+    "words": 28,
+    "source": null,
+    "wav": null,
+    "truth": null
+   },
+   {
+    "para": 1,
+    "key": "0c234d8ef9946c08610a1b3b",
+    "words": 19,
+    "source": null,
+    "wav": null,
+    "truth": null
+   }
+  ],
+  "10.2": [
+   {
+    "para": 0,
+    "key": "07ae37b9fe3ef2816c66aa5e",
+    "words": 45,
+    "source": null,
+    "wav": null,
+    "truth": null
+   },
+   {
+    "para": 1,
+    "key": "b8476256d04de3c5e7a912fb",
+    "words": 22,
+    "source": null,
+    "wav": null,
+    "truth": null
+   },
+   {
+    "para": 2,
+    "key": "042f0ea30d2fd080d6b9d21b",
+    "words": 30,
+    "source": null,
+    "wav": null,
+    "truth": null
+   }
+  ],
+  "10.3": [
+   {
+    "para": 0,
+    "key": "9ffb666f36f02241d5ec2a4f",
+    "words": 33,
+    "source": null,
+    "wav": null,
+    "truth": null
+   }
+  ],
+  "10.4": [
+   {
+    "para": 0,
+    "key": "64b92e1715859f82db1e345f",
+    "words": 27,
+    "source": null,
+    "wav": null,
+    "truth": null
+   },
+   {
+    "para": 1,
+    "key": "0acec52c1475533982109b59",
+    "words": 42,
+    "source": null,
+    "wav": null,
+    "truth": null
+   },
+   {
+    "para": 2,
+    "key": "c32443dc43197c544c41e955",
+    "words": 29,
+    "source": null,
+    "wav": null,
+    "truth": null
+   }
+  ],
+  "10.5": [
+   {
+    "para": 0,
+    "key": "7de45b93f26fbe75c2b9eeed",
+    "words": 31,
+    "source": null,
+    "wav": null,
+    "truth": null
+   },
+   {
+    "para": 1,
+    "key": "e6f0992edcae133a5e3e0843",
+    "words": 25,
+    "source": null,
+    "wav": null,
+    "truth": null
+   },
+   {
+    "para": 2,
+    "key": "bfdf57175bd23d9008ddb0fd",
+    "words": 38,
+    "source": null,
+    "wav": null,
+    "truth": null
+   }
+  ],
+  "10.6": [
+   {
+    "para": 0,
+    "key": "52d0751d91085124acac5d02",
+    "words": 34,
+    "source": null,
+    "wav": null,
+    "truth": null
+   },
+   {
+    "para": 1,
+    "key": "fa3b7fdcd0b2a6244e112fe1",
+    "words": 20,
+    "source": null,
+    "wav": null,
+    "truth": null
+   }
+  ],
+  "10.7": [
+   {
+    "para": 0,
+    "key": "b6c520da814da51e1784e9e9",
+    "words": 27,
+    "source": null,
+    "wav": null,
+    "truth": null
+   },
+   {
+    "para": 1,
+    "key": "a1dad56dec3f5de5d1f35ece",
+    "words": 25,
+    "source": null,
+    "wav": null,
+    "truth": null
+   }
+  ],
+  "10.8": [
+   {
+    "para": 0,
+    "key": "e134c62544d1e73f9478c4f6",
+    "words": 27,
+    "source": null,
+    "wav": null,
+    "truth": null
+   },
+   {
+    "para": 1,
+    "key": "0ca55a47f2a6d35232600ae7",
+    "words": 24,
+    "source": null,
+    "wav": null,
+    "truth": null
+   },
+   {
+    "para": 2,
+    "key": "a9f03009648326a1cdf6078c",
+    "words": 41,
+    "source": null,
+    "wav": null,
+    "truth": null
+   }
+  ],
+  "10.9": [
+   {
+    "para": 0,
+    "key": "df15d6f47eef5bea74545b38",
+    "words": 16,
+    "source": null,
+    "wav": null,
+    "truth": null
+   },
+   {
+    "para": 1,
+    "key": "1983e134f1adec23d89432a6",
+    "words": 38,
+    "source": null,
+    "wav": null,
+    "truth": null
+   },
+   {
+    "para": 2,
+    "key": "60ad239559e73b96533a0425",
+    "words": 14,
+    "source": null,
+    "wav": null,
+    "truth": null
+   }
+  ],
+  "ch10.Q": [
+   {
+    "para": 0,
+    "key": "b8576e7118235aef8889b0dd",
+    "words": 18,
+    "source": null,
+    "wav": null,
+    "truth": null
+   }
+  ],
+  "10q.1": [
+   {
+    "para": 0,
+    "key": "e2c0802f113b499067adf384",
+    "words": 14,
+    "source": null,
+    "wav": null,
+    "truth": null
+   },
+   {
+    "para": 1,
+    "key": "3ad5303c1e1511ab4d106f9e",
+    "words": 42,
+    "source": null,
+    "wav": null,
+    "truth": null
+   },
+   {
+    "para": 2,
+    "key": "85ba2ae041babd98f430e471",
+    "words": 17,
+    "source": null,
+    "wav": null,
+    "truth": null
+   }
+  ],
+  "10q.2": [
+   {
+    "para": 0,
+    "key": "a72c18627fccb6e3f7213f8e",
+    "words": 9,
+    "source": null,
+    "wav": null,
+    "truth": null
+   },
+   {
+    "para": 1,
+    "key": "59b5bdf455dbd866be2d7a6b",
+    "words": 64,
+    "source": null,
+    "wav": null,
+    "truth": null
+   }
+  ],
+  "10q.3": [
+   {
+    "para": 0,
+    "key": "07bcd33ee8ec3453c7252184",
+    "words": 50,
+    "source": null,
+    "wav": null,
+    "truth": null
+   }
+  ],
+  "10q.4": [
+   {
+    "para": 0,
+    "key": "e602e3d64a8689be823b9af7",
+    "words": 14,
+    "source": null,
+    "wav": null,
+    "truth": null
+   },
+   {
+    "para": 1,
+    "key": "d498c6f4fc34480bb7cd2748",
+    "words": 44,
+    "source": null,
+    "wav": null,
+    "truth": null
+   }
+  ],
+  "10q.5": [
+   {
+    "para": 0,
+    "key": "dc1fb293a13ff49102a905b6",
+    "words": 46,
+    "source": null,
+    "wav": null,
+    "truth": null
+   },
+   {
+    "para": 1,
+    "key": "91f5a4ab65605b1e05192102",
+    "words": 16,
+    "source": null,
+    "wav": null,
+    "truth": null
+   }
+  ],
+  "10q.6": [
+   {
+    "para": 0,
+    "key": "d7501ab12db7a6c773993084",
+    "words": 24,
+    "source": null,
+    "wav": null,
+    "truth": null
+   },
+   {
+    "para": 1,
+    "key": "1e9be9156afc644e50db3227",
+    "words": 27,
+    "source": null,
+    "wav": null,
+    "truth": null
+   }
+  ],
+  "11.1": [
+   {
+    "para": 0,
+    "key": "1918c653c9cc5204acfee5ce",
+    "words": 44,
+    "source": null,
+    "wav": null,
+    "truth": null
+   },
+   {
+    "para": 1,
+    "key": "1ea1bf1b60fa37c350ea2bee",
+    "words": 33,
+    "source": null,
+    "wav": null,
+    "truth": null
+   }
+  ],
+  "11.2": [
+   {
+    "para": 0,
+    "key": "692541390ad0adb5caa0b321",
+    "words": 9,
+    "source": null,
+    "wav": null,
+    "truth": null
+   },
+   {
+    "para": 1,
+    "key": "859b399df83b2ca61ef93f18",
+    "words": 67,
+    "source": null,
+    "wav": null,
+    "truth": null
+   },
+   {
+    "para": 2,
+    "key": "768cf9d9627246e1cc1a1d2b",
+    "words": 59,
+    "source": null,
+    "wav": null,
+    "truth": null
+   },
+   {
+    "para": 3,
+    "key": "fe5091f525ca803addc8e9ab",
+    "words": 23,
+    "source": null,
+    "wav": null,
+    "truth": null
+   }
+  ],
+  "11.3": [
+   {
+    "para": 0,
+    "key": "31f2fd645310ba00557dab7e",
+    "words": 30,
+    "source": null,
+    "wav": null,
+    "truth": null
+   }
+  ]
+ }
+}

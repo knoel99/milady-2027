@@ -1,0 +1,25 @@
+[Script Info]
+ScriptType: v4.00+
+PlayResX: 1920
+PlayResY: 1080
+WrapStyle: 2
+ScaledBorderAndShadow: yes
+YCbCr Matrix: TV.709
+
+[V4+ Styles]
+Format: Name, Fontname, Fontsize, PrimaryColour, SecondaryColour, OutlineColour, BackColour, Bold, Italic, Underline, StrikeOut, ScaleX, ScaleY, Spacing, Angle, BorderStyle, Outline, Shadow, Alignment, MarginL, MarginR, MarginV, Encoding
+Style: Sub,Inter Medium,42,&H00F7F4F2,&H00F7F4F2,&H38140F0B,&H00000000,0,0,0,0,100,100,0,0,3,12,0,2,240,240,64,1
+
+[Events]
+Format: Layer, Start, End, Style, Name, MarginL, MarginR, MarginV, Effect, Text
+Dialogue: 0,0:00:00.32,0:00:04.73,Sub,,0,0,0,,{\fad(120,100)\move(960,1020,960,1016,0,120)}A generated snapshot has no\Ntrue twin, so we compare crowds.
+Dialogue: 0,0:00:04.81,0:00:07.50,Sub,,0,0,0,,{\fad(120,100)\move(960,1020,960,1016,0,120)}Picture each crowd as a pile of sand.
+Dialogue: 0,0:00:07.58,0:00:12.22,Sub,,0,0,0,,{\fad(120,100)\move(960,1020,960,1016,0,120)}A {\c&H00A1ED&}distribution distance{\c&HF7F4F2&} scores\Nhow different the two piles are.
+Dialogue: 0,0:00:12.30,0:00:17.20,Sub,,0,0,0,,{\fad(120,100)\move(960,1020,960,1016,0,120)}The earth-mover kind counts how\Nmuch sand must move, and how far.
+Dialogue: 0,0:00:18.07,0:00:22.62,Sub,,0,0,0,,{\fad(120,100)\move(960,1020,960,1016,0,120)}A perfect model, scored against\Nthe data: will it get zero?
+Dialogue: 0,0:00:25.99,0:00:30.36,Sub,,0,0,0,,{\fad(120,100)\move(960,1020,960,1016,0,120)}No. Roll a fair die a thousand\Ntimes, then a thousand more.
+Dialogue: 0,0:00:30.44,0:00:34.29,Sub,,0,0,0,,{\fad(120,100)\move(960,1020,960,1016,0,120)}Same die, same truth,\Nyet the two histograms differ.
+Dialogue: 0,0:00:34.37,0:00:39.04,Sub,,0,0,0,,{\fad(120,100)\move(960,1020,960,1016,0,120)}That gap is the {\c&H00A1ED&}noise floor{\c&HF7F4F2&},\Nabout what a perfect model scores.
+Dialogue: 0,0:00:39.12,0:00:44.51,Sub,,0,0,0,,{\fad(120,100)\move(960,1020,960,1016,0,120)}Judge every model against it,\Nat equal sample size, never against zero.
+Dialogue: 0,0:00:45.38,0:00:48.47,Sub,,0,0,0,,{\fad(120,100)\move(960,1020,960,1016,0,120)}One catch: the samples\Nmust be independent.
+Dialogue: 0,0:00:48.55,0:00:53.22,Sub,,0,0,0,,{\fad(120,100)\move(960,1020,960,1016,0,120)}Overlap them, and the floor drops\Ntoo low, as the report warns.

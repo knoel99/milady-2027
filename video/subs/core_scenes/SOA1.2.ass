@@ -1,0 +1,20 @@
+[Script Info]
+ScriptType: v4.00+
+PlayResX: 1920
+PlayResY: 1080
+WrapStyle: 2
+ScaledBorderAndShadow: yes
+YCbCr Matrix: TV.709
+
+[V4+ Styles]
+Format: Name, Fontname, Fontsize, PrimaryColour, SecondaryColour, OutlineColour, BackColour, Bold, Italic, Underline, StrikeOut, ScaleX, ScaleY, Spacing, Angle, BorderStyle, Outline, Shadow, Alignment, MarginL, MarginR, MarginV, Encoding
+Style: Sub,Inter Medium,42,&H00F7F4F2,&H00F7F4F2,&H38140F0B,&H00000000,0,0,0,0,100,100,0,0,3,12,0,2,240,240,64,1
+
+[Events]
+Format: Layer, Start, End, Style, Name, MarginL, MarginR, MarginV, Effect, Text
+Dialogue: 0,0:00:00.37,0:00:02.31,Sub,,0,0,0,,{\fad(120,100)\move(960,1020,960,1016,0,120)}Lane two, theory.
+Dialogue: 0,0:00:02.70,0:00:08.36,Sub,,0,0,0,,{\fad(120,100)\move(960,1020,960,1016,0,120)}Nineteen nineteen: a moving, conducting\Nfluid might keep the Sun's field alive.
+Dialogue: 0,0:00:08.80,0:00:14.78,Sub,,0,0,0,,{\fad(120,100)\move(960,1020,960,1016,0,120)}Nineteen thirty-three: no flow can sustain\Na field that is symmetric around an axis.
+Dialogue: 0,0:00:15.52,0:00:20.16,Sub,,0,0,0,,{\fad(120,100)\move(960,1020,960,1016,0,120)}Nineteen fifty-eight: the first\Nproven examples of flows that can.
+Dialogue: 0,0:00:20.45,0:00:23.19,Sub,,0,0,0,,{\fad(120,100)\move(960,1020,960,1016,0,120)}In the seventies came simple dynamo flows,
+Dialogue: 0,0:00:23.27,0:00:26.48,Sub,,0,0,0,,{\fad(120,100)\move(960,1020,960,1016,0,120)}later the blueprints\Nof Riga and Karlsruhe.

@@ -1,0 +1,20 @@
+[Script Info]
+ScriptType: v4.00+
+PlayResX: 1920
+PlayResY: 1080
+WrapStyle: 2
+ScaledBorderAndShadow: yes
+YCbCr Matrix: TV.709
+
+[V4+ Styles]
+Format: Name, Fontname, Fontsize, PrimaryColour, SecondaryColour, OutlineColour, BackColour, Bold, Italic, Underline, StrikeOut, ScaleX, ScaleY, Spacing, Angle, BorderStyle, Outline, Shadow, Alignment, MarginL, MarginR, MarginV, Encoding
+Style: Sub,Inter Medium,42,&H00F7F4F2,&H00F7F4F2,&H38140F0B,&H00000000,0,0,0,0,100,100,0,0,3,12,0,2,240,240,64,1
+
+[Events]
+Format: Layer, Start, End, Style, Name, MarginL, MarginR, MarginV, Effect, Text
+Dialogue: 0,0:00:00.37,0:00:05.88,Sub,,0,0,0,,{\fad(120,100)\move(960,1020,960,1016,0,120)}Inside VKS: a cylinder holding a hundred\Nand fifty litres of liquid sodium.
+Dialogue: 0,0:00:06.30,0:00:12.16,Sub,,0,0,0,,{\fad(120,100)\move(960,1020,960,1016,0,120)}At its ends, two bladed discs, the\Nimpellers, spin in opposite directions.
+Dialogue: 0,0:00:12.90,0:00:15.58,Sub,,0,0,0,,{\fad(120,100)\move(960,1020,960,1016,0,120)}Should it matter what metal\Nthe discs are made of?
+Dialogue: 0,0:00:18.82,0:00:23.61,Sub,,0,0,0,,{\fad(120,100)\move(960,1020,960,1016,0,120)}With stainless steel discs, there\Nwas no dynamo, even at full speed.
+Dialogue: 0,0:00:23.91,0:00:28.94,Sub,,0,0,0,,{\fad(120,100)\move(960,1020,960,1016,0,120)}Swap in discs of soft iron,\Nand a dipole grows along the axis.
+Dialogue: 0,0:00:30.68,0:00:35.27,Sub,,0,0,0,,{\fad(120,100)\move(960,1020,960,1016,0,120)}So the threshold depends on more\Nthan Rm: materials count too.

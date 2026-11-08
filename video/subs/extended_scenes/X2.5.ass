@@ -1,0 +1,24 @@
+[Script Info]
+ScriptType: v4.00+
+PlayResX: 1920
+PlayResY: 1080
+WrapStyle: 2
+ScaledBorderAndShadow: yes
+YCbCr Matrix: TV.709
+
+[V4+ Styles]
+Format: Name, Fontname, Fontsize, PrimaryColour, SecondaryColour, OutlineColour, BackColour, Bold, Italic, Underline, StrikeOut, ScaleX, ScaleY, Spacing, Angle, BorderStyle, Outline, Shadow, Alignment, MarginL, MarginR, MarginV, Encoding
+Style: Sub,Inter Medium,42,&H00F7F4F2,&H00F7F4F2,&H38140F0B,&H00000000,0,0,0,0,100,100,0,0,3,12,0,2,240,240,64,1
+
+[Events]
+Format: Layer, Start, End, Style, Name, MarginL, MarginR, MarginV, Effect, Text
+Dialogue: 0,0:00:00.37,0:00:03.20,Sub,,0,0,0,,{\fad(120,100)\move(960,1020,960,1016,0,120)}Last, crowd laws. The equations give any
+Dialogue: 0,0:00:03.28,0:00:06.73,Sub,,0,0,0,,{\fad(120,100)\move(960,1020,960,1016,0,120)}quantity a rate of\Nchange at each snapshot.
+Dialogue: 0,0:00:07.12,0:00:10.92,Sub,,0,0,0,,{\fad(120,100)\move(960,1020,960,1016,0,120)}If the crowd is stationary,\Nthat rate {\c&H00A1ED&}averages to zero{\c&HF7F4F2&},
+Dialogue: 0,0:00:11.00,0:00:14.86,Sub,,0,0,0,,{\fad(120,100)\move(960,1020,960,1016,0,120)}for every quantity;\Nthe energy budget is one case.
+Dialogue: 0,0:00:15.60,0:00:19.38,Sub,,0,0,0,,{\fad(120,100)\move(960,1020,960,1016,0,120)}The proof: let every\Nsnapshot run for a moment.
+Dialogue: 0,0:00:20.02,0:00:25.54,Sub,,0,0,0,,{\fad(120,100)\move(960,1020,960,1016,0,120)}The crowd looks the same, so no\Naverage moves: the mean rate is zero.
+Dialogue: 0,0:00:26.28,0:00:29.79,Sub,,0,0,0,,{\fad(120,100)\move(960,1020,960,1016,0,120)}Necessary, not sufficient:\Na crowd parked on an
+Dialogue: 0,0:00:29.87,0:00:33.56,Sub,,0,0,0,,{\fad(120,100)\move(960,1020,960,1016,0,120)}unstable fixed point\Npasses every such test.
+Dialogue: 0,0:00:33.67,0:00:35.47,Sub,,0,0,0,,{\fad(120,100)\move(960,1020,960,1016,0,120)}So does an unstable loop.
+Dialogue: 0,0:00:35.98,0:00:39.24,Sub,,0,0,0,,{\fad(120,100)\move(960,1020,960,1016,0,120)}The fit to data must\Ntherefore stay in the loss.

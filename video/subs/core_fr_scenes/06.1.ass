@@ -1,0 +1,22 @@
+[Script Info]
+ScriptType: v4.00+
+PlayResX: 1920
+PlayResY: 1080
+WrapStyle: 2
+ScaledBorderAndShadow: yes
+YCbCr Matrix: TV.709
+
+[V4+ Styles]
+Format: Name, Fontname, Fontsize, PrimaryColour, SecondaryColour, OutlineColour, BackColour, Bold, Italic, Underline, StrikeOut, ScaleX, ScaleY, Spacing, Angle, BorderStyle, Outline, Shadow, Alignment, MarginL, MarginR, MarginV, Encoding
+Style: Sub,Inter Medium,42,&H00F7F4F2,&H00F7F4F2,&H38140F0B,&H00000000,0,0,0,0,100,100,0,0,3,12,0,2,240,240,64,1
+
+[Events]
+Format: Layer, Start, End, Style, Name, MarginL, MarginR, MarginV, Effect, Text
+Dialogue: 0,0:00:03.12,0:00:07.94,Sub,,0,0,0,,{\fad(120,100)\move(960,1020,960,1016,0,120)}New snapshots start as pure noise:\Na round cloud of random points.
+Dialogue: 0,0:00:08.02,0:00:12.05,Sub,,0,0,0,,{\fad(120,100)\move(960,1020,960,1016,0,120)}Over it, the crowd we want:\None point per snapshot. Here,
+Dialogue: 0,0:00:12.13,0:00:15.48,Sub,,0,0,0,,{\fad(120,100)\move(960,1020,960,1016,0,120)}two mirror blobs, like the two whirlpools.
+Dialogue: 0,0:00:16.35,0:00:19.29,Sub,,0,0,0,,{\fad(120,100)\move(960,1020,960,1016,0,120)}Now let a {\c&HF09CB4&}wind{\c&HF7F4F2&} blow through the cloud.
+Dialogue: 0,0:00:19.37,0:00:24.47,Sub,,0,0,0,,{\fad(120,100)\move(960,1020,960,1016,0,120)}Each point drifts, bends,\Nand lands inside the shape of the data.
+Dialogue: 0,0:00:24.55,0:00:29.12,Sub,,0,0,0,,{\fad(120,100)\move(960,1020,960,1016,0,120)}Fresh noise in, fresh snapshots\Nout, as many as you like.
+Dialogue: 0,0:00:29.99,0:00:34.74,Sub,,0,0,0,,{\fad(120,100)\move(960,1020,960,1016,0,120)}That wind is a {\c&HF09CB4&}generative model{\c&HF7F4F2&}:\Nnew, plausible examples, on demand.
+Dialogue: 0,0:00:34.82,0:00:37.42,Sub,,0,0,0,,{\fad(120,100)\move(960,1020,960,1016,0,120)}The whole game is learning the wind.

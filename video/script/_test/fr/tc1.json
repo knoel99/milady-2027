@@ -1,0 +1,20 @@
+{
+ "schema": 2, "unit": "tc1", "lang": "fr",
+ "title": "Chapitre de test un",
+ "voice": {"provider": "fish", "model": "drama-3", "reference_id": "536d3a5e000945adb7038665781a4aca"},
+ "sentences": {
+  "T1.1.s1": "Ce court film ne teste que le pipeline.",
+  "T1.1.s2": "Regardez l'{b}aiguille{/} faire demi-tour, puis se poser.",
+  "T1.1.s3": "Avant qu'elle ne bouge à nouveau : va-t-elle revenir ?",
+  "T1.2.s1": "Cette place est encore vide : le calcul n'a pas été lancé.",
+  "T1.2.s2": "Le pari : le {param}taux de croissance{/} change de signe entre dix-sept et dix-huit."
+ },
+ "variants": {
+  "T1.2": {
+   "T1.2.s1": "Le calcul est arrivé, et la place est remplie.",
+   "T1.2.s2": "À dix-sept, le taux de croissance vaut {{s17:2}}, à dix-huit {{s18:2}} : {{verdict}}.",
+   "T1.2.s3": "Le seuil est donc ailleurs, et la question change."
+  }
+ },
+ "notes": "PIPELINE TEST overlay (not part of the film). tc1.Q is left out on purpose: the question card is spoken from question.fr."
+}

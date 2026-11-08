@@ -1,0 +1,27 @@
+[Script Info]
+ScriptType: v4.00+
+PlayResX: 1920
+PlayResY: 1080
+WrapStyle: 2
+ScaledBorderAndShadow: yes
+YCbCr Matrix: TV.709
+
+[V4+ Styles]
+Format: Name, Fontname, Fontsize, PrimaryColour, SecondaryColour, OutlineColour, BackColour, Bold, Italic, Underline, StrikeOut, ScaleX, ScaleY, Spacing, Angle, BorderStyle, Outline, Shadow, Alignment, MarginL, MarginR, MarginV, Encoding
+Style: Sub,Inter Medium,42,&H00F7F4F2,&H00F7F4F2,&H38140F0B,&H00000000,0,0,0,0,100,100,0,0,3,12,0,2,240,240,64,1
+
+[Events]
+Format: Layer, Start, End, Style, Name, MarginL, MarginR, MarginV, Effect, Text
+Dialogue: 0,0:00:00.37,0:00:04.73,Sub,,0,0,0,,{\fad(120,100)\move(960,1020,960,1016,0,120)}Back to the shoebox. Spread its\Nphotos out by their {\c&H3468EB&}dipole{\c&HF7F4F2&} reading.
+Dialogue: 0,0:00:04.90,0:00:09.15,Sub,,0,0,0,,{\fad(120,100)\move(960,1020,960,1016,0,120)}The line to cross is zero:\Ndraw a thin strip around it.
+Dialogue: 0,0:00:09.89,0:00:12.39,Sub,,0,0,0,,{\fad(120,100)\move(960,1020,960,1016,0,120)}Each photo also needs a speedometer.
+Dialogue: 0,0:00:12.79,0:00:15.61,Sub,,0,0,0,,{\fad(120,100)\move(960,1020,960,1016,0,120)}No clock required:\Nthe dipole's equation turns
+Dialogue: 0,0:00:15.69,0:00:18.86,Sub,,0,0,0,,{\fad(120,100)\move(960,1020,960,1016,0,120)}the photo's three dial\Nreadings into a speed.
+Dialogue: 0,0:00:19.27,0:00:23.64,Sub,,0,0,0,,{\fad(120,100)\move(960,1020,960,1016,0,120)}Up or down, both count,\Nso keep only its size.
+Dialogue: 0,0:00:24.38,0:00:26.17,Sub,,0,0,0,,{\fad(120,100)\move(960,1020,960,1016,0,120)}Add the speeds inside the strip,
+Dialogue: 0,0:00:26.25,0:00:30.03,Sub,,0,0,0,,{\fad(120,100)\move(960,1020,960,1016,0,120)}then divide by its width and\Nby the total number of photos.
+Dialogue: 0,0:00:30.35,0:00:32.15,Sub,,0,0,0,,{\fad(120,100)\move(960,1020,960,1016,0,120)}Out comes the {\c&H00A1ED&}crossing rate{\c&HF7F4F2&}.
+Dialogue: 0,0:00:32.63,0:00:35.89,Sub,,0,0,0,,{\fad(120,100)\move(960,1020,960,1016,0,120)}Shrink the strip to nothing,\Nand for well-behaved
+Dialogue: 0,0:00:35.97,0:00:39.29,Sub,,0,0,0,,{\fad(120,100)\move(960,1020,960,1016,0,120)}systems the recipe is\Nexact: Rice's formula.
+Dialogue: 0,0:00:39.74,0:00:43.52,Sub,,0,0,0,,{\fad(120,100)\move(960,1020,960,1016,0,120)}The catch: few photos land\Nin a thin strip. Here,
+Dialogue: 0,0:00:43.60,0:00:46.92,Sub,,0,0,0,,{\fad(120,100)\move(960,1020,960,1016,0,120)}about two dozen out of eight thousand.

@@ -1,0 +1,23 @@
+[Script Info]
+ScriptType: v4.00+
+PlayResX: 1920
+PlayResY: 1080
+WrapStyle: 2
+ScaledBorderAndShadow: yes
+YCbCr Matrix: TV.709
+
+[V4+ Styles]
+Format: Name, Fontname, Fontsize, PrimaryColour, SecondaryColour, OutlineColour, BackColour, Bold, Italic, Underline, StrikeOut, ScaleX, ScaleY, Spacing, Angle, BorderStyle, Outline, Shadow, Alignment, MarginL, MarginR, MarginV, Encoding
+Style: Sub,Inter Medium,42,&H00F7F4F2,&H00F7F4F2,&H38140F0B,&H00000000,0,0,0,0,100,100,0,0,3,12,0,2,240,240,64,1
+
+[Events]
+Format: Layer, Start, End, Style, Name, MarginL, MarginR, MarginV, Effect, Text
+Dialogue: 0,0:00:01.57,0:00:03.52,Sub,,0,0,0,,{\fad(120,100)\move(960,1020,960,1016,0,120)}Reweighting, up close.
+Dialogue: 0,0:00:03.91,0:00:06.77,Sub,,0,0,0,,{\fad(120,100)\move(960,1020,960,1016,0,120)}The {\c&HF09CB4&}model's{\c&HF7F4F2&} crowd misses\Nits target average.
+Dialogue: 0,0:00:07.15,0:00:12.18,Sub,,0,0,0,,{\fad(120,100)\move(960,1020,960,1016,0,120)}Leave every snapshot in place;\Nchange only how much each counts.
+Dialogue: 0,0:00:12.92,0:00:14.76,Sub,,0,0,0,,{\fad(120,100)\move(960,1020,960,1016,0,120)}Many weightings hit the target.
+Dialogue: 0,0:00:15.11,0:00:20.17,Sub,,0,0,0,,{\fad(120,100)\move(960,1020,960,1016,0,120)}The least distorting one is an exponential\Ntilt, known as the I-projection.
+Dialogue: 0,0:00:20.91,0:00:26.15,Sub,,0,0,0,,{\fad(120,100)\move(960,1020,960,1016,0,120)}Picture crowds as points: those with\Nthe right average lie on a line.
+Dialogue: 0,0:00:26.41,0:00:29.49,Sub,,0,0,0,,{\fad(120,100)\move(960,1020,960,1016,0,120)}The tilted crowd is the\Nfoot of the perpendicular.
+Dialogue: 0,0:00:29.92,0:00:35.30,Sub,,0,0,0,,{\fad(120,100)\move(960,1020,960,1016,0,120)}Any other fix pays the tilt's cost\Nplus an extra, as in Pythagoras.
+Dialogue: 0,0:00:35.61,0:00:41.32,Sub,,0,0,0,,{\fad(120,100)\move(960,1020,960,1016,0,120)}And nothing moves: the tilted crowd\Nlives only where the model's crowd was.

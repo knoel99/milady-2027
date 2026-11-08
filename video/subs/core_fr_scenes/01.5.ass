@@ -1,0 +1,20 @@
+[Script Info]
+ScriptType: v4.00+
+PlayResX: 1920
+PlayResY: 1080
+WrapStyle: 2
+ScaledBorderAndShadow: yes
+YCbCr Matrix: TV.709
+
+[V4+ Styles]
+Format: Name, Fontname, Fontsize, PrimaryColour, SecondaryColour, OutlineColour, BackColour, Bold, Italic, Underline, StrikeOut, ScaleX, ScaleY, Spacing, Angle, BorderStyle, Outline, Shadow, Alignment, MarginL, MarginR, MarginV, Encoding
+Style: Sub,Inter Medium,42,&H00F7F4F2,&H00F7F4F2,&H38140F0B,&H00000000,0,0,0,0,100,100,0,0,3,12,0,2,240,240,64,1
+
+[Events]
+Format: Layer, Start, End, Style, Name, MarginL, MarginR, MarginV, Effect, Text
+Dialogue: 0,0:00:00.32,0:00:05.69,Sub,,0,0,0,,{\fad(120,100)\move(960,1020,960,1016,0,120)}Le {\c&H3468EB&}champ{\c&HF7F4F2&} de la Terre pointe aujourd'hui\Ndans un sens. Lequel devrait-il préférer ?
+Dialogue: 0,0:00:09.06,0:00:14.65,Sub,,0,0,0,,{\fad(120,100)\move(960,1020,960,1016,0,120)}Inversez chaque ligne de champ : les\Néquations de la dynamo restent les mêmes.
+Dialogue: 0,0:00:14.73,0:00:20.73,Sub,,0,0,0,,{\fad(120,100)\move(960,1020,960,1016,0,120)}Donc, aucun des deux. Ce sont des jumeaux\Nen miroir, tout aussi permis par les lois.
+Dialogue: 0,0:00:20.84,0:00:23.78,Sub,,0,0,0,,{\fad(120,100)\move(960,1020,960,1016,0,120)}Le sens qu'on obtient\Nrelève de l'histoire,
+Dialogue: 0,0:00:23.86,0:00:28.02,Sub,,0,0,0,,{\fad(120,100)\move(960,1020,960,1016,0,120)}pas des lois : dans le disque,\Nle signe du germe décide.
+Dialogue: 0,0:00:28.10,0:00:31.69,Sub,,0,0,0,,{\fad(120,100)\move(960,1020,960,1016,0,120)}Et rien dans les lois\Nn'interdit un renversement.

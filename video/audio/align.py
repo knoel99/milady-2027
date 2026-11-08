@@ -4,9 +4,14 @@
 Each paragraph is one TTS file (audio/tts.py), so paragraph boundaries are exact. Inside a paragraph,
 sentence boundaries are found by silence detection (as prototyped):
   1. pauses = runs >= 0.18 s whose 20-ms RMS stays below -40 dBFS (or 32 dB under the loudest frame);
-  2. the script predicts where each sentence boundary should fall (character counts);
+  2. the script predicts where each sentence boundary should fall (character counts, measured in voiced
+     time, i.e. with the detected pauses taken out, so that comma pauses do not skew the prediction);
   3. a dynamic programme picks, in order, the K-1 pauses that best match the predictions, preferring
      long pauses (sentence ends are longer than commas); too few pauses -> proportional fallback.
+  3b. audio/align_hints.json (optional, written by `audio/qa.py hints` from a speech-recognition pass)
+     gives, per paragraph cache key, the approximate start of each sentence after the first; a hinted
+     boundary takes the pause whose END is nearest to the hint. The times stay silence-based and the
+     text stays the script's (BRIEF D16); the build never needs the recognizer.
 Then each paragraph is trimmed to its speech (+50 ms before, +120 ms after) and the scene track is
     para 1 | LONG_PAUSE_S + hold_after(1) | para 2 | ... | para N | hold_after(N)
 written to audio/scenes/<scene>.wav (48 kHz mono) with audio/scenes/<scene>.align.json:
@@ -14,6 +19,8 @@ written to audio/scenes/<scene>.wav (48 kHz mono) with audio/scenes/<scene>.alig
 Times are relative to the start of the scene track; build.js adds lead_in, so a scene lasts
 lead_in + duration + tail (holds included in duration) and a cue is lead_in + sentence start.
 --allow-missing (for `make plan`): a paragraph with no audio yet gets an estimated length (146 raw wpm).
+Language: a film with "lang": "fr" (tools/assemble_cut.py --lang fr) writes its tracks to audio/scenes_fr/
+instead (same scene ids, French timing); English tracks and keys are untouched.
 Usage: python3 -I audio/align.py script/_build/film_core.json [--manifest script/_build/core_tts.json] [--allow-missing]
 """
 import argparse, hashlib, json, os, re, sys, wave
@@ -25,8 +32,28 @@ ROOT = os.path.dirname(HERE)
 sys.path.insert(0, HERE)
 from tts import LONG_PAUSE_S, RAW_WPM, SR, nwords, plain  # noqa: E402
 
-OUT = os.path.join(HERE, "scenes")
-ALIGN_VERSION = 2
+OUT = os.path.join(HERE, "scenes")          # English tracks; other languages: scenes_dir(lang)
+
+
+def scenes_dir(lang="en"):
+    """audio/scenes (English) or audio/scenes_<lang>: one narration track per scene and language."""
+    return OUT if lang in (None, "", "en") else os.path.join(HERE, f"scenes_{lang}")
+ALIGN_VERSION = 3
+LEN_BONUS = 1.5                  # s of prediction error forgiven per s of pause length (sentence ends are long)
+HINTS_FILE = os.path.join(HERE, "align_hints.json")
+_HINTS = None
+
+
+def hints_for(key, n):
+    """Hinted sentence starts (seconds in the paragraph file, None = no hint) for a paragraph of n sentences."""
+    global _HINTS
+    if _HINTS is None:
+        try:
+            _HINTS = json.load(open(HINTS_FILE)).get("hints", {})
+        except (FileNotFoundError, ValueError):
+            _HINTS = {}
+    h = _HINTS.get(key)
+    return h if isinstance(h, list) and len(h) == n - 1 else None
 PAD0, PAD1 = 0.05, 0.12          # kept before the first and after the last voiced frame of a paragraph
 HOP, WIN = 0.010, 0.020
 
@@ -88,7 +115,7 @@ def silences(x, min_d=0.18, thr=None):
     return out, thr
 
 
-def split_sentences(sents, x, extra_weight=None):
+def split_sentences(sents, x, extra_weight=None, hints=None):
     """Sentence (start, end) inside one paragraph signal x. Returns (bounds, speech0, speech1, method)."""
     dur = len(x) / SR
     sil, thr = silences(x)
@@ -104,14 +131,24 @@ def split_sentences(sents, x, extra_weight=None):
     for wgt in weights[:-1]:
         c += wgt
         exp.append(speech0 + (speech1 - speech0) * c / total)
-    method = "silence+dp"
+
+    def voiced(t):                                   # speaking time before t (pauses taken out)
+        return (t - speech0) - sum(min(b, t) - a for a, b in inner if a < t)
+    vtot = voiced(speech1)
+    vexp = [vtot * sum(weights[:k + 1]) / total for k in range(K - 1)]
+    vpos = [voiced(a) for a, b in inner]
+    hints = hints if hints and len(hints) == K - 1 else None
+    method = "silence+dp" + ("+hints" if hints and any(h is not None for h in hints) else "")
     if K == 1:
         cuts = []
     elif len(inner) < K - 1:
         cuts, method = [(e, e) for e in exp], "proportional-fallback"
     else:
         INF, M = 1e18, len(inner)
-        cost = lambda j, i: abs((inner[i][0] + inner[i][1]) / 2 - exp[j]) - 0.8 * (inner[i][1] - inner[i][0])
+        def cost(j, i):
+            if hints and hints[j] is not None:
+                return 4.0 * abs(inner[i][1] - hints[j])
+            return abs(vpos[i] - vexp[j]) - LEN_BONUS * (inner[i][1] - inner[i][0])
         D = [[INF] * M for _ in range(K - 1)]
         P = [[-1] * M for _ in range(K - 1)]
         for i in range(M):
@@ -139,11 +176,15 @@ def split_sentences(sents, x, extra_weight=None):
     return out, speech0, speech1, method
 
 
-def scene_key(sc, entries):
-    blob = json.dumps({"v": ALIGN_VERSION, "pause": LONG_PAUSE_S, "pads": [PAD0, PAD1],
-                       "paras": [[e.get("key"), e.get("source"), e.get("wav"), p["hold_after"],
-                                  [(s["id"], s.get("cue"), s["text"]) for s in p["sentences"]]]
-                                 for p, e in zip(sc["paragraphs"], entries)]}, sort_keys=True)
+def scene_key(sc, entries, lang="en"):
+    d = {"v": ALIGN_VERSION, "pause": LONG_PAUSE_S, "pads": [PAD0, PAD1],
+         "paras": [[e.get("key"), e.get("source"), e.get("wav"), p["hold_after"],
+                    [(s["id"], s.get("cue"), s["text"]) for s in p["sentences"]],
+                    hints_for(e.get("key"), len(p["sentences"]))]
+                   for p, e in zip(sc["paragraphs"], entries)]}
+    if lang not in (None, "", "en"):
+        d["lang"] = lang
+    blob = json.dumps(d, sort_keys=True)
     return hashlib.sha256(blob.encode()).hexdigest()[:20]
 
 
@@ -154,7 +195,7 @@ def align_scene(sc, entries, allow_missing):
         sents = p["sentences"]
         if e.get("wav"):
             x = read_wav(os.path.join(ROOT, e["wav"]))
-            bounds, s0, s1, m = split_sentences(sents, x)
+            bounds, s0, s1, m = split_sentences(sents, x, hints=hints_for(e.get("key"), len(sents)))
             a, b = max(0.0, s0 - PAD0), min(len(x) / SR, s1 + PAD1)
             clip = x[int(round(a * SR)):int(round(b * SR))]
             for s, (u, v) in zip(sents, bounds):
@@ -211,14 +252,16 @@ def main():
     film = json.load(open(a.film))
     name = film.get("name")
     man = json.load(open(a.manifest or os.path.join(ROOT, "script", "_build", f"{name}_tts.json")))
-    os.makedirs(OUT, exist_ok=True)
+    lang = film.get("lang") or "en"
+    out_dir = scenes_dir(lang)
+    os.makedirs(out_dir, exist_ok=True)
     allerr, done, skipped, est = [], 0, 0, 0
     for sc in film["scenes"]:
         entries = man["scenes"].get(sc["id"])
         if entries is None or len(entries) != len(sc["paragraphs"]):
             raise SystemExit(f"[align] {sc['id']}: manifest does not match the script (rerun tts.py)")
-        key = scene_key(sc, entries)
-        jp, wp = os.path.join(OUT, sc["id"] + ".align.json"), os.path.join(OUT, sc["id"] + ".wav")
+        key = scene_key(sc, entries, lang)
+        jp, wp = os.path.join(out_dir, sc["id"] + ".align.json"), os.path.join(out_dir, sc["id"] + ".wav")
         if not a.force and os.path.exists(jp):
             old = json.load(open(jp))
             if old.get("key") == key and (old.get("estimated") or os.path.exists(wp)):
@@ -227,6 +270,8 @@ def main():
                 continue
         res, sig, errs = align_scene(sc, entries, a.allow_missing)
         res["key"] = key
+        if lang != "en":
+            res["lang"] = lang
         res["wav"] = None
         if sig is not None:
             write_wav(wp, sig)

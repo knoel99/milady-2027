@@ -1,0 +1,24 @@
+[Script Info]
+ScriptType: v4.00+
+PlayResX: 1920
+PlayResY: 1080
+WrapStyle: 2
+ScaledBorderAndShadow: yes
+YCbCr Matrix: TV.709
+
+[V4+ Styles]
+Format: Name, Fontname, Fontsize, PrimaryColour, SecondaryColour, OutlineColour, BackColour, Bold, Italic, Underline, StrikeOut, ScaleX, ScaleY, Spacing, Angle, BorderStyle, Outline, Shadow, Alignment, MarginL, MarginR, MarginV, Encoding
+Style: Sub,Inter Medium,42,&H00F7F4F2,&H00F7F4F2,&H38140F0B,&H00000000,0,0,0,0,100,100,0,0,3,12,0,2,240,240,64,1
+
+[Events]
+Format: Layer, Start, End, Style, Name, MarginL, MarginR, MarginV, Effect, Text
+Dialogue: 0,0:00:00.22,0:00:01.48,Sub,,0,0,0,,{\fad(120,100)\move(960,1020,960,1016,0,120)}Alors, deux questions.
+Dialogue: 0,0:00:01.56,0:00:04.03,Sub,,0,0,0,,{\fad(120,100)\move(960,1020,960,1016,0,120)}Quand aura lieu le prochain renversement ?
+Dialogue: 0,0:00:04.11,0:00:07.01,Sub,,0,0,0,,{\fad(120,100)\move(960,1020,960,1016,0,120)}Et {\c&H00A1ED&}à quelle fréquence{\c&HF7F4F2&} le\Nchamp se renverse-t-il ?
+Dialogue: 0,0:00:07.09,0:00:08.88,Sub,,0,0,0,,{\fad(120,100)\move(960,1020,960,1016,0,120)}À laquelle peut-on répondre ?
+Dialogue: 0,0:00:11.25,0:00:15.21,Sub,,0,0,0,,{\fad(120,100)\move(960,1020,960,1016,0,120)}Dans un modèle numérique simple\Nd'un {\c&H3468EB&}champ{\c&HF7F4F2&} qui se renverse,
+Dialogue: 0,0:00:15.29,0:00:17.43,Sub,,0,0,0,,{\fad(120,100)\move(960,1020,960,1016,0,120)}la première est sans espoir.
+Dialogue: 0,0:00:17.51,0:00:18.71,Sub,,0,0,0,,{\fad(120,100)\move(960,1020,960,1016,0,120)}La seconde, non.
+Dialogue: 0,0:00:19.55,0:00:24.19,Sub,,0,0,0,,{\fad(120,100)\move(960,1020,960,1016,0,120)}Pour comprendre pourquoi, nous passerons\Npar le métal liquide et le chaos.
+Dialogue: 0,0:00:24.27,0:00:28.90,Sub,,0,0,0,,{\fad(120,100)\move(960,1020,960,1016,0,120)}Puis par des {\c&HF09CB4&}machines{\c&HF7F4F2&} qui imaginent\Ndes instantanés de champs magnétiques.
+Dialogue: 0,0:00:28.98,0:00:34.37,Sub,,0,0,0,,{\fad(120,100)\move(960,1020,960,1016,0,120)}Elles doivent obéir exactement à certaines\Nlois, et à d'autres seulement en moyenne.

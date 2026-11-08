@@ -1,0 +1,22 @@
+[Script Info]
+ScriptType: v4.00+
+PlayResX: 1920
+PlayResY: 1080
+WrapStyle: 2
+ScaledBorderAndShadow: yes
+YCbCr Matrix: TV.709
+
+[V4+ Styles]
+Format: Name, Fontname, Fontsize, PrimaryColour, SecondaryColour, OutlineColour, BackColour, Bold, Italic, Underline, StrikeOut, ScaleX, ScaleY, Spacing, Angle, BorderStyle, Outline, Shadow, Alignment, MarginL, MarginR, MarginV, Encoding
+Style: Sub,Inter Medium,42,&H00F7F4F2,&H00F7F4F2,&H38140F0B,&H00000000,0,0,0,0,100,100,0,0,3,12,0,2,240,240,64,1
+
+[Events]
+Format: Layer, Start, End, Style, Name, MarginL, MarginR, MarginV, Effect, Text
+Dialogue: 0,0:00:00.37,0:00:04.48,Sub,,0,0,0,,{\fad(120,100)\move(960,1020,960,1016,0,120)}Take a bar magnet: north at\None end, south at the other.
+Dialogue: 0,0:00:04.76,0:00:05.96,Sub,,0,0,0,,{\fad(120,100)\move(960,1020,960,1016,0,120)}Cut it in half.
+Dialogue: 0,0:00:06.04,0:00:09.72,Sub,,0,0,0,,{\fad(120,100)\move(960,1020,960,1016,0,120)}You get two magnets, each\Nwith a north and a south.
+Dialogue: 0,0:00:10.20,0:00:13.41,Sub,,0,0,0,,{\fad(120,100)\move(960,1020,960,1016,0,120)}No one has ever found\Na lone magnetic pole.
+Dialogue: 0,0:00:14.15,0:00:17.94,Sub,,0,0,0,,{\fad(120,100)\move(960,1020,960,1016,0,120)}{\c&H3468EB&}Field lines{\c&HF7F4F2&} say the same:\Nthey never start or stop.
+Dialogue: 0,0:00:18.44,0:00:20.57,Sub,,0,0,0,,{\fad(120,100)\move(960,1020,960,1016,0,120)}Draw any box, and count.
+Dialogue: 0,0:00:20.76,0:00:23.17,Sub,,0,0,0,,{\fad(120,100)\move(960,1020,960,1016,0,120)}As many lines go in as come out.
+Dialogue: 0,0:00:23.55,0:00:25.29,Sub,,0,0,0,,{\fad(120,100)\move(960,1020,960,1016,0,120)}Keep this box in mind.

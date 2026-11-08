@@ -1,0 +1,22 @@
+[Script Info]
+ScriptType: v4.00+
+PlayResX: 1920
+PlayResY: 1080
+WrapStyle: 2
+ScaledBorderAndShadow: yes
+YCbCr Matrix: TV.709
+
+[V4+ Styles]
+Format: Name, Fontname, Fontsize, PrimaryColour, SecondaryColour, OutlineColour, BackColour, Bold, Italic, Underline, StrikeOut, ScaleX, ScaleY, Spacing, Angle, BorderStyle, Outline, Shadow, Alignment, MarginL, MarginR, MarginV, Encoding
+Style: Sub,Inter Medium,42,&H00F7F4F2,&H00F7F4F2,&H38140F0B,&H00000000,0,0,0,0,100,100,0,0,3,12,0,2,240,240,64,1
+
+[Events]
+Format: Layer, Start, End, Style, Name, MarginL, MarginR, MarginV, Effect, Text
+Dialogue: 0,0:00:00.37,0:00:05.87,Sub,,0,0,0,,{\fad(120,100)\move(960,1020,960,1016,0,120)}Set {\c&H7AAF1B&}Gamma{\c&HF7F4F2&} at zero point nine, and\Nlaunch two copies, one millionth apart.
+Dialogue: 0,0:00:06.23,0:00:11.30,Sub,,0,0,0,,{\fad(120,100)\move(960,1020,960,1016,0,120)}We know the state to six decimals.\NCan we predict the date of the next flip?
+Dialogue: 0,0:00:15.04,0:00:17.71,Sub,,0,0,0,,{\fad(120,100)\move(960,1020,960,1016,0,120)}At first, the copies move as one.
+Dialogue: 0,0:00:17.92,0:00:21.42,Sub,,0,0,0,,{\fad(120,100)\move(960,1020,960,1016,0,120)}But their gap nearly triples\Nevery eleven time units.
+Dialogue: 0,0:00:21.87,0:00:25.57,Sub,,0,0,0,,{\fad(120,100)\move(960,1020,960,1016,0,120)}After about a hundred and fifty,\Nthey disagree completely.
+Dialogue: 0,0:00:26.31,0:00:30.54,Sub,,0,0,0,,{\fad(120,100)\move(960,1020,960,1016,0,120)}The average wait between crossings\Nis longer: over two hundred.
+Dialogue: 0,0:00:31.01,0:00:35.11,Sub,,0,0,0,,{\fad(120,100)\move(960,1020,960,1016,0,120)}Each extra decimal buys only\Nabout twenty-five more time units.
+Dialogue: 0,0:00:35.25,0:00:41.04,Sub,,0,0,0,,{\fad(120,100)\move(960,1020,960,1016,0,120)}So the forecast fades before the average\Nwait ends. Only the statistics survive.

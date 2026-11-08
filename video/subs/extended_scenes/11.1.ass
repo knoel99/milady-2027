@@ -1,0 +1,22 @@
+[Script Info]
+ScriptType: v4.00+
+PlayResX: 1920
+PlayResY: 1080
+WrapStyle: 2
+ScaledBorderAndShadow: yes
+YCbCr Matrix: TV.709
+
+[V4+ Styles]
+Format: Name, Fontname, Fontsize, PrimaryColour, SecondaryColour, OutlineColour, BackColour, Bold, Italic, Underline, StrikeOut, ScaleX, ScaleY, Spacing, Angle, BorderStyle, Outline, Shadow, Alignment, MarginL, MarginR, MarginV, Encoding
+Style: Sub,Inter Medium,42,&H00F7F4F2,&H00F7F4F2,&H38140F0B,&H00000000,0,0,0,0,100,100,0,0,3,12,0,2,240,240,64,1
+
+[Events]
+Format: Layer, Start, End, Style, Name, MarginL, MarginR, MarginV, Effect, Text
+Dialogue: 0,0:00:03.37,0:00:05.68,Sub,,0,0,0,,{\fad(120,100)\move(960,1020,960,1016,0,120)}Questions first, then computing.
+Dialogue: 0,0:00:05.95,0:00:09.26,Sub,,0,0,0,,{\fad(120,100)\move(960,1020,960,1016,0,120)}Here is what those questions\Nrest on, in two columns.
+Dialogue: 0,0:00:09.63,0:00:14.59,Sub,,0,0,0,,{\fad(120,100)\move(960,1020,960,1016,0,120)}On the left, what three small experiments\Nmeasured on an ordinary processor.
+Dialogue: 0,0:00:14.76,0:00:17.10,Sub,,0,0,0,,{\fad(120,100)\move(960,1020,960,1016,0,120)}Toy problems, one or two training seeds,
+Dialogue: 0,0:00:17.18,0:00:21.57,Sub,,0,0,0,,{\fad(120,100)\move(960,1020,960,1016,0,120)}and machines tested only between\Nthe settings they were trained on.
+Dialogue: 0,0:00:22.31,0:00:27.29,Sub,,0,0,0,,{\fad(120,100)\move(960,1020,960,1016,0,120)}On the right, what the staircase bets,\Neach with the rule that will settle it.
+Dialogue: 0,0:00:28.07,0:00:31.73,Sub,,0,0,0,,{\fad(120,100)\move(960,1020,960,1016,0,120)}Each lamp shows a verdict only\Nonce its data file arrives,
+Dialogue: 0,0:00:31.81,0:00:34.21,Sub,,0,0,0,,{\fad(120,100)\move(960,1020,960,1016,0,120)}and the film is updated with it.

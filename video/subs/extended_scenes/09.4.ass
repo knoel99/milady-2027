@@ -1,0 +1,22 @@
+[Script Info]
+ScriptType: v4.00+
+PlayResX: 1920
+PlayResY: 1080
+WrapStyle: 2
+ScaledBorderAndShadow: yes
+YCbCr Matrix: TV.709
+
+[V4+ Styles]
+Format: Name, Fontname, Fontsize, PrimaryColour, SecondaryColour, OutlineColour, BackColour, Bold, Italic, Underline, StrikeOut, ScaleX, ScaleY, Spacing, Angle, BorderStyle, Outline, Shadow, Alignment, MarginL, MarginR, MarginV, Encoding
+Style: Sub,Inter Medium,42,&H00F7F4F2,&H00F7F4F2,&H38140F0B,&H00000000,0,0,0,0,100,100,0,0,3,12,0,2,240,240,64,1
+
+[Events]
+Format: Layer, Start, End, Style, Name, MarginL, MarginR, MarginV, Effect, Text
+Dialogue: 0,0:00:00.37,0:00:04.24,Sub,,0,0,0,,{\fad(120,100)\move(960,1020,960,1016,0,120)}The crowd loss, on three\Ndials, at unseen settings.
+Dialogue: 0,0:00:04.71,0:00:08.17,Sub,,0,0,0,,{\fad(120,100)\move(960,1020,960,1016,0,120)}On the good machine,\Nit halves the crowd-law residuals,
+Dialogue: 0,0:00:08.25,0:00:10.64,Sub,,0,0,0,,{\fad(120,100)\move(960,1020,960,1016,0,120)}even for laws it never enforced.
+Dialogue: 0,0:00:11.13,0:00:16.94,Sub,,0,0,0,,{\fad(120,100)\move(960,1020,960,1016,0,120)}But the spread of energy changes shrinks\Nby a quarter: a faint echo of the spike.
+Dialogue: 0,0:00:17.68,0:00:21.01,Sub,,0,0,0,,{\fad(120,100)\move(960,1020,960,1016,0,120)}On a deliberately biased\Nmachine, it fails:
+Dialogue: 0,0:00:21.09,0:00:24.43,Sub,,0,0,0,,{\fad(120,100)\move(960,1020,960,1016,0,120)}one run diverged, the other got worse.
+Dialogue: 0,0:00:24.85,0:00:27.26,Sub,,0,0,0,,{\fad(120,100)\move(960,1020,960,1016,0,120)}On the crossing rate, with one seed:
+Dialogue: 0,0:00:27.34,0:00:31.41,Sub,,0,0,0,,{\fad(120,100)\move(960,1020,960,1016,0,120)}slightly better near the\Nthreshold, worse far from it.

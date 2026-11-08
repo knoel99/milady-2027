@@ -1,0 +1,23 @@
+[Script Info]
+ScriptType: v4.00+
+PlayResX: 1920
+PlayResY: 1080
+WrapStyle: 2
+ScaledBorderAndShadow: yes
+YCbCr Matrix: TV.709
+
+[V4+ Styles]
+Format: Name, Fontname, Fontsize, PrimaryColour, SecondaryColour, OutlineColour, BackColour, Bold, Italic, Underline, StrikeOut, ScaleX, ScaleY, Spacing, Angle, BorderStyle, Outline, Shadow, Alignment, MarginL, MarginR, MarginV, Encoding
+Style: Sub,Inter Medium,42,&H00F7F4F2,&H00F7F4F2,&H38140F0B,&H00000000,0,0,0,0,100,100,0,0,3,12,0,2,240,240,64,1
+
+[Events]
+Format: Layer, Start, End, Style, Name, MarginL, MarginR, MarginV, Effect, Text
+Dialogue: 0,0:00:00.52,0:00:04.25,Sub,,0,0,0,,{\fad(120,100)\move(960,1020,960,1016,0,120)}First, the runs: these answers\Nchange what gets computed.
+Dialogue: 0,0:00:05.12,0:00:09.39,Sub,,0,0,0,,{\fad(120,100)\move(960,1020,960,1016,0,120)}Near a threshold, start from a\Ntiny {\c&H3468EB&}seed{\c&HF7F4F2&}, a strong one, or both?
+Dialogue: 0,0:00:09.47,0:00:12.85,Sub,,0,0,0,,{\fad(120,100)\move(960,1020,960,1016,0,120)}Which values of {\c&H7AAF1B&}Pm{\c&HF7F4F2&}, since\Nsodium's is out of reach?
+Dialogue: 0,0:00:12.93,0:00:16.52,Sub,,0,0,0,,{\fad(120,100)\move(960,1020,960,1016,0,120)}Settings spread evenly,\Nor packed near each threshold?
+Dialogue: 0,0:00:16.60,0:00:19.45,Sub,,0,0,0,,{\fad(120,100)\move(960,1020,960,1016,0,120)}How many independent\Nsnapshots per setting?
+Dialogue: 0,0:00:19.53,0:00:22.23,Sub,,0,0,0,,{\fad(120,100)\move(960,1020,960,1016,0,120)}How long must runs near a threshold last?
+Dialogue: 0,0:00:22.31,0:00:25.39,Sub,,0,0,0,,{\fad(120,100)\move(960,1020,960,1016,0,120)}Which forcing, Reynolds\Nnumber and grid make the
+Dialogue: 0,0:00:25.47,0:00:29.23,Sub,,0,0,0,,{\fad(120,100)\move(960,1020,960,1016,0,120)}Taylor-Green threshold\Ncomparable with published ones?
+Dialogue: 0,0:00:29.31,0:00:31.45,Sub,,0,0,0,,{\fad(120,100)\move(960,1020,960,1016,0,120)}And which campaign comes first?

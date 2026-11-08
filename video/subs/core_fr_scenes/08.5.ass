@@ -1,0 +1,30 @@
+[Script Info]
+ScriptType: v4.00+
+PlayResX: 1920
+PlayResY: 1080
+WrapStyle: 2
+ScaledBorderAndShadow: yes
+YCbCr Matrix: TV.709
+
+[V4+ Styles]
+Format: Name, Fontname, Fontsize, PrimaryColour, SecondaryColour, OutlineColour, BackColour, Bold, Italic, Underline, StrikeOut, ScaleX, ScaleY, Spacing, Angle, BorderStyle, Outline, Shadow, Alignment, MarginL, MarginR, MarginV, Encoding
+Style: Sub,Inter Medium,42,&H00F7F4F2,&H00F7F4F2,&H38140F0B,&H00000000,0,0,0,0,100,100,0,0,3,12,0,2,240,240,64,1
+
+[Events]
+Format: Layer, Start, End, Style, Name, MarginL, MarginR, MarginV, Effect, Text
+Dialogue: 0,0:00:00.32,0:00:04.92,Sub,,0,0,0,,{\fad(120,100)\move(960,1020,960,1016,0,120)}Now the crowd law: on average,\Nenergy in equals energy out.
+Dialogue: 0,0:00:05.00,0:00:09.39,Sub,,0,0,0,,{\fad(120,100)\move(960,1020,960,1016,0,120)}Three ways to impose it,\Nat settings of {\c&H7AAF1B&}eta{\c&HF7F4F2&} never seen.
+Dialogue: 0,0:00:10.26,0:00:14.19,Sub,,0,0,0,,{\fad(120,100)\move(960,1020,960,1016,0,120)}One: during training, the crowd\Nloss, with its two juries.
+Dialogue: 0,0:00:14.27,0:00:16.74,Sub,,0,0,0,,{\fad(120,100)\move(960,1020,960,1016,0,120)}Against a control run of equal length,
+Dialogue: 0,0:00:16.82,0:00:21.87,Sub,,0,0,0,,{\fad(120,100)\move(960,1020,960,1016,0,120)}the {\c&H00A1ED&}distribution distance{\c&HF7F4F2&} drops from\Ntwo point five to zero point seven.
+Dialogue: 0,0:00:21.95,0:00:24.26,Sub,,0,0,0,,{\fad(120,100)\move(960,1020,960,1016,0,120)}The control itself gains nothing.
+Dialogue: 0,0:00:25.13,0:00:28.69,Sub,,0,0,0,,{\fad(120,100)\move(960,1020,960,1016,0,120)}Two: after training,\Nreweight the generated crowd.
+Dialogue: 0,0:00:28.77,0:00:32.06,Sub,,0,0,0,,{\fad(120,100)\move(960,1020,960,1016,0,120)}Where the model is worst,\Na poll of five hundred
+Dialogue: 0,0:00:32.14,0:00:35.85,Sub,,0,0,0,,{\fad(120,100)\move(960,1020,960,1016,0,120)}shrinks to one person,\Nand the crowd gets worse.
+Dialogue: 0,0:00:36.72,0:00:39.85,Sub,,0,0,0,,{\fad(120,100)\move(960,1020,960,1016,0,120)}Three: rescale every\Nsnapshot onto the budget.
+Dialogue: 0,0:00:39.93,0:00:43.00,Sub,,0,0,0,,{\fad(120,100)\move(960,1020,960,1016,0,120)}Each snapshot now dissipates\Nthe same: a spike,
+Dialogue: 0,0:00:43.08,0:00:45.84,Sub,,0,0,0,,{\fad(120,100)\move(960,1020,960,1016,0,120)}under a thousandth of the true spread.
+Dialogue: 0,0:00:45.92,0:00:51.21,Sub,,0,0,0,,{\fad(120,100)\move(960,1020,960,1016,0,120)}Yet the same {\c&H00A1ED&}distribution distance{\c&HF7F4F2&},\Nbuilt on spectra, improves: it is fooled.
+Dialogue: 0,0:00:51.29,0:00:56.06,Sub,,0,0,0,,{\fad(120,100)\move(960,1020,960,1016,0,120)}Only the spread gives the spike away.\NThe crowd loss shows no spike.
+Dialogue: 0,0:00:56.93,0:00:59.53,Sub,,0,0,0,,{\fad(120,100)\move(960,1020,960,1016,0,120)}One training seed each,\Ninterpolation only,
+Dialogue: 0,0:00:59.61,0:01:02.31,Sub,,0,0,0,,{\fad(120,100)\move(960,1020,960,1016,0,120)}every model far above the noise floor.
