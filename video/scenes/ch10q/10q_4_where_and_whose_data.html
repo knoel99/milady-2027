@@ -1,0 +1,55 @@
+<!doctype html>
+<html lang="en"><head><meta charset="utf-8">
+<title>10q.4 Where, and with whose data</title>
+<link rel="stylesheet" href="../../vendor/katex/katex.min.css">
+<link rel="stylesheet" href="../../runtime/theme.css">
+<link rel="stylesheet" href="ch10q.css">
+<script src="../../vendor/katex/katex.min.js"></script>
+<script src="../../runtime/scene.js"></script>
+<script src="../../runtime/components/kit.js"></script>
+<script src="../../runtime/components/hud.js"></script>
+<script src="../../runtime/components/plot.js"></script>
+<script src="../../runtime/components/field.js"></script>
+<script src="../../runtime/components/equation.js"></script>
+<script src="../../runtime/components/motifs.js"></script>
+<script src="../../runtime/components/cards.js"></script>
+<script src="../../runtime/components/seat.js"></script>
+<script src="../../runtime/components/threemodes.js"></script>
+<script src="ch10q_board.js"></script>
+<script src="ch10q_kit.js"></script>
+</head><body><div id="stage"></div>
+<script>
+/* 10q.4 Where, and with whose data (L4, NIGHT, CONJECTURE medium). Board state A: the 13 priority-1 tickets of the current register in their category
+   columns (RUNS · PARAMETERS, METRICS · CRITERIA, DATA · GPUs · BUDGET), the others in the LATER pile; this scene's
+   column lights, each narrated question's row lights on its cue and its full register question shows in the panel. */
+Scene.define({
+  duration: 30,
+  register: 'night',
+  cues: { predict: 0.4, which: 4.6, where: 9.2, lab: 11.0, data: 19.6 },
+  params: { column_on: 'c', focus: [] },
+  setup(ctx) {
+    const K = Kit, S = Scene, P = ctx.params, U = UK;
+    const tOn = ctx.at('predict-0.15');
+    const B = CQ.build(ctx, [{ t: -0.4, pos: CQ.layoutA(true) }]);
+    // the scene's column: rows rise from 45 % to 70 % (others dim), its head underlined
+    const mine = CQ.E().filter((e) => e.pri === 1 && e.cat === P.column_on).map((e) => e.id);
+    ctx.add({ render(t) { const p = S.seg(t, tOn, tOn + 0.4, S.ease.linear);
+      for (const q of B.tk) { if (q.e.pri !== 1) continue; const m = mine.includes(q.e.id) ? 1 + 0.55 * p : 1 - 0.25 * p; q.d.style.opacity = Math.min(1, +q.d.style.opacity * m).toFixed(3); q.l.style.opacity = Math.min(1, +q.l.style.opacity * m).toFixed(3); } } });
+    const hs = CQ.heads(ctx, -0.3, (c, t) => (c === P.column_on ? 0.6 + 0.4 * Scene.seg(t, tOn, tOn + 0.4, Scene.ease.linear) : 0.6));
+    void hs;
+    K.pen(ctx, { kind: 'underline', box: { x: CQ.COLS[P.column_on], y: 110, w: 340, h: 34 }, at: tOn + 0.2, dur: 0.4, seed: 'head' });
+    U.label(ctx, { text: '1 · BEFORE RENTING', x: 110, y: 158, cls: 'mono', at: -0.3 }).el.style.color = 'var(--fg)';
+    U.label(ctx, { text: 'changes what is computed, how or where', x: 480, y: 158, size: 28, cls: 'dim', at: -0.3 });
+    U.label(ctx, { text: 'LATER', x: 1560, y: 650, cls: 'mono', at: -0.3 });
+    // focus: rows light on their cues; the panel shows the register question
+    const items = [];
+    (P.focus || []).forEach((f, i) => { const at = ctx.at(f.cue + '-0.15'), nx = P.focus[i + 1]; const out = nx ? ctx.at(nx.cue + '-0.15') : ctx.at('_speech_end+0.3');
+      B.hiTicket(f.tickets, at, out); f.tickets.forEach((id, k) => items.push({ id, at: at + k * (out - at) / f.tickets.length, out: at + (k + 1) * (out - at) / f.tickets.length })); });
+    if (items.length) CQ.panel(ctx, { x0: 700, x1: 1300, y0: 586, y1: 850 }, items);
+    const pc = K.predictCard(ctx, { x: 700, y: 480, w: 540, anchor: 'l', question: P.predict ? P.predict.question : 'Which answer could make most renting unnecessary?', options: ['?'], at: 'which-0.15', out: 'where-0.3' });
+    void pc; U.label(ctx, { text: 'where the computing happens', x: 970, y: 500, anchor: 'c', size: 32, color: 'chalk', at: 'where-0.2', out: 'where+1.6' });
+    // the two DATA rows show as '?' tickets until their cue: covered by the panel's timing (labels hidden in state A for column c until focus)
+    K.badge(ctx, { kind: 'CONJECTURE', confidence: 'medium', at: -0.3 });
+  },
+});
+</script></body></html>
