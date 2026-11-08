@@ -1,0 +1,55 @@
+<!doctype html>
+<html lang="en"><head><meta charset="utf-8">
+<title>SOA1.2 Can a fluid make a magnet?</title>
+<link rel="stylesheet" href="../../vendor/katex/katex.min.css">
+<link rel="stylesheet" href="../../runtime/theme.css">
+<link rel="stylesheet" href="chSOA1.css">
+<script src="../../vendor/katex/katex.min.js"></script>
+<script src="../../runtime/scene.js"></script>
+<script src="../../runtime/components/kit.js"></script>
+<script src="../../runtime/components/hud.js"></script>
+<script src="../../runtime/components/motifs.js"></script>
+<script src="map.js"></script>
+<script src="chSOA1_kit.js"></script>
+</head><body><div id="stage"></div>
+<script>
+/* SOA1.2 (L1, NIGHT, CONTEXT). The shared map; lane 2 lit; pins of params.add on their cues; the axisymmetric
+   pictogram crossed by the pen on 'nogo'; arrow stubs from T1972 / T1973 down to the top of lane 3 at 1999 with the
+   corkscrew and spiral-cell pictograms ('Riga', 'Karlsruhe'). */
+Scene.define({
+  duration: 24,
+  register: 'night',
+  cues: { theory: 0.4, idea: 1.6, nogo: 5.6, proofs: 10.4, blueprints: 13.8 },
+  params: { present: ['E1906', 'E1963', 'E1968'], add: [{ id: 'T1919', cue: 'idea' }, { id: 'T1933', cue: 'nogo' }, { id: 'T1958', cue: 'proofs' }, { id: 'T1966', cue: 'proofs+1.8' }, { id: 'T1972', cue: 'blueprints' }, { id: 'T1973', cue: 'blueprints+0.5' }] },
+  setup(ctx) {
+    const K = Kit, S = Scene, P = ctx.params, st = ctx.stage, lab = (s) => C2.labOf(ctx, s, s);
+    const map = SOA.map(ctx, { scene: 'SOA1.2', present: P.present, add: P.add, lit: [['theory', 'theory-0.15']], activeFor: { T1966: 2.5, T1972: 2.0, T1973: 2.0 },
+      arrows: [{ from: 'T1972', toYear: 1999.95, toY: 404, at: 'blueprints+0.2', dur: 0.8 }, { from: 'T1973', toYear: 1999.85, toY: 404, at: 'blueprints+0.7', dur: 0.8 }] });
+    const svg = K.svgLayer(ctx, 14);
+    // axisymmetric pictogram (vermillion loops, same on both sides of a vertical axis), crossed by the pen
+    const ax = K.s('g', { transform: 'translate(700 250)' }, svg); K.s('rect', { x: -120, y: -86, width: 240, height: 172, rx: 10, fill: K.c('panel') }, ax);
+    K.s('line', { x1: 0, y1: -76, x2: 0, y2: 76, stroke: K.c('fg-2'), 'stroke-width': 3, 'stroke-dasharray': '6 6' }, ax);
+    [26, 46, 70].forEach((r) => [1, -1].forEach((s) => K.s('path', { d: `M0,-${r * 0.9} C${s * r * 1.4},-${r} ${s * r * 1.4},${r} 0,${r * 0.9}`, fill: 'none', stroke: K.c('b'), 'stroke-width': 3 }, ax)));
+    K.pen(ctx, { kind: 'cross', box: { x: 600, y: 180, w: 200, h: 140 }, at: 'nogo+0.8', dur: 0.4, out: 'proofs-0.3', seed: 'axi' });
+    // pictograms at the stubs: corkscrew (Ponomarenko -> Riga) and spiral cells (Roberts -> Karlsruhe)
+    const x99 = map.xOf(1999.9);
+    const pc = K.s('g', { transform: `translate(${x99 - 110} 460)` }, svg); K.s('rect', { x: -76, y: -40, width: 152, height: 80, rx: 8, fill: K.c('panel') }, pc);
+    let d = ''; for (let i = 0; i <= 60; i++) { const u = i / 60; d += `${i ? 'L' : 'M'}${(-60 + 120 * u).toFixed(1)},${(22 * Math.sin(u * 5 * Math.PI)).toFixed(1)}`; } K.s('path', { d, fill: 'none', stroke: K.c('u'), 'stroke-width': 4 }, pc);
+    const sc = K.s('g', { transform: `translate(${x99 + 110} 460)` }, svg); K.s('rect', { x: -60, y: -46, width: 120, height: 92, rx: 8, fill: K.c('panel') }, sc);
+    for (let i = 0; i < 3; i++) for (let j = 0; j < 3; j++) { const x = -32 + 32 * i, y = -28 + 28 * j; K.s('path', { d: `M${x + 10},${y} A10,10 0 1 1 ${x},${y - 10}`, fill: 'none', stroke: K.c('u'), 'stroke-width': 3 }, sc); }
+    const lR = C2.label(st, lab('Riga'), x99 - 110, 506, 'center'), lK = C2.label(st, lab('Karlsruhe'), x99 + 110, 512, 'center');
+    [lR, lK].forEach((e) => { e.style.color = 'var(--chalk)'; });
+    K.badge(ctx, { kind: 'CONTEXT', at: -0.3 });
+    K.formulaLayer(ctx);
+    const T = { nogo: ctx.at('nogo-0.15'), proofs: ctx.at('proofs-0.15'), bp: ctx.at('blueprints-0.15') };
+    window.__EVENTS__ = [{ t: +(ctx.at('proofs+1.8') - 0.05).toFixed(3), id: 'tick', gain_db: -26 }];
+    ctx.s1 = { T, ax, pc, sc, lR, lK };
+  },
+  render(t, ctx) {
+    const S = Scene, c = ctx.s1, T = c.T, fade = C2.fadeEl;
+    c.ax.style.opacity = (S.seg(t, T.nogo, T.nogo + 0.6, S.ease.linear) * (1 - S.seg(t, T.proofs, T.proofs + 0.4, S.ease.linear))).toFixed(3);
+    const a = T.bp + 1.5, o = S.seg(t, a, a + 0.3, S.ease.linear) * (1 - S.seg(t, a + 2.5, a + 2.9, S.ease.linear));
+    c.pc.style.opacity = c.sc.style.opacity = o.toFixed(3); fade(c.lR, t, a, a + 2.5); fade(c.lK, t, a, a + 2.5);
+  },
+});
+</script></body></html>
