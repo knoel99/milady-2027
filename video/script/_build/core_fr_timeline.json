@@ -126,10 +126,10 @@
     "needle@again+0.6"
    ],
    "render": "out/scenes_fr/00.1.mp4",
-   "hash": "dced9e5040ac7a9e",
+   "hash": "97e392e6ad29a240",
    "hash_parts": {
-    "html": "MISSING",
-    "files": "none",
+    "html": "f84c734fbf9c9a94316fbe2089b308dc7e8758c983fb0e065c571f072ff22684",
+    "files": "6b15c6e03be3ce82",
     "runtime": "c105b248019e6a43",
     "deps": "4f53cda18c2baa0c",
     "assets": "4f53cda18c2baa0c",
@@ -137,9 +137,17 @@
     "subtitles": "dee8fd507c7e403f",
     "render": "9ed7563f501d58e3"
    },
-   "up_to_date": false,
-   "why": [
-    "new"
+   "up_to_date": true,
+   "why": [],
+   "sfx": [
+    {
+     "t": 9.35,
+     "id": "needle"
+    },
+    {
+     "t": 11.89,
+     "id": "needle"
+    }
    ]
   },
   {
@@ -241,10 +249,10 @@
    "music": null,
    "sfx_spec": [],
    "render": "out/scenes_fr/00.2.mp4",
-   "hash": "d66b6556c45e254e",
+   "hash": "5f96393e41d762cc",
    "hash_parts": {
-    "html": "MISSING",
-    "files": "none",
+    "html": "a467c233f405910cbde13df18c972e75868f27ff61cbae20382fd2d4e0e2e9d4",
+    "files": "6b15c6e03be3ce82",
     "runtime": "c105b248019e6a43",
     "deps": "4f53cda18c2baa0c",
     "assets": "4f53cda18c2baa0c",
@@ -252,10 +260,9 @@
     "subtitles": "df1f6578ec8fea32",
     "render": "9ed7563f501d58e3"
    },
-   "up_to_date": false,
-   "why": [
-    "new"
-   ]
+   "up_to_date": true,
+   "why": [],
+   "sfx": []
   },
   {
    "id": "00.3",
@@ -439,10 +446,10 @@
    "music": null,
    "sfx_spec": [],
    "render": "out/scenes_fr/00.3.mp4",
-   "hash": "1a7cc618e1de7a77",
+   "hash": "44c1a9bf7fec358b",
    "hash_parts": {
-    "html": "MISSING",
-    "files": "none",
+    "html": "a6efed32a8c8bdb0de04f95f0cfaba983f72de513b110016b1928cd4a82e8526",
+    "files": "6b15c6e03be3ce82",
     "runtime": "c105b248019e6a43",
     "deps": "4f53cda18c2baa0c",
     "assets": "4f53cda18c2baa0c",
@@ -450,9 +457,119 @@
     "subtitles": "a59601dcabb0ad2a",
     "render": "9ed7563f501d58e3"
    },
-   "up_to_date": false,
-   "why": [
-    "new"
+   "up_to_date": true,
+   "why": [],
+   "sfx": [
+    {
+     "t": 11.285,
+     "id": "tick",
+     "gain_db": -30
+    },
+    {
+     "t": 11.354,
+     "id": "tick",
+     "gain_db": -30
+    },
+    {
+     "t": 11.422,
+     "id": "tick",
+     "gain_db": -30
+    },
+    {
+     "t": 11.559,
+     "id": "tick",
+     "gain_db": -30
+    },
+    {
+     "t": 11.665,
+     "id": "tick",
+     "gain_db": -30
+    },
+    {
+     "t": 11.81,
+     "id": "tick",
+     "gain_db": -30
+    },
+    {
+     "t": 11.893,
+     "id": "tick",
+     "gain_db": -30
+    },
+    {
+     "t": 12.349,
+     "id": "tick",
+     "gain_db": -30
+    },
+    {
+     "t": 12.539,
+     "id": "tick",
+     "gain_db": -30
+    },
+    {
+     "t": 12.623,
+     "id": "tick",
+     "gain_db": -30
+    },
+    {
+     "t": 12.706,
+     "id": "tick",
+     "gain_db": -30
+    },
+    {
+     "t": 12.76,
+     "id": "tick",
+     "gain_db": -30
+    },
+    {
+     "t": 13.108,
+     "id": "tick",
+     "gain_db": -30
+    },
+    {
+     "t": 13.436,
+     "id": "tick",
+     "gain_db": -30
+    },
+    {
+     "t": 13.444,
+     "id": "tick",
+     "gain_db": -30
+    },
+    {
+     "t": 13.588,
+     "id": "tick",
+     "gain_db": -30
+    },
+    {
+     "t": 13.725,
+     "id": "tick",
+     "gain_db": -30
+    },
+    {
+     "t": 14.15,
+     "id": "tick",
+     "gain_db": -30
+    },
+    {
+     "t": 14.157,
+     "id": "tick",
+     "gain_db": -30
+    },
+    {
+     "t": 14.257,
+     "id": "tick",
+     "gain_db": -30
+    },
+    {
+     "t": 14.318,
+     "id": "tick",
+     "gain_db": -30
+    },
+    {
+     "t": 14.477,
+     "id": "tick",
+     "gain_db": -30
+    }
    ]
   },
   {
@@ -629,7 +746,61 @@
       -2.8,
       2.8
      ],
-     "badge_note": "three-mode model"
+     "badge_note": "three-mode model",
+     "window_Ma": [
+      0,
+      5
+     ],
+     "normal_Ma": [
+      [
+       0,
+       0.78
+      ],
+      [
+       0.99,
+       1.07
+      ],
+      [
+       1.201,
+       1.211
+      ],
+      [
+       1.77,
+       1.95
+      ],
+      [
+       2.14,
+       2.15
+      ],
+      [
+       2.581,
+       3.04
+      ],
+      [
+       3.11,
+       3.22
+      ],
+      [
+       3.33,
+       3.58
+      ],
+      [
+       4.18,
+       4.29
+      ],
+      [
+       4.48,
+       4.62
+      ],
+      [
+       4.8,
+       4.89
+      ],
+      [
+       4.98,
+       5.23
+      ]
+     ]
     },
     "seed": 12345,
     "lang": "fr"
@@ -640,20 +811,44 @@
     "hiss@dream"
    ],
    "render": "out/scenes_fr/00.4.mp4",
-   "hash": "10593b3e078865e5",
+   "hash": "3896a1779b0fc0db",
    "hash_parts": {
-    "html": "MISSING",
-    "files": "none",
+    "html": "bd44ca18c216a15b955847afc699a49319fb5468a4ef0cc8d6d34a3ce3a3e994",
+    "files": "6b15c6e03be3ce82",
     "runtime": "c105b248019e6a43",
     "deps": "f1cfe0692aa22659",
     "assets": "4f53cda18c2baa0c",
-    "entry": "1efea6a8d51c8e16",
+    "entry": "0238e8b58d0bee0f",
     "subtitles": "6de77d8ca56d19f5",
     "render": "9ed7563f501d58e3"
    },
-   "up_to_date": false,
-   "why": [
-    "new"
+   "up_to_date": true,
+   "why": [],
+   "sfx": [
+    {
+     "t": 5.32,
+     "id": "tick",
+     "gain_db": -30
+    },
+    {
+     "t": 5.62,
+     "id": "tick",
+     "gain_db": -30
+    },
+    {
+     "t": 5.92,
+     "id": "tick",
+     "gain_db": -30
+    },
+    {
+     "t": 6.22,
+     "id": "tick",
+     "gain_db": -30
+    },
+    {
+     "t": 25.55,
+     "id": "hiss"
+    }
    ]
   },
   {
@@ -744,10 +939,10 @@
     "impact@_speech_end+0.3"
    ],
    "render": "out/scenes_fr/00.5.mp4",
-   "hash": "b0321dbe2f07d9ae",
+   "hash": "7b8e3b74604ef811",
    "hash_parts": {
-    "html": "MISSING",
-    "files": "none",
+    "html": "ba3326af3be707bb05c42686a5e843a0d4a9f0b532aa391f84fcf4fadbcd72ef",
+    "files": "6b15c6e03be3ce82",
     "runtime": "c105b248019e6a43",
     "deps": "4f53cda18c2baa0c",
     "assets": "4f53cda18c2baa0c",
@@ -755,9 +950,13 @@
     "subtitles": "4e468415902f3e57",
     "render": "9ed7563f501d58e3"
    },
-   "up_to_date": false,
-   "why": [
-    "new"
+   "up_to_date": true,
+   "why": [],
+   "sfx": [
+    {
+     "t": 9.43,
+     "id": "impact"
+    }
    ]
   },
   {
@@ -840,7 +1039,62 @@
      "en/prep/p4-systemes-dynamiques/index.qmd:1627 (when is unpredictable, how often is not, in the three-mode model)"
     ],
     "data": {},
-    "params": {},
+    "params": {
+     "window_Ma": [
+      0,
+      5
+     ],
+     "normal_Ma": [
+      [
+       0,
+       0.78
+      ],
+      [
+       0.99,
+       1.07
+      ],
+      [
+       1.201,
+       1.211
+      ],
+      [
+       1.77,
+       1.95
+      ],
+      [
+       2.14,
+       2.15
+      ],
+      [
+       2.581,
+       3.04
+      ],
+      [
+       3.11,
+       3.22
+      ],
+      [
+       3.33,
+       3.58
+      ],
+      [
+       4.18,
+       4.29
+      ],
+      [
+       4.48,
+       4.62
+      ],
+      [
+       4.8,
+       4.89
+      ],
+      [
+       4.98,
+       5.23
+      ]
+     ]
+    },
     "seed": 12345,
     "lang": "fr"
    },
@@ -850,20 +1104,24 @@
     "chime@q-0.2"
    ],
    "render": "out/scenes_fr/ch00.Q.mp4",
-   "hash": "fde324871fffe231",
+   "hash": "a78446d7dcfbb46b",
    "hash_parts": {
-    "html": "MISSING",
-    "files": "none",
+    "html": "4b513fce31dcb0a0c6d5e89aa7e0cd3b099e4ed5d885626cd3b975540a642300",
+    "files": "6b15c6e03be3ce82",
     "runtime": "c105b248019e6a43",
     "deps": "4f53cda18c2baa0c",
     "assets": "4f53cda18c2baa0c",
-    "entry": "9f9d5449537be0d3",
+    "entry": "61cda89e5adf47a4",
     "subtitles": "b3294b6aa4b971af",
     "render": "9ed7563f501d58e3"
    },
-   "up_to_date": false,
-   "why": [
-    "new"
+   "up_to_date": true,
+   "why": [],
+   "sfx": [
+    {
+     "t": 0.35,
+     "id": "chime"
+    }
    ]
   },
   {
@@ -1019,10 +1277,10 @@
     "whoosh@0.1"
    ],
    "render": "out/scenes_fr/01.1.mp4",
-   "hash": "b4ecc51d9cf9130a",
+   "hash": "c48205f48c38430a",
    "hash_parts": {
-    "html": "MISSING",
-    "files": "none",
+    "html": "c8c567ca52416cf913dcc0c365b61e55b9617ca3747b1a59d0054f3eb10f7349",
+    "files": "bfe7d4d05737649c",
     "runtime": "c105b248019e6a43",
     "deps": "4f53cda18c2baa0c",
     "assets": "4f53cda18c2baa0c",
@@ -1030,9 +1288,13 @@
     "subtitles": "ab52b403942105eb",
     "render": "9ed7563f501d58e3"
    },
-   "up_to_date": false,
-   "why": [
-    "new"
+   "up_to_date": true,
+   "why": [],
+   "sfx": [
+    {
+     "t": 0.1,
+     "id": "whoosh"
+    }
    ]
   },
   {
@@ -1204,10 +1466,10 @@
     "pop@two-0.1"
    ],
    "render": "out/scenes_fr/01.2.mp4",
-   "hash": "a4e84a327c714f8b",
+   "hash": "81d6e6b4b2349eb4",
    "hash_parts": {
-    "html": "MISSING",
-    "files": "none",
+    "html": "7696a05431fc82da35afa3be1bb552ad08d118cd0293bd08be4aaf13ec598f33",
+    "files": "bfe7d4d05737649c",
     "runtime": "c105b248019e6a43",
     "deps": "4f53cda18c2baa0c",
     "assets": "4f53cda18c2baa0c",
@@ -1215,9 +1477,13 @@
     "subtitles": "c3f557834e9330c4",
     "render": "9ed7563f501d58e3"
    },
-   "up_to_date": false,
-   "why": [
-    "new"
+   "up_to_date": true,
+   "why": [],
+   "sfx": [
+    {
+     "t": 7.34,
+     "id": "pop"
+    }
    ]
   },
   {
@@ -1450,10 +1716,10 @@
     "detent@nothing+0.3"
    ],
    "render": "out/scenes_fr/01.3.mp4",
-   "hash": "2b2a0ba377834449",
+   "hash": "854b0f2bdd7a1924",
    "hash_parts": {
-    "html": "MISSING",
-    "files": "none",
+    "html": "98e53bf3d0602d16937ad8c1c2b117d64b40c69b9c834c3b2a33fd8cc98c4f1c",
+    "files": "bfe7d4d05737649c",
     "runtime": "c105b248019e6a43",
     "deps": "4f53cda18c2baa0c",
     "assets": "4f53cda18c2baa0c",
@@ -1461,9 +1727,52 @@
     "subtitles": "2d06dd8f64dde48f",
     "render": "9ed7563f501d58e3"
    },
-   "up_to_date": false,
-   "why": [
-    "new"
+   "up_to_date": true,
+   "why": [],
+   "sfx": [
+    {
+     "t": 13.97,
+     "id": "detent",
+     "gain_db": -24
+    },
+    {
+     "t": 18.01,
+     "id": "detent"
+    },
+    {
+     "t": 20.17,
+     "id": "detent",
+     "gain_db": -24
+    },
+    {
+     "t": 23.47,
+     "id": "squeal",
+     "dur": 2.2
+    },
+    {
+     "t": 46.89,
+     "id": "detent"
+    },
+    {
+     "t": 46.89,
+     "id": "detent",
+     "gain_db": -24
+    },
+    {
+     "t": 47.99,
+     "id": "detent",
+     "gain_db": -24
+    },
+    {
+     "t": 48.88,
+     "id": "detent",
+     "gain_db": -24
+    },
+    {
+     "t": 49.09,
+     "id": "detent",
+     "gain_db": -24
+    }
    ]
   },
   {
@@ -1599,10 +1908,10 @@
    "music": null,
    "sfx_spec": [],
    "render": "out/scenes_fr/01.4.mp4",
-   "hash": "9724330e821fd736",
+   "hash": "efd88d9561802e1c",
    "hash_parts": {
-    "html": "MISSING",
-    "files": "none",
+    "html": "bfe17a3dcbb82038c66d854fe2985bea2c44d551d75ec9a656e7fa712b7984e8",
+    "files": "bfe7d4d05737649c",
     "runtime": "c105b248019e6a43",
     "deps": "4f53cda18c2baa0c",
     "assets": "4f53cda18c2baa0c",
@@ -1610,10 +1919,9 @@
     "subtitles": "ed9b6e64f5bcc227",
     "render": "9ed7563f501d58e3"
    },
-   "up_to_date": false,
-   "why": [
-    "new"
-   ]
+   "up_to_date": true,
+   "why": [],
+   "sfx": []
   },
   {
    "id": "01.5",
@@ -1750,10 +2058,10 @@
     "needle@forbid+0.5"
    ],
    "render": "out/scenes_fr/01.5.mp4",
-   "hash": "59415b0e8fbfcb5c",
+   "hash": "39c46adeda835411",
    "hash_parts": {
-    "html": "MISSING",
-    "files": "none",
+    "html": "871f3f0bb5f6671c480fae4918f74314b0bae3caee0848205da179ca65041544",
+    "files": "bfe7d4d05737649c",
     "runtime": "c105b248019e6a43",
     "deps": "4f53cda18c2baa0c",
     "assets": "4f53cda18c2baa0c",
@@ -1761,9 +2069,13 @@
     "subtitles": "7adfa7222839ee9e",
     "render": "9ed7563f501d58e3"
    },
-   "up_to_date": false,
-   "why": [
-    "new"
+   "up_to_date": true,
+   "why": [],
+   "sfx": [
+    {
+     "t": 29.3,
+     "id": "needle"
+    }
    ]
   },
   {
@@ -1869,10 +2181,10 @@
    "music": null,
    "sfx_spec": [],
    "render": "out/scenes_fr/01.6.mp4",
-   "hash": "9575413f60c4a934",
+   "hash": "01ebe523f85b93b7",
    "hash_parts": {
-    "html": "MISSING",
-    "files": "none",
+    "html": "7fe12b62c5237e0fbd63be4c2e9f1077c1b52ebfd5a4933b73d23f823d5a2b15",
+    "files": "bfe7d4d05737649c",
     "runtime": "c105b248019e6a43",
     "deps": "4f53cda18c2baa0c",
     "assets": "4f53cda18c2baa0c",
@@ -1880,10 +2192,9 @@
     "subtitles": "f140620dd2fa5aaf",
     "render": "9ed7563f501d58e3"
    },
-   "up_to_date": false,
-   "why": [
-    "new"
-   ]
+   "up_to_date": true,
+   "why": [],
+   "sfx": []
   },
   {
    "id": "ch01.Q",
@@ -1978,10 +2289,10 @@
     "chime@q-0.2"
    ],
    "render": "out/scenes_fr/ch01.Q.mp4",
-   "hash": "ef47cd1196b0f998",
+   "hash": "385bdd375b866c89",
    "hash_parts": {
-    "html": "MISSING",
-    "files": "none",
+    "html": "e78259beeb762959d14b2a78a66fb420fbeb9139e87a60626da27fe8f5efe443",
+    "files": "bfe7d4d05737649c",
     "runtime": "c105b248019e6a43",
     "deps": "4f53cda18c2baa0c",
     "assets": "4f53cda18c2baa0c",
@@ -1989,9 +2300,13 @@
     "subtitles": "46bffe671bd46c73",
     "render": "9ed7563f501d58e3"
    },
-   "up_to_date": false,
-   "why": [
-    "new"
+   "up_to_date": true,
+   "why": [],
+   "sfx": [
+    {
+     "t": 0.35,
+     "id": "chime"
+    }
    ]
   },
   {
@@ -2164,10 +2479,10 @@
     "whoosh@0.2"
    ],
    "render": "out/scenes_fr/02.1.mp4",
-   "hash": "c64ce515646ea2a0",
+   "hash": "dae20e062aaaa523",
    "hash_parts": {
-    "html": "MISSING",
-    "files": "none",
+    "html": "4ff83f8730d74d48c8d1c8c29443f25587d303c21490772604f93afcb4f76c3e",
+    "files": "2157fb36ee31606d",
     "runtime": "c105b248019e6a43",
     "deps": "4f53cda18c2baa0c",
     "assets": "4f53cda18c2baa0c",
@@ -2175,9 +2490,13 @@
     "subtitles": "c897721b93a2f3af",
     "render": "9ed7563f501d58e3"
    },
-   "up_to_date": false,
-   "why": [
-    "new"
+   "up_to_date": true,
+   "why": [],
+   "sfx": [
+    {
+     "t": 0.2,
+     "id": "whoosh"
+    }
    ]
   },
   {
@@ -2339,10 +2658,10 @@
    "music": null,
    "sfx_spec": [],
    "render": "out/scenes_fr/02.2.mp4",
-   "hash": "895c3f8e2f2b9dbd",
+   "hash": "008d33af142ee58e",
    "hash_parts": {
-    "html": "MISSING",
-    "files": "none",
+    "html": "63097379929450555a41d0aaf85f39a39ea74f691c7cabdb6d5697c8b5ec44b4",
+    "files": "2157fb36ee31606d",
     "runtime": "c105b248019e6a43",
     "deps": "4f53cda18c2baa0c",
     "assets": "4f53cda18c2baa0c",
@@ -2350,9 +2669,59 @@
     "subtitles": "956352096bfda85a",
     "render": "9ed7563f501d58e3"
    },
-   "up_to_date": false,
-   "why": [
-    "new"
+   "up_to_date": true,
+   "why": [],
+   "sfx": [
+    {
+     "t": 22.413,
+     "id": "detent",
+     "gain_db": -24
+    },
+    {
+     "t": 23.438,
+     "id": "detent",
+     "gain_db": -24
+    },
+    {
+     "t": 24.463,
+     "id": "detent",
+     "gain_db": -24
+    },
+    {
+     "t": 25.488,
+     "id": "detent",
+     "gain_db": -24
+    },
+    {
+     "t": 26.513,
+     "id": "detent",
+     "gain_db": -24
+    },
+    {
+     "t": 27.538,
+     "id": "detent",
+     "gain_db": -24
+    },
+    {
+     "t": 28.563,
+     "id": "detent",
+     "gain_db": -24
+    },
+    {
+     "t": 29.588,
+     "id": "detent",
+     "gain_db": -24
+    },
+    {
+     "t": 30.613,
+     "id": "detent",
+     "gain_db": -24
+    },
+    {
+     "t": 31.638,
+     "id": "detent",
+     "gain_db": -24
+    }
    ]
   },
   {
@@ -2534,10 +2903,10 @@
    "music": null,
    "sfx_spec": [],
    "render": "out/scenes_fr/02.3.mp4",
-   "hash": "75f2cc574270f9d1",
+   "hash": "cc2bd95ce1677700",
    "hash_parts": {
-    "html": "MISSING",
-    "files": "none",
+    "html": "e623260615c35868a8687d283e7b50e2455d013613e0def0b830f65a3507306a",
+    "files": "2157fb36ee31606d",
     "runtime": "c105b248019e6a43",
     "deps": "4f53cda18c2baa0c",
     "assets": "4f53cda18c2baa0c",
@@ -2545,10 +2914,9 @@
     "subtitles": "3a3749c997b6f45e",
     "render": "9ed7563f501d58e3"
    },
-   "up_to_date": false,
-   "why": [
-    "new"
-   ]
+   "up_to_date": true,
+   "why": [],
+   "sfx": []
   },
   {
    "id": "02.4",
@@ -2733,10 +3101,10 @@
     }
    ],
    "render": "out/scenes_fr/02.4.mp4",
-   "hash": "4f7119b8d9f27545",
+   "hash": "a7076a65f45e8c7a",
    "hash_parts": {
-    "html": "MISSING",
-    "files": "none",
+    "html": "0d548cb6b3f5ac0066de1ca9ffeceb2e60d80cefeb070147bef588f12d17a955",
+    "files": "2157fb36ee31606d",
     "runtime": "c105b248019e6a43",
     "deps": "4f53cda18c2baa0c",
     "assets": "4f53cda18c2baa0c",
@@ -2744,9 +3112,14 @@
     "subtitles": "7e2fa4371ad44526",
     "render": "9ed7563f501d58e3"
    },
-   "up_to_date": false,
-   "why": [
-    "new"
+   "up_to_date": true,
+   "why": [],
+   "sfx": [
+    {
+     "t": 22.02,
+     "id": "needle",
+     "gain_db": -20
+    }
    ]
   },
   {
@@ -2902,10 +3275,10 @@
    "music": null,
    "sfx_spec": [],
    "render": "out/scenes_fr/02.5.mp4",
-   "hash": "a88f9c09e7bea063",
+   "hash": "6a483131f8274402",
    "hash_parts": {
-    "html": "MISSING",
-    "files": "none",
+    "html": "ddf8f5389d60570087d4e613df3b935347e5dd0496d409ff81e3666cde3ebc38",
+    "files": "2157fb36ee31606d",
     "runtime": "c105b248019e6a43",
     "deps": "3bd351acddab420c",
     "assets": "4f53cda18c2baa0c",
@@ -2913,10 +3286,9 @@
     "subtitles": "729447099e313f50",
     "render": "9ed7563f501d58e3"
    },
-   "up_to_date": false,
-   "why": [
-    "new"
-   ]
+   "up_to_date": true,
+   "why": [],
+   "sfx": []
   },
   {
    "id": "02.6",
@@ -3113,10 +3485,10 @@
    "music": null,
    "sfx_spec": [],
    "render": "out/scenes_fr/02.6.mp4",
-   "hash": "208eb8b8a2725748",
+   "hash": "8eff45082e77387f",
    "hash_parts": {
-    "html": "MISSING",
-    "files": "none",
+    "html": "344254fffd6a4c15bcd785983ebeb24c75c5ed015ffd557f1039af360744fa5e",
+    "files": "2157fb36ee31606d",
     "runtime": "c105b248019e6a43",
     "deps": "3bd351acddab420c",
     "assets": "4f53cda18c2baa0c",
@@ -3124,9 +3496,19 @@
     "subtitles": "f85bd92f92230927",
     "render": "9ed7563f501d58e3"
    },
-   "up_to_date": false,
-   "why": [
-    "new"
+   "up_to_date": true,
+   "why": [],
+   "sfx": [
+    {
+     "t": 8.633,
+     "id": "needle",
+     "gain_db": -16
+    },
+    {
+     "t": 13.725,
+     "id": "needle",
+     "gain_db": -16
+    }
    ]
   },
   {
@@ -3225,10 +3607,10 @@
     "chime@q-0.2"
    ],
    "render": "out/scenes_fr/ch02.Q.mp4",
-   "hash": "3298470c6b69d5c4",
+   "hash": "01150cd75c7e5173",
    "hash_parts": {
-    "html": "MISSING",
-    "files": "none",
+    "html": "dac1c6280cd863ec35003abf8a51a1f997017cc986b7664a768e2190c30b607c",
+    "files": "2157fb36ee31606d",
     "runtime": "c105b248019e6a43",
     "deps": "4f53cda18c2baa0c",
     "assets": "4f53cda18c2baa0c",
@@ -3236,9 +3618,13 @@
     "subtitles": "7e2eda4ab7b2ba47",
     "render": "9ed7563f501d58e3"
    },
-   "up_to_date": false,
-   "why": [
-    "new"
+   "up_to_date": true,
+   "why": [],
+   "sfx": [
+    {
+     "t": 0.35,
+     "id": "chime"
+    }
    ]
   },
   {
@@ -4097,10 +4483,10 @@
     "tick@chance+0.1"
    ],
    "render": "out/scenes_fr/SOA1.1.mp4",
-   "hash": "9e0320d2936ed74e",
+   "hash": "29aaf06f76b2b0c1",
    "hash_parts": {
-    "html": "MISSING",
-    "files": "none",
+    "html": "4d019cabf69cafc0d9d64293c4a4edcf4ef3c779801bfc181120d7930676d827",
+    "files": "8edbb845315caca9",
     "runtime": "c105b248019e6a43",
     "deps": "4f53cda18c2baa0c",
     "assets": "4f53cda18c2baa0c",
@@ -4108,9 +4494,25 @@
     "subtitles": "596fe1ca8abd4698",
     "render": "9ed7563f501d58e3"
    },
-   "up_to_date": false,
-   "why": [
-    "new"
+   "up_to_date": true,
+   "why": [],
+   "sfx": [
+    {
+     "t": 0.1,
+     "id": "whoosh"
+    },
+    {
+     "t": 11.52,
+     "id": "tick"
+    },
+    {
+     "t": 18.78,
+     "id": "tick"
+    },
+    {
+     "t": 23.4,
+     "id": "tick"
+    }
    ]
   },
   {
@@ -4299,10 +4701,10 @@
     "tick@blueprints+0.1"
    ],
    "render": "out/scenes_fr/SOA1.2.mp4",
-   "hash": "6a31ebb033c53104",
+   "hash": "c149258db1677eaf",
    "hash_parts": {
-    "html": "MISSING",
-    "files": "none",
+    "html": "70f600de75e2c1e27db020e7128ac6eae8db88a1148664a023a0a0318485dc03",
+    "files": "8edbb845315caca9",
     "runtime": "c105b248019e6a43",
     "deps": "4f53cda18c2baa0c",
     "assets": "4f53cda18c2baa0c",
@@ -4310,9 +4712,30 @@
     "subtitles": "c0ac38bc11bacb7e",
     "render": "9ed7563f501d58e3"
    },
-   "up_to_date": false,
-   "why": [
-    "new"
+   "up_to_date": true,
+   "why": [],
+   "sfx": [
+    {
+     "t": 3.39,
+     "id": "tick"
+    },
+    {
+     "t": 9.89,
+     "id": "tick"
+    },
+    {
+     "t": 16.97,
+     "id": "tick"
+    },
+    {
+     "t": 18.62,
+     "id": "tick",
+     "gain_db": -26
+    },
+    {
+     "t": 23.87,
+     "id": "tick"
+    }
    ]
   },
   {
@@ -4496,10 +4919,10 @@
     "tick@vks+4.3"
    ],
    "render": "out/scenes_fr/SOA1.3.mp4",
-   "hash": "4e6a900c0cb35f38",
+   "hash": "670fe834e152ca21",
    "hash_parts": {
-    "html": "MISSING",
-    "files": "none",
+    "html": "8194c67af3ff45cc5d67e4e5a1858fbc53062bc131d8cd4e968490d2c0b9a2f2",
+    "files": "8edbb845315caca9",
     "runtime": "c105b248019e6a43",
     "deps": "4f53cda18c2baa0c",
     "assets": "4f53cda18c2baa0c",
@@ -4507,9 +4930,30 @@
     "subtitles": "d8ad3a19c0fb802a",
     "render": "9ed7563f501d58e3"
    },
-   "up_to_date": false,
-   "why": [
-    "new"
+   "up_to_date": true,
+   "why": [],
+   "sfx": [
+    {
+     "t": 3.75,
+     "id": "tick"
+    },
+    {
+     "t": 9.7,
+     "id": "tick"
+    },
+    {
+     "t": 11.1,
+     "id": "tick"
+    },
+    {
+     "t": 19,
+     "id": "needle",
+     "gain_db": -20
+    },
+    {
+     "t": 21.7,
+     "id": "tick"
+    }
    ]
   },
   {
@@ -4849,10 +5293,10 @@
     }
    ],
    "render": "out/scenes_fr/SOA1.4.mp4",
-   "hash": "1b4ee4b7220ea54a",
+   "hash": "3a8b84a4ecb4ce57",
    "hash_parts": {
-    "html": "MISSING",
-    "files": "none",
+    "html": "daf72f93b15398f2e66861c44d98a5a6b7546de2ce9cd1c75a817a3ed4b4fb77",
+    "files": "8edbb845315caca9",
     "runtime": "c105b248019e6a43",
     "deps": "4f53cda18c2baa0c",
     "assets": "4f53cda18c2baa0c",
@@ -4860,9 +5304,39 @@
     "subtitles": "a43133acb0d58b38",
     "render": "9ed7563f501d58e3"
    },
-   "up_to_date": false,
-   "why": [
-    "new"
+   "up_to_date": true,
+   "why": [],
+   "sfx": [
+    {
+     "t": 3.76,
+     "id": "tick"
+    },
+    {
+     "t": 10.2,
+     "id": "needle",
+     "gain_db": -24
+    },
+    {
+     "t": 15.47,
+     "id": "pop"
+    },
+    {
+     "t": 22.78,
+     "id": "tick"
+    },
+    {
+     "t": 30.04,
+     "id": "tick"
+    },
+    {
+     "t": 35.11,
+     "id": "tick"
+    },
+    {
+     "t": 43.19,
+     "id": "needle",
+     "gain_db": -20
+    }
    ]
   },
   {
@@ -5064,10 +5538,10 @@
     "pop@four+1.2"
    ],
    "render": "out/scenes_fr/SOA1.5.mp4",
-   "hash": "8ef68121afc6d084",
+   "hash": "2edc1378e68fb93f",
    "hash_parts": {
-    "html": "MISSING",
-    "files": "none",
+    "html": "3f261364b763b84d7231485543261b58a906f14d6234a3c7c406feac13ef0c4e",
+    "files": "8edbb845315caca9",
     "runtime": "c105b248019e6a43",
     "deps": "4f53cda18c2baa0c",
     "assets": "4f53cda18c2baa0c",
@@ -5075,9 +5549,30 @@
     "subtitles": "448f1cb0bf0c298f",
     "render": "9ed7563f501d58e3"
    },
-   "up_to_date": false,
-   "why": [
-    "new"
+   "up_to_date": true,
+   "why": [],
+   "sfx": [
+    {
+     "t": 4.52,
+     "id": "tick"
+    },
+    {
+     "t": 5.82,
+     "id": "needle",
+     "gain_db": -22
+    },
+    {
+     "t": 11.01,
+     "id": "tick"
+    },
+    {
+     "t": 18.83,
+     "id": "tick"
+    },
+    {
+     "t": 19.93,
+     "id": "pop"
+    }
    ]
   },
   {
@@ -5297,10 +5792,10 @@
     "whoosh@race+0.2"
    ],
    "render": "out/scenes_fr/SOA1.6.mp4",
-   "hash": "c797793c80101d5a",
+   "hash": "a211fd1f52d54420",
    "hash_parts": {
-    "html": "MISSING",
-    "files": "none",
+    "html": "642ec0d88021f164920973e808f515f5a5d3037f4b19296c054177c351ad4eaf",
+    "files": "8edbb845315caca9",
     "runtime": "c105b248019e6a43",
     "deps": "4f53cda18c2baa0c",
     "assets": "4f53cda18c2baa0c",
@@ -5308,9 +5803,25 @@
     "subtitles": "b69aefcdd0341f2b",
     "render": "9ed7563f501d58e3"
    },
-   "up_to_date": false,
-   "why": [
-    "new"
+   "up_to_date": true,
+   "why": [],
+   "sfx": [
+    {
+     "t": 0.65,
+     "id": "pop"
+    },
+    {
+     "t": 9.6,
+     "id": "tick"
+    },
+    {
+     "t": 22.44,
+     "id": "pop"
+    },
+    {
+     "t": 31.01,
+     "id": "whoosh"
+    }
    ]
   },
   {
@@ -5500,10 +6011,10 @@
     "whoosh@0.1"
    ],
    "render": "out/scenes_fr/03.1.mp4",
-   "hash": "58616b626b2a769b",
+   "hash": "a6b9054a6b565188",
    "hash_parts": {
-    "html": "MISSING",
-    "files": "none",
+    "html": "e163efa008cf313b5dc5490ec764053e516c3eaa0abd7d14b2a09a65ba91d7c9",
+    "files": "6efb3767e6613572",
     "runtime": "c105b248019e6a43",
     "deps": "4f53cda18c2baa0c",
     "assets": "4f53cda18c2baa0c",
@@ -5511,9 +6022,13 @@
     "subtitles": "a95661b5210d2e89",
     "render": "9ed7563f501d58e3"
    },
-   "up_to_date": false,
-   "why": [
-    "new"
+   "up_to_date": true,
+   "why": [],
+   "sfx": [
+    {
+     "t": 0.1,
+     "id": "whoosh"
+    }
    ]
   },
   {
@@ -5688,10 +6203,10 @@
    "music": null,
    "sfx_spec": [],
    "render": "out/scenes_fr/03.2.mp4",
-   "hash": "0bb4371c95db098f",
+   "hash": "64d8e2dabd069597",
    "hash_parts": {
-    "html": "MISSING",
-    "files": "none",
+    "html": "07f7341494095d6ca09b899125ef5105e683a85114c54b4ad38fb0c119d86c98",
+    "files": "6efb3767e6613572",
     "runtime": "c105b248019e6a43",
     "deps": "4f53cda18c2baa0c",
     "assets": "4f53cda18c2baa0c",
@@ -5699,10 +6214,9 @@
     "subtitles": "2a0c8481e08cfa3d",
     "render": "9ed7563f501d58e3"
    },
-   "up_to_date": false,
-   "why": [
-    "new"
-   ]
+   "up_to_date": true,
+   "why": [],
+   "sfx": []
   },
   {
    "id": "03.3",
@@ -5855,10 +6369,10 @@
    "music": null,
    "sfx_spec": [],
    "render": "out/scenes_fr/03.3.mp4",
-   "hash": "45095b4a9605873c",
+   "hash": "361675606822cca6",
    "hash_parts": {
-    "html": "MISSING",
-    "files": "none",
+    "html": "984ab346e24e445b06129fd454f71e7e9335affb485637d22d042d287cdab128",
+    "files": "6efb3767e6613572",
     "runtime": "c105b248019e6a43",
     "deps": "4f53cda18c2baa0c",
     "assets": "4f53cda18c2baa0c",
@@ -5866,10 +6380,9 @@
     "subtitles": "fd9017e80de847e5",
     "render": "9ed7563f501d58e3"
    },
-   "up_to_date": false,
-   "why": [
-    "new"
-   ]
+   "up_to_date": true,
+   "why": [],
+   "sfx": []
   },
   {
    "id": "03.4",
@@ -6142,10 +6655,10 @@
     "detent@helps+0.5"
    ],
    "render": "out/scenes_fr/03.4.mp4",
-   "hash": "16cf46aa73bf0748",
+   "hash": "15b6a7aeeff20c8a",
    "hash_parts": {
-    "html": "MISSING",
-    "files": "none",
+    "html": "94b04d61150826cc8e80a945984598e94ba1bcec7001f0f5ccfdc88d4008d907",
+    "files": "6efb3767e6613572",
     "runtime": "c105b248019e6a43",
     "deps": "29315df59cd2ce47",
     "assets": "4f53cda18c2baa0c",
@@ -6153,9 +6666,32 @@
     "subtitles": "c8dc088cd115c50f",
     "render": "9ed7563f501d58e3"
    },
-   "up_to_date": false,
-   "why": [
-    "new"
+   "up_to_date": true,
+   "why": [],
+   "sfx": [
+    {
+     "t": 1.35,
+     "id": "detent"
+    },
+    {
+     "t": 9.59,
+     "id": "detent"
+    },
+    {
+     "t": 25.82,
+     "id": "tick",
+     "gain_db": -20
+    },
+    {
+     "t": 32.93,
+     "id": "tick",
+     "gain_db": -20
+    },
+    {
+     "t": 35.309,
+     "id": "tick",
+     "gain_db": -20
+    }
    ]
   },
   {
@@ -6356,10 +6892,10 @@
     }
    ],
    "render": "out/scenes_fr/03.5.mp4",
-   "hash": "ae3e6138e10e52b8",
+   "hash": "00910a3eb72ca59d",
    "hash_parts": {
-    "html": "MISSING",
-    "files": "none",
+    "html": "31d14cf5cb182c2c989b796e74698b21d3d6ee7fab2757b498fb3b3eefb967bc",
+    "files": "6efb3767e6613572",
     "runtime": "c105b248019e6a43",
     "deps": "4f53cda18c2baa0c",
     "assets": "4f53cda18c2baa0c",
@@ -6367,9 +6903,18 @@
     "subtitles": "f29f8181bb402512",
     "render": "9ed7563f501d58e3"
    },
-   "up_to_date": false,
-   "why": [
-    "new"
+   "up_to_date": true,
+   "why": [],
+   "sfx": [
+    {
+     "t": 25.73,
+     "id": "detent"
+    },
+    {
+     "t": 25.73,
+     "id": "detent",
+     "gain_db": -20
+    }
    ]
   },
   {
@@ -6530,10 +7075,10 @@
    "music": null,
    "sfx_spec": [],
    "render": "out/scenes_fr/03.6.mp4",
-   "hash": "38f3d4daeaa7bb7d",
+   "hash": "76d11aa7e35fcc07",
    "hash_parts": {
-    "html": "MISSING",
-    "files": "none",
+    "html": "27b305341de87aee6987ea2335060c06f99a83467d2a1c97c2f877bde4b05432",
+    "files": "6efb3767e6613572",
     "runtime": "c105b248019e6a43",
     "deps": "4f53cda18c2baa0c",
     "assets": "4f53cda18c2baa0c",
@@ -6541,9 +7086,29 @@
     "subtitles": "5321a64c2b79b11f",
     "render": "9ed7563f501d58e3"
    },
-   "up_to_date": false,
-   "why": [
-    "new"
+   "up_to_date": true,
+   "why": [],
+   "sfx": [
+    {
+     "t": 5.84,
+     "id": "pop",
+     "gain_db": -26
+    },
+    {
+     "t": 6.09,
+     "id": "pop",
+     "gain_db": -26
+    },
+    {
+     "t": 6.34,
+     "id": "pop",
+     "gain_db": -26
+    },
+    {
+     "t": 6.59,
+     "id": "pop",
+     "gain_db": -26
+    }
    ]
   },
   {
@@ -6765,10 +7330,10 @@
     "pop@three-0.1"
    ],
    "render": "out/scenes_fr/03.7.mp4",
-   "hash": "7570791035f17e6c",
+   "hash": "4ad7e697e02874f8",
    "hash_parts": {
-    "html": "MISSING",
-    "files": "none",
+    "html": "2bcb92318d492accf83c8d91cbb40fa1c026caf9586c5d179f5a3b07a849c4da",
+    "files": "6efb3767e6613572",
     "runtime": "c105b248019e6a43",
     "deps": "4f53cda18c2baa0c",
     "assets": "4f53cda18c2baa0c",
@@ -6776,9 +7341,26 @@
     "subtitles": "3cddb6666abc72b0",
     "render": "9ed7563f501d58e3"
    },
-   "up_to_date": false,
-   "why": [
-    "new"
+   "up_to_date": true,
+   "why": [],
+   "sfx": [
+    {
+     "t": 6.7,
+     "id": "pop"
+    },
+    {
+     "t": 14.55,
+     "id": "pop"
+    },
+    {
+     "t": 23.45,
+     "id": "pop"
+    },
+    {
+     "t": 24.35,
+     "id": "needle",
+     "gain_db": -22
+    }
    ]
   },
   {
@@ -6898,10 +7480,10 @@
    "music": null,
    "sfx_spec": [],
    "render": "out/scenes_fr/03.8.mp4",
-   "hash": "39b5e24668f54ded",
+   "hash": "175ac2f1fbac7e47",
    "hash_parts": {
-    "html": "MISSING",
-    "files": "none",
+    "html": "1298f7c71f51491b7580c5f1a089399eb9276def0f01015fac0e6c732ade3cd3",
+    "files": "6efb3767e6613572",
     "runtime": "c105b248019e6a43",
     "deps": "691e227f6738a211",
     "assets": "4f53cda18c2baa0c",
@@ -6909,9 +7491,14 @@
     "subtitles": "1881e9dd0904a452",
     "render": "9ed7563f501d58e3"
    },
-   "up_to_date": false,
-   "why": [
-    "new"
+   "up_to_date": true,
+   "why": [],
+   "sfx": [
+    {
+     "t": 13.52,
+     "id": "needle",
+     "gain_db": -16
+    }
    ]
   },
   {
@@ -7019,10 +7606,10 @@
     "chime@q-0.2"
    ],
    "render": "out/scenes_fr/ch03.Q.mp4",
-   "hash": "fcf6aa8bed6269c3",
+   "hash": "74e8fb8077483214",
    "hash_parts": {
-    "html": "MISSING",
-    "files": "none",
+    "html": "714f745a149247e6fc534d29e7053186e38bfde624a4cb4a68d7c29fed52bbf2",
+    "files": "6efb3767e6613572",
     "runtime": "c105b248019e6a43",
     "deps": "691e227f6738a211",
     "assets": "4f53cda18c2baa0c",
@@ -7030,9 +7617,13 @@
     "subtitles": "4e838f15150aac29",
     "render": "9ed7563f501d58e3"
    },
-   "up_to_date": false,
-   "why": [
-    "new"
+   "up_to_date": true,
+   "why": [],
+   "sfx": [
+    {
+     "t": 0.35,
+     "id": "chime"
+    }
    ]
   },
   {
@@ -7235,9 +7826,13 @@
     "subtitles": "704df149082cbae0",
     "render": "9ed7563f501d58e3"
    },
-   "up_to_date": false,
-   "why": [
-    "new"
+   "up_to_date": true,
+   "why": [],
+   "sfx": [
+    {
+     "t": 0.1,
+     "id": "whoosh"
+    }
    ]
   },
   {
@@ -7542,9 +8137,61 @@
     "subtitles": "848e262c449e3d20",
     "render": "2fb0ebce4d97b9dc"
    },
-   "up_to_date": false,
-   "why": [
-    "new"
+   "up_to_date": true,
+   "why": [],
+   "sfx": [
+    {
+     "t": 25.91,
+     "id": "detent"
+    },
+    {
+     "t": 27.11,
+     "id": "detent"
+    },
+    {
+     "t": 27.63,
+     "id": "detent"
+    },
+    {
+     "t": 37.474,
+     "id": "needle",
+     "gain_db": -18
+    },
+    {
+     "t": 53.28,
+     "id": "needle",
+     "gain_db": -18
+    },
+    {
+     "t": 53.864,
+     "id": "needle",
+     "gain_db": -18
+    },
+    {
+     "t": 54.46,
+     "id": "needle",
+     "gain_db": -18
+    },
+    {
+     "t": 55.005,
+     "id": "needle",
+     "gain_db": -18
+    },
+    {
+     "t": 55.601,
+     "id": "needle",
+     "gain_db": -18
+    },
+    {
+     "t": 56.93,
+     "id": "needle",
+     "gain_db": -18
+    },
+    {
+     "t": 58.643,
+     "id": "needle",
+     "gain_db": -18
+    }
    ]
   },
   {
@@ -7733,9 +8380,189 @@
     "subtitles": "d19dae609aa8857f",
     "render": "9ed7563f501d58e3"
    },
-   "up_to_date": false,
-   "why": [
-    "new"
+   "up_to_date": true,
+   "why": [],
+   "sfx": [
+    {
+     "t": 0.901,
+     "id": "tick",
+     "gain_db": -22
+    },
+    {
+     "t": 2.524,
+     "id": "tick",
+     "gain_db": -22
+    },
+    {
+     "t": 3.933,
+     "id": "tick",
+     "gain_db": -22
+    },
+    {
+     "t": 5.996,
+     "id": "tick",
+     "gain_db": -22
+    },
+    {
+     "t": 6.93,
+     "id": "tick",
+     "gain_db": -22
+    },
+    {
+     "t": 9.835,
+     "id": "tick",
+     "gain_db": -22
+    },
+    {
+     "t": 11.279,
+     "id": "tick",
+     "gain_db": -22
+    },
+    {
+     "t": 12.746,
+     "id": "tick",
+     "gain_db": -22
+    },
+    {
+     "t": 14.077,
+     "id": "tick",
+     "gain_db": -22
+    },
+    {
+     "t": 15.045,
+     "id": "tick",
+     "gain_db": -22
+    },
+    {
+     "t": 16.225,
+     "id": "tick",
+     "gain_db": -22
+    },
+    {
+     "t": 21.697,
+     "id": "tick",
+     "gain_db": -22
+    },
+    {
+     "t": 22.467,
+     "id": "tick",
+     "gain_db": -22
+    },
+    {
+     "t": 23.234,
+     "id": "tick",
+     "gain_db": -22
+    },
+    {
+     "t": 24.005,
+     "id": "tick",
+     "gain_db": -22
+    },
+    {
+     "t": 24.772,
+     "id": "tick",
+     "gain_db": -22
+    },
+    {
+     "t": 25.455,
+     "id": "tick",
+     "gain_db": -22
+    },
+    {
+     "t": 25.809,
+     "id": "tick",
+     "gain_db": -22
+    },
+    {
+     "t": 26.022,
+     "id": "tick",
+     "gain_db": -22
+    },
+    {
+     "t": 26.201,
+     "id": "tick",
+     "gain_db": -22
+    },
+    {
+     "t": 26.372,
+     "id": "tick",
+     "gain_db": -22
+    },
+    {
+     "t": 26.53,
+     "id": "tick",
+     "gain_db": -22
+    },
+    {
+     "t": 26.676,
+     "id": "tick",
+     "gain_db": -22
+    },
+    {
+     "t": 26.817,
+     "id": "tick",
+     "gain_db": -22
+    },
+    {
+     "t": 26.942,
+     "id": "tick",
+     "gain_db": -22
+    },
+    {
+     "t": 27.076,
+     "id": "tick",
+     "gain_db": -22
+    },
+    {
+     "t": 27.205,
+     "id": "tick",
+     "gain_db": -22
+    },
+    {
+     "t": 27.338,
+     "id": "tick",
+     "gain_db": -22
+    },
+    {
+     "t": 27.472,
+     "id": "tick",
+     "gain_db": -22
+    },
+    {
+     "t": 27.605,
+     "id": "tick",
+     "gain_db": -22
+    },
+    {
+     "t": 27.738,
+     "id": "tick",
+     "gain_db": -22
+    },
+    {
+     "t": 27.867,
+     "id": "tick",
+     "gain_db": -22
+    },
+    {
+     "t": 28.001,
+     "id": "tick",
+     "gain_db": -22
+    },
+    {
+     "t": 28.134,
+     "id": "tick",
+     "gain_db": -22
+    },
+    {
+     "t": 28.267,
+     "id": "tick",
+     "gain_db": -22
+    },
+    {
+     "t": 28.397,
+     "id": "tick",
+     "gain_db": -22
+    }
    ]
   },
   {
@@ -7943,9 +8770,14 @@
     "subtitles": "8244a4e3e95d0d6e",
     "render": "9ed7563f501d58e3"
    },
-   "up_to_date": false,
-   "why": [
-    "new"
+   "up_to_date": true,
+   "why": [],
+   "sfx": [
+    {
+     "t": 18.899,
+     "id": "needle",
+     "gain_db": -18
+    }
    ]
   },
   {
@@ -8128,10 +8960,9 @@
     "subtitles": "9adaedfb6f1c5ed4",
     "render": "2fb0ebce4d97b9dc"
    },
-   "up_to_date": false,
-   "why": [
-    "new"
-   ]
+   "up_to_date": true,
+   "why": [],
+   "sfx": []
   },
   {
    "id": "04.6",
@@ -8341,9 +9172,14 @@
     "subtitles": "c48e4bac61963254",
     "render": "9ed7563f501d58e3"
    },
-   "up_to_date": false,
-   "why": [
-    "new"
+   "up_to_date": true,
+   "why": [],
+   "sfx": [
+    {
+     "t": 10.54,
+     "id": "hiss",
+     "dur": 1.2
+    }
    ]
   },
   {
@@ -8541,9 +9377,74 @@
     "subtitles": "d5b9d7ccba85be42",
     "render": "9ed7563f501d58e3"
    },
-   "up_to_date": false,
-   "why": [
-    "new"
+   "up_to_date": true,
+   "why": [],
+   "sfx": [
+    {
+     "t": 11.37,
+     "id": "tick",
+     "gain_db": -26
+    },
+    {
+     "t": 12.05,
+     "id": "tick",
+     "gain_db": -26
+    },
+    {
+     "t": 12.4,
+     "id": "tick",
+     "gain_db": -26
+    },
+    {
+     "t": 12.75,
+     "id": "tick",
+     "gain_db": -26
+    },
+    {
+     "t": 13.1,
+     "id": "tick",
+     "gain_db": -26
+    },
+    {
+     "t": 13.45,
+     "id": "tick",
+     "gain_db": -26
+    },
+    {
+     "t": 13.8,
+     "id": "tick",
+     "gain_db": -26
+    },
+    {
+     "t": 14.15,
+     "id": "tick",
+     "gain_db": -26
+    },
+    {
+     "t": 14.5,
+     "id": "tick",
+     "gain_db": -26
+    },
+    {
+     "t": 14.85,
+     "id": "tick",
+     "gain_db": -26
+    },
+    {
+     "t": 15.2,
+     "id": "tick",
+     "gain_db": -26
+    },
+    {
+     "t": 15.55,
+     "id": "tick",
+     "gain_db": -26
+    },
+    {
+     "t": 15.9,
+     "id": "tick",
+     "gain_db": -26
+    }
    ]
   },
   {
@@ -8657,9 +9558,13 @@
     "subtitles": "3c38899090681913",
     "render": "9ed7563f501d58e3"
    },
-   "up_to_date": false,
-   "why": [
-    "new"
+   "up_to_date": true,
+   "why": [],
+   "sfx": [
+    {
+     "t": 0.35,
+     "id": "chime"
+    }
    ]
   },
   {
@@ -8830,7 +9735,7 @@
      "speed_bar_px_per_unit": 160,
      "stack": {
       "x0": 300,
-      "y": 250
+      "y": 200
      },
      "predict": {
       "title": "PREDICT",
@@ -8847,20 +9752,28 @@
     "pop@photo-0.1"
    ],
    "render": "out/scenes_fr/05.1.mp4",
-   "hash": "9a1d855e23e3ee50",
+   "hash": "a04b89843eaa9434",
    "hash_parts": {
-    "html": "MISSING",
-    "files": "none",
+    "html": "962cb041dd15dd50a74305ff5c582f5788762579c78c3c192312e083e7dad798",
+    "files": "ed38d08299d9dde0",
     "runtime": "c105b248019e6a43",
     "deps": "4f53cda18c2baa0c",
     "assets": "4f53cda18c2baa0c",
-    "entry": "2ac8a5f5f73b593a",
+    "entry": "147bb85ee1c0fd33",
     "subtitles": "999cb096ac65b2af",
     "render": "9ed7563f501d58e3"
    },
-   "up_to_date": false,
-   "why": [
-    "new"
+   "up_to_date": true,
+   "why": [],
+   "sfx": [
+    {
+     "t": 0.1,
+     "id": "whoosh"
+    },
+    {
+     "t": 8.26,
+     "id": "pop"
+    }
    ]
   },
   {
@@ -8868,7 +9781,7 @@
    "unit": "ch05",
    "file": "scenes/ch05/05_2_rice_for_the_dipole.html",
    "title": "Rice for the dipole",
-   "status": "pending",
+   "status": "ready",
    "variant": "main",
    "level": "L3",
    "register": "NIGHT",
@@ -8977,8 +9890,8 @@
       "end": 50.57
      }
     ],
-    "status": "pending",
-    "variant": "pending",
+    "status": "ready",
+    "variant": "result",
     "stamp": null,
     "level": "L3",
     "register": "NIGHT",
@@ -9053,12 +9966,12 @@
        3
       ],
       "Ddot_range_signed": [
-       -4,
-       4
+       -1.5,
+       1.5
       ],
       "speed_range": [
        0,
-       4
+       1.5
       ]
      },
      "strip_plot_band": {
@@ -9104,20 +10017,25 @@
     }
    ],
    "render": "out/scenes_fr/05.2.mp4",
-   "hash": "a1bb718c237f6b2b",
+   "hash": "9f020f0b49df5803",
    "hash_parts": {
-    "html": "MISSING",
-    "files": "none",
+    "html": "8892a4543f2eb769904f18931eff9c393e29919e15a77966ab939debe6a174b0",
+    "files": "ed38d08299d9dde0",
     "runtime": "c105b248019e6a43",
-    "deps": "3151d753e1db35ca",
+    "deps": "991f695e4a506555",
     "assets": "4f53cda18c2baa0c",
-    "entry": "e5ffff3a8599dd32",
+    "entry": "7d8ab98ed1bdf4ce",
     "subtitles": "37c8a79b7826367f",
     "render": "9ed7563f501d58e3"
    },
-   "up_to_date": false,
-   "why": [
-    "new"
+   "up_to_date": true,
+   "why": [],
+   "sfx": [
+    {
+     "t": 0.75,
+     "id": "hiss",
+     "dur": 1
+    }
    ]
   },
   {
@@ -9125,7 +10043,7 @@
    "unit": "ch05",
    "file": "scenes/ch05/05_3_check_against_the_truth.html",
    "title": "Check against the truth",
-   "status": "pending",
+   "status": "ready",
    "variant": "main",
    "level": "L3",
    "register": "NIGHT",
@@ -9220,8 +10138,8 @@
       "end": 36.28
      }
     ],
-    "status": "pending",
-    "variant": "pending",
+    "status": "ready",
+    "variant": "result",
     "stamp": null,
     "level": "L3",
     "register": "NIGHT",
@@ -9327,21 +10245,20 @@
    "music": null,
    "sfx_spec": [],
    "render": "out/scenes_fr/05.3.mp4",
-   "hash": "dc4b33160203d2ab",
+   "hash": "29ba0b9da1e09ba2",
    "hash_parts": {
-    "html": "MISSING",
-    "files": "none",
+    "html": "b0a480310b5b8b0a2f9d130cce8fdaf303a10478106f4b5664919dbad0af287d",
+    "files": "ed38d08299d9dde0",
     "runtime": "c105b248019e6a43",
-    "deps": "93f1ef2e715f8c92",
+    "deps": "9376f4b718feb7ab",
     "assets": "1bb6026a5782d883",
-    "entry": "09aaf314ce289d0b",
+    "entry": "1395ab8138139139",
     "subtitles": "b40bd64e2f8984b7",
     "render": "9ed7563f501d58e3"
    },
-   "up_to_date": false,
-   "why": [
-    "new"
-   ]
+   "up_to_date": true,
+   "why": [],
+   "sfx": []
   },
   {
    "id": "05.4",
@@ -9453,10 +10370,10 @@
       "box": {
        "x0": 200,
        "x1": 1640,
-       "y0": 240,
-       "y1": 640
+       "y0": 180,
+       "y1": 580
       },
-      "zero_y": 440,
+      "zero_y": 380,
       "amp_px": 170,
       "seed": "ch05-trace",
       "knots": [
@@ -9512,20 +10429,35 @@
    "music": null,
    "sfx_spec": [],
    "render": "out/scenes_fr/05.4.mp4",
-   "hash": "99eb9450056242cd",
+   "hash": "484ddf86644e1c22",
    "hash_parts": {
-    "html": "MISSING",
-    "files": "none",
+    "html": "27322ff94ecf7f1e9d6944f6892f180f9172afc90057bd1187df91dbd5540630",
+    "files": "ed38d08299d9dde0",
     "runtime": "c105b248019e6a43",
     "deps": "4f53cda18c2baa0c",
     "assets": "4f53cda18c2baa0c",
-    "entry": "dd398d49239f3900",
+    "entry": "bfa41513327096a6",
     "subtitles": "55f01486d035d28f",
     "render": "9ed7563f501d58e3"
    },
-   "up_to_date": false,
-   "why": [
-    "new"
+   "up_to_date": true,
+   "why": [],
+   "sfx": [
+    {
+     "t": 6.058,
+     "id": "tick",
+     "gain_db": -20
+    },
+    {
+     "t": 6.458,
+     "id": "tick",
+     "gain_db": -20
+    },
+    {
+     "t": 8.094,
+     "id": "tick",
+     "gain_db": -20
+    }
    ]
   },
   {
@@ -9654,10 +10586,10 @@
    "music": null,
    "sfx_spec": [],
    "render": "out/scenes_fr/05.5.mp4",
-   "hash": "638a86051cc22ad4",
+   "hash": "91014aa6436daaeb",
    "hash_parts": {
-    "html": "MISSING",
-    "files": "none",
+    "html": "5ddc7e9a422f69173494d97b2cd43d3ccbbfbbdc6d225df655b3495c936dcca2",
+    "files": "ed38d08299d9dde0",
     "runtime": "c105b248019e6a43",
     "deps": "4f53cda18c2baa0c",
     "assets": "4f53cda18c2baa0c",
@@ -9665,10 +10597,9 @@
     "subtitles": "5edc475cbcf0db11",
     "render": "9ed7563f501d58e3"
    },
-   "up_to_date": false,
-   "why": [
-    "new"
-   ]
+   "up_to_date": true,
+   "why": [],
+   "sfx": []
   },
   {
    "id": "ch05.Q",
@@ -9771,10 +10702,10 @@
     "chime@q-0.2"
    ],
    "render": "out/scenes_fr/ch05.Q.mp4",
-   "hash": "fbe28ea409880135",
+   "hash": "5dc78f233042e804",
    "hash_parts": {
-    "html": "MISSING",
-    "files": "none",
+    "html": "82560fc8a7f8174419f0cd96dcbeacabad19c7afdd9259b426c4bb4d85ba7fd3",
+    "files": "ed38d08299d9dde0",
     "runtime": "c105b248019e6a43",
     "deps": "4f53cda18c2baa0c",
     "assets": "4f53cda18c2baa0c",
@@ -9782,9 +10713,13 @@
     "subtitles": "0af35a88b9bda37f",
     "render": "9ed7563f501d58e3"
    },
-   "up_to_date": false,
-   "why": [
-    "new"
+   "up_to_date": true,
+   "why": [],
+   "sfx": [
+    {
+     "t": 0.35,
+     "id": "chime"
+    }
    ]
   },
   {
@@ -9996,10 +10931,10 @@
     }
    ],
    "render": "out/scenes_fr/06.1.mp4",
-   "hash": "f38b1f7786cac1e8",
+   "hash": "1b5ea7f05b4df84a",
    "hash_parts": {
-    "html": "MISSING",
-    "files": "none",
+    "html": "afafed464ce871b5ec11aa76e52c0e2856f4fd6634a8f5881027b4a9a2e51a22",
+    "files": "3482969a1f761b0d",
     "runtime": "c105b248019e6a43",
     "deps": "5565a9113a34747d",
     "assets": "13bbf4707199742e",
@@ -10007,9 +10942,25 @@
     "subtitles": "c3d84fb3befe3e02",
     "render": "2fb0ebce4d97b9dc"
    },
-   "up_to_date": false,
-   "why": [
-    "new"
+   "up_to_date": true,
+   "why": [],
+   "sfx": [
+    {
+     "t": 0.1,
+     "id": "whoosh"
+    },
+    {
+     "t": 24.14,
+     "id": "hiss",
+     "gain_db": -20,
+     "dur": 3.5
+    },
+    {
+     "t": 30.23,
+     "id": "hiss",
+     "gain_db": -24,
+     "dur": 2
+    }
    ]
   },
   {
@@ -10149,10 +11100,10 @@
    "music": null,
    "sfx_spec": [],
    "render": "out/scenes_fr/06.2.mp4",
-   "hash": "cb968ea4b7bdf167",
+   "hash": "070c733662b4f883",
    "hash_parts": {
-    "html": "MISSING",
-    "files": "none",
+    "html": "b0fa629625c1f4440f6cfd97d9cde1a92f821ac81d4de74a789b3947d03a86e3",
+    "files": "3482969a1f761b0d",
     "runtime": "c105b248019e6a43",
     "deps": "5565a9113a34747d",
     "assets": "4f53cda18c2baa0c",
@@ -10160,10 +11111,9 @@
     "subtitles": "9e620b2ec59fbd5a",
     "render": "9ed7563f501d58e3"
    },
-   "up_to_date": false,
-   "why": [
-    "new"
-   ]
+   "up_to_date": true,
+   "why": [],
+   "sfx": []
   },
   {
    "id": "06.3",
@@ -10392,10 +11342,10 @@
    "music": null,
    "sfx_spec": [],
    "render": "out/scenes_fr/06.3.mp4",
-   "hash": "7aa01804325033f7",
+   "hash": "ff444e53c74b14e5",
    "hash_parts": {
-    "html": "MISSING",
-    "files": "none",
+    "html": "3e779ee09c90c9476944d24cb137ea31fc5150458caf4b0e898812aa73bb992e",
+    "files": "3482969a1f761b0d",
     "runtime": "c105b248019e6a43",
     "deps": "5565a9113a34747d",
     "assets": "14df3108145377cc",
@@ -10403,10 +11353,9 @@
     "subtitles": "63b45762e71f0b08",
     "render": "2fb0ebce4d97b9dc"
    },
-   "up_to_date": false,
-   "why": [
-    "new"
-   ]
+   "up_to_date": true,
+   "why": [],
+   "sfx": []
   },
   {
    "id": "06.4",
@@ -10648,10 +11597,10 @@
     }
    ],
    "render": "out/scenes_fr/06.4.mp4",
-   "hash": "becd0fe72c0fb6e7",
+   "hash": "846e958d88d47bf6",
    "hash_parts": {
-    "html": "MISSING",
-    "files": "none",
+    "html": "07f331c37b7d2ff5d7739a9dd695af7b53120a2a43e7df0e680a609fdd377c3f",
+    "files": "3482969a1f761b0d",
     "runtime": "c105b248019e6a43",
     "deps": "ec6db501471c69f1",
     "assets": "95112d84e358e0be",
@@ -10659,9 +11608,30 @@
     "subtitles": "c7bd29039e2094b1",
     "render": "2fb0ebce4d97b9dc"
    },
-   "up_to_date": false,
-   "why": [
-    "new"
+   "up_to_date": true,
+   "why": [],
+   "sfx": [
+    {
+     "t": 3.46,
+     "id": "detent"
+    },
+    {
+     "t": 4.66,
+     "id": "detent"
+    },
+    {
+     "t": 6.16,
+     "id": "detent"
+    },
+    {
+     "t": 29.32,
+     "id": "detent"
+    },
+    {
+     "t": 30.02,
+     "id": "pop",
+     "gain_db": -22
+    }
    ]
   },
   {
@@ -10897,10 +11867,10 @@
    "music": null,
    "sfx_spec": [],
    "render": "out/scenes_fr/06.5.mp4",
-   "hash": "357853ff56f11d38",
+   "hash": "a8cf2f517e7903e9",
    "hash_parts": {
-    "html": "MISSING",
-    "files": "none",
+    "html": "5d6bcd9c35778e5721e7bda5224245c53eec4e8964af4a5059965f6e444f3ddc",
+    "files": "3482969a1f761b0d",
     "runtime": "c105b248019e6a43",
     "deps": "4f53cda18c2baa0c",
     "assets": "08fe99df70f9b4d0",
@@ -10908,9 +11878,129 @@
     "subtitles": "2ae47e793ab4b360",
     "render": "9ed7563f501d58e3"
    },
-   "up_to_date": false,
-   "why": [
-    "new"
+   "up_to_date": true,
+   "why": [],
+   "sfx": [
+    {
+     "t": 28.9,
+     "id": "tick",
+     "gain_db": -26
+    },
+    {
+     "t": 29.2,
+     "id": "tick",
+     "gain_db": -26
+    },
+    {
+     "t": 29.5,
+     "id": "tick",
+     "gain_db": -26
+    },
+    {
+     "t": 29.8,
+     "id": "tick",
+     "gain_db": -26
+    },
+    {
+     "t": 30.1,
+     "id": "tick",
+     "gain_db": -26
+    },
+    {
+     "t": 30.4,
+     "id": "tick",
+     "gain_db": -26
+    },
+    {
+     "t": 30.7,
+     "id": "tick",
+     "gain_db": -26
+    },
+    {
+     "t": 31,
+     "id": "tick",
+     "gain_db": -26
+    },
+    {
+     "t": 31.3,
+     "id": "tick",
+     "gain_db": -26
+    },
+    {
+     "t": 31.6,
+     "id": "tick",
+     "gain_db": -26
+    },
+    {
+     "t": 31.9,
+     "id": "tick",
+     "gain_db": -26
+    },
+    {
+     "t": 32.2,
+     "id": "tick",
+     "gain_db": -26
+    },
+    {
+     "t": 34.8,
+     "id": "tick",
+     "gain_db": -26
+    },
+    {
+     "t": 34.95,
+     "id": "tick",
+     "gain_db": -26
+    },
+    {
+     "t": 35.1,
+     "id": "tick",
+     "gain_db": -26
+    },
+    {
+     "t": 35.25,
+     "id": "tick",
+     "gain_db": -26
+    },
+    {
+     "t": 35.4,
+     "id": "tick",
+     "gain_db": -26
+    },
+    {
+     "t": 35.55,
+     "id": "tick",
+     "gain_db": -26
+    },
+    {
+     "t": 35.7,
+     "id": "tick",
+     "gain_db": -26
+    },
+    {
+     "t": 35.85,
+     "id": "tick",
+     "gain_db": -26
+    },
+    {
+     "t": 36,
+     "id": "tick",
+     "gain_db": -26
+    },
+    {
+     "t": 36.15,
+     "id": "tick",
+     "gain_db": -26
+    },
+    {
+     "t": 36.3,
+     "id": "tick",
+     "gain_db": -26
+    },
+    {
+     "t": 36.45,
+     "id": "tick",
+     "gain_db": -26
+    }
    ]
   },
   {
@@ -11013,10 +12103,10 @@
     "chime@q-0.2"
    ],
    "render": "out/scenes_fr/ch06.Q.mp4",
-   "hash": "64ee9dfd452417c0",
+   "hash": "73ff9d6418bc21e5",
    "hash_parts": {
-    "html": "MISSING",
-    "files": "none",
+    "html": "c8410683b7db4a5ac4b5435268bcb6fef979809a42a8cb9f2fb2159cff409aba",
+    "files": "3482969a1f761b0d",
     "runtime": "c105b248019e6a43",
     "deps": "4f53cda18c2baa0c",
     "assets": "4f53cda18c2baa0c",
@@ -11024,9 +12114,13 @@
     "subtitles": "3309a3de7c226983",
     "render": "9ed7563f501d58e3"
    },
-   "up_to_date": false,
-   "why": [
-    "new"
+   "up_to_date": true,
+   "why": [],
+   "sfx": [
+    {
+     "t": 0.35,
+     "id": "chime"
+    }
    ]
   },
   {
@@ -11034,7 +12128,7 @@
    "unit": "ch07",
    "file": "scenes/ch07/07_1_lopsided_machine.html",
    "title": "A lopsided machine",
-   "status": "pending",
+   "status": "ready",
    "variant": "main",
    "level": "L3",
    "register": "NIGHT",
@@ -11168,8 +12262,8 @@
       "end": 48.38
      }
     ],
-    "status": "pending",
-    "variant": "pending",
+    "status": "ready",
+    "variant": "result",
     "stamp": null,
     "level": "L3",
     "register": "NIGHT",
@@ -11244,13 +12338,13 @@
        "x0": 140,
        "x1": 760,
        "y0": 210,
-       "y1": 690
+       "y1": 660
       },
       "right": {
        "x0": 860,
        "x1": 1480,
        "y0": 210,
-       "y1": 690
+       "y1": 660
       },
       "range_Q": [
        -2.5,
@@ -11276,8 +12370,8 @@
       "max": 0.9
      },
      "balance": {
-      "y0": 700,
-      "y1": 745
+      "y0": 678,
+      "y1": 718
      },
      "runs_gamma": 0.86,
      "runs_box": {
@@ -11297,20 +12391,28 @@
     "pop@empty"
    ],
    "render": "out/scenes_fr/07.1.mp4",
-   "hash": "49173b7197afa253",
+   "hash": "57e31d24de8064f6",
    "hash_parts": {
-    "html": "MISSING",
-    "files": "none",
+    "html": "210409f4ff4ea445b760da4279d2dacec1ec74d7633729e505676aa0454000ca",
+    "files": "63d67483d8bf2fb3",
     "runtime": "c105b248019e6a43",
-    "deps": "39312fe7cb574f6f",
+    "deps": "a1801a3797240424",
     "assets": "4f53cda18c2baa0c",
-    "entry": "b8fbb7e847b8b8ea",
+    "entry": "b358ddf7414c0268",
     "subtitles": "91194f4604ecde38",
     "render": "9ed7563f501d58e3"
    },
-   "up_to_date": false,
-   "why": [
-    "new"
+   "up_to_date": true,
+   "why": [],
+   "sfx": [
+    {
+     "t": 0.1,
+     "id": "whoosh"
+    },
+    {
+     "t": 12.81,
+     "id": "pop"
+    }
    ]
   },
   {
@@ -11493,14 +12595,14 @@
       "left": {
        "x0": 200,
        "x1": 860,
-       "y0": 290,
-       "y1": 680
+       "y0": 330,
+       "y1": 700
       },
       "right": {
        "x0": 1060,
        "x1": 1720,
-       "y0": 290,
-       "y1": 680
+       "y0": 330,
+       "y1": 700
       },
       "shrunk": {
        "x0": 1240,
@@ -11567,20 +12669,24 @@
     "pop@shelf+0.2"
    ],
    "render": "out/scenes_fr/07.2.mp4",
-   "hash": "4335480173020cdf",
+   "hash": "1cb94d702e1ae9a2",
    "hash_parts": {
-    "html": "MISSING",
-    "files": "none",
+    "html": "6dedf00511a11142d5d1b33e73a9a0c003a0487b3cc6d07e781f92b0e16d83c4",
+    "files": "63d67483d8bf2fb3",
     "runtime": "c105b248019e6a43",
     "deps": "6843cda15ffac2fe",
     "assets": "4f53cda18c2baa0c",
-    "entry": "c18860feb3b59978",
+    "entry": "149458020af9712b",
     "subtitles": "137097dfe4cbca2c",
     "render": "9ed7563f501d58e3"
    },
-   "up_to_date": false,
-   "why": [
-    "new"
+   "up_to_date": true,
+   "why": [],
+   "sfx": [
+    {
+     "t": 42.9,
+     "id": "pop"
+    }
    ]
   },
   {
@@ -11588,7 +12694,7 @@
    "unit": "ch07",
    "file": "scenes/ch07/07_3_only_where_the_data_are.html",
    "title": "Only where the data are",
-   "status": "pending",
+   "status": "ready",
    "variant": "main",
    "level": "L3",
    "register": "NIGHT",
@@ -11681,8 +12787,8 @@
       "end": 37.91
      }
     ],
-    "status": "pending",
-    "variant": "pending",
+    "status": "ready",
+    "variant": "result",
     "stamp": null,
     "level": "L3",
     "register": "NIGHT",
@@ -11740,8 +12846,8 @@
       "box": {
        "x0": 220,
        "x1": 1400,
-       "y0": 210,
-       "y1": 630
+       "y0": 270,
+       "y1": 640
       },
       "x": {
        "label": "Γ, control parameter",
@@ -11801,28 +12907,27 @@
    "music": null,
    "sfx_spec": [],
    "render": "out/scenes_fr/07.3.mp4",
-   "hash": "67ab3e517e21ab5a",
+   "hash": "fdb1d040d1babe27",
    "hash_parts": {
-    "html": "MISSING",
-    "files": "none",
+    "html": "82337ddf9f58f33608946615d09d2e384235d737f619dec4f4d09f1d143e0a90",
+    "files": "63d67483d8bf2fb3",
     "runtime": "c105b248019e6a43",
-    "deps": "cf81b942abf08bc9",
+    "deps": "a0d50918631359ee",
     "assets": "4f53cda18c2baa0c",
-    "entry": "46813a765594555b",
+    "entry": "560cb0715ad79150",
     "subtitles": "e38ce2cccec2d611",
     "render": "9ed7563f501d58e3"
    },
-   "up_to_date": false,
-   "why": [
-    "new"
-   ]
+   "up_to_date": true,
+   "why": [],
+   "sfx": []
   },
   {
    "id": "07.4",
    "unit": "ch07",
    "file": "scenes/ch07/07_4_budget_blind_to_mirror.html",
    "title": "The budget is blind to the mirror",
-   "status": "pending",
+   "status": "ready",
    "variant": "main",
    "level": "L3",
    "register": "NIGHT",
@@ -11899,8 +13004,8 @@
       "end": 22.4
      }
     ],
-    "status": "pending",
-    "variant": "pending",
+    "status": "ready",
+    "variant": "result",
     "stamp": null,
     "level": "L3",
     "register": "NIGHT",
@@ -12021,20 +13126,44 @@
    "music": null,
    "sfx_spec": [],
    "render": "out/scenes_fr/07.4.mp4",
-   "hash": "08adc17e3da5d4b2",
+   "hash": "69aa496074a9ccc4",
    "hash_parts": {
-    "html": "MISSING",
-    "files": "none",
+    "html": "2671092ec0056829213f3a0d64a1ec577446004d37b79cd0faaba5597c844d9e",
+    "files": "63d67483d8bf2fb3",
     "runtime": "c105b248019e6a43",
-    "deps": "11c0da2627db26b2",
+    "deps": "b0104411e3f42546",
     "assets": "4f53cda18c2baa0c",
-    "entry": "0af666454eed9aa5",
+    "entry": "208c7b7a1cae467d",
     "subtitles": "6fef068dcec5e61a",
     "render": "9ed7563f501d58e3"
    },
-   "up_to_date": false,
-   "why": [
-    "new"
+   "up_to_date": true,
+   "why": [],
+   "sfx": [
+    {
+     "t": 4.63,
+     "id": "detent"
+    },
+    {
+     "t": 5.63,
+     "id": "detent"
+    },
+    {
+     "t": 9.81,
+     "id": "detent"
+    },
+    {
+     "t": 11.01,
+     "id": "detent"
+    },
+    {
+     "t": 12.21,
+     "id": "detent"
+    },
+    {
+     "t": 13.21,
+     "id": "detent"
+    }
    ]
   },
   {
@@ -12042,7 +13171,7 @@
    "unit": "ch07",
    "file": "scenes/ch07/07_5_balance_every_snapshot.html",
    "title": "Predict: balance every snapshot?",
-   "status": "pending",
+   "status": "ready",
    "variant": "main",
    "level": "L4",
    "register": "NIGHT",
@@ -12183,8 +13312,8 @@
       "end": 64.85
      }
     ],
-    "status": "pending",
-    "variant": "pending",
+    "status": "ready",
+    "variant": "result",
     "stamp": null,
     "level": "L4",
     "register": "NIGHT",
@@ -12304,20 +13433,29 @@
     "pop@shelf+0.3"
    ],
    "render": "out/scenes_fr/07.5.mp4",
-   "hash": "5808016fa4c4807a",
+   "hash": "10bbe0188a5c0edd",
    "hash_parts": {
-    "html": "MISSING",
-    "files": "none",
+    "html": "cece663cb5a6dc28d34a162cead2499490ea3a1b2db2912184fe6f68230cac74",
+    "files": "63d67483d8bf2fb3",
     "runtime": "c105b248019e6a43",
-    "deps": "88af5cb3dc4f262f",
+    "deps": "56d5efa24d52f5f1",
     "assets": "4f53cda18c2baa0c",
-    "entry": "78c1a3ab61c2d143",
+    "entry": "9f75a6d128d89b9f",
     "subtitles": "17678c5850c0814f",
     "render": "9ed7563f501d58e3"
    },
-   "up_to_date": false,
-   "why": [
-    "new"
+   "up_to_date": true,
+   "why": [],
+   "sfx": [
+    {
+     "t": 28.8,
+     "id": "hiss",
+     "dur": 1.5
+    },
+    {
+     "t": 57.91,
+     "id": "pop"
+    }
    ]
   },
   {
@@ -12325,7 +13463,7 @@
    "unit": "ch07",
    "file": "scenes/ch07/07_6_two_juries.html",
    "title": "Enforce it on the crowd, with two juries",
-   "status": "pending",
+   "status": "ready",
    "variant": "main",
    "level": "L4",
    "register": "NIGHT",
@@ -12443,8 +13581,8 @@
       "end": 55.47
      }
     ],
-    "status": "pending",
-    "variant": "pending",
+    "status": "ready",
+    "variant": "result",
     "stamp": null,
     "level": "L4",
     "register": "NIGHT",
@@ -12546,20 +13684,24 @@
     "pop@juries"
    ],
    "render": "out/scenes_fr/07.6.mp4",
-   "hash": "21c9887613380334",
+   "hash": "8683d0c47b8a5b7c",
    "hash_parts": {
-    "html": "MISSING",
-    "files": "none",
+    "html": "891831bfa8f303cb19385dc7fe5a0be16bae87964bc5641954d8b89a6b87fb2f",
+    "files": "63d67483d8bf2fb3",
     "runtime": "c105b248019e6a43",
-    "deps": "bee26555ee71f095",
+    "deps": "95d8a1c56eb25d02",
     "assets": "4f53cda18c2baa0c",
-    "entry": "8609d6b51640d72a",
+    "entry": "983af2b0fb061842",
     "subtitles": "ade1a3581b8f2f99",
     "render": "9ed7563f501d58e3"
    },
-   "up_to_date": false,
-   "why": [
-    "new"
+   "up_to_date": true,
+   "why": [],
+   "sfx": [
+    {
+     "t": 40.34,
+     "id": "pop"
+    }
    ]
   },
   {
@@ -12665,10 +13807,10 @@
     "chime@q-0.2"
    ],
    "render": "out/scenes_fr/ch07.Q.mp4",
-   "hash": "4c0065b0f31a8316",
+   "hash": "e9a6e1fe0b293fbd",
    "hash_parts": {
-    "html": "MISSING",
-    "files": "none",
+    "html": "ea50deadccb4349d1fbf1f15223a4d8401385f0ff25855a220b14ef4e8fa1bd6",
+    "files": "63d67483d8bf2fb3",
     "runtime": "c105b248019e6a43",
     "deps": "4f53cda18c2baa0c",
     "assets": "4f53cda18c2baa0c",
@@ -12676,9 +13818,13 @@
     "subtitles": "94f90b9f733e4293",
     "render": "9ed7563f501d58e3"
    },
-   "up_to_date": false,
-   "why": [
-    "new"
+   "up_to_date": true,
+   "why": [],
+   "sfx": [
+    {
+     "t": 0.35,
+     "id": "chime"
+    }
    ]
   },
   {
@@ -12901,10 +14047,10 @@
     }
    ],
    "render": "out/scenes_fr/08.1.mp4",
-   "hash": "0d71269857025a9b",
+   "hash": "759f48c5ab9004de",
    "hash_parts": {
-    "html": "MISSING",
-    "files": "none",
+    "html": "f7a250bb68fd87d88a21c55de5e4e279d981cf9257877e7f99f5eeba85f2a5d7",
+    "files": "d323e5bc536eff89",
     "runtime": "c105b248019e6a43",
     "deps": "101cefc60b9eb55e",
     "assets": "4f53cda18c2baa0c",
@@ -12912,9 +14058,17 @@
     "subtitles": "eac276c5ebe2f129",
     "render": "9ed7563f501d58e3"
    },
-   "up_to_date": false,
-   "why": [
-    "new"
+   "up_to_date": true,
+   "why": [],
+   "sfx": [
+    {
+     "t": 0.1,
+     "id": "whoosh"
+    },
+    {
+     "t": 23.28,
+     "id": "detent"
+    }
    ]
   },
   {
@@ -13103,10 +14257,10 @@
     "params": {
      "read": "maps.variants.ref.samples[0].j; maps.variants.V0_libre.samples[0].j, .div_b, .div_u; maps.variants.V1_penalite.samples[0].j; maps.vmax.j; maps.eta. ev.variants.V0_libre.mean.test.div_rel_u / div_rel_b (0.408 / 0.408), ev.variants.V1_penalite.mean.test.div_rel_u / div_rel_b (0.34 / 0.162) and err_Eb_rel (1.68: an excess, so generated E_B / reference = 1 + err_Eb_rel = 2.68, shown rounded '×2.7'), ev.variants.reference_sous_echantillon.mean.test.div_rel_b (0)",
      "maps": {
-      "size": 460,
-      "x_left": 300,
-      "x_right": 1160,
-      "y": 200
+      "size": 420,
+      "x_left": 240,
+      "x_right": 900,
+      "y": 244
      },
      "box": {
       "w": 150,
@@ -13123,8 +14277,8 @@
       ]
      },
      "gauge": {
-      "x": 1700,
-      "y0": 180,
+      "x": 1440,
+      "y0": 220,
       "y1": 640,
       "log_min": -18,
       "log_max": 0
@@ -13153,20 +14307,30 @@
     }
    ],
    "render": "out/scenes_fr/08.2.mp4",
-   "hash": "5625f0d9dcce0de8",
+   "hash": "276cd27bcbb117d5",
    "hash_parts": {
-    "html": "MISSING",
-    "files": "none",
+    "html": "c4c7ea011bd9d16eeb4f8d87a7507438c918bdd9e94f97bfdcc808d9abd59311",
+    "files": "d323e5bc536eff89",
     "runtime": "c105b248019e6a43",
     "deps": "101cefc60b9eb55e",
     "assets": "4f53cda18c2baa0c",
-    "entry": "139a242206bd7476",
+    "entry": "e9b0cbce2bb7feba",
     "subtitles": "5b91c50bb0bffbc7",
     "render": "9ed7563f501d58e3"
    },
-   "up_to_date": false,
-   "why": [
-    "new"
+   "up_to_date": true,
+   "why": [],
+   "sfx": [
+    {
+     "t": 15.67,
+     "id": "pop",
+     "gain_db": -22
+    },
+    {
+     "t": 42.33,
+     "id": "pop",
+     "gain_db": -24
+    }
    ]
   },
   {
@@ -13174,7 +14338,7 @@
    "unit": "ch08",
    "file": "scenes/ch08/08_3_hill_maps_and_swirl_minus_slope.html",
    "title": "Hill maps and swirl minus slope",
-   "status": "pending",
+   "status": "ready",
    "variant": "main",
    "level": "L3",
    "register": "NIGHT",
@@ -13277,8 +14441,8 @@
       "end": 57.16
      }
     ],
-    "status": "pending",
-    "variant": "pending",
+    "status": "ready",
+    "variant": "result",
     "stamp": null,
     "level": "L3",
     "register": "NIGHT",
@@ -13353,8 +14517,8 @@
      "read": "hill.psi, hill.a (128 x 128, generated by V4 potentials, sample 0, η = 0.00951), hill.vmax, hill.waves (12 lowest modes of the V0 velocity: kx, ky, ux_re, uy_re), hill.meta.stamp; ev.variants.V2_proj_finale.mean.test.div_rel_u (5.05e-17), ev.variants.V4_potentiels.mean.test.div_rel_u / div_rel_b (1.78e-17 / 1.68e-17), ev.variants.V3_flot_projete.mean.test.div_rel_u (2.03e-8), ev.variants.V0_libre.mean.test.div_rel_u (0.408, ghost needle)",
      "map": {
       "x": 360,
-      "y": 150,
-      "size": 520
+      "y": 210,
+      "size": 500
      },
      "contours": 12,
      "tracers": 400,
@@ -13393,20 +14557,25 @@
     }
    ],
    "render": "out/scenes_fr/08.3.mp4",
-   "hash": "8176398271afb60a",
+   "hash": "518d6938cf03660c",
    "hash_parts": {
-    "html": "MISSING",
-    "files": "none",
+    "html": "9db3217f7d3db1534e54065888ec3a702fe56deff4c9719a3f4ed7aab4e7f9a7",
+    "files": "d323e5bc536eff89",
     "runtime": "c105b248019e6a43",
-    "deps": "1ed5d82d821a2f42",
+    "deps": "a79ba701b482caf2",
     "assets": "494695a33a8af00a",
-    "entry": "f8f58c4b082d9e18",
+    "entry": "2d964e4cda08920d",
     "subtitles": "44633d80a36c3dbc",
     "render": "2fb0ebce4d97b9dc"
    },
-   "up_to_date": false,
-   "why": [
-    "new"
+   "up_to_date": true,
+   "why": [],
+   "sfx": [
+    {
+     "t": 45.75,
+     "id": "pop",
+     "gain_db": -22
+    }
    ]
   },
   {
@@ -13555,10 +14724,10 @@
    "music": null,
    "sfx_spec": [],
    "render": "out/scenes_fr/08.4.mp4",
-   "hash": "20e4a1790306202d",
+   "hash": "e3ac3a0921d45f4b",
    "hash_parts": {
-    "html": "MISSING",
-    "files": "none",
+    "html": "4a9fd4a8330303922e9e2c5546c0161fc0a4e987372af007a0c9de9730913e3a",
+    "files": "d323e5bc536eff89",
     "runtime": "c105b248019e6a43",
     "deps": "4f53cda18c2baa0c",
     "assets": "4f53cda18c2baa0c",
@@ -13566,10 +14735,9 @@
     "subtitles": "386a952b419caccc",
     "render": "9ed7563f501d58e3"
    },
-   "up_to_date": false,
-   "why": [
-    "new"
-   ]
+   "up_to_date": true,
+   "why": [],
+   "sfx": []
   },
   {
    "id": "08.5",
@@ -13808,11 +14976,11 @@
       "x_axis0": 700,
       "x_axis1": 1640,
       "y": [
-       210,
-       400,
+       310,
+       450,
        590
       ],
-      "h": 130
+      "h": 100
      },
      "axis": {
       "log_min": -2,
@@ -13855,20 +15023,25 @@
     }
    ],
    "render": "out/scenes_fr/08.5.mp4",
-   "hash": "e22163ddde31bb65",
+   "hash": "2d67c139b3f6c289",
    "hash_parts": {
-    "html": "MISSING",
-    "files": "none",
+    "html": "e4fafbe03503cb1ca16d2e6a9ba409fd4d4c33a5feb8f3a30c351a5fc8b6e770",
+    "files": "d323e5bc536eff89",
     "runtime": "c105b248019e6a43",
     "deps": "170917fd3bb268e0",
     "assets": "4f53cda18c2baa0c",
-    "entry": "30a2c00d4b9554bf",
+    "entry": "268c9f6c60a3e2e2",
     "subtitles": "766c17f7cf991308",
     "render": "9ed7563f501d58e3"
    },
-   "up_to_date": false,
-   "why": [
-    "new"
+   "up_to_date": true,
+   "why": [],
+   "sfx": [
+    {
+     "t": 56.52,
+     "id": "pop",
+     "gain_db": -22
+    }
    ]
   },
   {
@@ -14127,10 +15300,10 @@
     }
    ],
    "render": "out/scenes_fr/08.6.mp4",
-   "hash": "e3ec55ca4724c12a",
+   "hash": "959126a6ad8088a4",
    "hash_parts": {
-    "html": "MISSING",
-    "files": "none",
+    "html": "d2f8deea5593c2b0c6444426a5305cb3983f48ca6c94f360017ed96cb858a9e6",
+    "files": "d323e5bc536eff89",
     "runtime": "c105b248019e6a43",
     "deps": "4f53cda18c2baa0c",
     "assets": "87daafde29cf5d2b",
@@ -14138,9 +15311,14 @@
     "subtitles": "b5c8c5b56cce901b",
     "render": "9ed7563f501d58e3"
    },
-   "up_to_date": false,
-   "why": [
-    "new"
+   "up_to_date": true,
+   "why": [],
+   "sfx": [
+    {
+     "t": 44,
+     "id": "pop",
+     "gain_db": -22
+    }
    ]
   },
   {
@@ -14319,10 +15497,10 @@
    "music": null,
    "sfx_spec": [],
    "render": "out/scenes_fr/08.7.mp4",
-   "hash": "c1b00f9720f50c3e",
+   "hash": "32275af4aae003e9",
    "hash_parts": {
-    "html": "MISSING",
-    "files": "none",
+    "html": "933cab437844d3e24820e434e2e8b7a5f9e1833656a6fecea46526975cd1d2ba",
+    "files": "d323e5bc536eff89",
     "runtime": "c105b248019e6a43",
     "deps": "21a869b93888fc4b",
     "assets": "43c8232a6b86d21e",
@@ -14330,10 +15508,9 @@
     "subtitles": "d021f66cea853fdd",
     "render": "9ed7563f501d58e3"
    },
-   "up_to_date": false,
-   "why": [
-    "new"
-   ]
+   "up_to_date": true,
+   "why": [],
+   "sfx": []
   },
   {
    "id": "ch08.Q",
@@ -14434,10 +15611,10 @@
     "chime@q-0.2"
    ],
    "render": "out/scenes_fr/ch08.Q.mp4",
-   "hash": "6b879126bf086f77",
+   "hash": "cee9ec76d02dd282",
    "hash_parts": {
-    "html": "MISSING",
-    "files": "none",
+    "html": "7eb3f37855c3f48c0c185a169422395f052242a03e00416baa834953dc507e42",
+    "files": "d323e5bc536eff89",
     "runtime": "c105b248019e6a43",
     "deps": "4f53cda18c2baa0c",
     "assets": "4f53cda18c2baa0c",
@@ -14445,9 +15622,13 @@
     "subtitles": "d60d356df9ebf813",
     "render": "9ed7563f501d58e3"
    },
-   "up_to_date": false,
-   "why": [
-    "new"
+   "up_to_date": true,
+   "why": [],
+   "sfx": [
+    {
+     "t": 0.35,
+     "id": "chime"
+    }
    ]
   },
   {
@@ -14455,7 +15636,7 @@
    "unit": "ch09",
    "file": "scenes/ch09/09_1_how_often_from_generated_photographs.html",
    "title": "How often, from generated photographs",
-   "status": "pending",
+   "status": "ready",
    "variant": "main",
    "level": "L4",
    "register": "NIGHT",
@@ -14572,8 +15753,8 @@
       "end": 66.13
      }
     ],
-    "status": "pending",
-    "variant": "pending",
+    "status": "ready",
+    "variant": "result",
     "stamp": null,
     "level": "L4",
     "register": "NIGHT",
@@ -14751,20 +15932,79 @@
     "whoosh@0.1"
    ],
    "render": "out/scenes_fr/09.1.mp4",
-   "hash": "9352f5815343979b",
+   "hash": "43952425d89d76a1",
    "hash_parts": {
-    "html": "MISSING",
-    "files": "none",
+    "html": "6c1133a2fa29a54568d51d2dcb23c6ff68f80516be9987fa31475e046c5ebfa3",
+    "files": "c41b0caff1fff837",
     "runtime": "c105b248019e6a43",
-    "deps": "071b91e079f613f0",
+    "deps": "ff90646da9afe52f",
     "assets": "4f53cda18c2baa0c",
-    "entry": "c37602e461008271",
+    "entry": "d39d0cc0aea91b2b",
     "subtitles": "e3ec90d561704afe",
     "render": "9ed7563f501d58e3"
    },
-   "up_to_date": false,
-   "why": [
-    "new"
+   "up_to_date": true,
+   "why": [],
+   "sfx": [
+    {
+     "t": 0.1,
+     "id": "whoosh"
+    },
+    {
+     "t": 3.25,
+     "id": "tick",
+     "gain_db": -26
+    },
+    {
+     "t": 4.15,
+     "id": "tick",
+     "gain_db": -26
+    },
+    {
+     "t": 5.4,
+     "id": "tick",
+     "gain_db": -26
+    },
+    {
+     "t": 6.05,
+     "id": "tick",
+     "gain_db": -26
+    },
+    {
+     "t": 6.6,
+     "id": "tick",
+     "gain_db": -26
+    },
+    {
+     "t": 7.5,
+     "id": "tick",
+     "gain_db": -26
+    },
+    {
+     "t": 7.9,
+     "id": "tick",
+     "gain_db": -26
+    },
+    {
+     "t": 8.3,
+     "id": "tick",
+     "gain_db": -26
+    },
+    {
+     "t": 8.9,
+     "id": "tick",
+     "gain_db": -26
+    },
+    {
+     "t": 9.95,
+     "id": "tick",
+     "gain_db": -26
+    },
+    {
+     "t": 63.951,
+     "id": "pop",
+     "gain_db": -24
+    }
    ]
   },
   {
@@ -14772,7 +16012,7 @@
    "unit": "ch09",
    "file": "scenes/ch09/09_2_early_late_or_on_time.html",
    "title": "Predict: early, late or on time?",
-   "status": "pending",
+   "status": "ready",
    "variant": "main",
    "level": "L4",
    "register": "NIGHT",
@@ -14865,8 +16105,8 @@
       "end": 45.3
      }
     ],
-    "status": "pending",
-    "variant": "pending",
+    "status": "ready",
+    "variant": "result",
     "stamp": null,
     "level": "L4",
     "register": "NIGHT",
@@ -15021,20 +16261,30 @@
     }
    ],
    "render": "out/scenes_fr/09.2.mp4",
-   "hash": "93a2656084eec07f",
+   "hash": "c4f2b49cef4d609b",
    "hash_parts": {
-    "html": "MISSING",
-    "files": "none",
+    "html": "34470803b1a5ba75b5845dcf60577d30e1cc0a5d38e0afadbc315c2559a284db",
+    "files": "c41b0caff1fff837",
     "runtime": "c105b248019e6a43",
-    "deps": "071b91e079f613f0",
+    "deps": "ff90646da9afe52f",
     "assets": "4f53cda18c2baa0c",
-    "entry": "23fd1cf15c3217e4",
+    "entry": "65f1b86697b0fa8e",
     "subtitles": "e4dd86e8c6e1d61c",
     "render": "9ed7563f501d58e3"
    },
-   "up_to_date": false,
-   "why": [
-    "new"
+   "up_to_date": true,
+   "why": [],
+   "sfx": [
+    {
+     "t": 20.31,
+     "id": "pop",
+     "gain_db": -24
+    },
+    {
+     "t": 20.31,
+     "id": "pop",
+     "gain_db": -24
+    }
    ]
   },
   {
@@ -15042,7 +16292,7 @@
    "unit": "ch09",
    "file": "scenes/ch09/09_3_a_stiff_sheet_on_a_steep_ramp.html",
    "title": "A stiff sheet on a steep ramp",
-   "status": "pending",
+   "status": "ready",
    "variant": "main",
    "level": "L4",
    "register": "NIGHT",
@@ -15065,7 +16315,10 @@
    },
    "deps": [
     "data/e1_finegrid.json",
-    "data/ch09_sweep.json"
+    "data/e1_samples_0.85.json",
+    "data/e1_samples_0.87.json",
+    "data/e1_samples_0.9.json",
+    "data/e1_samples_0.93.json"
    ],
    "assets": [],
    "entry": {
@@ -15143,8 +16396,8 @@
       "end": 53.19
      }
     ],
-    "status": "pending",
-    "variant": "pending",
+    "status": "ready",
+    "variant": "result",
     "stamp": null,
     "level": "L4",
     "register": "NIGHT",
@@ -15205,7 +16458,10 @@
     ],
     "data": {
      "e1": "data/e1_finegrid.json",
-     "sweep": "data/ch09_sweep.json"
+     "s85": "data/e1_samples_0.85.json",
+     "s87": "data/e1_samples_0.87.json",
+     "s90": "data/e1_samples_0.9.json",
+     "s93": "data/e1_samples_0.93.json"
     },
     "params": {
      "metaphor": {
@@ -15220,7 +16476,7 @@
        1
       ],
       "knee": 0.8625,
-      "ramp_from": "sweep.bridge_fine.reference (monotone envelope of the fine-grid bridge mass)",
+      "ramp_from": "e1.bridge.reference (monotone envelope of the fine-grid bridge mass)",
       "sheet": {
        "stiffness": 0.000004,
        "thickness_px": 26,
@@ -15249,31 +16505,21 @@
         "which": "model_C"
        }
       ],
-      "range": {
-       "Q": [
-        -2.4,
-        2.4
-       ],
-       "D": [
-        -2.4,
-        2.4
-       ]
-      },
+      "range": 3.2,
       "strip_half_width": 0.25,
       "point_px": 1.6,
       "bridge_point_px": 4,
-      "gammas": "sweep.gammas (21 values)",
-      "dwell_below_s": 0.5,
-      "dwell_above_s": 0.2,
-      "below_max": 0.86
+      "gammas": "the four data Γ with snapshots in data/ (0.85, 0.87, 0.9, 0.93)",
+      "below_max": 0.86,
+      "n_draw": 3000
      },
      "knob": {
       "x": 1577,
-      "y": 580,
-      "r": 56,
+      "y": 612,
+      "r": 40,
       "min": 0.8,
       "max": 1,
-      "detents": "sweep.gammas"
+      "detents": "the four Γ of the clouds"
      },
      "bridge_plot": {
       "box": {
@@ -15309,7 +16555,8 @@
      "squeal": {
       "cue": "ramp",
       "offset": 2.2
-     }
+     },
+     "smooth_sigma": 0.022
     },
     "seed": 12345,
     "lang": "fr"
@@ -15332,20 +16579,43 @@
     }
    ],
    "render": "out/scenes_fr/09.3.mp4",
-   "hash": "5f76f60274dc8d82",
+   "hash": "075f1143df389d48",
    "hash_parts": {
-    "html": "MISSING",
-    "files": "none",
+    "html": "600cfc4faf090c664630be15116494f28db37d3c53bbc4b7cafff043aac7ac39",
+    "files": "c41b0caff1fff837",
     "runtime": "c105b248019e6a43",
-    "deps": "57963f5d88763c88",
+    "deps": "6022fd390e878642",
     "assets": "4f53cda18c2baa0c",
-    "entry": "bceb91a683c0da71",
+    "entry": "e133f61ada294b78",
     "subtitles": "7841a6e8ad7713ff",
     "render": "9ed7563f501d58e3"
    },
    "up_to_date": false,
    "why": [
-    "new"
+    "subtitles"
+   ],
+   "sfx": [
+    {
+     "t": 10.41,
+     "id": "squeal",
+     "gain_db": -30,
+     "dur": 0.5
+    },
+    {
+     "t": 11.61,
+     "id": "squeal",
+     "gain_db": -30,
+     "dur": 0.7
+    },
+    {
+     "t": 23.09,
+     "id": "detent",
+     "gain_db": -30
+    },
+    {
+     "t": 23.24,
+     "id": "detent"
+    }
    ]
   },
   {
@@ -15353,7 +16623,7 @@
    "unit": "ch09",
    "file": "scenes/ch09/09_4_the_loss_is_not_a_clean_win.html",
    "title": "The loss is not a clean win",
-   "status": "pending",
+   "status": "ready",
    "variant": "main",
    "level": "L4",
    "register": "NIGHT",
@@ -15430,8 +16700,8 @@
       "end": 32.94
      }
     ],
-    "status": "pending",
-    "variant": "pending",
+    "status": "ready",
+    "variant": "result",
     "stamp": null,
     "level": "L4",
     "register": "NIGHT",
@@ -15541,20 +16811,30 @@
     }
    ],
    "render": "out/scenes_fr/09.4.mp4",
-   "hash": "1cc8c4491c6ed045",
+   "hash": "ee4348a061fc9315",
    "hash_parts": {
-    "html": "MISSING",
-    "files": "none",
+    "html": "9910b0d1a5f0c1a1892a02a7ae2edca69ca448509d7831f776fc77fa960db1b3",
+    "files": "c41b0caff1fff837",
     "runtime": "c105b248019e6a43",
-    "deps": "982ad7b04101c033",
+    "deps": "eb189d8a6b030d0d",
     "assets": "4f53cda18c2baa0c",
-    "entry": "3f5f5334f8095d53",
+    "entry": "85c235f5365069f3",
     "subtitles": "7657f463afafea7e",
     "render": "9ed7563f501d58e3"
    },
-   "up_to_date": false,
-   "why": [
-    "new"
+   "up_to_date": true,
+   "why": [],
+   "sfx": [
+    {
+     "t": 22.05,
+     "id": "pop",
+     "gain_db": -24
+    },
+    {
+     "t": 22.444,
+     "id": "pop",
+     "gain_db": -24
+    }
    ]
   },
   {
@@ -15585,7 +16865,9 @@
    },
    "deps": [
     "data/e1_eval.json",
-    "data/e2_eval.json"
+    "data/e2_eval.json",
+    "data/ch09_rice.json",
+    "data/e1_finegrid.json"
    ],
    "assets": [],
    "entry": {
@@ -15701,15 +16983,17 @@
     ],
     "data": {
      "e1": "data/e1_eval.json",
-     "e2": "data/e2_eval.json"
+     "e2": "data/e2_eval.json",
+     "rice": "data/ch09_rice.json",
+     "grid": "data/e1_finegrid.json"
     },
     "params": {
      "read": "E1 (left): e1.variants.{A_reference, B_augmentation, C_equivariant}.mean.test.energie (0.0118, 0.00356, 0.00257) against e1.noise_floor.n_gen.energie (0.00123, optimistic); E2 (right): e2.variants.{V0_libre, V1_penalite, V2_proj_finale, V3_flot_projete, V4_potentiels, V5_potentiels_stat, V5_temoin}.mean.test.err_spectre_log10 (0.23 ... 0.0696) against e2.variants.reference_sous_echantillon.mean.train.err_spectre_log10 (0.0114, honest floor) and .mean.test (0.0021, optimistic, faint); seeds: e1.meta / config seeds [0, 1], e2: one seed; rulers: x.train / x.test of e1 (11 + 10) and e2.config.eta_train / eta_test (6 + 5)",
      "panel_e1": {
       "x0": 120,
       "x1": 760,
-      "y0": 190,
-      "y1": 600,
+      "y0": 220,
+      "y1": 560,
       "axis": {
        "log": true,
        "min": 0.001,
@@ -15719,8 +17003,8 @@
      "panel_e2": {
       "x0": 860,
       "x1": 1800,
-      "y0": 190,
-      "y1": 600,
+      "y0": 220,
+      "y1": 560,
       "axis": {
        "log": true,
        "min": 0.001,
@@ -15742,7 +17026,7 @@
       "C_equivariant": "built-in mirror"
      },
      "seed_row_y": 650,
-     "ruler_y": 720
+     "ruler_y": 722
     },
     "seed": 12345,
     "lang": "fr"
@@ -15751,21 +17035,20 @@
    "music": null,
    "sfx_spec": [],
    "render": "out/scenes_fr/09.5.mp4",
-   "hash": "1f7eefaf4293aba1",
+   "hash": "ac479cbe31e25e37",
    "hash_parts": {
-    "html": "MISSING",
-    "files": "none",
+    "html": "6c7031443a766bd412d01b45f83384784a622cf9f3160c7cb1a21a3452a1de6f",
+    "files": "c41b0caff1fff837",
     "runtime": "c105b248019e6a43",
-    "deps": "5d9f2c14a29d4daa",
+    "deps": "b2076da1a58d8533",
     "assets": "4f53cda18c2baa0c",
-    "entry": "8259f19763667ca6",
+    "entry": "505559d40f306f8b",
     "subtitles": "ee415128cf9230ce",
     "render": "9ed7563f501d58e3"
    },
-   "up_to_date": false,
-   "why": [
-    "new"
-   ]
+   "up_to_date": true,
+   "why": [],
+   "sfx": []
   },
   {
    "id": "09.6",
@@ -15793,7 +17076,9 @@
     ],
     "narration": "tts"
    },
-   "deps": [],
+   "deps": [
+    "data/ch09_rice.json"
+   ],
    "assets": [],
    "entry": {
     "id": "09.6",
@@ -15947,7 +17232,9 @@
      "en/these/index.qmd:861 (at least three seeds per variant in the PhD protocol)",
      "plan/outline.md 09.6; critique_pedagogy F8 (one 40-s scene), E9 (recap merged), C1 (shelves); 08.6 of this film (the shelves state this scene starts from)"
     ],
-    "data": {},
+    "data": {
+     "rice": "data/ch09_rice.json"
+    },
     "params": {
      "shelves": {
       "component": "scenes/_shared shelves (07.1, 08.6)",
@@ -16063,20 +17350,65 @@
     }
    ],
    "render": "out/scenes_fr/09.6.mp4",
-   "hash": "d3216be9acd149bd",
+   "hash": "537840497c9f69bd",
    "hash_parts": {
-    "html": "MISSING",
-    "files": "none",
+    "html": "01c0e361ec9608e131420e25c879f98e099a05ad839546dda3bc98e64d3534d3",
+    "files": "c41b0caff1fff837",
     "runtime": "c105b248019e6a43",
-    "deps": "4f53cda18c2baa0c",
+    "deps": "da9ca16dc584ea88",
     "assets": "4f53cda18c2baa0c",
-    "entry": "289fbd72e1df1671",
+    "entry": "2e5e45b3f2bdb89e",
     "subtitles": "b83a22b23a59aca1",
     "render": "9ed7563f501d58e3"
    },
-   "up_to_date": false,
-   "why": [
-    "new"
+   "up_to_date": true,
+   "why": [],
+   "sfx": [
+    {
+     "t": 0.6,
+     "id": "pop",
+     "gain_db": -28
+    },
+    {
+     "t": 0.95,
+     "id": "pop",
+     "gain_db": -28
+    },
+    {
+     "t": 1.3,
+     "id": "pop",
+     "gain_db": -28
+    },
+    {
+     "t": 1.65,
+     "id": "pop",
+     "gain_db": -28
+    },
+    {
+     "t": 2,
+     "id": "pop",
+     "gain_db": -28
+    },
+    {
+     "t": 2.35,
+     "id": "pop",
+     "gain_db": -28
+    },
+    {
+     "t": 2.7,
+     "id": "pop",
+     "gain_db": -28
+    },
+    {
+     "t": 3.05,
+     "id": "pop",
+     "gain_db": -28
+    },
+    {
+     "t": 48.92,
+     "id": "pop",
+     "gain_db": -26
+    }
    ]
   },
   {
@@ -16105,7 +17437,9 @@
     ],
     "narration": "tts"
    },
-   "deps": [],
+   "deps": [
+    "data/e1_finegrid.json"
+   ],
    "assets": [],
    "entry": {
     "id": "ch09.Q",
@@ -16160,7 +17494,9 @@
      "en/rapport/index.qmd:786 and data/e1_finegrid.json (E1 truth: 16 trajectories x 3000 time units = 48,000 time units per Γ; 0.0019375 x 48,000 = 93 crossings at 0.865, 0.0119167 x 48,000 = 572 at 0.995)",
      "BRIEF 3.1 (question card), 3.3 (ch10q gathers the questions); plan/pedagogy.md P15"
     ],
-    "data": {},
+    "data": {
+     "e1": "data/e1_finegrid.json"
+    },
     "params": {
      "backdrop": {
       "opacity": 0.1,
@@ -16176,20 +17512,28 @@
     "chime@q-0.2"
    ],
    "render": "out/scenes_fr/ch09.Q.mp4",
-   "hash": "eb0e1a65db6ff0c5",
+   "hash": "2153462f1e76d533",
    "hash_parts": {
-    "html": "MISSING",
-    "files": "none",
+    "html": "60099cb85e2543d97d7adff57f44ab6263bbd170a1d6fffb226de5845cd67236",
+    "files": "c41b0caff1fff837",
     "runtime": "c105b248019e6a43",
-    "deps": "4f53cda18c2baa0c",
+    "deps": "e7b67a4d3d1cd524",
     "assets": "4f53cda18c2baa0c",
-    "entry": "a5ee7f281df0b760",
+    "entry": "7fd3f183e1eb8361",
     "subtitles": "3fcd2624828f72ab",
     "render": "9ed7563f501d58e3"
    },
-   "up_to_date": false,
-   "why": [
-    "new"
+   "up_to_date": true,
+   "why": [],
+   "sfx": [
+    {
+     "t": 0.35,
+     "id": "chime"
+    },
+    {
+     "t": 0.35,
+     "id": "chime"
+    }
    ]
   },
   {
@@ -16494,10 +17838,10 @@
     "whoosh@0.1"
    ],
    "render": "out/scenes_fr/SOA2.1.mp4",
-   "hash": "b5be36e535916d69",
+   "hash": "cbd55a724a41b2bd",
    "hash_parts": {
-    "html": "MISSING",
-    "files": "none",
+    "html": "c5aeee23b2c1438deb16bc9ce907d9cf15e0354e404ec655fc224e56528d3fd3",
+    "files": "63ec42fc9f77bc47",
     "runtime": "c105b248019e6a43",
     "deps": "4f53cda18c2baa0c",
     "assets": "4f53cda18c2baa0c",
@@ -16505,9 +17849,13 @@
     "subtitles": "232fcad780445332",
     "render": "9ed7563f501d58e3"
    },
-   "up_to_date": false,
-   "why": [
-    "new"
+   "up_to_date": true,
+   "why": [],
+   "sfx": [
+    {
+     "t": 0.1,
+     "id": "whoosh"
+    }
    ]
   },
   {
@@ -16786,10 +18134,10 @@
    "music": null,
    "sfx_spec": [],
    "render": "out/scenes_fr/SOA2.2.mp4",
-   "hash": "0cca981a1802ea29",
+   "hash": "dd7732ac502341b6",
    "hash_parts": {
-    "html": "MISSING",
-    "files": "none",
+    "html": "2f6ffe698767b7b7a1f6c873fedc23ba9728ee07e3c5914020af59320a057c60",
+    "files": "63ec42fc9f77bc47",
     "runtime": "c105b248019e6a43",
     "deps": "4f53cda18c2baa0c",
     "assets": "4f53cda18c2baa0c",
@@ -16797,10 +18145,9 @@
     "subtitles": "88d22e26f7a62803",
     "render": "9ed7563f501d58e3"
    },
-   "up_to_date": false,
-   "why": [
-    "new"
-   ]
+   "up_to_date": true,
+   "why": [],
+   "sfx": []
   },
   {
    "id": "SOA2.3",
@@ -17047,10 +18394,10 @@
    "music": null,
    "sfx_spec": [],
    "render": "out/scenes_fr/SOA2.3.mp4",
-   "hash": "f2c91f3539ab42fc",
+   "hash": "4a88747083fc9872",
    "hash_parts": {
-    "html": "MISSING",
-    "files": "none",
+    "html": "ccdf4c44aded8f7d968a1e71c8437d6c79b2bc50272e16c0bc6a3538bff3c1ca",
+    "files": "63ec42fc9f77bc47",
     "runtime": "c105b248019e6a43",
     "deps": "4f53cda18c2baa0c",
     "assets": "4f53cda18c2baa0c",
@@ -17058,10 +18405,9 @@
     "subtitles": "f1161bd75161b2e4",
     "render": "9ed7563f501d58e3"
    },
-   "up_to_date": false,
-   "why": [
-    "new"
-   ]
+   "up_to_date": true,
+   "why": [],
+   "sfx": []
   },
   {
    "id": "SOA2.4",
@@ -17481,10 +18827,10 @@
    "music": null,
    "sfx_spec": [],
    "render": "out/scenes_fr/SOA2.4.mp4",
-   "hash": "4beb47ba2ef44e58",
+   "hash": "e1608f8accc152bf",
    "hash_parts": {
-    "html": "MISSING",
-    "files": "none",
+    "html": "ae744631be1f97cfec8119d7a4b79efce14a0e778cb8c783bb7e9d016d99a372",
+    "files": "63ec42fc9f77bc47",
     "runtime": "c105b248019e6a43",
     "deps": "4f53cda18c2baa0c",
     "assets": "4f53cda18c2baa0c",
@@ -17492,10 +18838,9 @@
     "subtitles": "3eb111122efe14fe",
     "render": "9ed7563f501d58e3"
    },
-   "up_to_date": false,
-   "why": [
-    "new"
-   ]
+   "up_to_date": true,
+   "why": [],
+   "sfx": []
   },
   {
    "id": "SOA2.5",
@@ -17744,10 +19089,10 @@
    "music": null,
    "sfx_spec": [],
    "render": "out/scenes_fr/SOA2.5.mp4",
-   "hash": "9df21c8bed0acbe8",
+   "hash": "ebf8ecc00e775ed5",
    "hash_parts": {
-    "html": "MISSING",
-    "files": "none",
+    "html": "880226185f104881f58cdb1b778e201fbcb6f6ffd27e3003a2befe160dbbc78b",
+    "files": "63ec42fc9f77bc47",
     "runtime": "c105b248019e6a43",
     "deps": "4f53cda18c2baa0c",
     "assets": "4f53cda18c2baa0c",
@@ -17755,10 +19100,9 @@
     "subtitles": "afd7a9d2148f2a68",
     "render": "9ed7563f501d58e3"
    },
-   "up_to_date": false,
-   "why": [
-    "new"
-   ]
+   "up_to_date": true,
+   "why": [],
+   "sfx": []
   },
   {
    "id": "SOA2.6",
@@ -18123,10 +19467,10 @@
    "music": null,
    "sfx_spec": [],
    "render": "out/scenes_fr/SOA2.6.mp4",
-   "hash": "4d48bf48b7c5ea75",
+   "hash": "f3cd2daceb6b9e32",
    "hash_parts": {
-    "html": "MISSING",
-    "files": "none",
+    "html": "ad6392dbf30fc42955ad4100e8f593af3263167239ac9d286ae0fae39c2bf189",
+    "files": "63ec42fc9f77bc47",
     "runtime": "c105b248019e6a43",
     "deps": "4f53cda18c2baa0c",
     "assets": "4f53cda18c2baa0c",
@@ -18134,10 +19478,9 @@
     "subtitles": "ece9e5be802c5096",
     "render": "9ed7563f501d58e3"
    },
-   "up_to_date": false,
-   "why": [
-    "new"
-   ]
+   "up_to_date": true,
+   "why": [],
+   "sfx": []
   },
   {
    "id": "SOA2.7",
@@ -18398,10 +19741,10 @@
    "music": null,
    "sfx_spec": [],
    "render": "out/scenes_fr/SOA2.7.mp4",
-   "hash": "45408e645d3632a5",
+   "hash": "34eaae57c96f4646",
    "hash_parts": {
-    "html": "MISSING",
-    "files": "none",
+    "html": "62c8943b30e3e8ade7b57cc7fa0c0f012e588ee18f6f48a276b97e527f6daf9e",
+    "files": "63ec42fc9f77bc47",
     "runtime": "c105b248019e6a43",
     "deps": "4f53cda18c2baa0c",
     "assets": "4f53cda18c2baa0c",
@@ -18411,8 +19754,9 @@
    },
    "up_to_date": false,
    "why": [
-    "new"
-   ]
+    "subtitles"
+   ],
+   "sfx": []
   },
   {
    "id": "SOA2.8",
@@ -18574,10 +19918,10 @@
    "music": null,
    "sfx_spec": [],
    "render": "out/scenes_fr/SOA2.8.mp4",
-   "hash": "478c2a5600cc18d6",
+   "hash": "439e4a2019a9345d",
    "hash_parts": {
-    "html": "MISSING",
-    "files": "none",
+    "html": "407c3f11495a25f62edd087aaa3bd183f0d8fe992afe7aaf6cc011c25f9ee1c9",
+    "files": "63ec42fc9f77bc47",
     "runtime": "c105b248019e6a43",
     "deps": "4f53cda18c2baa0c",
     "assets": "4f53cda18c2baa0c",
@@ -18585,10 +19929,9 @@
     "subtitles": "ed252aa048c8f021",
     "render": "9ed7563f501d58e3"
    },
-   "up_to_date": false,
-   "why": [
-    "new"
-   ]
+   "up_to_date": true,
+   "why": [],
+   "sfx": []
   },
   {
    "id": "chSOA2.Q",
@@ -18691,10 +20034,10 @@
     "chime@q-0.2"
    ],
    "render": "out/scenes_fr/chSOA2.Q.mp4",
-   "hash": "39f867838957e182",
+   "hash": "cd31451e118b3c85",
    "hash_parts": {
-    "html": "MISSING",
-    "files": "none",
+    "html": "cc566315fb2c4be1e5bf4f1c84fa7d1e3ff349df9c0d36e9917b62fb1e6c1ee6",
+    "files": "63ec42fc9f77bc47",
     "runtime": "c105b248019e6a43",
     "deps": "4f53cda18c2baa0c",
     "assets": "4f53cda18c2baa0c",
@@ -18702,9 +20045,17 @@
     "subtitles": "b685d5b9db59152c",
     "render": "9ed7563f501d58e3"
    },
-   "up_to_date": false,
-   "why": [
-    "new"
+   "up_to_date": true,
+   "why": [],
+   "sfx": [
+    {
+     "t": 0.35,
+     "id": "chime"
+    },
+    {
+     "t": 0.35,
+     "id": "chime"
+    }
    ]
   },
   {
@@ -18871,10 +20222,10 @@
     "whoosh@0.1"
    ],
    "render": "out/scenes_fr/10.1.mp4",
-   "hash": "245262e948a11cc2",
+   "hash": "ec3631b414a21ee9",
    "hash_parts": {
-    "html": "MISSING",
-    "files": "none",
+    "html": "d3d69835d8aea96a59c659f69cb0bed19a9f4bc85649ec8621e037dba21e95c7",
+    "files": "12c711f3749a9adf",
     "runtime": "c105b248019e6a43",
     "deps": "ea972d85cf87a1e3",
     "assets": "1fd573657b80fc24",
@@ -18882,9 +20233,13 @@
     "subtitles": "3e6c41dc2925d805",
     "render": "9ed7563f501d58e3"
    },
-   "up_to_date": false,
-   "why": [
-    "new"
+   "up_to_date": true,
+   "why": [],
+   "sfx": [
+    {
+     "t": 0.1,
+     "id": "whoosh"
+    }
    ]
   },
   {
@@ -19084,10 +20439,10 @@
    "music": null,
    "sfx_spec": [],
    "render": "out/scenes_fr/10.2.mp4",
-   "hash": "1c94a2ea73c1ec08",
+   "hash": "4d31121937631fb7",
    "hash_parts": {
-    "html": "MISSING",
-    "files": "none",
+    "html": "ff72b505adbff80ba110a710f2c8b06b80f63b3c575ee4767383c36c206c4472",
+    "files": "12c711f3749a9adf",
     "runtime": "c105b248019e6a43",
     "deps": "4f53cda18c2baa0c",
     "assets": "eca37d8d5d2acdf5",
@@ -19095,10 +20450,9 @@
     "subtitles": "0fceda152ab73a40",
     "render": "9ed7563f501d58e3"
    },
-   "up_to_date": false,
-   "why": [
-    "new"
-   ]
+   "up_to_date": true,
+   "why": [],
+   "sfx": []
   },
   {
    "id": "10.3",
@@ -19266,10 +20620,10 @@
     }
    ],
    "render": "out/scenes_fr/10.3.mp4",
-   "hash": "3d407aeabc096640",
+   "hash": "2cefadd6005e8f81",
    "hash_parts": {
-    "html": "MISSING",
-    "files": "none",
+    "html": "89dfbc99ea8c06398ad475035088e1ee5b991a4a18a557633687da1c8e43b75b",
+    "files": "12c711f3749a9adf",
     "runtime": "c105b248019e6a43",
     "deps": "b9b9eb2b8b94d650",
     "assets": "4f53cda18c2baa0c",
@@ -19277,9 +20631,14 @@
     "subtitles": "e520485e938d0070",
     "render": "2fb0ebce4d97b9dc"
    },
-   "up_to_date": false,
-   "why": [
-    "new"
+   "up_to_date": true,
+   "why": [],
+   "sfx": [
+    {
+     "t": 8.4,
+     "id": "pop",
+     "gain_db": -24
+    }
    ]
   },
   {
@@ -19494,10 +20853,10 @@
     }
    ],
    "render": "out/scenes_fr/10.4.mp4",
-   "hash": "fec34c7a94f5eaed",
+   "hash": "2b3d9c72f8345578",
    "hash_parts": {
-    "html": "MISSING",
-    "files": "none",
+    "html": "b809caca44ef3e57cc83a2dc59d5e1dde8d3d56f8e66b8971711b661b509ab18",
+    "files": "12c711f3749a9adf",
     "runtime": "c105b248019e6a43",
     "deps": "896392311d33401d",
     "assets": "4793ccebdb105bee",
@@ -19505,9 +20864,14 @@
     "subtitles": "8e6a0cee9c2b38c2",
     "render": "9ed7563f501d58e3"
    },
-   "up_to_date": false,
-   "why": [
-    "new"
+   "up_to_date": true,
+   "why": [],
+   "sfx": [
+    {
+     "t": 14.8,
+     "id": "pop",
+     "gain_db": -24
+    }
    ]
   },
   {
@@ -19744,10 +21108,10 @@
     }
    ],
    "render": "out/scenes_fr/10.5.mp4",
-   "hash": "a90ef5527548579b",
+   "hash": "fb8a975f71382149",
    "hash_parts": {
-    "html": "MISSING",
-    "files": "none",
+    "html": "7078f1639a05ac121a839e2e5904c6d7bdf6fdafdeebf664df6b6c40205e4fff",
+    "files": "12c711f3749a9adf",
     "runtime": "c105b248019e6a43",
     "deps": "2f594d8d0604e0f3",
     "assets": "4f53cda18c2baa0c",
@@ -19755,9 +21119,14 @@
     "subtitles": "2567dce3e7c89656",
     "render": "9ed7563f501d58e3"
    },
-   "up_to_date": false,
-   "why": [
-    "new"
+   "up_to_date": true,
+   "why": [],
+   "sfx": [
+    {
+     "t": 18.4,
+     "id": "pop",
+     "gain_db": -24
+    }
    ]
   },
   {
@@ -19922,10 +21291,10 @@
     }
    ],
    "render": "out/scenes_fr/10.6.mp4",
-   "hash": "d35f175dd9a441f9",
+   "hash": "b7ae6d7ca201aeeb",
    "hash_parts": {
-    "html": "MISSING",
-    "files": "none",
+    "html": "54f6cc011e1d79e72a229216de909cd612d3642351973c60ce93545c34f4af93",
+    "files": "12c711f3749a9adf",
     "runtime": "c105b248019e6a43",
     "deps": "a6049c5cac6b9ae9",
     "assets": "339ef93ca7be2c55",
@@ -19933,9 +21302,14 @@
     "subtitles": "31fa3f1e1a6d8ab4",
     "render": "2fb0ebce4d97b9dc"
    },
-   "up_to_date": false,
-   "why": [
-    "new"
+   "up_to_date": true,
+   "why": [],
+   "sfx": [
+    {
+     "t": 12.87,
+     "id": "pop",
+     "gain_db": -24
+    }
    ]
   },
   {
@@ -20119,10 +21493,10 @@
     }
    ],
    "render": "out/scenes_fr/10.7.mp4",
-   "hash": "46dba8820953f624",
+   "hash": "e38c020ab3612244",
    "hash_parts": {
-    "html": "MISSING",
-    "files": "none",
+    "html": "7034bfb465e923e3217aa4f78315a373f37251c2abf119a528fc14d5ae968d5f",
+    "files": "12c711f3749a9adf",
     "runtime": "c105b248019e6a43",
     "deps": "45f1c26a9c5943db",
     "assets": "4f53cda18c2baa0c",
@@ -20130,9 +21504,14 @@
     "subtitles": "8445716b64e57cad",
     "render": "9ed7563f501d58e3"
    },
-   "up_to_date": false,
-   "why": [
-    "new"
+   "up_to_date": true,
+   "why": [],
+   "sfx": [
+    {
+     "t": 3.07,
+     "id": "pop",
+     "gain_db": -24
+    }
    ]
   },
   {
@@ -20296,10 +21675,10 @@
    "music": null,
    "sfx_spec": [],
    "render": "out/scenes_fr/10.8.mp4",
-   "hash": "fbfe950b2c86bb2c",
+   "hash": "a720cf9e1491c70a",
    "hash_parts": {
-    "html": "MISSING",
-    "files": "none",
+    "html": "d3bcb30f1e39461a1b9297936e9159bd644407ab5a08e7e5c997d2a8c7eec88f",
+    "files": "12c711f3749a9adf",
     "runtime": "c105b248019e6a43",
     "deps": "4f53cda18c2baa0c",
     "assets": "4f53cda18c2baa0c",
@@ -20310,7 +21689,8 @@
    "up_to_date": false,
    "why": [
     "new"
-   ]
+   ],
+   "sfx": []
   },
   {
    "id": "10.9",
@@ -20492,10 +21872,10 @@
     }
    ],
    "render": "out/scenes_fr/10.9.mp4",
-   "hash": "fe90e21abee6dd03",
+   "hash": "07912122b224afda",
    "hash_parts": {
-    "html": "MISSING",
-    "files": "none",
+    "html": "d56ef6d46ebfa5b9636bf3b1cb7abe56a5291112a61cba7a564a67a4c4544d9a",
+    "files": "12c711f3749a9adf",
     "runtime": "c105b248019e6a43",
     "deps": "1474066270b593da",
     "assets": "98e28a08c20744d5",
@@ -20506,6 +21886,13 @@
    "up_to_date": false,
    "why": [
     "new"
+   ],
+   "sfx": [
+    {
+     "t": 9.76,
+     "id": "pop",
+     "gain_db": -24
+    }
    ]
   },
   {
@@ -20604,10 +21991,10 @@
     "chime@q-0.2"
    ],
    "render": "out/scenes_fr/ch10.Q.mp4",
-   "hash": "cf1167d029bd8d19",
+   "hash": "d2403e7f41aa6727",
    "hash_parts": {
-    "html": "MISSING",
-    "files": "none",
+    "html": "693ef0a168550219db607c335a4aeaa3283f57b2e6af5ef34598676fa192873d",
+    "files": "12c711f3749a9adf",
     "runtime": "c105b248019e6a43",
     "deps": "4f53cda18c2baa0c",
     "assets": "4f53cda18c2baa0c",
@@ -20615,9 +22002,17 @@
     "subtitles": "7dedf8cdb38bd387",
     "render": "9ed7563f501d58e3"
    },
-   "up_to_date": false,
-   "why": [
-    "new"
+   "up_to_date": true,
+   "why": [],
+   "sfx": [
+    {
+     "t": 0.35,
+     "id": "chime"
+    },
+    {
+     "t": 0.35,
+     "id": "chime"
+    }
    ]
   },
   {
@@ -21294,10 +22689,10 @@
     }
    ],
    "render": "out/scenes_fr/10q.1.mp4",
-   "hash": "5ad637a9c47b0d59",
+   "hash": "07d1db95b8585a10",
    "hash_parts": {
-    "html": "MISSING",
-    "files": "none",
+    "html": "eb75e2183a8f3e8b8e124393aa4ab79ca1e58c2f2466e16fe025c49221f8a9e3",
+    "files": "9405cc9c1626b3df",
     "runtime": "c105b248019e6a43",
     "deps": "4f53cda18c2baa0c",
     "assets": "4f53cda18c2baa0c",
@@ -21305,9 +22700,23 @@
     "subtitles": "9157733ff56d46f6",
     "render": "9ed7563f501d58e3"
    },
-   "up_to_date": false,
-   "why": [
-    "new"
+   "up_to_date": true,
+   "why": [],
+   "sfx": [
+    {
+     "t": 0.1,
+     "id": "whoosh"
+    },
+    {
+     "t": 10.95,
+     "id": "pop",
+     "gain_db": -28
+    },
+    {
+     "t": 32.29,
+     "id": "pop",
+     "gain_db": -28
+    }
    ]
   },
   {
@@ -21601,10 +23010,10 @@
     }
    ],
    "render": "out/scenes_fr/10q.2.mp4",
-   "hash": "77a71be260c60d9a",
+   "hash": "12be5ff0209d006e",
    "hash_parts": {
-    "html": "MISSING",
-    "files": "none",
+    "html": "e1d8bcfd1a0fe601307ecb10a2a13a30f96af73da1b40bd5ca0aa8ffa7050436",
+    "files": "9405cc9c1626b3df",
     "runtime": "c105b248019e6a43",
     "deps": "4f53cda18c2baa0c",
     "assets": "4f53cda18c2baa0c",
@@ -21612,9 +23021,14 @@
     "subtitles": "2757f1d6e1c80a15",
     "render": "9ed7563f501d58e3"
    },
-   "up_to_date": false,
-   "why": [
-    "new"
+   "up_to_date": true,
+   "why": [],
+   "sfx": [
+    {
+     "t": 0.55,
+     "id": "pop",
+     "gain_db": -28
+    }
    ]
   },
   {
@@ -21811,10 +23225,10 @@
    "music": null,
    "sfx_spec": [],
    "render": "out/scenes_fr/10q.3.mp4",
-   "hash": "aa6fbe68ef6ca501",
+   "hash": "8f65daa00ef2f985",
    "hash_parts": {
-    "html": "MISSING",
-    "files": "none",
+    "html": "e819d9e1343f152a915bd1078a6a714eceae9a7159e470cc52b942255c2f487c",
+    "files": "9405cc9c1626b3df",
     "runtime": "c105b248019e6a43",
     "deps": "4f53cda18c2baa0c",
     "assets": "4f53cda18c2baa0c",
@@ -21824,8 +23238,9 @@
    },
    "up_to_date": false,
    "why": [
-    "new"
-   ]
+    "subtitles"
+   ],
+   "sfx": []
   },
   {
    "id": "10q.4",
@@ -22066,10 +23481,10 @@
    "music": false,
    "sfx_spec": [],
    "render": "out/scenes_fr/10q.4.mp4",
-   "hash": "70d2b1038bff835a",
+   "hash": "06423f8dee4b58f8",
    "hash_parts": {
-    "html": "MISSING",
-    "files": "none",
+    "html": "63874c015f0f3c6db8590e0828923ada3566f56b426ab7bd09f5667a6c665de4",
+    "files": "9405cc9c1626b3df",
     "runtime": "c105b248019e6a43",
     "deps": "4f53cda18c2baa0c",
     "assets": "4f53cda18c2baa0c",
@@ -22077,10 +23492,9 @@
     "subtitles": "72b77f310fa66ae9",
     "render": "9ed7563f501d58e3"
    },
-   "up_to_date": false,
-   "why": [
-    "new"
-   ]
+   "up_to_date": true,
+   "why": [],
+   "sfx": []
   },
   {
    "id": "10q.5",
@@ -22398,10 +23812,10 @@
     }
    ],
    "render": "out/scenes_fr/10q.5.mp4",
-   "hash": "d64bd23888fd345e",
+   "hash": "c7399c2940505bfc",
    "hash_parts": {
-    "html": "MISSING",
-    "files": "none",
+    "html": "27e58e0637727c6611dd2219c753a24693303122811d54c142d646a6c5e6c4e0",
+    "files": "9405cc9c1626b3df",
     "runtime": "c105b248019e6a43",
     "deps": "4f53cda18c2baa0c",
     "assets": "4f53cda18c2baa0c",
@@ -22409,9 +23823,19 @@
     "subtitles": "3d77e1549332fab4",
     "render": "9ed7563f501d58e3"
    },
-   "up_to_date": false,
-   "why": [
-    "new"
+   "up_to_date": true,
+   "why": [],
+   "sfx": [
+    {
+     "t": 0.65,
+     "id": "pop",
+     "gain_db": -28
+    },
+    {
+     "t": 21.84,
+     "id": "pop",
+     "gain_db": -28
+    }
    ]
   },
   {
@@ -22632,10 +24056,10 @@
     }
    ],
    "render": "out/scenes_fr/10q.6.mp4",
-   "hash": "36b5cf947c32a27a",
+   "hash": "61584a00adf35d95",
    "hash_parts": {
-    "html": "MISSING",
-    "files": "none",
+    "html": "dae8ac4f8ff3573682852af1a6048b99448de7d669fca5315ea7c9c9e9e1965d",
+    "files": "9405cc9c1626b3df",
     "runtime": "c105b248019e6a43",
     "deps": "4f53cda18c2baa0c",
     "assets": "4f53cda18c2baa0c",
@@ -22643,9 +24067,14 @@
     "subtitles": "0506febaa88246dd",
     "render": "9ed7563f501d58e3"
    },
-   "up_to_date": false,
-   "why": [
-    "new"
+   "up_to_date": true,
+   "why": [],
+   "sfx": [
+    {
+     "t": 24.26,
+     "id": "chime",
+     "gain_db": -22
+    }
    ]
   },
   {
@@ -22825,7 +24254,10 @@
      "tools/data_cloud.py (each converter writes verdict met | not_met | inconclusive, verdict_text, meta.stamp and sha256; outputs palier1_sweep, palier2_abc3d, palier2_tg3d, fm3d_eval, tier3_vks, tier4_dresdyn)",
      "plan/critique_pedagogy.md H2 (closing scenes depend on every regenerable file), E9 (recaps: keep this one lean)"
     ],
-    "data": {},
+    "data": {
+     "ledger": "data/ch11_ledger.json",
+     "measured": "data/ch11_measured.json"
+    },
     "params": {
      "chapter_card": {
       "num": "11",
@@ -22981,20 +24413,33 @@
     }
    ],
    "render": "out/scenes_fr/11.1.mp4",
-   "hash": "dc88a59cca4dea17",
+   "hash": "b3554a0efcbb94a1",
    "hash_parts": {
-    "html": "MISSING",
-    "files": "none",
+    "html": "aeed0c86d3bb1bad7a516dc0d128ffb5206e50534e93423b2bfa6a481944b5cc",
+    "files": "e0f2538f1f01ebea",
     "runtime": "c105b248019e6a43",
-    "deps": "1decaf4525e60486",
+    "deps": "184c1db508a9d3d5",
     "assets": "4f53cda18c2baa0c",
-    "entry": "72b474991c3f9142",
+    "entry": "df382a6ce26620bb",
     "subtitles": "57daa34b7ea14cb0",
     "render": "9ed7563f501d58e3"
    },
-   "up_to_date": false,
-   "why": [
-    "new"
+   "up_to_date": true,
+   "why": [],
+   "sfx": [
+    {
+     "t": 0.1,
+     "id": "whoosh"
+    },
+    {
+     "t": 24.5,
+     "id": "pop"
+    },
+    {
+     "t": 29.76,
+     "id": "pop",
+     "gain_db": -28
+    }
    ]
   },
   {
@@ -23002,7 +24447,7 @@
    "unit": "ch11",
    "file": "scenes/ch11/11_2_the_compass_again.html",
    "title": "The compass again",
-   "status": "pending",
+   "status": "ready",
    "variant": "main",
    "level": "L0",
    "register": "NIGHT",
@@ -23170,8 +24615,8 @@
       "end": 75.67
      }
     ],
-    "status": "pending",
-    "variant": "pending",
+    "status": "ready",
+    "variant": "result",
     "stamp": null,
     "level": "L0",
     "register": "NIGHT",
@@ -23238,7 +24683,11 @@
      "plan/critique_pedagogy.md G3 (stylized compass, no hand), G6 (sequenced montage), J and section C10.2 (numbers on chips, not spoken), H2 (no sentence that turns false once results arrive)",
      "plan/pedagogy.md 1.7 (closing: compass and motifs; obey a law exactly where it is exact, on average where it is only true on average)"
     ],
-    "data": {},
+    "data": {
+     "measured": "data/ch11_measured.json",
+     "e1": "data/e1_finegrid.json",
+     "s093": "data/e1_samples_0.93.json"
+    },
     "params": {
      "normal_Ma": [
       [
@@ -23384,20 +24833,43 @@
     }
    ],
    "render": "out/scenes_fr/11.2.mp4",
-   "hash": "bd48ff226ddfe91c",
+   "hash": "6988a881ba35d579",
    "hash_parts": {
-    "html": "MISSING",
-    "files": "none",
+    "html": "8b1dc3d7dbfc5a1d8ab9a5ddb6727cc8fdfd773564902591b1ce49fc77734ffb",
+    "files": "e0f2538f1f01ebea",
     "runtime": "c105b248019e6a43",
-    "deps": "26097f4204c610a7",
+    "deps": "57afdb11a22e94e7",
     "assets": "0f89ce9767dcbe98",
-    "entry": "74686f52c23800c8",
+    "entry": "6123a2caee409bcc",
     "subtitles": "0e975619889b3df3",
     "render": "9ed7563f501d58e3"
    },
    "up_to_date": false,
    "why": [
-    "new"
+    "subtitles"
+   ],
+   "sfx": [
+    {
+     "t": 17.49,
+     "id": "tick",
+     "gain_db": -24
+    },
+    {
+     "t": 18.29,
+     "id": "tick",
+     "gain_db": -24
+    },
+    {
+     "t": 19.19,
+     "id": "tick",
+     "gain_db": -24
+    },
+    {
+     "t": 31.55,
+     "id": "hiss",
+     "gain_db": -30,
+     "dur": 1.6
+    }
    ]
   },
   {
@@ -23514,10 +24986,10 @@
    "music": null,
    "sfx_spec": [],
    "render": "out/scenes_fr/11.3.mp4",
-   "hash": "088598661e2a94eb",
+   "hash": "a2275c803ec2f52c",
    "hash_parts": {
-    "html": "MISSING",
-    "files": "none",
+    "html": "ed0f6510d3447d5743b46463fefdf36319d68faf1f32561301d88df4a2ea08dd",
+    "files": "e0f2538f1f01ebea",
     "runtime": "c105b248019e6a43",
     "deps": "4f53cda18c2baa0c",
     "assets": "4f53cda18c2baa0c",
@@ -23525,10 +24997,9 @@
     "subtitles": "e50d0febc881749b",
     "render": "9ed7563f501d58e3"
    },
-   "up_to_date": false,
-   "why": [
-    "new"
-   ]
+   "up_to_date": true,
+   "why": [],
+   "sfx": []
   }
  ]
 }

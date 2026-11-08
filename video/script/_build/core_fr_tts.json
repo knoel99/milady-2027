@@ -1,12 +1,12 @@
 {
  "name": "core_fr",
  "voice": "536d3a5e000945adb7038665781a4aca",
- "mode": "dry-run",
+ "mode": "live",
  "lang": "fr",
  "long_pause_s": 0.9,
  "summary": {
   "name": "core_fr",
-  "mode": "dry-run",
+  "mode": "live",
   "voice": "536d3a5e000945adb7038665781a4aca",
   "lang": "fr",
   "paragraphs": 233,
