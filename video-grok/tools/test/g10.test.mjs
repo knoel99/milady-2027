@@ -126,7 +126,12 @@ test("les sous-titres sont des extraits du script, et la carte est q.g10", () =>
   assert.equal(viewAt(card, 8).questionCard, null);
 });
 
-test("le caveat de g10.law est branché sans voix et sans français", async () => {
+const CAVEAT_EN =
+  "E2 is two-dimensional and forced. One seed. The tests are interpolation. This is not a dynamo.";
+const CAVEAT_FR =
+  "E2 est bidimensionnel et forcé. Une graine. Les tests sont de l’interpolation. Ce n’est pas une dynamo.";
+
+test("le caveat de g10.law reste sans voix", async () => {
   assert.equal(slots.slots.length, 2);
   for (const slot of slots.slots) {
     assert.equal(slot.id, "cue.g10.law.caveat");
@@ -136,16 +141,44 @@ test("le caveat de g10.law est branché sans voix et sans français", async () =
   const english = slots.slots.find((slot) => slot.lang === "en");
   const french = slots.slots.find((slot) => slot.lang === "fr");
   assert.equal(english.source, "narration/en/g10.md");
-  assert.equal(french.source, null);
+  assert.equal(french.source, "narration/fr/g10.law.caveat.md");
   assert.match(narration, /cue\.g10\.law\.caveat/);
-  assert.match(narration, /One seed\./);
-  assert.match(narration, /The tests are interpolation\./);
-  assert.match(narration, /This is not a dynamo\./);
+  assert.equal(parole(narration, "cue.g10.law.caveat"), CAVEAT_EN);
   await assert.rejects(readFile(join(root, "narration/fr/g10.md"), "utf8"));
   const tree = await readFile(join(root, "scenes/g10/cues.json"), "utf8");
   assert.equal(tree.includes("One seed"), false);
   assert.equal(tree.includes("dynamo"), false);
 });
+
+test("les deux créneaux du caveat disent les trois limites", async () => {
+  const points = {
+    en: [/One seed/, /interpolation/, /not a dynamo/],
+    fr: [/Une graine/, /interpolation/, /pas une dynamo/],
+  };
+  const expected = { en: CAVEAT_EN, fr: CAVEAT_FR };
+  for (const lang of ["en", "fr"]) {
+    const slot = slots.slots.find((item) => item.lang === lang);
+    assert.equal(typeof slot.source, "string", lang);
+    const text = parole(await readFile(join(root, slot.source), "utf8"), slot.id);
+    assert.equal(text.length > 0, true, lang);
+    assert.equal(text, expected[lang], lang);
+    for (const point of points[lang]) assert.match(text, point, `${lang} ${point}`);
+  }
+});
+
+function parole(markdown, cueId) {
+  const lines = markdown.split(/\r?\n/);
+  const start = lines.findIndex((line) => line.trim() === `### ${cueId}`);
+  if (start < 0) return "";
+  const body = [];
+  for (const line of lines.slice(start + 1)) {
+    if (line.startsWith("## ") || line.startsWith("### ")) break;
+    const trimmed = line.trim();
+    if (trimmed === "" || trimmed.startsWith("role:")) continue;
+    body.push(trimmed);
+  }
+  return body.join(" ");
+}
 
 test("le texte reste à 28 px, hors marge, et ne coupe pas les barres", async () => {
   const server = await servir(root);
