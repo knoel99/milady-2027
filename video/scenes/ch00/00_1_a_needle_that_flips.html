@@ -1,0 +1,57 @@
+<!doctype html>
+<html lang="en"><head><meta charset="utf-8">
+<title>00.1 A needle that flips</title>
+<link rel="stylesheet" href="../../runtime/theme.css">
+<link rel="stylesheet" href="ch00.css">
+<script src="../../runtime/scene.js"></script>
+<script src="../../runtime/components/kit.js"></script>
+<script src="../../runtime/components/hud.js"></script>
+<script src="../../runtime/components/motifs.js"></script>
+<script src="ch00_kit.js"></script>
+</head><body><div id="stage"></div>
+<script>
+/* 00.1 A needle that flips (L0, NIGHT, CONTEXT). Flat build of the macro compass (Kit.needle, birth of M1):
+   the needle swings in from east during the lead-in and settles on north, flips on 'flip' (BRIEF D20, chip
+   'illustration, not to time scale'), two ghost needles sweep on 'again', then the needle settles back on north. */
+Scene.define({
+  duration: 11.6,
+  register: 'night',
+  cues: { north: 1.0, remember: 3.9, flip: 6.6, again: 8.3 },
+  params: { size: 560, cx: 960, cy: 440, push: 0.05 },
+  setup(ctx) {
+    const K = Kit, S = Scene, P = ctx.params, st = ctx.stage;
+    const chips = (ctx.script.onscreen && ctx.script.onscreen.chips) || [];
+    const grp = K.el('div', { class: 'c0-grp' }, st); grp.style.zIndex = 15;
+    // ghost needles (behind the real one), 30 % opacity
+    const gsvg = K.svgLayer(ctx, 14, grp);
+    const NP = C0.needlePaths(P.size);
+    const ghosts = [0, 1].map(() => { const g = K.s('g', {}, gsvg); K.s('path', { d: NP.north, fill: K.c('b') }, g); K.s('path', { d: NP.south, fill: K.c('matter') }, g); g.style.opacity = 0; return g; });
+    // the compass: two flips (to south on 'flip', back to north after the ghosts on 'again')
+    const N = K.needle(ctx, { x: P.cx, y: P.cy, size: P.size, flips: ['flip-0.15', 'again+0.6'], dur: 1.0, at: -0.4, parent: grp });
+    const base = N.angle.bind(N);
+    N.angle = (t) => base(t) + 90 * (1 - S.spring((t + 0.05) / 0.95, 0.03));   // swings in from east, settles on north
+    K.badge(ctx, { kind: 'CONTEXT', at: 'north-0.15' });
+    const ref = chips.find((c) => /^REFERENCE/i.test(c)) || 'REFERENCE · Vine & Matthews 1963 · seafloor stripes';
+    const parts = ref.split('·').map((x) => x.trim());
+    K.lowerThird(ctx, { kind: 'reference', l1: 'Reference', l2: parts.slice(1).join(' · '), at: 'remember-0.15', out: 'flip-0.4' });
+    const illus = chips.find((c) => /illustration/i.test(c)) || 'illustration, not to time scale';
+    K.chip(ctx, { text: illus, kind: 'plain', x: P.cx, y: P.cy + P.size / 2 + 70, anchor: 'c', at: 'flip-0.15' });
+    ghosts.forEach((g) => g.setAttribute('transform', `translate(${P.cx},${P.cy})`));
+    ctx.c0 = { grp, ghosts, T: { ag: ctx.at('again-0.15') } };
+  },
+  render(t, ctx) {
+    const S = Scene, P = ctx.params, c = ctx.c0;
+    // slow push-in over the whole scene (5 %)
+    const s = 1 + P.push * S.seg(t, 0, ctx.duration, S.ease.inOutSine);
+    c.grp.style.transform = `translate(${(P.cx * (1 - s)).toFixed(2)}px, ${(P.cy * (1 - s)).toFixed(2)}px) scale(${s.toFixed(4)})`;
+    // ghosts: south -> north -> south, 0.5 s each, the second one 0.25 s behind the first
+    c.ghosts.forEach((g, i) => {
+      const a = c.T.ag + 0.25 * i, p = S.seg(t, a, a + 1.0, S.ease.inOutSine);
+      const on = t >= a && t < a + 1.25;
+      g.style.display = on ? '' : 'none'; if (!on) return;
+      g.style.opacity = (0.3 * Math.min(1, S.seg(t, a, a + 0.12, S.ease.linear)) * (1 - S.seg(t, a + 1.0, a + 1.25, S.ease.linear))).toFixed(3);
+      g.setAttribute('transform', `translate(${P.cx},${P.cy}) rotate(${(180 + 360 * p).toFixed(2)})`);
+    });
+  },
+});
+</script></body></html>

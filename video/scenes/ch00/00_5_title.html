@@ -1,0 +1,67 @@
+<!doctype html>
+<html lang="en"><head><meta charset="utf-8">
+<title>00.5 Title</title>
+<link rel="stylesheet" href="../../runtime/theme.css">
+<link rel="stylesheet" href="ch00.css">
+<script src="../../runtime/scene.js"></script>
+<script src="../../runtime/components/kit.js"></script>
+<script src="../../runtime/components/hud.js"></script>
+<script src="../../runtime/components/field.js"></script>
+<script src="ch00_kit.js"></script>
+<style>
+  .c0-title { position: absolute; left: 260px; right: 260px; top: 250px; line-height: 1.04; text-align: center; z-index: 25; }
+  .c0-title .w { display: inline-block; margin: 0 .13em; }
+  .c0-sub { position: absolute; left: 260px; right: 260px; top: 500px; text-align: center; z-index: 25; font-size: 36px; font-weight: 500; line-height: 1.3; color: var(--fg-2); }
+</style>
+</head><body><div id="stage"></div>
+<script>
+/* 00.5 Title (L0, NIGHT, no badge). Faint vermillion dipole field lines fill the frame and part around the
+   title block; title word by word on 'title'; subtitle on 'map'; in the tail (_speech_end + 0.3) the dipole
+   flips: arrowheads reverse along every line and the lines change shade (--b -> --b-neg) in 1.5 s (M1). */
+Scene.define({
+  duration: 10.5,
+  register: 'night',
+  cues: { title: 0.6, map: 3.2 },
+  setup(ctx) {
+    const K = Kit, S = Scene, st = ctx.stage, on = ctx.script.onscreen || {};
+    const title = on.title || 'How Often Does the Field Flip?';
+    const sub = (on.labels && on.labels[0]) || 'Physics-constrained generative models for turbulent dynamos — a learner’s map of the MilaDy project.';
+    const tEl = K.el('div', { class: 'c0-title title-xl' }, st);
+    const words = title.split(' ').map((w) => K.el('span', { class: 'w' }, tEl, w));
+    const tb = K.box(tEl, ctx); const sEl = K.el('div', { class: 'c0-sub' }, st, sub); sEl.style.top = (tb.y + tb.h + 44) + 'px'; K.fit(sEl, 1400, 2 * 1.3 * 36 + 4, 28, ctx);
+    const disc = (on.chips && on.chips[0]) || 'independent, prospective study · not produced or endorsed by MilaDy';
+    K.chip(ctx, { text: disc, kind: 'plain', x: 960, y: 850, anchor: 'c', at: 'map+0.4' });
+    // field lines: a big dipole centred on the title, cleared around the title block
+    const L = K.canvasLayer(ctx, 3, { x: 0, y: 0, w: 1920, h: 880 }, null, { reset: true });
+    const Ls = [260, 340, 430, 540, 670, 820, 1000, 1220, 1480, 1800];
+    const lines = C0.dipoleLines(960, 440, Ls, 0, 0, 260);
+    // arrowhead positions: 3 per line, travelling along it
+    ctx.c0 = { tEl, words, sEl, L, lines, T: { ti: ctx.at('title-0.15'), map: ctx.at('map-0.15'), flip: ctx.at('_speech_end+0.3') } };
+  },
+  render(t, ctx) {
+    const S = Scene, K = Kit, c = ctx.c0, T = c.T, g = c.L.g;
+    g.clearRect(0, 0, 1920, 880);
+    const pf = S.seg(t, T.flip, T.flip + 1.5, S.ease.inOutCubic);
+    const br = 1 + 0.01 * Math.sin(2 * Math.PI * t / 4);
+    g.translate(960, 440); g.scale(br, br); g.translate(-960, -440);
+    const prog = S.seg(t, -0.4, 1.2, S.ease.inOutSine);
+    const col = pf < 0.5 ? 'b' : 'b-neg', a = 0.42 * (1 - 0.6 * Math.sin(Math.PI * pf));   // the shade swaps at the middle of the morph
+    K.drawLines(g, c.lines, { color: col, width: 2.4, alpha: a, progress: prog });
+    // arrowheads: north-going outside the source before the flip, reversed after; they drift along the lines
+    g.fillStyle = K.c(col); g.globalAlpha = Math.min(0.7, a * 1.6);
+    const dir = pf < 0.5 ? 1 : -1, drift = 0.04 * t * (pf < 0.5 ? 1 : -1);
+    for (const Lp of c.lines) { const n = Lp.length; if (n < 8) continue;
+      for (let k = 0; k < 3; k++) { let u = ((k + 0.5) / 3 + drift) % 1; if (u < 0) u += 1; if (u > prog) continue; const i = Math.min(n - 2, Math.max(1, Math.floor(u * n)));
+        const [x0, y0] = Lp[i + dir > 0 ? i - 1 : i + 1], [x1, y1] = Lp[i], ang = Math.atan2(y1 - y0, x1 - x0) + (dir > 0 ? Math.PI : 0) * 0, h = 13;
+        const aa = Math.atan2(y0 - y1, x0 - x1);
+        g.beginPath(); g.moveTo(x1 + h * Math.cos(aa), y1 + h * Math.sin(aa)); g.lineTo(x1 + h * 0.6 * Math.cos(aa + 2.3), y1 + h * 0.6 * Math.sin(aa + 2.3)); g.lineTo(x1 + h * 0.6 * Math.cos(aa - 2.3), y1 + h * 0.6 * Math.sin(aa - 2.3)); g.closePath(); g.fill(); void ang; } }
+    // clear a soft hole behind the title block (lines part around it)
+    g.globalAlpha = 1; g.globalCompositeOperation = 'destination-out';
+    const gr = g.createRadialGradient(960, 440, 120, 960, 440, 760); gr.addColorStop(0, 'rgba(0,0,0,1)'); gr.addColorStop(0.55, 'rgba(0,0,0,0.9)'); gr.addColorStop(1, 'rgba(0,0,0,0)');
+    g.save(); g.translate(960, 440); g.scale(1, 0.36); g.translate(-960, -440); g.fillStyle = gr; g.fillRect(0, 0, 1920, 2400); g.restore();
+    // title word by word, subtitle on 'map'
+    c.words.forEach((w, i) => { const p = S.seg(t, T.ti + 0.18 * i, T.ti + 0.18 * i + 0.35, S.ease.outCubic); w.style.opacity = p.toFixed(3); w.style.transform = `translateY(${(14 * (1 - p)).toFixed(2)}px)`; });
+    const ps = S.seg(t, T.map, T.map + 0.5, S.ease.linear); c.sEl.style.opacity = ps.toFixed(3);
+  },
+});
+</script></body></html>

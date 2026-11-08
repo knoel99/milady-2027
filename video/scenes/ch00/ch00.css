@@ -1,0 +1,8 @@
+/* ch00.css: styles shared by the scenes of unit ch00 (tokens only, no transitions, no animations). */
+.c0-grp { position: absolute; inset: 0; transform-origin: 0 0; }
+.c0-label { position: absolute; font-weight: 500; font-size: 32px; color: var(--fg-2); white-space: nowrap; z-index: 32;
+  text-shadow: 0 0 3px var(--bg), 0 0 6px var(--bg), 0 0 10px var(--bg); }
+.c0-label.big { font-size: 36px; color: var(--fg); }
+.c0-label.mono { font-family: "JetBrains Mono"; font-size: 28px; letter-spacing: .07em; color: var(--muted); }
+.c0-label.center { transform: translateX(-50%); text-align: center; }
+.c0-label.right { transform: translateX(-100%); text-align: right; }
