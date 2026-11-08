@@ -116,12 +116,11 @@ La scène dure 17 s. Pas de pastille. Pas de carte question. Le niveau reste L3.
 
 | Repère | t (s) | Écran |
 |---|---|---|
-| `cue.g10.close.show` | 0 | Pas de masse en zéro. |
-| `cue.g10.close.zero` | 4 | La valeur tombe exactement sur zéro. |
-| `cue.g10.close.anchor` | 8 | L'ancrage limite le réglage fin. |
-| `cue.g10.close.states` | 12 | Le chapitre énonce les propositions. |
-| `cue.g10.close.prove` | 15 | Il ne les prouve pas. |
+| `cue.g10.close.show` | 0 | « The constraint has zero probability of being exactly zero ». |
+| `cue.g10.close.anchor` | 8.5 | « Anchoring limits how far fine-tuning can move from the starting model. » L'axe montre start, anchor et witness. |
 | `cue.g10.close.end` | 17 | Fin. |
+
+Les deux phrases ne sont pas à l'écran en même temps. Le corps reste 64 px.
 
 ## Caveat oral de g10.law
 

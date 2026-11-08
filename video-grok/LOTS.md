@@ -63,10 +63,10 @@ Le pilote est sur `grok/video-pilot`, fichiers :
 Le film du pilote est une commande. Le cache Fish est déjà rempli. La commande ne contacte pas Fish.
 
 ```bash
-node tools/film.mjs --chapter g10 --cache tools/.cache/fish --sortie g10-pilote.mp4
+node tools/film.mjs --chapter g10 --cache tools/.cache/fish --sortie g10-pilote
 ```
 
-Elle lit les huit beats dans `narration/en/g10.md`, aux durées de `PLAN.md` : classes 45 s, hard 43 s, sym 30 s, law 39 s, sample 41 s, bias 25 s, close 17 s, card 8 s. La somme est 248 s. Elle capture chaque scène, puis elle appelle le même assemblage que `node tools/tts.mjs --chapter g10 --rendre` et place les deux pistes dans le mp4. La première piste porte la langue `eng`. La seconde porte la langue `fra`.
+Elle écrit `g10-pilote-en.mp4` et `g10-pilote-fr.mp4`. Les durées viennent de `PLAN.md` : classes 45 s, hard 43 s, sym 30 s, law 39 s, sample 45 s, bias 25 s, close 17 s, card 8 s. La somme est 252 s, soit 7560 images. Chaque fichier a une piste audio et les sous-titres de sa langue, `eng` ou `fra`. Les visuels restent anglais. Les répliques d'un même beat se suivent, et la pause de 3 s avant `cue.g10.sample.e1` reste vide.
 
 Le document de `sample` dure 40 s. Son créneau reste 41 s. La commande tient la dernière image pendant la seconde qui reste.
 

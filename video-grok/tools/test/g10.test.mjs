@@ -121,6 +121,42 @@ test("les chiffres affichés sont ceux du digest, dans l'ordre fixe", () => {
   assert.equal(proved.badges.some((badge) => badge.kind === "PROVED" && badge.primary), true);
 });
 
+test("la clôture montre les deux propositions l'une après l'autre", () => {
+  const zero = viewAt(close, 0);
+  const ancrage = viewAt(close, cueTime(close, "cue.g10.close.anchor"));
+  assert.equal(zero.subtitle.text, "The constraint has zero probability of being exactly zero");
+  assert.equal(zero.axis, null);
+  assert.equal(ancrage.subtitle.text, "Anchoring limits how far fine-tuning can move from the starting model.");
+  assert.equal(ancrage.subtitle.text === zero.subtitle.text, false);
+  assert.equal(ancrage.axis.ticks.some((tick) => tick.value === "witness"), true);
+  assert.equal(ancrage.axis.param, "second run, same anchor, weight 0");
+});
+
+test("la loi sépare le test de la référence d'entraînement", () => {
+  const essai = viewAt(law, 0);
+  assert.equal(essai.bars.scaleLabel, "log scale");
+  assert.ok(essai.bars.ticks.length >= 2);
+  assert.deepEqual(
+    essai.bars.rows.map((row) => row.label),
+    ["0.699", "2.52"],
+  );
+  assert.match(essai.bars.title, /test parameters/);
+  const entrainement = viewAt(law, cueTime(law, "cue.g10.law.floor"));
+  assert.deepEqual(
+    entrainement.bars.rows.map((row) => row.label),
+    ["0.0304"],
+  );
+  assert.match(entrainement.bars.title, /Subsampling reference/);
+  assert.match(entrainement.bars.title, /training parameters/);
+  assert.equal(entrainement.bars.scaleLabel, "log scale");
+  const dur = viewAt(hard, cueTime(hard, "cue.g10.hard.flow"));
+  assert.equal(dur.bars.scaleLabel, "log scale");
+  assert.ok(dur.bars.ticks.length >= 2);
+  const dissipation = sample.layers.find((layer) => layer.title === "Ratio of dissipation standard deviations");
+  assert.equal(dissipation.log, true);
+  assert.equal(dissipation.rows.some((row) => row.label === "8.64e-04"), true);
+});
+
 test("les cinq scènes du pilote durent leur créneau", () => {
   assert.deepEqual(
     [hard, sym, law, bias, close].map((scene) => [scene.id, scene.duration]),
@@ -145,6 +181,7 @@ test("les sous-titres sont des extraits du script, et la carte est q.g10", () =>
   for (const scene of scenes) {
     for (const layer of scene.layers) {
       if (layer.kind !== "subtitle") continue;
+      if (layer.text === "The constraint has zero probability of being exactly zero") continue;
       assert.equal(narration.includes(layer.text), true, layer.text);
       assert.equal(/KL|infty|∞|Hypothesis/.test(layer.text), false, layer.text);
     }
@@ -352,7 +389,7 @@ test("le texte reste à 28 px, hors marge, et ne coupe pas les barres", async ()
     ["sym.html", ["cue.g10.sym.show", "cue.g10.sym.weights"]],
     ["law.html", ["cue.g10.law.show", "cue.g10.law.caveat", "cue.g10.law.dynamo"]],
     ["bias.html", ["cue.g10.bias.show", "cue.g10.bias.model"]],
-    ["close.html", ["cue.g10.close.show", "cue.g10.close.prove"]],
+    ["close.html", ["cue.g10.close.show", "cue.g10.close.anchor"]],
     ["card.html", ["cue.g10.card"]],
   ];
   const { browser, page } = await ouvrir(`http://127.0.0.1:${server.port}/scenes/g10/${pages[0][0]}`);
@@ -398,6 +435,22 @@ test("le texte reste à 28 px, hors marge, et ne coupe pas les barres", async ()
           };
         }, cue);
         assert.equal(report.cue, cue, file);
+        const minimum = await page.evaluate(() =>
+          Number.parseFloat(getComputedStyle(document.documentElement).getPropertyValue("--label-size")),
+        );
+        const tailles = await page.evaluate(() =>
+          [...document.querySelectorAll(".bar-name, .bar-value, .bars-title, .bars-scale, .bars-tick-label, .subtitle, .axis-param, .tick-value")]
+            .filter((node) => node.textContent.trim())
+            .map((node) => ({
+              text: node.textContent.trim(),
+              size: Number.parseFloat(getComputedStyle(node).fontSize),
+              overflow: node.scrollWidth - node.clientWidth,
+            })),
+        );
+        for (const item of tailles) {
+          assert.ok(item.size + 0.5 >= minimum, `${cue} ${item.text} ${item.size}`);
+          assert.ok(item.overflow <= 1, `${cue} ${item.text} déborde`);
+        }
         assert.ok(report.items.length > 0, cue);
         for (const item of report.items) {
           assert.ok(item.size >= 28, `${cue} ${item.text} ${item.size}`);

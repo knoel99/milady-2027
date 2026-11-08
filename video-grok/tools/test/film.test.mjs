@@ -25,13 +25,13 @@ test("le tableau du film suit les créneaux de g10", async () => {
       ["g10.hard", 43, "hard"],
       ["g10.sym", 30, "sym"],
       ["g10.law", 39, "law"],
-      ["g10.sample", 41, "sample"],
+      ["g10.sample", 45, "sample"],
       ["g10.bias", 25, "bias"],
       ["g10.close", 17, "close"],
       ["g10.card", 8, "card"],
     ],
   );
-  assert.equal(dureeTableau(lignes), 248);
+  assert.equal(dureeTableau(lignes), 252);
 });
 
 test("le film tient 248 s et marque les pistes eng et fra", async () => {
@@ -62,7 +62,7 @@ test("le film tient 248 s et marque les pistes eng et fra", async () => {
     assert.equal(image.status, 0, image.stderr);
   }
   const cuesAvant = await readFile(join(root, "scenes/g10/cues.json"), "utf8");
-  const sortie = join(dir, "pilote.mp4");
+  const sortie = join(dir, "pilote");
   const resultat = spawnSync(
     process.execPath,
     ["--import", join(here, "bloquer-reseau.mjs"), film, "--chapter", "g10", "--cache", cache, "--clips", clips, "--sortie", sortie],
@@ -70,22 +70,30 @@ test("le film tient 248 s et marque les pistes eng et fra", async () => {
   );
   assert.equal(resultat.status, 0, resultat.stderr);
   assert.equal(resultat.stdout.includes("poisson-cle-film"), false);
-  assert.match(resultat.stdout, /video: 248/);
+  assert.match(resultat.stdout, /video: 252/);
   assert.equal(await readFile(join(root, "scenes/g10/cues.json"), "utf8"), cuesAvant);
-  const probe = spawnSync(
-    "ffprobe",
-    ["-v", "error", "-show_entries", "stream=codec_type,duration:stream_tags=language", "-of", "json", sortie],
-    { encoding: "utf8" },
-  );
-  assert.equal(probe.status, 0, probe.stderr);
-  const streams = JSON.parse(probe.stdout).streams;
-  const video = streams.filter((stream) => stream.codec_type === "video");
-  const audio = streams.filter((stream) => stream.codec_type === "audio");
-  assert.equal(video.length, 1);
-  assert.equal(audio.length, 2);
-  assert.equal(Number(video[0].duration), 248);
-  assert.equal(audio[0].tags.language, "eng");
-  assert.equal(audio[1].tags.language, "fra");
+  for (const [fichier, langue] of [
+    [`${sortie}-en.mp4`, "eng"],
+    [`${sortie}-fr.mp4`, "fra"],
+  ]) {
+    const probe = spawnSync(
+      "ffprobe",
+      ["-v", "error", "-count_frames", "-show_entries", "stream=codec_type,duration,nb_read_frames:stream_tags=language", "-of", "json", fichier],
+      { encoding: "utf8" },
+    );
+    assert.equal(probe.status, 0, probe.stderr);
+    const streams = JSON.parse(probe.stdout).streams;
+    const video = streams.filter((stream) => stream.codec_type === "video");
+    const audio = streams.filter((stream) => stream.codec_type === "audio");
+    const sous = streams.filter((stream) => stream.codec_type === "subtitle");
+    assert.equal(video.length, 1, langue);
+    assert.equal(audio.length, 1, langue);
+    assert.equal(sous.length, 1, langue);
+    assert.equal(Number(video[0].duration), 252, langue);
+    assert.equal(Number(video[0].nb_read_frames), 7560, langue);
+    assert.equal(audio[0].tags.language, langue);
+    assert.equal(sous[0].tags.language, langue);
+  }
 });
 
 function note(rate, seconds) {

@@ -19,9 +19,12 @@
     <div id="stage"></div>
     <script src="../../vendor/katex/katex.min.js"></script>
     <script type="module">
-      import scene from "./sample.json" with { type: "json" };
       import { mount } from "../../engine/runtime.js";
 
+      const params = new URLSearchParams(location.search);
+      const scene = params.get("document")
+        ? await (await fetch(params.get("document"))).json()
+        : (await import("./sample.json", { with: { type: "json" } })).default;
       mount(scene, document.querySelector("#stage"));
     </script>
   </body>

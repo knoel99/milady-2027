@@ -35,13 +35,15 @@
       "kind": "subtitle",
       "from": "cue.g10.law.witness",
       "until": "cue.g10.law.floor",
-      "text": "sits at 2.52 and does not win."
+      "text": "The witness, run for the same number of iterations, sits at 2.52 and does not win.",
+      "fr": "Le témoin, aux mêmes itérations, est à 2,52 et ne gagne pas."
     },
     {
       "kind": "subtitle",
       "from": "cue.g10.law.floor",
       "until": "cue.g10.law.caveat",
-      "text": "is 0.0304."
+      "text": "The honest floor, on the training values of eta, the magnetic diffusivity, is 0.0304.",
+      "fr": "Le plancher honnête, sur les valeurs d’entraînement d’êta, la diffusivité magnétique, est 0,0304."
     },
     {
       "kind": "subtitle",
@@ -70,14 +72,21 @@
     {
       "kind": "bars",
       "from": "cue.g10.law.show",
-      "until": "cue.g10.law.end",
-      "title": "Energy distance",
+      "until": "cue.g10.law.floor",
+      "title": "Energy distance, test parameters",
       "log": true,
       "rows": [
         { "name": "V5", "value": 0.699, "label": "0.699", "role": "model" },
-        { "name": "witness", "value": 2.52, "label": "2.52", "role": "model" },
-        { "name": "floor", "value": 0.0304, "label": "0.0304", "role": "metric" }
+        { "name": "witness", "value": 2.52, "label": "2.52", "role": "model" }
       ]
+    },
+    {
+      "kind": "bars",
+      "from": "cue.g10.law.floor",
+      "until": "cue.g10.law.caveat",
+      "title": "Subsampling reference, training parameters",
+      "log": true,
+      "rows": [{ "name": "reference", "value": 0.0304, "label": "0.0304", "role": "metric" }]
     }
   ]
 }

@@ -4,13 +4,30 @@
     <meta charset="utf-8" />
     <title>g10.close</title>
     <link rel="stylesheet" href="../../components/stage.css" />
+    <style>
+      .subtitle {
+        top: 160px;
+        bottom: auto;
+        font-size: 64px;
+        line-height: 84px;
+      }
+
+      .axis {
+        top: 520px;
+        left: 0;
+        width: 1760px;
+      }
+    </style>
   </head>
   <body>
     <div id="stage"></div>
     <script type="module">
-      import scene from "./close.json" with { type: "json" };
       import { mount } from "../../engine/runtime.js";
 
+      const params = new URLSearchParams(location.search);
+      const scene = params.get("document")
+        ? await (await fetch(params.get("document"))).json()
+        : (await import("./close.json", { with: { type: "json" } })).default;
       mount(scene, document.querySelector("#stage"));
     </script>
   </body>

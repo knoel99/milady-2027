@@ -13,17 +13,66 @@ import {
   argumentsPiste,
   brancher,
   calendrier,
+  chevauchements,
+  deborde,
   dureeFichier,
   ecrireManifeste,
   horloges,
   lireScenes,
+  placer,
   rapport,
   rendre,
+  sousTitresDans,
 } from "../pilote.mjs";
 
 const here = dirname(fileURLToPath(import.meta.url));
 const root = join(here, "../..");
 const tts = join(here, "../tts.mjs");
+
+test("les répliques se posent après la précédente, pause comprise, dans le créneau", async () => {
+  const anglais = preparer(await readFile(join(root, "narration/en/g10.md"), "utf8"), "en");
+  const francais = preparer(await readFile(join(root, "narration/fr/g10.md"), "utf8"), "fr");
+  const loi = anglais.beats.find((beat) => beat.id === "g10.law");
+  const anglaisLoi = placer(
+    loi.paragraphes,
+    new Map([
+      ["cue.g10.law.show", 28.343],
+      ["cue.g10.law.caveat", 8],
+    ]),
+  );
+  const francaisLoi = placer(
+    francais.beats.find((beat) => beat.id === "g10.law").paragraphes,
+    new Map([
+      ["cue.g10.law.show", 28.63],
+      ["cue.g10.law.caveat", 9],
+    ]),
+  );
+  assert.deepEqual(chevauchements(anglaisLoi.poses), []);
+  assert.deepEqual(chevauchements(francaisLoi.poses), []);
+  assert.equal(anglaisLoi.poses[1].at, 28.343);
+  assert.equal(francaisLoi.poses[1].at, 28.63);
+  assert.deepEqual(deborde(anglaisLoi.poses, loi.slot), []);
+  assert.deepEqual(deborde(francaisLoi.poses, loi.slot), []);
+
+  for (const chapitre of [anglais, francais]) {
+    const echantillon = chapitre.beats.find((beat) => beat.id === "g10.sample");
+    const durees = new Map([
+      ["cue.g10.sample.e2", 16],
+      ["cue.g10.sample.predict", 2.2],
+      ["cue.g10.sample.e1", chapitre.lang === "fr" ? 21.238 : 20.088],
+    ]);
+    const place = placer(echantillon.paragraphes, durees);
+    const predict = place.poses.find((pose) => pose.id === "cue.g10.sample.predict");
+    const suite = place.poses.find((pose) => pose.id === "cue.g10.sample.e1");
+    assert.ok(suite.at - predict.fin >= 3, `${chapitre.lang} ${suite.at - predict.fin}`);
+    assert.deepEqual(chevauchements(place.poses), []);
+    assert.deepEqual(deborde(place.poses, echantillon.slot), []);
+    const scene = JSON.parse(await readFile(join(root, "scenes/g10/sample.json"), "utf8"));
+    assert.deepEqual(sousTitresDans(scene, place.poses, echantillon.slot), []);
+  }
+  const sceneLoi = JSON.parse(await readFile(join(root, "scenes/g10/law.json"), "utf8"));
+  assert.deepEqual(sousTitresDans(sceneLoi, anglaisLoi.poses, loi.slot), []);
+});
 
 test("un audio plus court que le créneau tient, et un audio plus long échoue", () => {
   assert.equal(ajuster(4, 8).action, "tient");
@@ -50,7 +99,7 @@ test("chaque beat de g10 compare sa durée audio à son créneau, sur le même r
       ["g10.hard", 43],
       ["g10.sym", 30],
       ["g10.law", 39],
-      ["g10.sample", 41],
+      ["g10.sample", 45],
       ["g10.bias", 25],
       ["g10.close", 17],
       ["g10.card", 8],

@@ -28,6 +28,10 @@
   padding: 0;
 }
 
+:root {
+  --label-size: 44px;
+}
+
 html,
 body {
   width: 1920px;
@@ -190,8 +194,8 @@ body {
 
 .axis-param {
   color: #009e73;
-  font-size: 32px;
-  line-height: 40px;
+  font-size: var(--label-size);
+  line-height: 52px;
 }
 
 .axis-line {
@@ -222,23 +226,31 @@ body {
 
 .tick-value {
   font-family: "JetBrains Mono", monospace;
-  font-size: 32px;
+  font-size: var(--label-size);
   font-variant-numeric: tabular-nums;
-  line-height: 36px;
+  line-height: 48px;
 }
 
 .bars {
   position: absolute;
-  top: 88px;
+  top: 64px;
+  right: 0;
+  bottom: 160px;
   left: 0;
-  width: 980px;
+  display: flex;
+  flex-direction: column;
+}
+
+.safe:has(.field) .bars {
+  right: 700px;
 }
 
 .bars-title,
+.bars-scale,
 .waiting-title {
-  font-size: 32px;
+  font-size: var(--label-size);
   font-weight: 560;
-  line-height: 40px;
+  line-height: 52px;
 }
 
 .bars-seeds,
@@ -257,7 +269,12 @@ body {
 
 .plot {
   position: relative;
-  margin-top: 18px;
+  display: flex;
+  flex: 1;
+  flex-direction: column;
+  justify-content: space-between;
+  margin-top: 12px;
+  min-height: 0;
 }
 
 .floor-line {
@@ -273,15 +290,16 @@ body {
   grid-template-columns: max-content minmax(160px, 1fr) max-content;
   align-items: center;
   gap: 16px;
-  height: 52px;
+  min-height: 56px;
 }
 
 .bar-name,
-.bar-value {
+.bar-value,
+.bars-tick-label {
   font-family: "JetBrains Mono", monospace;
-  font-size: 32px;
+  font-size: var(--label-size);
   font-variant-numeric: tabular-nums;
-  line-height: 36px;
+  line-height: 48px;
 }
 
 .bar-track {
@@ -296,24 +314,60 @@ body {
   height: 28px;
 }
 
+.bars-axis {
+  flex: 0 0 88px;
+  min-height: 88px;
+  margin-top: 20px;
+}
+
+.bars-scale {
+  font-family: "JetBrains Mono", monospace;
+  font-size: var(--label-size);
+  line-height: 48px;
+  white-space: nowrap;
+}
+
+.bars-axis-track {
+  position: relative;
+  height: 48px;
+  background: transparent;
+}
+
+.bars-tick {
+  position: absolute;
+  bottom: 0;
+  width: 2px;
+  height: 16px;
+  background: #c7d0da;
+}
+
+.bars-tick-label {
+  position: absolute;
+  bottom: 18px;
+  left: 0;
+  transform: translateX(-50%);
+  white-space: nowrap;
+}
+
 .field {
   position: absolute;
-  top: 120px;
+  top: 64px;
   right: 0;
-  width: 560px;
+  bottom: 160px;
+  width: 660px;
 }
 
 .field-label {
   font-family: "JetBrains Mono", monospace;
-  font-size: 32px;
-  line-height: 36px;
+  font-size: var(--label-size);
+  line-height: 48px;
   color: #d55e00;
 }
 
 .field canvas {
   display: block;
-  width: 520px;
-  height: 300px;
+  width: 640px;
+  height: 520px;
   margin-top: 12px;
 }
 
@@ -339,12 +393,13 @@ body {
 .subtitle {
   position: absolute;
   right: 0;
-  bottom: 12px;
+  bottom: 24px;
   left: 0;
-  font-size: 32px;
-  line-height: 40px;
+  font-size: var(--label-size);
+  line-height: 56px;
   color: #f5f7fa;
   text-align: center;
+  white-space: normal;
 }
 
 .subtitle-band {
@@ -352,7 +407,7 @@ body {
   right: 0;
   bottom: 0;
   left: 0;
-  height: 140px;
+  height: 200px;
   background: rgb(11 15 20 / 72%);
 }
 

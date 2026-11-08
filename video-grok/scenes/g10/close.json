@@ -7,10 +7,7 @@
   "seed": 20261108,
   "cues": [
     { "id": "cue.g10.close.show", "at": 0 },
-    { "id": "cue.g10.close.zero", "at": 4 },
-    { "id": "cue.g10.close.anchor", "at": 8 },
-    { "id": "cue.g10.close.states", "at": 12 },
-    { "id": "cue.g10.close.prove", "at": 15 },
+    { "id": "cue.g10.close.anchor", "at": 8.5 },
     { "id": "cue.g10.close.end", "at": 17 }
   ],
   "layers": [
@@ -19,32 +16,27 @@
     {
       "kind": "subtitle",
       "from": "cue.g10.close.show",
-      "until": "cue.g10.close.zero",
-      "text": "No mass at zero means zero"
-    },
-    {
-      "kind": "subtitle",
-      "from": "cue.g10.close.zero",
       "until": "cue.g10.close.anchor",
-      "text": "landing exactly on zero."
+      "text": "The constraint has zero probability of being exactly zero",
+      "fr": "L’absence de masse en zéro signifie une probabilité nulle que la valeur de la contrainte tombe exactement sur zéro."
     },
     {
       "kind": "subtitle",
       "from": "cue.g10.close.anchor",
-      "until": "cue.g10.close.states",
-      "text": "Anchoring limits how far"
-    },
-    {
-      "kind": "subtitle",
-      "from": "cue.g10.close.states",
-      "until": "cue.g10.close.prove",
-      "text": "This chapter states the propositions."
-    },
-    {
-      "kind": "subtitle",
-      "from": "cue.g10.close.prove",
       "until": "cue.g10.close.end",
-      "text": "It does not prove them."
+      "text": "Anchoring limits how far fine-tuning can move from the starting model.",
+      "fr": "L’ancrage limite de combien le réglage fin peut s’éloigner du modèle de départ."
+    },
+    {
+      "kind": "axis",
+      "from": "cue.g10.close.anchor",
+      "until": "cue.g10.close.end",
+      "param": "second run, same anchor, weight 0",
+      "ticks": [
+        { "value": "start", "trained": true },
+        { "value": "anchor", "trained": true },
+        { "value": "witness", "trained": false }
+      ]
     }
   ]
 }

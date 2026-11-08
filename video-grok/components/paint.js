@@ -153,8 +153,27 @@ function paintBars(bars) {
     if (!bars.schematic) line.append(el("span", "bar-value", row.label));
     plot.append(line);
   }
+  if (bars.ticks?.length) plot.append(axeGraduations(bars));
   box.append(plot);
   return box;
+}
+
+function axeGraduations(bars) {
+  const row = el("div", "bar-row bars-axis");
+  row.append(el("span", "bars-scale", bars.scaleLabel ?? ""));
+  const track = el("span", "bar-track bars-axis-track");
+  for (const tick of bars.ticks) {
+    const mark = el("span", "bars-tick");
+    mark.style.left = `${tick.fraction * 100}%`;
+    const label = el("span", "bars-tick-label", tick.label);
+    if (tick.fraction > 0.72) label.style.transform = "translateX(-100%)";
+    else if (tick.fraction < 0.28) label.style.transform = "none";
+    mark.append(label);
+    track.append(mark);
+  }
+  row.append(track);
+  if (!bars.schematic) row.append(el("span", "bar-value", ""));
+  return row;
 }
 
 function paintField(field) {
@@ -204,7 +223,9 @@ function paintWaiting(waiting) {
 }
 
 function paintSubtitle(subtitle) {
-  return el("p", "subtitle", subtitle.text);
+  const langue = document.documentElement.lang;
+  const value = langue === "fr" && subtitle.fr ? subtitle.fr : subtitle.text;
+  return el("p", "subtitle", value);
 }
 
 function subtitleBand() {

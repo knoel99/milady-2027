@@ -46,6 +46,8 @@ export function mount(raw, stage) {
     return view.t;
   }
 
+  const langue = new URLSearchParams(window.location.search).get("lang");
+  if (langue === "fr" || langue === "en") document.documentElement.lang = langue;
   window.seek = seek;
   window.__scene = {
     cue(id) {

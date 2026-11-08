@@ -9,8 +9,8 @@ Deux montages, mêmes scènes, visuels anglais :
 
 | Montage | Contenu | Durée cible |
 |---|---|---|
-| Cœur `film_core_en`, `film_core_fr` | `g00`–`g15` | 41:08 |
-| Étendu `film_extended_en`, `film_extended_fr` | cœur + `x03`, `x01`, `x02`, `x04`, `x05` insérés aux coutures | 60:08 |
+| Cœur `film_core_en`, `film_core_fr` | `g00`–`g15` | 41:12 |
+| Étendu `film_extended_en`, `film_extended_fr` | cœur + `x03`, `x01`, `x02`, `x04`, `x05` insérés aux coutures | 60:12 |
 
 Mots effectifs visés, 125 à 130 par minute, pauses incluses dans la durée : cœur 5 125 à 5 330 mots ; étendu 7 500 à 7 800. Ce sont des budgets pour les rédacteurs, pas un texte.
 
@@ -30,13 +30,13 @@ Le cœur se suffit. À chaque couture, la scène suivante du cœur ne dépend pa
 | g07 | Three numbers that flip | L2–L3 | 3:30 | 14:55–18:25 | 438–455 |
 | g08 | A law without a clock | L3 | 2:50 | 18:25–21:15 | 354–369 |
 | g09 | Drawing a field from noise | L3 | 2:40 | 21:15–23:55 | 333–347 |
-| g10 | Where the constraint is true | L3–L4 | 4:08 | 23:55–28:03 | 500–520 |
-| g11 | The honest table | L3–L4 | 3:40 | 28:03–31:43 | 458–477 |
-| g12 | The map of the field | L4–L5 | 4:00 | 31:43–35:43 | 500–520 |
-| g13 | The ladder, as bets | L4 | 2:10 | 35:43–37:53 | 271–282 |
-| g14 | Before we compute | L4–L5 | 2:20 | 37:53–40:13 | 292–303 |
-| g15 | The needle, again | L0 | 0:55 | 40:13–41:08 | 115–119 |
-| | | | **41:08** | | |
+| g10 | Where the constraint is true | L3–L4 | 4:12 | 23:55–28:07 | 500–520 |
+| g11 | The honest table | L3–L4 | 3:40 | 28:07–31:47 | 458–477 |
+| g12 | The map of the field | L4–L5 | 4:00 | 31:47–35:47 | 500–520 |
+| g13 | The ladder, as bets | L4 | 2:10 | 35:47–37:57 | 271–282 |
+| g14 | Before we compute | L4–L5 | 2:20 | 37:57–40:17 | 292–303 |
+| g15 | The needle, again | L0 | 0:55 | 40:17–41:12 | 115–119 |
+| | | | **41:12** | | |
 
 ## Horloge de l’étendu
 
@@ -46,18 +46,18 @@ Les modules ajoutent 19:00. Ils ne déplacent pas le sens du cœur ; ils déplac
 |---|---|---|---|
 | 1–9 | g00 … g08 | 0:00 | 21:15 |
 | 10 | x03 Limits of a snapshot | 21:15 | 24:15 |
-| 11–12 | g09, g10 | 24:15 | 31:03 |
-| 13 | x01 The proof room | 31:03 | 36:03 |
-| 14 | g11 | 36:03 | 39:43 |
-| 15 | x02 ABC up close | 39:43 | 43:13 |
-| 16 | g12 | 43:13 | 47:13 |
-| 17 | g13 | 47:13 | 49:23 |
-| 18 | x04 Walls, iron, meshes | 49:23 | 53:23 |
-| 19 | g14 | 53:23 | 55:43 |
-| 20 | x05 The bill and the plan | 55:43 | 59:13 |
-| 21 | g15 | 59:13 | 60:08 |
+| 11–12 | g09, g10 | 24:15 | 31:07 |
+| 13 | x01 The proof room | 31:07 | 36:07 |
+| 14 | g11 | 36:07 | 39:47 |
+| 15 | x02 ABC up close | 39:47 | 43:17 |
+| 16 | g12 | 43:17 | 47:17 |
+| 17 | g13 | 47:17 | 49:27 |
+| 18 | x04 Walls, iron, meshes | 49:27 | 53:27 |
+| 19 | g14 | 53:27 | 55:47 |
+| 20 | x05 The bill and the plan | 55:47 | 59:17 |
+| 21 | g15 | 59:17 | 60:12 |
 
-Coutures : `g08` se ferme sans annoncer x03 ; `g10` énonce les propositions sans les démontrer ; `g11` donne les trois seuils et leur précision approximative sans x02 ; `g13` nomme parois et budget en une idée chacun ; `g14` classe les questions sans le tableau d’euros. Retirer x01–x05 laisse un film complet. Les scènes de chaque module égalent son enveloppe. 41:08 + 19:00 = 60:08.
+Coutures : `g08` se ferme sans annoncer x03 ; `g10` énonce les propositions sans les démontrer ; `g11` donne les trois seuils et leur précision approximative sans x02 ; `g13` nomme parois et budget en une idée chacun ; `g14` classe les questions sans le tableau d’euros. Retirer x01–x05 laisse un film complet. Les scènes de chaque module égalent son enveloppe. 41:12 + 19:00 = 60:12.
 
 ## Statuts
 
@@ -108,7 +108,7 @@ But : Rm est un rapport, un seuil existe, une dynamo de disque n’est pas encor
 | g02.close | 0:12 | — | ready | Synthèse du rapport. Pas la carte. | |
 | g02.card | 0:08 | PLANNED | ready | Carte visible `q.g02`. | |
 
-`cue.g02.ratio.formula` allume U, L, puis η. Le disque historique reste `blocked-source` (`INCERTITUDES.md` §E). Il n’a pas de ligne. Tant qu’aucune source datée n’est ajoutée, `g02.disk` n’existe pas et ses 0:15 restent dans `g02.stretch`, sans notion nouvelle. Si une source est épinglée plus tard, `g02.stretch` revient à 0:45 et `g02.disk` prend 0:15. L’enveloppe de g02 reste 3:20, le cœur 41:08.
+`cue.g02.ratio.formula` allume U, L, puis η. Le disque historique reste `blocked-source` (`INCERTITUDES.md` §E). Il n’a pas de ligne. Tant qu’aucune source datée n’est ajoutée, `g02.disk` n’existe pas et ses 0:15 restent dans `g02.stretch`, sans notion nouvelle. Si une source est épinglée plus tard, `g02.stretch` revient à 0:45 et `g02.disk` prend 0:15. L’enveloppe de g02 reste 3:20, le cœur 41:12.
 
 ## g03 — Three rooms of sodium (L1–L2, 3:10)
 
@@ -202,7 +202,7 @@ E1 comme histoire, puis les mesures de symétrie. Le détail de Rice est en g08.
 | g09.close | 0:12 | — | ready | Synthèse. Pas la carte. | |
 | g09.card | 0:08 | PLANNED | ready | Carte visible `q.g09`. | |
 
-## g10 — Where the constraint is true (L3–L4, 4:08)
+## g10 — Where the constraint is true (L3–L4, 4:12)
 
 Hinge pédagogique. Pilote recommandé (`LOTS.md`) : `g10.classes` et `g10.sample`.
 
@@ -212,7 +212,7 @@ Hinge pédagogique. Pilote recommandé (`LOTS.md`) : `g10.classes` et `g10.sampl
 | g10.hard | 0:43 | MEASURED | ready | V0 : divergence 0,408. Pénalité : 0,34 et 0,162, énergie magnétique trop haute. Potentiels, projection finale : ~10⁻¹⁷. Flot projeté : ~10⁻⁸. | `digest.md:134-138` |
 | g10.sym | 0:30 | PROVED | ready | B → −B est une symétrie de la loi. L’équivariance la tient partout. Les identités de budget ne fixent pas les poids. | `en/rapport/index.qmd:399-417` |
 | g10.law | 0:39 | MEASURED | ready-caveat | V5 : distance 0,699 contre 2,52 pour le témoin. Le témoin, mêmes itérations, ne gagne pas. Plancher honnête 0,0304 à l’entraînement. | `digest.md:139-140`, `digest.md:160`, `en/index.qmd:85` |
-| g10.sample | 0:41 | MEASURED | ready | D’abord E2 : résidu 8,27×10⁻⁶ et σ/σ_ref = 8,64×10⁻⁴. Ensuite E1 : distance ×9 (0,0231 contre 0,00257) et σ = 4,17×10⁻¹⁷. Predict avant la barre écrasée. Ces chiffres ne sont pas une KL infinie mesurée. | `digest.md:144`, `digest.md:19`, `en/rapport/index.qmd:881` |
+| g10.sample | 0:45 | MEASURED | ready | D’abord E2 : résidu 8,27×10⁻⁶ et σ/σ_ref = 8,64×10⁻⁴. Ensuite E1 : distance ×9 (0,0231 contre 0,00257) et σ = 4,17×10⁻¹⁷. Predict avant la barre écrasée. Ces chiffres ne sont pas une KL infinie mesurée. | `digest.md:144`, `digest.md:19`, `en/rapport/index.qmd:881` |
 | g10.bias | 0:25 | PROVED | ready | Le carré d’une moyenne pénalise la variance. Deux demi-lots. | `en/rapport/index.qmd:662-676` |
 | g10.close | 0:17 | — | ready | Synthèse. Pas la carte. | |
 | g10.card | 0:08 | PLANNED | ready | Carte visible `q.g10`. | |
@@ -285,7 +285,7 @@ Le générique est `g15.close`. Il ne prend rien à l’aiguille.
 
 ## Modules d’approfondissement (étendu seulement)
 
-Les sommes de scènes égalent les enveloppes. Avec le cœur de 41:08, l’étendu fait 60:08. x03 est L4 après un chapitre L3. C’est un détour facultatif, pas une condition pour comprendre g09.
+Les sommes de scènes égalent les enveloppes. Avec le cœur de 41:12, l’étendu fait 60:12. x03 est L4 après un chapitre L3. C’est un détour facultatif, pas une condition pour comprendre g09.
 
 ### x03 — Limits of a snapshot (L4, 3:00, après g08)
 

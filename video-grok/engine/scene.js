@@ -151,10 +151,9 @@ const parsers = {
     };
   },
   subtitle(layer) {
-    const value = text(layer.text);
-    if ([...value].length > 42) fail("sous-titre", "42 caractères au plus");
-    if (/[\\$]/.test(value)) fail("sous-titre", "le sous-titre ne contient pas de TeX");
-    return { kind: "subtitle", from: layer.from, until: layer.until, text: value };
+    const value = ligneSousTitre(layer.text);
+    const fr = layer.fr == null ? null : ligneSousTitre(layer.fr);
+    return { kind: "subtitle", from: layer.from, until: layer.until, text: value, fr };
   },
 };
 
@@ -265,7 +264,7 @@ export function viewAt(scene, t) {
     needle: needle ? needleView(scene, needle, t) : null,
     spots,
     axis: axis ? { param: axis.param, ticks: axis.ticks.map((tick) => ({ ...tick })) } : null,
-    subtitle: subtitle ? { text: subtitle.text } : null,
+    subtitle: subtitle ? { text: subtitle.text, fr: subtitle.fr } : null,
   };
 }
 
@@ -279,6 +278,8 @@ function barView(layer) {
     log: layer.log,
     seeds: layer.seeds,
     schematic: layer.schematic,
+    scaleLabel: layer.log ? "log scale" : null,
+    ticks: layer.log ? graduations(samples) : [],
     seedLabel: layer.seeds === 1 ? "one seed" : layer.seeds === 2 ? "two seeds" : null,
     floor:
       layer.floor == null
@@ -306,6 +307,35 @@ function logFractions(samples) {
   const hi = Math.max(...logs);
   const span = hi - lo || 1;
   return logs.map((value) => (value - lo + 1) / (span + 1));
+}
+
+function graduations(samples) {
+  const logs = samples.map((value) => Math.log10(value));
+  const lo = Math.min(...logs);
+  const hi = Math.max(...logs);
+  const span = hi - lo || 1;
+  const fraction = (value) => (Math.log10(value) - lo + 1) / (span + 1);
+  let k0 = Math.floor(lo);
+  let k1 = Math.ceil(hi);
+  if (k1 === k0) k1 += 1;
+  const step = k1 - k0 <= 4 ? 1 : Math.ceil((k1 - k0) / 4);
+  const ticks = [];
+  for (let k = k0; k <= k1; k += step) ticks.push(10 ** k);
+  return ticks
+    .map((value) => ({ label: etiquetteDecade(value), fraction: fraction(value) }))
+    .filter((tick) => tick.fraction > 0.08 && tick.fraction < 0.78);
+}
+
+function etiquetteDecade(value) {
+  const k = Math.round(Math.log10(value));
+  if (k >= 0 && k <= 3) return String(10 ** k);
+  return `1e${k}`;
+}
+
+function ligneSousTitre(value) {
+  const ligne = text(value);
+  if (/[\\$]/.test(ligne)) fail("sous-titre", "le sous-titre ne contient pas de TeX");
+  return ligne;
 }
 
 function fieldView(seed, frame, quantity) {

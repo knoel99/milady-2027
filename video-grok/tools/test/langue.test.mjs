@@ -35,7 +35,7 @@ test("les horloges en et fr couvrent les beats trop longs", async () => {
     const slots = Object.fromEntries(chapitre.beats.map((beat) => [beat.id, beat.slot]));
     assert.equal(slots["g10.law"], 39);
     assert.equal(slots["g10.hard"], 43);
-    assert.equal(slots["g10.sample"], 41);
+    assert.equal(slots["g10.sample"], 45);
   }
 });
 

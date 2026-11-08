@@ -153,7 +153,7 @@
       "kind": "bars",
       "from": "cue.g10.sample.e2.spread",
       "until": "cue.g10.sample.predict",
-      "title": "Dissipation spread, log scale",
+      "title": "Ratio of dissipation standard deviations",
       "log": true,
       "seeds": 1,
       "rows": [

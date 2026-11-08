@@ -12,10 +12,38 @@ export function horloges(scenes) {
   return table;
 }
 
-export function calendrier(chapitre, temps) {
+export function placer(paragraphes, durees) {
+  let curseur = 0;
+  const poses = [];
+  for (const paragraphe of paragraphes) {
+    const audio = durees.get(paragraphe.id) ?? 0;
+    const pause = Number(paragraphe.pause) || 0;
+    const at = curseur;
+    const fin = at + audio;
+    poses.push({ id: paragraphe.id, at, audio, pause, fin });
+    curseur = fin + pause;
+  }
+  return { poses, fin: curseur };
+}
+
+export function chevauchements(poses) {
+  const problèmes = [];
+  for (let index = 1; index < poses.length; index += 1) {
+    if (poses[index].at + 1e-3 < poses[index - 1].fin) {
+      problèmes.push(`${poses[index - 1].id} → ${poses[index].id}`);
+    }
+  }
+  return problèmes;
+}
+
+export function deborde(poses, slot) {
+  return poses.filter((pose) => pose.fin > slot + 1e-2).map((pose) => pose.id);
+}
+
+export function calendrier(chapitre, temps, durees) {
   let origine = 0;
   const beats = chapitre.beats.map((beat) => {
-    const locaux = instants(beat, temps);
+    const locaux = durees ? locauxMesures(beat, durees) : instants(beat, temps);
     const debut = origine;
     origine += beat.slot;
     return {
@@ -29,6 +57,21 @@ export function calendrier(chapitre, temps) {
     };
   });
   return { duree: origine, beats };
+}
+
+function locauxMesures(beat, durees) {
+  const place = placer(beat.paragraphes, durees);
+  if (place.fin > beat.slot + 1e-2) {
+    throw Object.assign(
+      new Error(`creneau ${beat.id}: ${place.fin.toFixed(3)} s dans ${beat.slot} s`),
+      { code: "creneau", beat: beat.id, fin: place.fin, slot: beat.slot },
+    );
+  }
+  if (chevauchements(place.poses).length > 0) {
+    throw Object.assign(new Error(`chevauche ${beat.id}`), { code: "chevauche" });
+  }
+  const parId = new Map(place.poses.map((pose) => [pose.id, pose.at]));
+  return beat.paragraphes.map((paragraphe) => parId.get(paragraphe.id));
 }
 
 export function ajuster(audio, fenetre) {
@@ -110,21 +153,61 @@ export function argumentsPiste(clips, duree) {
   return args;
 }
 
-export async function rendre({ en, fr, horloges: temps, sortie }) {
-  const calEn = calendrier(en.chapitre, temps);
-  const calFr = calendrier(fr.chapitre, temps);
-  if (calEn.duree !== calFr.duree) throw Object.assign(new Error("durees"), { code: "durees" });
-  for (const beat of calEn.beats) {
-    const autre = calFr.beats.find((item) => item.id === beat.id);
-    for (const paragraphe of beat.paragraphes) {
-      const jumeau = autre?.paragraphes.find((item) => item.id === paragraphe.id);
-      if (!jumeau || jumeau.at !== paragraphe.at) {
-        throw Object.assign(new Error(`decalage ${paragraphe.id}`), { code: "decalage" });
-      }
+export function bords(scene, poses, slot) {
+  const ancien = [0];
+  const nouveau = [poses[0] ? poses[0].at : 0];
+  for (let index = 1; index < poses.length; index += 1) {
+    const cue = (scene.cues ?? []).find((item) => item.id === poses[index].id);
+    const marque = cue ? cue.at : (index * scene.duration) / poses.length;
+    if (marque > ancien[ancien.length - 1] + 1e-6) {
+      ancien.push(marque);
+      nouveau.push(poses[index].at);
     }
   }
+  ancien.push(scene.duration);
+  nouveau.push(slot);
+  return { ancien, nouveau };
+}
+
+export function projeter(temps, bordsScene) {
+  const { ancien, nouveau } = bordsScene;
+  for (let index = 0; index < ancien.length - 1; index += 1) {
+    if (temps <= ancien[index + 1] + 1e-9) {
+      const largeur = ancien[index + 1] - ancien[index] || 1;
+      const part = (temps - ancien[index]) / largeur;
+      return nouveau[index] + part * (nouveau[index + 1] - nouveau[index]);
+    }
+  }
+  return nouveau[nouveau.length - 1];
+}
+
+export function sousTitresDans(scene, poses, slot) {
+  const carte = bords(scene, poses, slot);
+  const instant = new Map((scene.cues ?? []).map((cue) => [cue.id, projeter(cue.at, carte)]));
+  const hors = [];
+  for (const layer of (scene.layers ?? []).filter((item) => item.kind === "subtitle")) {
+    const debut = instant.get(layer.from);
+    const fin = instant.get(layer.until);
+    const contient = poses.some((pose, index) => {
+      const borne = index + 1 < poses.length ? poses[index + 1].at : slot;
+      return debut >= pose.at - 1e-6 && fin <= borne + 1e-6;
+    });
+    if (!contient) hors.push(layer.from);
+  }
+  return hors;
+}
+
+export async function rendre({ en, fr, sortie }) {
   const dureesEn = await sonder(en.fichiers);
   const dureesFr = await sonder(fr.fichiers);
+  const calEn = calendrier(en.chapitre, new Map(), dureesEn);
+  const calFr = calendrier(fr.chapitre, new Map(), dureesFr);
+  if (calEn.duree !== calFr.duree) throw Object.assign(new Error("durees"), { code: "durees" });
+  for (const beat of calEn.beats) {
+    if (!calFr.beats.some((item) => item.id === beat.id)) {
+      throw Object.assign(new Error(`decalage ${beat.id}`), { code: "decalage" });
+    }
+  }
   const rapportEn = rapport(calEn, dureesEn);
   const rapportFr = rapport(calFr, dureesFr);
   const dossier = await mkdtemp(join(tmpdir(), "pilote-"));

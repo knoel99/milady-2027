@@ -8,9 +8,12 @@
   <body>
     <div id="stage"></div>
     <script type="module">
-      import scene from "./classes.json" with { type: "json" };
       import { mount } from "../../engine/runtime.js";
 
+      const params = new URLSearchParams(location.search);
+      const scene = params.get("document")
+        ? await (await fetch(params.get("document"))).json()
+        : (await import("./classes.json", { with: { type: "json" } })).default;
       mount(scene, document.querySelector("#stage"));
     </script>
   </body>
