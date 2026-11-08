@@ -1,0 +1,100 @@
+<!doctype html>
+<html lang="en"><head><meta charset="utf-8">
+<title>11.1 Measured, and bet</title>
+<link rel="stylesheet" href="../../vendor/katex/katex.min.css">
+<link rel="stylesheet" href="../../runtime/theme.css">
+<link rel="stylesheet" href="ch11.css">
+<script src="../../vendor/katex/katex.min.js"></script>
+<script src="../../runtime/scene.js"></script>
+<script src="../../runtime/components/kit.js"></script>
+<script src="../../runtime/components/hud.js"></script>
+<script src="../../runtime/components/plot.js"></script>
+<script src="../../runtime/components/field.js"></script>
+<script src="../../runtime/components/equation.js"></script>
+<script src="../../runtime/components/motifs.js"></script>
+<script src="../../runtime/components/cards.js"></script>
+<script src="../../runtime/components/seat.js"></script>
+<script src="../../runtime/components/threemodes.js"></script>
+<script src="ch11_kit.js"></script>
+</head><body><div id="stage"></div>
+<script>
+/* 11.1 Measured, and bet (L5, NIGHT, MEASURED left · CONJECTURE right; PENDING until a tier-2 file arrives).
+   Chapter card; the three question tickets fold into a chip; two columns: MEASURED (E1-E3 headline results, every
+   number from data/ch11_measured.json) and BET (the six bets of ch10 with their confidence; each lamp shows the verdict
+   copied into data/ch11_ledger.json, or AWAITING). Nothing is computed here. */
+Scene.define({
+  duration: 38,
+  register: 'night',
+  cues: { first: 0.4, columns: 2.6, measured: 5.6, limits: 10.4, bets: 16.4, lights: 21.6 },
+  data: { measured: 'data/ch11_measured.json', ledger: { url: 'data/ch11_ledger.json', optional: true } },
+  params: { chapter_card: { num: '11', title: 'Back to the compass', level: 'L5', levelFrom: 'L4', tier: 1, pending: [2, 3, 4] }, tickets: ['RUNS', 'FRAMING', 'LOGISTICS'], bets: [], deal_s: 0.35, confidence_pips: { high: 3, medium: 2, low: 1 } },
+  setup(ctx) {
+    const K = Kit, S = Scene, P = ctx.params, U = UK, M = ctx.data.measured, LG = ctx.data.ledger, cc = P.chapter_card, st = ctx.stage;
+    K.chapterCard(ctx, { num: cc.num, title: cc.title, level: cc.level, levelFrom: cc.levelFrom, tier: cc.tier, pending: cc.pending, at: -0.3, out: 'first-0.4', railHold: 2.6 });
+    // three tickets fold into one chip
+    const tg = K.s('g', {}, K.svgLayer(ctx, 20));
+    P.tickets.forEach((t, i) => { const x = 120 + 175 * i; K.s('rect', { x, y: 64, width: 150, height: 70, rx: 6, fill: K.c('panel'), stroke: K.c('fg-2'), 'stroke-width': 2 }, tg);
+      K.s('text', { x: x + 75, y: 108, 'text-anchor': 'middle', class: 'kt-mono' }, tg, K.upper(t)); });
+    U.fade(ctx, tg, { at: 'first-0.15', out: 'first+1.6' });
+    K.chip(ctx, { text: 'questions first · chapter “Before we compute”', kind: 'plain', x: 120, y: 76, at: 'first+1.8' });
+    // divider and headers
+    const sv = K.svgLayer(ctx, 12), dv = K.s('line', { x1: 960, x2: 960, y1: 150, y2: 860, stroke: K.c('chalk'), 'stroke-width': 2 }, sv);
+    const dl = dv.getTotalLength(); dv.style.strokeDasharray = `${dl} ${dl}`; const tC = ctx.at('columns-0.15');
+    ctx.add({ render(t) { dv.style.strokeDashoffset = (dl * (1 - S.seg(t, tC, tC + 0.6, S.ease.inOutSine))).toFixed(1); dv.style.opacity = t >= tC ? 0.7 : 0; } });
+    K.chip(ctx, { text: 'MEASURED', kind: 'measured', x: 120, y: 150, at: 'columns' });
+    U.label(ctx, { text: 'small experiments · CPU', x: 330, y: 154, size: 28, cls: 'dim', at: 'columns+0.2' });
+    K.chip(ctx, { text: 'BET', kind: 'schematic', x: 1000, y: 150, at: 'columns+0.3' });
+    U.label(ctx, { text: 'written before the data · CONJECTURE', x: 1110, y: 154, size: 28, cls: 'dim', at: 'columns+0.4' });
+    // left: three cards, every number from the data
+    const f = (x, s) => K.fmt(x, s || 3), e1 = M.e1, e2 = M.e2, e3 = M.e3;
+    const cards = [
+      { title: 'three dials (E1)', chip: `${e1.seeds} seeds · rate: seed ${e1.rice.seed}`, lines: [
+        `built-in mirror: balanced at every Γ · {metric}distribution distance{/} ÷ ${e1.distance.ratio} vs plain`,
+        `forced on each snapshot: distance × ${e1.per_snapshot.ratio}`,
+        `{metric}crossing rate{/}, cumulative error: ${e1.rice.far.percent} % far from the threshold · ${e1.rice.near.percent} % near it`] },
+      { title: 'flat sheet (E2)', chip: `${e2.seeds} seed · ${e2.grid} · not a dynamo`, lines: [
+        `divergence ${f(e2.divergence.free, 2)} free → ${K.pow10(Math.pow(10, Math.round(Math.log10(e2.divergence.potentials))))} with hill maps`,
+        `crowd loss: distance ${e2.crowd.V4} → ${f(e2.crowd.V5, 2)} · control ${e2.crowd.control}`,
+        'forced on each snapshot: dissipation spread → 0'] },
+      { title: 'twisting box (E3)', chip: `${e3.grid} · kinematic`, lines: [
+        `thresholds ${e3.thresholds.join(' · ')} · published ${e3.published.slice(0, 2).join(' · ')} · about ${e3.published[2]}`,
+        `divergence ≤ ${f(e3.divergence_max, 2)} · sign at ${e3.unresolved_at} unresolved`] } ];
+    let y = 220;
+    cards.forEach((c, i) => {
+      const d = K.el('div', { class: 'uk-card' }, st); d.style.cssText += `;left:120px;top:${y}px;width:800px;padding:8px 18px 10px`;
+      const h = K.el('div', {}, d); h.style.cssText = 'display:flex;justify-content:space-between;align-items:baseline';
+      K.el('div', { class: 'uk-lab' }, h, c.title).style.cssText += ';position:static;font-size:30px;font-weight:600';
+      K.el('div', { class: 'uk-lab mono' }, h, K.upper(c.chip)).style.position = 'static';
+      c.lines.forEach((l) => { const p = K.el('div', { class: 'uk-lab', html: K.markup(l) }, d); p.style.cssText += ';position:static;white-space:normal;font-size:28px;line-height:1.18;margin-top:2px'; });
+      U.fade(ctx, d, { at: ctx.at('measured-0.15') + 0.5 * i });
+      y += d.offsetHeight + 12;
+    });
+    const cv = U.label(ctx, { text: M.caveats.join(' · '), x: 120, y: Math.max(y, 790), size: 28, cls: 'mono', maxW: 820, at: 'limits-0.15' });
+    cv.el.style.lineHeight = '1.38';   // room for the underline between the two lines
+    const io = M.caveats.indexOf('interpolation only');
+    if (io >= 0) { const before = M.caveats.slice(0, io).join(' · ') + (io ? ' · ' : ''); cv.el.innerHTML = K.esc(before) + '<span>interpolation only</span>' + K.esc(M.caveats.slice(io + 1).map((c) => ' · ' + c).join(''));
+      K.pen(ctx, { kind: 'underline', target: cv.el.querySelector('span'), offset: -1, width: 3, at: 'limits+0.8', dur: 0.4, seed: 'interp' }); }
+    // right: six bets with lamps (verdicts copied from the ledger)
+    const rows = (LG && LG.rows) || [], lamps = [];
+    P.bets.forEach((b, i) => {
+      const ry = 220 + 90 * i, at = ctx.at('bets-0.15') + P.deal_s * i, row = rows.find((r) => r.id === b.id) || { state: 'awaiting' };
+      const g = K.el('div', {}, st); g.style.cssText = `position:absolute;left:1000px;top:${ry}px;width:800px;height:84px;z-index:31`;
+      K.el('div', { class: 'uk-lab mono' }, g, 'T' + b.tier).style.cssText += ';left:0;top:4px';
+      K.el('div', { class: 'uk-lab' }, g, b.name).style.cssText += ';left:56px;top:0;font-size:30px;font-weight:600';
+      const bt = K.el('div', { class: 'uk-lab dim', html: K.markup(b.bet) }, g); bt.setAttribute('data-qa', 'ignore');   // ellipsised on purpose: the full bet is in 10.3-10.9
+      bt.style.cssText += ';left:56px;top:40px;font-size:28px;width:540px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis';
+      const pp = K.el('div', {}, g); pp.style.cssText = 'position:absolute;right:70px;top:8px;display:flex;gap:4px;align-items:flex-end';
+      [10, 16, 22].forEach((hh, k) => { const e = K.el('i', {}, pp); e.style.cssText = `display:block;width:7px;height:${hh}px;background:var(--fg-2);opacity:${k < (P.confidence_pips[b.confidence] || 1) ? 1 : 0.2}`; });
+      const lamp = K.el('div', {}, g); const met = row.state !== 'awaiting';
+      lamp.style.cssText = `position:absolute;right:6px;top:10px;width:44px;height:44px;border-radius:50%;border:3px ${met ? 'solid' : 'dashed'} var(--muted);box-sizing:border-box;text-align:center;line-height:36px;font-size:28px;color:var(--fg)`;
+      lamp.textContent = { met: '✓', not_met: '✗', inconclusive: '?' }[row.state] || '';
+      K.el('div', { class: 'uk-lab mono' }, g, K.upper(met ? `${row.sha8} · ${row.state.replace('_', ' ')}` : 'awaiting')).style.cssText += ';left:800px;top:44px;transform:translateX(-100%);font-size:28px';
+      U.fade(ctx, g, { at }); lamps.push({ lamp, i });
+    });
+    const tL = ctx.at('lights-0.15');
+    ctx.add({ render(t) { lamps.forEach(({ lamp, i }) => { const p = Math.sin(Math.PI * S.seg(t, tL + 0.15 * i, tL + 0.15 * i + 0.5, S.ease.linear)); lamp.style.borderColor = p > 0.1 ? 'var(--fg)' : ''; lamp.style.opacity = (t > tL + 1.5 ? 0.85 + 0.15 * Math.sin(t * 2 + i) : 1).toFixed(3); }); } });
+    K.chip(ctx, { text: '→ what to ask before computing: chapter “Before we compute”', kind: 'plain', maxWidth: 800, x: 1000, y: 780, at: 'lights+1.2' });
+    K.badge(ctx, { kind: 'MEASURED', at: 'columns-0.15' });
+  },
+});
+</script></body></html>

@@ -1,0 +1,80 @@
+{
+ "meta": {
+  "source": "the six bet files (none present yet)",
+  "sha256": null,
+  "generator": "tools/data_ch11.py",
+  "extracted": "2026-11-08",
+  "stamp": "LEDGER · bets of the PhD plan",
+  "sources": [],
+  "note": "verdicts copied from the converters' files, never computed here"
+ },
+ "pending": true,
+ "rows": [
+  {
+   "id": "tier1_check",
+   "scene": "10.3",
+   "file": "data/palier1_sweep.json",
+   "state": "awaiting",
+   "verdict_text": null,
+   "stamp": null,
+   "sha8": null
+  },
+  {
+   "id": "abc64",
+   "scene": "10.4",
+   "file": "data/palier2_abc3d.json",
+   "state": "awaiting",
+   "verdict_text": null,
+   "stamp": null,
+   "sha8": null
+  },
+  {
+   "id": "tg",
+   "scene": "10.5",
+   "file": "data/palier2_tg3d.json",
+   "state": "awaiting",
+   "verdict_text": null,
+   "stamp": null,
+   "sha8": null
+  },
+  {
+   "id": "fm3d",
+   "scene": "10.7",
+   "file": "data/fm3d_eval.json",
+   "state": "awaiting",
+   "verdict_text": null,
+   "stamp": null,
+   "sha8": null
+  },
+  {
+   "id": "vks",
+   "scene": "10.9",
+   "file": "data/tier3_vks.json",
+   "state": "awaiting",
+   "verdict_text": null,
+   "stamp": null,
+   "sha8": null
+  },
+  {
+   "id": "dresdyn",
+   "scene": "10.9",
+   "file": "data/tier4_dresdyn.json",
+   "state": "awaiting",
+   "verdict_text": null,
+   "stamp": null,
+   "sha8": null
+  }
+ ],
+ "fields": {
+  "n_bets": 6,
+  "n_in": 0,
+  "n_met": 0,
+  "n_not_met": 0,
+  "n_inconclusive": 0,
+  "n_awaiting": 6,
+  "any_met": false,
+  "any_not_met": false,
+  "any_inconclusive": false,
+  "top_awaiting": true
+ }
+}
