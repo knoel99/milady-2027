@@ -1,0 +1,94 @@
+<!doctype html>
+<html lang="en"><head><meta charset="utf-8">
+<title>X3.4 Per-eta detail</title>
+<link rel="stylesheet" href="../../vendor/katex/katex.min.css">
+<link rel="stylesheet" href="../../runtime/theme.css">
+<link rel="stylesheet" href="X3a.css">
+<script src="../../vendor/katex/katex.min.js"></script>
+<script src="../../runtime/scene.js"></script>
+<script src="../../runtime/components/kit.js"></script>
+<script src="../../runtime/components/hud.js"></script>
+<script src="../../runtime/components/plot.js"></script>
+<script src="../../runtime/components/equation.js"></script>
+<script src="../../runtime/components/motifs.js"></script>
+<script src="../../runtime/components/cards.js"></script>
+<script src="X3a_kit.js"></script>
+</head><body><div id="stage"></div>
+<script>
+/* X3.4 Per-η detail (L4, NIGHT, MEASURED: E2, test values of η, one seed per variant). Grouped bars on a log axis:
+   V4 (base), the control run and V5 (crowd loss), from data/e2_eval.json per_eta; V4's signed energy-budget error
+   above each group; the honest floor; the ESS/N strip of the tilt (X3.2) under the axis. */
+Scene.define({
+  duration: 31, register: 'night',
+  cues: { one: 0.4, largest: 2.4, cut: 8.6, smallest: 13.6, control: 16.2, same: 18.4, seed: 23.4 },
+  data: { ev: 'data/e2_eval.json' },
+  params: {},
+  setup(ctx) {
+    const K = Kit, S = Scene, P = ctx.params, EV = ctx.data.ev, PE = EV.per_eta;
+    K.badge(ctx, { kind: 'MEASURED', note: 'E2 · test values of η · one seed per variant', at: -0.3 });
+    const BX = P.bars.box, box = { x0: BX[0], x1: BX[0] + BX[2], y0: BX[1] + 20, y1: BX[1] + BX[3] - 40 };
+    const etas = PE.V4_potentiels.test.eta, G = etas.length;
+    const PL = K.plot(ctx, { box, at: 'one-0.15', x: { min: 0, max: G, ticks: [] }, y: { label: 'distribution distance · test values of η (never seen)', min: Math.pow(10, P.bars.y_log[0]), max: Math.pow(10, P.bars.y_log[1]), log: true, ticks: P.bars.y_ticks } });
+    PL.root.querySelectorAll('text.kt-axis').forEach((e) => { e.style.fill = K.c('metric'); });
+    const floor = EV.variants.reference_sous_echantillon.mean.train.dist_energie_features;
+    PL.hline({ y: floor, at: 'one+0.3' });
+    XK.lab(ctx, '- - honest noise floor (training values)', 120, 560, { w: 440, cls: 'small', color: 'muted', at: 'one+0.3' });
+    const svg = K.svgLayer(ctx, 13), am = K.c('metric'), vio = K.c('model'), grey = K.c('muted');
+    const ser = P.series, bw = 46, groups = [];
+    for (let gi = 0; gi < G; gi++) {
+      const cx = PL.sx(gi + 0.5), g = K.s('g', {}, svg), bars = [];
+      ser.forEach((sr, k) => { const v = PE[sr.key].test.dist_energie_features[gi], x = cx + (k - 1) * (bw + 6) - bw / 2;
+        const st = k === 0 ? { fill: 'none', stroke: vio, 'stroke-width': 3, 'stroke-dasharray': '8 6' } : k === 1 ? { fill: 'none', stroke: grey, 'stroke-width': 3 } : { fill: am, stroke: vio, 'stroke-width': 3 };
+        const r = K.s('rect', Object.assign({ x, width: bw, y: box.y1, height: 0 }, st), g); bars.push({ r, y: PL.sy(v), v }); });
+      const tl = K.s('text', { x: cx, y: box.y1 + 44, 'text-anchor': 'middle', class: 'kt-tick' }, g, K.fmt(etas[gi], 2)); tl.style.fill = K.c('param');
+      const res = PE.V4_potentiels.test.residu_bilan_energie[gi], pct = 100 * res;
+      const ch = XK.lab(ctx, (res >= 0 ? '+' : '') + K.fmt(pct, 2, { fixed: Math.abs(pct) < 1 ? 2 : 0 }) + ' %', cx, box.y0 - 6, { anchor: 'c', cls: 'small tnum', color: 'metric', at: XK.at(ctx, 'one', 0.6 + 0.12 * gi) });
+      groups.push({ g, bars, cx, ch, t: XK.at(ctx, 'one', 0.2 + 0.12 * gi) });
+    }
+    XK.lab(ctx, 'η', box.x1 + 24, box.y1 - 24, { color: 'param', at: 'one' });
+    XK.lab(ctx, 'base budget error (above each group)', 120, 196, { w: 440, cls: 'small', color: 'metric', at: 'one+0.6' });
+    // legend in the left column
+    const lg = K.s('g', {}, svg);
+    ser.forEach((sr, k) => { const y = 290 + 46 * k, st = k === 0 ? { fill: 'none', stroke: vio, 'stroke-width': 3, 'stroke-dasharray': '8 6' } : k === 1 ? { fill: 'none', stroke: grey, 'stroke-width': 3 } : { fill: am, stroke: vio, 'stroke-width': 3 };
+      K.s('rect', Object.assign({ x: 120, y: y - 16, width: 30, height: 30 }, st), lg); K.s('text', { x: 164, y: y + 10, class: 'kt-label' }, lg, sr.label); });
+    XK.timed(ctx, lg, 'one', null);
+    K.chip(ctx, { text: 'GENERATED · one seed per variant', kind: 'generated', x: 120, y: 96, at: 'one', out: 'seed-0.3' });
+    // largest / cut / smallest / control
+    const L = groups[G - 1], F = groups[0], resL = PE.V4_potentiels.test.residu_bilan_energie[G - 1];
+    K.pen(ctx, { kind: 'brace', target: L.ch, at: 'largest+0.2', out: 'smallest-0.15' });
+    XK.lab(ctx, `dissipates ${K.fmt(1 + resL, 2)}× the energy fed in`, 120, 424, { w: 440, at: 'largest+0.4', out: 'smallest-0.15' });
+    XK.lab(ctx, `${K.fmt(L.bars[0].v, 2)} → ${K.fmt(L.bars[2].v, 2)}`, 120, 512, { size: 44, color: 'metric', at: 'cut+0.6', out: 'smallest-0.15' });
+    XK.lab(ctx, 'no change', F.cx, F.bars[0].y - 54, { anchor: 'c', at: 'smallest+0.2', out: 'control-0.15' });
+    groups.forEach((gp) => K.pen(ctx, { kind: 'underline', box: { x: gp.cx - bw / 2, y: box.y1 - 10, w: bw, h: 10 }, offset: 2, at: XK.at(ctx, 'control', 0.1), out: 'same-0.15', seed: 'u' + gp.cx }));
+    XK.lab(ctx, 'stays put', box.x0 + 10, box.y1 - 60, { at: 'control+0.4', out: 'same-0.15', color: 'muted' });
+    // ESS strip under the axis (the X3.2 values at the test η)
+    const EL = EV.en_loi, ess = EL.eta.map((e, i) => i).filter((i) => EL.split[i] === 'test').map((i) => EL.ess_frac_b[i]);
+    const es = K.s('g', {}, svg), ey = P.ess_strip.y - 14;
+    ess.forEach((v, gi) => { const sz = 6 + 40 * v; K.s('rect', { x: groups[gi].cx - sz / 2, y: ey - sz / 2, width: sz, height: sz, fill: am }, es); });
+    XK.timed(ctx, es, 'same-0.15', null, { dy: 20 });
+    XK.lab(ctx, 'ESS/N of the tilt (X3.2)', box.x0 - 20, ey + 30, { anchor: 'r', cls: 'small', at: 'same' });
+    XK.lab(ctx, 'the loss moves the crowd · weights cannot', 120, 450, { w: 440, cls: 'big', at: 'same+0.6', color: 'metric' });
+    K.chip(ctx, { text: 'interpolation only', kind: 'plain', x: 120, y: 96, at: 'seed-0.15' });
+    const t0 = PE.V4_potentiels.train;
+    XK.lab(ctx, `slight cost at small training η · ${K.fmt(t0.dist_energie_features[0], 2)} → ${K.fmt(PE.V5_potentiels_stat.train.dist_energie_features[0], 2)}`, 120, 636, { w: 440, cls: 'small', color: 'muted', at: 'seed+0.3' });
+    K.chip(ctx, { text: 'part of the gain could be a global rescaling of the energy level: argued against, not ruled out', kind: 'plain', maxWidth: 900, x: 120, y: 780, at: 'seed+0.6' });
+    K.lowerThird(ctx, { kind: 'source', data: EV, at: 'one+0.8', out: 'largest+3.0' });
+    K.formulaLayer(ctx);
+    ctx.x34 = { groups, box, G, tL: ctx.at('largest-0.15'), tC: ctx.at('cut-0.15'), tS: ctx.at('smallest-0.15'), tCo: ctx.at('control-0.15') };
+  },
+  render(t, ctx) {
+    const S = Scene, c = ctx.x34;
+    const foc = (gi) => { // brightness per group
+      if (t >= c.tCo) return 1;
+      if (t >= c.tS) return gi === 0 ? 1 : 0.45;
+      if (t >= c.tL) return gi === c.G - 1 ? 1 : 0.45;
+      return 1; };
+    c.groups.forEach((gp, gi) => {
+      gp.g.style.opacity = foc(gi) * S.seg(t, gp.t - 0.2, gp.t + 0.2, S.ease.linear);
+      gp.bars.forEach((b, k) => { let p = S.seg(t, gp.t, gp.t + 0.6, S.ease.outCubic), y = b.y;
+        if (gi === c.G - 1 && k === 2) { const q = S.seg(t, c.tC, c.tC + 0.8, S.ease.inOutSine); p = t >= c.tC ? 1 : 0; y = XK.lerp(gp.bars[1].y, b.y, q); }
+        const h = (c.box.y1 - y) * p; b.r.setAttribute('y', (c.box.y1 - h).toFixed(1)); b.r.setAttribute('height', Math.max(0, h).toFixed(1)); });
+    });
+  },
+});
+</script></body></html>

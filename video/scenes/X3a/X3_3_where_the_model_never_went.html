@@ -1,0 +1,99 @@
+<!doctype html>
+<html lang="en"><head><meta charset="utf-8">
+<title>X3.3 Where the model never went</title>
+<link rel="stylesheet" href="../../vendor/katex/katex.min.css">
+<link rel="stylesheet" href="../../runtime/theme.css">
+<link rel="stylesheet" href="X3a.css">
+<script src="../../vendor/katex/katex.min.js"></script>
+<script src="../../runtime/scene.js"></script>
+<script src="../../runtime/components/kit.js"></script>
+<script src="../../runtime/components/hud.js"></script>
+<script src="../../runtime/components/plot.js"></script>
+<script src="../../runtime/components/equation.js"></script>
+<script src="../../runtime/components/motifs.js"></script>
+<script src="../../runtime/components/cards.js"></script>
+<script src="X3a_kit.js"></script>
+</head><body><div id="stage"></div>
+<script>
+/* X3.3 Where the model never went (L4, NIGHT, PROVED: Proposition 7, support). Model C at Γ = 0.93
+   (data/e1_samples_0.93.json, 4,000 generated snapshots) as a 1D strip plot along D (the 05.2 picture, violet ring);
+   the bridge |D| < h removed by hand (SCHEMATIC); the Rice gauge (needle only) reads the strip live; weights pushed
+   onto the edges change nothing (0 × any weight = 0) while the effective sample size collapses. */
+Scene.define({
+  duration: 36, register: 'night',
+  cues: { hole: 0.4, predict: 6.4, no: 11.6, push: 17.2, never: 21.4, fallback: 24.6 },
+  data: { shoebox: 'data/e1_samples_0.93.json' },
+  params: {},
+  setup(ctx) {
+    const K = Kit, S = Scene, P = ctx.params, SB = ctx.data.shoebox, V = SB.variants[P.variant], AX = P.axis, SP = P.strip_plot, h = P.h;
+    window.__EVENTS__ = [{ t: +(ctx.at('hole') + 0.7).toFixed(3), id: 'pop', gain_db: -24 }];
+    K.badge(ctx, { kind: 'PROVED', note: 'Prop. 7 (support) · any weights, any model', at: -0.3 });
+    const XS = S.f32(V.x), DD = S.f32(V.Ddot), N = V.n, D = new Float32Array(N); for (let i = 0; i < N; i++) D[i] = XS[3 * i + 1];
+    const X = (d) => AX.x0 + (AX.x1 - AX.x0) * (d - AX.dmin) / (AX.dmax - AX.dmin);
+    const jr = S.rng(SP.jitter_seed), Y = new Float32Array(N); for (let i = 0; i < N; i++) Y[i] = SP.y0 + 6 + (SP.y1 - SP.y0 - 12) * jr();
+    const inS = (i) => Math.abs(D[i]) < h;
+    let rice = 0; for (let i = 0; i < N; i++) if (inS(i)) rice += Math.abs(DD[i]); rice /= 2 * h * N;
+    // axis, strip, labels
+    const svg = K.svgLayer(ctx, 12), ag = K.s('g', {}, svg);
+    K.s('rect', { x: X(-h), y: SP.y0 - 10, width: X(h) - X(-h), height: SP.y1 - SP.y0 + 20, fill: K.rgba(K.c('chalk'), 0.08), stroke: K.c('chalk'), 'stroke-width': 2, 'stroke-dasharray': '8 6' }, ag);
+    K.s('line', { x1: AX.x0, x2: AX.x1, y1: AX.y, y2: AX.y, stroke: K.c('muted'), 'stroke-width': 2 }, ag);
+    [-3, -2, -1, 0, 1, 2, 3].forEach((v) => { K.s('line', { x1: X(v), x2: X(v), y1: AX.y, y2: AX.y + 10, stroke: K.c('muted'), 'stroke-width': 2 }, ag); K.s('text', { x: X(v), y: AX.y + 44, 'text-anchor': 'middle', class: 'kt-tick' }, ag, v === 0 ? 'D = 0' : K.fmt(v, 1)); });
+    const at = K.s('text', { x: (AX.x0 + AX.x1) / 2, y: AX.y + 92, 'text-anchor': 'middle', class: 'kt-axis' }, ag, 'D · dipole'); at.style.fill = K.c('b');
+    const hatch = K.s('g', {}, svg); for (let y = SP.y0; y < SP.y1; y += 16) K.s('line', { x1: X(-h) + 2, y1: y + 14, x2: X(h) - 2, y2: y, stroke: K.c('muted'), 'stroke-width': 2 }, hatch);
+    XK.timed(ctx, hatch, 'hole+0.4', null, { din: 0.6 });
+    XK.lab(ctx, 'the bridge · |D| < h', X(0), SP.y0 - 60, { anchor: 'c', at: -0.3 });
+    const tog = K.el('div', { class: 'x3-toggle', html: '<i></i><span>missing support</span>' }, ctx.stage); Object.assign(tog.style, { left: AX.x0 + 'px', top: (SP.y0 - 70) + 'px' });
+    const knobT = tog.firstChild;
+    const CV = K.canvasLayer(ctx, 6, { x: AX.x0 - 30, y: SP.y0 - 30, w: AX.x1 - AX.x0 + 60, h: SP.y1 - SP.y0 + 60 }, null, { reset: true });
+    // gauge (half dial, needle only)
+    const G = P.gauge, gg = K.s('g', {}, svg);
+    K.s('path', { d: `M${G.x - G.r},${G.y} A${G.r},${G.r} 0 0 1 ${G.x + G.r},${G.y}`, fill: 'none', stroke: K.c('metric'), 'stroke-width': 5 }, gg);
+    for (let k = 0; k <= 6; k++) { const a = Math.PI * (1 - k / 6); K.s('line', { x1: G.x + (G.r - 14) * Math.cos(a), y1: G.y - (G.r - 14) * Math.sin(a), x2: G.x + G.r * Math.cos(a), y2: G.y - G.r * Math.sin(a), stroke: K.c('metric'), 'stroke-width': 2 }, gg); }
+    const needle = K.s('line', { x1: G.x, y1: G.y, stroke: K.c('fg'), 'stroke-width': 5, 'stroke-linecap': 'round' }, gg);
+    XK.lab(ctx, G.label, G.x, G.y + 14, { anchor: 'c', cls: 'small', w: 260, at: -0.3 }).style.textAlign = 'center';
+    XK.lab(ctx, 'still 0', G.x - G.r - 10, G.y - 40, { anchor: 'r', at: 'push+0.6', out: 'never-0.15' });
+    // ESS bar
+    const PB = P.poll_bar, eb = K.s('rect', { x: PB.x, y: PB.y + 40, height: PB.h, fill: K.c('metric') }, svg);
+    K.s('rect', { x: PB.x, y: PB.y + 40, width: PB.w, height: PB.h, fill: 'none', stroke: K.c('muted'), 'stroke-width': 2 }, svg);
+    XK.lab(ctx, 'effective sample size', PB.x, PB.y - 4, { cls: 'small', at: 'push-0.15' });
+    // predict
+    const PR = P.predict, qtxt = 'Can reweighting bring back the *crossing rate*?';
+    K.predictCard(ctx, { x: 200, y: 110, w: 1100, anchor: 'l', question: qtxt, options: PR.options, at: 'predict-0.15', answerAt: 'no-0.15', pick: PR.answer, out: 'push-0.3' });
+    XK.lab(ctx, 'empty strip: 0 × any weight = 0', X(0), SP.y0 + 60, { anchor: 'c', cls: 'big halo', at: 'no+0.6', out: 'never-0.15' }).style.color = K.c('chalk');
+    XK.lab(ctx, 'weights pile up at the edge', X(h) + 140, SP.y0 - 60, { at: 'push+1.0', out: 'never-0.15' });
+    K.pen(ctx, { kind: 'arrow', from: [X(h) + 200, SP.y0 - 14], to: [X(h) + 30, SP.y0 + 50], at: 'push+0.8', out: 'never-0.15' });
+    const lesson = XK.lab(ctx, 'reweighting cannot create mass', 960, 260, { anchor: 'c', at: 'never-0.15', color: 'metric', size: 44 });
+    void lesson;
+    K.lowerThird(ctx, { kind: 'reference', l1: 'PhD plan · risk table', l2: 'tilting alone is not a fallback', at: 'fallback-0.15', hold: 4 });
+    K.chip(ctx, { text: `GENERATED · model C, Γ = ${SB.gamma}`, kind: 'generated', x: 120, y: 280, at: -0.3, out: 'predict-0.3' });
+    K.chip(ctx, { text: `GENERATED · model C, Γ = ${SB.gamma}`, kind: 'generated', x: 120, y: 280, at: 'push', out: 'never-0.3' });
+    K.chip(ctx, { text: 'SCHEMATIC · the bridge removed by hand · weights for illustration', kind: 'schematic', maxWidth: 880, x: 120, y: 770, at: 'hole', out: 'fallback-0.4' });
+    K.formulaLayer(ctx);
+    ctx.x33 = { CV, D, Y, X, N, inS, h, needle, G, rice, knobT, tog, eb, PB, beta: P.push.beta_max, pdur: P.push.dur, SP,
+      tH: ctx.at('hole-0.15'), tP: ctx.at('push-0.15'), tN: ctx.at('never-0.15') };
+  },
+  render(t, ctx) {
+    const S = Scene, K = Kit, c = ctx.x33, g = c.CV.g, ox = c.X(-3) - 30 - (c.X(-3) - c.X(-3)), oy = c.SP.y0 - 30;
+    const ph = S.seg(t, c.tH, c.tH + 0.6, S.ease.linear), pb = S.seg(t, c.tP, c.tP + c.pdur, S.ease.inOutSine) * (1 - S.seg(t, c.tN, c.tN + 0.8, S.ease.inOutSine));
+    const b = c.beta * pb;
+    let sw = 0, sw2 = 0; const w = new Float32Array(c.N);
+    for (let i = 0; i < c.N; i++) { if (c.inS(i)) continue; w[i] = Math.exp(-b * (Math.abs(c.D[i]) - c.h)); sw += w[i]; }
+    for (let i = 0; i < c.N; i++) { w[i] /= sw; sw2 += w[i] * w[i]; }
+    const nOut = c.N - Array.from({ length: c.N }, (_, i) => c.inS(i)).filter(Boolean).length;
+    g.clearRect(0, 0, c.CV.w, c.CV.h);
+    const ring = K.c('model'), bp = K.c('b'), bn = K.c('b-neg');
+    for (let i = 0; i < c.N; i++) {
+      let a = 1; if (c.inS(i)) { a = 1 - ph; if (a <= 0) continue; }
+      const r = c.inS(i) ? 2.2 : Math.max(1.2, Math.min(22, 2.2 * Math.sqrt(nOut * w[i])));
+      const x = c.X(c.D[i]) - ox, y = c.Y[i] - oy;
+      g.globalAlpha = a; g.fillStyle = c.D[i] >= 0 ? bp : bn; g.beginPath(); g.arc(x, y, r, 0, 2 * Math.PI); g.fill();
+      if (r > 4) { g.strokeStyle = ring; g.globalAlpha = 0.3 * a; g.lineWidth = 1.5; g.stroke(); }
+    }
+    // gauge: Rice in the strip (falls to 0 with the strip)
+    const v = c.rice * (1 - S.seg(t, c.tH + 0.2, c.tH + 1.2, S.ease.inOutSine)), ang = Math.PI * (1 - Math.min(1, v / (1.5 * c.rice)));
+    c.needle.setAttribute('x2', (c.G.x + (c.G.r - 22) * Math.cos(ang)).toFixed(1)); c.needle.setAttribute('y2', (c.G.y - (c.G.r - 22) * Math.sin(ang)).toFixed(1));
+    c.knobT.style.transform = `translateX(${(26 * ph).toFixed(1)}px)`; c.knobT.style.background = ph > 0.5 ? K.c('fg') : K.c('muted');
+    c.eb.setAttribute('width', (c.PB.w * (1 / sw2) / nOut).toFixed(1));
+  },
+});
+</script></body></html>

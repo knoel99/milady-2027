@@ -1,0 +1,103 @@
+<!doctype html>
+<html lang="en"><head><meta charset="utf-8">
+<title>X3.2 The poll that shrank</title>
+<link rel="stylesheet" href="../../vendor/katex/katex.min.css">
+<link rel="stylesheet" href="../../runtime/theme.css">
+<link rel="stylesheet" href="X3a.css">
+<script src="../../vendor/katex/katex.min.js"></script>
+<script src="../../runtime/scene.js"></script>
+<script src="../../runtime/components/kit.js"></script>
+<script src="../../runtime/components/hud.js"></script>
+<script src="../../runtime/components/plot.js"></script>
+<script src="../../runtime/components/equation.js"></script>
+<script src="../../runtime/components/motifs.js"></script>
+<script src="../../runtime/components/cards.js"></script>
+<script src="X3a_kit.js"></script>
+</head><body><div id="stage"></div>
+<script>
+/* X3.2 The poll that shrank (L4, NIGHT, MEASURED: E2, tilt of V4 on half b, one seed). A schematic poll of 20 shows
+   ESS = 1/Σw²; then the eleven ESS/N values of the tilt (data/e2_eval.json en_loi) as amber bars on a log η axis, and
+   the same values against |energy-budget error| of V4 per η (per_eta.V4_potentiels, train and test). */
+Scene.define({
+  duration: 46, register: 'night',
+  cues: { left: 0.4, ess: 3.0, equal: 5.0, giant: 7.0, sheet: 9.8, bottom: 15.6, rank: 20.4, little: 27.0, much: 29.4, e1: 32.6 },
+  data: { ev: 'data/e2_eval.json' },
+  params: {},
+  setup(ctx) {
+    const K = Kit, S = Scene, P = ctx.params, EV = ctx.data.ev, EL = EV.en_loi, PO = P.poll;
+    K.badge(ctx, { kind: 'MEASURED', note: 'E2 · tilt of V4 on half b · one seed', at: -0.3 });
+    // ---- the poll ----
+    const svg = K.svgLayer(ctx, 12), pg = K.s('g', {}, svg), B = PO.box, N = PO.n;
+    const pts = []; for (let i = 0; i < N; i++) pts.push([B[0] + 60 + (i % 5) * 80, B[1] + 50 + Math.floor(i / 5) * 72]);
+    const pd = pts.map((p) => K.s('circle', { cx: p[0], cy: p[1], fill: K.c('model'), stroke: K.c('model'), 'stroke-width': 2 }, pg));
+    const pl = [XK.lab(ctx, 'a poll of 20', B[0] + 20, B[1] - 50, { at: -0.3, out: 'sheet-0.15' })];
+    XK.timed(ctx, pg, -0.3, 'sheet-0.15');
+    const cnt = XK.lab(ctx, '', B[0] + 20, B[1] + B[3] + 10, { at: 'ess-0.15', cls: 'big', html: true }); cnt.style.color = K.c('metric');
+    const eqL = XK.lab(ctx, 'equal weights: the whole crowd', B[0] + 20, B[1] + B[3] + 60, { at: 'equal-0.15', out: 'giant-0.15', cls: 'small' });
+    const gL = XK.lab(ctx, 'one giant weight: one person', B[0] + 20, B[1] + B[3] + 60, { at: 'giant+0.3', out: 'sheet-0.15', cls: 'small' });
+    void eqL; void gL; void pl;
+    K.chip(ctx, { text: 'SCHEMATIC · a poll of 20 (weights for illustration)', kind: 'schematic', maxWidth: 660, x: 110, y: 690, at: -0.3, out: 'sheet-0.2' });
+    K.chip(ctx, { text: 'REFERENCE · effective sample size: Kish 1965', kind: 'plain', maxWidth: 660, x: 110, y: 800, at: 'ess', out: 'sheet-0.2' });
+    // ---- bars (log η) ----
+    const BX = P.bars.box, box = { x0: BX[0], x1: BX[0] + BX[2], y0: BX[1], y1: BX[1] + BX[3] - 30 };
+    const yax = { label: 'ESS/N of the tilt · 500 snapshots per η (half b)', min: 1e-3, max: 2.5, log: true, ticks: P.bars.y_ticks };
+    const P1 = K.plot(ctx, { box, at: 'sheet-0.15', out: 'rank-0.15', x: { label: 'η', min: 0.0035, max: 0.026, log: true, ticks: [0.004, 0.01, 0.02], param: true, fmt: (v) => K.fmt(v, 2) }, y: yax });
+    const minY = 2 / EV.config.n_gen;
+    P1.hline({ y: minY, label: 'one snapshot: the minimum', at: 'sheet+0.2' });
+    const n = EL.eta.length, bars = [], am = K.c('metric');
+    EL.eta.forEach((e, i) => { const x = P1.sx(e), y = P1.sy(EL.ess_frac_b[i]), test = EL.split[i] === 'test';
+      const b = K.s('rect', { x: x - 16, width: 32, y: box.y1, height: 0, fill: test ? K.rgba(am, 0.3) : am, stroke: am, 'stroke-width': 3 }, svg);
+      bars.push({ b, y, t: XK.at(ctx, 'sheet', 0.5 + 0.1 * i), test }); });
+    // markers on the η axis: filled training, open test
+    const mk = K.s('g', {}, svg);
+    EL.eta.forEach((e, i) => K.s('circle', { cx: P1.sx(e), cy: box.y1 + 22, r: 7, fill: EL.split[i] === 'test' ? K.c('bg') : K.c('param'), stroke: K.c('param'), 'stroke-width': 3 }, mk));
+    XK.timed(ctx, mk, 'sheet', 'rank-0.15');
+    const lg = XK.lab(ctx, '● training  ○ test', box.x1 - 10, box.y0 + 4, { anchor: 'r', cls: 'small', color: 'param', at: 'sheet+0.3', out: 'rank-0.15' }); void lg;
+    // the smallest test η: keeps 99 %
+    const iT = EL.split.indexOf('test'), x0 = P1.sx(EL.eta[iT]), y0 = P1.sy(EL.ess_frac_b[iT]);
+    K.pen(ctx, { kind: 'circle', box: { x: x0 - 26, y: y0 - 20, w: 52, h: 40 }, at: 'sheet+2.0', out: 'rank-0.15' });
+    XK.lab(ctx, `the poll keeps ${Math.round(100 * EL.ess_frac_b[iT])} %`, x0 + 50, y0 - 20, { at: 'sheet+2.2', out: 'rank-0.15' });
+    K.chip(ctx, { text: 'GENERATED · V4, one seed', kind: 'generated', x: 1400, y: 112, at: 'sheet', out: 'rank-0.15' });
+    K.lowerThird(ctx, { kind: 'source', data: EV, at: 'sheet+0.3', hold: 4 });
+    // three largest test values
+    const tests = EL.eta.map((e, i) => i).filter((i) => EL.split[i] === 'test').slice(-3);
+    const xa = P1.sx(EL.eta[tests[0]]) - 24, xb = P1.sx(EL.eta[tests[2]]) + 24, yb = P1.sy(minY);
+    K.pen(ctx, { kind: 'box', box: { x: xa, y: yb - 40, w: xb - xa, h: 34 }, pad: 6, at: 'bottom', out: 'rank-0.15' });
+    XK.lab(ctx, `one snapshot in ${EV.config.n_gen / 2}`, (xa + xb) / 2, yb - 110, { anchor: 'c', at: 'bottom+0.4', out: 'rank-0.15' });
+    K.chip(ctx, { text: `mean over the ${n} values: ${K.fmt(EL.mean.ess_frac_b_moy, 2)}`, kind: 'plain', x: 1350, y: 240, at: 'bottom+0.8', out: 'rank-0.15' });
+    // ---- scatter: ESS/N vs |energy-budget error| of V4 (per η) ----
+    const PE = EV.per_eta.V4_potentiels, res = {};
+    ['train', 'test'].forEach((sp) => PE[sp].eta.forEach((e, k) => { res[e.toFixed(6)] = Math.abs(PE[sp].residu_bilan_energie[k]); }));
+    const P2 = K.plot(ctx, { box, at: 'rank+0.3', x: { label: "how far the base model's energy budget was off", min: Math.pow(10, P.scatter.x_log[0]), max: Math.pow(10, P.scatter.x_log[1]), log: true, ticks: P.scatter.x_ticks }, y: yax });
+    P2.hline({ y: minY, at: 'rank+0.3' });
+    const sd = EL.eta.map((e, i) => ({ a: [P1.sx(e), P1.sy(EL.ess_frac_b[i])], b: [P2.sx(Math.max(1e-5, res[e.toFixed(6)])), P2.sy(EL.ess_frac_b[i])],
+      c: K.s('circle', { r: 9, fill: EL.split[i] === 'test' ? K.c('bg') : am, stroke: am, 'stroke-width': 3 }, svg) }));
+    K.chip(ctx, { text: 'the tilt fixes three budgets: energy, cross helicity, ⟨A²⟩', kind: 'plain', maxWidth: 880, x: 120, y: 732, at: 'rank+0.6', out: 'e1-0.3' });
+    K.chip(ctx, { text: 'rank order: one swap (η = 0.004 and 0.0067)', kind: 'plain', maxWidth: 880, x: 120, y: 834, at: 'rank+1.0', out: 'e1-0.3' });
+    const ul = sd.filter((d) => d.b[1] < P2.sy(0.3)), lr = sd.filter((d) => d.b[1] > P2.sy(0.003));
+    const bb = (A) => { const xs = A.map((d) => d.b[0]), ys = A.map((d) => d.b[1]); return { x: Math.min(...xs) - 10, y: Math.min(...ys) - 10, w: Math.max(...xs) - Math.min(...xs) + 20, h: Math.max(...ys) - Math.min(...ys) + 20 }; };
+    const B1 = bb(ul), B2 = bb(lr); { const y = Math.max(B1.y, box.y0 + 46); B1.h -= y - B1.y; B1.y = y; }
+    K.pen(ctx, { kind: 'circle', box: B1, at: 'little-0.15', seed: 'l' }); XK.lab(ctx, 'little to fix', B1.x + B1.w + 40, B1.y - 30, { at: 'little+0.2' });
+    K.pen(ctx, { kind: 'circle', box: B2, at: 'much-0.15', seed: 'm' }); XK.lab(ctx, 'much to fix: the poll collapses', B2.x + B2.w / 2, B2.y - 90, { anchor: 'c', at: 'much+0.2' });
+    const ref = (ctx.script.onscreen && ctx.script.onscreen.labels) || [], l1 = ref.find((s) => s.startsWith('REPORT')) || 'REPORT · E1', l2 = ref.find((s) => s.startsWith('ESS/N 0')) || '';
+    K.lowerThird(ctx, { kind: 'reference', l1, l2, at: 'e1-0.15', hold: P.quote.hold });
+    K.formulaLayer(ctx);
+    ctx.x32 = { pd, pts, cnt, N, bars, box, sd, pg, tG: ctx.at('giant-0.15'), tS: ctx.at('sheet-0.15'), tR: ctx.at('rank-0.15'), tE: ctx.at('e1-0.15') };
+  },
+  render(t, ctx) {
+    const S = Scene, K = Kit, c = ctx.x32;
+    const g = S.seg(t, c.tG, c.tG + 1.2, S.ease.inOutCubic), N = c.N;
+    const w = c.pd.map((_, i) => (1 - g) / N + g * (i === 7 ? 0.97 : 0.03 / (N - 1)));
+    let s2 = 0; w.forEach((x) => { s2 += x * x; });
+    c.pd.forEach((d, i) => { d.setAttribute('r', Math.max(2, 14 * Math.sqrt(N * w[i] * 0.5 + 0.0001)).toFixed(2)); d.setAttribute('fill-opacity', i === 7 || g < 0.5 ? 1 : (1 - g) + 0.05); });
+    c.cnt.innerHTML = `effective sample size: <span class="tnum">${K.fmt(1 / s2, 2)}</span>`;
+    const sh = S.seg(t, c.tS, c.tS + 0.8, S.ease.inOutCubic);
+        c.cnt.style.opacity = (1 - sh).toFixed(3);
+    const rk = S.seg(t, c.tR, c.tR + 1.2, S.ease.inOutSine);
+    c.bars.forEach((b) => { const p = S.seg(t, b.t, b.t + 0.4, S.ease.outCubic), h = (c.box.y1 - b.y) * p; b.b.setAttribute('y', (c.box.y1 - h).toFixed(1)); b.b.setAttribute('height', h.toFixed(1));
+      b.b.style.opacity = (1 - S.seg(t, c.tR, c.tR + 0.3, S.ease.linear)).toFixed(3); });
+    const dim = 1 - 0.5 * S.seg(t, c.tE, c.tE + 0.5, S.ease.linear);
+    c.sd.forEach((d) => { d.c.setAttribute('cx', XK.lerp(d.a[0], d.b[0], rk).toFixed(1)); d.c.setAttribute('cy', XK.lerp(d.a[1], d.b[1], rk).toFixed(1)); d.c.style.opacity = (S.seg(t, c.tR, c.tR + 0.2, S.ease.linear) * dim).toFixed(3); });
+  },
+});
+</script></body></html>
