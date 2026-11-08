@@ -489,6 +489,12 @@ def check_reservations(chapters: dict, errors: list[str]) -> None:
         errors.append("R3-g07: Q, D, V se disent avant une équation non lue")
     elif not all(name in start["text"] for name in ("Q", "D", "V")):
         errors.append("R3-g07: le premier repère ne nomme pas Q, D et V")
+    if "quadrupole" not in g07 or "velocity mode" not in g07 or "equatorial symmetry" not in g07:
+        errors.append("R3-g07: Q ou V n'a pas son sens physique avant les équations")
+    if "between 0.86 and 0.865" not in g07 or "neighbouring training values are 0.86 and 0.88" not in g07:
+        errors.append("science: le seuil n'est pas placé entre 0.86 et 0.865, voisins d'entraînement 0.86 et 0.88")
+    if "negative majority" not in g07 or "absolute gap" not in g07 or "lean positive" in g07:
+        errors.append("science: 0.3125 et 0.183 ne sont pas comparés dans le même sens")
     if "three-mode" not in g07 and "three modes" not in g07:
         errors.append("oral: E1 n'est pas dit comme un modèle à trois modes")
     if "prospective" not in g07 or "not endorsed" not in g07:
@@ -497,10 +503,12 @@ def check_reservations(chapters: dict, errors: list[str]) -> None:
     g08 = spoken.get("g08", "")
     if position(g08, "observable") < 0 or g08.find(" F") < 0 or position(g08, "observable") > g08.find(" F"):
         errors.append("R3-g08: F n'a pas de rôle avant le symbole")
-    if position(g08, "observable") < 0 or position(g08, "width of that window") < 0:
+    if position(g08, "observable") < 0 or position(g08, "half-width") < 0:
         errors.append("R3-g08: F ou h n'est pas nommé par son rôle")
-    if position(g08, "width of that window") > position(g08, "0.2") or position(g08, "0.2") < 0:
+    if position(g08, "half-width") > position(g08, "0.2") or position(g08, "0.2") < 0:
         errors.append("R3-g08: h est chiffré avant son rôle")
+    if position(g08, "rate of change") < 0 or position(g08, "rate of change") > position(g08, "vector field F"):
+        errors.append("R3-g08: F n'est pas le champ qui donne la dérivée")
     need("cue.g08.rice.caveat", "not guaranteed", "S18")
     need("cue.g08.rice.caveat", "deterministic", "S18")
     need("cue.g08.rice.caveat", "does not cover the percentages", "S18")
@@ -526,6 +534,10 @@ def check_reservations(chapters: dict, errors: list[str]) -> None:
         errors.append("S17: g09 attribue un chiffre au digest")
     if "toy" not in g09 or "not a measurement" not in g09:
         errors.append("plan: g09.path ne dit pas que le dessin est un jouet")
+    if "conditional mean" not in g09 or "fixed position" not in g09 or "fixed parameter" not in g09:
+        errors.append("science: la vitesse générative n'est pas une moyenne conditionnelle")
+    if "not the Heun steps" not in g09 or "taken in" in g09:
+        errors.append("science: les 6000 itérations sont encore mêlées aux 50 pas de Heun")
 
     sample = spoken_of_beat(chapters.get("g10", []), "g10.sample")
     order = [cue["id"] for beat in chapters.get("g10", []) for cue in beat["cues"] if beat["id"] == "g10.sample"]
@@ -552,6 +564,14 @@ def check_reservations(chapters: dict, errors: list[str]) -> None:
         errors.append("STYLE §6: g10.sample.e2 ne dit pas dissipation pour D")
     if "winner" not in spoken.get("g10", ""):
         errors.append("pilote: g10 ne refuse pas le tri par gagnant")
+    g10 = spoken.get("g10", "")
+    if "C1 is a linear" not in g10 or "C2 is a nonlinear" not in g10 or "repair or a penalty" in g10:
+        errors.append("science: C1 et C2 ne distinguent pas linéaire et non linéaire")
+    if "empirical mean over a finite batch" not in g10 or "two independent half-batch means" not in g10:
+        errors.append("science: le biais de variance n'est pas celui d'une moyenne empirique")
+    g10_close = cues.get("cue.g10.close.show")
+    if not g10_close or "not all stacked on zero" not in g10_close["text"] or "Anchoring means" not in g10_close["text"]:
+        errors.append("pédagogie: g10.close n'explique pas no mass at 0 ni l'ancrage")
     g10_close = cues.get("cue.g10.close.show")
     if not g10_close or "does not prove" not in g10_close["text"]:
         errors.append("couture: g10.close ne dit pas qu'il énonce sans prouver")
@@ -576,8 +596,10 @@ def check_reservations(chapters: dict, errors: list[str]) -> None:
         errors.append("oral: E3 ne dit pas l'absence de générateur")
     if not caveat or "not confidence intervals" not in caveat["text"]:
         errors.append("S20: la précision est présentée comme un intervalle, ou la phrase manque")
-    if not caveat or "about 0.1" not in caveat["text"] or "one unit" not in caveat["text"]:
-        errors.append("S20: environ 0,1 et environ une unité manquent")
+    if not caveat or "within about 0.1 near 17.5" not in caveat["text"] or "one unit" not in caveat["text"]:
+        errors.append("S20: environ 0,1 près de 17,5 et environ une unité manquent")
+    if "mean dot product" not in spoken.get("g11", "") or "twist" in spoken.get("g11", ""):
+        errors.append("science: l'hélicité croisée n'est pas le produit scalaire moyen")
     if not caveat or "second half" not in caveat["text"]:
         errors.append("S20: 17,6 n'est pas dit comme l'interpolation de la seconde moitié")
     if "x02" in spoken.get("g11", ""):
