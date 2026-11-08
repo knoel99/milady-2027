@@ -82,6 +82,33 @@ function phrases(texte) {
   return trouvees;
 }
 
+function estNombreSeul(texte) {
+  const nu = texte.replaceAll("\n", " ").replaceAll("\u00a0", " ").replace(/[.!?]+$/g, "").trim();
+  return /^(?:\d+(?:[.,]\d+)?|\d+(?:[.,]\d+)?\s*×\s*10[⁻⁰¹²³⁴⁵⁶⁷⁸⁹]+|10[⁻⁰¹²³⁴⁵⁶⁷⁸⁹]+)$/.test(nu);
+}
+
+test("aucun sous-titre n'est trop court pour se lire", async () => {
+  for (const lang of ["en", "fr"]) {
+    const markdown = await readFile(join(root, "narration", lang, "g10.md"), "utf8");
+    const chapitre = preparer(markdown, lang);
+    const durees = new Map(chapitre.paragraphes.map((paragraphe) => [paragraphe.id, 8]));
+    const cues = sousTitresNarration(tableau(chapitre), chapitre, durees);
+    const lignes = new Set(
+      phrases(contrat(chapitre.paragraphes.map((paragraphe) => paragraphe.brut).join(" "))).filter(
+        (phrase) => phrase.replace(/[.!?]+$/g, "").trim().split(/\s+/).length <= 1,
+      ),
+    );
+    for (const cue of cues) {
+      const duree = cue.fin - cue.debut;
+      assert.ok(duree >= 1 - 1e-6, `${lang} ${duree.toFixed(3)} ${cue.text}`);
+      const plat = contrat(cue.text);
+      const mots = plat.replace(/[.!?]+$/g, "").trim().split(/\s+/).filter(Boolean);
+      if (mots.length > 1 && !estNombreSeul(plat)) continue;
+      assert.equal(lignes.has(plat), true, `${lang} ${plat}`);
+    }
+  }
+});
+
 test("la piste entière égale le script parlé", async () => {
   for (const lang of ["en", "fr"]) {
     const markdown = await readFile(join(root, "narration", lang, "g10.md"), "utf8");
@@ -116,7 +143,6 @@ test("chaque beat porte le texte parlé, l'exposant et la conclusion", async () 
         assert.ok(cue.debut >= debutAudio - 1e-6 && cue.fin <= finAudio + 1e-6, `${cue.text} hors voix`);
         assert.ok(cue.fin > cue.debut, cue.text);
         const lignesBloc = cue.text.split("\n");
-        assert.ok(lignesBloc.length <= 2, cue.text);
         assert.ok(lignesBloc.every((item) => item.length <= 42 || !item.includes(" ")), cue.text);
       }
       for (let index = 1; index < duBeat.length; index += 1) {

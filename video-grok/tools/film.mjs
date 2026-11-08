@@ -311,9 +311,62 @@ function blocsDe(texte) {
   const blocs = [];
   for (const phrase of phrases(notationNombres(texte))) {
     const lignes = lignesDe(phrase);
-    for (let index = 0; index < lignes.length; index += 2) blocs.push(lignes.slice(index, index + 2).join("\n"));
+    for (let index = 0; index < lignes.length; index += 2) {
+      blocs.push({ text: lignes.slice(index, index + 2).join("\n"), phrase });
+    }
   }
   return blocs;
+}
+
+function motsDe(texte) {
+  return texte
+    .replaceAll("\n", " ")
+    .replaceAll("\u00a0", " ")
+    .replace(/[.!?]+/g, " ")
+    .trim()
+    .split(/\s+/)
+    .filter(Boolean);
+}
+
+function estNombreSeul(texte) {
+  const nu = texte.replaceAll("\n", " ").replaceAll("\u00a0", " ").replace(/[.!?]+$/g, "").trim();
+  return /^(?:\d+(?:[.,]\d+)?|\d+(?:[.,]\d+)?\s*×\s*10[⁻⁰¹²³⁴⁵⁶⁷⁸⁹]+|10[⁻⁰¹²³⁴⁵⁶⁷⁸⁹]+)$/.test(nu);
+}
+
+function aEcarter(cue) {
+  if (cue.fin - cue.debut < 1 - 1e-6) return true;
+  const mots = motsDe(cue.text);
+  if (motsDe(cue.phrase).length <= 1 && mots.length <= 1) return false;
+  if (mots.length <= 1) return true;
+  return estNombreSeul(cue.text);
+}
+
+function fusionner(cues) {
+  const suite = cues.map((cue) => ({ ...cue }));
+  let encore = true;
+  while (encore) {
+    encore = false;
+    const index = suite.findIndex((cue) => aEcarter(cue));
+    if (index < 0) break;
+    let vers = -1;
+    if (index > 0 && aEcarter(suite[index - 1])) vers = index - 1;
+    else if (index + 1 < suite.length && aEcarter(suite[index + 1])) vers = index + 1;
+    else if (index > 0) vers = index - 1;
+    else if (index + 1 < suite.length) vers = index + 1;
+    if (vers < 0) break;
+    const cible = Math.min(index, vers);
+    const source = Math.max(index, vers);
+    suite[cible] = {
+      debut: suite[cible].debut,
+      fin: suite[source].fin,
+      text: `${suite[cible].text}\n${suite[source].text}`,
+      beat: suite[cible].beat,
+      phrase: `${suite[cible].phrase} ${suite[source].phrase}`,
+    };
+    suite.splice(source, 1);
+    encore = true;
+  }
+  return suite;
 }
 
 export function sousTitresNarration(lignes, chapitre, durees) {
@@ -327,14 +380,16 @@ export function sousTitresNarration(lignes, chapitre, durees) {
       const blocs = blocsDe(paragraphe.brut);
       const debut = origine + pose.at;
       const fin = origine + pose.fin;
-      const poids = blocs.map((bloc) => Math.max(bloc.replaceAll("\n", "").length, 1));
+      const poids = blocs.map((bloc) => Math.max(bloc.text.replaceAll("\n", "").length, 1));
       const total = poids.reduce((somme, poidsBloc) => somme + poidsBloc, 0);
       let curseur = debut;
-      blocs.forEach((text, index) => {
+      const posesBloc = blocs.map((bloc, index) => {
         const prochain = index === blocs.length - 1 ? fin : curseur + ((fin - debut) * poids[index]) / total;
-        cues.push({ debut: curseur, fin: prochain, text, beat: beat.id });
+        const cue = { debut: curseur, fin: prochain, text: bloc.text, beat: beat.id, phrase: bloc.phrase };
         curseur = prochain;
+        return cue;
       });
+      cues.push(...fusionner(posesBloc));
     }
     origine += ligne.slot;
   }
