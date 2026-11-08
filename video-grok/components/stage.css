@@ -262,14 +262,15 @@ body {
 
 .floor-line {
   position: absolute;
-  top: 0;
-  bottom: 0;
-  border-left: 4px dashed #c98a00;
+  top: -12px;
+  bottom: -12px;
+  width: 4px;
+  background: repeating-linear-gradient(to bottom, #c98a00 0 10px, transparent 10px 16px);
 }
 
 .bar-row {
   display: grid;
-  grid-template-columns: 48px 1fr 90px;
+  grid-template-columns: max-content minmax(160px, 1fr) max-content;
   align-items: center;
   gap: 16px;
   height: 52px;
@@ -284,6 +285,7 @@ body {
 }
 
 .bar-track {
+  position: relative;
   display: block;
   height: 28px;
   background: rgb(107 122 140 / 35%);

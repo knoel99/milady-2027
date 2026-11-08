@@ -103,7 +103,12 @@ const parsers = {
     const rows = layer.rows.map((row) => {
       if (!ROLES.has(row.role)) fail("graphe", "rôle inconnu");
       if (!Number.isFinite(row.value) || row.value <= 0) fail("graphe", "valeur positive");
-      return { name: text(row.name), value: row.value, role: row.role };
+      return {
+        name: text(row.name),
+        value: row.value,
+        role: row.role,
+        label: row.label == null ? null : text(row.label),
+      };
     });
     if (layer.log === true && rows.some((row) => row.value <= 0)) fail("graphe", "logarithme");
     if (layer.seeds != null && layer.seeds !== 1 && layer.seeds !== 2) fail("graphe", "une ou deux graines");
@@ -283,6 +288,7 @@ function barView(layer) {
       name: row.name,
       value: row.value,
       role: row.role,
+      label: row.label ?? String(row.value),
       color: PALETTE.role[row.role],
       fraction: rowFractions[index],
     })),
@@ -299,7 +305,7 @@ function logFractions(samples) {
   const lo = Math.min(...logs);
   const hi = Math.max(...logs);
   const span = hi - lo || 1;
-  return logs.map((value) => (value - lo) / span);
+  return logs.map((value) => (value - lo + 1) / (span + 1));
 }
 
 function fieldView(seed, frame, quantity) {

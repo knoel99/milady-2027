@@ -136,11 +136,6 @@ function paintBars(bars) {
     box.append(legend);
   }
   const plot = el("div", "plot");
-  if (bars.floor) {
-    const mark = el("div", "floor-line");
-    mark.style.left = `${bars.floor.fraction * 100}%`;
-    plot.append(mark);
-  }
   for (const row of bars.rows) {
     const line = el("div", "bar-row");
     line.append(el("span", "bar-name", row.name));
@@ -149,8 +144,13 @@ function paintBars(bars) {
     fill.style.width = `${row.fraction * 100}%`;
     fill.style.background = row.color;
     track.append(fill);
+    if (bars.floor) {
+      const mark = el("span", "floor-line");
+      mark.style.left = `${bars.floor.fraction * 100}%`;
+      track.append(mark);
+    }
     line.append(track);
-    line.append(el("span", "bar-value", String(row.value)));
+    if (!bars.schematic) line.append(el("span", "bar-value", row.label));
     plot.append(line);
   }
   box.append(plot);
