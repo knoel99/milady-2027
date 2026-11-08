@@ -129,7 +129,7 @@ test("les sous-titres sont des extraits du script, et la carte est q.g10", () =>
 const CAVEAT_EN =
   "E2 is two-dimensional and forced. One seed. The tests are interpolation. This is not a dynamo.";
 const CAVEAT_FR =
-  "E2 est bidimensionnel et forcé. Une graine. Les tests sont de l’interpolation. Ce n’est pas une dynamo.";
+  "E2 est bidimensionnel et forcé. Une seule graine aléatoire a été testée. Les tests portent sur des valeurs intermédiaires dans la plage d’entraînement. Ce n’est pas une dynamo.";
 
 test("le caveat de g10.law reste sans voix", async () => {
   assert.equal(slots.slots.length, 2);
@@ -153,7 +153,7 @@ test("le caveat de g10.law reste sans voix", async () => {
 test("les deux créneaux du caveat disent les trois limites", async () => {
   const points = {
     en: [/One seed/, /interpolation/, /not a dynamo/],
-    fr: [/Une graine/, /interpolation/, /pas une dynamo/],
+    fr: [/Une seule graine aléatoire/, /valeurs intermédiaires dans la plage d’entraînement/, /pas une dynamo/],
   };
   const expected = { en: CAVEAT_EN, fr: CAVEAT_FR };
   for (const lang of ["en", "fr"]) {
