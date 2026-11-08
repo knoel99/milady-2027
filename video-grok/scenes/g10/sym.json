@@ -1,0 +1,69 @@
+{
+  "id": "g10.sym",
+  "width": 1920,
+  "height": 1080,
+  "fps": 30,
+  "duration": 30,
+  "seed": 20261108,
+  "cues": [
+    { "id": "cue.g10.sym.show", "at": 0 },
+    { "id": "cue.g10.sym.sign", "at": 6 },
+    { "id": "cue.g10.sym.equivariance", "at": 12 },
+    { "id": "cue.g10.sym.budget", "at": 18 },
+    { "id": "cue.g10.sym.weights", "at": 24 },
+    { "id": "cue.g10.sym.end", "at": 30 }
+  ],
+  "layers": [
+    { "kind": "matter", "at": "cue.g10.sym.show", "matter": "night" },
+    {
+      "kind": "badge",
+      "badge": "PROVED",
+      "primary": true,
+      "from": "cue.g10.sym.show",
+      "until": "cue.g10.sym.end"
+    },
+    { "kind": "level", "level": "L3", "from": "cue.g10.sym.show", "until": "cue.g10.sym.end" },
+    {
+      "kind": "subtitle",
+      "from": "cue.g10.sym.show",
+      "until": "cue.g10.sym.sign",
+      "text": "Changing the sign of the magnetic"
+    },
+    {
+      "kind": "subtitle",
+      "from": "cue.g10.sym.sign",
+      "until": "cue.g10.sym.equivariance",
+      "text": "field B is a symmetry of the law."
+    },
+    {
+      "kind": "subtitle",
+      "from": "cue.g10.sym.equivariance",
+      "until": "cue.g10.sym.budget",
+      "text": "Equivariance holds that symmetry"
+    },
+    {
+      "kind": "subtitle",
+      "from": "cue.g10.sym.budget",
+      "until": "cue.g10.sym.weights",
+      "text": "Budget identities do not set the"
+    },
+    {
+      "kind": "subtitle",
+      "from": "cue.g10.sym.weights",
+      "until": "cue.g10.sym.end",
+      "text": "weights of the two polarities."
+    },
+    { "kind": "field", "from": "cue.g10.sym.show", "until": "cue.g10.sym.end", "quantity": "B" },
+    {
+      "kind": "bars",
+      "from": "cue.g10.sym.show",
+      "until": "cue.g10.sym.end",
+      "title": "Sign of B",
+      "schematic": true,
+      "rows": [
+        { "name": "+B", "value": 1, "role": "field" },
+        { "name": "-B", "value": 1, "role": "field" }
+      ]
+    }
+  ]
+}

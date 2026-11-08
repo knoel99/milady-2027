@@ -60,6 +60,20 @@ Le pilote est sur `grok/video-pilot`, fichiers :
 - `video-grok/scenes/g10/card.html` (extrait de 8 s, pas le chapitre)
 - `video-grok/scenes/g10/README.md` (comment les repères sont branchés, y compris le caveat oral)
 
+Le film du pilote est une commande. Le cache Fish est déjà rempli. La commande ne contacte pas Fish.
+
+```bash
+node tools/film.mjs --chapter g10 --cache tools/.cache/fish --sortie g10-pilote.mp4
+```
+
+Elle lit les huit beats dans `narration/en/g10.md`, aux durées de `PLAN.md` : classes 45 s, hard 43 s, sym 30 s, law 39 s, sample 41 s, bias 25 s, close 17 s, card 8 s. La somme est 248 s. Elle capture chaque scène, puis elle appelle le même assemblage que `node tools/tts.mjs --chapter g10 --rendre` et place les deux pistes dans le mp4. La première piste porte la langue `eng`. La seconde porte la langue `fra`.
+
+Le document de `sample` dure 40 s. Son créneau reste 41 s. La commande tient la dernière image pendant la seconde qui reste.
+
+`scenes/g10/cues.json` n'est pas réécrit. Les chemins du cache restent dans un fichier temporaire.
+
+Si les huit images existent déjà, nommez-les `classes.mp4`, `hard.mp4`, `sym.mp4`, `law.mp4`, `sample.mp4`, `bias.mp4`, `close.mp4` et `card.mp4`, puis passez leur dossier avec `--clips`. Chaque image est tenue jusqu'à la durée de son créneau.
+
 Critères de sortie du pilote, tous obligatoires :
 
 1. `seek` déterministe : deux captures du même repère, même image.

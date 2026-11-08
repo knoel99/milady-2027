@@ -1,0 +1,50 @@
+{
+  "id": "g10.close",
+  "width": 1920,
+  "height": 1080,
+  "fps": 30,
+  "duration": 17,
+  "seed": 20261108,
+  "cues": [
+    { "id": "cue.g10.close.show", "at": 0 },
+    { "id": "cue.g10.close.zero", "at": 4 },
+    { "id": "cue.g10.close.anchor", "at": 8 },
+    { "id": "cue.g10.close.states", "at": 12 },
+    { "id": "cue.g10.close.prove", "at": 15 },
+    { "id": "cue.g10.close.end", "at": 17 }
+  ],
+  "layers": [
+    { "kind": "matter", "at": "cue.g10.close.show", "matter": "night" },
+    { "kind": "level", "level": "L3", "from": "cue.g10.close.show", "until": "cue.g10.close.end" },
+    {
+      "kind": "subtitle",
+      "from": "cue.g10.close.show",
+      "until": "cue.g10.close.zero",
+      "text": "No mass at zero means zero"
+    },
+    {
+      "kind": "subtitle",
+      "from": "cue.g10.close.zero",
+      "until": "cue.g10.close.anchor",
+      "text": "landing exactly on zero."
+    },
+    {
+      "kind": "subtitle",
+      "from": "cue.g10.close.anchor",
+      "until": "cue.g10.close.states",
+      "text": "Anchoring limits how far"
+    },
+    {
+      "kind": "subtitle",
+      "from": "cue.g10.close.states",
+      "until": "cue.g10.close.prove",
+      "text": "This chapter states the propositions."
+    },
+    {
+      "kind": "subtitle",
+      "from": "cue.g10.close.prove",
+      "until": "cue.g10.close.end",
+      "text": "It does not prove them."
+    }
+  ]
+}

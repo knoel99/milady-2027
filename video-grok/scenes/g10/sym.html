@@ -1,0 +1,17 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <title>g10.sym</title>
+    <link rel="stylesheet" href="../../components/stage.css" />
+  </head>
+  <body>
+    <div id="stage"></div>
+    <script type="module">
+      import scene from "./sym.json" with { type: "json" };
+      import { mount } from "../../engine/runtime.js";
+
+      mount(scene, document.querySelector("#stage"));
+    </script>
+  </body>
+</html>
