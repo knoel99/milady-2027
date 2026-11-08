@@ -1,0 +1,41 @@
+<!doctype html>
+<html lang="en"><head><meta charset="utf-8">
+<title>X1.Q Question for the supervisors</title>
+<link rel="stylesheet" href="../../vendor/katex/katex.min.css">
+<link rel="stylesheet" href="../../runtime/theme.css">
+<link rel="stylesheet" href="X1.css">
+<script src="../../vendor/katex/katex.min.js"></script>
+<script src="../../runtime/scene.js"></script>
+<script src="../../runtime/components/kit.js"></script>
+<script src="../../runtime/components/hud.js"></script>
+<script src="../../runtime/components/plot.js"></script>
+<script src="../../runtime/components/equation.js"></script>
+<script src="../../runtime/components/motifs.js"></script>
+<script src="../../runtime/components/cards.js"></script>
+<script src="../../runtime/components/field.js"></script>
+<script src="X1_kit.js"></script>
+<style>
+  /* WORKAROUND (kit issue: questionCard does not fit a three-line question): smaller question and rows */
+  .kit-qcard .qc-q { font-size: 46px !important; }
+</style>
+</head><body><div id="stage"></div>
+<script>
+/* X1.Q question card (no claim, no badge). Text from the script's "question"; behind it at 10 %, a schematic texture
+   echoing the X1.3 zoom (a dashed zero line, three marks straddling it, a wobbling line; no labels, no data). */
+Scene.define({
+  duration: 9, register: 'night',
+  cues: { q: 0.5 },
+  params: { backdrop: { opacity: 0.1 } },
+  setup(ctx) {
+    const K = Kit, P = ctx.params;
+    window.__EVENTS__ = [{ t: +Math.max(0, ctx.at('q') - 0.2).toFixed(3), id: 'chime', gain_db: -22 }];
+    const svg = K.svgLayer(ctx, 2), bg = K.s('g', { opacity: P.backdrop.opacity }, svg);
+    K.s('line', { x1: 200, x2: 1720, y1: 560, y2: 560, stroke: K.c('fg'), 'stroke-width': 5, 'stroke-dasharray': '20 14' }, bg);
+    K.s('circle', { cx: 860, cy: 500, r: 18, fill: K.c('b') }, bg); K.s('circle', { cx: 960, cy: 610, r: 18, fill: 'none', stroke: K.c('b'), 'stroke-width': 5 }, bg); K.s('rect', { x: 1042, y: 662, width: 36, height: 36, fill: K.c('chalk') }, bg);
+    let d = ''; for (let i = 0; i <= 200; i++) { const x = 200 + 7.6 * i; d += (i ? 'L' : 'M') + x + ',' + (860 - 2.2 * i - 30 * Math.sin(i / 8)).toFixed(1); } K.s('path', { d, fill: 'none', stroke: K.c('matter'), 'stroke-width': 5 }, bg);
+    ctx.bgG = bg;
+    K.questionCard(ctx, { chapter: 'X1', category: 'runs', at: -0.4, whyAt: 'q+2.4', unblocksAt: 'q+4.6' });
+  },
+  render(t, ctx) { ctx.bgG.setAttribute('transform', `translate(${(-6 * Math.sin(2 * Math.PI * t / 9)).toFixed(2)} 0)`); },
+});
+</script></body></html>

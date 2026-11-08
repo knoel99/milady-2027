@@ -1,0 +1,119 @@
+<!doctype html>
+<html lang="en"><head><meta charset="utf-8">
+<title>X1.3 How sure are the thresholds?</title>
+<link rel="stylesheet" href="../../vendor/katex/katex.min.css">
+<link rel="stylesheet" href="../../runtime/theme.css">
+<link rel="stylesheet" href="X1.css">
+<script src="../../vendor/katex/katex.min.js"></script>
+<script src="../../runtime/scene.js"></script>
+<script src="../../runtime/components/kit.js"></script>
+<script src="../../runtime/components/hud.js"></script>
+<script src="../../runtime/components/plot.js"></script>
+<script src="../../runtime/components/equation.js"></script>
+<script src="../../runtime/components/motifs.js"></script>
+<script src="../../runtime/components/cards.js"></script>
+<script src="../../runtime/components/field.js"></script>
+<script src="X1_kit.js"></script>
+</head><body><div id="stage"></div>
+<script>
+/* X1.3 How sure are the thresholds? (L4, NIGHT, MEASURED: E3 32³ and two 48³ checks). Every value from
+   data/e3_growth.json: long fit (series[0], second half; the file's series name is wrong and never shown), late fit
+   (series[1], last quarter), the two 48³ checks, thresholds, divergence range. The ln‖B‖ pictogram is SCHEMATIC. */
+Scene.define({
+  duration: 51, register: 'night',
+  cues: { fits: 0.4, grid: 7.6, predict: 12.6, split: 18.8, edge: 23.4, why: 30.0, div: 35.2, bet: 38.6 },
+  data: { e3: 'data/e3_growth.json' },
+  params: {},
+  setup(ctx) {
+    const K = Kit, S = Scene, P = ctx.params, E3 = ctx.data.e3, xs = E3.x.values, yl = E3.series[P.series.long.index].y, yq = E3.series[P.series.late.index].y;
+    K.badge(ctx, { kind: 'MEASURED', note: 'E3 · 32³ and two 48³ checks · fits over the second half and the last quarter', at: -0.3 });
+    XK.title(ctx, 'How sure are the thresholds?', 'fits-0.15', { x: 140, y: P.title_y - 24 });
+    // pictogram (schematic)
+    const PG = P.pictogram, svg = K.svgLayer(ctx, 12), pg = K.s('g', {}, svg), wr = S.rng(PG.wobble.seed);
+    const phs = wr() * 6.28, path = (amp) => { let d = ''; for (let i = 0; i <= 120; i++) { const tt = PG.t_max * i / 120, x = PG.x0 + (PG.x1 - PG.x0) * tt / PG.t_max, y = PG.y1 - 20 - (PG.y1 - PG.y0 - 50) * tt / PG.t_max + amp * Math.sin(2 * Math.PI * tt / (PG.t_max * PG.wobble.period_frac) + phs); d += (i ? 'L' : 'M') + x.toFixed(1) + ',' + y.toFixed(1); } return d; };
+    K.s('line', { x1: PG.x0, x2: PG.x1, y1: PG.y1, y2: PG.y1, stroke: K.c('muted'), 'stroke-width': 2 }, pg);
+    K.s('line', { x1: PG.x0, x2: PG.x0, y1: PG.y1, y2: PG.y0, stroke: K.c('muted'), 'stroke-width': 2 }, pg);
+    const wob = K.s('path', { d: path(PG.wobble.amp_px), fill: 'none', stroke: K.c('matter'), 'stroke-width': 3 }, pg);
+    const fx = (tt) => PG.x0 + (PG.x1 - PG.x0) * tt / PG.t_max, fy = (tt) => PG.y1 - 20 - (PG.y1 - PG.y0 - 50) * tt / PG.t_max;
+    K.s('line', { x1: fx(PG.long_from), y1: fy(PG.long_from) + 14, x2: fx(PG.t_max), y2: fy(PG.t_max) + 14, stroke: K.c('chalk'), 'stroke-width': 4 }, pg);
+    K.s('line', { x1: fx(PG.late_from), y1: fy(PG.late_from) - 14, x2: fx(PG.t_max), y2: fy(PG.t_max) - 14, stroke: K.c('chalk'), 'stroke-width': 4, 'stroke-dasharray': '8 6' }, pg);
+    K.s('text', { x: PG.x0 + 8, y: PG.y0 + 4, class: 'kt-tick' }, pg, 'ln‖B‖'); K.s('text', { x: PG.x1 + 8, y: PG.y1 + 8, class: 'kt-tick' }, pg, 't');
+    XK.timed(ctx, pg, 'fits-0.15', 'div-0.15');
+    K.chip(ctx, { text: 'pictogram · not data', kind: 'schematic', x: PG.x0 + 120, y: PG.y0 - 44, at: 'fits', out: 'why-0.15' });
+    XK.lab(ctx, 'illustration · published: modes oscillate, ω ≈ 0.53 (Bouya & Dormy 2013) · cause not verified', 120, 780, { w: 900, cls: 'small', color: 'muted', at: 'why-0.15', out: 'div-0.15' });
+    // main plot and zoom plot
+    const PP = P.plot, box = Object.assign({}, PP.box, { x1: 1300 });
+    const mk = (xr, yr, at, out, xt, yt) => K.plot(ctx, { box, at, out, x: { label: PP.x.label, min: xr[0], max: xr[1], ticks: xt, param: true }, y: { label: PP.y.label, min: yr[0], max: yr[1], ticks: yt } });
+    const series = (PL, at) => { const inR = (i) => yl[i] >= PL.Y.min && yl[i] <= PL.Y.max && xs[i] >= PL.X.min && xs[i] <= PL.X.max;
+      const idx = xs.map((x, i) => i).filter(inR);
+      PL.curve({ x: idx.map((i) => xs[i]), y: idx.map((i) => yl[i]), field: 'b', at, dur: 0.01, width: 3 }); PL.dots({ x: idx.map((i) => xs[i]), y: idx.map((i) => yl[i]), field: 'b', at, dur: 0.01, r: 6 });
+      const iq = xs.map((x, i) => i).filter((i) => yq[i] >= PL.Y.min && yq[i] <= PL.Y.max && xs[i] >= PL.X.min && xs[i] <= PL.X.max);
+      const c2 = PL.curve({ x: iq.map((i) => xs[i]), y: iq.map((i) => yq[i]), field: 'fg-2', kind: 'generated', at, dur: 0.01, width: 2 }); void c2;
+      PL.dots({ x: iq.map((i) => xs[i]), y: iq.map((i) => yq[i]), field: 'fg-2', filled: iq.map(() => false), at, dur: 0.01, r: 6 });
+      PL.hline({ y: 0, kind: 'zero', at }); };
+    const T = E3.thresholds;
+    const P1 = mk([PP.x.min, PP.x.max], [PP.y.min, PP.y.max], 'fits-0.15', 'predict-0.15', PP.x.ticks, PP.y.ticks);
+    P1.band({ x: [T[0], T[1]], kind: 'window', at: 'fits' }); P1.band({ x: [T[2], PP.x.max], kind: 'window', at: 'fits' }); series(P1, 'fits-0.15');
+    const P3 = mk([PP.x.min, PP.x.max], [PP.y.min, PP.y.max], 'edge-0.15', undefined, PP.x.ticks, PP.y.ticks);
+    P3.band({ x: [T[0], T[1]], kind: 'window', at: 'edge' }); P3.band({ x: [T[2], PP.x.max], kind: 'window', at: 'edge' }); series(P3, 'edge-0.15');
+    const ZP = P.zoom, P2 = mk(ZP.x, ZP.y, 'predict-0.15', 'edge-0.15', [16.5, 17, 17.5, 18, 18.5], [-0.003, 0, 0.003]); series(P2, 'predict-0.15');
+    const below = xs.filter((x, i) => yl[i] < PP.y.min);
+    [P1, P3].forEach((PL) => below.forEach((x) => K.s('path', { d: `M${PL.sx(x)},${box.y1 - 30} l0,22 m-8,-10 l8,10 l8,-10`, fill: 'none', stroke: K.c('b'), 'stroke-width': 3 }, PL.root)));
+    K.chip(ctx, { text: `${below.length} points below the scale: Rm ${below.join(', ')}`, kind: 'plain', x: box.x0 + 20, y: box.y1 - 70, at: 'fits+0.4', out: 'predict-0.15' });
+    XK.lab(ctx, '{b}●{/} long fit · second half     ○ late fit · last quarter', 140, 182, { cls: 'small', at: 'fits+0.3' });
+    // 48³ checks
+    const N48 = E3.convergence_N48, c12 = N48.find((c) => Math.abs(c.Rm - 12) < 1e-9), c175 = N48.find((c) => Math.abs(c.Rm - 17.5) < 1e-9);
+    const sq = (PL, c, at, out) => { const r = K.s('rect', { x: PL.sx(c.Rm) - 8, y: PL.sy(c.lambda_N48) - 8, width: 16, height: 16, fill: K.c('chalk') }, PL.root); XK.timed(ctx, r, at, out); return r; };
+    sq(P1, c12, 'grid-0.15'); sq(P3, c12, 'edge-0.15'); sq(P3, c175, 'edge-0.15');
+    XK.lab(ctx, '48³ check', P1.sx(12) + 18, P1.sy(c12.lambda_N48) - 60, { cls: 'small', at: 'grid', out: 'predict-0.15' });
+    K.pen(ctx, { kind: 'circle', box: { x: P1.sx(12) - 14, y: P1.sy(c12.lambda_N48) - 22, w: 28, h: 44 }, at: 'grid+1.0', out: 'predict-0.15' });
+    XK.lab(ctx, 'agree', P1.sx(12) - 30, P1.sy(c12.lambda_N48) - 100, { anchor: 'r', color: 'chalk', at: 'grid+1.3', out: 'predict-0.15' });
+    K.lowerThird(ctx, { kind: 'source', data: E3, at: 'grid+0.4', hold: 4 });
+    // predict / split on the zoom plot
+    const PR = P.predict, i175 = xs.findIndex((x) => Math.abs(x - 17.5) < 1e-9), vals = [yl[i175], yq[i175], c175.lambda_N48];
+    const card = XK.lab(ctx, `PREDICT · ${PR.question}`, 420, 240, { cls: 'big', at: 'predict-0.15', out: 'split+1.6', color: 'chalk' });
+    XK.lab(ctx, PR.answer, 420, 240, { cls: 'big', at: 'split+1.6', out: 'edge-0.15', color: 'chalk' });
+    void card;
+    const sx = P2.sx(17.5), slots = [-80, 0, 80];
+    const tS = ctx.script.sentences ? null : null; void tS;
+    const sm = vals.map((v, k) => { const g = K.s('g', {}, P2.root), tl = XK.frac(ctx, 'split', P.split_fracs[k], 3 * P.split_fracs[k]);
+      if (k === 2) K.s('rect', { x: sx + slots[k] - 9, y: P2.sy(v) - 9, width: 18, height: 18, fill: K.c('chalk') }, g);
+      else K.s('circle', { cx: sx + slots[k], cy: P2.sy(v), r: 9, fill: k === 0 ? K.c('b') : K.c('bg'), stroke: K.c('b'), 'stroke-width': 3 }, g);
+      XK.timed(ctx, g, tl, 'edge-0.15', { raw: true, dy: -40 });
+      XK.lab(ctx, `${PR.slots[k]} · ${K.fmt(v, 2)}`, sx + slots[k] + (k === 1 ? -20 : k === 2 ? 20 : 0), P2.sy(v) + (v > 0 ? -60 : 0), { anchor: k === 1 ? 'r' : k === 2 ? 'l' : 'c', cls: 'small halo', at: tl + 0.2, raw: true, out: 'edge-0.15', z: 32 });
+      return { t: tl }; });
+    window.__EVENTS__ = sm.map((m) => ({ t: +(m.t + 0.3).toFixed(3), id: 'tick', gain_db: -22 }));
+    // edge: brackets and the gap between the fits
+    const brk = (PL, c, hw, lab, at) => { const p = K.s('path', { d: `M${PL.sx(c - hw)},${box.y0 + 20} l0,-12 L${PL.sx(c + hw)},${box.y0 + 8} l0,12`, fill: 'none', stroke: K.c('chalk'), 'stroke-width': 3 }, PL.root); XK.timed(ctx, p, at, null);
+      XK.lab(ctx, lab, PL.sx(c), box.y0 - 44, { anchor: 'c', cls: 'small', at }); };
+    brk(P3, P.brackets[0].centre, P.brackets[0].half_width, P.brackets[0].label, 'edge+0.4');
+    brk(P3, T[2], P.brackets[1].half_width, P.brackets[1].label, 'edge+0.8');
+    const GB = P.gap_band, ig = xs.map((x, i) => i).filter((i) => xs[i] >= GB.x[0] && xs[i] <= GB.x[1]);
+    const gd = 'M' + ig.map((i) => `${P3.sx(xs[i]).toFixed(1)},${P3.sy(yl[i]).toFixed(1)}`).join('L') + 'L' + ig.slice().reverse().map((i) => `${P3.sx(xs[i]).toFixed(1)},${P3.sy(yq[i]).toFixed(1)}`).join('L') + 'Z';
+    const gap = K.s('path', { d: gd, fill: K.rgba(K.c('muted'), 0.35) }, P3.root); XK.timed(ctx, gap, 'edge+1.2', null);
+    const maxGap = Math.max(...ig.map((i) => Math.abs(yl[i] - yq[i])));
+    XK.lab(ctx, `fits differ by up to ${K.fmt(maxGap, 1)}`, P3.sx(23), P3.sy(-0.009), { anchor: 'c', cls: 'small', at: 'edge+1.3' });
+    K.pen(ctx, { kind: 'circle', box: { x: P3.sx(17.5) - 16, y: P3.sy(0) - 24, w: 32, h: 48 }, at: 'edge+0.2' });
+    // div gauge (replaces the pictogram)
+    const DG = P.div_gauge, lg = (v) => DG.x0 + (DG.x1 - DG.x0) * (Math.log10(v) - Math.log10(DG.min)) / (Math.log10(DG.max) - Math.log10(DG.min)), dg = K.s('g', {}, svg);
+    const dmin = Math.min(...E3.div_rel), dmax = Math.max(...E3.div_rel);
+    K.s('line', { x1: DG.x0, x2: DG.x1, y1: DG.y, y2: DG.y, stroke: K.c('muted'), 'stroke-width': 2 }, dg);
+    DG.ticks.forEach((v) => { K.s('line', { x1: lg(v), x2: lg(v), y1: DG.y, y2: DG.y + 10, stroke: K.c('muted'), 'stroke-width': 2 }, dg); K.s('text', { x: lg(v), y: DG.y + 44, 'text-anchor': 'middle', class: 'kt-tick' }, dg, K.pow10(v)); });
+    K.s('rect', { x: lg(dmin), y: DG.y - 26, width: lg(dmax) - lg(dmin), height: 20, fill: K.c('b') }, dg);
+    K.s('line', { x1: lg(DG.ref.value), x2: lg(DG.ref.value), y1: DG.y - 40, y2: DG.y + 4, stroke: K.c('chalk'), 'stroke-width': 3 }, dg);
+    XK.timed(ctx, dg, 'div-0.15', null);
+    XK.lab(ctx, DG.label, DG.x0, DG.y - 110, { cls: 'small', at: 'div' });
+    XK.lab(ctx, DG.ref.label, lg(DG.ref.value) + 10, DG.y - 70, { cls: 'small', color: 'chalk', at: 'div+0.3' });
+    // bet preview
+    const bf = K.s('rect', { x: P3.sx(P.bet_preview.band[0]), y: box.y0, width: P3.sx(P.bet_preview.band[1]) - P3.sx(P.bet_preview.band[0]), height: box.y1 - box.y0, fill: 'none', stroke: K.c('muted'), 'stroke-width': 3, 'stroke-dasharray': '12 8' }, P3.root);
+    XK.timed(ctx, bf, 'bet-0.15', null);
+    K.chip(ctx, { text: P.bet_preview.tag, kind: 'schematic', x: P3.sx(P.bet_preview.band[1]) + 16, y: box.y0 + 20, at: 'bet' });
+    K.formulaLayer(ctx, { label: 'Formula · R:1066, R:1099, R:1114, R:1118' });
+    ctx.x13 = { wob, path, PG, tW: ctx.at('why-0.15') };
+  },
+  render(t, ctx) {
+    const S = Scene, c = ctx.x13, w = S.seg(t, c.tW, c.tW + 1.0, S.ease.inOutSine);
+    if (w > 0) c.wob.setAttribute('d', c.path(c.PG.wobble.amp_px + (c.PG.wobble.grow_to_px - c.PG.wobble.amp_px) * w));
+  },
+});
+</script></body></html>

@@ -1,0 +1,112 @@
+<!doctype html>
+<html lang="en"><head><meta charset="utf-8">
+<title>X1.2 The mode in 3D</title>
+<link rel="stylesheet" href="../../vendor/katex/katex.min.css">
+<link rel="stylesheet" href="../../runtime/theme.css">
+<link rel="stylesheet" href="X1.css">
+<script src="../../vendor/katex/katex.min.js"></script>
+<script src="../../runtime/scene.js"></script>
+<script src="../../runtime/components/kit.js"></script>
+<script src="../../runtime/components/hud.js"></script>
+<script src="../../runtime/components/plot.js"></script>
+<script src="../../runtime/components/equation.js"></script>
+<script src="../../runtime/components/motifs.js"></script>
+<script src="../../runtime/components/cards.js"></script>
+<script src="../../runtime/components/field.js"></script>
+<script src="X1_kit.js"></script>
+</head><body><div id="stage"></div>
+<script>
+/* X1.2 The mode in 3D (L4, NIGHT, MEASURED: E3 stored snapshots, 32³). AS BUILT as a flat scene: the dominant modes
+   of data/e3_modes.json (|B| on 32³, normalised) shown as maximum projections along z, with the |B| = ½ contour, the
+   Rm strip (window from data/e3_growth.json thresholds), grows / fades from the sign of s (e3_growth long fit), and
+   the eight stagnation points of the ABC flow with |B| read at each one from the stored 32³ field. No Three.js, no
+   new data file (see the build report). */
+Scene.define({
+  duration: 48, register: 'night',
+  cues: { left: 0.4, draw: 5.4, eight: 8.6, inside: 10.4, past: 14.4, tubes: 17.0, still: 21.6, wider: 24.6, published: 26.6, target: 32.6 },
+  data: { modes: 'data/e3_modes.json', e3: 'data/e3_growth.json' },
+  params: {},
+  setup(ctx) {
+    const K = Kit, S = Scene, P = ctx.params, MD = ctx.data.modes, E3 = ctx.data.e3, LY = P.layout;
+    K.badge(ctx, { kind: 'MEASURED', note: 'E3 · stored snapshots, 32³ · cigar tubes and symmetries published (context); symmetries not checked', at: -0.3 });
+    XK.title(ctx, 'The mode in 3D', 'left-0.15', { y: 110, out: 'tubes-0.15' });
+    const keys = P.thumb_order, N = 32, proj = {}, atS = {};
+    const sF = (rm) => { const i = E3.x.values.findIndex((v) => Math.abs(v - rm) < 1e-9); return E3.series[0].y[i]; };
+    const stag = [[1, 5, 3], [1, 7, 5], [3, 1, 5], [3, 3, 3], [5, 1, 7], [5, 3, 1], [7, 5, 1], [7, 7, 7]].map((p) => p.map((v) => v / 8));
+    keys.forEach((k) => { const b = S.f32(MD.modes[k].babs), pr = new Float32Array(N * N);
+      for (let i = 0; i < N; i++) for (let j = 0; j < N; j++) { let m = 0; for (let l = 0; l < N; l++) m = Math.max(m, b[(i * N + j) * N + l]); pr[i * N + j] = m; }
+      proj[k] = pr; atS[k] = stag.map((f) => { const ix = f.map((v) => Math.round(v * N) % N); return b[(ix[0] * N + ix[1]) * N + ix[2]]; }); });
+    const label = (k) => `Rm ${MD.modes[k].Rm} · ${sF(MD.modes[k].Rm) > 0 ? 'grows' : 'fades'}`;
+    // contour at 0.5 on a projection (marching squares), as an SVG path in a box
+    const contour = (pr, x0, y0, sz) => { let d = ''; const c = sz / N, L = P.iso_level;
+      for (let i = 0; i < N - 1; i++) for (let j = 0; j < N - 1; j++) { const v = [pr[i * N + j], pr[i * N + j + 1], pr[(i + 1) * N + j + 1], pr[(i + 1) * N + j]], cr = [[j, i], [j + 1, i], [j + 1, i + 1], [j, i + 1]], pts = [];
+        for (let e = 0; e < 4; e++) { const p = v[e] - L, q = v[(e + 1) % 4] - L; if (p * q < 0) { const w = p / (p - q), A = cr[e], B = cr[(e + 1) % 4]; pts.push([x0 + (A[0] + w * (B[0] - A[0]) + 0.5) * c, y0 + (A[1] + w * (B[1] - A[1]) + 0.5) * c]); } }
+        if (pts.length >= 2) d += `M${pts[0][0].toFixed(1)},${pts[0][1].toFixed(1)}L${pts[1][0].toFixed(1)},${pts[1][1].toFixed(1)}`; } return d; };
+    // big view: four stacked maps, crossfaded
+    const BB = LY.big_box, bs = 540, bx = BB.x0 + 60, by = BB.y0 + 20, svg = K.svgLayer(ctx, 14), big = {};
+    const bigWrap = K.el('div', { class: 'kit-layer' }, ctx.stage); bigWrap.style.zIndex = 6;
+    keys.forEach((k) => { const w = K.el('div', { class: 'kit-layer' }, bigWrap); K.fieldMap(ctx, { grid: proj[k], nx: N, ny: N, kind: 'b', vmax: 1, x: bx, y: by, w: bs, h: bs, parent: w });
+      const cp = K.s('path', { d: contour(proj[k], bx, by, bs), fill: 'none', stroke: K.c('chalk'), 'stroke-width': 2 }, svg); big[k] = { w, cp }; });
+    const frame = K.s('rect', { x: bx, y: by, width: bs, height: bs, fill: 'none', stroke: K.c('infra'), 'stroke-width': 2 }, svg);
+    XK.timed(ctx, frame, 'left-0.15', 'tubes-0.15');
+    XK.lab(ctx, 'surface: |B| = ½ max', bx + bs + 20, by + 40, { cls: 'small', at: 'draw', out: 'eight-0.15' });
+    XK.lab(ctx, 'view along z · brightest |B| in each column', bx + bs + 20, by + bs - 80, { cls: 'small', color: 'muted', w: 400, at: 'draw+0.3', out: 'eight-0.15' });
+    K.chip(ctx, { text: 'normalised · max |B| = 1 · kinematic, so the size is arbitrary', kind: 'plain', maxWidth: 900, x: 120, y: 790, at: 'draw+0.4', out: 'tubes-0.15' });
+    const st = XK.lab(ctx, '', LY.state_label.x, LY.state_label.y - 60, { size: 44, at: 'left', out: 'tubes-0.15', html: true });
+    // Rm strip
+    const RS = LY.rm_strip, RP = P.rm_strip, RX = (v) => RS.x0 + (RS.x1 - RS.x0) * (v - RP.min) / (RP.max - RP.min), sg = K.s('g', {}, svg);
+    K.s('rect', { x: RX(E3.thresholds[0]), y: RS.y - 30, width: RX(E3.thresholds[1]) - RX(E3.thresholds[0]), height: 30, fill: K.rgba(K.c('param'), 0.12) }, sg);
+    K.s('line', { x1: RS.x0, x2: RS.x1, y1: RS.y, y2: RS.y, stroke: K.c('param'), 'stroke-width': 3 }, sg);
+    RP.ticks.forEach((v) => { K.s('line', { x1: RX(v), x2: RX(v), y1: RS.y, y2: RS.y + 10, stroke: K.c('param'), 'stroke-width': 2 }, sg); const tx = K.s('text', { x: RX(v), y: RS.y + 44, 'text-anchor': 'middle', class: 'kt-tick' }, sg, String(v)); tx.style.fill = K.c('param'); });
+    const ptr = K.s('path', { d: 'M0,0 l-10,-18 h20 z', fill: K.c('param') }, sg);
+    XK.timed(ctx, sg, 'eight-0.15', 'tubes-0.15');
+    XK.lab(ctx, 'first window', RX((E3.thresholds[0] + E3.thresholds[1]) / 2), RS.y - 76, { anchor: 'c', cls: 'small', color: 'param', at: 'eight', out: 'tubes-0.15' });
+    XK.lab(ctx, 'Rm', RS.x1 + 14, RS.y - 16, { cls: 'small', color: 'param', at: 'eight', out: 'tubes-0.15' });
+    K.lowerThird(ctx, { kind: 'source', data: MD, at: 'left+0.6', hold: 4 });
+    // sequence times
+    const t16 = XK.frac(ctx, 'inside', 0.35, 1.2);
+    const seq = [[ctx.at('left-0.15'), 'Rm8'], [ctx.at('inside-0.15'), 'Rm12'], [t16, 'Rm16'], [ctx.at('past-0.15'), 'Rm20']];
+    window.__EVENTS__ = seq.slice(1).map(([t]) => ({ t: +t.toFixed(3), id: 'detent', gain_db: -24 }));
+    // thumbnails
+    const TH = LY.thumbs, thumbs = keys.map((k, i) => { const T = TH[i], w = K.el('div', { class: 'kit-layer' }, ctx.stage); w.style.zIndex = 6;
+      K.fieldMap(ctx, { grid: proj[k], nx: N, ny: N, kind: 'b', vmax: 1, x: T.x0, y: T.y0, w: T.size, h: T.size, parent: w });
+      const g = K.s('g', {}, svg); K.s('path', { d: contour(proj[k], T.x0, T.y0, T.size), fill: 'none', stroke: K.c('chalk'), 'stroke-width': 1.5 }, g);
+      K.s('rect', { x: T.x0, y: T.y0, width: T.size, height: T.size, fill: 'none', stroke: K.c('infra'), 'stroke-width': 2 }, g);
+      XK.timed(ctx, w, XK.at(ctx, 'tubes', 0.6 + 0.2 * i), null); XK.timed(ctx, g, XK.at(ctx, 'tubes', 0.6 + 0.2 * i), null);
+      const l = XK.lab(ctx, '', T.x0 + T.size / 2, T.y0 + T.size + 14, { anchor: 'c', at: XK.at(ctx, 'tubes', 0.7 + 0.2 * i), html: true }); l.innerHTML = K.markup(label(k).replace(/^Rm (\S+)/, '{param}Rm $1{/}'));
+      // stagnation rings (projected along z), pulse where |B| ≥ 0.9
+      const rg = K.s('g', {}, svg), rings = stag.map((f, s) => { const peak = atS[k][s] >= P.stagnation_rings.peak_if_at_least;
+        return { e: K.s('circle', { cx: T.x0 + f[1] * T.size, cy: T.y0 + f[0] * T.size, r: P.stagnation_rings.px / 2 + 3, fill: 'none', stroke: K.c('muted'), 'stroke-width': 2.5 }, rg), peak }; });
+      XK.timed(ctx, rg, 'still-0.15', 'published-0.15');
+      return { w, g, rings, T, k }; });
+    XK.lab(ctx, '{u}u{/} = 0: the flow stands still', 960, 160, { anchor: 'c', at: 'still', out: 'published-0.15' });
+    K.chip(ctx, { text: 'one snapshot each, at t = 150 · one phase if the mode oscillates', kind: 'plain', maxWidth: 900, x: 120, y: 690, at: 'tubes+1.2', out: 'published-0.15' });
+    const t12 = thumbs[1].T;
+    K.pen(ctx, { kind: 'box', box: { x: t12.x0, y: t12.y0, w: t12.size, h: t12.size }, pad: 8, at: 'wider-0.15' });
+    XK.lab(ctx, 'spreads out', t12.x0 + t12.size / 2, t12.y0 + t12.size + 56, { anchor: 'c', color: 'chalk', at: 'wider+0.2' });
+    K.lowerThird(ctx, { kind: 'reference', l1: 'Reference', l2: 'Archontis, Dorch & Nordlund 2003 · Bouya & Dormy 2013', at: 'published-0.15', hold: 6 });
+    const t16b = thumbs[2].T, br = K.s('path', { d: `M${t12.x0},${t12.y0 - 20} l0,-14 L${t16b.x0 + t16b.size},${t12.y0 - 34} l0,14`, fill: 'none', stroke: K.c('chalk'), 'stroke-width': 3 }, svg);
+    XK.timed(ctx, br, 'published', null);
+    XK.lab(ctx, 'first window', (t12.x0 + t16b.x0 + t16b.size) / 2 + 60, t12.y0 + t12.size + 100, { anchor: 'c', cls: 'small', color: 'param', at: 'published+0.2', out: 'target-0.15' });
+    XK.lab(ctx, 'published: the first-window mode has all even symmetries of a 24-element group (Bouya and Dormy 2013) · not checked on these modes', 960, 104, { anchor: 'c', w: 1500, cls: 'small', color: 'muted', at: 'published+0.4', out: 'target-0.15' });
+    K.chip(ctx, { text: 'no second-window mode stored (Rm ≥ 27)', kind: 'schematic', x: 120, y: 690, at: 'published+0.6' });
+    const vf = K.s('rect', { x: TH[0].x0 - 24, y: TH[0].y0 - 24, width: TH[3].x0 + TH[3].size - TH[0].x0 + 48, height: TH[0].size + 100, rx: 16, fill: 'none', stroke: K.c('model'), 'stroke-width': 3, 'stroke-dasharray': '16 11' }, svg);
+    XK.drawOn(ctx, vf, 'target-0.15', 0.8);
+    XK.lab(ctx, '{model}generator{/} targets · one per Rm · proposed next step', 960, TH[0].y0 - 80, { anchor: 'c', at: 'target+0.5' });
+    K.formulaLayer(ctx, { label: 'Formula · R:1066, R:1120' });
+    ctx.x12 = { big, seq, st, label, ptr, RX, RS, MD, thumbs, tT: ctx.at('tubes-0.15'), tS: ctx.at('still-0.15'), tW: ctx.at('wider-0.15'), K };
+  },
+  render(t, ctx) {
+    const S = Scene, K = Kit, c = ctx.x12;
+    let cur = 0, from = 0, f = 1; for (let i = 0; i < c.seq.length; i++) if (t >= c.seq[i][0]) { from = cur; cur = i; f = S.seg(t, c.seq[i][0], c.seq[i][0] + 1.0, S.ease.inOutSine); }
+    const out = S.seg(t, c.tT, c.tT + 0.8, S.ease.linear);
+    c.seq.forEach(([, k], i) => { const a = (i === cur ? (cur === 0 ? S.seg(t, c.seq[0][0], c.seq[0][0] + 0.6, S.ease.linear) : f) : i === from && cur !== from ? 1 - f : 0) * (1 - out);
+      c.big[k].w.style.opacity = a.toFixed(3); c.big[k].w.style.display = a > 0 ? '' : 'none'; c.big[k].cp.style.opacity = (a * S.seg(t, c.seq[0][0] + 5.0, c.seq[0][0] + 5.6, S.ease.linear)).toFixed(3); });
+    const k = c.seq[cur][1]; c.st.innerHTML = K.markup(c.label(k).replace(/^Rm (\S+)/, '{param}Rm $1{/}'));
+    const rmFrom = c.MD.modes[c.seq[from][1]].Rm, rmTo = c.MD.modes[k].Rm, rm = XK.lerp(rmFrom, rmTo, S.ease.inOutCubic(Math.min(1, f / 0.8)));
+    c.ptr.setAttribute('transform', `translate(${c.RX(rm).toFixed(1)} ${c.RS.y - 2})`);
+    c.thumbs.forEach((th, i) => { const dim = i !== 1 && t > c.tW ? 0.7 : 1; th.w.style.filter = ''; th.g.style.opacity = dim; th.w.firstChild && (th.w.style.opacity = Math.min(parseFloat(th.w.style.opacity || 1), dim));
+      th.rings.forEach((r) => { const p = r.peak ? Math.sin(Math.PI * S.seg(t, c.tS + 0.3, c.tS + 0.8, S.ease.linear)) : 0; r.e.setAttribute('stroke', p > 0.05 || (r.peak && t > c.tS + 0.8) ? K.c('chalk') : K.c('muted')); r.e.setAttribute('stroke-width', (2.5 + 2 * p).toFixed(2)); }); });
+  },
+});
+</script></body></html>
