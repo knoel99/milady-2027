@@ -157,6 +157,20 @@ test("la loi sépare le test de la référence d'entraînement", () => {
   assert.equal(dissipation.rows.some((row) => row.label === "8.64e-04"), true);
 });
 
+test("le flot projeté place V3 entre V2 et V4", () => {
+  for (const id of ["cue.g10.hard.projection", "cue.g10.hard.flow"]) {
+    const rows = viewAt(hard, cueTime(hard, id)).bars.rows;
+    const noms = rows.map((row) => row.name);
+    const v2 = noms.indexOf("V2");
+    const v3 = noms.indexOf("V3");
+    const v4 = noms.indexOf("V4");
+    assert.ok(v2 >= 0 && v2 < v3 && v3 < v4, `${id} ${noms.join(",")}`);
+    assert.equal(rows[v3].value, 2.03e-8, id);
+    assert.equal(rows[v3].label, "2.03e-08", id);
+    assert.equal(viewAt(hard, cueTime(hard, id)).bars.log, true, id);
+  }
+});
+
 test("les cinq scènes du pilote durent leur créneau", () => {
   assert.deepEqual(
     [hard, sym, law, bias, close].map((scene) => [scene.id, scene.duration]),
@@ -169,7 +183,7 @@ test("les cinq scènes du pilote durent leur créneau", () => {
     ],
   );
   assert.equal(cueTime(law, "cue.g10.law.caveat"), 19.5);
-  assert.equal(viewAt(hard, cueTime(hard, "cue.g10.hard.flow")).bars.rows.map((row) => row.name).join(","), "V0,V1 u,V1 B,V2,V4,V3");
+  assert.equal(viewAt(hard, cueTime(hard, "cue.g10.hard.flow")).bars.rows.map((row) => row.name).join(","), "V0,V1 u,V1 B,V2,V3,V4");
   assert.equal(viewAt(law, 0).badges.some((badge) => badge.kind === "MEASURED" && badge.primary), true);
   assert.equal(viewAt(sym, 0).badges.some((badge) => badge.kind === "PROVED" && badge.primary), true);
   assert.equal(viewAt(bias, 0).bars.schematic, true);

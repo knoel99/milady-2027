@@ -59,13 +59,13 @@ La scène dure 43 s. La pastille principale est MEASURED.
 | `cue.g10.hard.show` | 0 | V0, divergence 0,408. |
 | `cue.g10.hard.penalty` | 8 | V0 puis V1 sur u, 0,34. |
 | `cue.g10.hard.magnetic` | 14 | V1 sur B, 0,162. |
-| `cue.g10.hard.projection` | 20 | V2 et V4, autour de 10⁻¹⁷. |
-| `cue.g10.hard.flow` | 28 | V3, flot projeté 2,03×10⁻⁸. |
+| `cue.g10.hard.projection` | 20 | V2, V3 et V4. V3 est le flot projeté, 2,03×10⁻⁸. |
+| `cue.g10.hard.flow` | 28 | Le même ordre, V3 entre V2 et V4. |
 | `cue.g10.hard.order` | 34 | L'ordre reste fixe. |
 | `cue.g10.hard.winner` | 38 | « Do not sort them by a winner. » |
 | `cue.g10.hard.end` | 43 | Fin. |
 
-L'ordre des rangées reste V0, V1 u, V1 B, V2, V4, V3. Ce n'est pas l'ordre des valeurs. Les chiffres sont ceux de `digest.md` lignes 134 à 138. L'échelle est logarithmique.
+L'ordre des rangées reste V0, V1 u, V1 B, V2, V3, V4. Ce n'est pas l'ordre des valeurs. Les chiffres sont ceux de `digest.md` lignes 134 à 138. V3 vaut 2,03×10⁻⁸, ligne 137. L'échelle est logarithmique.
 
 ## sym.html
 
