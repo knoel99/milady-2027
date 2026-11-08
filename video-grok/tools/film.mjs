@@ -41,8 +41,16 @@ export function tableau(chapitre) {
   }));
 }
 
+const IMAGES = 30;
+
 export function dureeTableau(lignes) {
   return lignes.reduce((somme, ligne) => somme + ligne.slot, 0);
+}
+
+export function images(slot) {
+  const n = Math.round(slot * IMAGES);
+  if (n < 1) throw Object.assign(new Error("images"), { code: "images" });
+  return n;
 }
 
 export function argumentsMontage({ lignes, clips, pistes, sortie }) {
@@ -54,8 +62,8 @@ export function argumentsMontage({ lignes, clips, pistes, sortie }) {
   args.push("-i", pistes);
   const audio = clips.length;
   const filtres = lignes.map((ligne, index) => {
-    const duree = ligne.slot;
-    return `[${index}:v]scale=1920:1080:force_original_aspect_ratio=decrease,pad=1920:1080:(ow-iw)/2:(oh-ih)/2,setsar=1,fps=30,tpad=stop_mode=clone:stop_duration=${duree},trim=duration=${duree},setpts=PTS-STARTPTS[v${index}]`;
+    const n = images(ligne.slot);
+    return `[${index}:v]scale=1920:1080:force_original_aspect_ratio=decrease,pad=1920:1080:(ow-iw)/2:(oh-ih)/2,setsar=1,fps=${IMAGES},tpad=stop_mode=clone:stop=${n},trim=end_frame=${n},settb=1/${IMAGES},setpts=N[v${index}]`;
   });
   filtres.push(`${lignes.map((_, index) => `[v${index}]`).join("")}concat=n=${lignes.length}:v=1:a=0[v]`);
   args.push(
@@ -91,8 +99,12 @@ export function argumentsMontage({ lignes, clips, pistes, sortie }) {
     "language=fra",
     "-movflags",
     "+faststart",
-    "-t",
-    String(dureeTableau(lignes)),
+    "-r",
+    String(IMAGES),
+    "-video_track_timescale",
+    String(IMAGES),
+    "-frames:v",
+    String(lignes.reduce((somme, ligne) => somme + images(ligne.slot), 0)),
     sortie,
   );
   return args;
