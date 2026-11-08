@@ -110,9 +110,10 @@ test("le journal additionne les envois et laisse les minutes unavailable", () =>
 });
 
 test("l'estimation et l'essai à blanc ne touchent pas le réseau", async () => {
+  const dir = await mkdtemp(join(tmpdir(), "tts-sec-"));
   const anglais = lancer(["--chapter", "g10", "--lang", "en", "--estimate"]);
   const francais = lancer(["--chapter", "g10", "--lang", "fr", "--estimate"]);
-  const sec = lancer(["--chapter", "g10", "--lang", "en", "--dry-run"], { FISH_API_KEY: cle });
+  const sec = lancer(["--chapter", "g10", "--lang", "en", "--dry-run", "--cache", dir], { FISH_API_KEY: cle });
   assert.equal(anglais.status, 0, anglais.stderr);
   assert.equal(francais.status, 0, francais.stderr);
   assert.equal(sec.status, 0, sec.stderr);
