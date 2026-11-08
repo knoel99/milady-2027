@@ -7,7 +7,8 @@ import { capturer } from "./capture.mjs";
 import { preparer } from "./parole.mjs";
 import { bords, dureeFichier, lireScenes, placer, projeter } from "./pilote.mjs";
 import { servir } from "./servir.mjs";
-import { alignerTextes, calerPhrasesDepuisMots } from "./calage.mjs";
+import { calerPhrasesDepuisOreille, ecouter } from "./calage.mjs";
+import { ecrireWav, lireWav } from "./kit-voix/aligner.mjs";
 import { garderCle } from "./tts.mjs";
 
 const ici = dirname(fileURLToPath(import.meta.url));
@@ -363,49 +364,65 @@ function fusionner(cues) {
 }
 
 export async function sousTitresNarration(lignes, chapitre, durees, fichiers = new Map()) {
-  const prepares = [];
-  const taches = [];
+  const poses = [];
   let origine = 0;
   for (const ligne of lignes) {
     const beat = chapitre.beats.find((item) => item.id === ligne.id);
     const place = placer(beat.paragraphes, durees);
     for (const pose of place.poses) {
       const paragraphe = beat.paragraphes.find((item) => item.id === pose.id);
-      const fichier = fichiers.get(paragraphe.id);
-      const cle = `${origine}:${pose.id}`;
-      if (fichier) {
-        taches.push({ id: cle, audio: fichier, texte: paragraphe.brut, langue: chapitre.lang });
-      }
-      prepares.push({ origine, pose, paragraphe, fichier, beat, cle });
+      poses.push({
+        at: origine + pose.at,
+        fin: origine + pose.fin,
+        paragraphe,
+        fichier: fichiers.get(paragraphe.id),
+        beat,
+      });
     }
     origine += ligne.slot;
   }
-  const aligne = alignerTextes(taches);
-  const cues = [];
-  for (const item of prepares) {
-    const { pose, paragraphe, fichier, beat } = item;
-    origine = item.origine;
-      const alignes = fichier
-        ? calerPhrasesDepuisMots(aligne[item.cle] ?? [], paragraphe.brut, phrases)
-        : [{ phrase: paragraphe.brut, debut: 0, fin: Math.max(pose.audio, pose.fin - pose.at) }];
-      const posesBloc = alignes.map((item, index) => {
-        const debut = origine + pose.at + item.debut;
-        const suivant = alignes[index + 1];
-        const finMot = origine + pose.at + item.fin;
-        const finAudio = origine + pose.fin;
-        const tenue = fichier ? finMot + 0.2 : finMot;
-        const debutSuivant = suivant ? origine + pose.at + suivant.debut : finAudio;
-        return {
-          debut,
-          fin: Math.max(finMot, Math.min(finAudio, debutSuivant, tenue)),
-          text: lignesDe(notationNombres(item.phrase)).join("\n"),
-          beat: beat.id,
-          phrase: item.phrase,
-        };
-      });
-      cues.push(...fusionner(posesBloc));
+  const avecAudio = poses.filter((pose) => pose.fichier);
+  let oreille = null;
+  if (avecAudio.length > 0) {
+    const premier = await lireWav(avecAudio[0].fichier);
+    const mix = new Float64Array(Math.ceil((origine + 1) * premier.sampleRate));
+    for (const pose of avecAudio) {
+      const lu = await lireWav(pose.fichier);
+      mix.set(lu.samples, Math.round(pose.at * lu.sampleRate));
+    }
+    const dir = await mkdtemp(join(tmpdir(), "oreille-"));
+    const chemin = join(dir, "mix.wav");
+    try {
+      await ecrireWav(chemin, mix, premier.sampleRate);
+      oreille = ecouter([{ id: "mix", audio: chemin, langue: chapitre.lang }]).mix;
+    } finally {
+      await rm(dir, { recursive: true, force: true });
+    }
   }
-  return cues;
+  const dites = avecAudio.flatMap((pose) => phrases(pose.paragraphe.brut));
+  const bornes = oreille ? calerPhrasesDepuisOreille(oreille, dites.join(" "), phrases) : [];
+  let curseur = 0;
+  const cues = [];
+  for (const pose of poses) {
+    const alignes = pose.fichier
+      ? phrases(pose.paragraphe.brut).map((phrase) => {
+          const borne = bornes[curseur];
+          curseur += 1;
+          return borne ?? { phrase, debut: pose.at, fin: pose.fin };
+        })
+      : [{ phrase: pose.paragraphe.brut, debut: pose.at, fin: pose.fin }];
+    const posesBloc = alignes.map((item) => ({
+      debut: pose.fichier ? item.debut : item.debut,
+      fin: Math.max(item.fin, item.debut),
+      text: lignesDe(notationNombres(item.phrase)).join("\n"),
+      beat: pose.beat.id,
+      phrase: item.phrase,
+    }));
+    cues.push(...fusionner(posesBloc));
+  }
+  return fusionner(cues).map((cue) =>
+    cue.fin - cue.debut >= 1 - 1e-6 ? cue : { ...cue, fin: cue.debut + 1 },
+  );
 }
 
 export function texteSousTitre(layer, lang) {

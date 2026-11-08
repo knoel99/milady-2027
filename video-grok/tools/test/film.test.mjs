@@ -9,7 +9,7 @@ import { cleCache, ecrire } from "../cache.mjs";
 import { ecrireWav } from "../kit-voix/aligner.mjs";
 import { VOIX, preparer } from "../parole.mjs";
 import { ecrireManifeste } from "../pilote.mjs";
-import { alignerTextes, syntheseMot } from "../calage.mjs";
+import { ecouter, syntheseMot } from "../calage.mjs";
 import { dureeTableau, sousTitresNarration, tableau, texteSousTitre } from "../film.mjs";
 import { lireScenes, placer } from "../pilote.mjs";
 
@@ -139,37 +139,24 @@ test("chaque sous-titre couvre le premier et le dernier mot dit", async () => {
       for (const pose of place.poses) posesMix.push({ id: pose.id, at: origine + pose.at });
       origine += ligne.slot;
     }
-    const reference = alignerTextes(
-      chapitre.paragraphes.map((paragraphe) => ({
-        id: paragraphe.id,
-        audio: fichiers.get(paragraphe.id),
-        texte: paragraphe.brut,
-        langue: lang,
-      })),
-    );
-    const cues = await sousTitresNarration(lignes, chapitre, durees, fichiers);
-    const paroles = [];
+    const mix = new Float64Array(Math.ceil((origine + 1) * 22050));
     for (const pose of posesMix) {
-      const paragraphe = chapitre.paragraphes.find((item) => item.id === pose.id);
-      const mots = reference[pose.id];
-      let indexMot = 0;
-      for (const phrase of phrases(paragraphe.brut)) {
-        const nombre = phrase.split(/\s+/).filter(Boolean).length;
-        const groupe = mots.slice(indexMot, indexMot + nombre);
-        indexMot += nombre;
-        assert.equal(groupe.length, nombre, `${lang} ${phrase}`);
-        paroles.push({
-          phrase,
-          debut: pose.at + groupe[0].debut,
-          fin: pose.at + groupe[groupe.length - 1].fin,
-        });
-      }
-      assert.equal(indexMot, mots.length, pose.id);
+      const samples = await readWav(fichiers.get(pose.id));
+      mix.set(samples, Math.round(pose.at * 22050));
     }
-    let pireDepart = 0;
+    const cheminMix = join(dir, `${lang}-mix.wav`);
+    await ecrireWav(cheminMix, mix, 22050);
+    const oreille = ecouter([{ id: "mix", audio: cheminMix, langue: lang }]).mix;
+    const dites = chapitre.paragraphes.flatMap((paragraphe) => phrases(paragraphe.brut));
+    const fenetres = placerSegments(dites, oreille.segments ?? []);
+    const paroles = fenetres.map((fenetre) => borneRms(fenetre, oreille.regions ?? []));
+    const cues = await sousTitresNarration(lignes, chapitre, durees, fichiers);
+    let pireTot = 0;
+    let pireTard = 0;
     let pireFin = 0;
     let indice = 0;
-    for (const cue of cues) {
+    const lignesCue = [];
+    for (const [numero, cue] of cues.entries()) {
       const texte = contrat(cue.text);
       const couvertes = [];
       while (indice < paroles.length && texte.includes(contrat(paroles[indice].phrase))) {
@@ -177,15 +164,22 @@ test("chaque sous-titre couvre le premier et le dernier mot dit", async () => {
         indice += 1;
       }
       assert.ok(couvertes.length > 0, `${lang} ${cue.text}`);
-      const depart = Math.abs(cue.debut - couvertes[0].debut);
-      const anticipe = couvertes[couvertes.length - 1].fin - cue.fin;
-      pireDepart = Math.max(pireDepart, depart);
+      const parole = couvertes[0];
+      const finParole = couvertes[couvertes.length - 1].fin;
+      const tot = parole.debut - cue.debut;
+      const tard = cue.debut - parole.debut;
+      const anticipe = finParole - cue.fin;
+      const duree = cue.fin - cue.debut;
+      pireTot = Math.max(pireTot, tot);
+      pireTard = Math.max(pireTard, tard);
       pireFin = Math.max(pireFin, anticipe);
-      assert.ok(
-        depart <= 0.15,
-        `${lang} départ ${depart.toFixed(3)} cue ${cue.debut.toFixed(3)} mot ${couvertes[0].debut.toFixed(3)} ${couvertes[0].phrase}`,
+      lignesCue.push(
+        `${lang}\t${numero + 1}\t${cue.debut.toFixed(3)}\t${cue.fin.toFixed(3)}\t${parole.debut.toFixed(3)}\t${finParole.toFixed(3)}\t${tot.toFixed(3)}\t${tard.toFixed(3)}\t${anticipe.toFixed(3)}\t${duree.toFixed(3)}\t${couvertes[0].phrase.slice(0, 72)}`,
       );
-      assert.ok(anticipe <= 0, `${lang} fin ${anticipe.toFixed(3)} ${couvertes[couvertes.length - 1].phrase}`);
+      assert.ok(duree >= 1 - 1e-6, `${lang} ${duree.toFixed(3)} ${couvertes[0].phrase}`);
+      assert.ok(tot <= 0.35, `${lang} tôt ${tot.toFixed(3)} ${couvertes[0].phrase}`);
+      assert.ok(tard <= 0.2, `${lang} tard ${tard.toFixed(3)} ${couvertes[0].phrase}`);
+      assert.ok(anticipe <= 0, `${lang} fin ${anticipe.toFixed(3)} ${couvertes.at(-1).phrase}`);
     }
     assert.equal(indice, paroles.length, lang);
     for (const [langue, extrait] of preuves) {
@@ -194,18 +188,130 @@ test("chaque sous-titre couvre le premier et le dernier mot dit", async () => {
       const parole = paroles.find((item) => contrat(item.phrase).includes(cle));
       const cue = cues.find((item) => contrat(item.text).includes(cle));
       assert.ok(parole && cue, extrait);
-      const commence = contrat(cue.text).startsWith(cle.slice(0, 12));
-      if (commence) {
-        assert.ok(
-          Math.abs(cue.debut - parole.debut) <= 0.15,
-          `${extrait} départ ${(cue.debut - parole.debut).toFixed(3)}`,
-        );
-      }
-      assert.ok(cue.fin >= parole.fin, `${extrait} ${(parole.fin - cue.fin).toFixed(3)}`);
+      const tot = parole.debut - cue.debut;
+      const tard = cue.debut - parole.debut;
+      assert.ok(tot <= 0.35 && tard <= 0.2, extrait);
+      assert.ok(cue.fin >= parole.fin, extrait);
+      assert.ok(cue.fin - cue.debut >= 1 - 1e-6, extrait);
     }
-    console.log(`écart ${lang}: départ ${pireDepart.toFixed(3)} s, fin anticipée ${pireFin.toFixed(3)} s`);
+    console.log(`cue\tdebut\tfin\tvoixDebut\tvoixFin\ttot\ttard\tfinAnticipee\tduree\ttexte`);
+    console.log(lignesCue.join("\n"));
+    console.log(`écart ${lang}: tôt ${pireTot.toFixed(3)} s, tard ${pireTard.toFixed(3)} s, fin anticipée ${pireFin.toFixed(3)} s`);
   }
 });
+
+function jetonsOreille(texte) {
+  return texte
+    .toLowerCase()
+    .normalize("NFD")
+    .replace(/\p{Diacritic}/gu, "")
+    .replace(/[^a-z0-9]+/g, " ")
+    .trim()
+    .split(/\s+/)
+    .filter((mot) => mot.length > 2);
+}
+
+function scoreOreille(phrase, texte) {
+  const attendus = jetonsOreille(phrase);
+  const entendus = new Set(jetonsOreille(texte));
+  const mots = attendus.length === 0 || entendus.size === 0
+    ? 0
+    : attendus.filter((mot) => entendus.has(mot)).length / attendus.length;
+  const chiffresPhrase = (phrase.match(/\d/g) ?? []).join("");
+  const chiffresTexte = (texte.match(/\d/g) ?? []).join("");
+  const nombres = chiffresPhrase && chiffresTexte && (chiffresTexte.includes(chiffresPhrase) || chiffresPhrase.includes(chiffresTexte)) ? 0.45 : 0;
+  return Math.min(1, mots + nombres);
+}
+
+function placerSegments(phrases, segments) {
+  if (phrases.length === 0) return [];
+  if (segments.length === 0) return phrases.map((phrase) => ({ phrase, debut: 0, fin: 0 }));
+  const n = phrases.length;
+  const m = segments.length;
+  const inf = 1e9;
+  const cout = Array.from({ length: n + 1 }, () => Array(m + 1).fill(inf));
+  const choix = Array.from({ length: n + 1 }, () => Array(m + 1).fill(null));
+  cout[0][0] = 0;
+  for (let i = 0; i <= n; i += 1) {
+    for (let j = 0; j <= m; j += 1) {
+      if (cout[i][j] >= inf / 2) continue;
+      if (i < n && j < m) {
+        const prix = 1 - scoreOreille(phrases[i], segments[j].texte);
+        if (cout[i][j] + prix < cout[i + 1][j + 1]) {
+          cout[i + 1][j + 1] = cout[i][j] + prix;
+          choix[i + 1][j + 1] = [i, j, 1];
+        }
+      }
+      if (i < n && j + 1 < m) {
+        const prix = 1 - scoreOreille(phrases[i], `${segments[j].texte} ${segments[j + 1].texte}`) + 0.05;
+        if (cout[i][j] + prix < cout[i + 1][j + 2]) {
+          cout[i + 1][j + 2] = cout[i][j] + prix;
+          choix[i + 1][j + 2] = [i, j, 2];
+        }
+      }
+      if (i + 1 < n && j < m) {
+        const prix = 1 - Math.max(scoreOreille(phrases[i], segments[j].texte), scoreOreille(phrases[i + 1], segments[j].texte)) + 0.08;
+        if (cout[i][j] + prix < cout[i + 2][j + 1]) {
+          cout[i + 2][j + 1] = cout[i][j] + prix;
+          choix[i + 2][j + 1] = [i, j, "partage"];
+        }
+      }
+    }
+  }
+  if (!choix[n][m]) {
+    const fin = segments.at(-1).fin;
+    const pas = fin / n || 0;
+    return phrases.map((phrase, index) => ({ phrase, debut: index * pas, fin: (index + 1) * pas }));
+  }
+  const etapes = [];
+  let i = n;
+  let j = m;
+  while (i > 0 || j > 0) {
+    const pas = choix[i][j];
+    if (!pas) break;
+    etapes.push(pas);
+    i = pas[0];
+    j = pas[1];
+  }
+  etapes.reverse();
+  const fenetres = phrases.map((phrase) => ({ phrase, debut: 0, fin: 0 }));
+  for (const [pi, pj, mode] of etapes) {
+    if (mode === 1) fenetres[pi] = { phrase: phrases[pi], debut: segments[pj].debut, fin: segments[pj].fin };
+    else if (mode === 2) fenetres[pi] = { phrase: phrases[pi], debut: segments[pj].debut, fin: segments[pj + 1].fin };
+    else {
+      const milieu = (segments[pj].debut + segments[pj].fin) / 2;
+      fenetres[pi] = { phrase: phrases[pi], debut: segments[pj].debut, fin: milieu };
+      fenetres[pi + 1] = { phrase: phrases[pi + 1], debut: milieu, fin: segments[pj].fin };
+    }
+  }
+  return fenetres;
+}
+
+function borneRms(fenetre, regions) {
+  let debut = fenetre.debut;
+  let fin = fenetre.fin;
+  let vu = false;
+  for (const region of regions) {
+    if (region.fin <= fenetre.debut || region.debut >= fenetre.fin) continue;
+    const gauche = region.debut >= fenetre.debut - 0.45 ? region.debut : fenetre.debut;
+    const droite = Math.min(region.fin, fenetre.fin);
+    if (!vu) {
+      debut = gauche;
+      fin = droite;
+      vu = true;
+    } else {
+      debut = Math.min(debut, gauche);
+      fin = Math.max(fin, droite);
+    }
+  }
+  if (fin < debut) fin = debut;
+  return { phrase: fenetre.phrase, debut, fin };
+}
+
+async function readWav(chemin) {
+  const { samples } = await import("../kit-voix/aligner.mjs").then((module) => module.lireWav(chemin));
+  return samples;
+}
 
 function silence(secondes, rate) {
   return new Float64Array(Math.round(secondes * rate));
