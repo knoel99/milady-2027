@@ -145,7 +145,8 @@ test("le caveat de g10.law reste sans voix", async () => {
   assert.equal(french.source, "narration/fr/g10.law.caveat.md");
   assert.match(narration, /cue\.g10\.law\.caveat/);
   assert.equal(parole(narration, "cue.g10.law.caveat"), CAVEAT_EN);
-  await assert.rejects(readFile(join(root, "narration/fr/g10.md"), "utf8"));
+  const chapitre = await readFile(join(root, "narration/fr/g10.md"), "utf8");
+  assert.equal(parole(chapitre, "cue.g10.law.caveat"), CAVEAT_FR);
   const tree = await readFile(join(root, "scenes/g10/cues.json"), "utf8");
   assert.equal(tree.includes("One seed"), false);
   assert.equal(tree.includes("dynamo"), false);
