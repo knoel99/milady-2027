@@ -1,0 +1,79 @@
+<!doctype html>
+<html lang="en"><head><meta charset="utf-8">
+<title>03.8 Checkpoint: the map so far</title>
+<link rel="stylesheet" href="../../vendor/katex/katex.min.css">
+<link rel="stylesheet" href="../../runtime/theme.css">
+<link rel="stylesheet" href="ch03.css">
+<script src="../../vendor/katex/katex.min.js"></script>
+<script src="../../runtime/scene.js"></script>
+<script src="../../runtime/components/kit.js"></script>
+<script src="../../runtime/components/hud.js"></script>
+<script src="../../runtime/components/field.js"></script>
+<script src="../../runtime/components/equation.js"></script>
+<script src="../../runtime/components/motifs.js"></script>
+<script src="../../runtime/components/cards.js"></script>
+<script src="../../runtime/components/threemodes.js"></script>
+<script src="ch03_kit.js"></script>
+</head><body><div id="stage"></div>
+<script>
+/* 03.8 Checkpoint (L2, NIGHT, no badge): recap with motifs only. Rail at L2; four tiles keyed to the words of
+   'recap' (equation, s(Rm) windows from data/e3_growth.json, five knobs, dots and stacks); on 'start' the tiles go to
+   the top, three dials D, Q, V (Kit.dial) linked by springs; the D needle swings through zero at the end of the
+   sentence (page 'needle' event); on 'next' a chalk question mark and 'When will it flip next?'. */
+Scene.define({
+  duration: 15,
+  register: 'night',
+  cues: { recap: 0.6, start: 4.4, next: 10.4 },
+  data: { e3: 'data/e3_growth.json' },
+  params: { rail: { from: 'L2', to: 'L2' }, dials: { D: 'b', Q: 'b-light', V: 'u' } },
+  setup(ctx) {
+    const K = Kit, S = Scene, P = ctx.params, st = ctx.stage, lab = (s) => C3.labOf(ctx, s, s), D = ctx.data.e3;
+    K.rail(ctx, { from: P.rail.from, to: P.rail.to, at: 0.3, hold: 3 });
+    const lCk = C3.label(st, lab(/^Checkpoint/), 120, 840, 'mono');
+    const grp = K.el('div', { class: 'c3-grp' }, st); grp.style.zIndex = 12;
+    const svg = K.svgLayer(ctx, 12, grp), TW = 360, TH = 220, TY = 260, TX = [140, 560, 980, 1400];
+    const tiles = TX.map((x) => { const g = K.s('g', {}, svg); K.s('rect', { x, y: TY, width: TW, height: TH, rx: 14, fill: K.c('panel'), stroke: K.c('muted'), 'stroke-width': 3 }, g); return g; });
+    // tile 1: the equation (coloured right-hand side)
+    const eqd = K.el('div', { html: K.tex('\\partial_t\\B = \\nabla\\times(\\U\\times\\B) + \\etaP\\nabla^2\\B', false) }, grp);
+    Object.assign(eqd.style, { position: 'absolute', left: (TX[0] + 18) + 'px', top: (TY + 88) + 'px', fontSize: '28px', color: 'var(--fg)', zIndex: 13, whiteSpace: 'nowrap' });
+    // tile 2: s(Rm) with green windows (data, no numbers)
+    const xs = D.x.values, ys = D.series[0].y, th = D.thresholds, x0 = TX[1] + 20, x1 = TX[1] + TW - 20, yc = TY + TH / 2, X = (v) => x0 + (x1 - x0) * (v - xs[0]) / (xs[xs.length - 1] - xs[0]), Y = (v) => yc - 70 * Math.max(-1.3, v / 0.012);
+    K.s('rect', { x: X(th[0]), y: TY + 20, width: X(th[1]) - X(th[0]), height: TH - 40, fill: K.rgba(K.c('param'), 0.18) }, tiles[1]); K.s('rect', { x: X(th[2]), y: TY + 20, width: x1 - X(th[2]), height: TH - 40, fill: K.rgba(K.c('param'), 0.18) }, tiles[1]);
+    K.s('line', { x1: x0, x2: x1, y1: yc, y2: yc, stroke: K.c('fg-2'), 'stroke-width': 2, 'stroke-dasharray': '6 6' }, tiles[1]);
+    K.s('path', { d: xs.map((x, i) => `${i ? 'L' : 'M'}${X(x).toFixed(1)},${Y(ys[i]).toFixed(1)}`).join(''), fill: 'none', stroke: K.c('b'), 'stroke-width': 3 }, tiles[1]);
+    // tile 3: five knobs; tile 4: axis, dots, stacks
+    for (let i = 0; i < 5; i++) { const cx = TX[2] + 44 + i * 68; K.s('circle', { cx, cy: yc, r: 24, fill: 'none', stroke: K.c('matter'), 'stroke-width': 3 }, tiles[2]); K.s('line', { x1: cx, y1: yc, x2: cx + 12, y2: yc - 18, stroke: K.c('param'), 'stroke-width': 4 }, tiles[2]); }
+    K.s('line', { x1: TX[3] + 20, x2: TX[3] + TW - 20, y1: TY + TH - 40, y2: TY + TH - 40, stroke: K.c('param'), 'stroke-width': 3 }, tiles[3]);
+    [0.12, 0.34, 0.41, 0.83].forEach((f) => { const x = TX[3] + 20 + (TW - 40) * f; K.s('rect', { x: x - 10, y: TY + 40, width: 20, height: TH - 86, fill: K.c('matter-dark'), stroke: K.c('infra'), 'stroke-width': 1.5 }, tiles[3]); K.s('circle', { cx: x, cy: TY + TH - 40, r: 7, fill: K.c('param') }, tiles[3]); });
+    // three dials
+    const dg = K.svgLayer(ctx, 14), dd = K.s('g', {}, dg), DX = [700, 960, 1220], DY = 560, Rr = 90;
+    const sprs = [0, 1].map(() => K.s('polyline', { fill: 'none', stroke: K.c('infra'), 'stroke-width': 4 }, dd));
+    const dials = ['Q', 'D', 'V'].map((nm, i) => { const d = K.dial(dd, { x: DX[i], y: DY, r: Rr }); const tl = K.s('text', { x: DX[i], y: DY + Rr + 50, 'text-anchor': 'middle', class: 'kt-label' }, dd, nm); return { d, tl, nm }; });
+    const lFl = C3.label(st, lab(/already flips/), 960, DY - Rr - 80, 'big center');
+    const qm = K.s('text', { x: 1380, y: DY + 40, 'text-anchor': 'middle', class: 'kt-big' }, dg, '?'); qm.style.fill = K.c('chalk');
+    const lNx = C3.label(st, lab(/flip next/), 960, 770, 'big center');
+    const sen = (ctx.script.sentences || []), rs = sen.find((s) => s.cue === 'recap'), ss = sen.find((s) => s.cue === 'start');
+    const a = ctx.at('recap-0.15'), e = rs ? rs.end : a + 3.5;
+    const T = { tile: [0, 1, 2, 3].map((i) => a + (e - a) * i / 4), start: ctx.at('start-0.15'), flip: (ss ? ss.end : ctx.at('start') + 4) - 0.2, next: ctx.at('next-0.15') };
+    window.__EVENTS__ = [{ t: +T.flip.toFixed(3), id: 'needle', gain_db: -16 }];
+    ctx.c3 = { T, lCk, grp, tiles, eqd, dd, sprs, dials, lFl, qm, lNx, DX, DY, Rr };
+  },
+  render(t, ctx) {
+    const S = Scene, K = Kit, P = ctx.params, c = ctx.c3, T = c.T, fade = C3.fadeEl;
+    fade(c.lCk, t, 0.3, 3.3);
+    c.tiles.forEach((g, i) => { const p = S.seg(t, T.tile[i], T.tile[i] + 0.45, S.ease.outCubic); g.style.opacity = (i === 0 ? Math.max(p, 0.25) : p).toFixed(3); g.setAttribute('transform', `translate(${(-50 * (1 - p)).toFixed(1)} 0)`); });
+    c.eqd.style.opacity = S.seg(t, T.tile[0], T.tile[0] + 0.45, S.ease.linear).toFixed(3);
+    const up = S.seg(t, T.start, T.start + 1.0, S.ease.inOutCubic), s = 1 - 0.6 * up;
+    c.grp.style.transformOrigin = '960px 0px'; c.grp.style.transform = `translateY(${(-40 * up).toFixed(1)}px) scale(${s.toFixed(3)})`; c.grp.style.opacity = (1 - 0.6 * S.seg(t, T.start + 0.8, T.start + 1.2, S.ease.linear)).toFixed(3);
+    c.grp.setAttribute('data-qa', up > 0.05 ? 'ignore' : '');   // QA: the recap tiles shrink to a strip (their formula goes small)
+    const dOn = S.seg(t, T.start + 0.6, T.start + 1.1, S.ease.linear); c.dd.style.opacity = dOn.toFixed(3);
+    const swing = 1 - 2 * S.spring((t - T.flip) / 0.9, 0.03), jig = (k) => 4 * Math.sin(1.7 * t + k);
+    const ang = [-50 + jig(0), 55 * swing + jig(1), 30 + jig(2)];
+    const col = { Q: K.c(P.dials.Q), D: K.c(swing >= 0 ? 'b' : 'b-neg'), V: K.c(P.dials.V) };
+    c.dials.forEach((q, i) => q.d.set(ang[i], col[q.nm]));
+    const zig = (xa, xb, y) => { let pts = []; for (let k = 0; k <= 12; k++) pts.push(`${(xa + (xb - xa) * k / 12).toFixed(1)},${(y + (k % 2 ? -10 : 10) * (k && k < 12 ? 1 : 0) * (1 + 0.15 * Math.sin(2 * t))).toFixed(1)}`); return pts.join(' '); };
+    c.sprs[0].setAttribute('points', zig(c.DX[0] + c.Rr + 10, c.DX[1] - c.Rr - 10, c.DY)); c.sprs[1].setAttribute('points', zig(c.DX[1] + c.Rr + 10, c.DX[2] - c.Rr - 10, c.DY));
+    fade(c.lFl, t, T.flip + 0.3); c.qm.style.opacity = S.seg(t, T.next, T.next + 0.4, S.ease.linear).toFixed(3); fade(c.lNx, t, T.next + 0.3);
+  },
+});
+</script></body></html>

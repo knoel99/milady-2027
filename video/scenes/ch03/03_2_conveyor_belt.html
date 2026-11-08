@@ -1,0 +1,93 @@
+<!doctype html>
+<html lang="en"><head><meta charset="utf-8">
+<title>03.2 A conveyor belt that does not feel its cargo</title>
+<link rel="stylesheet" href="../../vendor/katex/katex.min.css">
+<link rel="stylesheet" href="../../runtime/theme.css">
+<link rel="stylesheet" href="ch03.css">
+<script src="../../vendor/katex/katex.min.js"></script>
+<script src="../../runtime/scene.js"></script>
+<script src="../../runtime/components/kit.js"></script>
+<script src="../../runtime/components/hud.js"></script>
+<script src="../../runtime/components/field.js"></script>
+<script src="../../runtime/components/equation.js"></script>
+<script src="../../runtime/components/plot.js"></script>
+<script src="../../runtime/components/motifs.js"></script>
+<script src="../../runtime/components/cards.js"></script>
+<script src="ch03_kit.js"></script>
+</head><body><div id="stage"></div>
+<script>
+/* 03.2 Conveyor belt (L2, NIGHT, CONTEXT, SCHEMATIC). A blue belt on grey rollers carries three vermillion loops
+   whose size follows the vermillion curve; a log plot (params.plot, no ticks) with a fading and a growing line
+   from one seed; slope triangle and the growth rate; on 'push' the line bends into a plateau (smooth cap), the belt
+   slows (params.belt_slowdown), a ghost copper disc; braces 'kinematic' / 'dynamic'; a seeded polarity strip under
+   the plateau ('flips live here'). No numbers. */
+Scene.define({
+  duration: 32,
+  register: 'night',
+  cues: { belt: 0.4, grows: 4.4, line: 9.4, push: 13.6, names: 21.0, flips: 24.0 },
+  params: { plot: { box: { x0: 820, x1: 1700, y0: 220, y1: 600 }, x: { label: 'time', ticks: [] }, y: { label: 'field strength (log scale)', log: true, ticks: [] } }, belt_slowdown: 0.33, barcode: { seed: 'ch03-plateau-flips', runs: 6 } },
+  setup(ctx) {
+    const K = Kit, S = Scene, P = ctx.params, st = ctx.stage, lab = (s) => C3.labOf(ctx, s, s);
+    const T = {}; ['belt', 'grows', 'line', 'push', 'names', 'flips'].forEach((k) => { T[k] = ctx.at(k + '-0.15'); });
+    const pp = P.plot, PL = K.plot(ctx, { box: pp.box, at: 'grows-0.15', grid: false, x: { label: lab(pp.x.label), min: 0, max: 1, ticks: [] }, y: { label: lab(pp.y.label), log: true, min: 1e-3, max: 1e3, ticks: [] } });
+    const g = K.s('g', {}, PL.root), X = (u) => PL.sx(u), Y = (v) => PL.sy(Math.pow(10, v));
+    // log10 B(u): seed at 0; grows slope +4, fades slope -2.4; plateau at +2.2 (smooth cap)
+    const CAP = 1.4, grow = (u, sat) => { const e = 3 * u; const sm = -Math.log10(Math.pow(10, -e) + Math.pow(10, -CAP)); return e + (sm - e) * sat; };   // smooth cap = params.saturation
+    const fade = (u) => -2.4 * u;
+    const cG = K.s('path', { fill: 'none', stroke: K.c('b'), 'stroke-width': 5, 'stroke-linecap': 'round' }, g), cF = K.s('path', { fill: 'none', stroke: K.c('fg-2'), 'stroke-width': 4, 'stroke-linecap': 'round' }, g);
+    // slope triangle (pen) on the rising line
+    const u1 = 0.12, u2 = 0.26;
+    K.pen(ctx, { kind: 'box', box: { x: X(u1), y: Y(3 * u2), w: X(u2) - X(u1), h: Y(3 * u1) - Y(3 * u2) }, pad: 0, at: 'line', dur: 0.6, out: 'push', seed: 'tri' });
+    const lF = C3.label(st, lab('fades'), X(0.62), Y(-1.5) + 10, ''), lG = C3.label(st, lab('grows'), X(0.36), Y(0.7), '');
+    const lS = K.el('div', { class: 'c3-label', html: Kit.markup(lab(/^slope/)) }, st); Object.assign(lS.style, { left: (X(u2) + 20) + 'px', top: (Y(3 * u1) - 4) + 'px' });
+    const lB = K.el('div', { class: 'c3-label big', html: Kit.markup(lab(/^\$/) || '') }, st); Object.assign(lB.style, { left: (X(0.03)) + 'px', top: (Y(2.2)) + 'px' });
+    const lP = C3.label(st, lab('the field pushes back on the flow'), X(0.62), Y(CAP) - 96, 'center');
+    const lK = C3.label(st, lab('kinematic'), X(0.2), Y(CAP) - 108, 'big center'), lD = C3.label(st, lab('dynamic'), X(0.78), Y(CAP) - 108, 'big center');
+    K.pen(ctx, { kind: 'brace', box: { x: X(0.02), y: Y(CAP) - 70, w: X(0.38) - X(0.02), h: 10 }, at: 'names+0.2', dur: 0.5, seed: 'bk' });
+    K.pen(ctx, { kind: 'brace', box: { x: X(0.6), y: Y(CAP) - 70, w: X(0.98) - X(0.6), h: 10 }, at: 'names+0.5', dur: 0.5, seed: 'bd' });
+    // barcode under the plateau (seeded runs)
+    const r = S.rng(P.barcode.seed), segs = []; let a = 0.58; let sgn = 1; const nR = P.barcode.runs;
+    const cuts = Array.from({ length: nR - 1 }, () => 0.58 + 0.4 * r()).sort(); [...cuts, 0.98].forEach((b) => { segs.push({ a, b, s: sgn }); a = b; sgn = -sgn; });
+    K.barcode(ctx, { box: { x: X(0.58), y: pp.box.y1 - 70, w: X(0.98) - X(0.58), h: 22 }, segments: segs, domain: [0.58, 0.98], at: 'flips-0.15', dur: 1.2 });
+    const lFl = C3.label(st, lab('flips live here'), X(0.58), pp.box.y1 - 120, '');
+    K.chip(ctx, { text: 'SCHEMATIC', kind: 'schematic', x: pp.box.x1, y: pp.box.y0 - 70, anchor: 'tr', at: 'grows' });
+    K.chip(ctx, { text: C3.chipOf(ctx, /growth rate/, 's · growth rate (glossary recall, 01.3)').replace(/\s*\(.*\)/, ''), kind: 'plain', caps: false, x: pp.box.x0, y: pp.box.y1 + 52, at: 'line+0.4', out: 'names' });
+    // belt (left third)
+    const svg = K.svgLayer(ctx, 12), bg = K.s('g', {}, svg), BX0 = 140, BX1 = 680, BY = 340;
+    [BX0, BX1].forEach((x) => K.s('circle', { cx: x, cy: BY, r: 34, fill: K.c('matter'), stroke: K.c('fg-2'), 'stroke-width': 2 }, bg));
+    const belt = K.s('path', { d: `M${BX0},${BY - 34} H${BX1} M${BX0},${BY + 34} H${BX1}`, fill: 'none', stroke: K.c('u'), 'stroke-width': 6, 'stroke-dasharray': '22 14' }, bg);
+    const cargo = [0, 1, 2].map(() => K.s('ellipse', { rx: 20, ry: 12, fill: 'none', stroke: K.c('b'), 'stroke-width': 3.5 }, bg));
+    const push = K.s('path', { d: `M${BX1 - 40},${BY - 90} H${BX1 - 140} M${BX1 - 124},${BY - 102} L${BX1 - 142},${BY - 90} L${BX1 - 124},${BY - 78}`, fill: 'none', stroke: K.c('b'), 'stroke-width': 5, 'stroke-linecap': 'round' }, bg);
+    const disc = K.s('g', { transform: `translate(410 560)` }, svg); K.s('ellipse', { rx: 70, ry: 24, fill: K.c('matter'), stroke: K.c('fg-2'), 'stroke-width': 2 }, disc); K.s('line', { x1: 0, y1: -60, x2: 0, y2: 60, stroke: K.c('matter'), 'stroke-width': 6 }, disc);
+    K.badge(ctx, { kind: 'CONTEXT', at: -0.3 });
+    // WORKAROUND (kit issue 2: Kit.fitFormula cannot fit these two statements in two lines at 28 px): each statement is
+    // shown in two consecutive parts, split at its colon / before 'acts back'; the words are the script's
+    const F = (ctx.script.onscreen && ctx.script.onscreen.formulas) || [];
+    const items = []; F.forEach((f) => { const tx = f.tex, i = tx.indexOf(':\\quad'), j = tx.indexOf('\\text{ acts back');
+      if (i > 0) { items.push({ tex: tx.slice(0, i), at: f.cue }); items.push({ tex: tx.slice(i + 6), at: f.cue + '+3.0' }); }
+      else if (j > 0) { items.push({ tex: tx.slice(0, j) + '\\ldots', at: f.cue }); items.push({ tex: '\\ldots' + tx.slice(j), at: f.cue + '+2.5' }); }
+      else items.push({ tex: tx, at: f.cue }); });
+    K.formulaLayer(ctx, { label: 'Formula · P3 Definition 5.1, §5.5', items });
+    ctx.c3 = { T, PL, cG, cF, X, Y, grow, fade, lF, lG, lS, lB, lP, lK, lD, lFl, bg, belt, cargo, push, disc, BX0, BX1, BY };
+  },
+  render(t, ctx) {
+    const S = Scene, P = ctx.params, c = ctx.c3, T = c.T, fd = C3.fadeEl;
+    const pg = S.seg(t, T.grows, T.grows + 2.5, S.ease.linear), sat = S.seg(t, T.push, T.push + 1.6, S.ease.inOutCubic);
+    const ext = pg < 1 ? 0.5 * pg : 0.5 + 0.48 * S.seg(t, T.push, T.push + 1.6, S.ease.linear);
+    const path = (f, u1) => { let d = ''; for (let i = 0; i <= 80; i++) { const u = 0.02 + (u1 - 0.02) * i / 80; d += `${i ? 'L' : 'M'}${c.X(u).toFixed(1)},${c.Y(f(u - 0.02)).toFixed(1)}`; } return d; };
+    c.cG.setAttribute('d', path((u) => c.grow(u, sat), Math.max(0.021, 0.02 + ext))); c.cG.style.opacity = pg > 0 ? 1 : 0;
+    const fo = pg > 0 ? 1 - S.seg(t, T.line, T.line + 0.4, S.ease.linear) : 0; c.cF.setAttribute('d', path(c.fade, Math.max(0.021, 0.02 + 0.5 * pg))); c.cF.style.opacity = fo.toFixed(3);
+    fd(c.lF, t, T.grows + 1.6, T.line); fd(c.lG, t, T.grows + 1.8, T.line);
+    const so = C3.fadeEl(c.lS, t, T.line + 0.4, T.names); fd(c.lB, t, T.line + 0.8, T.names); void so;
+    fd(c.lP, t, T.push + 1.0, T.names); fd(c.lK, t, T.names + 0.3); fd(c.lD, t, T.names + 0.6); fd(c.lFl, t, T.flips + 0.6);
+    // belt
+    const bo = S.seg(t, -0.4, -0.1, S.ease.linear); c.bg.style.opacity = bo.toFixed(3);   // base layout from frame 0
+    const sp = 1 - (1 - P.belt_slowdown) * sat, tt = t - T.belt; const off = -60 * (Math.min(tt, T.push - T.belt) + Math.max(0, t - T.push) * 0.5 * (1 + sp));
+    c.belt.style.strokeDashoffset = off.toFixed(1);
+    const level = pg > 0 ? c.grow(ext, sat) : 0, size = Math.min(1.8, Math.max(0.5, 0.6 + 0.25 * level));
+    c.cargo.forEach((e, i) => { const x = c.BX0 + ((((-off) * 0.5 + i * 180) % 540) + 540) % 540; e.setAttribute('cx', x.toFixed(1)); e.setAttribute('cy', c.BY - 34 - 16 * size); e.setAttribute('rx', (20 * size).toFixed(1)); e.setAttribute('ry', (12 * size).toFixed(1)); });
+    c.push.style.opacity = S.seg(t, T.push + 0.4, T.push + 0.8, S.ease.linear).toFixed(3);
+    c.disc.style.opacity = (0.3 * S.seg(t, T.push + 0.6, T.push + 0.9, S.ease.linear) * (1 - S.seg(t, T.push + 2.1, T.push + 2.4, S.ease.linear))).toFixed(3);
+  },
+});
+</script></body></html>

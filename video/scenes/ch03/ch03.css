@@ -1,0 +1,11 @@
+/* ch03.css: styles shared by the scenes of unit ch03 (tokens only, no transitions, no animations). */
+.c3-grp { position: absolute; inset: 0; transform-origin: 0 0; }
+.c3-label { position: absolute; font-weight: 500; font-size: 32px; color: var(--fg-2); white-space: nowrap; z-index: 32;
+  text-shadow: 0 0 3px var(--bg), 0 0 6px var(--bg), 0 0 10px var(--bg); }
+.c3-label.big { font-size: 36px; color: var(--fg); }
+.c3-label.mono { font-family: "JetBrains Mono"; font-size: 28px; letter-spacing: .07em; color: var(--muted); }
+.c3-label.center { transform: translateX(-50%); text-align: center; }
+.c3-label.right { transform: translateX(-100%); text-align: right; }
+.c3-card { position: absolute; box-sizing: border-box; border: 3px solid var(--muted); border-radius: 14px; background: var(--panel); }
+.c3-count { position: absolute; font-size: 36px; font-weight: 500; color: var(--fg); white-space: nowrap; z-index: 32; }
+.c3-halo { text-shadow: 0 0 3px var(--bg), 0 0 6px var(--bg), 0 0 10px var(--bg); }
