@@ -1,0 +1,99 @@
+<!doctype html>
+<html lang="en"><head><meta charset="utf-8">
+<title>01.4 Who pays the bill</title>
+<link rel="stylesheet" href="../../vendor/katex/katex.min.css">
+<link rel="stylesheet" href="../../runtime/theme.css">
+<link rel="stylesheet" href="ch01.css">
+<script src="../../vendor/katex/katex.min.js"></script>
+<script src="../../runtime/scene.js"></script>
+<script src="../../runtime/components/kit.js"></script>
+<script src="../../runtime/components/hud.js"></script>
+<script src="../../runtime/components/field.js"></script>
+<script src="../../runtime/components/motifs.js"></script>
+<script src="../../runtime/components/cards.js"></script>
+<script src="ch01_kit.js"></script>
+</head><body><div id="stage"></div>
+<script>
+/* 01.4 Who pays the bill (L1, NIGHT, PROVED · energy budget). The dynamo loop of P3 ch. 5 redrawn, words only:
+   motor -> flow (blue tracers) -> field (vermillion lines), the field brakes the flow, both drop heat into a tray;
+   neutral energy tokens (params.tokens_per_s) travel the arrows; 'on average: power in = heat out'. */
+Scene.define({
+  duration: 21,
+  register: 'night',
+  cues: { bill: 0.4, motor: 2.0, loop: 6.6, heat: 10.4, convert: 15.4 },
+  params: { badge_note: 'energy budget · P3 Theorem 3.3', tokens_per_s: 6 },
+  setup(ctx) {
+    const K = Kit, S = Scene, P = ctx.params, st = ctx.stage, lab = (s) => C1.labOf(ctx, s, s);
+    const svg = K.svgLayer(ctx, 12), g = K.s('g', {}, svg), grey = K.c('fg-2');
+    const FX = 590, FY = 300, BX = 1450, BW = 360, BH = 200, TRY = 620;
+    const fBox = K.s('rect', { x: FX - BW / 2, y: FY - BH / 2, width: BW, height: BH, rx: 16, fill: 'none', stroke: K.c('u'), 'stroke-width': 4 }, g);
+    const bBox = K.s('rect', { x: BX - BW / 2, y: FY - BH / 2, width: BW, height: BH, rx: 16, fill: 'none', stroke: K.c('b'), 'stroke-width': 4 }, g);
+    const tray = K.s('path', { d: `M760,${TRY - 50} V${TRY + 30} H1160 V${TRY - 50}`, fill: 'none', stroke: grey, 'stroke-width': 5, 'stroke-linejoin': 'round' }, g);
+    const mk = (d, dash) => { const p = K.s('path', { d, fill: 'none', stroke: grey, 'stroke-width': 4, 'stroke-linecap': 'round', 'stroke-dasharray': dash || '' }, g); return p; };
+    const head = (x, y, a) => K.s('path', { d: 'M-16,-11 L2,0 L-16,11', transform: `translate(${x} ${y}) rotate(${a})`, fill: 'none', stroke: grey, 'stroke-width': 4, 'stroke-linecap': 'round', 'stroke-linejoin': 'round' }, g);
+    const pIn = mk(`M100,${FY} H${FX - BW / 2 - 10}`), hIn = head(FX - BW / 2 - 10, FY, 0);
+    const pTop = mk(`M${FX + 60},${FY - BH / 2 - 10} C${FX + 200},${FY - 200} ${BX - 200},${FY - 200} ${BX - 60},${FY - BH / 2 - 10}`), hTop = head(BX - 60, FY - BH / 2 - 10, 50);
+    const pBot = mk(`M${BX - 60},${FY + BH / 2 + 10} C${BX - 200},${FY + 230} ${FX + 200},${FY + 230} ${FX + 60},${FY + BH / 2 + 10}`), hBot = head(FX + 60, FY + BH / 2 + 10, -120);
+    const pH1 = mk(`M${FX},${FY + BH / 2 + 10} C${FX},${TRY - 40} 800,${TRY - 120} 860,${TRY - 10}`, '10 9'), pH2 = mk(`M${BX},${FY + BH / 2 + 10} C${BX},${TRY - 40} 1120,${TRY - 120} 1060,${TRY - 10}`, '10 9');
+    const paths = [pIn, pTop, pBot, pH1, pH2].map((p) => { const L = p.getTotalLength(); return { p, L }; });
+    paths.slice(0, 3).forEach((q) => { q.p.style.strokeDasharray = `${q.L} ${q.L + 10}`; });
+    const qm = K.s('text', { x: 960, y: 420, 'text-anchor': 'middle', class: 'kt-big' }, svg, '?'); qm.style.fill = K.c('chalk');
+    // field lines inside the field box (a few loops), tracers in the flow box
+    const flines = K.s('g', {}, g); [26, 46, 66].forEach((r) => K.s('ellipse', { cx: BX, cy: FY, rx: r * 2.2, ry: r, fill: 'none', stroke: K.c('b'), 'stroke-width': 3 }, flines));
+    const r = S.rng('tr'), tr = Array.from({ length: 120 }, () => ({ a: 6.283 * r(), rr: 0.2 + 0.75 * r(), w: 0.8 + 0.6 * r() }));
+    const tg = K.s('g', {}, g), tEl = tr.map(() => K.s('circle', { r: 3, fill: K.c('u') }, tg));
+    const toks = Array.from({ length: 40 }, () => K.s('circle', { r: 6, fill: grey }, svg));
+    // labels
+    const L = (s, x, y, cls) => C1.label(st, lab(s), x, y, cls);
+    const lMotor = L('motor · convection', 96, FY - 60, 'small'), lFlow = L('flow', FX, FY - 22, 'big center'), lField = L('field', BX, FY - 22, 'big center');
+    [lFlow, lField].forEach((e, i) => { Object.assign(e.style, { color: i ? 'var(--b)' : 'var(--u)', background: 'var(--panel)', padding: '0 12px', borderRadius: '6px' }); });
+    const lStr = L('stretches the field', 960, 166, 'center'), lBrk = L('brakes the flow', 960, 506, 'center');
+    const lFr = L('friction in the fluid', 560, 580, 'right'), lJ = L('electric heating', 1360, 580), lHeat = L('heat', 960, TRY - 40, 'big center');
+    const tag = K.el('div', { class: 'c1-label big', html: K.esc(lab('on average: power in = heat out')) }, st);
+    Object.assign(tag.style, { left: '960px', top: (TRY + 44) + 'px', transform: 'translateX(-50%)', border: '3px dashed var(--fg-2)', borderRadius: '8px', padding: '4px 20px 8px' });
+    K.pen(ctx, { kind: 'underline', target: tag, at: 'convert+0.5', dur: 0.5, seed: 'avg', offset: 6 });
+    K.chip(ctx, { text: 'SCHEMATIC', kind: 'schematic', x: 96, y: 124, at: 'bill' });
+    K.badge(ctx, { kind: 'PROVED', note: P.badge_note, at: -0.3 });
+    K.formulaLayer(ctx, { label: 'Formula · P3 Theorem 3.3, key point' });
+    const T = {}; ['bill', 'motor', 'loop', 'heat', 'convert'].forEach((k) => { T[k] = ctx.at(k + '-0.15'); });
+    ctx.c1 = { T, fBox, bBox, tray, paths, hIn, hTop, hBot, qm, flines, tr, tEl, toks, lMotor, lFlow, lField, lStr, lBrk, lFr, lJ, lHeat, tag, FX, FY, BW, BH, g };
+  },
+  render(t, ctx) {
+    const S = Scene, K = Kit, P = ctx.params, c = ctx.c1, T = c.T, fade = C1.fadeEl;
+    const tIn = S.seg(t, -0.4, -0.1, S.ease.linear);   // base layout: tray, input arrow, motor label from frame 0
+    c.tray.style.opacity = tIn; fade(c.lHeat, t, -0.4); fade(c.lMotor, t, -0.4);
+    const draw = (q, a, d) => { q.p.style.strokeDashoffset = (q.L * (1 - S.seg(t, a, a + d, S.ease.inOutSine))).toFixed(1); q.p.style.opacity = t >= a ? 1 : 0; };
+    draw(c.paths[0], -0.4, 0.3); c.hIn.style.opacity = tIn;
+    c.qm.style.opacity = (S.seg(t, T.bill + 0.5, T.bill + 0.9, S.ease.linear) * (1 - S.seg(t, T.loop - 0.3, T.loop, S.ease.linear))).toFixed(3);
+    c.fBox.style.opacity = S.seg(t, T.motor, T.motor + 0.3, S.ease.linear); fade(c.lFlow, t, T.motor);
+    c.bBox.style.opacity = S.seg(t, T.loop + 0.4, T.loop + 0.7, S.ease.linear); fade(c.lField, t, T.loop + 0.4);
+    draw(c.paths[1], T.loop, 0.7); c.hTop.style.opacity = S.seg(t, T.loop + 0.6, T.loop + 0.8, S.ease.linear); fade(c.lStr, t, T.loop + 0.5);
+    draw(c.paths[2], T.loop + 1.4, 0.7); c.hBot.style.opacity = S.seg(t, T.loop + 2.0, T.loop + 2.2, S.ease.linear); fade(c.lBrk, t, T.loop + 1.9);
+    [3, 4].forEach((i) => { c.paths[i].p.style.opacity = S.seg(t, T.heat, T.heat + 0.4, S.ease.linear); }); fade(c.lFr, t, T.heat + 0.3); fade(c.lJ, t, T.heat + 0.3);
+    fade(c.tag, t, T.heat + 0.8);
+    const pul = 1 + 0.03 * Math.sin(Math.PI * S.seg(t, T.convert, T.convert + 0.6, S.ease.inOutSine));
+    c.g.setAttribute('transform', `translate(960 400) scale(${pul.toFixed(4)}) translate(-960 -400)`);
+    // field lines brighten as tokens arrive
+    c.flines.style.opacity = (S.seg(t, T.loop + 0.4, T.loop + 0.7, S.ease.linear) * (0.5 + 0.5 * S.seg(t, T.loop + 1.0, T.loop + 3, S.ease.linear))).toFixed(3);
+    // tracers circle inside the flow box
+    const on = S.seg(t, T.motor, T.motor + 0.4, S.ease.linear);
+    c.tr.forEach((p, i) => { const a = p.a + p.w * (t - T.motor); c.tEl[i].setAttribute('cx', (c.FX + 0.46 * c.BW * p.rr * Math.cos(a)).toFixed(1)); c.tEl[i].setAttribute('cy', (c.FY + 0.42 * c.BH * p.rr * Math.sin(a)).toFixed(1)); });
+    c.tEl.forEach((e) => { e.style.opacity = on; });
+    // tokens: a pure function of t: token j enters at T.motor + j / rate, then takes a route by its index
+    const rate = P.tokens_per_s;
+    c.toks.forEach((e, j) => {
+      let tt = t - T.motor, k = Math.floor(tt * rate) - j * 1; void k;
+      // token j travels a lap of period 40 / rate
+      const per = c.toks.length / rate, ph = ((tt - j / rate) % per + per) % per;
+      if (tt < j / rate || ph > 3.6) { e.style.opacity = 0; return; }
+      const seg = (q, a, b) => { const u = S.seg(ph, a, b, S.ease.linear); return q.p.getPointAtLength(u * q.L); };
+      let pt = seg(c.paths[0], 0, 1.0);
+      if (ph > 1.0) { if (t < T.loop + 0.8) { e.style.opacity = 0; return; }
+        if (ph <= 2.0) pt = (j % 3 === 2) ? seg(c.paths[3], 1.0, 2.0) : seg(c.paths[1], 1.0, 2.0);
+        else { if (j % 3 === 2) { e.style.opacity = 0; return; } pt = (j % 3 === 1 && t > T.loop + 2.2) ? seg(c.paths[2], 2.0, 3.0) : (t > T.heat ? seg(c.paths[4], 2.0, 3.0) : seg(c.paths[1], 2.0, 2.0)); if (ph > 3.0) { e.style.opacity = 0; return; } }
+        if ((j % 3 === 2 || ph > 2.0) && t < T.heat && !(j % 3 === 1 && ph > 2.0 && t > T.loop + 2.2)) { e.style.opacity = 0; return; } }
+      e.setAttribute('cx', pt.x.toFixed(1)); e.setAttribute('cy', pt.y.toFixed(1)); e.style.opacity = 0.9;
+    });
+  },
+});
+</script></body></html>

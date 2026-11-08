@@ -1,0 +1,97 @@
+<!doctype html>
+<html lang="en"><head><meta charset="utf-8">
+<title>01.1 No magnet inside</title>
+<link rel="stylesheet" href="../../vendor/katex/katex.min.css">
+<link rel="stylesheet" href="../../runtime/theme.css">
+<link rel="stylesheet" href="ch01.css">
+<script src="../../vendor/katex/katex.min.js"></script>
+<script src="../../runtime/scene.js"></script>
+<script src="../../runtime/components/kit.js"></script>
+<script src="../../runtime/components/hud.js"></script>
+<script src="../../runtime/components/field.js"></script>
+<script src="../../runtime/components/motifs.js"></script>
+<script src="../../runtime/components/cards.js"></script>
+<script src="ch01_kit.js"></script>
+</head><body><div id="stage"></div>
+<script>
+/* 01.1 No magnet inside (L0, NIGHT, CONTEXT). Lead-in: chapter card (no staircase). Earth cutaway with a ghost
+   bar magnet and a chalk question mark; core labels; 'left alone' decay counter (params.decay_counter_years) while
+   the loops fade; 'age of the field' counter settling on params.age_words; the outer core churns and the field
+   lines bloom again from the core and stay. */
+Scene.define({
+  duration: 25,
+  register: 'night',
+  cues: { magnet: 3.2, core: 6.0, fade: 9.3, old: 14.0, churn: 17.0 },
+  params: { chapter: { num: '01', title: 'A planet that makes its own magnet', level: 'L0', levelFrom: 'L0' }, decay_counter_years: 40000,
+    age_counter_stops: [1000000, 1000000000], age_words: 'several billion years', churn: { max_particles: 3000, seed: 'ch01-churn' } },
+  setup(ctx) {
+    const K = Kit, S = Scene, P = ctx.params, st = ctx.stage, ch = P.chapter;
+    K.chapterCard(ctx, { num: ch.num, title: ch.title, level: ch.level, levelFrom: ch.levelFrom, at: -0.3, out: 'magnet-0.5', railHold: 3 });
+    K.badge(ctx, { kind: 'CONTEXT', at: 'magnet-0.15' });
+    const EX = 760, EY = 470, R = 330;
+    const svg = K.svgLayer(ctx, 10), grp = K.s('g', {}, svg);
+    const E = C1.earth(grp, { x: EX, y: EY, r: R });
+    // ghost bar magnet with four faint loops, a chalk question mark
+    const ghost = K.s('g', { transform: `translate(${EX} ${EY})` }, svg);
+    K.s('rect', { x: -110, y: -26, width: 220, height: 52, rx: 6, fill: 'none', stroke: K.c('fg-2'), 'stroke-width': 3 }, ghost);
+    K.s('text', { x: -84, y: 12, class: 'kt-label' }, ghost, 'S'); K.s('text', { x: 66, y: 12, class: 'kt-label' }, ghost, 'N');
+    const qm = K.s('text', { x: EX + 170, y: EY - 150, class: 'kt-big' }, svg, '?'); qm.style.fill = K.c('chalk');
+    // field lines: loops of the ghost magnet (fade) and the regenerated field (bloom on 'churn')
+    const L = K.canvasLayer(ctx, 12, { x: 0, y: 0, w: 1920, h: 880 }, null, { reset: true });
+    const loops = C1.dipoleLines(EX, EY, [150, 210, 270, 320], 90, 40);   // axis horizontal: the ghost magnet lies across
+    const field = C1.dipoleLines(EX, EY, [R * 1.25, R * 1.6, R * 2.05, R * 2.6, R * 3.3], 0, R * 0.25);
+    // churn of the liquid outer core (closed form)
+    const nP = Math.min(1400, P.churn.max_particles), churn = C1.churn(nP, R * 0.25 + 4, R * 0.55 - 4, P.churn.seed);
+    const Lc = K.canvasLayer(ctx, 11, { x: EX - R, y: EY - R, w: 2 * R, h: 2 * R }, null, { reset: true });
+    // right column: labels and counters
+    const lab = (re, fb) => C1.labOf(ctx, re, fb);
+    const lOuter = C1.label(st, lab('liquid iron outer core', 'liquid iron outer core'), 1180, 360, 'big');
+    const lInner = C1.label(st, lab('solid inner core', 'solid inner core'), 1180, 470, 'big');
+    const leaders = K.s('g', {}, svg);
+    K.s('path', { d: `M1170,384 L${EX + R * 0.42},${EY - 70}`, stroke: K.c('fg-2'), 'stroke-width': 2, fill: 'none' }, leaders);
+    K.s('path', { d: `M1170,494 L${EX + R * 0.2},${EY + 10}`, stroke: K.c('fg-2'), 'stroke-width': 2, fill: 'none' }, leaders);
+    const cnt1 = C1.label(st, '', 1180, 190, 'big'); cnt1.classList.add('tnum');
+    const fadeLab = K.el('div', { class: 'c1-label' }, st, lab(/fades within/, 'a field left alone fades within tens of thousands of years'));
+    Object.assign(fadeLab.style, { left: '1180px', top: '250px', whiteSpace: 'normal', width: '600px' });
+    K.chip(ctx, { text: C1.chipOf(ctx, /Tobias/, 'order of magnitude · Tobias 2021 · P3 exercise 9'), kind: 'plain', maxWidth: 620, x: 1180, y: 360, at: 'fade+0.6', out: 'churn-0.2' });
+    const cnt2 = C1.label(st, '', 1180, 470, 'big'); cnt2.classList.add('tnum');
+    K.lowerThird(ctx, { kind: 'reference', l1: 'Reference', l2: C1.refL2(C1.chipOf(ctx, /USGS/, "REFERENCE · USGS This Dynamic Earth · Earth's layers")), at: 'core-0.15', hold: 4 });
+    K.lowerThird(ctx, { kind: 'reference', l1: 'Reference', l2: C1.refL2(C1.chipOf(ctx, /Tarduno/, 'REFERENCE · Tarduno et al. 2010 · a field already 3.4 billion years ago')), at: 'old+0.2', hold: 4 });
+    const cross = K.pen(ctx, { kind: 'cross', box: { x: EX - 90, y: EY - 50, w: 180, h: 100 }, at: 'old+0.8', dur: 0.5, out: 'churn+0.4', seed: 'ghostx' });
+    K.chip(ctx, { text: 'SCHEMATIC', kind: 'schematic', x: EX - R, y: EY - R - 12, anchor: 'bl', at: 'churn+0.2' });
+    K.formulaLayer(ctx, { label: 'Formula · P3:1471' });
+    const T = { m: ctx.at('magnet-0.15'), core: ctx.at('core-0.15'), fade: ctx.at('fade-0.15'), old: ctx.at('old-0.15'), churn: ctx.at('churn-0.15') };
+    const fmtInt = (v) => String(Math.round(v)).replace(/\B(?=(\d{3})+(?!\d))/g, ',');
+    ctx.c1 = { grp, E, ghost, qm, L, loops, field, Lc, churn, nP, R, lOuter, lInner, leaders, cnt1, fadeLab, cnt2, T, fmtInt, cross };
+  },
+  render(t, ctx) {
+    const S = Scene, K = Kit, P = ctx.params, c = ctx.c1, T = c.T;
+    const pin = S.seg(t, T.m, T.m + 0.6, S.ease.outCubic);
+    c.grp.style.opacity = pin.toFixed(3); c.grp.setAttribute('transform', `translate(0 ${(20 * (1 - pin)).toFixed(2)})`);
+    const gO = pin * 0.4 * (1 - S.seg(t, T.fade, T.fade + 0.5, S.ease.linear));
+    c.ghost.style.opacity = gO.toFixed(3); c.qm.style.opacity = (S.seg(t, T.m + 0.4, T.m + 0.8, S.ease.linear) * (1 - S.seg(t, T.core, T.core + 0.3, S.ease.linear))).toFixed(3);
+    C1.fadeEl(c.lOuter, t, T.core, T.fade); C1.fadeEl(c.lInner, t, T.core + 0.15, T.fade); c.leaders.style.opacity = c.lOuter.style.opacity;
+    // decay counter and fading loops
+    const pd = S.seg(t, T.fade + 0.2, T.fade + 2.7, S.ease.inOutSine);
+    c.cnt1.innerHTML = `left alone: ${c.fmtInt(P.decay_counter_years * pd)} years`;
+    C1.fadeEl(c.cnt1, t, T.fade + 0.1, T.churn - 0.4); C1.fadeEl(c.fadeLab, t, T.fade + 0.5, T.churn - 0.4);
+    const g = c.L.g; g.clearRect(0, 0, 1920, 880);
+    const loopA = pin * 0.55 * Math.exp(-1.1 * 3 * pd) * (1 - S.seg(t, T.fade + 2.7, T.fade + 3.7, S.ease.linear));
+    if (loopA > 0.005) K.drawLines(g, c.loops, { color: 'b', width: 2.5, alpha: loopA });
+    // age counter: spins past the stops, then the words
+    const pa = S.seg(t, T.old + 0.1, T.old + 1.9, S.ease.inOutSine), stops = P.age_counter_stops;
+    const v = Math.pow(10, Math.log10(stops[0]) + (Math.log10(stops[1]) - Math.log10(stops[0])) * pa);
+    c.cnt2.innerHTML = `age of the field: ${t < T.old + 2.1 ? c.fmtInt(v) + ' years' : K.esc(P.age_words)}`;
+    C1.fadeEl(c.cnt2, t, T.old, T.churn - 0.4);
+    // churn + regenerated field
+    const pc = S.seg(t, T.churn, T.churn + 0.8, S.ease.linear), lc = c.Lc.g; lc.clearRect(0, 0, 2 * c.R, 2 * c.R);
+    if (pc > 0) {
+      const tt = t - T.churn, cols = [K.rgba(K.c('fg-2'), 0.55 * pc), K.rgba(K.c('matter-dark'), 0.7 * pc)];
+      for (let k = 0; k < 2; k++) { lc.fillStyle = cols[k]; for (let i = 0; i < c.nP; i++) { const [x, y, sh] = c.churn(tt, i); if ((sh > 0.5) !== (k === 0)) continue; lc.fillRect(c.R + x - 2, c.R + y - 1.5, 4, 3); } }
+    }
+    const pf = S.seg(t, T.churn + 0.3, T.churn + 2.0, S.ease.inOutSine);
+    if (pf > 0) { const br = 1 + 0.012 * Math.sin(2 * Math.PI * (t - T.churn) / 3.3); g.save(); g.translate(760, 470); g.scale(br, br); g.translate(-760, -470);
+      K.drawLines(g, c.field, { color: 'b', width: 3, alpha: 0.95, progress: pf }); g.globalAlpha = S.seg(pf, 0.7, 1, S.ease.linear); C1.heads(g, c.field, { fr: [0.5] }); g.restore(); }
+  },
+});
+</script></body></html>
