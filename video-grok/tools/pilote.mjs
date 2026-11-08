@@ -33,13 +33,12 @@ export function calendrier(chapitre, temps) {
 
 export function ajuster(audio, fenetre) {
   if (!(fenetre > 0)) throw Object.assign(new Error("creneau"), { code: "creneau" });
-  const speed = 1;
-  if (audio <= fenetre + 1e-6) return { action: "tient", atempo: null, speed };
-  const ratio = audio / fenetre;
-  if (ratio <= 1.12 + 1e-9) {
-    return { action: "atempo", atempo: Number(ratio.toFixed(4)), speed };
-  }
-  return { action: "reminutage", atempo: null, speed };
+  if (audio <= fenetre + 1e-2) return { action: "tient", atempo: null, speed: 1 };
+  throw Object.assign(new Error(`atempo refusé: ${audio} s dans un créneau de ${fenetre} s`), {
+    code: "atempo",
+    audio,
+    fenetre,
+  });
 }
 
 export function rapport(cal, durees) {
@@ -48,11 +47,31 @@ export function rapport(cal, durees) {
       const suivant = beat.paragraphes[index + 1];
       const fin = suivant ? suivant.at : beat.debut + beat.slot;
       const audio = durees.get(paragraphe.id) ?? 0;
-      return { id: paragraphe.id, at: paragraphe.at, audio, fenetre: fin - paragraphe.at, ...ajuster(audio, fin - paragraphe.at) };
+      return { id: paragraphe.id, at: paragraphe.at, audio, fenetre: fin - paragraphe.at, action: "tient", atempo: null, speed: 1 };
     });
     const audio = cues.reduce((somme, cue) => somme + cue.audio, 0);
     return { id: beat.id, audio, slot: beat.slot, ...ajuster(audio, beat.slot), cues };
   });
+}
+
+export function relier(texte, mises) {
+  const voulu = new Map(mises.map((mise) => [`${mise.lang}\0${mise.id}`, mise]));
+  let sortie = "";
+  let index = 0;
+  for (const span of objetsFeuilles(texte)) {
+    sortie += texte.slice(index, span.debut);
+    const brut = texte.slice(span.debut, span.fin);
+    let valeur = null;
+    try {
+      valeur = JSON.parse(brut);
+    } catch {
+      valeur = null;
+    }
+    const mise = valeur && typeof valeur.id === "string" ? voulu.get(`${valeur.lang}\0${valeur.id}`) : null;
+    sortie += mise ? remplacerCreneau(brut, mise) : brut;
+    index = span.fin;
+  }
+  return sortie + texte.slice(index);
 }
 
 export function brancher(document, fichiers, rapports) {
@@ -60,8 +79,11 @@ export function brancher(document, fichiers, rapports) {
     slots: document.slots.map((slot) => {
       const cue = (rapports[slot.lang] ?? []).flatMap((beat) => beat.cues).find((item) => item.id === slot.id);
       const fichier = fichiers[slot.lang]?.[slot.id];
-      if (!cue || !fichier) return { ...slot, audio: null, status: "PENDING" };
-      const tient = cue.action === "tient" || cue.action === "atempo";
+      if (!cue || !fichier) return slot;
+      if (cue.atempo) {
+        throw Object.assign(new Error(`atempo refusé: ${slot.id}`), { code: "atempo" });
+      }
+      const tient = cue.action === "tient";
       if (!tient) return { ...slot, audio: null, status: "PENDING", reason: "la durée dépasse le créneau" };
       return { ...slot, audio: fichier, status: "READY", reason: "" };
     }),
@@ -173,7 +195,9 @@ function clips(cal, fichiers, lignes) {
     for (const paragraphe of beat.paragraphes) {
       const fichier = fichiers[paragraphe.id];
       if (!fichier) throw Object.assign(new Error(`audio manquant: ${paragraphe.id}`), { code: "audio" });
-      liste.push({ fichier, at: paragraphe.at, atempo: parCue.get(paragraphe.id)?.atempo ?? null });
+      const atempo = parCue.get(paragraphe.id)?.atempo ?? null;
+      if (atempo) throw Object.assign(new Error(`atempo refusé: ${paragraphe.id}`), { code: "atempo" });
+      liste.push({ fichier, at: paragraphe.at, atempo: null });
     }
   }
   if (liste.length === 0) throw Object.assign(new Error("audio manquant"), { code: "audio" });
@@ -199,6 +223,45 @@ function executer(commande, args) {
       else reject(new Error(erreur.slice(-2000)));
     });
   });
+}
+
+function objetsFeuilles(texte) {
+  const pile = [];
+  const spans = [];
+  let chaine = false;
+  let echappe = false;
+  for (let index = 0; index < texte.length; index += 1) {
+    const caractere = texte[index];
+    if (chaine) {
+      if (echappe) echappe = false;
+      else if (caractere === "\\") echappe = true;
+      else if (caractere === '"') chaine = false;
+      continue;
+    }
+    if (caractere === '"') {
+      chaine = true;
+      continue;
+    }
+    if (caractere === "{") pile.push({ debut: index, enfants: 0 });
+    else if (caractere === "}" && pile.length > 0) {
+      const courant = pile.pop();
+      if (pile.length > 0) pile[pile.length - 1].enfants += 1;
+      if (courant.enfants === 0) spans.push({ debut: courant.debut, fin: index + 1 });
+    }
+  }
+  return spans;
+}
+
+function remplacerCreneau(brut, mise) {
+  let sortie = remplacerChamp(brut, "audio", mise.audio);
+  sortie = remplacerChamp(sortie, "status", mise.status);
+  return remplacerChamp(sortie, "reason", mise.reason);
+}
+
+function remplacerChamp(brut, nom, valeur) {
+  const motif = new RegExp(`("${nom}"\\s*:\\s*)(?:"(?:\\\\.|[^"\\\\])*"|null|true|false|-?\\d+(?:\\.\\d+)?)`);
+  if (!motif.test(brut)) throw Object.assign(new Error(`champ ${nom}`), { code: "champ" });
+  return brut.replace(motif, `$1${JSON.stringify(valeur)}`);
 }
 
 export async function ecrireManifeste(path, { chapter, lang, paragraphes }) {

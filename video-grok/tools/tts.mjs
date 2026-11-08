@@ -3,7 +3,7 @@ import { dirname, join } from "node:path";
 import { fileURLToPath } from "node:url";
 import { cleCache, ecrire, lire } from "./cache.mjs";
 import { ecrireJournal } from "./journal.mjs";
-import { brancher, ecrireManifeste, horloges, lireScenes, rendre } from "./pilote.mjs";
+import { brancher, ecrireManifeste, horloges, lireScenes, relier, rendre } from "./pilote.mjs";
 import {
   URL_FISH,
   VOIX,
@@ -71,6 +71,9 @@ export function minutesReponse(headers) {
 }
 
 export async function synthetiser({ chapitre, cacheDir, cle, dryRun = false, fetchImpl = globalThis.fetch }) {
+  if (chapitre.lang !== "en" && chapitre.lang !== "fr") {
+    throw Object.assign(new Error("langue"), { code: "langue" });
+  }
   if (!dryRun) exigerCle({ FISH_API_KEY: cle });
   let requetes = 0;
   let succesCache = 0;
@@ -81,7 +84,7 @@ export async function synthetiser({ chapitre, cacheDir, cle, dryRun = false, fet
   try {
     for (const paragraphe of chapitre.paragraphes) {
       const key = cleCache({ text: paragraphe.texte, referenceId: VOIX });
-      const chemin = join(cacheDir, `${paragraphe.id}.mp3`);
+      const chemin = join(cacheDir, chapitre.lang, `${paragraphe.id}.mp3`);
       const deja = await lire(cacheDir, key);
       if (deja) {
         succesCache += 1;
@@ -187,10 +190,11 @@ async function rendreChapitre({ opts, root, cache }) {
     for (const paragraphe of chapitre.paragraphes) {
       const ligne = manifeste.paragraphes.find((item) => item.id === paragraphe.id);
       const cle = cleCache({ text: paragraphe.texte, referenceId: VOIX });
-      if (!ligne || ligne.cle !== cle || !ligne.fichier) {
-        throw Object.assign(new Error(`audio manquant: ${paragraphe.id}`), { code: "audio" });
-      }
-      fichiers[paragraphe.id] = ligne.fichier;
+      const octets = ligne && ligne.cle === cle ? await lire(cache, ligne.cle) : null;
+      if (!octets) throw Object.assign(new Error(`audio manquant: ${paragraphe.id}`), { code: "audio" });
+      const chemin = join(cache, lang, `${paragraphe.id}.mp3`);
+      await ecrireNomme(chemin, octets);
+      fichiers[paragraphe.id] = chemin;
     }
     prepares[lang] = { chapitre, fichiers };
   }
@@ -203,9 +207,23 @@ async function rendreChapitre({ opts, root, cache }) {
     sortie,
   });
   const creneaux = opts.creneaux ?? join(root, "scenes", opts.chapter, "cues.json");
-  const document = JSON.parse(await readFile(creneaux, "utf8"));
+  const texte = await readFile(creneaux, "utf8");
+  const document = JSON.parse(texte);
   const branche = brancher(document, { en: prepares.en.fichiers, fr: prepares.fr.fichiers }, resultat);
-  await writeFile(creneaux, `${JSON.stringify(branche, null, 2)}\n`);
+  const mises = [];
+  for (let index = 0; index < document.slots.length; index += 1) {
+    const avant = document.slots[index];
+    const apres = branche.slots[index];
+    if (avant === apres) continue;
+    mises.push({
+      id: apres.id,
+      lang: apres.lang,
+      audio: apres.audio,
+      status: apres.status,
+      reason: apres.reason,
+    });
+  }
+  await writeFile(creneaux, relier(texte, mises));
   const lignes = [
     `chapitre: ${opts.chapter}`,
     `sortie: ${sortie}`,

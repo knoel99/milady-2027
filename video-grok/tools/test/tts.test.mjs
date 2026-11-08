@@ -56,6 +56,7 @@ test("la clé absente échoue avant toute requête, et le cache est consulté av
 test("le même triplet n'est payé qu'une fois, et l'échec ne révèle pas la clé", async () => {
   const dir = await mkdtemp(join(tmpdir(), "tts-"));
   const chapitre = {
+    lang: "en",
     paragraphes: [
       { id: "a", texte: "Hello." },
       { id: "b", texte: "Hello." },
@@ -72,6 +73,7 @@ test("le même triplet n'est payé qu'une fois, et l'échec ne révèle pas la c
   assert.equal(resultat.succesCache, 1);
   assert.equal(resultat.minutes, null);
   const echec = {
+    lang: "en",
     paragraphes: [{ id: "c", texte: "Autre." }],
   };
   await assert.rejects(
