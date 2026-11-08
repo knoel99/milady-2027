@@ -2,7 +2,7 @@
 
 Le verdict global est BLOQUANT.
 
-Huit points mettraient à l’écran un chiffre faux, une précision trop forte, ou un énoncé plus fort que ses hypothèses. Le reste des contrôles obligatoires tient. Aucun correctif n’est appliqué ici.
+Huit points sont bloquants. Les bloquants scientifiques sont S18, S19 et S20. S18 laisse la formule de Rice sur E1 sans dire que la densité jointe n’est pas garantie. S19 doit garder l’absence de masse en 0 comme hypothèse explicite du corollaire 6, parce que la variance mesurée sur E1 ne la démontre pas. S20 doit reprendre la précision approximative du rapport, environ 0,1 pour le second seuil et environ une unité pour le troisième, sans en faire un intervalle de confiance. Les bloquants de documentation sont S21 à S25. S21, S22 et S25 sont des nombres présents dans la source gelée et absents de l’inventaire. S23 cite une ligne qui ne contient pas le seuil du pont. S24 affiche un intervalle absent des lignes citées. Ces cinq points ne sont pas des résultats expérimentaux faux. Le reste des contrôles obligatoires tient. Aucun correctif n’est appliqué ici.
 
 Périmètre lu : `INVENTAIRE.md`, `INCERTITUDES.md`, `MANQUES.md`, les cellules Sources et les pastilles de `PLAN.md`, la colonne "À lire" et les défauts de `QUESTIONS.md`, `STYLE.md` §6. Les durées, le style graphique et Fish ne sont pas relus. `video/` n’est pas ouvert.
 
@@ -39,7 +39,7 @@ Correction proposée. Aucune. Critère de levée. Rien à lever.
 | S17 | `PLAN.md:188` | "E2, 50 pas de Heun" est vrai dans le rapport et le script. `digest.md:127` ne le dit pas. L’inventaire ne le range que sous E1. | `en/rapport/index.qmd:595`, `experiences/e2_mhd2d.py:198`, `digest.md:5` et `:127` | RÉSERVE |
 | S18 | `PLAN.md:174-176` | La fréquence de Rice est montrée comme loi plus F, avec 4 %, 6 %, 14 %, 65 %, 42 %. Le cœur ne dit pas que la densité jointe n’est pas garantie sur E1. | `en/rapport/index.qmd:509-528`, `:883`, `:901` | BLOQUANT |
 | S19 | `PLAN.md:201` et `:287` | Les mesures de projection et de recalage collent au corollaire 6. x01 énonce "KL infini, borne W1" sans les hypothèses. | `en/rapport/index.qmd:447-455`, `digest.md:19` et `:144` | BLOQUANT |
-| S20 | `PLAN.md:214` | 8,87, 17,6 et 26,8 sont les bons arrondis. Le cœur ne porte pas ±0,1 sur le second seuil ni ±1 sur le troisième. | `en/rapport/index.qmd:1114`, `INCERTITUDES.md:37` | BLOQUANT |
+| S20 | `PLAN.md:214` | 8,87, 17,6 et 26,8 sont les bons arrondis. Le cœur ne porte pas la précision approximative du rapport, environ 0,1 pour le second seuil et environ une unité pour le troisième. Cette précision n’est pas un intervalle de confiance. | `en/rapport/index.qmd:1114`, `INCERTITUDES.md:37` | BLOQUANT |
 | S21 | `PLAN.md:225` | "3 variables latentes, Re = 100" est vrai à la ligne citée et absent de `INVENTAIRE.md`. | `en/rapport/index.qmd:169` | BLOQUANT |
 | S22 | `PLAN.md:303` | "24 symétries" est vrai à la ligne citée et absent de `INVENTAIRE.md`. | `en/rapport/index.qmd:1120`, `dynamo.md:400` | BLOQUANT |
 | S23 | `PLAN.md:275` | "Masse du pont \|D\| < 0,25" n’est pas dans l’inventaire. La ligne citée 883 ne contient pas 0,25. | `en/rapport/index.qmd:729`, `:807`, `:883`, `:1269` | BLOQUANT |
@@ -66,27 +66,27 @@ Critère de levée. L’idée du cœur contient ces trois précisions, et la pas
 
 ### S19. Stationnarité en loi et corollaire 6
 
-`PLAN.md:201` et `PLAN.md:287`. Le bon niveau est la loi. Remarque 3.4. dE/dt = P − ε est une identité sur un instantané, et la contrainte est l’espérance nulle. Proposition 5. L’invariance donne E[Lφ] = 0. Corollaire 6, lignes 447 à 455. Si la loi de Lφ ne charge pas 0, ce qui est le cas dès que la variance est strictement positive et qu’il y a une densité, l’ensemble où Lφ vaut 0 est négligeable. Toute loi portée par cet ensemble est singulière, et la KL vers μ est infinie. Si de plus Lφ est lipschitzienne, W1 est minoré par E|Lφ| / L, donc strictement positif.
+`PLAN.md:201` et `PLAN.md:287`. Le bon niveau est la loi. Remarque 3.4. dE/dt = P − ε est une identité sur un instantané, et la contrainte est l’espérance nulle. Proposition 5. L’invariance donne E[Lφ] = 0. Corollaire 6, lignes 447 à 455. L’absence de masse en 0 pour la loi de Lφ est une hypothèse explicite du corollaire. Une variance strictement positive ne la démontre pas. Si cette hypothèse est admise, l’ensemble où Lφ vaut 0 est négligeable. Toute loi portée par cet ensemble est singulière, et la KL vers μ est infinie. Si de plus Lφ est lipschitzienne, W1 est minoré par E|Lφ| / L, donc strictement positif.
 
-E1, variante E. La projection par échantillon annule dE/dt. σ tombe à 4,17×10⁻¹⁷, `digest.md:19` et le JSON. La distance d’énergie passe de 0,00257 à 0,0231, facteur 8,99, affiché ×9. Le témoin de variance avant projection est σ_ref = 0,37772, donc l’hypothèse de non-concentration est satisfaite sur ce banc.
+E1, variante E. La projection par échantillon annule dE/dt. σ tombe à 4,17×10⁻¹⁷, `digest.md:19` et le JSON. La distance d’énergie passe de 0,00257 à 0,0231, facteur 8,99, affiché ×9. Le témoin de variance avant projection est σ_ref = 0,37772. Cette variance mesurée sur E1 ne démontre pas l’absence de masse en 0.
 
 E2, recalage. Le script multiplie les échelles |k| > 3 pour imposer la dissipation égale à l’injection sur chaque échantillon, `experiences/e2_mhd2d.py:328`. Le résidu moyen tombe à 8,27×10⁻⁶ et σ/σ_ref à 8,64×10⁻⁴, `digest.md:144`. Ce sont des quasi-zéros numériques. La KL infinie reste la conclusion du corollaire, sous concentration exacte. La distance peut quand même baisser, 1,1 contre 2,62 sur la base. Le plan montre les deux chiffres ensemble. C’est le bon couple.
 
 x01.c6 résume "KL infini, borne W1". Les deux conclusions sont vraies sous les hypothèses. Sans elles, la phrase est plus forte que le corollaire.
 
-Correction proposée. L’idée de x01.c6 et le calque portent la non-concentration et, pour W1, le lipschitz. Pour E1 et E2, dire que la variance mesurée avant contrainte n’est pas nulle. Ne pas écrire que la KL mesurée est infinie. Les chiffres d’écran restent 4,17×10⁻¹⁷ et 8,64×10⁻⁴.
+Correction proposée. L’idée de x01.c6 et le calque gardent l’absence de masse en 0 comme hypothèse explicite, et le caractère lipschitzien pour W1. Ils ne présentent pas la variance mesurée sur E1 comme une démonstration de cette hypothèse. Ne pas écrire que la KL mesurée est infinie. Les chiffres d’écran restent 4,17×10⁻¹⁷ et 8,64×10⁻⁴.
 
-Critère de levée. x01.c6 énonce les deux hypothèses, et aucun calque n’attribue une KL infinie au chiffre mesuré.
+Critère de levée. x01.c6 énonce l’absence de masse en 0 comme hypothèse, sans la déduire de la variance d’E1, et aucun calque n’attribue une KL infinie au chiffre mesuré.
 
 ### S20. Précision des seuils E3 dans le cœur
 
 `PLAN.md:214`. Les trois affichages 8,87, 17,6, 26,8 sont l’arrondi du rapport. Le JSON a les trois flottants cités plus haut. L’interpolation des seuils lit le signe de λ sur la seconde moitié, t > t_total/2, `experiences/e3_abc.py:85-86` et `:111-112`. λ du dernier quart ne rentre pas dans cette interpolation. À Rm = 17,5, la seconde moitié est positive et le dernier quart est déjà négatif. 17,6 dépend donc de la fenêtre.
 
-Le rapport, ligne 1114, borne le second seuil à environ 0,1 près de 17,5, et le troisième à environ une unité. `INCERTITUDES.md:37` demande d’afficher ces deux limites avec l’arrondi. L’idée du cœur dit que le signe change à Rm = 17,5. Elle ne dit pas ±0,1 ni ±1. x02 le dit pour le troisième seuil, et x02 sort du cœur. Montrer 26,8 en face de "au-dessus de 27" sans l’unité d’incertitude fait lire un écart de 0,2 là où la mesure ne tranche pas à mieux qu’une unité.
+Le rapport, ligne 1114, donne une précision approximative. Le second seuil est à environ 0,1 près de 17,5. Le troisième n’est connu qu’à environ une unité près. Ce ne sont pas des intervalles de confiance. `INCERTITUDES.md:37` demande d’afficher cette précision avec l’arrondi. L’idée du cœur dit que le signe change à Rm = 17,5. Elle ne reprend pas la précision approximative du rapport. x02 la reprend pour le troisième seuil, et x02 sort du cœur. Montrer 26,8 en face de "au-dessus de 27" sans cette précision fait lire un écart de 0,2 là où le rapport ne revendique qu’une unité environ.
 
-Correction proposée. Ajouter à `g11.e3` que le second seuil est connu à environ 0,1 près, que le troisième l’est à environ une unité, et que 17,6 est l’interpolation de la seconde moitié.
+Correction proposée. Ajouter à `g11.e3` la précision approximative du rapport. Le second seuil est à environ 0,1 près de 17,5. Le troisième n’est connu qu’à environ une unité près. 17,6 est l’interpolation de la seconde moitié. Ne pas écrire ces deux précisions comme des intervalles de confiance.
 
-Critère de levée. Ces trois précisions sont dans l’idée de `g11.e3`. x02 peut les répéter. Il ne suffit pas.
+Critère de levée. L’idée de `g11.e3` donne la précision approximative du rapport, environ 0,1 et environ une unité, et ne l’appelle pas un intervalle de confiance. x02 peut la répéter. Il ne suffit pas.
 
 ### S21. Trois variables latentes et Re = 100
 
@@ -181,7 +181,7 @@ PROVED veut dire démontré dans le rapport prospectif. Cela ne veut pas dire pu
 | Définitions 3.1, 3.2, 3.3, 3.9. Remarques 3.4, 3.7, 3.11. Propositions 1, 2, 4, 5, 7, 8, 9. Corollaire 6. | PROVED dans le rapport | Hypothèses du texte. Voir S18 et S19. |
 | E1, table de test, seuil 0,86 à 0,865, plancher 0,0040, ×9 | MEASURED, numérique | Deux graines. CPU. Dimension 3. Interpolation seulement. h = 0,2. Densité non garantie. |
 | E2, V0 à V5, témoin, recalage, inclinaison | MEASURED, numérique | Une graine. Zel’dovich. Forçage f_a. Pm de 0,35 à 2. Plancher de test optimiste. |
-| E3, λ de Rm, seuils, divergence du solveur | MEASURED, numérique, solveur seul | Cinématique, sans force de Lorentz. Rm = 1/η. Signe non résolu à 17,5. Pas de générateur. |
+| E3, λ de Rm, seuils, divergence du solveur | MEASURED, numérique, solveur seul | Cinématique, sans force de Lorentz. Rm = 1/η. Signe non résolu à 17,5. Précision approximative du rapport, environ 0,1 et environ une unité, pas un intervalle de confiance. Pas de générateur. |
 | Courbes `vks-en.png` | Schéma | Durées et amplitudes différentes de VKS. CONTEXT seulement pour la géométrie sourcée. |
 | 74 renversements du script RK4 | Vérification interne | Le plan ne l’affiche pas. Ne pas la présenter comme E1. |
 | Absence d’un modèle génératif de dynamo au 2026-11-06 | CONJECTURE, confiance moyenne | Une absence ne se prouve pas. À relire avant chaque article. |
