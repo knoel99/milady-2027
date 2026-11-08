@@ -33,7 +33,7 @@ BEAT_FIGURES = {
     "g03.vks": ("0.6", "31", "16", "22", "120", "50", "5", "0.4"),
     "g03.defs": ("31", "44", "52", "71"),
     "g04.cowling": ("1933",),
-    "g04.sim": ("2018", "90", "5", "130", "10", "1.5", "50", LATU_GRID),
+    "g04.sim": ("2018", "90", "5", "130", "10", LATU_GRID),
     "g04.reduced": ("2000",),
     "g04.stats": ("2012",),
     "g05.project": ("2026", "48", "560612", "25", "0077"),
@@ -343,7 +343,8 @@ def check_reservations(chapters: dict, errors: list[str]) -> None:
     if not predict or predict["preamble"].get("role") != "spoken":
         errors.append("g02: le predict du rapport doit être dit")
     need(cues, "cue.g02.sodium.show", "0.82 times 10 to the minus 5", "g02", errors)
-    need(cues, "cue.g02.sodium.show", "several million", "g02", errors)
+    if "several million" in cues.get("cue.g02.sodium.show", {"text": ""})["text"]:
+        errors.append("g02.sodium: several million n'est pas dans l'idée du beat")
     need(cues, "cue.g03.riga.caveat", "later machine", "g03", errors)
     need(cues, "cue.g03.riga.show", "two motors of 55 kilowatts", "g03", errors)
     riga_numbers = narration_numbers(spoken_text(next(beat for beat in chapters.get("g03", []) if beat["id"] == "g03.riga")))
@@ -358,6 +359,9 @@ def check_reservations(chapters: dict, errors: list[str]) -> None:
     if "Glatzmaier" in g04 or "Larmor" in g04:
         errors.append("§E: g04 date une source encore bloquée")
     need(cues, "cue.g04.sim.caveat", "No source is pinned", "g04", errors)
+    sim_show = cues.get("cue.g04.sim.show", {"text": ""})["text"]
+    if "1.5" in sim_show or "relative permeability" in sim_show:
+        errors.append("S27: g04.sim répète Re ou mu_r à côté de 90 et 130")
     need(cues, "cue.g04.reduced.show", "not public", "g04", errors)
     need(cues, "cue.g04.stats.show", "Poissonian", "g04", errors)
     need(cues, "cue.g04.stats.caveat", "not an Earth rate", "g04", errors)
