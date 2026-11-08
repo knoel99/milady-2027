@@ -45,9 +45,29 @@ Horloge de la machine. La lecture des sources va jusqu’à la création de la b
 ## Ce qui n’a pas été fait
 
 - Les quatre films, les sous-titres, les pistes séparées, le kit de narration, les convertisseurs, la fiche vouvoyée finale, le document d’état de l’art rédigé pour les encadrants (le plan en tient lieu, pas le livrable §4.7).
-- Les deux relectures adverses (porte G0).
+- À la clôture de la phase 1, les deux relectures n’existaient pas encore. Elles ont été écrites ensuite, sur d’autres branches. Cette branche ne les modifie pas.
 - L’épinglage des faits externes du §E de `INCERTITUDES.md`.
 - Toute mesure de coût Fish, de tokens, ou de temps GPU.
+
+## Exécution 2, correctif des constats G0
+
+Une exécution. Pas de sous-agent. Pas d’appel Fish. Pas de simulation. Tokens et coût toujours `unavailable`.
+
+| Champ | Valeur |
+|---|---|
+| Début (horodatage du message) | 2026-11-08T08:59:00Z |
+| Rapport science lu | `a050a7fbb9f229f8c80e388fcaa0357571d99318`, fichier `video-grok/revues/SCIENCE.md` sur `grok/revue-science` |
+| Rapport pédagogie lu | `d4a3979d5c588e2a2695cd481c2fc8e5f5d4bc4e`, fichier `video-grok/revues/PEDAGOGIE.md` sur `grok/revue-pedagogie` |
+| Sous-agents | 0 |
+| Requêtes Fish | 0 |
+| Tokens | unavailable |
+| Coût | unavailable |
+| G0 | non close. Ce correctif n’est pas une approbation |
+
+Horloge de fin écrite juste avant le commit de ce correctif.
+
+- correction_end: 2026-11-08T09:06:37Z
+- correction_elapsed_s: 457
 
 ## Clôture de la phase 1
 

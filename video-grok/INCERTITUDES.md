@@ -34,7 +34,7 @@ Il est écrit **avant** le stage, sur des bancs CPU, et n’est pas validé par 
 | Taux de croissance maximal de la première fenêtre ABC | valeur inconnue. E3 mesure 0,00765 à Rm = 12 sur sa grille ; ne pas dire « nous retrouvons le maximum publié » (`dynamo.md:706`, `en/rapport/index.qmd:1112`) |
 | Gissinger : le papier balaie μ à Γ = 0,9 ; E1 balaie Γ à μ = 0,119 | le seuil 0,86–0,865 est un résultat d’E1, pas la crise μ_c ≈ 0,11928 (`en/rapport/index.qmd:784`) |
 | σ(dE/dt) du digest contre σ/σ_ref du rapport | étiqueter (`digest.md:11`, `en/rapport/index.qmd:838`) |
-| Seuils E3 : JSON long contre 8,87 / 17,6 / 26,8 | afficher l’arrondi du rapport et la limite ±0,1 et ±1 (`e3_abc.json:167-171`, `en/rapport/index.qmd:1114`) |
+| Seuils E3 : JSON long contre 8,87 / 17,6 / 26,8 | arrondi du rapport. Le second seuil est à environ 0,1 près de 17,5. Le troisième n’est connu qu’à environ une unité près. Ce n’est pas un intervalle de confiance (`e3_abc.json:167-171`, `en/rapport/index.qmd:1114`) |
 | « 65 % » et « 42 % » | 65 % ponctuel loin du récit « au seuil » ; 42 % cumulé près du seuil (`en/rapport/index.qmd:883`) |
 | 0,70 contre 2,52 (×3,6) | c’est V5 contre le **témoin**, pas contre V0 (`en/index.qmd:85`, `digest.md:139-140`) |
 | eps = 0,05 dans le YAML palier 1 contre 0,04479 et 0,04476 mesurés | ne pas mélanger injection nominale et taux d’Itô (`palier1_mhd2d.yaml:25-26`, `digest.md:127`) |
@@ -54,13 +54,15 @@ Il est écrit **avant** le stage, sur des bancs CPU, et n’est pas validé par 
 - En E2 elle améliore budget, spectre et distance au test, et le témoin ne gagne rien (`en/rapport/index.qmd:1031`).
 - Elle n’a qu’un nombre fini d’identités : nécessaire, non suffisant (`en/rapport/index.qmd:568-571`).
 - L’inclinaison ne crée pas de masse et s’effondre là où le modèle est creux (ESS/N → 0,002) (`en/rapport/index.qmd:1033`).
-- Le recalage par échantillon annule la variance de la dissipation (`digest.md:144`). Une distance sur les spectres peut quand même « s’améliorer » (1,1 contre 2,62) : il faut montrer σ/σ_ref en même temps (`en/rapport/index.qmd:1035`).
+- Le recalage par échantillon annule presque la variance de la dissipation (`digest.md:144`, σ/σ_ref = 8,64×10⁻⁴). Une distance sur les spectres peut quand même « s’améliorer » (1,1 contre 2,62) : il faut montrer σ/σ_ref en même temps (`en/rapport/index.qmd:1035`).
+- La variance mesurée de dE/dt sur E1, σ_ref = 0,37772 (`digest.md:49`), ne prouve pas que cette variable n’a pas d’atome en 0. L’absence de masse en 0 reste l’hypothèse du corollaire 6 (`en/rapport/index.qmd:449`).
 
 Confiance dans le mécanisme (où poser la contrainte) : haute sur les bancs mesurés. Confiance dans le transfert 3D, domaine borné, VKS : faible — c’est l’objet de la thèse, pas un résultat (`en/these/index.qmd:1010`).
 
 ## U5. Rice
 
-- Hypothèse de densité non garantie pour une dynamique déterministe. E1 travaille avec h = 0,2 (`en/rapport/index.qmd:528`, `digest.md:5`).
+- Hypothèse de densité continue du couple (D, Ḋ), non garantie parce qu’E1 est déterministe (`en/rapport/index.qmd:528`, `:901`). h = 0,2 (`digest.md:5`).
+- Les 4 % et 6 % sur la référence sont le contrôle numérique de la fenêtre, pas une application du théorème sous ses hypothèses (`en/rapport/index.qmd:883`).
 - Le comptage et Rice ne sont pas la même chose que « un renversement clair ». Les excursions comptent (`en/rapport/index.qmd:528`).
 - La loi des temps d’attente n’est pas dans la loi stationnaire (`en/these/index.qmd:850`).
 - Près du seuil, le générateur lisse le saut (proposition 9) : retard d’environ 0,005 à 0,01 en Γ, puis dépassement (`en/rapport/index.qmd:883`).

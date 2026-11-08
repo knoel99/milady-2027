@@ -104,7 +104,7 @@ Symboles figés (feuille à respecter plus tard, pas une narration) :
 
 Carte de chapitre, 4 s maximum dans la durée du chapitre : numéro, titre anglais, niveau, une ligne « this chapter asks ». Pas de sommaire animé de toutes les parties.
 
-Carte question, 6 à 10 s, fin de chapitre : fond nuit, une phrase anglaise ≤ 18 mots, classe A / B / C en petit, pastille PLANNED ou CONTEXT selon le cas. La voix dit une phrase ; le texte à l’écran n’est pas un paragraphe. Le module `g14` reprend les mêmes phrases, regroupées, sans les réécrire.
+Carte question, 6 à 10 s, fin de chapitre. Dans ce plan elle dure 0:08. Le créneau `*.close` est une synthèse parlée. Il ne garde pas la carte à l’écran. Fond nuit, une phrase anglaise ≤ 18 mots, classe A / B / C en petit, pastille PLANNED ou CONTEXT selon le cas. La voix dit une phrase. Le texte à l’écran n’est pas un paragraphe. Le module `g14` reprend les mêmes phrases, regroupées, sans les réécrire.
 
 ## 9. Série « en attente »
 

@@ -1,6 +1,6 @@
 # Relectures adverses du plan
 
-Statut : **non faites**. Cette exécution a écrit le plan ; elle ne peut pas être son propre adversaire. Porte G0 ouverte (`LOTS.md`).
+Statut au 2026-11-08, après lecture des rapports et un correctif : **G0 non close**. Les rapports indépendants sont sur d’autres branches. Ils n’ont pas été modifiés. `G0-CORRECTIONS.md` répond à S18–S25 et aux six réserves pédagogiques. Une nouvelle revue indépendante doit relire le commit de correctif. Cette note n’est pas une approbation.
 
 Les deux relecteurs travaillent sans se lire l’un l’autre, sans ouvrir `video/`, sans modifier `PLAN.md`. Chacun écrit un fichier neuf :
 

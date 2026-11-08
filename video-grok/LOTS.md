@@ -46,24 +46,29 @@ Un relecteur adverse par lot (exactitude, oral, pédagogie, rythme, cadrage du �
 
 ## Pilote (avant de multiplier les agents d’animation)
 
-Unité : `g10`, scènes `g10.classes` et `g10.sample`.
+Unité : `g10`. Scènes animées : `g10.classes` et `g10.sample`. La séquence d’essai ajoute deux extraits, sans animer tout le chapitre.
 
-Pourquoi celles-là : elles croisent pastille PROVED et pastille MEASURED, les quatre couleurs de rôle, un calque formule, une pause predict, une carte question, un plancher, et l’interdiction de trier les barres par « gagnant ». Si ces composants échouent, les multiplier est inutile.
+- Carte `g10.card`, 8 s, phrase de `QUESTIONS.md` `q.g10`.
+- Caveat oral de `g10.law`, en anglais et en français : une graine, interpolation, ce n’est pas une dynamo. Le texte anglais ne suffit pas.
+
+Pourquoi celles-là : elles croisent pastille PROVED et pastille MEASURED, les quatre couleurs de rôle, un calque formule, une pause predict, une carte question, un plancher, et l’interdiction de trier les barres par « gagnant ». Si ces composants échouent, les multiplier est inutile. Le pilote ne prouve pas le passage g06 vers g08. Ce passage se relit à G1 et G2.
 
 Le pilote est sur `grok/video-pilot`, fichiers :
 
 - `video-grok/scenes/g10/classes.html`
 - `video-grok/scenes/g10/sample.html`
-- `video-grok/scenes/g10/README.md` (comment les repères sont branchés)
+- `video-grok/scenes/g10/card.html` (extrait de 8 s, pas le chapitre)
+- `video-grok/scenes/g10/README.md` (comment les repères sont branchés, y compris le caveat oral)
 
 Critères de sortie du pilote, tous obligatoires :
 
 1. `seek` déterministe : deux captures du même repère, même image.
 2. Texte ≥ 28 px, rien dans la marge de 80 px, rien qui se chevauche sur la barre de divergence logarithmique.
-3. La formule du corollaire 6 n’est pas dans le sous-titre.
+3. La formule du corollaire 6 n’est pas dans le sous-titre. Le calque énonce l’absence de masse en 0 comme hypothèse. Il n’écrit pas « KL = ∞ » à côté de 4,17×10⁻¹⁷ ni de 8,64×10⁻⁴.
 4. La pause predict dure 2 à 3 s et précède la barre écrasée.
-5. Les chiffres affichés sont ceux de `digest.md:134-144` et `digest.md:19`, avec pastille MEASURED, et la légende « not a dynamo ».
-6. Un relecteur qui n’a pas animé le pilote coche la liste. S’il refuse, on ne lance pas les lots d’animation.
+5. Les chiffres affichés sont ceux de `digest.md:134-144` et `digest.md:19`, avec pastille MEASURED.
+6. La capture comprend la carte de 8 s et une limite E2 audible dans les deux langues.
+7. Un relecteur qui n’a pas animé le pilote coche la liste. S’il refuse, on ne lance pas les lots d’animation.
 
 ## Lots d’animation (après le pilote)
 

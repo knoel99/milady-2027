@@ -146,12 +146,13 @@ Le rapport dit que plusieurs énoncés sont classiques ou élémentaires et que 
 | Prop. 4 | un champ équivariant et une base invariante donnent une loi invariante pour **tout** λ, même sans donnée | `en/rapport/index.qmd:399-401` |
 | Rem. 3.7 | les identités de stationnarité ne fixent pas le poids des deux polarités | `en/rapport/index.qmd:414-417` |
 | Prop. 5 | invariance ⇒ E[Lφ] = 0 ; le budget d’énergie moyen est le cas φ = E | `en/rapport/index.qmd:421-424` |
-| Cor. 6 | imposer Lφ = 0 sur chaque échantillon rend la loi singulière par rapport à μ (KL infini) si la variable n’est pas concentrée en 0 | `en/rapport/index.qmd:447-455` |
+| Cor. 6 | Hypothèse explicite : la loi de Lφ ne met pas de masse en 0. Une variance strictement positive ne démontre pas cette absence d’atome. Si l’hypothèse est admise, une loi portée par {Lφ = 0} est singulière et la KL vers μ est infinie. Si de plus Lφ est lipschitzienne, W1 est minoré par E\|Lφ\|/L. Le rapport ajoute qu’une densité rend l’hypothèse vraie, et appelle cela générique dès que la variance est positive (`:449`). Cette glose n’est pas une preuve, et la variance mesurée d’E1 ne l’est pas non plus. Ne pas écrire qu’une KL mesurée est infinie. | `en/rapport/index.qmd:447-455` |
 | Prop. 7 | I-projection = inclinaison exponentielle ; un repondération ne crée pas de masse ; ESS = 1/Σ wᵢ² | `en/rapport/index.qmd:464-473` |
 | Déf. 3.9 | perte de stationnarité, utilisable aux paramètres sans donnée | `en/rapport/index.qmd:487-496` |
 | Ex. 4.2 | (moyenne)² a pour espérance (E g)² + Var(g)/n et pousse donc à réduire la variance ; le produit de deux demi-lots est sans biais | `en/rapport/index.qmd:662-676` |
-| Prop. 8 | formule de Rice : fréquence des passages par 0 à partir de la loi et de F, sans intégration en temps. Fenêtre h : biais O(h²), variance O(1/(Nh)) | `en/rapport/index.qmd:509-517` |
-| Limites de Rice | F doit être connu ; tous les passages, y compris les excursions et le brouhaha autour de 0 ; pas la loi des temps d’attente ; densité non garantie si la mesure physique est singulière | `en/rapport/index.qmd:528` |
+| Prop. 8 | formule de Rice : fréquence des passages par 0 à partir de la loi et de F, sans intégration en temps. Hypothèses : processus stationnaire, trajectoires C¹, observable linéaire, densité continue du couple (D, Ḋ). Fenêtre h : biais O(h²), variance O(1/(Nh)) | `en/rapport/index.qmd:509-517` |
+| Limites de Rice | F doit être connu ; tous les passages, y compris les excursions et le brouhaha autour de 0 ; pas la loi des temps d’attente ; pour une dynamique déterministe comme E1, la densité continue n’est pas garantie | `en/rapport/index.qmd:528` |
+| Contrôle numérique de Rice | Les 4 % près du seuil et 6 % au-dessus, sur la référence, sont le contrôle de l’estimateur de fenêtre là où la densité n’est pas garantie. Ce n’est pas le théorème appliqué sous ses hypothèses. h = 0,2 | `en/rapport/index.qmd:883`, `:901` |
 | Prop. 9 | un générateur lipschitzien en λ rate au moins la moitié du saut de la loi près d’une discontinuité | `en/rapport/index.qmd:543-557` |
 | Rem. 3.11 | les identités sont nécessaires, non suffisantes | `en/rapport/index.qmd:568-571` |
 
@@ -175,6 +176,7 @@ Durées mesurées sur cette machine, en partie avec d’autres calculs : E3 1366
 | Itérations | A, B, C : 12 000 ; C court : 1 200 | `digest.md:5` |
 | Réseau | MLP 256×4, SiLU ; Heun 50 pas ; 10 000 échantillons par Γ ; h_Rice = 0,2 | `digest.md:5`, `en/rapport/index.qmd:593-595` |
 | Seuil mesuré | aucun passage de D par 0 jusqu’à Γ = 0,86 ; des passages dès Γ = 0,865 (0,00194 par unité de temps) | `en/rapport/index.qmd:871`, `digest.md:94` |
+| Pont \|D\| < 0,25 | masse P(\|D\| < 0,25). Ce seuil n’est pas le diamètre D1 = 0,25 m de Riga (`dynamo.md:55`) | `en/rapport/index.qmd:729`, rappel figure `:807` et annexe `:1269` |
 | Plancher d’asymétrie | √(2/π)·(1/2)/√n ≈ 0,0040 pour n = 10 000 | `en/rapport/index.qmd:832` |
 | Plancher d’énergie (n_gen) | 0,0012269… | `digest.md:48` |
 | σ_ref(dE/dt) | 0,37772… | `digest.md:49` |
@@ -266,7 +268,9 @@ Seuils interpolés exacts du JSON (`e3_abc.json:167-171`) : 8,87069372523019 ; 1
 | Rm = 2, λ | −0,500053… (dernier quart −0,500007…) ; mode exact −1/Rm = −0,5 | `e3_abc.json:13-16`, `en/rapport/index.qmd:1116` |
 | Rm = 12, λ | 0,007653 ; à N = 48, 0,008124 | `e3_abc.json:68`, `:160` |
 | Rm = 17,5 | λ = +2,34×10⁻⁴ sur la seconde moitié, −2,17×10⁻⁴ sur le dernier quart, −5,20×10⁻⁴ à N = 48. Le signe n’est pas résolu | `e3_abc.json:104-106`, `:163`, `en/rapport/index.qmd:1114` |
-| Troisième seuil | connu à environ une unité près | `en/rapport/index.qmd:1114` |
+| Second seuil | à environ 0,1 près de 17,5. 17,6 est l’interpolation de la seconde moitié, pas un intervalle de confiance | `en/rapport/index.qmd:1114` |
+| Troisième seuil | connu à environ une unité près. Pas un intervalle de confiance | `en/rapport/index.qmd:1114` |
+| Groupe ABC | le mode de la première fenêtre a les symétries paires du groupe, 24 éléments. Ne pas importer les autres nombres du même paragraphe (Rm1, Rm2, ω, σ à 25 000) | `dynamo.md:400`, `en/rapport/index.qmd:1120` |
 | div. rel. maximale citée | 1,52×10⁻¹⁶ à Rm = 22 | `digest.md:191` |
 | Durée | 1365,53 s dans le JSON ; 1366 s dans le digest | `e3_abc.json:172`, `digest.md:199` |
 | Pas de générateur | E3 valide le solveur et les fenêtres | `en/these/index.qmd:97` |
@@ -310,6 +314,9 @@ Format MFF : HDF5 aligné sur The Well (Ohana et al., NeurIPS 2024), attributs `
 |---|---|---|
 | Flow matching | Lipman et al. 2023 ; chemin linéaire = rectified flow, Liu et al. 2023 | choix du stage, trois raisons en `en/rapport/index.qmd:601` |
 | Offre | FunDiff, Wang et al. 2026 ; Fukami & Taira 2023, Nat. Commun. 14, 6480 | `en/index.qmd:74` |
+| Fukami et Taira 2023 | trois variables latentes, profil NACA 0012 à Re = 100 | `en/rapport/index.qmd:169` |
+| Perméabilité VKS, trois faits | fer doux et mode axisymétrique m = 0 (`dynamo.md:193`) ; μr d’ordre 50, Nore et al. 2018 (`dynamo.md:220`) ; μr ≈ 100, Monchaux et al. 2009 (`dynamo.md:160`). Pas d’intervalle 50 à 100 | mêmes lignes |
+| Clôture EDARI | la recommandation du 2026-11-08 écrit que la prochaine clôture de l’accès régulier est le 08/02/2027 à 9 h, source EDARI. CONTEXT, à reconfirmer. Pas une décision des encadrants | `RECOMMANDATION-CLOUD.md:872-873` |
 | Divergence | potentiels (FunDiff) ; Leray (Genuist et al. 2026, prépublication ; PCDM, Li et al. 2026) | comparaison V0–V5 sur MHD 2D couplée |
 | Perte faible | Weak Generative Sampler, Cai et al. 2026, dimension ≤ 100 | perte conditionnelle de champ, sans valeur cible, aux paramètres sans donnée |
 | Inclinaison | Csiszár 1975 ; Khalifa et al. 2021 ; Mun 2026 | identités sans valeur cible ; mesure de l’échec quand la masse manque |

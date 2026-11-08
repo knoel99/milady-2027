@@ -10,11 +10,12 @@ Ce dossier est la production indépendante demandée par `BRIEF-GROK.md`. **Les 
 | Objet | État |
 |---|---|
 | Branche de planification | `grok/video-plan` |
-| Branche d’intégration prévue | `grok/video` — **absente** du dépôt au moment de cette planification |
+| Branche d’intégration | `grok/video` existe. Cette planification ne la fusionne pas |
 | `main` | non poussée, non fusionnée |
 | Dossier `video/` (autre équipe) | non ouvert |
-| Relectures adverses du plan | **non faites** — porte G0 ouverte (`REVUES.md`) |
-| Scripts, pilote, films | interdits tant que G0 n’est pas close |
+| Relectures lues, non modifiées | science `a050a7f` ; pédagogie `grok/revue-pedagogie` |
+| Porte G0 | **non close**. Correctifs dans `G0-CORRECTIONS.md`. Nouvelle revue indépendante requise |
+| Scripts, pilote, films | toujours absents |
 
 Source scientifique épinglée : commit `4e42429716c093df34ba05b47ada542a13d39c50` (2026-11-08).
 
@@ -30,11 +31,12 @@ Source scientifique épinglée : commit `4e42429716c093df34ba05b47ada542a13d39c5
 | `PLAN.md` | Découpage ~41 min (cœur) et ~60 min (étendu), scènes, statuts, repères nommés |
 | `QUESTIONS.md` | Cartes de fin de chapitre et registre « Before we compute » |
 | `LOTS.md` | Lots disjoints, branche `grok/video`, portes, pilote |
-| `REVUES.md` | Périmètre exact des deux relectures adverses, avant toute écriture |
+| `REVUES.md` | Périmètre des relectures. Les rapports sont sur d’autres branches |
+| `G0-CORRECTIONS.md` | Réponse à S18–S25 et aux six réserves. Pas une clôture |
 | `FISH.md` | Inventaire Fish Audio, sans clé et sans crédit dépensé |
 | `STATS.md` | Journal de comparaison (métriques réelles seulement) |
 | `RAPPORT-PHASE-1.md` | Rapport de fin de phase, en français |
 
 ## Règle pour la suite
 
-Ne pas écrire de narration ni de code de scène tant que deux relecteurs indépendants n’ont pas rendu les rapports décrits dans `REVUES.md`. Le cœur du film doit pouvoir être monté sans les modules d’approfondissement.
+Les rapports existent. Le correctif aussi. G0 n’est pas close : une nouvelle revue indépendante doit relire ce correctif avant toute narration ou scène. Le cœur du film doit pouvoir être monté sans les modules d’approfondissement.
