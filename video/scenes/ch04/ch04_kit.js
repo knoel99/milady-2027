@@ -71,7 +71,64 @@
     const f = ctx.script.onscreen && ctx.script.onscreen.formulas;
     if (!f || !f.length) return null;   // preview without a script entry: no formula layer
     const items = f.map((x, i) => ({ tex: x.tex, at: x.cue, out: x.out ?? (o.stack ? undefined : (i + 1 < f.length ? f[i + 1].cue : undefined)) }));
-    return Kit.formulaLayer(ctx, Object.assign({ items }, o.layer || {}));
+    const L = Kit.formulaLayer(ctx, Object.assign({ items }, o.layer || {}));
+    C4.fitFormulas(L.root, items.map((x) => x.tex));
+    return L;
+  };
+
+  /** REVIEW FIX (Kit.formulaLayer wraps long items only after a relation, e.g. "Γ ≤ | 0.86" or "Γ = | 0.9"):
+   *  an item wider than the layer is split at its most balanced separator (";", ":" or "," followed by a
+   *  space, inside \text{} or at the top level, or \quad), one KaTeX line per half, nothing broken inside a
+   *  relation. If a half is still too wide, the item shrinks (never below 28 px). Items that fit are untouched. */
+  C4.breakCandidates = function (tex) {
+    const out = [];
+    let depth = 0;
+    for (let i = 0; i < tex.length; i++) {
+      if (depth === 0 && tex.startsWith('\\text{', i)) {
+        let j = i + 6, d = 1; while (j < tex.length && d > 0) { if (tex[j] === '{') d++; else if (tex[j] === '}') d--; j++; }
+        const inner = tex.slice(i + 6, j - 1), re = /[;:,]\s+/g; let m;
+        while ((m = re.exec(inner))) {
+          const k = m.index + 1, rest = inner.slice(k).replace(/^\s+/, '');
+          out.push({ left: tex.slice(0, i) + (k > 0 ? '\\text{' + inner.slice(0, k) + '}' : ''), right: (rest ? '\\text{' + rest + '}' : '') + tex.slice(j) });
+        }
+        i = j - 1; continue;
+      }
+      const ch = tex[i];
+      if (ch === '\\' && depth === 0 && /^\\q?quad/.test(tex.slice(i))) { const n = tex.startsWith('\\qquad', i) ? 6 : 5; out.push({ left: tex.slice(0, i), right: tex.slice(i + n).replace(/^\s+/, '') }); i += n - 1; continue; }
+      if (ch === '\\') { i++; continue; }   // skip the escaped character (\{, \;, \,)
+      if (ch === '{') depth++; else if (ch === '}') depth--;
+      else if (depth === 0 && /[;:,]/.test(ch)) {
+        const m = tex.slice(i + 1).match(/^(?:\s*(?:\\[ ,;:!]|\\quad|\\qquad|~))+\s*/);
+        if (m) out.push({ left: tex.slice(0, i + 1), right: tex.slice(i + 1 + m[0].length) });
+      }
+    }
+    return out.filter((c) => c.left.trim() && c.right.trim());
+  };
+  C4.fitFormulas = function (root, texs) {
+    if (!root) return;
+    const rows = Array.from(root.querySelectorAll('.fl-item')), cs = getComputedStyle(root);
+    const avail = parseFloat(cs.maxWidth || '760') - parseFloat(cs.paddingLeft) - parseFloat(cs.paddingRight) - 4;
+    const probe = K.el('span', {}, root); probe.style.cssText = 'position:absolute;left:0;top:0;visibility:hidden;white-space:nowrap;display:inline-block;font-size:32px';
+    const wOf = (tex) => { probe.innerHTML = K.tex(tex, false); return probe.getBoundingClientRect().width; };
+    rows.forEach((row, i) => {
+      const tex = texs[i]; if (!tex || wOf(tex) <= avail) return;
+      let best = null;
+      for (const c of C4.breakCandidates(tex)) { const a = wOf(c.left), b = wOf(c.right), w = Math.max(a, b); if (!best || w < best.w) best = { c, w }; }
+      if (!best) return;   // no separator: KaTeX's own break after a relation stays
+      row.innerHTML = ''; row.style.whiteSpace = 'nowrap';
+      [best.c.left, best.c.right].forEach((x) => K.el('div', { html: K.tex(x, false) }, row));
+      if (best.w > avail) row.style.fontSize = Math.max(28, Math.floor(32 * avail / best.w)) + 'px';
+    });
+    probe.remove();
+  };
+
+  /** REVIEW FIX (runtime/theme.css sets font-feature-settings "tnum" on the whole stage, and Inter's tabular
+   *  hyphen is a full figure wide: "north-south" renders as "north - south"). Replaces a hyphen between two
+   *  letters by U+2011 (non-breaking hyphen, normal width in Inter and JetBrains Mono) in every text node of
+   *  `root` outside KaTeX. Call it last in setup(). */
+  C4.nbhy = function (root) {
+    const w = document.createTreeWalker(root, NodeFilter.SHOW_TEXT, { acceptNode: (n) => (n.parentElement && n.parentElement.closest('.katex') ? NodeFilter.FILTER_REJECT : NodeFilter.FILTER_ACCEPT) });
+    for (let n = w.nextNode(); n; n = w.nextNode()) if (/\p{L}-\p{L}/u.test(n.nodeValue)) n.nodeValue = n.nodeValue.replace(/(\p{L})-(?=\p{L})/gu, '$1‑');
   };
 
   // ---------------- colours ----------------

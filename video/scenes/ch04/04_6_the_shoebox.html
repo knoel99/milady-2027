@@ -12,7 +12,7 @@
 <script src="../../runtime/components/motifs.js"></script>
 <script src="ch04_kit.js"></script>
 <style>
-  .ts { font-family: "JetBrains Mono"; font-size: 28px; letter-spacing: .07em; fill: var(--muted); }
+  .ts { font-family: "JetBrains Mono"; font-size: 28px; letter-spacing: .01em; fill: var(--muted); }
   .rd { font: 500 28px Inter; fill: var(--fg); font-feature-settings: "tnum"; }
   .eqcard { position: absolute; box-sizing: border-box; padding: 14px 22px 16px; background: var(--panel); border: 2px solid var(--matter); border-radius: 10px; }
   .eqcard .katex { font-size: 34px; }
@@ -50,7 +50,7 @@ Scene.define({
     const s = M.seed(G, +1, S.rng('film' + P.seed)); M.run(s, G, P.transient_units, P.dt);
     const NF = P.film_frames, frames = [];
     for (let i = 0; i < NF; i++) { frames.push({ q: s[0], d: s[1], v: s[2] }); M.run(s, G, P.frame_every_units, P.dt); }
-    const FW = 128, FH = 96, PITCH = 140, FX0 = (1920 - (NF - 1) * PITCH - FW) / 2, FY = 158;
+    const FW = 124, FH = 94, PITCH = 144, FX0 = (1920 - (NF - 1) * PITCH - FW) / 2, FY = 290;   // REVIEW: strip in the upper middle (at 158 it left 70 % of the frame empty for 10 s); it clears the box (rim at y 387)
     const svg = K.svgLayer(ctx, 20);
     const strip = K.s('g', {}, svg);
     const band = K.s('g', {}, strip);
@@ -70,7 +70,7 @@ Scene.define({
       const rank = order.indexOf(i);
       return { g, x, y, ts, rank, tx: P.box.x - P.box.w * 0.36 + (rng() * 0.72) * P.box.w - FW / 2, ty: P.box.y - P.box.h / 2 - FH * 0.55 + rng() * 26, rot: (rng() - 0.5) * 40 };
     });
-    K.pen(ctx, { kind: 'box', box: { x: FX0 + 5 * PITCH - 8, y: FY - 8, w: PITCH + FW + 16 - 12 - 4, h: FH + 16 }, at: 'alike', out: 'cut', dur: 0.5, seed: 'alike' });
+    K.pen(ctx, { kind: 'box', box: { x: FX0 + 5 * PITCH - 6, y: FY - 6, w: PITCH + FW + 12, h: FH + 12 }, pad: 4, at: 'alike', out: 'cut', dur: 0.5, seed: 'alike' });
     const cuts = []; for (let i = 0; i < NF - 1; i++) { const x = FX0 + i * PITCH + FW + (PITCH - FW) / 2; cuts.push(K.s('line', { x1: x, x2: x, y1: FY - 30, y2: FY + FH + 76, stroke: K.c('chalk'), 'stroke-width': 3.5, 'stroke-dasharray': '8 7', 'stroke-linecap': 'round' }, svg)); }
 
     // ---------- the map: the 8,000 reference snapshots (Q across, D up) and the 04.5 glow outline ----------
@@ -79,8 +79,9 @@ Scene.define({
     const mapSvg = K.svgLayer(ctx, 14), mapG = K.s('g', {}, mapSvg);
     K.s('line', { x1: MAP.x, x2: MAP.x + MAP.w, y1: MAP.y + MAP.h / 2, y2: MAP.y + MAP.h / 2, stroke: K.c('muted'), 'stroke-width': 2, opacity: 0.6 }, mapG);
     K.s('line', { x1: MAP.x + MAP.w / 2, x2: MAP.x + MAP.w / 2, y1: MAP.y, y2: MAP.y + MAP.h, stroke: K.c('muted'), 'stroke-width': 2, opacity: 0.6 }, mapG);
-    K.s('text', { x: MAP.x + MAP.w - 8, y: MAP.y + MAP.h / 2 - 14, 'text-anchor': 'end', class: 'kt-label' }, mapG, 'Q');
-    K.s('text', { x: MAP.x + MAP.w / 2 - 14, y: MAP.y + 30, 'text-anchor': 'end', class: 'kt-label' }, mapG, 'D');
+    const axl = K.s('g', {}, mapG);
+    K.s('text', { x: MAP.x + MAP.w - 8, y: MAP.y + MAP.h / 2 - 14, 'text-anchor': 'end', class: 'kt-label' }, axl, 'Q');
+    K.s('text', { x: MAP.x + MAP.w / 2 - 14, y: MAP.y + 30, 'text-anchor': 'end', class: 'kt-label' }, axl, 'D');
     // outline of the glow: a smoothed density contour of the same snapshots (marching squares)
     const GX = 64, GY = 48, dens = new Float32Array(GX * GY);
     for (let k = 0; k < N; k++) { const i = Math.floor((XS[3 * k] + RR) / (2 * RR) * GX), j = Math.floor((RR - XS[3 * k + 1]) / (2 * RR) * GY); if (i >= 0 && i < GX && j >= 0 && j < GY) dens[j * GX + i]++; }
@@ -99,8 +100,8 @@ Scene.define({
     // launch order and times of the snapshots (they pour from the box mouth)
     const prng = S.rng('pour' + P.seed), launch = new Float32Array(N); for (let k = 0; k < N; k++) launch[k] = prng();
     const lab = (text, x, y, cls) => { const e = K.el('div', { class: cls || 'c4-label' }, st, text); e.style.left = x + 'px'; e.style.top = y + 'px'; e.style.zIndex = 30; return e; };
-    const lN = lab(`${N.toLocaleString('en-US')} snapshots · Γ = ${G}`, MAP.x + MAP.w / 2, MAP.y + MAP.h + 12, 'c4-label center');
-    K.chip(ctx, { text: 'SIMULATED', kind: '', x: MAP.x + 16, y: MAP.y + 12, at: 'pour+1.2', out: 'enough-0.4' });
+    const lN = lab(`${N.toLocaleString('en-US')} snapshots · Γ = ${G}`, 120, 120, 'c4-label');
+    K.chip(ctx, { text: 'SIMULATED', kind: '', x: MAP.x + MAP.w - 16, y: MAP.y + 12, anchor: 'tr', at: 'pour+1.2', out: 'enough-0.4' });
     K.lowerThird(ctx, { kind: 'source', data: SB, at: 'pour+0.6', hold: 4 });
 
     // ---------- one snapshot, enlarged: three dials and their readings, no clock ----------
@@ -117,12 +118,12 @@ Scene.define({
     K.s('path', { d: 'M0,-15 V0 L11,8', fill: 'none', stroke: K.c('fg-2'), 'stroke-width': 3, 'stroke-linecap': 'round' }, clock);
     K.pen(ctx, { kind: 'cross', box: { x: CX + CW - 64, y: CY + CH + 62, w: 60, h: 60 }, at: 'notime+0.2', out: 'enough-0.4', dur: 0.4, seed: 'clock' });
     const lNo = lab('a snapshot carries no timestamp and no time order', CX, CY + CH + 136, 'c4-label');
-    lNo.style.whiteSpace = 'normal'; lNo.style.width = '396px'; lNo.style.lineHeight = '1.25';
+    lNo.style.whiteSpace = 'normal'; lNo.style.width = '390px'; lNo.style.lineHeight = '1.25'; lNo.style.fontSize = '34px'; lNo.style.color = K.c('fg'); lNo.style.textWrap = 'balance';   // REVIEW: the line of the sentence, legible (was 30 px muted, 'order' alone on line 3)
 
     // ---------- enough: shoebox + the equations; tags ----------
     const eq = K.el('div', { class: 'eqcard' }, st); eq.style.left = '1150px'; eq.style.top = '176px'; eq.style.zIndex = 30;
     const Qs = '\\htmlClass{k-q}{Q}';
-    [`\\dot{${Qs}} = ${K.fmt(E1.config.mu)}\\,${Qs} - \\cu{V}\\,\\cb{D}`, `\\dot{\\cb{D}} = -${K.fmt(E1.config.nu)}\\,\\cb{D} + \\cu{V}\\,${Qs}`, `\\dot{\\cu{V}} = \\Gam - \\cu{V} + ${Qs}\\,\\cb{D}`]
+    [`\\dot{${Qs}} = ${K.fmt(E1.config.mu)}\\,${Qs} - \\cu{V}\\,\\cb{D}`, `\\dot{\\cb{D}} = -${K.fmt(E1.config.nu)}\\,\\cb{D} + \\cu{V}\\,${Qs}`, `\\dot{\\cu{V}} = \\Gamma - \\cu{V} + ${Qs}\\,\\cb{D}`]   // REVIEW: plain Γ here: with the amber 'chapter 05' tag the 'tags' shot had four key colours
       .forEach((tx) => K.el('div', { class: 'row', html: K.tex(tx, false) }, eq));
     const plus = K.el('div', { class: 'plus' }, st, '+'); plus.style.left = '1080px'; plus.style.top = '290px'; plus.style.zIndex = 30;
     const tags = [K.el('div', { class: 'tag' }, st, 'averages'), K.el('div', { class: 'tag' }, st, 'energy budgets'),
@@ -130,44 +131,49 @@ Scene.define({
     tags.forEach((g, i) => { g.style.left = (i === 2 ? 790 : [790, 1050][i]) + 'px'; g.style.top = (i === 2 ? 556 : 470) + 'px'; g.style.zIndex = 30; });
     const tagT = [T.tags, T.tags + 0.3 * tagDur, T.tags + 0.58 * tagDur];
 
-    K.badge(ctx, { kind: 'MEASURED', note: ctx.script.badge && ctx.script.badge.note, at: 'film' });
+    K.badge(ctx, { kind: 'MEASURED', note: ctx.script.badge && ctx.script.badge.note, at: -0.3 });
     C4.formulas(ctx);
+    C4.nbhy(st);
     const L = P.point_px, alpha = P.point_alpha;
-    ctx.c46 = { T, strip, band, fr, cuts, boxG, front, box, frameG, MAP, small, RR, LP, mapG, contour, launch, XS, N, lN, card, photoLink, lSnap, clock, lNo, eq, plus, tags, tagT, ph, pq, pd, L, alpha, FW, FH, PITCH };
+    ctx.c46 = { axl, T, strip, band, fr, cuts, boxG, front, box, frameG, MAP, small, RR, LP, mapG, contour, launch, XS, N, lN, card, photoLink, lSnap, clock, lNo, eq, plus, tags, tagT, ph, pq, pd, L, alpha, FW, FH, PITCH };
   },
   render(t, ctx) {
     const S = Scene, K = Kit, c = ctx.c46, T = c.T, P = ctx.params;
     const f = (el, a, b = Infinity, d = 0.3) => { const p = S.seg(t, a, a + d, S.ease.linear) * (b === Infinity ? 1 : 1 - S.seg(t, b, b + 0.3, S.ease.linear)); el.style.opacity = p.toFixed(3); el.style.display = p > 0 ? '' : 'none'; return p; };
     // --- film: the strip scrolls in from the right, stops; the cut; frames fall into the box (random order)
-    const scroll = 1750 * (1 - S.seg(t, T.film, T.alike - 0.2, S.ease.outCubic));
+    const scroll = 0;   // the empty strip is there from the first frame; the frames are exposed one by one
+    const expo = (i) => T.film + 0.1 + i * Math.max(0.12, (T.alike - 0.3 - T.film - 0.1) / c.fr.length);
     const apart = S.seg(t, T.cut + 0.5, T.cut + 1.0, S.ease.inOutCubic);
     c.strip.setAttribute('transform', `translate(${scroll.toFixed(1)} 0)`);
-    f(c.strip, T.film, T.sh + 0.4);
+    f(c.strip, -1, T.sh + 0.4);
     c.band.style.opacity = (1 - S.seg(t, T.cut + 0.4, T.cut + 0.9, S.ease.linear)).toFixed(3);
     // --- the box: appears before the shuffle, shakes twice, tips and pours, parks small; joins the equations on 'enough'
     const pb = S.seg(t, T.sh - 0.5, T.sh, S.ease.linear), bx = P.box.x, by = P.box.y;
     const shake = 8 * (Math.sin(Math.PI * 2 * S.seg(t, T.sh + 2.0, T.sh + 2.35, S.ease.linear)) + Math.sin(Math.PI * 2 * S.seg(t, T.sh + 2.5, T.sh + 2.85, S.ease.linear)));
-    const tip = S.seg(t, T.pour, T.pour + 0.6, S.ease.inOutCubic), away = S.seg(t, T.pour + 2.9, T.pour + 3.8, S.ease.inOutCubic), back = S.seg(t, T.enough, T.enough + 1.0, S.ease.inOutCubic);
-    const cx = S.lerp(S.lerp(bx, 230, away), 900, back) + shake, cy = S.lerp(S.lerp(by - 30 * tip, 620, away), 300, back);
-    const rot = -32 * tip * (1 - away), sc = S.lerp(1, 0.42, away);
+    const tip = S.seg(t, T.pour - 0.1, T.pour + 0.6, S.ease.inOutCubic), gone = S.seg(t, T.pour + 2.9, T.pour + 3.4, S.ease.linear), back = S.seg(t, T.enough + 0.2, T.enough + 0.8, S.ease.linear);
+    const BX = 1540, BY = 560, BS = 0.62, PX2 = 900, PY2 = 300, PS2 = 0.42;   // pouring place (right of the map), place beside the equations
+    const cx = (back > 0 ? PX2 : S.lerp(bx, BX, tip)) + shake, cy = back > 0 ? PY2 : S.lerp(by, BY, tip);
+    const rot = back > 0 ? 0 : -32 * tip, sc = back > 0 ? PS2 : S.lerp(1, BS, tip);
     const tf = `translate(${cx.toFixed(1)} ${cy.toFixed(1)}) rotate(${rot.toFixed(2)}) scale(${sc.toFixed(3)}) translate(${-bx} ${-by})`;
     c.boxG.setAttribute('transform', tf); c.front.setAttribute('transform', tf);
-    c.boxG.style.opacity = c.front.style.opacity = pb.toFixed(3); K.show(c.boxG, pb > 0); K.show(c.front, pb > 0);
-    const rr = -32 * Math.PI / 180, mx0 = -P.box.w / 2 + 30, my0 = -P.box.h / 2 - 20;   // the mouth (top-left of the tipped box)
-    c.mouth = [bx + mx0 * Math.cos(rr) - my0 * Math.sin(rr), by - 30 + mx0 * Math.sin(rr) + my0 * Math.cos(rr)];
+    const bo = back > 0 ? back : pb * (1 - gone);
+    c.boxG.style.opacity = c.front.style.opacity = bo.toFixed(3); K.show(c.boxG, bo > 0); K.show(c.front, bo > 0);
+    const rr = -32 * Math.PI / 180, mx0 = (-P.box.w / 2 + 40) * BS, my0 = (-P.box.h / 2 - 10) * BS;   // the mouth: top-left of the tipped box
+    c.mouth = [BX + mx0 * Math.cos(rr) - my0 * Math.sin(rr), BY + mx0 * Math.sin(rr) + my0 * Math.cos(rr)];
     // --- frames: in the strip, then they fall into the box (random order), ride with the box, fade when it pours
     c.fr.forEach((F, i) => {
-      if (t < T.film) { F.g.style.display = 'none'; return; }
+      if (t < T.film) { F.g.style.display = 'none'; F.ts.style.opacity = 0; return; }
       F.g.style.display = '';
       const sp = (i - (c.fr.length - 1) / 2) * 10 * apart;   // the cut frames come apart
       const t0 = T.sh + 0.12 * F.rank, p = S.seg(t, t0, t0 + 0.55, S.ease.inCubic);
+      const ex = S.seg(t, expo(i), expo(i) + 0.25, S.ease.linear);
       if (p < 1) {
         const x = S.lerp(F.x + scroll + sp, F.tx, p), y = S.lerp(F.y, F.ty, p);
         F.g.setAttribute('transform', `translate(${x.toFixed(1)} ${y.toFixed(1)}) rotate(${(F.rot * p).toFixed(2)} ${c.FW / 2} ${c.FH / 2})`);
       } else F.g.setAttribute('transform', `${tf} translate(${F.tx.toFixed(1)} ${F.ty.toFixed(1)}) rotate(${F.rot.toFixed(2)} ${c.FW / 2} ${c.FH / 2})`);
       const pe = S.seg(t, T.sh + 0.3, T.sh + 1.1, S.ease.outCubic);   // timestamps peel off and drift up
-      F.ts.setAttribute('transform', `translate(${sp.toFixed(1)} ${(-60 * pe).toFixed(1)})`); F.ts.style.opacity = (1 - pe).toFixed(3);
-      F.g.style.opacity = (1 - S.seg(t, T.pour + 0.2, T.pour + 0.7, S.ease.linear)).toFixed(3);
+      F.ts.setAttribute('transform', `translate(${sp.toFixed(1)} ${(-60 * pe).toFixed(1)})`); F.ts.style.opacity = (ex * (1 - pe)).toFixed(3);
+      F.g.style.opacity = (ex * (1 - S.seg(t, T.pour + 0.2, T.pour + 0.7, S.ease.linear))).toFixed(3);
     });
     c.cuts.forEach((L, i) => { const a = T.cut + 0.04 * i; L.style.opacity = (S.seg(t, a, a + 0.15, S.ease.linear) * (1 - S.seg(t, T.cut + 0.9, T.cut + 1.2, S.ease.linear))).toFixed(3); L.style.display = t >= a ? '' : 'none'; });
     // --- the map: points pour from the box mouth to their places (shuffled order), then the outline of the glow
@@ -176,6 +182,7 @@ Scene.define({
     const k = MP.w / c.MAP.w;
     c.mapG.setAttribute('transform', `translate(${MP.x} ${MP.y}) scale(${k.toFixed(4)}) translate(${-c.MAP.x} ${-c.MAP.y})`);
     const pm = f(c.mapG, T.pour + 0.2, Infinity, 0.5); void pm;
+    c.axl.style.opacity = (1 - S.seg(t, T.enough - 0.5, T.enough - 0.2, S.ease.linear)).toFixed(3);
     c.contour.style.opacity = (0.7 * S.seg(t, T.pour + 2.4, T.pour + 3.0, S.ease.linear)).toFixed(3);
     const g = c.LP.g; g.clearRect(0, 0, 1920, 1080);
     const t0 = T.pour + 0.5, span = 2.4, fly = 0.55;

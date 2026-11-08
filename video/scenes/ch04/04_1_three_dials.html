@@ -41,7 +41,7 @@ Scene.define({
     const title = (ctx.script.onscreen && ctx.script.onscreen.title) || ctx.script.title || 'Chaos and the shoebox of photographs';
 
     // ---- lead-in: chapter card T4 (staircase tier 0 lit, rail at L2 without climbing)
-    K.chapterCard(ctx, { num: '04', title, level: 'L2', levelFrom: 'L2', tier: P.staircase.lit, pending: P.staircase.pending, at: 0, out: 'caricature-0.4', railHold: 2.6 });
+    K.chapterCard(ctx, { num: '04', title, level: 'L2', levelFrom: 'L2', tier: P.staircase.lit, pending: P.staircase.pending, at: -0.3, out: 'caricature-0.55', railHold: 2.9 });   // REVIEW: gone before the dials fade in (no double exposure)
     K.badge(ctx, { kind: 'CONTEXT', at: 'caricature' });
 
     // ---- the dial group (dials, springs, labels, equations, knob): shrinks onto tier 0 at 'bench'
@@ -93,7 +93,7 @@ Scene.define({
     const xl = Math.min(...eb.map((b) => b.x)) - 22;
     const routes = [
       `M${eb[0].x - 10},${mid(eb[0])} H${X[0]} V${lq}`,
-      `M${eb[1].x - 10},${mid(eb[1])} H${xl} V${eb[0].y - 8} H${X[1] - 30}`,
+      `M${eb[1].x - 10},${mid(eb[1])} H${xl} V${eb[0].y - 8} H${K.box(labD, ctx).x - 12}`,   // REVIEW: stops left of 'north-south' (it ran through the letters)
       `M${eb[2].x + eb[2].w + 10},${mid(eb[2])} H${X[2]} V${lv}`,
     ];
     void ld;
@@ -102,7 +102,7 @@ Scene.define({
 
     // mirror: the pen ticks the three rows, 'same equations' beside them
     const xr = Math.max(...eb.map((b) => b.x + b.w)) + 28;
-    eb.forEach((b, i) => K.pen(ctx, { kind: 'check', box: { x: xr, y: b.y + b.h * 0.2, w: 34, h: 34 }, at: `mirror+${(0.45 + 0.15 * i).toFixed(2)}`, dur: 0.35, parent: grp, seed: 'chk' + i }));
+    const checks = eb.map((b, i) => K.pen(ctx, { kind: 'check', box: { x: xr, y: b.y + b.h * 0.2, w: 34, h: 34 }, at: `mirror+${(0.45 + 0.15 * i).toFixed(2)}`, dur: 0.35, parent: grp, seed: 'chk' + i }));
     const same = K.el('div', { class: 'c4-label big' }, grp, 'same equations'); same.style.left = (xr + 64) + 'px'; same.style.top = (eb[1].y + eb[1].h / 2 - 24) + 'px';
     // chip (schematic metaphor), formula layer from the script
     K.chip(ctx, { text: 'SCHEMATIC · dials and springs', kind: 'schematic', x: 1824, y: 124, anchor: 'tr', at: 'caricature+0.3', out: 'bench-0.2' });
@@ -123,7 +123,8 @@ Scene.define({
     const grey = K.hex(K.c('matter')), cb = K.hex(K.c('b')), cbn = K.hex(K.c('b-neg')), cu = K.hex(K.c('u')), cq = C4.mixRGB('b', 'fg', P.q_shade_opacity);
     const lerpC = (a, b, p) => `rgb(${a.map((x, i) => Math.round(x + (b[i] - x) * p)).join(',')})`;
     const zig = (x0, x1, y, amp) => { const n = 9, pts = [[x0, y]]; for (let i = 1; i < 2 * n; i++) pts.push([x0 + (x1 - x0) * i / (2 * n), y + (i % 2 ? -amp : amp)]); pts.push([x1, y]); return pts.map((p) => p.map((v) => v.toFixed(1)).join(',')).join(' '); };
-    ctx.c4 = { eqy: eb.map((b) => b.y + b.h / 2), grp, svg, dials, springs, labs: [labQ, labD, labV], gam, eqw, leaders, same, benchLab, sG, tier0, T, rest, ph, grey, cb, cbn, cu, cq, lerpC, zig, R, X, Y };
+    C4.nbhy(st);   // REVIEW: tabular hyphen of the theme ('north - south')
+    ctx.c4 = { checks, eqy: eb.map((b) => b.y + b.h / 2), grp, svg, dials, springs, labs: [labQ, labD, labV], gam, eqw, leaders, same, benchLab, sG, tier0, T, rest, ph, grey, cb, cbn, cu, cq, lerpC, zig, R, X, Y };
   },
   render(t, ctx) {
     const S = Scene, K = Kit, c = ctx.c4, T = c.T;
@@ -137,6 +138,10 @@ Scene.define({
     c.grp.style.transform = `translate(${tx.toFixed(2)}px, ${(ty + 16 * (1 - pIn)).toFixed(2)}px) scale(${s.toFixed(4)})`;
     c.grp.style.opacity = (pIn * (1 - S.seg(t, T.bench + 0.7, T.bench + 1.2, S.ease.linear))).toFixed(3);
     if (pB >= 1) K.show(c.grp, false);
+    // text leaves first when the group shrinks (only the dials and springs land on tier 0)
+    const txt = 1 - S.seg(t, T.bench, T.bench + 0.3, S.ease.linear);
+    c.eqw.forEach((w) => { w.style.opacity = txt.toFixed(3); });
+    c.labs.forEach((L) => { L.style.filter = ''; }); c.txt = txt;
     // pointers: swing in (spring), idle coupled jiggle, the mirror swings Q and D to the other side
     const jig = (i) => 2.6 * Math.sin(2 * Math.PI * t / 3.1 + c.ph[i]) + 1.2 * Math.sin(2 * Math.PI * t / 1.9 + 1.7 * c.ph[i]);
     const mir = S.seg(t, T.mir, T.mir + 1.0, S.ease.inOutCubic);
@@ -160,10 +165,12 @@ Scene.define({
     c.leaders.forEach((L, i) => { const a = T.eq + 0.6 * i; L.style.opacity = (0.75 * S.seg(t, a + 0.1, a + 0.35, S.ease.linear) * (1 - S.seg(t, a + 1.6, a + 1.9, S.ease.linear))).toFixed(3); });
     // mirror: the rows pulse once, then 'same equations'
     c.eqw.forEach((w, i) => { const a = T.mir + 0.25 + 0.12 * i, p = Math.sin(Math.PI * S.seg(t, a, a + 0.6, S.ease.inOutSine));
-      w.style.transformOrigin = `960px ${c.eqy[i]}px`; w.style.transform = p > 0 ? `scale(${(1 + 0.05 * p).toFixed(4)})` : ''; });
+      w.style.transformOrigin = `960px ${c.eqy[i]}px`; w.style.transform = p > 0 ? `scale(${(1 + 0.03 * p).toFixed(4)})` : ''; });
     const ps = S.seg(t, T.mir + 1.0, T.mir + 1.25, S.ease.linear); c.same.style.opacity = ps; K.show(c.same, ps > 0);
     // the staircase breathes after landing; its label
     const pl = S.seg(t, T.bench + 1.2, T.bench + 1.45, S.ease.linear); c.benchLab.style.opacity = pl; K.show(c.benchLab, pl > 0);
+    [...c.labs, c.gam, c.same].forEach((e) => { e.style.opacity = (+e.style.opacity * c.txt).toFixed(3); });
+    c.checks.forEach((p) => { p.path.style.opacity = (+p.path.style.opacity * c.txt).toFixed(3); });
     const br = 1 + 0.006 * Math.sin(2 * Math.PI * Math.max(0, t - T.bench) / 3.4);
     c.sG.setAttribute('transform', `translate(960 400) scale(${br.toFixed(4)}) translate(-960 -400)`);
   },

@@ -35,7 +35,7 @@ Scene.define({
     C4.fixAt(ctx); C4.tokens(ctx, 0.6);
     const ser = Dd.series.find((s) => s.name === P.series);
     if (!ser) throw new Error('04.3: series not found: ' + P.series);
-    K.badge(ctx, { kind: 'MEASURED', note: ctx.script.badge && ctx.script.badge.note, at: 'count' });
+    K.badge(ctx, { kind: 'MEASURED', note: ctx.script.badge && ctx.script.badge.note, at: -0.3 });
     const events = [];
 
     // ================= part 1: the strip =================
@@ -96,14 +96,19 @@ Scene.define({
     }
     // ================= part 2: the rate against Γ =================
     const X = Dd.x.values, Y = ser.y.map((y) => y * P.y_scale), train = Dd.x.train;
-    const plot = K.plot(ctx, { box: { x0: 260, x1: 1640, y0: 200, y1: 620 }, at: 'silence-0.15',
+    const plot = K.plot(ctx, { box: { x0: 260, x1: 1640, y0: 200, y1: 620 }, at: 'silence+0.4',
       x: { label: 'Γ, control parameter', min: 0.8, max: 1.0, ticks: P.x_ticks, param: true, fmt: (v) => v.toFixed(2) },
       y: { label: 'crossings per ' + P.y_scale.toLocaleString('en-US') + ' time units', min: 0, max: P.y_max, ticks: P.y_ticks } });
     const thr = Dd.threshold, iT = X.findIndex((x) => x >= thr.first_nonzero - 1e-9), nZero = X.filter((x) => x <= thr.last_zero + 1e-9).length;
     plot.band({ x: [thr.last_zero, thr.first_nonzero], kind: 'window', label: 'threshold', at: 'switch-0.15', labelX: plot.sx(thr.first_nonzero) + 14, labelY: 246 });
-    const tSw = ctx.at('switch-0.15'), tGr = ctx.at('grows-0.1'), tEnd = ctx.at('_tail');
-    const dl = Math.min(0.12, Math.max(0.05, (tEnd - tGr - 0.6) / Math.max(1, X.length - iT - 1)));
-    const landT = X.map((x, i) => (i < nZero ? tSil + 0.45 + P.land_interval_s * i : i === iT ? tSw + 0.2 : tGr + dl * (i - iT - 1)));
+    const tSw = ctx.at('switch-0.15'), tGr = ctx.at('grows-0.1'), tEnd = ctx.cue('_tail', ctx.duration - 0.8);   // REVIEW: '_tail' exists only in a built entry (preview threw)
+    // REVIEW: the sweep reaches Γ = 1 by the end of "At Gamma equal to one," and the callout leads "about eleven"
+    // (it used to land 0.5 s after the words); fractions of the 'grows' sentence, fallback: the old rule
+    const sGr = (ctx.script.sentences || []).find((x) => x.cue === 'grows');
+    const sweepEnd = sGr ? sGr.start + 0.55 * (sGr.end - sGr.start) : tEnd - 0.6;
+    const dl = Math.min(0.12, Math.max(0.04, (sweepEnd - tGr) / Math.max(1, X.length - iT - 1)));
+    const li = Math.max(0.06, Math.min(P.land_interval_s, (tSw - tSil - 1.1) / nZero));
+    const landT = X.map((x, i) => (i < nZero ? tSil + 0.8 + li * i : i === iT ? tSw + 0.2 : tGr + dl * (i - iT - 1)));
     plot.curve({ x: X.slice(0, iT + 1), y: Y.slice(0, iT + 1), field: ser.field, kind: 'simulated', at: tSw + 0.1, dur: 0.5 });
     plot.curve({ x: X.slice(iT), y: Y.slice(iT), field: ser.field, kind: 'simulated', at: tGr, dur: dl * (X.length - iT - 1) + 0.15 });
     const dots = X.map((x, i) => K.s('circle', { cx: plot.sx(x), cy: plot.sy(Y[i]), r: 8, fill: train[i] ? K.c(ser.field) : K.c('bg'), stroke: K.c(ser.field), 'stroke-width': 3 }, plot.root));
@@ -125,26 +130,29 @@ Scene.define({
     for (let t = tSw + 0.2; t < tEnd; t += 1 / 240) { ph += P.ticks_per_s_at_max * lastY(t) / yMax / 240; if (ph >= 1) { ph -= 1; streamTicks.push(+t.toFixed(3)); } }
     streamTicks.forEach((t) => events.push({ t, id: 'tick', gain_db: P.tick_gain_db }));
     window.__EVENTS__ = events.sort((a, b) => a.t - b.t);
+    C4.nbhy(st);
 
     ctx.c43 = { STRIP, BAR, TRAY, L1, grp1, Dat, tauNow, W, v, pxPerU, counted, cntN, lRate, exG, exLab, excTau, tau0, lD, lTime,
+      tC2: Math.max(tGr + dl * (X.length - iT - 2) + 0.15, sGr ? sGr.start + 0.62 * (sGr.end - sGr.start) : 0),
       plot, X, Y, dots, landT, ring, streamTicks, lSil, c1, c2, l1, l2, iT, nZero,
       T: { c: tC, ex: tEx, rate: ctx.at('rate-0.15'), sil: tSil, sw: tSw, gr: tGr, end: tEnd } };
   },
   render(t, ctx) {
     const S = Scene, K = Kit, c = ctx.c43, T = c.T;
     // ---------- part 1 ----------
-    const pIn = S.seg(t, T.c, T.c + 0.5, S.ease.outCubic), pOut = S.seg(t, T.sil, T.sil + 1.0, S.ease.inOutCubic);
-    c.grp1.style.transform = `translateY(${(-30 * (1 - pIn) - 520 * pOut).toFixed(2)}px)`; c.grp1.style.opacity = (pIn * (1 - S.seg(t, T.sil, T.sil + 0.4, S.ease.linear))).toFixed(3);
-    K.show(c.grp1, pIn > 0 && t < T.sil + 0.4);
-    if (pIn > 0 && t < T.sil + 0.4) {
+    const pIn = 1, pOut = S.seg(t, T.sil, T.sil + 0.45, S.ease.inOutSine);
+    c.grp1.style.transform = `translateY(${(-60 * pOut).toFixed(2)}px)`; c.grp1.style.opacity = (1 - pOut).toFixed(3);   // the strip drifts up and fades, then the plot comes in
+    K.show(c.grp1, t < T.sil + 0.45);
+    if (t < T.sil + 0.45) {
       const g = c.L1.g, st = c.STRIP, ox = st.x - 20, oy = st.y - 20, tn = c.tauNow(t);
       g.clearRect(0, 0, c.L1.w, c.L1.h);
+      g.lineCap = 'butt'; g.globalAlpha = 1;   // REVIEW: canvas state reset every frame (no dependence on the seek history)
       g.strokeStyle = K.c('matter-dark'); g.lineWidth = 2; g.strokeRect(st.x - ox, st.y - oy, st.w, st.h);
       const zy = st.y + st.h / 2 - oy;
       g.setLineDash([8, 8]); g.strokeStyle = K.c('muted'); g.beginPath(); g.moveTo(st.x - ox, zy); g.lineTo(st.x + st.w - ox, zy); g.stroke(); g.setLineDash([]);
       const NP = 460, ds = new Float32Array(NP + 1); for (let i = 0; i <= NP; i++) ds[i] = c.Dat(tn - c.W + c.W * i / NP);
       const yD = (d) => zy - d * (st.h / 2 - 8) / 3;
-      g.lineWidth = 2.8; g.lineJoin = 'round';
+      g.lineWidth = 2.8; g.lineJoin = 'round'; g.lineCap = 'round';
       for (let i = 0; i < NP; i++) { g.strokeStyle = ds[i] + ds[i + 1] > 0 ? K.c('b') : K.c('b-neg'); g.beginPath(); g.moveTo(st.x - ox + st.w * i / NP, yD(ds[i])); g.lineTo(st.x - ox + st.w * (i + 1) / NP, yD(ds[i + 1])); g.stroke(); }
       let i0 = 0; const br = c.BAR;
       for (let i = 1; i <= NP; i++) if (i === NP || (ds[i] > 0) !== (ds[i0] > 0)) { g.fillStyle = ds[i0] > 0 ? K.c('b') : K.c('b-neg'); g.fillRect(br.x - ox + br.w * i0 / NP, br.y - oy, br.w * (i - i0) / NP + 0.5, br.h); i0 = i; }
@@ -185,7 +193,7 @@ Scene.define({
     const show = (el, a, b = Infinity) => { const p = S.seg(t, a, a + 0.25, S.ease.linear) * (b === Infinity ? 1 : 1 - S.seg(t, b, b + 0.3, S.ease.linear)); el.style.opacity = p; K.show(el, p > 0); };
     show(c.lSil, c.landT[c.nZero - 1] - 0.2, T.gr + 0.6);
     show(c.c1, c.landT[c.iT] + 0.2); show(c.l1, c.landT[c.iT] + 0.2);
-    show(c.c2, c.landT[c.X.length - 1] + 0.2); show(c.l2, c.landT[c.X.length - 1] + 0.2);
+    show(c.c2, c.tC2); show(c.l2, c.tC2);
   },
 });
 </script></body></html>

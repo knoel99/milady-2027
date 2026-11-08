@@ -115,7 +115,7 @@ Scene.define({
       K.s('line', { x1: p.x, x2: p.x + p.w, y1: p.y + p.h / 2, y2: p.y + p.h / 2, stroke: K.c('muted'), 'stroke-width': 1.5, opacity: 0.6 }, g);
       K.s('line', { x1: p.x + p.w / 2, x2: p.x + p.w / 2, y1: p.y, y2: p.y + p.h, stroke: K.c('muted'), 'stroke-width': 1.5, opacity: 0.6 }, g);
       K.s('text', { x: p.x + p.w - 12, y: p.y + p.h / 2 - 12, 'text-anchor': 'end', class: 'kt-tick' }, g, 'Q');
-      K.s('text', { x: p.x + p.w / 2 - 12, y: p.y + p.h - 12, 'text-anchor': 'end', class: 'kt-tick' }, g, 'D');
+      K.s('text', { x: p.x + p.w / 2 - 12, y: p.y + 34, 'text-anchor': 'end', class: 'kt-tick' }, g, 'D');   // REVIEW: at the positive end (was at the bottom)
     });
     const mkHist = (i) => {
       const p = PAN[i], g = K.s('g', {}, svg), w = p.w / NB;
@@ -130,16 +130,17 @@ Scene.define({
     const lA = lab('copy A', PAN[0].x + 16, PAN[0].y + 10), lB = lab('copy B', PAN[1].x + 16, PAN[1].y + 10);
     const lLong = lab('long exposure', PAN[0].x + PAN[0].w - 16, PAN[0].y + 10, 'c4-label right');
     const lSame = lab('same glow, same humps', PAN[1].x, HB.y + 46, 'c4-label big');
-    const lName = lab('the long-exposure glow (stationary distribution)', PAN[0].x + 16, PAN[0].y + 10, 'c4-label');
+    // REVIEW: the name sits in the right column on two lines (inside panel A it ran across the D axis and the glow)
+    const lName = lab('', PAN[1].x, HB.y + 46, 'c4-label big'); lName.innerHTML = 'the long-exposure glow<br>(stationary distribution)'; lName.style.lineHeight = '1.25';
     const lBelow = lab('below the threshold: one whirlpool per start', PAN[1].x, HB.y + 6, 'c4-label');
     // shutter icon (grey): six blades that open
     const shG = K.s('g', { transform: `translate(${PAN[0].x + PAN[0].w - 300},${PAN[0].y + 30})` }, svg);
     const blades = []; for (let k = 0; k < 6; k++) blades.push(K.s('line', { stroke: K.c('matter'), 'stroke-width': 3, 'stroke-linecap': 'round' }, shG));
     K.s('circle', { r: 20, fill: 'none', stroke: K.c('matter'), 'stroke-width': 2.5 }, shG);
     // chips, badge, references
-    K.badge(ctx, { kind: 'CONTEXT', at: 'shutter' });
-    const gch = K.chip(ctx, { text: `Γ = ${G}`, kind: 'plain', x: 140, y: 56, at: 'shutter-0.1' }); gch.root.classList.add('c4-chip-param'); gch.root.style.border = '2px solid'; gch.root.style.padding = '0 16px';
-    K.chip(ctx, { text: 'illustration · live integration of the model', kind: 'plain', x: 340, y: 56, at: 'shutter+0.2' });
+    K.badge(ctx, { kind: 'CONTEXT', at: -0.3 });
+    const gch = K.chip(ctx, { text: `Γ = ${G}`, kind: 'plain', x: 140, y: 56, at: -0.2 }); gch.root.classList.add('c4-chip-param'); gch.root.style.border = '2px solid'; gch.root.style.padding = '0 16px';
+    K.chip(ctx, { text: 'illustration · live integration of the model', kind: 'plain', x: 340, y: 56, at: -0.2 });
     const ich = K.chip(ctx, { text: `Γ = ${P.inset_gamma.toFixed(2)}`, kind: 'plain', x: PAN[1].x + 16, y: PAN[1].y + 12, at: 'below', z: 46 }); ich.root.classList.add('c4-chip-param'); ich.root.style.border = '2px solid'; ich.root.style.padding = '0 16px';
     K.lowerThird(ctx, { kind: 'reference', l1: 'Reference', l2: 'Birkhoff 1931 · ergodic theorem', at: 'name+0.4', hold: 4 });
     C4.formulas(ctx);
@@ -149,6 +150,7 @@ Scene.define({
     K.pen(ctx, { kind: 'circle', box: { x: hx(-humpD) - 60, y: HB.y + HB.h * 0.45, w: 120, h: HB.h * 0.5 }, at: 'hist+0.5', dur: 0.5, pad: 4, seed: 'humpL' });
     K.pen(ctx, { kind: 'underline', box: { x: hx(-0.5), y: HB.y + HB.h - 14, w: hx(0.5) - hx(-0.5), h: 4 }, at: 'hist+1.2', dur: 0.4, seed: 'mid' });
 
+    C4.nbhy(st);
     ctx.c45 = { PAN, HB, LG, off, og, im, GW, GH, acc, A, B, NS, SR, cell, HA, HBh, yMax, NB, bw, lA, lB, lLong, lSame, lName, lBelow, lDax, blades, shG, T, R };
   },
   render(t, ctx) {
@@ -173,7 +175,7 @@ Scene.define({
     K.show(c.LG[0].canvas, pA > 0); if (pA > 0) paint(c.LG[0], st.gA, st.mA, pA);
     K.show(c.LG[1].canvas, pB > 0);
     if (pB > 0) { if (swap < 1) paint(c.LG[1], st.gB, st.mB, pB * (1 - swap)); if (swap > 0) paint(c.LG[1], st.gI, st.mI, swap, swap >= 1); }
-    c.PAN[0].g.style.opacity = pA; c.PAN[1].g.style.opacity = pB;
+    c.PAN[0].g.style.opacity = 1; c.PAN[1].g.style.opacity = pB;
     // the dots with a short fading trail (the last few units), drawn over the glow
     const dot = (L, C, p, t0, alpha) => {
       if (alpha <= 0) return;
@@ -208,7 +210,12 @@ Scene.define({
     c.HBh.g.querySelector('line').style.opacity = (1 - pSl).toFixed(3);
     // labels
     const f = (el, a, b = Infinity) => { const p = S.seg(t, a, a + 0.25, S.ease.linear) * (b === Infinity ? 1 : 1 - S.seg(t, b, b + 0.3, S.ease.linear)); el.style.opacity = p; K.show(el, p > 0); };
-    f(c.lA, T.sec + 0.2, T.name - 0.3); f(c.lB, T.sec + 0.2, T.below - 0.3); f(c.lLong, T.open, T.sec); f(c.lSame, T.slide + 1.0, T.below - 0.4); f(c.lName, T.name); f(c.lBelow, T.below + 0.4); f(c.lDax, T.open);
+    f(c.lA, T.sec + 0.2); f(c.lB, T.sec + 0.2, T.below - 0.3); f(c.lLong, T.open, T.sec); f(c.lSame, T.slide + 1.0, T.name - 0.4); f(c.lName, T.name, T.below - 0.4); f(c.lBelow, T.below + 0.4); f(c.lDax, T.open);
+    // REVIEW: panel A starts centred (one idea, no empty half frame) and slides to its place as copy B arrives
+    const dxA = 440 * (1 - S.seg(t, T.sec - 0.7, T.sec + 0.1, S.ease.inOutCubic)), tr = dxA > 0 ? `${dxA.toFixed(1)}px 0` : '';
+    [c.LG[0].canvas, c.lA, c.lLong, c.lDax].forEach((e) => { e.style.translate = tr; });
+    c.PAN[0].g.setAttribute('transform', `translate(${dxA.toFixed(1)} 0)`); c.HA.g.setAttribute('transform', `translate(${dxA.toFixed(1)} 0)`);
+    c.shG.setAttribute('transform', `translate(${(c.PAN[0].x + c.PAN[0].w - 300 + dxA).toFixed(1)},${c.PAN[0].y + 30})`);
     // shutter: blades rotate open at 'shutter+0.9'
     const po = S.seg(t, T.open - 0.4, T.open + 0.2, S.ease.inOutCubic), ps = S.seg(t, T.sh, T.sh + 0.3, S.ease.linear) * (1 - S.seg(t, T.sec - 0.3, T.sec, S.ease.linear));
     c.shG.style.opacity = ps; K.show(c.shG, ps > 0);

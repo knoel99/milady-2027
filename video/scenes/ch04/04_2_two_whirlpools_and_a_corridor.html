@@ -12,7 +12,9 @@
 <script src="../../runtime/components/motifs.js"></script>
 <script src="ch04_kit.js"></script>
 <style>
-  .axl { position: absolute; font-size: 32px; font-weight: 500; color: var(--fg-2); white-space: nowrap; }
+  .axl { position: absolute; font-size: 32px; font-weight: 500; color: var(--fg-2); white-space: nowrap; z-index: 30; }
+  /* REVIEW: map labels sit above the trajectory canvas with a background-coloured halo (the Γ = 1 attractor runs through 'Q · quadrupole') */
+  .axl, .halo { text-shadow: 0 0 3px var(--bg), 0 0 6px var(--bg), 0 0 10px var(--bg); }
 </style>
 </head><body><div id="stage"></div>
 <script>
@@ -27,7 +29,7 @@ Scene.define({
   cues: { map: 0.4, low: 4.24, twin: 8.95, trapped: 13.0, turn: 17.74, touch: 19.04, flip: 24.73, predict: 29.64, irregular: 37.58, barcode: 40.35 },
   data: { e1: 'data/e1_finegrid.json' },
   params: { dt: 0.01, transient_units: 600, units_per_s: 30, units_per_s_fast: 90, trail_units: 60, strip_units: 600, candidates: 128,
-    first_flip_window_s: [0.2, 1.2], seed: 4, needle_min_gap_s: 0.4,
+    first_flip_window_s: [0.2, 1.2], first_flip_frac: [0.58, 0.8], seed: 4, needle_min_gap_s: 0.4,
     gamma_keys: [{ at: 'map', v: 0.8 }, { at: 'turn', v: 0.86, dur: 3.0 }, { at: 'touch-0.2', v: 0.87, dur: 1.0 }, { at: 'irregular', v: 1.0, dur: 3.0 }],
     seafloor_window_Ma: [0, 5],
     seafloor_normal_Ma: [[0.0, 0.78], [0.99, 1.07], [1.201, 1.211], [1.77, 1.95], [2.14, 2.15], [2.581, 3.04], [3.11, 3.22], [3.33, 3.58], [4.18, 4.29], [4.48, 4.62], [4.8, 4.89], [4.98, 5.23]] },
@@ -44,9 +46,9 @@ Scene.define({
     const STRIP = { x: 1100, y: 450, w: 700, h: 120 }, BAR = { x: 1100, y: 588, w: 700, h: 34 }, SEA = { x: 1100, y: 640, w: 700, h: 24 };
 
     // ---------- badge, chips, knob ----------
-    K.badge(ctx, { kind: 'MEASURED', note: ctx.script.badge && ctx.script.badge.note, at: 'map' });
-    K.chip(ctx, { text: 'illustration · live integration of the model', kind: 'plain', x: MAP.x0, y: 60, at: 'map+0.3' });
-    const knob = K.knob(ctx, { x: 1180, y: 240, r: 80, min: 0.8, max: 1.0, window: thr, label: 'Γ', fmt: (v) => v.toFixed(2), keys: P.gamma_keys, at: 'map', ticks: 8 });
+    K.badge(ctx, { kind: 'MEASURED', note: ctx.script.badge && ctx.script.badge.note, at: -0.3 });
+    K.chip(ctx, { text: 'illustration · live integration of the model', kind: 'plain', x: MAP.x0, y: 60, at: -0.2 });
+    const knob = K.knob(ctx, { x: 1180, y: 240, r: 80, min: 0.8, max: 1.0, window: thr, label: 'Γ', fmt: (v) => v.toFixed(2), keys: P.gamma_keys, at: -0.4, ticks: 8 });
     const crisis = K.chip(ctx, { text: 'crisis in Γ: expected, not proved', kind: 'plain', x: 1330, y: 176, at: 'touch+0.6' });
     crisis.root.classList.add('c4-chip-wrap'); crisis.root.style.width = '380px';
     K.lowerThird(ctx, { kind: 'reference', l1: 'Reference', l2: 'Gissinger 2012 · crisis shown for another coefficient', at: 'touch+0.6', hold: 4 });
@@ -62,54 +64,81 @@ Scene.define({
     const pre = M.seed(G0, +1, rng); M.run(pre, G0, P.transient_units, P.dt);
     const HIST_DT = 0.1, hist = { q: [], d: [] }, cands = [];
     const spacing = 7.3, nHistSteps = Math.round(HIST_DT / P.dt);
-    for (let k = 0; cands.length < P.candidates; k++) {
+    const more = (n) => { const want = cands.length + n; while (cands.length < want) {   // REVIEW: callable again (extra search rounds)
       M.run(pre, G0, HIST_DT, P.dt); hist.q.push(pre[0]); hist.d.push(pre[1]);
       if (hist.d.length * HIST_DT >= P.strip_units && (hist.d.length % Math.round(spacing / HIST_DT)) === 0) cands.push({ s: Float64Array.from(pre), at: hist.d.length });
-    }
+    } };
+    more(P.candidates);
     void nHistSteps;
     // integrate one start through the scene clock; returns crossing times (and records samples when asked)
     const simulate = (s0, tEnd, rec) => {
-      const s = Float64Array.from(s0), cr = []; let tau = 0, prevD = s[1];
+      const s = Float64Array.from(s0), cr = []; let tau = 0, prevD = s[1], ft = 0;
       const n1 = Math.min(NS, Math.ceil(tEnd * SR));
-      if (rec) { rec.q[0] = s[0]; rec.d[0] = s[1]; rec.tau[0] = 0; }
+      if (rec) { rec.q[0] = s[0]; rec.d[0] = s[1]; rec.tau[0] = 0; rec.F.t.push(0); rec.F.q.push(s[0]); rec.F.d.push(s[1]); }
       for (let n = 1; n < n1; n++) {
         const t = n / SR, du = rate(t) / SR, m = Math.ceil(du / P.dt - 1e-9), h = du / m, G = knob.value(t);
-        for (let i = 0; i < m; i++) M.step(s, G, h);
+        for (let i = 0; i < m; i++) { M.step(s, G, h); if (rec) { ft += h; rec.F.t.push(ft); rec.F.q.push(s[0]); rec.F.d.push(s[1]); } }   // REVIEW: every RK4 step kept (smooth trails)
         tau += du;
         if ((s[1] > 0) !== (prevD > 0)) cr.push({ t: t - (1 / SR) * Math.abs(s[1]) / (Math.abs(s[1]) + Math.abs(prevD)), tau });
         prevD = s[1];
         if (rec) { rec.q[n] = s[0]; rec.d[n] = s[1]; rec.tau[n] = tau; }
-        else if (cr.length && cr[0].t < tFlip + P.first_flip_window_s[0]) break;
+        else if (cr.length && cr[0].t < w0) break;
       }
       return cr;
     };
-    const w0 = tFlip + P.first_flip_window_s[0], w1 = tFlip + P.first_flip_window_s[1], aim = (w0 + w1) / 2;
-    let best = null;
-    cands.forEach((c, i) => {
-      const cr = simulate(c.s, w1 + 0.05, null), f = cr.length ? cr[0].t : Infinity;
-      const ok = f >= w0 && f <= w1, score = ok ? Math.abs(f - aim) : 100 + (f >= w0 ? f - w1 : 1000);
-      if (!best || score < best.score) best = { i, score, f };
-    });
+    // REVIEW: the first crossing lands on "…then slips through. The dipole flips." (fractions of the 'flip' sentence),
+    // not 0.2-1.2 s after its start, where the narrator is still saying "The state lingers on one side".
+    const sFlip = (ctx.script.sentences || []).find((x) => x.cue === 'flip'), ff = P.first_flip_frac;
+    const w0 = sFlip && ff ? sFlip.start + ff[0] * (sFlip.end - sFlip.start) : tFlip + P.first_flip_window_s[0];
+    const w1 = sFlip && ff ? sFlip.start + ff[1] * (sFlip.end - sFlip.start) : tFlip + P.first_flip_window_s[1], aim = (w0 + w1) / 2;
+    // most starts cross during the knob's turn (a transient of the ramp, not of a fixed Γ <= 0.86): keep searching,
+    // up to three rounds of params.candidates, until one first crosses inside the window
+    // and prefer a start that then stays on the new side until 'irregular' (a flip that undoes itself within a second
+    // reads as a glitch while the narrator says "The dipole flips")
+    const tIrr0 = ctx.at('irregular');
+    let best = null, done = 0;
+    for (let round = 0; round < 3 && (!best || best.score >= 10); round++) {
+      if (round) more(P.candidates);
+      for (let i = done; i < cands.length; i++) {
+        const cr = simulate(cands[i].s, w1 + 0.05, null), f = cr.length ? cr[0].t : Infinity;
+        const ok = f >= w0 && f <= w1;
+        let score = ok ? Math.abs(f - aim) : 100 + (f < w0 ? 1000 : Number.isFinite(f) ? f - w1 : 500);
+        if (ok) { const cr2 = simulate(cands[i].s, tIrr0, null); if (cr2.length > 1) score += 10; }
+        if (!best || score < best.score) best = { i, score, f };
+      }
+      done = cands.length;
+    }
     if (best.score >= 100) S.warn(`04.2: no starting state crosses inside the flip window (best first crossing at ${best.f.toFixed(2)} s, flip at ${tFlip.toFixed(2)} s)`);
     const pick = cands[best.i];
-    const R = { q: new Float32Array(NS), d: new Float32Array(NS), tau: new Float64Array(NS) };
+    const R = { q: new Float32Array(NS), d: new Float32Array(NS), tau: new Float64Array(NS), F: { t: [], q: [], d: [] } };
     const crossings = simulate(pick.s, dur + 0.01, R);
-    const atTauEarly = (tau, arr) => { let lo = 0, hi = NS - 1; while (hi - lo > 1) { const m = (lo + hi) >> 1; if (R.tau[m] <= tau) lo = m; else hi = m; } return arr[lo]; };
+    // REVIEW: the fine path (every RK4 step, h <= dt) replaces the per-scene-sample path for drawing: at 90 units/s a
+    // scene sample is 0.375 model units apart and the Γ = 1 trail showed straight polygon sides.
+    const FT = Float64Array.from(R.F.t), FQ = Float32Array.from(R.F.q), FD = Float32Array.from(R.F.d), FN = FT.length; R.F = null;
+    const fIdx = (tau) => { let lo = 0, hi = FN - 1; if (tau <= 0) return 0; if (tau >= FT[hi]) return hi; while (hi - lo > 1) { const m = (lo + hi) >> 1; if (FT[m] <= tau) lo = m; else hi = m; } return lo; };
+    const atF = (tau, arr) => { const i = fIdx(tau); if (i + 1 >= FN) return arr[FN - 1]; const f = (tau - FT[i]) / Math.max(1e-12, FT[i + 1] - FT[i]); return arr[i] + (arr[i + 1] - arr[i]) * Math.max(0, Math.min(1, f)); };
+    const atTauEarly = (tau, arr) => atF(tau, arr === R.q ? FQ : FD);
     // pre-history (strip, outline): the long run before the picked state, at negative model time
     const hq = Float32Array.from(hist.q.slice(0, pick.at)), hd = Float32Array.from(hist.d.slice(0, pick.at));
     const sceneIdx = (t) => Math.max(0, Math.min(NS - 1, Math.floor(t * SR)));
     const tauAt = (t) => { const i = sceneIdx(t), f = t * SR - i; return i + 1 < NS ? R.tau[i] + (R.tau[i + 1] - R.tau[i]) * Math.max(0, Math.min(1, f)) : R.tau[i]; };
-    // D (and Q) at model time tau, over pre-history and scene samples
+    // D (and Q) at model time tau, over pre-history and the fine path
     const atTau = (tau, arr, harr) => {
       if (tau < 0) { const j = harr.length - 1 + Math.round(tau / HIST_DT); return j >= 0 ? harr[j] : harr[0]; }
-      let lo = 0, hi = NS - 1; while (hi - lo > 1) { const mid = (lo + hi) >> 1; if (R.tau[mid] <= tau) lo = mid; else hi = mid; }
-      const f = (tau - R.tau[lo]) / Math.max(1e-9, R.tau[hi] - R.tau[lo]); return arr[lo] + (arr[hi] - arr[lo]) * Math.max(0, Math.min(1, f));
+      return atF(tau, arr === R.q ? FQ : FD);
+    };
+    // every stored point (u, Q, D) with a0 <= u <= a1 (pre-history every HIST_DT, then every RK4 step), plus the end point
+    const forPts = (a0, a1, cb) => {
+      if (a0 < 0) { const L = hq.length; for (let j = Math.max(0, L - 1 + Math.ceil(a0 / HIST_DT)); j < L - 1; j++) { const u = (j - (L - 1)) * HIST_DT; if (u > a1) return; cb(u, hq[j], hd[j]); } }
+      if (a1 < 0) return;
+      for (let j = fIdx(Math.max(0, a0)); j < FN && FT[j] < a1; j++) if (FT[j] >= a0) cb(FT[j], FQ[j], FD[j]);
+      cb(a1, atF(a1, FQ), atF(a1, FD));
     };
 
     // ---------- needle flips (pairs closer than the minimum gap cancel, so the polarity stays right) ----------
     const flips = [];
     for (const c of crossings) { if (flips.length && c.t - flips[flips.length - 1] < P.needle_min_gap_s) flips.pop(); else flips.push(c.t); }
-    K.needle(ctx, { corner: true, flips: flips.map((x) => +x.toFixed(3)), dur: 0.5, at: 'map+0.4' });
+    K.needle(ctx, { corner: true, flips: flips.map((x) => +x.toFixed(3)), dur: 0.5, at: -0.4 });
     window.__EVENTS__ = flips.map((x) => ({ t: +x.toFixed(3), id: 'needle', gain_db: -18 }));
 
     // ---------- the map: axes born from the two dials of 04.1 (T1), labels ----------
@@ -121,7 +150,7 @@ Scene.define({
     const labQ = K.el('div', { class: 'axl', html: '<span class="k-q">Q</span> · quadrupole' }, st); labQ.style.left = (MAP.x1 - 236) + 'px'; labQ.style.top = (cy - 50) + 'px';
     const labD = K.el('div', { class: 'axl', html: '<span class="k-b">D</span> · dipole' }, st); labD.style.left = (cx + 16) + 'px'; labD.style.top = (MAP.y0 - 6) + 'px';
     C4.tokens(ctx, 0.6);
-    const lab = (text, x, y, cls = 'c4-label') => { const e = K.el('div', { class: cls }, st, text); e.style.left = x + 'px'; e.style.top = y + 'px'; e.style.zIndex = 30; return e; };
+    const lab = (text, x, y, cls = 'c4-label halo') => { const e = K.el('div', { class: cls }, st, text); e.style.left = x + 'px'; e.style.top = y + 'px'; e.style.zIndex = 30; return e; };
     // whirlpool boxes at the first key (pen loops on 'trapped'), from the recorded path before 'turn'
     const tTurn = ctx.at('turn'), nT = sceneIdx(tTurn);
     let qmin = 9, qmax = -9, dmin = 9, dmax = -9; for (let n = 0; n < nT; n++) { qmin = Math.min(qmin, R.q[n]); qmax = Math.max(qmax, R.q[n]); dmin = Math.min(dmin, R.d[n]); dmax = Math.max(dmax, R.d[n]); }
@@ -140,7 +169,7 @@ Scene.define({
       const gsv = K.svgLayer(ctx, 13);
       const path = K.s('path', { d, fill: 'none', stroke: K.c('chalk'), 'stroke-width': 4, 'stroke-linecap': 'round', 'stroke-linejoin': 'round', 'stroke-dasharray': '2 10' }, gsv);
       const Pm = [PX(atTauEarly(c0.tau, R.q)), PY(0)], sg = Math.sign(atTauEarly(c0.tau, R.q)) || -1;
-      corr = { path, pts, head: [[e[0] - hl * Math.cos(a - 0.5), e[1] - hl * Math.sin(a - 0.5)], e, [e[0] - hl * Math.cos(a + 0.5), e[1] - hl * Math.sin(a + 0.5)]], x: sg < 0 ? Math.max(110, Pm[0] - 160) : Math.min(PX(3.2) - 140, Pm[0] + 30), y: sg < 0 ? Pm[1] + 20 : Pm[1] - 64 };
+      corr = { tc: c0.t, path, pts, head: [[e[0] - hl * Math.cos(a - 0.5), e[1] - hl * Math.sin(a - 0.5)], e, [e[0] - hl * Math.cos(a + 0.5), e[1] - hl * Math.sin(a + 0.5)]], x: sg < 0 ? Pm[0] + 26 : Pm[0] - 160, y: sg < 0 ? Pm[1] + 20 : Pm[1] - 64 };   // REVIEW: inside the loop, clear of the chalk guide
     }
     const lOne = lab('one whirlpool', 180, 150), lMir = lab('mirror whirlpool', 720, 636), lCor = lab('corridor', corr ? corr.x : cx + 30, corr ? corr.y : cy - 92);
     // ---------- canvases ----------
@@ -155,9 +184,10 @@ Scene.define({
     K.pen(ctx, { kind: 'box', box: { x: BAR.x, y: BAR.y, w: BAR.w, h: SEA.y + SEA.h - BAR.y }, pad: 10, at: 'barcode-0.1', dur: 0.6, seed: 'barbox' });
     // ---------- PREDICT card (right column; the knob fades under it) ----------
     const card = C4.predict(ctx, { x: 1060, y: 112, w: 640, anchor: 'l', question: 'Will the flips come like clockwork?', options: ['A · regular', 'B · irregular'],
-      at: 'predict', out: 'irregular+0.35', answerAt: 'irregular-0.15', pick: 1 });
+      at: 'predict', out: 'irregular+1.2', answerAt: 'irregular-0.15', pick: 1 });   // REVIEW: the lit answer stays 1.35 s (was 0.5 s)
 
-    ctx.c42 = { corr, M, R, NS, SR, hq, hd, HIST_DT, sceneIdx, tauAt, atTau, crossings, PX, PY, MAP, STRIP, BAR, SEA, LM, LS, knob, crisis, card,
+    C4.nbhy(st);
+    ctx.c42 = { forPts, atF, FQ, FD, corr, M, R, NS, SR, hq, hd, HIST_DT, sceneIdx, tauAt, atTau, crossings, PX, PY, MAP, STRIP, BAR, SEA, LM, LS, knob, crisis, card,
       axQ, axD, dQ, dD, labQ, labD, lOne, lMir, lCor, lD, lTime, lSea, seaRuns, sw, cx, cy,
       T: { map: tMap, low: ctx.at('low'), twin: ctx.at('twin-0.15'), turn: tTurn, touch: ctx.at('touch-0.15'), pred: ctx.at('predict'), irr: tIrr, bar: ctx.at('barcode-0.15') } };
   },
@@ -175,13 +205,13 @@ Scene.define({
     const pl = S.seg(t, T.map + 0.9, T.map + 1.2, S.ease.linear); c.labQ.style.opacity = c.labD.style.opacity = pl; K.show(c.labQ, pl > 0); K.show(c.labD, pl > 0);
     const fade = (el, a, b) => { const p = S.seg(t, a, a + 0.25, S.ease.linear) * (1 - S.seg(t, b, b + 0.3, S.ease.linear)); el.style.opacity = p; K.show(el, p > 0); };
     if (c.corr) {   // chalk guide drawn on along the path (prefix of its points), arrowhead at the end
-      const pa = S.seg(t, T.touch + 0.25, T.touch + 0.85, S.ease.inOutSine), pz = S.seg(t, ctx.at('flip+2.5'), ctx.at('flip+2.8'), S.ease.linear);
+      const pa = S.seg(t, T.touch + 0.25, T.touch + 0.85, S.ease.inOutSine), pz = S.seg(t, c.corr.tc + 1.0, c.corr.tc + 1.3, S.ease.linear);   // REVIEW: leaves after the dot has slipped through
       const m = Math.max(2, Math.round(c.corr.pts.length * pa));
       let d = c.corr.pts.slice(0, m).map((p, i) => `${i ? 'L' : 'M'}${p[0].toFixed(1)},${p[1].toFixed(1)}`).join('');
       if (pa >= 1) d += ` M${c.corr.head.map((p) => p[0].toFixed(1) + ',' + p[1].toFixed(1)).join(' L')}`;
       c.corr.path.setAttribute('d', d); c.corr.path.style.opacity = (0.9 * (pa > 0 ? 1 : 0) * (1 - pz)).toFixed(3);
     }
-    fade(c.lOne, T.low - 0.15, T.turn - 0.3); fade(c.lMir, T.twin + 0.2, T.turn - 0.3); fade(c.lCor, T.touch + 0.3, ctx.at('flip+2.5'));
+    fade(c.lOne, T.low - 0.15, T.turn - 0.3); fade(c.lMir, T.twin + 0.2, T.turn - 0.3); fade(c.lCor, T.touch + 0.3, c.corr ? c.corr.tc + 1.0 : ctx.at('flip+2.5'));
 
     // --- phase map canvas: faint outline of both whirlpools (A and its mirror), mirror dot, trail, dot
     const g = c.LM.g, ox = c.MAP.x0 - 10, oy = c.MAP.y0 - 10;
@@ -190,31 +220,37 @@ Scene.define({
     const n = c.sceneIdx(t), tau = c.tauAt(t);
     const X = (q) => c.PX(q) - ox, Y = (d) => c.PY(d) - oy;
     const aOut = 0.16 * S.seg(t, T.twin, T.twin + 1, S.ease.linear);
-    if (aOut > 0) {   // last 300 units of A and of its mirror image, very faint grey
-      g.save(); g.lineWidth = 1.6; g.strokeStyle = K.rgba(K.c('fg-2'), aOut);
+    if (aOut > 0) {   // last 300 units of A and of its mirror image, very faint grey (every stored point, >= 4 px apart)
+      g.save(); g.lineWidth = 1.6; g.lineJoin = 'round'; g.strokeStyle = K.rgba(K.c('fg-2'), aOut);
       for (const sg of [1, -1]) {
-        g.beginPath(); let first = true;
-        for (let u = tau - 300; u <= tau; u += 0.2) { const q = sg * c.atTau(u, c.R.q, c.hq), d = sg * c.atTau(u, c.R.d, c.hd); if (first) { g.moveTo(X(q), Y(d)); first = false; } else g.lineTo(X(q), Y(d)); }
+        g.beginPath(); let px = null, py = 0;
+        c.forPts(tau - 300, tau, (u, q, d) => { const x = X(sg * q), y = Y(sg * d); if (px === null) { g.moveTo(x, y); px = x; py = y; return; }
+          if ((x - px) * (x - px) + (y - py) * (y - py) < 16 && u < tau) return; g.lineTo(x, y); px = x; py = y; });
         g.stroke();
       }
       g.restore();
     }
-    const trail = (sg, tauFrom, alpha) => {   // fading trail, colour by the sign of D (polarity = shade)
-      const span = P.trail_units, a0 = Math.max(tauFrom, tau - span), N = 24;
-      g.save(); g.lineWidth = 3.2; g.lineCap = 'round';
-      for (let k = 0; k < N; k++) {
-        const u0 = a0 + (tau - a0) * k / N, u1 = a0 + (tau - a0) * (k + 1) / N; if (u1 <= u0) continue;
-        const age = (tau - u1) / span; g.globalAlpha = alpha * (1 - age) ** 1.5;
-        let pq = sg * c.atTau(u0, c.R.q, c.hq), pd = sg * c.atTau(u0, c.R.d, c.hd);
-        for (let u = u0 + 0.12; u <= u1 + 1e-9; u += 0.12) {
-          const q = sg * c.atTau(Math.min(u, u1), c.R.q, c.hq), d = sg * c.atTau(Math.min(u, u1), c.R.d, c.hd);
-          g.strokeStyle = (d + pd) / 2 > 0 ? B : BN; g.beginPath(); g.moveTo(X(pq), Y(pd)); g.lineTo(X(q), Y(d)); g.stroke(); pq = q; pd = d;
+    const trail = (sg, tauFrom, alpha) => {   // fading trail, colour by the sign of D (polarity = shade); REVIEW: drawn from the fine path
+      const span = P.trail_units, a0 = Math.max(tauFrom, tau - span), N = 24, len = Math.max(1e-6, tau - a0);
+      g.save(); g.lineWidth = 3.2; g.lineCap = 'round'; g.lineJoin = 'round';
+      let px = null, py = 0, pdv = 0, key = -1;
+      c.forPts(a0, tau, (u, q, d) => {
+        const x = X(sg * q), y = Y(sg * d), dv = sg * d;
+        if (px === null) { px = x; py = y; pdv = dv; return; }
+        if ((x - px) * (x - px) + (y - py) * (y - py) < 6.25 && u < tau) return;
+        const k = Math.min(N - 1, Math.floor((u - a0) / len * N)), col = (dv + pdv) / 2 > 0 ? 1 : 0, kk = 2 * k + col;
+        if (kk !== key) {
+          if (key >= 0) g.stroke();
+          const u1 = a0 + len * (k + 1) / N, age = (tau - u1) / span; g.globalAlpha = alpha * Math.max(0, 1 - age) ** 1.5;
+          g.strokeStyle = col ? B : BN; g.beginPath(); g.moveTo(px, py); key = kk;
         }
-      }
+        g.lineTo(x, y); px = x; py = y; pdv = dv;
+      });
+      if (key >= 0) g.stroke();
       g.restore();
     };
     const dot = (q, d, alpha) => { g.save(); g.globalAlpha = alpha; g.fillStyle = d > 0 ? B : BN; g.strokeStyle = K.c('fg'); g.lineWidth = 2.5; g.beginPath(); g.arc(X(q), Y(d), 10, 0, Math.PI * 2); g.fill(); g.stroke(); g.restore(); };
-    const qA = c.R.q[n], dA = c.R.d[n], aA = S.seg(t, tDot, tDot + 0.3, S.ease.linear);
+    const qA = c.atF(tau, c.FQ), dA = c.atF(tau, c.FD), aA = S.seg(t, tDot, tDot + 0.3, S.ease.linear);   // REVIEW: the dot sits on the trail's end
     // mirror twin: S·A from 'twin' until it fades at 'turn-0.5'
     const aM = S.seg(t, T.twin, T.twin + 0.3, S.ease.linear) * (1 - S.seg(t, T.turn - 0.5, T.turn - 0.1, S.ease.linear));
     if (aM > 0) { trail(-1, c.tauAt(T.twin), aM); dot(-qA, -dA, aM); }
@@ -224,8 +260,11 @@ Scene.define({
     function drawStrip() {
       const h = c.LS.g, sx = c.STRIP.x - 60, sy = c.STRIP.y - 10;
       h.clearRect(0, 0, c.LS.w, c.LS.h);
-      const pS = S.seg(t, T.map + 0.3, T.map + 0.9, S.ease.linear); if (pS <= 0) return;
-      const tauN = t >= T.map + 0.7 ? c.tauAt(t) : c.tauAt(T.map + 0.7), W = P.strip_units, st = c.STRIP, br = c.BAR;
+      const pS = S.seg(t, -0.4, 0, S.ease.linear), pSea = S.seg(t, T.bar, T.bar + 0.6, S.ease.outCubic);
+      c.lD.style.opacity = pS; c.lTime.style.opacity = pS; K.show(c.lD, pS > 0); K.show(c.lTime, pS > 0);
+      c.lSea.style.opacity = pSea; K.show(c.lSea, pSea > 0);
+      if (pS <= 0) return;
+      const tauN = c.tauAt(Math.max(t, 0)), W = P.strip_units, st = c.STRIP, br = c.BAR;
       h.save(); h.globalAlpha = pS;
       // frame and dashed zero line
       h.strokeStyle = K.c('matter-dark'); h.lineWidth = 2; h.strokeRect(st.x - sx, st.y - sy, st.w, st.h);
@@ -243,7 +282,6 @@ Scene.define({
       }
       h.globalAlpha = pS; h.strokeStyle = K.c('matter-dark'); h.lineWidth = 2; h.strokeRect(br.x - sx, br.y - sy, br.w, br.h);
       // seafloor thumbnail (grey, 40 %), slides in on 'barcode'
-      const pSea = S.seg(t, T.bar, T.bar + 0.6, S.ease.outCubic);
       if (pSea > 0) {
         const se = c.SEA, x0 = se.x - sx + 40 * (1 - pSea), Xm = (ma) => x0 + se.w * (1 - (ma - c.sw[0]) / (c.sw[1] - c.sw[0]));
         h.globalAlpha = 0.4 * pSea; h.fillStyle = K.c('matter-dark'); h.fillRect(x0, se.y - sy, se.w, se.h);
@@ -251,11 +289,9 @@ Scene.define({
         for (const [a, b] of c.seaRuns) { const xa = Xm(Math.min(b, c.sw[1])), xb = Xm(Math.max(a, c.sw[0])); if (xb > xa) h.fillRect(xa, se.y - sy, Math.max(2, xb - xa), se.h); }
       }
       h.restore();
-      c.lD.style.opacity = pS; c.lTime.style.opacity = pS; K.show(c.lD, pS > 0); K.show(c.lTime, pS > 0);
-      c.lSea.style.opacity = pSea; K.show(c.lSea, pSea > 0);
     }
     // the knob and the crisis chip fade under the PREDICT card
-    const under = 1 - S.seg(t, T.pred - 0.1, T.pred + 0.25, S.ease.linear) * (1 - S.seg(t, T.irr + 0.1, T.irr + 0.45, S.ease.linear));
+    const under = 1 - S.seg(t, T.pred - 0.1, T.pred + 0.25, S.ease.linear) * (1 - S.seg(t, T.irr + 1.3, T.irr + 1.6, S.ease.linear));
     c.knob.root.style.opacity = (+c.knob.root.style.opacity * under).toFixed(3);
     c.crisis.root.style.opacity = (+c.crisis.root.style.opacity * under).toFixed(3);
     if (under <= 0.01) { K.show(c.knob.root, false); K.show(c.crisis.root, false); }

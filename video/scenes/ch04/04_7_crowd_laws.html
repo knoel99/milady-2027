@@ -1,0 +1,198 @@
+<!doctype html>
+<html lang="en"><head><meta charset="utf-8">
+<title>04.7 Crowd laws</title>
+<link rel="stylesheet" href="../../vendor/katex/katex.min.css">
+<link rel="stylesheet" href="../../runtime/theme.css">
+<link rel="stylesheet" href="ch04.css">
+<script src="../../vendor/katex/katex.min.js"></script>
+<script src="../../runtime/scene.js"></script>
+<script src="../../runtime/components/kit.js"></script>
+<script src="../../runtime/components/hud.js"></script>
+<script src="../../runtime/components/field.js"></script>
+<script src="../../runtime/components/motifs.js"></script>
+<script src="ch04_kit.js"></script>
+<style>
+  .rd { font: 500 28px Inter; fill: var(--fg); font-feature-settings: "tnum"; }
+  .tagd { position: absolute; padding: 6px 16px 8px; border: 2px dashed var(--fg-2); border-radius: 8px; font-size: 32px; color: var(--fg-2); white-space: nowrap; }
+  .big-eq { position: absolute; transform: translateX(-50%); font-size: 56px; color: var(--metric); white-space: nowrap; }
+  .ledger { position: absolute; box-sizing: border-box; background: var(--panel); border: 2px solid var(--matter); border-radius: 10px; }
+</style>
+</head><body><div id="stage"></div>
+<script>
+/* 04.7 Crowd laws (L2, NIGHT, PROVED: Proposition 5; the histogram is the E1 reference at Γ = 0.93).
+   One photo (a snapshot of data/e1_samples_0.93.json) gives its energy; the equations give its dE/dt (the
+   extractor's dEdt column, computed from the model's equations on each snapshot, no time integration). One amber
+   marble per photo, then the 8,000 rain into the histogram (M5): wide spread, mean at zero (computed here
+   from the data). A law of the crowd, not of each photo. */
+Scene.define({
+  duration: 38.77,
+  register: 'night',
+  cues: { energy: 0.4, rate: 4.56, marble: 9.76, spread: 13.63, mean: 18.88, budget: 20.99, bank: 24.8, crowd: 32.06 },
+  data: { shoebox: 'data/e1_samples_0.93.json' },
+  params: { variant: 'ref', range: [-0.6, 0.6], bins: 33, one_by_one: 12, one_by_one_s: 0.35, rain_s: 2.5, tick_gain_db: -26, seed: 7 },
+  setup(ctx) {
+    const K = Kit, S = Scene, P = ctx.params, st = ctx.stage, SB = ctx.data.shoebox;
+    C4.fixAt(ctx); C4.tokens(ctx, 0.6);
+    const V = SB.variants[P.variant], XS = S.f32(V.x), DE = S.f32(V.dEdt), N = V.n;
+    const T = { en: ctx.at('energy-0.15'), rate: ctx.at('rate-0.15'), mar: ctx.at('marble-0.15'), spread: ctx.at('spread'), mean: ctx.at('mean-0.15'),
+      bud: ctx.at('budget'), bank: ctx.at('bank-0.15'), crowd: ctx.at('crowd-0.15'), end: ctx.duration };
+    // ---------- geometry ----------
+    const HB = { x: 360, y: 330, w: 1200, h: 310 }, NB = P.bins, r0 = P.range[0], r1 = P.range[1], bw = (r1 - r0) / NB;
+    const sx = (v) => HB.x + HB.w * (v - r0) / (r1 - r0);
+    const binOf = (v) => (v < r0 ? -1 : v >= r1 ? NB : Math.floor((v - r0) / bw));
+    // ---------- the photos: a first one with a clear positive dE/dt, then twelve more (seeded) ----------
+    const rng = S.rng('photos' + P.seed);
+    let first = 0; for (let i = 0; i < N; i++) if (DE[i] > 0.25 && DE[i] < 0.6) { first = i; break; }
+    const photos = [first]; while (photos.length < P.one_by_one + 1) { const i = Math.floor(rng() * N); if (!photos.includes(i) && DE[i] > r0 && DE[i] < r1) photos.push(i); }
+    // timing of the photos and marbles (compressed if the narration leaves less room before 'mean')
+    const room = (T.mean - 0.6) - (T.mar + 0.6);
+    const k1 = Math.min(1, room / (P.one_by_one * P.one_by_one_s + P.rain_s + 0.2));
+    const dt1 = P.one_by_one_s * k1, rainS = P.rain_s * k1;
+    const tPh = photos.map((_, k) => (k === 0 ? T.en : T.mar + 0.6 + (k - 1) * dt1));
+    const tDrop = photos.map((_, k) => (k === 0 ? T.mar : tPh[k] + 0.08)), FALL = 0.42;
+    const tRain = T.mar + 0.6 + P.one_by_one * dt1 + 0.15;
+    // every other snapshot rains down (order seeded); landing time per bin, sorted, for the bar heights
+    const others = []; for (let i = 0; i < N; i++) if (!photos.includes(i)) others.push(i);
+    const lrng = S.rng('rain' + P.seed), launch = new Float32Array(N).fill(-1);
+    others.forEach((i) => { launch[i] = tRain + rainS * lrng(); });
+    const landBins = Array.from({ length: NB + 2 }, () => []);
+    for (let i = 0; i < N; i++) { const b = binOf(DE[i]) + 1, tl = launch[i] >= 0 ? launch[i] + 0.35 : tDrop[photos.indexOf(i)] + FALL; landBins[b].push(tl); }
+    landBins.forEach((a) => a.sort((x, y) => x - y));
+    const cMax = Math.max(...landBins.slice(1, NB + 1).map((a) => a.length));
+    let mean = 0; for (let i = 0; i < N; i++) mean += DE[i]; mean /= N;
+    // ---------- drawing ----------
+    const svg = K.svgLayer(ctx, 12);
+    // the shoebox of 04.6, small, top-left
+    const boxG = K.s('g', { transform: 'translate(210 175) scale(0.36) translate(-960 -600)' }, svg); C4.shoebox(boxG, { x: 960, y: 600, w: 520, h: 260 });
+    // photos (one group each, shown one at a time) with their readings
+    const CX = 380, CY = 92, CW = 330, CH = 210;
+    const cards = photos.map((i) => {
+      const g = K.s('g', {}, svg), q = XS[3 * i], d = XS[3 * i + 1], v = XS[3 * i + 2];
+      C4.frame(g, { x: CX, y: CY, w: CW, h: CH, q, d, v, vmax: 3, dialY: 0.42, stroke: 3 });
+      [q, d, v].forEach((x, j) => K.s('text', { x: CX + CW * [0.2, 0.5, 0.8][j], y: CY + CH - 20, 'text-anchor': 'middle', class: 'rd' }, g, K.fmt(x, 2, { fixed: 2 })));
+      return { g, i, E: 0.5 * (q * q + d * d + v * v), r: DE[i] };
+    });
+    const Emax = Math.max(...cards.map((c) => c.E)) * 1.15;
+    const BAR = { x: 770, y: 168, w: 470, h: 34 };
+    const barBg = K.s('rect', { x: BAR.x, y: BAR.y, width: BAR.w, height: BAR.h, rx: 4, fill: 'none', stroke: K.c('matter'), 'stroke-width': 2 }, svg);
+    const bar = K.s('rect', { x: BAR.x, y: BAR.y, height: BAR.h, rx: 4, fill: K.c('matter') }, svg);
+    const arrow = K.s('path', { fill: 'none', stroke: K.c('fg'), 'stroke-width': 5, 'stroke-linecap': 'round', 'stroke-linejoin': 'round' }, svg);
+    const lab = (html, x, y, cls) => { const e = K.el('div', { class: cls || 'c4-label', html }, st); e.style.left = x + 'px'; e.style.top = y + 'px'; e.style.zIndex = 30; return e; };
+    const lE = lab('energy E = ½ (<span class="k-q">Q</span>² + <span class="k-b">D</span>² + <span class="k-u">V</span>²)', BAR.x, BAR.y - 52);
+    const lR = lab('dE/dt, from the photo and the equations', BAR.x, BAR.y + BAR.h + 14);
+    // histogram: axis, bars, overflow markers, marbles
+    const hg = K.s('g', {}, svg);
+    K.s('line', { x1: HB.x - 40, x2: HB.x + HB.w + 40, y1: HB.y + HB.h, y2: HB.y + HB.h, stroke: K.c('muted'), 'stroke-width': 2 }, hg);
+    K.s('line', { x1: sx(0), x2: sx(0), y1: HB.y + HB.h, y2: HB.y + HB.h + 12, stroke: K.c('muted'), 'stroke-width': 2 }, hg);
+    K.s('text', { x: sx(0), y: HB.y + HB.h + 44, 'text-anchor': 'middle', class: 'kt-tick' }, hg, '0');
+    K.s('text', { x: sx(0), y: HB.y + HB.h + 92, 'text-anchor': 'middle', class: 'kt-axis' }, hg, 'rate of change of energy, dE/dt');
+    const bwPx = HB.w / NB, amber = K.c('metric');
+    const bars = []; for (let k = 0; k < NB; k++) bars.push(K.s('rect', { x: HB.x + k * bwPx + 1.5, width: bwPx - 3, y: HB.y + HB.h, height: 0, fill: amber }, hg));
+    const ovL = K.s('rect', { x: HB.x - 34, width: 16, fill: amber }, hg), ovR = K.s('rect', { x: HB.x + HB.w + 18, width: 16, fill: amber }, hg);
+    const chevL = K.s('path', { d: `M${HB.x - 22},${HB.y + HB.h + 20} l-10,8 l10,8`, fill: 'none', stroke: amber, 'stroke-width': 3 }, hg);
+    const chevR = K.s('path', { d: `M${HB.x + HB.w + 22},${HB.y + HB.h + 20} l10,8 l-10,8`, fill: 'none', stroke: amber, 'stroke-width': 3 }, hg);
+    void chevL; void chevR;
+    const MR = 8, marbles = photos.map(() => K.s('circle', { r: MR, fill: amber }, svg));
+    const stackN = {}; const stackY = photos.map((i) => { const b = binOf(DE[i]); stackN[b] = (stackN[b] || 0) + 1; return HB.y + HB.h - MR - 2 * MR * (stackN[b] - 1) - 1; });
+    const LR = K.canvasLayer(ctx, 13, { x: HB.x - 60, y: 120, w: HB.w + 120, h: HB.y + HB.h - 120 });
+    window.__EVENTS__ = photos.map((_, k) => ({ t: +(tDrop[k] + FALL).toFixed(3), id: 'tick', gain_db: P.tick_gain_db }));
+    // labels and the crowd law
+    const lLose = lab('losing energy', HB.x + 20, HB.y + 40), lGain = lab('gaining energy', HB.x + HB.w - 20, HB.y + 40, 'c4-label right');
+    const meanLine = K.s('line', { x1: sx(mean), x2: sx(mean), y1: HB.y - 8, y2: HB.y + HB.h, stroke: amber, 'stroke-width': 4 }, svg);
+    // REVIEW: 12 px lower, so the pen ellipse no longer touches the 'true on average' tag above it
+    const lMean = lab('mean ≈ 0', sx(mean), HB.y - 52, 'c4-label center'); lMean.style.color = amber;
+    K.pen(ctx, { kind: 'circle', box: { x: sx(mean) - 80, y: HB.y - 54, w: 160, h: 50 }, at: 'mean+0.4', dur: 0.5, seed: 'mean' });
+    const beq = K.el('div', { class: 'big-eq', html: K.tex('\\mathbb{E}\\big[\\,\\mathrm{d}E/\\mathrm{d}t\\,\\big] = 0', false) }, st); beq.style.left = '960px'; beq.style.top = '98px'; beq.style.zIndex = 30;
+    const tAvg = lab('true on average, not for each', 960, 204, 'tagd'); tAvg.style.transform = 'translateX(-50%)';
+    // ledger (schematic): daily bars up and down, a running balance that wanders and comes back
+    const LG = { x: 1300, y: 120, w: 510, h: 214 }, led = K.el('div', { class: 'ledger' }, st);
+    led.style.cssText += `;left:${LG.x}px;top:${LG.y}px;width:${LG.w}px;height:${LG.h}px;z-index:31`;
+    const ledSvg = K.s('svg', { width: LG.w, height: LG.h, viewBox: `0 0 ${LG.w} ${LG.h}` }, led); ledSvg.style.cssText = 'position:absolute;left:0;top:0';
+    const lrn = S.rng('ledger'), days = 24, flows = []; for (let d = 0; d < days; d++) flows.push((lrn() - 0.5) * 2);
+    const m0 = flows.reduce((a, b) => a + b, 0) / days; for (let d = 0; d < days; d++) flows[d] -= m0;   // income = spending over the period
+    let bal = 0; const balPts = [];
+    flows.forEach((f, d) => { const x = 24 + d * (LG.w - 48) / days, w = (LG.w - 48) / days - 4, y0 = 128; K.s('rect', { x, width: w, y: f > 0 ? y0 - f * 40 : y0, height: Math.abs(f) * 40, fill: K.c('fg-2'), opacity: 0.75 }, ledSvg); bal += f; balPts.push([x + w / 2, y0 - bal * 22]); });
+    K.s('line', { x1: 20, x2: LG.w - 20, y1: 128, y2: 128, stroke: K.c('muted'), 'stroke-width': 2 }, ledSvg);
+    K.s('path', { d: 'M' + [[24, 128], ...balPts].map((p) => p.map((v) => v.toFixed(1)).join(',')).join('L'), fill: 'none', stroke: K.c('fg'), 'stroke-width': 3 }, ledSvg);
+    const lInc = K.el('div', { class: 'c4-label small' }, led, 'income = spending, on average'); lInc.style.left = '20px'; lInc.style.top = (LG.h - 44) + 'px';
+    const ledChip = K.chip(ctx, { text: 'SCHEMATIC · ledger', kind: 'schematic', x: LG.x + 16, y: LG.y + 12, at: 'bank-0.15', out: 'bank+2.85', z: 32 });
+    void ledChip;
+    // crowd: an amber stack-of-cards icon and its label; one marble lifted out
+    const xCrowd = HB.x + HB.w * 0.67;   // REVIEW: placed by fraction (the dE/dt range is now ±0.6)
+    const crowdG = K.s('g', { transform: `translate(${xCrowd} ${HB.y + 110})` }, svg);
+    [[10, -10], [5, -5], [0, 0]].forEach(([dx, dy]) => K.s('rect', { x: dx, y: dy, width: 44, height: 56, rx: 5, fill: K.c('bg'), stroke: amber, 'stroke-width': 3 }, crowdG));
+    const lCrowd = lab('law of the crowd', xCrowd + 74, HB.y + 104); lCrowd.style.color = amber;
+    const lift = K.s('circle', { r: MR + 2, fill: amber, stroke: K.c('fg'), 'stroke-width': 2 }, svg);
+    const kl = cards.reduce((b, c, k) => (c.r > cards[b].r ? k : b), 0);   // the photo farthest on the gaining side
+    const liftFrom = [HB.x + (binOf(cards[kl].r) + 0.5) * bwPx, stackY[kl]], liftTo = [Math.min(1300, Math.max(liftFrom[0], sx(0) + 200)), HB.y - 46];
+    const lOne = lab('one photo: no reason to be at 0', liftTo[0] + 28, liftTo[1] - 22);
+    K.chip(ctx, { text: 'SIMULATED', kind: '', x: HB.x + HB.w + 40, y: HB.y + HB.h + 60, anchor: 'tr', at: 'spread' });
+    K.lowerThird(ctx, { kind: 'source', data: SB, at: 'spread+0.4', hold: 4 });
+    K.badge(ctx, { kind: 'PROVED', note: ctx.script.badge && ctx.script.badge.note, at: -0.3 });
+    C4.formulas(ctx);
+    C4.nbhy(st);
+    ctx.c47 = { T, HB, NB, sx, bwPx, cards, Emax, BAR, bar, barBg, arrow, lE, lR, bars, ovL, ovR, marbles, stackY, tPh, tDrop, FALL, tRain, rainS, launch, DE, N, binOf,
+      landBins, cMax, LR, lLose, lGain, meanLine, lMean, beq, tAvg, led, crowdG, lCrowd, lift, liftFrom, liftTo, lOne, boxG, photos, hg };
+  },
+  render(t, ctx) {
+    const S = Scene, K = Kit, c = ctx.c47, T = c.T;
+    const f = (el, a, b = Infinity, d = 0.3) => { const p = S.seg(t, a, a + d, S.ease.linear) * (b === Infinity ? 1 : 1 - S.seg(t, b, b + 0.3, S.ease.linear)); el.style.opacity = p.toFixed(3); el.style.display = p > 0 ? '' : 'none'; return p; };
+    const upEnd = c.tRain - 0.2;   // the photo, the energy bar and the arrow leave when the rain starts
+    f(c.boxG, -1, Infinity, 0.4);
+    // the current photo: slides out of the box (first), then switches with each marble
+    let cur = 0; for (let k = 0; k < c.cards.length; k++) if (t >= c.tPh[k]) cur = k;
+    const pc = S.seg(t, T.en, T.en + 0.6, S.ease.outCubic), out = S.seg(t, upEnd, upEnd + 0.4, S.ease.linear);
+    c.cards.forEach((C, k) => { const on = k === cur && t >= T.en && out < 1; C.g.style.display = on ? '' : 'none';
+      if (on) { C.g.setAttribute('transform', k === 0 ? `translate(${(-170 * (1 - pc)).toFixed(1)} ${(60 * (1 - pc)).toFixed(1)}) translate(380 92) scale(${(0.4 + 0.6 * pc).toFixed(3)}) translate(-380 -92)` : ''); C.g.style.opacity = ((k === 0 ? pc : 1) * (1 - out)).toFixed(3); } });
+    const C = c.cards[cur], pb = S.seg(t, T.en + 0.5, T.en + 0.9, S.ease.outCubic) * (1 - out);
+    c.bar.setAttribute('width', (c.BAR.w * Math.min(1, C.E / c.Emax) * pb).toFixed(1)); c.bar.style.opacity = c.barBg.style.opacity = pb.toFixed(3);
+    f(c.lE, T.en + 0.5, upEnd); f(c.lR, T.rate + 0.2, upEnd);
+    // the arrow at the end of the bar: up (gaining) or down (losing), length from the photo's dE/dt
+    const pa = S.seg(t, T.rate, T.rate + 0.4, S.ease.outCubic) * (1 - out);
+    const ax = c.BAR.x + c.BAR.w + 34, ay = c.BAR.y + c.BAR.h / 2, L = Math.max(-70, Math.min(70, -C.r * 110)) * pa, hs = Math.sign(L) || 1;
+    c.arrow.setAttribute('d', Math.abs(L) > 4 ? `M${ax},${ay} V${ay + L} M${ax - 10},${ay + L - 12 * hs} L${ax},${ay + L} L${ax + 10},${ay + L - 12 * hs}` : '');
+    c.arrow.style.opacity = pa.toFixed(3);
+    // marbles: from the arrow tip into their bins, stacked; they melt into the bars when the rain starts
+    const melt = S.seg(t, c.tRain + 0.2, c.tRain + 0.8, S.ease.linear);
+    c.marbles.forEach((m, k) => {
+      const a = c.tDrop[k], p = S.seg(t, a, a + c.FALL, S.ease.inCubic);
+      if (p <= 0 || melt >= 1) { m.style.display = 'none'; return; }
+      m.style.display = '';
+      const tx = c.HB.x + (c.binOf(c.DE[c.photos[k]]) + 0.5) * c.bwPx;
+      m.setAttribute('cx', S.lerp(ax, tx, S.ease.outCubic(p)).toFixed(1)); m.setAttribute('cy', S.lerp(ay + (k === 0 ? L : 0), c.stackY[k], p).toFixed(1));
+      m.style.opacity = (1 - melt).toFixed(3);
+    });
+    // bars: landed count / largest final count, breathing slightly once spread
+    const breathe = 1 + 0.01 * Math.sin(2 * Math.PI * t / 2.8) * S.seg(t, T.spread, T.spread + 1, S.ease.linear);
+    const cnt = (arr) => { let lo = 0, hi = arr.length; while (lo < hi) { const m = (lo + hi) >> 1; if (arr[m] <= t) lo = m + 1; else hi = m; } return lo; };
+    const show = t >= c.tRain;
+    for (let k = 0; k < c.NB; k++) { const h = show ? c.HB.h * 0.88 * cnt(c.landBins[k + 1]) / c.cMax * breathe : 0; c.bars[k].setAttribute('y', (c.HB.y + c.HB.h - h).toFixed(2)); c.bars[k].setAttribute('height', h.toFixed(2)); }
+    const hl = show ? c.HB.h * 0.88 * cnt(c.landBins[0]) / c.cMax * breathe : 0, hr = show ? c.HB.h * 0.88 * cnt(c.landBins[c.NB + 1]) / c.cMax * breathe : 0;
+    c.ovL.setAttribute('y', c.HB.y + c.HB.h - hl); c.ovL.setAttribute('height', hl); c.ovR.setAttribute('y', c.HB.y + c.HB.h - hr); c.ovR.setAttribute('height', hr);
+    f(c.hg, T.mar - 0.4, Infinity, 0.4);
+    // rain: the falling marbles (small dots), drawn on a canvas
+    const g = c.LR.g, ox = c.HB.x - 60, oy = 120; g.clearRect(0, 0, c.LR.w, c.LR.h);
+    if (t >= c.tRain && t < c.tRain + c.rainS + 0.4) {
+      g.fillStyle = K.c('metric'); g.globalAlpha = 0.85;
+      for (let i = 0; i < c.N; i++) {
+        const a = c.launch[i]; if (a < 0 || t < a || t > a + 0.35) continue;
+        const p = (t - a) / 0.35, v = c.DE[i], b = c.binOf(v), jx = ((i * 7919) % 97 / 97 - 0.5) * 0.7 * c.bwPx, x = (b < 0 ? c.HB.x - 26 : b >= c.NB ? c.HB.x + c.HB.w + 26 : c.HB.x + (b + 0.5) * c.bwPx) + jx;
+        g.fillRect(x - 2 - ox, S.lerp(150, c.HB.y + c.HB.h - 8, p * p) - oy, 4, 4);
+      }
+      g.globalAlpha = 1;
+    }
+    // spread: labels; mean: the marker; budget: the crowd formula and its tag
+    f(c.lLose, T.spread + 0.1, T.bank - 0.4); f(c.lGain, T.spread + 0.4, T.bank - 0.4);
+    f(c.meanLine, T.mean); f(c.lMean, T.mean + 0.15);
+    f(c.beq, T.bud - 0.15, Infinity, 0.4); f(c.tAvg, T.bud + 0.5);
+    // the ledger flashes for 3 s
+    const pl = f(c.led, T.bank, T.bank + 2.85, 0.25); c.led.style.transform = `translateY(${(12 * (1 - pl)).toFixed(1)}px)`;
+    // crowd: the stack icon and its label, one marble lifted out
+    f(c.crowdG, T.crowd); f(c.lCrowd, T.crowd + 0.1);
+    const pL = S.seg(t, T.crowd + 0.6, T.crowd + 1.4, S.ease.inOutCubic);
+    c.lift.style.display = pL > 0 ? '' : 'none';
+    c.lift.setAttribute('cx', S.lerp(c.liftFrom[0], c.liftTo[0], pL).toFixed(1)); c.lift.setAttribute('cy', S.lerp(c.HB.y + c.HB.h - 12, c.liftTo[1], pL).toFixed(1));
+    f(c.lOne, T.crowd + 1.3);
+  },
+});
+</script></body></html>

@@ -1,0 +1,62 @@
+{
+ "schema": 2,
+ "unit": "X5a",
+ "lang": "fr",
+ "voice": {
+  "provider": "fish",
+  "model": "drama-3",
+  "reference_id": "536d3a5e000945adb7038665781a4aca"
+ },
+ "sentences": {
+  "X5.1.s1": "Ouvrez un four : le solveur garde l'{u}écoulement{/} et le {b}champ{/} sous forme d'ondes, et un rotationnel y devient une multiplication.",
+  "X5.1.s2": "Les produits sont plus simples sur la grille : chaque pas fait l'aller-retour.",
+  "X5.1.s3": "Il coupe le tiers extérieur des ondes : les produits ne peuvent plus se replier en ondes factices.",
+  "X5.1.s4": "Une projection garde les deux champs à divergence nulle ; l'estompage, lui, est résolu exactement.",
+  "X5.1.s5": "Un pas en soixante-quatre au cube : huit centièmes de seconde, sur un processeur ordinaire.",
+  "X5.1.s6": "Le pic de mémoire, environ quinze fois l'état, est estimé à six gigaoctets en deux cent cinquante-six au cube.",
+  "X5.2.s1": "Ouvrez un bocal : une simulation, un fichier, organisé comme The Well, un jeu de données de référence en apprentissage automatique.",
+  "X5.2.s2": "À l'intérieur : la {u}vitesse{/} et le {b}champ magnétique{/}, instantané après instantané, et des séries temporelles d'énergies et de divergences.",
+  "X5.2.s3": "Le fichier porte un identifiant unique et le commit du code.",
+  "X5.2.s4": "Le catalogue reprend cet identifiant et ajoute une somme de contrôle.",
+  "X5.2.s5": "Ainsi, un cluster sans réseau peut reconstruire ses lignes de catalogue depuis les seuls fichiers.",
+  "X5.2.s6": "Une somme de contrôle, pas un scellé : une réécriture forcée la met à jour.",
+  "X5.3.s1": "Suivez une campagne tout au long de la chaîne. Une commande lit la fiche recette : la nappe plane, onze {param}diffusivités{/}.",
+  "X5.3.s2": "Le lanceur ouvre une tâche par réglage ; chacune fait avancer seize simulations de front, et écrit un seul fichier.",
+  "X5.3.s3": "Chaque tâche inscrit au registre son statut, sa somme de contrôle et sa durée.",
+  "X5.3.s4": "Cette campagne n'a pas encore tourné. Le pari : les onze tâches aboutissent, chacune avec un fichier et sa somme de contrôle.",
+  "X5.3.s5": "Confiance : élevée. De petites campagnes de test ont déjà abouti, en quelques secondes.",
+  "X5.3.s6": "Les données du rapport, issues du même solveur, ont pris environ une demi-heure.",
+  "X5.4.s1": "Un nouvel instrument pour le {metric}critique{/} : sur la nappe plane, les {b}lignes de champ{/} sont les courbes de niveau d'un potentiel.",
+  "X5.4.s2": "Elles tournent autour des points O et se croisent aux points X.",
+  "X5.4.s3": "Sur ce carré périodique, lesquels sont les plus nombreux ?",
+  "X5.4.s4": "Aucun des deux : il y en a exactement autant, un test gratuit pour tout compteur.",
+  "X5.4.s5": "L'offre de stage demande de la topologie ; le rapport n'en a rien calculé.",
+  "X5.4.s6": "Un pari à faible confiance : les champs générés retrouvent le comptage simulé.",
+  "X5.4.s7": "Le plan retient ce comptage, mais ne fixe aucun seuil de réussite.",
+  "X5a.Q.s1": "Quelle métrique de topologie doit juger les champs générés, et quel écart du nombre de points X fait échouer un modèle ?"
+ },
+ "variants": {
+  "X5.3": {
+   "X5.3.r1": "Suivez une campagne tout au long de la chaîne : une commande, la nappe plane, onze {param}diffusivités{/}.",
+   "X5.3.r2": "Une tâche par réglage, seize simulations de front, un fichier par tâche.",
+   "X5.3.r3": "Le registre gagne une ligne par tâche.",
+   "X5.3.r4": "Voici la trace réelle : {{totals.done}} tâches sur {{totals.n}} ont abouti, pour environ {{hours}} heures de calcul.",
+   "X5.3.r5": "Chaque tâche terminée a laissé un fichier, sa somme de contrôle et une ligne au registre.",
+   "X5.3.r6": "Ces heures mesurées remplacent désormais une estimation.",
+   "X5.3.r7": "Le registre montre quelles tâches se sont arrêtées, avant tout entraînement sur leurs données.",
+   "X5.3.r8": "Et voici le balayage complet, une bande par réglage : le contrôle du premier produit, en entier."
+  },
+  "X5.4": {
+   "X5.4.r1": "Un nouvel instrument pour le {metric}critique{/} : sur la nappe plane, les {b}lignes de champ{/} sont les courbes de niveau d'un potentiel.",
+   "X5.4.r2": "Elles tournent autour des points O et se croisent aux points X.",
+   "X5.4.r3": "Sur ce carré périodique, lesquels sont les plus nombreux ?",
+   "X5.4.r4": "Aucun des deux : il y en a exactement autant, un test gratuit pour tout compteur.",
+   "X5.4.r5": "Enfin comptés : en moyenne {{mean_reference}} points X par instantané simulé, et {{mean_generated}} par instantané généré.",
+   "X5.4.r6": "Verdict : {{verdict}}.",
+   "X5.4.r7": "Faute de tolérance convenue, on peut comparer les comptages, mais pas les juger.",
+   "X5.4.r8": "Dans la tolérance : sur ce comptage-là, le modèle concorde avec la simulation.",
+   "X5.4.r9": "Hors tolérance : les lignes de champ du modèle se croisent trop souvent, ou trop rarement."
+  }
+ },
+ "notes": "Translator notes, X5a (2026-11-08). No inline text_fr in the English script: translated from the frozen English text, the scene visuals, the on-screen labels, the unit notes, the review (_review/X5a.md), the question register (Q16, Q21) and the French site (calcul/index.qmd: solveur, format, catalogue, coûts; these/index.qmd:876, :902; prep/p8:1482-1489), with the French of ch02, ch06, ch08 and ch10. Covers the 26 main sentences (pending variants of X5.3 and X5.4 included) and the 17 sentences of the two result variants, every id; the 'when' conditions (met, not_met, inconclusive) stay in the English script. Terms carried over from ch10: ovens = des fours ('Ouvrez un four'), labelled jar = bocal ('Ouvrez un bocal'), recipe card = la fiche recette, ledger = le registre (X5.3.s3, r3, r5, r7), catalog = le catalogue (X5.2.s4-s5, where the English says 'catalog' and the screen says 'catalog'), checksum = somme de contrôle, sealed = scellé, so X5.2.s6 'Checksummed, not sealed' = 'Une somme de contrôle, pas un scellé' answers 10.2.s4 'scellé dans un bocal étiqueté' as the English answers 'sealed'; critic = le critique ({metric}); first product = le premier produit (10.3 'Premier produit sorti de la chaîne'), down the line = tout au long de la chaîne; check = contrôle (10.3: a factory check, not a plan criterion); cluster = un cluster, offline = sans réseau (the site: 'un cluster sans réseau'); ordinary processor = processeur ordinaire; sixty-four cubed = soixante-quatre au cube; run = simulation, 'sixteen runs side by side' = 'seize simulations de front'; setting = réglage; flat sheet = la nappe plane; diffusivities = diffusivités ({param}); snapshot = instantané; bet = pari, 'Confidence is high' = 'Confiance : élevée.' as its own short clause (ch10 'Confiance : moyenne.'); the plan = le plan; pass mark = seuil de réussite (register Q16 why_fr); simulated count = le comptage simulé (10.9.s3); sweep = balayage; divergence-free = à divergence nulle; smudging = l'estompage (ch02 rule: stretch / smudge = étirement / estompage); field lines = lignes de champ ({b}); contours = courbes de niveau (ch08 hill maps). Terms planted here: wave space = 'sous forme d'ondes' (the English avoids 'Fourier', which stays on screen); curl = rotationnel; products = les produits; hops over and back = 'fait l'aller-retour'; trims the outer third = 'coupe le tiers extérieur des ondes' (matches the visual, where the outer third of the dot grid fades); fold back as fakes = 'se replier en ondes factices' (aliasing is 'repliement' in French: the verb carries the physicists' word without naming it); projection = projection (Leray stays on screen only); memory peak = pic de mémoire, 'fifteen times the state' = 'quinze fois l'état', estimated = 'est estimé à' (B14: the 6 GB is an estimate); gigabytes = gigaoctets; reference dataset for machine learning = un jeu de données de référence en apprentissage automatique; unique identifier = identifiant unique; commit = le commit (the French developers' word, as the site); rows = lignes de catalogue; forced rewrite = réécriture forcée; launcher = le lanceur; task = tâche, finish = aboutir (s4 bet, s5, r4), 'finished task' = 'tâche terminée' (r5, the gauge label 'tasks finished'); wall time = durée; trace = la trace réelle; strip = bande; O-point / X-point = point O / point X (the French site and the plan: 'extremums (points O) et cols (points X)'); periodic square = carré périodique; free check = 'un test gratuit'; counter = compteur; tolerance = tolérance, agreed = convenue; within / outside tolerance = 'Dans la tolérance' / 'Hors tolérance'. Choices: X5.1.s3 'It' = 'Il' (the step or the solver, as in English); 'so products cannot' = a colon and 'ne peuvent plus'. X5.1.s6 keeps the measured factor and the estimated peak apart, as the English. X5.2.s1 'laid out like The Well' = 'organisé comme The Well'. X5.3.s6 'The report's own data' = 'Les données du rapport, issues du même solveur' ('lui-même' dropped for length; the subject is still the report's E2 data, X:69). X5.4.s4 'Neither' = 'Aucun des deux' (answers 'lesquels sont les plus nombreux'). X5.4.s5 'asks for topology; the report computed none' = 'demande de la topologie ; le rapport n'en a rien calculé'. X5.4.s6 'A low-confidence bet' = 'Un pari à faible confiance' (keeps the word of the seat's CONFIDENCE pips; 'peu assuré' would lose it). X5.4.s7 'lists the count' = 'retient ce comptage' (T:902 lists it among the tier-1 metrics). X5.4.r8 'on this count' = 'sur ce comptage-là' (the review's point 7: a matched mean count says nothing more). X5.3.r7 'before anything is trained on them' = 'avant tout entraînement sur leurs données'. X5a.Q.s1 follows question.fr of the English script and the register's Q16 word for word, without the asterisks (no markup, as the English spoken line). Hedges and status kept: 'est estimé à' (X5.1), 'pas un scellé' (C10), 'Cette campagne n'a pas encore tourné', 'Le pari', 'Confiance : élevée', 'à faible confiance', 'ne fixe aucun seuil de réussite', 'Faute de tolérance convenue, on peut comparer ... mais pas les juger', 'sur ce comptage-là'. Address: vouvoiement for the imperatives (Ouvrez, Suivez); no 'we'. Numbers spoken as words (no digit outside placeholders, checked): soixante-quatre au cube, huit centièmes de seconde, quinze fois, six gigaoctets, deux cent cinquante-six au cube, onze, seize, environ une demi-heure. Markup: {u} on écoulement (s1, elision l' outside the tag) and vitesse; {b} on champ, champ magnétique, lignes de champ; {param} on diffusivités; {metric} on critique; the same tag sequence per sentence as the English (checked by script); {{totals.done}}, {{totals.n}}, {{hours}}, {{mean_reference}}, {{mean_generated}}, {{verdict}} kept verbatim. Typography: straight apostrophes; no-break space (U+00A0) before : ; ? as ch00-ch10. REQUESTS (foundation engineer, tools/data_cloud.py, as ch10): (1) verdict_fr in x5_xpoints.json ('validé', 'non validé', 'non concluant'; X5.4.r6 'Verdict : {{verdict}}.'); (2) hours_fr, mean_reference_fr and mean_generated_fr with a French decimal comma (or in words), else the French voice reads '1.5' the English way. TTS (French lexicon; the English pins must not be applied to the French voice): 'The Well' kept in English, should sound 'ze ouèl'; 'commit' as the French developers say it ('ko-mitt'); 'points O' / 'points X' read 'points o' / 'points ixe'; cluster as in ch10. Length (whitespace count without markup or punctuation; elided forms count as one word): main paragraphs 401 French words for 339 English (+18 %), result variants 218 for 189 (+15 %); per scene X5.1 +10 %, X5.2 +20 %, X5.3 +16 %, X5.4 +25 % ('point O', 'point X' are two words each), X5a.Q 21 words for 16 (question.fr kept); results X5.3 +12 %, X5.4 +19 %. X5.4 runs longest: 94 words, about 43 s at the measured 146 words per minute with its 2.5-s predict hold and breaks (target 35); the French timeline absorbs it."
+}

@@ -1,0 +1,39 @@
+{
+  "schema": 2,
+  "unit": "X1",
+  "lang": "fr",
+  "voice": {
+    "provider": "fish",
+    "model": "drama-3",
+    "reference_id": "536d3a5e000945adb7038665781a4aca"
+  },
+  "sentences": {
+    "X1.1.s1": "Avant de se fier au solveur, on le teste sur une solution connue.",
+    "X1.1.s2": "L'{u}écoulement{/} tourbillonnant en offre une : un {b}champ{/} qui épouse exactement sa forme.",
+    "X1.1.s3": "Ses lignes suivent celles de l'écoulement, si bien que transport et étirement s'annulent.",
+    "X1.1.s4": "Seule la diffusion agit : le taux de croissance vaut exactement moins un sur {param}Rm{/}.",
+    "X1.1.s5": "Le taux mesuré, celui du champ le plus lent à s'éteindre, ne peut donc pas être plus bas : à {param}Rm{/} égal deux, moins un demi.",
+    "X1.1.s6": "Le solveur trouve moins zéro virgule cinq zéro zéro un : sur la borne, à environ un dix-millième près.",
+    "X1.2.s1": "Laissez tourner assez longtemps, et un seul {b}champ{/} l'emporte : le plus lent à s'éteindre, ou le plus rapide à grandir.",
+    "X1.2.s2": "La surface enveloppe ses zones intenses ; des filaments tracent ses lignes de champ.",
+    "X1.2.s3": "À {param}Rm{/} égal huit, il s'éteint.",
+    "X1.2.s4": "À douze et à seize, dans la fenêtre, il grandit.",
+    "X1.2.s5": "À vingt, juste au-delà, il s'éteint de nouveau.",
+    "X1.2.s6": "Sur ces instantanés, à huit, seize et vingt, il se concentre dans quatre tubes fins.",
+    "X1.2.s7": "Leur intensité culmine en des points où l'{u}écoulement{/} est immobile.",
+    "X1.2.s8": "À douze, il s'étale.",
+    "X1.2.s9": "La littérature décrit de tels tubes en forme de cigare, et des symétries que le rapport n'a pas vérifiées.",
+    "X1.2.s10": "Une forme par réglage : de premières cibles, proposées pour un {model}générateur{/} en trois dimensions.",
+    "X1.3.s1": "Quelle précision sur ces seuils ? Pour chaque simulation, un ajustement long, sur la seconde moitié, et un ajustement tardif, sur le dernier quart.",
+    "X1.3.s2": "Deux réglages sont recalculés sur une grille plus fine. À {param}Rm{/} égal douze, les trois valeurs concordent.",
+    "X1.3.s3": "À dix-sept et demi, pile sur le seuil : même signe pour les trois ?",
+    "X1.3.s4": "Non : selon l'ajustement long, le champ grandit ; selon l'ajustement tardif et la grille fine, il s'éteint.",
+    "X1.3.s5": "Ce seuil-là est connu à environ zéro virgule un près ; le troisième, vers vingt-sept, à environ un près.",
+    "X1.3.s6": "Une cause probable, pas encore vérifiée : les modes oscillent, donc la courbe de croissance ondule.",
+    "X1.3.s7": "La divergence, au moins, reste au niveau de l'erreur d'arrondi.",
+    "X1.3.s8": "C'est de ce signe indéterminé que part le premier pari.",
+    "X1.Q.s1": "Près des seuils, faut-il ajuster les taux de croissance avec un terme d'oscillation, ou simplement simuler plus longtemps ?"
+  },
+  "variants": {},
+  "notes": "Translator notes, X1 (2026-11-08). No inline text_fr in the English script: translated from the frozen English text, the scene visuals, the on-screen labels, the unit notes and the question register (Q17 fr, why_fr, unblocks_fr), with the French of ch03, ch08 and ch10. 25 sentences, every id of the four scenes; no pending scene, so no variants. Markup kept on the same words ({u} écoulement, {b} champ, {param} Rm, {model} générateur); no {{field}} in this unit. Terms carried over: solver = solveur; the twisting flow = l'écoulement tourbillonnant (ch03 'la boîte tourbillonnante'); carrying and stretching = transport et étirement (ch03.1: 'l'écoulement transporte le champ et l'étire', 'l'étirement'); diffusion; growth rate = taux de croissance; fades / grows = s'éteint / grandit (ch03 rule: s'éteint is the field's verb), used also in X1.3.s4 for the near-zero rates so that the fade/grow pair stays one pair across X1.2 and X1.3; window = fenêtre; snapshot = instantané; setting = réglage; run = simulation; generator = générateur; field lines = lignes de champ (untagged, as in English); rounding error = erreur d'arrondi, 'stays at rounding error' = 'reste au niveau de l'erreur d'arrondi' (10.7 result); unresolved sign = signe indéterminé (10.4.s2); Bet one = le premier pari (ch10 note: Premier pari). Terms planted here: known answer = une solution connue (the numerical physicist's 'tester un solveur sur une solution connue'; the screen keeps 'known answer', 'A built-in answer key'); 'a field shaped exactly like it' = 'un champ qui épouse exactement sa forme'; cancel = s'annulent; minus one over Rm = moins un sur Rm; the bound = la borne; to about one part in ten thousand = à environ un dix-millième près; the slowest fade / the slowest to fade = le champ le plus lent à s'éteindre (X1.1.s5 and X1.2.s1 echo each other, as in English); takes over = l'emporte; threads = des filaments (not 'des fils', which a TTS voice may read [fis], ch03 note); its strong parts = ses zones intenses; slim tubes = tubes fins; cigar-shaped = en forme de cigare; where the flow stands still = où l'écoulement est immobile ('points de stagnation' is not narrated, as the English avoids 'stagnation points'); spreads out = s'étale; published work = la littérature (French researchers' word; keeps the hedge 'de tels tubes', not 'ces tubes'); proposed first targets = de premières cibles, proposées (a proposal, R:1218, not 'prévues'); fit = ajustement, long fit = ajustement long, late fit = ajustement tardif (register Q17 why_fr, ch10 note), second half = seconde moitié, last quarter = dernier quart; edges = seuils (the title 'How sure are the thresholds?' and the card say thresholds; 'limite' is kept for the published edge of 10.4.r6); finer grid = une grille plus fine, then 'la grille fine'; 'rechecks two settings' = 'Deux réglages sont recalculés sur une grille plus fine' (the 48³ runs); all three agree = les trois valeurs concordent; right on the edge = pile sur le seuil; known to about zero point one = connu à environ zéro virgule un près; likely cause, still unchecked = une cause probable, pas encore vérifiée (the oscillation is published, its role is not checked: hedge kept); wobbles = ondule; oscillation term = terme d'oscillation. Numbers: 'moins zéro virgule cinq zéro zéro un' digit by digit (as the English), 'moins un demi', 'dix-sept et demi', 'vers vingt-sept', 'zéro virgule un', 'à environ un près'; settings read 'à Rm égal deux / huit / douze' (spoken physics French), then bare numbers ('À douze et à seize') as in English. Choices: X1.1.s1 'on le teste' (impersonal, no first-person, no imperative to the viewer); X1.2.s1 'Laissez tourner assez longtemps' (the lab's 'laisser tourner une simulation', vouvoiement); X1.3.s1 'Quelle précision sur ces seuils ?' then a verbless enumeration of the two fits, so that both names are heard in full once; X1.3.s3 'même signe pour les trois ?' makes the predict question explicit for the ear (the three slots are on screen); X1.Q.s1 is the register's Q17 fr word for word (asterisks removed). Cue notes for the builder (no change needed): X1.2.s4 keeps 'seize' at about 40 % of the sentence (English 'sixteen' at 35 %); X1.3.s4 keeps the order long fit, late fit, finer grid ('long' at about 22 %, 'tardif' at about 55 %, 'grille fine' at about 80 % of the words, English about 23 %, 50 %, 80 %), so params.split_fracs should still land. TTS (French lexicon): Rm 'erre ème' (lexicon_fr pin); no new entry ('ABC' is not narrated in X1). Typography: U+00A0 before ':', ';', '?', as the other French overlays. Length (whitespace count without markup or punctuation; elided forms count as one word): 354 French words for 302 English (+17 %); X1.1 95 for 82 (+16 %), X1.2 119 for 101 (+18 %), X1.3 122 for 103 (+18 %), X1.Q 18 for 16 (+12 %); at the measured 146 raw words per minute, X1.2 and X1.3 run about 49 s and 50 s of speech before holds and breaks (targets 47 s and 50 s); the French timeline absorbs it."
+}
