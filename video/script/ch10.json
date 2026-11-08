@@ -11,7 +11,7 @@
  },
  "learning_goal": "See the PhD proposal as a staircase of test benches and the data factory that will feed it; separate what is guaranteed by construction from what must be measured; read each upper step as a bet written down before the data exist, with its criterion, its confidence and the question to settle before computing.",
  "takeaway": "Some properties are guaranteed by construction; everything else on the staircase is a bet written down before the data exist, with the criterion that will settle it.",
- "notes": "Status (D4): 10.3, 10.4 and 10.5 were PROVISIONAL in the outline and are now pending (no CPU run); 10.7 and 10.9 pending; 10.1, 10.2, 10.6, 10.8, 10.9-bridge and ch10.Q ready. Every pending scene ships as an empty seat with a READY anchor (10.3 E2 reference map, 10.4 E3 ghost, 10.5 Taylor-Green cells and a SCHEMATIC growth curve, 10.7 lamp panel, 10.9 VKS and DRESDYN drawings), the bet, CONFIDENCE, the criterion with its source and an ASK box; seat types vary: curve (10.3, 10.4), map (10.5, 10.9 VKS), lamps (10.7), curve (10.9 DRESDYN). Seat ASK boxes: 10.3 'Is the 2D tier at 128² worth its GPU hours, or go straight to 3D?'; 10.4 D17 'Add runs at Rm 17.25, 17.5 and 17.75 to pin the edge?'; 10.5 D18 'Near the threshold: lengthen runs to saturation, or flag and exclude them?'; 10.7 'To test criterion (c), hold out a whole value of Pm?' (the configured split holds out single points, Re 100 Pm 1 and Re 50 Pm 2, so every Pm keeps training data and criterion (c) is untestable); 10.9 'Can we get VKS and precession snapshots, in what format, and when?'. Question card ch10.Q (n 11 if ch09.Q is Q10; category runs; ask Y. Ponty): forcing, Reynolds-number definition and resolution of the Taylor-Green campaign, so that its threshold can be compared with the published one; it does not repeat Q3 (which Pm) or Q4 (spread or pack the points). REQUESTS. (1) tools/data_cloud.py (foundation engineer B): the result variants use 'when': 'met' | 'not_met' | 'inconclusive'; please add these three booleans to every converter's 'fields' (exactly one true); without them the conditional sentences drop and only the 'Verdict: {{verdict}}' sentence remains (safe). 10.9 needs 'vks_verdict' and 'dresdyn_verdict' in the fields of the generic seat JSONs tier3_vks.json and tier4_dresdyn.json. (2) tools/data_existing.py: NEW data/fm3d_guarantees.json for 10.6 (milady/train/fm3d.py decoder and B-sign-symmetrised velocity field with random weights, CPU, seconds, no simulation or training: div_rel_u, div_rel_b, mirror_error, packed field-line polylines of one sample, meta.stamp 'GENERATED · fm3d · untrained weights'); torch is not installed in the system python here, so it needs the repository venv; until the file exists the assembler renders 10.6 as pending with a warning. (3) tools/assemble_cut.py lints a result variant against the pending target_s; result targets are given in variants.result.target_s (10.4 45, 10.5 45, 10.7 40, 10.9 40, 10.3 15): 10.7 (about 41 s vs 25) will warn unless the lint reads that field. (4) conv_fm3d_eval lamp (b) uses err_spectre_*_log10, a mean over all shells, while T:917 asks 'per band up to half the cutoff' (stricter): the lamp may read 'met' where the plan would not. CHANGES AGAINST THE OUTLINE. 10.5: the outline chip said 'different forcing convention'; Ponty et al. 2005 (checked on arXiv physics/0410046) use the same Taylor-Green forcing shape at k0 = 2 but define R_V from the r.m.s. velocity and the integral scale, while palier2_tg3d uses U_ref = 1 and L_ref = 1/kf: narration and chip say 'defines the Reynolds number differently'. 10.4: confidence medium, because at 32³ the whole-run and last-quarter fits already disagree at Rm 18 (|s − s_q| > |s|), which the converter would call inconclusive. 10.2: the H6 stamp sentence becomes the grey seat tag (no provisional stamps under D4); badge MEASURED refers to the test suite only (consistency editor: confirm or change). 10.3: P for the injection rate and ε for the dissipation, as in ch08 (outline wrote eps_inj); the converter gives ONE j tile, not 11, so the strips carry the per-η information; the bet is a data check, labelled as not a PhD-plan criterion. 10.1: chapter card in the 3.2-s lead-in, rail holds at L4 (the chapter reaches L5 at 10.5). Cuts: 10.8 and 10.9 'cuts': ['core']; 10.9-bridge 'cuts': ['extended'] (outline extended_variant); ch10.Q closes the chapter in both cuts. No predict beat in this chapter (the outline lists none); 0.5-0.8-s holds after the bet paragraphs let the seat column be read. No new lexicon entry (Rm, Pm, VKS, DRESDYN, Reynolds, Rice are pinned; 'eta' is avoided, 'diffusivities' is said instead). Words budgeted at about 128 effective words per minute of target_s, checked with the assembler formula (146 raw words per minute, 0.9 s per paragraph break, holds, lead-in, tail).",
+ "notes": "Status (D4): 10.3, 10.4 and 10.5 were PROVISIONAL in the outline and are now pending (no CPU run); 10.7 and 10.9 pending; 10.1, 10.2, 10.6, 10.8, 10.9-bridge and ch10.Q ready. Every pending scene ships as an empty seat with a READY anchor (10.3 E2 reference map, 10.4 E3 ghost, 10.5 Taylor-Green cells and a SCHEMATIC growth curve, 10.7 lamp panel, 10.9 VKS and DRESDYN drawings), the bet, CONFIDENCE, the criterion with its source and an ASK box; seat types vary: curve (10.3, 10.4), map (10.5, 10.9 VKS), lamps (10.7), curve (10.9 DRESDYN). Seat ASK boxes: 10.3 'Is the 2D tier at 128² worth its GPU hours, or go straight to 3D?'; 10.4 D17 'Add runs at Rm 17.25, 17.5 and 17.75 to pin the edge?'; 10.5 D18 'Near the threshold: lengthen runs to saturation, or flag and exclude them?'; 10.7 'To test criterion (c), hold out a whole value of Pm?' (the configured split holds out single points, Re 100 Pm 1 and Re 50 Pm 2, so every Pm keeps training data and criterion (c) is untestable); 10.9 'Can we get VKS and precession snapshots, in what format, and when?'. Question card ch10.Q (n 11 if ch09.Q is Q10; category runs; ask Y. Ponty): forcing, Reynolds-number definition and resolution of the Taylor-Green campaign, so that its threshold can be compared with the published one; it does not repeat Q3 (which Pm) or Q4 (spread or pack the points). REQUESTS. (1) tools/data_cloud.py (foundation engineer B): the result variants use 'when': 'met' | 'not_met' | 'inconclusive'; please add these three booleans to every converter's 'fields' (exactly one true); without them the conditional sentences drop and only the 'Verdict: {{verdict}}' sentence remains (safe). 10.9 needs 'vks_verdict' and 'dresdyn_verdict' in the fields of the generic seat JSONs tier3_vks.json and tier4_dresdyn.json. (2) tools/data_existing.py: NEW data/fm3d_guarantees.json for 10.6 (milady/train/fm3d.py decoder and B-sign-symmetrised velocity field with random weights, CPU, seconds, no simulation or training: div_rel_u, div_rel_b, mirror_error, packed field-line polylines of one sample, meta.stamp 'GENERATED · fm3d · untrained weights'); torch is not installed in the system python here, so it needs the repository venv; until the file exists the assembler renders 10.6 as pending with a warning. (3) tools/assemble_cut.py lints a result variant against the pending target_s; result targets are given in variants.result.target_s (10.4 45, 10.5 45, 10.7 40, 10.9 40, 10.3 15): 10.7 (about 41 s vs 25) will warn unless the lint reads that field. (4) conv_fm3d_eval lamp (b) uses err_spectre_*_log10, a mean over all shells, while T:917 asks 'per band up to half the cutoff' (stricter): the lamp may read 'met' where the plan would not. CHANGES AGAINST THE OUTLINE. 10.5: the outline chip said 'different forcing convention'; Ponty et al. 2005 (checked on arXiv physics/0410046) use the same Taylor-Green forcing shape at k0 = 2 but define R_V from the r.m.s. velocity and the integral scale, while palier2_tg3d uses U_ref = 1 and L_ref = 1/kf: narration and chip say 'defines the Reynolds number differently'. 10.4: confidence medium, because at 32³ the whole-run and last-quarter fits already disagree at Rm 18 (|s − s_q| > |s|), which the converter would call inconclusive. 10.2: the H6 stamp sentence becomes the grey seat tag (no provisional stamps under D4); badge MEASURED refers to the test suite only (consistency editor: confirm or change). 10.3: P for the injection rate and ε for the dissipation, as in ch08 (outline wrote eps_inj); the converter gives ONE j tile, not 11, so the strips carry the per-η information; the bet is a data check, labelled as not a PhD-plan criterion. 10.1: chapter card in the 3.2-s lead-in, rail holds at L4 (the chapter reaches L5 at 10.5). Cuts: 10.8 and 10.9 'cuts': ['core']; 10.9-bridge 'cuts': ['extended'] (outline extended_variant); ch10.Q closes the chapter in both cuts. No predict beat in this chapter (the outline lists none); 0.5-0.8-s holds after the bet paragraphs let the seat column be read. No new lexicon entry (Rm, Pm, VKS, DRESDYN, Reynolds, Rice are pinned; 'eta' is avoided, 'diffusivities' is said instead). Words budgeted at about 128 effective words per minute of target_s, checked with the assembler formula (146 raw words per minute, 0.9 s per paragraph break, holds, lead-in, tail). REVIEW 2026-11-08 (adversarial script review, see script/_review/ch10.md): (5) PRECISION (foundation engineer): the fm3d decoder works and returns float32 (milady/train/data.py to_grid, fm3d.py:782; tests/test_train.py:113 asserts relative divergence < 1e-6 in float32), so (i) data/fm3d_guarantees.json should decode in float64 (cast the decoder to double) and write meta.dtype, else the 10.6 gauge reads about 1e-7, and (ii) conv_fm3d_eval with div_tol 1e-12 will mark lamp (a) not_met on float32 samples: evaluate the divergence on a float64 decode, or set the tolerance to the dtype's rounding. (6) LAMP (b): err_spectre_*_log10 is the mean |log10 E_gen - log10 E_ref| over shells k = 1..8 (milady/eval/metrics.py:600, 630-639), and fm3d truncates at |m| <= 8: the ±0.1 band drawn around the curve is a guide, not the lamp's rule; the result narration no longer says 'every spectrum inside the band'. (7) CONTINUITY (consistency editor): chSOA2 (L4-L5) now precedes ch10 in both cuts (BRIEF §10); if it ends at L5, the 10.1 card's levelFrom 'L4' is a step down and needs the side-step treatment of ch08. New cues: 10.5 'push' and 'catch' (visual updated), 10.8 'nonlocal' (visual updated); sentence ids of 10.5 and 10.8 renumbered.",
  "scenes": [
   {
    "id": "10.1",
@@ -105,7 +105,7 @@
       {
        "id": "10.1.s4",
        "cue": "bets",
-       "text": "From that step up, the plan is an independent PhD proposal, and every result is a bet, written down before the data exist."
+       "text": "From there up, every step is a bet, written down before the data exist, in an independent PhD proposal."
       }
      ]
     }
@@ -256,7 +256,7 @@
       {
        "id": "10.2.s6",
        "cue": "tested",
-       "text": "It all runs end to end on an ordinary processor, never yet on a graphics card."
+       "text": "It all runs end to end on an ordinary processor, never yet on a graphics card or a real cluster."
       },
       {
        "id": "10.2.s7",
@@ -448,7 +448,7 @@
         {
          "id": "10.3.r1",
          "cue": "product",
-         "text": "First product off the line: the flat sheet, eleven {param}diffusivities{/}, sixteen runs each."
+         "text": "First product: the flat sheet, eleven {param}diffusivities{/}, sixteen runs each."
         },
         {
          "id": "10.3.r2",
@@ -458,13 +458,13 @@
         {
          "id": "10.3.r3",
          "cue": "meaning",
-         "text": "The runs have settled, so their snapshots can feed a crowd law.",
+         "text": "The runs pass, so their snapshots can feed a crowd law.",
          "when": "met"
         },
         {
          "id": "10.3.r4",
          "cue": "meaning",
-         "text": "Some runs had not settled, so their snapshots cannot feed a crowd law yet.",
+         "text": "At least one setting fails: its runs wait until the cause is found.",
          "when": "not_met"
         }
        ]
@@ -533,7 +533,7 @@
       "ghost": "e3.x.values, e3.series[0].y (32³, whole run), label 'E3 at 32³ (measured)'; e3.convergence_N48 as two small grey squares '48³ check'; e3.published_windows.bounds shaded green 12 % 'published windows'",
       "bet": "s(17) > 0 > s(18), the long and the late fits agreeing",
       "confidence": "medium",
-      "why": "at 32³ the two fits already disagreed at Rm 18",
+      "why": "at 32³ and Rm 18, the two fits already differed by more than |s|",
       "criterion": "s(17) > 0 > s(18) with |s − s_q| < |s| at both · published window 8.9 < Rm < 17.5",
       "source": "R:1112",
       "ask": "Add runs at Rm 17.25, 17.5 and 17.75 to pin the edge?",
@@ -569,7 +569,7 @@
       {
        "id": "10.4.s2",
        "cue": "ghost",
-       "text": "At thirty-two cubed, the small run matched the published windows, but near seventeen and a half the sign of growth stayed unresolved."
+       "text": "At thirty-two cubed, the small sweep matched the published windows, but near seventeen and a half the sign of growth stayed unresolved."
       }
      ]
     },
@@ -584,7 +584,7 @@
       {
        "id": "10.4.s4",
        "cue": "bet",
-       "text": "The bet: growth still positive at seventeen, already negative at eighteen, with a long fit and a late fit agreeing on the sign."
+       "text": "The bet: growth still positive at seventeen, already negative at eighteen, with a long fit and a late fit that agree."
       }
      ]
     },
@@ -594,7 +594,7 @@
       {
        "id": "10.4.s5",
        "cue": "why",
-       "text": "Confidence: medium, since those two fits already disagreed at eighteen."
+       "text": "Confidence: medium. At eighteen, the small sweep's two fits already differed by more than the rate itself."
       },
       {
        "id": "10.4.s6",
@@ -693,13 +693,13 @@
         {
          "id": "10.4.r6",
          "cue": "meaning",
-         "text": "The sign change sits elsewhere, so either the published edge or our resolution needs a second look.",
+         "text": "The sign change sits elsewhere, so either the published edge or the resolution needs a second look.",
          "when": "not_met"
         },
         {
          "id": "10.4.r7",
          "cue": "meaning",
-         "text": "The two fits still disagree near the edge, so longer runs are needed before the sign can be read.",
+         "text": "The two fits still disagree near the edge, so the sign cannot be read yet.",
          "when": "inconclusive"
         }
        ]
@@ -789,9 +789,9 @@
       },
       "bet": "A threshold in Rm, bracketed for at least two values of Pm",
       "confidence": "medium",
-      "why": "published Rm_c uses other Reynolds scales; near threshold, runs may not saturate",
+      "why": "published runs define Re differently: the threshold may fall off this grid; near threshold, runs may not saturate",
       "criterion": "threshold bracketed at ≥ 2 Pm; crowd laws from saturated runs only",
-      "source": "T:908 · saturation flag",
+      "source": "T:912 · saturation flag",
       "ask": "Near the threshold: lengthen runs to saturation, or flag and exclude them?",
       "cues": {
        "frame": "seat",
@@ -818,12 +818,17 @@
       {
        "id": "10.5.s1",
        "cue": "anchor",
-       "text": "Bet two is the first true dynamo: a Taylor-Green flow, counter-rotating eddies that now feel the {b}field{/} and push back."
+       "text": "Bet two, the first true dynamo: a Taylor-Green flow of counter-rotating eddies."
       },
       {
        "id": "10.5.s2",
+       "cue": "push",
+       "text": "Now the {b}field{/} pushes back on the {u}flow{/}."
+      },
+      {
+       "id": "10.5.s3",
        "cue": "grow",
-       "text": "A tiny seed {b}field{/} should grow, then level off."
+       "text": "Above a threshold, a tiny {b}seed{/} should grow, then level off."
       }
      ]
     },
@@ -831,12 +836,12 @@
      "hold_after": 0.8,
      "sentences": [
       {
-       "id": "10.5.s3",
+       "id": "10.5.s4",
        "cue": "seat",
        "text": "Twelve runs cross four Reynolds numbers with three values of {param}Pm{/}."
       },
       {
-       "id": "10.5.s4",
+       "id": "10.5.s5",
        "cue": "bet",
        "text": "The bet: a threshold in {param}Rm{/}, bracketed for at least two values of {param}Pm{/}."
       }
@@ -846,12 +851,17 @@
      "hold_after": 0.0,
      "sentences": [
       {
-       "id": "10.5.s5",
+       "id": "10.5.s6",
        "cue": "why",
-       "text": "Confidence: medium. The published threshold defines the Reynolds number differently, and near threshold, a run may still be growing when its snapshots are kept."
+       "text": "Confidence: medium. Published runs define the Reynolds number differently, so the threshold may fall off this grid."
       },
       {
-       "id": "10.5.s6",
+       "id": "10.5.s7",
+       "cue": "catch",
+       "text": "Near threshold, a run may still be growing when its snapshots are kept."
+      },
+      {
+       "id": "10.5.s8",
        "cue": "ask",
        "text": "Lengthen those runs, or flag and exclude them?"
       }
@@ -883,7 +893,7 @@
       "tex": "\\text{here } \\RE = U_{\\rm ref} L_{\\rm ref}/\\nu,\\ L_{\\rm ref} = 1/k_f = 0.5;\\ \\text{Ponty et al. 2005: } R_V = U_{\\rm rms} L/\\nu,\\ L = 2\\pi \\textstyle\\int k^{-1}E(k)\\,dk \\big/ \\int E(k)\\,dk"
      },
      {
-      "cue": "ask",
+      "cue": "catch",
       "tex": "\\text{saturated if } |\\text{slope of } \\ln E_B \\text{ over the kept window}|/2 < 0.1\\, s_{\\rm kin}\\ \\ (\\text{saturation flag of the data converter})"
      }
     ],
@@ -892,10 +902,11 @@
      "anchor: Rm_c ≈ 30 at Pm = 1 (Ponty et al. 2005, T:908) · Reynolds numbers defined with other scales: qualitative only"
     ]
    },
-   "visual": "Render class flat (the optional 3D insert of a saturated field is a separate WebGL shot, G9, not in this scene). READY anchor first (H3), left half: on 'anchor-0.15' the Taylor-Green flow in the slice z = 0, u = (sin 2x cos 2y, −cos 2x sin 2y) (analytic shape of the forcing, k0 = 2, CFG palier2_tg3d.yaml:3-4, no data number): 4 x 4 counter-rotating cells drawn by Kit.tracers (blue, params.flow.tracers, trail 8) over faint arrows; label 'Taylor-Green flow · slice z = 0'; at 'anchor+2.2' (on 'push back') short vermillion arrows appear inside two cells, opposing the swirl, label 'Lorentz force: the field pushes back'. On 'grow-0.15': a schematic curve of ln E_B(t) (grey dashed, chip 'SCHEMATIC · growth then saturation, no data'): flat start at 'seed 10⁻³ (rms)', a straight rise 'exponential growth', a knee and a plateau 'saturation'; the kept window t 100-140 shaded grey with its label. On 'seat-0.15': Kit.seat type 'map' (right 55 % of the frame): a 4 x 3 grid of small dashed frames (columns Re 25, 50, 100, 200; rows Pm 0.5, 1, 2, green axis labels), each frame an empty ln E_B(t) lane with its Rm = Re × Pm in small green mono (12.5 … 400: axis values of the configured grid), the grey tag 'DATA · PALIER2_TG3D · AWAITING' and the label '12 runs · 64³ · 40 snapshots each'. On 'bet-0.15': per Pm row, a dashed green bracket between two columns marks where a threshold is expected to be bracketed; the right column shows THE BET and SUCCESS CRITERION. On 'why-0.15': CONFIDENCE medium (pips) with params.seat.why; the anchor chip 'anchor: Rm_c ≈ 30 at Pm = 1 (Ponty et al. 2005, T:908) · Reynolds numbers defined with other scales: qualitative only' under the grid; on the schematic curve, a hatched copy that is still rising inside the kept window, label 'still growing?' (A8). On 'ask-0.15': the boxed ASK BEFORE WE COMPUTE (D18). Result variant: on 'data-0.15' each of the 12 frames draws runs[i].logEb against runs[i].t (vermillion, solid), flagged by runs[i].flag: 'saturated' solid, 'growing' hatched with the label 'still growing', 'decaying' grey; on 'hatched-0.15' the growing ones pulse once; a small (Re, Pm) map beside the grid colours each run dynamo / no dynamo / not saturated; thresholds_Rm per Pm as green markers; the seat shows verdict and verdict_text. Badge CONJECTURE, confidence medium, note 'bet · palier2_tg3d · qualitative'. Key colours: blue (flow), vermillion (field), green (knobs).",
+   "visual": "Render class flat (the optional 3D insert of a saturated field is a separate WebGL shot, G9, not in this scene). READY anchor first (H3), left half: on 'anchor-0.15' the Taylor-Green flow in the slice z = 0, u = (sin 2x cos 2y, −cos 2x sin 2y) (analytic shape of the forcing, k0 = 2, CFG palier2_tg3d.yaml:3-4, no data number): 4 x 4 counter-rotating cells drawn by Kit.tracers (blue, params.flow.tracers, trail 8) over faint arrows; label 'Taylor-Green flow · slice z = 0'; on 'push-0.15' short vermillion arrows appear inside two cells, opposing the swirl, label 'Lorentz force: the field pushes back'. On 'grow-0.15': a schematic curve of ln E_B(t) (grey dashed, chip 'SCHEMATIC · growth then saturation, no data'): flat start at 'seed 10⁻³ (rms)', a straight rise 'exponential growth', a knee and a plateau 'saturation'; the kept window t 100-140 shaded grey with its label. On 'seat-0.15': Kit.seat type 'map' (right 55 % of the frame): a 4 x 3 grid of small dashed frames (columns Re 25, 50, 100, 200; rows Pm 0.5, 1, 2, green axis labels), each frame an empty ln E_B(t) lane with its Rm = Re × Pm in small green mono (12.5 … 400: axis values of the configured grid), the grey tag 'DATA · PALIER2_TG3D · AWAITING' and the label '12 runs · 64³ · 40 snapshots each'. On 'bet-0.15': per Pm row, a dashed green bracket between two columns marks where a threshold is expected to be bracketed; the right column shows THE BET and SUCCESS CRITERION. On 'why-0.15': CONFIDENCE medium (pips) with params.seat.why; the anchor chip 'anchor: Rm_c ≈ 30 at Pm = 1 (Ponty et al. 2005, T:908) · Reynolds numbers defined with other scales: qualitative only' under the grid. On 'catch-0.15': on the schematic curve, a hatched copy that is still rising inside the kept window, label 'still growing?' (A8). On 'ask-0.15': the boxed ASK BEFORE WE COMPUTE (D18). Result variant: on 'data-0.15' each of the 12 frames draws runs[i].logEb against runs[i].t (vermillion, solid), flagged by runs[i].flag: 'saturated' solid, 'growing' hatched with the label 'still growing', 'decaying' grey; on 'hatched-0.15' the growing ones pulse once; a small (Re, Pm) map beside the grid colours each run dynamo / no dynamo / not saturated; thresholds_Rm per Pm as green markers; the seat shows verdict and verdict_text. Badge CONJECTURE, confidence medium, note 'bet · palier2_tg3d · qualitative'. Key colours: blue (flow), vermillion (field), green (knobs).",
    "assets": [],
    "sources": [
     "en/these/index.qmd:908 (tier 2 is the first where a true dynamo exists; Taylor-Green forcing, thresholds known as a function of Pm, Ponty et al. 2005: Rm_c = 30 at Pm = 1, 226 at Pm = 0.3; subcritical bifurcation, Ponty et al. 2007)",
+    "en/these/index.qmd:912 (tier-2 data plan: Rm on both sides of the threshold for two values of Pm, checked against the published thresholds: the bracketing bet)",
     "infra/configs/palier2_tg3d.yaml:3-14, 20-21, 34-43 (dynamic MHD with Lorentz force, TG forcing at kf = 2, L_ref = 1/kf = 0.5, U_ref = 1, Re = U_ref L_ref / ν, Rm = Re × Pm; seed rms 1e-3, kinematic phase then saturation; Re in {25, 50, 100, 200} x Pm in {0.5, 1, 2}; t_burn 100, 40 snapshots over t_keep 40; check resolution at Re = 200, Pm = 2)",
     "en/calcul/index.qmd:163 (palier2_tg3d: 12 simulations at 64³)",
     "external: Ponty Y., Mininni P. D., Montgomery D. C., Pinton J.-F., Politano H., Pouquet A. (2005), Numerical study of dynamo action at low magnetic Prandtl numbers, Phys. Rev. Lett. 94, 164502, https://arxiv.org/abs/physics/0410046 (R_V = U L / ν with U the r.m.s. velocity and L the integral scale, L = 2π ∫k⁻¹E(k)dk / ∫E(k)dk; Taylor-Green forcing with k0 = 2): verified 2026-11-08 from the arXiv PDF, supports 'defines the Reynolds number differently'",
@@ -965,7 +976,7 @@
         {
          "id": "10.5.r8",
          "cue": "caveat",
-         "text": "The threshold stays qualitative here: the published one defines the Reynolds number differently."
+         "text": "The threshold stays qualitative here: published runs define the Reynolds number differently."
         }
        ]
       }
@@ -1048,7 +1059,7 @@
       {
        "id": "10.6.s4",
        "cue": "mirror",
-       "text": "Mirror the seed noise, and the sample comes out with its {b}field{/} flipped."
+       "text": "Mirror the starting noise, and the sample comes out with its {b}field{/} flipped."
       },
       {
        "id": "10.6.s5",
@@ -1086,7 +1097,7 @@
      "GENERATED · fm3d · untrained weights"
     ]
    },
-   "visual": "Render class webgl (Three.js, field lines as fat lines, ≤ 28 000 segments, precomputed polylines from the data file, G8). Data: ctx.data.g = data/fm3d_guarantees.json (NEW, requested from tools/data_existing.py, see unit notes: the fm3d decoder and its B → −B-symmetrised velocity field with random weights, unit normalisation, on CPU in seconds; no simulation, no training). Layout: two columns, 'GUARANTEED' (left, this scene) and 'MUST BE MEASURED' (right, dim, filled in 10.7): the pair of H4. On 'nobet-0.15': the left column header lights; a violet-framed cube (generated) shows the field lines of one sample (g.lines, vermillion, slowly rotating: the idle motion), chip 'GENERATED · fm3d · untrained weights' (violet). On 'curl-0.15': the projector motif M6 returns (Kit.projector, callback of 08.3): a few grey potential arrows inside the cube turn into the field lines through a 'potential → curl' gate (label), the 2D hill map of 08.3 as a small ghost icon beside it (callback: 'hill maps become potentials'). On 'zero-0.15': a vertical log gauge (params.gauge, 10⁰ to 10⁻¹⁸) beside the cube: its needle falls from the top to g.div_rel_b (and a second thin needle to g.div_rel_u) in 1.2 s, a grey band 'rounding error' near the bottom; label 'random, untrained weights'; pop at zero+0.6. On 'mirror-0.15': M10, Kit.mirror mode 'plane' used only as the B → −B metaphor: the cube splits into two, 'sample from z' and 'sample from S z'; the field lines are the same curves with reversed arrows (--b vs --b-neg, a shade, not a hue), the blue velocity lines identical; the measured mismatch g.mirror_error is printed small under the pair. On 'mechanism-0.15': chip 'by construction (Prop. 1, Prop. 4): this shows the mechanism, not quality' (Kit.chip kind 'plain'). Badge PROVED, note 'Prop. 1, Prop. 4 · untrained network'. Key colours: violet (frame), vermillion (field), blue (velocity, faint).",
+   "visual": "Render class webgl (Three.js, field lines as fat lines, ≤ 28 000 segments, precomputed polylines from the data file, G8). Data: ctx.data.g = data/fm3d_guarantees.json (NEW, requested from tools/data_existing.py, see unit notes: the fm3d decoder and its B → −B-symmetrised velocity field with random weights, unit normalisation, on CPU in seconds; no simulation, no training). Layout: two columns, 'GUARANTEED' (left, this scene) and 'MUST BE MEASURED' (right, dim, filled in 10.7): the pair of H4. On 'nobet-0.15': the left column header lights; a violet-framed cube (generated) shows the field lines of one sample (g.lines, vermillion, slowly rotating: the idle motion), chip 'GENERATED · fm3d · untrained weights' (violet). On 'curl-0.15': the projector motif M6 returns (Kit.projector, callback of 08.3): a few grey potential arrows inside the cube turn into the field lines through a 'potential → curl' gate (label), the 2D hill map of 08.3 as a small ghost icon beside it (callback: 'hill maps become potentials'). On 'zero-0.15': a vertical log gauge (params.gauge, 10⁰ to 10⁻¹⁸) beside the cube: its needle falls from the top to g.div_rel_b (and a second thin needle to g.div_rel_u) in 1.2 s, a grey band 'rounding error' placed at the rounding level of the precision written in g.meta.dtype (about 10⁻¹⁶ in float64, about 10⁻⁷ in float32: never placed by hand; the decoder outputs float32, tests/test_train.py:113, so ask for a float64 decode, see unit notes); label 'random, untrained weights'; pop at zero+0.6. On 'mirror-0.15': M10, Kit.mirror mode 'plane' used only as the B → −B metaphor: the cube splits into two, 'sample from z' and 'sample from S z'; the field lines are the same curves with reversed arrows (--b vs --b-neg, a shade, not a hue), the blue velocity lines identical; the measured mismatch g.mirror_error is printed small under the pair. On 'mechanism-0.15': chip 'by construction (Prop. 1, Prop. 4): this shows the mechanism, not quality' (Kit.chip kind 'plain'). Badge PROVED, note 'Prop. 1, Prop. 4 · untrained network'. Key colours: violet (frame), vermillion (field), blue (velocity, faint).",
    "assets": [
     "milady/train/fm3d.py"
    ],
@@ -1135,7 +1146,7 @@
        {
         "id": "a",
         "label": "divergence < 10⁻¹²",
-        "rule": "by construction (previous scene)"
+        "rule": "by construction (previous scene), in double precision"
        },
        {
         "id": "b",
@@ -1243,7 +1254,8 @@
     "infra/configs/train_fm3d.yaml:34-39 (auto_dataset: validation Re 100, Pm 1; test Re 50, Pm 2; all other points train: every Pm keeps training data, hence the seat's question on criterion (c))",
     "experiences/resultats/digest.md:150-157 (E2 training means of the spectral error: V5 0.0826, V4 0.0925, reference floor 0.0114) and en/rapport/index.qmd:80 (spectral errors 0.07-0.23 against 0.002-0.011 for data)",
     "milady/eval/metrics.py:601, 630-639 (err_spectre_*_log10 is the mean |log10 E_gen(k) − log10 E_ref(k)| over all shells; the plan's 'per band up to half the cutoff' is stricter: see open issues)",
-    "plan/critique_accuracy.md A7 (criterion (b) at training points; held-out points are diagnostics; lamps indicative at 12 x 40) and A8 (saturated runs only); video/tools/data_cloud.py conv_fm3d_eval"
+    "plan/critique_accuracy.md A7 (criterion (b) at training points; held-out points are diagnostics; lamps indicative at 12 x 40) and A8 (saturated runs only); video/tools/data_cloud.py conv_fm3d_eval",
+    "milady/train/data.py:385-445 and milady/train/fm3d.py:782 (decoded fields are float32; tests/test_train.py:113 asserts relative divergence < 1e-6 in float32): criterion (a) < 1e-12 holds only for a double-precision decode, hence the lamp rule"
    ],
    "variants": {
     "result": {
@@ -1278,13 +1290,13 @@
         {
          "id": "10.7.r4",
          "cue": "meaning",
-         "text": "Divergence stays at rounding error, and every training spectrum sits inside the band.",
+         "text": "Divergence stays at rounding error, and the spectrum error stays under a tenth of a decade at every training setting.",
          "when": "met"
         },
         {
          "id": "10.7.r5",
          "cue": "meaning",
-         "text": "At least one spectrum leaves the band: the generator is not yet good enough, even where it has data.",
+         "text": "At least one lamp is red; the screen shows which, and why.",
          "when": "not_met"
         },
         {
@@ -1306,7 +1318,7 @@
         {
          "id": "10.7.r8",
          "cue": "later",
-         "text": "The threshold at an unseen {param}Pm{/}, and the branch test, need the full tier."
+         "text": "The threshold at an unseen {param}Pm{/}, and the fourth lamp, need the full tier."
         },
         {
          "id": "10.7.r9",
@@ -1370,12 +1382,12 @@
      ]
     },
     {
-     "hold_after": 0.0,
+     "hold_after": 0.5,
      "sentences": [
       {
        "id": "10.8.s3",
        "cue": "iron",
-       "text": "At the soft-iron impellers, {b}field lines{/} bend like light entering glass, so a smooth potential cannot be exact: it needs a kink there."
+       "text": "At the soft-iron impellers, {b}field lines{/} bend sharply at the iron's surface, so a smooth potential cannot be exact: it needs a kink there."
       }
      ]
     },
@@ -1385,12 +1397,17 @@
       {
        "id": "10.8.s4",
        "cue": "vacuum",
-       "text": "Outside, the {b}field{/} must match a current-free field in the vacuum: a linear rule, but nonlocal, since the field at each point of the wall depends on the whole wall."
+       "text": "Outside, the {b}field{/} must match a current-free field in the vacuum."
       },
       {
        "id": "10.8.s5",
+       "cue": "nonlocal",
+       "text": "The rule is linear but nonlocal: the {b}field{/} at one point of the wall depends on the whole wall."
+      },
+      {
+       "id": "10.8.s6",
        "cue": "open",
-       "text": "How to impose it is still open."
+       "text": "Imposing it exactly and cheaply, for every sample, is still open."
       }
      ]
     }
@@ -1431,7 +1448,7 @@
      "SCHEMATIC · refraction exaggerated"
     ]
    },
-   "visual": "Render class flat, PAPER register (T3 ink change from NIGHT on 'leave-0.3', a wipe along a drawn line; ink lines, vermillion for B on paper #D55E00 via the token). On 'leave-0.15': the periodic box of 10.6 (wire cube with faint repeated copies, 'periodic') loses its copies and rounds into a vertical cylinder drawn in ink; label 'periodic box → bounded vessel'. On 'gauge-0.15': short grey ink arrows of the potential A fill the cylinder's meridian section; near the wall each arrow loses its normal part and snaps tangent to the wall (A · n = 0), 0.6 s, staggered; label 'gauge + wall condition → one potential per field'. On 'iron-0.15': zoom on a soft-iron disc (grey hatched slab, label 'soft iron'): vermillion field lines cross the interface and bend away from the normal inside the iron (chip 'SCHEMATIC · refraction exaggerated'), labels 'B · n continuous' and 'tangential B / μ_r continuous' (L5: μ_r on screen is allowed); under it a small profile plot of the potential across the interface: a smooth curve (grey, 'smooth potential', crossed out by the pen M9) and a curve with a corner at the interface (vermillion, 'kinked potential', pen circle on the kink). On 'vacuum-0.15': zoom out: the cylinder in white space; thinner vermillion exterior field lines wrap around it, continuous across the wall, label 'vacuum: current-free field'; one point of the wall is highlighted and params.nonlocal.rays faint grey lines join it to points all over the wall, label 'one point depends on the whole wall'. On 'open-0.15': the pen draws a question mark beside the exterior field and the chip 'vacuum matching: candidate routes, an open question of the PhD plan' (critique C11). Formula layer from the script (Amrouche-Seloula in the formula only, never narrated). Core cut only: the extended cut plays X6.1 and X6.2 in full instead. Badge PROVED, note 'Thm 2.2 (published) · Prop. 2.6 · Remark 2.5 · untested'. Key colours: vermillion and ink grey only.",
+   "visual": "Render class flat, PAPER register (T3 ink change from NIGHT on 'leave-0.3', a wipe along a drawn line; ink lines, vermillion for B on paper #D55E00 via the token). On 'leave-0.15': the periodic box of 10.6 (wire cube with faint repeated copies, 'periodic') loses its copies and rounds into a vertical cylinder drawn in ink; label 'periodic box → bounded vessel'. On 'gauge-0.15': short grey ink arrows of the potential A fill the cylinder's meridian section; near the wall each arrow loses its normal part and snaps tangent to the wall (A · n = 0), 0.6 s, staggered; label 'gauge + wall condition → one potential per field'. On 'iron-0.15': zoom on a soft-iron disc (grey hatched slab, label 'soft iron'): vermillion field lines cross the interface and bend away from the normal inside the iron (chip 'SCHEMATIC · refraction exaggerated'), labels 'B · n continuous' and 'tangential B / μ_r continuous' (L5: μ_r on screen is allowed); under it a small profile plot of the potential across the interface: a smooth curve (grey, 'smooth potential', crossed out by the pen M9) and a curve with a corner at the interface (vermillion, 'kinked potential', pen circle on the kink). On 'vacuum-0.15': zoom out: the cylinder in white space; thinner vermillion exterior field lines wrap around it, continuous across the wall, label 'vacuum: current-free field'. On 'nonlocal-0.15': one point of the wall is highlighted and params.nonlocal.rays faint grey lines join it to points all over the wall, label 'one point depends on the whole wall'. On 'open-0.15': the pen draws a question mark beside the exterior field and the chip 'vacuum matching: candidate routes, an open question of the PhD plan' (critique C11; projection is exact but costs one exterior solve per sample, T:114, T:266). Formula layer from the script (Amrouche-Seloula in the formula only, never narrated). Core cut only: the extended cut plays X6.1 and X6.2 in full instead. Badge PROVED, note 'Thm 2.2 (published) · Prop. 2.6 · Remark 2.5 · untested'. Key colours: vermillion and ink grey only.",
    "assets": [],
    "sources": [
     "en/rapport/index.qmd:338-340 (Remark 3.5: in a bounded domain the decoder must respect boundary conditions; Amrouche & Seloula 2011: ψ · n = 0, or ψ × n = 0 if B · n = 0; vacuum matching requires the external field) and :1137 (boundary conditions not tested)",
@@ -1546,7 +1563,7 @@
       {
        "id": "10.9.s3",
        "cue": "vks",
-       "text": "For VKS: the four main patterns with the right energy shares, and Rice's reversal rate inside the simulations' error bars."
+       "text": "For VKS: the four main patterns with the right energy shares, and Rice's reversal rate inside the simulated count's error bars."
       },
       {
        "id": "10.9.s4",
