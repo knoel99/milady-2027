@@ -336,7 +336,7 @@ def check_reservations(chapters: dict, errors: list[str]) -> None:
     need(cues, "cue.g14.c.show", "No price is read out.", "plan-g14", errors)
     forbid(cues, "cue.g14.c.show", "euro table", "pedagogy-g14", errors)
     need(cues, "cue.g14.a.show", "trajectory count to 1", "plan-g14", errors)
-    need(cues, "cue.g14.a.show", "loss weight set to zero", "pedagogy-g14", errors)
+    need(cues, "cue.g14.a.show", "stationarity-loss weight set to zero", "science-g14", errors)
     forbid(cues, "cue.g14.a.show", "witness at zero weight", "pedagogy-g14", errors)
     need(cues, "cue.g14.close.show", "A, then B, then C", "plan-g14", errors)
     forbid(cues, "cue.g14.close.show", "not read aloud", "pedagogy-g14", errors)
