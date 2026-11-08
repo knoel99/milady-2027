@@ -9,8 +9,8 @@ import { cleCache, ecrire } from "../cache.mjs";
 import { ecrireWav } from "../kit-voix/aligner.mjs";
 import { VOIX, preparer } from "../parole.mjs";
 import { ecrireManifeste } from "../pilote.mjs";
-import { dureeTableau, tableau, texteSousTitre } from "../film.mjs";
-import { lireScenes } from "../pilote.mjs";
+import { dureeTableau, sousTitresNarration, tableau, texteSousTitre } from "../film.mjs";
+import { lireScenes, placer } from "../pilote.mjs";
 
 const here = dirname(fileURLToPath(import.meta.url));
 const root = join(here, "../..");
@@ -46,6 +46,100 @@ test("chaque sous-titre français vient du script français", async () => {
     const fr = texteSousTitre(layer, "fr");
     assert.equal(francais.includes(fr), true, fr);
     if (fr === en) assert.equal(anglais.includes(fr), true, fr);
+  }
+});
+
+const PUISSANCE = "⁰¹²³⁴⁵⁶⁷⁸⁹";
+
+function puissance(chiffres) {
+  return `⁻${[...String(chiffres)].map((chiffre) => PUISSANCE[Number(chiffre)]).join("")}`;
+}
+
+function contrat(texte) {
+  return texte
+    .replace(/(\d+(?:\.\d+)?) times 10 to the minus (\d+)/gi, (_, nombre, exposant) => `${nombre} × 10${puissance(exposant)}`)
+    .replace(/about 10 to the minus (\d+)/gi, (_, exposant) => `about 10${puissance(exposant)}`)
+    .replace(/(\d+(?:,\d+)?) fois 10 à la puissance moins (\d+)/gi, (_, nombre, exposant) => `${nombre} × 10${puissance(exposant)}`)
+    .replace(/environ 10 à la puissance moins (\d+)/gi, (_, exposant) => `environ 10${puissance(exposant)}`)
+    .replace(/\u00a0/g, " ")
+    .replace(/\s+/g, " ")
+    .trim();
+}
+
+function phrases(texte) {
+  const trouvees = [];
+  let courant = "";
+  for (let index = 0; index < texte.length; index += 1) {
+    const char = texte[index];
+    courant += char;
+    const decimal = char === "." && /\d/.test(texte[index - 1] ?? "") && /\d/.test(texte[index + 1] ?? "");
+    if ((char === "." || char === "?" || char === "!") && !decimal) {
+      trouvees.push(courant.trim());
+      courant = "";
+    }
+  }
+  if (courant.trim()) trouvees.push(courant.trim());
+  return trouvees;
+}
+
+test("chaque beat porte le texte parlé, l'exposant et la conclusion", async () => {
+  for (const lang of ["en", "fr"]) {
+    const markdown = await readFile(join(root, "narration", lang, "g10.md"), "utf8");
+    const chapitre = preparer(markdown, lang);
+    const durees = new Map(chapitre.paragraphes.map((paragraphe) => [paragraphe.id, 8]));
+    const lignes = tableau(chapitre);
+    const cues = await sousTitresNarration(lignes, chapitre, durees);
+    let origine = 0;
+    for (const ligne of lignes) {
+      const beat = chapitre.beats.find((item) => item.id === ligne.id);
+      const duBeat = cues.filter((cue) => cue.beat === beat.id);
+      const lu = contrat(duBeat.map((cue) => cue.text).join(" "));
+      const voulu = contrat(beat.paragraphes.map((paragraphe) => paragraphe.brut).join(" "));
+      assert.equal(lu, voulu, `${lang} ${beat.id}`);
+      const place = placer(beat.paragraphes, durees);
+      const debutAudio = origine + place.poses[0].at;
+      const finAudio = origine + place.poses.at(-1).fin;
+      for (const cue of duBeat) {
+        assert.ok(cue.debut >= debutAudio - 1e-6 && cue.fin <= finAudio + 1e-6, `${cue.text} hors voix`);
+        assert.ok(cue.fin > cue.debut, cue.text);
+        const lignesBloc = cue.text.split("\n");
+        assert.ok(lignesBloc.length <= 2, cue.text);
+        assert.ok(lignesBloc.every((item) => item.length <= 42 || !item.includes(" ")), cue.text);
+      }
+      for (let index = 1; index < duBeat.length; index += 1) {
+        assert.ok(duBeat[index].debut >= duBeat[index - 1].fin - 1e-9, beat.id);
+      }
+      const textes = duBeat.map((cue) => contrat(cue.text));
+      for (const phrase of phrases(voulu)) {
+        const tient = textes.some((texte, index) => [texte, textes[index + 1]].filter(Boolean).join(" ").includes(phrase));
+        assert.equal(tient, true, `${lang} ${phrase}`);
+      }
+      origine += ligne.slot;
+    }
+    const tout = contrat(cues.map((cue) => cue.text).join(" "));
+    for (const match of markdown.matchAll(/(\d+(?:[.,]\d+)?) (?:times 10 to the minus|fois 10 à la puissance moins) (\d+)/gi)) {
+      assert.equal(tout.includes(`${match[1]} × 10${puissance(match[2])}`), true, match[0]);
+    }
+    for (const match of markdown.matchAll(/(?:about 10 to the minus|environ 10 à la puissance moins) (\d+)/gi)) {
+      assert.equal(tout.includes(`10${puissance(match[1])}`), true, match[0]);
+    }
+  }
+  const anglais = preparer(await readFile(join(root, "narration/en/g10.md"), "utf8"), "en");
+  const francais = preparer(await readFile(join(root, "narration/fr/g10.md"), "utf8"), "fr");
+  const cuesAnglais = await sousTitresNarration(tableau(anglais), anglais, new Map(anglais.paragraphes.map((item) => [item.id, 8])));
+  const cuesFrancais = await sousTitresNarration(tableau(francais), francais, new Map(francais.paragraphes.map((item) => [item.id, 8])));
+  const ligneFlot = (cues, nombre) =>
+    cues.flatMap((cue) => cue.text.split("\n")).find((ligne) => ligne.replaceAll("\u00a0", " ").includes(nombre));
+  assert.match(ligneFlot(cuesAnglais, "2.03").replaceAll("\u00a0", " "), /2\.03 × 10⁻⁸/);
+  assert.match(ligneFlot(cuesFrancais, "2,03").replaceAll("\u00a0", " "), /2,03 × 10⁻⁸/);
+  for (const [cues, amorce, conclusion] of [
+    [cuesAnglais, "A positive variance does not prove", "there is no mass at 0"],
+    [cuesFrancais, "Une variance positive ne prouve pas", "absence de masse en 0"],
+  ]) {
+    const index = cues.findIndex((cue) => cue.text.includes(amorce));
+    assert.ok(index >= 0, amorce);
+    const voisin = [cues[index], cues[index + 1]].filter(Boolean).map((cue) => cue.text.replaceAll("\n", " ")).join(" ");
+    assert.equal(voisin.includes(conclusion), true, amorce);
   }
 });
 
@@ -108,6 +202,16 @@ test("le film tient 248 s et marque les pistes eng et fra", async () => {
     assert.equal(Number(video[0].nb_read_frames), 7560, langue);
     assert.equal(audio[0].tags.language, langue);
     assert.equal(sous[0].tags.language, langue);
+    const piste = spawnSync("ffmpeg", ["-y", "-i", fichier, "-map", "0:s:0", "-f", "srt", "-"], { encoding: "utf8" });
+    assert.equal(piste.status, 0, piste.stderr);
+    const texte = piste.stdout.replaceAll("\u00a0", " ").replace(/\s+/g, " ");
+    if (langue === "eng") {
+      assert.match(texte, /2\.03 × 10⁻⁸/);
+      assert.match(texte, /there is no mass at 0/);
+    } else {
+      assert.match(texte, /2,03 × 10⁻⁸/);
+      assert.match(texte, /absence de masse en 0/);
+    }
   }
 });
 

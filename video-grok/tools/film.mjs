@@ -176,7 +176,7 @@ export async function principal(argv, env, io) {
         durees.set(paragraphe.id, await dureeFichier(join(opts.cache, film.lang, `${paragraphe.id}.mp3`)));
       }
       const srt = join(dossier, `${film.lang}.srt`);
-      await writeFile(srt, texteSrt(segments(scenes, lignes, chapitre, durees, film.lang)));
+      await writeFile(srt, texteSrt(sousTitresNarration(lignes, chapitre, durees)));
       const clips = opts.clips
         ? lignes.map((ligne) => join(opts.clips, `${ligne.nom}.mp4`))
         : await capturerBeats({
@@ -260,20 +260,81 @@ async function capturerBeats({ root, chapter, lignes, scenes, dossier, lang, cha
   return clips;
 }
 
-function segments(scenes, lignes, chapitre, durees, lang) {
+const LARGEUR = 42;
+const PUISSANCE = "⁰¹²³⁴⁵⁶⁷⁸⁹";
+
+function puissance(chiffres) {
+  return `⁻${[...String(chiffres)].map((chiffre) => PUISSANCE[Number(chiffre)]).join("")}`;
+}
+
+function notationNombres(texte) {
+  return texte
+    .replace(/(\d+(?:\.\d+)?) times 10 to the minus (\d+)/gi, (_, nombre, exposant) => `${nombre}\u00a0×\u00a010${puissance(exposant)}`)
+    .replace(/about 10 to the minus (\d+)/gi, (_, exposant) => `about\u00a010${puissance(exposant)}`)
+    .replace(/(\d+(?:,\d+)?) fois 10 à la puissance moins (\d+)/gi, (_, nombre, exposant) => `${nombre}\u00a0×\u00a010${puissance(exposant)}`)
+    .replace(/environ 10 à la puissance moins (\d+)/gi, (_, exposant) => `environ\u00a010${puissance(exposant)}`);
+}
+
+function phrases(texte) {
+  const trouvees = [];
+  let courant = "";
+  for (let index = 0; index < texte.length; index += 1) {
+    const char = texte[index];
+    courant += char;
+    const decimal = char === "." && /\d/.test(texte[index - 1] ?? "") && /\d/.test(texte[index + 1] ?? "");
+    if ((char === "." || char === "?" || char === "!") && !decimal) {
+      trouvees.push(courant.trim());
+      courant = "";
+    }
+  }
+  if (courant.trim()) trouvees.push(courant.trim());
+  return trouvees;
+}
+
+function lignesDe(texte) {
+  const mots = texte.split(/ +/).filter(Boolean);
+  const lignes = [];
+  let ligne = "";
+  for (const mot of mots) {
+    const suivant = ligne ? `${ligne} ${mot}` : mot;
+    if (suivant.length <= LARGEUR) ligne = suivant;
+    else {
+      if (ligne) lignes.push(ligne);
+      ligne = mot;
+    }
+  }
+  if (ligne) lignes.push(ligne);
+  return lignes;
+}
+
+function blocsDe(texte) {
+  const blocs = [];
+  for (const phrase of phrases(notationNombres(texte))) {
+    const lignes = lignesDe(phrase);
+    for (let index = 0; index < lignes.length; index += 2) blocs.push(lignes.slice(index, index + 2).join("\n"));
+  }
+  return blocs;
+}
+
+export function sousTitresNarration(lignes, chapitre, durees) {
   let origine = 0;
   const cues = [];
   for (const ligne of lignes) {
-    const scene = scenes.find((item) => item.id === ligne.id);
     const beat = chapitre.beats.find((item) => item.id === ligne.id);
     const place = placer(beat.paragraphes, durees);
-    const carte = bords(scene, place.poses, ligne.slot);
-    const instant = new Map(scene.cues.map((cue) => [cue.id, origine + projeter(cue.at, carte)]));
-    for (const layer of (scene.layers ?? []).filter((item) => item.kind === "subtitle")) {
-      const debut = instant.get(layer.from);
-      const fin = Math.max(instant.get(layer.until), debut + 0.05);
-      const text = texteSousTitre(layer, lang);
-      cues.push({ debut, fin, text });
+    for (const pose of place.poses) {
+      const paragraphe = beat.paragraphes.find((item) => item.id === pose.id);
+      const blocs = blocsDe(paragraphe.brut);
+      const debut = origine + pose.at;
+      const fin = origine + pose.fin;
+      const poids = blocs.map((bloc) => Math.max(bloc.replaceAll("\n", "").length, 1));
+      const total = poids.reduce((somme, poidsBloc) => somme + poidsBloc, 0);
+      let curseur = debut;
+      blocs.forEach((text, index) => {
+        const prochain = index === blocs.length - 1 ? fin : curseur + ((fin - debut) * poids[index]) / total;
+        cues.push({ debut: curseur, fin: prochain, text, beat: beat.id });
+        curseur = prochain;
+      });
     }
     origine += ligne.slot;
   }
