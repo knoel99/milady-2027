@@ -1,13 +1,13 @@
 import { spawn, spawnSync } from "node:child_process";
+import { createHash } from "node:crypto";
 import { copyFile, mkdtemp, readFile, rm, writeFile } from "node:fs/promises";
 import { tmpdir } from "node:os";
 import { dirname, join } from "node:path";
 import { fileURLToPath } from "node:url";
 import { capturer } from "./capture.mjs";
 import { preparer } from "./parole.mjs";
-import { argumentsPiste, bords, dureeFichier, lireScenes, placer, projeter } from "./pilote.mjs";
+import { bords, dureeFichier, lireScenes, placer, projeter } from "./pilote.mjs";
 import { servir } from "./servir.mjs";
-import { calerPhrasesDepuisOreille, ecouter } from "./calage.mjs";
 import { garderCle } from "./tts.mjs";
 
 const ici = dirname(fileURLToPath(import.meta.url));
@@ -165,6 +165,7 @@ export async function principal(argv, env, io) {
     if (rendu.status !== 0) {
       throw Object.assign(new Error(garderCle(rendu.stderr || rendu.stdout, env.FISH_API_KEY)), { code: "rendre" });
     }
+    verifierEmpreinte(pistes, await lireParole(opts.chapter));
     const films = fichiersSortie(opts.sortie);
     const rendus = [];
     for (const film of films) {
@@ -173,14 +174,12 @@ export async function principal(argv, env, io) {
         film.lang,
       );
       const durees = new Map();
-      const fichiers = new Map();
       for (const paragraphe of chapitre.paragraphes) {
         const chemin = join(opts.cache, film.lang, `${paragraphe.id}.mp3`);
         durees.set(paragraphe.id, await dureeFichier(chemin));
-        fichiers.set(paragraphe.id, chemin);
       }
       const srt = join(dossier, `${film.lang}.srt`);
-      await writeFile(srt, texteSrt(await sousTitresNarration(lignes, chapitre, durees, fichiers)));
+      await writeFile(srt, texteSrt(await sousTitresNarration(chapitre)));
       const clips = opts.clips
         ? lignes.map((ligne) => join(opts.clips, `${ligne.nom}.mp4`))
         : await capturerBeats({
@@ -334,136 +333,109 @@ function aEcarter(cue) {
   return estNombreSeul(cue.text);
 }
 
-function fusionner(cues) {
-  const suite = cues.map((cue) => ({ ...cue }));
-  let encore = true;
-  while (encore) {
-    encore = false;
+const TENUE = 0.3;
+
+export async function lireParole(chapitre) {
+  const chemin = join(ici, "..", "narration", `${chapitre}-speech-ref.json`);
+  try {
+    return JSON.parse(await readFile(chemin, "utf8"));
+  } catch (error) {
+    if (error.code === "ENOENT") throw Object.assign(new Error(`parole ${chapitre}`), { code: "parole" });
+    throw error;
+  }
+}
+
+export function empreinteAac(chemin, piste) {
+  const resultat = spawnSync(
+    "ffmpeg",
+    ["-v", "error", "-i", chemin, "-map", `0:a:${piste}`, "-c", "copy", "-f", "adts", "pipe:1"],
+    { maxBuffer: 32 * 1024 * 1024 },
+  );
+  if (resultat.status !== 0) {
+    throw Object.assign(new Error(resultat.stderr?.toString().slice(-500) || "empreinte"), { code: "empreinte" });
+  }
+  return createHash("sha256").update(resultat.stdout).digest("hex");
+}
+
+export function verifierEmpreinte(chemin, ref) {
+  const en = empreinteAac(chemin, 0);
+  const fr = empreinteAac(chemin, 1);
+  if (en === ref.sha256.en && fr === ref.sha256.fr) return;
+  throw Object.assign(
+    new Error(`empreinte\nen ${en}\nattendu ${ref.sha256.en}\nfr ${fr}\nattendu ${ref.sha256.fr}`),
+    { code: "empreinte" },
+  );
+}
+
+export function poserCues(cues) {
+  const suite = cues.map((cue) => ({ ...cue, finVoix: cue.finVoix ?? cue.fin }));
+  let garde = 0;
+  while (garde < suite.length * 4 + 4) {
+    garde += 1;
+    appliquerTenue(suite);
     const index = suite.findIndex((cue) => aEcarter(cue));
-    if (index < 0) break;
+    if (index < 0) return suite;
     let vers = -1;
     if (index > 0 && aEcarter(suite[index - 1])) vers = index - 1;
     else if (index + 1 < suite.length && aEcarter(suite[index + 1])) vers = index + 1;
     else if (index > 0) vers = index - 1;
     else if (index + 1 < suite.length) vers = index + 1;
-    if (vers < 0) break;
+    if (vers < 0) {
+      if (suite[index].fin - suite[index].debut < 1 - 1e-6) suite[index].fin = suite[index].debut + 1;
+      return suite;
+    }
     const cible = Math.min(index, vers);
     const source = Math.max(index, vers);
-    suite[cible] = {
-      debut: suite[cible].debut,
-      fin: suite[source].fin,
-      text: `${suite[cible].text}\n${suite[source].text}`,
-      beat: suite[cible].beat,
-      phrase: `${suite[cible].phrase} ${suite[source].phrase}`,
-    };
+    suite[cible] = reunir(suite[cible], suite[source]);
     suite.splice(source, 1);
-    encore = true;
   }
+  appliquerTenue(suite);
   return suite;
 }
 
-export async function sousTitresNarration(lignes, chapitre, durees, fichiers = new Map()) {
-  const poses = [];
-  let origine = 0;
-  for (const ligne of lignes) {
-    const beat = chapitre.beats.find((item) => item.id === ligne.id);
-    const place = placer(beat.paragraphes, durees);
-    for (const pose of place.poses) {
-      const paragraphe = beat.paragraphes.find((item) => item.id === pose.id);
-      poses.push({
-        at: origine + pose.at,
-        fin: origine + pose.fin,
-        paragraphe,
-        fichier: fichiers.get(paragraphe.id),
-        beat,
-      });
-    }
-    origine += ligne.slot;
+function appliquerTenue(suite) {
+  for (let index = 0; index < suite.length; index += 1) {
+    const suivant = suite[index + 1];
+    const plafond = suivant ? suivant.debut : Number.POSITIVE_INFINITY;
+    suite[index].fin = Math.min(suite[index].finVoix + TENUE, plafond);
   }
-  const avecAudio = poses.filter((pose) => pose.fichier);
-  let oreille = null;
-  if (avecAudio.length > 0) {
-    const dir = await mkdtemp(join(tmpdir(), "oreille-"));
-    const chemin = join(dir, "mix.wav");
-    try {
-      await executer(
-        "ffmpeg",
-        [
-          ...argumentsPiste(
-            avecAudio.map((pose) => ({ fichier: pose.fichier, at: pose.at })),
-            origine + 1,
-          ),
-          chemin,
-        ],
-      );
-      oreille = ecouter([{ id: "mix", audio: chemin, langue: chapitre.lang }]).mix;
-    } finally {
-      await rm(dir, { recursive: true, force: true });
-    }
-  }
-  const dites = avecAudio.flatMap((pose) => phrases(pose.paragraphe.brut));
-  const bornes = oreille ? calerPhrasesDepuisOreille(oreille, dites.join(" "), phrases) : [];
-  let curseur = 0;
-  const cues = [];
-  for (const pose of poses) {
-    const alignes = pose.fichier
-      ? phrases(pose.paragraphe.brut).map((phrase) => {
-          const borne = bornes[curseur];
-          curseur += 1;
-          return borne ?? { phrase, debut: pose.at, fin: pose.fin };
-        })
-      : [{ phrase: pose.paragraphe.brut, debut: pose.at, fin: pose.fin }];
-    const posesBloc = alignes.map((item) => ({
-      debut: pose.fichier ? item.debut : item.debut,
-      fin: Math.max(item.fin, item.debut),
-      text: lignesDe(notationNombres(item.phrase)).join("\n"),
-      beat: pose.beat.id,
-      phrase: item.phrase,
-    }));
-    cues.push(...fusionner(posesBloc));
-  }
-  return sansChevauchement(fusionner(cues));
-}
-
-export function sansChevauchement(cues) {
-  const suite = cues.map((cue) => ({ ...cue }));
-  let garde = 0;
-  while (garde < suite.length * 4 + 4) {
-    garde += 1;
-    suite.sort((a, b) => a.debut - b.debut || a.fin - b.fin);
-    let change = false;
-    for (let index = 0; index < suite.length - 1; index += 1) {
-      const cue = suite[index];
-      const suivant = suite[index + 1];
-      if (cue.fin <= suivant.debut + 1e-6) continue;
-      if (suivant.debut - cue.debut >= 1 - 1e-6) suite[index] = { ...cue, fin: suivant.debut };
-      else suite.splice(index, 2, reunir(cue, suivant));
-      change = true;
-      break;
-    }
-    if (change) continue;
-    const court = suite.findIndex((cue) => cue.fin - cue.debut < 1 - 1e-6);
-    if (court < 0) break;
-    const cue = suite[court];
-    const suivant = suite[court + 1];
-    if (!suivant) {
-      suite[court] = { ...cue, fin: cue.debut + 1 };
-      continue;
-    }
-    if (suivant.debut - cue.debut >= 1 - 1e-6) suite[court] = { ...cue, fin: Math.min(cue.debut + 1, suivant.debut) };
-    else suite.splice(court, 2, reunir(cue, suivant));
-  }
-  return suite;
 }
 
 function reunir(gauche, droite) {
+  const finVoix = Math.max(gauche.finVoix, droite.finVoix);
   return {
     debut: Math.min(gauche.debut, droite.debut),
-    fin: Math.max(gauche.fin, droite.fin),
+    fin: finVoix,
+    finVoix,
     text: `${gauche.text}\n${droite.text}`,
     beat: gauche.beat,
     phrase: `${gauche.phrase} ${droite.phrase}`,
   };
+}
+
+export async function sousTitresNarration(chapitre) {
+  const id = chapitre.beats[0].id.split(".")[0];
+  const ref = await lireParole(id);
+  const mesures = ref[chapitre.lang];
+  if (!mesures) throw Object.assign(new Error(`parole ${chapitre.lang}`), { code: "parole" });
+  const dites = [];
+  for (const paragraphe of chapitre.paragraphes) {
+    for (const phrase of phrases(paragraphe.brut)) {
+      const mesure = mesures[dites.length];
+      if (!mesure) throw Object.assign(new Error(`parole ${chapitre.lang} ${dites.length + 1}`), { code: "parole" });
+      dites.push({
+        debut: mesure.debut,
+        fin: mesure.fin,
+        text: lignesDe(notationNombres(phrase)).join("\n"),
+        beat: paragraphe.beat,
+        phrase,
+      });
+    }
+  }
+  if (dites.length !== mesures.length) {
+    throw Object.assign(new Error(`parole ${chapitre.lang} ${dites.length} ${mesures.length}`), { code: "parole" });
+  }
+  return poserCues(dites);
 }
 
 export function texteSousTitre(layer, lang) {
