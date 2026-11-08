@@ -176,7 +176,7 @@ test("le beat g10.law avec le caveat français reste à 156 mots par minute", as
   );
   const duration = duree(narration, "g10.law");
   const { count, rate } = motsDits(`${show}\n${caveat}`, duration);
-  assert.equal(duration, 35);
+  assert.equal(duration, 39);
   assert.ok(count <= 91, `${count} mots dits`);
   assert.ok(rate <= 156, `${rate} mots/min`);
 });

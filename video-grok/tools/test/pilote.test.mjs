@@ -25,22 +25,15 @@ const here = dirname(fileURLToPath(import.meta.url));
 const root = join(here, "../..");
 const tts = join(here, "../tts.mjs");
 
-test("un créneau trop long se recale sans baisser speed", () => {
+test("un audio plus court que le créneau tient, et un audio plus long échoue", () => {
   assert.equal(ajuster(4, 8).action, "tient");
   assert.equal(ajuster(4, 8).atempo, null);
   assert.equal(ajuster(4, 8).speed, 1);
-  const serre = ajuster(8.5, 8);
-  assert.equal(serre.action, "atempo");
-  assert.equal(serre.speed, 1);
-  assert.ok(serre.atempo > 1);
-  const large = ajuster(10, 8);
-  assert.equal(large.action, "reminutage");
-  assert.equal(large.speed, 1);
-  assert.equal(large.atempo, null);
-  const args = argumentsPiste([{ fichier: "a.wav", at: 1.5, atempo: 0.8 }], 2);
-  assert.equal(args.join(" ").includes("atempo=0.8"), true);
+  assert.throws(() => ajuster(8.5, 8), { code: "atempo" });
+  assert.throws(() => ajuster(10, 8), { code: "atempo" });
+  const args = argumentsPiste([{ fichier: "a.wav", at: 1.5, atempo: null }], 2);
+  assert.equal(args.join(" ").includes("atempo"), false);
   assert.equal(args.join(" ").includes("adelay=1500"), true);
-  assert.equal(args.some((arg) => arg.includes("speed")), false);
 });
 
 test("chaque beat de g10 compare sa durée audio à son créneau, sur le même repère", async () => {
@@ -54,10 +47,10 @@ test("chaque beat de g10 compare sa durée audio à son créneau, sur le même r
     calEn.beats.map((beat) => [beat.id, beat.slot]),
     [
       ["g10.classes", 45],
-      ["g10.hard", 42],
+      ["g10.hard", 43],
       ["g10.sym", 30],
-      ["g10.law", 35],
-      ["g10.sample", 40],
+      ["g10.law", 39],
+      ["g10.sample", 41],
       ["g10.bias", 25],
       ["g10.close", 17],
       ["g10.card", 8],
