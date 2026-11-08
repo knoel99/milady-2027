@@ -154,7 +154,7 @@ stationnaire 2D périodique à vorticité singulière `[RÉS]` ; Galloway et Pro
 **d. Dynamo à petite échelle et problème du faible Pm.** Batchelor (1950) soutient qu'il n'y a pas de dynamo
 pour Pm < 1 `[sec : Rincon §3.3.2]`. Kazantsev (1967 en russe, 1968 en anglais) propose un modèle statistique
 de dynamo à petite échelle dans des écoulements aléatoires non hélicitaires `[TI : Rincon §1.4]`, avec un spectre
-magnétique en k^{3/2}. Schekochihin et al. (2005) trouvent que Rm_c croît avec Re sans limite visible, jusqu'à
+magnétique en k^{3/2}, observé dans les runs de Taylor–Green de Ponty et al. (2005) `[site Dy:584]`. Schekochihin et al. (2005) trouvent que Rm_c croît avec Re sans limite visible, jusqu'à
 Rm_c ≈ 500 pour Re ≈ 3000 `[RÉS]`. Ponty et al. (2005), avec un forçage de Taylor–Green, obtiennent Rm_c = 30 à
 Pm = 1, 226 à Pm = 0,3, puis un plateau Rm_c ≈ 150 en LES pour 10⁻² ≤ Pm ≤ 10⁻¹ `[site Dy:573-595]`. Iskakov et
 al. (2007) montrent qu'une dynamo de fluctuations existe pour Pm ≪ 1, avec Rm_c ≲ 200 pour Re ≳ 6000 contre
@@ -429,7 +429,7 @@ sources citées dans chaque case]` :
 | Épreuve | Pourquoi | A1 substituts | A2 génératifs | A3 contraintes | A4 assimilation |
 |---|---|---|---|---|---|
 | **3D** | Zel'dovich : une dynamo auto-entretenue exige trois dimensions ; la MHD 2D est un banc d'essai, pas une dynamo `[site R:240]` | parfois | oui (TurbDiff, CoNFiLD, GenCFD) | divergence dure en 3D : seulement PCDM, périodique | oui (météo) |
-| **Domaine borné, vide, sauts de μr, maillage non cartésien** | VKS et DRESDYN sont des cylindres à parois ; B·n et la composante tangentielle de B/μr sont continus ; SFEMaNS = modes de Fourier × éléments finis `[site T:111-117 ; R:143-145]` | surtout grilles périodiques | partiellement (CoNFiLD, TurbDiff : géométries complexes, sans divergence) | **aucune contrainte dure de divergence avec parois trouvée** | grilles météo |
+| **Domaine borné, vide, sauts de μr, maillage non cartésien** | VKS et DRESDYN sont des cylindres à parois ; B·n et la composante tangentielle de B/μr sont continus ; SFEMaNS = modes de Fourier × éléments finis `[site T:111-117 ; R:143-145]` | surtout grilles périodiques | partiellement (CoNFiLD, TurbDiff : géométries complexes, sans divergence) | **aucune contrainte dure ne traite à la fois parois, raccord au vide et sauts de μr** `[site R:241-242 ; E:518]` | grilles météo |
 | **Faible Pm** | sodium Pm = 0,82·10⁻⁵ `[site R:137]` ; DNS « typically restricted to Pm~1 regimes » `[site S:88]` ; run de référence Re = 1594, Rm = 531, donc Pm ≈ 0,33 `[site R:161]` (calcul de ce document) | non | non | non | non |
 | **Événements rares** | inversion ≈ 5 s contre polarités de 120 s et 50 s `[site R:149]` ; cinq inversions sur 0-2 Ma `[RÉS : Gwirtz 2022]` | résultats négatifs ou partiels | échantillonnage d'événements rares (Finzi 2023), jamais sur une dynamo | non | loi a posteriori bimodale non étudiée pour la MHD |
 
@@ -908,6 +908,9 @@ l'API arXiv (identifiant), sauf mention contraire.
   159-172. doi:10.1070/PU1972v015n02ABEH004960.
 - Galloway D., Frisch U. (1986). Dynamo action in a family of flows with chaotic streamlines. *GAFD* 36, 53-83.
   doi:10.1080/03091928608208797.
+- Archontis et al. (2003) : fenêtres dynamo de l'écoulement ABC, vérifiées par le site dans cette source (la
+  source primaire de Galloway et Frisch 1984 étant inaccessible) `[site Dy:41, Dy:386-412]` ; métadonnées non
+  revérifiées le 8 novembre 2026.
 - Soward A. M. (1987). Fast dynamo action in a steady flow. *J. Fluid Mech.* 180, 267-295.
   doi:10.1017/S0022112087001800.
 - Galloway D. J., Proctor M. R. E. (1992). *Nature* 356, 691-693. doi:10.1038/356691a0.

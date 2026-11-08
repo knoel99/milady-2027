@@ -12,7 +12,7 @@
  },
  "learning_goal": "Know the square-root bound near a supercritical threshold and the branch-conditioning conjecture near a subcritical one, and the run that would test it.",
  "takeaway": "Near a subcritical threshold, conditioning on the branch could remove the smoothing error; it is a bet, and the downward sweep that would test it is not configured yet.",
- "notes": "Extension module, extended cut only, inserted after 10.5 (before 10.6; CONTRACT P1). One scene, X4.4, PENDING (needs the tier-2 hysteresis campaign and two trained models; nothing configured). No question card: the decision this module raises (a downward sweep from saturated fields, and where) is the seat's ASK; it is close to ch01.Q (seed amplitude, branch labels) and ch03.Q (packing points near thresholds), so a separate card would repeat them; the question register may promote the ASK. Register NIGHT (10.5 and 10.6 are NIGHT). Modules are asides: no chapter card; module tag lower-third and rail at L5 in the 0.8-s lead-in. CHANGES AGAINST THE OUTLINE, to review. (1) target 25 -> 45 s (result 40 -> 40 s): the learning goal has two statements (Prop. 2.36 and Conjecture 2.38) and the pending framing of BRIEF 3.2 adds bet, criterion, confidence and ask; 25 s (about 54 words) cannot hold them. Module 0:25 -> 0:45. (2) The READY anchor is a SCHEMATIC bifurcation plot (normal forms of prep module 4, Prop. 3.7) instead of a hysteresis loop 'on the Taylor-Green picture of 10.5': no Taylor-Green hysteresis data exist; the 10.5 flow stays as a grey ghost inset. (3) A sourced CONTEXT fact gives the loop a size: Ponty et al. 2007, onset at R_M = 206 (R_V = 563), sustained down to R_M = 70 (read in the arXiv PDF); it is on a chip and a reference lower-third, and the narration says 'near two hundred ... down to seventy' without naming the scale (the chip says 'other scales'). The badge stays CONJECTURE (the scene's claim is the bet); if the consistency editor wants the CONTEXT fact badged, add 'Ponty et al. 2007 (context)' to the badge note. (4) The jump bound (Prop. 2.35) is not repeated: 09.3 said it; X4.4 adds the gentle case and the branch. SYMBOLS: λ generic knob (green, formula layer only), μ_λ allowed (X4 module, symbol sheet), q violet, K the Lipschitz constant of the generator in λ (as T), b the branch label; s, r, r_a not used. The narration never says 'supercritical' alone without 'gentle', and says 'subcritical' once (L5). DATA. Pending file data/x4_branch.json: generic seat JSON, content listed at the end of 'visual'. REQUESTS (foundation engineer B): (a) conv_seat refuses a gauge without a numeric value: allow value null when verdict is 'inconclusive' (no two-state range found), or the producer must invent a number; (b) as ch10 and X4a asked, numeric fields (ratio) so that the assembler speaks them in words, and the booleans met / not_met / inconclusive in 'fields'. LEXICON: no new entry ('Taylor-Green' as in 10.5; 'subcritical' is plain English). MUSIC: none (L5). PACE: words budgeted at 125-130 effective words per minute of target_s; estimates with the assembler formula (146 raw words per minute, 0.9 s per paragraph break, holds, lead-in, tail).",
+ "notes": "Extension module, extended cut only, inserted after 10.5 (before 10.6; CONTRACT P1). One scene, X4.4, PENDING (needs the tier-2 hysteresis campaign and two trained models; nothing configured). No question card: the decision this module raises (a downward sweep from saturated fields, and where) is the seat's ASK; it is close to ch01.Q (seed amplitude, branch labels) and ch03.Q (packing points near thresholds), so a separate card would repeat them; the question register may promote the ASK. Register NIGHT (10.5 and 10.6 are NIGHT). Modules are asides: no chapter card; module tag lower-third and rail at L5 in the 0.8-s lead-in. CHANGES AGAINST THE OUTLINE, to review. (1) target 25 -> 45 s (result 40 -> 40 s): the learning goal has two statements (Prop. 2.36 and Conjecture 2.38) and the pending framing of BRIEF 3.2 adds bet, criterion, confidence and ask; 25 s (about 54 words) cannot hold them. Module 0:25 -> 0:45. (2) The READY anchor is a SCHEMATIC bifurcation plot (normal forms of prep module 4, Prop. 3.7) instead of a hysteresis loop 'on the Taylor-Green picture of 10.5': no Taylor-Green hysteresis data exist; the 10.5 flow stays as a grey ghost inset. (3) A sourced CONTEXT fact gives the loop a size: Ponty et al. 2007, onset at R_M = 206 (R_V = 563), sustained down to R_M = 70 (read in the arXiv PDF); it is on a chip and a reference lower-third, and the narration says 'near two hundred ... down to seventy' without naming the scale (the chip says 'other scales'). The badge stays CONJECTURE (the scene's claim is the bet); if the consistency editor wants the CONTEXT fact badged, add 'Ponty et al. 2007 (context)' to the badge note. (4) The jump bound (Prop. 2.35) is not repeated: 09.3 said it; X4.4 adds the gentle case and the branch. SYMBOLS: λ generic knob (green, formula layer only), μ_λ allowed (X4 module, symbol sheet), q violet, K the Lipschitz constant of the generator in λ (as T), b the branch label; s, r, r_a not used. The narration never says 'supercritical' alone without 'gentle', and says 'subcritical' once (L5). 'stiff' and 'supple' machines echo 09.3's stiff sheet ('unless it is very supple, or told which state the system is in'): this module is the payoff of that line. DATA. Pending file data/x4_branch.json: generic seat JSON, content listed at the end of 'visual'. REQUESTS (foundation engineer B): (a) conv_seat refuses a gauge without a numeric value: allow value null when verdict is 'inconclusive' (no two-state range found), or the producer must invent a number; (b) as ch10 and X4a asked, numeric fields (ratio) so that the assembler speaks them in words, and the booleans met / not_met / inconclusive in 'fields'. LEXICON: no new entry ('Taylor-Green' as in 10.5; 'subcritical' is plain English). MUSIC: none (L5). PACE: words budgeted at 125-130 effective words per minute of target_s; estimates with the assembler formula (146 raw words per minute, 0.9 s per paragraph break, holds, lead-in, tail). REVIEW 2026-11-08 (adversarial script review): changes and evidence in script/_review/X3b-X4b-X5b.md; Ponty et al. 2007 values re-checked in the arXiv PDF (Table I: A9, η = 0.12, R_M = 70; onset R_M^c = 206 at R_V = 563); placeholders {{ratio:1}} speak one decimal whether the field arrives as a number or a string.",
  "scenes": [
   {
    "id": "X4.4",
@@ -96,12 +96,12 @@
       "generators": [
        {
         "K": 1.2,
-        "label": "smooth machine: rounds the corner",
+        "label": "stiff machine: rounds the corner",
         "wiggle": 0.0
        },
        {
         "K": 4.0,
-        "label": "steeper machine: smaller error, narrower window, jumpy",
+        "label": "supple machine: smaller error, narrower window, jumpy",
         "wiggle": 0.03,
         "wiggle_seed": "x4-jumpy"
        }
@@ -183,7 +183,7 @@
       },
       "bet": "Told its branch, the generator at least halves its error at the threshold.",
       "confidence": "low",
-      "why": "stability along each branch unproven for turbulence (T:791) · no downward sweep configured",
+      "why": "statistical stability along each branch unproven for turbulence (T:791) · no downward sweep configured",
       "criterion": "subcritical region: error at the threshold divided by at least 2 with branch conditioning",
       "source": "T:917 (d) · Conjecture 2.38",
       "ask": "Sweep down from saturated fields: over which Rm range, at which Pm?",
@@ -242,12 +242,12 @@
       {
        "id": "X4.4.s1",
        "cue": "gentle",
-       "text": "Near a gentle threshold, the truth rises like a square root, vertical at the edge."
+       "text": "Near a gentle threshold, the truth rises like a square root, vertical at first."
       },
       {
        "id": "X4.4.s2",
        "cue": "round",
-       "text": "A smooth {model}machine{/} rounds that corner; steeper, it errs less but turns jumpy everywhere."
+       "text": "A stiff {model}machine{/} rounds the corner; a supple one errs less, but turns jumpy everywhere."
       }
      ]
     },
@@ -262,12 +262,12 @@
       {
        "id": "X4.4.s4",
        "cue": "published",
-       "text": "In published Taylor-Green runs, a dynamo switched on near two hundred, yet held on down to seventy."
+       "text": "In published Taylor-Green runs, a dynamo, once on, survived down to a third of its threshold."
       },
       {
        "id": "X4.4.s5",
        "cue": "blend",
-       "text": "Told only the knob, a {model}machine{/} blends them."
+       "text": "Told only the {param}knob{/}, a {model}machine{/} blends them."
       }
      ]
     },
@@ -277,7 +277,7 @@
       {
        "id": "X4.4.s6",
        "cue": "bet",
-       "text": "The plan's bet: tell it the branch, and its error at the threshold at least halves."
+       "text": "The plan's bet: tell it the branch, and its threshold error at least halves."
       }
      ]
     },
@@ -287,12 +287,12 @@
       {
        "id": "X4.4.s7",
        "cue": "why",
-       "text": "Confidence: low; branch stability is unproven for turbulence."
+       "text": "Confidence: low; statistical stability along branches is unproven in turbulence."
       },
       {
        "id": "X4.4.s8",
        "cue": "ask",
-       "text": "No downward sweep is configured: from which saturated fields, over which range?"
+       "text": "No downward sweep is configured: from which saturated runs, and how far down?"
       }
      ]
     }
@@ -308,13 +308,14 @@
      "field strength",
      "gentle (supercritical) threshold",
      "truth: a square root",
-     "smooth machine: rounds the corner",
-     "steeper machine: smaller error, narrower window, jumpy",
+     "stiff machine: rounds the corner",
+     "supple machine: smaller error, narrower window, jumpy",
      "subcritical threshold: two states",
      "sweep up: switches on late",
      "sweep down: holds on",
      "on: 206",
      "held to: 70",
+     "held down to about a third of the onset",
      "knob only: a blend, weights set by the protocol",
      "told its branch",
      "b = on",
@@ -334,7 +335,7 @@
      },
      {
       "cue": "bet",
-      "tex": "\\text{Conjecture 2.38: } \\cp{\\lambda} \\mapsto \\mu_{\\cp{\\lambda},b} \\text{ Lipschitz on each branch } b \\Rightarrow \\cm{q}_\\theta(\\cdot\\mid\\cp{\\lambda},b) \\text{ can reach error} \\to 0 \\text{ at the threshold};\\ \\ \\text{(d): error at } \\Rm_c \\text{ divided by} \\ge 2\\ \\text{(T:917)}"
+      "tex": "\\text{Conjecture 2.38: } \\cp{\\lambda} \\mapsto \\mu_{\\cp{\\lambda},b} \\text{ Lipschitz on each branch } b \\Rightarrow \\cm{q}_\\theta(\\cdot\\mid\\cp{\\lambda},b) \\text{ can reach error} \\to 0 \\text{ as training parameters get denser, threshold included};\\ \\ \\text{(d): error at } \\Rm_c \\text{ divided by} \\ge 2\\ \\text{(T:917)}"
      }
     ],
     "chips": [
@@ -343,10 +344,10 @@
      "configured runs all start from a 10⁻³ seed: no downward sweep (palier2_tg3d.yaml:34)"
     ]
    },
-   "visual": "Render class flat (SVG; one small Canvas inset). NIGHT, right after 10.5 (whose Taylor-Green flow it reuses as a ghost). Key colours in the pending shot: green (knob, Rm axis), vermillion (field strength), violet (machines); the error gaps are a neutral hatch, the Taylor-Green inset is a grey ghost (no blue), so the shot never carries more than three key colours. No corner needle (D is not on screen). LEAD-IN 0.8 s: Kit.lowerThird kind 'chapter' from params.module_tag (l1 'EXTENSION X4b · LEVEL 5 · AN ASIDE', l2 'Steep slopes and the branch', hold 2.6 s, gone before 'published', where the reference lower-third enters) and Kit.rail at L5 (no climb). Top-left inset (params.tg_inset, 180 px): the Taylor-Green slice of 10.5 as a grey ghost, Kit.tracers (160, trail 6) breathing through the scene, label 'Taylor-Green · knob: Rm' (Rm green). LEFT, the bifurcation plot (Kit.plot, params.plot.box, x 220-860, y 260-620): x title 'Rm, magnetic Reynolds number' (green), tick labels 'below', 'threshold', 'above' only (qualitative: no number on this axis); y title 'field strength' (vermillion); Kit.chip kind 'schematic' 'SCHEMATIC · normal forms, no data' under the axis. P1. On 'gentle-0.15': heading 'gentle (supercritical) threshold'; the truth draws on left to right (vermillion solid, params.supercritical.truth): flat at zero below the threshold, then a square root; Kit.pen 'circle' on its vertical tangent at the threshold; label 'truth: a square root'. On 'round-0.15': a violet dashed curve (generated: violet chip 'GENERATED · schematic') that rounds the corner (generators[0]); the gap between truth and machine hatched where it is largest; label 'smooth machine: rounds the corner'. At 'round+2.0': a second violet dashed curve (generators[1], steeper): its hatched gap is smaller and narrower, but it carries small seeded wiggles far from the threshold (Scene.rng(params.supercritical.generators[1].wiggle_seed)); label 'steeper machine: smaller error, narrower window, jumpy'. Formula layer item 1 (Prop. 2.36). P2. On 'loop-0.15': T1 morph (1.4 s): the curves morph into the subcritical normal form (params.subcritical): lower branch at zero, stable upper branch (vermillion solid), unstable middle branch (vermillion dotted) folding back to r = −1/4; heading 'subcritical threshold: two states'. A small green knob (M2, Kit.knob, keys params.subcritical.knob.keys) sweeps up: a white dot rides the zero branch to the threshold and jumps to the upper branch (detent at 'loop+0.9'), label 'sweep up: switches on late'; the knob sweeps back down: the dot stays on the upper branch well past the threshold, to the fold, then drops (detent at 'loop+3.2'), label 'sweep down: holds on'; two arrows close the hysteresis loop. On 'published-0.15': Kit.lowerThird kind 'reference' (l1 'Reference', l2 params.ponty2007.ref); the chip with the published values under the plot (from params.ponty2007), and two small green ticks on the x axis, 'on: 206' at the jump and 'held to: 70' at the fold (published values on other Reynolds scales, placed on the schematic axis, not to scale: say so in the chip). On 'blend-0.15': a violet dashed curve runs between the two branches inside the loop (weight params.blend.p), label 'knob only: a blend, weights set by the protocol'; formula layer item 2. P3. On 'bet-0.15': the blend splits into two violet dashed curves, each hugging its own branch, labels 'b = on' and 'b = off' under the heading 'told its branch'; the plot and inset shrink to the left 45 % (params.plot.shrunk, 0.8 s); Kit.seat type 'gauge' opens on the right (params.seat, with cues = ctx.variant === 'result' ? params.seat.cues_result : params.seat.cues): a half-dial on a log scale 'error without branch ÷ error with branch, at the threshold', ticks 0.5-8, the success band [2, 8] shaded 'halved or better · criterion (d)', no needle, grey tag 'DATA · X4_BRANCH · AWAITING'; THE BET and SUCCESS CRITERION in the seat column; pop at 'bet+0.3'; formula layer item 3 (Conjecture 2.38, criterion (d)). P4. On 'why-0.15': CONFIDENCE low (pips) with params.seat.why. On 'ask-0.15': the chip 'configured runs all start from a 10⁻³ seed: no downward sweep (palier2_tg3d.yaml:34)' under the seat, then the boxed ASK BEFORE WE COMPUTE (params.seat.ask). The 1.2-s tail lets the box be read. RESULT VARIANT (when data/x4_branch.json exists; cues loop, data, verdict, ratio (only when not inconclusive), meaning, caveat; seat cue map params.seat.cues_result): the plot opens directly on the subcritical loop, drawn from ctx.data.seat.series when the file carries it ({name, branch: 'on' | 'off', x: Rm, y: field strength or error}; solid simulated, dashed violet generated), else the schematic stays with its chip; the Ponty chip and the seed chip are not shown. On 'data-0.15': two amber bars beside the gauge, 'knob only' (seat.err_lambda_only) and 'knob + branch' (seat.err_branch), labelled with Kit.fmt; the gauge needle moves to seat.value (read from the file, never computed); the seat shows verdict and verdict_text; Kit.lowerThird kind 'source' with ctx.data.seat. DATA. data/x4_branch.json is a generic seat JSON (python -I tools/data_cloud.py seat --in <file> --name x4_branch), written by whoever runs the hysteresis campaign and trains the two models; content: {type 'gauge', value = err_lambda_only / err_branch at the threshold (a number), err_lambda_only, err_branch, metric (the distance used, e.g. energy distance on descriptors, with its noise floor), Rm_on and Rm_off (thresholds of the upward and downward sweeps), Pm, n_runs_up, n_runs_down, branch_label (how b was obtained, e.g. clustering of E_B), series (optional, as above), stamp 'GENERATED · fm3d · branch-conditioned', verdict (met if value ≥ 2; not_met if value < 2; inconclusive if no two-state range was found), verdict_text, fields {ratio (a NUMBER, so the assembler speaks it in words), verdict, met, not_met, inconclusive (booleans, exactly one true)}}. Badge CONJECTURE, confidence low, note 'bet · Conjecture 2.38 · tier-2 criterion (d) · Prop. 2.36 proved'.",
+   "visual": "Render class flat (SVG; one small Canvas inset). NIGHT, right after 10.5 (whose Taylor-Green flow it reuses as a ghost). Key colours in the pending shot: green (knob, Rm axis), vermillion (field strength), violet (machines); the error gaps are a neutral hatch, the Taylor-Green inset is a grey ghost (no blue), so the shot never carries more than three key colours. No corner needle (D is not on screen). LEAD-IN 0.8 s: Kit.lowerThird kind 'chapter' from params.module_tag (l1 'EXTENSION X4b · LEVEL 5 · AN ASIDE', l2 'Steep slopes and the branch', hold 2.6 s, gone before 'published', where the reference lower-third enters) and Kit.rail at L5 (no climb). Top-left inset (params.tg_inset, 180 px): the Taylor-Green slice of 10.5 as a grey ghost, Kit.tracers (160, trail 6) breathing through the scene, label 'Taylor-Green · knob: Rm' (Rm green). LEFT, the bifurcation plot (Kit.plot, params.plot.box, x 220-860, y 260-620): x title 'Rm, magnetic Reynolds number' (green), tick labels 'below', 'threshold', 'above' only (qualitative: no number on this axis); y title 'field strength' (vermillion); Kit.chip kind 'schematic' 'SCHEMATIC · normal forms, no data' under the axis. P1. On 'gentle-0.15': heading 'gentle (supercritical) threshold'; the truth draws on left to right (vermillion solid, params.supercritical.truth): flat at zero below the threshold, then a square root; Kit.pen 'circle' on its vertical tangent at the threshold; label 'truth: a square root'. On 'round-0.15': a violet dashed curve (generated: violet chip 'GENERATED · schematic') that rounds the corner (generators[0]); the gap between truth and machine hatched where it is largest; label 'stiff machine: rounds the corner' (the stiff sheet of 09.3). At 'round+2.4' (on 'a supple one'): a second violet dashed curve (generators[1], suppler: larger K): its hatched gap is smaller and narrower, but it carries small seeded wiggles far from the threshold (Scene.rng(params.supercritical.generators[1].wiggle_seed)); label 'supple machine: smaller error, narrower window, jumpy'. Formula layer item 1 (Prop. 2.36). P2. On 'loop-0.15': T1 morph (1.4 s): the curves morph into the subcritical normal form (params.subcritical): lower branch at zero, stable upper branch (vermillion solid), unstable middle branch (vermillion dotted) folding back to r = −1/4; heading 'subcritical threshold: two states'. A small green knob (M2, Kit.knob, keys params.subcritical.knob.keys) sweeps up: a white dot rides the zero branch to the threshold and jumps to the upper branch (detent at 'loop+0.9'), label 'sweep up: switches on late'; the knob sweeps back down: the dot stays on the upper branch well past the threshold, to the fold, then drops (detent at 'loop+3.2'), label 'sweep down: holds on'; two arrows close the hysteresis loop. On 'published-0.15': Kit.lowerThird kind 'reference' (l1 'Reference', l2 params.ponty2007.ref); the chip with the published values under the plot (from params.ponty2007), and two small green ticks on the x axis, 'on: 206' at the jump and 'held to: 70' at the fold (published values on other Reynolds scales, placed on the schematic axis, not to scale: say so in the chip), and between them a small bracket 'held down to about a third of the onset' (70 / 206 ≈ 0.34: the narration gives only this ratio, which does not depend on how the Reynolds number is defined). On 'blend-0.15': a violet dashed curve runs between the two branches inside the loop (weight params.blend.p), label 'knob only: a blend, weights set by the protocol'; formula layer item 2. P3. On 'bet-0.15': the blend splits into two violet dashed curves, each hugging its own branch, labels 'b = on' and 'b = off' under the heading 'told its branch'; the plot and inset shrink to the left 45 % (params.plot.shrunk, 0.8 s); Kit.seat type 'gauge' opens on the right (params.seat, with cues = ctx.variant === 'result' ? params.seat.cues_result : params.seat.cues): a half-dial on a log scale 'error without branch ÷ error with branch, at the threshold', ticks 0.5-8, the success band [2, 8] shaded 'halved or better · criterion (d)', no needle, grey tag 'DATA · X4_BRANCH · AWAITING'; THE BET and SUCCESS CRITERION in the seat column; pop at 'bet+0.3'; formula layer item 3 (Conjecture 2.38, criterion (d)). P4. On 'why-0.15': CONFIDENCE low (pips) with params.seat.why. On 'ask-0.15': the chip 'configured runs all start from a 10⁻³ seed: no downward sweep (palier2_tg3d.yaml:34)' under the seat, then the boxed ASK BEFORE WE COMPUTE (params.seat.ask). The 1.2-s tail lets the box be read. RESULT VARIANT (when data/x4_branch.json exists; cues loop, data, verdict, ratio (only when not inconclusive), meaning, caveat; seat cue map params.seat.cues_result): the plot opens directly on the subcritical loop, drawn from ctx.data.seat.series when the file carries it ({name, branch: 'on' | 'off', x: Rm, y: field strength or error}; solid simulated, dashed violet generated), else the schematic stays with its chip; the Ponty chip and the seed chip are not shown. On 'data-0.15': two amber bars beside the gauge, 'knob only' (seat.err_lambda_only) and 'knob + branch' (seat.err_branch), labelled with Kit.fmt; the gauge needle moves to seat.value (read from the file, never computed); the seat shows verdict and verdict_text; Kit.lowerThird kind 'source' with ctx.data.seat. DATA. data/x4_branch.json is a generic seat JSON (python -I tools/data_cloud.py seat --in <file> --name x4_branch), written by whoever runs the hysteresis campaign and trains the two models; content: {type 'gauge', value = err_lambda_only / err_branch at the threshold (a number), err_lambda_only, err_branch, metric (the distance used, e.g. energy distance on descriptors, with its noise floor), Rm_on and Rm_off (thresholds of the upward and downward sweeps), Pm, n_runs_up, n_runs_down, branch_label (how b was obtained, e.g. clustering of E_B), series (optional, as above), stamp 'GENERATED · fm3d · branch-conditioned', verdict (met if value ≥ 2; not_met if value < 2; inconclusive if no two-state range was found), verdict_text, fields {ratio (a NUMBER, so the assembler speaks it in words), verdict, met, not_met, inconclusive (booleans, exactly one true)}}. Badge CONJECTURE, confidence low, note 'bet · Conjecture 2.38 · tier-2 criterion (d) · Prop. 2.36 proved'.",
    "assets": [],
    "sources": [
-    "en/these/index.qmd:768-779 (Proposition 2.36, supercritical threshold, square-root bound: for a generator K-Lipschitz in λ, sup W1 ≥ c²m1²/(8K) over [λc, λc + δ*], δ* = (c m1 / 2K)²; the true law has an infinite slope at the threshold; increasing K reduces the error but makes the model more sensitive to the parameters everywhere)",
+    "en/these/index.qmd:768-780 (Proposition 2.36, supercritical threshold, square-root bound: for a generator K-Lipschitz in λ, sup W1 ≥ c²m1²/(8K) over [λc, λc + δ*], δ* = (c m1 / 2K)²; the true law has an infinite slope at the threshold; increasing K reduces the error but makes the model more sensitive to the parameters everywhere)",
     "en/these/index.qmd:741-760 (Propositions 2.34 and 2.35: W1(qλ, qλ') ≤ K|λ − λ'|; near a jump, an error of at least half the jump; = Proposition 9 of the report, en/rapport/index.qmd:544-557)",
     "en/these/index.qmd:783-785 (Remark 2.37: in a bistability region, subcritical Taylor-Green dynamo, Ponty et al. 2007, a model conditioned on λ alone learns p μ_on + (1 − p) μ_off whose weight reflects the computational protocol, not the physics; remedies: a branch label b by clustering, or conditioning on an earlier state)",
     "en/these/index.qmd:788-792 (Conjecture 2.38: if λ ↦ μ_{λ,b} is Lipschitz along each branch, a generator conditioned on (λ, b) can reach an error that tends to zero with the density of training parameters, including at the threshold; statistical stability along branches is not established in general for turbulent systems; tier 2, subcritical Taylor-Green, will test it)",
@@ -356,7 +357,7 @@
     "infra/configs/palier2_tg3d.yaml:9-10, :34-37 (every run starts from a weak magnetic seed, b0_amp 1e-3, on the Re × Pm grid: no downward sweep and no restart from a saturated field is configured): the seat's ASK",
     "en/prep/p4-systemes-dynamiques/index.qmd:567-575 (Proposition 3.7, subcritical pitchfork dx/dt = r x + x³ − x⁵: jump to |x| = 1 at r = 0, fall back at r = −1/4, a hysteresis loop): the SCHEMATIC anchor",
     "external: Ponty Y., Laval J.-P., Dubrulle B., Daviaud F., Pinton J.-F. (2007), Subcritical dynamo bifurcation in the Taylor-Green flow, Phys. Rev. Lett. 99, 224501, https://arxiv.org/abs/0707.2498 (read in the arXiv PDF on 2026-11-08: onset from an infinitesimal seed at R_M^c = 206 for R_V = 563; starting from the saturated dynamo state and raising η step by step, the dynamo is sustained down to R_M = 70, 'substantially lower' than the onset; Reynolds numbers built on a length π and a v_rms from hydrodynamic runs, hence other scales than palier2_tg3d)",
-    "script/ch09.json 09.3 (the core already states the jump bound: 'across a true jump, a smooth machine misses by about half of it, unless very steep, or told its branch'); script/ch10.json 10.5 (Taylor-Green bet, seat map) and script/ch01.json ch01.Q (seed amplitude and branch labels): this seat's ASK is the downward sweep, distinct from both",
+    "script/ch09.json 09.3 (the core already states the jump bound, cues 'bound' and 'unless': 'A theorem: at a true jump, a smooth machine misses by at least half of it. Unless it is very supple, or told which state the system is in.' X4.4 calls back the stiff sheet and pays off both escapes: 'supple' (Prop. 2.36) and 'told its branch' (Conjecture 2.38)); script/ch10.json 10.5 (Taylor-Green bet, seat map) and script/ch01.json ch01.Q (seed amplitude and branch labels): this seat's ASK is the downward sweep, distinct from both",
     "video/tools/data_cloud.py conv_seat (generic seat JSON; a gauge needs a numeric value; fields as given by the producer, fields.verdict added)"
    ],
    "variants": {
@@ -372,7 +373,7 @@
         {
          "id": "X4.4.r1",
          "cue": "loop",
-         "text": "The Taylor-Green loop, now measured: runs swept up from a weak seed, and back down from saturated fields."
+         "text": "The Taylor-Green loop, now measured: swept up from a weak seed, and down from saturated fields."
         },
         {
          "id": "X4.4.r2",
@@ -387,36 +388,30 @@
         {
          "id": "X4.4.r3",
          "cue": "verdict",
-         "text": "Verdict on the bet: {{verdict}}."
+         "text": "The bet: the branch at least halves the error. Verdict: {{verdict}}."
         },
         {
          "id": "X4.4.r4",
          "cue": "ratio",
-         "text": "Error with the knob alone, over error with the branch: {{ratio}}.",
+         "text": "Error with the {param}knob{/} alone, over error with the branch: {{ratio:1}}.",
          "when": "!inconclusive"
-        },
-        {
-         "id": "X4.4.r4b",
-         "cue": "ratio",
-         "text": "Without two branches, there is nothing to tell the machine, so no ratio is drawn.",
-         "when": "inconclusive"
         },
         {
          "id": "X4.4.r5",
          "cue": "meaning",
-         "text": "At least halved: on this flow, telling the branch removes most of the smoothing error, as the conjecture predicts.",
+         "text": "On this flow, the branch label removes at least half the error, in line with the conjecture.",
          "when": "met"
         },
         {
          "id": "X4.4.r6",
          "cue": "meaning",
-         "text": "Less than halved: the label alone is not enough here, and the plan's other remedy, conditioning on an earlier state, is next in line.",
+         "text": "Less than halved: the label alone falls short; the plan's other remedy conditions on an earlier state.",
          "when": "not_met"
         },
         {
          "id": "X4.4.r7",
          "cue": "meaning",
-         "text": "No clear two-state range turned up on this grid: the sweep must move before the conjecture can be tested.",
+         "text": "No clear two-state range turned up on this grid, so there is no ratio: the sweep must move first.",
          "when": "inconclusive"
         }
        ]

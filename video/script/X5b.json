@@ -12,7 +12,7 @@
  },
  "learning_goal": "See the compute bill, its uncertainty and what it leaves out, then the 36-month plan on one page, with its named risks and the one it cannot rate.",
  "takeaway": "The bill is estimated with at least a factor-two uncertainty, and every estimate will be replaced by a measured number; the plan is a proposal whose last months are not yet funded.",
- "notes": "Extension module, extended cut only, inserted after X6 (unit anchor: after X6's last scene; CONTRACT P1), so it closes the extended cut's L5 finale before ch10.Q, ch10q and ch11. Three scenes: X5.5 PENDING (no GPU cost measured), X5.6 READY, and a NEW question card X5b.Q (category logistics, ask S. Cheng / D. Lucor / C. Nore): who funds the months of a fall-2027 thesis that fall after MilaDy's nominal end. The plan itself lists it as 'a question to ask the supervisors before committing' (T:1000) and no other card asks it. Registers: X5.5 BLUEPRINT (T3 ink change in its 1.6-s lead-in; X6.6 is NIGHT per the outline), X5.6 back to NIGHT (T3 in its 1.2-s lead-in), X5b.Q NIGHT. Modules are asides: no chapter card; module tag lower-third and rail at L5 in X5.5's lead-in. Badges: X5.5 CONJECTURE low (the bet), X5.6 PLANNED (note: independent proposal), none on the card. CHANGES AGAINST THE OUTLINE, to review. (1) X5.5 target 30 -> 40 s (result 40 s, unchanged): the plan, its anchor, the bet, the confidence and the ask need about 86 words. Module 1:15 -> 1:35 with the 10-s card. (2) X5.5's ASK: the plan's H4 keeps the reference simulations of tiers 2-4 (≈ 2 × 10⁴ CPU hours and more) on CPUs outside the GPU bill, whereas the configured palier2_tg3d campaign asks for one GPU per simulation (palier2_tg3d.yaml:51) and the rental plan runs them on a GPU: whose machines run them decides what the bill counts. Distinct from X5.3's seat ASK (where the first campaign runs). (3) X5.6: the site figure's axis colours are not reused (key clash), the risk cards link back to X5.5, X3.5 and X4.4 (the module ties the three L5 asides together), and the funding risk sets up the card. The merged score 4.45 (S:451) is not shown: the site calls it 'favorable by construction'. (4) NEW card X5b.Q, as above. PLACEMENT: in the extended cut X5b.Q is followed directly by ch10.Q (Taylor-Green forcing) and then ch10q, which gathers the questions: two cards back to back. The question register may fold X5b.Q into ch10q (category logistics) or keep it here; the card stands on its own either way. n is null until the register numbers it. DATA. X5.5 reads data/x5_compute_bill.json (tools/data_cloud.py bill); the plan's numbers are planned values carried in entry.params with their source lines (T:965-972), as X5a does for C:153; if CONTRACT §5 is read strictly, tools/data_existing.py can write data/X5b_plan_budget.json with the same content (tiers, reserve, anchor, CPU hours) and the scene reads it instead. X5.6 has no data file: its months, scores and ratings are planned values and the author's judgments, carried in entry.params with sources (same remark: a 'site_facts' file would make them traceable through the source lower-third). REQUESTS (foundation engineer B, tools/data_cloud.py conv_bill). (a) The plan's hours are A100-class TRAINING hours per tier (T:965-972) and its simulations are CPU hours outside that bill (H4); the converter sums simulation wall time per campaign and compares it with a {campaign: hours} JSON 'transcribed from T:955-974', which the thesis does not give per campaign: the plan JSON must hold like-for-like expectations at the configured scale (12 runs × 40 snapshots, an MLP on Fourier modes, not the planned 20 points × 5000 snapshots and latent models), and GPU classes must be converted (the rental plan uses an L4, the plan counts A100 hours), otherwise the ratio is meaningless and the verdict trivially 'not met'; (b) separate training runs (MLflow / catalog models) from simulations, so that the measured bar is comparable with the plan bar and the CPU side bar can be filled; (c) numeric 'ratio' and 'measured_hours' in fields (say() writes digit strings such as '1.5', which the narration would read as digits) and the booleans met / not_met / inconclusive. SYMBOLS: none of the sheet's physics symbols in the narration; 'graphics-card hours' and 'processor hours' in narration (as ch10 says 'graphics card'), 'GPU h' and 'CPU h' on screen. LEXICON: 'MilaDy' pinned; no new entry. MUSIC: none (L5). PACE: 125-130 effective words per minute of target_s; estimates with the assembler formula (146 raw words per minute, 0.9 s per paragraph break, holds, lead-in, tail).",
+ "notes": "Extension module, extended cut only, inserted after X6 (unit anchor: after X6's last scene; CONTRACT P1), so it closes the extended cut's L5 finale before ch10.Q, ch10q and ch11. Three scenes: X5.5 PENDING (no GPU cost measured), X5.6 READY, and a NEW question card X5b.Q (category logistics, ask S. Cheng / D. Lucor / C. Nore): who funds the months of a fall-2027 thesis that fall after MilaDy's nominal end. The plan itself lists it as 'a question to ask the supervisors before committing' (T:1000) and no other card asks it. Registers: X5.5 BLUEPRINT (T3 ink change in its 1.6-s lead-in; X6.6 is NIGHT per the outline), X5.6 back to NIGHT (T3 in its 1.2-s lead-in), X5b.Q NIGHT. Modules are asides: no chapter card; module tag lower-third and rail at L5 in X5.5's lead-in. Badges: X5.5 CONJECTURE low (the bet), X5.6 PLANNED (note: independent proposal), none on the card. CHANGES AGAINST THE OUTLINE, to review. (1) X5.5 target 30 -> 40 s (result 40 s, unchanged): the plan, its anchor, the bet, the confidence and the ask need about 86 words. Module 1:15 -> 1:35 with the 10-s card. (2) X5.5's ASK: the plan's H4 keeps the reference simulations of tiers 2-4 (≈ 2 × 10⁴ CPU hours and more) on CPUs outside the GPU bill, whereas the configured palier2_tg3d campaign asks for one GPU per simulation (palier2_tg3d.yaml:51) and the rental plan runs them on a GPU: whose machines run them decides what the bill counts. Distinct from X5.3's seat ASK (where the first campaign runs). (3) X5.6: the site figure's axis colours are not reused (key clash), the risk cards link back to X5.5, X3.5 and X4.4 (the module ties the three L5 asides together), and the funding risk sets up the card. The merged score 4.45 (S:451) is not shown: the site calls it 'favorable by construction'. (4) NEW card X5b.Q, as above. PLACEMENT: in the extended cut X5b.Q is followed directly by ch10.Q (Taylor-Green forcing) and then ch10q, which gathers the questions: two cards back to back. The question register may fold X5b.Q into ch10q (category logistics) or keep it here; the card stands on its own either way. n is null until the register numbers it. DATA. X5.5 reads data/x5_compute_bill.json (tools/data_cloud.py bill); the plan's numbers are planned values carried in entry.params with their source lines (T:965-972), as X5a does for C:153; if CONTRACT §5 is read strictly, tools/data_existing.py can write data/X5b_plan_budget.json with the same content (tiers, reserve, anchor, CPU hours) and the scene reads it instead. X5.6 has no data file: its months, scores and ratings are planned values and the author's judgments, carried in entry.params with sources (same remark: a 'site_facts' file would make them traceable through the source lower-third). REQUESTS (foundation engineer B, tools/data_cloud.py conv_bill). (a) The plan's hours are A100-class TRAINING hours per tier (T:965-972) and its simulations are CPU hours outside that bill (H4); the converter sums simulation wall time per campaign and compares it with a {campaign: hours} JSON 'transcribed from T:955-974', which the thesis does not give per campaign: the plan JSON must hold like-for-like expectations at the configured scale (12 runs × 40 snapshots, an MLP on Fourier modes, not the planned 20 points × 5000 snapshots and latent models), and GPU classes must be converted (the rental plan uses an L4, the plan counts A100 hours), otherwise the ratio is meaningless and the verdict trivially 'not met'; (b) separate training runs (MLflow / catalog models) from simulations, so that the measured bar is comparable with the plan bar and the CPU side bar can be filled; (c) numeric 'ratio' and 'measured_hours' in fields (say() writes digit strings such as '1.5', which the narration would read as digits) and the booleans met / not_met / inconclusive. (d) GPU sharing: wall_time_s × max(n_gpus, 1) counts GPU hours only when each simulation had its own GPU (C:141); on a VM, make sweep runs up to resources.max_parallel simulations on one GPU (12 for palier2_tg3d.yaml:55), so the converter must divide by the number of simulations sharing a card, or the measured bar overstates the bill up to twelvefold. (e) fields.a100_factor: the GPU-class conversion factor actually applied (a number), absent when none was applied; the result narration branches on it (r2b / r2c), so it never claims a conversion the converter did not make. The placeholders now read {{ratio:1}} and {{measured_hours:0}}: one decimal, or whole hours, whether the field arrives as a number or a string. SYMBOLS: none of the sheet's physics symbols in the narration; 'graphics-card hours' and 'processor hours' in narration (as ch10 says 'graphics card'), 'GPU h' and 'CPU h' on screen. LEXICON: 'MilaDy' pinned; no new entry. MUSIC: none (L5). PACE: 125-130 effective words per minute of target_s; estimates with the assembler formula (146 raw words per minute, 0.9 s per paragraph break, holds, lead-in, tail). REVIEW 2026-11-08 (adversarial script review): changes and evidence in script/_review/X3b-X4b-X5b.md.",
  "scenes": [
   {
    "id": "X5.5",
@@ -215,7 +215,7 @@
       {
        "id": "X5.5.s3",
        "cue": "anchor",
-       "text": "Most lines scale up one published run of about eleven hundred and fifty hours."
+       "text": "Most lines are scaled from one published training run: about eleven hundred and fifty hours."
       }
      ]
     },
@@ -240,12 +240,12 @@
       {
        "id": "X5.5.s6",
        "cue": "why",
-       "text": "Confidence: low, since the plan itself says at least a factor of two."
+       "text": "Confidence: low; the plan's own error bar is at least twofold."
       },
       {
        "id": "X5.5.s7",
        "cue": "ask",
-       "text": "Ask first: the reference simulations, twenty thousand processor hours or more, sit outside this bill. On whose machines?"
+       "text": "Ask first: the reference simulations, twenty thousand processor hours or more, are off this bill. On whose machines?"
       }
      ]
     }
@@ -292,7 +292,7 @@
      "palier2_tg3d.yaml: resources.gpus 1 · the solver also runs on GPU (C:153)"
     ]
    },
-   "visual": "Render class flat (SVG). BLUEPRINT (infrastructure): grey lines, white text, no key colour needed; the gauge band in the seat's success style. LEAD-IN 1.6 s: T3 ink change NIGHT → BLUEPRINT (X6.6, the scene before, is NIGHT), then Kit.lowerThird kind 'chapter' from params.module_tag (l1 'EXTENSION X5b · LEVEL 5 · AN ASIDE', l2 'The bill and the plan', hold 2.6 s) and Kit.rail at L5. P1. On 'bill-0.15': one horizontal stacked bar (params.layout.plan_bar) builds segment by segment, 0.25 s apart, from params.plan.tiers (tier 0 as a sliver '≈ 0 · CPU', then tiers 1 to 4) and the reserve (computed as reserve_frac × the sum, hatched, 'reserve 20 % (H5)'); each segment: the tier's small staircase icon (M7) above it, its label in mono 30 below, a dashed outline and a small 'estimate' tag; at the bar's end params.plan.total_label; chip 'A100-class GPU hours · estimates (T:957)'. On 'tier2-0.15': the tier-2 segment brightens and its breakdown slides down under it (params.plan.tiers[2].detail, y params.layout.breakdown_y). On 'anchor-0.15': under the breakdown, a short solid bar params.anchor.label with the tag 'published anchor (H1)' and the plain chip params.anchor.detail; thin grey leader lines run from it to the breakdown items it scales (params.anchor.leaders); formula layer item 1 (H1, H2, H3, H5). P2. On 'none-0.15': a second bar appears under the plan bar, empty and dashed (params.layout.measured_bar), label 'measured: no GPU hour yet', with the chip params.measured_now. On 'bet-0.15': both bars, the breakdown and the anchor slide up and shrink into the left 60 % (params.layout.shrunk_x, 0.8 s); Kit.seat type 'gauge' (params.seat; cues = ctx.variant === 'result' ? params.seat.cues_result : params.seat.cues) opens on the right: a half-dial on a log scale 'measured ÷ planned, like for like', ticks 0.25-4, the band [0.5, 2] shaded 'the plan's own band (T:974)', no needle, grey tag 'DATA · X5_COMPUTE_BILL · AWAITING'; THE BET and SUCCESS CRITERION; pop at 'bet+0.3'; formula layer item 2 (how the catalog counts hours, and the rule). P3. On 'why-0.15': CONFIDENCE low (pips) with params.seat.why. On 'ask-0.15': a narrow grey bar appears to the right of the plan bar, outside its frame (params.layout.cpu_bar_x), with params.cpu.label, and under it the chip params.config_gpus (the configured 3D campaign asks for a GPU, while the plan's H4 puts these simulations on CPUs outside the bill); then the boxed ASK BEFORE WE COMPUTE (params.seat.ask). The 1.2-s tail lets the box be read. RESULT VARIANT (when data/x5_compute_bill.json exists; cues bill, data, convert (the measured bar gets a small tag 'converted to A100-class hours' naming the factor the file used), verdict, ratio (only when not inconclusive), meaning, sims): P1 as pending, compressed (the anchor bar stays). On 'data-0.15': the dashed measured bar fills per campaign from ctx.data.seat.measured_hours, mapped to tiers by params.campaign_tier, each segment labelled with its hours (Kit.fmt, read from the file); the planned hours actually compared are those of ctx.data.seat.planned_hours (shown as a thin outline over the plan bar, so the viewer sees what was compared with what); the gauge needle moves to ctx.data.seat.value (read, never computed); the seat shows verdict and verdict_text; Kit.lowerThird kind 'source' with ctx.data.seat (stamp 'CATALOG · compute bill'). On 'sims-0.15': the CPU side bar brightens (no number unless the file carries simulation hours). DATA. data/x5_compute_bill.json from tools/data_cloud.py bill (catalog dumps + a plan JSON {campaign: hours} that the operator transcribes): value (measured ÷ planned for the campaigns present), measured_hours {campaign: h}, planned_hours, verdict, verdict_text, fields {ratio, measured_hours, verdict} plus the booleans met / not_met / inconclusive (requested). See the notes: the plan JSON must hold like-for-like expectations at the configured scale. Badge CONJECTURE, confidence low.",
+   "visual": "Render class flat (SVG). BLUEPRINT (infrastructure): grey lines, white text, no key colour needed; the gauge band in the seat's success style. LEAD-IN 1.6 s: T3 ink change NIGHT → BLUEPRINT (X6.6, the scene before, is NIGHT), then Kit.lowerThird kind 'chapter' from params.module_tag (l1 'EXTENSION X5b · LEVEL 5 · AN ASIDE', l2 'The bill and the plan', hold 2.6 s) and Kit.rail at L5. P1. On 'bill-0.15': one horizontal stacked bar (params.layout.plan_bar) builds segment by segment, 0.25 s apart, from params.plan.tiers (tier 0 as a sliver '≈ 0 · CPU', then tiers 1 to 4) and the reserve (computed as reserve_frac × the sum, hatched, 'reserve 20 % (H5)'); each segment: the tier's small staircase icon (M7) above it, its label in mono 30 below, a dashed outline and a small 'estimate' tag; at the bar's end params.plan.total_label; chip 'A100-class GPU hours · estimates (T:957)'. On 'tier2-0.15': the tier-2 segment brightens and its breakdown slides down under it (params.plan.tiers[2].detail, y params.layout.breakdown_y). On 'anchor-0.15': under the breakdown, a short solid bar params.anchor.label with the tag 'published anchor (H1)' and the plain chip params.anchor.detail; thin grey leader lines run from it to the breakdown items it scales (params.anchor.leaders); formula layer item 1 (H1, H2, H3, H5). P2. On 'none-0.15': a second bar appears under the plan bar, empty and dashed (params.layout.measured_bar), label 'measured: no GPU hour yet', with the chip params.measured_now. On 'bet-0.15': both bars, the breakdown and the anchor slide up and shrink into the left 60 % (params.layout.shrunk_x, 0.8 s); Kit.seat type 'gauge' (params.seat; cues = ctx.variant === 'result' ? params.seat.cues_result : params.seat.cues) opens on the right: a half-dial on a log scale 'measured ÷ planned, like for like', ticks 0.25-4, the band [0.5, 2] shaded 'the plan's own band (T:974)', no needle, grey tag 'DATA · X5_COMPUTE_BILL · AWAITING'; THE BET and SUCCESS CRITERION; pop at 'bet+0.3'; formula layer item 2 (how the catalog counts hours, and the rule). P3. On 'why-0.15': CONFIDENCE low (pips) with params.seat.why. On 'ask-0.15': a narrow grey bar appears to the right of the plan bar, outside its frame (params.layout.cpu_bar_x), with params.cpu.label, and under it the chip params.config_gpus (the configured 3D campaign asks for a GPU, while the plan's H4 puts these simulations on CPUs outside the bill); then the boxed ASK BEFORE WE COMPUTE (params.seat.ask). The 1.2-s tail lets the box be read. RESULT VARIANT (when data/x5_compute_bill.json exists; cues bill, data, convert (the measured bar gets a small tag 'converted to A100-class hours · ×{fields.a100_factor}' when the file carries fields.a100_factor, else the grey tag 'raw hours · not converted'; the narration says which, sentences r2b / r2c), verdict, ratio (only when not inconclusive), meaning, sims): P1 as pending, compressed (the anchor bar stays). On 'data-0.15': the dashed measured bar fills per campaign from ctx.data.seat.measured_hours, mapped to tiers by params.campaign_tier, each segment labelled with its hours (Kit.fmt, read from the file); the planned hours actually compared are those of ctx.data.seat.planned_hours (shown as a thin outline over the plan bar, so the viewer sees what was compared with what); the gauge needle moves to ctx.data.seat.value (read, never computed); the seat shows verdict and verdict_text; Kit.lowerThird kind 'source' with ctx.data.seat (stamp 'CATALOG · compute bill'). On 'sims-0.15': the CPU side bar brightens (no number unless the file carries simulation hours). DATA. data/x5_compute_bill.json from tools/data_cloud.py bill (catalog dumps + a plan JSON {campaign: hours} that the operator transcribes): value (measured ÷ planned for the campaigns present), measured_hours {campaign: h}, planned_hours, verdict, verdict_text, fields {ratio, measured_hours, verdict} plus the booleans met / not_met / inconclusive (requested) and a100_factor (the GPU-class conversion factor applied, a number; absent when no conversion was made: the narration then says the hours are raw). See the notes: the plan JSON must hold like-for-like expectations at the configured scale. Badge CONJECTURE, confidence low.",
    "assets": [],
    "sources": [
     "en/these/index.qmd:955-957 (computing budget in A100-class GPU hours; 'the assumptions are explicit; they will be replaced by measurements as early as the first year')",
@@ -300,7 +300,7 @@
     "en/these/index.qmd:965-972 (table: tier 0 ≈ 0, tier 1 ≈ 700, tier 2 ≈ 3900 = 3 × 300 + 12 × 150 + 1200, tier 3 ≈ 3200 = 1500 + 3 × 300 + 8 × 100, tier 4 ≈ 1200; total ≈ 1.1 × 10⁴ with the 20 % reserve, i.e. 9000 × 1.2 = 10 800; simulations on CPU ≈ 10³ h at tier 0 and ≈ 2 × 10⁴ h at tier 2, 'and more')",
     "en/these/index.qmd:974 ('The uncertainty is at least a factor of two. Tier 2 is the most expensive; it is also the first where the resolution can be reduced without losing the scientific question'): the band, the confidence and the not_met sentence",
     "en/these/index.qmd:991 (risk: cost of 3D computing above the budget, medium / medium; mitigation includes measuring the actual costs from tier 1 onward)",
-    "en/calcul/index.qmd:153 (one step takes 0.08 s at 64³ on the development CPU; no GPU timing is given, for lack of a GPU) and :143-147 (hours per campaign from wall_time_s × max(n_gpus, 1) in SQL)",
+    "en/calcul/index.qmd:153 (one step takes 0.08 s at 64³ on the development CPU; no GPU timing is given, for lack of a GPU) and :141-147 (hours per campaign from wall_time_s × max(n_gpus, 1) in SQL; 'GPU hours only if each simulation had its own GPU, as in a Slurm array; on a VM, make sweep runs up to resources.max_parallel simulations at once on the same GPU': request (d) of the notes)",
     "infra/configs/palier2_tg3d.yaml:50-55 (resources: gpus 1, cpus 8, time 10 h, max_parallel 12: the configured 3D campaign runs its simulations on a GPU, whereas the plan's H4 puts reference simulations on CPUs outside the GPU bill): the seat's ASK",
     "infra/cloud/RECOMMANDATION-CLOUD.md:24-28 (§0: lab GPUs, an existing GENCI project on Jean Zay) and :858-873 (§8.4: GENCI dynamic access on Jean Zay, to be filed by a supervisor; suggested request includes 5000 to 10000 CPU hours): context for the ASK, not narrated",
     "video/tools/data_cloud.py conv_bill (value = measured / planned for the campaigns present; verdict met within [0.5, 2]; fields ratio, measured_hours, verdict)",
@@ -320,17 +320,24 @@
         {
          "id": "X5.5.r1",
          "cue": "bill",
-         "text": "The bill again, now with measured hours beside the plan's estimates."
+         "text": "The bill again, now with measured hours."
         },
         {
          "id": "X5.5.r2",
          "cue": "data",
-         "text": "The dashed bars come from the catalog's own clock: {{measured_hours}} hours so far."
+         "text": "The lower bar fills from the catalog's own clock: {{measured_hours:0}} hours so far."
         },
         {
          "id": "X5.5.r2b",
          "cue": "convert",
-         "text": "Each measured hour is converted to the plan's class of card before it is compared."
+         "text": "Each hour is first converted to the plan's class of card.",
+         "when": "a100_factor"
+        },
+        {
+         "id": "X5.5.r2c",
+         "cue": "convert",
+         "text": "These are raw hours, not yet converted to the plan's class of card.",
+         "when": "!a100_factor"
         }
        ]
       },
@@ -340,30 +347,30 @@
         {
          "id": "X5.5.r3",
          "cue": "verdict",
-         "text": "Verdict on the bet: {{verdict}}."
+         "text": "The bet: within a factor of two of the plan. Verdict: {{verdict}}."
         },
         {
          "id": "X5.5.r4",
          "cue": "ratio",
-         "text": "Measured over planned, like for like: {{ratio}}.",
+         "text": "Measured over planned: {{ratio:1}}.",
          "when": "!inconclusive"
         },
         {
          "id": "X5.5.r5",
          "cue": "meaning",
-         "text": "Inside the factor-two band: the estimate holds for now, and from here on the measured number replaces it in the plan.",
+         "text": "Inside the band: the estimate holds for now, and the measured number replaces it.",
          "when": "met"
         },
         {
          "id": "X5.5.r6",
          "cue": "meaning",
-         "text": "Outside the band: the plan must be rescaled, starting with the three-dimensional box, the costliest tier, where resolution can drop first.",
+         "text": "Outside the band: rescale the plan; if costs run over, the three-dimensional box can drop resolution first.",
          "when": "not_met"
         },
         {
          "id": "X5.5.r7",
          "cue": "meaning",
-         "text": "Too little has run to compare like with like, so the estimates stay on screen, still marked as estimates, until a full campaign has run.",
+         "text": "Too little has run to compare like with like: the estimates stay, marked as estimates, until a full campaign ends.",
          "when": "inconclusive"
         }
        ]
@@ -666,12 +673,12 @@
       {
        "id": "X5.6.s4",
        "cue": "score",
-       "text": "It merges the top two of six scored directions, on top under all three weightings tried."
+       "text": "It merges the two best-scored of six directions; they stay on top under all three weightings tried."
       },
       {
        "id": "X5.6.s5",
        "cue": "risks",
-       "text": "Its named risks: non-public data, a bill over budget, an unstable crowd loss in three dimensions, the error near thresholds."
+       "text": "Among its named risks: non-public data, a bill over budget, an unstable crowd loss in three dimensions, the error near thresholds."
       },
       {
        "id": "X5.6.s6",

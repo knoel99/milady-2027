@@ -12,7 +12,7 @@
  },
  "learning_goal": "See the 3D version of the crowd-loss experiment as a bet with an adapted criterion, its control run, its missing spread metric, and the question of where to impose it.",
  "takeaway": "The crowd loss must be tested again in 3D, against a control run, without narrowing the dissipation, and only where the runs have settled.",
- "notes": "Extension module, extended cut only, inserted after 10.7 (before 10.9-bridge; CONTRACT P1). One scene, X3.5, PENDING (needs the fm3d model of 10.7, a fine-tune with the crowd loss, a control run with weight 0, and two evaluations). No question card: the decision it raises (where to impose the law, given runs that may still grow near the threshold) is the seat's ASK; ch07.Q (which budgets, must the spread match) and X3a.Q (fallback if the crowd loss fails) already cover the neighbouring decisions. Register NIGHT. Modules are asides: no chapter card; module tag lower-third and rail at L5 in the 0.8-s lead-in. CHANGES AGAINST THE OUTLINE, to review. (1) target 25 -> 40 s (result 35 -> 40 s): anchor, bet, criterion (three parts), confidence with its reason and the ask do not fit in 25 s (about 54 words). Module 0:25 -> 0:40. (2) The 2D anchor uses the energy-budget residual (6.1 % with the loss vs 46 % for the control, R:956-957), not the distribution distance of 08.5: it is the quantity of the bet, and it shows honestly that the 2D result itself sits just above the 5 % bar (T:903 says 'E2 reaches 6.1 %'). (3) Criterion wording follows A9: 'adapted from the tier-1 criteria; the plan sets none for 3D'; the converter's rule is applied as written (residual < 5 % at every scored point, control residual larger, spread in [0.8, 1.2]). (4) Saturated runs only (A8) is a chip and the subject of the ASK. SYMBOLS: ε dissipation and P injection (as 08.5, 10.3; here P = ⟨f·u⟩ varies per snapshot), σ(ε) for the spread (never σ(D)), β the loss weight on the formula layer (as 08.5; X3a flagged the clash with the tilt multipliers), 'budget error' in narration, 'relative budget error' on screen; no 'eta' in narration. REQUESTS (foundation engineer B, tools/data_cloud.py conv_fm3d_stat). (a) The tier-1 criterion (b) applies at parameters WITHOUT data; the converter tests every scored point: restrict the budget lamp to the held-out points (validation Re 100, Pm 1; test Re 50, Pm 2, train_fm3d.yaml:35-39) or report both, and mark training points; (b) carry the reference data's own residual per point (residual_ref): with 40 snapshots per run the data may miss 5 % themselves; (c) carry the saturation flag of palier2_tg3d.json per point and exclude non-saturated points (A8); (d) numeric worst_residual_percent (so the assembler speaks it) and the booleans met / not_met / inconclusive; (e) the spread lamp needs std_diss_rel in milady.eval (C:166): until then the verdict is 'inconclusive' even when the budget and control lamps pass, which the result narration says. LEXICON: none new. MUSIC: none (L5). PACE: 125-130 effective words per minute of target_s; assembler formula for the estimate.",
+ "notes": "Extension module, extended cut only, inserted after 10.7 (before 10.9-bridge; CONTRACT P1). One scene, X3.5, PENDING (needs the fm3d model of 10.7, a fine-tune with the crowd loss, a control run with weight 0, and two evaluations). No question card: the decision it raises (where to impose the law, given runs that may still grow near the threshold) is the seat's ASK; ch07.Q (which budgets, must the spread match) and X3a.Q (fallback if the crowd loss fails) already cover the neighbouring decisions. Register NIGHT. Modules are asides: no chapter card; module tag lower-third and rail at L5 in the 0.8-s lead-in. CHANGES AGAINST THE OUTLINE, to review. (1) target 25 -> 40 s (result 35 -> 40 s): anchor, bet, criterion (three parts), confidence with its reason and the ask do not fit in 25 s (about 54 words). Module 0:25 -> 0:40. (2) The 2D anchor uses the energy-budget residual (6.1 % with the loss vs 46 % for the control, R:956-957), not the distribution distance of 08.5: it is the quantity of the bet, and it shows honestly that the 2D result itself sits just above the 5 % bar (T:903 says 'E2 reaches 6.1 %'). (3) Criterion wording follows A9: 'adapted from the tier-1 criteria; the plan sets none for 3D'; the converter's rule is applied as written (residual < 5 % at every scored point, control residual larger, spread in [0.8, 1.2]). (4) Saturated runs only (A8) is a chip (without the critique id on screen) and the subject of the ASK, phrased as the decision it is: where runs may still be growing, the crowd law (true of a saturated, stationary state) and the snapshots (not yet stationary) disagree, so either those data go (or the runs are lengthened, 10.5's ASK) and the law is imposed there, or cond_range keeps the law away from them (train_fm3d.yaml:96-110: the law is imposed at conditions drawn over the whole normalized training range, cond_range [0, 1], line 110; growth_rate, line 109, covers only a non-saturated magnetic budget). SYMBOLS: ε dissipation and P injection (as 08.5, 10.3; here P = ⟨f·u⟩ varies per snapshot), σ(ε) for the spread (never σ(D)), β the loss weight on the formula layer (as 08.5; X3a flagged the clash with the tilt multipliers), 'budget error' in narration, 'relative budget error' on screen; no 'eta' in narration. REQUESTS (foundation engineer B, tools/data_cloud.py conv_fm3d_stat). (a) The tier-1 criterion (b) applies at parameters WITHOUT data; the converter tests every scored point: restrict the budget lamp to the held-out points (validation Re 100, Pm 1; test Re 50, Pm 2, train_fm3d.yaml:35-39) or report both, and mark training points; (b) carry the reference data's own residual per point (residual_ref): with 40 snapshots per run the data may miss 5 % themselves; (c) carry the saturation flag of palier2_tg3d.json per point and exclude non-saturated points (A8); (d) numeric worst_residual_percent (so the assembler speaks it) and the booleans met / not_met / inconclusive; (e) the spread lamp needs std_diss_rel in milady.eval (C:166): until then the verdict is 'inconclusive' even when the budget and control lamps pass, which the result narration says. LEXICON: none new. MUSIC: none (L5). PACE: 125-130 effective words per minute of target_s; assembler formula for the estimate. REVIEW 2026-11-08 (adversarial script review): changes and evidence in script/_review/X3b-X4b-X5b.md. Note for the reader of the 2D anchor: V5's spread ratio, 0.788 (R:956), sits just below the 0.8 edge of the adapted band, as its 6.1 % sits just above the 5 % bar: the 2D result itself missed both adapted bars narrowly, which the ghosts show without narration.",
  "scenes": [
   {
    "id": "X3.5",
@@ -137,12 +137,13 @@
        "spread": "2D: {val}"
       },
       "at": {
-       "budget": "race+0.4",
-       "control": "race+2.6",
-       "spread": "race+3.8"
+       "budget": "race+4.2",
+       "control": "race+5.8",
+       "spread": "race+7.6"
       },
       "chip": "2D · 32² · one seed (E2) · test values of η",
-      "style": "grey dotted ghost markers (READY anchor); dim to 30 % on 'bet'"
+      "style": "grey dotted ghost markers (READY anchor); dim to 30 % on 'bet'",
+      "at_note": "on 'six percent', 'control run' and the end of the sentence (146 raw words per minute from the cue); the lanes themselves draw at 'race-0.15'"
      },
      "heldout": [
       {
@@ -188,7 +189,7 @@
       "why": "E1: spread of dE/dt 1.04 → 0.75; from a biased model, 2 of 2 fine-tunings unusable · risk rated high (T:992)",
       "criterion": "|residual| < 5 % held out · control residual higher · σ(ε)/σ_ref in [0.8, 1.2]",
       "source": "adapted from T:903 (b), (d) · T:917 sets none",
-      "ask": "Impose the crowd law near threshold, where runs may still be growing?",
+      "ask": "Where runs may still be growing (near threshold): trust the data, or the crowd law?",
       "cues": {
        "frame": "bet",
        "bet": "bet",
@@ -226,7 +227,7 @@
       {
        "id": "X3.5.s2",
        "cue": "race",
-       "text": "In two dimensions, the crowd loss cut the budget error to six percent; a control run of equal length stayed at forty-six."
+       "text": "In two dimensions, the crowd loss cut the {metric}budget error{/} to six percent; an equal-length control run stayed at forty-six."
       }
      ]
     },
@@ -236,7 +237,7 @@
       {
        "id": "X3.5.s3",
        "cue": "bet",
-       "text": "The bet: under five percent at held-out settings, the control higher, the dissipation's spread within a fifth."
+       "text": "The bet: under five percent at held-out settings, the control higher, the dissipation's {metric}spread{/} within a fifth."
       }
      ]
     },
@@ -246,12 +247,12 @@
       {
        "id": "X3.5.s4",
        "cue": "why",
-       "text": "Confidence: low. In the three-variable test, this loss narrowed the budget's spread, and failed from a poor start."
+       "text": "Confidence: low. On three dials, the loss shrank the spread of energy changes, and failed from a biased start."
       },
       {
        "id": "X3.5.s5",
        "cue": "ask",
-       "text": "Ask first: impose it near the threshold, where runs may still be growing?"
+       "text": "Ask first: where runs may still be growing, trust the data or the crowd law?"
       }
      ]
     }
@@ -293,11 +294,11 @@
     ],
     "chips": [
      "2D · 32² · one seed (E2) · test values of η",
-     "saturated runs only (A8): the flag of 10.5 decides which points count",
+     "saturated runs only: the flag of 10.5 decides which points count",
      "bet adapted from the tier-1 criteria · the plan sets none for 3D"
     ]
    },
-   "visual": "Render class flat (SVG). NIGHT, right after 10.7 (the lamp panel 'must be measured'), whose crowd-law sequel it is; it redraws the three-lane race of 08.5 as empty seats for the 3D generator. Key colours: amber (budget and spread: distribution-level metrics), grey (control, ghosts); violet only on the GENERATED chip of the result. No corner needle. LEAD-IN 0.8 s: Kit.lowerThird kind 'chapter' from params.module_tag (hold 2.6 s, gone before 'race') and Kit.rail at L5. P1. On 'recall-0.15': the top banner (params.banner, as in 08.5): the amber ledger icon with 'on average: energy in = energy out', and beside it the M7 tier-2 box icon, lit, 'Taylor-Green · 64³'; formula layer item 1 (the 3D budget; P = ⟨f·u⟩ varies per snapshot here, unlike the constant injection of 2D). On 'race-0.15': three horizontal lanes (params.lanes; labels Inter 36 at the left, tracks x 580-1180): '1 · budget error, with the crowd loss', '2 · budget error, control run of equal length', '3 · spread of ε ÷ truth'. Lanes 1 and 2 share a log axis (params.axis_budget, ticks 1 %, 10 %, 100 %) with a dashed amber vertical bar at 5 % labelled '5 % bar'; lane 3 has its own linear axis (params.axis_spread, 0.4-1.4) with the band 0.8-1.2 shaded (success style). The 2D race appears as the READY anchor, grey dotted markers read from ctx.data.ev (paths in params.ghost_2d.read; labels from the numbers read, Kit.fmt): lane 1 at 0.061 '2D: 6.1 %' (just right of the 5 % bar: the 2D result itself missed the tier-1 bar, T:903), lane 2 at 0.462 '2D: 46 %', lane 3 at 0.788 '2D: 0.79' with the control's 0.663 as a thin grey tick; entrance times params.ghost_2d.at; chip '2D · 32² · one seed (E2) · test values of η'. P2. On 'bet-0.15': the ghosts dim to 30 %; each lane gets an empty dashed track for the 3D runners and, at its right end, an unlit lamp; Kit.seat type 'lamps' (params.seat; cues = ctx.variant === 'result' ? params.seat.cues_result : params.seat.cues) opens the right column (x ≥ 1240): lampsTitle 'Bet adapted from the tier-1 criteria · the plan sets none for 3D', the three lamps in lane order (if Kit.seat cannot place its lamps at the lanes' ends, its panel lists them in the same order and the lane ends carry small grey circles), THE BET and SUCCESS CRITERION, grey tag 'DATA · FM3D_STATIONARITY · AWAITING'; the lane-3 lamp carries the small grey tag 'metric to add (C:166)' (the 3D evaluation records mean residuals only); pop at 'bet+0.3'; formula layer item 2. P3. On 'why-0.15': CONFIDENCE low (pips) with params.seat.why; formula layer item 3 (the E1 numbers). On 'ask-0.15': the chip 'saturated runs only (A8): the flag of 10.5 decides which points count' under the lanes, then the boxed ASK BEFORE WE COMPUTE (params.seat.ask). The 1.2-s tail lets the box be read. RESULT VARIANT (when data/fm3d_stationarity.json exists; cues recall, data, verdict, worst, meaning, caveat): P1 as pending, the 2D ghosts at 30 % from the start. On 'data-0.15': for every scored point of ctx.data.seat.points (point {Re, Pm}), an amber dot on lane 1 at |residual| and a grey dot on lane 2 at |residual_control|, training points filled, held-out points open (params.heldout: Re 100, Pm 1 and Re 50, Pm 2); a thin connector joins each point's two dots across lanes 1-2; lane 3: amber dots at spread_ratio, or the grey label 'not computed by milady.eval' when the lamp value says so; points whose reference run is flagged not saturated (if the file carries the 10.5 flag) are hatched and excluded, as the chip says; the lamps light from lamps[].state; the seat shows verdict and verdict_text; Kit.lowerThird kind 'source' with ctx.data.seat (stamp 'GENERATED · fm3d + stationarity loss'). If the points carry the reference's own residual (residual_ref, requested), draw it as a grey floor tick on lane 1: a 5 % bar the data themselves miss cannot be met. DATA. data/fm3d_stationarity.json from tools/data_cloud.py fm3d-stat (two milady.eval reports: fine-tune with the loss, control with weight 0): lamps [{id budget|control|spread, state, value}], points [{point, residual, residual_control, dist, dist_control, spread_ratio}], verdict, verdict_text, fields {worst_residual_percent, verdict} plus the booleans met / not_met / inconclusive (requested). data/e2_eval.json exists (READY anchor). Badge CONJECTURE, confidence low.",
+   "visual": "Render class flat (SVG). NIGHT, right after 10.7 (the lamp panel 'must be measured'), whose crowd-law sequel it is; it redraws the three-lane race of 08.5 as empty seats for the 3D generator. Key colours: amber (budget and spread: distribution-level metrics), grey (control, ghosts); violet only on the GENERATED chip of the result. No corner needle. LEAD-IN 0.8 s: Kit.lowerThird kind 'chapter' from params.module_tag (hold 2.6 s, gone before 'race') and Kit.rail at L5. P1. On 'recall-0.15': the top banner (params.banner, as in 08.5): the amber ledger icon with 'on average: energy in = energy out', and beside it the M7 tier-2 box icon, lit, 'Taylor-Green · 64³'; formula layer item 1 (the 3D budget; P = ⟨f·u⟩ varies per snapshot here, unlike the constant injection of 2D). On 'race-0.15': three horizontal lanes (params.lanes; labels Inter 36 at the left, tracks x 580-1180): '1 · budget error, with the crowd loss', '2 · budget error, control run of equal length', '3 · spread of ε ÷ truth'. Lanes 1 and 2 share a log axis (params.axis_budget, ticks 1 %, 10 %, 100 %) with a dashed amber vertical bar at 5 % labelled '5 % bar'; lane 3 has its own linear axis (params.axis_spread, 0.4-1.4) with the band 0.8-1.2 shaded (success style). The 2D race appears as the READY anchor, grey dotted markers read from ctx.data.ev (paths in params.ghost_2d.read; labels from the numbers read, Kit.fmt): lane 1 at 0.061 '2D: 6.1 %' (just right of the 5 % bar: the 2D result itself missed the tier-1 bar, T:903), lane 2 at 0.462 '2D: 46 %', lane 3 at 0.788 '2D: 0.79' with the control's 0.663 as a thin grey tick; entrance times params.ghost_2d.at; chip '2D · 32² · one seed (E2) · test values of η'. P2. On 'bet-0.15': the ghosts dim to 30 %; each lane gets an empty dashed track for the 3D runners and, at its right end, an unlit lamp; Kit.seat type 'lamps' (params.seat; cues = ctx.variant === 'result' ? params.seat.cues_result : params.seat.cues) opens the right column (x ≥ 1240): lampsTitle 'Bet adapted from the tier-1 criteria · the plan sets none for 3D', the three lamps in lane order (if Kit.seat cannot place its lamps at the lanes' ends, its panel lists them in the same order and the lane ends carry small grey circles), THE BET and SUCCESS CRITERION, grey tag 'DATA · FM3D_STATIONARITY · AWAITING'; the lane-3 lamp carries the small grey tag 'metric to add (C:166)' (the 3D evaluation records mean residuals only); pop at 'bet+0.3'; formula layer item 2. P3. On 'why-0.15': CONFIDENCE low (pips) with params.seat.why; formula layer item 3 (the E1 numbers). On 'ask-0.15': the chip 'saturated runs only: the flag of 10.5 decides which points count' under the lanes, then the boxed ASK BEFORE WE COMPUTE (params.seat.ask). The 1.2-s tail lets the box be read. RESULT VARIANT (when data/fm3d_stationarity.json exists; cues recall, data, verdict, worst, meaning, caveat): P1 as pending, the 2D ghosts at 30 % from the start. On 'data-0.15': for every scored point of ctx.data.seat.points (point {Re, Pm}), an amber dot on lane 1 at |residual| and a grey dot on lane 2 at |residual_control|, training points filled, held-out points open (params.heldout: Re 100, Pm 1 and Re 50, Pm 2); a thin connector joins each point's two dots across lanes 1-2; lane 3: amber dots at spread_ratio, or the grey label 'not computed by milady.eval' when the lamp value says so; points whose reference run is flagged not saturated (if the file carries the 10.5 flag) are hatched and excluded, as the chip says; the lamps light from lamps[].state; the seat shows verdict and verdict_text; Kit.lowerThird kind 'source' with ctx.data.seat (stamp 'GENERATED · fm3d + stationarity loss'). If the points carry the reference's own residual (residual_ref, requested), draw it as a grey floor tick on lane 1: a 5 % bar the data themselves miss cannot be met. DATA. data/fm3d_stationarity.json from tools/data_cloud.py fm3d-stat (two milady.eval reports: fine-tune with the loss, control with weight 0): lamps [{id budget|control|spread, state, value}], points [{point, residual, residual_control, dist, dist_control, spread_ratio}], verdict, verdict_text, fields {worst_residual_percent, verdict} plus the booleans met / not_met / inconclusive (requested). data/e2_eval.json exists (READY anchor). Badge CONJECTURE, confidence low.",
    "assets": [],
    "sources": [
     "en/rapport/index.qmd:949-957 (Table 4, test values of η, means over five values: V5 energy-budget residual 0.0611 vs control 0.462; spread of the dissipation over that of the data 0.788 vs 0.663 (the report writes σ(𝒟)/σ_ref); energy distance 0.699 vs 2.52) and :681 (the control run repeats the same fine-tuning with β = 0); data/e2_eval.json variants.V5_potentiels_stat / V5_temoin mean.test (residu_bilan_energie 0.061117 / 0.461716, std_diss_rel 0.788209 / 0.66268)",
@@ -330,7 +331,7 @@
         {
          "id": "X3.5.r2",
          "cue": "data",
-         "text": "Each lane shows the budget error at every scored setting, with the loss, and with a control run of equal length."
+         "text": "Dots mark each scored setting: {metric}budget error{/} with the loss, then with the control, then the {metric}spread{/}."
         }
        ]
       },
@@ -340,23 +341,23 @@
         {
          "id": "X3.5.r3",
          "cue": "verdict",
-         "text": "Verdict on the bet: {{verdict}}."
+         "text": "The bet: under five percent at held-out settings, control higher, spread kept. Verdict: {{verdict}}."
         },
         {
          "id": "X3.5.r4",
          "cue": "worst",
-         "text": "Worst budget error with the loss, in percent: {{worst_residual_percent}}."
+         "text": "Worst budget error with the loss, in percent: {{worst_residual_percent:1}}."
         },
         {
          "id": "X3.5.r5",
          "cue": "meaning",
-         "text": "Budget held, control worse, spread kept: the crowd law carries over to three dimensions, at this scale.",
+         "text": "All three lamps are green: the crowd loss carries over to three dimensions, at this scale.",
          "when": "met"
         },
         {
          "id": "X3.5.r6",
          "cue": "meaning",
-         "text": "A lamp is red: as it stands, the loss does not carry over, and that lamp says which part failed.",
+         "text": "A lamp is red: the loss does not carry over as it stands, and the lamp shows where.",
          "when": "not_met"
         },
         {
