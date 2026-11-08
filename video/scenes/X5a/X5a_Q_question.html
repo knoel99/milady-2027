@@ -1,0 +1,36 @@
+<!doctype html>
+<html lang="en"><head><meta charset="utf-8">
+<title>X5a.Q Question for the supervisors</title>
+<link rel="stylesheet" href="../../vendor/katex/katex.min.css">
+<link rel="stylesheet" href="../../runtime/theme.css">
+<link rel="stylesheet" href="X5a.css">
+<script src="../../vendor/katex/katex.min.js"></script>
+<script src="../../runtime/scene.js"></script>
+<script src="../../runtime/components/kit.js"></script>
+<script src="../../runtime/components/hud.js"></script>
+<script src="../../runtime/components/plot.js"></script>
+<script src="../../runtime/components/equation.js"></script>
+<script src="../../runtime/components/motifs.js"></script>
+<script src="../../runtime/components/cards.js"></script>
+<script src="../../runtime/components/seat.js"></script>
+<script src="X5a_kit.js"></script>
+</head><body><div id="stage"></div>
+<script>
+/* X5a.Q question card (no claim, no badge). Text from the script's "question"; behind it at 10 %, a schematic texture of
+   contour rings of the X5.4 toy (no data). */
+Scene.define({
+  duration: 9, register: 'night',
+  cues: { q: 0.5 },
+  params: { backdrop: { opacity: 0.1 } },
+  setup(ctx) {
+    const K = Kit, P = ctx.params;
+    window.__EVENTS__ = [{ t: +Math.max(0, ctx.at('q') - 0.2).toFixed(3), id: 'chime', gain_db: -22 }];
+    const svg = K.svgLayer(ctx, 2), bg = K.s('g', { opacity: P.backdrop.opacity }, svg);
+    for (let k = 1; k <= 7; k++) K.s('ellipse', { cx: 520, cy: 540, rx: 50 * k, ry: 34 * k, fill: 'none', stroke: K.c('b'), 'stroke-width': 4 }, bg);
+    for (let k = 1; k <= 5; k++) K.s('ellipse', { cx: 1400, cy: 520, rx: 50 * k, ry: 40 * k, fill: 'none', stroke: K.c('b-neg'), 'stroke-width': 4 }, bg);
+    ctx.bgG = bg;
+    K.questionCard(ctx, { chapter: 'X5a', category: 'framing', at: -0.4, whyAt: 'q+2.4', unblocksAt: 'q+4.6' });
+  },
+  render(t, ctx) { ctx.bgG.setAttribute('transform', `translate(${(-6 * Math.sin(2 * Math.PI * t / 9)).toFixed(2)} 0)`); },
+});
+</script></body></html>

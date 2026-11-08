@@ -1,0 +1,80 @@
+<!doctype html>
+<html lang="en"><head><meta charset="utf-8">
+<title>X5.3 The life of one campaign</title>
+<link rel="stylesheet" href="../../vendor/katex/katex.min.css">
+<link rel="stylesheet" href="../../runtime/theme.css">
+<link rel="stylesheet" href="X5a.css">
+<script src="../../vendor/katex/katex.min.js"></script>
+<script src="../../runtime/scene.js"></script>
+<script src="../../runtime/components/kit.js"></script>
+<script src="../../runtime/components/hud.js"></script>
+<script src="../../runtime/components/plot.js"></script>
+<script src="../../runtime/components/equation.js"></script>
+<script src="../../runtime/components/motifs.js"></script>
+<script src="../../runtime/components/cards.js"></script>
+<script src="../../runtime/components/seat.js"></script>
+<script src="X5a_kit.js"></script>
+<style>
+  .kit-seat-col { top: 236px !important; gap: 18px !important; }
+</style>
+</head><body><div id="stage"></div>
+<script>
+/* X5.3 The life of one campaign (L4, BLUEPRINT, PENDING: CONJECTURE high, a factory check). Walk-through of
+   palier1_mhd2d (SCHEMATIC, no run yet): the seven pipeline stages, the command, eleven tasks (η values from the
+   campaign file in the entry: axis values, not results), the ledger with dashed cells; then Kit.seat 'gauge' for
+   data/x5_campaign_trace.json. No number of the missing run anywhere. */
+Scene.define({
+  duration: 41, register: 'blueprint',
+  cues: { command: 0.4, tasks: 6.6, rows: 12.2, seat: 16.8, why: 25.0, e2: 28.6 },
+  data: { trace: { url: 'data/x5_campaign_trace.json', optional: true }, sweep: { url: 'data/palier1_sweep.json', optional: true } },
+  params: {},
+  setup(ctx) {
+    const K = Kit, S = Scene, P = ctx.params, C = P.campaign, LY = P.layout, res = ctx.variant === 'result';
+    window.__EVENTS__ = [{ t: +(ctx.at('seat') + 0.3).toFixed(3), id: 'pop', gain_db: -24 }];
+    K.badge(ctx, { kind: 'CONJECTURE', confidence: 'high', at: -0.3 });
+    const etas = []; for (let i = 0; i < C.eta.num; i++) etas.push(Math.exp(Math.log(C.eta.start) + (Math.log(C.eta.stop) - Math.log(C.eta.start)) * i / (C.eta.num - 1)));
+    // stage strip
+    const SB = LY.strip, n = P.stages.length, bw = (SB[2] - 20 * (n - 1)) / n, stg = [];
+    P.stages.forEach((s, i) => { const e = K.el('div', { class: 'x5-panel' }, ctx.stage, ''); Object.assign(e.style, { left: (SB[0] + i * (bw + 20)) + 'px', top: SB[1] + 'px', width: bw + 'px', height: '60px' });
+      const l = K.el('div', { class: 'x5-mono' }, e, s); l.style.cssText = 'position:static;padding:12px 8px'; stg.push(e); XK.timed(ctx, e, -0.3, 'seat-0.15', { op: i >= P.stages_active ? 0.3 : 1 }); });
+    const stageAt = [['command', 0], ['tasks', 1], ['tasks', 2], ['rows', 3]];
+    // terminal
+    const TB = LY.terminal, term = K.el('div', { class: 'x5-term' }, ctx.stage); Object.assign(term.style, { left: TB[0] + 'px', top: TB[1] + 'px', width: TB[2] + 'px', height: TB[3] + 'px' });
+    XK.timed(ctx, term, 'command-0.15', 'seat-0.15');
+    const cmd = K.el('div', { class: 'x5-mono' }, term, ''); cmd.style.cssText += ';position:static;white-space:normal;line-height:1.1';
+    const tl = etas.map((e, i) => { const d = K.el('div', { class: 'x5-mono' }, term, `task ${String(i + 1).padStart(2, '0')}/${C.eta.num} · η = ${e.toPrecision(3)} · queued`); d.style.cssText += ';position:static;line-height:1.1;color:' + K.c('muted'); XK.timed(ctx, d, XK.at(ctx, 'tasks', 0.12 * i), null, { din: 0.1 }); return d; });
+    void tl;
+    const recipe = XK.lab(ctx, `η: ${C.eta.num} values, log-spaced, ${C.eta.start} → ${(+C.eta.stop).toPrecision(3)} · ${C.n_traj} runs each · ${C.grid}² · burn-in ${C.t_burn} · ${C.t_keep} snapshots`, TB[0], 190, { w: 900, cls: 'small', at: 'command+0.6', out: 'seat-0.15' });
+    void recipe;
+    const dg = K.s('g', {}, K.svgLayer(ctx, 13));
+    etas.forEach((e, i) => K.s('circle', { cx: TB[0] + TB[2] - 300 + 280 * i / (etas.length - 1), cy: TB[1] + 26, r: 7, fill: K.c('param') }, dg));
+    XK.timed(ctx, dg, 'command+0.8', 'tasks-0.15');
+    K.chip(ctx, { text: 'SCHEMATIC · walk-through, no run yet', kind: 'schematic', x: 120, y: 800, at: 'command', out: 'seat-0.15' });
+    // ledger
+    const LB = LY.ledger, led = K.el('div', { class: 'x5-term' }, ctx.stage); Object.assign(led.style, { left: LB[0] + 'px', top: LB[1] + 'px', width: LB[2] + 'px', height: LB[3] + 'px', transformOrigin: '0 0' });
+    const tb = K.el('table', {}, led); tb.style.cssText = 'border-collapse:collapse;font-family:"JetBrains Mono";font-size:28px;color:' + K.c('fg-2');
+    const hr = K.el('tr', {}, tb); ['id', 'η', 'status', 'sha256', 'wall s'].forEach((h) => { const th = K.el('th', {}, hr, h); th.style.cssText = 'text-align:left;padding:0 16px 4px 0;color:' + K.c('muted'); });
+    etas.forEach((e, i) => { const tr = K.el('tr', {}, tb); ['xxxxxxxx', e.toPrecision(3), 'queued', '—', '—'].forEach((v) => { const td = K.el('td', {}, tr, v); td.style.cssText = 'padding:0 16px 0 0;line-height:1.12'; }); XK.timed(ctx, tr, XK.at(ctx, 'rows', 0.06 * i), null, { din: 0.1 }); });
+    XK.timed(ctx, led, 'rows-0.15', 'seat-0.15', { din: 0.4 });
+    XK.lab(ctx, P.ledger_columns.join(' · '), LB[0], LB[1] - 46, { cls: 'small', color: 'muted', at: 'rows', out: 'seat-0.15' });
+    // seat
+    const SE = P.seat, fr = { x: 660, y: 280, w: 420, h: 400 };
+    K.seat(ctx, { type: 'gauge', variant: ctx.variant, data: ctx.data.trace, tag: SE.tag, frame: fr, gauge: SE.gauge, bet: SE.bet, confidence: SE.confidence, criterion: SE.criterion, source: SE.source, ask: SE.ask,
+      cues: res ? { frame: 'seat-0.15', bet: 'seat', criterion: 'seat+1.0', ask: 'seat+2.0', data: 'seat+0.4' } : { frame: 'seat-0.15', bet: 'seat', criterion: 'why-0.15', ask: 'why+1.6', data: 'seat' } });
+    XK.lab(ctx, 'a factory check, not a criterion of the PhD plan', fr.x - 100, fr.y + fr.h + 40, { w: 540, cls: 'small', color: 'muted', at: 'seat+0.6' });
+    if (!res) {
+      XK.lab(ctx, ctx.script.onscreen.chips[1], 110, 540, { w: 420, cls: 'small', color: 'muted', at: 'why+0.3' });
+      XK.lab(ctx, ctx.script.onscreen.chips[2], 110, 720, { w: 420, cls: 'small', color: 'muted', at: 'e2-0.15' });
+    }
+    ctx.x53 = { stg, stageAt: stageAt.map(([c, i]) => [ctx.at(c + '-0.15'), i]), cmd, text: '$ ' + C.command, tC: ctx.at('command-0.15'), led, tS: ctx.at('seat-0.15'), LB };
+  },
+  render(t, ctx) {
+    const S = Scene, K = Kit, c = ctx.x53;
+    let cur = -1; c.stageAt.forEach(([tt, i]) => { if (t >= tt) cur = i; });
+    c.stg.forEach((e, i) => { e.style.borderColor = i === cur ? K.c('fg') : ''; e.style.background = i <= cur && cur >= 0 ? K.rgba(K.c('fg'), 0.08) : 'transparent'; });
+    const nC = Math.floor(c.text.length * S.seg(t, c.tC, c.tC + 1.2, S.ease.linear)); c.cmd.textContent = c.text.slice(0, nC);
+    const sh = S.seg(t, c.tS, c.tS + 0.8, S.ease.inOutCubic);
+    void sh;
+  },
+});
+</script></body></html>

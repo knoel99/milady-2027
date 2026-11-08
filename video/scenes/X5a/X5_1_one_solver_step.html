@@ -1,0 +1,109 @@
+<!doctype html>
+<html lang="en"><head><meta charset="utf-8">
+<title>X5.1 One solver step</title>
+<link rel="stylesheet" href="../../vendor/katex/katex.min.css">
+<link rel="stylesheet" href="../../runtime/theme.css">
+<link rel="stylesheet" href="X5a.css">
+<script src="../../vendor/katex/katex.min.js"></script>
+<script src="../../runtime/scene.js"></script>
+<script src="../../runtime/components/kit.js"></script>
+<script src="../../runtime/components/hud.js"></script>
+<script src="../../runtime/components/plot.js"></script>
+<script src="../../runtime/components/equation.js"></script>
+<script src="../../runtime/components/motifs.js"></script>
+<script src="../../runtime/components/cards.js"></script>
+<script src="../../runtime/components/seat.js"></script>
+<script src="X5a_kit.js"></script>
+</head><body><div id="stage"></div>
+<script>
+/* X5.1 One solver step (L4, BLUEPRINT, MEASURED: CPU timing and memory, estimates dashed). Opens the module with the
+   T3 ink change (NIGHT → BLUEPRINT). The pseudo-spectral loop drawn as a diagram (Fourier space, grid, dealiasing,
+   projection, Lawson RK4); then the measured step time and the memory chart, values from the entry (quoted from the
+   computing page C:153, C:176, with their sources). Measured solid, estimated dashed. */
+Scene.define({
+  duration: 41, register: 'blueprint',
+  cues: { oven: 1.6, hop: 8.4, trim: 11.6, smudge: 16.0, cost: 22.6, memory: 28.4 },
+  params: {},
+  setup(ctx) {
+    const K = Kit, S = Scene, P = ctx.params, IC = P.ink_change, LY = P.layout;
+    XK.inkChange(ctx, IC.t0, IC.t1, IC.pen_y, 'night');
+    window.__EVENTS__ = [{ t: IC.t0, id: 'whoosh', gain_db: -20 }];
+    K.rail(ctx, { from: 'L4', to: 'L4', at: 0.3, hold: 3 });
+    const MT = P.module_tag; K.lowerThird(ctx, { kind: 'chapter', l1: MT.l1, l2: MT.l2, at: MT.at, out: Math.min(MT.at + MT.hold, ctx.at('oven') - 0.1) });
+    K.badge(ctx, { kind: 'MEASURED', note: 'CPU timing and memory · estimates dashed · C:153, C:176', at: -0.3 });
+    const tO = ctx.at('oven-0.15'), tC = ctx.at('cost-0.15');
+    // panels
+    const FP = LY.fourier, PP = LY.physical, out = 'cost-0.15';
+    [[FP, 'Fourier space'], [PP, 'physical space (grid)']].forEach(([b, t]) => { const e = K.el('div', { class: 'x5-panel' }, ctx.stage); Object.assign(e.style, { left: b[0] + 'px', top: b[1] + 'px', width: b[2] + 'px', height: b[3] + 'px' }); XK.timed(ctx, e, 'oven+0.2', out, { din: 0.8 });
+      XK.lab(ctx, t, b[0] + 16, b[1] + 10, { cls: 'mono', at: 'oven+0.4', out }); });
+    const svg = K.svgLayer(ctx, 13), fg = K.s('g', {}, svg);
+    const grid = (x0, y0, sz, col, g) => { const dots = []; for (let i = 0; i < 11; i++) for (let j = 0; j < 11; j++) dots.push(K.s('circle', { cx: x0 + sz * i / 10, cy: y0 + sz * j / 10, r: 4, fill: K.c(col) }, g)); return dots; };
+    const gu = grid(FP[0] + 50, FP[1] + 90, 200, 'u', fg), gb = grid(FP[0] + 470, FP[1] + 90, 200, 'b', fg);
+    K.s('rect', { x: FP[0] + 320, y: FP[1] + 160, width: 90, height: 60, rx: 8, fill: 'none', stroke: K.c('infra'), 'stroke-width': 3 }, fg);
+    XK.timed(ctx, fg, 'oven+0.6', out, { din: 0.6 });
+    XK.lab(ctx, '{u}û{/}', FP[0] + 140, FP[1] + 300, { at: 'oven+0.6', out }); XK.lab(ctx, '{b}B̂{/}', FP[0] + 560, FP[1] + 300, { at: 'oven+0.6', out });
+    XK.lab(ctx, 'ik ×', FP[0] + 365, FP[1] + 172, { anchor: 'c', at: 'oven+0.6', out });
+    XK.lab(ctx, 'û, B̂ · (n_traj, 3, 64, 64, 33)', FP[0] + 50, FP[1] + 350, { cls: 'mono', at: 'oven+0.8', out });
+    const tCurl = XK.frac(ctx, 'oven', 0.55, 3);
+    XK.lab(ctx, 'curl = multiply by ik ×', FP[0] + 50, FP[1] + 400, { at: tCurl, out: 'hop-0.15', raw: true });
+    // physical: checker tile and products
+    const pg = K.s('g', {}, svg), tx0 = PP[0] + 60, ty0 = PP[1] + 100;
+    for (let i = 0; i < 4; i++) for (let j = 0; j < 4; j++) K.s('rect', { x: tx0 + 40 * i, y: ty0 + 40 * j, width: 40, height: 40, fill: (i + j) % 2 ? K.c('grid') : K.rgba(K.c(i < 2 ? 'u' : 'b'), 0.5) }, pg);
+    K.s('rect', { x: PP[0] + 300, y: PP[1] + 150, width: 400, height: 70, rx: 8, fill: 'none', stroke: K.c('infra'), 'stroke-width': 3 }, pg);
+    XK.timed(ctx, pg, 'hop+0.6', out);
+    XK.lab(ctx, '{u}u{/}, {b}B{/}, {u}ω{/}, {b}j{/}', tx0, ty0 + 176, { at: 'hop+0.8', out });
+    XK.lab(ctx, 'u × ω + j × B · u × B', PP[0] + 500, PP[1] + 168, { anchor: 'c', at: 'hop+0.9', out });
+    const ar = K.s('g', {}, svg);
+    K.s('path', { d: `M${FP[0] + FP[2] - 40},${FP[1] + 60} C${FP[0] + FP[2] + 40},${FP[1] + 20} ${PP[0] - 40},${PP[1] + 20} ${PP[0] + 40},${PP[1] + 60}`, fill: 'none', stroke: K.c('infra'), 'stroke-width': 3 }, ar);
+    K.s('path', { d: `M${PP[0] + 40},${PP[1] + PP[3] - 60} C${PP[0] - 40},${PP[1] + PP[3] - 20} ${FP[0] + FP[2] + 40},${FP[1] + FP[3] - 20} ${FP[0] + FP[2] - 40},${FP[1] + FP[3] - 60}`, fill: 'none', stroke: K.c('infra'), 'stroke-width': 3 }, ar);
+    XK.timed(ctx, ar, 'hop-0.15', out);
+    XK.lab(ctx, 'inverse FFT', (FP[0] + FP[2] + PP[0]) / 2, FP[1] - 34, { anchor: 'c', cls: 'small', at: 'hop', out });
+    XK.lab(ctx, 'FFT', (FP[0] + FP[2] + PP[0]) / 2, FP[1] + FP[3] - 20, { anchor: 'c', cls: 'small', at: 'hop+0.9', out });
+    // trim: mask over the inner two thirds of a grey grid (drawn on the B̂ grid's place, below)
+    const tg = K.s('g', {}, svg), gx = FP[0] + 470, gy = FP[1] + 90;
+    K.s('rect', { x: gx + 200 / 6 - 8, y: gy + 200 / 6 - 8, width: 200 * 2 / 3 + 16, height: 200 * 2 / 3 + 16, fill: 'none', stroke: K.c('fg-2'), 'stroke-width': 2 }, tg);
+    XK.timed(ctx, tg, 'trim-0.15', out);
+    XK.lab(ctx, '2/3 dealiasing · |m| ≤ 21 at 64³', FP[0] + 50, FP[1] + 400, { at: 'trim+0.3', out: 'smudge-0.15' });
+    // projection and Lawson RK4 (in the physical panel's lower half)
+    const prj = K.s('g', {}, svg), px0 = PP[0] + 60, py0 = PP[1] + 330;
+    K.s('path', { d: `M${px0},${py0 + 60} l90,-60`, stroke: K.c('fg'), 'stroke-width': 4, fill: 'none' }, prj);
+    K.s('path', { d: `M${px0 + 90},${py0} l0,60`, stroke: K.c('muted'), 'stroke-width': 3, 'stroke-dasharray': '6 5', fill: 'none' }, prj);
+    XK.timed(ctx, prj, 'smudge-0.15', out);
+    XK.lab(ctx, 'projection · ∇·u = ∇·B = 0 to machine precision', px0 + 120, py0 + 6, { cls: 'small', w: 520, at: 'smudge', out });
+    const tL = XK.frac(ctx, 'smudge', 0.5, 2.5), lw = K.s('g', {}, svg);
+    let dd = ''; for (let i = 0; i <= 40; i++) dd += (i ? 'L' : 'M') + (FP[0] + 50 + 4 * i).toFixed(1) + ',' + (FP[1] + 470 - 50 * Math.exp(-i / 10)).toFixed(1);
+    K.s('path', { d: dd, fill: 'none', stroke: K.c('muted'), 'stroke-width': 3 }, lw);
+    XK.timed(ctx, lw, tL, out, { raw: true });
+    XK.lab(ctx, 'Lawson RK4 · diffusion solved exactly · 4 evaluations per step', FP[0] + 230, FP[1] + 420, { cls: 'small', w: 600, at: tL, out, raw: true });
+    XK.lab(ctx, 'milady.sim.mhd3d · periodic 3D MHD · PyTorch, CPU or GPU', 120, 700, { cls: 'mono', at: 'oven+1.0', out });
+    // cost: step time (entry values, source C:153)
+    const ST = P.step_time;
+    XK.lab(ctx, `${ST.grid}³ ${ST.mode} step: ${ST.seconds} s · ${ST.device}, ${ST.threads} threads`, 360, 220, { cls: 'big', at: 'cost', out: 'memory-0.15' });
+    const sw = K.s('g', {}, svg); K.s('circle', { cx: 300, cy: 240, r: 34, fill: 'none', stroke: K.c('fg-2'), 'stroke-width': 4 }, sw); K.s('line', { x1: 300, y1: 240, x2: 300, y2: 214, stroke: K.c('fg-2'), 'stroke-width': 4 }, sw);
+    XK.timed(ctx, sw, 'cost-0.15', 'memory-0.15');
+    K.chip(ctx, { text: 'no GPU timing yet · python -m milady.sim.mhd3d bench --device cuda measures it on site', kind: 'plain', maxWidth: 900, x: 360, y: 300, at: 'cost+0.4', out: 'memory-0.15' });
+    // memory chart (entry values, C:176)
+    const M = P.memory, MB = LY.memory_box, box = { x0: MB.x0, x1: MB.x1, y0: MB.y0, y1: MB.y1 };
+    const PL = K.plot(ctx, { box, at: 'memory-0.15', x: { label: M.axis.label, min: M.axis.min, max: M.axis.max, log: true, ticks: M.axis.ticks }, y: { min: 0, max: 3, ticks: [] }, grid: false });
+    const rowY = (k) => box.y0 + 30 + k * ((box.y1 - box.y0 - 40) / 3);
+    M.rows.forEach((r, k) => { const y = rowY(k), at = XK.at(ctx, 'memory', 0.4 * k);
+      XK.lab(ctx, r.label, box.x0 - 16, y - 4, { anchor: 'r', at, cls: 'big' });
+      if (r.state_gb) { const b0 = K.s('rect', { x: PL.sx(M.axis.min), y, width: PL.sx(r.state_gb) - PL.sx(M.axis.min), height: 30, fill: K.c('fg-2') }, PL.root); XK.timed(ctx, b0, at, null); }
+      const x0 = r.state_gb ? PL.sx(r.state_gb) : PL.sx(M.axis.min), b = K.s('rect', { x: x0, y, width: PL.sx(r.peak_gb) - x0, height: 30, fill: r.kind === 'measured' ? K.c('fg-2') : 'none', stroke: K.c('fg-2'), 'stroke-width': 3, 'stroke-dasharray': r.kind === 'measured' ? 'none' : '10 7' }, PL.root);
+      XK.timed(ctx, b, at, null);
+      XK.lab(ctx, r.text, PL.sx(r.peak_gb) + 14, y - 2, { cls: 'small', at: at + 0.2 }); });
+    M.cards.forEach((cd, k) => { const l = K.s('line', { x1: PL.sx(cd.gb), x2: PL.sx(cd.gb), y1: box.y0 - 30, y2: box.y1, stroke: K.c('muted'), 'stroke-width': 2, 'stroke-dasharray': '8 6' }, PL.root); XK.timed(ctx, l, XK.at(ctx, 'memory', 1.4), null);
+      XK.lab(ctx, cd.label, PL.sx(cd.gb) - 10, box.y0 - 80 + 40 * k, { anchor: 'r', cls: 'small', at: XK.at(ctx, 'memory', 1.5) }); });
+    XK.lab(ctx, 'state 6 N³ × 4 bytes · peak ≈ 15 × state', box.x0, box.y0 - 130, { cls: 'small', color: 'muted', at: 'memory+1.0' });
+    K.chip(ctx, { text: 'measured on CPU', kind: 'measured', x: box.x0, y: rowY(0) - 50, at: 'memory+0.3' });
+    K.chip(ctx, { text: 'peak ≈ 15 × state: measured once at 128³ on CPU, extrapolated · check with nvidia-smi', kind: 'plain', maxWidth: 900, x: 120, y: 790, at: 'memory+1.8' });
+    K.formulaLayer(ctx);
+    ctx.x51 = { gb, tCurl, tO };
+  },
+  render(t, ctx) {
+    const S = Scene, c = ctx.x51;
+    const f = S.seg(t, c.tCurl, c.tCurl + 0.6, S.ease.linear);
+    c.gb.forEach((d, i) => { const ph = ((i * 37) % 121) / 121, on = f > ph && f < ph + 0.15; d.setAttribute('r', on ? 7 : 4); });
+  },
+});
+</script></body></html>
