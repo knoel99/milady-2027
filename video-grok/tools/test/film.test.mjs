@@ -1,6 +1,6 @@
 import assert from "node:assert/strict";
 import { spawnSync } from "node:child_process";
-import { mkdir, mkdtemp, readFile } from "node:fs/promises";
+import { mkdir, mkdtemp, readFile, writeFile } from "node:fs/promises";
 import { tmpdir } from "node:os";
 import { dirname, join } from "node:path";
 import test from "node:test";
@@ -10,8 +10,8 @@ import { ecrireWav } from "../kit-voix/aligner.mjs";
 import { VOIX, preparer } from "../parole.mjs";
 import { ecrireManifeste } from "../pilote.mjs";
 import { ecouter, syntheseMot } from "../calage.mjs";
-import { dureeTableau, sousTitresNarration, tableau, texteSousTitre } from "../film.mjs";
-import { lireScenes, placer } from "../pilote.mjs";
+import { dureeTableau, sansChevauchement, sousTitresNarration, tableau, texteSousTitre, texteSrt } from "../film.mjs";
+import { argumentsPiste, lireScenes, placer } from "../pilote.mjs";
 
 const here = dirname(fileURLToPath(import.meta.url));
 const root = join(here, "../..");
@@ -139,13 +139,19 @@ test("chaque sous-titre couvre le premier et le dernier mot dit", async () => {
       for (const pose of place.poses) posesMix.push({ id: pose.id, at: origine + pose.at });
       origine += ligne.slot;
     }
-    const mix = new Float64Array(Math.ceil((origine + 1) * 22050));
-    for (const pose of posesMix) {
-      const samples = await readWav(fichiers.get(pose.id));
-      mix.set(samples, Math.round(pose.at * 22050));
-    }
     const cheminMix = join(dir, `${lang}-mix.wav`);
-    await ecrireWav(cheminMix, mix, 22050);
+    const melange = spawnSync(
+      "ffmpeg",
+      [
+        ...argumentsPiste(
+          posesMix.map((pose) => ({ fichier: fichiers.get(pose.id), at: pose.at })),
+          origine + 1,
+        ),
+        cheminMix,
+      ],
+      { encoding: "utf8" },
+    );
+    assert.equal(melange.status, 0, melange.stderr);
     const oreille = ecouter([{ id: "mix", audio: cheminMix, langue: lang }]).mix;
     const dites = chapitre.paragraphes.flatMap((paragraphe) => phrases(paragraphe.brut));
     const fenetres = placerSegments(dites, oreille.segments ?? []);
@@ -166,9 +172,11 @@ test("chaque sous-titre couvre le premier et le dernier mot dit", async () => {
       assert.ok(couvertes.length > 0, `${lang} ${cue.text}`);
       const parole = couvertes[0];
       const finParole = couvertes[couvertes.length - 1].fin;
+      const suivant = cues[numero + 1];
+      const finExigible = suivant ? Math.min(finParole, suivant.debut) : finParole;
       const tot = parole.debut - cue.debut;
       const tard = cue.debut - parole.debut;
-      const anticipe = finParole - cue.fin;
+      const anticipe = finExigible - cue.fin;
       const duree = cue.fin - cue.debut;
       pireTot = Math.max(pireTot, tot);
       pireTard = Math.max(pireTard, tard);
@@ -182,16 +190,21 @@ test("chaque sous-titre couvre le premier et le dernier mot dit", async () => {
       assert.ok(anticipe <= 0, `${lang} fin ${anticipe.toFixed(3)} ${couvertes.at(-1).phrase}`);
     }
     assert.equal(indice, paroles.length, lang);
+    for (let index = 1; index < cues.length; index += 1) {
+      assert.ok(cues[index].debut + 1e-6 >= cues[index - 1].fin, `${lang} ${index}`);
+      assert.ok(cues[index].fin - cues[index].debut >= 1 - 1e-6, `${lang} ${index}`);
+    }
     for (const [langue, extrait] of preuves) {
       if (langue !== lang) continue;
       const cle = contrat(extrait).slice(0, 24);
       const parole = paroles.find((item) => contrat(item.phrase).includes(cle));
       const cue = cues.find((item) => contrat(item.text).includes(cle));
       assert.ok(parole && cue, extrait);
-      const tot = parole.debut - cue.debut;
-      const tard = cue.debut - parole.debut;
-      assert.ok(tot <= 0.35 && tard <= 0.2, extrait);
-      assert.ok(cue.fin >= parole.fin, extrait);
+      assert.ok(cue.debut - parole.debut <= 0.2, `${extrait} tard ${(cue.debut - parole.debut).toFixed(3)}`);
+      const indexCue = cues.indexOf(cue);
+      const suivant = cues[indexCue + 1];
+      const finExigible = suivant ? Math.min(parole.fin, suivant.debut) : parole.fin;
+      assert.ok(cue.fin + 1e-6 >= finExigible, `${extrait} ${(finExigible - cue.fin).toFixed(3)}`);
       assert.ok(cue.fin - cue.debut >= 1 - 1e-6, extrait);
     }
     console.log(`cue\tdebut\tfin\tvoixDebut\tvoixFin\ttot\ttard\tfinAnticipee\tduree\ttexte`);
@@ -308,11 +321,6 @@ function borneRms(fenetre, regions) {
   return { phrase: fenetre.phrase, debut, fin };
 }
 
-async function readWav(chemin) {
-  const { samples } = await import("../kit-voix/aligner.mjs").then((module) => module.lireWav(chemin));
-  return samples;
-}
-
 function silence(secondes, rate) {
   return new Float64Array(Math.round(secondes * rate));
 }
@@ -327,6 +335,77 @@ function coller(parties) {
   }
   return samples;
 }
+
+test("un cue s'arrête avant le suivant, quitte à fusionner", () => {
+  const ranges = sansChevauchement([
+    { debut: 0, fin: 1.4, text: "The field flips.", phrase: "The field flips.", beat: "a" },
+    { debut: 0.8, fin: 3, text: "The flow falls.", phrase: "The flow falls.", beat: "a" },
+    { debut: 3.2, fin: 3.24, text: "Stop.", phrase: "Stop.", beat: "a" },
+  ]);
+  for (let index = 1; index < ranges.length; index += 1) {
+    assert.ok(ranges[index].debut + 1e-9 >= ranges[index - 1].fin);
+  }
+  for (const cue of ranges) assert.ok(cue.fin - cue.debut >= 1 - 1e-6, cue.text);
+  assert.ok(ranges.some((cue) => cue.text.includes("The field flips.") && cue.text.includes("The flow falls.")));
+  const bornes = sansChevauchement([
+    { debut: 0, fin: 2.5, text: "The field flips.", phrase: "The field flips.", beat: "a" },
+    { debut: 2, fin: 4, text: "The flow falls.", phrase: "The flow falls.", beat: "a" },
+  ]);
+  assert.equal(bornes.length, 2);
+  assert.equal(bornes[0].text, "The field flips.");
+  assert.ok(bornes[0].fin <= bornes[1].debut + 1e-9);
+  assert.ok(bornes[0].fin - bornes[0].debut >= 1 - 1e-6);
+  assert.equal(bornes[1].text, "The flow falls.");
+});
+
+test("le constructeur de cues lit un mp3", async () => {
+  const dir = await mkdtemp(join(tmpdir(), "mp3-"));
+  const wav = join(dir, "prise.wav");
+  const mp3 = join(dir, "prise.mp3");
+  const mp4 = join(dir, "pilote.mp4");
+  const parole = await syntheseMot("The field flips. The flow falls to zero.", "en");
+  await ecrireWav(wav, parole.samples, parole.sampleRate);
+  const encode = spawnSync("ffmpeg", ["-y", "-i", wav, "-c:a", "libmp3lame", "-b:a", "128k", mp3], { encoding: "utf8" });
+  assert.equal(encode.status, 0, encode.stderr);
+  const entete = await readFile(mp3);
+  assert.notEqual(entete.subarray(0, 4).toString("ascii"), "RIFF");
+  const markdown = "## demo\n\nduration: 0:08\n\n### cue.demo.show\n\nrole: spoken\n\nThe field flips. The flow falls to zero.\n";
+  const chapitre = preparer(markdown, "en");
+  const lignes = tableau(chapitre);
+  const duree = await (await import("../pilote.mjs")).dureeFichier(mp3);
+  const cues = await sousTitresNarration(lignes, chapitre, new Map([[chapitre.paragraphes[0].id, duree]]), new Map([[chapitre.paragraphes[0].id, mp3]]));
+  assert.ok(cues.length >= 1);
+  const texte = cues.map((cue) => cue.text).join(" ");
+  assert.match(texte, /field flips/);
+  assert.match(texte, /flow falls/);
+  for (const cue of cues) assert.ok(cue.fin - cue.debut >= 1 - 1e-6, cue.text);
+  for (let index = 1; index < cues.length; index += 1) {
+    assert.ok(cues[index].debut + 1e-6 >= cues[index - 1].fin);
+  }
+  const srt = join(dir, "sous.srt");
+  const corps = texteSrt(cues);
+  await writeFile(srt, corps);
+  const mux = spawnSync(
+    "ffmpeg",
+    ["-y", "-i", mp3, "-i", srt, "-c:a", "copy", "-c:s", "mov_text", "-map", "0:a", "-map", "1:s", mp4],
+    { encoding: "utf8" },
+  );
+  assert.equal(mux.status, 0, mux.stderr);
+  const probe = spawnSync(
+    "ffprobe",
+    ["-v", "error", "-show_entries", "stream=codec_type", "-of", "json", mp4],
+    { encoding: "utf8" },
+  );
+  assert.equal(probe.status, 0, probe.stderr);
+  const types = JSON.parse(probe.stdout).streams.map((stream) => stream.codec_type);
+  assert.ok(types.includes("audio"));
+  assert.ok(types.includes("subtitle"));
+  const extrait = spawnSync("ffmpeg", ["-v", "error", "-i", mp4, "-map", "0:s:0", "-f", "srt", "-"], { encoding: "utf8" });
+  assert.equal(extrait.status, 0, extrait.stderr);
+  assert.match(extrait.stdout, /field flips/);
+  assert.match(extrait.stdout, /flow falls/);
+  assert.match(extrait.stdout, /\d{2}:\d{2}:\d{2},\d{3} --> \d{2}:\d{2}:\d{2},\d{3}/);
+});
 
 test("aucun sous-titre n'est trop court pour se lire", async () => {
   for (const lang of ["en", "fr"]) {

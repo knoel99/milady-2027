@@ -5,10 +5,9 @@ import { dirname, join } from "node:path";
 import { fileURLToPath } from "node:url";
 import { capturer } from "./capture.mjs";
 import { preparer } from "./parole.mjs";
-import { bords, dureeFichier, lireScenes, placer, projeter } from "./pilote.mjs";
+import { argumentsPiste, bords, dureeFichier, lireScenes, placer, projeter } from "./pilote.mjs";
 import { servir } from "./servir.mjs";
 import { calerPhrasesDepuisOreille, ecouter } from "./calage.mjs";
-import { ecrireWav, lireWav } from "./kit-voix/aligner.mjs";
 import { garderCle } from "./tts.mjs";
 
 const ici = dirname(fileURLToPath(import.meta.url));
@@ -384,16 +383,19 @@ export async function sousTitresNarration(lignes, chapitre, durees, fichiers = n
   const avecAudio = poses.filter((pose) => pose.fichier);
   let oreille = null;
   if (avecAudio.length > 0) {
-    const premier = await lireWav(avecAudio[0].fichier);
-    const mix = new Float64Array(Math.ceil((origine + 1) * premier.sampleRate));
-    for (const pose of avecAudio) {
-      const lu = await lireWav(pose.fichier);
-      mix.set(lu.samples, Math.round(pose.at * lu.sampleRate));
-    }
     const dir = await mkdtemp(join(tmpdir(), "oreille-"));
     const chemin = join(dir, "mix.wav");
     try {
-      await ecrireWav(chemin, mix, premier.sampleRate);
+      await executer(
+        "ffmpeg",
+        [
+          ...argumentsPiste(
+            avecAudio.map((pose) => ({ fichier: pose.fichier, at: pose.at })),
+            origine + 1,
+          ),
+          chemin,
+        ],
+      );
       oreille = ecouter([{ id: "mix", audio: chemin, langue: chapitre.lang }]).mix;
     } finally {
       await rm(dir, { recursive: true, force: true });
@@ -420,9 +422,48 @@ export async function sousTitresNarration(lignes, chapitre, durees, fichiers = n
     }));
     cues.push(...fusionner(posesBloc));
   }
-  return fusionner(cues).map((cue) =>
-    cue.fin - cue.debut >= 1 - 1e-6 ? cue : { ...cue, fin: cue.debut + 1 },
-  );
+  return sansChevauchement(fusionner(cues));
+}
+
+export function sansChevauchement(cues) {
+  const suite = cues.map((cue) => ({ ...cue }));
+  let garde = 0;
+  while (garde < suite.length * 4 + 4) {
+    garde += 1;
+    suite.sort((a, b) => a.debut - b.debut || a.fin - b.fin);
+    let change = false;
+    for (let index = 0; index < suite.length - 1; index += 1) {
+      const cue = suite[index];
+      const suivant = suite[index + 1];
+      if (cue.fin <= suivant.debut + 1e-6) continue;
+      if (suivant.debut - cue.debut >= 1 - 1e-6) suite[index] = { ...cue, fin: suivant.debut };
+      else suite.splice(index, 2, reunir(cue, suivant));
+      change = true;
+      break;
+    }
+    if (change) continue;
+    const court = suite.findIndex((cue) => cue.fin - cue.debut < 1 - 1e-6);
+    if (court < 0) break;
+    const cue = suite[court];
+    const suivant = suite[court + 1];
+    if (!suivant) {
+      suite[court] = { ...cue, fin: cue.debut + 1 };
+      continue;
+    }
+    if (suivant.debut - cue.debut >= 1 - 1e-6) suite[court] = { ...cue, fin: Math.min(cue.debut + 1, suivant.debut) };
+    else suite.splice(court, 2, reunir(cue, suivant));
+  }
+  return suite;
+}
+
+function reunir(gauche, droite) {
+  return {
+    debut: Math.min(gauche.debut, droite.debut),
+    fin: Math.max(gauche.fin, droite.fin),
+    text: `${gauche.text}\n${droite.text}`,
+    beat: gauche.beat,
+    phrase: `${gauche.phrase} ${droite.phrase}`,
+  };
 }
 
 export function texteSousTitre(layer, lang) {
@@ -430,7 +471,7 @@ export function texteSousTitre(layer, lang) {
   return layer.text;
 }
 
-function texteSrt(cues) {
+export function texteSrt(cues) {
   return `${cues
     .map((cue, index) => `${index + 1}\n${horlogeSrt(cue.debut)} --> ${horlogeSrt(cue.fin)}\n${cue.text}\n`)
     .join("\n")}\n`;
