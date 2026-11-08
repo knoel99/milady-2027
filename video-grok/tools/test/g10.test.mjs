@@ -1,5 +1,6 @@
 import assert from "node:assert/strict";
-import { mkdir, readFile, writeFile } from "node:fs/promises";
+import { copyFile, mkdir, mkdtemp, readFile, rm, writeFile } from "node:fs/promises";
+import { tmpdir } from "node:os";
 import { dirname, join } from "node:path";
 import test from "node:test";
 import { fileURLToPath } from "node:url";
@@ -261,19 +262,22 @@ test("le texte reste à 28 px, hors marge, et ne coupe pas les barres", async ()
 
 test("deux captures du même repère donnent la même image, carte comprise", async () => {
   const server = await servir(root);
-  const shots = [
-    ["classes.html", "cue.g10.classes.c4", "g10-classes-c4.png"],
-    ["sample.html", "cue.g10.sample.div", "g10-sample-divergence.png"],
-    ["sample.html", "cue.g10.sample.predict", "g10-sample-predict.png"],
-    ["sample.html", "cue.g10.sample.e1", "g10-sample-distance.png"],
-    ["sample.html", "cue.g10.sample.e1.spread", "g10-sample-crushed.png"],
-    ["sample.html", "cue.g10.sample.formula", "g10-sample-formula.png"],
-    ["card.html", "cue.g10.card", "g10-card.png"],
-  ];
-  const { browser, page } = await ouvrir(`http://127.0.0.1:${server.port}/scenes/g10/card.html`);
-  const dir = "/opt/cursor/artifacts";
-  await mkdir(dir, { recursive: true });
+  let browser;
+  let dir;
   try {
+    dir = await mkdtemp(join(tmpdir(), "g10-captures-"));
+    const opened = await ouvrir(`http://127.0.0.1:${server.port}/scenes/g10/card.html`);
+    browser = opened.browser;
+    const page = opened.page;
+    const shots = [
+      ["classes.html", "cue.g10.classes.c4", "g10-classes-c4.png"],
+      ["sample.html", "cue.g10.sample.div", "g10-sample-divergence.png"],
+      ["sample.html", "cue.g10.sample.predict", "g10-sample-predict.png"],
+      ["sample.html", "cue.g10.sample.e1", "g10-sample-distance.png"],
+      ["sample.html", "cue.g10.sample.e1.spread", "g10-sample-crushed.png"],
+      ["sample.html", "cue.g10.sample.formula", "g10-sample-formula.png"],
+      ["card.html", "cue.g10.card", "g10-card.png"],
+    ];
     let previous = "";
     for (const [file, cue, name] of shots) {
       if (file !== previous) {
@@ -289,9 +293,19 @@ test("deux captures du même repère donnent la même image, carte comprise", as
       assert.equal(pngSize(first).height, 1080);
       await writeFile(join(dir, name), first);
     }
+    if (process.env.G10_ARTIFACTS_DIR) {
+      await mkdir(process.env.G10_ARTIFACTS_DIR, { recursive: true });
+      for (const [, , name] of shots) {
+        await copyFile(join(dir, name), join(process.env.G10_ARTIFACTS_DIR, name));
+      }
+    }
   } finally {
-    await browser.close();
-    await server.close();
+    const closing = [server.close()];
+    if (browser) closing.push(browser.close());
+    if (dir) closing.push(rm(dir, { recursive: true, force: true }));
+    const results = await Promise.allSettled(closing);
+    const rejected = results.find((result) => result.status === "rejected");
+    if (rejected?.status === "rejected") throw rejected.reason;
   }
 });
 
