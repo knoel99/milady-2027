@@ -1,0 +1,103 @@
+<!doctype html>
+<html lang="en"><head><meta charset="utf-8">
+<title>X4.4 Steep slopes and the branch</title>
+<link rel="stylesheet" href="../../vendor/katex/katex.min.css">
+<link rel="stylesheet" href="../../runtime/theme.css">
+<link rel="stylesheet" href="X4b.css">
+<script src="../../vendor/katex/katex.min.js"></script>
+<script src="../../runtime/scene.js"></script>
+<script src="../../runtime/components/kit.js"></script>
+<script src="../../runtime/components/hud.js"></script>
+<script src="../../runtime/components/plot.js"></script>
+<script src="../../runtime/components/equation.js"></script>
+<script src="../../runtime/components/motifs.js"></script>
+<script src="../../runtime/components/cards.js"></script>
+<script src="../../runtime/components/seat.js"></script>
+<script src="X4b_kit.js"></script>
+</head><body><div id="stage"></div>
+<script>
+/* X4.4 Steep slopes and the branch (L5, NIGHT, PENDING: CONJECTURE low). SCHEMATIC normal forms, no data: the
+   supercritical square root and two Lipschitz "machines" (box-smoothed truth, half-width ∝ 1/K², entry K values); the
+   subcritical loop dx/dt = r x + x³ − x⁵ with a knob-driven dot (hysteresis); the blend and the branch-told curves; then
+   Kit.seat 'gauge' for data/x4_branch.json. Published values (Ponty et al. 2007) appear only as chip text and two ticks
+   placed on the schematic axis. */
+Scene.define({
+  duration: 46, register: 'night',
+  cues: { gentle: 0.8, round: 5.4, loop: 12.4, published: 15.2, blend: 20.4, bet: 23.6, why: 30.6, ask: 35.0 },
+  data: { seat: { url: 'data/x4_branch.json', optional: true } },
+  params: {},
+  setup(ctx) {
+    const K = Kit, S = Scene, P = ctx.params, res = ctx.variant === 'result', SP = P.supercritical, SC = P.subcritical, PO = P.ponty2007;
+    window.__EVENTS__ = [{ t: +(ctx.at('loop') + 0.9).toFixed(3), id: 'detent', gain_db: -24 }, { t: +(ctx.at('loop') + 3.2).toFixed(3), id: 'detent', gain_db: -24 }, { t: +(ctx.at('bet') + 0.3).toFixed(3), id: 'pop', gain_db: -24 }];
+    const MT = P.module_tag; K.lowerThird(ctx, { kind: 'chapter', l1: MT.l1, l2: MT.l2, at: -0.2, out: Math.min(MT.hold, ctx.at('published') - 0.4) });
+    K.rail(ctx, { from: 'L5', to: 'L5', at: -0.2, hold: 2.6 });
+    K.badge(ctx, { kind: 'CONJECTURE', confidence: 'low', at: -0.3 });
+    // Taylor-Green ghost inset (top right of the plot, grey)
+    const svg = K.svgLayer(ctx, 12), tg = K.s('g', { opacity: 0.35 }, svg), IX = 940, IY = 150, IS = 180;
+    for (let i = 0; i < 4; i++) for (let j = 0; j < 4; j++) K.s('circle', { cx: IX + IS * (i + 0.5) / 4, cy: IY + IS * (j + 0.5) / 4, r: IS / 10, fill: 'none', stroke: K.c('fg'), 'stroke-width': 2 }, tg);
+    K.s('rect', { x: IX, y: IY, width: IS, height: IS, fill: 'none', stroke: K.c('fg'), 'stroke-width': 2 }, tg);
+    const dots = []; for (let k = 0; k < 16; k++) dots.push(K.s('circle', { r: 3, fill: K.c('fg') }, tg));
+    XK.timed(ctx, tg, -0.3, 'bet+1.0', { op: 0.35 });
+    XK.lab(ctx, 'Taylor-Green · knob: {param}Rm{/}', IX, IY + IS + 10, { cls: 'small', at: -0.3, out: 'bet+1.0' });
+    // plots: supercritical (r in [-1, 1], y 0..1.1), subcritical (r in [-0.6, 0.6], y 0..1.3)
+    const B = P.plot.box, mkP = (xr, yr, at, out) => K.plot(ctx, { box: B, at, out, x: { label: P.plot.x.label, min: xr[0], max: xr[1], ticks: [xr[0], 0, xr[1]], param: true, fmt: (v) => (v < 0 ? P.plot.x.tick_labels[0] : v > 0 ? P.plot.x.tick_labels[2] : P.plot.x.tick_labels[1]) }, y: { label: P.plot.y.label, min: yr[0], max: yr[1], ticks: [] } });
+    const P1 = mkP([-1, 1], [0, 1.1], 'gentle-0.15', 'loop-0.15'), P2 = mkP([-0.6, 0.6], [0, 1.3], 'loop-0.15', 'bet+1.0');
+    [P1, P2].forEach((PL) => PL.root.querySelectorAll('text.kt-axis').forEach((e, i) => { if (e.textContent === P.plot.y.label) e.style.fill = K.c('b'); }));
+    K.chip(ctx, { text: 'SCHEMATIC · normal forms, no data', kind: 'schematic', x: B.x0, y: B.y1 + 110, at: -0.3, out: 'bet+1.0' });
+    const N = 241, rs = [], tru = []; for (let i = 0; i < N; i++) { const r = -1 + 2 * i / (N - 1); rs.push(r); tru.push(Math.sqrt(Math.max(0, r))); }
+    const smooth = (Kk, wig) => { const w = 0.6 / (Kk * Kk), wr = S.rng(SP.generators[1].wiggle_seed); return rs.map((r) => { let s = 0, n = 0; for (let u = -w; u <= w + 1e-9; u += w / 20) { s += Math.sqrt(Math.max(0, r + u)); n++; } return s / n + (wig ? wig * (wr() - 0.5) * 2 : 0); }); };
+    P1.curve({ x: rs, y: tru, field: 'b', at: 'gentle-0.15', dur: 1.4 });
+    const m1 = smooth(SP.generators[0].K, 0), m2 = smooth(SP.generators[1].K, SP.generators[1].wiggle);
+    P1.curve({ x: rs, y: m1, field: 'model', kind: 'generated', at: 'round-0.15', dur: 1.2 });
+    P1.curve({ x: rs, y: m2, field: 'model', kind: 'generated', at: 'round+2.3', dur: 1.2 });
+    const hatch = (m, at) => { const g = K.s('g', {}, P1.root); rs.forEach((r, i) => { if (i % 3 || Math.abs(m[i] - tru[i]) < 0.02) return; K.s('line', { x1: P1.sx(r), x2: P1.sx(r), y1: P1.sy(m[i]), y2: P1.sy(tru[i]), stroke: K.rgba(K.c('fg'), 0.2), 'stroke-width': 2 }, g); }); XK.timed(ctx, g, at, null); };
+    hatch(m1, 'round+0.8'); hatch(m2, 'round+3.1');
+    K.pen(ctx, { kind: 'circle', box: { x: P1.sx(0) - 20, y: P1.sy(0.35), w: 40, h: P1.sy(0) - P1.sy(0.35) }, at: 'gentle+1.4', out: 'round-0.15' });
+    XK.lab(ctx, 'gentle (supercritical) threshold', B.x0, B.y0 - 124, { at: 'gentle-0.15', out: 'loop-0.15' });
+    XK.lab(ctx, 'truth: a square root', P1.sx(0.45), P1.sy(0.85), { cls: 'small', color: 'b', at: 'gentle+0.8', out: 'loop-0.15' });
+    XK.lab(ctx, SP.generators[0].label, P1.sx(-0.95), P1.sy(1.0), { cls: 'small', color: 'model', at: 'round+0.6', out: 'loop-0.15' });
+    XK.lab(ctx, SP.generators[1].label, P1.sx(-0.95), P1.sy(0.8), { cls: 'small', color: 'model', w: 420, at: 'round+2.8', out: 'loop-0.15' });
+    K.chip(ctx, { text: 'GENERATED · schematic', kind: 'generated', x: 480, y: B.y0 - 64, at: 'round', out: 'bet+1.0' });
+    // subcritical branches
+    const up = [], mid = [], upR = [], midR = []; for (let i = 0; i <= 200; i++) { const r = -0.25 + 0.85 * i / 200; upR.push(r); up.push(Math.sqrt((1 + Math.sqrt(1 + 4 * r)) / 2)); }
+    for (let i = 0; i <= 100; i++) { const r = -0.25 + 0.25 * i / 100; midR.push(r); mid.push(Math.sqrt(Math.max(0, (1 - Math.sqrt(1 + 4 * r)) / 2))); }
+    P2.curve({ x: [-0.6, 0.6], y: [0, 0], field: 'b', at: 'loop', dur: 0.8 }); P2.curve({ x: upR, y: up, field: 'b', at: 'loop', dur: 1.2 });
+    const mc = P2.curve({ x: midR, y: mid, field: 'b', at: 'loop', dur: 1.2 }); mc.path.setAttribute('stroke-dasharray', '3 8');
+    XK.lab(ctx, 'subcritical threshold: two states', B.x0, B.y0 - 124, { at: 'loop-0.15', out: 'bet-0.2' });
+    const kn = K.knob(ctx, { x: B.x1 + 120, y: B.y1 - 30, r: 40, min: SC.r_range[0], max: SC.r_range[1], label: 'Rm', showValue: false, ticks: 4, labelDy: 66, at: 'loop', out: 'bet+1.0',
+      keys: [{ at: 'loop', v: SC.r_range[0], dur: 0 }].concat(SC.knob.keys.map((k) => ({ at: k.at, v: k.v, dur: k.dur ?? 0.1 }))) });
+    const dot = K.s('circle', { r: 10, fill: K.c('fg'), stroke: K.c('bg'), 'stroke-width': 3 }, P2.root);
+    XK.lab(ctx, 'sweep up: switches on late', P2.sx(0.1), P2.sy(0.62), { cls: 'small', at: 'loop+1.0', out: 'blend-0.15' });
+    XK.lab(ctx, 'sweep down: holds on', P2.sx(-0.55), P2.sy(1.2), { cls: 'small', at: 'loop+3.2', out: 'blend-0.15' });
+    // published: ticks on the schematic axis (values as text from the entry)
+    const pg = K.s('g', {}, P2.root); [[0, `on: ${PO.onset_Rm_c}`], [-0.25, `held to: ${PO.sustained_down_to_Rm}`]].forEach(([r, l], k) => { K.s('line', { x1: P2.sx(r), x2: P2.sx(r), y1: B.y1 - 14, y2: B.y1 + 14, stroke: K.c('param'), 'stroke-width': 4 }, pg); K.s('text', { x: P2.sx(r) + (k ? -10 : 10), y: B.y1 - 22, 'text-anchor': k ? 'end' : 'start', class: 'kt-tick' }, pg, l).style.fill = K.c('param'); });
+    K.s('path', { d: `M${P2.sx(-0.25)},${B.y1 - 60} l0,-10 L${P2.sx(0)},${B.y1 - 70} l0,10`, fill: 'none', stroke: K.c('chalk'), 'stroke-width': 3 }, pg);
+    XK.timed(ctx, pg, 'published-0.15', 'bet+1.0');
+    XK.lab(ctx, 'held down to about a third of the onset', P2.sx(-0.125), B.y1 - 116, { anchor: 'c', cls: 'small', at: 'published+0.4', out: 'blend-0.15' });
+    K.lowerThird(ctx, { kind: 'reference', l1: 'Reference', l2: PO.ref, at: 'published-0.15', hold: 4.5 });
+    // blend and branch-told curves
+    const bl = upR.map((r, i) => (r < 0 ? P.blend.p * up[i] : up[i])), blR = [-0.6, -0.25].concat(upR), blY = [0, 0].concat(bl);
+    P2.curve({ x: blR, y: blY, field: 'model', kind: 'generated', at: 'blend-0.15', dur: 1.0 });
+    XK.lab(ctx, P.blend.label, P2.sx(-0.58), P2.sy(1.05), { cls: 'small', color: 'model', w: 360, at: 'blend+0.4', out: 'bet-0.15' });
+    P2.curve({ x: upR, y: up.map((y) => y + 0.05), field: 'model', kind: 'generated', at: 'bet-0.15', dur: 0.8 }); P2.curve({ x: [-0.6, 0.6], y: [0.06, 0.06], field: 'model', kind: 'generated', at: 'bet-0.15', dur: 0.8 });
+    XK.lab(ctx, `${P.branches.title}: ${P.branches.labels.join(' · ')}`, B.x0, B.y0 - 124, { at: 'bet', out: 'bet+1.0', color: 'model' });
+    // the seat (after the plot leaves)
+    const SE = P.seat, fr = { x: 380, y: 300, w: 640, h: 420 };
+    K.seat(ctx, { type: 'gauge', variant: ctx.variant, data: ctx.data.seat, tag: SE.tag, frame: fr, gauge: SE.gauge, bet: SE.bet, confidence: SE.confidence, criterion: SE.criterion, source: SE.source, ask: SE.ask,
+      cues: res ? { frame: 'loop', bet: 'loop', criterion: 'data', ask: 'caveat', data: 'data' } : { frame: 'bet+1.2', bet: 'bet', criterion: 'bet+1.5', ask: 'ask', data: 'bet' } });
+    if (!res) K.chip(ctx, { text: 'configured runs all start from a 10⁻³ seed: no downward sweep (palier2_tg3d.yaml:34)', kind: 'plain', maxWidth: 900, x: 120, y: 800, at: 'ask-0.15' });
+    XK.lab(ctx, 'Ponty et al. 2007 (PRL 99, 224501): on at Rm_c = 206 (R_V = 563), held down to Rm = 70 · Reynolds numbers on other scales', 120, 790, { w: 900, cls: 'small', color: 'muted', at: 'published+4.8', out: 'bet+1.0' });
+    const fl = ((ctx.script.onscreen && ctx.script.onscreen.formulas) || []).map((f) => ({ tex: f.tex, at: f.cue, out: f.cue === 'bet' ? 'ask-0.3' : undefined }));
+    if (fl.length) K.formulaLayer(ctx, { items: fl });
+    ctx.x44 = { dots, IX, IY, IS, kn, dot, P2, tL: ctx.at('loop') };
+  },
+  render(t, ctx) {
+    const S = Scene, c = ctx.x44;
+    c.dots.forEach((d, k) => { const i = k % 4, j = Math.floor(k / 4), s = (i + j) % 2 ? 1 : -1, a = s * t * 0.8 + k; d.setAttribute('cx', (c.IX + c.IS * (i + 0.5) / 4 + c.IS / 10 * Math.cos(a)).toFixed(1)); d.setAttribute('cy', (c.IY + c.IS * (j + 0.5) / 4 + c.IS / 10 * Math.sin(a)).toFixed(1)); });
+    // hysteresis: integrate the branch state from the knob history
+    let on = false; const v = c.kn.value; for (let tt = c.tL; tt <= t; tt += 0.05) { const r = v(tt); if (!on && r > 0) on = true; if (on && r < -0.25) on = false; }
+    const r = Math.max(-0.6, Math.min(0.6, v(t))), y = on ? Math.sqrt((1 + Math.sqrt(Math.max(0, 1 + 4 * r))) / 2) : 0;
+    c.dot.setAttribute('cx', c.P2.sx(r).toFixed(1)); c.dot.setAttribute('cy', c.P2.sy(y).toFixed(1)); c.dot.style.opacity = S.seg(t, c.tL, c.tL + 0.3, S.ease.linear);
+  },
+});
+</script></body></html>
