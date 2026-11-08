@@ -1,0 +1,20 @@
+{
+  "slots": [
+    {
+      "id": "cue.g10.law.caveat",
+      "lang": "en",
+      "source": "narration/en/g10.md",
+      "audio": null,
+      "status": "PENDING",
+      "reason": "La voix anglaise n'est pas synthétisée. Le texte gelé reste dans la narration."
+    },
+    {
+      "id": "cue.g10.law.caveat",
+      "lang": "fr",
+      "source": null,
+      "audio": null,
+      "status": "PENDING",
+      "reason": "La narration française n'existe pas. Aucun texte français n'est inventé ici."
+    }
+  ]
+}

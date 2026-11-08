@@ -1,0 +1,23 @@
+{
+  "id": "g10.card",
+  "width": 1920,
+  "height": 1080,
+  "fps": 30,
+  "duration": 8,
+  "seed": 20261108,
+  "cues": [
+    { "id": "cue.g10.card", "at": 0 },
+    { "id": "cue.g10.card.end", "at": 8 }
+  ],
+  "layers": [
+    { "kind": "matter", "at": "cue.g10.card", "matter": "night" },
+    {
+      "kind": "question-card",
+      "from": "cue.g10.card",
+      "until": "cue.g10.card.end",
+      "sentence": "Must stationarity fine-tuning be anchored first?",
+      "class": "A",
+      "badge": "PLANNED"
+    }
+  ]
+}

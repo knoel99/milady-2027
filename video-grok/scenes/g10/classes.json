@@ -1,0 +1,117 @@
+{
+  "id": "g10.classes",
+  "width": 1920,
+  "height": 1080,
+  "fps": 30,
+  "duration": 45,
+  "seed": 20261108,
+  "cues": [
+    { "id": "cue.g10.classes.show", "at": 0 },
+    { "id": "cue.g10.classes.c1", "at": 5 },
+    { "id": "cue.g10.classes.c2", "at": 12 },
+    { "id": "cue.g10.classes.c3", "at": 19 },
+    { "id": "cue.g10.classes.c4", "at": 26 },
+    { "id": "cue.g10.classes.bar", "at": 33 },
+    { "id": "cue.g10.classes.claim", "at": 39 },
+    { "id": "cue.g10.classes.end", "at": 45 }
+  ],
+  "layers": [
+    { "kind": "matter", "at": "cue.g10.classes.show", "matter": "night" },
+    {
+      "kind": "badge",
+      "badge": "PROVED",
+      "primary": true,
+      "from": "cue.g10.classes.show",
+      "until": "cue.g10.classes.end"
+    },
+    { "kind": "level", "level": "L3", "from": "cue.g10.classes.show", "until": "cue.g10.classes.end" },
+    {
+      "kind": "subtitle",
+      "from": "cue.g10.classes.show",
+      "until": "cue.g10.classes.c1",
+      "text": "A constraint can sit in four places."
+    },
+    {
+      "kind": "subtitle",
+      "from": "cue.g10.classes.c1",
+      "until": "cue.g10.classes.c2",
+      "text": "C1 is a linear local constraint"
+    },
+    {
+      "kind": "subtitle",
+      "from": "cue.g10.classes.c2",
+      "until": "cue.g10.classes.c3",
+      "text": "C2 is a nonlinear local constraint"
+    },
+    {
+      "kind": "subtitle",
+      "from": "cue.g10.classes.c3",
+      "until": "cue.g10.classes.c4",
+      "text": "C3 is a symmetry of the law."
+    },
+    {
+      "kind": "subtitle",
+      "from": "cue.g10.classes.c4",
+      "until": "cue.g10.classes.bar",
+      "text": "C4 is a stationarity identity"
+    },
+    {
+      "kind": "subtitle",
+      "from": "cue.g10.classes.bar",
+      "until": "cue.g10.classes.claim",
+      "text": "A short bar is not a prize."
+    },
+    {
+      "kind": "subtitle",
+      "from": "cue.g10.classes.claim",
+      "until": "cue.g10.classes.end",
+      "text": "The place of the constraint is the claim."
+    },
+    {
+      "kind": "bars",
+      "from": "cue.g10.classes.c1",
+      "until": "cue.g10.classes.c2",
+      "title": "Four classes",
+      "schematic": true,
+      "rows": [{ "name": "C1", "value": 1, "role": "velocity" }]
+    },
+    {
+      "kind": "bars",
+      "from": "cue.g10.classes.c2",
+      "until": "cue.g10.classes.c3",
+      "title": "Four classes",
+      "schematic": true,
+      "rows": [
+        { "name": "C1", "value": 1, "role": "velocity" },
+        { "name": "C2", "value": 1, "role": "field" }
+      ]
+    },
+    {
+      "kind": "bars",
+      "from": "cue.g10.classes.c3",
+      "until": "cue.g10.classes.c4",
+      "title": "Four classes",
+      "schematic": true,
+      "rows": [
+        { "name": "C1", "value": 1, "role": "velocity" },
+        { "name": "C2", "value": 1, "role": "field" },
+        { "name": "C3", "value": 1, "role": "model" }
+      ]
+    },
+    {
+      "kind": "bars",
+      "from": "cue.g10.classes.c4",
+      "until": "cue.g10.classes.end",
+      "title": "Four classes",
+      "schematic": true,
+      "rows": [
+        { "name": "C1", "value": 1, "role": "velocity" },
+        { "name": "C2", "value": 1, "role": "field" },
+        { "name": "C3", "value": 1, "role": "model" },
+        { "name": "C4", "value": 1, "role": "parameter" }
+      ]
+    },
+    { "kind": "field", "from": "cue.g10.classes.c1", "until": "cue.g10.classes.c2", "quantity": "u" },
+    { "kind": "field", "from": "cue.g10.classes.c2", "until": "cue.g10.classes.c3", "quantity": "B" }
+  ]
+}
