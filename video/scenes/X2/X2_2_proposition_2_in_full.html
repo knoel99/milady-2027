@@ -1,0 +1,116 @@
+<!doctype html>
+<html lang="en"><head><meta charset="utf-8">
+<title>X2.2 Proposition 2 in full</title>
+<link rel="stylesheet" href="../../vendor/katex/katex.min.css">
+<link rel="stylesheet" href="../../runtime/theme.css">
+<link rel="stylesheet" href="X2.css">
+<script src="../../vendor/katex/katex.min.js"></script>
+<script src="../../runtime/scene.js"></script>
+<script src="../../runtime/components/kit.js"></script>
+<script src="../../runtime/components/hud.js"></script>
+<script src="../../runtime/components/plot.js"></script>
+<script src="../../runtime/components/equation.js"></script>
+<script src="../../runtime/components/motifs.js"></script>
+<script src="../../runtime/components/cards.js"></script>
+<script src="X2_kit.js"></script>
+</head><body><div id="stage"></div>
+<script>
+/* X2.2 Proposition 2 in full (L4, PAPER, PROVED). The ideal wind on a subspace: along (learnable) and across (the
+   pull −(I − Π)x/(1 − t)). SCHEMATIC curves in units of the initial stray part (exact pull 1 − t; capped pull with
+   K from the entry; exact pull + bounded error inside its Remark 3.6 envelope). The E2 values (plain generator and
+   the three gauges) are read from data/e2_eval.json, test means. */
+Scene.define({
+  duration: 58, register: 'paper',
+  cues: { spring: 0.4, split: 2.6, along: 7.0, across: 9.4, lands: 15.0, same: 18.6, cap: 25.4, predict: 28.5, erased: 37.5, missing: 39.6, single: 46.6 },
+  data: { ev: 'data/e2_eval.json' },
+  params: {},
+  setup(ctx) {
+    const K = Kit, S = Scene, P = ctx.params, EV = ctx.data.ev;
+    window.__EVENTS__ = [{ t: +(ctx.at('lands') + 1.6).toFixed(3), id: 'pop', gain_db: -24 }, { t: +(ctx.at('erased') + 1.4).toFixed(3), id: 'pop', gain_db: -24 }];
+    XK.strip(ctx, P.strip, { at: -0.4, activeAt: -0.4 });
+    K.badge(ctx, { kind: 'PROVED', note: 'Prop. 2 · Remark 3.6 · E2 gauges measured', at: -0.3 });
+    XK.title(ctx, 'Proposition 2 · the optimal flow on a subspace', 'spring-0.15');
+    K.chip(ctx, { text: 'from 08.4 · the spring', kind: 'plain', x: 1300, y: 290, at: 'spring-0.15', out: 'split-0.3' });
+    // hero (its labels leave before the plot comes in)
+    const H = P.hero;
+    K.equation(ctx, { tex: H.tex, x: H.x, y: 274, size: 60, reveal: H.reveal, labels: H.labels, out: 'lands-0.45' });
+    // plot (schematic)
+    const box = { x0: 260, x1: 1120, y0: 350, y1: 640 };
+    const PL = K.plot(ctx, { box, at: 'lands-0.15', x: P.plot.x, y: P.plot.y });
+    K.chip(ctx, { text: 'SCHEMATIC curves · units of the initial stray part', kind: 'schematic', maxWidth: 560, x: 1240, y: 290, at: 'lands-0.15', out: 'same-0.3' });
+    const n = 241, ts = [], ex = [], ca = [], bo = [], lo = [], hi = [], Kc = P.K, rho = P.rho;
+    let I = 0;
+    for (let i = 0; i < n; i++) {
+      const t = i / (n - 1); ts.push(t); ex.push(1 - t);
+      const tc = 1 - 1 / Kc; ca.push(t <= tc ? 1 - t : (1 / Kc) * Math.exp(-Kc * (t - tc)));
+      if (i > 0) { const s = (i - 0.5) / (n - 1); I += rho * Math.sin(6 * Math.PI * s) / (1 - s) / (n - 1); }
+      bo.push((1 - t) * (1 + I));
+      const e = t < 1 ? rho * (1 - t) * Math.log(1 / (1 - t)) : 0; lo.push(1 - t - e); hi.push(1 - t + e);
+    }
+    PL.curve({ x: ts, y: ex, field: 'model', at: 'lands-0.15', dur: 1.2 });
+    PL.legend([{ label: 'exact pull', field: 'model' }], { at: 'lands-0.15', x: box.x0 + 30, y: PL.sy(0.4) });
+    PL.curve({ x: ts, y: ca, field: 'model', kind: 'generated', at: 'cap-0.15', dur: 1.2 });
+    PL.legend([{ label: 'capped pull', field: 'model', kind: 'generated' }], { at: 'cap-0.15', x: box.x0 + 30, y: PL.sy(0.4) + 46 });
+    const cut = Math.round(P.predict_stop_t * (n - 1));
+    const envD = 'M' + ts.map((t, i) => `${PL.sx(t).toFixed(1)},${PL.sy(hi[i]).toFixed(1)}`).join('L') + 'L' + ts.slice().reverse().map((t, j) => `${PL.sx(t).toFixed(1)},${PL.sy(lo[n - 1 - j]).toFixed(1)}`).join('L') + 'Z';
+    const env = K.s('path', { d: envD, fill: K.c('grid'), stroke: 'none' }, PL.root); PL.root.insertBefore(env, PL.root.children[2]);
+    XK.timed(ctx, env, 'erased-0.15', null, { din: 0.6 });
+    const b1 = PL.curve({ x: ts.slice(0, cut + 1), y: bo.slice(0, cut + 1), field: 'model', at: 'predict-0.15', dur: 1.0 });
+    const b2 = PL.curve({ x: ts.slice(cut), y: bo.slice(cut), field: 'model', at: 'erased-0.15', dur: 1.0 });
+    [b1, b2].forEach((b) => { b.path.setAttribute('stroke-dasharray', '2 10'); b.path.setAttribute('stroke-width', 6); });
+    PL.legend([{ label: 'exact pull + bounded error', field: 'model', kind: 'ghost' }], { at: 'predict-0.15', x: box.x0 + 30, y: PL.sy(0.4) + 92 });
+    const capY = PL.sy(ca[n - 1]), x1 = PL.sx(1);
+    const br = K.s('path', { d: `M${x1 + 14},${PL.sy(0)} q10,0 10,-10 L${x1 + 24},${capY + 10} q0,-10 10,-10`, fill: 'none', stroke: K.c('chalk'), 'stroke-width': 3 }, PL.root);
+    XK.timed(ctx, br, 'cap+0.9', null);
+    XK.lab(ctx, 'a stray part survives', x1 - 20, capY - 110, { anchor: 'r', at: 'cap+1.0', out: 'predict-0.3' });
+    XK.lab(ctx, 'PREDICT', PL.sx(0.45), PL.sy(0.85), { at: 'predict-0.15', out: 'erased+0.3', color: 'chalk', cls: 'big' });
+    XK.lab(ctx, '?', x1 - 8, PL.sy(0) - 70, { at: 'predict+0.6', out: 'erased-0.15', cls: 'big' });
+    K.pen(ctx, { kind: 'check', box: { x: x1 - 50, y: PL.sy(0) - 70, w: 46, h: 40 }, at: 'lands+1.4', out: 'cap-0.2' });
+    K.pen(ctx, { kind: 'check', box: { x: x1 - 50, y: PL.sy(0) - 70, w: 46, h: 40 }, at: 'erased+1.2', seed: 'e2' });
+    XK.lab(ctx, 'erased by the pull', PL.sx(0.45), PL.sy(0.85), { at: 'erased+1.0', out: 'missing-0.2' });
+    // inset meter: 1/(1 − t), clipped; capped from 'cap'
+    const IN = P.inset, ig = K.s('g', {}, PL.root);
+    const mx = PL.sx(0.9), mt = box.y0 + 20, mb = box.y0 + 110;
+    K.s('rect', { x: mx - 14, y: mt, width: 28, height: mb - mt, fill: 'none', stroke: K.c('fg-2'), 'stroke-width': 2 }, ig);
+    K.s('path', { d: `M${mx - 70},${mb} l8,-10 l8,20 l8,-20 l8,20 l8,-20 l8,10`, fill: 'none', stroke: K.c('fg-2'), 'stroke-width': 2 }, ig);
+    const fill = K.s('rect', { x: mx - 10, width: 20, fill: K.c('matter') }, ig);
+    const ceil = K.s('line', { x1: mx - 22, x2: mx + 22, stroke: K.c('muted'), 'stroke-width': 5 }, ig);
+    XK.timed(ctx, ig, 'lands-0.15', 'missing-0.3');
+    XK.lab(ctx, '1/(1 − t)', mx, mb + 8, { at: 'lands-0.15', out: 'missing-0.3', anchor: 'c', cls: 'small' });
+    XK.lab(ctx, 'capped', mx + 26, mt + 18, { at: 'cap+0.2', out: 'missing-0.3', cls: 'small' });
+    // right column: four mechanisms → one target crowd
+    const RX = 1240, cw = 400, ch = 60, ys = [370, 450, 530, 610], cards = K.svgLayer(ctx, 14), cg = K.s('g', {}, cards);
+    P.mechanisms.forEach((m, k) => {
+      K.s('rect', { x: RX, y: ys[k], width: cw, height: ch, rx: 6, fill: K.c('panel'), stroke: K.c('fg-2'), 'stroke-width': 2 }, cg);
+      K.s('text', { x: RX + 20, y: ys[k] + 41, class: 'kt-label' }, cg, m);
+      K.s('path', { d: `M${RX + cw},${ys[k] + ch / 2} L${RX + cw + 90},${520}`, fill: 'none', stroke: K.c('fg-2'), 'stroke-width': 2 }, cg);
+    });
+    [[0, 0], [12, -8], [-10, 10], [6, 14], [-14, -6], [16, 6]].forEach(([dx, dy]) => K.s('circle', { cx: RX + cw + 120 + dx, cy: 520 + dy, r: 7, fill: K.c('matter') }, cg));
+    XK.timed(ctx, cg, 'same-0.15', 'single-0.15', { din: 0.6 });
+    XK.lab(ctx, 'same target crowd · perfect training', RX, 300, { at: 'same+0.3', out: 'single-0.15' });
+    K.chip(ctx, { text: 'Prop. 2 (b): differences come from training, not the target', kind: 'plain', x: 120, y: 770, at: 'same+0.5', out: 'same+3.5' });
+    // missing: the plain generator's value, read from data
+    const free = XK.get(EV, P.free.path);
+    XK.lab(ctx, `plain generator, E2: <span class="tnum">${K.fmt(free, 2)}</span> · a missing pull`, PL.sx(0.62), PL.sy(0.66), { html: true, w: 380, at: 'missing-0.15' });
+    K.pen(ctx, { kind: 'arrow', from: [PL.sx(0.86), PL.sy(0.3)], to: [x1 + 30, capY - 4], at: 'missing+0.5' });
+    // single: three readouts from data
+    P.gauges.forEach((g, k) => {
+      const v = XK.get(EV, g.path), y = 360 + 110 * k;
+      XK.lab(ctx, `${g.label}: <span class="tnum">${K.fmt(v, 3)}</span>`, RX, y, { html: true, at: ctx.at('single-0.15') + 0.2 * k, cls: 'big' });
+      XK.lab(ctx, g.tag, RX + 20, y + 48, { at: ctx.at('single-0.15') + 0.2 * k + 0.2, cls: 'small' });
+    });
+    K.pen(ctx, { kind: 'underline', box: { x: RX, y: 580, w: 440, h: 44 }, offset: 2, at: 'single+1.0' });
+    XK.lab(ctx, 'learns only m: noise projected in training too', RX, 690, { at: 'single+1.6', cls: 'small', color: 'model' });
+    K.lowerThird(ctx, { kind: 'source', data: EV, at: 'single', hold: 4 });
+    K.formulaLayer(ctx);
+    ctx.x22 = { fill, ceil, mx, mt, mb, tA: ctx.at('lands+0.3'), tC: ctx.at('cap-0.15') };
+  },
+  render(t, ctx) {
+    const S = Scene, c = ctx.x22;
+    const p = S.seg(t, c.tA, c.tA + 1.6, S.ease.inOutSine), tt = 0.98 * p, v = Math.min(1, 0.06 / Math.max(1e-3, 1 - tt));
+    const cap = S.seg(t, c.tC, c.tC + 0.4, S.ease.linear), vmax = 1 - 0.45 * cap, lv = Math.min(v, vmax);
+    const h = (c.mb - c.mt) * lv; c.fill.setAttribute('y', (c.mb - h).toFixed(1)); c.fill.setAttribute('height', h.toFixed(1));
+    const cy = c.mb - (c.mb - c.mt) * vmax; c.ceil.setAttribute('y1', cy); c.ceil.setAttribute('y2', cy); c.ceil.style.opacity = cap;
+  },
+});
+</script></body></html>

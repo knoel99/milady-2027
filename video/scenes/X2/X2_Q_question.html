@@ -1,0 +1,41 @@
+<!doctype html>
+<html lang="en"><head><meta charset="utf-8">
+<title>X2.Q Question for the supervisors</title>
+<link rel="stylesheet" href="../../vendor/katex/katex.min.css">
+<link rel="stylesheet" href="../../runtime/theme.css">
+<link rel="stylesheet" href="X2.css">
+<script src="../../vendor/katex/katex.min.js"></script>
+<script src="../../runtime/scene.js"></script>
+<script src="../../runtime/components/kit.js"></script>
+<script src="../../runtime/components/hud.js"></script>
+<script src="../../runtime/components/plot.js"></script>
+<script src="../../runtime/components/equation.js"></script>
+<script src="../../runtime/components/motifs.js"></script>
+<script src="../../runtime/components/cards.js"></script>
+<script src="X2_kit.js"></script>
+</head><body><div id="stage"></div>
+<script>
+/* X2.Q question card (no claim, no badge). Text, number, category and who-to-ask from the script's "question".
+   Behind the card at 10 %: the schematic VKS cylinder of X2.4 with its asymmetry knob drawn at its positive end
+   (a texture, no data). */
+Scene.define({
+  duration: 9, register: 'paper',
+  cues: { q: 0.5 },
+  params: { backdrop: { opacity: 0.1 } },
+  setup(ctx) {
+    const K = Kit, P = ctx.params;
+    window.__EVENTS__ = [{ t: +Math.max(0, ctx.at('q') - 0.2).toFixed(3), id: 'chime', gain_db: -22 }];
+    const svg = K.svgLayer(ctx, 2), bg = K.s('g', { opacity: P.backdrop.opacity }, svg), ink = K.c('fg-2');
+    const vx = 520, vy = 560, W = 260, H = 240;
+    K.s('path', { d: `M${vx - W},${vy - H} L${vx - W},${vy + H} M${vx + W},${vy - H} L${vx + W},${vy + H}`, stroke: ink, 'stroke-width': 4, fill: 'none' }, bg);
+    [-1, 1].forEach((s) => { K.s('ellipse', { cx: vx, cy: vy + s * H, rx: W, ry: 46, fill: 'none', stroke: ink, 'stroke-width': 4 }, bg);
+      K.s('ellipse', { cx: vx, cy: vy + s * (H - 50), rx: W - 60, ry: 26, fill: 'none', stroke: K.c('matter'), 'stroke-width': 4 }, bg); });
+    const kx = 1480, ky = 560, R = 120;
+    K.s('circle', { cx: kx, cy: ky, r: R, fill: 'none', stroke: K.c('matter'), 'stroke-width': 6 }, bg);
+    K.s('line', { x1: kx, y1: ky, x2: kx + R * 0.9 * Math.sin(2.1), y2: ky - R * 0.9 * Math.cos(2.1), stroke: K.c('param'), 'stroke-width': 12, 'stroke-linecap': 'round' }, bg);
+    ctx.bgG = bg;
+    K.questionCard(ctx, { chapter: 'X2', category: 'runs', at: -0.4, whyAt: 'q+2.4', unblocksAt: 'q+4.6' });
+  },
+  render(t, ctx) { ctx.bgG.setAttribute('transform', `translate(${(-6 * Math.sin(2 * Math.PI * t / 9)).toFixed(2)} 0)`); },
+});
+</script></body></html>

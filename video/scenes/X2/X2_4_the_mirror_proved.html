@@ -1,0 +1,125 @@
+<!doctype html>
+<html lang="en"><head><meta charset="utf-8">
+<title>X2.4 Proposition 4: the mirror, proved</title>
+<link rel="stylesheet" href="../../vendor/katex/katex.min.css">
+<link rel="stylesheet" href="../../runtime/theme.css">
+<link rel="stylesheet" href="X2.css">
+<script src="../../vendor/katex/katex.min.js"></script>
+<script src="../../runtime/scene.js"></script>
+<script src="../../runtime/components/kit.js"></script>
+<script src="../../runtime/components/hud.js"></script>
+<script src="../../runtime/components/plot.js"></script>
+<script src="../../runtime/components/equation.js"></script>
+<script src="../../runtime/components/motifs.js"></script>
+<script src="../../runtime/components/cards.js"></script>
+<script src="X2_kit.js"></script>
+</head><body><div id="stage"></div>
+<script>
+/* X2.4 Proposition 4, the mirror proved (L4, PAPER, PROVED). (Q, D) plane with the point mirror S: (Q, D) → (−Q, −D).
+   Mirrored noise pairs flow on straight SCHEMATIC paths to real model C snapshots at Γ = 0.85 (data/e1_samples_0.85.json,
+   first n_pairs rows) and their mirror images. The proof in three lines; then the VKS half-turn (schematic cylinder). */
+Scene.define({
+  duration: 54, register: 'paper',
+  cues: { theorem: 0.4, equi: 2.6, noise: 7.4, twin: 10.2, every: 12.8, loss: 19.6, cost: 26.4, swap: 29.4, speeds: 35.0, untested: 41.6 },
+  data: { samples: 'data/e1_samples_0.85.json' },
+  params: {},
+  setup(ctx) {
+    const K = Kit, S = Scene, P = ctx.params, PL = P.plane, SM = ctx.data.samples;
+    window.__EVENTS__ = [{ t: +(ctx.at('loss') + 1.5).toFixed(3), id: 'pop', gain_db: -24 }];
+    XK.strip(ctx, P.strip, { at: -0.4, activeAt: -0.4 });
+    K.badge(ctx, { kind: 'PROVED', note: 'Prop. 4 · classical (Köhler et al. 2020) · E1 consistent', at: -0.3 });
+    XK.title(ctx, 'Proposition 4 · the mirror, proved', 'theorem-0.15');
+    const tSwap = ctx.at('swap-0.15');
+    // ---- left: the (Q, D) plane ----
+    const B = PL.box, cx = (B[0] + B[2]) / 2, cy = (B[1] + B[3]) / 2 - 20, sc = (B[3] - B[1] - 60) / (PL.q_range[1] - PL.q_range[0]);
+    const X = (q) => cx + sc * q, Y = (d) => cy - sc * d;
+    const svg = K.svgLayer(ctx, 12), pg = K.s('g', {}, svg), vio = K.c('model');
+    K.s('line', { x1: X(-3.2), x2: X(3.2), y1: cy, y2: cy, stroke: K.c('muted'), 'stroke-width': 2 }, pg);
+    K.s('line', { x1: cx, x2: cx, y1: Y(3.2), y2: Y(-3.2), stroke: K.c('muted'), 'stroke-width': 2 }, pg);
+    const tq = K.s('text', { x: X(3.2) + 10, y: cy + 10, class: 'kt-axis' }, pg, 'Q'); tq.style.fill = K.c('b');
+    const td = K.s('text', { x: cx + 12, y: Y(3.2) + 4, class: 'kt-axis' }, pg, 'D'); td.style.fill = K.c('b');
+    // the faint two-whirlpool glyph
+    [-1, 1].forEach((s) => K.s('ellipse', { cx: X(s * 1.0), cy: Y(s * 1.1), rx: sc * 1.1, ry: sc * 0.8, fill: 'none', stroke: K.c('grid'), 'stroke-width': 5, transform: `rotate(${s * 0} ${X(s)} ${Y(s)})` }, pg));
+    K.s('circle', { cx, cy, r: 6, fill: K.c('fg-2') }, pg);
+    // equivariance: one point and its image
+    const z0 = [0.7, 0.45], v0 = [0.5, 0.35];
+    const eq = K.s('g', {}, svg);
+    [1, -1].forEach((s) => { const x = X(s * z0[0]), y = Y(s * z0[1]);
+      K.s('circle', { cx: x, cy: y, r: 8, fill: vio }, eq); K.s('circle', { cx: x, cy: y, r: 15, fill: 'none', stroke: vio, 'stroke-width': 2 }, eq);
+      const ex = X(s * (z0[0] + v0[0])), ey = Y(s * (z0[1] + v0[1])), a = Math.atan2(ey - y, ex - x);
+      K.s('path', { d: `M${x},${y} L${ex},${ey} M${ex - 14 * Math.cos(a - 0.5)},${ey - 14 * Math.sin(a - 0.5)} L${ex},${ey} L${ex - 14 * Math.cos(a + 0.5)},${ey - 14 * Math.sin(a + 0.5)}`, fill: 'none', stroke: vio, 'stroke-width': 3.5 }, eq); });
+    K.s('line', { x1: X(z0[0]), y1: Y(z0[1]), x2: X(-z0[0]), y2: Y(-z0[1]), stroke: K.c('muted'), 'stroke-width': 2, 'stroke-dasharray': '6 6' }, eq);
+    XK.timed(ctx, eq, 'equi-0.15', 'noise-0.15');
+    XK.tex(ctx, '\\cm{v}(S\\mathbf{x}) = S\\,\\cm{v}(\\mathbf{x})', X(0.5), Y(3.1), { size: 36, at: 'equi+0.3', out: 'swap-0.15' });
+    // mirrored pairs: noise → snapshots (straight schematic paths)
+    const rng = S.rng(PL.seed || 'x2-mirror'), XS = S.f32(SM.variants[PL.variant].x), n = PL.n_pairs, pairs = [];
+    for (let i = 0; i < n; i++) { const g = XK.gauss(rng), z = [0.55 * g[0], 0.55 * g[1]], x = [XS[3 * i], XS[3 * i + 1]];
+      pairs.push({ z, x, a: K.s('circle', { r: 4, fill: vio }, pg), b: K.s('circle', { r: 4, fill: vio }, pg) }); }
+    const links = K.s('g', {}, pg);
+    for (let i = 0; i < 6; i++) { const z = pairs[i].z; K.s('line', { x1: X(z[0]), y1: Y(z[1]), x2: X(-z[0]), y2: Y(-z[1]), stroke: K.c('muted'), 'stroke-width': 1.5, 'stroke-dasharray': '5 6' }, links); }
+    XK.timed(ctx, links, 'noise', 'twin+0.3');
+    K.chip(ctx, { text: `SCHEMATIC paths · endpoints: model C, Γ = ${SM.gamma}, seed 0`, kind: 'generated', maxWidth: 600, x: B[0] - 80, y: B[3] - 6, at: 'twin-0.15', out: 'every-0.3' });
+    // balance under the plane (mirrored pairs: exactly half on each side)
+    const bal = K.s('g', {}, svg), BX = (B[0] + B[2]) / 2, BY = B[3] - 28;
+    K.s('line', { x1: BX - 170, x2: BX + 170, y1: BY, y2: BY, stroke: K.c('fg-2'), 'stroke-width': 4 }, bal);
+    K.s('path', { d: `M${BX - 14},${BY + 22} L${BX},${BY} L${BX + 14},${BY + 22} Z`, fill: K.c('chalk') }, bal);
+    K.s('rect', { x: BX - 190, y: BY - 22, width: 40, height: 20, fill: K.c('b-neg') }, bal); K.s('rect', { x: BX + 150, y: BY - 22, width: 40, height: 20, fill: K.c('b') }, bal);
+    XK.timed(ctx, bal, 'every-0.15', 'swap-0.15');
+    XK.lab(ctx, '½ · ½', BX, BY + 26, { anchor: 'c', cls: 'small', at: 'every', out: 'swap-0.15' });
+    const KN = P.knob;
+    K.knob(ctx, { x: B[0] + 50, y: B[1] + 40, r: 40, min: KN.min, max: KN.max, window: KN.window, label: 'Γ', labelDy: 66, fmt: (v) => v.toFixed(2), at: 'every+0.8', out: 'swap-0.15',
+      keys: [{ at: 'every+0.8', v: KN.min, dur: 0 }, { at: KN.sweep_at, v: KN.max, dur: KN.dur }] });
+    K.chip(ctx, { text: "E1: model C's lopsidedness on the noise floor, all 21 Γ · R:873", kind: 'plain', maxWidth: 760, x: 120, y: 790, at: 'every+1.4', out: 'loss-0.2' });
+    // ---- right: the proof ----
+    const PR = P.proof;
+    let cond = null;
+    PR.lines.forEach((L, k) => {
+      const y = PR.box[1] + 10 + k * 116, parts = L.tex.split('\\quad');
+      K.equation(ctx, { tex: parts[0], x: PR.box[0], y, size: 34, anchor: 'left', at: L.at + '-0.15', reveal: [] });
+      if (parts[1]) cond = K.equation(ctx, { tex: parts[1], x: PR.box[0] + 40, y: y + 56, size: 32, anchor: 'left', at: L.at + '+0.3', reveal: [] });
+      XK.lab(ctx, L.tag, PR.box[0] + (parts[1] ? 40 : 10), y + (parts[1] ? 102 : 56), { cls: 'mono', at: L.at + '+0.5' });
+    });
+    K.pen(ctx, { kind: 'box', target: cond.root, pad: 8, at: PR.lines[2].box_condition_at });
+    K.chip(ctx, { text: 'cost ×2 · E1: ≈ 0.5 s vs 0.25 s per 1,000 samples, shared CPU · R:885', kind: 'plain', maxWidth: 900, x: 120, y: 776, at: 'cost-0.15', out: 'untested-0.2' });
+    K.chip(ctx, { text: 'classical: Köhler, Klein & Noé 2020 · R:412, P8:347', kind: 'plain', x: 860, y: 280, at: 'cost+0.4', out: 'untested-0.2' });
+    // ---- swap: the schematic VKS cylinder ----
+    const VB = P.vks.box, vx = (VB[0] + VB[2]) / 2, vy = (VB[1] + VB[3]) / 2 - 10, W = 160, Hh = 150;
+    const vg = K.s('g', {}, svg), body = K.s('g', {}, vg), ink = K.c('fg-2');
+    K.s('path', { d: `M${vx - W},${vy - Hh} L${vx - W},${vy + Hh} M${vx + W},${vy - Hh} L${vx + W},${vy + Hh}`, stroke: ink, 'stroke-width': 3, fill: 'none' }, body);
+    [-1, 1].forEach((s) => K.s('ellipse', { cx: vx, cy: vy + s * Hh, rx: W, ry: 30, fill: 'none', stroke: ink, 'stroke-width': 3 }, body));
+    const disc = (s) => { const y = vy + s * (Hh - 34); K.s('ellipse', { cx: vx, cy: y, rx: W - 40, ry: 18, fill: K.c('panel'), stroke: K.c('matter'), 'stroke-width': 3 }, body);
+      for (let k = 0; k < 4; k++) K.s('line', { x1: vx - (W - 60) + k * (2 * (W - 60) / 3), x2: vx - (W - 60) + k * (2 * (W - 60) / 3), y1: y - s * 4, y2: y - s * 26, stroke: K.c('matter'), 'stroke-width': 4 }, body); };
+    disc(-1); disc(1);
+    K.s('line', { x1: vx - W - 50, x2: vx + W + 50, y1: vy, y2: vy, stroke: K.c('muted'), 'stroke-width': 2, 'stroke-dasharray': '10 8' }, vg);
+    const arrA = K.s('path', { fill: 'none', stroke: K.c('matter'), 'stroke-width': 4 }, body), arrB = K.s('path', { fill: 'none', stroke: K.c('matter'), 'stroke-width': 4 }, body);
+    XK.timed(ctx, vg, tSwap, null, { din: 1.2 });
+    XK.lab(ctx, 'equal speeds: same picture', vx, VB[3] + 6, { anchor: 'c', at: 'swap+1.9', out: 'speeds-0.15' });
+    const kv = P.vks.knob;
+    K.knob(ctx, { x: vx + W + 100, y: vy - 120, r: 40, min: kv.min, max: kv.max, label: kv.label, labelDy: 62, showValue: false, ticks: 2, at: 'speeds-0.15',
+      keys: [{ at: 'speeds-0.15', v: kv.from, dur: 0 }, { at: P.vks.half_turn2_at, v: kv.to, dur: P.vks.half_turn_dur }] });
+    XK.lab(ctx, 'R_π: a half-turn, joint with the asymmetry · untested', vx + 40, VB[3] + 34, { anchor: 'c', at: 'untested-0.15', html: false, cls: 'small' }).innerHTML = K.markup('$R_\\pi$: a half-turn, joint with the asymmetry · untested');
+    K.chip(ctx, { text: 'same proof, untested · R:1187', kind: 'plain', x: 960, y: 280, at: 'untested+0.2' });
+    K.chip(ctx, { text: 'both symmetries: four passes · PhD plan §2.4 · T:633', kind: 'plain', maxWidth: 900, x: 120, y: 776, at: 'untested+0.6' });
+    K.formulaLayer(ctx);
+    ctx.x24 = { pairs, X, Y, pg, body, arrA, arrB, vx, vy, W, Hh, tN: ctx.at('noise-0.15'), tT: ctx.at('twin-0.15'), fd: PL.flow_dur, tSwap,
+      h1: ctx.at(P.vks.half_turn_at), h2: ctx.at(P.vks.half_turn2_at), hd: P.vks.half_turn_dur, tS: ctx.at('speeds-0.15') };
+  },
+  render(t, ctx) {
+    const S = Scene, c = ctx.x24;
+    const out = S.seg(t, c.tSwap, c.tSwap + 0.8, S.ease.linear);
+    c.pg.style.opacity = (1 - out).toFixed(3); c.pg.style.display = out < 1 ? '' : 'none';
+    const pn = S.seg(t, c.tN, c.tN + 0.5, S.ease.linear), f = S.seg(t, c.tT, c.tT + c.fd, S.ease.inOutCubic), br = 1 + 0.015 * Math.sin(2 * Math.PI * t / 3);
+    c.pairs.forEach((p) => { const q = XK.lerp(p.z[0], p.x[0], f) * br, d = XK.lerp(p.z[1], p.x[1], f) * br;
+      p.a.setAttribute('cx', c.X(q).toFixed(1)); p.a.setAttribute('cy', c.Y(d).toFixed(1)); p.b.setAttribute('cx', c.X(-q).toFixed(1)); p.b.setAttribute('cy', c.Y(-d).toFixed(1));
+      p.a.style.opacity = p.b.style.opacity = pn; });
+    // the cylinder: two half-turns about the horizontal axis (scaleY = cos)
+    const p1 = S.seg(t, c.h1, c.h1 + c.hd, S.ease.inOutCubic), p2 = S.seg(t, c.h2, c.h2 + c.hd, S.ease.inOutCubic), k = Math.cos(Math.PI * (p1 + p2));
+    c.body.setAttribute('transform', `translate(0 ${c.vy}) scale(1 ${k.toFixed(4)}) translate(0 ${-c.vy})`);
+    // rotation arrows: impeller A (drawn on top at rest) and B; B speeds up from 'speeds' (it is on top then)
+    const g = S.seg(t, c.tS, c.tS + 0.8, S.ease.outCubic);
+    const arc = (s, len) => { const y = c.vy + s * (c.Hh + 50), a0 = -0.5, a1 = a0 + len; const P = (a) => [c.vx + (c.W - 20) * Math.cos(a), y + 16 * Math.sin(a)];
+      const A = P(a0), Bp = P(a1), Bq = P(a1 - 0.12); return `M${A[0].toFixed(1)},${A[1].toFixed(1)} A${c.W - 20},16 0 0 1 ${Bp[0].toFixed(1)},${Bp[1].toFixed(1)} M${(Bp[0] - 12).toFixed(1)},${(Bp[1] - 10).toFixed(1)} L${Bp[0].toFixed(1)},${Bp[1].toFixed(1)} L${(Bp[0] - 14).toFixed(1)},${(Bp[1] + 8).toFixed(1)}`; };
+    c.arrA.setAttribute('d', arc(-1, 1.6)); c.arrB.setAttribute('d', arc(1, 1.6 + 1.2 * g));
+  },
+});
+</script></body></html>
