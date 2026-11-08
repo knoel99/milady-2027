@@ -119,7 +119,7 @@ the mean · no distribution improved » · puces « the tilt fixes three budgets
 
 ## X3.3 · Le pont vide · ≈ 18 s · reprend X3.3 (P1, « predict »)
 **On voit :** le nuage de 05.2, mais en violet (modèle C à Γ = 0,93) : les points répartis selon D, la
-bande |D| < h à la craie. À droite, la jauge ambre du compteur de péage.
+bande |D| < h à la craie. À droite, la jauge ambre du péage (05.1).
 **Animation :** sur « ne visite jamais le pont » : un interrupteur « missing support » bascule ; les points
 de la bande s'effacent, la bande se hachure, l'aiguille de la jauge tombe à zéro. Pastille PREDICT, deux
 réponses A et B. Silence de 2 s.
@@ -152,7 +152,7 @@ fallback ».
 
 ## X3.4 · Valeur par valeur · ≈ 31 s · reprend X3.4
 **On voit :** même cadre que les barres de X3.2. L'axe vert ne garde que les cinq valeurs de test d'êta ;
-pour chacune, trois barres : V4 (violet pointillé), témoin (gris), V5 avec la perte sur la foule (ambre).
+pour chacune, trois barres : V4 (violet pointillé), témoin (gris), V5 avec la perte de foule (ambre).
 Ligne pointillée « honest noise floor ».
 **Animation :** sur « la plus grande » : le groupe de droite s'allume, les autres pâlissent ; accolade
 « dissipates 2.2× the energy fed in ». Sur « sept virgule sept à deux virgule deux » : la barre V5
@@ -165,7 +165,7 @@ rescaling of the energy level: argued against, not ruled out » · badge MEASURE
 **Voix off :**
 > Et l'autre route, celle qui change l'entraînement ? Regardons chaque valeur de test d'êta. À la plus
 > grande, les instantanés du modèle de base dissipent, en moyenne, plus de deux fois l'énergie injectée.
-> La perte sur la foule fait tomber la distance de sept virgule sept à deux virgule deux. À la plus
+> La perte de foule fait tomber la distance de sept virgule sept à deux virgule deux. À la plus
 > petite, le modèle était déjà bon : rien ne change. Et le témoin, entraîné aussi longtemps sans la perte,
 > ne bouge pas.
 
@@ -174,20 +174,20 @@ rescaling of the energy level: argued against, not ruled out » · badge MEASURE
 **Animation :** sur « les mêmes valeurs » : la rangée de X3.2 revient en fondu sous les groupes, les
 effondrements du sondage alignés avec les plus gros gains ; un trait vertical relie chaque paire. Sur
 « Une seule graine » : la puce « GENERATED · one seed per variant » clignote. Sur « Fin du détour » : tout
-pâlit, une petite icône du compteur de péage apparaît au centre.
+pâlit, une petite icône du péage apparaît au centre.
 **Textes à l'écran (EN) :** « ESS/N of the tilt (X3.2) » · « the loss moves the crowd · weights cannot ».
 **Voix off :**
 > Et regardez : ce sont les mêmes valeurs que celles où le sondage s'effondrait. L'entraînement a
 > déplacé la foule ; les poids n'y arrivaient pas. Une seule graine, quand même.
 >
-> Fin du détour. Retour au compteur de péage.
+> Fin du détour. Retour au péage.
 
 ## X3a.Q · Question pour les encadrants · ≈ 13 s · reprend X3a.Q
 **On voit :** la carte « ASK · Q12 · X3A · S. Cheng / D. Lucor » ; en fond pâle, des barres groupées.
 **Animation :** soulignés au stylo sur « fallback » et « reweighting ».
 **Textes à l'écran (EN) :** texte de Q12 (registre), catégorie FRAMING.
 **Voix off :**
-> Question pour les encadrants : si la perte sur la foule échoue, quel est le plan de repli… puisque la
+> Question pour les encadrants : si la perte de foule échoue, quel est le plan de repli… puisque la
 > repondération échoue justement là où le modèle est mauvais ?
 
 **Durée totale estimée :** 4 min 27 s · **Mots :** ≈ 610
@@ -197,7 +197,8 @@ pâlit, une petite icône du compteur de péage apparaît au centre.
    parler un village où personne n'a été interrogé ».
 2. « Et l'autre route, celle qui change l'entraînement ? » ouvre X3.4 : phrase nouvelle, tirée de R:462
    (deux routes : incliner après coup, ou modifier l'entraînement).
-3. Le passage de main (« Retour au compteur de péage ») précède la carte Q12 ; 09.1 enchaîne sur « Le
-   compteur de péage est de retour », ce qui fait un léger écho voulu. À couper dans 09.1 si c'est trop.
+3. Le passage de main (« Retour au péage ») précède la carte Q12 ; 09.1 enchaîne sur « Vous vous
+   souvenez du péage ? », ce qui fait un léger écho voulu. Termes alignés sur ch05/ch09 : « le péage »,
+   « la perte de foule ».
 4. La note du visuel v2 de X3a.Q (« suivi de ch08.Q ») est périmée : dans l'ordre actuel, c'est 09.1 qui
    suit.

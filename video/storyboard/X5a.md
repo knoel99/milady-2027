@@ -1,4 +1,4 @@
-# X5a · L'usine, poste par poste (≈ 4 min 18 s)
+# X5a · L'usine, poste par poste (≈ 4 min 14 s)
 
 **Objectif :** ouvrir l'usine à données une station à la fois (un pas de solveur, un fichier étiqueté, la
 vie d'une campagne, un nouvel instrument pour le critique) et savoir, pour chaque chiffre, s'il est
@@ -57,7 +57,7 @@ measures it on site », « peak ≈ 15 × state: measured once at 128³ on CPU, 
 > Extrapolé à deux cent cinquante-six au cube : à peu près six gigaoctets. Ça, c'est une estimation, d'où
 > les pointillés. Et sur carte graphique, aucun chronométrage pour l'instant.
 
-## X5.2 · On ouvre un bocal · ≈ 44 s · reprend X5.2
+## X5.2 · On ouvre un bocal · ≈ 40 s · reprend X5.2
 **On voit :** BLUEPRINT. Le bocal étiqueté de 10.2 au centre.
 **Animation :** sur « un bocal » : plongée dans l'étiquette, qui devient la fiche « fields.h5 » avec son
 chemin. Sur « The Well » : l'arborescence se tape ligne par ligne, les entrées de la convention The Well
@@ -65,8 +65,8 @@ en gris. Sur « instantané après instantané » : derrière « velocity » (bl
 (vermillon), une bande de six vignettes glisse ; puis « milady_diagnostics/ » et une mini-courbe. Sur
 « identifiant unique » et « commit » : les deux attributs s'allument. Sur « Le registre » : à droite, le
 registre ; un fil relie l'identifiant du fichier à celui de la ligne. Sur « coupé d'Internet » : les
-lignes du registre se reconstruisent à partir de la fiche (flèche « ingest »). Sur « contrôlé, pas
-scellé » : le tampon « --force » frappe le fichier, la somme de contrôle se réécrit.
+lignes du registre se reconstruisent à partir de la fiche (flèche « ingest »). Sur « vérifiable, pas
+inviolable » : le tampon « --force » frappe le fichier, l'empreinte se réécrit.
 **Textes à l'écran (EN) :** « fields.h5 » · « {campaign}/{uuid}/fields.h5 » · « in grey: The Well
 convention » · « milady_uuid », « milady_git_commit » · « same UUID in the file and in the catalog » ·
 « the checksum lives in the catalog » · « checksummed, not tamper-proof » · puces « MFF · HDF5 following
@@ -78,11 +78,11 @@ simulations, files, diagnostics · not restored: compute time, resources, campai
 > instantané, plus des séries d'énergies et de divergences. Sur l'étiquette : un identifiant unique, et le
 > commit du code qui l'a produit.
 >
-> Le registre répète cet identifiant et ajoute une somme de contrôle. Du coup, un cluster coupé d'Internet
+> Le registre répète cet identifiant et ajoute une empreinte du contenu. Du coup, un cluster coupé d'Internet
 > peut reconstruire ses lignes du registre à partir des seuls fichiers.
 >
-> Et soyons précis : tout à l'heure, j'ai dit « scellé ». C'est contrôlé, pas scellé. Une réécriture
-> forcée met simplement à jour la somme de contrôle.
+> Petite précision honnête : c'est vérifiable, pas inviolable. Une réécriture forcée met simplement à
+> jour l'empreinte.
 
 ## X5.3 · La vie d'une campagne · ≈ 46 s · reprend X5.3 (variante en attente)
 **On voit :** en haut, les sept étapes de la chaîne en petites boîtes grises, de « 1 campaign » à
@@ -105,10 +105,10 @@ factory check, not a criterion of the PhD plan » · badge CONJECTURE, confiance
 > Troisième poste : on suit une campagne entière sur la chaîne. Une commande lit la fiche recette : la
 > nappe plane, onze diffusivités. Le lanceur ouvre une tâche par réglage ; chaque tâche fait tourner seize
 > simulations côte à côte, et écrit un fichier. Et chaque tâche ajoute une ligne au registre : son statut,
-> sa somme de contrôle, son temps de calcul.
+> son empreinte, son temps de calcul.
 >
 > Sauf que… cette campagne n'a pas encore tourné. Alors on parie : les onze tâches vont au bout, chacune
-> avec son fichier contrôlé. Confiance : élevée. Des campagnes de test plus petites ont déjà fini, en
+> avec son fichier et son empreinte. Confiance : élevée. Des campagnes de test plus petites ont déjà fini, en
 > quelques secondes. Et les données du rapport, sorties du même solveur, ont pris environ une demi-heure.
 
 **Note :** la variante « résultat » (v2 X5.3.r1–r8) est à réécrire au même ton quand le fichier
@@ -171,11 +171,11 @@ the report (R:739) ».
 > Question pour les encadrants : quelle mesure de topologie doit juger les champs générés… et quel écart
 > dans le nombre de points X fait échouer un modèle ?
 
-**Durée totale estimée :** 4 min 18 s · **Mots :** ≈ 600
+**Durée totale estimée :** 4 min 14 s · **Mots :** ≈ 590
 
 **Points à valider :**
-1. « Tout à l'heure, j'ai dit scellé » : rappel volontaire de 10.2 (« sealed in a labelled jar ») ; à
-   garder seulement si le storyboard de ch10 dit bien « scellé ».
+1. « Empreinte » pour *checksum* à l'oral, comme le storyboard de ch10 (« une empreinte pour vérifier le
+   contenu ») ; « vérifiable, pas inviolable » traduit « checksummed, not sealed ».
 2. Les « cols et sommets » de la carte de randonnée remplacent « X-points, O-points » à l'oral (les sigles
    restent à l'écran) ; « points O / points X » dits une fois chacun.
 3. « Chaque sommet ou creux est compensé par un col » : formulation orale du résultat de Poincaré–Hopf

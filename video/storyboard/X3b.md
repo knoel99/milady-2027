@@ -1,8 +1,8 @@
 # X3b · La loi de foule en 3D (≈ 1 min 05 s)
 
-**Objectif :** voir la version 3D de l'expérience de la perte sur la foule comme un pari, avec son
+**Objectif :** voir la version 3D de l'expérience de la perte de foule comme un pari, avec son
 critère adapté, sa simulation témoin, sa mesure d'étalement manquante, et la question de l'endroit où
-l'imposer. **À retenir :** la perte sur la foule doit refaire ses preuves en 3D, contre un témoin, sans
+l'imposer. **À retenir :** la perte de foule doit refaire ses preuves en 3D, contre un témoin, sans
 écraser l'étalement de la dissipation, et seulement là où les simulations sont stabilisées.
 **Niveau :** L5. **Version :** longue seulement (inséré après 10.7, avant ch10.Q).
 
@@ -21,7 +21,7 @@ budget error, with the crowd loss » · « 2 · budget error, control run of equ
 > Un mot de plus sur les lois de foule, puisqu'elles aussi doivent passer en trois dimensions. La loi :
 > en moyenne, l'énergie qui entre égale l'énergie qui sort.
 >
-> En deux dimensions, la perte sur la foule avait ramené l'erreur de bilan à six pour cent ; un témoin,
+> En deux dimensions, la perte de foule avait ramené l'erreur de bilan à six pour cent ; un témoin,
 > entraîné aussi longtemps sans elle, restait à quarante-six. Et remarquez : six pour cent, c'est déjà
 > juste au-dessus de la barre.
 
