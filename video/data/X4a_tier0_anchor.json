@@ -1,0 +1,33 @@
+{
+ "meta": {
+  "source": "experiences/resultats/e1_gissinger.json",
+  "sha256": "6f2197324d6fb52cf1564e179955f120c92a86ec5f33bcfa42673114ad949304",
+  "generator": "tools/data_X4a.py",
+  "extracted": "2026-11-08",
+  "stamp": "DATA · E1 · first round of tier 0",
+  "note": "recorded E1 results (2 seeds); asym per Gamma = seed mean; Rice on model C seed 0 (grille_fine); R:832, R:875, R:883"
+ },
+ "first_round": {
+  "asym_C_min": 0.0037,
+  "asym_C_max": 0.00485,
+  "asym_floor": 0.00399,
+  "n_gen": 10000,
+  "seeds": 2,
+  "resid_loss": 0.01132,
+  "resid_control": 0.02244,
+  "resid_ratio": 1.983,
+  "rice_far_cumulative": 0.1374,
+  "rice_near_cumulative": 0.4155,
+  "rice_far_pointwise_max": 0.6537,
+  "rice_ranges": {
+   "far": [
+    0.89,
+    1.0
+   ],
+   "near": [
+    0.865,
+    0.885
+   ]
+  }
+ }
+}

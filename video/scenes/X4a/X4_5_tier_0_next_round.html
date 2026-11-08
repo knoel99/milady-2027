@@ -1,0 +1,97 @@
+<!doctype html>
+<html lang="en"><head><meta charset="utf-8">
+<title>X4.5 Tier 0, the next round</title>
+<link rel="stylesheet" href="../../vendor/katex/katex.min.css">
+<link rel="stylesheet" href="../../runtime/theme.css">
+<link rel="stylesheet" href="X4a.css">
+<script src="../../vendor/katex/katex.min.js"></script>
+<script src="../../runtime/scene.js"></script>
+<script src="../../runtime/components/kit.js"></script>
+<script src="../../runtime/components/hud.js"></script>
+<script src="../../runtime/components/plot.js"></script>
+<script src="../../runtime/components/equation.js"></script>
+<script src="../../runtime/components/motifs.js"></script>
+<script src="../../runtime/components/cards.js"></script>
+<script src="../../runtime/components/seat.js"></script>
+<script src="X4a_kit.js"></script>
+<style>
+  svg[data-kit="seat"] text.kt-label { font-size: 28px; }
+  .kit-seat-col { left: 1256px !important; width: 568px !important; }
+  .x45-tile { position: absolute; box-sizing: border-box; border: 2px solid var(--matter); border-radius: 10px; background: var(--panel); padding: 16px 20px; z-index: 14; }
+</style>
+</head><body><div id="stage"></div>
+<script>
+/* X4.5 Tier 0, the next round (L5, NIGHT, PENDING: CONJECTURE medium). Staircase with tier 0 lit; three tiles (three
+   seeds, the DQVU model card from the script's labels, the joint mirror R_π with the Γ knob); then Kit.seat 'lamps' for
+   data/x4_tier0.json, each lamp carrying its first-round value from data/X4a_tier0_anchor.json (tools/data_X4a.py). */
+Scene.define({
+  duration: 41, register: 'night',
+  cues: { next: 0.4, seeds: 3.0, model: 4.6, mirror: 7.6, lamps: 11.6, bet: 17.4, why: 25.0, catch: 26.6, ask: 33.4 },
+  data: { seat: { url: 'data/x4_tier0.json', optional: true }, anchor: 'data/X4a_tier0_anchor.json' },
+  params: {},
+  setup(ctx) {
+    const K = Kit, S = Scene, P = ctx.params, SE = P.seat, FR = ctx.data.anchor.first_round, TL = P.tiles;
+    window.__EVENTS__ = [{ t: +(ctx.at('lamps') + 0.3).toFixed(3), id: 'pop', gain_db: -24 }];
+    K.badge(ctx, { kind: 'CONJECTURE', confidence: 'medium', at: -0.3 });
+    const SC = P.staircase.box;
+    K.staircase(ctx, { lit: P.staircase.lit, pending: P.staircase.pending, x: SC.x0, y: SC.y0, w: 1100, h: 300, at: -0.3, out: 'seeds-0.3' });
+    XK.lab(ctx, 'tier 0 · three numbers', SC.x0, 530, { cls: 'small', at: 'next', out: 'lamps-0.3' });
+    K.chip(ctx, { text: 'second round', kind: 'plain', x: SC.x0, y: 580, at: 'next+0.2', out: 'lamps-0.3' });
+    const lab = (pre) => ((ctx.script.onscreen && ctx.script.onscreen.labels) || []).find((s) => s.startsWith(pre)) || pre;
+    // tile 1: seeds
+    const tx = TL.x, tw = TL.w, ty = 130, th = 540, out = 'lamps-0.3';
+    const t1 = K.el('div', { class: 'x45-tile' }, ctx.stage); Object.assign(t1.style, { left: tx[0] + 'px', top: ty + 'px', width: tw + 'px', height: th + 'px' });
+    XK.timed(ctx, t1, 'seeds-0.15', out);
+    const sv = K.svgLayer(ctx, 15), s1 = K.s('g', {}, sv);
+    TL.seeds.lanes.forEach((l, k) => { const y = ty + 80 + k * 90, filled = k < TL.seeds.filled;
+      K.s('rect', { x: tx[0] + 20, y, width: tw - 40, height: 40, rx: 6, fill: filled ? K.c('fg-2') : 'none', stroke: K.c('muted'), 'stroke-width': 2, 'stroke-dasharray': filled ? 'none' : '8 6' }, s1);
+      XK.lab(ctx, k < TL.seeds.filled ? l : lab('seed 2'), tx[0] + 20, y + 44, { cls: 'small', at: XK.at(ctx, 'seeds', 0.1 * k), out }); });
+    XK.timed(ctx, s1, 'seeds-0.15', out);
+    XK.lab(ctx, 'first round: 2 seeds', tx[0] + 20, ty + 360, { cls: 'small', color: 'muted', at: 'seeds+0.3', out });
+    XK.lab(ctx, 'first round = E1 · 2 seeds instead of the 3 planned', tx[0] + 20, ty + 410, { w: tw - 40, cls: 'small', color: 'muted', at: 'seeds+0.5', out });
+    // tile 2: DQVU card (text from the script's labels)
+    const dq = XK.card(ctx, tx[1], ty, tw, th, { head: lab('DQVU'), at: 'model-0.15', out }); dq.body.style.fontSize = '28px'; dq.body.innerHTML = [lab('reduced model'), lab('Re 1594'), lab('POD of'), '{metric}' + lab('no DQVU code') + '{/}'].map((x) => K.markup(x)).join('<br><br>');
+    K.lowerThird(ctx, { kind: 'reference', l1: 'Reference', l2: 'Bousquet, Ponty, Botez, Plihon, Nore 2026 · PRFluids 11, 063703', at: 'model+0.4', hold: 4 });
+    // tile 3: the joint mirror
+    const t3 = K.el('div', { class: 'x45-tile' }, ctx.stage); Object.assign(t3.style, { left: tx[2] + 'px', top: ty + 'px', width: tw + 'px', height: th + 'px' });
+    XK.timed(ctx, t3, 'mirror-0.15', out);
+    const m3 = K.s('g', {}, sv), mx = tx[2] + tw / 2, my = ty + 236, ms = 70;
+    K.s('line', { x1: mx - 150, x2: mx + 150, y1: my, y2: my, stroke: K.c('chalk'), 'stroke-width': 3, 'stroke-dasharray': '10 6' }, m3);
+    K.s('line', { x1: mx, x2: mx, y1: my - 100, y2: my + 100, stroke: K.c('muted'), 'stroke-width': 2 }, m3);
+    K.s('text', { x: mx + 160, y: my + 10, class: 'kt-tick' }, m3, 'Q'); K.s('text', { x: mx + 10, y: my + 96, class: 'kt-tick' }, m3, 'D');
+    const pt = K.s('circle', { cx: mx + 1.0 * ms, r: 11, fill: K.c('b') }, m3), ghostP = K.s('circle', { cx: mx + 1.0 * ms, cy: my - 1.2 * ms, r: 11, fill: 'none', stroke: K.c('b'), 'stroke-width': 2, 'stroke-dasharray': '4 4' }, m3);
+    XK.timed(ctx, m3, 'mirror-0.15', out);
+    const KN = TL.mirror.knob;
+    K.knob(ctx, { x: mx, y: ty + 430, r: 46, min: -1, max: 1, label: KN.label, labelDy: 70, ticks: 2, fmt: (v) => K.fmt(v, 2), at: 'mirror-0.15', out,
+      keys: [{ at: 'mirror-0.15', v: KN.from, dur: 0 }, { at: 'mirror+0.6', v: KN.to, dur: KN.dur }] });
+    XK.lab(ctx, lab('joint mirror').replace('R_π', '$R_\\pi$'), tx[2] + 20, ty + 16, { cls: 'small', w: tw - 40, at: 'mirror', out });
+    XK.lab(ctx, lab('R_π: D'), tx[2] + 20, ty + 90, { cls: 'small', w: tw - 40, at: 'mirror+0.3', out }).innerHTML = K.markup(lab('R_π: D').replace('R_π', '$R_\\pi$'));
+    XK.lab(ctx, lab('runs at Γ'), mx + 62, ty + 400, { cls: 'small', color: 'param', at: 'mirror+1.6', out });
+    // ---- the seat (lamps) ----
+    const fr = { x: 216, y: 400, w: 960, h: 300 };
+    const lamps = SE.lamps.map((l) => {
+      let a = 'not measured yet';
+      if (l.id === 'a') a = `first round, ${FR.seeds} seeds: ${FR.asym_C_min.toFixed(4)} to ${FR.asym_C_max.toFixed(4)} vs floor ${FR.asym_floor.toFixed(4)}`;
+      if (l.id === 'b') a = `first round: ×${FR.resid_ratio.toFixed(2)} (${FR.resid_loss.toFixed(4)} vs ${FR.resid_control.toFixed(4)})`;
+      if (l.id === 'c') a = `seed 0: ${Math.round(100 * FR.rice_far_cumulative)} % far (pointwise up to ${Math.round(100 * FR.rice_far_pointwise_max)} %), ${Math.round(100 * FR.rice_near_cumulative)} % near`;
+      return { id: l.id, label: l.label, rule: `${l.rule} · ${a}` }; });
+    K.seat(ctx, { type: 'lamps', variant: ctx.variant, data: ctx.data.seat, tag: SE.tag, frame: fr, lamps, lampsTitle: SE.lampsTitle,
+      bet: SE.bet, confidence: SE.confidence, criterion: SE.criterion, source: SE.source, ask: SE.ask,
+      cues: { frame: 'lamps-0.15', bet: 'bet-0.15', criterion: 'bet+1.5', ask: 'ask-0.15', data: 'lamps' } });
+    const row = Math.min(118, (fr.h - 20) / 4), y0 = fr.y + (fr.h - row * 4) / 2, ly = (i) => y0 + row * i + row / 2;
+    const txt = (k) => Array.from(ctx.stage.querySelectorAll('svg[data-kit="seat"] text')).find((e) => e.textContent.startsWith(SE.lamps[k].rule + ' ·'));
+    void txt;
+    K.pen(ctx, { kind: 'arrow', from: [112, ly(1) + 44], to: [176, ly(1) + 26], at: 'bet+0.6', seed: 'b' });
+    K.pen(ctx, { kind: 'arrow', from: [112, ly(0) + 44], to: [176, ly(0) + 26], at: 'catch+0.2', seed: 'a' });
+    K.lowerThird(ctx, { kind: 'source', data: ctx.data.anchor, at: 'lamps+0.6', hold: 4 });
+    XK.lab(ctx, ctx.script.onscreen && ctx.script.onscreen.chips ? ctx.script.onscreen.chips[2] : '', 1256, 640, { w: 560, cls: 'small', color: 'muted', at: 'bet+2.0', out: 'ask-0.4' });
+    const fl = ((ctx.script.onscreen && ctx.script.onscreen.formulas) || []).map((f) => ({ tex: f.tex, at: f.cue, out: f.out || (f.cue === 'catch' ? 'ask-0.3' : undefined) }));
+    if (fl.length) K.formulaLayer(ctx, { items: fl });
+    ctx.x45 = { pt, ghostP, mx, my, ms, tM: ctx.at('mirror+0.6'), dur: KN.dur };
+  },
+  render(t, ctx) {
+    const S = Scene, c = ctx.x45, p = S.spring(S.seg(t, c.tM, c.tM + c.dur, S.ease.linear), 0.02);
+    c.pt.setAttribute('cy', (c.my - 1.2 * c.ms * (1 - 2 * p)).toFixed(1));
+  },
+});
+</script></body></html>

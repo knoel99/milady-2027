@@ -1,0 +1,148 @@
+<!doctype html>
+<html lang="en"><head><meta charset="utf-8">
+<title>X4.3 Waiting times need the movie</title>
+<link rel="stylesheet" href="../../vendor/katex/katex.min.css">
+<link rel="stylesheet" href="../../runtime/theme.css">
+<link rel="stylesheet" href="X4a.css">
+<script src="../../vendor/katex/katex.min.js"></script>
+<script src="../../runtime/scene.js"></script>
+<script src="../../runtime/components/kit.js"></script>
+<script src="../../runtime/components/hud.js"></script>
+<script src="../../runtime/components/plot.js"></script>
+<script src="../../runtime/components/equation.js"></script>
+<script src="../../runtime/components/motifs.js"></script>
+<script src="../../runtime/components/cards.js"></script>
+<script src="../../runtime/components/seat.js"></script>
+<script src="X4a_kit.js"></script>
+</head><body><div id="stage"></div>
+<script>
+/* X4.3 Waiting times need the movie (L4, NIGHT, PROVED: Prop. 2.32). Two synthetic Gaussian signals with the same
+   snapshot law (one frequency vs two; seeded), their zero crossings and gap histograms; then the waiting-time histogram
+   of the Gissinger model at Γ = 0.9 from a live RK4 integration in setup (illustration; coefficients from the entry,
+   bounded run: see AS BUILT); then generated snapshots of model C at Γ = 0.9 (data/e1_samples_0.9.json) and short runs
+   of the true equations launched from the corridor. */
+Scene.define({
+  duration: 36, register: 'night',
+  cues: { proved: 0.4, twins: 2.2, gaps: 8.0, dials: 12.4, movie: 21.4, short: 24.6 },
+  data: { gen: 'data/e1_samples_0.9.json' },
+  params: {},
+  setup(ctx) {
+    const K = Kit, S = Scene, P = ctx.params, TW = P.twins, GI = P.gissinger, MV = P.movie;
+    K.badge(ctx, { kind: 'PROVED', note: 'Prop. 2.32 · waiting-time shape: Gissinger 2012, Fig. 12 (context)', at: -0.3 });
+    XK.title(ctx, 'Waiting times need the movie', 'proved-0.15', { y: 110, out: 'dials-0.3' });
+    // ---- twins ----
+    const w = TW.omega, w1 = w * TW.omega1_factor, w2 = w * TW.omega2_factor, Tw = TW.t_window_periods * 2 * Math.PI / w;
+    const rng = S.rng(TW.seed), nrm = () => XK.gauss(rng)[0];
+    const D1 = (c, t) => c[0] * Math.cos(w * t) + c[1] * Math.sin(w * t);
+    const D2 = (c, t) => (c[0] * Math.cos(w1 * t) + c[1] * Math.sin(w1 * t) + c[2] * Math.cos(w2 * t) + c[3] * Math.sin(w2 * t)) / Math.SQRT2;
+    const zeros = (f, c) => { const z = []; let p = f(c, 0); const n = 800; for (let i = 1; i <= n; i++) { const t = Tw * i / n, v = f(c, t); if (p * v < 0) z.push(t - Tw / n * v / (v - p)); p = v; } return z; };
+    const c1 = [nrm(), nrm()]; let c2 = null, best = -1;
+    for (let k = 0; k < 12; k++) { const c = [nrm(), nrm(), nrm(), nrm()], z = zeros(D2, c); if (z.length < 4) continue; const g = z.slice(1).map((v, i) => v - z[i]), m = g.reduce((a, b) => a + b, 0) / g.length, v = g.reduce((a, b) => a + (b - m) ** 2, 0) / g.length / (m * m); if (v > best) { best = v; c2 = c; } }
+    const rows = TW.rows, svg = K.svgLayer(ctx, 12), tw = K.s('g', {}, svg), ev = [];
+    const drawRow = (f, c, R, k) => {
+      const zy = (R.y0 + R.y1) / 2, amp = (R.y1 - R.y0) / 2 / 2.6, X = (t) => R.x0 + (R.x1 - R.x0) * t / Tw;
+      K.s('line', { x1: R.x0, x2: R.x1, y1: zy, y2: zy, stroke: K.c('muted'), 'stroke-width': 2 }, tw);
+      let d = ''; for (let i = 0; i <= 600; i++) { const t = Tw * i / 600; d += (i ? 'L' : 'M') + X(t).toFixed(1) + ',' + (zy - amp * f(c, t)).toFixed(1); }
+      XK.drawOn(ctx, K.s('path', { d, fill: 'none', stroke: K.c('b'), 'stroke-width': 4 }, tw), 'twins-0.15', 2.5);
+      const tg = ctx.at('gaps-0.15'), z = zeros(f, c);
+      z.forEach((t) => { const tk = K.s('line', { x1: X(t), x2: X(t), y1: zy - 16, y2: zy + 16, stroke: K.c('chalk'), 'stroke-width': 4 }, tw), at = tg + 2.4 * t / Tw;
+        XK.timed(ctx, tk, at, null, { din: 0.1 }); ev.push({ t: +at.toFixed(3), id: 'tick', gain_db: -22 }); });
+      XK.lab(ctx, R.label, R.x1, R.y0 - 6, { anchor: 'r', cls: 'small', at: 'twins', out: 'dials-0.3' });
+    };
+    drawRow(D1, c1, rows[0], 0); drawRow(D2, c2, rows[1], 1);
+    window.__EVENTS__ = ev;
+    // gap histograms (D1: spike at π/ω; D2: gaps of 2,000 realisations)
+    const GH = P.gaps_hist, gmax = 2.5 * Math.PI / w, nb = 30, h2 = new Float64Array(nb);
+    for (let r = 0; r < 2000; r++) { const c = [nrm(), nrm(), nrm(), nrm()], z = zeros(D2, c); for (let i = 1; i < z.length; i++) { const k = Math.floor((z[i] - z[i - 1]) / gmax * nb); if (k < nb) h2[k]++; } }
+    const hm = Math.max(...h2), gx0 = rows[0].x0 + 560, gw = 380;
+    [0, 1].forEach((k) => { const y = GH.rows_y[k] + GH.h - 4; K.s('line', { x1: gx0, x2: gx0 + gw, y1: y, y2: y, stroke: K.c('muted'), 'stroke-width': 1.5 }, tw);
+      for (let b = 0; b < nb; b++) { const hh = k === 0 ? (Math.floor(Math.PI / w / gmax * nb) === b ? GH.h - 4 : 0) : (GH.h - 4) * h2[b] / hm; if (hh > 0) { const r = K.s('rect', { x: gx0 + gw * b / nb, y: y - hh, width: gw / nb - 1, height: hh, fill: K.c('metric') }, tw); XK.timed(ctx, r, 'gaps+0.8', null); } } });
+    XK.lab(ctx, 'metronome', gx0 + gw + 16, GH.rows_y[0] + 4, { cls: 'small', at: 'gaps+1.0', out: 'dials-0.3' });
+    XK.lab(ctx, 'uneven gaps', gx0 + gw + 16, GH.rows_y[1] + 4, { cls: 'small', at: 'gaps+1.2', out: 'dials-0.3' });
+    XK.lab(ctx, 'gap between zeros', gx0, GH.rows_y[1] + GH.h + 4, { cls: 'small', color: 'muted', at: 'gaps+1.2', out: 'dials-0.3' });
+    XK.timed(ctx, tw, -0.3, 'dials-0.3');
+    // clouds: exact draws of N(0, diag(1, ω²)) for both, sliding together
+    const CB = TW.cloud_box, CV = K.canvasLayer(ctx, 6, { x: CB.x0, y: CB.y0, w: CB.x1 - CB.x0, h: CB.y1 - CB.y0 }, null, { reset: true });
+    const cl = [[], []]; for (let k = 0; k < 2; k++) for (let i = 0; i < TW.n_cloud; i++) { const g = XK.gauss(rng); cl[k].push([g[0], w * g[1]]); }
+    XK.lab(ctx, 'snapshots of one', CB.x0, CB.y0 - 40, { cls: 'small', at: 'twins+0.3', out: 'twins+2.3' });
+    XK.lab(ctx, 'snapshots of two', CB.x1, CB.y0 - 40, { anchor: 'r', cls: 'small', at: 'twins+0.3', out: 'twins+2.3' });
+    XK.lab(ctx, 'same snapshot law', (CB.x0 + CB.x1) / 2, CB.y0 - 40, { anchor: 'c', at: 'twins+2.4', out: 'dials-0.3' });
+    XK.lab(ctx, 'D', CB.x1 - 30, (CB.y0 + CB.y1) / 2 + 6, { cls: 'small', color: 'b', at: 'twins', out: 'dials-0.3' });
+    XK.lab(ctx, 'Ḋ', (CB.x0 + CB.x1) / 2 + 10, CB.y0, { cls: 'small', color: 'b', at: 'twins', out: 'dials-0.3' });
+    const gg = K.s('g', {}, svg), gcx = (CB.x0 + CB.x1) / 2, gcy = CB.y1 + 120;
+    K.s('path', { d: `M${gcx - 60},${gcy} A60,60 0 0 1 ${gcx + 60},${gcy}`, fill: 'none', stroke: K.c('metric'), 'stroke-width': 5 }, gg);
+    K.s('line', { x1: gcx, y1: gcy, x2: gcx + 45 * Math.cos(2.2), y2: gcy - 45 * Math.sin(2.2), stroke: K.c('fg'), 'stroke-width': 4 }, gg);
+    XK.timed(ctx, gg, 'twins+2.6', 'dials-0.3');
+    XK.lab(ctx, 'Rice rate: the same', gcx, gcy + 10, { anchor: 'c', cls: 'small', at: 'twins+2.8', out: 'dials-0.3' });
+    K.chip(ctx, { text: 'illustration · synthetic Gaussian signals', kind: 'schematic', x: 160, y: 640, at: 'twins', out: 'dials-0.3' });
+    // ---- Gissinger waits (bounded RK4 run, scalar code) ----
+    const mu = GI.coef_Q, nu = GI.coef_D, G = GI.gamma, dt = 0.02, Tend = GI.t_transient + 150000;
+    let q = GI.x0[0], d = GI.x0[1], v = GI.x0[2], prev = d, last = -1, t = 0; const waits = [];
+    const f = (q, d, v) => [mu * q - v * d, -nu * d + v * q, G - v + q * d];
+    while (t < Tend) {
+      const a = f(q, d, v), b = f(q + dt / 2 * a[0], d + dt / 2 * a[1], v + dt / 2 * a[2]), c = f(q + dt / 2 * b[0], d + dt / 2 * b[1], v + dt / 2 * b[2]), e = f(q + dt * c[0], d + dt * c[1], v + dt * c[2]);
+      q += dt / 6 * (a[0] + 2 * b[0] + 2 * c[0] + e[0]); d += dt / 6 * (a[1] + 2 * b[1] + 2 * c[1] + e[1]); v += dt / 6 * (a[2] + 2 * b[2] + 2 * c[2] + e[2]); t += dt;
+      if (t > GI.t_transient && d * prev < 0) { if (last >= 0) waits.push(t - last); last = t; } prev = d;
+    }
+    const HB = GI.hist_box, wb = GI.bins, wh = new Float64Array(wb); waits.forEach((x) => { const k = Math.floor(x / GI.wait_max * wb); if (k < wb) wh[k]++; });
+    const PH = K.plot(ctx, { box: { x0: HB.x0, x1: HB.x1, y0: HB.y0 + 20, y1: HB.y1 - 40 }, at: 'dials-0.15', out: 'movie-0.15',
+      x: { label: 'wait between flips (time units)', min: 0, max: GI.wait_max, ticks: [0, 250, 500, 750, 1000] }, y: { label: 'count (log scale)', min: 0.8, max: Math.max(...wh) * 2, log: true, ticks: [1, 10, 100] } });
+    const bars = []; for (let k = 0; k < wb; k++) if (wh[k] > 0) { const x0 = PH.sx(GI.wait_max * k / wb), x1 = PH.sx(GI.wait_max * (k + 1) / wb);
+      const r = K.s('rect', { x: x0 + 1, width: x1 - x0 - 2, y: PH.sy(wh[k]), height: PH.box.y1 - PH.sy(wh[k]), fill: K.c('metric') }, PH.root); bars.push({ r, f: k / wb }); }
+    // tail fit (log-linear least squares over the bins beyond the median wait)
+    const srt = waits.slice().sort((a, b) => a - b), med = srt[Math.floor(srt.length / 2)];
+    let sx = 0, sy = 0, sxx = 0, sxy = 0, n = 0; for (let k = 0; k < wb; k++) { const xc = GI.wait_max * (k + 0.5) / wb; if (xc > med && wh[k] > 0) { const ly = Math.log(wh[k]); sx += xc; sy += ly; sxx += xc * xc; sxy += xc * ly; n++; } }
+    const sl = (n * sxy - sx * sy) / (n * sxx - sx * sx), ic = (sy - sl * sx) / n;
+    const fx0 = med, fx1 = GI.wait_max * 0.95;
+    const fit = K.s('line', { x1: PH.sx(fx0), y1: PH.sy(Math.exp(ic + sl * fx0)), x2: PH.sx(fx1), y2: PH.sy(Math.max(0.9, Math.exp(ic + sl * fx1))), stroke: K.c('chalk'), 'stroke-width': 3, 'stroke-dasharray': '10 8' }, PH.root);
+    XK.timed(ctx, fit, 'dials+2.0', null);
+    XK.lab(ctx, `Γ = ${G}`, HB.x1 - 10, HB.y0 + 30, { anchor: 'r', color: 'param', at: 'dials', out: 'movie-0.15' });
+    K.pen(ctx, { kind: 'brace', box: { x: PH.sx(0), y: HB.y0 + 40, w: PH.sx(220) - PH.sx(0), h: 10 }, at: 'dials+1.6', out: 'movie-0.15' });
+    XK.lab(ctx, 'comb: quantized short waits (unstable orbits)', PH.sx(0) + 10, HB.y0 + 92, { cls: 'small halo', at: 'dials+1.8', out: 'movie-0.15' });
+    XK.lab(ctx, 'memoryless tail · exponential', PH.sx(560), PH.sy(Math.exp(ic + sl * 560)) - 60, { cls: 'small halo', at: 'dials+2.2', out: 'movie-0.15' });
+    K.chip(ctx, { text: 'illustration · live integration of the model · shape as in Gissinger 2012, Fig. 12', kind: 'plain', maxWidth: 900, x: 1340, y: 210, at: 'dials+0.6', out: 'movie-0.15' });
+    K.lowerThird(ctx, { kind: 'reference', l1: 'Reference', l2: 'Gissinger 2012 · EPJ B 85, 137 · Fig. 12', at: 'dials+0.5', hold: 5 });
+    // ---- movie ----
+    const MB = MV.cloud_box, GV = ctx.data.gen.variants[MV.variant], XS = S.f32(GV.x), NG = GV.n;
+    const QX = (q) => MB.x0 + (MB.x1 - MB.x0) * (q + 3) / 6, DY = (dd) => (MB.y0 + MB.y1) / 2 - (MB.y1 - MB.y0) / 2 * dd / 3;
+    const MC = K.canvasLayer(ctx, 6, { x: MB.x0, y: MB.y0, w: MB.x1 - MB.x0, h: MB.y1 - MB.y0 }, null, { reset: true });
+    const mg = K.s('g', {}, svg);
+    K.s('rect', { x: MB.x0, y: MB.y0, width: MB.x1 - MB.x0, height: MB.y1 - MB.y0, fill: 'none', stroke: K.c('model'), 'stroke-width': 2, 'stroke-dasharray': '12 8' }, mg);
+    const cor = K.s('rect', { x: MB.x0, y: DY(MV.corridor), width: MB.x1 - MB.x0, height: DY(-MV.corridor) - DY(MV.corridor), fill: K.rgba(K.c('chalk'), 0.08) }, mg);
+    XK.timed(ctx, mg, 'movie-0.15', null);
+    XK.lab(ctx, `generated snapshots · model C · Γ = ${ctx.data.gen.gamma}`, MB.x0, MB.y0 - 44, { cls: 'small', color: 'model', at: 'movie' });
+    XK.lab(ctx, `corridor · |D| < ${MV.corridor}`, MB.x1 - 10, DY(MV.corridor) - 40, { anchor: 'r', cls: 'small halo', at: 'movie+0.4', z: 32 });
+    K.chip(ctx, { text: 'GENERATED', kind: 'generated', x: MB.x1 - 190, y: MB.y0 + 12, at: 'movie' });
+    // short runs from corridor points
+    const cand = []; for (let i = 0; i < NG; i++) if (Math.abs(XS[3 * i + 1]) < MV.corridor) cand.push(i);
+    const lr = S.rng('x4-launch'), runs = [];
+    for (let k = 0; k < MV.n_launch && cand.length; k++) { const i = cand[Math.floor(lr() * cand.length)]; let Q = XS[3 * i], Dd = XS[3 * i + 1], V = XS[3 * i + 2]; const pts = [[Q, Dd]];
+      const g0 = ctx.data.gen.gamma, ff = (q, d, v) => [mu * q - v * d, -nu * d + v * q, g0 - v + q * d];
+      for (let s = 0; s < MV.run_length / 0.02; s++) { const a = ff(Q, Dd, V), b = ff(Q + 0.01 * a[0], Dd + 0.01 * a[1], V + 0.01 * a[2]), c = ff(Q + 0.01 * b[0], Dd + 0.01 * b[1], V + 0.01 * b[2]), e = ff(Q + 0.02 * c[0], Dd + 0.02 * c[1], V + 0.02 * c[2]);
+        Q += 0.02 / 6 * (a[0] + 2 * b[0] + 2 * c[0] + e[0]); Dd += 0.02 / 6 * (a[1] + 2 * b[1] + 2 * c[1] + e[1]); V += 0.02 / 6 * (a[2] + 2 * b[2] + 2 * c[2] + e[2]); if (s % 10 === 9) pts.push([Q, Dd]); }
+      const pth = K.s('path', { d: 'M' + pts.map((p) => QX(Math.max(-3, Math.min(3, p[0]))).toFixed(1) + ',' + DY(Math.max(-3, Math.min(3, p[1]))).toFixed(1)).join('L'), fill: 'none', stroke: K.c('chalk'), 'stroke-width': 2.5 }, svg);
+      XK.drawOn(ctx, pth, XK.at(ctx, 'short', 0.2 * k), 1.6); runs.push(pth); }
+    XK.lab(ctx, 'short runs of the true equations, from generated states', MB.x0, MB.y1 + 14, { cls: 'small', at: 'short+0.6' });
+    K.chip(ctx, { text: 'open question · PhD plan, T:131', kind: 'plain', x: 1340, y: 650, at: 'short+0.8' });
+    XK.lab(ctx, '?', 1150, 380, { size: 72, at: 'short+1.4', color: 'chalk' });
+    K.lowerThird(ctx, { kind: 'source', data: ctx.data.gen, at: 'short+2.0', hold: 3 });
+    K.formulaLayer(ctx, { label: 'Formula · T, Prop. 2.32 · Gissinger 2012' });
+    ctx.x43 = { CV, cl, CB, MC, XS, NG, QX, DY, MB, MV, cor, PH, bars, HB, T: { tw: ctx.at('twins-0.15'), d: ctx.at('dials-0.15'), m: ctx.at('movie-0.15') } };
+  },
+  render(t, ctx) {
+    const S = Scene, K = Kit, c = ctx.x43, T = c.T;
+    const g = c.CV.g; g.clearRect(0, 0, c.CV.w, c.CV.h);
+    const a = S.seg(t, T.tw, T.tw + 0.5, S.ease.linear) * (1 - S.seg(t, T.d - 0.15, T.d + 0.3, S.ease.linear)), j = S.seg(t, T.tw + 0.6, T.tw + 2.4, S.ease.inOutSine);
+    if (a > 0) { const W = c.CV.w, H = c.CV.h; g.fillStyle = K.c('b'); g.globalAlpha = 0.4 * a;
+      [0, 1].forEach((k) => { const off = (k ? 1 : -1) * W * 0.22 * (1 - j); for (const p of c.cl[k]) g.fillRect(W / 2 + off + p[0] * W * 0.12 - 1.5, H / 2 - p[1] * H * 0.12 - 1.5, 3, 3); }); }
+    // waiting-time bars grow from the left
+    const pb = S.seg(t, T.d, T.d + 1.6, S.ease.inOutSine); c.bars.forEach((b) => { b.r.style.opacity = pb > b.f ? 1 : 0; });
+    const shrink = S.seg(t, T.m, T.m + 1.0, S.ease.inOutCubic);
+    // movie cloud
+    const m = c.MC.g; m.clearRect(0, 0, c.MC.w, c.MC.h); const am = S.seg(t, T.m, T.m + 0.6, S.ease.linear);
+    if (am > 0) { m.fillStyle = K.c('model'); for (let i = 0; i < c.NG; i++) { const q = c.XS[3 * i], d = c.XS[3 * i + 1], inC = Math.abs(d) < c.MV.corridor; m.globalAlpha = am * (inC ? 0.9 : 0.35); m.fillRect(c.QX(q) - c.MB.x0 - 1.5, c.DY(d) - c.MB.y0 - 1.5, 3, 3); } }
+    c.cor.setAttribute('opacity', (0.8 + 0.2 * Math.sin(2 * Math.PI * t / 3)).toFixed(3));
+    void shrink;
+  },
+});
+</script></body></html>
