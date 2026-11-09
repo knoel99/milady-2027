@@ -13,9 +13,9 @@
 **Décompte.** 55 entrées bibliographiques :
 - **46 [vérifié]**, dont 5 complétées par un DOI ou des pages ;
 - **9 [corrigé]** ;
-- **0 [NON CONFIRMÉ]** : aucune référence introuvable.
+- **0 référence introuvable.**
 
-Trois détails secondaires restent non confirmés (voir « Non confirmé » en fin de fichier).
+**3 affirmations [NON CONFIRMÉ]** (voir « Non confirmé » en fin de fichier) : deux détails bibliographiques (statut « spotlight » de Lipman et al. 2023, prénom de Sengupta dans Bansal et al. 2024) et l'affirmation négative « aucun génératif sur des simulations de dynamo », centrale pour le positionnement du sujet.
 
 **Corrections importantes :**
 1. **ECI : l'« incohérence ×310 vs ×4,9 » n'existe pas.** Le Tableau 4 donne la mémoire par lot : 5,4 Go pour 128 échantillons contre 26,4 Go pour 2 échantillons (D-Flow). Par échantillon, l'écart est d'environ ×313, cohérent avec le « ×310 » du texte. L'affirmation inverse du rapport de recherche est fausse.
