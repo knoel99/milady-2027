@@ -9,7 +9,6 @@
 #   GDRIVE_CLIENT_ID, GDRIVE_CLIENT_SECRET  identifiants OAuth « Desktop app » d'un projet Google Cloud
 #   GDRIVE_REFRESH_TOKEN                     jeton de rafraîchissement obtenu avec le périmètre drive.file
 #   GDRIVE_FOLDER_ID (facultatif)            dossier Drive de destination (sinon la racine « Mon Drive »)
-# Voir video/LIVRAISON-DRIVE.md.
 name: drive-upload
 
 on:

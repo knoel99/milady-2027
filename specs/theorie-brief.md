@@ -58,7 +58,7 @@ $$ \nu_0 = \mathbb{E}_\mu\big[\,|\ell(F(\mathbf{x}))|\;\delta(\ell(\mathbf{x}))\
 
 ## 4. Antériorité et positionnement (à respecter dans le rapport et la thèse)
 
-Base de faits vérifiée : `research/donnees-metriques.md` §3 et `research/litterature.md` (scratchpad de la session ; références reprises ci-dessous).
+Base de faits vérifiée : `specs/sources/donnees-metriques.md` §3 et `specs/sources/litterature.md` (références reprises ci-dessous).
 
 **Déjà publié — à citer, ne pas revendiquer :**
 - Invariance ⟺ $\mathbb{E}_\mu[\mathcal{L}\varphi] = 0$ sur un cœur de fonctions test : Echeverría (1982), Ethier & Kurtz (1986), approche par le générateur de Barbour (1988, 1990), discrepances de Stein (Gorham & Mackey 2015 ; Gorham, Duncan, Vollmer, Mackey 2019 ; Liu, Lee, Jordan 2016).
