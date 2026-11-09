@@ -17,6 +17,8 @@ order = []
 for s in tl["scenes"]:
     if s["unit"] not in order:
         order.append(s["unit"])
+if "ch10q" in order:              # v4: « Ouvertures » closes the film
+    order.remove("ch10q"); order.append("ch10q")
 cut = {u: json.load(open(os.path.join(ROOT, "script", u + ".json")))["cut"] for u in order}
 still_ids = {f[:-4] for f in os.listdir(STILLS)}
 
