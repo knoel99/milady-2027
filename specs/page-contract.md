@@ -13,7 +13,7 @@ Créer la page avec `python3 tools/new_page.py <chemin> "Titre" "Sous-titre"` : 
 2. `## Prérequis {#prerequis}` — niveau de départ (L1, L2…), modules du site à lire avant (liens relatifs `../<id>/index.html`).
 3. `## Plan de travail {#plan}` — tableau : séance, durée estimée, niveau (1 = fondations, 2 = cœur, 3 = proche de la recherche ; le niveau ne redescend jamais), contenu, exercices associés. Total d'heures indiqué.
 4. Chapitres numérotés `## 1. Titre {#ch1}`, `## 2. … {#ch2}` … Chaque chapitre : motivation physique ou pratique en une ou deux phrases, définitions, résultats (énoncé + démonstration ou esquisse honnête), exemple chiffré, code Python exécutable, encadré récapitulatif.
-5. `## Exercices {#exercices}` — au moins 8 exercices gradués ★ / ★★ / ★★★, chacun avec une solution complète (*Solution* : …). Au moins un exercice de code.
+5. `## Exercices {#exercices}` — au moins 10 exercices gradués ★ / ★★ / ★★★, chacun avec une solution complète (*Solution* : …). Au moins un exercice de code.
 6. `## Lien avec le stage {#lien-stage}` — où ce module sert dans le stage MilaDy (renvoyer au rapport `../../rapport/index.html#…` et au sujet de thèse `../../these/index.html` quand c'est pertinent).
 7. `## Pour aller plus loin {#plus-loin}` — 3 à 6 lectures commentées.
 8. `## Sources {#sources}` — références complètes (auteurs, année, titre, revue/éditeur, DOI ou URL). Uniquement des références vérifiées.
@@ -84,4 +84,4 @@ Numérotation : `Définition <chapitre>.<n>` (un seul compteur par chapitre pour
 - Phrases complètes, ton d'un cours écrit ; pas de style télégraphique ; une idée par paragraphe.
 - Chaque chiffre de la littérature est sourcé (auteur, année) et figure dans les Sources.
 - Distinguer clairement ce qui est **mesuré dans ce dépôt** (expériences `experiences/`), ce qui est **publié** (avec référence) et ce qui est **conjecturé**.
-- Aucun fait inventé sur les encadrants, l'offre ou le projet MilaDy : ne citer que `research/*.md` vérifié ou l'offre elle-même.
+- Aucun fait inventé sur les encadrants, l'offre ou le projet MilaDy : ne citer que les entrées vérifiées de `specs/sources/*.md` ou l'offre elle-même.

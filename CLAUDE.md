@@ -15,7 +15,7 @@ Lire avant d'écrire une page :
 - `specs/page-contract.md` : structure obligatoire des modules (sections et ancres `{#objectifs}` … `{#sources}`), encadrés Quarto (`def`, `thm`, `proof`, `prop`, `ex`, `note`, `key`, `recap`), règles KaTeX (pas de macro, pas de `\label`), code, figures, style.
 - `specs/notations.md` : notations communes à toutes les pages.
 - `specs/theorie-brief.md` : énoncés et preuves (Propositions 1 à 9) que le rapport et la thèse doivent reprendre **à l'identique**, plan E1–E3, et ce qui est déjà publié (à citer, ne pas revendiquer).
-- `specs/sources/*.md` : bases de faits vérifiés (`litterature`, `dynamo`, `encadrants`, `donnees-metriques`). Seule source autorisée pour les faits sur la littérature, les encadrants, l'offre et le projet. Balises `[vérifié]`, `[corrigé : …]`, `[NON CONFIRMÉ]` : ne jamais utiliser une entrée `[NON CONFIRMÉ]` sans nouvelle vérification. Les mentions `research/*.md` dans les specs désignent ces fichiers.
+- `specs/sources/*.md` : bases de faits vérifiés (`litterature`, `dynamo`, `encadrants`, `donnees-metriques`). Seule source autorisée pour les faits sur la littérature, les encadrants, l'offre et le projet. Balises `[vérifié]`, `[corrigé : …]`, `[NON CONFIRMÉ]` : ne jamais utiliser une entrée `[NON CONFIRMÉ]` sans nouvelle vérification.
 - `specs/infra.md`, `specs/format-donnees.md` : contrat du paquet `milady/` et de `infra/` (guide : `infra/README.md`).
 
 Règles transversales : distinguer ce qui est **mesuré dans ce dépôt**, **publié** (avec référence) ou **conjecturé** ; les chiffres d'expériences cités dans les pages viennent de `experiences/resultats/digest.md` (généré par `experiences/digest.py` à partir des JSON), jamais d'ailleurs.
@@ -36,7 +36,6 @@ NODE_PATH=<node_modules avec katex@0.19.0> node tools/check_katex.mjs $(find . -
 - Ne jamais éditer un `index.html` à la main : toujours `tools/render.py`, qui restaure les balises KaTeX épinglées (SRI) que Quarto retire. Ne pas publier `index_files/` ni `.quarto/`.
 - Toute modification d'une page française se reporte dans `en/<même chemin>/index.qmd` (mêmes ancres, mêmes formules), puis `make_en.py`, rendu des deux pages et `compare_fr_en.py`.
 - Images : variante anglaise `x-en.png` à côté de `x.png` ; `make_en.py` la choisit automatiquement.
-- Le contrat demande ≥ 8 exercices, `check_gates.py` en exige ≥ 10 : la porte fait foi.
 - Les blocs ```` ```python ```` des pages ne sont pas exécutés par Quarto : chacun doit tourner seul en < 30 s sur CPU, sortie recopiée en commentaire.
 
 ## Expériences et tests
@@ -47,4 +46,4 @@ make test                                           # pytest sur tests/ (paquet 
 python -m pytest tests/test_format.py -k <nom>      # un seul test
 ```
 
-`common.py` regroupe le flow matching, l'échantillonneur de Heun, les métriques entre lois et l'inclinaison exponentielle partagés par E1–E3. Les sorties `--quick` (`resultats/*_quick.*`) sont ignorées par git ; seules les sorties complètes sont citées par les pages.
+`common.py` regroupe le flow matching, l'échantillonneur de Heun, les métriques entre lois et l'inclinaison exponentielle partagés par E1–E3. Les sorties `--quick` (`resultats/*_quick.*`, `figures/*_quick.*`) sont ignorées par git ; seules les sorties complètes sont citées par les pages.
