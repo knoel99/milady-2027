@@ -49,4 +49,4 @@ n'existe pas encore en 3D (C:166) : sans elle, le verdict sera « non concluant 
 2. La remarque « six pour cent, c'est déjà juste au-dessus de la barre » est retirée de la voix ; l'écart
    reste visible à l'écran.
 3. La raison « échec à partir d'un modèle biaisé » (R:877) n'est plus dite, faute de temps ; elle reste
-   dans la note de badge.
+   dans les sources de X3.5.
