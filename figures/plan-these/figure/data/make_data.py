@@ -3,7 +3,7 @@
 1. Palier 0 : série D(t) du modèle de Gissinger (2012), mêmes équations et paramètres que E1
    (experiences/e1_gissinger.py) : dQ/dt = mu Q - V D, dD/dt = -nu D + V Q, dV/dt = Gamma - V + Q D,
    mu = 0.119, nu = 0.1, Gamma = 0.9 (au-dessus de la crise des renversements, 0.86-0.87 dans E1).
-2. Palier 1 : un instantané de référence de E2 (MHD 2D forcée, résultats/e2_echantillons_quick.npz,
+2. Palier 1 : un instantané de référence de E2 (MHD 2D forcée, resultats/e2_echantillons.npz, versionné,
    coefficients de Fourier de u et B) : densité de courant j sur la grille, et isolignes du potentiel a
    (lignes de champ de B).
 3. Palier 2 : mode dynamo cinématique ABC de E3 (résultats/e3_modes.npz, Rm = 12, dans la première
@@ -73,7 +73,7 @@ out["gissinger"] = {"t": np.round(tt[::step], 4).tolist(), "D": np.round(dd[::st
 print("fenêtre Gissinger", best, "points", len(tt[::step]))
 
 # ---------- 2. MHD 2D (E2) ----------
-d = np.load(EXP / "e2_echantillons_quick.npz")
+d = np.load(EXP / "e2_echantillons.npz")
 ref = d["ref"]; kx = d["kx"]; ky = d["ky"]
 c = ref[0]  # (4, M) : ux, uy, bx, by (coefficients complexes, demi-plan kx >= 0)
 bx, by = c[2], c[3]

@@ -54,25 +54,25 @@ Référence : {"dEdt_std": 0.3777204303788672, "erreur_taux_rice_ref": 0.0003612
 |---|---|---|---|
 | 0.8 | 0 | 0 | 0.375 |
 | 0.81 | 0 | 0 | – |
-| 0.82 | 0 | 0 | 0.438 |
+| 0.82 | 0 | 0 | 0.4375 |
 | 0.83 | 0 | 0 | – |
-| 0.84 | 0 | 0 | 0.5 |
+| 0.84 | 0 | 0 | 0.4995 |
 | 0.85 | 0 | 0 | – |
-| 0.86 | 0 | 0 | 0.312 |
+| 0.86 | 0 | 0 | 0.3125 |
 | 0.87 | 0.00219 | 0.00211 | – |
 | 0.88 | 0.00335 | 0.00289 | 0.515 |
 | 0.89 | 0.00396 | 0.00381 | – |
-| 0.9 | 0.00465 | 0.00438 | 0.459 |
+| 0.9 | 0.00465 | 0.00438 | 0.4589 |
 | 0.91 | 0.00607 | 0.00568 | – |
-| 0.92 | 0.00769 | 0.00759 | 0.511 |
+| 0.92 | 0.00769 | 0.00759 | 0.5112 |
 | 0.93 | 0.00732 | 0.0081 | – |
-| 0.94 | 0.0091 | 0.00836 | 0.481 |
+| 0.94 | 0.0091 | 0.00836 | 0.4808 |
 | 0.95 | 0.00878 | 0.00789 | – |
 | 0.96 | 0.00935 | 0.00908 | 0.512 |
 | 0.97 | 0.0111 | 0.0116 | – |
 | 0.98 | 0.00997 | 0.00899 | 0.491 |
 | 0.99 | 0.0113 | 0.0122 | – |
-| 1.0 | 0.0112 | 0.0117 | 0.499 |
+| 1.0 | 0.0112 | 0.0117 | 0.4988 |
 
 ### Grille fine (modèle C graine 0 et F graine 0)
 
@@ -120,6 +120,98 @@ Référence : {"dEdt_std": 0.3777204303788672, "erreur_taux_rice_ref": 0.0003612
 | 0.995 | 0.0119 | 0.0122 | 0.0138 | 0.0164 | 0.00842 | 0.009 | 0.0098 |
 | 1.0 | 0.0112 | 0.0112 | 0.0131 | 0.0167 | 0.0075 | 0.0089 | 0.00965 |
 
+### Asymétrie |P(D>0)−½| par Γ (moyenne des graines)
+
+| Γ | jeu | A_reference | B_augmentation | C_equivariant |
+|---|---|---|---|---|
+| 0.8 | entraînement | 0.123 | 0.00435 | 0.0044 |
+| 0.81 | test | 0.0873 | 0.0203 | 0.0043 |
+| 0.82 | entraînement | 0.0608 | 0.00365 | 0.0044 |
+| 0.83 | test | 0.0284 | 0.013 | 0.0047 |
+| 0.84 | entraînement | 0.003 | 0.0049 | 0.0043 |
+| 0.85 | test | 0.0825 | 0.0246 | 0.00475 |
+| 0.86 | entraînement | 0.183 | 0.00395 | 0.00475 |
+| 0.87 | test | 0.0854 | 0.0111 | 0.0047 |
+| 0.88 | entraînement | 0.0181 | 0.00285 | 0.00435 |
+| 0.89 | test | 0.00425 | 0.0143 | 0.00435 |
+| 0.9 | entraînement | 0.0355 | 0.0038 | 0.00445 |
+| 0.91 | test | 0.00915 | 0.00705 | 0.0037 |
+| 0.92 | entraînement | 0.0144 | 0.0051 | 0.0042 |
+| 0.93 | test | 0.00555 | 0.0203 | 0.0044 |
+| 0.94 | entraînement | 0.0145 | 0.00415 | 0.00425 |
+| 0.95 | test | 0.003 | 0.0152 | 0.00435 |
+| 0.96 | entraînement | 0.0184 | 0.00565 | 0.0043 |
+| 0.97 | test | 0.00255 | 0.018 | 0.0038 |
+| 0.98 | entraînement | 0.00425 | 0.0057 | 0.0042 |
+| 0.99 | test | 0.0138 | 0.0128 | 0.00485 |
+| 1.0 | entraînement | 0.0047 | 0.00625 | 0.00435 |
+
+### Dispersion entre graines (écart-type moyen sur les Γ de test)
+
+| variante | dist. énergie | Liouville deg≤2 | Liouville deg 3 |
+|---|---|---|---|
+| C_equivariant | 6.22e-04 | 0.00537 | 0.00393 |
+| F_stationnarite_C | 0.00153 | 0.00182 | 0.00361 |
+| F0_temoin_C | 0.00104 | 0.00811 | 0.00697 |
+
+### Enveloppe par graine de σ(dE/dt)/σ_ref (σ moyen sur les Γ de test, divisé par la référence)
+
+| variante | graine basse | graine haute |
+|---|---|---|
+| F_stationnarite_C | 0.699 | 0.796 |
+| F0_temoin_C | 1.01 | 1.07 |
+| C_court | 1.18 | 1.51 |
+| F_stationnarite_Ccourt | 0.791 | 37.6 |
+| F0_temoin_Ccourt | 1.11 | 1.44 |
+
+Sur C court, la graine 1 a divergé : à chaque Γ, sa valeur est la haute, ce qui sépare les graines.
+
+### C court, graine 0 (valeur basse à chaque Γ) contre son témoin, Γ de test
+
+| métrique | F sur C court, graine 0 | témoin F0, moyenne des graines | témoin F0, graine haute |
+|---|---|---|---|
+| dist. énergie | 0.0111 | 0.00494 | 0.00619 |
+| Liouville deg≤2 | 0.0441 | 0.043 | 0.0526 |
+| Liouville deg 3 | 0.118 | 0.0309 | 0.0371 |
+
+### Inclinaison a posteriori par Γ de test (moyenne des graines, moitié b)
+
+| Γ | ESS/N (A) | Liouville deg≤2 : A moitié → A incliné | ESS/N (C) | Liouville deg≤2 : C moitié → C incliné |
+|---|---|---|---|---|
+| 0.81 | 0.941 | 0.0401 → 0.0241 | 0.975 | 0.0186 → 0.016 |
+| 0.83 | 0.472 | 0.0474 → 1.33 | 0.421 | 0.0585 → 0.121 |
+| 0.85 | 0.882 | 0.0562 → 0.0305 | 0.817 | 0.0428 → 0.0636 |
+| 0.87 | 0.963 | 0.0286 → 0.0287 | 0.871 | 0.0203 → 0.0325 |
+| 0.89 | 0.984 | 0.029 → 0.0142 | 0.587 | 0.037 → 0.111 |
+| 0.91 | 0.987 | 0.0296 → 0.0151 | 0.964 | 0.0267 → 0.0193 |
+| 0.93 | 0.989 | 0.0193 → 0.0181 | 0.997 | 0.0143 → 0.0152 |
+| 0.95 | 0.983 | 0.016 → 0.0186 | 0.891 | 0.024 → 0.0327 |
+| 0.97 | 0.962 | 0.0299 → 0.0199 | 0.991 | 0.0176 → 0.0156 |
+| 0.99 | 0.977 | 0.0315 → 0.0167 | 0.993 | 0.0181 → 0.0209 |
+
+Passages fictifs sous le seuil (grille fine, taux simulé nul) : au plus 1.55e-04 pour C (Γ = 0.845) et 1.63e-04 pour F (Γ = 0.85), soit 1.4 % et 1.5 % du taux simulé à Γ = 1 (0.0112).
+
+### Durées par variante et par graine (s)
+
+| variante | graine | entraînement ou réglage fin | génération par 1000 échantillons |
+|---|---|---|---|
+| A_reference | seed0 | 146 | 0.24 |
+| A_reference | seed1 | 366 | 0.29 |
+| B_augmentation | seed0 | 756 | 0.85 |
+| B_augmentation | seed1 | 720 | 0.31 |
+| C_equivariant | seed0 | 221 | 0.47 |
+| C_equivariant | seed1 | 282 | 0.57 |
+| C_court | seed0 | 51 | 0.48 |
+| C_court | seed1 | 555 | 0.72 |
+| F_stationnarite_C | seed0 | 321 | – |
+| F_stationnarite_C | seed1 | 335 | – |
+| F0_temoin_C | seed0 | 15 | – |
+| F0_temoin_C | seed1 | 15 | – |
+| F_stationnarite_Ccourt | seed0 | 338 | – |
+| F_stationnarite_Ccourt | seed1 | 331 | – |
+| F0_temoin_Ccourt | seed0 | 15 | – |
+| F0_temoin_Ccourt | seed1 | 14 | – |
+
 Durée totale : 3350 s.
 
 ## E2 — MHD 2D forcée, génération conditionnée par η
@@ -160,6 +252,70 @@ Configuration : N = 32, ν = 0.008, α = 0.02, bande de forçage [2.0, 3.0] ; η
 | en loi : recalage (V4, moitié b) | 2.85e-17 | 2.81e-17 | 0.0472 | 0.0688 | 0.0515 | 2.07e-16 | 0.0294 | 0.116 | 1.40e-15 | 0.422 |
 
 ESS/N moyen de l'inclinaison : 0.287
+
+### Par η : distance d'énergie
+
+| η | jeu | V0_libre | V1_penalite | V4_potentiels | V5_temoin | V5_potentiels_stat |
+|---|---|---|---|---|---|---|
+| 0.00400 | entraînement | 0.697 | 5.13 | 0.364 | 0.352 | 0.41 |
+| 0.00476 | test | 0.811 | 6.01 | 0.184 | 0.178 | 0.186 |
+| 0.00566 | entraînement | 0.744 | 4.89 | 0.191 | 0.174 | 0.234 |
+| 0.00673 | test | 1.37 | 5.28 | 0.337 | 0.311 | 0.0972 |
+| 0.00800 | entraînement | 0.926 | 4.62 | 0.0838 | 0.0863 | 0.115 |
+| 0.00951 | test | 3.27 | 4.39 | 1.03 | 0.961 | 0.203 |
+| 0.01131 | entraînement | 1.29 | 4.57 | 0.166 | 0.208 | 0.242 |
+| 0.01345 | test | 6.01 | 5.56 | 3.63 | 3.51 | 0.792 |
+| 0.01600 | entraînement | 3.52 | 5.85 | 1.38 | 1.55 | 1.07 |
+| 0.01903 | test | 10.1 | 8.04 | 7.74 | 7.63 | 2.22 |
+| 0.02263 | entraînement | 6.93 | 8.38 | 3.97 | 4.3 | 3.11 |
+
+### Par η : résidu signé du bilan d'énergie
+
+| η | jeu | V0_libre | V1_penalite | V4_potentiels | V5_temoin | V5_potentiels_stat |
+|---|---|---|---|---|---|---|
+| 0.00400 | entraînement | -0.0908 | 0.207 | -0.101 | -0.0961 | -0.0525 |
+| 0.00476 | test | -0.019 | 0.175 | 2.20e-04 | -0.00776 | -0.0171 |
+| 0.00566 | entraînement | -0.0142 | 0.367 | -0.0594 | -0.0474 | -0.0698 |
+| 0.00673 | test | 0.126 | 0.392 | 0.142 | 0.133 | 0.014 |
+| 0.00800 | entraînement | 0.0343 | 0.575 | -0.0104 | 0.0067 | -0.048 |
+| 0.00951 | test | 0.387 | 0.6 | 0.297 | 0.283 | 0.0465 |
+| 0.01131 | entraînement | 0.0705 | 0.843 | 0.071 | 0.092 | -0.00408 |
+| 0.01345 | test | 0.729 | 1.26 | 0.699 | 0.682 | 0.0851 |
+| 0.01600 | entraînement | 0.202 | 1.27 | 0.246 | 0.274 | 0.0119 |
+| 0.01903 | test | 1.19 | 2.05 | 1.22 | 1.2 | 0.143 |
+| 0.02263 | entraînement | 0.465 | 1.88 | 0.558 | 0.597 | 0.239 |
+
+### Par η : erreur relative sur E_B
+
+| η | jeu | V0_libre | V1_penalite | V4_potentiels | V5_temoin | V5_potentiels_stat |
+|---|---|---|---|---|---|---|
+| 0.00400 | entraînement | 0.0726 | 1.05 | 0.0524 | 0.049 | 0.0637 |
+| 0.00476 | test | 0.155 | 1.07 | 0.0458 | 0.036 | 0.0324 |
+| 0.00566 | entraînement | 0.157 | 1.22 | 0.0237 | 0.0121 | 0.00742 |
+| 0.00673 | test | 0.25 | 1.2 | 0.118 | 0.109 | 0.00208 |
+| 0.00800 | entraînement | 0.191 | 1.35 | 0.0296 | 0.014 | 0.0836 |
+| 0.00951 | test | 0.475 | 1.28 | 0.223 | 0.211 | 0.0331 |
+| 0.01131 | entraînement | 0.229 | 1.51 | 9.45e-04 | 0.0197 | 0.126 |
+| 0.01345 | test | 0.749 | 2 | 0.519 | 0.501 | 0.106 |
+| 0.01600 | entraînement | 0.426 | 1.97 | 0.163 | 0.188 | 0.174 |
+| 0.01903 | test | 1.18 | 2.84 | 0.936 | 0.917 | 0.137 |
+| 0.02263 | entraînement | 0.727 | 2.56 | 0.414 | 0.446 | 0.0332 |
+
+### Par η : contraintes en loi sur V4 (moitié b)
+
+| η | Pm = ν/η | jeu | ESS/N | dist. base | dist. inclinaison | dist. recalage | résidu base | résidu inclinaison |
+|---|---|---|---|---|---|---|---|---|
+| 0.00400 | 2 | entraînement | 0.0758 | 0.366 | 0.9 | 0.312 | -0.1 | 0.0326 |
+| 0.00476 | 1.68 | test | 0.99 | 0.185 | 0.17 | 0.193 | 1.10e-04 | -0.00175 |
+| 0.00566 | 1.41 | entraînement | 0.526 | 0.198 | 0.277 | 0.168 | -0.0593 | 0.00418 |
+| 0.00673 | 1.19 | test | 0.116 | 0.345 | 0.182 | 0.193 | 0.141 | 0.00577 |
+| 0.00800 | 1 | entraînement | 0.892 | 0.0839 | 0.073 | 0.0968 | -0.01 | 0.00236 |
+| 0.00951 | 0.841 | test | 0.00215 | 0.989 | 4.81 | 0.317 | 0.295 | -0.00125 |
+| 0.01131 | 0.707 | entraînement | 0.507 | 0.18 | 0.257 | 0.126 | 0.0716 | 0.00263 |
+| 0.01345 | 0.595 | test | 0.002 | 3.69 | 6.15 | 1.38 | 0.697 | 0.277 |
+| 0.01600 | 0.5 | entraînement | 0.0469 | 1.4 | 1.57 | 0.471 | 0.248 | 0.028 |
+| 0.01903 | 0.42 | test | 0.002 | 7.88 | 9.46 | 3.43 | 1.22 | 0.679 |
+| 0.02263 | 0.354 | entraînement | 0.002 | 3.94 | 6.48 | 1.36 | 0.559 | 0.082 |
 
 Temps : {"V0_libre": {"temps_entrainement_s": 1199.9813, "temps_generation_s_par_echantillon": 0.0074}, "V1_penalite": {"temps_entrainement_s": 1059.0879, "temps_generation_s_par_echantillon": 0.0189}, "V2_proj_finale": {"temps_entrainement_s": 0.0, "temps_generation_s_par_echantillon": 0.0059}, "V3_flot_projete": {"temps_entrainement_s": 424.0978, "temps_generation_s_par_echantillon": 0.0064}, "V4_potentiels": {"temps_entrainement_s": 304.9478, "temps_generation_s_par_echantillon": 0.0045}, "V5_potentiels_stat": {"temps_reglage_fin_s": 460.1759, "iters": 600, "beta": 50.0}, "V5_temoin": {"temps_reglage_fin_s": 79.2724, "iters": 600, "beta": 0.0}}
 

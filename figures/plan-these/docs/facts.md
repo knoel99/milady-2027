@@ -37,7 +37,7 @@ Sources : [D] description technique de l'appelant (verbatim dans `brief.md`) ; [
 | Élément | Ce qui est dessiné | Source |
 |---|---|---|
 | Domaine | carré [0, 2π]² périodique | [E2] |
-| Contenu | densité de courant *j* (niveaux de gris) et isolignes du potentiel *a* (lignes de champ de **B**, traits fins) d'un instantané de référence de E2 (|k_x|, |k_y| ≤ 10) | calculé : `experiences/resultats/e2_echantillons_quick.npz` → `make_data.py` |
+| Contenu | densité de courant *j* (niveaux de gris) et isolignes du potentiel *a* (lignes de champ de **B**, traits fins) d'un instantané de référence de E2 (|k_x|, |k_y| ≤ 10) | calculé : `experiences/resultats/e2_echantillons.npz` → `make_data.py` |
 
 ### Palier 0 — modèle à 3 modes (vignette)
 | Élément | Ce qui est dessiné | Source |
