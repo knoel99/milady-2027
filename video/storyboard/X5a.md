@@ -1,4 +1,4 @@
-# X5a · La chaîne de production des données (≈ 2 min 36 s)
+# X5a · La chaîne de production des données (≈ 2 min 32 s)
 
 **Objectif :** décrire la chaîne de production des données étape par étape (un pas de solveur, un fichier
 documenté, le déroulement d'une campagne, un nouvel instrument d'évaluation) et distinguer, pour chaque
@@ -42,7 +42,7 @@ on site », « peak ≈ 15 × state: measured once at 128³ on CPU, extrapolated
 > pic de mémoire est estimé à six gigaoctets à deux cent cinquante-six points. Aucun temps n'a encore été
 > mesuré sur carte graphique.
 
-## X5.2 · Un fichier par simulation · ≈ 30 s · reprend X5.2
+## X5.2 · Un fichier par simulation · ≈ 27 s · reprend X5.2
 **On voit :** BLUEPRINT. Le bocal étiqueté de 10.2 au centre ; plongée dans l'étiquette, qui devient la
 fiche « fields.h5 » avec son chemin.
 **Animation :** sur « The Well » : l'arborescence se tape ligne par ligne, les entrées de la convention en
@@ -62,7 +62,7 @@ files, diagnostics · not restored: compute time, resources, campaign YAML » ·
 > un identifiant unique et la version du code. Le catalogue ajoute une somme de contrôle et peut être
 > reconstruit à partir des seuls fichiers. Le contenu est vérifiable, non inviolable.
 
-## X5.3 · Le déroulement d'une campagne · ≈ 38 s · reprend X5.3 (variante en attente)
+## X5.3 · Le déroulement d'une campagne · ≈ 33 s · reprend X5.3 (variante en attente)
 **On voit :** en haut, les sept étapes de la chaîne en petites boîtes grises, de « 1 campaign » à
 « 7 evaluation » (5 à 7 pâles, « later »). Dessous, un terminal.
 **Animation :** sur « une commande » : la commande se tape ; au-dessus, la configuration et ses onze
@@ -88,7 +88,7 @@ criterion of the PhD plan » · badge CONJECTURE, confiance haute.
 **Note :** variante « résultat » (v2 X5.3.r1–r8) à réécrire au même registre. La question de la case ASK
 reste à l'écran, non dite (comme en v2).
 
-## X5.4 · Le nombre de points X · ≈ 40 s · reprend X5.4 (P1, réponse et siège, sans la pause « predict »)
+## X5.4 · Le nombre de points X · ≈ 44 s · reprend X5.4 (P1, réponse et siège, sans la pause « predict »)
 **On voit :** changement d'encre BLUEPRINT → NIGHT. À gauche, un carré dont les bords opposés sont
 recollés ; dedans, les courbes de niveau d'un potentiel jouet. Puis, à droite, le cadre vide d'un graphe
 « X-points per snapshot » / « share of snapshots », silhouettes « simulated » et « generated ».
@@ -113,7 +113,7 @@ computed in the report (R:739) » · badge CONJECTURE, confiance faible.
 
 **Note :** variante « résultat » (v2 X5.4.r1–r9) à réécrire au même registre.
 
-**Durée totale estimée :** 2 min 36 s · **Mots :** ≈ 360
+**Durée totale estimée :** 2 min 32 s · **Mots :** ≈ 335
 
 **Points à valider :**
 1. La carte X5a.Q (Q16 : quelle mesure de topologie, quel écart fait échouer un modèle) est supprimée ; la

@@ -46,7 +46,7 @@ se grise, la puce de configuration apparaît. Sur « reprend » : la tranche Tay
 
 **Note :** variante « résultat » (v2 X4.4.r1–r8) à réécrire au même registre.
 
-**Durée totale estimée :** 45 s · **Mots :** ≈ 105
+**Durée totale estimée :** 45 s · **Mots :** ≈ 110
 
 **Points à valider :**
 1. L'analogie du vélo et le rappel de la plaque rigide de 09.3 sont retirés.
