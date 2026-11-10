@@ -143,7 +143,7 @@ Les lignes « > écran : » et « > légende : » ne sont pas dites.
 [r-surprises] Viennent maintenant deux surprises.
 [r-cisaillement] Dans un cisaillement, les flèches vont vers la droite en haut et vers la gauche en bas, d'autant plus vite qu'on s'éloigne de la ligne du milieu.
 [r-droites] Toutes les lignes de courant sont droites.
-[r-pales] Pourtant, pose la roue sur la ligne du milieu : ses aubes du haut sont poussées vers la droite, celles du bas vers la gauche.
+[r-aubes] Pourtant, pose la roue sur la ligne du milieu : ses aubes du haut sont poussées vers la droite, celles du bas vers la gauche.
 [r-horaire] La roue tourne dans le sens des aiguilles d'une montre : oméga vaut moins un, et la roue tourne à la vitesse angulaire un demi.
 
 > écran : le cisaillement, la roue posée sur la ligne du milieu ; ses aubes du haut filent à droite et celles du bas à gauche.
