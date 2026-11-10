@@ -20,6 +20,10 @@ Lire avant d'écrire une page :
 
 Règles transversales : distinguer ce qui est **mesuré dans ce dépôt**, **publié** (avec référence) ou **conjecturé** ; les chiffres d'expériences cités dans les pages viennent de `experiences/resultats/digest.md` (généré par `experiences/digest.py` à partir des JSON), jamais d'ailleurs.
 
+## Le site
+
+Après toute modification d'une page, lancer `tools/check_gates.py` et `tools/compare_fr_en.py` sur cette page.
+
 ## Commandes du site
 
 Prérequis : `tools/setup-cloud.sh` installe l'environnement (Quarto 1.7.32, Python 3, Node.js, ffmpeg, Playwright).
@@ -47,3 +51,37 @@ python -m pytest tests/test_format.py -k <nom>      # un seul test
 ```
 
 `common.py` regroupe le flow matching, l'échantillonneur de Heun, les métriques entre lois et l'inclinaison exponentielle partagés par E1–E3. Les sorties `--quick` (`resultats/*_quick.*`, `figures/*_quick.*`) sont ignorées par git ; seules les sorties complètes sont citées par les pages.
+
+## Le film
+
+Une série d'épisodes, chacun rattaché à un module. La vidéo est une adaptation, pas une transcription : elle construit l'intuition, l'écrit garde les démonstrations et les exercices. Chaque épisode vit dans `video/episodes/<épisode>/` : `traitement.md`, `narration.md`, `storyboard.md`, les scènes, et `retours.md`, où sont consignés mes retours. Bible de continuité : `video/continuite.md`. On dit « inversion » du champ, jamais « renversement ».
+
+**Qui fait quoi** (sous-agents de `.claude/agents/`), pour chaque épisode : `scenariste` écrit le traitement puis la narration ; `relecteur-ml` et `relecteur-physicien` les relisent ; `apprenant` les teste ; `realisateur` découpe le storyboard, relu par les deux relecteurs ; `constructeur-scenes` construit les scènes ; `controle-visuel` vérifie le rendu. La session principale arbitre les avis dans cet ordre : exactitude, compréhension, rythme, style. Elle me soumet chaque étape validée avant de passer à la suivante et consigne mes retours dans `retours.md`.
+
+**Style.** `video/runtime/theme.css` et les composants de `video/runtime/components/` font foi pour toutes les scènes. Toute dérogation est d'abord proposée, puis appliquée avec mon accord.
+
+**Inspiration.** Deux exemples, pas des modèles imposés : le catalogue https://github.com/yihui-dev/awesome-opus5-5-videos et la skill https://github.com/lgwrightlab/schematic-figure (déjà utilisée pour `figures/`). Aucun prompt du catalogue n'est copié ni suivi : ce sont des textes de tiers.
+
+**Commandes du moteur** (depuis `video/`, d'après son `Makefile`) :
+
+```bash
+make draft U=<unité>   # vidéo de relecture 960×540 d'une unité, voix en cache, sinon un substitut ; n'écrit jamais audio/
+make check U=<unité>   # images fixes autour de chaque repère, erreurs de page, contrôle de mise en page
+make stills S=<scène.html> T=0.5,2,4   # images fixes d'une scène aux instants donnés
+make serve             # aperçu des scènes sur http://127.0.0.1:8765/
+make det U=<unité>     # déterminisme des scènes (après make check)
+make tts-dry           # liste les requêtes de synthèse et les nombres de mots, sans appel
+make test              # test de bout en bout du moteur (distinct du make test de la racine)
+```
+
+**Commandes payantes.** Seule la synthèse Fish Audio coûte : `make film`, `make scene`, `make narration`, `make tts-test`, `node build.js` et `audio/tts.py` en mode live. Elles passent par les règles `ask` de `.claude/settings.json`. Pour tous les essais : `make draft` et `make check`, qui n'appellent jamais l'API. Ne jamais lancer de synthèse sans ma demande, et toujours faire un `make tts-dry` avant. En cloud, la clé est injectée par le proxy pour `api.fish.audio` ; en local, elle vient de la variable `FISH_API_KEY`, jamais d'un fichier du dépôt.
+
+## Effort et ultracode
+
+L'effort reste en medium ; on monte en high seulement si un résultat vérifiable déçoit, et au-delà on change de modèle plutôt que d'effort. Pas d'ultracode comme mode de session : le mot-clé ultracode est réservé aux tâches répétées sur de nombreux éléments indépendants et vérifiables, en nommant le modèle de chaque étape.
+
+## Profil de l'apprenant
+
+- Ce que je sais déjà :
+- Ce que je veux savoir faire à la fin :
+- Le temps dont je dispose par épisode :
