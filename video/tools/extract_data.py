@@ -11,4 +11,7 @@ Usage: python3 -I tools/extract_data.py [--repo /home/user/milady-2027] [--check
 import os, subprocess, sys
 
 here = os.path.dirname(os.path.abspath(__file__))
-sys.exit(subprocess.call([sys.executable, "-I", os.path.join(here, "data_existing.py"), *sys.argv[1:]]))
+conv = os.path.join(here, "data_existing.py")
+if not os.path.exists(conv):
+    sys.exit("[extract_data] tools/data_existing.py is not in this film yet: nothing to convert")
+sys.exit(subprocess.call([sys.executable, "-I", conv, *sys.argv[1:]]))

@@ -1,4 +1,5 @@
-# MilaDy 2027 film: pipeline commands (README.md, NARRATION.md). build.js does the incremental work itself.
+# MilaDy 2027 film: pipeline commands. build.js does the incremental work itself.
+# Engine only: script/, plan/outline.json, scenes/<unit>/ and data/ are written per film (none in the repository yet).
 #   make plan  CUT=core|extended          what would be synthesised / re-rendered (no API call, nothing rendered)
 #   make film  CUT=core|extended          full build: TTS (live, cached) + render changed scenes + mix + MP4
 #   make films                            both cuts
@@ -12,7 +13,7 @@
 #   make narration-script CUT=...         reading script for an external narrator (out/narration_script_<cut>.md)
 #   make fit DIR=takes/ [CUT=..] [RETIME=auto]   fit an external recording (NARRATION.md)
 #   make tts-dry CUT=...                  print every TTS request and the word counts
-#   make test                             end-to-end test on script/_test (placeholder audio, draft, no API)
+#   make test                             end-to-end test on script/_test + scenes/_test (absent: the test stops and says so)
 #   LANG=fr on any target above           French narration over the same English visuals (script/fr/<unit>.json):
 #                                         out/film_<cut>_fr.mp4, subs/<cut>_fr.*, stems <cut>_fr_*; LANG=en is the default
 export NODE_PATH := /opt/node22/lib/node_modules
@@ -42,11 +43,11 @@ BUILD = node build.js --workers $(WORKERS) --narration $(NARRATION) $(LFLAG) $(i
 .PHONY: help data plan film films draft scene check det narration narration-script fit tts-dry tts-test stills test test-fr serve sfx-demo clean clean-draft
 
 help:
-	@sed -n '1,17p' Makefile
+	@sed -n '1,18p' Makefile
 
-data:                       ## refresh data/*.json from the repository's existing results (unchanged content is not rewritten)
-	python3 -I tools/data_existing.py
-	@echo "(cloud results: python3 -I tools/data_cloud.py <converter> ... by hand, see CONTRACT.md section 5)"
+data:                       ## refresh data/*.json with the film's converter tools/data_existing.py, when the film has one
+	@if [ -f tools/data_existing.py ]; then python3 -I tools/data_existing.py; \
+	else echo "(make data: no tools/data_existing.py in this film yet, data/ left as it is)"; fi
 
 plan: data
 	$(BUILD) --cut $(CUT) --plan

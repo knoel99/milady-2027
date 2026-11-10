@@ -8,6 +8,10 @@
 # 1080p30 final-mode build.
 set -euo pipefail
 cd "$(dirname "$0")/.."
+if [ ! -f script/_test/cuts.json ] || [ ! -d scenes/_test ]; then
+  echo "SKIP: this test needs the test units script/_test/ and the test scenes scenes/_test/ (not restored with the engine)"
+  exit 2
+fi
 export NODE_PATH=/opt/node22/lib/node_modules
 T="--units script/_test --cuts script/_test/cuts.json"
 SCR=$(mktemp -d)

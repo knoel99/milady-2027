@@ -34,13 +34,16 @@ Scene.define({
   duration: PL * (NPL - FIRST + 1),
   register: 'night',
   cues: { q_why: P0(2) + 2.9, q_unblocks: P0(2) + 5.0, eq_lhs: P0(4) + 0.8, eq_adv: P0(4) + 1.8, eq_diff: P0(4) + 3.0 },
-  data: { rate: 'data/e1_finegrid.json', ev: 'data/e1_eval.json', e3: 'data/e3_growth.json', e2: 'data/e2_maps.json',
-          s09: 'data/e1_samples_0.9.json', plan: 'data/fig_plan_these.json' },
+  // data/*.json are not part of the engine (content of the old film): optional, the plates that need them
+  // show a "no data" chip instead when the files are absent
+  data: Object.fromEntries(Object.entries({ rate: 'data/e1_finegrid.json', ev: 'data/e1_eval.json', e3: 'data/e3_growth.json', e2: 'data/e2_maps.json',
+          s09: 'data/e1_samples_0.9.json', plan: 'data/fig_plan_these.json' }).map(([k, url]) => [k, { url, optional: true }])),
   setup(ctx) {
     const K = Kit, D = ctx.data, st = ctx.stage;
     const plates = [];
     const plate = (k, name) => { const p = K.el('div', { class: 'plate' }, st); p.dataset.k = k; K.el('div', { class: 'plate-title mono' }, p, K.upper(`Gallery · ${String(k).padStart(2, '0')} · ${name}`)); plates.push(p); return p; };
     ctx.plates = plates;
+    const noData = (k, p, file, y = 540) => K.chip(ctx, { text: `no data: ${file} (not in the engine)`, kind: 'plain', x: 960, y, anchor: 'c', at: P0(k) + 0.2, parent: p });
 
     // 1. chapter card (T4) with staircase (M7) and rail (M8)
     let p = plate(1, 'chapter card T4');
@@ -75,13 +78,15 @@ Scene.define({
       labels: [{ id: 'adv', text: 'carried and stretched by the flow', color: 'u', at: 'eq_adv+0.4' }, { id: 'diff', text: 'diffusion', color: 'param', at: 'eq_diff+0.4' }],
       focus: [{ ids: ['adv'], at: P0(4) + 5.2, out: P0(4) + 7.0 }] });
     K.lowerThird(ctx, { kind: 'chapter', l1: 'Level 2 · chapter 3', l2: 'The equation, the windows, and the question', color: 'param', at: P0(4) + 0.4, hold: 1.4, parent: p });
-    K.lowerThird(ctx, { kind: 'source', data: D.rate, at: P0(4) + 2.4, hold: 1.4, parent: p });
+    if (D.rate) K.lowerThird(ctx, { kind: 'source', data: D.rate, at: P0(4) + 2.4, hold: 1.4, parent: p });
+    else K.lowerThird(ctx, { kind: 'source', l1: 'Source', l2: 'no data file (fixture text)', at: P0(4) + 2.4, hold: 1.4, parent: p });
     K.lowerThird(ctx, { kind: 'reference', l1: 'Reference', l2: 'Gissinger 2012 · Kac 1943; Rice 1944–1945', at: P0(4) + 4.4, hold: 1.4, parent: p });
     K.lowerThird(ctx, { kind: 'stamp', l1: 'Regenerable · status pending', l2: 'Re-rendered when palier2_abc3d arrives', at: P0(4) + 6.4, hold: 1.2, parent: p });
 
     // 5. plot helper: curves, dots, band, log axis, error bars, floor line, legend
     p = plate(5, 'plot helper (E1 data)');
     K.badge(ctx, { kind: 'MEASURED', note: 'E1', at: P0(5) + 0.2, parent: p });
+    if (D.rate && D.ev) {
     const R = D.rate;
     const P1 = K.plot(ctx, { parent: p, box: { x0: 250, x1: 900, y0: 220, y1: 620 }, at: P0(5) + 0.2,
       x: { label: 'Γ, control parameter', min: 0.8, max: 1.0, ticks: [0.8, 0.85, 0.9, 0.95, 1.0], param: true },
@@ -99,6 +104,7 @@ Scene.define({
     }
     P2.legend([{ label: 'A · reference', field: 'model', kind: 'generated' }, { label: 'C · equivariant', field: 'metric', kind: 'generated' }], { at: P0(5) + 1.4, x: 1230, y: 244 });
     K.lowerThird(ctx, { kind: 'source', data: D.rate, at: P0(5) + 3.2, hold: 4, parent: p });
+    } else noData(5, p, 'data/e1_finegrid.json, data/e1_eval.json');
 
     // 6. empty seat: curve (pending), E3 32³ ghost
     p = plate(6, 'empty seat · curve · pending');
@@ -107,7 +113,7 @@ Scene.define({
     K.seat(ctx, { type: 'curve', variant: 'pending', tag: 'palier2_abc3d', at: P0(6) + 0.3, parent: p,
       x: { label: 'Rm, magnetic Reynolds number', min: 4, max: 40, ticks: [4, 10, 20, 30, 40], param: true },
       y: { label: 's, growth rate', min: -0.02, max: 0.015, ticks: [-0.02, -0.01, 0, 0.01] }, zero: true,
-      band: { x: [17, 18], label: 'decisive' }, ghost: { x: E3.x.values, y: E3.series[0].y, label: 'E3 at 32³ (measured)', legendX: 230, legendY: 796 },
+      band: { x: [17, 18], label: 'decisive' }, ghost: E3 ? { x: E3.x.values, y: E3.series[0].y, label: 'E3 at 32³ (measured)', legendX: 230, legendY: 796 } : undefined,
       bet: 'The two dynamo windows of E3 persist at 64³.', confidence: 'high',
       criterion: 's(17) > 0 > s(18), with the last-quarter fit agreeing in sign.', source: 'R:1112 · D17',
       ask: 'Add Rm = 17.25, 17.5 and 17.75 to the 64³ sweep?' });
@@ -144,7 +150,8 @@ Scene.define({
     p = plate(10, 'field maps (E2 data)');
     K.badge(ctx, { kind: 'MEASURED', note: 'E2', at: P0(10) + 0.2, parent: p });
     const E2 = D.e2, f32 = Scene.f32;
-    [['ref', 'omega', 'u', 'vorticity ω · simulated', false], ['ref', 'j', 'b', 'current {sym}j{/} · simulated', false], ['V4_potentials', 'j', 'b', 'current {sym}j{/} · generated (V4)', true]]
+    if (!E2) noData(10, p, 'data/e2_maps.json');
+    else [['ref', 'omega', 'u', 'vorticity ω · simulated', false], ['ref', 'j', 'b', 'current {sym}j{/} · simulated', false], ['V4_potentials', 'j', 'b', 'current {sym}j{/} · generated (V4)', true]]
       .forEach(([v, fld, kind, label, gen], i) => {
         const vv = v === 'V4_potentials' ? 'V4_potentiels' : v;
         K.fieldMap(ctx, { grid: f32(E2.variants[vv].samples[0][fld]), x: 150 + i * 560, y: 190, w: 500, h: 500, kind, vmax: E2.vmax[fld], label, generated: gen, at: P0(10) + 0.3 + 0.4 * i, parent: p });
@@ -167,8 +174,9 @@ Scene.define({
     K.needle(ctx, { x: 380, y: 430, size: 380, flips: [P0(12) + 1.5, P0(12) + 4.5], at: P0(12) + 0.2, parent: p });
     K.chip(ctx, { text: 'illustration, not to time scale', kind: 'plain', x: 380, y: 680, anchor: 'c', at: P0(12) + 0.4, parent: p });
     K.knob(ctx, { x: 930, y: 400, r: 120, min: 0.8, max: 1.0, window: [0.865, 1.0], label: 'Γ', keys: [{ at: P0(12), v: 0.8 }, { at: P0(12) + 1.0, v: 0.93, dur: 1.4 }], at: P0(12) + 0.2, parent: p });
-    const G = D.plan.data.gissinger;
-    K.barcode(ctx, { box: { x: 1180, y: 300, w: 600, h: 60 }, series: { t: G.t, D: G.D }, label: 'polarity of D (model, Γ = 0.9)', at: P0(12) + 0.6, dur: 2.5, parent: p });
+    const G = D.plan && D.plan.data.gissinger;
+    if (!G) noData(12, p, 'data/fig_plan_these.json', 330);
+    else K.barcode(ctx, { box: { x: 1180, y: 300, w: 600, h: 60 }, series: { t: G.t, D: G.D }, label: 'polarity of D (model, Γ = 0.9)', at: P0(12) + 0.6, dur: 2.5, parent: p });
     K.staircase(ctx, { x: 1120, y: 470, w: 660, h: 210, lit: 2, pending: [3, 4], at: P0(12) + 1.0, parent: p });
 
     // 13. two inks (M3)
@@ -178,12 +186,15 @@ Scene.define({
 
     // 14. cloud (M4) on E1 snapshots, histogram (M5) and the spike
     p = plate(14, 'M4 violet cloud (E1 model C) · M5 amber histogram');
+    if (!D.s09) noData(14, p, 'data/e1_samples_0.9.json');
+    else {
     const S9 = D.s09.variants, xc = f32(S9.C_equivariant.x), qd = new Float32Array(2 * S9.C_equivariant.n);
     for (let i = 0; i < S9.C_equivariant.n; i++) { qd[2 * i] = xc[3 * i]; qd[2 * i + 1] = xc[3 * i + 1]; }
     K.cloud(ctx, { box: { x: 150, y: 200, w: 640, h: 560 }, range: { x: [-3, 3], y: [-3, 3] }, targets: [{ pts: qd, at: P0(14) + 0.8, dur: 3 }], strings: 120, n: 3000, at: P0(14) + 0.2, out: P0(15), parent: p });
     K.chip(ctx, { text: 'Q, D · generated · Γ = 0.9', kind: 'generated', x: 150, y: 790, at: P0(14) + 0.5, parent: p });
     K.histogram(ctx, { box: { x: 1000, y: 250, w: 760, h: 440 }, values: S9.ref.dEdt, ref: S9.ref.dEdt, range: [-1.5, 1.5], bins: 41, label: 'dE/dt over the crowd (reference, then projected)',
       xLabel: 'dE/dt per snapshot', morph: { values: S9.E_projection_C.dEdt, at: P0(14) + 4.0, dur: 1.6 }, at: P0(14) + 0.6, refAt: P0(14) + 3.6, parent: p });
+    }
 
     // 15. projector (M6), pen (M9), mirror (M10) plane and point
     p = plate(15, 'M6 projector · M9 pen · M10 mirror');
@@ -197,6 +208,8 @@ Scene.define({
 
     // 16. empty seat: curve, RESULT variant, fed by a fixture that re-uses the E3 32³ data (layout test only)
     p = plate(16, 'seat · curve · result');
+    if (!D.e3) noData(16, p, 'data/e3_growth.json');
+    else {
     const fx = { meta: { stamp: 'TEST FIXTURE · E3 data, result layout', source: D.e3.meta.source, sha256: D.e3.meta.sha256 }, verdict: 'inconclusive',
       verdict_text: 'Fixture only: the E3 32³ points drawn where the 64³ result will go.', x: D.e3.x,
       series: [{ name: 's, whole run', kind: 'simulated', field: 'b', y: D.e3.series[0].y }, { name: 's, last quarter', kind: 'simulated', field: 'fg', y: D.e3.series[1].y, points: false }] };
@@ -204,6 +217,7 @@ Scene.define({
       x: { label: 'Rm, magnetic Reynolds number', min: 4, max: 40, ticks: [4, 10, 20, 30, 40], param: true },
       y: { label: 's, growth rate', min: -0.02, max: 0.015, ticks: [-0.02, -0.01, 0, 0.01] }, zero: true, band: { x: [17, 18], label: 'decisive' },
       bet: 'The two dynamo windows of E3 persist at 64³.', confidence: 'high', criterion: 's(17) > 0 > s(18), both fits agreeing in sign.', source: 'R:1112 · D17' });
+    }
     K.chip(ctx, { text: 'test fixture · not a result', kind: 'fixture', x: 1824, y: 40, anchor: 'tr', at: P0(16) + 0.2, parent: p });
     // plates before ?plate=K are never shown: drop their components from the render loop
     const dead = plates.filter((q) => +q.dataset.k < FIRST);

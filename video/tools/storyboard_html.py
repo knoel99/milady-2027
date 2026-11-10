@@ -5,20 +5,22 @@ Each plan is shown with the still of the v2 scene it reuses ("reprend <id>"), ta
 French extended film (storyboard/stills_v2/<id>.jpg), or with a "new shot" slate. Units follow the
 extended-cut running order. Usage: python3 tools/storyboard_html.py
 """
-import base64, html, json, os, re
+import base64, html, json, os, re, sys
 
 HERE = os.path.dirname(os.path.abspath(__file__))
 ROOT = os.path.dirname(HERE)
 SB = os.path.join(ROOT, "storyboard")
 STILLS = os.path.join(SB, "stills_v2")
 
-tl = json.load(open(os.path.join(ROOT, "script/_build/extended_fr_timeline.json")))
+TL = os.path.join(ROOT, "script/_build/extended_fr_timeline.json")
+if not (os.path.exists(TL) and os.path.isdir(STILLS)):
+    sys.exit("[storyboard] needs storyboard/<unit>.md, storyboard/stills_v2/ and script/_build/extended_fr_timeline.json "
+             "(make plan CUT=extended LANG=fr): none of them is in this film yet")
+tl = json.load(open(TL))
 order = []
 for s in tl["scenes"]:
     if s["unit"] not in order:
         order.append(s["unit"])
-if "ch10q" in order:              # v4: « Ouvertures » closes the film
-    order.remove("ch10q"); order.append("ch10q")
 cut = {u: json.load(open(os.path.join(ROOT, "script", u + ".json")))["cut"] for u in order}
 still_ids = {f[:-4] for f in os.listdir(STILLS)}
 

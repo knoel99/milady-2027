@@ -49,9 +49,9 @@ ROOT = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 QUESTION_CARD_FILE = "scenes/_shared/question_card.html"   # default page of a question-card scene without "file"
 RAW_WPM = 146.0          # measured raw pace of the Ethan voice incl. [long pause] (BRIEF D21)
 LONG_PAUSE_S = 0.9       # silence standing for [long pause] between two paragraphs (see audio/tts.py)
-EXTRA_UNITS = [{"unit": "chSOA1", "before": "ch03"},   # BRIEF section 10: state of the art, history map
-               {"unit": "chSOA2", "before": "ch10"},   # BRIEF section 10: where this work fits
-               {"unit": "ch10q", "before": "ch11"}]    # BRIEF section 3.3: before we compute
+# extra units placed in every cut before a given chapter: the outline's "extra_units"
+# ([{"unit": "...", "before": "..."}]); none by default (the old film's list went with its chapters)
+EXTRA_UNITS = []
 MARK = re.compile(r"\{(u|b|param|model|metric)\}(.*?)\{/\}")
 CUE_RE = re.compile(r"^[A-Za-z_][\w-]*$")
 
@@ -553,6 +553,9 @@ def main():
     if not opts.cut and not opts.unit:
         ap.error("--cut or --unit")
     units_dir = os.path.join(ROOT, opts.units)
+    if not os.path.exists(os.path.join(ROOT, opts.cuts)):
+        sys.exit(f"[assemble] {opts.cuts} does not exist: write the film's outline (\"cuts\": {{\"core\": {{\"chapters\": [...]}}}}) "
+                 "or pass --cuts <file>")
     outline = json.load(open(os.path.join(ROOT, opts.cuts)))
     cuts = outline["cuts"]
     ext_rules = {}

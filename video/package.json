@@ -1,7 +1,7 @@
 {
   "name": "milady-2027-film",
   "version": "2.0.0",
-  "description": "MilaDy 2027 explainer film: deterministic HTML scenes, Fish Audio narration, incremental render (see README.md)",
+  "description": "MilaDy 2027 explainer film: deterministic HTML scenes, Fish Audio narration, incremental render (engine only, see Makefile)",
   "private": true,
   "scripts": {
     "plan": "node build.js --cut extended --plan",
