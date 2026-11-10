@@ -66,10 +66,10 @@ Scene.define({
     const SMALL = [[-3.8, 2.7], [-1.5, 2.9], [1.4, 2.5], [3.7, 2.8], [-3.4, 0.2], [-1.3, -0.5], [2.2, 0.9], [3.9, -1.2], [-2.3, -2.6], [1.0, -2.8]];
     for (const [x, y] of SMALL) if (Math.hypot(x, y) * SC - 30 <= 80) throw new Error('petit cercle trop près du centre');
     const probes = SMALL.map(([x, y], i) => {
-      const a = `e1-nullepartout+${(0.15 * i).toFixed(2)}`;
+      const a = `e1-nullepartout+${(0.15 * i).toFixed(2)}`, aR = `e1-nullepartout+${(0.3 + 0.15 * i).toFixed(2)}`;
       const P = K.probe(ctx, { toPx, F: U, mode: 'circulation', perArea: true, circle: { c: [x, y], r: 0.3 }, at: a, out: 'e1-entiere', z: 13 });
       const [px, py] = toPx(x, y);
-      K.readout(ctx, { value: (t) => P.value(t), digits: 2, pos: () => [px + 38, py - 30], size: 40, at: `${a}+0.3`, out: 'e1-entiere', z: 24 });
+      K.readout(ctx, { value: (t) => P.value(t), digits: 2, pos: () => [px + 38, py - 30], size: 40, at: aR, out: 'e1-entiere', z: 24 });
       return P;
     });
 
