@@ -7,7 +7,11 @@
  *                                key colour map, symmetric range ±vmax; violet frame when generated
  *   Kit.streamlines(F, seeds, {h, n, box})   → polylines (precompute in setup); F(x, y) → [vx, vy] in px
  *   Kit.fieldLines(ctx, {lines | F + seeds, color, width, at, dur, alpha, z})   drawn on by progress
- *   Kit.arrows(ctx, {F, box, nx, ny, scale, color, at})                         vector arrows on a grid
+ *   Kit.arrows(ctx, {F, box, nx, ny, scale, color, at, compress, hole})         vector arrows on a grid
+ *                                compress: {k (px per field unit), threshold}: length L(I) = k·I under the threshold,
+ *                                k·Is·(2 − Is/I) above (Kit.compressLength: strictly increasing, no hard cap) instead of
+ *                                the default normalisation by the grid maximum; hole: {x, y, r} (stage px): no arrow
+ *                                whose foot lies in that disc (the centre of a point vortex)
  *   Kit.tracers(ctx, {F, n, box, color, at, trail, dt, seed, size})            particles advected by F
  * All drawing is in stage px. F must be a pure function (no randomness, no time unless passed in).
  */
@@ -17,7 +21,7 @@
 
   K.cmap = function (kind, v) {
     const bg = K.hex(K.c('bg'));
-    const hue = K.hex(K.c({ u: 'u-hi', b: 'b-hi', metric: 'metric', model: 'model', param: 'param' }[kind] || 'fg'));
+    const hue = K.hex(K.c({ u: 'u-hi', b: 'b-hi', metric: 'metric', model: 'model', param: 'param', 'fg-2': 'fg-2', neutral: 'fg-2' }[kind] || 'fg'));
     const neg = K.hex(K.c('silver'));
     const a = Math.min(1, Math.abs(v)), to = v >= 0 ? hue : neg;
     return [bg[0] + (to[0] - bg[0]) * a, bg[1] + (to[1] - bg[1]) * a, bg[2] + (to[2] - bg[2]) * a];
@@ -117,24 +121,33 @@
     });
   };
 
+  /** strictly increasing length compression (no hard cap): k·I under Is, k·Is·(2 − Is/I) above; tends to 2·k·Is */
+  K.compressLength = K.compressLength || function (I, k, Is) { if (!(I > 0)) return 0; return I <= Is ? k * I : k * Is * (2 - Is / I); };
+
   K.arrows = function (ctx, o = {}) {
     const box = o.box || { x: 360, y: 160, w: 1200, h: 640 }, nx = o.nx || 16, ny = o.ny || 9;
     const L = K.canvasLayer(ctx, o.z ?? 7, null, o.parent); L.canvas.setAttribute('data-kit', 'arrows');
     const t0 = ctx.at(o.at ?? 0), t1 = o.out !== undefined ? ctx.at(o.out) : Infinity;
     const pts = [];
     let vmax = 1e-12;
+    const hole = o.hole || null, comp = o.compress || null;
     for (let j = 0; j < ny; j++) for (let i = 0; i < nx; i++) {
-      const x = box.x + (i + 0.5) * box.w / nx, y = box.y + (j + 0.5) * box.h / ny, v = o.F(x, y);
+      const x = box.x + (i + 0.5) * box.w / nx, y = box.y + (j + 0.5) * box.h / ny;
+      if (hole && Math.hypot(x - hole.x, y - hole.y) < hole.r) continue;
+      const v = o.F(x, y);
       vmax = Math.max(vmax, Math.hypot(v[0], v[1])); pts.push([x, y, v[0], v[1]]);
     }
     const cell = Math.min(box.w / nx, box.h / ny), sc = (o.scale ?? 0.8) * cell / vmax;
+    // length in px of an arrow of intensity I (direction always exact)
+    const len = comp ? (I) => K.compressLength(I, comp.k, comp.threshold) : (I) => I * sc;
     return ctx.add({
       canvas: L.canvas,
       render(t) {
         const e = K.env(t, t0, t1, 0.5, 0.3); K.show(L.canvas, e.on); if (!e.on) return;
         const g = L.g; g.clearRect(0, 0, 1920, 1080); g.save(); g.strokeStyle = g.fillStyle = K.c(o.color || 'u'); g.globalAlpha = e.o; g.lineWidth = o.width ?? 3;
         for (const [x, y, vx, vy] of pts) {
-          const ex = x + vx * sc * e.p, ey = y + vy * sc * e.p, a = Math.atan2(vy, vx), m = Math.hypot(vx, vy) * sc * e.p;
+          const I = Math.hypot(vx, vy), m = (I > 0 ? len(I) : 0) * e.p, a = Math.atan2(vy, vx);
+          const ex = x + (I > 0 ? vx / I : 0) * m, ey = y + (I > 0 ? vy / I : 0) * m;
           if (m < 4) continue;
           g.beginPath(); g.moveTo(x, y); g.lineTo(ex, ey); g.stroke();
           const hl = Math.min(14, m * 0.4);
