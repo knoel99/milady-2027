@@ -175,7 +175,7 @@ Scene.define({
     K.chip(ctx, { text: 'illustration, not to time scale', kind: 'plain', x: 380, y: 680, anchor: 'c', at: P0(12) + 0.4, parent: p });
     K.knob(ctx, { x: 930, y: 400, r: 120, min: 0.8, max: 1.0, window: [0.865, 1.0], label: 'Γ', keys: [{ at: P0(12), v: 0.8 }, { at: P0(12) + 1.0, v: 0.93, dur: 1.4 }], at: P0(12) + 0.2, parent: p });
     const G = D.plan && D.plan.data.gissinger;
-    if (!G) noData(12, p, 'data/fig_plan_these.json', 330);
+    if (!G) noData(12, p, 'data/fig_plan_these.json', 830);
     else K.barcode(ctx, { box: { x: 1180, y: 300, w: 600, h: 60 }, series: { t: G.t, D: G.D }, label: 'polarity of D (model, Γ = 0.9)', at: P0(12) + 0.6, dur: 2.5, parent: p });
     K.staircase(ctx, { x: 1120, y: 470, w: 660, h: 210, lit: 2, pending: [3, 4], at: P0(12) + 1.0, parent: p });
 
