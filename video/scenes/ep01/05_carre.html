@@ -1,0 +1,258 @@
+<!doctype html>
+<html lang="fr"><head><meta charset="utf-8">
+<title>ep01.05 Le petit carré</title>
+<!-- Storyboard ep01, scène ep01.05 (plans 5.1 à 5.15), narration P8 et P9.
+     Champ u = (0,5 + 0,6x ; 0,4 + 0,5y), coordonnées mathématiques y vers le haut, 300 px par unité, origine du
+     champ au centre du carré (560, 470). Côté h = 1,2 < 1,6 : les quatre flèches gardent leur sens (section 3). -->
+<link rel="stylesheet" href="../../vendor/katex/katex.min.css">
+<link rel="stylesheet" href="../../runtime/theme.css">
+<script src="../../vendor/katex/katex.min.js"></script>
+<script src="../../runtime/scene.js"></script>
+<script src="../../runtime/components/kit.js"></script>
+<script src="../../runtime/components/equation.js"></script>
+<script src="../../runtime/components/motifs.js"></script>
+<script src="../../runtime/components/ep-kit.js"></script>
+<style>
+  .lab { position: absolute; transform: translate(-50%, -50%); white-space: nowrap; font-size: 40px; color: var(--muted); z-index: 18; }
+  .lab .katex { font-size: 1em; }
+</style>
+</head><body><div id="stage"></div>
+<script>
+Scene.define({
+  duration: 71.1,
+  register: 'night',
+  // temps d'aperçu = estimation du moteur (146 mots par minute) ; le moteur injecte les vrais
+  cues: { 'e1-formule': 0.4, 'e1-cotes': 5.29, 'e1-horiz': 8.8, 'e1-droit': 13.25, 'e1-gauchepareil': 18.66, 'e1-deuxpoints': 22.67,
+    'e1-separes': 28.29, 'e1-ecart': 32.09, 'e1-divise': 38.74, 'e1-reste': 44.65, 'e1-dpdroite': 49.69, 'e1-hautbas': 54.31,
+    'e1-montee': 59.56, 'e1-somme': 62.84, 'e1-propre': 66.33 },
+  setup(ctx) {
+    const K = Kit, S = Scene, at = ctx.at, seg = S.seg, E = S.ease;
+    // ---------- géométrie et champ (storyboard, section 0 : y vers le haut, toPx renverse l'axe vertical) ----------
+    const CX = 560, CY = 470, SC = 300;
+    const toPx = (x, y) => [CX + SC * x, CY - SC * y];
+    const U = (x, y) => [0.5 + 0.6 * x, 0.4 + 0.5 * y];
+    const T = {};   // repères résolus une fois
+    for (const k of Object.keys(ctx.cues)) if (k.startsWith('e1-')) T[k.slice(3)] = at(k);
+    // côté h(t) : 1,2 ; rétrécit à 0,2 en 5.11 ; reprend 1,2 en 5.12
+    const hOf = (t) => {
+      let h = S.lerp(1.2, 0.2, seg(t, T.dpdroite + 0.2, T.dpdroite + 2.4, E.inOutCubic));
+      return S.lerp(h, 1.2, seg(t, T.hautbas, T.hautbas + 0.7, E.inOutCubic));
+    };
+    const halfPx = (t) => SC * hOf(t) / 2;
+
+    const svg = K.svgLayer(ctx, 12); svg.setAttribute('data-kit', 'carre');
+    const mk = (tag, a, p = svg) => K.s(tag, a, p);
+    const chalk = K.c('chalk'), muted = K.c('muted'), ucol = K.c('u');
+    const geo = mk('g', {});                        // carré, voile, accolades, points : s'efface en 5.14
+    const veil = mk('path', { fill: K.rgba(chalk, 0.12), stroke: 'none' }, geo);
+    const sides = [0, 1, 2, 3].map(() => mk('path', { fill: 'none', stroke: chalk, 'stroke-linecap': 'butt', 'stroke-linejoin': 'round' }, geo));
+    // une flèche : chemin plein --u ; une part qui ne compte pas : trait en tirets --muted, décalé de 12 px vers
+    // l'extérieur du côté qu'elle longe (sinon le côté plein la cache)
+    const arrowEl = (p = geo) => mk('path', { fill: ucol, stroke: ucol, 'stroke-width': 4, 'stroke-linecap': 'round', 'stroke-linejoin': 'round' }, p);
+    const dashEl = (p = geo) => mk('path', { fill: 'none', stroke: muted, 'stroke-width': 3, 'stroke-dasharray': '8 7' }, p);
+    const setArrow = (el, x0, y0, dx, dy, o = 1) => { el.setAttribute('d', K.arrowPath(x0, y0, x0 + dx, y0 + dy, 18)); el.style.opacity = o; };
+    const setLine = (el, x0, y0, x1, y1, o = 1) => { el.setAttribute('d', `M${x0.toFixed(2)},${y0.toFixed(2)}L${x1.toFixed(2)},${y1.toFixed(2)}`); el.style.opacity = o; };
+    // accolade de p0 à p1, bombée du côté `side` (+1 : à gauche du sens p0 → p1, à l'écran)
+    const braceEl = () => mk('path', { fill: 'none', stroke: muted, 'stroke-width': 3.5, 'stroke-linecap': 'round', 'stroke-linejoin': 'round' }, geo);
+    const setBrace = (el, p0, p1, side, prog, o = 1) => {
+      const L = Math.hypot(p1[0] - p0[0], p1[1] - p0[1]), r = Math.min(16, L / 4), a = Math.atan2(p1[1] - p0[1], p1[0] - p0[0]) * 180 / Math.PI, d = -side * r;
+      el.setAttribute('d', `M0,0 q0,${d} ${r},${d} L${L / 2 - r},${d} q${r},0 ${r},${d} q0,${-d} ${r},${-d} L${L - r},${d} q${r},0 ${r},${-d}`);
+      el.setAttribute('transform', `translate(${p0[0].toFixed(2)},${p0[1].toFixed(2)}) rotate(${a.toFixed(3)})`);
+      const len = 2 * L + 4 * r; el.style.strokeDasharray = len; el.style.strokeDashoffset = (len * (1 - prog)).toFixed(2);
+      el.style.opacity = prog > 0 ? o : 0;
+    };
+    const dimEl = () => mk('path', { fill: 'none', stroke: chalk, 'stroke-width': 6, 'stroke-linecap': 'round' }, svg);
+    const setDim = (el, x0, y0, x1, y1, prog, o) => {   // segment d'écart, avec deux petits traits aux bouts
+      const nx = -(y1 - y0), ny = x1 - x0, m = Math.hypot(nx, ny) || 1, tx = 12 * nx / m, ty = 12 * ny / m;
+      const xe = x0 + (x1 - x0) * prog, ye = y0 + (y1 - y0) * prog;
+      el.setAttribute('d', `M${x0 - tx},${y0 - ty}L${x0 + tx},${y0 + ty}M${x0},${y0}L${xe},${ye}` + (prog >= 1 ? `M${x1 - tx},${y1 - ty}L${x1 + tx},${y1 + ty}` : ''));
+      el.style.opacity = prog > 0 ? o : 0;
+    };
+    const dot = () => mk('circle', { r: 9, fill: chalk }, geo);
+    const lab = (tex, color = 'muted') => { const d = K.el('div', { class: 'lab', html: K.tex(tex, false) }, ctx.stage); d.style.color = K.c(color); return d; };
+    const place = (el, x, y, o) => { el.style.left = x.toFixed(1) + 'px'; el.style.top = y.toFixed(1) + 'px'; el.style.opacity = o; K.show(el, o > 0.01); };
+
+    // flèches horizontales (5.3 à 5.11) et verticales (5.12 à 5.14)
+    const H = { wR: arrowEl(), wL: arrowEl(), vR: dashEl(), vL: dashEl(), hR: arrowEl(svg), hL: arrowEl(svg) };
+    const V = { wT: arrowEl(), wB: arrowEl(), hT: dashEl(), hB: dashEl(), vT: arrowEl(svg), vB: arrowEl(svg) };
+    const braceR = braceEl(), braceX = braceEl(), braceT = braceEl(), braceY = braceEl();
+    const labR = lab('h'), labX = lab('h'), labT = lab('h'), labY = lab('h');
+    const dR = dot(), dL = dot(), dT = dot(), dB = dot();
+    const dimX = dimEl(), dimY = dimEl();
+    const labHH = lab('h\\times h = h^2', 'chalk'); labHH.style.fontSize = '44px';
+    // triangle de pente (5.10), le même que celui de la scène 02 : pas horizontal h, montée égale à l'écart (pente 0,6)
+    const tri = mk('g', {});
+    const TX0 = 1590, TY0 = 340, TW = 160, TH = 0.6 * TW;
+    const triLegs = mk('path', { d: `M${TX0},${TY0}L${TX0 + TW},${TY0}`, fill: 'none', stroke: chalk, 'stroke-width': 3 }, tri);
+    const triRise = mk('path', { d: `M${TX0 + TW},${TY0}L${TX0 + TW},${TY0 - TH}`, fill: 'none', stroke: chalk, 'stroke-width': 6, 'stroke-linecap': 'round' }, tri);
+    const triHyp = mk('path', { d: `M${TX0},${TY0}L${TX0 + TW},${TY0 - TH}`, fill: 'none', stroke: chalk, 'stroke-width': 3 }, tri);
+    const triLen = [TW, TH, Math.hypot(TW, TH)];
+    [triLegs, triRise, triHyp].forEach((p, i) => { p.style.strokeDasharray = triLen[i]; });
+    const labTri = lab('h');
+
+    // ---------- équations (colonne de droite, x 1000 à 1780) ----------
+    const EQX = 1010, EQY = 150, EQS = 50;
+    const ux = '\\cu{u_x}', uy = '\\cu{u_y}';
+    const Ea = K.equation(ctx, { x: EQX, y: EQY, size: EQS, anchor: 'left',
+      tex: `\\term{uxd}{${ux}(\\term{ad}{\\text{droite}})}\\term{t1}{\\,\\times\\, h}\\term{minus}{\\;-\\;}\\term{uxg}{${ux}(\\term{ag}{\\text{gauche}})}\\term{t2}{\\,\\times\\, h}`,
+      reveal: [[['uxd', 'ad', 't1'], 'e1-droit+1.1'], [['minus', 'uxg', 'ag', 't2'], 'e1-gauchepareil+0.5']] });
+    const Eb = K.equation(ctx, { wipe: 0.01, x: EQX, y: EQY, size: EQS, anchor: 'left', at: 'e1-ecart+0.4',
+      tex: `\\term{lb}{\\big[}\\term{uxd}{${ux}(\\text{droite})}\\term{minus}{\\;-\\;}\\term{uxg}{${ux}(\\text{gauche})}\\term{rb}{\\big]}\\term{t1}{\\,\\times\\, h}` });
+    K.morph(ctx, { from: Ea, to: Eb, at: 'e1-ecart+0.4', dur: 1.0 });
+    const Ec = K.equation(ctx, { wipe: 0.01, x: EQX, y: EQY - 10, size: EQS, anchor: 'left', at: 'e1-divise+0.3',
+      tex: `\\frac{\\term{lb}{\\big[}\\term{uxd}{${ux}(\\text{droite})}\\term{minus}{\\;-\\;}\\term{uxg}{${ux}(\\text{gauche})}\\term{rb}{\\big]}\\term{tx}{\\,\\times\\,}\\term{hn}{h}}{\\term{hd1}{h}\\term{tx2}{\\,\\times\\,}\\term{hd2}{h}}` });
+    K.morph(ctx, { from: Eb, to: Ec, at: 'e1-divise+0.3', dur: 1.0 });
+    const Ed = K.equation(ctx, { wipe: 0.01, x: EQX, y: EQY - 10, size: EQS, anchor: 'left', at: 'e1-reste+1.4',
+      tex: `\\frac{\\term{uxd}{${ux}(\\text{droite})}\\term{minus}{\\;-\\;}\\term{uxg}{${ux}(\\text{gauche})}}{\\term{hd1}{h}}` });
+    K.morph(ctx, { from: Ec, to: Ed, at: 'e1-reste+1.4', dur: 1.0 });
+    // barres sur un h du haut et un h du bas (5.10), au stylo, petites
+    const shrink = (b, k) => ({ x: b.x + b.w * k, y: b.y + b.h * k, w: b.w * (1 - 2 * k), h: b.h * (1 - 2 * k) });
+    K.pen(ctx, { kind: 'cross', box: shrink(Ec.tbox.hn, 0.08), at: 'e1-reste+0.1', dur: 0.35, out: 'e1-reste+1.4', width: 4 });
+    K.pen(ctx, { kind: 'cross', box: shrink(Ec.tbox.hd2, 0.08), at: 'e1-reste+0.5', dur: 0.35, out: 'e1-reste+1.4', width: 4 });
+    const Ee = K.equation(ctx, { wipe: 0.01, x: EQX + 40, y: EQY, size: 76, anchor: 'left', at: 'e1-dpdroite+0.3', tex: `\\term{dx}{\\partial_x ${ux}}` });
+    K.morph(ctx, { from: Ed, to: Ee, at: 'e1-dpdroite+0.3', dur: 1.0 });
+    const Ef = K.equation(ctx, { x: EQX, y: 420, size: EQS, anchor: 'left', at: 'e1-hautbas+3.2',
+      tex: `\\frac{\\term{uyh}{${uy}(\\text{haut})}\\term{minus}{\\;-\\;}\\term{uyb}{${uy}(\\text{bas})}}{\\term{hd}{h}}` });
+    const Eg = K.equation(ctx, { wipe: 0.01, x: EQX + 40, y: 430, size: 76, anchor: 'left', at: 'e1-montee+0.1', tex: `\\term{dy}{\\partial_y ${uy}}` });
+    K.morph(ctx, { from: Ef, to: Eg, at: 'e1-montee+0.1', dur: 1.0 });
+    // 5.14 : la divergence, centrée en grand, les deux termes venus de leurs places
+    const Eh = K.equation(ctx, { wipe: 0.01, x: 960, y: 380, size: 112, anchor: 'center', at: 'e1-somme+0.3',
+      tex: `\\term{lhs}{\\nabla\\cdot\\U}\\term{eq}{\\;=\\;}\\term{dx}{\\partial_{\\term{ix1}{x}} \\cu{u_{\\term{ix2}{x}}}}\\term{plus}{\\;+\\;}\\term{dy}{\\partial_{\\term{iy1}{y}} \\cu{u_{\\term{iy2}{y}}}}` });
+    // morphose à deux sources (Kit.morph n'en prend qu'une) : dx vient de Ee, dy de Eg, avec changement de taille
+    const mA = at('e1-somme+0.3'), mD = 1.2, srcs = [[Ee, 'dx'], [Eg, 'dy']];
+    const mdelta = {};
+    for (const [Es, k] of srcs) { const a = Es.tbox[k], b = Eh.tbox[k]; mdelta[k] = [a.x - b.x, a.y - b.y, a.h / b.h]; }
+    ctx.add({ render(t) {
+      if (t < mA) { K.show(Eh.root, false); return; }
+      const p = seg(t, mA, mA + mD, E.inOutCubic), hand = seg(t, mA, mA + 0.15, E.linear);
+      for (const [Es, k] of srcs) { K.show(Es.root, p < 1); Es.root.style.opacity = 1 - seg(t, mA, mA + mD * 0.6, E.linear); Es.terms[k].style.visibility = hand >= 1 ? 'hidden' : 'visible'; }
+      K.show(Eh.root, true); Eh.root.style.opacity = hand;
+      for (const [k, el] of Object.entries(Eh.terms)) {
+        el.style.clipPath = 'none'; el.style.visibility = 'visible';
+        if (mdelta[k]) {
+          const [dx, dy, s0] = mdelta[k], s = S.lerp(s0, 1, p);
+          el.style.display = 'inline-block'; el.style.opacity = 1; el.style.transformOrigin = '0 0';
+          el.style.transform = `translate(${(dx * (1 - p)).toFixed(2)}px, ${(dy * (1 - p)).toFixed(2)}px) scale(${s.toFixed(4)})`;
+        } else if (['ix1', 'ix2', 'iy1', 'iy2'].includes(k)) el.style.opacity = 1;   // à l'intérieur de dx, dy
+        else el.style.opacity = seg(t, mA + mD * 0.5, mA + mD, E.linear);
+      }
+    } });
+    // 5.15 : les deux indices de chaque terme, reliés par un petit trait (stylo, sans pointe)
+    const link = (a, b, k) => { const A = Eh.tbox[a], B = Eh.tbox[b];
+      K.pen(ctx, { kind: 'arrow', head: false, from: [A.x + A.w / 2, A.y + A.h + 6], to: [B.x + B.w / 2, B.y + B.h + 6], bend: -0.45, at: `e1-propre+${0.25 + 0.35 * k}`, dur: 0.45, width: 4 }); };
+    link('ix1', 'ix2', 0); link('iy1', 'iy2', 1);
+
+    ctx.S = { CX, CY, SC, U, T, hOf, halfPx, geo, veil, sides, H, V, braceR, braceX, braceT, braceY, labR, labX, labT, labY, dR, dL, dT, dB,
+      dimX, dimY, labHH, tri, triLegs, triRise, triHyp, triLen, labTri, TX0, TY0, TW, TH, setArrow, setLine, setBrace, setDim, place, Ea, Eh };
+  },
+
+  render(t, ctx) {
+    const K = Kit, S = Scene, seg = S.seg, E = S.ease;
+    const { CX, CY, SC, U, T, hOf, halfPx, geo, veil, sides, H, V, setArrow, setLine, setBrace, setDim, place } = ctx.S;
+    const a = halfPx(t), h = hOf(t);
+    const fadeAll = 1 - seg(t, T.somme, T.somme + 0.5, E.linear);   // 5.14 : la formule prend toute la place
+    geo.style.opacity = fadeAll;
+
+    // ---------- 5.1 à 5.2, 5.12 : le cercle devient carré ; côtés mis en avant ----------
+    const pm = seg(t, T.formule + 0.3, T.formule + 1.1, E.inOutCubic);
+    const rad = (th) => S.lerp(180, a / Math.max(Math.abs(Math.cos(th)), Math.abs(Math.sin(th))), pm);
+    const pc = seg(t, T.cotes, T.cotes + 0.5, E.inOutSine), ph = seg(t, T.hautbas, T.hautbas + 0.5, E.inOutSine);
+    let dVeil = '';
+    for (let k = 0; k < 4; k++) {          // k = 0 droite, 1 haut, 2 gauche, 3 bas ; angles comptés dans le sens trigonométrique
+      let d = '';
+      for (let i = 0; i <= 48; i++) {
+        const th = (k - 0.5) * Math.PI / 2 + (i / 48) * Math.PI / 2, r = rad(th);
+        const x = CX + r * Math.cos(th), y = CY - r * Math.sin(th);
+        d += (i ? 'L' : 'M') + x.toFixed(2) + ',' + y.toFixed(2);
+        dVeil += (k || i ? 'L' : 'M') + x.toFixed(2) + ',' + y.toFixed(2);
+      }
+      const lr = k % 2 === 0, emph = lr ? pc * (1 - ph) : ph, dim = lr ? ph : pc * (1 - ph);
+      sides[k].setAttribute('d', d);
+      sides[k].setAttribute('stroke-width', (3 + 2 * emph).toFixed(2));
+      sides[k].setAttribute('stroke-dasharray', emph > 0.5 ? 'none' : '12 9');
+      sides[k].style.opacity = 1 - 0.7 * dim;
+    }
+    // 5.9 : voile du carré
+    const pv = seg(t, T.divise, T.divise + 0.6, E.inOutSine) * (1 - seg(t, T.dpdroite, T.dpdroite + 0.4, E.linear));
+    veil.setAttribute('d', dVeil + 'Z'); veil.style.opacity = pv;
+    place(ctx.S.labHH, CX, CY - 40, seg(t, T.divise + 0.4, T.divise + 0.8, E.linear) * (1 - seg(t, T.dpdroite, T.dpdroite + 0.4, E.linear)) * fadeAll);
+
+    // ---------- 5.3 à 5.11 : les deux côtés gauche et droit ----------
+    const uR = U(h / 2, 0), uL = U(-h / 2, 0);
+    const grow = seg(t, T.horiz, T.horiz + 0.4, E.outCubic), cut = seg(t, T.horiz + 0.6, T.horiz + 1.1, E.inOutSine);
+    const gone = seg(t, T.dpdroite, T.dpdroite + 0.4, E.linear);                  // 5.11 : les flèches s'en vont
+    const vDim = 1 - 0.7 * seg(t, T.horiz + 1.2, T.horiz + 1.6, E.linear), vGone = 1 - seg(t, T.ecart, T.ecart + 0.3, E.linear);
+    const R0 = [CX + a, CY], L0 = [CX - a, CY];
+    const showH = t >= T.horiz && t < T.dpdroite + 0.4;
+    for (const el of [H.wR, H.wL, H.vR, H.vL, H.hR, H.hL]) K.show(el, showH);
+    if (showH) {
+      setArrow(H.wR, R0[0], R0[1], uR[0] * SC * grow, -uR[1] * SC * grow, 1 - cut);
+      setArrow(H.wL, L0[0], L0[1], uL[0] * SC * grow, -uL[1] * SC * grow, 1 - cut);
+      setLine(H.vR, R0[0] + 12, R0[1], R0[0] + 12, R0[1] - uR[1] * SC, cut * vDim * vGone);
+      setLine(H.vL, L0[0] - 12, L0[1], L0[0] - 12, L0[1] - uL[1] * SC, cut * vDim * vGone);
+      // 5.4 : la flèche de droite mise en avant ; la gauche s'efface un peu, puis repousse en 5.5
+      const leftDim = 1 - 0.65 * seg(t, T.droit, T.droit + 0.3, E.linear) * (1 - seg(t, T.gauchepareil, T.gauchepareil + 0.2, E.linear));
+      const leftGrow = t >= T.gauchepareil ? seg(t, T.gauchepareil, T.gauchepareil + 0.6, E.outCubic) : 1;
+      // 5.8 : glissement au-dessus du carré, base contre base (x = 380), deux lignes l'une sur l'autre
+      const g = seg(t, T.ecart, T.ecart + 0.8, E.inOutCubic);
+      const bR = [S.lerp(R0[0], CX - 180, g), S.lerp(R0[1], 222, g)], bL = [S.lerp(L0[0], CX - 180, g), S.lerp(L0[1], 250, g)];
+      setArrow(H.hR, bR[0], bR[1], uR[0] * SC, 0, cut * (1 - gone));
+      setArrow(H.hL, bL[0], bL[1], uL[0] * SC * leftGrow, 0, cut * leftDim * (1 - gone));
+      H.hR.setAttribute('stroke-width', (4 + 2 * Math.sin(Math.PI * seg(t, T.droit, T.droit + 0.8, E.linear))).toFixed(2));
+      setDim(ctx.S.dimX, CX - 180 + uL[0] * SC, 194, CX - 180 + uR[0] * SC, 194, seg(t, T.ecart + 0.9, T.ecart + 1.4, E.inOutSine), 1 - gone);
+    } else ctx.S.dimX.style.opacity = 0;
+    // 5.4 : accolade le long du côté droit, à l'intérieur ; 5.7 : accolade entre les deux points
+    const bOut = 1 - seg(t, T.ecart, T.ecart + 0.3, E.linear);
+    setBrace(ctx.S.braceR, [CX + a - 36, CY + a - 6], [CX + a - 36, CY - a + 6], -1, seg(t, T.droit + 0.3, T.droit + 0.9, E.inOutSine), bOut);
+    place(ctx.S.labR, CX + a - 84, CY + 2, seg(t, T.droit + 0.8, T.droit + 1.0, E.linear) * bOut * fadeAll);
+    setBrace(ctx.S.braceX, [CX - a, CY + 30], [CX + a, CY + 30], -1, seg(t, T.separes, T.separes + 0.6, E.inOutSine), bOut);
+    place(ctx.S.labX, CX, CY + 80, seg(t, T.separes + 0.5, T.separes + 0.7, E.linear) * bOut * fadeAll);
+    // 5.6 : les deux points de mesure, pulsation l'un après l'autre ; les arguments de l'équation s'allument
+    const pd = seg(t, T.deuxpoints, T.deuxpoints + 0.3, E.linear) * bOut;
+    const pulse = (a0) => Math.sin(Math.PI * seg(t, a0, a0 + 0.7, E.linear));
+    const pr = pulse(T.deuxpoints + 0.3), pl = pulse(T.deuxpoints + 1.4);
+    ctx.S.dR.setAttribute('cx', R0[0]); ctx.S.dR.setAttribute('cy', R0[1]); ctx.S.dR.setAttribute('r', (9 + 6 * pr).toFixed(2)); ctx.S.dR.style.opacity = pd;
+    ctx.S.dL.setAttribute('cx', L0[0]); ctx.S.dL.setAttribute('cy', L0[1]); ctx.S.dL.setAttribute('r', (9 + 6 * pl).toFixed(2)); ctx.S.dL.style.opacity = pd;
+    const lit = (el, on) => { el.style.color = on > 0.02 ? K.c('chalk') : ''; el.style.opacity = on > 0.02 ? (0.75 + 0.25 * on).toFixed(3) : ''; };
+    const litOn = (a0) => (t >= a0 && t < T.ecart ? 1 : 0);
+    lit(ctx.S.Ea.terms.ad, litOn(T.deuxpoints + 0.3) * (0.5 + 0.5 * pr));
+    lit(ctx.S.Ea.terms.ag, litOn(T.deuxpoints + 1.4) * (0.5 + 0.5 * pl));
+
+    // ---------- 5.10 : triangle de pente ----------
+    const tOn = 1 - seg(t, T.dpdroite, T.dpdroite + 0.4, E.linear);
+    const tp = seg(t, T.reste + 2.0, T.reste + 2.6, E.inOutSine);
+    [ctx.S.triLegs, ctx.S.triRise, ctx.S.triHyp].forEach((p, i) => { const q = S.clamp(tp * 3 - i); p.style.strokeDashoffset = (ctx.S.triLen[i] * (1 - q)).toFixed(2); p.style.opacity = q > 0 ? tOn : 0; });
+    place(ctx.S.labTri, ctx.S.TX0 + ctx.S.TW / 2, ctx.S.TY0 + 34, seg(t, T.reste + 2.2, T.reste + 2.5, E.linear) * tOn);
+
+    // ---------- 5.12 : le même geste en bas et en haut, en accéléré (3 s) ----------
+    const r0 = T.hautbas + 0.6;
+    const uT = U(0, h / 2), uB = U(0, -h / 2), T0 = [CX, CY - a], B0 = [CX, CY + a];
+    const vg = seg(t, r0, r0 + 0.3, E.outCubic), vc = seg(t, r0 + 0.4, r0 + 0.7, E.inOutSine);
+    const hDim = 1 - 0.7 * seg(t, r0 + 0.7, r0 + 0.9, E.linear), hGone = 1 - seg(t, r0 + 2.0, r0 + 2.2, E.linear);
+    const showV = t >= r0;
+    for (const el of [V.wT, V.wB, V.hT, V.hB, V.vT, V.vB]) K.show(el, showV);
+    if (showV) {
+      setArrow(V.wT, T0[0], T0[1], uT[0] * SC * vg, -uT[1] * SC * vg, 1 - vc);
+      setArrow(V.wB, B0[0], B0[1], uB[0] * SC * vg, -uB[1] * SC * vg, 1 - vc);
+      setLine(V.hT, T0[0], T0[1] - 12, T0[0] + uT[0] * SC, T0[1] - 12, vc * hDim * hGone);
+      setLine(V.hB, B0[0], B0[1] + 12, B0[0] + uB[0] * SC, B0[1] + 12, vc * hDim * hGone);
+      const g = seg(t, r0 + 2.0, r0 + 2.6, E.inOutCubic);
+      const bT = [S.lerp(T0[0], 820, g), S.lerp(T0[1], 660, g)], bB = [S.lerp(B0[0], 848, g), S.lerp(B0[1], 660, g)];
+      setArrow(V.vT, bT[0], bT[1], 0, -uT[1] * SC, vc * fadeAll);
+      setArrow(V.vB, bB[0], bB[1], 0, -uB[1] * SC, vc * fadeAll);
+      setDim(ctx.S.dimY, 884, 660 - uB[1] * SC, 884, 660 - uT[1] * SC, seg(t, r0 + 2.6, r0 + 2.9, E.inOutSine), fadeAll);
+    } else ctx.S.dimY.style.opacity = 0;
+    setBrace(ctx.S.braceT, [CX - a, CY - a + 16], [CX + a, CY - a + 16], -1, seg(t, r0 + 1.0, r0 + 1.3, E.inOutSine), hGone);
+    place(ctx.S.labT, CX - 90, CY - a + 56, seg(t, r0 + 1.2, r0 + 1.3, E.linear) * hGone * fadeAll);
+    setBrace(ctx.S.braceY, [CX + 30, CY + a], [CX + 30, CY - a], 1, seg(t, r0 + 1.7, r0 + 2.0, E.inOutSine), hGone);
+    place(ctx.S.labY, CX + 76, CY + 40, seg(t, r0 + 1.9, r0 + 2.0, E.linear) * hGone * fadeAll);
+    const pdV = seg(t, r0 + 1.3, r0 + 1.45, E.linear) * hGone;
+    ctx.S.dT.setAttribute('cx', T0[0]); ctx.S.dT.setAttribute('cy', T0[1]); ctx.S.dT.setAttribute('r', (9 + 6 * pulse(r0 + 1.3)).toFixed(2)); ctx.S.dT.style.opacity = pdV;
+    ctx.S.dB.setAttribute('cx', B0[0]); ctx.S.dB.setAttribute('cy', B0[1]); ctx.S.dB.setAttribute('r', (9 + 6 * pulse(r0 + 1.5)).toFixed(2)); ctx.S.dB.style.opacity = pdV;
+
+    // ---------- 5.15 : les indices de chaque terme passent en --chalk ----------
+    const ip = seg(t, T.propre, T.propre + 0.3, E.linear);
+    for (const k of ['ix1', 'ix2', 'iy1', 'iy2']) { const el = ctx.S.Eh.terms[k]; el.style.color = ip > 0 ? K.c('chalk') : ''; }
+  },
+});
+</script></body></html>
