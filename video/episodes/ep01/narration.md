@@ -72,7 +72,7 @@ Les lignes « > écran : » et « > légende : » ne sont pas dites. La voix ne 
 [e1-flux] On fait la somme tout autour du cercle : c'est le flux.
 [e1-sens] Le flux mesure ce qui sort du cercle chaque seconde, moins ce qui y entre.
 
-> écran : les parts perpendiculaires au bord, vertes vers l'extérieur, rouges vers l'intérieur ; le mot « flux ».
+> écran : les parts perpendiculaires au bord, marquées « + » vers l'extérieur, « − » vers l'intérieur ; le mot « flux ».
 
 ### P7
 

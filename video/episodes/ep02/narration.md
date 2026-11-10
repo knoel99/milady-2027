@@ -308,7 +308,8 @@ Les lignes « > écran : » et « > légende : » ne sont pas dites. La voix ne 
 [e2-r1] Le bord raconte l'intérieur : c'est le carrelage, Green-Ostrogradski et Stokes.
 [e2-r2] Le champ magnétique a un flux nul à travers n'importe quelle surface fermée.
 [e2-r2b] Ses lignes n'ont ni début ni fin, et il n'y a pas de monopôle.
-[e2-r3] Les flèches de pente d'une fonction de courant, tournées d'un quart de tour, donnent un champ sans divergence.
+[e2-r3] Prends les flèches de pente d'une fonction de courant.
+[e2-r3b] Tourne-les d'un quart de tour dans le sens horaire : le champ obtenu n'a pas de divergence.
 
 > écran : trois lignes, chacune avec sa formule : « ∫Ω ∇·u dx = ∮∂Ω u·n dℓ » ; « ∇·B = 0 » ; « u = ∇⊥ψ, ∇·u = 0 ».
 
