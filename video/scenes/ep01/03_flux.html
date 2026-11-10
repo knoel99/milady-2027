@@ -1,0 +1,218 @@
+<!doctype html>
+<html lang="fr"><head><meta charset="utf-8">
+<title>ep01.03 Le flux</title>
+<!-- Storyboard ep01, scène ep01.03 (plans 3.1 à 3.14), narration P5 et P6.
+     Champ u = (x − 0,4y ; y + 0,4x), coordonnées mathématiques y vers le haut, 100 px par unité, origine P à l'écran en
+     (620, 340) ; panneau 900 × 720 (x 120 à 1020, y 100 à 820). Cercle R = 180 px = 1,8 ; cercle déplacé de
+     (−2,12 ; −2,12), centré à l'écran en (408, 552) : cinq parts entrantes (|c| = 3 > R/1,077), sur l'arc qui fait face à P.
+     Parts des seize points : 18 px par unité de vitesse, pour qu'au plus loin elles restent dans le panneau (3.12) ;
+     la flèche de démonstration de 3.6 à 3.10 est dessinée à 60 px par unité, pour que sa part tangente se voie.
+     Traceurs de 3.14 en forme fermée : x(τ) = e^τ R(0,4τ) x0 (le champ est linéaire). -->
+<link rel="stylesheet" href="../../vendor/katex/katex.min.css">
+<link rel="stylesheet" href="../../runtime/theme.css">
+<script src="../../vendor/katex/katex.min.js"></script>
+<script src="../../runtime/scene.js"></script>
+<script src="../../runtime/components/kit.js"></script>
+<script src="../../runtime/components/field.js"></script>
+<script src="../../runtime/components/ep-kit.js"></script>
+<style>
+  .fiche-mot { position: absolute; font-size: 44px; color: var(--chalk); z-index: 18; white-space: nowrap; transform: translate(-50%, -50%); }
+</style>
+</head><body><div id="stage"></div>
+<script>
+Scene.define({
+  duration: 60.47,
+  register: 'night',
+  cues: { 'e1-source': 0.4, 'e1-robinet': 4.27, 'e1-ecarte': 8.0, 'e1-dessus': 12.09, 'e1-cercle': 16.47, 'e1-bord': 21.06, 'e1-coupe': 24.93,
+    'e1-traverse': 27.37, 'e1-glisse': 32.68, 'e1-seul': 36.41, 'e1-plus': 40.75, 'e1-moins': 45.46, 'e1-flux': 49.54, 'e1-sens': 53.85 },
+  setup(ctx) {
+    const K = Kit, S = Scene, at = ctx.at, seg = S.seg, E = S.ease, TAU = Math.PI * 2;
+    const T = {}; for (const k of Object.keys(ctx.cues)) if (k.startsWith('e1-')) T[k.slice(3)] = at(k);
+    const PX = 620, PY = 340, SC = 100, R = 1.8;
+    const toPx = (x, y) => [PX + SC * x, PY - SC * y];
+    const fromPx = (px, py) => [(px - PX) / SC, (PY - py) / SC];
+    const U = (x, y) => [x - 0.4 * y, y + 0.4 * x];
+    const chalk = K.c('chalk'), muted = K.c('muted'), ucol = K.c('u'), matter = K.c('matter'), bg = K.c('bg');
+
+    // ---------- panneau, flèches, point P ----------
+    const svgP = K.svgLayer(ctx, 4); svgP.setAttribute('data-kit', 'panneau');
+    const frame = K.s('rect', { x: 120, y: 100, width: 900, height: 720, fill: 'none', stroke: matter, 'stroke-width': 2 }, svgP);
+    const field = K.arrows(ctx, { F: (px, py) => { const v = U(...fromPx(px, py)); return [v[0], -v[1]]; },
+      box: { x: 120, y: 100, w: 900, h: 720 }, nx: 14, ny: 11, compress: { k: 10, threshold: 1e9 }, at: -1 });
+    const svg = K.svgLayer(ctx, 12); svg.setAttribute('data-kit', 'flux');
+    const pDot = K.s('circle', { cx: PX, cy: PY, r: 9, fill: chalk }, svg);
+
+    // ---------- 3.2 à 3.4 : le robinet, vue de côté puis vue de dessus ----------
+    const pic = K.s('g', {}, svg);
+    const side = K.s('g', {}, pic), top = K.s('g', {}, pic);
+    K.s('rect', { x: 1250, y: 560, width: 460, height: 14, fill: matter }, side);
+    K.s('path', { d: 'M1290,574L1290,690M1670,574L1670,690', stroke: matter, 'stroke-width': 10, fill: 'none' }, side);
+    K.s('path', { d: 'M1600,150L1600,230L1480,230L1480,268', stroke: matter, 'stroke-width': 22, fill: 'none', 'stroke-linejoin': 'round' }, side);
+    const jet = K.s('path', { stroke: ucol, 'stroke-width': 10, fill: 'none', 'stroke-linecap': 'butt' }, side);
+    const nappe = K.s('path', { stroke: ucol, 'stroke-width': 7, fill: 'none', 'stroke-linecap': 'round' }, side);
+    const sideArr = [-1, 1].flatMap((sg) => [[sg, 34, 70], [sg, 130, 50]]).map(([sg, x0, L]) => ({ sg, x0, L,
+      el: K.s('path', { fill: ucol, stroke: ucol, 'stroke-width': 4, 'stroke-linecap': 'round', 'stroke-linejoin': 'round' }, side) }));
+    // vue de dessus : table, disque du jet vide (le jet s'éloigne de l'œil), gerbe en 1/r
+    const TC = [1480, 470];
+    K.s('rect', { x: 1250, y: 310, width: 460, height: 320, fill: K.rgba(matter, 0.12), stroke: matter, 'stroke-width': 3 }, top);
+    K.s('circle', { cx: TC[0], cy: TC[1], r: 20, fill: 'none', stroke: muted, 'stroke-width': 2.5, 'stroke-dasharray': '6 5' }, top);
+    const gerbe = [];
+    for (let k = 0; k < 12; k++) for (const r of [30, 128]) {
+      const a = k * TAU / 12 + (r > 100 ? TAU / 24 : 0), L = 2400 / r;
+      gerbe.push({ a, r, L, el: K.s('path', { fill: ucol, stroke: ucol, 'stroke-width': 3.5, 'stroke-linecap': 'round', 'stroke-linejoin': 'round' }, top) });
+    }
+    const eye = K.s('g', {}, svg);
+    K.s('path', { d: 'M-30,0Q0,-20 30,0Q0,20 -30,0Z', fill: 'none', stroke: muted, 'stroke-width': 3 }, eye);
+    K.s('circle', { r: 7, fill: muted }, eye);
+
+    // ---------- 3.5 à 3.12 : le cercle-sonde ----------
+    const CS = [-2.12, -2.12];
+    const cOf = (t) => { const g = seg(t, T.moins, T.moins + 1, E.inOutCubic) * (1 - seg(t, T.moins + 2.6, T.moins + 3.6, E.inOutCubic)); return [CS[0] * g, CS[1] * g]; };
+    const probe = K.probe(ctx, { toPx, F: U, mode: 'flux', circle: { c: cOf, r: R }, at: 'e1-cercle', z: 13,
+      parts: { n: 16, phase: 0, scale: 18, other: null, signs: true, at: 'e1-plus', dur: 0.9 } });
+
+    // ---------- 3.6 à 3.10 : une flèche du bord et ses deux morceaux ----------
+    const th = 40 * Math.PI / 180, nV = [Math.cos(th), Math.sin(th)], tV = [-Math.sin(th), Math.cos(th)];
+    const Qm = [R * nV[0], R * nV[1]], Qs = toPx(...Qm), uQ = U(...Qm), vn = uQ[0] * nV[0] + uQ[1] * nV[1], vt = uQ[0] * tV[0] + uQ[1] * tV[1], DS = 60;
+    const demo = K.s('g', {}, svg);
+    const full = K.s('path', { fill: ucol, stroke: ucol, 'stroke-width': 5, 'stroke-linecap': 'round', 'stroke-linejoin': 'round' }, demo);
+    const outN = K.s('path', { fill: 'none', stroke: muted, 'stroke-width': 2, 'stroke-dasharray': '6 5' }, demo);
+    const outT = K.s('path', { fill: 'none', stroke: muted, 'stroke-width': 2, 'stroke-dasharray': '6 5' }, demo);
+    const sq = K.s('path', { fill: 'none', stroke: muted, 'stroke-width': 2 }, demo);
+    const pieceN = K.s('path', { fill: ucol, stroke: ucol, 'stroke-width': 6, 'stroke-linecap': 'round', 'stroke-linejoin': 'round' }, demo);
+    const pieceT = K.s('path', { fill: 'none', stroke: muted, 'stroke-width': 5, 'stroke-dasharray': '10 7', 'stroke-linecap': 'butt' }, demo);
+
+    // ---------- 3.13 : l'arc qui rassemble, la fiche FLUX ----------
+    const sumArc = K.s('path', { fill: 'none', stroke: chalk, 'stroke-width': 4, 'stroke-linecap': 'round' }, svg);
+    const sumDot = K.s('circle', { r: 7, fill: chalk }, svg);
+    const fiche = K.s('rect', { x: 1300, y: 400, width: 360, height: 130, rx: 10, fill: 'none', stroke: muted, 'stroke-width': 2.5, 'stroke-dasharray': '10 8' }, svg);
+    const mot = K.el('div', { class: 'fiche-mot mono', 'data-kit': 'fiche' }, ctx.stage, K.upper('flux'));
+    mot.style.left = '1480px'; mot.style.top = '465px';
+
+    // ---------- 3.14 : traceurs en forme fermée, éclats au passage du bord ----------
+    const L = K.canvasLayer(ctx, 6, null, null, { reset: true }); L.canvas.setAttribute('data-kit', 'traceurs');
+    const rng = S.rng('ep01.03-traceurs'), KAP = 0.45, parts = [];
+    for (let i = 0; i < 200; i++) {
+      const r0 = Math.max(0.15, R * 0.97 * Math.sqrt(rng())), th0 = TAU * rng();
+      const tc = Math.log(R / r0) / KAP, life = Math.log(6 / r0) / KAP;
+      parts.push({ r0, th0, tc, life, ph: rng() * tc });
+    }
+
+    ctx.S = { T, toPx, U, R, field, frame, pDot, pic, side, top, jet, nappe, sideArr, gerbe, TC, eye, probe, Qs, nV, tV, vn, vt, DS, demo, full, outN, outT, sq, pieceN, pieceT,
+      sumArc, sumDot, fiche, mot, L, parts, KAP, cOf };
+  },
+
+  render(t, ctx) {
+    const K = Kit, S = Scene, seg = S.seg, E = S.ease, TAU = Math.PI * 2;
+    const C = ctx.S, T = C.T;
+    // ---------- 3.1, 3.2, 3.5, 3.6 : intensité du panneau ----------
+    const half = seg(t, T.robinet, T.robinet + 0.5, E.linear) * (1 - seg(t, T.cercle, T.cercle + 0.5, E.linear));
+    const quart = seg(t, T.bord, T.bord + 0.5, E.linear);
+    C.field.canvas.style.opacity = (1 - 0.5 * half) * (1 - 0.75 * quart);
+    C.frame.style.opacity = 1 - 0.5 * half;
+    C.pDot.setAttribute('r', (9 + 7 * Math.sin(Math.PI * seg(t, T.source + 0.2, T.source + 0.6, E.linear))).toFixed(2));
+    C.pDot.style.opacity = 1 - 0.5 * half;
+
+    // ---------- 3.2 à 3.5 : pictogramme ----------
+    const picOn = seg(t, T.robinet, T.robinet + 0.4, E.linear);
+    C.pic.style.opacity = picOn; K.show(C.pic, picOn > 0);
+    const jp = seg(t, T.robinet + 0.3, T.robinet + 0.9, E.inCubic);
+    C.jet.setAttribute('d', jp > 0 ? `M1480,270L1480,${(270 + 283 * jp).toFixed(1)}` : '');
+    const sp = seg(t, T.ecarte, T.ecarte + 1.2, E.outCubic);
+    C.nappe.setAttribute('d', sp > 0 ? `M${(1480 - 210 * sp).toFixed(1)},553L${(1480 + 210 * sp).toFixed(1)},553` : '');
+    for (const a of C.sideArr) {
+      const g = seg(t, T.ecarte + 0.3 + (a.x0 > 100 ? 0.3 : 0), T.ecarte + 0.9 + (a.x0 > 100 ? 0.3 : 0), E.outCubic);
+      const x0 = 1480 + a.sg * a.x0;
+      a.el.setAttribute('d', g > 0 ? K.arrowPath(x0, 530, x0 + a.sg * a.L * g, 530, 14) : '');
+    }
+    // œil : il monte, puis la bascule par aplatissement vertical (affine)
+    const up = seg(t, T.dessus, T.dessus + 0.5, E.inOutCubic);
+    C.eye.setAttribute('transform', `translate(${S.lerp(1250, 1300, up)},${S.lerp(460, 200, up)})`);
+    const eyeOn = picOn * (1 - seg(t, T.dessus + 1.6, T.dessus + 2.0, E.linear));
+    C.eye.style.opacity = eyeOn; K.show(C.eye, eyeOn > 0);
+    const f1 = seg(t, T.dessus + 0.5, T.dessus + 1.0, E.inCubic), f2 = seg(t, T.dessus + 1.0, T.dessus + 1.5, E.outCubic);
+    C.side.setAttribute('transform', `translate(0,560) scale(1,${Math.max(0.001, 1 - f1).toFixed(4)}) translate(0,-560)`);
+    K.show(C.side, f1 < 1);
+    // 3.5 : réduction en vignette dans le coin haut droit
+    const vg = seg(t, T.cercle, T.cercle + 0.8, E.inOutCubic), vs = S.lerp(1, 0.38, vg);
+    const vx = S.lerp(C.TC[0], 1712, vg), vy = S.lerp(C.TC[1], 132, vg);
+    C.top.setAttribute('transform', `translate(${vx.toFixed(2)},${vy.toFixed(2)}) scale(${vs.toFixed(4)},${(vs * Math.max(0.001, f2)).toFixed(4)}) translate(${-C.TC[0]},${-C.TC[1]})`);
+    K.show(C.top, f2 > 0);
+    const gr = seg(t, T.dessus + 1.2, T.dessus + 1.9, E.outCubic);
+    for (const a of C.gerbe) {
+      const x0 = C.TC[0] + a.r * Math.cos(a.a), y0 = C.TC[1] - a.r * Math.sin(a.a), L = a.L * gr;
+      a.el.setAttribute('d', gr > 0 ? K.arrowPath(x0, y0, x0 + L * Math.cos(a.a), y0 - L * Math.sin(a.a), 12) : '');
+    }
+
+    // ---------- 3.5 : le cercle se trace au trait ----------
+    const cp = seg(t, T.cercle, T.cercle + 0.8, E.inOutSine);
+    if (cp > 0 && cp < 1) {
+      let poly = `${C.toPx(0, 0)[0]}px ${C.toPx(0, 0)[1]}px`;
+      for (let i = 0; i <= 40; i++) { const a = TAU * cp * i / 40, q = C.toPx(3 * Math.cos(a), 3 * Math.sin(a)); poly += `, ${q[0].toFixed(1)}px ${q[1].toFixed(1)}px`; }
+      C.probe.root.style.clipPath = `polygon(${poly})`;
+    } else C.probe.root.style.clipPath = 'none';
+
+    // ---------- 3.6 à 3.10 : la flèche du bord ----------
+    const [qx, qy] = C.Qs, DS = C.DS, n = C.nV, tg = C.tV;
+    const sx = (v) => v[0], sy = (v) => -v[1];   // vecteur mathématique → écran
+    const nEnd = [n[0] * C.vn * DS, n[1] * C.vn * DS], tEnd = [tg[0] * C.vt * DS, tg[1] * C.vt * DS];
+    const demoOff = 1 - seg(t, T.plus, T.plus + 0.4, E.linear);
+    C.demo.style.opacity = demoOff; K.show(C.demo, t >= T.bord && demoOff > 0);
+    const gf = seg(t, T.bord + 0.2, T.bord + 0.8, E.outCubic), fullDim = 1 - 0.7 * seg(t, T.traverse, T.traverse + 0.5, E.linear);
+    const fx = qx + (sx(nEnd) + sx(tEnd)) * gf, fy = qy + (sy(nEnd) + sy(tEnd)) * gf;
+    C.full.setAttribute('d', gf > 0 ? K.arrowPath(qx, qy, fx, fy, 20) : ''); C.full.style.opacity = fullDim;
+    const oc = seg(t, T.coupe, T.coupe + 0.5, E.linear), outOff = 1 - seg(t, T.traverse, T.traverse + 0.5, E.linear) * 0.6;
+    C.outN.setAttribute('d', `M${qx},${qy}L${qx + sx(nEnd)},${qy + sy(nEnd)}`);
+    C.outT.setAttribute('d', `M${qx},${qy}L${qx + sx(tEnd)},${qy + sy(tEnd)}`);
+    C.outN.style.strokeDashoffset = 0; C.outN.style.opacity = oc * outOff; C.outT.style.opacity = oc * (1 - seg(t, T.glisse, T.glisse + 0.3, E.linear));
+    const q = 14, a1 = [qx + sx(n) * q, qy + sy(n) * q], a2 = [qx + sx(n) * q + sx(tg) * q, qy + sy(n) * q + sy(tg) * q], a3 = [qx + sx(tg) * q, qy + sy(tg) * q];
+    C.sq.setAttribute('d', `M${a1[0]},${a1[1]}L${a2[0]},${a2[1]}L${a3[0]},${a3[1]}`); C.sq.style.opacity = oc * (1 - seg(t, T.plus, T.plus + 0.3, E.linear));
+    // 3.8 : le morceau perpendiculaire se détache, va-et-vient de part et d'autre du bord
+    const pn = seg(t, T.traverse, T.traverse + 0.5, E.linear);
+    const w = seg(t, T.traverse + 0.6, T.traverse + 3.0, E.linear), osc = 34 * Math.sin(TAU * 1.5 * w) * Math.sin(Math.PI * w);
+    const pul = Math.sin(Math.PI * seg(t, T.seul + 0.2, T.seul + 0.6, E.linear));
+    const ox = sx(n) * osc, oy = sy(n) * osc;
+    C.pieceN.setAttribute('d', pn > 0 ? K.arrowPath(qx + ox, qy + oy, qx + ox + sx(nEnd), qy + oy + sy(nEnd), 20) : '');
+    C.pieceN.style.opacity = pn; C.pieceN.setAttribute('stroke-width', (6 + 4 * pul).toFixed(2));
+    // 3.9 : le morceau tangent, en tirets, glisse le long du cercle et revient ; 3.10 : il baisse à 40 %
+    const pt = seg(t, T.glisse, T.glisse + 0.3, E.linear), gw = seg(t, T.glisse + 0.4, T.glisse + 2.6, E.linear), d = 0.22 * Math.sin(Math.PI * gw);
+    const thd = 40 * Math.PI / 180 + d, nn = [Math.cos(thd), Math.sin(thd)], tt = [-Math.sin(thd), Math.cos(thd)], b = C.toPx(C.R * nn[0], C.R * nn[1]);
+    C.pieceT.setAttribute('d', pt > 0 ? `M${b[0]},${b[1]}L${b[0] + tt[0] * C.vt * DS},${b[1] - tt[1] * C.vt * DS}` : '');
+    C.pieceT.style.opacity = pt * (1 - 0.6 * seg(t, T.seul, T.seul + 0.4, E.linear));
+
+    // ---------- 3.13 : l'arc fait le tour, la fiche s'écrit ----------
+    const ap = seg(t, T.flux, T.flux + 1.0, E.inOutSine), aOff = 1 - seg(t, T.flux + 1.6, T.flux + 2.2, E.linear);
+    let dd = '';
+    const rr = C.R - 0.22, c = C.cOf(t);
+    for (let i = 0; i <= 72; i++) { const a = TAU * ap * i / 72, p = C.toPx(c[0] + rr * Math.cos(a), c[1] + rr * Math.sin(a)); dd += (i ? 'L' : 'M') + p[0].toFixed(1) + ',' + p[1].toFixed(1); }
+    C.sumArc.setAttribute('d', ap > 0 ? dd : ''); C.sumArc.style.opacity = aOff;
+    const hp = C.toPx(c[0] + rr * Math.cos(TAU * ap), c[1] + rr * Math.sin(TAU * ap));
+    C.sumDot.setAttribute('cx', hp[0]); C.sumDot.setAttribute('cy', hp[1]); C.sumDot.style.opacity = ap > 0 && ap < 1 ? 1 : 0;
+    const fo = seg(t, T.flux + 1.0, T.flux + 1.4, E.linear);
+    C.fiche.style.opacity = fo; C.mot.style.opacity = fo; K.show(C.mot, fo > 0);
+
+    // ---------- 3.14 : traceurs ----------
+    const g = C.L.g, on = seg(t, T.sens, T.sens + 0.5, E.linear);
+    g.clearRect(0, 0, 1920, 1080); K.show(C.L.canvas, on > 0);
+    if (on > 0) {
+      g.save(); g.beginPath(); g.rect(120, 100, 900, 720); g.clip();
+      g.strokeStyle = K.c('u'); g.lineWidth = 3; g.lineCap = 'round'; g.globalAlpha = 0.5 * on;
+      const flashes = [];
+      g.beginPath();
+      for (const p of C.parts) {
+        const life = p.life + 0.3, s = ((t - T.sens + p.ph) % life + life) % life, tau = C.KAP * s;
+        if (s > p.life) continue;
+        const pos = (tt) => { const r = p.r0 * Math.exp(tt), a = p.th0 + 0.4 * tt; return C.toPx(r * Math.cos(a), r * Math.sin(a)); };
+        const a0 = pos(Math.max(0, tau - 0.09)), a1 = pos(tau);
+        g.moveTo(a0[0], a0[1]); g.lineTo(a1[0], a1[1]);
+        const since = s - p.tc;
+        if (since >= 0 && since < 0.35 && t - T.sens >= since) flashes.push([pos(C.KAP * p.tc), 1 - since / 0.35]);
+      }
+      g.stroke();
+      g.fillStyle = K.c('chalk');
+      for (const [q2, o] of flashes) { g.globalAlpha = o * on; g.beginPath(); g.arc(q2[0], q2[1], 6, 0, TAU); g.fill(); }
+      g.restore();
+    }
+  },
+});
+</script></body></html>

@@ -1,0 +1,263 @@
+<!doctype html>
+<html lang="fr"><head><meta charset="utf-8">
+<title>ep01.09 La circulation</title>
+<!-- Storyboard ep01, scène ep01.09 (plans 9.1 à 9.16), narration P15 et P16.
+     Même champ, même panneau, même point P que la scène 03 : u = (x − 0,4y ; y + 0,4x), coordonnées mathématiques
+     y vers le haut (toPx renverse l'axe vertical), 180 px par unité, P = origine du champ, à l'écran en (620, 340).
+     Panneau 900 × 720 px (x 120 à 1020, y 100 à 820), colonne d'équation x 1180 à 1780. Vorticité 0,8 partout.
+     Circulation comptée dans le sens trigonométrique. Cercle déplacé (9.7) : c = (−212, −212) px ; la part le long
+     du bord vaut t·(A c) + 0,4 R et est négative sur les 7 points de 270° à 45° (premier point à 0°). -->
+<link rel="stylesheet" href="../../vendor/katex/katex.min.css">
+<link rel="stylesheet" href="../../runtime/theme.css">
+<script src="../../vendor/katex/katex.min.js"></script>
+<script src="../../runtime/scene.js"></script>
+<script src="../../runtime/components/kit.js"></script>
+<script src="../../runtime/components/field.js"></script>
+<script src="../../runtime/components/equation.js"></script>
+<script src="../../runtime/components/motifs.js"></script>
+<script src="../../runtime/components/hud.js"></script>
+<script src="../../runtime/components/ep-kit.js"></script>
+<style>
+  .lab { position: absolute; transform: translate(-50%, -50%); white-space: nowrap; font-size: 40px; color: var(--muted); z-index: 22;
+    text-shadow: 0 0 6px var(--bg), 0 0 3px var(--bg); }
+  .lab .katex { font-size: 1em; }
+</style>
+</head><body><div id="stage"></div>
+<script>
+Scene.define({
+  duration: 64.57,
+  register: 'night',
+  // temps d'aperçu = estimation du moteur ; le moteur injecte les vrais
+  cues: { 'e1-transition': 0.4, 'e1-tourneq': 3.79, 'e1-parcours': 8.12, 'e1-trigo': 12.96, 'e1-autre': 16.64, 'e1-avec': 22.27,
+    'e1-contre': 25.96, 'e1-circulation': 28.41, 'e1-recette': 33.35, 'e1-divaire': 37.41, 'e1-vorticite': 41.32,
+    'e1-vortsens': 44.65, 'e1-carre': 49.21, 'e1-croise': 51.96, 'e1-vertdroite': 54.42, 'e1-horizhaut': 58.91 },
+  setup(ctx) {
+    const K = Kit, S = Scene, at = ctx.at, seg = S.seg, E = S.ease, TAU = 2 * Math.PI;
+    const T = {};
+    for (const k of Object.keys(ctx.cues)) if (k.startsWith('e1-')) T[k.slice(3)] = at(k);
+    // ---------- géométrie et champ (section 0 : y vers le haut) ----------
+    const PX = 620, PY = 340, SC = 180, BOX = { x: 120, y: 100, w: 900, h: 720 };
+    const toPx = (x, y) => [PX + SC * x, PY - SC * y];
+    const U = (x, y) => [x - 0.4 * y, y + 0.4 * x];
+    const FPX = (px, py) => { const v = U((px - PX) / SC, (PY - py) / SC); return [v[0], -v[1]]; };
+    // centre du cercle : sur P, puis 300 px vers le bas à gauche en 9.7 (glissement 1 s, retour 1 s)
+    const CD = [-212 / SC, -212 / SC], tRet = Math.max(T.contre + 1.2, T.circulation - 1.0);
+    const slide = (t) => seg(t, T.contre, T.contre + 1.0, E.inOutCubic) - seg(t, tRet, tRet + 1.0, E.inOutCubic);
+    const cOf = (t) => { const s = slide(t); return [CD[0] * s, CD[1] * s]; };
+    // rayon : 180 px, puis rétrécit vers P jusqu'à 20 px en 9.10 (2,5 s, inOutCubic)
+    const rOf = (t) => S.lerp(1, 20 / SC, seg(t, T.divaire + 0.3, T.divaire + 2.8, E.inOutCubic));
+
+    K.arrows(ctx, { F: FPX, box: BOX, nx: 9, ny: 8, scale: 0.85, at: -1.5, z: 7 });
+    const arrowsCanvas = ctx.stage.querySelector('canvas[data-kit="arrows"]');
+    // 9.1 : les seize parts perpendiculaires de la scène 03 (toutes sortent : « + »), qui baissent à 30 %
+    const pA = K.probe(ctx, { toPx, F: U, mode: 'flux', draw: false, circle: { c: [0, 0], r: 1 }, at: -1.5, z: 12,
+      parts: { n: 16, phase: 0, scale: 100, other: null, signs: true, at: -1.5 } });
+    // le cercle-sonde, sens trigonométrique ; ses parts tangentes (9.5), l'autre part en tirets --muted
+    const pB = K.probe(ctx, { toPx, F: U, mode: 'circulation', circle: { c: cOf, r: rOf }, at: -1.5, out: 'e1-carre', z: 13,
+      parts: { n: 16, phase: 0, scale: 100, other: 'dashed', signs: false, at: 'e1-autre+0.8', out: 'e1-recette' } });
+    // 9.6, 9.7 : les signes, allumés en un tour à partir de [e1-avec] ; posés à 30 px du bord, à l'extérieur, au pied de
+    // chaque part (au bout de la part, deux signes voisins se chevauchent près du changement de signe) ; aucun signe
+    // sur une part de moins de 2 px (section 0)
+    const ssvg = K.svgLayer(ctx, 14); ssvg.setAttribute('data-kit', 'signs');
+    const signs = Array.from({ length: 16 }, () => { const e = K.s('text', { class: 'kt-label', 'text-anchor': 'middle', 'dominant-baseline': 'central' }, ssvg, '');
+      e.style.cssText = `paint-order: stroke; stroke: ${K.c('bg')}; stroke-width: 6px; stroke-linejoin: round`; return e; });
+    const svg = K.svgLayer(ctx, 15); svg.setAttribute('data-kit', 'circulation');
+    const mk = (tag, a, p = svg) => K.s(tag, a, p);
+    const chalk = K.c('chalk'), muted = K.c('muted'), ucol = K.c('u');
+    const veil = mk('circle', { fill: K.rgba(chalk, 0.12), stroke: 'none' });
+    const pDot = mk('circle', { cx: PX, cy: PY, r: 7, fill: chalk });
+    const labP = K.el('div', { class: 'lab', html: K.tex('P', false) }, ctx.stage); labP.style.left = (PX - 30) + 'px'; labP.style.top = (PY + 30) + 'px';
+    // 9.3, 9.4 : flèche de parcours (arc de 50° et sa pointe), sur le cercle
+    const parc = mk('path', { fill: 'none', stroke: chalk, 'stroke-width': 5, 'stroke-linecap': 'round' });
+    const parcHead = mk('path', { fill: chalk, stroke: 'none' });
+    // 9.4 : cadran d'horloge --muted, aiguille dans le sens horaire
+    const dial = mk('g', { transform: 'translate(880,180)' });
+    mk('circle', { r: 52, fill: K.c('panel'), stroke: muted, 'stroke-width': 3 }, dial);
+    for (let i = 0; i < 12; i++) { const a = i * TAU / 12; mk('line', { x1: 44 * Math.sin(a), y1: -44 * Math.cos(a), x2: 37 * Math.sin(a), y2: -37 * Math.cos(a), stroke: muted, 'stroke-width': i % 3 ? 2 : 3.5 }, dial); }
+    const hand = mk('line', { x1: 0, y1: 0, x2: 0, y2: -36, stroke: muted, 'stroke-width': 4, 'stroke-linecap': 'round' }, dial);
+    mk('circle', { r: 4.5, fill: muted }, dial);
+    // 9.5 : la flèche du bord à 40° : part perpendiculaire et part le long du bord, styles échangés
+    const b40 = [Math.cos(40 * Math.PI / 180), Math.sin(40 * Math.PI / 180)];
+    const nSolid = mk('path', { fill: ucol, stroke: ucol, 'stroke-width': 4, 'stroke-linecap': 'round', 'stroke-linejoin': 'round' });
+    const nDash = mk('path', { fill: 'none', stroke: muted, 'stroke-width': 3, 'stroke-dasharray': '7 6' });
+    const tSolid = mk('path', { fill: ucol, stroke: ucol, 'stroke-width': 4, 'stroke-linecap': 'round', 'stroke-linejoin': 'round' });
+    const tDash = mk('path', { fill: 'none', stroke: muted, 'stroke-width': 3, 'stroke-dasharray': '7 6' });
+    { const [bx, by] = toPx(...b40), v = U(...b40), n = b40, tg = [-b40[1], b40[0]];
+      const vn = v[0] * n[0] + v[1] * n[1], vt = v[0] * tg[0] + v[1] * tg[1], k = 100;
+      const ne = [bx + n[0] * vn * k, by - n[1] * vn * k], te = [bx + tg[0] * vt * k, by - tg[1] * vt * k];
+      nSolid.setAttribute('d', K.arrowPath(bx, by, ne[0], ne[1], 14)); nDash.setAttribute('d', `M${bx},${by}L${ne[0]},${ne[1]}`);
+      tSolid.setAttribute('d', K.arrowPath(bx, by, te[0], te[1], 14)); tDash.setAttribute('d', `M${bx},${by}L${te[0]},${te[1]}`); }
+    // 9.8 : l'arc qui rassemble les seize parts
+    const gath = mk('path', { fill: 'none', stroke: chalk, 'stroke-width': 4, 'stroke-linecap': 'round' });
+    const gathHead = mk('path', { fill: chalk, stroke: 'none' });
+    // 9.12 : petite flèche courbe --u, sens trigonométrique, autour de P
+    const curl = mk('g', {});
+    { const r = 52, a0 = -40 * Math.PI / 180, a1 = 220 * Math.PI / 180; let d = '';
+      for (let i = 0; i <= 40; i++) { const a = S.lerp(a0, a1, i / 40); d += (i ? 'L' : 'M') + (PX + r * Math.cos(a)).toFixed(2) + ',' + (PY - r * Math.sin(a)).toFixed(2); }
+      mk('path', { d, fill: 'none', stroke: ucol, 'stroke-width': 4, 'stroke-linecap': 'round' }, curl);
+      const ex = PX + r * Math.cos(a1), ey = PY - r * Math.sin(a1), tx = -Math.sin(a1), ty = -Math.cos(a1), ang = Math.atan2(ty, tx), hl = 15;
+      mk('path', { d: `M${(ex + 0.5 * hl * tx).toFixed(2)},${(ey + 0.5 * hl * ty).toFixed(2)}L${(ex - hl * Math.cos(ang - 0.5)).toFixed(2)},${(ey - hl * Math.sin(ang - 0.5)).toFixed(2)}L${(ex - hl * Math.cos(ang + 0.5)).toFixed(2)},${(ey - hl * Math.sin(ang + 0.5)).toFixed(2)}Z`, fill: ucol }, curl); }
+    // 9.13 à 9.16 : le carré de 240 px (côté h = 4/3 unité), ses quatre côtés, les parts le long des côtés
+    const sides = [0, 1, 2, 3].map(() => mk('path', { fill: 'none', stroke: chalk, 'stroke-linecap': 'butt', 'stroke-linejoin': 'round' }));
+    const HALF = 120, OFF = 14, KS = 200;               // parts : 200 px par unité, posées à 14 px à l'extérieur du côté
+    const sqPart = [0, 1, 2, 3].map(() => mk('path', { fill: ucol, stroke: ucol, 'stroke-width': 4, 'stroke-linecap': 'round', 'stroke-linejoin': 'round' }));
+    const sqBase = [[PX + HALF + OFF, PY], [PX, PY - HALF - OFF], [PX - HALF - OFF, PY], [PX, PY + HALF + OFF]];
+    const sqVec = [U(HALF / SC, 0), U(0, HALF / SC), U(-HALF / SC, 0), U(0, -HALF / SC)].map((v, k) => (k % 2 === 0 ? [0, -v[1] * KS] : [v[0] * KS, 0]));
+    const topTravel = mk('path', { d: K.arrowPath(730, PY - HALF - 58, 650, PY - HALF - 58, 16), fill: chalk, stroke: chalk, 'stroke-width': 4, 'stroke-linecap': 'round' });
+    // 9.12 : traceurs en forme fermée (le flot de ce champ linéaire : r = r0·e^s, angle θ0 + 0,4 s), rendus dans le panneau
+    const TL = K.canvasLayer(ctx, 6, null, null, { reset: true }); TL.canvas.setAttribute('data-kit', 'tracers');
+    const rng = S.rng('circ-tracers'), NT = 150, LIFE = 2.2, tr = [];
+    for (let i = 0; i < NT; i++) tr.push({ th: rng() * TAU, r0: 6 + 50 * rng(), ph: rng() * LIFE });
+
+    // ---------- colonne (x 1180 à 1780) ----------
+    const CXc = 1180;
+    // pictogramme « tourne » de l'ouverture (9.2)
+    const picto = mk('g', { transform: 'translate(1240,190)' });
+    mk('circle', { r: 45, fill: 'none', stroke: chalk, 'stroke-width': 3, 'stroke-dasharray': '12 9' }, picto);
+    const pictoArc = mk('g', {}, picto);
+    { const r = 45, a0 = -10 * Math.PI / 180, a1 = 100 * Math.PI / 180; let d = '';
+      for (let i = 0; i <= 24; i++) { const a = S.lerp(a0, a1, i / 24); d += (i ? 'L' : 'M') + (r * Math.cos(a)).toFixed(2) + ',' + (-r * Math.sin(a)).toFixed(2); }
+      mk('path', { d, fill: 'none', stroke: chalk, 'stroke-width': 5, 'stroke-linecap': 'round' }, pictoArc);
+      const ex = r * Math.cos(a1), ey = -r * Math.sin(a1), tx = -Math.sin(a1), ty = -Math.cos(a1), ang = Math.atan2(ty, tx), hl = 15;
+      mk('path', { d: `M${(ex + 0.5 * hl * tx).toFixed(2)},${(ey + 0.5 * hl * ty).toFixed(2)}L${(ex - hl * Math.cos(ang - 0.5)).toFixed(2)},${(ey - hl * Math.sin(ang - 0.5)).toFixed(2)}L${(ex - hl * Math.cos(ang + 0.5)).toFixed(2)},${(ey - hl * Math.sin(ang + 0.5)).toFixed(2)}Z`, fill: chalk }, pictoArc); }
+    const chipFlux = K.chip(ctx, { text: 'FLUX', x: CXc, y: 300, at: -1.5, out: 'e1-carre' });
+    K.chip(ctx, { text: 'CIRCULATION', x: CXc, y: 370, at: 'e1-circulation+1.0', out: 'e1-carre' });
+    // 9.9 : l'équation de la scène 04 revient ; « flux » devient « circulation » ; 9.11 : le membre de gauche s'écrit
+    const Ef = K.equation(ctx, { x: CXc, y: 470, size: 50, anchor: 'left', at: 'e1-recette+0.1',
+      tex: '\\term{lhs}{\\phantom{\\cu{\\omega}(P) =\\;}}\\term{lim}{\\lim_{r\\to0}}\\,\\frac{\\term{nf}{\\text{flux}}}{\\term{den}{\\pi r^2}}' });
+    const Ec = K.equation(ctx, { wipe: 0.01, x: CXc, y: 470, size: 50, anchor: 'left', at: 'e1-recette+0.9',
+      tex: '\\term{lhs}{\\cu{\\omega}(P) =\\;}\\term{lim}{\\lim_{r\\to0}}\\,\\frac{\\term{nc}{\\text{circulation}}}{\\term{den}{\\pi r^2}}' });
+    K.morph(ctx, { from: Ef, to: Ec, at: 'e1-recette+0.9', dur: 0.8 });
+    // 9.14 : rappel de la divergence, à 40 %, avec ses traits de la scène 05 ; la vorticité dessous, indices croisés
+    const Ed = K.equation(ctx, { x: CXc, y: 120, size: 50, anchor: 'left', at: 'e1-croise',
+      tex: '\\nabla\\cdot\\U = \\partial_{\\term{ix1}{x}} \\cu{u_{\\term{ix2}{x}}} + \\partial_{\\term{iy1}{y}} \\cu{u_{\\term{iy2}{y}}}' });
+    const Ew = K.equation(ctx, { x: CXc, y: 262, size: 72, anchor: 'left',
+      tex: '\\term{l}{\\cu{\\omega}}\\term{e}{\\;=\\;}\\term{t1}{\\partial_{\\term{a1}{x}} \\cu{u_{\\term{b1}{y}}}}\\term{mi}{\\;-\\;}\\term{t2}{\\partial_{\\term{a2}{y}} \\cu{u_{\\term{b2}{x}}}}',
+      reveal: [[['l', 'e'], 'e1-croise+0.1'], [['t1', 'a1', 'b1'], 'e1-croise+0.5'], ['mi', 'e1-croise+0.9'], [['t2', 'a2', 'b2'], 'e1-croise+1.2']] });
+    const link = (Eq, a, b, when, alpha) => { const A = Eq.tbox[a], B = Eq.tbox[b];
+      K.pen(ctx, { kind: 'arrow', head: false, from: [A.x + A.w / 2, A.y + A.h + 6], to: [B.x + B.w / 2, B.y + B.h + 6], bend: -0.45, at: when, dur: 0.4, width: 4, alpha }); };
+    link(Ed, 'ix1', 'ix2', 'e1-croise+0.3', 0.4); link(Ed, 'iy1', 'iy2', 'e1-croise+0.5', 0.4);
+    link(Ew, 'a1', 'b1', 'e1-croise+1.8', 0.95); link(Ew, 'a2', 'b2', 'e1-croise+2.1', 0.95);
+
+    ctx.S = { PX, PY, SC, T, U, toPx, cOf, rOf, slide, arrowsCanvas, pA, pB, signs, ssvg, chipFlux, veil, labP, parc, parcHead, dial, hand,
+      nSolid, nDash, tSolid, tDash, gath, gathHead, curl, sides, sqPart, sqBase, sqVec, topTravel, HALF, TL, tr, LIFE, BOX, picto, pictoArc, Ec, Ed, Ew };
+  },
+
+  render(t, ctx) {
+    const K = Kit, S = Scene, seg = S.seg, E = S.ease, TAU = 2 * Math.PI;
+    const C = ctx.S, T = C.T, { PX, PY, SC } = C;
+    const show = (el, o) => { el.style.opacity = o; K.show(el, o > 0.005); };
+    // ---------- 9.1 : la grille à 25 %, les parts perpendiculaires et la fiche FLUX baissent à 30 % ----------
+    C.arrowsCanvas.style.opacity = 0.25;
+    const dimA = 1 - 0.7 * seg(t, T.transition + 0.6, T.transition + 1.4, E.inOutSine);
+    show(C.pA.root, dimA * (1 - seg(t, T.autre, T.autre + 0.4, E.linear)));
+    C.chipFlux.root.style.opacity = (+C.chipFlux.root.style.opacity || 0) * dimA;
+    // les parts perpendiculaires en tirets (9.5) s'effacent avant le glissement : elles sortiraient du panneau
+    const oo = 1 - seg(t, T.contre - 0.4, T.contre, E.linear);
+    if (!C.others) C.others = Array.from(C.pB.root.querySelectorAll('path[stroke-dasharray="7 6"]'));
+    for (const p of C.others) p.style.opacity = oo;
+    const c = C.cOf(t), r = C.rOf(t), [cx, cy] = C.toPx(c[0], c[1]), rp = r * SC;
+    // signes (9.6, 9.7)
+    const so = seg(t, T.avec, T.avec + 0.2, E.linear) * (1 - seg(t, T.recette, T.recette + 0.3, E.linear));
+    K.show(C.ssvg, so > 0); C.ssvg.style.opacity = so;
+    if (so > 0) C.signs.forEach((el, k) => {
+      const th = TAU * k / 16, bx = c[0] + r * Math.cos(th), by = c[1] + r * Math.sin(th), v = C.U(bx, by);
+      const vt = -v[0] * Math.sin(th) + v[1] * Math.cos(th), len = Math.abs(vt) * 100;
+      const on = t >= T.avec + 0.6 * k / 16 + 0.3 && len >= 2;
+      K.show(el, on); if (!on) return;
+      const [sx, sy] = C.toPx(bx, by);
+      el.setAttribute('x', (sx + 30 * Math.cos(th)).toFixed(1)); el.setAttribute('y', (sy - 30 * Math.sin(th)).toFixed(1));
+      el.textContent = vt > 0 ? '+' : '−'; el.style.fill = K.c(vt > 0 ? 'chalk' : 'muted');
+    });
+    show(C.labP, 1 - seg(t, T.divaire, T.divaire + 0.4, E.linear));
+
+    // ---------- 9.2 : pictogramme « tourne » ; sa flèche fait un tour ----------
+    const pe = seg(t, T.tourneq, T.tourneq + 0.4, E.linear) * (1 - seg(t, T.carre, T.carre + 0.4, E.linear));
+    show(C.picto, pe);
+    C.pictoArc.setAttribute('transform', `rotate(${(-360 * seg(t, T.tourneq + 0.4, T.tourneq + 1.8, E.inOutSine)).toFixed(2)})`);
+
+    // ---------- 9.3, 9.4 : flèche de parcours, sens trigonométrique ----------
+    const turn = seg(t, T.parcours + 0.2, T.parcours + 2.7, E.inOutSine), half = seg(t, T.trigo + 0.2, T.trigo + 1.7, E.inOutSine);
+    const thH = Math.PI / 2 + TAU * turn + Math.PI * half;
+    const po = seg(t, T.parcours, T.parcours + 0.2, E.linear) * (1 - seg(t, T.circulation, T.circulation + 0.3, E.linear));
+    const arc = (R0, a0, a1, n = 30) => { let d = ''; for (let i = 0; i <= n; i++) { const a = S.lerp(a0, a1, i / n); d += (i ? 'L' : 'M') + (cx + R0 * Math.cos(a)).toFixed(2) + ',' + (cy - R0 * Math.sin(a)).toFixed(2); } return d; };
+    const head = (R0, a, size = 18) => {   // pointe au point d'angle a, dirigée dans le sens trigonométrique
+      const ex = cx + R0 * Math.cos(a), ey = cy - R0 * Math.sin(a), tx = -Math.sin(a), ty = -Math.cos(a), ang = Math.atan2(ty, tx);
+      return `M${(ex + 0.5 * size * tx).toFixed(2)},${(ey + 0.5 * size * ty).toFixed(2)}L${(ex - size * Math.cos(ang - 0.5)).toFixed(2)},${(ey - size * Math.sin(ang - 0.5)).toFixed(2)}L${(ex - size * Math.cos(ang + 0.5)).toFixed(2)},${(ey - size * Math.sin(ang + 0.5)).toFixed(2)}Z`;
+    };
+    if (po > 0) { C.parc.setAttribute('d', arc(rp, thH - 50 * Math.PI / 180, thH - 0.06)); C.parcHead.setAttribute('d', head(rp, thH)); }
+    show(C.parc, po); show(C.parcHead, po);
+    // cadran : l'aiguille fait un demi-tour dans le sens horaire, pendant que la flèche fait un demi-tour dans l'autre sens
+    show(C.dial, seg(t, T.trigo, T.trigo + 0.3, E.linear) * (1 - seg(t, T.autre, T.autre + 0.4, E.linear)));
+    C.hand.setAttribute('transform', `rotate(${(180 * half).toFixed(2)})`);
+
+    // ---------- 9.5 : échange des rôles sur la flèche du bord à 40° ----------
+    const sw = seg(t, T.autre + 0.2, T.autre + 0.6, E.inOutSine), bo = seg(t, T.autre, T.autre + 0.2, E.linear) * (1 - seg(t, T.autre + 1.4, T.autre + 1.8, E.linear));
+    show(C.nSolid, bo * (1 - sw)); show(C.nDash, bo * sw); show(C.tDash, bo * (1 - sw)); show(C.tSolid, bo * sw);
+
+    // ---------- 9.8 : l'arc qui rassemble les parts ----------
+    const gp = seg(t, T.circulation + 0.1, T.circulation + 1.1, E.inOutSine), go = gp > 0 ? 1 - seg(t, T.recette, T.recette + 0.4, E.linear) : 0;
+    if (go > 0) { C.gath.setAttribute('d', arc(rp + 30, -Math.PI / 2, -Math.PI / 2 + TAU * gp * 0.985, 90)); C.gathHead.setAttribute('d', head(rp + 30, -Math.PI / 2 + TAU * gp * 0.985, 16)); }
+    show(C.gath, go); show(C.gathHead, go);
+
+    // ---------- 9.10 : voile du disque ----------
+    C.veil.setAttribute('cx', cx); C.veil.setAttribute('cy', cy); C.veil.setAttribute('r', rp.toFixed(2));
+    show(C.veil, seg(t, T.divaire, T.divaire + 0.4, E.linear) * (1 - seg(t, T.carre, T.carre + 0.3, E.linear)));
+    // ---------- 9.11 : le membre de gauche s'écrit ----------
+    K.wipe(C.Ec.terms.lhs, seg(t, T.vorticite + 0.1, T.vorticite + 0.55, E.outCubic));
+
+    // ---------- 9.12 : traceurs et flèche courbe ----------
+    const to = seg(t, T.vortsens, T.vortsens + 0.6, E.inOutSine) * (1 - seg(t, T.carre, T.carre + 0.5, E.inOutSine));
+    const g = C.TL.g; g.clearRect(0, 0, 1920, 1080); K.show(C.TL.canvas, to > 0);
+    if (to > 0) {
+      g.save(); g.beginPath(); g.rect(C.BOX.x, C.BOX.y, C.BOX.w, C.BOX.h); g.clip();
+      g.strokeStyle = K.c('u'); g.lineWidth = 2.4; g.lineCap = 'round';
+      const k = 0.9, el = (t - T.vortsens) * k;
+      for (const p of C.tr) {
+        const s = (((el + p.ph) % C.LIFE) + C.LIFE) % C.LIFE;
+        const a = Math.min(1, s / 0.25) * Math.min(1, (C.LIFE - s) / 0.35);
+        g.globalAlpha = 0.4 * to * a; g.beginPath();
+        for (let j = 0; j <= 6; j++) { const q = Math.max(0, s - 0.22 * (1 - j / 6)), rr = p.r0 * Math.exp(q), th = p.th + 0.4 * q;
+          const X = PX + rr * Math.cos(th), Y = PY - rr * Math.sin(th); if (j) g.lineTo(X, Y); else g.moveTo(X, Y); }
+        g.stroke();
+      }
+      g.restore();
+    }
+    show(C.curl, seg(t, T.vortsens + 0.3, T.vortsens + 0.7, E.linear) * (1 - seg(t, T.carre, T.carre + 0.4, E.linear)));
+
+    // ---------- 9.13 : le petit cercle devient un carré de 240 px ; 9.15, 9.16 : côtés en plein, parts ----------
+    const pm = seg(t, T.carre + 0.1, T.carre + 0.9, E.inOutCubic), sqOn = t >= T.carre;
+    const pv = seg(t, T.vertdroite, T.vertdroite + 0.4, E.inOutSine), ph = seg(t, T.horizhaut, T.horizhaut + 0.4, E.inOutSine);
+    for (let k = 0; k < 4; k++) {
+      K.show(C.sides[k], sqOn); if (!sqOn) continue;
+      let d = '';
+      for (let i = 0; i <= 48; i++) {
+        const th = (k - 0.5) * Math.PI / 2 + (i / 48) * Math.PI / 2;
+        const rr = S.lerp(20, C.HALF / Math.max(Math.abs(Math.cos(th)), Math.abs(Math.sin(th))), pm);
+        d += (i ? 'L' : 'M') + (PX + rr * Math.cos(th)).toFixed(2) + ',' + (PY - rr * Math.sin(th)).toFixed(2);
+      }
+      const emph = k % 2 === 0 ? pv : ph;
+      C.sides[k].setAttribute('d', d); C.sides[k].setAttribute('stroke-width', (3 + 2 * emph).toFixed(2));
+      C.sides[k].setAttribute('stroke-dasharray', emph > 0.5 ? 'none' : '12 9');
+    }
+    for (let k = 0; k < 4; k++) {
+      const gr = seg(t, (k % 2 === 0 ? T.vertdroite : T.horizhaut) + 0.3, (k % 2 === 0 ? T.vertdroite : T.horizhaut) + 0.9, E.outCubic);
+      const [bx, by] = C.sqBase[k], v = C.sqVec[k];
+      C.sqPart[k].setAttribute('d', gr > 0 ? K.arrowPath(bx, by, bx + v[0] * gr, by + v[1] * gr, 14) : '');
+    }
+    show(C.topTravel, seg(t, T.horizhaut + 0.9, T.horizhaut + 1.3, E.linear));
+
+    // ---------- 9.14 à 9.16 : rappel à 40 %, indices en --chalk, termes qui s'allument ----------
+    C.Ed.root.style.opacity = 0.4 * (+C.Ed.root.style.opacity || 0);
+    const ic = t >= T.croise + 1.7 ? K.c('chalk') : '';
+    for (const k of ['a1', 'b1', 'a2', 'b2']) C.Ew.terms[k].style.color = ic;
+    const pulse = (k, a0) => {
+      const el = C.Ew.terms[k], q = Math.sin(Math.PI * seg(t, a0, a0 + 0.6, E.linear)), lit = t >= a0;
+      el.style.display = 'inline-block'; el.style.transformOrigin = '50% 60%';
+      el.style.transform = q > 0 ? `scale(${(1 + 0.14 * q).toFixed(4)})` : '';
+      el.style.textShadow = lit ? `0 0 10px ${K.rgba(K.c('chalk'), 0.35)}` : '';
+    };
+    pulse('t1', T.vertdroite + 0.6); pulse('mi', T.horizhaut + 0.5); pulse('t2', T.horizhaut + 1.0);
+  },
+});
+</script></body></html>

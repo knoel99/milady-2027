@@ -1,0 +1,211 @@
+<!doctype html>
+<html lang="fr"><head><meta charset="utf-8">
+<title>ep01.07 Le cercle promené</title>
+<!-- Storyboard ep01, scène ep01.07 (plans 7.1 à 7.13), narration P12 et P13.
+     Les deux panneaux de la scène 06 (unité 140 px, y vers le haut, origines (470, 520) et (1410, 520)).
+     Cercle de rayon 130 px ; centre final c = (200, 140) px depuis l'origine. Seize points de bord en 11,25° + k × 22,5°.
+     Parts du bord à une échelle commune : la plus longue (source, direction de c) fait 30 px, soit 30 / (|c| + R) px
+     par unité de champ. Aucun « + » ni « − » sur une part de moins de 2 px. Compteurs : Kit.probe (quadrature sur
+     256 points) et Kit.readout. -->
+<link rel="stylesheet" href="../../vendor/katex/katex.min.css">
+<link rel="stylesheet" href="../../runtime/theme.css">
+<script src="../../vendor/katex/katex.min.js"></script>
+<script src="../../runtime/scene.js"></script>
+<script src="../../runtime/components/kit.js"></script>
+<script src="../../runtime/components/field.js"></script>
+<script src="../../runtime/components/equation.js"></script>
+<script src="../../runtime/components/ep-kit.js"></script>
+<style>
+  .flux-eq .katex-display { background: var(--panel-a); padding: 4px 14px; border-radius: 6px; }
+</style>
+</head><body><div id="stage"></div>
+<script>
+Scene.define({
+  duration: 55.9,
+  register: 'night',
+  cues: { 'e1-centre': 0.4, 'e1-sortent': 3.16, 'e1-glissent': 7.83, 'e1-deplace': 12.3, 'e1-entrent': 15.26, 'e1-ressortent': 19.47,
+    'e1-rotbilan': 22.67, 'e1-rotnul': 29.26, 'e1-srcbilan': 30.59, 'e1-srcdeux': 35.14, 'e1-compteur': 38.35, 'e1-taille': 45.49, 'e1-simple': 49.33 },
+  setup(ctx) {
+    const K = Kit, S = Scene, at = ctx.at, seg = S.seg, E = S.ease;
+    const T = {};
+    for (const k of Object.keys(ctx.cues)) if (k.startsWith('e1-')) T[k.slice(3)] = at(k);
+    const UNIT = 140, KG = 16;
+    const PAN = [{ x: 140, y: 200, w: 700, h: 560, ox: 470, oy: 520 }, { x: 1080, y: 200, w: 700, h: 560, ox: 1410, oy: 520 }];
+    const toPx = PAN.map((P) => (x, y) => [P.ox + UNIT * x, P.oy - UNIT * y]);
+    const toM = (P) => (px, py) => [(px - P.ox) / UNIT, (P.oy - py) / UNIT];
+    const FF = [(x, y) => [x, y], (x, y) => [-y, x]];
+    const R0 = 130, CF = [200, 140], NP = 16, PH = 11.25 / 360;
+    const SC = 30 / ((Math.hypot(CF[0], CF[1]) + R0) / UNIT);   // px par unité de champ des parts (≈ 11,2)
+
+    // ---------- trajectoire du centre (px, y vers le haut, depuis l'origine) et rayon ----------
+    const way = [[200, 140], [-40, 150], [-160, 60], [-120, -70], [100, -70], [190, 20], [20, 40]];
+    const cr = (s) => {   // Catmull-Rom uniforme sur les points de passage, s ∈ [0, 1]
+      const n = way.length - 1, u = Math.min(n - 1e-9, Math.max(0, s * n)), i = Math.floor(u), f = u - i;
+      const P0 = way[Math.max(0, i - 1)], P1 = way[i], P2 = way[i + 1], P3 = way[Math.min(n, i + 2)];
+      return [0, 1].map((d) => 0.5 * ((2 * P1[d]) + (-P0[d] + P2[d]) * f + (2 * P0[d] - 5 * P1[d] + 4 * P2[d] - P3[d]) * f * f + (-P0[d] + 3 * P1[d] - 3 * P2[d] + P3[d]) * f * f * f));
+    };
+    const cOf = (t) => {
+      if (t < T.deplace) return [0, 0];
+      if (t < T.deplace + 0.4) { const p = seg(t, T.deplace, T.deplace + 0.4, E.inOutSine); return [CF[0] * p, CF[1] * p]; }
+      if (t < T.compteur + 0.5) { const tau = seg(t, T.deplace + 0.4, T.deplace + 2.6, E.inOutCubic);
+        return [20 + 180 * Math.cos(2 * Math.PI * tau), 110 + 30 * Math.cos(4 * Math.PI * tau)]; }
+      return cr(seg(t, T.compteur + 0.5, T.compteur + 5.9, E.inOutSine));
+    };
+    const rOf = (t) => R0 + 70 * Math.sin(2 * Math.PI * 2 * seg(t, T.taille + 0.1, T.taille + 3.9, E.linear));
+    // 7.3 : léger défilement des points le long du bord, d'exactement un pas (la phase revient à 11,25°)
+    const phase = (t, i) => PH + (i === 1 ? seg(t, T.glissent + 0.4, T.deplace - 0.2, E.inOutSine) / NP : 0);
+
+    // ---------- cadres, flèches de la grille, teinte 7.13 ----------
+    const back = K.svgLayer(ctx, 4); back.setAttribute('data-kit', 'panels');
+    for (const P of PAN) K.s('rect', { x: P.x, y: P.y, width: P.w, height: P.h, fill: 'none', stroke: K.c('matter'), 'stroke-width': 2 }, back);
+    const gridF = (i) => (px, py) => { const [x, y] = toM(PAN[i])(px, py), v = FF[i](x, y); return [v[0], -v[1]]; };
+    const A = [0, 1].map((i) => K.arrows(ctx, { F: gridF(i), box: { x: PAN[i].x, y: PAN[i].y, w: PAN[i].w, h: PAN[i].h }, nx: 11, ny: 9,
+      compress: { k: KG, threshold: 1e9 }, color: 'u', width: 3, at: 'e1-centre-0.4', z: 7 }));
+    [0.2, 0].forEach((v, i) => K.fieldMap(ctx, { grid: new Float32Array(4).fill(v), nx: 2, ny: 2, x: PAN[i].x, y: PAN[i].y, w: PAN[i].w, h: PAN[i].h,
+      kind: 'u', vmax: 1, gamma: 1, at: 'e1-simple', dur: 0.8, z: 5 }));
+
+    // ---------- en-têtes ----------
+    const EQS = 46;
+    const head = [['\\U = (x,\\, y)', '\\nabla\\cdot\\U = 2'], ['\\U = (-y,\\, x)', '\\nabla\\cdot\\U = 0']].map((L, i) => [
+      K.equation(ctx, { x: PAN[i].ox + 20, y: 70, size: EQS, anchor: 'center', at: 'e1-centre-0.4', wipe: 0.01, tex: L[0] }),
+      K.equation(ctx, { x: PAN[i].ox + 20, y: 132, size: EQS, anchor: 'center', at: 'e1-centre-0.4', wipe: 0.01, tex: L[1] })]);
+
+    // ---------- sondes (quadrature) et compteurs ----------
+    const probes = [0, 1].map((i) => K.probe(ctx, { toPx: toPx[i], F: FF[i], mode: 'flux', perArea: true, draw: false,
+      circle: { c: (t) => { const c = cOf(t); return [c[0] / UNIT, c[1] / UNIT]; }, r: (t) => rOf(t) / UNIT }, at: 'e1-centre' }));
+    const ro = [0, 1].map((i) => K.readout(ctx, { label: 'FLUX ÷ AIRE', value: (t) => probes[i].value(t), digits: 0, x: PAN[i].ox + 20, y: 772,
+      anchor: 'c', at: 'e1-deplace' }));
+
+    // ---------- SVG : cercles, parts, signes, colonnes ----------
+    const svg = K.svgLayer(ctx, 13); svg.setAttribute('data-kit', 'scene07');
+    const mk = (tag, a, p = svg) => K.s(tag, a, p);
+    const chalk = K.c('chalk'), muted = K.c('muted'), ucol = K.c('u');
+    const veil = [0, 1].map(() => mk('circle', { fill: K.rgba(chalk, 0.12), stroke: 'none' }));
+    const circ = [0, 1].map(() => mk('path', { fill: 'none', stroke: chalk, 'stroke-width': 3, 'stroke-dasharray': '12 9' }));
+    const part = (w = 4) => mk('path', { fill: ucol, stroke: ucol, 'stroke-width': w, 'stroke-linecap': 'round', 'stroke-linejoin': 'round' });
+    const sign = () => { const s = mk('text', { class: 'kt-label', 'text-anchor': 'middle', 'dominant-baseline': 'central' }, svg, '');
+      s.style.cssText = `paint-order: stroke; stroke: ${K.c('bg')}; stroke-width: 6px; stroke-linejoin: round; font-size: 36px`; return s; };
+    const P = [0, 1].map(() => Array.from({ length: NP }, () => ({ full: part(), norm: part(), sg: sign() })));
+    const colSign = [0, 1].map(() => ({ plus: sign(), minus: sign() }));
+    const excess = [0, 1].map(() => mk('rect', { fill: chalk, rx: 2 }));
+
+    // parts au repos en c (7.5 à 7.10), et rangement en colonnes
+    const BASE = 752, COLDX = 34;
+    const cols = [0, 1].map((i) => {
+      const rows = [];
+      for (let k = 0; k < NP; k++) {
+        const th = 2 * Math.PI * (k / NP + PH), n = [Math.cos(th), Math.sin(th)];
+        const p = [CF[0] / UNIT + (R0 / UNIT) * n[0], CF[1] / UNIT + (R0 / UNIT) * n[1]], v = FF[i](p[0], p[1]);
+        rows.push({ k, vn: v[0] * n[0] + v[1] * n[1] });
+      }
+      const out = rows.filter((r) => r.vn > 0).sort((a, b) => b.vn - a.vn), inn = rows.filter((r) => r.vn <= 0).sort((a, b) => a.vn - b.vn);
+      const cx = PAN[i].ox + CF[0], slot = {};
+      let h = 0; for (const r of out) { const L = r.vn * SC; slot[r.k] = { x: cx + COLDX, y0: BASE - h, y1: BASE - h - L, out: true }; h += L; }
+      const Hout = h; h = 0;
+      for (const r of inn) { const L = -r.vn * SC; slot[r.k] = { x: cx - COLDX, y0: BASE - h - L, y1: BASE - h, out: false }; h += L; }
+      return { slot, Hout, Hin: h, cx };
+    });
+    const fluxEq = K.equation(ctx, { x: 175, y: 600, size: 44, anchor: 'left', at: 'e1-srcdeux+0.6', out: 'e1-compteur+0.2', tex: '\\text{flux} = 2 \\times \\pi R^2' });
+    fluxEq.root.classList.add('flux-eq');
+
+    ctx.S = { T, UNIT, PAN, toPx, FF, R0, CF, NP, SC, cOf, rOf, phase, A, head, ro, veil, circ, P, colSign, excess, cols, BASE, COLDX };
+  },
+
+  render(t, ctx) {
+    const K = Kit, S = Scene, seg = S.seg, E = S.ease;
+    const C = ctx.S, T = C.T, { UNIT, PAN, toPx, FF, NP, SC } = C;
+    const lin = (a, b) => seg(t, a, b, E.linear);
+
+    // grilles : 30 % dès le centrage
+    for (const Ai of C.A) Ai.canvas.style.opacity = (1 - 0.7 * lin(T.centre, T.centre + 0.5)).toFixed(3);
+    // lignes de divergence : 35 % jusqu'à 7.13
+    for (const h of C.head) h[1].root.style.opacity = (0.35 + 0.65 * lin(T.simple + 0.4, T.simple + 1.0)).toFixed(3);
+
+    const c = C.cOf(t), R = C.rOf(t);
+    for (let i = 0; i < 2; i++) {
+      const tp = toPx[i], [cx, cy] = tp(c[0] / UNIT, c[1] / UNIT), F = FF[i];
+      // cercle tracé (7.1)
+      const draw = seg(t, T.centre, T.centre + 0.8, E.inOutSine);
+      let d = ''; const N = 160, M = Math.max(1, Math.round(N * draw));
+      for (let j = 0; j <= M; j++) { const a = 2 * Math.PI * (j / N) * (draw * N / M); d += (j ? 'L' : 'M') + (cx + R * Math.cos(a)).toFixed(2) + ',' + (cy - R * Math.sin(a)).toFixed(2); }
+      C.circ[i].setAttribute('d', draw > 0 ? d : ''); C.circ[i].style.opacity = draw > 0 ? 1 : 0;
+      // voile du disque (7.10, source)
+      const vo = i === 0 ? lin(T.srcdeux, T.srcdeux + 0.4) * (1 - lin(T.compteur, T.compteur + 0.4)) : 0;
+      C.veil[i].setAttribute('cx', cx); C.veil[i].setAttribute('cy', cy); C.veil[i].setAttribute('r', R); C.veil[i].style.opacity = vo;
+
+      // ---------- parts ----------
+      const appear = i ? T.glissent : T.sortent;
+      const fullToNorm = lin(T.entrent, T.entrent + 0.4);                     // 7.5 : les parts tangentes s'effacent
+      const bil = i ? T.rotbilan : T.srcbilan, g = seg(t, bil + 0.3, bil + 1.3, E.inOutCubic);   // glissement en colonnes
+      const back = lin(T.compteur, T.compteur + 0.5);                           // 7.11 : retour sur le bord
+      const colGone = lin(T.compteur, T.compteur + 0.4);
+      const ph = C.phase(t, i);
+      // 7.8 / 7.10 : superposition des colonnes
+      const sup = i ? seg(t, T.rotnul, T.rotnul + 0.5, E.inOutCubic) : seg(t, T.srcdeux, T.srcdeux + 0.5, E.inOutCubic);
+      const cancel = i ? lin(T.rotnul + 0.6, T.rotnul + 1.0) : 0;
+      const exO = i ? 0 : lin(T.srcdeux + 0.5, T.srcdeux + 0.8) * (1 - colGone);
+      const moving = (t >= T.deplace && t < T.entrent) || (t >= T.compteur && t < T.simple);
+      for (let k = 0; k < NP; k++) {
+        const Pk = C.P[i][k], th = 2 * Math.PI * (k / NP + ph), n = [Math.cos(th), Math.sin(th)];
+        const p = [(c[0] + R * n[0]) / UNIT, (c[1] + R * n[1]) / UNIT], v = F(p[0], p[1]), vn = v[0] * n[0] + v[1] * n[1];
+        const [bx, by] = tp(p[0], p[1]);
+        const grow = seg(t, appear + 0.6 * k / NP, appear + 0.6 * k / NP + 0.5, E.outCubic);
+        // flèche entière (7.2 à 7.4)
+        const oFull = grow * (1 - fullToNorm);
+        K.show(Pk.full, oFull > 0.001);
+        if (oFull > 0.001) { Pk.full.setAttribute('d', K.arrowPath(bx, by, bx + v[0] * SC * grow, by - v[1] * SC * grow, 10)); Pk.full.style.opacity = oFull; }
+        // part perpendiculaire (7.5 et après)
+        let o = fullToNorm * grow;
+        if (t >= T.entrent && t < T.ressortent + 0.4 && vn > 0) o *= 0.35 + 0.65 * lin(T.ressortent, T.ressortent + 0.4);
+        const sl = C.cols[i].slot[k];
+        let x0 = bx, y0 = by, x1 = bx + n[0] * vn * SC, y1 = by - n[1] * vn * SC, hl = 10, w = 4;
+        const gg = g * (1 - back);
+        if (gg > 0) {
+          let sx = sl.x; if (!sl.out) sx = S.lerp(sl.x, sl.x + 2 * C.COLDX, sup);   // la colonne entrante glisse sur la sortante
+          x0 = S.lerp(x0, sx, gg); y0 = S.lerp(y0, sl.y0, gg); x1 = S.lerp(x1, sx, gg); y1 = S.lerp(y1, sl.y1, gg);
+          hl = 10 * (1 - gg); w = S.lerp(4, 12, gg);
+          if (gg >= 1) { o *= (1 - cancel); if (sup > 0 && i === 0) o *= 1 - 0.75 * lin(T.srcdeux + 0.5, T.srcdeux + 0.8); }
+          if (back > 0) o *= 1 - colGone;
+        }
+        if (t >= T.compteur) o = (t < T.compteur + 0.4 ? (1 - colGone) : lin(T.compteur + 0.4, T.compteur + 0.8));
+        const pul = t >= T.entrent && t < T.ressortent && vn < 0 ? Math.sin(Math.PI * lin(T.entrent + 0.4, T.entrent + 1.2)) : (t >= T.ressortent && vn > 0 ? Math.sin(Math.PI * lin(T.ressortent, T.ressortent + 0.8)) : 0);
+        K.show(Pk.norm, o > 0.001);
+        if (o > 0.001) {
+          const path = gg > 0.02 ? `M${x0.toFixed(2)},${y0.toFixed(2)}L${x1.toFixed(2)},${y1.toFixed(2)}` + (hl > 0.5 ? K.arrowPath(x0, y0, x1, y1, hl).replace(/^M[^L]*L[^M]*/, '') : '') : K.arrowPath(x0, y0, x1, y1, hl);
+          Pk.norm.setAttribute('d', path); Pk.norm.style.opacity = o;
+          Pk.norm.setAttribute('stroke-width', (w + 2.5 * pul).toFixed(2)); Pk.norm.setAttribute('stroke-linecap', gg > 0.5 ? 'butt' : 'round');
+        }
+        // signes : au repos seulement, jamais sur une part de moins de 2 px
+        const len = Math.abs(vn) * SC * (oFull > 0.001 && fullToNorm < 1 ? grow : 1);
+        let so = 0;
+        if (i === 0 && t >= T.sortent && t < T.deplace) so = lin(T.sortent + 0.6, T.sortent + 1.0) * (1 - lin(T.deplace, T.deplace + 0.2));
+        if (t >= T.entrent && t < bil + 0.6) so = vn < 0 ? lin(T.entrent + 0.2, T.entrent + 0.5) : lin(T.ressortent, T.ressortent + 0.3);
+        if (t >= bil) so *= 1 - lin(bil + 0.2, bil + 0.5);
+        if (t >= T.simple) so = lin(T.simple + 0.2, T.simple + 0.6);
+        if (moving) so = 0;
+        if (len < 2) so = 0;
+        K.show(Pk.sg, so > 0.001);
+        if (so > 0.001) {
+          const sgn = vn > 0 ? 1 : -1, off = Math.abs(vn) * SC + 22;
+          // le signe au-delà de la pointe (sortante) ou au-delà du pied, à l'extérieur (entrante)
+          const ox = sgn > 0 ? bx + n[0] * off : bx + n[0] * 22, oy = sgn > 0 ? by - n[1] * off : by - n[1] * 22;
+          Pk.sg.setAttribute('x', ox.toFixed(1)); Pk.sg.setAttribute('y', oy.toFixed(1));
+          Pk.sg.textContent = sgn > 0 ? '+' : '−'; Pk.sg.style.fill = K.c(sgn > 0 ? 'chalk' : 'muted'); Pk.sg.style.opacity = so;
+        }
+      }
+      // signes des colonnes, excédent
+      const CS = C.colSign[i], cl = C.cols[i];
+      const cso = lin(bil + 1.2, bil + 1.5) * (1 - colGone) * (1 - cancel) * (1 - (i === 0 ? lin(T.srcdeux, T.srcdeux + 0.3) : lin(T.rotnul, T.rotnul + 0.3)));
+      CS.plus.setAttribute('x', cl.cx + C.COLDX); CS.plus.setAttribute('y', C.BASE - cl.Hout - 26); CS.plus.textContent = '+'; CS.plus.style.fill = K.c('chalk'); CS.plus.style.opacity = cso;
+      CS.minus.setAttribute('x', cl.cx - C.COLDX); CS.minus.setAttribute('y', C.BASE - cl.Hin - 26); CS.minus.textContent = '−'; CS.minus.style.fill = K.c('muted'); CS.minus.style.opacity = cso;
+      K.show(CS.plus, cso > 0.001); K.show(CS.minus, cso > 0.001);
+      const ex = C.excess[i];
+      if (exO > 0.001) { ex.setAttribute('x', cl.cx + C.COLDX - 6); ex.setAttribute('width', 12); ex.setAttribute('y', C.BASE - cl.Hout); ex.setAttribute('height', cl.Hout - cl.Hin); }
+      ex.style.opacity = exO; K.show(ex, exO > 0.001);
+    }
+    // 7.8 : le compteur 0 pulse
+    const pz = Math.sin(Math.PI * lin(T.rotnul + 0.6, T.rotnul + 1.4));
+    C.ro[1].el.style.transform = `scale(${(1 + 0.18 * pz).toFixed(3)})`;
+  },
+});
+</script></body></html>

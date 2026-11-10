@@ -80,15 +80,16 @@ Scene.define({
     const leg1 = K.el('div', { class: 'legend mono' }, ctx.stage, K.upper('Circulation ÷ aire')); leg1.style.top = '150px';
     const leg2 = K.el('div', { class: 'legend mono' }, ctx.stage, K.upper('Circulation')); leg2.style.top = '150px';
     const Ew = K.equation(ctx, { x: 1200, y: 230, size: 52, anchor: 'left', tex: '\\cu{\\omega} = 0 \\quad \\text{pour } r > 0', at: 'e1-nullepartout+0.4' });
-    const Eu = K.equation(ctx, { x: 1200, y: 350, size: 52, anchor: 'left', tex: '\\lvert\\U\\rvert = \\dfrac{1}{r} \\to \\infty \\ \\text{ quand } r \\to 0', at: 'e1-nondef+0.4' });
+    const Eu = K.equation(ctx, { x: 1200, y: 350, size: 48, anchor: 'left', tex: '\\lvert\\U\\rvert = \\dfrac{1}{r} \\to \\infty \\ \\text{ quand } r \\to 0', at: 'e1-nondef+0.4' });
 
     // ---------- 13.5 à 13.7 : cercles qui entourent le centre (du petit au grand), puis un cercle à l'écart ----------
-    // rayons et centres en px (décalages comptés y vers le haut) ; valeurs symboliques
+    // rayons et centres en px (décalages comptés y vers le haut) ; valeurs symboliques, chacune à 36 px de son cercle, là où
+    // aucun autre cercle n'est proche
     const BIG = [
-      { c: [0, 0], r: 120, a: 'e1-revele+0.3', v: '2\\pi', va: 135 },
-      { c: [70, 40], r: 220, a: 'e1-memecirc+0.2', v: '2\\pi', va: 40 },
-      { c: [0, 0], r: 320, a: 'e1-memecirc+1.6', v: '2\\pi', va: 140 },
-      { c: [-380, 250], r: 70, a: 'e1-zerocirc+0.2', v: '0', va: 225 },
+      { c: [0, 0], r: 120, a: 'e1-revele+0.3', v: '2\\pi', va: 100, side: 1 },
+      { c: [70, 40], r: 220, a: 'e1-memecirc+0.2', v: '2\\pi', va: -45, side: -1 },
+      { c: [0, 0], r: 320, a: 'e1-memecirc+1.6', v: '2\\pi', va: 225, side: -1 },
+      { c: [-380, 250], r: 70, a: 'e1-zerocirc+0.2', v: '0', va: 225, side: 1 },
     ];
     const csvg = K.svgLayer(ctx, 15); csvg.setAttribute('data-kit', 'circles');
     for (const B of BIG) {
@@ -96,7 +97,7 @@ Scene.define({
       if ((B.v === '0') === enclosed) throw new Error('cercle et valeur incohérents');
       B.cx = CX + B.c[0]; B.cy = CY - B.c[1]; B.t = at(B.a);
       B.path = K.s('path', { fill: 'none', stroke: chalk, 'stroke-width': 3, 'stroke-dasharray': '12 9' }, csvg);
-      const va = B.va * Math.PI / 180, off = B.r + 36;
+      const va = B.va * Math.PI / 180, off = B.r + 36 * B.side;   // valeur collée à son propre cercle, dehors (1) ou dedans (−1)
       B.lab = K.el('div', { class: 'val', html: K.tex(B.v, false) }, ctx.stage);
       B.lab.style.left = (B.cx + off * Math.cos(va)).toFixed(1) + 'px'; B.lab.style.top = (B.cy - off * Math.sin(va)).toFixed(1) + 'px';
     }
