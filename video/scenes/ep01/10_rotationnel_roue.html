@@ -56,6 +56,7 @@ Scene.define({
     const mk = (tag, a, p) => K.s(tag, a, p);
     const square = mk('rect', { x: PX - 120, y: PY - 120, width: 240, height: 240, fill: 'none', stroke: chalk, 'stroke-width': 5 }, psvg);
     mk('circle', { cx: PX, cy: PY, r: 7, fill: chalk }, psvg);
+    const planeEdge = mk('rect', { x: BOX.x, y: BOX.y, width: BOX.w, height: BOX.h, fill: 'none', stroke: muted, 'stroke-width': 2.5 }, psvg);   // bord du plan, visible en perspective
     // tilt θ(t) : bascule de 1,2 s (10.1), retour de face en 1 s (10.2)
     const thetaP = (t) => TILT * (seg(t, T.fleche3d + 0.6, T.fleche3d + 1.8, E.inOutCubic) - seg(t, T.plan + 2.0, T.plan + 3.0, E.inOutCubic));
     // (x, y) → (x + sh (y − cy) + e, cy + d (y − cy)) autour de c0 ; e : décalage vers la droite (panneau : le parallélogramme
@@ -161,7 +162,7 @@ Scene.define({
     const Er = K.equation(ctx, { x: 1640, y: 500, size: 46, anchor: 'center', at: 'e1-colle+0.5', tex: '\\dot\\alpha_{\\text{roue}} = 1' });
     K.equation(ctx, { x: 1640, y: 650, size: 56, anchor: 'center', at: 'e1-retiens+0.6', tex: '\\cu{\\omega} = 2' });
 
-    ctx.S = { T, TILT, PX, PY, SC, PIV, toPx, U, pclip, pin, arrows1, square, thetaP, affine, GRID, vArrows, odots, tl, flowT, flowR, refLine, aArc, alab,
+    ctx.S = { planeEdge, T, TILT, PX, PY, SC, PIV, toPx, U, pclip, pin, arrows1, square, thetaP, affine, GRID, vArrows, odots, tl, flowT, flowR, refLine, aArc, alab,
       D1, D2, D3, lPos, lNeg, l3, brace, lAbs, omega3, Ea, EAS, EAX, EAY, OX, OY, SC2, toPx2, beta, wpos, A2, TR, trs, diskS, radius, radDot, RD,
       dial1, dial2, Er };
   },
@@ -178,6 +179,7 @@ Scene.define({
     show(C.square, 1 - seg(t, T.fleche3d, T.fleche3d + 0.5, E.linear));
     const th = C.thetaP(t), A = C.affine(th, C.PIV, 90);
     // 10.6, 10.7 : zoom de 1,8× sur la roue, autour de P
+    show(C.planeEdge, Math.sin(th) / Math.sin(TILT));
     const z = 1 + 0.8 * (seg(t, T.pousse, T.pousse + 0.8, E.inOutCubic) - seg(t, T.moitie, T.moitie + 0.8, E.inOutCubic));
     if (th > 1e-4) { C.pin.style.transformOrigin = `${C.PIV[0]}px ${C.PIV[1]}px`; C.pin.style.transform = `matrix(1,0,${A.sh.toFixed(5)},${A.d.toFixed(5)},${A.e.toFixed(3)},0)`; }
     else if (z > 1.0001) { C.pin.style.transformOrigin = `${C.PX}px ${C.PY}px`; C.pin.style.transform = `scale(${z.toFixed(4)})`; }

@@ -130,20 +130,20 @@ Scene.define({
     const streaks = mk('path', { fill: 'none', stroke: ucol, 'stroke-width': 2.5, 'stroke-linecap': 'round', opacity: 0.6 }, rG);
     const gradD = mk('radialGradient', { id: 'drop08', cx: '36%', cy: '32%', r: '72%' }, defs);
     mk('stop', { offset: '0%', 'stop-color': chalk, 'stop-opacity': 0.95 }, gradD);
-    mk('stop', { offset: '100%', 'stop-color': chalk, 'stop-opacity': 0.35 }, gradD);
+    mk('stop', { offset: '100%', 'stop-color': chalk, 'stop-opacity': 0.75 }, gradD);
     const drop = mk('ellipse', { fill: 'url(#drop08)', stroke: chalk, 'stroke-width': 2.5 }, riverG);
     const DX0 = 260, DR = 26;
 
     // 8.8 : deux seringues fermées, un même poids sur chaque piston
     const syrG = mk('g', {});
-    const SX = [760, 1160], BOT = 770, PH0 = 360, PLH = 18, ROD = 190;
+    const SX = [760, 1160], BOT = 800, PH0 = 410, PLH = 18, ROD = 215, TOP = 380;
     const syr = SX.map((x, i) => {
       const g = mk('g', {}, syrG);
       const fluid = mk('rect', { x: x - 66, width: 132, fill: i ? K.rgba(ucol, 0.6) : 'none' }, g);
       const dots = i ? [] : Array.from({ length: 14 }, (_, k) => ({ el: mk('circle', { r: 4, fill: muted }, g), u: S.rng('air' + k)(), v: S.rng('airv' + k)() }));
-      mk('path', { d: `M${x - 70},330 L${x - 70},${BOT} L${x - 22},${BOT + 14} L${x - 12},${BOT + 34} L${x + 12},${BOT + 34} L${x + 22},${BOT + 14} L${x + 70},${BOT} L${x + 70},330`, fill: 'none', stroke: K.c('matter'), 'stroke-width': 4, 'stroke-linejoin': 'round' }, g);
+      mk('path', { d: `M${x - 70},${TOP} L${x - 70},${BOT} L${x - 22},${BOT + 14} L${x - 12},${BOT + 34} L${x + 12},${BOT + 34} L${x + 22},${BOT + 14} L${x + 70},${BOT} L${x + 70},${TOP}`, fill: 'none', stroke: K.c('matter'), 'stroke-width': 4, 'stroke-linejoin': 'round' }, g);
       mk('rect', { x: x - 16, y: BOT + 34, width: 32, height: 12, rx: 3, fill: K.c('matter-dark'), stroke: K.c('matter'), 'stroke-width': 2 }, g);   // bouchon
-      mk('line', { x1: x - 104, x2: x + 104, y1: 330, y2: 330, stroke: K.c('matter'), 'stroke-width': 8, 'stroke-linecap': 'round' }, g);   // collerette
+      mk('line', { x1: x - 104, x2: x + 104, y1: TOP, y2: TOP, stroke: K.c('matter'), 'stroke-width': 8, 'stroke-linecap': 'round' }, g);   // collerette
       const plunger = mk('g', {}, g);
       mk('rect', { x: -66, y: 0, width: 132, height: PLH, rx: 3, fill: K.c('matter-dark'), stroke: K.c('matter'), 'stroke-width': 2 }, plunger);
       mk('rect', { x: -8, y: -ROD, width: 16, height: ROD, fill: K.c('matter') }, plunger);
