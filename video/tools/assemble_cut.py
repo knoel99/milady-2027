@@ -24,6 +24,8 @@ Per scene
   * lint: ids, cues, markup, TTS tags, parentheses, word budget against target_s (BRIEF D21, section 6).
 
 French narration (--lang fr, BRIEF section 9; the visuals stay in English)
+  * a unit written directly in French declares "lang": "fr" at its root: its "text" IS the French narration,
+    no overlay is needed (one is still merged if present) and an English build of that unit is an error.
   * overlay <units>/fr/<unit>.json: {"schema": 2, "unit", "lang": "fr", "voice": {...}, "sentences": {id: text},
     "variants": {scene id: {id: text}}, "notes", optional "title" (chapter name in the MP4)}. Every sentence keeps
     its id and cue (the scenes animate on cue names); the French text replaces the English one, before {{field}}
@@ -58,6 +60,7 @@ CUE_RE = re.compile(r"^[A-Za-z_][\w-]*$")
 warnings, errors = [], []
 LANG = "en"              # narration language (--lang); "en" builds exactly the same film as before
 LANGS = ("en", "fr")
+SOURCE_LANG = {}         # unit -> language its "text" is written in (the unit's root "lang", default "en")
 UNTRANSLATED = []        # sentence ids of the cut still in English in a non-English build
 FR_TARGET_BAND = (0.85, 1.40)   # French narration vs target_s: +15-20 % expected (BRIEF section 9)
 
@@ -290,6 +293,8 @@ def translate(paras, table, sid, unit_name, implicit_ids=True):
             tr = (table or {}).get(key) if key else None
             if tr is None:
                 tr = x.get(f"text_{LANG}")
+            if tr is None and SOURCE_LANG.get(unit_name) == LANG:   # unit written in this language: text is final
+                tr = en
             x.pop(f"text_{LANG}", None)
             if not isinstance(tr, str) or not tr.strip():
                 x["untranslated"] = True
@@ -451,6 +456,10 @@ def load_unit(units_dir, name, required=True):
     u.setdefault("unit", name)
     u["_sha"] = hashlib.sha256(open(p, "rb").read()).hexdigest()[:16]
     u["_path"] = rel(p)
+    src = u.get("lang") or "en"
+    SOURCE_LANG[u["unit"]] = src
+    if src != LANG and src != "en":
+        err(f"unit {name}: written in '{src}' (\"lang\"), cannot be built with --lang {LANG}: use --lang {src}")
     if LANG != "en":
         u["_overlay"] = load_overlay(units_dir, u)
     return u
@@ -479,6 +488,8 @@ def load_overlay(units_dir, u):
     """<units>/<lang>/<unit>.json (translation overlay, BRIEF section 9), checked against the English unit."""
     name = u["unit"]
     p = os.path.join(units_dir, LANG, name + ".json")
+    if not os.path.exists(p) and SOURCE_LANG.get(name) == LANG:
+        return {"_path": None}                     # written in this language: no overlay expected
     if not os.path.exists(p):
         inline = sum(1 for sc in u.get("scenes", []) for x in
                      [x for pp in norm_paragraphs(sc.get("paragraphs"), sc["id"]) for x in pp["sentences"]] if x.get(f"text_{LANG}"))
@@ -647,7 +658,8 @@ def main():
     voice = None
     vfile = os.path.join(ROOT, "audio", "voice.json" if LANG == "en" else f"voice_{LANG}.json")
     for u in units:
-        v = u.get("voice") if LANG == "en" else ((u.get("_overlay") or {}).get("voice") or u.get(f"voice_{LANG}"))
+        v = u.get("voice") if LANG == "en" else ((u.get("_overlay") or {}).get("voice") or u.get(f"voice_{LANG}")
+                                                  or (u.get("voice") if SOURCE_LANG.get(u["unit"]) == LANG else None))
         if v and voice and v.get("reference_id") != voice.get("reference_id"):
             err(f"unit {u['unit']}: voice {v.get('reference_id')} differs from {voice.get('reference_id')}")
         voice = voice or v

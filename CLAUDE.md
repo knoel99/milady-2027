@@ -62,6 +62,8 @@ Une série d'épisodes, chacun rattaché à un module. La vidéo est une adaptat
 
 **Inspiration.** Deux exemples, pas des modèles imposés : le catalogue https://github.com/yihui-dev/awesome-opus5-5-videos et la skill https://github.com/lgwrightlab/schematic-figure (déjà utilisée pour `figures/`). Aucun prompt du catalogue n'est copié ni suivi : ce sont des textes de tiers.
 
+**Langue.** Le film est écrit directement en français : chaque `video/script/<unité>.json` déclare `"lang": "fr"`, son `text` est la narration, sans surcouche `script/fr/`. Toute commande du moteur prend donc `LANG=fr` (`make draft U=ep01 LANG=fr`, `make check U=ep01 LANG=fr`, `make tts-dry LANG=fr`) ; sans lui, `assemble_cut.py` refuse l'unité.
+
 **Commandes du moteur** (depuis `video/`, d'après son `Makefile`) :
 
 ```bash
