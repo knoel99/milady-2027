@@ -147,7 +147,7 @@ Scene.define({
     // 11.5 : sur la ligne du milieu, des points à la place des flèches
     const pd = seg(t, T.milieu, T.milieu + 0.4, E.linear);
     ctx.S.dots.forEach((d, i) => { d.style.opacity = pd * (i === PROF ? 1 : dimOthers); });
-    // 11.6 : profil des vitesses, droite qui relie les pointes de la colonne (x = 270 + KL·y)
+    // 11.6 : profil des vitesses, droite qui relie les pointes de la colonne (x = 290 + KL·y)
     const pp = seg(t, T.loin + 0.9, T.loin + 1.7, E.inOutSine), po = 1 - seg(t, T.courant, T.courant + 0.5, E.linear);
     if (pp > 0 && po > 0) {
       const x0 = COLS[PROF], ya = -2, yb = S.lerp(-2, 2, pp);
@@ -187,6 +187,7 @@ Scene.define({
     // les équations s'effacent un peu pendant que le panneau passe au-dessus d'elles
     const dimEq = 1 - 0.85 * Math.sin(Math.PI * vp);
     for (const Eq of ctx.S.eqs) Eq.root.style.opacity = dimEq;
+    ctx.S.gsvg.style.opacity = go * dimEq;
     const vo = seg(t, T.lecon1 + 0.9, T.lecon1 + 1.3, E.linear);
     ctx.S.vlab.style.opacity = vo; K.show(ctx.S.vlab, vo > 0);
   },
