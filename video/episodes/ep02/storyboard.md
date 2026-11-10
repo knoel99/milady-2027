@@ -10,7 +10,7 @@ Base : l'ancien storyboard relu et corrigé, `video/episodes/ep01/avant-decoupag
 
 **Repères.** Chaque plan commence sur le repère entre crochets de `narration.md`, qui sert de nom de cue au moteur. Un plan dure jusqu'au repère du plan suivant. Les durées sont estimées phrase par phrase à 0,4 s par mot.
 
-**Registre.** NIGHT pour tout l'épisode (fond `--bg`). Pas de PAPER : aucune page ni figure du site n'est incrustée ; le panneau de gauche de `fig-monopole-dipole.png` est redessiné dans le thème (section 4, point 9).
+**Registre.** NIGHT pour tout l'épisode (fond `--bg`). Pas de PAPER : aucune page ni figure du site n'est incrustée ; le panneau de gauche de `fig-monopole-dipole.png` est redessiné dans le thème (section 4, point 8).
 
 **Coordonnées.** Tous les champs se calculent analytiquement dans la page, en coordonnées mathématiques, **y vers le haut**. Chaque scène définit `toPx(x, y)`, qui retourne l'axe vertical pour l'écran. C'est une condition des contraintes de sens : sans elle, les bosses de ψ tourneraient dans le sens horaire et les grandes valeurs de ψ passeraient à droite du courant. Le constructeur le vérifie sur une image fixe de la scène 16 (cellule en bas à gauche, ψ > 0, sens trigonométrique) et de la scène 14 (bosse à gauche du courant). Les déplacements en px sont, eux aussi, comptés y vers le haut.
 
@@ -104,16 +104,27 @@ Les trois pictogrammes reviennent à la scène 20, chacun avec sa formule. Ils r
 
 ### ep02.02 · `02_carrelage.html` · P3, P4 · 47 s
 
-Région $\Omega$ **de forme quelconque**, étoilée, de bord r(θ) = 1 + 0,25 cos 2θ + 0,15 sin 3θ en unités de la région (250 px par unité), centrée à l'écran en (620, 470) : elle tient dans x 270 à 970, y 120 à 820. Colonne d'équation à droite (x 1100 à 1780). Carrelage : la grille de pas 0,25 (62,5 px), **découpée par le bord** ; les carreaux du bord sont des morceaux de carré limités par la courbe. Le découpage est donc exact : la réunion des carreaux est Ω, et leurs côtés non partagés forment exactement $\partial\Omega$. Champ de l'ancienne scène 12 : u = (x²/2 − 0,5 y, y + 0,5 x), origine au centre de la région ; ∇·u = x + 1 et ω = 1, non nulles, pour que les deux énoncés aient un contenu. Sur chaque côté de chaque carreau, **une seule** petite flèche `--u` perpendiculaire au côté, dans le sens du champ, de longueur proportionnelle au flux par ce côté (ancien 12.3, correction 10).
+Région $\Omega$ **de forme quelconque**, étoilée, de bord r(θ) = 1 + 0,25 cos 2θ + 0,15 sin 3θ en unités de la région (250 px par unité), centrée à l'écran en (620, 470) : elle tient dans x 270 à 970, y 120 à 820. Colonne d'équation à droite (x 1100 à 1780). Carrelage : la grille de pas 0,25 (62,5 px), **découpée par le bord** ; les carreaux du bord sont des morceaux de carré limités par la courbe. Le découpage est donc exact : la réunion des carreaux est Ω, et leurs côtés non partagés forment exactement $\partial\Omega$. Champ de l'ancienne scène 12 : u = (x²/2 − 0,5 y, y + 0,5 x), origine au centre de la région ; ∇·u = x + 1 et ω = 1, non nulles, pour que les deux énoncés aient un contenu. Sur chaque côté de chaque carreau, **une seule** petite flèche `--u` perpendiculaire au côté, dans le sens du flux net par ce côté, de longueur proportionnelle à la valeur absolue de ce flux (ancien 12.3, correction 10).
 
 Carreaux de travail : A = [0 ; 0,25] × [−0,5 ; −0,25] et B = [0,25 ; 0,5] × [−0,5 ; −0,25], entiers et dans Ω (le coin le plus loin du centre est à 0,71 < r = 0,89 dans cette direction). Sur leur côté commun x = 0,25, $u_x$ = 0,031 + 0,5·|y| est compris entre 0,16 et 0,28 : positif, la flèche va vers la droite, sans changement de signe le long du côté.
+
+Signes des quatre côtés de A, chacun de signe constant le long du côté (le constructeur les vérifie sur image fixe) :
+
+| Côté de A | Composante | Valeurs le long du côté | Flèche | Pour A | Signe |
+|---|---|---|---|---|---|
+| gauche, x = 0 | $u_x = -0{,}5\,y$ | de 0,125 à 0,25 | vers la droite | entre | « − » |
+| droite, x = 0,25 | $u_x$ | de 0,16 à 0,28 | vers la droite | sort | « + » |
+| bas, y = −0,5 | $u_y = y + 0{,}5\,x$ | de −0,5 à −0,375 | vers le bas | sort | « + » |
+| haut, y = −0,25 | $u_y$ | de −0,25 à −0,125 | vers le bas | entre | « − » |
+
+Flux net de A : 0,0703 (= 0,0547 − 0,0469 + 0,1094 − 0,0469), égal à $\int_A (x + 1)\,\mathrm{d}\mathbf{x}$. Valeur de contrôle pour le constructeur, jamais affichée.
 
 | # | Repère | Image | Mouvement | Durée |
 |---|---|---|---|---|
 | 2.1 | [e2-but] | La région Ω : intérieur voilé `--chalk` à 12 %, contour `--chalk` 3 px. Étiquettes « Ω » dans la région, « ∂Ω » sur le contour. | Le voile pulse une fois, puis le contour pulse une fois : l'intérieur, puis le bord. | 6,8 s |
 | 2.2 | [e2-region] | Le contour se déforme lentement (les coefficients 0,25 et 0,15 varient en douceur) puis se fige dans la forme ci-dessus. | Déformation de 2 s, arrêt sans rebond. | 3,2 s |
 | 2.3 | [e2-carrelage] | Les lignes du carrelage, découpées par le contour. | Tracé ligne par ligne en 1,2 s. | 2,8 s |
-| 2.4 | [e2-chaque] | Le carreau A s'allume ; sur ses quatre côtés, une flèche de flux chacun, avec un « + » `--chalk` là où elle sort de A, un « − » `--muted` là où elle entre. | Les quatre flèches poussent l'une après l'autre. | 4,8 s |
+| 2.4 | [e2-chaque] | Le carreau A s'allume ; sur ses quatre côtés, une flèche de flux chacun, avec un « + » `--chalk` là où elle sort de A, un « − » `--muted` là où elle entre, selon le tableau de l'en-tête : gauche, entre, « − » ; droite, sort, « + » ; bas, flèche vers le bas, sort, « + » ; haut, flèche vers le bas, entre, « − ». | Les quatre flèches poussent l'une après l'autre. | 4,8 s |
 | 2.5 | [e2-voisins] | Le carreau B, à droite de A, s'allume à son tour. | — | 2 s |
 | 2.6 | [e2-commun] | Leur côté commun s'épaissit ; les autres flèches de A baissent à 30 %. | Trait de 0,4 s. | 1,6 s |
 | 2.7 | [e2-passe] | Sur le côté commun, une seule flèche, vers la droite. Un « + » `--chalk` du côté de A : pour A, elle sort. Un « − » `--muted` du côté de B : pour B, elle entre. Aucune flèche n'est dédoublée ni retournée. | Le « + » puis le « − » s'allument. | 4,4 s |
@@ -147,7 +158,7 @@ Même région, même champ (ω = 1), carrelage de pas 0,25, mêmes carreaux A et
 |---|---|---|---|---|
 | 4.1 | [e2-stokes0] | Les carreaux A et B ; leurs flèches de flux s'effacent. | Fondu de 0,4 s. | 2,8 s |
 | 4.2 | [e2-stokes1] | Dans A et dans B, une flèche de parcours `--chalk` qui fait le tour du carreau, sens trigonométrique. | Chaque flèche fait un tour en 1,2 s, puis reste posée. | 3,2 s |
-| 4.3 | [e2-stokes2] | Sur le côté commun, les deux parcours en sens contraires : vers le haut pour A, vers le bas pour B (deux chevrons `--chalk`). Sur ce côté, une seule flèche `--u` tangente, la part du champ le long du côté. Un « + » du côté du carreau dont le parcours suit cette flèche, un « − » de l'autre. | Les chevrons s'allument, puis la flèche `--u`, puis les signes. | 5,6 s |
+| 4.3 | [e2-stokes2] | Sur le côté commun, les deux parcours en sens contraires : vers le haut pour A, vers le bas pour B (deux chevrons `--chalk`). Sur ce côté, une seule flèche `--u` tangente, la part du champ le long du côté : sur x = 0,25, $u_y$ va de −0,375 à −0,125, la flèche pointe donc **vers le bas**. Un « + » `--chalk` du côté de B, dont le parcours suit cette flèche ; un « − » `--muted` du côté de A, dont le parcours la remonte. | Les chevrons s'allument, puis la flèche `--u`, puis les signes. | 5,6 s |
 | 4.4 | [e2-stokes3] | Les signes fusionnent et s'annulent ; la flèche tangente du côté commun s'efface. | 0,6 s. | 2 s |
 | 4.5 | [e2-stokesrappel] | Tout le carrelage : une flèche tangente par côté, les paires des côtés intérieurs s'annulent, il reste les flèches tangentes du contour. Colonne : $\text{circulation}(A) \approx \omega \times \text{aire}(A)$. Calque de formule, rappel de ep01 : $\omega = \lim_{r\to0} \dfrac{\text{circulation}}{\pi r^2}$. | Apparition en 1 s, effacement par paires en vague en 1,5 s ; écriture de la formule. | 8 s |
 | 4.6 | [e2-stokes4] | $\sum \omega\,\text{aire} \;\to\; \int_\Omega \omega\,\mathrm{d}\mathbf{x} = \oint_{\partial\Omega}\mathbf{u}\cdot\mathbf{t}\,\mathrm{d}\ell$, sous l'énoncé de Green–Ostrogradski. Dessous, en `--fg-2`, 32 px : « bord parcouru en gardant la région à sa gauche, sens trigonométrique pour une région sans trou ». Sur le contour, trois marqueurs « région à gauche ». | Écriture, `Kit.morph` du Σ vers l'intégrale ; le sous-titre en fondu ; les marqueurs s'allument un à un. | 5,2 s |
@@ -163,8 +174,8 @@ Tourbillon ponctuel de ep01, u = (−y, x)/(x² + y²), sens trigonométrique, u
 |---|---|---|---|---|
 | 5.1 | [e2-echo] | Le tourbillon : flèches et cinq lignes de courant circulaires. | Fondu d'entrée. | 2,4 s |
 | 5.2 | [e2-echo2] | L'image de ep01 : trois cercles en tirets qui entourent le centre, apparus du plus petit au plus grand (120 px centré ; 220 px décentré de (70, 40) px ; 320 px centré), chacun avec sa valeur « 2π ». | Chaque cercle se trace, sa valeur s'écrit. | 3,6 s |
-| 5.3 | [e2-echo3] | Le cercle décentré et les trois valeurs s'effacent. Entre les cercles de 120 et 320 px, l'anneau se voile `--chalk` à 12 % et se carrelle en secteurs. | Tracé des rayons puis des couronnes en 1,2 s. | 3,2 s |
-| 5.4 | [e2-anneaubord] | Les deux cercles s'épaississent ; les lignes intérieures du carrelage baissent à 50 %. | — | 2,4 s |
+| 5.3 | [e2-echo3] | Le cercle décentré et les trois valeurs s'effacent. Entre les cercles de 120 et 320 px, l'anneau se voile `--chalk` à 12 % et se carrelle en secteurs. Étiquette « Ω » dans l'anneau. | Tracé des rayons puis des couronnes en 1,2 s ; l'étiquette en fondu. | 3,2 s |
+| 5.4 | [e2-anneaubord] | Les deux cercles s'épaississent ; les lignes intérieures du carrelage baissent à 50 %. Étiquette « ∂Ω » sur chacun des deux cercles. | — | 2,4 s |
 | 5.5 | [e2-anneausens] | Dans chaque carreau, une flèche de parcours trigonométrique. Sur chaque côté partagé, deux chevrons opposés, qui s'effacent par paires. Il reste : sur le grand cercle, des chevrons dans le **sens trigonométrique** ; sur le petit, dans le **sens horaire**. Un marqueur « région à gauche » sur chaque cercle : sa demi-pastille touche l'anneau dans les deux cas (vers l'intérieur pour le grand cercle, vers l'extérieur pour le petit). | Flèches de parcours en 0,8 s ; effacement des paires en vague, en 1,5 s ; chevrons du bord qui défilent doucement dans leur sens. | 6 s |
 | 5.6 | [e2-anneaudiff] | Colonne : $\oint_{\partial\Omega}\mathbf{u}\cdot\mathbf{t}\,\mathrm{d}\ell = \text{circulation}(\text{grand}) - \text{circulation}(\text{petit})$. Le terme « grand » souligné en `--chalk` en même temps que le grand cercle pulse, puis le terme « petit » avec le petit cercle. | Écriture terme à terme ; pulsations synchronisées. | 5,6 s |
 | 5.7 | [e2-anneaunulle] | Dans l'anneau, en trois endroits, « ω = 0 » en `--u`. Au-dessus de l'équation : $\int_\Omega \omega\,\mathrm{d}\mathbf{x} = 0$. | Les trois étiquettes s'allument une à une ; écriture. | 5,6 s |
@@ -182,8 +193,8 @@ Dessins en SVG ou canvas 2D (ancienne scène 13) : la sphère est un cercle `--c
 | 6.2 | [e2-sphere] | Un petit cercle en tirets posé sur le plan se gonfle en sphère. | L'équateur apparaît, le dégradé se lève, en 1,5 s. | 3,6 s |
 | 6.3 | [e2-volume] | Un carreau se soulève en petit cube. À côté : $\pi r^2$ devient $\tfrac43\pi r^3$. | Extrusion de 1 s ; `Kit.morph` de la formule. | 4,4 s |
 | 6.4 | [e2-peau] | À droite du plan, un ballon (sphère, voile `--chalk` à 10 %). L'étiquette « ∂Ω » quitte le contour du plan et se pose sur la peau du ballon, qui s'allume. | Glissement de l'étiquette en 0,8 s. | 6 s |
-| 6.5 | [e2-pareil] | Le ballon se remplit de cubes : les 32 cubes d'une grille 4 × 4 × 4 dont le centre est dans la boule. | Cubes posés couche par couche en 1,5 s. | 2 s |
-| 6.6 | [e2-faces] | Les faces communes s'effacent par paires ; il reste l'extérieur de l'empilement, une surface fermée en escalier, voilée à 15 %. Puis subdivisions (8 × 8 × 8, 16 × 16 × 16, toujours les cubes dont le centre est dans la boule) : l'escalier s'affine et fond vers la peau lisse du ballon. | Effacement en vague en 1,5 s ; deux subdivisions à 1 s d'écart ; fondu de 0,6 s vers la sphère lisse (ancien 13.4, correction 18). | 5,6 s |
+| 6.5 | [e2-pareil] | Le ballon se remplit de cubes : les 32 cubes d'une grille 4 × 4 × 4 dont le centre est dans la boule de rayon 2 côtés, centrée au centre de la grille. | Cubes posés couche par couche en 1,5 s. | 2 s |
+| 6.6 | [e2-faces] | Les faces communes s'effacent par paires ; il reste l'extérieur de l'empilement, une surface fermée en escalier, voilée à 15 %. Puis subdivisions (8 × 8 × 8, 16 × 16 × 16, toujours les cubes dont le centre est dans la même boule) : l'escalier s'affine et fond vers la peau lisse du ballon. | Effacement en vague en 1,5 s ; deux subdivisions à 1 s d'écart ; fondu de 0,6 s vers la sphère lisse (ancien 13.4, correction 18). | 5,6 s |
 
 ### ep02.07 · `07_champ_magnetique.html` · P9 · 45 s
 
@@ -280,9 +291,11 @@ Les deux cartes de l'ancienne scène 01, côte à côte : à gauche (x 136 à 89
 
 ### ep02.13 · `13_randonnee.html` · P16, P17 · 56 s
 
-Carte des hauteurs **générique**, pas encore la boîte à œufs (révélée à la scène 16) : ψ(x, y) = exp(−((x + 1,2)² + y²)/0,8) + 0,7 exp(−((x − 1,6)² + (y − 0,3)²)/3), une bosse étroite (pente forte) et une bosse large (pente douce), sur [−3,2 ; 4] × [−2,6 ; 2,6], unité 125 px, panneau de 900 × 650 px à gauche (x 120 à 1020, y 120 à 770). Colonne à droite (x 1120 à 1780). Carte `Kit.fieldMap` kind `u`. Lignes de niveau ψ = 0,1 à 0,9 par pas de 0,1, plus les deux niveaux exacts ψ(Q) et ψ(Q′), en `--fg-2` fin, par marching squares.
+Carte des hauteurs **générique**, pas encore la boîte à œufs (révélée à la scène 16) : ψ(x, y) = exp(−((x + 1,2)² + y²)/0,8) + 0,7 exp(−((x − 1,6)² + (y − 0,3)²)/3), une bosse étroite (pente forte) et une bosse large (pente douce), sur [−3,2 ; 4] × [−2,6 ; 2,6], unité 125 px, panneau de 900 × 650 px à gauche (x 120 à 1020, y 120 à 770). Colonne à droite (x 1120 à 1780). Carte `Kit.fieldMap` kind `u`. Lignes de niveau ψ = 0,1 à 0,9 par pas de 0,1, plus les deux niveaux exacts ψ(Q) et ψ(Q′), en `--fg-2` fin, par marching squares. **Le niveau 0,7 n'est tracé qu'autour de la bosse étroite** : la bosse large culmine à 0,70 tout juste, et sa composante du niveau 0,7 serait un point ou une boucle minuscule ; le constructeur ne garde, pour ce niveau, que la composante qui entoure (−1,2 ; 0). L'amplitude 0,7 de la bosse large est conservée, pour que la ligne ψ = 0,5 du marcheur de 13.15 existe telle quelle.
 
-Points de travail : **Q = (−1,2 ; −0,6)**, sur le flanc de la bosse étroite, sous son sommet : ∇ψ(Q) ≈ (0,07 ; 0,98), presque vers le haut. **Q′ = (1,6 ; −1,0)**, sur le flanc de la bosse large : ∇ψ(Q′) ≈ (0 ; 0,35). Rapport des longueurs ≈ 2,8, exact à l'écran (sous le seuil). Gradients calculés analytiquement dans la page.
+Topologie des niveaux, à vérifier sur image fixe : le col entre les deux bosses est à ψ ≈ 0,45. Les lignes 0,1 à 0,4, et la ligne ψ(Q′) ≈ 0,40, entourent **les deux bosses** ; les lignes 0,5 et 0,6 sont fermées autour de la **seule bosse large** ; les lignes 0,5 à 0,9 (0,7 compris) sont fermées autour de la **seule bosse étroite**.
+
+Points de travail : **Q = (−1,2 ; −0,6)**, sur le flanc de la bosse étroite, sous son sommet : ∇ψ(Q) ≈ (0,07 ; 0,98), presque vers le haut. **Q′ = (1,6 ; −1,0)**, sur le flanc de la bosse large, ψ(Q′) ≈ 0,40 : ∇ψ(Q′) ≈ (0 ; 0,35). Rapport des longueurs ≈ 2,8, exact à l'écran (sous le seuil). Q′ ne sert qu'à la flèche courte de 13.13. **M = (1,6 ; −0,70)**, départ du marcheur de 13.15 : ψ(M) ≈ 0,50, sur la ligne ψ = 0,5, fermée autour de la seule bosse large (cercle de rayon ≈ 1 autour de (1,6 ; 0,3), à peine déformé par la bosse étroite) ; le constructeur prend le point exact de la ligne 0,5 sur la verticale x = 1,6, sous le sommet. Gradients calculés analytiquement dans la page.
 
 | # | Repère | Image | Mouvement | Durée |
 |---|---|---|---|---|
@@ -300,7 +313,7 @@ Points de travail : **Q = (−1,2 ; −0,6)**, sur le flanc de la bosse étroite
 | 13.12 | [e2-pente] | Cinq flèches de gradient le long d'une droite qui descend du sommet de la bosse étroite vers l'extérieur : les plus longues là où les lignes se serrent. | Elles poussent l'une après l'autre. | 3,6 s |
 | 13.13 | [e2-douce] | En Q′, sur la bosse large, une flèche de gradient courte ; ses lignes de niveau sont écartées. Les deux flèches de Q et Q′ restent côte à côte en vue. | Elle pousse. | 2,8 s |
 | 13.14 | [e2-randonneur] | Un point `--chalk` part de (−0,4 ; −1,1) et monte en suivant le gradient jusqu'au sommet de la bosse étroite ; sa trace coupe chaque ligne de niveau à angle droit. | Trajectoire intégrée dans `setup` (ascension de plus grande pente), parcourue en 3 s. | 4,4 s |
-| 13.15 | [e2-plat] | Un second point part de Q′ et fait le tour de la bosse large sur sa ligne de niveau ; un fil vertical `--muted` de longueur constante montre que sa hauteur ne change pas. | Un tour en 4 s. | 4,8 s |
+| 13.15 | [e2-plat] | Un second point part de M = (1,6 ; −0,70) et fait le tour de la seule bosse large sur la ligne ψ = 0,5, qui s'allume ; la flèche courte de Q′ reste en place, à 40 % ; un fil vertical `--muted` de longueur constante montre que sa hauteur ne change pas. | Un tour en 4 s. | 4,8 s |
 
 ### ep02.14 · `14_quart_de_tour.html` · P18 · 25 s
 
@@ -312,7 +325,7 @@ Même carte, même point Q, même colonne. En Q, $\nabla^\perp\psi = (\partial_y
 | 14.2 | [e2-suit] | La flèche est tangente à la ligne ψ = ψ(Q), qui s'allume. | — | 4 s |
 | 14.3 | [e2-vitesse] | La flèche passe de `--chalk` à `--u` ; étiquette $\nabla^\perp\psi$. | Fondu de couleur de 0,6 s. | 3,2 s |
 | 14.4 | [e2-courant] | Toutes les lignes de niveau passent en `--u` et reçoivent des pointes dans le sens de $\nabla^\perp\psi$ ; traceurs `--u` à 40 % (300 particules). Autour de chaque bosse, ils tournent dans le sens trigonométrique. | Pointes réparties en 1 s ; traceurs en marche. | 4 s |
-| 14.5 | [e2-gauche] | Quatre petits « + » `--chalk`, chacun juste à gauche du courant, du côté des plus grandes valeurs : deux sur des lignes de la bosse étroite, un sur une ligne de la bosse large, un sur une ligne extérieure qui entoure les deux bosses. | Les « + » s'allument un à un. | 4,4 s |
+| 14.5 | [e2-gauche] | Quatre petits « + » `--chalk`, chacun juste à gauche du courant, du côté des plus grandes valeurs : deux sur des lignes de la bosse étroite (0,6 et 0,8), un sur la ligne 0,5 de la seule bosse large, un sur une ligne extérieure qui entoure les deux bosses, prise parmi 0,1 à 0,4 (ces quatre lignes entourent les deux bosses, le col étant à ψ ≈ 0,45). | Les « + » s'allument un à un. | 4,4 s |
 | 14.6 | [e2-fonction] | Colonne : $\mathbf{u} = \nabla^\perp\psi = (\partial_y\psi,\ -\partial_x\psi)$ ; sous la carte, l'étiquette devient « ψ : fonction de courant ». | Écriture terme à terme ; fondu de l'étiquette. | 4,8 s |
 
 ### ep02.15 · `15_construction.html` · P19 · 32 s
@@ -354,8 +367,8 @@ La carte des cellules de la scène 16 (pas une autre carte), renommée a, en `Ki
 
 | # | Repère | Image | Mouvement | Durée |
 |---|---|---|---|---|
-| 17.1 | [e2-dansplan] | Au centre, le ballon de la scène 07, traversé de ses lignes `--b`, en perspective ; il s'aplatit en un cercle posé sur un plan, et le plan revient de face. | Aplatissement de 1,2 s, retour de face de 0,8 s, puis fondu vers la carte. | 4,8 s |
-| 17.2 | [e2-recette] | La carte de ψ de la scène 16, lignes de niveau, à gauche. | Fondu d'entrée. | 4 s |
+| 17.1 | [e2-dansplan] | Au centre, le ballon de la scène 07, traversé de ses lignes `--b`, en perspective. Les lignes `--b` de l'aimant s'effacent d'abord, entièrement ; puis seul le ballon, la surface fermée, s'aplatit : la sphère devient un cercle en tirets `--chalk` posé sur un plan vide, un contour fermé, et le plan revient de face. Rien du champ de l'aimant ne passe dans le plan. | Effacement des lignes en 0,6 s ; aplatissement de 1,2 s ; retour de face de 0,8 s. Le cercle s'efface en fin de plan. | 4,8 s |
+| 17.2 | [e2-recette] | Sur le plan vide, la carte de ψ de la scène 16, lignes de niveau, à gauche : un champ nouveau, propre au plan, qui n'est pas une coupe du ballon ni de l'aimant. Elle n'est ni découpée dans le cercle, ni centrée sur lui. | Fondu d'entrée depuis le fond, sans lien de mouvement avec le cercle. | 4 s |
 | 17.3 | [e2-potentiel] | L'étiquette ψ devient a ; la carte passe de `--u` à `--b`. Sous la carte : « a : potentiel magnétique ». | Fondu de couleur de 1 s. | 4,4 s |
 | 17.4 | [e2-memegeste] | Colonne, deux lignes en regard : $\psi \;\mapsto\; \mathbf{u} = \nabla^\perp\psi$ en `--u`, à 40 % ; en dessous, $a \;\mapsto\; ?$ en `--b`. | Écriture. | 2,8 s |
 | 17.5 | [e2-tourne] | Sur la carte, en un point, la flèche de pente `--chalk` pivote d'un quart de tour dans le sens horaire et passe en `--b` ; puis toutes les flèches `--b` apparaissent le long des lignes de niveau, qui passent en `--b`. Dans la colonne, le « ? » devient $\mathbf{B} = \nabla^\perp a$. Sous la carte, en `--fg-2`, 32 px : « les lignes de niveau du potentiel sont les lignes du champ ». | Rotation de 0,8 s ; vague de flèches ; `Kit.morph` du « ? ». | 6 s |
@@ -372,18 +385,18 @@ Colonne à droite, deux lignes ; carte à gauche.
 | 18.1 | [e2-attention] | La carte de a de la scène 17, à gauche, à 60 %. Dans la colonne, deux emplacements l'un sous l'autre. | Fondu. | 3,2 s |
 | 18.2 | [e2-garantit] | Première ligne : $\nabla\cdot\mathbf{B} = 0$ et une coche. | Coche au `Kit.pen`. | 2 s |
 | 18.3 | [e2-ressemble] | Seconde ligne : un emplacement vide, cadre en tirets `--muted`, et un point d'interrogation `--chalk`. Aucune image de champ réel n'y est dessinée. | Le point d'interrogation s'allume. | 4,4 s |
-| 18.4 | [e2-hasard] | La carte des cellules est remplacée par une carte de a **prise au hasard** : somme de 16 modes de Fourier à nombres d'onde entiers, 1 ≤ \|k\| ≤ 4, graine nommée « ep02-hasard », figée ; lignes de niveau et flèches `--b`. Le contour haricot y repasse, compteur « FLUX » à 0. La coche reste ; le point d'interrogation reste. | Fondu croisé de 1 s ; contour en mouvement. | 6 s |
+| 18.4 | [e2-hasard] | La carte des cellules est remplacée par une carte de a **prise au hasard** : somme de 16 modes de Fourier à nombres d'onde entiers, 1 ≤ \|k\| ≤ 4, **tous de même amplitude**, phases seules tirées de la graine nommée « ep02-hasard », figée. Aspect franchement sans structure : un enchevêtrement de petites bosses et de petits creux de tailles voisines, sans tourbillon dominant ; elle doit se distinguer d'un coup d'œil de la carte agitée de 19.2 par sa structure, pas seulement par sa graine. Lignes de niveau et flèches `--b`. Le contour haricot y repasse, compteur « FLUX » à 0. La coche reste ; le point d'interrogation reste. | Fondu croisé de 1 s ; contour en mouvement. | 6 s |
 | 18.5 | [e2-juger] | Le contour et son compteur s'effacent ; le point d'interrogation pulse une fois ; tout baisse à 40 % à la fin. | — | 5,2 s |
 
 ### ep02.19 · `19_fundiff.html` · P24 · 25 s
 
-**Badge SCHEMATIC pour toute la scène**, de 19.1 à 19.5. Carte agitée à gauche (640 × 640 px, x 176 à 816, y 96 à 736). Sa fonction de courant est une somme de 24 modes de Fourier à **nombres d'onde entiers** (k_x, k_y), 2 ≤ \|k\| ≤ 6, sur [0, 2π]², amplitudes et phases fixées par une graine nommée dans le code, différente de celle de la scène 18 ; elle est **figée** pendant toute la scène. C'est une **illustration fabriquée pour le film, ni figure de l'article ni sortie de FunDiff**. La carte de gauche est une **carte de vitesse** : fond `--bg`, lignes de courant `--u` (lignes de niveau de ψ), flèches `--u` clairsemées à 50 %, traceurs `--u`. Encart à droite (480 × 480 px, x 1184 à 1664, y 160 à 640).
+**Badge SCHEMATIC pour toute la scène**, de 19.1 à 19.5. Carte agitée à gauche (640 × 640 px, x 176 à 816, y 96 à 736). Sa fonction de courant, sur [0, 2π]², a une **structure différente** de la carte au hasard de 18.4 : quelques **tourbillons cohérents de grande taille** (trois, deux positifs et un négatif, bosses gaussiennes périodisées de rayon ≈ 0,7, centres fixés dans le code), auxquels s'ajoute une somme de 24 modes de Fourier à **nombres d'onde entiers** (k_x, k_y), 2 ≤ \|k\| ≤ 6, **d'amplitudes décroissantes avec \|k\|** (par exemple proportionnelles à 1/\|k\|²), phases fixées par la graine nommée « ep02-agites », différente de celle de la scène 18. On doit y voir de grands tourbillons nets, bordés de filaments plus fins, là où 18.4 n'a aucune structure. Elle est **figée** pendant toute la scène. Le réglage est fait à l'œil pour l'aspect seulement : aucune loi d'échelle n'est revendiquée ni affichée, et la carte n'imite aucune figure de l'article. C'est une **illustration fabriquée pour le film, ni figure de l'article ni sortie de FunDiff**. La carte de gauche est une **carte de vitesse** : fond `--bg`, lignes de courant `--u` (lignes de niveau de ψ), flèches `--u` clairsemées à 50 %, traceurs `--u`. Encart à droite (480 × 480 px, x 1184 à 1664, y 160 à 640).
 
 | # | Repère | Image | Mouvement | Durée |
 |---|---|---|---|---|
 | 19.1 | [e2-chercheurs] | Dans l'encart de droite, la carte des cellules de la scène 16, réduite, lignes et traceurs. Badge SCHEMATIC en haut à droite. | Fondu ; le badge se découvre. | 2,8 s |
-| 19.2 | [e2-agites] | À gauche, la carte de vitesse agitée : lignes de courant, flèches clairsemées, traceurs. Chip `schematic` en haut à gauche de la carte, `maxWidth` 600 : « ILLUSTRATION DU FILM · PAS UNE SORTIE DE FUNDIFF ». Bandeau (`Kit.lowerThird` kind `reference`), **sous la carte de vitesse**, dans la zone x 96 à 996, y ≈ 780 à 880, l2 seul : « Idée utilisée par Wang et al., FunDiff, Nature Communications, 2026 ». | Ouverture de la carte en 1 s ; lignes en 1,5 s ; chip et bandeau en fondu, maintenus jusqu'à la fin de la scène. | 6,8 s |
-| 19.3 | [e2-dessine] | Dans l'encart, la carte des cellules est remplacée par la carte de ψ de l'écoulement agité (`Kit.cmap('u')`, étiquette « ψ »), avec un chip `schematic` « ILLUSTRATION ». Une flèche au `Kit.pen` va de l'encart vers la carte de vitesse, étiquetée $\nabla^\perp$. | Fondu croisé de 0,8 s ; flèche de 0,6 s. | 4,8 s |
+| 19.2 | [e2-agites] | À gauche, la carte de vitesse agitée (structure de l'en-tête : grands tourbillons cohérents, amplitudes décroissantes avec \|k\|) : lignes de courant, flèches clairsemées, traceurs qui tournent autour des grands tourbillons. Chip `schematic` en haut à gauche de la carte, `maxWidth` 600 : « ILLUSTRATION DU FILM · PAS UNE SORTIE DE FUNDIFF ». Bandeau (`Kit.lowerThird` kind `reference`), **sous la carte de vitesse**, dans la zone x 96 à 996, y ≈ 780 à 880, l2 seul : « Idée utilisée par Wang et al., FunDiff, Nature Communications, 2026 ». | Ouverture de la carte en 1 s ; lignes en 1,5 s ; chip et bandeau en fondu, maintenus jusqu'à la fin de la scène. | 6,8 s |
+| 19.3 | [e2-dessine] | Dans l'encart, la carte des cellules est remplacée par la carte de ψ de l'écoulement agité (`Kit.cmap('u')`, étiquette « ψ »), avec un chip `schematic` en haut de l'encart, `maxWidth` 460, sur deux lignes au besoin : « ILLUSTRATION DU FILM · PAS UNE SORTIE DE FUNDIFF », même texte que le chip de la carte de vitesse. Une flèche au `Kit.pen` va de l'encart vers la carte de vitesse, étiquetée $\nabla^\perp$. | Fondu croisé de 0,8 s ; flèche de 0,6 s. | 4,8 s |
 | 19.4 | [e2-jamais] | Calque de formule : $\mathbf{u} = \nabla^\perp\psi \;\Rightarrow\; \nabla\cdot\mathbf{u} = 0$. | Fondu du calque. | 4,4 s |
 | 19.5 | [e2-vitesses] | Le $\mathbf{u}$ du calque souligné au `Kit.pen`, en `--u`. Les traceurs continuent, seuls à bouger. | Trait de 0,4 s ; maintien. | 6 s |
 
@@ -398,7 +411,7 @@ Les trois pictogrammes de la scène 01 en colonne à gauche ; chacun reçoit sa 
 | 20.1 | [e2-retenir] | Les trois pictogrammes, en colonne à gauche. | Apparition échelonnée. | 1,2 s |
 | 20.2 | [e2-r1] | En face du pictogramme 1 : $\int_\Omega \nabla\cdot\mathbf{u}\,\mathrm{d}\mathbf{x} = \oint_{\partial\Omega}\mathbf{u}\cdot\mathbf{n}\,\mathrm{d}\ell$. | Écriture ; le contour du pictogramme s'allume. | 4,4 s |
 | 20.3 | [e2-r2] | En face du pictogramme 2 : $\nabla\cdot\mathbf{B} = 0$. | Écriture ; la ligne `--b` du pictogramme traverse la sphère. | 4,8 s |
-| 20.4 | [e2-r2b] | À côté du pictogramme 2, une petite ligne `--b` fermée qui traverse un aimant miniature, parcourue par un point ; et le pictogramme barré du monopôle (scène 08), en petit. | Point en boucle continue. | 5,6 s |
+| 20.4 | [e2-r2b] | À côté du pictogramme 2, une petite ligne `--b` fermée qui traverse un aimant miniature (nord `--b` en haut, sud `--matter-dark`), parcourue par un point dans le sens du champ : il sort par la face nord, revient par l'extérieur jusqu'à la face sud et traverse l'aimant du sud vers le nord, comme en 11.4 à 11.6 ; et le pictogramme barré du monopôle (scène 08), en petit. | Point en boucle continue. | 5,6 s |
 | 20.5 | [e2-r3] puis [e2-r3b] | En face du pictogramme 3 : $\mathbf{u} = \nabla^\perp\psi,\ \ \nabla\cdot\mathbf{u} = 0$. | Écriture ; la flèche du pictogramme rejoue son quart de tour horaire. | 7,2 s |
 | 20.6 | [e2-voie] | Les trois lignes baissent à 40 %. `Kit.projector` à droite, plan étiqueté « CHAMPS SANS DIVERGENCE », champ `--u`. | Entrée de 0,5 s. | 4 s |
 | 20.7 | [e2-retirer] | La flèche se projette sur le plan ; la part retirée, en tirets `--muted`, reste un instant. | `drop` au début du plan. | 5,2 s |
@@ -425,6 +438,9 @@ Les trois pictogrammes de la scène 01 en colonne à gauche ; chacun reçoit sa 
 | Sphère déplacée : petite calotte d'entrée à flèches fortes, grande calotte de sortie à flèches faibles, valeur 0 | 10.4 |
 | Couleur neutre des deux cartes jusqu'au verdict | 12.1 à 12.4 |
 | Gradient perpendiculaire aux lignes de niveau, plus long où elles se serrent, rapports exacts | 13.8 à 13.14 |
+| Topologie des niveaux de la scène 13 : col à ψ ≈ 0,45 ; 0,1 à 0,4 et ψ(Q′) autour des deux bosses ; marcheur sur ψ = 0,5, fermée autour de la seule bosse large ; 0,7 tracé autour de la seule bosse étroite | 13.6, 13.13, 13.15, 14.5 |
+| Ballon aplati en simple contour, lignes de l'aimant effacées avant ; la carte du plan est un champ nouveau, pas une coupe | 17.1, 17.2 |
+| Carte au hasard (18.4) et carte agitée (19.2) distinctes par leur structure : amplitudes égales, sans structure, contre amplitudes décroissantes et grands tourbillons cohérents | 18.4, 19.2, 19.3 |
 | Quart de tour dans le sens horaire ; grandes valeurs de ψ à gauche du courant ; bosses dans le sens trigonométrique | 1.10, 14.1 à 14.5, 16.7, 16.8, 17.5, 20.5 ; axe y vers le haut (section 0) |
 | Les droites x = kπ et y = kπ séparent les cellules | 16.9 |
 | La carte de a est celle des cellules ; lignes de niveau de a = lignes de B ; compteur FLUX permis car vrai champ du plan | 17.3 à 17.7, 18.4 |
@@ -434,15 +450,14 @@ Les trois pictogrammes de la scène 01 en colonne à gauche ; chacun reçoit sa 
 ## 4. Points signalés à la narration (non modifiée)
 
 1. **P2, ligne « écran ».** Les trois lignes « du petit au grand », « du plan à l'espace », « construire » reprennent la voix. Remplacées par trois pictogrammes numérotés (1.7 à 1.10), qui reviennent à la clôture avec leurs formules (20.1 à 20.5).
-2. **P25, [e2-r3] puis [e2-r3b].** « tournées d'un quart de tour » sans « dans le sens horaire », contraire à la bible (section 1 : jamais « d'un quart de tour » seul). À corriger par le scénariste ; l'image, elle, rejoue le quart de tour horaire (20.5).
-3. **P5 et P6, lignes « écran ».** « Green-Ostrogradski : somme des divergences × aire = flux à travers le bord » et son pendant pour Stokes répètent [e2-enonce] et [e2-stokes4]. Remplacés par la somme Σ qui devient l'intégrale (3.8, 4.6), avec le nom du théorème en étiquette.
-4. **P7, ligne « écran ».** « vorticité nulle dans l'anneau » répète [e2-anneaunulle]. Remplacé par « ω = 0 » posé dans l'anneau et $\int_\Omega \omega\,\mathrm{d}\mathbf{x} = 0$ (5.7).
-5. **P9, ligne « écran ».** « divergence du champ magnétique » et « loi admise » répètent la voix : remplacés par l'accolade « lim flux ÷ volume » (7.4), comme l'ancien 13.6 ; rien n'est écrit pour « admise ». « flux nul à travers n'importe quelle surface fermée » devient la formule $\oint_{\partial\Omega}\mathbf{B}\cdot\mathbf{n}\,\mathrm{d}S = 0$ pour tout Ω (7.6). Le mot « ligne de champ » reste, comme étiquette de la courbe dessinée (7.8).
-6. **P14, ligne « écran ».** « laquelle peut être magnétique ? » répète [e2-deuxcartes]. Remplacé par une carte de réponse compacte sans question, options « GAUCHE » / « DROITE » (12.1), qui s'allume au verdict.
-7. **P22, ligne « écran ».** « dans le plan » répète [e2-dansplan]. Remplacé par le ballon qui s'aplatit sur un plan (17.1).
-8. **P1, ligne « écran ».** « pourquoi ? » répète [e2-question]. Seul le point d'interrogation de ep01 est repris (1.4).
-9. **P11, ligne « écran ».** Le panneau de gauche de `fig-monopole-dipole.png` est redessiné dans le thème, même géométrie, au lieu d'incruster la figure blanche (qui obligerait au registre PAPER).
-10. **Continuité avec ep01.** La ligne « écran » de ep01 P6 parle de parts « vertes » et « rouges » ; le thème n'a ni vert ni rouge pour cela. ep02 marque les signes par « + » `--chalk` et « − » `--muted`, comme l'ancien storyboard : à aligner quand le storyboard de ep01 sera écrit.
+2. **P5 et P6, lignes « écran ».** « Green-Ostrogradski : somme des divergences × aire = flux à travers le bord » et son pendant pour Stokes répètent [e2-enonce] et [e2-stokes4]. Remplacés par la somme Σ qui devient l'intégrale (3.8, 4.6), avec le nom du théorème en étiquette.
+3. **P7, ligne « écran ».** « vorticité nulle dans l'anneau » répète [e2-anneaunulle]. Remplacé par « ω = 0 » posé dans l'anneau et $\int_\Omega \omega\,\mathrm{d}\mathbf{x} = 0$ (5.7).
+4. **P9, ligne « écran ».** « divergence du champ magnétique » et « loi admise » répètent la voix : remplacés par l'accolade « lim flux ÷ volume » (7.4), comme l'ancien 13.6 ; rien n'est écrit pour « admise ». « flux nul à travers n'importe quelle surface fermée » devient la formule $\oint_{\partial\Omega}\mathbf{B}\cdot\mathbf{n}\,\mathrm{d}S = 0$ pour tout Ω (7.6). Le mot « ligne de champ » reste, comme étiquette de la courbe dessinée (7.8).
+5. **P14, ligne « écran ».** « laquelle peut être magnétique ? » répète [e2-deuxcartes]. Remplacé par une carte de réponse compacte sans question, options « GAUCHE » / « DROITE » (12.1), qui s'allume au verdict.
+6. **P22, ligne « écran ».** « dans le plan » répète [e2-dansplan]. Remplacé par le ballon qui s'aplatit en cercle sur un plan vide, après effacement des lignes de l'aimant (17.1).
+7. **P1, ligne « écran ».** « pourquoi ? » répète [e2-question]. Seul le point d'interrogation de ep01 est repris (1.4).
+8. **P11, ligne « écran ».** Le panneau de gauche de `fig-monopole-dipole.png` est redessiné dans le thème, même géométrie, au lieu d'incruster la figure blanche (qui obligerait au registre PAPER).
+9. **Continuité avec ep01.** La ligne « écran » de ep01 P6 parle de parts « vertes » et « rouges » ; le thème n'a ni vert ni rouge pour cela. ep02 marque les signes par « + » `--chalk` et « − » `--muted`, comme l'ancien storyboard : à aligner quand le storyboard de ep01 sera écrit.
 
 ## 5. Écarts proposés
 
@@ -456,3 +471,19 @@ Rien de ceci n'est appliqué ni validé par l'auteur : à accepter ou refuser. R
 6. **Dessins en perspective et relief : sphère, ballon, calottes et cône tangent, cubes, plan incliné, carte inclinée, relief en fil de fer.** Pas de composant ; code de scène en SVG ou canvas 2D (ellipses, dégradé radial, isométrie, cubes peints du fond vers l'avant, transformation affine du dessin 2D, pas de 3D CSS). À factoriser dans `motifs.js` si un épisode suivant les reprend. Raison : scènes 06 à 13, 16, 17.
 7. **Marqueurs de parcours : flèche de parcours d'un carreau ou d'un cercle, chevron et marqueur « région à gauche ».** Nouveaux, en code de scène ; même dessin partout, à factoriser avec le point 6. Raison : la convention de sens du bord doit se lire sans texte ; scènes 04 et 05.
 8. **Libellés français des composants.** `Kit.projector` : `planeLabel` « champs sans divergence » ; `Kit.predictCard` : kicker « TA RÉPONSE » au lieu de « PREDICT » par défaut, options « GAUCHE » et « DROITE ». Pas un écart si le moteur accepte ces options telles quelles ; à noter pour le constructeur. Raison : scènes 12 et 20.
+
+## Journal des corrections
+
+Relectures arbitrées par la session principale ; tous les points retenus.
+
+1. Scène 13, 13.15 [e2-plat] : ψ(Q′) ≈ 0,40 est sous le col (≈ 0,45), sa ligne entoure les deux bosses. Q′ reste réservé à la flèche courte de 13.13 ; le marcheur part de M = (1,6 ; −0,70), sur la ligne ψ = 0,5, fermée autour de la seule bosse large. En-tête corrigé (point M, topologie des niveaux).
+2. 17.1 [e2-dansplan] : les lignes `--b` de l'aimant s'effacent avant l'aplatissement ; seul le ballon devient un contour fermé, la sphère devient un cercle. 17.2 : la carte arrive comme un champ nouveau, propre au plan, pas comme une coupe. Section 4, point 6, mis en accord.
+3. Scène 02, en-tête : la flèche de chaque côté pointe dans le sens du flux net par ce côté, longueur proportionnelle à sa valeur absolue.
+4. 2.4 : signes des côtés de A fixés (gauche, entre, « − » ; droite, sort, « + » ; bas, sort, « + » ; haut, entre, « − ») avec les plages de $u_x$ et $u_y$ ; tableau dans l'en-tête ; flux net de A 0,0703, valeur de contrôle non affichée.
+5. 4.3 : sur x = 0,25, $u_y$ va de −0,375 à −0,125, la flèche pointe vers le bas ; « + » du côté de B, « − » du côté de A.
+6. Scène 05 : étiquette « Ω » dans l'anneau en 5.3, « ∂Ω » sur les deux cercles en 5.4.
+7. Scène 13, en-tête : amplitude 0,7 de la bosse large conservée, niveau 0,7 tracé autour de la seule bosse étroite. 14.5 : la ligne extérieure est prise parmi 0,1 à 0,4, qui entourent les deux bosses.
+8. 6.5 : « dans la boule de rayon 2 côtés », centrée au centre de la grille ; même boule pour les subdivisions de 6.6.
+9. 20.4 : le point sort par le nord, revient par l'extérieur et traverse l'aimant du sud vers le nord. Section 4, point 2 (quart de tour de P25), périmé, supprimé ; points suivants renumérotés et renvoi de la section 0 mis à jour.
+10. Scènes 18 et 19 : 18.4 [e2-hasard], modes de même amplitude sur 1 ≤ \|k\| ≤ 4, aspect sans structure ; 19.2 [e2-agites], amplitudes décroissantes avec \|k\| et trois grands tourbillons cohérents, graine « ep02-agites ». Toujours sans chiffre, sans « Kolmogorov », sans « Re », sans imiter une figure de l'article.
+11. 19.3 [e2-dessine] : le chip de l'encart porte « ILLUSTRATION DU FILM · PAS UNE SORTIE DE FUNDIFF », comme celui de la carte de vitesse.
