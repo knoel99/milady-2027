@@ -82,6 +82,8 @@ L'effort reste en medium ; on monte en high seulement si un résultat vérifiabl
 
 ## Profil de l'apprenant
 
-- Ce que je sais déjà :
-- Ce que je veux savoir faire à la fin :
-- Le temps dont je dispose par épisode :
+Hypothèses du parcours écrit (`prep/index.qmd`, sections `{#objectifs}` et `{#prerequis}` de chaque module).
+
+- **Ce que je sais déjà.** Le niveau de départ du parcours : fin de L1 scientifique. Dérivées et primitives d'une variable, développements limités, intégrales simples et doubles sur un rectangle, nombres complexes et $e^{i\theta}$, produit scalaire et produit vectoriel dans $\mathbb{R}^3$ ; en Python, tableaux NumPy, boucles et fonctions. Pas encore d'électromagnétisme local, de mécanique des fluides, de probabilités continues ni d'apprentissage profond. Pour un épisode donné, je ne connais en plus que ce qu'ont couvert les modules précédents dans l'ordre de lecture 1, 2, 5, 3, 4, 6, 7, 8 (prérequis de chaque module : L2 pour les modules 2, 5, 3, 4 ; L3 pour 6 ; M1 pour 7 ; M1–M2 pour 8), et les épisodes déjà validés, consignés dans `video/continuite.md`. Rien de ce qui vient après.
+- **Ce que je veux savoir faire à la fin.** Pour un épisode : les objectifs de la section `{#objectifs}` de son module, dans la part que l'épisode traite. Pour tout le film : ce que vise le parcours, c'est-à-dire lire un article sur les modèles génératifs sous contraintes physiques, écrire et entraîner un modèle de flow matching conditionnel, et juger un champ MHD généré avec des critères physiques.
+- **Le temps dont je dispose par épisode.** De 10 à 15 minutes de vidéo, soit de 1 500 à 2 250 mots de narration à 150 mots par minute. Le module, lui, demande de 20 à 30 heures : la vidéo donne l'intuition, le texte garde les démonstrations et les exercices.
