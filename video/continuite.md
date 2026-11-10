@@ -19,7 +19,7 @@ Le module 1 est traité en deux épisodes : ep01, « Ce qui sort, ce qui tourne 
 - Champ sans divergence : « sans divergence » ou « ne diverge nulle part » ; jamais « ne diverge jamais », qui mêle le temps et l'espace.
 - Robinet et bonde : toujours « vus de dessus » ; l'eau semble naître sous le jet, elle quitte la carte par la bonde.
 - Rivière : elle illustre la conservation du volume dans l'espace, pas de l'aire en surface. « Chaque goutte y garde son volume », « l'eau se laisse très mal comprimer ».
-- Rotation solide : « le disque tourne à la vitesse de rotation un » ; à l'écran, « vitesse de rotation du disque : 1 ».
+- Rotation solide : « le disque tourne à la vitesse de rotation un » ; à l'écran, $\dot\alpha_{\text{disque}} = 1$, où α est l'angle du rayon marqué, compté dans le sens trigonométrique.
 
 ## 2. Ton et langue parlée
 
@@ -40,7 +40,8 @@ La voix ne lit jamais une formule symbole par symbole. La formule va dans une li
 | Divergence | $\nabla\cdot\mathbf{u} = \partial_x u_x + \partial_y u_y$ | « la divergence » ; « chaque composante dérivée dans sa propre direction » |
 | Vorticité 2D | $\omega = \partial_x u_y - \partial_y u_x$ | « la vorticité » ; « les rôles se croisent : la composante verticale vers la droite, moins la composante horizontale vers le haut » |
 | Rotationnel | $\nabla\times\mathbf{u}$ | « le rotationnel de la vitesse », flèche perpendiculaire à l'écran pour un écoulement plan : elle en sort si la vorticité est positive, elle y entre sinon |
-| Vitesse de la roue | $\omega/2$ | « la moitié de la vorticité » |
+| Vitesse de la roue | $\dot\alpha_{\text{roue}} = \omega/2$ (α : angle de l'aube marquée, sens trigonométrique) | « la moitié de la vorticité » |
+| Région, son bord | $\Omega$, $\partial\Omega$ (`specs/notations.md`) ; Ω n'est jamais une vitesse de rotation, contrairement au $\boldsymbol\Omega$ du module | « la région », « son bord » |
 | Source | $(x, y)$ | « le fluide fuit l'origine dans toutes les directions » |
 | Rotation solide | $(-y, x)$ | « le fluide tourne d'un seul bloc, comme un disque rigide » |
 | Cisaillement | $(y, 0)$ | « à droite en haut, à gauche en bas, immobile sur la ligne du milieu » |
