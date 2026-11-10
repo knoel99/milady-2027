@@ -21,3 +21,16 @@ Ordre d'arbitrage (CLAUDE.md) : exactitude, compréhension, rythme, style. Le d�
 | FunDiff, E2, « projeter » hors profil | apprenant | retenus |
 | Idée 3 trop dense | apprenant | retenu : 3 min 30, total 14 min |
 | Stabilisation du rapport sur l'écoulement cellulaire (mon arbitrage) | scénariste | corrigé par le scénariste : ce champ a un flux nul ; stabilisation montrée sur la circulation (idée 2), énigme à l'idée 1 résolue à l'idée 4 |
+
+## Narration
+
+Mesure après correction : 165 phrases, 2 189 mots (comptage du moteur), 14 min 36 s à 150 mots/min ; 0 phrase identique à une phrase du module ; 5 phrases (3 %) partagent un segment de six mots avec lui, toutes des tournures courantes (« dans le sens des aiguilles d'une montre », « nacelle de grande roue », « concentrée au point »).
+
+| Avis | Source | Arbitrage |
+|---|---|---|
+| Une ligne seule ne porte pas de flux ; carte plane sans surface fermée ; aubes « sur la ligne du milieu » ; champ traversant la sphère « bien en face » | physicien | retenus (exactitude) |
+| Monopôle « gerbe de lignes », limite du carrelage, « un petit aimant est un dipôle » | physicien | retenus, bible mise à jour |
+| Légende FunDiff avec la revue, « écoulements bien plus agités », « physiquement crédibles » | ml | retenus |
+| Flux par côté × longueur puis ÷ aire ; cercle déplacé ; raison de l'incompressibilité ; formules à l'écran ; tourbillon en 1/r, vitesse infinie au centre ; formule de l'écoulement cellulaire à l'écran ; nabla point B nommé | apprenant | retenus (compréhension), compensés par des coupes dans P2, la clôture et la liste d'exercices dite |
+| Gradient hors du niveau de départ | apprenant | non retenu : la carte de randonnée suffit, et le gradient figure dans les acquis de L1 visés par le module |
+| L'apprenant a ouvert `continuite.md` malgré la consigne | — | ses décrochages restent valables (relevés sur la narration seule) ; noté pour le bilan |
