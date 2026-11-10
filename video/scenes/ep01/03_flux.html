@@ -163,7 +163,8 @@ Scene.define({
     C.full.setAttribute('d', gf > 0 ? K.arrowPath(qx, qy, fx, fy, 20) : ''); C.full.style.opacity = fullDim;
     const oc = seg(t, T.coupe, T.coupe + 0.5, E.linear), outOff = 1 - seg(t, T.traverse, T.traverse + 0.5, E.linear) * 0.6;
     C.outN.setAttribute('d', `M${qx},${qy}L${qx + sx(nEnd)},${qy + sy(nEnd)}`);
-    C.outT.setAttribute('d', `M${qx},${qy}L${qx + sx(tEnd)},${qy + sy(tEnd)}`);
+    const o12x = sx(n) * 12, o12y = sy(n) * 12;   // part en tirets posée le long du cercle : décalée de 12 px vers l'extérieur
+    C.outT.setAttribute('d', `M${qx + o12x},${qy + o12y}L${qx + o12x + sx(tEnd)},${qy + o12y + sy(tEnd)}`);
     C.outN.style.strokeDashoffset = 0; C.outN.style.opacity = oc * outOff; C.outT.style.opacity = oc * (1 - seg(t, T.glisse, T.glisse + 0.3, E.linear));
     const q = 14, a1 = [qx + sx(n) * q, qy + sy(n) * q], a2 = [qx + sx(n) * q + sx(tg) * q, qy + sy(n) * q + sy(tg) * q], a3 = [qx + sx(tg) * q, qy + sy(tg) * q];
     C.sq.setAttribute('d', `M${a1[0]},${a1[1]}L${a2[0]},${a2[1]}L${a3[0]},${a3[1]}`); C.sq.style.opacity = oc * (1 - seg(t, T.plus, T.plus + 0.3, E.linear));
@@ -176,7 +177,7 @@ Scene.define({
     C.pieceN.style.opacity = pn; C.pieceN.setAttribute('stroke-width', (6 + 4 * pul).toFixed(2));
     // 3.9 : le morceau tangent, en tirets, glisse le long du cercle et revient ; 3.10 : il baisse à 40 %
     const pt = seg(t, T.glisse, T.glisse + 0.3, E.linear), gw = seg(t, T.glisse + 0.4, T.glisse + 2.6, E.linear), d = 0.22 * Math.sin(Math.PI * gw);
-    const thd = 40 * Math.PI / 180 + d, nn = [Math.cos(thd), Math.sin(thd)], tt = [-Math.sin(thd), Math.cos(thd)], b = C.toPx(C.R * nn[0], C.R * nn[1]);
+    const thd = 40 * Math.PI / 180 + d, nn = [Math.cos(thd), Math.sin(thd)], tt = [-Math.sin(thd), Math.cos(thd)], b = C.toPx((C.R + 0.12) * nn[0], (C.R + 0.12) * nn[1]);
     C.pieceT.setAttribute('d', pt > 0 ? `M${b[0]},${b[1]}L${b[0] + tt[0] * C.vt * DS},${b[1] - tt[1] * C.vt * DS}` : '');
     C.pieceT.style.opacity = pt * (1 - 0.6 * seg(t, T.seul, T.seul + 0.4, E.linear));
 

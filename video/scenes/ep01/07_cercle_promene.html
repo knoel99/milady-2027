@@ -205,7 +205,8 @@ Scene.define({
     }
     // 7.8 : le compteur 0 pulse
     const pz = Math.sin(Math.PI * lin(T.rotnul + 0.6, T.rotnul + 1.4));
-    C.ro[1].el.style.transform = `scale(${(1 + 0.18 * pz).toFixed(3)})`;
+    C.ro[1].el.style.transformOrigin = '50% 0%'; C.ro[1].el.style.transform = `scale(${(1 + 0.1 * pz).toFixed(3)})`;
+    C.ro[1].el.style.color = pz > 0.05 ? K.c('chalk') : '';
   },
 });
 </script></body></html>

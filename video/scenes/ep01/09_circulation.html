@@ -51,7 +51,7 @@ Scene.define({
     const arrowsCanvas = ctx.stage.querySelector('canvas[data-kit="arrows"]');
     // 9.1 : les seize parts perpendiculaires de la scène 03 (toutes sortent : « + »), qui baissent à 30 %
     const pA = K.probe(ctx, { toPx, F: U, mode: 'flux', draw: false, circle: { c: [0, 0], r: 1 }, at: -1.5, z: 12,
-      parts: { n: 16, phase: 0, scale: 100, other: null, signs: true, at: -1.5 } });
+      parts: { n: 16, phase: 0, scale: 70, other: null, signs: true, at: -1.5 } });
     // le cercle-sonde, sens trigonométrique ; ses parts tangentes (9.5), l'autre part en tirets --muted
     const pB = K.probe(ctx, { toPx, F: U, mode: 'circulation', circle: { c: cOf, r: rOf }, at: -1.5, out: 'e1-carre', z: 13,
       parts: { n: 16, phase: 0, scale: 100, other: 'dashed', signs: false, at: 'e1-autre+0.8', out: 'e1-recette' } });
@@ -71,7 +71,7 @@ Scene.define({
     const parc = mk('path', { fill: 'none', stroke: chalk, 'stroke-width': 5, 'stroke-linecap': 'round' });
     const parcHead = mk('path', { fill: chalk, stroke: 'none' });
     // 9.4 : cadran d'horloge --muted, aiguille dans le sens horaire
-    const dial = mk('g', { transform: 'translate(880,180)' });
+    const dial = mk('g', { transform: 'translate(900,730)' });
     mk('circle', { r: 52, fill: K.c('panel'), stroke: muted, 'stroke-width': 3 }, dial);
     for (let i = 0; i < 12; i++) { const a = i * TAU / 12; mk('line', { x1: 44 * Math.sin(a), y1: -44 * Math.cos(a), x2: 37 * Math.sin(a), y2: -37 * Math.cos(a), stroke: muted, 'stroke-width': i % 3 ? 2 : 3.5 }, dial); }
     const hand = mk('line', { x1: 0, y1: 0, x2: 0, y2: -36, stroke: muted, 'stroke-width': 4, 'stroke-linecap': 'round' }, dial);
