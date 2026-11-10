@@ -2,7 +2,7 @@
 
 Titre de travail : « Ce qui sort, ce qui tourne ».
 Module : `prep/p1-calcul-vectoriel/index.qmd`. Traitement : `video/episodes/ep01/traitement.md`.
-Ton : tutoiement. Voix : environ 1 600 mots, soit 10 min 40 à 150 mots par minute.
+Ton : tutoiement. Voix : environ 1 840 mots, soit 12 min 15 à 150 mots par minute.
 Les lignes « > écran : » et « > légende : » ne sont pas dites. La voix ne dicte aucune formule : la formule est à l'écran, la voix dit ce qu'elle signifie.
 
 ## Ouverture
@@ -23,7 +23,7 @@ Les lignes « > écran : » et « > légende : » ne sont pas dites. La voix ne 
 
 [e1-outil] Pour les deux questions, on aura le même outil : un petit cercle.
 [e1-machine] Plus tard dans le film, des machines dessineront de telles cartes.
-[e1-juger] Il faudra alors juger si elles sont physiquement crédibles.
+[e1-juger] Il faudra alors juger si ces cartes sont physiquement crédibles.
 [e1-lire] Mais d'abord, il faut savoir les lire.
 
 > écran : un petit cercle en tirets se pose sur la carte.
@@ -32,20 +32,18 @@ Les lignes « > écran : » et « > légende : » ne sont pas dites. La voix ne 
 
 ### P3
 
-[e1-mots] Commençons par trois mots.
+[e1-mots] On commence par trois mots.
 [e1-champ] Une carte qui met une flèche en chaque point s'appelle un champ vectoriel.
-[e1-ligne] Une courbe qui suit les flèches partout s'appelle une ligne de champ.
-[e1-courant] Quand les flèches sont des vitesses, on parle de ligne de courant.
 [e1-composantes] Chaque flèche se décompose en deux parts.
 [e1-horizontale] La composante horizontale dit de combien la flèche pousse vers la droite.
 [e1-verticale] La composante verticale dit de combien elle pousse vers le haut.
 
-> écran : une flèche décomposée en deux parts, notées ux vers la droite et uy vers le haut ; u = (ux, uy).
+> écran : avec [e1-champ], le mot « champ vectoriel » ; puis une flèche décomposée en deux parts, notées ux vers la droite et uy vers le haut ; u = (ux, uy).
 
 ### P4
 
 [e1-change] Il faudra savoir comment une composante change quand on se déplace.
-[e1-avance] Pour cela, on avance vers la droite, sans changer de hauteur.
+[e1-avance] Pour le mesurer, on avance vers la droite, sans changer de hauteur.
 [e1-taux] On regarde de combien la composante change, par unité de longueur.
 [e1-derivee] Ce taux s'appelle une dérivée partielle.
 [e1-monte] On peut faire de même en montant, sans bouger vers la droite.
@@ -57,6 +55,7 @@ Les lignes « > écran : » et « > légende : » ne sont pas dites. La voix ne 
 [e1-source] Première question : un point donné est-il une source ?
 [e1-robinet] Pense à un robinet qui verse de l'eau sur une table.
 [e1-ecarte] Autour de lui, l'eau s'écarte dans toutes les directions.
+[e1-dessus] Sur la table, vue de dessus, l'eau semble naître sous le jet.
 [e1-cercle] Pour reconnaître une source, entoure le point d'un petit cercle.
 [e1-bord] Puis regarde les flèches posées sur le bord du cercle.
 [e1-coupe] Chacune se coupe en deux morceaux.
@@ -68,22 +67,23 @@ Les lignes « > écran : » et « > légende : » ne sont pas dites. La voix ne 
 
 ### P6
 
-[e1-plus] S'il pointe vers l'extérieur, on le compte en plus.
+[e1-plus] Si ce morceau pointe vers l'extérieur, on le compte en plus.
 [e1-moins] S'il pointe vers l'intérieur, on le compte en moins.
 [e1-flux] On fait la somme tout autour du cercle : c'est le flux.
-[e1-sens] Le flux mesure ce qui sort du cercle, moins ce qui y entre, à chaque instant.
+[e1-sens] Le flux mesure ce qui sort du cercle chaque seconde, moins ce qui y entre.
 
 > écran : les parts perpendiculaires au bord, vertes vers l'extérieur, rouges vers l'intérieur ; le mot « flux ».
 
 ### P7
 
-[e1-grand] Sur un grand cercle, il y a plus de bord, donc souvent plus de flux.
+[e1-grand] Un grand cercle enferme plus de surface, donc souvent plus de flux.
 [e1-aire] Alors on divise le flux par l'aire du disque.
 [e1-retrecir] Puis on fait rétrécir le cercle vers le point.
 [e1-divergence] Le nombre qu'on trouve à la fin s'appelle la divergence en ce point.
 [e1-positive] Une divergence positive veut dire que le point fait sortir du fluide.
 [e1-negative] Une divergence négative veut dire qu'il en avale.
 [e1-evier] Pense cette fois à la bonde d'un évier.
+[e1-quitte] Vue de dessus, l'eau y quitte la carte.
 [e1-nulle] Une divergence nulle veut dire que tout ce qui entre ressort.
 
 > écran : avec [e1-divergence], « divergence = flux sortant ÷ aire, quand le cercle rétrécit ».
@@ -95,11 +95,14 @@ Les lignes « > écran : » et « > légende : » ne sont pas dites. La voix ne 
 [e1-horiz] Par ces deux côtés, seule la composante horizontale traverse.
 [e1-droit] Ce qui sort par la droite vaut cette composante, fois la longueur du côté.
 [e1-gauchepareil] Ce qui entre par la gauche se calcule de la même façon.
+[e1-deuxpoints] La composante est donc prise en deux points, l'un à droite, l'autre à gauche.
+[e1-separes] Ces deux points sont séparés d'une longueur de côté.
 [e1-ecart] Le bilan des deux côtés, c'est donc l'écart de la composante horizontale, fois la longueur.
-[e1-divise] On divise par l'aire du carré, qui vaut la longueur au carré.
-[e1-reste] Il reste l'écart par unité de longueur : c'est la dérivée partielle vers la droite.
+[e1-divise] On divise par l'aire du carré, soit la longueur du côté multipliée par elle-même.
+[e1-reste] Il reste l'écart divisé par la longueur : c'est un taux de variation.
+[e1-dpdroite] Ce taux, c'est la dérivée partielle vers la droite.
 
-> écran : petit carré, flèche entrante courte à gauche, flèche sortante longue à droite ; « flux = ux × longueur du côté », puis « ÷ aire du carré », puis ∂x ux.
+> écran : petit carré, flèche entrante courte à gauche, flèche sortante longue à droite ; avec [e1-separes], les deux points de mesure marqués, la longueur du côté entre eux ; « flux = ux × longueur du côté », puis « ÷ aire du carré », puis ∂x ux.
 
 ### P9
 
@@ -112,25 +115,29 @@ Les lignes « > écran : » et « > légende : » ne sont pas dites. La voix ne 
 
 ### P10
 
-[e1-essai] Essayons sur deux champs simples.
-[e1-fuit] Dans le premier, le fluide fuit l'origine dans toutes les directions.
+[e1-essai] Essaie cette formule sur deux champs simples.
+[e1-fuit] Le premier est une source : le fluide fuit l'origine dans toutes les directions.
 [e1-allonge] Ses flèches pointent vers l'extérieur et s'allongent avec la distance.
+[e1-srcdroite] Avance vers la droite : la composante horizontale grandit d'autant que tu avances.
+[e1-srchaut] Monte : la composante verticale grandit d'autant que tu montes.
 [e1-un] Chacune des deux dérivées vaut un.
 [e1-vautdeux] Sa divergence vaut donc un plus un, soit deux, partout.
 
-> écran : avec [e1-fuit], u = (x, y), flèches qui fuient l'origine ; avec [e1-vautdeux], ∇·u = 1 + 1 = 2.
+> écran : avec [e1-fuit], u = (x, y), flèches qui fuient l'origine ; avec [e1-srcdroite], ∂x ux = 1 ; avec [e1-srchaut], ∂y uy = 1 ; avec [e1-vautdeux], ∇·u = 1 + 1 = 2.
 
 ### P11
 
-[e1-bloc] Dans le second, le fluide tourne autour de l'origine, d'un seul bloc.
+[e1-bloc] Le second est une rotation : le fluide tourne autour de l'origine, d'un seul bloc.
 [e1-perp] Ses flèches sont perpendiculaires au rayon, et s'allongent aussi avec la distance.
-[e1-vautzero] Ici, les deux dérivées valent zéro : la divergence est nulle.
+[e1-rotdroite] Va vers la droite : la composante horizontale ne change pas.
+[e1-rothaut] Monte : la composante verticale ne change pas non plus.
+[e1-vautzero] Ici, les deux dérivées valent donc zéro : la divergence est nulle.
 
-> écran : avec [e1-bloc], u = (−y, x), flèches qui tournent ; avec [e1-vautzero], ∇·u = 0 + 0 = 0.
+> écran : avec [e1-bloc], u = (−y, x), flèches qui tournent ; avec [e1-rotdroite], ∂x ux = 0 ; avec [e1-rothaut], ∂y uy = 0 ; avec [e1-vautzero], ∇·u = 0 + 0 = 0.
 
 ### P12
 
-[e1-centre] Pose maintenant le cercle sur l'origine.
+[e1-centre] Centre maintenant le cercle sur l'origine.
 [e1-sortent] Dans la source, toutes les flèches traversent le bord vers l'extérieur.
 [e1-glissent] Dans la rotation, elles glissent le long du bord, sans le traverser.
 [e1-deplace] Déplace ensuite le cercle, loin de l'origine.
@@ -145,9 +152,9 @@ Les lignes « > écran : » et « > légende : » ne sont pas dites. La voix ne 
 [e1-rotnul] Le bilan est nul.
 [e1-srcbilan] Pour la source, les flèches qui sortent sont plus longues.
 [e1-srcdeux] Le bilan vaut deux fois l'aire du disque.
-[e1-compteur] Le compteur affiche donc deux ou zéro, quelle que soit la place du cercle.
-[e1-taille] Il ne dépend pas non plus de sa taille.
-[e1-simple] C'est parce que ces deux champs sont très simples.
+[e1-compteur] Le compteur affiche donc deux pour la source, zéro pour la rotation, où que soit le cercle.
+[e1-taille] Il ne dépend pas non plus de la taille du cercle.
+[e1-simple] La raison : dans ces deux champs, la divergence est la même en tout point.
 
 > écran : cercle arrêté loin de l'origine, parts perpendiculaires au bord seules : d'un côté des flèches entrantes, de l'autre des flèches sortantes ; pour la rotation, entrantes et sortantes de même taille ; pour la source, les sortantes l'emportent.
 
@@ -157,12 +164,12 @@ Les lignes « > écran : » et « > légende : » ne sont pas dites. La voix ne 
 [e1-nom] On le dit incompressible.
 [e1-tache] Suis une petite tache de fluide qui se déplace avec lui.
 [e1-deforme] Elle peut s'étirer et se tordre.
-[e1-garde] Mais comme rien ne sort d'aucun petit cercle, elle garde son aire.
+[e1-garde] Mais comme chaque petit cercle rend tout ce qu'il reçoit, elle garde son aire.
 [e1-volume] Dans l'espace, c'est son volume qu'elle garde.
-[e1-riviere] L'eau d'une rivière se comporte presque ainsi.
-[e1-comprimer] On a beaucoup de mal à la comprimer.
+[e1-riviere] Dans une rivière, chaque goutte d'eau garde presque son volume.
+[e1-comprimer] Car l'eau se laisse très mal comprimer.
 
-> écran : une tache colorée transportée par un écoulement sans divergence, qui s'étire sans changer d'aire ; « divergence nulle : l'aire se conserve ».
+> écran : une tache colorée transportée par un écoulement plan sans divergence, qui s'étire sans changer d'aire ; « divergence nulle : l'aire se conserve » ; avec [e1-volume], « dans l'espace : le volume se conserve ».
 
 ## Idée 2. Ce qui tourne : la vorticité
 
@@ -184,21 +191,22 @@ Les lignes « > écran : » et « > légende : » ne sont pas dites. La voix ne 
 [e1-recette] Ensuite, on suit la même recette que pour la divergence.
 [e1-divaire] On divise par l'aire, puis on fait rétrécir le cercle.
 [e1-vorticite] Le nombre qu'on trouve s'appelle la vorticité.
-[e1-vortsens] Elle mesure à quel point le fluide tourne sur lui-même, en ce point.
+[e1-vortsens] Elle mesure combien le fluide tourne sur lui-même, en ce point.
 [e1-carre] Le petit carré donne aussi sa formule.
 [e1-croise] Cette fois, les rôles se croisent.
-[e1-vertdroite] On regarde comment la composante verticale change vers la droite.
-[e1-horizhaut] On retire la façon dont la composante horizontale change vers le haut.
+[e1-vertdroite] On prend la dérivée de la composante verticale vers la droite.
+[e1-horizhaut] On lui retire la dérivée de la composante horizontale vers le haut.
 
 > écran : avec [e1-croise], ω = ∂x uy − ∂y ux, les indices croisés mis en évidence.
 
 ### P17
 
-[e1-fleche3d] Dans l'espace, la vorticité devient une flèche, qu'on appelle le rotationnel.
-[e1-plan] Pour un écoulement plan, cette flèche sort tout droit de l'écran.
+[e1-fleche3d] Dans l'espace, la vorticité devient une flèche : le rotationnel de la vitesse.
+[e1-plan] Pour un écoulement plan, cette flèche est perpendiculaire à l'écran.
+[e1-signe] Elle en sort si la vorticité est positive, elle y entre sinon.
 [e1-longueur3d] La vorticité est sa longueur, comptée avec un signe.
 
-> écran : avec [e1-fleche3d], ∇×u ; une flèche perpendiculaire au plan de la carte.
+> écran : avec [e1-fleche3d], ∇×u ; une flèche perpendiculaire au plan de la carte ; avec [e1-signe], elle sort de l'écran pour ω > 0, elle y entre pour ω < 0.
 
 ### P18
 
@@ -208,13 +216,13 @@ Les lignes « > écran : » et « > légende : » ne sont pas dites. La voix ne 
 [e1-exemple] Un exemple aide à le retenir.
 [e1-reprends] Reprends la rotation de tout à l'heure.
 [e1-disque] Le fluide y tourne d'un seul bloc, comme un disque rigide.
-[e1-vitesseun] Sa vitesse de rotation vaut un.
+[e1-vitesseun] Le disque tourne à la vitesse de rotation un.
 [e1-colle] La roue tourne avec lui, exactement à la même vitesse.
 [e1-affiche] Pourtant, le compteur de vorticité affiche deux.
 [e1-retiens] Retiens-le : la vorticité vaut deux fois la vitesse de rotation sur place.
 
 > écran : avec [e1-moitie], « vitesse de rotation de la roue = ω ÷ 2 ».
-> écran : dès [e1-reprends], la roue dans la rotation solide, qui tourne avec le fluide ; « vitesse de rotation : 1 » ; compteur de vorticité à 2.
+> écran : dès [e1-reprends], la roue dans la rotation solide, qui tourne avec le fluide ; « vitesse de rotation du disque : 1 » ; compteur de vorticité à 2.
 
 ### P19
 
@@ -224,9 +232,10 @@ Les lignes « > écran : » et « > légende : » ne sont pas dites. La voix ne 
 [e1-bas] En bas, il file vers la gauche.
 [e1-milieu] Sur la ligne du milieu, il est immobile.
 [e1-loin] Plus on s'éloigne de cette ligne, plus il va vite.
-[e1-droites] Toutes les lignes de courant sont donc des droites.
+[e1-courant] Une ligne de courant est une courbe qui suit partout les flèches de vitesse.
+[e1-droites] Partout, il avance à l'horizontale : les lignes de courant sont des droites.
 
-> écran : le cisaillement u = (y, 0) ; flèches vers la droite en haut, vers la gauche en bas, nulles sur la ligne du milieu.
+> écran : le cisaillement u = (y, 0) ; flèches vers la droite en haut, vers la gauche en bas, nulles sur la ligne du milieu ; avec [e1-courant], le mot « ligne de courant » et quelques lignes horizontales tracées le long des flèches.
 
 ### P20
 
@@ -258,30 +267,36 @@ Les lignes « > écran : » et « > légende : » ne sont pas dites. La voix ne 
 [e1-bords] Regarde les deux bords de la roue.
 [e1-proche] Le bord proche du centre est poussé plus vite que le bord éloigné.
 [e1-unsens] À lui seul, cet écart la ferait tourner dans un sens.
-[e1-courbure] Mais son trajet est courbe, et ce virage la ferait tourner dans l'autre sens.
+[e1-courbure] Mais son trajet est courbe.
+[e1-virage] Ce virage, lui, la ferait tourner dans l'autre sens.
 [e1-annulent] Pour cette façon précise de ralentir, les deux effets s'annulent exactement.
+[e1-exo2] Le calcul est dans l'exercice deux, et tu peux le faire crayon en main.
 [e1-lecon2] Des lignes courbes ne prouvent donc pas que le fluide tourne sur lui-même.
 
-> écran : sur les deux bords de la roue, deux flèches de vitesse, la plus longue du côté du centre ; rappel |u| = 1/r.
+> écran : sur les deux bords de la roue, deux flèches de vitesse, la plus longue du côté du centre ; rappel |u| = 1/r ; avec [e1-exo2], « exercice 2 (c) ».
 
 ### P23
 
 [e1-ou] Alors, où est passée la rotation de ce tourbillon ?
-[e1-entiere] Elle est tout entière au centre, où la vitesse devient infinie.
-[e1-revele] Un cercle qui entoure le centre la révèle.
+[e1-nullepartout] Sa vorticité est nulle partout, sauf au centre.
+[e1-nondef] Au centre, elle n'est pas définie, car la vitesse y devient infinie.
+[e1-entiere] C'est là, au centre, que se cache toute la rotation.
+[e1-revele] Voilà pourquoi un cercle qui entoure le centre a une circulation non nulle.
 [e1-memecirc] Petit ou grand, il donne toujours la même circulation.
 [e1-zerocirc] Un cercle qui n'entoure pas le centre donne zéro.
 [e1-image] Garde cette image en tête : elle reviendra.
 
+> écran : avec [e1-nullepartout], « vorticité nulle hors du centre » ; avec [e1-nondef], le centre marqué « non définie ».
 > écran : plusieurs cercles de tailles différentes entourent le centre ; un compteur « circulation », sans division par l'aire, affiche la même valeur pour chacun ; un cercle à l'écart du centre affiche 0.
 
 ### P24
 
 [e1-retour] Reviens maintenant à la carte du début.
 [e1-engrenages] Elle montre des cellules qui tournent côte à côte, comme des engrenages de fluide.
-[e1-coin] Sa formule est dans le coin de l'écran, tu n'as pas besoin de la lire.
+[e1-coin] Sa formule est dans le coin de l'écran.
+[e1-paslire] Tu n'as pas besoin de la lire.
 [e1-dedans] Place le cercle à l'intérieur d'une cellule.
-[e1-varie] Tant qu'il est grand, le compteur de circulation par unité d'aire change avec la taille.
+[e1-varie] Tant que le cercle est grand, le compteur de circulation par unité d'aire varie d'une taille à l'autre.
 [e1-rapetisse] Quand le cercle rapetisse, le compteur bouge de moins en moins.
 [e1-fixe] Puis il se fixe sur une valeur.
 [e1-valeur] Cette valeur, c'est la vorticité au centre du cercle.
@@ -310,8 +325,8 @@ Les lignes « > écran : » et « > légende : » ne sont pas dites. La voix ne 
 [e1-sortir] Sortir : le flux par unité d'aire, sur un cercle qui rétrécit, donne la divergence.
 [e1-tourner] Tourner : la circulation par unité d'aire donne la vorticité.
 [e1-rouemoitie] La roue à aubes tourne à la moitié de cette vorticité.
-[e1-rappelcis] Le cisaillement fait tourner la roue, avec des lignes droites.
-[e1-rappeltour] Hors de son centre, le tourbillon ponctuel ne fait pas tourner la roue.
+[e1-rappelcis] Le cisaillement a des lignes droites, et pourtant il fait tourner la roue.
+[e1-rappeltour] Loin du centre du tourbillon ponctuel, la roue ne tourne pas sur elle-même.
 
 > écran : les deux gestes en deux lignes, chacun avec sa formule : ∇·u = ∂x ux + ∂y uy ; ω = ∂x uy − ∂y ux.
 

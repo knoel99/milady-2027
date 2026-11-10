@@ -2,7 +2,7 @@
 
 Titre de travail : « Le bord, l'aimant et la carte des hauteurs ».
 Module : `prep/p1-calcul-vectoriel/index.qmd`. Traitement : `video/episodes/ep02/traitement.md`.
-Ton : tutoiement. Voix : environ 1 600 mots, soit 10 min 40 à 150 mots par minute.
+Ton : tutoiement. Voix : environ 1 780 mots, soit 11 min 50 à 150 mots par minute.
 Les lignes « > écran : » et « > légende : » ne sont pas dites. La voix ne dicte aucune formule : la formule est à l'écran, la voix dit ce qu'elle signifie.
 
 ## Ouverture
@@ -14,7 +14,7 @@ Les lignes « > écran : » et « > légende : » ne sont pas dites. La voix ne 
 [e2-cellules] Le compteur de flux restait à zéro, partout.
 [e2-question] Pourquoi ce champ ne diverge-t-il nulle part ?
 [e2-detour] Pour répondre, on va faire un détour par le champ magnétique.
-[e2-promesse] À la fin, tu sauras fabriquer des champs qui ne divergent jamais.
+[e2-promesse] À la fin, tu sauras fabriquer des champs qui ne divergent nulle part.
 
 > écran : l'écoulement cellulaire de ep01, formule en coin ; le cercle se promène, compteur de flux à 0 ; « pourquoi ? ».
 
@@ -31,7 +31,7 @@ Les lignes « > écran : » et « > légende : » ne sont pas dites. La voix ne 
 
 ### P3
 
-[e2-but] Le but : relier ce qui se passe dedans à ce qu'on voit sur le bord.
+[e2-but] Le but : relier ce qui se passe dans une région à ce qu'on voit sur son bord.
 [e2-region] Prends une région du plan, de forme quelconque.
 [e2-carrelage] Découpe-la en petits carreaux, comme un carrelage.
 [e2-chaque] Pour chaque carreau, calcule le flux qui sort par ses quatre côtés.
@@ -55,13 +55,15 @@ Les lignes « > écran : » et « > légende : » ne sont pas dites. La voix ne 
 
 [e2-rappeldiv] Or tu sais ce que vaut le flux d'un tout petit carreau.
 [e2-produit] C'est à peu près sa divergence, multipliée par son aire.
-[e2-definition] C'est la définition même de la divergence, vue dans l'épisode précédent.
+[e2-definition] C'est ce que dit la définition de la divergence, vue dans l'épisode précédent.
 [e2-affine] Plus les carreaux sont petits, plus cette approximation est bonne.
+[e2-erreur] Quand les carreaux rapetissent, l'erreur sur chacun devient bien plus petite que son aire.
+[e2-erreursomme] Additionnées, ces erreurs finissent par disparaître.
 [e2-limite] À la limite, l'égalité devient exacte.
 [e2-enonce] La somme des divergences fois les aires égale le flux à travers le bord.
 [e2-nom] C'est le théorème de Green-Ostrogradski.
 
-> écran : les carreaux se subdivisent pendant [e2-affine] ; avec [e2-enonce], « Green-Ostrogradski : somme des divergences × aire = flux à travers le bord » ; puis l'énoncé complet ∫Ω ∇·u dx = ∮∂Ω u·n dℓ.
+> écran : les carreaux se subdivisent pendant [e2-affine] et [e2-erreur] ; avec [e2-enonce], « Green-Ostrogradski : somme des divergences × aire = flux à travers le bord » ; puis l'énoncé complet ∫Ω ∇·u dx = ∮∂Ω u·n dℓ.
 
 ### P6
 
@@ -69,22 +71,28 @@ Les lignes « > écran : » et « > légende : » ne sont pas dites. La voix ne 
 [e2-stokes1] Chaque carreau est parcouru dans le sens trigonométrique.
 [e2-stokes2] Sur un côté commun, les deux carreaux voisins passent donc dans des sens contraires.
 [e2-stokes3] Là encore, leurs contributions s'annulent.
+[e2-stokesrappel] Tu l'as vu dans l'épisode un : la circulation d'un petit carreau vaut à peu près sa vorticité fois son aire.
 [e2-stokes4] La somme des vorticités fois les aires égale la circulation sur le bord.
 [e2-stokesnom] C'est le théorème de Stokes, dans le plan.
 [e2-raconte] Dans les deux cas, le bord raconte l'intérieur.
 [e2-tour] Pour connaître le total à l'intérieur, il suffit de faire le tour.
 
-> écran : deux carreaux voisins parcourus dans le sens trigonométrique, flèches opposées sur le côté commun ; avec [e2-stokes4], « Stokes : somme des vorticités × aire = circulation sur le bord » ; puis ∫Ω ω dx = ∮∂Ω u·t dℓ, t tangente unitaire dans le sens trigonométrique.
+> écran : deux carreaux voisins parcourus dans le sens trigonométrique, flèches opposées sur le côté commun ; avec [e2-stokesrappel], « circulation d'un petit carreau ≈ ω × aire » ; avec [e2-stokes4], « Stokes : somme des vorticités × aire = circulation sur le bord » ; puis ∫Ω ω dx = ∮∂Ω u·t dℓ, sous-titré « bord parcouru en gardant la région à sa gauche, sens trigonométrique pour une région sans trou ».
 
 ### P7
 
 [e2-echo] Tu te souviens du tourbillon ponctuel ?
 [e2-echo2] Tout cercle autour du centre donnait la même circulation.
-[e2-echo3] Le carrelage l'explique : entre deux de ces cercles, la vorticité est nulle.
-[e2-echo4] Les deux cercles ont donc la même circulation, quelle que soit leur taille.
-[e2-echo5] Toute la rotation vient du centre, et chaque cercle qui l'entoure la compte en entier.
+[e2-echo3] Carrelle maintenant l'anneau entre deux de ces cercles.
+[e2-anneaubord] Son bord, ce sont les deux cercles.
+[e2-anneausens] Les carreaux longent le grand dans le sens trigonométrique, et le petit dans le sens horaire.
+[e2-anneaudiff] La circulation sur ce bord vaut celle du grand cercle, moins celle du petit.
+[e2-anneaunulle] Or la vorticité est nulle dans tout l'anneau : on l'a vu dans l'épisode un.
+[e2-echo4] La différence vaut donc zéro : les deux cercles ont la même circulation.
+[e2-echo5] Toute la rotation vient du centre.
+[e2-echo6] Chaque cercle autour du centre la compte en entier.
 
-> écran : deux cercles autour du centre du tourbillon, l'anneau entre eux carrelé ; « vorticité nulle dans l'anneau » ; aucun cercle ne rétrécit sur le centre.
+> écran : deux cercles autour du centre du tourbillon, l'anneau entre eux carrelé ; avec [e2-anneausens], flèches de parcours dans le sens trigonométrique sur le grand cercle, dans le sens horaire sur le petit ; avec [e2-anneaunulle], « vorticité nulle dans l'anneau » ; avec [e2-echo4], « circulation(grand) − circulation(petit) = 0 » ; aucun cercle ne rétrécit sur le centre.
 
 ## Idée 2. Du plan à l'espace : le champ magnétique
 
@@ -101,14 +109,19 @@ Les lignes « > écran : » et « > légende : » ne sont pas dites. La voix ne 
 
 ### P9
 
-[e2-champb] Applique cela au champ magnétique, celui que crée un aimant.
+[e2-champb] Applique ce raisonnement au champ magnétique, celui que crée un aimant.
 [e2-boussole] C'est lui qui oriente l'aiguille d'une boussole.
-[e2-loi] La physique lui impose une règle : sa divergence est nulle en tout point.
+[e2-loi] Il obéit à une règle : sa divergence est nulle en tout point.
+[e2-admet] C'est une loi de la physique : ici, on l'admet, sans la démontrer.
 [e2-global] Grâce au carrelage, cette règle a une version globale.
 [e2-surface] Le flux magnétique est nul à travers n'importe quelle surface fermée.
 [e2-ressort] Ce qui sort par un côté du ballon rentre par un autre côté.
+[e2-lignechamp] Une ligne de champ est une courbe qui suit partout les flèches du champ.
+[e2-lignecourant] Pour une vitesse, c'est la ligne de courant de l'épisode un.
+[e2-traverse] Les lignes de champ d'un aimant, par exemple, le traversent de part en part.
 
-> écran : avec [e2-loi], ∇·B = 0, sous-titré « divergence du champ magnétique » ; avec [e2-surface], « flux nul à travers n'importe quelle surface fermée ».
+> écran : avec [e2-loi], ∇·B = 0, sous-titré « divergence du champ magnétique » ; avec [e2-admet], « loi admise » ; avec [e2-surface], « flux nul à travers n'importe quelle surface fermée ».
+> écran : avec [e2-lignechamp], quelques flèches du champ et une courbe tracée le long d'elles, le mot « ligne de champ » ; avec [e2-traverse], l'esquisse d'un aimant traversé par ses lignes, sans détail.
 
 ### P10
 
@@ -129,13 +142,16 @@ Les lignes « > écran : » et « > légende : » ne sont pas dites. La voix ne 
 [e2-transparents] Imagine-les comme des ballons transparents posés autour de la charge.
 [e2-centree] Prends une sphère centrée sur la charge.
 [e2-enface] Partout sur elle, le champ la traverse bien en face, avec la même intensité.
-[e2-faiblit] Quand le rayon double, cette intensité est divisée par quatre.
-[e2-grandit] Mais l'aire de la sphère, elle, est multipliée par quatre.
-[e2-produit2] Le flux est le produit des deux : il ne dépend pas du rayon.
-[e2-quatrepi] Il vaut toujours quatre pi.
+[e2-faiblit] Plus la sphère est grande, plus cette intensité faiblit.
+[e2-diviseequatre] Quand le rayon double, l'intensité est divisée par quatre.
+[e2-grandit] L'aire de la sphère, elle, grandit.
+[e2-multquatre] Quand le rayon double, l'aire est multipliée par quatre.
+[e2-produit2] Le flux est le produit de l'intensité par l'aire.
+[e2-memeprod] Divisé par quatre puis multiplié par quatre, ce produit reste le même.
+[e2-quatrepi] Il vaut toujours quatre pi, quel que soit le rayon.
 
-> écran : panneau de gauche de fig-monopole-dipole.png ; sphères de rayons croissants autour de la charge, flèches perpendiculaires à la sphère et de même longueur partout.
-> écran : avec [e2-faiblit], « intensité = 1/R² » ; avec [e2-grandit], « aire = 4πR² » ; avec [e2-quatrepi], « flux = 4π ». Aucun compteur « flux divisé par l'aire ».
+> écran : panneau de gauche de fig-monopole-dipole.png ; sphères de rayons croissants autour de la charge ; flèches perpendiculaires à la sphère, de même longueur sur une même sphère, plus courtes sur les sphères plus grandes.
+> écran : avec [e2-diviseequatre], « intensité = 1/R² », sous-titré « unités choisies pour que l'intensité vaille 1/R² » ; avec [e2-multquatre], « aire = 4πR² » ; avec [e2-quatrepi], « flux = 4π ». Aucun compteur « flux divisé par l'aire ».
 
 ### P12
 
@@ -163,10 +179,8 @@ Les lignes « > écran : » et « > légende : » ne sont pas dites. La voix ne 
 
 ### P14
 
-[e2-deuxcartes] Voici les deux cartes côte à côte, sans étiquette.
-[e2-laquelle] Laquelle de ces deux cartes peut montrer un champ magnétique ?
-[e2-indice] Un indice : pense aux sphères en coupe.
-[e2-reflechis] Prends quelques secondes avant d'écouter la réponse.
+[e2-deuxcartes] Voici deux cartes sans étiquette : laquelle peut montrer un champ magnétique ?
+[e2-reflechis] Pense aux sphères en coupe, et prends quelques secondes avant la réponse.
 
 > écran : deux cartes côte à côte, la charge à gauche, le petit aimant étendu à droite, sans étiquette ; sur chacune, des cercles en tirets ; « laquelle peut être magnétique ? ».
 
@@ -220,13 +234,13 @@ Les lignes « > écran : » et « > légende : » ne sont pas dites. La voix ne 
 
 ### P19
 
-[e2-calcul] Calculons la divergence de cette vitesse.
+[e2-calcul] Calcule la divergence de cette vitesse.
 [e2-deuxtermes] On trouve deux termes.
 [e2-terme1] Le premier dérive la carte vers le haut, puis vers la droite.
 [e2-terme2] Le second fait la même chose dans l'autre ordre, et on le retranche.
 [e2-ordre] Pour une carte assez lisse, l'ordre des deux dérivations ne change rien.
 [e2-zero] Les deux termes sont égaux, et leur différence vaut zéro.
-[e2-toujours] Cela marche pour n'importe quelle carte des hauteurs.
+[e2-toujours] Ce calcul marche pour n'importe quelle carte des hauteurs.
 [e2-livree] La divergence nulle n'est plus à vérifier : elle vient avec la construction.
 
 > écran : avec [e2-deuxtermes], ∇·u = ∂x∂yψ − ∂y∂xψ ; avec [e2-zero], « = 0 ».
@@ -234,13 +248,14 @@ Les lignes « > écran : » et « > légende : » ne sont pas dites. La voix ne 
 ### P20
 
 [e2-boite] Choisis une carte faite de bosses et de creux alternés, comme une boîte à œufs.
-[e2-formule] Sa formule est à l'écran, pas besoin de la lire à voix haute.
-[e2-revoila] Fais tourner ses flèches de pente : tu retrouves les cellules de l'énigme.
+[e2-formule] Sa formule est à l'écran.
+[e2-revoila] Fais tourner ses flèches de pente d'un quart de tour, dans le sens horaire.
+[e2-retrouve] Tu retrouves les cellules de l'énigme.
 [e2-reponse] Voilà la réponse : ce champ a été fabriqué à partir d'une fonction de courant.
-[e2-zero2] C'est pour cela que le compteur de flux restait à zéro.
+[e2-zero2] Le compteur de flux restait donc à zéro, et partout.
 
 > écran : avec [e2-boite], ψ = sin x sin y, en relief puis en lignes de niveau.
-> écran : avec [e2-revoila], les flèches de vitesse apparaissent le long des lignes de niveau et forment les cellules alternées ; la formule u = (sin x cos y, −cos x sin y) de ep01 revient en coin ; le petit cercle repasse, compteur de flux à 0.
+> écran : avec [e2-revoila], les flèches de vitesse apparaissent le long des lignes de niveau ; avec [e2-retrouve], elles forment les cellules alternées ; la formule u = (sin x cos y, −cos x sin y) de ep01 revient en coin ; le petit cercle repasse, compteur de flux à 0.
 
 ### P21
 
@@ -254,15 +269,16 @@ Les lignes « > écran : » et « > légende : » ne sont pas dites. La voix ne 
 
 ### P22
 
-[e2-recette] La même recette marche pour le champ magnétique dans le plan.
+[e2-dansplan] Le champ magnétique vivait dans l'espace : on revient maintenant dans le plan.
+[e2-recette] Là, la même recette marche aussi pour le champ magnétique.
 [e2-potentiel] On part d'une carte des hauteurs qu'on appelle le potentiel magnétique.
 [e2-memegeste] C'est le même geste, avec un autre nom.
-[e2-tourne] On fait tourner ses flèches de pente d'un quart de tour.
-[e2-champ] On obtient un champ magnétique, sans divergence à coup sûr.
+[e2-tourne] On fait tourner ses flèches de pente d'un quart de tour, dans le sens horaire.
+[e2-champ] On obtient un champ sans divergence à coup sûr : il peut être magnétique.
 [e2-contour] Son flux est nul à travers n'importe quel contour fermé du plan.
-[e2-office] Au lieu de vérifier qu'une carte peut être magnétique, on en fabrique une qui l'est d'office.
+[e2-office] Au lieu de vérifier qu'un champ peut être magnétique, on en fabrique un qui l'est forcément.
 
-> écran : la même carte, renommée a, sous-titrée « potentiel magnétique », avec des flèches du champ magnétique ; avec [e2-tourne], B = ∇⊥a.
+> écran : avec [e2-dansplan], « dans le plan » ; la même carte, renommée a, sous-titrée « potentiel magnétique », avec des flèches du champ magnétique ; avec [e2-tourne], B = ∇⊥a ; les lignes de niveau du potentiel sont les lignes du champ.
 
 ### P23
 
@@ -270,18 +286,18 @@ Les lignes « > écran : » et « > légende : » ne sont pas dites. La voix ne 
 [e2-garantit] Elle garantit une divergence nulle.
 [e2-ressemble] Elle ne garantit pas que le champ ressemble à un vrai champ.
 [e2-hasard] Une carte prise au hasard donne un champ sans divergence, mais sans rien de réaliste.
-[e2-juger] Apprendre à juger cela viendra plus tard dans le parcours.
+[e2-juger] Juger si un champ est réaliste, tu l'apprendras plus tard dans le parcours.
 
 ### P24
 
 [e2-chercheurs] Des chercheurs se servent déjà de cette astuce.
-[e2-agites] Ils l'appliquent à des fluides en deux dimensions, bien plus agités que nos cellules.
+[e2-agites] Ils l'appliquent à un écoulement simulé en deux dimensions, bien plus agité que les cellules de l'énigme.
 [e2-dessine] Leur machine dessine la fonction de courant, plutôt que la vitesse elle-même.
-[e2-jamais] La vitesse qu'on en tire ne diverge donc jamais.
-[e2-vitesses] Ce travail porte sur des vitesses de fluide.
+[e2-jamais] La vitesse qu'on en tire est donc sans divergence, par construction.
+[e2-vitesses] Dans ce travail, l'astuce sert pour une vitesse de fluide, pas pour un champ magnétique.
 
-> écran : une carte de vitesse d'un fluide plan agité, avec ses lignes de courant.
-> légende : Wang et al., FunDiff, Nature Communications, 2026.
+> écran : carte de vitesse d'un fluide plan agité, illustration fabriquée pour le film, ni figure de l'article ni sortie de FunDiff ; avec ses lignes de courant.
+> légende : Idée utilisée par Wang et al., FunDiff, Nature Communications, 2026.
 > écran : légende sur la carte de vitesse seulement, jamais sur la carte du champ magnétique.
 
 ## Clôture
@@ -298,9 +314,10 @@ Les lignes « > écran : » et « > légende : » ne sont pas dites. La voix ne 
 
 ### P26
 
-[e2-voie] Il existe une autre voie.
+[e2-voie] Il existe une autre façon d'obtenir un champ sans divergence.
 [e2-retirer] On part d'un champ quelconque et on lui retire la partie qui diverge.
-[e2-projection] Cela s'appelle la projection, et le module en parle au chapitre six.
+[e2-projection] Cette méthode s'appelle la projection.
+[e2-chapitre6] Le module la traite au chapitre six.
 [e2-crayon] D'ici là, prends un crayon.
 [e2-exos] Les exercices affichés à l'écran changent ces images en calculs.
 
