@@ -1,6 +1,8 @@
 {
   "model": "opus",
   "effortLevel": "medium",
+  "ultracode": false,
+  "workflowSizeGuideline": "small",
   "env": {
     "CLAUDE_CODE_SUBAGENT_MODEL": "sonnet"
   }
