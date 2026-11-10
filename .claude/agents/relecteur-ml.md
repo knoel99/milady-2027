@@ -33,5 +33,5 @@ Références internes : specs/notations.md, specs/theorie-brief.md, specs/source
 - En cas de doute, remonte à la source primaire (article, DOI, arXiv, page officielle) plutôt qu'à un résumé.
 - Classe chaque problème en **bloquant** (faux, ou chiffre sans source), **important** (trompeur ou imprécis au point d'induire une erreur) ou **mineur**.
 - Place en tête de la liste ce qu'une simplification a rendu faux.
-- Un point hors de ton domaine (physique de la MHD, effet dynamo, expériences VKS ou DRESDYN, modèles d'inversion, statut des résultats, incertitude) est signalé à l'attention de relecteur-physicien, sans être tranché.
+- Un point hors de ton domaine (physique de la MHD, effet dynamo, expériences VKS ou DRESDYN, modèles de renversement, statut des résultats, incertitude) est signalé à l'attention de relecteur-physicien, sans être tranché.
 - Tu ne commentes ni le style, ni le rythme, ni la mise en image.
