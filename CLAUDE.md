@@ -6,7 +6,7 @@ This file provides guidance to Claude Code (claude.ai/code) when working with co
 
 Site Quarto statique (FR + EN) préparant le stage M2 MilaDy 2027 : 8 modules de préparation (`prep/`), un rapport de stage **prospectif** (`rapport/`), un sujet de thèse (`these/`), des expériences CPU (`experiences/`). Publié par GitHub Pages depuis `main`, à la racine : les `index.html` rendus sont versionnés avec leurs `index.qmd`, sans construction côté GitHub.
 
-Le film (`video-grok/`, workflow `.github/workflows/drive-upload.yml`) sera repris plus tard : aucune règle pour l'instant, ne pas y toucher sans demande.
+Le film est repris sous forme d'épisodes : `video/` contient le moteur, sans contenu (règles dans « Le film » ci-dessous). Le workflow `.github/workflows/drive-upload.yml` envoie un film terminé vers Google Drive ; ses secrets Google sont à configurer et documenter quand un premier épisode sera prêt à livrer.
 
 ## Les specs font foi
 
@@ -22,7 +22,7 @@ Règles transversales : distinguer ce qui est **mesuré dans ce dépôt**, **pub
 
 ## Commandes du site
 
-Prérequis : Quarto 1.7.32 (`pip install quarto-cli==1.7.32`), Python 3, Node.js.
+Prérequis : `tools/setup-cloud.sh` installe l'environnement (Quarto 1.7.32, Python 3, Node.js, ffmpeg, Playwright).
 
 ```bash
 python3 tools/new_page.py prep/<id> "Titre" "Sous-titre"   # squelette (en-tête généré : ne pas le modifier)
