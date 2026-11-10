@@ -89,7 +89,7 @@ Scene.define({
 
     // ---------- 1.4 : traceurs ----------
     const V = SC * 0.45;
-    K.tracers(ctx, { parent: world, z: 6, n: 300, box: { x: X0, y: 78, w: 780, h: 780 }, alpha: 0.4, trail: 14, seed: 'ep01.01',
+    K.tracers(ctx, { parent: world, z: 6, n: 300, box: { x: X0, y: 78, w: 780, h: 780 }, alpha: 0.4, trail: 14, size: 3, seed: 'ep01.01',
       F: (px, py) => { const [x, y] = fromPx(px, py), v = U(x, y); return [v[0] * V, -v[1] * V]; }, at: 'e1-question' });
 
     // ---------- 1.5 à 1.7 : emplacements et pictogrammes (écran) ----------

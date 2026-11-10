@@ -1,0 +1,194 @@
+<!doctype html>
+<html lang="fr"><head><meta charset="utf-8">
+<title>ep01.11 Le cisaillement</title>
+<!-- Storyboard ep01, scène ep01.11 (plans 11.1 à 11.15), narration P19 et P20.
+     Cisaillement u = (y, 0), coordonnées mathématiques y vers le haut (toPx renverse l'axe vertical) : panneau
+     1100 × 640 px (x 120 à 1220, y 136 à 776), y = 0 à l'écran en y = 456, 160 px par unité, y de −2 à 2.
+     Flèches vers la droite en haut, vers la gauche en bas, longueur proportionnelle à |y|, nulles au milieu.
+     Roue posée sur la ligne du milieu (670, 456) : vitesse nulle, centre immobile ; ω = −1, α̇ = ω/2 = −1/2. -->
+<link rel="stylesheet" href="../../vendor/katex/katex.min.css">
+<link rel="stylesheet" href="../../runtime/theme.css">
+<script src="../../vendor/katex/katex.min.js"></script>
+<script src="../../runtime/scene.js"></script>
+<script src="../../runtime/components/kit.js"></script>
+<script src="../../runtime/components/field.js"></script>
+<script src="../../runtime/components/equation.js"></script>
+<script src="../../runtime/components/hud.js"></script>
+<script src="../../runtime/components/ep-kit.js"></script>
+<style>
+  .lab { position: absolute; transform: translate(-50%, -50%); white-space: nowrap; font-size: 44px; color: var(--fg); z-index: 22;
+    text-shadow: 0 0 6px var(--bg), 0 0 3px var(--bg); }
+  .lab .katex { font-size: 1em; }
+  .wrap { position: absolute; left: 0; top: 0; width: 1920px; height: 1080px; transform-origin: 0 0; z-index: 7; }
+  .kit-readout.boxed { background: var(--panel-a); padding: 4px 12px 6px; border-radius: 6px; }
+</style>
+</head><body><div id="stage"></div>
+<script>
+Scene.define({
+  duration: 54.7,
+  register: 'night',
+  // temps d'aperçu = estimation du moteur ; le moteur injecte les vrais
+  cues: { 'e1-surprises': 0.4, 'e1-cisail': 2.94, 'e1-haut': 5.7, 'e1-bas': 8.53, 'e1-milieu': 10.78, 'e1-loin': 13.68,
+    'e1-courant': 17.31, 'e1-droites': 22.83, 'e1-pose': 29.25, 'e1-aubeshaut': 32.08, 'e1-aubesbas': 35.78,
+    'e1-horaire': 39.41, 'e1-moinsun': 42.72, 'e1-undemi': 45.24, 'e1-lecon1': 48.07 },
+  setup(ctx) {
+    const K = Kit, S = Scene, at = ctx.at, seg = S.seg, E = S.ease;
+    const T = {};
+    for (const k of Object.keys(ctx.cues)) if (k.startsWith('e1-')) T[k.slice(3)] = at(k);
+    // ---------- géométrie (section 0 : y vers le haut) ----------
+    const CX = 670, CY = 456, SC = 160, BOX = { x: 120, y: 136, w: 1100, h: 640 };
+    const toPx = (x, y) => [CX + SC * x, CY - SC * y];
+    const U = (x, y) => [y, 0];                         // cisaillement
+    const FPX = (px, py) => [CY - py, 0];               // même champ en px/s à l'écran (160 px par unité, y vers le bas)
+
+    // tout le panneau dans un conteneur, réduit en vignette en 11.15
+    const wrap = K.el('div', { class: 'wrap', 'data-kit': 'panel' }, ctx.stage);
+    const frameSvg = K.svgLayer(ctx, 4, wrap);
+    const frame = K.s('rect', { x: BOX.x, y: BOX.y, width: BOX.w, height: BOX.h, fill: 'none', stroke: K.c('grid'), 'stroke-width': 3 }, frameSvg);
+    const midLine = K.s('line', { x1: BOX.x, y1: CY, x2: BOX.x + BOX.w, y2: CY, stroke: K.c('muted'), 'stroke-width': 2.5 }, frameSvg);
+
+    // flèches du champ, dessinées ici (entrée ligne par ligne, du milieu vers le bord : 11.3, 11.4)
+    const ROWS = [0.3, 0.8, 1.3, 1.8], COLS = Array.from({ length: 11 }, (_, i) => 200 + 90 * i), KL = 44;   // KL : px par unité de vitesse
+    const AL = K.canvasLayer(ctx, 7, null, wrap, { reset: true }); AL.canvas.setAttribute('data-kit', 'arrows');
+    const PROF = 1;                                      // colonne du profil des vitesses (11.6), x = 290
+    // traceurs (40 %) qui glissent à droite en haut, à gauche en bas ; ceux qui touchent la ligne du milieu restent immobiles
+    K.tracers(ctx, { F: FPX, n: 110, box: { x: BOX.x, y: BOX.y, w: BOX.w, h: 320 }, color: 'u', alpha: 0.4, at: 'e1-haut+0.2', seed: 'shear-top', parent: wrap, z: 6, trail: 9 });
+    K.tracers(ctx, { F: FPX, n: 110, box: { x: BOX.x, y: CY, w: BOX.w, h: 320 }, color: 'u', alpha: 0.4, at: 'e1-bas+0.2', seed: 'shear-bot', parent: wrap, z: 6, trail: 9 });
+    // 11.8 : six lignes de courant horizontales (la septième serait la ligne du milieu, faite de points immobiles),
+    // tracées dans le sens du courant : de gauche à droite en haut, de droite à gauche en bas
+    const LY = [0.55, 1.05, 1.55, -0.55, -1.05, -1.55];
+    const lines = LY.map((y) => Array.from({ length: 60 }, (_, i) => { const s = i / 59, x0 = BOX.x + 4, x1 = BOX.x + BOX.w - 4;
+      return [y > 0 ? S.lerp(x0, x1, s) : S.lerp(x1, x0, s), CY - SC * y]; }));
+    K.fieldLines(ctx, { lines, color: 'u', width: 3, alpha: 0.85, at: 'e1-droites+0.2', dur: 1.0, parent: wrap, z: 6 });
+
+    const svg = K.svgLayer(ctx, 12, wrap); svg.setAttribute('data-kit', 'shear');
+    const chalk = K.c('chalk'), ucol = K.c('u'), fgc = K.c('fg');
+    const dots = COLS.map((x) => K.s('circle', { cx: x, cy: CY, r: 6, fill: chalk }, svg));
+    const profile = K.s('path', { d: '', fill: 'none', stroke: chalk, 'stroke-width': 4, 'stroke-linecap': 'round' }, svg);
+    // 11.7 : le traceur --fg et son trait --u
+    const trail = K.s('path', { d: '', fill: 'none', stroke: ucol, 'stroke-width': 4, 'stroke-linecap': 'round' }, svg);
+    const head = K.s('circle', { r: 9, fill: fgc }, svg);
+    const TR0 = [-3.2, 1.05];
+
+    // ---------- roue à aubes (11.9 à 11.14) ----------
+    const RW = 56;                                       // rayon de la roue, px (0,35 unité)
+    const wheel = K.paddleWheel(ctx, { toPx, r: RW, at: 'e1-pose', parent: wrap, z: 15,
+      pos: (t) => [0, 0.7 * (1 - S.spring(S.clamp((t - T.pose) / 0.6), 0.03))],   // descente de 0,6 s, amorti ≤ 3 %
+      angle: (t) => -0.5 * Math.max(0, t - T.horaire) });                              // sens horaire, 1/2 rad par seconde
+    const wsvg = K.svgLayer(ctx, 16, wrap); wsvg.setAttribute('data-kit', 'wheel-flow');
+    const FL = 180;                                      // px par unité de vitesse pour les flèches des aubes
+    const aTop = K.s('path', { fill: ucol, stroke: ucol, 'stroke-width': 4, 'stroke-linecap': 'round', 'stroke-linejoin': 'round' }, wsvg);
+    const aBot = K.s('path', { fill: ucol, stroke: ucol, 'stroke-width': 4, 'stroke-linecap': 'round', 'stroke-linejoin': 'round' }, wsvg);
+    // flèche courbe horaire (11.12), petit glyphe qui glisse jusqu'au signe moins en 11.14
+    const gsvg = K.svgLayer(ctx, 24); gsvg.setAttribute('data-kit', 'cw-glyph');
+    const glyph = K.s('g', {}, gsvg);
+    { const r = 28, a0 = 150 * Math.PI / 180, a1 = a0 - 1.5 * Math.PI;   // de 150° à −120°, sens horaire (angles mathématiques)
+      let d = ''; for (let i = 0; i <= 40; i++) { const a = S.lerp(a0, a1, i / 40); d += (i ? 'L' : 'M') + (r * Math.cos(a)).toFixed(2) + ',' + (-r * Math.sin(a)).toFixed(2); }
+      K.s('path', { d, fill: 'none', stroke: chalk, 'stroke-width': 5, 'stroke-linecap': 'round' }, glyph);
+      const ex = r * Math.cos(a1), ey = -r * Math.sin(a1), tx = Math.sin(a1), ty = Math.cos(a1);   // tangente du parcours horaire, à l'écran
+      const hl = 15, ang = Math.atan2(ty, tx);
+      K.s('path', { d: `M${(ex + hl * 0.5 * tx).toFixed(2)},${(ey + hl * 0.5 * ty).toFixed(2)}L${(ex - hl * Math.cos(ang - 0.5)).toFixed(2)},${(ey - hl * Math.sin(ang - 0.5)).toFixed(2)}L${(ex - hl * Math.cos(ang + 0.5)).toFixed(2)},${(ey - hl * Math.sin(ang + 0.5)).toFixed(2)}Z`, fill: chalk }, glyph); }
+
+    // 11.13 : cercle en tirets de 80 px autour de la roue et son compteur (circulation ÷ aire, calculée)
+    const probe = K.probe(ctx, { toPx, F: U, mode: 'circulation', perArea: true, circle: { c: [0, 0], r: 0.5 }, at: 'e1-moinsun', parent: wrap, z: 13 });
+    const ro = K.readout(ctx, { label: 'VORTICITÉ', value: (t) => probe.value(t), digits: 0, x: 792, y: 476, at: 'e1-moinsun+0.3', out: 'e1-lecon1' });
+    ro.root.classList.add('boxed');
+
+    // ---------- colonne d'équations (x 1300 à 1800) ----------
+    const EX = 1300;
+    K.equation(ctx, { x: EX, y: 128, size: 64, anchor: 'left', at: 'e1-cisail+0.2', out: 'e1-lecon1', tex: '\\U = (y,\\,0)' });
+    K.chip(ctx, { text: 'LIGNE DE COURANT', x: EX, y: 252, at: 'e1-courant+0.2', out: 'e1-lecon1' });
+    const Ew1 = K.equation(ctx, { x: EX, y: 404, size: 52, anchor: 'left',
+      tex: '\\term{l}{\\cu{\\omega}}\\term{e}{\\;=\\;}\\term{a}{\\partial_x \\cu{u_y}}\\term{m}{\\;-\\;}\\term{b}{\\partial_y \\cu{u_x}}',
+      reveal: [[['l', 'e'], 'e1-moinsun+0.1'], ['a', 'e1-moinsun+0.45'], ['m', 'e1-moinsun+0.8'], ['b', 'e1-moinsun+1.0']] });
+    const Ew2 = K.equation(ctx, { x: EX + 34, y: 478, size: 52, anchor: 'left',
+      tex: '\\term{e1}{=\\;}\\term{z}{0}\\term{m}{\\;-\\;}\\term{o}{1}\\term{e2}{\\;=\\;}\\term{r}{-1}',
+      reveal: [[['e1', 'z'], 'e1-moinsun+1.4'], [['m', 'o'], 'e1-moinsun+1.7'], [['e2', 'r'], 'e1-moinsun+2.0']] });
+    const Ea = K.equation(ctx, { x: EX, y: 582, size: 56, anchor: 'left',
+      tex: '\\term{l}{\\dot\\alpha_{\\text{roue}}}\\term{e}{\\;=\\;}\\term{f}{\\frac{\\cu{\\omega}}{2}}\\term{e2}{\\;=\\;}\\term{mi}{-}\\term{h}{\\tfrac{1}{2}}',
+      reveal: [[['l', 'e', 'f'], 'e1-undemi+0.1'], [['e2', 'mi', 'h'], 'e1-undemi+0.6']] });
+    // 11.15 : vignette ; ω = −1 sous la vignette (le compteur, hors du conteneur, ne se réduit pas)
+    const VS = 0.4, VX = 1380, VY = 64;
+    const vlab = K.el('div', { class: 'lab', html: K.tex('\\cu{\\omega} = -1', false) }, ctx.stage);
+    vlab.style.left = (VX + VS * BOX.w / 2) + 'px'; vlab.style.top = (VY + VS * BOX.h + 40) + 'px';
+
+    ctx.S = { CX, CY, SC, BOX, toPx, wrap, frame, midLine, ROWS, COLS, KL, AL, PROF, dots, profile, trail, head, TR0, RW, FL, aTop, aBot, glyph, gsvg, Ea, Ew2, eqs: [Ew1, Ew2, Ea], VS, VX, VY, vlab, T };
+  },
+
+  render(t, ctx) {
+    const K = Kit, S = Scene, seg = S.seg, E = S.ease;
+    const { CX, CY, SC, BOX, ROWS, COLS, KL, AL, PROF, T } = ctx.S;
+    // ---------- 11.1 : panneau vide, ligne du milieu (posée avant l'image 0 : la scène est collée à la précédente) ----------
+    ctx.S.midLine.style.opacity = 0.6 + 0.4 * seg(t, 0, 0.6, E.linear);
+
+    // ---------- flèches (11.3 à 11.6) ----------
+    const g = AL.g; g.clearRect(0, 0, 1920, 1080);
+    const ucol = K.c('u'); g.strokeStyle = g.fillStyle = ucol; g.lineCap = 'round';
+    const dimOthers = 1 - 0.65 * seg(t, T.loin, T.loin + 0.4, E.linear) * (1 - seg(t, T.courant, T.courant + 0.5, E.linear));
+    const arrow = (x0, y0, x1, y1, w) => {
+      const m = Math.hypot(x1 - x0, y1 - y0); if (m < 4) return;
+      const a = Math.atan2(y1 - y0, x1 - x0), hl = Math.min(14, m * 0.4);
+      g.lineWidth = w; g.beginPath(); g.moveTo(x0, y0); g.lineTo(x1 - 0.5 * hl * Math.cos(a), y1 - 0.5 * hl * Math.sin(a)); g.stroke();
+      g.beginPath(); g.moveTo(x1, y1); g.lineTo(x1 - hl * Math.cos(a - 0.45), y1 - hl * Math.sin(a - 0.45)); g.lineTo(x1 - hl * Math.cos(a + 0.45), y1 - hl * Math.sin(a + 0.45)); g.closePath(); g.fill();
+    };
+    for (const sgn of [1, -1]) {
+      const t0 = sgn > 0 ? T.haut : T.bas;
+      ROWS.forEach((y, r) => {
+        const grow = seg(t, t0 + 0.2 * r, t0 + 0.2 * r + 0.4, E.outCubic); if (grow <= 0) return;
+        const ym = sgn * y, py = CY - SC * ym, L = KL * ym * grow;              // u_x = y : à droite en haut, à gauche en bas
+        COLS.forEach((x, i) => {
+          const hi = i === PROF ? seg(t, T.loin + 0.1 * (sgn > 0 ? 4 + r : 3 - r), T.loin + 0.1 * (sgn > 0 ? 4 + r : 3 - r) + 0.25, E.linear) * (1 - seg(t, T.courant, T.courant + 0.5, E.linear)) : 0;
+          g.globalAlpha = i === PROF ? Math.max(dimOthers, hi) : dimOthers;
+          arrow(x, py, x + L, py, 3 + 1.5 * hi);
+        });
+      });
+    }
+    g.globalAlpha = 1;
+    // 11.5 : sur la ligne du milieu, des points à la place des flèches
+    const pd = seg(t, T.milieu, T.milieu + 0.4, E.linear);
+    ctx.S.dots.forEach((d, i) => { d.style.opacity = pd * (i === PROF ? 1 : dimOthers); });
+    // 11.6 : profil des vitesses, droite qui relie les pointes de la colonne (x = 270 + KL·y)
+    const pp = seg(t, T.loin + 0.9, T.loin + 1.7, E.inOutSine), po = 1 - seg(t, T.courant, T.courant + 0.5, E.linear);
+    if (pp > 0 && po > 0) {
+      const x0 = COLS[PROF], ya = -2, yb = S.lerp(-2, 2, pp);
+      ctx.S.profile.setAttribute('d', `M${(x0 + KL * ya).toFixed(2)},${(CY - SC * ya).toFixed(2)}L${(x0 + KL * yb).toFixed(2)},${(CY - SC * yb).toFixed(2)}`);
+      ctx.S.profile.style.opacity = po;
+    } else ctx.S.profile.style.opacity = 0;
+
+    // ---------- 11.7 : une ligne de courant, tracée par un traceur qui suit les flèches ----------
+    const [x0, y0] = ctx.S.TR0, ts = T.courant + 0.6, tp = S.clamp(t - ts, 0, 3);
+    const trOn = t >= ts && t < T.droites + 1.4, trO = seg(t, ts, ts + 0.2, E.linear) * (1 - seg(t, T.droites + 1.0, T.droites + 1.4, E.linear));
+    K.show(ctx.S.trail, trOn); K.show(ctx.S.head, trOn);
+    if (trOn) {
+      const xa = CX + SC * x0, xb = CX + SC * (x0 + y0 * tp), yy = CY - SC * y0;   // x(t) = x0 + y0·t : vitesse (y0, 0)
+      ctx.S.trail.setAttribute('d', `M${xa.toFixed(2)},${yy}L${xb.toFixed(2)},${yy}`); ctx.S.trail.style.opacity = trO;
+      ctx.S.head.setAttribute('cx', xb.toFixed(2)); ctx.S.head.setAttribute('cy', yy); ctx.S.head.style.opacity = trO;
+    }
+
+    // ---------- 11.10, 11.11 : flèches du fluide sur les aubes du haut et du bas ----------
+    const rw = ctx.S.RW, ym = rw / SC;
+    const gt = seg(t, T.aubeshaut + 0.2, T.aubeshaut + 0.7, E.outCubic), gb = seg(t, T.aubesbas + 0.2, T.aubesbas + 0.7, E.outCubic);
+    ctx.S.aTop.setAttribute('d', gt > 0 ? K.arrowPath(CX, CY - rw, CX + ctx.S.FL * ym * gt, CY - rw, 14) : '');
+    ctx.S.aBot.setAttribute('d', gb > 0 ? K.arrowPath(CX, CY + rw, CX - ctx.S.FL * ym * gb, CY + rw, 14) : '');
+
+    // ---------- 11.12, 11.14 : la flèche courbe horaire, près de la roue, puis contre le signe moins ----------
+    const go = seg(t, T.horaire + 0.3, T.horaire + 0.7, E.linear);
+    const mb = ctx.S.Ea.tbox.mi, gl = seg(t, T.undemi + 0.9, T.undemi + 1.7, E.inOutCubic);
+    const gx = S.lerp(CX + 118, mb.x + mb.w / 2, gl), gy = S.lerp(CY - 112, mb.y - 30, gl), gs = S.lerp(1, 0.85, gl);
+    ctx.S.glyph.setAttribute('transform', `translate(${gx.toFixed(2)},${gy.toFixed(2)}) scale(${gs.toFixed(3)})`);
+    ctx.S.gsvg.style.opacity = go; K.show(ctx.S.gsvg, go > 0);
+
+    // ---------- 11.15 : le panneau se réduit en vignette dans le coin haut droit ----------
+    const vp = seg(t, T.lecon1 + 0.2, T.lecon1 + 1.0, E.inOutCubic), { VS, VX, VY } = ctx.S;
+    const s = S.lerp(1, VS, vp), tx = (VX - VS * BOX.x) * vp, ty = (VY - VS * BOX.y) * vp;
+    ctx.S.wrap.style.transform = vp > 0 ? `translate(${tx.toFixed(2)}px, ${ty.toFixed(2)}px) scale(${s.toFixed(4)})` : '';
+    ctx.S.frame.setAttribute('stroke', K.c(vp > 0 ? 'muted' : 'grid'));
+    ctx.S.frame.style.opacity = vp > 0 ? 0.4 + 0.6 * vp : 1;
+    // les équations s'effacent un peu pendant que le panneau passe au-dessus d'elles
+    const dimEq = 1 - 0.85 * Math.sin(Math.PI * vp);
+    for (const Eq of ctx.S.eqs) Eq.root.style.opacity = dimEq;
+    const vo = seg(t, T.lecon1 + 0.9, T.lecon1 + 1.3, E.linear);
+    ctx.S.vlab.style.opacity = vo; K.show(ctx.S.vlab, vo > 0);
+  },
+});
+</script></body></html>

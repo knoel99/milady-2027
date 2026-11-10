@@ -47,6 +47,9 @@ Scene.define({
     const clip = K.el('div', { class: 'kit-layer', 'data-layer': 'panel-clip' }, ctx.stage);
     clip.style.zIndex = 7; clip.style.clipPath = 'inset(100px 800px 220px 120px)';
     const zoom = K.el('div', { class: 'kit-layer', 'data-layer': 'panel-zoom' }, clip);
+    // cadre du panneau, présent dès la première image (la scène est collée à la précédente)
+    const fsvg = K.svgLayer(ctx, 4); fsvg.setAttribute('data-kit', 'panel-frame');
+    K.s('rect', { x: 120, y: 100, width: 1000, height: 760, rx: 10, fill: 'none', stroke: K.c('grid'), 'stroke-width': 3 }, fsvg);
     const R = 2.2, A = 0.5, WX = toPx(R, 0);          // la roue s'arrête à 3 h : centre du zoom
     zoom.style.transformOrigin = `${WX[0]}px ${WX[1]}px`;
 
@@ -115,7 +118,7 @@ Scene.define({
     const rayDot = K.s('circle', { r: 6, fill: muted }, ssvg);
     const ticks = [1.5, 3].map(() => K.s('path', { fill: 'none', stroke: muted, 'stroke-width': 3, 'stroke-linecap': 'round' }, ssvg));
     const two = [1.5, 3].map(() => K.s('path', { fill: ucol, stroke: ucol, 'stroke-width': 6, 'stroke-linecap': 'round', 'stroke-linejoin': 'round' }, ssvg));
-    const refV = K.s('path', { d: 'M1080,140L1080,250', fill: 'none', stroke: muted, 'stroke-width': 4, 'stroke-linecap': 'round' }, ssvg);
+    const refV = K.s('path', { d: 'M1100,140L1100,250', fill: 'none', stroke: muted, 'stroke-width': 4, 'stroke-linecap': 'round' }, ssvg);
     const lab = (tex) => { const d = K.el('div', { class: 'lab', html: K.tex(tex, false) }, ctx.stage); return d; };
     const labR = lab('r'), lab2R = lab('2r');
     const putLab = (el, x, y, o) => { el.style.left = x.toFixed(1) + 'px'; el.style.top = y.toFixed(1) + 'px'; el.style.opacity = o; K.show(el, o > 0.01); };
@@ -137,7 +140,7 @@ Scene.define({
     const labA = lab('\\alpha'); labA.style.zIndex = 15;
 
     // rappel |u| = 1/r au calque de formule (12.9)
-    K.formulaLayer(ctx, { items: [{ tex: '\\lvert\\U\\rvert = \\dfrac{1}{r}', at: 'e1-proche+0.4', out: 'e1-lecon2' }], label: false });
+    K.formulaLayer(ctx, { items: [{ tex: '\\lvert\\U\\rvert = \\dfrac{1}{r}', at: 'e1-proche+0.4', out: 'e1-lecon2' }], label: false, out: 'e1-lecon2' });
 
     // 12.14 : chip, crayon, question à calculer, Γ = 2π
     const chip = K.chip(ctx, { text: 'Module 1 · exercice 2 (c)', kind: 'plain', x: 1190, y: 118, at: 'e1-exo2+0.2', out: 'e1-lecon2' });
@@ -152,8 +155,10 @@ Scene.define({
     const Q1 = K.equation(ctx, { x: 1190, y: 186, size: 48, anchor: 'left', tex: '\\U = \\dfrac{(-y,\\ x)}{x^2 + y^2}', at: 'e1-exo2+0.8', out: 'e1-lecon2' });
     const q1 = K.box(Q1.root, ctx);
     K.equation(ctx, { x: q1.x + q1.w + 36, y: q1.y + q1.h / 2 - 30, size: 40, anchor: 'left', tex: '\\cg{\\Gamma = 2\\pi}', at: 'e1-exo2+2.4', out: 'e1-lecon2' });
-    K.equation(ctx, { x: 1190, y: q1.y + q1.h + 24, size: 46, anchor: 'left',
-      tex: '\\cu{\\omega} = \\partial_x \\cu{u_y} - \\partial_y \\cu{u_x} = \\;?\\quad \\text{pour } r > 0', at: 'e1-exo2+1.5', out: 'e1-lecon2' });
+    const Q2 = K.equation(ctx, { x: 1190, y: q1.y + q1.h + 20, size: 46, anchor: 'left',
+      tex: '\\cu{\\omega} = \\partial_x \\cu{u_y} - \\partial_y \\cu{u_x} = \\;?', at: 'e1-exo2+1.5', out: 'e1-lecon2' });
+    const q2 = K.box(Q2.root, ctx);
+    K.equation(ctx, { x: 1190, y: q2.y + q2.h + 6, size: 40, anchor: 'left', tex: '\\text{pour } r > 0', at: 'e1-exo2+1.9', out: 'e1-lecon2' });
 
     // ---------- 12.15 : vignettes côte à côte (cisaillement, tourbillon), mouvement en boucle courte ----------
     const vig = buildVignettes(ctx, { at: 'e1-lecon2+0.4' });
