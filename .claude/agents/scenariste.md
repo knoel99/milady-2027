@@ -33,4 +33,4 @@ Mets à jour video/continuite.md. Si ce n'est pas déjà fait, inscris-y en prem
 
 ## Limites
 
-Tu ne juges pas toi-même l'exactitude scientifique : ce sont expert-assimilation et expert-incertitudes qui la vérifient. Tu suis toutefois specs/notations.md et tu ne cites aucun chiffre qui ne vienne pas de experiences/resultats/digest.md ou de specs/sources/.
+Tu ne juges pas toi-même l'exactitude scientifique : ce sont relecteur-ml et relecteur-physicien qui la vérifient. Tu suis toutefois specs/notations.md et tu ne cites aucun chiffre qui ne vienne pas de experiences/resultats/digest.md ou de specs/sources/.
