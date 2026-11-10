@@ -34,3 +34,11 @@ Mesure après correction : 165 phrases, 2 189 mots (comptage du moteur), 14 min 
 | Flux par côté × longueur puis ÷ aire ; cercle déplacé ; raison de l'incompressibilité ; formules à l'écran ; tourbillon en 1/r, vitesse infinie au centre ; formule de l'écoulement cellulaire à l'écran ; nabla point B nommé | apprenant | retenus (compréhension), compensés par des coupes dans P2, la clôture et la liste d'exercices dite |
 | Gradient hors du niveau de départ | apprenant | non retenu : la carte de randonnée suffit, et le gradient figure dans les acquis de L1 visés par le module |
 | L'apprenant a ouvert `continuite.md` malgré la consigne | — | ses décrochages restent valables (relevés sur la narration seule) ; noté pour le bilan |
+
+## Storyboard
+
+Les deux relecteurs ont vérifié que les images ne disent rien de faux. Tous leurs points sont retenus (détail : `storyboard.md`, « Journal des corrections », points 1 à 27).
+
+- relecteur-physicien : 2 erreurs (déplacement de 100 px qui ne fait entrer aucune part ; Ω_roue affiché +½ au lieu de −½), 7 imprécisions (coupe plane de la sphère déplacée qui contredit le 0, dérivée partielle montrée sur un cas nul, Stokes illustré sur 0 = 0, « 1 tour » contre « 2 », plafond de longueur des flèches, ligne de niveau de Q non tracée, « sommet à gauche » faux dans les cellules ψ < 0), 11 suggestions.
+- relecteur-ml : 3 points importants sur le plan [c-machines] (badge de scène qui attribuait 52 s de calcul à Wang et al., bandeau sous la mauvaise carte, chip « schéma » ambigu), 4 mineurs.
+- Repère [r-pales] renommé [r-aubes] par la session principale (mot proscrit par la bible).
