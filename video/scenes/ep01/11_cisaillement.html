@@ -20,6 +20,7 @@
     text-shadow: 0 0 6px var(--bg), 0 0 3px var(--bg); }
   .lab .katex { font-size: 1em; }
   .wrap { position: absolute; left: 0; top: 0; width: 1920px; height: 1080px; transform-origin: 0 0; z-index: 7; }
+  .fiche-mot { position: absolute; font-size: 44px; color: var(--chalk); z-index: 18; white-space: nowrap; transform: translate(-50%, -50%); }
   .kit-readout.boxed { background: var(--panel-a); padding: 4px 12px 6px; border-radius: 6px; }
 </style>
 </head><body><div id="stage"></div>
@@ -44,7 +45,7 @@ Scene.define({
     // tout le panneau dans un conteneur, réduit en vignette en 11.15
     const wrap = K.el('div', { class: 'wrap', 'data-kit': 'panel' }, ctx.stage);
     const frameSvg = K.svgLayer(ctx, 4, wrap);
-    const frame = K.s('rect', { x: BOX.x, y: BOX.y, width: BOX.w, height: BOX.h, fill: 'none', stroke: K.c('grid'), 'stroke-width': 3 }, frameSvg);
+    const frame = K.s('rect', { x: BOX.x, y: BOX.y, width: BOX.w, height: BOX.h, fill: 'none', stroke: K.c('matter'), 'stroke-width': 2 }, frameSvg);   // cadre de la scène 03
     const midLine = K.s('line', { x1: BOX.x, y1: CY, x2: BOX.x + BOX.w, y2: CY, stroke: K.c('muted'), 'stroke-width': 2.5 }, frameSvg);
 
     // flèches du champ, dessinées ici (entrée ligne par ligne, du milieu vers le bord : 11.3, 11.4)
@@ -97,7 +98,12 @@ Scene.define({
     // ---------- colonne d'équations (x 1300 à 1800) ----------
     const EX = 1300;
     K.equation(ctx, { x: EX, y: 128, size: 64, anchor: 'left', at: 'e1-cisail+0.2', out: 'e1-lecon1', tex: '\\U = (y,\\,0)' });
-    K.chip(ctx, { text: 'LIGNE DE COURANT', x: EX, y: 252, at: 'e1-courant+0.2', out: 'e1-lecon1' });
+    // fiche de vocabulaire, au format de la scène 03 (cadre pointillé arrondi, mot en mono), largeur adaptée au mot
+    const fsvg = K.svgLayer(ctx, 14); fsvg.setAttribute('data-kit', 'fiche');
+    const ficheMot = K.el('div', { class: 'fiche-mot mono', 'data-kit': 'fiche' }, ctx.stage, K.upper('ligne de courant'));
+    const FW = Math.ceil(ficheMot.offsetWidth) + 80, FH = 130, FX = Math.min(EX - 40, 1812 - FW), FY = 224;
+    const ficheRect = K.s('rect', { x: FX, y: FY, width: FW, height: FH, rx: 10, fill: 'none', stroke: K.c('muted'), 'stroke-width': 2.5, 'stroke-dasharray': '10 8' }, fsvg);
+    ficheMot.style.left = (FX + FW / 2) + 'px'; ficheMot.style.top = (FY + FH / 2) + 'px';
     const Ew1 = K.equation(ctx, { x: EX, y: 404, size: 52, anchor: 'left',
       tex: '\\term{l}{\\cu{\\omega}}\\term{e}{\\;=\\;}\\term{a}{\\partial_x \\cu{u_y}}\\term{m}{\\;-\\;}\\term{b}{\\partial_y \\cu{u_x}}',
       reveal: [[['l', 'e'], 'e1-moinsun+0.1'], ['a', 'e1-moinsun+0.45'], ['m', 'e1-moinsun+0.8'], ['b', 'e1-moinsun+1.0']] });
@@ -112,7 +118,7 @@ Scene.define({
     const vlab = K.el('div', { class: 'lab', html: K.tex('\\cu{\\omega} = -1', false) }, ctx.stage);
     vlab.style.left = (VX + VS * BOX.w / 2) + 'px'; vlab.style.top = (VY + VS * BOX.h + 40) + 'px';
 
-    ctx.S = { CX, CY, SC, BOX, toPx, wrap, frame, midLine, ROWS, COLS, KL, AL, PROF, dots, profile, trail, head, TR0, RW, FL, aTop, aBot, glyph, gsvg, Ea, Ew2, eqs: [Ew1, Ew2, Ea], VS, VX, VY, vlab, T };
+    ctx.S = { CX, CY, SC, BOX, toPx, wrap, frame, midLine, ROWS, COLS, KL, AL, PROF, dots, profile, trail, head, TR0, RW, FL, aTop, aBot, glyph, gsvg, Ea, Ew2, eqs: [Ew1, Ew2, Ea], VS, VX, VY, vlab, ficheMot, ficheRect, T };
   },
 
   render(t, ctx) {
@@ -182,8 +188,9 @@ Scene.define({
     const vp = seg(t, T.lecon1 + 0.2, T.lecon1 + 1.0, E.inOutCubic), { VS, VX, VY } = ctx.S;
     const s = S.lerp(1, VS, vp), tx = (VX - VS * BOX.x) * vp, ty = (VY - VS * BOX.y) * vp;
     ctx.S.wrap.style.transform = vp > 0 ? `translate(${tx.toFixed(2)}px, ${ty.toFixed(2)}px) scale(${s.toFixed(4)})` : '';
-    ctx.S.frame.setAttribute('stroke', K.c(vp > 0 ? 'muted' : 'grid'));
-    ctx.S.frame.style.opacity = vp > 0 ? 0.4 + 0.6 * vp : 1;
+    // fiche LIGNE DE COURANT : de [e1-courant+0,2] à [e1-lecon1]
+    const fo = seg(t, T.courant + 0.2, T.courant + 0.6, E.linear) * (1 - seg(t, T.lecon1, T.lecon1 + 0.3, E.linear));
+    for (const el of [ctx.S.ficheMot, ctx.S.ficheRect]) { el.style.opacity = fo; K.show(el, fo > 0); }
     // les équations s'effacent un peu pendant que le panneau passe au-dessus d'elles
     const dimEq = 1 - 0.85 * Math.sin(Math.PI * vp);
     for (const Eq of ctx.S.eqs) Eq.root.style.opacity = dimEq;

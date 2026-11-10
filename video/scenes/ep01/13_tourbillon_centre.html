@@ -3,7 +3,7 @@
 <title>ep01.13 Le centre du tourbillon</title>
 <!-- Storyboard ep01, scène ep01.13 (plans 13.1 à 13.8), narration P23.
      Même tourbillon, même panneau et mêmes réglages que la scène 12 : u = (−y, x)/(x² + y²), y vers le haut, 100 px par
-     unité, centre à l'écran en (620, 480), flèches compressées (k = 70 px par unité, I_s = 0,8), disque vide de 30 px.
+     unité, centre à l'écran en (620, 460), panneau 1000 × 720 (x 120 à 1120, y 100 à 820), flèches compressées (k = 70 px par unité, I_s = 0,8), disque vide de 30 px.
      Les dix petits compteurs de 13.2 sont calculés (Kit.probe, quadrature sur 256 points) ; les valeurs 2π et 0 de 13.5
      à 13.7 sont symboliques, écrites. Aucun cercle ne rétrécit vers le centre : les cercles qui l'entourent apparaissent
      du plus petit au plus grand. -->
@@ -23,7 +23,7 @@
     text-shadow: 0 0 8px var(--bg), 0 0 4px var(--bg), 0 0 2px var(--bg); }
   .val .katex { font-size: 1em; }
   .legend { position: absolute; left: 1260px; white-space: nowrap; color: var(--muted); z-index: 22; transform: translateY(-50%); }
-  .kit-readout { text-shadow: 0 0 6px var(--bg), 0 0 3px var(--bg); }
+  .kit-readout.backed { background: var(--panel-a); padding: 4px 12px 2px; border-radius: 4px; }   /* fond des compteurs de la scène 14 */
 </style>
 </head><body><div id="stage"></div>
 <script>
@@ -39,23 +39,24 @@ Scene.define({
     for (const k of Object.keys(ctx.cues)) if (k.startsWith('e1-')) T[k.slice(3)] = at(k);
 
     // ---------- géométrie et champ, identiques à la scène 12 ----------
-    const CX = 620, CY = 480, SC = 100;
+    const CX = 620, CY = 460, SC = 100;   // centre du panneau 1000 × 720
     const toPx = (x, y) => [CX + SC * x, CY - SC * y];
     const toM = (px, py) => [(px - CX) / SC, (CY - py) / SC];
     const U = (x, y) => { const r2 = x * x + y * y; return [-y / r2, x / r2]; };
     const KC = 70, IS = 0.8;
     const chalk = K.c('chalk'), muted = K.c('muted'), fg = K.c('fg');
     const band = (lo, hi) => (px, py) => { const [x, y] = toM(px, py), r = Math.hypot(x, y); if (r < lo || r >= hi) return [0, 0]; const u = U(x, y); return [u[0], -u[1]]; };
-    const box = { x: 120, y: 100, w: 1000, h: 760 };
+    const box = { x: 120, y: 100, w: 1000, h: 720 };
 
     // état de fin de la scène 12, dès la première image : cadre, flèches, lignes de courant, point du centre, vignettes
     const fsvg = K.svgLayer(ctx, 4); fsvg.setAttribute('data-kit', 'panel-frame');
-    K.s('rect', { x: 120, y: 100, width: 1000, height: 760, rx: 10, fill: 'none', stroke: K.c('grid'), 'stroke-width': 3 }, fsvg);
+    K.s('rect', { x: 120, y: 100, width: 1000, height: 720, fill: 'none', stroke: K.c('matter'), 'stroke-width': 2 }, fsvg);   // cadre de la scène 03
     const arrows = K.arrows(ctx, { F: band(0, 99), box, nx: 10, ny: 8, compress: { k: KC, threshold: IS }, hole: { x: CX, y: CY, r: 30 }, at: -1, width: 3 });
     // 13.3 : les flèches les plus proches du centre, les plus longues de la carte, repassées plus épaisses en --u-hi
     const near = K.arrows(ctx, { F: band(0, 1), box, nx: 10, ny: 8, compress: { k: KC, threshold: IS }, hole: { x: CX, y: CY, r: 30 }, at: 'e1-nondef+0.2', out: 'e1-entiere', width: 5, color: 'u-hi', z: 8 });
     const circ = (r, n = 240) => Array.from({ length: n + 1 }, (_, i) => toPx(r * Math.cos(TAU * i / n), r * Math.sin(TAU * i / n)));
-    K.fieldLines(ctx, { lines: [0.8, 1.5, 2.2, 3.0, 3.7].map((r) => circ(r)), color: 'u', width: 2.5, alpha: 0.5, at: -1, dur: 0.01, out: 'e1-nullepartout' });
+    const flines = K.fieldLines(ctx, { lines: [0.8, 1.5, 2.2, 3.0, 3.7].map((r) => circ(r)), color: 'u', width: 2.5, alpha: 0.5, at: -1, dur: 0.01, out: 'e1-nullepartout' });
+    flines.canvas.style.clipPath = 'inset(100px 800px 260px 120px)';   // découpées au cadre, comme dans la scène 12
     const vig = buildVignettes(ctx, { at: -1, out: 'e1-ou+0.2', phase: (t) => t });
 
     const psvg = K.svgLayer(ctx, 16); psvg.setAttribute('data-kit', 'vortex-centre');
@@ -69,7 +70,8 @@ Scene.define({
       const a = `e1-nullepartout+${(0.15 * i).toFixed(2)}`, aR = `e1-nullepartout+${(0.3 + 0.15 * i).toFixed(2)}`;
       const P = K.probe(ctx, { toPx, F: U, mode: 'circulation', perArea: true, circle: { c: [x, y], r: 0.3 }, at: a, out: 'e1-entiere', z: 13 });
       const [px, py] = toPx(x, y);
-      K.readout(ctx, { value: (t) => P.value(t), digits: 2, pos: () => [px + 38, py - 30], size: 40, at: aR, out: 'e1-entiere', z: 24 });
+      const ro = K.readout(ctx, { value: (t) => P.value(t), digits: 2, pos: () => [px + 38, py - 30], size: 40, at: aR, out: 'e1-entiere', z: 24 });
+      ro.root.classList.add('backed');   // sans libellé : le libellé est en tête de colonne
       return P;
     });
 

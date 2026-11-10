@@ -56,7 +56,11 @@ Scene.define({
     const mk = (tag, a, p) => K.s(tag, a, p);
     const square = mk('rect', { x: PX - 120, y: PY - 120, width: 240, height: 240, fill: 'none', stroke: chalk, 'stroke-width': 5 }, psvg);
     mk('circle', { cx: PX, cy: PY, r: 7, fill: chalk }, psvg);
-    const planeEdge = mk('rect', { x: BOX.x, y: BOX.y, width: BOX.w, height: BOX.h, fill: 'none', stroke: muted, 'stroke-width': 2.5 }, psvg);   // bord du plan, visible en perspective
+    // cadre du panneau, --matter comme en 09 ; il bascule avec le plan (bord du plan en perspective)
+    const planeEdge = mk('rect', { x: BOX.x, y: BOX.y, width: BOX.w, height: BOX.h, fill: 'none', stroke: K.c('matter'), 'stroke-width': 2 }, psvg);
+    // pendant le zoom de 10.6, le calque est découpé au cadre : un cadre fixe, hors du calque zoomé
+    const zsvg = K.svgLayer(ctx, 8); zsvg.setAttribute('data-kit', 'panel-frame');
+    const zoomEdge = mk('rect', { x: BOX.x, y: BOX.y, width: BOX.w, height: BOX.h, fill: 'none', stroke: K.c('matter'), 'stroke-width': 2 }, zsvg);
     // tilt θ(t) : bascule de 1,2 s (10.1), retour de face en 1 s (10.2)
     const thetaP = (t) => TILT * (seg(t, T.fleche3d + 0.6, T.fleche3d + 1.8, E.inOutCubic) - seg(t, T.plan + 2.0, T.plan + 3.0, E.inOutCubic));
     // (x, y) → (x + sh (y − cy) + e, cy + d (y − cy)) autour de c0 ; e : décalage vers la droite (panneau : le parallélogramme
@@ -131,6 +135,10 @@ Scene.define({
     const beta = (t) => t - T.reprends;                  // angle du rayon marqué : 1 rad par seconde de scène
     const wpos = (t) => [2 * Math.cos(beta(t) + PHI), 2 * Math.sin(beta(t) + PHI)];
     const A2 = K.arrows(ctx, { F: (px, py) => [(py - OY) / SC2, -(px - OX) / SC2], box: BOX2, nx: 10, ny: 7, scale: 0.85, at: 'e1-reprends', z: 7 });
+    A2.canvas.style.clipPath = `inset(${BOX2.y}px ${1920 - BOX2.x - BOX2.w}px ${1080 - BOX2.y - BOX2.h}px ${BOX2.x}px)`;
+    // cadre du second panneau, --matter ; les traceurs s'arrêtent sur son bord intérieur
+    const fsvg2 = K.svgLayer(ctx, 8); fsvg2.setAttribute('data-kit', 'panel-frame-2');
+    const frame2 = mk('rect', { x: BOX2.x, y: BOX2.y, width: BOX2.w, height: BOX2.h, fill: 'none', stroke: K.c('matter'), 'stroke-width': 2 }, fsvg2);
     const TR = K.canvasLayer(ctx, 6, null, null, { reset: true }); TR.canvas.setAttribute('data-kit', 'tracers');
     const rng = S.rng('solid-tracers'), trs = [];
     for (let i = 0; i < 200; i++) trs.push({ r: 0.3 + 3.9 * Math.sqrt(rng()), th: rng() * TAU });
@@ -162,7 +170,7 @@ Scene.define({
     const Er = K.equation(ctx, { x: 1640, y: 500, size: 46, anchor: 'center', at: 'e1-colle+0.5', tex: '\\dot\\alpha_{\\text{roue}} = 1' });
     K.equation(ctx, { x: 1640, y: 650, size: 56, anchor: 'center', at: 'e1-retiens+0.6', tex: '\\cu{\\omega} = 2' });
 
-    ctx.S = { planeEdge, T, TILT, PX, PY, SC, PIV, toPx, U, pclip, pin, arrows1, square, thetaP, affine, GRID, vArrows, odots, tl, flowT, flowR, refLine, aArc, alab,
+    ctx.S = { planeEdge, zoomEdge, frame2, BOX2, T, TILT, PX, PY, SC, PIV, toPx, U, pclip, pin, arrows1, square, thetaP, affine, GRID, vArrows, odots, tl, flowT, flowR, refLine, aArc, alab,
       D1, D2, D3, lPos, lNeg, l3, brace, lAbs, omega3, Ea, EAS, EAX, EAY, OX, OY, SC2, toPx2, beta, wpos, A2, TR, trs, diskS, radius, radDot, RD,
       dial1, dial2, Er };
   },
@@ -179,12 +187,17 @@ Scene.define({
     show(C.square, 1 - seg(t, T.fleche3d, T.fleche3d + 0.5, E.linear));
     const th = C.thetaP(t), A = C.affine(th, C.PIV, 90);
     // 10.6, 10.7 : zoom de 1,8× sur la roue, autour de P
-    show(C.planeEdge, Math.sin(th) / Math.sin(TILT));
+    // cadre : de face il borde le panneau, en perspective il borde le plan ; pendant le zoom, le cadre fixe le remplace
+    show(C.planeEdge, 1);
     const z = 1 + 0.8 * (seg(t, T.pousse, T.pousse + 0.8, E.inOutCubic) - seg(t, T.moitie, T.moitie + 0.8, E.inOutCubic));
     if (th > 1e-4) { C.pin.style.transformOrigin = `${C.PIV[0]}px ${C.PIV[1]}px`; C.pin.style.transform = `matrix(1,0,${A.sh.toFixed(5)},${A.d.toFixed(5)},${A.e.toFixed(3)},0)`; }
     else if (z > 1.0001) { C.pin.style.transformOrigin = `${C.PX}px ${C.PY}px`; C.pin.style.transform = `scale(${z.toFixed(4)})`; }
     else C.pin.style.transform = '';
-    C.pclip.style.clipPath = z > 1.0001 ? 'inset(100px 900px 260px 120px)' : 'none';
+    // de face, le panneau est découpé à son cadre (flèches arrêtées au bord) ; en perspective, rien n'est découpé
+    // le découpage suit le plan basculé (mêmes coins, même transformation affine)
+    { const q = [[119, 99], [1021, 99], [1021, 821], [119, 821]].map(([x, y]) => (th > 1e-4 ? A.f(x, y) : [x, y]));
+      C.pclip.style.clipPath = `polygon(${q.map(([x, y]) => `${x.toFixed(2)}px ${y.toFixed(2)}px`).join(', ')})`; }
+    show(C.zoomEdge, z > 1.0001 ? o1 : 0);
 
     // 10.1, 10.2 : flèches perpendiculaires au plan, ⊙ de face
     const ell = 150 * 0.8, oA = o1 * (1 - seg(t, T.signe, T.signe + 0.4, E.linear)) * (t < T.roue ? 1 : 0);
@@ -261,7 +274,7 @@ Scene.define({
     C.A2.canvas.style.opacity = 0.5;
     const b = C.beta(t), g = C.TR.g; g.clearRect(0, 0, 1920, 1080); K.show(C.TR.canvas, oS > 0);
     if (oS > 0) {
-      g.save(); g.beginPath(); g.rect(120, 100, 1000, 720); g.clip();
+      const B = C.BOX2; g.save(); g.beginPath(); g.rect(B.x + 1, B.y + 1, B.w - 2, B.h - 2); g.clip();   // jusqu'au bord intérieur du cadre
       g.strokeStyle = K.c('u'); g.lineWidth = 2.4; g.lineCap = 'round'; g.globalAlpha = 0.5 * oS; g.beginPath();
       for (const p of C.trs) {   // trait de 0,3 rad derrière chaque particule : rotation d'un bloc, distances gardées
         const R = p.r * C.SC2, a1 = p.th + b, a0 = a1 - 0.3;
@@ -270,6 +283,7 @@ Scene.define({
       }
       g.stroke(); g.restore();
     }
+    show(C.frame2, oS);
     const dO = seg(t, T.disque, T.disque + 0.5, E.linear);
     show(C.diskS, dO); show(C.radius, dO); show(C.radDot, dO);
     const re = [C.OX + C.RD * C.SC2 * Math.cos(b), C.OY - C.RD * C.SC2 * Math.sin(b)];

@@ -116,11 +116,12 @@ Scene.define({
     const rowY = [262, 432, 572];
     const rows = ['1 (b)', '2 (b)', '2 (c)'].map((s, i) => { const d = K.el('div', { class: 'ex-row ex-num tnum', 'data-kit': 'exercise-card' }, ctx.stage, s);
       d.style.left = '1320px'; d.style.top = (rowY[i] - 26) + 'px'; return d; });
-    const anchor = K.el('div', { class: 'ex-row mono', 'data-kit': 'exercise-card' }, ctx.stage, '#exercices');
+    const anchor = K.el('div', { class: 'ex-row mono', 'data-kit': 'exercise-card' }, ctx.stage, K.upper('#exercices'));
     anchor.style.left = '1320px'; anchor.style.top = '650px'; anchor.style.color = muted;
     // miniatures : 1 (b) les deux formules de gauche, posées à côté de la ligne, sans signe d'égalité avec l'énoncé
     const mini1 = [lab('\\nabla\\cdot\\U = \\partial_x \\cu{u_x} + \\partial_y \\cu{u_y}', 1450, rowY[0] - 50, 30),
       lab('\\cu{\\omega} = \\partial_x \\cu{u_y} - \\partial_y \\cu{u_x}', 1450, rowY[0] + 4, 30)];
+    mini1.forEach((d) => { d.style.color = muted; });   // --muted plein, sans opacité réduite
     // 2 (b) : la roue du cisaillement ; 2 (c) : la roue du tourbillon
     const m2 = mk('g', {});
     const m2x = 1450, m2w = 300;

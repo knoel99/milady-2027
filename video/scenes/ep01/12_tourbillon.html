@@ -3,7 +3,7 @@
 <title>ep01.12 Le tourbillon ponctuel</title>
 <!-- Storyboard ep01, scène ep01.12 (plans 12.1 à 12.15), narration P21 et P22.
      Tourbillon ponctuel u = (−y, x)/(x² + y²), sens trigonométrique ; coordonnées mathématiques y vers le haut,
-     100 px par unité, centre à l'écran en (620, 480) ; panneau x 120 à 1120, y 100 à 860 ; colonne x 1180 à 1780.
+     100 px par unité, centre à l'écran en (620, 460) ; panneau 1000 × 720, x 120 à 1120, y 100 à 820 ; colonne x 1180 à 1780.
      Flèches : longueur compressée L(I) = k·I sous I_s = 0,8, k·I_s·(2 − I_s/I) au-dessus (k = 70 px par unité),
      disque vide de 30 px autour du centre. Roue de rayon a = 0,5 sur le cercle R = 2,2, jamais sur le centre. -->
 <link rel="stylesheet" href="../../vendor/katex/katex.min.css">
@@ -36,7 +36,7 @@ Scene.define({
     for (const k of Object.keys(ctx.cues)) if (k.startsWith('e1-')) T[k.slice(3)] = at(k);
 
     // ---------- géométrie et champ (section 0 : y vers le haut, toPx renverse l'axe vertical) ----------
-    const CX = 620, CY = 480, SC = 100;
+    const CX = 620, CY = 460, SC = 100;   // centre du panneau 1000 × 720
     const toPx = (x, y) => [CX + SC * x, CY - SC * y];
     const toM = (px, py) => [(px - CX) / SC, (CY - py) / SC];
     const U = (x, y) => { const r2 = x * x + y * y; return [-y / r2, x / r2]; };
@@ -45,17 +45,17 @@ Scene.define({
 
     // panneau : un calque découpé au cadre du panneau, et dedans un calque zoomable (12.8, zoom de 1,8× sur la roue)
     const clip = K.el('div', { class: 'kit-layer', 'data-layer': 'panel-clip' }, ctx.stage);
-    clip.style.zIndex = 7; clip.style.clipPath = 'inset(100px 800px 220px 120px)';
+    clip.style.zIndex = 7; clip.style.clipPath = 'inset(100px 800px 260px 120px)';
     const zoom = K.el('div', { class: 'kit-layer', 'data-layer': 'panel-zoom' }, clip);
     // cadre du panneau, présent dès la première image (la scène est collée à la précédente)
     const fsvg = K.svgLayer(ctx, 4); fsvg.setAttribute('data-kit', 'panel-frame');
-    K.s('rect', { x: 120, y: 100, width: 1000, height: 760, rx: 10, fill: 'none', stroke: K.c('grid'), 'stroke-width': 3 }, fsvg);
+    K.s('rect', { x: 120, y: 100, width: 1000, height: 720, fill: 'none', stroke: K.c('matter'), 'stroke-width': 2 }, fsvg);   // cadre de la scène 03
     const R = 2.2, A = 0.5, WX = toPx(R, 0);          // la roue s'arrête à 3 h : centre du zoom
     zoom.style.transformOrigin = `${WX[0]}px ${WX[1]}px`;
 
     // flèches du tourbillon (Kit.arrows, compression, trou de 30 px), en quatre anneaux qui entrent de l'extérieur vers l'intérieur
     const band = (lo, hi) => (px, py) => { const [x, y] = toM(px, py), r = Math.hypot(x, y); if (r < lo || r >= hi) return [0, 0]; const u = U(x, y); return [u[0], -u[1]]; };
-    const box = { x: 120, y: 100, w: 1000, h: 760 };
+    const box = { x: 120, y: 100, w: 1000, h: 720 };
     const bands = [[3, 99], [2, 3], [1, 2], [0, 1]].map(([lo, hi], i) => K.arrows(ctx, { F: band(lo, hi), box, nx: 10, ny: 8, compress: { k: KC, threshold: IS },
       hole: { x: CX, y: CY, r: 30 }, at: `e1-autour+${(0.3 * i).toFixed(1)}`, parent: zoom, width: 3 }));
 

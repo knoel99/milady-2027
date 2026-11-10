@@ -4,7 +4,7 @@
 <!-- Storyboard ep01, scène ep01.09 (plans 9.1 à 9.16), narration P15 et P16.
      Même champ, même panneau, même point P que la scène 03 : u = (x − 0,4y ; y + 0,4x), coordonnées mathématiques
      y vers le haut (toPx renverse l'axe vertical), 180 px par unité, P = origine du champ, à l'écran en (620, 340).
-     Panneau 900 × 720 px (x 120 à 1020, y 100 à 820), colonne d'équation x 1180 à 1780. Vorticité 0,8 partout.
+     Panneau 900 × 720 px (x 120 à 1020, y 100 à 820), cadre --matter comme en 03, colonne d'équation x 1180 à 1780. Vorticité 0,8 partout.
      Circulation comptée dans le sens trigonométrique. Cercle déplacé (9.7) : c = (−212, −212) px ; la part le long
      du bord vaut t·(A c) + 0,4 R et est négative sur les 7 points de 270° à 45° (premier point à 0°). -->
 <link rel="stylesheet" href="../../vendor/katex/katex.min.css">
@@ -21,6 +21,7 @@
   .lab { position: absolute; transform: translate(-50%, -50%); white-space: nowrap; font-size: 40px; color: var(--muted); z-index: 22;
     text-shadow: 0 0 6px var(--bg), 0 0 3px var(--bg); }
   .lab .katex { font-size: 1em; }
+  .fiche-mot { position: absolute; font-size: 44px; color: var(--chalk); z-index: 18; white-space: nowrap; transform: translate(-50%, -50%); }
 </style>
 </head><body><div id="stage"></div>
 <script>
@@ -49,6 +50,10 @@ Scene.define({
 
     K.arrows(ctx, { F: FPX, box: BOX, nx: 9, ny: 8, scale: 0.85, at: -1.5, z: 7 });
     const arrowsCanvas = ctx.stage.querySelector('canvas[data-kit="arrows"]');
+    arrowsCanvas.style.clipPath = `inset(${BOX.y}px ${1920 - BOX.x - BOX.w}px ${1080 - BOX.y - BOX.h}px ${BOX.x}px)`;   // flèches arrêtées au cadre
+    // cadre du panneau, comme en scène 03 : --matter, angles vifs
+    const svgF = K.svgLayer(ctx, 4); svgF.setAttribute('data-kit', 'panneau');
+    K.s('rect', { x: BOX.x, y: BOX.y, width: BOX.w, height: BOX.h, fill: 'none', stroke: K.c('matter'), 'stroke-width': 2 }, svgF);
     // 9.1 : les seize parts perpendiculaires de la scène 03 (toutes sortent : « + »), qui baissent à 30 %
     const pA = K.probe(ctx, { toPx, F: U, mode: 'flux', draw: false, circle: { c: [0, 0], r: 1 }, at: -1.5, z: 12,
       parts: { n: 16, phase: 0, scale: 70, other: null, signs: true, at: -1.5 } });
@@ -120,8 +125,16 @@ Scene.define({
       mk('path', { d, fill: 'none', stroke: chalk, 'stroke-width': 5, 'stroke-linecap': 'round' }, pictoArc);
       const ex = r * Math.cos(a1), ey = -r * Math.sin(a1), tx = -Math.sin(a1), ty = -Math.cos(a1), ang = Math.atan2(ty, tx), hl = 15;
       mk('path', { d: `M${(ex + 0.5 * hl * tx).toFixed(2)},${(ey + 0.5 * hl * ty).toFixed(2)}L${(ex - hl * Math.cos(ang - 0.5)).toFixed(2)},${(ey - hl * Math.sin(ang - 0.5)).toFixed(2)}L${(ex - hl * Math.cos(ang + 0.5)).toFixed(2)},${(ey - hl * Math.sin(ang + 0.5)).toFixed(2)}Z`, fill: chalk }, pictoArc); }
-    const chipFlux = K.chip(ctx, { text: 'FLUX', x: CXc, y: 300, at: -1.5, out: 'e1-carre' });
-    K.chip(ctx, { text: 'CIRCULATION', x: CXc, y: 370, at: 'e1-circulation+1.0', out: 'e1-carre' });
+    // fiches de vocabulaire, au format de la scène 03 : cadre pointillé arrondi, mot en mono ; FLUX garde 360 × 130,
+    // CIRCULATION prend la largeur de son mot
+    const fiche = (word, x, y, minW) => {
+      const mot = K.el('div', { class: 'fiche-mot mono', 'data-kit': 'fiche' }, ctx.stage, K.upper(word));
+      const w = Math.max(minW, Math.ceil(mot.offsetWidth) + 96), h = 130;
+      const rect = mk('rect', { x, y, width: w, height: h, rx: 10, fill: 'none', stroke: muted, 'stroke-width': 2.5, 'stroke-dasharray': '10 8' });
+      mot.style.left = (x + w / 2) + 'px'; mot.style.top = (y + h / 2) + 'px';
+      return { mot, rect };
+    };
+    const ficheFlux = fiche('flux', 1320, 125, 360), ficheCirc = fiche('circulation', CXc, 290, 0);
     // 9.9 : l'équation de la scène 04 revient ; « flux » devient « circulation » ; 9.11 : le membre de gauche s'écrit
     const Ef = K.equation(ctx, { x: CXc, y: 470, size: 50, anchor: 'left', at: 'e1-recette+0.1',
       tex: '\\term{lhs}{\\phantom{\\cu{\\omega}(P) =\\;}}\\term{lim}{\\lim_{r\\to0}}\\,\\frac{\\term{nf}{\\text{flux}}}{\\term{den}{\\pi r^2}}' });
@@ -139,7 +152,7 @@ Scene.define({
     link(Ed, 'ix1', 'ix2', 'e1-croise+0.3', 0.4); link(Ed, 'iy1', 'iy2', 'e1-croise+0.5', 0.4);
     link(Ew, 'a1', 'b1', 'e1-croise+1.8', 0.95); link(Ew, 'a2', 'b2', 'e1-croise+2.1', 0.95);
 
-    ctx.S = { PX, PY, SC, T, U, toPx, cOf, rOf, slide, arrowsCanvas, pA, pB, signs, ssvg, chipFlux, veil, labP, parc, parcHead, dial, hand,
+    ctx.S = { PX, PY, SC, T, U, toPx, cOf, rOf, slide, arrowsCanvas, pA, pB, signs, ssvg, ficheFlux, ficheCirc, veil, labP, parc, parcHead, dial, hand,
       nSolid, nDash, tSolid, tDash, gath, gathHead, curl, sides, sqPart, sqBase, sqVec, topTravel, HALF, TL, tr, LIFE, BOX, picto, pictoArc, Ec, Ed, Ew };
   },
 
@@ -151,7 +164,14 @@ Scene.define({
     C.arrowsCanvas.style.opacity = 0.25;
     const dimA = 1 - 0.7 * seg(t, T.transition + 0.6, T.transition + 1.4, E.inOutSine);
     show(C.pA.root, dimA * (1 - seg(t, T.autre, T.autre + 0.4, E.linear)));
-    C.chipFlux.root.style.opacity = (+C.chipFlux.root.style.opacity || 0) * dimA;
+    // fiches : FLUX présente dès l'entrée ; en retrait, son mot passe à --muted plein et sa bordure pâlit
+    const fOut = 1 - seg(t, T.carre, T.carre + 0.4, E.linear), retrait = 1 - dimA;   // 0 → 0,7
+    const fx = C.ficheFlux, fc = C.ficheCirc, rk = retrait / 0.7;
+    show(fx.rect, fOut); show(fx.mot, fOut);
+    fx.mot.style.color = `color-mix(in srgb, var(--muted) ${(100 * rk).toFixed(1)}%, var(--chalk))`;
+    fx.rect.style.strokeOpacity = (1 - 0.6 * rk).toFixed(3);
+    const co = seg(t, T.circulation + 1.0, T.circulation + 1.4, E.linear) * fOut;
+    show(fc.rect, co); show(fc.mot, co);
     // les parts perpendiculaires en tirets (9.5) s'effacent avant le glissement : elles sortiraient du panneau
     const oo = 1 - seg(t, T.contre - 0.4, T.contre, E.linear);
     if (!C.others) C.others = Array.from(C.pB.root.querySelectorAll('path[stroke-dasharray="7 6"]'));

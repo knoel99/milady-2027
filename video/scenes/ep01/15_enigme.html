@@ -3,7 +3,7 @@
 <title>ep01.15 L'énigme des cellules</title>
 <!-- Storyboard ep01, scène ep01.15 (plans 15.1 à 15.7), narration P25.
      Même carte, même panneau qu'à la fin de la scène 14 (x 120 à 900, y 80 à 860, 780/2π ≈ 124 px par unité,
-     y vers le haut) ; calque de formule à 60 % toute la scène. Les compteurs « FLUX ÷ AIRE » sont calculés par
+     y vers le haut) ; formule du calque à 60 % toute la scène, légende pleine. Les compteurs « FLUX ÷ AIRE » sont calculés par
      quadrature (Kit.probe, 256 points) et affichent 0, jamais « −0 » (Kit.fmtFr). Aucun ψ. -->
 <link rel="stylesheet" href="../../vendor/katex/katex.min.css">
 <link rel="stylesheet" href="../../runtime/theme.css">
@@ -14,6 +14,7 @@
 <script src="../../runtime/components/field.js"></script>
 <script src="../../runtime/components/ep-kit.js"></script>
 <style>
+  .kit-formula { bottom: 212px; }   /* calque de formule remonté de 12 px : sa légende quitte la bande des sous-titres */
   .kit-readout.backed { background: var(--panel-a); padding: 4px 12px 2px; border-radius: 4px; }
   .kit-readout.small .ro-value { font-size: 36px; }
   .qmark { position: absolute; font-family: "Inter Display"; font-weight: 800; color: var(--chalk); line-height: 1; z-index: 47;
@@ -44,7 +45,7 @@ Scene.define({
     K.arrows(ctx, { F: Fpx, box: { x: X0 - step / 2, y: Y1 - SIDE - step / 2, w: 13 * step, h: 13 * step }, nx: 13, ny: 13, scale: 0.8, color: 'u', width: 3, at: -1 });
     K.tracers(ctx, { F: (px, py) => { const v = Fpx(px, py); return [v[0] * SC * 0.8, v[1] * SC * 0.8]; },
       n: 300, box: { x: X0, y: Y1 - SIDE, w: SIDE, h: SIDE }, color: 'u', alpha: 0.4, trail: 12, seed: 'ep01.15', at: -1, warmup: 4 });
-    // calque de formule, à 60 % jusqu'à la fin de la scène (opacité réglée dans render)
+    // calque de formule : la formule à 60 % jusqu'à la fin de la scène (opacité réglée dans render), la légende pleine
     const FL = K.formulaLayer(ctx, { label: 'Champ', items: [{ tex: '\\U = (\\sin x\\cos y,\\ -\\cos x\\sin y)', at: -1 }] });
 
     // ---------- 15.1 : pictogramme « sort » à droite de la carte ----------
@@ -68,9 +69,13 @@ Scene.define({
     // un cercle tracé dans le sens trigonométrique jusqu'à la fraction prog
     const arcD = (cx, cy, r, prog) => { const N = Math.max(8, Math.ceil(96 * prog)); let d = '';
       for (let i = 0; i <= N; i++) { const a = 2 * PI * prog * i / N; d += (i ? 'L' : 'M') + (cx + r * Math.cos(a)).toFixed(2) + ',' + (cy - r * Math.sin(a)).toFixed(2); } return d; };
-    const roPos = (t) => { const c = cOf(t), r = rOf(t), [px, py] = toPx(c[0] + r, c[1]); return [px + 22, py - 52]; };
+    // compteur à droite du cercle, gardé dans le cadre : il s'arrête à 14 px de son bord droit (x 900)
+    let RW = 260;
+    const roPos = (t) => { const c = cOf(t), r = rOf(t), [px, py] = toPx(c[0] + r, c[1]);
+      return [Math.min(px + 22, X0 + SIDE - 14 - RW), py - 52]; };
     const RO = K.readout(ctx, { label: 'Flux ÷ aire', value: (t) => big.value(t), digits: 2, at: 'e1-autreq+0.5', pos: roPos });
     RO.root.classList.add('backed'); RO.el.style.transformOrigin = '0 50%';
+    RO.el.textContent = '−0,00'; RW = Math.max(RW, Math.ceil(RO.root.offsetWidth)); RO.el.textContent = '';
 
     // ---------- 15.4 : douze petits cercles de 40 px, sur les droites de séparation et au milieu des cellules ----------
     const smallC = [[PI, 0.6], [PI, 4.0], [PI, 5.6], [0.9, PI], [2.3, PI], [4.0, PI], [5.5, PI],
@@ -96,7 +101,10 @@ Scene.define({
   render(t, ctx) {
     const K = Kit, S = Scene, seg = S.seg, E = S.ease;
     const { picG, T, PI, toPx, picArrows, cOf, rOf, bigPath, arcD, roPos, RO, smalls, Q, FL } = ctx.S;
-    if (FL) FL.root.style.opacity = (+FL.root.style.opacity * 0.6).toFixed(3);
+    if (FL) for (const r of FL.rows) {   // la formule à 60 %, la légende « CHAMP » reste pleine
+      const o = seg(t, r.a, r.a + 0.25, E.linear) * (Number.isFinite(r.b) ? 1 - seg(t, r.b, r.b + 0.25, E.linear) : 1);   // fondu de la ligne (Kit.formulaLayer)
+      r.d.style.opacity = (o * 0.6).toFixed(3);
+    }
 
     // 15.1 : les quatre flèches du pictogramme poussent vers l'extérieur
     picG.style.opacity = seg(t, T.autreq, T.autreq + 0.3, E.linear).toFixed(3);   // il se pose sur [e1-autreq]
@@ -127,7 +135,7 @@ Scene.define({
     const [rx, ry] = roPos(t);
     const qOn = seg(t, T.pourquoi + 0.2, T.pourquoi + 0.6, E.linear);
     const m = seg(t, T.ouverte + 0.2, T.ouverte + 1.0, E.inOutCubic);
-    const qx0 = rx + RO.root.offsetWidth + 30, qy0 = ry + 50, qx1 = 990, qy1 = 110;
+    const qx0 = 940, qy0 = ry + 50, qx1 = 990, qy1 = 110;   // à droite du cadre, à la hauteur du compteur
     Q.style.left = S.lerp(qx0, qx1, m).toFixed(1) + 'px'; Q.style.top = (S.lerp(qy0, qy1, m) - 60).toFixed(1) + 'px';
     Q.style.fontSize = '120px';
     Q.style.transform = `scale(${S.lerp(1, 0.45, m).toFixed(4)})`;

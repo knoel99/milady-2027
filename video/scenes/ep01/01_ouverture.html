@@ -121,12 +121,20 @@ Scene.define({
     const verdict = K.s('path', { d: `M${EC[0] - 80},${EC[1] + EH + 64}L${EC[0] + 80},${EC[1] + EH + 64}`, fill: 'none', stroke: muted, 'stroke-width': 3, 'stroke-linecap': 'butt' }, esvg);
     verdict.style.strokeDasharray = 160;
 
-    ctx.S = { T, arrows, A, B, dotA, dotQ, qm, slots, pc, outA, arc, arcHead, SL, empty, verdict, AK };
+    // voile --bg hors du cadre sûr pendant le zoom de 1.2 : le champ y tombe à 40 % (au-dessus de la carte, sous le stylo)
+    const vsvg = K.svgLayer(ctx, 11); vsvg.setAttribute('data-kit', 'voile-cadre-sur'); vsvg.setAttribute('data-qa', 'ignore');
+    const SF = K.SAFE;
+    const voile = K.s('path', { d: `M0,0H1920V1080H0Z M${SF.x0},${SF.y0}V${SF.y1}H${SF.x1}V${SF.y0}Z`, 'fill-rule': 'evenodd', fill: K.c('bg'), stroke: 'none' }, vsvg);
+    ctx.S = { cam, voile, T, arrows, A, B, dotA, dotQ, qm, slots, pc, outA, arc, arcHead, SL, empty, verdict, AK };
   },
 
   render(t, ctx) {
     const K = Kit, S = Scene, seg = S.seg, E = S.ease, TAU = Math.PI * 2;
     const { T, arrows, A, B, dotA, dotQ, qm, slots, pc, outA, arc, arcHead, SL, empty, verdict, AK } = ctx.S;
+
+    // voile hors du cadre sûr : 60 % de --bg à plein zoom (fond à 40 %), proportionnel à l'agrandissement
+    const zs = ctx.S.cam(t).s, vo = 0.6 * S.clamp((zs - 1) / 1.5);
+    ctx.S.voile.style.opacity = vo.toFixed(3); K.show(ctx.S.voile, vo > 0.001);
 
     // ---------- 1.1 : les flèches poussent depuis leur pied, balayage de gauche à droite ; 1.3 : mise en avant ----------
     const dim = 1 - 0.65 * seg(t, T.longueur, T.longueur + 0.4, E.linear) * (1 - seg(t, T.question - 0.9, T.question - 0.1, E.linear));

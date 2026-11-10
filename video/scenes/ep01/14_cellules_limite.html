@@ -20,6 +20,7 @@
 <style>
   .lab { position: absolute; transform: translate(0, -50%); white-space: nowrap; font-size: 36px; color: var(--muted); z-index: 18; }
   .lab .katex { font-size: 1em; }
+  .kit-formula { bottom: 212px; }   /* calque de formule remonté de 12 px : sa légende quitte la bande des sous-titres */
   .kit-readout.backed { background: var(--panel-a); padding: 4px 12px 2px; border-radius: 4px; }
 </style>
 </head><body><div id="stage"></div>
@@ -81,7 +82,7 @@ Scene.define({
       return { g, arc, hd, len };
     });
 
-    // ---------- 14.3 : calque de formule, non dite ; 14.4 : à 60 % jusqu'à la fin ----------
+    // ---------- 14.3 : calque de formule, non dite ; 14.4 : la formule à 60 % jusqu'à la fin, sa légende pleine ----------
     const FL = K.formulaLayer(ctx, { label: 'Champ', items: [{ tex: '\\U = (\\sin x\\cos y,\\ -\\cos x\\sin y)', at: 'e1-coin+0.5' }] });
 
     // ---------- 14.5 à 14.8 : le cercle qui rétrécit, à l'intérieur de la cellule ----------
@@ -147,7 +148,10 @@ Scene.define({
       K.show(c.g, p > 0 && cOut > 0);
     });
     // 14.4 : le calque de formule baisse à 60 %
-    if (FL) FL.root.style.opacity = (+FL.root.style.opacity * (1 - 0.4 * seg(t, T.paslire, T.paslire + 0.6, E.inOutSine))).toFixed(3);
+    // (la formule seule : la légende « CHAMP » reste --muted pleine)
+    if (FL) { const k = 1 - 0.4 * seg(t, T.paslire, T.paslire + 0.6, E.inOutSine); for (const r of FL.rows) {
+      const o = seg(t, r.a, r.a + 0.25, E.linear) * (Number.isFinite(r.b) ? 1 - seg(t, r.b, r.b + 0.25, E.linear) : 1);   // fondu de la ligne (Kit.formulaLayer)
+      r.d.style.opacity = (o * k).toFixed(3); } }
 
     // 14.6 : la courbe se trace du grand rayon vers le petit, au rythme du cercle
     const show = t >= T.varie;
