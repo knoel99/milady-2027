@@ -276,7 +276,7 @@ Perspective : transformation affine du dessin 2D (parallélogramme, inclinaison 
 | 10.11 | [e1-vitesseun] | Sous l'équation, un cadran `--muted` : un trait de référence fixe `--muted`, horizontal vers la droite ; une aiguille `--u` qui suit l'angle du rayon marqué ; entre les deux, un arc `--muted` étiqueté α, qui grandit dans le sens trigonométrique avec l'aiguille et repart de zéro à chaque tour. Aucun mot. Sous le cadran, $\dot\alpha_{\text{disque}} = 1$. | Rotation continue ; l'arc se dessine avec l'aiguille ; la formule s'écrit. | 3,6 s |
 | 10.12 | [e1-colle] | Second cadran à côté, même construction (trait de référence, arc α) : son aiguille `--chalk` suit l'aube marquée ; sous lui, $\dot\alpha_{\text{roue}} = 1$. Les deux aiguilles restent alignées ; l'aube marquée reste parallèle au rayon marqué. | Rotation continue ; au bout d'un tour, un trait bref `--chalk` sur les deux cadrans. | 4 s |
 | 10.13 | [e1-affiche] | Un cercle en tirets de 70 px, centré sur la roue et emporté avec elle ; son compteur « VORTICITÉ » (circulation ÷ aire, calculée) : 2. | Le cercle se trace, le compteur s'allume. | 2,8 s |
-| 10.14 | [e1-retiens] | Rapprochement : $\Omega_{\text{roue}} = 1$ glisse en face du compteur, $\omega = 2$ ; l'équation $\Omega_{\text{roue}} = \omega/2$ du haut entourée au `Kit.pen`. | Glissement de 0,6 s ; trait de 0,6 s. | 5,2 s |
+| 10.14 | [e1-retiens] | Rapprochement : $\dot\alpha_{\text{roue}} = 1$ glisse en face du compteur, $\omega = 2$ ; l'équation $\dot\alpha_{\text{roue}} = \omega/2$ du haut entourée au `Kit.pen`. | Glissement de 0,6 s ; trait de 0,6 s. | 5,2 s |
 
 ### ep01.11 · `11_cisaillement.html` · P19, P20 · 51 s
 
@@ -297,7 +297,7 @@ Cisaillement $\mathbf{u} = (y, 0)$, panneau de 1100 × 640 px à gauche (x 120 �
 | 11.11 | [e1-aubesbas] | Sur l'aube du bas, une flèche `--u` vers la gauche. | La flèche pousse. | 3,6 s |
 | 11.12 | [e1-horaire] | La roue tourne **dans le sens horaire** à ½ rad par seconde de scène ; une flèche courbe `--chalk` horaire à côté, sans chiffre. | Rotation continue jusqu'à la fin de la scène. | 3,2 s |
 | 11.13 | [e1-moinsun] | Cercle en tirets de 80 px autour de la roue, compteur « VORTICITÉ » : −1. Dans la colonne : $\omega = \partial_x u_y - \partial_y u_x = 0 - 1 = -1$. | Écriture terme à terme. | 2,4 s |
-| 11.14 | [e1-undemi] | En dessous : $\Omega_{\text{roue}} = \omega/2 = -\tfrac12$, la flèche courbe horaire posée à côté du signe moins : le signe moins est le sens horaire. Jamais « ½ » seul. | Écriture ; la flèche courbe glisse jusqu'au signe. | 3,2 s |
+| 11.14 | [e1-undemi] | En dessous : $\dot\alpha_{\text{roue}} = \omega/2 = -\tfrac12$, la flèche courbe horaire posée à côté du signe moins : le signe moins est le sens horaire. Jamais « ½ » seul. | Écriture ; la flèche courbe glisse jusqu'au signe. | 3,2 s |
 | 11.15 | [e1-lecon1] | Le panneau se réduit en vignette dans le coin haut droit : lignes droites, roue qui tourne, ω = −1. La vignette reste jusqu'à la fin de la scène. | Réduction de 0,8 s. | 4,8 s |
 
 ### ep01.12 · `12_tourbillon.html` · P21, P22 · 58 s
@@ -310,7 +310,7 @@ Tourbillon ponctuel $\mathbf{u} = \dfrac{(-y, x)}{x^2 + y^2}$, sens trigonométr
 | 12.2 | [e1-autour] | Flèches du tourbillon ; cinq lignes de courant circulaires `--u`. | Flèches de l'extérieur vers l'intérieur ; lignes tracées en 1,2 s. | 3,2 s |
 | 12.3 | [e1-diminue] | À droite, $\lvert\mathbf{u}\rvert = \dfrac{1}{r}$, et un petit schéma : r est le segment `--muted` du centre à un point. | Formule avec la voix. | 4 s |
 | 12.4 | [e1-double] | Sur un rayon `--muted`, deux flèches s'allument, à r = 1,5 et r = 3 (150 et 300 px) : la seconde est exactement deux fois plus courte (intensités 0,67 et 0,33, sous le seuil). Deux graduations `--muted` « r » et « 2r ». | Pulsation des deux flèches. | 4 s |
-| 12.5 | [e1-loincentre] | La roue se pose sur le cercle R = 2,2 et fait le tour du centre (un tour en 9 s de scène, en unités de temps de la scène), **sans pivoter** : l'aube marquée reste pointée vers le haut. Un trait `--muted` fixe à côté sert de référence verticale. | Orbite continue. | 4,4 s |
+| 12.5 | [e1-loincentre] | La roue se pose sur le cercle R = 2,2 et fait le tour du centre dans le sens trigonométrique, celui du fluide, à vitesse constante (un tour en 9 s de scène), **sans pivoter** : l'aube marquée reste pointée vers le haut. Un trait `--muted` fixe à côté sert de référence verticale. | Orbite continue. | 4,4 s |
 | 12.6 | [e1-cabine] | Des fantômes de la roue à 25 %, laissés tous les 45° de son orbite : tous ont l'aube marquée vers le haut. | Un fantôme se dépose à chaque passage ; orbite continue. | 4,8 s |
 | 12.7 | [e1-surplace] | Cadran à droite, son aiguille `--chalk` suit l'aube marquée : immobile. | — | 2,4 s |
 | 12.8 | [e1-bords] | Les fantômes s'effacent. La roue s'arrête à droite du centre (position 3 h). Zoom de 1,8× sur elle. | Ralenti jusqu'à l'arrêt, zoom de 0,8 s. | 2,8 s |
@@ -319,7 +319,7 @@ Tourbillon ponctuel $\mathbf{u} = \dfrac{(-y, x)}{x^2 + y^2}$, sens trigonométr
 | 12.11 | [e1-courbure] | L'arc de la trajectoire en `--chalk`, de part et d'autre de la roue. | Tracé de l'arc. | 2 s |
 | 12.12 | [e1-virage] | Une seconde flèche courbe `--u` trigonométrique, de même taille, sous la roue : ce que ferait la courbure. | La flèche courbe se dessine. | 3,6 s |
 | 12.13 | [e1-annulent] | Les deux flèches courbes se rapprochent et s'annulent ; l'aiguille du cadran reste immobile. | Glissement de 0,8 s, puis fondu des deux. | 4,4 s |
-| 12.14 | [e1-exo2] | Chip `plain` dans la colonne : « MODULE 1 · EXERCICE 2 (C) », un petit crayon `--chalk` à côté. Dessous, la question à calculer : $\mathbf{u} = \dfrac{(-y,\ x)}{x^2 + y^2}$ et $\omega = \partial_x u_y - \partial_y u_x = \ ?$ pour $r > 0$. | Le chip s'écrit, puis la question ; le crayon trace un petit trait. | 5,6 s |
+| 12.14 | [e1-exo2] | Chip `plain` dans la colonne : « MODULE 1 · EXERCICE 2 (C) », un petit crayon `--chalk` à côté. Dessous, la question, présentée comme à calculer : $\mathbf{u} = \dfrac{(-y,\ x)}{x^2 + y^2}$ et $\omega = \partial_x u_y - \partial_y u_x = \ ?$ pour $r > 0$ ; le point d'interrogation reste, aucune valeur ne le remplace dans ce plan. À côté du champ, en `--muted`, $\Gamma = 2\pi$ : le tourbillon de l'écran est celui de l'énoncé, $\mathbf{u} = \frac{\Gamma}{2\pi r}\mathbf{e}_\theta$, pour cette valeur. | Le chip s'écrit, puis la question, puis $\Gamma = 2\pi$ ; le crayon trace un petit trait. | 5,6 s |
 | 12.15 | [e1-lecon2] | Retour au plan large. En vignettes côte à côte, à droite : le cisaillement (lignes droites, roue qui tourne, $\omega = -1$) et le tourbillon (lignes courbes, roue qui ne tourne pas, $\omega = 0$ pour $r > 0$). | Les vignettes jouent leur mouvement en boucle courte. | 5,2 s |
 
 ### ep01.13 · `13_tourbillon_centre.html` · P23 · 30 s
@@ -377,11 +377,11 @@ Les deux pictogrammes de l'ouverture en colonne à gauche (x 160 à 360) ; chacu
 | 16.1 | [e1-retenir] | Les deux pictogrammes, « sort » en haut, « tourne » en bas. | Apparition échelonnée. | 1,2 s |
 | 16.2 | [e1-sortir] | En face de « sort » : $\nabla\cdot\mathbf{u} = \lim_{r\to0} \dfrac{\text{flux}}{\pi r^2} = \partial_x u_x + \partial_y u_y$. | Écriture ; le cercle du pictogramme rétrécit un peu et revient. | 5,6 s |
 | 16.3 | [e1-tourner] | En face de « tourne » : $\omega = \lim_{r\to0} \dfrac{\text{circulation}}{\pi r^2} = \partial_x u_y - \partial_y u_x$. | Écriture. | 3,6 s |
-| 16.4 | [e1-rouemoitie] | Sous la ligne de ω : $\Omega_{\text{roue}} = \omega/2$, avec une petite roue. | Écriture ; la roue fait un quart de tour **dans le sens trigonométrique**, comme pour ω > 0. | 4,4 s |
+| 16.4 | [e1-rouemoitie] | Sous la ligne de ω : $\dot\alpha_{\text{roue}} = \omega/2$, avec une petite roue. | Écriture ; la roue fait un quart de tour **dans le sens trigonométrique**, comme pour ω > 0. | 4,4 s |
 | 16.5 | [e1-rappelcis] | À droite, vignette du cisaillement de la scène 11 : lignes droites, roue qui tourne dans le sens horaire, $\omega = -1$. | La vignette joue sa boucle. | 5,2 s |
 | 16.6 | [e1-rappeltour] | En dessous, vignette du tourbillon de la scène 12 : lignes circulaires, roue qui fait le tour sans pivoter, $\omega = 0$ pour $r > 0$. | La vignette joue sa boucle. | 5,2 s |
 | 16.7 | [e1-crayon] | Les vignettes s'effacent ; à leur place, la carte d'exercices : « EXERCICES » en mono, puis trois lignes 1 (b) · 2 (b) · 2 (c) ; dessous, l'ancre « #exercices » en `--muted`. Petit crayon `--chalk`. | Lignes en cascade. | 2,4 s |
-| 16.8 | [e1-exos] | En face de chaque ligne, une miniature de l'image qu'elle met en calcul : 1 (b), les deux formules de gauche ; 2 (b), la roue du cisaillement ; 2 (c), la roue du tourbillon. | Les miniatures apparaissent une à une. | 4 s |
+| 16.8 | [e1-exos] | En face de chaque ligne, une miniature de l'image qu'elle met en calcul : 1 (b), les deux formules de gauche, posées à côté de la ligne sans signe d'égalité entre elles et l'énoncé (l'exercice les applique à un autre champ, en trois dimensions) ; 2 (b), la roue du cisaillement ; 2 (c), la roue du tourbillon. | Les miniatures apparaissent une à une. | 4 s |
 | 16.9 | [e1-suivant] | Tout baisse à 40 %, sauf un petit cercle en tirets au centre, qui se démultiplie en un carrelage de 3 × 2 carreaux dont le contour s'épaissit. | Carrelage en 1,2 s ; maintien, puis fondu au noir de 1 s en fin de scène (3 s de pause conseillée). | 4 s |
 
 ## 3. Contraintes physiques : où elles portent
