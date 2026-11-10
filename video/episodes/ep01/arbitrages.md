@@ -50,3 +50,11 @@ Linter (`tools/lint_narration.py`) : avant le découpage, une narration de 2 189
 Relectures des deux narrations : relecteur-physicien (ep01 : 3 importants, 7 mineurs ; ep02 : 3 importants, 5 mineurs ; rien de faux dans la voix), relecteur-ml (ep01 : rien ; ep02 : 1 important, la provenance de l'image FunDiff, et 3 mineurs), relecteur-langue (ep01 : 18 problèmes, surtout des pronoms ambigus ; ep02 : 12), apprenant (5/5 au quiz dans les deux épisodes ; décrochages surtout au tourbillon ponctuel d'ep01 et à l'anneau, au 4π et au calcul croisé d'ep02).
 
 Arbitrages : tout ce qui touche l'exactitude est retenu ; toutes les réécritures de langue sont retenues, celle de [e2-echo3] (« Carrelons ») passée au tutoiement ; des décrochages de l'apprenant, retenus ceux qui tiennent en une phrase (raison de chaque dérivée, limite du carrelage, rappel vorticité × aire, loi admise, 4π ralenti, plan annoncé) ; non retenus : la justification du gradient perpendiculaire aux lignes de niveau et la convention « grandes hauteurs à gauche », gardées comme contrainte d'image. Le dernier « cela » vague ([e1-riviere]) est corrigé par la session principale.
+
+## Storyboards ep01 et ep02
+
+Relectures : relecteur-physicien (ep01 : 2 importants, la notation Ω et un décompte 9 au lieu de 7 parts, et 10 mineurs ; ep02 : 2 importants, la ligne de niveau de Q′ sous le col et l'aimant aplati qui ferait croire à une coupe, et 7 mineurs), relecteur-ml (2 importants, les deux cartes de Fourier identiques en 18.4 et 19.2 et le décompte de la scène 09, 3 mineurs). Tous retenus (journaux des corrections de chaque storyboard).
+
+Tranché par la session principale : vitesse de rotation notée $\dot\alpha$ (α angle de l'aube marquée), Ω réservé à la région comme dans `specs/notations.md`, bible mise à jour ; l'arc « α » avancé en 10.6 ; « Ω_disque = 1 » du premier jet remplacé par $\dot\alpha_{\text{disque}} = 1$ ; [e2-r3] coupé en deux phrases pour dire « dans le sens horaire » sans dépasser 20 mots ; signes « + » et « − » au lieu du vert et du rouge, absents du thème. Vérifié par calcul : ψ(M) = 0,50 au-dessus du col (0,44), donc la ligne du marcheur de 13.15 entoure la seule bosse large.
+
+Restent à valider par l'auteur avant la construction : les écarts proposés de la section 5 de chaque storyboard.
