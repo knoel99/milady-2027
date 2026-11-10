@@ -1,0 +1,202 @@
+<!doctype html>
+<html lang="fr"><head><meta charset="utf-8">
+<title>ep01.04 La divergence</title>
+<!-- Storyboard ep01, scène ep01.04 (plans 4.1 à 4.9), narration P7.
+     Même champ, même panneau, même point P que la scène 03 : u = (x − 0,4y ; y + 0,4x), 100 px par unité, P en (620, 340).
+     Divergence 2 partout : le flux d'un cercle centré vaut 2πR², il quadruple quand le rayon double ; divisé par l'aire,
+     il vaut 2 pour les deux cercles. Les barres sous le panneau lisent les flux calculés par les cercles-sondes (quadrature).
+     Pictogrammes : gerbes en 1/r de la distance au centre du disque (sans divergence hors du disque) ; étiquettes accrochées
+     au disque du jet et au disque de la bonde. -->
+<link rel="stylesheet" href="../../vendor/katex/katex.min.css">
+<link rel="stylesheet" href="../../runtime/theme.css">
+<script src="../../vendor/katex/katex.min.js"></script>
+<script src="../../runtime/scene.js"></script>
+<script src="../../runtime/components/kit.js"></script>
+<script src="../../runtime/components/field.js"></script>
+<script src="../../runtime/components/equation.js"></script>
+<script src="../../runtime/components/ep-kit.js"></script>
+<style>
+  .lab { position: absolute; white-space: nowrap; font-size: 38px; color: var(--fg); z-index: 22; transform: translate(-50%, 0); }
+  .lab .katex { font-size: 1em; }
+  .barlab { position: absolute; font-size: 28px; color: var(--muted); z-index: 18; white-space: nowrap; transform: translateY(-50%); }
+</style>
+</head><body><div id="stage"></div>
+<script>
+Scene.define({
+  duration: 38.2,
+  register: 'night',
+  cues: { 'e1-grand': 0.4, 'e1-aire': 5.53, 'e1-retrecir': 8.98, 'e1-divergence': 12.5, 'e1-positive': 17.71, 'e1-negative': 22.99,
+    'e1-evier': 26.74, 'e1-quitte': 29.73, 'e1-nulle': 32.72 },
+  setup(ctx) {
+    const K = Kit, S = Scene, at = ctx.at, seg = S.seg, E = S.ease, TAU = Math.PI * 2;
+    const T = {}; for (const k of Object.keys(ctx.cues)) if (k.startsWith('e1-')) T[k.slice(3)] = at(k);
+    const PX = 620, PY = 340, SC = 100;
+    const toPx = (x, y) => [PX + SC * x, PY - SC * y];
+    const fromPx = (px, py) => [(px - PX) / SC, (PY - py) / SC];
+    const U = (x, y) => [x - 0.4 * y, y + 0.4 * x];
+    const chalk = K.c('chalk'), muted = K.c('muted'), ucol = K.c('u'), matter = K.c('matter'), mdark = K.c('matter-dark'), bg = K.c('bg');
+    const arrowEl = (p, w = 3.5) => K.s('path', { fill: ucol, stroke: ucol, 'stroke-width': w, 'stroke-linecap': 'round', 'stroke-linejoin': 'round' }, p);
+
+    // ---------- panneau (comme en 03, flèches à 25 %) ----------
+    const svgP = K.svgLayer(ctx, 4); svgP.setAttribute('data-kit', 'panneau');
+    K.s('rect', { x: 120, y: 100, width: 900, height: 720, fill: 'none', stroke: matter, 'stroke-width': 2 }, svgP);
+    const field = K.arrows(ctx, { F: (px, py) => { const v = U(...fromPx(px, py)); return [v[0], -v[1]]; },
+      box: { x: 120, y: 100, w: 900, h: 720 }, nx: 14, ny: 11, compress: { k: 10, threshold: 1e9 }, at: -1 });
+    field.canvas.style.opacity = 0.25;
+    const svgV = K.svgLayer(ctx, 11); svgV.setAttribute('data-kit', 'voiles');
+    const veilS = K.s('circle', { cx: PX, cy: PY, fill: K.rgba(chalk, 0.12) }, svgV), veilB = K.s('circle', { cx: PX, cy: PY, fill: K.rgba(chalk, 0.12) }, svgV);
+
+    // ---------- 4.1 à 4.3 : deux cercles-sondes, leurs flux en barres ----------
+    const rBig = (t) => S.lerp(1.8, 0.2, seg(t, T.retrecir, T.retrecir + 2.5, E.inOutCubic));
+    const big = K.probe(ctx, { toPx, F: U, circle: { c: [0, 0], r: rBig }, at: -1, z: 13 });
+    const small = K.probe(ctx, { toPx, F: U, circle: { c: [0, 0], r: 0.9 }, at: 'e1-grand', out: 'e1-retrecir', z: 13 });
+    const svg = K.svgLayer(ctx, 12); svg.setAttribute('data-kit', 'divergence');
+    const pDot = K.s('circle', { cx: PX, cy: PY, r: 8, fill: chalk }, svg);
+    const BX = 360, barS = K.s('rect', { x: BX, y: 832, height: 12, fill: ucol }, svg), barB = K.s('rect', { x: BX, y: 856, height: 12, fill: ucol }, svg);
+    const labF = K.el('div', { class: 'barlab mono', 'data-kit': 'barres' }, ctx.stage, K.upper('flux'));
+    const labFA = K.el('div', { class: 'barlab mono', 'data-kit': 'barres' }, ctx.stage, K.upper('flux ÷ aire'));
+    for (const l of [labF, labFA]) { l.style.left = '120px'; l.style.top = '850px'; }
+
+    // ---------- 4.2 à 4.4 : l'équation, construite dans l'ordre du récit ----------
+    K.equation(ctx, { x: 1180, y: 236, size: 58, anchor: 'left',
+      tex: '\\term{lhs}{\\nabla\\cdot\\U(P)}\\term{eq}{\\;=\\;}\\term{lim}{\\lim_{r\\to 0}}\\,\\term{fr}{\\dfrac{\\text{flux}}{\\pi r^2}}',
+      reveal: [['fr', 'e1-aire+0.3'], ['lim', 'e1-retrecir+0.4'], [['lhs', 'eq'], 'e1-divergence+0.3']] });
+
+    // ---------- vignettes ----------
+    const V1 = [1270, 510], V2 = [1480, 510], V3 = [1690, 510], VS = 0.38;
+    // vignette 1 : le robinet vu de dessus (la vignette du coin, scène 03)
+    const TC = [1480, 470];
+    const top1 = K.s('g', {}, svg);
+    K.s('rect', { x: 1250, y: 310, width: 460, height: 320, fill: K.rgba(matter, 0.12), stroke: matter, 'stroke-width': 3 }, top1);
+    K.s('circle', { cx: TC[0], cy: TC[1], r: 20, fill: 'none', stroke: muted, 'stroke-width': 2.5, 'stroke-dasharray': '6 5' }, top1);
+    const gerbe1 = [];
+    for (let k = 0; k < 12; k++) for (const r of [30, 128]) {
+      const a = k * TAU / 12 + (r > 100 ? TAU / 24 : 0);
+      gerbe1.push({ a, r, L: 2400 / r, el: arrowEl(top1) });
+    }
+    // vignette 2 : quatre flèches vers un point, puis l'évier (vue de côté), puis la bonde vue de dessus
+    const g2 = K.s('g', {}, svg);
+    const four = [0, 1, 2, 3].map(() => arrowEl(g2, 3.5));
+    const v2dot = K.s('circle', { cx: V2[0], cy: V2[1], r: 6, fill: chalk }, g2);
+    const big2 = K.s('g', {}, svg);                               // dessin agrandi, centré sur (1480, 520), taille 1
+    const BC = [1480, 520];
+    K.s('rect', { x: 1220, y: 340, width: 520, height: 360, rx: 14, fill: bg, stroke: muted, 'stroke-width': 2 }, big2);
+    const sideS = K.s('g', {}, big2), topS = K.s('g', {}, big2);
+    K.s('path', { d: 'M1290,420L1335,610L1625,610L1670,420', fill: 'none', stroke: matter, 'stroke-width': 10, 'stroke-linejoin': 'round' }, sideS);
+    K.s('rect', { x: 1452, y: 606, width: 56, height: 14, fill: mdark }, sideS);
+    K.s('path', { d: 'M1468,620L1468,690M1492,620L1492,690', stroke: mdark, 'stroke-width': 6, fill: 'none' }, sideS);
+    K.s('path', { d: 'M1340,598L1452,602M1508,602L1620,598', stroke: K.rgba(ucol, 0.35), 'stroke-width': 12, fill: 'none', 'stroke-linecap': 'round' }, sideS);
+    const flowL = K.s('path', { d: 'M1345,598L1460,602', stroke: ucol, 'stroke-width': 5, fill: 'none', 'stroke-dasharray': '18 14' }, sideS);
+    const flowR = K.s('path', { d: 'M1615,598L1500,602', stroke: ucol, 'stroke-width': 5, fill: 'none', 'stroke-dasharray': '18 14' }, sideS);
+    const flowD = K.s('path', { d: 'M1480,602L1480,690', stroke: ucol, 'stroke-width': 8, fill: 'none', 'stroke-dasharray': '18 12' }, sideS);
+    const sinkTop = K.s('rect', { x: 1280, y: 360, width: 400, height: 320, rx: 40, fill: K.rgba(matter, 0.12), stroke: matter, 'stroke-width': 4 }, topS);
+    K.s('circle', { cx: BC[0], cy: BC[1], r: 26, fill: mdark, stroke: matter, 'stroke-width': 2 }, topS);
+    const gerbe2 = [];
+    for (let k = 0; k < 12; k++) for (const r of [90, 150]) {
+      const a = k * TAU / 12 + (r > 100 ? TAU / 24 : 0);
+      gerbe2.push({ a, r, L: 5400 / r, el: arrowEl(topS, 4) });
+    }
+    const eye = K.s('g', {}, svg);
+    K.s('path', { d: 'M-30,0Q0,-20 30,0Q0,20 -30,0Z', fill: bg, stroke: muted, 'stroke-width': 3 }, eye);
+    K.s('circle', { r: 7, fill: muted }, eye);
+    // vignette 3 : flèches parallèles qui traversent un cercle
+    const clip = K.s('clipPath', { id: 'v3clip' }, K.s('defs', {}, svg));
+    K.s('rect', { x: V3[0] - 90, y: V3[1] - 90, width: 180, height: 180 }, clip);
+    const g3 = K.s('g', { 'clip-path': 'url(#v3clip)' }, svg);
+    K.s('circle', { cx: V3[0], cy: V3[1], r: 50, fill: 'none', stroke: chalk, 'stroke-width': 3, 'stroke-dasharray': '12 9' }, g3);
+    const par = [];
+    for (const dy of [-42, -14, 14, 42]) for (let k = 0; k < 3; k++) par.push({ dy, k, el: arrowEl(g3, 3.5) });
+    // étiquettes et leurs filets
+    const lab = (tex) => K.el('div', { class: 'lab', html: K.tex(tex, false) }, ctx.stage);
+    const L1 = lab('\\nabla\\cdot\\U > 0'), L2 = lab('\\nabla\\cdot\\U < 0'), L3 = lab('\\nabla\\cdot\\U = 0');
+    [[L1, V1], [L2, V2], [L3, V3]].forEach(([l, v]) => { l.style.left = v[0] + 'px'; l.style.top = (v[1] + 112) + 'px'; });
+    const lead = () => K.s('path', { fill: 'none', stroke: muted, 'stroke-width': 2.5 }, K.svgLayer(ctx, 21));
+    const lead1 = lead(), lead2 = lead();
+
+    ctx.S = { T, PX, PY, field, veilS, veilB, rBig, big, small, pDot, barS, barB, labF, labFA, BX, V1, V2, V3, VS, TC, top1, gerbe1, g2, four, v2dot, big2, BC, sideS, topS,
+      flowL, flowR, flowD, gerbe2, eye, g3, par, L1, L2, L3, lead1, lead2 };
+  },
+
+  render(t, ctx) {
+    const K = Kit, S = Scene, seg = S.seg, E = S.ease, TAU = Math.PI * 2;
+    const C = ctx.S, T = C.T;
+
+    // ---------- 4.1 : le petit cercle se trace ; barres de flux ----------
+    const cp = seg(t, T.grand, T.grand + 0.8, E.inOutSine);
+    if (cp > 0 && cp < 1) {
+      let poly = `${C.PX}px ${C.PY}px`;
+      for (let i = 0; i <= 40; i++) { const a = TAU * cp * i / 40; poly += `, ${(C.PX + 300 * Math.cos(a)).toFixed(1)}px ${(C.PY - 300 * Math.sin(a)).toFixed(1)}px`; }
+      C.small.root.style.clipPath = `polygon(${poly})`;
+    } else C.small.root.style.clipPath = 'none';
+    const bp = seg(t, T.grand + 0.6, T.grand + 1.4, E.outCubic), dv = seg(t, T.aire + 0.6, T.aire + 1.4, E.inOutCubic);
+    const len = (P) => S.lerp(30 * P.flux(t), 150 * P.flux(t) / P.area(t), dv) * bp;
+    const sOff = 1 - seg(t, T.retrecir, T.retrecir + 0.3, E.linear);
+    C.barS.setAttribute('width', Math.max(0, len(C.small)).toFixed(2)); C.barS.style.opacity = sOff;
+    C.barB.setAttribute('width', Math.max(0, len(C.big)).toFixed(2));
+    const lf = seg(t, T.grand + 0.6, T.grand + 1.0, E.linear), sw = seg(t, T.aire + 0.6, T.aire + 1.0, E.linear);
+    C.labF.style.opacity = lf * (1 - sw); K.show(C.labF, lf * (1 - sw) > 0.01);
+    C.labFA.style.opacity = sw; K.show(C.labFA, sw > 0.01);
+    // 4.2 : voiles des disques, remplissage radial
+    const vp = seg(t, T.aire, T.aire + 0.6, E.outCubic);
+    C.veilB.setAttribute('r', (100 * C.rBig(t) * vp).toFixed(2)); C.veilS.setAttribute('r', (90 * vp).toFixed(2)); C.veilS.style.opacity = sOff;
+    C.pDot.setAttribute('r', (8 - 4 * seg(t, T.retrecir + 1.5, T.retrecir + 2.5, E.linear)).toFixed(2));
+
+    // ---------- 4.5 : la vignette du coin descend à sa place ; ses flèches repoussent ----------
+    const d1 = seg(t, T.positive, T.positive + 0.8, E.inOutCubic);
+    const v1x = S.lerp(1712, C.V1[0], d1), v1y = S.lerp(132, C.V1[1], d1);
+    C.top1.setAttribute('transform', `translate(${v1x.toFixed(2)},${v1y.toFixed(2)}) scale(${C.VS}) translate(${-C.TC[0]},${-C.TC[1]})`);
+    const gr = t < T.positive ? 1 : seg(t, T.positive + 0.8, T.positive + 1.5, E.outCubic);
+    for (const a of C.gerbe1) {
+      const x0 = C.TC[0] + a.r * Math.cos(a.a), y0 = C.TC[1] - a.r * Math.sin(a.a), L = a.L * gr;
+      a.el.setAttribute('d', gr > 0.02 ? K.arrowPath(x0, y0, x0 + L * Math.cos(a.a), y0 - L * Math.sin(a.a), 12) : '');
+    }
+    const fr = [seg(t, T.positive + 0.6, T.positive + 1.0, E.linear), seg(t, T.negative, T.negative + 0.4, E.linear), seg(t, T.nulle, T.nulle + 0.4, E.linear)];
+    // pendant l'agrandissement de la vignette 2, les étiquettes voisines s'effacent
+    const enl = seg(t, T.evier, T.evier + 0.6, E.inOutCubic) * (1 - seg(t, T.quitte + 1.6, T.quitte + 2.2, E.inOutCubic));
+    const hideL = 1 - seg(t, T.evier, T.evier + 0.3, E.linear) * (1 - seg(t, T.quitte + 2.0, T.quitte + 2.4, E.linear));
+    C.top1.style.opacity = hideL;
+    const l1 = seg(t, T.positive + 1.4, T.positive + 1.8, E.linear) * hideL;
+    C.L1.style.opacity = l1; K.show(C.L1, l1 > 0.01);
+    C.lead1.setAttribute('d', `M${C.V1[0]},${C.V1[1] + 108}L${C.V1[0]},${C.V1[1] + 10}`); C.lead1.style.opacity = l1;
+
+    // ---------- 4.6 : quatre flèches arrivent sur un point ----------
+    const g4 = seg(t, T.negative + 0.2, T.negative + 0.8, E.outCubic), fourOff = 1 - seg(t, T.evier + 0.2, T.evier + 0.5, E.linear);
+    C.four.forEach((el, k) => {
+      const a = Math.PI / 4 + k * Math.PI / 2, r0 = 78, r1 = 14, rr = S.lerp(r0, r1, g4);
+      el.setAttribute('d', g4 > 0 ? K.arrowPath(C.V2[0] + r0 * Math.cos(a), C.V2[1] - r0 * Math.sin(a), C.V2[0] + rr * Math.cos(a), C.V2[1] - rr * Math.sin(a), 12) : '');
+    });
+    C.g2.style.opacity = fr[1] * fourOff; K.show(C.g2, fr[1] * fourOff > 0);
+    // 4.7 : l'évier, agrandi au centre de la colonne ; 4.8 : bascule en vue de dessus, puis retour à la taille de la vignette
+    const bs = S.lerp(0.36, 1, enl), bx = S.lerp(C.V2[0], C.BC[0], enl), by = S.lerp(C.V2[1], C.BC[1] + 50, enl);
+    const bOn = seg(t, T.evier, T.evier + 0.3, E.linear);
+    C.big2.setAttribute('transform', `translate(${bx.toFixed(2)},${by.toFixed(2)}) scale(${bs.toFixed(4)}) translate(${-C.BC[0]},${-C.BC[1]})`);
+    C.big2.style.opacity = bOn; K.show(C.big2, bOn > 0);
+    const f1 = seg(t, T.quitte + 0.4, T.quitte + 0.9, E.inCubic), f2 = seg(t, T.quitte + 0.9, T.quitte + 1.4, E.outCubic);
+    C.sideS.setAttribute('transform', `translate(0,610) scale(1,${Math.max(0.001, 1 - f1).toFixed(4)}) translate(0,-610)`); K.show(C.sideS, f1 < 1);
+    C.topS.setAttribute('transform', `translate(0,${C.BC[1]}) scale(1,${Math.max(0.001, f2).toFixed(4)}) translate(0,${-C.BC[1]})`); K.show(C.topS, f2 > 0);
+    const fl = (t - T.evier) * 60;   // filet d'eau continu (décalage de tirets, fonction pure de t)
+    C.flowL.style.strokeDashoffset = (-fl).toFixed(1); C.flowR.style.strokeDashoffset = (-fl).toFixed(1); C.flowD.style.strokeDashoffset = (-fl).toFixed(1);
+    const g2r = seg(t, T.quitte + 1.0, T.quitte + 1.6, E.outCubic);
+    for (const a of C.gerbe2) {   // gerbe convergente en 1/r : chaque flèche s'arrête avant le disque de la bonde
+      const x0 = C.BC[0] + a.r * Math.cos(a.a), y0 = C.BC[1] - a.r * Math.sin(a.a), L = a.L * g2r;
+      a.el.setAttribute('d', g2r > 0.02 ? K.arrowPath(x0, y0, x0 - L * Math.cos(a.a), y0 + L * Math.sin(a.a), 16) : '');
+    }
+    const up = seg(t, T.quitte, T.quitte + 0.4, E.inOutCubic), eOn = seg(t, T.quitte, T.quitte + 0.2, E.linear) * (1 - seg(t, T.quitte + 1.5, T.quitte + 1.8, E.linear));
+    C.eye.setAttribute('transform', `translate(1290,${S.lerp(530, 430, up).toFixed(1)})`); C.eye.style.opacity = eOn; K.show(C.eye, eOn > 0);
+    const l2 = seg(t, T.negative + 0.6, T.negative + 1.0, E.linear) * hideL;
+    C.L2.style.opacity = l2; K.show(C.L2, l2 > 0.01);
+    // filet : vers le point (4.6), puis vers le bord du disque de la bonde (4.8 : rayon 26 × 0,36)
+    const hook = seg(t, T.quitte + 2.0, T.quitte + 2.4, E.inOutSine), yEnd = S.lerp(C.V2[1] + 8, C.V2[1] + 26 * 0.36 + 3, hook);
+    C.lead2.setAttribute('d', `M${C.V2[0]},${C.V2[1] + 108}L${C.V2[0]},${yEnd.toFixed(2)}`); C.lead2.style.opacity = l2;
+
+    // ---------- 4.9 : flux uniforme à travers un cercle ----------
+    C.g3.style.opacity = fr[2]; K.show(C.g3, fr[2] > 0);
+    for (const p of C.par) {
+      const x = C.V3[0] - 135 + (((t - T.nulle) * 28 + p.k * 90 + (p.dy === -14 || p.dy === 42 ? 45 : 0)) % 270 + 270) % 270, y = C.V3[1] + p.dy;
+      p.el.setAttribute('d', K.arrowPath(x, y, x + 42, y, 12));
+    }
+    const l3 = seg(t, T.nulle + 0.5, T.nulle + 0.9, E.linear);
+    C.L3.style.opacity = l3; K.show(C.L3, l3 > 0.01);
+  },
+});
+</script></body></html>

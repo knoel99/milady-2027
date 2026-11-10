@@ -162,7 +162,8 @@ Scene.define({
         const gg = g * (1 - back);
         if (gg > 0) {
           let sx = sl.x; if (!sl.out) sx = S.lerp(sl.x, sl.x + 2 * C.COLDX, sup);   // la colonne entrante glisse sur la sortante
-          x0 = S.lerp(x0, sx, gg); y0 = S.lerp(y0, sl.y0, gg); x1 = S.lerp(x1, sx, gg); y1 = S.lerp(y1, sl.y1, gg);
+          const gap = Math.min(1.5, Math.abs(sl.y1 - sl.y0) / 4) * Math.sign(sl.y1 - sl.y0);   // petit jour entre deux parts empilées
+          x0 = S.lerp(x0, sx, gg); y0 = S.lerp(y0, sl.y0 + gap, gg); x1 = S.lerp(x1, sx, gg); y1 = S.lerp(y1, sl.y1 - gap, gg);
           hl = 10 * (1 - gg); w = S.lerp(4, 12, gg);
           if (gg >= 1) { o *= (1 - cancel); if (sup > 0 && i === 0) o *= 1 - 0.75 * lin(T.srcdeux + 0.5, T.srcdeux + 0.8); }
           if (back > 0) o *= 1 - colGone;

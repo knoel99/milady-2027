@@ -1,0 +1,248 @@
+<!doctype html>
+<html lang="fr"><head><meta charset="utf-8">
+<title>ep01.08 Incompressible</title>
+<!-- Storyboard ep01, scène ep01.08 (plans 8.1 à 8.8), narration P14.
+     Écoulement plan sans divergence, sans nom à l'écran : u = (−y, x) / (1 + x² + y²), y vers le haut.
+     Panneau 1000 × 720 (x 120 à 1120, y 120 à 840), unité 120 px, centre (620, 480).
+     Transport exact en forme fermée : un point tourne autour du centre de l'angle τ / (1 + r²), τ = λ (t − t_tache) ;
+     λ est réglé sur les repères pour que l'écart d'angle entre les bords intérieur (r = 0,8) et extérieur (r = 1,8)
+     de la tache atteigne 2,5 rad au repère e1-volume (fin de 8.5). Aire : formule du lacet sur 512 points transportés.
+     8.6 : ellipsoïde de demi-axes λ × 1/√λ × 1/√λ (produit 1). 8.7 : rivière, vitesse V0·W0 / largeur (débit conservé),
+     étirement de la goutte = v(x) / V0 le long du courant, 1/√ dans les deux autres directions. -->
+<link rel="stylesheet" href="../../vendor/katex/katex.min.css">
+<link rel="stylesheet" href="../../runtime/theme.css">
+<script src="../../vendor/katex/katex.min.js"></script>
+<script src="../../runtime/scene.js"></script>
+<script src="../../runtime/components/kit.js"></script>
+<script src="../../runtime/components/field.js"></script>
+<script src="../../runtime/components/equation.js"></script>
+<script src="../../runtime/components/motifs.js"></script>
+<script src="../../runtime/components/ep-kit.js"></script>
+</head><body><div id="stage"></div>
+<script>
+Scene.define({
+  duration: 30.0,
+  register: 'night',
+  cues: { 'e1-incomp': 0.4, 'e1-nom': 4.97, 'e1-tache': 6.75, 'e1-deforme': 10.75, 'e1-garde': 13.04, 'e1-volume': 18.6,
+    'e1-riviere': 21.89, 'e1-comprimer': 26.38 },
+  setup(ctx) {
+    const K = Kit, S = Scene, at = ctx.at, seg = S.seg, E = S.ease;
+    const T = {};
+    for (const k of Object.keys(ctx.cues)) if (k.startsWith('e1-')) T[k.slice(3)] = at(k);
+    const UNIT = 120, OX = 620, OY = 480, PB = { x: 120, y: 120, w: 1000, h: 720 };
+    const toPx = (x, y) => [OX + UNIT * x, OY - UNIT * y];
+    const F = (x, y) => { const q = 1 + x * x + y * y; return [-y / q, x / q]; };
+    // λ : 2,5 rad d'écart entre r = 0,8 et r = 1,8 au repère e1-volume
+    const LAM = (2.5 / (1 / 1.64 - 1 / 4.24)) / Math.max(1, T.volume - T.tache);
+    const tauOf = (t) => LAM * Math.max(0, t - T.tache);
+    const move = (p, tau) => { const r2 = p[0] * p[0] + p[1] * p[1], a = tau / (1 + r2), c = Math.cos(a), s = Math.sin(a); return [c * p[0] - s * p[1], s * p[0] + c * p[1]]; };
+    const chalk = K.c('chalk'), muted = K.c('muted'), ucol = K.c('u');
+
+    // ---------- groupe du panneau (baisse à 30 % en 8.6, s'efface en 8.7) ----------
+    const back = K.svgLayer(ctx, 4); back.setAttribute('data-kit', 'panel');
+    K.s('rect', { x: PB.x, y: PB.y, width: PB.w, height: PB.h, fill: 'none', stroke: K.c('matter'), 'stroke-width': 2 }, back);
+    const A = K.arrows(ctx, { F: (px, py) => { const v = F((px - OX) / UNIT, (OY - py) / UNIT); return [v[0], -v[1]]; }, box: PB, nx: 14, ny: 10,
+      compress: { k: 110, threshold: 1e9 }, color: 'u', width: 3, at: 'e1-incomp-0.4', z: 7 });
+    const TL = K.canvasLayer(ctx, 6, null, null, { reset: true }); TL.canvas.setAttribute('data-kit', 'tracers');
+    const rt = S.rng('tracers08');
+    const TR = Array.from({ length: 230 }, () => ({ r: Math.sqrt(0.01 + 0.99 * rt()) * 5.0, th: rt() * 2 * Math.PI }));
+    const divEq = K.equation(ctx, { x: 1480, y: 120, size: 80, anchor: 'center', at: 'e1-incomp+0.2', tex: '\\nabla\\cdot\\U = 0' });
+    K.pen(ctx, { kind: 'underline', target: divEq.root.querySelector('.katex-html') || divEq.root, at: 'e1-nom+0.05', dur: 0.4, out: 'e1-riviere', width: 5 });
+
+    const svg = K.svgLayer(ctx, 12); svg.setAttribute('data-kit', 'scene08');
+    const mk = (tag, a, p = svg, txt = null) => K.s(tag, a, p, txt);
+    const panelG = mk('g', {});
+    // tache : disque de rayon 0,5 centré en (1,3 ; 0), contour suivi sur 512 points
+    const NB = 512, blob0 = Array.from({ length: NB }, (_, i) => { const a = 2 * Math.PI * i / NB; return [1.3 + 0.5 * Math.cos(a), 0.5 * Math.sin(a)]; });
+    const shoelace = (P) => { let s = 0; for (let i = 0; i < P.length; i++) { const p = P[i], q = P[(i + 1) % P.length]; s += p[0] * q[1] - q[0] * p[1]; } return s / 2; };
+    const AREA0 = shoelace(blob0);
+    const blob = mk('path', { fill: K.rgba(chalk, 0.2), stroke: chalk, 'stroke-width': 3, 'stroke-linejoin': 'round' }, panelG);
+    let cacheT = NaN, cacheA = 1, cacheD = '';
+    const blobAt = (t) => {
+      if (t === cacheT) return;
+      const tau = tauOf(t), pts = blob0.map((p) => move(p, tau));
+      cacheA = shoelace(pts) / AREA0; cacheT = t;
+      cacheD = pts.map((p, i) => { const q = toPx(p[0], p[1]); return (i ? 'L' : 'M') + q[0].toFixed(2) + ',' + q[1].toFixed(2); }).join('') + 'Z';
+    };
+
+    // jauges : contour --muted, remplissage, trait fixe à la hauteur de départ
+    const gaugeLayer = K.svgLayer(ctx, 14); gaugeLayer.setAttribute('data-kit', 'gauges');
+    const gauge = (label, labelTop) => {
+      const g = mk('g', {}, gaugeLayer);
+      const box = mk('rect', { fill: 'none', stroke: muted, 'stroke-width': 2 }, g);
+      const fill = mk('rect', { fill: K.rgba(muted, 0.55) }, g);
+      const ref = mk('line', { stroke: muted, 'stroke-width': 3 }, g);
+      const txt = mk('text', { class: 'kt-mono', 'text-anchor': 'middle' }, g, K.upper(label));
+      return { g, set(x, base, v, H0, o) {
+        const top = base - 1.4 * H0;
+        box.setAttribute('x', x - 13); box.setAttribute('y', top); box.setAttribute('width', 26); box.setAttribute('height', 1.4 * H0);
+        const h = Math.max(0, Math.min(1.4, v)) * H0;
+        fill.setAttribute('x', x - 11); fill.setAttribute('y', base - h); fill.setAttribute('width', 22); fill.setAttribute('height', h);
+        ref.setAttribute('x1', x - 24); ref.setAttribute('x2', x + 24); ref.setAttribute('y1', base - H0); ref.setAttribute('y2', base - H0);
+        txt.setAttribute('x', x); txt.setAttribute('y', labelTop ? top - 16 : base + 38);
+        g.style.opacity = o; K.show(g, o > 0.001);
+      } };
+    };
+    const gArea = gauge('AIRE', false), gVol = gauge('VOLUME', false), gDrop = gauge('VOLUME', true);
+
+    // 8.5 : trois petits cercles en tirets (30 px de diamètre) portés par la tache, compteurs « FLUX ÷ AIRE »
+    const seeds = [[1.02, 0.15], [1.3, -0.2], [1.62, 0.1]];
+    const cAt = (k) => (t) => move(seeds[k], tauOf(t));
+    const probes = seeds.map((_, k) => K.probe(ctx, { toPx, F, mode: 'flux', perArea: true, circle: { c: cAt(k), r: 15 / UNIT }, at: 'e1-garde', out: 'e1-volume', z: 13 }));
+    const RY = [560, 430, 300];   // le cercle intérieur prend de l'avance et finit en bas : fils sans croisement
+    const ro = probes.map((P, k) => K.readout(ctx, { label: 'FLUX ÷ AIRE', value: (t) => P.value(t), digits: 2, x: 1236, y: RY[k], size: 44, at: 'e1-garde+0.2', out: 'e1-volume' }));
+    const leaders = seeds.map(() => mk('line', { stroke: muted, 'stroke-width': 2, 'stroke-dasharray': '3 6' }));
+
+    // 8.6 : boule et ellipsoïde en perspective
+    const defs = mk('defs', {});
+    const grad = mk('radialGradient', { id: 'ball08', cx: '38%', cy: '34%', r: '70%' }, defs);
+    mk('stop', { offset: '0%', 'stop-color': chalk, 'stop-opacity': 0.55 }, grad);
+    mk('stop', { offset: '100%', 'stop-color': chalk, 'stop-opacity': 0.08 }, grad);
+    const ballG = mk('g', {});
+    const ball = mk('ellipse', { fill: 'url(#ball08)', stroke: chalk, 'stroke-width': 3 }, ballG);
+    const equator = mk('ellipse', { fill: 'none', stroke: chalk, 'stroke-width': 2.5, 'stroke-dasharray': '12 9' }, ballG);
+    const BX = 1420, BY = 480, BR = 100, EPS = 0.34;
+
+    // 8.7 : la rivière
+    const riverG = mk('g', {});
+    const W0 = 300, V0 = 330;
+    const wOf = (x) => W0 * (1 - 0.25 * Math.exp(-Math.pow((x - 960) / 260, 2)));
+    const ycOf = (x) => 560 + 14 * Math.sin(x / 380);
+    const vOf = (x) => V0 * W0 / wOf(x);
+    const farY = (x) => ycOf(x) - 0.42 * wOf(x), nearY = (x) => ycOf(x) + 0.58 * wOf(x);
+    const XS = []; for (let x = 40; x <= 1880; x += 4) XS.push(x);
+    const line = (f, dy = 0) => XS.map((x, i) => (i ? 'L' : 'M') + x + ',' + (f(x) + dy).toFixed(1)).join('');
+    const clipR = mk('clipPath', { id: 'river08' }, defs); mk('rect', { x: 96, y: 56, width: 1728, height: 824 }, clipR);
+    const rG = mk('g', { 'clip-path': 'url(#river08)' }, riverG);
+    mk('path', { d: line(farY) + XS.slice().reverse().map((x) => 'L' + x + ',' + nearY(x).toFixed(1)).join('') + 'Z', fill: K.rgba(ucol, 0.14) }, rG);
+    mk('path', { d: line(farY), fill: 'none', stroke: K.c('matter'), 'stroke-width': 5 }, rG);
+    mk('path', { d: line(farY, -22), fill: 'none', stroke: K.c('matter'), 'stroke-width': 2.5 }, rG);
+    mk('path', { d: line(nearY), fill: 'none', stroke: K.c('matter'), 'stroke-width': 6 }, rG);
+    mk('path', { d: line(nearY, 34), fill: 'none', stroke: K.c('matter'), 'stroke-width': 3 }, rG);
+    // temps de parcours T(x) = ∫ dx / v, et son inverse (table, pas de 2 px)
+    const TX = [], XT = []; { let acc = 0; for (let x = 0; x <= 2000; x += 2) { TX.push(acc); XT.push(x); acc += 2 / vOf(x + 1); } }
+    const xOfT = (tt) => { let lo = 0, hi = TX.length - 1; if (tt <= 0) return 0; if (tt >= TX[hi]) return XT[hi];
+      while (hi - lo > 1) { const m = (lo + hi) >> 1; if (TX[m] <= tt) lo = m; else hi = m; } const f = (tt - TX[lo]) / (TX[hi] - TX[lo]); return XT[lo] + 2 * f; };
+    const tOfX = (x) => { const i = Math.min(TX.length - 2, Math.max(0, Math.floor(x / 2))), f = (x - XT[i]) / 2; return TX[i] + f * (TX[i + 1] - TX[i]); };
+    const TTOT = TX[TX.length - 1];
+    const rr = S.rng('river08');
+    const RT = Array.from({ length: 80 }, () => ({ eta: -0.88 + 1.76 * rr(), off: rr() * TTOT }));
+    const streaks = mk('path', { fill: 'none', stroke: ucol, 'stroke-width': 2.5, 'stroke-linecap': 'round', opacity: 0.6 }, rG);
+    const gradD = mk('radialGradient', { id: 'drop08', cx: '36%', cy: '32%', r: '72%' }, defs);
+    mk('stop', { offset: '0%', 'stop-color': chalk, 'stop-opacity': 0.95 }, gradD);
+    mk('stop', { offset: '100%', 'stop-color': chalk, 'stop-opacity': 0.35 }, gradD);
+    const drop = mk('ellipse', { fill: 'url(#drop08)', stroke: chalk, 'stroke-width': 2.5 }, riverG);
+    const DX0 = 260, DR = 26;
+
+    // 8.8 : deux seringues fermées, un même poids sur chaque piston
+    const syrG = mk('g', {});
+    const SX = [760, 1160], BOT = 770, PH0 = 360, PLH = 18, ROD = 190;
+    const syr = SX.map((x, i) => {
+      const g = mk('g', {}, syrG);
+      const fluid = mk('rect', { x: x - 66, width: 132, fill: i ? K.rgba(ucol, 0.6) : 'none' }, g);
+      const dots = i ? [] : Array.from({ length: 14 }, (_, k) => ({ el: mk('circle', { r: 4, fill: muted }, g), u: S.rng('air' + k)(), v: S.rng('airv' + k)() }));
+      mk('path', { d: `M${x - 70},330 L${x - 70},${BOT} L${x - 22},${BOT + 14} L${x - 12},${BOT + 34} L${x + 12},${BOT + 34} L${x + 22},${BOT + 14} L${x + 70},${BOT} L${x + 70},330`, fill: 'none', stroke: K.c('matter'), 'stroke-width': 4, 'stroke-linejoin': 'round' }, g);
+      mk('rect', { x: x - 16, y: BOT + 34, width: 32, height: 12, rx: 3, fill: K.c('matter-dark'), stroke: K.c('matter'), 'stroke-width': 2 }, g);   // bouchon
+      mk('line', { x1: x - 104, x2: x + 104, y1: 330, y2: 330, stroke: K.c('matter'), 'stroke-width': 8, 'stroke-linecap': 'round' }, g);   // collerette
+      const plunger = mk('g', {}, g);
+      mk('rect', { x: -66, y: 0, width: 132, height: PLH, rx: 3, fill: K.c('matter-dark'), stroke: K.c('matter'), 'stroke-width': 2 }, plunger);
+      mk('rect', { x: -8, y: -ROD, width: 16, height: ROD, fill: K.c('matter') }, plunger);
+      mk('rect', { x: -60, y: -ROD - 12, width: 120, height: 12, rx: 3, fill: K.c('matter') }, plunger);
+      mk('rect', { x: -70, y: -ROD - 12 - 80, width: 140, height: 80, rx: 6, fill: K.c('matter-dark'), stroke: K.c('matter'), 'stroke-width': 2 }, plunger);   // le poids
+      return { x, fluid, dots, plunger, drop: i ? 0.015 : 0.5 };
+    });
+
+    ctx.S = { T, UNIT, OX, OY, PB, toPx, F, LAM, tauOf, move, A, TL, TR, divEq, panelG, blob, blobAt, get area() { return cacheA; }, get blobD() { return cacheD; },
+      gArea, gVol, gDrop, probes, ro, leaders, cAt, RY, ballG, ball, equator, BX, BY, BR, EPS, riverG, streaks, RT, xOfT, tOfX, TTOT, ycOf, wOf, vOf, farY, nearY,
+      drop, DX0, DR, V0, syrG, syr, BOT, PH0, PLH };
+  },
+
+  render(t, ctx) {
+    const K = Kit, S = Scene, seg = S.seg, E = S.ease;
+    const C = ctx.S, T = C.T, { UNIT, OX, OY, PB, toPx } = C;
+    const lin = (a, b) => seg(t, a, b, E.linear);
+    const riv = lin(T.riviere, T.riviere + 0.5), dimP = 1 - 0.7 * lin(T.volume, T.volume + 0.5);
+    const panelO = dimP * (1 - riv);
+
+    // ---------- panneau ----------
+    C.A.canvas.style.opacity = (0.6 * panelO).toFixed(3);
+    const g = C.TL.g; g.clearRect(0, 0, 1920, 1080);
+    const aT = 0.3 * lin(T.incomp, T.incomp + 0.8) * panelO;
+    if (aT > 0.001) {
+      g.save(); g.beginPath(); g.rect(PB.x, PB.y, PB.w, PB.h); g.clip();
+      g.globalAlpha = aT; g.strokeStyle = K.c('u'); g.lineWidth = 2.2; g.lineCap = 'round'; g.beginPath();
+      for (const q of C.TR) {
+        const w = C.LAM / (1 + q.r * q.r), th = q.th + w * t, rp = q.r * UNIT, a0 = -th, tr = Math.max(0.05, w * 0.9);
+        g.moveTo(OX + rp * Math.cos(a0), OY + rp * Math.sin(a0)); g.arc(OX, OY, rp, a0, a0 + tr, false);
+      }
+      g.stroke(); g.restore();
+    }
+    for (const el of [ctx.stage.querySelector('[data-kit="panel"]')]) el.style.opacity = (1 - riv).toFixed(3);
+    C.divEq.root.style.opacity = (1 - riv).toFixed(3);
+
+    // tache
+    const bo = lin(T.tache, T.tache + 0.4) * panelO;
+    C.panelG.style.opacity = 1; K.show(C.blob, bo > 0.001);
+    if (bo > 0.001) {
+      C.blobAt(t);
+      const grow = seg(t, T.tache, T.tache + 0.4, E.outCubic);
+      C.blob.setAttribute('d', C.blobD); C.blob.style.opacity = bo;
+      const c0 = toPx(...C.move([1.3, 0], C.tauOf(t)));
+      C.blob.setAttribute('transform', grow < 1 ? `translate(${c0[0]},${c0[1]}) scale(${grow.toFixed(3)}) translate(${-c0[0]},${-c0[1]})` : '');
+    }
+    // jauge AIRE (aire calculée du polygone transporté)
+    const ao = bo * (1 - lin(T.volume, T.volume + 0.4)) / Math.max(1e-6, dimP);
+    if (ao > 0.001) C.gArea.set(1680, 770, C.area, 260, ao); else C.gArea.set(1680, 770, 1, 260, 0);
+    // fils des compteurs
+    const lo = lin(T.garde + 0.2, T.garde + 0.6) * (1 - lin(T.volume, T.volume + 0.3));
+    C.leaders.forEach((L, k) => {
+      K.show(L, lo > 0.001); if (lo <= 0.001) return;
+      const p = toPx(...C.cAt(k)(t)), q = [1224, C.RY[k] + 46], d = Math.hypot(q[0] - p[0], q[1] - p[1]) || 1;
+      L.setAttribute('x1', (p[0] + 18 * (q[0] - p[0]) / d).toFixed(1)); L.setAttribute('y1', (p[1] + 18 * (q[1] - p[1]) / d).toFixed(1));
+      L.setAttribute('x2', q[0]); L.setAttribute('y2', q[1]); L.style.opacity = lo;
+    });
+
+    // ---------- 8.6 : boule → ellipsoïde, demi-axes λ × 1/√λ × 1/√λ ----------
+    const bp = lin(T.volume + 0.3, T.volume + 0.7) * (1 - riv);
+    const lam = 1 + seg(t, T.volume + 0.8, T.volume + 2.3, E.inOutSine);
+    const a = C.BR * lam, b = C.BR / Math.sqrt(lam), c = C.BR / Math.sqrt(lam);
+    C.ball.setAttribute('cx', C.BX); C.ball.setAttribute('cy', C.BY); C.ball.setAttribute('rx', a.toFixed(2)); C.ball.setAttribute('ry', b.toFixed(2));
+    C.equator.setAttribute('cx', C.BX); C.equator.setAttribute('cy', C.BY); C.equator.setAttribute('rx', a.toFixed(2)); C.equator.setAttribute('ry', (c * C.EPS).toFixed(2));
+    C.ballG.style.opacity = bp; K.show(C.ballG, bp > 0.001);
+    C.gVol.set(1680, 770, (a * b * c) / Math.pow(C.BR, 3), 260, bp);
+
+    // ---------- 8.7 : rivière ----------
+    const ro = riv * (1 - lin(T.comprimer, T.comprimer + 0.4));
+    C.riverG.style.opacity = ro; K.show(C.riverG, ro > 0.001);
+    if (ro > 0.001) {
+      let d = '';
+      for (const q of C.RT) {
+        const tt = ((t - T.riviere + q.off) % C.TTOT + C.TTOT) % C.TTOT, x1 = C.xOfT(tt), x0 = C.xOfT(Math.max(0, tt - 0.09));
+        if (x1 - x0 < 2) continue;
+        const yy = (x) => C.ycOf(x) + (q.eta >= 0 ? 0.58 : 0.42) * q.eta * C.wOf(x) * 0.92;
+        d += `M${x0.toFixed(1)},${yy(x0).toFixed(1)}L${x1.toFixed(1)},${yy(x1).toFixed(1)}`;
+      }
+      C.streaks.setAttribute('d', d);
+      const t0 = T.riviere + 0.3, xd = Math.min(1700, C.xOfT(C.tOfX(C.DX0) + Math.max(0, t - t0))), yd = C.ycOf(xd) + 10;
+      const l = C.vOf(xd) / C.V0;                       // étirement le long du courant ; 1/√l dans les deux autres directions
+      C.drop.setAttribute('cx', xd.toFixed(1)); C.drop.setAttribute('cy', yd.toFixed(1));
+      C.drop.setAttribute('rx', (C.DR * l).toFixed(2)); C.drop.setAttribute('ry', (C.DR / Math.sqrt(l)).toFixed(2));
+      const gd = lin(T.riviere + 0.4, T.riviere + 0.8) * ro;
+      C.gDrop.set(xd, yd - C.DR - 30, (l * (1 / Math.sqrt(l)) * (1 / Math.sqrt(l))), 100, gd);
+    } else C.gDrop.set(0, 0, 1, 100, 0);
+
+    // ---------- 8.8 : seringues ----------
+    const so = lin(T.comprimer + 0.1, T.comprimer + 0.5);
+    C.syrG.style.opacity = so; K.show(C.syrG, so > 0.001);
+    if (so > 0.001) {
+      const p = seg(t, T.comprimer + 0.6, T.comprimer + 1.6, E.inOutSine);
+      for (const s of C.syr) {
+        const L0 = C.BOT - C.PH0 - C.PLH, L = L0 * (1 - s.drop * p), yp = C.BOT - L - C.PLH;
+        s.plunger.setAttribute('transform', `translate(${s.x},${yp.toFixed(2)})`);
+        s.fluid.setAttribute('y', (yp + C.PLH).toFixed(2)); s.fluid.setAttribute('height', L.toFixed(2));
+        for (const dt of s.dots) { dt.el.setAttribute('cx', (s.x - 54 + 108 * dt.u).toFixed(1)); dt.el.setAttribute('cy', (yp + C.PLH + 10 + (L - 20) * dt.v).toFixed(1)); }
+      }
+    }
+  },
+});
+</script></body></html>
