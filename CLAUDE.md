@@ -82,6 +82,8 @@ make test              # test de bout en bout du moteur (distinct du make test d
 
 L'effort reste en medium ; on monte en high seulement si un résultat vérifiable déçoit, et au-delà on change de modèle plutôt que d'effort. Pas d'ultracode comme mode de session : le mot-clé ultracode est réservé aux tâches répétées sur de nombreux éléments indépendants et vérifiables, en nommant le modèle de chaque étape.
 
+**Vérifier le modèle avant une tâche.** Au début de chaque nouvelle tâche, lire le modèle et l'effort de la session (outil `get_session` en cloud, sinon me les demander). S'ils ne conviennent pas à la tâche, le dire en une ligne avant de commencer : modèle et effort conseillés, raison, et commande à taper (`/model`, `/effort`). Puis continuer sans attendre ma réponse, sauf si la tâche est longue ou coûteuse. Ne rien dire quand le réglage convient.
+
 ## Profil de l'apprenant
 
 Hypothèses du parcours écrit (`prep/index.qmd`, sections `{#objectifs}` et `{#prerequis}` de chaque module).
