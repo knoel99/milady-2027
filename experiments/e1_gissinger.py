@@ -11,7 +11,7 @@ We learn the law p(Q, D, V | Gamma) by conditional flow matching and compare:
   A. baseline (flow matching);
   B. baseline + data augmentation by the symmetry;
   C. equivariant velocity field (exact symmetry by construction);
-  C_court. same architecture as C, reduced training budget (biased model);
+  C_short. same architecture as C, reduced training budget (biased model);
   D_*. exponential tilting on the stationarity identities (constraint in law);
   E_C. projection of each sample of C onto dE/dt = 0 (sample-by-sample constraint);
   F_*. fine-tuning with a stationarity loss (Liouville identities imposed at every Gamma,
@@ -20,7 +20,7 @@ We also estimate the frequency of zero crossings of D (reversals and excursions)
 the generated law alone, using Rice's formula, and compare it with the simulations.
 
 Usage: python3 e1_gissinger.py [--quick]
-Outputs: results/e1_gissinger[_quick].json, results/e1_echantillons[_quick].npz
+Outputs: results/e1_gissinger[_quick].json, results/e1_samples[_quick].npz
 """
 from __future__ import annotations
 
@@ -93,7 +93,7 @@ def simulate(gammas, n_traj, t_burn, t_keep, every, dt=0.01, seed=0):
     for i, gam in enumerate(gammas):
         sl = slice(i * n_traj, (i + 1) * n_traj)
         data[float(gam)] = {"x": arr[sl].reshape(-1, 3),
-                            "taux_passages": float(crossings[sl].sum() / (n_traj * t_keep)),
+                            "crossing_rate": float(crossings[sl].sum() / (n_traj * t_keep)),
                             "P(D>0)": float((arr[sl][..., 1] > 0).mean())}
     return data
 
@@ -219,8 +219,8 @@ def main(quick=False, reverse=False, train_only=False):
 
     stats = {}
     for gam in sorted(ref_data):
-        stats[str(gam)] = {"taux_passages_simulation": ref_data[gam]["taux_passages"],
-                           "taux_rice_reference": rice_rate(ref_data[gam]["x"]),
+        stats[str(gam)] = {"simulation_crossing_rate": ref_data[gam]["crossing_rate"],
+                           "rice_rate_reference": rice_rate(ref_data[gam]["x"]),
                            "P(|D|<0.25)_ref": float((np.abs(ref_data[gam]["x"][:, 1]) < 0.25).mean())}
         if gam in train_data:
             stats[str(gam)]["P(D>0)_train"] = train_data[gam]["P(D>0)"]
@@ -249,16 +249,16 @@ def main(quick=False, reverse=False, train_only=False):
 
     iters = 3000 if quick else 12000
     variants = {"A_reference": ("plain", False, iters), "B_augmentation": ("plain", True, iters),
-                "C_equivariant": ("sym", False, iters), "C_court": ("sym", False, max(iters // 10, 300))}
+                "C_equivariant": ("sym", False, iters), "C_short": ("sym", False, max(iters // 10, 300))}
     seeds = [0] if quick else [0, 1]  # two seeds (shared-CPU compute constraint)
     n_gen = 4000 if quick else 10000
     grid = np.concatenate([G_TRAIN, G_TEST])
     results = {"config": {"mu": MU, "nu": NU, "G_train": G_TRAIN.tolist(), "G_test": G_TEST.tolist(),
-                          "G_fine": G_FINE.tolist(), "trajectoires_par_Gamma": n_traj, "duree_gardee": t_keep,
+                          "G_fine": G_FINE.tolist(), "trajectories_per_Gamma": n_traj, "kept_duration": t_keep,
                           "iters": {k: v[2] for k, v in variants.items()}, "seeds": seeds, "n_gen": n_gen,
-                          "pas_ODE_Heun": 50, "largeur_MLP": 256, "profondeur_MLP": 4, "h_Rice": H_RICE,
-                          "inclinaison_reg": 1.0, "reglage_fin": {"beta": 20.0, "gammas_par_pas": 8, "echantillons_par_gamma": 128, "pas_Heun_differentiable": 8, "lr": 5e-4}},
-               "donnees": stats, "entrainement": {}}
+                          "heun_ode_steps": 50, "mlp_width": 256, "mlp_depth": 4, "h_Rice": H_RICE,
+                          "tilting_reg": 1.0, "finetuning": {"beta": 20.0, "gammas_per_step": 8, "samples_per_gamma": 128, "differentiable_heun_steps": 8, "lr": 5e-4}},
+               "data": stats, "training": {}}
     gens, models = {}, {}
     jobs = [(vname, cfg, seed) for vname, cfg in variants.items() for seed in seeds]
     if reverse:
@@ -283,23 +283,23 @@ def main(quick=False, reverse=False, train_only=False):
                     c = torch.full((n_gen,), float(cnorm(gam)))
                     z = sample_ode(model, c, (n_gen, 3), steps=50)
                     g[float(gam)] = from_z(z.numpy().astype(np.float64))
-                info = {"temps_entrainement_s": tsec, "perte_finale": hist[-1][1],
-                        "temps_generation_s_par_1000": (time.time() - t0) / (len(grid) * n_gen / 1000)}
+                info = {"training_time_s": tsec, "final_loss": hist[-1][1],
+                        "generation_time_s_per_1000": (time.time() - t0) / (len(grid) * n_gen / 1000)}
                 return {"state": {k: v.clone() for k, v in model.state_dict().items()}, "gens": g, "info": info}
             out = cached(f"{vname}_s{seed}{q}", run)
             model.load_state_dict(out["state"]); model.eval()
             models[(vname, seed)] = model
             for gam, xg in out["gens"].items():
                 gens[(vname, seed, gam)] = xg
-            results["entrainement"].setdefault(vname, {})[f"seed{seed}"] = out["info"]
+            results["training"].setdefault(vname, {})[f"seed{seed}"] = out["info"]
 
     # Fine-tunings (F: with stationarity loss; F0: control without the loss)
     import copy
     sd = generator_terms(np.concatenate([train_data[g]["x"] for g in G_TRAIN]),
                          np.concatenate([np.full(len(train_data[g]["x"]), g) for g in G_TRAIN]), MONO_TRAIN).std(0)
     ft_iters = 200 if quick else 800
-    ft_jobs = [(b, t, beta, pre, seed) for b, t in (("C_equivariant", "C"), ("C_court", "Ccourt"))
-               for beta, pre in ((20.0, "F_stationnarite_"), (0.0, "F0_temoin_")) for seed in seeds]
+    ft_jobs = [(b, t, beta, pre, seed) for b, t in (("C_equivariant", "C"), ("C_short", "Cshort"))
+               for beta, pre in ((20.0, "F_stationarity_"), (0.0, "F0_control_")) for seed in seeds]
     if reverse:
         ft_jobs = ft_jobs[::-1]
     for base_name, tag, beta, prefix, seed in ft_jobs:
@@ -319,21 +319,21 @@ def main(quick=False, reverse=False, train_only=False):
                         z = sample_ode(model, torch.full((n_gen,), float(cnorm(gam))), (n_gen, 3), steps=50)
                         g[float(gam)] = from_z(z.numpy().astype(np.float64))
                     return {"state": {k: v.clone() for k, v in model.state_dict().items()}, "gens": g,
-                            "info": {"temps_reglage_fin_s": tsec, "iters": ft_iters, "beta": beta}}
+                            "info": {"finetuning_time_s": tsec, "iters": ft_iters, "beta": beta}}
                 out = cached(f"{vname}_s{seed}{q}", run_ft)
                 model.load_state_dict(out["state"]); model.eval()
                 models[(vname, seed)] = model
                 for gam, xg in out["gens"].items():
                     gens[(vname, seed, gam)] = xg
-                results["entrainement"].setdefault(vname, {})[f"seed{seed}"] = out["info"]
+                results["training"].setdefault(vname, {})[f"seed{seed}"] = out["info"]
 
     if train_only:
         print("training only: cache filled, stopping", flush=True)
         return
     # Post-processing in law (D) and per sample (E)
     tilt_info = {}
-    for base_name, dname in (("C_equivariant", "D_inclinaison_C"), ("C_court", "D_inclinaison_Ccourt"),
-                             ("A_reference", "D_inclinaison_A")):
+    for base_name, dname in (("C_equivariant", "D_tilting_C"), ("C_short", "D_tilting_Cshort"),
+                             ("A_reference", "D_tilting_A")):
         for seed in seeds:
             for gam in grid:
                 gam = float(gam)
@@ -346,14 +346,14 @@ def main(quick=False, reverse=False, train_only=False):
                 gens[(dname, seed, gam)] = xb[systematic_resample(wb, len(xb), seed=seed)]
                 tilt_info[(dname, seed, gam)] = {"ess_frac_a": info["ess_frac"], "ess_frac_b": float(1 / np.sum(wb ** 2) / len(xb))}
                 # Equal-size comparison baseline: the unweighted half b
-                gens[(base_name + "_moitie", seed, gam)] = xb
+                gens[(base_name + "_half", seed, gam)] = xb
     for seed in seeds:
         for gam in grid:
             gens[("E_projection_C", seed, float(gam))] = project_energy_balance(gens[("C_equivariant", seed, float(gam))], float(gam))
 
-    names = ["A_reference", "B_augmentation", "C_equivariant", "C_court", "D_inclinaison_A", "D_inclinaison_C",
-             "D_inclinaison_Ccourt", "E_projection_C", "F_stationnarite_C", "F0_temoin_C", "F_stationnarite_Ccourt",
-             "F0_temoin_Ccourt", "A_reference_moitie", "C_equivariant_moitie", "C_court_moitie"]
+    names = ["A_reference", "B_augmentation", "C_equivariant", "C_short", "D_tilting_A", "D_tilting_C",
+             "D_tilting_Cshort", "E_projection_C", "F_stationarity_C", "F0_control_C", "F_stationarity_Cshort",
+             "F0_control_Cshort", "A_reference_half", "C_equivariant_half", "C_short_half"]
     evals = {}
     for vname in names:
         for split, gg in (("train", G_TRAIN), ("test", G_TEST)):
@@ -365,24 +365,24 @@ def main(quick=False, reverse=False, train_only=False):
                 for seed in seeds:
                     x = gens[(vname, seed, gam)]
                     per_seed.append({
-                        "energie": energy_distance(to_z(x), to_z(ref), n=3000, seed=seed),
+                        "energy": energy_distance(to_z(x), to_z(ref), n=3000, seed=seed),
                         "sw1": sliced_w1(to_z(x), to_z(ref), seed=seed),
                         "asym": abs(float((x[:, 1] > 0).mean()) - 0.5),
-                        "pont": float((np.abs(x[:, 1]) < 0.25).mean()),
-                        "liou_train_moy": float(liouville_residual(x, gam, MONO_TRAIN, ref).mean()),
-                        "liou_test_moy": float(liouville_residual(x, gam, MONO_TEST, ref).mean()),
-                        "dEdt_moy": float(dEdt(x, gam).mean()),
+                        "bridge": float((np.abs(x[:, 1]) < 0.25).mean()),
+                        "liou_train_mean": float(liouville_residual(x, gam, MONO_TRAIN, ref).mean()),
+                        "liou_test_mean": float(liouville_residual(x, gam, MONO_TEST, ref).mean()),
+                        "dEdt_mean": float(dEdt(x, gam).mean()),
                         "dEdt_std": float(dEdt(x, gam).std()),
-                        "taux_rice": rice_rate(x),
+                        "rice_rate": rice_rate(x),
                     })
                 agg = {k: [float(np.mean([p[k] for p in per_seed])), float(np.std([p[k] for p in per_seed]))]
                        for k in per_seed[0]}
                 agg["Gamma"] = gam
                 agg["n"] = len(gens[(vname, seeds[0], gam)])
-                agg["pont_ref"] = float((np.abs(ref[:, 1]) < 0.25).mean())
+                agg["bridge_ref"] = float((np.abs(ref[:, 1]) < 0.25).mean())
                 agg["dEdt_std_ref"] = float(dEdt(ref, gam).std())
-                agg["taux_simulation"] = ref_data[gam]["taux_passages"]
-                agg["taux_rice_ref"] = rice_rate(ref)
+                agg["simulation_rate"] = ref_data[gam]["crossing_rate"]
+                agg["rice_rate_ref"] = rice_rate(ref)
                 key = vname if vname.startswith("D_") else None
                 if key:
                     agg["ess_frac_b"] = float(np.mean([tilt_info[(vname, s, gam)]["ess_frac_b"] for s in seeds]))
@@ -400,7 +400,7 @@ def main(quick=False, reverse=False, train_only=False):
             e.append(energy_distance(to_z(sub), to_z(ref), n=3000, seed=1))
             l1.append(liouville_residual(sub, float(gam), MONO_TRAIN, ref).mean())
             l2.append(liouville_residual(sub, float(gam), MONO_TEST, ref).mean())
-        floors[label] = {"energie": float(np.mean(e)), "liou_train_moy": float(np.mean(l1)), "liou_test_moy": float(np.mean(l2))}
+        floors[label] = {"energy": float(np.mean(e)), "liou_train_mean": float(np.mean(l1)), "liou_test_mean": float(np.mean(l2))}
 
     summary = {}
     for vname in names:
@@ -408,14 +408,14 @@ def main(quick=False, reverse=False, train_only=False):
         for split in ("train", "test"):
             rows = evals[vname][split]
             summary[vname][split] = {k: float(np.mean([r[k][0] for r in rows]))
-                                     for k in ("energie", "sw1", "asym", "liou_train_moy", "liou_test_moy", "dEdt_std")}
-            summary[vname][split]["erreur_pont"] = float(np.mean([abs(r["pont"][0] - r["pont_ref"]) for r in rows]))
-            summary[vname][split]["erreur_taux_rice"] = float(np.mean([abs(r["taux_rice"][0] - r["taux_simulation"]) for r in rows]))
+                                     for k in ("energy", "sw1", "asym", "liou_train_mean", "liou_test_mean", "dEdt_std")}
+            summary[vname][split]["bridge_error"] = float(np.mean([abs(r["bridge"][0] - r["bridge_ref"]) for r in rows]))
+            summary[vname][split]["rice_rate_error"] = float(np.mean([abs(r["rice_rate"][0] - r["simulation_rate"]) for r in rows]))
             if "ess_frac_b" in rows[0]:
                 summary[vname][split]["ess_frac_b"] = float(np.mean([r["ess_frac_b"] for r in rows]))
-    summary["planchers_bruit_MC"] = floors
+    summary["mc_noise_floors"] = floors
     summary["reference"] = {"dEdt_std": float(np.mean([r["dEdt_std_ref"] for r in evals["A_reference"]["test"]])),
-                            "erreur_taux_rice_ref": float(np.mean([abs(r["taux_rice_ref"] - r["taux_simulation"]) for r in evals["A_reference"]["test"]]))}
+                            "rice_rate_error_ref": float(np.mean([abs(r["rice_rate_ref"] - r["simulation_rate"]) for r in evals["A_reference"]["test"]]))}
 
     # Fine grid around the threshold: model C (seed 0), large sample for Rice
     model = models[("C_equivariant", seeds[0])]
@@ -427,29 +427,29 @@ def main(quick=False, reverse=False, train_only=False):
         x = from_z(z.numpy().astype(np.float64))
         ref = fine_data[float(gam)]["x"]
         torch.manual_seed(5000)
-        zf = sample_ode(models[("F_stationnarite_C", seeds[0])], torch.full((n_big,), float(cnorm(gam))), (n_big, 3), steps=50)
+        zf = sample_ode(models[("F_stationarity_C", seeds[0])], torch.full((n_big,), float(cnorm(gam))), (n_big, 3), steps=50)
         xf = from_z(zf.numpy().astype(np.float64))
-        fine.append({"Gamma": float(gam), "taux_simulation": fine_data[float(gam)]["taux_passages"],
-                     "taux_rice_modele_F": rice_rate(xf), "pont_modele_F": float((np.abs(xf[:, 1]) < 0.25).mean()),
-                     "taux_rice_ref": rice_rate(ref), "taux_rice_modele": rice_rate(x),
-                     "pont_ref": float((np.abs(ref[:, 1]) < 0.25).mean()), "pont_modele": float((np.abs(x[:, 1]) < 0.25).mean()),
-                     "V_q99_ref": float(np.quantile(ref[:, 2], 0.99)), "V_q99_modele": float(np.quantile(x[:, 2], 0.99)),
-                     "dans_entrainement": bool(np.any(np.isclose(G_TRAIN, gam)))})
+        fine.append({"Gamma": float(gam), "simulation_rate": fine_data[float(gam)]["crossing_rate"],
+                     "rice_rate_model_F": rice_rate(xf), "bridge_model_F": float((np.abs(xf[:, 1]) < 0.25).mean()),
+                     "rice_rate_ref": rice_rate(ref), "rice_rate_model": rice_rate(x),
+                     "bridge_ref": float((np.abs(ref[:, 1]) < 0.25).mean()), "bridge_model": float((np.abs(x[:, 1]) < 0.25).mean()),
+                     "V_q99_ref": float(np.quantile(ref[:, 2], 0.99)), "V_q99_model": float(np.quantile(x[:, 2], 0.99)),
+                     "in_training": bool(np.any(np.isclose(G_TRAIN, gam)))})
         if abs(gam - 0.9) < 1e-9 or abs(gam - 0.85) < 1e-9:
-            gens[("C_grand", 0, float(gam))] = x[:8000]
-    results["grille_fine"] = fine
+            gens[("C_large", 0, float(gam))] = x[:8000]
+    results["fine_grid"] = fine
     results["evaluation"] = evals
-    results["resume"] = summary
-    results["duree_totale_s"] = time.time() - t_start
+    results["summary"] = summary
+    results["total_duration_s"] = time.time() - t_start
     suffix = "_quick" if quick else ""
     save_json(results, f"e1_gissinger{suffix}.json")
     store = {f"{v}|{g}": gens[(v, seeds[0], float(g))][:4000] for v in names for g in grid}
     store.update({f"ref|{g}": ref_data[g]["x"][:8000] for g in ref_data})
-    store.update({f"{k[0]}|{k[2]}": v for k, v in gens.items() if k[0] == "C_grand"})
+    store.update({f"{k[0]}|{k[2]}": v for k, v in gens.items() if k[0] == "C_large"})
     CACHE.mkdir(parents=True, exist_ok=True)
-    np.savez_compressed(CACHE / f"e1_echantillons_complet{suffix}.npz", **store)  # full (≈ 30 MB, not versioned)
+    np.savez_compressed(CACHE / f"e1_samples_full{suffix}.npz", **store)  # full (≈ 30 MB, not versioned)
     keep = {"0.85", "0.87", "0.9", "0.93"}  # published version: the Γ values of the figures, in float32 (≈ 3 MB)
-    np.savez_compressed(RESULTS / f"e1_echantillons{suffix}.npz",
+    np.savez_compressed(RESULTS / f"e1_samples{suffix}.npz",
                         **{k: v.astype(np.float32) for k, v in store.items() if k.split("|")[1] in keep})
     for k, v in summary.items():
         print(k, v, flush=True)

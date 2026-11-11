@@ -28,7 +28,7 @@ def main(quick=False):
     rows, modes = [], {}
     for rm in rms:
         lam, lam_q, m = growth_rate(rm, t_total=t_total)
-        rows.append({"Rm": rm, "lambda": lam, "lambda_dernier_quart": lam_q, "div_rel": m.divergence_rel()})
+        rows.append({"Rm": rm, "lambda": lam, "lambda_last_quarter": lam_q, "div_rel": m.divergence_rel()})
         print(f"Rm={rm:5.1f}  λ={lam:+.4f} (last quarter {lam_q:+.4f})  div={m.divergence_rel():.1e}  {time.time() - t0:.0f} s", flush=True)
         if rm in (8, 12, 16, 20):
             modes[f"Rm{rm}"] = np.stack([np.fft.irfftn(c, s=(32,) * 3, axes=(0, 1, 2)) for c in m.bh]).astype(np.float32)
@@ -39,16 +39,16 @@ def main(quick=False):
         conv.append({"Rm": rm, "lambda_N48": lam48})
         print(f"N=48 Rm={rm}  λ={lam48:+.4f}", flush=True)
     # Thresholds by linear interpolation of the sign changes
-    seuils = []
+    thresholds = []
     for a, b in zip(rows[:-1], rows[1:]):
         if np.sign(a["lambda"]) != np.sign(b["lambda"]):
-            seuils.append(a["Rm"] + (b["Rm"] - a["Rm"]) * (-a["lambda"]) / (b["lambda"] - a["lambda"]))
+            thresholds.append(a["Rm"] + (b["Rm"] - a["Rm"]) * (-a["lambda"]) / (b["lambda"] - a["lambda"]))
     out = {"config": {"N": 32, "A": 1, "B": 1, "C": 1, "dt": 0.05, "t_total": t_total, "Rm": "1/eta"},
-           "taux": rows, "convergence": conv, "seuils_interpoles": seuils, "duree_s": time.time() - t0}
+           "rates": rows, "convergence": conv, "interpolated_thresholds": thresholds, "duration_s": time.time() - t0}
     suffix = "_quick" if quick else ""
     save_json(out, f"e3_abc{suffix}.json")
     np.savez_compressed(RESULTS / f"e3_modes{suffix}.npz", **modes)
-    print("thresholds:", seuils)
+    print("thresholds:", thresholds)
 
 
 if __name__ == "__main__":

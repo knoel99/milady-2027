@@ -3,7 +3,7 @@
 1. Step 0: D(t) series of the Gissinger model (2012), same equations and parameters as E1
    (experiments/e1_gissinger.py) : dQ/dt = mu Q - V D, dD/dt = -nu D + V Q, dV/dt = Gamma - V + Q D,
    mu = 0.119, nu = 0.1, Gamma = 0.9 (above the reversal crisis, 0.86-0.87 in E1).
-2. Step 1: a reference snapshot of E2 (forced 2D MHD, results/e2_echantillons.npz, versioned,
+2. Step 1: a reference snapshot of E2 (forced 2D MHD, results/e2_samples.npz, versioned,
    Fourier coefficients of u and B): current density j on the grid, and contour lines of the potential a
    (field lines of B).
 3. Step 2: kinematic ABC dynamo mode of E3 (results/e3_modes.npz, Rm = 12, in the first
@@ -73,7 +73,7 @@ out["gissinger"] = {"t": np.round(tt[::step], 4).tolist(), "D": np.round(dd[::st
 print("Gissinger window", best, "points", len(tt[::step]))
 
 # ---------- 2. MHD 2D (E2) ----------
-d = np.load(EXP / "e2_echantillons.npz")
+d = np.load(EXP / "e2_samples.npz")
 ref = d["ref"]; kx = d["kx"]; ky = d["ky"]
 c = ref[0]  # (4, M): ux, uy, bx, by (complex coefficients, half-plane kx >= 0)
 bx, by = c[2], c[3]
