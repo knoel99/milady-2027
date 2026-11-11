@@ -29,8 +29,8 @@ from typing import Any
 
 import numpy as np
 from sqlalchemy import Engine, and_, create_engine, delete, event, func, inspect, or_, select, text
-from sqlalchemy.exc import DBAPIError
 from sqlalchemy.dialects import postgresql, sqlite
+from sqlalchemy.exc import DBAPIError
 from sqlalchemy.orm import Session, selectinload, sessionmaker
 from sqlalchemy.pool import StaticPool
 
@@ -164,7 +164,7 @@ def _as_datetime(v: Any) -> _dt.datetime | None:
         return _aware(v)
     if isinstance(v, (int, float)):
         return _dt.datetime.fromtimestamp(v, _dt.UTC)
-    return _aware(_dt.datetime.fromisoformat(str(v).replace("Z", "+00:00")))
+    return _aware(_dt.datetime.fromisoformat(str(v)))
 
 
 def _row(obj: Any) -> dict[str, Any]:

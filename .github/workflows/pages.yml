@@ -49,6 +49,7 @@ jobs:
           rsync -a --prune-empty-dirs \
             --exclude='*.qmd' --exclude='*.md' --exclude='node_modules/' \
             --exclude='figures/*/docs/' --exclude='figures/*/figure/*.js' --exclude='figures/*/figure/data/' \
+            --exclude='figures/*/figure/out/*.json' --exclude='figures/*/figure/out/*.txt' \
             site/ _site/
           touch _site/.nojekyll
 

@@ -182,7 +182,7 @@ def convert_e2_file(
         w, a = w[:max_members], a[:max_members]
     if max_snapshots:
         w, a = w[:, :max_snapshots], a[:, :max_snapshots]
-    n_traj, n_t = w.shape[:2]
+    n_t = w.shape[1]
 
     phys = e2_physical(w, a, n)
     x = 2 * np.pi * np.arange(n) / n

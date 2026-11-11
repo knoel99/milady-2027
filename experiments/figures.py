@@ -27,52 +27,33 @@ plt.rcParams.update({
 })
 
 TXT = {
-    "en": {
-        "sim": "simulation (counting)", "rice_ref": "Rice, reference distribution", "rice_C": "Rice, generated distribution (C)",
-        "rice_F": "Rice, generated distribution (F)", "gtrain": "training Γ", "rate": "zero crossings of D per unit time",
-        "ref": "reference", "genC": "generated distribution (C)", "genF": "generated distribution (F)",
-        "ed": "energy distance", "liou3": "Liouville residual (degree 3)", "asym": "|P(D>0) − 1/2|", "mc": " MC noise",
-        "sig": "σ(dE/dt) / σ_ref", "one": " reference distribution",
-        "density": "density", "projC": "C projected on dE/dt = 0", "genCshort": "C (generated)",
-        "var": {"A_reference": "A baseline", "B_augmentation": "B augmentation", "C_equivariant": "C equivariant",
-                "C_court": "C short budget", "F_stationnarite_Ccourt": "C short + stat. loss",
-                "F0_temoin_Ccourt": "C short + control", "F_stationnarite_C": "C + stat. loss", "F0_temoin_C": "C + control",
-                "D_inclinaison_C": "C + tilting", "E_projection_C": "C + per-sample proj."},
-        "e2var": {"V0_libre": "V0 free", "V1_penalite": "V1 penalty", "V2_proj_finale": "V2 final projection",
-                  "V3_flot_projete": "V3 projected flow", "V4_potentiels": "V4 potentials",
-                  "V5_potentiels_stat": "V5 potentials + stat. loss", "V5_temoin": "V5 control",
-                  "reference_sous_echantillon": "data (subsample)"},
-        "div": "relative divergence of u", "spec": "spectrum error (log₁₀, mean)",
-        "bal": "|E[D] − ε_inj| / ε_inj", "k": "wavenumber k", "Eu": "E_u(k)", "Eb": "E_B(k)",
-        "diss": "dissipation D(x) / ε_inj", "base": "V4 (generated)", "tilt": "V4 + tilting", "resc": "V4 + per-sample rescaling",
-        "rm": "Rm = 1/η", "lam": "growth rate λ",
-    },
+    "sim": "simulation (counting)", "rice_ref": "Rice, reference distribution", "rice_C": "Rice, generated distribution (C)",
+    "rice_F": "Rice, generated distribution (F)", "gtrain": "training Γ", "rate": "zero crossings of D per unit time",
+    "ref": "reference", "genC": "generated distribution (C)", "genF": "generated distribution (F)",
+    "ed": "energy distance", "liou3": "Liouville residual (degree 3)", "asym": "|P(D>0) − 1/2|", "mc": " MC noise",
+    "sig": "σ(dE/dt) / σ_ref", "one": " reference distribution",
+    "density": "density", "projC": "C projected on dE/dt = 0", "genCshort": "C (generated)",
+    "var": {"A_reference": "A baseline", "B_augmentation": "B augmentation", "C_equivariant": "C equivariant",
+            "C_court": "C short budget", "F_stationnarite_Ccourt": "C short + stat. loss",
+            "F0_temoin_Ccourt": "C short + control", "F_stationnarite_C": "C + stat. loss", "F0_temoin_C": "C + control",
+            "D_inclinaison_C": "C + tilting", "E_projection_C": "C + per-sample proj."},
+    "e2var": {"V0_libre": "V0 free", "V1_penalite": "V1 penalty", "V2_proj_finale": "V2 final projection",
+              "V3_flot_projete": "V3 projected flow", "V4_potentiels": "V4 potentials",
+              "V5_potentiels_stat": "V5 potentials + stat. loss", "V5_temoin": "V5 control",
+              "reference_sous_echantillon": "data (subsample)"},
+    "div": "relative divergence of u", "spec": "spectrum error (log₁₀, mean)",
+    "bal": "|E[D] − ε_inj| / ε_inj", "k": "wavenumber k", "Eu": "E_u(k)", "Eb": "E_B(k)",
+    "diss": "dissipation D(x) / ε_inj", "base": "V4 (generated)", "tilt": "V4 + tilting", "resc": "V4 + per-sample rescaling",
+    "rm": "Rm = 1/η", "lam": "growth rate λ",
 }
 
 
-def fmt(lang):
-    """Decimal separator: comma in French."""
-    if lang == "fr":
-        plt.rcParams["axes.formatter.use_locale"] = False
-        from matplotlib.ticker import FuncFormatter
-        return FuncFormatter(lambda v, _: f"{v:g}".replace(".", ","))
-    return None
-
-
-def finish(fig, name, lang):
-    f = fmt(lang)
-    if f is not None:
-        for ax in fig.axes:
-            if ax.get_xscale() == "linear":
-                ax.xaxis.set_major_formatter(f)
-            if ax.get_yscale() == "linear" and not getattr(ax, "_categ", False):
-                ax.yaxis.set_major_formatter(f)
+def finish(fig, name):
     fig.tight_layout()
-    stem = name
-    fig.savefig(FIGS / f"{stem}.png", dpi=200)
-    fig.savefig(FIGS / f"{stem}.svg")
+    fig.savefig(FIGS / f"{name}.png", dpi=200)
+    fig.savefig(FIGS / f"{name}.svg")
     plt.close(fig)
-    print("written", FIGS / f"{stem}.png")
+    print("written", FIGS / f"{name}.png")
 
 
 def load(name):
@@ -80,8 +61,8 @@ def load(name):
 
 
 # ---------------------------------------------------------------------------
-def e1(suffix="", lang="en"):
-    t = TXT[lang]
+def e1(suffix=""):
+    t = TXT
     r = load(f"e1_gissinger{suffix}.json")
     fine = r["grille_fine"]
     g = np.array([f["Gamma"] for f in fine])
@@ -99,9 +80,9 @@ def e1(suffix="", lang="en"):
     ax[1].plot(g, [f["pont_modele"] for f in fine], color=C[0], label=t["genC"])
     if "pont_modele_F" in fine[0]:
         ax[1].plot(g, [f["pont_modele_F"] for f in fine], color=C[1], label=t["genF"])
-    ax[1].set_xlabel("Γ"); ax[1].set_ylabel("P(|D| < 0.25)" if lang == "en" else "P(|D| < 0,25)")
+    ax[1].set_xlabel("Γ"); ax[1].set_ylabel("P(|D| < 0.25)")
     ax[1].legend(fontsize=7.5, loc="upper left")
-    finish(fig, f"e1_threshold{suffix}", lang)
+    finish(fig, f"e1_threshold{suffix}")
 
     res = r["resume"]
     keys = ["A_reference", "B_augmentation", "C_equivariant", "C_court", "F_stationnarite_Ccourt", "F0_temoin_Ccourt",
@@ -129,16 +110,16 @@ def e1(suffix="", lang="en"):
         if key in ("asym", "dEdt_std"):  # readable ticks (few decades)
             ticks = [0.003, 0.01, 0.03] if key == "asym" else [0.3, 1, 3, 10]
             ax[j].set_xticks(ticks)
-            ax[j].xaxis.set_major_formatter(FuncFormatter(lambda v, _: f"{v:g}" if lang == "en" else f"{v:g}".replace(".", ",")))
+            ax[j].xaxis.set_major_formatter(FuncFormatter(lambda v, _: f"{v:g}"))
         if key == "dEdt_std":  # per-sample projection cancels dE/dt: bar off scale, annotated
             ax[j].set_xlim(0.2, 30)
             for yy, v in zip(y, vals):
                 if v < 0.2:
-                    ax[j].text(0.22, yy, "≈ 0 (" + ("exact" if lang == "en" else "exact") + ")", va="center", fontsize=7.5, color=INK2)
+                    ax[j].text(0.22, yy, "≈ 0 (exact)", va="center", fontsize=7.5, color=INK2)
     ax[0].set_yticks(y); ax[0].set_yticklabels([t["var"][k] for k in keys])
     for a in ax:
         a._categ = True
-    finish(fig, f"e1_variants{suffix}", lang)
+    finish(fig, f"e1_variants{suffix}")
 
     d = np.load(RESULTS / f"e1_echantillons{suffix}.npz")
     from e1_gissinger import dEdt
@@ -148,8 +129,7 @@ def e1(suffix="", lang="en"):
     for key, col, lab in (("ref", INK, t["ref"]), ("C_equivariant", C[0], t["genCshort"]), ("E_projection_C", C[1], t["projC"])):
         x = d[f"{key}|{gam2}"]
         ax[0].hist(dEdt(x, float(gam2)), bins=bins, density=True, histtype="step", color=col, lw=1.6, label=lab)
-    dec = (lambda v: v) if lang == "en" else (lambda v: v.replace(".", ","))
-    ax[0].set_xlabel(f"dE/dt  (Γ = {dec(gam2)})"); ax[0].set_ylabel(t["density"]); ax[0].legend(fontsize=7)
+    ax[0].set_xlabel(f"dE/dt  (Γ = {gam2})"); ax[0].set_ylabel(t["density"]); ax[0].legend(fontsize=7)
     ax[0].set_yscale("log")
     for j, key in enumerate(("A_reference", "C_equivariant")):
         ref, x = d[f"ref|{gam}"], d[f"{key}|{gam}"]
@@ -157,13 +137,13 @@ def e1(suffix="", lang="en"):
         ax[j + 1].scatter(x[:3000, 0], x[:3000, 1], s=1, color=C[0], rasterized=True)
         ax[j + 1].set_xlabel("Q"); ax[j + 1].set_ylabel("D")
         p = f"{(x[:, 1] > 0).mean():.2f}"
-        ax[j + 1].set_title(f"{t['var'][key]}, Γ = {dec(gam)}{':' if lang == 'en' else ' :'} P(D>0) = {dec(p)}", fontsize=8.5)
-    finish(fig, f"e1_symmetry_projection{suffix}", lang)
+        ax[j + 1].set_title(f"{t['var'][key]}, Γ = {gam}: P(D>0) = {p}", fontsize=8.5)
+    finish(fig, f"e1_symmetry_projection{suffix}")
 
 
 # ---------------------------------------------------------------------------
-def e2(suffix="", lang="en"):
-    t = TXT[lang]
+def e2(suffix=""):
+    t = TXT
     r = load(f"e2_mhd2d{suffix}.json")
     res = r["resume"]
     keys = [k for k in ("V0_libre", "V1_penalite", "V2_proj_finale", "V3_flot_projete", "V4_potentiels",
@@ -178,7 +158,7 @@ def e2(suffix="", lang="en"):
     ax[0].set_yticks(y); ax[0].set_yticklabels([t["e2var"][k] for k in keys])
     for a in ax:
         a._categ = True
-    finish(fig, f"e2_mechanisms{suffix}", lang)
+    finish(fig, f"e2_mechanisms{suffix}")
 
     # mean spectra at one test η
     d = np.load(RESULTS / f"e2_echantillons{suffix}.npz")
@@ -200,7 +180,7 @@ def e2(suffix="", lang="en"):
         ax[1].loglog(ks, sb, color=col, label=lab, lw=2.2 if name == "ref" else 1.6)
     ax[0].set_xlabel(t["k"]); ax[0].set_ylabel(t["Eu"]); ax[1].set_xlabel(t["k"]); ax[1].set_ylabel(t["Eb"])
     ax[0].legend(fontsize=7.5)
-    finish(fig, f"e2_spectra{suffix}", lang)
+    finish(fig, f"e2_spectra{suffix}")
 
     # "in law" part: means over the test η
     law = dict(res["en_loi"])
@@ -213,7 +193,7 @@ def e2(suffix="", lang="en"):
         vals = [law[m]["test"][key] for m, _ in modes]
         ax[j].barh(y, vals, color=[C[0], C[2], C[1], C[3]], height=0.6)
         for yy, v in zip(y, vals):
-            txt = f"{v:.2g}" if lang == "en" else f"{v:.2g}".replace(".", ",")
+            txt = f"{v:.2g}"
             ax[j].text(v, yy, " " + txt, va="center", fontsize=7.5, color=INK2)
         ax[j].set_xlabel(lab, fontsize=8)
         if key == "std_diss_rel":
@@ -221,12 +201,12 @@ def e2(suffix="", lang="en"):
     ax[0].set_yticks(y); ax[0].set_yticklabels([lab for _, lab in modes])
     for a in ax:
         a._categ = True
-    finish(fig, f"e2_in_law{suffix}", lang)
+    finish(fig, f"e2_in_law{suffix}")
 
 
 # ---------------------------------------------------------------------------
-def e3(suffix="", lang="en"):
-    t = TXT[lang]
+def e3(suffix=""):
+    t = TXT
     r = load(f"e3_abc{suffix}.json")
     rm = np.array([x["Rm"] for x in r["taux"]])
     lam = np.array([x["lambda"] for x in r["taux"]])
@@ -240,19 +220,18 @@ def e3(suffix="", lang="en"):
     ax.set_ylim(max(lam.min(), -0.06), lam.max() * 1.6)
     for s in r.get("seuils_interpoles", []):
         ax.axvline(s, color=INK2, ls=":", lw=1)
-        lab = f" {s:.1f}" if lang == "en" else f" {s:.1f}".replace(".", ",")
+        lab = f" {s:.1f}"
         ax.text(s, ax.get_ylim()[1] * 0.9, lab, color=INK2, fontsize=7.5)
     ax.legend(fontsize=7.5, loc="lower right")
     ax.set_xlabel(t["rm"]); ax.set_ylabel(t["lam"])
-    finish(fig, f"e3_abc{suffix}", lang)
+    finish(fig, f"e3_abc{suffix}")
 
 
 if __name__ == "__main__":
     args = [a for a in sys.argv[1:] if not a.startswith("--")] or ["e1", "e2", "e3"]
     suffix = "_quick" if "--quick" in sys.argv else ""
     for a in args:
-        for lang in ("en",):
-            try:
-                globals()[a](suffix, lang)
-            except FileNotFoundError as e:
-                print(f"{a} ({lang}): results missing ({e.filename})")
+        try:
+            globals()[a](suffix)
+        except FileNotFoundError as e:
+            print(f"{a}: results missing ({e.filename})")

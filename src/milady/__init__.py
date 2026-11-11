@@ -25,19 +25,21 @@ __all__ = ["__version__", "git_commit", "project_root"]
 
 
 def project_root() -> Path:
-    """Project root (the folder containing ``pyproject.toml``, ``milady/`` and ``infra/``).
+    """Project root (the folder containing ``pyproject.toml``, ``src/`` and ``infra/``).
 
-    Resolution order: the ``MILADY_ROOT`` environment variable; the package's parent folder if it
-    looks like the repository (editable install ``pip install -e .``); otherwise the current directory.
+    Resolution order: the ``MILADY_ROOT`` environment variable; the nearest ancestor of the package
+    that looks like the repository (editable install ``pip install -e .``, where the package lives
+    in ``src/milady``); otherwise the current directory (wheel installed in ``site-packages``).
     Serves as the base for the default catalog (``data/catalog.sqlite``) and storage
     (``data/store``).
     """
     env = os.environ.get("MILADY_ROOT")
     if env:
         return Path(os.path.expandvars(env)).expanduser().resolve()
-    here = Path(__file__).resolve().parent.parent
-    if (here / "pyproject.toml").is_file() or (here / "infra").is_dir():
-        return here
+    package = Path(__file__).resolve().parent
+    for here in (package.parent, package.parent.parent):
+        if (here / "pyproject.toml").is_file() or (here / "infra").is_dir():
+            return here
     return Path.cwd().resolve()
 
 

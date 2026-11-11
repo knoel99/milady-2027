@@ -30,3 +30,10 @@ infra/env/*.lock.tmp
 # Rendered pages (built by .github/workflows/pages.yml)
 site/**/index.html
 _site/
+
+# Diagram build by-products (only the .png and .svg in figure/out/ are published)
+site/figures/*/figure/out/*.json
+site/figures/*/figure/out/*.txt
+site/figures/*/figure/data/*.log
+site/figures/*/figure/data/preview.png
+site/figures/*/docs/draft*.png

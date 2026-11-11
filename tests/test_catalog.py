@@ -167,7 +167,7 @@ def _workflow(cat: Catalog) -> None:
     assert len(rows) == 3 and len(ed12) == 1
     assert ed12[0]["n_runs"] == 3 and ed12[0]["n_samples_total"] == 768
     assert ed12[0]["mean"] == pytest.approx(0.12) and ed12[0]["std"] == pytest.approx(0.02)
-    single = [r for r in rows if r["parameters"]["Rm"] == 14.0][0]
+    single = next(r for r in rows if r["parameters"]["Rm"] == 14.0)
     assert single["std"] is None and single["model_name"] == "fm3d"
     assert len(cat.eval_summary()) == 4
 

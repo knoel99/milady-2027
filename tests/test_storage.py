@@ -202,7 +202,7 @@ def s3_env(s3_endpoint: dict[str, str], monkeypatch: pytest.MonkeyPatch) -> Iter
     yield f"s3://{bucket}"
     try:
         storage.rm(f"s3://{bucket}", recursive=True)
-    except Exception:  # noqa: BLE001 (best-effort cleanup)
+    except Exception:  # noqa: BLE001, S110 (best-effort cleanup)
         pass
 
 
