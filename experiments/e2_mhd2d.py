@@ -30,7 +30,8 @@ from pathlib import Path
 import numpy as np
 import torch
 
-from common import MLPField, energy_distance, exp_tilt, fm_loss, sample_ode, save_json, seed_all, systematic_resample, train
+from common import (MLPField, energy_distance, exp_tilt, fm_loss, heun_sample, sample_ode, save_json, seed_all,
+                    systematic_resample, train)
 from e2_data import ALPHA, EPS, ETA_TEST, ETA_TRAIN, KF, N, NU
 from mhd2d import MHD2D
 
@@ -252,12 +253,7 @@ def main(quick=False):
                 le = np.log(3.5e-3) + (np.log(2.6e-2) - np.log(3.5e-3)) * np.random.rand(4)
                 etas = np.repeat(np.exp(le), 64)
                 cc = torch.tensor(cn(etas), dtype=torch.float32)
-                z = torch.randn(len(etas), Xp.shape[1])
-                h = 1.0 / 8
-                for k in range(8):
-                    v0 = model(z, torch.full((len(z),), k * h), cc)
-                    v1 = model(z + h * v0, torch.full((len(z),), (k + 1) * h), cc)
-                    z = z + 0.5 * h * (v0 + v1)
+                z = heun_sample(model, torch.randn(len(etas), Xp.shape[1]), cc, steps=8)  # differentiable
                 d = diss_t(z, torch.tensor(etas, dtype=torch.float32)).view(4, 2, 32).mean(2)
                 r = (d - inj) / inj
                 # unbiased estimator of (E[D] - ε)²: product of the residuals of two half-batches

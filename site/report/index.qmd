@@ -574,7 +574,7 @@ Key takeaways — formulation
 
 ## 4. Methods {#methodes}
 
-This section describes exactly what the scripts in the `experiments/` folder do (`common.py`, `e1_gissinger.py`, `mhd2d.py`, `e2_data.py`, `e2_mhd2d.py`, `e3_abc.py`). The values of all hyperparameters are gathered in the [appendix](#a-hyperparametres).
+This section describes exactly what the scripts in the `experiments/` folder do (`common.py`, `e1_gissinger.py`, `mhd2d.py`, `e2_data.py`, `e2_mhd2d.py`, `e3_abc.py`), and the tools of the `milady` package they import (`milady.train.flow`, `milady.eval.metrics`, `milady.eval.tilt`, `milady.sim.mhd2d`, `milady.sim.induction3d`). The values of all hyperparameters are gathered in the [appendix](#a-hyperparametres).
 
 ### Conditional flow matching {#m-fm}
 

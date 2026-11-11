@@ -31,7 +31,7 @@ import time
 import numpy as np
 import torch
 
-from common import (MLPField, SymmetrizedField, energy_distance, exp_tilt, save_json, sample_ode,
+from common import (MLPField, SymmetrizedField, energy_distance, exp_tilt, heun_sample, save_json, sample_ode,
                     seed_all, sliced_w1, systematic_resample, train, RESULTS)
 
 import pickle
@@ -183,13 +183,7 @@ def finetune(model, batcher, iters, beta, sd, mean, std, cnorm, n_gamma=8, n_per
             gam = 0.80 + 0.20 * torch.rand(n_gamma)
             gg = gam.repeat_interleave(n_per)
             cc = torch.tensor(cnorm(gg.numpy()), dtype=torch.float32)
-            z = torch.randn(n_gamma * n_per, 3)
-            h = 1.0 / steps
-            for k in range(steps):
-                t0v = torch.full((len(z),), k * h); t1v = torch.full((len(z),), (k + 1) * h)
-                v0 = model(z, t0v, cc)
-                v1 = model(z + h * v0, t1v, cc)
-                z = z + 0.5 * h * (v0 + v1)
+            z = heun_sample(model, torch.randn(n_gamma * n_per, 3), cc, steps=steps)  # differentiable
             x = z * std_t + mean_t
             gt = generator_terms_torch(x, gg, MONO_TRAIN).view(n_gamma, 2, n_per // 2, -1).mean(2) / sd_t
             # Unbiased estimator of (E[F·∇phi])²: product of the means of two independent half-batches.

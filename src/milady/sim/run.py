@@ -27,14 +27,12 @@ MFF file carries the ``milady_uuid`` identifier and can be registered afterwards
 
 Environment variables: ``MILADY_DB_URL``, ``MILADY_STORAGE_URI`` (and S3), ``MILADY_WORKDIR``
 (local working folder, default ``$MILADY_DATA/work`` or ``<root>/data/work``), ``MILADY_JOB_ID``,
-``MILADY_SCHEDULER``, ``MILADY_HOST``, ``MILADY_MHD2D_PATH`` (2D solver, default
-``experiments/mhd2d.py``).
+``MILADY_SCHEDULER``, ``MILADY_HOST``.
 """
 
 from __future__ import annotations
 
 import argparse
-import importlib.util
 import json
 import logging
 import math
@@ -50,7 +48,7 @@ import time
 import traceback
 from collections.abc import Callable, Mapping, Sequence
 from pathlib import Path
-from types import FrameType, ModuleType
+from types import FrameType
 from typing import Any
 
 import numpy as np
@@ -177,20 +175,8 @@ class Solver3D:
         }
 
 
-def _load_mhd2d() -> ModuleType:
-    """Load ``experiments/mhd2d.py`` (2D solver of the experiments, reused as is)."""
-    path = Path(os.environ.get("MILADY_MHD2D_PATH") or project_root() / "experiments" / "mhd2d.py")
-    if not path.is_file():
-        raise FileNotFoundError(f"2D solver not found: {path} (MILADY_MHD2D_PATH)")
-    spec = importlib.util.spec_from_file_location("milady_experiments_mhd2d", path)
-    assert spec is not None and spec.loader is not None
-    mod = importlib.util.module_from_spec(spec)
-    spec.loader.exec_module(mod)
-    return mod
-
-
 class Solver2D:
-    """Adapter of the forced 2D MHD solver of the experiments (``experiments/mhd2d.py``, class ``MHD2D``).
+    """Adapter of the forced 2D MHD solver of experiment E2 (``milady.sim.mhd2d.MHD2D``).
 
     Same sequence of calls as ``experiments/e2_data.py`` (injection estimate then fixed time
     steps): at equal seed, the snapshots are those of E2. Since the forcing is white in time, the
@@ -204,13 +190,13 @@ class Solver2D:
         self, campaign: Campaign, params: Mapping[str, Any], seed: int, device: str, dtype: str
     ) -> None:
         from milady.data.convert import e2_physical
+        from milady.sim.mhd2d import MHD2D
 
         self._phys = e2_physical
-        mod = _load_mhd2d()
         rt = campaign.runtime
         self.n = int(campaign.shape[0])
         self.dt = float(rt["dt"])
-        self.m = mod.MHD2D(
+        self.m = MHD2D(
             n=self.n,
             nu=float(params["nu"]),
             eta=float(params["eta"]),
@@ -295,7 +281,7 @@ class Solver2D:
     def info(self) -> dict[str, Any]:
         """Description of the solver for the file metadata."""
         return {
-            "name": "experiments/mhd2d.py (MHD2D)",
+            "name": "milady.sim.mhd2d (MHD2D)",
             "scheme": "pseudo-spectral 2D in potentials (ω, a), 2/3 dealiasing, integrating-factor RK4 + "
             "Euler–Maruyama (white forcing)",
             "dt": self.dt,

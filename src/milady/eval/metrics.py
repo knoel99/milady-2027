@@ -507,24 +507,55 @@ def features(
     return x, names
 
 
-def _mean_pdist(a: np.ndarray, b: np.ndarray, chunk: int = 1024) -> float:
-    """Mean of the Euclidean distances between all pairs (a_i, b_j) (V statistic)."""
+def _sum_pdist(a: np.ndarray, b: np.ndarray, same: bool, chunk: int = 1024) -> float:
+    """Sum of the Euclidean distances between all pairs (a_i, b_j); diagonal set to zero if ``same``."""
     nb = np.sum(b * b, axis=1)
     tot = 0.0
     for i in range(0, a.shape[0], chunk):
         ai = a[i : i + chunk]
-        d2 = np.sum(ai * ai, axis=1)[:, None] + nb[None, :] - 2.0 * ai @ b.T
-        tot += float(np.sqrt(np.maximum(d2, 0.0)).sum())
-    return tot / (a.shape[0] * b.shape[0])
+        d = np.sqrt(np.maximum(np.sum(ai * ai, axis=1)[:, None] + nb[None, :] - 2.0 * ai @ b.T, 0.0))
+        if same:
+            rows = np.arange(ai.shape[0])
+            d[rows, i + rows] = 0.0
+        tot += float(d.sum())
+    return tot
 
 
-def energy_distance(x: Any, y: Any, n: int = 4000, seed: int = 0, standardize: bool = False) -> float:
-    """Székely energy distance D² = 2E|X−Y| − E|X−X'| − E|Y−Y'| (≥ 0, zero iff same distribution).
+def _sum_pdist_torch(a: np.ndarray, b: np.ndarray, chunk: int = 2048) -> float:
+    """Same sum with ``torch.cdist`` in float64 (the computation of experiments E1–E2, exact diagonal zeros)."""
+    import torch
 
-    ``x``: ``(n_x, d)``, ``y``: ``(n_y, d)``; at most ``n`` points drawn without replacement in each set.
-    ``standardize``: centers and scales each column by the mean and standard deviation of ``y`` (reference).
-    V estimator (diagonals included), always positive; bias O(1/n).
+    ta, tb = torch.as_tensor(a, dtype=torch.float64), torch.as_tensor(b, dtype=torch.float64)
+    tot = 0.0
+    for i in range(0, ta.shape[0], chunk):
+        tot += torch.cdist(ta[i : i + chunk], tb).sum().item()
+    return tot
+
+
+def energy_distance(
+    x: Any,
+    y: Any,
+    n: int = 4000,
+    seed: int = 0,
+    standardize: bool = False,
+    estimator: str = "V",
+    pdist: str = "numpy",
+) -> float:
+    """Székely energy distance D² = 2E|X−Y| − E|X−X'| − E|Y−Y'| (zero iff same distribution).
+
+    ``x``: ``(n_x, d)``, ``y``: ``(n_y, d)``; at most ``n`` points drawn without replacement in each set
+    (``numpy.random.default_rng(seed)``, x first). ``standardize``: centers and scales each column by
+    the mean and standard deviation of ``y`` (reference).
+
+    ``estimator``: ``V`` (diagonals included in E|X−X'| and E|Y−Y'|: always ≥ 0, bias O(1/n)) or ``U``
+    (diagonals excluded: unbiased, can be slightly negative). Returns D², not D.
+    ``pdist``: ``numpy`` (expanded ‖a‖² + ‖b‖² − 2a·b) or ``torch`` (``torch.cdist`` in float64, the
+    computation used by experiments E1–E2; the two agree to about 1e-10 in relative terms).
     """
+    if estimator not in ("V", "U"):
+        raise ValueError(f"estimator: V or U, not {estimator!r}")
+    if pdist not in ("numpy", "torch"):
+        raise ValueError(f"pdist: numpy or torch, not {pdist!r}")
     xa, ya = _as_np(x), _as_np(y)
     xa = xa.reshape(xa.shape[0], -1)
     ya = ya.reshape(ya.shape[0], -1)
@@ -534,17 +565,43 @@ def energy_distance(x: Any, y: Any, n: int = 4000, seed: int = 0, standardize: b
     rng = np.random.default_rng(seed)
     a = xa[rng.choice(len(xa), size=min(n, len(xa)), replace=False)]
     b = ya[rng.choice(len(ya), size=min(n, len(ya)), replace=False)]
-    return 2.0 * _mean_pdist(a, b) - _mean_pdist(a, a) - _mean_pdist(b, b)
+
+    def total(p: np.ndarray, q: np.ndarray, same: bool) -> float:
+        # U: the diagonal is excluded (zeroed); V keeps the computed diagonal so that the round-off of
+        # the three terms cancels (D²(x, x) ≈ 1e-15).
+        return _sum_pdist_torch(p, q) if pdist == "torch" else _sum_pdist(p, q, same and estimator == "U")
+
+    na, nb = len(a), len(b)
+    off = 1 if estimator == "U" else 0
+    exy = total(a, b, False) / (na * nb)
+    exx = total(a, a, True) / (na * (na - off))
+    eyy = total(b, b, True) / (nb * (nb - off))
+    return 2 * exy - exx - eyy
 
 
 def sliced_wasserstein(
-    x: Any, y: Any, n_proj: int = 256, seed: int = 0, p: int = 1, standardize: bool = False
+    x: Any,
+    y: Any,
+    n_proj: int = 256,
+    seed: int = 0,
+    p: int = 1,
+    standardize: bool = False,
+    match: str = "quantile",
+    n_sub: int | None = None,
 ) -> float:
     """Sliced Wasserstein-p distance: mean over ``n_proj`` random directions of the 1D W_p.
 
-    The quantile functions of the two projected sets are compared on a common grid of levels
-    (different sizes accepted). Returns (E_θ W_p^p)^{1/p}.
+    Directions are drawn first from ``numpy.random.default_rng(seed)``. Returns (E_θ W_p^p)^{1/p}.
+
+    ``match``: how sets of different sizes are compared.
+
+    - ``quantile``: the quantile functions of the full sets are compared on a common grid of
+      ``max(n_x, n_y)`` levels (uses every point);
+    - ``truncate``: each set is subsampled without replacement to at most ``n_sub`` points (x then y,
+      same RNG), then both are cut to the smaller size (the estimator of experiment E1).
     """
+    if match not in ("quantile", "truncate"):
+        raise ValueError(f"match: quantile or truncate, not {match!r}")
     xa, ya = _as_np(x), _as_np(y)
     xa = xa.reshape(xa.shape[0], -1)
     ya = ya.reshape(ya.shape[0], -1)
@@ -554,17 +611,27 @@ def sliced_wasserstein(
     rng = np.random.default_rng(seed)
     th = rng.normal(size=(n_proj, xa.shape[1]))
     th /= np.linalg.norm(th, axis=1, keepdims=True)
-    px, py = np.sort(xa @ th.T, axis=0), np.sort(ya @ th.T, axis=0)
-    m = max(len(px), len(py))
-    levels = (np.arange(m) + 0.5) / m
-    qx = np.quantile(px, levels, axis=0, method="inverted_cdf") if len(px) != m else px
-    qy = np.quantile(py, levels, axis=0, method="inverted_cdf") if len(py) != m else py
-    return float(np.mean(np.abs(qx - qy) ** p) ** (1.0 / p))
+    if match == "truncate":
+        cap = n_sub if n_sub is not None else max(len(xa), len(ya))
+        xs = xa[rng.choice(len(xa), size=min(cap, len(xa)), replace=False)]
+        ys = ya[rng.choice(len(ya), size=min(cap, len(ya)), replace=False)]
+        m = min(len(xs), len(ys))
+        qx, qy = np.sort(xs[:m] @ th.T, axis=0), np.sort(ys[:m] @ th.T, axis=0)
+    else:
+        px, py = np.sort(xa @ th.T, axis=0), np.sort(ya @ th.T, axis=0)
+        m = max(len(px), len(py))
+        levels = (np.arange(m) + 0.5) / m
+        qx = np.quantile(px, levels, axis=0, method="inverted_cdf") if len(px) != m else px
+        qy = np.quantile(py, levels, axis=0, method="inverted_cdf") if len(py) != m else py
+    w = np.abs(qx - qy)
+    return float(w.mean()) if p == 1 else float(np.mean(w**p) ** (1.0 / p))
 
 
-def sliced_w1(x: Any, y: Any, n_proj: int = 256, seed: int = 0) -> float:
+def sliced_w1(
+    x: Any, y: Any, n_proj: int = 256, seed: int = 0, match: str = "quantile", n_sub: int | None = None
+) -> float:
     """Sliced Wasserstein-1 (shortcut of :func:`sliced_wasserstein` with p = 1)."""
-    return sliced_wasserstein(x, y, n_proj=n_proj, seed=seed, p=1)
+    return sliced_wasserstein(x, y, n_proj=n_proj, seed=seed, p=1, match=match, n_sub=n_sub)
 
 
 def _ensemble_stats(

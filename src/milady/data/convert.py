@@ -51,7 +51,7 @@ __all__ = [
 ]
 
 # =============================================================================================
-# E2: forced 2D MHD (experiments/e2_data.py, experiments/mhd2d.py)
+# E2: forced 2D MHD (experiments/e2_data.py, milady.sim.mhd2d)
 # =============================================================================================
 #: Values from e2_data.py used if meta.json is absent or incomplete.
 E2_DEFAULTS: dict[str, Any] = {
@@ -235,7 +235,7 @@ def convert_e2_file(
     file_meta = {
         "uuid": sim_id,
         "code": "mhd2d_numpy",
-        "code_version": "experiments/mhd2d.py",
+        "code_version": "milady.sim.mhd2d",
         "git_commit": git_commit(),
         "nondimensionalization": E2_NONDIM,
         "split": split,
@@ -351,7 +351,7 @@ def convert_e2(
                     "mhd2d_numpy",
                     {},
                     {},
-                    code_version="experiments/mhd2d.py",
+                    code_version="milady.sim.mhd2d",
                     git_commit=git_commit(),
                     host=socket.gethostname(),
                     n_cpus=1,

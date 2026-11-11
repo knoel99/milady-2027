@@ -1,7 +1,7 @@
 # Tier 1 campaign (internship): forced 2D MHD, sweep over the magnetic diffusivity η.
 #
 # Reproduces the dataset of experiment E2 (experiments/e2_data.py) with the solver
-# experiments/mhd2d.py, reused as is: 32² grid, ν = 8e-3, friction α = 0.02, white forcing
+# milady.sim.mhd2d, reused as is: 32² grid, ν = 8e-3, friction α = 0.02, white forcing
 # in the band 2 ≤ |k| ≤ 3 with injection 0.05 (vorticity and potential). The 11 values of η are
 # those of E2 (η_train ∪ η_test = 4e-3 × 2^(j/4), j = 0…10, i.e. Pm = ν/η from 2 to ≈ 0.35).
 # Difference with E2: the seed of each simulation is its index in the campaign (E2:

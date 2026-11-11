@@ -9,13 +9,13 @@ the same parameters.
 Supported codes:
 
 - ``mhd3d_torch``  : :mod:`milady.sim.mhd3d` (PyTorch, CPU/GPU);
-- ``mhd2d_numpy``  : 2D solver of the experiments (``experiments/mhd2d.py``, NumPy, CPU).
+- ``mhd2d_numpy``  : 2D solver of the experiments (``milady.sim.mhd2d``, from experiment E2, NumPy, CPU).
 
 Nondimensionalization (3D): reference velocity ``U_ref`` (default 1, amplitude of the imposed flow
 or of the forcing), reference length ``L_ref`` = 1/k_f (k_f = 2π kf / L, default 1/kf in the box
 2π); Re = U_ref L_ref / ν, Rm = U_ref L_ref / η, Pm = ν/η = Rm/Re. For the ABC flow
 (A = B = C = 1, kf = 1), Rm = 1/η: convention of Arnold & Korkina and of Galloway & Frisch, the one
-of ``experiments/e3_abc.py``.
+of ``milady.sim.induction3d`` (experiment E3).
 """
 
 from __future__ import annotations

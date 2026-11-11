@@ -38,7 +38,7 @@ equivalent of `h5dump -H file.h5`). Attributes are written `@name`, datasets `na
   @nu = 0.008   @eta = 0.008   @Pm = 1.0   @alpha = 0.02   @eps_u = 0.05   @eps_b = 0.05   @kf_min = 2.0   @kf_max = 3.0
   @milady_format_version = '1.0'
   @milady_code = 'mhd2d_numpy'
-  @milady_code_version = 'experiments/mhd2d.py'
+  @milady_code_version = 'milady.sim.mhd2d'
   @milady_git_commit = '07efe3c19375-dirty'
   @milady_parameters = '{"Pm": 1.0, "alpha": 0.02, "eps_b": 0.05, "eps_u": 0.05, "eta": 0.008, ...}'
   @milady_nondimensionalization = "Periodic domain [0, 2π)²; B in Alfvén units ..."
