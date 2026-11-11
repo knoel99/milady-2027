@@ -1,76 +1,76 @@
 /*
- * gissinger.js — MilaDy 2027, widget interactif « gissinger » (FR / EN).
- * Explorateur du modèle à trois modes de Gissinger : renversements chaotiques du dipôle.
- * Usage : <div class="widget" data-widget="gissinger"></div> + <script defer src=".../gissinger.js"></script>
+ * gissinger.js — MilaDy 2027, interactive "gissinger" widget.
+ * Explorer of Gissinger's three-mode model: chaotic dipole reversals.
+ * Usage: <div class="widget" data-widget="gissinger"></div> + <script defer src=".../gissinger.js"></script>
  *
  * ---------------------------------------------------------------------------------------------
- * Formules utilisées
+ * Formulas used
  *
- * 1. Modèle (Gissinger 2012) — Q : mode quadripolaire, D : mode dipolaire, V : mode de vitesse
+ * 1. Model (Gissinger 2012) — Q: quadrupole mode, D: dipole mode, V: velocity mode
  *        dQ/dt = μ Q − V D
  *        dD/dt = −ν D + V Q
- *        dV/dt = Γ − V + Q D,        μ = 0,119 ; ν = 0,1 ; Γ ∈ [0,80 ; 1,00] (pas 0,005).
+ *        dV/dt = Γ − V + Q D,        μ = 0.119; ν = 0.1; Γ ∈ [0.80; 1.00] (step 0.005).
  *
- * 2. Symétrie : le champ F vérifie F(S x) = S F(x) avec S = diag(−1, −1, 1). L'application
- *    (Q, D, V) → (−Q, −D, V) envoie donc toute solution sur une solution (analogue de B → −B) ;
- *    le bouton « Symétrie » l'applique à l'état courant.
+ * 2. Symmetry: the field F satisfies F(S x) = S F(x) with S = diag(−1, −1, 1). The map
+ *    (Q, D, V) → (−Q, −D, V) therefore sends any solution to a solution (analogue of B → −B);
+ *    the "Symmetry" button applies it to the current state.
  *
- * 3. Points fixes (calcul direct, F = 0) : (0, 0, Γ) et la paire échangée par S
+ * 3. Fixed points (direct computation, F = 0): (0, 0, Γ) and the pair exchanged by S
  *        V* = −√(μν),  D*² = μ (Γ + √(μν)) / √(μν),  Q* = −√(ν/μ) D*.
- *    (μQ = VD et νD = VQ imposent Q = VD/μ puis V² = μν si D ≠ 0 ; la troisième équation donne
- *    D² = μ (V − Γ) / V : avec V = +√(μν), D² > 0 exigerait Γ < √(μν) ≈ 0,109, donc seule la
- *    racine négative convient sur [0,80 ; 1,00].)
- *    Ils sont marqués « × » dans le portrait de phase (Q, D).
+ *    (μQ = VD and νD = VQ impose Q = VD/μ then V² = μν if D ≠ 0; the third equation gives
+ *    D² = μ (V − Γ) / V: with V = +√(μν), D² > 0 would require Γ < √(μν) ≈ 0.109, so only the
+ *    negative root is suitable on [0.80; 1.00].)
+ *    They are marked "×" in the phase portrait (Q, D).
  *
- * 4. Intégration : Runge–Kutta classique d'ordre 4 à pas fixe dt = 0,01 (Hairer, Nørsett,
+ * 4. Integration: classical fixed-step Runge–Kutta of order 4, dt = 0.01 (Hairer, Nørsett,
  *    Wanner 1993, § II.1)
  *        k1 = F(x), k2 = F(x + dt k1/2), k3 = F(x + dt k2/2), k4 = F(x + dt k3),
  *        x ← x + dt (k1 + 2 k2 + 2 k3 + k4) / 6.
- *    Plusieurs pas par image ; ×1 = 10 unités de temps (u.t.) par seconde, ×5, ×20.
+ *    Several steps per frame; ×1 = 10 time units (t.u.) per second, ×5, ×20.
  *
- * 5. Comptage : un passage de D par 0 est compté entre les pas n et n + 1 quand
- *    signe(D_n) ≠ signe(D_{n+1}) (renversements et excursions). Compteurs remis à zéro à
- *    chaque changement de Γ (et à la réinitialisation) ; fréquence = N / T, où N et T ne
- *    portent que sur la durée écoulée après un transitoire de 200 u.t.
+ * 5. Counting: a crossing of D through 0 is counted between steps n and n + 1 when
+ *    sign(D_n) ≠ sign(D_{n+1}) (reversals and excursions). Counters reset at
+ *    each change of Γ (and at reinitialisation); frequency = N / T, where N and T only
+ *    cover the time elapsed after a transient of 200 t.u.
  *
- * 6. Formule de Rice (Kac 1943 ; Rice 1944–1945) : pour un processus stationnaire ergodique
- *    dérivable, le nombre moyen de passages par 0 par unité de temps vaut
+ * 6. Rice formula (Kac 1943; Rice 1944–1945): for a differentiable stationary ergodic process,
+ *    the mean number of crossings of 0 per unit time is
  *        ν₀ = E[ |Ḋ| δ(D) ] = ∫ |ḋ| p(0, ḋ) dḋ,
- *    estimé en remplaçant δ(D) par 1{|D| < h} / (2h) et l'espérance par la moyenne sur les états
- *    visités après le transitoire (sans utiliser leur ordre temporel) :
+ *    estimated by replacing δ(D) by 1{|D| < h} / (2h) and the expectation by the average over the states
+ *    visited after the transient (without using their temporal order):
  *        ν₀ ≈ E[ |Ḋ| 1{|D| < h} ] / (2h),   Ḋ = −ν D + V Q,
  *        Ê = (1/T) Σ_n |Ḋ_n| 1{|D_n| < h} dt.
- *    Les contributions |Ḋ_n| dt sont rangées dans un histogramme de |D| (pas 0,01 sur [0 ; 0,5[),
- *    ce qui donne l'estimation exacte pour tout h multiple de 0,01 sans relancer la simulation.
- *    Biais en O(h²) quand h grandit, variance en O(1/(hT)) quand h diminue. Le long d'une seule
- *    trajectoire, une traversée monotone de la bande donne ∫|Ḋ| 1{|D| < h} dt = ∫_{−h}^{h} dD = 2h :
- *    l'estimation coïncide alors avec le comptage, aux excursions près qui entrent dans la bande
- *    sans la traverser. Son intérêt est de n'utiliser que la loi des états (échantillons sans ordre).
+ *    The contributions |Ḋ_n| dt are stored in a histogram of |D| (step 0.01 on [0; 0.5[),
+ *    which gives the exact estimate for any h multiple of 0.01 without rerunning the simulation.
+ *    Bias O(h²) as h grows, variance O(1/(hT)) as h decreases. Along a single
+ *    trajectory, a monotone traversal of the band gives ∫|Ḋ| 1{|D| < h} dt = ∫_{−h}^{h} dD = 2h:
+ *    the estimate then coincides with the count, up to excursions that enter the band
+ *    without crossing it. Its interest is that it only uses the law of the states (samples without order).
  *
- * 7. Condition initiale aléatoire (bouton « Réinitialiser ») : ±(Q*, D*, V*) + bruit gaussien
- *    d'écart-type 0,5 sur chaque composante. On évite le voisinage du point fixe trivial (0, 0, Γ) :
- *    sa jacobienne a pour valeurs propres −1 et (μ − ν)/2 ± i √(Γ² − ((μ + ν)/2)²), donc une spirale
- *    instable de taux (μ − ν)/2 ≈ 0,0095 seulement, qui donnerait des transitoires (oscillations de D
- *    autour de 0, période ≈ 2π/Γ) plus longs que les 200 u.t. ignorées.
+ * 7. Random initial condition ("Reset" button): ±(Q*, D*, V*) + Gaussian noise
+ *    of standard deviation 0.5 on each component. The neighbourhood of the trivial fixed point (0, 0, Γ) is avoided:
+ *    its Jacobian has eigenvalues −1 and (μ − ν)/2 ± i √(Γ² − ((μ + ν)/2)²), hence an
+ *    unstable spiral of rate (μ − ν)/2 ≈ 0.0095 only, which would give transients (oscillations of D
+ *    around 0, period ≈ 2π/Γ) longer than the 200 t.u. ignored.
  *
- * 8. Seuil des renversements : jusqu'à Γ = 0,86, D garde son signe (deux attracteurs symétriques
- *    disjoints) ; ils fusionnent par une crise (Grebogi, Ott, Romeiras, Yorke 1987) entre
- *    Γ = 0,86 et 0,865 avec cet intégrateur (RK4, dt = 0,01 ; contrôle indépendant sur
- *    16 × 10 000 u.t. : 0 passage à Γ = 0,86, taux 0,0007 à 0,8625, 0,0012 à 0,865, 0,0042 à 0,9,
- *    0,0113 à 1,0), intervalle identique à ]0,86 ; 0,865] de la grille fine de l'expérience E1 du site
- *    (experiments/e1_gissinger.py). Aux valeurs du curseur (pas 0,005) : aucun renversement pour
- *    Γ ≤ 0,86, renversements dès Γ = 0,865.
+ * 8. Reversal threshold: up to Γ = 0.86, D keeps its sign (two disjoint symmetric
+ *    attractors); they merge through a crisis (Grebogi, Ott, Romeiras, Yorke 1987) between
+ *    Γ = 0.86 and 0.865 with this integrator (RK4, dt = 0.01; independent check over
+ *    16 × 10 000 t.u.: 0 crossings at Γ = 0.86, rate 0.0007 at 0.8625, 0.0012 at 0.865, 0.0042 at 0.9,
+ *    0.0113 at 1.0), an interval identical to ]0.86; 0.865] of the fine grid of the site's experiment E1
+ *    (experiments/e1_gissinger.py). At the slider values (step 0.005): no reversal for
+ *    Γ ≤ 0.86, reversals from Γ = 0.865.
  *
- * Références
- *  - C. Gissinger, « A new deterministic model for chaotic reversals », Eur. Phys. J. B 85, 137 (2012).
- *  - M. Kac, « On the average number of real roots of a random algebraic equation »,
+ * References
+ *  - C. Gissinger, "A new deterministic model for chaotic reversals", Eur. Phys. J. B 85, 137 (2012).
+ *  - M. Kac, "On the average number of real roots of a random algebraic equation",
  *    Bull. Amer. Math. Soc. 49, 314–320 (1943).
- *  - S. O. Rice, « Mathematical analysis of random noise », Bell Syst. Tech. J. 23, 282–332 (1944)
- *    et 24, 46–156 (1945).
- *  - E. Hairer, S. P. Nørsett, G. Wanner, Solving Ordinary Differential Equations I, 2e éd.,
+ *  - S. O. Rice, "Mathematical analysis of random noise", Bell Syst. Tech. J. 23, 282–332 (1944)
+ *    and 24, 46–156 (1945).
+ *  - E. Hairer, S. P. Nørsett, G. Wanner, Solving Ordinary Differential Equations I, 2nd ed.,
  *    Springer (1993).
- *  - C. Grebogi, E. Ott, F. Romeiras, J. A. Yorke, « Critical exponents for crisis-induced
- *    intermittency », Phys. Rev. A 36, 5365–5380 (1987).
+ *  - C. Grebogi, E. Ott, F. Romeiras, J. A. Yorke, "Critical exponents for crisis-induced
+ *    intermittency", Phys. Rev. A 36, 5365–5380 (1987).
  * ---------------------------------------------------------------------------------------------
  */
 (function () {
@@ -78,113 +78,78 @@
 
   var NAME = "gissinger";
 
-  /* ---------- constantes du modèle et de l'affichage ---------- */
+  /* ---------- model and display constants ---------- */
   var MU = 0.119, NU = 0.1, DT = 0.01;
   var SQ_MN = Math.sqrt(MU * NU), SQ_NM = Math.sqrt(NU / MU);
   var G_MIN = 0.8, G_MAX = 1.0, G_STEP = 0.005, G_DEF = 0.95;
   var H_MIN = 0.05, H_MAX = 0.5, H_STEP = 0.01, H_DEF = 0.2;
-  var BIN = 0.01, NBIN = 50;                       // histogramme de |D| sur [0 ; 0,5[
+  var BIN = 0.01, NBIN = 50;                       // histogram of |D| on [0; 0.5[
   var WINDOW = 600, TRANSIENT = 200, PREFILL = 800, TRAIL = 200;
-  var K_TRANS = Math.round(TRANSIENT / DT);        // 20 000 pas
-  var K_PREFILL = Math.round(PREFILL / DT);        // 80 000 pas
-  var SUB = 5;                                     // un point tracé tous les 5 pas (0,05 u.t.)
-  var CAP = Math.round(WINDOW / (SUB * DT)) + 400; // tampon circulaire des points tracés
-  var BASE_RATE = 10;                              // u.t. par seconde à ×1
+  var K_TRANS = Math.round(TRANSIENT / DT);        // 20,000 steps
+  var K_PREFILL = Math.round(PREFILL / DT);        // 80,000 steps
+  var SUB = 5;                                     // one plotted point every 5 steps (0.05 t.u.)
+  var CAP = Math.round(WINDOW / (SUB * DT)) + 400; // circular buffer of the plotted points
+  var BASE_RATE = 10;                              // t.u. per second at ×1
   var SPEEDS = [1, 5, 20];
-  var AX = 3.5;                                    // demi-étendue des axes Q et D
-  var NCHUNK = 20;                                 // dégradé de la traînée
+  var AX = 3.5;                                    // half-extent of the Q and D axes
+  var NCHUNK = 20;                                 // gradient of the trail
   var PAL_LIGHT = ["#2a78d6", "#eb6834", "#1baf7a", "#eda100"];
   var PAL_DARK = ["#3987e5", "#d95926", "#199e70", "#c98500"];
 
   /* ---------- textes ---------- */
   var TXT = {
-    fr: {
-      title: "Renversements du dipôle dans le modèle à trois modes de Gissinger",
-      gName: "Γ, paramètre de contrôle", hName: "h, demi-largeur de la fenêtre |D| < h de l'estimateur de Rice",
-      speed: "Vitesse", speedTip: "×1 = 10 unités de temps par seconde",
-      pause: "Pause", play: "Lecture",
-      reset: "Réinitialiser", resetTip: "Nouvelle condition initiale aléatoire, compteurs remis à zéro",
-      sym: "Symétrie", symTip: "Applique (Q, D, V) → (−Q, −D, V) à l'état courant",
-      panelA: "(a) dipôle D(t)", panelB: "(b) portrait de phase (Q, D)",
-      pos: "D > 0", neg: "D < 0", band: "|D| < h", transient: "transitoire", symMark: "sym.", colon: " :",
-      canvas: "Panneau (a) : dipôle D en fonction du temps sur les 600 dernières unités de temps, " +
-        "avec la ligne D = 0, en bleu quand D > 0 et en orange quand D < 0. Panneau (b) : portrait de " +
-        "phase (Q, D) avec la traînée des 200 dernières unités de temps, les deux points fixes non triviaux (croix) et l'état courant (point).",
-      l1: function (g, t) { return "Γ\u00a0=\u00a0" + g + " · durée depuis le dernier changement\u00a0: " + t + " u.t."; },
-      l2: function (n, np) { return "Passages de D par 0\u00a0: " + n + ", dont " + np + " après le transitoire (200 premières u.t. ignorées)"; },
-      l3: function (np, T, f, h, r) { return "Fréquence par u.t.\u00a0: comptage " + np + "\u00a0/\u00a0" + T + "\u00a0=\u00a0" + f + " ; Rice (h\u00a0=\u00a0" + h + ")\u00a0: " + r; },
-      l3wait: function (left) { return "Fréquence\u00a0: transitoire en cours, encore " + left + " u.t. avant l'estimation"; },
-      note: "μ = 0,119, ν = 0,1 ; RK4, dt = 0,01 ; u.t. = unité de temps (×1 = 10 u.t./s). " +
-        "Bleu : D > 0, orange : D < 0, bande verte : |D| < h, × : points fixes non triviaux, ● : état courant. " +
-        "Jusqu'à Γ = 0,86, pas de renversement : la trajectoire reste sur l'un des deux attracteurs symétriques " +
-        "(D > 0 ou D < 0). Ils fusionnent par une crise entre 0,86 et 0,865 ; dès Γ = 0,865, D change de signe " +
-        "de façon irrégulière. Le long d'une trajectoire, chaque traversée de la bande apporte ∫|Ḋ|\u00a0dt ≈ 2h, " +
-        "d'où l'accord avec le comptage ; mais Rice n'utilise que la loi des états, pas leur ordre : elle vaut donc " +
-        "aussi pour les échantillons d'un modèle génératif. En pause, changer Γ ou réinitialiser calcule d'un coup 800 u.t."
-    },
-    en: {
-      title: "Dipole reversals in Gissinger's three-mode model",
-      gName: "Γ, control parameter", hName: "h, half-width of the |D| < h window of the Rice estimator",
-      speed: "Speed", speedTip: "×1 = 10 time units per second",
-      pause: "Pause", play: "Play",
-      reset: "Reset", resetTip: "New random initial condition, counters set to zero",
-      sym: "Symmetry", symTip: "Applies (Q, D, V) → (−Q, −D, V) to the current state",
-      panelA: "(a) dipole D(t)", panelB: "(b) phase portrait (Q, D)",
-      pos: "D > 0", neg: "D < 0", band: "|D| < h", transient: "transient", symMark: "sym.", colon: ":",
-      canvas: "Panel (a): dipole D versus time over the last 600 time units, with the line D = 0, " +
-        "blue where D > 0 and orange where D < 0. Panel (b): phase portrait (Q, D) with the trail of the " +
-        "last 200 time units, the two non-trivial fixed points (crosses) and the current state (dot).",
-      l1: function (g, t) { return "Γ\u00a0=\u00a0" + g + " · time since last change: " + t + " t.u."; },
-      l2: function (n, np) { return "Zero crossings of D: " + n + ", of which " + np + " after the transient (first 200 t.u. ignored)"; },
-      l3: function (np, T, f, h, r) { return "Rate per t.u.: count " + np + "\u00a0/\u00a0" + T + "\u00a0=\u00a0" + f + "; Rice (h\u00a0=\u00a0" + h + "): " + r; },
-      l3wait: function (left) { return "Rate: transient in progress, " + left + " t.u. left before estimating"; },
-      note: "μ = 0.119, ν = 0.1; RK4, dt = 0.01; t.u. = time unit (×1 = 10 t.u./s). " +
-        "Blue: D > 0, orange: D < 0, green band: |D| < h, ×: non-trivial fixed points, ●: current state. " +
-        "Up to Γ = 0.86 there is no reversal: the trajectory stays on one of the two symmetric attractors " +
-        "(D > 0 or D < 0). They merge in a crisis between 0.86 and 0.865; from Γ = 0.865 on, D changes sign " +
-        "irregularly. Along a trajectory, each traversal of the band contributes ∫|Ḋ|\u00a0dt ≈ 2h, hence the " +
-        "agreement with the count; but Rice uses only the distribution of states, not their order, so it also " +
-        "holds for samples from a generative model. While paused, changing Γ or resetting computes 800 t.u. at once."
-    }
+    title: "Dipole reversals in Gissinger's three-mode model",
+    gName: "Γ, control parameter", hName: "h, half-width of the |D| < h window of the Rice estimator",
+    speed: "Speed", speedTip: "×1 = 10 time units per second",
+    pause: "Pause", play: "Play",
+    reset: "Reset", resetTip: "New random initial condition, counters set to zero",
+    sym: "Symmetry", symTip: "Applies (Q, D, V) → (−Q, −D, V) to the current state",
+    panelA: "(a) dipole D(t)", panelB: "(b) phase portrait (Q, D)",
+    pos: "D > 0", neg: "D < 0", band: "|D| < h", transient: "transient", symMark: "sym.", colon: ":",
+    canvas: "Panel (a): dipole D versus time over the last 600 time units, with the line D = 0, " +
+      "blue where D > 0 and orange where D < 0. Panel (b): phase portrait (Q, D) with the trail of the " +
+      "last 200 time units, the two non-trivial fixed points (crosses) and the current state (dot).",
+    l1: function (g, t) { return "Γ\u00a0=\u00a0" + g + " · time since last change: " + t + " t.u."; },
+    l2: function (n, np) { return "Zero crossings of D: " + n + ", of which " + np + " after the transient (first 200 t.u. ignored)"; },
+    l3: function (np, T, f, h, r) { return "Rate per t.u.: count " + np + "\u00a0/\u00a0" + T + "\u00a0=\u00a0" + f + "; Rice (h\u00a0=\u00a0" + h + "): " + r; },
+    l3wait: function (left) { return "Rate: transient in progress, " + left + " t.u. left before estimating"; },
+    note: "μ = 0.119, ν = 0.1; RK4, dt = 0.01; t.u. = time unit (×1 = 10 t.u./s). " +
+      "Blue: D > 0, orange: D < 0, green band: |D| < h, ×: non-trivial fixed points, ●: current state. " +
+      "Up to Γ = 0.86 there is no reversal: the trajectory stays on one of the two symmetric attractors " +
+      "(D > 0 or D < 0). They merge in a crisis between 0.86 and 0.865; from Γ = 0.865 on, D changes sign " +
+      "irregularly. Along a trajectory, each traversal of the band contributes ∫|Ḋ|\u00a0dt ≈ 2h, hence the " +
+      "agreement with the count; but Rice uses only the distribution of states, not their order, so it also " +
+      "holds for samples from a generative model. While paused, changing Γ or resetting computes 800 t.u. at once."
   };
 
-  // Typographie : espaces insécables autour de =, <, >, ≈, → et entre un nombre et « u.t. » ;
-  // en français, espace insécable avant « : » et fine insécable avant « ; ».
-  function typo(lang, s) {
+  // Typography: non-breaking spaces around =, <, >, ≈, → and between a number and "t.u.".
+  function typo(s) {
     s = s.replace(/ ([=<>≈→]) /g, "\u00a0$1\u00a0").replace(/(\d) (u\.t\.|t\.u\.)/g, "$1\u00a0$2");
-    if (lang === "fr") s = s.replace(/ :/g, "\u00a0:").replace(/ ;/g, "\u202f;");
     return s;
   }
-  Object.keys(TXT).forEach(function (lg) {
-    var D = TXT[lg];
-    Object.keys(D).forEach(function (k) {
-      var v = D[k];
-      // « | » autorise une coupure après lui (classe BA d'UAX 14) : gluer |D| et ∫|Ḋ| dans la note
-      // par un gluon de mots (U+2060) ; pas dans les textes dessinés sur le canvas.
-      if (k === "note") v = v.replace(/\|/g, "|\u2060");
-      if (typeof v === "string") D[k] = typo(lg, v);
-      else if (typeof v === "function") D[k] = function () { return typo(lg, v.apply(null, arguments)); };
-    });
+  Object.keys(TXT).forEach(function (k) {
+    var v = TXT[k];
+    // "|" allows a line break after it (UAX 14 class BA): glue |D| and ∫|Ḋ| in the note
+    // with a word joiner (U+2060); not in the texts drawn on the canvas.
+    if (k === "note") v = v.replace(/\|/g, "|\u2060");
+    if (typeof v === "string") TXT[k] = typo(v);
+    else if (typeof v === "function") TXT[k] = function () { return typo(v.apply(null, arguments)); };
   });
 
   /* ---------- utilitaires ---------- */
-  function langOf() {
-    return /^en/i.test(document.documentElement.getAttribute("lang") || "") ? "en" : "fr";
-  }
-
   var NF = {};
-  function fmt(lang, x, d, group) {
-    if (Math.abs(x) < 0.5 * Math.pow(10, -d)) x = 0;   // pas de « −0 »
-    var key = lang + d + (group === false ? "n" : "g");
+  function fmt(x, d, group) {
+    if (Math.abs(x) < 0.5 * Math.pow(10, -d)) x = 0;   // no "−0"
+    var key = d + (group === false ? "n" : "g");
     if (!(key in NF)) {
       try {
-        NF[key] = new Intl.NumberFormat(lang === "en" ? "en-US" : "fr-FR",
+        NF[key] = new Intl.NumberFormat("en-US",
           { minimumFractionDigits: d, maximumFractionDigits: d, useGrouping: group !== false });
       } catch (e) { NF[key] = null; }
     }
     var s;
     if (NF[key]) s = NF[key].format(x);
-    else { s = x.toFixed(d); if (lang === "fr") s = s.replace(".", ","); }
+    else s = x.toFixed(d);
     return s.replace(/-/g, "−");
   }
 
@@ -235,8 +200,7 @@
   function Widget(el) {
     var self = this;
     this.el = el;
-    this.lang = langOf();
-    var T = this.T = TXT[this.lang];
+    var T = this.T = TXT;
     el.textContent = "";
 
     el.appendChild(mk("p", "widget-title", T.title));
@@ -318,7 +282,7 @@
     el.appendChild(ro);
     el.appendChild(mk("p", "widget-note", T.note));
 
-    // état
+    // state
     this.g = G_DEF; this.h = H_DEF; this.speed = 1;
     this.hist = new Float64Array(NBIN);
     this.bt = new Float64Array(CAP); this.bq = new Float32Array(CAP); this.bd = new Float32Array(CAP);
@@ -363,7 +327,7 @@
     if (reducedMotion()) this.stop(); else this.start();
   }
 
-  /* ----- thème ----- */
+  /* ----- theme ----- */
   Widget.prototype.readTheme = function () {
     var cs = getComputedStyle(document.documentElement);
     var c = {
@@ -380,7 +344,7 @@
     this.C = c;
   };
 
-  /* ----- géométrie ----- */
+  /* ----- geometry ----- */
   Widget.prototype.resize = function (force) {
     var r = this.canvas.getBoundingClientRect();
     var W = Math.floor(r.width || this.el.clientWidth || 600);
@@ -397,7 +361,7 @@
       var hb = Math.round(Math.min(W, 340));
       L = { a: { x: 0, y: 0, w: W, h: ha }, b: { x: 0, y: ha + gap, w: W, h: hb }, H: ha + gap + hb };
     }
-    // zones de tracé
+    // plot areas
     var a = L.a;
     a.l = a.x + 34; a.r = a.x + a.w - 6; a.t = a.y + 26; a.b = a.y + a.h - 26;
     var b = L.b;
@@ -413,9 +377,9 @@
     this.draw();
   };
 
-  /* ----- état et intégration ----- */
+  /* ----- state and integration ----- */
   Widget.prototype.newState = function () {
-    // condition initiale : un des deux points fixes non triviaux (signe au hasard) + bruit N(0, 0,5²)
+    // initial condition: one of the two non-trivial fixed points (random sign) + noise N(0, 0.5²)
     var Ds = Math.sqrt(MU * (this.g + SQ_MN) / SQ_MN), Qs = -SQ_NM * Ds, sg = Math.random() < 0.5 ? -1 : 1;
     this.q = sg * Qs + 0.5 * gauss(); this.d = sg * Ds + 0.5 * gauss(); this.v = -SQ_MN + 0.5 * gauss();
     this.k = 0; this.sub = 0;
@@ -518,7 +482,7 @@
   Widget.prototype.symmetry = function () {
     this.q = -this.q; this.d = -this.d;            // (Q, D, V) → (−Q, −D, V)
     var t = this.k * DT;
-    this.push(t, NaN, NaN);                         // coupure de la courbe
+    this.push(t, NaN, NaN);                         // curve break
     this.push(t, this.q, this.d);
     this.markers.push({ t: t, type: "s" });
     this.draw();
@@ -529,7 +493,7 @@
     if (this.running) return;
     this.running = true; this.lastTs = 0;
     this.pauseBtn.textContent = this.T.pause;
-    this.readout.setAttribute("aria-busy", "true");   // pas d'annonce continue pendant l'animation
+    this.readout.setAttribute("aria-busy", "true");   // no continuous announcement during the animation
     var self = this;
     this.raf = requestAnimationFrame(function (ts) { self.frame(ts); });
   };
@@ -561,8 +525,7 @@
 
   /* ----- textes ----- */
   Widget.prototype.updateLabels = function () {
-    var lg = this.lang;
-    var gs = fmt(lg, this.g, 3), hs = fmt(lg, this.h, 2);
+    var gs = fmt(this.g, 3), hs = fmt(this.h, 2);
     this.gOut.textContent = "Γ\u00a0=\u00a0" + gs;
     this.gIn.setAttribute("aria-valuetext", gs);
     this.hOut.textContent = "h\u00a0=\u00a0" + hs;
@@ -570,23 +533,23 @@
   };
 
   Widget.prototype.updateReadout = function () {
-    var T = this.T, lg = this.lang;
+    var T = this.T;
     var since = (this.k - this.kChange) * DT;
     var lines = [
-      T.l1(fmt(lg, this.g, 3), fmt(lg, Math.floor(since), 0)),
-      T.l2(fmt(lg, this.nCross, 0), fmt(lg, this.nPost, 0))
+      T.l1(fmt(this.g, 3), fmt(Math.floor(since), 0)),
+      T.l2(fmt(this.nCross, 0), fmt(this.nPost, 0))
     ];
     var Tp = since - TRANSIENT;
     if (Tp > 0) {
-      lines.push(T.l3(fmt(lg, this.nPost, 0), fmt(lg, Math.floor(Tp), 0), fmt(lg, this.nPost / Tp, 4),
-        fmt(lg, this.h, 2), fmt(lg, this.riceRate(), 4)));
+      lines.push(T.l3(fmt(this.nPost, 0), fmt(Math.floor(Tp), 0), fmt(this.nPost / Tp, 4),
+        fmt(this.h, 2), fmt(this.riceRate(), 4)));
     } else {
-      lines.push(T.l3wait(fmt(lg, Math.ceil(-Tp), 0)));
+      lines.push(T.l3wait(fmt(Math.ceil(-Tp), 0)));
     }
     for (var i = 0; i < 3; i++) if (this.rl[i].textContent !== lines[i]) this.rl[i].textContent = lines[i];
   };
 
-  /* ----- dessin ----- */
+  /* ----- drawing ----- */
   Widget.prototype.draw = function () {
     if (!this.L) return;
     var c = this.ctx, dpr = this.dpr;
@@ -640,7 +603,7 @@
   };
 
   Widget.prototype.drawSeries = function (p) {
-    var c = this.ctx, C = this.C, T = this.T, lg = this.lang;
+    var c = this.ctx, C = this.C, T = this.T;
     var tNow = this.k * DT, t1 = Math.max(tNow, WINDOW), t0 = t1 - WINDOW;
     var pw = p.r - p.l, ph = p.b - p.t;
     var X = function (t) { return p.l + (t - t0) / WINDOW * pw; };
@@ -651,7 +614,7 @@
     c.save();
     c.beginPath(); c.rect(p.l, p.t, pw, ph); c.clip();
 
-    // transitoire du réglage courant
+    // transient of the current setting
     var tc = this.kChange * DT, te = Math.min(tc + TRANSIENT, tNow);
     if (te > t0 && te > tc) {
       var xa = X(Math.max(tc, t0)), xb = X(te);
@@ -667,14 +630,14 @@
     c.fillRect(p.l, Y(this.h), pw, Y(-this.h) - Y(this.h));
     c.globalAlpha = 1;
 
-    // grille
+    // grid
     c.lineWidth = 1; c.strokeStyle = C.hair; c.globalAlpha = 0.45;
     c.beginPath();
     [-2, 2].forEach(function (d) { var y = Math.round(Y(d)) + 0.5; c.moveTo(p.l, y); c.lineTo(p.r, y); });
     c.stroke(); c.globalAlpha = 1;
 
-    // graduations du temps
-    var lab = this.textWidth(fmt(lg, Math.max(t1, 1000), 0), 12) + 18;
+    // time ticks
+    var lab = this.textWidth(fmt(Math.max(t1, 1000), 0), 12) + 18;
     var steps = [50, 100, 200, 300, 600], step = 600;
     for (var si = 0; si < steps.length; si++) if (steps[si] * pw / WINDOW >= lab) { step = steps[si]; break; }
     var ticks = [];
@@ -683,11 +646,11 @@
     ticks.forEach(function (t) { var x = Math.round(X(t)) + 0.5; c.moveTo(x, p.t); c.lineTo(x, p.b); });
     c.stroke(); c.globalAlpha = 1;
 
-    // D = 0 (référence)
+    // D = 0 (reference)
     c.strokeStyle = C.ink; c.lineWidth = 1.5;
     c.beginPath(); c.moveTo(p.l, Y(0)); c.lineTo(p.r, Y(0)); c.stroke();
 
-    // série D(t), colorée par le signe
+    // D(t) series, coloured by sign
     var pp = new Path2D(), pn = new Path2D();
     var start = (this.head - this.count + CAP) % CAP;
     var pd = NaN, px = 0;
@@ -710,7 +673,7 @@
     c.strokeStyle = C.pal[0]; c.stroke(pp);
     c.strokeStyle = C.pal[1]; c.stroke(pn);
 
-    // repères : changements de Γ et symétries
+    // marks: changes of Γ and symmetries
     var lastLab = [-1e9, -1e9], self = this;
     this.markers = this.markers.filter(function (m) { return m.t >= t0 - 1; });
     this.markers.forEach(function (m) {
@@ -720,10 +683,10 @@
       else { c.strokeStyle = C.pal[3]; c.setLineDash([2, 2]); }
       c.beginPath(); c.moveTo(xm, p.t); c.lineTo(xm, p.b); c.stroke();
       c.setLineDash([]);
-      var s = m.type === "g" ? "Γ\u00a0=\u00a0" + fmt(lg, m.g, 3) : T.symMark;
+      var s = m.type === "g" ? "Γ\u00a0=\u00a0" + fmt(m.g, 3) : T.symMark;
       var w = self.textWidth(s, 11, "600");
       var xl = Math.min(xm + 3, p.r - w - 2);
-      for (var row = 0; row < 2; row++) {            // deux rangées d'étiquettes, sans chevauchement
+      for (var row = 0; row < 2; row++) {            // two rows of labels, without overlap
         if (xl > lastLab[row] + 4) {
           self.text(s, xl, p.t + 12 + 13 * row, "left", m.type === "g" ? C.soft : C.ink, 11, "600", true);
           lastLab[row] = xl + w;
@@ -732,20 +695,20 @@
       }
     });
 
-    // étiquette de la bande
+    // band label
     var yb = Y(this.h) - 4;
     this.text(T.band, p.l + 4, Math.max(p.t + 26, yb), "left", C.ink, 11, "600", true);
 
     c.restore();
     this.frameBox(p);
 
-    // étiquettes des axes
+    // axis labels
     var sx = this;
-    [-2, 0, 2].forEach(function (d) { sx.text(fmt(lg, d, 0), p.l - 6, Y(d) + 4, "right", C.soft, 12); });
+    [-2, 0, 2].forEach(function (d) { sx.text(fmt(d, 0), p.l - 6, Y(d) + 4, "right", C.soft, 12); });
     sx.text("D", p.l - 6, p.t + 11, "right", C.ink, 12, "700");
     var wt = this.textWidth("t", 12, "700");
     ticks.forEach(function (t) {
-      var x = X(t), s = fmt(lg, t, 0), w = sx.textWidth(s, 12);
+      var x = X(t), s = fmt(t, 0), w = sx.textWidth(s, 12);
       if (x + w / 2 > p.r - wt - 8 || x - w / 2 < p.l - 30) return;
       sx.text(s, x, p.b + 16, "center", C.soft, 12);
     });
@@ -753,7 +716,7 @@
   };
 
   Widget.prototype.drawPhase = function (p) {
-    var c = this.ctx, C = this.C, T = this.T, lg = this.lang;
+    var c = this.ctx, C = this.C, T = this.T;
     var s = p.s;
     var X = function (q) { return p.l + (q + AX) / (2 * AX) * s; };
     var Y = function (d) { return p.t + (AX - d) / (2 * AX) * s; };
@@ -768,7 +731,7 @@
     c.fillRect(p.l, Y(this.h), s, Y(-this.h) - Y(this.h));
     c.globalAlpha = 1;
 
-    // grille
+    // grid
     c.lineWidth = 1; c.strokeStyle = C.hair; c.globalAlpha = 0.45; c.beginPath();
     [-2, 2].forEach(function (v) {
       var y = Math.round(Y(v)) + 0.5, x = Math.round(X(v)) + 0.5;
@@ -780,7 +743,7 @@
     c.strokeStyle = C.ink; c.lineWidth = 1.5;
     c.beginPath(); c.moveTo(p.l, Y(0)); c.lineTo(p.r, Y(0)); c.stroke();
 
-    // traînée : dégradé d'opacité selon l'âge, couleur selon le signe de D
+    // trail: opacity gradient by age, colour by sign of D
     var tNow = this.k * DT, tA = tNow - TRAIL;
     var paths = [];
     for (var ci = 0; ci < NCHUNK; ci++) paths.push([new Path2D(), new Path2D()]);
@@ -812,7 +775,7 @@
     }
     c.globalAlpha = 1;
 
-    // points fixes non triviaux
+    // non-trivial fixed points
     var Ds = Math.sqrt(MU * (this.g + SQ_MN) / SQ_MN), Qs = -SQ_NM * Ds;
     c.strokeStyle = C.ink; c.lineWidth = 2;
     [[Qs, Ds], [-Qs, -Ds]].forEach(function (pt) {
@@ -821,7 +784,7 @@
       c.stroke();
     });
 
-    // état courant
+    // current state
     var xc = X(this.q), yc = Y(this.d);
     c.beginPath(); c.arc(xc, yc, 5, 0, 2 * Math.PI);
     c.fillStyle = C.ink; c.fill();
@@ -832,14 +795,14 @@
 
     var sx = this;
     [-2, 0, 2].forEach(function (v) {
-      sx.text(fmt(lg, v, 0), p.l - 6, Y(v) + 4, "right", C.soft, 12);
-      sx.text(fmt(lg, v, 0), X(v), p.b + 16, "center", C.soft, 12);
+      sx.text(fmt(v, 0), p.l - 6, Y(v) + 4, "right", C.soft, 12);
+      sx.text(fmt(v, 0), X(v), p.b + 16, "center", C.soft, 12);
     });
     sx.text("D", p.l - 6, p.t + 11, "right", C.ink, 12, "700");
     sx.text("Q", p.r, p.b + 16, "right", C.ink, 12, "700");
   };
 
-  /* ---------- initialisation et thème ---------- */
+  /* ---------- initialisation and theme ---------- */
   var instances = [];
   function refreshAll() {
     instances.forEach(function (w) { w.readTheme(); w.draw(); });

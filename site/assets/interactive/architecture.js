@@ -1,17 +1,17 @@
 /*
- * architecture.js — MilaDy 2027, widget interactif « architecture » (FR / EN).
- * La chaîne d'une campagne de simulations (sept étapes, deux magasins) et sa réalisation sur trois cibles :
- * version interactive de la figure « architecture » de la page Calcul et données.
- * Usage : <div class="widget" data-widget="architecture"></div> + <script defer src=".../architecture.js"></script>
+ * architecture.js — MilaDy 2027, interactive "architecture" widget.
+ * The chain of a simulation campaign (seven stages, two stores) and how it runs on three targets:
+ * interactive version of the "architecture" figure of the Computing and data page.
+ * Usage: <div class="widget" data-widget="architecture"></div> + <script defer src=".../architecture.js"></script>
  *
- * Contenu (sources dans le dépôt, chemins relatifs à la racine) :
- * - étapes et modules : computing/index.qmd (tableau « La chaîne de traitement ») ; src/milady/sweep.py, src/milady/sim/run.py,
- *   src/milady/storage.py, src/milady/catalog/, src/milady/train/fm3d.py, src/milady/eval/metrics.py ;
- * - campagne suivie : infra/configs/palier2_tg3d.yaml (Re × Pm = 4 × 3, 64³) et infra/configs/train_fm3d.yaml
- *   (validation Re = 100, Pm = 1 ; test Re = 50, Pm = 2) ;
- * - services par cible : docs/ARCHITECTURE.md § 2, infra/docker/docker-compose.yml, infra/slurm/env.sh,
- *   infra/slurm/*.sbatch, Makefile (cibles sweep, train, eval).
- * Rien n'est simulé ici : le widget montre où chaque étape s'exécute et ce qu'elle écrit.
+ * Content (sources in the repository, paths relative to the root):
+ * - stages and modules: computing/index.qmd (table "The processing chain"); src/milady/sweep.py, src/milady/sim/run.py,
+ *   src/milady/storage.py, src/milady/catalog/, src/milady/train/fm3d.py, src/milady/eval/metrics.py;
+ * - campaign followed: infra/configs/palier2_tg3d.yaml (Re × Pm = 4 × 3, 64³) and infra/configs/train_fm3d.yaml
+ *   (validation Re = 100, Pm = 1; test Re = 50, Pm = 2);
+ * - services per target: docs/ARCHITECTURE.md § 2, infra/docker/docker-compose.yml, infra/slurm/env.sh,
+ *   infra/slurm/*.sbatch, Makefile (targets sweep, train, eval).
+ * Nothing is simulated here: the widget shows where each stage runs and what it writes.
  */
 (function () {
   "use strict";
@@ -19,116 +19,60 @@
   var GH = "https://github.com/knoel99/milady-2027/blob/main/";
 
   var TXT = {
-    fr: {
-      title: "La chaîne de simulation, cible par cible",
-      targets: ["Portable", "VM cloud GPU", "Cluster Slurm"],
-      play: "Suivre une campagne", pause: "Pause", next: "Étape suivante",
-      catalog: "Catalogue", files: "Fichiers", exec: "Exécution",
-      what: "Ce qu'elle fait", writesCat: "Écrit au catalogue", writesFiles: "Écrit dans le stockage",
-      onTarget: "Sur cette cible", command: "Commande", code: "Code", none: "rien",
-      stageWord: "Étape", choose: "Cliquez une étape (ou utilisez les flèches du clavier) ; choisissez une cible ci-dessus.",
-      svgLabel: "Schéma de la chaîne : sept étapes, catalogue et fichiers",
-      note: "Campagne suivie : palier2_tg3d (Re × Pm = 4 × 3, 64³), entraînée par train_fm3d. Le widget ne simule rien : il montre où chaque étape s'exécute et ce qu'elle écrit.",
-      stages: ["Campagne", "Lancement", "Simulation", "Stockage", "Jeu de données", "Entraînement", "Évaluation"],
-      does: [
-        "Décrit la grille de paramètres et les réglages de temps : ici 4 valeurs de Re × 3 valeurs de Pm, grille 64³, mise en régime 100, fenêtre gardée 40.",
-        "Développe la grille en 12 simulations à identifiant déterministe (UUID v5), les enregistre au statut queued et les lance ; relancer la campagne saute les simulations terminées.",
-        "Intègre la MHD 3D (pseudo-spectral, RK4 de Lawson) : diagnostics tous les 0,1, 40 instantanés de (u, B), point de contrôle toutes les 900 s de calcul et à la réception de SIGTERM.",
-        "Écrit le fichier MFF (HDF5 compatible The Well), le valide, l'envoie sous {campagne}/{uuid}/fields.h5 et enregistre son empreinte SHA-256.",
-        "Sélectionne les simulations terminées et les répartit par point (Re, Pm) : validation (100 ; 1), test (50 ; 2), entraînement pour les 10 autres.",
-        "Flow matching conditionnel par (Re, Pm) sur des potentiels vecteurs tronqués à |m| ≤ 8 (divergence nulle par construction), symétrie B → −B exacte ; un ou plusieurs GPU (DDP).",
-        "Échantillonne le modèle et compare aux simulations : spectres, hélicités, bilans d'énergie, distance d'énergie, Wasserstein tranché.",
-      ],
-      cat: [["campaign"], ["simulation", "job"], ["diagnostic"], ["file"], ["dataset", "dataset_member"], ["model"], ["evaluation"]],
-      fil: [null, null, null, "fields.h5", null, "last.pt, final.pt", "rapport JSON"],
-      rails: [
-        { cat: "SQLite · data/catalog.sqlite", fil: "data/store/", exec: "venv, un processus par simulation" },
-        { cat: "PostgreSQL 16 · :5432", fil: "MinIO (S3) · :9000", exec: "conteneur worker-gpu (milady:gpu)" },
-        { cat: "SQLite sur $WORK", fil: "$SCRATCH, puis copie vers S3", exec: "tableau de jobs, 1 GPU par simulation" },
-      ],
-      targetNotes: [
-        "Sans GPU, sans Docker : un environnement virtuel (make setup) ; catalogue et fichiers dans data/.",
-        "Docker Compose : PostgreSQL, MinIO, MLflow et le conteneur de calcul ; ports liés à 127.0.0.1, accès par tunnel SSH (make up, ou sudo infra/deploy/bootstrap_vm.sh).",
-        "Image Apptainer convertie de milady:gpu (make sif) ; nœuds sans Internet : catalogue SQLite sur $WORK, fichiers sur $SCRATCH, copiés ensuite vers S3 puis ingérés dans PostgreSQL (milady.catalog ingest).",
-      ],
-      cmd: [
-        ["éditer infra/configs/palier2_tg3d.yaml", "éditer infra/configs/palier2_tg3d.yaml", "éditer infra/configs/palier2_tg3d.yaml"],
-        ["python -m milady.sweep infra/configs/palier2_tg3d.yaml --scheduler local", "make sweep CONFIG=infra/configs/palier2_tg3d.yaml", "python -m milady.sweep infra/configs/palier2_tg3d.yaml --scheduler slurm"],
-        ["python -m milady.sim.run infra/configs/palier2_tg3d.yaml --index i   (lancé par milady.sweep)", "python -m milady.sim.run … --index i   (dans le conteneur, lancé par milady.sweep)", "sbatch --array=0-11%12 infra/slurm/gen_data.sbatch infra/configs/palier2_tg3d.yaml   (soumis par milady.sweep)"],
-        ["automatique, en fin de simulation (milady.storage)", "automatique, vers s3://milady-data (MinIO)", "automatique, vers $SCRATCH ; puis copie vers S3 et python -m milady.catalog ingest <uri> --campaign <campagne>"],
-        ["automatique au début de l'entraînement (auto_dataset de train_fm3d.yaml)", "automatique au début de l'entraînement (auto_dataset)", "automatique au début de l'entraînement (auto_dataset)"],
-        ["python -m milady.train.fm3d --config infra/configs/train_fm3d.yaml", "make train CONFIG=infra/configs/train_fm3d.yaml   (torchrun, tous les GPU)", "sbatch infra/slurm/train.sbatch infra/configs/train_fm3d.yaml   (torchrun par nœud)"],
-        ["python -m milady.eval --config infra/configs/train_fm3d.yaml", "make eval CONFIG=infra/configs/train_fm3d.yaml", "sbatch infra/slurm/eval.sbatch infra/configs/train_fm3d.yaml"],
-      ],
-      onT: [
-        ["fichier YAML versionné avec le code", "idem", "idem"],
-        ["un sous-processus par simulation", "dans le conteneur de calcul (SCHEDULER=local) ou un conteneur par simulation (SCHEDULER=docker)", "un élément de tableau de jobs par simulation, au plus 12 à la fois (max_parallel)"],
-        ["processeur ; quelques fils", "GPU de la VM", "1 GPU par élément du tableau, image Apptainer ; SIGTERM 120 s avant la limite de temps"],
-        ["dossier data/store/", "bucket milady-data de MinIO", "$SCRATCH/milady/store"],
-        ["catalogue SQLite local", "PostgreSQL de la VM", "catalogue SQLite du cluster, ou PostgreSQL après ingestion"],
-        ["CPU (lent) ; suivi dans metrics.jsonl", "tous les GPU de la VM ; suivi dans le serveur MLflow", "plusieurs nœuds (DDP) ; suivi dans MLflow SQLite sur $WORK"],
-        ["CPU", "GPU de la VM", "1 GPU (eval.sbatch)"],
-      ],
-      codePaths: [["infra/configs/palier2_tg3d.yaml"], ["src/milady/sweep.py"], ["src/milady/sim/run.py", "src/milady/sim/mhd3d.py"], ["src/milady/storage.py", "src/milady/data/format.py"], ["src/milady/train/data.py", "src/milady/catalog/api.py"], ["src/milady/train/fm3d.py"], ["src/milady/eval/metrics.py"]],
-      sep: " : ", filShort: [null, null, null, "fields.h5", null, "last.pt", "JSON"],
-    },
-    en: {
-      title: "The simulation pipeline, target by target",
-      targets: ["Laptop", "Cloud GPU VM", "Slurm cluster"],
-      play: "Follow a campaign", pause: "Pause", next: "Next stage",
-      catalog: "Catalog", files: "Files", exec: "Execution",
-      what: "What it does", writesCat: "Writes to the catalog", writesFiles: "Writes to storage",
-      onTarget: "On this target", command: "Command", code: "Code", none: "nothing",
-      stageWord: "Stage", choose: "Click a stage (or use the arrow keys); pick a target above.",
-      svgLabel: "Pipeline diagram: seven stages, catalog and files",
-      note: "Campaign followed: palier2_tg3d (Re × Pm = 4 × 3, 64³), trained by train_fm3d. The widget simulates nothing: it shows where each stage runs and what it writes.",
-      stages: ["Campaign", "Launch", "Simulation", "Storage", "Dataset", "Training", "Evaluation"],
-      does: [
-        "Describes the parameter grid and the time settings: here 4 values of Re × 3 values of Pm, 64³ grid, burn-in 100, kept window 40.",
-        "Expands the grid into 12 simulations with deterministic identifiers (UUID v5), records them as queued and launches them; relaunching the campaign skips finished simulations.",
-        "Integrates 3D MHD (pseudo-spectral, Lawson RK4): diagnostics every 0.1, 40 snapshots of (u, B), a checkpoint every 900 s of compute and on SIGTERM.",
-        "Writes the MFF file (HDF5 compatible with The Well), validates it, uploads it as {campaign}/{uuid}/fields.h5 and records its SHA-256 digest.",
-        "Selects the finished simulations and splits them by (Re, Pm) point: validation (100; 1), test (50; 2), training for the other 10.",
-        "Conditional flow matching on (Re, Pm) over vector potentials truncated at |m| ≤ 8 (divergence-free by construction), exact B → −B symmetry; one or several GPUs (DDP).",
-        "Samples the model and compares with the simulations: spectra, helicities, energy budgets, energy distance, sliced Wasserstein.",
-      ],
-      cat: [["campaign"], ["simulation", "job"], ["diagnostic"], ["file"], ["dataset", "dataset_member"], ["model"], ["evaluation"]],
-      fil: [null, null, null, "fields.h5", null, "last.pt, final.pt", "JSON report"],
-      rails: [
-        { cat: "SQLite · data/catalog.sqlite", fil: "data/store/", exec: "venv, one process per simulation" },
-        { cat: "PostgreSQL 16 · :5432", fil: "MinIO (S3) · :9000", exec: "worker-gpu container (milady:gpu)" },
-        { cat: "SQLite on $WORK", fil: "$SCRATCH, then copy to S3", exec: "job array, 1 GPU per simulation" },
-      ],
-      targetNotes: [
-        "No GPU, no Docker: a virtual environment (make setup); catalog and files in data/.",
-        "Docker Compose: PostgreSQL, MinIO, MLflow and the compute container; ports bound to 127.0.0.1, access through an SSH tunnel (make up, or sudo infra/deploy/bootstrap_vm.sh).",
-        "Apptainer image converted from milady:gpu (make sif); nodes without Internet: SQLite catalog on $WORK, files on $SCRATCH, later copied to S3 and ingested into PostgreSQL (milady.catalog ingest).",
-      ],
-      cmd: [
-        ["edit infra/configs/palier2_tg3d.yaml", "edit infra/configs/palier2_tg3d.yaml", "edit infra/configs/palier2_tg3d.yaml"],
-        ["python -m milady.sweep infra/configs/palier2_tg3d.yaml --scheduler local", "make sweep CONFIG=infra/configs/palier2_tg3d.yaml", "python -m milady.sweep infra/configs/palier2_tg3d.yaml --scheduler slurm"],
-        ["python -m milady.sim.run infra/configs/palier2_tg3d.yaml --index i   (launched by milady.sweep)", "python -m milady.sim.run … --index i   (in the container, launched by milady.sweep)", "sbatch --array=0-11%12 infra/slurm/gen_data.sbatch infra/configs/palier2_tg3d.yaml   (submitted by milady.sweep)"],
-        ["automatic, at the end of the simulation (milady.storage)", "automatic, to s3://milady-data (MinIO)", "automatic, to $SCRATCH; then copy to S3 and python -m milady.catalog ingest <uri> --campaign <campaign>"],
-        ["automatic when training starts (auto_dataset in train_fm3d.yaml)", "automatic when training starts (auto_dataset)", "automatic when training starts (auto_dataset)"],
-        ["python -m milady.train.fm3d --config infra/configs/train_fm3d.yaml", "make train CONFIG=infra/configs/train_fm3d.yaml   (torchrun, all GPUs)", "sbatch infra/slurm/train.sbatch infra/configs/train_fm3d.yaml   (torchrun per node)"],
-        ["python -m milady.eval --config infra/configs/train_fm3d.yaml", "make eval CONFIG=infra/configs/train_fm3d.yaml", "sbatch infra/slurm/eval.sbatch infra/configs/train_fm3d.yaml"],
-      ],
-      onT: [
-        ["YAML file versioned with the code", "same", "same"],
-        ["one subprocess per simulation", "inside the compute container (SCHEDULER=local) or one container per simulation (SCHEDULER=docker)", "one job-array element per simulation, at most 12 at a time (max_parallel)"],
-        ["CPU; a few threads", "the VM's GPU", "1 GPU per array element, Apptainer image; SIGTERM 120 s before the time limit"],
-        ["data/store/ folder", "MinIO milady-data bucket", "$SCRATCH/milady/store"],
-        ["local SQLite catalog", "the VM's PostgreSQL", "the cluster's SQLite catalog, or PostgreSQL after ingestion"],
-        ["CPU (slow); tracking in metrics.jsonl", "all the VM's GPUs; tracking in the MLflow server", "several nodes (DDP); tracking in MLflow SQLite on $WORK"],
-        ["CPU", "the VM's GPU", "1 GPU (eval.sbatch)"],
-      ],
-      codePaths: [["infra/configs/palier2_tg3d.yaml"], ["src/milady/sweep.py"], ["src/milady/sim/run.py", "src/milady/sim/mhd3d.py"], ["src/milady/storage.py", "src/milady/data/format.py"], ["src/milady/train/data.py", "src/milady/catalog/api.py"], ["src/milady/train/fm3d.py"], ["src/milady/eval/metrics.py"]],
-      sep: ": ", filShort: [null, null, null, "fields.h5", null, "last.pt", "JSON"],
-    },
+    title: "The simulation pipeline, target by target",
+    targets: ["Laptop", "Cloud GPU VM", "Slurm cluster"],
+    play: "Follow a campaign", pause: "Pause", next: "Next stage",
+    catalog: "Catalog", files: "Files", exec: "Execution",
+    what: "What it does", writesCat: "Writes to the catalog", writesFiles: "Writes to storage",
+    onTarget: "On this target", command: "Command", code: "Code", none: "nothing",
+    stageWord: "Stage", choose: "Click a stage (or use the arrow keys); pick a target above.",
+    svgLabel: "Pipeline diagram: seven stages, catalog and files",
+    note: "Campaign followed: palier2_tg3d (Re × Pm = 4 × 3, 64³), trained by train_fm3d. The widget simulates nothing: it shows where each stage runs and what it writes.",
+    stages: ["Campaign", "Launch", "Simulation", "Storage", "Dataset", "Training", "Evaluation"],
+    does: [
+      "Describes the parameter grid and the time settings: here 4 values of Re × 3 values of Pm, 64³ grid, burn-in 100, kept window 40.",
+      "Expands the grid into 12 simulations with deterministic identifiers (UUID v5), records them as queued and launches them; relaunching the campaign skips finished simulations.",
+      "Integrates 3D MHD (pseudo-spectral, Lawson RK4): diagnostics every 0.1, 40 snapshots of (u, B), a checkpoint every 900 s of compute and on SIGTERM.",
+      "Writes the MFF file (HDF5 compatible with The Well), validates it, uploads it as {campaign}/{uuid}/fields.h5 and records its SHA-256 digest.",
+      "Selects the finished simulations and splits them by (Re, Pm) point: validation (100; 1), test (50; 2), training for the other 10.",
+      "Conditional flow matching on (Re, Pm) over vector potentials truncated at |m| ≤ 8 (divergence-free by construction), exact B → −B symmetry; one or several GPUs (DDP).",
+      "Samples the model and compares with the simulations: spectra, helicities, energy budgets, energy distance, sliced Wasserstein.",
+    ],
+    cat: [["campaign"], ["simulation", "job"], ["diagnostic"], ["file"], ["dataset", "dataset_member"], ["model"], ["evaluation"]],
+    fil: [null, null, null, "fields.h5", null, "last.pt, final.pt", "JSON report"],
+    rails: [
+      { cat: "SQLite · data/catalog.sqlite", fil: "data/store/", exec: "venv, one process per simulation" },
+      { cat: "PostgreSQL 16 · :5432", fil: "MinIO (S3) · :9000", exec: "worker-gpu container (milady:gpu)" },
+      { cat: "SQLite on $WORK", fil: "$SCRATCH, then copy to S3", exec: "job array, 1 GPU per simulation" },
+    ],
+    targetNotes: [
+      "No GPU, no Docker: a virtual environment (make setup); catalog and files in data/.",
+      "Docker Compose: PostgreSQL, MinIO, MLflow and the compute container; ports bound to 127.0.0.1, access through an SSH tunnel (make up, or sudo infra/deploy/bootstrap_vm.sh).",
+      "Apptainer image converted from milady:gpu (make sif); nodes without Internet: SQLite catalog on $WORK, files on $SCRATCH, later copied to S3 and ingested into PostgreSQL (milady.catalog ingest).",
+    ],
+    cmd: [
+      ["edit infra/configs/palier2_tg3d.yaml", "edit infra/configs/palier2_tg3d.yaml", "edit infra/configs/palier2_tg3d.yaml"],
+      ["python -m milady.sweep infra/configs/palier2_tg3d.yaml --scheduler local", "make sweep CONFIG=infra/configs/palier2_tg3d.yaml", "python -m milady.sweep infra/configs/palier2_tg3d.yaml --scheduler slurm"],
+      ["python -m milady.sim.run infra/configs/palier2_tg3d.yaml --index i   (launched by milady.sweep)", "python -m milady.sim.run … --index i   (in the container, launched by milady.sweep)", "sbatch --array=0-11%12 infra/slurm/gen_data.sbatch infra/configs/palier2_tg3d.yaml   (submitted by milady.sweep)"],
+      ["automatic, at the end of the simulation (milady.storage)", "automatic, to s3://milady-data (MinIO)", "automatic, to $SCRATCH; then copy to S3 and python -m milady.catalog ingest <uri> --campaign <campaign>"],
+      ["automatic when training starts (auto_dataset in train_fm3d.yaml)", "automatic when training starts (auto_dataset)", "automatic when training starts (auto_dataset)"],
+      ["python -m milady.train.fm3d --config infra/configs/train_fm3d.yaml", "make train CONFIG=infra/configs/train_fm3d.yaml   (torchrun, all GPUs)", "sbatch infra/slurm/train.sbatch infra/configs/train_fm3d.yaml   (torchrun per node)"],
+      ["python -m milady.eval --config infra/configs/train_fm3d.yaml", "make eval CONFIG=infra/configs/train_fm3d.yaml", "sbatch infra/slurm/eval.sbatch infra/configs/train_fm3d.yaml"],
+    ],
+    onT: [
+      ["YAML file versioned with the code", "same", "same"],
+      ["one subprocess per simulation", "inside the compute container (SCHEDULER=local) or one container per simulation (SCHEDULER=docker)", "one job-array element per simulation, at most 12 at a time (max_parallel)"],
+      ["CPU; a few threads", "the VM's GPU", "1 GPU per array element, Apptainer image; SIGTERM 120 s before the time limit"],
+      ["data/store/ folder", "MinIO milady-data bucket", "$SCRATCH/milady/store"],
+      ["local SQLite catalog", "the VM's PostgreSQL", "the cluster's SQLite catalog, or PostgreSQL after ingestion"],
+      ["CPU (slow); tracking in metrics.jsonl", "all the VM's GPUs; tracking in the MLflow server", "several nodes (DDP); tracking in MLflow SQLite on $WORK"],
+      ["CPU", "the VM's GPU", "1 GPU (eval.sbatch)"],
+    ],
+    codePaths: [["infra/configs/palier2_tg3d.yaml"], ["src/milady/sweep.py"], ["src/milady/sim/run.py", "src/milady/sim/mhd3d.py"], ["src/milady/storage.py", "src/milady/data/format.py"], ["src/milady/train/data.py", "src/milady/catalog/api.py"], ["src/milady/train/fm3d.py"], ["src/milady/eval/metrics.py"]],
+    sep: ": ", filShort: [null, null, null, "fields.h5", null, "last.pt", "JSON"],
   };
 
   var SVGNS = "http://www.w3.org/2000/svg";
-  function langOf() { return (document.documentElement.lang || "fr").slice(0, 2) === "en" ? "en" : "fr"; }
   function mk(tag, cls, text) { var e = document.createElement(tag); if (cls) e.className = cls; if (text != null) e.textContent = text; return e; }
   function sv(tag, attrs, parent) {
     var e = document.createElementNS(SVGNS, tag);
@@ -161,7 +105,7 @@
 
   function Widget(el) {
     var self = this;
-    this.el = el; this.lang = langOf(); var T = this.T = TXT[this.lang];
+    this.el = el; var T = this.T = TXT;
     this.target = 1; this.stage = 2; this.timer = null;
     el.textContent = "";
     el.appendChild(mk("p", "widget-title", T.title));
@@ -292,11 +236,11 @@
           svText(svg, cx, fy + rh / 2, T.fil[j].split(",")[0], { size: 11.5, anchor: "middle", family: MONO, fill: C.ink, weight: sel ? "700" : "normal" });
         }
       }
-      // jeton de la campagne au-dessus de l'étape choisie
+      // campaign token above the selected stage
       var tx = 10 + this.stage * (nw + gap) + nw - 9;
       sv("circle", { cx: tx, cy: ny + 9, r: 4.5, fill: C.lam }, svg);
     } else {
-      // tableau vertical : étape | catalogue | fichiers
+      // vertical table: stage | catalog | files
       var c1 = 6, c1w = Math.min(170, Math.round(W * 0.42)), c2 = c1 + c1w + 8, c3 = c2 + Math.round((W - c2) * 0.56);
       svText(svg, c2, 20, T.catalog, { size: 13, weight: "700", fill: C.ink });
       svText(svg, c3, 20, T.files, { size: 13, weight: "700", fill: C.ink });

@@ -1,59 +1,34 @@
-/* Schémas interactifs du module p5 « Probabilités, statistiques et transport optimal ».
-   Interactive diagrams for module p5 "Probability, statistics and optimal transport".
-   Un seul fichier pour les pages française et anglaise : la langue suit <html lang>.
-   Chaque widget est un <div class="widget" data-widget="..."> ; ce script y ajoute les
-   réglages, un <canvas> et les valeurs calculées. Aucune dépendance externe. */
+/* Interactive diagrams for module p5 "Probability, statistics and optimal transport".
+   Each widget is a <div class="widget" data-widget="...">; this script adds the
+   controls, a <canvas> and the computed values. No external dependency. */
 (function () {
   "use strict";
-  var LANG = /^en/i.test(document.documentElement.getAttribute("lang") || "") ? "en" : "fr";
   var S = {
-    fr: {
-      a: "non-linéarité a", s: "échelle s", mintp: "min T′", integral: "∫ p_Y", histerr: "écart max histogramme / formule",
-      topX: "loi de X ~ N(0, 1), 10 tranches de probabilité 0,1", botY: "loi de Y = T(X) : mêmes tranches, même masse",
-      mapLbl: "T(x) = s (x + a sin 2x)",
-      c: "contrainte c = E[X]", lamS: "λ (échantillon)", lamE: "λ (exact)", ess: "ESS / N", kl: "KL(p̂ ‖ q̂)",
-      infeas: "c est hors de l'enveloppe convexe de l'échantillon : aucune inclinaison ne convient (ESS → 1).",
-      baseH: "échantillon de q", tiltH: "échantillon repondéré", tiltE: "loi inclinée exacte", essCurve: "ESS / N en fonction de c",
-      m: "décalage m", sd: "écart-type s", d: "séparation des modes d", w1: "W₁", w2: "W₂", de: "ℰ (énergie)", klnm: "KL(ν ‖ μ)",
-      dens: "densités μ (bleu) et ν (orange)", cdf: "répartitions F, G ; aire colorée = W₁",
-      theta: "θ", sigma: "σ", dt: "Δt", x0: "x₀", run: "Lancer", pause: "Pause", reset: "Réinitialiser",
-      t: "t", meanE: "moyenne (empirique / exacte)", varE: "variance (empirique / exacte)", vdisc: "variance stationnaire du schéma",
-      unstable: "instable : θ Δt ≥ 2", traj: "trajectoires X_t", histo: "histogramme, p(·, t) exacte, p∞",
-      tt: "temps du flot t", mode: "affichage", cond: "chemins conditionnels (droites)", ode: "flot marginal (EDO)", anim: "Animer",
-      w1t: "W₁(nuage conditionnel, nuage EDO)", disp: "écart moyen |x_t cond − x_t EDO|", pt: "p_t(x) et chemins", ht: "histogramme à l'instant t et p_t exacte",
-      alt1: "Mesure image : densité de X, application T et densité de Y = T(X).",
-      alt2: "Inclinaison exponentielle d'un échantillon : histogrammes et ESS.",
-      alt3: "Densités et fonctions de répartition de deux lois, et distances associées.",
-      alt4: "Particules d'Ornstein–Uhlenbeck simulées par Euler–Maruyama et densités de Fokker–Planck.",
-      alt5: "Transport d'une gaussienne vers un mélange par chemins conditionnels ou flot marginal."
-    },
-    en: {
-      a: "non-linearity a", s: "scale s", mintp: "min T′", integral: "∫ p_Y", histerr: "max gap histogram / formula",
-      topX: "distribution of X ~ N(0, 1), 10 slices of probability 0.1", botY: "distribution of Y = T(X): same slices, same mass",
-      mapLbl: "T(x) = s (x + a sin 2x)",
-      c: "constraint c = E[X]", lamS: "λ (sample)", lamE: "λ (exact)", ess: "ESS / N", kl: "KL(p̂ ‖ q̂)",
-      infeas: "c lies outside the convex hull of the sample: no tilt works (ESS → 1).",
-      baseH: "sample of q", tiltH: "reweighted sample", tiltE: "exact tilted distribution", essCurve: "ESS / N as a function of c",
-      m: "shift m", sd: "standard deviation s", d: "mode separation d", w1: "W₁", w2: "W₂", de: "ℰ (energy)", klnm: "KL(ν ‖ μ)",
-      dens: "densities μ (blue) and ν (orange)", cdf: "CDFs F, G; shaded area = W₁",
-      theta: "θ", sigma: "σ", dt: "Δt", x0: "x₀", run: "Run", pause: "Pause", reset: "Reset",
-      t: "t", meanE: "mean (empirical / exact)", varE: "variance (empirical / exact)", vdisc: "stationary variance of the scheme",
-      unstable: "unstable: θ Δt ≥ 2", traj: "paths X_t", histo: "histogram, exact p(·, t), p∞",
-      tt: "flow time t", mode: "display", cond: "conditional paths (straight lines)", ode: "marginal flow (ODE)", anim: "Animate",
-      w1t: "W₁(conditional cloud, ODE cloud)", disp: "mean gap |x_t cond − x_t ODE|", pt: "p_t(x) and paths", ht: "histogram at time t and exact p_t",
-      alt1: "Pushforward: density of X, map T and density of Y = T(X).",
-      alt2: "Exponential tilting of a sample: histograms and ESS.",
-      alt3: "Densities and CDFs of two distributions, and the associated distances.",
-      alt4: "Ornstein–Uhlenbeck particles simulated by Euler–Maruyama and Fokker–Planck densities.",
-      alt5: "Transport of a Gaussian to a mixture by conditional paths or marginal flow."
-    }
-  }[LANG];
+    a: "non-linearity a", s: "scale s", mintp: "min T′", integral: "∫ p_Y", histerr: "max gap histogram / formula",
+    topX: "distribution of X ~ N(0, 1), 10 slices of probability 0.1", botY: "distribution of Y = T(X): same slices, same mass",
+    mapLbl: "T(x) = s (x + a sin 2x)",
+    c: "constraint c = E[X]", lamS: "λ (sample)", lamE: "λ (exact)", ess: "ESS / N", kl: "KL(p̂ ‖ q̂)",
+    infeas: "c lies outside the convex hull of the sample: no tilt works (ESS → 1).",
+    baseH: "sample of q", tiltH: "reweighted sample", tiltE: "exact tilted distribution", essCurve: "ESS / N as a function of c",
+    m: "shift m", sd: "standard deviation s", d: "mode separation d", w1: "W₁", w2: "W₂", de: "ℰ (energy)", klnm: "KL(ν ‖ μ)",
+    dens: "densities μ (blue) and ν (orange)", cdf: "CDFs F, G; shaded area = W₁",
+    theta: "θ", sigma: "σ", dt: "Δt", x0: "x₀", run: "Run", pause: "Pause", reset: "Reset",
+    t: "t", meanE: "mean (empirical / exact)", varE: "variance (empirical / exact)", vdisc: "stationary variance of the scheme",
+    unstable: "unstable: θ Δt ≥ 2", traj: "paths X_t", histo: "histogram, exact p(·, t), p∞",
+    tt: "flow time t", mode: "display", cond: "conditional paths (straight lines)", ode: "marginal flow (ODE)", anim: "Animate",
+    w1t: "W₁(conditional cloud, ODE cloud)", disp: "mean gap |x_t cond − x_t ODE|", pt: "p_t(x) and paths", ht: "histogram at time t and exact p_t",
+    alt1: "Pushforward: density of X, map T and density of Y = T(X).",
+    alt2: "Exponential tilting of a sample: histograms and ESS.",
+    alt3: "Densities and CDFs of two distributions, and the associated distances.",
+    alt4: "Ornstein–Uhlenbeck particles simulated by Euler–Maruyama and Fokker–Planck densities.",
+    alt5: "Transport of a Gaussian to a mixture by conditional paths or marginal flow."
+  };
 
-  /* ---------- outils numériques ---------- */
+  /* ---------- numerical tools ---------- */
   function fmt(x, d) {
     if (!isFinite(x)) return "∞";
     var s = (Math.abs(x) >= 1e4 || (Math.abs(x) < 1e-3 && x !== 0)) ? x.toExponential(Math.max(1, d - 1)) : x.toFixed(d);
-    return LANG === "fr" ? s.replace(".", ",") : s;
+    return s;
   }
   function mulberry32(a) {
     return function () {
@@ -75,7 +50,7 @@
   }
   var SQ2PI = Math.sqrt(2 * Math.PI);
   function phi(x, m, v) { m = m || 0; v = v || 1; return Math.exp(-(x - m) * (x - m) / (2 * v)) / Math.sqrt(2 * Math.PI * v); }
-  function erf(x) { // Abramowitz–Stegun 7.1.26 (|erreur| < 1.5e-7)
+  function erf(x) { // Abramowitz–Stegun 7.1.26 (|error| < 1.5e-7)
     var s = x < 0 ? -1 : 1; x = Math.abs(x);
     var t = 1 / (1 + 0.3275911 * x);
     var y = 1 - (((((1.061405429 * t - 1.453152027) * t) + 1.421413741) * t - 0.284496736) * t + 0.254829592) * t * Math.exp(-x * x);
@@ -87,7 +62,7 @@
   function sortedCopy(a) { return Float64Array.from(a).sort(); }
   function w1Sorted(a, b) { var s = 0, n = Math.min(a.length, b.length); for (var i = 0; i < n; i++) s += Math.abs(a[i] - b[i]); return s / n; }
 
-  /* ---------- thème et dessin ---------- */
+  /* ---------- theme and drawing ---------- */
   function lum(hex) {
     var m = /^#?([0-9a-f]{2})([0-9a-f]{2})([0-9a-f]{2})/i.exec(hex || "");
     if (!m) return 1;
@@ -118,9 +93,9 @@
   function tickLabel(t) {
     var s = Math.abs(t) >= 100 || Number.isInteger(Math.round(t * 1000) / 1000) && Math.abs(t - Math.round(t)) < 1e-9 ? String(Math.round(t)) : String(Math.round(t * 100) / 100);
     s = s.replace("-", "−");
-    return LANG === "fr" ? s.replace(".", ",") : s;
+    return s;
   }
-  // Repère : box = {x, y, w, h} en pixels CSS ; xr, yr = [min, max]
+  // Frame: box = {x, y, w, h} in CSS pixels; xr, yr = [min, max]
   function axes(ctx, P, box, xr, yr, opt) {
     opt = opt || {};
     var X = function (v) { return box.x + (v - xr[0]) / (xr[1] - xr[0]) * box.w; };
@@ -155,7 +130,7 @@
     if (opt.title) {
       ctx.fillStyle = P.ink; ctx.textAlign = "left"; ctx.textBaseline = "bottom";
       ctx.font = "600 12.5px system-ui, -apple-system, Segoe UI, sans-serif";
-      // titre réduit s'il dépasse la largeur disponible (petits écrans)
+      // title shrunk if it exceeds the available width (small screens)
       var avail = (ctx.canvas.clientWidth || ctx.canvas.width) - box.x - 4, tw = ctx.measureText(opt.title).width;
       if (tw > avail && avail > 0) ctx.font = "600 " + Math.max(9, 12.5 * avail / tw).toFixed(1) + "px system-ui, -apple-system, Segoe UI, sans-serif";
       ctx.fillText(opt.title, box.x, box.y - 5);
@@ -252,7 +227,7 @@
     W.read.textContent = pairs.map(function (p) { return p[0] + " = " + p[1]; }).join(" · ");
   }
 
-  /* ======================= 1. Mesure image et jacobien ======================= */
+  /* ======================= 1. Pushforward and Jacobian ======================= */
   function wPushforward(el) {
     var W = makeWidget(el, S.alt1);
     var st = { a: 0.3, s: 1.0 };
@@ -274,14 +249,14 @@
       var grid = linspace(-6, 6, 961);
       var pX = Array.from(grid, function (x) { return phi(x); });
       var At = axes(ctx, P, bTop, xr, [0, 0.45], { title: S.topX, ny: 3, noXLabels: true });
-      // Tranches de probabilité 0,1 de X
+      // Probability slices 0.1 of X
       var edges = [-6].concat(qEdges, [6]);
       for (var b = 0; b < 10; b++) {
         var seg = linspace(edges[b], edges[b + 1], 60);
         fillUnder(ctx, seg, Array.from(seg, function (x) { return phi(x); }), At, b % 2 ? P.c3a : P.c1a);
       }
       polyline(ctx, grid, pX, At, P.c1, 2);
-      // Densité de Y par la formule du jacobien
+      // Density of Y by the Jacobian formula
       var yv = linspace(-6, 6, 961), pY = new Float64Array(yv.length), integ = 0, mx = 0;
       for (var j = 0; j < yv.length; j++) { var xi = Tinv(yv[j]); pY[j] = phi(xi) / Math.abs(Tp(xi)); integ += pY[j] * (yv[1] - yv[0]); if (pY[j] > mx) mx = pY[j]; }
       var hist = histo(Array.from(xs, T), null, -6, 6, 96);
@@ -296,7 +271,7 @@
       }
       drawHist(ctx, hist, -6, 6, Ab, null, P.soft);
       polyline(ctx, yv, pY, Ab, P.c2, 2);
-      // Liens x -> T(x) entre les deux axes
+      // Links x -> T(x) between the two axes
       ctx.save();
       var yA = bTop.y + bTop.h, yB = bBot.y - 20;
       ctx.strokeStyle = P.hair; ctx.lineWidth = 0.6; ctx.globalAlpha = 0.6;
@@ -314,7 +289,7 @@
     return W;
   }
 
-  /* ======================= 2. Inclinaison exponentielle et ESS ======================= */
+  /* ======================= 2. Exponential tilting and ESS ======================= */
   function wTilt(el) {
     var W = makeWidget(el, S.alt2);
     var s = 0.5, N = 4000, g = normalGen(23), u = mulberry32(5), xs = new Float64Array(N);
@@ -367,7 +342,7 @@
       polyline(ctx, grid, dens.map(function (v) { return Math.min(v, ym); }), A, P.c2, 2);
       ctx.save(); ctx.strokeStyle = P.ink; ctx.setLineDash([5, 4]); ctx.lineWidth = 1.4;
       ctx.beginPath(); ctx.moveTo(A.X(st.c), b1.y); ctx.lineTo(A.X(st.c), b1.y + b1.h); ctx.stroke(); ctx.restore();
-      // Légende
+      // Legend
       ctx.save(); ctx.font = "12px system-ui, sans-serif"; ctx.textBaseline = "middle"; ctx.textAlign = "left";
       var lx = b1.x + 8, ly = b1.y + 12;
       [[P.soft, S.baseH, "line"], [P.c1a, S.tiltH, "box"], [P.c2, S.tiltE, "line"]].forEach(function (it, k) {
@@ -391,7 +366,7 @@
     return W;
   }
 
-  /* ======================= 3. Wasserstein 1D, énergie, KL ======================= */
+  /* ======================= 3. 1D Wasserstein, energy, KL ======================= */
   function wWasserstein(el) {
     var W = makeWidget(el, S.alt3);
     var st = { m: 1.0, s: 1.0, d: 0 };
@@ -414,7 +389,7 @@
         var dF = F[i] - Gc[i]; w1 += Math.abs(dF) * dx; de += 2 * dF * dF * dx;
         if (g[i] > 1e-300) kl += g[i] * (Math.log(g[i]) - (-xg[i] * xg[i] / 2 - Math.log(SQ2PI))) * dx;
       }
-      // W2 par les fonctions quantiles
+      // W2 through the quantile functions
       var nu = 2000, w2 = 0, iF = 0, iG = 0;
       for (var k = 0; k < nu; k++) {
         var uu = (k + 0.5) / nu;
@@ -447,7 +422,7 @@
     return W;
   }
 
-  /* ======================= 4. Ornstein–Uhlenbeck : Euler–Maruyama et Fokker–Planck ======================= */
+  /* ======================= 4. Ornstein–Uhlenbeck: Euler–Maruyama and Fokker–Planck ======================= */
   function wOU(el) {
     var W = makeWidget(el, S.alt4);
     var DTS = [0.001, 0.002, 0.005, 0.01, 0.02, 0.05, 0.1, 0.2, 0.3, 0.4, 0.5, 0.6, 0.8, 1.0];
@@ -490,7 +465,7 @@
       var vinf = st.sigma * st.sigma / (2 * st.theta);
       var R = Math.max(4 * Math.sqrt(vinf), Math.abs(st.x0) + 0.5, 1.5);
       var A = axes(ctx, P, b1, [0, TMAX], [-R, R], { title: S.traj, ny: 4 });
-      // Bande exacte moyenne ± 2 écarts-types
+      // Exact band: mean ± 2 standard deviations
       var tg = linspace(0, TMAX, 300), up = [], dn = [];
       for (var i = 0; i < tg.length; i++) {
         var m = st.x0 * Math.exp(-st.theta * tg[i]), v = vinf * (1 - Math.exp(-2 * st.theta * tg[i]));
@@ -529,7 +504,7 @@
     return W;
   }
 
-  /* ======================= 5. Équation de continuité et flow matching ======================= */
+  /* ======================= 5. Continuity equation and flow matching ======================= */
   function wFlow(el) {
     var W = makeWidget(el, S.alt5);
     var pis = [0.5, 0.5], ms = [-2, 2], ss = [0.4, 0.4];
@@ -611,7 +586,7 @@
       ctx.fillStyle = P.ink;
       show.forEach(function (i) { ctx.beginPath(); ctx.arc(A.X(st.t), A.Y(cur[i]), 3, 0, 2 * Math.PI); ctx.fill(); });
       ctx.restore();
-      // Histogramme horizontal (axe vertical commun avec le panneau de gauche)
+      // Horizontal histogram (vertical axis shared with the left panel)
       var h = histo(cur, null, -4, 4, 64), xx = linspace(-4, 4, 300), pv = Array.from(xx, function (x) { return pt(x, st.t); });
       var hm = Math.max(Math.max.apply(null, h), Math.max.apply(null, pv)) * 1.1;
       var B = axes(ctx, P, b2, [0, hm], [-4, 4], { title: S.ht, ny: 4, nx: 3 });

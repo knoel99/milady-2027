@@ -1,84 +1,84 @@
 /*
- * law-constraint.js — MilaDy 2027, widget interactif « law-constraint » (FR / EN).
- * Contrainte en loi contre contrainte par échantillon (Propositions 5 à 7 de docs/specs/theory-brief.md) :
- * projection de chaque échantillon sur {r = 0} contre inclinaison exponentielle (I-projection).
- * Usage : <div class="widget" data-widget="law-constraint"></div>
+ * law-constraint.js — MilaDy 2027, interactive "law-constraint" widget.
+ * Law constraint versus per-sample constraint (Propositions 5 to 7 of docs/specs/theory-brief.md):
+ * projection of each sample onto {r = 0} versus exponential tilting (I-projection).
+ * Usage: <div class="widget" data-widget="law-constraint"></div>
  *         <script defer src=".../assets/interactive/law-constraint.js"></script>
  *
  * ---------------------------------------------------------------------------------------------
- * Formules utilisées
+ * Formulas used
  *
- * 1. Vraie loi μ de la variable scalaire r = dE/dt = P − ε (puissance injectée moins dissipation) d'un
- *    état statistiquement stationnaire, en unités arbitraires. Mélange asymétrique de deux gaussiennes
- *        μ = 0,7 N(−0,45 ; 0,5²) + 0,3 N(1,05 ; 0,8²),
- *    de moyenne 0,7 × (−0,45) + 0,3 × 1,05 = 0 EXACTEMENT : c'est l'identité de stationnarité
- *    E_μ[𝓛E] = E_μ[dE/dt] = 0 (Proposition 5, φ = E). Variance Σ p_k (σ_k² + m_k²) = 0,8395,
- *    écart-type 0,9162 ; queue droite plus lourde (bouffées d'injection).
- *    Fonctions exactes, avec z_k = (x − m_k)/σ_k :
+ * 1. True law μ of the scalar variable r = dE/dt = P − ε (injected power minus dissipation) of a
+ *    statistically stationary state, in arbitrary units. Asymmetric mixture of two Gaussians
+ *        μ = 0.7 N(−0.45; 0.5²) + 0.3 N(1.05; 0.8²),
+ *    with mean 0.7 × (−0.45) + 0.3 × 1.05 = 0 EXACTLY: this is the stationarity identity
+ *    E_μ[𝓛E] = E_μ[dE/dt] = 0 (Proposition 5, φ = E). Variance Σ p_k (σ_k² + m_k²) = 0.8395,
+ *    standard deviation 0.9162; heavier right tail (injection bursts).
+ *    Exact functions, with z_k = (x − m_k)/σ_k:
  *        F_μ(x) = Σ p_k Φ(z_k),   f_μ(x) = Σ p_k φ(z_k)/σ_k,
  *        M(x) = E_μ[r 1{r ≤ x}] = Σ p_k (m_k Φ(z_k) − σ_k φ(z_k)),
- *        G(x) = ∫_{−∞}^x F_μ = E_μ[(x − r)⁺] = x F_μ(x) − M(x)   (intégration par parties).
- *    Φ par la série de Marsaglia (2004), sans terme alterné :
- *        Φ(z) = 1/2 + φ(z) Σ_{n≥0} z^{2n+1} / (1·3·5···(2n+1)),   |Φ − Φ_exact| ≲ 1e−15 pour |z| ≤ 9,
- *    et Φ = 0 ou 1 au-delà (Φ(−9) ≈ 1,1e−19).
+ *        G(x) = ∫_{−∞}^x F_μ = E_μ[(x − r)⁺] = x F_μ(x) − M(x)   (integration by parts).
+ *    Φ by the Marsaglia series (2004), without alternating terms:
+ *        Φ(z) = 1/2 + φ(z) Σ_{n≥0} z^{2n+1} / (1·3·5···(2n+1)),   |Φ − Φ_exact| ≲ 1e−15 for |z| ≤ 9,
+ *    and Φ = 0 or 1 beyond (Φ(−9) ≈ 1.1e−19).
  *
- * 2. « Modèle génératif » q_{b,s} : loi de s X + b avec X ~ μ (biais b = décalage de la moyenne,
- *    largeur s = dilatation autour de 0) ; moyenne b, écart-type 0,9162 s.
- *    Option « support manquant » : q conditionnée à r < r_c (le modèle ne produit jamais r ≥ r_c).
- *    Tirage par inversion : u_j = (k_j + 1/2)/2³² avec k_j entiers de mulberry32 (graine affichée),
- *        X_j = F_μ^{-1}(u_j)   ou, tronqué,   X_j = F_μ^{-1}(u_j F_μ(x_c)),  x_c = (r_c − b)/s,
+ * 2. "Generative model" q_{b,s}: law of s X + b with X ~ μ (bias b = shift of the mean,
+ *    width s = dilation around 0); mean b, standard deviation 0.9162 s.
+ *    "Missing support" option: q conditioned on r < r_c (the model never produces r ≥ r_c).
+ *    Draw by inversion: u_j = (k_j + 1/2)/2³² with k_j integers from mulberry32 (displayed seed),
+ *        X_j = F_μ^{-1}(u_j)   or, truncated,   X_j = F_μ^{-1}(u_j F_μ(x_c)),  x_c = (r_c − b)/s,
  *        r_j = s X_j + b,
- *    F_μ^{-1} par Newton protégé par bissection. Les mêmes u_j servent quand on bouge les curseurs
- *    (nombres aléatoires communs) : l'image varie continûment ; « Nouveau tirage » change la graine.
- *    Les N premiers u_j sont triés, donc les r_j sont triés (s > 0).
+ *    F_μ^{-1} by Newton safeguarded by bisection. The same u_j are used when the sliders move
+ *    (common random numbers): the picture varies continuously; "New draw" changes the seed.
+ *    The first N u_j are sorted, hence the r_j are sorted (s > 0).
  *
- * 3. Projection par échantillon sur {r = 0} : r_j ← 0 pour tout j. Loi obtenue δ₀ : moyenne 0,
- *    variance 0, étrangère à μ (KL(δ₀ ‖ q) = +∞) et
- *        W₁(δ₀, μ) = E_μ|r| = 2 G(0) = −2 M(0) ≈ 0,7216,
- *    (contrôle : Σ p_k [σ_k √(2/π) e^{−m_k²/(2σ_k²)} + m_k (1 − 2Φ(−m_k/σ_k))] = 0,7216),
- *    indépendant du modèle : même un générateur parfait la subit (Corollaire 6).
+ * 3. Per-sample projection onto {r = 0}: r_j ← 0 for all j. Resulting law δ₀: mean 0,
+ *    variance 0, singular with respect to μ (KL(δ₀ ‖ q) = +∞) and
+ *        W₁(δ₀, μ) = E_μ|r| = 2 G(0) = −2 M(0) ≈ 0.7216,
+ *    (check: Σ p_k [σ_k √(2/π) e^{−m_k²/(2σ_k²)} + m_k (1 − 2Φ(−m_k/σ_k))] = 0.7216),
+ *    independent of the model: even a perfect generator suffers it (Corollary 6).
  *
- * 4. Inclinaison exponentielle (I-projection, Csiszár 1975 ; Proposition 7). Parmi les lois ν ≪ q_N
- *    (q_N = (1/N) Σ δ_{r_j}) telles que E_ν[r] = 0, celle qui minimise KL(ν ‖ q_N) est
+ * 4. Exponential tilting (I-projection, Csiszár 1975; Proposition 7). Among the laws ν ≪ q_N
+ *    (q_N = (1/N) Σ δ_{r_j}) such that E_ν[r] = 0, the one minimising KL(ν ‖ q_N) is
  *        w_j = e^{β r_j} / Σ_i e^{β r_i},
- *    où β minimise le dual convexe Λ(β) = log((1/N) Σ_j e^{β r_j}) :
+ *    where β minimises the convex dual Λ(β) = log((1/N) Σ_j e^{β r_j}):
  *        Λ'(β) = Σ w_j r_j = E_w[r],   Λ''(β) = Var_w(r) > 0.
- *    Newton β ← β − Λ'(β)/Λ''(β) à partir de β = 0, protégé par l'encadrement de la racine
- *    (bissection si le pas en sort) ; exponentielles en log-somme-exp. Arrêt quand |E_w[r]| ≤ 1e−12 (max r − min r).
- *    Solution si et seulement si min r_j < 0 < max r_j (sinon aucun poids positif ne ramène la moyenne à 0).
- *        KL(ν* ‖ q_N) = Σ w_j log(N w_j) = β E_w[r] − Λ(β) = −Λ(β*)   (en nats),
- *        ESS = 1 / Σ w_j²   (taille effective d'échantillon, Kish 1965), affichée aussi en ESS/N.
- *    Un repondérage ne crée pas de masse : supp ν* ⊂ supp q.
+ *    Newton β ← β − Λ'(β)/Λ''(β) starting from β = 0, safeguarded by the bracketing of the root
+ *    (bisection if the step leaves it); exponentials in log-sum-exp form. Stop when |E_w[r]| ≤ 1e−12 (max r − min r).
+ *    A solution exists if and only if min r_j < 0 < max r_j (otherwise no positive weights bring the mean back to 0).
+ *        KL(ν* ‖ q_N) = Σ w_j log(N w_j) = β E_w[r] − Λ(β) = −Λ(β*)   (in nats),
+ *        ESS = 1 / Σ w_j²   (effective sample size, Kish 1965), also displayed as ESS/N.
+ *    A reweighting creates no mass: supp ν* ⊂ supp q.
  *
- * 5. Distance de Wasserstein-1 en dimension 1 (Vallender 1973), contre la loi EXACTE μ :
+ * 5. Wasserstein-1 distance in dimension 1 (Vallender 1973), against the EXACT law μ:
  *        W₁(ν, μ) = ∫_0^1 |F_ν^{-1}(u) − F_μ^{-1}(u)| du = ∫_ℝ |F_ν(x) − F_μ(x)| dx.
- *    Pour ν = Σ_j w_j δ_{r_(j)} (valeurs triées, poids cumulés c_j = Σ_{i≤j} w_i), la fonction quantile
- *    de ν vaut r_(j) sur ]c_{j−1}, c_j] ; on intègre exactement morceau par morceau :
+ *    For ν = Σ_j w_j δ_{r_(j)} (sorted values, cumulative weights c_j = Σ_{i≤j} w_i), the quantile function
+ *    of ν equals r_(j) on ]c_{j−1}, c_j]; one integrates exactly piece by piece:
  *        W₁ = G(r_(1)) + Σ_{j<N} ∫_{r_(j)}^{r_(j+1)} |c_j − F_μ(x)| dx + (G(r_(N)) − r_(N)),
- *    avec ∫_a^b (F_μ − c) dx = G(b) − G(a) − c (b − a), en coupant en x* = F_μ^{-1}(c_j) quand
- *    F_μ(a) < c_j < F_μ(b) ; la queue droite vaut ∫_t^∞ (1 − F_μ) = E_μ[(r − t)⁺] = G(t) − t (car E_μ[r] = 0).
- *    Même pour q = μ, W₁(q_N, μ) n'est pas nul : bruit d'échantillonnage de l'ordre de 1/√N.
+ *    with ∫_a^b (F_μ − c) dx = G(b) − G(a) − c (b − a), cutting at x* = F_μ^{-1}(c_j) when
+ *    F_μ(a) < c_j < F_μ(b); the right tail is ∫_t^∞ (1 − F_μ) = E_μ[(r − t)⁺] = G(t) − t (since E_μ[r] = 0).
+ *    Even for q = μ, W₁(q_N, μ) is not zero: sampling noise of order 1/√N.
  *
- * 6. Masse manquante : μ(r ≥ r_c) = 1 − F_μ(r_c).
+ * 6. Missing mass: μ(r ≥ r_c) = 1 − F_μ(r_c).
  *
- * 7. Histogrammes : densité Σ_{j ∈ case} w_j / Δ, cases de largeur Δ = 0,125 sur [−3 ; 5] ;
- *    avec « support manquant », la case qui contient r_c est réduite à [bord gauche ; r_c[ (support de q),
- *    soit une densité Σ w_j / (r_c − bord gauche), et n'est pas dessinée au-delà de r_c.
- *    La même échelle verticale sert aux trois panneaux. Le Dirac δ₀ est dessiné comme une flèche.
+ * 7. Histograms: density Σ_{j ∈ bin} w_j / Δ, bins of width Δ = 0.125 on [−3; 5];
+ *    with "missing support", the bin containing r_c is reduced to [left edge; r_c[ (support of q),
+ *    i.e. a density Σ w_j / (r_c − left edge), and is not drawn beyond r_c.
+ *    The same vertical scale serves the three panels. The Dirac δ₀ is drawn as an arrow.
  *
- * Références
- *  - I. Csiszár, « I-divergence geometry of probability distributions and minimization problems »,
+ * References
+ *  - I. Csiszár, "I-divergence geometry of probability distributions and minimization problems",
  *    Ann. Probab. 3(1), 146–158 (1975).
- *  - S. S. Vallender, « Calculation of the Wasserstein distance between probability distributions on
- *    the line », Theory Probab. Appl. 18(4), 784–786 (1973).
- *  - G. Marsaglia, « Evaluating the normal distribution », J. Stat. Softw. 11(4), 1–11 (2004).
- *  - L. Kish, Survey Sampling, Wiley (1965) ; J. S. Liu, Monte Carlo Strategies in Scientific
- *    Computing, Springer (2001), § 2.5 (ESS des poids d'importance).
- *  - T. M. Cover, J. A. Thomas, Elements of Information Theory, 2e éd., Wiley (2006), § 12.1
- *    (loi d'entropie maximale / famille exponentielle).
- *  - Générateur pseudo-aléatoire mulberry32 (T. Ettinger, 2017, domaine public).
- *  - docs/specs/theory-brief.md : Proposition 5 (identités de stationnarité), Corollaire 6 (contrainte par
- *    échantillon incohérente), Proposition 7 (I-projection, ESS, support manquant).
+ *  - S. S. Vallender, "Calculation of the Wasserstein distance between probability distributions on
+ *    the line", Theory Probab. Appl. 18(4), 784–786 (1973).
+ *  - G. Marsaglia, "Evaluating the normal distribution", J. Stat. Softw. 11(4), 1–11 (2004).
+ *  - L. Kish, Survey Sampling, Wiley (1965); J. S. Liu, Monte Carlo Strategies in Scientific
+ *    Computing, Springer (2001), § 2.5 (ESS of importance weights).
+ *  - T. M. Cover, J. A. Thomas, Elements of Information Theory, 2nd ed., Wiley (2006), § 12.1
+ *    (maximum-entropy law / exponential family).
+ *  - Pseudo-random generator mulberry32 (T. Ettinger, 2017, public domain).
+ *  - docs/specs/theory-brief.md: Proposition 5 (stationarity identities), Corollary 6 (inconsistent per-sample
+ *    constraint), Proposition 7 (I-projection, ESS, missing support).
  * ---------------------------------------------------------------------------------------------
  */
 (function () {
@@ -105,150 +105,88 @@
 
   /* ---------- textes ---------- */
   var TXT = {
-    fr: {
-      title: "Contrainte en loi ou par échantillon : le bilan d'énergie moyen ⟨dE/dt⟩\u00a0=\u00a00",
-      bLab: "biais b", sLab: "largeur s", nLab: "N", cLab: "seuil r<sub>c</sub>",
-      bName: "Biais b du modèle : décalage de la moyenne de q",
-      sName: "Largeur s du modèle : dilatation de q autour de 0",
-      nName: "N : nombre d'échantillons tirés du modèle",
-      cName: "Seuil rc : le modèle tronqué ne produit jamais r ≥ rc",
-      trunc: "support manquant", truncName: "Support manquant : le modèle n'a pas la queue droite de la vraie loi (r ≥ rc)",
-      redraw: "Nouveau tirage", redrawTip: "Nouvelle graine pour les N tirages du modèle",
-      redrawName: "Nouveau tirage : nouvelle graine pour les N tirages du modèle",
-      play: "Animer b", pause: "Pause", playTip: "Fait varier le biais b entre −1 et 1, en boucle",
-      panelA: "(a) Vérité μ et modèle q", panelAs: "(a) μ et q",
-      panelB: "(b) Projection par échantillon : chaque r ← 0", panelBs: "(b) Projection r ← 0",
-      panelC: "(c) Inclinaison exponentielle : poids w ∝ exp(βr)", panelCs: "(c) Inclinaison w ∝ exp(βr)",
-      panelAt: "(a) μ et q", panelBt: "(b) Projection", panelCt: "(c) Inclinaison",
-      legTruth: "vérité μ (densité exacte)", legQ: "modèle q", legQd: "q avant correction",
-      legProj: "projection : Dirac en 0", legTilt: "inclinaison ν*", legMiss: "zone où q n'a aucune masse",
-      xAxis: "r = dE/dt = P − ε (unités arbitraires)", yAxis: "densité",
-      dirac: "δ₀ : masse 1, variance 0", diracS: "δ₀ (masse 1)",
-      stA: function (m, w) { return "moyenne " + m + " · W₁ = " + w; },
-      stB: function (w) { return "écart-type 0 · W₁ = " + w; },
-      stC: function (w, e) { return "W₁ = " + w + " · ESS/N = " + e; },
-      miss: function (p) { return p + " de μ"; },
-      infeasible: function (pos) { return "impossible : aucun r " + (pos ? "> 0" : "< 0") + " dans l'échantillon"; },
-      canvas: "Trois panneaux superposés, même axe horizontal r = dE/dt. (a) densité exacte de la vraie loi μ " +
-        "(courbe) et histogramme des N échantillons du modèle q. (b) projection par échantillon : toute la masse " +
-        "en r = 0 (flèche, Dirac). (c) histogramme pondéré de l'inclinaison exponentielle, avec le contour de q " +
-        "et la densité de μ. Les valeurs numériques sont données sous la figure.",
-      lTruth: function (sd) { return "<b>Vérité μ</b>\u00a0: moyenne 0\u00a0; écart-type " + sd + "."; },
-      lModel: function (n, seed, m, sd, w) {
-        return "<b>Modèle q</b> (N\u00a0=\u00a0" + n + ", graine " + seed + ")\u00a0: moyenne " + m + "\u00a0; écart-type " + sd +
-          "\u00a0; W₁(q,\u00a0μ)\u00a0=\u00a0" + w + ".";
-      },
-      lProj: function (w) {
-        return "<b>Projection r ← 0</b>\u00a0: moyenne 0\u00a0; écart-type 0\u00a0; W₁\u00a0=\u00a0E<sub>μ</sub>|r|\u00a0=\u00a0" + w + "\u00a0; KL(δ₀\u00a0‖\u00a0q)\u00a0=\u00a0∞.";
-      },
-      lTilt: function (beta, it, m, sd, w, kl, ess, essN) {
-        return "<b>Inclinaison</b>\u00a0: β\u00a0=\u00a0" + beta + " (" + it + " itér. de Newton)\u00a0; moyenne " + m + "\u00a0; écart-type " + sd +
-          "\u00a0; W₁\u00a0=\u00a0" + w + "\u00a0; KL(ν*\u00a0‖\u00a0q)\u00a0=\u00a0" + kl + " nat\u00a0; ESS\u00a0=\u00a0" + ess + " (ESS/N\u00a0=\u00a0" + essN + ").";
-      },
-      lTiltNo: function (pos) {
-        return "<b>Inclinaison</b>\u00a0: impossible, tous les r<sub>j</sub> sont " + (pos ? "≤ 0" : "≥ 0") +
-          "\u00a0: aucun poids positif ne ramène la moyenne à 0.";
-      },
-      lMiss: function (rc, p) {
-        return "<b>Support manquant</b>\u00a0: q ne produit jamais r ≥ r<sub>c</sub>\u00a0=\u00a0" + rc + ", où μ met " + p +
-          " de sa masse\u00a0; aucun poids ne peut l'y créer.";
-      },
-      note: "La projection par échantillon met chaque tirage sur r = 0 : la moyenne est juste, mais l'écart-type tombe à 0, " +
-        "la loi obtenue (un Dirac) est étrangère à μ et son erreur W₁ = E<sub>μ</sub>|r| ne dépend pas du modèle : un générateur parfait " +
-        "(b = 0, s = 1) la subit aussi (Corollaire 6). L'inclinaison n'impose que la moyenne, en déformant q le moins possible " +
-        "au sens de KL (Proposition 7). Elle ne crée pas de masse : avec « support manquant », la masse s'entasse sous r<sub>c</sub>, " +
-        "l'ESS chute (impossible si r<sub>c</sub> ≤ 0), W₁ peut dépasser celui de q et ne tend pas vers 0 quand N augmente. W₁ est calculé " +
-        "exactement contre μ ; même pour q = μ, il reste de l'ordre de 1/√N (bruit d'échantillonnage)."
+    title: "Distributional or per-sample constraint: the mean energy budget ⟨dE/dt⟩\u00a0=\u00a00",
+    bLab: "bias b", sLab: "width s", nLab: "N", cLab: "cut-off r<sub>c</sub>",
+    bName: "Bias b of the model: shift of the mean of q",
+    sName: "Width s of the model: dilation of q about 0",
+    nName: "N: number of samples drawn from the model",
+    cName: "Cut-off rc: the truncated model never produces r ≥ rc",
+    trunc: "missing support", truncName: "Missing support: the model lacks the right tail of the true distribution (r ≥ rc)",
+    redraw: "New draw", redrawTip: "New seed for the N model samples",
+    redrawName: "New draw: new seed for the N model samples",
+    play: "Animate b", pause: "Pause", playTip: "Sweeps the bias b between −1 and 1, in a loop",
+    panelA: "(a) Truth μ and model q", panelAs: "(a) μ and q",
+    panelB: "(b) Per-sample projection: every r ← 0", panelBs: "(b) Projection r ← 0",
+    panelC: "(c) Exponential tilting: weights w ∝ exp(βr)", panelCs: "(c) Tilting w ∝ exp(βr)",
+    panelAt: "(a) μ and q", panelBt: "(b) Projection", panelCt: "(c) Tilting",
+    legTruth: "truth μ (exact density)", legQ: "model q", legQd: "q before correction",
+    legProj: "projection: Dirac at 0", legTilt: "tilted ν*", legMiss: "region where q has no mass",
+    xAxis: "r = dE/dt = P − ε (arbitrary units)", yAxis: "density",
+    dirac: "δ₀: mass 1, variance 0", diracS: "δ₀ (mass 1)",
+    stA: function (m, w) { return "mean " + m + " · W₁ = " + w; },
+    stB: function (w) { return "std 0 · W₁ = " + w; },
+    stC: function (w, e) { return "W₁ = " + w + " · ESS/N = " + e; },
+    miss: function (p) { return p + " of μ"; },
+    infeasible: function (pos) { return "impossible: no r " + (pos ? "> 0" : "< 0") + " in the sample"; },
+    canvas: "Three stacked panels sharing the horizontal axis r = dE/dt. (a) exact density of the true distribution μ " +
+      "(curve) and histogram of the N samples of the model q. (b) per-sample projection: all the mass at r = 0 " +
+      "(arrow, Dirac). (c) weighted histogram of the exponential tilting, with the outline of q and the density of μ. " +
+      "The numbers are given below the figure.",
+    lTruth: function (sd) { return "<b>Truth μ</b>: mean 0; standard deviation " + sd + "."; },
+    lModel: function (n, seed, m, sd, w) {
+      return "<b>Model q</b> (N\u00a0=\u00a0" + n + ", seed " + seed + "): mean " + m + "; standard deviation " + sd +
+        "; W₁(q,\u00a0μ)\u00a0=\u00a0" + w + ".";
     },
-    en: {
-      title: "Distributional or per-sample constraint: the mean energy budget ⟨dE/dt⟩\u00a0=\u00a00",
-      bLab: "bias b", sLab: "width s", nLab: "N", cLab: "cut-off r<sub>c</sub>",
-      bName: "Bias b of the model: shift of the mean of q",
-      sName: "Width s of the model: dilation of q about 0",
-      nName: "N: number of samples drawn from the model",
-      cName: "Cut-off rc: the truncated model never produces r ≥ rc",
-      trunc: "missing support", truncName: "Missing support: the model lacks the right tail of the true distribution (r ≥ rc)",
-      redraw: "New draw", redrawTip: "New seed for the N model samples",
-      redrawName: "New draw: new seed for the N model samples",
-      play: "Animate b", pause: "Pause", playTip: "Sweeps the bias b between −1 and 1, in a loop",
-      panelA: "(a) Truth μ and model q", panelAs: "(a) μ and q",
-      panelB: "(b) Per-sample projection: every r ← 0", panelBs: "(b) Projection r ← 0",
-      panelC: "(c) Exponential tilting: weights w ∝ exp(βr)", panelCs: "(c) Tilting w ∝ exp(βr)",
-      panelAt: "(a) μ and q", panelBt: "(b) Projection", panelCt: "(c) Tilting",
-      legTruth: "truth μ (exact density)", legQ: "model q", legQd: "q before correction",
-      legProj: "projection: Dirac at 0", legTilt: "tilted ν*", legMiss: "region where q has no mass",
-      xAxis: "r = dE/dt = P − ε (arbitrary units)", yAxis: "density",
-      dirac: "δ₀: mass 1, variance 0", diracS: "δ₀ (mass 1)",
-      stA: function (m, w) { return "mean " + m + " · W₁ = " + w; },
-      stB: function (w) { return "std 0 · W₁ = " + w; },
-      stC: function (w, e) { return "W₁ = " + w + " · ESS/N = " + e; },
-      miss: function (p) { return p + " of μ"; },
-      infeasible: function (pos) { return "impossible: no r " + (pos ? "> 0" : "< 0") + " in the sample"; },
-      canvas: "Three stacked panels sharing the horizontal axis r = dE/dt. (a) exact density of the true distribution μ " +
-        "(curve) and histogram of the N samples of the model q. (b) per-sample projection: all the mass at r = 0 " +
-        "(arrow, Dirac). (c) weighted histogram of the exponential tilting, with the outline of q and the density of μ. " +
-        "The numbers are given below the figure.",
-      lTruth: function (sd) { return "<b>Truth μ</b>: mean 0; standard deviation " + sd + "."; },
-      lModel: function (n, seed, m, sd, w) {
-        return "<b>Model q</b> (N\u00a0=\u00a0" + n + ", seed " + seed + "): mean " + m + "; standard deviation " + sd +
-          "; W₁(q,\u00a0μ)\u00a0=\u00a0" + w + ".";
-      },
-      lProj: function (w) {
-        return "<b>Projection r ← 0</b>: mean 0; standard deviation 0; W₁\u00a0=\u00a0E<sub>μ</sub>|r|\u00a0=\u00a0" + w + "; KL(δ₀\u00a0‖\u00a0q)\u00a0=\u00a0∞.";
-      },
-      lTilt: function (beta, it, m, sd, w, kl, ess, essN) {
-        return "<b>Tilting</b>: β\u00a0=\u00a0" + beta + " (" + it + " Newton iter.); mean " + m + "; standard deviation " + sd +
-          "; W₁\u00a0=\u00a0" + w + "; KL(ν*\u00a0‖\u00a0q)\u00a0=\u00a0" + kl + " nat; ESS\u00a0=\u00a0" + ess + " (ESS/N\u00a0=\u00a0" + essN + ").";
-      },
-      lTiltNo: function (pos) {
-        return "<b>Tilting</b>: impossible, all r<sub>j</sub> are " + (pos ? "≤ 0" : "≥ 0") +
-          ": no positive weights can bring the mean back to 0.";
-      },
-      lMiss: function (rc, p) {
-        return "<b>Missing support</b>: q never produces r ≥ r<sub>c</sub>\u00a0=\u00a0" + rc + ", where μ puts " + p +
-          " of its mass; no weights can create it there.";
-      },
-      note: "Per-sample projection puts every draw at r = 0: the mean is right, but the standard deviation drops to 0, " +
-        "the resulting distribution (a Dirac) is singular with respect to μ and its error W₁ = E<sub>μ</sub>|r| does not depend on the model: " +
-        "a perfect generator (b = 0, s = 1) suffers it too (Corollary 6). Tilting only imposes the mean, distorting q as " +
-        "little as possible in the KL sense (Proposition 7). It creates no mass: with “missing support”, the mass piles up " +
-        "below r<sub>c</sub>, the ESS drops (impossible if r<sub>c</sub> ≤ 0), W₁ can exceed that of q and does not go to 0 as N grows. " +
-        "W₁ is computed exactly against μ; even for q = μ it stays of order 1/√N (sampling noise)."
-    }
+    lProj: function (w) {
+      return "<b>Projection r ← 0</b>: mean 0; standard deviation 0; W₁\u00a0=\u00a0E<sub>μ</sub>|r|\u00a0=\u00a0" + w + "; KL(δ₀\u00a0‖\u00a0q)\u00a0=\u00a0∞.";
+    },
+    lTilt: function (beta, it, m, sd, w, kl, ess, essN) {
+      return "<b>Tilting</b>: β\u00a0=\u00a0" + beta + " (" + it + " Newton iter.); mean " + m + "; standard deviation " + sd +
+        "; W₁\u00a0=\u00a0" + w + "; KL(ν*\u00a0‖\u00a0q)\u00a0=\u00a0" + kl + " nat; ESS\u00a0=\u00a0" + ess + " (ESS/N\u00a0=\u00a0" + essN + ").";
+    },
+    lTiltNo: function (pos) {
+      return "<b>Tilting</b>: impossible, all r<sub>j</sub> are " + (pos ? "≤ 0" : "≥ 0") +
+        ": no positive weights can bring the mean back to 0.";
+    },
+    lMiss: function (rc, p) {
+      return "<b>Missing support</b>: q never produces r ≥ r<sub>c</sub>\u00a0=\u00a0" + rc + ", where μ puts " + p +
+        " of its mass; no weights can create it there.";
+    },
+    note: "Per-sample projection puts every draw at r = 0: the mean is right, but the standard deviation drops to 0, " +
+      "the resulting distribution (a Dirac) is singular with respect to μ and its error W₁ = E<sub>μ</sub>|r| does not depend on the model: " +
+      "a perfect generator (b = 0, s = 1) suffers it too (Corollary 6). Tilting only imposes the mean, distorting q as " +
+      "little as possible in the KL sense (Proposition 7). It creates no mass: with “missing support”, the mass piles up " +
+      "below r<sub>c</sub>, the ESS drops (impossible if r<sub>c</sub> ≤ 0), W₁ can exceed that of q and does not go to 0 as N grows. " +
+      "W₁ is computed exactly against μ; even for q = μ it stays of order 1/√N (sampling noise)."
   };
 
   /* ---------- utilitaires ---------- */
-  function langOf() {
-    return /^en/i.test(document.documentElement.getAttribute("lang") || "") ? "en" : "fr";
-  }
-
   var NF = {};
-  function fmt(lang, x, d, group) {
-    if (Math.abs(x) < 0.5 * Math.pow(10, -d)) x = 0;   // pas de « −0 »
-    var key = lang + d + (group === false ? "n" : "g");
+  function fmt(x, d, group) {
+    if (Math.abs(x) < 0.5 * Math.pow(10, -d)) x = 0;   // no "−0"
+    var key = d + (group === false ? "n" : "g");
     if (!(key in NF)) {
       try {
-        NF[key] = new Intl.NumberFormat(lang === "en" ? "en-US" : "fr-FR",
+        NF[key] = new Intl.NumberFormat("en-US",
           { minimumFractionDigits: d, maximumFractionDigits: d, useGrouping: group !== false });
       } catch (e) { NF[key] = null; }
     }
     var s;
     if (NF[key]) s = NF[key].format(x);
-    else { s = x.toFixed(d); if (lang === "fr") s = s.replace(".", ","); }
+    else s = x.toFixed(d);
     return s.replace(/-/g, "−");
   }
-  function fmtSmall(lang, x) {            // ESS/N : 3 décimales, davantage si très petit
-    return fmt(lang, x, x > 0 && x < 0.01 ? 4 : 3);
+  function fmtSmall(x) {                  // ESS/N: 3 decimals, more if very small
+    return fmt(x, x > 0 && x < 0.01 ? 4 : 3);
   }
-  function pct(lang, x) {
-    var s = fmt(lang, 100 * x, 1);
-    return lang === "fr" ? s + " %" : s + "%";
+  function pct(x) {
+    var s = fmt(100 * x, 1);
+    return s + "%";
   }
 
-  // pas de retour à la ligne autour de = ≤ ≥ ← ‖, ni (en français) avant : ; ! ? » ou après «
-  function typo(lang, s) {
+  // no line break around = ≤ ≥ ← ‖
+  function typo(s) {
     s = s.replace(/ ([=≤≥←‖]) /g, "\u00a0$1\u00a0");
-    if (lang === "fr") s = s.replace(/ ([:;!?»])/g, "\u00a0$1").replace(/« /g, "«\u00a0");
     return s;
   }
 
@@ -286,7 +224,7 @@
     return !!(window.matchMedia && window.matchMedia("(prefers-reduced-motion: reduce)").matches);
   }
 
-  /* ---------- générateur pseudo-aléatoire (mulberry32) ---------- */
+  /* ---------- pseudo-random generator (mulberry32) ---------- */
   function mulberry32(a) {
     return function () {
       a = (a + 0x6D2B79F5) | 0;
@@ -295,14 +233,14 @@
       return ((t ^ (t >>> 14)) >>> 0);
     };
   }
-  function uniforms(seed, n) {           // u_j = (k_j + 1/2)/2³² ∈ ]0 ; 1[, triés
+  function uniforms(seed, n) {           // u_j = (k_j + 1/2)/2³² ∈ ]0; 1[, sorted
     var r = mulberry32(seed * 2654435761 + 12345), u = new Float64Array(n);
     for (var i = 0; i < n; i++) u[i] = (r() + 0.5) / 4294967296;
     u.sort();
     return u;
   }
 
-  /* ---------- loi normale et mélange ---------- */
+  /* ---------- normal law and mixture ---------- */
   function phi(z) { return INV_SQRT_2PI * Math.exp(-0.5 * z * z); }
   function Phi(z) {                      // Marsaglia (2004)
     if (z < -9) return 0;
@@ -311,7 +249,7 @@
     do { k += 2; t *= z2 / k; old = s; s += t; } while (s !== old && k < 2000);
     return 0.5 + s * phi(z);
   }
-  // évaluation du mélange en x : F, f, G (résultats dans des variables du module, sans allocation)
+  // evaluation of the mixture at x: F, f, G (results in module variables, no allocation)
   var mF = 0, mf = 0, mG = 0;
   function mix(x) {
     var F = 0, f = 0, M = 0;
@@ -328,7 +266,7 @@
     for (var k = 0; k < 2; k++) { var z = (x - MK[k]) / SK[k]; f += PK[k] * phi(z) / SK[k]; }
     return f;
   }
-  // F_μ^{-1}(u) sur [lo ; hi] avec F(lo) ≤ u ≤ F(hi) : Newton protégé par bissection
+  // F_μ^{-1}(u) on [lo; hi] with F(lo) ≤ u ≤ F(hi): Newton safeguarded by bisection
   function quantile(u, lo, hi, x) {
     if (!(x >= lo && x <= hi)) x = 0.5 * (lo + hi);
     for (var it = 0; it < 200; it++) {
@@ -345,11 +283,11 @@
   }
   mix(0);
   var W1_PROJ = 2 * mG;                  // E_μ|r| = 2 G(0)
-  var F_MAX = 0;                         // maximum de f_μ (≈ 0,585 en x ≈ −0,42)
+  var F_MAX = 0;                         // maximum of f_μ (≈ 0.585 at x ≈ −0.42)
   for (var xg = -1.5; xg <= 1; xg += 0.001) F_MAX = Math.max(F_MAX, density(xg));
 
-  /* ---------- inclinaison exponentielle : Newton sur le dual ---------- */
-  // y trié (n valeurs) ; remplit w (poids normalisés) ; renvoie {ok, beta, it, mean, sd, kl, ess}
+  /* ---------- exponential tilting: Newton on the dual ---------- */
+  // y sorted (n values); fills w (normalised weights); returns {ok, beta, it, mean, sd, kl, ess}
   function solveTilt(y, n, w) {
     var ymin = y[0], ymax = y[n - 1];
     if (!(ymin < 0 && ymax > 0)) return { ok: false, pos: ymax <= 0 };
@@ -379,8 +317,8 @@
     return { ok: true, beta: beta, it: it, mean: m, sd: Math.sqrt(v), kl: Math.max(0, -logZ), ess: 1 / sw2 };
   }
 
-  /* ---------- W₁ exacte entre Σ w_j δ_{y_j} (y trié) et μ ---------- */
-  // FA, GA : F_μ et G aux points y (précalculés) ; w = null pour des poids uniformes 1/n
+  /* ---------- exact W₁ between Σ w_j δ_{y_j} (y sorted) and μ ---------- */
+  // FA, GA: F_μ and G at the points y (precomputed); w = null for uniform weights 1/n
   function wasserstein1(y, n, w, FA, GA) {
     var res = GA[0], cum = 0;
     for (var i = 0; i < n - 1; i++) {
@@ -400,7 +338,7 @@
     return res + (GA[n - 1] - y[n - 1]);
   }
 
-  // cut = {k, x, w} : case k coupée en x = r_c (largeur utile w), ou null
+  // cut = {k, x, w}: bin k cut at x = r_c (useful width w), or null
   function histo(y, n, w, out, cut) {
     for (var k = 0; k < NBIN; k++) out[k] = 0;
     var outL = 0, outR = 0;
@@ -413,7 +351,7 @@
     return { max: mxv, outL: outL, outR: outR };
   }
 
-  function styleButton(b, pressed) {      // l'état est dit par le libellé (« Animer b » / « Pause »)
+  function styleButton(b, pressed) {      // the state is told by the label ("Animate b" / "Pause")
     b.style.background = pressed ? "var(--ink)" : "transparent";
     b.style.color = pressed ? "var(--bg)" : "var(--ink)";
   }
@@ -422,11 +360,10 @@
   function Widget(el) {
     var self = this;
     this.el = el;
-    this.lang = langOf();
-    var T = this.T = TXT[this.lang];
+    var T = this.T = TXT;
     el.textContent = "";
 
-    el.appendChild(mk("p", "widget-title", typo(this.lang, T.title)));
+    el.appendChild(mk("p", "widget-title", typo(T.title)));
     var controls = mk("div", "widget-controls");
     el.appendChild(controls);
 
@@ -477,10 +414,10 @@
     for (var i = 0; i < 5; i++) { var s = mk("span"); s.style.display = "block"; ro.appendChild(s); this.rl.push(s); }
     el.appendChild(ro);
     var note = mk("p", "widget-note");
-    note.innerHTML = typo(this.lang, T.note);   // texte fixe du dictionnaire (indices <sub>)
+    note.innerHTML = typo(T.note);   // fixed text from the dictionary (<sub> subscripts)
     el.appendChild(note);
 
-    /* état */
+    /* state */
     this.b = B_DEF; this.s = S_DEF; this.nIdx = N_DEF; this.trunc = false; this.rc = C_DEF; this.seed = 1;
     this.running = false; this.raf = 0; this.lastTs = 0; this.phase = Math.asin(B_DEF / B_MAX); this.lastRead = 0;
     this.visible = true; this.pending = false; this.ymaxHold = 0;
@@ -538,7 +475,7 @@
     styleButton(bp, false);
   }
 
-  /* ----- thème ----- */
+  /* ----- theme ----- */
   Widget.prototype.readTheme = function () {
     var cs = getComputedStyle(document.documentElement);
     var c = {
@@ -554,7 +491,7 @@
     this.C = c;
   };
 
-  /* ----- calcul ----- */
+  /* ----- computation ----- */
   Widget.prototype.schedule = function () {
     if (this.pending) return;
     this.pending = true;
@@ -578,7 +515,7 @@
       this.FA = new Float64Array(n); this.GA = new Float64Array(n);
     }
     var y = this.y, b = this.b, s = this.s, B = this.base;
-    if (this.trunc) {                       // X_j = F^{-1}(u_j F(x_c)) : loi de X conditionnée à X < x_c
+    if (this.trunc) {                       // X_j = F^{-1}(u_j F(x_c)): law of X conditioned on X < x_c
       var xc = (this.rc - b) / s;
       mix(xc);
       var Fc = mF, p = QLO;
@@ -586,17 +523,17 @@
     } else {
       for (i = 0; i < n; i++) y[i] = s * B.x0[i] + b;
     }
-    // statistiques du modèle brut
+    // statistics of the raw model
     var m = 0;
     for (i = 0; i < n; i++) m += y[i];
     m /= n;
     var v = 0;
     for (i = 0; i < n; i++) { var d = y[i] - m; v += d * d; }
     this.rawMean = m; this.rawSd = Math.sqrt(v / n);
-    // F_μ et G aux points
+    // F_μ and G at the points
     for (i = 0; i < n; i++) { mix(y[i]); this.FA[i] = mF; this.GA[i] = mG; }
     this.rawW1 = wasserstein1(y, n, null, this.FA, this.GA);
-    var cut = null;                         // case qui contient r_c : q n'a pas de masse au-delà
+    var cut = null;                         // bin containing r_c: q has no mass beyond
     if (this.trunc) {
       var kc = Math.floor((this.rc - XMIN) / DX), left = XMIN + kc * DX;
       if (kc >= 0 && kc < NBIN && this.rc - left > 1e-9) cut = { k: kc, x: this.rc, w: this.rc - left };
@@ -615,8 +552,8 @@
 
   /* ----- textes ----- */
   Widget.prototype.updateLabels = function () {
-    var lg = this.lang, T = this.T;
-    var bs = fmt(lg, this.b, 2), ss = fmt(lg, this.s, 2), ns = fmt(lg, NS[this.nIdx], 0), cs = fmt(lg, this.rc, 2);
+    var T = this.T;
+    var bs = fmt(this.b, 2), ss = fmt(this.s, 2), ns = fmt(NS[this.nIdx], 0), cs = fmt(this.rc, 2);
     this.cb.out.textContent = T.bLab + "\u00a0=\u00a0" + bs;
     this.cs.out.textContent = T.sLab + "\u00a0=\u00a0" + ss;
     this.cn.out.textContent = T.nLab + "\u00a0=\u00a0" + ns;
@@ -630,19 +567,19 @@
   };
 
   Widget.prototype.updateReadout = function () {
-    var T = this.T, lg = this.lang, t = this.tilt;
+    var T = this.T, t = this.tilt;
     var lines = [
-      T.lTruth(fmt(lg, SD_MU, 3)),
-      T.lModel(fmt(lg, NS[this.nIdx], 0), fmt(lg, this.seed, 0), fmt(lg, this.rawMean, 3), fmt(lg, this.rawSd, 3),
-        fmt(lg, this.rawW1, 3)),
-      T.lProj(fmt(lg, W1_PROJ, 3)),
-      t.ok ? T.lTilt(fmt(lg, t.beta, 3), fmt(lg, t.it, 0), fmt(lg, t.mean, 3), fmt(lg, t.sd, 3), fmt(lg, t.w1, 3),
-        fmt(lg, t.kl, 3), fmt(lg, t.ess, 0), fmtSmall(lg, t.ess / NS[this.nIdx])) : T.lTiltNo(t.pos),
-      this.trunc ? T.lMiss(fmt(lg, this.rc, 2), pct(lg, this.missMass)) : ""
+      T.lTruth(fmt(SD_MU, 3)),
+      T.lModel(fmt(NS[this.nIdx], 0), fmt(this.seed, 0), fmt(this.rawMean, 3), fmt(this.rawSd, 3),
+        fmt(this.rawW1, 3)),
+      T.lProj(fmt(W1_PROJ, 3)),
+      t.ok ? T.lTilt(fmt(t.beta, 3), fmt(t.it, 0), fmt(t.mean, 3), fmt(t.sd, 3), fmt(t.w1, 3),
+        fmt(t.kl, 3), fmt(t.ess, 0), fmtSmall(t.ess / NS[this.nIdx])) : T.lTiltNo(t.pos),
+      this.trunc ? T.lMiss(fmt(this.rc, 2), pct(this.missMass)) : ""
     ];
     if (!this.lastLines) this.lastLines = [];
     for (var i = 0; i < 5; i++) {
-      lines[i] = typo(lg, lines[i]);
+      lines[i] = typo(lines[i]);
       if (this.lastLines[i] === lines[i]) continue;
       this.lastLines[i] = lines[i];
       this.rl[i].innerHTML = lines[i];
@@ -670,7 +607,7 @@
     styleButton(this.playBtn, false);
     this.readout.setAttribute("aria-busy", "false");
     if (was) {
-      this.b = Math.round(this.b / B_STEP) * B_STEP;   // retour sur la grille du curseur
+      this.b = Math.round(this.b / B_STEP) * B_STEP;   // back onto the slider grid
       this.cb.input.value = String(this.b);
       this.ymaxHold = 0;
       this.compute(); this.updateLabels(); this.draw();
@@ -692,7 +629,7 @@
     this.raf = requestAnimationFrame(function (t) { self.frame(t); });
   };
 
-  /* ----- géométrie ----- */
+  /* ----- geometry ----- */
   Widget.prototype.legendItems = function () {
     var T = this.T, it = [
       { k: "truth", t: T.legTruth }, { k: "q", t: T.legQ }, { k: "qd", t: T.legQd },
@@ -710,7 +647,7 @@
     this.W = W; this.dpr = dpr;
     var fs = W < 460 ? 11 : 12;
     this.fs = fs;
-    // légende sur une ou plusieurs lignes
+    // legend on one or several lines
     var items = this.legendItems(), x = 0, row = 0, sw = 24, gapI = 16, rowH = fs + 7;
     for (var i = 0; i < items.length; i++) {
       var wi = sw + this.textWidth(items[i].t, fs) + gapI;
@@ -735,7 +672,7 @@
     this.draw();
   };
 
-  /* ----- dessin ----- */
+  /* ----- drawing ----- */
   Widget.prototype.textWidth = function (s, size, weight) {
     var c = this.ctx;
     c.font = (weight || "400") + " " + (size || 12) + "px " + (this.C ? this.C.font : "sans-serif");
@@ -768,7 +705,7 @@
 
   Widget.prototype.draw = function () {
     if (!this.L || !this.hr) return;
-    var c = this.ctx, dpr = this.dpr, L = this.L, C = this.C, T = this.T, lg = this.lang, fs = this.fs;
+    var c = this.ctx, dpr = this.dpr, L = this.L, C = this.C, T = this.T, fs = this.fs;
     c.setTransform(dpr, 0, 0, dpr, 0, 0);
     c.clearRect(0, 0, L.W, L.H);
     c.lineJoin = "round"; c.lineCap = "butt";
@@ -781,27 +718,27 @@
     var titles = [[T.panelA, T.panelAs, T.panelAt], [T.panelB, T.panelBs, T.panelBt], [T.panelC, T.panelCs, T.panelCt]];
     var t = this.tilt;
     var stats = [
-      T.stA(fmt(lg, this.rawMean, 2), fmt(lg, this.rawW1, 2)),
-      T.stB(fmt(lg, W1_PROJ, 2)),
-      t.ok ? T.stC(fmt(lg, t.w1, 2), fmt(lg, t.ess / NS[this.nIdx], t.ess / NS[this.nIdx] < 0.01 ? 3 : 2)) : ""
+      T.stA(fmt(this.rawMean, 2), fmt(this.rawW1, 2)),
+      T.stB(fmt(W1_PROJ, 2)),
+      t.ok ? T.stC(fmt(t.w1, 2), fmt(t.ess / NS[this.nIdx], t.ess / NS[this.nIdx] < 0.01 ? 3 : 2)) : ""
     ];
     for (var k = 0; k < 3; k++) {
       var p = L.panels[k];
       var Y = (function (pp) { return function (v) { return pp.b - Math.min(v, ymax) / ymax * (pp.b - pp.t); }; })(p);
-      // en-tête : titre (long ou court) + statistique si la place suffit
+      // header: title (long or short) + statistic if there is room
       var tx = narrow ? 4 : p.l, avail = p.r - tx, title = null, showSt = false, j;
       var stw = stats[k] ? this.textWidth(stats[k], fs) + 14 : 0;
-      for (j = 0; j < 3 && !title; j++) {         // le titre le plus long qui laisse la place à la statistique
+      for (j = 0; j < 3 && !title; j++) {         // the longest title that leaves room for the statistic
         if (this.textWidth(titles[k][j], fs + 1, "700") + stw <= avail) { title = titles[k][j]; showSt = !!stw; }
       }
-      for (j = 0; j < 3 && !title; j++) {         // sinon, le plus long qui tient seul
+      for (j = 0; j < 3 && !title; j++) {         // otherwise, the longest that fits alone
         if (this.textWidth(titles[k][j], fs + 1, "700") <= avail) title = titles[k][j];
       }
       if (!title) title = titles[k][2];
       this.text(title, tx, p.t - 6, "left", C.ink, fs + 1, "700");
       if (showSt) this.text(stats[k], p.r, p.t - 6, "right", C.soft, fs);
 
-      // grille et axes
+      // grid and axes
       var step = ymax <= 0.6 ? 0.2 : ymax <= 1.2 ? 0.25 : ymax <= 2 ? 0.5 : 1;
       if (ymax / step > 4.01) step *= 2;
       c.lineWidth = 1;
@@ -810,7 +747,7 @@
         c.strokeStyle = C.rule; c.globalAlpha = 0.18;
         c.beginPath(); c.moveTo(p.l, gy); c.lineTo(p.r, gy); c.stroke();
         c.globalAlpha = 1;
-        this.text(fmt(lg, gv, step < 0.5 ? 2 : 1), p.l - 5, gy + 4, "right", C.soft, fs - 1);
+        this.text(fmt(gv, step < 0.5 ? 2 : 1), p.l - 5, gy + 4, "right", C.soft, fs - 1);
       }
       this.text("0", p.l - 5, p.b + 3, "right", C.soft, fs - 1);
 
@@ -820,16 +757,16 @@
       if (k === 0) this.drawPanelA(p, X, Y);
       else if (k === 1) this.drawPanelB(p, X, Y, ymax);
       else this.drawPanelC(p, X, Y);
-      // droite r = 0 (contrainte E[r] = 0)
+      // line r = 0 (constraint E[r] = 0)
       c.setLineDash([4, 4]); c.strokeStyle = C.soft; c.lineWidth = 1; c.globalAlpha = 0.85;
       var x0 = Math.round(X(0)) + 0.5;
       c.beginPath(); c.moveTo(x0, p.t); c.lineTo(x0, p.b); c.stroke();
       c.setLineDash([]); c.globalAlpha = 1;
-      // vraie densité
+      // true density
       this.truthCurve(p, X, Y);
       c.restore();
 
-      // cadre
+      // frame
       c.strokeStyle = C.rule; c.lineWidth = 1; c.globalAlpha = 0.9;
       c.beginPath(); c.moveTo(p.l + 0.5, p.t); c.lineTo(p.l + 0.5, p.b + 0.5); c.lineTo(p.r, p.b + 0.5); c.stroke();
       c.globalAlpha = 1;
@@ -840,13 +777,13 @@
       }
     }
 
-    // axe horizontal
+    // horizontal axis
     var pl = L.panels[2], xs = narrow ? 2 : 1;
     for (var xv = XMIN; xv <= XMAX; xv += 1) {
       var xx = Math.round(X(xv)) + 0.5;
       c.strokeStyle = C.rule; c.lineWidth = 1;
       c.beginPath(); c.moveTo(xx, pl.b); c.lineTo(xx, pl.b + 4); c.stroke();
-      if ((xv - XMIN) % xs === (narrow ? 1 : 0) || !narrow) this.text(fmt(lg, xv, 0), xx, pl.b + fs + 5, "center", C.soft, fs);
+      if ((xv - XMIN) % xs === (narrow ? 1 : 0) || !narrow) this.text(fmt(xv, 0), xx, pl.b + fs + 5, "center", C.soft, fs);
     }
     if (this.trunc) {
       var xr = X(this.rc);
@@ -854,7 +791,7 @@
       c.beginPath(); c.moveTo(xr, pl.b + 1); c.lineTo(xr - 4, pl.b + 8); c.lineTo(xr + 4, pl.b + 8); c.closePath(); c.fill();
     }
     this.text(T.xAxis, (pl.l + pl.r) / 2, pl.b + 2 * fs + 15, "center", C.ink, fs, "700");
-    // axe vertical (texte tourné)
+    // vertical axis (rotated text)
     c.save();
     c.translate(11, (L.panels[0].t + L.panels[2].b) / 2);
     c.rotate(-Math.PI / 2);
@@ -934,7 +871,7 @@
     if (dashed) c.setLineDash([4, 3]);
     c.stroke();
     c.setLineDash([]);
-    // cases tronquées par l'échelle : chevron
+    // bins truncated by the scale: chevron
     for (var k = 0; k < NBIN; k++) {
       if (h[k] > ymaxClip && !dashed) {
         var xm = (this.cut && k === this.cut.k) ? 0.5 * (X(XMIN + k * DX) + X(this.cut.x)) : X(XMIN + (k + 0.5) * DX);
@@ -963,7 +900,7 @@
 
   Widget.prototype.drawPanelA = function (p, X, Y) {
     var c = this.ctx, C = this.C;
-    if (this.trunc) {                     // masse de μ au-delà de r_c
+    if (this.trunc) {                     // mass of μ beyond r_c
       var xr = Math.max(p.l, X(this.rc));
       c.beginPath(); c.moveTo(xr, p.b);
       for (var px = xr; px <= p.r; px += 1.5) {
@@ -975,7 +912,7 @@
     }
     this.drawHist(this.hRaw, X, Y, p, C.pal[0], true, false, this.ymaxNow);
     if (this.trunc && X(this.rc) < p.r - 30) {
-      var lab = this.T.miss(pct(this.lang, this.missMass));
+      var lab = this.T.miss(pct(this.missMass));
       var lx = Math.max(p.l, X(this.rc)) + 5;
       var w = this.textWidth(lab, this.fs, "700");
       if (lx + w > p.r - 3) lx = p.r - 3 - w;
@@ -998,7 +935,7 @@
     if (this.tilt.ok) this.drawHist(this.hTilt, X, Y, p, C.pal[2], true, false, this.ymaxNow);
   };
 
-  /* ---------- initialisation et thème ---------- */
+  /* ---------- initialisation and theme ---------- */
   var instances = [];
   function refreshAll() {
     instances.forEach(function (w) { w.readTheme(); w.resize(true); });

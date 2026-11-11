@@ -1,88 +1,88 @@
-/* MilaDy 2027 — widget interactif « flow-matching ».
-   Flow matching conditionnel en 2D avec le champ de vitesse marginal EXACT
-   (aucun réseau : le champ que l'apprentissage chercherait à approcher est
-   calculé en forme close puis intégré par la méthode de Heun).
+/* MilaDy 2027 — interactive "flow-matching" widget.
+   Conditional flow matching in 2D with the EXACT marginal velocity field
+   (no network: the field that training would try to approximate is
+   computed in closed form and then integrated with Heun's method).
 
    ------------------------------------------------------------------------
-   Modèle
+   Model
    ------------------------------------------------------------------------
    Base     : x0 ~ N(0, I2).
-   Cible    : x1 ~ sum_k pi_k N(m_k, s^2 I2), deux composantes k = +/-,
+   Target   : x1 ~ sum_k pi_k N(m_k, s^2 I2), two components k = +/-,
               m_+ = (lambda, 0), m_- = (-lambda, 0), pi_+ = pi_- = 1/2,
-              s = 0,35 (symétrie B -> -B : la cible est invariante par x -> -x).
-   Couplage : indépendant, (x0, x1) ~ p0 (x) p1 (I-CFM, Tong et al. 2024).
-   Chemin   : x_t = (1 - t) x0 + t x1, t dans [0, 1] (rectified flow /
-              interpolant linéaire ; vitesse conditionnelle u = x1 - x0).
+              s = 0.35 (symmetry B -> -B: the target is invariant under x -> -x).
+   Coupling : independent, (x0, x1) ~ p0 (x) p1 (I-CFM, Tong et al. 2024).
+   Path     : x_t = (1 - t) x0 + t x1, t in [0, 1] (rectified flow /
+              linear interpolant; conditional velocity u = x1 - x0).
 
-   Dérivation (vérifiée numériquement : Monte-Carlo et forme close) :
-   (1) Sachant k, x_t = (1 - t) x0 + t m_k + t s e1 avec x0, e1 ~ N(0, I)
-       indépendants, donc
+   Derivation (checked numerically: Monte Carlo and closed form):
+   (1) Given k, x_t = (1 - t) x0 + t m_k + t s e1 with x0, e1 ~ N(0, I)
+       independent, hence
            x_t | k ~ N(t m_k, sigma_t^2 I),   sigma_t^2 = (1 - t)^2 + t^2 s^2.
-   (2) Sachant k, (u, x_t) est gaussien avec E[u | k] = m_k et
+   (2) Given k, (u, x_t) is Gaussian with E[u | k] = m_k and
        Cov(u, x_t | k) = Cov(s e1 - x0, (1 - t) x0 + t s e1) = (t s^2 - (1 - t)) I.
-       Conditionnement gaussien (Bishop, PRML, §2.3.1) :
+       Gaussian conditioning (Bishop, PRML, §2.3.1):
            E[x1 - x0 | x_t, k] = m_k + a(t) (x_t - t m_k),
            a(t) = (t s^2 - (1 - t)) / sigma_t^2.
-   (3) Champ marginal (Lipman et al. 2023, th. 1 ; Liu et al. 2023, th. 3.3 ;
+   (3) Marginal field (Lipman et al. 2023, th. 1; Liu et al. 2023, th. 3.3;
        Albergo & Vanden-Eijnden 2023) : v(x, t) = E[x1 - x0 | x_t = x]
            = sum_k w_k(x, t) E[x1 - x0 | x_t = x, k],
            w_k(x, t) = pi_k N(x; t m_k, sigma_t^2 I) / sum_j pi_j N(x; t m_j, sigma_t^2 I)
-       (formule de Bayes ; calcul en log-somme-exp ci-dessous).
-       L'EDO dx/dt = v(x, t), x(0) ~ p0, a pour loi p_t à tout t (équation de
-       continuité), donc x(1) ~ cible exactement.
-   (4) Forme close pour deux composantes symétriques (contrôle) :
-       w_+ - w_- = tanh(t m.x / sigma_t^2) et 1 - a(t) t = (1 - t) / sigma_t^2, d'où
+       (Bayes formula; computed in log-sum-exp below).
+       The ODE dx/dt = v(x, t), x(0) ~ p0, has law p_t at every t (continuity
+       equation), hence x(1) ~ target exactly.
+   (4) Closed form for two symmetric components (check):
+       w_+ - w_- = tanh(t m.x / sigma_t^2) and 1 - a(t) t = (1 - t) / sigma_t^2, hence
            v(x, t) = [ (t s^2 - (1 - t)) x + (1 - t) tanh(t m.x / sigma_t^2) m ] / sigma_t^2.
-       Vérifications : v(x, 0) = E[x1] - x = -x ; v(x, 1) = x - E[x0] = x.
-   (5) Coordonnées x = (xi, eta) : d eta/dt = a(t) eta avec a = (1/2) d ln sigma_t^2 / dt,
-       donc eta_t = sigma_t eta_0 (exact ; eta_1 = s eta_0 ~ N(0, s^2)).
-       v_xi ne dépend que de (xi, t) et est impaire en xi : la droite xi = 0 est
-       invariante, la moitié droite de la base est envoyée sur la moitié droite de
-       la cible (masse 1/2, au voisinage de +m).
-       v est lisse, donc (unicité de Cauchy-Lipschitz) deux trajectoires du flot ne
-       sont jamais au même point au même instant. Leurs tracés DANS LE PLAN peuvent
-       en revanche se couper à des instants différents : xi_t et eta_t ne sont pas
-       monotones (v(x, 0) = -x contracte d'abord ; sigma_t est minimal en
-       t* = 1/(1 + s^2)). Contrôle numérique (revue) : parmi les 40 trajectoires
-       tracées, 12 à 59 paires sur 780 se coupent dans le plan, contre 136 à 222
-       pour les 40 segments conditionnels. Au contraire, par un même (x, t) passe un
-       continuum de chemins conditionnels x0 -> x1 de directions différentes
-       (loi de (x0, x1) sachant x_t = x non dégénérée) : v en est la moyenne.
-   (6) Heun (Runge-Kutta explicite d'ordre 2 ; Hairer, Nørsett & Wanner, Solving
-       ODE I, §II.1 ; échantillonneur de Karras et al. 2022), h = 1/N :
+       Checks: v(x, 0) = E[x1] - x = -x; v(x, 1) = x - E[x0] = x.
+   (5) Coordinates x = (xi, eta): d eta/dt = a(t) eta with a = (1/2) d ln sigma_t^2 / dt,
+       hence eta_t = sigma_t eta_0 (exact; eta_1 = s eta_0 ~ N(0, s^2)).
+       v_xi depends only on (xi, t) and is odd in xi: the line xi = 0 is
+       invariant, the right half of the base is sent to the right half of
+       the target (mass 1/2, near +m).
+       v is smooth, hence (Cauchy-Lipschitz uniqueness) two flow trajectories are
+       never at the same point at the same time. Their traces IN THE PLANE can
+       however cross at different times: xi_t and eta_t are not
+       monotone (v(x, 0) = -x contracts first; sigma_t is minimal at
+       t* = 1/(1 + s^2)). Numerical check (review): among the 40 drawn
+       trajectories, 12 to 59 pairs out of 780 cross in the plane, against 136 to 222
+       for the 40 conditional segments. Conversely, through a given (x, t) passes a
+       continuum of conditional paths x0 -> x1 with different directions
+       (law of (x0, x1) given x_t = x non-degenerate): v is their average.
+   (6) Heun (explicit Runge-Kutta of order 2; Hairer, Nørsett & Wanner, Solving
+       ODE I, §II.1; sampler of Karras et al. 2022), h = 1/N:
            x~ = x_n + h v(x_n, t_n),
            x_{n+1} = x_n + (h/2) [ v(x_n, t_n) + v(x~, t_{n+1}) ].
-       Affichage entre deux nœuds : interpolation linéaire.
-   (7) Densité marginale exacte de xi sous p_t (courbe de référence) :
+       Display between two nodes: linear interpolation.
+   (7) Exact marginal density of xi under p_t (reference curve):
            p_t(xi) = (1/2) phi((xi - t lambda)/sigma_t)/sigma_t + (1/2) phi((xi + t lambda)/sigma_t)/sigma_t.
-   (8) Statistiques cibles (t = 1) : E|xi_1| = s sqrt(2/pi) exp(-lambda^2/(2 s^2))
-       + lambda erf(lambda/(s sqrt 2)) (loi normale repliée ; Leone, Nelson &
-       Nottingham, Technometrics 3, 1961) ; écart-type de eta_1 = s ; P(xi_1 > 0) = 1/2.
-       erf : Abramowitz & Stegun 7.1.26 (|erreur| <= 1,5e-7).
-   (9) Cercles de référence : pour N(c, r^2 I2), P(|x - c| <= 2r) = 1 - e^{-2} ~ 86,5 %.
-   (10) Flèches du champ : segment v(x, t) dt avec dt = 0,1 (déplacement pendant 0,1).
+   (8) Target statistics (t = 1): E|xi_1| = s sqrt(2/pi) exp(-lambda^2/(2 s^2))
+       + lambda erf(lambda/(s sqrt 2)) (folded normal law; Leone, Nelson &
+       Nottingham, Technometrics 3, 1961); standard deviation of eta_1 = s; P(xi_1 > 0) = 1/2.
+       erf: Abramowitz & Stegun 7.1.26 (|error| <= 1.5e-7).
+   (9) Reference circles: for N(c, r^2 I2), P(|x - c| <= 2r) = 1 - e^{-2} ~ 86.5 %.
+   (10) Field arrows: segment v(x, t) dt with dt = 0.1 (displacement during 0.1).
 
-   Références :
-   - Y. Lipman, R. T. Q. Chen, H. Ben-Hamu, M. Nickel, M. Le, « Flow Matching for
-     Generative Modeling », ICLR 2023, arXiv:2210.02747.
-   - X. Liu, C. Gong, Q. Liu, « Flow Straight and Fast: Learning to Generate and
-     Transfer Data with Rectified Flow », ICLR 2023, arXiv:2209.03003.
-   - M. S. Albergo, E. Vanden-Eijnden, « Building Normalizing Flows with Stochastic
-     Interpolants », ICLR 2023, arXiv:2209.15571.
-   - A. Tong et al., « Improving and Generalizing Flow-Based Generative Models with
-     Minibatch Optimal Transport », TMLR 2024, arXiv:2302.00482.
-   - T. Karras, M. Aittala, T. Aila, S. Laine, « Elucidating the Design Space of
-     Diffusion-Based Generative Models », NeurIPS 2022, arXiv:2206.00364.
+   References:
+   - Y. Lipman, R. T. Q. Chen, H. Ben-Hamu, M. Nickel, M. Le, "Flow Matching for
+     Generative Modeling", ICLR 2023, arXiv:2210.02747.
+   - X. Liu, C. Gong, Q. Liu, "Flow Straight and Fast: Learning to Generate and
+     Transfer Data with Rectified Flow", ICLR 2023, arXiv:2209.03003.
+   - M. S. Albergo, E. Vanden-Eijnden, "Building Normalizing Flows with Stochastic
+     Interpolants", ICLR 2023, arXiv:2209.15571.
+   - A. Tong et al., "Improving and Generalizing Flow-Based Generative Models with
+     Minibatch Optimal Transport", TMLR 2024, arXiv:2302.00482.
+   - T. Karras, M. Aittala, T. Aila, S. Laine, "Elucidating the Design Space of
+     Diffusion-Based Generative Models", NeurIPS 2022, arXiv:2206.00364.
 
-   Contrat : <div class="widget" data-widget="flow-matching"></div> ; textes
-   FR / EN selon <html lang> ; couleurs lues dans les variables CSS de la page. */
+   Contract: <div class="widget" data-widget="flow-matching"></div>; colours read
+   from the CSS variables of the page. */
 (function () {
   "use strict";
 
   var NAME = "flow-matching";
-  var S = 0.35;                 /* écart-type de chaque composante cible */
-  var P = 600;                  /* nombre de particules du nuage */
-  var K_LINES = 40;             /* trajectoires / chemins conditionnels tracés */
+  var S = 0.35;                 /* standard deviation of each target component */
+  var P = 600;                  /* number of particles of the cloud */
+  var K_LINES = 40;             /* conditional trajectories / paths drawn */
   var XMIN = -4.2, XMAX = 4.2, YMIN = -3, YMAX = 3;
   var NS = [1, 2, 3, 4, 5, 6, 8, 10, 12, 16, 20, 25, 32, 40, 50, 64, 80, 100, 128, 160, 200];
   var N_DEFAULT_INDEX = NS.indexOf(100);
@@ -91,87 +91,51 @@
   var BIN = 0.2;
 
   var I18N = {
-    fr: {
-      title: "Flow matching conditionnel : champ de vitesse marginal exact",
-      lambda: "λ", lambdaLong: "λ, demi-écart entre les deux modes",
-      t: "t", tLong: "temps t du flot",
-      steps: "pas N", stepsLong: "pas N : nombre de pas de Heun",
-      play: "Lecture", pause: "Pause", playLabel: "Lancer l'animation", pauseLabel: "Mettre l'animation en pause",
-      resample: "Nouveau tirage",
-      paths: "Chemins :", none: "aucun", cond: "conditionnels", flow: "flot",
-      field: "champ v(x, t)",
-      canvas: "Nuage de particules transporté de la gaussienne N(0, I₂) vers un mélange de deux gaussiennes de moyennes ±(λ, 0), avec la densité de la première coordonnée en dessous.",
-      density: "densité de ξ",
-      legRight: "vers +m", legLeft: "vers −m", legTarget: "cible (rayon 2s)", legPt: "loi exacte pₜ (rayon 2σₜ)",
-      legField: "v(x, t)·Δt, Δt = 0,1", legCond: "xₜ = (1 − t)x₀ + t x₁, paires indépendantes",
-      legDens: "densité exacte pₜ(ξ)", legHist: "histogramme du nuage",
-      readout: function (o) {
-        return "t = " + o.t + " (σₜ = " + o.st + ") · λ = " + o.lam + " · Heun, N = " + o.n + "\u00a0pas. " +
-          "Nuage final (t = 1) : moyenne de |ξ| = " + o.mabs + " (cible " + o.mabsT + ", écart " + o.gap + ") · " +
-          "écart-type de η = " + o.sdy + " (cible " + o.sdyT + ") · à droite : " + o.right + "\u202f% (cible 50\u202f%).";
-      },
-      note: "x = (ξ, η). Base x₀ ~ N(0, I₂) ; cible ½ N((λ, 0), s²I₂) + ½ N((−λ, 0), s²I₂), s = 0,35, invariante par x → −x (comme B → −B). " +
-        "Champ exact v(x, t) = Σₖ wₖ(x, t) E[x₁ − x₀ | xₜ = x, k], avec w₊ = P(k = + | xₜ = x), intégré par Heun en N pas. " +
-        "Par un même point x passent, au même instant t, des chemins conditionnels (segments x₀ → x₁) de directions différentes : v en est la moyenne. " +
-        "Deux trajectoires du flot ne sont jamais au même point au même instant et aucune ne franchit ξ = 0 ; leurs tracés peuvent se couper dans le plan, " +
-        "mais à des instants différents. Survol ou toucher : v et w₊ au point visé.",
-      tipX: "x", tipV: "v", tipW: "w₊"
+    title: "Conditional flow matching: exact marginal velocity field",
+    lambda: "λ", lambdaLong: "λ, half-distance between the two modes",
+    t: "t", tLong: "flow time t",
+    steps: "steps N", stepsLong: "steps N: number of Heun steps",
+    play: "Play", pause: "Pause", playLabel: "Start the animation", pauseLabel: "Pause the animation",
+    resample: "New sample",
+    paths: "Paths:", none: "none", cond: "conditional", flow: "flow",
+    field: "field v(x, t)",
+    canvas: "Particle cloud carried from the Gaussian N(0, I₂) to a mixture of two Gaussians with means ±(λ, 0), with the density of the first coordinate below.",
+    density: "density of ξ",
+    legRight: "to +m", legLeft: "to −m", legTarget: "target (radius 2s)", legPt: "exact distribution pₜ (radius 2σₜ)",
+    legField: "v(x, t)·Δt, Δt = 0.1", legCond: "xₜ = (1 − t)x₀ + t x₁, independent pairs",
+    legDens: "exact density pₜ(ξ)", legHist: "cloud histogram",
+    readout: function (o) {
+      return "t = " + o.t + " (σₜ = " + o.st + ") · λ = " + o.lam + " · Heun, N = " + o.n + (o.n === "1" ? "\u00a0step. " : "\u00a0steps. ") +
+        "Final cloud (t = 1): mean |ξ| = " + o.mabs + " (target " + o.mabsT + ", gap " + o.gap + ") · " +
+        "std of η = " + o.sdy + " (target " + o.sdyT + ") · on the right: " + o.right + "% (target 50%).";
     },
-    en: {
-      title: "Conditional flow matching: exact marginal velocity field",
-      lambda: "λ", lambdaLong: "λ, half-distance between the two modes",
-      t: "t", tLong: "flow time t",
-      steps: "steps N", stepsLong: "steps N: number of Heun steps",
-      play: "Play", pause: "Pause", playLabel: "Start the animation", pauseLabel: "Pause the animation",
-      resample: "New sample",
-      paths: "Paths:", none: "none", cond: "conditional", flow: "flow",
-      field: "field v(x, t)",
-      canvas: "Particle cloud carried from the Gaussian N(0, I₂) to a mixture of two Gaussians with means ±(λ, 0), with the density of the first coordinate below.",
-      density: "density of ξ",
-      legRight: "to +m", legLeft: "to −m", legTarget: "target (radius 2s)", legPt: "exact distribution pₜ (radius 2σₜ)",
-      legField: "v(x, t)·Δt, Δt = 0.1", legCond: "xₜ = (1 − t)x₀ + t x₁, independent pairs",
-      legDens: "exact density pₜ(ξ)", legHist: "cloud histogram",
-      readout: function (o) {
-        return "t = " + o.t + " (σₜ = " + o.st + ") · λ = " + o.lam + " · Heun, N = " + o.n + (o.n === "1" ? "\u00a0step. " : "\u00a0steps. ") +
-          "Final cloud (t = 1): mean |ξ| = " + o.mabs + " (target " + o.mabsT + ", gap " + o.gap + ") · " +
-          "std of η = " + o.sdy + " (target " + o.sdyT + ") · on the right: " + o.right + "% (target 50%).";
-      },
-      note: "x = (ξ, η). Base x₀ ~ N(0, I₂); target ½ N((λ, 0), s²I₂) + ½ N((−λ, 0), s²I₂), s = 0.35, invariant under x → −x (like B → −B). " +
-        "Exact field v(x, t) = Σₖ wₖ(x, t) E[x₁ − x₀ | xₜ = x, k], with w₊ = P(k = + | xₜ = x), integrated with Heun in N steps. " +
-        "Through a given point x, at a given time t, pass conditional paths (segments x₀ → x₁) with different directions: v is their average. " +
-        "Two flow trajectories are never at the same point at the same time, and none crosses ξ = 0; their traces may intersect in the plane, " +
-        "but at different times. Hover or tap: v and w₊ at that point.",
-      tipX: "x", tipV: "v", tipW: "w₊"
-    }
+    note: "x = (ξ, η). Base x₀ ~ N(0, I₂); target ½ N((λ, 0), s²I₂) + ½ N((−λ, 0), s²I₂), s = 0.35, invariant under x → −x (like B → −B). " +
+      "Exact field v(x, t) = Σₖ wₖ(x, t) E[x₁ − x₀ | xₜ = x, k], with w₊ = P(k = + | xₜ = x), integrated with Heun in N steps. " +
+      "Through a given point x, at a given time t, pass conditional paths (segments x₀ → x₁) with different directions: v is their average. " +
+      "Two flow trajectories are never at the same point at the same time, and none crosses ξ = 0; their traces may intersect in the plane, " +
+      "but at different times. Hover or tap: v and w₊ at that point.",
+    tipX: "x", tipV: "v", tipW: "w₊"
   };
 
   var LIGHT_SERIES = ["#2a78d6", "#eb6834", "#1baf7a", "#eda100"];
   var DARK_SERIES = ["#3987e5", "#d95926", "#199e70", "#c98500"];
   var FONT = 'system-ui, -apple-system, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif';
 
-  function getLang() {
-    var l = (document.documentElement.getAttribute("lang") || "fr").toLowerCase();
-    return l.indexOf("en") === 0 ? "en" : "fr";
-  }
-
-  function fmt(x, d, lang) {
+  function fmt(x, d) {
     var s = Math.abs(x).toFixed(d);
     var neg = x < 0 && parseFloat(s) !== 0;
-    if (lang === "fr") s = s.replace(".", ",");
     return (neg ? "\u2212" : "") + s;
   }
 
-  /* Espaces insécables : pas de coupure autour de « = », « → », « ~ », ni avant
-     « : » / « ; » en français (espace fine pour « ; »). */
-  function nb(s, lang) {
+  /* Non-breaking spaces: no break around "=", "→", "~", "|" and inside "(x, t)"-like pairs. */
+  function nb(s) {
     s = s.replace(/ = /g, "\u00a0=\u00a0").replace(/ \u2192 /g, "\u00a0\u2192\u00a0").replace(/ ~ /g, "\u00a0~\u00a0")
       .replace(/ \| /g, "\u00a0|\u00a0")
       .replace(/\(([^() ]{1,6}), ([^() ]{1,6})\)/g, "($1,\u00a0$2)");   /* (x, t), (ξ, η), (λ, 0)… */
-    if (lang === "fr") s = s.replace(/ :/g, "\u00a0:").replace(/ ;/g, "\u202f;");
     return s;
   }
 
-  /* ---------------- aléa reproductible ---------------- */
+  /* ---------------- reproducible randomness ---------------- */
   function mulberry32(a) {
     return function () {
       a |= 0; a = (a + 0x6D2B79F5) | 0;
@@ -188,13 +152,13 @@
     return [r * Math.cos(2 * Math.PI * v), r * Math.sin(2 * Math.PI * v)];
   }
 
-  /* ---------------- physique / mathématiques ---------------- */
+  /* ---------------- physics / mathematics ---------------- */
   function sigma2(t) { return (1 - t) * (1 - t) + t * t * S * S; }
 
-  /* Composantes de la cible : [pi_k, m_k^xi, m_k^eta]. */
+  /* Target components: [pi_k, m_k^xi, m_k^eta]. */
   function components(lam) { return [[0.5, lam, 0], [0.5, -lam, 0]]; }
 
-  /* v(x, t) = sum_k w_k [m_k + a(t)(x - t m_k)], w_k par log-somme-exp (formule (3)).
+  /* v(x, t) = sum_k w_k [m_k + a(t)(x - t m_k)], w_k by log-sum-exp (formula (3)).
      out = [v_xi, v_eta, w_0]. */
   function velocity(x, y, t, comps, out) {
     var s2 = sigma2(t);
@@ -219,7 +183,7 @@
     return out;
   }
 
-  /* Heun, h = 1/N ; renvoie les nœuds (N+1) x P x 2 (formule (6)). */
+  /* Heun, h = 1/N; returns the nodes (N+1) x P x 2 (formula (6)). */
   function integrate(x0, N, comps) {
     var n = x0.length / 2;
     var nodes = new Float32Array((N + 1) * n * 2);
@@ -248,7 +212,7 @@
     var y = 1 - (((((1.061405429 * tt - 1.453152027) * tt) + 1.421413741) * tt - 0.284496736) * tt + 0.254829592) * tt * Math.exp(-x * x);
     return sgn * y;
   }
-  /* E|xi_1| pour ½N(λ, s²) + ½N(−λ, s²) : moyenne de la normale repliée (formule (8)). */
+  /* E|xi_1| for ½N(λ, s²) + ½N(−λ, s²): mean of the folded normal (formula (8)). */
   function foldedMean(lam) {
     return S * Math.sqrt(2 / Math.PI) * Math.exp(-lam * lam / (2 * S * S)) + lam * erf(lam / (S * Math.SQRT2));
   }
@@ -259,7 +223,7 @@
     return 0.5 * c * (Math.exp(-0.5 * a * a) + Math.exp(-0.5 * b * b));
   }
 
-  /* ---------------- thème ---------------- */
+  /* ---------------- theme ---------------- */
   function parseColor(str) {
     str = (str || "").trim();
     var m = /^#([0-9a-f]{3}|[0-9a-f]{6})$/i.exec(str);
@@ -306,14 +270,14 @@
     return e;
   }
 
-  /* Pastilles de légende en SVG (couleur = currentColor, fixée par updateLegend). */
+  /* Legend dots in SVG (colour = currentColor, set by updateLegend). */
   function swatch(kind) {
     var NSV = "http://www.w3.org/2000/svg";
     var svg = document.createElementNS(NSV, "svg");
     svg.setAttribute("viewBox", "0 0 22 14");
     svg.setAttribute("width", "22"); svg.setAttribute("height", "14");
     svg.setAttribute("aria-hidden", "true"); svg.setAttribute("focusable", "false");
-    /* la feuille de style met .widget svg en bloc pleine largeur : on annule ici */
+  /* the style sheet makes .widget svg a full-width block: cancel it here */
     svg.style.display = "inline-block"; svg.style.width = "22px"; svg.style.height = "14px";
     svg.style.maxWidth = "none"; svg.style.flex = "none";
     function add(tag, attrs) {
@@ -343,8 +307,7 @@
   function build(host) {
     if (host.getAttribute("data-ready") === "1") return;
     host.setAttribute("data-ready", "1");
-    var lang = getLang();
-    var L = I18N[lang];
+    var L = I18N;
     host.textContent = "";
 
     var st = {
@@ -354,7 +317,7 @@
     };
     var data = {};          /* x0, pairs, nodes, stats */
     var theme = readTheme();
-    var geo = null;         /* géométrie courante */
+    var geo = null;         /* current geometry */
     var cur = new Float32Array(2 * P);
 
     /* ---------- DOM ---------- */
@@ -427,7 +390,7 @@
       var s = el("span");
       s.style.display = "inline-flex"; s.style.alignItems = "center"; s.style.gap = ".35rem";
       var g = swatch(kind);
-      s.appendChild(g); s.appendChild(el("span", null, nb(text, lang)));
+      s.appendChild(g); s.appendChild(el("span", null, nb(text)));
       legend.appendChild(s);
       legItems[key] = { root: s, glyph: g };
     }
@@ -442,7 +405,7 @@
 
     var readout = el("p", "widget-readout");
     readout.setAttribute("aria-live", "polite");
-    var note = el("p", "widget-note", nb(L.note, lang));
+    var note = el("p", "widget-note", nb(L.note));
 
     host.appendChild(title);
     host.appendChild(controls);
@@ -453,7 +416,7 @@
 
     var ctx = canvas.getContext("2d");
 
-    /* ---------- données ---------- */
+    /* ---------- data ---------- */
     function sample() {
       var rng = mulberry32(0x9E3779B1 ^ (st.seed * 2654435761));
       var x0 = new Float64Array(2 * P);
@@ -461,7 +424,7 @@
         var z = normalPair(rng);
         x0[2 * i] = z[0]; x0[2 * i + 1] = z[1];
       }
-      /* paires indépendantes : x0 des K premières particules, x1 tiré indépendamment */
+      /* independent pairs: x0 of the first K particles, x1 drawn independently */
       var kk = new Int8Array(K_LINES), eps = new Float64Array(2 * K_LINES);
       for (var j = 0; j < K_LINES; j++) {
         kk[j] = rng() < 0.5 ? 1 : -1;
@@ -477,14 +440,14 @@
       data.comps = comps;
       data.N = N;
       data.nodes = integrate(data.x0, N, comps);
-      /* x1 des paires conditionnelles */
+      /* x1 of the conditional pairs */
       var x1 = new Float64Array(2 * K_LINES);
       for (var j = 0; j < K_LINES; j++) {
         x1[2 * j] = data.k[j] * st.lam + S * data.eps[2 * j];
         x1[2 * j + 1] = S * data.eps[2 * j + 1];
       }
       data.x1 = x1;
-      /* statistiques du nuage final */
+      /* statistics of the final cloud */
       var base = N * P * 2, sabs = 0, sy = 0, sy2 = 0, right = 0;
       var side = new Int8Array(P);
       for (var i = 0; i < P; i++) {
@@ -500,7 +463,7 @@
         right: right / P,
         mabsT: foldedMean(st.lam)
       };
-      /* échelle verticale fixe de la bande de densité (max de p_t sur t et xi) */
+      /* fixed vertical scale of the density band (max of p_t over t and xi) */
       var mx = 0;
       for (var a = 0; a <= 50; a++) {
         var tt = a / 50;
@@ -522,14 +485,14 @@
       return outArr;
     }
 
-    /* ---------- géométrie ---------- */
+    /* ---------- geometry ---------- */
     function layout() {
       var W = Math.floor(wrap.getBoundingClientRect().width);
       if (!(W > 0)) return false;
       if (geo && geo.W === W) return false;
       var small = W < 520;
-      /* gap : place pour l'étiquette « densité de ξ » AU-DESSUS de la bande
-         (dans la bande, elle masquait le mode gauche quand λ est grand) */
+      /* gap: room for the label "density of ξ" ABOVE the band
+         (inside the band, it hid the left mode when λ is large) */
       var padL = small ? 26 : 32, padR = 8, padT = 6, gap = small ? 19 : 21;
       var k = Math.min((W - padL - padR) / (XMAX - XMIN), 80);
       var plotW = k * (XMAX - XMIN);
@@ -552,7 +515,7 @@
     function px(x) { return geo.left + (x - XMIN) * geo.k; }
     function py(y) { return geo.top + (YMAX - y) * geo.k; }
 
-    /* ---------- dessin ---------- */
+    /* ---------- drawing ---------- */
     function draw() {
       if (!geo || !data.nodes) return;
       var c = ctx, th = theme, g = geo;
@@ -577,7 +540,7 @@
       c.stroke();
       c.globalAlpha = 1;
 
-      /* champ v(x, t) */
+      /* field v(x, t) */
       if (st.field) {
         var spacing = g.small ? 26 : 36;
         var nx = Math.max(6, Math.round((g.right - g.left) / spacing));
@@ -605,7 +568,7 @@
         c.globalAlpha = 1;
       }
 
-      /* référence : cibles (rayon 2s) et loi exacte p_t (rayon 2 sigma_t), encre neutre */
+      /* reference: targets (radius 2s) and exact law p_t (radius 2 sigma_t), neutral ink */
       var sd = Math.sqrt(sigma2(t));
       c.strokeStyle = th.ink; c.lineWidth = 1.6;
       c.beginPath();
@@ -621,13 +584,13 @@
       c.stroke();
       c.setLineDash([]);
 
-      /* tracés : trajectoires du flot ou chemins conditionnels */
+      /* traces: flow trajectories or conditional paths */
       var i, j;
       if (st.mode === "flow") {
         var N = data.N, nodes = data.nodes, f = t * N, jn = Math.min(N, Math.floor(f));
         [1, -1].forEach(function (sgn) {
           c.strokeStyle = sgn > 0 ? blue : orange;
-          /* trajectoire complète, pâle */
+          /* full trajectory, pale */
           c.globalAlpha = 0.28; c.lineWidth = 1;
           c.beginPath();
           for (i = 0; i < K_LINES; i++) {
@@ -672,7 +635,7 @@
         c.globalAlpha = 1;
       }
 
-      /* nuage de particules, couleur = mode d'arrivée (signe de ξ à t = 1) */
+      /* particle cloud, colour = arrival mode (sign of ξ at t = 1) */
       var r = g.small ? 1.7 : 2.1;
       [1, -1].forEach(function (sgn) {
         c.fillStyle = sgn > 0 ? blue : orange;
@@ -687,7 +650,7 @@
       });
       c.globalAlpha = 1;
 
-      /* marqueurs creux x_t sur les chemins conditionnels */
+      /* hollow markers x_t on the conditional paths */
       if (st.mode === "cond") {
         c.lineWidth = 2;
         [1, -1].forEach(function (sgn) {
@@ -704,7 +667,7 @@
         });
       }
 
-      /* étiquettes ±m au-dessus des cercles cibles */
+      /* ±m labels above the target circles */
       c.fillStyle = th.ink; c.textAlign = "center"; c.textBaseline = "bottom";
       c.font = "700 " + fs + "px " + FONT;
       c.strokeStyle = th.bg; c.lineWidth = 3; c.lineJoin = "round";
@@ -713,30 +676,30 @@
       c.fillText("+m", px(lam), py(2 * S) - 3);
       c.fillText("\u2212m", px(-lam), py(2 * S) - 3);
 
-      /* survol : v et w_+ au point visé */
+      /* hover: v and w_+ at the pointed location */
       if (st.hover) drawHover(c, th, g, fs);
       c.restore();
 
-      /* étiquette du temps (au-dessus du clip pour rester lisible) */
+      /* time label (above the clip to stay readable) */
       c.font = "700 " + (fs + 2) + "px " + FONT;
       c.textAlign = "left"; c.textBaseline = "top";
-      var tl = "t = " + fmt(t, 2, lang);
+      var tl = "t = " + fmt(t, 2);
       var tw = c.measureText(tl).width;
       c.fillStyle = th.bg; c.globalAlpha = 0.85;
       c.fillRect(g.left + 4, g.top + 4, tw + 10, fs + 9);
       c.globalAlpha = 1; c.fillStyle = th.ink;
       c.fillText(tl, g.left + 9, g.top + 8);
 
-      /* cadre principal */
+      /* main frame
       c.strokeStyle = th.rule; c.lineWidth = 1;
       c.strokeRect(g.left + 0.5, g.top + 0.5, g.right - g.left - 1, g.bottom - g.top - 1);
 
-      /* graduations η */
+      /* η ticks
       c.font = fs + "px " + FONT;
       c.fillStyle = th.soft; c.textAlign = "right"; c.textBaseline = "middle";
       var ys = g.small ? [-2, 0, 2] : [-2, -1, 0, 1, 2];
       ys.forEach(function (yv) {
-        c.fillText(fmt(yv, 0, lang), g.left - 5, py(yv));
+        c.fillText(fmt(yv, 0), g.left - 5, py(yv));
         c.beginPath(); c.moveTo(g.left - 3, py(yv)); c.lineTo(g.left, py(yv));
         c.strokeStyle = th.rule; c.stroke();
       });
@@ -744,7 +707,7 @@
       c.fillStyle = th.ink; c.textBaseline = "top";
       c.fillText("η", g.left - 6, g.top + 2);
 
-      /* --- bande : densité de ξ --- */
+      /* --- band: density of ξ --- */
       var sH = g.sBottom - g.sTop;
       function sy(d) { return g.sBottom - Math.min(1, d / data.ymax) * (sH - 4); }
       var nb = Math.round((XMAX - XMIN) / BIN);
@@ -769,7 +732,7 @@
         }
       }
       c.globalAlpha = 1;
-      /* densité exacte p_t(ξ) */
+      /* exact density p_t(ξ) */
       c.strokeStyle = th.ink; c.lineWidth = 2;
       c.beginPath();
       var steps = Math.round(g.right - g.left);
@@ -784,11 +747,11 @@
       c.font = fs + "px " + FONT; c.fillStyle = th.soft; c.textAlign = "left"; c.textBaseline = "bottom";
       c.fillText(L.density, g.left + 1, g.sTop - 3);
 
-      /* graduations ξ (partagées) */
+      /* shared ξ ticks */
       c.textAlign = "center"; c.textBaseline = "top"; c.fillStyle = th.soft;
       var xs = g.small ? [-4, -2, 0, 2, 4] : [-4, -3, -2, -1, 0, 1, 2, 3, 4];
       xs.forEach(function (xv) {
-        c.fillText(fmt(xv, 0, lang), px(xv), g.sBottom + 4);
+        c.fillText(fmt(xv, 0), px(xv), g.sBottom + 4);
         c.beginPath(); c.moveTo(px(xv), g.sBottom); c.lineTo(px(xv), g.sBottom + 3);
         c.strokeStyle = th.rule; c.stroke();
       });
@@ -800,7 +763,7 @@
       var hv = st.hover;
       var x = XMIN + (hv.X - g.left) / g.k, y = YMAX - (hv.Y - g.top) / g.k;
       var vv = velocity(x, y, st.t, data.comps, [0, 0, 0]);
-      /* flèche v Δt au point visé */
+      /* arrow v Δt at the pointed location */
       var dxp = vv[0] * DT_ARROW * g.k, dyp = -vv[1] * DT_ARROW * g.k;
       c.strokeStyle = th.ink; c.fillStyle = th.ink; c.lineWidth = 2;
       c.beginPath(); c.arc(hv.X, hv.Y, 3, 0, 2 * Math.PI); c.fill();
@@ -813,14 +776,10 @@
         c.stroke();
       }
       var lines = [
-        L.tipX + " = (" + fmt(x, 2, lang) + " ; " + fmt(y, 2, lang) + ")",
-        L.tipV + " = (" + fmt(vv[0], 2, lang) + " ; " + fmt(vv[1], 2, lang) + ")",
-        L.tipW + " = " + fmt(vv[2], 3, lang)
+        L.tipX + " = (" + fmt(x, 2) + ", " + fmt(y, 2) + ")",
+        L.tipV + " = (" + fmt(vv[0], 2) + ", " + fmt(vv[1], 2) + ")",
+        L.tipW + " = " + fmt(vv[2], 3)
       ];
-      if (lang === "en") {
-        lines[0] = lines[0].replace(" ; ", ", ");
-        lines[1] = lines[1].replace(" ; ", ", ");
-      }
       c.font = fs + "px " + FONT;
       var w = 0;
       lines.forEach(function (s) { w = Math.max(w, c.measureText(s).width); });
@@ -839,16 +798,16 @@
     function updateReadout() {
       var s = data.stats;
       readout.textContent = nb(L.readout({
-        t: fmt(st.t, 2, lang), st: fmt(Math.sqrt(sigma2(st.t)), 2, lang), lam: fmt(st.lam, 2, lang),
+        t: fmt(st.t, 2), st: fmt(Math.sqrt(sigma2(st.t)), 2), lam: fmt(st.lam, 2),
         n: String(data.N),
-        mabs: fmt(s.mabs, 2, lang), mabsT: fmt(s.mabsT, 2, lang), gap: fmt(Math.abs(s.mabs - s.mabsT), 2, lang),
-        sdy: fmt(s.sdy, 2, lang), sdyT: fmt(S, 2, lang), right: fmt(100 * s.right, 1, lang)
-      }), lang);
-      sLam.out.textContent = fmt(st.lam, 2, lang);
-      sT.out.textContent = fmt(st.t, 2, lang);
+        mabs: fmt(s.mabs, 2), mabsT: fmt(s.mabsT, 2), gap: fmt(Math.abs(s.mabs - s.mabsT), 2),
+        sdy: fmt(s.sdy, 2), sdyT: fmt(S, 2), right: fmt(100 * s.right, 1)
+      }));
+      sLam.out.textContent = fmt(st.lam, 2);
+      sT.out.textContent = fmt(st.t, 2);
       sN.out.textContent = String(NS[st.nIndex]);
-      sLam.input.setAttribute("aria-valuetext", "λ = " + fmt(st.lam, 2, lang));
-      sT.input.setAttribute("aria-valuetext", "t = " + fmt(st.t, 2, lang));
+      sLam.input.setAttribute("aria-valuetext", "λ = " + fmt(st.lam, 2));
+      sT.input.setAttribute("aria-valuetext", "t = " + fmt(st.t, 2));
       sN.input.setAttribute("aria-valuetext", "N = " + NS[st.nIndex]);
     }
     function updateLegend() {
@@ -874,7 +833,7 @@
     function syncButtons() {
       Object.keys(modeButtons).forEach(function (m) { setPressed(modeButtons[m], st.mode === m); });
       setPressed(bField, st.field);
-      /* nom accessible = texte visible (WCAG 2.5.3) ; pictogramme masqué, forme texte (U+FE0E) */
+      /* accessible name = visible text (WCAG 2.5.3); icon hidden, text form (U+FE0E) */
       bPlay.textContent = "";
       var glyph = el("span", null, st.playing ? "\u275a\u275a" : "\u25b6\ufe0e");
       glyph.setAttribute("aria-hidden", "true");
@@ -921,7 +880,7 @@
       updateReadout();
     }
 
-    /* ---------- évènements ---------- */
+    /* ---------- events ---------- */
     sLam.input.addEventListener("input", function () {
       st.lam = parseFloat(sLam.input.value);
       compute(); updateReadout(); draw();
@@ -952,7 +911,7 @@
     canvas.addEventListener("pointermove", pointer);
     canvas.addEventListener("pointerdown", pointer);
     canvas.addEventListener("pointerleave", function (e) {
-      if (e.pointerType === "touch") return;   /* au doigt, l'info reste jusqu'au toucher suivant */
+      if (e.pointerType === "touch") return;   /* the information stays until the next touch */
       st.hover = null; if (!st.playing) draw();
     });
 
@@ -990,7 +949,7 @@
       play();
     }
 
-    /* ---------- démarrage ---------- */
+    /* ---------- start ---------- */
     if (reducedMotion()) { st.t = 1; sT.input.value = "1"; }
     sample();
     compute();

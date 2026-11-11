@@ -1,35 +1,22 @@
-/* MilaDy 2027 — module p7, schéma interactif « chemin de probabilité du flow matching ».
-   Cible 1D : mélange 0,3 N(-a, s²) + 0,7 N(a, s²), a = 0,5 + 2λ ; source N(0, 1) ;
-   chemin linéaire x_t = (1 - t) x0 + t x1 (t = 0 : bruit, t = 1 : données).
-   Densité p_t et vitesse marginale v_t calculées exactement (exemple 4.6 du module).
-   Aucun appel réseau, aucune bibliothèque.
-   Un seul fichier pour les pages française et anglaise : la langue suit <html lang>.
-   One file for the French and English pages: the language follows <html lang>. */
+/* MilaDy 2027 — module p7, interactive diagram "probability path of flow matching".
+   1D target: mixture 0.3 N(-a, s²) + 0.7 N(a, s²), a = 0.5 + 2λ; source N(0, 1);
+   linear path x_t = (1 - t) x0 + t x1 (t = 0: noise, t = 1: data).
+   Density p_t and marginal velocity v_t computed exactly (example 4.6 of the module).
+   No network call, no library. */
 (function () {
   "use strict";
   var root = document.getElementById("fmw");
   if (!root) return;
-  var LANG = /^en/i.test(document.documentElement.getAttribute("lang") || "") ? "en" : "fr";
   var TXT = {
-    fr: {
-      axis: "temps du flot t   (0 : bruit, 1 : données)",
-      side: "pₜ(x) et vₜ(x) à t = ",
-      ratio: "Longueur totale des trajectoires du flot marginal rapportée à la somme de leurs cordes : ",
-      straight: " (1 = trajectoires droites).",
-      aria: "Densité du chemin de probabilité dans le plan (t, x) pour λ = ",
-      and: " et s = "
-    },
-    en: {
-      axis: "flow time t   (0: noise, 1: data)",
-      side: "pₜ(x) and vₜ(x) at t = ",
-      ratio: "Total length of the marginal-flow trajectories divided by the sum of their chords: ",
-      straight: " (1 = straight trajectories).",
-      aria: "Density of the probability path in the (t, x) plane for λ = ",
-      and: " and s = "
-    }
-  }[LANG];
-  /* nombre avec virgule décimale en français, point en anglais */
-  function num(x, d) { var s = d === undefined ? String(x) : x.toFixed(d); return LANG === "fr" ? s.replace(".", ",") : s; }
+    axis: "flow time t   (0: noise, 1: data)",
+    side: "pₜ(x) and vₜ(x) at t = ",
+    ratio: "Total length of the marginal-flow trajectories divided by the sum of their chords: ",
+    straight: " (1 = straight trajectories).",
+    aria: "Density of the probability path in the (t, x) plane for λ = ",
+    and: " and s = "
+  };
+  /* number with a decimal point */
+  function num(x, d) { return d === undefined ? String(x) : x.toFixed(d); }
   var cMain = document.getElementById("fmw-main");
   var cSide = document.getElementById("fmw-side");
   var inLam = document.getElementById("fmw-lam");
@@ -44,14 +31,14 @@
   var XMIN = -5, XMAX = 5;
   var NTRAJ = 15;
 
-  /* tirages fixes (générateur congruentiel) : les segments ne « sautent » pas quand on bouge un curseur */
+  /* fixed draws (congruential generator): the segments do not "jump" when a slider moves */
   var seed = 12345;
   function unif() { seed = (seed * 1103515245 + 12345) % 2147483648; return (seed + 0.5) / 2147483648; }
   function gauss() { var u = unif(), v = unif(); return Math.sqrt(-2 * Math.log(u)) * Math.cos(2 * Math.PI * v); }
   var PAIRS = [];
   for (var i = 0; i < NTRAJ; i++) PAIRS.push({ z0: gauss(), z1: gauss(), k: unif() < PI[0] ? 0 : 1 });
-  /* points de départ des trajectoires du flot : quantiles réguliers de N(0, 1) */
-  function probit(p) { /* Acklam, précision ~1e-9, suffisante pour un dessin */
+  /* starting points of the flow trajectories: regular quantiles of N(0, 1) */
+  function probit(p) { /* Acklam, precision ~1e-9, enough for a drawing */
     var a = [-39.69683028665376, 220.9460984245205, -275.9285104469687, 138.357751867269, -30.66479806614716, 2.506628277459239];
     var b = [-54.47609879822406, 161.5858368580409, -155.6989798598866, 66.80131188771972, -13.28068155288572];
     var c = [-0.007784894002430293, -0.3223964580411365, -2.400758277161838, -2.549732539343734, 4.374664141464968, 2.938163982698783];
@@ -69,7 +56,7 @@
     var lam = parseFloat(inLam.value), s = parseFloat(inS.value);
     return { lam: lam, s: s, m: [-(0.5 + 2 * lam), 0.5 + 2 * lam], t: parseFloat(inT.value) };
   }
-  /* densité et vitesse marginale au point (x, t) */
+  /* density and marginal velocity at the point (x, t) */
   function pv(P, x, t) {
     var s2 = P.s * P.s, v2 = (1 - t) * (1 - t) + t * t * s2;
     var g0 = PI[0] * Math.exp(-0.5 * Math.pow(x - t * P.m[0], 2) / v2);
@@ -81,7 +68,7 @@
     var v = tot > 0 ? (g0 * vk0 + g1 * vk1) / tot : 0;
     return [p, v];
   }
-  /* trajectoires du flot (Heun, 120 pas) ; rapport longueur totale / corde totale (1 = droites) */
+  /* flow trajectories (Heun, 120 steps); total length / total chord ratio (1 = straight lines) */
   function trajectories(P) {
     var steps = 120, h = 1 / steps, out = [], Ltot = 0, Ctot = 0;
     for (var j = 0; j < NTRAJ; j++) {
@@ -98,7 +85,7 @@
     return { paths: out, ratio: Ctot > 1e-9 ? Ltot / Ctot : 1 };
   }
 
-  /* couleurs : jetons du site ; teintes de série choisies selon le fond (clair ou sombre) */
+  /* colours: site tokens; series hues chosen according to the background (light or dark) */
   function colors() {
     var cs = getComputedStyle(document.documentElement);
     var bg = (cs.getPropertyValue("--bg") || "#ffffff").trim();
@@ -144,7 +131,7 @@
     function Y(x) { return mt + (XMAX - x) / (XMAX - XMIN) * ph; }
     ctx.fillStyle = rgb(C.bg); ctx.fillRect(0, 0, M.w, M.h);
 
-    /* carte de densité p_t(x), normalisée par son maximum à chaque instant t */
+    /* density map p_t(x), normalised by its maximum at each time t */
     var nt = 120, nx = 100, img = ctx.createImageData(nt, nx), vals = [], cmax = [];
     for (var a = 0; a < nt; a++) {
       var mx = 0;
@@ -165,7 +152,7 @@
     ctx.imageSmoothingEnabled = true;
     ctx.drawImage(off, X(0), Y(XMAX), pw, ph);
 
-    /* segments conditionnels (droites qui se croisent) */
+    /* conditional segments (crossing straight lines) */
     if (mode !== "marg") {
       ctx.strokeStyle = C.orange; ctx.lineWidth = 1.6;
       PAIRS.forEach(function (q) {
@@ -173,7 +160,7 @@
         ctx.beginPath(); ctx.moveTo(X(0), Y(x0)); ctx.lineTo(X(1), Y(x1)); ctx.stroke();
       });
     }
-    /* trajectoires du flot marginal (sans croisement) */
+    /* marginal-flow trajectories (without crossing) */
     var T = trajectories(P);
     if (mode !== "cond") {
       ctx.strokeStyle = C.ink; ctx.lineWidth = 1.8;
@@ -183,7 +170,7 @@
         ctx.stroke();
       });
     }
-    /* temps sélectionné */
+    /* selected time */
     ctx.setLineDash([5, 4]); ctx.strokeStyle = C.muted; ctx.lineWidth = 1.5;
     ctx.beginPath(); ctx.moveTo(X(P.t), mt); ctx.lineTo(X(P.t), mt + ph); ctx.stroke(); ctx.setLineDash([]);
     /* axes */
@@ -194,7 +181,7 @@
     ctx.textAlign = "right"; ctx.textBaseline = "middle";
     [-4, -2, 0, 2, 4].forEach(function (x) { ctx.fillText(String(x).replace("-", "−"), ml - 5, Y(x)); });
 
-    /* panneau latéral : densité p_t(x) et flèches de vitesse v_t(x) au temps choisi */
+    /* side panel: density p_t(x) and velocity arrows v_t(x) at the chosen time */
     var S = setup(cSide, cSide.clientWidth > 320 ? 220 : H), sx = S.ctx;
     var sl = 8, sr = 8;
     var sw = S.w - sl - sr, sh = S.h - mt - mb;
@@ -207,7 +194,7 @@
     sx.lineTo(sl, SY(XMIN)); sx.closePath();
     sx.fillStyle = "rgba(" + C.blue.join(",") + ",0.35)"; sx.fill();
     sx.strokeStyle = rgb(C.blue); sx.lineWidth = 1.6; sx.stroke();
-    /* flèches : longueur ∝ v_t(x) (déplacement pendant Δt = 0,15) */
+    /* arrows: length ∝ v_t(x) (displacement during Δt = 0.15) */
     sx.strokeStyle = C.ink; sx.fillStyle = C.ink; sx.lineWidth = 1.6;
     var ax = sl + 0.82 * sw;
     for (var xv = -4; xv <= 4.01; xv += 1) {
@@ -230,7 +217,7 @@
   [inLam, inS, inT].forEach(function (e) { e.addEventListener("input", draw); });
   for (var j = 0; j < modes.length; j++) modes[j].addEventListener("change", draw);
   var lastW = -1, pending = false;
-  function onResize() {                       /* ne redessine que si la largeur change (pas de boucle) */
+  function onResize() {                       /* redraws only if the width changes (no loop) */
     if (pending) return;
     pending = true;
     window.requestAnimationFrame(function () {

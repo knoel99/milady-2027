@@ -1,7 +1,6 @@
-/* Outils communs aux widgets du module p3 (couleurs suivant le thème, langue). */
+/* Common helpers for the p3 widgets (theme-dependent colours, number formatting). */
 window.P3W = window.P3W || (function () {
   var root = document.documentElement;
-  var EN = /^en/i.test(root.getAttribute("lang") || "");
   function hexLum(h) {
     h = (h || "").trim();
     var m = /^#?([0-9a-f]{6})$/i.exec(h);
@@ -31,15 +30,8 @@ window.P3W = window.P3W || (function () {
   if (window.matchMedia) {
     try { window.matchMedia("(prefers-color-scheme: dark)").addEventListener("change", fire); } catch (e) {}
   }
-  function localize(el) {
-    if (!EN) return;
-    el.querySelectorAll("[data-en]").forEach(function (e) { e.textContent = e.getAttribute("data-en"); });
-    if (el.hasAttribute("data-en-label")) el.setAttribute("aria-label", el.getAttribute("data-en-label"));
-    el.querySelectorAll("[data-en-label]").forEach(function (e) { e.setAttribute("aria-label", e.getAttribute("data-en-label")); });
-  }
   function num(x, d) {
-    var s = x.toFixed(d);
-    return EN ? s : s.replace(".", ",");
+    return x.toFixed(d);
   }
   function fitCanvas(cv, ratio) {
     var w = Math.max(280, cv.clientWidth || cv.parentNode.clientWidth || 600);
@@ -53,15 +45,14 @@ window.P3W = window.P3W || (function () {
     ctx.setTransform(dpr, 0, 0, dpr, 0, 0);
     return { ctx: ctx, w: w, h: h };
   }
-  return { EN: EN, pal: pal, onTheme: onTheme, localize: localize, num: num, fitCanvas: fitCanvas };
+  return { pal: pal, onTheme: onTheme, num: num, fitCanvas: fitCanvas };
 })();
 
-/* ===================== Widget 1 : expulsion du flux par un tourbillon ===================== */
+/* ===================== Widget 1: flux expulsion by an eddy ===================== */
 (function () {
   var box = document.getElementById("w-expulsion");
   if (!box) return;
   var W = window.P3W;
-  W.localize(box);
   var cv = box.querySelector("canvas");
   var sl = box.querySelector("input[name=rm]");
   var out = box.querySelector(".rm-val");
@@ -95,7 +86,7 @@ window.P3W = window.P3W || (function () {
       }
     }
   }
-  function step(dt) {                       /* Runge-Kutta SSP d'ordre 3 */
+  function step(dt) {                       /* Runge-Kutta SSP of order 3 */
     var k;
     rhs(a, L); for (k = 0; k < NN; k++) a1[k] = a[k] + dt * L[k];
     rhs(a1, L); for (k = 0; k < NN; k++) a2[k] = 0.75 * a[k] + 0.25 * (a1[k] + dt * L[k]);
@@ -107,7 +98,7 @@ window.P3W = window.P3W || (function () {
     var n = Math.ceil(T / dtmax), dt = T / n;
     for (var s = 0; s < n; s++) step(dt);
   }
-  function value(i, j) {                    /* a = y + a', prolongé périodiquement en x */
+  function value(i, j) {                    /* a = y + a', extended periodically in x */
     var ii = i % N, jj = j % N;
     return j * h + a[jj * N + ii];
   }
@@ -151,7 +142,7 @@ window.P3W = window.P3W || (function () {
       var b2 = bx * bx + by * by; e += b2; if (b2 > bmax) bmax = b2;
     }
     e /= NN;
-    rd.textContent = (W.EN ? "t = " : "t = ") + W.num(t, 1) + "   ·   ⟨|B|²⟩/B₀² = " + W.num(e, 2) +
+    rd.textContent = "t = " + W.num(t, 1) + "   ·   ⟨|B|²⟩/B₀² = " + W.num(e, 2) +
       "   ·   max |B|/B₀ = " + W.num(Math.sqrt(bmax), 1);
   }
   function reset() { a.fill(0); t = 0; draw(); }
@@ -161,7 +152,7 @@ window.P3W = window.P3W || (function () {
   sl.addEventListener("input", function () { setRm(); });
   bPlay.addEventListener("click", function () {
     running = !running;
-    bPlay.textContent = running ? (W.EN ? "Pause" : "Pause") : (W.EN ? "Run" : "Lancer");
+    bPlay.textContent = running ? "Pause" : "Run";
     if (running) loop();
   });
   bReset.addEventListener("click", reset);
@@ -186,12 +177,11 @@ window.P3W = window.P3W || (function () {
   setRm(); reset(); loop();
 })();
 
-/* ===================== Widget 2 : dynamo alpha², modes et seuil ===================== */
+/* ===================== Widget 2: alpha-squared dynamo, modes and threshold ===================== */
 (function () {
   var box = document.getElementById("w-alpha2");
   if (!box) return;
   var W = window.P3W;
-  W.localize(box);
   var svg = box.querySelector("svg"), sl = box.querySelector("input[name=c]"), out = box.querySelector(".c-val");
   var rd = box.querySelector(".widget-readout");
   var NS = "http://www.w3.org/2000/svg";
@@ -219,9 +209,9 @@ window.P3W = window.P3W || (function () {
       el("text", { x: X(n), y: VH - mb + 18, "text-anchor": "middle", "font-size": 12, fill: P.soft }, String(n));
     }
     el("text", { x: (ml + VW - mr) / 2, y: VH - 6, "text-anchor": "middle", "font-size": 12.5, fill: P.ink },
-       W.EN ? "mode index n (wavenumber k = 2πn/L in the periodic box)" : "indice du mode n (nombre d'onde k = 2πn/L dans la boîte périodique)");
+       "mode index n (wavenumber k = 2πn/L in the periodic box)");
     el("text", { x: 14, y: (mt + VH - mb) / 2, "text-anchor": "middle", "font-size": 12.5, fill: P.ink,
-                 transform: "rotate(-90 14 " + ((mt + VH - mb) / 2) + ")" }, W.EN ? "growth rate σ L²/η_T" : "taux σ L²/η_T");
+                 transform: "rotate(-90 14 " + ((mt + VH - mb) / 2) + ")" }, "growth rate σ L²/η_T");
     function curve(f, color, dash) {
       var d = "";
       for (var q = 0; q <= 200; q++) { var nn = xmax * q / 200; d += (q ? "L" : "M") + X(nn).toFixed(1) + " " + Y(f(nn)).toFixed(1); }
@@ -235,17 +225,17 @@ window.P3W = window.P3W || (function () {
       el("rect", { x: X(n) - 5, y: Y(wal(n)) - 5, width: 10, height: 10, fill: P.bg, stroke: P.s2, "stroke-width": 2.2 });
     }
     el("text", { x: VW - mr - 4, y: mt + 14, "text-anchor": "end", "font-size": 12, fill: P.ink },
-       W.EN ? "● periodic box: σ = Ck L − (kL)²" : "● boîte périodique : σ = C kL − (kL)²");
+       "● periodic box: σ = Ck L − (kL)²");
     el("text", { x: VW - mr - 4, y: mt + 32, "text-anchor": "end", "font-size": 12, fill: P.ink },
-       W.EN ? "■ walls B = 0: λₙ = C²/4 − n²π²" : "■ parois B = 0 : λₙ = C²/4 − n²π²");
+       "■ walls B = 0: λₙ = C²/4 − n²π²");
     var best = 1, bs = per(1);
     for (n = 2; n <= 6; n++) if (per(n) > bs) { bs = per(n); best = n; }
     var sat = C > 2 * pi && C < 4 * pi ? C / (2 * pi) - 1 : null;
-    var txt = (W.EN ? "Periodic: " : "Périodique : ") + (bs > 0 ? (W.EN ? "dynamo, fastest mode n = " : "dynamo, mode le plus rapide n = ") + best +
-      " (σ = " + W.num(bs, 1) + ")" : (W.EN ? "no dynamo" : "pas de dynamo")) +
-      "   ·   " + (W.EN ? "Walls: " : "Parois : ") + (wal(1) > 0 ? "λ₁ = " + W.num(wal(1), 1) : (W.EN ? "no dynamo" : "pas de dynamo")) +
-      "   ·   " + (W.EN ? "threshold C = 2π ≈ 6.28 in both cases" : "seuil C = 2π ≈ 6,28 dans les deux cas") +
-      (sat !== null ? "   ·   " + (W.EN ? "saturated ⟨|B|²⟩/B_eq² (α-quenching, n = 1) = " : "⟨|B|²⟩/B_eq² saturé (α-quenching, n = 1) = ") + W.num(sat, 3) : "");
+    var txt = "Periodic: " + (bs > 0 ? "dynamo, fastest mode n = " + best +
+      " (σ = " + W.num(bs, 1) + ")" : "no dynamo") +
+      "   ·   " + "Walls: " + (wal(1) > 0 ? "λ₁ = " + W.num(wal(1), 1) : "no dynamo") +
+      "   ·   " + "threshold C = 2π ≈ 6.28 in both cases" +
+      (sat !== null ? "   ·   " + "saturated ⟨|B|²⟩/B_eq² (α-quenching, n = 1) = " + W.num(sat, 3) : "");
     rd.textContent = txt;
   }
   sl.addEventListener("input", draw);
@@ -253,12 +243,11 @@ window.P3W = window.P3W || (function () {
   draw();
 })();
 
-/* ===================== Widget 3 : modèle de renversements de Gissinger ===================== */
+/* ===================== Widget 3: Gissinger reversal model ===================== */
 (function () {
   var box = document.getElementById("w-gissinger");
   if (!box) return;
   var W = window.P3W;
-  W.localize(box);
   var cv = box.querySelector("canvas");
   var sG = box.querySelector("input[name=gamma]"), sM = box.querySelector("input[name=mu]");
   var oG = box.querySelector(".g-val"), oM = box.querySelector(".mu-val");
@@ -296,7 +285,7 @@ window.P3W = window.P3W || (function () {
     var rw = w - lw - gap - 30, rx = lw + gap + 22;
     var Dm = 3.4;
     ctx.font = "12px system-ui, sans-serif";
-    /* série temporelle de D */
+    /* time series of D */
     ctx.strokeStyle = P.grid; ctx.lineWidth = 1;
     [-2, 0, 2].forEach(function (v) {
       var yy = y0 + ph * (Dm - v) / (2 * Dm);
@@ -311,7 +300,7 @@ window.P3W = window.P3W || (function () {
     }
     ctx.stroke();
     ctx.fillStyle = P.ink; ctx.textAlign = "center";
-    ctx.fillText(W.EN ? "dipole D over the last 1200 time units" : "dipôle D sur les 1200 dernières unités de temps", (x0 + lw) / 2, hh - 8);
+    ctx.fillText("dipole D over the last 1200 time units", (x0 + lw) / 2, hh - 8);
     /* portrait de phase (Q, D) */
     ctx.strokeStyle = P.grid; ctx.strokeRect(rx, y0, rw, ph);
     var Qm = 3.0;
@@ -323,10 +312,10 @@ window.P3W = window.P3W || (function () {
     }
     ctx.stroke(); ctx.globalAlpha = 1;
     ctx.fillStyle = P.ink;
-    ctx.fillText(W.EN ? "phase portrait (Q, D)" : "portrait de phase (Q, D)", rx + rw / 2, hh - 8);
+    ctx.fillText("phase portrait (Q, D)", rx + rw / 2, hh - 8);
     var wait = trev.length > 1 ? (trev[trev.length - 1] - trev[0]) / (trev.length - 1) : null;
-    rd.textContent = "t = " + W.num(t, 0) + "   ·   " + (W.EN ? "reversals: " : "renversements : ") + nrev +
-      (wait ? "   ·   " + (W.EN ? "mean waiting time ≈ " : "attente moyenne ≈ ") + W.num(wait, 0) : "") +
+    rd.textContent = "t = " + W.num(t, 0) + "   ·   " + "reversals: " + nrev +
+      (wait ? "   ·   " + "mean waiting time ≈ " + W.num(wait, 0) : "") +
       "   ·   V = " + W.num(V, 2);
   }
   function params() {
@@ -337,7 +326,7 @@ window.P3W = window.P3W || (function () {
   sM.addEventListener("input", function () { params(); nrev = 0; trev = []; });
   bPlay.addEventListener("click", function () {
     running = !running;
-    bPlay.textContent = running ? "Pause" : (W.EN ? "Run" : "Lancer");
+    bPlay.textContent = running ? "Pause" : "Run";
     if (running) loop();
   });
   bReset.addEventListener("click", function () { reset(); draw(); });

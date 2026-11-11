@@ -1,80 +1,80 @@
 /*
- * leray.js — MilaDy 2027, widget interactif « leray » (FR / EN).
- * Projection de Leray / décomposition de Helmholtz–Hodge sur le tore 2D [0, 2π)².
- * Usage : <div class="widget" data-widget="leray"></div> + <script defer src=".../leray.js"></script>
- * Attributs facultatifs : data-seed (graine initiale, entier ≥ 1, défaut 1), data-alpha (α initial, défaut 0,5).
+ * leray.js — MilaDy 2027, interactive "leray" widget.
+ * Leray projection / Helmholtz–Hodge decomposition on the 2D torus [0, 2π)².
+ * Usage: <div class="widget" data-widget="leray"></div> + <script defer src=".../leray.js"></script>
+ * Optional attributes: data-seed (initial seed, integer ≥ 1, default 1), data-alpha (initial α, default 0.5).
  *
  * ---------------------------------------------------------------------------------------------
- * Formules utilisées (x = (x, y) ∈ [0, 2π)², k ∈ ℤ², k⊥ = (−k_y, k_x), |k| = √(k_x² + k_y²))
+ * Formulas used (x = (x, y) ∈ [0, 2π)², k ∈ ℤ², k⊥ = (−k_y, k_x), |k| = √(k_x² + k_y²))
  *
- * 1. Champ. K = 20 vecteurs d'onde tirés (graine) parmi les 24 vecteurs entiers du demi-plan
- *    {k_x > 0} ∪ {k_x = 0, k_y > 0} tels que 1 ≤ |k| ≤ 4 (un seul représentant de ±k : les
- *    fonctions cos(k·x), sin(k·x), k ∈ K, sont alors deux à deux orthogonales sur le tore).
+ * 1. Field. K = 20 wave vectors drawn (seeded) among the 24 integer vectors of the half-plane
+ *    {k_x > 0} ∪ {k_x = 0, k_y > 0} such that 1 ≤ |k| ≤ 4 (a single representative of ±k: the
+ *    functions cos(k·x), sin(k·x), k ∈ K, are then pairwise orthogonal on the torus).
  *        u(x) = Σ_{k∈K} [ a_k cos(k·x) + b_k sin(k·x) ],   a_k, b_k ∈ ℝ²
- *    (forme réelle de u = Σ û_k e^{ik·x} avec û_k = (a_k − i b_k)/2, û_{−k} = conj(û_k)).
+ *    (real form of u = Σ û_k e^{ik·x} with û_k = (a_k − i b_k)/2, û_{−k} = conj(û_k)).
  *        a_k = s_k k⊥/|k| + α p_k k/|k|,   b_k = t_k k⊥/|k| + α q_k k/|k|,
- *    s_k, t_k, p_k, q_k ~ N(0, σ_k²), σ_k ∝ |k|^(−3/2) (générateur mulberry32 + Box–Muller).
- *    u = v + α ∇φ avec v = u_sol = ∇⊥ψ = (−∂_y ψ, ∂_x ψ), ψ = Σ (s_k sin(k·x) − t_k cos(k·x))/|k|,
- *    et ∇φ = u_grad, φ = Σ (p_k sin(k·x) − q_k cos(k·x))/|k|. Moyenne spatiale nulle (pas de k = 0,
- *    donc pas de partie harmonique : sur le tore, celle-ci serait le champ constant û_0, que P garde).
- *    Normalisation : ⟨|v|²⟩ = ⟨|∇φ|²⟩ = 1, où ⟨f⟩ = (2π)⁻² ∫ f dx.
+ *    s_k, t_k, p_k, q_k ~ N(0, σ_k²), σ_k ∝ |k|^(−3/2) (mulberry32 generator + Box–Muller).
+ *    u = v + α ∇φ with v = u_sol = ∇⊥ψ = (−∂_y ψ, ∂_x ψ), ψ = Σ (s_k sin(k·x) − t_k cos(k·x))/|k|,
+ *    and ∇φ = u_grad, φ = Σ (p_k sin(k·x) − q_k cos(k·x))/|k|. Zero spatial mean (no k = 0,
+ *    hence no harmonic part: on the torus it would be the constant field û_0, which P keeps).
+ *    Normalisation: ⟨|v|²⟩ = ⟨|∇φ|²⟩ = 1, where ⟨f⟩ = (2π)⁻² ∫ f dx.
  *
- * 2. Divergence analytique (∇·[a cos(k·x)] = −(k·a) sin(k·x), ∇·[b sin(k·x)] = (k·b) cos(k·x)) :
+ * 2. Analytic divergence (∇·[a cos(k·x)] = −(k·a) sin(k·x), ∇·[b sin(k·x)] = (k·b) cos(k·x)):
  *        ∇·u(x) = Σ_k [ (k·b_k) cos(k·x) − (k·a_k) sin(k·x) ],
- *    k·a_k = α p_k |k|, k·b_k = α q_k |k| (k·k⊥ = 0) : seule la partie gradient contribue.
- *    Évaluée sur une grille 128 × 128 (fond) par cos(k·x) = cos(k_x x) cos(k_y y) − sin(k_x x) sin(k_y y)
- *    et sin(k·x) = sin(k_x x) cos(k_y y) + cos(k_x x) sin(k_y y). Comme ∇·u est linéaire en α,
- *    max_grille |∇·u| = α D avec D = max_grille |∇·u| à α = 1 (repères sur la barre de couleur) ;
- *    échelle de couleur fixe pour un champ : ±S, S = D/2 = max |∇·u| à α = 0,5, saturée au-delà.
- *    Flèches (grille 16 × 16, centrées sur les centres des cellules) : longueur = |u| / U₉₀ cellule,
- *    U₉₀ = 90e centile de |u| à α = 1 sur la grille (échelle linéaire fixe pour un champ).
+ *    k·a_k = α p_k |k|, k·b_k = α q_k |k| (k·k⊥ = 0): only the gradient part contributes.
+ *    Evaluated on a 128 × 128 grid (background) by cos(k·x) = cos(k_x x) cos(k_y y) − sin(k_x x) sin(k_y y)
+ *    and sin(k·x) = sin(k_x x) cos(k_y y) + cos(k_x x) sin(k_y y). Since ∇·u is linear in α,
+ *    max_grid |∇·u| = α D with D = max_grid |∇·u| at α = 1 (ticks on the colour bar);
+ *    fixed colour scale for a given field: ±S, S = D/2 = max |∇·u| at α = 0.5, saturated beyond.
+ *    Arrows (16 × 16 grid, centred on the cell centres): length = |u| / U₉₀ cells,
+ *    U₉₀ = 90th percentile of |u| at α = 1 on the grid (fixed linear scale for a given field).
  *
- * 3. Projection de Leray (Leray 1934 ; Chorin 1968), mode par mode, exacte (pas de FFT : les
- *    coefficients sont connus) :
- *        P̂_k = I − k kᵀ/|k|²,   û_k ← û_k − k (k·û_k)/|k|²,   appliqué à a_k et à b_k.
- *    Ici P u = v. Transition animée : u_τ = u − τ (I − P) u = P u + (1 − τ)(I − P) u, τ : 0 → 1
- *    (lissage 3τ² − 2τ³ du temps, 0,9 s), puisque P est linéaire.
+ * 3. Leray projection (Leray 1934; Chorin 1968), mode by mode, exact (no FFT: the
+ *    coefficients are known):
+ *        P̂_k = I − k kᵀ/|k|²,   û_k ← û_k − k (k·û_k)/|k|²,   applied to a_k and to b_k.
+ *    Here P u = v. Animated transition: u_τ = u − τ (I − P) u = P u + (1 − τ)(I − P) u, τ: 0 → 1
+ *    (time smoothing 3τ² − 2τ³, 0.9 s), since P is linear.
  *
- * 4. Normes (Parseval sur le tore, K dans un demi-plan) :
+ * 4. Norms (Parseval on the torus, K in a half-plane):
  *        ‖u‖² = ⟨|u|²⟩ = ½ Σ (|a_k|² + |b_k|²),
  *        ‖∇u‖² = ⟨Σ_ij (∂_i u_j)²⟩ = ½ Σ |k|² (|a_k|² + |b_k|²),
  *        ‖∇·u‖² = ⟨(∇·u)²⟩ = ½ Σ [ (k·a_k)² + (k·b_k)² ].
- *    Divergence relative δ = ‖∇·u‖ / ‖∇u‖ ∈ [0, 1] (|k·a| ≤ |k| |a|) : 0 si u est solénoïdal,
- *    1 si u est un gradient pur. Après projection, δ est évaluée sur les coefficients projetés en
- *    virgule flottante (résidu ~ 10⁻¹⁷, zéro à la précision machine).
+ *    Relative divergence δ = ‖∇·u‖ / ‖∇u‖ ∈ [0, 1] (|k·a| ≤ |k| |a|): 0 if u is solenoidal,
+ *    1 if u is a pure gradient. After projection, δ is evaluated on the projected coefficients in
+ *    floating point (residual ~ 10⁻¹⁷, zero to machine precision).
  *
- * 5. Orthogonalité et Pythagore : ⟨v · ∇φ⟩ = ½ Σ (s_k p_k + t_k q_k)(k⊥·k)/|k|² = 0, donc
- *        ‖u‖² = ‖P u‖² + ‖(I − P) u‖²,  ‖P u‖² ≤ ‖u‖²  (P projecteur orthogonal : P² = P, P* = P),
- *    fraction d'énergie retirée f = ‖(I − P) u‖² / ‖u‖² = α² / (1 + α²) avec la normalisation du § 1.
- *    Panneau (b) : coordonnées (‖P u_τ‖, ‖(I − P) u_τ‖) = (‖P u‖, (1 − τ) ‖(I − P) u‖) dans L² = H ⊕ G.
+ * 5. Orthogonality and Pythagoras: ⟨v · ∇φ⟩ = ½ Σ (s_k p_k + t_k q_k)(k⊥·k)/|k|² = 0, hence
+ *        ‖u‖² = ‖P u‖² + ‖(I − P) u‖²,  ‖P u‖² ≤ ‖u‖²  (P orthogonal projector: P² = P, P* = P),
+ *    fraction of energy removed f = ‖(I − P) u‖² / ‖u‖² = α² / (1 + α²) with the normalisation of § 1.
+ *    Panel (b): coordinates (‖P u_τ‖, ‖(I − P) u_τ‖) = (‖P u‖, (1 − τ) ‖(I − P) u‖) in L² = H ⊕ G.
  *
- * 6. Traceurs : dX/dt = u_τ(X), Runge–Kutta 4 à pas ≤ 0,02, repliement périodique ; 32 × 32
- *    particules sur une grille uniforme perturbée, relancées toutes les 4 unités de temps (1 u.t./s) ;
- *    sur une carte de moins de 360 px, une particule sur deux (damier) est dessinée.
- *    Continuité ∂ρ/∂t + ∇·(ρu) = 0, soit Dρ/Dt = −ρ ∇·u : les traceurs s'accumulent là où ∇·u < 0
- *    (puits) ; si ∇·u = 0, le flot préserve les aires (Liouville) et une densité uniforme reste
- *    uniforme. En pause ou avec prefers-reduced-motion : instantané à t = 2 u.t., calculé d'un coup.
+ * 6. Tracers: dX/dt = u_τ(X), Runge–Kutta 4 with step ≤ 0.02, periodic wrapping; 32 × 32
+ *    particles on a perturbed uniform grid, restarted every 4 time units (1 t.u./s);
+ *    on a map narrower than 360 px, one particle out of two (checkerboard) is drawn.
+ *    Continuity ∂ρ/∂t + ∇·(ρu) = 0, i.e. Dρ/Dt = −ρ ∇·u: tracers accumulate where ∇·u < 0
+ *    (sinks); if ∇·u = 0, the flow preserves areas (Liouville) and a uniform density stays
+ *    uniform. Paused or with prefers-reduced-motion: snapshot at t = 2 t.u., computed at once.
  *
- * 7. Domaine borné Ω (non simulé ici) : u = w + ∇φ avec ∇·w = 0, w·n = 0 sur ∂Ω exige de résoudre
- *    Δφ = ∇·u dans Ω, ∂φ/∂n = u·n sur ∂Ω (problème de Neumann), puis P u = u − ∇φ (Chorin 1968 ;
- *    Temam 1977, chap. I). Même opération pour imposer ∇·B = 0 à un champ magnétique
- *    (nettoyage de divergence par projection, Brackbill & Barnes 1980).
+ * 7. Bounded domain Ω (not simulated here): u = w + ∇φ with ∇·w = 0, w·n = 0 on ∂Ω requires solving
+ *    Δφ = ∇·u in Ω, ∂φ/∂n = u·n on ∂Ω (Neumann problem), then P u = u − ∇φ (Chorin 1968;
+ *    Temam 1977, chap. I). Same operation to impose ∇·B = 0 on a magnetic field
+ *    (divergence cleaning by projection, Brackbill & Barnes 1980).
  *
- * Références
- *  - H. von Helmholtz, « Über Integrale der hydrodynamischen Gleichungen, welche den
- *    Wirbelbewegungen entsprechen », J. reine angew. Math. 55, 25–55 (1858).
- *  - J. Leray, « Sur le mouvement d'un liquide visqueux emplissant l'espace », Acta Math. 63,
+ * References
+ *  - H. von Helmholtz, "Über Integrale der hydrodynamischen Gleichungen, welche den
+ *    Wirbelbewegungen entsprechen", J. reine angew. Math. 55, 25–55 (1858).
+ *  - J. Leray, "Sur le mouvement d'un liquide visqueux emplissant l'espace", Acta Math. 63,
  *    193–248 (1934).
- *  - A. J. Chorin, « Numerical solution of the Navier–Stokes equations », Math. Comp. 22,
+ *  - A. J. Chorin, "Numerical solution of the Navier–Stokes equations", Math. Comp. 22,
  *    745–762 (1968).
  *  - R. Temam, Navier–Stokes Equations: Theory and Numerical Analysis, North-Holland (1977).
  *  - A. J. Majda, A. L. Bertozzi, Vorticity and Incompressible Flow, Cambridge Univ. Press (2002).
- *  - J. U. Brackbill, D. C. Barnes, « The effect of nonzero ∇·B on the numerical solution of the
- *    magnetohydrodynamic equations », J. Comput. Phys. 35, 426–430 (1980).
- *  - H. Bhatia, G. Norgard, V. Pascucci, P.-T. Bremer, « The Helmholtz–Hodge decomposition —
- *    a survey », IEEE Trans. Vis. Comput. Graph. 19, 1386–1404 (2013).
- *  - B. Ottosson, « A perceptual color space for image processing » (OKLab, 2020) : interpolation
- *    de la palette divergente.
+ *  - J. U. Brackbill, D. C. Barnes, "The effect of nonzero ∇·B on the numerical solution of the
+ *    magnetohydrodynamic equations", J. Comput. Phys. 35, 426–430 (1980).
+ *  - H. Bhatia, G. Norgard, V. Pascucci, P.-T. Bremer, "The Helmholtz–Hodge decomposition —
+ *    a survey", IEEE Trans. Vis. Comput. Graph. 19, 1386–1404 (2013).
+ *  - B. Ottosson, "A perceptual color space for image processing" (OKLab, 2020): interpolation
+ *    of the diverging palette.
  * ---------------------------------------------------------------------------------------------
  */
 (function () {
@@ -86,142 +86,93 @@
   var TWO_PI = 2 * Math.PI;
   var KMAX = 4, NMODES = 20;
   var SPEC = 1.5;                 // σ_k ∝ |k|^(−SPEC)
-  var NARROW = 16;                // grille des flèches 16 × 16
-  var NIMG = 128;                 // grille de ∇·u (fond)
-  var NTR = 32;                   // 32 × 32 traceurs
+  var NARROW = 16;                // grid of the 16 × 16 arrows
+  var NIMG = 128;                 // ∇·u grid (background)
+  var NTR = 32;                   // 32 × 32 tracers
   var T_CYCLE = 4, T_SNAP = 2, RATE = 1, DT_MAX = 0.02;
-  var TRANS_S = 0.9;              // durée de la transition de projection (s)
+  var TRANS_S = 0.9;              // duration of the projection transition (s)
   var A_DEF = 0.5;
   var PAL_LIGHT = ["#2a78d6", "#eb6834", "#1baf7a", "#eda100"];
   var PAL_DARK = ["#3987e5", "#d95926", "#199e70", "#c98500"];
-  var ZERO_LIGHT = "#d5d9de", ZERO_DARK = "#343a42";   // gris de la palette divergente au zéro
+  var ZERO_LIGHT = "#d5d9de", ZERO_DARK = "#343a42";   // grey of the diverging palette at zero
 
   /* ---------- textes ---------- */
   var TXT = {
-    fr: {
-      title: "Projection de Leray : retirer la partie gradient d'un champ périodique 2D",
-      aName: "α, part compressible (amplitude de la partie gradient)",
-      newField: "Nouveau champ", newTip: "Nouvelle graine : nouveaux coefficients de Fourier aléatoires",
-      project: "Projeter (Leray)", projectTip: "Applique û_k ← û_k − k (k·û_k)/|k|² à chaque mode (bascule)",
-      showGrad: "afficher la partie gradient", tracers: "traceurs",
-      pause: "Pause", play: "Lecture",
-      titleU: "(a) u = v + α∇φ et ∇·u", titlePU: "(a) Pu = v et ∇·(Pu)", titleMid: "(a) projection en cours…",
-      titleB: "(b) Dans L² = H ⊕ G", titleBshort: "(b) L² = H ⊕ G",
-      axH: "H (∇·v = 0)", axG: "G (gradients)",
-      legU: "u affiché", legG: "(I−P)u = α∇φ", legTr: function (t) { return "traceurs, t = " + t; },
-      cbCap: "fond : ∇·u (échelle fixe, saturée au-delà)", cbCapShort: "fond : ∇·u (échelle fixe)", sinks: "puits", sources: "sources",
-      pyth: "‖u‖² = ‖Pu‖² + ‖(I−P)u‖²",
-      canvas: "Panneau (a) : carte de couleur de la divergence du champ affiché sur le domaine périodique " +
-        "[0, 2π)², bleu pour les valeurs négatives, gris au zéro, orange pour les positives, avec les flèches " +
-        "du champ sur une grille 16 × 16. Panneau (b) : triangle rectangle ‖u‖² = ‖Pu‖² + ‖(I−P)u‖² dans " +
-        "l'espace L², somme orthogonale des champs à divergence nulle H et des gradients G.",
-      l1: function (n, a, shown) { return "Graine " + n + " : 20 modes, 1 ≤ |k| ≤ 4 · α = " + a + " · affiché : " + shown; },
-      shownU: "u (non projeté)", shownPU: "Pu (projeté)", shownMid: "transition u → Pu",
-      l2: function (b, a, exact) {
-        return "Divergence relative ‖∇·u‖/‖∇u‖ : avant " + b + " ; après projection " + a +
-          (exact ? " (exact)" : " (zéro à la précision machine)");
-      },
-      l3: function (e, pe, kept, re, rem) {
-        return "Énergie ‖u‖² = " + e + " ; ‖Pu‖² = " + pe + " ≤ ‖u‖² (conservée : " + kept +
-          ") ; retirée ‖(I−P)u‖² = " + re + " (" + rem + ")";
-      },
-      note: "Domaine périodique [0, 2π)², u = v + α∇φ avec v = u_sol (∇·v = 0) et ∇φ = u_grad, " +
-        "20 modes de Fourier aléatoires ; ‖f‖² = ⟨|f|²⟩ (moyenne sur le domaine) et ‖v‖ = ‖∇φ‖ = 1, " +
-        "donc fraction retirée = α²/(1 + α²). P agit mode par mode, û_k ← û_k − k\u00a0(k·û_k)/|k|², " +
-        "exactement et sans FFT puisque les coefficients sont connus ; Pu ne dépend pas de α. " +
-        "Fond : ∇·u, bleu < 0 (puits), orange > 0 (sources), gris = 0 ; échelle fixe pour un champ donné " +
-        "(±S, S = max |∇·u| à α = 0,5, saturée au-delà) ; les repères au-dessus de la barre marquent ±max |∇·u| actuel. " +
-        "Divergence relative : 0 pour un champ solénoïdal, 1 pour un gradient pur. " +
-        "Traceurs : particules advectées par le champ affiché, relancées uniformément toutes les 4 unités de temps ; " +
-        "Dρ/Dt = −ρ\u00a0∇·u les concentre dans les puits, alors qu'après projection l'écoulement conserve les aires " +
-        "et leur densité reste uniforme. " +
-        "En domaine borné, la projection exige de résoudre un problème de Poisson Δφ = ∇·u avec la condition " +
-        "aux limites ∂φ/∂n = u·n, puis Pu = u − ∇φ ; c'est la même opération qui impose ∇·B = 0 " +
-        "à un champ magnétique (nettoyage de divergence)."
+    title: "Leray projection: removing the gradient part of a 2D periodic field",
+    aName: "α, compressible part (amplitude of the gradient part)",
+    newField: "New field", newTip: "New seed: new random Fourier coefficients",
+    project: "Project (Leray)", projectTip: "Applies û_k ← û_k − k (k·û_k)/|k|² to every mode (toggle)",
+    showGrad: "show gradient part", tracers: "tracers",
+    pause: "Pause", play: "Play",
+    titleU: "(a) u = v + α∇φ and ∇·u", titlePU: "(a) Pu = v and ∇·(Pu)", titleMid: "(a) projecting…",
+    titleB: "(b) In L² = H ⊕ G", titleBshort: "(b) L² = H ⊕ G",
+    axH: "H (∇·v = 0)", axG: "G (gradients)",
+    legU: "u shown", legG: "(I−P)u = α∇φ", legTr: function (t) { return "tracers, t = " + t; },
+    cbCap: "background: ∇·u (fixed scale, saturated beyond)", cbCapShort: "background: ∇·u (fixed scale)", sinks: "sinks", sources: "sources",
+    pyth: "‖u‖² = ‖Pu‖² + ‖(I−P)u‖²",
+    canvas: "Panel (a): color map of the divergence of the displayed field on the periodic domain " +
+      "[0, 2π)², blue for negative values, gray at zero, orange for positive ones, with the field arrows " +
+      "on a 16 × 16 grid. Panel (b): right triangle ‖u‖² = ‖Pu‖² + ‖(I−P)u‖² in the space L², " +
+      "orthogonal sum of divergence-free fields H and gradients G.",
+    l1: function (n, a, shown) { return "Seed " + n + ": 20 modes, 1 ≤ |k| ≤ 4 · α = " + a + " · shown: " + shown; },
+    shownU: "u (not projected)", shownPU: "Pu (projected)", shownMid: "transition u → Pu",
+    l2: function (b, a, exact) {
+      return "Relative divergence ‖∇·u‖/‖∇u‖: before " + b + "; after projection " + a +
+        (exact ? " (exact)" : " (zero to machine precision)");
     },
-    en: {
-      title: "Leray projection: removing the gradient part of a 2D periodic field",
-      aName: "α, compressible part (amplitude of the gradient part)",
-      newField: "New field", newTip: "New seed: new random Fourier coefficients",
-      project: "Project (Leray)", projectTip: "Applies û_k ← û_k − k (k·û_k)/|k|² to every mode (toggle)",
-      showGrad: "show gradient part", tracers: "tracers",
-      pause: "Pause", play: "Play",
-      titleU: "(a) u = v + α∇φ and ∇·u", titlePU: "(a) Pu = v and ∇·(Pu)", titleMid: "(a) projecting…",
-      titleB: "(b) In L² = H ⊕ G", titleBshort: "(b) L² = H ⊕ G",
-      axH: "H (∇·v = 0)", axG: "G (gradients)",
-      legU: "u shown", legG: "(I−P)u = α∇φ", legTr: function (t) { return "tracers, t = " + t; },
-      cbCap: "background: ∇·u (fixed scale, saturated beyond)", cbCapShort: "background: ∇·u (fixed scale)", sinks: "sinks", sources: "sources",
-      pyth: "‖u‖² = ‖Pu‖² + ‖(I−P)u‖²",
-      canvas: "Panel (a): color map of the divergence of the displayed field on the periodic domain " +
-        "[0, 2π)², blue for negative values, gray at zero, orange for positive ones, with the field arrows " +
-        "on a 16 × 16 grid. Panel (b): right triangle ‖u‖² = ‖Pu‖² + ‖(I−P)u‖² in the space L², " +
-        "orthogonal sum of divergence-free fields H and gradients G.",
-      l1: function (n, a, shown) { return "Seed " + n + ": 20 modes, 1 ≤ |k| ≤ 4 · α = " + a + " · shown: " + shown; },
-      shownU: "u (not projected)", shownPU: "Pu (projected)", shownMid: "transition u → Pu",
-      l2: function (b, a, exact) {
-        return "Relative divergence ‖∇·u‖/‖∇u‖: before " + b + "; after projection " + a +
-          (exact ? " (exact)" : " (zero to machine precision)");
-      },
-      l3: function (e, pe, kept, re, rem) {
-        return "Energy ‖u‖² = " + e + "; ‖Pu‖² = " + pe + " ≤ ‖u‖² (kept: " + kept +
-          "); removed ‖(I−P)u‖² = " + re + " (" + rem + ")";
-      },
-      note: "Periodic domain [0, 2π)², u = v + α∇φ with v = u_sol (∇·v = 0) and ∇φ = u_grad, " +
-        "20 random Fourier modes; ‖f‖² = ⟨|f|²⟩ (domain average) and ‖v‖ = ‖∇φ‖ = 1, " +
-        "so the removed fraction is α²/(1 + α²). P acts mode by mode, û_k ← û_k − k\u00a0(k·û_k)/|k|², " +
-        "exactly and without an FFT since the coefficients are known; Pu does not depend on α. " +
-        "Background: ∇·u, blue < 0 (sinks), orange > 0 (sources), gray = 0; fixed scale for a given field " +
-        "(±S, S = max |∇·u| at α = 0.5, saturated beyond); the marks above the color bar show ±max |∇·u| now. " +
-        "Relative divergence: 0 for a solenoidal field, 1 for a pure gradient. " +
-        "Tracers: particles advected by the displayed field, reseeded uniformly every 4 time units; " +
-        "Dρ/Dt = −ρ\u00a0∇·u gathers them in the sinks, whereas after projection the flow preserves areas " +
-        "and their density stays uniform. " +
-        "In a bounded domain, the projection requires solving a Poisson problem Δφ = ∇·u with the boundary " +
-        "condition ∂φ/∂n = u·n, then Pu = u − ∇φ; the same operation enforces ∇·B = 0 " +
-        "on a magnetic field (divergence cleaning)."
-    }
+    l3: function (e, pe, kept, re, rem) {
+      return "Energy ‖u‖² = " + e + "; ‖Pu‖² = " + pe + " ≤ ‖u‖² (kept: " + kept +
+        "); removed ‖(I−P)u‖² = " + re + " (" + rem + ")";
+    },
+    note: "Periodic domain [0, 2π)², u = v + α∇φ with v = u_sol (∇·v = 0) and ∇φ = u_grad, " +
+      "20 random Fourier modes; ‖f‖² = ⟨|f|²⟩ (domain average) and ‖v‖ = ‖∇φ‖ = 1, " +
+      "so the removed fraction is α²/(1 + α²). P acts mode by mode, û_k ← û_k − k\u00a0(k·û_k)/|k|², " +
+      "exactly and without an FFT since the coefficients are known; Pu does not depend on α. " +
+      "Background: ∇·u, blue < 0 (sinks), orange > 0 (sources), gray = 0; fixed scale for a given field " +
+      "(±S, S = max |∇·u| at α = 0.5, saturated beyond); the marks above the color bar show ±max |∇·u| now. " +
+      "Relative divergence: 0 for a solenoidal field, 1 for a pure gradient. " +
+      "Tracers: particles advected by the displayed field, reseeded uniformly every 4 time units; " +
+      "Dρ/Dt = −ρ\u00a0∇·u gathers them in the sinks, whereas after projection the flow preserves areas " +
+      "and their density stays uniform. " +
+      "In a bounded domain, the projection requires solving a Poisson problem Δφ = ∇·u with the boundary " +
+      "condition ∂φ/∂n = u·n, then Pu = u − ∇φ; the same operation enforces ∇·B = 0 " +
+      "on a magnetic field (divergence cleaning)."
   };
 
   /* ---------- utilitaires ---------- */
-  function langOf() {
-    return /^en/i.test(document.documentElement.getAttribute("lang") || "") ? "en" : "fr";
-  }
-
   var NF = {};
-  function fmt(lang, x, d) {
-    if (Math.abs(x) < 0.5 * Math.pow(10, -d)) x = 0;   // pas de « −0 »
-    var key = lang + d;
+  function fmt(x, d) {
+    if (Math.abs(x) < 0.5 * Math.pow(10, -d)) x = 0;   // no "−0"
+    var key = d;
     if (!(key in NF)) {
       try {
-        NF[key] = new Intl.NumberFormat(lang === "en" ? "en-US" : "fr-FR",
+        NF[key] = new Intl.NumberFormat("en-US",
           { minimumFractionDigits: d, maximumFractionDigits: d });
       } catch (e) { NF[key] = null; }
     }
     var s;
     if (NF[key]) s = NF[key].format(x);
-    else { s = x.toFixed(d); if (lang === "fr") s = s.replace(".", ","); }
+    else s = x.toFixed(d);
     return s.replace(/-/g, "−");
   }
 
-  function pct(lang, f) { return fmt(lang, 100 * f, 1) + (lang === "fr" ? " %" : "%"); }
+  function pct(f) { return fmt(100 * f, 1) + "%"; }
 
-  // Texte du DOM : pas de coupure de ligne autour de =, ≤, ×, +, − entourés d'espaces, ni après
-  // un « | » ou un « / » collé au signe suivant (U+2060, gluon : « |∇·u| », « ∂φ/∂n ») ;
-  // en français, espace insécable avant « : », fine insécable avant « ; » et « % ».
-  function glue(lang, s) {
+  // DOM text: no line break around =, ≤, ×, +, − surrounded by spaces, nor after
+  // a "|" or "/" stuck to the next sign (U+2060, word joiner: "|∇·u|", "∂φ/∂n").
+  function glue(s) {
     s = s.replace(/ ([=≤×+−]) /g, "\u00a0$1\u00a0").replace(/([|/])(?=[^\s|])/g, "$1\u2060");
-    if (lang === "fr") s = s.replace(/ :/g, "\u00a0:").replace(/ ([;%])/g, "\u202f$1");
     return s;
   }
 
   var SUP = { "0": "⁰", "1": "¹", "2": "²", "3": "³", "4": "⁴", "5": "⁵", "6": "⁶", "7": "⁷", "8": "⁸", "9": "⁹", "-": "⁻" };
-  function fmtSci(lang, x, d) {
+  function fmtSci(x, d) {
     if (x === 0) return "0";
     var e = Math.floor(Math.log(Math.abs(x)) / Math.LN10);
     var m = x / Math.pow(10, e);
     if (Math.abs(m) >= 10 - 0.5 * Math.pow(10, -d)) { m /= 10; e += 1; }
     if (Math.abs(m) < 1) { m *= 10; e -= 1; }
-    return fmt(lang, m, d) + "\u00a0×\u00a010" + String(e).replace(/./g, function (ch) { return SUP[ch] || ch; });
+    return fmt(m, d) + "\u00a0×\u00a010" + String(e).replace(/./g, function (ch) { return SUP[ch] || ch; });
   }
 
   function mk(tag, cls, text) {
@@ -275,7 +226,7 @@
 
   function smooth(x) { return x * x * (3 - 2 * x); }
 
-  /* ----- OKLab (Ottosson 2020) pour la palette divergente ----- */
+  /* ----- OKLab (Ottosson 2020) for the diverging palette ----- */
   function toLin(c) { c /= 255; return c <= 0.04045 ? c / 12.92 : Math.pow((c + 0.055) / 1.055, 2.4); }
   function toSrgb(c) {
     c = c <= 0.0031308 ? 12.92 * c : 1.055 * Math.pow(c, 1 / 2.4) - 0.055;
@@ -299,7 +250,7 @@
       toSrgb(-1.2684380046 * l + 2.6097574011 * m - 0.3413193965 * s),
       toSrgb(-0.0041960863 * l - 0.7034186147 * m + 1.7076147010 * s)];
   }
-  function buildLut(neg, zero, pos) {          // 256 entrées pour t ∈ [−1, 1]
+  function buildLut(neg, zero, pos) {          // 256 entries for t ∈ [−1, 1]
     var A = rgb2lab(parseColor(neg)), Z = rgb2lab(parseColor(zero)), B = rgb2lab(parseColor(pos));
     var lut = new Uint8ClampedArray(256 * 3);
     for (var i = 0; i < 256; i++) {
@@ -334,13 +285,13 @@
     }
     return { c: c, s: s };
   }
-  // fond : centres des pixels ; x_i de gauche à droite, y_r de haut (2π) en bas (0)
+  // background: pixel centres; x_i from left to right, y_r from top (2π) to bottom (0)
   var TIX = trigTable(Array.from({ length: NIMG }, function (_, i) { return (i + 0.5) * TWO_PI / NIMG; }));
   var TIY = trigTable(Array.from({ length: NIMG }, function (_, r) { return TWO_PI - (r + 0.5) * TWO_PI / NIMG; }));
-  // flèches : centres des cellules 16 × 16 (mêmes valeurs en x et en y, y vers le haut)
+  // arrows: centres of the 16 × 16 cells (same values in x and y, y pointing up)
   var TA = trigTable(Array.from({ length: NARROW }, function (_, i) { return (i + 0.5) * TWO_PI / NARROW; }));
 
-  /* ---------- champ ---------- */
+  /* ---------- field ---------- */
   function makeField(seed) {
     var rng = mulberry32(seed * 7919 + 17);
     var idx = CAND.map(function (_, i) { return i; });
@@ -385,7 +336,7 @@
     return C;
   }
 
-  // Leray : û_k ← û_k − k (k·û_k)/|k|²
+  // Leray: û_k ← û_k − k (k·û_k)/|k|²
   function leray(F, C, out) {
     for (var m = 0; m < F.n; m++) {
       var kx = F.kx[m], ky = F.ky[m], k2 = F.k2[m];
@@ -405,7 +356,7 @@
     return out;
   }
 
-  // Parseval : ‖u‖², ‖∇·u‖², ‖∇u‖² (moyennes sur le tore)
+  // Parseval: ‖u‖², ‖∇·u‖², ‖∇u‖² (means over the torus)
   function norms(F, C) {
     var e = 0, ed = 0, eg = 0;
     for (var m = 0; m < F.n; m++) {
@@ -416,7 +367,7 @@
     return { E: e, Ediv: ed, Egrad: eg };
   }
 
-  // évaluation ponctuelle (récurrence de Tchebychev pour cos(m x), sin(m x))
+  // pointwise evaluation (Chebyshev recurrence for cos(m x), sin(m x))
   var CXs = new Float64Array(KMAX + 1), SXs = new Float64Array(KMAX + 1);
   var CYs = new Float64Array(KMAX + 1), SYs = new Float64Array(KMAX + 1);
   function harmonics(x, C, S) {
@@ -442,7 +393,7 @@
     return out;
   }
 
-  // ∇·u sur la grille du fond
+  // ∇·u on the background grid
   function divGrid(F, C, buf) {
     var N = NIMG;
     buf.fill(0);
@@ -462,7 +413,7 @@
     return buf;
   }
 
-  // u sur la grille des flèches (i : x, j : y vers le haut)
+  // u on the arrow grid (i: x, j: y pointing up)
   function arrowGrid(F, C, ux, uy) {
     var N = NARROW;
     ux.fill(0); uy.fill(0);
@@ -490,8 +441,7 @@
   function Widget(el) {
     var self = this;
     this.el = el;
-    this.lang = langOf();
-    var T = this.T = TXT[this.lang];
+    var T = this.T = TXT;
     el.textContent = "";
 
     var seed0 = parseInt(el.getAttribute("data-seed") || "1", 10);
@@ -499,7 +449,7 @@
     var a0 = parseFloat(el.getAttribute("data-alpha"));
     if (!(a0 >= 0 && a0 <= 1)) a0 = A_DEF;
 
-    el.appendChild(mk("p", "widget-title", glue(this.lang, T.title)));
+    el.appendChild(mk("p", "widget-title", glue(T.title)));
     var controls = mk("div", "widget-controls");
     el.appendChild(controls);
 
@@ -559,14 +509,14 @@
     this.rl = [mk("span"), mk("span"), mk("span")];
     this.rl.forEach(function (s) { s.style.display = "block"; ro.appendChild(s); });
     el.appendChild(ro);
-    el.appendChild(mk("p", "widget-note", glue(this.lang, T.note)));
+    el.appendChild(mk("p", "widget-note", glue(T.note)));
 
-    // état
+    // state
     this.alpha = Math.round(a0 * 100) / 100;
     this.showGrad = false;
     this.tracersOn = true;
     this.playing = !reducedMotion();
-    this.target = 0; this.tauLin = 0;           // projection : cible 0/1, avancement linéaire
+    this.target = 0; this.tauLin = 0;           // projection: target 0/1, linear progress
     this.divBuf = new Float32Array(NIMG * NIMG);
     this.gux = new Float64Array(NARROW * NARROW); this.guy = new Float64Array(NARROW * NARROW);
     this.ggx = new Float64Array(NARROW * NARROW); this.ggy = new Float64Array(NARROW * NARROW);
@@ -584,7 +534,7 @@
     this.updateButtons();
     this.resize(true);
 
-    if (window.__LERAY_TEST__) el.__leray = this;   // accès pour les tests uniquement
+    if (window.__LERAY_TEST__) el.__leray = this;   // access for tests only
 
     if (window.ResizeObserver) {
       this.ro = new ResizeObserver(function () {
@@ -599,7 +549,7 @@
     if (window.IntersectionObserver) {
       new IntersectionObserver(function (es) {
         es.forEach(function (e) { self.visible = e.isIntersecting; });
-        if (self.visible) self.ensureLoop();      // relance la boucle au retour à l'écran
+        if (self.visible) self.ensureLoop();      // restarts the loop when back on screen
       }).observe(el);
     }
     if (window.matchMedia) {
@@ -611,7 +561,7 @@
     this.ensureLoop();
   }
 
-  /* ----- thème ----- */
+  /* ----- theme ----- */
   Widget.prototype.readTheme = function () {
     var cs = getComputedStyle(document.documentElement);
     var c = {
@@ -631,18 +581,18 @@
     this.imgKey = null;
   };
 
-  /* ----- champ et coefficients ----- */
+  /* ----- field and coefficients ----- */
   Widget.prototype.setField = function (F) {
     this.F = F;
     var n = F.n;
     this.cU = newCoef(n); this.cP = newCoef(n); this.cG = newCoef(n); this.cCur = newCoef(n);
-    // échelles fixes pour ce champ (indépendantes de α et de τ)
+    // fixed scales for this field (independent of α and τ)
     var c1 = coefU(F, 1, newCoef(n));
     var buf = divGrid(F, c1, new Float32Array(NIMG * NIMG)), D = 0;
     for (var i = 0; i < buf.length; i++) { var a = Math.abs(buf[i]); if (a > D) D = a; }
-    this.Dmax = D || 1;            // max |∇·u| à α = 1
-    this.Sc = 0.5 * this.Dmax;     // échelle de couleur ±S (= max à α = 0,5)
-    // flèches : échelle linéaire fixe pour un champ, U₉₀ (90e centile de |u| à α = 1) ↔ une cellule
+    this.Dmax = D || 1;            // max |∇·u| at α = 1
+    this.Sc = 0.5 * this.Dmax;     // colour scale ±S (= max at α = 0.5)
+    // arrows: fixed linear scale for a given field, U₉₀ (90th percentile of |u| at α = 1) ↔ one cell
     var ux = new Float64Array(NARROW * NARROW), uy = new Float64Array(NARROW * NARROW), mags = [];
     arrowGrid(F, c1, ux, uy);
     for (var j = 0; j < ux.length; j++) mags.push(Math.hypot(ux[j], uy[j]));
@@ -671,13 +621,13 @@
     arrowGrid(this.F, this.cG, this.ggx, this.ggy);
   };
 
-  // échantillon ponctuel [u_x, u_y, ∇·u] de u, P u, (I − P) u ou du champ affiché (tests)
+  // point sample [u_x, u_y, ∇·u] of u, P u, (I − P) u or the displayed field (tests)
   Widget.prototype.sample = function (which, x, y) {
     var C = which === "P" ? this.cP : which === "G" ? this.cG : which === "cur" ? this.cCur : this.cU;
     return evalAt(this.F, C, x, y, [0, 0, 0]);
   };
 
-  /* ----- traceurs ----- */
+  /* ----- tracers ----- */
   Widget.prototype.seedTracers = function () {
     var rng = mulberry32(this.F.seed * 104729 + 3), h = TWO_PI / NTR, k = 0;
     for (var j = 0; j < NTR; j++) {
@@ -708,7 +658,7 @@
     this.tt += T;
   };
 
-  // relance uniforme ; immobile (pause / mouvement réduit) : instantané à t = T_SNAP
+  // uniform restart; still (pause / reduced motion): snapshot at t = T_SNAP
   Widget.prototype.restartTracers = function () {
     this.seedTracers();
     if (this.tracersOn && !this.playing) this.advanceTracers(T_SNAP);
@@ -735,7 +685,7 @@
   Widget.prototype.toggleProjection = function () {
     this.target = this.target ? 0 : 1;
     this.updateButtons();
-    if (!this.playing) {                       // pas d'animation : saut direct
+    if (!this.playing) {                       // no animation: direct jump
       this.tauLin = this.target;
       this.endTransition();
     } else {
@@ -778,7 +728,7 @@
 
   /* ----- boucle d'animation ----- */
   Widget.prototype.needsLoop = function () {
-    // hors écran : seule une transition en cours garde la boucle active
+    // off screen: only a transition in progress keeps the loop active
     return this.tauLin !== this.target || (this.tracersOn && this.playing && this.visible);
   };
 
@@ -815,26 +765,26 @@
   /* ----- lecture ----- */
   Widget.prototype.updateReadout = function () {
     if (!this.normU) return;
-    var T = this.T, lg = this.lang;
+    var T = this.T;
     var nu = this.normU, np = this.normP, ng = this.normG;
     var dBefore = nu.Egrad > 0 ? Math.sqrt(nu.Ediv / nu.Egrad) : 0;
     var dAfter = np.Egrad > 0 ? Math.sqrt(np.Ediv / np.Egrad) : 0;
     var shown = this.tauLin === 0 && this.target === 0 ? T.shownU :
       (this.tauLin === 1 && this.target === 1 ? T.shownPU : T.shownMid);
     var lines = [
-      T.l1(fmt(lg, this.F.seed, 0), fmt(lg, this.alpha, 2), shown),
-      T.l2(fmt(lg, dBefore, 3), dAfter === 0 ? "0" : fmtSci(lg, dAfter, 1), dAfter === 0),
-      T.l3(fmt(lg, nu.E, 3), fmt(lg, np.E, 3), pct(lg, np.E / nu.E), fmt(lg, ng.E, 3), pct(lg, ng.E / nu.E))
+      T.l1(fmt(this.F.seed, 0), fmt(this.alpha, 2), shown),
+      T.l2(fmt(dBefore, 3), dAfter === 0 ? "0" : fmtSci(dAfter, 1), dAfter === 0),
+      T.l3(fmt(nu.E, 3), fmt(np.E, 3), pct(np.E / nu.E), fmt(ng.E, 3), pct(ng.E / nu.E))
     ];
     for (var i = 0; i < 3; i++) {
-      lines[i] = glue(lg, lines[i]);
+      lines[i] = glue(lines[i]);
       if (this.rl[i].textContent !== lines[i]) this.rl[i].textContent = lines[i];
     }
-    this.aOut.textContent = "α\u00a0=\u00a0" + fmt(lg, this.alpha, 2);
-    this.aIn.setAttribute("aria-valuetext", fmt(lg, this.alpha, 2));
+    this.aOut.textContent = "α\u00a0=\u00a0" + fmt(this.alpha, 2);
+    this.aIn.setAttribute("aria-valuetext", fmt(this.alpha, 2));
   };
 
-  /* ----- géométrie ----- */
+  /* ----- geometry ----- */
   Widget.prototype.resize = function (force) {
     var r = this.canvas.getBoundingClientRect();
     var W = Math.floor(r.width || this.el.clientWidth || 600);
@@ -842,7 +792,7 @@
     if (!force && W === this.W && dpr === this.dpr) return;
     this.W = W; this.dpr = dpr;
     var ml = 26, mt = 26, mb = 24, L = {};
-    var CBH = 66;                                   // bloc de la barre de couleur
+    var CBH = 66;                                   // colour bar block
     if (W >= 600) {
       var wr = Math.max(210, Math.min(270, Math.round(W * 0.34)));
       var gap = 22;
@@ -851,10 +801,10 @@
       var H = mt + s + mb;
       L.map = { l: ml, t: mt, s: s };
       var x0 = ml + s + gap;
-      var cbY = H - CBH - 6;                      // marge basse : jambages de « puits (< 0) »
+      var cbY = H - CBH - 6;                      // bottom margin: descenders of "sinks (< 0)"
       L.cb = { x: x0, y: cbY, w: wr };
       L.leg = { x: x0, y: cbY - 62, w: wr, vertical: true };
-      var hb = cbY - 62 - 8;                      // titre + triangle + formules
+      var hb = cbY - 62 - 8;                      // title + triangle + formulas
       L.b = this.layoutB(x0, 0, wr, hb);
       L.H = H;
     } else {
@@ -877,7 +827,7 @@
     this.draw();
   };
 
-  // panneau (b) : titre, triangle (origine O, échelle sc), deux lignes de formules
+  // panel (b): title, triangle (origin O, scale sc), two lines of formulas
   Widget.prototype.layoutB = function (x, y, w, h) {
     var top = 24, bottom = 44, ox = x + 30;
     var sc = Math.min(150, w - 30 - 66, (h - top - bottom - 34) / 1.22);
@@ -891,7 +841,7 @@
     return [
       { kind: "arrow", color: C.ink, text: T.legU, on: true },
       { kind: "arrow", color: C.pal[2], text: T.legG, on: this.showGrad },
-      { kind: "dot", color: C.pal[3], text: T.legTr(fmt(this.lang, Math.min(this.tt, T_CYCLE - 0.05), 1)), on: this.tracersOn }
+      { kind: "dot", color: C.pal[3], text: T.legTr(fmt(Math.min(this.tt, T_CYCLE - 0.05), 1)), on: this.tracersOn }
     ];
   };
 
@@ -905,7 +855,7 @@
     return lines * 18;
   };
 
-  /* ----- dessin ----- */
+  /* ----- drawing ----- */
   Widget.prototype.text = function (s, x, y, align, color, size, weight, halo) {
     var c = this.ctx;
     c.font = (weight || "400") + " " + (size || 12) + "px " + this.C.font;
@@ -926,7 +876,7 @@
     return c.measureText(s).width;
   };
 
-  // flèche simple (légende, panneau b)
+  // simple arrow (legend, panel b)
   Widget.prototype.arrow = function (x0, y0, x1, y1, color, lw, head) {
     var c = this.ctx, dx = x1 - x0, dy = y1 - y0, L = Math.hypot(dx, dy);
     if (L < 1e-6) return;
@@ -979,10 +929,10 @@
     if ("imageSmoothingQuality" in c) c.imageSmoothingQuality = "high";
     c.drawImage(this.img, p.l, p.t, s, s);
 
-    // traceurs
+    // tracers
     if (this.tracersOn) {
       var X = this.tx, Y = this.ty, k = s / TWO_PI, path = new Path2D(), rr = s > 360 ? 1.7 : 1.5;
-      var thin = s < 360;                       // petit écran : un traceur sur deux (damier)
+      var thin = s < 360;                       // small screen: one tracer out of two (checkerboard)
       for (var i = 0; i < X.length; i++) {
         if (thin && ((i + Math.floor(i / NTR)) & 1)) continue;
         var px = p.l + X[i] * k, py = p.t + s - Y[i] * k;
@@ -992,13 +942,13 @@
       c.lineWidth = 0.6; c.strokeStyle = C.dark ? "rgba(0,0,0,0.55)" : "rgba(0,0,0,0.45)"; c.stroke(path);
     }
 
-    // flèches : u_τ (encre) et, en option, (I − P) u (vert)
+    // arrows: u_τ (ink) and, optionally, (I − P) u (green)
     var cell = s / NARROW, scale = cell / this.Uref;
     this.quiver(p, this.gux, this.guy, scale, C.ink, 1.5);
     if (this.showGrad) this.quiver(p, this.ggx, this.ggy, scale, C.pal[2], 1.5);
     c.restore();
 
-    // cadre et axes
+    // frame and axes
     c.lineWidth = 1; c.strokeStyle = C.rule;
     c.strokeRect(Math.round(p.l) + 0.5, Math.round(p.t) + 0.5, Math.round(s), Math.round(s));
     var labs = ["0", "π", "2π"], self = this;
@@ -1035,7 +985,7 @@
         heads.closePath();
       }
     }
-    // halo couleur de fond pour la lisibilité sur la carte
+    // colour halo of the background for legibility on the map
     c.lineCap = "round"; c.lineJoin = "round";
     c.globalAlpha = 0.85; c.strokeStyle = this.C.bg;
     c.lineWidth = lw + 2.2; c.stroke(shafts);
@@ -1068,11 +1018,11 @@
   };
 
   Widget.prototype.drawColorbar = function (p) {
-    var c = this.ctx, C = this.C, lg = this.lang, T = this.T;
+    var c = this.ctx, C = this.C, T = this.T;
     var ext = 9, x0 = p.x + 2 + ext, w = p.w - 4 - 2 * ext, yb = p.y + 24, hb = 12;
     var cap = this.textWidth(T.cbCap, 12, "600") <= p.w ? T.cbCap : T.cbCapShort;
     this.text(cap, p.x, p.y + 12, "left", C.ink, 12, "600");
-    // dégradé à partir de la table de couleurs, embouts triangulaires = saturation au-delà de ±S
+    // gradient from the colour table, triangular tips = saturation beyond ±S
     var lut = C.lut, n = Math.max(2, Math.round(w));
     for (var i = 0; i < n; i++) {
       var li = 3 * Math.round(i / (n - 1) * 255);
@@ -1088,9 +1038,9 @@
     c.beginPath();
     c.moveTo(x0, yb + 0.5); c.lineTo(x0 + w, yb + 0.5); c.lineTo(x0 + w + ext, yb + hb / 2); c.lineTo(x0 + w, yb + hb - 0.5);
     c.lineTo(x0, yb + hb - 0.5); c.lineTo(x0 - ext, yb + hb / 2); c.closePath(); c.stroke();
-    // repères : ±max |∇·u| actuel = ±α (1 − τ) D, bornés aux embouts
+    // marks: current ±max |∇·u| = ±α (1 − τ) D, clamped to the tips
     var cur = this.alpha * (1 - this.tau()) * this.Dmax, xm = x0 + w / 2;
-    var rel = cur / this.Sc, half = rel <= 1 ? w / 2 * rel : w / 2 + 0.6 * ext;   // au-delà : dans l'embout
+    var rel = cur / this.Sc, half = rel <= 1 ? w / 2 * rel : w / 2 + 0.6 * ext;   // beyond: inside the tip
     c.fillStyle = C.ink;
     [xm - half, xm + half].forEach(function (xx) {
       c.beginPath(); c.moveTo(xx, yb - 1); c.lineTo(xx - 4, yb - 7); c.lineTo(xx + 4, yb - 7); c.closePath(); c.fill();
@@ -1098,15 +1048,15 @@
     c.strokeStyle = C.ink; c.lineWidth = 1.5;
     c.beginPath(); c.moveTo(Math.round(xm) + 0.5, yb + hb); c.lineTo(Math.round(xm) + 0.5, yb + hb + 4); c.stroke();
     var S = this.Sc;
-    this.text(fmt(lg, -S, 1), x0 - ext, yb + hb + 15, "left", C.soft, 12);
+    this.text(fmt(-S, 1), x0 - ext, yb + hb + 15, "left", C.soft, 12);
     this.text("0", xm, yb + hb + 15, "center", C.soft, 12);
-    this.text(fmt(lg, S, 1), x0 + w + ext, yb + hb + 15, "right", C.soft, 12);
+    this.text(fmt(S, 1), x0 + w + ext, yb + hb + 15, "right", C.soft, 12);
     this.text(T.sinks + " (< 0)", x0 - ext, yb + hb + 30, "left", C.soft, 11);
     this.text(T.sources + " (> 0)", x0 + w + ext, yb + hb + 30, "right", C.soft, 11);
   };
 
   Widget.prototype.drawB = function (p) {
-    var c = this.ctx, C = this.C, T = this.T, lg = this.lang;
+    var c = this.ctx, C = this.C, T = this.T;
     var tb = this.textWidth(T.titleB, 13, "700") <= p.w ? T.titleB : T.titleBshort;
     this.text(tb, p.x, p.y + 16, "left", C.ink, 13, "700");
     var sc = p.sc, ox = p.ox, oy = p.oy;
@@ -1114,7 +1064,7 @@
     var Qt = (1 - tau) * Q;
     var X = function (v) { return ox + v * sc; }, Y = function (v) { return oy - v * sc; };
 
-    // axes H et G
+    // H and G axes
     this.arrow(ox, oy, X(1.22), oy, C.soft, 1, 7);
     this.arrow(ox, oy, ox, Y(1.22), C.soft, 1, 7);
     this.text(T.axH, X(1.22), oy + 17, "right", C.soft, 12);
@@ -1131,26 +1081,26 @@
       c.strokeStyle = C.soft; c.lineWidth = 1;
       c.beginPath(); c.moveTo(X(P) - r, oy); c.lineTo(X(P) - r, oy - r); c.lineTo(X(P), oy - r); c.stroke();
     }
-    // u d'origine en pointillés quand la projection a commencé
+    // original u dashed once the projection has started
     if (tau > 0.001 && Q * sc > 1) {
       c.setLineDash([5, 4]); c.strokeStyle = C.soft; c.lineWidth = 1.5;
       c.beginPath(); c.moveTo(ox, oy); c.lineTo(X(P), Y(Q)); c.stroke();
       c.setLineDash([]);
     }
-    // P u (série 1) puis u_τ affiché (encre)
+    // P u (series 1) then displayed u_τ (ink)
     this.arrow(ox, oy, X(P), oy, C.pal[0], 4.5, 11);
     this.arrow(ox, oy, X(P), Y(Qt), C.ink, 2, 10);
-    // étiquettes
+    // labels
     this.text("Pu", X(P * 0.3), oy + 17, "center", C.pal[0], 12, "700");
     this.text("u", X(P * 0.5) - 6, Y(Q * 0.5) - 6, "right", C.ink, 12, "700", true);
 
     // Pythagore
     var nu = this.normU, np = this.normP, ng = this.normG;
     this.text(T.pyth, p.x, p.fy, "left", C.ink, 12);
-    this.text(fmt(lg, nu.E, 3) + " = " + fmt(lg, np.E, 3) + " + " + fmt(lg, ng.E, 3), p.x, p.fy + 18, "left", C.soft, 12);
+    this.text(fmt(nu.E, 3) + " = " + fmt(np.E, 3) + " + " + fmt(ng.E, 3), p.x, p.fy + 18, "left", C.soft, 12);
   };
 
-  /* ---------- initialisation et thème ---------- */
+  /* ---------- initialisation and theme ---------- */
   var instances = [];
   function refreshAll() {
     instances.forEach(function (w) { w.readTheme(); w.draw(); });

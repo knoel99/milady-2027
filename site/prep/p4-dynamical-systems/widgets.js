@@ -1,5 +1,4 @@
-/* Schémas interactifs du module p4 (systèmes dynamiques). Textes des canevas en français ou en anglais selon <html lang>.
-   Interactive diagrams of module p4; canvas strings follow <html lang>. */
+/* Interactive diagrams of module p4 (dynamical systems). */
 (function () {
   if (document.getElementById("p4w-style")) return;
   var st = document.createElement("style"); st.id = "p4w-style";
@@ -9,8 +8,7 @@
 window.P4 = window.P4 || (function () {
   var root = document.documentElement;
   function css(el, name, dflt) { var v = getComputedStyle(el).getPropertyValue(name).trim(); return v || dflt; }
-  function lang() { return /^en/i.test(root.getAttribute("lang") || "") ? "en" : "fr"; }
-  function fmt(x, d) { var s = (+x).toFixed(d); return lang() === "fr" ? s.replace(".", ",") : s; }
+  function fmt(x, d) { return (+x).toFixed(d); }
   function setup(canvas, ratio) {
     var dpr = window.devicePixelRatio || 1;
     var w = canvas.clientWidth || 600, h = Math.max(160, Math.round(w * ratio));
@@ -58,13 +56,12 @@ window.P4 = window.P4 || (function () {
   }
   function rng(seed) { var s = seed >>> 0; return function () { s = (s + 0x6D2B79F5) >>> 0; var t = s; t = Math.imul(t ^ (t >>> 15), t | 1); t ^= t + Math.imul(t ^ (t >>> 7), t | 61); return ((t ^ (t >>> 14)) >>> 0) / 4294967296; }; }
   function gauss(u) { var spare = null; return function () { if (spare !== null) { var s = spare; spare = null; return s; } var a = u() || 1e-12, b = u(); var r = Math.sqrt(-2 * Math.log(a)); spare = r * Math.sin(2 * Math.PI * b); return r * Math.cos(2 * Math.PI * b); }; }
-  return { css: css, lang: lang, fmt: fmt, setup: setup, frame: frame, polyline: polyline, clip: clip, onChange: onChange, rng: rng, gauss: gauss, root: root };
+  return { css: css, fmt: fmt, setup: setup, frame: frame, polyline: polyline, clip: clip, onChange: onChange, rng: rng, gauss: gauss, root: root };
 })();
 
 /* ---- w1.html ---- */
 (function () {
   var P = window.P4, box = document.getElementById("w-bif"); if (!P || !box) return;
-  var en = P.lang() === "en";
   var sel = box.querySelector("#wb-forme"), sr = box.querySelector("#wb-r"), sh = box.querySelector("#wb-h");
   var out = box.querySelector("#wb-out"), c1 = box.querySelector("#wb-c1"), c2 = box.querySelector("#wb-c2");
   var F = {
@@ -109,7 +106,7 @@ window.P4 = window.P4 || (function () {
     var xs = [], ys = [], m = 0;
     for (var i = 0; i <= 320; i++) { var x = -XM + 2 * XM * i / 320, y = f(x, r, h); xs.push(x); ys.push(y); m = Math.max(m, Math.abs(y)); }
     var ym = m < 0.5 ? 0.5 : (m < 1 ? 1 : 2);
-    var c = P.setup(c1, 0.75), fr = P.frame(c, [-XM, XM], [-ym, ym], { xt: [-1.5, -1, -0.5, 0, 0.5, 1, 1.5], xd: 1, yt: [-ym, -ym / 2, 0, ym / 2, ym], yd: ym < 1 ? 2 : 1, xl: "x", yl: "ẋ = f(x)", title: en ? "Vector field on the line" : "Champ de vecteurs sur la droite" });
+    var c = P.setup(c1, 0.75), fr = P.frame(c, [-XM, XM], [-ym, ym], { xt: [-1.5, -1, -0.5, 0, 0.5, 1, 1.5], xd: 1, yt: [-ym, -ym / 2, 0, ym / 2, ym], yd: ym < 1 ? 2 : 1, xl: "x", yl: "ẋ = f(x)", title: "Vector field on the line" });
     var ctx = c.ctx; P.clip(ctx, fr);
     ctx.strokeStyle = fr.soft; ctx.lineWidth = 1; ctx.beginPath(); ctx.moveTo(fr.X(-XM), fr.Y(0)); ctx.lineTo(fr.X(XM), fr.Y(0)); ctx.stroke();
     P.polyline(ctx, fr, xs, ys, fr.ink, 2);
@@ -119,9 +116,9 @@ window.P4 = window.P4 || (function () {
       ctx.fillStyle = fr.soft; ctx.beginPath(); ctx.moveTo(px + 6 * d, py); ctx.lineTo(px - 4 * d, py - 5); ctx.lineTo(px - 4 * d, py + 5); ctx.closePath(); ctx.fill();
     }
     var rs = roots(f, r, h), txt = [];
-    rs.forEach(function (x) { var st = fp(x, r, h) < 0; marker(ctx, fr.X(x), fr.Y(0), st, s1, s2, bg); txt.push("x* = " + P.fmt(Math.abs(x) < 5e-4 ? 0 : x, 3) + (st ? " (stable)" : (en ? " (unstable)" : " (instable)"))); });
+    rs.forEach(function (x) { var st = fp(x, r, h) < 0; marker(ctx, fr.X(x), fr.Y(0), st, s1, s2, bg); txt.push("x* = " + P.fmt(Math.abs(x) < 5e-4 ? 0 : x, 3) + (st ? " (stable)" : " (unstable)")); });
     ctx.restore();
-    var c2d = P.setup(c2, 0.75), fd = P.frame(c2d, [-1, 1], [-XM, XM], { xt: [-1, -0.5, 0, 0.5, 1], xd: 1, yt: [-1.5, -1, -0.5, 0, 0.5, 1, 1.5], yd: 1, xl: "r", yl: "x*", title: en ? "Bifurcation diagram" : "Diagramme de bifurcation" });
+    var c2d = P.setup(c2, 0.75), fd = P.frame(c2d, [-1, 1], [-XM, XM], { xt: [-1, -0.5, 0, 0.5, 1], xd: 1, yt: [-1.5, -1, -0.5, 0, 0.5, 1, 1.5], yd: 1, xl: "r", yl: "x*", title: "Bifurcation diagram" });
     var cx = c2d.ctx; P.clip(cx, fd);
     diagram(form, h).forEach(function (p) { cx.fillStyle = p[2] ? s1 : s2; var s = p[2] ? 2.6 : 2.2; cx.fillRect(fd.X(p[0]) - s / 2, fd.Y(p[1]) - s / 2, s, s); });
     cx.strokeStyle = fd.ink; cx.lineWidth = 1.2; cx.setLineDash([5, 4]);
@@ -129,7 +126,7 @@ window.P4 = window.P4 || (function () {
     rs.forEach(function (x) { marker(cx, fd.X(r), fd.Y(x), fp(x, r, h) < 0, s1, s2, bg); });
     cx.restore();
     out.textContent = "r = " + P.fmt(r, 2) + (form === "imp" ? ", h = " + P.fmt(h, 2) : "") + " — " +
-      (txt.length ? txt.join(" ; ") : (en ? "no fixed point" : "aucun point fixe"));
+      (txt.length ? txt.join(" ; ") : "no fixed point");
   }
   [sel, sr, sh].forEach(function (e) { e.addEventListener("input", draw); e.addEventListener("change", draw); });
   P.onChange(draw); draw();
@@ -138,7 +135,6 @@ window.P4 = window.P4 || (function () {
 /* ---- w3.html ---- */
 (function () {
   var P = window.P4, box = document.getElementById("w-kram"); if (!P || !box) return;
-  var en = P.lang() === "en";
   var ss = box.querySelector("#wk-s"), sv = box.querySelector("#wk-sv"), btn = box.querySelector("#wk-run"), out = box.querySelector("#wk-out");
   var c1 = box.querySelector("#wk-c1"), c2 = box.querySelector("#wk-c2");
   var DT = 0.01, T = 10000, NP = 4, SHOW = 800, EVERY = 20, NB = 60, LO = -2.2, HI = 2.2, seed = 11, data = null;
@@ -173,7 +169,7 @@ window.P4 = window.P4 || (function () {
     if (!data) compute();
     var s1 = P.css(box, "--s1", "#2a78d6"), s2 = P.css(box, "--s2", "#eb6834");
     sv.textContent = "σ = " + P.fmt(data.s, 2);
-    var c = P.setup(c1, 0.75), fr = P.frame(c, [0, SHOW], [-2, 2], { xt: [0, 200, 400, 600, 800], yt: [-2, -1, 0, 1, 2], xl: en ? "time t" : "temps t", yl: "x(t)", title: en ? "Sample path" : "Trajectoire" });
+    var c = P.setup(c1, 0.75), fr = P.frame(c, [0, SHOW], [-2, 2], { xt: [0, 200, 400, 600, 800], yt: [-2, -1, 0, 1, 2], xl: "time t", yl: "x(t)", title: "Sample path" });
     var ctx = c.ctx; P.clip(ctx, fr);
     ctx.strokeStyle = s1; ctx.lineWidth = 1; ctx.beginPath();
     for (var i = 0; i < data.path.length; i++) { var px = fr.X(i * EVERY * DT), py = fr.Y(data.path[i]); if (i) ctx.lineTo(px, py); else ctx.moveTo(px, py); }
@@ -183,14 +179,14 @@ window.P4 = window.P4 || (function () {
     var xs = [], ys = [];
     for (var k = 0; k <= 200; k++) { var xx = LO + (HI - LO) * k / 200, rho = Math.exp(-2 * U(xx) / (data.s * data.s)) / data.Z; xs.push(xx); ys.push(rho); ym = Math.max(ym, rho); }
     ym *= 1.1;
-    var c2d = P.setup(c2, 0.75), fh = P.frame(c2d, [LO, HI], [0, ym], { xt: [-2, -1, 0, 1, 2], yt: [0, ym / 2, ym], yd: 2, xl: "x", yl: en ? "density" : "densité", title: en ? "Histogram vs stationary density" : "Histogramme et densité stationnaire" });
+    var c2d = P.setup(c2, 0.75), fh = P.frame(c2d, [LO, HI], [0, ym], { xt: [-2, -1, 0, 1, 2], yt: [0, ym / 2, ym], yd: 2, xl: "x", yl: "density", title: "Histogram vs stationary density" });
     var hx = c2d.ctx; P.clip(hx, fh);
     hx.fillStyle = s1; hx.globalAlpha = 0.55;
     for (var b = 0; b < NB; b++) { var x0 = LO + b * (HI - LO) / NB, x1 = x0 + (HI - LO) / NB; hx.fillRect(fh.X(x0) + 1, fh.Y(data.hist[b]), fh.X(x1) - fh.X(x0) - 2, fh.Y(0) - fh.Y(data.hist[b])); }
     hx.globalAlpha = 1; P.polyline(hx, fh, xs, ys, s2, 2.5); hx.restore();
     var est = data.nsw > 0 ? P.fmt(NP * T / data.nsw, 1) + " (± " + Math.round(100 / Math.sqrt(data.nsw)) + " %)" : "> " + NP * T;
-    out.textContent = (en ? "Switches: " : "Bascules : ") + data.nsw + (en ? " — simulated mean time τ ≈ " : " — temps moyen simulé τ ≈ ") + est +
-      (en ? " ; exact (integral formula) " : " ; exact (formule intégrale) ") + P.fmt(data.tauE, 1) + (en ? " ; Kramers asymptotics " : " ; asymptotique de Kramers ") + P.fmt(data.tauK, 1) + ".";
+    out.textContent = "Switches: " + data.nsw + " — simulated mean time τ ≈ " + est +
+      " ; exact (integral formula) " + P.fmt(data.tauE, 1) + " ; Kramers asymptotics " + P.fmt(data.tauK, 1) + ".";
   }
   var timer = null;
   ss.addEventListener("input", function () { sv.textContent = "σ = " + P.fmt(+ss.value, 2); clearTimeout(timer); timer = setTimeout(function () { compute(); draw(); }, 60); });
@@ -201,7 +197,6 @@ window.P4 = window.P4 || (function () {
 /* ---- w2.html ---- */
 (function () {
   var P = window.P4, box = document.getElementById("w-giss"); if (!P || !box) return;
-  var en = P.lang() === "en";
   var sg = box.querySelector("#wg-gamma"), gv = box.querySelector("#wg-g"), btn = box.querySelector("#wg-run"), out = box.querySelector("#wg-out");
   var c1 = box.querySelector("#wg-c1"), c2 = box.querySelector("#wg-c2"), c3 = box.querySelector("#wg-c3");
   var MU = 0.119, NU = 0.1, DT = 0.02, NTR = 30000, NK = 100000, EVERY = 10, seed = 7, data = null;
@@ -236,7 +231,7 @@ window.P4 = window.P4 || (function () {
     var s = [P.css(box, "--s1", "#2a78d6"), P.css(box, "--s2", "#eb6834")];
     gv.textContent = "Γ = " + P.fmt(data.G, 3);
     var c = P.setup(c1, 0.3), n = data.tr[0].D.length, T = n * EVERY * DT;
-    var fr = P.frame(c, [0, T], [-3.5, 3.5], { xt: [0, 500, 1000, 1500, 2000], yt: [-3, -2, -1, 0, 1, 2, 3], xl: en ? "time t" : "temps t", yl: "D", title: en ? "Dipole D(t)" : "Dipôle D(t)" });
+    var fr = P.frame(c, [0, T], [-3.5, 3.5], { xt: [0, 500, 1000, 1500, 2000], yt: [-3, -2, -1, 0, 1, 2, 3], xl: "time t", yl: "D", title: "Dipole D(t)" });
     var ctx = c.ctx; P.clip(ctx, fr);
     data.tr.forEach(function (tr, j) {
       ctx.strokeStyle = s[j]; ctx.lineWidth = 1; ctx.globalAlpha = 0.85; ctx.beginPath();
@@ -244,7 +239,7 @@ window.P4 = window.P4 || (function () {
       ctx.stroke(); ctx.globalAlpha = 1;
     });
     ctx.restore();
-    var cp = P.setup(c2, 0.8), fp = P.frame(cp, [-3, 3], [-3.5, 3.5], { xt: [-3, -2, -1, 0, 1, 2, 3], yt: [-3, -2, -1, 0, 1, 2, 3], xl: "Q", yl: "D", title: en ? "Projection on (Q, D)" : "Projection sur (Q, D)" });
+    var cp = P.setup(c2, 0.8), fp = P.frame(cp, [-3, 3], [-3.5, 3.5], { xt: [-3, -2, -1, 0, 1, 2, 3], yt: [-3, -2, -1, 0, 1, 2, 3], xl: "Q", yl: "D", title: "Projection on (Q, D)" });
     var cx = cp.ctx; P.clip(cx, fp);
     data.tr.forEach(function (tr, j) { cx.fillStyle = s[j]; cx.globalAlpha = 0.5; for (var i = 0; i < n; i += 2) cx.fillRect(fp.X(tr.Q[i]) - 0.8, fp.Y(tr.D[i]) - 0.8, 1.6, 1.6); cx.globalAlpha = 1; });
     cx.restore();
@@ -253,7 +248,7 @@ window.P4 = window.P4 || (function () {
       return h.map(function (x) { return x / (n * (hi - lo) / nb); });
     });
     var ymax = Math.max.apply(null, hs[0].concat(hs[1])) * 1.1 || 1;
-    var ch = P.setup(c3, 0.8), fh = P.frame(ch, [lo, hi], [0, ymax], { xt: [-3, -2, -1, 0, 1, 2, 3], yt: [0, ymax / 2, ymax], yd: 2, xl: "D", yl: en ? "density" : "densité", title: en ? "Histogram of D" : "Histogramme de D" });
+    var ch = P.setup(c3, 0.8), fh = P.frame(ch, [lo, hi], [0, ymax], { xt: [-3, -2, -1, 0, 1, 2, 3], yt: [0, ymax / 2, ymax], yd: 2, xl: "D", yl: "density", title: "Histogram of D" });
     var hx = ch.ctx; P.clip(hx, fh);
     hs.forEach(function (h, j) {
       hx.strokeStyle = s[j]; hx.lineWidth = 2; hx.beginPath(); hx.moveTo(fh.X(lo), fh.Y(0));
@@ -262,11 +257,11 @@ window.P4 = window.P4 || (function () {
     });
     hx.restore();
     var tot = data.tr[0].cross + data.tr[1].cross, dur = NK * DT;
-    var msg = (en ? "Zero crossings of D: " : "Passages de D par zéro : ") + data.tr[0].cross + " + " + data.tr[1].cross +
-      (en ? " (rate " : " (taux ") + P.fmt(tot / (2 * dur), 4) + (en ? " per unit time); time fraction with D > 0: " : " par unité de temps) ; fraction du temps avec D > 0 : ") +
-      P.fmt(data.tr[0].pos, 2) + (en ? " and " : " et ") + P.fmt(data.tr[1].pos, 2) + ". ";
-    msg += tot === 0 ? (en ? "Two separate symmetric attractors: no reversal." : "Deux attracteurs symétriques séparés : aucun renversement.")
-                     : (en ? "The attractors have merged: chaotic reversals." : "Les attracteurs ont fusionné : renversements chaotiques.");
+    var msg = "Zero crossings of D: " + data.tr[0].cross + " + " + data.tr[1].cross +
+      " (rate " + P.fmt(tot / (2 * dur), 4) + " per unit time); time fraction with D > 0: " +
+      P.fmt(data.tr[0].pos, 2) + " and " + P.fmt(data.tr[1].pos, 2) + ". ";
+    msg += tot === 0 ? "Two separate symmetric attractors: no reversal."
+                     : "The attractors have merged: chaotic reversals.";
     out.textContent = msg;
   }
   var timer = null;

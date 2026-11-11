@@ -388,17 +388,17 @@ The measured slopes, $0.50$ and $0.49$, confirm proposition 2.6. The transient m
 The following interactive diagram solves the same equation in your browser (third-order finite differences on a $128^2$ grid, which gives values within a few percent of those of the spectral code). Vary $Rm$: at small $Rm$, the lines are barely deformed; at large $Rm$, watch the winding, the transient peak of $\langle|\mathbf{B}|^2\rangle$, then the expulsion.
 
 ```{=html}
-<div class="widget" id="w-expulsion" role="group" aria-label="Expulsion du flux magnétique par un écoulement cellulaire" data-en-label="Magnetic flux expulsion by a cellular flow">
-  <p class="widget-title" data-en="Interactive: flux expulsion by a cellular flow">Interactif : expulsion du flux par un écoulement cellulaire</p>
+<div class="widget" id="w-expulsion" role="group" aria-label="Magnetic flux expulsion by a cellular flow">
+  <p class="widget-title">Interactive: flux expulsion by a cellular flow</p>
   <div class="widget-controls">
-    <label><span data-en="Magnetic Reynolds number Rm">Nombre de Reynolds magnétique Rm</span>
+    <label><span>Magnetic Reynolds number Rm</span>
       <input type="range" name="rm" min="1" max="2.5" step="0.01" value="1.6"> <output class="rm-val">40</output></label>
     <button type="button" class="play">Pause</button>
-    <button type="button" class="reset" data-en="Restart">Recommencer</button>
+    <button type="button" class="reset">Restart</button>
   </div>
-  <canvas style="max-width:520px;margin:0 auto" aria-label="Lignes de champ magnétique dans quatre tourbillons" data-en-label="Magnetic field lines in four eddies"></canvas>
+  <canvas style="max-width:520px;margin:0 auto" aria-label="Magnetic field lines in four eddies"></canvas>
   <p class="widget-readout" aria-live="off"></p>
-  <p class="widget-note" data-en="Blue: field lines (contours of a = y + a'). Grey: streamlines of ψ = sin x sin y. The mean horizontal flux is imposed (B₀ = 1). The simulation stops at t = 400.">En bleu : lignes de champ (iso-valeurs de a = y + a'). En gris : lignes de courant de ψ = sin x sin y. Le flux horizontal moyen est imposé (B₀ = 1). La simulation s'arrête à t = 400.</p>
+  <p class="widget-note">Blue: field lines (contours of a = y + a'). Grey: streamlines of ψ = sin x sin y. The mean horizontal flux is imposed (B₀ = 1). The simulation stops at t = 400.</p>
 </div>
 ```
 
@@ -1031,15 +1031,15 @@ The numerical threshold, $6.2837$, coincides with $2\pi$ to within $10^{-4}$ (th
 The following interactive diagram plots the dispersion relation for both geometries. Vary $C$: in the periodic box, the most unstable mode moves from $n = 1$ to $n = 2$ and beyond as $C$ increases; between walls, it is always $n = 1$.
 
 ```{=html}
-<div class="widget" id="w-alpha2" role="group" aria-label="Dynamo alpha carré : modes et seuil" data-en-label="Alpha-squared dynamo: modes and threshold">
-  <p class="widget-title" data-en="Interactive: α² dynamo, modes and threshold">Interactif : dynamo α², modes et seuil</p>
+<div class="widget" id="w-alpha2" role="group" aria-label="Alpha-squared dynamo: modes and threshold">
+  <p class="widget-title">Interactive: α² dynamo, modes and threshold</p>
   <div class="widget-controls">
-    <label><span data-en="Dynamo number C = |α|L/η_T">Nombre dynamo C = |α|L/η_T</span>
+    <label><span>Dynamo number C = |α|L/η_T</span>
       <input type="range" name="c" min="0" max="16" step="0.05" value="8"> <output class="c-val">8</output></label>
   </div>
-  <svg role="img" aria-label="Taux de croissance des modes en fonction de leur indice" data-en-label="Growth rate of the modes versus their index"></svg>
+  <svg role="img" aria-label="Growth rate of the modes versus their index"></svg>
   <p class="widget-readout"></p>
-  <p class="widget-note" data-en="Circles: periodic box, σ = C kL − (kL)² at kL = 2πn. Squares: walls with B = 0, λₙ = C²/4 − n²π². Growth rates in units of η_T/L².">Cercles : boîte périodique, σ = C kL − (kL)² en kL = 2πn. Carrés : parois avec B = 0, λₙ = C²/4 − n²π². Taux en unités de η_T/L².</p>
+  <p class="widget-note">Circles: periodic box, σ = C kL − (kL)² at kL = 2πn. Squares: walls with B = 0, λₙ = C²/4 − n²π². Growth rates in units of η_T/L².</p>
 </div>
 ```
 
@@ -1328,17 +1328,17 @@ The eigenvalues of $O$ have a positive real part ($0.0095$) and an imaginary par
 The following interactive diagram integrates the model live. Vary $\Gamma$ around $0.86$–$0.87$, then $\mu$ around the crisis $\mu_c \approx 0.1193$ at $\Gamma = 0.9$: on the right, the $(Q, D)$ phase portrait shows the two symmetric attractors, separate or connected.
 
 ```{=html}
-<div class="widget" id="w-gissinger" role="group" aria-label="Modèle de renversements de Gissinger" data-en-label="Gissinger reversal model">
-  <p class="widget-title" data-en="Interactive: chaotic reversals in the Gissinger model">Interactif : renversements chaotiques du modèle de Gissinger</p>
+<div class="widget" id="w-gissinger" role="group" aria-label="Gissinger reversal model">
+  <p class="widget-title">Interactive: chaotic reversals in the Gissinger model</p>
   <div class="widget-controls">
-    <label>Γ <input type="range" name="gamma" min="0.80" max="1.00" step="0.005" value="0.90"> <output class="g-val">0,900</output></label>
-    <label>μ <input type="range" name="mu" min="0.100" max="0.140" step="0.0005" value="0.119"> <output class="mu-val">0,119</output></label>
+    <label>Γ <input type="range" name="gamma" min="0.80" max="1.00" step="0.005" value="0.90"> <output class="g-val">0.900</output></label>
+    <label>μ <input type="range" name="mu" min="0.100" max="0.140" step="0.0005" value="0.119"> <output class="mu-val">0.119</output></label>
     <button type="button" class="play">Pause</button>
-    <button type="button" class="reset" data-en="New initial condition">Nouvelle condition initiale</button>
+    <button type="button" class="reset">New initial condition</button>
   </div>
-  <canvas aria-label="Série temporelle du dipôle et portrait de phase" data-en-label="Time series of the dipole and phase portrait"></canvas>
+  <canvas aria-label="Time series of the dipole and phase portrait"></canvas>
   <p class="widget-readout"></p>
-  <p class="widget-note" data-en="ν = 0.1 is fixed. A reversal is counted when D goes from above 0.5 to below −0.5 (or the reverse), after a transient of 200 time units. Changing a parameter resets the counter.">ν = 0,1 est fixé. Un renversement est compté quand D passe de plus de 0,5 à moins de −0,5 (ou l'inverse), après un transitoire de 200 unités de temps. Changer un paramètre remet le compteur à zéro.</p>
+  <p class="widget-note">ν = 0.1 is fixed. A reversal is counted when D goes from above 0.5 to below −0.5 (or the reverse), after a transient of 200 time units. Changing a parameter resets the counter.</p>
 </div>
 ```
 

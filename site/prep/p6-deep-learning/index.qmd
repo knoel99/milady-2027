@@ -224,22 +224,20 @@ Kingma and Ba (2015, section 2.1) bound the size of the effective step $\Delta_k
 
 ```{=html}
 <div class="widget" id="p6w-opt">
-  <p class="widget-title" data-fr="Schéma interactif 1 — Trois optimiseurs dans une vallée étroite" data-en="Interactive diagram 1 — Three optimisers in a narrow valley"></p>
+  <p class="widget-title">Interactive diagram 1 — Three optimisers in a narrow valley</p>
   <div class="widget-controls">
-    <label><span data-fr="conditionnement κ" data-en="condition number κ"></span> <input type="range" id="p6w-opt-k" min="0" max="2.5" step="0.05" value="1.5"> <span class="widget-readout" id="p6w-opt-kv"></span></label>
-    <label><span data-fr="pas η·L (GD, momentum)" data-en="step η·L (GD, momentum)"></span> <input type="range" id="p6w-opt-eta" min="0.05" max="2.2" step="0.05" value="1"> <span class="widget-readout" id="p6w-opt-etav"></span></label>
-    <label><span data-fr="pas Adam" data-en="Adam step"></span> <input type="range" id="p6w-opt-adam" min="0.01" max="0.5" step="0.01" value="0.15"> <span class="widget-readout" id="p6w-opt-adamv"></span></label>
-    <label><input type="checkbox" id="p6w-opt-rot"> <span data-fr="vallée tournée de 35°" data-en="valley rotated by 35°"></span></label>
+    <label><span>condition number κ</span> <input type="range" id="p6w-opt-k" min="0" max="2.5" step="0.05" value="1.5"> <span class="widget-readout" id="p6w-opt-kv"></span></label>
+    <label><span>step η·L (GD, momentum)</span> <input type="range" id="p6w-opt-eta" min="0.05" max="2.2" step="0.05" value="1"> <span class="widget-readout" id="p6w-opt-etav"></span></label>
+    <label><span>Adam step</span> <input type="range" id="p6w-opt-adam" min="0.01" max="0.5" step="0.01" value="0.15"> <span class="widget-readout" id="p6w-opt-adamv"></span></label>
+    <label><input type="checkbox" id="p6w-opt-rot"> <span>valley rotated by 35°</span></label>
   </div>
-  <svg id="p6w-opt-svg" viewBox="0 0 640 400" role="img" aria-label="trajectoires d'optimisation / optimisation trajectories"></svg>
+  <svg id="p6w-opt-svg" viewBox="0 0 640 400" role="img" aria-label="optimisation trajectories"></svg>
   <p class="widget-readout" id="p6w-opt-out"></p>
-  <p class="widget-note" data-fr="Fonction F(θ) = ½(u² + κ v²), où (u, v) sont les coordonnées de θ dans les axes de la vallée ; départ en (−2,5 ; 2), 60 pas. Bleu : descente de gradient ; ambre : momentum β = 0,9 ; vert : Adam. Au-delà de η·L = 2, la descente de gradient diverge dans la direction raide." data-en="F(θ) = ½(u² + κ v²), where (u, v) are the coordinates of θ in the valley axes; start at (−2.5, 2), 60 steps. Blue: gradient descent; amber: momentum β = 0.9; green: Adam. Beyond η·L = 2, gradient descent diverges along the steep direction."></p>
+  <p class="widget-note">F(θ) = ½(u² + κ v²), where (u, v) are the coordinates of θ in the valley axes; start at (−2.5, 2), 60 steps. Blue: gradient descent; amber: momentum β = 0.9; green: Adam. Beyond η·L = 2, gradient descent diverges along the steep direction.</p>
 </div>
 <script>
 (function () {
-  var EN = /^en/i.test(document.documentElement.lang || "");
   var root = document.getElementById("p6w-opt");
-  root.querySelectorAll("[data-fr]").forEach(function (e) { e.textContent = e.getAttribute(EN ? "data-en" : "data-fr"); });
   var NS = "http://www.w3.org/2000/svg", svg = document.getElementById("p6w-opt-svg");
   var W = 640, H = 400, sc = (H / 2 - 10) / 3.2;
   function X(a) { return W / 2 + a * sc; }
@@ -277,17 +275,17 @@ Kingma and Ba (2015, section 2.1) bound the size of the effective step $\Delta_k
       svg.appendChild(mk("ellipse", { cx: X(0), cy: Y(0), rx: a * sc, ry: b * sc, transform: "rotate(" + (-rot * 180 / Math.PI) + " " + X(0) + " " + Y(0) + ")" }, "fill:none;stroke:var(--hair);stroke-width:1"));
     });
     svg.appendChild(mk("circle", { cx: X(0), cy: Y(0), r: 4 }, "fill:var(--ink)"));
-    var cols = ["var(--def-bar)", "var(--thm-bar)", "var(--ex-bar)"], names = EN ? ["GD", "momentum", "Adam"] : ["GD", "momentum", "Adam"], out = [];
+    var cols = ["var(--def-bar)", "var(--thm-bar)", "var(--ex-bar)"], names = ["GD", "momentum", "Adam"], out = [];
     runs.forEach(function (tr, r) {
       var pts = [], diverged = false;
       tr.forEach(function (q) { if (!isFinite(q[0]) || Math.abs(q[0]) > 50 || Math.abs(q[1]) > 50) diverged = true; if (!diverged) pts.push(X(Math.max(-20, Math.min(20, q[0]))).toFixed(1) + "," + Y(Math.max(-20, Math.min(20, q[1]))).toFixed(1)); });
       svg.appendChild(mk("polyline", { points: pts.join(" ") }, "fill:none;stroke-width:2;stroke:" + cols[r]));
       pts.forEach(function (q, t) { if (t % 3 === 0) { var xy = q.split(","); svg.appendChild(mk("circle", { cx: xy[0], cy: xy[1], r: 2.6 }, "fill:" + cols[r])); } });
       var fl = F(tr[tr.length - 1]);
-      out.push(names[r] + " : F = " + (diverged || !isFinite(fl) ? (EN ? "diverges" : "diverge") : fl.toExponential(1)));
+      out.push(names[r] + " : F = " + (diverged || !isFinite(fl) ? "diverges" : fl.toExponential(1)));
     });
     svg.appendChild(mk("circle", { cx: X(p0[0]), cy: Y(p0[1]), r: 5 }, "fill:none;stroke:var(--ink);stroke-width:2"));
-    document.getElementById("p6w-opt-out").textContent = (EN ? "After 60 steps — " : "Après 60 pas — ") + out.join(" · ");
+    document.getElementById("p6w-opt-out").textContent = "After 60 steps — " + out.join(" · ");
   }
   root.querySelectorAll("input").forEach(function (e) { e.addEventListener("input", draw); });
   draw();
@@ -749,21 +747,19 @@ In a periodic box (forced 2D MHD of experiment E2, ABC dynamo of experiment E3),
 
 ```{=html}
 <div class="widget" id="p6w-conv">
-  <p class="widget-title" data-fr="Schéma interactif 2 — Convolution, translation et bord" data-en="Interactive diagram 2 — Convolution, shift and boundary"></p>
+  <p class="widget-title">Interactive diagram 2 — Convolution, shift and boundary</p>
   <div class="widget-controls">
-    <label><span data-fr="translation s" data-en="shift s"></span> <input type="range" id="p6w-conv-s" min="0" max="31" step="1" value="5"> <span class="widget-readout" id="p6w-conv-sv"></span></label>
-    <label><span data-fr="noyau" data-en="kernel"></span> <select id="p6w-conv-k"><option value="lap" data-fr="laplacien (1, −2, 1)" data-en="Laplacian (1, −2, 1)"></option><option value="der" data-fr="dérivée (−1, 0, 1)/2" data-en="derivative (−1, 0, 1)/2"></option><option value="avg" data-fr="lissage (1, 4, 6, 4, 1)/16" data-en="smoothing (1, 4, 6, 4, 1)/16"></option></select></label>
-    <label><span data-fr="padding" data-en="padding"></span> <select id="p6w-conv-p"><option value="circ" data-fr="circulaire" data-en="circular"></option><option value="zero" data-fr="zéros" data-en="zeros"></option></select></label>
+    <label><span>shift s</span> <input type="range" id="p6w-conv-s" min="0" max="31" step="1" value="5"> <span class="widget-readout" id="p6w-conv-sv"></span></label>
+    <label><span>kernel</span> <select id="p6w-conv-k"><option value="lap">Laplacian (1, −2, 1)</option><option value="der">derivative (−1, 0, 1)/2</option><option value="avg">smoothing (1, 4, 6, 4, 1)/16</option></select></label>
+    <label><span>padding</span> <select id="p6w-conv-p"><option value="circ">circular</option><option value="zero">zeros</option></select></label>
   </div>
-  <svg id="p6w-conv-svg" viewBox="0 0 640 330" role="img" aria-label="convolution et translation / convolution and shift"></svg>
+  <svg id="p6w-conv-svg" viewBox="0 0 640 330" role="img" aria-label="convolution and shift"></svg>
   <p class="widget-readout" id="p6w-conv-out"></p>
-  <p class="widget-note" data-fr="En haut : signal x (32 points) et sa translation Tₛx. En bas : Φ(Tₛx) en bleu et Tₛ Φ(x) en ambre (tirets) ; les points rouges marquent les indices où ils diffèrent. Avec le padding circulaire, les deux courbes coïncident toujours." data-en="Top: signal x (32 points) and its shift Tₛx. Bottom: Φ(Tₛx) in blue and Tₛ Φ(x) in amber (dashed); red dots mark indices where they differ. With circular padding, the two curves always coincide."></p>
+  <p class="widget-note">Top: signal x (32 points) and its shift Tₛx. Bottom: Φ(Tₛx) in blue and Tₛ Φ(x) in amber (dashed); red dots mark indices where they differ. With circular padding, the two curves always coincide.</p>
 </div>
 <script>
 (function () {
-  var EN = /^en/i.test(document.documentElement.lang || "");
   var root = document.getElementById("p6w-conv");
-  root.querySelectorAll("[data-fr]").forEach(function (e) { e.textContent = e.getAttribute(EN ? "data-en" : "data-fr"); });
   var NS = "http://www.w3.org/2000/svg", svg = document.getElementById("p6w-conv-svg"), N = 32;
   var x = []; for (var i = 0; i < N; i++) x.push(Math.exp(-Math.pow((i - 6) / 2.2, 2)) - 0.7 * Math.exp(-Math.pow((i - 20) / 1.5, 2)) + 0.25 * Math.sin(2 * Math.PI * i / N));
   var K = { lap: [1, -2, 1], der: [-0.5, 0, 0.5], avg: [1 / 16, 4 / 16, 6 / 16, 4 / 16, 1 / 16] };
@@ -790,12 +786,12 @@ In a periodic box (forced 2D MHD of experiment E2, ABC dynamo of experiment E3),
     document.getElementById("p6w-conv-sv").textContent = s;
     while (svg.firstChild) svg.removeChild(svg.firstChild);
     var xs = shift(x, s);
-    panel(5, 130, [{ v: x, c: "var(--hair)" }, { v: xs, c: "var(--ink)" }], EN ? "x (grey) and Tₛx (black)" : "x (gris) et Tₛx (noir)");
+    panel(5, 130, [{ v: x, c: "var(--hair)" }, { v: xs, c: "var(--ink)" }], "x (grey) and Tₛx (black)");
     var a = conv(xs, k, circ), b = shift(conv(x, k, circ), s);
-    var P = panel(170, 150, [{ v: a, c: "var(--def-bar)" }, { v: b, c: "var(--thm-bar)", dash: true }], EN ? "Φ(Tₛx) and Tₛ Φ(x)" : "Φ(Tₛx) et Tₛ Φ(x)");
+    var P = panel(170, 150, [{ v: a, c: "var(--def-bar)" }, { v: b, c: "var(--thm-bar)", dash: true }], "Φ(Tₛx) and Tₛ Φ(x)");
     var bad = [], err = 0;
     for (var i = 0; i < N; i++) { var d = Math.abs(a[i] - b[i]); err = Math.max(err, d); if (d > 1e-12) { bad.push(i); svg.appendChild(mk("circle", { cx: P.X(i), cy: P.Y(a[i]), r: 5 }, "fill:none;stroke:var(--key-bar);stroke-width:2.5")); } }
-    document.getElementById("p6w-conv-out").textContent = (EN ? "max |Φ(Tₛx) − Tₛ Φ(x)| = " : "max |Φ(Tₛx) − Tₛ Φ(x)| = ") + err.toExponential(1) + (bad.length ? (EN ? " — wrong indices: " : " — indices faux : ") + bad.join(", ") : (EN ? " — exactly equivariant" : " — équivariance exacte"));
+    document.getElementById("p6w-conv-out").textContent = "max |Φ(Tₛx) − Tₛ Φ(x)| = " + err.toExponential(1) + (bad.length ? " — wrong indices: " + bad.join(", ") : " — exactly equivariant");
   }
   root.querySelectorAll("input, select").forEach(function (e) { e.addEventListener("input", draw); e.addEventListener("change", draw); });
   draw();
@@ -1062,21 +1058,19 @@ The following interactive diagram reduces this mechanism to one dimension. Ten t
 
 ```{=html}
 <div class="widget" id="p6w-att">
-  <p class="widget-title" data-fr="Schéma interactif 3 — Poids d'attention d'une requête en un point arbitraire" data-en="Interactive diagram 3 — Attention weights of a query at an arbitrary point"></p>
+  <p class="widget-title">Interactive diagram 3 — Attention weights of a query at an arbitrary point</p>
   <div class="widget-controls">
-    <label><span data-fr="position q de la requête" data-en="query position q"></span> <input type="range" id="p6w-att-q" min="0" max="0.999" step="0.001" value="0.37"> <span class="widget-readout" id="p6w-att-qv"></span></label>
-    <label><span data-fr="netteté β" data-en="sharpness β"></span> <input type="range" id="p6w-att-b" min="0" max="6" step="0.1" value="2"> <span class="widget-readout" id="p6w-att-bv"></span></label>
-    <label><span data-fr="fréquences K" data-en="frequencies K"></span> <input type="range" id="p6w-att-k" min="1" max="6" step="1" value="3"> <span class="widget-readout" id="p6w-att-kv"></span></label>
+    <label><span>query position q</span> <input type="range" id="p6w-att-q" min="0" max="0.999" step="0.001" value="0.37"> <span class="widget-readout" id="p6w-att-qv"></span></label>
+    <label><span>sharpness β</span> <input type="range" id="p6w-att-b" min="0" max="6" step="0.1" value="2"> <span class="widget-readout" id="p6w-att-bv"></span></label>
+    <label><span>frequencies K</span> <input type="range" id="p6w-att-k" min="1" max="6" step="1" value="3"> <span class="widget-readout" id="p6w-att-kv"></span></label>
   </div>
-  <svg id="p6w-att-svg" viewBox="0 0 640 340" role="img" aria-label="poids d'attention et sortie du décodeur / attention weights and decoder output"></svg>
+  <svg id="p6w-att-svg" viewBox="0 0 640 340" role="img" aria-label="attention weights and decoder output"></svg>
   <p class="widget-readout" id="p6w-att-out"></p>
-  <p class="widget-note" data-fr="En haut : poids d'attention A_j (somme 1) de la requête q (ligne verticale). En bas : valeurs v_j des jetons (points noirs) et sortie û(q) du décodeur pour tous les q (courbe bleue). β = 0 donne la moyenne des valeurs ; β grand donne presque le plus proche voisin ; K règle la largeur du noyau." data-en="Top: attention weights A_j (summing to 1) of the query q (vertical line). Bottom: token values v_j (black dots) and decoder output û(q) for all q (blue curve). β = 0 gives the mean of the values; large β gives almost the nearest neighbour; K sets the kernel width."></p>
+  <p class="widget-note">Top: attention weights A_j (summing to 1) of the query q (vertical line). Bottom: token values v_j (black dots) and decoder output û(q) for all q (blue curve). β = 0 gives the mean of the values; large β gives almost the nearest neighbour; K sets the kernel width.</p>
 </div>
 <script>
 (function () {
-  var EN = /^en/i.test(document.documentElement.lang || "");
   var root = document.getElementById("p6w-att");
-  root.querySelectorAll("[data-fr]").forEach(function (e) { e.textContent = e.getAttribute(EN ? "data-en" : "data-fr"); });
   var NS = "http://www.w3.org/2000/svg", svg = document.getElementById("p6w-att-svg"), n = 10, P = [], V = [];
   for (var j = 0; j < n; j++) { var p = (j + 0.5) / n + 0.03 * Math.sin(7 * j); P.push(p); V.push(Math.sin(2 * Math.PI * p) + 0.5 * Math.cos(6 * Math.PI * p)); }
   function mk(tag, a, st) { var e = document.createElementNS(NS, tag); for (var k in a) e.setAttribute(k, a[k]); if (st) e.setAttribute("style", st); return e; }
@@ -1089,7 +1083,7 @@ The following interactive diagram reduces this mechanism to one dimension. Ten t
     var A = weights(q, b, K);
     svg.appendChild(mk("rect", { x: 40, y: 10, width: 590, height: 120 }, "fill:none;stroke:var(--hair)"));
     A.forEach(function (a, j) { var h = a * 110; svg.appendChild(mk("rect", { x: X(P[j]) - 9, y: 130 - h, width: 18, height: Math.max(h, 0.5), rx: 2 }, "fill:var(--thm-bar)")); });
-    var t1 = mk("text", { x: 46, y: 26 }, "fill:var(--ink);font-size:12px"); t1.textContent = EN ? "attention weights A_j" : "poids d'attention A_j"; svg.appendChild(t1);
+    var t1 = mk("text", { x: 46, y: 26 }, "fill:var(--ink);font-size:12px"); t1.textContent = "attention weights A_j"; svg.appendChild(t1);
     var y0 = 160, h = 170, lo = -1.8, hi = 1.8;
     function Y(v) { return y0 + h - (v - lo) / (hi - lo) * h; }
     svg.appendChild(mk("rect", { x: 40, y: y0, width: 590, height: h }, "fill:none;stroke:var(--hair)"));
@@ -1100,9 +1094,9 @@ The following interactive diagram reduces this mechanism to one dimension. Ten t
     for (j = 0; j < n; j++) { out += A[j] * V[j]; svg.appendChild(mk("circle", { cx: X(P[j]), cy: Y(V[j]), r: 4.5 }, "fill:var(--ink)")); }
     svg.appendChild(mk("line", { x1: X(q), x2: X(q), y1: 10, y2: y0 + h }, "stroke:var(--key-bar);stroke-width:2"));
     svg.appendChild(mk("circle", { cx: X(q), cy: Y(out), r: 6 }, "fill:var(--bg);stroke:var(--key-bar);stroke-width:3"));
-    var t2 = mk("text", { x: 46, y: y0 + 16 }, "fill:var(--ink);font-size:12px"); t2.textContent = EN ? "values v_j and decoder output û(q)" : "valeurs v_j et sortie du décodeur û(q)"; svg.appendChild(t2);
+    var t2 = mk("text", { x: 46, y: y0 + 16 }, "fill:var(--ink);font-size:12px"); t2.textContent = "values v_j and decoder output û(q)"; svg.appendChild(t2);
     var ent = -A.reduce(function (a, c) { return a + (c > 0 ? c * Math.log(c) : 0); }, 0);
-    document.getElementById("p6w-att-out").textContent = "û(q) = " + out.toFixed(3) + " · Σ A_j = " + A.reduce(function (a, c) { return a + c; }, 0).toFixed(3) + (EN ? " · effective number of tokens e^H = " : " · nombre effectif de jetons e^H = ") + Math.exp(ent).toFixed(2);
+    document.getElementById("p6w-att-out").textContent = "û(q) = " + out.toFixed(3) + " · Σ A_j = " + A.reduce(function (a, c) { return a + c; }, 0).toFixed(3) + " · effective number of tokens e^H = " + Math.exp(ent).toFixed(2);
   }
   root.querySelectorAll("input").forEach(function (e) { e.addEventListener("input", draw); });
   draw();
@@ -1391,21 +1385,19 @@ Yet the set of snapshots is only a **closed curve** parameterized by $s$: a mani
 
 ```{=html}
 <div class="widget" id="p6w-pod">
-  <p class="widget-title" data-fr="Schéma interactif 4 — Troncature POD d'une impulsion advectée" data-en="Interactive diagram 4 — POD truncation of an advected pulse"></p>
+  <p class="widget-title">Interactive diagram 4 — POD truncation of an advected pulse</p>
   <div class="widget-controls">
-    <label><span data-fr="modes POD r" data-en="POD modes r"></span> <input type="range" id="p6w-pod-r" min="2" max="40" step="2" value="4"> <span class="widget-readout" id="p6w-pod-rv"></span></label>
-    <label><span data-fr="largeur w" data-en="width w"></span> <input type="range" id="p6w-pod-w" min="0.1" max="1.2" step="0.05" value="0.3"> <span class="widget-readout" id="p6w-pod-wv"></span></label>
-    <label><span data-fr="position s" data-en="position s"></span> <input type="range" id="p6w-pod-s" min="0" max="6.28" step="0.01" value="2"> <span class="widget-readout" id="p6w-pod-sv"></span></label>
+    <label><span>POD modes r</span> <input type="range" id="p6w-pod-r" min="2" max="40" step="2" value="4"> <span class="widget-readout" id="p6w-pod-rv"></span></label>
+    <label><span>width w</span> <input type="range" id="p6w-pod-w" min="0.1" max="1.2" step="0.05" value="0.3"> <span class="widget-readout" id="p6w-pod-wv"></span></label>
+    <label><span>position s</span> <input type="range" id="p6w-pod-s" min="0" max="6.28" step="0.01" value="2"> <span class="widget-readout" id="p6w-pod-sv"></span></label>
   </div>
-  <svg id="p6w-pod-svg" viewBox="0 0 640 300" role="img" aria-label="impulsion et reconstruction POD / pulse and POD reconstruction"></svg>
+  <svg id="p6w-pod-svg" viewBox="0 0 640 300" role="img" aria-label="pulse and POD reconstruction"></svg>
   <p class="widget-readout" id="p6w-pod-out"></p>
-  <p class="widget-note" data-fr="Noir : impulsion g(x − s) sur 128 points. Bleu : sa reconstruction par la moyenne et les r premiers modes POD, qui sont ici les modes de Fourier de nombres d'onde 1 à r/2 (proposition 5.6). L'erreur relative ne dépend pas de s : c'est l'homogénéité. À comparer avec l'autoencodeur à r = 2 du bloc de code (erreur 0,011 pour w = 0,3)." data-en="Black: pulse g(x − s) on 128 points. Blue: its reconstruction from the mean and the first r POD modes, which here are the Fourier modes of wavenumbers 1 to r/2 (proposition 5.6). The relative error does not depend on s: this is homogeneity. Compare with the r = 2 autoencoder of the code block (error 0.011 for w = 0.3)."></p>
+  <p class="widget-note">Black: pulse g(x − s) on 128 points. Blue: its reconstruction from the mean and the first r POD modes, which here are the Fourier modes of wavenumbers 1 to r/2 (proposition 5.6). The relative error does not depend on s: this is homogeneity. Compare with the r = 2 autoencoder of the code block (error 0.011 for w = 0.3).</p>
 </div>
 <script>
 (function () {
-  var EN = /^en/i.test(document.documentElement.lang || "");
   var root = document.getElementById("p6w-pod");
-  root.querySelectorAll("[data-fr]").forEach(function (e) { e.textContent = e.getAttribute(EN ? "data-en" : "data-fr"); });
   var NS = "http://www.w3.org/2000/svg", svg = document.getElementById("p6w-pod-svg"), N = 128;
   function mk(tag, a, st) { var e = document.createElementNS(NS, tag); for (var k in a) e.setAttribute(k, a[k]); if (st) e.setAttribute("style", st); return e; }
   function draw() {
@@ -1427,7 +1419,7 @@ Yet the set of snapshots is only a **closed curve** parameterized by $s$: a mani
     line(g, "stroke:var(--ink);stroke-width:2.5");
     line(rec, "stroke:var(--def-bar);stroke-width:2.2");
     var E = eKept / eTot;
-    document.getElementById("p6w-pod-out").textContent = (EN ? "energy captured E_r = " : "énergie captée E_r = ") + (100 * E).toFixed(1) + " % · " + (EN ? "relative error √(1 − E_r) = " : "erreur relative √(1 − E_r) = ") + Math.sqrt(Math.max(0, 1 - E)).toFixed(3);
+    document.getElementById("p6w-pod-out").textContent = "energy captured E_r = " + (100 * E).toFixed(1) + " % · " + "relative error √(1 − E_r) = " + Math.sqrt(Math.max(0, 1 - E)).toFixed(3);
   }
   root.querySelectorAll("input").forEach(function (e) { e.addEventListener("input", draw); });
   draw();
