@@ -34,11 +34,11 @@ format:
       - text: |
           </main>
           </div>
-          <footer class="foot"><p><a href="index.html">← Home</a> · <a href="prep/index.html">Preparation</a> · <a href="encadrants/index.html">Supervisors</a> · <a href="rapport/index.html">Internship report</a> · <a href="these/index.html">PhD proposal</a> · <a href="interactifs/index.html">Interactive diagrams</a> · <a href="experiences/index.html">Experiments</a> · <a href="calcul/index.html">Computing and data</a></p></footer>
+          <footer class="foot"><p><a href="index.html">← Home</a> · <a href="prep/index.html">Preparation</a> · <a href="supervisors/index.html">Supervisors</a> · <a href="report/index.html">Internship report</a> · <a href="thesis/index.html">PhD proposal</a> · <a href="interactive/index.html">Interactive diagrams</a> · <a href="experiments/index.html">Experiments</a> · <a href="computing/index.html">Computing and data</a></p></footer>
           <script defer src="assets/theme.js"></script>
 ---
 
-![The framework under study: physical parameters drive a generative model whose fields satisfy $\nabla\cdot\mathbf{u} = 0$, $\nabla\cdot\mathbf{B} = 0$ and the symmetry $\mathbf{B}\to-\mathbf{B}$ by construction, and whose distribution satisfies the mean energy budget. Diagram drawn with the [schematic-figure](https://lgwrightlab.github.io/schematic-figure/) skill; full caption in the [report](rapport/index.html#formulation).](figures/cadre/figure/out/cadre.png){width="100%" fig-alt="Diagram of the generative framework: parameters, flow matching in a latent space, potential decoder, divergence-free fields, distributional control of the energy budget, downstream uses."}
+![The framework under study: physical parameters drive a generative model whose fields satisfy $\nabla\cdot\mathbf{u} = 0$, $\nabla\cdot\mathbf{B} = 0$ and the symmetry $\mathbf{B}\to-\mathbf{B}$ by construction, and whose distribution satisfies the mean energy budget. Diagram drawn with the [schematic-figure](https://lgwrightlab.github.io/schematic-figure/) skill; full caption in the [report](report/index.html#formulation).](figures/framework/figure/out/framework.png){width="100%" fig-alt="Diagram of the generative framework: parameters, flow matching in a latent space, potential decoder, divergence-free fields, distributional control of the energy budget, downstream uses."}
 
 ::: note
 [What is this site?]{.tag}
@@ -50,12 +50,12 @@ An independent project, prepared to apply for the M2 internship "*Physics-Constr
 | Stage | Content | Pages |
 |---|---|---|
 | **1. Prepare** | Eight graded modules, from first-year undergraduate level to M2 research level: vector calculus and Fourier analysis, turbulence, MHD and dynamo, dynamical systems, probability and transport, deep learning, diffusion and flow matching, physical constraints. About 215 hours, 122 exercises with solutions. | [Preparation pathway](prep/index.html) |
-| **2. Do the internship** | The internship report: state of the art, a taxonomy of physical constraints with nine proven statements (eight propositions and one corollary), three experiments (reversal model, 2D MHD, ABC dynamo) and their discussion. | [Internship report](rapport/index.html) · [Experiments](experiences/index.html) |
-| **3. Prepare the PhD** | The work of the four supervisors, six assessed directions, the selected direction, its theoretical part, its costed and assessed experimental plan, its timeline. | [Supervisors](encadrants/index.html) · [PhD proposal](these/index.html) |
+| **2. Do the internship** | The internship report: state of the art, a taxonomy of physical constraints with nine proven statements (eight propositions and one corollary), three experiments (reversal model, 2D MHD, ABC dynamo) and their discussion. | [Internship report](report/index.html) · [Experiments](experiments/index.html) |
+| **3. Prepare the PhD** | The work of the four supervisors, six assessed directions, the selected direction, its theoretical part, its costed and assessed experimental plan, its timeline. | [Supervisors](supervisors/index.html) · [PhD proposal](thesis/index.html) |
 
-Six cross-cutting [interactive diagrams](interactifs/index.html) accompany the pathway, in addition to the 25 interactive diagrams inside the modules: flow matching, Leray projection, distributional constraint, dipole reversals, ABC dynamo and simulation pipeline.
+Six cross-cutting [interactive diagrams](interactive/index.html) accompany the pathway, in addition to the 25 interactive diagrams inside the modules: flow matching, Leray projection, distributional constraint, dipole reversals, ABC dynamo and simulation pipeline.
 
-To scale up during the PhD, the [Computing and data](calcul/index.html) page describes the repository's infrastructure: standard data format, catalog of simulations and results, one-command deployment on a cloud VM with a GPU or on a Slurm cluster.
+To scale up during the PhD, the [Computing and data](computing/index.html) page describes the repository's infrastructure: standard data format, catalog of simulations and results, one-command deployment on a cloud VM with a GPU or on a Slurm cluster.
 
 ## The internship offer {#offre}
 
@@ -71,20 +71,20 @@ The offer is published by the supervisors: [stage_milady_2027.pdf](https://schen
 
 **Supervision and setting.** A 5- to 6-month internship starting in spring 2027, mainly at CEREA (École nationale des ponts et chaussées, Institut Polytechnique de Paris, Champs-sur-Marne), under the supervision of Sibo Cheng (ENPC) and Didier Lucor (LISN, Université Paris-Saclay), in collaboration with Caroline Nore (LISN) and Yannick Ponty (Observatoire de la Côte d'Azur, CNRS). Remote work possible up to 1 to 2 days per week.
 
-**References recommended by the offer.** FunDiff (Wang, Dou, Shan, Liu, Lu, *Nature Communications*, 2026); Fukami and Taira (*Nature Communications* 14, 6480, 2023); then Bansal et al. (ICLR 2024), Bastek, Sun and Kochmann (ICLR 2025), Solera-Rico et al. (*Nature Communications* 15, 1361, 2024). All are presented in [module 8](prep/p8-contraintes-physiques/index.html) and in the state of the art of the [report](rapport/index.html#etat-art).
+**References recommended by the offer.** FunDiff (Wang, Dou, Shan, Liu, Lu, *Nature Communications*, 2026); Fukami and Taira (*Nature Communications* 14, 6480, 2023); then Bansal et al. (ICLR 2024), Bastek, Sun and Kochmann (ICLR 2025), Solera-Rico et al. (*Nature Communications* 15, 1361, 2024). All are presented in [module 8](prep/p8-physical-constraints/index.html) and in the state of the art of the [report](report/index.html#etat-art).
 
 ## The MilaDy project {#milady}
 
-MilaDy (*Machine learning modelling for turbulent Dynamos*; French title *Modélisation par apprentissage automatique des dynamos turbulentes*) is the ANR project ANR-25-CE51-0077, coordinated by Caroline Nore (LISN), with the Lagrange laboratory (Observatoire de la Côte d'Azur) and CEREA (ENPC). It started in January 2026 for 48 months. Its two objectives: to study magnetic field reversals and burst dynamos with data-driven reduced models, and to optimize the DRESDYN device (a precessing cylinder) with parametric reduced models. Details and sources: the [Supervisors and the MilaDy project](encadrants/index.html#milady) page.
+MilaDy (*Machine learning modelling for turbulent Dynamos*; French title *Modélisation par apprentissage automatique des dynamos turbulentes*) is the ANR project ANR-25-CE51-0077, coordinated by Caroline Nore (LISN), with the Lagrange laboratory (Observatoire de la Côte d'Azur) and CEREA (ENPC). It started in January 2026 for 48 months. Its two objectives: to study magnetic field reversals and burst dynamos with data-driven reduced models, and to optimize the DRESDYN device (a precessing cylinder) with parametric reduced models. Details and sources: the [Supervisors and the MilaDy project](supervisors/index.html#milady) page.
 
 ## What the experiments show {#resultats}
 
-The experiments are small-scale test benches (CPU, no GPU). All the numbers come from the [results digest](https://github.com/knoel99/milady-2027/blob/main/experiences/resultats/digest.md).
+The experiments are small-scale test benches (CPU, no GPU). All the numbers come from the [results digest](https://github.com/knoel99/milady-2027/blob/main/experiments/results/digest.md).
 
 - **Zero divergence (2D MHD, E2).** Generating the components freely leaves a relative divergence of about 0.4; a soft penalty only partly reduces it (0.34 for u, 0.16 for B) and degrades the magnetic energy. Generating potentials, projecting at the end or projecting the flow gives zero divergence to machine precision.
 - **Distributional energy budget (E2).** Enforcing the mean energy budget during training, including for values of $\eta$ without data, divides the energy distance between distributions of spectral descriptors at test values by about 3.6 (0.70 versus 2.52 for a control run trained just as long without this loss). Enforcing the budget on each sample satisfies it exactly, but by reducing the variance of the dissipation to zero, which is physically wrong.
 - **ABC dynamo (E3).** The measured thresholds, $Rm \approx 8.87$, $17.6$ and $26.8$, recover the known dynamo windows.
-- **Reversals (E1).** On a three-mode reversal model, making the velocity field symmetric by construction keeps the two polarities equally likely at every value of the forcing, whereas adding flipped data does so only at values seen during training. The reversal frequency is predicted from the generated samples alone, without any time-dependent simulation, with a cumulative error of 14% far from the threshold (up to 65% at a single value) and of 42% at the threshold, which the generator smooths out. Enforcing the energy budget on each sample multiplies the energy distance to the true distribution by 9; the distributional loss, useful on a good model, fails on a biased model. See the [report, section E1](rapport/index.html#e1).
+- **Reversals (E1).** On a three-mode reversal model, making the velocity field symmetric by construction keeps the two polarities equally likely at every value of the forcing, whereas adding flipped data does so only at values seen during training. The reversal frequency is predicted from the generated samples alone, without any time-dependent simulation, with a cumulative error of 14% far from the threshold (up to 65% at a single value) and of 42% at the threshold, which the generator smooths out. Enforcing the energy budget on each sample multiplies the energy distance to the true distribution by 9; the distributional loss, useful on a good model, fails on a biased model. See the [report, section E1](report/index.html#e1).
 
 ## Official sources {#sources}
 

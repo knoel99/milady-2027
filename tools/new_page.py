@@ -2,7 +2,7 @@
 """Create the skeleton of a Quarto page.
 
 Usage (paths relative to site/):
-    python3 tools/new_page.py prep/p1-calcul-vectoriel "Title" "Subtitle"
+    python3 tools/new_page.py prep/p1-vector-calculus "Title" "Subtitle"
     python3 tools/new_page.py rapport "Internship report" "Subtitle"
 """
 import sys
@@ -20,5 +20,5 @@ qmd = ROOT / rel / "index.qmd"
 if qmd.exists():
     sys.exit(f"{qmd} already exists")
 qmd.parent.mkdir(parents=True, exist_ok=True)
-qmd.write_text(header(title, subtitle, "../" * depth) + "\n## Objectives {#objectifs}\n\n", encoding="utf-8")
+qmd.write_text(header(title, subtitle, "../" * depth) + "\n## Objectives {#objectives}\n\n", encoding="utf-8")
 print(qmd)

@@ -34,11 +34,11 @@ format:
       - text: |
           </main>
           </div>
-          <footer class="foot"><p><a href="../../index.html">← Home</a> · <a href="../../prep/index.html">Preparation</a> · <a href="../../encadrants/index.html">Supervisors</a> · <a href="../../rapport/index.html">Internship report</a> · <a href="../../these/index.html">PhD proposal</a> · <a href="../../interactifs/index.html">Interactive diagrams</a> · <a href="../../experiences/index.html">Experiments</a> · <a href="../../calcul/index.html">Computing and data</a></p></footer>
+          <footer class="foot"><p><a href="../../index.html">← Home</a> · <a href="../../prep/index.html">Preparation</a> · <a href="../../supervisors/index.html">Supervisors</a> · <a href="../../report/index.html">Internship report</a> · <a href="../../thesis/index.html">PhD proposal</a> · <a href="../../interactive/index.html">Interactive diagrams</a> · <a href="../../experiments/index.html">Experiments</a> · <a href="../../computing/index.html">Computing and data</a></p></footer>
           <script defer src="../../assets/theme.js"></script>
 ---
 
-## Objectives {#objectifs}
+## Objectives {#objectives}
 
 A conducting fluid moving through a magnetic field carries electric currents, and these currents in turn create a magnetic field. If the flow is fast enough and well organized, the field it creates can reinforce the initial field instead of weakening it: this is the **dynamo effect**, by which the Earth, the Sun and three liquid-sodium experiments generate their own field. This module starts from Maxwell's equations as taught in the undergraduate curriculum and leads up to the questions the MilaDy project is asking today: dynamo thresholds, the role of boundary conditions, field reversals. By the end of the thirty hours of planned work, you will be able to:
 
@@ -51,11 +51,11 @@ A conducting fluid moving through a magnetic field carries electric currents, an
 7. describe the laboratory dynamos of Riga, Karlsruhe and Cadarache (VKS) and the DRESDYN project, with their key figures and their sources;
 8. integrate Gissinger's three-mode reversal model, locate its fixed points and count its reversals as a function of the forcing parameter $\Gamma$.
 
-## Prerequisites {#prerequis}
+## Prerequisites {#prerequisites}
 
 The starting point is the level of the second year of a French undergraduate physics degree (L2): Maxwell's equations in integral and local form in vacuum, the notion of the Lorentz force on a charge, and the basics of fluid mechanics (material derivative, continuity equation). On the mathematical side, you need to be able to solve a linear differential equation with constant coefficients, diagonalize a small matrix and compute a Fourier series.
 
-The module [Vector calculus and Fourier analysis](../p1-calcul-vectoriel/index.html) is essential: we use without re-proving them the vector identities and product formulas (chapter 2), the Stokes and Green–Ostrogradsky (divergence) theorems (chapter 3), the stream function, the vector potential and the poloidal–toroidal decomposition (chapter 4), as well as spectral differentiation (chapter 5). The module [Fluid mechanics and turbulence](../p2-mecanique-fluides/index.html) is recommended for the Navier–Stokes equation, the Reynolds number and the kinetic energy budget, which we extend here to MHD. For chapters 5 and 7, it is useful to read in parallel the module [Dynamical systems, bifurcations and invariant measures](../p4-systemes-dynamiques/index.html), which covers pitchfork and Hopf bifurcations and chaotic attractors.
+The module [Vector calculus and Fourier analysis](../p1-vector-calculus/index.html) is essential: we use without re-proving them the vector identities and product formulas (chapter 2), the Stokes and Green–Ostrogradsky (divergence) theorems (chapter 3), the stream function, the vector potential and the poloidal–toroidal decomposition (chapter 4), as well as spectral differentiation (chapter 5). The module [Fluid mechanics and turbulence](../p2-fluid-mechanics/index.html) is recommended for the Navier–Stokes equation, the Reynolds number and the kinetic energy budget, which we extend here to MHD. For chapters 5 and 7, it is useful to read in parallel the module [Dynamical systems, bifurcations and invariant measures](../p4-dynamical-systems/index.html), which covers pitchfork and Hopf bifurcations and chaotic attractors.
 
 On the programming side, it is enough to know how to use NumPy and SciPy (arrays, fast Fourier transform, eigenvalues, integration of differential equations). All code blocks run in less than 30 seconds on a single core.
 
@@ -898,7 +898,7 @@ As soon as $X > \gamma Y/\eta$, $X$ decreases. Fix $\varepsilon > 0$. Since $Y \
 :::
 ::::
 
-The proof shows where the difficulty lies: the planar field can grow transiently (the factor $2\gamma X$), as we saw in chapter 2 with the energy peak of the winding phase, but the potential $a$, which is a transported scalar, can only diffuse. For the internship, the consequence is direct: a statistically steady two-dimensional MHD field, such as those of experiment E2 in the repository, can only exist if the magnetic field is **forced** as well; this is why E2 adds a random forcing to the equation for $a$ (see the [report](../../rapport/index.html#e2)). A true dynamo requires three dimensions and a non-planar flow.
+The proof shows where the difficulty lies: the planar field can grow transiently (the factor $2\gamma X$), as we saw in chapter 2 with the energy peak of the winding phase, but the potential $a$, which is a transported scalar, can only diffuse. For the internship, the consequence is direct: a statistically steady two-dimensional MHD field, such as those of experiment E2 in the repository, can only exist if the magnetic field is **forced** as well; this is why E2 adds a random forcing to the equation for $a$ (see the [report](../../report/index.html#e2)). A true dynamo requires three dimensions and a non-planar flow.
 
 ### 5.3 Three dynamo flows
 
@@ -910,7 +910,7 @@ The anti-dynamo theorems were circumvented by carefully chosen flows, which beca
 
 **G. O. Roberts (1972).** The periodic flow $\mathbf{u} = (\cos y - \cos z, \; \sin z, \; \sin y)$, whose three components depend only on $(y, z)$, is a dynamo “for almost all resistivities” (abstract of the paper). One checks that $\nabla\times\mathbf{u} = \mathbf{u}$: it is a Beltrami flow, of maximal helicity. The growing field varies slowly in $x$, on a scale much larger than that of the flow: it is a **two-scale** dynamo, the principle of the Karlsruhe experiment.
 
-**ABC.** The flow $\mathbf{u} = (\sin z + \cos y, \; \sin x + \cos z, \; \sin y + \cos x)$, also a Beltrami flow and with partly chaotic streamlines, is a dynamo in two windows, $8.9 < Rm < 17.5$ and then $Rm > 27$, with $Rm = 1/\eta$ (Galloway and Frisch, 1984, cited by Archontis et al., 2003). Bouya and Dormy (2013) still find a growth rate of about $0.1$ at $Rm = 25\,000$. Experiment E3 in the repository computes this rate as a function of $Rm$ (see the [report](../../rapport/index.html#e3)).
+**ABC.** The flow $\mathbf{u} = (\sin z + \cos y, \; \sin x + \cos z, \; \sin y + \cos x)$, also a Beltrami flow and with partly chaotic streamlines, is a dynamo in two windows, $8.9 < Rm < 17.5$ and then $Rm > 27$, with $Rm = 1/\eta$ (Galloway and Frisch, 1984, cited by Archontis et al., 2003). Bouya and Dormy (2013) still find a growth rate of about $0.1$ at $Rm = 25\,000$. Experiment E3 in the repository computes this rate as a function of $Rm$ (see the [report](../../report/index.html#e3)).
 :::
 
 ### 5.4 The $\alpha$ effect and the mean-field $\alpha^2$ dynamo
@@ -1265,7 +1265,7 @@ The points $M_\pm$, with $V = +\sqrt{\mu\nu}$, exist only if $\sqrt{\mu\nu} > \G
 :::
 ::::
 
-Gissinger (2012) studies the regime $\nu = 0.1$, $\Gamma = 0.9$ while varying $\mu$: periodic orbits around the points $N_\pm$ undergo a period-doubling cascade, then the two symmetric attractors merge in a **crisis** near $\mu_c \approx 0.11928$. Just below the crisis ($\mu = 0.119 < \mu_c$), the trajectory moves chaotically from the neighborhood of $N_+$ to that of $N_-$: these are chaotic reversals. The waiting times between reversals follow an exponential distribution at long times, as for the Earth's field. Experiment E1 in the repository (see the [report](../../rapport/index.html#e1)) fixes $\mu = 0.119$, $\nu = 0.1$ and takes $\Gamma$ as the conditioning parameter: the following code shows what $\Gamma$ does. It computes the fixed points, then integrates 4 trajectories per value of $\Gamma$ and counts the reversals, defined as a passage from $D > 0.5$ to $D < -0.5$ or the reverse (the threshold avoids counting small excursions around zero).
+Gissinger (2012) studies the regime $\nu = 0.1$, $\Gamma = 0.9$ while varying $\mu$: periodic orbits around the points $N_\pm$ undergo a period-doubling cascade, then the two symmetric attractors merge in a **crisis** near $\mu_c \approx 0.11928$. Just below the crisis ($\mu = 0.119 < \mu_c$), the trajectory moves chaotically from the neighborhood of $N_+$ to that of $N_-$: these are chaotic reversals. The waiting times between reversals follow an exponential distribution at long times, as for the Earth's field. Experiment E1 in the repository (see the [report](../../report/index.html#e1)) fixes $\mu = 0.119$, $\nu = 0.1$ and takes $\Gamma$ as the conditioning parameter: the following code shows what $\Gamma$ does. It computes the fixed points, then integrates 4 trajectories per value of $\Gamma$ and counts the reversals, defined as a passage from $D > 0.5$ to $D < -0.5$ or the reverse (the threshold avoids counting small excursions around zero).
 
 ```python
 import numpy as np
@@ -1371,7 +1371,7 @@ Key takeaways — chapter 7
 - Codes: SFEMaNS (Fourier + finite elements, heterogeneous materials), LATU and periodic pseudo-spectral codes.
 ::::
 
-## Exercises {#exercices}
+## Exercises {#exercises}
 
 The exercises follow the order of the sessions in the work plan. One star (★) marks a direct application of the course, two stars (★★) an exercise that chains several results, three stars (★★★) a proof or a longer program, close to the questions of the internship. Work on each exercise for at least twenty minutes before reading its solution. Exercises 10 and 14 require running code; numerical values marked “assumption” are orders of magnitude chosen for the exercise, not published data.
 
@@ -1579,23 +1579,23 @@ The exercises follow the order of the sessions in the work plan. One star (★) 
     The agreement is perfect to the precision requested.
     :::
 
-## Link with the internship {#lien-stage}
+## Link with the internship {#internship-link}
 
 The [internship offer](https://scheng2024.github.io/stage_milady_2027.pdf) asks for conditional generative models of parametric MHD fields, conditioned on $Re$, $Rm$ and material properties, that respect zero divergence, the energy budget and the boundary conditions, validated first on simple PDEs and then on dynamos, with metrics based on spectra, helicity, divergence and topology. Each element of this sentence has its chapter in this module.
 
 **The conditioning parameters.** The parameter vector $\boldsymbol\lambda$ of the site's notation contains here $Re$, $Rm$, $Pm$ (chapter 2), the permeability $\mu_r$ of the impellers (chapter 4) or the forcing $\Gamma$ of the Gissinger model (chapter 7). Two lessons of this module apply directly: the definition of $Rm$ varies from one paper to another (chapter 6), and the response of the system to $\boldsymbol\lambda$ is not smooth, since it goes through **thresholds** (dynamo or not, reversals or not). A conditional generative model must reproduce these transitions, and not merely interpolate between neighboring fields.
 
-**The constraints.** The zero divergence of $\mathbf{B}$ is an initial constraint that the dynamics preserves but that a generator does not respect spontaneously (remark 1.3). The energy budget (theorem 3.3) holds only **for the distribution** in a steady regime, which justifies the statistical constraint studied in the second part of experiment E2 in the repository (generation of forced 2D MHD fields conditioned on $\eta$, comparison of five divergence-constraint mechanisms; see the [report](../../rapport/index.html#e2) and the [formulation](../../rapport/index.html#formulation)). Zeldovich's theorem explains why these 2D fields must be magnetically forced. The boundary conditions of chapter 4 are the difficulty specific to experimental data: nonlocal insulator, local pseudo-vacuum, jump conditions at $\mu_r$ discontinuities. These constraints bear on traces of fields at an interface, and the [taxonomy](../../rapport/index.html#taxonomie) of the report discusses where to impose them (architecture, loss, sampling).
+**The constraints.** The zero divergence of $\mathbf{B}$ is an initial constraint that the dynamics preserves but that a generator does not respect spontaneously (remark 1.3). The energy budget (theorem 3.3) holds only **for the distribution** in a steady regime, which justifies the statistical constraint studied in the second part of experiment E2 in the repository (generation of forced 2D MHD fields conditioned on $\eta$, comparison of five divergence-constraint mechanisms; see the [report](../../report/index.html#e2) and the [formulation](../../report/index.html#formulation)). Zeldovich's theorem explains why these 2D fields must be magnetically forced. The boundary conditions of chapter 4 are the difficulty specific to experimental data: nonlocal insulator, local pseudo-vacuum, jump conditions at $\mu_r$ discontinuities. These constraints bear on traces of fields at an interface, and the [taxonomy](../../report/index.html#taxonomie) of the report discusses where to impose them (architecture, loss, sampling).
 
 **The metrics.** The kinetic and magnetic energy spectra, the magnetic and cross helicities (definition 3.4) and their budgets (theorem 3.5), the divergence and the topology of the field lines (linkage measured by $H_M$) are the natural diagnostics of a generated MHD field. The code of example 3.7 shows the principle: compute each term of the budget on a sample and test the identity.
 
-**The three experiments in the repository.** Experiment E1 learns by conditional flow matching the invariant distribution of the Gissinger model as a function of $\Gamma$, with the symmetry $(Q, D, V) \to (-Q, -D, V)$, stationarity identities and Rice's formula for the frequency of reversals (see the [report](../../rapport/index.html#e1)); the transition between $\Gamma = 0.86$ and $0.87$ measured in chapter 7 (between $0.86$ and $0.865$ on the fine grid of E1) is exactly the kind of threshold that the generated distribution must respect. Experiment E2 was described above. Experiment E3 computes the growth rate of the ABC kinematic dynamo as a function of $Rm$, that is, the function $\sigma(Rm)$ of definition 5.1 (see the [report](../../rapport/index.html#e3)).
+**The three experiments in the repository.** Experiment E1 learns by conditional flow matching the invariant distribution of the Gissinger model as a function of $\Gamma$, with the symmetry $(Q, D, V) \to (-Q, -D, V)$, stationarity identities and Rice's formula for the frequency of reversals (see the [report](../../report/index.html#e1)); the transition between $\Gamma = 0.86$ and $0.87$ measured in chapter 7 (between $0.86$ and $0.865$ on the fine grid of E1) is exactly the kind of threshold that the generated distribution must respect. Experiment E2 was described above. Experiment E3 computes the growth rate of the ABC kinematic dynamo as a function of $Rm$, that is, the function $\sigma(Rm)$ of definition 5.1 (see the [report](../../report/index.html#e3)).
 
-**Toward the PhD.** The two objectives of the MilaDy project, reversals in VKS (DQVU model, section 7.3) and the optimization of DRESDYN (section 6.4), require moving from periodic boxes to cylinders with walls, insulator conditions and heterogeneous materials. This is one of the theoretical questions of the [PhD proposal](../../these/index.html#theorie), and its [experimental plan](../../these/index.html#plan-experimental) foresees this transition in stages.
+**Toward the PhD.** The two objectives of the MilaDy project, reversals in VKS (DQVU model, section 7.3) and the optimization of DRESDYN (section 6.4), require moving from periodic boxes to cylinders with walls, insulator conditions and heterogeneous materials. This is one of the theoretical questions of the [PhD proposal](../../thesis/index.html#theorie), and its [experimental plan](../../thesis/index.html#plan-experimental) foresees this transition in stages.
 
-This module builds on [Vector calculus and Fourier analysis](../p1-calcul-vectoriel/index.html) and [Fluid mechanics and turbulence](../p2-mecanique-fluides/index.html). It extends naturally into [Dynamical systems, bifurcations and invariant measures](../p4-systemes-dynamiques/index.html) (pitchfork, saddle-node and Hopf bifurcations, crises, invariant distributions), then into [Generative models: diffusion and flow matching](../p7-modeles-generatifs/index.html) and [Generative models under physical constraints](../p8-contraintes-physiques/index.html).
+This module builds on [Vector calculus and Fourier analysis](../p1-vector-calculus/index.html) and [Fluid mechanics and turbulence](../p2-fluid-mechanics/index.html). It extends naturally into [Dynamical systems, bifurcations and invariant measures](../p4-dynamical-systems/index.html) (pitchfork, saddle-node and Hopf bifurcations, crises, invariant distributions), then into [Generative models: diffusion and flow matching](../p7-generative-models/index.html) and [Generative models under physical constraints](../p8-physical-constraints/index.html).
 
-## Further reading {#plus-loin}
+## Further reading {#further-reading}
 
 1. **K. Moffatt and E. Dormy (2019), *Self-Exciting Fluid Dynamos*.** The new edition of Moffatt's reference treatise. It contains complete proofs of the anti-dynamo theorems, mean-field theory, fast dynamos and a detailed presentation of the experiments. It is the natural continuation of chapters 2 and 5.
 2. **P. A. Davidson (2016), *Introduction to Magnetohydrodynamics* (2nd edition).** A very pedagogical textbook, at master's level, which starts from electromagnetism and covers the MHD of liquid metals (magnetic damping, waves, industrial applications) before the geodynamo. Ideal for consolidating chapters 1 to 4.

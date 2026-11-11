@@ -354,7 +354,7 @@ def test_describe(mff3d: tuple[Path, dict[str, np.ndarray], str]) -> None:
 # Convertisseur E2
 # ---------------------------------------------------------------------------------------------
 def _synthetic_e2(tmp_path: Path, n: int = 32, members: int = 2, n_snap: int = 3) -> Path:
-    """npz au format de e2_donnees.py pour ψ = cos(2x + 3y) et a = sin(x − 2y) (disposition [ky, kx])."""
+    """npz au format de e2_data.py pour ψ = cos(2x + 3y) et a = sin(x − 2y) (disposition [ky, kx])."""
     x = 2 * np.pi * np.arange(n) / n
     X, Y = np.meshgrid(x, x)  # tableaux [y, x], comme irfft2 de mhd2d.py
     omega = 13 * np.cos(2 * X + 3 * Y)  # ω = −Δψ
@@ -434,7 +434,7 @@ def test_e2_converter_cli_with_catalog(tmp_path: Path) -> None:
     assert convert.main(["validate", str(tmp_path / "out" / "e2_eta0.004000_train.h5")]) == 0
 
 
-E2_DATA = Path(os.environ.get("E2_DATA", Path(__file__).resolve().parents[1] / "experiences" / "donnees_e2"))
+E2_DATA = Path(os.environ.get("E2_DATA", Path(__file__).resolve().parents[1] / "experiments" / "data_e2"))
 
 
 @pytest.mark.skipif(not any(E2_DATA.glob("eta_*_ref.npz")), reason="données E2 absentes (variable E2_DATA)")

@@ -5,7 +5,7 @@ Quarto réécrit les balises <script>/<link> de KaTeX et retire les attributs
 d'intégrité. Ce script rend chaque page puis remet les deux balises publiées.
 
 Usage (n'importe quel répertoire) :
-    python3 tools/render.py rapport these prep/p1-calcul-vectoriel
+    python3 tools/render.py rapport these prep/p1-vector-calculus
     python3 tools/render.py --all
 Quarto 1.7.32 (pip install quarto-cli==1.7.32, ou binaire officiel).
 """

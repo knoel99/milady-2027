@@ -9,13 +9,13 @@ Créer la page avec `python3 tools/new_page.py <chemin> "Titre" "Sous-titre"` : 
 
 ## Structure d'un module de préparation (`prep/<id>/index.qmd`)
 
-1. `## Objectifs {#objectifs}` — 4 à 8 capacités vérifiables (« savoir calculer… », « savoir démontrer… »).
-2. `## Prérequis {#prerequis}` — niveau de départ (L1, L2…), modules du site à lire avant (liens relatifs `../<id>/index.html`).
+1. `## Objectifs {#objectives}` — 4 à 8 capacités vérifiables (« savoir calculer… », « savoir démontrer… »).
+2. `## Prérequis {#prerequisites}` — niveau de départ (L1, L2…), modules du site à lire avant (liens relatifs `../<id>/index.html`).
 3. `## Plan de travail {#plan}` — tableau : séance, durée estimée, niveau (1 = fondations, 2 = cœur, 3 = proche de la recherche ; le niveau ne redescend jamais), contenu, exercices associés. Total d'heures indiqué.
 4. Chapitres numérotés `## 1. Titre {#ch1}`, `## 2. … {#ch2}` … Chaque chapitre : motivation physique ou pratique en une ou deux phrases, définitions, résultats (énoncé + démonstration ou esquisse honnête), exemple chiffré, code Python exécutable, encadré récapitulatif.
-5. `## Exercices {#exercices}` — au moins 10 exercices gradués ★ / ★★ / ★★★, chacun avec une solution complète (*Solution* : …). Au moins un exercice de code.
-6. `## Lien avec le stage {#lien-stage}` — où ce module sert dans le stage MilaDy (renvoyer au rapport `../../rapport/index.html#…` et au sujet de thèse `../../these/index.html` quand c'est pertinent).
-7. `## Pour aller plus loin {#plus-loin}` — 3 à 6 lectures commentées.
+5. `## Exercices {#exercises}` — au moins 10 exercices gradués ★ / ★★ / ★★★, chacun avec une solution complète (*Solution* : …). Au moins un exercice de code.
+6. `## Lien avec le stage {#internship-link}` — où ce module sert dans le stage MilaDy (renvoyer au rapport `../../report/index.html#…` et au sujet de thèse `../../thesis/index.html` quand c'est pertinent).
+7. `## Pour aller plus loin {#further-reading}` — 3 à 6 lectures commentées.
 8. `## Sources {#sources}` — références complètes (auteurs, année, titre, revue/éditeur, DOI ou URL). Uniquement des références vérifiées.
 
 ## Encadrés (divs Quarto, classes définies dans `site/assets/paper.css`)
@@ -66,7 +66,7 @@ Numérotation : `Définition <chapitre>.<n>` (un seul compteur par chapitre pour
 ## Mathématiques
 
 - KaTeX : `$…$` en ligne, `$$…$$` en bloc (une équation par bloc, phrases de liaison entre les blocs). Pas de `\label`/`\eqref` ; numéroter à la main avec `\tag{2.3}` si besoin.
-- Notations communes : voir `docs/specs/notations.md`. Vecteurs en gras droit `\mathbf{u}`, `\mathbf{B}` ; opérateurs `\nabla\cdot`, `\nabla\times`, `\Delta` ; moyenne spatiale `\langle\cdot\rangle` ; espérance `\mathbb{E}`.
+- Notations communes : voir `docs/specs/notation.md`. Vecteurs en gras droit `\mathbf{u}`, `\mathbf{B}` ; opérateurs `\nabla\cdot`, `\nabla\times`, `\Delta` ; moyenne spatiale `\langle\cdot\rangle` ; espérance `\mathbb{E}`.
 - Pas de macro personnalisée (KaTeX sans préambule).
 
 ## Code
@@ -77,11 +77,11 @@ Numérotation : `Définition <chapitre>.<n>` (un seul compteur par chapitre pour
 ## Figures
 
 - Schémas conceptuels : SVG/PNG produits par la skill `schematic-figure` (dossier `figures/<nom>/`), insérés par `![Légende complète.](../../figures/<nom>/<nom>.png){width="100%" fig-alt="Description textuelle."}`.
-- Graphiques de résultats : `site/experiences/figures/*.png` (écrits par `experiences/figures.py`) (matplotlib).
+- Graphiques de résultats : `site/experiments/figures/*.png` (écrits par `experiments/figures.py`) (matplotlib).
 
 ## Style d'écriture
 
 - Phrases complètes, ton d'un cours écrit ; pas de style télégraphique ; une idée par paragraphe.
 - Chaque chiffre de la littérature est sourcé (auteur, année) et figure dans les Sources.
-- Distinguer clairement ce qui est **mesuré dans ce dépôt** (expériences `experiences/`), ce qui est **publié** (avec référence) et ce qui est **conjecturé**.
+- Distinguer clairement ce qui est **mesuré dans ce dépôt** (expériences `experiments/`), ce qui est **publié** (avec référence) et ce qui est **conjecturé**.
 - Aucun fait inventé sur les encadrants, l'offre ou le projet MilaDy : ne citer que les entrées vérifiées de `docs/specs/sources/*.md` ou l'offre elle-même.

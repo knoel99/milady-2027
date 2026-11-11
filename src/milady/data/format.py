@@ -16,7 +16,7 @@ catalogue) et deux groupes optionnels : ``milady_diagnostics/`` (séries tempore
 La variante Zarr (lecture par morceaux depuis S3) a la même hiérarchie : :func:`to_zarr`, puis
 :func:`read_mff` / :func:`validate` sur une URI qui finit par ``.zarr``.
 
-Spécification lisible : ``docs/specs/format-donnees.md`` ; schéma des métadonnées : ``schema.json``.
+Spécification lisible : ``docs/specs/data-format.md`` ; schéma des métadonnées : ``schema.json``.
 """
 
 from __future__ import annotations

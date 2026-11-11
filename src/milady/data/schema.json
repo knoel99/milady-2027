@@ -2,7 +2,7 @@
   "$schema": "https://json-schema.org/draft/2020-12/schema",
   "$id": "https://knoel99.github.io/milady-2027/schemas/mff-1.0.json",
   "title": "MilaDy Field Format (MFF) 1.0 — métadonnées",
-  "description": "Attributs racine d'un fichier MFF (HDF5 ou Zarr) après décodage : les attributs HDF5 sont convertis en types JSON et milady_parameters (chaîne JSON dans le fichier) est décodé en objet. Les sous-schémas $defs décrivent les attributs des groupes et jeux de données. Spécification lisible : docs/specs/format-donnees.md.",
+  "description": "Attributs racine d'un fichier MFF (HDF5 ou Zarr) après décodage : les attributs HDF5 sont convertis en types JSON et milady_parameters (chaîne JSON dans le fichier) est décodé en objet. Les sous-schémas $defs décrivent les attributs des groupes et jeux de données. Spécification lisible : docs/specs/data-format.md.",
   "type": "object",
   "allOf": [
     {"$ref": "#/$defs/well_root"},

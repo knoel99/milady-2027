@@ -1,7 +1,7 @@
 # Campagne du palier 2 (thèse) : dynamo cinématique de l'écoulement ABC (A = B = C = 1), balayage en Rm.
 #
 # Équation d'induction seule, u imposé (ABC, kf = 1, boîte 2π) : Rm = 1/η (convention de E3).
-# Repères mesurés par experiences/e3_abc.py à 32³ : λ < 0 pour Rm < 8,87, fenêtre de dynamo
+# Repères mesurés par experiments/e3_abc.py à 32³ : λ < 0 pour Rm < 8,87, fenêtre de dynamo
 # 8,87 < Rm < 17,6 (λ max ≈ 0,008 vers Rm = 12), λ < 0 jusqu'à 26,8, puis λ > 0 au-delà.
 # Le problème étant linéaire, B est renormalisé (‖B‖ = 1 à chaque sortie) ; l'amplitude vraie
 # est le diagnostic log_b_rms et le taux de croissance ajusté est enregistré au catalogue

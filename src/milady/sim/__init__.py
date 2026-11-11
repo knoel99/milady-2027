@@ -9,13 +9,13 @@ les mêmes paramètres.
 Codes pris en charge :
 
 - ``mhd3d_torch``  : :mod:`milady.sim.mhd3d` (PyTorch, CPU/GPU) ;
-- ``mhd2d_numpy``  : solveur 2D des expériences (``experiences/mhd2d.py``, NumPy, CPU).
+- ``mhd2d_numpy``  : solveur 2D des expériences (``experiments/mhd2d.py``, NumPy, CPU).
 
 Adimensionnement (3D) : vitesse de référence ``U_ref`` (défaut 1, amplitude de l'écoulement imposé
 ou du forçage), longueur de référence ``L_ref`` = 1/k_f (k_f = 2π kf / L, défaut 1/kf dans la boîte
 2π) ; Re = U_ref L_ref / ν, Rm = U_ref L_ref / η, Pm = ν/η = Rm/Re. Pour l'écoulement ABC
 (A = B = C = 1, kf = 1), Rm = 1/η : convention d'Arnold & Korkina et de Galloway & Frisch, celle
-de ``experiences/e3_abc.py``.
+de ``experiments/e3_abc.py``.
 """
 
 from __future__ import annotations

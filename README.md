@@ -4,18 +4,18 @@ Ressources préparatoires, rapport de stage prospectif et proposition de sujet d
 
 **Site** : <https://knoel99.github.io/milady-2027/>
 
-> Ce site est un projet indépendant. Il n'est ni produit ni validé par l'École nationale des ponts et chaussées, le LISN, l'Observatoire de la Côte d'Azur, l'ANR ou les encadrants du stage. L'offre de référence est le PDF publié par les encadrants : <https://scheng2024.github.io/stage_milady_2027.pdf>. Le rapport de stage est **prospectif** : il est écrit comme s'il concluait le stage, mais ses résultats numériques proviennent uniquement des expériences à petite échelle (CPU) de ce dépôt, décrites et reproductibles dans `experiences/`.
+> Ce site est un projet indépendant. Il n'est ni produit ni validé par l'École nationale des ponts et chaussées, le LISN, l'Observatoire de la Côte d'Azur, l'ANR ou les encadrants du stage. L'offre de référence est le PDF publié par les encadrants : <https://scheng2024.github.io/stage_milady_2027.pdf>. Le rapport de stage est **prospectif** : il est écrit comme s'il concluait le stage, mais ses résultats numériques proviennent uniquement des expériences à petite échelle (CPU) de ce dépôt, décrites et reproductibles dans `experiments/`.
 
 ## Ce que contient le site
 
 - **Accueil** (`site/index.qmd`) : l'offre (faits officiels), le projet MilaDy, le parcours en trois étapes.
 - **Préparation** (`prep/`) : 8 modules gradués du niveau licence 1 au niveau M2 recherche (calcul vectoriel et Fourier, mécanique des fluides et turbulence, MHD et effet dynamo, systèmes dynamiques, bifurcations et mesures invariantes, probabilités et transport optimal, apprentissage profond, diffusion et flow matching, contraintes physiques). Chaque module : objectifs, plan de travail, cours avec démonstrations, code Python exécuté, exercices corrigés ★/★★/★★★, sources.
-- **Encadrants** (`encadrants/`) : travaux de S. Cheng, D. Lucor, C. Nore et Y. Ponty, pistes de thèse et choix argumenté.
-- **Rapport de stage** (`rapport/`) : état de l'art, formulation (taxonomie des contraintes, propositions démontrées), méthodes, expériences E1–E3 et résultats, discussion, ouverture vers la thèse.
-- **Sujet de thèse** (`these/`) : piste retenue, partie théorique, plan expérimental planifié et évalué (paliers, métriques, risques, calendrier).
-- **Expériences** (`experiences/`) : code, résultats JSON et graphiques, et un schéma des trois simulations sur un même gabarit.
-- **Schémas interactifs** (`interactifs/`) : six widgets dans le navigateur (flow matching, projection de Leray, contrainte en loi, modèle de Gissinger, dynamo ABC, chaîne de simulation).
-- **Calcul et données** (`calcul/`) : l'infrastructure de calcul (format MFF, catalogue, déploiement cloud et Slurm), résumée pour le lecteur, avec deux schémas d'architecture (chaîne de simulation, solveur) et un schéma interactif.
+- **Encadrants** (`supervisors/`) : travaux de S. Cheng, D. Lucor, C. Nore et Y. Ponty, pistes de thèse et choix argumenté.
+- **Rapport de stage** (`report/`) : état de l'art, formulation (taxonomie des contraintes, propositions démontrées), méthodes, expériences E1–E3 et résultats, discussion, ouverture vers la thèse.
+- **Sujet de thèse** (`thesis/`) : piste retenue, partie théorique, plan expérimental planifié et évalué (paliers, métriques, risques, calendrier).
+- **Expériences** (`experiments/`) : code, résultats JSON et graphiques, et un schéma des trois simulations sur un même gabarit.
+- **Schémas interactifs** (`interactive/`) : six widgets dans le navigateur (flow matching, projection de Leray, contrainte en loi, modèle de Gissinger, dynamo ABC, chaîne de simulation).
+- **Calcul et données** (`computing/`) : l'infrastructure de calcul (format MFF, catalogue, déploiement cloud et Slurm), résumée pour le lecteur, avec deux schémas d'architecture (chaîne de simulation, solveur) et un schéma interactif.
 - **Version anglaise** (`en/`) : toutes les pages, aux mêmes chemins sous `en/`.
 - **Schémas** (`figures/`) : figures conceptuelles dessinées avec la skill [schematic-figure](https://lgwrightlab.github.io/schematic-figure/) (sources `figure.js`, brief, spec, légende ; sorties SVG/PDF/PNG).
 
@@ -26,7 +26,7 @@ Python 3.11+ avec NumPy, SciPy, Matplotlib et PyTorch (CPU suffit).
 ```bash
 cd experiences
 python3 e1_gissinger.py            # E1 : loi invariante du modèle de renversements de Gissinger (≈ 2 à 3 h CPU, reprenable)
-python3 e2_donnees.py              # E2 : instantanés MHD 2D forcée (≈ 30 min)
+python3 e2_data.py              # E2 : instantanés MHD 2D forcée (≈ 30 min)
 python3 e2_mhd2d.py                # E2 : 5 mécanismes de contrainte + volet « en loi » (≈ 1 h)
 python3 e3_abc.py                  # E3 : dynamo cinématique ABC, taux de croissance en fonction de Rm (≈ 23 min)
 python3 figures.py                 # graphiques
@@ -62,7 +62,7 @@ NODE_PATH=<node_modules avec katex@0.19.0> node tools/check_katex.mjs $(find sit
 python3 tools/check_gates.py                               # sections, exercices, liens, ancres
 ```
 
-Contrats : `docs/specs/page-contract.md` (structure des pages), `docs/specs/notations.md`, `docs/specs/theorie-brief.md` (énoncés communs au rapport et à la thèse).
+Contrats : `docs/specs/page-contract.md` (structure des pages), `docs/specs/notation.md`, `docs/specs/theory-brief.md` (énoncés communs au rapport et à la thèse).
 
 ## Structure
 
@@ -70,14 +70,14 @@ Contrats : `docs/specs/page-contract.md` (structure des pages), `docs/specs/nota
 site/                         sources du site, publiées par le workflow pages.yml (racine des URL)
   index.qmd                   accueil
   prep/<id>/index.qmd         modules de préparation
-  encadrants/ rapport/ these/ calcul/ interactifs/ experiences/
+  supervisors/ report/ thesis/ computing/ interactive/ experiments/
   en/                         version anglaise, mêmes chemins
   assets/                     paper.css, theme.js, schémas interactifs
   figures/<nom>/              schémas (figure/figure.js, docs/, figure/out/ publié)
-  experiences/figures/        graphiques des expériences (écrits par experiences/figures.py)
+  experiments/figures/        graphiques des expériences (écrits par experiments/figures.py)
 src/milady/                   paquet Python (format MFF, catalogue, stockage, solveur 3D, entraînement, évaluation)
 tests/                        pytest (make test)
-experiences/                  scripts E1–E3, common.py, resultats/*.json, digest.md
+experiments/                  scripts E1–E3, common.py, results/*.json, digest.md
 infra/                        déploiement : Docker, VM cloud, Slurm/Apptainer, configurations, schéma SQL
 video/                        moteur du film (projet Node autonome)
 docs/                         documentation des développeurs : specs/ (contrats, bases de faits), ARCHITECTURE.md

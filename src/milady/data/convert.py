@@ -1,6 +1,6 @@
 """Convertisseurs vers le format MFF 1.0, et squelette de l'extension SFEMaNS (Fourier × éléments finis).
 
-- **E2** (``experiences/e2_donnees.py``) : fichiers ``eta_<η>_<split>.npz`` contenant les coefficients de
+- **E2** (``experiments/e2_data.py``) : fichiers ``eta_<η>_<split>.npz`` contenant les coefficients de
   Fourier (``numpy.fft.rfft2``, disposition ``[ky, kx]`` de ``mhd2d.py``) de la vorticité ω et du potentiel
   magnétique a pour 16 membres × n instantanés. Chaque fichier devient une simulation MFF 2D : champs
   ``velocity`` et ``magnetic_field`` (grille 32², disposition The Well ``[x, y]``), coefficients
@@ -9,7 +9,7 @@
 - **SFEMaNS** (``grid_type = "fourier_fe_axisym"``) : :func:`write_fourier_fe_mff` écrit des champs
   donnés par un maillage méridien (r, z) × des modes azimutaux m ; :func:`fourier_fe_to_grid` et
   :func:`fourier_fe_to_cartesian` les interpolent vers une grille régulière. La lecture des fichiers
-  natifs de SFEMaNS n'est pas implémentée (données non publiques) : voir ``docs/specs/format-donnees.md``.
+  natifs de SFEMaNS n'est pas implémentée (données non publiques) : voir ``docs/specs/data-format.md``.
 
 Ligne de commande :
 
@@ -51,9 +51,9 @@ __all__ = [
 ]
 
 # =============================================================================================
-# E2 : MHD 2D forcée (experiences/e2_donnees.py, experiences/mhd2d.py)
+# E2 : MHD 2D forcée (experiments/e2_data.py, experiments/mhd2d.py)
 # =============================================================================================
-#: Valeurs de e2_donnees.py utilisées si meta.json est absent ou incomplet.
+#: Valeurs de e2_data.py utilisées si meta.json est absent ou incomplet.
 E2_DEFAULTS: dict[str, Any] = {
     "N": 32,
     "nu": 8e-3,
@@ -129,7 +129,7 @@ def _e2_meta(src_dir: Path) -> dict[str, Any]:
 
 
 def _e2_seed(meta: Mapping[str, Any], eta: float, split: str) -> int | None:
-    """Graine de e2_donnees.py : 100 + i (train) ou 200 + i (ref), i = rang de η dans eta_train + eta_test."""
+    """Graine de e2_data.py : 100 + i (train) ou 200 + i (ref), i = rang de η dans eta_train + eta_test."""
     etas = list(meta.get("eta_train", [])) + list(meta.get("eta_test", []))
     for i, e in enumerate(etas):
         if abs(e - eta) <= 1e-9 * abs(eta):
@@ -175,7 +175,7 @@ def convert_e2_file(
     if w.shape[0] % members:
         raise ValueError(f"{npz.name} : {w.shape[0]} instantanés non divisibles par {members} membres")
     n_snap = w.shape[0] // members
-    # Disposition de e2_donnees.py : index = membre × n_snap + instantané (« regroupé par membre »).
+    # Disposition de e2_data.py : index = membre × n_snap + instantané (« regroupé par membre »).
     w = w.reshape(members, n_snap, n, n // 2 + 1)
     a = a.reshape(members, n_snap, n, n // 2 + 1)
     if max_members:
@@ -235,7 +235,7 @@ def convert_e2_file(
     file_meta = {
         "uuid": sim_id,
         "code": "mhd2d_numpy",
-        "code_version": "experiences/mhd2d.py",
+        "code_version": "experiments/mhd2d.py",
         "git_commit": git_commit(),
         "nondimensionalization": E2_NONDIM,
         "split": split,
@@ -319,7 +319,7 @@ def convert_e2(
         camp_id = catalog.create_campaign(
             campaign,
             config_yaml=yaml.safe_dump(
-                {"source": "experiences/e2_donnees.py", "meta": meta}, allow_unicode=True, sort_keys=False
+                {"source": "experiments/e2_data.py", "meta": meta}, allow_unicode=True, sort_keys=False
             ),
             description="E2 : MHD 2D forcée, gamme de diffusivités magnétiques η (ν = 8e-3 fixé), grille 32².",
         )
@@ -351,7 +351,7 @@ def convert_e2(
                     "mhd2d_numpy",
                     {},
                     {},
-                    code_version="experiences/mhd2d.py",
+                    code_version="experiments/mhd2d.py",
                     git_commit=git_commit(),
                     host=socket.gethostname(),
                     n_cpus=1,
@@ -609,11 +609,11 @@ def read_sfemans_native(*_: Any, **__: Any) -> None:
 
     Les données SFEMaNS ne sont pas publiques ; quand elles seront accessibles, ce lecteur devra produire
     les tableaux attendus par :func:`write_fourier_fe_mff` (maillages par domaine, modes, coefficients
-    cos/sin par nœud) sans interpolation. Voir ``docs/specs/format-donnees.md``, section SFEMaNS.
+    cos/sin par nœud) sans interpolation. Voir ``docs/specs/data-format.md``, section SFEMaNS.
     """
     raise NotImplementedError(
         "lecteur SFEMaNS natif à écrire quand les données seront disponibles "
-        "(voir docs/specs/format-donnees.md) ; utiliser write_fourier_fe_mff avec des tableaux"
+        "(voir docs/specs/data-format.md) ; utiliser write_fourier_fe_mff avec des tableaux"
     )
 
 

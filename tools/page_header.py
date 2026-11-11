@@ -2,7 +2,7 @@
 """Shared Quarto front matter for every page of the site (English only).
 
 `up` is the relative path to the site root (where assets/ lives):
-index.qmd → "", rapport/index.qmd → "../", prep/p1-x/index.qmd → "../../".
+index.qmd → "", report/index.qmd → "../", prep/p1-x/index.qmd → "../../".
 """
 
 KATEX = "https://cdn.jsdelivr.net/npm/katex@0.19.0/dist/katex.min.js"
@@ -51,7 +51,7 @@ format:
       - text: |
           </main>
           </div>
-          <footer class="foot"><p><a href="{home}index.html">{u["home"]}</a> · <a href="{home}prep/index.html">{u["prep"]}</a> · <a href="{home}encadrants/index.html">{u["sup"]}</a> · <a href="{home}rapport/index.html">{u["report"]}</a> · <a href="{home}these/index.html">{u["thesis"]}</a> · <a href="{home}interactifs/index.html">{u["interactive"]}</a> · <a href="{home}experiences/index.html">{u["exp"]}</a> · <a href="{home}calcul/index.html">{u["calc"]}</a></p></footer>
+          <footer class="foot"><p><a href="{home}index.html">{u["home"]}</a> · <a href="{home}prep/index.html">{u["prep"]}</a> · <a href="{home}supervisors/index.html">{u["sup"]}</a> · <a href="{home}report/index.html">{u["report"]}</a> · <a href="{home}thesis/index.html">{u["thesis"]}</a> · <a href="{home}interactive/index.html">{u["interactive"]}</a> · <a href="{home}experiments/index.html">{u["exp"]}</a> · <a href="{home}computing/index.html">{u["calc"]}</a></p></footer>
           <script defer src="{up}assets/theme.js"></script>
 ---
 '''

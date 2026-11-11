@@ -3,11 +3,11 @@
 1. Vignettes : reprises telles quelles de la figure « plan-these » (plan_data.json) : série D(t) du modèle de
    Gissinger (Γ = 0,9), instantané de MHD 2D de E2 (densité de courant j et isolignes de a), mode dynamo ABC de E3
    (|B| sur trois faces, Rm = 12).
-2. E1 : fréquence des passages de D par zéro dans les simulations de la grille fine (resultats/e1_gissinger.json,
+2. E1 : fréquence des passages de D par zéro dans les simulations de la grille fine (results/e1_gissinger.json,
    « grille_fine », taux_simulation) et valeurs de Γ d'entraînement et de test (config).
-3. E3 : taux de croissance λ(Rm) et seuils interpolés (resultats/e3_abc.json).
+3. E3 : taux de croissance λ(Rm) et seuils interpolés (results/e3_abc.json).
 4. E2 : énergie magnétique moyenne E_B = ½⟨|B|²⟩ en régime stationnaire pour les 11 valeurs de η de E2, **recalculée**
-   avec le solveur de E2 (experiences/mhd2d.py) et ses réglages (N = 32, ν = 8e-3, α = 0,02, forçage blanc dans
+   avec le solveur de E2 (experiments/mhd2d.py) et ses réglages (N = 32, ν = 8e-3, α = 0,02, forçage blanc dans
    la couronne 2 ≤ |k| ≤ 3, ε = 0,05 pour u et B, 16 membres, Δt = 0,01, mise en régime 30) : moyenne et écart-type
    sur 30 instantanés espacés de 1 par membre (graines 300 + i, indépendantes de celles de E2). Les données brutes de
    E2 ne sont pas versionnées, d'où ce recalcul.
@@ -22,9 +22,9 @@ from pathlib import Path
 import numpy as np
 
 HERE = Path(__file__).resolve().parent
-ROOT = HERE.parents[3]
-RES = ROOT / "experiences" / "resultats"
-sys.path.insert(0, str(ROOT / "experiences"))
+ROOT = HERE.parents[4]  # repo root
+RES = ROOT / "experiments" / "results"
+sys.path.insert(0, str(ROOT / "experiments"))
 
 ETA_TRAIN = [4e-3 * 2 ** (k / 2) for k in range(6)]
 ETA_TEST = [4e-3 * 2 ** (k / 2 + 0.25) for k in range(5)]

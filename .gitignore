@@ -1,13 +1,13 @@
 __pycache__/
 *.pyc
-experiences/donnees_e2/
-experiences/resultats/*_quick.*
-site/experiences/figures/*_quick.*
+experiments/data_e2/
+experiments/results/*_quick.*
+site/experiments/figures/*_quick.*
 index_files/
 **/index_files/
 .quarto/
 site/figures/**/node_modules/
-experiences/resultats/cache_e1/
+experiments/results/cache_e1/
 /data/
 .env
 infra/docker/.env

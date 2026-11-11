@@ -1,7 +1,7 @@
 # Campagne du palier 1 (stage) : MHD 2D forcée, balayage en diffusivité magnétique η.
 #
-# Reprend le jeu de données de l'expérience E2 (experiences/e2_donnees.py) avec le solveur
-# experiences/mhd2d.py, réutilisé tel quel : grille 32², ν = 8e-3, frottement α = 0,02, forçage blanc
+# Reprend le jeu de données de l'expérience E2 (experiments/e2_data.py) avec le solveur
+# experiments/mhd2d.py, réutilisé tel quel : grille 32², ν = 8e-3, frottement α = 0,02, forçage blanc
 # dans la bande 2 ≤ |k| ≤ 3 d'injection 0,05 (vorticité et potentiel). Les 11 valeurs de η sont
 # celles de E2 (η_train ∪ η_test = 4e-3 × 2^(j/4), j = 0…10, soit Pm = ν/η de 2 à ≈ 0,35).
 # Différence avec E2 : la graine de chaque simulation est son indice dans la campagne (E2 :

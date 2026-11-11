@@ -21,7 +21,7 @@ Les modules réels (solveur, entraînement, métriques) sont exigés : une panne
 échouer l'étape. ``--allow-fallback`` autorise les remplacements de secours (champ ABC analytique,
 petit réseau convolutif, divergence spectrale locale) pour tester l'infrastructure seule.
 
-Usage : ``python infra/deploy/smoke.py [--n 16] [--keep] [--json rapport.json] [--allow-fallback]``
+Usage : ``python infra/deploy/smoke.py [--n 16] [--keep] [--json report.json] [--allow-fallback]``
 """
 from __future__ import annotations
 

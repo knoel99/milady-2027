@@ -28,7 +28,7 @@ fichier MFF porte l'identifiant ``milady_uuid`` et s'enregistre a posteriori ave
 Variables d'environnement : ``MILADY_DB_URL``, ``MILADY_STORAGE_URI`` (et S3), ``MILADY_WORKDIR``
 (dossier de travail local, défaut ``$MILADY_DATA/work`` ou ``<racine>/data/work``), ``MILADY_JOB_ID``,
 ``MILADY_SCHEDULER``, ``MILADY_HOST``, ``MILADY_MHD2D_PATH`` (solveur 2D, défaut
-``experiences/mhd2d.py``).
+``experiments/mhd2d.py``).
 """
 
 from __future__ import annotations
@@ -178,11 +178,11 @@ class Solver3D:
 
 
 def _load_mhd2d() -> ModuleType:
-    """Charge ``experiences/mhd2d.py`` (solveur 2D des expériences, réutilisé tel quel)."""
-    path = Path(os.environ.get("MILADY_MHD2D_PATH") or project_root() / "experiences" / "mhd2d.py")
+    """Charge ``experiments/mhd2d.py`` (solveur 2D des expériences, réutilisé tel quel)."""
+    path = Path(os.environ.get("MILADY_MHD2D_PATH") or project_root() / "experiments" / "mhd2d.py")
     if not path.is_file():
         raise FileNotFoundError(f"solveur 2D introuvable : {path} (MILADY_MHD2D_PATH)")
-    spec = importlib.util.spec_from_file_location("milady_experiences_mhd2d", path)
+    spec = importlib.util.spec_from_file_location("milady_experiments_mhd2d", path)
     assert spec is not None and spec.loader is not None
     mod = importlib.util.module_from_spec(spec)
     spec.loader.exec_module(mod)
@@ -190,9 +190,9 @@ def _load_mhd2d() -> ModuleType:
 
 
 class Solver2D:
-    """Adaptateur du solveur MHD 2D forcé des expériences (``experiences/mhd2d.py``, classe ``MHD2D``).
+    """Adaptateur du solveur MHD 2D forcé des expériences (``experiments/mhd2d.py``, classe ``MHD2D``).
 
-    Même suite d'appels que ``experiences/e2_donnees.py`` (estimation de l'injection puis pas de temps
+    Même suite d'appels que ``experiments/e2_data.py`` (estimation de l'injection puis pas de temps
     fixes) : à graine égale, les instantanés sont ceux de E2. Le forçage étant blanc en temps, le
     pas est fixe (``runtime.dt``) et les instants de sortie doivent en être des multiples.
     """
@@ -295,7 +295,7 @@ class Solver2D:
     def info(self) -> dict[str, Any]:
         """Description du solveur pour les métadonnées du fichier."""
         return {
-            "name": "experiences/mhd2d.py (MHD2D)",
+            "name": "experiments/mhd2d.py (MHD2D)",
             "scheme": "pseudo-spectral 2D en potentiels (ω, a), désaliasage 2/3, RK4 à facteur intégrant + "
             "Euler–Maruyama (forçage blanc)",
             "dt": self.dt,

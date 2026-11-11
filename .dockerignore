@@ -9,7 +9,7 @@
 !src/
 !tests/
 !infra/
-!experiences/*.py
+!experiments/*.py
 
 # Jamais dans une image : secrets, données, caches, conteneurs construits.
 **/.env

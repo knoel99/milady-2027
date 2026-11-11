@@ -18,7 +18,7 @@ from urllib.parse import urlsplit
 
 ROOT = Path(__file__).resolve().parent.parent / "site"  # racine du site publié
 KATEX_SRI = 'integrity="sha384-QFFtAGzvvj+bfgCGxXJlNZZR1nXEZgvG8tDLCCY1F19xl20WlfTYgguB4VcNdxYk"'
-PREP_SECTIONS = ["{#objectifs}", "{#prerequis}", "{#plan}", "{#exercices}", "{#lien-stage}", "{#plus-loin}", "{#sources}"]
+PREP_SECTIONS = ["{#objectives}", "{#prerequisites}", "{#plan}", "{#exercises}", "{#internship-link}", "{#further-reading}", "{#sources}"]
 
 
 class Links:
@@ -42,7 +42,7 @@ def main():
     problems = []
     only = [a.strip("/") for a in sys.argv[1:]]
     pages = sorted(q for q in ROOT.glob("**/index.qmd") if "figures" not in q.parts and "node_modules" not in q.parts)
-    if only:  # restreindre aux pages demandées (chemins relatifs, ex. en/prep/p1-calcul-vectoriel)
+    if only:  # restreindre aux pages demandées (chemins relatifs, ex. en/prep/p1-vector-calculus)
         pages = [q for q in pages if (q.parent.relative_to(ROOT).as_posix() or ".") in only]
     cache = {}
     for qmd in pages:
@@ -61,7 +61,7 @@ def main():
             for sec in PREP_SECTIONS:
                 if sec not in src:
                     problems.append(f"{rel}: section {sec} absente")
-            ex = src.split("{#exercices}", 1)[-1].split("{#lien-stage}", 1)[0]
+            ex = src.split("{#exercises}", 1)[-1].split("{#internship-link}", 1)[0]
             n_ex = len(re.findall(r"^\d+\.\s+\*\*★", ex, flags=re.M))
             if n_ex < 10:
                 problems.append(f"{rel}: {n_ex} exercices gradués (≥ 10 attendus)")

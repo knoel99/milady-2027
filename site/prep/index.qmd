@@ -34,7 +34,7 @@ format:
       - text: |
           </main>
           </div>
-          <footer class="foot"><p><a href="../index.html">← Home</a> · <a href="../prep/index.html">Preparation</a> · <a href="../encadrants/index.html">Supervisors</a> · <a href="../rapport/index.html">Internship report</a> · <a href="../these/index.html">PhD proposal</a> · <a href="../interactifs/index.html">Interactive diagrams</a> · <a href="../experiences/index.html">Experiments</a> · <a href="../calcul/index.html">Computing and data</a></p></footer>
+          <footer class="foot"><p><a href="../index.html">← Home</a> · <a href="../prep/index.html">Preparation</a> · <a href="../supervisors/index.html">Supervisors</a> · <a href="../report/index.html">Internship report</a> · <a href="../thesis/index.html">PhD proposal</a> · <a href="../interactive/index.html">Interactive diagrams</a> · <a href="../experiments/index.html">Experiments</a> · <a href="../computing/index.html">Computing and data</a></p></footer>
           <script defer src="../assets/theme.js"></script>
 ---
 
@@ -49,14 +49,14 @@ These modules are independent notes. They are not an official course of ENPC, LI
 
 | Module | Level | Duration | Exercises | What it brings to the internship |
 |---|---|---|---|---|
-| [1. Vector calculus and Fourier analysis](p1-calcul-vectoriel/index.html) | L1 → L2 | 20 h | 15 | divergence, curl, potentials, FFT, Leray projection |
-| [2. Fluid mechanics and turbulence](p2-mecanique-fluides/index.html) | L2 → M1 | 25 h | 15 | Navier–Stokes, energy budgets, spectra, pseudo-spectral methods |
+| [1. Vector calculus and Fourier analysis](p1-vector-calculus/index.html) | L1 → L2 | 20 h | 15 | divergence, curl, potentials, FFT, Leray projection |
+| [2. Fluid mechanics and turbulence](p2-fluid-mechanics/index.html) | L2 → M1 | 25 h | 15 | Navier–Stokes, energy budgets, spectra, pseudo-spectral methods |
 | [3. Electromagnetism, MHD and the dynamo effect](p3-mhd-dynamo/index.html) | L2 → M2 | 30 h | 14 | induction equation, $Rm$, laboratory dynamos, reversals |
-| [4. Dynamical systems, bifurcations and invariant measures](p4-systemes-dynamiques/index.html) | L2 → M2 | 25 h | 15 | bifurcations, chaos, stationarity identities, Rice formula |
-| [5. Probability, statistics and optimal transport](p5-probabilites-transport/index.html) | L2 → M1 | 25 h | 15 | pushforward measure, KL and I-projection, distances between distributions, SDEs |
-| [6. Deep learning for physics](p6-apprentissage-profond/index.html) | L3 → M2 | 30 h | 16 | neural networks, POD and autoencoders, equivariance, PINNs and operators |
-| [7. Generative models: diffusion and flow matching](p7-modeles-generatifs/index.html) | M1 → M2 | 30 h | 16 | diffusion, score, flow matching, conditioning, FunDiff |
-| [8. Generative models under physical constraints](p8-contraintes-physiques/index.html) | M2 → research | 30 h | 16 | taxonomy of constraints, projections, penalties, distributional constraints |
+| [4. Dynamical systems, bifurcations and invariant measures](p4-dynamical-systems/index.html) | L2 → M2 | 25 h | 15 | bifurcations, chaos, stationarity identities, Rice formula |
+| [5. Probability, statistics and optimal transport](p5-probability-transport/index.html) | L2 → M1 | 25 h | 15 | pushforward measure, KL and I-projection, distances between distributions, SDEs |
+| [6. Deep learning for physics](p6-deep-learning/index.html) | L3 → M2 | 30 h | 16 | neural networks, POD and autoencoders, equivariance, PINNs and operators |
+| [7. Generative models: diffusion and flow matching](p7-generative-models/index.html) | M1 → M2 | 30 h | 16 | diffusion, score, flow matching, conditioning, FunDiff |
+| [8. Generative models under physical constraints](p8-physical-constraints/index.html) | M2 → research | 30 h | 16 | taxonomy of constraints, projections, penalties, distributional constraints |
 
 ## In what order {#ordre}
 
@@ -81,7 +81,7 @@ To start the internship in spring 2027, at a pace of about 15 hours per week:
 | 9–10 | 4 | be able to check a stationarity identity and the Rice formula on a simple model |
 | 11–12 | 6 | have compared POD and an autoencoder on fields |
 | 13–14 | 7 | have trained a conditional flow matching model |
-| 15–16 | 8 | have read the five references of the internship offer and reproduced an experiment from the [report](../rapport/index.html) |
+| 15–16 | 8 | have read the five references of the internship offer and reproduced an experiment from the [report](../report/index.html) |
 
 ## How to work through a module {#methode}
 
@@ -90,4 +90,4 @@ Each module follows the same structure: objectives, prerequisites, work plan (se
 - Read a chapter, then do the exercises listed in its work plan before reading the solution.
 - Run each code block and change a parameter: every block runs in under 30 seconds on a laptop.
 - Keep one page of formulas per module; module 8 assumes you can retrieve them quickly.
-- The [interactive diagrams](../interactifs/index.html) illustrate five key notions (flow matching, Leray projection, distributional constraint, reversals and the ABC dynamo) and the simulation pipeline; the modules contain 25 more.
+- The [interactive diagrams](../interactive/index.html) illustrate five key notions (flow matching, Leray projection, distributional constraint, reversals and the ABC dynamo) and the simulation pipeline; the modules contain 25 more.

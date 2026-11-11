@@ -1,6 +1,6 @@
 """Données MilaDy : format MFF 1.0 (HDF5 compatible The Well, variante Zarr), validation et convertisseurs.
 
-Interface principale (voir ``milady.data.format`` et ``docs/specs/format-donnees.md``) :
+Interface principale (voir ``milady.data.format`` et ``docs/specs/data-format.md``) :
 
     from milady.data import write_mff, read_mff, validate
     sha = write_mff("sim.h5", {"velocity": u, "magnetic_field": b}, {"time": t, "x": x, "y": y, "z": z},
