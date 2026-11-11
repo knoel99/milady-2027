@@ -265,6 +265,10 @@ def main(quick=False, reverse=False, train_only=False):
         jobs = jobs[::-1]
     for vname, (kind, aug, n_it), seed in jobs:
         if True:
+            # Initial weights depend only on the seed: not on the start-up seed of torch (random in torch 2.14),
+            # the job order (--reverse) or which jobs were read from the cache. Before 2026-11-11 the first
+            # model was built before any seeding, so variant A of the published runs is not reproducible.
+            seed_all(seed)
             base = MLPField(3, width=256, depth=4)
             model = SymmetrizedField(base, S) if kind == "sym" else base
 
