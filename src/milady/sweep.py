@@ -1,24 +1,24 @@
-"""Campagnes de simulations : développement d'un fichier YAML en simulations, enregistrement au catalogue,
-exécution locale, dans des conteneurs Docker ou en tableau de jobs Slurm.
+"""Simulation campaigns: expansion of a YAML file into simulations, registration in the catalog,
+local execution, in Docker containers or as a Slurm job array.
 
 Usage ::
 
     python -m milady.sweep infra/configs/palier2_abc3d.yaml --scheduler local  [--max-parallel 2]
     python -m milady.sweep infra/configs/palier2_abc3d.yaml --scheduler docker [--max-parallel 4]
     python -m milady.sweep infra/configs/palier2_abc3d.yaml --scheduler slurm  [--dry-run]
-    python -m milady.sweep CONFIG --scheduler local --dry-run                  # plan, sans rien exécuter
+    python -m milady.sweep CONFIG --scheduler local --dry-run                  # plan, without running anything
 
-Format d'une campagne (voir ``infra/configs/*.yaml``) ::
+Format of a campaign (see ``infra/configs/*.yaml``) ::
 
-    name: palier2_abc3d                 # identifiant (lettres, chiffres, « _ », « - », « . »)
-    description: texte libre
-    code: mhd3d_torch                   # ou mhd2d_numpy
-    grid: {N: 64, domain: 2pi}          # N entier ou [nx, ny, nz] ; domain nombre, "2pi" ou liste
-    fixed: {mode: kinematic, flow: abc} # paramètres communs à toutes les simulations
-    sweep:                              # produit cartésien (la dernière clé varie le plus vite)
-      Rm: [6, 8, 10]                    #   liste
-      Pm: {start: 0.5, stop: 4, num: 4, scale: log}   # plage : num points (lin ou log), bornes incluses
-      Re: {start: 50, stop: 200, step: 50}            # plage : pas fixe, borne haute incluse
+    name: palier2_abc3d                 # identifier (letters, digits, "_", "-", ".")
+    description: free text
+    code: mhd3d_torch                   # or mhd2d_numpy
+    grid: {N: 64, domain: 2pi}          # N integer or [nx, ny, nz]; domain number, "2pi" or list
+    fixed: {mode: kinematic, flow: abc} # parameters common to all simulations
+    sweep:                              # Cartesian product (the last key varies fastest)
+      Rm: [6, 8, 10]                    #   list
+      Pm: {start: 0.5, stop: 4, num: 4, scale: log}   # range: num points (lin or log), bounds included
+      Re: {start: 50, stop: 200, step: 50}            # range: fixed step, upper bound included
     runtime: {dt: 0.02, t_burn: 100, t_keep: 100, every: 5, n_traj: 2, diag_every: 0.5,
               cfl: 1.0, device: auto, dtype: float32, checkpoint_every_s: 900}
     resources: {gpus: 1, cpus: 8, time: "02:00:00", mem: null, max_parallel: 16,
@@ -26,15 +26,15 @@ Format d'une campagne (voir ``infra/configs/*.yaml``) ::
     output: {format: mff, uri: "${MILADY_STORAGE_URI}", fields: [velocity, magnetic_field],
              spectral: false, dataset_name: milady_palier2_abc3d}
 
-Chaque simulation reçoit un identifiant **déterministe** (UUID v5 du nom de campagne, de l'indice,
-des paramètres, de la grille et des réglages de temps) : ``milady.sweep`` l'enregistre au catalogue
-(statut ``queued``) et ``milady.sim.run CONFIG --index i`` le retrouve sans échange entre eux
-(tableau Slurm, conteneurs). Relancer une campagne est donc idempotent : les simulations ``done``
-sont sautées (``--force`` pour tout refaire), les ``failed`` et ``queued`` sont relancées, les
-``running`` aussi avec ``--retry-running`` (nœud perdu, instance interruptible récupérée).
+Each simulation receives a **deterministic** identifier (UUID v5 of the campaign name, the index,
+the parameters, the grid and the time settings): ``milady.sweep`` registers it in the catalog
+(status ``queued``) and ``milady.sim.run CONFIG --index i`` finds it again without any exchange between them
+(Slurm array, containers). Relaunching a campaign is therefore idempotent: ``done`` simulations
+are skipped (``--force`` to redo everything), ``failed`` and ``queued`` ones are relaunched,
+``running`` ones too with ``--retry-running`` (lost node, preemptible instance recovered).
 
-Ce module ne dépend que de PyYAML pour développer une campagne : sur une VM, il peut piloter les
-conteneurs depuis l'hôte (``--scheduler docker``) sans PyTorch ni accès direct au catalogue.
+This module depends only on PyYAML to expand a campaign: on a VM, it can drive the
+containers from the host (``--scheduler docker``) without PyTorch or direct access to the catalog.
 """
 
 from __future__ import annotations
@@ -78,14 +78,14 @@ __all__ = [
     "sweep_points",
 ]
 
-#: Espace de noms des identifiants déterministes de simulations (UUID v5).
+#: Namespace of the deterministic simulation identifiers (UUID v5).
 SIM_NAMESPACE = uuid.uuid5(uuid.NAMESPACE_URL, "https://knoel99.github.io/milady-2027/simulation")
 _TOP_KEYS = {"name", "description", "code", "grid", "fixed", "sweep", "runtime", "resources", "output"}
 _RUNTIME_KEYS = {
     "dt", "t_burn", "t_keep", "every", "n_traj", "diag_every", "cfl", "device", "dtype",
     "checkpoint_every_s", "checkpoint_to_storage", "keep_checkpoint",
 }  # fmt: skip
-#: Réglages de temps qui changent le résultat d'une simulation (entrent dans son identifiant).
+#: Time settings that change the result of a simulation (they enter its identifier).
 _RUNTIME_ID_KEYS = ("dt", "t_burn", "t_keep", "every", "n_traj", "diag_every", "cfl")
 _RESOURCE_KEYS = {"gpus", "cpus", "time", "mem", "max_parallel", "account", "partition", "qos", "constraint"}
 _OUTPUT_KEYS = {"format", "uri", "fields", "spectral", "dataset_name"}
@@ -95,11 +95,11 @@ _PENDING_TAG = "MILADY_PENDING"
 
 
 # =============================================================================================
-# Campagne
+# Campaign
 # =============================================================================================
 @dataclass
 class Campaign:
-    """Campagne de simulations lue depuis un fichier YAML (voir la docstring du module)."""
+    """Simulation campaign read from a YAML file (see the module docstring)."""
 
     name: str
     code: str
@@ -115,24 +115,24 @@ class Campaign:
 
     @property
     def n_dims(self) -> int:
-        """Nombre de dimensions spatiales du code."""
+        """Number of spatial dimensions of the code."""
         return 2 if self.code == "mhd2d_numpy" else 3
 
     @property
     def shape(self) -> list[int]:
-        """Points de grille par direction."""
+        """Grid points per direction."""
         n = self.grid["N"]
         return [int(v) for v in n] if isinstance(n, (list, tuple)) else [int(n)] * self.n_dims
 
     @property
     def lengths(self) -> list[float]:
-        """Longueurs du domaine par direction."""
+        """Domain lengths per direction."""
         d = self.grid.get("domain", 2 * math.pi)
         return [float(v) for v in d] if isinstance(d, (list, tuple)) else [float(d)] * self.n_dims
 
 
 def _parse_length(v: Any) -> float:
-    """Longueur : nombre, ou chaîne ``2pi``, ``2π``, ``pi``, ``4*pi``…"""
+    """Length: number, or string ``2pi``, ``2π``, ``pi``, ``4*pi``…"""
     if isinstance(v, (int, float)) and not isinstance(v, bool):
         return float(v)
     s = str(v).strip().lower().replace("π", "pi").replace(" ", "").replace("*", "")
@@ -143,59 +143,59 @@ def _parse_length(v: Any) -> float:
 
 
 def load_campaign(path: str | os.PathLike[str]) -> Campaign:
-    """Lit et valide une campagne YAML (clés connues, noms de paramètres, temps cohérents)."""
+    """Read and validate a YAML campaign (known keys, parameter names, consistent times)."""
     path = Path(path)
     text = path.read_text(encoding="utf-8")
     raw = yaml.safe_load(text)
     if not isinstance(raw, dict):
-        raise TypeError(f"{path} : dictionnaire YAML attendu")
+        raise TypeError(f"{path}: YAML dictionary expected")
     unknown = set(raw) - _TOP_KEYS
     if unknown:
-        raise ValueError(f"{path} : clés inconnues {sorted(unknown)} (attendues : {sorted(_TOP_KEYS)})")
+        raise ValueError(f"{path}: unknown keys {sorted(unknown)} (expected: {sorted(_TOP_KEYS)})")
     for key in ("name", "code", "grid", "runtime"):
         if key not in raw:
-            raise ValueError(f"{path} : clé obligatoire « {key} » absente")
+            raise ValueError(f"{path}: required key \"{key}\" missing")
     name = str(raw["name"])
     if not _NAME_RE.match(name):
-        raise ValueError(f"nom de campagne invalide : {name!r}")
+        raise ValueError(f"invalid campaign name: {name!r}")
     code = str(raw["code"])
     if code not in CODES:
-        raise ValueError(f"code {code!r} inconnu (attendu : {', '.join(CODES)})")
+        raise ValueError(f"code {code!r} unknown (expected: {', '.join(CODES)})")
     grid = dict(raw["grid"] or {})
     if "N" not in grid:
-        raise ValueError("grid.N obligatoire")
+        raise ValueError("grid.N required")
     d = grid.get("domain", 2 * math.pi)
     grid["domain"] = [_parse_length(x) for x in d] if isinstance(d, (list, tuple)) else _parse_length(d)
     runtime = dict(raw["runtime"] or {})
     bad = set(runtime) - _RUNTIME_KEYS
     if bad:
-        raise ValueError(f"runtime : clés inconnues {sorted(bad)} (acceptées : {sorted(_RUNTIME_KEYS)})")
+        raise ValueError(f"runtime: unknown keys {sorted(bad)} (accepted: {sorted(_RUNTIME_KEYS)})")
     for key in ("dt", "t_keep", "every"):
         if key not in runtime:
-            raise ValueError(f"runtime.{key} obligatoire")
+            raise ValueError(f"runtime.{key} required")
     runtime.setdefault("t_burn", 0.0)
     runtime.setdefault("n_traj", 1)
     resources = dict(raw.get("resources") or {})
     bad = set(resources) - _RESOURCE_KEYS
     if bad:
-        raise ValueError(f"resources : clés inconnues {sorted(bad)} (acceptées : {sorted(_RESOURCE_KEYS)})")
+        raise ValueError(f"resources: unknown keys {sorted(bad)} (accepted: {sorted(_RESOURCE_KEYS)})")
     output = dict(raw.get("output") or {})
     bad = set(output) - _OUTPUT_KEYS
     if bad:
-        raise ValueError(f"output : clés inconnues {sorted(bad)} (acceptées : {sorted(_OUTPUT_KEYS)})")
+        raise ValueError(f"output: unknown keys {sorted(bad)} (accepted: {sorted(_OUTPUT_KEYS)})")
     fields = output.get("fields") or ["velocity", "magnetic_field"]
     if not isinstance(fields, list) or not fields or set(fields) - {"velocity", "magnetic_field"}:
         raise ValueError(
-            f"output.fields : sous-ensemble non vide de [velocity, magnetic_field], reçu {fields!r}"
+            f"output.fields: non-empty subset of [velocity, magnetic_field], got {fields!r}"
         )
     fixed = dict(raw.get("fixed") or {})
     sweep = dict(raw.get("sweep") or {})
     overlap = set(fixed) & set(sweep)
     if overlap:
-        raise ValueError(f"paramètres à la fois fixes et balayés : {sorted(overlap)}")
+        raise ValueError(f"parameters both fixed and swept: {sorted(overlap)}")
     for key in list(fixed) + list(sweep):
         if not _PARAM_RE.match(str(key)) or str(key).startswith("milady_"):
-            raise ValueError(f"nom de paramètre invalide : {key!r}")
+            raise ValueError(f"invalid parameter name: {key!r}")
     camp = Campaign(
         name=name,
         code=code,
@@ -209,34 +209,34 @@ def load_campaign(path: str | os.PathLike[str]) -> Campaign:
         path=path,
         text=text,
     )
-    output_times(camp.runtime)  # contrôle de cohérence des temps
+    output_times(camp.runtime)  # time consistency check
     if code == "mhd2d_numpy" and (
         len(camp.shape) != 2 or any(abs(L - 2 * math.pi) > 1e-9 for L in camp.lengths)
     ):
-        raise ValueError("mhd2d_numpy : grille 2D carrée sur [0, 2π)² uniquement (N entier, domain 2pi)")
+        raise ValueError("mhd2d_numpy: square 2D grid on [0, 2π)² only (integer N, domain 2pi)")
     return camp
 
 
 def _clean(x: float) -> float | int:
-    """Arrondi à 12 chiffres significatifs (évite 0.30000000000000004) ; entiers conservés."""
+    """Round to 12 significant digits (avoids 0.30000000000000004); integers kept."""
     if isinstance(x, int):
         return x
     return float(f"{x:.12g}")
 
 
 def expand_values(spec: Any) -> list[Any]:
-    """Valeurs d'un paramètre balayé : liste, scalaire, ou plage ``{start, stop, num[, scale]}`` /
-    ``{start, stop, step}`` (bornes incluses) / ``{values: [...]}``."""
+    """Values of a swept parameter: list, scalar, or range ``{start, stop, num[, scale]}`` /
+    ``{start, stop, step}`` (bounds included) / ``{values: [...]}``."""
     if isinstance(spec, (list, tuple)):
         if not spec:
-            raise ValueError("liste de valeurs vide")
+            raise ValueError("empty list of values")
         return list(spec)
     if not isinstance(spec, Mapping):
         return [spec]
     if "values" in spec:
         return expand_values(list(spec["values"]))
     if "start" not in spec or "stop" not in spec:
-        raise ValueError(f"plage invalide {dict(spec)} : start et stop requis")
+        raise ValueError(f"invalid range {dict(spec)}: start and stop required")
     a, b = float(spec["start"]), float(spec["stop"])
     if "num" in spec:
         n = int(spec["num"])
@@ -247,42 +247,42 @@ def expand_values(spec: Any) -> list[Any]:
             return [_clean(a)]
         if scale in ("log", "geom", "geometric"):
             if a <= 0 or b <= 0:
-                raise ValueError("échelle log : bornes > 0")
+                raise ValueError("log scale: bounds > 0")
             la, lb = math.log(a), math.log(b)
             return [_clean(math.exp(la + (lb - la) * i / (n - 1))) for i in range(n)]
         if scale not in ("lin", "linear"):
-            raise ValueError(f"échelle {scale!r} : lin ou log")
+            raise ValueError(f"scale {scale!r}: lin or log")
         return [_clean(a + (b - a) * i / (n - 1)) for i in range(n)]
     if "step" in spec:
         step = float(spec["step"])
         if step == 0 or (b - a) / step < 0:
-            raise ValueError("pas nul ou de mauvais signe")
+            raise ValueError("zero step or wrong sign")
         n = math.floor((b - a) / step + 1e-9) + 1
         ints = all(
             isinstance(spec[k], int) and not isinstance(spec[k], bool) for k in ("start", "stop", "step")
         )
         return [int(a + i * step) if ints else _clean(a + i * step) for i in range(n)]
-    raise ValueError(f"plage invalide {dict(spec)} : num ou step requis")
+    raise ValueError(f"invalid range {dict(spec)}: num or step required")
 
 
 def output_times(runtime: Mapping[str, Any]) -> tuple[list[float], list[float]]:
-    """(instants des champs conservés, instants des diagnostics).
+    """(times of the kept fields, times of the diagnostics).
 
-    Champs : t_burn + k × every, k = 1…round(t_keep/every) (convention de E2). Diagnostics : tous les
-    ``diag_every`` (défaut ``every``) depuis t = 0 jusqu'à t_burn + t_keep (inclus).
+    Fields: t_burn + k × every, k = 1…round(t_keep/every) (E2 convention). Diagnostics: every
+    ``diag_every`` (default ``every``) from t = 0 up to t_burn + t_keep (inclusive).
     """
     dt, every, t_keep = float(runtime["dt"]), float(runtime["every"]), float(runtime["t_keep"])
     t_burn = float(runtime.get("t_burn", 0.0))
     if dt <= 0 or every <= 0 or t_keep <= 0 or t_burn < 0:
-        raise ValueError("runtime : dt, every, t_keep > 0 et t_burn ≥ 0 requis")
+        raise ValueError("runtime: dt, every, t_keep > 0 and t_burn ≥ 0 required")
     n_keep = round(t_keep / every)
     if n_keep < 1 or abs(n_keep * every - t_keep) > 1e-6 * t_keep:
-        raise ValueError(f"runtime : t_keep = {t_keep} doit être un multiple de every = {every}")
+        raise ValueError(f"runtime: t_keep = {t_keep} must be a multiple of every = {every}")
     snaps = [_clean(t_burn + k * every) for k in range(1, n_keep + 1)]
     t_end = t_burn + t_keep
     de = float(runtime.get("diag_every", every))
     if de <= 0:
-        raise ValueError("runtime.diag_every > 0 requis")
+        raise ValueError("runtime.diag_every > 0 required")
     n_d = math.floor(t_end / de + 1e-9)
     diags = [_clean(j * de) for j in range(n_d + 1)]
     if abs(diags[-1] - t_end) > 1e-9 * max(1.0, t_end):
@@ -292,11 +292,11 @@ def output_times(runtime: Mapping[str, Any]) -> tuple[list[float], list[float]]:
 
 @dataclass
 class SweepPoint:
-    """Une simulation de la campagne."""
+    """One simulation of the campaign."""
 
     index: int
-    point: dict[str, Any]  # paramètres tels qu'écrits (fixes + balayés)
-    params: dict[str, Any]  # paramètres physiques complets (catalogue, fichier MFF)
+    point: dict[str, Any]  # parameters as written (fixed + swept)
+    params: dict[str, Any]  # complete physical parameters (catalog, MFF file)
     sim_id: str
 
 
@@ -305,7 +305,7 @@ def _canonical(obj: Any) -> str:
 
 
 def simulation_id(campaign: Campaign, index: int, params: Mapping[str, Any]) -> str:
-    """Identifiant déterministe (UUID v5) d'une simulation de la campagne."""
+    """Deterministic identifier (UUID v5) of a campaign simulation."""
     key = {
         "campaign": campaign.name,
         "code": campaign.code,
@@ -318,7 +318,7 @@ def simulation_id(campaign: Campaign, index: int, params: Mapping[str, Any]) -> 
 
 
 def sweep_points(campaign: Campaign) -> list[SweepPoint]:
-    """Développe la campagne : produit cartésien des valeurs balayées (ordre YAML, dernière clé la plus rapide)."""
+    """Expand the campaign: Cartesian product of the swept values (YAML order, last key fastest)."""
     keys = list(campaign.sweep)
     values = [expand_values(campaign.sweep[k]) for k in keys]
     grid = {"domain": campaign.lengths[0]}
@@ -331,7 +331,7 @@ def sweep_points(campaign: Campaign) -> list[SweepPoint]:
 
 
 def grid_spec(campaign: Campaign) -> dict[str, Any]:
-    """Description de la grille pour la colonne ``grid`` du catalogue (mêmes clés que ``format.grid_info``)."""
+    """Description of the grid for the ``grid`` column of the catalog (same keys as ``format.grid_info``)."""
     snaps, _ = output_times(campaign.runtime)
     dims = ["x", "y", "z"][: campaign.n_dims]
     return {
@@ -350,7 +350,7 @@ def grid_spec(campaign: Campaign) -> dict[str, Any]:
 
 
 def parse_indices(spec: str | None, n: int) -> list[int]:
-    """``"0,3,5-7"`` → [0, 3, 5, 6, 7] (bornes vérifiées) ; ``None`` → tous."""
+    """``"0,3,5-7"`` → [0, 3, 5, 6, 7] (bounds checked); ``None`` → all."""
     if not spec:
         return list(range(n))
     out: list[int] = []
@@ -365,12 +365,12 @@ def parse_indices(spec: str | None, n: int) -> list[int]:
             out.append(int(part))
     bad = [i for i in out if not 0 <= i < n]
     if bad:
-        raise ValueError(f"indices hors de [0, {n - 1}] : {bad}")
+        raise ValueError(f"indices outside [0, {n - 1}]: {bad}")
     return sorted(set(out))
 
 
 def _ranges(indices: Sequence[int]) -> str:
-    """[0, 1, 2, 5, 7, 8] → "0-2,5,7-8" (syntaxe de ``sbatch --array``)."""
+    """[0, 1, 2, 5, 7, 8] → "0-2,5,7-8" (syntax of ``sbatch --array``)."""
     parts: list[str] = []
     for _, grp in itertools.groupby(enumerate(sorted(indices)), key=lambda p: p[1] - p[0]):
         g = [v for _, v in grp]
@@ -379,7 +379,7 @@ def _ranges(indices: Sequence[int]) -> str:
 
 
 # =============================================================================================
-# Catalogue
+# Catalog
 # =============================================================================================
 def register(
     campaign: Campaign,
@@ -389,10 +389,10 @@ def register(
     retry_running: bool = False,
     log: Any = print,
 ) -> list[SweepPoint]:
-    """Crée la campagne et les simulations ``queued`` au catalogue ; renvoie celles à exécuter.
+    """Create the campaign and the ``queued`` simulations in the catalog; return those to run.
 
-    Simulations déjà présentes : ``done`` sautées (sauf ``force``), ``running`` sautées (sauf
-    ``force`` ou ``retry_running``), ``failed``/``queued`` remises en file.
+    Simulations already present: ``done`` skipped (unless ``force``), ``running`` skipped (unless
+    ``force`` or ``retry_running``), ``failed``/``queued`` put back in the queue.
     """
     from milady.catalog.api import Catalog
 
@@ -433,18 +433,18 @@ def register(
     cat.close()
     if skipped:
         log(
-            "simulations sautées : "
+            "simulations skipped: "
             + ", ".join(f"{n} {s}" for s, n in sorted(skipped.items()))
-            + " (--force pour tout relancer, --retry-running pour les « running » orphelines)"
+            + " (--force to rerun everything, --retry-running for orphaned \"running\" ones)"
         )
     return pending
 
 
 # =============================================================================================
-# Exécution
+# Execution
 # =============================================================================================
 def _gpu_count() -> int:
-    """Nombre de GPU NVIDIA visibles (``nvidia-smi -L``), 0 sans pilote ; sans importer torch."""
+    """Number of visible NVIDIA GPUs (``nvidia-smi -L``), 0 without a driver; without importing torch."""
     visible = os.environ.get("CUDA_VISIBLE_DEVICES")
     if visible is not None:
         return len([v for v in visible.split(",") if v.strip() and v.strip() != "-1"])
@@ -459,7 +459,7 @@ def _gpu_count() -> int:
 
 
 def _sweep_dir(campaign: Campaign) -> Path:
-    """Dossier de la campagne lancée (copie figée de la configuration, scripts, journaux)."""
+    """Folder of the launched campaign (frozen copy of the configuration, scripts, logs)."""
     stamp = _dt.datetime.now(_dt.UTC).strftime("%Y%m%dT%H%M%SZ")
     env = os.environ.get("MILADY_SWEEP_DIR")
     base = Path(os.path.expandvars(env)).expanduser() if env else project_root() / "data" / "sweeps"
@@ -469,14 +469,14 @@ def _sweep_dir(campaign: Campaign) -> Path:
 
 
 def _freeze_config(campaign: Campaign, sweep_dir: Path) -> Path:
-    """Copie figée de la configuration : les jobs en file la relisent telle quelle (identifiants stables)."""
+    """Frozen copy of the configuration: queued jobs re-read it as is (stable identifiers)."""
     frozen = sweep_dir / f"{campaign.name}.yaml"
     frozen.write_text(campaign.text, encoding="utf-8")
     return frozen
 
 
 def _repo_relative(path: Path) -> str:
-    """Chemin relatif à la racine du dépôt si possible (visible tel quel dans les conteneurs), sinon absolu."""
+    """Path relative to the repository root if possible (visible as is in the containers), otherwise absolute."""
     root = project_root()
     try:
         return str(path.resolve().relative_to(root))
@@ -496,9 +496,9 @@ def _child_env(extra: Mapping[str, str]) -> dict[str, str]:
 def _run_pool(
     points: Sequence[SweepPoint], max_parallel: int, gpus: int, launch: Any, log: Any
 ) -> dict[int, int]:
-    """Exécute ``launch(point, slot)`` avec au plus ``max_parallel`` tâches simultanées.
+    """Run ``launch(point, slot)`` with at most ``max_parallel`` simultaneous tasks.
 
-    ``slot`` : indice de GPU attribué (tourniquet) ou ``None`` sans GPU. Renvoie {indice: code de retour}.
+    ``slot``: assigned GPU index (round-robin) or ``None`` without GPU. Returns {index: return code}.
     """
     slots: queue.Queue[int | None] = queue.Queue()
     for k in range(max_parallel):
@@ -515,10 +515,10 @@ def _run_pool(
             slots.put(slot)
         with lock:
             results[p.index] = code
-            state = "ok" if code == 0 else f"ÉCHEC (code {code})"
+            state = "ok" if code == 0 else f"FAILED (code {code})"
             log(
                 f"[{len(results)}/{len(points)}] simulation {p.index} ({p.sim_id[:8]}) : {state} "
-                f"— {time.monotonic() - t0:.0f} s écoulées"
+                f"— {time.monotonic() - t0:.0f} s elapsed"
             )
 
     with cf.ThreadPoolExecutor(max_workers=max_parallel) as ex:
@@ -541,10 +541,10 @@ def run_local(
     use_catalog: bool,
     log: Any = print,
 ) -> dict[int, int]:
-    """Exécute les simulations dans des sous-processus de la machine courante."""
+    """Run the simulations in subprocesses of the current machine."""
     gpus = _gpu_count()
-    # Fils par simulation : jamais plus que les cœurs disponibles / simulations simultanées
-    # (la sur-souscription ralentit les FFT d'un facteur 10 à 100 sur une machine chargée).
+    # Threads per simulation: never more than the available cores / simultaneous simulations
+    # (oversubscription slows down FFTs by a factor of 10 to 100 on a loaded machine).
     share = max(1, (os.cpu_count() or 1) // max_parallel)
     cpus = min(int(campaign.resources.get("cpus", 0) or 0) or share, share)
     cat = None
@@ -585,9 +585,9 @@ def run_local(
         return code
 
     log(
-        f"exécution locale : {len(points)} simulation(s), {max_parallel} en parallèle, {cpus} fil(s) chacune"
+        f"local execution: {len(points)} simulation(s), {max_parallel} in parallel, {cpus} thread(s) each"
         + (f", {gpus} GPU" if gpus else ", CPU")
-        + f" ; journaux : {log_dir}"
+        + f"; logs: {log_dir}"
     )
     try:
         return _run_pool(points, max_parallel, gpus, launch, log)
@@ -623,7 +623,7 @@ def _compose_worker() -> str:
 
 
 def _docker_register(cfg_arg: str, args: argparse.Namespace, log: Any) -> list[int]:
-    """Enregistre la campagne depuis un conteneur (accès au catalogue du réseau compose) ; renvoie les indices à exécuter."""
+    """Register the campaign from a container (access to the catalog of the compose network); return the indices to run."""
     cmd = [
         *_compose_base(),
         "run",
@@ -644,17 +644,17 @@ def _docker_register(cfg_arg: str, args: argparse.Namespace, log: Any) -> list[i
         cmd.append("--force")
     if args.retry_running:
         cmd.append("--retry-running")
-    log("enregistrement au catalogue (conteneur) : " + shlex.join(cmd))
+    log("registration in the catalog (container): " + shlex.join(cmd))
     env = _child_env({"GIT_COMMIT": os.environ.get("GIT_COMMIT") or git_commit()})
     out = subprocess.run(cmd, cwd=project_root(), env=env, capture_output=True, text=True, check=False)
     sys.stderr.write(out.stderr)
     if out.returncode != 0:
         sys.stdout.write(out.stdout)
-        raise RuntimeError(f"échec de l'enregistrement dans le conteneur (code {out.returncode})")
+        raise RuntimeError(f"registration in the container failed (code {out.returncode})")
     for line in reversed(out.stdout.splitlines()):
         if line.startswith(_PENDING_TAG):
             return [int(i) for i in json.loads(line[len(_PENDING_TAG) :])["pending"]]
-    raise RuntimeError("réponse d'enregistrement illisible :\n" + out.stdout)
+    raise RuntimeError("unreadable registration response:\n" + out.stdout)
 
 
 def run_docker(
@@ -667,7 +667,7 @@ def run_docker(
     run_args: Sequence[str],
     log: Any = print,
 ) -> dict[int, int]:
-    """Exécute chaque simulation dans un conteneur ``docker compose run --rm worker`` (GPU attribué par tâche)."""
+    """Run each simulation in a ``docker compose run --rm worker`` container (GPU assigned per task)."""
     worker = _compose_worker()
     gpus = _gpu_count() if worker.endswith("gpu") else 0
     log_dir.mkdir(parents=True, exist_ok=True)
@@ -686,16 +686,16 @@ def run_docker(
             ).returncode
 
     log(
-        f"exécution Docker ({worker}) : {len(points)} simulation(s), {max_parallel} conteneur(s) en parallèle"
+        f"Docker execution ({worker}): {len(points)} simulation(s), {max_parallel} container(s) in parallel"
         + (f", {gpus} GPU" if gpus else "")
-        + f" ; journaux : {log_dir}"
+        + f"; logs: {log_dir}"
     )
     return _run_pool(points, max_parallel, gpus, launch, log)
 
 
 # --- Slurm -------------------------------------------------------------------------------------
 _FALLBACK_SBATCH = """#!/bin/bash
-# Tableau de jobs MilaDy (gabarit minimal : infra/slurm/gen_data.sbatch absent).
+# Slurm job array of MilaDy (minimal template: infra/slurm/gen_data.sbatch missing).
 #SBATCH --job-name=milady-sim
 #SBATCH --array=0-0
 #SBATCH --nodes=1
@@ -704,7 +704,7 @@ _FALLBACK_SBATCH = """#!/bin/bash
 #SBATCH --time=04:00:00
 #SBATCH --output=%x-%A_%a.out
 set -euo pipefail
-CONFIG="${1:?campagne.yaml}"
+CONFIG="${1:?campaign.yaml}"
 shift
 cd "${MILADY_ROOT:-${SLURM_SUBMIT_DIR:-.}}"
 python -m milady.sim.run "${CONFIG}" --index "${SLURM_ARRAY_TASK_ID:-0}" "$@"
@@ -712,12 +712,12 @@ python -m milady.sim.run "${CONFIG}" --index "${SLURM_ARRAY_TASK_ID:-0}" "$@"
 
 
 def _job_name(campaign: Campaign) -> str:
-    """Nom des jobs Slurm de la campagne (``%x`` dans les noms de journaux)."""
+    """Name of the campaign Slurm jobs (``%x`` in log file names)."""
     return f"milady-sim-{campaign.name}"[:64]
 
 
 def _read_simple_env(path: Path) -> dict[str, str]:
-    """Lignes ``CLÉ=valeur`` d'un fichier de type shell (sans exécution ; ``$VAR`` développées)."""
+    """Lines ``KEY=value`` of a shell-like file (without execution; ``$VAR`` expanded)."""
     out: dict[str, str] = {}
     if not path.is_file():
         return out
@@ -730,12 +730,12 @@ def _read_simple_env(path: Path) -> dict[str, str]:
 
 
 def slurm_catalog_defaults(log: Any = print) -> None:
-    """Catalogue de la frontale = celui des jobs : mêmes valeurs par défaut que ``infra/slurm/env.sh``.
+    """Login-node catalog = the one of the jobs: same defaults as ``infra/slurm/env.sh``.
 
-    Si ``MILADY_DB_URL`` n'est pas défini : ``sqlite:///$MILADY_STATE/catalog.sqlite`` avec
-    ``MILADY_STATE`` = ``$WORK/milady`` (sinon ``<racine>/data``), après lecture de
-    ``~/.config/milady/slurm.env`` (lignes ``CLÉ=valeur``). La variable est exportée : ``sbatch``
-    la transmet aux jobs, qui écrivent donc dans la même base.
+    If ``MILADY_DB_URL`` is not defined: ``sqlite:///$MILADY_STATE/catalog.sqlite`` with
+    ``MILADY_STATE`` = ``$WORK/milady`` (otherwise ``<root>/data``), after reading
+    ``~/.config/milady/slurm.env`` (lines ``KEY=value``). The variable is exported: ``sbatch``
+    passes it to the jobs, which therefore write into the same database.
     """
     if os.environ.get("MILADY_DB_URL"):
         return
@@ -750,7 +750,7 @@ def slurm_catalog_defaults(log: Any = print) -> None:
         Path(state).mkdir(parents=True, exist_ok=True)
         url = f"sqlite:///{state}/catalog.sqlite"
     os.environ["MILADY_DB_URL"] = url
-    log(f"catalogue (comme infra/slurm/env.sh) : {url}")
+    log(f"catalog (as infra/slurm/env.sh): {url}")
 
 
 def render_sbatch(
@@ -760,8 +760,8 @@ def render_sbatch(
     max_parallel: int | None,
     template: str | None = None,
 ) -> str:
-    """Script sbatch du tableau : gabarit ``infra/slurm/gen_data.sbatch`` dont les options #SBATCH sont
-    remplacées par celles de la campagne (tableau, durée, cœurs, GPU, compte, partition…)."""
+    """sbatch script of the array: template ``infra/slurm/gen_data.sbatch`` whose #SBATCH options are
+    replaced by those of the campaign (array, duration, cores, GPU, account, partition…)."""
     if template is None:
         tpl_path = project_root() / "infra/slurm/gen_data.sbatch"
         template = tpl_path.read_text(encoding="utf-8") if tpl_path.is_file() else _FALLBACK_SBATCH
@@ -792,9 +792,9 @@ def render_sbatch(
             key = m.group(1)
             seen.add(key)
             val = opts[key]
-            if val is None:  # option de la campagne absente : on garde celle du gabarit
+            if val is None:  # campaign option absent: keep the one of the template
                 out.append(line)
-            elif val != "":  # chaîne vide : option retirée (ex. --gres sans GPU)
+            elif val != "":  # empty string: option removed (e.g. --gres without GPU)
                 out.append(f"#SBATCH --{key}={val}")
             last_sbatch = len(out) - 1
             continue
@@ -803,7 +803,7 @@ def render_sbatch(
             last_sbatch = len(out) - 1
     extra = [f"#SBATCH --{k}={v}" for k, v in opts.items() if k not in seen and v]
     if extra:
-        header = ["# --- options ajoutées par milady.sweep (campagne " + campaign.name + ") ---", *extra]
+        header = ["# --- options added by milady.sweep (campaign " + campaign.name + ") ---", *extra]
         out[last_sbatch + 1 : last_sbatch + 1] = header
     return "\n".join(out) + "\n"
 
@@ -821,29 +821,29 @@ def run_slurm(
     use_catalog: bool,
     log: Any = print,
 ) -> int:
-    """Écrit le script du tableau de jobs et le soumet (``sbatch --parsable``) ; enregistre les tâches."""
+    """Write the job array script and submit it (``sbatch --parsable``); register the tasks."""
     script = render_sbatch(campaign, [p.index for p in points], sweep_dir, max_parallel)
     cmd = ["sbatch", "--parsable", *sbatch_args, "<script>", cfg_arg, *run_args]
     if dry_run:
-        log("--- script sbatch (non soumis) ---\n" + script + "--- fin du script ---")
-        log("commande : " + shlex.join(cmd))
+        log("--- sbatch script (not submitted) ---\n" + script + "--- end of script ---")
+        log("command: " + shlex.join(cmd))
         return 0
     path = sweep_dir / "gen_data.sbatch"
     path.write_text(script, encoding="utf-8")
     path.chmod(0o755)
     cmd[cmd.index("<script>")] = str(path)
     if shutil.which("sbatch") is None:
-        raise RuntimeError(f"sbatch introuvable (pas de Slurm ici) ; script écrit : {path}")
-    log("soumission : " + shlex.join(cmd))
+        raise RuntimeError(f"sbatch not found (no Slurm here); script written: {path}")
+    log("submission: " + shlex.join(cmd))
     env = _child_env({"MILADY_ROOT": str(project_root())})
     out = subprocess.run(cmd, cwd=project_root(), env=env, capture_output=True, text=True, check=False)
     if out.returncode != 0:
         raise RuntimeError(
-            f"sbatch a échoué (code {out.returncode}) : {out.stderr.strip() or out.stdout.strip()}"
+            f"sbatch failed (code {out.returncode}): {out.stderr.strip() or out.stdout.strip()}"
         )
     job_id = out.stdout.strip().splitlines()[-1].split(";")[0].strip()
     log(
-        f"tableau soumis : job {job_id} ({len(points)} tâches) ; suivi : squeue -j {job_id} ; journaux : {sweep_dir}"
+        f"array submitted: job {job_id} ({len(points)} tasks); monitor: squeue -j {job_id}; logs: {sweep_dir}"
     )
     if use_catalog:
         from milady.catalog.api import Catalog
@@ -867,7 +867,7 @@ def run_slurm(
 
 
 # =============================================================================================
-# Ligne de commande
+# Command line
 # =============================================================================================
 def _print_plan(
     campaign: Campaign, points: Sequence[SweepPoint], selected: Sequence[SweepPoint], log: Any
@@ -875,47 +875,47 @@ def _print_plan(
     snaps, diags = output_times(campaign.runtime)
     rt = campaign.runtime
     log(
-        f"campagne {campaign.name} ({campaign.code}) : {len(points)} simulation(s), {len(selected)} retenue(s)"
+        f"campaign {campaign.name} ({campaign.code}): {len(points)} simulation(s), {len(selected)} selected"
     )
     log(
-        f"  grille {campaign.shape} sur {[round(L, 6) for L in campaign.lengths]} ; dt ≤ {rt['dt']}, "
-        f"t_burn = {rt.get('t_burn', 0)}, {len(snaps)} instantanés de {snaps[0]} à {snaps[-1]}, "
-        f"{len(diags)} diagnostics, {rt.get('n_traj', 1)} trajectoire(s)"
+        f"  grid {campaign.shape} on {[round(L, 6) for L in campaign.lengths]}; dt ≤ {rt['dt']}, "
+        f"t_burn = {rt.get('t_burn', 0)}, {len(snaps)} snapshots from {snaps[0]} to {snaps[-1]}, "
+        f"{len(diags)} diagnostics, {rt.get('n_traj', 1)} trajectory(ies)"
     )
     swept = list(campaign.sweep)
     for p in selected:
-        vals = ", ".join(f"{k}={p.point[k]}" for k in swept) or "(aucun balayage)"
+        vals = ", ".join(f"{k}={p.point[k]}" for k in swept) or "(no sweep)"
         log(f"  [{p.index:4d}] {p.sim_id}  {vals}")
 
 
 def main(argv: Sequence[str] | None = None) -> int:
-    """Point d'entrée de ``python -m milady.sweep``."""
+    """Entry point of ``python -m milady.sweep``."""
     ap = argparse.ArgumentParser(prog="python -m milady.sweep", description=__doc__.split("\n\n")[0])
-    ap.add_argument("config", help="campagne YAML (infra/configs/*.yaml)")
+    ap.add_argument("config", help="campaign YAML (infra/configs/*.yaml)")
     ap.add_argument("--scheduler", choices=["local", "docker", "slurm"], default="local")
-    ap.add_argument("--dry-run", action="store_true", help="affiche le plan et les commandes, n'exécute rien")
+    ap.add_argument("--dry-run", action="store_true", help="show the plan and the commands, run nothing")
     ap.add_argument(
         "--max-parallel",
         type=int,
         default=None,
-        help="simulations simultanées (local/docker : défaut = nb de GPU ou 1 ; slurm : %%N du tableau)",
+        help="simultaneous simulations (local/docker: default = number of GPUs or 1; slurm: %%N of the array)",
     )
-    ap.add_argument("--indices", default=None, help="sous-ensemble d'indices, ex. 0,3,5-7")
-    ap.add_argument("--force", action="store_true", help="relance aussi les simulations déjà terminées")
+    ap.add_argument("--indices", default=None, help="subset of indices, e.g. 0,3,5-7")
+    ap.add_argument("--force", action="store_true", help="also rerun already finished simulations")
     ap.add_argument(
-        "--retry-running", action="store_true", help="relance les simulations restées « running »"
+        "--retry-running", action="store_true", help="rerun simulations left as \"running\""
     )
     ap.add_argument(
-        "--no-catalog", action="store_true", help="n'utilise pas le catalogue (fichiers seulement)"
+        "--no-catalog", action="store_true", help="do not use the catalog (files only)"
     )
-    ap.add_argument("--register-only", action="store_true", help="enregistre au catalogue sans exécuter")
-    ap.add_argument("--device", default=None, help="transmis à milady.sim.run (cpu, cuda, auto)")
+    ap.add_argument("--register-only", action="store_true", help="register in the catalog without running")
+    ap.add_argument("--device", default=None, help="passed to milady.sim.run (cpu, cuda, auto)")
     ap.add_argument(
         "--sbatch-arg",
         action="append",
         default=[],
         metavar="ARG",
-        help="option supplémentaire de sbatch (répétable), ex. --sbatch-arg=--account=abc@h100",
+        help="extra sbatch option (repeatable), e.g. --sbatch-arg=--account=abc@h100",
     )
     args = ap.parse_args(argv)
 
@@ -950,13 +950,13 @@ def main(argv: Sequence[str] | None = None) -> int:
 
     if args.dry_run:
         cfg_arg = _repo_relative(Path(args.config))
-        log(f"--dry-run : rien n'est enregistré ni exécuté ({args.scheduler}, max_parallel = {max_parallel})")
+        log(f"--dry-run: nothing is registered or run ({args.scheduler}, max_parallel = {max_parallel})")
         if args.scheduler == "slurm":
             return run_slurm(
                 campaign,
                 cfg_arg,
                 selected,
-                sweep_dir=project_root() / "data/sweeps" / campaign.name / "<horodatage>",
+                sweep_dir=project_root() / "data/sweeps" / campaign.name / "<timestamp>",
                 max_parallel=max_parallel,
                 sbatch_args=args.sbatch_arg,
                 run_args=run_args,
@@ -985,7 +985,7 @@ def main(argv: Sequence[str] | None = None) -> int:
     sweep_dir = _sweep_dir(campaign)
     frozen = _freeze_config(campaign, sweep_dir)
     cfg_arg = _repo_relative(frozen)
-    log(f"configuration figée : {frozen}")
+    log(f"frozen configuration: {frozen}")
 
     if args.scheduler == "docker":
         if args.no_catalog:
@@ -998,9 +998,9 @@ def main(argv: Sequence[str] | None = None) -> int:
     else:
         pending = register(campaign, selected, force=args.force, retry_running=args.retry_running, log=log)
     if not pending:
-        log("rien à exécuter : toutes les simulations retenues sont terminées ou en cours.")
+        log("nothing to run: all the selected simulations are finished or running.")
         return 0
-    log(f"{len(pending)} simulation(s) à exécuter : indices {_ranges([p.index for p in pending])}")
+    log(f"{len(pending)} simulation(s) to run: indices {_ranges([p.index for p in pending])}")
 
     if args.scheduler == "slurm":
         return run_slurm(
@@ -1038,8 +1038,8 @@ def main(argv: Sequence[str] | None = None) -> int:
         )
     failed = sorted(i for i, c in results.items() if c != 0)
     log(
-        f"terminé : {len(results) - len(failed)} réussie(s), {len(failed)} en échec"
-        + (f" (indices {_ranges(failed)} ; journaux dans {sweep_dir / 'logs'})" if failed else "")
+        f"finished: {len(results) - len(failed)} succeeded, {len(failed)} failed"
+        + (f" (indices {_ranges(failed)}; logs in {sweep_dir / 'logs'})" if failed else "")
     )
     return 1 if failed else 0
 

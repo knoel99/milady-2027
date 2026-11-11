@@ -1,16 +1,16 @@
-"""MilaDy : modèles génératifs conditionnels sous contraintes physiques pour des champs MHD paramétriques.
+"""MilaDy: conditional generative models under physical constraints for parametric MHD fields.
 
-Sous-paquets et modules :
+Subpackages and modules:
 
-- ``milady.data``    : format de données MFF 1.0 (HDF5 compatible The Well, variante Zarr), validation,
-                       convertisseurs (E2 → MFF, squelette SFEMaNS) ;
-- ``milady.catalog`` : catalogue SQL des campagnes, simulations, fichiers, jeux de données, modèles,
-                       évaluations et tâches (PostgreSQL en production, SQLite en mode portable) ;
-- ``milady.storage`` : stockage des objets lourds via fsspec (``file://``, chemins HPC, ``s3://``) ;
-- ``milady.sim``, ``milady.train``, ``milady.eval``, ``milady.sweep`` : solveur, entraînement, évaluation,
-  campagnes (voir ``docs/specs/infra.md``).
+- ``milady.data``    : MFF 1.0 data format (HDF5 compatible with The Well, Zarr variant), validation,
+                       converters (E2 → MFF, SFEMaNS skeleton);
+- ``milady.catalog`` : SQL catalog of campaigns, simulations, files, datasets, models,
+                       evaluations and tasks (PostgreSQL in production, SQLite in portable mode);
+- ``milady.storage`` : storage of heavy objects through fsspec (``file://``, HPC paths, ``s3://``);
+- ``milady.sim``, ``milady.train``, ``milady.eval``, ``milady.sweep``: solver, training, evaluation,
+  campaigns (see ``docs/specs/infra.md``).
 
-Les sous-modules ne sont pas importés ici : ``import milady`` reste léger (pas de torch, h5py ni SQLAlchemy).
+Submodules are not imported here: ``import milady`` stays lightweight (no torch, h5py or SQLAlchemy).
 """
 
 from __future__ import annotations
@@ -25,11 +25,11 @@ __all__ = ["__version__", "git_commit", "project_root"]
 
 
 def project_root() -> Path:
-    """Racine du projet (dossier qui contient ``pyproject.toml``, ``milady/`` et ``infra/``).
+    """Project root (the folder containing ``pyproject.toml``, ``milady/`` and ``infra/``).
 
-    Ordre de résolution : variable d'environnement ``MILADY_ROOT`` ; dossier parent du paquet s'il
-    ressemble au dépôt (installation éditable ``pip install -e .``) ; à défaut, le répertoire courant.
-    Sert de base aux valeurs par défaut du catalogue (``data/catalog.sqlite``) et du stockage
+    Resolution order: the ``MILADY_ROOT`` environment variable; the package's parent folder if it
+    looks like the repository (editable install ``pip install -e .``); otherwise the current directory.
+    Serves as the base for the default catalog (``data/catalog.sqlite``) and storage
     (``data/store``).
     """
     env = os.environ.get("MILADY_ROOT")
@@ -42,13 +42,13 @@ def project_root() -> Path:
 
 
 def git_commit(path: str | os.PathLike[str] | None = None) -> str:
-    """Identifiant du commit git courant (12 caractères, suffixe ``-dirty`` si l'arbre est modifié).
+    """Identifier of the current git commit (12 characters, ``-dirty`` suffix if the tree is modified).
 
-    Ordre : variable ``MILADY_GIT_COMMIT`` (fixée à la construction des images Docker/Apptainer, où
-    ``.git`` est absent), puis ``git rev-parse`` dans ``path`` (défaut : racine du projet). Renvoie
-    une chaîne vide si rien n'est disponible : la provenance ne doit jamais faire échouer un calcul.
-    ``safe.directory=*`` : dans un conteneur, le dépôt monté appartient souvent à un autre UID que
-    l'utilisateur courant (« dubious ownership ») ; la lecture du commit reste sans risque.
+    Order: the ``MILADY_GIT_COMMIT`` variable (set when building the Docker/Apptainer images, where
+    ``.git`` is absent), then ``git rev-parse`` in ``path`` (default: project root). Returns
+    an empty string if nothing is available: provenance must never make a computation fail.
+    ``safe.directory=*``: in a container, the mounted repository is often owned by a different UID than
+    the current user ("dubious ownership"); reading the commit remains safe.
     """
     env = os.environ.get("MILADY_GIT_COMMIT")
     if env:
@@ -64,8 +64,8 @@ def git_commit(path: str | os.PathLike[str] | None = None) -> str:
             check=True,
         ).stdout.strip()
         dirty = subprocess.run(
-            # core.fsmonitor désactivé : avec safe.directory=*, « git status » ne doit lancer aucune
-            # commande définie dans la configuration d'un dépôt appartenant à un autre utilisateur.
+            # core.fsmonitor disabled: with safe.directory=*, "git status" must not run any
+            # command defined in the configuration of a repository owned by another user.
             [
                 "git",
                 "-c",

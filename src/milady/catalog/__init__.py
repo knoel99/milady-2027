@@ -1,7 +1,7 @@
-"""Catalogue MilaDy : campagnes, simulations, fichiers, diagnostics, jeux de données, modèles, évaluations, tâches.
+"""MilaDy catalog: campaigns, simulations, files, diagnostics, datasets, models, evaluations, tasks.
 
-PostgreSQL 16 en production (service ``db`` du docker-compose, schéma ``infra/db/schema.sql``) ; SQLite en
-mode portable ou sur un cluster sans base joignable. Voir :class:`milady.catalog.api.Catalog`.
+PostgreSQL 16 in production (``db`` service of the docker-compose, schema ``infra/db/schema.sql``); SQLite in
+portable mode or on a cluster with no reachable database. See :class:`milady.catalog.api.Catalog`.
 """
 
 from __future__ import annotations

@@ -1,4 +1,4 @@
-"""Tests des métriques physiques et des distances entre lois (milady.eval.metrics), champs analytiques."""
+"""Tests of the physical metrics and distances between distributions (milady.eval.metrics), analytical fields."""
 
 from __future__ import annotations
 
@@ -18,13 +18,13 @@ def _grid(n: int = N) -> tuple[np.ndarray, np.ndarray, np.ndarray]:
 
 
 # ---------------------------------------------------------------------------------------------
-# Divergence et spectres
+# Divergence and spectra
 # ---------------------------------------------------------------------------------------------
 def test_divergence_solenoidal_and_gradient() -> None:
     abc = M.abc_field((N, N, N))
     assert M.divergence_relative(abc) < 1e-13
     X, Y, Z = _grid()
-    # gradient de φ = sin x cos 2y sin 3z : divergence relative exactement 1
+    # gradient of φ = sin x cos 2y sin 3z: relative divergence exactly 1
     grad = np.stack(
         [
             np.cos(X) * np.cos(2 * Y) * np.sin(3 * Z),
@@ -46,11 +46,11 @@ def test_divergence_solenoidal_and_gradient() -> None:
 def test_spectrum_single_mode() -> None:
     X, _, _ = _grid()
     u = np.zeros((N, N, N, 3))
-    u[..., 2] = np.sin(3 * X)  # E = ½⟨sin²⟩ = 1/4, tout en k = 3
+    u[..., 2] = np.sin(3 * X)  # E = ½⟨sin²⟩ = 1/4, all at k = 3
     spec = M.energy_spectrum(u)
     assert spec[3] == pytest.approx(0.25, rel=1e-12)
     assert np.sum(np.delete(spec, 3)) < 1e-25
-    # mode oblique (1, 1, 1) : |m| = √3 → couronne 2 ; somme = ½⟨|u|²⟩ ; forme avec dimensions de tête
+    # oblique mode (1, 1, 1): |m| = √3 → shell 2; sum = ½⟨|u|²⟩; shape with leading dimensions
     X, Y, Z = _grid()
     v = np.zeros((2, N, N, N, 3))
     v[1, ..., 0] = np.cos(X + Y + Z)
@@ -61,7 +61,7 @@ def test_spectrum_single_mode() -> None:
 
 
 # ---------------------------------------------------------------------------------------------
-# Hélicités (champs ABC : valeurs connues)
+# Helicities (ABC fields: known values)
 # ---------------------------------------------------------------------------------------------
 @pytest.mark.parametrize("coeffs", [(1.0, 1.0, 1.0), (1.0, 0.5, 0.25)])
 def test_helicities_abc(coeffs: tuple[float, float, float]) -> None:
@@ -74,7 +74,7 @@ def test_helicities_abc(coeffs: tuple[float, float, float]) -> None:
     assert h["cross_helicity"] == pytest.approx(s2, rel=1e-12)
     for key in ("relative_kinetic_helicity", "relative_magnetic_helicity", "relative_cross_helicity"):
         assert h[key] == pytest.approx(1.0, rel=1e-12)
-    # kf = 2 : ∇×u = 2u → H_K = 2⟨|u|²⟩, A = B/2 → H_M = ⟨|B|²⟩/2 ; B → −B change le signe de H_C seulement
+    # kf = 2: ∇×u = 2u → H_K = 2⟨|u|²⟩, A = B/2 → H_M = ⟨|B|²⟩/2; B → −B changes the sign of H_C only
     u2 = M.abc_field((N, N, N), kf=2, coeffs=coeffs)
     h2 = M.helicities(u2, -u2)
     assert h2["kinetic_helicity"] == pytest.approx(2 * s2, rel=1e-12)
@@ -83,10 +83,10 @@ def test_helicities_abc(coeffs: tuple[float, float, float]) -> None:
 
 
 # ---------------------------------------------------------------------------------------------
-# Bilans d'énergie
+# Energy budgets
 # ---------------------------------------------------------------------------------------------
 def test_budget_stokes_taylor_green() -> None:
-    """Solution de Stokes du forçage TG : −νΔu = f avec Δu = −3u (kf = 1) ⇒ injection = dissipation."""
+    """Stokes solution of the TG forcing: −νΔu = f with Δu = −3u (kf = 1) ⇒ injection = dissipation."""
     nu = 0.1
     u = M.taylor_green_field((N, N, N))
     params = {
@@ -102,7 +102,7 @@ def test_budget_stokes_taylor_green() -> None:
     assert bud["injection"] == pytest.approx(3 * nu * np.mean(np.sum(u**2, -1)), rel=1e-12)
     assert abs(bud["residual_total"]) < 1e-14
     assert abs(M.budget_summary(bud)["residu_bilan_total"]) < 1e-12
-    # forçage aléatoire : injection = eps
+    # random forcing: injection = eps
     rnd = M.energy_budget(
         np.stack([u, u]), None, {"mode": "dynamic", "forcing": "random", "eps": 0.3, "nu": nu}
     )
@@ -110,18 +110,18 @@ def test_budget_stokes_taylor_green() -> None:
 
 
 def test_budget_kinematic_abc_eigen() -> None:
-    """u = B = ABC (k = 1) : u × B = 0, donc production nulle et taux de croissance −η k²."""
+    """u = B = ABC (k = 1): u × B = 0, hence zero production and growth rate −η k²."""
     eta = 0.07
     b = M.abc_field((N, N, N))
     params = {"mode": "kinematic", "flow": "abc", "kf": 1, "U_ref": 1.0, "eta": eta}
-    bud = M.energy_budget(None, b, params)  # u : écoulement imposé
+    bud = M.energy_budget(None, b, params)  # u: imposed flow
     assert abs(bud["magnetic_production"]) < 1e-13
     assert bud["growth_rate"] == pytest.approx(-eta, rel=1e-12)
     assert bud["residual_magnetic"] == pytest.approx(-eta * 3.0, rel=1e-12)  # −η⟨|j|²⟩, ⟨|B|²⟩ = 3
 
 
 def test_budget_matches_solver_diagnostics() -> None:
-    """Termes du bilan recalculés depuis les champs = diagnostics du solveur pseudo-spectral 3D."""
+    """Budget terms recomputed from the fields = diagnostics of the 3D pseudo-spectral solver."""
     mhd3d = pytest.importorskip("milady.sim.mhd3d")
     sim = mhd3d.MHD3D(
         n=16,
@@ -155,7 +155,7 @@ def test_budget_matches_solver_diagnostics() -> None:
     h = M.helicities(f["velocity"], f["magnetic_field"])
     for key in ("kinetic_helicity", "magnetic_helicity", "cross_helicity"):
         np.testing.assert_allclose(h[key], diag[key], rtol=1e-9, atol=1e-12)
-    # forçage : même champ que le solveur (règle laminaire)
+    # forcing: same field as the solver (laminar rule)
     lam = M.forcing_field(
         {"mode": "dynamic", "forcing": "tg", "kf": 1, "nu": 0.05, "U_ref": 1.0, "forcing_rule": "laminar"},
         (16, 16, 16),
@@ -164,7 +164,7 @@ def test_budget_matches_solver_diagnostics() -> None:
 
 
 # ---------------------------------------------------------------------------------------------
-# Distances entre lois
+# Distances between distributions
 # ---------------------------------------------------------------------------------------------
 def test_energy_distance() -> None:
     rng = np.random.default_rng(0)
@@ -174,7 +174,7 @@ def test_energy_distance() -> None:
     near = M.energy_distance(x, rng.normal(size=(400, 3)) + 0.5)
     far = M.energy_distance(x, rng.normal(size=(400, 3)) + 2.0)
     assert 0 <= same < near < far
-    # 1D, décalage δ grand devant l'écart-type : D² → 2δ
+    # 1D, shift δ large compared with the standard deviation: D² → 2δ
     assert M.energy_distance(1e-3 * x[:, :1], 1e-3 * x[:, :1] + 5.0) == pytest.approx(10.0, rel=1e-3)
 
 
@@ -184,9 +184,9 @@ def test_sliced_wasserstein() -> None:
     assert M.sliced_wasserstein(x, x + 0.7) == pytest.approx(0.7, rel=1e-12)  # 1D : W1 = |δ|
     assert M.sliced_w1(x, x) == 0.0
     y = rng.normal(size=(500, 4))
-    z = rng.normal(size=(300, 4)) + 1.0  # tailles différentes
+    z = rng.normal(size=(300, 4)) + 1.0  # different sizes
     d = M.sliced_wasserstein(y, z, n_proj=128)
-    # E_θ |θ·(1,1,1,1)| avec θ uniforme sur S³ : 2·E|θ₁| = 2 × 4/(3π)… ≈ 0.85 (bruit d'échantillonnage)
+    # E_θ |θ·(1,1,1,1)| with θ uniform on S³: 2·E|θ₁| = 2 × 4/(3π)… ≈ 0.85 (sampling noise)
     assert 0.6 < d < 1.1
 
 
@@ -216,4 +216,4 @@ def test_features_and_compare() -> None:
     m = res["metrics"]
     assert m["div_rel_u"] < 1e-12 and m["div_rel_b"] < 1e-12
     assert abs(m["dist_energie"]) < 1e-12 and m["err_spectre_u_log10"] == 0.0 and m["err_Eb_rel"] == 0.0
-    assert math.isfinite(m["residu_bilan_total"]) and "plancher_dist_energie" not in m  # < 8 échantillons
+    assert math.isfinite(m["residu_bilan_total"]) and "plancher_dist_energie" not in m  # < 8 samples

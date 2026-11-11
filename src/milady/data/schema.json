@@ -1,8 +1,8 @@
 {
   "$schema": "https://json-schema.org/draft/2020-12/schema",
   "$id": "https://knoel99.github.io/milady-2027/schemas/mff-1.0.json",
-  "title": "MilaDy Field Format (MFF) 1.0 — métadonnées",
-  "description": "Attributs racine d'un fichier MFF (HDF5 ou Zarr) après décodage : les attributs HDF5 sont convertis en types JSON et milady_parameters (chaîne JSON dans le fichier) est décodé en objet. Les sous-schémas $defs décrivent les attributs des groupes et jeux de données. Spécification lisible : docs/specs/data-format.md.",
+  "title": "MilaDy Field Format (MFF) 1.0 — metadata",
+  "description": "Root attributes of an MFF file (HDF5 or Zarr) after decoding: HDF5 attributes are converted to JSON types and milady_parameters (a JSON string in the file) is decoded into an object. The $defs subschemas describe the attributes of groups and datasets. Readable specification: docs/specs/data-format.md.",
   "type": "object",
   "allOf": [
     {"$ref": "#/$defs/well_root"},
@@ -10,7 +10,7 @@
   ],
   "$defs": {
     "well_root": {
-      "description": "Attributs racine imposés par le format de The Well (PolymathicAI/the_well, docs/data_format.md).",
+      "description": "Root attributes required by The Well format (PolymathicAI/the_well, docs/data_format.md).",
       "type": "object",
       "required": ["dataset_name", "grid_type", "n_spatial_dims", "n_trajectories", "simulation_parameters"],
       "properties": {
@@ -22,7 +22,7 @@
       }
     },
     "milady_root": {
-      "description": "Attributs MilaDy (préfixe milady_) ajoutés à la racine.",
+      "description": "MilaDy attributes (milady_ prefix) added at the root.",
       "type": "object",
       "required": ["milady_format_version", "milady_code", "milady_parameters", "milady_created", "milady_uuid"],
       "properties": {
@@ -35,7 +35,7 @@
         "milady_git_commit": {"type": "string", "pattern": "^([0-9a-f]{7,40}(-dirty)?)?$"},
         "milady_parameters": {
           "type": "object",
-          "description": "Tous les paramètres physiques de la simulation (Re, Rm, Pm, mu_r, nu, eta, forçage…), y compris ceux qui ne sont pas des nombres.",
+          "description": "All physical parameters of the simulation (Re, Rm, Pm, mu_r, nu, eta, forcing…), including those that are not numbers.",
           "additionalProperties": {"type": ["number", "string", "boolean", "array", "object", "null"]}
         },
         "milady_nondimensionalization": {"type": "string"},
@@ -53,7 +53,7 @@
     },
     "flag": {"type": "boolean"},
     "dimension": {
-      "description": "Attributs d'un jeu de données de /dimensions (time, x, y, z).",
+      "description": "Attributes of a dataset in /dimensions (time, x, y, z).",
       "type": "object",
       "required": ["sample_varying"],
       "properties": {
@@ -67,7 +67,7 @@
       "properties": {"spatial_dims": {"type": "array", "items": {"type": "string"}, "minItems": 1, "maxItems": 3}}
     },
     "boundary": {
-      "description": "Attributs d'un sous-groupe de /boundary_conditions.",
+      "description": "Attributes of a subgroup of /boundary_conditions.",
       "type": "object",
       "required": ["associated_dims", "associated_fields", "bc_type", "sample_varying", "time_varying"],
       "properties": {
@@ -79,7 +79,7 @@
       }
     },
     "named_group": {
-      "description": "Attributs d'un groupe qui énumère ses membres (scalars, t0_fields, t1_fields, t2_fields, milady_diagnostics, milady_spectral).",
+      "description": "Attributes of a group that enumerates its members (scalars, t0_fields, t1_fields, t2_fields, milady_diagnostics, milady_spectral).",
       "type": "object",
       "required": ["field_names"],
       "properties": {"field_names": {"type": "array", "items": {"type": "string"}, "uniqueItems": true}}
@@ -90,7 +90,7 @@
       "properties": {"sample_varying": {"$ref": "#/$defs/flag"}, "time_varying": {"$ref": "#/$defs/flag"}}
     },
     "field": {
-      "description": "Attributs d'un champ de t0_fields ou t1_fields.",
+      "description": "Attributes of a field in t0_fields or t1_fields.",
       "type": "object",
       "required": ["dim_varying", "sample_varying", "time_varying"],
       "properties": {
@@ -100,7 +100,7 @@
       }
     },
     "t2_field": {
-      "description": "Attributs d'un champ de t2_fields : ceux d'un champ plus la symétrie du tenseur.",
+      "description": "Attributes of a field in t2_fields: those of a field plus the tensor symmetry.",
       "allOf": [
         {"$ref": "#/$defs/field"},
         {
@@ -111,7 +111,7 @@
       ]
     },
     "spectral_group": {
-      "description": "Attributs du groupe optionnel /milady_spectral (coefficients rfftn des champs, domaines périodiques).",
+      "description": "Attributes of the optional /milady_spectral group (rfftn coefficients of the fields, periodic domains).",
       "type": "object",
       "required": ["field_names", "transform", "norm", "axes", "real_shape", "spatial_dims", "domain_lengths"],
       "properties": {
@@ -142,7 +142,7 @@
       "properties": {"sample_varying": {"$ref": "#/$defs/flag"}, "time_varying": {"$ref": "#/$defs/flag"}}
     },
     "fourier_fe_group": {
-      "description": "Attributs du groupe /milady_fourier_fe (extension grid_type = fourier_fe_axisym, SFEMaNS).",
+      "description": "Attributes of the /milady_fourier_fe group (extension grid_type = fourier_fe_axisym, SFEMaNS).",
       "type": "object",
       "required": ["field_names", "azimuthal_convention", "component_basis", "n_modes"],
       "properties": {

@@ -1,11 +1,11 @@
-"""Ligne de commande du catalogue : ``python -m milady.catalog <commande>``.
+"""Catalog command line: ``python -m milady.catalog <command>``.
 
-    init                         crée tables, index et vue (idempotent)
-    ingest <uri>… [--campaign C] enregistre des fichiers MFF déjà écrits (ex. après un tableau de jobs Slurm)
-    campaigns                    campagnes et nombre de simulations par statut
+    init                         creates tables, indexes and view (idempotent)
+    ingest <uri>… [--campaign C] registers MFF files that are already written (e.g. after a Slurm job array)
+    campaigns                    campaigns and number of simulations per status
     sims [--campaign C] [--status S] [--param Rm__gt=8 …]
-    summary [--model ID]         vue v_eval_summary
-L'URL vient de ``--url``, sinon de ``MILADY_DB_URL``, sinon ``sqlite:///<racine>/data/catalog.sqlite``.
+    summary [--model ID]         v_eval_summary view
+The URL comes from ``--url``, otherwise from ``MILADY_DB_URL``, otherwise ``sqlite:///<root>/data/catalog.sqlite``.
 """
 
 from __future__ import annotations
@@ -27,9 +27,9 @@ def _value(text: str) -> Any:
 
 
 def main(argv: Sequence[str] | None = None) -> int:
-    """Point d'entrée."""
+    """Entry point."""
     ap = argparse.ArgumentParser(prog="python -m milady.catalog", description=__doc__.split("\n\n")[0])
-    ap.add_argument("--url", default=None, help="URL SQLAlchemy du catalogue")
+    ap.add_argument("--url", default=None, help="SQLAlchemy URL of the catalog")
     sub = ap.add_subparsers(dest="cmd", required=True)
     sub.add_parser("init")
     p = sub.add_parser("ingest")
@@ -41,7 +41,7 @@ def main(argv: Sequence[str] | None = None) -> int:
     p.add_argument("--campaign")
     p.add_argument("--status")
     p.add_argument(
-        "--param", action="append", default=[], help="filtre nom[__op]=valeur (op : gt, ge, lt, le, ne, in)"
+        "--param", action="append", default=[], help="filter name[__op]=value (op: gt, ge, lt, le, ne, in)"
     )
     p = sub.add_parser("summary")
     p.add_argument("--model")

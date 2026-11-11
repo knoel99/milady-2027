@@ -1,44 +1,44 @@
-"""Solveur pseudo-spectral de la MHD incompressible 3D périodique (PyTorch, CPU ou GPU).
+"""Pseudo-spectral solver for 3D periodic incompressible MHD (PyTorch, CPU or GPU).
 
-Équations résolues sur la boîte [0, L)³ périodique, champ magnétique en unités d'Alfvén
-(B ← B / √(μ₀ρ), même unité que la vitesse) :
+Equations solved on the periodic box [0, L)³, magnetic field in Alfvén units
+(B ← B / √(μ₀ρ), same unit as the velocity):
 
     ∂t u = u × ω + j × B − ∇Π + ν ∇²u + f,      ∇·u = 0,   ω = ∇×u,  j = ∇×B,  Π = p + |u|²/2
     ∂t B = ∇ × (u × B) + η ∇²B,                  ∇·B = 0
 
-Deux modes :
+Two modes:
 
-- ``dynamic`` : Navier–Stokes + induction, force de Lorentz j × B ; forçage constant ABC ou
-  Taylor–Green (TG), forçage aléatoire blanc en temps à puissance injectée fixée, ou aucun ;
-- ``kinematic`` : écoulement imposé (ABC ou TG), seule l'équation d'induction évolue (problème
-  linéaire en B : le champ est renormalisé régulièrement, l'amplitude vraie est suivie par
+- ``dynamic``: Navier–Stokes + induction, Lorentz force j × B; constant ABC or
+  Taylor–Green (TG) forcing, white-in-time random forcing with fixed injected power, or none;
+- ``kinematic``: imposed flow (ABC or TG), only the induction equation evolves (problem
+  linear in B: the field is renormalized regularly, the true amplitude is tracked by
   ``log_b_rms``).
 
-Schéma numérique :
+Numerical scheme:
 
-- transformées ``torch.fft.rfftn`` sur les trois derniers axes ; état = coefficients de Fourier
-  (n_traj, 3, nx, ny, nz//2+1) ; plusieurs trajectoires (graines différentes) avancent ensemble ;
-- termes non linéaires en espace physique (forme rotationnelle), désaliasage par la règle des 2/3
-  (cube |m_i| ≤ (n_i − 1)//3, qui exclut tout repliement sur les modes conservés : les invariants
-  quadratiques du système tronqué de Galerkin — énergie, hélicités magnétique et croisée — sont
-  conservés exactement par les termes non linéaires) ;
-- RK4 à facteur intégrant (Lawson) : la diffusion ν k², η k² est intégrée exactement ;
-- projection de Leray de u (pression) et de B (correction de ∇·B, nettoyage des erreurs
-  d'arrondi), toutes deux exactes mode par mode ; ∇·u et ∇·B restent à la précision machine ;
-- forçage aléatoire : Euler–Maruyama après le pas déterministe ; incrément Δu = √(2 ε dt) ξ avec ξ
-  solénoïdal, à bande |k| ∈ [kf_min, kf_max], normalisé à ⟨|ξ|²⟩ = 1 : la part d'Itô de l'énergie
-  injectée vaut exactement ε dt à chaque pas.
+- ``torch.fft.rfftn`` transforms on the last three axes; state = Fourier coefficients
+  (n_traj, 3, nx, ny, nz//2+1); several trajectories (different seeds) advance together;
+- nonlinear terms in physical space (rotational form), dealiasing by the 2/3 rule
+  (cube |m_i| ≤ (n_i − 1)//3, which excludes any aliasing onto the retained modes: the quadratic
+  invariants of the truncated Galerkin system — energy, magnetic and cross helicities — are
+  conserved exactly by the nonlinear terms);
+- integrating-factor RK4 (Lawson): the diffusion ν k², η k² is integrated exactly;
+- Leray projection of u (pressure) and of B (∇·B correction, cleaning of rounding
+  errors), both exact mode by mode; ∇·u and ∇·B stay at machine precision;
+- random forcing: Euler–Maruyama after the deterministic step; increment Δu = √(2 ε dt) ξ with ξ
+  solenoidal, band-limited to |k| ∈ [kf_min, kf_max], normalized to ⟨|ξ|²⟩ = 1: the Itô part of the injected
+  energy is exactly ε dt at each step.
 
-Diagnostics (moyennes spatiales ⟨·⟩, par trajectoire, calculés par Parseval) : énergies
-cinétique et magnétique, dissipations ν⟨|ω|²⟩ et η⟨|j|²⟩, puissance injectée ⟨u·f⟩, hélicités
-cinétique ⟨u·ω⟩, magnétique ⟨A·B⟩ (jauge de Coulomb) et croisée ⟨u·B⟩, max |∇·u| et max |∇·B|,
-taux de croissance magnétique instantané γ = d ln‖B‖/dt = (⟨B·∇×(u×B)⟩ − η⟨|j|²⟩) / ⟨|B|²⟩.
-Bilan : d(E_u + E_B)/dt = injection − ν⟨|ω|²⟩ − η⟨|j|²⟩ (vérifié par tests/test_mhd3d.py).
+Diagnostics (spatial means ⟨·⟩, per trajectory, computed by Parseval): kinetic
+and magnetic energies, dissipations ν⟨|ω|²⟩ and η⟨|j|²⟩, injected power ⟨u·f⟩, kinetic
+⟨u·ω⟩, magnetic ⟨A·B⟩ (Coulomb gauge) and cross ⟨u·B⟩ helicities, max |∇·u| and max |∇·B|,
+instantaneous magnetic growth rate γ = d ln‖B‖/dt = (⟨B·∇×(u×B)⟩ − η⟨|j|²⟩) / ⟨|B|²⟩.
+Budget: d(E_u + E_B)/dt = injection − ν⟨|ω|²⟩ − η⟨|j|²⟩ (checked by tests/test_mhd3d.py).
 
-Point de contrôle : :meth:`MHD3D.save_checkpoint` / :meth:`MHD3D.load_checkpoint` (fichier ``.npz``
-sans pickle : tableaux + métadonnées JSON), reprise bit à bit sur le même matériel.
+Checkpoint: :meth:`MHD3D.save_checkpoint` / :meth:`MHD3D.load_checkpoint` (``.npz`` file
+without pickle: arrays + JSON metadata), bit-for-bit resumption on the same hardware.
 
-Performances (CPU mesurées, méthode de mesure GPU) : voir ``BENCHMARK_NOTES``.
+Performance (measured on CPU, GPU measurement method): see ``BENCHMARK_NOTES``.
 """
 
 from __future__ import annotations
@@ -71,42 +71,42 @@ __all__ = [
     "smoke_run",
 ]
 
-#: Temps par pas mesurés sur la machine de développement (CPU) et méthode de mesure sur GPU.
+#: Time per step measured on the development machine (CPU) and measurement method on GPU.
 BENCHMARK_NOTES = """
-Temps par pas mesurés le 2026-11-07 avec ``python -m milady.sim.mhd3d bench`` (1 trajectoire ; un pas
-RK4 = 4 évaluations du second membre, soit 18 FFT 3D scalaires chacune en mode dynamique), sur la
-machine de développement : CPU 4 cœurs partagés avec d'autres calculs (charge ≈ 4,5), torch 2.15 CPU.
+Time per step measured on 2026-11-07 with ``python -m milady.sim.mhd3d bench`` (1 trajectory; one
+RK4 step = 4 right-hand-side evaluations, i.e. 18 scalar 3D FFTs each in dynamic mode), on the
+development machine: 4 CPU cores shared with other computations (load ≈ 4.5), torch 2.15 CPU.
 
-                          1 fil          2 fils
-    dynamique  float32    32³ : 0,014 s  0,011–0,015 s
-                          64³ : 0,15 s   0,073–0,083 s
-    dynamique  float64    32³ : 0,021 s  0,024 s
-                          64³ : 0,31 s   0,19 s
-    cinématique float32   32³ : 0,0046 s 0,0043 s
-                          64³ : 0,052 s  0,031 s
+                          1 thread       2 threads
+    dynamic    float32    32³ : 0.014 s  0.011–0.015 s
+                          64³ : 0.15 s   0.073–0.083 s
+    dynamic    float64    32³ : 0.021 s  0.024 s
+                          64³ : 0.31 s   0.19 s
+    kinematic  float32    32³ : 0.0046 s 0.0043 s
+                          64³ : 0.052 s  0.031 s
 
-Le mode cinématique coûte ≈ 1/3 à 1/2 du mode dynamique ; de 32³ à 64³ le coût est multiplié par
-≈ 7 à 10 (N³ log N, plus les effets de cache). Attention à la sur-souscription : avec 4 fils sur
-ces 4 cœurs déjà chargés, le pas passait à ≈ 1 s (32³) et ≈ 4 s (64³). Fixer OMP_NUM_THREADS (ou
-``resources.cpus``, ``--cpus-per-task`` sous Slurm) au nombre de cœurs réellement libres.
+The kinematic mode costs ≈ 1/3 to 1/2 of the dynamic mode; from 32³ to 64³ the cost is multiplied by
+≈ 7 to 10 (N³ log N, plus cache effects). Beware of oversubscription: with 4 threads on
+these already loaded 4 cores, the step rose to ≈ 1 s (32³) and ≈ 4 s (64³). Set OMP_NUM_THREADS (or
+``resources.cpus``, ``--cpus-per-task`` under Slurm) to the number of really free cores.
 
-Mémoire sur CPU (7 novembre 2026, torch 2.14.1 CPU, 4 fils, dynamique float32, 2 pas) : pic de mémoire
-résidente moins celle de Python et torch après import ≈ 100 Mo à 64³ et 717 Mo à 128³, soit ≈ 15 fois
-l'état (u, B) de 6 × N³ × 4 octets (voir infra/README.md § 6.2).
+CPU memory (7 November 2026, torch 2.14.1 CPU, 4 threads, dynamic float32, 2 steps): peak resident
+memory minus that of Python and torch after import ≈ 100 MB at 64³ and 717 MB at 128³, i.e. ≈ 15 times
+the state (u, B) of 6 × N³ × 4 bytes (see infra/README.md § 6.2).
 
-GPU : aucun chiffre n'est donné ici (pas de GPU sur la machine de développement ; ne pas extrapoler
-les chiffres CPU). Pour mesurer sur la VM louée ou le nœud Slurm, avant de dimensionner une campagne :
+GPU: no figure is given here (no GPU on the development machine; do not extrapolate
+the CPU figures). To measure on the rented VM or the Slurm node, before sizing a campaign:
 
     python -m milady.sim.mhd3d bench --n 64 128 256 --device cuda --dtype float32 --steps 50
     python -m milady.sim.mhd3d bench --n 64 128 --device cuda --mode kinematic --n-traj 4
 
-(la mesure synchronise le GPU — ``torch.cuda.synchronize()`` —, écarte les pas de chauffe et affiche
-la mémoire maximale allouée). Durée d'une simulation ≈ temps par pas × (t_burn + t_keep) / dt_effectif
-(dt_effectif = min(dt, pas CFL)) ; le catalogue enregistre ensuite la durée réelle (``wall_time_s``),
-à utiliser pour régler ``resources.time`` des campagnes suivantes.
+(the measurement synchronizes the GPU — ``torch.cuda.synchronize()`` —, discards warm-up steps and prints
+the maximum allocated memory). Duration of a simulation ≈ time per step × (t_burn + t_keep) / dt_effective
+(dt_effective = min(dt, CFL step)); the catalog then records the actual duration (``wall_time_s``),
+to be used to set ``resources.time`` of the following campaigns.
 """
 
-#: Noms des séries renvoyées par :meth:`MHD3D.diagnostics` (une valeur par trajectoire).
+#: Names of the series returned by :meth:`MHD3D.diagnostics` (one value per trajectory).
 DIAGNOSTIC_NAMES = (
     "kinetic_energy",
     "magnetic_energy",
@@ -136,30 +136,30 @@ _INITS = ("laminar", "zero", "random")
 # =============================================================================================
 @dataclass
 class MHD3DConfig:
-    """Paramètres du solveur (toutes les grandeurs sont sans dimension).
+    """Solver parameters (all quantities are dimensionless).
 
-    Grille et numérique
-        ``n`` : points par direction (entier ou triplet) ; ``length`` : taille de la boîte (défaut 2π) ;
-        ``dealias`` : règle des 2/3 ; ``project_every`` : projection de Leray de u et B tous les
-        ``project_every`` pas (0 = jamais ; B reste solénoïdal par construction, la projection ne
-        retire que les erreurs d'arrondi) ; ``device`` (``cpu``, ``cuda``, ``cuda:1``, ``auto``) ;
-        ``dtype`` (``float32`` ou ``float64``).
-    Physique
-        ``mode`` : ``dynamic`` ou ``kinematic`` ; ``nu``, ``eta`` : viscosité et diffusivité
-        magnétique ; ``kf`` : indice (entier) du mode de l'écoulement imposé ou du forçage ABC/TG
-        (nombre d'onde physique kf·2π/L) ; ``flow`` : écoulement imposé (cinématique) ``abc`` ou
-        ``tg`` d'amplitude ``flow_amp`` (ABC : coefficients ``abc`` = (A, B, C) × ``flow_amp``) ;
-        ``forcing`` (dynamique) : ``abc``, ``tg``, ``random`` ou ``none``, d'amplitude
-        ``forcing_amp`` (``None`` : ν |k|² × flow_amp, |k|² = k_f² pour ABC et 3 k_f² pour TG : réponse
-        laminaire d'amplitude ``flow_amp``) ;
-        forçage aléatoire : puissance ``eps`` et bande ``kf_band`` = (|k|min, |k|max).
-    Conditions initiales
-        ``u0`` : ``laminar`` (forme du forçage, amplitude ``u0_amp``), ``zero`` ou ``random``
-        (spectre ∝ exp(−k²/(2 b0_kwidth²)), vitesse quadratique moyenne ``u0_amp``) ; ``u_noise`` :
-        perturbation aléatoire (rms) ajoutée à u0 ; ``b0_amp`` : rms du champ magnétique germe
-        (aléatoire, solénoïdal, sans moyenne, spectre ∝ exp(−k²/(2 b0_kwidth²))) ;
-        ``renormalize`` (cinématique) : remet ‖B‖ à 1 tous les ``renorm_every`` pas et à chaque
-        sortie ; ``n_traj`` trajectoires (graines ``seed``, tirages successifs du même générateur).
+    Grid and numerics
+        ``n``: points per direction (integer or triplet); ``length``: box size (default 2π);
+        ``dealias``: 2/3 rule; ``project_every``: Leray projection of u and B every
+        ``project_every`` steps (0 = never; B stays solenoidal by construction, the projection only
+        removes rounding errors); ``device`` (``cpu``, ``cuda``, ``cuda:1``, ``auto``);
+        ``dtype`` (``float32`` or ``float64``).
+    Physics
+        ``mode``: ``dynamic`` or ``kinematic``; ``nu``, ``eta``: viscosity and magnetic
+        diffusivity; ``kf``: (integer) index of the mode of the imposed flow or of the ABC/TG forcing
+        (physical wavenumber kf·2π/L); ``flow``: imposed flow (kinematic) ``abc`` or
+        ``tg`` of amplitude ``flow_amp`` (ABC: coefficients ``abc`` = (A, B, C) × ``flow_amp``);
+        ``forcing`` (dynamic): ``abc``, ``tg``, ``random`` or ``none``, of amplitude
+        ``forcing_amp`` (``None``: ν |k|² × flow_amp, |k|² = k_f² for ABC and 3 k_f² for TG: laminar
+        response of amplitude ``flow_amp``);
+        random forcing: power ``eps`` and band ``kf_band`` = (|k|min, |k|max).
+    Initial conditions
+        ``u0``: ``laminar`` (shape of the forcing, amplitude ``u0_amp``), ``zero`` or ``random``
+        (spectrum ∝ exp(−k²/(2 b0_kwidth²)), mean square velocity ``u0_amp``); ``u_noise``:
+        random perturbation (rms) added to u0; ``b0_amp``: rms of the seed magnetic field
+        (random, solenoidal, zero-mean, spectrum ∝ exp(−k²/(2 b0_kwidth²)));
+        ``renormalize`` (kinematic): resets ‖B‖ to 1 every ``renorm_every`` steps and at each
+        output; ``n_traj`` trajectories (seeds ``seed``, successive draws of the same generator).
     """
 
     n: int | tuple[int, int, int] = 32
@@ -199,40 +199,40 @@ class MHD3DConfig:
         self.abc = tuple(float(v) for v in self.abc)  # type: ignore[assignment]
         self.kf_band = tuple(float(v) for v in self.kf_band)  # type: ignore[assignment]
         if len(self.n) != 3 or len(self.length) != 3 or len(self.abc) != 3 or len(self.kf_band) != 2:
-            raise ValueError("n, length, abc : 3 valeurs ; kf_band : 2 valeurs")
+            raise ValueError("n, length, abc: 3 values; kf_band: 2 values")
         if min(self.n) < 8 or any(v % 2 for v in self.n):
-            raise ValueError(f"n = {self.n} : entiers pairs ≥ 8 attendus")
+            raise ValueError(f"n = {self.n}: even integers ≥ 8 expected")
         if self.mode not in _MODES:
-            raise ValueError(f"mode {self.mode!r} inconnu (attendu : {_MODES})")
+            raise ValueError(f"mode {self.mode!r} unknown (expected: {_MODES})")
         if self.flow not in _FLOWS:
-            raise ValueError(f"flow {self.flow!r} inconnu (attendu : {_FLOWS})")
+            raise ValueError(f"flow {self.flow!r} unknown (expected: {_FLOWS})")
         if self.forcing not in _FORCINGS:
-            raise ValueError(f"forcing {self.forcing!r} inconnu (attendu : {_FORCINGS})")
+            raise ValueError(f"forcing {self.forcing!r} unknown (expected: {_FORCINGS})")
         if self.u0 not in _INITS:
-            raise ValueError(f"u0 {self.u0!r} inconnu (attendu : {_INITS})")
+            raise ValueError(f"u0 {self.u0!r} unknown (expected: {_INITS})")
         if self.dtype not in ("float32", "float64"):
-            raise ValueError("dtype : float32 ou float64")
+            raise ValueError("dtype: float32 or float64")
         if self.eta < 0 or self.nu < 0:
-            raise ValueError("nu et eta doivent être positifs ou nuls")
+            raise ValueError("nu and eta must be non-negative")
         if self.mode == "dynamic" and self.nu <= 0:
-            raise ValueError("mode dynamique : nu > 0 requis")
+            raise ValueError("dynamic mode: nu > 0 required")
         if int(self.kf) != self.kf or self.kf < 1:
-            raise ValueError("kf : entier ≥ 1 (indice de mode, périodicité de la boîte)")
+            raise ValueError("kf: integer ≥ 1 (mode index, periodicity of the box)")
         self.kf = int(self.kf)
         if self.n_traj < 1:
             raise ValueError("n_traj ≥ 1")
 
     def to_dict(self) -> dict[str, Any]:
-        """Dictionnaire sérialisable en JSON."""
+        """JSON-serializable dictionary."""
         return json.loads(json.dumps(dataclasses.asdict(self)))
 
     @classmethod
     def from_dict(cls, d: Mapping[str, Any]) -> MHD3DConfig:
-        """Inverse de :meth:`to_dict` (clés inconnues refusées)."""
+        """Inverse of :meth:`to_dict` (unknown keys rejected)."""
         names = {f.name for f in dataclasses.fields(cls)}
         unknown = set(d) - names
         if unknown:
-            raise ValueError(f"clés inconnues pour MHD3DConfig : {sorted(unknown)}")
+            raise ValueError(f"unknown keys for MHD3DConfig: {sorted(unknown)}")
         kw = dict(d)
         for key in ("n", "length", "abc", "kf_band"):
             if isinstance(kw.get(key), list):
@@ -241,19 +241,19 @@ class MHD3DConfig:
 
 
 def resolve_device(device: str | torch.device | None) -> torch.device:
-    """``auto`` → ``cuda`` si un GPU est visible, sinon ``cpu`` (MPS non pris en charge : FFT complexes)."""
+    """``auto`` → ``cuda`` if a GPU is visible, otherwise ``cpu`` (MPS not supported: complex FFTs)."""
     if device is None or str(device) == "auto":
         return torch.device("cuda" if torch.cuda.is_available() else "cpu")
     return torch.device(device)
 
 
 # =============================================================================================
-# Points de contrôle génériques (.npz sans pickle)
+# Generic checkpoints (.npz without pickle)
 # =============================================================================================
 def save_npz_checkpoint(
     path: str | os.PathLike[str], arrays: Mapping[str, Any], meta: Mapping[str, Any]
 ) -> Path:
-    """Écrit ``arrays`` (tableaux numpy) et ``meta`` (JSON) dans ``path`` (.npz), de façon atomique."""
+    """Write ``arrays`` (numpy arrays) and ``meta`` (JSON) to ``path`` (.npz), atomically."""
     path = Path(path)
     path.parent.mkdir(parents=True, exist_ok=True)
     tmp = path.with_name(f".{path.stem}.{uuid.uuid4().hex[:8]}.part.npz")
@@ -268,7 +268,7 @@ def save_npz_checkpoint(
 
 
 def load_npz_checkpoint(path: str | os.PathLike[str]) -> tuple[dict[str, np.ndarray], dict[str, Any]]:
-    """Relit un point de contrôle écrit par :func:`save_npz_checkpoint` → (tableaux, méta)."""
+    """Read back a checkpoint written by :func:`save_npz_checkpoint` → (arrays, meta)."""
     with np.load(path, allow_pickle=False) as d:
         arrays = {k: d[k] for k in d.files if k != "__meta__"}
         meta = json.loads(str(d["__meta__"])) if "__meta__" in d.files else {}
@@ -276,12 +276,12 @@ def load_npz_checkpoint(path: str | os.PathLike[str]) -> tuple[dict[str, np.ndar
 
 
 # =============================================================================================
-# Solveur
+# Solver
 # =============================================================================================
 class MHD3D:
-    """Solveur MHD 3D pseudo-spectral (voir la docstring du module).
+    """Pseudo-spectral 3D MHD solver (see the module docstring).
 
-    Exemple ::
+    Example ::
 
         cfg = MHD3DConfig(n=32, mode="kinematic", flow="abc", eta=1 / 12, b0_amp=1.0)
         sim = MHD3D(cfg)
@@ -304,7 +304,7 @@ class MHD3D:
         self.n_total = nx * ny * nz
         dev, rd = self.device, self.rdtype
 
-        # --- nombres d'onde (indices m entiers, k = 2π m / L) -------------------------------
+        # --- wavenumbers (integer indices m, k = 2π m / L) ----------------------------------
         mx = torch.fft.fftfreq(nx, 1.0 / nx, dtype=torch.float64)
         my = torch.fft.fftfreq(ny, 1.0 / ny, dtype=torch.float64)
         mz = torch.fft.rfftfreq(nz, 1.0 / nz, dtype=torch.float64)
@@ -328,14 +328,14 @@ class MHD3D:
         self.mask = keep.to(dev, rd)
         kmax_phys = [s * k for s, k in zip((sx, sy, sz), self.kmax_index)]
         self.kmax_norm = math.sqrt(sum(k * k for k in kmax_phys))
-        # Poids de Parseval pour rfftn : les plans 0 < kz < nz/2 représentent aussi leurs conjugués.
+        # Parseval weights for rfftn: the planes 0 < kz < nz/2 also represent their conjugates.
         w = torch.full((mz.numel(),), 2.0, dtype=torch.float64)
         w[0] = 1.0
         if nz % 2 == 0:
             w[-1] = 1.0
         self.parseval_w = (w / self.n_total**2).view(1, 1, -1).to(dev, rd)
 
-        # --- grille physique, écoulement imposé ou forçage ---------------------------------
+        # --- physical grid, imposed flow or forcing ----------------------------------------
         axes = [torch.arange(n, dtype=torch.float64) * (L / n) for n, L in zip(self.shape, self.lengths)]
         self.coords = {name: a.numpy().copy() for name, a in zip("xyz", axes)}
         X, Y, Z = torch.meshgrid(*axes, indexing="ij")
@@ -354,29 +354,29 @@ class MHD3D:
             self.uh_imp = self._fft(self.u_imp) * self.mask
         elif cfg.forcing in ("abc", "tg"):
             base = shape_abc if cfg.forcing == "abc" else shape_tg
-            # Amplitude « laminaire » : la réponse de Stokes −ν∇²u = f a l'amplitude flow_amp
-            # (−∇² de la forme : k_f² pour ABC, 3 k_f² pour TG).
+            # "Laminar" amplitude: the Stokes response −ν∇²u = f has amplitude flow_amp
+            # (−∇² of the shape: k_f² for ABC, 3 k_f² for TG).
             lap = self.kf_phys**2 * (1.0 if cfg.forcing == "abc" else 3.0)
             amp = cfg.forcing_amp if cfg.forcing_amp is not None else cfg.nu * lap * cfg.flow_amp
             self.forcing_amp = float(amp)
             self.f_phys = (amp * base).to(dev, rd)
             self.f_hat = self._project(self._fft(self.f_phys) * self.mask)
-        # Forme « laminaire » de u0 : celle du forçage constant, sinon celle de ``flow``.
+        # "Laminar" shape of u0: that of the constant forcing, otherwise that of ``flow``.
         lam = cfg.forcing if cfg.forcing in _FLOWS else cfg.flow
         self._laminar_shape = (shape_abc if lam == "abc" else shape_tg).to(dev, rd)
         if cfg.forcing == "random":
             kk = torch.sqrt(self.k2)
             self.band = ((kk >= cfg.kf_band[0]) & (kk <= cfg.kf_band[1])).to(rd) * self.mask
             if float(self.band.sum()) == 0:
-                raise ValueError(f"bande de forçage {cfg.kf_band} vide pour la grille {self.shape}")
+                raise ValueError(f"forcing band {cfg.kf_band} empty for the grid {self.shape}")
 
-        # --- état ---------------------------------------------------------------------------
+        # --- state --------------------------------------------------------------------------
         self.generator = torch.Generator(device=self.device)
         self.generator.manual_seed(int(cfg.seed))
         self.t = 0.0
         self.step_count = 0
-        self.log_b = np.zeros(cfg.n_traj, dtype=np.float64)  # cumul des renormalisations (cinématique)
-        self.inj_acc = np.zeros(cfg.n_traj, dtype=np.float64)  # énergie injectée (forçage aléatoire)
+        self.log_b = np.zeros(cfg.n_traj, dtype=np.float64)  # cumulative renormalizations (kinematic)
+        self.inj_acc = np.zeros(cfg.n_traj, dtype=np.float64)  # injected energy (random forcing)
         self.inj_t0 = 0.0
         self._factors_cache: tuple[float, tuple[torch.Tensor, ...]] | None = None
         self.uh: torch.Tensor | None = None
@@ -387,13 +387,13 @@ class MHD3D:
             self.renormalize()
 
     # -----------------------------------------------------------------------------------------
-    # Champs analytiques
+    # Analytical fields
     # -----------------------------------------------------------------------------------------
     @staticmethod
     def _abc_field(
         X: torch.Tensor, Y: torch.Tensor, Z: torch.Tensor, k: Sequence[float], abc: Sequence[float]
     ) -> torch.Tensor:
-        """ABC : (A sin kz + C cos ky, B sin kx + A cos kz, C sin ky + B cos kx) ; ∇×u = k u (Beltrami)."""
+        """ABC: (A sin kz + C cos ky, B sin kx + A cos kz, C sin ky + B cos kx); ∇×u = k u (Beltrami)."""
         A, B, C = abc
         kx, ky, kz = k
         return torch.stack(
@@ -406,7 +406,7 @@ class MHD3D:
 
     @staticmethod
     def _tg_field(X: torch.Tensor, Y: torch.Tensor, Z: torch.Tensor, k: Sequence[float]) -> torch.Tensor:
-        """Taylor–Green : (sin kx cos ky cos kz, −cos kx sin ky cos kz, 0), à divergence nulle."""
+        """Taylor–Green: (sin kx cos ky cos kz, −cos kx sin ky cos kz, 0), divergence-free."""
         kx, ky, kz = k
         return torch.stack(
             (
@@ -417,7 +417,7 @@ class MHD3D:
         )
 
     # -----------------------------------------------------------------------------------------
-    # Outils spectraux
+    # Spectral tools
     # -----------------------------------------------------------------------------------------
     def _fft(self, v: torch.Tensor) -> torch.Tensor:
         return torch.fft.rfftn(v, dim=(-3, -2, -1))
@@ -426,7 +426,7 @@ class MHD3D:
         return torch.fft.irfftn(vh, s=self.shape, dim=(-3, -2, -1))
 
     def _curl(self, vh: torch.Tensor) -> torch.Tensor:
-        """i k × v̂ (rotationnel en Fourier) ; composantes sur l'axe −4."""
+        """i k × v̂ (curl in Fourier space); components on axis −4."""
         vx, vy, vz = vh.unbind(-4)
         return 1j * torch.stack(
             (self.ky * vz - self.kz * vy, self.kz * vx - self.kx * vz, self.kx * vy - self.ky * vx), dim=-4
@@ -437,7 +437,7 @@ class MHD3D:
         return 1j * (self.kx * vx + self.ky * vy + self.kz * vz)
 
     def _project(self, vh: torch.Tensor) -> torch.Tensor:
-        """Projection de Leray v̂ − k (k·v̂)/k² (partie solénoïdale, mode par mode)."""
+        """Leray projection v̂ − k (k·v̂)/k² (solenoidal part, mode by mode)."""
         vx, vy, vz = vh.unbind(-4)
         d = (self.kx * vx + self.ky * vy + self.kz * vz) * self.inv_k2
         return torch.stack((vx - self.kx * d, vy - self.ky * d, vz - self.kz * d), dim=-4)
@@ -449,13 +449,13 @@ class MHD3D:
         return torch.stack((ay * bz - az * by, az * bx - ax * bz, ax * by - ay * bx), dim=-4)
 
     def _inner(self, ah: torch.Tensor, bh: torch.Tensor) -> np.ndarray:
-        """⟨a·b⟩ (moyenne spatiale) par trajectoire, par Parseval sur les coefficients rfftn."""
-        prod = (ah * bh.conj()).real.sum(dim=-4)  # somme sur les composantes
+        """⟨a·b⟩ (spatial mean) per trajectory, by Parseval on the rfftn coefficients."""
+        prod = (ah * bh.conj()).real.sum(dim=-4)  # sum over the components
         val = (prod * self.parseval_w).sum(dim=(-3, -2, -1))
         return np.atleast_1d(val.detach().to("cpu", torch.float64).numpy()).copy()
 
     def _random_solenoidal(self, weight: torch.Tensor, rms: float) -> torch.Tensor:
-        """Champ aléatoire solénoïdal à moyenne nulle, filtré par ``weight`` (spectre), rms imposée."""
+        """Zero-mean solenoidal random field, filtered by ``weight`` (spectrum), imposed rms."""
         noise = torch.randn(
             (self.cfg.n_traj, 3, *self.shape), generator=self.generator, device=self.device, dtype=self.rdtype
         )
@@ -486,10 +486,10 @@ class MHD3D:
         return uh
 
     # -----------------------------------------------------------------------------------------
-    # Dynamique
+    # Dynamics
     # -----------------------------------------------------------------------------------------
     def _rhs(self, uh: torch.Tensor | None, bh: torch.Tensor) -> tuple[torch.Tensor | None, torch.Tensor]:
-        """Seconds membres non linéaires (et forçage constant) en Fourier, désaliasés."""
+        """Nonlinear right-hand sides (and constant forcing) in Fourier space, dealiased."""
         b = self._ifft(bh)
         if self.kinematic:
             assert self.u_imp is not None
@@ -509,7 +509,7 @@ class MHD3D:
         return nu_h, nb_h
 
     def _factors(self, dt: float) -> tuple[torch.Tensor, ...]:
-        """Facteurs intégrants exp(−ν k² dt), exp(−ν k² dt/2), exp(−η k² dt), exp(−η k² dt/2)."""
+        """Integrating factors exp(−ν k² dt), exp(−ν k² dt/2), exp(−η k² dt), exp(−η k² dt/2)."""
         if self._factors_cache is not None and self._factors_cache[0] == dt:
             return self._factors_cache[1]
         k2 = self.k2
@@ -523,7 +523,7 @@ class MHD3D:
         return out
 
     def step(self, dt: float) -> None:
-        """Avance d'un pas ``dt`` : RK4 de Lawson (facteur intégrant), puis forçage aléatoire et projections."""
+        """Advance by one step ``dt``: Lawson RK4 (integrating factor), then random forcing and projections."""
         Eu, Eu2, Eb, Eb2 = self._factors(dt)
         b0 = self.bh
         if self.kinematic:
@@ -558,23 +558,23 @@ class MHD3D:
             self.renormalize()
 
     def _random_kick(self, dt: float) -> None:
-        """Forçage blanc : u ← u + √(2 ε dt) ξ, ⟨|ξ|²⟩ = 1 ; cumule l'énergie injectée réalisée."""
+        """White forcing: u ← u + √(2 ε dt) ξ, ⟨|ξ|²⟩ = 1; accumulates the realized injected energy."""
         assert self.uh is not None
         amp = math.sqrt(2.0 * self.cfg.eps * dt)
         du = self._random_solenoidal(self.band, amp)
-        # ΔE = ⟨u·Δu⟩ + ½⟨|Δu|²⟩ ; le second terme vaut exactement ε dt par construction.
+        # ΔE = ⟨u·Δu⟩ + ½⟨|Δu|²⟩; the second term equals exactly ε dt by construction.
         self.inj_acc += self._inner(self.uh, du) + 0.5 * self._inner(du, du)
         self.uh = self.uh + du
 
     def renormalize(self) -> None:
-        """Ramène ‖B‖ (rms) à 1 par trajectoire et cumule ln‖B‖ dans ``log_b`` (problème linéaire)."""
+        """Bring ‖B‖ (rms) back to 1 per trajectory and accumulate ln‖B‖ in ``log_b`` (linear problem)."""
         rms = np.sqrt(np.maximum(self._inner(self.bh, self.bh), 1e-300))
         self.log_b += np.log(rms)
         scale = torch.as_tensor(1.0 / rms, device=self.device, dtype=self.rdtype).view(-1, 1, 1, 1, 1)
         self.bh = self.bh * scale
 
     def max_speed(self) -> float:
-        """max |u| + max |B| sur la grille (toutes trajectoires) : vitesse de référence du CFL."""
+        """max |u| + max |B| on the grid (all trajectories): reference velocity of the CFL."""
         vmax = 0.0
         if self.kinematic:
             assert self.u_imp is not None
@@ -586,16 +586,16 @@ class MHD3D:
         return vmax
 
     def cfl_dt(self, cfl: float) -> float:
-        """Pas de temps tel que dt (max|u| + max|B|) |k|max = cfl (stabilité de RK4 : cfl ≲ 2,8)."""
+        """Time step such that dt (max|u| + max|B|) |k|max = cfl (RK4 stability: cfl ≲ 2.8)."""
         speed = self.max_speed()
         return math.inf if speed <= 0 else cfl / (speed * self.kmax_norm)
 
     def advance_to(self, t_target: float, dt: float, cfl: float | None = None) -> int:
-        """Avance jusqu'à ``t_target`` exactement, avec des pas ≤ ``dt`` (et ≤ pas CFL si ``cfl``).
+        """Advance to exactly ``t_target``, with steps ≤ ``dt`` (and ≤ CFL step if ``cfl``).
 
-        Le pas est constant sur l'intervalle (nombre entier de pas) : les instants de sortie sont
-        atteints exactement. Renvoie le nombre de pas effectués ; lève ``FloatingPointError`` si
-        l'état cesse d'être fini (instabilité numérique : réduire ``dt`` ou ``cfl``).
+        The step is constant over the interval (integer number of steps): the output times are
+        reached exactly. Returns the number of steps taken; raises ``FloatingPointError`` if
+        the state ceases to be finite (numerical instability: reduce ``dt`` or ``cfl``).
         """
         remaining = float(t_target) - self.t
         if remaining <= 1e-12 * max(1.0, abs(t_target)):
@@ -612,23 +612,23 @@ class MHD3D:
             self.renormalize()
         if not self.is_finite():
             raise FloatingPointError(
-                f"état non fini à t = {self.t:.4g} (pas {h:.3g}) : réduire dt ou cfl, ou augmenter la résolution"
+                f"non-finite state at t = {self.t:.4g} (step {h:.3g}): reduce dt or cfl, or increase the resolution"
             )
         return n_sub
 
     def is_finite(self) -> bool:
-        """Vrai si tous les coefficients sont finis."""
+        """True if all coefficients are finite."""
         ok = bool(torch.isfinite(torch.view_as_real(self.bh)).all())
         if self.uh is not None:
             ok = ok and bool(torch.isfinite(torch.view_as_real(self.uh)).all())
         return ok
 
     # -----------------------------------------------------------------------------------------
-    # Diagnostics et sorties
+    # Diagnostics and outputs
     # -----------------------------------------------------------------------------------------
     @property
     def velocity_hat(self) -> torch.Tensor:
-        """û (n_traj, 3, nx, ny, nz//2+1) ; en cinématique, l'écoulement imposé répété."""
+        """û (n_traj, 3, nx, ny, nz//2+1); in kinematic mode, the imposed flow repeated."""
         if self.kinematic:
             assert self.uh_imp is not None
             return self.uh_imp.unsqueeze(0).expand(self.cfg.n_traj, -1, -1, -1, -1)
@@ -637,16 +637,16 @@ class MHD3D:
 
     @torch.no_grad()
     def diagnostics(self, reset_injection: bool = True) -> dict[str, np.ndarray]:
-        """Diagnostics instantanés par trajectoire (tableaux numpy float64 de forme (n_traj,)).
+        """Instantaneous diagnostics per trajectory (numpy float64 arrays of shape (n_traj,)).
 
-        ``injection`` : ⟨u·f⟩ instantané (forçage constant) ou, pour le forçage aléatoire, puissance
-        moyenne réellement injectée depuis l'appel précédent (remise à zéro si ``reset_injection``).
-        ``growth_rate`` : d ln‖B‖/dt instantané (exact, déduit de l'équation d'induction).
+        ``injection``: instantaneous ⟨u·f⟩ (constant forcing) or, for random forcing, mean power
+        actually injected since the previous call (reset to zero if ``reset_injection``).
+        ``growth_rate``: instantaneous d ln‖B‖/dt (exact, deduced from the induction equation).
         """
         cfg = self.cfg
         uh, bh = self.velocity_hat, self.bh
         wh, jh = self._curl(uh), self._curl(bh)
-        ah = jh * self.inv_k2  # potentiel vecteur en jauge de Coulomb : Â = i k × B̂ / k²
+        ah = jh * self.inv_k2  # vector potential in Coulomb gauge: Â = i k × B̂ / k²
         eu = 0.5 * self._inner(uh, uh)
         b2 = self._inner(bh, bh)
         eb = 0.5 * b2
@@ -688,7 +688,7 @@ class MHD3D:
 
     @torch.no_grad()
     def fields(self, dtype: Any = np.float32) -> dict[str, np.ndarray]:
-        """Champs physiques ``velocity`` et ``magnetic_field`` de forme (n_traj, nx, ny, nz, 3)."""
+        """Physical fields ``velocity`` and ``magnetic_field`` of shape (n_traj, nx, ny, nz, 3)."""
 
         def conv(vh: torch.Tensor) -> np.ndarray:
             v = self._ifft(vh).permute(0, 2, 3, 4, 1).contiguous()
@@ -698,7 +698,7 @@ class MHD3D:
 
     @torch.no_grad()
     def energy_spectra(self) -> dict[str, np.ndarray]:
-        """Spectres en couches E_u(k), E_B(k) (k entier = arrondi de |m|), forme (n_traj, k_max + 1)."""
+        """Shell spectra E_u(k), E_B(k) (k integer = rounded |m|), shape (n_traj, k_max + 1)."""
         mx = torch.fft.fftfreq(self.shape[0], 1.0 / self.shape[0], dtype=torch.float64).view(-1, 1, 1)
         my = torch.fft.fftfreq(self.shape[1], 1.0 / self.shape[1], dtype=torch.float64).view(1, -1, 1)
         mz = torch.fft.rfftfreq(self.shape[2], 1.0 / self.shape[2], dtype=torch.float64).view(1, 1, -1)
@@ -713,10 +713,10 @@ class MHD3D:
         return out
 
     # -----------------------------------------------------------------------------------------
-    # Points de contrôle
+    # Checkpoints
     # -----------------------------------------------------------------------------------------
     def state_dict(self) -> tuple[dict[str, np.ndarray], dict[str, Any]]:
-        """État complet → (tableaux numpy, métadonnées JSON)."""
+        """Full state → (numpy arrays, JSON metadata)."""
         arrays: dict[str, np.ndarray] = {
             "bh": self.bh.detach().cpu().numpy(),
             "log_b": self.log_b.copy(),
@@ -736,7 +736,7 @@ class MHD3D:
         return arrays, meta
 
     def load_state_dict(self, arrays: Mapping[str, np.ndarray], meta: Mapping[str, Any]) -> None:
-        """Restaure un état produit par :meth:`state_dict` (même configuration physique)."""
+        """Restore a state produced by :meth:`state_dict` (same physical configuration)."""
         self.bh = torch.as_tensor(np.asarray(arrays["bh"]), device=self.device).to(self.cdtype)
         if not self.kinematic:
             self.uh = torch.as_tensor(np.asarray(arrays["uh"]), device=self.device).to(self.cdtype)
@@ -747,7 +747,7 @@ class MHD3D:
         self.inj_t0 = float(meta.get("inj_t0", 0.0))
         if meta.get("rng_device") == self.device.type:
             self.generator.set_state(torch.as_tensor(np.asarray(arrays["rng_state"]), dtype=torch.uint8))
-        else:  # état d'un autre type de générateur : graine déterministe dérivée
+        else:  # state of another generator type: derived deterministic seed
             self.generator.manual_seed(int(self.cfg.seed) * 1_000_003 + self.step_count)
         self._factors_cache = None
 
@@ -757,7 +757,7 @@ class MHD3D:
         extra: Mapping[str, np.ndarray] | None = None,
         extra_meta: Mapping[str, Any] | None = None,
     ) -> Path:
-        """Écrit l'état (et des tableaux ``extra`` préfixés ``extra/``) dans un fichier ``.npz`` atomique."""
+        """Write the state (and ``extra`` arrays prefixed ``extra/``) to an atomic ``.npz`` file."""
         arrays, meta = self.state_dict()
         arrays = {f"solver/{k}": v for k, v in arrays.items()}
         for k, v in (extra or {}).items():
@@ -768,7 +768,7 @@ class MHD3D:
     def load_checkpoint(
         cls, path: str | os.PathLike[str], device: str | None = None, dtype: str | None = None
     ) -> tuple[MHD3D, dict[str, np.ndarray], dict[str, Any]]:
-        """Recrée le solveur depuis un point de contrôle → (solveur, tableaux ``extra``, méta ``extra``)."""
+        """Recreate the solver from a checkpoint → (solver, ``extra`` arrays, ``extra`` meta)."""
         arrays, meta = load_npz_checkpoint(path)
         cfg = MHD3DConfig.from_dict(meta["solver"]["config"])
         changes: dict[str, Any] = {}
@@ -786,12 +786,12 @@ class MHD3D:
 
 
 # =============================================================================================
-# Utilitaires
+# Utilities
 # =============================================================================================
 def growth_rate_fit(
     t: Sequence[float] | np.ndarray, log_amp: Sequence[float] | np.ndarray, t_min: float | None = None
 ) -> float:
-    """Pente d'une régression linéaire de ln‖B‖ en fonction de t (sur t ≥ ``t_min``) : taux de croissance λ."""
+    """Slope of a linear regression of ln‖B‖ against t (over t ≥ ``t_min``): growth rate λ."""
     t = np.asarray(t, dtype=np.float64)
     y = np.asarray(log_amp, dtype=np.float64)
     sel = np.isfinite(y) & (t >= (t_min if t_min is not None else -np.inf))
@@ -809,7 +809,7 @@ def benchmark(
     n_traj: int = 1,
     warmup: int = 2,
 ) -> dict[str, Any]:
-    """Mesure le temps moyen par pas (s) à la résolution n³ ; synchronise le GPU le cas échéant."""
+    """Measure the mean time per step (s) at resolution n³; synchronizes the GPU if applicable."""
     dev = resolve_device(device)
     cfg = MHD3DConfig(
         n=n,
@@ -851,10 +851,10 @@ def benchmark(
 
 
 def smoke_run(n: int = 16, n_t: int = 3, device: str = "cpu") -> dict[str, Any]:
-    """Simulation minuscule (dynamique, forçage ABC) pour ``infra/deploy/smoke.py``.
+    """Tiny simulation (dynamic, ABC forcing) for ``infra/deploy/smoke.py``.
 
-    Renvoie ``{"fields", "coords", "diagnostics", "params", "code"}`` au format attendu par
-    :func:`milady.data.format.write_mff` (une trajectoire, ``n_t`` instantanés espacés de 0,1).
+    Returns ``{"fields", "coords", "diagnostics", "params", "code"}`` in the format expected by
+    :func:`milady.data.format.write_mff` (one trajectory, ``n_t`` snapshots spaced by 0.1).
     """
     cfg = MHD3DConfig(
         n=n,
@@ -897,20 +897,20 @@ def smoke_run(n: int = 16, n_t: int = 3, device: str = "cpu") -> dict[str, Any]:
 
 
 # =============================================================================================
-# Ligne de commande : mesure de performance et essai rapide
+# Command line: performance measurement and quick test
 # =============================================================================================
 def _main(argv: Sequence[str] | None = None) -> int:
-    ap = argparse.ArgumentParser(prog="python -m milady.sim.mhd3d", description="Solveur MHD 3D : outils.")
+    ap = argparse.ArgumentParser(prog="python -m milady.sim.mhd3d", description="3D MHD solver: tools.")
     sub = ap.add_subparsers(dest="cmd", required=True)
-    b = sub.add_parser("bench", help="temps par pas à différentes résolutions")
+    b = sub.add_parser("bench", help="time per step at different resolutions")
     b.add_argument("--n", type=int, nargs="+", default=[32, 64])
     b.add_argument("--steps", type=int, default=10)
     b.add_argument("--device", default="auto")
     b.add_argument("--dtype", default="float32", choices=["float32", "float64"])
     b.add_argument("--mode", default="dynamic", choices=list(_MODES))
     b.add_argument("--n-traj", type=int, default=1)
-    b.add_argument("--threads", type=int, default=None, help="fils CPU de torch (défaut : réglage de torch)")
-    g = sub.add_parser("growth", help="taux de croissance cinématique ABC pour quelques Rm")
+    b.add_argument("--threads", type=int, default=None, help="torch CPU threads (default: torch setting)")
+    g = sub.add_parser("growth", help="kinematic ABC growth rate for a few Rm")
     g.add_argument("--rm", type=float, nargs="+", default=[6.0, 12.0])
     g.add_argument("--n", type=int, default=24)
     g.add_argument("--t", type=float, default=60.0)

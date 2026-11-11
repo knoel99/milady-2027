@@ -1,21 +1,21 @@
-"""Stockage des objets lourds (fichiers MFF, points de contrôle, figures) via fsspec.
+"""Storage of heavy objects (MFF files, checkpoints, figures) through fsspec.
 
-Schémas d'URI pris en charge :
+Supported URI schemes:
 
-- ``file:///chemin/absolu`` ou simple chemin (``/scratch/...``, ``$SCRATCH/milady``, ``~/data``) : disque
-  local ou système de fichiers parallèle d'un cluster HPC ($WORK, $SCRATCH) ;
-- ``s3://bucket/clé`` : stockage objet S3 — MinIO du docker-compose, AWS S3, Scaleway, OVHcloud… ;
-- tout autre protocole fsspec (``gs://``, ``az://``, ``https://``…) si le paquet correspondant est installé.
+- ``file:///absolute/path`` or a plain path (``/scratch/...``, ``$SCRATCH/milady``, ``~/data``): local
+  disk or parallel file system of an HPC cluster ($WORK, $SCRATCH);
+- ``s3://bucket/key``: S3 object storage — MinIO from the docker-compose, AWS S3, Scaleway, OVHcloud…;
+- any other fsspec protocol (``gs://``, ``az://``, ``https://``…) if the corresponding package is installed.
 
-Configuration (variables d'environnement, jamais de secret dans le dépôt) :
+Configuration (environment variables, never a secret in the repository):
 
-- ``MILADY_STORAGE_URI``   : racine du stockage (défaut ``file://<racine>/data/store``) ;
-- ``MILADY_S3_ENDPOINT``   : point d'accès S3 non AWS (``http://s3:9000`` pour MinIO, ``https://s3.fr-par.scw.cloud``…) ;
-- ``AWS_ACCESS_KEY_ID`` / ``AWS_SECRET_ACCESS_KEY`` (/ ``AWS_SESSION_TOKEN``) : identifiants S3 ;
-- ``AWS_DEFAULT_REGION`` ou ``AWS_REGION`` : région (défaut ``us-east-1``, valeur acceptée par MinIO).
+- ``MILADY_STORAGE_URI``   : storage root (default ``file://<root>/data/store``);
+- ``MILADY_S3_ENDPOINT``   : non-AWS S3 endpoint (``http://s3:9000`` for MinIO, ``https://s3.fr-par.scw.cloud``…);
+- ``AWS_ACCESS_KEY_ID`` / ``AWS_SECRET_ACCESS_KEY`` (/ ``AWS_SESSION_TOKEN``): S3 credentials;
+- ``AWS_DEFAULT_REGION`` or ``AWS_REGION``: region (default ``us-east-1``, accepted by MinIO).
 
-Convention de rangement : ``{MILADY_STORAGE_URI}/{campagne}/{uuid_simulation}/{kind}.h5``
-(voir :func:`simulation_uri`).
+Layout convention: ``{MILADY_STORAGE_URI}/{campaign}/{simulation_uuid}/{kind}.h5``
+(see :func:`simulation_uri`).
 """
 
 from __future__ import annotations
@@ -53,7 +53,7 @@ __all__ = [
     "storage_options",
 ]
 
-#: Buckets créés par le docker-compose (données, modèles, artefacts MLflow).
+#: Buckets created by the docker-compose (data, models, MLflow artifacts).
 DEFAULT_BUCKETS = ("milady-data", "milady-models", "mlflow")
 _CHUNK = 8 * 2**20
 
@@ -62,12 +62,12 @@ _CHUNK = 8 * 2**20
 # URI
 # ---------------------------------------------------------------------------------------------
 def _expand(path: str) -> str:
-    """Développe ``$VAR`` et ``~`` d'un chemin local (``$SCRATCH``, ``$WORK`` sur les clusters)."""
+    """Expand ``$VAR`` and ``~`` in a local path (``$SCRATCH``, ``$WORK`` on clusters)."""
     return os.path.expanduser(os.path.expandvars(path))
 
 
 def split_uri(uri: str | os.PathLike[str]) -> tuple[str, str]:
-    """Sépare protocole et chemin : ``s3://b/k`` → ``("s3", "b/k")`` ; ``/a/b`` → ``("file", "/a/b")``."""
+    """Split protocol and path: ``s3://b/k`` → ``("s3", "b/k")``; ``/a/b`` → ``("file", "/a/b")``."""
     s = os.fspath(uri)
     if "://" not in s:
         return "file", os.path.abspath(_expand(s))
@@ -81,20 +81,20 @@ def split_uri(uri: str | os.PathLike[str]) -> tuple[str, str]:
 
 
 def is_local(uri: str | os.PathLike[str]) -> bool:
-    """Vrai pour un chemin local ou une URI ``file://``."""
+    """True for a local path or a ``file://`` URI."""
     return split_uri(uri)[0] == "file"
 
 
 def local_path(uri: str | os.PathLike[str]) -> Path:
-    """Chemin local d'une URI ``file://`` ou d'un chemin (erreur pour une URI distante)."""
+    """Local path of a ``file://`` URI or of a path (error for a remote URI)."""
     proto, path = split_uri(uri)
     if proto != "file":
-        raise ValueError(f"URI non locale : {uri}")
+        raise ValueError(f"Non-local URI: {uri}")
     return Path(path)
 
 
 def base_uri() -> str:
-    """Racine du stockage : ``MILADY_STORAGE_URI`` (variables ``$VAR`` développées) ou ``file://<racine>/data/store``."""
+    """Storage root: ``MILADY_STORAGE_URI`` (``$VAR`` variables expanded) or ``file://<root>/data/store``."""
     env = os.environ.get("MILADY_STORAGE_URI", "").strip()
     if not env:
         return (project_root() / "data" / "store").as_uri()
@@ -105,7 +105,7 @@ def base_uri() -> str:
 
 
 def join(base: str | os.PathLike[str], *parts: str) -> str:
-    """Concatène des éléments de chemin à une URI ou un chemin (séparateur ``/`` dans tous les cas)."""
+    """Concatenate path elements onto a URI or a path (``/`` separator in all cases)."""
     out = os.fspath(base).rstrip("/")
     for p in parts:
         p = str(p).strip("/")
@@ -117,15 +117,15 @@ def join(base: str | os.PathLike[str], *parts: str) -> str:
 def simulation_uri(
     campaign: str, simulation_id: str, kind: str = "fields", ext: str = ".h5", base: str | None = None
 ) -> str:
-    """URI conventionnelle d'un fichier de simulation : ``{base}/{campagne}/{uuid}/{kind}{ext}``."""
+    """Conventional URI of a simulation file: ``{base}/{campaign}/{uuid}/{kind}{ext}``."""
     return join(base or base_uri(), campaign, simulation_id, f"{kind}{ext}")
 
 
 # ---------------------------------------------------------------------------------------------
-# Systèmes de fichiers
+# File systems
 # ---------------------------------------------------------------------------------------------
 def storage_options(uri: str | os.PathLike[str]) -> dict[str, Any]:
-    """Options fsspec du protocole de ``uri`` (identifiants et point d'accès S3 lus dans l'environnement)."""
+    """fsspec options for the protocol of ``uri`` (S3 credentials and endpoint read from the environment)."""
     proto, _ = split_uri(uri)
     if proto != "s3":
         return {}
@@ -140,14 +140,14 @@ def storage_options(uri: str | os.PathLike[str]) -> dict[str, Any]:
     opts["client_kwargs"] = {"region_name": region}
     if endpoint:
         opts["endpoint_url"] = endpoint
-        # MinIO et la plupart des fournisseurs compatibles acceptent l'adressage par chemin
-        # (http://hôte/bucket/clé), le seul qui marche sans DNS joker.
+        # MinIO and most compatible providers accept path-style addressing
+        # (http://host/bucket/key), the only one that works without wildcard DNS.
         opts["config_kwargs"] = {"s3": {"addressing_style": "path"}}
     return opts
 
 
 def filesystem(uri: str | os.PathLike[str]) -> tuple[fsspec.AbstractFileSystem, str]:
-    """Système de fichiers fsspec et chemin interne correspondant à ``uri``."""
+    """fsspec file system and internal path corresponding to ``uri``."""
     proto, path = split_uri(uri)
     if proto == "file":
         return fsspec.filesystem("file"), path
@@ -155,7 +155,7 @@ def filesystem(uri: str | os.PathLike[str]) -> tuple[fsspec.AbstractFileSystem, 
 
 
 def ensure_bucket(uri: str) -> None:
-    """Crée le bucket S3 de ``uri`` s'il n'existe pas (sans effet pour les autres protocoles)."""
+    """Create the S3 bucket of ``uri`` if it does not exist (no effect for other protocols)."""
     proto, path = split_uri(uri)
     if proto != "s3":
         return
@@ -166,7 +166,7 @@ def ensure_bucket(uri: str) -> None:
             return
     except (PermissionError, OSError):
         pass
-    # Appel direct à CreateBucket : s3fs.mkdir enverrait LocationConstraint = us-east-1, que AWS refuse.
+    # Direct call to CreateBucket: s3fs.mkdir would send LocationConstraint = us-east-1, which AWS rejects.
     params: dict[str, Any] = {"Bucket": bucket}
     region = storage_options(uri)["client_kwargs"]["region_name"]
     if region != "us-east-1":
@@ -182,14 +182,14 @@ def ensure_bucket(uri: str) -> None:
 
 
 # ---------------------------------------------------------------------------------------------
-# Opérations
+# Operations
 # ---------------------------------------------------------------------------------------------
 def put(local: str | os.PathLike[str], uri: str) -> str:
-    """Copie le fichier local ``local`` vers ``uri`` ; renvoie ``uri``.
+    """Copy the local file ``local`` to ``uri``; returns ``uri``.
 
-    Écriture atomique en local (copie dans un fichier temporaire du même dossier puis renommage) :
-    un job interrompu ne laisse jamais de fichier tronqué sous le nom final. En S3, l'objet n'apparaît
-    qu'une fois l'envoi terminé ; le bucket est créé au besoin.
+    Atomic write locally (copy into a temporary file in the same folder, then rename):
+    an interrupted job never leaves a truncated file under the final name. On S3, the object only appears
+    once the upload is complete; the bucket is created if needed.
     """
     src = Path(local)
     if not src.is_file():
@@ -215,7 +215,7 @@ def put(local: str | os.PathLike[str], uri: str) -> str:
 
 
 def get(uri: str, local: str | os.PathLike[str]) -> str:
-    """Télécharge ``uri`` vers le chemin local ``local`` (dossiers créés, écriture atomique) ; renvoie ce chemin."""
+    """Download ``uri`` to the local path ``local`` (folders created, atomic write); returns that path."""
     dst = Path(local)
     dst.parent.mkdir(parents=True, exist_ok=True)
     proto, path = split_uri(uri)
@@ -234,11 +234,11 @@ def get(uri: str, local: str | os.PathLike[str]) -> str:
     return str(dst)
 
 
-def open(uri: str | os.PathLike[str], mode: str = "rb", **kwargs: Any) -> IO[Any]:  # noqa: A001 (API voulue)
-    """Ouvre ``uri`` comme un fichier (à utiliser avec ``with``) ; dossiers/bucket créés en écriture.
+def open(uri: str | os.PathLike[str], mode: str = "rb", **kwargs: Any) -> IO[Any]:  # noqa: A001 (intended API)
+    """Open ``uri`` as a file (use with ``with``); folders/bucket created for writing.
 
-    En lecture S3, l'objet est lu par blocs (pas de téléchargement complet) : ``h5py.File(storage.open(u))``
-    ne lit que les morceaux nécessaires.
+    When reading from S3, the object is read in blocks (no full download): ``h5py.File(storage.open(u))``
+    only reads the chunks it needs.
     """
     proto, path = split_uri(uri)
     writing = any(c in mode for c in "wax+")
@@ -253,7 +253,7 @@ def open(uri: str | os.PathLike[str], mode: str = "rb", **kwargs: Any) -> IO[Any
 
 
 def exists(uri: str | os.PathLike[str]) -> bool:
-    """Vrai si l'objet ou le dossier ``uri`` existe (faux aussi si le bucket est absent ou inaccessible)."""
+    """True if the object or folder ``uri`` exists (also False if the bucket is missing or inaccessible)."""
     fs, path = filesystem(uri)
     try:
         fs.invalidate_cache(path)
@@ -263,13 +263,13 @@ def exists(uri: str | os.PathLike[str]) -> bool:
 
 
 def size(uri: str | os.PathLike[str]) -> int:
-    """Taille en octets de l'objet ``uri``."""
+    """Size in bytes of the object ``uri``."""
     fs, path = filesystem(uri)
     return int(fs.size(path))
 
 
 def sha256(uri: str | os.PathLike[str]) -> str:
-    """Somme SHA-256 (hexadécimale) du contenu de ``uri``, lue par blocs de 8 Mio."""
+    """SHA-256 sum (hexadecimal) of the contents of ``uri``, read in 8 MiB blocks."""
     h = hashlib.sha256()
     with open(uri, "rb") as f:
         while chunk := f.read(_CHUNK):
@@ -278,7 +278,7 @@ def sha256(uri: str | os.PathLike[str]) -> str:
 
 
 def ls(uri: str | os.PathLike[str]) -> list[str]:
-    """Liste le contenu du dossier ``uri`` (URI complètes, triées)."""
+    """List the contents of the folder ``uri`` (full URIs, sorted)."""
     proto, path = split_uri(uri)
     fs, _ = filesystem(uri)
     fs.invalidate_cache(path)
@@ -289,7 +289,7 @@ def ls(uri: str | os.PathLike[str]) -> list[str]:
 
 
 def rm(uri: str | os.PathLike[str], recursive: bool = False) -> None:
-    """Supprime l'objet (ou, avec ``recursive=True``, le dossier) ``uri`` ; sans effet s'il est absent."""
+    """Delete the object (or, with ``recursive=True``, the folder) ``uri``; no effect if absent."""
     fs, path = filesystem(uri)
     try:
         fs.rm(path, recursive=recursive)

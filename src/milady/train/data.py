@@ -1,24 +1,24 @@
-"""Données d'entraînement 3D : fichiers MFF → représentation latente « potentiel vecteur de Fourier ».
+"""3D training data: MFF files → "Fourier vector potential" latent representation.
 
-Représentation (contrainte dure ∇·u = ∇·B = 0, voir ``docs/specs/infra.md`` § 6) :
+Representation (hard constraint ∇·u = ∇·B = 0, see ``docs/specs/infra.md`` § 6):
 
-1. coefficients de Fourier (``rfftn``, norme « forward » : indépendants de la résolution) des champs u et B,
-   tronqués à la boule |m| ≤ ``kmax`` (m = indices entiers, k = 2π m / L) et à un demi-espace (chaque mode
-   représente aussi son conjugué −m ; le mode m = 0, champ moyen, est exclu) ;
-2. potentiel vecteur en jauge de Coulomb, Â = i k × B̂ / |k|² (idem Â_u = i k × û / |k|² pour la vitesse) ;
-3. composantes de Â dans la base orthonormée de Craya–Herring (e₁, e₂) du plan ⟂ k : k·Â = 0 exactement,
-   deux coefficients complexes par mode et par champ, soit 4 réels (canaux ``a1.re, a1.im, a2.re, a2.im``) ;
-4. normalisation par mode : moyenne par coordonnée (nulle pour B si la symétrie B → −B est imposée) et
-   écart-type par mode et par champ (mis en commun sur les 4 canaux, plancher relatif 1e-6).
+1. Fourier coefficients (``rfftn``, "forward" norm: independent of the resolution) of the fields u and B,
+   truncated to the ball |m| ≤ ``kmax`` (m = integer indices, k = 2π m / L) and to a half-space (each mode
+   also represents its conjugate −m; the mode m = 0, the mean field, is excluded);
+2. vector potential in Coulomb gauge, Â = i k × B̂ / |k|² (likewise Â_u = i k × û / |k|² for the velocity);
+3. components of Â in the Craya–Herring orthonormal basis (e₁, e₂) of the plane ⟂ k: k·Â = 0 exactly,
+   two complex coefficients per mode and per field, i.e. 4 reals (channels ``a1.re, a1.im, a2.re, a2.im``);
+4. per-mode normalization: mean per coordinate (zero for B if the B → −B symmetry is imposed) and
+   standard deviation per mode and per field (pooled over the 4 channels, relative floor 1e-6).
 
-Le décodage B̂ = i k × Â (puis transformée inverse) donne un champ à divergence nulle **par construction**
-(k·(k × Â) = 0) ; la divergence résiduelle est l'arrondi flottant (≈ 1e-7 en float32).
+Decoding B̂ = i k × Â (then inverse transform) gives a divergence-free field **by construction**
+(k·(k × Â) = 0); the residual divergence is floating-point rounding (≈ 1e-7 in float32).
 
-Le tenseur latent d'un instantané a la forme ``(M, C)`` : M modes (triés par |m| croissant), C = 4 × nombre
-de champs. Le jeu de données renvoie ``(x normalisé (M, C), condition normalisée (n_cond,))``.
+The latent tensor of a snapshot has shape ``(M, C)``: M modes (sorted by increasing |m|), C = 4 × number
+of fields. The dataset returns ``(normalized x (M, C), normalized condition (n_cond,))``.
 
-Sources des fichiers : liste d'URI (locales, ``s3://``, ``.zarr``), ou jeu de données du catalogue
-(``Catalog.dataset_files``), créé au besoin à partir d'une campagne (simulations terminées).
+File sources: list of URIs (local, ``s3://``, ``.zarr``), or catalog dataset
+(``Catalog.dataset_files``), created if needed from a campaign (finished simulations).
 """
 
 from __future__ import annotations
@@ -65,10 +65,10 @@ _DIFFUSIVITY_KEYS = ("nu", "eta", "Re", "Rm", "Pm")
 
 
 # =============================================================================================
-# Paramètres physiques et conditionnement
+# Physical parameters and conditioning
 # =============================================================================================
 def _num(v: Any) -> float | None:
-    """Valeur numérique finie ou ``None``."""
+    """Finite numerical value or ``None``."""
     if isinstance(v, bool) or v is None:
         return None
     try:
@@ -79,7 +79,7 @@ def _num(v: Any) -> float | None:
 
 
 def param_value(params: Mapping[str, Any], name: str) -> float:
-    """Valeur numérique du paramètre ``name``, déduite au besoin (Rm = U L/η, Re = U L/ν, Pm = ν/η…)."""
+    """Numerical value of parameter ``name``, deduced if needed (Rm = U L/η, Re = U L/ν, Pm = ν/η…)."""
     v = _num(params.get(name))
     if v is not None:
         return v
@@ -99,11 +99,11 @@ def param_value(params: Mapping[str, Any], name: str) -> float:
         return U * L / Rm
     if name == "nu" and Re:
         return U * L / Re
-    raise KeyError(f"paramètre {name!r} absent (et non déductible) de {sorted(params)}")
+    raise KeyError(f"parameter {name!r} absent (and not deducible) from {sorted(params)}")
 
 
 def fixed_parameters(params_list: Sequence[Mapping[str, Any]]) -> dict[str, Any]:
-    """Paramètres de même valeur dans tous les fichiers (forçage, kf, U_ref…) : contexte des conditions."""
+    """Parameters with the same value in all files (forcing, kf, U_ref…): context of the conditions."""
     if not params_list:
         return {}
     out = dict(params_list[0])
@@ -123,11 +123,11 @@ def fixed_parameters(params_list: Sequence[Mapping[str, Any]]) -> dict[str, Any]
 def physical_parameters(
     cond: Mapping[str, float], fixed: Mapping[str, Any], lengths: Sequence[float] | None = None
 ) -> dict[str, Any]:
-    """Paramètres physiques complets en un point de conditionnement (éventuellement non vu à l'entraînement).
+    """Complete physical parameters at a conditioning point (possibly unseen during training).
 
-    ``cond`` (ex. ``{"Re": 70, "Pm": 1.5}``) prime ; ν, η, Re, Rm, Pm sont recalculés de façon cohérente
-    à partir des conditions et, pour compléter, des valeurs fixes du jeu de données (priorité Pm, Rm, η,
-    Re, ν) ; l'amplitude d'un forçage « laminaire » (ν k_f² U) suit ν.
+    ``cond`` (e.g. ``{"Re": 70, "Pm": 1.5}``) takes precedence; ν, η, Re, Rm, Pm are recomputed consistently
+    from the conditions and, to complete them, from the fixed values of the dataset (priority Pm, Rm, η,
+    Re, ν); the amplitude of a "laminar" forcing (ν k_f² U) follows ν.
     """
     from milady.eval.metrics import forcing_amplitude
 
@@ -180,10 +180,10 @@ def physical_parameters(
 
 @dataclasses.dataclass
 class CondSpec:
-    """Paramètre de conditionnement : nom, transformation (``log`` ou ``lin``) et plage de normalisation.
+    """Conditioning parameter: name, transformation (``log`` or ``lin``) and normalization range.
 
-    La valeur normalisée vaut (T(p) − T(lo)) / (T(hi) − T(lo)) ∈ [0, 1] sur la plage d'entraînement ;
-    ``lo``/``hi`` absents sont pris sur les données d'entraînement (min et max).
+    The normalized value is (T(p) − T(lo)) / (T(hi) − T(lo)) ∈ [0, 1] over the training range;
+    missing ``lo``/``hi`` are taken from the training data (min and max).
     """
 
     name: str
@@ -193,7 +193,7 @@ class CondSpec:
 
     def __post_init__(self) -> None:
         if self.transform not in ("log", "lin"):
-            raise ValueError(f"conditionnement {self.name} : transformation 'log' ou 'lin' attendue")
+            raise ValueError(f"conditioning {self.name}: 'log' or 'lin' transformation expected")
 
     def _t(self, v: Any) -> Any:
         return np.log(v) if self.transform == "log" else v
@@ -202,7 +202,7 @@ class CondSpec:
         return np.exp(v) if self.transform == "log" else v
 
     def fit(self, values: Sequence[float] | np.ndarray) -> CondSpec:
-        """Fixe ``lo``/``hi`` manquants d'après les valeurs d'entraînement ; renvoie ``self``."""
+        """Set missing ``lo``/``hi`` from the training values; returns ``self``."""
         arr = np.asarray(values, dtype=np.float64)
         if self.lo is None:
             self.lo = float(arr.min())
@@ -212,27 +212,27 @@ class CondSpec:
 
     def _span(self) -> tuple[float, float]:
         if self.lo is None or self.hi is None:
-            raise RuntimeError(f"conditionnement {self.name} : plage non initialisée (fit)")
+            raise RuntimeError(f"conditioning {self.name}: range not initialized (fit)")
         a, b = float(self._t(self.lo)), float(self._t(self.hi))
         return a, (b - a) if abs(b - a) > 1e-12 else 1.0
 
     def normalize(self, v: Any) -> Any:
-        """Valeur brute → valeur normalisée."""
+        """Raw value → normalized value."""
         a, s = self._span()
         return (self._t(np.asarray(v, dtype=np.float64)) - a) / s
 
     def denormalize(self, c: Any) -> Any:
-        """Valeur normalisée → valeur brute."""
+        """Normalized value → raw value."""
         a, s = self._span()
         return self._ti(np.asarray(c, dtype=np.float64) * s + a)
 
     def to_dict(self) -> dict[str, Any]:
-        """Dictionnaire sérialisable."""
+        """Serializable dictionary."""
         return dataclasses.asdict(self)
 
     @classmethod
     def parse(cls, spec: str | Mapping[str, Any] | CondSpec) -> CondSpec:
-        """``"Rm"``, ``"Rm:lin"`` ou ``{"name": "Rm", "transform": "log", "lo": …, "hi": …}``."""
+        """``"Rm"``, ``"Rm:lin"`` or ``{"name": "Rm", "transform": "log", "lo": …, "hi": …}``."""
         if isinstance(spec, CondSpec):
             return dataclasses.replace(spec)
         if isinstance(spec, str):
@@ -242,16 +242,16 @@ class CondSpec:
 
 
 # =============================================================================================
-# Base de Fourier tronquée et potentiel vecteur
+# Truncated Fourier basis and vector potential
 # =============================================================================================
 def half_ball_modes(kmax: float) -> np.ndarray:
-    """Indices entiers m de la boule 0 < |m| ≤ kmax, un représentant par paire (m, −m), triés par |m|.
+    """Integer indices m of the ball 0 < |m| ≤ kmax, one representative per pair (m, −m), sorted by |m|.
 
-    Demi-espace : m_z > 0, ou m_z = 0 et (m_y > 0, ou m_y = 0 et m_x > 0) — compatible avec ``rfftn``.
+    Half-space: m_z > 0, or m_z = 0 and (m_y > 0, or m_y = 0 and m_x > 0) — compatible with ``rfftn``.
     """
     r = math.floor(kmax)
     if r < 1:
-        raise ValueError("kmax ≥ 1 requis")
+        raise ValueError("kmax ≥ 1 required")
     g = np.arange(-r, r + 1)
     mx, my, mz = (a.ravel() for a in np.meshgrid(g, g, g, indexing="ij"))
     m2 = mx**2 + my**2 + mz**2
@@ -263,9 +263,9 @@ def half_ball_modes(kmax: float) -> np.ndarray:
 
 
 def craya_basis(k: np.ndarray) -> tuple[np.ndarray, np.ndarray]:
-    """Base orthonormée (e₁, e₂) du plan ⟂ k (Craya–Herring).
+    """Orthonormal basis (e₁, e₂) of the plane ⟂ k (Craya–Herring).
 
-    e₁ = k × ẑ / |k × ẑ| (k × x̂ si k ∥ ẑ), e₂ = k × e₁ / |k|.
+    e₁ = k × ẑ / |k × ẑ| (k × x̂ if k ∥ ẑ), e₂ = k × e₁ / |k|.
     """
     k = np.asarray(k, dtype=np.float64)
     kn = np.linalg.norm(k, axis=1, keepdims=True)
@@ -281,18 +281,18 @@ def craya_basis(k: np.ndarray) -> tuple[np.ndarray, np.ndarray]:
 
 
 def _cross(a: torch.Tensor, b: torch.Tensor) -> torch.Tensor:
-    """Produit vectoriel sur la dernière dimension (réel ou complexe, diffusion des formes)."""
+    """Cross product over the last dimension (real or complex, broadcasting of shapes)."""
     a0, a1, a2 = a[..., 0], a[..., 1], a[..., 2]
     b0, b1, b2 = b[..., 0], b[..., 1], b[..., 2]
     return torch.stack((a1 * b2 - a2 * b1, a2 * b0 - a0 * b2, a0 * b1 - a1 * b0), dim=-1)
 
 
 class FourierPotentialSpace(nn.Module):
-    """Représentation latente « potentiel vecteur de Fourier » et sa normalisation (tampons du module).
+    """"Fourier vector potential" latent representation and its normalization (module buffers).
 
-    Paramètres : ``kmax`` (rayon de troncature en indices entiers), ``fields`` (``velocity``,
-    ``magnetic_field`` ou un seul des deux), ``lengths`` (boîte périodique, défaut 2π), ``symmetric_b``
-    (moyenne de B nulle, pour un modèle équivariant par B → −B).
+    Parameters: ``kmax`` (truncation radius in integer indices), ``fields`` (``velocity``,
+    ``magnetic_field`` or just one of the two), ``lengths`` (periodic box, default 2π), ``symmetric_b``
+    (zero mean of B, for a model equivariant under B → −B).
     """
 
     m: torch.Tensor
@@ -315,7 +315,7 @@ class FourierPotentialSpace(nn.Module):
         fields = tuple(fields)
         unknown = set(fields) - set(FIELD_NAMES)
         if unknown or not fields:
-            raise ValueError(f"champs {fields} : sous-ensemble non vide de {FIELD_NAMES} attendu")
+            raise ValueError(f"fields {fields}: non-empty subset of {FIELD_NAMES} expected")
         self.kmax = float(kmax)
         self.fields = fields
         self.lengths = tuple(float(v) for v in lengths)
@@ -340,16 +340,16 @@ class FourierPotentialSpace(nn.Module):
     # -- description -------------------------------------------------------------------------
     @property
     def n_modes(self) -> int:
-        """Nombre de modes M."""
+        """Number of modes M."""
         return int(self.m.shape[0])
 
     @property
     def n_channels(self) -> int:
-        """Nombre de canaux C = 4 × nombre de champs."""
+        """Number of channels C = 4 × number of fields."""
         return 4 * len(self.fields)
 
     def config(self) -> dict[str, Any]:
-        """Arguments du constructeur (sérialisables)."""
+        """Constructor arguments (serializable)."""
         return {
             "kmax": self.kmax,
             "fields": list(self.fields),
@@ -358,24 +358,24 @@ class FourierPotentialSpace(nn.Module):
         }
 
     def field_slice(self, name: str) -> slice:
-        """Canaux du champ ``name``."""
+        """Channels of the field ``name``."""
         i = self.fields.index(name)
         return slice(4 * i, 4 * i + 4)
 
     def default_grid(self) -> int:
-        """Plus petite grille paire ≥ 3 kmax + 1 : produits quadratiques sans repliement sur |m| ≤ kmax."""
+        """Smallest even grid ≥ 3 kmax + 1: quadratic products without aliasing on |m| ≤ kmax."""
         n = math.floor(3 * self.kmax) + 1
         return n + (n % 2)
 
-    # -- grille ↔ modes ----------------------------------------------------------------------
+    # -- grid ↔ modes ------------------------------------------------------------------------
     def modes_from_grid(self, field: torch.Tensor) -> torch.Tensor:
-        """Coefficients (norme « forward ») aux modes : ``(..., nx, ny, nz, 3)`` → ``(..., M, 3)``."""
+        """Coefficients ("forward" norm) at the modes: ``(..., nx, ny, nz, 3)`` → ``(..., M, 3)``."""
         nx, ny, nz = field.shape[-4:-1]
         mmax = self.m.abs().amax(0).tolist()
         for i, n in enumerate((nx, ny, nz)):
             if 2 * mmax[i] >= n:
                 raise ValueError(
-                    f"kmax = {self.kmax} trop grand pour la grille {(nx, ny, nz)} (|m| < n/2 requis)"
+                    f"kmax = {self.kmax} too large for the grid {(nx, ny, nz)} (|m| < n/2 required)"
                 )
         fh = torch.fft.rfftn(field.movedim(-1, -4), dim=(-3, -2, -1), norm="forward")
         m = self.m
@@ -383,20 +383,20 @@ class FourierPotentialSpace(nn.Module):
         return hat.movedim(-2, -1)
 
     def to_grid(self, hat: torch.Tensor, shape: Sequence[int]) -> torch.Tensor:
-        """Champ physique ``(..., nx, ny, nz, 3)`` des coefficients ``(..., M, 3)`` (différentiable)."""
+        """Physical field ``(..., nx, ny, nz, 3)`` from the coefficients ``(..., M, 3)`` (differentiable)."""
         nx, ny, nz = (int(n) for n in shape)
         nzr = nz // 2 + 1
         mmax = self.m.abs().amax(0).tolist()
         if 2 * mmax[0] >= nx or 2 * mmax[1] >= ny or 2 * mmax[2] >= nz:
-            raise ValueError(f"grille {shape} trop petite pour kmax = {self.kmax}")
+            raise ValueError(f"grid {shape} too small for kmax = {self.kmax}")
         lead = hat.shape[:-2]
         vals = hat.movedim(-1, -2).reshape(-1, self.n_modes)
         m = self.m
         lin = ((m[:, 0] % nx) * ny + (m[:, 1] % ny)) * nzr + m[:, 2]
         z0 = m[:, 2] == 0
         lin_c = (((-m[z0, 0]) % nx) * ny + ((-m[z0, 1]) % ny)) * nzr
-        # Dispersion en parties réelle/imaginaire (index_add réel : tous appareils, différentiable) ; le plan
-        # kz = 0 reçoit aussi les conjugués (symétrie hermitienne attendue par irfftn).
+        # Scatter into real/imaginary parts (real index_add: all devices, differentiable); the
+        # kz = 0 plane also receives the conjugates (Hermitian symmetry expected by irfftn).
         vr = torch.view_as_real(vals)
         conj = torch.tensor([1.0, -1.0], dtype=vr.dtype, device=vr.device)
         full = torch.zeros(vals.shape[0], nx * ny * nzr, 2, dtype=vr.dtype, device=vr.device)
@@ -405,15 +405,15 @@ class FourierPotentialSpace(nn.Module):
         f = torch.fft.irfftn(full, s=(nx, ny, nz), dim=(-3, -2, -1), norm="forward")
         return f.movedim(-4, -1)
 
-    # -- potentiel vecteur -------------------------------------------------------------------
+    # -- vector potential -------------------------------------------------------------------
     def encode(self, fields: Mapping[str, Any]) -> torch.Tensor:
-        """Champs ``{nom: (b, nx, ny, nz, 3)}`` → latent brut ``(b, M, C)`` (float32, non normalisé)."""
+        """Fields ``{name: (b, nx, ny, nz, 3)}`` → raw latent ``(b, M, C)`` (float32, not normalized)."""
         cols = []
         k = self.k
         k2 = (k * k).sum(-1)
         for name in self.fields:
             if name not in fields:
-                raise KeyError(f"champ {name!r} absent (fournis : {sorted(fields)})")
+                raise KeyError(f"field {name!r} absent (provided: {sorted(fields)})")
             f = torch.as_tensor(fields[name], dtype=torch.float64, device=k.device)
             hat = self.modes_from_grid(f)
             a = 1j * _cross(k.to(hat.dtype), hat) / k2[:, None]
@@ -423,7 +423,7 @@ class FourierPotentialSpace(nn.Module):
         return torch.stack(cols, dim=-1).to(torch.float32)
 
     def potential_hat(self, x: torch.Tensor) -> torch.Tensor:
-        """Latent brut ``(b, M, C)`` → potentiels Â ``(b, F, M, 3)`` complexes (k·Â = 0 par construction)."""
+        """Raw latent ``(b, M, C)`` → complex potentials Â ``(b, F, M, 3)`` (k·Â = 0 by construction)."""
         b = x.shape[0]
         xr = x.reshape(b, self.n_modes, len(self.fields), 4).movedim(2, 1)
         e1, e2 = self.e1.to(x.dtype), self.e2.to(x.dtype)
@@ -432,12 +432,12 @@ class FourierPotentialSpace(nn.Module):
         return a1 * e1 + a2 * e2
 
     def field_hat(self, x: torch.Tensor) -> torch.Tensor:
-        """Coefficients des champs ``(b, F, M, 3)`` : f̂ = i k × Â (divergence nulle exacte)."""
+        """Field coefficients ``(b, F, M, 3)``: f̂ = i k × Â (exactly zero divergence)."""
         a = self.potential_hat(x)
         return 1j * _cross(self.k.to(x.dtype).to(a.dtype), a)
 
     def decode(self, x: torch.Tensor, shape: Sequence[int] | int | None = None) -> dict[str, torch.Tensor]:
-        """Latent brut → champs physiques ``{nom: (b, nx, ny, nz, 3)}`` (u = ∇×A_u, B = ∇×A_B)."""
+        """Raw latent → physical fields ``{name: (b, nx, ny, nz, 3)}`` (u = ∇×A_u, B = ∇×A_B)."""
         n = shape if shape is not None else self.default_grid()
         grid = (n, n, n) if isinstance(n, int) else tuple(n)
         f = self.to_grid(self.field_hat(x), grid)
@@ -446,7 +446,7 @@ class FourierPotentialSpace(nn.Module):
     # -- normalisation -----------------------------------------------------------------------
     @torch.no_grad()
     def fit(self, x: torch.Tensor) -> None:
-        """Moyenne (par coordonnée) et écart-type (par mode et champ) du latent brut ``(N, M, C)``."""
+        """Mean (per coordinate) and standard deviation (per mode and field) of the raw latent ``(N, M, C)``."""
         x64 = x.to(torch.float64)
         mean = x64.mean(0)
         if self.symmetric_b and "magnetic_field" in self.fields:
@@ -462,16 +462,16 @@ class FourierPotentialSpace(nn.Module):
         self.std.copy_(std.to(self.std.dtype))
 
     def normalize(self, x: torch.Tensor) -> torch.Tensor:
-        """Latent brut → latent normalisé."""
+        """Raw latent → normalized latent."""
         return (x - self.mean) / self.std
 
     def denormalize(self, z: torch.Tensor) -> torch.Tensor:
-        """Latent normalisé → latent brut."""
+        """Normalized latent → raw latent."""
         return z * self.std + self.mean
 
-    # -- grandeurs physiques depuis le latent (différentiables) -------------------------------
+    # -- physical quantities from the latent (differentiable) ---------------------------------
     def vector_modes(self, field: Any) -> torch.Tensor:
-        """Champ vectoriel physique ``(nx, ny, nz, 3)`` (numpy) → coefficients aux modes ``(M, 3)``."""
+        """Physical vector field ``(nx, ny, nz, 3)`` (numpy) → coefficients at the modes ``(M, 3)``."""
         f = torch.as_tensor(np.asarray(field), dtype=torch.float64, device=self.k.device)
         return self.modes_from_grid(f)
 
@@ -487,13 +487,13 @@ class FourierPotentialSpace(nn.Module):
         production: bool = False,
         grid: int | None = None,
     ) -> dict[str, torch.Tensor]:
-        """Termes des bilans d'énergie par échantillon depuis le latent brut ``x`` (b, M, C), dérivables.
+        """Terms of the energy budgets per sample from the raw latent ``x`` (b, M, C), differentiable.
 
-        Termes quadratiques par Parseval sur les modes (chaque mode compte deux fois) ; production
-        ⟨j·(u×B)⟩ sur une grille sans repliement (``grid`` ≥ 3 kmax + 1). ``forcing_hat`` (M, 3) : forçage
-        d'amplitude 1 aux modes, multiplié par ``injection`` (amplitude par échantillon) ; sans
-        ``forcing_hat``, ``injection`` est directement la puissance injectée. ``flow_hat`` : écoulement
-        imposé (mode cinématique) quand u n'est pas généré.
+        Quadratic terms by Parseval over the modes (each mode counts twice); production
+        ⟨j·(u×B)⟩ on an alias-free grid (``grid`` ≥ 3 kmax + 1). ``forcing_hat`` (M, 3): forcing
+        of amplitude 1 at the modes, multiplied by ``injection`` (amplitude per sample); without
+        ``forcing_hat``, ``injection`` is directly the injected power. ``flow_hat``: imposed flow
+        (kinematic mode) when u is not generated.
         """
         k = self.k.to(x.dtype)
         k2 = (k * k).sum(-1)
@@ -525,7 +525,7 @@ class FourierPotentialSpace(nn.Module):
             out["injection"] = torch.zeros_like(nu)
         if production:
             if uh is None or bh is None:
-                raise ValueError("production magnétique : u (généré ou imposé) et B requis")
+                raise ValueError("magnetic production: u (generated or imposed) and B required")
             n = grid or self.default_grid()
             jh = k2[:, None] * a[:, self.fields.index("magnetic_field")]
             fields = self.to_grid(torch.stack([uh, bh, jh], dim=1), (n, n, n))
@@ -534,7 +534,7 @@ class FourierPotentialSpace(nn.Module):
         return out
 
     def shell_spectra(self, x: torch.Tensor) -> dict[str, torch.Tensor]:
-        """Spectres en couronnes E(k) (k = 1…kmax) depuis le latent brut : ``{nom: (b, n_shells)}``."""
+        """Shell spectra E(k) (k = 1…kmax) from the raw latent: ``{name: (b, n_shells)}``."""
         k2 = (self.k.to(x.dtype) ** 2).sum(-1)
         a = self.potential_hat(x)
         ns = int(self.shell.max()) + 1
@@ -547,10 +547,10 @@ class FourierPotentialSpace(nn.Module):
 
 
 # =============================================================================================
-# Lecture des fichiers MFF
+# Reading MFF files
 # =============================================================================================
 def local_copy(uri: str, cache_dir: str | os.PathLike[str] | None) -> str:
-    """Chemin lisible localement : ``uri`` (locale ou sans cache) ou sa copie dans ``cache_dir``."""
+    """Locally readable path: ``uri`` (local or uncached) or its copy in ``cache_dir``."""
     if storage.is_local(uri) or not cache_dir or uri.rstrip("/").endswith(".zarr"):
         return uri
     key = hashlib.sha1(uri.encode("utf-8")).hexdigest()[:16]
@@ -564,11 +564,11 @@ def local_copy(uri: str, cache_dir: str | os.PathLike[str] | None) -> str:
 
 
 def grid_lengths(coords: Mapping[str, np.ndarray]) -> tuple[float, float, float]:
-    """Longueurs de la boîte périodique depuis les coordonnées (x_j = j L / n)."""
+    """Lengths of the periodic box from the coordinates (x_j = j L / n)."""
     out = []
     for d in ("x", "y", "z"):
         if d not in coords:
-            raise ValueError("fichier 3D (coordonnées x, y, z) attendu")
+            raise ValueError("3D file (coordinates x, y, z) expected")
         c = np.asarray(coords[d], dtype=np.float64)
         out.append(float(c.size * (c[1] - c[0])) if c.size > 1 else TWO_PI)
     return out[0], out[1], out[2]
@@ -585,11 +585,11 @@ def iter_snapshots(
     cache_dir: str | None = None,
     select: Callable[[Mapping[str, Any]], bool] | None = None,
 ) -> Iterator[tuple[str, dict[str, Any], dict[str, np.ndarray]]]:
-    """Parcourt les instantanés des fichiers par blocs de ``chunk`` pas de temps (mémoire bornée).
+    """Iterate over the snapshots of the files in blocks of ``chunk`` time steps (bounded memory).
 
-    Rend ``(uri, paramètres, {champ: (n_traj × n_t_bloc, nx, ny, nz, 3)})`` ; ``t_min`` écarte le transitoire,
-    ``stride`` sous-échantillonne en temps, ``select(params)`` filtre les fichiers. Les longueurs de boîte
-    sont dans ``params["_lengths"]``.
+    Yields ``(uri, parameters, {field: (n_traj × n_t_block, nx, ny, nz, 3)})``; ``t_min`` drops the transient,
+    ``stride`` subsamples in time, ``select(params)`` filters the files. The box lengths
+    are in ``params["_lengths"]``.
     """
     for uri in uris:
         path = local_copy(uri, cache_dir)
@@ -604,7 +604,7 @@ def iter_snapshots(
         if max_per_file is not None:
             idx = idx[: int(max_per_file)]
         if not idx:
-            LOG.warning("%s : aucun instantané après t_min = %s", uri, t_min)
+            LOG.warning("%s: no snapshot after t_min = %s", uri, t_min)
             continue
         step = max(1, int(stride))
         for i in range(0, len(idx), chunk):
@@ -617,14 +617,14 @@ def iter_snapshots(
             for name in fields:
                 arr = np.asarray(d["fields"][name])
                 if arr.ndim != 6 or arr.shape[-1] != 3:
-                    raise ValueError(f"{uri} : {name} de forme {arr.shape}, (B, T, nx, ny, nz, 3) attendu")
+                    raise ValueError(f"{uri}: {name} of shape {arr.shape}, (B, T, nx, ny, nz, 3) expected")
                 out[name] = arr.reshape(-1, *arr.shape[2:])
             yield uri, params, out
 
 
 @dataclasses.dataclass
 class LatentData:
-    """Latents bruts d'une partition : ``latents`` (N, M, C), ``file_index`` (N,), paramètres par fichier."""
+    """Raw latents of a split: ``latents`` (N, M, C), ``file_index`` (N,), parameters per file."""
 
     latents: torch.Tensor
     file_index: torch.Tensor
@@ -642,7 +642,7 @@ def load_latents(
     chunk: int = 8,
     cache_dir: str | None = None,
 ) -> LatentData:
-    """Lit et encode tous les instantanés de ``uris`` (vérifie que la boîte est celle de ``space``)."""
+    """Read and encode all snapshots of ``uris`` (checks that the box is that of ``space``)."""
     lat: list[torch.Tensor] = []
     fidx: list[torch.Tensor] = []
     params: list[dict[str, Any]] = []
@@ -657,7 +657,7 @@ def load_latents(
         cache_dir=cache_dir,
     ):
         if not np.allclose(p["_lengths"], space.lengths, rtol=1e-5):
-            raise ValueError(f"{uri} : boîte {p['_lengths']} ≠ {space.lengths} (un jeu = une géométrie)")
+            raise ValueError(f"{uri}: box {p['_lengths']} ≠ {space.lengths} (one dataset = one geometry)")
         if not used or used[-1] != uri:
             used.append(uri)
             params.append({k: v for k, v in p.items() if k != "_lengths"})
@@ -665,12 +665,12 @@ def load_latents(
         lat.append(x.cpu())
         fidx.append(torch.full((x.shape[0],), len(used) - 1, dtype=torch.long))
     if not lat:
-        raise ValueError(f"aucun instantané lu dans {len(uris)} fichier(s)")
+        raise ValueError(f"no snapshot read from {len(uris)} file(s)")
     return LatentData(torch.cat(lat), torch.cat(fidx), params, used)
 
 
 class LatentDataset(torch.utils.data.Dataset):
-    """Jeu de données en mémoire : ``x`` normalisé (N, M, C) et condition normalisée (N, n_cond), float32."""
+    """In-memory dataset: normalized ``x`` (N, M, C) and normalized condition (N, n_cond), float32."""
 
     def __init__(
         self,
@@ -693,16 +693,16 @@ class LatentDataset(torch.utils.data.Dataset):
         return self.x[i], self.cond[i]
 
     def to(self, device: torch.device | str) -> LatentDataset:
-        """Copie des tenseurs sur ``device`` (le jeu tient en mémoire : quelques Mo à quelques Go)."""
+        """Copy of the tensors onto ``device`` (the dataset fits in memory: a few MB to a few GB)."""
         return LatentDataset(
             self.x.to(device), self.cond.to(device), self.file_index.to(device), self.params, self.uris
         )
 
 
 class EpochSampler:
-    """Lots d'une époque : permutation commune à tous les processus (graine, époque), partagée par rang.
+    """Batches of an epoch: permutation shared by all processes (seed, epoch), partitioned by rank.
 
-    La permutation est complétée pour que chaque rang ait le même nombre de lots (exigence de DDP).
+    The permutation is padded so that every rank has the same number of batches (DDP requirement).
     """
 
     def __init__(self, n: int, batch_size: int, rank: int = 0, world: int = 1, seed: int = 0) -> None:
@@ -713,7 +713,7 @@ class EpochSampler:
         return max(1, math.ceil(per_rank / self.batch_size))
 
     def epoch(self, epoch: int) -> list[torch.Tensor]:
-        """Indices des lots de l'époque ``epoch`` pour ce rang."""
+        """Batch indices of epoch ``epoch`` for this rank."""
         g = torch.Generator().manual_seed(int(self.seed) * 100_003 + int(epoch))
         perm = torch.randperm(self.n, generator=g)
         total = math.ceil(self.n / self.world) * self.world
@@ -724,7 +724,7 @@ class EpochSampler:
 
 
 # =============================================================================================
-# Résolution des sources (catalogue, campagne, URI)
+# Source resolution (catalog, campaign, URI)
 # =============================================================================================
 def _matches(params: Mapping[str, Any], spec: Mapping[str, Any]) -> bool:
     for key, val in spec.items():
@@ -744,14 +744,14 @@ def resolve_uris(
     dataset: str | None = None,
     catalog: Any | None = None,
 ) -> dict[str, Any]:
-    """URI par partition ``{"train": […], "val": […], "test": […]}`` et provenance (``dataset_id``…).
+    """URIs per split ``{"train": […], "val": […], "test": […]}`` and provenance (``dataset_id``…).
 
-    Priorité : ``files`` (ligne de commande) ; ``data.files`` ; jeu de données (``dataset`` ou
-    ``data.dataset``, forme ``nom`` ou ``nom:version``) au catalogue ; s'il n'existe pas et que
-    ``data.campaign`` est donné, il est créé à partir des simulations terminées de la campagne, les
-    partitions ``val``/``test`` étant désignées par ``data.auto_dataset.val/test`` (listes de jeux de
-    paramètres). Une liste explicite de fichiers va entièrement en ``train`` (``data.val_files``,
-    ``data.test_files`` pour les autres partitions).
+    Priority: ``files`` (command line); ``data.files``; dataset (``dataset`` or
+    ``data.dataset``, form ``name`` or ``name:version``) in the catalog; if it does not exist and
+    ``data.campaign`` is given, it is created from the finished simulations of the campaign, the
+    ``val``/``test`` splits being designated by ``data.auto_dataset.val/test`` (lists of
+    parameter sets). An explicit list of files goes entirely into ``train`` (``data.val_files``,
+    ``data.test_files`` for the other splits).
     """
     out: dict[str, Any] = {
         "train": [],
@@ -770,7 +770,7 @@ def resolve_uris(
     name = dataset or cfg_data.get("dataset")
     if not name:
         raise ValueError(
-            "aucune donnée : --files URI…, --dataset NOM, ou data.files / data.dataset dans la configuration"
+            "no data: --files URI…, --dataset NAME, or data.files / data.dataset in the configuration"
         )
     version = cfg_data.get("version")
     if ":" in str(name):
@@ -799,7 +799,7 @@ def resolve_uris(
 def _create_dataset(
     catalog: Any, name: str, version: str, campaign: str, rule: Mapping[str, Any]
 ) -> list[dict[str, Any]]:
-    """Crée le jeu ``name`` v``version`` : fichiers ``fields`` des simulations terminées d'une campagne."""
+    """Create the dataset ``name`` v``version``: ``fields`` files of the finished simulations of a campaign."""
     sims = catalog.query_simulations(campaign=campaign, status="done")
     members = []
     for sim in sims:
@@ -812,20 +812,20 @@ def _create_dataset(
             if f.get("kind") == "fields":
                 members.append((f["id"], split))
     if not members:
-        raise ValueError(f"campagne {campaign!r} : aucune simulation terminée avec un fichier « fields »")
+        raise ValueError(f"campaign {campaign!r}: no finished simulation with a \"fields\" file")
     catalog.register_dataset(
-        name, version, members, description=f"créé par milady.train depuis la campagne {campaign}"
+        name, version, members, description=f"created by milady.train from campaign {campaign}"
     )
-    LOG.info("jeu de données %s v%s créé : %d fichiers", name, version, len(members))
+    LOG.info("dataset %s v%s created: %d files", name, version, len(members))
     return catalog.dataset_files(name, version=version)
 
 
 # =============================================================================================
-# Assemblage
+# Assembly
 # =============================================================================================
 @dataclasses.dataclass
 class DataBundle:
-    """Espace latent ajusté, conditionnement, partitions et contexte physique d'un entraînement."""
+    """Fitted latent space, conditioning, splits and physical context of a training run."""
 
     space: FourierPotentialSpace
     cond_specs: list[CondSpec]
@@ -848,10 +848,10 @@ def build_data(
     space_state: Mapping[str, Any] | None = None,
     cond_specs: Sequence[CondSpec | Mapping[str, Any] | str] | None = None,
 ) -> DataBundle:
-    """Lit les partitions, ajuste la normalisation sur ``train`` et rend les jeux de données normalisés.
+    """Read the splits, fit the normalization on ``train`` and return the normalized datasets.
 
-    ``space_state`` (``{"config": …, "state": …}``) et ``cond_specs`` : reprise d'un modèle existant
-    (réglage fin) — la normalisation et les plages de conditionnement du modèle sont alors conservées.
+    ``space_state`` (``{"config": …, "state": …}``) and ``cond_specs``: resumption of an existing model
+    (fine-tuning) — the model's normalization and conditioning ranges are then kept.
     """
     fields = tuple(cfg_data.get("fields") or FIELD_NAMES)
     opts: dict[str, Any] = {
@@ -863,7 +863,7 @@ def build_data(
     }
     train_uris = list(uris.get("train") or [])
     if not train_uris:
-        raise ValueError("partition « train » vide")
+        raise ValueError("empty \"train\" split")
     if space_state is not None:
         space = FourierPotentialSpace(**space_state["config"])
         space.load_state_dict(space_state["state"])
@@ -914,7 +914,7 @@ def build_data(
         "data_uris": [u for v in raw.values() for u in v.uris],
     }
     LOG.info(
-        "données : %s instantanés, %d modes × %d canaux (dimension %d)",
+        "data: %s snapshots, %d modes × %d channels (dimension %d)",
         info["n_snapshots"],
         space.n_modes,
         space.n_channels,

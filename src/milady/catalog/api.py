@@ -1,7 +1,7 @@
-"""Interface Python du catalogue MilaDy (PostgreSQL en production, SQLite en mode portable).
+"""Python interface of the MilaDy catalog (PostgreSQL in production, SQLite in portable mode).
 
     from milady.catalog.api import Catalog
-    cat = Catalog()                                   # MILADY_DB_URL, sinon sqlite:///<racine>/data/catalog.sqlite
+    cat = Catalog()                                   # MILADY_DB_URL, otherwise sqlite:///<root>/data/catalog.sqlite
     camp = cat.create_campaign("palier2_abc3d", config_yaml=open(cfg).read())
     sim = cat.register_simulation(camp, "mhd3d_torch", {"Rm": 12.0}, {"shape": [64, 64, 64]})
     cat.update_simulation(sim, status="running")
@@ -10,9 +10,9 @@
     cat.update_simulation(sim, status="done")
     cat.query_simulations(campaign="palier2_abc3d", status="done", Rm__gt=8.0)
 
-Toutes les méthodes ouvrent leur propre transaction (sûres entre processus) ; les identifiants sont des
-chaînes UUID. Les méthodes d'enregistrement sont idempotentes quand c'est naturel (campagne par nom,
-fichier par URI, jeu de données par (nom, version), diagnostics par (simulation, nom, t)).
+All methods open their own transaction (safe across processes); identifiers are
+UUID strings. Registration methods are idempotent where natural (campaign by name,
+file by URI, dataset by (name, version), diagnostics by (simulation, name, t)).
 """
 
 from __future__ import annotations
@@ -59,7 +59,7 @@ from milady.catalog.models import (
 
 __all__ = ["Catalog", "default_url", "normalize_url"]
 
-# Synonymes acceptés pour les statuts (les scripts d'ordonnanceurs parlent des langues différentes).
+# Accepted synonyms for statuses (scheduler scripts speak different languages).
 _STATUS_ALIASES = {
     "pending": "queued",
     "submitted": "submitted",
@@ -76,10 +76,10 @@ _OPS = ("eq", "ne", "lt", "le", "gt", "ge", "in")
 
 
 # =============================================================================================
-# Connexion
+# Connection
 # =============================================================================================
 def default_url() -> str:
-    """URL par défaut : ``MILADY_DB_URL`` sinon ``sqlite:///<racine>/data/catalog.sqlite``."""
+    """Default URL: ``MILADY_DB_URL``, otherwise ``sqlite:///<root>/data/catalog.sqlite``."""
     env = os.environ.get("MILADY_DB_URL", "").strip()
     if env:
         return env
@@ -87,7 +87,7 @@ def default_url() -> str:
 
 
 def normalize_url(url: str) -> str:
-    """Pilote psycopg 3 pour PostgreSQL (``postgresql://`` → ``postgresql+psycopg://``), ``$VAR`` développées."""
+    """psycopg 3 driver for PostgreSQL (``postgresql://`` → ``postgresql+psycopg://``), ``$VAR`` expanded."""
     url = os.path.expandvars(url)
     for prefix in ("postgresql://", "postgres://"):
         if url.startswith(prefix):
@@ -96,7 +96,7 @@ def normalize_url(url: str) -> str:
 
 
 def _jsonable(obj: Any) -> Any:
-    """Copie sérialisable en JSON (numpy → Python, NaN/inf → None : JSONB refuse NaN)."""
+    """JSON-serializable copy (numpy → Python, NaN/inf → None: JSONB rejects NaN)."""
     if isinstance(obj, Mapping):
         return {str(k): _jsonable(v) for k, v in obj.items()}
     if isinstance(obj, np.ndarray):
@@ -115,7 +115,7 @@ def _jsonable(obj: Any) -> Any:
 
 
 def _dumps(obj: Any) -> str:
-    # Clés triées : en SQLite, l'égalité de deux objets JSON (GROUP BY de la vue) est l'égalité du texte.
+    # Sorted keys: in SQLite, equality of two JSON objects (GROUP BY of the view) is text equality.
     return json.dumps(_jsonable(obj), sort_keys=True, ensure_ascii=False)
 
 
@@ -127,7 +127,7 @@ def _float(v: Any) -> float | None:
 
 
 class _StdDevSamp:
-    """Agrégat ``stddev_samp`` pour SQLite (algorithme de Welford ; NULL si moins de deux valeurs)."""
+    """``stddev_samp`` aggregate for SQLite (Welford algorithm; NULL if fewer than two values)."""
 
     def __init__(self) -> None:
         self.n, self.mean, self.m2 = 0, 0.0, 0.0
@@ -153,7 +153,7 @@ def _sqlite_on_connect(dbapi_conn: Any, _record: Any) -> None:
 
 
 def _aware(v: Any) -> Any:
-    """SQLite rend des datetimes naïfs : on les déclare UTC."""
+    """SQLite returns naive datetimes: we declare them UTC."""
     if isinstance(v, _dt.datetime) and v.tzinfo is None:
         return v.replace(tzinfo=_dt.UTC)
     return v
@@ -168,27 +168,27 @@ def _as_datetime(v: Any) -> _dt.datetime | None:
 
 
 def _row(obj: Any) -> dict[str, Any]:
-    """Objet ORM → dictionnaire (colonnes seulement, datetimes en UTC)."""
+    """ORM object → dictionary (columns only, datetimes in UTC)."""
     return {c.key: _aware(getattr(obj, c.key)) for c in inspect(obj).mapper.column_attrs}
 
 
 def _status(value: str, allowed: tuple[str, ...], what: str) -> str:
     v = _STATUS_ALIASES.get(str(value).lower(), str(value).lower())
     if v not in allowed:
-        raise ValueError(f"{what} {value!r} invalide (attendu : {', '.join(allowed)})")
+        raise ValueError(f"{what} {value!r} invalid (expected: {', '.join(allowed)})")
     return v
 
 
 # =============================================================================================
-# Catalogue
+# Catalog
 # =============================================================================================
 class Catalog:
-    """Catalogue des campagnes, simulations, fichiers, jeux de données, modèles, évaluations et tâches.
+    """Catalog of campaigns, simulations, files, datasets, models, evaluations and tasks.
 
-    ``url`` : URL SQLAlchemy (``postgresql://user:mdp@hôte:5432/milady``, ``sqlite:///chemin.sqlite``,
-    ``sqlite://`` en mémoire) ; défaut ``MILADY_DB_URL`` puis ``sqlite:///<racine>/data/catalog.sqlite``.
-    ``create=True`` crée les tables et la vue manquantes (sans toucher aux tables existantes : en production
-    PostgreSQL, le schéma vient de ``infra/db/schema.sql``).
+    ``url``: SQLAlchemy URL (``postgresql://user:pwd@host:5432/milady``, ``sqlite:///path.sqlite``,
+    ``sqlite://`` in memory); default ``MILADY_DB_URL`` then ``sqlite:///<root>/data/catalog.sqlite``.
+    ``create=True`` creates the missing tables and view (without touching existing tables: in PostgreSQL
+    production, the schema comes from ``infra/db/schema.sql``).
     """
 
     def __init__(self, url: str | None = None, *, echo: bool = False, create: bool = True) -> None:
@@ -196,7 +196,7 @@ class Catalog:
         kwargs: dict[str, Any] = {"echo": echo, "json_serializer": _dumps, "pool_pre_ping": True}
         self.is_sqlite = self.url.startswith("sqlite")
         if self.is_sqlite:
-            # Délai d'attente long : plusieurs jobs d'un tableau Slurm peuvent écrire en même temps.
+            # Long timeout: several jobs of a Slurm array may write at the same time.
             kwargs["connect_args"] = {"timeout": 120, "check_same_thread": False}
             path = self.url.split(":///", 1)[1] if ":///" in self.url else ""
             if path in ("", ":memory:"):
@@ -214,14 +214,14 @@ class Catalog:
         return f"Catalog({self.engine.url.render_as_string(hide_password=True)!r})"
 
     def close(self) -> None:
-        """Ferme les connexions du moteur."""
+        """Close the engine connections."""
         self.engine.dispose()
 
     def create_schema(self) -> None:
-        """Crée les tables, index, contraintes et la vue ``v_eval_summary`` absents (idempotent).
+        """Create the missing tables, indexes, constraints and ``v_eval_summary`` view (idempotent).
 
-        Tolère deux créations simultanées (deux campagnes lancées en même temps sur un catalogue neuf) :
-        si l'autre processus a créé un objet entre la vérification et la création, on réessaie.
+        Tolerates two simultaneous creations (two campaigns launched at the same time on a new catalog):
+        if the other process created an object between the check and the creation, we retry.
         """
         for attempt in range(6):
             try:
@@ -237,16 +237,16 @@ class Catalog:
                 time.sleep(0.2 * (attempt + 1))
 
     def session(self) -> Session:
-        """Session SQLAlchemy brute (requêtes libres) ; à utiliser avec ``with cat.session() as s``."""
+        """Raw SQLAlchemy session (free-form queries); use with ``with cat.session() as s``."""
         return self._session()
 
-    # -- utilitaires internes -----------------------------------------------------------------
+    # -- internal helpers ---------------------------------------------------------------------
     def _campaign_id(self, s: Session, campaign: str) -> str:
         found = s.scalar(
             select(Campaign.id).where(or_(Campaign.name == campaign, Campaign.id == _maybe_uuid(campaign)))
         )
         if found is None:
-            raise KeyError(f"campagne inconnue : {campaign!r}")
+            raise KeyError(f"unknown campaign: {campaign!r}")
         return found
 
     def _upsert(
@@ -254,7 +254,7 @@ class Catalog:
     ) -> None:
         dialect = self.engine.dialect.name
         ins = postgresql.insert if dialect == "postgresql" else sqlite.insert if dialect == "sqlite" else None
-        if ins is None:  # autre base : suppression puis insertion
+        if ins is None:  # other database: delete then insert
             for r in rows:
                 s.execute(delete(model).where(and_(*[getattr(model, k) == r[k] for k in keys])))
             s.execute(model.__table__.insert(), rows)
@@ -265,9 +265,9 @@ class Catalog:
         )
         s.execute(stmt, rows)
 
-    # -- campagnes ------------------------------------------------------------------------------
+    # -- campaigns ------------------------------------------------------------------------------
     def create_campaign(self, name: str, config_yaml: str = "", description: str = "") -> str:
-        """Crée la campagne ``name`` et renvoie son identifiant ; si elle existe, renvoie l'existant (inchangé)."""
+        """Create the campaign ``name`` and return its identifier; if it exists, return the existing one (unchanged)."""
         with self._session.begin() as s:
             found = s.scalar(select(Campaign.id).where(Campaign.name == name))
             if found:
@@ -278,7 +278,7 @@ class Catalog:
             return c.id
 
     def list_campaigns(self) -> list[dict[str, Any]]:
-        """Campagnes et nombre de simulations par statut."""
+        """Campaigns and number of simulations per status."""
         with self._session() as s:
             out = []
             for c in s.scalars(select(Campaign).order_by(Campaign.created_at)):
@@ -310,10 +310,10 @@ class Catalog:
         status: str = "queued",
         notes: str = "",
     ) -> str:
-        """Enregistre une simulation et renvoie son identifiant (``sim_id`` imposé possible, ex. ``milady_uuid``).
+        """Register a simulation and return its identifier (``sim_id`` can be imposed, e.g. ``milady_uuid``).
 
-        ``campaign_id`` : identifiant ou nom de campagne. Si ``sim_id`` existe déjà, renvoie ``sim_id`` sans
-        rien modifier (reprise d'un job relancé).
+        ``campaign_id``: campaign identifier or name. If ``sim_id`` already exists, returns ``sim_id`` without
+        changing anything (restart of a relaunched job).
         """
         with self._session.begin() as s:
             camp = self._campaign_id(s, campaign_id)
@@ -329,7 +329,7 @@ class Catalog:
                 git_commit=git_commit or "",
                 parameters=_jsonable(dict(parameters)),
                 grid=_jsonable(dict(grid)),
-                status=_status(status, SIMULATION_STATUSES, "statut"),
+                status=_status(status, SIMULATION_STATUSES, "status"),
                 host=host or socket.gethostname(),
                 n_gpus=int(n_gpus),
                 n_cpus=int(n_cpus),
@@ -340,22 +340,22 @@ class Catalog:
             return sim.id
 
     def update_simulation(self, sim_id: str, **fields: Any) -> None:
-        """Met à jour des colonnes d'une simulation.
+        """Update columns of a simulation.
 
-        Passer ``status="running"`` fixe ``started_at`` (s'il n'est pas donné) ; ``"done"``/``"failed"`` fixe
-        ``finished_at`` et, si possible, ``wall_time_s``. ``parameters``/``grid`` remplacent le JSON entier.
+        Passing ``status="running"`` sets ``started_at`` (if not given); ``"done"``/``"failed"`` sets
+        ``finished_at`` and, if possible, ``wall_time_s``. ``parameters``/``grid`` replace the whole JSON.
         """
         allowed = {c.key for c in inspect(Simulation).column_attrs} - {"id", "created_at"}
         unknown = set(fields) - allowed
         if unknown:
-            raise ValueError(f"colonnes inconnues pour simulation : {sorted(unknown)}")
+            raise ValueError(f"unknown columns for simulation: {sorted(unknown)}")
         with self._session.begin() as s:
             sim = s.get(Simulation, _uuid_str(sim_id))
             if sim is None:
-                raise KeyError(f"simulation inconnue : {sim_id}")
+                raise KeyError(f"unknown simulation: {sim_id}")
             now = utcnow()
             if "status" in fields:
-                fields["status"] = _status(fields["status"], SIMULATION_STATUSES, "statut")
+                fields["status"] = _status(fields["status"], SIMULATION_STATUSES, "status")
                 if fields["status"] == "running":
                     fields.setdefault("started_at", sim.started_at or now)
                 elif fields["status"] in ("done", "failed"):
@@ -372,7 +372,7 @@ class Catalog:
                 sim.wall_time_s = (_aware(sim.finished_at) - _aware(sim.started_at)).total_seconds()
 
     def get_simulation(self, sim_id: str) -> dict[str, Any] | None:
-        """Simulation (avec campagne et fichiers) ou ``None``."""
+        """Simulation (with campaign and files) or ``None``."""
         with self._session() as s:
             sim = s.scalar(
                 select(Simulation)
@@ -384,18 +384,18 @@ class Catalog:
     def query_simulations(
         self, campaign: str | None = None, status: str | None = None, **param_filters: Any
     ) -> list[dict[str, Any]]:
-        """Simulations filtrées par campagne (nom ou id), statut et valeurs de paramètres.
+        """Simulations filtered by campaign (name or id), status and parameter values.
 
-        Filtres de paramètres : ``Rm=12.0`` (égalité ; tolérance relative 1e-9 pour les nombres),
-        ``Rm__gt=8``, ``__ge``, ``__lt``, ``__le``, ``__ne``, ``Rm__in=[8, 12]`` ; chaînes et booléens par égalité.
-        Chaque résultat contient les colonnes de la simulation, ``campaign`` (nom) et ``files``.
+        Parameter filters: ``Rm=12.0`` (equality; relative tolerance 1e-9 for numbers),
+        ``Rm__gt=8``, ``__ge``, ``__lt``, ``__le``, ``__ne``, ``Rm__in=[8, 12]``; strings and booleans by equality.
+        Each result contains the simulation columns, ``campaign`` (name) and ``files``.
         """
         stmt = select(Simulation).options(selectinload(Simulation.files), selectinload(Simulation.campaign))
         with self._session() as s:
             if campaign is not None:
                 stmt = stmt.where(Simulation.campaign_id == self._campaign_id(s, campaign))
             if status is not None:
-                stmt = stmt.where(Simulation.status == _status(status, SIMULATION_STATUSES, "statut"))
+                stmt = stmt.where(Simulation.status == _status(status, SIMULATION_STATUSES, "status"))
             for key, val in param_filters.items():
                 name, op = key, "eq"
                 if "__" in key and key.rsplit("__", 1)[1] in _OPS:
@@ -404,7 +404,7 @@ class Catalog:
             stmt = stmt.order_by(Simulation.created_at, Simulation.id)
             return [_sim_dict(sim) for sim in s.scalars(stmt).unique()]
 
-    # -- fichiers -------------------------------------------------------------------------------
+    # -- files ----------------------------------------------------------------------------------
     def register_file(
         self,
         sim_id: str,
@@ -417,9 +417,9 @@ class Catalog:
         t_end: float | None = None,
         format_version: str = "1.0",
     ) -> str:
-        """Enregistre un fichier (clé : son URI) et renvoie son identifiant ; un fichier réécrit est mis à jour."""
+        """Register a file (key: its URI) and return its identifier; a rewritten file is updated."""
         if kind not in FILE_KINDS:
-            raise ValueError(f"type de fichier {kind!r} invalide (attendu : {', '.join(FILE_KINDS)})")
+            raise ValueError(f"invalid file kind {kind!r} (expected: {', '.join(FILE_KINDS)})")
         values = {
             "simulation_id": _uuid_str(sim_id),
             "kind": kind,
@@ -442,24 +442,24 @@ class Catalog:
             return f.id
 
     def find_file(self, uri: str) -> dict[str, Any] | None:
-        """Fichier enregistré sous ``uri`` ou ``None``."""
+        """File registered under ``uri`` or ``None``."""
         with self._session() as s:
             f = s.scalar(select(File).where(File.uri == uri))
             return _row(f) if f is not None else None
 
     # -- diagnostics ----------------------------------------------------------------------------
     def add_diagnostics(self, sim_id: str, name: str, t: Iterable[float], values: Iterable[float]) -> int:
-        """Ajoute (ou remplace, à t égal) les points d'une série temporelle ; renvoie le nombre de points.
+        """Add (or replace, at equal t) the points of a time series; return the number of points.
 
-        Une seule valeur par (simulation, nom, t) : pour plusieurs trajectoires, enregistrer la moyenne sous
-        ``name`` et, si besoin, chaque trajectoire sous ``name[i]``.
+        A single value per (simulation, name, t): for several trajectories, record the mean under
+        ``name`` and, if needed, each trajectory under ``name[i]``.
         """
         t = np.asarray(list(t) if not isinstance(t, np.ndarray) else t, dtype=np.float64).ravel()
         v = np.asarray(
             list(values) if not isinstance(values, np.ndarray) else values, dtype=np.float64
         ).ravel()
         if t.shape != v.shape:
-            raise ValueError(f"t et values de longueurs différentes ({t.size} ≠ {v.size})")
+            raise ValueError(f"t and values have different lengths ({t.size} ≠ {v.size})")
         sid = _uuid_str(sim_id)
         rows = [
             {"simulation_id": sid, "name": name, "t": float(ti), "value": _float(vi)} for ti, vi in zip(t, v)
@@ -472,7 +472,7 @@ class Catalog:
     def get_diagnostics(
         self, sim_id: str, name: str | None = None
     ) -> dict[str, tuple[np.ndarray, np.ndarray]]:
-        """Séries ``{nom: (t, valeurs)}`` d'une simulation (triées par t)."""
+        """Series ``{name: (t, values)}`` of a simulation (sorted by t)."""
         stmt = select(Diagnostic.name, Diagnostic.t, Diagnostic.value).where(
             Diagnostic.simulation_id == _uuid_str(sim_id)
         )
@@ -484,19 +484,19 @@ class Catalog:
                 out.setdefault(n, []).append((t, np.nan if v is None else v))
         return {n: (np.array([p[0] for p in pts]), np.array([p[1] for p in pts])) for n, pts in out.items()}
 
-    # -- jeux de données ------------------------------------------------------------------------
+    # -- datasets -------------------------------------------------------------------------------
     def register_dataset(
         self, name: str, version: str, members: Sequence[tuple[str, str]], description: str = ""
     ) -> str:
-        """Enregistre le jeu de données (nom, version) avec ses fichiers ``[(file_id, split)]`` ; renvoie son id.
+        """Register the dataset (name, version) with its files ``[(file_id, split)]``; return its id.
 
-        Une version publiée est figée : la réenregistrer avec les mêmes membres renvoie l'existant, avec
-        d'autres membres lève ``ValueError`` (créer une nouvelle version).
+        A published version is frozen: re-registering it with the same members returns the existing one, with
+        other members raises ``ValueError`` (create a new version).
         """
         wanted = {(_uuid_str(fid), split) for fid, split in members}
         for _, split in wanted:
             if split not in SPLITS:
-                raise ValueError(f"partition {split!r} invalide (attendu : {', '.join(SPLITS)})")
+                raise ValueError(f"split {split!r} invalid (expected: {', '.join(SPLITS)})")
         with self._session.begin() as s:
             ds = s.scalar(select(Dataset).where(Dataset.name == name, Dataset.version == version))
             if ds is not None:
@@ -505,7 +505,7 @@ class Catalog:
                     for m in s.scalars(select(DatasetMember).where(DatasetMember.dataset_id == ds.id))
                 }
                 if have != wanted:
-                    raise ValueError(f"jeu de données {name} v{version} déjà publié avec d'autres membres")
+                    raise ValueError(f"dataset {name} v{version} already published with other members")
                 return ds.id
             ds = Dataset(name=name, version=version, description=description or "")
             s.add(ds)
@@ -518,14 +518,14 @@ class Catalog:
     def dataset_files(
         self, name: str, version: str | None = None, split: str | None = None
     ) -> list[dict[str, Any]]:
-        """Fichiers d'un jeu de données (dernière version si ``version`` est omise), avec leur partition."""
+        """Files of a dataset (latest version if ``version`` is omitted), with their split."""
         with self._session() as s:
             q = select(Dataset).where(Dataset.name == name)
             if version is not None:
                 q = q.where(Dataset.version == version)
             ds = s.scalars(q.order_by(Dataset.created_at.desc())).first()
             if ds is None:
-                raise KeyError(f"jeu de données inconnu : {name} {version or ''}")
+                raise KeyError(f"unknown dataset: {name} {version or ''}")
             q = (
                 select(File, DatasetMember.split)
                 .join(DatasetMember, DatasetMember.file_id == File.id)
@@ -537,7 +537,7 @@ class Catalog:
                 {**_row(f), "split": sp, "dataset_id": ds.id} for f, sp in s.execute(q.order_by(File.uri))
             ]
 
-    # -- modèles et évaluations -----------------------------------------------------------------
+    # -- models and evaluations -----------------------------------------------------------------
     def register_model(
         self,
         name: str,
@@ -549,7 +549,7 @@ class Catalog:
         checkpoint_uri: str | None = None,
         git_commit: str = "",
     ) -> str:
-        """Enregistre un modèle entraîné et renvoie son identifiant."""
+        """Register a trained model and return its identifier."""
         with self._session.begin() as s:
             m = Model(
                 name=name,
@@ -566,21 +566,21 @@ class Catalog:
             return m.id
 
     def update_model(self, model_id: str, **fields: Any) -> None:
-        """Met à jour des colonnes d'un modèle (ex. ``checkpoint_uri`` en fin d'entraînement)."""
+        """Update columns of a model (e.g. ``checkpoint_uri`` at the end of training)."""
         allowed = {c.key for c in inspect(Model).column_attrs} - {"id", "created_at"}
         if set(fields) - allowed:
-            raise ValueError(f"colonnes inconnues pour model : {sorted(set(fields) - allowed)}")
+            raise ValueError(f"unknown columns for model: {sorted(set(fields) - allowed)}")
         with self._session.begin() as s:
             m = s.get(Model, _uuid_str(model_id))
             if m is None:
-                raise KeyError(f"modèle inconnu : {model_id}")
+                raise KeyError(f"unknown model: {model_id}")
             if "hyperparams" in fields:
                 fields["hyperparams"] = _jsonable(dict(fields["hyperparams"]))
             for k, v in fields.items():
                 setattr(m, k, v)
 
     def get_model(self, model_id: str) -> dict[str, Any] | None:
-        """Modèle ou ``None``."""
+        """Model or ``None``."""
         with self._session() as s:
             m = s.get(Model, _uuid_str(model_id))
             return _row(m) if m is not None else None
@@ -595,7 +595,7 @@ class Catalog:
         seed: int,
         details: Mapping[str, Any] | None = None,
     ) -> str:
-        """Enregistre une mesure ``metric = value`` du modèle aux paramètres physiques ``parameters``."""
+        """Register a measurement ``metric = value`` of the model at physical parameters ``parameters``."""
         with self._session.begin() as s:
             e = Evaluation(
                 model_id=_uuid_str(model_id),
@@ -611,7 +611,7 @@ class Catalog:
             return e.id
 
     def eval_summary(self, model_id: str | None = None) -> list[dict[str, Any]]:
-        """Lignes de la vue ``v_eval_summary`` : moyenne, écart-type, min, max par modèle, métrique et paramètres."""
+        """Rows of the ``v_eval_summary`` view: mean, standard deviation, min, max per model, metric and parameters."""
         stmt = select(v_eval_summary)
         if model_id is not None:
             stmt = stmt.where(v_eval_summary.c.model_id == _uuid_str(model_id))
@@ -619,7 +619,7 @@ class Catalog:
         with self.engine.connect() as conn:
             rows = [dict(r._mapping) for r in conn.execute(stmt)]
         for r in rows:
-            if isinstance(r.get("parameters"), str):  # vue SQLite sans type déclaré
+            if isinstance(r.get("parameters"), str):  # SQLite view without declared type
                 r["parameters"] = json.loads(r["parameters"])
             for k in ("mean", "std", "min", "max"):
                 r[k] = None if r[k] is None else float(r[k])
@@ -627,7 +627,7 @@ class Catalog:
             rows, key=lambda r: (r["model_name"], r["metric"], json.dumps(r["parameters"], sort_keys=True))
         )
 
-    # -- tâches ---------------------------------------------------------------------------------
+    # -- tasks ----------------------------------------------------------------------------------
     def register_job(
         self,
         kind: str,
@@ -638,12 +638,12 @@ class Catalog:
         status: str = "queued",
         log_uri: str = "",
     ) -> str:
-        """Enregistre une tâche (``kind`` libre : simulation, train, eval, convert, smoke…) ; renvoie son id."""
+        """Register a task (free ``kind``: simulation, train, eval, convert, smoke…); return its id."""
         if scheduler not in SCHEDULERS:
-            raise ValueError(f"ordonnanceur {scheduler!r} invalide (attendu : {', '.join(SCHEDULERS)})")
+            raise ValueError(f"scheduler {scheduler!r} invalid (expected: {', '.join(SCHEDULERS)})")
         if simulation_id and model_id:
-            raise ValueError("une tâche porte sur une simulation ou un modèle, pas les deux")
-        status = _status(status, JOB_STATUSES, "statut de tâche")
+            raise ValueError("a task concerns a simulation or a model, not both")
+        status = _status(status, JOB_STATUSES, "task status")
         with self._session.begin() as s:
             job = Job(
                 kind=kind,
@@ -661,22 +661,22 @@ class Catalog:
             return job.id
 
     def update_job(self, job_id: str, **fields: Any) -> None:
-        """Met à jour une tâche ; ``status`` fixe ``started_at`` / ``finished_at`` comme pour les simulations."""
+        """Update a task; ``status`` sets ``started_at`` / ``finished_at`` as for simulations."""
         allowed = {c.key for c in inspect(Job).column_attrs} - {"id"}
         if set(fields) - allowed:
-            raise ValueError(f"colonnes inconnues pour job : {sorted(set(fields) - allowed)}")
+            raise ValueError(f"unknown columns for job: {sorted(set(fields) - allowed)}")
         with self._session.begin() as s:
             job = s.get(Job, _uuid_str(job_id))
             if job is None:
-                raise KeyError(f"tâche inconnue : {job_id}")
+                raise KeyError(f"unknown task: {job_id}")
             if "status" in fields:
-                fields["status"] = _status(fields["status"], JOB_STATUSES, "statut de tâche")
+                fields["status"] = _status(fields["status"], JOB_STATUSES, "task status")
                 if fields["status"] == "running":
                     fields.setdefault("started_at", job.started_at or utcnow())
                 elif fields["status"] in ("done", "failed", "cancelled"):
                     fields.setdefault("finished_at", utcnow())
             if "scheduler" in fields and fields["scheduler"] not in SCHEDULERS:
-                raise ValueError(f"ordonnanceur {fields['scheduler']!r} invalide")
+                raise ValueError(f"scheduler {fields['scheduler']!r} invalid")
             for key in ("submitted_at", "started_at", "finished_at"):
                 if key in fields:
                     fields[key] = _as_datetime(fields[key])
@@ -684,7 +684,7 @@ class Catalog:
                 setattr(job, k, v)
 
     def get_job(self, job_id: str) -> dict[str, Any] | None:
-        """Tâche ou ``None``."""
+        """Task or ``None``."""
         with self._session() as s:
             job = s.get(Job, _uuid_str(job_id))
             return _row(job) if job is not None else None
@@ -692,10 +692,10 @@ class Catalog:
     def query_jobs(
         self, status: str | None = None, scheduler: str | None = None, external_id: str | None = None
     ) -> list[dict[str, Any]]:
-        """Tâches filtrées (statut, ordonnanceur, identifiant externe Slurm)."""
+        """Tasks filtered (status, scheduler, external Slurm identifier)."""
         stmt = select(Job)
         if status is not None:
-            stmt = stmt.where(Job.status == _status(status, JOB_STATUSES, "statut de tâche"))
+            stmt = stmt.where(Job.status == _status(status, JOB_STATUSES, "task status"))
         if scheduler is not None:
             stmt = stmt.where(Job.scheduler == scheduler)
         if external_id is not None:
@@ -703,15 +703,15 @@ class Catalog:
         with self._session() as s:
             return [_row(j) for j in s.scalars(stmt.order_by(Job.submitted_at))]
 
-    # -- ingestion d'un fichier MFF existant ----------------------------------------------------
+    # -- ingestion of an existing MFF file ------------------------------------------------------
     def ingest_mff(
         self, uri: str, campaign: str = "default", kind: str = "fields", diagnostics: bool = True
     ) -> dict[str, str]:
-        """Enregistre un fichier MFF déjà écrit (local, ``s3://`` ou ``.zarr``) d'après ses métadonnées.
+        """Register an MFF file that is already written (local, ``s3://`` or ``.zarr``) from its metadata.
 
-        Utile sur HPC quand les nœuds de calcul ne joignent pas la base : les jobs n'écrivent que des
-        fichiers, puis ``python -m milady.catalog ingest <uri>…`` les enregistre depuis la frontale.
-        La simulation reçoit l'identifiant ``milady_uuid`` du fichier ; idempotent. Renvoie
+        Useful on HPC when the compute nodes cannot reach the database: jobs only write
+        files, then ``python -m milady.catalog ingest <uri>…`` registers them from the login node.
+        The simulation receives the file's ``milady_uuid`` identifier; idempotent. Returns
         ``{"simulation_id": …, "file_id": …}``.
         """
         from milady import storage
@@ -768,7 +768,7 @@ class Catalog:
 
 
 # =============================================================================================
-# Fonctions auxiliaires
+# Auxiliary functions
 # =============================================================================================
 def _uuid_str(v: Any) -> str:
     import uuid
@@ -777,7 +777,7 @@ def _uuid_str(v: Any) -> str:
 
 
 def _maybe_uuid(v: Any) -> str | None:
-    """UUID normalisé, ou ``None`` si ``v`` n'en est pas un (évite une erreur de type en PostgreSQL)."""
+    """Normalized UUID, or ``None`` if ``v`` is not one (avoids a type error in PostgreSQL)."""
     try:
         return _uuid_str(v)
     except (ValueError, TypeError, AttributeError):

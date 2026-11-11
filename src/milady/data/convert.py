@@ -1,22 +1,22 @@
-"""Convertisseurs vers le format MFF 1.0, et squelette de l'extension SFEMaNS (Fourier × éléments finis).
+"""Converters to the MFF 1.0 format, and skeleton of the SFEMaNS extension (Fourier × finite elements).
 
-- **E2** (``experiments/e2_data.py``) : fichiers ``eta_<η>_<split>.npz`` contenant les coefficients de
-  Fourier (``numpy.fft.rfft2``, disposition ``[ky, kx]`` de ``mhd2d.py``) de la vorticité ω et du potentiel
-  magnétique a pour 16 membres × n instantanés. Chaque fichier devient une simulation MFF 2D : champs
-  ``velocity`` et ``magnetic_field`` (grille 32², disposition The Well ``[x, y]``), coefficients
-  ``milady_spectral/{vorticity, magnetic_potential}`` (``rfftn`` sur ``[x, y]``), diagnostics par
-  instantané (énergies, enstrophie, dissipation, hélicité croisée, max |∇·B|).
-- **SFEMaNS** (``grid_type = "fourier_fe_axisym"``) : :func:`write_fourier_fe_mff` écrit des champs
-  donnés par un maillage méridien (r, z) × des modes azimutaux m ; :func:`fourier_fe_to_grid` et
-  :func:`fourier_fe_to_cartesian` les interpolent vers une grille régulière. La lecture des fichiers
-  natifs de SFEMaNS n'est pas implémentée (données non publiques) : voir ``docs/specs/data-format.md``.
+- **E2** (``experiments/e2_data.py``): ``eta_<η>_<split>.npz`` files containing the Fourier coefficients
+  (``numpy.fft.rfft2``, ``[ky, kx]`` layout of ``mhd2d.py``) of the vorticity ω and of the magnetic
+  potential a for 16 members × n snapshots. Each file becomes a 2D MFF simulation: fields
+  ``velocity`` and ``magnetic_field`` (32² grid, The Well ``[x, y]`` layout), coefficients
+  ``milady_spectral/{vorticity, magnetic_potential}`` (``rfftn`` over ``[x, y]``), per-snapshot
+  diagnostics (energies, enstrophy, dissipation, cross helicity, max |∇·B|).
+- **SFEMaNS** (``grid_type = "fourier_fe_axisym"``): :func:`write_fourier_fe_mff` writes fields
+  given by a meridian mesh (r, z) × azimuthal modes m; :func:`fourier_fe_to_grid` and
+  :func:`fourier_fe_to_cartesian` interpolate them onto a regular grid. Reading the native
+  SFEMaNS files is not implemented (non-public data): see ``docs/specs/data-format.md``.
 
-Ligne de commande :
+Command line:
 
-    python -m milady.data.convert e2 <dossier_npz> <sortie> [--catalog [URL]] [--store URI] [--limit N]
-    python -m milady.data.convert validate <fichier> [...]
-    python -m milady.data.convert info <fichier>
-    python -m milady.data.convert zarr <fichier.h5> <uri.zarr>
+    python -m milady.data.convert e2 <npz_dir> <output> [--catalog [URL]] [--store URI] [--limit N]
+    python -m milady.data.convert validate <file> [...]
+    python -m milady.data.convert info <file>
+    python -m milady.data.convert zarr <file.h5> <uri.zarr>
 """
 
 from __future__ import annotations
@@ -51,9 +51,9 @@ __all__ = [
 ]
 
 # =============================================================================================
-# E2 : MHD 2D forcée (experiments/e2_data.py, experiments/mhd2d.py)
+# E2: forced 2D MHD (experiments/e2_data.py, experiments/mhd2d.py)
 # =============================================================================================
-#: Valeurs de e2_data.py utilisées si meta.json est absent ou incomplet.
+#: Values from e2_data.py used if meta.json is absent or incomplete.
 E2_DEFAULTS: dict[str, Any] = {
     "N": 32,
     "nu": 8e-3,
@@ -67,16 +67,16 @@ E2_DEFAULTS: dict[str, Any] = {
     "kmax": 10,
 }
 E2_NONDIM = (
-    "Domaine [0, 2π)² périodique ; B en unités d'Alfvén (même unité que u) ; ν et η sans dimension "
-    "(inverses de nombres de Reynolds construits sur la longueur 1 et la vitesse 1) ; forçage blanc en "
-    "temps, d'injection moyenne eps_u (vorticité) et eps_b (potentiel), bande kf_min ≤ |k| ≤ kf_max ; "
-    "frottement linéaire α aux grandes échelles."
+    "Periodic domain [0, 2π)²; B in Alfvén units (same unit as u); ν and η dimensionless "
+    "(inverses of Reynolds numbers built on length 1 and velocity 1); white-in-time forcing "
+    "with mean injection rates eps_u (vorticity) and eps_b (potential), band kf_min ≤ |k| ≤ kf_max; "
+    "linear friction α at large scales."
 )
 _E2_NAME = re.compile(r"eta_(?P<eta>[0-9.]+)_(?P<split>[a-z]+)\.npz$")
 
 
 def _e2_wavenumbers(n: int) -> tuple[np.ndarray, np.ndarray, np.ndarray]:
-    """Nombres d'onde de ``mhd2d.py`` : tableaux ``(n, n//2+1)``, axe 0 = ky (fftfreq), axe 1 = kx (rfftfreq)."""
+    """Wavenumbers of ``mhd2d.py``: arrays ``(n, n//2+1)``, axis 0 = ky (fftfreq), axis 1 = kx (rfftfreq)."""
     k = np.fft.fftfreq(n, 1.0 / n)
     kr = np.fft.rfftfreq(n, 1.0 / n)
     kx, ky = np.meshgrid(kr, k)
@@ -86,11 +86,11 @@ def _e2_wavenumbers(n: int) -> tuple[np.ndarray, np.ndarray, np.ndarray]:
 
 
 def e2_physical(w: np.ndarray, a: np.ndarray, n: int) -> dict[str, np.ndarray]:
-    """Champs physiques (float64, disposition ``[..., x, y]``) à partir de ω̂ et â (disposition ``[..., ky, kx]``).
+    """Physical fields (float64, ``[..., x, y]`` layout) from ω̂ and â (``[..., ky, kx]`` layout).
 
-    Conventions de ``mhd2d.py`` : ψ̂ = ω̂/k², u = (∂yψ, −∂xψ), B = (∂y a, −∂x a), j = −Δa. Les tableaux
-    physiques de ``irfft2`` sont indexés ``[y, x]`` ; on les transpose en ``[x, y]`` (convention The Well :
-    axes dans l'ordre de ``dimensions@spatial_dims``).
+    Conventions of ``mhd2d.py``: ψ̂ = ω̂/k², u = (∂yψ, −∂xψ), B = (∂y a, −∂x a), j = −Δa. The physical
+    arrays from ``irfft2`` are indexed ``[y, x]``; they are transposed to ``[x, y]`` (The Well convention:
+    axes in the order of ``dimensions@spatial_dims``).
     """
     kx, ky, k2i = _e2_wavenumbers(n)
     k2 = kx**2 + ky**2
@@ -111,7 +111,7 @@ def e2_physical(w: np.ndarray, a: np.ndarray, n: int) -> dict[str, np.ndarray]:
 
 
 def _max_div(v: np.ndarray, lengths: Sequence[float]) -> np.ndarray:
-    """max |∇·v| par instantané (dérivées spectrales) ; v de forme ``(B, T, nx, ny, 2)``."""
+    """max |∇·v| per snapshot (spectral derivatives); v of shape ``(B, T, nx, ny, 2)``."""
     nx, ny = v.shape[2:4]
     kx = 2 * np.pi / lengths[0] * np.fft.fftfreq(nx, 1.0 / nx)[:, None]
     ky = 2 * np.pi / lengths[1] * np.fft.rfftfreq(ny, 1.0 / ny)[None, :]
@@ -129,7 +129,7 @@ def _e2_meta(src_dir: Path) -> dict[str, Any]:
 
 
 def _e2_seed(meta: Mapping[str, Any], eta: float, split: str) -> int | None:
-    """Graine de e2_data.py : 100 + i (train) ou 200 + i (ref), i = rang de η dans eta_train + eta_test."""
+    """Seed of e2_data.py: 100 + i (train) or 200 + i (ref), i = rank of η in eta_train + eta_test."""
     etas = list(meta.get("eta_train", [])) + list(meta.get("eta_test", []))
     for i, e in enumerate(etas):
         if abs(e - eta) <= 1e-9 * abs(eta):
@@ -155,11 +155,11 @@ def convert_e2_file(
     max_members: int | None = None,
     max_snapshots: int | None = None,
 ) -> dict[str, Any]:
-    """Convertit un fichier ``eta_<η>_<split>.npz`` de E2 en fichier MFF ; renvoie un résumé.
+    """Convert an E2 ``eta_<η>_<split>.npz`` file into an MFF file; returns a summary.
 
-    Le résumé contient ``path``, ``sha256``, ``size_bytes``, ``uuid``, ``eta``, ``split``, ``params``,
-    ``grid``, ``n_t``, ``t_start``, ``t_end`` et ``diagnostics_mean`` (séries moyennées sur les trajectoires,
-    pour le catalogue). ``max_members`` / ``max_snapshots`` réduisent le fichier (tests rapides).
+    The summary contains ``path``, ``sha256``, ``size_bytes``, ``uuid``, ``eta``, ``split``, ``params``,
+    ``grid``, ``n_t``, ``t_start``, ``t_end`` and ``diagnostics_mean`` (series averaged over the trajectories,
+    for the catalog). ``max_members`` / ``max_snapshots`` shrink the file (quick tests).
     """
     npz = Path(npz)
     meta = dict(meta) if meta is not None else _e2_meta(npz.parent)
@@ -173,9 +173,9 @@ def convert_e2_file(
     n = int(meta["N"])
     members = int(meta.get("membres", 16))
     if w.shape[0] % members:
-        raise ValueError(f"{npz.name} : {w.shape[0]} instantanés non divisibles par {members} membres")
+        raise ValueError(f"{npz.name}: {w.shape[0]} snapshots not divisible by {members} members")
     n_snap = w.shape[0] // members
-    # Disposition de e2_data.py : index = membre × n_snap + instantané (« regroupé par membre »).
+    # Layout of e2_data.py: index = member × n_snap + snapshot ("grouped by member").
     w = w.reshape(members, n_snap, n, n // 2 + 1)
     a = a.reshape(members, n_snap, n, n // 2 + 1)
     if max_members:
@@ -221,13 +221,13 @@ def convert_e2_file(
             "data": np.fft.rfftn(phys["vorticity"], axes=(2, 3)),
             "physical_field": "",
             "kmax": int(meta.get("kmax", n // 3)),
-            "description": "ω = ∂x u_y − ∂y u_x = −Δψ ; u = (∂yψ, −∂xψ) ; état du solveur mhd2d.py",
+            "description": "ω = ∂x u_y − ∂y u_x = −Δψ ; u = (∂yψ, −∂xψ) ; state of the mhd2d.py solver",
         },
         "magnetic_potential": {
             "data": np.fft.rfftn(phys["magnetic_potential"], axes=(2, 3)),
             "physical_field": "",
             "kmax": int(meta.get("kmax", n // 3)),
-            "description": "a (potentiel vecteur hors plan, A = a ẑ) ; B = (∂y a, −∂x a) = ∇×A",
+            "description": "a (out-of-plane vector potential, A = a ẑ) ; B = (∂y a, −∂x a) = ∇×A",
         },
     }
     seed = _e2_seed(meta, eta, split)
@@ -243,7 +243,7 @@ def convert_e2_file(
         "source": npz.name,
         "source_sha256": mff.sha256_file(npz),
         "solver": {
-            "scheme": "pseudo-spectral, désaliasage 2/3, RK4 à facteur intégrant + Euler–Maruyama",
+            "scheme": "pseudo-spectral, 2/3 dealiasing, integrating-factor RK4 + Euler–Maruyama",
             "dt": float(meta.get("dt", 1e-2)),
             "t_burn": t_burn,
             "sampling_interval": every,
@@ -294,19 +294,19 @@ def convert_e2(
     overwrite: bool = False,
     verbose: bool = True,
 ) -> list[dict[str, Any]]:
-    """Convertit tous les ``eta_*.npz`` de ``src_dir`` vers ``out_dir`` (idempotent).
+    """Convert all ``eta_*.npz`` files of ``src_dir`` into ``out_dir`` (idempotent).
 
-    - un fichier déjà converti et valide est conservé (son identifiant est réutilisé) sauf ``overwrite`` ;
-    - ``catalog`` (instance :class:`milady.catalog.api.Catalog`) : enregistre campagne, simulations,
-      fichiers, diagnostics moyens et, si toute la collection est convertie sans réduction, le jeu de
-      données ``e2_mhd2d`` v1.0 (train → train, ref → test) ;
-    - ``store`` : URI de stockage (``s3://milady-data``…) où copier les fichiers selon la convention
-      ``{store}/{campagne}/{uuid}/fields.h5`` ; sinon l'URI enregistrée est le fichier local.
+    - a file that is already converted and valid is kept (its identifier is reused) unless ``overwrite``;
+    - ``catalog`` (instance of :class:`milady.catalog.api.Catalog`): registers campaign, simulations,
+      files, mean diagnostics and, if the whole collection is converted without reduction, the dataset
+      ``e2_mhd2d`` v1.0 (train → train, ref → test);
+    - ``store``: storage URI (``s3://milady-data``…) where to copy the files following the convention
+      ``{store}/{campaign}/{uuid}/fields.h5``; otherwise the registered URI is the local file.
     """
     src_dir, out_dir = Path(src_dir), Path(out_dir)
     files = sorted(src_dir.glob(pattern))
     if not files:
-        raise FileNotFoundError(f"aucun fichier {pattern} dans {src_dir}")
+        raise FileNotFoundError(f"no file {pattern} in {src_dir}")
     reduced = bool(limit or max_members or max_snapshots)
     if limit:
         files = files[:limit]
@@ -321,7 +321,7 @@ def convert_e2(
             config_yaml=yaml.safe_dump(
                 {"source": "experiments/e2_data.py", "meta": meta}, allow_unicode=True, sort_keys=False
             ),
-            description="E2 : MHD 2D forcée, gamme de diffusivités magnétiques η (ν = 8e-3 fixé), grille 32².",
+            description="E2: forced 2D MHD, range of magnetic diffusivities η (ν = 8e-3 fixed), 32² grid.",
         )
     records = []
     for npz in files:
@@ -343,7 +343,7 @@ def convert_e2(
                 "reused": True,
             }
             if verbose:
-                print(f"{npz.name} : déjà converti ({out.name})", flush=True)
+                print(f"{npz.name}: already converted ({out.name})", flush=True)
         else:
             if catalog is not None and catalog.get_simulation(sim_id) is None:
                 catalog.register_simulation(
@@ -363,7 +363,7 @@ def convert_e2(
             )
             if verbose:
                 print(
-                    f"{npz.name} → {out.name} : {rec['size_bytes'] / 2**20:.1f} Mio, "
+                    f"{npz.name} → {out.name}: {rec['size_bytes'] / 2**20:.1f} MiB, "
                     f"{_time.time() - t0:.1f} s",
                     flush=True,
                 )
@@ -408,10 +408,10 @@ def convert_e2(
                 "e2_mhd2d",
                 "1.0",
                 members,
-                description="E2 : instantanés MHD 2D 32² ; train = η d'entraînement, "
-                "test = trajectoires de référence (η d'entraînement et η de test).",
+                description="E2: 2D MHD snapshots 32²; train = training η, "
+                "test = reference trajectories (training η and test η).",
             )
-    for r in records:  # pas de tableaux dans la valeur de retour
+    for r in records:  # no arrays in the return value
         r.pop("time", None)
         r.pop("diagnostics_mean", None)
     return records
@@ -421,7 +421,7 @@ def convert_e2(
 # Extension SFEMaNS : grid_type = "fourier_fe_axisym"
 # =============================================================================================
 AZIMUTHAL_CONVENTION = (
-    "f(r, θ, z) = Σ_m [ f_m^c(r, z) cos(mθ) + f_m^s(r, z) sin(mθ) ] ; indice 0 = cos, 1 = sin"
+    "f(r, θ, z) = Σ_m [ f_m^c(r, z) cos(mθ) + f_m^s(r, z) sin(mθ) ] ; index 0 = cos, 1 = sin"
 )
 
 
@@ -438,14 +438,14 @@ def write_fourier_fe_mff(
     compression: str | None = "gzip",
     compression_level: int = 4,
 ) -> str:
-    """Écrit des champs « Fourier azimutal × éléments finis méridiens » (SFEMaNS) au format MFF ; renvoie le SHA-256.
+    """Write "azimuthal Fourier × meridian finite elements" fields (SFEMaNS) in MFF format; returns the SHA-256.
 
-    meshes : ``{nom: {"nodes": (n, 2) [r, z], "connectivity": (n_elem, 3|6) indices 0, "element_type": "P1"|"P2",
-             "vertices": (n_v,) optionnel, "boundary_nodes": (n_b,) optionnel, "region": (n_elem,) optionnel}}``.
-             SFEMaNS utilise des maillages distincts (fluide, conducteur, vide) : un nom par maillage.
-    modes : nombres d'onde azimutaux m (entiers ≥ 0, ``len = M``).
-    fields : ``{nom: {"data": (n_traj, n_t, M, 2, n_nodes[, 3]), "mesh": nom, "node_set": "all"|"vertices"}}`` ;
-             axe 3 = (cos, sin) ; dernier axe des vecteurs = composantes cylindriques (r, θ, z).
+    meshes: ``{name: {"nodes": (n, 2) [r, z], "connectivity": (n_elem, 3|6) 0-based indices, "element_type": "P1"|"P2",
+             "vertices": (n_v,) optional, "boundary_nodes": (n_b,) optional, "region": (n_elem,) optional}}``.
+             SFEMaNS uses distinct meshes (fluid, conductor, vacuum): one name per mesh.
+    modes: azimuthal wavenumbers m (integers ≥ 0, ``len = M``).
+    fields: ``{name: {"data": (n_traj, n_t, M, 2, n_nodes[, 3]), "mesh": name, "node_set": "all"|"vertices"}}``;
+             axis 3 = (cos, sin); last axis of vectors = cylindrical components (r, θ, z).
     """
     path = Path(storage.local_path(path))
     path.parent.mkdir(parents=True, exist_ok=True)
@@ -459,12 +459,12 @@ def write_fourier_fe_mff(
             n_traj = data.shape[0]
         if data.shape[:4] != (n_traj, len(time), M, 2):
             raise ValueError(
-                f"{name} : forme {data.shape}, attendu ({n_traj}, {len(time)}, {M}, 2, n_nœuds[, 3])"
+                f"{name}: shape {data.shape}, expected ({n_traj}, {len(time)}, {M}, 2, n_nodes[, 3])"
             )
         if spec["mesh"] not in meshes:
-            raise ValueError(f"{name} : maillage {spec['mesh']!r} inconnu")
+            raise ValueError(f"{name}: unknown mesh {spec['mesh']!r}")
     if n_traj is None:
-        raise ValueError("au moins un champ est requis")
+        raise ValueError("at least one field is required")
     tmp = path.with_name(f".{path.name}.{_uuid.uuid4().hex[:8]}.part")
     try:
         with h5py.File(tmp, "w") as f:
@@ -484,7 +484,7 @@ def write_fourier_fe_mff(
             ds.attrs["sample_varying"] = False
             g = f.create_group("boundary_conditions")
             g.attrs["milady_note"] = (
-                "maillage non structuré : nœuds de bord dans milady_fourier_fe/meshes/*/boundary_nodes"
+                "unstructured mesh: boundary nodes in milady_fourier_fe/meshes/*/boundary_nodes"
             )
             g = f.create_group("scalars")
             for k, v in numeric.items():
@@ -538,10 +538,10 @@ def _fe_eval(
     traj: int,
     t: int,
 ) -> np.ndarray:
-    """Évalue un champ Fourier–EF aux points (r, θ, z) (tableaux de même forme) ; composantes cylindriques.
+    """Evaluate a Fourier–FE field at points (r, θ, z) (arrays of the same shape); cylindrical components.
 
-    Interpolation linéaire par morceaux sur une triangulation de Delaunay des nœuds (exacte pour des champs
-    affines en (r, z) ; approximation d'ordre 2 pour des éléments P2) ; NaN hors du domaine méridien.
+    Piecewise linear interpolation on a Delaunay triangulation of the nodes (exact for fields
+    affine in (r, z); order-2 approximation for P2 elements); NaN outside the meridian domain.
     """
     from scipy.interpolate import LinearNDInterpolator
 
@@ -576,7 +576,7 @@ def fourier_fe_to_grid(
     traj: int = 0,
     t: int = 0,
 ) -> np.ndarray:
-    """Interpole un champ Fourier–EF sur une grille cylindrique régulière ``(nr, nθ, nz[, 3])`` (composantes r, θ, z)."""
+    """Interpolate a Fourier–FE field onto a regular cylindrical grid ``(nr, nθ, nz[, 3])`` (components r, θ, z)."""
     R, TH, Z = np.meshgrid(
         np.asarray(r, float), np.asarray(theta, float), np.asarray(z, float), indexing="ij"
     )
@@ -593,7 +593,7 @@ def fourier_fe_to_cartesian(
     traj: int = 0,
     t: int = 0,
 ) -> np.ndarray:
-    """Interpole un champ Fourier–EF sur une grille cartésienne ``(nx, ny, nz[, 3])`` (composantes x, y, z ; NaN hors domaine)."""
+    """Interpolate a Fourier–FE field onto a Cartesian grid ``(nx, ny, nz[, 3])`` (components x, y, z; NaN outside the domain)."""
     X, Y, Z = np.meshgrid(np.asarray(x, float), np.asarray(y, float), np.asarray(z, float), indexing="ij")
     R, TH = np.hypot(X, Y), np.arctan2(Y, X)
     out = _fe_eval(path, field, R, Z, TH, traj=traj, t=t)
@@ -605,59 +605,59 @@ def fourier_fe_to_cartesian(
 
 
 def read_sfemans_native(*_: Any, **__: Any) -> None:
-    """Lecture des fichiers natifs de SFEMaNS (« suites » Fortran) : non implémentée.
+    """Reading of native SFEMaNS files (Fortran "suites"): not implemented.
 
-    Les données SFEMaNS ne sont pas publiques ; quand elles seront accessibles, ce lecteur devra produire
-    les tableaux attendus par :func:`write_fourier_fe_mff` (maillages par domaine, modes, coefficients
-    cos/sin par nœud) sans interpolation. Voir ``docs/specs/data-format.md``, section SFEMaNS.
+    SFEMaNS data are not public; when they become accessible, this reader will have to produce
+    the arrays expected by :func:`write_fourier_fe_mff` (meshes per domain, modes, cos/sin
+    coefficients per node) without interpolation. See ``docs/specs/data-format.md``, SFEMaNS section.
     """
     raise NotImplementedError(
-        "lecteur SFEMaNS natif à écrire quand les données seront disponibles "
-        "(voir docs/specs/data-format.md) ; utiliser write_fourier_fe_mff avec des tableaux"
+        "native SFEMaNS reader to be written when the data become available "
+        "(see docs/specs/data-format.md); use write_fourier_fe_mff with arrays"
     )
 
 
 # =============================================================================================
-# Ligne de commande
+# Command line
 # =============================================================================================
 def main(argv: Sequence[str] | None = None) -> int:
-    """Point d'entrée de ``python -m milady.data.convert``."""
+    """Entry point of ``python -m milady.data.convert``."""
     ap = argparse.ArgumentParser(prog="python -m milady.data.convert", description=__doc__.split("\n\n")[0])
     sub = ap.add_subparsers(dest="cmd", required=True)
-    p = sub.add_parser("e2", help="convertit les .npz de E2 en fichiers MFF")
-    p.add_argument("source", help="dossier des eta_*.npz (et meta.json)")
-    p.add_argument("sortie", help="dossier de sortie des fichiers .h5")
+    p = sub.add_parser("e2", help="convert the E2 .npz files into MFF files")
+    p.add_argument("source", help="folder of eta_*.npz (and meta.json)")
+    p.add_argument("sortie", help="output folder for the .h5 files")
     p.add_argument("--pattern", default="eta_*.npz")
-    p.add_argument("--limit", type=int, default=None, help="nombre maximal de fichiers")
-    p.add_argument("--max-members", type=int, default=None, help="trajectoires gardées par fichier")
-    p.add_argument("--max-snapshots", type=int, default=None, help="instantanés gardés par trajectoire")
+    p.add_argument("--limit", type=int, default=None, help="maximum number of files")
+    p.add_argument("--max-members", type=int, default=None, help="trajectories kept per file")
+    p.add_argument("--max-snapshots", type=int, default=None, help="snapshots kept per trajectory")
     p.add_argument(
         "--catalog",
         nargs="?",
         const="",
         default=None,
-        help="enregistre au catalogue (URL SQLAlchemy ; sans valeur : MILADY_DB_URL ou SQLite par défaut)",
+        help="register in the catalog (SQLAlchemy URL; without value: MILADY_DB_URL or default SQLite)",
     )
     p.add_argument("--campaign", default="e2_mhd2d")
     p.add_argument(
-        "--store", default=None, help="URI de stockage où copier les fichiers (ex. s3://milady-data)"
+        "--store", default=None, help="storage URI where to copy the files (e.g. s3://milady-data)"
     )
     p.add_argument("--overwrite", action="store_true")
-    p = sub.add_parser("validate", help="valide des fichiers MFF")
+    p = sub.add_parser("validate", help="validate MFF files")
     p.add_argument("files", nargs="+")
-    p.add_argument("--well-only", action="store_true", help="contrôle seulement la partie The Well")
+    p.add_argument("--well-only", action="store_true", help="check only the The Well part")
     p.add_argument(
         "--full",
         action="store_true",
-        help="valeurs finies vérifiées sur tous les instantanés (lecture complète)",
+        help="finite values checked on all snapshots (full read)",
     )
-    p = sub.add_parser("info", help="affiche l'arborescence d'un fichier (façon h5dump -H)")
+    p = sub.add_parser("info", help="display the tree of a file (like h5dump -H)")
     p.add_argument("file")
-    p = sub.add_parser("zarr", help="copie un fichier MFF HDF5 en Zarr (local ou s3://)")
+    p = sub.add_parser("zarr", help="copy an HDF5 MFF file to Zarr (local or s3://)")
     p.add_argument("h5")
     p.add_argument("uri")
     p.add_argument("--overwrite", action="store_true")
-    p = sub.add_parser("sfemans", help="(squelette) conversion de données SFEMaNS natives")
+    p = sub.add_parser("sfemans", help="(skeleton) conversion of native SFEMaNS data")
     p.add_argument("source")
     p.add_argument("sortie")
     args = ap.parse_args(argv)
@@ -686,7 +686,7 @@ def main(argv: Sequence[str] | None = None) -> int:
         bad = 0
         for path in args.files:
             errs = mff.validate(path, well_only=args.well_only, full_scan=args.full)
-            print(f"{path} : {'conforme' if not errs else f'{len(errs)} problème(s)'}")
+            print(f"{path}: {'valid' if not errs else f'{len(errs)} problem(s)'}")
             for e in errs:
                 print(f"  - {e}")
             bad += bool(errs)
@@ -701,7 +701,7 @@ def main(argv: Sequence[str] | None = None) -> int:
         try:
             read_sfemans_native(args.source, args.sortie)
         except NotImplementedError as exc:
-            print(f"non implémenté : {exc}", file=sys.stderr)
+            print(f"not implemented: {exc}", file=sys.stderr)
             return 2
     return 0
 

@@ -1,4 +1,4 @@
-"""Tests du format MFF 1.0 : aller-retour, structure The Well, validation, Zarr, convertisseurs E2 et SFEMaNS."""
+"""Tests of the MFF 1.0 format: round trip, The Well structure, validation, Zarr, E2 and SFEMaNS converters."""
 
 from __future__ import annotations
 
@@ -43,7 +43,7 @@ def mff3d(tmp_path: Path) -> tuple[Path, dict[str, np.ndarray], str]:
             "code": "mhd3d_torch",
             "code_version": "0.1.0",
             "git_commit": "0123456789ab",
-            "nondimensionalization": "L = 2π, unités d'Alfvén",
+            "nondimensionalization": "L = 2π, Alfvén units",
             "uuid": "1b4e28ba-2fa1-11d2-883f-0016d3cca427",
             "solver": {"dt": 1e-3, "scheme": "RK4"},
         },
@@ -55,7 +55,7 @@ def mff3d(tmp_path: Path) -> tuple[Path, dict[str, np.ndarray], str]:
 
 
 # ---------------------------------------------------------------------------------------------
-# Aller-retour
+# Round trip
 # ---------------------------------------------------------------------------------------------
 def test_roundtrip_3d(mff3d: tuple[Path, dict[str, np.ndarray], str]) -> None:
     path, fields, sha = mff3d
@@ -106,7 +106,7 @@ def test_spectral_consistency(mff3d: tuple[Path, dict[str, np.ndarray], str]) ->
 
 
 # ---------------------------------------------------------------------------------------------
-# Structure The Well (docs/data_format.md de PolymathicAI/the_well)
+# The Well structure (docs/data_format.md of PolymathicAI/the_well)
 # ---------------------------------------------------------------------------------------------
 def test_well_structure(mff3d: tuple[Path, dict[str, np.ndarray], str]) -> None:
     path, _, _ = mff3d
@@ -117,7 +117,7 @@ def test_well_structure(mff3d: tuple[Path, dict[str, np.ndarray], str]) -> None:
         assert list(mff._str_list(a["simulation_parameters"])) == ["Rm", "Re", "mu_r"]
         assert (
             float(a["Rm"]) == 12.5 and "forcing" not in a
-        )  # non numérique : seulement dans milady_parameters
+        )  # non-numeric: only in milady_parameters
         assert json.loads(a["milady_parameters"])["forcing"] == "ABC"
         for g in mff.WELL_GROUPS:
             assert isinstance(f[g], h5py.Group)
@@ -151,7 +151,7 @@ def test_well_structure(mff3d: tuple[Path, dict[str, np.ndarray], str]) -> None:
 
 
 def _well_metadata(path: Path) -> dict[str, object]:
-    """Reprend la lecture des métadonnées de WellDataset._build_metadata (the_well/data/datasets.py)."""
+    """Reproduces the metadata reading of WellDataset._build_metadata (the_well/data/datasets.py)."""
     with h5py.File(path, "r") as f:
         out: dict[str, object] = {
             "n_trajectories": int(f.attrs["n_trajectories"]),
@@ -174,7 +174,7 @@ def _well_metadata(path: Path) -> dict[str, object]:
                 for d in dims:
                     names.append(f"{field}_{d}" if d else field)
                 ds = f[ti][field]
-                # _reconstruct_fields : index (trajectoire, tranche de temps) puis pavage par dim_varying
+                # _reconstruct_fields: index (trajectory, time slice) then tiling by dim_varying
                 data = ds[(0, slice(0, 2, 1))]
                 assert data.shape[1 : 1 + len(ds.attrs["dim_varying"])] == tuple(out["size_tuple"])
         out["field_names"] = names
@@ -189,7 +189,7 @@ def test_well_reader_logic(mff3d: tuple[Path, dict[str, np.ndarray], str]) -> No
 
 
 def test_the_well_dummy_file_is_readable(tmp_path: Path) -> None:
-    """Fichier écrit comme the_well/utils/dummy_data.py : lisible et conforme (partie The Well)."""
+    """File written like the_well/utils/dummy_data.py: readable and conforming (The Well part)."""
     path = tmp_path / "dummy.hdf5"
     nx = ny = 16
     nt = 5
@@ -245,16 +245,16 @@ def test_the_well_dummy_file_is_readable(tmp_path: Path) -> None:
         file.create_group("t2_fields").attrs["field_names"] = []
     assert validate(path, well_only=True) == []
     errors = validate(path)
-    assert any("milady_format_version" in e for e in errors)  # pas un fichier MilaDy
+    assert any("milady_format_version" in e for e in errors)  # not a MilaDy file
     d = read_mff(path, t=slice(0, 2))
     assert d["fields"]["field"].shape == (2, 2, nx, ny, 2)
-    assert d["fields"]["constant_field"].shape == (2, nx, ny)  # non dépendant du temps : t ignoré
+    assert d["fields"]["constant_field"].shape == (2, nx, ny)  # not time-dependent: t ignored
     assert d["params"] == {"a": 0.25, "b": 0.75}
     assert d["scalars"]["time_varying_scalar"].shape == (2,)
 
 
 # ---------------------------------------------------------------------------------------------
-# 2D, erreurs d'écriture, validation
+# 2D, write errors, validation
 # ---------------------------------------------------------------------------------------------
 def test_2d_vectors_and_write_errors(tmp_path: Path) -> None:
     coords = {"time": np.arange(4.0), "x": np.arange(6.0), "y": np.arange(5.0)}
@@ -275,18 +275,18 @@ def test_2d_vectors_and_write_errors(tmp_path: Path) -> None:
         )
         assert f["boundary_conditions/y_wall"].attrs["bc_type"] == "wall"
     bad = [
-        ({"velocity": RNG.normal(size=(1, 4, 6, 5, 3))}, "composantes"),  # 3 composantes en 2D
-        ({"velocity": RNG.normal(size=(1, 3, 6, 5, 2))}, "n_t"),  # temps incohérent
-        ({"velocity": RNG.normal(size=(1, 4, 6, 4, 2))}, "dimensions spatiales"),
-        ({"pressure": RNG.normal(size=(1, 4, 6, 5, 2))}, "champ standard"),  # pressure vectoriel
-        ({"t0_fields/velocity": u}, "groupe"),
+        ({"velocity": RNG.normal(size=(1, 4, 6, 5, 3))}, "components"),  # 3 components in 2D
+        ({"velocity": RNG.normal(size=(1, 3, 6, 5, 2))}, "n_t"),  # inconsistent time
+        ({"velocity": RNG.normal(size=(1, 4, 6, 4, 2))}, "spatial dimensions"),
+        ({"pressure": RNG.normal(size=(1, 4, 6, 5, 2))}, "standard field"),  # vector pressure
+        ({"t0_fields/velocity": u}, "group"),
     ]
     for fields, msg in bad:
         with pytest.raises(ValueError, match=msg):
             write_mff(tmp_path / "bad.h5", fields, coords, {"nu": 1e-3})
-    with pytest.raises(ValueError, match="réservé"):
+    with pytest.raises(ValueError, match="reserved"):
         write_mff(tmp_path / "bad.h5", {"velocity": u}, coords, {"grid_type": 1.0})
-    assert not (tmp_path / "bad.h5").exists()  # écriture atomique : rien sous le nom final
+    assert not (tmp_path / "bad.h5").exists()  # atomic write: nothing under the final name
 
 
 def test_validate_detects_problems(mff3d: tuple[Path, dict[str, np.ndarray], str], tmp_path: Path) -> None:
@@ -312,20 +312,20 @@ def test_validate_detects_problems(mff3d: tuple[Path, dict[str, np.ndarray], str
         for e in broken(lambda f: f["t1_fields/velocity"].attrs.__setitem__("dim_varying", np.ones(2, bool)))
     )
     assert any("milady_parameters" in e for e in broken(lambda f: f.attrs.__setitem__("Rm", 99.0)))
-    assert any("croissant" in e for e in broken(lambda f: f["dimensions/time"].__setitem__(1, -5.0)))
+    assert any("increasing" in e for e in broken(lambda f: f["dimensions/time"].__setitem__(1, -5.0)))
     assert any("irfftn" in e for e in broken(lambda f: f["milady_spectral/velocity"].__setitem__((0, 0), 0)))
     assert any(
-        "finies" in e for e in broken(lambda f: f["t0_fields/pressure"].__setitem__((0, 0, 0, 0, 0), np.nan))
+        "finite" in e for e in broken(lambda f: f["t0_fields/pressure"].__setitem__((0, 0, 0, 0, 0), np.nan))
     )
     assert any("mask" in e for e in broken(lambda f: f["boundary_conditions/x_periodic"].__delitem__("mask")))
-    assert any("illisible" in e for e in validate(tmp_path / "absent.h5"))
-    # Valeur non finie sur la 2e trajectoire : invisible à l'échantillonnage par défaut, vue par full_scan.
+    assert any("unreadable" in e for e in validate(tmp_path / "absent.h5"))
+    # Non-finite value on the 2nd trajectory: invisible to the default sampling, seen by full_scan.
     dst = tmp_path / "nan_traj1.h5"
     dst.write_bytes(src.read_bytes())
     with h5py.File(dst, "r+") as f:
         f["t1_fields/velocity"][1, 1, 0, 0, 0, 0] = np.inf
     assert validate(dst) == []
-    assert any("finies" in e for e in validate(dst, full_scan=True))
+    assert any("finite" in e for e in validate(dst, full_scan=True))
 
 
 # ---------------------------------------------------------------------------------------------
@@ -351,16 +351,16 @@ def test_describe(mff3d: tuple[Path, dict[str, np.ndarray], str]) -> None:
 
 
 # ---------------------------------------------------------------------------------------------
-# Convertisseur E2
+# E2 converter
 # ---------------------------------------------------------------------------------------------
 def _synthetic_e2(tmp_path: Path, n: int = 32, members: int = 2, n_snap: int = 3) -> Path:
-    """npz au format de e2_data.py pour ψ = cos(2x + 3y) et a = sin(x − 2y) (disposition [ky, kx])."""
+    """npz in the format of e2_data.py for ψ = cos(2x + 3y) and a = sin(x − 2y) ([ky, kx] layout)."""
     x = 2 * np.pi * np.arange(n) / n
-    X, Y = np.meshgrid(x, x)  # tableaux [y, x], comme irfft2 de mhd2d.py
+    X, Y = np.meshgrid(x, x)  # [y, x] arrays, like irfft2 of mhd2d.py
     omega = 13 * np.cos(2 * X + 3 * Y)  # ω = −Δψ
     a = np.sin(X - 2 * Y)
     w_hat, a_hat = np.fft.rfft2(omega), np.fft.rfft2(a)
-    amp = np.arange(1, members * n_snap + 1, dtype=float)[:, None, None]  # amplitude = indice global + 1
+    amp = np.arange(1, members * n_snap + 1, dtype=float)[:, None, None]  # amplitude = global index + 1
     src = tmp_path / "e2_src"
     src.mkdir()
     np.savez_compressed(
@@ -392,7 +392,7 @@ def test_e2_converter_synthetic(tmp_path: Path) -> None:
     b_exact = np.stack([-2 * c, -c], -1)  # B = (∂y a, −∂x a)
     u, b = d["fields"]["velocity"], d["fields"]["magnetic_field"]
     assert u.shape == (2, 3, n, n, 2)
-    # Disposition « regroupé par membre » : membre m, instantané j ↔ indice global m × 3 + j.
+    # "Grouped by member" layout: member m, snapshot j ↔ global index m × 3 + j.
     for m, j in ((0, 0), (1, 2)):
         amp = m * 3 + j + 1
         np.testing.assert_allclose(u[m, j], amp * u_exact, atol=1e-4 * amp)
@@ -406,7 +406,7 @@ def test_e2_converter_synthetic(tmp_path: Path) -> None:
         d["diagnostics"]["kinetic_energy"][0, 0], 0.5 * 13 / 2, rtol=1e-5
     )  # ½⟨|u|²⟩ = 13/4
     assert np.max(d["diagnostics"]["max_div_b"]) < 1e-4
-    # Idempotence : deuxième passage sans réécriture, même identifiant.
+    # Idempotence: second pass without rewriting, same identifier.
     again = convert.convert_e2(src, tmp_path / "out", verbose=False)
     assert again[0]["uuid"] == recs[0]["uuid"] and again[0].get("reused")
 
@@ -437,9 +437,9 @@ def test_e2_converter_cli_with_catalog(tmp_path: Path) -> None:
 E2_DATA = Path(os.environ.get("E2_DATA", Path(__file__).resolve().parents[1] / "experiments" / "data_e2"))
 
 
-@pytest.mark.skipif(not any(E2_DATA.glob("eta_*_ref.npz")), reason="données E2 absentes (variable E2_DATA)")
+@pytest.mark.skipif(not any(E2_DATA.glob("eta_*_ref.npz")), reason="E2 data missing (E2_DATA variable)")
 def test_e2_converter_real_data(tmp_path: Path) -> None:
-    """Fichier réel réduit : bilan d'énergie en loi ⟨dissipation⟩ ≈ injection (à ~10 % sur 2 × 20 instantanés)."""
+    """Reduced real file: energy budget in distribution ⟨dissipation⟩ ≈ injection (to ~10 % over 2 × 20 snapshots)."""
     npz = min(E2_DATA.glob("eta_*_ref.npz"))
     rec = convert.convert_e2_file(npz, tmp_path / "e2.h5", max_members=4, max_snapshots=20)
     assert validate(tmp_path / "e2.h5") == []
@@ -475,7 +475,7 @@ def test_fourier_fe_extension(tmp_path: Path) -> None:
     p[0, :, 1, 0] = r  # mode 1 (cos) : r cos θ = x
     p[0, :, 2, 1] = 0.5 * r  # mode 2 (sin) : 0.5 r sin 2θ
     u = np.zeros((1, 2, M, 2, N, 3))
-    u[0, :, 0, 0, :, 0] = r  # u = r e_r (mode 0) → (x, y, 0) en cartésien
+    u[0, :, 0, 0, :, 0] = r  # u = r e_r (mode 0) → (x, y, 0) in Cartesian
     u[0, :, 0, 0, :, 2] = 1.0
     path = tmp_path / "sfemans.h5"
     convert.write_fourier_fe_mff(
@@ -500,6 +500,6 @@ def test_fourier_fe_extension(tmp_path: Path) -> None:
     np.testing.assert_allclose(uc[..., 0, 0], X, atol=1e-5)
     np.testing.assert_allclose(uc[..., 0, 1], Y, atol=1e-5)
     np.testing.assert_allclose(uc[..., 0, 2], 1.0, atol=1e-5)
-    with h5py.File(path, "r+") as f:  # incohérence détectée
+    with h5py.File(path, "r+") as f:  # inconsistency detected
         f["milady_fourier_fe/meshes/fluid"].attrs["n_nodes"] = 3
     assert any("n_nodes" in e for e in validate(path))

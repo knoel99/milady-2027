@@ -1,33 +1,33 @@
-"""Exécute UNE simulation d'une campagne : solveur → fichier MFF → stockage → catalogue.
+"""Run ONE simulation of a campaign: solver → MFF file → storage → catalog.
 
 Usage ::
 
     python -m milady.sim.run infra/configs/palier2_abc3d.yaml --index 3 [--device cuda] [--dtype float32]
 
-Étapes :
+Steps:
 
-1. développe la campagne (``milady.sweep``) et retrouve le point ``index`` et son identifiant
-   déterministe (le même que celui enregistré par ``milady.sweep``) ;
-2. catalogue (``milady.catalog.api``) : campagne et simulation (idempotent), tâche (``MILADY_JOB_ID``
-   fourni par ``milady.sweep``, ou tâche Slurm ``<job>_<tâche>``, ou nouvelle tâche), statut ``running`` ;
-3. intègre : diagnostics tous les ``diag_every`` depuis t = 0, champs tous les ``every`` sur
-   ]t_burn, t_burn + t_keep] ; point de contrôle ``.npz`` toutes les ``checkpoint_every_s`` secondes
-   (et à la réception de SIGTERM : fin de temps Slurm, arrêt d'une instance interruptible), reprise
-   automatique au lancement suivant (même indice) ;
-4. écrit le fichier MFF (``milady.data.format.write_mff`` : champs u et B, diagnostics, coefficients
-   spectraux en option), le valide, l'envoie au stockage (``milady.storage``) sous
-   ``{output.uri}/{campagne}/{uuid}/fields.h5`` (option : copie Zarr ``fields.zarr``) ;
-5. catalogue : fichier (URI, SHA-256, taille, n_t, t_start, t_end), séries de diagnostics (moyennes
-   sur les trajectoires), statut ``done``, durée de calcul, hôte, résumé JSON (``notes``).
+1. expands the campaign (``milady.sweep``) and finds the point ``index`` and its deterministic
+   identifier (the same as the one registered by ``milady.sweep``);
+2. catalog (``milady.catalog.api``): campaign and simulation (idempotent), task (``MILADY_JOB_ID``
+   provided by ``milady.sweep``, or Slurm task ``<job>_<task>``, or new task), status ``running``;
+3. integrates: diagnostics every ``diag_every`` from t = 0, fields every ``every`` over
+   ]t_burn, t_burn + t_keep]; ``.npz`` checkpoint every ``checkpoint_every_s`` seconds
+   (and on receipt of SIGTERM: Slurm time limit, shutdown of a preemptible instance), automatic
+   resumption at the next launch (same index);
+4. writes the MFF file (``milady.data.format.write_mff``: fields u and B, diagnostics, optional spectral
+   coefficients), validates it, sends it to storage (``milady.storage``) under
+   ``{output.uri}/{campaign}/{uuid}/fields.h5`` (option: Zarr copy ``fields.zarr``);
+5. catalog: file (URI, SHA-256, size, n_t, t_start, t_end), diagnostic series (means
+   over the trajectories), status ``done``, compute time, host, JSON summary (``notes``).
 
-En cas d'erreur : statut ``failed`` (message dans ``notes``), point de contrôle conservé, code de
-retour 1. Le catalogue est facultatif (``--no-catalog``, ou base injoignable : avertissement) : le
-fichier MFF porte l'identifiant ``milady_uuid`` et s'enregistre a posteriori avec
-``python -m milady.catalog ingest <uri> --campaign <campagne>``.
+On error: status ``failed`` (message in ``notes``), checkpoint kept, return code
+1. The catalog is optional (``--no-catalog``, or unreachable database: warning): the
+MFF file carries the ``milady_uuid`` identifier and can be registered afterwards with
+``python -m milady.catalog ingest <uri> --campaign <campaign>``.
 
-Variables d'environnement : ``MILADY_DB_URL``, ``MILADY_STORAGE_URI`` (et S3), ``MILADY_WORKDIR``
-(dossier de travail local, défaut ``$MILADY_DATA/work`` ou ``<racine>/data/work``), ``MILADY_JOB_ID``,
-``MILADY_SCHEDULER``, ``MILADY_HOST``, ``MILADY_MHD2D_PATH`` (solveur 2D, défaut
+Environment variables: ``MILADY_DB_URL``, ``MILADY_STORAGE_URI`` (and S3), ``MILADY_WORKDIR``
+(local working folder, default ``$MILADY_DATA/work`` or ``<root>/data/work``), ``MILADY_JOB_ID``,
+``MILADY_SCHEDULER``, ``MILADY_HOST``, ``MILADY_MHD2D_PATH`` (2D solver, default
 ``experiments/mhd2d.py``).
 """
 
@@ -66,14 +66,14 @@ _DEFAULT_FIELDS = ("velocity", "magnetic_field")
 
 
 class Interrupted(Exception):
-    """Signal d'arrêt reçu (SIGTERM/SIGINT) : point de contrôle puis sortie."""
+    """Stop signal received (SIGTERM/SIGINT): checkpoint then exit."""
 
 
 # =============================================================================================
-# Adaptateurs de solveurs (interface commune)
+# Solver adapters (common interface)
 # =============================================================================================
 class Solver3D:
-    """Adaptateur de :class:`milady.sim.mhd3d.MHD3D` pour la boucle de :func:`run_simulation`."""
+    """Adapter of :class:`milady.sim.mhd3d.MHD3D` for the loop of :func:`run_simulation`."""
 
     code = "mhd3d_torch"
     nondim = NONDIM_3D
@@ -129,43 +129,43 @@ class Solver3D:
 
     @property
     def t(self) -> float:
-        """Temps courant."""
+        """Current time."""
         return self.sim.t
 
     def advance_to(self, t: float, dt: float) -> None:
-        """Avance jusqu'à ``t`` (pas ≤ dt, CFL éventuel)."""
+        """Advance to ``t`` (steps ≤ dt, CFL if any)."""
         self.sim.advance_to(t, dt, self.cfl)
 
     def fields(self) -> dict[str, np.ndarray]:
-        """Champs physiques (n_traj, nx, ny, nz, 3) float32."""
+        """Physical fields (n_traj, nx, ny, nz, 3) float32."""
         return self.sim.fields()
 
     def diagnostics(self) -> dict[str, np.ndarray]:
-        """Diagnostics (n_traj,) par série."""
+        """Diagnostics (n_traj,) per series."""
         return self.sim.diagnostics()
 
     def state(self) -> tuple[dict[str, np.ndarray], dict[str, Any]]:
-        """État pour le point de contrôle."""
+        """State for the checkpoint."""
         return self.sim.state_dict()
 
     def restore(self, arrays: Mapping[str, np.ndarray], meta: Mapping[str, Any]) -> None:
-        """Restaure l'état d'un point de contrôle (configuration physique identique exigée)."""
+        """Restore the state of a checkpoint (identical physical configuration required)."""
         mine = self.sim.cfg.to_dict()
         theirs = dict(meta.get("config", {}))
         for key in ("device", "dtype"):
             mine.pop(key, None)
             theirs.pop(key, None)
         if mine != theirs:
-            raise ValueError("configuration du point de contrôle différente de celle de la campagne")
+            raise ValueError("checkpoint configuration differs from that of the campaign")
         self.sim.load_state_dict(arrays, meta)
 
     def info(self) -> dict[str, Any]:
-        """Description du solveur pour les métadonnées du fichier."""
+        """Description of the solver for the file metadata."""
         cfg = self.sim.cfg
         return {
             "name": "milady.sim.mhd3d",
-            "scheme": "pseudo-spectral (rfftn), désaliasage 2/3 (|m_i| ≤ (n_i−1)//3), RK4 à facteur intégrant "
-            "(Lawson), projection de Leray de u et B",
+            "scheme": "pseudo-spectral (rfftn), 2/3 dealiasing (|m_i| ≤ (n_i−1)//3), integrating-factor RK4 "
+            "(Lawson), Leray projection of u and B",
             "mode": cfg.mode,
             "device": str(self.sim.device),
             "dtype": cfg.dtype,
@@ -178,10 +178,10 @@ class Solver3D:
 
 
 def _load_mhd2d() -> ModuleType:
-    """Charge ``experiments/mhd2d.py`` (solveur 2D des expériences, réutilisé tel quel)."""
+    """Load ``experiments/mhd2d.py`` (2D solver of the experiments, reused as is)."""
     path = Path(os.environ.get("MILADY_MHD2D_PATH") or project_root() / "experiments" / "mhd2d.py")
     if not path.is_file():
-        raise FileNotFoundError(f"solveur 2D introuvable : {path} (MILADY_MHD2D_PATH)")
+        raise FileNotFoundError(f"2D solver not found: {path} (MILADY_MHD2D_PATH)")
     spec = importlib.util.spec_from_file_location("milady_experiments_mhd2d", path)
     assert spec is not None and spec.loader is not None
     mod = importlib.util.module_from_spec(spec)
@@ -190,11 +190,11 @@ def _load_mhd2d() -> ModuleType:
 
 
 class Solver2D:
-    """Adaptateur du solveur MHD 2D forcé des expériences (``experiments/mhd2d.py``, classe ``MHD2D``).
+    """Adapter of the forced 2D MHD solver of the experiments (``experiments/mhd2d.py``, class ``MHD2D``).
 
-    Même suite d'appels que ``experiments/e2_data.py`` (estimation de l'injection puis pas de temps
-    fixes) : à graine égale, les instantanés sont ceux de E2. Le forçage étant blanc en temps, le
-    pas est fixe (``runtime.dt``) et les instants de sortie doivent en être des multiples.
+    Same sequence of calls as ``experiments/e2_data.py`` (injection estimate then fixed time
+    steps): at equal seed, the snapshots are those of E2. Since the forcing is white in time, the
+    step is fixed (``runtime.dt``) and the output times must be multiples of it.
     """
 
     code = "mhd2d_numpy"
@@ -232,28 +232,28 @@ class Solver2D:
 
     @property
     def t(self) -> float:
-        """Temps courant."""
+        """Current time."""
         return self._t
 
     def advance_to(self, t: float, dt: float) -> None:
-        """Avance de pas fixes ``runtime.dt`` jusqu'à ``t`` (multiple de dt exigé)."""
+        """Advance by fixed steps ``runtime.dt`` up to ``t`` (multiple of dt required)."""
         n = round((t - self._t) / self.dt)
         if n < 0 or abs(n * self.dt - (t - self._t)) > 1e-6 * self.dt:
-            raise ValueError(f"t = {t} n'est pas atteint par des pas de {self.dt} depuis {self._t}")
+            raise ValueError(f"t = {t} is not reached by steps of {self.dt} from {self._t}")
         for _ in range(n):
             self.m.step(self.dt)
         self.steps += n
         self._t = float(t)
         if not (np.isfinite(self.m.w).all() and np.isfinite(self.m.a).all()):
-            raise FloatingPointError(f"état non fini à t = {t}")
+            raise FloatingPointError(f"non-finite state at t = {t}")
 
     def fields(self) -> dict[str, np.ndarray]:
-        """Champs physiques (n_traj, nx, ny, 2) float32, axes [x, y]."""
+        """Physical fields (n_traj, nx, ny, 2) float32, axes [x, y]."""
         phys = self._phys(self.m.w, self.m.a, self.n)
         return {k: phys[k].astype(np.float32) for k in _DEFAULT_FIELDS}
 
     def diagnostics(self) -> dict[str, np.ndarray]:
-        """Énergies, enstrophie, ⟨j²⟩, dissipation, injection (constante d'Itô), hélicité croisée, max |∇·B|."""
+        """Energies, enstrophy, ⟨j²⟩, dissipation, injection (Itô constant), cross helicity, max |∇·B|."""
         d = self.m.diagnostics()
         phys = self._phys(self.m.w, self.m.a, self.n)
         u, b = phys["velocity"], phys["magnetic_field"]
@@ -276,16 +276,16 @@ class Solver2D:
         }
 
     def state(self) -> tuple[dict[str, np.ndarray], dict[str, Any]]:
-        """État (ω̂, â, générateur aléatoire) pour le point de contrôle."""
+        """State (ω̂, â, random generator) for the checkpoint."""
         return (
             {"w": self.m.w, "a": self.m.a},
             {"t": self._t, "steps": self.steps, "rng": self.m.rng.bit_generator.state, "seed": self.seed},
         )
 
     def restore(self, arrays: Mapping[str, np.ndarray], meta: Mapping[str, Any]) -> None:
-        """Restaure l'état d'un point de contrôle."""
+        """Restore the state of a checkpoint."""
         if int(meta.get("seed", self.seed)) != self.seed or arrays["w"].shape != self.m.w.shape:
-            raise ValueError("point de contrôle d'une autre simulation 2D")
+            raise ValueError("checkpoint of another 2D simulation")
         self.m.w = np.asarray(arrays["w"]).copy()
         self.m.a = np.asarray(arrays["a"]).copy()
         self.m.rng.bit_generator.state = meta["rng"]
@@ -293,11 +293,11 @@ class Solver2D:
         self.steps = int(meta["steps"])
 
     def info(self) -> dict[str, Any]:
-        """Description du solveur pour les métadonnées du fichier."""
+        """Description of the solver for the file metadata."""
         return {
             "name": "experiments/mhd2d.py (MHD2D)",
-            "scheme": "pseudo-spectral 2D en potentiels (ω, a), désaliasage 2/3, RK4 à facteur intégrant + "
-            "Euler–Maruyama (forçage blanc)",
+            "scheme": "pseudo-spectral 2D in potentials (ω, a), 2/3 dealiasing, integrating-factor RK4 + "
+            "Euler–Maruyama (white forcing)",
             "dt": self.dt,
             "n_steps": self.steps,
             "seed": self.seed,
@@ -309,10 +309,10 @@ _SOLVERS: dict[str, Callable[..., Any]] = {"mhd3d_torch": Solver3D, "mhd2d_numpy
 
 
 # =============================================================================================
-# Catalogue « au mieux »
+# "Best-effort" catalog
 # =============================================================================================
 class CatalogLink:
-    """Accès au catalogue qui, sauf ``strict``, se désactive (avertissement) à la première erreur."""
+    """Catalog access that, unless ``strict``, disables itself (warning) on the first error."""
 
     def __init__(self, enabled: bool, strict: bool) -> None:
         self.strict = strict
@@ -323,27 +323,27 @@ class CatalogLink:
             from milady.catalog.api import Catalog
 
             self.cat = Catalog()
-        except Exception as exc:  # noqa: BLE001 — base injoignable : on continue sans catalogue
-            self._fail("connexion", exc)
+        except Exception as exc:  # noqa: BLE001 — unreachable database: we continue without a catalog
+            self._fail("connection", exc)
 
     @property
     def ok(self) -> bool:
-        """Vrai si le catalogue est utilisable."""
+        """True if the catalog is usable."""
         return self.cat is not None
 
     def _fail(self, what: str, exc: BaseException) -> None:
         if self.strict:
             raise exc
         LOG.warning(
-            "catalogue indisponible (%s : %s) ; la simulation continue sans catalogue "
-            "(enregistrer ensuite avec `python -m milady.catalog ingest <uri> --campaign <campagne>`)",
+            "catalog unavailable (%s: %s); the simulation continues without a catalog "
+            "(register afterwards with `python -m milady.catalog ingest <uri> --campaign <campaign>`)",
             what,
             exc,
         )
         self.cat = None
 
     def call(self, method: str, *args: Any, **kwargs: Any) -> Any:
-        """Appelle ``Catalog.<method>`` ; renvoie ``None`` si le catalogue est désactivé ou en erreur."""
+        """Call ``Catalog.<method>``; returns ``None`` if the catalog is disabled or in error."""
         if self.cat is None:
             return None
         try:
@@ -354,7 +354,7 @@ class CatalogLink:
 
 
 def _job_external_id() -> tuple[str, str]:
-    """(ordonnanceur, identifiant externe) de la tâche courante."""
+    """(scheduler, external identifier) of the current task."""
     if os.environ.get("SLURM_JOB_ID"):
         array = os.environ.get("SLURM_ARRAY_JOB_ID")
         task = os.environ.get("SLURM_ARRAY_TASK_ID")
@@ -366,11 +366,11 @@ def _job_external_id() -> tuple[str, str]:
 
 
 def _attach_job(link: CatalogLink, sim_id: str) -> str | None:
-    """Tâche du catalogue associée à cette exécution (créée si besoin), passée à l'état ``running``."""
+    """Catalog task associated with this run (created if needed), moved to the ``running`` state."""
     job_id = os.environ.get("MILADY_JOB_ID") or None
     sched, ext = _job_external_id()
     if job_id is None and sched == "slurm" and link.ok and hasattr(link.cat, "query_jobs"):
-        # (scheduler, external_id) : requête servie par l'index ix_job_external.
+        # (scheduler, external_id): query served by the ix_job_external index.
         for job in link.call("query_jobs", scheduler="slurm", external_id=ext) or []:
             if job.get("simulation_id") == sim_id:
                 job_id = job["id"]
@@ -386,13 +386,13 @@ def _attach_job(link: CatalogLink, sim_id: str) -> str | None:
 
 
 # =============================================================================================
-# Outils
+# Tools
 # =============================================================================================
 _ENV_RE = re.compile(r"\$\{([A-Za-z_][A-Za-z0-9_]*)(?::-([^}]*))?\}|\$([A-Za-z_][A-Za-z0-9_]*)")
 
 
 def expand_env(text: str) -> str:
-    """Développe ``$VAR``, ``${VAR}`` et ``${VAR:-défaut}`` (variables absentes → chaîne vide ou défaut)."""
+    """Expand ``$VAR``, ``${VAR}`` and ``${VAR:-default}`` (missing variables → empty string or default)."""
 
     def repl(m: re.Match[str]) -> str:
         name = m.group(1) or m.group(3)
@@ -403,7 +403,7 @@ def expand_env(text: str) -> str:
 
 
 def output_base(campaign: Campaign) -> str:
-    """Racine de stockage des fichiers : ``output.uri`` développée, sinon ``milady.storage.base_uri()``."""
+    """Storage root of the files: ``output.uri`` expanded, otherwise ``milady.storage.base_uri()``."""
     raw = campaign.output.get("uri")
     uri = expand_env(str(raw)).strip() if raw else ""
     if not uri:
@@ -433,7 +433,7 @@ def _host() -> str:
 
 
 def _set_threads(campaign: Campaign) -> int:
-    """Fils de calcul CPU de torch : OMP_NUM_THREADS, SLURM_CPUS_PER_TASK, resources.cpus, sinon défaut torch."""
+    """CPU compute threads of torch: OMP_NUM_THREADS, SLURM_CPUS_PER_TASK, resources.cpus, otherwise torch default."""
     try:
         import torch
     except ImportError:
@@ -466,7 +466,7 @@ def _resolve_device(requested: str | None, campaign: Campaign) -> str:
 
 
 class _RunState:
-    """Séries accumulées pendant la simulation (sauvegardées dans le point de contrôle)."""
+    """Series accumulated during the simulation (saved in the checkpoint)."""
 
     def __init__(self) -> None:
         self.next_event = 0
@@ -474,7 +474,7 @@ class _RunState:
         self.diag: dict[str, list[np.ndarray]] = {}
         self.snap_t: list[float] = []
         self.snaps: dict[str, list[np.ndarray]] = {}
-        self.wall_before = 0.0  # secondes de calcul des sessions précédentes (reprise)
+        self.wall_before = 0.0  # compute seconds of the previous sessions (resumption)
 
     def add_diag(self, t: float, values: Mapping[str, np.ndarray]) -> None:
         self.diag_t.append(t)
@@ -527,7 +527,7 @@ def _try_resume(path: Path, solver: Any, run: _RunState, sim_id: str) -> bool:
 
     arrays, meta = load_npz_checkpoint(path)
     if meta.get("sim_id") != sim_id or meta.get("code") != solver.code:
-        LOG.warning("point de contrôle %s ignoré : autre simulation", path)
+        LOG.warning("checkpoint %s ignored: another simulation", path)
         return False
     solver_arrays = {k[len("solver/") :]: v for k, v in arrays.items() if k.startswith("solver/")}
     solver.restore(solver_arrays, meta["solver"])
@@ -550,16 +550,16 @@ def run_simulation(
     workdir: str | None = None,
     keep_workdir: bool = False,
 ) -> dict[str, Any]:
-    """Exécute la simulation ``index`` de la campagne ``config`` (voir la docstring du module).
+    """Run simulation ``index`` of the campaign ``config`` (see the module docstring).
 
-    Renvoie un résumé : ``sim_id``, ``status``, ``uri``, ``sha256``, ``size_bytes``, ``wall_time_s``,
-    ``n_t``, ``growth_rate`` (3D), énergies finales… Lève l'exception d'origine en cas d'échec
-    (après avoir marqué la simulation ``failed`` et sauvegardé un point de contrôle).
+    Returns a summary: ``sim_id``, ``status``, ``uri``, ``sha256``, ``size_bytes``, ``wall_time_s``,
+    ``n_t``, ``growth_rate`` (3D), final energies… Raises the original exception on failure
+    (after marking the simulation ``failed`` and saving a checkpoint).
     """
     campaign = config if isinstance(config, Campaign) else load_campaign(config)
     points = sweep_points(campaign)
     if not 0 <= index < len(points):
-        raise IndexError(f"indice {index} hors de [0, {len(points) - 1}] pour {campaign.name}")
+        raise IndexError(f"index {index} out of [0, {len(points) - 1}] for {campaign.name}")
     point: SweepPoint = points[index]
     sim_id, params = point.sim_id, point.params
     rt = campaign.runtime
@@ -572,8 +572,8 @@ def run_simulation(
     ckpt = wd / "checkpoint.npz"
     base = output_base(campaign)
     ckpt_uri = storage.join(base, campaign.name, sim_id, "checkpoint.npz")
-    LOG.info("simulation %d/%d de %s : %s", index, len(points) - 1, campaign.name, sim_id)
-    LOG.info("paramètres : %s", json.dumps(params, ensure_ascii=False))
+    LOG.info("simulation %d/%d of %s: %s", index, len(points) - 1, campaign.name, sim_id)
+    LOG.info("parameters: %s", json.dumps(params, ensure_ascii=False))
 
     link = CatalogLink(use_catalog, strict_catalog)
     commit = git_commit()
@@ -605,7 +605,7 @@ def run_simulation(
         git_commit=commit,
     )
 
-    # Arrêt propre sur SIGTERM (fin de temps Slurm, préemption, docker stop) : point de contrôle.
+    # Clean shutdown on SIGTERM (Slurm time limit, preemption, docker stop): checkpoint.
     def _on_signal(signum: int, _frame: FrameType | None) -> None:
         raise Interrupted(f"signal {signal.Signals(signum).name}")
 
@@ -622,9 +622,9 @@ def run_simulation(
         if resume and ckpt.is_file():
             try:
                 if _try_resume(ckpt, solver, run, sim_id):
-                    LOG.info("reprise depuis %s à t = %.4g", ckpt, solver.t)
+                    LOG.info("resuming from %s at t = %.4g", ckpt, solver.t)
             except (ValueError, KeyError) as exc:
-                LOG.warning("point de contrôle illisible ou incompatible (%s) : départ de t = 0", exc)
+                LOG.warning("checkpoint unreadable or incompatible (%s): starting from t = 0", exc)
                 solver = _SOLVERS[campaign.code](campaign, params, seed, dev, dt_name)
                 run = _RunState()
 
@@ -676,9 +676,9 @@ def run_simulation(
         if rt.get("checkpoint_to_storage") and not rt.get("keep_checkpoint"):
             try:
                 storage.rm(ckpt_uri)
-            except Exception as exc:  # noqa: BLE001 — nettoyage facultatif
-                LOG.debug("point de contrôle distant non supprimé : %s", exc)
-        LOG.info("terminé en %.1f s : %s", wall, summary["uri"])
+            except Exception as exc:  # noqa: BLE001 — optional cleanup
+                LOG.debug("remote checkpoint not deleted: %s", exc)
+        LOG.info("finished in %.1f s: %s", wall, summary["uri"])
         return summary
     except BaseException as exc:
         wall = run.wall_before + time.monotonic() - t_wall0
@@ -687,9 +687,9 @@ def run_simulation(
                 _save_checkpoint(ckpt, solver, run, sim_id, wall)
                 if rt.get("checkpoint_to_storage"):
                     storage.put(ckpt, ckpt_uri)
-                LOG.info("point de contrôle sauvegardé : %s (relancer le même indice pour reprendre)", ckpt)
+                LOG.info("checkpoint saved: %s (rerun the same index to resume)", ckpt)
             except Exception as ck_exc:  # noqa: BLE001
-                LOG.warning("point de contrôle impossible : %s", ck_exc)
+                LOG.warning("checkpoint could not be written: %s", ck_exc)
         tail = "".join(traceback.format_exception_only(type(exc), exc)).strip()
         note = {
             "error": tail[-2000:],
@@ -723,7 +723,7 @@ def _finalize(
     device: str,
     dtype: str,
 ) -> dict[str, Any]:
-    """Écrit, valide et envoie le fichier MFF ; enregistre fichier et diagnostics au catalogue."""
+    """Write, validate and upload the MFF file; register file and diagnostics in the catalog."""
     from milady.data.format import to_zarr, validate, write_mff
 
     sim_id, params = point.sim_id, point.params
@@ -799,11 +799,11 @@ def _finalize(
     )
     errors = validate(local)
     if errors:
-        raise RuntimeError("fichier MFF non conforme : " + " ; ".join(errors[:10]))
+        raise RuntimeError("non-conforming MFF file: " + "; ".join(errors[:10]))
     size = local.stat().st_size
     uri = storage.join(base, campaign.name, sim_id, "fields.h5")
     storage.put(local, uri)
-    LOG.info("fichier MFF : %s (%.1f Mo, sha256 %s…)", uri, size / 2**20, sha[:12])
+    LOG.info("MFF file: %s (%.1f MB, sha256 %s…)", uri, size / 2**20, sha[:12])
     files = [{"kind": "fields", "uri": uri, "sha256": sha, "size_bytes": size}]
     fmt = str(out.get("format", "mff")).lower()
     if "zarr" in fmt:
@@ -871,22 +871,22 @@ def _finalize(
 
 
 # =============================================================================================
-# Ligne de commande
+# Command line
 # =============================================================================================
 def main(argv: Sequence[str] | None = None) -> int:
-    """Point d'entrée de ``python -m milady.sim.run``."""
+    """Entry point of ``python -m milady.sim.run``."""
     ap = argparse.ArgumentParser(
-        prog="python -m milady.sim.run", description="Exécute une simulation d'une campagne MilaDy."
+        prog="python -m milady.sim.run", description="Run one simulation of a MilaDy campaign."
     )
-    ap.add_argument("config", help="campagne YAML")
-    ap.add_argument("--index", type=int, required=True, help="indice de la simulation dans la campagne")
-    ap.add_argument("--device", default=None, help="cpu, cuda, cuda:1 ou auto (défaut : runtime.device)")
-    ap.add_argument("--dtype", default=None, choices=["float32", "float64"], help="défaut : runtime.dtype")
-    ap.add_argument("--workdir", default=None, help="dossier de travail (défaut : MILADY_WORKDIR…)")
-    ap.add_argument("--no-catalog", action="store_true", help="n'écrit pas au catalogue (fichier seulement)")
-    ap.add_argument("--require-catalog", action="store_true", help="erreur fatale si le catalogue échoue")
-    ap.add_argument("--no-resume", action="store_true", help="ignore un point de contrôle existant")
-    ap.add_argument("--keep-workdir", action="store_true", help="garde le dossier de travail local")
+    ap.add_argument("config", help="campaign YAML")
+    ap.add_argument("--index", type=int, required=True, help="index of the simulation in the campaign")
+    ap.add_argument("--device", default=None, help="cpu, cuda, cuda:1 or auto (default: runtime.device)")
+    ap.add_argument("--dtype", default=None, choices=["float32", "float64"], help="default: runtime.dtype")
+    ap.add_argument("--workdir", default=None, help="working folder (default: MILADY_WORKDIR…)")
+    ap.add_argument("--no-catalog", action="store_true", help="do not write to the catalog (file only)")
+    ap.add_argument("--require-catalog", action="store_true", help="fatal error if the catalog fails")
+    ap.add_argument("--no-resume", action="store_true", help="ignore an existing checkpoint")
+    ap.add_argument("--keep-workdir", action="store_true", help="keep the local working folder")
     ap.add_argument("--quiet", action="store_true")
     args = ap.parse_args(argv)
     logging.basicConfig(
@@ -907,10 +907,10 @@ def main(argv: Sequence[str] | None = None) -> int:
             keep_workdir=args.keep_workdir,
         )
     except Interrupted as exc:
-        LOG.error("interrompu (%s) : point de contrôle conservé, relancer le même indice pour reprendre", exc)
+        LOG.error("interrupted (%s): checkpoint kept, rerun the same index to resume", exc)
         return 143
     except Exception:
-        LOG.exception("échec de la simulation %d", args.index)
+        LOG.exception("simulation %d failed", args.index)
         return 1
     print(
         json.dumps(

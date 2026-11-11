@@ -1,29 +1,29 @@
-"""Flow matching conditionnel de champs MHD 3D (u, B) sous contraintes physiques dures — palier 2 de la thèse.
+"""Conditional flow matching of 3D MHD fields (u, B) under hard physical constraints — stage 2 of the thesis.
 
-Modèle (reprend E2, variante V4/V5, et E1, réglage fin, en 3D) :
+Model (takes up E2, variant V4/V5, and E1, fine-tuning, in 3D):
 
-- **représentation** : potentiels vecteurs A_u, A_B en jauge de Coulomb, coefficients de Fourier tronqués
-  |m| ≤ kmax dans la base de Craya–Herring, normalisés par mode (``milady.train.data``) ;
-- **contrainte dure** : décodage u = ∇×A_u, B = ∇×A_B en Fourier, divergence nulle par construction ;
-- **symétrie B → −B** (optionnelle) : symétrisation équivariante v(x) = ½ (v(x) + S v(S x)) avec
-  S : A_B → −A_B ; la loi générée est alors exactement invariante (bruit gaussien symétrique) ;
-- **flow matching** : chemin linéaire x_t = (1 − t) x₀ + t x₁, cible x₁ − x₀, conditionnement par des
-  paramètres (log Re, log Pm, log Rm…) normalisés ; échantillonnage par le schéma de Heun ;
-- **perte de stationnarité** (optionnelle) : à des conditions tirées dans toute la plage (y compris entre les
-  valeurs d'entraînement), échantillonnage différentiable (Heun à quelques pas) puis pénalité du bilan
-  d'énergie moyen E[injection − dissipation] (ou des bilans cinétique / magnétique), estimée **sans biais**
-  par le produit des moyennes de deux demi-lots (le carré d'une seule moyenne pénaliserait la variance) ;
-- **réseaux** : MLP résiduel à modulation adaLN, ou transformeur léger (DiT) sur des jetons de modes ;
-- **calcul** : mono-processus ou DDP (``torchrun``), bf16 optionnel sur GPU, points de contrôle locaux ou S3
-  (``milady.storage``), reprise automatique (Slurm : même ``SLURM_JOB_ID`` après requeue), journal MLflow si
-  ``MLFLOW_TRACKING_URI`` est défini (sinon ``metrics.jsonl``), modèle, tâche et évaluations au catalogue.
+- **representation**: vector potentials A_u, A_B in Coulomb gauge, truncated Fourier coefficients
+  |m| ≤ kmax in the Craya–Herring basis, normalized per mode (``milady.train.data``);
+- **hard constraint**: decoding u = ∇×A_u, B = ∇×A_B in Fourier space, zero divergence by construction;
+- **B → −B symmetry** (optional): equivariant symmetrization v(x) = ½ (v(x) + S v(S x)) with
+  S: A_B → −A_B; the generated distribution is then exactly invariant (symmetric Gaussian noise);
+- **flow matching**: linear path x_t = (1 − t) x₀ + t x₁, target x₁ − x₀, conditioning on normalized
+  parameters (log Re, log Pm, log Rm…); sampling by the Heun scheme;
+- **stationarity loss** (optional): at conditions drawn over the whole range (including between the
+  training values), differentiable sampling (Heun with a few steps) then penalty on the mean energy
+  budget E[injection − dissipation] (or on the kinetic / magnetic budgets), estimated **without bias**
+  by the product of the means of two half-batches (the square of a single mean would penalize the variance);
+- **networks**: residual MLP with adaLN modulation, or light transformer (DiT) on mode tokens;
+- **compute**: single process or DDP (``torchrun``), optional bf16 on GPU, local or S3 checkpoints
+  (``milady.storage``), automatic resumption (Slurm: same ``SLURM_JOB_ID`` after requeue), MLflow log if
+  ``MLFLOW_TRACKING_URI`` is defined (otherwise ``metrics.jsonl``), model, task and evaluations in the catalog.
 
 Usage ::
 
     python -m milady.train.fm3d --config infra/configs/train_fm3d.yaml \\
-        [--dataset NOM[:VERSION] | --files URI…]
+        [--dataset NAME[:VERSION] | --files URI…]
     torchrun --standalone --nproc-per-node=4 -m milady.train.fm3d --config infra/configs/train_fm3d.yaml
-    # réglage fin avec la perte de stationnarité, depuis un modèle entraîné :
+    # fine-tuning with the stationarity loss, from a trained model:
     python -m milady.train.fm3d --config … --init-from s3://milady-models/…/final.pt \\
         --set stationarity.enabled=true stationarity.anchor=1.0 stationarity.beta_warmup=500 \\
               train.iters=2000 train.lr=1e-4
@@ -93,7 +93,7 @@ _UUID_RE = re.compile(r"^[0-9a-fA-F]{8}-?[0-9a-fA-F]{4}-?[0-9a-fA-F]{4}-?[0-9a-f
 # =============================================================================================
 # Configuration
 # =============================================================================================
-#: Valeurs par défaut ; le YAML (``infra/configs/train_fm3d.yaml``) n'a besoin de préciser que les écarts.
+#: Default values; the YAML (``infra/configs/train_fm3d.yaml``) only needs to specify the differences.
 DEFAULT_CONFIG: dict[str, Any] = {
     "name": "fm3d",
     "description": "",
@@ -166,9 +166,9 @@ DEFAULT_CONFIG: dict[str, Any] = {
         "injection_param": "eps",
         "growth_rate": 0.0,
         "cond_range": [0.0, 1.0],
-        # Garde-fous du réglage fin (expérience E1 : la perte seule peut diverger depuis un modèle biaisé) :
-        "anchor": 0.0,       # poids de l'ancrage aux poids de départ : anchor × moyenne des (θ − θ₀)²
-        "beta_warmup": 0,    # montée linéaire de beta sur ce nombre d'itérations actives (0 : beta d'emblée)
+        # Fine-tuning safeguards (experiment E1: the loss alone can diverge from a biased model):
+        "anchor": 0.0,       # weight of the anchoring to the starting weights: anchor × mean of (θ − θ₀)²
+        "beta_warmup": 0,    # linear ramp-up of beta over this number of active iterations (0: beta right away)
     },
     "sampling": {"steps": 50},
     "checkpoint": {"uri": None},
@@ -191,7 +191,7 @@ _ENV_RE = re.compile(r"\$\{([A-Za-z_][A-Za-z0-9_]*)(?::-([^}]*))?\}")
 
 
 def _expand_env(obj: Any) -> Any:
-    """Développe ``${VAR}`` et ``${VAR:-défaut}`` dans les chaînes (récursif)."""
+    """Expand ``${VAR}`` and ``${VAR:-default}`` in strings (recursive)."""
     if isinstance(obj, str):
         return _ENV_RE.sub(lambda m: os.environ.get(m.group(1)) or (m.group(2) or ""), obj)
     if isinstance(obj, list):
@@ -211,12 +211,12 @@ def _merge(base: dict[str, Any], over: Mapping[str, Any]) -> dict[str, Any]:
 
 
 def default_config() -> dict[str, Any]:
-    """Copie de la configuration par défaut (variables d'environnement développées)."""
+    """Copy of the default configuration (environment variables expanded)."""
     return _expand_env(copy.deepcopy(DEFAULT_CONFIG))
 
 
 def load_config(path: str | os.PathLike[str] | None) -> dict[str, Any]:
-    """Lit un YAML d'entraînement fusionné avec :data:`DEFAULT_CONFIG` (``${VAR:-défaut}`` développés)."""
+    """Read a training YAML merged with :data:`DEFAULT_CONFIG` (``${VAR:-default}`` expanded)."""
     import yaml
 
     cfg = copy.deepcopy(DEFAULT_CONFIG)
@@ -228,12 +228,12 @@ def load_config(path: str | os.PathLike[str] | None) -> dict[str, Any]:
 
 
 def apply_overrides(cfg: dict[str, Any], items: Sequence[str]) -> dict[str, Any]:
-    """Applique des surcharges ``section.clé=valeur`` (valeur lue en YAML : nombres, listes, booléens)."""
+    """Apply ``section.key=value`` overrides (value read as YAML: numbers, lists, booleans)."""
     import yaml
 
     for item in items:
         if "=" not in item:
-            raise ValueError(f"surcharge {item!r} : forme section.clé=valeur attendue")
+            raise ValueError(f"override {item!r}: form section.key=value expected")
         key, val = item.split("=", 1)
         node = cfg
         parts = key.strip().split(".")
@@ -257,10 +257,10 @@ def _flatten(d: Mapping[str, Any], prefix: str = "") -> dict[str, Any]:
 
 
 # =============================================================================================
-# Réseaux
+# Networks
 # =============================================================================================
 class FourierEmbedding(nn.Module):
-    """Plongement sinusoïdal d'un scalaire (temps du flot ou paramètre normalisé)."""
+    """Sinusoidal embedding of a scalar (flow time or normalized parameter)."""
 
     freqs: torch.Tensor
 
@@ -274,7 +274,7 @@ class FourierEmbedding(nn.Module):
 
 
 class ConditionEmbedding(nn.Module):
-    """Plongement commun du temps t et des n_cond paramètres normalisés → vecteur de dimension ``emb_dim``."""
+    """Shared embedding of time t and of the n_cond normalized parameters → vector of dimension ``emb_dim``."""
 
     def __init__(self, n_cond: int, emb_dim: int = 256, n_freq: int = 16) -> None:
         super().__init__()
@@ -300,7 +300,7 @@ def _zero(layer: nn.Linear) -> nn.Linear:
 
 
 class ResBlock(nn.Module):
-    """Bloc résiduel du MLP, modulé par le plongement (adaLN-Zero)."""
+    """Residual block of the MLP, modulated by the embedding (adaLN-Zero)."""
 
     def __init__(self, width: int, expansion: int, emb_dim: int, dropout: float) -> None:
         super().__init__()
@@ -317,7 +317,7 @@ class ResBlock(nn.Module):
 
 
 class ResMLP(nn.Module):
-    """Champ de vitesse v_θ(x, t, c) : MLP résiduel sur le latent aplati (M × C)."""
+    """Velocity field v_θ(x, t, c): residual MLP on the flattened latent (M × C)."""
 
     def __init__(
         self,
@@ -350,7 +350,7 @@ class ResMLP(nn.Module):
 
 
 class DiTBlock(nn.Module):
-    """Bloc de transformeur à modulation adaLN-Zero (attention sur les jetons de modes, puis MLP)."""
+    """Transformer block with adaLN-Zero modulation (attention over mode tokens, then MLP)."""
 
     def __init__(self, d: int, heads: int, mlp_ratio: int, emb_dim: int, dropout: float) -> None:
         super().__init__()
@@ -373,7 +373,7 @@ class DiTBlock(nn.Module):
 
 
 def _mode_features(m: np.ndarray, kmax: float) -> np.ndarray:
-    """Caractéristiques de position d'un mode : m/kmax, |m|/kmax et sinusoïdes de π m 2^j / kmax."""
+    """Position features of a mode: m/kmax, |m|/kmax and sinusoids of π m 2^j / kmax."""
     base = m.astype(np.float64) / kmax
     feats = [base, np.linalg.norm(base, axis=1, keepdims=True)]
     for j in range(3):
@@ -382,10 +382,10 @@ def _mode_features(m: np.ndarray, kmax: float) -> np.ndarray:
 
 
 class ModeTransformer(nn.Module):
-    """Champ de vitesse v_θ(x, t, c) : transformeur léger sur des jetons de ``modes_per_token`` modes.
+    """Velocity field v_θ(x, t, c): light transformer on tokens of ``modes_per_token`` modes.
 
-    Les modes étant triés par |m|, un jeton regroupe des modes voisins en nombre d'onde ; la position
-    d'un jeton est apprise à partir des vecteurs d'onde de ses modes.
+    Since the modes are sorted by |m|, a token groups modes that are neighbors in wavenumber; the position
+    of a token is learned from the wave vectors of its modes.
     """
 
     mode_feats: torch.Tensor
@@ -415,7 +415,7 @@ class ModeTransformer(nn.Module):
         feats = np.concatenate([feats, np.zeros((M, 1))], axis=1)
         if pad:
             filler = np.zeros((pad, feats.shape[1]))
-            filler[:, -1] = 1.0  # indicateur de remplissage
+            filler[:, -1] = 1.0  # padding indicator
             feats = np.concatenate([feats, filler])
         self.register_buffer(
             "mode_feats", torch.as_tensor(feats.reshape(self.n_tokens, -1), dtype=torch.float32)
@@ -444,10 +444,10 @@ class ModeTransformer(nn.Module):
 
 
 class SignSymmetrized(nn.Module):
-    """v_S(x, t, c) = ½ (v(x, t, c) + S v(S x, t, c)) : exactement équivariant pour S = diag(±1) (A_B → −A_B).
+    """v_S(x, t, c) = ½ (v(x, t, c) + S v(S x, t, c)): exactly equivariant for S = diag(±1) (A_B → −A_B).
 
-    Si x₀ ~ N(0, I) (invariant par S), le flot équivariant transporte une loi invariante : la loi générée
-    est symétrique par B → −B, à la précision machine et quel que soit l'entraînement.
+    If x₀ ~ N(0, I) (invariant under S), the equivariant flow transports an invariant distribution: the generated
+    distribution is symmetric under B → −B, to machine precision and whatever the training.
     """
 
     sign: torch.Tensor
@@ -463,7 +463,7 @@ class SignSymmetrized(nn.Module):
 
 
 def build_field(model_cfg: Mapping[str, Any], space: FourierPotentialSpace, n_cond: int) -> nn.Module:
-    """Réseau du champ de vitesse (``model.architecture`` : ``mlp``, ``transformer``), symétrisé au besoin."""
+    """Velocity field network (``model.architecture``: ``mlp``, ``transformer``), symmetrized if needed."""
     arch = str(model_cfg.get("architecture", "mlp"))
     if arch == "mlp":
         o = dict(DEFAULT_CONFIG["model"]["mlp"], **(model_cfg.get("mlp") or {}))
@@ -495,7 +495,7 @@ def build_field(model_cfg: Mapping[str, Any], space: FourierPotentialSpace, n_co
             float(o["dropout"]),
         )
     else:
-        raise ValueError(f"architecture {arch!r} inconnue (mlp, transformer)")
+        raise ValueError(f"architecture {arch!r} unknown (mlp, transformer)")
     if (
         bool(model_cfg.get("symmetry_b_sign", False))
         and space.symmetric_b
@@ -506,7 +506,7 @@ def build_field(model_cfg: Mapping[str, Any], space: FourierPotentialSpace, n_co
 
 
 # =============================================================================================
-# Flow matching, échantillonnage, perte de stationnarité
+# Flow matching, sampling, stationarity loss
 # =============================================================================================
 def heun_sample(
     field: nn.Module,
@@ -515,9 +515,9 @@ def heun_sample(
     steps: int = 50,
     autocast: tuple[str, torch.dtype] | None = None,
 ) -> torch.Tensor:
-    """Intègre dz/dt = v(z, t, c) de t = 0 à 1 par le schéma de Heun (``steps`` pas, 2 évaluations par pas).
+    """Integrate dz/dt = v(z, t, c) from t = 0 to 1 with the Heun scheme (``steps`` steps, 2 evaluations per step).
 
-    Différentiable si appelé hors de ``torch.no_grad`` (perte de stationnarité).
+    Differentiable if called outside ``torch.no_grad`` (stationarity loss).
     """
     h = 1.0 / steps
     n = z.shape[0]
@@ -536,9 +536,9 @@ def heun_sample(
 
 
 class FlowMatchingLoss(nn.Module):
-    """Perte d'entraînement complète (un seul ``forward`` par itération : compatible DDP).
+    """Complete training loss (a single ``forward`` per iteration: DDP-compatible).
 
-    ``forward(x1, c, stationarity)`` → (perte totale, perte de flow matching, perte de stationnarité).
+    ``forward(x1, c, stationarity)`` → (total loss, flow matching loss, stationarity loss).
     """
 
     forcing_hat: torch.Tensor
@@ -569,15 +569,15 @@ class FlowMatchingLoss(nn.Module):
             self._prepare_stationarity()
 
     def _prepare_stationarity(self) -> None:
-        """Vérifie que le bilan demandé est calculable et précalcule forçage / écoulement imposé aux modes."""
+        """Check that the requested budget is computable and precompute forcing / imposed flow at the modes."""
         from milady.eval import metrics
 
         sp, st = self.space, self.stat
         if int(st["n_per"]) < 2 or int(st["n_per"]) % 2:
-            raise ValueError("stationarity.n_per : entier pair ≥ 2 (deux demi-lots)")
+            raise ValueError("stationarity.n_per: even integer ≥ 2 (two half-batches)")
         balance = str(st["balance"])
         if balance not in ("total", "kinetic", "magnetic"):
-            raise ValueError("stationarity.balance : total, kinetic ou magnetic")
+            raise ValueError("stationarity.balance: total, kinetic or magnetic")
         n = sp.default_grid()
         grid = (n, n, n)
         mode = str(self.fixed.get("mode", "dynamic"))
@@ -587,15 +587,15 @@ class FlowMatchingLoss(nn.Module):
                 self.flow_hat = sp.vector_modes(flow).to(torch.complex64)
         has_u = "velocity" in sp.fields or self.flow_hat.numel() > 0
         if balance in ("total", "kinetic") and "velocity" not in sp.fields:
-            raise ValueError(f"bilan {balance} : le champ « velocity » doit être généré (data.fields)")
+            raise ValueError(f"budget {balance}: the field \"velocity\" must be generated (data.fields)")
         if balance == "magnetic" and ("magnetic_field" not in sp.fields or not has_u):
-            raise ValueError("bilan magnetic : B généré et u généré ou imposé (mode cinématique) requis")
+            raise ValueError("magnetic budget: generated B and generated or imposed u (kinematic mode) required")
         if balance in ("total", "kinetic") and st["injection"] == "forcing":
             kind = str(self.fixed.get("forcing", ""))
             if mode != "dynamic" or kind not in ("abc", "tg"):
                 raise ValueError(
-                    "injection « forcing » : forçage ABC ou TG constant commun à tous les fichiers requis "
-                    "(sinon stationarity.injection: param ou none)"
+                    "\"forcing\" injection: constant ABC or TG forcing common to all files required "
+                    "(otherwise stationarity.injection: param or none)"
                 )
             self.forcing_kind = kind
             shape = metrics._shape_field(kind, self.fixed, grid, sp.lengths)
@@ -603,7 +603,7 @@ class FlowMatchingLoss(nn.Module):
             captured = float(2 * (fh.abs() ** 2).sum()) / max(float((shape**2).sum(-1).mean()), 1e-30)
             if captured < 0.99:
                 raise ValueError(
-                    f"le forçage n'est qu'à {captured:.0%} dans la boule |m| ≤ kmax : augmenter kmax"
+                    f"the forcing is only {captured:.0%} inside the ball |m| ≤ kmax: increase kmax"
                 )
             self.forcing_hat = fh.to(torch.complex64)
 
@@ -616,7 +616,7 @@ class FlowMatchingLoss(nn.Module):
     def fm_loss(
         self, x1: torch.Tensor, c: torch.Tensor, generator: torch.Generator | None = None
     ) -> torch.Tensor:
-        """Perte de flow matching ‖v(x_t, t, c) − (x₁ − x₀)‖² (moyenne)."""
+        """Flow matching loss ‖v(x_t, t, c) − (x₁ − x₀)‖² (mean)."""
         if generator is None:
             x0 = torch.randn_like(x1)
             t = self._times(x1.shape[0], x1.device)
@@ -634,9 +634,9 @@ class FlowMatchingLoss(nn.Module):
             v = self.field(xt, t, c)
         return ((v.float() - (x1 - x0)) ** 2).mean()
 
-    # -- stationnarité ------------------------------------------------------------------------
+    # -- stationarity -------------------------------------------------------------------------
     def _physics(self, cn: torch.Tensor) -> dict[str, torch.Tensor]:
-        """Paramètres physiques (ν, η, amplitude d'injection, λ) des conditions normalisées ``cn``."""
+        """Physical parameters (ν, η, injection amplitude, λ) of the normalized conditions ``cn``."""
         from milady.eval.metrics import forcing_amplitude
 
         rows = cn.detach().cpu().numpy()
@@ -657,10 +657,10 @@ class FlowMatchingLoss(nn.Module):
         return {k: torch.tensor(v, dtype=torch.float32, device=cn.device) for k, v in out.items()}
 
     def stationarity_loss(self) -> torch.Tensor:
-        """Pénalité sans biais de (E[résidu du bilan])² aux conditions tirées dans ``cond_range``.
+        """Unbiased penalty of (E[budget residual])² at conditions drawn in ``cond_range``.
 
-        Pour chaque condition : ``n_per`` échantillons par Heun différentiable (``steps`` pas), résidu
-        normalisé par l'échelle des puits (détachée), produit des moyennes des deux demi-lots.
+        For each condition: ``n_per`` samples by differentiable Heun (``steps`` steps), residual
+        normalized by the scale of the sinks (detached), product of the means of the two half-batches.
         """
         st = self.stat
         nc, nper = int(st["n_cond"]), int(st["n_per"])
@@ -708,10 +708,10 @@ class FlowMatchingLoss(nn.Module):
 
 
 # =============================================================================================
-# Modèle entraîné (inférence)
+# Trained model (inference)
 # =============================================================================================
 class GenerativeModel:
-    """Modèle prêt à échantillonner : espace latent, réseau (poids EMA), conditionnement, contexte."""
+    """Model ready to sample: latent space, network (EMA weights), conditioning, context."""
 
     def __init__(
         self,
@@ -733,7 +733,7 @@ class GenerativeModel:
 
     @classmethod
     def from_payload(cls, payload: Mapping[str, Any], device: torch.device | str = "cpu") -> GenerativeModel:
-        """Reconstruit le modèle depuis un point de contrôle (dictionnaire de :func:`load_checkpoint`)."""
+        """Rebuild the model from a checkpoint (dictionary from :func:`load_checkpoint`)."""
         space = FourierPotentialSpace(**payload["space"]["config"])
         space.load_state_dict(payload["space"]["state"])
         specs = [CondSpec.parse(s) for s in payload["cond_specs"]]
@@ -743,19 +743,19 @@ class GenerativeModel:
         return cls(space, field, specs, payload.get("fixed_params", {}), payload.get("meta"), device, steps)
 
     def default_grid(self) -> int:
-        """Grille de reconstruction par défaut (paire, ≥ 3 kmax + 1)."""
+        """Default reconstruction grid (even, ≥ 3 kmax + 1)."""
         return self.space.default_grid()
 
     def cond_vector(self, point: Mapping[str, Any]) -> torch.Tensor:
-        """Condition normalisée ``(n_cond,)`` d'un point ``{"Re": 50, …}``."""
+        """Normalized condition ``(n_cond,)`` of a point ``{"Re": 50, …}``."""
         missing = [s.name for s in self.cond_specs if s.name not in point]
         if missing:
-            raise KeyError(f"paramètres de conditionnement manquants : {missing}")
+            raise KeyError(f"missing conditioning parameters: {missing}")
         vals = [float(s.normalize(float(point[s.name]))) for s in self.cond_specs]
         return torch.tensor(vals, dtype=torch.float32, device=self.device)
 
     def physical_parameters(self, point: Mapping[str, Any]) -> dict[str, Any]:
-        """Paramètres physiques complets au point ``point`` (ν, η, forçage…)."""
+        """Complete physical parameters at point ``point`` (ν, η, forcing…)."""
         cond = {s.name: float(point[s.name]) for s in self.cond_specs if s.name in point}
         return physical_parameters(cond, self.fixed, self.space.lengths)
 
@@ -763,7 +763,7 @@ class GenerativeModel:
     def sample_latent(
         self, point: Mapping[str, Any], n: int, seed: int = 0, steps: int | None = None
     ) -> torch.Tensor:
-        """``n`` latents bruts ``(n, M, C)`` au point ``point`` (graine ``seed`` reproductible)."""
+        """``n`` raw latents ``(n, M, C)`` at point ``point`` (reproducible seed ``seed``)."""
         g = torch.Generator().manual_seed(int(seed))
         z = torch.randn(n, self.space.n_modes, self.space.n_channels, generator=g).to(self.device)
         c = self.cond_vector(point).expand(n, -1)
@@ -779,13 +779,13 @@ class GenerativeModel:
         steps: int | None = None,
         grid: int | Sequence[int] | None = None,
     ) -> dict[str, np.ndarray]:
-        """Champs physiques générés ``{nom: (n, nx, ny, nz, 3)}`` (numpy float32), divergence nulle."""
+        """Generated physical fields ``{name: (n, nx, ny, nz, 3)}`` (numpy float32), zero divergence."""
         x = self.sample_latent(point, n, seed, steps)
         return {k: v.float().cpu().numpy() for k, v in self.space.decode(x, grid).items()}
 
 
 # =============================================================================================
-# Points de contrôle, catalogue, journal
+# Checkpoints, catalog, logging
 # =============================================================================================
 def _checkpoint_base(cfg: Mapping[str, Any]) -> str:
     base = (cfg.get("checkpoint") or {}).get("uri") or os.environ.get("MILADY_MODELS_URI")
@@ -793,7 +793,7 @@ def _checkpoint_base(cfg: Mapping[str, Any]) -> str:
 
 
 def save_checkpoint(payload: Mapping[str, Any], local: Path, uri: str) -> str:
-    """Écrit ``payload`` en local (fichier temporaire puis renommage atomique) puis le copie vers ``uri``."""
+    """Write ``payload`` locally (temporary file then atomic rename) then copy it to ``uri``."""
     local.parent.mkdir(parents=True, exist_ok=True)
     tmp = local.with_name(f".{local.name}.{uuid.uuid4().hex[:8]}.part")
     try:
@@ -808,10 +808,10 @@ def save_checkpoint(payload: Mapping[str, Any], local: Path, uri: str) -> str:
 
 
 def load_checkpoint(ref: str, map_location: str | torch.device = "cpu") -> dict[str, Any]:
-    """Charge un point de contrôle local ou distant (``s3://`` : téléchargé dans un fichier temporaire).
+    """Load a local or remote checkpoint (``s3://``: downloaded to a temporary file).
 
-    Les points de contrôle MilaDy contiennent des dictionnaires Python (configuration, paramètres) :
-    ``weights_only=False`` — ne charger que des fichiers de confiance (produits par ce code).
+    MilaDy checkpoints contain Python dictionaries (configuration, parameters):
+    ``weights_only=False`` — only load trusted files (produced by this code).
     """
     if storage.is_local(ref):
         return torch.load(storage.local_path(ref), map_location=map_location, weights_only=False)
@@ -821,7 +821,7 @@ def load_checkpoint(ref: str, map_location: str | torch.device = "cpu") -> dict[
 
 
 def latest_model_id(catalog: Any, name: str) -> str | None:
-    """Identifiant du dernier modèle ``name`` du catalogue qui a un point de contrôle, ou ``None``."""
+    """Identifier of the latest model ``name`` of the catalog that has a checkpoint, or ``None``."""
     from sqlalchemy import select
 
     from milady.catalog.models import Model
@@ -838,9 +838,9 @@ def latest_model_id(catalog: Any, name: str) -> str | None:
 def load_model(
     ref: str, device: str | torch.device | None = None, catalog: Any | None = None
 ) -> tuple[GenerativeModel, str | None]:
-    """Charge un modèle depuis son identifiant au catalogue (UUID) ou un chemin / URI de point de contrôle.
+    """Load a model from its catalog identifier (UUID) or a checkpoint path / URI.
 
-    Renvoie ``(modèle, identifiant au catalogue ou None)``.
+    Returns ``(model, catalog identifier or None)``.
     """
     model_id: str | None = None
     uri = str(ref)
@@ -851,9 +851,9 @@ def load_model(
             catalog = Catalog()
         row = catalog.get_model(uri)
         if row is None:
-            raise KeyError(f"modèle {uri} absent du catalogue")
+            raise KeyError(f"model {uri} absent from the catalog")
         if not row.get("checkpoint_uri"):
-            raise ValueError(f"modèle {uri} sans point de contrôle (entraînement inachevé ?)")
+            raise ValueError(f"model {uri} without checkpoint (unfinished training?)")
         model_id, uri = uri, str(row["checkpoint_uri"])
     payload = load_checkpoint(uri)
     if model_id is None:
@@ -863,7 +863,7 @@ def load_model(
 
 
 class RunLogger:
-    """Journal des métriques : ``metrics.jsonl`` et, si ``MLFLOW_TRACKING_URI`` est défini, MLflow."""
+    """Metrics log: ``metrics.jsonl`` and, if ``MLFLOW_TRACKING_URI`` is defined, MLflow."""
 
     def __init__(
         self,
@@ -880,7 +880,7 @@ class RunLogger:
         workdir.mkdir(parents=True, exist_ok=True)
         uri = os.environ.get("MLFLOW_TRACKING_URI")
         if not uri:
-            LOG.info("MLFLOW_TRACKING_URI non défini : journal local %s", self.path)
+            LOG.info("MLFLOW_TRACKING_URI not defined: local log %s", self.path)
             return
         try:
             import mlflow
@@ -898,13 +898,13 @@ class RunLogger:
                 }
                 mlflow.log_params({k: str(v)[:500] for k, v in params.items()})
                 mlflow.set_tags({"milady.git_commit": git_commit(), "milady.host": socket.gethostname()})
-            LOG.info("MLflow : run %s (%s)", self.run_id, uri)
-        except Exception as exc:  # noqa: BLE001 — le suivi ne doit jamais arrêter un entraînement
-            LOG.warning("MLflow indisponible (%s) : journal local %s", exc, self.path)
+            LOG.info("MLflow: run %s (%s)", self.run_id, uri)
+        except Exception as exc:  # noqa: BLE001 — tracking must never stop a training run
+            LOG.warning("MLflow unavailable (%s): local log %s", exc, self.path)
             self.mlflow = None
 
     def log(self, metrics: Mapping[str, float], step: int) -> None:
-        """Enregistre des métriques à l'itération ``step``."""
+        """Record metrics at iteration ``step``."""
         if not self.active:
             return
         row = {"step": int(step), "time": time.time(), **{k: float(v) for k, v in metrics.items()}}
@@ -914,25 +914,25 @@ class RunLogger:
             try:
                 self.mlflow.log_metrics({k: float(v) for k, v in metrics.items()}, step=int(step))
             except Exception as exc:  # noqa: BLE001
-                LOG.warning("MLflow log_metrics : %s", exc)
+                LOG.warning("MLflow log_metrics: %s", exc)
 
     def artifact(self, path: Path) -> None:
-        """Ajoute un fichier aux artefacts du run MLflow (si actif)."""
+        """Add a file to the artifacts of the MLflow run (if active)."""
         if self.active and self.mlflow is not None:
             try:
                 self.mlflow.log_artifact(str(path))
             except Exception as exc:  # noqa: BLE001
-                LOG.warning("MLflow log_artifact : %s", exc)
+                LOG.warning("MLflow log_artifact: %s", exc)
 
     def close(self, ok: bool) -> None:
-        """Termine le run MLflow."""
+        """End the MLflow run."""
         if self.active and self.mlflow is not None:
             with contextlib.suppress(Exception):
                 self.mlflow.end_run(status="FINISHED" if ok else "FAILED")
 
 
 class _Catalog:
-    """Accès au catalogue tolérant aux pannes (avertissement), sauf ``catalog.required: true``."""
+    """Fault-tolerant catalog access (warning), unless ``catalog.required: true``."""
 
     def __init__(self, enabled: bool, url: str | None, required: bool) -> None:
         self.cat, self.required = None, required
@@ -945,7 +945,7 @@ class _Catalog:
         except Exception as exc:
             if required:
                 raise
-            LOG.warning("catalogue indisponible (%s) : modèle non enregistré", exc)
+            LOG.warning("catalog unavailable (%s): model not registered", exc)
 
     def call(self, method: str, *args: Any, **kwargs: Any) -> Any:
         if self.cat is None:
@@ -955,7 +955,7 @@ class _Catalog:
         except Exception as exc:
             if self.required:
                 raise
-            LOG.warning("catalogue : %s a échoué (%s)", method, exc)
+            LOG.warning("catalog: %s failed (%s)", method, exc)
             return None
 
 
@@ -968,7 +968,7 @@ def _scheduler() -> tuple[str, str]:
 
 
 # =============================================================================================
-# Distribution et appareils
+# Distribution and devices
 # =============================================================================================
 def _resolve_device(pref: str, local_rank: int = 0) -> torch.device:
     pref = (pref or "auto").lower()
@@ -976,13 +976,13 @@ def _resolve_device(pref: str, local_rank: int = 0) -> torch.device:
         return torch.device(f"cuda:{local_rank}") if torch.cuda.is_available() else torch.device("cpu")
     if pref == "cuda":
         if not torch.cuda.is_available():
-            raise RuntimeError("device cuda demandé mais aucun GPU visible")
+            raise RuntimeError("device cuda requested but no GPU visible")
         return torch.device(f"cuda:{local_rank}")
     return torch.device(pref)
 
 
 def _setup_distributed(pref: str) -> tuple[int, int, int, torch.device]:
-    """Initialise DDP si lancé par torchrun (``WORLD_SIZE`` > 1) : NCCL sur GPU, gloo sur CPU."""
+    """Initialize DDP if launched by torchrun (``WORLD_SIZE`` > 1): NCCL on GPU, gloo on CPU."""
     world = int(os.environ.get("WORLD_SIZE", "1"))
     rank = int(os.environ.get("RANK", "0"))
     local = int(os.environ.get("LOCAL_RANK", "0"))
@@ -1004,7 +1004,7 @@ def _broadcast(obj: Any, world: int) -> Any:
 
 
 class _StopFlag:
-    """Signal d'arrêt (SIGTERM, SIGUSR1 de Slurm avant la fin) : point de contrôle puis sortie."""
+    """Stop signal (SIGTERM, Slurm SIGUSR1 before the end): checkpoint then exit."""
 
     def __init__(self) -> None:
         self.stop = False
@@ -1017,7 +1017,7 @@ class _StopFlag:
         return self
 
     def _handler(self, signum: int, _frame: Any) -> None:
-        LOG.warning("signal %d reçu : point de contrôle puis arrêt", signum)
+        LOG.warning("signal %d received: checkpoint then stop", signum)
         self.stop = True
 
     def __exit__(self, *exc: object) -> None:
@@ -1027,7 +1027,7 @@ class _StopFlag:
 
 
 # =============================================================================================
-# Entraînement
+# Training
 # =============================================================================================
 def _lr_lambda(warmup: int, total: int, ratio_min: float) -> Any:
     def f(step: int) -> float:
@@ -1065,10 +1065,10 @@ def train(
     resume: str | None = None,
     init_from: str | None = None,
 ) -> dict[str, Any]:
-    """Entraîne un modèle selon ``cfg`` (voir :data:`DEFAULT_CONFIG`) ; renvoie un résumé (rang 0).
+    """Train a model according to ``cfg`` (see :data:`DEFAULT_CONFIG`); returns a summary (rank 0).
 
-    Lancé par ``torchrun``, chaque processus exécute cette fonction (DDP) ; seul le rang 0 écrit les points
-    de contrôle, le journal et le catalogue.
+    Launched by ``torchrun``, each process runs this function (DDP); only rank 0 writes the checkpoints,
+    the log and the catalog.
     """
     tcfg = cfg["train"]
     rank, world, _local, device = _setup_distributed(str(tcfg.get("device") or "auto"))
@@ -1086,7 +1086,7 @@ def train(
         prec = "bf16" if device.type == "cuda" and torch.cuda.is_bf16_supported() else "fp32"
     autocast = (device.type, torch.bfloat16) if prec == "bf16" else None
 
-    # -- nom du run, emplacements -------------------------------------------------------------
+    # -- run name, locations ------------------------------------------------------------------
     if main_rank and not run_name:
         run_name = os.environ.get("MILADY_RUN_NAME") or (
             f"{cfg['name']}-slurm{os.environ['SLURM_JOB_ID']}"
@@ -1102,7 +1102,7 @@ def train(
         workdir = (wd if wd.is_absolute() else project_root() / wd) / run_name
     last_uri, final_uri = storage.join(run_uri, "last.pt"), storage.join(run_uri, "final.pt")
 
-    # -- reprise ou initialisation depuis un modèle --------------------------------------------
+    # -- resumption or initialization from a model ---------------------------------------------
     resume = resume or str(tcfg.get("resume") or "auto")
     init_from = init_from or tcfg.get("init_from")
     payload: dict[str, Any] | None = None
@@ -1112,12 +1112,12 @@ def train(
         exists = storage.exists(src) if resume == "auto" else True
         if exists:
             payload, resumed = load_checkpoint(src), True
-            LOG.info("reprise depuis %s (itération %d)", src, payload["step"])
+            LOG.info("resuming from %s (iteration %d)", src, payload["step"])
     if payload is None and init_from:
         payload = load_checkpoint(str(init_from))
-        LOG.info("initialisation depuis %s", init_from)
+        LOG.info("initialization from %s", init_from)
 
-    # -- données ------------------------------------------------------------------------------
+    # -- data ---------------------------------------------------------------------------------
     cat = _Catalog(
         main_rank and bool(cfg["catalog"].get("enabled", True)),
         cfg["catalog"].get("url"),
@@ -1147,7 +1147,7 @@ def train(
         else bundle.fixed_params
     )
 
-    # -- modèle, perte, optimiseur ------------------------------------------------------------
+    # -- model, loss, optimizer ---------------------------------------------------------------
     n_cond = len(bundle.cond_specs)
     model_cfg = payload["model_config"] if payload is not None else cfg["model"]
     field = build_field(model_cfg, space, n_cond).to(device)
@@ -1159,8 +1159,8 @@ def train(
         ema.load_state_dict(payload["ema_state"])
     for p in ema.parameters() if ema is not None else []:
         p.requires_grad_(False)
-    # Ancrage du réglage fin : référence = poids de ``init_from`` s'il est donné (y compris après une
-    # reprise), sinon poids au début de cette exécution.
+    # Fine-tuning anchoring: reference = weights of ``init_from`` if given (including after a
+    # resumption), otherwise weights at the start of this run.
     anchor_w = float(cfg["stationarity"].get("anchor") or 0.0)
     anchor_ref: list[torch.Tensor] = []
     if anchor_w > 0:
@@ -1170,7 +1170,7 @@ def train(
         else:
             ref_field.load_state_dict(field.state_dict())
             if resumed:
-                LOG.warning("stationarity.anchor sans init_from : ancrage aux poids repris, pas au modèle d'origine")
+                LOG.warning("stationarity.anchor without init_from: anchoring to the resumed weights, not to the original model")
         anchor_ref = [q.detach().clone() for q in ref_field.parameters()]
         del ref_field
     n_anchor = max(1, sum(q.numel() for q in anchor_ref))
@@ -1212,7 +1212,7 @@ def train(
         step = int(payload["step"])
     n_params = sum(p.numel() for p in field.parameters())
 
-    # -- journal, catalogue ---------------------------------------------------------------------
+    # -- log, catalog ---------------------------------------------------------------------
     meta_prev = dict(payload.get("meta") or {}) if (payload is not None and resumed) else {}
     logger = RunLogger(main_rank, workdir, run_name, cfg, meta_prev.get("mlflow_run_id"))
     arch = f"fm3d-{model_cfg.get('architecture', 'mlp')}"
@@ -1282,7 +1282,7 @@ def train(
     }
     if main_rank:
         LOG.info(
-            "run %s : %d paramètres, %d itérations (%d par époque), %d processus, %s, %s",
+            "run %s: %d parameters, %d iterations (%d per epoch), %d processes, %s, %s",
             run_name,
             n_params,
             total,
@@ -1311,7 +1311,7 @@ def train(
             "meta": {**meta, "saved": _dt.datetime.now(_dt.UTC).isoformat(timespec="seconds")},
         }
 
-    # -- boucle ---------------------------------------------------------------------------------
+    # -- loop -----------------------------------------------------------------------------------
     st_cfg = cfg["stationarity"]
     use_stat_any = bool(st_cfg.get("enabled"))
     beta0 = float(loss_mod.stat["beta"])
@@ -1387,7 +1387,7 @@ def train(
                     if main_rank:
                         logger.log(last, step)
                         LOG.info(
-                            "it %d/%d  perte %.4f  fm %.4f%s  %.0f s",
+                            "it %d/%d  loss %.4f  fm %.4f%s  %.0f s",
                             step,
                             total,
                             last["loss"],
@@ -1413,7 +1413,7 @@ def train(
                 if main_rank and ((ckpt_every and step % ckpt_every == 0) or stop):
                     save_checkpoint(make_payload(False), workdir / "last.pt", last_uri)
                 if stop:
-                    LOG.warning("arrêt demandé à l'itération %d (point de contrôle %s)", step, last_uri)
+                    LOG.warning("stop requested at iteration %d (checkpoint %s)", step, last_uri)
                     break
         finished = step >= total
         result: dict[str, Any] = {
@@ -1461,14 +1461,14 @@ def train(
     finally:
         logger.close(ok)
         if world > 1 and dist.is_initialized():
-            # Pas de barrière : après la boucle, le rang 0 ne fait plus d'opération collective (sauvegarde,
-            # catalogue, évaluation) ; attendre son évaluation dépasserait le délai NCCL sur un gros modèle.
+            # No barrier: after the loop, rank 0 no longer performs collective operations (saving,
+            # catalog, evaluation); waiting for its evaluation would exceed the NCCL timeout on a large model.
             dist.destroy_process_group()
 
 
 @torch.no_grad()
 def _val_loss(loss_mod: FlowMatchingLoss, field: nn.Module, ds: Any, batch: int, seed: int) -> float:
-    """Perte de flow matching de validation (bruit et temps fixés : comparable d'une fois à l'autre)."""
+    """Validation flow matching loss (fixed noise and time: comparable from one time to the next)."""
     g = torch.Generator().manual_seed(seed + 12345)
     saved = loss_mod.field
     loss_mod.field = field
@@ -1494,7 +1494,7 @@ def _evaluate_after_train(
     model_id: str,
     device: torch.device,
 ) -> list[dict[str, Any]] | None:
-    """Évaluation rapide en fin d'entraînement (points des données), enregistrée au catalogue."""
+    """Quick evaluation at the end of training (data points), recorded in the catalog."""
     from milady.eval.metrics import evaluate_model
 
     ev = cfg["eval"]
@@ -1523,20 +1523,20 @@ def _evaluate_after_train(
             catalog=cat.cat,
             model_id=model_id,
         )
-    except Exception as exc:  # noqa: BLE001 — l'entraînement est terminé et sauvegardé : avertir seulement
-        LOG.warning("évaluation de fin d'entraînement impossible : %s", exc)
+    except Exception as exc:  # noqa: BLE001 — training is finished and saved: only warn
+        LOG.warning("end-of-training evaluation impossible: %s", exc)
         return None
     return [{"point": r["point"], **r["metrics"]} for r in res]
 
 
 # =============================================================================================
-# Test de fumée (infra/deploy/smoke.py)
+# Smoke test (infra/deploy/smoke.py)
 # =============================================================================================
 def smoke_step(data: Any, device: str = "cpu", workdir: str | None = None) -> dict[str, Any]:
-    """Une itération d'entraînement sur des instantanés de B ``(n_t, 3, n, n, n)`` (``make smoke``).
+    """One training iteration on snapshots of B ``(n_t, 3, n, n, n)`` (``make smoke``).
 
-    Encode B en potentiel vecteur (kmax ≤ 4), ajuste la normalisation, fait un pas d'AdamW avec la perte de
-    flow matching (MLP réduit, symétrie B → −B), vérifie la divergence d'un échantillon décodé.
+    Encodes B into a vector potential (kmax ≤ 4), fits the normalization, performs an AdamW step with the
+    flow matching loss (reduced MLP, B → −B symmetry), checks the divergence of a decoded sample.
     """
     del workdir
     from milady.eval.metrics import divergence_relative
@@ -1581,47 +1581,47 @@ def smoke_step(data: Any, device: str = "cpu", workdir: str | None = None) -> di
 
 
 # =============================================================================================
-# Ligne de commande
+# Command line
 # =============================================================================================
 def _setup_logging(verbose: bool) -> None:
     rank = os.environ.get("RANK", "0")
     logging.basicConfig(
         level=logging.DEBUG if verbose else logging.INFO,
-        format=f"%(asctime)s [rang {rank}] %(levelname)s %(name)s : %(message)s",
+        format=f"%(asctime)s [rank {rank}] %(levelname)s %(name)s: %(message)s",
     )
     if rank != "0" and not verbose:
         logging.getLogger("milady").setLevel(logging.WARNING)
 
 
 def main(argv: Sequence[str] | None = None) -> int:
-    """Point d'entrée : ``python -m milady.train.fm3d`` (ou via ``torchrun``)."""
+    """Entry point: ``python -m milady.train.fm3d`` (or via ``torchrun``)."""
     ap = argparse.ArgumentParser(
         prog="python -m milady.train.fm3d",
-        description="Flow matching conditionnel 3D sous contraintes (potentiel vecteur).",
+        description="Conditional 3D flow matching under constraints (vector potential).",
     )
-    ap.add_argument("--config", default=None, help="YAML d'entraînement (infra/configs/train_fm3d.yaml)")
+    ap.add_argument("--config", default=None, help="training YAML (infra/configs/train_fm3d.yaml)")
     src = ap.add_mutually_exclusive_group()
-    src.add_argument("--dataset", default=None, help="jeu de données du catalogue (NOM ou NOM:VERSION)")
-    src.add_argument("--files", nargs="+", default=None, help="fichiers MFF (chemins, file://, s3://, .zarr)")
+    src.add_argument("--dataset", default=None, help="catalog dataset (NAME or NAME:VERSION)")
+    src.add_argument("--files", nargs="+", default=None, help="MFF files (paths, file://, s3://, .zarr)")
     ap.add_argument("--iters", type=int, default=None)
     ap.add_argument("--epochs", type=int, default=None)
     ap.add_argument("--batch-size", type=int, default=None)
     ap.add_argument("--lr", type=float, default=None)
-    ap.add_argument("--device", default=None, help="auto (défaut), cpu, cuda")
-    ap.add_argument("--run-name", default=None, help="nom du run (reprise automatique si un last.pt existe)")
+    ap.add_argument("--device", default=None, help="auto (default), cpu, cuda")
+    ap.add_argument("--run-name", default=None, help="run name (automatic resumption if a last.pt exists)")
     ap.add_argument(
-        "--resume", default=None, help="auto (défaut), never, ou chemin/URI d'un point de contrôle"
+        "--resume", default=None, help="auto (default), never, or path/URI of a checkpoint"
     )
-    ap.add_argument("--init-from", default=None, help="point de contrôle d'initialisation (réglage fin)")
-    ap.add_argument("--no-catalog", action="store_true", help="n'enregistre rien au catalogue")
-    ap.add_argument("--db-url", default=None, help="URL du catalogue (défaut MILADY_DB_URL)")
+    ap.add_argument("--init-from", default=None, help="initialization checkpoint (fine-tuning)")
+    ap.add_argument("--no-catalog", action="store_true", help="do not register anything in the catalog")
+    ap.add_argument("--db-url", default=None, help="catalog URL (default MILADY_DB_URL)")
     ap.add_argument(
         "--set",
         nargs="+",
         action="append",
         default=[],
-        metavar="CLÉ=VALEUR",
-        help="surcharges de configuration, ex. --set train.lr=1e-4 stationarity.enabled=true",
+        metavar="KEY=VALUE",
+        help="configuration overrides, e.g. --set train.lr=1e-4 stationarity.enabled=true",
     )
     ap.add_argument("-v", "--verbose", action="store_true")
     args = ap.parse_args(argv)

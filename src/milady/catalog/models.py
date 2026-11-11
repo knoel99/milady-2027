@@ -1,22 +1,22 @@
-"""Modèle SQLAlchemy 2.x du catalogue MilaDy (équivalent de ``infra/db/schema.sql``).
+"""SQLAlchemy 2.x model of the MilaDy catalog (equivalent of ``infra/db/schema.sql``).
 
-Types portables :
+Portable types:
 
-- identifiants : chaînes UUID (``uuid`` natif en PostgreSQL, ``VARCHAR(36)`` en SQLite) ;
-- paramètres, grilles, hyperparamètres : ``JSONB`` en PostgreSQL, ``JSON`` (texte) en SQLite ;
-- horodatages : ``timestamptz`` en UTC.
+- identifiers: UUID strings (native ``uuid`` in PostgreSQL, ``VARCHAR(36)`` in SQLite);
+- parameters, grids, hyperparameters: ``JSONB`` in PostgreSQL, ``JSON`` (text) in SQLite;
+- timestamps: ``timestamptz`` in UTC.
 
-Les énumérations (statut, type de fichier, partition, ordonnanceur) sont des contraintes ``CHECK`` portant
-les mêmes noms que dans ``schema.sql`` ; les valeurs par défaut existent aussi côté serveur (``DEFAULT`` SQL :
-une insertion en SQL brut, depuis ``psql`` ou un autre outil, les obtient) ; un test vérifie que les deux
-définitions restent identiques (colonnes, types, ``DEFAULT``, contraintes, index, vue).
+Enumerations (status, file kind, split, scheduler) are ``CHECK`` constraints bearing
+the same names as in ``schema.sql``; default values also exist server-side (SQL ``DEFAULT``:
+a raw SQL insert, from ``psql`` or another tool, gets them); a test checks that the two
+definitions stay identical (columns, types, ``DEFAULT``, constraints, indexes, view).
 
-Évolutions du schéma : ``create_all`` ne modifie jamais une table existante. Tant que le schéma est en
-version 1.0, toute modification se fait à l'identique dans ce fichier et dans ``infra/db/schema.sql``.
-Dès qu'une base de production contient des résultats à garder, les changements passeront par des
-migrations Alembic (``alembic init infra/db/migrations`` ; ``target_metadata = Base.metadata`` ;
-``alembic revision --autogenerate`` relu à la main, puis ``alembic upgrade head`` sur PostgreSQL et sur
-chaque catalogue SQLite de cluster) : ne jamais modifier une table de production à la main.
+Schema evolution: ``create_all`` never modifies an existing table. As long as the schema is at
+version 1.0, every change is made identically in this file and in ``infra/db/schema.sql``.
+Once a production database holds results worth keeping, changes will go through
+Alembic migrations (``alembic init infra/db/migrations``; ``target_metadata = Base.metadata``;
+``alembic revision --autogenerate`` reviewed by hand, then ``alembic upgrade head`` on PostgreSQL and on
+each cluster SQLite catalog): never modify a production table by hand.
 """
 
 from __future__ import annotations
@@ -79,15 +79,15 @@ SPLITS = ("train", "val", "test")
 SCHEDULERS = ("local", "docker", "slurm")
 JOB_STATUSES = ("queued", "submitted", "running", "done", "failed", "cancelled")
 
-#: JSONB en PostgreSQL (indexable, égalité structurelle), JSON ailleurs.
+#: JSONB in PostgreSQL (indexable, structural equality), JSON elsewhere.
 JSONType = JSON().with_variant(JSONB(), "postgresql")
-#: UUID natif en PostgreSQL, chaîne de 36 caractères ailleurs ; toujours une ``str`` côté Python.
+#: Native UUID in PostgreSQL, 36-character string elsewhere; always a ``str`` on the Python side.
 UUIDStr = String(36).with_variant(PG_UUID(as_uuid=False), "postgresql")
 TZDateTime = DateTime(timezone=True)
 
 
 class _GenRandomUUID(FunctionElement[str]):
-    """Défaut serveur d'un identifiant : ``gen_random_uuid()`` (PostgreSQL ≥ 13), UUID v4 textuel ailleurs."""
+    """Server default of an identifier: ``gen_random_uuid()`` (PostgreSQL ≥ 13), textual UUID v4 elsewhere."""
 
     type = String(36)
     inherit_cache = True
@@ -101,7 +101,7 @@ def _gen_random_uuid_pg(element: Any, compiler: Any, **kw: Any) -> str:
 
 @compiles(_GenRandomUUID)
 def _gen_random_uuid_default(element: Any, compiler: Any, **kw: Any) -> str:
-    # SQLite : 8-4-4-4-12 chiffres hexadécimaux, version 4 et variante RFC 4122 (8, 9, a ou b).
+    # SQLite: 8-4-4-4-12 hexadecimal digits, version 4 and RFC 4122 variant (8, 9, a or b).
     return (
         "(lower(hex(randomblob(4))) || '-' || lower(hex(randomblob(2))) || '-4' || "
         "substr(lower(hex(randomblob(2))), 2) || '-' || substr('89ab', 1 + (abs(random()) % 4), 1) || "
@@ -109,7 +109,7 @@ def _gen_random_uuid_default(element: Any, compiler: Any, **kw: Any) -> str:
     )
 
 
-#: Valeurs par défaut côté serveur (identiques à ``DEFAULT`` dans ``infra/db/schema.sql``).
+#: Server-side default values (identical to ``DEFAULT`` in ``infra/db/schema.sql``).
 SD_UUID = _GenRandomUUID()
 SD_NOW = func.now()
 SD_EMPTY = text("''")
@@ -118,12 +118,12 @@ SD_JSON = text("'{}'")
 
 
 def new_uuid() -> str:
-    """Nouvel identifiant (UUID v4, chaîne)."""
+    """New identifier (UUID v4, string)."""
     return str(_uuid.uuid4())
 
 
 def utcnow() -> _dt.datetime:
-    """Instant courant en UTC (avec fuseau)."""
+    """Current instant in UTC (timezone-aware)."""
     return _dt.datetime.now(_dt.UTC)
 
 
@@ -132,13 +132,13 @@ def _in(column: str, values: tuple[str, ...], name: str) -> CheckConstraint:
 
 
 class Base(DeclarativeBase):
-    """Base déclarative du catalogue."""
+    """Declarative base of the catalog."""
 
     type_annotation_map = {dict[str, Any]: JSONType}
 
 
 class Campaign(Base):
-    """Campagne : ensemble de simulations décrit par un fichier YAML (``infra/configs/*.yaml``)."""
+    """Campaign: a set of simulations described by a YAML file (``infra/configs/*.yaml``)."""
 
     __tablename__ = "campaign"
     id: Mapped[str] = mapped_column(UUIDStr, primary_key=True, default=new_uuid, server_default=SD_UUID)
@@ -153,7 +153,7 @@ class Campaign(Base):
 
 
 class Simulation(Base):
-    """Simulation : un code, un jeu de paramètres, une grille ; produit un ou plusieurs fichiers."""
+    """Simulation: a code, a parameter set, a grid; produces one or more files."""
 
     __tablename__ = "simulation"
     __table_args__ = (
@@ -197,7 +197,7 @@ class Simulation(Base):
 
 
 class File(Base):
-    """Fichier produit par une simulation (MFF, points de contrôle, journaux), repéré par son URI."""
+    """File produced by a simulation (MFF, checkpoints, logs), located by its URI."""
 
     __tablename__ = "file"
     __table_args__ = (
@@ -228,7 +228,7 @@ class File(Base):
 
 
 class Diagnostic(Base):
-    """Point d'une série temporelle légère (énergies, dissipation…) pour les requêtes rapides."""
+    """Point of a lightweight time series (energies, dissipation…) for fast queries."""
 
     __tablename__ = "diagnostic"
     simulation_id: Mapped[str] = mapped_column(
@@ -240,7 +240,7 @@ class Diagnostic(Base):
 
 
 class Dataset(Base):
-    """Jeu de données versionné : liste figée de fichiers répartis en train / val / test."""
+    """Versioned dataset: frozen list of files split into train / val / test."""
 
     __tablename__ = "dataset"
     __table_args__ = (UniqueConstraint("name", "version", name="uq_dataset_name_version"),)
@@ -256,7 +256,7 @@ class Dataset(Base):
 
 
 class DatasetMember(Base):
-    """Appartenance d'un fichier à un jeu de données, avec sa partition."""
+    """Membership of a file in a dataset, with its split."""
 
     __tablename__ = "dataset_member"
     __table_args__ = (
@@ -273,7 +273,7 @@ class DatasetMember(Base):
 
 
 class Model(Base):
-    """Modèle génératif entraîné (lien vers l'exécution MLflow et le point de contrôle)."""
+    """Trained generative model (link to the MLflow run and the checkpoint)."""
 
     __tablename__ = "model"
     __table_args__ = (Index("ix_model_name", "name"), Index("ix_model_dataset", "dataset_id"))
@@ -300,7 +300,7 @@ class Model(Base):
 
 
 class Evaluation(Base):
-    """Une mesure d'une métrique pour un modèle, à paramètres physiques et graine donnés."""
+    """One measurement of a metric for a model, at given physical parameters and seed."""
 
     __tablename__ = "evaluation"
     __table_args__ = (
@@ -323,7 +323,7 @@ class Evaluation(Base):
 
 
 class Job(Base):
-    """Tâche soumise à un ordonnanceur (local, docker, slurm) pour une simulation ou un modèle."""
+    """Task submitted to a scheduler (local, docker, slurm) for a simulation or a model."""
 
     __tablename__ = "job"
     __table_args__ = (
@@ -357,9 +357,9 @@ class Job(Base):
 
 
 # ---------------------------------------------------------------------------------------------
-# Vue v_eval_summary : moyenne et écart-type par modèle, métrique et paramètres.
-# Même texte que dans infra/db/schema.sql. En SQLite, stddev_samp est une fonction d'agrégat
-# enregistrée par milady.catalog.api à chaque connexion.
+# View v_eval_summary: mean and standard deviation per model, metric and parameters.
+# Same text as in infra/db/schema.sql. In SQLite, stddev_samp is an aggregate function
+# registered by milady.catalog.api on each connection.
 # ---------------------------------------------------------------------------------------------
 VIEW_EVAL_SUMMARY_SQL = """
 CREATE VIEW v_eval_summary AS
@@ -379,7 +379,7 @@ JOIN model m ON m.id = e.model_id
 GROUP BY e.model_id, m.name, m.constraint_mechanism, e.metric, e.parameters
 """.strip()
 
-#: Description typée de la vue (non créée par ``create_all`` : métadonnées séparées).
+#: Typed description of the view (not created by ``create_all``: separate metadata).
 view_metadata = MetaData()
 v_eval_summary = Table(
     "v_eval_summary",

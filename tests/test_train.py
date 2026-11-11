@@ -1,6 +1,6 @@
-"""Tests de l'entraînement 3D (milady.train) : représentation latente, contraintes dures, équivariance, une
-époque sur des champs 8³ synthétiques, échantillonnage, catalogue, CLI d'évaluation et torchrun
-(2 processus CPU).
+"""Tests of the 3D training (milady.train): latent representation, hard constraints, equivariance, one
+epoch on synthetic 8³ fields, sampling, catalog, evaluation CLI and torchrun
+(2 CPU processes).
 """
 
 from __future__ import annotations
@@ -31,7 +31,7 @@ def _threads() -> None:
 
 
 # ---------------------------------------------------------------------------------------------
-# Données synthétiques : 2 fichiers MFF (Re = 20, 40) de 1 trajectoire × 4 instantanés 8³ = 8 champs
+# Synthetic data: 2 MFF files (Re = 20, 40) of 1 trajectory × 4 snapshots 8³ = 8 fields
 # ---------------------------------------------------------------------------------------------
 def _write_synthetic(tmp: Path, kmax: float = 3.0) -> list[str]:
     space = D.FourierPotentialSpace(kmax)
@@ -96,11 +96,11 @@ def _small_cfg(tmp: Path, **over: object) -> dict:
 
 
 # ---------------------------------------------------------------------------------------------
-# Représentation latente
+# Latent representation
 # ---------------------------------------------------------------------------------------------
 def test_modes_and_basis() -> None:
     m = D.half_ball_modes(4)
-    assert len(m) == 128 and len({tuple(v) for v in m} | {tuple(-v) for v in m}) == 256  # aucun doublon ±m
+    assert len(m) == 128 and len({tuple(v) for v in m} | {tuple(-v) for v in m}) == 256  # no ±m duplicate
     assert np.all(np.linalg.norm(m, axis=1) <= 4) and np.all(np.diff(np.sum(m**2, 1)) >= 0)
     k = m.astype(float)
     e1, e2 = D.craya_basis(k)
@@ -110,7 +110,7 @@ def test_modes_and_basis() -> None:
 
 
 def test_decode_divergence_free_float32() -> None:
-    """Décodage u = ∇×A_u, B = ∇×A_B : divergence relative < 1e-6 en float32, jauge de Coulomb exacte."""
+    """Decoding u = ∇×A_u, B = ∇×A_B: relative divergence < 1e-6 in float32, exact Coulomb gauge."""
     space = D.FourierPotentialSpace(4)
     x = torch.randn(5, space.n_modes, space.n_channels) * 3.0
     a = space.potential_hat(x)
@@ -130,7 +130,7 @@ def test_encode_projects_and_roundtrips() -> None:
     f = {k: v.double() for k, v in space.decode(x.double(), 10).items()}
     x2 = space.encode(f)
     assert torch.allclose(x2, x, atol=1e-5)
-    # un gradient pur a un potentiel vecteur nul (projection de Leray implicite)
+    # a pure gradient has a zero vector potential (implicit Leray projection)
     X, Y, Z = np.meshgrid(*(2 * np.pi * np.arange(10) / 10,) * 3, indexing="ij")
     grad = np.stack([np.cos(X) * np.cos(Y), -np.sin(X) * np.sin(Y), 0 * Z], -1)[None]
     lat = space.encode({"velocity": grad, "magnetic_field": grad})
@@ -140,7 +140,7 @@ def test_encode_projects_and_roundtrips() -> None:
 
 
 def test_latent_budget_matches_grid_metrics() -> None:
-    """Termes de bilan différentiables (latent, Parseval + grille sans repliement) = métriques sur grille."""
+    """Differentiable budget terms (latent, Parseval + alias-free grid) = metrics on the grid."""
     space = D.FourierPotentialSpace(3)
     x = torch.randn(3, space.n_modes, space.n_channels) / (1 + space.shell.float()[None, :, None]) ** 2
     params = {
@@ -194,8 +194,8 @@ def test_physical_parameters_at_new_condition() -> None:
         and p["Rm"] == pytest.approx(105.0)
         and p["eta"] == pytest.approx(0.5 / 105)
     )
-    assert p["forcing_amp"] == pytest.approx(p["nu"] * 3 * 4)  # ν |k|², |k|² = 3 k_f² pour TG
-    # un seul paramètre conditionnant : l'autre groupe vient des valeurs fixes (Pm prioritaire)
+    assert p["forcing_amp"] == pytest.approx(p["nu"] * 3 * 4)  # ν |k|², |k|² = 3 k_f² for TG
+    # a single conditioning parameter: the other group comes from the fixed values (Pm takes priority)
     q = D.physical_parameters({"Re": 50.0}, {**fixed, "Pm": 2.0, "Rm": 999.0, "nu": 1.0})
     assert q["Rm"] == pytest.approx(100.0) and q["nu"] == pytest.approx(0.01)
     assert D.param_value({"eta": 0.1, "U_ref": 1.0, "L_ref": 1.0}, "Rm") == pytest.approx(10.0)
@@ -205,7 +205,7 @@ def test_physical_parameters_at_new_condition() -> None:
 
 
 # ---------------------------------------------------------------------------------------------
-# Réseaux : équivariance exacte
+# Networks: exact equivariance
 # ---------------------------------------------------------------------------------------------
 @pytest.mark.parametrize("arch", ["mlp", "transformer"])
 def test_equivariance_exact(arch: str) -> None:
@@ -226,15 +226,15 @@ def test_equivariance_exact(arch: str) -> None:
     }
     field = fm3d.build_field(cfg, space, 2)
     assert isinstance(field, fm3d.SignSymmetrized)
-    for p in field.parameters():  # poids non nuls (l'initialisation adaLN-Zero rendrait le test trivial)
+    for p in field.parameters():  # non-zero weights (adaLN-Zero initialization would make the test trivial)
         torch.nn.init.normal_(p, std=0.2)
     s = space.sign
-    assert s[:4].eq(1).all() and s[4:].eq(-1).all()  # A_u inchangé, A_B → −A_B
+    assert s[:4].eq(1).all() and s[4:].eq(-1).all()  # A_u unchanged, A_B → −A_B
     x, t, c = torch.randn(6, space.n_modes, space.n_channels), torch.rand(6), torch.rand(6, 2)
     v, vs = field(x, t, c), field(s * x, t, c)
     assert v.abs().max() > 0
-    assert torch.equal(vs, s * v)  # égalité exacte, bit à bit
-    # la loi générée est symétrique : z ↦ S z donne S x exactement
+    assert torch.equal(vs, s * v)  # exact equality, bit for bit
+    # the generated distribution is symmetric: z ↦ S z gives S x exactly
     z = torch.randn(4, space.n_modes, space.n_channels)
     with torch.no_grad():
         a = fm3d.heun_sample(field, z, c[:4], steps=3)
@@ -277,21 +277,21 @@ def test_stationarity_loss_gradient() -> None:
         st.backward()
         grads = [p.grad for p in field.parameters() if p.grad is not None]
         assert math.isfinite(float(st.detach())) and grads and all(torch.isfinite(g).all() for g in grads)
-    with pytest.raises(ValueError):  # bilan total sans u généré
+    with pytest.raises(ValueError):  # total budget without generated u
         fm3d.FlowMatchingLoss(
             field, D.FourierPotentialSpace(3, ("magnetic_field",)), [spec], fixed, {"enabled": True}
         )
 
 
 # ---------------------------------------------------------------------------------------------
-# Entraînement d'une époque, échantillonnage, catalogue, évaluation
+# Training for one epoch, sampling, catalog, evaluation
 # ---------------------------------------------------------------------------------------------
 def test_train_one_epoch_sample_and_catalog(mff_files: list[str], tmp_path: Path) -> None:
     from milady.catalog.api import Catalog
 
     cfg = _small_cfg(tmp_path)
     res = fm3d.train(cfg, files=mff_files)
-    assert res["finished"] and res["steps"] == 2 and res["total"] == 2  # 8 champs, lots de 4
+    assert res["finished"] and res["steps"] == 2 and res["total"] == 2  # 8 fields, batches of 4
     assert math.isfinite(res["metrics"]["loss"])
     ckpt = Path(res["checkpoint_uri"])
     assert ckpt.name == "final.pt" and ckpt.exists() and (ckpt.parent / "last.pt").exists()
@@ -314,9 +314,9 @@ def test_train_one_epoch_sample_and_catalog(mff_files: list[str], tmp_path: Path
     for f in out.values():
         assert np.isfinite(f).all() and M.divergence_relative(f) < 1e-6
     again = model.sample_fields({"Re": 28.0}, 3, seed=1, steps=4, grid=N)
-    np.testing.assert_array_equal(again["magnetic_field"], out["magnetic_field"])  # graine reproductible
+    np.testing.assert_array_equal(again["magnetic_field"], out["magnetic_field"])  # reproducible seed
 
-    # CLI d'évaluation sur le point de contrôle (sans catalogue), rapport JSON
+    # Evaluation CLI on the checkpoint (without catalog), JSON report
     rep = tmp_path / "rep.json"
     assert (
         M.main(
@@ -344,7 +344,7 @@ def test_train_one_epoch_sample_and_catalog(mff_files: list[str], tmp_path: Path
         and "dist_energie" not in report["results"][0]["metrics"]
     )
 
-    # reprise : même run, 2 itérations de plus
+    # resumption: same run, 2 more iterations
     cfg2 = _small_cfg(tmp_path, train__iters=4)
     cfg2["eval"]["after_train"] = False
     res2 = fm3d.train(cfg2, files=mff_files, run_name=res["run_name"])
@@ -367,7 +367,7 @@ def test_train_transformer_with_stationarity(mff_files: list[str], tmp_path: Pat
 
 
 def test_finetune_anchor_limits_drift(mff_files: list[str], tmp_path: Path) -> None:
-    """Réglage fin par perte de stationnarité : l'ancrage garde les poids près du modèle de départ."""
+    """Fine-tuning by stationarity loss: the anchoring keeps the weights close to the starting model."""
     base_cfg = _small_cfg(tmp_path / "base", train__iters=2)
     base_cfg["catalog"]["enabled"] = False
     base_cfg["eval"]["after_train"] = False
@@ -393,7 +393,7 @@ def test_smoke_step() -> None:
 
 
 def test_torchrun_two_cpu_processes(mff_files: list[str], tmp_path: Path) -> None:
-    """``torchrun`` à 2 processus CPU (gloo, DDP) : une itération, point de contrôle final du rang 0."""
+    """``torchrun`` with 2 CPU processes (gloo, DDP): one iteration, final checkpoint of rank 0."""
     cfg = tmp_path / "cfg.yaml"
     cfg.write_text(
         "name: ddp_test\n"
@@ -439,6 +439,6 @@ def test_torchrun_two_cpu_processes(mff_files: list[str], tmp_path: Path) -> Non
     assert proc.returncode == 0, proc.stdout[-2000:] + proc.stderr[-4000:]
     result = json.loads([line for line in proc.stdout.splitlines() if line.startswith("{")][-1])
     assert result["finished"] and result["steps"] == 1
-    assert "2 processus" in proc.stderr
+    assert "2 processes" in proc.stderr
     payload = fm3d.load_checkpoint(str(tmp_path / "models" / "ddp_test" / "ddp" / "final.pt"))
     assert payload["meta"]["world_size"] == 2 and payload["step"] == 1

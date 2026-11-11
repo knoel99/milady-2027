@@ -1,12 +1,12 @@
-"""Évaluation des modèles génératifs MilaDy : métriques physiques et distances entre lois.
+"""Evaluation of MilaDy generative models: physical metrics and distances between distributions.
 
-``milady.eval.metrics`` : divergence relative, spectres E_u(k) et E_B(k) en couronnes, hélicités
-cinétique / magnétique / croisée, bilans d'énergie (injection, dissipations, production magnétique) et
-leurs résidus en loi, distance d'énergie (Székely), Wasserstein tranché ; évaluation d'un modèle entraîné
-avec enregistrement au catalogue.
+``milady.eval.metrics``: relative divergence, E_u(k) and E_B(k) spectra in shells, kinetic /
+magnetic / cross helicities, energy budgets (injection, dissipations, magnetic production) and
+their residuals in distribution, energy distance (Székely), sliced Wasserstein; evaluation of a trained model
+with registration in the catalog.
 
-Ligne de commande : ``python -m milady.eval --config infra/configs/train_fm3d.yaml [--model <uuid>]``
-(équivalent à ``python -m milady.eval.metrics``).
+Command line: ``python -m milady.eval --config infra/configs/train_fm3d.yaml [--model <uuid>]``
+(equivalent to ``python -m milady.eval.metrics``).
 """
 
 from __future__ import annotations
