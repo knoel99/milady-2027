@@ -56,6 +56,7 @@ def e1():
         print(f"| {x['Gamma']} | {f(x['simulation_rate'])} | {f(x['rice_rate_ref'])} | {f(x['rice_rate_model'])} | "
               f"{f(x.get('rice_rate_model_F'))} | {f(x['bridge_ref'])} | {f(x['bridge_model'])} | {f(x.get('bridge_model_F'))} |")
     e1_detail(r)
+    e1_seeds(r)
     print(f"\nTotal duration: {r['total_duration_s']:.0f} s.\n")
 
 
@@ -141,6 +142,50 @@ def e1_detail(r):
             print(f"| {v} | {s} | {t:.0f} | {f(d.get('generation_time_s_per_1000'), 2)} |")
 
 
+def spread(values):
+    """mean ± standard deviation (ddof = 1) [min, max] of a list of per-seed values."""
+    n = len(values)
+    m = sum(values) / n
+    sd = (sum((v - m) ** 2 for v in values) / (n - 1)) ** 0.5 if n > 1 else 0.0
+    return f"{f(m)} ± {f(sd)} [{f(min(values))}, {f(max(values))}]"
+
+
+def e1_seeds(r):
+    """Dispersion across seeds of the means over the test Γ (runs that store per-seed values)."""
+    seeds = r["config"]["seeds"]
+    ev = r["evaluation"]
+    if len(seeds) < 2 or "seed_values" not in ev["A_reference"]["test"][0]:
+        return
+    keys = [("energy", "energy dist."), ("sw1", "SW1"), ("liou_test_mean", "Liouville deg 3"), ("asym", "|P(D>0)−½|")]
+    print(f"\n### Across seeds: mean over the test Γ, then mean ± sd [min, max] over {len(seeds)} seeds {seeds}\n")
+    print("| variant | " + " | ".join(k[1] for k in keys) + " |")
+    print("|---|" + "---|" * len(keys))
+    for v, d in ev.items():
+        rows = d["test"]
+        cells = [spread([sum(row["seed_values"][k][i] for row in rows) / len(rows) for i in range(len(seeds))]) for k, _ in keys]
+        print(f"| {v} | " + " | ".join(cells) + " |")
+
+
+def e2_seeds():
+    """E2 runs with several seeds: e2_mhd2d.json (seed 0) and e2_mhd2d_s<k>.json."""
+    runs = [R / "e2_mhd2d.json"] + sorted(R.glob("e2_mhd2d_s*.json"), key=lambda p: int(p.stem.split("_s")[-1]))
+    runs = [json.loads(p.read_text()) for p in runs if p.is_file()]
+    if len(runs) < 2:
+        return
+    seeds = [x["config"].get("seed", 0) for x in runs]
+    keys = [("energy_distance_features", "energy dist."), ("div_rel_u", "rel. div. u"), ("balance_residual_energy", "energy residual"),
+            ("std_diss_rel", "σ(D)/σ_ref")]
+    print(f"\n### Across seeds: means over the test η, mean ± sd [min, max] over {len(runs)} seeds {seeds}\n")
+    print("| variant | " + " | ".join(k[1] for k in keys) + " |")
+    print("|---|" + "---|" * len(keys))
+    for v in runs[0]["summary"]:
+        if v == "in_law":
+            continue
+        print(f"| {v} | " + " | ".join(spread([x["summary"][v]["test"][k] for x in runs]) for k, _ in keys) + " |")
+    for m in ("base", "tilting", "rescaling"):
+        print(f"| in law: {m} | " + " | ".join(spread([x["summary"]["in_law"][m]["test"][k] for x in runs]) for k, _ in keys) + " |")
+
+
 def e2():
     p = R / "e2_mhd2d.json"
     if not p.is_file():
@@ -170,6 +215,7 @@ def e2():
             print(f"| in law: {m} (V4, half b) | " + " | ".join(f(res['in_law'][m][split][k[0]]) for k in keys) + " |")
     print(f"\nMean ESS/N of the tilting: {f(res['in_law']['ess_frac_b_mean'])}")
     e2_detail(r)
+    e2_seeds()
     print("\nTimes: " + json.dumps({k: {kk: round(vv, 4) if isinstance(vv, float) else vv for kk, vv in v.items()}
                                      for k, v in r["variants"].items()}))
     print(f"\nTotal duration: {r['total_duration_s']:.0f} s.\n")

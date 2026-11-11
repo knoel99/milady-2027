@@ -12,5 +12,45 @@
     "results": "keys in experiments/results/digest.md",
     "commit": "commit that produced the results"
   },
-  "hypotheses": []
+  "hypotheses": [
+    {
+      "id": "H1",
+      "statement": "In E1, the equivariant velocity field (C_equivariant) gives a lower energy distance to the reference law on the test Γ than the baseline (A_reference).",
+      "origin": "E1 published run, 2 seeds: 0.00257 vs 0.0118 (digest, test Γ); review §2.3 (seed counts) and CLAUDE.md rule 4",
+      "refutation_criterion": "Refuted if the mean paired difference ED(A) − ED(C) is not larger than 2 SE, or if C is below A in fewer than 4 of the 5 seeds, or if ED(A) − ED(C) is smaller than the Monte Carlo floor of the energy distance (digest: mc_noise_floors.n_gen.energy).",
+      "protocol": "E1, test Γ (10 values), energy distance on standardized (Q, D, V), n = 3000 per set, V statistic. Five model seeds 0-4 (experiments/run_stage.sh); for each seed, mean of the metric over the test values of the parameter, then the paired difference between the two variants. SE = standard deviation of the 5 differences / sqrt(5).",
+      "script": "experiments/e1_gissinger.py --seeds 0 1 2 3 4",
+      "cost_estimate": "E1 for 5 seeds: one process per seed, about 1 h each at 2 threads (estimate), no GPU",
+      "status": "proposed",
+      "verdict": "",
+      "results": "",
+      "commit": ""
+    },
+    {
+      "id": "H2",
+      "statement": "In E1, fine-tuning with the stationarity loss (F_stationarity_C) lowers the residual of the held-out degree-3 Liouville identities on the test Γ compared with the same fine-tuning without the loss (F0_control_C), without degrading the energy distance by more than 20 %.",
+      "origin": "E1 published run, 2 seeds: Liouville deg 3, 0.0113 vs 0.0224 (digest, test Γ); report claims on stationarity losses",
+      "refutation_criterion": "Refuted if the mean paired difference Liou3(F0) − Liou3(F) is not larger than 2 SE, or if F is below F0 in fewer than 4 of the 5 seeds, or if the mean energy distance of F exceeds 1.2 times that of F0.",
+      "protocol": "E1, test Γ, liouville_residual with MONO_TEST (degree 3, not used in training) and energy distance as in H1. Five model seeds 0-4 (experiments/run_stage.sh); for each seed, mean of the metric over the test values of the parameter, then the paired difference between the two variants. SE = standard deviation of the 5 differences / sqrt(5).",
+      "script": "experiments/e1_gissinger.py --seeds 0 1 2 3 4",
+      "cost_estimate": "included in H1 (same run)",
+      "status": "proposed",
+      "verdict": "",
+      "results": "",
+      "commit": ""
+    },
+    {
+      "id": "H3",
+      "statement": "In E2, the stationarity loss in law (V5_potentials_stat) lowers the energy distance of the generated law on the test η compared with the same fine-tuning without the loss (V5_control).",
+      "origin": "E2 published run, 1 seed: 0.699 vs 2.52 (digest, test η); review §2.3 (one seed) and §2.7 (gain concentrated at large η)",
+      "refutation_criterion": "Refuted if the mean paired difference ED(V5_control) − ED(V5_potentials_stat) is not larger than 2 SE, or if V5 is below its control in fewer than 4 of the 5 seeds, or if the gain comes from fewer than 3 of the 5 test η (per-η table of the digest, seed mean).",
+      "protocol": "E2, test η (5 values), energy distance of the standardized physical features, n = 1000. Training data identical for all seeds; seeds change the networks, the generation and the tilting. Five model seeds 0-4 (experiments/run_stage.sh); for each seed, mean of the metric over the test values of the parameter, then the paired difference between the two variants. SE = standard deviation of the 5 differences / sqrt(5).",
+      "script": "experiments/e2_mhd2d.py --seed k, k = 0..4",
+      "cost_estimate": "about 70 min per seed at 2 threads (published run: 4023 s), 5 processes, no GPU",
+      "status": "proposed",
+      "verdict": "",
+      "results": "",
+      "commit": ""
+    }
+  ]
 }

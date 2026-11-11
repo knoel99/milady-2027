@@ -64,15 +64,15 @@ The `experiments/` folder of the repository contains everything needed to reprod
 ## Reproducing the results {#reproduire}
 
 ```bash
-cd experiences
+cd experiments
 python3 e3_abc.py                 # E3, about 23 min
-python3 e2_data.py             # E2, data: about 30 min
-python3 e2_mhd2d.py               # E2, models: about 67 min
-python3 e1_gissinger.py           # E1, about 2 to 3 h (resumable)
+python3 e2_data.py                # E2, data: about 30 min
+python3 e2_mhd2d.py               # E2, models: about 67 min (--seed k for another seed)
+python3 e1_gissinger.py           # E1, about 2 to 3 h (resumable; --seeds 0 1 ... to choose the seeds)
 python3 figures.py && python3 digest.py > results/digest.md
 ```
 
-Each script accepts `--quick` for a reduced version (from a few minutes to about twenty minutes for E1), useful for checking the installation. The seeds are fixed in the code (0 and 1 for the two repetitions of E1). The durations given were measured on the machine described above, partly while other computations were running.
+Each script accepts `--quick` for a reduced version (from a few minutes to about twenty minutes for E1), useful for checking the installation. The published runs use seeds 0 and 1 for E1 and seed 0 for E2. `./run_stage.sh --seeds "0 1 2 3 4"` runs the three experiments with several seeds, one process per seed, then the figures and the digest, which then reports the spread across seeds. The durations given were measured on the machine described above, partly while other computations were running.
 
 ## E1 — dipole reversals {#e1}
 

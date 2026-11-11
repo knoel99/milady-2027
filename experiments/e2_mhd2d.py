@@ -15,8 +15,9 @@ Variants (same network, same budget):
 "In law" part on V4: exponential tilting (3 stationarity identities) versus
 rescaling of each sample to the energy balance.
 
-Usage: python3 e2_mhd2d.py [--quick]  (data: e2_data.py, directory $E2_DATA)
-Output: results/e2_mhd2d[_quick].json
+Usage: python3 e2_mhd2d.py [--quick] [--seed k]  (data: e2_data.py, directory $E2_DATA)
+Output: results/e2_mhd2d[_quick][_s<k>].json (no suffix for seed 0); samples results/e2_samples[_quick].npz (seed 0)
+The training data are the same for every seed: only the networks, the generation and the tilting change.
 """
 from __future__ import annotations
 
@@ -32,7 +33,7 @@ import torch
 
 from common import (MLPField, energy_distance, exp_tilt, fm_loss, heun_sample, sample_ode, save_json, seed_all,
                     systematic_resample, train)
-from e2_data import ALPHA, EPS, ETA_TEST, ETA_TRAIN, KF, N, NU
+from e2_data import ALPHA, EPS, ETA_TEST, ETA_TRAIN, KF, N, NU, data_dir
 from mhd2d import MHD2D
 
 DATA = Path(os.environ.get("E2_DATA", Path(__file__).resolve().parent / "data_e2"))
@@ -62,10 +63,10 @@ def mean_sq(fh):
     return NORM * np.sum(np.abs(fh) ** 2, -1)
 
 
-def load(split, etas):
+def load(split, etas, root=DATA):
     out = {}
     for eta in etas:
-        d = np.load(DATA / f"eta_{eta:.6f}_{split}.npz")
+        d = np.load(root / f"eta_{eta:.6f}_{split}.npz")
         w, a = d["w"][:, MASK].astype(np.complex128), d["a"][:, MASK].astype(np.complex128)
         out[eta] = {"psi": w / k2, "a": a, "inj": float(d["inj_u"] + d["inj_b"])}
     return out
@@ -116,10 +117,11 @@ def features(dg):
 
 
 # --- model ------------------------------------------------------------------------------
-def main(quick=False):
+def main(quick=False, seed=0):
     torch.set_num_threads(2)
     t_start = time.time()
-    tr, ref = load("train", ETA_TRAIN), load("ref", ETA_TRAIN + ETA_TEST)
+    root = data_dir(quick)
+    tr, ref = load("train", ETA_TRAIN, root), load("ref", ETA_TRAIN + ETA_TEST, root)
     solver = MHD2D(n=N, nu=NU, eta=ETA_TRAIN[0], alpha=ALPHA, kf=KF, eps_u=EPS, eps_b=EPS, batch=8, seed=0)
     inj_u, inj_b, inj_a2 = solver.injection_rates_all()
     inj = inj_u + inj_b
@@ -193,7 +195,7 @@ def main(quick=False):
                           "n_train_per_eta": int(len(tr[ETA_TRAIN[0]]["psi"]))}, "variants": {}}
     models, gens = {}, {}
 
-    def generate(model, eta, kind, noise=None, project=None, n=n_gen, seed=0):
+    def generate(model, eta, kind, noise=None, project=None, n=n_gen):
         torch.manual_seed(seed)
         dim = Xp.shape[1] if kind == "pot" else Xc.shape[1]
         z = sample_ode(model, torch.full((n,), float(cn(eta))), (n, dim), steps=50, noise_fn=noise, project=project)
@@ -208,7 +210,7 @@ def main(quick=False):
         if "reuse" in cfg:
             model, tsec = models[cfg["reuse"]], 0.0
         else:
-            seed_all(0)
+            seed_all(seed)
             model = MLPField(cfg["X"].shape[1], width=width, depth=4)
             hist, tsec = train(model, batcher(cfg["X"]), iters, lr=1e-3, log_every=max(iters // 6, 1),
                                extra=cfg["extra"], noise_fn=cfg["noise"], name=name)
@@ -241,7 +243,7 @@ def main(quick=False):
 
     ft_iters = 50 if quick else 600
     for beta, vname in ((50.0, "V5_potentials_stat"), (0.0, "V5_control")):
-        seed_all(1)
+        seed_all(1 + seed)
         model = copy.deepcopy(models["V4_potentials"]).train()
         opt = torch.optim.Adam(model.parameters(), lr=2e-4)
         bt = batcher(Xp)
@@ -320,7 +322,7 @@ def main(quick=False):
         w, lam, info = exp_tilt(g[:half], reg=1.0)
         zb = g[half:] @ lam
         wb = np.exp(zb - zb.max()); wb /= wb.sum()
-        tilted = c[half:][systematic_resample(wb, len(c) - half, seed=1)]
+        tilted = c[half:][systematic_resample(wb, len(c) - half, seed=1 + seed)]
         # rescaling: multiply the scales |k| > 3 by s so that D(x) = ε_inj exactly
         big = (np.sqrt(k2) > 3)
         cl, cs = c * (~big), c * big
@@ -344,12 +346,15 @@ def main(quick=False):
     summary["in_law"]["ess_frac_b_mean"] = float(np.mean([v["ess_frac_b"] for v in law.values()]))
     results["summary"] = summary
     results["total_duration_s"] = time.time() - t_start
-    save_json(results, "e2_mhd2d_quick.json" if quick else "e2_mhd2d.json")
-    # samples for figures (middle η)
+    results["config"]["seed"] = seed
+    tag = ("_quick" if quick else "") + (f"_s{seed}" if seed else "")
+    save_json(results, f"e2_mhd2d{tag}.json")
+    # samples for figures (middle η), seed 0 only
     e_mid = ETA_TEST[2]
-    np.savez_compressed(Path(__file__).resolve().parent / "results" / ("e2_samples_quick.npz" if quick else "e2_samples.npz"),
-                        **{f"{n}": gens[(n, e_mid)][:8] for n in list(variants) + ["V5_potentials_stat"]},
-                        ref=comps_from_pot(ref[e_mid]["psi"][:8], ref[e_mid]["a"][:8]), kx=kx, ky=ky, eta=e_mid)
+    if seed == 0:
+        np.savez_compressed(Path(__file__).resolve().parent / "results" / ("e2_samples_quick.npz" if quick else "e2_samples.npz"),
+                            **{f"{n}": gens[(n, e_mid)][:8] for n in list(variants) + ["V5_potentials_stat"]},
+                            ref=comps_from_pot(ref[e_mid]["psi"][:8], ref[e_mid]["a"][:8]), kx=kx, ky=ky, eta=e_mid)
     for name, v in summary.items():
         print(name, json.dumps(v)[:600], flush=True)
     print(f"total duration {time.time() - t_start:.0f} s")
@@ -358,4 +363,7 @@ def main(quick=False):
 if __name__ == "__main__":
     ap = argparse.ArgumentParser()
     ap.add_argument("--quick", action="store_true")
-    main(ap.parse_args().quick)
+    ap.add_argument("--seed", type=int, default=0,
+                    help="seed of training, fine-tuning, generation and tilting (0 = the published run)")
+    a = ap.parse_args()
+    main(a.quick, a.seed)

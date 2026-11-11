@@ -8,6 +8,7 @@ index_files/
 .quarto/
 site/figures/**/node_modules/
 experiments/results/cache_e1/
+experiments/results/logs/
 /data/
 .env
 infra/docker/.env
