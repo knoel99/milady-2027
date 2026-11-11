@@ -34,7 +34,7 @@ src/milady/                  installable Python package (pip install -e .), "src
   src/milady/sweep.py            expands a YAML campaign into jobs (local, docker, slurm) and submits them
   src/milady/train/fm3d.py       conditional flow matching of 3D fields, hard constraints (vector potential) and stationarity loss; DDP
   src/milady/eval/metrics.py     physical metrics (divergence, spectra, helicities, balances) and distances between laws
-tests/                       pytest: format (round trip, validation), catalog (SQLite), solver (energy, ∇·B), training (one iteration)
+tests/                       pytest: format (round trip, validation), catalog (SQLite), storage (file, S3), metrics, solver (energy, ∇·B), training (one iteration), project root
 ```
 
 Overview and data-flow diagram: `docs/ARCHITECTURE.md`.

@@ -18,7 +18,7 @@ site/                  published site (Quarto sources; rendered and deployed by 
 experiments/           E1–E3 scripts, shared code (common.py), results/ (JSON, digest.md)
 research/              hypothesis register and lab journal (empty until research starts)
 src/milady/            Python package: MFF data format, catalogue, storage, 3D MHD solver, training, evaluation
-tests/                 pytest suite for the package (make test)
+tests/                 pytest suite for the package (make test; run with ruff by .github/workflows/tests.yml)
 infra/                 deployment: Docker, cloud VM, Slurm/Apptainer, campaign configs, SQL schema
 docs/                  developer docs: specs/ (page contract, notation, theory brief, fact bases), ARCHITECTURE.md, review-2026-11.md
 tools/                 site rendering and checks
@@ -52,7 +52,7 @@ python -m milady.sweep infra/configs/stage2_abc3d.yaml --scheduler slurm   # Slu
 
 ## Build the site
 
-Requirements: [Quarto](https://quarto.org) 1.7.32, Python 3, Node.js (KaTeX check). `tools/setup-cloud.sh` installs them in a cloud session.
+Requirements: [Quarto](https://quarto.org) 1.7.32, Python 3, Node.js (KaTeX check). `tools/setup-cloud.sh` installs them in a cloud session, with the pinned Python lock of `infra/env/`.
 
 ```bash
 python3 tools/render.py --all     # Quarto render + pinned KaTeX tags (SRI)

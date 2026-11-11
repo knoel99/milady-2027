@@ -1293,7 +1293,7 @@ def to_zarr(path_h5: str | os.PathLike[str], uri: str, *, overwrite: bool = Fals
         _copy_attrs(f, root)
 
         def visit(src: h5py.Group, dst: Any) -> None:
-            for key in src.keys():
+            for key in src:
                 node = src[key]
                 if isinstance(node, h5py.Group):
                     sub = dst.create_group(key)

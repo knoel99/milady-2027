@@ -234,7 +234,7 @@ def get(uri: str, local: str | os.PathLike[str]) -> str:
     return str(dst)
 
 
-def open(uri: str | os.PathLike[str], mode: str = "rb", **kwargs: Any) -> IO[Any]:  # noqa: A001 (intended API)
+def open(uri: str | os.PathLike[str], mode: str = "rb", **kwargs: Any) -> IO[Any]:
     """Open ``uri`` as a file (use with ``with``); folders/bucket created for writing.
 
     When reading from S3, the object is read in blocks (no full download): ``h5py.File(storage.open(u))``

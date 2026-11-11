@@ -50,6 +50,12 @@ from sqlalchemy.orm import DeclarativeBase, Mapped, mapped_column, relationship
 from sqlalchemy.sql.functions import FunctionElement
 
 __all__ = [
+    "FILE_KINDS",
+    "JOB_STATUSES",
+    "SCHEDULERS",
+    "SIMULATION_STATUSES",
+    "SPLITS",
+    "VIEW_EVAL_SUMMARY_SQL",
     "Base",
     "Campaign",
     "Dataset",
@@ -57,17 +63,11 @@ __all__ = [
     "Diagnostic",
     "Evaluation",
     "File",
-    "FILE_KINDS",
-    "JOB_STATUSES",
     "JSONType",
     "Job",
     "Model",
-    "SCHEDULERS",
-    "SIMULATION_STATUSES",
-    "SPLITS",
     "Simulation",
     "UUIDStr",
-    "VIEW_EVAL_SUMMARY_SQL",
     "new_uuid",
     "utcnow",
     "v_eval_summary",
@@ -134,7 +134,7 @@ def _in(column: str, values: tuple[str, ...], name: str) -> CheckConstraint:
 class Base(DeclarativeBase):
     """Declarative base of the catalog."""
 
-    type_annotation_map = {dict[str, Any]: JSONType}
+    type_annotation_map = {dict[str, Any]: JSONType}  # noqa: RUF012 (SQLAlchemy class-level registry)
 
 
 class Campaign(Base):

@@ -6,7 +6,7 @@ Guidance for Claude Code in this repository. Talk to the user in French; write e
 
 An English-only Quarto site preparing the M2 internship MilaDy 2027 (physics-constrained generative models of parametric dynamical systems: MHD, dynamo, conditional flow matching). `site/` holds eight preparation modules (`prep/`), a **prospective** internship report (`report/`), a PhD proposal (`thesis/`) and pages on the supervisors, experiments, computing and interactive diagrams. `experiments/` holds the CPU experiments E1–E3. `src/milady/`, `tests/` and `infra/` are the HPC package planned for the thesis. `research/` will hold the hypothesis register and the lab journal. Page paths given to tools (`prep/p3-mhd-dynamo`, `report`) are relative to `site/`.
 
-The site is built and published by `.github/workflows/pages.yml` on every push to `main`; rendered `index.html` files are not versioned.
+The site is built and published by `.github/workflows/pages.yml` on every push to `main`; rendered `index.html` files are not versioned. `.github/workflows/tests.yml` runs `make test`'s pytest selection and `ruff check src tests` on every push to `main` and every pull request.
 
 ## Sources of truth
 
@@ -29,6 +29,7 @@ python3 tools/check_gates.py [page …]                     # sections, ≥ 10 �
 NODE_PATH=<node_modules with katex@0.19.0> node tools/check_katex.mjs $(find site -name index.html)
 cd experiments && python3 e1_gissinger.py --quick         # also e2_data.py, e2_mhd2d.py, e3_abc.py; figures.py; digest.py > results/digest.md
 make test                                                 # pytest for src/milady
+python3 -m ruff check src tests                           # lint, as in CI
 ```
 
 - Never edit an `index.html` by hand: `tools/render.py` restores the pinned KaTeX tags (SRI) that Quarto strips.
