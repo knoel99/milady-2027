@@ -42,6 +42,10 @@ def e1():
         for v, d in res.items():
             if split in d:
                 print(f"| {v} | " + " | ".join(f(d[split].get(k[0])) for k in keys) + f" | {f(d[split].get('ess_frac_b'))} |")
+    wt = {v: d["test"]["energy_weighted"] for v, d in res.items() if isinstance(d, dict) and "energy_weighted" in d.get("test", {})}
+    if wt:
+        print("\nTilted variants evaluated with their weights (no resampling), energy dist. over the test Γ: "
+              + ", ".join(f"{v} {f(x)}" for v, x in wt.items()))
     print(f"\nMonte Carlo noise floors (subsample of the reference): {json.dumps(res['mc_noise_floors'])}")
     print(f"Reference: {json.dumps(res['reference'])}\n")
     print("### Data: zero crossings of D (simulation) and asymmetry of the training data\n")
@@ -50,11 +54,15 @@ def e1():
     for g, s in sorted(r["data"].items(), key=lambda t: float(t[0])):
         print(f"| {g} | {f(s['simulation_crossing_rate'])} | {f(s['rice_rate_reference'])} | {f(s.get('P(D>0)_train'), 4)} |")
     print("\n### Fine grid (model C seed 0 and F seed 0)\n")
-    print("| Γ | sim. rate | Rice ref. | Rice C | Rice F | bridge ref. | bridge C | bridge F |")
-    print("|---|---|---|---|---|---|---|---|")
+    print("| Γ | sim. rate | Rice ref. | Rice C | Rice F | bridge ref. | bridge C | bridge F | ref. SW1 to next Γ | ref. SW1 floor |")
+    print("|---|---|---|---|---|---|---|---|---|---|")
     for x in r["fine_grid"]:
         print(f"| {x['Gamma']} | {f(x['simulation_rate'])} | {f(x['rice_rate_ref'])} | {f(x['rice_rate_model'])} | "
-              f"{f(x.get('rice_rate_model_F'))} | {f(x['bridge_ref'])} | {f(x['bridge_model'])} | {f(x.get('bridge_model_F'))} |")
+              f"{f(x.get('rice_rate_model_F'))} | {f(x['bridge_ref'])} | {f(x['bridge_model'])} | {f(x.get('bridge_model_F'))} | "
+              f"{f(x.get('ref_sw1_to_next'))} | {f(x.get('ref_sw1_floor'))} |")
+    print("\nref. SW1 to next Γ: sliced W1 between the symmetrized reference laws of consecutive Γ (jump J_δ of "
+          "Proposition 9, δ = half the step); floor: same Γ, two halves of the sample.")
+    e1_rice(r)
     e1_detail(r)
     e1_seeds(r)
     print(f"\nTotal duration: {r['total_duration_s']:.0f} s.\n")
@@ -142,6 +150,37 @@ def e1_detail(r):
             print(f"| {v} | {s} | {t:.0f} | {f(d.get('generation_time_s_per_1000'), 2)} |")
 
 
+def e1_rice(r):
+    """Errors of Rice's formula on the fine grid (the percentages quoted in the report), and floors."""
+    fg = r["fine_grid"]
+    near = [x for x in fg if 0.865 - 1e-9 <= x["Gamma"] <= 0.885 + 1e-9]
+    above = [x for x in fg if x["Gamma"] >= 0.89 - 1e-9]
+    below = [x for x in fg if x["Gamma"] <= 0.86 + 1e-9]
+
+    def cum(rows, key):
+        den = sum(x["simulation_rate"] for x in rows)
+        return sum(abs(x[key] - x["simulation_rate"]) for x in rows) / den if den else None
+
+    print("\n### Rice's formula on the fine grid: relative errors\n")
+    print("Cumulative error = Σ|Rice − count| / Σ count over the range; near threshold 0.865 ≤ Γ ≤ 0.885, above Γ ≥ 0.89. "
+          f"Models C and F: seed {r['config']['seeds'][0]} only, {r['config'].get('n_big', 'n_big')} samples per Γ.\n")
+    print("| distribution | cumulative error near threshold | cumulative error above | mean pointwise error above | max pointwise error above (Γ) |")
+    print("|---|---|---|---|---|")
+    for key, lab in (("rice_rate_ref", "reference"), ("rice_rate_model", "model C"), ("rice_rate_model_F", "model F")):
+        if key not in fg[0]:
+            continue
+        pts = [(abs(x[key] - x["simulation_rate"]) / x["simulation_rate"], x["Gamma"]) for x in above if x["simulation_rate"] > 0]
+        worst = max(pts) if pts else (None, None)
+        mean_pt = sum(p for p, _ in pts) / len(pts) if pts else None
+        print(f"| {lab} | {f(cum(near, key))} | {f(cum(above, key))} | {f(mean_pt)} | {f(worst[0])} ({worst[1]}) |")
+    top = max(fg, key=lambda x: x["Gamma"])
+    spur = max(x["rice_rate_model"] for x in below) if below else None
+    print(f"\nSpurious crossings of model C below the threshold (Γ ≤ 0.86): max Rice rate {f(spur)}; "
+          f"ratio to its value at Γ = {top['Gamma']}: {f(spur / top['rice_rate_model']) if spur is not None and top['rice_rate_model'] else '–'}.")
+    n = r["config"]["n_gen"]
+    print(f"Binomial floor of the asymmetry |P(D>0) − ½| for N = {n} samples: E|p̂ − ½| ≈ 1/√(2πN) = {f((2 * 3.141592653589793 * n) ** -0.5)}.")
+
+
 def spread(values):
     """mean ± standard deviation (ddof = 1) [min, max] of a list of per-seed values."""
     n = len(values)
@@ -214,6 +253,9 @@ def e2():
         for m in ("base", "tilting", "rescaling"):
             print(f"| in law: {m} (V4, half b) | " + " | ".join(f(res['in_law'][m][split][k[0]]) for k in keys) + " |")
     print(f"\nMean ESS/N of the tilting: {f(res['in_law']['ess_frac_b_mean'])}")
+    if "tilting_weighted_energy_distance" in res["in_law"]:
+        w = res["in_law"]["tilting_weighted_energy_distance"]
+        print(f"Tilting evaluated with its weights (no resampling), energy dist.: test {f(w['test'])}, train {f(w['train'])}")
     e2_detail(r)
     e2_seeds()
     print("\nTimes: " + json.dumps({k: {kk: round(vv, 4) if isinstance(vv, float) else vv for kk, vv in v.items()}
@@ -251,7 +293,7 @@ def e3():
         return
     r = json.loads(p.read_text())
     print("## E3 - ABC kinematic dynamo (A = B = C = 1, Rm = 1/η, N = 32)\n")
-    print("| Rm | λ | λ (last quarter) | rel. div. |")
+    print("| Rm | γ | γ (last quarter) | rel. div. |")
     print("|---|---|---|---|")
     for t in r["rates"]:
         print(f"| {t['Rm']} | {f(t['lambda'], 4)} | {f(t['lambda_last_quarter'], 4)} | {f(t['div_rel'])} |")

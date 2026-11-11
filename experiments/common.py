@@ -140,6 +140,11 @@ def energy_distance(x: np.ndarray, y: np.ndarray, n: int = 4000, seed: int = 0) 
     return _metrics.energy_distance(x, y, n=n, seed=seed, estimator="V", pdist="torch")
 
 
+def weighted_energy_distance(x: np.ndarray, wx: np.ndarray, y: np.ndarray, n: int = 4000, seed: int = 0) -> float:
+    """Energy distance D² of a weighted sample (tilted law evaluated with its weights): ``milady.eval.metrics``."""
+    return _metrics.weighted_energy_distance(x, wx, y, n=n, seed=seed)
+
+
 def sliced_w1(x: np.ndarray, y: np.ndarray, n_proj: int = 256, seed: int = 0, n: int = 20000) -> float:
     """Sliced Wasserstein-1, subsampled to ``n`` points then truncated to the smaller set (estimator of E1)."""
     return _metrics.sliced_w1(x, y, n_proj=n_proj, seed=seed, match="truncate", n_sub=n)

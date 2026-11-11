@@ -45,10 +45,10 @@ This module provides the language in which the internship frames its questions: 
 1. state the Cauchy–Lipschitz theorem, prove Grönwall's lemma and the group property of the flow, and compute how a flow transports volumes (Liouville's formula);
 2. find the fixed points of a system, classify them by the eigenvalues of the Jacobian, and prove stability with a Lyapunov function;
 3. recognize the saddle-node, pitchfork (super- and subcritical) and Hopf bifurcations from their normal forms, explain why the symmetry $\mathbf{B} \mapsto -\mathbf{B}$ makes the pitchfork generic, and prove the amplitude law $\sqrt{R - R_c}$ and the bistability boundary $27h^2 = 4r^3$ of the imperfect pitchfork;
-4. compute numerically the Lyapunov exponents of the Lorenz system, relate their sum to the divergence of the vector field, and describe the merging crisis of two symmetric attractors that gives rise to reversals;
+4. compute numerically the Lyapunov exponents of the Lorenz system, relate their sum to the divergence of the vector field, and describe the merging crisis of two symmetric attractors that gives rise to reversals in the Gissinger model (Gissinger, 2012);
 5. define invariant measure, ergodicity and physical (SRB) measure, write the Liouville and Fokker–Planck equations, and **prove** the stationarity identities $\mathbb{E}_\mu[F\cdot\nabla\varphi + \tfrac{\sigma^2}{2}\Delta\varphi] = 0$, of which the energy budget is a special case;
 6. explain why these identities do not fix the relative weight of two symmetric attractors (convexity of the set of invariant measures, ergodic measures as extreme points);
-7. prove the mean first-passage time formula in dimension 1, derive the Arrhenius–Kramers law from it, and estimate a reversal frequency with the Rice formula $\mathbb{E}[|\dot X|\,\delta(X)]$ from the stationary distribution alone;
+7. prove the mean first-passage time formula in dimension 1, derive the Arrhenius–Kramers law from it, and estimate a frequency of zero crossings (reversals and excursions) with the Rice formula $\mathbb{E}[|\dot X|\,\delta(X)]$ from the stationary distribution alone;
 8. reproduce, on the three-mode model of Gissinger (2012), the reversal threshold, the stationarity identities and the Rice formula used in experiment E1 of the repository.
 
 ## Prerequisites {#prerequisites}
@@ -907,10 +907,10 @@ In a system equivariant under $S$, the image $S(\mathcal{A})$ of an attractor is
 
 ::: ex
 [Example 4.8 — The scenario of chaotic reversals]{.tag}
-Before the crisis, there are two chaotic attractors $\mathcal{A}_+$ (dipole $D > 0$) and $\mathcal{A}_- = S(\mathcal{A}_+)$ ($D < 0$): a trajectory stays on one side forever, and the field never reverses. Just after the crisis, the two attractors have become connected by a narrow “corridor”: a trajectory spends long periods near the former $\mathcal{A}_+$, then switches to near the former $\mathcal{A}_-$, and so on. This regime of **crisis-induced intermittency** produces irregular reversals without any external noise. The mean duration $\tau$ between two switches diverges at the threshold as a power law $\tau \propto |p - p_c|^{-\gamma}$, with a critical exponent $\gamma$ specific to the system (Grebogi, Ott, Romeiras and Yorke, 1987). For the Gissinger model, at $\Gamma = 0.9$ and $\nu = 0.1$, the crisis occurs at $\mu_c \approx 0.11928$, and the author estimates $\gamma \simeq 1/2$, stressing that the conclusion is delicate because it is very sensitive to the value of $\mu_c$ (Gissinger, 2012). In this repository, with $\mu = 0.119$ fixed and $\Gamma$ varied, the crisis is observed between $\Gamma = 0.86$ and $0.865$ (chapter 7).
+Before the crisis, there are two chaotic attractors $\mathcal{A}_+$ (dipole $D > 0$) and $\mathcal{A}_- = S(\mathcal{A}_+)$ ($D < 0$): a trajectory stays on one side forever, and the field never reverses. Just after the crisis, the two attractors have become connected by a narrow “corridor”: a trajectory spends long periods near the former $\mathcal{A}_+$, then switches to near the former $\mathcal{A}_-$, and so on. This regime of **crisis-induced intermittency** produces irregular reversals without any external noise. The mean duration $\tau$ between two switches diverges at the threshold as a power law $\tau \propto |p - p_c|^{-\gamma}$, with a critical exponent $\gamma$ specific to the system (Grebogi, Ott, Romeiras and Yorke, 1987). For the Gissinger model, at $\Gamma = 0.9$ and $\nu = 0.1$, the crisis occurs at $\mu_c \approx 0.11928$, and the author estimates $\gamma \simeq 1/2$, stressing that the conclusion is delicate because it is very sensitive to the value of $\mu_c$ (Gissinger, 2012). In this repository, with $\mu = 0.119$ fixed and $\Gamma$ varied, a threshold of zero crossings of $D$ is observed between $\Gamma = 0.86$ and $0.865$ (chapter 7); we interpret it as the same crisis by analogy, without having established the nature of the transition.
 :::
 
-For Lorenz at $r = 28$, the merging has already taken place: the attractor is symmetric, and the passage from one wing to the other (from $x > 0$ to $x < 0$) plays the role of a reversal.
+For Lorenz at $r = 28$, the attractor is symmetric from the start (it does not arise from a merging crisis), and the passage from one wing to the other (from $x > 0$ to $x < 0$) plays the role of a reversal.
 
 :::: recap
 ::: recap-title
@@ -1512,7 +1512,7 @@ Key takeaways — chapter 6
 
 ## 7. The Gissinger model, the common thread of the internship {#ch7}
 
-The three-mode model of Gissinger (2012) brings the whole module together: a symmetry $\mathbf{B} \mapsto -\mathbf{B}$, unstable fixed points, a chaotic attractor, a merging crisis that gives rise to reversals, an invariant distribution that changes nature at the threshold. It is the first test bench of the internship (experiment E1, see the [report](../../report/index.html#e1)): the distribution $\mu_\Gamma$ conditioned on $\Gamma$ is learned there with a flow matching model, and we check what this model respects of the physics.
+The three-mode model of Gissinger (2012) brings the whole module together: a symmetry $\mathbf{B} \mapsto -\mathbf{B}$, unstable fixed points, a chaotic attractor, a merging crisis that gives rise to reversals (in $\mu$, Gissinger 2012; observed here in $\Gamma$ as a threshold of zero crossings), an invariant distribution whose bridge between the polarities appears at the threshold. It is the first test bench of the internship (experiment E1, see the [report](../../report/index.html#e1)): the distribution $\mu_\Gamma$ conditioned on $\Gamma$ is learned there with a flow matching model, and we check what this model respects of the physics.
 
 ### 7.1 The model and its properties
 
@@ -1631,8 +1631,8 @@ The time scales explain the difficulty. The oscillation around $N_\pm$ has an an
 Key takeaways — chapter 7
 :::
 - Gissinger model: $\dot Q = \mu Q - VD$, $\dot D = -\nu D + VQ$, $\dot V = \Gamma - V + QD$, with $\mu = 0.119$, $\nu = 0.1$; symmetry $(Q, D, V) \mapsto (-Q, -D, V)$; divergence $-0.981$.
-- All its fixed points are unstable; the dynamics is chaotic ($\lambda_1 \approx 0.09$).
-- Merging crisis: at $\mu = 0.119$, reversal threshold between $\Gamma = 0.86$ and $0.865$, in E1 as in the sweep of this module; at $\Gamma = 0.9$, crisis at $\mu_c \approx 0.11928$ (Gissinger, 2012).
+- All its fixed points are unstable; at $\Gamma = 0.9$ the dynamics is chaotic ($\lambda_1 \approx 0.09$ measured in exercise 14, $\lambda \simeq 0.1$ in Gissinger 2012).
+- Merging crisis: at $\mu = 0.119$, threshold of zero crossings of $D$ observed between $\Gamma = 0.86$ and $0.865$, in E1 as in the sweep of this module (no crossing observed below, over the simulated time); at $\Gamma = 0.9$, crisis at $\mu_c \approx 0.11928$ (Gissinger, 2012).
 - Below the threshold, the weight of the two attractors is set by the initial conditions and invisible to the stationarity identities; above it, the distribution is unique and symmetric.
 - Symmetry, stationarity identities and the Rice formula are the three physical checks of experiment E1.
 ::::

@@ -39,13 +39,13 @@ TXT = {
             "F0_control_Cshort": "C short + control", "F_stationarity_C": "C + stat. loss", "F0_control_C": "C + control",
             "D_tilting_C": "C + tilting", "E_projection_C": "C + per-sample proj."},
     "e2var": {"V0_free": "V0 free", "V1_penalty": "V1 penalty", "V2_final_projection": "V2 final projection",
-              "V3_projected_flow": "V3 projected flow", "V4_potentials": "V4 potentials",
+              "V3_projected_flow": "V3 flow in S", "V4_potentials": "V4 potentials",
               "V5_potentials_stat": "V5 potentials + stat. loss", "V5_control": "V5 control",
               "reference_subsample": "data (subsample)"},
     "div": "relative divergence of u", "spec": "spectrum error (log₁₀, mean)",
     "bal": "|E[D] − ε_inj| / ε_inj", "k": "wavenumber k", "Eu": "E_u(k)", "Eb": "E_B(k)",
     "diss": "dissipation D(x) / ε_inj", "base": "V4 (generated)", "tilt": "V4 + tilting", "resc": "V4 + per-sample rescaling",
-    "rm": "Rm = 1/η", "lam": "growth rate λ",
+    "rm": "Rm = 1/η", "lam": "growth rate γ",
 }
 
 

@@ -7,6 +7,8 @@
 | Vorticity, current density | $\boldsymbol{\omega} = \nabla\times\mathbf{u}$, $\mathbf{j} = \nabla\times\mathbf{B}$ | in 2D: scalars $\omega$, $j$ |
 | Potentials | stream function $\psi$ ($\mathbf{u} = \nabla^\perp\psi = (\partial_y\psi, -\partial_x\psi)$), magnetic potential $a$ ($\mathbf{B} = \nabla^\perp a$); vector potential $\mathbf{A}$ ($\mathbf{B} = \nabla\times\mathbf{A}$) in 3D | |
 | Viscosity, magnetic diffusivity | $\nu$, $\eta = 1/(\mu_0\sigma)$ | |
+| Growth rate (dynamo, E3) | $\gamma$ | never $\lambda$, which is the control parameter |
+| Kolmogorov scales (P2) | $\ell_K = (\nu^3/\varepsilon)^{1/4}$, $\tau_K$, $u_K$ | never $\eta$, which is the magnetic diffusivity |
 | Dimensionless numbers | $Re = UL/\nu$, $Rm = UL/\eta$, $Pm = \nu/\eta = Rm/Re$ | |
 | Spatial average | $\langle f \rangle = \frac{1}{|\Omega|}\int_\Omega f\,\mathrm{d}\mathbf{x}$ | |
 | Energy | $E = \tfrac12\langle |\mathbf{u}|^2 + |\mathbf{B}|^2\rangle$ | |

@@ -254,7 +254,7 @@ def fig_gissinger(out):
     fig = plt.figure(figsize=(12, 4.6))
     gs = fig.add_gridspec(2, 3, width_ratios=[1, 1, 0.9])
     a1, a2, a3 = fig.add_subplot(gs[0, :2]), fig.add_subplot(gs[1, :2]), fig.add_subplot(gs[:, 2])
-    a1.plot(ts, d86, color=fs.C1, lw=0.7); a1.set_title("Γ = 0.86: chaos without reversals", loc="left")
+    a1.plot(ts, d86, color=fs.C1, lw=0.7); a1.set_title("Γ = 0.86: no reversal over the simulated time", loc="left")
     a2.plot(ts, d90, color=fs.C2, lw=0.7); a2.set_title("Γ = 0.90: chaotic reversals", loc="left")
     for a in (a1, a2):
         a.axhline(0, color=fs.INK2, lw=0.8); a.set_ylim(-3.3, 3.3); a.set_ylabel("dipole D")
