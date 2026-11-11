@@ -10,7 +10,7 @@ import re
 import sys
 from pathlib import Path
 
-ROOT = Path(__file__).resolve().parent.parent
+ROOT = Path(__file__).resolve().parent.parent / "site"  # racine du site publié
 
 
 def body(path: Path) -> str:
@@ -79,5 +79,13 @@ def main(pages):
     return 1 if bad else 0
 
 
+def all_pages():
+    """Toutes les pages françaises (hors en/ et hors sources des schémas)."""
+    return sorted(q.parent.relative_to(ROOT).as_posix() or "." for q in ROOT.glob("**/index.qmd")
+                  if q.relative_to(ROOT).parts[0] != "en" and "figures" not in q.parts
+                  and "node_modules" not in q.parts)
+
+
 if __name__ == "__main__":
-    sys.exit(main(sys.argv[1:] or ["."]))
+    args = sys.argv[1:]
+    sys.exit(main(all_pages() if args == ["--all"] else args or ["."]))

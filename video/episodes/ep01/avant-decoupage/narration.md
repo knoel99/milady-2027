@@ -1,6 +1,6 @@
 # Épisode 01 : narration
 
-Module : `prep/p1-calcul-vectoriel/index.qmd`. Traitement : `video/episodes/ep01/traitement.md`.
+Module : `site/prep/p1-calcul-vectoriel/index.qmd`. Traitement : `video/episodes/ep01/traitement.md`.
 Ton : tutoiement. Voix : environ 2 190 mots, soit 14 min 35 à 150 mots par minute.
 Les lignes « > écran : » et « > légende : » ne sont pas dites.
 

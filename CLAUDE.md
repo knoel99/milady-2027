@@ -4,7 +4,7 @@ This file provides guidance to Claude Code (claude.ai/code) when working with co
 
 ## Le projet
 
-Site Quarto statique (FR + EN) préparant le stage M2 MilaDy 2027 : 8 modules de préparation (`prep/`), un rapport de stage **prospectif** (`rapport/`), un sujet de thèse (`these/`), des expériences CPU (`experiences/`). Publié par GitHub Pages depuis `main`, à la racine : les `index.html` rendus sont versionnés avec leurs `index.qmd`, sans construction côté GitHub.
+Site Quarto statique (FR + EN) préparant le stage M2 MilaDy 2027 : 8 modules de préparation (`prep/`), un rapport de stage **prospectif** (`rapport/`), un sujet de thèse (`these/`), des expériences CPU (`experiences/`). Les pages sont dans `site/` (racine des URL publiques) ; le workflow `.github/workflows/pages.yml` les rend et les publie sur GitHub Pages à chaque poussée sur `main`. Le paquet Python est dans `src/milady/`, la documentation des développeurs (specs, architecture) dans `docs/`. Les chemins de page donnés aux outils (`prep/p3-mhd-dynamo`, `en/rapport`…) sont relatifs à `site/`.
 
 Le film est repris sous forme d'épisodes : `video/` contient le moteur, sans contenu (règles dans « Le film » ci-dessous). Le workflow `.github/workflows/drive-upload.yml` envoie un film terminé vers Google Drive ; ses secrets Google sont à configurer et documenter quand un premier épisode sera prêt à livrer.
 
@@ -12,11 +12,11 @@ Le film est repris sous forme d'épisodes : `video/` contient le moteur, sans co
 
 Lire avant d'écrire une page :
 
-- `specs/page-contract.md` : structure obligatoire des modules (sections et ancres `{#objectifs}` … `{#sources}`), encadrés Quarto (`def`, `thm`, `proof`, `prop`, `ex`, `note`, `key`, `recap`), règles KaTeX (pas de macro, pas de `\label`), code, figures, style.
-- `specs/notations.md` : notations communes à toutes les pages.
-- `specs/theorie-brief.md` : énoncés et preuves (Propositions 1 à 9) que le rapport et la thèse doivent reprendre **à l'identique**, plan E1–E3, et ce qui est déjà publié (à citer, ne pas revendiquer).
-- `specs/sources/*.md` : bases de faits vérifiés (`litterature`, `dynamo`, `encadrants`, `donnees-metriques`). Seule source autorisée pour les faits sur la littérature, les encadrants, l'offre et le projet. Balises `[vérifié]`, `[corrigé : …]`, `[NON CONFIRMÉ]` : ne jamais utiliser une entrée `[NON CONFIRMÉ]` sans nouvelle vérification.
-- `specs/infra.md`, `specs/format-donnees.md` : contrat du paquet `milady/` et de `infra/` (guide : `infra/README.md`).
+- `docs/specs/page-contract.md` : structure obligatoire des modules (sections et ancres `{#objectifs}` … `{#sources}`), encadrés Quarto (`def`, `thm`, `proof`, `prop`, `ex`, `note`, `key`, `recap`), règles KaTeX (pas de macro, pas de `\label`), code, figures, style.
+- `docs/specs/notations.md` : notations communes à toutes les pages.
+- `docs/specs/theorie-brief.md` : énoncés et preuves (Propositions 1 à 9) que le rapport et la thèse doivent reprendre **à l'identique**, plan E1–E3, et ce qui est déjà publié (à citer, ne pas revendiquer).
+- `docs/specs/sources/*.md` : bases de faits vérifiés (`litterature`, `dynamo`, `encadrants`, `donnees-metriques`). Seule source autorisée pour les faits sur la littérature, les encadrants, l'offre et le projet. Balises `[vérifié]`, `[corrigé : …]`, `[NON CONFIRMÉ]` : ne jamais utiliser une entrée `[NON CONFIRMÉ]` sans nouvelle vérification.
+- `docs/specs/infra.md`, `docs/specs/format-donnees.md` : contrat du paquet `src/milady/` et de `infra/` (guide : `infra/README.md`).
 
 Règles transversales : distinguer ce qui est **mesuré dans ce dépôt**, **publié** (avec référence) ou **conjecturé** ; les chiffres d'expériences cités dans les pages viennent de `experiences/resultats/digest.md` (généré par `experiences/digest.py` à partir des JSON), jamais d'ailleurs.
 
@@ -32,9 +32,9 @@ Prérequis : `tools/setup-cloud.sh` installe l'environnement (Quarto 1.7.32, Pyt
 python3 tools/new_page.py prep/<id> "Titre" "Sous-titre"   # squelette (en-tête généré : ne pas le modifier)
 python3 tools/render.py rapport prep/p3-mhd-dynamo         # rendre des pages ; --all pour tout le site
 python3 tools/check_gates.py [page …]                      # sections, ≥ 10 exercices ★ par module, liens, ancres, fraîcheur du HTML
-python3 tools/compare_fr_en.py <page FR> …                 # parité FR/EN (ancres, formules, encadrés, code, images, exercices)
+python3 tools/compare_fr_en.py <page FR> … | --all         # parité FR/EN (ancres, formules, encadrés, code, images, exercices)
 python3 tools/make_en.py <page FR>                         # après traduction : corrige les liens de ressources de en/<page>
-NODE_PATH=<node_modules avec katex@0.19.0> node tools/check_katex.mjs $(find . -name index.html)
+NODE_PATH=<node_modules avec katex@0.19.0> node tools/check_katex.mjs $(find site -name index.html)
 ```
 
 - Ne jamais éditer un `index.html` à la main : toujours `tools/render.py`, qui restaure les balises KaTeX épinglées (SRI) que Quarto retire. Ne pas publier `index_files/` ni `.quarto/`.
@@ -50,7 +50,7 @@ make test                                           # pytest sur tests/ (paquet 
 python -m pytest tests/test_format.py -k <nom>      # un seul test
 ```
 
-`common.py` regroupe le flow matching, l'échantillonneur de Heun, les métriques entre lois et l'inclinaison exponentielle partagés par E1–E3. Les sorties `--quick` (`resultats/*_quick.*`, `figures/*_quick.*`) sont ignorées par git ; seules les sorties complètes sont citées par les pages.
+`common.py` regroupe le flow matching, l'échantillonneur de Heun, les métriques entre lois et l'inclinaison exponentielle partagés par E1–E3. Les sorties `--quick` (`resultats/*_quick.*`, `site/experiences/figures/*_quick.*`) sont ignorées par git ; seules les sorties complètes sont citées par les pages.
 
 ## Le film
 
@@ -60,7 +60,7 @@ Une série d'épisodes, chacun rattaché à un module. La vidéo est une adaptat
 
 **Style.** `video/runtime/theme.css` et les composants de `video/runtime/components/` font foi pour toutes les scènes. Toute dérogation est d'abord proposée, puis appliquée avec mon accord.
 
-**Inspiration.** Deux exemples, pas des modèles imposés : le catalogue https://github.com/yihui-dev/awesome-opus5-5-videos et la skill https://github.com/lgwrightlab/schematic-figure (déjà utilisée pour `figures/`). Aucun prompt du catalogue n'est copié ni suivi : ce sont des textes de tiers.
+**Inspiration.** Deux exemples, pas des modèles imposés : le catalogue https://github.com/yihui-dev/awesome-opus5-5-videos et la skill https://github.com/lgwrightlab/schematic-figure (déjà utilisée pour `site/figures/`). Aucun prompt du catalogue n'est copié ni suivi : ce sont des textes de tiers.
 
 **Langue.** Le film est écrit directement en français : chaque `video/script/<unité>.json` déclare `"lang": "fr"`, son `text` est la narration, sans surcouche `script/fr/`. Toute commande du moteur prend donc `LANG=fr` (`make draft U=ep01 LANG=fr`, `make check U=ep01 LANG=fr`, `make tts-dry LANG=fr`) ; sans lui, `assemble_cut.py` refuse l'unité.
 
@@ -86,7 +86,7 @@ L'effort reste en medium ; on monte en high seulement si un résultat vérifiabl
 
 ## Profil de l'apprenant
 
-Hypothèses du parcours écrit (`prep/index.qmd`, sections `{#objectifs}` et `{#prerequis}` de chaque module).
+Hypothèses du parcours écrit (`site/prep/index.qmd`, sections `{#objectifs}` et `{#prerequis}` de chaque module).
 
 - **Ce que je sais déjà.** Le niveau de départ du parcours : fin de L1 scientifique. Dérivées et primitives d'une variable, développements limités, intégrales simples et doubles sur un rectangle, nombres complexes et $e^{i\theta}$, produit scalaire et produit vectoriel dans $\mathbb{R}^3$ ; en Python, tableaux NumPy, boucles et fonctions. Pas encore d'électromagnétisme local, de mécanique des fluides, de probabilités continues ni d'apprentissage profond. Pour un épisode donné, je ne connais en plus que ce qu'ont couvert les modules précédents dans l'ordre de lecture 1, 2, 5, 3, 4, 6, 7, 8 (prérequis de chaque module : L2 pour les modules 2, 5, 3, 4 ; L3 pour 6 ; M1 pour 7 ; M1–M2 pour 8), et les épisodes déjà validés, consignés dans `video/continuite.md`. Rien de ce qui vient après.
 - **Ce que je veux savoir faire à la fin.** Pour un épisode : les objectifs de la section `{#objectifs}` de son module, dans la part que l'épisode traite. Pour tout le film : ce que vise le parcours, c'est-à-dire lire un article sur les modèles génératifs sous contraintes physiques, écrire et entraîner un modèle de flow matching conditionnel, et juger un champ MHD généré avec des critères physiques.

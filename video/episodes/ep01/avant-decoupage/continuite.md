@@ -20,7 +20,7 @@ Ce fichier dit ce que le film a déjà défini, noté, montré et expliqué. Un 
 
 ## 3. Notations et lectures à voix haute
 
-Conformes à `specs/notations.md`.
+Conformes à `docs/specs/notations.md`.
 
 | Objet | Écran | Voix |
 |---|---|---|

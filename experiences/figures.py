@@ -1,7 +1,7 @@
 """Graphiques des résultats (matplotlib), en français et en anglais.
 
 Usage : python3 figures.py [e1] [e2] [e3] [--quick]
-Sorties : figures/<nom>.png|svg (français) et figures/<nom>-en.png|svg (anglais).
+Sorties (dans site/experiences/figures/) : <nom>.png|svg (français) et figures/<nom>-en.png|svg (anglais).
 Palette catégorielle de référence (ordre fixe) ; la référence « vérité » est en encre neutre.
 """
 from __future__ import annotations

@@ -75,7 +75,7 @@ else
     echo "==> Copie de l'arbre local vers ${TARGET}:${REMOTE_DIR} (rsync)"
     ssh_run "command -v rsync >/dev/null || { sudo apt-get update -y && sudo apt-get install -y rsync make; }; mkdir -p '${REMOTE_DIR}'"
     # Les fichiers exclus ne sont ni copiés ni supprimés côté VM (--delete ne touche pas aux exclus).
-    # Motifs ancrés (« /data/ ») : le paquet milady/data/ doit, lui, être copié.
+    # Motifs ancrés (« /data/ ») : le paquet src/milady/data/ doit, lui, être copié.
     rsync -az --delete --info=stats1 \
         -e "ssh ${SSH_OPTS[*]}" \
         --exclude '/.venv/' --exclude '/.venv-front/' --exclude '/data/' --exclude '/backups/' \

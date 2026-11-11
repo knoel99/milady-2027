@@ -1,7 +1,7 @@
 -- =============================================================================================
 -- Catalogue MilaDy — schéma PostgreSQL 16 (version 1.0)
 --
--- Équivalent exact du modèle SQLAlchemy milady/catalog/models.py (mêmes tables, colonnes, contraintes
+-- Équivalent exact du modèle SQLAlchemy src/milady/catalog/models.py (mêmes tables, colonnes, contraintes
 -- CHECK et index ; tests/test_catalog.py vérifie la concordance). En mode portable (SQLite), le même
 -- schéma est créé par SQLAlchemy (Catalog(create=True)) ; ce fichier sert à PostgreSQL :
 --   - automatiquement au premier démarrage du service « db » du docker-compose
@@ -14,7 +14,7 @@
 -- en version 1.0, toute modification se fait à l'identique ici et dans models.py (le test de
 -- concordance compare colonnes, types, DEFAULT, contraintes et index). Dès qu'une base de production
 -- contient des résultats à garder, passer par des migrations Alembic (voir l'en-tête de
--- milady/catalog/models.py) plutôt que par des ALTER TABLE à la main.
+-- src/milady/catalog/models.py) plutôt que par des ALTER TABLE à la main.
 -- =============================================================================================
 
 BEGIN;
@@ -176,7 +176,7 @@ CREATE TABLE IF NOT EXISTS dataset_member (
 CREATE INDEX IF NOT EXISTS ix_dataset_member_file ON dataset_member (file_id);
 
 -- Synthèse des évaluations : moyenne et écart-type (sur les graines) par modèle, métrique et paramètres.
--- Même requête que VIEW_EVAL_SUMMARY_SQL dans milady/catalog/models.py.
+-- Même requête que VIEW_EVAL_SUMMARY_SQL dans src/milady/catalog/models.py.
 CREATE OR REPLACE VIEW v_eval_summary AS
 SELECT e.model_id                AS model_id,
        m.name                    AS model_name,

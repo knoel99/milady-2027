@@ -41,7 +41,7 @@ La voix ne lit jamais une formule symbole par symbole. La formule va dans une li
 | Vorticité 2D | $\omega = \partial_x u_y - \partial_y u_x$ | « la vorticité » ; « les rôles se croisent : la composante verticale vers la droite, moins la composante horizontale vers le haut » |
 | Rotationnel | $\nabla\times\mathbf{u}$ | « le rotationnel de la vitesse », flèche perpendiculaire à l'écran pour un écoulement plan : elle en sort si la vorticité est positive, elle y entre sinon |
 | Vitesse de la roue | $\dot\alpha_{\text{roue}} = \omega/2$ (α : angle de l'aube marquée, sens trigonométrique) | « la moitié de la vorticité » |
-| Région, son bord | $\Omega$, $\partial\Omega$ (`specs/notations.md`) ; Ω n'est jamais une vitesse de rotation, contrairement au $\boldsymbol\Omega$ du module | « la région », « son bord » |
+| Région, son bord | $\Omega$, $\partial\Omega$ (`docs/specs/notations.md`) ; Ω n'est jamais une vitesse de rotation, contrairement au $\boldsymbol\Omega$ du module | « la région », « son bord » |
 | Source | $(x, y)$ | « le fluide fuit l'origine dans toutes les directions » |
 | Rotation solide | $(-y, x)$ | « le fluide tourne d'un seul bloc, comme un disque rigide » |
 | Cisaillement | $(y, 0)$ | « à droite en haut, à gauche en bas, immobile sur la ligne du milieu » |
@@ -58,7 +58,7 @@ La voix ne lit jamais une formule symbole par symbole. La formule va dans une li
 | Potentiel magnétique 2D | $a$, $\mathbf{B} = \nabla^\perp a$ | « le potentiel magnétique », jamais la lettre seule |
 | Théorèmes | $\int_\Omega \nabla\cdot\mathbf{u}\,\mathrm{d}\mathbf{x} = \oint_{\partial\Omega}\mathbf{u}\cdot\mathbf{n}\,\mathrm{d}\ell$, $\int_\Omega \omega\,\mathrm{d}\mathbf{x} = \oint_{\partial\Omega}\mathbf{u}\cdot\mathbf{t}\,\mathrm{d}\ell$ | « la somme des divergences fois les aires égale le flux à travers le bord » ; de même pour les vorticités et la circulation. Sous Stokes, à l'écran : « bord parcouru en gardant la région à sa gauche, sens trigonométrique pour une région sans trou » |
 
-Notations écran conformes à `specs/notations.md` : domaine $\Omega$, bord $\partial\Omega$, normale sortante $\mathbf{n}$, $\nabla^\perp\psi = (\partial_y\psi, -\partial_x\psi)$, $\mathbf{B} = \nabla^\perp a$.
+Notations écran conformes à `docs/specs/notations.md` : domaine $\Omega$, bord $\partial\Omega$, normale sortante $\mathbf{n}$, $\nabla^\perp\psi = (\partial_y\psi, -\partial_x\psi)$, $\mathbf{B} = \nabla^\perp a$.
 
 Conventions de sens, à ne jamais contredire à l'écran :
 

@@ -9,8 +9,8 @@ Usage (racine du site) :
 import sys
 from pathlib import Path
 
-ROOT = Path(__file__).resolve().parent.parent
-sys.path.insert(0, str(ROOT / "tools"))
+ROOT = Path(__file__).resolve().parent.parent / "site"  # racine du site publié
+sys.path.insert(0, str(Path(__file__).resolve().parent))
 from page_header import header  # noqa: E402
 
 if len(sys.argv) != 4:

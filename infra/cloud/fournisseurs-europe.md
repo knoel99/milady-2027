@@ -88,7 +88,7 @@ l'hypothèse « HT », **non vérifiée**.
   plus SEPA. Les **cartes virtuelles et prépayées sont refusées**, et le 3-D Secure est recommandé. Le
   prélèvement a lieu en début de mois suivant (`…/pages/billing/faq.mdx`).
 - **Spot** : aucune offre GPU interruptible trouvée (**non vérifié**).
-- **Ce qui compte ici** : le stockage S3 est déjà cité par le dépôt (`specs/infra.md`, `MILADY_STORAGE_URI`). Le
+- **Ce qui compte ici** : le stockage S3 est déjà cité par le dépôt (`docs/specs/infra.md`, `MILADY_STORAGE_URI`). Le
   quota d'un seul L4 au départ suffit, car plusieurs simulations 64³ peuvent tourner en parallèle sur ce GPU.
 
 ### OVHcloud (France) : le moins cher en euros parmi les L4, avec 200 € de crédit d'essai
@@ -233,7 +233,7 @@ liquidation rapportée).
 - Nebius : https://nebius.com/prices , https://docs.nebius.com/compute/resources/pricing , https://docs.nebius.com/overview/regions , https://docs.nebius.com/compute/resources/quotas-limits , https://docs.nebius.com/compute/storage/boot-disk-images , https://docs.nebius.com/signup-billing/sign-up
 - Verda : https://verda.com/pricing?currency=eur , https://docs.verda.com/welcome-to-verda/pricing-and-billing/ , https://docs.verda.com/welcome-to-verda/locations-and-sustainability/ , https://docs.verda.com/storage/object-storage/ , https://docs.verda.com/cpu-and-gpu-instances/set-up-a-gpu-instance/ , https://docs.verda.com/welcome-to-verda/release-notes/
 - Genesis Cloud : https://www.genesiscloud.com/ (échec TLS), https://genesiscloud.com/ (erreur 522), https://bizety.com/?p=12386 (article du 23/09/2025)
-- Dépôt (lecture seule) : `infra/README.md` §2.1, §6.2, §6.3 ; `infra/docker/Dockerfile.gpu` (torch 2.14.1, CUDA 12.6) ; `milady/sim/mhd3d.py` (`BENCHMARK_NOTES`)
+- Dépôt (lecture seule) : `infra/README.md` §2.1, §6.2, §6.3 ; `infra/docker/Dockerfile.gpu` (torch 2.14.1, CUDA 12.6) ; `src/milady/sim/mhd3d.py` (`BENCHMARK_NOTES`)
 
 Les pages et réponses d'API brutes sont conservées dans
 (copies de travail non versionnées).

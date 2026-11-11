@@ -15,7 +15,7 @@ import subprocess
 import sys
 from pathlib import Path
 
-ROOT = Path(__file__).resolve().parent.parent
+ROOT = Path(__file__).resolve().parent.parent / "site"  # racine du site publié
 QUARTO = os.environ.get("QUARTO", "quarto")
 BASE = "https://cdn.jsdelivr.net/npm/katex@0.19.0/dist/"
 JS_TAG = (

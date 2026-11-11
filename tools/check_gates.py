@@ -16,7 +16,7 @@ import html
 from pathlib import Path
 from urllib.parse import urlsplit
 
-ROOT = Path(__file__).resolve().parent.parent
+ROOT = Path(__file__).resolve().parent.parent / "site"  # racine du site publié
 KATEX_SRI = 'integrity="sha384-QFFtAGzvvj+bfgCGxXJlNZZR1nXEZgvG8tDLCCY1F19xl20WlfTYgguB4VcNdxYk"'
 PREP_SECTIONS = ["{#objectifs}", "{#prerequis}", "{#plan}", "{#exercices}", "{#lien-stage}", "{#plus-loin}", "{#sources}"]
 

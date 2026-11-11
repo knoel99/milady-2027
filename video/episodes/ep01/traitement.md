@@ -1,7 +1,7 @@
 # Épisode 01 : traitement
 
 Titre de travail : « Ce qui sort, ce qui tourne ».
-Module rattaché : `prep/p1-calcul-vectoriel/index.qmd`, « Calcul vectoriel et analyse de Fourier ».
+Module rattaché : `site/prep/p1-calcul-vectoriel/index.qmd`, « Calcul vectoriel et analyse de Fourier ».
 Durée visée : environ 12 min 15, soit environ 1 840 mots de narration à 150 mots par minute, sous le plafond de 2 000 mots.
 Spectateur : fin de L1, premier épisode du film, aucun module ni épisode avant celui-ci.
 

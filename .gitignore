@@ -2,11 +2,11 @@ __pycache__/
 *.pyc
 experiences/donnees_e2/
 experiences/resultats/*_quick.*
-experiences/figures/*_quick.*
+site/experiences/figures/*_quick.*
 index_files/
 **/index_files/
 .quarto/
-figures/**/node_modules/
+site/figures/**/node_modules/
 experiences/resultats/cache_e1/
 /data/
 .env

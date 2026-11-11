@@ -1,7 +1,7 @@
 # Épisode 02 : traitement
 
 Titre de travail : « Le bord, l'aimant et la carte des hauteurs ».
-Module rattaché : `prep/p1-calcul-vectoriel/index.qmd`, « Calcul vectoriel et analyse de Fourier ».
+Module rattaché : `site/prep/p1-calcul-vectoriel/index.qmd`, « Calcul vectoriel et analyse de Fourier ».
 Durée visée : environ 11 min 50, soit environ 1 780 mots de narration à 150 mots par minute, sous le plafond de 2 000 mots.
 Spectateur : fin de L1, qui a vu ep01 (flux, divergence, circulation, vorticité, roue à aubes, tourbillon ponctuel, énigme des cellules) et rien d'autre.
 
@@ -43,7 +43,7 @@ Retour au tourbillon ponctuel de ep01, par l'anneau carrelé entre deux cercles 
 
 **L'image.** Deux carreaux voisins, flèches opposées sur le côté commun qui s'effacent. Le carrelage complet, les côtés intérieurs s'effacent par paires, il ne reste que le contour. Les carreaux se subdivisent. Les deux énoncés en mots, puis en formule ; sous l'énoncé de Stokes : « bord parcouru en gardant la région à sa gauche, sens trigonométrique pour une région sans trou ». L'anneau carrelé entre deux cercles du tourbillon, sens trigonométrique sur le grand cercle, sens horaire sur le petit, et « circulation(grand) − circulation(petit) = 0 ».
 
-**Contraintes.** Aucun cercle ne rétrécit sur le centre du tourbillon. Les carreaux sont parcourus dans le sens trigonométrique. Le bord d'une région est parcouru en la gardant à sa gauche : pour l'anneau, le petit cercle est donc parcouru dans le sens horaire. Énoncés à l'écran, conformes à `specs/notations.md` (domaine $\Omega$, bord $\partial\Omega$, normale sortante $\mathbf{n}$).
+**Contraintes.** Aucun cercle ne rétrécit sur le centre du tourbillon. Les carreaux sont parcourus dans le sens trigonométrique. Le bord d'une région est parcouru en la gardant à sa gauche : pour l'anneau, le petit cercle est donc parcouru dans le sens horaire. Énoncés à l'écran, conformes à `docs/specs/notations.md` (domaine $\Omega$, bord $\partial\Omega$, normale sortante $\mathbf{n}$).
 
 ### Idée 2. Du plan à l'espace : le champ magnétique n'a pas de source
 

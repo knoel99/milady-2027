@@ -1,6 +1,6 @@
 # Épisode 01 : traitement
 
-Module rattaché : `prep/p1-calcul-vectoriel/index.qmd`, « Calcul vectoriel et analyse de Fourier ».
+Module rattaché : `site/prep/p1-calcul-vectoriel/index.qmd`, « Calcul vectoriel et analyse de Fourier ».
 Durée visée : 14 min, soit environ 2 100 mots de narration à 150 mots par minute.
 Spectateur : fin de L1, premier épisode du film, aucun module ni épisode avant celui-ci.
 

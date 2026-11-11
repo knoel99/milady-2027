@@ -16,7 +16,7 @@ heures-GPU** et un processeur ne suffit plus pour 256³.
 
 ## 1. Hypothèses de coût
 
-### 1.1 Processeur (mesuré, `milady/sim/mhd3d.py` l. 75–107, BENCHMARK_NOTES)
+### 1.1 Processeur (mesuré, `src/milady/sim/mhd3d.py` l. 75–107, BENCHMARK_NOTES)
 
 | Cas (float32, 1 trajectoire, RK4) | 1 fil | 2 fils |
 |---|---|---|
@@ -49,14 +49,14 @@ projection de Leray, masques) ; un pas RK4 ≈ **430 lancements de noyaux** (cin
 - **256³** : ≈ **120–300 ms/pas** pour 1–2 To/s ; proportionnellement plus lent sur une carte à
   plus faible bande passante (ordre de grandeur, caractéristiques constructeur non relues ici).
 - Plusieurs processus sur un même GPU (ce que fait `make sweep` en local : tous les créneaux sur le
-  GPU 0, `milady/sweep.py` l. 497–505, 544–561) remplissent les temps morts de lancement ; gain
+  GPU 0, `src/milady/sweep.py` l. 497–505, 544–561) remplissent les temps morts de lancement ; gain
   attendu ×2–4 en débit à 64³ (non vérifié). Chaque processus a besoin d'un vCPU pour lancer ses noyaux.
 
 Première action sur la machine louée, qui remplace toutes ces hypothèses (et produit les chiffres de
 la scène vidéo M15) : `python -m milady.sim.mhd3d bench --n 64 128 256 --device cuda --dtype float32 --steps 50`
 puis `--mode kinematic --n-traj 4`.
 
-### 1.3 Pas de temps (CFL, `cfl_dt` l. 588–591 ; boucle d'événements `milady/sim/run.py` l. 630–647)
+### 1.3 Pas de temps (CFL, `cfl_dt` l. 588–591 ; boucle d'événements `src/milady/sim/run.py` l. 630–647)
 
 dt = min(dt_config, cfl / ((max|u| + max|B|) |k|max)), |k|max = √3 × (N−1)//3 = 36,4 (64³), 72,7 (128³),
 147 (256³). Le pas est recalculé à chaque événement (diagnostic ou instantané) et rendu constant sur
@@ -73,7 +73,7 @@ l'intervalle.
 ## 2. Tableaux par calcul
 
 Tailles de fichiers : float32 brut = forme × 4 octets ; `write_mff` compresse en gzip niveau 4
-(`milady/data/format.py` l. 372–373), gain sur des champs float32 turbulents non mesuré (probablement
+(`src/milady/data/format.py` l. 372–373), gain sur des champs float32 turbulents non mesuré (probablement
 faible) : les volumes ci-dessous sont des **majorants**. Les instantanés restent en mémoire pendant la
 simulation (`_RunState.add_snap`, `run.py` l. 484) et chaque point de contrôle `.npz` les réécrit tous.
 

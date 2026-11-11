@@ -8,7 +8,7 @@
 # (diagnostic growth_rate_fit, notes de la simulation). Sortie : modes propres dominants B(x; Rm).
 #
 # Coût : mesuré sur CPU (2 fils, machine partagée) ≈ 0,03 s par pas et par trajectoire à 64³ en
-# cinématique (≈ 1/3 à 1/2 du mode dynamique, voir milady/sim/mhd3d.py, BENCHMARK_NOTES) ; le pas
+# cinématique (≈ 1/3 à 1/2 du mode dynamique, voir src/milady/sim/mhd3d.py, BENCHMARK_NOTES) ; le pas
 # effectif est fixé par la condition CFL (≈ 0,01 à 64³). Sur GPU, mesurer d'abord
 #   python -m milady.sim.mhd3d bench --n 64 --mode kinematic --device cuda
 # puis ajuster resources.time (gabarit Slurm) en conséquence.

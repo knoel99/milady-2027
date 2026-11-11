@@ -46,8 +46,8 @@ from typing import Any
 import numpy as np
 
 REPO = Path(__file__).resolve().parents[2]
-if str(REPO) not in sys.path:  # exécution possible sans « pip install -e . »
-    sys.path.insert(0, str(REPO))
+if str(REPO / "src") not in sys.path:  # exécution possible sans « pip install -e . »
+    sys.path.insert(0, str(REPO / "src"))
 
 
 # ---------------------------------------------------------------------------------------------

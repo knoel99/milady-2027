@@ -1,7 +1,7 @@
 # Épisode 02 : narration
 
 Titre de travail : « Le bord, l'aimant et la carte des hauteurs ».
-Module : `prep/p1-calcul-vectoriel/index.qmd`. Traitement : `video/episodes/ep02/traitement.md`.
+Module : `site/prep/p1-calcul-vectoriel/index.qmd`. Traitement : `video/episodes/ep02/traitement.md`.
 Ton : tutoiement. Voix : environ 1 780 mots, soit 11 min 50 à 150 mots par minute.
 Les lignes « > écran : » et « > légende : » ne sont pas dites. La voix ne dicte aucune formule : la formule est à l'écran, la voix dit ce qu'elle signifie.
 

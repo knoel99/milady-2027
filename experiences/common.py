@@ -20,7 +20,7 @@ import torch.nn as nn
 
 HERE = Path(__file__).resolve().parent
 RESULTS = HERE / "resultats"
-FIGS = HERE / "figures"
+FIGS = HERE.parent / "site" / "experiences" / "figures"  # figures publiées avec la page
 RESULTS.mkdir(exist_ok=True)
 FIGS.mkdir(exist_ok=True)
 

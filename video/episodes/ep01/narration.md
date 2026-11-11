@@ -1,7 +1,7 @@
 # Épisode 01 : narration
 
 Titre de travail : « Ce qui sort, ce qui tourne ».
-Module : `prep/p1-calcul-vectoriel/index.qmd`. Traitement : `video/episodes/ep01/traitement.md`.
+Module : `site/prep/p1-calcul-vectoriel/index.qmd`. Traitement : `video/episodes/ep01/traitement.md`.
 Ton : tutoiement. Voix : environ 1 840 mots, soit 12 min 15 à 150 mots par minute.
 Les lignes « > écran : » et « > légende : » ne sont pas dites. La voix ne dicte aucune formule : la formule est à l'écran, la voix dit ce qu'elle signifie.
 

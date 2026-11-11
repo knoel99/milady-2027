@@ -190,7 +190,7 @@ technique.
 ### 4.1 Corrections qui rendent les résultats exploitables
 
 1. **σ(dissipation)/σ_ref dans l'évaluation 3D.**
-   - Constat : `budget_summary` (`milady/eval/metrics.py`, l. 451–470) ne renvoie que des
+   - Constat : `budget_summary` (`src/milady/eval/metrics.py`, l. 451–470) ne renvoie que des
      moyennes ; `_ensemble_stats` (l. 570–584) garde l'écart-type des hélicités, pas celui des
      dissipations.
    - À faire : ajouter l'écart-type par échantillon de Dν + Dη (et de chaque terme) et son rapport à
@@ -220,7 +220,7 @@ technique.
      paramètre (`fm3d.py`, l. 655–656).
 
    **Essai réduit**, sous un **autre nom de campagne**, sur 2 valeurs de Rm. Une grille 16³ est
-   impossible avec `kmax = 8` : `to_grid` exige 2·kmax < N (`milady/train/data.py`, l. 389–391).
+   impossible avec `kmax = 8` : `to_grid` exige 2·kmax < N (`src/milady/train/data.py`, l. 389–391).
    Ajouter `--set train.iters=10 data.kmax=3 data.campaign=<essai> data.dataset=<essai> name=<essai>`,
    ou prendre une grille 24³.
 4. **Résolution de M4.** Préparer une campagne séparée (par exemple `palier2_tg3d_hr.yaml`) :
@@ -371,7 +371,7 @@ AWS_DEFAULT_REGION=fr-par
 ```
 
 - **Région.** Le `.env` généré garde `AWS_DEFAULT_REGION=us-east-1`, utilisé pour signer les
-  requêtes S3 (`milady/storage.py`, l. 139–140). La doc Scaleway demande la région du bucket
+  requêtes S3 (`src/milady/storage.py`, l. 139–140). La doc Scaleway demande la région du bucket
   (`fr-par`) avec ce point d'accès [SCW-CLI]. D'où la dernière ligne.
 - **Effet de bord.** Cette variable est aussi passée au conteneur MLflow, qui parle à MinIO
   (`docker-compose.yml`, l. 175). Que MinIO accepte `fr-par` est **non vérifié**. Le `make smoke`
@@ -456,7 +456,7 @@ make sweep CONFIG=infra/configs/palier2_abc3d.yaml SWEEP_ARGS="--max-parallel 6"
 ```
 
 - `--max-parallel` doit rester ≤ vCPU − 2 : chaque processus GPU occupe un vCPU. Le nombre de fils
-  par simulation vaut min(`resources.cpus`, vCPU // max-parallel) (`milady/sweep.py`, l. 548–549).
+  par simulation vaut min(`resources.cpus`, vCPU // max-parallel) (`src/milady/sweep.py`, l. 548–549).
   Sur la `l4-90` d'OVHcloud (22 vCPU), on peut monter à 16.
 - Plusieurs simulations sur un même GPU n'ont **jamais été testées**. Pendant M4, `nvidia-smi` doit
   montrer 6 processus.
@@ -515,7 +515,7 @@ Les deux runs partent du même modèle, font le même nombre d'itérations et on
 aux poids de départ. Seule la perte de stationnarité change.
 
 Attention : `stationarity.anchor` s'applique **même quand `stationarity.enabled=false`**
-(`milady/train/fm3d.py`, l. 1164 et 1351–1353). Le témoin doit donc recevoir aussi
+(`src/milady/train/fm3d.py`, l. 1164 et 1351–1353). Le témoin doit donc recevoir aussi
 `stationarity.anchor=1.0`. Sans cela, deux choses changeraient entre les runs. La commande du run
 principal vient de `train_fm3d.yaml`, l. 13–15.
 
@@ -946,7 +946,7 @@ Toutes lues le **2026-11-08** (00 h 30–00 h 50 UTC), sauf mention contraire.
 - [NV-L4] https://www.nvidia.com/en-us/data-center/l4/ ; [NV-L40S] https://www.nvidia.com/en-us/data-center/l40s/ ; [NV-A100] https://www.nvidia.com/en-us/data-center/a100/
 - [EDARI] https://www.edari.fr/ ; [EDARI-DOC] https://www.edari.fr/documentation/index.php/Documentation_compl%C3%A8te
 - [IDRIS-NU] http://www.idris.fr/docs/jean-zay/nouvel-utilisateur
-- Dépôt le dépôt (lu, non modifié) : `infra/README.md`, `Makefile`, `infra/deploy/`, `infra/docker/`, `infra/db/schema.sql`, `infra/configs/`, `milady/`, `calcul/index.qmd`, `these/index.qmd` ; plan vidéo : `video_plan/inventory.md` §4, `pedagogy.md` §1.8.
+- Dépôt le dépôt (lu, non modifié) : `infra/README.md`, `Makefile`, `infra/deploy/`, `infra/docker/`, `infra/db/schema.sql`, `infra/configs/`, `src/milady/`, `calcul/index.qmd`, `these/index.qmd` ; plan vidéo : `video_plan/inventory.md` §4, `pedagogy.md` §1.8.
 
 ---
 
