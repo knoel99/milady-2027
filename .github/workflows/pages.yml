@@ -36,10 +36,8 @@ jobs:
       - name: Rendu de toutes les pages
         run: python3 tools/render.py --all
 
-      - name: Portes de qualité
-        run: |
-          python3 tools/check_gates.py
-          python3 tools/compare_fr_en.py --all
+      - name: Quality gates
+        run: python3 tools/check_gates.py
 
       - name: KaTeX
         run: |

@@ -1,4 +1,4 @@
-/* MilaDy 2027 — habillage des pages.
+/* MilaDy 2027 — page chrome.
    1. Theme: light / dark, follows the system until the reader chooses;
       the choice is kept in localStorage ("milady-theme").
    2. Side contents: built from the h2 / h3 headings of <main>; always
@@ -6,22 +6,14 @@
       the section being read is highlighted and named in the top bar.
    3. Tables: wrapped so they scroll sideways on phones; two-column
       key / value tables (course fiches) stack on narrow screens.
-   4. Langue : textes d'interface en français ou en anglais selon <html lang>,
-      bouton FR / EN vers la page homologue (même chemin sous en/).
-   Interface strings follow <html lang> (fr or en). */
+   4. Long formulas are scaled to fit narrow screens. */
 (function () {
   var KEY = "milady-theme";
   var TOC_KEY = "milady-toc-hidden";
   var root = document.documentElement;
-  var LANG = /^en/i.test(root.getAttribute("lang") || "") ? "en" : "fr";
-  var T = {
-    fr: { toLight: "Passer en mode clair", toDark: "Passer en mode sombre", light: "Clair", dark: "Sombre",
-          contents: "Sommaire", skip: "Aller au contenu", close: "✕ Fermer", closeLabel: "Fermer le sommaire",
-          top: "↑ Haut de page", other: "EN", otherLabel: "English version" },
-    en: { toLight: "Switch to light mode", toDark: "Switch to dark mode", light: "Light", dark: "Dark",
-          contents: "Contents", skip: "Skip to content", close: "✕ Close", closeLabel: "Close the contents",
-          top: "↑ Top of page", other: "FR", otherLabel: "Version française" }
-  }[LANG];
+  var T = { toLight: "Switch to light mode", toDark: "Switch to dark mode", light: "Light", dark: "Dark",
+            contents: "Contents", skip: "Skip to content", close: "✕ Close", closeLabel: "Close the contents",
+            top: "↑ Top of page" };
 
   function store(k, v) { try { if (v === null) localStorage.removeItem(k); else localStorage.setItem(k, v); } catch (e) {} }
   function read(k) { try { return localStorage.getItem(k); } catch (e) { return null; } }
@@ -260,33 +252,7 @@
   window.addEventListener("load", fitFormulas);
   window.addEventListener("resize", scheduleFit);
 
-  /* ---------- 5. Language toggle: same path under en/ ---------- */
-  function siteRoot() {
-    var s = document.querySelector('script[src$="assets/theme.js"]');
-    if (!s) return null;
-    return s.src.replace(/assets\/theme\.js(\?.*)?$/, "");
-  }
-  function addLangToggle() {
-    var bar = document.querySelector(".topbar");
-    var rootUrl = siteRoot();
-    if (!bar || !rootUrl || document.getElementById("lang-toggle")) return;
-    var here = window.location.href.split("#")[0].split("?")[0];
-    if (here.indexOf(rootUrl) !== 0) return;
-    var rel = here.slice(rootUrl.length);
-    var other = /^en\//.test(rel) ? rel.slice(3) : "en/" + rel;
-    var a = el("a", "tb-btn lang-btn", null);
-    a.id = "lang-toggle";
-    a.href = rootUrl + other + window.location.hash;
-    a.setAttribute("hreflang", LANG === "fr" ? "en" : "fr");
-    a.setAttribute("title", T.otherLabel);
-    a.setAttribute("aria-label", T.otherLabel);
-    a.innerHTML = '<span class="tb-label-always">' + T.other + "</span>";
-    var theme = document.getElementById("theme-toggle");
-    if (theme) bar.insertBefore(a, theme); else bar.appendChild(a);
-  }
-
   function mount() {
-    addLangToggle();
     setupTables();
     setupToc();
     var btn = document.getElementById("theme-toggle");

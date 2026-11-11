@@ -1,6 +1,6 @@
-// Figure 1 « cadre » (rapport de stage MilaDy): the proposed generative framework, one causal row of five stations.
+// Figure 1 "cadre", ENGLISH version (MilaDy internship report): the proposed generative framework, one causal row of five stations.
 // a lambda conditions a latent flow matching (equivariant under S); b a functional decoder outputs potentials, the curl gives
-// divergence-free fields; c generated u, B in the VKS target geometry; d the energy balance checked in law; e downstream uses.
+// divergence-free fields; c generated u, B in the VKS target geometry; d the energy budget checked on average (distributional control); e downstream uses.
 // Constraint chips (classes C1, C3, C4 of the theory note) sit under the station that enforces each one.
 // Hero: VKS cylinder with generated u and B, drawn with vector 3D library parts (L.obliqueProj, L.cylinder3) and the illustrated finish.
 import { K, heading, chip, latentFlow, potentialMap, fieldLines, vks, lawHist, miniDiff, modesGlyph, assimGlyph, riceGlyph, check, cross } from './parts.js';
@@ -16,11 +16,11 @@ export default async function draw(F, L) {
   const pc = F.panel('c', { x: 99, y: T, w: 30, h: H });
   const pd = F.panel('d', { x: 129, y: T, w: 32, h: H });
   const pe = F.panel('e', { x: 161, y: T, w: 22, h: H });
-  heading(L, pa, 'Flow matching latent');
-  heading(L, pb, 'Décodeur à potentiels');
-  heading(L, pc, 'Cible 3D : VKS');
-  heading(L, pd, 'Contrôle en loi');
-  heading(L, pe, 'Usages');
+  heading(L, pa, 'Latent flow matching');
+  heading(L, pb, 'Potential decoder');
+  heading(L, pc, '3D target: VKS');
+  heading(L, pd, 'Distributional control');
+  heading(L, pe, 'Uses');
   const yA = 90;                                 // main axis (panel-local pt)
   const chipY = mm(H) - 15;
 
@@ -35,7 +35,7 @@ export default async function draw(F, L) {
     L.circle(pa, xx, y1 - (y1 - y0) * pos[i], 2.3, { fill: '#ffffff', stroke: K.lam, width: 0.7 });
     L.text(pa, xx, y1 + 6, n, { size: 5.6, anchor: 'middle', valign: 'top', color: K.ink });
   });
-  L.text(pa, 17.5, 127, 'Paramètres\nde contrôle', { size: 6, anchor: 'middle', valign: 'top', color: K.ink, lineGap: 1.15 });
+  L.text(pa, 17.5, 127, 'Control\nparameters', { size: 6, anchor: 'middle', valign: 'top', color: K.ink, lineGap: 1.15 });
   const fl = latentFlow(F, L, pa, { x: 52, y: yA - 56, w: 50, h: 112 }, D, { dens: 11 });
   const vx = fl.X(0.5);
   L.text(pa, vx, vy, '*v*_{θ}(**z**, *t*, {#009E73|**λ**})', { size: 6, anchor: 'middle', valign: 'middle', color: K.z });
@@ -55,7 +55,7 @@ export default async function draw(F, L) {
   const w8 = [0.25, 0.6, 1, 0.45, 0.15];
   tok.forEach(([x, y], i) => L.line(pb, [x + 0.3, y], [bx, by + 6 + i * 5], { stroke: K.z, width: 0.25 + 0.75 * w8[i], opacity: 0.35 + 0.6 * w8[i] }));
   L.rect(pb, bx, by, bw, bh, { r: 3, fill: '#f1eef7', stroke: K.z, width: 0.5 });
-  L.text(pb, bx + bw / 2, by + bh / 2, 'Attention\ncroisée', { size: 6, anchor: 'middle', valign: 'middle', color: K.ink, lineGap: 1.15 });
+  L.text(pb, bx + bw / 2, by + bh / 2, 'Cross-\nattention', { size: 6, anchor: 'middle', valign: 'middle', color: K.ink, lineGap: 1.15 });
   const qs = 20, qx = bx + (bw - qs) / 2, qy = by + bh + 10;
   L.rect(pb, qx, qy, qs, qs, { fill: '#f4f4f4', stroke: '#8a8a8a', width: 0.4 });
   L.circle(pb, qx + qs * 0.5, qy + qs * 0.42, 1.4, { fill: K.ink, stroke: 'none' });
@@ -82,36 +82,36 @@ export default async function draw(F, L) {
 
   // ================================================================ c: VKS target
   vks(F, L, pc, 31, yA + 2, 22, D, { elev: 20, clipR: 2.4 });
-  L.callout(pc, L.toLocal(F, pc, F.at('vks.impB')), [6, 143], 'Turbines\ncontrarotatives', { anchor: 'start', size: 6 });
+  L.callout(pc, L.toLocal(F, pc, F.at('vks.impB')), [6, 143], 'Counter-rotating\nimpellers', { anchor: 'start', size: 6 });
   L.callout(pc, L.toLocal(F, pc, F.at('vks.ucell')), [4, yA - 20], '**u**', { anchor: 'middle', size: 6.5, textColor: K.u, color: K.u });
   L.callout(pc, L.toLocal(F, pc, F.at('vks.Bloop')), [76, 62], '**B**', { anchor: 'middle', size: 6.5, textColor: K.B, color: K.B });
 
   // ================================================================ d: law control
   const lh = lawHist(F, L, pd, { x: 6, y: 42, w: 66, h: 40 }, D, { arrowY: 35 });
   L.text(pd, lh.xe, 25, '*E*[*ε*] = *E*[*P*]', { size: 6, anchor: 'middle', color: K.ink });
-  L.text(pd, lh.xr0 + 3, 35, 'inclinaison', { size: 5.5, color: K.E, valign: 'middle' });
+  L.text(pd, lh.xr0 + 3, 35, 'tilting', { size: 5.5, color: K.E, valign: 'middle' });
   L.text(pd, 61, 64, '*q*_{θ}', { size: 5.8, color: K.mid });
   miniDiff(L, pd, 6, 106, 28, 20, D, 'law');
   miniDiff(L, pd, 46, 106, 28, 20, D, 'sample');
   check(L, pd, 31, 103, 5, K.ink); cross(L, pd, 71, 103, 5, K.ink);
-  L.text(pd, 20, 135, 'en loi', { size: 6, anchor: 'middle', color: K.ink });
-  L.text(pd, 60, 135, 'par échantillon', { size: 6, anchor: 'middle', color: K.ink });
+  L.text(pd, 20, 135, 'on average', { size: 6, anchor: 'middle', color: K.ink });
+  L.text(pd, 60, 135, 'per sample', { size: 6, anchor: 'middle', color: K.ink });
   L.text(pd, 40, 147, 'd*E*/d*t* = *P* − *ε*', { size: 6, anchor: 'middle', color: K.ink });
 
   // ================================================================ e: uses
   modesGlyph(L, pe, 4, 27, 15, D);
-  L.text(pe, 4, 53, 'Modèles réduits', { size: 6, color: K.ink });
+  L.text(pe, 4, 53, 'Reduced models', { size: 6, color: K.ink });
   assimGlyph(L, pe, 4, 67, 52, 21, D);
-  L.text(pe, 4, 98, 'Assimilation\nde données', { size: 6, color: K.ink, lineGap: 1.15 });
+  L.text(pe, 4, 98, 'Data\nassimilation', { size: 6, color: K.ink, lineGap: 1.15 });
   riceGlyph(L, pe, 4, 119, 48, 20, D);
   L.text(pe, 55, 139, '*D*', { size: 5.6, color: K.ink, valign: 'middle' });
-  L.text(pe, 4, 151, 'Renversements\n(Rice)', { size: 6, color: K.ink, lineGap: 1.15 });
+  L.text(pe, 4, 151, 'Field reversals\n(Rice)', { size: 6, color: K.ink, lineGap: 1.15 });
 
   // ================================================================ constraint chips (classes of the theory note)
-  chip(L, pa, 3, chipY, 138, 'C3', 'symétrie **B** ↦ −**B** : équivariance');
-  chip(L, pb, 3, chipY, 126, 'C1', '∇·**u** = ∇·**B** = 0 : par construction');
-  chip(L, pc, 3, chipY, 79, null, 'stage : 3 modes, MHD 2D', { dash: '1.6 1.2', fill: '#f6f6f6' });
-  chip(L, pd, 3, chipY, 86, 'C4', 'bilan d’énergie : en loi');
+  chip(L, pa, 3, chipY, 138, 'C3', 'symmetry **B** ↦ −**B**: equivariance');
+  chip(L, pb, 3, chipY, 126, 'C1', '∇·**u** = ∇·**B** = 0: by construction');
+  chip(L, pc, 3, chipY, 79, null, 'tested: 3-mode, 2D MHD', { dash: '1.6 1.2', fill: '#f6f6f6' });
+  chip(L, pd, 3, chipY, 86, 'C4', 'mean energy budget');
 
   // ================================================================ flow between stations
   const ya = mm(T) + yA;
@@ -125,7 +125,7 @@ export default async function draw(F, L) {
   const xv = vx + 10, yv = mm(T) + vy - 5.5, yt = mm(2.3), xl = mm(129) - 4.5, yeq = mm(T) + 23;   // xl: clear of the panel letter d
   L.path(R0, `M${mm(129) + lh.xe - 17.5},${yeq} L${xl},${yeq} L${xl},${yt} L${xv},${yt} L${xv},${yv}`, { stroke: K.mid, width: 0.6, dash: '2 1.3', fill: 'none' });
   L.chevron(R0, [xv, yv], [0, 1], { len: 2.6, spread: 0.6, stroke: K.mid, width: 0.6 });
-  L.text(R0, (xl + xv) / 2, yt, 'perte de stationnarité', { size: 5.6, anchor: 'middle', valign: 'middle', color: K.mid, halo: true, italic: true });
+  L.text(R0, (xl + xv) / 2, yt, 'stationarity loss', { size: 5.6, anchor: 'middle', valign: 'middle', color: K.mid, halo: true, italic: true });
   F.anchor('fb.from', R0, mm(129) + lh.xe - 17.5, yeq); F.anchor('fb.to', R0, xv, yv);
   F.relate('fb.from', 'fb.to', 'feedback'); F.drew('fb.from', 'fb.to', 'feedback');
 }

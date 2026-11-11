@@ -1,5 +1,5 @@
-// Figure « taxonomie » : classes de contraintes C1–C4 et mécanisme adapté (a) ; piège de C4 (b).
-// Hero: none, taxonomie et lois de probabilité (route flat : cases, vignettes géométriques, petits graphes qualitatifs).
+// Figure "taxonomie" (English version): constraint classes C1–C4 and matched mechanism (a); the C4 trap (b).
+// Hero: none, taxonomy and probability distributions (flat route: boxes, geometric vignettes, small qualitative plots).
 export const figure = { width: 183, height: 80, name: 'taxonomie', format: 'journal', illustrate: false };
 
 export default async function draw(F, L) {
@@ -22,8 +22,8 @@ export default async function draw(F, L) {
   const a = F.panel('a', { x: 0, y: 0, w: 112, h: 80 });
   const colX = [2, 29.5, 57, 84.5].map(m), colW = m(25.5);
   const groups = [
-    { x0: colX[0], x1: colX[1] + colW, col: BLUE, txt: BLUE_TXT, s: 'Vraie pour chaque échantillon' },
-    { x0: colX[2], x1: colX[3] + colW, col: OR, txt: OR_TXT, s: 'Vraie pour la loi' },
+    { x0: colX[0], x1: colX[1] + colW, col: BLUE, txt: BLUE_TXT, s: 'True for each sample' },
+    { x0: colX[2], x1: colX[3] + colW, col: OR, txt: OR_TXT, s: 'True for the distribution' },
   ];
   for (const g of groups) {
     L.text(a, (g.x0 + g.x1) / 2, m(4.6), g.s, { size: T.head, weight: 'bold', anchor: 'middle', valign: 'middle', color: g.txt });
@@ -31,14 +31,14 @@ export default async function draw(F, L) {
   }
   const classes = [
     // join : « ou » = deux mécanismes possibles ; « et » (C3) = deux conditions qui vont ensemble (Prop. 4)
-    { id: 'C1', name: 'Locale\nlinéaire', g: 0, form: '*A***x** = 0', ex: ['∇·**u** = 0,  ∇·**B** = 0', 'Conditions aux limites', 'linéaires homogènes'],
-      mech: ['Potentiels\n**B** = ∇×**A**', 'Projection\nde Leray'], join: 'ou' },
-    { id: 'C2', name: 'Locale non\nlinéaire', g: 0, form: '*c*(**x**) = 0', ex: ['Résidu d\'EDP', 'stationnaire'],
-      mech: ['Projection\nnon linéaire', 'Pénalité,\nguidage'], join: 'ou' },
-    { id: 'C3', name: 'Symétrie', g: 1, form: '*g*_#μ = μ', ex: ['**B** ↦ −**B**', 'Rotation *R*_π (VKS)'],
-      mech: ['*v*_θ équivariant', 'Loi de base\ninvariante'], join: 'et' },
-    { id: 'C4', name: 'Statistique\nen loi', g: 1, form: '𝔼_μ[ℒφ] = 0', ex: ['Bilan d\'énergie', '𝔼[ε] = 𝔼[*P*]'],
-      mech: ['Perte de\nstationnarité', 'Inclinaison\nexponentielle'], join: 'ou' },
+    { id: 'C1', name: 'Local\nlinear', g: 0, form: '*A***x** = 0', ex: ['∇·**u** = 0,  ∇·**B** = 0', 'Homogeneous linear', 'boundary conditions'],
+      mech: ['Potentials\n**B** = ∇×**A**', 'Leray\nprojection'], join: 'or' },
+    { id: 'C2', name: 'Local\nnonlinear', g: 0, form: '*c*(**x**) = 0', ex: ['Stationary PDE', 'residual'],
+      mech: ['Nonlinear\nprojection', 'Penalty,\nguidance'], join: 'or' },
+    { id: 'C3', name: 'Symmetry', g: 1, form: '*g*_#μ = μ', ex: ['**B** ↦ −**B**', 'Rotation *R*_π (VKS)'],
+      mech: ['Equivariant *v*_θ', 'Invariant base\ndistribution'], join: 'and' },
+    { id: 'C4', name: 'Distributional\nstatistic', g: 1, form: '𝔼_μ[ℒφ] = 0', ex: ['Energy budget', '𝔼[ε] = 𝔼[*P*]'],
+      mech: ['Stationarity\nloss', 'Exponential\ntilting'], join: 'or' },
   ];
   const fy0 = m(16.3), fh = m(24);        // vignette frame
   const glyphs = [];
@@ -69,7 +69,7 @@ export default async function draw(F, L) {
   });
   // row header for the mechanisms
   {
-    const y = m(56.4), s = 'Mécanisme adapté';
+    const y = m(56.4), s = 'Matched mechanism';
     const t = L.text(a, m(56), y, s, { size: T.small, anchor: 'middle', valign: 'middle', color: GREY, italic: true });
     const b = t.getBBox();
     L.line(a, [colX[0], y], [b.x - m(1.5), y], { stroke: LG, width: 0.4 });
@@ -111,7 +111,7 @@ export default async function draw(F, L) {
     L.line(g, [mid[0], mid[1] - m(0.9)], [best[0], best[1] + m(0.9)], { stroke: BLUE, width: 0.5 });
     L.line(g, [mid[0] - m(0.7), best[1] + m(0.9)], [mid[0] + m(0.7), best[1] + m(0.9)], { stroke: BLUE, width: 0.5 });
     ring(g, ...mid, m(0.7), GREY);
-    L.text(g, mid[0], m(21.3), 'écart de Jensen', { size: T.small, anchor: 'middle', valign: 'middle', color: BLUE_TXT, italic: true });
+    L.text(g, mid[0], m(21.3), 'Jensen gap', { size: T.small, anchor: 'middle', valign: 'middle', color: BLUE_TXT, italic: true });
   }
   // ---- C3 : loi symétrique (deux nuages miroirs), échantillons non symétriques --------------------
   {
@@ -152,12 +152,12 @@ export default async function draw(F, L) {
   // panel b : C4, trois lois de dE/dt sur les mêmes axes
   // =====================================================================================================
   const b = F.panel('b', { x: 117, y: 0, w: 66, h: 80 });
-  L.text(b, m(5), m(2.9), 'Bilan d\'énergie (C4)', { size: T.head, weight: 'bold', valign: 'middle', color: TXT });
-  L.text(b, m(65.5), m(2.9), 'Allures illustratives', { size: T.small, anchor: 'end', valign: 'middle', color: GREY, italic: true });
+  L.text(b, m(5), m(2.9), 'Energy budget (C4)', { size: T.head, weight: 'bold', valign: 'middle', color: TXT });
+  L.text(b, m(65.5), m(2.9), 'Illustrative shapes', { size: T.small, anchor: 'end', valign: 'middle', color: GREY, italic: true });
   const px = [1.5, 23.75, 46].map(m), pw = m(19.5);
   const base = m(44), ytop = m(15.5), ys = m(45 - 17) / 0.5;      // 0.5 density units = 28 mm
   const titles = [
-    { s: 'Loi vraie', c: TXT }, { s: 'Projection par\néchantillon', c: BLUE_TXT }, { s: 'Correction\nen loi', c: OR_TXT },
+    { s: 'True\ndistribution', c: TXT }, { s: 'Per-sample\nprojection', c: BLUE_TXT }, { s: 'Distributional\ncorrection', c: OR_TXT },
   ];
   const Xs = (k) => (v) => px[k] + (v + 3.2) / 6.4 * pw;
   const curve = (k, arr) => D.x.map((v, i) => [Xs(k)(v), base - arr[i] * ys]);
@@ -194,18 +194,18 @@ export default async function draw(F, L) {
   }
   // direct labels
   L.text(b, Xs(0)(-1.55), base - 0.29 * ys, 'μ', { size: T.label, anchor: 'end', valign: 'middle', color: INK });
-  L.text(b, Xs(0)(0) - m(1.5), base + m(1.75), 'moyenne', { size: T.small, anchor: 'end', valign: 'middle', color: SUB });
+  L.text(b, Xs(0)(0) - m(1.5), base + m(1.75), 'mean', { size: T.small, anchor: 'end', valign: 'middle', color: SUB });
   for (const k of [1, 2]) L.text(b, Xs(k)(-1.6), base - 0.2 * ys, 'μ', { size: T.label, anchor: 'end', valign: 'middle', color: INK });
   L.text(b, Xs(1)(1.95), base - 0.22 * ys, '*q*_θ', { size: T.label, anchor: 'start', valign: 'middle', color: '#7a7a7a' });
   L.text(b, Xs(2)(1.95), base - 0.22 * ys, '*q*_θ', { size: T.label, anchor: 'start', valign: 'middle', color: '#7a7a7a' });
-  L.text(b, Xs(1)(0) - m(1.2), m(17.2), 'Dirac en 0', { size: T.small, anchor: 'end', valign: 'middle', color: BLUE_TXT });
+  L.text(b, Xs(1)(0) - m(1.2), m(17.2), 'Dirac at 0', { size: T.small, anchor: 'end', valign: 'middle', color: BLUE_TXT });
 
   // ---- sample rows : lois empiriques (masses de Dirac pondérées), mêmes axes que les densités ---------
   const sb = m(60.2), h0 = m(2.6), N = D.samples_mu.length;      // h0 = hauteur d'un poids uniforme 1/N
   const stem = (x, h, col, edge) => { L.line(b, [x, sb], [x, sb - h], { stroke: edge, width: 0.6, cap: 'butt' }); L.circle(b, x, sb - h, m(0.42), { fill: col, stroke: edge, width: 0.35 }); };
   for (const k of [0, 2]) L.line(b, [px[k] + m(1), sb], [px[k] + pw - m(1), sb], { stroke: GREY, width: 0.4, cap: 'butt' });
   for (const v of D.samples_mu) stem(Xs(0)(v), h0, DOT, DOT);
-  L.text(b, px[0] + pw / 2, m(63.3), 'Échantillons', { size: T.small, anchor: 'middle', valign: 'middle', color: SUB });
+  L.text(b, px[0] + pw / 2, m(63.3), 'Samples', { size: T.small, anchor: 'middle', valign: 'middle', color: SUB });
   // projection : chaque échantillon envoyé sur 0
   {
     const X = Xs(1), tgt = [X(0), sb];
@@ -221,7 +221,7 @@ export default async function draw(F, L) {
   {
     const X = Xs(2);
     D.samples_q.forEach((v, i) => stem(X(v), h0 * N * D.weights[i], OR, OR_D));
-    L.text(b, px[2] + pw / 2, m(63.3), 'Poids *w*_i', { size: T.small, anchor: 'middle', valign: 'middle', color: OR_TXT });
+    L.text(b, px[2] + pw / 2, m(63.3), 'Weights *w*_i', { size: T.small, anchor: 'middle', valign: 'middle', color: OR_TXT });
   }
   // verdicts
   const verdict = ['𝔼 = 0,  Var > 0', '𝔼 = 0,  Var = 0', '𝔼 = 0,  Var > 0'];

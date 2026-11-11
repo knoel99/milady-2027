@@ -1,5 +1,4 @@
-// Figure « solveur » (français). Hero : aucun (boucle de calcul à plat, P25) ; tranche de |u| de Taylor–Green et
-// facteur intégrant calculés (formes analytiques). Source commune : draw.js (concept A, voir docs/choice.md).
+// Figure "solveur" (English). Same source as figure.js (draw.js), English labels.
 import { make } from './draw.js';
 export const figure = { width: 183, height: 110, name: 'solveur', format: 'journal', illustrate: true };
-export default make('fr');
+export default make('en');

@@ -1,5 +1,5 @@
-// Figure « vks » : l'expérience von Kármán Sodium (VKS) et les renversements du dipôle.
-// Hero: cylindre VKS (cuve, sodium, turbines à pales courbes), drawn in vector 3D with the illustrated finish.
+// Figure « vks-en » (English version of figure.js): the von Kármán Sodium (VKS) experiment and the dipole reversals.
+// Hero: VKS cylinder (vessel, sodium, curved-blade impellers), drawn in vector 3D with the illustrated finish.
 import { K, G, proj, vesselBack, vesselFront, turbine, shaft, ringArc, ribbonArc, poloidalLoop, polarityGlyph, tFront } from './parts.js';
 
 export const figure = { width: 183, height: 118, name: 'vks', format: 'journal', illustrate: true };
@@ -77,14 +77,14 @@ export default async function draw(F, L) {
 
   // ---- a : labels, headings, the causal arrow
   const at = (P, q) => P(...q);
-  L.text(a, mm(50), mm(5.2), 'écoulement moyen {#0072B2|**u**}', { size: 8, weight: 'bold', anchor: 'middle', role: 'title' });
-  L.text(a, mm(137), mm(5.2), 'champ moyen {#D55E00|**B**}', { size: 8, weight: 'bold', anchor: 'middle', role: 'title' });
-  L.callout(a, at(P1, [-Xi - G.td, 0.68 * Math.cos(1.0), 0.68 * Math.sin(1.0)]), [mm(4), mm(13)], 'turbine en fer doux', { anchor: 'start' });
-  L.callout(a, at(P1, [Xi - 0.1, -0.45, 0.25]), [mm(84), mm(13)], 'pales courbes', { anchor: 'end' });
-  L.callout(a, [torL.at(0.08), torR.at(0.92)].map((q) => q), [mm(50), mm(11.5)], 'cellules toroïdales', { anchor: 'middle', textColor: K.u });
-  L.callout(a, at(P1, [-0.42, 0, -0.62]), [mm(42), mm(61)], 'recirculation poloïdale', { anchor: 'middle', textColor: K.u });
-  L.callout(a, at(P1, [-1.1, -0.2, -0.75]), [mm(4), mm(55)], 'sodium liquide', { anchor: 'start' });
-  L.callout(a, at(P1, [0, -0.62, -0.78]), [mm(66), mm(58)], 'plan médian', { anchor: 'start' });
+  L.text(a, mm(50), mm(5.2), 'mean flow {#0072B2|**u**}', { size: 8, weight: 'bold', anchor: 'middle', role: 'title' });
+  L.text(a, mm(137), mm(5.2), 'mean field {#D55E00|**B**}', { size: 8, weight: 'bold', anchor: 'middle', role: 'title' });
+  L.callout(a, at(P1, [-Xi - G.td, 0.68 * Math.cos(1.0), 0.68 * Math.sin(1.0)]), [mm(4), mm(13)], 'soft-iron impeller', { anchor: 'start' });
+  L.callout(a, at(P1, [Xi - 0.1, -0.45, 0.25]), [mm(84), mm(13)], 'curved blades', { anchor: 'end' });
+  L.callout(a, [torL.at(0.08), torR.at(0.92)].map((q) => q), [mm(50), mm(11.5)], 'toroidal cells', { anchor: 'middle', textColor: K.u });
+  L.callout(a, at(P1, [-0.42, 0, -0.62]), [mm(42), mm(61)], 'poloidal recirculation', { anchor: 'middle', textColor: K.u });
+  L.callout(a, at(P1, [-1.1, -0.2, -0.75]), [mm(4), mm(55)], 'liquid sodium', { anchor: 'start' });
+  L.callout(a, at(P1, [0, -0.62, -0.78]), [mm(66), mm(58)], 'mid-plane', { anchor: 'start' });
   const fL = rotL.tip, fR = rotR.tip;
   const cL = P1(-xRot, 0, -rRot), cR = P1(xRot, 0, rRot);
   L.text(a, cL[0], cL[1] + mm(3.2), '*F*_{1}', { anchor: 'middle', valign: 'middle', size: 8 });
@@ -93,10 +93,10 @@ export default async function draw(F, L) {
   const bTip = P2(XC, 0, 0);
   L.text(a, bTip[0] + 2.5, bTip[1], '{#D55E00|**B**}', { anchor: 'start', valign: 'middle', size: 8 });
   const fOut = data.fieldlines[2].pts.filter(([x, r]) => r > 1.05 && x > 0).reduce((bq, q) => (Math.abs(q[0] - 0.4) < Math.abs(bq[0] - 0.4) ? q : bq));
-  L.callout(a, P2(fOut[0], 0, fOut[1]), [mm(166.5), mm(15)], 'dipôle axial', { anchor: 'start', textColor: K.B });
+  L.callout(a, P2(fOut[0], 0, fOut[1]), [mm(166.5), mm(15)], 'axial dipole', { anchor: 'start', textColor: K.B });
   F.anchor('flow', a, mm(84), mm(35)); F.anchor('field', a, mm(104), mm(35));
   F.relate('flow', 'field', 'induction');
-  L.connect(F, 'flow', 'field', { stroke: K.mid, width: 1.1, head: 4.2, headWidth: 2.2, label: 'effet dynamo', labelOffset: -5, kind: 'induction' });
+  L.connect(F, 'flow', 'field', { stroke: K.mid, width: 1.1, head: 4.2, headWidth: 2.2, label: 'dynamo effect', labelOffset: -5, kind: 'induction' });
 
   // =============================================================== b, c : reversals
   const S = data.series, Ds = data.fixed.stable[0], Qs = data.fixed.stable[1];
@@ -104,7 +104,7 @@ export default async function draw(F, L) {
   const b = F.panel('b', { x: 0, y: 68, w: 124, h: 50 });
   const c = F.panel('c', { x: 126, y: 68, w: 57, h: 50 });
   const bx0 = mm(13), bx1 = mm(121), T1 = S.t[S.t.length - 1], X = (t) => bx0 + mm(1.5) + t / T1 * (bx1 - bx0 - mm(1.5));
-  // Q scale: the slow curve (max |Q| = 0.75) must end left of the axis label « quadripôle Q »
+  // Q scale: the slow curve (max |Q| = 0.75) must end left of the axis label « quadrupole Q »
   const cx0 = mm(4), cx1 = mm(55), cQ0 = mm(27.2), Qk = mm(17.6), QX = (q) => cQ0 + q * Qk;
   const evCol = { renversement: K.rev, excursion: K.exc }, evTint = { renversement: '#EEEAF5', excursion: '#E3F3EC' };
   // event bands
@@ -118,8 +118,8 @@ export default async function draw(F, L) {
   // axes of b
   L.arrow(b, [bx0, yBot + mm(2)], [bx0, yTop - mm(3)], { stroke: K.ink, width: 0.5, head: 3 });
   L.arrow(b, [bx0, yBot + mm(2)], [bx1 + mm(1), yBot + mm(2)], { stroke: K.ink, width: 0.5, head: 3 });
-  L.text(b, bx0 + mm(1.6), yTop - mm(3.5), 'dipôle *D*', { anchor: 'start', valign: 'middle' });
-  L.text(b, bx1 + mm(1), yBot + mm(4.6), 'temps *t*', { anchor: 'end', valign: 'middle' });
+  L.text(b, bx0 + mm(1.6), yTop - mm(3.5), 'dipole *D*', { anchor: 'start', valign: 'middle' });
+  L.text(b, bx1 + mm(1), yBot + mm(4.6), 'time *t*', { anchor: 'end', valign: 'middle' });
   L.text(b, bx0 - mm(1), Y(Ds), '+*D*^{∗}', { anchor: 'end', valign: 'middle' });
   L.text(b, bx0 - mm(1), Y(-Ds), '−*D*^{∗}', { anchor: 'end', valign: 'middle' });
   // the series: plateaus in the colour of B, events in their own colour
@@ -130,8 +130,8 @@ export default async function draw(F, L) {
   // event labels and polarity glyphs
   const ev = S.events, mid = (e) => Math.round((e.span[0] + e.span[1]) / 2);
   const r1 = ev[0], ex = ev[1], r2 = ev[2];
-  L.callout(b, pts[mid(r1)], [X(S.t[mid(r1)]) - mm(4), mm(20)], 'renversement', { anchor: 'end', textColor: K.rev, color: K.rev });
-  L.callout(b, pts[mid(r2)], [X(S.t[mid(r2)]) + mm(4), mm(20)], 'renversement', { anchor: 'start', textColor: K.rev, color: K.rev });
+  L.callout(b, pts[mid(r1)], [X(S.t[mid(r1)]) - mm(4), mm(20)], 'reversal', { anchor: 'end', textColor: K.rev, color: K.rev });
+  L.callout(b, pts[mid(r2)], [X(S.t[mid(r2)]) + mm(4), mm(20)], 'reversal', { anchor: 'start', textColor: K.rev, color: K.rev });
   const exLow = ex.span[0] + S.D.slice(ex.span[0], ex.span[1]).reduce((bi, v, i, arr) => (Math.abs(v) < Math.abs(arr[bi]) ? i : bi), 0);
   L.callout(b, pts[exLow], [pts[exLow][0] + mm(5), mm(31)], 'excursion', { anchor: 'start', textColor: K.exc, color: K.exc });
   polarityGlyph(b, L, X(30), mm(31.5), mm(7.5), S.sign0);
@@ -142,7 +142,7 @@ export default async function draw(F, L) {
   L.arrow(c, [cx0, Y(0)], [cx1, Y(0)], { stroke: K.ink, width: 0.5, head: 3 });
   L.arrow(c, [cQ0, yBot + mm(2)], [cQ0, yTop - mm(3)], { stroke: K.ink, width: 0.5, head: 3 });
   L.text(c, cQ0 + mm(1.4), yTop - mm(3.5), '*D*', { anchor: 'start', valign: 'middle' });
-  L.text(c, cx1 + mm(1), Y(0) + mm(4.6), 'quadripôle *Q*', { anchor: 'end', valign: 'middle', halo: true });
+  L.text(c, cx1 + mm(1), Y(0) + mm(4.6), 'quadrupole *Q*', { anchor: 'end', valign: 'middle', halo: true });
   polarityGlyph(c, L, mm(50.5), Y(0) + mm(10.5), mm(7.5), 'quad');
   L.path(c, L.smooth(data.manifold.map(([d, q]) => [QX(q), Y(d)]), true), { stroke: K.mid, width: 0.4, dash: '1.2 1', fill: 'none', part: 'slow-manifold' });
   const cp = S.t.map((t, i) => [QX(S.Q[i]), Y(S.D[i])]);
@@ -192,5 +192,5 @@ export default async function draw(F, L) {
   }
   L.text(c, QX(Qs) + mm(1.8), Y(Ds) - mm(3.2), '+(*D*^{∗}, *Q*^{∗})', { anchor: 'start', valign: 'middle', halo: true });
   L.text(c, QX(-Qs) - mm(1.8), Y(-Ds) + mm(3.2), '−(*D*^{∗}, *Q*^{∗})', { anchor: 'end', valign: 'middle', halo: true });
-  L.callout(c, [QX(-data.fixed.saddle[1]) - 1.1, Y(-data.fixed.saddle[0]) + 1.1], [mm(2.5), Y(-0.62)], 'point-col', { anchor: 'start' });
+  L.callout(c, [QX(-data.fixed.saddle[1]) - 1.1, Y(-data.fixed.saddle[0]) + 1.1], [mm(2.5), Y(-0.62)], 'saddle\npoint', { anchor: 'start' });
 }

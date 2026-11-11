@@ -1,3 +1,4 @@
+// Version anglaise de figure.js (mêmes dessin, couleurs et mise en page ; seuls les textes affichés changent).
 // Hero: l'escalier des cinq bancs d'essai ; vignettes VKS, DRESDYN et boîte périodique en vector 3D (L.cylinder3, L.circle3, L.obliqueBox), illustrated finish ; vignettes 0 et 1 calculées (make_data.py)
 export const figure = { width: 183, height: 120, name: 'plan-these', format: 'journal', illustrate: true };
 
@@ -110,11 +111,11 @@ export default async function draw(F, L) {
     badge(L, P, m(colX(k) + 2.75), m(tread(k) + 2.85), m(1.85), k);
   }
   const NAMES = [
-    ['**Modèles réduits**', 'Gissinger, DQVU'],
-    ['**MHD 2D**', 'périodique'],
-    ['**Dynamos 3D**', '**périodiques**', 'ABC, Taylor–Green'],
+    ['**Reduced models**', 'Gissinger, DQVU'],
+    ['**2D MHD**', 'periodic'],
+    ['**Periodic**', '**3D dynamos**', 'ABC, Taylor–Green'],
     ['**VKS**', 'SFEMaNS, LATU'],
-    ['**DRESDYN**', 'précession, HZDR'],
+    ['**DRESDYN**', 'precession, HZDR'],
   ];
   for (let k = 0; k < NT; k++) {
     const x = m(colX(k) + 5.2);
@@ -246,31 +247,31 @@ export default async function draw(F, L) {
     const yAt = (x) => vtop(0) - 2.4 - (x - colC(0)) * 2.0 / CW;
     const a = [m(colX(0) + 1.0), m(yAt(colX(0) + 1.0))], b = [m(XR - 1.0), m(yAt(XR - 1.0))];
     L.arrow(P, a, b, { stroke: '#8a8a8a', width: 0.5, head: 2.6 });
-    L.text(P, m(colX(0) + 1.0), m(yAt(colX(0) + 1.0) - 3.0), 'complexité croissante', { size: 6.5, italic: true, color: C.sub });
+    L.text(P, m(colX(0) + 1.0), m(yAt(colX(0) + 1.0) - 3.0), 'increasing complexity', { size: 6.5, italic: true, color: C.sub });
   }
   // en-têtes de ligne
-  L.text(P, m(1.2), m(tread(0) + 2.6), '**Bancs d\'essai**', { size: 7.5, color: C.txt });
+  L.text(P, m(1.2), m(tread(0) + 2.6), '**Test benches**', { size: 7.5, color: C.txt });
 
   // ---- rangée « acquis du stage » : E1, E2, E3 sous les paliers 0, 1, 2 ----
   {
     L.rect(P, m(colX(0) + 0.6), m(ST_Y), m(3 * CW - 1.2), m(ST_H), { r: m(ST_H / 2), fill: '#F3F3F3', stroke: '#a6a6a6', width: 0.4 });
     for (let k = 1; k < 3; k++) L.line(P, [m(colX(k)), m(ST_Y + 0.6)], [m(colX(k)), m(ST_Y + ST_H - 0.6)], { stroke: '#c4c4c4', width: 0.35 });
     for (let k = 0; k < 3; k++) L.text(P, m(colC(k)), m(ST_Y + ST_H / 2), 'E' + (k + 1), { size: 6.5, anchor: 'middle', valign: 'middle', color: C.sub });
-    L.text(P, m(1.2), m(ST_Y + ST_H / 2), 'Acquis du stage', { size: 6.5, valign: 'middle', color: C.sub });
+    L.text(P, m(1.2), m(ST_Y + ST_H / 2), 'Internship results', { size: 6.5, valign: 'middle', color: C.sub });
   }
 
   // =================================================================================================
   // 2. Bandes des trois axes
   // =================================================================================================
   const HEAD = [
-    ['Axe 1', 'Contraintes dures 3D'],
-    ['Axe 2', 'Contraintes en loi\net symétries'],
-    ['Axe 3', 'Seuil dynamo\net renversements'],
+    ['Axis 1', 'Hard 3D constraints'],
+    ['Axis 2', 'Distributional and\nsymmetry constraints'],
+    ['Axis 3', 'Dynamo threshold\nand reversals'],
   ];
   const ST = [
-    [null, 'potentiels ψ, *a*', '∇×**A**, jauge', 'vide, saut de *μ*', 'parois conductrices'],
-    ['**B** → −**B**', '𝔼[*P* − ε] = 0', 'bilans d\'hélicité', 'symétrie *R*_{π}', 'centro-symétrie'],
-    ['formule de Rice', null, 'borne près de *Rm*_{c}', 'renversements', '*Rm*_{c}(*Po*)'],
+    [null, 'potentials ψ, *a*', '∇×**A**, gauge', 'vacuum, *μ* jump', 'conducting walls'],
+    ['**B** → −**B**', '𝔼[*P* − ε] = 0', 'helicity budgets', '*R*_{π} symmetry', 'centrosymmetry'],
+    ['Rice formula', null, 'bound near *Rm*_{c}', 'reversals', '*Rm*_{c}(*Po*)'],
   ];
   for (let k = 1; k < NT; k++) L.line(P, [m(colX(k)), m(BAND_Y[0] - 0.8)], [m(colX(k)), m(BAND_Y[2] + BAND_H + 0.8)], { stroke: '#d9d9d9', width: 0.35, dash: '1 1.2' });
   for (let i = 0; i < 3; i++) {
@@ -294,11 +295,11 @@ export default async function draw(F, L) {
     }
   }
   // trous signifiants
-  L.text(P, m(colC(0)), m(BAND_Y[0] + BAND_H / 2), 'sans objet', { size: 6.5, italic: true, color: C.grey, anchor: 'middle', valign: 'middle' });
+  L.text(P, m(colC(0)), m(BAND_Y[0] + BAND_H / 2), 'not applicable', { size: 6.5, italic: true, color: C.grey, anchor: 'middle', valign: 'middle' });
   {
     // tirets coupés autour de l'étiquette (le halo ne masque pas les espaces entre les mots)
     const ym = BAND_Y[2] + BAND_H / 2, cx = m(colC(1));
-    const t = L.text(P, cx, m(ym - 0.2), 'pas de dynamo 2D', { size: 6.5, italic: true, color: C.grey, anchor: 'middle', valign: 'middle' });
+    const t = L.text(P, cx, m(ym - 0.2), 'no 2D dynamo', { size: 6.5, italic: true, color: C.grey, anchor: 'middle', valign: 'middle' });
     let w; try { w = t.getBBox().width; } catch (e) { w = m(18.5); }
     const gap = m(0.9), dl = { stroke: C.a3, width: 0.5, dash: '1.2 1.1' };
     L.line(P, [m(colX(1) - 0.5), m(ym)], [cx - w / 2 - gap, m(ym)], dl);
@@ -311,7 +312,7 @@ export default async function draw(F, L) {
   {
     const y0 = 44.6, y1 = BAND_Y[2] + BAND_H;
     L.rect(P, m(RX), m(y0), m(RW), m(y1 - y0), { r: m(1.6), fill: '#F5F5F5', stroke: '#9a9a9a', width: 0.6 });
-    L.text(P, m(RX + RW / 2), m(y0 + 3.4), '**Boîte à outils**\n**MilaDy**', { size: 6.5, anchor: 'middle', color: C.txt, lineGap: 1.15 });
+    L.text(P, m(RX + RW / 2), m(y0 + 3.4), '**MilaDy**\n**toolbox**', { size: 6.5, anchor: 'middle', color: C.txt, lineGap: 1.15 });
     for (let i = 0; i < 3; i++) {
       const ym = BAND_Y[i] + BAND_H / 2, ax = AX[i];
       const mx = RX + 2.2, mw = RW - 4.4, mh = 6.0;
@@ -325,7 +326,7 @@ export default async function draw(F, L) {
     F.anchor('outils.top', P.node, m(RX + RW / 2), m(y0));
   }
   {
-    L.text(P, m(RX), m(4.6), '**Débouchés**', { size: 7.5, color: C.txt });
+    L.text(P, m(RX), m(4.6), '**Applications**', { size: 7.5, color: C.txt });
     // réduction de modèle : instantanés → quelques modes
     const gy = 7.4;
     for (let i = 0; i < 3; i++) L.rect(P, m(RX + 0.4 + i * 1.3), m(gy + i * 1.0), m(6.2), m(6.2), { fill: L.ramp(['#f2f2f2', '#d0d0d0'], i / 2), stroke: '#6b6b6b', width: 0.4 });
@@ -333,7 +334,7 @@ export default async function draw(F, L) {
     const bars = [5.6, 3.4, 2.0, 1.1];
     bars.forEach((h, i) => L.rect(P, m(RX + 15.8 + i * 1.9), m(gy + 8.2 - h), m(1.3), m(h), { fill: '#7a7a7a', stroke: 'none' }));
     L.line(P, [m(RX + 15.3), m(gy + 8.2)], [m(RX + 23.6), m(gy + 8.2)], { stroke: '#6b6b6b', width: 0.4 });
-    L.text(P, m(RX), m(gy + 11.6), 'Réduction de modèle', { size: 6.5, color: C.txt });
+    L.text(P, m(RX), m(gy + 11.6), 'Model reduction', { size: 6.5, color: C.txt });
     // assimilation : ensemble resserré par des observations
     const ay = 24.0, aw = 23.0, ah = 8.0;
     const obs = [[0.38, 0.45], [0.66, 0.62], [0.9, 0.42]];
@@ -361,7 +362,7 @@ export default async function draw(F, L) {
     const yM = 92.0, yY0 = 94.4, yY1 = 97.8, yG = 99.9, dG = 2.3, yAx = 114.2;
     for (let a = 0; a < 3; a++) {
       L.rect(P, m(mo(12 * a)), m(yY0), m(mo(12) - mo(0)), m(yY1 - yY0), { fill: a % 2 ? '#E4E4E4' : '#EFEFEF', stroke: '#ffffff', width: 0.6 });
-      L.text(P, m(mo(12 * a + 6)), m((yY0 + yY1) / 2), `Année ${a + 1}`, { size: 6.5, anchor: 'middle', valign: 'middle', color: C.txt });
+      L.text(P, m(mo(12 * a + 6)), m((yY0 + yY1) / 2), `Year ${a + 1}`, { size: 6.5, anchor: 'middle', valign: 'middle', color: C.txt });
     }
     for (const k of [12, 24]) L.line(P, [m(mo(k)), m(yY1)], [m(mo(k)), m(yAx)], { stroke: '#cfcfcf', width: 0.35, dash: '1 1.2' });
     // barres des paliers (calendrier proposé)
@@ -374,14 +375,14 @@ export default async function draw(F, L) {
     {
       const y = yG + 5 * dG;
       L.rect(P, m(mo(30)), m(y + 0.25), m(mo(36) - mo(30)), m(1.5), { r: m(0.75), fill: '#ffffff', stroke: '#9a9a9a', width: 0.45, dash: '1 0.8' });
-      L.text(P, m(mo(30) - 1.2), m(y + 1.0), 'rédaction', { size: 6.5, anchor: 'end', valign: 'middle', color: C.sub });
+      L.text(P, m(mo(30) - 1.2), m(y + 1.0), 'thesis writing', { size: 6.5, anchor: 'end', valign: 'middle', color: C.sub });
     }
     L.line(P, [m(mo(0)), m(yAx)], [m(mo(36)), m(yAx)], { stroke: '#6b6b6b', width: 0.45 });
     for (let k = 0; k <= 36; k += 6) {
       L.line(P, [m(mo(k)), m(yAx)], [m(mo(k)), m(yAx + 0.9)], { stroke: '#6b6b6b', width: 0.45 });
       L.text(P, m(mo(k)), m(yAx + 3.2), String(k), { size: 5.5, anchor: 'middle', color: C.sub });
     }
-    L.text(P, m(mo(36) + 2.2), m(yAx + 3.2), 'mois', { size: 5.5, anchor: 'start', color: C.sub });
+    L.text(P, m(mo(36) + 2.2), m(yAx + 3.2), 'months', { size: 5.5, anchor: 'start', color: C.sub });
     // jalons : tige courte jusqu'au bandeau des années
     const ART = [[10, 1], [22, 0], [33, 2]];
     for (const k of [10, 16, 22, 30, 33]) L.line(P, [m(mo(k)), m(yM)], [m(mo(k)), m(yY0)], { stroke: '#9a9a9a', width: 0.35 });
@@ -391,17 +392,17 @@ export default async function draw(F, L) {
       const x = m(mo(36)), y = m(yM);
       L.line(P, [x, m(yY0)], [x, y - m(1.9)], { stroke: '#2b2b2b', width: 0.6 });
       L.polygon(P, [[x, y - m(1.9)], [x + m(2.4), y - m(1.2)], [x, y - m(0.5)]], { fill: '#2b2b2b', stroke: 'none' });
-      L.text(P, x + m(3.0), y - m(0.6), 'soutenance', { size: 6.5, anchor: 'start', valign: 'middle', color: C.txt });
+      L.text(P, x + m(3.0), y - m(0.6), 'PhD defense', { size: 6.5, anchor: 'start', valign: 'middle', color: C.txt });
     }
-    L.text(P, m(1.2), m(yY0 + 2.6), '**Calendrier**', { size: 7.5, color: C.txt });
-    L.text(P, m(1.2), m(yY0 + 6.1), '36 mois', { size: 6.5, color: C.sub });
+    L.text(P, m(1.2), m(yY0 + 2.6), '**Timeline**', { size: 7.5, color: C.txt });
+    L.text(P, m(1.2), m(yY0 + 6.1), '36 months', { size: 6.5, color: C.sub });
     // légende des jalons
     {
       const lx = RX + 0.4, ly = 101.4;
       [0, 1, 2].forEach((i) => diamond(L, P, m(lx + 1.3 + i * 2.2), m(ly), m(2.8), AX[i].c));
-      L.text(P, m(lx + 8.0), m(ly), 'article', { size: 6.5, valign: 'middle', color: C.txt });
+      L.text(P, m(lx + 8.0), m(ly), 'paper', { size: 6.5, valign: 'middle', color: C.txt });
       codeGlyph(L, P, m(lx + 1.3), m(ly + 4.4), m(2.5));
-      L.text(P, m(lx + 3.4), m(ly + 4.4), 'version du code', { size: 6.5, valign: 'middle', color: C.txt });
+      L.text(P, m(lx + 3.4), m(ly + 4.4), 'code release', { size: 6.5, valign: 'middle', color: C.txt });
     }
   }
 }

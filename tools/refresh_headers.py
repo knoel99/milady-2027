@@ -1,14 +1,14 @@
 #!/usr/bin/env python3
-"""Régénère l'en-tête YAML de toutes les pages (ou de celles données) à partir de tools/page_header.py.
+"""Regenerate the YAML header of every page (or of the given pages) from tools/page_header.py.
 
-Le titre et le sous-titre existants sont conservés ; la langue est déduite du chemin (en/… → anglais).
-Usage : python3 tools/refresh_headers.py [chemin …]
+The existing title and subtitle are kept.
+Usage: python3 tools/refresh_headers.py [page ...]   (paths relative to site/)
 """
 import re
 import sys
 from pathlib import Path
 
-ROOT = Path(__file__).resolve().parent.parent / "site"  # racine du site publié
+ROOT = Path(__file__).resolve().parent.parent / "site"  # root of the published site
 sys.path.insert(0, str(Path(__file__).resolve().parent))
 from page_header import header  # noqa: E402
 
@@ -17,17 +17,16 @@ def refresh(qmd: Path) -> None:
     text = qmd.read_text(encoding="utf-8")
     m = re.match(r"---\n(.*?)\n---\n", text, flags=re.S)
     if not m:
-        print(f"{qmd}: pas d'en-tête YAML")
+        print(f"{qmd}: no YAML header")
         return
     yaml = m.group(1)
     title = re.search(r'^title:\s*"(.*)"\s*$', yaml, flags=re.M)
     sub = re.search(r'^subtitle:\s*"(.*)"\s*$', yaml, flags=re.M)
     rel = qmd.parent.relative_to(ROOT)
     depth = 0 if str(rel) == "." else len(rel.parts)
-    lang = "en" if rel.parts[:1] == ("en",) else "fr"
-    new = header(title.group(1) if title else "", sub.group(1) if sub else "", "../" * depth, lang)
+    new = header(title.group(1) if title else "", sub.group(1) if sub else "", "../" * depth)
     qmd.write_text(new + text[m.end():], encoding="utf-8")
-    print(f"{rel}: en-tête régénéré ({lang})")
+    print(f"{rel}: header regenerated")
 
 
 if __name__ == "__main__":

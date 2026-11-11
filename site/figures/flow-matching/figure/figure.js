@@ -1,4 +1,5 @@
-// Figure « flow-matching » (module de préparation « modèles génératifs », site MilaDy 2027).
+// Figure « flow-matching », ENGLISH version (preparation module « generative models », MilaDy 2027 site).
+// Same drawing as figure.js; only the displayed strings are translated. Shared glyphs: parts.js (no displayed words).
 // One principle, two cases on the same space-time template (flow time t to the right, one coordinate of x up):
 // a  base law N(0, I) at t = 0, two-mode symmetric data law at t = 1, straight conditional paths between independent
 //    pairs, and the exact marginal field v(x, t) = E[x1 - x0 | x_t = x] (arrows); a fan of paths through one point
@@ -16,7 +17,7 @@ export default async function draw(F, L) {
 
   // =============================================================== a: principle
   const pa = F.panel('a', { x: 0, y: 0, w: 136, h: 65 });
-  heading(L, pa, 'Chemins et champ marginal');
+  heading(L, pa, 'Paths and marginal field');
   const fa = frame(mm(36), mm(96), mm(31.5), mm(7.0));
   const XR = 3.15;
   const kA = mm(21);                                    // pt per unit of density, both profiles of a
@@ -66,9 +67,9 @@ export default async function draw(F, L) {
   const c0 = [mm(14), mm(31.5)], c1 = [mm(122), mm(31.5)];
   cl(c0[0], c0[1], D.cloud0, K.noise);
   cl(c1[0], c1[1], D.cloud1.map(([a, b]) => [a, b]), K.data);
-  L.text(pa, c0[0], c0[1] - R - mm(1.6), 'Loi de base', { size: 7, anchor: 'middle', valign: 'bottom', color: '#555555' });
+  L.text(pa, c0[0], c0[1] - R - mm(1.6), 'Base distribution', { size: 7, anchor: 'middle', valign: 'bottom', color: '#555555' });
   L.text(pa, c0[0], c0[1] + R + mm(1.6), '𝒩(0, *I*)', { size: 7, anchor: 'middle', valign: 'top', color: K.ink });
-  L.text(pa, c1[0], c1[1] - R - mm(1.6), 'Loi des données *μ*', { size: 7, anchor: 'middle', valign: 'bottom', color: K.data });
+  L.text(pa, c1[0], c1[1] - R - mm(1.6), 'Data distribution *μ*', { size: 7, anchor: 'middle', valign: 'bottom', color: K.data });
   // symmetry B -> -B: point reflection that swaps the two modes
   const mh = D.cloud_mh, mv = D.params.m;
   L.arrow(pa, [c1[0] + mh * gs, c1[1] - mv * gs], [c1[0] - mh * gs, c1[1] + mv * gs], { both: true, bend: 0.42, gap0: mm(2.2), gap1: mm(2.2), stroke: K.ink, width: 0.5, head: 2.2, headWidth: 1.0 });
@@ -79,8 +80,8 @@ export default async function draw(F, L) {
 
   // legend row: the two repeated glyphs and their defining relations, centred under the panel
   const ly = mm(62.6), gl = mm(5), gg = mm(1.2), gap = mm(7);
-  const t1 = L.text(pa, 0, ly, 'Chemin conditionnel  **x**_{*t*} = (1 − *t*) **x**_{0} + *t* **x**_{1}', { size: 7, valign: 'middle', color: K.ink });
-  const t2 = L.text(pa, 0, ly, 'Champ marginal  *v*(**x**, *t*) = 𝔼[**x**_{1} − **x**_{0} | **x**_{*t*} = **x**]', { size: 7, valign: 'middle', color: K.ink });
+  const t1 = L.text(pa, 0, ly, 'Conditional path  **x**_{*t*} = (1 − *t*) **x**_{0} + *t* **x**_{1}', { size: 7, valign: 'middle', color: K.ink });
+  const t2 = L.text(pa, 0, ly, 'Marginal field  *v*(**x**, *t*) = 𝔼[**x**_{1} − **x**_{0} | **x**_{*t*} = **x**]', { size: 7, valign: 'middle', color: K.ink });
   const w1 = t1.getBBox().width, w2 = t2.getBBox().width, wt = 2 * (gl + gg) + w1 + w2 + gap;
   let lx = (pa.w - wt) / 2;
   L.line(pa, [lx, ly], [lx + gl, ly], { stroke: K.fan, width: 0.5 }); t1.setAttribute('x', lx + gl + gg); t1.querySelectorAll('tspan[x]').forEach((e) => e.setAttribute('x', lx + gl + gg));
@@ -89,7 +90,7 @@ export default async function draw(F, L) {
 
   // =============================================================== b: conditioning by lambda
   const pb = F.panel('b', { x: 0, y: 66, w: 86, h: 57 });
-  heading(L, pb, 'Conditionnement par **λ**');
+  heading(L, pb, 'Conditioning on **λ**');
   const fb = frame(mm(13), mm(63), mm(31), mm(7.0));
   const XB = 2.75, kB = mm(13);
   for (const t of [0, 1]) L.line(pb, [fb.T(t), fb.Y(XB)], [fb.T(t), fb.Y(-XB)], { stroke: K.light, width: 0.4 });
@@ -106,9 +107,9 @@ export default async function draw(F, L) {
   timeAxis(L, pb, fb, fb.Y(-XB) + mm(2.0), { over: 14 });
   // column headers: same noise, same field, only lambda changes
   const hy = fb.Y(XB) - mm(2.2);
-  L.text(pb, fb.T(0) + mm(1.0), hy, 'Même bruit', { size: 7, anchor: 'end', valign: 'baseline', color: K.ink });
-  L.text(pb, fb.T(0.5), hy, 'Même champ *v*_{θ}(**x**, *t*, **λ**)', { size: 7, anchor: 'middle', valign: 'baseline', color: K.ink });
-  L.text(pb, fb.T(1) - mm(1.0), hy, 'Lois cibles', { size: 7, anchor: 'start', valign: 'baseline', color: K.ink });
+  L.text(pb, fb.T(0) + mm(1.0), hy, 'Same noise', { size: 7, anchor: 'end', valign: 'baseline', color: K.ink });
+  L.text(pb, fb.T(0.5), hy, 'Same field *v*_{θ}(**x**, *t*, **λ**)', { size: 7, anchor: 'middle', valign: 'baseline', color: K.ink });
+  L.text(pb, fb.T(1) - mm(1.0), hy, 'Target distributions', { size: 7, anchor: 'start', valign: 'baseline', color: K.ink });
   // target laws, labelled in their colours
   L.text(pb, fb.T(1) + kB * 0.887 + mm(1.4), fb.Y(0), '**λ**_{1}', { size: 7.5, anchor: 'start', valign: 'middle', color: K.lam1 });
   L.text(pb, fb.T(1) + kB * 0.57 + mm(1.4), fb.Y(D.params.m), '**λ**_{2}', { size: 7.5, anchor: 'start', valign: 'middle', color: K.data });
@@ -116,7 +117,7 @@ export default async function draw(F, L) {
 
   // =============================================================== c: sampling with Heun
   const pc = F.panel('c', { x: 88, y: 66, w: 48, h: 57 });
-  heading(L, pc, 'Échantillonnage');
+  heading(L, pc, 'Sampling');
   L.text(pc, mm(4), mm(9.55), 'd**x**/d*t* = *v*_{θ}(**x**, *t*, **λ**)', { size: 7, anchor: 'start', valign: 'baseline', color: K.ink });
   const lo = -0.15, hi = 1.25, yTop = mm(14.2), yBot = mm(50.25);
   const fc = frame(mm(6), mm(42), yBot + lo / (hi - lo) * (yBot - yTop), (yBot - yTop) / (hi - lo));
@@ -139,11 +140,11 @@ export default async function draw(F, L) {
   // key in the empty upper-left corner of the plot: three line styles
   const kx = fc.T(0) + mm(1.6), ky = fc.Y(1.12), kd = mm(3.6), kw = mm(5);
   L.line(pc, [kx, ky], [kx + kw, ky], { stroke: K.dataPale, width: 1.6, cap: 'round' });
-  L.text(pc, kx + kw + mm(1.3), ky, 'Exacte', { size: 7, valign: 'middle', color: K.ink });
+  L.text(pc, kx + kw + mm(1.3), ky, 'Exact', { size: 7, valign: 'middle', color: K.ink });
   L.line(pc, [kx, ky + kd], [kx + kw, ky + kd], { stroke: K.ink, width: 0.6 });
   dot(L, pc, kx + kw, ky + kd, 1.3, K.ink);
   L.text(pc, kx + kw + mm(1.3), ky + kd, 'Heun', { size: 7, valign: 'middle', color: K.ink });
   L.line(pc, [kx, ky + 2 * kd], [kx + kw, ky + 2 * kd], { stroke: K.mid, width: 0.45, dash: '1.3 0.9' });
   dot(L, pc, kx + kw, ky + 2 * kd, 1.1, '#ffffff', K.mid, 0.45);
-  L.text(pc, kx + kw + mm(1.3), ky + 2 * kd, 'Prédicteur', { size: 7, valign: 'middle', color: K.ink });
+  L.text(pc, kx + kw + mm(1.3), ky + 2 * kd, 'Predictor', { size: 7, valign: 'middle', color: K.ink });
 }

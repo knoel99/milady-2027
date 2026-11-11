@@ -1,30 +1,24 @@
 #!/usr/bin/env python3
-"""Front matter commun des pages (Quarto), en français ou en anglais.
+"""Shared Quarto front matter for every page of the site (English only).
 
-`up` est le chemin relatif vers la racine du site (où vivent assets/) :
-index.qmd → "", rapport/index.qmd → "../", prep/p1-x/index.qmd → "../../",
-en/prep/p1-x/index.qmd → "../../../". Les pages anglaises vivent sous en/ avec les mêmes chemins.
+`up` is the relative path to the site root (where assets/ lives):
+index.qmd → "", rapport/index.qmd → "../", prep/p1-x/index.qmd → "../../".
 """
 
 KATEX = "https://cdn.jsdelivr.net/npm/katex@0.19.0/dist/katex.min.js"
 
-UI = {
-    "fr": {"skip": "Aller au contenu", "contents": "Sommaire", "theme": "Thème", "home": "← Accueil",
-           "prep": "Préparation", "sup": "Encadrants", "report": "Rapport de stage", "thesis": "Sujet de thèse",
-           "exp": "Expériences", "interactive": "Schémas interactifs", "calc": "Calcul et données"},
-    "en": {"skip": "Skip to content", "contents": "Contents", "theme": "Theme", "home": "← Home",
-           "prep": "Preparation", "sup": "Supervisors", "report": "Internship report", "thesis": "PhD proposal",
-           "exp": "Experiments", "interactive": "Interactive diagrams", "calc": "Computing and data"},
-}
+UI = {"skip": "Skip to content", "contents": "Contents", "theme": "Theme", "home": "← Home",
+      "prep": "Preparation", "sup": "Supervisors", "report": "Internship report", "thesis": "PhD proposal",
+      "exp": "Experiments", "interactive": "Interactive diagrams", "calc": "Computing and data"}
 
 
-def header(title: str, subtitle: str, up: str, lang: str = "fr") -> str:
-    u = UI[lang]
-    home = up + ("en/" if lang == "en" else "")   # racine de la langue
+def header(title: str, subtitle: str, up: str) -> str:
+    u = UI
+    home = up
     return f'''---
 title: "{title}"
 subtitle: "{subtitle}"
-lang: {lang}
+lang: en
 format:
   html:
     theme: none

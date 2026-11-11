@@ -26,3 +26,7 @@ milady-sim-*.out
 milady-train-*.out
 milady-eval-*.out
 infra/env/*.lock.tmp
+
+# Rendered pages (built by .github/workflows/pages.yml)
+site/**/index.html
+_site/
