@@ -1,7 +1,7 @@
-// Figure « solveur » : un pas du solveur pseudo-spectral MHD 3D (boucle Fourier ↔ espace physique),
-// la vie d'une simulation sur un axe de temps, et ce qui est écrit (fichier MFF ↔ catalogue).
-// Hero : aucun (boucle de calcul dessinée à plat, P25) ; tranche de |u| de Taylor–Green et facteur
-// intégrant calculés (formes analytiques). Sources : docs/facts.md.
+// Figure "solver": one step of the 3D MHD pseudo-spectral solver (Fourier ↔ physical space loop),
+// the life of a simulation on a time axis, and what is written (MFF file ↔ catalog).
+// Hero: none (computation loop drawn flat, P25); |u| slice of Taylor–Green and integrating
+// factor computed (analytic forms). Sources: docs/facts.md.
 
 export const K = {
   u: '#0072B2', uL: '#dcebf6', B: '#D55E00', BL: '#fbe3d3', lam: '#009E73',
@@ -17,13 +17,13 @@ export function mono(L, p, x, y, s, o = {}) { return L.text(p, x, y, esc(s), { s
 
 const T = {
   fr: {
-    a: 'Un pas de temps', b: 'Une simulation dans le temps', c: 'Ce qui est écrit',
-    four: 'Espace de Fourier', phys: 'Espace physique', grid: 'grille 64³',
-    dealias: 'désaliasage 2/3', leray: 'projection de Leray', rk4: 'RK4 de Lawson', x4: '4 évaluations par pas',
-    after: 'puis : forçage aléatoire, projection périodique', state: 'état',
-    diag: 'diagnostics tous les 0,1', snaps: '40 instantanés (u, B)', burn: 'mise en régime', keep: 'fenêtre gardée',
-    ckpt: 'point de contrôle (toutes les 900 s de calcul)', sig: 'SIGTERM : point de contrôle, puis reprise',
-    resume: 'reprise', opt: 'facultatif', attrs: 'attributs', theWell: 'The Well', milady: 'MilaDy', wellNote: 'en gris : convention The Well',
+    a: 'One time step', b: 'One simulation over time', c: 'What is written',
+    four: 'Fourier space', phys: 'Physical space', grid: '64³ grid',
+    dealias: '2/3 dealiasing', leray: 'Leray projection', rk4: 'Lawson RK4', x4: '4 evaluations per step',
+    after: 'then: random forcing, periodic projection', state: 'state',
+    diag: 'diagnostics every 0.1', snaps: '40 snapshots (u, B)', burn: 'burn-in', keep: 'kept window',
+    ckpt: 'checkpoint (every 900 s of compute)', sig: 'SIGTERM: checkpoint, then resume',
+    resume: 'resume', opt: 'optional', attrs: 'attributes', theWell: 'The Well', milady: 'MilaDy', wellNote: 'in grey: The Well convention',
   },
   en: {
     a: 'One time step', b: 'One simulation over time', c: 'What is written',
@@ -38,8 +38,8 @@ const T = {
 
 const tgSpeed = (X, Y) => Math.sqrt(Math.sin(2 * X) ** 2 * Math.cos(2 * Y) ** 2 + Math.cos(2 * X) ** 2 * Math.sin(2 * Y) ** 2);
 
-// plan de modes (kx, ky) à 11 × 11 points : modes gardés (|m| ≤ 3 sur 5, image de la coupure 21 sur 32) pleins,
-// modes coupés pâles (état) ou en anneaux vides (après le masque)
+// plane of modes (kx, ky) with 11 × 11 points: kept modes (|m| ≤ 3 out of 5, image of the 21-out-of-32 cutoff) filled,
+// cut modes pale (state) or empty rings (after the mask)
 function modePlane(L, p, cx, cy, s, color, { cut = 'faint', frame = true } = {}) {
   const n = 11, d = s / (n - 1), r = Math.min(0.32 * d, L.mm(0.32)), x0 = cx - s / 2, y0 = cy - s / 2;
   if (frame) L.rect(p, x0 - d * 0.7, y0 - d * 0.7, s + 1.4 * d, s + 1.4 * d, { r: L.mm(0.6), fill: '#ffffff', stroke: K.fourEdge, width: 0.4 });
@@ -64,8 +64,8 @@ function badge(L, p, cx, cy, r, s, fill = K.badge) {
   L.text(p, cx, cy, s, { size: 5.2, weight: 'bold', color: '#ffffff', anchor: 'middle', valign: 'middle' });
 }
 
-// ------------------------------------------------------------------------------------ a : un pas
-// coordonnées en mm dans le panneau (183 × 62) ; Fourier à gauche (x 1–121), espace physique à droite (x 123–182)
+// ------------------------------------------------------------------------------------ a: one step
+// coordinates in mm in the panel (183 × 62); Fourier on the left (x 1–121), physical space on the right (x 123–182)
 export function stepCycle(F, L, p, S) {
   const m = L.mm, M = (x, y) => [m(x), m(y)];
   const FX1 = 121, PX0 = 123, TOP = 9.4, BOT = 61.4;
@@ -73,26 +73,26 @@ export function stepCycle(F, L, p, S) {
   L.rect(p, m(PX0), m(TOP), m(182 - PX0), m(BOT - TOP), { r: m(2), fill: K.phys, stroke: K.physEdge, width: 0.5 });
   L.text(p, m(3), m(TOP + 3.4), S.four, { size: 6.2, weight: 'bold', color: '#4f5b66' });
   L.text(p, m(PX0 + 2), m(TOP + 3.4), S.phys, { size: 6.2, weight: 'bold', color: '#4f5b66' });
-  // équations résolues (deux relations, P19)
+  // equations solved (two relations, P19)
   const u = `{${K.u}|**u**}`, w = `{${K.u}|**ω**}`, j = `{${K.B}|**j**}`, b = `{${K.B}|**B**}`;
   L.text(p, m(54), m(4.8), `∂_{t}${u} = ${u} × ${w} + ${j} × ${b} − ∇Π + ν∇²${u} + **f**`, { size: 6.3, valign: 'middle' });
   L.text(p, m(124), m(4.8), `∂_{t}${b} = ∇ × (${u} × ${b}) + η∇²${b}`, { size: 6.3, valign: 'middle' });
 
-  // état (û, B̂) : deux plans de modes ; les modes hors du cube 2/3 sont nuls (pâles)
+  // state (û, B̂): two planes of modes; the modes outside the 2/3 cube are zero (pale)
   const sy = 21.4;
   modePlane(L, p, m(12.4), m(sy), m(8.4), K.u);
   modePlane(L, p, m(24.0), m(sy), m(8.4), K.B);
   L.text(p, m(18.2), m(29.6), `{${K.u}|**û**}, {${K.B}|**B̂**}`, { size: 6.4, anchor: 'middle', valign: 'middle' });
   mono(L, p, m(18.2), m(32.3), '(n_traj, 3, 64, 64, 33)', { size: 5.0, anchor: 'middle', valign: 'middle', color: K.sub });
-  // rotationnels en Fourier
+  // curls in Fourier space
   opBox(L, p, m(42), m(sy - 3.2), m(9.4), m(6.4), 'ik×', { size: 6.4 });
   F.anchor('st.r', p, m(29.6), m(sy)); F.anchor('cu.l', p, m(41.6), m(sy));
   F.relate('st.r', 'cu.l', 'flow'); L.connect(F, 'st.r', 'cu.l', { stroke: '#7f7f7f', width: 0.6, head: 2 });
-  // passage en espace physique
+  // transform to physical space
   F.anchor('if.a', p, m(51.8), m(sy)); F.anchor('if.b', p, m(129.4), m(sy));
   F.relate('if.a', 'if.b', 'irfftn'); L.connect(F, 'if.a', 'if.b', { stroke: K.ink, width: 0.75, head: 2.4 });
   mono(L, p, m(90), m(sy - 1.7), 'irfftn', { anchor: 'middle', size: 5.8, color: K.ink, halo: true });
-  // champs sur la grille : tranche de |u| de Taylor–Green (kf = 2), calculée
+  // fields on the grid: computed |u| slice of Taylor–Green (kf = 2)
   const ts = m(12.4), tx = m(130), ty = m(sy) - ts / 2;
   const N = 36, lerp = (v) => L.ramp(['#fbfbfb', '#d9dde1', '#9aa3ab', '#4f5862'], Math.min(1, Math.max(0, v)));
   for (let i = 0; i < N; i++) for (let k = 0; k < N; k++) {
@@ -102,14 +102,14 @@ export function stepCycle(F, L, p, S) {
   L.rect(p, tx, ty, ts, ts, { fill: 'none', stroke: K.ink, width: 0.45 });
   L.text(p, m(144.6), m(sy - 1.6), `${u}, ${b}, ${w}, ${j}`, { size: 6.4, valign: 'middle' });
   L.text(p, m(144.6), m(sy + 1.9), S.grid, { size: 5.6, color: K.sub, valign: 'middle' });
-  // produits, forme rotationnelle
+  // products, rotational form
   const qx = 130, qy = 45.6, qw = 36, qh = 11;
   opBox(L, p, m(qx), m(qy - qh / 2), m(qw), m(qh), '');
   L.text(p, m(qx + qw / 2), m(qy - 2.4), `${u} × ${w} + ${j} × ${b}`, { size: 6.4, anchor: 'middle', valign: 'middle' });
   L.text(p, m(qx + qw / 2), m(qy + 2.5), `${u} × ${b}`, { size: 6.4, anchor: 'middle', valign: 'middle' });
   F.anchor('pr.t', p, m(136.2), m(sy + 6.6)); F.anchor('pr.in', p, m(136.2), m(qy - qh / 2 - 0.4));
   F.relate('pr.t', 'pr.in', 'flow'); L.connect(F, 'pr.t', 'pr.in', { stroke: '#7f7f7f', width: 0.6, head: 2 });
-  // retour en Fourier, puis désaliasage 2/3
+  // back to Fourier space, then 2/3 dealiasing
   const dX = 102, dY = 45.6;
   F.anchor('ff.a', p, m(qx - 0.6), m(qy)); F.anchor('ff.b', p, m(dX + 6.4), m(dY));
   F.relate('ff.a', 'ff.b', 'rfftn'); L.connect(F, 'ff.a', 'ff.b', { stroke: K.ink, width: 0.75, head: 2.4 });
@@ -117,7 +117,7 @@ export function stepCycle(F, L, p, S) {
   modePlane(L, p, m(dX), m(dY), m(8.4), K.ink, { cut: 'ring' });
   L.text(p, m(dX), m(dY + 7.6), S.dealias, { size: 5.9, anchor: 'middle', valign: 'middle' });
   mono(L, p, m(dX), m(dY + 10.2), '|m| ≤ 21', { size: 5.0, anchor: 'middle', valign: 'middle', color: K.sub });
-  // branche quantité de mouvement : projection de Leray (décomposition selon k)
+  // momentum branch: Leray projection (decomposition along k)
   {
     const ox = 58.0, oy = 41.6;
     const k = [m(6.2), -m(1.8)], v = [m(3.4), -m(5.0)];
@@ -132,13 +132,13 @@ export function stepCycle(F, L, p, S) {
     L.text(p, m(68.2), m(35.6), S.leray, { size: 5.9, valign: 'middle' });
     L.text(p, m(68.2), m(38.6), 'P = I − kkᵀ/|k|²', { size: 5.7, italic: true, valign: 'middle', color: K.sub });
   }
-  // branche induction : rotationnel en Fourier
+  // induction branch: curl in Fourier space
   opBox(L, p, m(60), m(52.6 - 2.9), m(15), m(5.8), 'ik × ( · )', { size: 5.9 });
   F.anchor('de.uo', p, m(dX - 6.6), m(dY - 2.0)); F.anchor('le.i', p, m(89.6), m(37.4));
   F.anchor('de.bo', p, m(dX - 6.6), m(dY + 2.4)); F.anchor('in.i', p, m(75.4), m(52.6));
   F.relate('de.uo', 'le.i', 'flow'); L.connect(F, 'de.uo', 'le.i', { stroke: '#7f7f7f', width: 0.6, head: 2 });
   F.relate('de.bo', 'in.i', 'flow'); L.connect(F, 'de.bo', 'in.i', { stroke: '#7f7f7f', width: 0.6, head: 2 });
-  // RK4 de Lawson : combine les seconds membres N̂_u, N̂_B (+ forçage constant f̂)
+  // Lawson RK4: combines the right-hand sides N̂_u, N̂_B (+ constant forcing f̂)
   const rx = 4, ry = 38.0, rw = 31, rh = 19.4;
   L.rect(p, m(rx), m(ry), m(rw), m(rh), { r: m(1.4), fill: '#ffffff', stroke: K.ink, width: 0.7 });
   L.text(p, m(rx + 2), m(ry + 3.4), S.rk4, { size: 6.4, weight: 'bold', valign: 'middle' });
@@ -151,20 +151,20 @@ export function stepCycle(F, L, p, S) {
     L.text(p, gx + gw + m(1.6), gy + m(1.6), 'e^{−νk²Δt}', { size: 5.6, italic: true, valign: 'middle', color: K.sub });
     L.text(p, gx + gw + m(1.6), gy + m(4.6), 'e^{−ηk²Δt}', { size: 5.6, italic: true, valign: 'middle', color: K.sub });
   }
-  // entrées de la combinaison
+  // inputs of the combination
   F.anchor('nu.a', p, m(56.6), m(41.6)); F.anchor('nu.b', p, m(rx + rw + 0.4), m(41.6));
   F.anchor('nb.a', p, m(59.6), m(52.6)); F.anchor('nb.b', p, m(rx + rw + 0.4), m(52.6));
   F.relate('nu.a', 'nu.b', 'flow'); L.connect(F, 'nu.a', 'nu.b', { stroke: '#7f7f7f', width: 0.6, head: 2 });
   F.relate('nb.a', 'nb.b', 'flow'); L.connect(F, 'nb.a', 'nb.b', { stroke: '#7f7f7f', width: 0.6, head: 2 });
   L.text(p, m(46.0), m(40.0), `{${K.u}|**N̂**_{u}} + **f̂**`, { size: 5.9, anchor: 'middle', valign: 'middle' });
   L.text(p, m(47.6), m(51.0), `{${K.B}|**N̂**_{B}}`, { size: 5.9, anchor: 'middle', valign: 'middle' });
-  // la boucle se referme sur l'état (P11 : retour épais, distinct du flux)
+  // the loop closes on the state (P11: thick return, distinct from the flow)
   F.anchor('rk.t', p, m(18.2), m(ry - 0.4)); F.anchor('st.b', p, m(18.2), m(33.8));
   F.relate('rk.t', 'st.b', 'feedback'); L.connect(F, 'rk.t', 'st.b', { stroke: K.ink, width: 1.2, head: 2.8 });
   L.text(p, m(3), m(BOT - 1.8), S.after, { size: 5.5, color: K.sub });
 }
 
-// ------------------------------------------------------------------------------- b : la frise
+// ------------------------------------------------------------------------------- b: the timeline
 export function timeline(F, L, p, S, X0, Y0, W) {
   const m = L.mm, t0 = X0 + m(5), t1 = X0 + W - m(4), X = (t) => t0 + (t1 - t0) * t / 140;
   const yRun = Y0 + m(4.2), yDiag = Y0 + m(10.6), ySnap = Y0 + m(14.8), yAx = Y0 + m(18.8);
@@ -187,13 +187,13 @@ export function timeline(F, L, p, S, X0, Y0, W) {
   L.chevron(p, [X(ti) + m(2.5), yRun + m(0.9)], [0.45, -0.89], { len: m(0.9), width: 0.5 });
   L.text(p, X(ti) + m(3.0), yRun + m(3.2), S.resume, { size: 5.2, color: K.sub, valign: 'middle' });
   chip(X(140) - m(8.6), yRun - m(4.4), 'done', K.ink, K.ink);
-  // diagnostics tous les 0,1 depuis t = 0 (peigne continu à cette échelle)
+  // diagnostics every 0.1 from t = 0 (continuous comb at this scale)
   L.rect(p, X(0), yDiag - m(0.8), X(140) - X(0), m(1.6), { fill: '#c9ced4', stroke: 'none' });
   L.text(p, X(1), yDiag - m(2.4), S.diag, { size: 5.6, color: K.sub, valign: 'middle' });
-  // champs : 40 instantanés sur ]100, 140]
+  // fields: 40 snapshots over ]100, 140]
   for (let k = 1; k <= 40; k++) L.line(p, [X(100 + k), ySnap - m(1.5)], [X(100 + k), ySnap + m(1.5)], { stroke: k % 2 ? K.u : K.B, width: 0.45 });
   L.text(p, X(100) - m(1.2), ySnap, S.snaps, { size: 5.6, anchor: 'end', valign: 'middle' });
-  // axe du temps simulé
+  // simulated-time axis
   L.arrow(p, [X(0), yAx], [X(140) + m(2.6), yAx], { stroke: K.ink, width: 0.5, head: 1.8 });
   for (const t of [0, 100, 140]) {
     L.line(p, [X(t), yAx - m(0.8)], [X(t), yAx + m(0.8)], { stroke: K.ink, width: 0.5 });
@@ -208,7 +208,7 @@ export function timeline(F, L, p, S, X0, Y0, W) {
   L.text(p, X0 + m(3.6), ly + m(3.1), S.sig, { size: 5.5, valign: 'middle', color: K.sub });
 }
 
-// ------------------------------------------------------------------------ c : fichier ↔ catalogue
+// ------------------------------------------------------------------------ c: file ↔ catalog
 export function mapping(F, L, p, S, X0, Y0, W) {
   const m = L.mm, fw = W * 0.53, tx0 = X0 + W * 0.635, tw = W * 0.365;
   const rows = [

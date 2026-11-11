@@ -1,4 +1,4 @@
-// Parts of the « vks » figure: the VKS cylinder in vector 3D (one orthographic view shared by both drawings of
+// Parts of the "vks" figure: the VKS cylinder in vector 3D (one orthographic view shared by both drawings of
 // panel a), its turbines, the mean-flow glyphs, and the small polarity glyph reused in panel b.
 // World units: R (radius of the sodium volume) = 1; axis along x; z up. Geometry record: docs/facts.md.
 export const K = {

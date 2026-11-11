@@ -1,16 +1,16 @@
-"""Données calculées de la figure « cadre » (toutes illustratives, modèles jouets).
+"""Computed data for the "framework" figure (all illustrative, toy models).
 
-Lancer : python figure/data/make_data.py  (depuis figures/framework/) -> figure/data/framework.json
-Contenu :
-  flow     : trajectoires du flot marginal de flow matching 1D (chemin linéaire, couplage indépendant),
-             base N(0,1) -> mélange symétrique 0.5 N(-m, s^2) + 0.5 N(m, s^2) ; v* exact (posterior gaussien).
-  pot      : potentiels 2D périodiques psi, a (somme de Fourier, |k| <= 3, amplitude ~ k^-2.6 et k^-2.1) ;
-             isolignes orientées selon u = grad^perp psi = (d_y psi, -d_x psi), B = grad^perp a.
-  vks      : fonction de courant de Stokes à deux cellules (u_r = -1/r d_z psi, u_z = 1/r d_r psi) ;
-             lignes de champ d'un solénoïde fini (dipôle axial), Biot-Savart par spires (intégrales elliptiques).
-  law      : échantillons de dissipation eps ~ Gamma(k, theta) (q_theta brut, moyenne 1.15 E[P]),
-             inclinaison exponentielle exacte vers la moyenne E[P] = 1 ; P - eps : loi large de moyenne 0.
-  uses     : modes (modèles réduits), ensemble + observations (assimilation), densité de D (Rice).
+Run: python figure/data/make_data.py  (from site/figures/framework/) -> figure/data/framework.json
+Contents:
+  flow     : trajectories of the marginal flow of 1D flow matching (linear path, independent coupling),
+             base N(0,1) -> symmetric mixture 0.5 N(-m, s^2) + 0.5 N(m, s^2); exact v* (Gaussian posterior).
+  pot      : periodic 2D potentials psi, a (Fourier sum, |k| <= 3, amplitude ~ k^-2.6 and k^-2.1);
+             contour lines oriented along u = grad^perp psi = (d_y psi, -d_x psi), B = grad^perp a.
+  vks      : two-cell Stokes stream function (u_r = -1/r d_z psi, u_z = 1/r d_r psi);
+             field lines of a finite solenoid (axial dipole), Biot-Savart by current loops (elliptic integrals).
+  law      : dissipation samples eps ~ Gamma(k, theta) (raw q_theta, mean 1.15 E[P]),
+             exact exponential tilting toward the mean E[P] = 1; P - eps: broad law with mean 0.
+  uses     : modes (reduced models), ensemble + observations (assimilation), density of D (Rice).
 """
 import json, os
 import numpy as np
@@ -22,7 +22,7 @@ import matplotlib.pyplot as plt
 rng = np.random.default_rng(7)
 out = {}
 
-# ---------------------------------------------------------------- 1. flot latent 1D
+# ---------------------------------------------------------------- 1. 1D latent flow
 m, s = 1.55, 0.30
 mus = np.array([-m, m]); pis = np.array([0.5, 0.5])
 
@@ -55,7 +55,7 @@ for i in range(len(ts) - 1):
         x = x + h / 6 * (k1 + 2 * k2 + 2 * k3 + k4)
     traj.append(x.copy())
 traj_indep = np.array(traj)
-# Couplage optimal (OT) : en 1D la carte monotone x1 = F1^-1(Phi(x0)) donne des trajectoires droites
+# Optimal coupling (OT): in 1D the monotone map x1 = F1^-1(Phi(x0)) gives straight trajectories
 from scipy.optimize import brentq
 F1 = lambda y: 0.5 * norm.cdf(y, -m, s) + 0.5 * norm.cdf(y, m, s)
 x0 = norm.ppf(q)
@@ -78,7 +78,7 @@ out['flow'] = {
 }
 print('flow: max deviation from straight line', dev.max(), 'final', traj[-1].round(2))
 
-# ---------------------------------------------------------------- 2. potentiels 2D
+# ---------------------------------------------------------------- 2. 2D potentials
 N = 64
 g = np.linspace(0, 2 * np.pi, N, endpoint=False)
 X, Y = np.meshgrid(g, g, indexing='xy')
@@ -143,12 +143,12 @@ out['pot'] = {
     'cpsi': orient(contours(psi, lev_psi), psi), 'ca': orient(contours(a, lev_a), a),
 }
 
-# ---------------------------------------------------------------- 3. VKS : écoulement moyen et dipôle axial
-# Unités : rayon du cylindre R = 1, turbines en z = +-h (VKS2 : 185.5/206 = 0.90).
+# ---------------------------------------------------------------- 3. VKS: mean flow and axial dipole
+# Units: cylinder radius R = 1, impellers at z = +-h (VKS2: 185.5/206 = 0.90).
 h = 0.90
 rr = np.linspace(0, 1, 81); zv = np.linspace(-h, h, 145)
 Rg, Zg = np.meshgrid(rr, zv, indexing='xy')
-psiS = Rg**2 * (1 - Rg**2) * np.sin(np.pi * Zg / h)   # u_z = (1/r) d_r psi > 0 on axis for z > 0 (vers la turbine)
+psiS = Rg**2 * (1 - Rg**2) * np.sin(np.pi * Zg / h)   # u_z = (1/r) d_r psi > 0 on axis for z > 0 (toward the impeller)
 fig, ax = plt.subplots()
 cs = ax.contour(rr, zv, psiS, levels=[-0.2, -0.12, -0.05, 0.05, 0.12, 0.2])
 vks_u = []
@@ -163,37 +163,37 @@ for lev, ss in zip(cs.levels, cs.allsegs):
         if tv[0] * ur + tv[1] * uz < 0: p = p[::-1]
         vks_u.append({'lev': float(lev), 'pts': np.round(p, 4).tolist()})
 plt.close(fig)
-# axe : u_z sur l'axe, contrôle du sens
+# axis: u_z on the axis, sign check
 print('vks: u_z(axis, z=+0.45) =', 2 * np.sin(np.pi * 0.45 / h), ' u_r(r=0.5, z=0) =', -0.5 * 0.75 * np.pi / h)
 
-# Dipôle axial : noyau uniformément aimanté (sphère de rayon a) ; dedans B axial uniforme, dehors dipôle pur.
-# Une ligne qui coupe le plan médian en r0 < a sort de la sphère en sin(theta) = r0/a et suit r = L sin^2(theta), L = a^3/r0^2.
+# Axial dipole: uniformly magnetized core (sphere of radius a); inside, uniform axial B; outside, pure dipole.
+# A line crossing the mid-plane at r0 < a leaves the sphere at sin(theta) = r0/a and follows r = L sin^2(theta), L = a^3/r0^2.
 acore = 0.80
 vks_B = []
-for r0 in [0.50, 0.57, 0.64]:   # L = a^3/r0^2 <= 2.05 : chaque boucle se referme dans la station c (pas de coupure au bord)
+for r0 in [0.50, 0.57, 0.64]:   # L = a^3/r0^2 <= 2.05: each loop closes inside station c (no cut at the edge)
     L = acore**3 / r0**2
     th_e = np.arcsin(r0 / acore)
     z_e = np.sqrt(acore**2 - r0**2)
     th = np.linspace(th_e, np.pi - th_e, 300)
-    outer = np.c_[L * np.sin(th)**3, L * np.sin(th)**2 * np.cos(th)]          # de la sortie haute vers l'entrée basse
-    inner = np.c_[np.full(40, r0), np.linspace(-z_e, z_e, 40)]                  # montée à l'intérieur (B_z > 0)
-    line = np.vstack([inner, outer[1:]])                                         # boucle fermée orientée dans le sens de B
+    outer = np.c_[L * np.sin(th)**3, L * np.sin(th)**2 * np.cos(th)]          # from the upper exit to the lower entry
+    inner = np.c_[np.full(40, r0), np.linspace(-z_e, z_e, 40)]                  # rising inside (B_z > 0)
+    line = np.vstack([inner, outer[1:]])                                         # closed loop oriented along B
     vks_B.append({'L': float(L), 'pts': np.round(line[::2], 4).tolist()})
 print('vks: B loops L =', [round(b['L'], 2) for b in vks_B])
 out['vks'] = {'h': h, 'u': vks_u, 'B': vks_B}
 
-# ---------------------------------------------------------------- 4. contrôle en loi
+# ---------------------------------------------------------------- 4. law-level control
 k = 7.0
 mean_raw = 1.15
 eps = rng.gamma(k, mean_raw / k, 6000)
-beta = k / 1.0 - k / mean_raw                # Gamma(k, rate) * exp(-beta eps) -> Gamma(k, rate + beta): moyenne 1
+beta = k / 1.0 - k / mean_raw                # Gamma(k, rate) * exp(-beta eps) -> Gamma(k, rate + beta): mean 1
 w = np.exp(-beta * eps); w /= w.sum()
 ess = 1 / np.sum(w**2)
 edges = np.linspace(0.2, 2.4, 23)
 h_raw, _ = np.histogram(eps, edges, density=True)
 h_til, _ = np.histogram(eps, edges, weights=w, density=True)
 print('law: E_q[eps] =', eps.mean().round(3), ' E_tilt[eps] =', (w * eps).sum().round(3), ' ESS/N =', (ess / len(eps)).round(2))
-# P - eps (= dE/dt) : loi stationnaire de moyenne nulle et de variance non nulle (Corollaire 6)
+# P - eps (= dE/dt): stationary law with zero mean and nonzero variance (Corollary 6)
 d = rng.normal(0, 0.28, 6000)
 dedges = np.linspace(-1, 1, 17)
 h_d, _ = np.histogram(d, dedges, density=True)
@@ -201,12 +201,12 @@ out['law'] = {'edges': edges.tolist(), 'raw': h_raw.round(4).tolist(), 'tilt': h
               'mean_raw': float(eps.mean()), 'mean_tilt': float((w * eps).sum()), 'EP': 1.0,
               'dedges': dedges.tolist(), 'dhist': h_d.round(4).tolist(), 'ess_frac': float(ess / len(eps))}
 
-# ---------------------------------------------------------------- 5. usages
-# modes (modèles réduits) : trois modes de Fourier du domaine 2D
+# ---------------------------------------------------------------- 5. uses
+# modes (reduced models): three Fourier modes of the 2D domain
 n2 = 16; gg = np.linspace(0, 2 * np.pi, n2, endpoint=False); XX, YY = np.meshgrid(gg, gg)
 modes = [np.sin(XX) * np.sin(YY), np.cos(XX) * np.sin(2 * YY), np.sin(2 * XX + YY)]
 modes = [((mm / np.abs(mm).max()) + 1) / 2 for mm in modes]
-# assimilation : ensemble de 7 trajectoires d'un AR(1), resserré aux instants d'observation
+# assimilation: ensemble of 7 trajectories of an AR(1), tightened at the observation times
 T = 60; tt = np.arange(T); obs_t = [14, 30, 46]
 truth = np.cumsum(rng.normal(0, 0.12, T)); truth -= truth.mean()
 truth = 0.8 * np.sin(tt / 9.0) + 0.25 * np.sin(tt / 3.7)

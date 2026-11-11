@@ -1,7 +1,7 @@
-"""Figures statiques du module p5 (probabilités, statistiques, transport optimal).
+"""Static figures of module p5 (probability, statistics, optimal transport).
 
-Usage : python figures_p5.py <dossier_fr> <dossier_en>
-Produit fig-*.png (libellés français) dans <dossier_fr> et les mêmes noms (libellés anglais) dans <dossier_en>.
+Usage: python figures_p5.py <fr_dir> <en_dir>
+Produces fig-*.png (French labels) in <fr_dir> and the same names (English labels) in <en_dir>.
 """
 import sys
 from pathlib import Path
@@ -11,7 +11,7 @@ matplotlib.use("Agg")
 import matplotlib.pyplot as plt
 from scipy.stats import norm
 
-C1, C2, C3 = "#2a78d6", "#eb6834", "#1baf7a"     # bleu, orange, aqua (palette catégorielle validée)
+C1, C2, C3 = "#2a78d6", "#eb6834", "#1baf7a"     # blue, orange, aqua (validated categorical palette)
 INK, INK2, GRID = "#0b0b0b", "#52514e", "#d9d8d4"
 plt.rcParams.update({
     "font.size": 11, "axes.edgecolor": INK2, "axes.labelcolor": INK, "xtick.color": INK2,
@@ -21,20 +21,6 @@ plt.rcParams.update({
 })
 
 T = {
- "fr": dict(
-   pf_a="Loi de X ~ N(0, 1)", pf_b="Loi de Y = sinh(X)", pf_band="8 tranches de probabilité 1/8",
-   pf_hist="10⁶ tirages", pf_form="jacobien",
-   mc_a="Estimation de E[cos X] et IC à 95 %", mc_b="Erreur quadratique moyenne (200 répétitions)",
-   mc_N="nombre de tirages N", mc_est="estimation", mc_ex="valeur exacte e^(−1/2)", mc_err="erreur RMS", mc_slope="pente −1/2",
-   ti_a="Loi de base q et lois inclinées p_λ", ti_b="Taille d'échantillon effective", ti_q="q (base)",
-   ti_c="E[X] = {c}", ti_c_lab="valeur imposée c = E[X]", ti_ess="ESS / N", ti_emp="estimée (N = 20 000)", ti_th="limite N → ∞",
-   w_a="Fonctions de répartition : aire = W₁", w_b="Couplage monotone (appariement des quantiles)",
-   w_F="F (loi μ)", w_G="G (loi ν)", w_area="|F − G|", w_mu="échantillon de μ", w_nu="échantillon de ν",
-   ou_a="Trajectoires d'Ornstein–Uhlenbeck (Euler–Maruyama)", ou_b="Histogrammes et solutions de Fokker–Planck",
-   ou_t="temps t", ou_band="moyenne ± 2 écarts-types (exact)", ou_h1="t = 0,25", ou_h2="t = 4", ou_pinf="p∞ = N(0, σ²/2θ)", ou_pt="p(·, 0,25) exacte",
-   fl_a="Chemins conditionnels x_t = (1 − t)x₀ + t x₁", fl_b="Flot marginal dx/dt = v(x, t)", fl_t="temps du flot t",
-   dens="densité", x="x", y="y",
- ),
  "en": dict(
    pf_a="Law of X ~ N(0, 1)", pf_b="Law of Y = sinh(X)", pf_band="8 slices of probability 1/8",
    pf_hist="10⁶ draws", pf_form="Jacobian",
@@ -64,7 +50,7 @@ def fig_pushforward(L, out):
         ys = np.sinh(xs)
         ax[1].fill_between(ys, norm.pdf(np.arcsinh(ys)) / np.sqrt(1 + ys ** 2), color=col, alpha=0.35, lw=0)
     ax[0].plot(x, norm.pdf(x), color=C1)
-    ax[0].set_title(L["pf_a"] + " : " + L["pf_band"] if L is T["fr"] else L["pf_a"] + ": " + L["pf_band"], fontsize=11); ax[0].set_xlabel(L["x"]); ax[0].set_ylabel(L["dens"])
+    ax[0].set_title(L["pf_a"] + ": " + L["pf_band"], fontsize=11); ax[0].set_xlabel(L["x"]); ax[0].set_ylabel(L["dens"])
     Y = np.sinh(rng.standard_normal(1_000_000))
     ax[1].hist(Y, bins=120, range=(-6, 6), density=True, histtype="step", color=INK2, lw=1, label=L["pf_hist"])
     y = np.linspace(-6, 6, 800)
@@ -92,7 +78,7 @@ def fig_montecarlo(L, out):
     Ns = np.unique(np.logspace(1, 5, 13).astype(int))
     rms = [np.sqrt(np.mean((np.cos(rng.standard_normal((200, N))).mean(1) - I) ** 2)) for N in Ns]
     ax[1].loglog(Ns, rms, "o", color=C1, ms=6, label=L["mc_err"])
-    sd = np.sqrt((1 + np.exp(-2)) / 2 - np.exp(-1))       # écart-type de cos X
+    sd = np.sqrt((1 + np.exp(-2)) / 2 - np.exp(-1))       # standard deviation of cos X
     ax[1].loglog(Ns, sd / np.sqrt(Ns), color=C2, lw=1.5, label=L["mc_slope"] + "  (σ/√N)")
     ax[1].set_xlabel(L["mc_N"]); ax[1].set_title(L["mc_b"], fontsize=11); ax[1].legend(fontsize=9)
     fig.savefig(out / "fig-monte-carlo.png"); plt.close(fig)
@@ -115,7 +101,7 @@ def fig_tilt(L, out):
         lam = brentq(lambda l: tilted_mixture(l)[0] @ tilted_mixture(l)[1] - c, -50, 50)
         p, mu = tilted_mixture(lam)
         ax[0].plot(x, p[0] * norm.pdf(x, mu[0], s) + p[1] * norm.pdf(x, mu[1], s), color=col,
-                   label=L["ti_c"].format(c=str(c).replace(".", ",") if L is T["fr"] else c) + f"  (λ = {lam:.2f})".replace(".", "," if L is T["fr"] else "."))
+                   label=L["ti_c"].format(c=c) + f"  (λ = {lam:.2f})")
     ax[0].set_title(L["ti_a"], fontsize=11); ax[0].set_xlabel(L["x"]); ax[0].legend(fontsize=8.5, loc="upper left")
     rng = np.random.default_rng(3)
     N = 20_000
@@ -126,7 +112,7 @@ def fig_tilt(L, out):
         lam = brentq(lambda l: tilted_mixture(l)[0] @ tilted_mixture(l)[1] - c, -50, 50)
         a = lam * xs; w = np.exp(a - a.max())
         ess_emp.append(w.sum() ** 2 / (w ** 2).sum() / N)
-        # limite : (E_q e^{λX})² / E_q e^{2λX}, calculée en log pour la stabilité
+        # limit: (E_q e^{λX})² / E_q e^{2λX}, computed in log form for stability
         lm = lambda l: np.log(0.5 * np.exp(l * -2.0 + l ** 2 * s ** 2 / 2) + 0.5 * np.exp(l * 2.0 + l ** 2 * s ** 2 / 2))
         ess_th.append(np.exp(2 * lm(lam) - lm(2 * lam)))
     ax[1].semilogy(cs, ess_th, color=C2, lw=1.5, label=L["ti_th"])
@@ -223,9 +209,8 @@ def fig_flow(L, out):
 
 
 if __name__ == "__main__":
-    for lang, d in (("fr", sys.argv[1]), ("en", sys.argv[2])):
-        out = Path(d); out.mkdir(parents=True, exist_ok=True)
-        L = T[lang]
-        for f in (fig_pushforward, fig_montecarlo, fig_tilt, fig_wasserstein, fig_ou, fig_flow):
-            f(L, out)
-        print(lang, "->", out)
+    out = Path(sys.argv[1] if len(sys.argv) > 1 else Path(__file__).parent); out.mkdir(parents=True, exist_ok=True)
+    L = T["en"]
+    for f in (fig_pushforward, fig_montecarlo, fig_tilt, fig_wasserstein, fig_ou, fig_flow):
+        f(L, out)
+    print("->", out)

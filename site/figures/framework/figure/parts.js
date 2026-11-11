@@ -1,5 +1,5 @@
-// Parts shared by the drafts of the « cadre » figure. Every function draws one station's content into a box (pt).
-// Colour key (one hue per entity, carried into the labels): lambda green, latent z violet, u blue, B vermillion, energy/law amber.
+// Parts shared by the drafts of the "framework" figure. Every function draws one station's content into a box (pt).
+// Color key (one hue per entity, carried into the labels): lambda green, latent z violet, u blue, B vermillion, energy/law amber.
 export const K = {
   lam: '#009E73', z: '#6C4BA0', u: '#0072B2', B: '#D55E00', E: '#C98A00', Efill: '#F6DFA6',
   ink: '#2b2b2b', mid: '#7a7a7a', light: '#bdbdbd', faint: '#ececec', paper: '#ffffff',

@@ -1,4 +1,4 @@
-// Figure "taxonomie" (English version): constraint classes C1–C4 and matched mechanism (a); the C4 trap (b).
+// Figure "taxonomy" (English version): constraint classes C1–C4 and matched mechanism (a); the C4 trap (b).
 // Hero: none, taxonomy and probability distributions (flat route: boxes, geometric vignettes, small qualitative plots).
 export const figure = { width: 183, height: 80, name: 'taxonomie', format: 'journal', illustrate: false };
 
@@ -17,7 +17,7 @@ export default async function draw(F, L) {
   const tri = (p, x, y, s, fill) => L.polygon(p, [[x, y], [x - s * 0.62, y + s], [x + s * 0.62, y + s]], { fill, stroke: 'none' });
 
   // =====================================================================================================
-  // panel a : la grille C1–C4
+  // panel a: the C1–C4 grid
   // =====================================================================================================
   const a = F.panel('a', { x: 0, y: 0, w: 112, h: 80 });
   const colX = [2, 29.5, 57, 84.5].map(m), colW = m(25.5);
@@ -30,7 +30,7 @@ export default async function draw(F, L) {
     L.line(a, [g.x0, m(7)], [g.x1, m(7)], { stroke: g.col, width: 1.0, cap: 'butt' });
   }
   const classes = [
-    // join : « ou » = deux mécanismes possibles ; « et » (C3) = deux conditions qui vont ensemble (Prop. 4)
+    // join: "or" = two possible mechanisms; "and" (C3) = two conditions that go together (Prop. 4)
     { id: 'C1', name: 'Local\nlinear', g: 0, form: '*A***x** = 0', ex: ['∇·**u** = 0,  ∇·**B** = 0', 'Homogeneous linear', 'boundary conditions'],
       mech: ['Potentials\n**B** = ∇×**A**', 'Leray\nprojection'], join: 'or' },
     { id: 'C2', name: 'Local\nnonlinear', g: 0, form: '*c*(**x**) = 0', ex: ['Stationary PDE', 'residual'],
@@ -77,7 +77,7 @@ export default async function draw(F, L) {
   }
 
   const W = colW, H = fh;
-  // ---- C1 : sous-espace S = ker A, projection orthogonale P ----------------------------------------
+  // ---- C1: subspace S = ker A, orthogonal projection P ----------------------------------------
   {
     const g = glyphs[0];
     const A0 = [m(2.6), m(19.6)], A1 = [m(23), m(6.4)];
@@ -95,7 +95,7 @@ export default async function draw(F, L) {
     dot(g, ...foot, m(0.62), BLUE);
     L.text(g, (src[0] + foot[0]) / 2 + m(1.6), (src[1] + foot[1]) / 2 - m(0.6), '*P*', { size: T.label, color: BLUE_TXT, valign: 'middle' });
   }
-  // ---- C2 : variété c(x) = 0, écart de Jensen ------------------------------------------------------
+  // ---- C2: manifold c(x) = 0, Jensen gap ------------------------------------------------------
   {
     const g = glyphs[1];
     const arc = (u) => [m(2.4) + u * m(20.8), m(19.8) - m(15.5) * Math.sin(Math.PI * (0.08 + 0.84 * u)) ];
@@ -113,7 +113,7 @@ export default async function draw(F, L) {
     ring(g, ...mid, m(0.7), GREY);
     L.text(g, mid[0], m(21.3), 'Jensen gap', { size: T.small, anchor: 'middle', valign: 'middle', color: BLUE_TXT, italic: true });
   }
-  // ---- C3 : loi symétrique (deux nuages miroirs), échantillons non symétriques --------------------
+  // ---- C3: symmetric law (two mirror clouds), non-symmetric samples --------------------
   {
     const g = glyphs[2], cx = W / 2;
     const blob = (sx) => {
@@ -134,7 +134,7 @@ export default async function draw(F, L) {
     L.arrow(g, [cx - m(5.4), m(5.4)], [cx + m(5.4), m(5.4)], { bend: 0.22, both: true, stroke: OR, width: 0.7, head: 2.6 });
     L.text(g, cx, m(2.6), '*g*', { size: T.label, anchor: 'middle', valign: 'middle', color: OR_TXT });
   }
-  // ---- C4 : loi de dE/dt, moyenne nulle -------------------------------------------------------------
+  // ---- C4: law of dE/dt, zero mean -------------------------------------------------------------
   {
     const g = glyphs[3];
     const X = (v) => m(2.6) + (v + 3.2) / 6.4 * m(20.3), base = m(17.6), Y = (d) => base - d * m(27);
@@ -149,7 +149,7 @@ export default async function draw(F, L) {
   }
 
   // =====================================================================================================
-  // panel b : C4, trois lois de dE/dt sur les mêmes axes
+  // panel b: C4, three laws of dE/dt on the same axes
   // =====================================================================================================
   const b = F.panel('b', { x: 117, y: 0, w: 66, h: 80 });
   L.text(b, m(5), m(2.9), 'Energy budget (C4)', { size: T.head, weight: 'bold', valign: 'middle', color: TXT });
@@ -171,7 +171,7 @@ export default async function draw(F, L) {
       L.polygon(b, area(0, D.mu), { fill: LAWFILL, stroke: 'none' });
       L.polyline(b, curve(0, D.mu), { stroke: INK, width: 0.8, fill: 'none' });
     } else {
-      // q_theta : modèle avant correction (gris pâle, pointillé)
+      // q_theta: model before correction (pale grey, dotted)
       L.polygon(b, area(k, D.q), { fill: '#EFEFEF', stroke: 'none' });
       L.polyline(b, curve(k, D.q), { stroke: '#9a9a9a', width: 0.6, dash: '1.6 1', fill: 'none' });
     }
@@ -181,7 +181,7 @@ export default async function draw(F, L) {
     }
     if (k > 0) L.polyline(b, curve(k, D.mu), { stroke: INK, width: 0.45, dash: '0.5 0.7', fill: 'none' });
     if (k === 1) {
-      // Dirac en 0 : flèche verticale (notation de delta)
+      // Dirac mass at 0: vertical arrow (delta notation)
       L.arrow(b, [X(0), base], [X(0), m(14.6)], { stroke: BLUE, width: 1.3, head: 3.4 });
     }
     // axis
@@ -200,16 +200,16 @@ export default async function draw(F, L) {
   L.text(b, Xs(2)(1.95), base - 0.22 * ys, '*q*_θ', { size: T.label, anchor: 'start', valign: 'middle', color: '#7a7a7a' });
   L.text(b, Xs(1)(0) - m(1.2), m(17.2), 'Dirac at 0', { size: T.small, anchor: 'end', valign: 'middle', color: BLUE_TXT });
 
-  // ---- sample rows : lois empiriques (masses de Dirac pondérées), mêmes axes que les densités ---------
-  const sb = m(60.2), h0 = m(2.6), N = D.samples_mu.length;      // h0 = hauteur d'un poids uniforme 1/N
+  // ---- sample rows: empirical laws (weighted Dirac masses), same axes as the densities ---------
+  const sb = m(60.2), h0 = m(2.6), N = D.samples_mu.length;      // h0 = height of a uniform weight 1/N
   const stem = (x, h, col, edge) => { L.line(b, [x, sb], [x, sb - h], { stroke: edge, width: 0.6, cap: 'butt' }); L.circle(b, x, sb - h, m(0.42), { fill: col, stroke: edge, width: 0.35 }); };
   for (const k of [0, 2]) L.line(b, [px[k] + m(1), sb], [px[k] + pw - m(1), sb], { stroke: GREY, width: 0.4, cap: 'butt' });
   for (const v of D.samples_mu) stem(Xs(0)(v), h0, DOT, DOT);
   L.text(b, px[0] + pw / 2, m(63.3), 'Samples', { size: T.small, anchor: 'middle', valign: 'middle', color: SUB });
-  // projection : chaque échantillon envoyé sur 0
+  // projection: each sample sent to 0
   {
     const X = Xs(1), tgt = [X(0), sb];
-    // anneaux décalés en hauteur un sur deux : les quantiles centraux ne sont qu'à 0,95 mm l'un de l'autre
+    // rings offset in height every other one: the central quantiles are only 0.95 mm apart
     D.samples_q.forEach((v, i) => {
       const s = [X(v), m(i % 2 ? 51.2 : 52.4)];
       L.line(b, s, [tgt[0] + (s[0] - tgt[0]) * 0.14, tgt[1] + (s[1] - tgt[1]) * 0.14], { stroke: BLUE, width: 0.4, opacity: 0.85 });
@@ -217,7 +217,7 @@ export default async function draw(F, L) {
     });
     dot(b, ...tgt, m(1.0), BLUE);
   }
-  // inclinaison exponentielle : mêmes échantillons, poids w_i
+  // exponential tilting: same samples, weights w_i
   {
     const X = Xs(2);
     D.samples_q.forEach((v, i) => stem(X(v), h0 * N * D.weights[i], OR, OR_D));

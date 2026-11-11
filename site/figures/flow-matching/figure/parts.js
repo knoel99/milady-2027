@@ -1,4 +1,4 @@
-// Shared glyphs of the « flow-matching » figure: colour key, space-time frame, sideways density profiles,
+// Shared glyphs of the "flow-matching" figure: color key, space-time frame, sideways density profiles,
 // sample dots, direction-field arrows. Every panel draws the same objects through these helpers.
 
 export const K = {

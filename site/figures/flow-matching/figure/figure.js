@@ -1,4 +1,4 @@
-// Figure « flow-matching », ENGLISH version (preparation module « generative models », MilaDy 2027 site).
+// "flow-matching" figure, English version (preparation module "generative models", MilaDy 2027 site).
 // Same drawing as figure.js; only the displayed strings are translated. Shared glyphs: parts.js (no displayed words).
 // One principle, two cases on the same space-time template (flow time t to the right, one coordinate of x up):
 // a  base law N(0, I) at t = 0, two-mode symmetric data law at t = 1, straight conditional paths between independent

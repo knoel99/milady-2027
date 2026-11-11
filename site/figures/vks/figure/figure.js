@@ -1,4 +1,4 @@
-// Figure « vks-en » (English version of figure.js): the von Kármán Sodium (VKS) experiment and the dipole reversals.
+// Figure "vks-en" (English version of figure.js): the von Kármán Sodium (VKS) experiment and the dipole reversals.
 // Hero: VKS cylinder (vessel, sodium, curved-blade impellers), drawn in vector 3D with the illustrated finish.
 import { K, G, proj, vesselBack, vesselFront, turbine, shaft, ringArc, ribbonArc, poloidalLoop, polarityGlyph, tFront } from './parts.js';
 
@@ -104,7 +104,7 @@ export default async function draw(F, L) {
   const b = F.panel('b', { x: 0, y: 68, w: 124, h: 50 });
   const c = F.panel('c', { x: 126, y: 68, w: 57, h: 50 });
   const bx0 = mm(13), bx1 = mm(121), T1 = S.t[S.t.length - 1], X = (t) => bx0 + mm(1.5) + t / T1 * (bx1 - bx0 - mm(1.5));
-  // Q scale: the slow curve (max |Q| = 0.75) must end left of the axis label « quadrupole Q »
+  // Q scale: the slow curve (max |Q| = 0.75) must end left of the axis label "quadrupole Q"
   const cx0 = mm(4), cx1 = mm(55), cQ0 = mm(27.2), Qk = mm(17.6), QX = (q) => cQ0 + q * Qk;
   const evCol = { renversement: K.rev, excursion: K.exc }, evTint = { renversement: '#EEEAF5', excursion: '#E3F3EC' };
   // event bands

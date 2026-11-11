@@ -1,11 +1,11 @@
-"""Données jouets de la figure « flow-matching » (1D, chemin linéaire, couplage indépendant).
+"""Toy data for the "flow-matching" figure (1D, linear path, independent coupling).
 
-Loi de base  : N(0, 1).
-Loi lambda_2 : 1/2 N(+m, s^2) + 1/2 N(-m, s^2), m = 1.5, s = 0.35 (aussi la loi du panneau a).
-Loi lambda_1 : N(0, s1^2), s1 = 0.45.
-Pour une loi cible mélange de gaussiennes et x_t = (1-t) x0 + t x1 avec x0, x1 indépendants,
-le champ marginal v*(x, t) = E[x1 - x0 | x_t = x] est exact (formules gaussiennes conditionnelles).
-Sortie : flow-matching.json (même dossier).
+Base law     : N(0, 1).
+Law lambda_2 : 1/2 N(+m, s^2) + 1/2 N(-m, s^2), m = 1.5, s = 0.35 (also the law of panel a).
+Law lambda_1 : N(0, s1^2), s1 = 0.45.
+For a Gaussian-mixture target law and x_t = (1-t) x0 + t x1 with x0, x1 independent,
+the marginal field v*(x, t) = E[x1 - x0 | x_t = x] is exact (conditional Gaussian formulas).
+Output: flow-matching.json (same folder).
 """
 import json, os
 import numpy as np
@@ -26,7 +26,7 @@ def mix_pdf(x, law):
 
 
 def pt(x, t, law):
-    """densité marginale p_t(x)"""
+    """marginal density p_t(x)"""
     return sum(w * npdf(x, t * m, np.sqrt((1 - t) ** 2 + t ** 2 * s ** 2)) for w, m, s in law)
 
 
@@ -63,7 +63,7 @@ def heun(x0, law, N):
 
 
 def posterior_x1(x, t, law, qs):
-    """quantiles du posterior p(x1 | x_t = x) (mélange de gaussiennes)"""
+    """quantiles of the posterior p(x1 | x_t = x) (Gaussian mixture)"""
     comps = []
     for w, m, s in law:
         # x | x1 ~ N(t x1, (1-t)^2) ; x1 ~ N(m, s^2)
@@ -81,22 +81,22 @@ def posterior_x1(x, t, law, qs):
 rng = np.random.default_rng(7)
 out = {"params": dict(m=M, s=S, s1=S1)}
 
-# ---- densités de bord
+# ---- marginal densities
 xg = np.linspace(-3.3, 3.3, 331)
 out["grid"] = xg.round(4).tolist()
 out["pdf_noise"] = npdf(xg, 0, 1).round(5).tolist()
 out["pdf_law2"] = mix_pdf(xg, LAW2).round(5).tolist()
 out["pdf_law1"] = mix_pdf(xg, LAW1).round(5).tolist()
 
-# ---- panneau a : paires indépendantes (x0, x1)
+# ---- panel a: independent pairs (x0, x1)
 npairs = 34
 x0 = rng.standard_normal(4 * npairs)
 x0 = x0[np.abs(x0) < 2.7][:npairs]
-comp = np.arange(npairs) % 2          # échantillon équilibré : 17 + 17 (loi symétrique)
+comp = np.arange(npairs) % 2          # balanced sample: 17 + 17 (symmetric law)
 x1 = np.where(comp == 0, M, -M) + S * rng.standard_normal(npairs)
 out["pairs"] = [[round(float(a), 4), round(float(b), 4)] for a, b in zip(x0, x1)]
 
-# ---- panneau a : grille du champ marginal
+# ---- panel a: grid of the marginal field
 tcols = np.linspace(0.07, 0.93, 9)
 xrows = np.linspace(-2.75, 2.75, 12)
 field = []
@@ -109,7 +109,7 @@ for f in field:
     f["p"] = round(f["p"] / pmax, 4)
 out["field"] = field
 
-# ---- panneau a : éventail de chemins conditionnels par un point (t*, x*)
+# ---- panel a: fan of conditional paths through a point (t*, x*)
 TS, XS = 0.40, 0.30
 qs = [(i + 0.5) / 7 for i in range(7)]
 x1s, comps = posterior_x1(XS, TS, LAW2, qs)
@@ -117,7 +117,7 @@ fan = [[round((XS - TS * b) / (1 - TS), 4), round(b, 4)] for b in x1s]
 out["fan"] = dict(t=TS, x=XS, v=round(float(vstar(XS, TS, LAW2)), 4), pairs=fan,
                   weights=[round(c[0], 3) for c in comps])
 
-# ---- panneau b : mêmes bruits, deux lois
+# ---- panel b: same noise, two laws
 nb = 10
 from statistics import NormalDist
 q0 = [NormalDist().inv_cdf((i + 0.5) / nb) for i in range(nb)]
@@ -129,13 +129,13 @@ for key, law in (("lam1", LAW1), ("lam2", LAW2)):
 out["traj"] = trajs
 out["x0b"] = [round(a, 4) for a in q0]
 
-# ---- panneau c : Heun sur une trajectoire lambda_2
+# ---- panel c: Heun on a lambda_2 trajectory
 xc = q0[5]
 ts, xs = rk4(xc, LAW2, 800)
 out["heun"] = dict(x0=round(xc, 4), exact=[[round(float(t), 4), round(float(x), 4)] for t, x in zip(ts[::10], xs[::10])],
                    steps4=heun(xc, LAW2, 4), steps3=heun(xc, LAW2, 3))
 
-# ---- vignettes 2D (nuages) : bruit isotrope N(0, I_2), données ± (m_h, m) avec la même coordonnée verticale que les tracés
+# ---- 2D thumbnails (clouds): isotropic noise N(0, I_2), data ± (m_h, m) with the same vertical coordinate as the plots
 r2 = np.random.default_rng(11)
 c0 = r2.standard_normal((400, 2)); c0 = c0[np.hypot(c0[:, 0], c0[:, 1]) < 2.35][:130]
 MH = 0.85
@@ -149,7 +149,7 @@ out["cloud_mh"] = MH
 with open(os.path.join(HERE, "flow-matching.json"), "w") as f:
     json.dump(out, f)
 
-# résumé console
+# console summary
 print("fan v* =", out["fan"]["v"], "weights", out["fan"]["weights"], "pairs", fan)
 print("slopes", [round(b - a, 2) for a, b in fan], "mean", np.mean([b - a for a, b in fan]))
 print("x0b", [round(a, 3) for a in q0])

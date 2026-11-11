@@ -1,4 +1,4 @@
-"""Figures statiques du module p6 (FR et EN). Usage : python figures_p6.py <dossier_sortie>"""
+"""Static figures of module p6 (FR and EN). Usage: python figures_p6.py <output_dir>"""
 import sys
 from pathlib import Path
 import numpy as np
@@ -17,14 +17,6 @@ plt.rcParams.update({"font.size": 10.5, "axes.edgecolor": INK2, "axes.labelcolor
                      "axes.grid": True, "grid.color": GRID, "grid.linewidth": 0.6, "lines.linewidth": 2,
                      "legend.frameon": False, "axes.titleweight": "bold", "axes.titlesize": 11})
 T = {
- "fr": dict(err="erreur relative (test)", nlat="nombre de variables latentes r", pod="POD (linéaire)",
-            ae="autoencodeur", x="x", u="u(x)", truth="vérité", podr="POD, r = 2", aer="AE, r = 2",
-            z1="latent z₁", z2="latent z₂", pos="position s de l'impulsion",
-            ta="(a) Erreur en fonction de r", tb="(b) Un instantané de test", tc="(c) Latents de l'AE (r = 2)",
-            i="indice i du mode", lam="valeur propre λᵢ", pred="prédiction N aₖ²/4", meas="POD empirique",
-            td="(a) Valeurs propres POD = spectre", te="(b) Quatre premiers modes POD", mode="mode",
-            shift="translation s (pas de grille)", eq="erreur relative d'équivariance",
-            tf="U-Net à 2 sous-échantillonnages : ‖U(Tₛx) − TₛU(x)‖ / ‖U(x)‖", zero="0 exactement"),
  "en": dict(err="relative error (test)", nlat="number of latent variables r", pod="POD (linear)",
             ae="autoencoder", x="x", u="u(x)", truth="truth", podr="POD, r = 2", aer="AE, r = 2",
             z1="latent z₁", z2="latent z₂", pos="pulse position s",
@@ -35,7 +27,7 @@ T = {
             tf="U-Net with 2 downsamplings: ‖U(Tₛx) − TₛU(x)‖ / ‖U(x)‖", zero="exactly 0"),
 }
 
-# ---------- Données et modèles (mêmes réglages que les blocs du cours) ----------
+# ---------- Data and models (same settings as the course code blocks) ----------
 torch.manual_seed(0); rng = np.random.default_rng(0)
 N, w = 64, 0.3
 x = np.arange(N) * 2 * np.pi / N
@@ -66,11 +58,11 @@ for r in (1, 2):
     with torch.no_grad():
         ae_errs[r] = ((ae(Xs) - Xs).norm() / Xs.norm()).item()
     aes[r] = ae
-print("AE :", ae_errs, "POD r=1,2 :", pod_errs[:2])
+print("AE:", ae_errs, "POD r=1,2:", pod_errs[:2])
 with torch.no_grad():
     Z = aes[2].encode(Xs).numpy(); rec_ae = aes[2](Xs).numpy() + mean
 
-# POD d'un champ homogène
+# POD of a homogeneous field
 rng2 = np.random.default_rng(0)
 M = 4000; k = np.fft.rfftfreq(N, 1 / N)
 amp = np.where((k >= 1) & (k <= 20), 1 / np.maximum(k, 1), 0.0)
@@ -78,7 +70,7 @@ snap = np.fft.irfft(amp * np.exp(1j * rng2.uniform(0, 2 * np.pi, (M, k.size))) *
 lam, phi = np.linalg.eigh(snap.T @ snap / M); lam, phi = lam[::-1], phi[:, ::-1]
 pred = np.repeat(N * amp[1:21] ** 2 / 4, 2)
 
-# Équivariance du U-Net
+# U-Net equivariance
 def block(ci, co):
     cs = [nn.Conv2d(a, co, 3, padding=1, padding_mode="circular", bias=False) for a in (ci, co)]
     for c in cs: nn.init.kaiming_normal_(c.weight)
@@ -100,9 +92,9 @@ with torch.no_grad():
     eqerr = [((net(torch.roll(xg, (int(q), int(q)), (-2, -1))) - torch.roll(y, (int(q), int(q)), (-2, -1))).norm()
               / y.norm()).item() for q in shifts]
 
-for lang, t in T.items():
-    sfx = "" if lang == "fr" else "-en"
-    # Figure 1 : POD vs AE
+for lang, t in [("en", T["en"])]:
+    sfx = ""
+    # Figure 1: POD vs AE
     fig, ax = plt.subplots(1, 3, figsize=(11.5, 3.5), constrained_layout=True)
     r_ax = np.arange(1, 25)
     ax[0].plot(r_ax, pod_errs, color=C1, marker="o", ms=4, label=t["pod"])
@@ -118,7 +110,7 @@ for lang, t in T.items():
     ax[2].set_xlabel(t["z1"]); ax[2].set_ylabel(t["z2"]); ax[2].set_title(t["tc"]); ax[2].set_aspect("equal", "datalim")
     cb = fig.colorbar(sc, ax=ax[2], shrink=0.85); cb.set_label(t["pos"])
     fig.savefig(OUT / f"fig-pod-ae{sfx}.png", dpi=160); plt.close(fig)
-    # Figure 2 : POD homogène = Fourier
+    # Figure 2: homogeneous POD = Fourier
     fig, ax = plt.subplots(1, 2, figsize=(11, 3.9), constrained_layout=True)
     i = np.arange(1, 41)
     ax[0].semilogy(i, lam[:40], color=C1, marker="o", ms=4, ls="none", label=t["meas"])
@@ -128,7 +120,7 @@ for lang, t in T.items():
         ax[1].plot(x, phi[:, q] * np.sqrt(N / 2), color=c, label=f"{t['mode']} {q + 1}")
     ax[1].set_xlabel(t["x"]); ax[1].set_title(t["te"]); ax[1].legend(ncol=4, loc="upper center", bbox_to_anchor=(0.5, -0.2), fontsize=9)
     fig.savefig(OUT / f"fig-pod-fourier{sfx}.png", dpi=160); plt.close(fig)
-    # Figure 3 : équivariance du U-Net
+    # Figure 3: U-Net equivariance
     fig, ax = plt.subplots(figsize=(8, 3.2), constrained_layout=True)
     cols = [C2 if q % 4 == 0 else C1 for q in shifts]
     ax.bar(shifts, eqerr, color=cols, width=0.7)

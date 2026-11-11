@@ -1,31 +1,31 @@
-// Figure « architecture » (concept A) : la chaîne d'une campagne et ses deux magasins (a), puis les
-// services qui réalisent chaque rôle sur les trois cibles (b). Texte en français ou en anglais.
-// Hero : aucun (architecture logicielle) ; icônes de machines en vector 3D (L.obliqueBox) ; vignette du
-// champ calculée (écoulement de Taylor–Green initial, analytique, kf = 2, comme palier2_tg3d.yaml).
+// Figure "architecture" (concept A): the chain of a campaign and its two stores (a), then the
+// services that fulfil each role on the three targets (b). English text.
+// Hero: none (software architecture); machine icons in 3D vector (L.obliqueBox); computed field
+// thumbnail (initial Taylor–Green flow, analytic, kf = 2, as in palier2_tg3d.yaml).
 
-// Clé de couleurs du site (figures cadre, plan-these, taxonomie) : la couleur est réservée aux données.
+// Color key of the site (figures framework, thesis-plan, taxonomy): color is reserved for data.
 export const K = {
   lam: '#009E73', lamT: '#006E4F', z: '#6C4BA0', zl: '#EEE9F6', u: '#0072B2', B: '#D55E00',
   E: '#C98A00', Efill: '#F6DFA6',
   ink: '#2b2b2b', sub: '#555555', mid: '#7a7a7a', light: '#bdbdbd', faint: '#ececec', paper: '#ffffff',
   badge: '#4d4d4d', frame: '#d3d6da', col: '#f6f7f8',
-  cat: '#E3E8EE', catEdge: '#A9B4C0', catInk: '#34414e',      // catalogue : gris bleuté
-  fil: '#EDE8E0', filEdge: '#BDB2A2', filInk: '#4a4136',      // fichiers : gris chaud
+  cat: '#E3E8EE', catEdge: '#A9B4C0', catInk: '#34414e',      // catalog: bluish grey
+  fil: '#EDE8E0', filEdge: '#BDB2A2', filInk: '#4a4136',      // files: warm grey
 };
 export const MONO = "'DejaVu Sans Mono', 'Liberation Mono', Consolas, monospace";
 
 const T = {
   fr: {
-    a: 'Chaîne d’une campagne', b: 'Trois cibles, même chaîne',
-    stages: ['Campagne', 'Lancement', 'Simulation', 'Stockage', 'Jeu de données', 'Entraînement', 'Évaluation'],
-    sims: '12 simulations', ref: 'référence', gen: 'généré', sameId: 'même UUID',
-    catRail: 'Catalogue · PostgreSQL ou SQLite', filRail: 'Fichiers · S3, MinIO ou disque',
-    cols: [['Portable', 'sans GPU'], ['VM cloud GPU', 'Docker Compose'], ['Cluster Slurm', 'Apptainer']],
-    rows: ['Exécution', 'Fichiers', 'Catalogue', 'Suivi'],
-    venv: 'venv, processus', ports: 'ports sur 127.0.0.1', tunnel: 'tunnel SSH',
-    array: 'tableau de jobs', gpuSim: '1 GPU par simulation', torchrun: 'torchrun par nœud',
-    sqliteWork: 'SQLite sur $WORK', noNet: 'nœuds sans Internet', copyS3: 'copie vers S3',
-    container: 'conteneur worker-gpu', split: 'par point (Re, Pm)', evalSub: 'spectres, bilans',
+    a: 'Campaign pipeline', b: 'Three targets, one pipeline',
+    stages: ['Campaign', 'Launch', 'Simulation', 'Storage', 'Dataset', 'Training', 'Evaluation'],
+    sims: '12 simulations', ref: 'reference', gen: 'generated', sameId: 'same UUID',
+    catRail: 'Catalog · PostgreSQL or SQLite', filRail: 'Files · S3, MinIO or disk',
+    cols: [['Laptop', 'no GPU'], ['Cloud GPU VM', 'Docker Compose'], ['Slurm cluster', 'Apptainer']],
+    rows: ['Execution', 'Files', 'Catalog', 'Tracking'],
+    venv: 'venv, processes', ports: 'ports on 127.0.0.1', tunnel: 'SSH tunnel',
+    array: 'job array', gpuSim: '1 GPU per simulation', torchrun: 'torchrun per node',
+    sqliteWork: 'SQLite on $WORK', noNet: 'nodes without Internet', copyS3: 'copy to S3',
+    container: 'worker-gpu container', split: 'by (Re, Pm) point', evalSub: 'spectra, budgets',
   },
   en: {
     a: 'Campaign pipeline', b: 'Three targets, one pipeline',
@@ -46,17 +46,17 @@ export function badge(L, p, cx, cy, r, k, size = 6) {
   L.circle(p, cx, cy, r, { fill: K.badge, stroke: 'none' });
   L.text(p, cx, cy, String(k), { size, weight: 'bold', color: '#ffffff', anchor: 'middle', valign: 'middle' });
 }
-// texte en chasse fixe : « _ », « * », « ^ », « { » sont des caractères, pas du balisage
+// monospaced text: "_", "*", "^", "{" are characters, not markup
 export const esc = (s) => s.replace(/([_*^{])/g, '\\$1');
 export function mono(L, p, x, y, s, o = {}) {
   return L.text(p, x, y, esc(s), { size: 5.5, family: MONO, color: K.ink, ...o });
 }
-// feuille à coin plié
+// sheet with a folded corner
 export function sheet(L, p, x, y, w, h, { fold = 3, fill = '#ffffff', stroke = '#9aa3ab', width = 0.45 } = {}) {
   L.polygon(p, [[x, y], [x + w - fold, y], [x + w, y + fold], [x + w, y + h], [x, y + h]], { fill, stroke, width, join: 'round' });
   L.polyline(p, [[x + w - fold, y], [x + w - fold, y + fold], [x + w, y + fold]], { fill: 'none', stroke, width, join: 'round' });
 }
-// grille Re × Pm de palier2_tg3d : 4 colonnes (Re = 25, 50, 100, 200), 3 rangées (Pm = 0,5 ; 1 ; 2, vers le haut)
+// Re × Pm grid of palier2_tg3d: 4 columns (Re = 25, 50, 100, 200), 3 rows (Pm = 0.5; 1; 2, going up)
 export function paramGrid(L, p, x0, y0, d, r, mark) {
   const pts = [];
   for (let i = 0; i < 4; i++) for (let j = 0; j < 3; j++) {
@@ -66,7 +66,7 @@ export function paramGrid(L, p, x0, y0, d, r, mark) {
   }
   return pts;
 }
-// icônes de machines
+// machine icons
 export function laptop(L, p, x, y, s) {
   const P3 = L.obliqueProj({ preset: 'angles', angle: 28, depth: 0.5 });
   const base = L.obliqueBox(p, P3, [s, 0.62 * s, 0.06 * s], { at: [x, y + 0.18 * s], anchor: 'center', fill: '#d9dde1', stroke: '#6b737b', width: 0.35 });
@@ -90,7 +90,7 @@ export function server(L, p, x, y, s, { n = 3, gpu = false } = {}) {
 export function cloud(L, p, cx, cy, w, h) {
   L.cloud(p, cx, cy, w, h, { lobes: 9, fill: '#f1f4f7', stroke: '#9aa5b0', width: 0.4, seed: 7 });
 }
-// cylindre de base de données (catalogue) et dossier (fichiers), glyphes de rôle
+// database cylinder (catalog) and folder (files), role glyphs
 export function dbGlyph(L, p, cx, cy, s, fill = K.cat, stroke = K.catEdge) {
   const rx = s / 2, ry = s * 0.17, h = s * 0.8;
   L.path(p, `M${cx - rx},${cy - h / 2} L${cx - rx},${cy + h / 2} A${rx},${ry} 0 0 0 ${cx + rx},${cy + h / 2} L${cx + rx},${cy - h / 2}`, { fill, stroke, width: 0.4 });
@@ -114,7 +114,7 @@ export function trackGlyph(L, p, cx, cy, s) {
   L.polyline(p, L.sample((t) => cy - s * 0.25 + s * 0.45 * (1 - Math.exp(-3 * (t - (cx - s / 2)) / s)), cx - s * 0.45, cx + s * 0.45, 12).map(([x, y]) => [x, cy + s * 0.25 - (y - (cy - s * 0.25))]), { fill: 'none', stroke: '#6b737b', width: 0.5 });
 }
 
-// |u| de l'écoulement de Taylor–Green initial (kf = 2 sur [0, 2π)³), normalisé dans [0, 1]
+// |u| of the initial Taylor–Green flow (kf = 2 on [0, 2π)³), normalized to [0, 1]
 export const tgSpeed = (X, Y, Z) => {
   const c = Math.cos(2 * Z);
   return Math.abs(c) * Math.sqrt(Math.sin(2 * X) ** 2 * Math.cos(2 * Y) ** 2 + Math.cos(2 * X) ** 2 * Math.sin(2 * Y) ** 2);
@@ -124,7 +124,7 @@ export function make(lang) {
   const S = T[lang];
   return async function draw(F, L) {
     const m = L.mm;
-    // ------------------------------------------------------------------ panneau a
+    // ------------------------------------------------------------------ panel a
     const pa = F.panel('a', { x: 0, y: 0, w: 183, h: 62 });
     L.text(pa, 12, 7.6, S.a, { size: 7, weight: 'bold', color: K.ink, role: 'title' });
     const CW = 179 / 7, cx = (k) => m(2 + CW * (k + 0.5)), bx = (k) => m(2 + CW * k);
@@ -144,7 +144,7 @@ export function make(lang) {
     }
     const sub = (k, str, o = {}) => L.text(pa, cx(k), SUBY, str, { size: 5.7, color: K.sub, anchor: 'middle', ...o });
 
-    // 1 : feuille YAML et grille Re × Pm (palier2_tg3d.yaml)
+    // 1: YAML sheet and Re × Pm grid (palier2_tg3d.yaml)
     {
       const c = cx(0), x = c - m(8.6), y = m(12.4), w = m(17.2), h = m(19.6), d = m(3.1);
       sheet(L, pa, x, y, w, h, { fold: m(3) });
@@ -155,7 +155,7 @@ export function make(lang) {
       L.text(pa, x + m(2.9), gy - d, 'Pm', { size: 6, italic: true, color: K.lamT, anchor: 'middle', valign: 'middle' });
       sub(0, S.sims);
     }
-    // 2 : douze tâches à identifiant déterministe
+    // 2: twelve tasks with deterministic identifiers
     {
       const c = cx(1), w = m(10.2), h = m(6.8);
       for (let k = 2; k >= 0; k--) {
@@ -170,7 +170,7 @@ export function make(lang) {
       L.text(pa, c + m(7.8), GY, '×12', { size: 6.3, weight: 'bold', color: K.ink, anchor: 'middle', valign: 'middle' });
       mono(L, pa, c, SUBY, 'UUID v5', { anchor: 'middle', size: 5.6, color: K.sub });
     }
-    // 3 : boîte périodique 64³, |u| du Taylor–Green initial (kf = 2) sur trois faces
+    // 3: periodic 64³ box, |u| of the initial Taylor–Green flow (kf = 2) on three faces
     {
       const e = m(12.6);
       const P3 = L.obliqueProj({ preset: 'angles', angle: 32, depth: 0.55 });
@@ -192,7 +192,7 @@ export function make(lang) {
       for (const key of ['y0', 'x1', 'z1']) L.polygon(pa, box.faces[key].corners, { fill: 'none', stroke: K.ink, width: 0.5, join: 'round' });
       sub(2, '{' + K.u + '|**u**}, {' + K.B + '|**B**} · 64³');
     }
-    // 4 : fichier MFF (HDF5 compatible The Well)
+    // 4: MFF file (HDF5 compatible with The Well)
     {
       const c = cx(3), x = c - m(8.8), y = m(12.4), w = m(17.6), h = m(19.6);
       sheet(L, pa, x, y, w, h, { fold: m(3) });
@@ -205,7 +205,7 @@ export function make(lang) {
       }
       sub(3, 'HDF5 · The Well');
     }
-    // 5 : découpage par point de paramètres (train_fm3d.yaml : val Re = 100, Pm = 1 ; test Re = 50, Pm = 2)
+    // 5: split by parameter point (train_fm3d.yaml: val Re = 100, Pm = 1; test Re = 50, Pm = 2)
     {
       const c = cx(4), d = m(2.9), r = m(0.78), x0 = c - m(8.9), y0 = m(27.8);
       const val = (x, y) => { L.circle(pa, x, y, r, { fill: K.lam, stroke: 'none' }); L.circle(pa, x, y, m(1.45), { fill: 'none', stroke: K.ink, width: 0.5 }); };
@@ -220,7 +220,7 @@ export function make(lang) {
       });
       sub(4, S.split);
     }
-    // 6 : modèle génératif à potentiels vecteurs
+    // 6: generative model with vector potentials
     {
       const c = cx(5), x = c - m(9.4), y = m(14.0), w = m(11), h = m(14.4);
       L.rect(pa, x, y, w, h, { r: m(1.4), fill: K.zl, stroke: K.z, width: 0.55 });
@@ -232,7 +232,7 @@ export function make(lang) {
       L.text(pa, ax, y + m(12.6), '{' + K.u + '|**u**}, {' + K.B + '|**B**}', { size: 6, anchor: 'start' });
       sub(5, 'torchrun · DDP');
     }
-    // 7 : comparaison de spectres (forme illustrative)
+    // 7: comparison of spectra (illustrative shape)
     {
       const c = cx(6), x = c - m(7.6), y = m(13.0), w = m(16.4), h = m(16.6);
       L.polyline(pa, [[x, y], [x, y + h], [x + w, y + h]], { fill: 'none', stroke: K.ink, width: 0.45 });
@@ -246,7 +246,7 @@ export function make(lang) {
       sub(6, S.evalSub);
     }
 
-    // rails : catalogue (haut) et fichiers (bas)
+    // rails: catalog (top) and files (bottom)
     const RX0 = m(2), RX1 = m(181), CY0 = m(40.2), CH = m(5.6), FY0 = m(50.8), FH = m(5.6);
     L.rect(pa, RX0, CY0, RX1 - RX0, CH, { r: CH / 2, fill: K.cat, stroke: K.catEdge, width: 0.4 });
     L.rect(pa, RX0, FY0, RX1 - RX0, FH, { r: FH / 2, fill: K.fil, stroke: K.filEdge, width: 0.4 });
@@ -270,7 +270,7 @@ export function make(lang) {
     L.arrow(pa, [ix, FY0], [ix, CY0 + CH], { stroke: K.sub, width: 0.5, head: 1.8, dash: '1.4 0.8' });
     mono(L, pa, ix - m(1.0), (CY0 + CH + FY0) / 2, 'ingest', { anchor: 'end', valign: 'middle', size: 5.6, color: K.sub });
 
-    // ------------------------------------------------------------------ panneau b
+    // ------------------------------------------------------------------ panel b
     const pb = F.panel('b', { x: 0, y: 63, w: 183, h: 53.4 });
     L.text(pb, 12, 7.6, S.b, { size: 7, weight: 'bold', color: K.ink, role: 'title' });
     const C0 = [26, 78.4, 130.8], CWB = 50.4, top = m(5.4), bot = m(52.6);
@@ -313,8 +313,8 @@ export function make(lang) {
     cell(2, 1, [{ s: '$SCRATCH', mono: true }], 18.0);
     cell(2, 2, [{ s: S.sqliteWork }]);
     cell(2, 3, [{ s: 'MLflow SQLite' }]);
-    // synchronisations : copie des fichiers du cluster vers le stockage S3 de la VM, puis ingestion de ces
-    // fichiers dans PostgreSQL (milady.catalog ingest lit les fichiers MFF, pas le catalogue SQLite du cluster)
+    // synchronizations: copy of the cluster files to the VM's S3 storage, then ingestion of these
+    // files into PostgreSQL (milady.catalog ingest reads the MFF files, not the cluster's SQLite catalog)
     F.anchor('cl.fil', pb, m(C0[2] + 16.6), RY[1]); F.anchor('vm.fil', pb, m(C0[1] + CWB - 6.0), RY[1]);
     F.relate('cl.fil', 'vm.fil', 'sync');
     L.connect(F, 'cl.fil', 'vm.fil', { stroke: K.sub, width: 0.55, head: 1.9, dash: '1.4 0.8' });

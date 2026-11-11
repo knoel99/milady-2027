@@ -1,18 +1,18 @@
-"""Données de la figure « simulations » (E1–E3 côte à côte).
+"""Data for the "simulations" figure (E1–E3 side by side).
 
-1. Vignettes : reprises telles quelles de la figure « plan-these » (plan_data.json) : série D(t) du modèle de
-   Gissinger (Γ = 0,9), instantané de MHD 2D de E2 (densité de courant j et isolignes de a), mode dynamo ABC de E3
-   (|B| sur trois faces, Rm = 12).
-2. E1 : fréquence des passages de D par zéro dans les simulations de la grille fine (results/e1_gissinger.json,
-   « grille_fine », taux_simulation) et valeurs de Γ d'entraînement et de test (config).
-3. E3 : taux de croissance λ(Rm) et seuils interpolés (results/e3_abc.json).
-4. E2 : énergie magnétique moyenne E_B = ½⟨|B|²⟩ en régime stationnaire pour les 11 valeurs de η de E2, **recalculée**
-   avec le solveur de E2 (experiments/mhd2d.py) et ses réglages (N = 32, ν = 8e-3, α = 0,02, forçage blanc dans
-   la couronne 2 ≤ |k| ≤ 3, ε = 0,05 pour u et B, 16 membres, Δt = 0,01, mise en régime 30) : moyenne et écart-type
-   sur 30 instantanés espacés de 1 par membre (graines 300 + i, indépendantes de celles de E2). Les données brutes de
-   E2 ne sont pas versionnées, d'où ce recalcul.
+1. Thumbnails: taken as is from the "thesis-plan" figure (plan_data.json): D(t) series of the Gissinger model
+   (Γ = 0.9), 2D MHD snapshot of E2 (current density j and contour lines of a), ABC dynamo mode of E3
+   (|B| on three faces, Rm = 12).
+2. E1: frequency of zero crossings of D in the fine-grid simulations (results/e1_gissinger.json,
+   "grille_fine", taux_simulation) and training and test values of Γ (config).
+3. E3: growth rate λ(Rm) and interpolated thresholds (results/e3_abc.json).
+4. E2: mean magnetic energy E_B = ½⟨|B|²⟩ in the stationary regime for the 11 values of η of E2, **recomputed**
+   with the E2 solver (experiments/mhd2d.py) and its settings (N = 32, ν = 8e-3, α = 0.02, white forcing in
+   the annulus 2 ≤ |k| ≤ 3, ε = 0.05 for u and B, 16 members, Δt = 0.01, burn-in 30): mean and standard deviation
+   over 30 snapshots spaced 1 apart per member (seeds 300 + i, independent of those of E2). The raw data of
+   E2 are not versioned, hence this recomputation.
 
-Usage : python3 make_data.py  (≈ 3 min sur 4 cœurs). Sortie : sim_data.json.
+Usage: python3 make_data.py  (≈ 3 min on 4 cores). Output: sim_data.json.
 """
 import json
 import sys
@@ -47,7 +47,7 @@ def e2_point(args):
 
 
 def main():
-    plan = json.loads((ROOT / "figures" / "plan-these" / "figure" / "data" / "plan_data.json").read_text())
+    plan = json.loads((ROOT / "site" / "figures" / "thesis-plan" / "figure" / "data" / "plan_data.json").read_text())
     out = {"vignettes": plan}
     e1 = json.loads((RES / "e1_gissinger.json").read_text())
     out["e1"] = {

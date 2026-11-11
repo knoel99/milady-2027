@@ -1,6 +1,6 @@
-// Figure « simulations » : les trois bancs du stage (E1 Gissinger, E2 MHD 2D, E3 dynamo ABC) sur un même gabarit.
-// Hero : aucun (petits multiples) ; vignettes reprises de plan-these (mêmes données, calculées) ; réponses tracées à
-// partir des résultats (E1, E3) ou recalculées avec le solveur et les réglages de E2 (make_data.py).
+// Figure "simulations": the three internship test benches (E1 Gissinger, E2 2D MHD, E3 ABC dynamo) on a common template.
+// Hero: none (small multiples); thumbnails taken from thesis-plan (same data, computed); responses plotted from
+// the results (E1, E3) or recomputed with the E2 solver and settings (make_data.py).
 
 export const K = {
   lam: '#009E73', lamT: '#006E4F', lamL: '#e0f2ea', B: '#D55E00', BT: '#a8470a', u: '#0072B2',
@@ -12,13 +12,13 @@ const mono = (L, p, x, y, s, o = {}) => L.text(p, x, y, esc(s), { size: 5.6, fam
 
 const T = {
   fr: {
-    cols: ['Système', 'Schéma numérique', 'Balayage du paramètre', 'Données gardées', 'Dans la chaîne'],
-    names: [['E1', 'Gissinger, 3 modes'], ['E2', 'MHD 2D forcée'], ['E3', 'dynamo ABC']],
-    scheme: [['RK4, Δt = 0,01', 'transitoire 300'], ['pseudo-spectral 32²', 'forçage blanc, Δt = 0,01'], ['pseudo-spectral 32³', 'RK4 à facteur intégrant']],
-    data: [['16 trajectoires × 1 500', 'états par Γ'], ['16 membres × 150', 'instantanés par η'], ['λ(Rm) et', 'modes propres de B']],
-    chain: ['script autonome', 'palier1_mhd2d', 'palier2_abc3d'],
-    resp: ['passages de D par 0', 'E_{B}', 'λ'], train: 'entraînement (E1, E2)', test: 'test', thr: 'seuil',
-    rows: ['Système', 'Balayage', 'Schéma', 'Données', 'Chaîne'], both: 'Données et chaîne',
+    cols: ['System', 'Numerical scheme', 'Parameter sweep', 'Data kept', 'In the pipeline'],
+    names: [['E1', 'Gissinger, 3 modes'], ['E2', 'forced 2D MHD'], ['E3', 'ABC dynamo']],
+    scheme: [['RK4, Δt = 0.01', 'transient 300'], ['pseudo-spectral 32²', 'white forcing, Δt = 0.01'], ['pseudo-spectral 32³', 'integrating-factor RK4']],
+    data: [['16 trajectories × 1,500', 'states per Γ'], ['16 members × 150', 'snapshots per η'], ['λ(Rm) and', 'B eigenmodes']],
+    chain: ['standalone script', 'palier1_mhd2d', 'palier2_abc3d'],
+    resp: ['zero crossings of D', 'E_{B}', 'λ'], train: 'training (E1, E2)', test: 'test', thr: 'threshold',
+    rows: ['System', 'Sweep', 'Scheme', 'Data', 'Pipeline'], both: 'Data and pipeline',
   },
   en: {
     cols: ['System', 'Numerical scheme', 'Parameter sweep', 'Data kept', 'In the pipeline'],
@@ -43,7 +43,7 @@ function badge(L, p, cx, cy, r, s) {
   L.text(p, cx, cy, s, { size: 5.6, weight: 'bold', color: '#ffffff', anchor: 'middle', valign: 'middle' });
 }
 
-// ------------------------------------------------------------------- vignettes (mêmes dessins que plan-these)
+// ------------------------------------------------------------------- thumbnails (same drawings as thesis-plan)
 function vGiss(L, p, D, bx, by, bw, bh) {
   const m = L.mm, g = L.group(p, {}).node;
   const y0 = m(by + bh / 2), X = (t) => m(bx + 1.6 + t * (bw - 3.4)), Y = (d) => y0 - d * m(bh / 2 - 0.3);
@@ -88,8 +88,8 @@ function vAbc(L, p, D, cx, cy, eMM) {
   for (const key of ['y0', 'x1', 'z1']) L.polygon(p, box.faces[key].corners, { fill: 'none', stroke: K.ink, width: 0.5, join: 'round' });
 }
 
-// ------------------------------------------------------------------- balayages : réponse en fonction du paramètre
-// cadre commun : axe horizontal = paramètre (vert), réponse en vermillon, points pleins = entraînement, vides = test
+// ------------------------------------------------------------------- sweeps: response as a function of the parameter
+// common frame: horizontal axis = parameter (green), response in vermilion, filled points = training, open = test
 function frame(L, p, x, y, w, h, { xlab, ylab, ticks, X, ylabX }) {
   const m = L.mm;
   L.line(p, [m(x), m(y + h)], [m(x + w), m(y + h)], { stroke: K.ink, width: 0.45 });
@@ -107,7 +107,7 @@ function dots(L, p, xs, yy, filled) {
 function plotE1(L, p, S, E, x, y, w, h) {
   const f = (v, d) => v.toFixed(d).replace('.', S.dec);
   const m = L.mm, X = (g) => m(x + (g - 0.8) / 0.2 * w), ymax = 0.012, Y = (r) => m(y + h - r / ymax * h);
-  // seuil des renversements : entre 0,86 et 0,865 (aucun passage jusqu'à 0,86)
+  // reversal threshold: between 0.86 and 0.865 (no crossing up to 0.86)
   L.rect(p, X(0.86), m(y), X(0.865) - X(0.86), m(h), { fill: K.lamL, stroke: 'none' });
   L.text(p, X(0.8625), m(y - 1.6), S.thr, { size: 5.2, color: K.lamT, anchor: 'middle', valign: 'middle' });
   frame(L, p, x, y, w, h, { xlab: 'Γ', ylab: S.resp[0], ticks: [[0.8, f(0.8, 2)], [0.9, f(0.9, 2)], [1.0, f(1, 2)]], X, ylabX: X(0.885) });
@@ -129,7 +129,7 @@ function plotE2(L, p, S, E, x, y, w, h) {
 }
 function plotE3(L, p, S, E, x, y, w, h) {
   const m = L.mm, X = (r) => m(x + (r - 0) / 31 * w);
-  // λ vaut ±0,01 entre Rm = 8 et 30 mais −0,50 à Rm = 2 : axe restreint, points hors échelle marqués d'une flèche
+  // λ is ±0.01 between Rm = 8 and 30 but −0.50 at Rm = 2: restricted axis, off-scale points marked with an arrow
   const lo = -0.012, hi = 0.013, Y = (v) => m(y + h - (Math.max(lo, Math.min(hi, v)) - lo) / (hi - lo) * h);
   const th = E.thresholds;
   for (const [a, b] of [[th[0], th[1]], [th[2], 31]]) L.rect(p, X(a), m(y), X(b) - X(a), m(h), { fill: K.lamL, stroke: 'none' });
@@ -175,7 +175,7 @@ export function make(lang, concept = 'A') {
         if (isMono) mono(L, P, m(CX[3]) + cw / 2, m(y0 + 17.8), (r ? '→ ' : '') + ch, { size: 5.6, anchor: 'middle', valign: 'middle' });
         else L.text(P, m(CX[3]) + cw / 2, m(y0 + 17.8), ch, { size: 5.8, anchor: 'middle', valign: 'middle', color: K.sub });
       }
-      // légende des points
+      // point legend
       const ly = 98.2;
       dots(L, P, [m(80)], m(ly), true); L.text(P, m(81.4), m(ly), S.train, { size: 5.5, valign: 'middle', color: K.sub });
       dots(L, P, [m(112)], m(ly), false); L.text(P, m(113.4), m(ly), S.test, { size: 5.5, valign: 'middle', color: K.sub });

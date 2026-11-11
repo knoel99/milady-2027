@@ -1,10 +1,10 @@
-// Version anglaise de figure.js (mêmes dessin, couleurs et mise en page ; seuls les textes affichés changent).
-// Hero: l'escalier des cinq bancs d'essai ; vignettes VKS, DRESDYN et boîte périodique en vector 3D (L.cylinder3, L.circle3, L.obliqueBox), illustrated finish ; vignettes 0 et 1 calculées (make_data.py)
+// English version of figure.js (same drawing, colors and layout; only the displayed texts change).
+// Hero: the staircase of the five test benches; VKS, DRESDYN and periodic-box thumbnails in 3D vector (L.cylinder3, L.circle3, L.obliqueBox), illustrated finish; thumbnails 0 and 1 computed (make_data.py)
 export const figure = { width: 183, height: 120, name: 'plan-these', format: 'journal', illustrate: true };
 
 // ---------------------------------------------------------------------------------------------------
-// Palette : bancs, frise, outils en gris neutres ; couleur réservée aux trois axes (clé des figures sœurs
-// « taxonomie » et « cadre » : bleu = par échantillon, orange = en loi, vert = paramètre de contrôle / seuil).
+// Palette: test benches, timeline and tools in neutral greys; color reserved for the three axes (key shared with the sister figures
+// "taxonomy" and "framework": blue = per sample, orange = in distribution, green = control parameter / threshold).
 const C = {
   ink: '#2b2b2b', txt: '#1a1a1a', sub: '#555555', grey: '#8a8a8a', lg: '#cfcfcf',
   tread: '#8c8c8c', badge: '#4d4d4d',
@@ -19,18 +19,18 @@ const AX = [
   { c: C.a3, t: C.a3t, l: C.a3l },
 ];
 
-// Mise en page (mm)
-const X0 = 25, CW = 26, NT = 5, XR = X0 + NT * CW;            // colonnes des paliers : 25 → 155
+// Layout (mm)
+const X0 = 25, CW = 26, NT = 5, XR = X0 + NT * CW;            // step columns: 25 → 155
 const colX = (k) => X0 + k * CW, colC = (k) => X0 + (k + 0.5) * CW;
-const YB = 50, tread = (k) => 41 - 2.0 * k;                  // bas de l'escalier, dessus de chaque marche
-const IH = 21;                                                // hauteur réservée aux vignettes
+const YB = 50, tread = (k) => 41 - 2.0 * k;                  // bottom of the staircase, top of each step
+const IH = 21;                                                // height reserved for the thumbnails
 const vtop = (k) => tread(k) - IH - 0.6;
-const ST_Y = 51.3, ST_H = 3.2;                                // rangée « acquis du stage »
+const ST_Y = 51.3, ST_H = 3.2;                                // "internship results" row
 const BAND_H = 9.6, BAND_Y = [56.2, 56.2 + BAND_H + 1.5, 56.2 + 2 * (BAND_H + 1.5)];
-const XT0 = X0, XT1 = XR, mo = (k) => XT0 + k * (XT1 - XT0) / 36;   // frise : mois → mm
-const RX = 158, RW = 24.4;                                    // colonne de droite
+const XT0 = X0, XT1 = XR, mo = (k) => XT0 + k * (XT1 - XT0) / 36;   // timeline: month → mm
+const RX = 158, RW = 24.4;                                    // right-hand column
 
-// petits outils 3D
+// small 3D tools
 const sub3 = (a, b) => [a[0] - b[0], a[1] - b[1], a[2] - b[2]];
 const add3 = (...v) => v.reduce((s, a) => [s[0] + a[0], s[1] + a[1], s[2] + a[2]], [0, 0, 0]);
 const sc3 = (a, k) => [a[0] * k, a[1] * k, a[2] * k];
@@ -38,15 +38,15 @@ const dot3 = (a, b) => a[0] * b[0] + a[1] * b[1] + a[2] * b[2];
 const cross3 = (a, b) => [a[1] * b[2] - a[2] * b[1], a[2] * b[0] - a[0] * b[2], a[0] * b[1] - a[1] * b[0]];
 const unit3 = (a) => sc3(a, 1 / Math.hypot(...a));
 
-// projection orthographique : azimut az, élévation el (degrés), z vers le haut
+// orthographic projection: azimuth az, elevation el (degrees), z pointing up
 function orthoProj(L, az, el, origin) {
   const a = az * Math.PI / 180, e = el * Math.PI / 180;
-  const V = [Math.sin(a) * Math.cos(e), -Math.cos(a) * Math.cos(e), Math.sin(e)];   // vers l'observateur
+  const V = [Math.sin(a) * Math.cos(e), -Math.cos(a) * Math.cos(e), Math.sin(e)];   // toward the viewer
   const R = [Math.cos(a), Math.sin(a), 0], U = cross3(V, R);
   return L.obliqueProj({ x: [R[0], -U[0]], y: [R[1], -U[1]], z: [R[2], -U[2]], origin, view: V });
 }
 
-// flèche de rotation : arc de cercle 3D (centre c, axe, rayon r, de phi0 à phi1) avec une pointe pleine
+// rotation arrow: 3D circular arc (center c, axis, radius r, from phi0 to phi1) with a solid head
 function rotArrow(L, p, P, c, axis, r, phi0, phi1, { stroke = '#3d3d3d', width = 0.55, head = 2.3 } = {}) {
   const a = unit3(axis), t = Math.abs(a[2]) < 0.9 ? [0, 0, 1] : [1, 0, 0];
   const e1 = unit3(sub3(t, sc3(a, dot3(t, a)))), e2 = cross3(a, e1);
@@ -59,7 +59,7 @@ function rotArrow(L, p, P, c, axis, r, phi0, phi1, { stroke = '#3d3d3d', width =
   L.polygon(p, [q, [base[0] - u[1] * head * 0.45, base[1] + u[0] * head * 0.45], [base[0] + u[1] * head * 0.45, base[1] - u[0] * head * 0.45]], { fill: stroke, stroke: 'none' });
 }
 
-// glyphe « version du code » : carré arrondi à trois lignes blanches
+// "code release" glyph: rounded square with three white lines
 function codeGlyph(L, p, cx, cy, s, fill = '#4a4a4a') {
   L.rect(p, cx - s / 2, cy - s / 2, s, s, { r: s * 0.18, fill, stroke: 'none' });
   for (const [k, f] of [[-0.22, 0.55], [0, 0.4], [0.22, 0.5]]) L.line(p, [cx - s * 0.3, cy + k * s], [cx - s * 0.3 + f * s, cy + k * s], { stroke: '#ffffff', width: Math.max(0.35, s * 0.07), cap: 'round' });
@@ -71,7 +71,7 @@ function badge(L, p, cx, cy, r, k, size = 7) {
   L.circle(p, cx, cy, r, { fill: C.badge, stroke: 'none' });
   L.text(p, cx, cy, String(k), { size, weight: 'bold', color: '#ffffff', anchor: 'middle', valign: 'middle' });
 }
-// pastille de texte (station d'un axe) : largeur mesurée sur le texte
+// text pill (station of an axis): width measured on the text
 function pill(L, p, cx, cy, str, ax, { size = 6.5, h = 4.6, padX = 1.5 } = {}) {
   const m = L.mm;
   const g = L.group(p, {}).node;
@@ -83,7 +83,7 @@ function pill(L, p, cx, cy, str, ax, { size = 6.5, h = 4.6, padX = 1.5 } = {}) {
   bg.setAttribute('x', cx - W / 2); bg.setAttribute('y', cy - H / 2); bg.setAttribute('width', W); bg.setAttribute('height', H);
   return { w: W, h: H };
 }
-// bilinéaire périodique sur une carte n × n (indices [i][j], i suivant u, j suivant v ; coordonnées dans [0, 1))
+// periodic bilinear interpolation on an n × n map (indices [i][j], i along u, j along v; coordinates in [0, 1))
 function bilinP(Mx, u, v) {
   const n = Mx.length, x = u * n - 0.5, y = v * n - 0.5;
   const i0 = Math.floor(x), j0 = Math.floor(y), fx = x - i0, fy = y - j0;
@@ -98,7 +98,7 @@ export default async function draw(F, L) {
   const P = F.panel('', { x: 0, y: 0, w: 183, h: 120 });
 
   // =================================================================================================
-  // 1. Escalier des paliers (noms sur les contremarches, vignettes sur les marches)
+  // 1. Staircase of the steps (names on the risers, thumbnails on the treads)
   // =================================================================================================
   const stair = [[m(X0), m(YB)]];
   for (let k = 0; k < NT; k++) { stair.push([m(colX(k)), m(tread(k))]); stair.push([m(colX(k + 1)), m(tread(k))]); }
@@ -125,7 +125,7 @@ export default async function draw(F, L) {
     });
   }
 
-  // ---- vignette 0 : série D(t) du modèle de Gissinger ----
+  // ---- thumbnail 0: D(t) series of the Gissinger model ----
   {
     const bx = colX(0) + 2.2, bw = CW - 3.6, by = vtop(0) + 2.6, bh = IH - 4.2;
     const g = L.group(P, {}).node;
@@ -139,10 +139,10 @@ export default async function draw(F, L) {
     L.text(g, m(bx + bw + 0.2), y0 + m(2.5), '*t*', { size: 6, anchor: 'end', valign: 'middle' });
   }
 
-  // ---- vignette 1 : MHD 2D (carte de j, isolignes de a), données E2 ----
+  // ---- thumbnail 1: 2D MHD (map of j, contour lines of a), E2 data ----
   {
     const s = IH - 2.2, bx = colC(1) - s / 2, by = vtop(1) + 1.6;
-    const rows0 = D.mhd2d.j.slice().reverse(), NU = 120;          // suréchantillonnage bilinéaire périodique (48 → 120)
+    const rows0 = D.mhd2d.j.slice().reverse(), NU = 120;          // periodic bilinear upsampling (48 → 120)
     const rows = Array.from({ length: NU }, (_, r) => Array.from({ length: NU }, (_, c) => bilinP(rows0, (r + 0.5) / NU, (c + 0.5) / NU)));
     L.pixelImage(P, m(bx), m(by), m(s), rows, { palette: ['#fafafa', '#cdcdcd', '#6f6f6f'], overlap: 0.6, skipBelow: 0 });
     const clip = L.clipPath(P.node, `M${m(bx)},${m(by)} h${m(s)} v${m(s)} h${-m(s)} Z`);
@@ -151,7 +151,7 @@ export default async function draw(F, L) {
     L.rect(P, m(bx), m(by), m(s), m(s), { fill: 'none', stroke: '#5f5f5f', width: 0.45 });
   }
 
-  // ---- vignette 2 : boîte périodique, |B| du mode dynamo ABC (E3) sur trois faces ----
+  // ---- thumbnail 2: periodic box, |B| of the ABC dynamo mode (E3) on three faces ----
   {
     const e = m(11.6);
     const P3 = L.obliqueProj({ preset: 'angles', angle: 32, depth: 0.55 });
@@ -168,7 +168,7 @@ export default async function draw(F, L) {
       const M = box.faces[key];
       const d = 'M' + M.corners.map((q) => q.map((v) => v.toFixed(3)).join(',')).join(' L') + ' Z';
       const g = L.group(P, { clip: L.clipPath(P.node, d) }).node;
-      const shade = key === 'z1' ? 0 : key === 'y0' ? -0.04 : -0.1;     // faces latérales un peu plus sombres
+      const shade = key === 'z1' ? 0 : key === 'y0' ? -0.04 : -0.1;     // side faces slightly darker
       for (let i = 0; i < N; i++) for (let j = 0; j < N; j++) {
         const du = 1 / N, ov = 0.4 / N, u0 = i * du, v0 = j * du;
         const val = sample(key, M.world(u0 + du / 2, v0 + du / 2));
@@ -176,18 +176,18 @@ export default async function draw(F, L) {
       }
     }
     for (const key of ['y0', 'x1', 'z1']) L.polygon(P, box.faces[key].corners, { fill: 'none', stroke: C.ink, width: 0.5, join: 'round' });
-    // périodicité : sortie par la face x = 2π, rentrée par x = 0 (flèches courtes)
+    // periodicity: exit through the face x = 2π, re-entry through x = 0 (short arrows)
     const BP = box.P, xo = box.faces.x1.world(1.0, 0.72), xi = box.faces.y0.world(0.0, 0.72);
     L.arrow(P, BP(...xo), BP(xo[0] + m(2.8), xo[1], xo[2]), { stroke: '#4d4d4d', width: 0.5, head: 1.9 });
     L.arrow(P, BP(xi[0] - m(2.8), xi[1], xi[2]), BP(xi[0] - m(0.3), xi[1], xi[2]), { stroke: '#4d4d4d', width: 0.5, head: 1.9 });
   }
 
-  // ---- vignette 3 : cuve VKS (cylindre horizontal, deux turbines en fer doux contrarotatives) ----
+  // ---- thumbnail 3: VKS vessel (horizontal cylinder, two counter-rotating soft-iron impellers) ----
   {
     const R = m(6.6), Lh = 1.27 * R, xi = 0.708 * Lh, Ri = 0.75 * R, hb = 0.2 * R;
     const PV = orthoProj(L, 24, 17, [m(colC(3) - 0.2), m(vtop(3) + IH / 2 + 0.3)]);
     const g = L.group(P, {}).node;
-    // corps de verre (fond), bord du fond éloigné
+    // glass body (background), edge of the far end
     L.cylinder3(g, PV, [-Lh, 0, 0], [Lh, 0, 0], R, R, { fill: C.glass, stroke: 'none', cap: false });
     L.circle3(g, PV, [-Lh, 0, 0], 'x', R, { stroke: '#b3bcc4', width: 0.35 });
     L.cylinder3(g, PV, [-Lh - m(2.2), 0, 0], [-xi, 0, 0], m(0.45), m(0.45), { fill: '#8b929a', stroke: C.ironEdge, width: 0.3 });
@@ -207,25 +207,25 @@ export default async function draw(F, L) {
     const hl = [];
     for (let i = 0; i <= 20; i++) { const t = -0.82 + 1.64 * i / 20; hl.push(PV(t * Lh, -0.35 * R, 0.93 * R)); }
     L.polyline(g, hl, { stroke: '#ffffff', width: 0.9, opacity: 0.9, fill: 'none', cap: 'round' });
-    // contrarotation
+    // counter-rotation
     rotArrow(L, g, PV, [-Lh - m(1.3), 0, 0], [1, 0, 0], m(2.0), 0.6, 0.6 + 4.6);
     rotArrow(L, g, PV, [Lh + m(1.3), 0, 0], [1, 0, 0], m(2.0), 0.6 + 4.6, 0.6);
   }
 
-  // ---- vignette 4 : DRESDYN, cylindre en précession sur plateau tournant ----
+  // ---- thumbnail 4: DRESDYN, precessing cylinder on a turntable ----
   {
-    const R = m(4.7), H = m(9.4), th = 60 * Math.PI / 180;      // axe du cylindre à 60° de la verticale
+    const R = m(4.7), H = m(9.4), th = 60 * Math.PI / 180;      // cylinder axis at 60° from the vertical
     const ax = [Math.sin(th), 0, Math.cos(th)];
     const zc = R * Math.sin(th) + H / 2 * Math.cos(th) + m(1.0);
     const PD = orthoProj(L, 26, 19, [m(colC(4) - 1.0), m(tread(4) - 4.4)]);
     const g = L.group(P, {}).node;
     const rT = m(8.8);
-    // plateau tournant (axe de précession vertical)
+    // turntable (vertical precession axis)
     L.cylinder3(g, PD, [0, 0, -m(1.2)], [0, 0, 0], rT, rT, { fill: '#d4d4d4', capFill: '#e9e9e9', stroke: '#6f6f6f', width: 0.4, shading: true });
-    // axe de précession (tirets), derrière le cylindre
+    // precession axis (dashes), behind the cylinder
     const zt = zc + H / 2 * Math.cos(th) + R * Math.sin(th);
     L.line3(g, PD, [0, 0, 0], [0, 0, zt + m(2.4)], { stroke: '#6a6a6a', width: 0.45, dash: '1.3 0.9' });
-    // étrier : montant arrière, cylindre, montant avant (y vers l'arrière pour cette vue)
+    // yoke: rear upright, cylinder, front upright (y toward the back for this view)
     const yP = R + m(1.3);
     const post = (y) => {
       L.cylinder3(g, PD, [0, y, 0], [0, y, zc], m(0.6), m(0.6), { fill: '#a9aeb4', stroke: '#555b61', width: 0.3, shading: true });
@@ -236,23 +236,23 @@ export default async function draw(F, L) {
     const c = [0, 0, zc], c0 = sub3(c, sc3(ax, H / 2)), c1 = add3(c, sc3(ax, H / 2));
     L.cylinder3(g, PD, c0, c1, R, R, { fill: C.metal, capFill: '#e4e7ea', stroke: '#4a4f55', width: 0.5, shading: true });
     post(-back);
-    // rotation propre (autour de l'axe du cylindre), au-dessus du couvercle visible
+    // spin (about the cylinder axis), above the visible lid
     rotArrow(L, g, PD, add3(c1, sc3(ax, m(1.0))), ax, R * 0.55, 0.9, 0.9 + 4.6, { head: 2.0 });
-    // précession : flèche de rotation autour de l'axe vertical, au-dessus du cylindre
+    // precession: rotation arrow about the vertical axis, above the cylinder
     rotArrow(L, g, PD, [0, 0, zt + m(1.5)], [0, 0, 1], m(2.3), -2.3, -2.3 + 4.6, { head: 2.0 });
   }
 
-  // complexité croissante : flèche parallèle à l'escalier, au-dessus des vignettes
+  // increasing complexity: arrow parallel to the staircase, above the thumbnails
   {
     const yAt = (x) => vtop(0) - 2.4 - (x - colC(0)) * 2.0 / CW;
     const a = [m(colX(0) + 1.0), m(yAt(colX(0) + 1.0))], b = [m(XR - 1.0), m(yAt(XR - 1.0))];
     L.arrow(P, a, b, { stroke: '#8a8a8a', width: 0.5, head: 2.6 });
     L.text(P, m(colX(0) + 1.0), m(yAt(colX(0) + 1.0) - 3.0), 'increasing complexity', { size: 6.5, italic: true, color: C.sub });
   }
-  // en-têtes de ligne
+  // row headers
   L.text(P, m(1.2), m(tread(0) + 2.6), '**Test benches**', { size: 7.5, color: C.txt });
 
-  // ---- rangée « acquis du stage » : E1, E2, E3 sous les paliers 0, 1, 2 ----
+  // ---- "internship results" row: E1, E2, E3 under steps 0, 1, 2 ----
   {
     L.rect(P, m(colX(0) + 0.6), m(ST_Y), m(3 * CW - 1.2), m(ST_H), { r: m(ST_H / 2), fill: '#F3F3F3', stroke: '#a6a6a6', width: 0.4 });
     for (let k = 1; k < 3; k++) L.line(P, [m(colX(k)), m(ST_Y + 0.6)], [m(colX(k)), m(ST_Y + ST_H - 0.6)], { stroke: '#c4c4c4', width: 0.35 });
@@ -261,7 +261,7 @@ export default async function draw(F, L) {
   }
 
   // =================================================================================================
-  // 2. Bandes des trois axes
+  // 2. Bands of the three axes
   // =================================================================================================
   const HEAD = [
     ['Axis 1', 'Hard 3D constraints'],
@@ -294,10 +294,10 @@ export default async function draw(F, L) {
       if (s) pill(L, P, m(colC(k) + 0.4), m(ym), s, ax);
     }
   }
-  // trous signifiants
+  // meaningful gaps
   L.text(P, m(colC(0)), m(BAND_Y[0] + BAND_H / 2), 'not applicable', { size: 6.5, italic: true, color: C.grey, anchor: 'middle', valign: 'middle' });
   {
-    // tirets coupés autour de l'étiquette (le halo ne masque pas les espaces entre les mots)
+    // dashes cut around the label (the halo does not mask the spaces between words)
     const ym = BAND_Y[2] + BAND_H / 2, cx = m(colC(1));
     const t = L.text(P, cx, m(ym - 0.2), 'no 2D dynamo', { size: 6.5, italic: true, color: C.grey, anchor: 'middle', valign: 'middle' });
     let w; try { w = t.getBBox().width; } catch (e) { w = m(18.5); }
@@ -307,7 +307,7 @@ export default async function draw(F, L) {
   }
 
   // =================================================================================================
-  // 3. Colonne de droite : boîte à outils (un module par axe), débouchés
+  // 3. Right-hand column: toolbox (one module per axis), applications
   // =================================================================================================
   {
     const y0 = 44.6, y1 = BAND_Y[2] + BAND_H;
@@ -327,7 +327,7 @@ export default async function draw(F, L) {
   }
   {
     L.text(P, m(RX), m(4.6), '**Applications**', { size: 7.5, color: C.txt });
-    // réduction de modèle : instantanés → quelques modes
+    // model reduction: snapshots → a few modes
     const gy = 7.4;
     for (let i = 0; i < 3; i++) L.rect(P, m(RX + 0.4 + i * 1.3), m(gy + i * 1.0), m(6.2), m(6.2), { fill: L.ramp(['#f2f2f2', '#d0d0d0'], i / 2), stroke: '#6b6b6b', width: 0.4 });
     L.arrow(P, [m(RX + 10.4), m(gy + 4.6)], [m(RX + 14.6), m(gy + 4.6)], { stroke: '#6b6b6b', width: 0.5, head: 2.0 });
@@ -335,7 +335,7 @@ export default async function draw(F, L) {
     bars.forEach((h, i) => L.rect(P, m(RX + 15.8 + i * 1.9), m(gy + 8.2 - h), m(1.3), m(h), { fill: '#7a7a7a', stroke: 'none' }));
     L.line(P, [m(RX + 15.3), m(gy + 8.2)], [m(RX + 23.6), m(gy + 8.2)], { stroke: '#6b6b6b', width: 0.4 });
     L.text(P, m(RX), m(gy + 11.6), 'Model reduction', { size: 6.5, color: C.txt });
-    // assimilation : ensemble resserré par des observations
+    // assimilation: ensemble narrowed by observations
     const ay = 24.0, aw = 23.0, ah = 8.0;
     const obs = [[0.38, 0.45], [0.66, 0.62], [0.9, 0.42]];
     for (let k = 0; k < 6; k++) {
@@ -356,7 +356,7 @@ export default async function draw(F, L) {
   }
 
   // =================================================================================================
-  // 4. Frise de 36 mois
+  // 4. 36-month timeline
   // =================================================================================================
   {
     const yM = 92.0, yY0 = 94.4, yY1 = 97.8, yG = 99.9, dG = 2.3, yAx = 114.2;
@@ -365,7 +365,7 @@ export default async function draw(F, L) {
       L.text(P, m(mo(12 * a + 6)), m((yY0 + yY1) / 2), `Year ${a + 1}`, { size: 6.5, anchor: 'middle', valign: 'middle', color: C.txt });
     }
     for (const k of [12, 24]) L.line(P, [m(mo(k)), m(yY1)], [m(mo(k)), m(yAx)], { stroke: '#cfcfcf', width: 0.35, dash: '1 1.2' });
-    // barres des paliers (calendrier proposé)
+    // step bars (proposed schedule)
     const G = [[0, 1, 6], [1, 1, 9], [2, 6, 20], [3, 15, 33], [4, 24, 34]];
     G.forEach(([k, a, b], i) => {
       const y = yG + i * dG;
@@ -383,7 +383,7 @@ export default async function draw(F, L) {
       L.text(P, m(mo(k)), m(yAx + 3.2), String(k), { size: 5.5, anchor: 'middle', color: C.sub });
     }
     L.text(P, m(mo(36) + 2.2), m(yAx + 3.2), 'months', { size: 5.5, anchor: 'start', color: C.sub });
-    // jalons : tige courte jusqu'au bandeau des années
+    // milestones: short stem up to the year band
     const ART = [[10, 1], [22, 0], [33, 2]];
     for (const k of [10, 16, 22, 30, 33]) L.line(P, [m(mo(k)), m(yM)], [m(mo(k)), m(yY0)], { stroke: '#9a9a9a', width: 0.35 });
     for (const [k, i] of ART) diamond(L, P, m(mo(k)), m(yM), m(3.3), AX[i].c);
@@ -396,7 +396,7 @@ export default async function draw(F, L) {
     }
     L.text(P, m(1.2), m(yY0 + 2.6), '**Timeline**', { size: 7.5, color: C.txt });
     L.text(P, m(1.2), m(yY0 + 6.1), '36 months', { size: 6.5, color: C.sub });
-    // légende des jalons
+    // milestone legend
     {
       const lx = RX + 0.4, ly = 101.4;
       [0, 1, 2].forEach((i) => diamond(L, P, m(lx + 1.3 + i * 2.2), m(ly), m(2.8), AX[i].c));

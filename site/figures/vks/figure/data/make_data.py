@@ -1,4 +1,4 @@
-"""Data for the « vks » figure (qualitative curves, no value is printed on the figure).
+"""Data for the "vks" figure (qualitative curves, no value is printed on the figure).
 
 1. Field lines of the axial dipole (panel a, right view): contours of the flux function Psi = r A_phi of
    azimuthal currents filling the sodium volume between the turbines (J_phi proportional to r, r <= 0.95 R,

@@ -1,4 +1,4 @@
-// Figure 1 "cadre", ENGLISH version (MilaDy internship report): the proposed generative framework, one causal row of five stations.
+// Figure 1 "framework", English version (MilaDy internship report): the proposed generative framework, one causal row of five stations.
 // a lambda conditions a latent flow matching (equivariant under S); b a functional decoder outputs potentials, the curl gives
 // divergence-free fields; c generated u, B in the VKS target geometry; d the energy budget checked on average (distributional control); e downstream uses.
 // Constraint chips (classes C1, C3, C4 of the theory note) sit under the station that enforces each one.

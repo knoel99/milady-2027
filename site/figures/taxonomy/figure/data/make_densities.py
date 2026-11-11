@@ -1,10 +1,10 @@
-"""Courbes ILLUSTRATIVES du panneau b (figure « taxonomie »).
+"""ILLUSTRATIVE curves of panel b ("taxonomy" figure).
 
-Aucune mesure : une loi vraie mu gaussienne de moyenne nulle (d E/dt en unités de son écart type),
-un modèle q_theta volontairement imparfait (moyenne décalée, un peu trop étroit),
-et l'I-projection de q_theta sur {E[dE/dt] = 0} (inclinaison exponentielle, Proposition 7),
-calculée numériquement sur la grille et sur un petit échantillon (poids autonormalisés).
-Usage : python make_densities.py  -> densities.json (même dossier)
+No measurement: a true Gaussian law mu with zero mean (d E/dt in units of its standard deviation),
+a deliberately imperfect model q_theta (shifted mean, slightly too narrow),
+and the I-projection of q_theta onto {E[dE/dt] = 0} (exponential tilting, Proposition 7),
+computed numerically on the grid and on a small sample (self-normalized weights).
+Usage: python make_densities.py  -> densities.json (same folder)
 """
 import json, os
 import numpy as np
@@ -14,12 +14,12 @@ x = np.linspace(-3.2, 3.2, 321)
 def gauss(x, m, s):
     return np.exp(-0.5 * ((x - m) / s) ** 2) / (s * np.sqrt(2 * np.pi))
 
-MU_M, MU_S = 0.0, 1.0     # loi vraie : moyenne nulle (stationnarité), dispersion > 0
-Q_M, Q_S = 0.6, 0.85      # modèle avant correction (choix illustratif)
+MU_M, MU_S = 0.0, 1.0     # true law: zero mean (stationarity), spread > 0
+Q_M, Q_S = 0.6, 0.85      # model before correction (illustrative choice)
 mu = gauss(x, MU_M, MU_S)
 q = gauss(x, Q_M, Q_S)
 
-# I-projection sur la grille : nu = exp(beta x) q / Z, beta tel que E_nu[x] = 0
+# I-projection on the grid: nu = exp(beta x) q / Z, beta such that E_nu[x] = 0
 dx = x[1] - x[0]
 def mean_tilt(b):
     w = np.exp(b * x) * q
@@ -33,10 +33,10 @@ beta = 0.5 * (lo + hi)
 nu = np.exp(beta * x) * q
 nu /= nu.sum() * dx
 
-# petits échantillons déterministes (quantiles centrés) pour les rangées de points
+# small deterministic samples (centered quantiles) for the rows of points
 N = 7
 p = (np.arange(1, N + 1) - 0.5) / N
-def ndtri(pp):  # inverse de la fonction de répartition gaussienne, par bissection
+def ndtri(pp):  # inverse of the Gaussian cumulative distribution function, by bisection
     out = []
     for v in pp:
         a, b = -8.0, 8.0
@@ -49,7 +49,7 @@ def ndtri(pp):  # inverse de la fonction de répartition gaussienne, par bissect
 z = ndtri(p)
 s_mu = MU_M + MU_S * z
 s_q = Q_M + Q_S * z
-# poids autonormalisés w_i ∝ exp(beta_s g_i) avec sum w_i g_i = 0 (Proposition 7, sur un échantillon)
+# self-normalized weights w_i ∝ exp(beta_s g_i) with sum w_i g_i = 0 (Proposition 7, on a sample)
 lo, hi = -10.0, 10.0
 for _ in range(200):
     mid = 0.5 * (lo + hi)
