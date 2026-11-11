@@ -20,7 +20,7 @@ def test_project_root_is_the_repository_from_any_directory(
     root = milady.project_root()
     assert root == REPO
     assert (root / "pyproject.toml").is_file()
-    assert (root / "experiments" / "mhd2d.py").is_file()  # loaded by milady.sim.run
+    assert (root / "experiments" / "common.py").is_file()
 
 
 def test_milady_root_variable_takes_precedence(tmp_path: Path, monkeypatch: pytest.MonkeyPatch) -> None:

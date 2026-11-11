@@ -1,7 +1,6 @@
 """Static figures of module p5 (probability, statistics, optimal transport).
 
-Usage: python figures_p5.py <fr_dir> <en_dir>
-Produces fig-*.png (French labels) in <fr_dir> and the same names (English labels) in <en_dir>.
+Usage: python3 figures_p5.py [out_dir]     (default: the folder of this script)
 """
 import sys
 from pathlib import Path
@@ -11,8 +10,8 @@ matplotlib.use("Agg")
 import matplotlib.pyplot as plt
 from scipy.stats import norm
 
-C1, C2, C3 = "#2a78d6", "#eb6834", "#1baf7a"     # blue, orange, aqua (validated categorical palette)
-INK, INK2, GRID = "#0b0b0b", "#52514e", "#d9d8d4"
+sys.path.insert(0, str(Path(__file__).resolve().parents[2] / "assets"))
+from figstyle import C1, C2, C3, GRID, INK, INK2  # noqa: E402  shared palette (site/assets/figstyle.py)
 plt.rcParams.update({
     "font.size": 11, "axes.edgecolor": INK2, "axes.labelcolor": INK, "xtick.color": INK2,
     "ytick.color": INK2, "axes.grid": True, "grid.color": GRID, "grid.linewidth": 0.6,

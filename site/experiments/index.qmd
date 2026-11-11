@@ -47,32 +47,32 @@ All the experiments on this site run on an ordinary processor (Intel Xeon, 4 cor
 
 ## Code organization {#code}
 
-The `experiments/` folder of the repository contains everything needed to reproduce the results.
+The `experiments/` folder of the repository contains everything needed to reproduce the results. The generic tools (flow matching, Heun sampler, distances, tilting, the 2D MHD and ABC induction solvers) live in the `milady` package (`src/milady/`), which the thesis reuses; the scripts import them with the exact settings of the published runs, and `tests/test_shared_tools.py` checks that they reproduce the earlier code bit for bit.
 
 | File | Role |
 |---|---|
-| `common.py` | Conditional flow matching (linear path, Heun scheme), networks (MLP, equivariant symmetrization), metrics (energy distance, sliced Wasserstein), exponential tilting (regularized I-projection). |
+| `common.py` | Networks (MLP, equivariant symmetrization) and training loop; re-exports, with the settings of the runs, conditional flow matching and the Heun scheme (`milady.train.flow`), the metrics (energy distance, sliced Wasserstein: `milady.eval.metrics`) and exponential tilting (regularized I-projection: `milady.eval.tilt`). |
 | `e1_gissinger.py` | E1: invariant distribution of the Gissinger (2012) reversal model, conditioned on $\Gamma$; symmetry, stationarity identities, Rice formula. Costly steps are cached in `results/cache_e1/`. |
-| `mhd2d.py` | Pseudo-spectral solver for forced incompressible 2D MHD, in potentials $(\omega, a)$. |
+| `mhd2d.py` | Pseudo-spectral solver for forced incompressible 2D MHD, in potentials $(\omega, a)$ (re-export of `milady.sim.mhd2d`). |
 | `e2_data.py` | E2: 2D MHD snapshots for eleven values of $\eta$ (six for training, five for testing). |
 | `e2_mhd2d.py` | E2: five divergence-constraint mechanisms, distributional stationarity loss, tilting versus per-sample rescaling. |
-| `e3_abc.py` | E3: kinematic dynamo of the ABC flow, growth rate as a function of $Rm$. |
+| `e3_abc.py` | E3: kinematic dynamo of the ABC flow, growth rate as a function of $Rm$ (solver `milady.sim.induction3d`). |
 | `unet.py` | Small periodic U-Net (not used in the final results: too slow on CPU, see below). |
-| `figures.py` | Plots in French and English (`figures/<name>.png` and `figures/<name>-en.png`). |
+| `figures.py` | Plots of the results (`figures/<name>.png` and `.svg`). |
 | `digest.py` | Numerical digest `results/digest.md`, the source of Tables 1, 3 to 6 and 8 of the report (Tables 2 and 7 come from the JSON files of E1 and E2). |
 
 ## Reproducing the results {#reproduire}
 
 ```bash
-cd experiences
+cd experiments
 python3 e3_abc.py                 # E3, about 23 min
-python3 e2_data.py             # E2, data: about 30 min
-python3 e2_mhd2d.py               # E2, models: about 67 min
-python3 e1_gissinger.py           # E1, about 2 to 3 h (resumable)
+python3 e2_data.py                # E2, data: about 30 min
+python3 e2_mhd2d.py               # E2, models: about 67 min (--seed k for another seed)
+python3 e1_gissinger.py           # E1, about 2 to 3 h (resumable; --seeds 0 1 ... to choose the seeds)
 python3 figures.py && python3 digest.py > results/digest.md
 ```
 
-Each script accepts `--quick` for a reduced version (from a few minutes to about twenty minutes for E1), useful for checking the installation. The seeds are fixed in the code (0 and 1 for the two repetitions of E1). The durations given were measured on the machine described above, partly while other computations were running.
+Each script accepts `--quick` for a reduced version (from a few minutes to about twenty minutes for E1), useful for checking the installation. The published runs use seeds 0 and 1 for E1 and seed 0 for E2. `./run_stage.sh --seeds "0 1 2 3 4"` runs the three experiments with several seeds, one process per seed, then the figures and the digest, which then reports the spread across seeds. The durations given were measured on the machine described above, partly while other computations were running.
 
 ## E1 — dipole reversals {#e1}
 

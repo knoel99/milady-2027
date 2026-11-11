@@ -5,7 +5,8 @@
 Each snapshot is stored as the (complex) Fourier coefficients of ω and a.
 
 Usage: python3 e2_data.py [--quick]
-Output: $E2_DATA (default: ./data_e2/) eta_<value>.npz
+Output: $E2_DATA (default: ./data_e2/) eta_<value>_<split>.npz; with --quick, the subfolder quick/
+(so that a full run never reuses the small quick files)
 """
 from __future__ import annotations
 
@@ -25,6 +26,11 @@ ETA_TEST = [4e-3 * 2 ** (k / 2 + 0.25) for k in range(5)]
 DATA = Path(os.environ.get("E2_DATA", Path(__file__).resolve().parent / "data_e2"))
 
 
+def data_dir(quick=False):
+    """Folder of the E2 data; the quick data live in a subfolder."""
+    return DATA / "quick" if quick else DATA
+
+
 def run(eta, n_snap_per_member, seed, batch=16, dt=1e-2, t_burn=30.0, every=1.0):
     m = MHD2D(n=N, nu=NU, eta=eta, alpha=ALPHA, kf=KF, eps_u=EPS, eps_b=EPS, batch=batch, seed=seed)
     inj = m.injection_rate(dt=dt, n_draw=400)
@@ -40,6 +46,7 @@ def run(eta, n_snap_per_member, seed, batch=16, dt=1e-2, t_burn=30.0, every=1.0)
 
 
 def main(quick=False):
+    DATA = data_dir(quick)
     DATA.mkdir(parents=True, exist_ok=True)
     n_tr, n_ref = (20, 10) if quick else (150, 75)
     meta = {"N": N, "nu": NU, "alpha": ALPHA, "kf": KF, "eps": EPS, "eta_train": ETA_TRAIN, "eta_test": ETA_TEST,

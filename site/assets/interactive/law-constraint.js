@@ -540,7 +540,7 @@
     }
     this.cut = cut;
     this.hr = histo(y, n, null, this.hRaw, cut);
-    // inclinaison
+    // tilting
     this.tilt = solveTilt(y, n, this.w);
     if (this.tilt.ok) {
       this.tilt.w1 = wasserstein1(y, n, this.w, this.FA, this.GA);

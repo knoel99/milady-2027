@@ -28,6 +28,7 @@ python3 tools/render.py report prep/p3-mhd-dynamo         # render pages; --all 
 python3 tools/check_gates.py [page …]                     # sections, ≥ 10 ★ exercises per module, links, anchors
 NODE_PATH=<node_modules with katex@0.19.0> node tools/check_katex.mjs $(find site -name index.html)
 cd experiments && python3 e1_gissinger.py --quick         # also e2_data.py, e2_mhd2d.py, e3_abc.py; figures.py; digest.py > results/digest.md
+experiments/run_stage.sh [--quick] [--seeds "0 1 2 3 4"]  # E1-E3 with several seeds, one process per seed, then figures and digest
 make test                                                 # pytest for src/milady
 python3 -m ruff check src tests                           # lint, as in CI
 ```

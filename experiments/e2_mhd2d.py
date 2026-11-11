@@ -5,18 +5,19 @@ In homogeneous turbulence on a periodic domain, the POD modes are the Fourier mo
 plays the role of the linear latent space. A flow matching MLP conditioned on log η generates in it.
 
 Variants (same network, same budget):
-  V0_libre        : generates (ûx, ûy, B̂x, B̂y) without constraint;
-  V1_penalite     : V0 + soft penalty on the divergence of the prediction x̂1 = x_t + (1 - t) v;
-  V2_proj_finale  : V0, then Leray projection of the final samples;
-  V3_flot_projete : noise and integration steps projected onto the divergence-free subspace;
-  V4_potentiels   : generates (ψ̂, â), then u = ∇⊥ψ, B = ∇⊥a (exactly divergence-free by construction);
-  V5_potentiels_stat : V4 + fine-tuning with a stationarity loss in law (mean energy balance),
-                       imposed at every η (including those without data); control V5_temoin (without the loss).
+  V0_free         : generates (ûx, ûy, B̂x, B̂y) without constraint;
+  V1_penalty      : V0 + soft penalty on the divergence of the prediction x̂1 = x_t + (1 - t) v;
+  V2_final_projection : V0, then Leray projection of the final samples;
+  V3_projected_flow : noise and integration steps projected onto the divergence-free subspace;
+  V4_potentials   : generates (ψ̂, â), then u = ∇⊥ψ, B = ∇⊥a (exactly divergence-free by construction);
+  V5_potentials_stat : V4 + fine-tuning with a stationarity loss in law (mean energy balance),
+                       imposed at every η (including those without data); control V5_control (without the loss).
 "In law" part on V4: exponential tilting (3 stationarity identities) versus
 rescaling of each sample to the energy balance.
 
-Usage: python3 e2_mhd2d.py [--quick]  (data: e2_data.py, directory $E2_DATA)
-Output: results/e2_mhd2d[_quick].json
+Usage: python3 e2_mhd2d.py [--quick] [--seed k]  (data: e2_data.py, directory $E2_DATA)
+Output: results/e2_mhd2d[_quick][_s<k>].json (no suffix for seed 0); samples results/e2_samples[_quick].npz (seed 0)
+The training data are the same for every seed: only the networks, the generation and the tilting change.
 """
 from __future__ import annotations
 
@@ -30,8 +31,9 @@ from pathlib import Path
 import numpy as np
 import torch
 
-from common import MLPField, energy_distance, exp_tilt, fm_loss, sample_ode, save_json, seed_all, systematic_resample, train
-from e2_data import ALPHA, EPS, ETA_TEST, ETA_TRAIN, KF, N, NU
+from common import (MLPField, energy_distance, exp_tilt, fm_loss, heun_sample, sample_ode, save_json, seed_all,
+                    systematic_resample, train)
+from e2_data import ALPHA, EPS, ETA_TEST, ETA_TRAIN, KF, N, NU, data_dir
 from mhd2d import MHD2D
 
 DATA = Path(os.environ.get("E2_DATA", Path(__file__).resolve().parent / "data_e2"))
@@ -61,10 +63,10 @@ def mean_sq(fh):
     return NORM * np.sum(np.abs(fh) ** 2, -1)
 
 
-def load(split, etas):
+def load(split, etas, root=DATA):
     out = {}
     for eta in etas:
-        d = np.load(DATA / f"eta_{eta:.6f}_{split}.npz")
+        d = np.load(root / f"eta_{eta:.6f}_{split}.npz")
         w, a = d["w"][:, MASK].astype(np.complex128), d["a"][:, MASK].astype(np.complex128)
         out[eta] = {"psi": w / k2, "a": a, "inj": float(d["inj_u"] + d["inj_b"])}
     return out
@@ -115,10 +117,11 @@ def features(dg):
 
 
 # --- model ------------------------------------------------------------------------------
-def main(quick=False):
+def main(quick=False, seed=0):
     torch.set_num_threads(2)
     t_start = time.time()
-    tr, ref = load("train", ETA_TRAIN), load("ref", ETA_TRAIN + ETA_TEST)
+    root = data_dir(quick)
+    tr, ref = load("train", ETA_TRAIN, root), load("ref", ETA_TRAIN + ETA_TEST, root)
     solver = MHD2D(n=N, nu=NU, eta=ETA_TRAIN[0], alpha=ALPHA, kf=KF, eps_u=EPS, eps_b=EPS, batch=8, seed=0)
     inj_u, inj_b, inj_a2 = solver.injection_rates_all()
     inj = inj_u + inj_b
@@ -180,19 +183,19 @@ def main(quick=False):
         return fn
 
     variants = {
-        "V0_libre": dict(X=Xc, extra=None, noise=None, project=None, post=None),
-        "V1_penalite": dict(X=Xc, extra=penalty, noise=None, project=None, post=None),
-        "V2_proj_finale": dict(X=Xc, extra=None, noise=None, project=None, post="leray", reuse="V0_libre"),
-        "V3_flot_projete": dict(X=Xc, extra=None, noise=proj_noise, project=project_t, post=None),
-        "V4_potentiels": dict(X=Xp, extra=None, noise=None, project=None, post=None),
+        "V0_free": dict(X=Xc, extra=None, noise=None, project=None, post=None),
+        "V1_penalty": dict(X=Xc, extra=penalty, noise=None, project=None, post=None),
+        "V2_final_projection": dict(X=Xc, extra=None, noise=None, project=None, post="leray", reuse="V0_free"),
+        "V3_projected_flow": dict(X=Xc, extra=None, noise=proj_noise, project=project_t, post=None),
+        "V4_potentials": dict(X=Xp, extra=None, noise=None, project=None, post=None),
     }
     results = {"config": {"N": N, "nu": NU, "alpha": ALPHA, "kf": KF, "eta_train": ETA_TRAIN, "eta_test": ETA_TEST,
-                          "modes": int(M), "dim_potentiels": int(Xp.shape[1]), "dim_composantes": int(Xc.shape[1]),
-                          "iters": iters, "largeur": width, "n_gen": n_gen, "injection": [inj_u, inj_b, inj_a2],
-                          "n_train_par_eta": int(len(tr[ETA_TRAIN[0]]["psi"]))}, "variantes": {}}
+                          "modes": int(M), "dim_potentials": int(Xp.shape[1]), "dim_components": int(Xc.shape[1]),
+                          "iters": iters, "width": width, "n_gen": n_gen, "injection": [inj_u, inj_b, inj_a2],
+                          "n_train_per_eta": int(len(tr[ETA_TRAIN[0]]["psi"]))}, "variants": {}}
     models, gens = {}, {}
 
-    def generate(model, eta, kind, noise=None, project=None, n=n_gen, seed=0):
+    def generate(model, eta, kind, noise=None, project=None, n=n_gen):
         torch.manual_seed(seed)
         dim = Xp.shape[1] if kind == "pot" else Xc.shape[1]
         z = sample_ode(model, torch.full((n,), float(cn(eta))), (n, dim), steps=50, noise_fn=noise, project=project)
@@ -207,7 +210,7 @@ def main(quick=False):
         if "reuse" in cfg:
             model, tsec = models[cfg["reuse"]], 0.0
         else:
-            seed_all(0)
+            seed_all(seed)
             model = MLPField(cfg["X"].shape[1], width=width, depth=4)
             hist, tsec = train(model, batcher(cfg["X"]), iters, lr=1e-3, log_every=max(iters // 6, 1),
                                extra=cfg["extra"], noise_fn=cfg["noise"], name=name)
@@ -220,8 +223,8 @@ def main(quick=False):
             if cfg["post"] == "leray":
                 c = leray(c)
             gens[(name, eta)] = c
-        results["variantes"][name] = {"temps_entrainement_s": tsec,
-                                      "temps_generation_s_par_echantillon": (time.time() - tg) / (n_gen * 11)}
+        results["variants"][name] = {"training_time_s": tsec,
+                                      "generation_time_s_per_sample": (time.time() - tg) / (n_gen * 11)}
 
     # V5: fine-tuning of V4 with a stationarity loss (mean energy balance imposed at every η)
     sdp_t = torch.tensor(sd_pot, dtype=torch.float32)
@@ -239,9 +242,9 @@ def main(quick=False):
         return NU * Z + eta * J2 + ALPHA * (E2u + E2b)
 
     ft_iters = 50 if quick else 600
-    for beta, vname in ((50.0, "V5_potentiels_stat"), (0.0, "V5_temoin")):
-        seed_all(1)
-        model = copy.deepcopy(models["V4_potentiels"]).train()
+    for beta, vname in ((50.0, "V5_potentials_stat"), (0.0, "V5_control")):
+        seed_all(1 + seed)
+        model = copy.deepcopy(models["V4_potentials"]).train()
         opt = torch.optim.Adam(model.parameters(), lr=2e-4)
         bt = batcher(Xp)
         t0 = time.time()
@@ -252,12 +255,7 @@ def main(quick=False):
                 le = np.log(3.5e-3) + (np.log(2.6e-2) - np.log(3.5e-3)) * np.random.rand(4)
                 etas = np.repeat(np.exp(le), 64)
                 cc = torch.tensor(cn(etas), dtype=torch.float32)
-                z = torch.randn(len(etas), Xp.shape[1])
-                h = 1.0 / 8
-                for k in range(8):
-                    v0 = model(z, torch.full((len(z),), k * h), cc)
-                    v1 = model(z + h * v0, torch.full((len(z),), (k + 1) * h), cc)
-                    z = z + 0.5 * h * (v0 + v1)
+                z = heun_sample(model, torch.randn(len(etas), Xp.shape[1]), cc, steps=8)  # differentiable
                 d = diss_t(z, torch.tensor(etas, dtype=torch.float32)).view(4, 2, 32).mean(2)
                 r = (d - inj) / inj
                 # unbiased estimator of (E[D] - ε)²: product of the residuals of two half-batches
@@ -272,7 +270,7 @@ def main(quick=False):
         models[vname] = model
         for eta in ETA_TRAIN + ETA_TEST:
             gens[(vname, eta)] = generate(model, eta, "pot")
-        results["variantes"][vname] = {"temps_reglage_fin_s": time.time() - t0, "iters": ft_iters, "beta": beta}
+        results["variants"][vname] = {"finetuning_time_s": time.time() - t0, "iters": ft_iters, "beta": beta}
 
     # --- evaluation ---------------------------------------------------------------------
     ref_dg = {e: diagnostics(comps_from_pot(ref[e]["psi"], ref[e]["a"]), e) for e in ETA_TRAIN + ETA_TEST}
@@ -290,16 +288,16 @@ def main(quick=False):
             "spectrum_error_log10": spec_err,
             "err_Eu_rel": float(abs(dg["Eu"].mean() / r["Eu"].mean() - 1)),
             "err_Eb_rel": float(abs(dg["Eb"].mean() / r["Eb"].mean() - 1)),
-            "balance_residual_energie": float((dg["diss"].mean() - inj) / inj),
+            "balance_residual_energy": float((dg["diss"].mean() - inj) / inj),
             "balance_residual_Hc": float(dg["g_Hc"].mean() / (r["g_Hc"].std() + 1e-12)),
             "balance_residual_A2": float((dg["g_A2"].mean() - inj_a2) / inj_a2),
             "std_diss_rel": float(dg["diss"].std() / r["diss"].std()),
             "energy_distance_features": energy_distance((features(dg) - fmean) / fstd, (features(r) - fmean) / fstd, n=1000),
-            "Hc_moy": float(dg["Hc"].mean()), "Hc_std": float(dg["Hc"].std()),
+            "Hc_mean": float(dg["Hc"].mean()), "Hc_std": float(dg["Hc"].std()),
         }
 
     evals = {}
-    for name in list(variants) + ["V5_potentiels_stat", "V5_temoin"]:
+    for name in list(variants) + ["V5_potentials_stat", "V5_control"]:
         for split, etas in (("train", ETA_TRAIN), ("test", ETA_TEST)):
             evals.setdefault(name, {})[split] = [{"eta": e, **evaluate(gens[(name, e)], e)} for e in etas]
     # Reference: subsample of the same size (noise floor) and training data
@@ -312,48 +310,51 @@ def main(quick=False):
             idx = rng.choice(len(src["psi"]), size=min(n_gen, len(src["psi"])), replace=False)
             rows.append({"eta": e, **evaluate(comps_from_pot(src["psi"][idx], src["a"][idx]), e)})
         floor[split] = rows
-    evals["reference_sous_echantillon"] = floor
+    evals["reference_subsample"] = floor
 
     # --- "in law" part: exponential tilting versus per-sample rescaling (on V4) ---
     law = {}
     for e in ETA_TRAIN + ETA_TEST:
-        c = gens[("V4_potentiels", e)]
+        c = gens[("V4_potentials", e)]
         dg = diagnostics(c, e)
         g = np.stack([dg["diss"] - inj, dg["g_Hc"], dg["g_A2"] - inj_a2], 1)
         half = len(c) // 2
         w, lam, info = exp_tilt(g[:half], reg=1.0)
         zb = g[half:] @ lam
         wb = np.exp(zb - zb.max()); wb /= wb.sum()
-        tilted = c[half:][systematic_resample(wb, len(c) - half, seed=1)]
+        tilted = c[half:][systematic_resample(wb, len(c) - half, seed=1 + seed)]
         # rescaling: multiply the scales |k| > 3 by s so that D(x) = ε_inj exactly
         big = (np.sqrt(k2) > 3)
         cl, cs = c * (~big), c * big
         dl, ds = diagnostics(cl, e)["diss"], diagnostics(cs, e)["diss"]
         s = np.sqrt(np.clip((inj - dl) / np.maximum(ds, 1e-12), 0, None))
         rescaled = cl + cs * s[:, None, None]
-        law[str(e)] = {"base": evaluate(c[half:], e), "inclinaison": evaluate(tilted, e), "recalage": evaluate(rescaled, e),
+        law[str(e)] = {"base": evaluate(c[half:], e), "tilting": evaluate(tilted, e), "rescaling": evaluate(rescaled, e),
                        "ess_frac_b": float(1 / np.sum(wb ** 2) / len(wb)), "lambda": lam.tolist(),
                        "split": "train" if e in ETA_TRAIN else "test"}
     results["evaluation"] = evals
-    results["en_loi"] = law
-    keys = ["div_rel_u", "div_rel_b", "spectrum_error_log10", "err_Eu_rel", "err_Eb_rel", "balance_residual_energie",
+    results["in_law"] = law
+    keys = ["div_rel_u", "div_rel_b", "spectrum_error_log10", "err_Eu_rel", "err_Eb_rel", "balance_residual_energy",
             "balance_residual_Hc", "balance_residual_A2", "std_diss_rel", "energy_distance_features"]
     summary = {}
     for name, ev in evals.items():
-        summary[name] = {split: {k: float(np.mean([abs(r[k]) if k.startswith("residu") else r[k] for r in rows])) for k in keys}
+        summary[name] = {split: {k: float(np.mean([abs(r[k]) if k.startswith("balance_residual") else r[k] for r in rows])) for k in keys}
                          for split, rows in ev.items()}
-    summary["en_loi"] = {m: {split: {k: float(np.mean([abs(v[m][k]) if k.startswith("residu") else v[m][k]
+    summary["in_law"] = {m: {split: {k: float(np.mean([abs(v[m][k]) if k.startswith("balance_residual") else v[m][k]
                                                        for v in law.values() if v["split"] == split])) for k in keys}
-                             for split in ("train", "test")} for m in ("base", "inclinaison", "recalage")}
-    summary["en_loi"]["ess_frac_b_moy"] = float(np.mean([v["ess_frac_b"] for v in law.values()]))
-    results["resume"] = summary
-    results["duree_totale_s"] = time.time() - t_start
-    save_json(results, "e2_mhd2d_quick.json" if quick else "e2_mhd2d.json")
-    # samples for figures (middle η)
+                             for split in ("train", "test")} for m in ("base", "tilting", "rescaling")}
+    summary["in_law"]["ess_frac_b_mean"] = float(np.mean([v["ess_frac_b"] for v in law.values()]))
+    results["summary"] = summary
+    results["total_duration_s"] = time.time() - t_start
+    results["config"]["seed"] = seed
+    tag = ("_quick" if quick else "") + (f"_s{seed}" if seed else "")
+    save_json(results, f"e2_mhd2d{tag}.json")
+    # samples for figures (middle η), seed 0 only
     e_mid = ETA_TEST[2]
-    np.savez_compressed(Path(__file__).resolve().parent / "results" / ("e2_echantillons_quick.npz" if quick else "e2_echantillons.npz"),
-                        **{f"{n}": gens[(n, e_mid)][:8] for n in list(variants) + ["V5_potentiels_stat"]},
-                        ref=comps_from_pot(ref[e_mid]["psi"][:8], ref[e_mid]["a"][:8]), kx=kx, ky=ky, eta=e_mid)
+    if seed == 0:
+        np.savez_compressed(Path(__file__).resolve().parent / "results" / ("e2_samples_quick.npz" if quick else "e2_samples.npz"),
+                            **{f"{n}": gens[(n, e_mid)][:8] for n in list(variants) + ["V5_potentials_stat"]},
+                            ref=comps_from_pot(ref[e_mid]["psi"][:8], ref[e_mid]["a"][:8]), kx=kx, ky=ky, eta=e_mid)
     for name, v in summary.items():
         print(name, json.dumps(v)[:600], flush=True)
     print(f"total duration {time.time() - t_start:.0f} s")
@@ -362,4 +363,7 @@ def main(quick=False):
 if __name__ == "__main__":
     ap = argparse.ArgumentParser()
     ap.add_argument("--quick", action="store_true")
-    main(ap.parse_args().quick)
+    ap.add_argument("--seed", type=int, default=0,
+                    help="seed of training, fine-tuning, generation and tilting (0 = the published run)")
+    a = ap.parse_args()
+    main(a.quick, a.seed)

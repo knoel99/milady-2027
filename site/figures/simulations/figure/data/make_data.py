@@ -4,7 +4,7 @@
    (Γ = 0.9), 2D MHD snapshot of E2 (current density j and contour lines of a), ABC dynamo mode of E3
    (|B| on three faces, Rm = 12).
 2. E1: frequency of zero crossings of D in the fine-grid simulations (results/e1_gissinger.json,
-   "grille_fine", taux_simulation) and training and test values of Γ (config).
+   "fine_grid", simulation_rate) and training and test values of Γ (config).
 3. E3: growth rate λ(Rm) and interpolated thresholds (results/e3_abc.json).
 4. E2: mean magnetic energy E_B = ½⟨|B|²⟩ in the stationary regime for the 11 values of η of E2, **recomputed**
    with the E2 solver (experiments/mhd2d.py) and its settings (N = 32, ν = 8e-3, α = 0.02, white forcing in
@@ -52,11 +52,11 @@ def main():
     e1 = json.loads((RES / "e1_gissinger.json").read_text())
     out["e1"] = {
         "G_train": e1["config"]["G_train"], "G_test": e1["config"]["G_test"],
-        "fine": [[g["Gamma"], g["taux_simulation"]] for g in e1["grille_fine"]],
-        "n_traj": e1["config"]["trajectoires_par_Gamma"], "t_keep": e1["config"]["duree_gardee"],
+        "fine": [[g["Gamma"], g["simulation_rate"]] for g in e1["fine_grid"]],
+        "n_traj": e1["config"]["trajectories_per_Gamma"], "t_keep": e1["config"]["kept_duration"],
     }
     e3 = json.loads((RES / "e3_abc.json").read_text())
-    out["e3"] = {"rates": [[r["Rm"], r["lambda"]] for r in e3["taux"]], "thresholds": e3["seuils_interpoles"],
+    out["e3"] = {"rates": [[r["Rm"], r["lambda"]] for r in e3["rates"]], "thresholds": e3["interpolated_thresholds"],
                  "N": e3["config"]["N"], "dt": e3["config"]["dt"], "t_total": e3["config"]["t_total"]}
     etas = sorted(ETA_TRAIN + ETA_TEST)
     with Pool(4) as pool:

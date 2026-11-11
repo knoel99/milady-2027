@@ -2,7 +2,7 @@
 
 ## E1 - Gissinger reversal model (invariant law conditioned on Γ)
 
-Configuration: μ = 0.119, ν = 0.1; training Γ [0.8, 0.82, 0.84, 0.86, 0.88, 0.9, 0.92, 0.94, 0.96, 0.98, 1.0]; test Γ [0.81, 0.83, 0.85, 0.87, 0.89, 0.91, 0.93, 0.95, 0.97, 0.99]; 16 trajectories per Γ, kept duration 3000; iterations {'A_reference': 12000, 'B_augmentation': 12000, 'C_equivariant': 12000, 'C_court': 1200}; seeds [0, 1]; 10000 samples generated per Γ; Heun 50 steps; MLP 256×4; h_Rice = 0.2.
+Configuration: μ = 0.119, ν = 0.1; training Γ [0.8, 0.82, 0.84, 0.86, 0.88, 0.9, 0.92, 0.94, 0.96, 0.98, 1.0]; test Γ [0.81, 0.83, 0.85, 0.87, 0.89, 0.91, 0.93, 0.95, 0.97, 0.99]; 16 trajectories per Γ, kept duration 3000; iterations {'A_reference': 12000, 'B_augmentation': 12000, 'C_equivariant': 12000, 'C_short': 1200}; seeds [0, 1]; 10000 samples generated per Γ; Heun 50 steps; MLP 256×4; h_Rice = 0.2.
 
 
 ### Means over the test Γ (mean over seeds)
@@ -12,18 +12,18 @@ Configuration: μ = 0.119, ν = 0.1; training Γ [0.8, 0.82, 0.84, 0.86, 0.88, 0
 | A_reference | 0.0118 | 0.0644 | 0.0322 | 0.0326 | 0.0167 | 0.387 | 9.90e-04 | 0.00125 | – |
 | B_augmentation | 0.00356 | 0.0423 | 0.0157 | 0.044 | 0.0223 | 0.389 | 7.90e-04 | 0.00108 | – |
 | C_equivariant | 0.00257 | 0.0333 | 0.00439 | 0.0265 | 0.0217 | 0.384 | 8.06e-04 | 0.00106 | – |
-| C_court | 0.0043 | 0.046 | 0.00444 | 0.0322 | 0.0292 | 0.508 | 0.00158 | 0.00316 | – |
-| D_inclinaison_A | 0.0879 | 0.109 | 0.0499 | 0.151 | 0.147 | 0.395 | 5.35e-04 | 8.33e-04 | 0.914 |
-| D_inclinaison_C | 0.00483 | 0.0503 | 0.0119 | 0.0448 | 0.0586 | 0.455 | 9.80e-04 | 0.00155 | 0.851 |
-| D_inclinaison_Ccourt | 1.54 | 0.51 | 0.0689 | 3.41 | 6.83 | 0.917 | 0.00266 | 0.00368 | 0.623 |
+| C_short | 0.0043 | 0.046 | 0.00444 | 0.0322 | 0.0292 | 0.508 | 0.00158 | 0.00316 | – |
+| D_tilting_A | 0.0879 | 0.109 | 0.0499 | 0.151 | 0.147 | 0.395 | 5.35e-04 | 8.33e-04 | 0.914 |
+| D_tilting_C | 0.00483 | 0.0503 | 0.0119 | 0.0448 | 0.0586 | 0.455 | 9.80e-04 | 0.00155 | 0.851 |
+| D_tilting_Cshort | 1.54 | 0.51 | 0.0689 | 3.41 | 6.83 | 0.917 | 0.00266 | 0.00368 | 0.623 |
 | E_projection_C | 0.0231 | 0.107 | 0.00434 | 0.0359 | 0.0204 | 4.17e-17 | 0.00271 | 0.0026 | – |
-| F_stationnarite_C | 0.0031 | 0.0451 | 0.00344 | 0.0136 | 0.0113 | 0.282 | 9.28e-04 | 0.0011 | – |
-| F0_temoin_C | 0.00345 | 0.0402 | 0.00443 | 0.0324 | 0.0224 | 0.393 | 7.71e-04 | 8.35e-04 | – |
-| F_stationnarite_Ccourt | 0.0785 | 0.224 | 0.0032 | 0.456 | 1.72 | 7.25 | 0.0216 | 0.00608 | – |
-| F0_temoin_Ccourt | 0.00494 | 0.0514 | 0.00399 | 0.043 | 0.0309 | 0.482 | 0.002 | 0.00136 | – |
-| A_reference_moitie | 0.0124 | 0.0663 | 0.0328 | 0.0328 | 0.0178 | 0.384 | 7.05e-04 | 9.76e-04 | – |
-| C_equivariant_moitie | 0.00295 | 0.0362 | 0.00803 | 0.0278 | 0.0238 | 0.382 | 6.36e-04 | 8.88e-04 | – |
-| C_court_moitie | 0.00457 | 0.0471 | 0.00805 | 0.0337 | 0.0325 | 0.478 | 0.0013 | 0.00193 | – |
+| F_stationarity_C | 0.0031 | 0.0451 | 0.00344 | 0.0136 | 0.0113 | 0.282 | 9.28e-04 | 0.0011 | – |
+| F0_control_C | 0.00345 | 0.0402 | 0.00443 | 0.0324 | 0.0224 | 0.393 | 7.71e-04 | 8.35e-04 | – |
+| F_stationarity_Cshort | 0.0785 | 0.224 | 0.0032 | 0.456 | 1.72 | 7.25 | 0.0216 | 0.00608 | – |
+| F0_control_Cshort | 0.00494 | 0.0514 | 0.00399 | 0.043 | 0.0309 | 0.482 | 0.002 | 0.00136 | – |
+| A_reference_half | 0.0124 | 0.0663 | 0.0328 | 0.0328 | 0.0178 | 0.384 | 7.05e-04 | 9.76e-04 | – |
+| C_equivariant_half | 0.00295 | 0.0362 | 0.00803 | 0.0278 | 0.0238 | 0.382 | 6.36e-04 | 8.88e-04 | – |
+| C_short_half | 0.00457 | 0.0471 | 0.00805 | 0.0337 | 0.0325 | 0.478 | 0.0013 | 0.00193 | – |
 
 ### Means over the train Γ (mean over seeds)
 
@@ -32,21 +32,21 @@ Configuration: μ = 0.119, ν = 0.1; training Γ [0.8, 0.82, 0.84, 0.86, 0.88, 0
 | A_reference | 0.019 | 0.0661 | 0.0437 | 0.0103 | 0.00893 | 0.386 | 4.48e-04 | 6.30e-04 | – |
 | B_augmentation | 0.00114 | 0.022 | 0.00458 | 0.012 | 0.00955 | 0.388 | 2.52e-04 | 3.85e-04 | – |
 | C_equivariant | 0.00115 | 0.0219 | 0.00436 | 0.0108 | 0.00948 | 0.386 | 3.12e-04 | 5.32e-04 | – |
-| C_court | 0.00142 | 0.0277 | 0.00455 | 0.0131 | 0.0177 | 0.491 | 6.44e-04 | 0.00228 | – |
-| D_inclinaison_A | 0.0198 | 0.0716 | 0.0452 | 0.0138 | 0.0122 | 0.384 | 5.74e-04 | 7.91e-04 | 0.998 |
-| D_inclinaison_C | 0.00153 | 0.0269 | 0.00792 | 0.0129 | 0.0115 | 0.386 | 3.98e-04 | 5.71e-04 | 0.998 |
-| D_inclinaison_Ccourt | 0.00222 | 0.0353 | 0.00931 | 0.0647 | 0.143 | 0.633 | 0.00116 | 0.00101 | 0.955 |
+| C_short | 0.00142 | 0.0277 | 0.00455 | 0.0131 | 0.0177 | 0.491 | 6.44e-04 | 0.00228 | – |
+| D_tilting_A | 0.0198 | 0.0716 | 0.0452 | 0.0138 | 0.0122 | 0.384 | 5.74e-04 | 7.91e-04 | 0.998 |
+| D_tilting_C | 0.00153 | 0.0269 | 0.00792 | 0.0129 | 0.0115 | 0.386 | 3.98e-04 | 5.71e-04 | 0.998 |
+| D_tilting_Cshort | 0.00222 | 0.0353 | 0.00931 | 0.0647 | 0.143 | 0.633 | 0.00116 | 0.00101 | 0.955 |
 | E_projection_C | 0.021 | 0.1 | 0.00425 | 0.042 | 0.0218 | 4.04e-17 | 0.0027 | 0.00254 | – |
-| F_stationnarite_C | 0.00252 | 0.0451 | 0.00328 | 0.0139 | 0.0109 | 0.283 | 5.66e-04 | 8.35e-04 | – |
-| F0_temoin_C | 0.00234 | 0.032 | 0.00439 | 0.0227 | 0.0136 | 0.393 | 3.42e-04 | 4.86e-04 | – |
-| F_stationnarite_Ccourt | 0.0711 | 0.226 | 0.00313 | 0.371 | 1.69 | 7.88 | 0.00941 | 0.00658 | – |
-| F0_temoin_Ccourt | 0.00251 | 0.0382 | 0.00398 | 0.0286 | 0.0219 | 0.466 | 0.00122 | 9.83e-04 | – |
-| A_reference_moitie | 0.0195 | 0.071 | 0.0449 | 0.0117 | 0.0102 | 0.383 | 4.98e-04 | 6.77e-04 | – |
-| C_equivariant_moitie | 0.00157 | 0.0263 | 0.00788 | 0.0123 | 0.0114 | 0.382 | 4.20e-04 | 6.25e-04 | – |
-| C_court_moitie | 0.00183 | 0.0309 | 0.00825 | 0.0155 | 0.0222 | 0.461 | 0.00106 | 8.67e-04 | – |
+| F_stationarity_C | 0.00252 | 0.0451 | 0.00328 | 0.0139 | 0.0109 | 0.283 | 5.66e-04 | 8.35e-04 | – |
+| F0_control_C | 0.00234 | 0.032 | 0.00439 | 0.0227 | 0.0136 | 0.393 | 3.42e-04 | 4.86e-04 | – |
+| F_stationarity_Cshort | 0.0711 | 0.226 | 0.00313 | 0.371 | 1.69 | 7.88 | 0.00941 | 0.00658 | – |
+| F0_control_Cshort | 0.00251 | 0.0382 | 0.00398 | 0.0286 | 0.0219 | 0.466 | 0.00122 | 9.83e-04 | – |
+| A_reference_half | 0.0195 | 0.071 | 0.0449 | 0.0117 | 0.0102 | 0.383 | 4.98e-04 | 6.77e-04 | – |
+| C_equivariant_half | 0.00157 | 0.0263 | 0.00788 | 0.0123 | 0.0114 | 0.382 | 4.20e-04 | 6.25e-04 | – |
+| C_short_half | 0.00183 | 0.0309 | 0.00825 | 0.0155 | 0.0222 | 0.461 | 0.00106 | 8.67e-04 | – |
 
-Monte Carlo noise floors (subsample of the reference): {"n_gen": {"energie": 0.0012269410015240956, "liou_train_moy": 0.008313903884542232, "liou_test_moy": 0.007754615328397765}, "n_gen/2": {"energie": 0.0010395543650338456, "liou_train_moy": 0.012394976789609316, "liou_test_moy": 0.010104128581043512}}
-Reference: {"dEdt_std": 0.3777204303788672, "erreur_taux_rice_ref": 0.00036122719124476193}
+Monte Carlo noise floors (subsample of the reference): {"n_gen": {"energy": 0.0012269410015240956, "liou_train_mean": 0.008313903884542232, "liou_test_mean": 0.007754615328397765}, "n_gen/2": {"energy": 0.0010395543650338456, "liou_train_mean": 0.012394976789609316, "liou_test_mean": 0.010104128581043512}}
+Reference: {"dEdt_std": 0.3777204303788672, "rice_rate_error_ref": 0.00036122719124476193}
 
 ### Data: zero crossings of D (simulation) and asymmetry of the training data
 
@@ -151,18 +151,18 @@ Reference: {"dEdt_std": 0.3777204303788672, "erreur_taux_rice_ref": 0.0003612271
 | variant | energy dist. | Liouville deg≤2 | Liouville deg 3 |
 |---|---|---|---|
 | C_equivariant | 6.22e-04 | 0.00537 | 0.00393 |
-| F_stationnarite_C | 0.00153 | 0.00182 | 0.00361 |
-| F0_temoin_C | 0.00104 | 0.00811 | 0.00697 |
+| F_stationarity_C | 0.00153 | 0.00182 | 0.00361 |
+| F0_control_C | 0.00104 | 0.00811 | 0.00697 |
 
 ### Per-seed envelope of σ(dE/dt)/σ_ref (mean σ over the test Γ, divided by the reference)
 
 | variant | low seed | high seed |
 |---|---|---|
-| F_stationnarite_C | 0.699 | 0.796 |
-| F0_temoin_C | 1.01 | 1.07 |
-| C_court | 1.18 | 1.51 |
-| F_stationnarite_Ccourt | 0.791 | 37.6 |
-| F0_temoin_Ccourt | 1.11 | 1.44 |
+| F_stationarity_C | 0.699 | 0.796 |
+| F0_control_C | 1.01 | 1.07 |
+| C_short | 1.18 | 1.51 |
+| F_stationarity_Cshort | 0.791 | 37.6 |
+| F0_control_Cshort | 1.11 | 1.44 |
 
 On short C, seed 1 diverged: at each Γ its value is the high one, which separates the seeds.
 
@@ -201,16 +201,16 @@ Spurious crossings below the threshold (fine grid, zero simulated rate): at most
 | B_augmentation | seed1 | 720 | 0.31 |
 | C_equivariant | seed0 | 221 | 0.47 |
 | C_equivariant | seed1 | 282 | 0.57 |
-| C_court | seed0 | 51 | 0.48 |
-| C_court | seed1 | 555 | 0.72 |
-| F_stationnarite_C | seed0 | 321 | – |
-| F_stationnarite_C | seed1 | 335 | – |
-| F0_temoin_C | seed0 | 15 | – |
-| F0_temoin_C | seed1 | 15 | – |
-| F_stationnarite_Ccourt | seed0 | 338 | – |
-| F_stationnarite_Ccourt | seed1 | 331 | – |
-| F0_temoin_Ccourt | seed0 | 15 | – |
-| F0_temoin_Ccourt | seed1 | 14 | – |
+| C_short | seed0 | 51 | 0.48 |
+| C_short | seed1 | 555 | 0.72 |
+| F_stationarity_C | seed0 | 321 | – |
+| F_stationarity_C | seed1 | 335 | – |
+| F0_control_C | seed0 | 15 | – |
+| F0_control_C | seed1 | 15 | – |
+| F_stationarity_Cshort | seed0 | 338 | – |
+| F_stationarity_Cshort | seed1 | 331 | – |
+| F0_control_Cshort | seed0 | 15 | – |
+| F0_control_Cshort | seed1 | 14 | – |
 
 Total duration: 3350 s.
 
@@ -223,39 +223,39 @@ Configuration: N = 32, ν = 0.008, α = 0.02, forcing band [2.0, 3.0]; training 
 
 | variant | rel. div. u | rel. div. B | err. spectrum | err. E_u | err. E_B | energy residual | H_c residual | ⟨a²⟩ residual | σ(D)/σ_ref | energy dist. |
 |---|---|---|---|---|---|---|---|---|---|---|
-| V0_libre | 0.408 | 0.408 | 0.23 | 0.464 | 0.562 | 0.491 | 0.0182 | 0.543 | 0.68 | 4.31 |
-| V1_penalite | 0.34 | 0.162 | 0.18 | 0.0995 | 1.68 | 0.895 | 0.00798 | 1.35 | 1.21 | 5.86 |
-| V2_proj_finale | 5.05e-17 | 5.00e-17 | 0.168 | 0.222 | 0.337 | 0.469 | 0.0172 | 0.421 | 0.677 | 2.61 |
-| V3_flot_projete | 2.03e-08 | 2.03e-08 | 0.135 | 0.0922 | 0.236 | 0.335 | 0.00595 | 0.322 | 0.565 | 1.85 |
-| V4_potentiels | 1.78e-17 | 1.68e-17 | 0.168 | 0.261 | 0.369 | 0.472 | 0.0169 | 0.443 | 0.672 | 2.58 |
-| V5_potentiels_stat | 1.74e-17 | 1.62e-17 | 0.0696 | 0.0668 | 0.0621 | 0.0611 | 0.0237 | 0.0612 | 0.788 | 0.699 |
-| V5_temoin | 1.78e-17 | 1.67e-17 | 0.165 | 0.252 | 0.355 | 0.462 | 0.0143 | 0.43 | 0.663 | 2.52 |
-| reference_sous_echantillon | 1.52e-17 | 0 | 0.00212 | 0.00261 | 0.00248 | 0.00661 | 0.0782 | 0.0265 | 0.998 | 0.00178 |
+| V0_free | 0.408 | 0.408 | 0.23 | 0.464 | 0.562 | 0.491 | 0.0182 | 0.543 | 0.68 | 4.31 |
+| V1_penalty | 0.34 | 0.162 | 0.18 | 0.0995 | 1.68 | 0.895 | 0.00798 | 1.35 | 1.21 | 5.86 |
+| V2_final_projection | 5.05e-17 | 5.00e-17 | 0.168 | 0.222 | 0.337 | 0.469 | 0.0172 | 0.421 | 0.677 | 2.61 |
+| V3_projected_flow | 2.03e-08 | 2.03e-08 | 0.135 | 0.0922 | 0.236 | 0.335 | 0.00595 | 0.322 | 0.565 | 1.85 |
+| V4_potentials | 1.78e-17 | 1.68e-17 | 0.168 | 0.261 | 0.369 | 0.472 | 0.0169 | 0.443 | 0.672 | 2.58 |
+| V5_potentials_stat | 1.74e-17 | 1.62e-17 | 0.0696 | 0.0668 | 0.0621 | 0.0611 | 0.0237 | 0.0612 | 0.788 | 0.699 |
+| V5_control | 1.78e-17 | 1.67e-17 | 0.165 | 0.252 | 0.355 | 0.462 | 0.0143 | 0.43 | 0.663 | 2.52 |
+| reference_subsample | 1.52e-17 | 0 | 0.00212 | 0.00261 | 0.00248 | 0.00661 | 0.0782 | 0.0265 | 0.998 | 0.00178 |
 | in law: base (V4, half b) | 1.78e-17 | 1.69e-17 | 0.168 | 0.268 | 0.36 | 0.47 | 0.0272 | 0.438 | 0.644 | 2.62 |
-| in law: inclinaison (V4, half b) | 1.76e-17 | 1.59e-17 | 0.143 | 0.098 | 0.115 | 0.193 | 0.388 | 0.143 | 0.204 | 4.15 |
-| in law: recalage (V4, half b) | 2.75e-17 | 2.71e-17 | 0.0804 | 0.113 | 0.188 | 8.27e-06 | 0.015 | 0.299 | 8.64e-04 | 1.1 |
+| in law: tilting (V4, half b) | 1.76e-17 | 1.59e-17 | 0.143 | 0.098 | 0.115 | 0.193 | 0.388 | 0.143 | 0.204 | 4.15 |
+| in law: rescaling (V4, half b) | 2.75e-17 | 2.71e-17 | 0.0804 | 0.113 | 0.188 | 8.27e-06 | 0.015 | 0.299 | 8.64e-04 | 1.1 |
 
 ### Means over the train η
 
 | variant | rel. div. u | rel. div. B | err. spectrum | err. E_u | err. E_B | energy residual | H_c residual | ⟨a²⟩ residual | σ(D)/σ_ref | energy dist. |
 |---|---|---|---|---|---|---|---|---|---|---|
-| V0_libre | 0.459 | 0.459 | 0.15 | 0.205 | 0.3 | 0.146 | 0.031 | 0.288 | 0.573 | 2.35 |
-| V1_penalite | 0.312 | 0.14 | 0.177 | 0.0242 | 1.61 | 0.857 | 0.0147 | 1.28 | 1.07 | 5.57 |
-| V2_proj_finale | 5.46e-17 | 5.42e-17 | 0.096 | 0.0526 | 0.105 | 0.135 | 0.03 | 0.184 | 0.57 | 1.09 |
-| V3_flot_projete | 1.94e-08 | 1.95e-08 | 0.109 | 0.118 | 0.153 | 0.172 | 0.0187 | 0.203 | 0.612 | 1.12 |
-| V4_potentiels | 1.70e-17 | 1.58e-17 | 0.0925 | 0.0374 | 0.114 | 0.174 | 0.0289 | 0.17 | 0.666 | 1.03 |
-| V5_potentiels_stat | 1.69e-17 | 1.60e-17 | 0.0826 | 0.0543 | 0.0814 | 0.0708 | 0.0299 | 0.0884 | 0.568 | 0.863 |
-| V5_temoin | 1.70e-17 | 1.59e-17 | 0.0955 | 0.0487 | 0.121 | 0.185 | 0.0292 | 0.179 | 0.653 | 1.11 |
-| reference_sous_echantillon | 1.50e-17 | 0 | 0.0114 | 0.0226 | 0.0164 | 0.0112 | 0.0251 | 0.0125 | 1.01 | 0.0304 |
+| V0_free | 0.459 | 0.459 | 0.15 | 0.205 | 0.3 | 0.146 | 0.031 | 0.288 | 0.573 | 2.35 |
+| V1_penalty | 0.312 | 0.14 | 0.177 | 0.0242 | 1.61 | 0.857 | 0.0147 | 1.28 | 1.07 | 5.57 |
+| V2_final_projection | 5.46e-17 | 5.42e-17 | 0.096 | 0.0526 | 0.105 | 0.135 | 0.03 | 0.184 | 0.57 | 1.09 |
+| V3_projected_flow | 1.94e-08 | 1.95e-08 | 0.109 | 0.118 | 0.153 | 0.172 | 0.0187 | 0.203 | 0.612 | 1.12 |
+| V4_potentials | 1.70e-17 | 1.58e-17 | 0.0925 | 0.0374 | 0.114 | 0.174 | 0.0289 | 0.17 | 0.666 | 1.03 |
+| V5_potentials_stat | 1.69e-17 | 1.60e-17 | 0.0826 | 0.0543 | 0.0814 | 0.0708 | 0.0299 | 0.0884 | 0.568 | 0.863 |
+| V5_control | 1.70e-17 | 1.59e-17 | 0.0955 | 0.0487 | 0.121 | 0.185 | 0.0292 | 0.179 | 0.653 | 1.11 |
+| reference_subsample | 1.50e-17 | 0 | 0.0114 | 0.0226 | 0.0164 | 0.0112 | 0.0251 | 0.0125 | 1.01 | 0.0304 |
 | in law: base (V4, half b) | 1.70e-17 | 1.59e-17 | 0.0931 | 0.0406 | 0.115 | 0.175 | 0.0365 | 0.171 | 0.674 | 1.03 |
-| in law: inclinaison (V4, half b) | 1.74e-17 | 1.63e-17 | 0.0878 | 0.149 | 0.0843 | 0.0253 | 0.133 | 0.0324 | 0.396 | 1.59 |
-| in law: recalage (V4, half b) | 2.85e-17 | 2.81e-17 | 0.0472 | 0.0688 | 0.0515 | 2.07e-16 | 0.0294 | 0.116 | 1.40e-15 | 0.422 |
+| in law: tilting (V4, half b) | 1.74e-17 | 1.63e-17 | 0.0878 | 0.149 | 0.0843 | 0.0253 | 0.133 | 0.0324 | 0.396 | 1.59 |
+| in law: rescaling (V4, half b) | 2.85e-17 | 2.81e-17 | 0.0472 | 0.0688 | 0.0515 | 2.07e-16 | 0.0294 | 0.116 | 1.40e-15 | 0.422 |
 
 Mean ESS/N of the tilting: 0.287
 
 ### Per η: energy distance
 
-| η | set | V0_libre | V1_penalite | V4_potentiels | V5_temoin | V5_potentiels_stat |
+| η | set | V0_free | V1_penalty | V4_potentials | V5_control | V5_potentials_stat |
 |---|---|---|---|---|---|---|
 | 0.00400 | training | 0.697 | 5.13 | 0.364 | 0.352 | 0.41 |
 | 0.00476 | test | 0.811 | 6.01 | 0.184 | 0.178 | 0.186 |
@@ -271,7 +271,7 @@ Mean ESS/N of the tilting: 0.287
 
 ### Per η: signed residual of the energy balance
 
-| η | set | V0_libre | V1_penalite | V4_potentiels | V5_temoin | V5_potentiels_stat |
+| η | set | V0_free | V1_penalty | V4_potentials | V5_control | V5_potentials_stat |
 |---|---|---|---|---|---|---|
 | 0.00400 | training | -0.0908 | 0.207 | -0.101 | -0.0961 | -0.0525 |
 | 0.00476 | test | -0.019 | 0.175 | 2.20e-04 | -0.00776 | -0.0171 |
@@ -287,7 +287,7 @@ Mean ESS/N of the tilting: 0.287
 
 ### Per η: relative error on E_B
 
-| η | set | V0_libre | V1_penalite | V4_potentiels | V5_temoin | V5_potentiels_stat |
+| η | set | V0_free | V1_penalty | V4_potentials | V5_control | V5_potentials_stat |
 |---|---|---|---|---|---|---|
 | 0.00400 | training | 0.0726 | 1.05 | 0.0524 | 0.049 | 0.0637 |
 | 0.00476 | test | 0.155 | 1.07 | 0.0458 | 0.036 | 0.0324 |
@@ -303,7 +303,7 @@ Mean ESS/N of the tilting: 0.287
 
 ### Per η: law constraints on V4 (half b)
 
-| η | Pm = ν/η | set | ESS/N | base dist. | tilting dist. | recalibration dist. | base residual | tilting residual |
+| η | Pm = ν/η | set | ESS/N | base dist. | tilting dist. | rescaling dist. | base residual | tilting residual |
 |---|---|---|---|---|---|---|---|---|
 | 0.00400 | 2 | training | 0.0758 | 0.366 | 0.9 | 0.312 | -0.1 | 0.0326 |
 | 0.00476 | 1.68 | test | 0.99 | 0.185 | 0.17 | 0.193 | 1.10e-04 | -0.00175 |
@@ -317,7 +317,7 @@ Mean ESS/N of the tilting: 0.287
 | 0.01903 | 0.42 | test | 0.002 | 7.88 | 9.46 | 3.43 | 1.22 | 0.679 |
 | 0.02263 | 0.354 | training | 0.002 | 3.94 | 6.48 | 1.36 | 0.559 | 0.082 |
 
-Times: {"V0_libre": {"temps_entrainement_s": 1199.9813, "temps_generation_s_par_echantillon": 0.0074}, "V1_penalite": {"temps_entrainement_s": 1059.0879, "temps_generation_s_par_echantillon": 0.0189}, "V2_proj_finale": {"temps_entrainement_s": 0.0, "temps_generation_s_par_echantillon": 0.0059}, "V3_flot_projete": {"temps_entrainement_s": 424.0978, "temps_generation_s_par_echantillon": 0.0064}, "V4_potentiels": {"temps_entrainement_s": 304.9478, "temps_generation_s_par_echantillon": 0.0045}, "V5_potentiels_stat": {"temps_reglage_fin_s": 460.1759, "iters": 600, "beta": 50.0}, "V5_temoin": {"temps_reglage_fin_s": 79.2724, "iters": 600, "beta": 0.0}}
+Times: {"V0_free": {"training_time_s": 1199.9813, "generation_time_s_per_sample": 0.0074}, "V1_penalty": {"training_time_s": 1059.0879, "generation_time_s_per_sample": 0.0189}, "V2_final_projection": {"training_time_s": 0.0, "generation_time_s_per_sample": 0.0059}, "V3_projected_flow": {"training_time_s": 424.0978, "generation_time_s_per_sample": 0.0064}, "V4_potentials": {"training_time_s": 304.9478, "generation_time_s_per_sample": 0.0045}, "V5_potentials_stat": {"finetuning_time_s": 460.1759, "iters": 600, "beta": 50.0}, "V5_control": {"finetuning_time_s": 79.2724, "iters": 600, "beta": 0.0}}
 
 Total duration: 4023 s.
 

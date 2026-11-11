@@ -66,6 +66,7 @@ from milady.train.data import (
     physical_parameters,
     resolve_uris,
 )
+from milady.train.flow import FourierEmbedding, fm_loss, heun_sample
 
 __all__ = [
     "DEFAULT_CONFIG",
@@ -77,6 +78,7 @@ __all__ = [
     "apply_overrides",
     "build_field",
     "default_config",
+    "fm_loss",
     "heun_sample",
     "latest_model_id",
     "load_checkpoint",
@@ -259,20 +261,6 @@ def _flatten(d: Mapping[str, Any], prefix: str = "") -> dict[str, Any]:
 # =============================================================================================
 # Networks
 # =============================================================================================
-class FourierEmbedding(nn.Module):
-    """Sinusoidal embedding of a scalar (flow time or normalized parameter)."""
-
-    freqs: torch.Tensor
-
-    def __init__(self, n_freq: int = 16, scale: float = 30.0) -> None:
-        super().__init__()
-        self.register_buffer("freqs", torch.exp(torch.linspace(0.0, math.log(scale), n_freq)))
-
-    def forward(self, s: torch.Tensor) -> torch.Tensor:
-        a = s[:, None] * self.freqs[None, :] * (2 * math.pi)
-        return torch.cat([torch.sin(a), torch.cos(a), s[:, None]], dim=1)
-
-
 class ConditionEmbedding(nn.Module):
     """Shared embedding of time t and of the n_cond normalized parameters → vector of dimension ``emb_dim``."""
 
@@ -508,33 +496,6 @@ def build_field(model_cfg: Mapping[str, Any], space: FourierPotentialSpace, n_co
 # =============================================================================================
 # Flow matching, sampling, stationarity loss
 # =============================================================================================
-def heun_sample(
-    field: nn.Module,
-    z: torch.Tensor,
-    c: torch.Tensor,
-    steps: int = 50,
-    autocast: tuple[str, torch.dtype] | None = None,
-) -> torch.Tensor:
-    """Integrate dz/dt = v(z, t, c) from t = 0 to 1 with the Heun scheme (``steps`` steps, 2 evaluations per step).
-
-    Differentiable if called outside ``torch.no_grad`` (stationarity loss).
-    """
-    h = 1.0 / steps
-    n = z.shape[0]
-    ctx = (
-        (lambda: torch.autocast(device_type=autocast[0], dtype=autocast[1]))
-        if autocast
-        else contextlib.nullcontext
-    )
-    for k in range(steps):
-        t0 = torch.full((n,), k * h, device=z.device)
-        with ctx():
-            v0 = field(z, t0, c).float()
-            v1 = field(z + h * v0, t0 + h, c).float()
-        z = z + 0.5 * h * (v0 + v1)
-    return z
-
-
 class FlowMatchingLoss(nn.Module):
     """Complete training loss (a single ``forward`` per iteration: DDP-compatible).
 
@@ -608,31 +569,13 @@ class FlowMatchingLoss(nn.Module):
             self.forcing_hat = fh.to(torch.complex64)
 
     # -- flow matching ------------------------------------------------------------------------
-    def _times(self, n: int, device: torch.device) -> torch.Tensor:
-        if self.t_sampling == "logit_normal":
-            return torch.sigmoid(torch.randn(n, device=device))
-        return torch.rand(n, device=device)
-
     def fm_loss(
         self, x1: torch.Tensor, c: torch.Tensor, generator: torch.Generator | None = None
     ) -> torch.Tensor:
-        """Flow matching loss ‖v(x_t, t, c) − (x₁ − x₀)‖² (mean)."""
-        if generator is None:
-            x0 = torch.randn_like(x1)
-            t = self._times(x1.shape[0], x1.device)
-        else:
-            x0 = torch.randn(x1.shape, generator=generator).to(x1.device)
-            t = torch.rand(x1.shape[0], generator=generator).to(x1.device)
-        tt = t.view(-1, *([1] * (x1.dim() - 1)))
-        xt = (1 - tt) * x0 + tt * x1
-        ctx = (
-            torch.autocast(device_type=self.autocast[0], dtype=self.autocast[1])
-            if self.autocast
-            else contextlib.nullcontext()
+        """Flow matching loss ‖v(x_t, t, c) − (x₁ − x₀)‖² (mean); see :func:`milady.train.flow.fm_loss`."""
+        return fm_loss(
+            self.field, x1, c, t_sampling=self.t_sampling, generator=generator, autocast=self.autocast
         )
-        with ctx:
-            v = self.field(xt, t, c)
-        return ((v.float() - (x1 - x0)) ** 2).mean()
 
     # -- stationarity -------------------------------------------------------------------------
     def _physics(self, cn: torch.Tensor) -> dict[str, torch.Tensor]:
