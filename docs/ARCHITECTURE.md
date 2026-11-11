@@ -1,65 +1,65 @@
-# Architecture de l'infrastructure MilaDy
+# MilaDy infrastructure architecture
 
-Objectif : produire des **campagnes de simulations MHD paramétriques** (2D puis 3D), en faire des
-**jeux de données** au format standard, **entraîner** des modèles génératifs conditionnels sous
-contraintes physiques et **évaluer** leurs échantillons — de façon reproductible, sur trois cibles
-(VM cloud GPU, cluster Slurm, portable), avec une trace de chaque résultat dans un catalogue.
+Goal: produce **parametric MHD simulation campaigns** (2D then 3D), turn them into **datasets** in a
+standard format, **train** conditional generative models under physical constraints and **evaluate** their
+samples — reproducibly, on three targets (GPU cloud VM, Slurm cluster, laptop), with a trace of every
+result in a catalog.
 
-Le contrat (arborescence, format MFF, schéma du catalogue) est dans [`../specs/infra.md`](../specs/infra.md) ;
-le mode d'emploi dans [`README.md`](README.md).
+The contract (directory layout, MFF format, catalog schema) is in [`specs/infra.md`](specs/infra.md);
+the user guide is in [`../infra/README.md`](../infra/README.md).
 
-## 1. Flux des données
+## 1. Data flow
 
 ```mermaid
 flowchart LR
-    Y["Campagne YAML<br/>infra/configs/*.yaml"] --> SW["milady.sweep<br/>développe la grille de paramètres"]
-    SW -->|"local / docker / slurm<br/>(tableau de jobs)"| J["Tâches<br/>table job"]
-    J --> S["Solveur<br/>milady.sim (mhd3d, PyTorch)"]
-    S --> F["Fichier MFF<br/>HDF5 compatible The Well<br/>(+ variante Zarr)"]
-    F --> ST["Stockage objet<br/>S3 / MinIO, ou $SCRATCH"]
-    F -. "sha256, n_t, diagnostics" .-> C[("Catalogue<br/>PostgreSQL / SQLite")]
-    S -. "simulation : paramètres,<br/>statut, temps, commit" .-> C
-    C --> D["Jeu de données<br/>dataset + dataset_member<br/>(train / val / test)"]
-    D --> T["Entraînement<br/>milady.train.fm3d<br/>torchrun / DDP"]
+    Y["YAML campaign<br/>infra/configs/*.yaml"] --> SW["milady.sweep<br/>expands the parameter grid"]
+    SW -->|"local / docker / slurm<br/>(job array)"| J["Tasks<br/>job table"]
+    J --> S["Solver<br/>milady.sim (mhd3d, PyTorch)"]
+    S --> F["MFF file<br/>HDF5 compatible with The Well<br/>(+ Zarr variant)"]
+    F --> ST["Object storage<br/>S3 / MinIO, or $SCRATCH"]
+    F -. "sha256, n_t, diagnostics" .-> C[("Catalog<br/>PostgreSQL / SQLite")]
+    S -. "simulation: parameters,<br/>status, time, commit" .-> C
+    C --> D["Dataset<br/>dataset + dataset_member<br/>(train / val / test)"]
+    D --> T["Training<br/>milady.train.fm3d<br/>torchrun / DDP"]
     ST --> T
-    T --> ML["MLflow<br/>métriques, hyperparamètres"]
-    T --> CK["Points de contrôle<br/>s3://milady-models"]
+    T --> ML["MLflow<br/>metrics, hyperparameters"]
+    T --> CK["Checkpoints<br/>s3://milady-models"]
     T -. "model (mlflow_run_id,<br/>checkpoint_uri)" .-> C
-    CK --> E["Évaluation<br/>milady.eval.metrics"]
-    E -. "evaluation<br/>→ vue v_eval_summary" .-> C
+    CK --> E["Evaluation<br/>milady.eval.metrics"]
+    E -. "evaluation<br/>→ view v_eval_summary" .-> C
 ```
 
-Même chose en texte :
+The same thing in text:
 
 ```
-campagne YAML ──► milady.sweep ──► jobs (local | docker | slurm --array)
+YAML campaign ──► milady.sweep ──► jobs (local | docker | slurm --array)
                                      │
                                      ▼
-                         solveur milady.sim (CPU/GPU)
-                                     │ écrit
+                         milady.sim solver (CPU/GPU)
+                                     │ writes
                                      ▼
-              fichier MFF (HDF5, The Well + attributs milady_*) ──► S3 / MinIO / $SCRATCH
-                                     │ enregistre (uuid, sha256, paramètres, diagnostics)
+              MFF file (HDF5, The Well + milady_* attributes) ──► S3 / MinIO / $SCRATCH
+                                     │ registers (uuid, sha256, parameters, diagnostics)
                                      ▼
-                     ┌──────────── catalogue (PostgreSQL ; SQLite hors ligne) ────────────┐
+                     ┌──────────── catalog (PostgreSQL; SQLite offline) ───────────────────┐
                      │ campaign · simulation · file · diagnostic · job                    │
-                     │ dataset · dataset_member ─► entraînement (torchrun, MLflow) ─┐     │
-                     │ model (mlflow_run_id, checkpoint_uri)  ◄─────────────────────┘     │
-                     │ evaluation ─► v_eval_summary (moyenne, écart-type par métrique)    │
+                     │ dataset · dataset_member ─► training (torchrun, MLflow) ─┐         │
+                     │ model (mlflow_run_id, checkpoint_uri)  ◄─────────────────┘         │
+                     │ evaluation ─► v_eval_summary (mean, standard deviation per metric) │
                      └────────────────────────────────────────────────────────────────────┘
 ```
 
-Chaque objet porte un **UUID** : la simulation reçoit le même identifiant au catalogue et dans le
-fichier (`milady_uuid`), ce qui permet de reconstruire ou de fusionner la partie simulations d'un catalogue (simulations,
-fichiers, diagnostics ; jeux de données, modèles, évaluations et tâches n'existent qu'au catalogue) à
-partir des seuls fichiers (`python -m milady.catalog ingest --campaign <campagne>`), par exemple après une campagne sur un cluster
-sans accès réseau.
+Every object carries a **UUID**: the simulation receives the same identifier in the catalog and in the
+file (`milady_uuid`), which makes it possible to rebuild or merge the simulations part of a catalog (simulations,
+files, diagnostics; datasets, models, evaluations and tasks exist only in the catalog) from
+the files alone (`python -m milady.catalog ingest --campaign <campaign>`), for example after a campaign on a cluster
+without network access.
 
-## 2. Déploiement sur les trois cibles
+## 2. Deployment on the three targets
 
 ```mermaid
 flowchart TB
-    subgraph VM["A. VM cloud GPU — docker compose"]
+    subgraph VM["A. GPU cloud VM — docker compose"]
         db[("db<br/>PostgreSQL 16")]
         s3[("s3<br/>MinIO")]
         mlf["mlflow"]
@@ -70,137 +70,137 @@ flowchart TB
         mlf --> db
         mlf --> s3
     end
-    subgraph HPC["B. Cluster Slurm — Apptainer"]
-        sif["milady.sif<br/>(converti de milady:gpu)"]
-        arr["gen_data.sbatch<br/>tableau de jobs, 1 GPU/simulation"]
-        tr["train.sbatch<br/>torchrun multi-nœuds"]
-        sq[("SQLite sur $WORK<br/>catalogue + MLflow")]
-        fs[("$SCRATCH<br/>fichiers MFF")]
+    subgraph HPC["B. Slurm cluster — Apptainer"]
+        sif["milady.sif<br/>(converted from milady:gpu)"]
+        arr["gen_data.sbatch<br/>job array, 1 GPU/simulation"]
+        tr["train.sbatch<br/>multi-node torchrun"]
+        sq[("SQLite on $WORK<br/>catalog + MLflow")]
+        fs[("$SCRATCH<br/>MFF files")]
         arr --> sif
         tr --> sif
         sif --> sq
         sif --> fs
     end
-    subgraph LAP["C. Portable"]
-        venv["venv .venv<br/>ou mêmes conteneurs (CPU)"]
+    subgraph LAP["C. Laptop"]
+        venv["venv .venv<br/>or the same containers (CPU)"]
         lite[("data/catalog.sqlite<br/>data/store")]
         venv --> lite
     end
-    fs -. "mc mirror / rclone<br/>depuis la frontale" .-> s3
-    s3 -. "milady.catalog ingest<br/>(fichiers MFF → simulations,<br/>fichiers, diagnostics)" .-> db
-    Dev(["Portable : ssh, tunnel,<br/>deploy_remote.sh"]) --> VM
+    fs -. "mc mirror / rclone<br/>from the login node" .-> s3
+    s3 -. "milady.catalog ingest<br/>(MFF files → simulations,<br/>files, diagnostics)" .-> db
+    Dev(["Laptop: ssh, tunnel,<br/>deploy_remote.sh"]) --> VM
     Dev --> HPC
 ```
 
-| | VM cloud (A) | Cluster Slurm (B) | Portable (C) |
+| | Cloud VM (A) | Slurm cluster (B) | Laptop (C) |
 |---|---|---|---|
-| Exécution | conteneurs Docker | image Apptainer (`.sif`) | venv ou Docker |
-| Image | `milady:gpu` (CUDA 12.6) / `milady:cpu` | conversion de `milady:gpu` | `milady:cpu` ou paquets PyPI |
-| Catalogue | PostgreSQL (`db`) | SQLite sur `$WORK` ; simulations enregistrées ensuite dans PostgreSQL à partir des fichiers MFF | SQLite `data/` |
-| Fichiers | S3 (MinIO ou bucket fournisseur) | `$SCRATCH` puis S3 | `data/store` |
-| Suivi | serveur MLflow | MLflow SQLite local | MLflow (facultatif) |
+| Execution | Docker containers | Apptainer image (`.sif`) | venv or Docker |
+| Image | `milady:gpu` (CUDA 12.6) / `milady:cpu` | conversion of `milady:gpu` | `milady:cpu` or PyPI packages |
+| Catalog | PostgreSQL (`db`) | SQLite on `$WORK`; simulations then registered in PostgreSQL from the MFF files | SQLite `data/` |
+| Files | S3 (MinIO or provider bucket) | `$SCRATCH` then S3 | `data/store` |
+| Tracking | MLflow server | local SQLite MLflow | MLflow (optional) |
 | Installation | `bootstrap_vm.sh` / cloud-init / `deploy_remote.sh` | `make sif` + `sbatch` | `make setup` |
 
-**Une seule image logicielle** : l'image GPU de la VM est la source de l'image Apptainer du cluster ;
-les versions Python sont épinglées dans `infra/env/requirements*.txt`. Le dépôt est monté dans le
-conteneur (`/opt/milady`, installation éditable), si bien qu'une modification du code n'exige pas de
-reconstruire l'image, et que le commit (suffixe `-dirty` si l'arbre était modifié) est enregistré dans chaque fichier MFF,
-dans les points de contrôle et au catalogue pour les simulations et les modèles.
+**A single software image**: the VM's GPU image is the source of the cluster's Apptainer image;
+the Python versions are pinned in `infra/env/requirements*.txt`. The repository is mounted in the
+container (`/opt/milady`, editable install), so a code change does not require
+rebuilding the image, and the commit (suffix `-dirty` if the tree was modified) is recorded in every MFF file,
+in the checkpoints and in the catalog for simulations and models.
 
-## 3. Choix techniques
+## 3. Technical choices
 
-### Format de données : HDF5 compatible *The Well*, plus attributs `milady_*`
+### Data format: HDF5 compatible with *The Well*, plus `milady_*` attributes
 
-- *The Well* (Ohana et al., NeurIPS 2024, Datasets & Benchmarks ; [format des
-  données](https://polymathic-ai.org/the_well/data_format/)) est une collection de référence de
-  simulations physiques pour l'apprentissage, avec une convention HDF5 simple : groupes
-  `dimensions/`, `boundary_conditions/`, `t0_fields/` (scalaires), `t1_fields/` (vecteurs),
-  `t2_fields/` (tenseurs), formes `(trajectoires, temps, espace…, composantes)`. S'y conformer rend nos
-  données lisibles par les chargeurs et modèles de référence de la communauté, et inversement.
-- HDF5 : format auto-descriptif, compressé par blocs (lecture d'un pas de temps sans tout charger),
-  lu partout (h5py, Julia, ParaView/VisIt, Fortran/C des codes de simulation), sans serveur.
-- Les métadonnées propres à MilaDy (code, version, commit, paramètres JSON, adimensionnement, UUID,
-  diagnostics, coefficients spectraux) sont des attributs et groupes préfixés `milady_` : invisibles
-  pour un lecteur *The Well*, validés par un schéma JSON (`src/milady/data/schema.json`).
-- Variante **Zarr** (même hiérarchie) pour lire par morceaux depuis S3 sans téléchargement complet.
-- Extension `fourier_fe_axisym` pour SFEMaNS (modes de Fourier × éléments finis méridiens), sans
-  interpolation destructive.
+- *The Well* (Ohana et al., NeurIPS 2024, Datasets & Benchmarks; [data
+  format](https://polymathic-ai.org/the_well/data_format/)) is a reference collection of
+  physical simulations for learning, with a simple HDF5 convention: groups
+  `dimensions/`, `boundary_conditions/`, `t0_fields/` (scalars), `t1_fields/` (vectors),
+  `t2_fields/` (tensors), shapes `(trajectories, time, space…, components)`. Conforming to it makes our
+  data readable by the community's reference loaders and models, and conversely.
+- HDF5: self-describing format, compressed by chunks (reading one time step without loading everything),
+  read everywhere (h5py, Julia, ParaView/VisIt, Fortran/C of simulation codes), serverless.
+- MilaDy's own metadata (code, version, commit, JSON parameters, nondimensionalization, UUID,
+  diagnostics, spectral coefficients) are attributes and groups prefixed `milady_`: invisible
+  to a *The Well* reader, validated by a JSON schema (`src/milady/data/schema.json`).
+- **Zarr** variant (same hierarchy) to read pieces from S3 without a full download.
+- Extension `fourier_fe_axisym` for SFEMaNS (Fourier modes × meridian finite elements), without
+  destructive interpolation.
 
-### Catalogue : PostgreSQL (SQLite en mode hors ligne)
+### Catalog: PostgreSQL (SQLite in offline mode)
 
-- Les résultats d'une thèse sont **relationnels** (campagne → simulations → fichiers → jeux de
-  données → modèles → évaluations) et interrogés par paramètres physiques : PostgreSQL offre `JSONB`
-  et ses index pour les paramètres (Rm, Re, Pm…), les contraintes d'intégrité, les vues
-  (`v_eval_summary`) et des écritures concurrentes sûres depuis de nombreux jobs.
-- Le même modèle SQLAlchemy fonctionne sur **SQLite** : mode portable et clusters sans réseau, puis
-  ingestion dans la base centrale à partir des fichiers.
-- Un fichier de schéma versionné (`infra/db/schema.sql`) et des requêtes SQL lisibles plutôt qu'un
-  service supplémentaire. Le modèle SQLAlchemy (`src/milady/catalog/models.py`) en est l'équivalent exact
-  (colonnes, types, `DEFAULT` côté serveur, contraintes, index, vue), ce que vérifie un test sur
-  PostgreSQL.
-- **Évolutions du schéma** : `CREATE TABLE IF NOT EXISTS` et `create_all` ne modifient jamais une table
-  existante. Tant que le schéma est en version 1.0, une modification se fait à l'identique dans
-  `schema.sql` et `models.py`. Dès qu'une base contient des résultats à conserver, passer à des
-  migrations **Alembic** (déjà dans les dépendances) : `alembic init infra/db/migrations`,
-  `target_metadata = Base.metadata`, `alembic revision --autogenerate` relu à la main, puis
-  `alembic upgrade head` sur la base PostgreSQL et sur chaque catalogue SQLite de cluster.
+- The results of a thesis are **relational** (campaign → simulations → files → datasets →
+  models → evaluations) and queried by physical parameters: PostgreSQL offers `JSONB`
+  and its indexes for the parameters (Rm, Re, Pm…), integrity constraints, views
+  (`v_eval_summary`) and safe concurrent writes from many jobs.
+- The same SQLAlchemy model works on **SQLite**: portable mode and clusters without network, then
+  ingestion into the central database from the files.
+- A versioned schema file (`infra/db/schema.sql`) and readable SQL queries rather than an extra
+  service. The SQLAlchemy model (`src/milady/catalog/models.py`) is its exact equivalent
+  (columns, types, server-side `DEFAULT`, constraints, indexes, view), which a test on
+  PostgreSQL checks.
+- **Schema evolution**: `CREATE TABLE IF NOT EXISTS` and `create_all` never modify an existing
+  table. As long as the schema is at version 1.0, a change is made identically in
+  `schema.sql` and `models.py`. As soon as a database contains results to keep, switch to **Alembic**
+  migrations (already among the dependencies): `alembic init infra/db/migrations`,
+  `target_metadata = Base.metadata`, `alembic revision --autogenerate` reviewed by hand, then
+  `alembic upgrade head` on the PostgreSQL database and on each cluster SQLite catalog.
 
-### Stockage objet : API S3 (MinIO en local)
+### Object storage: S3 API (MinIO locally)
 
-- L'API S3 est le standard de fait : le même code (`fsspec`/`s3fs`) écrit dans MinIO sur la VM, dans
-  un bucket AWS S3, Scaleway ou OVHcloud, en changeant seulement `MILADY_STORAGE_URI` et le point
-  d'accès. Les fichiers ne sont pas réécrits en usage normal (`--force` les réécrit, et `register_file` met
-  alors à jour leur ligne et leur somme SHA-256) et sont adressés par une convention d'URI
-  (`{campagne}/{uuid}/fields.h5`), ce qui sépare clairement données lourdes et métadonnées.
-- **MinIO** : serveur S3 en un seul binaire, adapté à une VM. MinIO Inc. a cessé fin 2025 de publier
-  des images Docker de l'édition communautaire (constaté le 2026-11-07 : `minio/minio` et
-  `quay.io/minio/minio` ne sont plus téléchargeables) ; le compose
-  utilise le fork communautaire `pgsty/minio` (même code AGPLv3), remplaçable par `MINIO_IMAGE`, par
-  un autre serveur compatible S3 (SeaweedFS, Garage…) ou par un bucket du fournisseur — le code MilaDy
-  ne dépend que de l'API S3.
+- The S3 API is the de facto standard: the same code (`fsspec`/`s3fs`) writes to MinIO on the VM, to
+  an AWS S3, Scaleway or OVHcloud bucket, by changing only `MILADY_STORAGE_URI` and the access
+  endpoint. Files are not rewritten in normal use (`--force` rewrites them, and `register_file` then
+  updates their row and their SHA-256 checksum) and are addressed by a URI convention
+  (`{campaign}/{uuid}/fields.h5`), which cleanly separates heavy data from metadata.
+- **MinIO**: single-binary S3 server, suited to a VM. MinIO Inc. stopped publishing Docker images of the
+  community edition at the end of 2025 (observed on 2026-11-07: `minio/minio` and
+  `quay.io/minio/minio` can no longer be downloaded); the compose file
+  uses the community fork `pgsty/minio` (same AGPLv3 code), replaceable via `MINIO_IMAGE`, by
+  another S3-compatible server (SeaweedFS, Garage…) or by a provider bucket — MilaDy code
+  depends only on the S3 API.
 
-### Suivi des entraînements : MLflow
+### Training tracking: MLflow
 
-- Libre, auto-hébergeable, sans compte externe : métriques, hyperparamètres, artefacts et registre
-  de modèles. Le serveur utilise PostgreSQL (base `mlflow`) et S3 (`s3://mlflow`) ; il **relaie** les
-  artefacts, donc les conteneurs de calcul n'ont pas besoin des clés S3 pour journaliser.
-- Sur un cluster sans Internet : base SQLite locale (`sqlite:///$WORK/milady/mlflow.db`) consultable
-  après coup ; le lien avec le catalogue se fait par `model.mlflow_run_id`.
+- Free, self-hostable, no external account: metrics, hyperparameters, artifacts and model
+  registry. The server uses PostgreSQL (`mlflow` database) and S3 (`s3://mlflow`); it **proxies** the
+  artifacts, so the compute containers do not need the S3 keys to log.
+- On a cluster without Internet: local SQLite database (`sqlite:///$WORK/milady/mlflow.db`) that can be consulted
+  afterwards; the link with the catalog goes through `model.mlflow_run_id`.
 
-### Conteneurs : Docker sur VM, Apptainer sur HPC
+### Containers: Docker on VM, Apptainer on HPC
 
-- **Docker Compose** suffit pour une VM unique (pas de Kubernetes à administrer) : healthchecks,
-  volumes nommés, profils `cpu` / `gpu` / `jupyter`, réservation des GPU NVIDIA.
-- **Apptainer / Singularity** est le standard des centres de calcul : exécution sans root, image
-  en un seul fichier `.sif`, conversion directe d'une image Docker, accès GPU par `--nv`, réseau de
-  l'hôte (NCCL/InfiniBand). Jean Zay propose Singularity (Docker et Podman n'y sont pas disponibles).
-- Images de base épinglées : `python:3.12.15-slim-trixie` (CPU), `pytorch/pytorch:2.14.1-cuda12.6-cudnn9-runtime`
+- **Docker Compose** is enough for a single VM (no Kubernetes to administer): healthchecks,
+  named volumes, `cpu` / `gpu` / `jupyter` profiles, NVIDIA GPU reservation.
+- **Apptainer / Singularity** is the standard of computing centers: rootless execution, image
+  in a single `.sif` file, direct conversion from a Docker image, GPU access via `--nv`, host
+  network (NCCL/InfiniBand). Jean Zay offers Singularity (Docker and Podman are not available there).
+- Pinned base images: `python:3.12.15-slim-trixie` (CPU), `pytorch/pytorch:2.14.1-cuda12.6-cudnn9-runtime`
   (GPU), `postgres:16.14-bookworm`, `ghcr.io/mlflow/mlflow:v3.17.2`.
 
-### Ordonnancement : Slurm (tableaux de jobs, `torchrun`)
+### Scheduling: Slurm (job arrays, `torchrun`)
 
-- Une simulation = un élément de tableau de jobs (1 GPU) : parallélisme trivial, relance d'un
-  élément en échec, limitation du nombre simultané (`--array=0-N%16`).
-- Entraînement : un `torchrun` par nœud avec rendez-vous `MASTER_ADDR:MASTER_PORT` ; le même code
-  DDP tourne sur 1 GPU (VM), 8 GPU ou plusieurs nœuds (cluster).
+- One simulation = one job array element (1 GPU): trivial parallelism, rerun of a failed
+  element, limit on the number running at once (`--array=0-N%16`).
+- Training: one `torchrun` per node with `MASTER_ADDR:MASTER_PORT` rendezvous; the same DDP
+  code runs on 1 GPU (VM), 8 GPUs or several nodes (cluster).
 
-## 4. Reproductibilité et provenance
+## 4. Reproducibility and provenance
 
-| Élément | Où il est enregistré |
+| Element | Where it is recorded |
 |---|---|
-| Version du code | `milady_git_commit` (fichier), `simulation.git_commit`, `model.git_commit` |
-| Dépendances | `infra/env/requirements*.txt` (verrou), étiquettes d'image |
-| Paramètres physiques | `milady_parameters` (JSON, fichier) = `simulation.parameters` (JSONB) |
-| Configuration de campagne | `campaign.config_yaml` (YAML du premier lancement) ; copie figée de chaque lancement dans `data/sweeps/` |
-| Machine et ressources | `simulation.host`, `n_gpus`, `n_cpus`, `wall_time_s`, `job.external_id` (identifiant Slurm) |
-| Intégrité des données | `file.sha256`, `file.size_bytes` |
-| Entraînement | `model.hyperparams`, `model.dataset_id`, `model.mlflow_run_id`, `model.checkpoint_uri` |
-| Évaluation | `evaluation.seed`, `n_samples`, `parameters`, `details` |
+| Code version | `milady_git_commit` (file), `simulation.git_commit`, `model.git_commit` |
+| Dependencies | `infra/env/requirements*.txt` (lock), image tags |
+| Physical parameters | `milady_parameters` (JSON, file) = `simulation.parameters` (JSONB) |
+| Campaign configuration | `campaign.config_yaml` (YAML of the first launch); frozen copy of each launch in `data/sweeps/` |
+| Machine and resources | `simulation.host`, `n_gpus`, `n_cpus`, `wall_time_s`, `job.external_id` (Slurm identifier) |
+| Data integrity | `file.sha256`, `file.size_bytes` |
+| Training | `model.hyperparams`, `model.dataset_id`, `model.mlflow_run_id`, `model.checkpoint_uri` |
+| Evaluation | `evaluation.seed`, `n_samples`, `parameters`, `details` |
 
-## 5. Sécurité
+## 5. Security
 
-Pas de secret dans le dépôt (`.env` généré sur la machine, droits 600, ignoré par git) ; ports liés
-à `127.0.0.1` et accès par tunnel SSH ; compte S3 applicatif distinct du compte administrateur ;
-conteneurs de calcul, Jupyter et MLflow sans root (MinIO tourne en root, sans port exposé hors de
-`127.0.0.1`) ; sauvegardes (`pg_dump` + miroir S3) vers une cible externe avant toute
-suppression de VM.
+No secret in the repository (`.env` generated on the machine, permissions 600, ignored by git); ports bound
+to `127.0.0.1` and access through an SSH tunnel; application S3 account distinct from the administrator account;
+compute containers, Jupyter and MLflow run without root (MinIO runs as root, with no port exposed outside
+`127.0.0.1`); backups (`pg_dump` + S3 mirror) to an external target before any
+VM deletion.

@@ -1,32 +1,32 @@
-# Format de données MilaDy — MFF 1.0 (MilaDy Field Format)
+# MilaDy data format — MFF 1.0 (MilaDy Field Format)
 
-Spécification de référence du format des résultats de simulation du projet (stage M2 puis thèse, palier 1 MHD 2D,
-palier 2 MHD 3D, données SFEMaNS). Code de référence : `src/milady/data/format.py` (écriture, lecture, validation),
-`src/milady/data/schema.json` (schéma JSON des métadonnées), `src/milady/data/convert.py` (convertisseurs). Contrat
-d'ensemble : `docs/specs/infra.md`, section 2.
+Reference specification of the format of the project's simulation results (M2 internship then thesis, stage 1 2D MHD,
+stage 2 3D MHD, SFEMaNS data). Reference code: `src/milady/data/format.py` (writing, reading, validation),
+`src/milady/data/schema.json` (JSON schema of the metadata), `src/milady/data/convert.py` (converters). Overall
+contract: `docs/specs/infra.md`, section 2.
 
-## 1. Principes
+## 1. Principles
 
-1. **Compatible avec The Well.** Un fichier MFF sur grille régulière est un fichier HDF5 qui suit exactement la
-   spécification de The Well (Ohana et al., NeurIPS 2024 Datasets & Benchmarks ; dépôt `PolymathicAI/the_well`,
-   page `docs/data_format.md`) : mêmes groupes, mêmes formes, mêmes attributs. Le chargeur `WellDataset` de
-   The Well (1.2.0) doit lire nos champs sans modification : ses accès HDF5, rejoués sans exécuter the_well, les
-   relisent à l'identique (§ 8) ; nos outils lisent les fichiers au format de The Well (vérifié sur un fichier factice).
-2. **Un fichier = une simulation** : une ou plusieurs trajectoires (membres d'ensemble, graines différentes) qui
-   partagent les mêmes paramètres physiques et la même grille. L'identifiant `milady_uuid` du fichier est celui
-   de la simulation au catalogue.
-3. **Métadonnées MilaDy à part** : tout ajout porte le préfixe `milady_` (attributs racine, groupes
-   `milady_diagnostics/`, `milady_spectral/`, `milady_fourier_fe/`). Un lecteur The Well les ignore.
-4. **Simple précision** pour les champs (float32), comme The Well ; double précision pour les séries de
-   diagnostics (bilans d'énergie), qui sont légères.
-5. **Intégrité et reproductibilité** : somme SHA-256 calculée à l'écriture et stockée au catalogue ;
-   provenance complète (code, version, commit git, commande, hôte, date, paramètres) dans le fichier.
+1. **Compatible with The Well.** An MFF file on a regular grid is an HDF5 file that follows exactly the
+   specification of The Well (Ohana et al., NeurIPS 2024 Datasets & Benchmarks; repository `PolymathicAI/the_well`,
+   page `docs/data_format.md`): same groups, same shapes, same attributes. The `WellDataset` loader of
+   The Well (1.2.0) must read our fields without modification: its HDF5 accesses, replayed without running the_well, read
+   them back identically (§ 8); our tools read files in The Well's format (checked on a dummy file).
+2. **One file = one simulation**: one or more trajectories (ensemble members, different seeds) that
+   share the same physical parameters and the same grid. The file's `milady_uuid` identifier is that
+   of the simulation in the catalog.
+3. **MilaDy metadata kept apart**: every addition carries the `milady_` prefix (root attributes, groups
+   `milady_diagnostics/`, `milady_spectral/`, `milady_fourier_fe/`). A The Well reader ignores them.
+4. **Single precision** for the fields (float32), like The Well; double precision for the diagnostics
+   series (energy balances), which are light.
+5. **Integrity and reproducibility**: SHA-256 checksum computed at write time and stored in the catalog;
+   complete provenance (code, version, git commit, command, host, date, parameters) in the file.
 
-## 2. Arborescence
+## 2. Tree structure
 
-Exemple réel : un fichier de l'expérience E2 (MHD 2D forcée, η = 0,008, partition d'entraînement), produit par
-`python -m milady.data.convert e2` puis affiché par `python -m milady.data.convert info fichier.h5` (équivalent
-lisible de `h5dump -H fichier.h5`). Les attributs sont notés `@nom`, les jeux de données `nom: type(forme)`.
+Real example: a file from experiment E2 (forced 2D MHD, η = 0.008, training split), produced by
+`python -m milady.data.convert e2` then displayed by `python -m milady.data.convert info file.h5` (readable
+equivalent of `h5dump -H file.h5`). Attributes are written `@name`, datasets `name: type(shape)`.
 
 ```text
 /
@@ -41,7 +41,7 @@ lisible de `h5dump -H fichier.h5`). Les attributs sont notés `@nom`, les jeux d
   @milady_code_version = 'experiments/mhd2d.py'
   @milady_git_commit = '07efe3c19375-dirty'
   @milady_parameters = '{"Pm": 1.0, "alpha": 0.02, "eps_b": 0.05, "eps_u": 0.05, "eta": 0.008, ...}'
-  @milady_nondimensionalization = "Domaine [0, 2π)² périodique ; B en unités d'Alfvén ..."
+  @milady_nondimensionalization = "Periodic domain [0, 2π)²; B in Alfvén units ..."
   @milady_created = '2026-11-07T08:03:03Z'
   @milady_host = 'vm'
   @milady_command = 'python -m milady.data.convert e2 data_e2 e2_mff'
@@ -58,9 +58,9 @@ lisible de `h5dump -H fichier.h5`). Les attributs sont notés `@nom`, les jeux d
     x_periodic/
       @associated_dims = ['x']  @associated_fields = []  @bc_type = 'periodic'
       @sample_varying = False   @time_varying = False
-      mask: bool(32,)                  vrai aux indices 0 et 31
+      mask: bool(32,)                  true at indices 0 and 31
       values: float32(2,)
-    y_periodic/                        (idem pour y)
+    y_periodic/                        (same for y)
   scalars/
     @field_names = ['nu', 'eta', 'Pm', 'alpha', 'eps_u', 'eps_b', 'kf_min', 'kf_max',
                     'injection_rate_u', 'injection_rate_b']
@@ -87,147 +87,147 @@ lisible de `h5dump -H fichier.h5`). Les attributs sont notés `@nom`, les jeux d
     @field_names = ['vorticity', 'magnetic_potential']
     @transform = 'numpy.fft.rfftn'  @norm = 'backward'  @axes = [2, 3]
     @real_shape = [32, 32]  @spatial_dims = ['x', 'y']  @domain_lengths = [6.2832, 6.2832]
-    @wavenumbers = 'k_i = 2π/L_i × numpy.fft.fftfreq(n_i, 1/n_i) ; dernier axe : numpy.fft.rfftfreq(n_i, 1/n_i)'
+    @wavenumbers = 'k_i = 2π/L_i × numpy.fft.fftfreq(n_i, 1/n_i) ; last axis: numpy.fft.rfftfreq(n_i, 1/n_i)'
     vorticity: complex64(16, 150, 32, 17)        chunks=(1, 1, 32, 17) gzip(4)
       @tensor_order = 0  @physical_field = ''  @kmax = 10
       @sample_varying = True  @time_varying = True
-      @description = 'ω = ∂x u_y − ∂y u_x = −Δψ ; u = (∂yψ, −∂xψ) ; état du solveur mhd2d.py'
+      @description = 'ω = ∂x u_y − ∂y u_x = −Δψ ; u = (∂yψ, −∂xψ) ; state of the mhd2d.py solver'
     magnetic_potential: complex64(16, 150, 32, 17)
       ...
 ```
 
-Pour une simulation 3D du palier 2 (grille 64³, 4 membres, 50 instantanés), la seule différence de structure est
-`@n_spatial_dims = 3`, `@spatial_dims = ['x', 'y', 'z']`, un groupe `z_periodic/` et des champs
-`velocity: float32(4, 50, 64, 64, 64, 3)` découpés en blocs `(1, 1, 64, 64, 64, 3)`.
+For a 3D stage 2 simulation (64³ grid, 4 members, 50 snapshots), the only difference in structure is
+`@n_spatial_dims = 3`, `@spatial_dims = ['x', 'y', 'z']`, a `z_periodic/` group and fields
+`velocity: float32(4, 50, 64, 64, 64, 3)` split into chunks `(1, 1, 64, 64, 64, 3)`.
 
-## 3. Attributs racine
+## 3. Root attributes
 
-| Attribut | Type | Oblig. | Origine | Contenu |
+| Attribute | Type | Req. | Origin | Content |
 |---|---|---|---|---|
-| `dataset_name` | chaîne | oui | The Well | Nom de la collection (identique pour tous les fichiers d'un dossier lu par The Well) |
-| `grid_type` | chaîne | oui | The Well | `cartesian`, `spherical` (The Well) ; `fourier_fe_axisym` (extension MilaDy, § 8) |
-| `n_spatial_dims` | entier | oui | The Well | 1, 2 ou 3 ; = nombre de composantes des vecteurs |
-| `n_trajectories` | entier | oui | The Well | Nombre de trajectoires B (premier axe des champs) |
-| `simulation_parameters` | liste de chaînes | oui | The Well | Noms des paramètres **numériques** ; chacun est aussi un attribut racine (float64) et un scalaire de `scalars/` |
-| `<paramètre>` | flottant | oui | The Well | Valeur du paramètre (ex. `@Rm = 12.0`) |
-| `milady_format_version` | chaîne | oui | MilaDy | `"1.0"` |
-| `milady_code` | chaîne | oui | MilaDy | `mhd3d_torch`, `mhd2d_numpy`, `induction3d_numpy`, `sfemans`, `latu`, `generated` (échantillons d'un modèle)… |
-| `milady_code_version` | chaîne | non | MilaDy | Version du code (étiquette, version du paquet) |
-| `milady_git_commit` | chaîne | non | MilaDy | Commit (7 à 40 car. hexadécimaux, suffixe `-dirty` si modifié) ; `MILADY_GIT_COMMIT` dans les images |
-| `milady_parameters` | chaîne JSON | oui | MilaDy | **Tous** les paramètres, y compris non numériques : `{"Re": 100, "Rm": 12.0, "Pm": 0.12, "mu_r": 1.0, "forcing": "ABC"}` |
-| `milady_nondimensionalization` | chaîne | non | MilaDy | Échelles de référence (longueur, vitesse, temps, unités d'Alfvén pour B) |
-| `milady_created` | chaîne | oui | MilaDy | Date ISO 8601 UTC (`2026-11-07T08:03:03Z`) |
-| `milady_host` | chaîne | non | MilaDy | Machine de calcul |
-| `milady_command` | chaîne | non | MilaDy | Ligne de commande qui a produit le fichier |
-| `milady_uuid` | chaîne UUID | oui | MilaDy | Identifiant de la simulation au catalogue (`simulation.id`) |
-| `milady_<autre>` | chaîne / nombre / JSON | non | MilaDy | Métadonnées libres (`milady_split`, `milady_seed`, `milady_solver`…) ; les structures sont en JSON |
+| `dataset_name` | string | yes | The Well | Name of the collection (identical for all files of a folder read by The Well) |
+| `grid_type` | string | yes | The Well | `cartesian`, `spherical` (The Well); `fourier_fe_axisym` (MilaDy extension, § 8) |
+| `n_spatial_dims` | integer | yes | The Well | 1, 2 or 3; = number of vector components |
+| `n_trajectories` | integer | yes | The Well | Number of trajectories B (first axis of the fields) |
+| `simulation_parameters` | list of strings | yes | The Well | Names of the **numerical** parameters; each is also a root attribute (float64) and a scalar of `scalars/` |
+| `<parameter>` | float | yes | The Well | Value of the parameter (e.g. `@Rm = 12.0`) |
+| `milady_format_version` | string | yes | MilaDy | `"1.0"` |
+| `milady_code` | string | yes | MilaDy | `mhd3d_torch`, `mhd2d_numpy`, `induction3d_numpy`, `sfemans`, `latu`, `generated` (samples of a model)… |
+| `milady_code_version` | string | no | MilaDy | Code version (label, package version) |
+| `milady_git_commit` | string | no | MilaDy | Commit (7 to 40 hexadecimal chars, suffix `-dirty` if modified); `MILADY_GIT_COMMIT` in the images |
+| `milady_parameters` | JSON string | yes | MilaDy | **All** the parameters, including non-numerical ones: `{"Re": 100, "Rm": 12.0, "Pm": 0.12, "mu_r": 1.0, "forcing": "ABC"}` |
+| `milady_nondimensionalization` | string | no | MilaDy | Reference scales (length, velocity, time, Alfvén units for B) |
+| `milady_created` | string | yes | MilaDy | ISO 8601 UTC date (`2026-11-07T08:03:03Z`) |
+| `milady_host` | string | no | MilaDy | Compute machine |
+| `milady_command` | string | no | MilaDy | Command line that produced the file |
+| `milady_uuid` | UUID string | yes | MilaDy | Identifier of the simulation in the catalog (`simulation.id`) |
+| `milady_<other>` | string / number / JSON | no | MilaDy | Free metadata (`milady_split`, `milady_seed`, `milady_solver`…); structures are in JSON |
 
-Les noms de paramètres sont des identifiants (`[A-Za-z_][A-Za-z0-9_]*`) distincts des attributs réservés de
-The Well et sans préfixe `milady_`.
+Parameter names are identifiers (`[A-Za-z_][A-Za-z0-9_]*`) distinct from the reserved attributes of
+The Well and without the `milady_` prefix.
 
-## 4. Groupes et jeux de données
+## 4. Groups and datasets
 
 ### 4.1 `dimensions/`
 
-`@spatial_dims` donne l'ordre des axes spatiaux des champs (`['x', 'y', 'z']`). `time` (float32, `(T,)`, attribut
-`sample_varying`) et une coordonnée 1D par axe (float32, attributs `sample_varying` et `time_varying`, toujours
-faux pour MilaDy). Coordonnées strictement croissantes ; temps commun à toutes les trajectoires. Sur un domaine
-périodique `[0, L)`, les points sont `x_j = j L / n` (le point `L` n'est pas répété) : `L = n × Δx`.
+`@spatial_dims` gives the order of the spatial axes of the fields (`['x', 'y', 'z']`). `time` (float32, `(T,)`, attribute
+`sample_varying`) and a 1D coordinate per axis (float32, attributes `sample_varying` and `time_varying`, always
+false for MilaDy). Strictly increasing coordinates; time common to all trajectories. On a periodic domain
+`[0, L)`, the points are `x_j = j L / n` (the point `L` is not repeated): `L = n × Δx`.
 
 ### 4.2 `boundary_conditions/`
 
-Un sous-groupe par condition, nommé `<dim>_<type>` (`x_periodic`, `z_wall`…), avec les attributs
+One subgroup per condition, named `<dim>_<type>` (`x_periodic`, `z_wall`…), with the attributes
 `associated_dims`, `associated_fields`, `bc_type` ∈ {`periodic`, `wall`, `open`}, `sample_varying`,
-`time_varying`, et les jeux `mask` (booléens, forme des dimensions associées, vrai là où la condition s'applique :
-premier et dernier point pour une condition sur un axe) et `values` (float32, une valeur par point vrai du masque ;
-sans objet et nul pour `periodic`). Par défaut `write_mff` écrit des conditions périodiques sur tous les axes
-(cas de tous les domaines pseudo-spectraux du projet).
+`time_varying`, and the datasets `mask` (booleans, shape of the associated dimensions, true where the condition applies:
+first and last point for a condition on one axis) and `values` (float32, one value per true point of the mask;
+not applicable and zero for `periodic`). By default `write_mff` writes periodic conditions on all axes
+(the case of all the project's pseudo-spectral domains).
 
 ### 4.3 `scalars/`
 
-`@field_names` liste tous les scalaires. Chaque paramètre numérique y figure (float32, forme `()`, constant).
-Autres séries possibles : forme `()`, `(T,)` (`time_varying`), `(B,)` (`sample_varying`) ou `(B, T)`. E2 y range
-les taux d'injection du forçage (`injection_rate_u`, `injection_rate_b`).
+`@field_names` lists all the scalars. Each numerical parameter appears there (float32, shape `()`, constant).
+Other possible series: shape `()`, `(T,)` (`time_varying`), `(B,)` (`sample_varying`) or `(B, T)`. E2 stores there
+the injection rates of the forcing (`injection_rate_u`, `injection_rate_b`).
 
 ### 4.4 `t0_fields/`, `t1_fields/`, `t2_fields/`
 
-Les trois groupes existent toujours (éventuellement vides), avec `@field_names` exhaustif. Formes :
+The three groups always exist (possibly empty), with an exhaustive `@field_names`. Shapes:
 
-| Groupe | Contenu | Forme (D = n_spatial_dims) |
+| Group | Content | Shape (D = n_spatial_dims) |
 |---|---|---|
-| `t0_fields` | scalaires | `(B, T, n_1, …, n_D)` |
-| `t1_fields` | vecteurs | `(B, T, n_1, …, n_D, D)` |
-| `t2_fields` | tenseurs | `(B, T, n_1, …, n_D, D, D)` (+ `@symmetric`, `@antisymmetric`) |
+| `t0_fields` | scalars | `(B, T, n_1, …, n_D)` |
+| `t1_fields` | vectors | `(B, T, n_1, …, n_D, D)` |
+| `t2_fields` | tensors | `(B, T, n_1, …, n_D, D, D)` (+ `@symmetric`, `@antisymmetric`) |
 
-Attributs de chaque champ : `dim_varying` (booléens, longueur D), `sample_varying`, `time_varying`. Un axe absent
-(`dim_varying` faux, champ constant en temps ou commun aux trajectoires) est retiré de la forme, comme dans
-The Well. En 2D, une composante hors plan (B_z d'une configuration 2,5D, potentiel `a` de A = a ẑ) est un champ
-de `t0_fields`.
+Attributes of each field: `dim_varying` (booleans, length D), `sample_varying`, `time_varying`. An absent axis
+(`dim_varying` false, field constant in time or common to the trajectories) is removed from the shape, as in
+The Well. In 2D, an out-of-plane component (B_z of a 2.5D configuration, potential `a` of A = a ẑ) is a field
+of `t0_fields`.
 
-**Champs MilaDy standard** (noms imposés, groupe imposé, vérifiés par `validate`) :
+**Standard MilaDy fields** (mandatory names, mandatory group, checked by `validate`):
 
-| Nom | Groupe | Grandeur |
+| Name | Group | Quantity |
 |---|---|---|
-| `velocity` | `t1_fields` | vitesse **u** |
-| `magnetic_field` | `t1_fields` | champ magnétique **B** en unités d'Alfvén (B/√(μ₀ρ), même unité que u) |
-| `vector_potential` | `t1_fields` | potentiel vecteur **A**, B = ∇×A (jauge précisée dans `milady_nondimensionalization`) |
-| `pressure` | `t0_fields` | pression (divisée par ρ) |
+| `velocity` | `t1_fields` | velocity **u** |
+| `magnetic_field` | `t1_fields` | magnetic field **B** in Alfvén units (B/√(μ₀ρ), same unit as u) |
+| `vector_potential` | `t1_fields` | vector potential **A**, B = ∇×A (gauge specified in `milady_nondimensionalization`) |
+| `pressure` | `t0_fields` | pressure (divided by ρ) |
 
-### 4.5 `milady_diagnostics/` (optionnel)
+### 4.5 `milady_diagnostics/` (optional)
 
-Séries temporelles légères, sur leur propre grille `time` (float64, souvent plus fine que celle des champs).
-Chaque série : float64, forme `(T_d,)` ou `(B, T_d)`, attributs `sample_varying`, `time_varying`. Noms
-recommandés (½⟨·⟩ = moyenne spatiale) :
+Light time series, on their own `time` grid (float64, often finer than that of the fields).
+Each series: float64, shape `(T_d,)` or `(B, T_d)`, attributes `sample_varying`, `time_varying`. Recommended
+names (½⟨·⟩ = spatial average):
 
-| Nom | Définition |
+| Name | Definition |
 |---|---|
 | `kinetic_energy`, `magnetic_energy` | ½⟨\|u\|²⟩, ½⟨\|B\|²⟩ |
 | `enstrophy`, `mean_square_current` | ⟨\|ω\|²⟩, ⟨\|j\|²⟩ |
-| `kinetic_dissipation`, `magnetic_dissipation`, `dissipation` | ν⟨\|ω\|²⟩, η⟨\|j\|²⟩, total (frottements compris) |
-| `injection` | puissance injectée par le forçage |
+| `kinetic_dissipation`, `magnetic_dissipation`, `dissipation` | ν⟨\|ω\|²⟩, η⟨\|j\|²⟩, total (friction included) |
+| `injection` | power injected by the forcing |
 | `kinetic_helicity`, `magnetic_helicity`, `cross_helicity` | ⟨u·ω⟩, ⟨A·B⟩, ⟨u·B⟩ |
-| `max_div_b` | max \|∇·B\| (contrôle de la contrainte) |
-| `max_div_u`, `growth_rate`, `magnetic_production`, `u_rms`, `b_rms`, `log_b_rms` | solveur 3D (`milady.sim.mhd3d`) : max \|∇·u\|, taux de croissance instantané d ln‖B‖/dt, production magnétique ⟨B·∇×(u×B)⟩, valeurs efficaces de u et B, logarithme de la valeur efficace de B (renormalisations cumulées comprises) |
+| `max_div_b` | max \|∇·B\| (constraint check) |
+| `max_div_u`, `growth_rate`, `magnetic_production`, `u_rms`, `b_rms`, `log_b_rms` | 3D solver (`milady.sim.mhd3d`): max \|∇·u\|, instantaneous growth rate d ln‖B‖/dt, magnetic production ⟨B·∇×(u×B)⟩, root-mean-square values of u and B, logarithm of the root-mean-square value of B (cumulative renormalizations included) |
 
-Le catalogue en garde une copie (moyenne sur les trajectoires, table `diagnostic`) pour les requêtes rapides.
+The catalog keeps a copy (average over the trajectories, `diagnostic` table) for fast queries.
 
-### 4.6 `milady_spectral/` (optionnel, domaines périodiques)
+### 4.6 `milady_spectral/` (optional, periodic domains)
 
-Coefficients `numpy.fft.rfftn` (normalisation `backward`) sur les axes spatiaux, dans la disposition des champs
-physiques : forme `(B, T, n_1, …, n_D//2+1[, D…])`, complex64. Attributs du groupe : `transform`, `norm`, `axes`,
-`real_shape`, `spatial_dims`, `domain_lengths`, `wavenumbers` (k_i = 2π/L_i × fftfreq, `rfftfreq` pour le
-dernier axe). Attributs de chaque jeu : `tensor_order`, `physical_field` (nom du champ physique dont c'est la
-transformée **complète** — `validate` vérifie alors `irfftn ≈ champ` sur un instantané — ou chaîne vide pour une
-grandeur sans champ physique stocké, comme ω et a dans E2), `kmax` (troncature ou support spectral, −1 si
-aucune), `description`. Intérêt : dérivées exactes, contraintes ∇·B = 0 et jauge de Coulomb k·Â = 0 vérifiables
-mode par mode, représentation naturelle des modèles génératifs en base de Fourier.
+`numpy.fft.rfftn` coefficients (`backward` normalization) on the spatial axes, in the layout of the
+physical fields: shape `(B, T, n_1, …, n_D//2+1[, D…])`, complex64. Group attributes: `transform`, `norm`, `axes`,
+`real_shape`, `spatial_dims`, `domain_lengths`, `wavenumbers` (k_i = 2π/L_i × fftfreq, `rfftfreq` for the
+last axis). Attributes of each dataset: `tensor_order`, `physical_field` (name of the physical field of which this is the
+**complete** transform — `validate` then checks `irfftn ≈ field` on one snapshot — or an empty string for a
+quantity with no stored physical field, such as ω and a in E2), `kmax` (truncation or spectral support, −1 if
+none), `description`. Benefits: exact derivatives, constraints ∇·B = 0 and Coulomb gauge k·Â = 0 verifiable
+mode by mode, natural representation for generative models in a Fourier basis.
 
-## 5. Stockage physique
+## 5. Physical storage
 
-- **Types** : champs float32, coefficients spectraux complex64, diagnostics float64, coordonnées float32.
-- **Blocs** : un pas de temps d'une trajectoire par bloc, `chunks = (1, 1, n_1, …, n_D, comp)` ; si un bloc
-  dépasse 32 Mio (3D au-delà de ≈ 160³ × 3), l'axe x est coupé en deux jusqu'à passer sous ce seuil. La lecture
-  d'un instantané ne décompresse que ses blocs, y compris depuis S3.
-- **Compression** : `gzip` niveau 4 avec filtre `shuffle` (défaut, lisible partout) ou `lzf` (plus rapide) ou aucune.
-- **Intégrité** : écriture dans un fichier temporaire du même dossier puis renommage atomique ; SHA-256 du fichier
-  final renvoyé par `write_mff` et enregistré dans `file.sha256`.
-- **Rangement** : `{MILADY_STORAGE_URI}/{campagne}/{uuid_simulation}/fields.h5` (spectres et diagnostics dans ce
-  fichier ; copie Zarr facultative `fields.zarr` ; point de contrôle final `checkpoint.npz` avec
-  `runtime.keep_checkpoint`) ; `MILADY_STORAGE_URI` = `s3://milady-data` (MinIO, AWS, Scaleway, OVHcloud),
-  `file:///…`, ou `$SCRATCH/milady/store` sur un cluster (défaut de `infra/slurm/env.sh`).
-- **Taille indicative** : un fichier E2 d'entraînement (16 × 150 instantanés 32², u, B, spectres, diagnostics) fait
-  50 Mio ; une trajectoire 3D 128³ de 100 instantanés (u, B) ≈ 5 Gio avant compression.
+- **Types**: fields float32, spectral coefficients complex64, diagnostics float64, coordinates float32.
+- **Chunks**: one time step of one trajectory per chunk, `chunks = (1, 1, n_1, …, n_D, comp)`; if a chunk
+  exceeds 32 MiB (3D beyond ≈ 160³ × 3), the x axis is split in two until it falls below this threshold. Reading
+  a snapshot only decompresses its chunks, including from S3.
+- **Compression**: `gzip` level 4 with `shuffle` filter (default, readable everywhere) or `lzf` (faster) or none.
+- **Integrity**: writing to a temporary file in the same folder then atomic rename; SHA-256 of the final file
+  returned by `write_mff` and recorded in `file.sha256`.
+- **Layout**: `{MILADY_STORAGE_URI}/{campaign}/{simulation_uuid}/fields.h5` (spectra and diagnostics in this
+  file; optional Zarr copy `fields.zarr`; final checkpoint `checkpoint.npz` with
+  `runtime.keep_checkpoint`); `MILADY_STORAGE_URI` = `s3://milady-data` (MinIO, AWS, Scaleway, OVHcloud),
+  `file:///…`, or `$SCRATCH/milady/store` on a cluster (default of `infra/slurm/env.sh`).
+- **Indicative size**: a training E2 file (16 × 150 snapshots 32², u, B, spectra, diagnostics) is
+  50 MiB; a 3D 128³ trajectory of 100 snapshots (u, B) ≈ 5 GiB before compression.
 
-## 6. Variante Zarr (cloud)
+## 6. Zarr variant (cloud)
 
-Même hiérarchie en Zarr v3 (groupes, tableaux, attributs JSON identiques), même découpage en blocs, compression
-Zarr par défaut (zstd). Elle sert à lire des morceaux de très gros fichiers depuis S3 sans téléchargement complet
-ni bibliothèque HDF5 côté client. Conversion : `to_zarr("fields.h5", "s3://milady-data/c/<uuid>/fields.zarr")` ou
-`python -m milady.data.convert zarr fields.h5 s3://…/fields.zarr`. `read_mff`, `validate` et `open_mff`
-reconnaissent une URI qui finit par `.zarr`. Le fichier HDF5 reste la référence (somme SHA-256) ; la copie Zarr
-est un dérivé reconstructible.
+Same hierarchy in Zarr v3 (groups, arrays, identical JSON attributes), same chunking, default Zarr
+compression (zstd). It is used to read pieces of very large files from S3 without a full download
+or an HDF5 library on the client side. Conversion: `to_zarr("fields.h5", "s3://milady-data/c/<uuid>/fields.zarr")` or
+`python -m milady.data.convert zarr fields.h5 s3://…/fields.zarr`. `read_mff`, `validate` and `open_mff`
+recognize a URI ending in `.zarr`. The HDF5 file remains the reference (SHA-256 checksum); the Zarr copy
+is a reconstructible derivative.
 
-## 7. Interface Python et outils
+## 7. Python interface and tools
 
 ```python
 from milady.data import write_mff, read_mff, validate, open_mff, to_zarr
@@ -237,135 +237,134 @@ sha = write_mff("s3://milady-data/palier2/<uuid>/fields.h5",
                 {"time": t, "x": x, "y": y, "z": z},
                 {"Rm": 12.0, "Re": 50.0, "forcing": "ABC"},
                 meta={"code": "mhd3d_torch", "code_version": "0.1.0", "uuid": sim_id,
-                      "nondimensionalization": "L = 2π, U = 1, B en unités d'Alfvén"},
+                      "nondimensionalization": "L = 2π, U = 1, B in Alfvén units"},
                 diagnostics={"time": t_fine, "magnetic_energy": eb},   # (B, T_d)
-                spectral=True)                                   # rfftn de tous les champs
+                spectral=True)                                   # rfftn of all the fields
 d = read_mff(uri, fields=["magnetic_field"], t=slice(-10, None), traj=0)
 d["fields"]["magnetic_field"], d["coords"], d["params"], d["meta"], d["diagnostics"], d["scalars"]
 assert validate(uri) == []
-with open_mff(uri) as f:                                         # h5py.File (ou zarr.Group)
+with open_mff(uri) as f:                                         # h5py.File (or zarr.Group)
     b_last = f["t1_fields/magnetic_field"][0, -1]
 ```
 
-Ligne de commande : `python -m milady.data.convert {e2, validate, info, zarr, sfemans}` ; catalogue :
-`python -m milady.catalog ingest <uri>… --campaign <campagne>` (sans `--campaign`, les simulations vont dans une
-campagne « default ») (enregistre des fichiers déjà écrits, par exemple après un tableau de jobs
-Slurm dont les nœuds ne joignent pas la base).
+Command line: `python -m milady.data.convert {e2, validate, info, zarr, sfemans}`; catalog:
+`python -m milady.catalog ingest <uri>… --campaign <campaign>` (without `--campaign`, the simulations go into a
+"default" campaign) (registers files that have already been written, for example after a Slurm job array
+whose nodes cannot reach the database).
 
-**Validation** (`validate(path, well_only=False, full_scan=False)`) : attributs racine contre `schema.json`
-(JSON Schema 2020-12, sous-schémas `$defs` pour chaque type de nœud), groupes obligatoires, `field_names`
-exhaustifs, formes déduites de `sample_varying` / `time_varying` / `dim_varying`, float32, conditions aux limites
-(masques, valeurs), paramètres présents à la racine, dans `scalars/` et égaux à `milady_parameters`, champs
-standard dans leur groupe, diagnostics et spectres cohérents, valeurs finies sur le premier, le médian et le
-dernier instantané de la première trajectoire. `full_scan=True` (en ligne de commande : `validate --full`)
-vérifie les valeurs de toutes les trajectoires et de tous les instantanés, un bloc à la fois : à faire avant
-de figer un jeu de données. `well_only=True` ne contrôle que la partie The Well (pour les fichiers de The Well
-eux-mêmes).
+**Validation** (`validate(path, well_only=False, full_scan=False)`): root attributes against `schema.json`
+(JSON Schema 2020-12, `$defs` subschemas for each node type), mandatory groups, exhaustive `field_names`,
+shapes deduced from `sample_varying` / `time_varying` / `dim_varying`, float32, boundary conditions
+(masks, values), parameters present at the root, in `scalars/` and equal to `milady_parameters`, standard
+fields in their group, consistent diagnostics and spectra, finite values on the first, the median and the
+last snapshot of the first trajectory. `full_scan=True` (on the command line: `validate --full`)
+checks the values of all trajectories and all snapshots, one chunk at a time: to be done before freezing
+a dataset. `well_only=True` only checks The Well part (for The Well's own files).
 
-## 8. Comparaison avec The Well
+## 8. Comparison with The Well
 
 | Point | The Well (`docs/data_format.md`) | MFF 1.0 |
 |---|---|---|
-| Conteneur | HDF5, un fichier par jeu de paramètres, plusieurs trajectoires | identique ; variante Zarr en plus |
-| Attributs racine | `dataset_name`, `grid_type`, `n_spatial_dims`, `n_trajectories`, `simulation_parameters` + un attribut par paramètre | identiques, plus les attributs `milady_*` |
-| Paramètres non numériques | non prévus | dans `milady_parameters` (JSON) seulement |
-| `dimensions/` | `spatial_dims`, `time`, coordonnées, `sample_varying` / `time_varying` | identique |
-| `boundary_conditions/` | sous-groupes `associated_dims`, `associated_fields`, `bc_type`, `mask`, `values` | identique ; `bc_type` en minuscules (The Well les met en majuscules à la lecture) ; `values` nul pour `periodic` |
-| `scalars/` | paramètres et séries, `float32(1)` | identique ; paramètres en float32 de forme `()` comme le générateur de données factices officiel (`the_well/utils/dummy_data.py`) |
-| `t0/t1/t2_fields/` | `(B, T, W, H[, D][, D, D])` float32, `dim_varying`, `sample_varying`, `time_varying`, `symmetric`, `antisymmetric` | identique ; noms standard `velocity`, `magnetic_field`, `vector_potential`, `pressure` |
-| Découpage, compression | non spécifiés | blocs d'un pas de temps, gzip 4 + shuffle |
-| Diagnostics, spectres | absents | `milady_diagnostics/`, `milady_spectral/` |
-| Provenance | absente | code, version, commit, commande, hôte, date, UUID du catalogue, SHA-256 au catalogue |
-| Grilles | `cartesian`, `spherical` | idem, plus `fourier_fe_axisym` (non lisible par The Well) |
+| Container | HDF5, one file per parameter set, several trajectories | identical; Zarr variant in addition |
+| Root attributes | `dataset_name`, `grid_type`, `n_spatial_dims`, `n_trajectories`, `simulation_parameters` + one attribute per parameter | identical, plus the `milady_*` attributes |
+| Non-numerical parameters | not provided | in `milady_parameters` (JSON) only |
+| `dimensions/` | `spatial_dims`, `time`, coordinates, `sample_varying` / `time_varying` | identical |
+| `boundary_conditions/` | subgroups `associated_dims`, `associated_fields`, `bc_type`, `mask`, `values` | identical; lowercase `bc_type` (The Well uppercases them on reading); `values` zero for `periodic` |
+| `scalars/` | parameters and series, `float32(1)` | identical; parameters in float32 of shape `()` like the official dummy-data generator (`the_well/utils/dummy_data.py`) |
+| `t0/t1/t2_fields/` | `(B, T, W, H[, D][, D, D])` float32, `dim_varying`, `sample_varying`, `time_varying`, `symmetric`, `antisymmetric` | identical; standard names `velocity`, `magnetic_field`, `vector_potential`, `pressure` |
+| Chunking, compression | not specified | one-time-step chunks, gzip 4 + shuffle |
+| Diagnostics, spectra | absent | `milady_diagnostics/`, `milady_spectral/` |
+| Provenance | absent | code, version, commit, command, host, date, catalog UUID, SHA-256 in the catalog |
+| Grids | `cartesian`, `spherical` | same, plus `fourier_fe_axisym` (not readable by The Well) |
 
-Conséquences pratiques : (1) un dossier de fichiers MFF cartésiens de même `dataset_name` et même résolution se
-charge avec `WellDataset` de The Well (normalisation : calculer `stats.yaml` comme pour leurs jeux ; fichiers
-rangés en `<base>/<dataset_name>/data/{train,valid,test}/*.hdf5` ou `*.h5`). Vérifié le 2026-11-07 en rejouant
-sur un fichier MFF 3D tous les accès HDF5 de `the_well/data/datasets.py` (version 1.2.0 : passe de métadonnées,
-`_reconstruct_fields`, `_reconstruct_scalars`, `_reconstruct_grids`, `_padding_bcs`) : champs relus à l'identique,
-noms développés `velocity_x…z`, conditions aux limites `PERIODIC` sur les trois axes. Les trois groupes
-`t0_fields`, `t1_fields`, `t2_fields` doivent exister même vides (le lecteur les parcourt tous) ; (2) `read_mff`
-et `validate(..., well_only=True)` acceptent les fichiers de The Well (vérifié sur un fichier factice construit comme `the_well/utils/dummy_data.py`, pas encore sur `MHD_64` ni
-`MHD_256`, utiles
-comme données externes de MHD 3D) ; (3) The Well impose une résolution et un nom uniques par dossier : un jeu de
-données MilaDy à résolutions multiples se range en un dossier par résolution.
+Practical consequences: (1) a folder of Cartesian MFF files with the same `dataset_name` and the same resolution
+loads with The Well's `WellDataset` (normalization: compute `stats.yaml` as for their datasets; files
+stored as `<base>/<dataset_name>/data/{train,valid,test}/*.hdf5` or `*.h5`). Checked on 2026-11-07 by replaying
+on a 3D MFF file all the HDF5 accesses of `the_well/data/datasets.py` (version 1.2.0: metadata pass,
+`_reconstruct_fields`, `_reconstruct_scalars`, `_reconstruct_grids`, `_padding_bcs`): fields read back identically,
+expanded names `velocity_x…z`, `PERIODIC` boundary conditions on the three axes. The three groups
+`t0_fields`, `t1_fields`, `t2_fields` must exist even if empty (the reader goes through all of them); (2) `read_mff`
+and `validate(..., well_only=True)` accept The Well's files (checked on a dummy file built like `the_well/utils/dummy_data.py`, not yet on `MHD_64` nor
+`MHD_256`, useful
+as external 3D MHD data); (3) The Well imposes a single resolution and a single name per folder: a MilaDy
+dataset with several resolutions is stored as one folder per resolution.
 
-## 9. Extension SFEMaNS : `grid_type = "fourier_fe_axisym"`
+## 9. SFEMaNS extension: `grid_type = "fourier_fe_axisym"`
 
-SFEMaNS (Guermond, Léorat, Nore, Ribeiro… ; simulations de dynamos de Von Kármán, VKS, précession) discrétise les
-champs en **série de Fourier en azimut θ** et en **éléments finis de Lagrange sur le plan méridien (r, z)** :
+SFEMaNS (Guermond, Léorat, Nore, Ribeiro… ; simulations of Von Kármán dynamos, VKS, precession) discretizes the
+fields as a **Fourier series in azimuth θ** and **Lagrange finite elements on the meridian plane (r, z)**:
 
     f(r, θ, z, t) = Σ_m [ f_m^c(r, z, t) cos(mθ) + f_m^s(r, z, t) sin(mθ) ],   m ∈ {m_0, …, m_{M−1}}.
 
-Le format stocke ces coefficients **tels quels, sans interpolation** (une interpolation vers une grille cartésienne
-dégraderait ∇·B = 0, les conditions de saut aux interfaces de perméabilité μ_r et la symétrie axiale).
+The format stores these coefficients **as they are, without interpolation** (interpolation to a Cartesian grid
+would degrade ∇·B = 0, the jump conditions at the μ_r permeability interfaces and the axial symmetry).
 
 ```text
 /
   @grid_type = 'fourier_fe_axisym'   @n_spatial_dims = 3   @n_trajectories = B
-  @simulation_parameters, paramètres, milady_* : comme en § 3 (ex. Rm, Re, mu_r, sigma_r, Ro)
+  @simulation_parameters, parameters, milady_*: as in § 3 (e.g. Rm, Re, mu_r, sigma_r, Ro)
   dimensions/
     @spatial_dims = ['r', 'theta', 'z']
     time: float32(T,)                  @sample_varying = False
-  boundary_conditions/                 vide : nœuds de bord dans les maillages
-  scalars/                             paramètres (comme en § 4.3)
-  t0_fields/ t1_fields/ t2_fields/     @field_names = [] (pas de grille tensorielle)
+  boundary_conditions/                 empty: boundary nodes are in the meshes
+  scalars/                             parameters (as in § 4.3)
+  t0_fields/ t1_fields/ t2_fields/     @field_names = [] (no tensor grid)
   milady_fourier_fe/
     @field_names = ['velocity', 'magnetic_field', 'pressure']
-    @azimuthal_convention = 'f(r, θ, z) = Σ_m [ f_m^c cos(mθ) + f_m^s sin(mθ) ] ; indice 0 = cos, 1 = sin'
-    @component_basis = 'cylindrical'   (composantes des vecteurs : r, θ, z)
+    @azimuthal_convention = 'f(r, θ, z) = Σ_m [ f_m^c cos(mθ) + f_m^s sin(mθ) ] ; index 0 = cos, 1 = sin'
+    @component_basis = 'cylindrical'   (vector components: r, θ, z)
     @n_modes = M
-    modes: int32(M,)                   nombres d'onde azimutaux m (entiers ≥ 0, distincts)
+    modes: int32(M,)                   azimuthal wavenumbers m (integers ≥ 0, distinct)
     meshes/
-      fluid/                           un sous-groupe par maillage (SFEMaNS : fluide, conducteur, vide…)
-        @element_type = 'P2'           'P1' (3 nœuds) ou 'P2' (3 sommets puis 3 milieux d'arêtes)
+      fluid/                           one subgroup per mesh (SFEMaNS: fluid, conductor, vacuum…)
+        @element_type = 'P2'           'P1' (3 nodes) or 'P2' (3 vertices then 3 edge midpoints)
         @n_nodes = N   @n_elements = E
-        nodes: float64(N, 2)           coordonnées (r, z), r ≥ 0
-        connectivity: int32(E, 6)      indices de nœuds, base 0, sens trigonométrique
-        vertices: int32(N_v,)          (optionnel) indices des sommets, support des champs P1
-        boundary_nodes: int32(N_b,)    (optionnel) nœuds du bord
-        region: int32(E,)              (optionnel) numéro de sous-domaine (μ_r, σ par région)
+        nodes: float64(N, 2)           coordinates (r, z), r ≥ 0
+        connectivity: int32(E, 6)      node indices, 0-based, counterclockwise
+        vertices: int32(N_v,)          (optional) vertex indices, support of the P1 fields
+        boundary_nodes: int32(N_b,)    (optional) boundary nodes
+        region: int32(E,)              (optional) subdomain number (μ_r, σ per region)
       conductor/ ...
     fields/
       velocity: float32(B, T, M, 2, N_fluid, 3)       @mesh = 'fluid'  @node_set = 'all'  @tensor_order = 1
       magnetic_field: float32(B, T, M, 2, N_cond, 3)  @mesh = 'conductor'  @node_set = 'all'  @tensor_order = 1
       pressure: float32(B, T, M, 2, N_v)              @mesh = 'fluid'  @node_set = 'vertices'  @tensor_order = 0
-        (axe 3 : 0 = cos, 1 = sin ; blocs (1, 1, 1, 2, N[, 3]) : un mode d'un instantané par bloc)
+        (axis 3: 0 = cos, 1 = sin ; chunks (1, 1, 1, 2, N[, 3]): one mode of one snapshot per chunk)
 ```
 
-Règles : les champs vectoriels sont en composantes **cylindriques** ; les coefficients sin du mode m = 0 sont
-nuls ; un champ porté par les sommets seulement (pression P1 d'une discrétisation P2/P1) déclare
-`node_set = 'vertices'` et le maillage fournit `vertices` ; le potentiel scalaire du vide (formulation H–φ) est
-un champ `t0`-like de son propre maillage. `validate` contrôle la cohérence des maillages (indices, nombre de
-nœuds par élément, r ≥ 0), des modes et des formes.
+Rules: vector fields are in **cylindrical** components; the sin coefficients of mode m = 0 are
+zero; a field carried by the vertices only (P1 pressure of a P2/P1 discretization) declares
+`node_set = 'vertices'` and the mesh provides `vertices`; the scalar potential of the vacuum (H–φ formulation) is
+a `t0`-like field of its own mesh. `validate` checks the consistency of the meshes (indices, number of
+nodes per element, r ≥ 0), of the modes and of the shapes.
 
-**Outils** (`src/milady/data/convert.py`) :
+**Tools** (`src/milady/data/convert.py`):
 
-- `write_fourier_fe_mff(path, meshes, modes, fields, time, params, meta=…)` écrit ce format à partir de tableaux ;
-- `fourier_fe_to_grid(path, champ, r, θ, z)` évalue le champ sur une grille cylindrique régulière
-  `(n_r, n_θ, n_z[, 3])` ; `fourier_fe_to_cartesian(path, champ, x, y, z)` sur une grille cartésienne, composantes
-  cartésiennes (u_x = u_r cos θ − u_θ sin θ, u_y = u_r sin θ + u_θ cos θ), NaN hors du domaine. L'interpolation
-  méridienne est linéaire par morceaux sur une triangulation de Delaunay des nœuds (exacte pour un champ affine
-  en (r, z), approximation pour P2) ; la sommation de Fourier en θ est exacte. Pour l'apprentissage, on préférera
-  souvent garder la représentation native (modes × nœuds), qui respecte la géométrie.
-- Lecteur des fichiers natifs SFEMaNS : **non implémenté** (`read_sfemans_native` lève `NotImplementedError`) ;
-  les données ne sont pas publiques. Quand elles seront accessibles, il devra produire les tableaux ci-dessus
-  (un maillage par domaine, modes, coefficients cos/sin par nœud), sans interpolation.
+- `write_fourier_fe_mff(path, meshes, modes, fields, time, params, meta=…)` writes this format from arrays;
+- `fourier_fe_to_grid(path, field, r, θ, z)` evaluates the field on a regular cylindrical grid
+  `(n_r, n_θ, n_z[, 3])`; `fourier_fe_to_cartesian(path, field, x, y, z)` on a Cartesian grid, Cartesian
+  components (u_x = u_r cos θ − u_θ sin θ, u_y = u_r sin θ + u_θ cos θ), NaN outside the domain. The meridian
+  interpolation is piecewise linear on a Delaunay triangulation of the nodes (exact for a field affine
+  in (r, z), approximate for P2); the Fourier summation in θ is exact. For learning, it is often preferable
+  to keep the native representation (modes × nodes), which respects the geometry.
+- Reader of native SFEMaNS files: **not implemented** (`read_sfemans_native` raises `NotImplementedError`);
+  the data are not public. When they become available, it will have to produce the arrays above
+  (one mesh per domain, modes, cos/sin coefficients per node), without interpolation.
 
-## 10. Conversion des données E2
+## 10. Conversion of the E2 data
 
-`python -m milady.data.convert e2 <dossier_npz> <sortie> [--catalog [URL]] [--store URI]` lit les
-`eta_<η>_<split>.npz` de `experiments/e2_data.py` (coefficients `rfft2` de ω et a, disposition `[ky, kx]`,
-16 membres × n instantanés regroupés par membre) et écrit un fichier MFF par fichier source :
-u = (∂yψ, −∂xψ) avec ψ̂ = ω̂/k², B = (∂y a, −∂x a), transposés en disposition `[x, y]` ; temps
-t_j = 30 + j (j = 1…n) ; paramètres ν, η, Pm, α, eps_u, eps_b, kf_min, kf_max ; taux d'injection dans `scalars/` ;
-ω̂ et â (transformées de la disposition `[x, y]`) dans `milady_spectral/` ; diagnostics par instantané. Contrôle :
-sur les fichiers réels, la dissipation moyenne vaut l'injection à 1 % près (bilan d'énergie en loi). Avec
-`--catalog`, campagne `e2_mhd2d`, simulations, fichiers, diagnostics moyens et jeu de données `e2_mhd2d` v1.0
-(train → train, ref → test) sont enregistrés ; la commande est idempotente.
+`python -m milady.data.convert e2 <npz_folder> <output> [--catalog [URL]] [--store URI]` reads the
+`eta_<η>_<split>.npz` files of `experiments/e2_data.py` (`rfft2` coefficients of ω and a, `[ky, kx]` layout,
+16 members × n snapshots grouped by member) and writes one MFF file per source file:
+u = (∂yψ, −∂xψ) with ψ̂ = ω̂/k², B = (∂y a, −∂x a), transposed to the `[x, y]` layout; times
+t_j = 30 + j (j = 1…n); parameters ν, η, Pm, α, eps_u, eps_b, kf_min, kf_max; injection rates in `scalars/`;
+ω̂ and â (transforms of the `[x, y]` layout) in `milady_spectral/`; per-snapshot diagnostics. Check:
+on the real files, the mean dissipation equals the injection to within 1 % (energy balance at the law level). With
+`--catalog`, the campaign `e2_mhd2d`, the simulations, files, mean diagnostics and the `e2_mhd2d` v1.0 dataset
+(train → train, ref → test) are registered; the command is idempotent.
 
-## 11. Évolution du format
+## 11. Format evolution
 
-Version `milady_format_version = "1.0"`. Les versions 1.x n'ajoutent que des éléments optionnels (attributs
-`milady_*`, groupes `milady_*`, noms de diagnostics) : un lecteur 1.0 lit tout fichier 1.x. Tout changement de
-forme, de type ou de sens d'un élément existant passe à 2.0, avec un convertisseur dans `src/milady/data/convert.py`.
+Version `milady_format_version = "1.0"`. Versions 1.x only add optional elements (`milady_*` attributes,
+`milady_*` groups, diagnostic names): a 1.0 reader reads any 1.x file. Any change to the
+shape, type or meaning of an existing element moves to 2.0, with a converter in `src/milady/data/convert.py`.

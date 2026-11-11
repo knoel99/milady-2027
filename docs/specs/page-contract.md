@@ -1,37 +1,37 @@
-# Contrat de page — site MilaDy 2027
+# Page contract — MilaDy 2027 site
 
-Toutes les pages sont en **français**. Source Quarto `index.qmd`, page publiée `index.html` (rendue par `python3 tools/render.py <chemin>`).
-Ne jamais éditer un `index.html` à la main.
+All pages are in **English**. Quarto source `index.qmd`, published page `index.html` (rendered by `python3 tools/render.py <path>`).
+Never edit an `index.html` by hand.
 
-## En-tête
+## Header
 
-Créer la page avec `python3 tools/new_page.py <chemin> "Titre" "Sous-titre"` : l'en-tête (KaTeX épinglé, barre supérieure, sommaire latéral, pied de page) est généré. Ne pas le modifier.
+Create the page with `python3 tools/new_page.py <path> "Title" "Subtitle"`: the header (pinned KaTeX, top bar, side table of contents, footer) is generated. Do not modify it.
 
-## Structure d'un module de préparation (`prep/<id>/index.qmd`)
+## Structure of a preparation module (`prep/<id>/index.qmd`)
 
-1. `## Objectifs {#objectives}` — 4 à 8 capacités vérifiables (« savoir calculer… », « savoir démontrer… »).
-2. `## Prérequis {#prerequisites}` — niveau de départ (L1, L2…), modules du site à lire avant (liens relatifs `../<id>/index.html`).
-3. `## Plan de travail {#plan}` — tableau : séance, durée estimée, niveau (1 = fondations, 2 = cœur, 3 = proche de la recherche ; le niveau ne redescend jamais), contenu, exercices associés. Total d'heures indiqué.
-4. Chapitres numérotés `## 1. Titre {#ch1}`, `## 2. … {#ch2}` … Chaque chapitre : motivation physique ou pratique en une ou deux phrases, définitions, résultats (énoncé + démonstration ou esquisse honnête), exemple chiffré, code Python exécutable, encadré récapitulatif.
-5. `## Exercices {#exercises}` — au moins 10 exercices gradués ★ / ★★ / ★★★, chacun avec une solution complète (*Solution* : …). Au moins un exercice de code.
-6. `## Lien avec le stage {#internship-link}` — où ce module sert dans le stage MilaDy (renvoyer au rapport `../../report/index.html#…` et au sujet de thèse `../../thesis/index.html` quand c'est pertinent).
-7. `## Pour aller plus loin {#further-reading}` — 3 à 6 lectures commentées.
-8. `## Sources {#sources}` — références complètes (auteurs, année, titre, revue/éditeur, DOI ou URL). Uniquement des références vérifiées.
+1. `## Objectives {#objectives}` — 4 to 8 verifiable abilities ("be able to compute…", "be able to prove…").
+2. `## Prerequisites {#prerequisites}` — starting level (L1, L2…), site modules to read beforehand (relative links `../<id>/index.html`).
+3. `## Work plan {#plan}` — table: session, estimated duration, level (1 = foundations, 2 = core, 3 = close to research; the level never goes back down), content, associated exercises. Total hours stated.
+4. Numbered chapters `## 1. Title {#ch1}`, `## 2. … {#ch2}` … Each chapter: physical or practical motivation in one or two sentences, definitions, results (statement + proof or honest sketch), worked numerical example, executable Python code, recap callout.
+5. `## Exercises {#exercises}` — at least 10 exercises graded ★ / ★★ / ★★★, each with a complete solution (*Solution*: …). At least one coding exercise.
+6. `## Link with the internship {#internship-link}` — where this module is used in the MilaDy internship (point to the report `../../report/index.html#…` and to the thesis proposal `../../thesis/index.html` when relevant).
+7. `## Further reading {#further-reading}` — 3 to 6 annotated readings.
+8. `## Sources {#sources}` — complete references (authors, year, title, journal/publisher, DOI or URL). Verified references only.
 
-## Encadrés (divs Quarto, classes définies dans `site/assets/paper.css`)
+## Callouts (Quarto divs, classes defined in `site/assets/paper.css`)
 
 ```markdown
 ::: def
-[Définition 1.2 — Champ solénoïdal]{.tag}
-Texte.
+[Definition 1.2 — Solenoidal field]{.tag}
+Text.
 :::
 
 :::: thm
-[Théorème 1.3 — Décomposition de Helmholtz–Hodge]{.tag}
-Énoncé.
+[Theorem 1.3 — Helmholtz–Hodge decomposition]{.tag}
+Statement.
 
 ::: proof
-Démonstration. [∎]{.qed}
+Proof. [∎]{.qed}
 :::
 ::::
 
@@ -40,48 +40,48 @@ Démonstration. [∎]{.qed}
 :::
 
 ::: ex
-[Exemple 2.2 — …]{.tag}
+[Example 2.2 — …]{.tag}
 :::
 
 ::: note
-[Remarque]{.tag}
+[Remark]{.tag}
 :::
 
 ::: key
-[À retenir]{.tag}
-Formule ou idée centrale.
+[Key point]{.tag}
+Formula or central idea.
 :::
 
 :::: recap
 ::: recap-title
-Ce qu'il faut retenir — chapitre 2
+Key takeaways — chapter 2
 :::
 - point 1
 - point 2
 ::::
 ```
 
-Numérotation : `Définition <chapitre>.<n>` (un seul compteur par chapitre pour tous les types d'encadrés).
+Numbering: `Definition <chapter>.<n>` (a single counter per chapter for all callout types).
 
-## Mathématiques
+## Mathematics
 
-- KaTeX : `$…$` en ligne, `$$…$$` en bloc (une équation par bloc, phrases de liaison entre les blocs). Pas de `\label`/`\eqref` ; numéroter à la main avec `\tag{2.3}` si besoin.
-- Notations communes : voir `docs/specs/notation.md`. Vecteurs en gras droit `\mathbf{u}`, `\mathbf{B}` ; opérateurs `\nabla\cdot`, `\nabla\times`, `\Delta` ; moyenne spatiale `\langle\cdot\rangle` ; espérance `\mathbb{E}`.
-- Pas de macro personnalisée (KaTeX sans préambule).
+- KaTeX: `$…$` inline, `$$…$$` display (one equation per block, linking sentences between blocks). No `\label`/`\eqref`; number by hand with `\tag{2.3}` if needed.
+- Common notation: see `docs/specs/notation.md`. Vectors in upright bold `\mathbf{u}`, `\mathbf{B}`; operators `\nabla\cdot`, `\nabla\times`, `\Delta`; spatial average `\langle\cdot\rangle`; expectation `\mathbb{E}`.
+- No custom macros (KaTeX without preamble).
 
 ## Code
 
-- Blocs ```` ```python ```` statiques (Quarto ne les exécute pas). Chaque bloc doit tourner tel quel en moins de 30 s sur un CPU avec NumPy, SciPy, Matplotlib, PyTorch (CPU). Le rédacteur exécute chaque bloc et recopie la sortie utile en commentaire (`# sortie : …`).
-- Pas de données téléchargées sauf mention explicite.
+- Static ```` ```python ```` blocks (Quarto does not execute them). Each block must run as is in under 30 s on a CPU with NumPy, SciPy, Matplotlib, PyTorch (CPU). The author runs each block and copies the useful output into a comment (`# output: …`).
+- No downloaded data unless explicitly stated.
 
 ## Figures
 
-- Schémas conceptuels : SVG/PNG produits par la skill `schematic-figure` (dossier `figures/<nom>/`), insérés par `![Légende complète.](../../figures/<nom>/<nom>.png){width="100%" fig-alt="Description textuelle."}`.
-- Graphiques de résultats : `site/experiments/figures/*.png` (écrits par `experiments/figures.py`) (matplotlib).
+- Conceptual diagrams: SVG/PNG produced by the `schematic-figure` skill (folder `figures/<name>/`), inserted with `![Full caption.](../../figures/<name>/<name>.png){width="100%" fig-alt="Text description."}`.
+- Result plots: `site/experiments/figures/*.png` (written by `experiments/figures.py`) (matplotlib).
 
-## Style d'écriture
+## Writing style
 
-- Phrases complètes, ton d'un cours écrit ; pas de style télégraphique ; une idée par paragraphe.
-- Chaque chiffre de la littérature est sourcé (auteur, année) et figure dans les Sources.
-- Distinguer clairement ce qui est **mesuré dans ce dépôt** (expériences `experiments/`), ce qui est **publié** (avec référence) et ce qui est **conjecturé**.
-- Aucun fait inventé sur les encadrants, l'offre ou le projet MilaDy : ne citer que les entrées vérifiées de `docs/specs/sources/*.md` ou l'offre elle-même.
+- Complete sentences, the tone of a written course; no telegraphic style; one idea per paragraph.
+- Every figure taken from the literature is sourced (author, year) and appears in the Sources.
+- Clearly distinguish what is **measured in this repository** (experiments `experiments/`), what is **published** (with reference) and what is **conjectured**.
+- No invented fact about the supervisors, the offer or the MilaDy project: cite only the verified entries of `docs/specs/sources/*.md` or the offer itself.
