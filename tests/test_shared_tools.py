@@ -219,3 +219,16 @@ def test_induction3d_agrees_with_mhd3d_kinematic() -> None:
         ref = _abc_growth(rm)
         assert np.sign(lam) == np.sign(ref) and abs(lam - ref) < 0.01, (rm, lam, ref)
         assert sim.divergence_rel() < 1e-12
+
+
+def test_weighted_energy_distance() -> None:
+    """Uniform weights give the V statistic; tilting weights are evaluated without resampling."""
+    rng = np.random.default_rng(6)
+    x, y = rng.normal(size=(300, 2)), rng.normal(0.3, 1.0, size=(400, 2))
+    uniform = M.weighted_energy_distance(x, np.ones(len(x)), y, n=10_000)
+    assert uniform == pytest.approx(M.energy_distance(x, y, n=10_000), rel=1e-10)
+    # weights that move the mean of x towards that of y lower the distance
+    w = np.exp(0.6 * x[:, 0])
+    assert M.weighted_energy_distance(x, w, y, n=10_000) < uniform
+    with pytest.raises(ValueError):
+        M.weighted_energy_distance(x, -np.ones(len(x)), y)

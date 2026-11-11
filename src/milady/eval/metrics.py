@@ -579,6 +579,36 @@ def energy_distance(
     return 2 * exy - exx - eyy
 
 
+def weighted_energy_distance(x: Any, wx: Any, y: Any, n: int = 4000, seed: int = 0, chunk: int = 1024) -> float:
+    """Energy distance D² between a **weighted** sample ``(x, wx)`` and a sample ``y`` (V statistic).
+
+    Evaluates a reweighted distribution (exponential tilting) with its weights instead of resampling it
+    with duplicates, which inflates E|X−X'| downwards and biases the V statistic against the tilting.
+    All the points of ``x`` are kept (weights normalized to sum 1); ``y`` is subsampled to at most ``n``
+    points with ``numpy.random.default_rng(seed)``. With uniform weights and no subsampling, equals
+    :func:`energy_distance` (V statistic).
+    """
+    xa = _as_np(x).reshape(len(x), -1)
+    w = _as_np(wx).reshape(-1)
+    if len(w) != len(xa) or np.any(w < 0) or w.sum() <= 0:
+        raise ValueError("wx: nonnegative weights, one per sample of x, not all zero")
+    w = w / w.sum()
+    ya = _as_np(y).reshape(len(y), -1)
+    b = ya[np.random.default_rng(seed).choice(len(ya), size=min(n, len(ya)), replace=False)]
+
+    def dist(p: np.ndarray, q: np.ndarray) -> np.ndarray:
+        d2 = np.sum(p * p, axis=1)[:, None] + np.sum(q * q, axis=1)[None, :] - 2.0 * p @ q.T
+        return np.sqrt(np.maximum(d2, 0.0))
+
+    exy = exx = 0.0
+    for i in range(0, len(xa), chunk):
+        sl = slice(i, i + chunk)
+        exy += float(w[sl] @ dist(xa[sl], b).mean(axis=1))
+        exx += float(w[sl] @ (dist(xa[sl], xa) @ w))
+    eyy = _sum_pdist(b, b, False) / (len(b) * len(b))
+    return 2 * exy - exx - eyy
+
+
 def sliced_wasserstein(
     x: Any,
     y: Any,

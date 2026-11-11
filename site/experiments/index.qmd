@@ -43,7 +43,7 @@ format:
 All the experiments on this site run on an ordinary processor (Intel Xeon, 4 cores, 2.30 GHz, no GPU), in Python 3.13 with NumPy 2.5, SciPy 1.18, Matplotlib 3.11 and PyTorch 2.15 (CPU build). They are **small-scale test benches**: they test ideas and mechanisms, not performance on real dynamo data. All the numbers quoted in the [report](../report/index.html) come from the result files described here.
 :::
 
-![The three test benches on one template: system, numerical scheme, parameter sweep with the system's response, data kept and place in the compute pipeline. Responses: E1, frequency of zero crossings of $D$ in the fine-grid simulations; E2, mean magnetic energy $E_B$ (± one standard deviation), **recomputed** for this diagram with E2's solver and settings; E3, growth rate $\lambda$, axis restricted to $\pm 0.012$ (three points below the scale, at $Rm = 2$, 4 and 6, marked with an arrow). Filled points: training values; open points: test values. Shaded zones: reversal threshold (E1) and dynamo windows (E3).](../figures/simulations/figure/out/simulations.png){width="100%" fig-alt="Three rows, E1, E2 and E3. In each row: a thumbnail of the system (time series of the dipole D, 2D MHD map, periodic box), two lines on the numerical scheme, a small plot of the response against the parameter with the training and test values on the axis, and the corresponding infrastructure campaign."}
+![The three test benches on one template: system, numerical scheme, parameter sweep with the system's response, data kept and place in the compute pipeline. Responses: E1, frequency of zero crossings of $D$ in the fine-grid simulations; E2, mean magnetic energy $E_B$ (± one standard deviation), **recomputed** for this diagram with E2's solver and settings; E3, growth rate $\gamma$, axis restricted to $\pm 0.012$ (three points below the scale, at $Rm = 2$, 4 and 6, marked with an arrow). Filled points: training values; open points: test values. Shaded zones: reversal threshold (E1) and dynamo windows (E3).](../figures/simulations/figure/out/simulations.png){width="100%" fig-alt="Three rows, E1, E2 and E3. In each row: a thumbnail of the system (time series of the dipole D, 2D MHD map, periodic box), two lines on the numerical scheme, a small plot of the response against the parameter with the training and test values on the axis, and the corresponding infrastructure campaign."}
 
 ## Code organization {#code}
 
@@ -55,7 +55,7 @@ The `experiments/` folder of the repository contains everything needed to reprod
 | `e1_gissinger.py` | E1: invariant distribution of the Gissinger (2012) reversal model, conditioned on $\Gamma$; symmetry, stationarity identities, Rice formula. Costly steps are cached in `results/cache_e1/`. |
 | `mhd2d.py` | Pseudo-spectral solver for forced incompressible 2D MHD, in potentials $(\omega, a)$ (re-export of `milady.sim.mhd2d`). |
 | `e2_data.py` | E2: 2D MHD snapshots for eleven values of $\eta$ (six for training, five for testing). |
-| `e2_mhd2d.py` | E2: five divergence-constraint mechanisms, distributional stationarity loss, tilting versus per-sample rescaling. |
+| `e2_mhd2d.py` | E2: free baseline and four divergence-constraint mechanisms, distributional stationarity loss, tilting versus per-sample rescaling. |
 | `e3_abc.py` | E3: kinematic dynamo of the ABC flow, growth rate as a function of $Rm$ (solver `milady.sim.induction3d`). |
 | `unet.py` | Small periodic U-Net (not used in the final results: too slow on CPU, see below). |
 | `figures.py` | Plots of the results (`figures/<name>.png` and `.svg`). |
@@ -90,7 +90,7 @@ Results and discussion: [report, section E1](../report/index.html#e1). Interacti
 
 ## E2 — 2D MHD and divergence constraints {#e2}
 
-Forced 2D MHD produces fields $(\mathbf{u}, \mathbf{B})$ that are divergence-free by construction. We generate these fields conditionally on the parameter $\eta$ in the truncated Fourier basis (220 independent modes per scalar field), which is the POD basis of homogeneous turbulence on a periodic domain. We compare five ways of handling the divergence, then the effect of a distributional constraint on the energy budget.
+Forced 2D MHD produces fields $(\mathbf{u}, \mathbf{B})$ that are divergence-free by construction. We generate these fields conditionally on the parameter $\eta$ in the truncated Fourier basis (220 independent modes per scalar field), which is a POD basis without reduction for a translation-invariant law on a periodic domain (up to a rotation of the modes once the cross helicity couples $\mathbf{u}$ and $\mathbf{B}$). We compare the free baseline with four ways of handling the divergence, then the effect of a distributional constraint on the energy budget.
 
 Results and discussion: [report, section E2](../report/index.html#e2).
 
@@ -102,11 +102,11 @@ A first attempt with a periodic U-Net on the $32\times32$ grid (file `unet.py`) 
 
 ## E3 — ABC kinematic dynamo {#e3}
 
-The induction equation with the imposed ABC flow is solved by a $32^3$ pseudo-spectral method. The growth rate $\lambda(Rm)$ changes sign at $Rm \approx 8.87$, $17.6$ and $26.8$, in agreement with the known windows. The curl form of the equation keeps $\nabla\cdot\mathbf{B}$ at machine precision ($\sim 10^{-16}$).
+The induction equation with the imposed ABC flow is solved by a $32^3$ pseudo-spectral method. The growth rate $\gamma(Rm)$ changes sign at $Rm \approx 8.87$, $17.6$ and $26.8$, in agreement with the known windows. The curl form of the equation keeps $\nabla\cdot\mathbf{B}$ at machine precision ($\sim 10^{-16}$).
 
 Results: [report, section E3](../report/index.html#e3). Interactive diagram: [ABC dynamo](../interactive/index.html#abc-dynamo).
 
-![Growth rate $\lambda$ of the ABC kinematic dynamo as a function of $Rm = 1/\eta$ ($32^3$ grid, checks at $48^3$); the shaded areas are the dynamo windows.](figures/e3_abc.png){width="100%" fig-alt="Curve of the growth rate as a function of Rm, positive between 8.9 and 17.6 and then beyond 26.8."}
+![Growth rate $\gamma$ of the ABC kinematic dynamo as a function of $Rm = 1/\eta$ ($32^3$ grid, checks at $48^3$); the shaded areas are the dynamo windows.](figures/e3_abc.png){width="100%" fig-alt="Curve of the growth rate as a function of Rm, positive between 8.9 and 17.6 and then beyond 26.8."}
 
 ## Result files {#resultats}
 

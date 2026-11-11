@@ -32,7 +32,7 @@ import numpy as np
 import torch
 
 from common import (MLPField, energy_distance, exp_tilt, fm_loss, heun_sample, sample_ode, save_json, seed_all,
-                    systematic_resample, train)
+                    systematic_resample, train, weighted_energy_distance)
 from e2_data import ALPHA, EPS, ETA_TEST, ETA_TRAIN, KF, N, NU, data_dir
 from mhd2d import MHD2D
 
@@ -329,7 +329,11 @@ def main(quick=False, seed=0):
         dl, ds = diagnostics(cl, e)["diss"], diagnostics(cs, e)["diss"]
         s = np.sqrt(np.clip((inj - dl) / np.maximum(ds, 1e-12), 0, None))
         rescaled = cl + cs * s[:, None, None]
+        # tilted law evaluated with its weights, without resampling (review §2.5)
+        fb = (features(diagnostics(c[half:], e)) - fmean) / fstd
+        tilted_weighted = weighted_energy_distance(fb, wb, (features(ref_dg[e]) - fmean) / fstd, n=1000)
         law[str(e)] = {"base": evaluate(c[half:], e), "tilting": evaluate(tilted, e), "rescaling": evaluate(rescaled, e),
+                       "tilting_weighted_energy_distance": tilted_weighted,
                        "ess_frac_b": float(1 / np.sum(wb ** 2) / len(wb)), "lambda": lam.tolist(),
                        "split": "train" if e in ETA_TRAIN else "test"}
     results["evaluation"] = evals
@@ -344,6 +348,9 @@ def main(quick=False, seed=0):
                                                        for v in law.values() if v["split"] == split])) for k in keys}
                              for split in ("train", "test")} for m in ("base", "tilting", "rescaling")}
     summary["in_law"]["ess_frac_b_mean"] = float(np.mean([v["ess_frac_b"] for v in law.values()]))
+    summary["in_law"]["tilting_weighted_energy_distance"] = {
+        split: float(np.mean([v["tilting_weighted_energy_distance"] for v in law.values() if v["split"] == split]))
+        for split in ("train", "test")}
     results["summary"] = summary
     results["total_duration_s"] = time.time() - t_start
     results["config"]["seed"] = seed

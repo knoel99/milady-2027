@@ -45,7 +45,7 @@ TXT = {
     "div": "relative divergence of u", "spec": "spectrum error (log₁₀, mean)",
     "bal": "|E[D] − ε_inj| / ε_inj", "k": "wavenumber k", "Eu": "E_u(k)", "Eb": "E_B(k)",
     "diss": "dissipation D(x) / ε_inj", "base": "V4 (generated)", "tilt": "V4 + tilting", "resc": "V4 + per-sample rescaling",
-    "rm": "Rm = 1/η", "lam": "growth rate λ",
+    "rm": "Rm = 1/η", "lam": "growth rate γ",
 }
 
 

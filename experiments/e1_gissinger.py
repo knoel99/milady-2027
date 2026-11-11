@@ -32,7 +32,7 @@ import numpy as np
 import torch
 
 from common import (MLPField, SymmetrizedField, energy_distance, exp_tilt, heun_sample, save_json, sample_ode,
-                    seed_all, sliced_w1, systematic_resample, train, RESULTS)
+                    seed_all, sliced_w1, systematic_resample, train, weighted_energy_distance, RESULTS)
 
 import pickle
 
@@ -336,7 +336,7 @@ def main(quick=False, reverse=False, train_only=False, seeds=None, simulate_only
         print("training only: cache filled, stopping", flush=True)
         return
     # Post-processing in law (D) and per sample (E)
-    tilt_info = {}
+    tilt_info, tilt_weights = {}, {}
     for base_name, dname in (("C_equivariant", "D_tilting_C"), ("C_short", "D_tilting_Cshort"),
                              ("A_reference", "D_tilting_A")):
         for seed in seeds:
@@ -350,6 +350,7 @@ def main(quick=False, reverse=False, train_only=False, seeds=None, simulate_only
                 wb = np.exp(zb - zb.max()); wb /= wb.sum()
                 gens[(dname, seed, gam)] = xb[systematic_resample(wb, len(xb), seed=seed)]
                 tilt_info[(dname, seed, gam)] = {"ess_frac_a": info["ess_frac"], "ess_frac_b": float(1 / np.sum(wb ** 2) / len(xb))}
+                tilt_weights[(dname, seed, gam)] = (xb, wb)  # evaluated with its weights too (review §2.5)
                 # Equal-size comparison baseline: the unweighted half b
                 gens[(base_name + "_half", seed, gam)] = xb
     for seed in seeds:
@@ -380,6 +381,9 @@ def main(quick=False, reverse=False, train_only=False, seeds=None, simulate_only
                         "dEdt_std": float(dEdt(x, gam).std()),
                         "rice_rate": rice_rate(x),
                     })
+                    if (vname, seed, gam) in tilt_weights:  # tilted law with its weights, without resampling
+                        xb, wb = tilt_weights[(vname, seed, gam)]
+                        per_seed[-1]["energy_weighted"] = weighted_energy_distance(to_z(xb), wb, to_z(ref), n=3000, seed=seed)
                 # [mean, standard deviation (ddof = 0), min, max] over the seeds
                 agg = {k: [float(np.mean(v)), float(np.std(v)), float(np.min(v)), float(np.max(v))]
                        for k in per_seed[0] for v in [[p[k] for p in per_seed]]}
@@ -417,6 +421,8 @@ def main(quick=False, reverse=False, train_only=False, seeds=None, simulate_only
             summary[vname][split] = {k: float(np.mean([r[k][0] for r in rows]))
                                      for k in ("energy", "sw1", "asym", "liou_train_mean", "liou_test_mean", "dEdt_std")}
             summary[vname][split]["bridge_error"] = float(np.mean([abs(r["bridge"][0] - r["bridge_ref"]) for r in rows]))
+            if "energy_weighted" in rows[0]:
+                summary[vname][split]["energy_weighted"] = float(np.mean([r["energy_weighted"][0] for r in rows]))
             summary[vname][split]["rice_rate_error"] = float(np.mean([abs(r["rice_rate"][0] - r["simulation_rate"]) for r in rows]))
             if "ess_frac_b" in rows[0]:
                 summary[vname][split]["ess_frac_b"] = float(np.mean([r["ess_frac_b"] for r in rows]))
@@ -427,6 +433,7 @@ def main(quick=False, reverse=False, train_only=False, seeds=None, simulate_only
     # Fine grid around the threshold: model C (seed 0), large sample for Rice
     model = models[("C_equivariant", seeds[0])]
     n_big = 8000 if quick else 20000
+    results["config"]["n_big"] = n_big
     fine = []
     for gam in G_FINE:
         torch.manual_seed(5000)
