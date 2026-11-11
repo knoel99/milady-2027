@@ -1,8 +1,8 @@
-"""Vérification numérique du modèle de Gissinger (2012) citée dans docs/specs/sources/dynamo.md.
+"""Numerical check of the Gissinger (2012) model, cited in docs/specs/sources/dynamo.md.
 
-RK4, dt = 0,01, t ∈ [0 ; 2·10⁴], transitoire de 500 retiré, condition initiale (0,1 ; 0,1 ; 0) ;
-un renversement est compté quand D franchit ±0,5 avec changement de signe.
-Usage : python3 docs/specs/sources/scripts/gissinger_check.py 0.119 0.12 0.15 0.25 0.101 0.065
+RK4, dt = 0.01, t ∈ [0; 2·10⁴], transient of 500 removed, initial condition (0.1; 0.1; 0);
+a reversal is counted when D crosses ±0.5 with a change of sign.
+Usage: python3 docs/specs/sources/scripts/gissinger_check.py 0.119 0.12 0.15 0.25 0.101 0.065
 """
 import math, sys
 def run(mu, nu=0.1, G=0.9, T=2e4, dt=0.01, y0=(0.1, 0.1, 0.0), thr=0.5):
