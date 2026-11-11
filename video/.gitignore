@@ -15,3 +15,6 @@ audio/external/
 audio/external_fr/
 __pycache__/
 storyboard/storyboard.html
+
+# Sorties de assemble_cut.py, make check et make draft (régénérées) : jamais versionnées
+script/_build/

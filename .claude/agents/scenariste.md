@@ -29,7 +29,7 @@ Tu n'écris que trois fichiers : video/episodes/<épisode>/traitement.md, video/
 
 ## 3. La continuité
 
-Mets à jour video/continuite.md. Si ce n'est pas déjà fait, inscris-y en premier ce choix de vocabulaire : on dit « inversion » du champ, jamais « renversement », dans la voix comme à l'écran. Ajoute ensuite les termes définis dans l'épisode, les notations employées, les motifs récurrents et ce qui a été expliqué, pour que les épisodes suivants ne le réexpliquent pas et ne le contredisent pas.
+Mets à jour video/continuite.md. Si ce n'est pas déjà fait, inscris-y en premier ce choix de vocabulaire : on dit « renversement » du champ, comme le parcours écrit, jamais « inversion », dans la voix comme à l'écran. Ajoute ensuite les termes définis dans l'épisode, les notations employées, les motifs récurrents et ce qui a été expliqué, pour que les épisodes suivants ne le réexpliquent pas et ne le contredisent pas.
 
 ## Limites
 

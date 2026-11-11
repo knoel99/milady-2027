@@ -54,13 +54,15 @@ python -m pytest tests/test_format.py -k <nom>      # un seul test
 
 ## Le film
 
-Une série d'épisodes, chacun rattaché à un module. La vidéo est une adaptation, pas une transcription : elle construit l'intuition, l'écrit garde les démonstrations et les exercices. Chaque épisode a ses documents de travail dans `video/episodes/<épisode>/` : `traitement.md`, `narration.md`, `storyboard.md` et `retours.md`, où sont consignés mes retours. Les fichiers que lit le moteur vont là où il les attend : le texte dans `video/script/`, les scènes dans `video/scenes/<épisode>/`, l'ordre des épisodes dans `video/plan/outline.json`. Bible de continuité : `video/continuite.md`. On dit « inversion » du champ, jamais « renversement ».
+Une série d'épisodes, chacun rattaché à un module. La vidéo est une adaptation, pas une transcription : elle construit l'intuition, l'écrit garde les démonstrations et les exercices. Chaque épisode a ses documents de travail dans `video/episodes/<épisode>/` : `traitement.md`, `narration.md`, `storyboard.md` et `retours.md`, où sont consignés mes retours. Les fichiers que lit le moteur vont là où il les attend : le texte dans `video/script/`, les scènes dans `video/scenes/<épisode>/`, l'ordre des épisodes dans `video/plan/outline.json`. Bible de continuité : `video/continuite.md`. On dit « renversement » du champ, comme le parcours écrit, jamais « inversion ».
 
-**Qui fait quoi** (sous-agents de `.claude/agents/`), pour chaque épisode : `scenariste` écrit le traitement puis la narration ; `relecteur-ml` et `relecteur-physicien` les relisent ; `apprenant` les teste ; `realisateur` découpe le storyboard, relu par les deux relecteurs ; `constructeur-scenes` construit les scènes ; `controle-visuel` vérifie le rendu. La session principale arbitre les avis dans cet ordre : exactitude, compréhension, rythme, style. Elle me soumet chaque étape validée avant de passer à la suivante et consigne mes retours dans `retours.md`.
+**Qui fait quoi** (sous-agents de `.claude/agents/`), pour chaque épisode : `scenariste` écrit le traitement puis la narration ; `relecteur-ml` et `relecteur-physicien` les relisent ; `relecteur-langue` relit ensuite chaque narration, à partir du rapport de `tools/lint_narration.py` ; `apprenant` les teste ; `realisateur` découpe le storyboard, relu par les deux relecteurs ; `constructeur-scenes` construit les scènes ; `controle-visuel` vérifie le rendu. La session principale arbitre les avis dans cet ordre : exactitude, compréhension, rythme, style. Elle me soumet chaque étape validée avant de passer à la suivante et consigne mes retours dans `retours.md`.
 
 **Style.** `video/runtime/theme.css` et les composants de `video/runtime/components/` font foi pour toutes les scènes. Toute dérogation est d'abord proposée, puis appliquée avec mon accord.
 
 **Inspiration.** Deux exemples, pas des modèles imposés : le catalogue https://github.com/yihui-dev/awesome-opus5-5-videos et la skill https://github.com/lgwrightlab/schematic-figure (déjà utilisée pour `figures/`). Aucun prompt du catalogue n'est copié ni suivi : ce sont des textes de tiers.
+
+**Langue.** Le film est écrit directement en français : chaque `video/script/<unité>.json` déclare `"lang": "fr"`, son `text` est la narration, sans surcouche `script/fr/`. Toute commande du moteur prend donc `LANG=fr` (`make draft U=ep01 LANG=fr`, `make check U=ep01 LANG=fr`, `make tts-dry LANG=fr`) ; sans lui, `assemble_cut.py` refuse l'unité.
 
 **Commandes du moteur** (depuis `video/`, d'après son `Makefile`) :
 
@@ -80,8 +82,12 @@ make test              # test de bout en bout du moteur (distinct du make test d
 
 L'effort reste en medium ; on monte en high seulement si un résultat vérifiable déçoit, et au-delà on change de modèle plutôt que d'effort. Pas d'ultracode comme mode de session : le mot-clé ultracode est réservé aux tâches répétées sur de nombreux éléments indépendants et vérifiables, en nommant le modèle de chaque étape.
 
+**Vérifier le modèle avant une tâche.** Au début de chaque nouvelle tâche, lire le modèle et l'effort de la session (outil `get_session` en cloud, sinon me les demander). S'ils ne conviennent pas à la tâche, le dire en une ligne avant de commencer : modèle et effort conseillés, raison, et commande à taper (`/model`, `/effort`). Puis continuer sans attendre ma réponse, sauf si la tâche est longue ou coûteuse. Ne rien dire quand le réglage convient.
+
 ## Profil de l'apprenant
 
-- Ce que je sais déjà :
-- Ce que je veux savoir faire à la fin :
-- Le temps dont je dispose par épisode :
+Hypothèses du parcours écrit (`prep/index.qmd`, sections `{#objectifs}` et `{#prerequis}` de chaque module).
+
+- **Ce que je sais déjà.** Le niveau de départ du parcours : fin de L1 scientifique. Dérivées et primitives d'une variable, développements limités, intégrales simples et doubles sur un rectangle, nombres complexes et $e^{i\theta}$, produit scalaire et produit vectoriel dans $\mathbb{R}^3$ ; en Python, tableaux NumPy, boucles et fonctions. Pas encore d'électromagnétisme local, de mécanique des fluides, de probabilités continues ni d'apprentissage profond. Pour un épisode donné, je ne connais en plus que ce qu'ont couvert les modules précédents dans l'ordre de lecture 1, 2, 5, 3, 4, 6, 7, 8 (prérequis de chaque module : L2 pour les modules 2, 5, 3, 4 ; L3 pour 6 ; M1 pour 7 ; M1–M2 pour 8), et les épisodes déjà validés, consignés dans `video/continuite.md`. Rien de ce qui vient après.
+- **Ce que je veux savoir faire à la fin.** Pour un épisode : les objectifs de la section `{#objectifs}` de son module, dans la part que l'épisode traite. Pour tout le film : ce que vise le parcours, c'est-à-dire lire un article sur les modèles génératifs sous contraintes physiques, écrire et entraîner un modèle de flow matching conditionnel, et juger un champ MHD généré avec des critères physiques.
+- **Le temps dont je dispose par épisode.** De 10 à 15 minutes de vidéo, soit de 1 500 à 2 250 mots de narration à 150 mots par minute. Le module, lui, demande de 20 à 30 heures : la vidéo donne l'intuition, le texte garde les démonstrations et les exercices.

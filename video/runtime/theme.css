@@ -62,6 +62,7 @@ html, body { margin: 0; padding: 0; background: #0B0F14; overflow: hidden; }
 .tnum { font-variant-numeric: tabular-nums !important; }   /* counters, readouts, aligned columns (beats a later font: shorthand) */
 .k-model { color: var(--model); } .k-metric { color: var(--metric); } .k-infra { color: var(--infra); }
 .k-chalk { color: var(--chalk); } .k-muted { color: var(--muted); }
+.k-fg2 { color: var(--fg-2); }   /* neutral field: a field not yet named (ep02: charge, magnet), never a fourth key colour; \cn{…} */
 
 /* ---------- type scale (all >= 28 px) ---------- */
 .title-xl { font-family: "Inter Display"; font-weight: 800; font-size: var(--fs-title); letter-spacing: -0.01em; line-height: 1.02; }
@@ -188,6 +189,10 @@ html, body { margin: 0; padding: 0; background: #0B0F14; overflow: hidden; }
 .kit-eq .katex { font-size: 1em; }
 .kit-eq .katex-display { margin: 0; }
 .kit-eq-label { position: absolute; transform: translateX(-50%); font-weight: 500; font-size: 32px; white-space: nowrap; }
+/* readout (Kit.readout, ep-kit.js): the counter beside the probe circle, mono label over tabular figures */
+.kit-readout { position: absolute; color: var(--fg); white-space: nowrap; }
+.kit-readout .ro-label { color: var(--muted); }
+.kit-readout .ro-value { font-family: "Inter Display"; font-weight: 600; font-size: 56px; line-height: 1.1; }
 .kit-dot { position: absolute; width: 12px; height: 12px; margin: -6px 0 0 -6px; border-radius: 6px; background: var(--chalk); }
 
 /* safe-area guides (preview: key g or ?safe=1; never in renders) */

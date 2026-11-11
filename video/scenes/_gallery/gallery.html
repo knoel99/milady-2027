@@ -1,7 +1,7 @@
 <!doctype html>
 <html lang="en"><head><meta charset="utf-8">
 <title>Kit gallery</title>
-<!-- Gallery of every kit component (QA page, not a film scene). 16 plates of 8 s each:
+<!-- Gallery of every kit component (QA page, not a film scene). 17 plates of 8 s each:
      plate k is on screen during [8k, 8k + 8). Stills: tools in CONTRACT.md §7 (out/gallery/). -->
 <link rel="stylesheet" href="../../vendor/katex/katex.min.css">
 <link rel="stylesheet" href="../../runtime/theme.css">
@@ -15,6 +15,7 @@
 <script src="../../runtime/components/motifs.js"></script>
 <script src="../../runtime/components/cards.js"></script>
 <script src="../../runtime/components/seat.js"></script>
+<script src="../../runtime/components/ep-kit.js"></script>
 <style>
   .plate { position: absolute; inset: 0; }
   .plate-title { position: absolute; left: 96px; top: 40px; z-index: 70; color: var(--muted); }
@@ -26,7 +27,7 @@
 </style></head>
 <body><div id="stage"></div>
 <script>
-const PL = 8, NPL = 16;
+const PL = 8, NPL = 17;
 // ?plate=K starts the gallery at plate K (preview one plate, or capture it alone for a throughput check)
 const FIRST = Math.max(1, Math.min(NPL, +(new URLSearchParams(location.search).get('plate') || 1)));
 const P0 = (k) => PL * (k - FIRST);      // plate k starts at 8 (k - FIRST) s
@@ -219,6 +220,25 @@ Scene.define({
       bet: 'The two dynamo windows of E3 persist at 64³.', confidence: 'high', criterion: 's(17) > 0 > s(18), both fits agreeing in sign.', source: 'R:1112 · D17' });
     }
     K.chip(ctx, { text: 'test fixture · not a result', kind: 'fixture', x: 1824, y: 40, anchor: 'tr', at: P0(16) + 0.2, parent: p });
+    // 17. episode kit (ep-kit.js): paddle wheel in a shear, probe and readout on a source, compressed arrows of a
+    //     point vortex with a hole, level lines by marching squares, French readout that never prints "−0"
+    p = plate(17, 'ep-kit · wheel · probe · readout · compress · level lines');
+    const pan = (cx, cy, s) => (x, y) => [cx + s * x, cy - s * y];
+    const T1 = pan(400, 460, 100), T2 = pan(950, 460, 100), T3 = pan(1500, 460, 100);
+    K.arrows(ctx, { F: (X, Y) => [(460 - Y) / 100, 0], box: { x: 150, y: 210, w: 500, h: 500 }, nx: 9, ny: 9, color: 'u', at: P0(17) + 0.2, parent: p });
+    K.paddleWheel(ctx, { toPx: T1, pos: [0, 0], angle: (t) => -0.5 * Math.max(0, t - P0(17) - 1), r: 56, at: P0(17) + 0.4,
+      flow: { F: (x, y) => [y, 0], scale: 100, at: P0(17) + 1.2 }, parent: p });
+    K.readout(ctx, { label: 'ω', value: -1, digits: 0, x: 400, y: 740, anchor: 'c', at: P0(17) + 0.6, parent: p });
+    const src = (x, y) => [x, y];
+    K.arrows(ctx, { F: (X, Y) => [(X - 950) / 100, -(460 - Y) / 100], box: { x: 700, y: 210, w: 500, h: 500 }, nx: 9, ny: 9, color: 'u', at: P0(17) + 0.2, parent: p });
+    const PR = K.probe(ctx, { toPx: T2, F: src, mode: 'flux', circle: { c: (t) => [0.6 * Math.cos(0.6 * (t - P0(17))), 0.3 * Math.sin(0.6 * (t - P0(17)))], r: (t) => 0.95 + 0.25 * Math.sin(t - P0(17)) },
+      parts: { n: 12, scale: 45, other: 'dashed', at: P0(17) + 1.0 }, at: P0(17) + 0.5, parent: p });
+    K.readout(ctx, { label: 'flux ÷ aire', value: (t) => PR.value(t), digits: 2, x: 950, y: 740, anchor: 'c', at: P0(17) + 0.8, parent: p });
+    const vort = (X, Y) => { const x = (X - 1500) / 100, y = (460 - Y) / 100, r2 = x * x + y * y; return [-y / r2, -(x / r2)]; };
+    K.arrows(ctx, { F: vort, box: { x: 1250, y: 210, w: 500, h: 500 }, nx: 11, ny: 11, color: 'u', compress: { k: 40, threshold: 0.8 }, hole: { x: 1500, y: 460, r: 30 }, at: P0(17) + 0.2, parent: p });
+    K.levelLines(ctx, { f: (x, y) => x * x + y * y, domain: { x0: -2.5, x1: 2.5, y0: -2.5, y1: 2.5, nx: 80, ny: 80 }, levels: [0.25, 1, 2.25, 4], toPx: T3, color: 'chalk', width: 2, alpha: 0.6, at: P0(17) + 0.6, dur: 1.5, parent: p });
+    K.readout(ctx, { label: 'arrondi', value: (t) => 0.004 * Math.sin(3 * t), digits: 2, x: 1500, y: 740, anchor: 'c', at: P0(17) + 0.8, parent: p });
+
     // plates before ?plate=K are never shown: drop their components from the render loop
     const dead = plates.filter((q) => +q.dataset.k < FIRST);
     ctx.layers = ctx.layers.filter((c) => { const el = c.root || c.canvas || c.col || c.path || c.g; return !el || !dead.some((q) => q.contains(el)); });

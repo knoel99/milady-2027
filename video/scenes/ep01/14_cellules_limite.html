@@ -1,0 +1,185 @@
+<!doctype html>
+<html lang="fr"><head><meta charset="utf-8">
+<title>ep01.14 La limite sur les cellules</title>
+<!-- Storyboard ep01, scène ep01.14 (plans 14.1 à 14.10), narration P24.
+     Écoulement cellulaire u = (sin x cos y, −cos x sin y) sur [0, 2π]², coordonnées mathématiques y vers le haut,
+     panneau carré de 780 px (780/2π ≈ 124 px par unité). Il entre au centre (x 570 à 1350, comme en 1.1), puis glisse
+     à gauche (x 120 à 900, y 80 à 860) sur [e1-coin]. Cercle centré en C = (1,4 ; 1,8), dans la cellule en bas à
+     gauche ; la circulation par unité d'aire se calcule par quadrature (Kit.probe, 256 points) et tend vers
+     ω(C) = 2 sin 1,4 sin 1,8 ≈ 1,92. Aucun ψ, aucune carte de couleur. -->
+<link rel="stylesheet" href="../../vendor/katex/katex.min.css">
+<link rel="stylesheet" href="../../runtime/theme.css">
+<script src="../../vendor/katex/katex.min.js"></script>
+<script src="../../runtime/scene.js"></script>
+<script src="../../runtime/components/kit.js"></script>
+<script src="../../runtime/components/hud.js"></script>
+<script src="../../runtime/components/field.js"></script>
+<script src="../../runtime/components/plot.js"></script>
+<script src="../../runtime/components/motifs.js"></script>
+<script src="../../runtime/components/ep-kit.js"></script>
+<style>
+  .lab { position: absolute; transform: translate(0, -50%); white-space: nowrap; font-size: 36px; color: var(--muted); z-index: 18; }
+  .lab .katex { font-size: 1em; }
+  .kit-formula { bottom: 212px; }   /* calque de formule remonté de 12 px : sa légende quitte la bande des sous-titres */
+  .kit-readout.backed { background: var(--panel-a); padding: 4px 12px 2px; border-radius: 4px; }
+</style>
+</head><body><div id="stage"></div>
+<script>
+Scene.define({
+  duration: 45.1,
+  register: 'night',
+  // temps d'aperçu (estimation à 146 mots par minute) ; le moteur injecte les vrais
+  cues: { 'e1-retour': 0.4, 'e1-engrenages': 3.58, 'e1-coin': 9.63, 'e1-paslire': 13.22, 'e1-dedans': 16.39, 'e1-varie': 19.57,
+    'e1-rapetisse': 27.27, 'e1-fixe': 32.09, 'e1-valeur': 35.27, 'e1-visible': 39.26 },
+  setup(ctx) {
+    const K = Kit, S = Scene, at = ctx.at, seg = S.seg, E = S.ease, PI = Math.PI;
+    const T = {};
+    for (const k of Object.keys(ctx.cues)) if (k.startsWith('e1-')) T[k.slice(3)] = at(k);
+
+    // ---------- géométrie (section 0 : y vers le haut ; toPx renverse l'axe vertical) ----------
+    const X0 = 120, Y1 = 860, SIDE = 780, SC = SIDE / (2 * PI);      // position finale du panneau (après [e1-coin])
+    const SHIFT = 450;                                               // panneau centré (x 570 à 1350) avant le glissement
+    const toPx = (x, y) => [X0 + SC * x, Y1 - SC * y];
+    const toMath = (px, py) => [(px - X0) / SC, (Y1 - py) / SC];
+    const U = (x, y) => [Math.sin(x) * Math.cos(y), -Math.cos(x) * Math.sin(y)];
+    const Fpx = (px, py) => { const [x, y] = toMath(px, py), v = U(x, y); return [v[0], -v[1]]; };   // vecteur écran
+    const C = [1.4, 1.8], OMEGA_C = 2 * Math.sin(C[0]) * Math.sin(C[1]);
+
+    // tout ce qui glisse avec le panneau : un calque translaté en bloc
+    const slideX = (t) => SHIFT * (1 - seg(t, T.coin, T.coin + 0.8, E.inOutCubic));
+    const panel = K.layer(ctx, 7, 'panel');
+    const fadeIn = (t) => S.lerp(0.35, 1, seg(t, 0, T.retour + 0.6, E.inOutSine));   // première image non vide
+    const svgP = K.svgLayer(ctx, 12, panel); svgP.setAttribute('data-kit', 'panel');
+    K.s('rect', { x: X0, y: Y1 - SIDE, width: SIDE, height: SIDE, fill: 'none', stroke: K.c('matter'), 'stroke-width': 2 }, svgP);
+
+    // flèches sur les nœuds de pas π/6 (13 × 13, comme en 1.1), longueur proportionnelle à l'intensité
+    const step = SC * PI / 6;
+    K.arrows(ctx, { F: Fpx, box: { x: X0 - step / 2, y: Y1 - SIDE - step / 2, w: 13 * step, h: 13 * step }, nx: 13, ny: 13,
+      scale: 0.8, color: 'u', width: 3, at: -1, parent: panel });
+    // 14.2 : lignes de courant fermées (lignes de niveau de la fonction de courant interne, jamais affichée ni nommée)
+    const sf = (x, y) => Math.sin(x) * Math.sin(y);
+    K.levelLines(ctx, { f: sf, domain: { x0: 0, x1: 2 * PI, y0: 0, y1: 2 * PI, nx: 160, ny: 160 }, levels: [-0.85, -0.6, -0.35, -0.12, 0.12, 0.35, 0.6, 0.85],
+      toPx, color: 'u', width: 2.5, alpha: 0.45, at: 'e1-engrenages', dur: 1.5, parent: panel });
+    // traceurs : 300 particules à 40 % (vitesse en px par seconde de scène)
+    K.tracers(ctx, { F: (px, py) => { const v = Fpx(px, py); return [v[0] * SC * 0.8, v[1] * SC * 0.8]; },
+      n: 300, box: { x: X0, y: Y1 - SIDE, w: SIDE, h: SIDE }, color: 'u', alpha: 0.4, trail: 12, seed: 'ep01.14', at: 'e1-engrenages', parent: panel });
+    // 14.2 : une flèche courbe par cellule (trigonométrique en bas à gauche et en haut à droite, horaire ailleurs)
+    const curvedG = K.s('g', {}, svgP), ucol = K.c('u');
+    const cells = [[PI / 2, PI / 2, 1], [3 * PI / 2, 3 * PI / 2, 1], [3 * PI / 2, PI / 2, -1], [PI / 2, 3 * PI / 2, -1]];
+    const curved = cells.map(([cx, cy, s]) => {
+      const R = 0.95 * SC, [qx, qy] = toPx(cx, cy), a0 = s > 0 ? -0.6 : 0.6 + PI, span = 1.45 * PI;
+      let d = '';
+      const N = 48;
+      for (let i = 0; i <= N; i++) { const a = a0 + s * span * i / N; d += (i ? 'L' : 'M') + (qx + R * Math.cos(a)).toFixed(1) + ',' + (qy - R * Math.sin(a)).toFixed(1); }
+      const a1 = a0 + s * span, ex = qx + R * Math.cos(a1), ey = qy - R * Math.sin(a1);
+      const tx = -s * Math.sin(a1), ty = -s * Math.cos(a1);    // tangente du parcours, à l'écran
+      const ang = Math.atan2(ty, tx), hl = 22;
+      const head = `M${(ex + 6 * Math.cos(ang)).toFixed(1)},${(ey + 6 * Math.sin(ang)).toFixed(1)}L${(ex - hl * Math.cos(ang - 0.5)).toFixed(1)},${(ey - hl * Math.sin(ang - 0.5)).toFixed(1)}L${(ex - hl * Math.cos(ang + 0.5)).toFixed(1)},${(ey - hl * Math.sin(ang + 0.5)).toFixed(1)}Z`;
+      const g = K.s('g', {}, curvedG);
+      const arc = K.s('path', { d, fill: 'none', stroke: ucol, 'stroke-width': 6, 'stroke-linecap': 'round' }, g);
+      const hd = K.s('path', { d: head, fill: ucol }, g);
+      const len = arc.getTotalLength(); arc.style.strokeDasharray = len;
+      return { g, arc, hd, len };
+    });
+
+    // ---------- 14.3 : calque de formule, non dite ; 14.4 : la formule à 60 % jusqu'à la fin, sa légende pleine ----------
+    const FL = K.formulaLayer(ctx, { label: 'Champ', items: [{ tex: '\\U = (\\sin x\\cos y,\\ -\\cos x\\sin y)', at: 'e1-coin+0.5' }] });
+
+    // ---------- 14.5 à 14.8 : le cercle qui rétrécit, à l'intérieur de la cellule ----------
+    const rOf = (t) => {
+      let r = 1.2;
+      r = S.lerp(r, 0.6, seg(t, T.varie + 0.8, T.rapetisse, E.inOutSine));
+      r = S.lerp(r, 0.15, seg(t, T.rapetisse, T.fixe, E.outCubic));
+      r = S.lerp(r, 0.05, seg(t, T.fixe, T.fixe + 1.6, E.outCubic));
+      return r;
+    };
+    const P = K.probe(ctx, { toPx, F: U, mode: 'circulation', perArea: true, n: 256, circle: { c: C, r: rOf }, draw: false, at: 'e1-dedans', z: 13 });
+    // le cercle en tirets, tracé dans le sens trigonométrique en 14.5 (Kit.probe le ferait apparaître en fondu)
+    const svgR = K.svgLayer(ctx, 13); svgR.setAttribute('data-kit', 'probe-path');
+    const ring = K.s('path', { fill: 'none', stroke: K.c('chalk'), 'stroke-width': 3, 'stroke-dasharray': '12 9' }, svgR);
+    // compteur à droite du cercle, sur un fond (il passe sur les flèches)
+    const RO = K.readout(ctx, { label: 'Circulation ÷ aire', value: (t) => P.value(t), digits: 2, at: 'e1-dedans+0.4',
+      pos: (t) => { const [px, py] = toPx(C[0] + rOf(t), C[1]); return [px + 22, py - 52]; } });
+    RO.root.classList.add('backed');
+    // 14.9 : point C au centre du cercle
+    const svgC = K.svgLayer(ctx, 14); svgC.setAttribute('data-kit', 'point-c');
+    const [cpx, cpy] = toPx(C[0], C[1]);
+    const dotC = K.s('circle', { cx: cpx, cy: cpy, r: 6, fill: K.c('chalk') }, svgC);
+    const labC = K.el('div', { class: 'lab', html: K.tex('C', false) }, ctx.stage); labC.style.left = (cpx - 44) + 'px'; labC.style.top = (cpy - 30) + 'px'; labC.style.color = K.c('chalk');
+
+    // ---------- 14.6 à 14.10 : le graphe (rayon, circulation ÷ aire) ----------
+    const frFmt = (v) => String(v).replace('.', ',');
+    const PL = K.plot(ctx, { box: { x0: 1040, x1: 1780, y0: 160, y1: 700 }, x: { min: 0, max: 1.3, ticks: [0, 0.5, 1], fmt: frFmt },
+      y: { min: 0, max: 2.4, ticks: [0, 1, 2], fmt: frFmt, label: 'CIRCULATION ÷ AIRE' }, grid: false, at: 'e1-varie' });
+    // titre de l'axe horizontal posé au-dessus de l'axe, à son extrémité (sous l'axe, le calque de formule l'aurait recouvert)
+    const xt = K.s('text', { x: 1780, y: 680, 'text-anchor': 'end', class: 'kt-axis' }, PL.root, 'RAYON');
+    // la valeur de la sonde pour un rayon donné : la même quadrature que Kit.probe (256 points, parcours trigonométrique)
+    const circPerArea = (r) => { let c = 0; const N = 256; for (let i = 0; i < N; i++) { const s = (i + 0.5) / N, a = 2 * PI * s,
+      x = C[0] + r * Math.cos(a), y = C[1] + r * Math.sin(a), v = U(x, y); c += (v[0] * -2 * PI * r * Math.sin(a) + v[1] * 2 * PI * r * Math.cos(a)) / N; }
+      return c / (PI * r * r); };
+    const curveRs = []; for (let i = 0; i <= 400; i++) curveRs.push(1.2 - (1.15 * i) / 400);
+    const curveVs = curveRs.map(circPerArea);
+    const curve = K.s('path', { d: '', fill: 'none', stroke: ucol, 'stroke-width': 5, 'stroke-linecap': 'round', 'stroke-linejoin': 'round' }, PL.root);
+    const ptG = K.s('circle', { r: 9, fill: K.c('chalk') }, PL.root);
+    // 14.9 : ligne horizontale en tirets à ω(C), étiquette ω(C)
+    PL.hline({ y: OMEGA_C, kind: 'floor', at: 'e1-valeur+0.3' });
+    const labW = K.el('div', { class: 'lab', html: K.tex('\\cu{\\omega}(C)', false) }, ctx.stage);
+    labW.style.left = '1660px'; labW.style.top = (PL.sy(OMEGA_C) - 34) + 'px'; labW.style.color = K.c('fg-2');
+    // 14.10 : l'extrémité gauche de la courbe et la ligne, entourées au stylo
+    const xe = PL.sx(0.05), ye = PL.sy(OMEGA_C);
+    K.pen(ctx, { kind: 'circle', box: { x: xe - 18, y: ye - 18, w: 36, h: 36 }, pad: 8, at: 'e1-visible+0.3', dur: 0.6 });
+
+    ctx.S = { ring, toPx, C, T, PI, SC, slideX, fadeIn, panel, curved, cells, FL, P, rOf, dotC, labC, labW, PL, curve, ptG, curveRs, curveVs, xt };
+  },
+
+  render(t, ctx) {
+    const K = Kit, S = Scene, seg = S.seg, E = S.ease;
+    const { ring, toPx, C, T, slideX, fadeIn, panel, curved, FL, P, rOf, dotC, labC, labW, PL, curve, ptG, curveRs, curveVs, xt } = ctx.S;
+    panel.style.transform = `translateX(${slideX(t).toFixed(2)}px)`;
+    panel.style.opacity = fadeIn(t).toFixed(3);
+
+    // 14.2 : flèches courbes, tracées puis effacées en 14.4
+    const cOut = 1 - seg(t, T.paslire, T.paslire + 0.5, E.linear);
+    curved.forEach((c, i) => {
+      const p = seg(t, T.engrenages + 1.5 + 0.2 * i, T.engrenages + 2.3 + 0.2 * i, E.inOutSine);
+      c.arc.style.strokeDashoffset = (c.len * (1 - p)).toFixed(2);
+      c.hd.style.opacity = p >= 1 ? 1 : 0;
+      c.g.style.opacity = (p > 0 ? 1 : 0) * cOut;
+      K.show(c.g, p > 0 && cOut > 0);
+    });
+    // 14.4 : le calque de formule baisse à 60 %
+    // (la formule seule : la légende « CHAMP » reste --muted pleine)
+    if (FL) { const k = 1 - 0.4 * seg(t, T.paslire, T.paslire + 0.6, E.inOutSine); for (const r of FL.rows) {
+      const o = seg(t, r.a, r.a + 0.25, E.linear) * (Number.isFinite(r.b) ? 1 - seg(t, r.b, r.b + 0.25, E.linear) : 1);   // fondu de la ligne (Kit.formulaLayer)
+      r.d.style.opacity = (o * k).toFixed(3); } }
+
+    // 14.6 : la courbe se trace du grand rayon vers le petit, au rythme du cercle
+    const show = t >= T.varie;
+    const r = rOf(t), pOn = seg(t, T.varie + 0.3, T.varie + 0.7, E.linear);
+    let d = '', last = null;
+    for (let i = 0; i < curveRs.length && curveRs[i] >= r - 1e-9; i++) {
+      const x = PL.sx(curveRs[i]), y = PL.sy(curveVs[i]); d += (d ? 'L' : 'M') + x.toFixed(1) + ',' + y.toFixed(1); last = [x, y];
+    }
+    // dernier point exactement au rayon courant (valeur de la sonde)
+    const xv = PL.sx(r), yv = PL.sy(P.value(t));
+    if (d) d += 'L' + xv.toFixed(1) + ',' + yv.toFixed(1);
+    curve.setAttribute('d', show && t >= T.varie + 0.8 ? d : '');
+    ptG.setAttribute('cx', xv.toFixed(1)); ptG.setAttribute('cy', yv.toFixed(1));
+    ptG.style.opacity = show ? pOn : 0;
+    xt.style.opacity = seg(t, T.varie, T.varie + 0.5, E.linear);
+
+    // 14.5 : le cercle se trace (0,8 s), puis suit le rayon
+    const tr = seg(t, T.dedans + 0.1, T.dedans + 0.9, E.inOutSine);
+    if (tr > 0) {
+      const [qx, qy] = toPx(C[0], C[1]), rp = r * ctx.S.SC, N = Math.max(8, Math.ceil(96 * tr)); let dd = '';
+      for (let i = 0; i <= N; i++) { const a = 2 * Math.PI * tr * i / N; dd += (i ? 'L' : 'M') + (qx + rp * Math.cos(a)).toFixed(2) + ',' + (qy - rp * Math.sin(a)).toFixed(2); }
+      ring.setAttribute('d', dd);
+    } else ring.setAttribute('d', '');
+    // 14.9 : point C et étiquette ω(C)
+    const cv = seg(t, T.valeur, T.valeur + 0.4, E.linear);
+    dotC.style.opacity = cv; labC.style.opacity = cv; K.show(labC, cv > 0);
+    const wv = seg(t, T.valeur + 0.5, T.valeur + 0.9, E.linear);
+    labW.style.opacity = wv; K.show(labW, wv > 0);
+  },
+});
+</script></body></html>

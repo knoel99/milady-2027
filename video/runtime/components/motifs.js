@@ -14,6 +14,7 @@
  *   M6  Kit.projector(ctx, {x, y, at, drop, field, gauge: {label, value}})   vector dropped onto a plane
  *   M7  Kit.staircase(ctx, {x, y, w, h, lit, pending, at})   tiers 0 → 4
  *   M9  Kit.pen(ctx, {kind, box | target | from/to, at, dur, color})   circle, underline, arrow, brace, box, check, cross
+ *       (kind 'arrow' with head: false draws the curved stroke alone: a link between two symbols)
  *   M10 Kit.mirror(ctx, {mode: 'plane' | 'point', x, y, at, reflect, ...})  B → −B
  * Polarity is a shade of vermillion (--b, --b-neg), never a new hue. Physical objects (needle, knob) may
  * overshoot by at most 3 % (Scene.spring).
@@ -403,7 +404,7 @@
     } else if (kind === 'arrow') {
       const [x0, y0] = o.from, [x1, y1] = o.to, mx = (x0 + x1) / 2 + (y1 - y0) * (o.bend ?? 0.15), my = (y0 + y1) / 2 - (x1 - x0) * (o.bend ?? 0.15);
       const a = Math.atan2(y1 - my, x1 - mx), hl = 22;
-      d = `M${x0},${y0} Q${mx},${my} ${x1},${y1} M${x1 - hl * Math.cos(a - 0.5)},${y1 - hl * Math.sin(a - 0.5)} L${x1},${y1} L${x1 - hl * Math.cos(a + 0.5)},${y1 - hl * Math.sin(a + 0.5)}`;
+      d = `M${x0},${y0} Q${mx},${my} ${x1},${y1}` + (o.head === false ? '' : ` M${x1 - hl * Math.cos(a - 0.5)},${y1 - hl * Math.sin(a - 0.5)} L${x1},${y1} L${x1 - hl * Math.cos(a + 0.5)},${y1 - hl * Math.sin(a + 0.5)}`);
     } else if (kind === 'check') {
       const cx = b.x + b.w / 2, cy = b.y + b.h / 2, s = Math.min(b.w, b.h) / 2;
       d = `M${cx - s},${cy} L${cx - s * 0.3},${cy + s * 0.7} L${cx + s},${cy - s * 0.8}`;

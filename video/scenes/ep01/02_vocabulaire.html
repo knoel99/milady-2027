@@ -1,0 +1,180 @@
+<!doctype html>
+<html lang="fr"><head><meta charset="utf-8">
+<title>ep01.02 Trois mots</title>
+<!-- Storyboard ep01, scène ep01.02 (plans 2.1 à 2.10), narration P3 et P4.
+     Champ u = (0,6 + 0,4 sin(x + 0,5y) ; 0,3 cos x), coordonnées mathématiques y vers le haut, 150 px par unité,
+     origine au coin bas gauche du panneau (120, 840) ; panneau 1100 × 720 (x 0 à 7,33, y 0 à 4,8).
+     Flèches : Kit.arrows, une instance par colonne (entrée échelonnée par colonnes), longueur ∝ intensité (58 px par unité).
+     Variantes : les deux petits graphes sont posés dans le haut du panneau, sur un fond --bg (au-dessus du panneau,
+     il n'y a que 64 px) ; la flèche agrandie est posée dans la partie droite du panneau (la colonne de droite porte les
+     fiches) ; l'accolade de 2.9 longe la montée du triangle de pente, ∂x ux à côté d'elle. -->
+<link rel="stylesheet" href="../../vendor/katex/katex.min.css">
+<link rel="stylesheet" href="../../runtime/theme.css">
+<script src="../../vendor/katex/katex.min.js"></script>
+<script src="../../runtime/scene.js"></script>
+<script src="../../runtime/components/kit.js"></script>
+<script src="../../runtime/components/field.js"></script>
+<script src="../../runtime/components/equation.js"></script>
+<script src="../../runtime/components/plot.js"></script>
+<script src="../../runtime/components/ep-kit.js"></script>
+<style>
+  .lab { position: absolute; white-space: nowrap; font-size: 40px; color: var(--muted); z-index: 18; }
+  .lab .katex { font-size: 1em; }
+  .fiche-mot { position: absolute; font-size: 36px; color: var(--chalk); z-index: 18; white-space: nowrap; transform: translateX(-50%); }
+</style>
+</head><body><div id="stage"></div>
+<script>
+Scene.define({
+  duration: 43.2,
+  register: 'night',
+  cues: { 'e1-mots': 0.4, 'e1-champ': 2.31, 'e1-composantes': 7.54, 'e1-horizontale': 10.44, 'e1-verticale': 15.6,
+    'e1-change': 21.03, 'e1-avance': 25.78, 'e1-taux': 30.54, 'e1-derivee': 35.23, 'e1-monte': 38.06 },
+  setup(ctx) {
+    const K = Kit, S = Scene, at = ctx.at, seg = S.seg, E = S.ease;
+    const T = {}; for (const k of Object.keys(ctx.cues)) if (k.startsWith('e1-')) T[k.slice(3)] = at(k);
+    const OX = 120, OY = 840, SC = 150;
+    const toPx = (x, y) => [OX + SC * x, OY - SC * y];
+    const fromPx = (px, py) => [(px - OX) / SC, (OY - py) / SC];
+    const U = (x, y) => [0.6 + 0.4 * Math.sin(x + 0.5 * y), 0.3 * Math.cos(x)];
+    const chalk = K.c('chalk'), muted = K.c('muted'), ucol = K.c('u'), bg = K.c('bg');
+
+    // ---------- 2.1 : panneau et fiches ----------
+    const svg0 = K.svgLayer(ctx, 4); svg0.setAttribute('data-kit', 'panneau');
+    const frame = K.s('rect', { x: 120, y: 120, width: 1100, height: 720, fill: 'none', stroke: K.c('matter'), 'stroke-width': 2 }, svg0);
+    const cards = [[140, 330], [360, 550], [580, 770]].map(([y0, y1]) =>
+      K.s('rect', { x: 1300, y: y0, width: 500, height: y1 - y0, rx: 10, fill: 'none', stroke: muted, 'stroke-width': 2.5, 'stroke-dasharray': '10 8' }, svg0));
+
+    // ---------- 2.2 : flèches, une colonne après l'autre en 3 s ----------
+    const F = (px, py) => { const [x, y] = fromPx(px, py), v = U(x, y); return [v[0], -v[1]]; };
+    const cols = [];
+    for (let i = 0; i < 13; i++) cols.push(K.arrows(ctx, { F, box: { x: OX + i * 1100 / 13, y: 120, w: 1100 / 13, h: 720 }, nx: 1, ny: 9,
+      compress: { k: 58, threshold: 1e9 }, at: `e1-champ+${(0.1 + 2.5 * i / 12).toFixed(3)}` }));
+    const mot = K.el('div', { class: 'fiche-mot mono', 'data-kit': 'fiche' }, ctx.stage, K.upper('champ vectoriel'));
+    mot.style.left = '1550px'; mot.style.top = '168px';
+    K.equation(ctx, { x: 1550, y: 222, size: 60, anchor: 'center', tex: '\\U', at: 'e1-champ+0.5' });
+    K.equation(ctx, { x: 1550, y: 412, size: 56, anchor: 'center', tex: '\\U = (\\cu{u_x},\\, \\cu{u_y})', at: 'e1-verticale+0.6' });
+    K.equation(ctx, { x: 1550, y: 632, size: 56, anchor: 'center', tex: '\\term{dx}{\\partial_x \\cu{u_x}}\\term{c}{,\\;\\;}\\term{dy}{\\partial_y \\cu{u_x}}',
+      reveal: [['dx', 'e1-derivee+0.3'], [['c', 'dy'], 'e1-monte+3.6']] });
+
+    // ---------- 2.3 à 2.5 : la flèche agrandie et ses deux parts ----------
+    const svg = K.svgLayer(ctx, 12); svg.setAttribute('data-kit', 'decomposition');
+    const node = [OX + 10.5 * 1100 / 13, 120 + 4.5 * 80], nm = fromPx(...node), vN = U(...nm);
+    const BIG = 330, FOOT = [800, 570];
+    const back = K.s('rect', { x: 730, y: 400, width: 470, height: 260, rx: 12, fill: bg, 'fill-opacity': 0.9, stroke: 'none' }, svg);
+    const axH = K.s('path', { d: `M${FOOT[0] - 40},${FOOT[1]}L${FOOT[0] + 370},${FOOT[1]}`, stroke: muted, 'stroke-width': 2, fill: 'none' }, svg);
+    const axV = K.s('path', { d: `M${FOOT[0]},${FOOT[1] + 40}L${FOOT[0]},${FOOT[1] - 150}`, stroke: muted, 'stroke-width': 2, fill: 'none' }, svg);
+    const big = K.s('path', { fill: ucol, stroke: ucol, 'stroke-width': 5, 'stroke-linecap': 'round', 'stroke-linejoin': 'round' }, svg);
+    const partX = K.s('path', { fill: 'none', stroke: ucol, 'stroke-width': 5, 'stroke-dasharray': '12 9' }, svg);
+    const partY = K.s('path', { fill: 'none', stroke: ucol, 'stroke-width': 5, 'stroke-dasharray': '12 9' }, svg);
+    const lab = (tex, color = 'muted', cls = 'lab') => { const d = K.el('div', { class: cls, html: K.tex(tex, false) }, ctx.stage); d.style.color = K.c(color); return d; };
+    const labUx = lab('\\cu{u_x}', 'u'), labUy = lab('\\cu{u_y}', 'u');
+    const place = (el, x, y, o, ax = 0.5, ay = 0.5) => { el.style.left = x.toFixed(1) + 'px'; el.style.top = y.toFixed(1) + 'px';
+      el.style.transform = `translate(${-100 * ax}%, ${-100 * ay}%)`; el.style.opacity = o; K.show(el, o > 0.01); };
+
+    // ---------- 2.6 à 2.10 : le point, sa barre, les droites de marche ----------
+    const lineH = K.s('path', { d: `M120,${toPx(0, 1)[1]}L1220,${toPx(0, 1)[1]}`, stroke: chalk, 'stroke-width': 3, fill: 'none' }, svg);
+    const lineV = K.s('path', { d: `M${toPx(1, 0)[0]},120L${toPx(1, 0)[0]},840`, stroke: chalk, 'stroke-width': 3, fill: 'none' }, svg);
+    const labY1 = lab('y = 1'), labX1 = lab('x = 1');
+    const bar = K.s('path', { fill: 'none', stroke: ucol, 'stroke-width': 9, 'stroke-linecap': 'butt' }, svg);
+    const pt = K.s('circle', { r: 10, fill: chalk }, svg);
+    const labBar = lab('\\cu{u_x}', 'u'); labBar.style.fontSize = '36px';
+    // position du point (coordonnées mathématiques), fonction pure de t
+    const pos = (t) => {
+      const w = t - T.change;
+      let p = [1.3 + 0.25 * Math.sin(1.4 * w), 1.35 + 0.15 * Math.sin(0.9 * w)];
+      const go = seg(t, T.avance, T.avance + 0.4, E.inOutSine); p = [S.lerp(p[0], 0.6, go), S.lerp(p[1], 1, go)];
+      p[0] = S.lerp(p[0], 4.0, seg(t, T.avance + 0.4, T.avance + 4.4, E.inOutSine));
+      p[0] = S.lerp(p[0], 5.0, seg(t, T.taux, T.taux + 3.0, E.inOutSine));
+      const g2 = seg(t, T.monte, T.monte + 0.6, E.inOutSine); p = [S.lerp(p[0], 1, g2), S.lerp(p[1], 0.4, g2)];
+      p[1] = S.lerp(p[1], 4.4, seg(t, T.monte + 0.6, T.monte + 3.6, E.inOutSine));
+      return p;
+    };
+
+    // ---------- 2.8, 2.10 : petits graphes (Kit.plot) avec triangle de pente ----------
+    const f1 = (x) => 0.6 + 0.4 * Math.sin(x + 0.5), d1 = (x) => 0.4 * Math.cos(x + 0.5);
+    const f2 = (y) => 0.6 + 0.4 * Math.sin(1 + 0.5 * y), d2 = (y) => 0.2 * Math.cos(1 + 0.5 * y);
+    const back1 = K.s('rect', { x: 140, y: 132, width: 1060, height: 300, rx: 12, fill: bg, 'fill-opacity': 0.92 }, K.svgLayer(ctx, 11));
+    const back2 = K.s('rect', { x: 530, y: 132, width: 670, height: 300, rx: 12, fill: bg, 'fill-opacity': 0.92 }, K.svgLayer(ctx, 11));
+    const mkPlot = (box, xmin, xmax, f, a, out) => {
+      const P = K.plot(ctx, { box, x: { min: xmin, max: xmax, ticks: [] }, y: { min: 0, max: 1.1, ticks: [] }, grid: false, at: a, out, z: 12 });
+      const xs = [], ys = []; for (let i = 0; i <= 200; i++) { const x = xmin + (xmax - xmin) * i / 200; xs.push(x); ys.push(f(x)); }
+      P.curve({ x: xs, y: ys, field: 'u', width: 4, at: a, dur: 0.8 });
+      return P;
+    };
+    const P1 = mkPlot({ x0: toPx(0.3, 0)[0], x1: toPx(7.0, 0)[0], y0: 200, y1: 400 }, 0.3, 7.0, f1, 'e1-taux', 'e1-monte');
+    const P2 = mkPlot({ x0: 560, x1: 1160, y0: 200, y1: 400 }, 0, 5.6, f2, 'e1-monte+0.4');
+    const g1 = lab('\\cu{u_x}(x,\\, 1)'), g1x = lab('x'), g2 = lab('\\cu{u_x}(1,\\, y)'), g2y = lab('y');
+    const tri = (n) => ({ leg: K.s('path', { fill: 'none', stroke: chalk, 'stroke-width': 3 }, svg), rise: K.s('path', { fill: 'none', stroke: chalk, 'stroke-width': 5, 'stroke-linecap': 'round' }, svg),
+      hyp: K.s('path', { fill: 'none', stroke: chalk, 'stroke-width': 3 }, svg), dot: K.s('circle', { r: 8, fill: chalk }, svg) });
+    const tri1 = tri(), tri2 = tri();
+    const brace = K.s('path', { fill: 'none', stroke: muted, 'stroke-width': 3.5, 'stroke-linecap': 'round', 'stroke-linejoin': 'round' }, svg);
+    const dLab = lab('\\partial_x \\cu{u_x}', 'fg'); dLab.style.fontSize = '44px';
+
+    ctx.S = { T, toPx, U, cols, back, axH, axV, big, partX, partY, labUx, labUy, place, node, vN, BIG, FOOT, lineH, lineV, labY1, labX1, bar, pt, labBar, pos,
+      P1, P2, f1, d1, f2, d2, back1, back2, g1, g1x, g2, g2y, tri1, tri2, brace, dLab, cards, mot };
+  },
+
+  render(t, ctx) {
+    const K = Kit, S = Scene, seg = S.seg, E = S.ease;
+    const C = ctx.S, T = C.T;
+    // 2.1 : fiches vides, l'une après l'autre
+    C.cards.forEach((c, k) => { c.style.opacity = seg(t, T.mots + 0.2 + 0.35 * k, T.mots + 0.6 + 0.35 * k, E.linear); });
+    C.place(C.mot, 1550, 168, seg(t, T.champ + 0.3, T.champ + 0.7, E.linear), 0.5, 0); C.mot.style.transform = 'translateX(-50%)';
+    // 2.3 : le champ baisse à 30 %
+    const dimA = 1 - 0.7 * seg(t, T.composantes, T.composantes + 0.5, E.linear);
+    C.cols.forEach((a) => { a.canvas.style.opacity = dimA; });
+
+    // ---------- 2.3 à 2.6 : flèche agrandie ----------
+    const gIn = seg(t, T.composantes + 0.2, T.composantes + 0.8, E.inOutCubic), gOut = seg(t, T.change, T.change + 0.6, E.inOutCubic), g = gIn * (1 - gOut);
+    const showBig = t >= T.composantes + 0.2 && gOut < 1;
+    const foot = [S.lerp(C.node[0], C.FOOT[0], g), S.lerp(C.node[1], C.FOOT[1], g)], sc = S.lerp(58, C.BIG, g);
+    const tip = [foot[0] + C.vN[0] * sc, foot[1] - C.vN[1] * sc];
+    C.big.setAttribute('d', showBig ? K.arrowPath(foot[0], foot[1], tip[0], tip[1], S.lerp(12, 24, g)) : '');
+    const deco = seg(t, T.composantes + 0.5, T.composantes + 0.9, E.linear) * (1 - seg(t, T.change, T.change + 0.3, E.linear));
+    C.back.style.opacity = deco; C.axH.style.opacity = deco * 0.7; C.axV.style.opacity = deco * 0.7;
+    const px = seg(t, T.horizontale, T.horizontale + 0.5, E.inOutSine), py = seg(t, T.verticale, T.verticale + 0.5, E.inOutSine);
+    const F0 = C.FOOT, ex = F0[0] + C.vN[0] * C.BIG, ey = F0[1] - C.vN[1] * C.BIG;
+    C.partX.setAttribute('d', px > 0 ? `M${F0[0]},${F0[1]}L${S.lerp(F0[0], ex, px).toFixed(2)},${F0[1]}` : ''); C.partX.style.opacity = deco;
+    C.partY.setAttribute('d', py > 0 ? `M${ex},${F0[1]}L${ex},${S.lerp(F0[1], ey, py).toFixed(2)}` : ''); C.partY.style.opacity = deco;
+    C.place(C.labUx, (F0[0] + ex) / 2, F0[1] + 36, seg(t, T.horizontale + 0.4, T.horizontale + 0.7, E.linear) * deco);
+    C.place(C.labUy, ex + 46, (F0[1] + ey) / 2, seg(t, T.verticale + 0.4, T.verticale + 0.7, E.linear) * deco);
+
+    // ---------- 2.6 à 2.10 : le point et sa barre ----------
+    const pOn = seg(t, T.change + 0.6, T.change + 0.9, E.linear);
+    const p = C.pos(t), [qx, qy] = C.toPx(...p), ux = C.U(...p)[0];
+    C.pt.setAttribute('cx', qx.toFixed(2)); C.pt.setAttribute('cy', qy.toFixed(2)); C.pt.style.opacity = pOn;
+    C.bar.setAttribute('d', `M${(qx + 16).toFixed(2)},${(qy - 30).toFixed(2)}L${(qx + 16 + ux * 150).toFixed(2)},${(qy - 30).toFixed(2)}`); C.bar.style.opacity = pOn;
+    C.place(C.labBar, qx + 16 + ux * 150 + 12, qy - 30, pOn, 0, 0.5);
+    const hOn = seg(t, T.avance, T.avance + 0.4, E.linear) * (1 - seg(t, T.monte, T.monte + 0.4, E.linear));
+    C.lineH.style.opacity = hOn; C.place(C.labY1, 1200, C.toPx(0, 1)[1] - 40, hOn, 1, 0.5);
+    const vOn = seg(t, T.monte + 0.2, T.monte + 0.6, E.linear);
+    C.lineV.style.opacity = vOn; C.place(C.labX1, C.toPx(1, 0)[0] - 20, 806, vOn, 1, 0.5);
+
+    // ---------- 2.8 : graphe et triangle de pente ----------
+    const o1 = seg(t, T.taux, T.taux + 0.4, E.linear) * (1 - seg(t, T.monte, T.monte + 0.3, E.linear));
+    C.back1.style.opacity = o1;
+    C.place(C.g1, 170, 170, o1, 0, 0.5); C.place(C.g1x, C.P1.box.x1 + 30, 400, o1, 0, 0.5);
+    const setTri = (tr, P, xv, f, d, o) => {
+      const x0 = P.sx(xv), y0 = P.sy(f(xv)), x1 = P.sx(xv + 1), y1 = P.sy(f(xv) + d(xv));
+      tr.leg.setAttribute('d', `M${x0},${y0}L${x1},${y0}`); tr.rise.setAttribute('d', `M${x1},${y0}L${x1},${y1}`); tr.hyp.setAttribute('d', `M${x0},${y0}L${x1},${y1}`);
+      tr.dot.setAttribute('cx', x0); tr.dot.setAttribute('cy', y0);
+      for (const e of [tr.leg, tr.rise, tr.hyp, tr.dot]) e.style.opacity = o;
+      return { x1, y0, y1 };
+    };
+    const tOn1 = seg(t, T.taux + 0.8, T.taux + 1.2, E.linear) * (1 - seg(t, T.monte, T.monte + 0.3, E.linear));
+    const r1 = setTri(C.tri1, C.P1, p[0], C.f1, C.d1, tOn1);
+    // 2.9 : accolade le long de la montée, ∂x ux à côté
+    const bOn = seg(t, T.derivee, T.derivee + 0.4, E.linear) * (1 - seg(t, T.monte, T.monte + 0.3, E.linear));
+    const ya = Math.min(r1.y0, r1.y1), yb = Math.max(r1.y0, r1.y1), bx = r1.x1 + 14, rr = Math.min(10, (yb - ya) / 4), ym = (ya + yb) / 2;
+    C.brace.setAttribute('d', `M${bx},${ya} q${rr},0 ${rr},${rr} L${bx + rr},${ym - rr} q0,${rr} ${rr},${rr} q-${rr},0 -${rr},${rr} L${bx + rr},${yb - rr} q0,${rr} -${rr},${rr}`);
+    C.brace.style.opacity = bOn;
+    C.place(C.dLab, bx + 2 * rr + 14, ym, bOn, 0, 0.5);
+
+    // ---------- 2.10 : la montée, second graphe ----------
+    const o2 = seg(t, T.monte + 0.4, T.monte + 0.8, E.linear);
+    C.back2.style.opacity = o2;
+    C.place(C.g2, 580, 170, o2, 0, 0.5); C.place(C.g2y, 1180, 400, o2, 0, 0.5);
+    setTri(C.tri2, C.P2, p[1], C.f2, C.d2, seg(t, T.monte + 0.9, T.monte + 1.2, E.linear));
+  },
+});
+</script></body></html>
