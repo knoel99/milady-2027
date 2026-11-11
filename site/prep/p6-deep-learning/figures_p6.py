@@ -1,4 +1,4 @@
-"""Static figures of module p6 (FR and EN). Usage: python figures_p6.py <output_dir>"""
+"""Static figures of module p6 (deep learning). Usage: python3 figures_p6.py [out_dir] (default: this folder)"""
 import sys
 from pathlib import Path
 import numpy as np
@@ -9,9 +9,9 @@ matplotlib.use("Agg")
 import matplotlib.pyplot as plt
 
 torch.set_num_threads(1)
-OUT = Path(sys.argv[1])
-C1, C2, C3 = "#2a78d6", "#eb6834", "#1baf7a"
-INK, INK2, GRID = "#0b0b0b", "#52514e", "#d9d8d4"
+OUT = Path(sys.argv[1]) if len(sys.argv) > 1 else Path(__file__).resolve().parent
+sys.path.insert(0, str(Path(__file__).resolve().parents[2] / "assets"))
+from figstyle import C1, C2, C3, GRID, INK, INK2  # noqa: E402  shared palette (site/assets/figstyle.py)
 plt.rcParams.update({"font.size": 10.5, "axes.edgecolor": INK2, "axes.labelcolor": INK, "xtick.color": INK2,
                      "ytick.color": INK2, "axes.spines.top": False, "axes.spines.right": False,
                      "axes.grid": True, "grid.color": GRID, "grid.linewidth": 0.6, "lines.linewidth": 2,
@@ -93,7 +93,6 @@ with torch.no_grad():
               / y.norm()).item() for q in shifts]
 
 for lang, t in [("en", T["en"])]:
-    sfx = ""
     # Figure 1: POD vs AE
     fig, ax = plt.subplots(1, 3, figsize=(11.5, 3.5), constrained_layout=True)
     r_ax = np.arange(1, 25)
@@ -109,7 +108,7 @@ for lang, t in [("en", T["en"])]:
     sc = ax[2].scatter(Z[:, 0], Z[:, 1], c=s_test, cmap="twilight", s=14, edgecolors="none")
     ax[2].set_xlabel(t["z1"]); ax[2].set_ylabel(t["z2"]); ax[2].set_title(t["tc"]); ax[2].set_aspect("equal", "datalim")
     cb = fig.colorbar(sc, ax=ax[2], shrink=0.85); cb.set_label(t["pos"])
-    fig.savefig(OUT / f"fig-pod-ae{sfx}.png", dpi=160); plt.close(fig)
+    fig.savefig(OUT / "fig-pod-ae.png", dpi=160); plt.close(fig)
     # Figure 2: homogeneous POD = Fourier
     fig, ax = plt.subplots(1, 2, figsize=(11, 3.9), constrained_layout=True)
     i = np.arange(1, 41)
@@ -119,7 +118,7 @@ for lang, t in [("en", T["en"])]:
     for q, c in zip(range(4), (C1, C2, C3, INK2)):
         ax[1].plot(x, phi[:, q] * np.sqrt(N / 2), color=c, label=f"{t['mode']} {q + 1}")
     ax[1].set_xlabel(t["x"]); ax[1].set_title(t["te"]); ax[1].legend(ncol=4, loc="upper center", bbox_to_anchor=(0.5, -0.2), fontsize=9)
-    fig.savefig(OUT / f"fig-pod-fourier{sfx}.png", dpi=160); plt.close(fig)
+    fig.savefig(OUT / "fig-pod-fourier.png", dpi=160); plt.close(fig)
     # Figure 3: U-Net equivariance
     fig, ax = plt.subplots(figsize=(8, 3.2), constrained_layout=True)
     cols = [C2 if q % 4 == 0 else C1 for q in shifts]
@@ -129,5 +128,5 @@ for lang, t in [("en", T["en"])]:
                     fontsize=8.5, color=INK, rotation=90, va="bottom")
     ax.set_xticks(shifts); ax.set_xlabel(t["shift"]); ax.set_ylabel(t["eq"]); ax.set_title(t["tf"], fontsize=10.5)
     ax.grid(axis="x", visible=False)
-    fig.savefig(OUT / f"fig-unet-equiv{sfx}.png", dpi=160); plt.close(fig)
+    fig.savefig(OUT / "fig-unet-equiv.png", dpi=160); plt.close(fig)
 print("ok")

@@ -4,6 +4,7 @@
 - every index.qmd has its index.html, newer than the source;
 - the pinned KaTeX tags (SRI) are present on pages that have formulas;
 - the preparation modules have all the sections of the contract and >= 10 graded exercises;
+- every image of a module's own folder is written by its figures_p*.py script (figure provenance);
 - all relative links (href, src) of the published pages point to existing files;
 - internal anchors (#id) exist in the target page;
 - no index_files/ folder or .quarto file is published.
@@ -18,6 +19,7 @@ from urllib.parse import urlsplit
 
 ROOT = Path(__file__).resolve().parent.parent / "site"  # root of the published site
 KATEX_SRI = 'integrity="sha384-QFFtAGzvvj+bfgCGxXJlNZZR1nXEZgvG8tDLCCY1F19xl20WlfTYgguB4VcNdxYk"'
+IMG_RE = re.compile(r'(?:\]\(|src=")([^)"\s]+\.(?:png|svg|jpg|gif))')
 PREP_SECTIONS = ["{#objectives}", "{#prerequisites}", "{#plan}", "{#exercises}", "{#internship-link}", "{#further-reading}", "{#sources}"]
 
 
@@ -65,6 +67,10 @@ def main():
             n_ex = len(re.findall(r"^\d+\.\s+\*\*★", ex, flags=re.M))
             if n_ex < 10:
                 problems.append(f"{rel}: {n_ex} graded exercises (>= 10 expected)")
+            scripts = "".join(f.read_text(encoding="utf-8") for f in qmd.parent.glob("figures_p*.py"))
+            for img in sorted(set(IMG_RE.findall(src))):
+                if not img.startswith("../") and Path(img).name not in scripts:
+                    problems.append(f"{rel}: image {img} not written by a figures_p*.py script of the module")
         if (qmd.parent / "index_files").exists():
             problems.append(f"{rel}: index_files/ folder to delete")
         links = cache.setdefault(html, parse(html))

@@ -1,7 +1,7 @@
-"""Result plots (matplotlib), in French and English.
+"""Result plots (matplotlib).
 
 Usage: python3 figures.py [e1] [e2] [e3] [--quick]
-Outputs (in site/experiments/figures/): <name>.png|svg (French) and <name>-en.png|svg (English).
+Outputs (in site/experiments/figures/): <name>.png and <name>.svg.
 Reference categorical palette (fixed order); the "ground truth" reference is drawn in neutral ink.
 """
 from __future__ import annotations
@@ -17,8 +17,9 @@ import numpy as np  # noqa: E402
 
 from common import FIGS, RESULTS  # noqa: E402
 
-C = ["#2a78d6", "#eb6834", "#1baf7a", "#eda100", "#e87ba4", "#008300", "#6250d6", "#e34948"]
-INK, INK2, GRID, LIGHT = "#0b0b0b", "#52514e", "#e4e3df", "#b9b8b2"
+sys.path.insert(0, str(FIGS.parents[1] / "assets"))
+from figstyle import C, INK, INK2, LIGHT  # noqa: E402  shared palette (site/assets/figstyle.py)
+from figstyle import GRID_LIGHT as GRID  # noqa: E402
 plt.rcParams.update({
     "font.family": "DejaVu Sans", "font.size": 9, "axes.edgecolor": INK2, "axes.labelcolor": INK,
     "xtick.color": INK2, "ytick.color": INK2, "axes.grid": True, "grid.color": GRID, "grid.linewidth": 0.6,

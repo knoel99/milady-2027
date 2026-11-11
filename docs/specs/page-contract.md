@@ -76,7 +76,8 @@ Numbering: `Definition <chapter>.<n>` (a single counter per chapter for all call
 
 ## Figures
 
-- Conceptual diagrams: SVG/PNG produced by the `schematic-figure` skill (folder `figures/<name>/`), inserted with `![Full caption.](../../figures/<name>/<name>.png){width="100%" fig-alt="Text description."}`.
+- Conceptual diagrams shared between pages: `site/figures/<name>/` (generator in `figure/`, output `figure/out/<name>.png`), inserted with `![Full caption.](../../figures/<name>/figure/out/<name>.png){width="100%" fig-alt="Text description."}`.
+- Module figures: every image in a module's folder is written by the module's script `figures_pN.py` (one function per figure, fixed seeds, output folder = the module by default, run with `python3 figures_pN.py`); `tools/check_gates.py` checks it. The function reuses the code block of the page that precedes the figure and prints every measured number the caption quotes; the caption copies them from that output. Style: `site/assets/figstyle.py` (shared palette and rcParams).
 - Result plots: `site/experiments/figures/*.png` (written by `experiments/figures.py`) (matplotlib).
 
 ## Writing style
