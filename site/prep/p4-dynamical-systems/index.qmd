@@ -48,7 +48,7 @@ This module provides the language in which the internship frames its questions: 
 4. compute numerically the Lyapunov exponents of the Lorenz system, relate their sum to the divergence of the vector field, and describe the merging crisis of two symmetric attractors that gives rise to reversals in the Gissinger model (Gissinger, 2012);
 5. define invariant measure, ergodicity and physical (SRB) measure, write the Liouville and Fokker–Planck equations, and **prove** the stationarity identities $\mathbb{E}_\mu[F\cdot\nabla\varphi + \tfrac{\sigma^2}{2}\Delta\varphi] = 0$, of which the energy budget is a special case;
 6. explain why these identities do not fix the relative weight of two symmetric attractors (convexity of the set of invariant measures, ergodic measures as extreme points);
-7. prove the mean first-passage time formula in dimension 1, derive the Arrhenius–Kramers law from it, and estimate a reversal frequency with the Rice formula $\mathbb{E}[|\dot X|\,\delta(X)]$ from the stationary distribution alone;
+7. prove the mean first-passage time formula in dimension 1, derive the Arrhenius–Kramers law from it, and estimate a frequency of zero crossings (reversals and excursions) with the Rice formula $\mathbb{E}[|\dot X|\,\delta(X)]$ from the stationary distribution alone;
 8. reproduce, on the three-mode model of Gissinger (2012), the reversal threshold, the stationarity identities and the Rice formula used in experiment E1 of the repository.
 
 ## Prerequisites {#prerequisites}

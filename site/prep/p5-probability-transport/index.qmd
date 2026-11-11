@@ -550,7 +550,7 @@ Key takeaways — chapter 2
 
 ## 3. Monte Carlo estimation {#ch3}
 
-Every metric of a generative model (mean spectrum, mean helicity, dissipation rate, reversal frequency) is an expectation that we estimate with a finite number of samples. Before concluding that a model “satisfies the energy budget”, we need to know what error we make from sampling alone. This chapter gives this error bar, then shows how to reuse samples from one distribution to estimate expectations under another distribution, which will be used for the exponential tilting of Chapter 4.
+Every metric of a generative model (mean spectrum, mean helicity, dissipation rate, frequency of zero crossings of the dipole) is an expectation that we estimate with a finite number of samples. Before concluding that a model “satisfies the energy budget”, we need to know what error we make from sampling alone. This chapter gives this error bar, then shows how to reuse samples from one distribution to estimate expectations under another distribution, which will be used for the exponential tilting of Chapter 4.
 
 ### 3.1 The Monte Carlo estimator and the law of large numbers
 
@@ -1596,7 +1596,7 @@ $$
 \nu_u^+ = \int_0^{\infty}\dot x\,p(u, \dot x)\,\mathrm{d}\dot x.
 $$
 
-Applied to the dipole component of a dynamo, this formula relates the frequency of reversals to the joint invariant distribution of the state and its velocity; experiment E1 uses it to judge the generated distribution on a quantity that training does not see directly (see the [report](../../report/index.html#e1)).
+Applied to the dipole component of a dynamo, this formula relates the frequency of zero crossings of the dipole (reversals and excursions) to the joint invariant distribution of the state and its velocity; experiment E1 uses it to judge the generated distribution on a quantity that training does not see directly (see the [report](../../report/index.html#e1)).
 :::
 
 ### 6.5 Continuity equation and transport of distributions by a velocity field

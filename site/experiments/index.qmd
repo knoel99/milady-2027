@@ -76,7 +76,7 @@ Each script accepts `--quick` for a reduced version (from a few minutes to about
 
 ## E1 — dipole reversals {#e1}
 
-Gissinger's three-mode model serves as a "pocket dynamo": it has the symmetry $\mathbf{B}\to-\mathbf{B}$, an onset threshold for reversals (between $\Gamma = 0.86$ and $0.865$) and exactly known dynamics. We learn the stationary distribution $p(Q, D, V \mid \Gamma)$ by conditional flow matching, then measure the effect of the symmetry imposed by construction, of the stationarity loss, and of the per-sample projection. The reversal frequency is estimated from the generated distribution alone, through the Rice formula.
+Gissinger's three-mode model serves as a "pocket dynamo": it has the symmetry $\mathbf{B}\to-\mathbf{B}$, an onset threshold for reversals (between $\Gamma = 0.86$ and $0.865$) and exactly known dynamics. We learn the stationary distribution $p(Q, D, V \mid \Gamma)$ by conditional flow matching, then measure the effect of the symmetry imposed by construction, of the stationarity loss, and of the per-sample projection. The frequency of zero crossings of $D$ (reversals and excursions) is estimated from the generated distribution alone, through the Rice formula.
 
 In short: the equivariant velocity field keeps the distribution symmetric at every value of $\Gamma$, whereas data augmentation symmetrizes it only at training values; projecting each sample onto $\mathrm{d}E/\mathrm{d}t = 0$ multiplies the energy distance to the true distribution by 9; Rice's formula recovers the crossing frequency with a cumulative error of 14% far from the threshold (up to 65% at a single value) and of 42% near the threshold; the stationarity loss improves the residuals of a good model but fails on a biased model.
 
