@@ -117,8 +117,9 @@ def fig_fourier(out):
         S = sum(4 / np.pi * np.sin(n * xx) / n for n in range(1, n_max + 1, 2))
         ax[1].plot(xx, S, color=col, lw=1.4, label=rf"$n_\max$ = {n_max}")
     xm = np.linspace(1e-4, np.pi / 2, 200001)
-    smax = (sum(4 / np.pi * np.sin(n * xm) / n for n in range(1, 102, 2))).max()
-    print(f"fourier: max of the partial sum (n_max = 101) = {smax:.4f}")
+    for n_max in (11, 101):
+        smax = (sum(4 / np.pi * np.sin(n * xm) / n for n in range(1, n_max + 1, 2))).max()
+        print(f"fourier: max of the partial sum (n_max = {n_max}) = {smax:.4f}")
     ax[1].plot(xx, np.sign(xx), ":", color=fs.INK2, lw=1)
     ax[1].axhline(smax, color=fs.C3, ls="--", lw=1.2); ax[1].text(0.85, smax + 0.03, f"{smax:.3f}", ha="right")
     ax[1].legend(loc="lower right", fontsize=9, frameon=True); ax[1].set_title("Gibbs phenomenon")
@@ -136,7 +137,8 @@ def fig_fourier(out):
     ax[2].loglog(Ns, ed[3] * (Ns / Ns[3]) ** -2.0, ":", color=fs.INK2, lw=1)
     ax[2].text(150, ed[3] * (150 / Ns[3]) ** -2.0 * 3, r"$\propto N^{-2}$", color=fs.INK2)
     ax[2].set_xlabel(r"number of points $N$"); ax[2].set_ylabel("max error")
-    ax[2].legend(loc="lower left", fontsize=9, frameon=True); ax[2].set_title(r"Error of the derivative of $e^{\sin x}$")
+    ax[2].legend(loc="center", bbox_to_anchor=(0.70, 0.45), fontsize=8.5, frameon=True)
+    ax[2].set_title(r"Error of the derivative of $e^{\sin x}$")
     fig.tight_layout()
     fs.save(fig, out / "fig-fourier.png")
 

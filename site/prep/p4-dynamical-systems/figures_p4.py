@@ -1,8 +1,11 @@
 """Static figures of module p4 (dynamical systems, bifurcations, chaos, noise).
 
 Usage: python3 figures_p4.py [out_dir]     (default: the figures/ folder next to this script)
-Each figure reuses the code block of the page that precedes it; the numbers quoted in the captions
-are printed. Runs on CPU in about one minute.
+Kramers (c) and Gissinger (e) rerun the code blocks of the page (same seeds); the other panels are
+drawn here: the bifurcation branches (analytic, numpy roots), the Lorenz attractor and the separation
+of two trajectories (no renormalisation; the dashed slope is the lambda_1 = 0.90 measured by the
+Benettin and QR methods of the page, not fitted here), and the Gissinger trajectories of (a)-(d)
+(seed 4, transient 600). The numbers quoted in the captions are printed. Runs in about one minute.
 """
 import sys
 from pathlib import Path
@@ -96,7 +99,7 @@ def fig_lorenz(out):
         xa, xb = rk4(F, xa, dt), rk4(F, xb, dt)
         ts.append((k + 1) * dt); ds.append(np.linalg.norm(xb - xa))
     ts, ds = np.array(ts), np.array(ds)
-    lam1 = 0.90                                             # page: lambda_1 ≈ 0.90 (Benettin and QR)
+    lam1 = 0.90                                             # measured by the code block of the page (Benettin, QR)
     fig, ax = plt.subplots(1, 2, figsize=(10, 3.8))
     ax[0].plot(traj[:, 0], traj[:, 2], color=fs.C1, lw=0.6)
     ax[0].set_xlabel("x"); ax[0].set_ylabel("z"); ax[0].set_title("(a) Lorenz attractor (x–z projection)")
@@ -106,8 +109,7 @@ def fig_lorenz(out):
     ax[1].set_ylim(3e-9, 1e2); ax[1].legend(loc="lower right")
     ax[1].set_xlabel("time t"); ax[1].set_ylabel("|δx(t)| (log scale)")
     ax[1].set_title("(b) distance between two trajectories (initial distance 10⁻⁸)")
-    sat = ts[np.argmax(ds > 1.0)]
-    print(f"lorenz: separation reaches 1 at t = {sat:.1f}, max {ds.max():.1f}")
+    print("lorenz: separation reaches " + ", ".join(f"{v:g} at t = {ts[np.argmax(ds > v)]:.1f}" for v in (1, 10, 20)))
     fig.tight_layout()
     fs.save(fig, out / "lorenz.png")
 

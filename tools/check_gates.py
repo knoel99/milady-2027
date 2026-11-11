@@ -11,6 +11,7 @@
 Output: "ok" and the number of pages, or the list of problems (exit code 1).
 Usage: python3 tools/check_gates.py [page ...]   (no argument: the whole site; otherwise the given pages)
 """
+import ast
 import re
 import sys
 import html
@@ -34,6 +35,38 @@ class Links:
         text = re.sub(r"<script\b[^>]*>.*?</script>", "", text, flags=re.S)
         self.ids = set(self.ID_RE.findall(text))
         self.refs = [html.unescape(r) for r in self.REF_RE.findall(text)]
+
+
+def written_images(folder):
+    """Image names saved by the figures_p*.py scripts of a module folder.
+
+    A name counts if it is a string literal inside a call to save/savefig, at module level or in a
+    function that the ``if __name__ == "__main__"`` block refers to (comments and dead functions do not count).
+    """
+    names = set()
+    for script in folder.glob("figures_p*.py"):
+        tree = ast.parse(script.read_text(encoding="utf-8"))
+        main_names = set()
+        for node in tree.body:
+            if isinstance(node, ast.If) and "__main__" in ast.unparse(node.test):
+                main_names |= {n.id for n in ast.walk(node) if isinstance(n, ast.Name)}
+
+        def saved(node):
+            out = set()
+            for call in ast.walk(node):
+                if isinstance(call, ast.Call) and getattr(call.func, "attr", getattr(call.func, "id", "")) in ("save", "savefig"):
+                    for c in ast.walk(call):
+                        if isinstance(c, ast.Constant) and isinstance(c.value, str) and c.value.endswith((".png", ".svg")):
+                            out.add(Path(c.value).name)
+            return out
+
+        for node in tree.body:
+            if isinstance(node, (ast.FunctionDef, ast.AsyncFunctionDef)):
+                if node.name in main_names:
+                    names |= saved(node)
+            else:
+                names |= saved(node)
+    return names
 
 
 def parse(path):
@@ -67,10 +100,14 @@ def main():
             n_ex = len(re.findall(r"^\d+\.\s+\*\*★", ex, flags=re.M))
             if n_ex < 10:
                 problems.append(f"{rel}: {n_ex} graded exercises (>= 10 expected)")
-            scripts = "".join(f.read_text(encoding="utf-8") for f in qmd.parent.glob("figures_p*.py"))
-            for img in sorted(set(IMG_RE.findall(src))):
-                if not img.startswith("../") and Path(img).name not in scripts:
+            written = written_images(qmd.parent)
+            used = {img for img in IMG_RE.findall(src) if not img.startswith("../")}
+            for img in sorted(used):
+                if Path(img).name not in written:
                     problems.append(f"{rel}: image {img} not written by a figures_p*.py script of the module")
+            for f in sorted(qmd.parent.rglob("*")):
+                if f.suffix in (".png", ".svg", ".jpg", ".gif") and f.relative_to(qmd.parent).as_posix() not in used:
+                    problems.append(f"{rel}: image {f.relative_to(qmd.parent)} not used by the page (delete it)")
         if (qmd.parent / "index_files").exists():
             problems.append(f"{rel}: index_files/ folder to delete")
         links = cache.setdefault(html, parse(html))

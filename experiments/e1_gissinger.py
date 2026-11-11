@@ -267,7 +267,8 @@ def main(quick=False, reverse=False, train_only=False):
         if True:
             # Initial weights depend only on the seed: not on the start-up seed of torch (random in torch 2.14),
             # the job order (--reverse) or which jobs were read from the cache. Before 2026-11-11 the first
-            # model was built before any seeding, so variant A of the published runs is not reproducible.
+            # model built in each process was initialised before any seeding (A_reference seed 0 in a
+            # forward run without cache; C_court of the last seed with --reverse): not reproducible.
             seed_all(seed)
             base = MLPField(3, width=256, depth=4)
             model = SymmetrizedField(base, S) if kind == "sym" else base

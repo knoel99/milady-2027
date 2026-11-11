@@ -1,8 +1,11 @@
 """Static figures of module p3 (MHD and dynamo theory).
 
 Usage: python3 figures_p3.py [out_dir]     (default: the figures/ folder next to this script)
-Each data figure reuses the code block of the page that precedes it; the numbers quoted in the
-captions are printed. The VKS diagram uses the dimensions of docs/specs/sources/dynamo.md §1.3.
+Each data figure reuses the code block of the page that precedes it, with these differences:
+expulsion is computed at N = 128 (page default 96, as the caption says; energies agree to 0.004);
+alpha2 adds points near the threshold and integrates 40 time units for C < 7.5 (slow growth);
+gissinger records the time series of one trajectory at Gamma = 0.86 and 0.90. The numbers quoted
+in the captions are printed. The VKS diagram uses the dimensions of docs/specs/sources/dynamo.md §1.3.
 Runs on CPU in about two minutes.
 """
 import sys
@@ -184,17 +187,18 @@ def fig_vks(out):
         for sy in (-1, 1):
             x0, x1 = sorted((sx * 20, sx * 150)); y0, y1 = sorted((sy * 20, sy * 170))
             ax.add_patch(patches.Rectangle((x0, y0), x1 - x0, y1 - y0, fill=False, **loop_kw))
-            ccw = sx * sy < 0                               # sense of the poloidal cell
-            for (xa, ya, dx, dy) in [((x0 + x1) / 2, y1, 1, 0), ((x0 + x1) / 2, y0, -1, 0),
-                                     (x0, (y0 + y1) / 2, 0, -1), (x1, (y0 + y1) / 2, 0, 1)]:
-                d = -1 if ccw else 1
-                ax.annotate("", xy=(xa + 8 * dx * d, ya + 8 * dy * d), xytext=(xa, ya),
+            # drawn along the axis towards the impeller, ejected along the disk, back along the wall,
+            # inwards at the mid-plane (same sense as P2, figure flows (f))
+            xm, ym = sx * 85, sy * 95
+            for (xa, ya, dx, dy) in [(xm, sy * 20, sx, 0), (sx * 150, ym, 0, sy),
+                                     (xm, sy * 170, -sx, 0), (sx * 20, ym, 0, -sy)]:
+                ax.annotate("", xy=(xa + 8 * dx, ya + 8 * dy), xytext=(xa, ya),
                             arrowprops=dict(arrowstyle="-|>", color=fs.C1, lw=1.4))
     for (x, y, sym) in [(-230, 180, "⊙"), (230, 180, "⊗"), (-230, -180, "⊗"), (230, -180, "⊙")]:
         ax.text(x, y, sym, ha="center", va="center", color=fs.C2, fontsize=14, family="DejaVu Sans")
     ax.annotate("", xy=(100, -12), xytext=(-100, -12), arrowprops=dict(arrowstyle="-|>", color="#e34948", lw=3))
-    ax.annotate("", xy=(-185.5, -245), xytext=(185.5, -245), arrowprops=dict(arrowstyle="<->", color=fs.INK2))
-    ax.text(0, -265, "371 mm", ha="center", va="top", color=fs.INK2, fontsize=9)
+    ax.annotate("", xy=(-185.5, -232), xytext=(185.5, -232), arrowprops=dict(arrowstyle="<->", color=fs.INK2))
+    ax.text(0, -240, "371 mm", ha="center", va="top", color=fs.INK2, fontsize=9)
     marks = {1: (-280, 265), 2: (-245, -100), 3: (205, 80), 4: (255, 180), 5: (95, 110), 6: (25, -185), 7: (0, -50)}
     for n, (x, y) in marks.items():
         ax.text(x, y, str(n), ha="center", va="center", color="white", fontsize=9, fontweight="bold",
@@ -255,7 +259,7 @@ def fig_gissinger(out):
     for a in (a1, a2):
         a.axhline(0, color=fs.INK2, lw=0.8); a.set_ylim(-3.3, 3.3); a.set_ylabel("dipole D")
     a1.set_xticklabels([]); a2.set_xlabel("time t")
-    a3.axvspan(0.795, 0.865, color="#e4e3df", lw=0)
+    a3.axvspan(0.795, 0.86, color="#e4e3df", lw=0)
     a3.plot(gammas, per1000, "o-", color=fs.C1, mfc="white", mew=1.5)
     a3.set_xlabel("Γ"); a3.set_ylabel("reversals per 1000 time units")
     fig.tight_layout()

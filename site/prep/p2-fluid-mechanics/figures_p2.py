@@ -1,7 +1,9 @@
 """Static figures of module p2 (fluid mechanics, reference flows, turbulence).
 
 Usage: python3 figures_p2.py [out_dir]     (default: the folder of this script)
-lagrange and kolmogorov64 rerun the code blocks of the page (sections 1 and 7); the model spectrum is
+kolmogorov64 reruns the solver of the page (section 7); lagrange advects the boundary of the blob
+with the RK4 of the section 1 block (400 steps per time unit) and measures its area by the shoelace
+formula (the page block checks det(dX/da) = 1 at points, not areas); the model spectrum is
 that of Pope (2000) used by the interactive diagram of section 6 (C = 1.5, p0 = 2, c_L = 6.78,
 beta = 5.2, c_eta = 0.40); the VKS panel uses a model stream function and the dimensions of
 docs/specs/sources/dynamo.md §1.3. Prints the numbers quoted in the captions. Runs in about a minute.
