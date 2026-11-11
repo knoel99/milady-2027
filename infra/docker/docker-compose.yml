@@ -199,7 +199,7 @@ services:
 
   # -------------------------------------------------------------------------------------------
   # Compute containers (simulations, training, evaluation). Started on demand:
-  #   docker compose ... run --rm worker python -m milady.sweep infra/configs/palier2_abc3d.yaml
+  #   docker compose ... run --rm worker python -m milady.sweep infra/configs/stage2_abc3d.yaml
   # -------------------------------------------------------------------------------------------
   worker:
     <<: *milady-worker

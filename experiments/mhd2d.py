@@ -153,7 +153,7 @@ class MHD2D:
         Zw = m(w)
         Jj = m(self.k2 * a)
         diss = self.nu * Zw + self.eta * Jj + self.alpha * 2 * Eu + self.alpha * 2 * Eb
-        return {"Eu": Eu, "Eb": Eb, "enstrophie": Zw, "j2": Jj, "dissipation": diss}
+        return {"Eu": Eu, "Eb": Eb, "enstrophy": Zw, "j2": Jj, "dissipation": diss}
 
 
 def leray_project(ux, uy):

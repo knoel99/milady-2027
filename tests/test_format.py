@@ -371,7 +371,7 @@ def _synthetic_e2(tmp_path: Path, n: int = 32, members: int = 2, n_snap: int = 3
         inj_b=0.045,
         eta=0.004,
     )
-    meta = dict(convert.E2_DEFAULTS, membres=members, eta_train=[0.004], eta_test=[])
+    meta = dict(convert.E2_DEFAULTS, members=members, eta_train=[0.004], eta_test=[])
     (src / "meta.json").write_text(json.dumps(meta))
     return src
 

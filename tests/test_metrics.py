@@ -101,7 +101,7 @@ def test_budget_stokes_taylor_green() -> None:
     bud = M.energy_budget(u, None, params)
     assert bud["injection"] == pytest.approx(3 * nu * np.mean(np.sum(u**2, -1)), rel=1e-12)
     assert abs(bud["residual_total"]) < 1e-14
-    assert abs(M.budget_summary(bud)["residu_bilan_total"]) < 1e-12
+    assert abs(M.budget_summary(bud)["balance_residual_total"]) < 1e-12
     # random forcing: injection = eps
     rnd = M.energy_budget(
         np.stack([u, u]), None, {"mode": "dynamic", "forcing": "random", "eps": 0.3, "nu": nu}
@@ -215,5 +215,5 @@ def test_features_and_compare() -> None:
     )
     m = res["metrics"]
     assert m["div_rel_u"] < 1e-12 and m["div_rel_b"] < 1e-12
-    assert abs(m["dist_energie"]) < 1e-12 and m["err_spectre_u_log10"] == 0.0 and m["err_Eb_rel"] == 0.0
-    assert math.isfinite(m["residu_bilan_total"]) and "plancher_dist_energie" not in m  # < 8 samples
+    assert abs(m["energy_distance"]) < 1e-12 and m["spectrum_error_u_log10"] == 0.0 and m["err_Eb_rel"] == 0.0
+    assert math.isfinite(m["balance_residual_total"]) and "energy_distance_floor" not in m  # < 8 samples

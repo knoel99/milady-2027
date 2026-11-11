@@ -1,7 +1,7 @@
 // Figure "architecture" (concept A): the chain of a campaign and its two stores (a), then the
 // services that fulfil each role on the three targets (b). English text.
 // Hero: none (software architecture); machine icons in 3D vector (L.obliqueBox); computed field
-// thumbnail (initial Taylor–Green flow, analytic, kf = 2, as in palier2_tg3d.yaml).
+// thumbnail (initial Taylor–Green flow, analytic, kf = 2, as in stage2_tg3d.yaml).
 
 // Color key of the site (figures framework, thesis-plan, taxonomy): color is reserved for data.
 export const K = {
@@ -56,7 +56,7 @@ export function sheet(L, p, x, y, w, h, { fold = 3, fill = '#ffffff', stroke = '
   L.polygon(p, [[x, y], [x + w - fold, y], [x + w, y + fold], [x + w, y + h], [x, y + h]], { fill, stroke, width, join: 'round' });
   L.polyline(p, [[x + w - fold, y], [x + w - fold, y + fold], [x + w, y + fold]], { fill: 'none', stroke, width, join: 'round' });
 }
-// Re × Pm grid of palier2_tg3d: 4 columns (Re = 25, 50, 100, 200), 3 rows (Pm = 0.5; 1; 2, going up)
+// Re × Pm grid of stage2_tg3d: 4 columns (Re = 25, 50, 100, 200), 3 rows (Pm = 0.5; 1; 2, going up)
 export function paramGrid(L, p, x0, y0, d, r, mark) {
   const pts = [];
   for (let i = 0; i < 4; i++) for (let j = 0; j < 3; j++) {
@@ -144,7 +144,7 @@ export function make(lang) {
     }
     const sub = (k, str, o = {}) => L.text(pa, cx(k), SUBY, str, { size: 5.7, color: K.sub, anchor: 'middle', ...o });
 
-    // 1: YAML sheet and Re × Pm grid (palier2_tg3d.yaml)
+    // 1: YAML sheet and Re × Pm grid (stage2_tg3d.yaml)
     {
       const c = cx(0), x = c - m(8.6), y = m(12.4), w = m(17.2), h = m(19.6), d = m(3.1);
       sheet(L, pa, x, y, w, h, { fold: m(3) });

@@ -4,7 +4,7 @@
 #   make setup                    portable: .venv venv + pinned dependencies + pip install -e .
 #   make env && make up           Docker stack (PostgreSQL, MinIO, MLflow) on any machine
 #   make smoke                    end-to-end test (simulation → MFF → S3 → catalogue → training → evaluation)
-#   make sweep CONFIG=infra/configs/palier2_abc3d.yaml
+#   make sweep CONFIG=infra/configs/stage2_abc3d.yaml
 #   make train CONFIG=infra/configs/train_fm3d.yaml [NGPUS=4]
 #   make eval  CONFIG=infra/configs/train_fm3d.yaml [MODEL=<uuid>]
 #

@@ -223,8 +223,8 @@ def test_s3_mff_hdf5_zarr_and_catalog(s3_env: str, tmp_path: Path, monkeypatch: 
 
     monkeypatch.setenv("MILADY_STORAGE_URI", s3_env)
     sim_id = str(uuid.uuid4())
-    uri = storage.simulation_uri("palier1", sim_id)
-    assert uri == f"{s3_env}/palier1/{sim_id}/fields.h5"
+    uri = storage.simulation_uri("stage1", sim_id)
+    assert uri == f"{s3_env}/stage1/{sim_id}/fields.h5"
     x = 2 * np.pi * np.arange(16) / 16
     rng = np.random.default_rng(0)
     b = rng.normal(size=(2, 5, 16, 16, 16, 3)).astype(np.float32)
@@ -240,7 +240,7 @@ def test_s3_mff_hdf5_zarr_and_catalog(s3_env: str, tmp_path: Path, monkeypatch: 
     d = read_mff(uri, t=slice(3, 5), traj=1)
     np.testing.assert_array_equal(d["fields"]["magnetic_field"], b[1:2, 3:5])
 
-    zuri = storage.simulation_uri("palier1", sim_id, "fields", ".zarr")
+    zuri = storage.simulation_uri("stage1", sim_id, "fields", ".zarr")
     local = tmp_path / "local.h5"
     storage.get(uri, local)
     to_zarr(local, zuri)
@@ -249,6 +249,6 @@ def test_s3_mff_hdf5_zarr_and_catalog(s3_env: str, tmp_path: Path, monkeypatch: 
     np.testing.assert_array_equal(dz["fields"]["magnetic_field"], b[1:2, 3:5])
 
     cat = Catalog("sqlite://")
-    out = cat.ingest_mff(uri, campaign="palier1")
+    out = cat.ingest_mff(uri, campaign="stage1")
     assert out["simulation_id"] == sim_id
     assert cat.get_simulation(sim_id)["files"][0]["sha256"] == sha

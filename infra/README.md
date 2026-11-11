@@ -107,8 +107,8 @@ After a new SSH connection (so that membership of the `docker` group takes effec
 ```bash
 cd milady-2027
 make ps                                                    # service status
-make sweep CONFIG=infra/configs/palier2_abc3d.yaml         # campaign (in the compute container)
-make sweep CONFIG=infra/configs/palier2_abc3d.yaml SCHEDULER=docker   # one container per simulation
+make sweep CONFIG=infra/configs/stage2_abc3d.yaml         # campaign (in the compute container)
+make sweep CONFIG=infra/configs/stage2_abc3d.yaml SCHEDULER=docker   # one container per simulation
 make train CONFIG=infra/configs/train_fm3d.yaml            # training (all GPUs, torchrun)
 make eval  CONFIG=infra/configs/train_fm3d.yaml            # evaluation (MODEL=<uuid> for a specific model)
 make shell                                                 # shell in the compute container
@@ -133,7 +133,7 @@ Catalog on the command line (in the container):
 ```bash
 make shell
 python -m milady.catalog campaigns
-python -m milady.catalog sims --campaign palier2_abc3d --param Rm__gt=8
+python -m milady.catalog sims --campaign stage2_abc3d --param Rm__gt=8
 python -m milady.catalog summary
 ```
 
@@ -186,7 +186,7 @@ Full chain in portable mode (checked here on a campaign reduced to 4 simulations
 6-iteration training run, §11; real campaigns at 64³ require a GPU):
 
 ```bash
-make sweep CONFIG=infra/configs/palier2_tg3d.yaml          # simulations → MFF → data/store + catalog
+make sweep CONFIG=infra/configs/stage2_tg3d.yaml          # simulations → MFF → data/store + catalog
 make train CONFIG=infra/configs/train_fm3d.yaml            # creates the dataset from the campaign, trains
 make eval  CONFIG=infra/configs/train_fm3d.yaml            # latest "fm3d_tg3d" model (or MODEL=<uuid>)
 python -m milady.catalog summary                           # mean/standard deviation per model, metric, parameters
@@ -410,7 +410,7 @@ checkpoints, MLflow artifacts), MLflow REST API (`/api/2.0/mlflow/runs/get`: run
 | `SLURM_ARRAY_TASK_ID=i bash infra/slurm/gen_data.sbatch <campaign>` (4 elements) | 2 s each | files in `$SCRATCH/milady/store`, SQLite catalog `$WORK/milady/catalog.sqlite` |
 | `GPUS_PER_NODE=2 bash infra/slurm/train.sbatch infra/configs/train_fm3d.yaml --set …` | 6 s | `torchrun` with 2 CPU processes (gloo), SQLite MLflow `$WORK/milady/mlflow.db` |
 | `bash infra/slurm/eval.sbatch infra/configs/train_fm3d.yaml --model <uuid>` | 2 s | evaluations in the cluster's catalog |
-| `python -m milady.sweep infra/configs/palier2_abc3d.yaml --scheduler slurm --dry-run` | 1 s | `sbatch` script rendered (`--array=0-36%16`), nothing submitted |
+| `python -m milady.sweep infra/configs/stage2_abc3d.yaml --scheduler slurm --dry-run` | 1 s | `sbatch` script rendered (`--array=0-36%16`), nothing submitted |
 
 **Review checks** (same day, after corrections):
 
@@ -448,7 +448,7 @@ checkpoints, MLflow artifacts), MLflow REST API (`/api/2.0/mlflow/runs/get`: run
   YAML), `deploy_remote.sh` (rsync/SSH to a VM), a Docker installation on an Ubuntu without
   Docker (here Docker was already present: step 2 was skipped), Ubuntu 22.04, provider S3 buckets
   (AWS, Scaleway, OVHcloud: only MinIO was used) and `make backup` to `s3://…`.
-- **Real size**: the `palier2_abc3d` campaigns (37 simulations at 64³) and `palier2_tg3d`
+- **Real size**: the `stage2_abc3d` campaigns (37 simulations at 64³) and `stage2_tg3d`
   (12 simulations at 64³) and a full training run (`train_fm3d.yaml`, 200 epochs) were not
   launched: only reduced versions were.
 - **Jupyter**: `make jupyter` was checked during development (token required), not during this

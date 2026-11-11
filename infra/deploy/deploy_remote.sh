@@ -100,6 +100,6 @@ cat <<EOF
 ==> Deployment finished. Web interfaces through an SSH tunnel:
     ssh -N -L 5000:localhost:5000 -L 9001:localhost:9001 ${TARGET}
     then http://localhost:5000 (MLflow) and http://localhost:9001 (MinIO console).
-    Commands: ssh ${TARGET} 'cd ${REMOTE_DIR} && make sweep CONFIG=infra/configs/palier2_abc3d.yaml'
+    Commands: ssh ${TARGET} 'cd ${REMOTE_DIR} && make sweep CONFIG=infra/configs/stage2_abc3d.yaml'
     Do not forget: make backup then delete the VM ${host} to stop billing.
 EOF

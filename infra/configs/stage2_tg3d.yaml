@@ -13,9 +13,9 @@
 # the resolution on a first simulation (spectra E_u(k), E_B(k) that decay over several
 # decades before k_max: milady.sim.mhd3d.MHD3D.energy_spectra) and move to N = 128 if needed.
 #
-# Run:       make sweep CONFIG=infra/configs/palier2_tg3d.yaml
-#            python -m milady.sweep infra/configs/palier2_tg3d.yaml --scheduler slurm
-name: palier2_tg3d
+# Run:       make sweep CONFIG=infra/configs/stage2_tg3d.yaml
+#            python -m milady.sweep infra/configs/stage2_tg3d.yaml --scheduler slurm
+name: stage2_tg3d
 description: >-
   Forced 3D Taylor–Green MHD (kf = 2) at 64³: Re ∈ {25, 50, 100, 200} × Pm ∈ {0.5, 1, 2} (12 simulations),
   magnetic seed 1e-3, 40 snapshots (u, B) after 100 time units.
@@ -58,4 +58,4 @@ output:
   uri: ${MILADY_STORAGE_URI}
   fields: [velocity, magnetic_field]
   spectral: false
-  dataset_name: milady_palier2_tg3d
+  dataset_name: milady_stage2_tg3d

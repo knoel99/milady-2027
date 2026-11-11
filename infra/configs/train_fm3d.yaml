@@ -1,6 +1,6 @@
 # Tier 2 training (PhD): conditional flow matching of 3D MHD fields (u, B) under hard constraints.
 #
-# Data: campaign palier2_tg3d (forced Taylor–Green MHD, Re × Pm), MFF files recorded in the catalogue.
+# Data: campaign stage2_tg3d (forced Taylor–Green MHD, Re × Pm), MFF files recorded in the catalogue.
 # Representation: vector potentials A_u, A_B in Coulomb gauge, Fourier coefficients |m| ≤ kmax
 # (Craya–Herring basis, per-mode normalisation); decoding u = ∇×A_u, B = ∇×A_B: ∇·u = ∇·B = 0 exactly.
 # Conditioning: log Re, log Pm (normalised over the training range).
@@ -27,11 +27,11 @@ description: >-
 
 data:
   # Source: catalogue dataset ("name" or "name:version"), overridden by --dataset or --files.
-  dataset: milady_palier2_tg3d
+  dataset: milady_stage2_tg3d
   version: null                    # null: latest version
   # If it does not exist yet, it is created from the finished simulations of this campaign
   # ("fields" files); the listed points go to validation / test, the others to training.
-  campaign: palier2_tg3d
+  campaign: stage2_tg3d
   auto_dataset:
     val:
       - {Re: 100, Pm: 1.0}

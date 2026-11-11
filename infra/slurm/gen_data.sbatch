@@ -2,12 +2,12 @@
 # MilaDy data generation on Slurm: job array, ONE simulation (1 GPU) per element.
 #
 # Normal submission (from the repository root) — the array is sized by milady.sweep:
-#   python -m milady.sweep infra/configs/palier2_abc3d.yaml --scheduler slurm
+#   python -m milady.sweep infra/configs/stage2_abc3d.yaml --scheduler slurm
 # Manual submission (N simulations, at most 16 in parallel):
-#   sbatch --array=0-$((N-1))%16 infra/slurm/gen_data.sbatch infra/configs/palier2_abc3d.yaml
+#   sbatch --array=0-$((N-1))%16 infra/slurm/gen_data.sbatch infra/configs/stage2_abc3d.yaml
 # Jean Zay (H100 example; see infra/slurm/README-slurm.md):
 #   sbatch --account=abc@h100 -C h100 --cpus-per-task=24 --array=0-36%16 \
-#          infra/slurm/gen_data.sbatch infra/configs/palier2_abc3d.yaml
+#          infra/slurm/gen_data.sbatch infra/configs/stage2_abc3d.yaml
 #
 # Argument: campaign YAML file. The array element SLURM_ARRAY_TASK_ID selects the parameter point
 # (order of the campaign expansion by milady.sweep).

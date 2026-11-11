@@ -19,7 +19,7 @@ infra/
   deploy/deploy_remote.sh    from the laptop: rsync/ssh to a VM, then bootstrap
   deploy/backup.sh           PostgreSQL dump + object storage synchronization to a bucket or a disk
   slurm/                     sbatch templates: gen_data.sbatch (job array), train.sbatch (multi-GPU torchrun), eval.sbatch; apptainer.def; Jean Zay README
-  configs/                   YAML campaigns: palier1_mhd2d.yaml, palier2_abc3d.yaml, palier2_tg3d.yaml; train_fm3d.yaml
+  configs/                   YAML campaigns: stage1_mhd2d.yaml, stage2_abc3d.yaml, stage2_tg3d.yaml; train_fm3d.yaml
   db/schema.sql              PostgreSQL schema (SQLite-compatible for portable mode, via SQLAlchemy)
 src/milady/                  installable Python package (pip install -e .), "src" layout
   pyproject.toml (at the repository root)
@@ -77,7 +77,7 @@ MLflow (same PostgreSQL, separate database; artifacts in S3) tracks the training
 ## 5. Deployment
 
 - **Cloud GPU VM**: `git clone … && cd milady-2027 && sudo infra/deploy/bootstrap_vm.sh`; installs Docker and the NVIDIA Container Toolkit if a GPU is detected, generates `.env` (random passwords), builds the image (`Dockerfile.gpu` if GPU), starts `db`, `s3`, `mlflow`, then `make smoke` (tiny 3D simulation → MFF file → catalog → one-iteration training → evaluation).
-- **Slurm HPC**: `make sif` (Apptainer from the Docker image or `apptainer.def`), then `python -m milady.sweep infra/configs/palier2_abc3d.yaml --scheduler slurm` (job array), `sbatch infra/slurm/train.sbatch infra/configs/train_fm3d.yaml`. Notes for Jean Zay (modules, GPU partitions, `$WORK`, `$SCRATCH`, no Internet on compute nodes).
+- **Slurm HPC**: `make sif` (Apptainer from the Docker image or `apptainer.def`), then `python -m milady.sweep infra/configs/stage2_abc3d.yaml --scheduler slurm` (job array), `sbatch infra/slurm/train.sbatch infra/configs/train_fm3d.yaml`. Notes for Jean Zay (modules, GPU partitions, `$WORK`, `$SCRATCH`, no Internet on compute nodes).
 - **Laptop**: `make setup` (venv + `pip install -e .`), SQLite catalog, local storage `./data`.
 - No secret in the repository; `.env` and credentials are in `.gitignore`.
 

@@ -154,10 +154,10 @@ def e2():
           f"Fourier modes; dimension {c['dim_potentiels']} (potentials) or {c['dim_composantes']} (components); MLP width {c['largeur']}, "
           f"{c['iters']} iterations; {c['n_gen']} samples per η; {c['n_train_par_eta']} training snapshots per η; "
           f"injection (Itô) ε_u, ε_b, ε_{{a²}} = {[round(x, 5) for x in c['injection']]}.\n")
-    keys = [("div_rel_u", "rel. div. u"), ("div_rel_b", "rel. div. B"), ("err_spectre_log10", "err. spectrum"),
-            ("err_Eu_rel", "err. E_u"), ("err_Eb_rel", "err. E_B"), ("residu_bilan_energie", "energy residual"),
-            ("residu_bilan_Hc", "H_c residual"), ("residu_bilan_A2", "⟨a²⟩ residual"), ("std_diss_rel", "σ(D)/σ_ref"),
-            ("dist_energie_features", "energy dist.")]
+    keys = [("div_rel_u", "rel. div. u"), ("div_rel_b", "rel. div. B"), ("spectrum_error_log10", "err. spectrum"),
+            ("err_Eu_rel", "err. E_u"), ("err_Eb_rel", "err. E_B"), ("balance_residual_energie", "energy residual"),
+            ("balance_residual_Hc", "H_c residual"), ("balance_residual_A2", "⟨a²⟩ residual"), ("std_diss_rel", "σ(D)/σ_ref"),
+            ("energy_distance_features", "energy dist.")]
     for split in ("test", "train"):
         print(f"\n### Means over the {split} η\n")
         print("| variant | " + " | ".join(k[1] for k in keys) + " |")
@@ -181,7 +181,7 @@ def e2_detail(r):
     vs = ["V0_libre", "V1_penalite", "V4_potentiels", "V5_temoin", "V5_potentiels_stat"]
     rows = sorted([(x["eta"], "training", i) for i, x in enumerate(ev[vs[0]]["train"])]
                   + [(x["eta"], "test", i) for i, x in enumerate(ev[vs[0]]["test"])])
-    for k, lab in (("dist_energie_features", "energy distance"), ("residu_bilan_energie", "signed residual of the energy balance"),
+    for k, lab in (("energy_distance_features", "energy distance"), ("balance_residual_energie", "signed residual of the energy balance"),
                    ("err_Eb_rel", "relative error on E_B")):
         print(f"\n### Per η: {lab}\n")
         print("| η | set | " + " | ".join(vs) + " |")
@@ -194,9 +194,9 @@ def e2_detail(r):
     print("|---|---|---|---|---|---|---|---|---|")
     for key, x in sorted(el.items(), key=lambda t: float(t[0])):
         print(f"| {float(key):.5f} | {f(r['config']['nu'] / float(key))} | {'training' if x['split'] == 'train' else 'test'} | {f(x['ess_frac_b'])} | "
-              f"{f(x['base']['dist_energie_features'])} | {f(x['inclinaison']['dist_energie_features'])} | "
-              f"{f(x['recalage']['dist_energie_features'])} | {f(x['base']['residu_bilan_energie'])} | "
-              f"{f(x['inclinaison']['residu_bilan_energie'])} |")
+              f"{f(x['base']['energy_distance_features'])} | {f(x['inclinaison']['energy_distance_features'])} | "
+              f"{f(x['recalage']['energy_distance_features'])} | {f(x['base']['balance_residual_energie'])} | "
+              f"{f(x['inclinaison']['balance_residual_energie'])} |")
 
 
 def e3():

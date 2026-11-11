@@ -7,7 +7,7 @@
  * Content (sources in the repository, paths relative to the root):
  * - stages and modules: computing/index.qmd (table "The processing chain"); src/milady/sweep.py, src/milady/sim/run.py,
  *   src/milady/storage.py, src/milady/catalog/, src/milady/train/fm3d.py, src/milady/eval/metrics.py;
- * - campaign followed: infra/configs/palier2_tg3d.yaml (Re × Pm = 4 × 3, 64³) and infra/configs/train_fm3d.yaml
+ * - campaign followed: infra/configs/stage2_tg3d.yaml (Re × Pm = 4 × 3, 64³) and infra/configs/train_fm3d.yaml
  *   (validation Re = 100, Pm = 1; test Re = 50, Pm = 2);
  * - services per target: docs/ARCHITECTURE.md § 2, infra/docker/docker-compose.yml, infra/slurm/env.sh,
  *   infra/slurm/*.sbatch, Makefile (targets sweep, train, eval).
@@ -27,7 +27,7 @@
     onTarget: "On this target", command: "Command", code: "Code", none: "nothing",
     stageWord: "Stage", choose: "Click a stage (or use the arrow keys); pick a target above.",
     svgLabel: "Pipeline diagram: seven stages, catalog and files",
-    note: "Campaign followed: palier2_tg3d (Re × Pm = 4 × 3, 64³), trained by train_fm3d. The widget simulates nothing: it shows where each stage runs and what it writes.",
+    note: "Campaign followed: stage2_tg3d (Re × Pm = 4 × 3, 64³), trained by train_fm3d. The widget simulates nothing: it shows where each stage runs and what it writes.",
     stages: ["Campaign", "Launch", "Simulation", "Storage", "Dataset", "Training", "Evaluation"],
     does: [
       "Describes the parameter grid and the time settings: here 4 values of Re × 3 values of Pm, 64³ grid, burn-in 100, kept window 40.",
@@ -51,9 +51,9 @@
       "Apptainer image converted from milady:gpu (make sif); nodes without Internet: SQLite catalog on $WORK, files on $SCRATCH, later copied to S3 and ingested into PostgreSQL (milady.catalog ingest).",
     ],
     cmd: [
-      ["edit infra/configs/palier2_tg3d.yaml", "edit infra/configs/palier2_tg3d.yaml", "edit infra/configs/palier2_tg3d.yaml"],
-      ["python -m milady.sweep infra/configs/palier2_tg3d.yaml --scheduler local", "make sweep CONFIG=infra/configs/palier2_tg3d.yaml", "python -m milady.sweep infra/configs/palier2_tg3d.yaml --scheduler slurm"],
-      ["python -m milady.sim.run infra/configs/palier2_tg3d.yaml --index i   (launched by milady.sweep)", "python -m milady.sim.run … --index i   (in the container, launched by milady.sweep)", "sbatch --array=0-11%12 infra/slurm/gen_data.sbatch infra/configs/palier2_tg3d.yaml   (submitted by milady.sweep)"],
+      ["edit infra/configs/stage2_tg3d.yaml", "edit infra/configs/stage2_tg3d.yaml", "edit infra/configs/stage2_tg3d.yaml"],
+      ["python -m milady.sweep infra/configs/stage2_tg3d.yaml --scheduler local", "make sweep CONFIG=infra/configs/stage2_tg3d.yaml", "python -m milady.sweep infra/configs/stage2_tg3d.yaml --scheduler slurm"],
+      ["python -m milady.sim.run infra/configs/stage2_tg3d.yaml --index i   (launched by milady.sweep)", "python -m milady.sim.run … --index i   (in the container, launched by milady.sweep)", "sbatch --array=0-11%12 infra/slurm/gen_data.sbatch infra/configs/stage2_tg3d.yaml   (submitted by milady.sweep)"],
       ["automatic, at the end of the simulation (milady.storage)", "automatic, to s3://milady-data (MinIO)", "automatic, to $SCRATCH; then copy to S3 and python -m milady.catalog ingest <uri> --campaign <campaign>"],
       ["automatic when training starts (auto_dataset in train_fm3d.yaml)", "automatic when training starts (auto_dataset)", "automatic when training starts (auto_dataset)"],
       ["python -m milady.train.fm3d --config infra/configs/train_fm3d.yaml", "make train CONFIG=infra/configs/train_fm3d.yaml   (torchrun, all GPUs)", "sbatch infra/slurm/train.sbatch infra/configs/train_fm3d.yaml   (torchrun per node)"],
@@ -68,7 +68,7 @@
       ["CPU (slow); tracking in metrics.jsonl", "all the VM's GPUs; tracking in the MLflow server", "several nodes (DDP); tracking in MLflow SQLite on $WORK"],
       ["CPU", "the VM's GPU", "1 GPU (eval.sbatch)"],
     ],
-    codePaths: [["infra/configs/palier2_tg3d.yaml"], ["src/milady/sweep.py"], ["src/milady/sim/run.py", "src/milady/sim/mhd3d.py"], ["src/milady/storage.py", "src/milady/data/format.py"], ["src/milady/train/data.py", "src/milady/catalog/api.py"], ["src/milady/train/fm3d.py"], ["src/milady/eval/metrics.py"]],
+    codePaths: [["infra/configs/stage2_tg3d.yaml"], ["src/milady/sweep.py"], ["src/milady/sim/run.py", "src/milady/sim/mhd3d.py"], ["src/milady/storage.py", "src/milady/data/format.py"], ["src/milady/train/data.py", "src/milady/catalog/api.py"], ["src/milady/train/fm3d.py"], ["src/milady/eval/metrics.py"]],
     sep: ": ", filShort: [null, null, null, "fields.h5", null, "last.pt", "JSON"],
   };
 

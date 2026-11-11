@@ -170,7 +170,7 @@ def e2(suffix="", lang="en"):
                         "V5_potentiels_stat", "V5_temoin", "reference_sous_echantillon") if k in res]
     fig, ax = plt.subplots(1, 3, figsize=(10.5, 3.6), sharey=True)
     y = np.arange(len(keys))[::-1]
-    for j, (key, lab) in enumerate((("div_rel_u", t["div"]), ("err_spectre_log10", t["spec"]), ("residu_bilan_energie", t["bal"]))):
+    for j, (key, lab) in enumerate((("div_rel_u", t["div"]), ("spectrum_error_log10", t["spec"]), ("balance_residual_energie", t["bal"]))):
         vals = np.array([max(res[k]["test"][key], 1e-17) for k in keys])
         cols = [INK2 if k == "reference_sous_echantillon" else C[0] for k in keys]
         ax[j].barh(y, vals, color=cols, height=0.62)
@@ -208,8 +208,8 @@ def e2(suffix="", lang="en"):
     fig, ax = plt.subplots(1, 3, figsize=(10, 3.4), sharey=True)
     modes = [("base", t["base"]), ("inclinaison", t["tilt"]), ("recalage", t["resc"]), ("V5", t["e2var"]["V5_potentiels_stat"])]
     y = np.arange(len(modes))[::-1]
-    for j, (key, lab) in enumerate((("residu_bilan_energie", t["bal"]), ("std_diss_rel", "σ(D) / σ_ref(D)"),
-                                    ("dist_energie_features", t["ed"]))):
+    for j, (key, lab) in enumerate((("balance_residual_energie", t["bal"]), ("std_diss_rel", "σ(D) / σ_ref(D)"),
+                                    ("energy_distance_features", t["ed"]))):
         vals = [law[m]["test"][key] for m, _ in modes]
         ax[j].barh(y, vals, color=[C[0], C[2], C[1], C[3]], height=0.6)
         for yy, v in zip(y, vals):

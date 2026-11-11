@@ -3,14 +3,14 @@ local execution, in Docker containers or as a Slurm job array.
 
 Usage ::
 
-    python -m milady.sweep infra/configs/palier2_abc3d.yaml --scheduler local  [--max-parallel 2]
-    python -m milady.sweep infra/configs/palier2_abc3d.yaml --scheduler docker [--max-parallel 4]
-    python -m milady.sweep infra/configs/palier2_abc3d.yaml --scheduler slurm  [--dry-run]
+    python -m milady.sweep infra/configs/stage2_abc3d.yaml --scheduler local  [--max-parallel 2]
+    python -m milady.sweep infra/configs/stage2_abc3d.yaml --scheduler docker [--max-parallel 4]
+    python -m milady.sweep infra/configs/stage2_abc3d.yaml --scheduler slurm  [--dry-run]
     python -m milady.sweep CONFIG --scheduler local --dry-run                  # plan, without running anything
 
 Format of a campaign (see ``infra/configs/*.yaml``) ::
 
-    name: palier2_abc3d                 # identifier (letters, digits, "_", "-", ".")
+    name: stage2_abc3d                 # identifier (letters, digits, "_", "-", ".")
     description: free text
     code: mhd3d_torch                   # or mhd2d_numpy
     grid: {N: 64, domain: 2pi}          # N integer or [nx, ny, nz]; domain number, "2pi" or list
@@ -24,7 +24,7 @@ Format of a campaign (see ``infra/configs/*.yaml``) ::
     resources: {gpus: 1, cpus: 8, time: "02:00:00", mem: null, max_parallel: 16,
                 account: null, partition: null, qos: null, constraint: null}
     output: {format: mff, uri: "${MILADY_STORAGE_URI}", fields: [velocity, magnetic_field],
-             spectral: false, dataset_name: milady_palier2_abc3d}
+             spectral: false, dataset_name: milady_stage2_abc3d}
 
 Each simulation receives a **deterministic** identifier (UUID v5 of the campaign name, the index,
 the parameters, the grid and the time settings): ``milady.sweep`` registers it in the catalog

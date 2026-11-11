@@ -35,10 +35,10 @@ python3 -m venv .venv-front && .venv-front/bin/pip install pyyaml numpy sqlalche
 .venv-front/bin/pip install --no-deps -e .         # (or `make setup`, heavier: includes torch CPU)
 
 # Simulation campaign (the YAML → job array expansion is done by milady.sweep)
-.venv-front/bin/python -m milady.sweep infra/configs/palier2_abc3d.yaml --scheduler slurm
+.venv-front/bin/python -m milady.sweep infra/configs/stage2_abc3d.yaml --scheduler slurm
 
-# Or by hand: the 37 simulations of palier2_abc3d (indices 0 to 36), at most 16 at once
-sbatch --array=0-36%16 infra/slurm/gen_data.sbatch infra/configs/palier2_abc3d.yaml
+# Or by hand: the 37 simulations of stage2_abc3d (indices 0 to 36), at most 16 at once
+sbatch --array=0-36%16 infra/slurm/gen_data.sbatch infra/configs/stage2_abc3d.yaml
 
 # Training on 2 nodes of 4 GPUs, then evaluation
 sbatch --nodes=2 --gres=gpu:4 infra/slurm/train.sbatch infra/configs/train_fm3d.yaml
@@ -124,7 +124,7 @@ Examples:
 ```bash
 # Simulations: 1 H100 GPU and 1/4 of the node (24 cores) per simulation
 sbatch --account=abc@h100 -C h100 --cpus-per-task=24 --time=10:00:00 \
-       --array=0-36%16 infra/slurm/gen_data.sbatch infra/configs/palier2_abc3d.yaml
+       --array=0-36%16 infra/slurm/gen_data.sbatch infra/configs/stage2_abc3d.yaml
 # Training: 2 full H100 nodes
 sbatch --account=abc@h100 -C h100 --nodes=2 --gres=gpu:4 --cpus-per-task=96 --time=20:00:00 \
        infra/slurm/train.sbatch infra/configs/train_fm3d.yaml
@@ -244,13 +244,13 @@ From the login node (which has Internet access) or after copying to the laptop:
 ```bash
 # 1. MFF files to the project's S3 storage (mc, rclone or aws s3 sync)
 mc alias set milady https://<point-d-accès-s3> <clé> <secret>
-mc mirror $SCRATCH/milady/store/palier2_abc3d milady/milady-data/palier2_abc3d
+mc mirror $SCRATCH/milady/store/stage2_abc3d milady/milady-data/stage2_abc3d
 # 2. Registration in the central catalog (idempotent: can be rerun). The shell does not expand
 #    s3:// wildcards: the objects are listed with mc find.
 export MILADY_DB_URL=postgresql://milady:<password>@<host>:5432/milady
 export MILADY_S3_ENDPOINT=https://<point-d-accès-s3> AWS_ACCESS_KEY_ID=<clé> AWS_SECRET_ACCESS_KEY=<secret>
-python -m milady.catalog ingest --campaign palier2_abc3d \
-  $(mc find milady/milady-data/palier2_abc3d --name fields.h5 | sed 's#^milady/#s3://#')
+python -m milady.catalog ingest --campaign stage2_abc3d \
+  $(mc find milady/milady-data/stage2_abc3d --name fields.h5 | sed 's#^milady/#s3://#')
 ```
 
 `ingest` reads the file's metadata (`milady_uuid`, parameters, code, commit, diagnostics): the

@@ -319,7 +319,7 @@ def test_shipped_campaigns_expand() -> None:
     from milady.sweep import load_campaign, sweep_points
 
     root = Path(__file__).resolve().parents[1] / "infra" / "configs"
-    expected = {"palier1_mhd2d": 11, "palier2_abc3d": 37, "palier2_tg3d": 12}
+    expected = {"stage1_mhd2d": 11, "stage2_abc3d": 37, "stage2_tg3d": 12}
     for name, n in expected.items():
         camp = load_campaign(root / f"{name}.yaml")
         pts = sweep_points(camp)
@@ -328,14 +328,14 @@ def test_shipped_campaigns_expand() -> None:
         assert [p.sim_id for p in sweep_points(load_campaign(root / f"{name}.yaml"))] == [
             p.sim_id for p in pts
         ]
-    tg = sweep_points(load_campaign(root / "palier2_tg3d.yaml"))
+    tg = sweep_points(load_campaign(root / "stage2_tg3d.yaml"))
     p = tg[-1].params  # Re = 200, Pm = 2
     assert (
         math.isclose(p["Rm"], 400.0)
         and math.isclose(p["nu"], 0.5 / 200)
         and math.isclose(p["eta"], 0.5 / 400)
     )
-    abc = sweep_points(load_campaign(root / "palier2_abc3d.yaml"))
+    abc = sweep_points(load_campaign(root / "stage2_abc3d.yaml"))
     assert math.isclose(abc[2].params["eta"], 1 / 6)  # Rm = 6 : η = 1/Rm (convention E3)
 
 

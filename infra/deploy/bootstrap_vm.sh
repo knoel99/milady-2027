@@ -220,7 +220,7 @@ From your laptop, open an SSH tunnel to the web interfaces (ports bound to 127.0
   (MinIO credentials: S3_ROOT_USER / S3_ROOT_PASSWORD in ${ENV_FILE})
 
 Useful commands (in ${REPO_ROOT}):
-  make sweep CONFIG=infra/configs/palier2_abc3d.yaml     simulation campaign
+  make sweep CONFIG=infra/configs/stage2_abc3d.yaml     simulation campaign
   make train CONFIG=infra/configs/train_fm3d.yaml        training
   make backup BACKUP_TARGET=s3://my-bucket/backups       backup (before shutting down!)
   make down                                              stop the services

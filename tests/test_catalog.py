@@ -64,13 +64,13 @@ def _apply_schema_sql(url: str) -> None:
 # Full scenario, played on each engine
 # ---------------------------------------------------------------------------------------------
 def _workflow(cat: Catalog) -> None:
-    camp = cat.create_campaign("palier2_abc3d", config_yaml="Rm: [8, 12]\n", description="ABC")
-    assert cat.create_campaign("palier2_abc3d") == camp  # idempotent by name
+    camp = cat.create_campaign("stage2_abc3d", config_yaml="Rm: [8, 12]\n", description="ABC")
+    assert cat.create_campaign("stage2_abc3d") == camp  # idempotent by name
 
     sims = {}
     for rm in (8.0, 12.0, 16.0):
         sims[rm] = cat.register_simulation(
-            "palier2_abc3d",
+            "stage2_abc3d",
             "mhd3d_torch",
             {"Rm": rm, "Re": np.float32(50.0), "forcing": "ABC", "kinematic": True},
             {"shape": [32, 32, 32], "lengths": [6.283] * 3},
@@ -88,7 +88,7 @@ def _workflow(cat: Catalog) -> None:
     cat.update_simulation(s12, status="running")
     cat.update_simulation(s12, status="completed")  # synonym of done
     sim = cat.get_simulation(s12)
-    assert sim["status"] == "done" and sim["campaign"] == "palier2_abc3d"
+    assert sim["status"] == "done" and sim["campaign"] == "stage2_abc3d"
     assert sim["started_at"].tzinfo is not None and sim["finished_at"] >= sim["started_at"]
     assert sim["wall_time_s"] is not None and sim["wall_time_s"] >= 0
     assert sim["parameters"]["Re"] == 50.0 and sim["grid"]["shape"] == [32, 32, 32]
@@ -100,7 +100,7 @@ def _workflow(cat: Catalog) -> None:
         cat.update_simulation(str(uuid.uuid4()), status="done")
 
     # Files: key = URI; a rewritten file is updated.
-    uri = f"s3://milady-data/palier2_abc3d/{s12}/fields.h5"
+    uri = f"s3://milady-data/stage2_abc3d/{s12}/fields.h5"
     fid = cat.register_file(s12, "fields", uri, "0" * 64, 1234, n_t=10, t_start=0.0, t_end=9.0)
     assert cat.register_file(s12, "fields", uri, "1" * 64, 2345, n_t=10, t_start=0.0, t_end=9.0) == fid
     assert cat.find_file(uri)["sha256"] == "1" * 64 and cat.find_file(uri)["size_bytes"] == 2345
@@ -117,7 +117,7 @@ def _workflow(cat: Catalog) -> None:
     assert len(tt) == 11 and vv[9] == 42.0 and np.isnan(vv[10])
 
     # Queries by parameters.
-    assert {s["id"] for s in cat.query_simulations(campaign="palier2_abc3d", Rm__ge=12)} == {
+    assert {s["id"] for s in cat.query_simulations(campaign="stage2_abc3d", Rm__ge=12)} == {
         s12,
         sims[16.0],
         fixed,
@@ -186,7 +186,7 @@ def _workflow(cat: Catalog) -> None:
     assert cat.get_job(tj)["started_at"] is not None
 
     counts = {c["name"]: c["counts"] for c in cat.list_campaigns()}
-    assert counts["palier2_abc3d"] == {"queued": 2, "done": 1, "failed": 1}
+    assert counts["stage2_abc3d"] == {"queued": 2, "done": 1, "failed": 1}
 
 
 def test_sqlite_memory_workflow() -> None:

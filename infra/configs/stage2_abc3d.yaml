@@ -13,9 +13,9 @@
 #   python -m milady.sim.mhd3d bench --n 64 --mode kinematic --device cuda
 # then adjust resources.time (Slurm template) accordingly.
 #
-# Run:       make sweep CONFIG=infra/configs/palier2_abc3d.yaml                         (VM, Docker)
-#            python -m milady.sweep infra/configs/palier2_abc3d.yaml --scheduler slurm   (cluster)
-name: palier2_abc3d
+# Run:       make sweep CONFIG=infra/configs/stage2_abc3d.yaml                         (VM, Docker)
+#            python -m milady.sweep infra/configs/stage2_abc3d.yaml --scheduler slurm   (cluster)
+name: stage2_abc3d
 description: >-
   Kinematic ABC 1:1:1 dynamo at 64³: Rm from 4 to 40 (step 1), 2 random magnetic seeds per Rm,
   20 snapshots of the renormalised magnetic field after 150 time units of transient.
@@ -57,4 +57,4 @@ output:
   uri: ${MILADY_STORAGE_URI}
   fields: [velocity, magnetic_field]   # u is constant in kinematic mode: remove "velocity" to save ~50%
   spectral: false
-  dataset_name: milady_palier2_abc3d
+  dataset_name: milady_stage2_abc3d

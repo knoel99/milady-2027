@@ -7,9 +7,9 @@
 # Difference with E2: the seed of each simulation is its index in the campaign (E2:
 # 100 + i for training, 200 + i for the reference) - same laws, different draws.
 #
-# Run:       make sweep CONFIG=infra/configs/palier1_mhd2d.yaml            (CPU, a few minutes / simulation)
-#            python -m milady.sweep infra/configs/palier1_mhd2d.yaml --scheduler local --max-parallel 4
-name: palier1_mhd2d
+# Run:       make sweep CONFIG=infra/configs/stage1_mhd2d.yaml            (CPU, a few minutes / simulation)
+#            python -m milady.sweep infra/configs/stage1_mhd2d.yaml --scheduler local --max-parallel 4
+name: stage1_mhd2d
 description: >-
   Forced 2D MHD (E2): 11 values of η between 4e-3 and 2.26e-2 (ν = 8e-3), 16 independent trajectories
   per value, 150 snapshots per trajectory after 30 time units of spin-up.
@@ -45,4 +45,4 @@ output:
   uri: ${MILADY_STORAGE_URI}   # empty → milady.storage.base_uri() (data/store in portable mode)
   fields: [velocity, magnetic_field]
   spectral: false
-  dataset_name: milady_palier1_mhd2d
+  dataset_name: milady_stage1_mhd2d

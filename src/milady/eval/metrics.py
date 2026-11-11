@@ -451,23 +451,23 @@ def energy_budget(
 def budget_summary(budget: Mapping[str, np.ndarray]) -> dict[str, float]:
     """Residuals **in distribution** of the budgets: (mean of sources − mean of sinks) / mean of sinks.
 
-    ``residu_bilan_total`` = E[injection − Dν − Dη] / E[Dν + Dη]; ``residu_bilan_cinetique`` =
-    E[injection − P − Dν] / E[Dν + |P|]; ``residu_bilan_magnetique`` = E[P − Dη − λ|B|²] / E[Dη + |P|].
+    ``balance_residual_total`` = E[injection − Dν − Dη] / E[Dν + Dη]; ``balance_residual_cinetique`` =
+    E[injection − P − Dν] / E[Dν + |P|]; ``balance_residual_magnetique`` = E[P − Dη − λ|B|²] / E[Dη + |P|].
     A model that respects stationarity in distribution gives residuals of the order of the Monte Carlo error.
     """
     mean = {k: float(np.mean(v)) for k, v in budget.items()}
     out: dict[str, float] = {}
     dnu, deta = mean.get("kinetic_dissipation", 0.0), mean.get("magnetic_dissipation", 0.0)
     if "residual_total" in mean:
-        out["residu_bilan_total"] = mean["residual_total"] / max(dnu + deta, _TINY)
+        out["balance_residual_total"] = mean["residual_total"] / max(dnu + deta, _TINY)
     if "residual_kinetic" in mean:
         scale = dnu + abs(mean.get("magnetic_production", 0.0))
-        out["residu_bilan_cinetique"] = mean["residual_kinetic"] / max(scale, _TINY)
+        out["balance_residual_cinetique"] = mean["residual_kinetic"] / max(scale, _TINY)
     if "residual_magnetic" in mean:
         scale = deta + abs(mean.get("magnetic_production", 0.0))
-        out["residu_bilan_magnetique"] = mean["residual_magnetic"] / max(scale, _TINY)
+        out["balance_residual_magnetique"] = mean["residual_magnetic"] / max(scale, _TINY)
     if "growth_rate" in budget:
-        out["taux_croissance_moyen"] = float(np.mean(budget["growth_rate"]))
+        out["mean_growth_rate"] = float(np.mean(budget["growth_rate"]))
     return out
 
 
@@ -598,10 +598,10 @@ def compare_ensembles(
     ``gen`` / ``ref``: ``{"velocity": (n, nx, ny, nz, 3), "magnetic_field": …}`` (reference optional).
     Returns ``metrics`` (numbers, one catalog row each) and ``details`` (mean spectra…).
     Metrics: ``div_rel_u``, ``div_rel_b``, mean energies and helicities, residuals of the budgets in distribution;
-    with reference: ``err_spectre_u_log10``, ``err_spectre_b_log10`` (mean gap of log10 E(k), k = 1…
-    ``n_shells``), ``err_Eu_rel``, ``err_Eb_rel``, ``dist_energie`` (Székely, features
+    with reference: ``spectrum_error_u_log10``, ``spectrum_error_b_log10`` (mean gap of log10 E(k), k = 1…
+    ``n_shells``), ``err_Eu_rel``, ``err_Eb_rel``, ``energy_distance`` (Székely, features
     centered and scaled
-    by the reference), ``wasserstein_tranche``, and ``plancher_dist_energie`` (two halves of the reference).
+    by the reference), ``sliced_wasserstein``, and ``energy_distance_floor`` (two halves of the reference).
     """
     g = _ensemble_stats({k: _as_np(v) for k, v in gen.items()}, params, lengths, n_shells)
     metrics: dict[str, float] = {}
@@ -633,7 +633,7 @@ def compare_ensembles(
                 sg, sr = g[f"spectrum_{tag}"][1:], r[f"spectrum_{tag}"][1:]
                 floor = 1e-12 * float(sr.max()) if sr.size else 0.0
                 ok = sr > floor  # empty shells of the reference (rounding) excluded
-                metrics[f"err_spectre_{tag}_log10"] = (
+                metrics[f"spectrum_error_{tag}_log10"] = (
                     float(np.mean(np.abs(np.log10(sg[ok] + floor) - np.log10(sr[ok] + floor))))
                     if ok.any()
                     else float("nan")
@@ -645,11 +645,11 @@ def compare_ensembles(
         fg, fr = g["features"], r["features"]
         mu, sd = fr.mean(0), fr.std(0) + 1e-9
         zg, zr = (fg - mu) / sd, (fr - mu) / sd
-        metrics["dist_energie"] = energy_distance(zg, zr, seed=seed)
-        metrics["wasserstein_tranche"] = sliced_wasserstein(zg, zr, seed=seed)
+        metrics["energy_distance"] = energy_distance(zg, zr, seed=seed)
+        metrics["sliced_wasserstein"] = sliced_wasserstein(zg, zr, seed=seed)
         if len(zr) >= 8:
             half = len(zr) // 2
-            metrics["plancher_dist_energie"] = energy_distance(zr[:half], zr[half:], seed=seed)
+            metrics["energy_distance_floor"] = energy_distance(zr[:half], zr[half:], seed=seed)
         for key, val in r["budget"].items():
             details[f"ref_{key}"] = val
         details["n_ref"] = int(fr.shape[0])
@@ -783,7 +783,7 @@ def evaluate_model(
                         "steps": steps,
                         "grid": n_grid,
                         "kmax": kmax,
-                        **(res["details"] if metric == "dist_energie" else {}),
+                        **(res["details"] if metric == "energy_distance" else {}),
                     },
                 )
     return results

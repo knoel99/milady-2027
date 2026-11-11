@@ -304,7 +304,7 @@ def test_train_one_epoch_sample_and_catalog(mff_files: list[str], tmp_path: Path
     assert cat.query_jobs(status="done") and fm3d.latest_model_id(cat, "test_fm3d") == res["model_id"]
     summary = cat.eval_summary(res["model_id"])
     metrics = {r["metric"] for r in summary}
-    assert {"div_rel_u", "div_rel_b", "residu_bilan_total", "dist_energie", "err_spectre_b_log10"} <= metrics
+    assert {"div_rel_u", "div_rel_b", "balance_residual_total", "energy_distance", "spectrum_error_b_log10"} <= metrics
     assert all(r["mean"] < 1e-6 for r in summary if r["metric"].startswith("div_rel"))
 
     model, mid = fm3d.load_model(res["model_id"], device="cpu", catalog=cat)
@@ -341,7 +341,7 @@ def test_train_one_epoch_sample_and_catalog(mff_files: list[str], tmp_path: Path
     report = json.loads(rep.read_text())
     assert (
         report["results"][0]["point"] == {"Re": 30.0}
-        and "dist_energie" not in report["results"][0]["metrics"]
+        and "energy_distance" not in report["results"][0]["metrics"]
     )
 
     # resumption: same run, 2 more iterations

@@ -47,7 +47,7 @@ Every script accepts `--quick` (a reduced run of a few minutes).
 ```bash
 make setup && make smoke RUN=local      # portable, no Docker (SQLite catalogue, files under data/)
 sudo infra/deploy/bootstrap_vm.sh       # cloud VM: Docker, PostgreSQL, MinIO, MLflow, end-to-end test
-python -m milady.sweep infra/configs/palier2_abc3d.yaml --scheduler slurm   # Slurm cluster
+python -m milady.sweep infra/configs/stage2_abc3d.yaml --scheduler slurm   # Slurm cluster
 ```
 
 ## Build the site

@@ -245,19 +245,13 @@ print("(u·∇)u (Eulerian)    =", np.round(acc_euler, 5))
 (function () {
   var cv = document.getElementById("p2w1-cv");
   if (!cv || !cv.getContext) return;
-  var EN = /^en/i.test(document.documentElement.lang || "");
-  var S = EN ? {
+  var S = {
     title: "Interactive diagram 1 — A blob of fluid advected by vortices",
     lab: "Unsteadiness ε", play: "Play", pause: "Pause", reset: "Reset", t: "t = ",
     aria: "Animation of 2,500 fluid particles initially forming a disc, advected by the 2D Taylor–Green cells.",
     note: "Velocity u = ∇⊥ψ with ψ = sin(x + ε sin t) sin y, on the periodic square [0, 2π]². The colour map is the vorticity of the cells (blue: ω > 0, orange: ω < 0). With ε = 0 the flow is steady: particles follow the closed streamlines and the blob is sheared into a filament whose area never changes (∇·u = 0). With ε > 0 the cells oscillate: particle paths no longer follow the instantaneous streamlines and the blob is stretched and folded chaotically (Lagrangian chaos), still without any change of area."
-  } : {
-    title: "Schéma interactif 1 — Une tache de fluide advectée par des tourbillons",
-    lab: "Instationnarité ε", play: "Lecture", pause: "Pause", reset: "Réinitialiser", t: "t = ",
-    aria: "Animation de 2 500 particules fluides formant initialement un disque, advectées par les cellules de Taylor–Green 2D.",
-    note: "Vitesse u = ∇⊥ψ avec ψ = sin(x + ε sin t) sin y, sur le carré périodique [0, 2π]². La carte de couleurs est la vorticité des cellules (bleu : ω > 0, orange : ω < 0). Pour ε = 0, l'écoulement est stationnaire : les particules suivent les lignes de courant fermées et la tache s'étire en un filament dont l'aire ne change jamais (∇·u = 0). Pour ε > 0, les cellules oscillent : les trajectoires ne suivent plus les lignes de courant instantanées, et la tache est étirée et repliée de façon chaotique (chaos lagrangien), toujours sans variation d'aire."
   };
-  var fmt = function (v, d) { var s = v.toFixed(d); return EN ? s : s.replace(".", ","); };
+  var fmt = function (v, d) { return v.toFixed(d); };
   document.getElementById("p2w1-title").textContent = S.title;
   document.getElementById("p2w1-lab").textContent = S.lab;
   document.getElementById("p2w1-reset").textContent = S.reset;
@@ -1202,21 +1196,13 @@ Sreenivasan (1998) gathered direct simulations in a periodic box confirming that
 (function () {
   var svg = document.getElementById("p2w2-svg");
   if (!svg) return;
-  var EN = /^en/i.test(document.documentElement.lang || "");
-  var S = EN ? {
+  var S = {
     title: "Interactive diagram 2 — Kolmogorov scale and the cost of a direct simulation",
     lab: "Reynolds number", labn: "grid N per direction",
     aria: "Log-log plot of the model energy spectrum E(k) for the chosen Reynolds number, with the Kolmogorov wavenumber 1/η and the largest wavenumber resolved by the chosen grid.",
     unres: "not resolved", ref: "k^(−5/3)",
     out: function (r) { return "L/η = Re^(3/4) ≈ " + r.Leta + " ; points needed per direction (k_max η ≈ 1, k_max = N/3): N ≈ " + r.Nreq + " ; total N³ ≈ " + r.N3 + " ; share of the dissipation 2νk²E(k) carried by the resolved modes of the " + r.N + "³ grid: " + r.frac + "."; },
     note: "Model spectrum of Pope (2000), with ε = L = 1 and ν = 1/Re, so that η = Re^(−3/4). The grey band marks the wavenumbers the grid cannot represent. At fixed grid, increasing Re pushes the dissipation range out of the grid: the simulation loses the scales where the energy is dissipated."
-  } : {
-    title: "Schéma interactif 2 — Échelle de Kolmogorov et coût d'une simulation directe",
-    lab: "Nombre de Reynolds", labn: "grille N par direction",
-    aria: "Spectre d'énergie modèle E(k) en échelle log-log pour le nombre de Reynolds choisi, avec le nombre d'onde de Kolmogorov 1/η et le plus grand nombre d'onde résolu par la grille choisie.",
-    unres: "non résolu", ref: "k^(−5/3)",
-    out: function (r) { return "L/η = Re^(3/4) ≈ " + r.Leta + " ; points nécessaires par direction (k_max η ≈ 1, k_max = N/3) : N ≈ " + r.Nreq + " ; total N³ ≈ " + r.N3 + " ; part de la dissipation 2νk²E(k) portée par les modes résolus de la grille " + r.N + "³ : " + r.frac + "."; },
-    note: "Spectre modèle de Pope (2000), avec ε = L = 1 et ν = 1/Re, donc η = Re^(−3/4). La bande grisée marque les nombres d'onde que la grille ne peut pas représenter. À grille fixée, augmenter Re fait sortir la zone dissipative de la grille : la simulation perd les échelles où l'énergie est dissipée."
   };
   document.getElementById("p2w2-title").textContent = S.title;
   document.getElementById("p2w2-lab").textContent = S.lab;
@@ -1228,7 +1214,7 @@ Sreenivasan (1998) gathered direct simulations in a periodic box confirming that
   function sci(x) {
     var e = Math.floor(Math.log10(x)), m = x / Math.pow(10, e);
     if (m >= 9.95) { m = 1; e += 1; }
-    var ms = m.toFixed(1); if (!EN) ms = ms.replace(".", ",");
+    var ms = m.toFixed(1);
     return (ms === "1,0" || ms === "1.0") ? "10" + sup(e) : ms + " × 10" + sup(e);
   }
   function el(tag, at, st) {
@@ -1283,7 +1269,7 @@ Sreenivasan (1998) gathered direct simulations in a periodic box confirming that
       el("text", { x: sx(le) - 6, y: Y1 - 10, "text-anchor": "end", "font-size": 13 }, "fill: var(--focus)").textContent = "k = 1/η";
     }
     var r = { Leta: sci(1 / eta), Nreq: sci(3 / eta), N3: sci(Math.pow(3 / eta, 3)), N: N,
-              frac: (100 * res / tot).toFixed(1).replace(".", EN ? "." : ",") + " %" };
+              frac: (100 * res / tot).toFixed(1) + " %" };
     document.getElementById("p2w2-out").textContent = S.out(r);
   }
   document.getElementById("p2w2-re").addEventListener("input", draw);
@@ -1486,8 +1472,7 @@ Without dealiasing, these identities are no longer exact and the energy can grow
 (function () {
   var svg = document.getElementById("p2w3-svg");
   if (!svg) return;
-  var EN = /^en/i.test(document.documentElement.lang || "");
-  var S = EN ? {
+  var S = {
     title: "Interactive diagram 3 — Aliasing of a product and the 2/3 rule",
     labn: "grid N", lab23: "2/3 rule (keep |m| ≤ K with 3K < N)",
     aria: "Top: integer wavenumber axis with the represented modes, the factors k and q, the exact product mode k + q and its alias on the grid. Bottom: the exact wave cos((k+q)x) and the aliased wave, which take the same values at the N grid points.",
@@ -1498,17 +1483,6 @@ Without dealiasing, these identities are no longer exact and the energy can grow
     removed: function (a, K) { return " With the 2/3 rule the alias s′ = " + sg(a) + " lies outside |m| ≤ " + K + " and is removed by the truncation: the computed product is the exact truncated product."; },
     dropped: function (s, K) { return " With the 2/3 rule the exact mode k + q = " + sg(s) + " lies outside |m| ≤ " + K + " and is simply truncated, as in the Galerkin method."; },
     note: "The sliders k and q choose two Fourier modes e^(ikx) and e^(iqx); the grid has N points x_j = 2πj/N. With the 2/3 rule active, the sliders are limited to |k|, |q| ≤ K, the largest integer such that 3K < N."
-  } : {
-    title: "Schéma interactif 3 — Repliement d'un produit et règle des 2/3",
-    labn: "grille N", lab23: "règle des 2/3 (on garde |m| ≤ K avec 3K < N)",
-    aria: "En haut : axe des nombres d'onde entiers avec les modes représentés, les facteurs k et q, le mode exact k + q du produit et son replié sur la grille. En bas : l'onde exacte cos((k+q)x) et l'onde repliée, qui prennent les mêmes valeurs aux N points de grille.",
-    band: "modes de la grille [−N/2, N/2)", kept: "modes gardés |m| ≤ K", exact: "k+q exact", alias: "replié",
-    wave1: "cos((k+q)x), exact", wave2: "cos(s′x), vu par la grille",
-    inside: function (s) { return "Le produit e^(ikx)·e^(iqx) = e^(i(k+q)x) crée le mode k + q = " + sg(s) + ", que la grille représente exactement."; },
-    outside: function (s, a, N) { return "Le produit crée le mode k + q = " + sg(s) + ", hors de [−N/2, N/2) = [" + sg(-N / 2) + ", " + (N / 2) + ") : aux N points de grille, il est indiscernable du mode s′ = " + sg(a) + " (points noirs), qui reçoit donc une énergie qu'il ne devrait pas avoir."; },
-    removed: function (a, K) { return " Avec la règle des 2/3, le replié s′ = " + sg(a) + " tombe hors de |m| ≤ " + K + " et la troncature l'élimine : le produit calculé est le produit exact tronqué."; },
-    dropped: function (s, K) { return " Avec la règle des 2/3, le mode exact k + q = " + sg(s) + " sort de |m| ≤ " + K + " et il est simplement tronqué, comme dans la méthode de Galerkin."; },
-    note: "Les curseurs k et q choisissent deux modes de Fourier e^(ikx) et e^(iqx) ; la grille compte N points x_j = 2πj/N. Quand la règle des 2/3 est active, les curseurs sont limités à |k|, |q| ≤ K, le plus grand entier tel que 3K < N."
   };
   ["title", "labn", "lab23", "note"].forEach(function (id) { document.getElementById("p2w3-" + id).textContent = S[id]; });
   svg.setAttribute("aria-label", S.aria);

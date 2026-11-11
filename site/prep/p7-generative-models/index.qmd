@@ -1619,7 +1619,7 @@ def distance_energie(X, Y):
     n, m = len(X), len(Y)
     return 2 * cdist(X, Y).mean() - cdist(X, X).sum() / (n * (n - 1)) - cdist(Y, Y).sum() / (m * (m - 1))
 
-def wasserstein_tranche(X, Y, n_dir=200):
+def sliced_wasserstein(X, Y, n_dir=200):
     """SW_1: average over random directions of W_1 between 1D projections (sorting, equal sizes)."""
     th = rng.standard_normal((n_dir, X.shape[1])); th /= np.linalg.norm(th, axis=1, keepdims=True)
     px, py = np.sort(X @ th.T, axis=0), np.sort(Y @ th.T, axis=0)
@@ -1639,7 +1639,7 @@ cas = {"same distribution": melange(n),
        "weights 0.4/0.1/0.25/0.25": melange(n, poids=(0.4, 0.1, 0.25, 0.25))}
 print(f"{'case':26s} {'D_E':>8s} {'SW_1':>8s}")
 for nom, X in cas.items():
-    print(f"{nom:26s} {distance_energie(X, ref):8.4f} {wasserstein_tranche(X, ref):8.4f}")
+    print(f"{nom:26s} {distance_energie(X, ref):8.4f} {sliced_wasserstein(X, ref):8.4f}")
 # output:
 # case                            D_E     SW_1
 # same distribution           -0.0010   0.0238

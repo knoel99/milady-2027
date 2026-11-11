@@ -2,7 +2,7 @@
 
 Usage ::
 
-    python -m milady.sim.run infra/configs/palier2_abc3d.yaml --index 3 [--device cuda] [--dtype float32]
+    python -m milady.sim.run infra/configs/stage2_abc3d.yaml --index 3 [--device cuda] [--dtype float32]
 
 Steps:
 
@@ -267,7 +267,7 @@ class Solver2D:
         return {
             "kinetic_energy": np.asarray(d["Eu"], np.float64),
             "magnetic_energy": np.asarray(d["Eb"], np.float64),
-            "enstrophy": np.asarray(d["enstrophie"], np.float64),
+            "enstrophy": np.asarray(d["enstrophy"], np.float64),
             "mean_square_current": np.asarray(d["j2"], np.float64),
             "dissipation": np.asarray(d["dissipation"], np.float64),
             "injection": np.full(n_traj, self.injection),

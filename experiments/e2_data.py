@@ -43,7 +43,7 @@ def main(quick=False):
     DATA.mkdir(parents=True, exist_ok=True)
     n_tr, n_ref = (20, 10) if quick else (150, 75)
     meta = {"N": N, "nu": NU, "alpha": ALPHA, "kf": KF, "eps": EPS, "eta_train": ETA_TRAIN, "eta_test": ETA_TEST,
-            "dt": 1e-2, "intervalle": 1.0, "membres": 16, "fichiers": {}}
+            "dt": 1e-2, "interval": 1.0, "members": 16, "files": {}}
     for i, eta in enumerate(ETA_TRAIN + ETA_TEST):
         t0 = time.time()
         jobs = [("train", n_tr, 100 + i)] if eta in ETA_TRAIN else []
@@ -52,13 +52,13 @@ def main(quick=False):
             fname = f"eta_{eta:.6f}_{split}.npz"
             if (DATA / fname).is_file():  # resume after interruption
                 d = np.load(DATA / fname)
-                meta["fichiers"][fname] = {"eta": eta, "split": split, "n": int(len(d["w"])),
+                meta["files"][fname] = {"eta": eta, "split": split, "n": int(len(d["w"])),
                                            "inj": [float(d["inj_u"]), float(d["inj_b"])]}
                 print(f"η={eta:.5f} {split}: already present", flush=True)
                 continue
             W, A, inj = run(eta, n_snap, seed)
             np.savez_compressed(DATA / fname, w=W, a=A, inj_u=inj[0], inj_b=inj[1], eta=eta)
-            meta["fichiers"][fname] = {"eta": eta, "split": split, "n": int(len(W)), "inj": [float(inj[0]), float(inj[1])]}
+            meta["files"][fname] = {"eta": eta, "split": split, "n": int(len(W)), "inj": [float(inj[0]), float(inj[1])]}
             print(f"η={eta:.5f} {split}: {len(W)} snapshots, injection {sum(inj):.4f}, {time.time() - t0:.0f} s", flush=True)
     (DATA / "meta.json").write_text(json.dumps(meta, indent=1))
 

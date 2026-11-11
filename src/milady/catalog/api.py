@@ -2,13 +2,13 @@
 
     from milady.catalog.api import Catalog
     cat = Catalog()                                   # MILADY_DB_URL, otherwise sqlite:///<root>/data/catalog.sqlite
-    camp = cat.create_campaign("palier2_abc3d", config_yaml=open(cfg).read())
+    camp = cat.create_campaign("stage2_abc3d", config_yaml=open(cfg).read())
     sim = cat.register_simulation(camp, "mhd3d_torch", {"Rm": 12.0}, {"shape": [64, 64, 64]})
     cat.update_simulation(sim, status="running")
     ...
     cat.register_file(sim, "fields", uri, sha256, size_bytes, n_t=50, t_start=0.0, t_end=49.0)
     cat.update_simulation(sim, status="done")
-    cat.query_simulations(campaign="palier2_abc3d", status="done", Rm__gt=8.0)
+    cat.query_simulations(campaign="stage2_abc3d", status="done", Rm__gt=8.0)
 
 All methods open their own transaction (safe across processes); identifiers are
 UUID strings. Registration methods are idempotent where natural (campaign by name,

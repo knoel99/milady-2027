@@ -61,8 +61,8 @@ E2_DEFAULTS: dict[str, Any] = {
     "kf": [2.0, 3.0],
     "eps": 0.05,
     "dt": 1e-2,
-    "intervalle": 1.0,
-    "membres": 16,
+    "interval": 1.0,
+    "members": 16,
     "t_burn": 30.0,
     "kmax": 10,
 }
@@ -171,7 +171,7 @@ def convert_e2_file(
         inj_u = float(d["inj_u"]) if "inj_u" in d else float("nan")
         inj_b = float(d["inj_b"]) if "inj_b" in d else float("nan")
     n = int(meta["N"])
-    members = int(meta.get("membres", 16))
+    members = int(meta.get("members", 16))
     if w.shape[0] % members:
         raise ValueError(f"{npz.name}: {w.shape[0]} snapshots not divisible by {members} members")
     n_snap = w.shape[0] // members
@@ -186,7 +186,7 @@ def convert_e2_file(
 
     phys = e2_physical(w, a, n)
     x = 2 * np.pi * np.arange(n) / n
-    t_burn, every = float(meta.get("t_burn", 30.0)), float(meta.get("intervalle", 1.0))
+    t_burn, every = float(meta.get("t_burn", 30.0)), float(meta.get("interval", 1.0))
     time = t_burn + every * np.arange(1, n_t + 1)
     nu, alpha = float(meta["nu"]), float(meta["alpha"])
     kf = list(meta.get("kf", [2.0, 3.0]))

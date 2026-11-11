@@ -287,14 +287,14 @@ def main(quick=False):
                          + np.mean(np.abs(np.log10(dg["Sb"].mean(0)[:10] / r["Sb"].mean(0)[:10]))) / 2)
         return {
             "div_rel_u": float(np.mean(dg["divu"])), "div_rel_b": float(np.mean(dg["divb"])),
-            "err_spectre_log10": spec_err,
+            "spectrum_error_log10": spec_err,
             "err_Eu_rel": float(abs(dg["Eu"].mean() / r["Eu"].mean() - 1)),
             "err_Eb_rel": float(abs(dg["Eb"].mean() / r["Eb"].mean() - 1)),
-            "residu_bilan_energie": float((dg["diss"].mean() - inj) / inj),
-            "residu_bilan_Hc": float(dg["g_Hc"].mean() / (r["g_Hc"].std() + 1e-12)),
-            "residu_bilan_A2": float((dg["g_A2"].mean() - inj_a2) / inj_a2),
+            "balance_residual_energie": float((dg["diss"].mean() - inj) / inj),
+            "balance_residual_Hc": float(dg["g_Hc"].mean() / (r["g_Hc"].std() + 1e-12)),
+            "balance_residual_A2": float((dg["g_A2"].mean() - inj_a2) / inj_a2),
             "std_diss_rel": float(dg["diss"].std() / r["diss"].std()),
-            "dist_energie_features": energy_distance((features(dg) - fmean) / fstd, (features(r) - fmean) / fstd, n=1000),
+            "energy_distance_features": energy_distance((features(dg) - fmean) / fstd, (features(r) - fmean) / fstd, n=1000),
             "Hc_moy": float(dg["Hc"].mean()), "Hc_std": float(dg["Hc"].std()),
         }
 
@@ -336,8 +336,8 @@ def main(quick=False):
                        "split": "train" if e in ETA_TRAIN else "test"}
     results["evaluation"] = evals
     results["en_loi"] = law
-    keys = ["div_rel_u", "div_rel_b", "err_spectre_log10", "err_Eu_rel", "err_Eb_rel", "residu_bilan_energie",
-            "residu_bilan_Hc", "residu_bilan_A2", "std_diss_rel", "dist_energie_features"]
+    keys = ["div_rel_u", "div_rel_b", "spectrum_error_log10", "err_Eu_rel", "err_Eb_rel", "balance_residual_energie",
+            "balance_residual_Hc", "balance_residual_A2", "std_diss_rel", "energy_distance_features"]
     summary = {}
     for name, ev in evals.items():
         summary[name] = {split: {k: float(np.mean([abs(r[k]) if k.startswith("residu") else r[k] for r in rows])) for k in keys}

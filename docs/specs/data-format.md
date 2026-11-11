@@ -232,7 +232,7 @@ is a reconstructible derivative.
 ```python
 from milady.data import write_mff, read_mff, validate, open_mff, to_zarr
 
-sha = write_mff("s3://milady-data/palier2/<uuid>/fields.h5",
+sha = write_mff("s3://milady-data/stage2/<uuid>/fields.h5",
                 {"velocity": u, "magnetic_field": b},            # (B, T, nx, ny, nz, 3)
                 {"time": t, "x": x, "y": y, "z": z},
                 {"Rm": 12.0, "Re": 50.0, "forcing": "ABC"},
