@@ -148,8 +148,23 @@ def cmd_delete(a):
 
 
 def http_get(url: str) -> bytes:
-    with urllib.request.urlopen(url, timeout=60) as r:
-        return r.read()
+    """GET a plain-HTTP URL, through a CONNECT tunnel when HTTPS_PROXY is set (cloud sessions
+    only allow outbound traffic through that proxy, which accepts CONNECT only)."""
+    import http.client
+    from urllib.parse import urlsplit
+    u = urlsplit(url)
+    proxy = os.environ.get("HTTPS_PROXY") or os.environ.get("https_proxy")
+    if proxy:
+        p = urlsplit(proxy)
+        conn = http.client.HTTPConnection(p.hostname, p.port, timeout=120)
+        conn.set_tunnel(u.hostname, u.port or 80)
+    else:
+        conn = http.client.HTTPConnection(u.hostname, u.port or 80, timeout=120)
+    conn.request("GET", u.path)
+    r = conn.getresponse()
+    if r.status != 200:
+        sys.exit(f"GET {u.path}: HTTP {r.status}")
+    return r.read()
 
 
 def cmd_campaign(a):
