@@ -704,3 +704,33 @@ dV/dt = Γ − V + Q D      (3)
 2. **JHTDB MHD, secondary parameters** [UNCONFIRMED]: interval t ∈ [0; 2.56], η = 1.1×10⁻⁴ independently of Pm = 1, and injection scale (L = π/2 for Kuzzay, "stirring scale equal to 0.5 in units of the size of the simulation box" for Lemoine). The official page (turbulence.pha.jhu.edu) and README-MHD.pdf (turbulence.idies.jhu.edu) still return 503 or present a self-signed certificate.
 3. **Riga, flow rate 0.67 m³/s** [UNCONFIRMED]: value attributed to an HZDR page not reread; only the "0.6 m³/s" of the PRL 2000 is verified.
 4. **ABC 1:1:1, primary reading of the windows and maximal growth rate** [UNCONFIRMED]: Galloway & Frisch 1984 (GAFD 29, 13–18) and 1986 (GAFD 36, 53–83) remain inaccessible (tandfonline: 403). The bounds 8.9 / 17.5 / 27 are therefore verified only via Archontis 2003. The **value** of the maximal growth rate of the 1st window (reached around Re_m ≈ 12 according to Archontis, from Galanti et al. 1993) is not known.
+
+## 10. Entries added on 2026-11-11 (review §2.9)
+
+Checked by the `biblio` agent on 2026-11-11. Strength of each check is stated: "primary" (text read), "abstract" (abstract or publisher page), "secondary" (search snippet or citing paper).
+
+**Rincon (2019).** F. Rincon, "Dynamo theories", *J. Plasma Phys.* **85**(4), 205850401. DOI 10.1017/S0022377819000539, arXiv:1903.07829 (arXiv states "vol. 84": error on arXiv's side, Crossref gives 85(4)). [verified, primary]
+- Eq. 2.25, p. 20: resistive scale ℓ_η ∼ Pm^{−3/4} ℓ_ν for Pm ≪ 1. [verified]
+- p. 19: liquid metals have "Pm ∼ 10⁻⁵ or smaller"; simulations have 0.1 < Pm < 10. [verified]
+- §5.4, p. 115: "the geodynamo likely operates at Rm of only O(10³)". [verified]
+- Earth-core Pm = O(10⁻⁶) (P3 table), Ekman 10⁻¹⁵, Rossby 10⁻⁶, Alfvén 10⁻², the run at Rm = 514, Pm = 0.1, E = 10⁻⁷, the solar row and the reversal timescales quoted in P3: [UNCONFIRMED] (passages not reached; p. 19 gives Pm ∼ 10⁻⁵ or smaller for liquid metals).
+
+**Faranda et al. (2014).** D. Faranda, M. Bourgoin, S. Miralles, P. Odier, J.-F. Pinton, N. Plihon, F. Daviaud, B. Dubrulle, *New J. Phys.* **16**, 083001, arXiv:1402.4275. [verified, bibliographic data]
+- Table 1 (onset around 44, extrapolated thresholds 51 to 56), quoted in P3: [UNCONFIRMED] (table not retrieved).
+
+**Chandler & Kerswell (2013).** G. J. Chandler, R. R. Kerswell, "Invariant recurrent solutions embedded in a turbulent two-dimensional Kolmogorov flow", *J. Fluid Mech.* **722**, 554–595, arXiv:1207.4682 (v1 title "Simple invariant solutions embedded in 2D Kolmogorov turbulence"; numbers below from v1). [verified, primary]
+- Eq. 2.3: ∂u/∂t + u·∇u + ∇p = Re⁻¹∇²u + sin(ny) x̂; §3.1: α = 1, n = 4 on [0, 2π]². [verified]
+- §4.1, p. 12: linear instability at Re_lin = 9.9669; steady "until Re ≈ 15"; "for 15 ≲ Re ≲ 23, some metastability"; "beyond Re ≈ 23, the chaotic state presumably becomes an attractor"; "an asymptotic regime is approached for Re ≳ 50"; analysis at Re = 40. [verified]
+
+**Avila et al. (2011).** K. Avila, D. Moxey, A. de Lozar, M. Avila, D. Barkley, B. Hof, "The onset of turbulence in pipe flow", *Science* **333**(6039), 192–196. DOI 10.1126/science.1203223. [verified, bibliographic data]
+- Critical point Re_c ≃ 2040 (puff decay versus splitting), pipe flow, Re on mean velocity and diameter. [verified, secondary]
+- The laminar pipe (Hagen–Poiseuille) profile is linearly stable for all Re. [verified, secondary; classical]
+
+**Mukund & Hof (2018).** V. Mukund, B. Hof, "The critical point of the transition to turbulence in pipe flow", *J. Fluid Mech.* **839**, 76–94. DOI 10.1017/jfm.2017.923, arXiv:1709.06372. [verified, abstract]
+- "2020 < Re_c < 2060", in agreement with 2040; their method includes puff interactions, which the 2040 estimate neglected. [verified, abstract]
+
+**Orszag (1971a).** S. A. Orszag, "Accurate solution of the Orr–Sommerfeld stability equation", *J. Fluid Mech.* **50**(4), 689–703. DOI 10.1017/S0022112071002842. [verified, abstract]
+- Critical Reynolds number 5772.22 for plane Poiseuille flow (Chebyshev expansion). [verified, abstract] The critical wavenumber differs between secondary sources: do not quote it.
+
+**Orszag (1971b).** S. A. Orszag, "On the elimination of aliasing in finite-difference schemes by filtering high-wavenumber components", *J. Atmos. Sci.* **28**(6), 1074. [verified, bibliographic data]
+- Origin of the 2/3 dealiasing rule: [verified, secondary] (primary text not read).

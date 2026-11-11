@@ -1866,7 +1866,7 @@ with torch.no_grad():
 # C4, symmetrized CNN: max equivariance error 6.0e-08
 ```
 
-For $\mathbb{Z}_2$, the error is exactly zero: multiplication by $\pm 1$ is exact in floating point, and the addition of two floating-point numbers is commutative. For $C_4$, the four terms are added in a different order on each side, and floating-point addition is not associative: what remains is the rounding error of single precision. Another route is to build layers that are equivariant by design, such as group convolutions (Cohen and Welling, 2016): they avoid the factor $|G|$ in the cost, but require a dedicated architecture.
+For $\mathbb{Z}_2$, the error is exactly zero: multiplication by $\pm 1$ is exact in floating point, and the addition of two floating-point numbers is commutative. For $C_4$, the four terms are added in a different order on each side, and floating-point addition is not associative: what remains is the rounding error of single precision. Another route is to build layers that are equivariant by design, such as group convolutions (Cohen and Welling, 2016): they avoid symmetrizing the output of the network, but require a dedicated architecture (a group convolution itself costs about $|G|$ times an ordinary convolution).
 
 ### 6.4 Hard constraints by construction: the output is a curl
 

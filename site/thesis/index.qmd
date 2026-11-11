@@ -154,8 +154,8 @@ The topic relies on published results that must be cited, not claimed. The table
 What this work claims is formulated with caution: **to our knowledge, after a literature search as of November 6, 2026**, no publication combines the following elements.
 
 1. The stationarity identities of a **field PDE** (MHD: budgets of energy, cross helicity and $\langle a^2\rangle$ in 2D) used as **distributional** constraints of a **parametric conditional** generative model, which can be imposed at parameters without data, and which are identities **without a target value** (unlike the external moments of Khalifa et al. 2021 or Mun 2026).
-2. The statement and the **measurement** of the inconsistency of a per-sample constraint for a stationary budget (Corollary 6 of the note, measured in E1 and E2); distinct from the trade-off between distributional and physical accuracy of Baldan et al. (2026), which concerns PDE residuals that hold for each sample.
-3. The Rice formula applied to a snapshot generator to predict the frequency of reversals without time integration (no prior work found).
+2. The statement and the **measurement** of the inconsistency of a per-sample constraint for a stationary budget (Corollary 6 of the note, measured in E1 and E2); distinct from the trade-off between distributional and physical accuracy of Baldan et al. (2026, preprint), which concerns PDE residuals that hold for each sample.
+3. The Rice formula applied to the distribution of a snapshot generator to predict the frequency of zero crossings of the dipole (reversals and excursions) without time integration; the formula is classical (Rice 1944, 1945; same structure as the transition-state-theory rate, Chandler 1978), and no earlier application to a generative model was found in a limited search.
 4. The complementarity between symmetry and stationarity: the identities do not fix the weights of the symmetric ergodic components, so equivariance is necessary.
 5. A technical point: the naive estimator (square of a mini-batch mean) of a stationarity loss has expectation $(\mathbb{E}g)^2 + \mathrm{Var}(g)/n$ and penalizes the spread of the distribution; the estimator based on the product of the means of two half-batches removes this bias.
 6. The lower bound on the error near a jump in the distribution (Proposition 9 of the note), applied to the dynamo threshold.
@@ -1132,6 +1132,7 @@ The references were checked in the site's research notes (Crossref, arXiv, HAL, 
 **Project, offer and supervision**
 
 - ANR. *Modélisation par apprentissage automatique des dynamos turbulentes – MilaDy* [Machine learning modelling for turbulent Dynamos], ANR-25-CE51-0077. <https://anr.fr/Projet-ANR-25-CE51-0077>
+- Chandler D. (1978). Statistical mechanics of isomerization dynamics in liquids and the transition state approximation. *Journal of Chemical Physics* 68, 2959.
 - Cheng S., Lucor D. *Physics-Constrained Generative AI Modelling of Parametric Dynamical Systems (with potential PhD position)*, M2 internship offer, 2027. <https://scheng2024.github.io/stage_milady_2027.pdf>
 - Cheng S. “Opportunities” page. <https://scheng2024.github.io/opportunities/>
 - Bousquet R., Ponty Y., Botez V., Plihon N., Nore C. (2026). Magnetic field reversals in numerical simulations of the von Kármán sodium experiment. *Physical Review Fluids* 11(6), 063703. <https://doi.org/10.1103/9tx2-1m13>
@@ -1199,7 +1200,7 @@ The references were checked in the site's research notes (Crossref, arXiv, HAL, 
 - Karras T., Aittala M., Aila T., Laine S. (2022). Elucidating the design space of diffusion-based generative models. *NeurIPS 2022*. <https://arxiv.org/abs/2206.00364>
 - Chung H., Kim J., McCann M. T., Klasky M. L., Ye J. C. (2023). Diffusion posterior sampling for general noisy inverse problems. *ICLR 2023*. <https://arxiv.org/abs/2209.14687>
 - Wang S., Dou Z., Shan S., Liu T.-R., Lu L. (2026). FunDiff: diffusion models over function spaces for physics-informed generative modeling. *Nature Communications* 17, 5749. <https://doi.org/10.1038/s41467-026-72292-0>
-- Baldan G., Liu Q., Guardone A., Thuerey N. (2026). Physics vs distributions: Pareto optimal flow matching with physics constraints. *ICLR 2026*. <https://arxiv.org/abs/2506.08604>
+- Baldan G., Liu Q., Guardone A., Thuerey N. (2026). Physics vs distributions: Pareto optimal flow matching with physics constraints. Preprint, arXiv:2506.08604 (v4, February 2026). <https://arxiv.org/abs/2506.08604>
 - Bastek J.-H., Sun W., Kochmann D. M. (2025). Physics-informed diffusion models. *ICLR 2025*. <https://arxiv.org/abs/2403.14404>
 - Genuist W., Savin É., Gatti F., Clouteau D. (2026). Divergence-free diffusion models for incompressible fluid flows. Preprint arXiv:2601.19368. <https://arxiv.org/abs/2601.19368>
 - Li T., Buzzicotti M., Bonaccorso F., Biferale L. (2026). Physics-constrained diffusion model for synthesis of 3D turbulent data. Preprint arXiv:2603.12834. <https://arxiv.org/abs/2603.12834>

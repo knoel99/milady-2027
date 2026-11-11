@@ -74,7 +74,7 @@ Verified fact base: `docs/specs/sources/data-metrics.md` §3 and `docs/specs/sou
 **What this work claims (worded cautiously: "to our knowledge, after a literature search on 6 November 2026"):**
 1. Using the stationarity identities of a **field PDE** (MHD: energy, cross-helicity and $\langle a^2\rangle$ balances) as **law-level** constraints of a **parametric conditional** generative model, enforceable at parameters **without data** (E1 fine-tuning, E2 law-level loss), and **identities with no target value** (unlike the external moments of Khalifa or Mun).
 2. Stating and **measuring** the inconsistency of the per-sample constraint of a stationary balance (Corollary 6): E1 and E2.
-3. **Rice formula applied to a snapshot generator** to predict the frequency of zero crossings of $D$ (reversals and excursions) from the generated law and $F$, without time integration (Proposition 8): no prior work found.
+3. **Rice formula applied to the law of a snapshot generator** to predict the frequency of zero crossings of $D$ (reversals and excursions) from the generated law and $F$, without time integration (Proposition 8). The formula is classical (Rice 1944, 1945) and has the structure of the transition-state-theory rate (Chandler 1978); the claim is only its application to a generative model: no earlier application found (search of 11 November 2026, limited).
 4. Symmetry / stationarity complementarity: the identities do not fix the weights of the ergodic components; equivariance is necessary (E1).
 5. Proposition 9 (lower bound on the error near a jump in the law) applied to the dynamo threshold.
 

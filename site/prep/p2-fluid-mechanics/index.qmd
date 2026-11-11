@@ -911,7 +911,7 @@ For $\mathbf{u} = (U(y), 0)$, we have $\nabla\cdot\mathbf{u} = 0$ and $(\mathbf{
 
 ::: note
 [Remark 5.2 — Transition to turbulence]{.tag}
-The Poiseuille solution exists for every $Re$, but it is observed only at small $Re$. Reynolds (1883) showed experimentally that pipe flow becomes "sinuous" beyond a critical value of the dimensionless number that now bears his name. For the circular pipe (with $Re$ built on the mean velocity and the diameter), Avila et al. (2011) place at $Re \approx 2040$ the threshold beyond which turbulence becomes sustained, by comparing the lifetimes and splitting times of turbulent "puffs"; Mukund and Hof (2018), using a different method, place this critical point between $2020$ and $2060$. An exact solution is therefore not necessarily the observed state: one must also study its **stability** (module [Dynamical systems](../p4-dynamical-systems/index.html)).
+The Poiseuille solution exists for every $Re$, but it is observed only at small $Re$, and the transition is not a simple linear instability. For the plane channel of this section, the laminar profile becomes linearly unstable only above $Re \approx 5772$ (Orszag, 1971a), yet turbulence appears subcritically at much lower $Re$. For the circular pipe, whose laminar (Hagen–Poiseuille) profile is linearly stable for every $Re$, Reynolds (1883) showed experimentally that the flow becomes "sinuous" beyond a critical value of the dimensionless number that now bears his name: with $Re$ built on the mean velocity and the diameter, Avila et al. (2011) place at $Re \approx 2040$ the threshold beyond which turbulence becomes sustained, by comparing the lifetimes and splitting times of turbulent "puffs"; Mukund and Hof (2018), with a method that includes the interactions between puffs, place this critical point between $2020$ and $2060$. An exact solution is therefore not necessarily the observed state: one must also study its **stability** (module [Dynamical systems](../p4-dynamical-systems/index.html)).
 :::
 
 ### 5.2 Taylor–Green vortices
@@ -952,7 +952,7 @@ As for Poiseuille, $(\mathbf{u}\cdot\nabla)\mathbf{u} = 0$ for a parallel flow t
 :::
 ::::
 
-The Kolmogorov flow has become a standard benchmark for machine learning in fluid mechanics: Kochkov et al. (2021) use it for their learning-accelerated solvers, and FunDiff (Wang et al., 2026) is trained on 2D Kolmogorov fields at $Re = 1000$. Chandler and Kerswell (2013) studied in detail the case $n = 4$ on $[0, 2\pi)^2$, with the nondimensionalization $\partial_t\mathbf{u} + \mathbf{u}\cdot\nabla\mathbf{u} + \nabla p = Re^{-1}\Delta\mathbf{u} + \sin(4y)\,\mathbf{e}_x$. In their paper (of which we read the arXiv version, arXiv:1207.4682), the laminar state becomes linearly unstable at $Re \approx 9.97$; the flow is steady up to $Re \approx 15$, becomes chaotic beyond about $Re \approx 23$, and approaches an asymptotic regime for $Re \gtrsim 50$. The solver of Chapter 7 uses exactly this nondimensionalization at $Re = 40$.
+The Kolmogorov flow has become a standard benchmark for machine learning in fluid mechanics: Kochkov et al. (2021) use it for their learning-accelerated solvers, and FunDiff (Wang et al., 2026) is trained on 2D Kolmogorov fields at $Re = 1000$. Chandler and Kerswell (2013) studied in detail the case $n = 4$ on $[0, 2\pi)^2$, with the nondimensionalization $\partial_t\mathbf{u} + \mathbf{u}\cdot\nabla\mathbf{u} + \nabla p = Re^{-1}\Delta\mathbf{u} + \sin(4y)\,\mathbf{e}_x$. In their paper (of which we read the arXiv version, arXiv:1207.4682), the laminar state becomes linearly unstable at $Re \approx 9.97$; the flow is steady up to $Re \approx 15$, shows metastable chaotic episodes for $15 \lesssim Re \lesssim 23$ and apparently a chaotic attractor beyond about $23$, and approaches an asymptotic regime for $Re \gtrsim 50$. The solver of Chapter 7 uses exactly this nondimensionalization at $Re = 40$.
 
 ### 5.4 ABC flows
 
@@ -1056,7 +1056,7 @@ print(f"     steady Navier–Stokes residual (p = -|u|²/2, f = νu): {max(np.ab
 ::: recap-title
 Key takeaways — chapter 5
 :::
-- Poiseuille: $U = \frac{G}{2\nu}(h^2 - y^2)$, an exact solution with walls; unstable beyond a critical Reynolds number.
+- Poiseuille: $U = \frac{G}{2\nu}(h^2 - y^2)$, an exact solution with walls; the plane channel is linearly unstable only above $Re \approx 5772$ (Orszag, 1971a), but turbulence appears subcritically at lower $Re$; the pipe flow is linearly stable for every $Re$.
 - 2D Taylor–Green: exact decay as $e^{-2\nu t}$; 3D Taylor–Green: the prototype of transition to turbulence through stretching.
 - Kolmogorov: force $\sin(ny)\,\mathbf{e}_x$ on the torus; laminar state $u = \frac{F}{\nu n^2}\sin(ny)$; chaotic at moderate $Re$; standard benchmark for learned models.
 - ABC: Beltrami field $\boldsymbol\omega = \mathbf{u}$, maximal helicity, chaotic trajectories, kinematic dynamo (experiment E3).
@@ -1436,7 +1436,7 @@ $e^{\mathrm{i}(k + mN)x_j} = e^{\mathrm{i}kx_j}\,e^{2\mathrm{i}\pi mj} = e^{\mat
 ::::
 
 :::: thm
-[Theorem 7.5 — The 2/3 rule (Orszag, 1971)]{.tag}
+[Theorem 7.5 — The 2/3 rule (Orszag, 1971b)]{.tag}
 If only the modes $|k| \le K$ (in each direction) are kept, with $3K < N$, then the pseudo-spectral product, truncated to $|k| \le K$, coincides exactly with the truncated Galerkin product: no aliased contribution survives.
 
 ::: proof
@@ -2147,9 +2147,10 @@ The MilaDy internship consists in learning **distributions** of MHD fields param
 - Lawson, J. D. (1967). Generalized Runge–Kutta processes for stable systems with large Lipschitz constants. *SIAM Journal on Numerical Analysis* 4(3), 372–380. <https://doi.org/10.1137/0704033>
 - Moffatt, H. K. (1969). The degree of knottedness of tangled vortex lines. *Journal of Fluid Mechanics* 35(1), 117–129. <https://doi.org/10.1017/S0022112069000991>
 - Monchaux, R., Berhanu, M., Bourgoin, M., Moulin, M., Odier, P., Pinton, J.-F., et al. (2007). Generation of a magnetic field by dynamo action in a turbulent flow of liquid sodium. *Physical Review Letters* 98, 044502. <https://doi.org/10.1103/PhysRevLett.98.044502>
+- Orszag, S. A. (1971a). Accurate solution of the Orr–Sommerfeld stability equation. *Journal of Fluid Mechanics* 50(4), 689–703. <https://doi.org/10.1017/S0022112071002842>
 - Mukund, V., Hof, B. (2018). The critical point of the transition to turbulence in pipe flow. *Journal of Fluid Mechanics* 839, 76–94. <https://doi.org/10.1017/jfm.2017.923>
 - Nore, C., Castanon Quiroz, D., Cappanera, L., Guermond, J.-L. (2018). Numerical simulation of the von Kármán sodium dynamo experiment. *Journal of Fluid Mechanics* 854, 164–195. <https://doi.org/10.1017/jfm.2018.582>
-- Orszag, S. A. (1971). On the elimination of aliasing in finite-difference schemes by filtering high-wavenumber components. *Journal of the Atmospheric Sciences* 28(6), 1074. <https://doi.org/10.1175/1520-0469(1971)028%3C1074:OTEOAI%3E2.0.CO;2>
+- Orszag, S. A. (1971b). On the elimination of aliasing in finite-difference schemes by filtering high-wavenumber components. *Journal of the Atmospheric Sciences* 28(6), 1074. <https://doi.org/10.1175/1520-0469(1971)028%3C1074:OTEOAI%3E2.0.CO;2>
 - Ponty, Y., Mininni, P. D., Montgomery, D. C., Pinton, J.-F., Politano, H., Pouquet, A. (2005). Numerical study of dynamo action at low magnetic Prandtl numbers. *Physical Review Letters* 94, 164502. <https://doi.org/10.1103/PhysRevLett.94.164502>
 - Ponty, Y., Politano, H., Pouquet, A. (2025). Intermittency assessed through a model of kurtosis–skewness relation in MHD in fast dynamo regimes. *Journal of Plasma Physics* 91(2), E69. <https://doi.org/10.1017/S0022377825000169>
 - Pope, S. B. (2000). *Turbulent Flows*. Cambridge University Press. <https://doi.org/10.1017/CBO9780511840531>
