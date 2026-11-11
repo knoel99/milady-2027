@@ -1,0 +1,73 @@
+# Construit le site (site/) et le publie sur GitHub Pages.
+#
+# Le HTML n'est pas versionné : ce workflow rend toutes les pages avec tools/render.py (Quarto 1.7.32,
+# balises KaTeX épinglées avec SRI), vérifie les portes de qualité, puis publie le contenu de site/
+# sans les sources (.qmd, .md, scripts des schémas). Les URL publiques sont celles de site/.
+#
+# Réglage requis une fois : Settings → Pages → Build and deployment → Source : « GitHub Actions ».
+name: pages
+
+on:
+  push:
+    branches: [main]
+  pull_request:
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+concurrency:
+  group: pages-${{ github.ref }}
+  cancel-in-progress: true
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Quarto 1.7.32
+        run: |
+          curl -fsSL -o /tmp/quarto.tgz \
+            https://github.com/quarto-dev/quarto-cli/releases/download/v1.7.32/quarto-1.7.32-linux-amd64.tar.gz
+          sudo tar -xzf /tmp/quarto.tgz -C /opt
+          echo "/opt/quarto-1.7.32/bin" >> "$GITHUB_PATH"
+
+      - name: Rendu de toutes les pages
+        run: python3 tools/render.py --all
+
+      - name: Portes de qualité
+        run: |
+          python3 tools/check_gates.py
+          python3 tools/compare_fr_en.py --all
+
+      - name: KaTeX
+        run: |
+          npm install --no-save --prefix /tmp/katex katex@0.19.0
+          NODE_PATH=/tmp/katex/node_modules node tools/check_katex.mjs $(find site -name index.html)
+
+      - name: Assemblage de _site/
+        run: |
+          rsync -a --prune-empty-dirs \
+            --exclude='*.qmd' --exclude='*.md' --exclude='node_modules/' \
+            --exclude='figures/*/docs/' --exclude='figures/*/figure/*.js' --exclude='figures/*/figure/data/' \
+            site/ _site/
+          touch _site/.nojekyll
+
+      - uses: actions/upload-pages-artifact@v3
+        with:
+          path: _site
+
+  deploy:
+    if: github.event_name != 'pull_request' && github.ref == 'refs/heads/main'
+    needs: build
+    runs-on: ubuntu-latest
+    permissions:
+      pages: write
+      id-token: write
+    environment:
+      name: github-pages
+      url: ${{ steps.deployment.outputs.page_url }}
+    steps:
+      - id: deployment
+        uses: actions/deploy-pages@v4
