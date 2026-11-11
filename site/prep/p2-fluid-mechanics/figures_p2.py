@@ -183,13 +183,13 @@ def fig_cascade(out):
     a.axvspan(10 ** -1.5, 2 * np.pi, color=fs.C1, alpha=0.1, lw=0)
     a.axvspan(1e3, 1e5, color=fs.C2, alpha=0.1, lw=0)
     for LE, col in ((1e2, "#5b9ae6"), (1e4, "#1b4f93")):
-        a.loglog(k, pope_spectrum(k, 1 / LE), color=col, label=f"L/η = 10{'²' if LE == 1e2 else '⁴'}")
+        a.loglog(k, pope_spectrum(k, 1 / LE), color=col, label=f"L/ℓ_K = 10{'²' if LE == 1e2 else '⁴'}")
     kk = np.logspace(0.3, 3.4, 10)
     a.loglog(kk, 1.5 * kk ** (-5 / 3) * 3, "--", color=fs.INK2, lw=1.2)
     a.text(80, 1.5 * 80 ** (-5 / 3) * 9, r"$k^{-5/3}$", color=fs.INK2)
     a.annotate("", xy=(800, 1e-5 * 1.2), xytext=(90, 1e-5 * 1.2), arrowprops=dict(arrowstyle="-|>", color=fs.C2, lw=2))
     a.text(80, 1.2e-5, "energy flux ε ", ha="right", va="center", fontsize=9)
-    for x, txt in ((0.4, "large scales\n(injection)"), (60, "inertial range\n(L/η = 10⁴)"), (3e4, "dissipation\n(L/η = 10⁴)")):
+    for x, txt in ((0.4, "large scales\n(injection)"), (60, "inertial range\n(L/ℓ_K = 10⁴)"), (3e4, "dissipation\n(L/ℓ_K = 10⁴)")):
         a.text(x, 3e-9, txt, ha="center", fontsize=9, bbox=dict(fc="white", ec="none", alpha=0.7, pad=1))
     a.set_ylim(1e-10, 30); a.set_xlim(10 ** -1.5, 1e5); a.legend(loc="upper right", fontsize=9)
     a.set_xlabel("k L"); a.set_ylabel("E(k)  (ε = L = 1)"); a.set_title("(a) 3D turbulence: model spectrum (Pope, 2000)")

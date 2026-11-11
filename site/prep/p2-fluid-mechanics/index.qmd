@@ -1108,9 +1108,9 @@ The **Reynolds stress tensor** $\mathbb{E}[\mathbf{u}'\otimes\mathbf{u}']$ is a 
 
 ::: note
 [Remark 6.5 — The Richardson cascade]{.tag}
-Richardson (1922) summed up the picture of three-dimensional turbulence in a rhyme that has remained famous: "*Big whirls have little whirls that feed on their velocity, and little whirls have lesser whirls and so on to viscosity — in the molecular sense*". Energy is injected at a large scale $L$, transferred without loss toward smaller and smaller scales by stretching (Chapter 3), then dissipated at a very small scale $\eta$.
+Richardson (1922) summed up the picture of three-dimensional turbulence in a rhyme that has remained famous: "*Big whirls have little whirls that feed on their velocity, and little whirls have lesser whirls and so on to viscosity — in the molecular sense*". Energy is injected at a large scale $L$, transferred without loss toward smaller and smaller scales by stretching (Chapter 3), then dissipated at a very small scale $\ell_K$.
 
-A word of caution on notation: in this chapter, $\eta$ denotes the Kolmogorov scale, as in all turbulence textbooks. In the rest of the site (common notation, module [MHD and the dynamo effect](../p3-mhd-dynamo/index.html), experiment E2 conditioned on $\eta$), the same letter denotes the magnetic diffusivity $\eta = 1/(\mu_0\sigma)$.
+A word of caution on notation: turbulence textbooks write the Kolmogorov scale $\eta$. On this site, $\eta$ is reserved for the magnetic diffusivity $\eta = 1/(\mu_0\sigma)$ (common notation, module [MHD and the dynamo effect](../p3-mhd-dynamo/index.html), experiment E2 conditioned on $\eta$), so the Kolmogorov scales are written $\ell_K$, $\tau_K$ and $u_K$.
 :::
 
 ::: def
@@ -1119,7 +1119,7 @@ Kolmogorov (1941a) formulates three hypotheses for a flow at very large Reynolds
 
 - **local isotropy**: at scales $\ell \ll L$, the statistics are homogeneous and isotropic;
 - **first similarity hypothesis**: at scales $\ell \ll L$, they depend only on $\nu$ and on the mean dissipation rate $\varepsilon$;
-- **second similarity hypothesis**: in the **inertial range** $\eta \ll \ell \ll L$, they depend only on $\varepsilon$.
+- **second similarity hypothesis**: in the **inertial range** $\ell_K \ll \ell \ll L$, they depend only on $\varepsilon$.
 :::
 
 :::: thm
@@ -1128,9 +1128,9 @@ Under these hypotheses:
 
 1. the only length, time and velocity scales that can be built from $\nu$ and $\varepsilon$ are the **Kolmogorov scales**
 $$
-\eta = \left(\frac{\nu^3}{\varepsilon}\right)^{1/4}, \qquad \tau_\eta = \left(\frac{\nu}{\varepsilon}\right)^{1/2}, \qquad u_\eta = (\nu\varepsilon)^{1/4}, \qquad \text{with } \frac{u_\eta\,\eta}{\nu} = 1 ;
+\ell_K = \left(\frac{\nu^3}{\varepsilon}\right)^{1/4}, \qquad \tau_K = \left(\frac{\nu}{\varepsilon}\right)^{1/2}, \qquad u_K = (\nu\varepsilon)^{1/4}, \qquad \text{with } \frac{u_K\,\ell_K}{\nu} = 1 ;
 $$
-2. in the inertial range $1/L \ll k \ll 1/\eta$, the energy spectrum is
+2. in the inertial range $1/L \ll k \ll 1/\ell_K$, the energy spectrum is
 $$
 E(k) = C_K\,\varepsilon^{2/3}\,k^{-5/3} ;
 $$
@@ -1139,7 +1139,7 @@ $$
 Here $C_K$ and $C_2$ are universal dimensionless constants.
 
 ::: proof
-We have $[\nu] = \mathrm{L}^2\mathrm{T}^{-1}$ and $[\varepsilon] = \mathrm{L}^2\mathrm{T}^{-3}$. Looking for $\nu^a\varepsilon^b$ with the dimension of a length: $2a + 2b = 1$ and $-a - 3b = 0$, hence $a = 3/4$, $b = -1/4$; likewise for time and velocity. The spectrum $E(k)$ has the dimension of an energy per unit wavenumber, $\mathrm{L}^3\mathrm{T}^{-2}$. By the first hypothesis, $E(k) = \varepsilon^{2/3}k^{-5/3}\,\Phi(k\eta)$ for a dimensionless function $\Phi$ (we factored out a combination with the right dimension; then $k\eta$ is the only dimensionless number available). By the second hypothesis, $E(k)$ does not depend on $\nu$ in the inertial range, hence not on $\eta$: $\Phi$ is constant there, equal to $C_K$. The same reasoning, with $[S_2] = \mathrm{L}^2\mathrm{T}^{-2}$, gives $S_2 \propto (\varepsilon\ell)^{2/3}$. [∎]{.qed}
+We have $[\nu] = \mathrm{L}^2\mathrm{T}^{-1}$ and $[\varepsilon] = \mathrm{L}^2\mathrm{T}^{-3}$. Looking for $\nu^a\varepsilon^b$ with the dimension of a length: $2a + 2b = 1$ and $-a - 3b = 0$, hence $a = 3/4$, $b = -1/4$; likewise for time and velocity. The spectrum $E(k)$ has the dimension of an energy per unit wavenumber, $\mathrm{L}^3\mathrm{T}^{-2}$. By the first hypothesis, $E(k) = \varepsilon^{2/3}k^{-5/3}\,\Phi(k\ell_K)$ for a dimensionless function $\Phi$ (we factored out a combination with the right dimension; then $k\ell_K$ is the only dimensionless number available). By the second hypothesis, $E(k)$ does not depend on $\nu$ in the inertial range, hence not on $\ell_K$: $\Phi$ is constant there, equal to $C_K$. The same reasoning, with $[S_2] = \mathrm{L}^2\mathrm{T}^{-2}$, gives $S_2 \propto (\varepsilon\ell)^{2/3}$. [∎]{.qed}
 :::
 ::::
 
@@ -1170,12 +1170,12 @@ Validating a generative model of turbulence on the spectrum alone is therefore i
 [Proposition 6.9 — Dissipative anomaly and number of degrees of freedom]{.tag}
 Assume, in agreement with observations, that $\varepsilon = C_\varepsilon U^3/L$ with $C_\varepsilon$ of order $1$ and independent of $\nu$ at large $Re$ (**dissipative anomaly**). Then
 $$
-\frac{L}{\eta} = C_\varepsilon^{1/4}\,Re^{3/4}, \qquad N_{\text{dof}} \sim \left(\frac{L}{\eta}\right)^3 \sim Re^{9/4},
+\frac{L}{\ell_K} = C_\varepsilon^{1/4}\,Re^{3/4}, \qquad N_{\text{dof}} \sim \left(\frac{L}{\ell_K}\right)^3 \sim Re^{9/4},
 $$
 where $N_{\text{dof}}$ is the number of grid points needed for a 3D direct numerical simulation (DNS) that resolves all scales. The total cost of a DNS over one turnover time grows as $Re^3$.
 
 ::: proof
-$\eta/L = L^{-1}(\nu^3L/(C_\varepsilon U^3))^{1/4} = C_\varepsilon^{-1/4}(\nu/(UL))^{3/4} = C_\varepsilon^{-1/4}Re^{-3/4}$. A grid spacing of the order of $\eta$ is needed in each direction, hence $(L/\eta)^3$ points. The time step is limited by the CFL condition (Chapter 7) to $\Delta t \lesssim \eta/U$, hence $L/\eta \sim Re^{3/4}$ steps per turnover time $L/U$, and a cost $\sim Re^{9/4}\times Re^{3/4} = Re^3$. [∎]{.qed}
+$\ell_K/L = L^{-1}(\nu^3L/(C_\varepsilon U^3))^{1/4} = C_\varepsilon^{-1/4}(\nu/(UL))^{3/4} = C_\varepsilon^{-1/4}Re^{-3/4}$. A grid spacing of the order of $\ell_K$ is needed in each direction, hence $(L/\ell_K)^3$ points. The time step is limited by the CFL condition (Chapter 7) to $\Delta t \lesssim \ell_K/U$, hence $L/\ell_K \sim Re^{3/4}$ steps per turnover time $L/U$, and a cost $\sim Re^{9/4}\times Re^{3/4} = Re^3$. [∎]{.qed}
 :::
 ::::
 
@@ -1199,10 +1199,10 @@ Sreenivasan (1998) gathered direct simulations in a periodic box confirming that
   var S = {
     title: "Interactive diagram 2 — Kolmogorov scale and the cost of a direct simulation",
     lab: "Reynolds number", labn: "grid N per direction",
-    aria: "Log-log plot of the model energy spectrum E(k) for the chosen Reynolds number, with the Kolmogorov wavenumber 1/η and the largest wavenumber resolved by the chosen grid.",
+    aria: "Log-log plot of the model energy spectrum E(k) for the chosen Reynolds number, with the Kolmogorov wavenumber 1/ℓ_K and the largest wavenumber resolved by the chosen grid.",
     unres: "not resolved", ref: "k^(−5/3)",
-    out: function (r) { return "L/η = Re^(3/4) ≈ " + r.Leta + " ; points needed per direction (k_max η ≈ 1, k_max = N/3): N ≈ " + r.Nreq + " ; total N³ ≈ " + r.N3 + " ; share of the dissipation 2νk²E(k) carried by the resolved modes of the " + r.N + "³ grid: " + r.frac + "."; },
-    note: "Model spectrum of Pope (2000), with ε = L = 1 and ν = 1/Re, so that η = Re^(−3/4). The grey band marks the wavenumbers the grid cannot represent. At fixed grid, increasing Re pushes the dissipation range out of the grid: the simulation loses the scales where the energy is dissipated."
+    out: function (r) { return "L/ℓ_K = Re^(3/4) ≈ " + r.Leta + " ; points needed per direction (k_max ℓ_K ≈ 1, k_max = N/3): N ≈ " + r.Nreq + " ; total N³ ≈ " + r.N3 + " ; share of the dissipation 2νk²E(k) carried by the resolved modes of the " + r.N + "³ grid: " + r.frac + "."; },
+    note: "Model spectrum of Pope (2000), with ε = L = 1 and ν = 1/Re, so that ℓ_K = Re^(−3/4). The grey band marks the wavenumbers the grid cannot represent. At fixed grid, increasing Re pushes the dissipation range out of the grid: the simulation loses the scales where the energy is dissipated."
   };
   document.getElementById("p2w2-title").textContent = S.title;
   document.getElementById("p2w2-lab").textContent = S.lab;
@@ -1266,7 +1266,7 @@ Sreenivasan (1998) gathered direct simulations in a periodic box confirming that
     var le = Math.log10(1 / eta);
     if (le < LX1) {
       el("line", { x1: sx(le), x2: sx(le), y1: Y0, y2: Y1 }, "stroke: var(--focus); stroke-width: 2; stroke-dasharray: 3 3");
-      el("text", { x: sx(le) - 6, y: Y1 - 10, "text-anchor": "end", "font-size": 13 }, "fill: var(--focus)").textContent = "k = 1/η";
+      el("text", { x: sx(le) - 6, y: Y1 - 10, "text-anchor": "end", "font-size": 13 }, "fill: var(--focus)").textContent = "k = 1/ℓ_K";
     }
     var r = { Leta: sci(1 / eta), Nreq: sci(3 / eta), N3: sci(Math.pow(3 / eta, 3)), N: N,
               frac: (100 * res / tot).toFixed(1) + " %" };
@@ -1315,7 +1315,7 @@ In the inverse cascade, only the energy flux $\varepsilon$ matters: same computa
 
 The $k^{-3}$ spectrum of the enstrophy cascade is subject to a logarithmic correction, and the inverse cascade, if nothing stops it, accumulates energy in the largest mode of the domain (a "condensate"). This is why many 2D simulations add a linear friction $-\alpha\omega$ at large scales, like the term $-0.1\,\omega$ of the Kolmogorov dataset used by FunDiff (Wang et al., 2026) or the friction in the repository's 2D MHD solver `src/milady/sim/mhd2d.py`. The review by Boffetta and Ecke (2012) gives an overview of these questions. In Chapter 7, we will again see energy accumulate in the mode $k = 1$, in the absence of friction.
 
-![(a) Model energy spectrum of Pope (2000) in 3D turbulence, for $L/\eta = 10^2$ and $10^4$ (with $\varepsilon = L = 1$): the large scales contain the energy, the inertial range follows $k^{-5/3}$ over an interval that lengthens as $Re^{3/4}$, and the dissipation range cuts off the spectrum near $k \approx 1/\eta$. The orange arrow is a reminder that energy crosses the inertial range at rate $\varepsilon$. (b) Sketch of Kraichnan's dual cascade in 2D turbulence forced at wavenumber $k_f$: energy moves up toward the large scales with a $k^{-5/3}$ spectrum, enstrophy moves down toward the small scales with a $k^{-3}$ spectrum. Panel (b) is a sketch (theoretical slopes), not a simulation.](cascade.png){width="100%" fig-alt="Two log-log plots. On the left, two blue asymmetric bell-shaped curves that rise to a maximum near k L equal to 3, then decrease with a slope of minus 5/3 parallel to a dotted line, and drop sharply near 10 to the power 2 for the light curve and 10 to the power 4 for the dark curve; three zones are labeled large scales, inertial range and dissipation, the first and last shaded. On the right, a blue line of slope minus 5/3 up to the vertical line k_f, then a green line of slope minus 3, with a blue arrow pointing left and a green arrow pointing right."}
+![(a) Model energy spectrum of Pope (2000) in 3D turbulence, for $L/\ell_K = 10^2$ and $10^4$ (with $\varepsilon = L = 1$): the large scales contain the energy, the inertial range follows $k^{-5/3}$ over an interval that lengthens as $Re^{3/4}$, and the dissipation range cuts off the spectrum near $k \approx 1/\ell_K$. The orange arrow is a reminder that energy crosses the inertial range at rate $\varepsilon$. (b) Sketch of Kraichnan's dual cascade in 2D turbulence forced at wavenumber $k_f$: energy moves up toward the large scales with a $k^{-5/3}$ spectrum, enstrophy moves down toward the small scales with a $k^{-3}$ spectrum. Panel (b) is a sketch (theoretical slopes), not a simulation.](cascade.png){width="100%" fig-alt="Two log-log plots. On the left, two blue asymmetric bell-shaped curves that rise to a maximum near k L equal to 3, then decrease with a slope of minus 5/3 parallel to a dotted line, and drop sharply near 10 to the power 2 for the light curve and 10 to the power 4 for the dark curve; three zones are labeled large scales, inertial range and dissipation, the first and last shaded. On the right, a blue line of slope minus 5/3 up to the vertical line k_f, then a green line of slope minus 3, with a blue arrow pointing left and a green arrow pointing right."}
 
 ::: ex
 [Example 6.13 — Kolmogorov scales and a "K41-like" Gaussian field]{.tag}
@@ -1331,8 +1331,8 @@ for U, L in ((0.1, 0.1), (1.0, 0.2), (5.0, 1.0)):
     Re = U * L / nu
     eps = U**3 / L                          # estimate ε ~ U³/L (order-one constant omitted)
     eta = (nu**3 / eps) ** 0.25
-    print(f"U = {U:4.1f} m/s, L = {L:3.1f} m: Re = {Re:.1e}, η = {eta*1e6:7.1f} µm, "
-          f"L/η = {L/eta:.1e} ≈ Re^(3/4) = {Re**0.75:.1e}, N_ddl ~ Re^(9/4) = {Re**2.25:.1e}")
+    print(f"U = {U:4.1f} m/s, L = {L:3.1f} m: Re = {Re:.1e}, ℓ_K = {eta*1e6:7.1f} µm, "
+          f"L/ℓ_K = {L/eta:.1e} ≈ Re^(3/4) = {Re**0.75:.1e}, N_ddl ~ Re^(9/4) = {Re**2.25:.1e}")
 
 # ---------- 2) Solenoidal Gaussian field with spectrum E(k) ∝ k^(-5/3) ----------
 N = 128
@@ -1369,9 +1369,9 @@ r = 2 ** np.arange(4, 13)
 S2 = np.array([np.mean((np.roll(s1, -ri) - s1) ** 2) for ri in r])
 print(f"1D signal: slope of S2(ℓ) over 16 ≤ r ≤ 4096 points = {np.polyfit(np.log(r), np.log(S2), 1)[0]:.3f}  (K41: 2/3)")
 # output:
-# U =  0.1 m/s, L = 0.1 m: Re = 1.0e+04, η =   100.0 µm, L/η = 1.0e+03 ≈ Re^(3/4) = 1.0e+03, N_ddl ~ Re^(9/4) = 1.0e+09
-# U =  1.0 m/s, L = 0.2 m: Re = 2.0e+05, η =    21.1 µm, L/η = 9.5e+03 ≈ Re^(3/4) = 9.5e+03, N_ddl ~ Re^(9/4) = 8.5e+11
-# U =  5.0 m/s, L = 1.0 m: Re = 5.0e+06, η =     9.5 µm, L/η = 1.1e+05 ≈ Re^(3/4) = 1.1e+05, N_ddl ~ Re^(9/4) = 1.2e+15
+# U =  0.1 m/s, L = 0.1 m: Re = 1.0e+04, ℓ_K =   100.0 µm, L/ℓ_K = 1.0e+03 ≈ Re^(3/4) = 1.0e+03, N_ddl ~ Re^(9/4) = 1.0e+09
+# U =  1.0 m/s, L = 0.2 m: Re = 2.0e+05, ℓ_K =    21.1 µm, L/ℓ_K = 9.5e+03 ≈ Re^(3/4) = 9.5e+03, N_ddl ~ Re^(9/4) = 8.5e+11
+# U =  5.0 m/s, L = 1.0 m: Re = 5.0e+06, ℓ_K =     9.5 µm, L/ℓ_K = 1.1e+05 ≈ Re^(3/4) = 1.1e+05, N_ddl ~ Re^(9/4) = 1.2e+15
 # slope of the spectrum E(k) over 4 ≤ k ≤ 29: -1.687  (K41: -5/3 = -1.667)
 # r =  2 points: skewness S3/S2^(3/2) = +0.004
 # r =  4 points: skewness S3/S2^(3/2) = +0.006
@@ -1387,8 +1387,8 @@ Key takeaways — chapter 6
 :::
 - Turbulence is described by distributions: statistical stationarity, ergodicity (hypothesis: time average = average under $\mu_{\boldsymbol\lambda}$); a long simulation samples the distribution.
 - Averaging Navier–Stokes brings in the Reynolds stress tensor: the closure problem.
-- K41: $\eta = (\nu^3/\varepsilon)^{1/4}$, $E(k) = C_K\varepsilon^{2/3}k^{-5/3}$, $S_2 \propto (\varepsilon\ell)^{2/3}$; exact result: $S_3 = -\tfrac45\varepsilon\ell$.
-- Dissipative anomaly $\varepsilon \approx C_\varepsilon U^3/L$ $\Rightarrow$ $L/\eta \sim Re^{3/4}$, $N_{\text{dof}} \sim Re^{9/4}$, cost $\sim Re^3$.
+- K41: $\ell_K = (\nu^3/\varepsilon)^{1/4}$, $E(k) = C_K\varepsilon^{2/3}k^{-5/3}$, $S_2 \propto (\varepsilon\ell)^{2/3}$; exact result: $S_3 = -\tfrac45\varepsilon\ell$.
+- Dissipative anomaly $\varepsilon \approx C_\varepsilon U^3/L$ $\Rightarrow$ $L/\ell_K \sim Re^{3/4}$, $N_{\text{dof}} \sim Re^{9/4}$, cost $\sim Re^3$.
 - 2D: energy toward the large scales ($k^{-5/3}$), enstrophy toward the small ones ($k^{-3}$); Kraichnan's dual cascade.
 - A Gaussian field can have the right spectrum and zero energy flux: third- and higher-order moments must be validated as well.
 ::::
@@ -1876,7 +1876,7 @@ The exercises follow the order of the chapters; the stars indicate the difficult
    **(c)** The total circulation (limit $r\to\infty$) equals $\Gamma$ at all times: the total vorticity is conserved; it merely diffuses. The core has a radius $\delta(t) = 2\sqrt{\nu t}$, which grows as the square root of time (diffusion). Far from the core, $u_\theta \approx \Gamma/(2\pi r)$: this is the irrotational flow of a point vortex.
    :::
 
-7. **★★★ The Burgers vortex: stretching versus diffusion (Chapter 3).** In cylindrical coordinates $(r, \theta, z)$, superimpose an axisymmetric stretching field $u_r = -\alpha r/2$, $u_z = \alpha z$ ($\alpha > 0$) and an azimuthal velocity $u_\theta(r)$, so that the vorticity is $\boldsymbol\omega = \omega(r)\,\mathbf{e}_z$. (a) Check that the stretching field is solenoidal and irrotational. (b) Write the vorticity equation (Theorem 3.4) and identify the stretching term. (c) Find the steady solution with total circulation $\Gamma$. (d) In turbulence, the small scales experience a strain rate of order $1/\tau_\eta$ (Chapter 6). What vortex radius follows from this?
+7. **★★★ The Burgers vortex: stretching versus diffusion (Chapter 3).** In cylindrical coordinates $(r, \theta, z)$, superimpose an axisymmetric stretching field $u_r = -\alpha r/2$, $u_z = \alpha z$ ($\alpha > 0$) and an azimuthal velocity $u_\theta(r)$, so that the vorticity is $\boldsymbol\omega = \omega(r)\,\mathbf{e}_z$. (a) Check that the stretching field is solenoidal and irrotational. (b) Write the vorticity equation (Theorem 3.4) and identify the stretching term. (c) Find the steady solution with total circulation $\Gamma$. (d) In turbulence, the small scales experience a strain rate of order $1/\tau_K$ (Chapter 6). What vortex radius follows from this?
 
    ::: sol
    *Solution.* (a) $\nabla\cdot\mathbf{u} = \frac1r\partial_r(ru_r) + \partial_z u_z = -\alpha + \alpha = 0$. The azimuthal component of the vorticity of the stretching field is $\partial_z u_r - \partial_r u_z = 0$: only $u_\theta$ contributes to $\boldsymbol\omega$, which is indeed directed along $\mathbf{e}_z$.
@@ -1895,7 +1895,7 @@ The exercises follow the order of the chapters; the stars indicate the difficult
 
    where the constant is fixed by $\int_0^\infty\omega\,2\pi r\,\mathrm{d}r = \Gamma$. The core radius is $\delta = 2\sqrt{\nu/\alpha}$: stretching, which concentrates the vorticity toward the axis, exactly balances viscous diffusion, which spreads it out.
 
-   **(d)** With $\alpha \sim 1/\tau_\eta = (\varepsilon/\nu)^{1/2}$, we find $\delta \sim 2(\nu\tau_\eta)^{1/2} = 2(\nu^3/\varepsilon)^{1/4} = 2\eta$. The intense vortex tubes of 3D turbulence therefore have a radius of a few Kolmogorov scales: the scale $\eta$ obtained by dimensional analysis in Chapter 6 acquires here a dynamical interpretation.
+   **(d)** With $\alpha \sim 1/\tau_K = (\varepsilon/\nu)^{1/2}$, we find $\delta \sim 2(\nu\tau_K)^{1/2} = 2(\nu^3/\varepsilon)^{1/4} = 2\ell_K$. The intense vortex tubes of 3D turbulence therefore have a radius of a few Kolmogorov scales: the scale $\ell_K$ obtained by dimensional analysis in Chapter 6 acquires here a dynamical interpretation.
    :::
 
 8. **★★ Helicity and mirror symmetry (Chapter 4).** Let $M = \mathrm{diag}(-1, 1, 1)$ be the reflection $x \mapsto -x$. To a field $\mathbf{u}$ on $\mathbb{T}^3$ we associate its mirror image $\mathbf{u}'(\mathbf{x}) = M\mathbf{u}(M\mathbf{x})$. (a) Show that $\nabla\cdot\mathbf{u}' = (\nabla\cdot\mathbf{u})(M\mathbf{x})$, that $\boldsymbol\omega'(\mathbf{x}) = -M\boldsymbol\omega(M\mathbf{x})$ and that $H_K' = -H_K$. (b) Apply the result to the ABC flow. (c) Show that the helicity of a plane flow is zero. (d) What precaution follows for data augmentation in a generative model?
@@ -1940,16 +1940,16 @@ The exercises follow the order of the chapters; the stars indicate the difficult
     **(c)** $H_K = \langle\mathbf{u}\cdot\lambda\mathbf{u}\rangle = 2\lambda E$. In general, the Cauchy–Schwarz inequality gives $|H_K| \le \langle|\mathbf{u}|^2\rangle^{1/2}\langle|\boldsymbol\omega|^2\rangle^{1/2}$; if all modes satisfy $|\mathbf{k}| = |\lambda|$, Parseval and $|\hat{\boldsymbol\omega}_{\mathbf{k}}| = |\mathbf{k}||\hat{\mathbf{u}}_{\mathbf{k}}|$ give $\langle|\boldsymbol\omega|^2\rangle = \lambda^2\langle|\mathbf{u}|^2\rangle$, hence $|H_K| \le |\lambda|\langle|\mathbf{u}|^2\rangle = 2|\lambda|E$. Equality in Cauchy–Schwarz requires $\boldsymbol\omega = \pm|\lambda|\mathbf{u}$: these are the Beltrami fields.
     :::
 
-12. **★★ Kolmogorov scales and the cost of a direct simulation (Chapter 6).** Assume $\varepsilon = U^3/L$. (a) Show that $\tau_\eta/T = Re^{-1/2}$ with $T = L/U$, and that $u_\eta/U = Re^{-1/4}$. (b) We simulate a box of side $2\pi L$ with $N$ points per direction and the 2/3 rule, so that $k_{\max} = N/(3L)$; we require $k_{\max}\eta \approx 1$. How many points are needed for $Re = 10^4$? How much memory do the three velocity components occupy in double precision? (c) Same question for $Re = 5\times10^6$, the maximal value for VKS (Monchaux et al., 2007). (d) A generative model is conditioned on $Re \in [10^3, 10^5]$ on a fixed grid: what can be said about its resolution? (Interactive diagram 2 can be used to check these orders of magnitude.)
+12. **★★ Kolmogorov scales and the cost of a direct simulation (Chapter 6).** Assume $\varepsilon = U^3/L$. (a) Show that $\tau_K/T = Re^{-1/2}$ with $T = L/U$, and that $u_K/U = Re^{-1/4}$. (b) We simulate a box of side $2\pi L$ with $N$ points per direction and the 2/3 rule, so that $k_{\max} = N/(3L)$; we require $k_{\max}\ell_K \approx 1$. How many points are needed for $Re = 10^4$? How much memory do the three velocity components occupy in double precision? (c) Same question for $Re = 5\times10^6$, the maximal value for VKS (Monchaux et al., 2007). (d) A generative model is conditioned on $Re \in [10^3, 10^5]$ on a fixed grid: what can be said about its resolution? (Interactive diagram 2 can be used to check these orders of magnitude.)
 
     ::: sol
-    *Solution.* (a) $\tau_\eta/T = (\nu/\varepsilon)^{1/2}\,U/L = (\nu L/U^3)^{1/2}\,U/L = (\nu/(UL))^{1/2} = Re^{-1/2}$, and $u_\eta/U = (\nu\varepsilon)^{1/4}/U = (\nu/(UL))^{1/4} = Re^{-1/4}$. The smallest eddies therefore have a size, a characteristic time and a velocity smaller than those of the large eddies, in ratios fixed by the number $Re$ alone.
+    *Solution.* (a) $\tau_K/T = (\nu/\varepsilon)^{1/2}\,U/L = (\nu L/U^3)^{1/2}\,U/L = (\nu/(UL))^{1/2} = Re^{-1/2}$, and $u_K/U = (\nu\varepsilon)^{1/4}/U = (\nu/(UL))^{1/4} = Re^{-1/4}$. The smallest eddies therefore have a size, a characteristic time and a velocity smaller than those of the large eddies, in ratios fixed by the number $Re$ alone.
 
-    **(b)** $k_{\max}\eta = 1$ gives $N = 3L/\eta = 3Re^{3/4}$. For $Re = 10^4$, $Re^{3/4} = 10^3$, so $N \approx 3000$ and $N^3 \approx 2.7\times10^{10}$ points. Three components of 8 bytes occupy $3\times8\times2.7\times10^{10} \approx 6.5\times10^{11}$ bytes, i.e. about 650 GB, before even counting the work arrays of the time-stepping scheme.
+    **(b)** $k_{\max}\ell_K = 1$ gives $N = 3L/\ell_K = 3Re^{3/4}$. For $Re = 10^4$, $Re^{3/4} = 10^3$, so $N \approx 3000$ and $N^3 \approx 2.7\times10^{10}$ points. Three components of 8 bytes occupy $3\times8\times2.7\times10^{10} \approx 6.5\times10^{11}$ bytes, i.e. about 650 GB, before even counting the work arrays of the time-stepping scheme.
 
     **(c)** For $Re = 5\times10^6$, $Re^{3/4} \approx 1.06\times10^5$, so $N \approx 3.2\times10^5$ and $N^3 \approx 3\times10^{16}$: about a million times more than for $Re = 10^4$, and the number of time steps is multiplied as well (Proposition 6.9). This is beyond the reach of current supercomputers, which explains the use of lower values of $Re$ or of large-eddy models.
 
-    **(d)** Between $Re = 10^3$ and $Re = 10^5$, $L/\eta$ varies by a factor $100^{3/4} \approx 32$. A grid suited to $Re = 10^5$ is needlessly fine at $Re = 10^3$; a grid suited to $Re = 10^3$ does not represent the dissipation range at $Re = 10^5$. A generative model on a fixed grid therefore cannot faithfully reproduce the small scales over the whole range: one needs either a variable-resolution representation (neural operators, functional representations such as FunDiff), or to restrict the metrics to the resolved scales.
+    **(d)** Between $Re = 10^3$ and $Re = 10^5$, $L/\ell_K$ varies by a factor $100^{3/4} \approx 32$. A grid suited to $Re = 10^5$ is needlessly fine at $Re = 10^3$; a grid suited to $Re = 10^3$ does not represent the dissipation range at $Re = 10^5$. A generative model on a fixed grid therefore cannot faithfully reproduce the small scales over the whole range: one needs either a variable-resolution representation (neural operators, functional representations such as FunDiff), or to restrict the metrics to the resolved scales.
     :::
 
 13. **★★★ Spectral centroid in 2D turbulence (Chapter 6).** In ideal 2D (no viscosity, no forcing), assume that the spectrum $E(k, t) \ge 0$ evolves while conserving $E = \int_0^\infty E\,\mathrm{d}k$ and $Z = \int_0^\infty k^2E\,\mathrm{d}k$. Let $k_E = E^{-1}\int kE\,\mathrm{d}k$ denote the energy centroid and $\sigma^2 = E^{-1}\int(k - k_E)^2E\,\mathrm{d}k$ its spread. (a) Show that $k_E^2 + \sigma^2 = Z/E$. (b) Deduce that if the spectrum spreads out ($\sigma^2$ increases), the energy centroid decreases. (c) Show likewise, with the variable $s = 1/k$ and the enstrophy distribution $Z(k) = k^2E(k)$, that if this distribution spreads out in $s$, enstrophy moves toward large $k$. (d) Why does no argument of this type exist in 3D?
@@ -2101,7 +2101,7 @@ The MilaDy internship consists in learning **distributions** of MHD fields param
 
 **Metrics.** The internship offer cites spectra, helicity, divergence and topology. Chapter 4 defines the spectrum $E(k)$ and the helicity, and shows that helicity is a pseudoscalar (Exercise 8); Chapter 6 shows that a Gaussian field can have the right spectrum and zero energy flux, so that a model validated on the spectrum alone can be wrong on third-order statistics. The modules [Probability, statistics and optimal transport](../p5-probability-transport/index.html) and [Generative models under physical constraints](../p8-physical-constraints/index.html) build the metrics between distributions that complement these diagnostics.
 
-**Conditioning on $Re$.** The nondimensionalization of Chapter 2 justifies conditioning a model on dimensionless numbers, and Exercise 3 recalls that their definition varies from one paper to another. Proposition 6.9 and Exercise 12 show that the required resolution depends on the conditioning parameter ($L/\eta \sim Re^{3/4}$): this is a strong constraint for a fixed-grid model, discussed in the [experimental plan of the PhD proposal](../../thesis/index.html#plan-experimental).
+**Conditioning on $Re$.** The nondimensionalization of Chapter 2 justifies conditioning a model on dimensionless numbers, and Exercise 3 recalls that their definition varies from one paper to another. Proposition 6.9 and Exercise 12 show that the required resolution depends on the conditioning parameter ($L/\ell_K \sim Re^{3/4}$): this is a strong constraint for a fixed-grid model, discussed in the [experimental plan of the PhD proposal](../../thesis/index.html#plan-experimental).
 
 **Reference flows and dynamos.** The progression "simple PDEs, then dynamos" set out in the offer goes through the flows of Chapter 5. The ABC flow is the one of experiment E3 of the repository, which measures the growth rate of the kinematic dynamo as a function of $Rm$ ([report, section E3](../../report/index.html#e3)). The von Kármán flow is the geometry of VKS, where reversals of the magnetic field have been observed (Berhanu et al., 2007). Gissinger's three-mode model (2012), studied in experiment E1, describes such reversals in low dimension, with a dipolar mode, a quadrupolar mode and a velocity mode; its author compares it with the reversals of the Earth's magnetic field ([report, section E1](../../report/index.html#e1)).
 
