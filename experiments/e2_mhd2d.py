@@ -340,9 +340,9 @@ def main(quick=False):
             "balance_residual_Hc", "balance_residual_A2", "std_diss_rel", "energy_distance_features"]
     summary = {}
     for name, ev in evals.items():
-        summary[name] = {split: {k: float(np.mean([abs(r[k]) if k.startswith("residu") else r[k] for r in rows])) for k in keys}
+        summary[name] = {split: {k: float(np.mean([abs(r[k]) if k.startswith("balance_residual") else r[k] for r in rows])) for k in keys}
                          for split, rows in ev.items()}
-    summary["en_loi"] = {m: {split: {k: float(np.mean([abs(v[m][k]) if k.startswith("residu") else v[m][k]
+    summary["en_loi"] = {m: {split: {k: float(np.mean([abs(v[m][k]) if k.startswith("balance_residual") else v[m][k]
                                                        for v in law.values() if v["split"] == split])) for k in keys}
                              for split in ("train", "test")} for m in ("base", "inclinaison", "recalage")}
     summary["en_loi"]["ess_frac_b_moy"] = float(np.mean([v["ess_frac_b"] for v in law.values()]))
