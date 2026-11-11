@@ -50,11 +50,14 @@ def e1():
     for g, s in sorted(r["data"].items(), key=lambda t: float(t[0])):
         print(f"| {g} | {f(s['simulation_crossing_rate'])} | {f(s['rice_rate_reference'])} | {f(s.get('P(D>0)_train'), 4)} |")
     print("\n### Fine grid (model C seed 0 and F seed 0)\n")
-    print("| Γ | sim. rate | Rice ref. | Rice C | Rice F | bridge ref. | bridge C | bridge F |")
-    print("|---|---|---|---|---|---|---|---|")
+    print("| Γ | sim. rate | Rice ref. | Rice C | Rice F | bridge ref. | bridge C | bridge F | ref. SW1 to next Γ | ref. SW1 floor |")
+    print("|---|---|---|---|---|---|---|---|---|---|")
     for x in r["fine_grid"]:
         print(f"| {x['Gamma']} | {f(x['simulation_rate'])} | {f(x['rice_rate_ref'])} | {f(x['rice_rate_model'])} | "
-              f"{f(x.get('rice_rate_model_F'))} | {f(x['bridge_ref'])} | {f(x['bridge_model'])} | {f(x.get('bridge_model_F'))} |")
+              f"{f(x.get('rice_rate_model_F'))} | {f(x['bridge_ref'])} | {f(x['bridge_model'])} | {f(x.get('bridge_model_F'))} | "
+              f"{f(x.get('ref_sw1_to_next'))} | {f(x.get('ref_sw1_floor'))} |")
+    print("\nref. SW1 to next Γ: sliced W1 between the symmetrized reference laws of consecutive Γ (jump J_δ of "
+          "Proposition 9, δ = half the step); floor: same Γ, two halves of the sample.")
     e1_detail(r)
     e1_seeds(r)
     print(f"\nTotal duration: {r['total_duration_s']:.0f} s.\n")

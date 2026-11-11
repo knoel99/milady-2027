@@ -444,6 +444,16 @@ def main(quick=False, reverse=False, train_only=False, seeds=None, simulate_only
                      "in_training": bool(np.any(np.isclose(G_TRAIN, gam)))})
         if abs(gam - 0.9) < 1e-9 or abs(gam - 0.85) < 1e-9:
             gens[("C_large", 0, float(gam))] = x[:8000]
+    # Jump of the reference law across the fine grid (Proposition 9, review B2): sliced W1 between the
+    # symmetrized reference laws of consecutive Γ, and its noise floor (two halves of the same sample).
+    gf = [float(g) for g in G_FINE]
+    sym = {g: to_z(np.concatenate([fine_data[g]["x"], fine_data[g]["x"] * S])) for g in gf}
+    for i, g in enumerate(gf):
+        x = sym[g]
+        half = len(x) // 2
+        perm = np.random.default_rng(11).permutation(len(x))
+        fine[i]["ref_sw1_floor"] = sliced_w1(x[perm[:half]], x[perm[half:]], seed=0)
+        fine[i]["ref_sw1_to_next"] = sliced_w1(x, sym[gf[i + 1]], seed=0) if i + 1 < len(gf) else None
     results["fine_grid"] = fine
     results["evaluation"] = evals
     results["summary"] = summary
