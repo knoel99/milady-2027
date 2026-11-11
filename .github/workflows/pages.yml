@@ -1,10 +1,10 @@
-# Construit le site (site/) et le publie sur GitHub Pages.
+# Build the site (site/) and publish it on GitHub Pages.
 #
-# Le HTML n'est pas versionné : ce workflow rend toutes les pages avec tools/render.py (Quarto 1.7.32,
-# balises KaTeX épinglées avec SRI), vérifie les portes de qualité, puis publie le contenu de site/
-# sans les sources (.qmd, .md, scripts des schémas). Les URL publiques sont celles de site/.
+# The HTML is not versioned: this workflow renders all pages with tools/render.py (Quarto 1.7.32,
+# KaTeX tags pinned with SRI), runs the quality gates, then publishes the content of site/
+# without the sources (.qmd, .md, diagram scripts). The public URLs are those of site/.
 #
-# Réglage requis une fois : Settings → Pages → Build and deployment → Source : « GitHub Actions ».
+# Setting required once: Settings → Pages → Build and deployment → Source: "GitHub Actions".
 name: pages
 
 on:
@@ -33,7 +33,7 @@ jobs:
           sudo tar -xzf /tmp/quarto.tgz -C /opt
           echo "/opt/quarto-1.7.32/bin" >> "$GITHUB_PATH"
 
-      - name: Rendu de toutes les pages
+      - name: Render all pages
         run: python3 tools/render.py --all
 
       - name: Quality gates
@@ -44,7 +44,7 @@ jobs:
           npm install --no-save --prefix /tmp/katex katex@0.19.0
           NODE_PATH=/tmp/katex/node_modules node tools/check_katex.mjs $(find site -name index.html)
 
-      - name: Assemblage de _site/
+      - name: Assemble _site/
         run: |
           rsync -a --prune-empty-dirs \
             --exclude='*.qmd' --exclude='*.md' --exclude='node_modules/' \

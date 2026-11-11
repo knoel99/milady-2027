@@ -1,22 +1,22 @@
-"""E2 — Génération conditionnelle de champs MHD 2D (u, B) : comparaison des mécanismes de contrainte.
+"""E2 - Conditional generation of 2D MHD fields (u, B): comparison of constraint mechanisms.
 
-Représentation : coefficients de Fourier indépendants (|kx|, |ky| ≤ 10) des instantanés 32².
-En turbulence homogène sur domaine périodique, les modes POD sont les modes de Fourier : cette base
-joue le rôle de l'espace latent linéaire. Un MLP de flow matching conditionné par log η y génère.
+Representation: independent Fourier coefficients (|kx|, |ky| <= 10) of the 32² snapshots.
+In homogeneous turbulence on a periodic domain, the POD modes are the Fourier modes: this basis
+plays the role of the linear latent space. A flow matching MLP conditioned on log η generates in it.
 
-Variantes (même réseau, même budget) :
-  V0_libre        : génère (ûx, ûy, B̂x, B̂y) sans contrainte ;
-  V1_penalite     : V0 + pénalité douce sur la divergence de la prédiction x̂1 = x_t + (1 - t) v ;
-  V2_proj_finale  : V0, puis projection de Leray des échantillons finaux ;
-  V3_flot_projete : bruit et pas d'intégration projetés sur le sous-espace à divergence nulle ;
-  V4_potentiels   : génère (ψ̂, â), puis u = ∇⊥ψ, B = ∇⊥a (divergence nulle exacte par construction) ;
-  V5_potentiels_stat : V4 + réglage fin avec perte de stationnarité en loi (bilan d'énergie moyen),
-                       imposée à tout η (y compris sans données) ; témoin V5_temoin (sans la perte).
-Volet « en loi » sur V4 : inclinaison exponentielle (3 identités de stationnarité) contre
-recalage de chaque échantillon sur le bilan d'énergie.
+Variants (same network, same budget):
+  V0_libre        : generates (ûx, ûy, B̂x, B̂y) without constraint;
+  V1_penalite     : V0 + soft penalty on the divergence of the prediction x̂1 = x_t + (1 - t) v;
+  V2_proj_finale  : V0, then Leray projection of the final samples;
+  V3_flot_projete : noise and integration steps projected onto the divergence-free subspace;
+  V4_potentiels   : generates (ψ̂, â), then u = ∇⊥ψ, B = ∇⊥a (exactly divergence-free by construction);
+  V5_potentiels_stat : V4 + fine-tuning with a stationarity loss in law (mean energy balance),
+                       imposed at every η (including those without data); control V5_temoin (without the loss).
+"In law" part on V4: exponential tilting (3 stationarity identities) versus
+rescaling of each sample to the energy balance.
 
-Usage : python3 e2_mhd2d.py [--quick]  (données : e2_data.py, dossier $E2_DATA)
-Sortie : results/e2_mhd2d[_quick].json
+Usage: python3 e2_mhd2d.py [--quick]  (data: e2_data.py, directory $E2_DATA)
+Output: results/e2_mhd2d[_quick].json
 """
 from __future__ import annotations
 
@@ -31,21 +31,21 @@ import numpy as np
 import torch
 
 from common import MLPField, energy_distance, exp_tilt, fm_loss, sample_ode, save_json, seed_all, systematic_resample, train
-from e2_donnees import ALPHA, EPS, ETA_TEST, ETA_TRAIN, KF, N, NU
+from e2_data import ALPHA, EPS, ETA_TEST, ETA_TRAIN, KF, N, NU
 from mhd2d import MHD2D
 
 DATA = Path(os.environ.get("E2_DATA", Path(__file__).resolve().parent / "data_e2"))
 KMAX = 10
 
-# --- géométrie spectrale --------------------------------------------------------------
+# --- spectral geometry --------------------------------------------------------------
 _k = np.fft.fftfreq(N, 1.0 / N)
 _kr = np.fft.rfftfreq(N, 1.0 / N)
 KX, KY = np.meshgrid(_kr, _k)
 MASK = (np.abs(KX) <= KMAX) & (np.abs(KY) <= KMAX) & ~((KX == 0) & (KY <= 0))
-kx, ky = KX[MASK], KY[MASK]               # (M,) modes indépendants
+kx, ky = KX[MASK], KY[MASK]               # (M,) independent modes
 k2 = kx ** 2 + ky ** 2
 M = len(kx)
-# Chaque mode retenu représente une paire conjuguée (k, -k) : Parseval donne ⟨f²⟩ = (2/N⁴) Σ_M |f̂|².
+# Each retained mode represents a conjugate pair (k, -k): Parseval gives ⟨f²⟩ = (2/N⁴) Σ_M |f̂|².
 NORM = 2.0 / N ** 4
 SHELL = np.rint(np.sqrt(k2)).astype(int)
 CSV = lambda z: np.concatenate([z.real, z.imag], -1)
@@ -57,7 +57,7 @@ def from_csv(v, nfield):
 
 
 def mean_sq(fh):
-    """⟨f²⟩ à partir des coefficients indépendants f̂ (..., M)."""
+    """⟨f²⟩ from the independent coefficients f̂ (..., M)."""
     return NORM * np.sum(np.abs(fh) ** 2, -1)
 
 
@@ -70,14 +70,14 @@ def load(split, etas):
     return out
 
 
-# --- passages entre représentations ----------------------------------------------------
+# --- conversions between representations ----------------------------------------------------
 def comps_from_pot(psi, a):
-    """(ψ̂, â) -> (ûx, ûy, B̂x, B̂y) avec u = (∂yψ, -∂xψ)."""
+    """(ψ̂, â) -> (ûx, ûy, B̂x, B̂y) with u = (∂yψ, -∂xψ)."""
     return np.stack([1j * ky * psi, -1j * kx * psi, 1j * ky * a, -1j * kx * a], 1)
 
 
 def leray(c):
-    """Projection de Leray mode par mode sur les champs à divergence nulle. c : (n, 4, M)."""
+    """Mode-by-mode Leray projection onto divergence-free fields. c: (n, 4, M)."""
     out = c.copy()
     for i in (0, 2):
         div = kx * c[:, i] + ky * c[:, i + 1]
@@ -87,11 +87,11 @@ def leray(c):
 
 
 def diagnostics(c, eta):
-    """Grandeurs physiques par échantillon à partir de (ûx, ûy, B̂x, B̂y)."""
+    """Physical quantities per sample from (ûx, ûy, B̂x, B̂y)."""
     ux, uy, bx, by = c[:, 0], c[:, 1], c[:, 2], c[:, 3]
     om = 1j * kx * uy - 1j * ky * ux
     jj = 1j * kx * by - 1j * ky * bx
-    # potentiel a reconstruit à partir de la partie solénoïdale de B (a = ĵ / k²)
+    # potential a reconstructed from the solenoidal part of B (a = ĵ / k²)
     ah = jj / k2
     Eu = 0.5 * (mean_sq(ux) + mean_sq(uy))
     Eb = 0.5 * (mean_sq(bx) + mean_sq(by))
@@ -114,7 +114,7 @@ def features(dg):
     return np.concatenate([np.log10(dg["Su"][:, :10] + 1e-12), np.log10(dg["Sb"][:, :10] + 1e-12), dg["Hc"][:, None] * 10], 1)
 
 
-# --- modèle ------------------------------------------------------------------------------
+# --- model ------------------------------------------------------------------------------
 def main(quick=False):
     torch.set_num_threads(2)
     t_start = time.time()
@@ -124,7 +124,7 @@ def main(quick=False):
     inj = inj_u + inj_b
     cn = lambda eta: (np.log(eta) - np.log(3.5e-3)) / (np.log(2.6e-2) - np.log(3.5e-3))
 
-    # Jeux d'entraînement dans les deux représentations
+    # Training sets in both representations
     pot = np.concatenate([CSV(np.stack([tr[e]["psi"], tr[e]["a"]], 1)).reshape(len(tr[e]["psi"]), -1) for e in ETA_TRAIN])
     comp = np.concatenate([CSV(comps_from_pot(tr[e]["psi"], tr[e]["a"])).reshape(len(tr[e]["psi"]), -1) for e in ETA_TRAIN])
     cond = np.concatenate([np.full(len(tr[e]["psi"]), cn(e)) for e in ETA_TRAIN])
@@ -134,11 +134,11 @@ def main(quick=False):
     Xc = torch.tensor(comp / sd_comp, dtype=torch.float32)
     Cc = torch.tensor(cond, dtype=torch.float32)
 
-    # opérateurs linéaires en coordonnées normalisées (torch) : divergence et projection
+    # linear operators in normalised coordinates (torch): divergence and projection
     kx_t, ky_t, k2_t = (torch.tensor(v, dtype=torch.float32) for v in (kx, ky, k2))
     sdc_t = torch.tensor(sd_comp, dtype=torch.float32)
 
-    def to_complex_t(z):  # z normalisé (n, 4*2*M) -> champs complexes séparés (re, im) (n, 4, M)
+    def to_complex_t(z):  # normalised z (n, 4*2*M) -> separated complex fields (re, im) (n, 4, M)
         v = (z * sdc_t).view(z.shape[0], 4, 2, M)
         return v[:, :, 0], v[:, :, 1]
 
@@ -223,13 +223,13 @@ def main(quick=False):
         results["variantes"][name] = {"temps_entrainement_s": tsec,
                                       "temps_generation_s_par_echantillon": (time.time() - tg) / (n_gen * 11)}
 
-    # V5 : réglage fin de V4 avec perte de stationnarité (bilan d'énergie moyen imposé à tout η)
+    # V5: fine-tuning of V4 with a stationarity loss (mean energy balance imposed at every η)
     sdp_t = torch.tensor(sd_pot, dtype=torch.float32)
     k2f = torch.tensor(np.tile(k2, 2), dtype=torch.float32)
 
     def diss_t(z, eta):
-        """Dissipation moyenne D(x) (différentiable) depuis les potentiels normalisés z, η par échantillon."""
-        v = (z * sdp_t).view(z.shape[0], 2, 2 * M)  # (n, champ, re/im concaténés)
+        """Mean dissipation D(x) (differentiable) from the normalised potentials z, η per sample."""
+        v = (z * sdp_t).view(z.shape[0], 2, 2 * M)  # (n, field, concatenated re/im)
         psi2 = v[:, 0] ** 2
         a2 = v[:, 1] ** 2
         Z = NORM * (k2f ** 2 * psi2).sum(1)        # ⟨ω²⟩
@@ -260,21 +260,21 @@ def main(quick=False):
                     z = z + 0.5 * h * (v0 + v1)
                 d = diss_t(z, torch.tensor(etas, dtype=torch.float32)).view(4, 2, 32).mean(2)
                 r = (d - inj) / inj
-                # estimateur sans biais de (E[D] - ε)² : produit des résidus de deux demi-lots
+                # unbiased estimator of (E[D] - ε)²: product of the residuals of two half-batches
                 loss = loss + beta * (r[:, 0] * r[:, 1]).mean()
             opt.zero_grad(set_to_none=True)
             loss.backward()
             torch.nn.utils.clip_grad_norm_(model.parameters(), 1.0)
             opt.step()
             if it % max(ft_iters // 4, 1) == 0:
-                print(f"[{vname}] it {it} perte {loss.item():.4f} {time.time() - t0:.0f} s", flush=True)
+                print(f"[{vname}] it {it} loss {loss.item():.4f} {time.time() - t0:.0f} s", flush=True)
         model.eval()
         models[vname] = model
         for eta in ETA_TRAIN + ETA_TEST:
             gens[(vname, eta)] = generate(model, eta, "pot")
         results["variantes"][vname] = {"temps_reglage_fin_s": time.time() - t0, "iters": ft_iters, "beta": beta}
 
-    # --- évaluation ---------------------------------------------------------------------
+    # --- evaluation ---------------------------------------------------------------------
     ref_dg = {e: diagnostics(comps_from_pot(ref[e]["psi"], ref[e]["a"]), e) for e in ETA_TRAIN + ETA_TEST}
     tr_dg = {e: diagnostics(comps_from_pot(tr[e]["psi"], tr[e]["a"]), e) for e in ETA_TRAIN}
     fmean = np.concatenate([features(ref_dg[e]) for e in ETA_TRAIN]).mean(0)
@@ -302,7 +302,7 @@ def main(quick=False):
     for name in list(variants) + ["V5_potentiels_stat", "V5_temoin"]:
         for split, etas in (("train", ETA_TRAIN), ("test", ETA_TEST)):
             evals.setdefault(name, {})[split] = [{"eta": e, **evaluate(gens[(name, e)], e)} for e in etas]
-    # Référence : sous-échantillon de même taille (plancher de bruit) et données d'entraînement
+    # Reference: subsample of the same size (noise floor) and training data
     floor = {}
     for split, etas in (("train", ETA_TRAIN), ("test", ETA_TEST)):
         rows = []
@@ -314,7 +314,7 @@ def main(quick=False):
         floor[split] = rows
     evals["reference_sous_echantillon"] = floor
 
-    # --- volet en loi : inclinaison exponentielle contre recalage par échantillon (sur V4) ---
+    # --- "in law" part: exponential tilting versus per-sample rescaling (on V4) ---
     law = {}
     for e in ETA_TRAIN + ETA_TEST:
         c = gens[("V4_potentiels", e)]
@@ -325,7 +325,7 @@ def main(quick=False):
         zb = g[half:] @ lam
         wb = np.exp(zb - zb.max()); wb /= wb.sum()
         tilted = c[half:][systematic_resample(wb, len(c) - half, seed=1)]
-        # recalage : on multiplie les échelles |k| > 3 par s pour que D(x) = ε_inj exactement
+        # rescaling: multiply the scales |k| > 3 by s so that D(x) = ε_inj exactly
         big = (np.sqrt(k2) > 3)
         cl, cs = c * (~big), c * big
         dl, ds = diagnostics(cl, e)["diss"], diagnostics(cs, e)["diss"]
@@ -349,14 +349,14 @@ def main(quick=False):
     results["resume"] = summary
     results["duree_totale_s"] = time.time() - t_start
     save_json(results, "e2_mhd2d_quick.json" if quick else "e2_mhd2d.json")
-    # échantillons pour figures (η du milieu)
+    # samples for figures (middle η)
     e_mid = ETA_TEST[2]
     np.savez_compressed(Path(__file__).resolve().parent / "results" / ("e2_echantillons_quick.npz" if quick else "e2_echantillons.npz"),
                         **{f"{n}": gens[(n, e_mid)][:8] for n in list(variants) + ["V5_potentiels_stat"]},
                         ref=comps_from_pot(ref[e_mid]["psi"][:8], ref[e_mid]["a"][:8]), kx=kx, ky=ky, eta=e_mid)
     for name, v in summary.items():
         print(name, json.dumps(v)[:600], flush=True)
-    print(f"durée totale {time.time() - t_start:.0f} s")
+    print(f"total duration {time.time() - t_start:.0f} s")
 
 
 if __name__ == "__main__":

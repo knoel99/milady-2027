@@ -1,25 +1,25 @@
 -- =============================================================================================
--- Catalogue MilaDy — schéma PostgreSQL 16 (version 1.0)
+-- MilaDy catalogue — PostgreSQL 16 schema (version 1.0)
 --
--- Équivalent exact du modèle SQLAlchemy src/milady/catalog/models.py (mêmes tables, colonnes, contraintes
--- CHECK et index ; tests/test_catalog.py vérifie la concordance). En mode portable (SQLite), le même
--- schéma est créé par SQLAlchemy (Catalog(create=True)) ; ce fichier sert à PostgreSQL :
---   - automatiquement au premier démarrage du service « db » du docker-compose
---     (montage dans /docker-entrypoint-initdb.d/) ;
---   - à la main :  psql "$MILADY_DB_URL" -v ON_ERROR_STOP=1 -f infra/db/schema.sql
--- Idempotent : CREATE … IF NOT EXISTS, CREATE OR REPLACE VIEW. Identifiants UUID, horodatages UTC
--- (timestamptz), paramètres en JSONB. MLflow utilise une base distincte (pas de table ici).
+-- Exact equivalent of the SQLAlchemy model src/milady/catalog/models.py (same tables, columns, CHECK
+-- constraints and indexes; tests/test_catalog.py checks the match). In portable mode (SQLite), the same
+-- schema is created by SQLAlchemy (Catalog(create=True)); this file is for PostgreSQL:
+--   - automatically at the first start of the "db" service of the docker-compose
+--     (mounted in /docker-entrypoint-initdb.d/);
+--   - by hand:  psql "$MILADY_DB_URL" -v ON_ERROR_STOP=1 -f infra/db/schema.sql
+-- Idempotent: CREATE ... IF NOT EXISTS, CREATE OR REPLACE VIEW. UUID identifiers, UTC timestamps
+-- (timestamptz), parameters in JSONB. MLflow uses a separate database (no table here).
 --
--- Évolutions : CREATE TABLE IF NOT EXISTS ne modifie pas une table existante. Tant que le schéma est
--- en version 1.0, toute modification se fait à l'identique ici et dans models.py (le test de
--- concordance compare colonnes, types, DEFAULT, contraintes et index). Dès qu'une base de production
--- contient des résultats à garder, passer par des migrations Alembic (voir l'en-tête de
--- src/milady/catalog/models.py) plutôt que par des ALTER TABLE à la main.
+-- Changes: CREATE TABLE IF NOT EXISTS does not modify an existing table. As long as the schema is
+-- at version 1.0, any change is made identically here and in models.py (the match test
+-- compares columns, types, DEFAULT, constraints and indexes). Once a production database
+-- holds results worth keeping, use Alembic migrations (see the header of
+-- src/milady/catalog/models.py) rather than hand-written ALTER TABLE.
 -- =============================================================================================
 
 BEGIN;
 
--- Campagne : ensemble de simulations décrit par un fichier YAML (infra/configs/*.yaml).
+-- Campaign: set of simulations described by a YAML file (infra/configs/*.yaml).
 CREATE TABLE IF NOT EXISTS campaign (
     id           UUID         NOT NULL DEFAULT gen_random_uuid(),
     name         VARCHAR(200) NOT NULL,
@@ -30,7 +30,7 @@ CREATE TABLE IF NOT EXISTS campaign (
     UNIQUE (name)
 );
 
--- Jeu de données versionné (liste figée de fichiers répartis en train / val / test).
+-- Versioned dataset (frozen list of files split into train / val / test).
 CREATE TABLE IF NOT EXISTS dataset (
     id           UUID         NOT NULL DEFAULT gen_random_uuid(),
     name         VARCHAR(200) NOT NULL,
@@ -41,7 +41,7 @@ CREATE TABLE IF NOT EXISTS dataset (
     CONSTRAINT uq_dataset_name_version UNIQUE (name, version)
 );
 
--- Modèle génératif entraîné ; mlflow_run_id relie à l'exécution MLflow, checkpoint_uri au stockage S3.
+-- Trained generative model; mlflow_run_id links to the MLflow run, checkpoint_uri to the S3 storage.
 CREATE TABLE IF NOT EXISTS model (
     id                    UUID         NOT NULL DEFAULT gen_random_uuid(),
     name                  VARCHAR(200) NOT NULL,
@@ -59,7 +59,7 @@ CREATE TABLE IF NOT EXISTS model (
 CREATE INDEX IF NOT EXISTS ix_model_name    ON model (name);
 CREATE INDEX IF NOT EXISTS ix_model_dataset ON model (dataset_id);
 
--- Simulation : un code, un jeu de paramètres, une grille.
+-- Simulation: a code, a parameter set, a grid.
 CREATE TABLE IF NOT EXISTS simulation (
     id            UUID         NOT NULL DEFAULT gen_random_uuid(),
     campaign_id   UUID         NOT NULL,
@@ -84,10 +84,10 @@ CREATE TABLE IF NOT EXISTS simulation (
 );
 CREATE INDEX IF NOT EXISTS ix_simulation_campaign   ON simulation (campaign_id);
 CREATE INDEX IF NOT EXISTS ix_simulation_status     ON simulation (status);
--- Requêtes sur les paramètres : parameters @> '{"Rm": 12.0}', parameters ? 'mu_r'…
+-- Queries on the parameters: parameters @> '{"Rm": 12.0}', parameters ? 'mu_r'...
 CREATE INDEX IF NOT EXISTS ix_simulation_parameters ON simulation USING gin (parameters);
 
--- Séries temporelles légères (énergies, dissipation, hélicités, max |div B|) pour les requêtes rapides.
+-- Lightweight time series (energies, dissipation, helicities, max |div B|) for fast queries.
 CREATE TABLE IF NOT EXISTS diagnostic (
     simulation_id  UUID             NOT NULL,
     name           VARCHAR(64)      NOT NULL,
@@ -97,7 +97,7 @@ CREATE TABLE IF NOT EXISTS diagnostic (
     FOREIGN KEY (simulation_id) REFERENCES simulation (id) ON DELETE CASCADE
 );
 
--- Une mesure d'une métrique pour un modèle, à paramètres physiques et graine donnés.
+-- One measurement of a metric for a model, at given physical parameters and seed.
 CREATE TABLE IF NOT EXISTS evaluation (
     id          UUID             NOT NULL DEFAULT gen_random_uuid(),
     model_id    UUID             NOT NULL,
@@ -114,8 +114,8 @@ CREATE TABLE IF NOT EXISTS evaluation (
 );
 CREATE INDEX IF NOT EXISTS ix_evaluation_model_metric ON evaluation (model_id, metric);
 
--- Fichier produit par une simulation (MFF, points de contrôle, journaux), repéré par son URI
--- ({MILADY_STORAGE_URI}/{campagne}/{uuid_simulation}/{kind}.h5).
+-- File produced by a simulation (MFF, checkpoints, logs), identified by its URI
+-- ({MILADY_STORAGE_URI}/{campaign}/{simulation_uuid}/{kind}.h5).
 CREATE TABLE IF NOT EXISTS file (
     id              UUID             NOT NULL DEFAULT gen_random_uuid(),
     simulation_id   UUID             NOT NULL,
@@ -137,7 +137,7 @@ CREATE TABLE IF NOT EXISTS file (
 CREATE INDEX IF NOT EXISTS ix_file_simulation ON file (simulation_id);
 CREATE INDEX IF NOT EXISTS ix_file_kind       ON file (kind);
 
--- Tâche soumise à un ordonnanceur ; porte sur une simulation ou un modèle (ou aucun : tableau de jobs).
+-- Task submitted to a scheduler; targets a simulation or a model (or neither: job board).
 CREATE TABLE IF NOT EXISTS job (
     id             UUID         NOT NULL DEFAULT gen_random_uuid(),
     kind           VARCHAR(32)  NOT NULL,
@@ -159,11 +159,11 @@ CREATE TABLE IF NOT EXISTS job (
 );
 CREATE INDEX IF NOT EXISTS ix_job_status     ON job (status);
 CREATE INDEX IF NOT EXISTS ix_job_external   ON job (scheduler, external_id);
--- Clés étrangères indexées : tâches d'une simulation ou d'un modèle, et ON DELETE SET NULL sans balayage.
+-- Indexed foreign keys: tasks of a simulation or a model, and ON DELETE SET NULL without a full scan.
 CREATE INDEX IF NOT EXISTS ix_job_simulation ON job (simulation_id);
 CREATE INDEX IF NOT EXISTS ix_job_model      ON job (model_id);
 
--- Appartenance d'un fichier à un jeu de données, avec sa partition.
+-- Membership of a file in a dataset, with its split.
 CREATE TABLE IF NOT EXISTS dataset_member (
     dataset_id  UUID       NOT NULL,
     file_id     UUID       NOT NULL,
@@ -175,8 +175,8 @@ CREATE TABLE IF NOT EXISTS dataset_member (
 );
 CREATE INDEX IF NOT EXISTS ix_dataset_member_file ON dataset_member (file_id);
 
--- Synthèse des évaluations : moyenne et écart-type (sur les graines) par modèle, métrique et paramètres.
--- Même requête que VIEW_EVAL_SUMMARY_SQL dans src/milady/catalog/models.py.
+-- Evaluation summary: mean and standard deviation (over seeds) per model, metric and parameters.
+-- Same query as VIEW_EVAL_SUMMARY_SQL in src/milady/catalog/models.py.
 CREATE OR REPLACE VIEW v_eval_summary AS
 SELECT e.model_id                AS model_id,
        m.name                    AS model_name,
@@ -193,15 +193,15 @@ FROM evaluation e
 JOIN model m ON m.id = e.model_id
 GROUP BY e.model_id, m.name, m.constraint_mechanism, e.metric, e.parameters;
 
-COMMENT ON TABLE campaign       IS 'Campagne de simulations (configuration YAML)';
-COMMENT ON TABLE simulation     IS 'Simulation : code, paramètres physiques (JSONB), grille, statut, ressources';
-COMMENT ON TABLE file           IS 'Fichier produit (MFF 1.0, point de contrôle, journal), URI et SHA-256';
-COMMENT ON TABLE diagnostic     IS 'Séries temporelles légères (moyenne sur les trajectoires)';
-COMMENT ON TABLE dataset        IS 'Jeu de données versionné et figé';
-COMMENT ON TABLE dataset_member IS 'Fichiers d''un jeu de données et partition (train, val, test)';
-COMMENT ON TABLE model          IS 'Modèle génératif entraîné (lien MLflow et point de contrôle)';
-COMMENT ON TABLE evaluation     IS 'Mesure d''une métrique physique ou statistique d''un modèle';
-COMMENT ON TABLE job            IS 'Tâche soumise (local, docker, slurm)';
-COMMENT ON VIEW  v_eval_summary IS 'Moyenne et écart-type des évaluations par modèle, métrique et paramètres';
+COMMENT ON TABLE campaign       IS 'Simulation campaign (YAML configuration)';
+COMMENT ON TABLE simulation     IS 'Simulation: code, physical parameters (JSONB), grid, status, resources';
+COMMENT ON TABLE file           IS 'Produced file (MFF 1.0, checkpoint, log), URI and SHA-256';
+COMMENT ON TABLE diagnostic     IS 'Lightweight time series (mean over trajectories)';
+COMMENT ON TABLE dataset        IS 'Versioned, frozen dataset';
+COMMENT ON TABLE dataset_member IS 'Files of a dataset and split (train, val, test)';
+COMMENT ON TABLE model          IS 'Trained generative model (MLflow link and checkpoint)';
+COMMENT ON TABLE evaluation     IS 'Measurement of a physical or statistical metric of a model';
+COMMENT ON TABLE job            IS 'Submitted task (local, docker, slurm)';
+COMMENT ON VIEW  v_eval_summary IS 'Mean and standard deviation of the evaluations per model, metric and parameters';
 
 COMMIT;

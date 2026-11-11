@@ -1,25 +1,25 @@
 # shellcheck shell=bash
-# Environnement commun aux gabarits Slurm MilaDy (sourcé par gen_data.sbatch, train.sbatch, eval.sbatch).
-# Ne pas exécuter directement : `source infra/slurm/env.sh` dans un script Slurm.
+# Environment shared by the MilaDy Slurm templates (sourced by gen_data.sbatch, train.sbatch, eval.sbatch).
+# Do not run directly: `source infra/slurm/env.sh` in a Slurm script.
 #
-# Toutes les variables sont surchargeables avant `sbatch` (Slurm transmet l'environnement de
-# soumission par défaut) ou dans ~/.config/milady/slurm.env (lu s'il existe) :
+# All variables can be overridden before `sbatch` (Slurm forwards the submission environment
+# by default) or in ~/.config/milady/slurm.env (read if it exists):
 #
-#   MILADY_ROOT          dépôt cloné (défaut : dossier de soumission SLURM_SUBMIT_DIR)
-#   MILADY_SIF           image Apptainer/Singularity ; défaut : $SINGULARITY_ALLOWED_DIR/milady.sif
-#                        (Jean Zay), sinon $MILADY_ROOT/milady.sif ; « none » → pas de conteneur
-#                        (venv MILADY_VENV ou module Python du centre)
-#   MILADY_VENV          venv à activer quand MILADY_SIF=none (défaut : $MILADY_ROOT/.venv)
-#   MILADY_MODULES       modules à charger (défaut : « singularity » si la commande module existe
-#                        et qu'aucun apptainer/singularity n'est dans le PATH)
-#   MILADY_DATA          racine des données (défaut : $SCRATCH/milady, sinon $WORK/milady, sinon
+#   MILADY_ROOT          cloned repository (default: submission directory SLURM_SUBMIT_DIR)
+#   MILADY_SIF           Apptainer/Singularity image; default: $SINGULARITY_ALLOWED_DIR/milady.sif
+#                        (Jean Zay), otherwise $MILADY_ROOT/milady.sif; "none" → no container
+#                        (MILADY_VENV venv or the centre's Python module)
+#   MILADY_VENV          venv to activate when MILADY_SIF=none (default: $MILADY_ROOT/.venv)
+#   MILADY_MODULES       modules to load (default: "singularity" if the module command exists
+#                        and no apptainer/singularity is in the PATH)
+#   MILADY_DATA          data root (default: $SCRATCH/milady, otherwise $WORK/milady, otherwise
 #                        $MILADY_ROOT/data)
-#   MILADY_STATE         catalogue et suivi persistants (défaut : $WORK/milady, sinon $MILADY_ROOT/data)
-#   MILADY_DB_URL        catalogue (défaut : sqlite:///$MILADY_STATE/catalog.sqlite ; PostgreSQL
-#                        possible seulement si les nœuds de calcul le joignent)
-#   MILADY_STORAGE_URI   stockage des fichiers MFF (défaut : file://$MILADY_DATA/store)
-#   MLFLOW_TRACKING_URI  suivi (défaut : sqlite:///$MILADY_STATE/mlflow.db ; pas d'Internet sur
-#                        les nœuds de calcul de Jean Zay)
+#   MILADY_STATE         persistent catalogue and tracking (default: $WORK/milady, otherwise $MILADY_ROOT/data)
+#   MILADY_DB_URL        catalogue (default: sqlite:///$MILADY_STATE/catalog.sqlite; PostgreSQL
+#                        only possible if the compute nodes can reach it)
+#   MILADY_STORAGE_URI   storage of the MFF files (default: file://$MILADY_DATA/store)
+#   MLFLOW_TRACKING_URI  tracking (default: sqlite:///$MILADY_STATE/mlflow.db; no Internet on
+#                        the Jean Zay compute nodes)
 
 if [[ -f "${HOME}/.config/milady/slurm.env" ]]; then
     # shellcheck disable=SC1091
@@ -28,7 +28,7 @@ fi
 
 export MILADY_ROOT="${MILADY_ROOT:-${SLURM_SUBMIT_DIR:-$(pwd)}}"
 
-# --- Modules et moteur de conteneurs ------------------------------------------------------------
+# --- Modules and container engine ------------------------------------------------------------
 if [[ -z "${MILADY_MODULES+x}" ]]; then
     MILADY_MODULES=""
     if ! command -v apptainer >/dev/null 2>&1 && ! command -v singularity >/dev/null 2>&1 \
@@ -58,7 +58,7 @@ if [[ -z "${MILADY_SIF:-}" ]]; then
 fi
 export MILADY_SIF
 
-# --- Données, catalogue, suivi ------------------------------------------------------------------
+# --- Data, catalogue, tracking ------------------------------------------------------------------
 if [[ -z "${MILADY_DATA:-}" ]]; then
     if [[ -n "${SCRATCH:-}" ]]; then MILADY_DATA="${SCRATCH}/milady"
     elif [[ -n "${WORK:-}" ]]; then MILADY_DATA="${WORK}/milady"
@@ -74,12 +74,12 @@ export MILADY_STORAGE_URI="${MILADY_STORAGE_URI:-file://${MILADY_DATA}/store}"
 export MLFLOW_TRACKING_URI="${MLFLOW_TRACKING_URI:-sqlite:///${MILADY_STATE}/mlflow.db}"
 export MILADY_HOST="${MILADY_HOST:-${SLURM_CLUSTER_NAME:-$(hostname -s)}}"
 export PYTHONUNBUFFERED=1
-# Fils OpenMP/BLAS = cœurs réservés par tâche (évite la sur-souscription).
+# OpenMP/BLAS threads = cores reserved per task (avoids oversubscription).
 export OMP_NUM_THREADS="${OMP_NUM_THREADS:-${SLURM_CPUS_PER_TASK:-1}}"
 
-# --- Exécution ----------------------------------------------------------------------------------
-# Provenance : commit du dépôt monté, lu sur l'hôte. L'image peut avoir été construite à un autre
-# commit (variable MILADY_GIT_COMMIT figée dans l'image Docker) : on la remplace à chaque exécution.
+# --- Execution ----------------------------------------------------------------------------------
+# Provenance: commit of the mounted repository, read on the host. The image may have been built at another
+# commit (MILADY_GIT_COMMIT variable baked into the Docker image): it is replaced at each run.
 milady_host_commit() {
     local c
     c="$(git -C "${MILADY_ROOT}" -c safe.directory='*' rev-parse --short=12 HEAD 2>/dev/null)" || return 0
@@ -90,23 +90,23 @@ milady_host_commit() {
     fi
 }
 
-# milady_run CMD… : exécute CMD dans l'image (dépôt monté sur /opt/milady, GPU via --nv) ou, à
-# défaut, dans le venv / l'environnement courant. Le dossier courant est la racine du dépôt.
+# milady_run CMD...: run CMD in the image (repository mounted on /opt/milady, GPU via --nv) or, failing
+# that, in the venv / current environment. The working directory is the repository root.
 milady_run() {
     if [[ "${MILADY_SIF}" != "none" ]]; then
         if [[ -z "${MILADY_CONTAINER_CMD}" ]]; then
-            echo "apptainer/singularity introuvable ; MILADY_SIF=none pour utiliser un venv" >&2
+            echo "apptainer/singularity not found; MILADY_SIF=none to use a venv" >&2
             return 1
         fi
         if [[ ! -f "${MILADY_SIF}" ]]; then
-            echo "Image introuvable : ${MILADY_SIF} (voir infra/slurm/README-slurm.md)" >&2
+            echo "Image not found: ${MILADY_SIF} (see infra/slurm/README-slurm.md)" >&2
             return 1
         fi
         local binds="${MILADY_ROOT}:/opt/milady,${MILADY_DATA},${MILADY_STATE}"
-        # Commit vide (git absent sur le nœud) : le code Python le relit dans le dépôt monté.
+        # Empty commit (git absent on the node): the Python code re-reads it from the mounted repository.
         local commit
         commit="$(milady_host_commit)"
-        # --nv : pilote et bibliothèques CUDA de l'hôte ; sans GPU, simple avertissement.
+        # --nv: host CUDA driver and libraries; without a GPU, just a warning.
         "${MILADY_CONTAINER_CMD}" exec --nv --bind "${binds}" --pwd /opt/milady \
             --env "PYTHONNOUSERSITE=1,MILADY_ROOT=/opt/milady,MILADY_GIT_COMMIT=${commit}" \
             "${MILADY_SIF}" "$@"
@@ -120,10 +120,10 @@ milady_run() {
 }
 
 milady_banner() {
-    echo "== MilaDy / Slurm : job ${SLURM_JOB_ID:-?}${SLURM_ARRAY_TASK_ID:+[${SLURM_ARRAY_TASK_ID}]} sur $(hostname)"
-    echo "   dépôt   : ${MILADY_ROOT}"
-    echo "   image   : ${MILADY_SIF} (${MILADY_CONTAINER_CMD:-aucun moteur})"
-    echo "   données : ${MILADY_STORAGE_URI}"
-    echo "   catalogue : ${MILADY_DB_URL%%\?*}   suivi : ${MLFLOW_TRACKING_URI}"
+    echo "== MilaDy / Slurm: job ${SLURM_JOB_ID:-?}${SLURM_ARRAY_TASK_ID:+[${SLURM_ARRAY_TASK_ID}]} on $(hostname)"
+    echo "   repository: ${MILADY_ROOT}"
+    echo "   image     : ${MILADY_SIF} (${MILADY_CONTAINER_CMD:-no engine})"
+    echo "   data      : ${MILADY_STORAGE_URI}"
+    echo "   catalogue : ${MILADY_DB_URL%%\?*}   tracking: ${MLFLOW_TRACKING_URI}"
     command -v nvidia-smi >/dev/null 2>&1 && nvidia-smi -L || true
 }

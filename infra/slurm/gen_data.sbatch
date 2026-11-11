@@ -1,17 +1,17 @@
 #!/bin/bash
-# Génération de données MilaDy sur Slurm : tableau de jobs, UNE simulation (1 GPU) par élément.
+# MilaDy data generation on Slurm: job array, ONE simulation (1 GPU) per element.
 #
-# Soumission normale (depuis la racine du dépôt) — le tableau est dimensionné par milady.sweep :
+# Normal submission (from the repository root) — the array is sized by milady.sweep:
 #   python -m milady.sweep infra/configs/palier2_abc3d.yaml --scheduler slurm
-# Soumission manuelle (N simulations, au plus 16 en parallèle) :
+# Manual submission (N simulations, at most 16 in parallel):
 #   sbatch --array=0-$((N-1))%16 infra/slurm/gen_data.sbatch infra/configs/palier2_abc3d.yaml
-# Jean Zay (exemple H100 ; voir infra/slurm/README-slurm.md) :
+# Jean Zay (H100 example; see infra/slurm/README-slurm.md):
 #   sbatch --account=abc@h100 -C h100 --cpus-per-task=24 --array=0-36%16 \
 #          infra/slurm/gen_data.sbatch infra/configs/palier2_abc3d.yaml
 #
-# Argument : fichier YAML de campagne. L'élément SLURM_ARRAY_TASK_ID du tableau choisit le point
-# de paramètres (ordre du développement de la campagne par milady.sweep).
-# Environnement : voir infra/slurm/env.sh (image Apptainer, $WORK/$SCRATCH, catalogue SQLite).
+# Argument: campaign YAML file. The array element SLURM_ARRAY_TASK_ID selects the parameter point
+# (order of the campaign expansion by milady.sweep).
+# Environment: see infra/slurm/env.sh (Apptainer image, $WORK/$SCRATCH, SQLite catalogue).
 #
 #SBATCH --job-name=milady-sim
 #SBATCH --array=0-0
@@ -23,46 +23,46 @@
 #SBATCH --time=04:00:00
 #SBATCH --output=%x-%A_%a.out
 #SBATCH --error=%x-%A_%a.out
-# SIGTERM 120 s avant la limite de temps, envoyé à l'étape srun (la simulation) : elle écrit son point
-# de contrôle et s'arrête proprement (sans cette marge, Slurm n'accorde que KillWait, souvent 30 s).
+# SIGTERM 120 s before the time limit, sent to the srun step (the simulation): it writes its checkpoint
+# and stops cleanly (without this margin, Slurm only grants KillWait, often 30 s).
 #SBATCH --signal=TERM@120
-# --- À adapter au centre de calcul (décommenter : « ##SBATCH » est ignoré par Slurm) ---------
-##SBATCH --account=PROJET@h100          # Jean Zay : projet@cpu|v100|a100|h100 (echo $IDRPROJ)
-##SBATCH --constraint=h100              # Jean Zay : h100 (gpu_p6), a100 (gpu_p5), v100-32g…
-##SBATCH --qos=qos_gpu_h100-t3          # Jean Zay : -t3 ≤ 20 h (défaut), -t4 ≤ 100 h, -dev ≤ 2 h
-##SBATCH --partition=gpu                # mésocentre / Slurm cloud : nom de la partition GPU
+# --- To adapt to the compute centre (uncomment: "##SBATCH" is ignored by Slurm) ---------
+##SBATCH --account=PROJECT@h100         # Jean Zay: project@cpu|v100|a100|h100 (echo $IDRPROJ)
+##SBATCH --constraint=h100              # Jean Zay: h100 (gpu_p6), a100 (gpu_p5), v100-32g...
+##SBATCH --qos=qos_gpu_h100-t3          # Jean Zay: -t3 <= 20 h (default), -t4 <= 100 h, -dev <= 2 h
+##SBATCH --partition=gpu                # regional centre / cloud Slurm: name of the GPU partition
 set -euo pipefail
 
-CONFIG="${1:?usage : sbatch [--array=…] infra/slurm/gen_data.sbatch campagne.yaml [options de milady.sim.run]}"
+CONFIG="${1:?usage: sbatch [--array=...] infra/slurm/gen_data.sbatch campaign.yaml [milady.sim.run options]}"
 shift
 EXTRA_ARGS=("$@")
 
-# Slurm exécute une copie de ce script : on retrouve le dépôt par MILADY_ROOT ou le dossier de soumission.
+# Slurm runs a copy of this script: the repository is found through MILADY_ROOT or the submission directory.
 # shellcheck source=infra/slurm/env.sh
 source "${MILADY_ROOT:-${SLURM_SUBMIT_DIR:-.}}/infra/slurm/env.sh"
 milady_banner
 
 TASK="${SLURM_ARRAY_TASK_ID:-0}"
-echo "== simulation ${TASK} de ${CONFIG} ($(date -u +%FT%TZ))"
+echo "== simulation ${TASK} of ${CONFIG} ($(date -u +%FT%TZ))"
 start=$(date +%s)
 
-# La simulation écrit le fichier MFF dans MILADY_STORAGE_URI et s'enregistre au catalogue
-# (MILADY_DB_URL) avec l'identifiant du job Slurm (SLURM_ARRAY_JOB_ID_SLURM_ARRAY_TASK_ID).
-# Elle tourne dans une étape srun pour recevoir le signal de --signal (le shell du script batch, lui,
-# n'est pas signalé). --cpus-per-task est redonné explicitement : depuis Slurm 22.05, srun n'hérite
-# plus forcément de la valeur de sbatch. Après une interruption (statut « failed », note
-# « interrupted » au catalogue), resoumettre le même indice reprend au dernier point de contrôle :
-#   sbatch --array=<indices> infra/slurm/gen_data.sbatch <campagne.yaml>
-# Hors Slurm (essai du gabarit : SLURM_ARRAY_TASK_ID=0 bash infra/slurm/gen_data.sbatch …), pas de srun.
+# The simulation writes the MFF file to MILADY_STORAGE_URI and registers itself in the catalogue
+# (MILADY_DB_URL) with the Slurm job id (SLURM_ARRAY_JOB_ID_SLURM_ARRAY_TASK_ID).
+# It runs in an srun step to receive the --signal signal (the shell of the batch script, for its part,
+# is not signalled). --cpus-per-task is passed explicitly again: since Slurm 22.05, srun no longer
+# necessarily inherits the value from sbatch. After an interruption (status "failed", note
+# "interrupted" in the catalogue), resubmitting the same index resumes from the last checkpoint:
+#   sbatch --array=<indices> infra/slurm/gen_data.sbatch <campaign.yaml>
+# Outside Slurm (template trial: SLURM_ARRAY_TASK_ID=0 bash infra/slurm/gen_data.sbatch ...), no srun.
 launch=()
 if [[ -n "${SLURM_JOB_ID:-}" ]] && command -v srun >/dev/null 2>&1; then
     launch=(srun --ntasks=1 --cpus-per-task="${SLURM_CPUS_PER_TASK:-1}")
 fi
-# shellcheck disable=SC2016  # bloc évalué dans l'étape srun
+# shellcheck disable=SC2016  # block evaluated in the srun step
 "${launch[@]}" bash -c '
     set -euo pipefail
     source "${MILADY_ROOT}/infra/slurm/env.sh"
     milady_run python -m milady.sim.run "$0" --index "$1" "${@:2}"
 ' "${CONFIG}" "${TASK}" "${EXTRA_ARGS[@]}"
 
-echo "== terminé en $(( $(date +%s) - start )) s"
+echo "== finished in $(( $(date +%s) - start )) s"

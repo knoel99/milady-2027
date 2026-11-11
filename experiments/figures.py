@@ -1,8 +1,8 @@
-"""Graphiques des résultats (matplotlib), en français et en anglais.
+"""Result plots (matplotlib), in French and English.
 
-Usage : python3 figures.py [e1] [e2] [e3] [--quick]
-Sorties (dans site/experiments/figures/) : <nom>.png|svg (français) et figures/<nom>-en.png|svg (anglais).
-Palette catégorielle de référence (ordre fixe) ; la référence « vérité » est en encre neutre.
+Usage: python3 figures.py [e1] [e2] [e3] [--quick]
+Outputs (in site/experiments/figures/): <name>.png|svg (French) and <name>-en.png|svg (English).
+Reference categorical palette (fixed order); the "ground truth" reference is drawn in neutral ink.
 """
 from __future__ import annotations
 
@@ -27,26 +27,6 @@ plt.rcParams.update({
 })
 
 TXT = {
-    "fr": {
-        "sim": "simulation (comptage)", "rice_ref": "Rice, loi de référence", "rice_C": "Rice, loi générée (C)",
-        "rice_F": "Rice, loi générée (F)", "gtrain": "Γ d'entraînement", "rate": "passages de D par 0 par unité de temps",
-        "ref": "référence", "genC": "loi générée (C)", "genF": "loi générée (F)",
-        "ed": "distance d'énergie", "liou3": "résidu de Liouville (degré 3)", "asym": "|P(D>0) − 1/2|", "mc": " bruit MC",
-        "sig": "σ(dE/dt) / σ_réf", "one": " loi de réf.",
-        "density": "densité", "projC": "C projetée sur dE/dt = 0", "genCshort": "C (générée)",
-        "var": {"A_reference": "A modèle de base", "B_augmentation": "B augmentation", "C_equivariant": "C équivariant",
-                "C_court": "C budget court", "F_stationnarite_Ccourt": "C court + perte stat.",
-                "F0_temoin_Ccourt": "C court + témoin", "F_stationnarite_C": "C + perte stat.", "F0_temoin_C": "C + témoin",
-                "D_inclinaison_C": "C + inclinaison", "E_projection_C": "C + projection/éch."},
-        "e2var": {"V0_libre": "V0 libre", "V1_penalite": "V1 pénalité", "V2_proj_finale": "V2 projection finale",
-                  "V3_flot_projete": "V3 flot projeté", "V4_potentiels": "V4 potentiels",
-                  "V5_potentiels_stat": "V5 potentiels + perte stat.", "V5_temoin": "V5 témoin",
-                  "reference_sous_echantillon": "données (sous-éch.)"},
-        "div": "divergence relative de u", "spec": "erreur de spectre (log₁₀, moyenne)",
-        "bal": "|E[D] − ε_inj| / ε_inj", "k": "nombre d'onde k", "Eu": "E_u(k)", "Eb": "E_B(k)",
-        "diss": "dissipation D(x) / ε_inj", "base": "V4 (générée)", "tilt": "V4 + inclinaison", "resc": "V4 + recalage/éch.",
-        "rm": "Rm = 1/η", "lam": "taux de croissance λ",
-    },
     "en": {
         "sim": "simulation (counting)", "rice_ref": "Rice, reference distribution", "rice_C": "Rice, generated distribution (C)",
         "rice_F": "Rice, generated distribution (F)", "gtrain": "training Γ", "rate": "zero crossings of D per unit time",
@@ -71,7 +51,7 @@ TXT = {
 
 
 def fmt(lang):
-    """Séparateur décimal : virgule en français."""
+    """Decimal separator: comma in French."""
     if lang == "fr":
         plt.rcParams["axes.formatter.use_locale"] = False
         from matplotlib.ticker import FuncFormatter
@@ -88,11 +68,11 @@ def finish(fig, name, lang):
             if ax.get_yscale() == "linear" and not getattr(ax, "_categ", False):
                 ax.yaxis.set_major_formatter(f)
     fig.tight_layout()
-    stem = name if lang == "fr" else f"{name}-en"
+    stem = name
     fig.savefig(FIGS / f"{stem}.png", dpi=200)
     fig.savefig(FIGS / f"{stem}.svg")
     plt.close(fig)
-    print("écrit", FIGS / f"{stem}.png")
+    print("written", FIGS / f"{stem}.png")
 
 
 def load(name):
@@ -100,7 +80,7 @@ def load(name):
 
 
 # ---------------------------------------------------------------------------
-def e1(suffix="", lang="fr"):
+def e1(suffix="", lang="en"):
     t = TXT[lang]
     r = load(f"e1_gissinger{suffix}.json")
     fine = r["grille_fine"]
@@ -121,7 +101,7 @@ def e1(suffix="", lang="fr"):
         ax[1].plot(g, [f["pont_modele_F"] for f in fine], color=C[1], label=t["genF"])
     ax[1].set_xlabel("Γ"); ax[1].set_ylabel("P(|D| < 0.25)" if lang == "en" else "P(|D| < 0,25)")
     ax[1].legend(fontsize=7.5, loc="upper left")
-    finish(fig, f"e1_seuil{suffix}", lang)
+    finish(fig, f"e1_threshold{suffix}", lang)
 
     res = r["resume"]
     keys = ["A_reference", "B_augmentation", "C_equivariant", "C_court", "F_stationnarite_Ccourt", "F0_temoin_Ccourt",
@@ -138,7 +118,7 @@ def e1(suffix="", lang="fr"):
         if floor_key:
             if floor_key == "one":
                 fl = 1.0
-            elif floor_key == "asym":  # E|p̂ − 1/2| pour une loi exactement symétrique : √(2/π) · ½ / √n
+            elif floor_key == "asym":  # E|p̂ − 1/2| for an exactly symmetric law: √(2/π) · ½ / √n
                 fl = np.sqrt(2 / np.pi) * 0.5 / np.sqrt(r["config"]["n_gen"])
             else:
                 fl = res["planchers_bruit_MC"]["n_gen"][floor_key]
@@ -146,11 +126,11 @@ def e1(suffix="", lang="fr"):
             ax[j].text(fl, len(keys) - 0.45, t[floor_key if floor_key == "one" else "mc"], color=INK2, fontsize=7, va="bottom")
         ax[j].set_xscale("log"); ax[j].set_xlabel(lab)
         ax[j].xaxis.set_minor_formatter(NullFormatter())
-        if key in ("asym", "dEdt_std"):  # graduations lisibles (peu de décades)
+        if key in ("asym", "dEdt_std"):  # readable ticks (few decades)
             ticks = [0.003, 0.01, 0.03] if key == "asym" else [0.3, 1, 3, 10]
             ax[j].set_xticks(ticks)
             ax[j].xaxis.set_major_formatter(FuncFormatter(lambda v, _: f"{v:g}" if lang == "en" else f"{v:g}".replace(".", ",")))
-        if key == "dEdt_std":  # la projection par échantillon annule dE/dt : barre hors échelle, annotée
+        if key == "dEdt_std":  # per-sample projection cancels dE/dt: bar off scale, annotated
             ax[j].set_xlim(0.2, 30)
             for yy, v in zip(y, vals):
                 if v < 0.2:
@@ -158,7 +138,7 @@ def e1(suffix="", lang="fr"):
     ax[0].set_yticks(y); ax[0].set_yticklabels([t["var"][k] for k in keys])
     for a in ax:
         a._categ = True
-    finish(fig, f"e1_variantes{suffix}", lang)
+    finish(fig, f"e1_variants{suffix}", lang)
 
     d = np.load(RESULTS / f"e1_echantillons{suffix}.npz")
     from e1_gissinger import dEdt
@@ -178,11 +158,11 @@ def e1(suffix="", lang="fr"):
         ax[j + 1].set_xlabel("Q"); ax[j + 1].set_ylabel("D")
         p = f"{(x[:, 1] > 0).mean():.2f}"
         ax[j + 1].set_title(f"{t['var'][key]}, Γ = {dec(gam)}{':' if lang == 'en' else ' :'} P(D>0) = {dec(p)}", fontsize=8.5)
-    finish(fig, f"e1_symetrie_projection{suffix}", lang)
+    finish(fig, f"e1_symmetry_projection{suffix}", lang)
 
 
 # ---------------------------------------------------------------------------
-def e2(suffix="", lang="fr"):
+def e2(suffix="", lang="en"):
     t = TXT[lang]
     r = load(f"e2_mhd2d{suffix}.json")
     res = r["resume"]
@@ -198,9 +178,9 @@ def e2(suffix="", lang="fr"):
     ax[0].set_yticks(y); ax[0].set_yticklabels([t["e2var"][k] for k in keys])
     for a in ax:
         a._categ = True
-    finish(fig, f"e2_mecanismes{suffix}", lang)
+    finish(fig, f"e2_mechanisms{suffix}", lang)
 
-    # spectres moyens à un η de test
+    # mean spectra at one test η
     d = np.load(RESULTS / f"e2_echantillons{suffix}.npz")
     kx, ky = d["kx"], d["ky"]
     shell = np.rint(np.sqrt(kx ** 2 + ky ** 2)).astype(int)
@@ -220,9 +200,9 @@ def e2(suffix="", lang="fr"):
         ax[1].loglog(ks, sb, color=col, label=lab, lw=2.2 if name == "ref" else 1.6)
     ax[0].set_xlabel(t["k"]); ax[0].set_ylabel(t["Eu"]); ax[1].set_xlabel(t["k"]); ax[1].set_ylabel(t["Eb"])
     ax[0].legend(fontsize=7.5)
-    finish(fig, f"e2_spectres{suffix}", lang)
+    finish(fig, f"e2_spectra{suffix}", lang)
 
-    # volet en loi : moyennes sur η de test
+    # "in law" part: means over the test η
     law = dict(res["en_loi"])
     law["V5"] = res["V5_potentiels_stat"]
     fig, ax = plt.subplots(1, 3, figsize=(10, 3.4), sharey=True)
@@ -241,11 +221,11 @@ def e2(suffix="", lang="fr"):
     ax[0].set_yticks(y); ax[0].set_yticklabels([lab for _, lab in modes])
     for a in ax:
         a._categ = True
-    finish(fig, f"e2_en_loi{suffix}", lang)
+    finish(fig, f"e2_in_law{suffix}", lang)
 
 
 # ---------------------------------------------------------------------------
-def e3(suffix="", lang="fr"):
+def e3(suffix="", lang="en"):
     t = TXT[lang]
     r = load(f"e3_abc{suffix}.json")
     rm = np.array([x["Rm"] for x in r["taux"]])
@@ -271,8 +251,8 @@ if __name__ == "__main__":
     args = [a for a in sys.argv[1:] if not a.startswith("--")] or ["e1", "e2", "e3"]
     suffix = "_quick" if "--quick" in sys.argv else ""
     for a in args:
-        for lang in ("fr", "en"):
+        for lang in ("en",):
             try:
                 globals()[a](suffix, lang)
             except FileNotFoundError as e:
-                print(f"{a} ({lang}) : résultats absents ({e.filename})")
+                print(f"{a} ({lang}): results missing ({e.filename})")

@@ -3,7 +3,7 @@
 
 Usage (paths relative to site/):
     python3 tools/new_page.py prep/p1-vector-calculus "Title" "Subtitle"
-    python3 tools/new_page.py rapport "Internship report" "Subtitle"
+    python3 tools/new_page.py report "Internship report" "Subtitle"
 """
 import sys
 from pathlib import Path

@@ -16,7 +16,7 @@ infra/docker/.env
 *.egg-info/
 /mlruns/
 
-# --- Infrastructure (déploiement) : secrets, données, artefacts locaux -----------------------
+# --- Infrastructure (deployment): secrets, data, local artifacts -----------------------
 /backups/
 .venv/
 .venv-front/

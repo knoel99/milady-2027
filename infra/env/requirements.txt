@@ -1,21 +1,21 @@
-# Dépendances Python épinglées (CPU) du paquet milady — verrou reproductible.
-# Valable pour Python 3.11 et 3.12, Linux x86_64/aarch64 et macOS (arm64) ; installation vérifiée aussi
-# sous Python 3.13 (Linux x86_64, 2026-11-07).
+# Pinned Python dependencies (CPU) of the milady package — reproducible lock.
+# Valid for Python 3.11 and 3.12, Linux x86_64/aarch64 and macOS (arm64); installation also verified
+# under Python 3.13 (Linux x86_64, 2026-11-07).
 #
-# Utilisation :
+# Usage:
 #   pip install -r infra/env/requirements.txt && pip install --no-deps -e .
-# (c'est ce que font `make setup` et infra/docker/Dockerfile).
+# (this is what `make setup` and infra/docker/Dockerfile do).
 #
-# torch CPU vient de l'index PyTorch CPU (roues sans CUDA, ~5x plus légères) ;
-# sur macOS, la roue standard de PyPI est déjà CPU/MPS.
+# CPU torch comes from the PyTorch CPU index (CUDA-free wheels, ~5x lighter);
+# on macOS, the standard PyPI wheel is already CPU/MPS.
 #
-# Régénération (outil uv, https://docs.astral.sh/uv/) : `make lock`, qui exécute
+# Regeneration (uv tool, https://docs.astral.sh/uv/): `make lock`, which runs
 #   uv pip compile infra/env/requirements.in --universal --python-version 3.11 \
 #     --default-index https://pypi.org/simple --index https://download.pytorch.org/whl/cpu \
 #     --index-strategy unsafe-best-match --no-header --no-annotate
-# Versions de premier niveau choisies le 2026-11-07 : publiées depuis au moins deux semaines
-# et compatibles Python 3.11 (numpy 2.4, scipy 1.17, zarr 3.1 sont les dernières séries
-# qui acceptent encore 3.11).
+# Top-level versions chosen on 2026-11-07: published at least two weeks ago
+# and compatible with Python 3.11 (numpy 2.4, scipy 1.17, zarr 3.1 are the latest series
+# that still accept 3.11).
 --extra-index-url https://download.pytorch.org/whl/cpu
 
 aiobotocore==3.10.0

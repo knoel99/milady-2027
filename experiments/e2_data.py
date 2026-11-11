@@ -1,11 +1,11 @@
-"""E2 (données) — Instantanés de MHD 2D forcée pour une gamme de diffusivités magnétiques η.
+"""E2 (data) - Snapshots of forced 2D MHD for a range of magnetic diffusivities η.
 
-ν = 8e-3 fixé ; η parcourt une grille log (Pm = ν/η de 2 à ≈ 0.35).
-Grille 32², désaliasage 2/3 : les coefficients non nuls vérifient |kx|, |ky| ≤ 10.
-Chaque instantané est stocké par les coefficients de Fourier de ω et a (complexes).
+ν = 8e-3 fixed; η runs over a log grid (Pm = ν/η from 2 to ≈ 0.35).
+32² grid, 2/3 dealiasing: the nonzero coefficients satisfy |kx|, |ky| <= 10.
+Each snapshot is stored as the (complex) Fourier coefficients of ω and a.
 
-Usage : python3 e2_data.py [--quick]
-Sortie : $E2_DATA (défaut : ./data_e2/) eta_<valeur>.npz
+Usage: python3 e2_data.py [--quick]
+Output: $E2_DATA (default: ./data_e2/) eta_<value>.npz
 """
 from __future__ import annotations
 
@@ -34,7 +34,7 @@ def run(eta, n_snap_per_member, seed, batch=16, dt=1e-2, t_burn=30.0, every=1.0)
         m.step(dt)
         if k >= nb and (k - nb + 1) % ne == 0:
             W.append(m.w.copy()); A.append(m.a.copy())
-    W = np.concatenate(np.stack(W, 1), 0)  # (batch * n_snap, N, N//2+1), regroupé par membre
+    W = np.concatenate(np.stack(W, 1), 0)  # (batch * n_snap, N, N//2+1), grouped by member
     A = np.concatenate(np.stack(A, 1), 0)
     return W.astype(np.complex64), A.astype(np.complex64), inj
 
@@ -50,16 +50,16 @@ def main(quick=False):
         jobs.append(("ref", n_ref, 200 + i))
         for split, n_snap, seed in jobs:
             fname = f"eta_{eta:.6f}_{split}.npz"
-            if (DATA / fname).is_file():  # reprise après interruption
+            if (DATA / fname).is_file():  # resume after interruption
                 d = np.load(DATA / fname)
                 meta["fichiers"][fname] = {"eta": eta, "split": split, "n": int(len(d["w"])),
                                            "inj": [float(d["inj_u"]), float(d["inj_b"])]}
-                print(f"η={eta:.5f} {split}: déjà présent", flush=True)
+                print(f"η={eta:.5f} {split}: already present", flush=True)
                 continue
             W, A, inj = run(eta, n_snap, seed)
             np.savez_compressed(DATA / fname, w=W, a=A, inj_u=inj[0], inj_b=inj[1], eta=eta)
             meta["fichiers"][fname] = {"eta": eta, "split": split, "n": int(len(W)), "inj": [float(inj[0]), float(inj[1])]}
-            print(f"η={eta:.5f} {split}: {len(W)} instantanés, injection {sum(inj):.4f}, {time.time() - t0:.0f} s", flush=True)
+            print(f"η={eta:.5f} {split}: {len(W)} snapshots, injection {sum(inj):.4f}, {time.time() - t0:.0f} s", flush=True)
     (DATA / "meta.json").write_text(json.dumps(meta, indent=1))
 
 

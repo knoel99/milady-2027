@@ -1,24 +1,24 @@
-# Campagne du palier 2 (thèse) : MHD 3D dynamique forcée Taylor–Green, balayage en Re et Pm.
+# Tier 2 campaign (PhD): dynamic forced 3D Taylor–Green MHD, sweep over Re and Pm.
 #
-# Navier–Stokes + induction, force de Lorentz, forçage Taylor–Green constant au mode kf = 2 de la
-# boîte 2π (cellules TG de taille π, configuration usuelle des études de dynamo Taylor–Green) ;
-# L_ref = 1/k_f = 0,5, U_ref = 1 ; Re = U_ref L_ref/ν, Rm = Re × Pm.
-# Règle de forçage « turbulent » : amplitude |k| U_ref² avec |k| = √3 k_f pour la forme TG (vise
-# u_rms ~ U_ref en régime turbulent, ordre de grandeur seulement) ; le Reynolds effectif
-# u_rms L_ref/ν se lit a posteriori dans les diagnostics (u_rms).
-# Germe magnétique faible (rms 1e-3) : phase cinématique (croissance exponentielle si Rm > Rm_c,
-# taux = growth_rate_fit au catalogue) puis saturation non linéaire.
+# Navier–Stokes + induction, Lorentz force, constant Taylor–Green forcing at mode kf = 2 of the
+# 2π box (TG cells of size π, the usual setup of Taylor–Green dynamo studies);
+# L_ref = 1/k_f = 0.5, U_ref = 1; Re = U_ref L_ref/ν, Rm = Re × Pm.
+# "Turbulent" forcing rule: amplitude |k| U_ref² with |k| = √3 k_f for the TG form (aims at
+# u_rms ~ U_ref in the turbulent regime, order of magnitude only); the effective Reynolds number
+# u_rms L_ref/ν is read a posteriori from the diagnostics (u_rms).
+# Weak magnetic seed (rms 1e-3): kinematic phase (exponential growth if Rm > Rm_c,
+# rate = growth_rate_fit in the catalogue) then nonlinear saturation.
 #
-# Résolution : 64³ (k_max = 21). Pour les plus grands Re et Rm (Re = 200, Pm = 2 : Rm = 400), vérifier
-# la résolution sur une première simulation (spectres E_u(k), E_B(k) qui décroissent de plusieurs
-# décades avant k_max : milady.sim.mhd3d.MHD3D.energy_spectra) et passer à N = 128 si besoin.
+# Resolution: 64³ (k_max = 21). For the largest Re and Rm (Re = 200, Pm = 2: Rm = 400), check
+# the resolution on a first simulation (spectra E_u(k), E_B(k) that decay over several
+# decades before k_max: milady.sim.mhd3d.MHD3D.energy_spectra) and move to N = 128 if needed.
 #
-# Lancer :   make sweep CONFIG=infra/configs/palier2_tg3d.yaml
+# Run:       make sweep CONFIG=infra/configs/palier2_tg3d.yaml
 #            python -m milady.sweep infra/configs/palier2_tg3d.yaml --scheduler slurm
 name: palier2_tg3d
 description: >-
-  MHD 3D forcée Taylor–Green (kf = 2) à 64³ : Re ∈ {25, 50, 100, 200} × Pm ∈ {0,5 ; 1 ; 2} (12 simulations),
-  germe magnétique 1e-3, 40 instantanés (u, B) après 100 unités de temps.
+  Forced 3D Taylor–Green MHD (kf = 2) at 64³: Re ∈ {25, 50, 100, 200} × Pm ∈ {0.5, 1, 2} (12 simulations),
+  magnetic seed 1e-3, 40 snapshots (u, B) after 100 time units.
 code: mhd3d_torch
 grid:
   N: 64
@@ -28,19 +28,19 @@ fixed:
   forcing: tg
   kf: 2
   U_ref: 1.0
-  forcing_amp: turbulent   # ou laminar (ν |k|² U_ref, |k|² = 3 k_f² pour TG), ou un nombre
-  u0: laminar              # écoulement TG d'amplitude U_ref au départ
-  u_noise: 0.01            # brise les symétries TG (sinon la dynamique reste dans le sous-espace symétrique)
+  forcing_amp: turbulent   # or laminar (ν |k|² U_ref, |k|² = 3 k_f² for TG), or a number
+  u0: laminar              # TG flow of amplitude U_ref at the start
+  u_noise: 0.01            # breaks the TG symmetries (otherwise the dynamics stays in the symmetric subspace)
   b0_amp: 1.0e-3
 sweep:
   Re: [25, 50, 100, 200]
   Pm: [0.5, 1.0, 2.0]
 runtime:
-  dt: 0.005               # pas maximal ; réduit par la condition CFL si u ou B grandissent
+  dt: 0.005               # maximum step; reduced by the CFL condition if u or B grow
   cfl: 1.0
   t_burn: 100.0
   t_keep: 40.0
-  every: 1.0              # 40 instantanés
+  every: 1.0              # 40 snapshots
   diag_every: 0.1
   n_traj: 1
   device: auto

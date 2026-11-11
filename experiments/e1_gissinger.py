@@ -1,26 +1,26 @@
-"""E1 — Loi invariante paramétrique du modèle de renversements de Gissinger (2012).
+"""E1 - Parametric invariant law of the Gissinger reversal model (2012).
 
-Modèle à trois modes (quadripôle Q, dipôle D, vitesse V) :
+Three-mode model (quadrupole Q, dipole D, velocity V):
     dQ/dt = mu Q - V D
     dD/dt = -nu D + V Q
     dV/dt = Gamma - V + Q D
-mu = 0.119, nu = 0.1 ; le paramètre de contrôle est Gamma. Symétrie : (Q, D, V) -> (-Q, -D, V),
-l'analogue du renversement B -> -B.
+mu = 0.119, nu = 0.1; the control parameter is Gamma. Symmetry: (Q, D, V) -> (-Q, -D, V),
+the analogue of the B -> -B reversal.
 
-On apprend la loi p(Q, D, V | Gamma) par flow matching conditionnel et on compare :
-  A. référence (flow matching) ;
-  B. référence + augmentation des données par la symétrie ;
-  C. champ de vitesse équivariant (symétrie exacte par construction) ;
-  C_court. même architecture que C, budget d'entraînement réduit (modèle biaisé) ;
-  D_*. inclinaison exponentielle sur les identités de stationnarité (contrainte en loi) ;
-  E_C. projection de chaque échantillon de C sur dE/dt = 0 (contrainte échantillon par échantillon) ;
-  F_*. réglage fin avec une perte de stationnarité (identités de Liouville imposées à tout Gamma,
-       y compris aux valeurs sans données), avec son témoin F0_* (même réglage fin, sans la perte).
-On estime aussi la fréquence des passages de D par zéro (renversements et excursions) à partir
-de la loi générée seule, par la formule de Rice, et on la compare aux simulations.
+We learn the law p(Q, D, V | Gamma) by conditional flow matching and compare:
+  A. baseline (flow matching);
+  B. baseline + data augmentation by the symmetry;
+  C. equivariant velocity field (exact symmetry by construction);
+  C_court. same architecture as C, reduced training budget (biased model);
+  D_*. exponential tilting on the stationarity identities (constraint in law);
+  E_C. projection of each sample of C onto dE/dt = 0 (sample-by-sample constraint);
+  F_*. fine-tuning with a stationarity loss (Liouville identities imposed at every Gamma,
+       including values without data), with its control F0_* (same fine-tuning, without the loss).
+We also estimate the frequency of zero crossings of D (reversals and excursions) from
+the generated law alone, using Rice's formula, and compare it with the simulations.
 
-Usage : python3 e1_gissinger.py [--quick]
-Sorties : results/e1_gissinger[_quick].json, results/e1_echantillons[_quick].npz
+Usage: python3 e1_gissinger.py [--quick]
+Outputs: results/e1_gissinger[_quick].json, results/e1_echantillons[_quick].npz
 """
 from __future__ import annotations
 
@@ -40,7 +40,7 @@ CACHE = RESULTS / "cache_e1"
 
 
 def cached(name, fn):
-    """Calcule fn() une seule fois : le résultat est gardé dans results/cache_e1/ (reprise après interruption)."""
+    """Compute fn() only once: the result is kept in results/cache_e1/ (resume after interruption)."""
     CACHE.mkdir(exist_ok=True)
     path = CACHE / f"{name}.pkl"
     if path.is_file():
@@ -59,7 +59,7 @@ G_TRAIN = np.round(np.arange(0.80, 1.0001, 0.02), 3)
 G_TEST = np.round(np.arange(0.81, 0.9901, 0.02), 3)
 G_FINE = np.round(np.arange(0.80, 1.0001, 0.005), 3)
 G_LO, G_HI = 0.78, 1.02
-H_RICE = 0.2  # demi-largeur de la fenêtre |D| < h de l'estimateur de Rice
+H_RICE = 0.2  # half-width of the |D| < h window of the Rice estimator
 
 
 def rhs(x, g):
@@ -68,9 +68,9 @@ def rhs(x, g):
 
 
 def simulate(gammas, n_traj, t_burn, t_keep, every, dt=0.01, seed=0):
-    """Intègre (RK4) n_traj trajectoires par valeur de Gamma, conditions initiales symétriques.
+    """Integrate (RK4) n_traj trajectories per value of Gamma, symmetric initial conditions.
 
-    Compte aussi, à chaque pas de temps, les passages de D par zéro (après le transitoire).
+    Also counts, at each time step, the zero crossings of D (after the transient).
     """
     rng = np.random.default_rng(seed)
     g = np.repeat(np.asarray(gammas, dtype=float), n_traj)
@@ -99,14 +99,14 @@ def simulate(gammas, n_traj, t_burn, t_keep, every, dt=0.01, seed=0):
 
 
 # ---------------------------------------------------------------------------
-# Identités de stationnarité (forme faible de Liouville) : E[F·∇phi] = 0
+# Stationarity identities (weak form of Liouville): E[F·∇phi] = 0
 # ---------------------------------------------------------------------------
 MONO_TRAIN = [(1, 0, 0), (0, 1, 0), (0, 0, 1), (2, 0, 0), (0, 2, 0), (0, 0, 2), (1, 1, 0), (1, 0, 1), (0, 1, 1)]
 MONO_TEST = [p for p in itertools.product(range(4), repeat=3) if sum(p) == 3]
 
 
 def generator_terms(x, g, monos):
-    """Pour chaque monôme phi = Q^a D^b V^c, renvoie F(x)·∇phi(x), de forme (N, len(monos))."""
+    """For each monomial phi = Q^a D^b V^c, return F(x)·∇phi(x), of shape (N, len(monos))."""
     f = rhs(x, g)
     q, d, v = x[:, 0], x[:, 1], x[:, 2]
     cols = []
@@ -119,26 +119,26 @@ def generator_terms(x, g, monos):
 
 
 def liouville_residual(x, g, monos, ref):
-    """Résidus |E_q[F·∇phi]| normalisés par l'écart-type de F·∇phi sous la loi de référence."""
+    """Residuals |E_q[F·∇phi]| normalised by the standard deviation of F·∇phi under the reference law."""
     gq = generator_terms(x, g, monos).mean(0)
     sd = generator_terms(ref, g, monos).std(0) + 1e-12
     return np.abs(gq) / sd
 
 
 def dEdt(x, g):
-    """Dérivée temporelle de l'énergie E = (Q² + D² + V²)/2 le long du flot."""
+    """Time derivative of the energy E = (Q² + D² + V²)/2 along the flow."""
     return generator_terms(x, g, [(2, 0, 0), (0, 2, 0), (0, 0, 2)]).sum(1) / 2
 
 
 def rice_rate(x, h=H_RICE):
-    """Formule de Rice : fréquence des passages de D par 0 = E[|dD/dt| δ(D)] ≈ E[|VQ| 1{|D|<h}] / (2h)."""
+    """Rice formula: frequency of zero crossings of D = E[|dD/dt| δ(D)] ≈ E[|VQ| 1{|D|<h}] / (2h)."""
     q, d, v = x[:, 0], x[:, 1], x[:, 2]
     ddot = np.abs(-NU * d + v * q)
     return float(np.mean(ddot * (np.abs(d) < h)) / (2 * h))
 
 
 def project_energy_balance(x, g, iters=20):
-    """Projection de chaque échantillon sur la surface dE/dt(x) = 0 (Newton, déplacement minimal)."""
+    """Projection of each sample onto the surface dE/dt(x) = 0 (Newton, minimal displacement)."""
     y = x.copy()
     eps = 1e-5
     for _ in range(iters):
@@ -149,7 +149,7 @@ def project_energy_balance(x, g, iters=20):
 
 
 def generator_terms_torch(x, g, monos):
-    """Version PyTorch (différentiable) de generator_terms ; g : (N,) tenseur."""
+    """PyTorch (differentiable) version of generator_terms; g: (N,) tensor."""
     q, d, v = x[:, 0], x[:, 1], x[:, 2]
     f = torch.stack([MU * q - v * d, -NU * d + v * q, g - v + q * d], 1)
     cols = []
@@ -163,12 +163,12 @@ def generator_terms_torch(x, g, monos):
 
 
 def finetune(model, batcher, iters, beta, sd, mean, std, cnorm, n_gamma=8, n_per=128, steps=8, lr=5e-4, name=""):
-    """Réglage fin : perte de flow matching + beta × perte de stationnarité.
+    """Fine-tuning: flow matching loss + beta × stationarity loss.
 
-    Perte de stationnarité : pour n_gamma valeurs de Gamma tirées uniformément dans [0.80, 1.00]
-    (donc aussi entre les valeurs d'entraînement), on génère n_per échantillons par un schéma de Heun
-    différentiable à `steps` pas, puis on pénalise Σ_k (E[F·∇phi_k] / sd_k)² sur les monômes de degré ≤ 2,
-    estimé sans biais par le produit des moyennes de deux demi-lots.
+    Stationarity loss: for n_gamma values of Gamma drawn uniformly in [0.80, 1.00]
+    (hence also between the training values), we generate n_per samples with a differentiable
+    Heun scheme with `steps` steps, then penalise Σ_k (E[F·∇phi_k] / sd_k)² over the monomials of degree <= 2,
+    estimated without bias by the product of the means of two half-batches.
     """
     from common import fm_loss
     opt = torch.optim.Adam(model.parameters(), lr=lr)
@@ -192,15 +192,15 @@ def finetune(model, batcher, iters, beta, sd, mean, std, cnorm, n_gamma=8, n_per
                 z = z + 0.5 * h * (v0 + v1)
             x = z * std_t + mean_t
             gt = generator_terms_torch(x, gg, MONO_TRAIN).view(n_gamma, 2, n_per // 2, -1).mean(2) / sd_t
-            # Estimateur sans biais de (E[F·∇phi])² : produit des moyennes de deux demi-lots indépendants.
-            # (Le carré d'une seule moyenne vaut (E g)² + Var(g)/n : il pénaliserait la dispersion de la loi.)
+            # Unbiased estimator of (E[F·∇phi])²: product of the means of two independent half-batches.
+            # (The square of a single mean equals (E g)² + Var(g)/n: it would penalise the spread of the law.)
             loss = loss + beta * (gt[:, 0] * gt[:, 1]).mean()
         opt.zero_grad(set_to_none=True)
         loss.backward()
         torch.nn.utils.clip_grad_norm_(model.parameters(), 1.0)
         opt.step()
         if it % max(iters // 4, 1) == 0:
-            print(f"[{name}] réglage fin it {it}  perte {loss.item():.4f}  {time.time() - t0:.0f} s", flush=True)
+            print(f"[{name}] fine-tuning it {it}  loss {loss.item():.4f}  {time.time() - t0:.0f} s", flush=True)
     return time.time() - t0
 
 
@@ -209,15 +209,15 @@ def main(quick=False, reverse=False, train_only=False):
     torch.set_num_threads(2)
     t_start = time.time()
     n_traj, t_keep = (8, 800) if quick else (16, 3000)
-    print("simulation (entraînement)…", flush=True)
+    print("simulation (training)...", flush=True)
     q = "_quick" if quick else ""
     train_data = cached(f"sim_train{q}", lambda: simulate(G_TRAIN, n_traj, 300, t_keep, every=2.0, seed=1))
-    print("simulation (référence)…", flush=True)
+    print("simulation (reference)...", flush=True)
     ref_data = cached(f"sim_ref{q}", lambda: simulate(np.concatenate([G_TRAIN, G_TEST]), 2 * n_traj, 300, t_keep, every=2.0, seed=2))
     ref_data = {k: dict(v) for k, v in ref_data.items()}
-    for k in ref_data:  # référence exactement symétrique (conditions initiales symétriques)
+    for k in ref_data:  # exactly symmetric reference (symmetric initial conditions)
         ref_data[k]["x"] = np.concatenate([ref_data[k]["x"], ref_data[k]["x"] * S])
-    print("simulation (grille fine)…", flush=True)
+    print("simulation (fine grid)...", flush=True)
     fine_data = cached(f"sim_fine{q}", lambda: simulate(G_FINE, n_traj, 300, t_keep, every=2.0, seed=3))
     fine_data = {k: dict(v) for k, v in fine_data.items()}
     for k in fine_data:
@@ -231,7 +231,7 @@ def main(quick=False, reverse=False, train_only=False):
         if gam in train_data:
             stats[str(gam)]["P(D>0)_train"] = train_data[gam]["P(D>0)"]
 
-    # Normalisation : moyenne nulle imposée sur Q et D (préserve S), écart-type par coordonnée
+    # Normalisation: zero mean imposed on Q and D (preserves S), standard deviation per coordinate
     allx = np.concatenate([train_data[g]["x"] for g in G_TRAIN])
     mean = np.array([0.0, 0.0, allx[:, 2].mean()])
     std = allx.std(0)
@@ -256,7 +256,7 @@ def main(quick=False, reverse=False, train_only=False):
     iters = 3000 if quick else 12000
     variants = {"A_reference": ("plain", False, iters), "B_augmentation": ("plain", True, iters),
                 "C_equivariant": ("sym", False, iters), "C_court": ("sym", False, max(iters // 10, 300))}
-    seeds = [0] if quick else [0, 1]  # deux graines (contrainte de calcul CPU partagé)
+    seeds = [0] if quick else [0, 1]  # two seeds (shared-CPU compute constraint)
     n_gen = 4000 if quick else 10000
     grid = np.concatenate([G_TRAIN, G_TEST])
     results = {"config": {"mu": MU, "nu": NU, "G_train": G_TRAIN.tolist(), "G_test": G_TEST.tolist(),
@@ -295,7 +295,7 @@ def main(quick=False, reverse=False, train_only=False):
                 gens[(vname, seed, gam)] = xg
             results["entrainement"].setdefault(vname, {})[f"seed{seed}"] = out["info"]
 
-    # Réglages fins (F : avec perte de stationnarité ; F0 : témoin sans la perte)
+    # Fine-tunings (F: with stationarity loss; F0: control without the loss)
     import copy
     sd = generator_terms(np.concatenate([train_data[g]["x"] for g in G_TRAIN]),
                          np.concatenate([np.full(len(train_data[g]["x"]), g) for g in G_TRAIN]), MONO_TRAIN).std(0)
@@ -330,9 +330,9 @@ def main(quick=False, reverse=False, train_only=False):
                 results["entrainement"].setdefault(vname, {})[f"seed{seed}"] = out["info"]
 
     if train_only:
-        print("entraînement seul : cache rempli, arrêt", flush=True)
+        print("training only: cache filled, stopping", flush=True)
         return
-    # Post-traitements en loi (D) et par échantillon (E)
+    # Post-processing in law (D) and per sample (E)
     tilt_info = {}
     for base_name, dname in (("C_equivariant", "D_inclinaison_C"), ("C_court", "D_inclinaison_Ccourt"),
                              ("A_reference", "D_inclinaison_A")):
@@ -343,11 +343,11 @@ def main(quick=False, reverse=False, train_only=False):
                 half = len(x) // 2
                 xa, xb = x[:half], x[half:]
                 w, lam, info = exp_tilt(generator_terms(xa, gam, MONO_TRAIN), reg=1.0)
-                zb = generator_terms(xb, gam, MONO_TRAIN) @ lam  # λ appris sur a, appliqué à b
+                zb = generator_terms(xb, gam, MONO_TRAIN) @ lam  # λ learned on a, applied to b
                 wb = np.exp(zb - zb.max()); wb /= wb.sum()
                 gens[(dname, seed, gam)] = xb[systematic_resample(wb, len(xb), seed=seed)]
                 tilt_info[(dname, seed, gam)] = {"ess_frac_a": info["ess_frac"], "ess_frac_b": float(1 / np.sum(wb ** 2) / len(xb))}
-                # Base de comparaison à taille égale : la moitié b non pondérée
+                # Equal-size comparison baseline: the unweighted half b
                 gens[(base_name + "_moitie", seed, gam)] = xb
     for seed in seeds:
         for gam in grid:
@@ -391,7 +391,7 @@ def main(quick=False, reverse=False, train_only=False):
                 rows.append(agg)
             evals.setdefault(vname, {})[split] = rows
 
-    # Planchers de bruit Monte-Carlo : sous-échantillons de la référence de même taille que les modèles
+    # Monte Carlo noise floors: subsamples of the reference of the same size as the models
     floors = {}
     for size, label in ((n_gen, "n_gen"), (n_gen // 2, "n_gen/2")):
         e, l1, l2 = [], [], []
@@ -419,7 +419,7 @@ def main(quick=False, reverse=False, train_only=False):
     summary["reference"] = {"dEdt_std": float(np.mean([r["dEdt_std_ref"] for r in evals["A_reference"]["test"]])),
                             "erreur_taux_rice_ref": float(np.mean([abs(r["taux_rice_ref"] - r["taux_simulation"]) for r in evals["A_reference"]["test"]]))}
 
-    # Grille fine autour du seuil : modèle C (graine 0), grand échantillon pour Rice
+    # Fine grid around the threshold: model C (seed 0), large sample for Rice
     model = models[("C_equivariant", seeds[0])]
     n_big = 8000 if quick else 20000
     fine = []
@@ -449,19 +449,19 @@ def main(quick=False, reverse=False, train_only=False):
     store.update({f"ref|{g}": ref_data[g]["x"][:8000] for g in ref_data})
     store.update({f"{k[0]}|{k[2]}": v for k, v in gens.items() if k[0] == "C_grand"})
     CACHE.mkdir(parents=True, exist_ok=True)
-    np.savez_compressed(CACHE / f"e1_echantillons_complet{suffix}.npz", **store)  # complet (≈ 30 Mo, non versionné)
-    keep = {"0.85", "0.87", "0.9", "0.93"}  # version publiée : les Γ des figures, en float32 (≈ 3 Mo)
+    np.savez_compressed(CACHE / f"e1_echantillons_complet{suffix}.npz", **store)  # full (≈ 30 MB, not versioned)
+    keep = {"0.85", "0.87", "0.9", "0.93"}  # published version: the Γ values of the figures, in float32 (≈ 3 MB)
     np.savez_compressed(RESULTS / f"e1_echantillons{suffix}.npz",
                         **{k: v.astype(np.float32) for k, v in store.items() if k.split("|")[1] in keep})
     for k, v in summary.items():
         print(k, v, flush=True)
-    print(f"durée totale {time.time() - t_start:.0f} s")
+    print(f"total duration {time.time() - t_start:.0f} s")
 
 
 if __name__ == "__main__":
     ap = argparse.ArgumentParser()
     ap.add_argument("--quick", action="store_true")
-    ap.add_argument("--reverse", action="store_true", help="entraîne les modèles dans l'ordre inverse (processus d'appoint)")
-    ap.add_argument("--train-only", action="store_true", help="remplit seulement le cache des modèles puis s'arrête")
+    ap.add_argument("--reverse", action="store_true", help="train the models in reverse order (auxiliary process)")
+    ap.add_argument("--train-only", action="store_true", help="only fill the model cache, then stop")
     a = ap.parse_args()
     main(a.quick, a.reverse, a.train_only)

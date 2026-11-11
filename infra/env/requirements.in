@@ -1,4 +1,4 @@
-# Dépendances directes (premier niveau) épinglées ; le verrou complet est requirements.txt (make lock).
+# Pinned direct (top-level) dependencies; the full lock is requirements.txt (make lock).
 numpy==2.4.6
 scipy==1.17.1
 h5py==3.16.0

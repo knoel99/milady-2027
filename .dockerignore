@@ -1,6 +1,6 @@
-# Contexte de construction des images Docker (infra/docker/Dockerfile*, contexte = racine du dépôt).
-# Liste blanche : on exclut tout (le site web, les figures, les données…) puis on réintègre
-# uniquement ce dont le paquet milady et les scripts ont besoin.
+# Build context of the Docker images (infra/docker/Dockerfile*, context = repository root).
+# Allowlist: exclude everything (the website, the figures, the data...) then add back
+# only what the milady package and the scripts need.
 *
 !pyproject.toml
 !README.md
@@ -11,7 +11,7 @@
 !infra/
 !experiments/*.py
 
-# Jamais dans une image : secrets, données, caches, conteneurs construits.
+# Never in an image: secrets, data, caches, built containers.
 **/.env
 **/__pycache__
 **/*.pyc

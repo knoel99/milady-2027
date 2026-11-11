@@ -1,11 +1,11 @@
-"""Outils communs aux expériences MilaDy 2027.
+"""Shared tools for the MilaDy 2027 experiments.
 
-- flow matching conditionnel (chemin linéaire, « rectified flow ») ;
-- intégration de l'EDO d'échantillonnage (Heun) ;
-- métriques entre lois : distance d'énergie, Wasserstein-1 tranché ;
-- inclinaison exponentielle (I-projection) d'un nuage d'échantillons sous contraintes de moments.
+- conditional flow matching (linear path, "rectified flow");
+- integration of the sampling ODE (Heun);
+- metrics between distributions: energy distance, sliced Wasserstein-1;
+- exponential tilting (I-projection) of a sample cloud under moment constraints.
 
-Tout tourne sur CPU. Python 3.11+, NumPy, PyTorch.
+Everything runs on CPU. Python 3.11+, NumPy, PyTorch.
 """
 from __future__ import annotations
 
@@ -37,10 +37,10 @@ def save_json(obj, name: str) -> Path:
 
 
 # ---------------------------------------------------------------------------
-# Plongements du temps et du paramètre
+# Time and parameter embeddings
 # ---------------------------------------------------------------------------
 class Fourier(nn.Module):
-    """Plongement sinusoïdal d'un scalaire dans [0, 1] (temps ou paramètre normalisé)."""
+    """Sinusoidal embedding of a scalar in [0, 1] (time or normalised parameter)."""
 
     def __init__(self, n: int = 16, scale: float = 30.0):
         super().__init__()
@@ -52,7 +52,7 @@ class Fourier(nn.Module):
 
 
 class MLPField(nn.Module):
-    """Champ de vitesse v_theta(x, t, c) pour des états de petite dimension."""
+    """Velocity field v_theta(x, t, c) for low-dimensional states."""
 
     def __init__(self, dim: int, width: int = 256, depth: int = 4, n_freq: int = 16):
         super().__init__()
@@ -70,7 +70,7 @@ class MLPField(nn.Module):
 
 
 class SymmetrizedField(nn.Module):
-    """v_sym(x) = (v(x) + S v(S x)) / 2 : équivariant pour une involution linéaire S (diagonale)."""
+    """v_sym(x) = (v(x) + S v(S x)) / 2 : equivariant for a linear involution S (diagonal)."""
 
     def __init__(self, base: nn.Module, s_diag):
         super().__init__()
@@ -85,10 +85,10 @@ class SymmetrizedField(nn.Module):
 # Flow matching
 # ---------------------------------------------------------------------------
 def fm_loss(model, x1, c, noise_fn=None, extra=None):
-    """Perte de flow matching (chemin linéaire x_t = (1-t) x0 + t x1, cible x1 - x0).
+    """Flow matching loss (linear path x_t = (1-t) x0 + t x1, target x1 - x0).
 
-    noise_fn : fonction qui tire x0 (par défaut gaussienne standard de même forme).
-    extra    : fonction (model, xt, t, c, v_pred, x1) -> perte additionnelle (pénalité physique).
+    noise_fn : function that draws x0 (default: standard Gaussian of the same shape).
+    extra    : function (model, xt, t, c, v_pred, x1) -> additional loss (physics penalty).
     """
     b = x1.shape[0]
     x0 = noise_fn(x1.shape) if noise_fn is not None else torch.randn_like(x1)
@@ -104,9 +104,9 @@ def fm_loss(model, x1, c, noise_fn=None, extra=None):
 
 @torch.no_grad()
 def sample_ode(model, c, shape, steps: int = 100, noise_fn=None, project=None, x0=None):
-    """Intègre dx/dt = v(x, t, c) de t=0 à 1 par le schéma de Heun.
+    """Integrate dx/dt = v(x, t, c) from t=0 to 1 with Heun's scheme.
 
-    project : application (x -> x) appliquée au bruit initial et après chaque pas (flot projeté).
+    project : map (x -> x) applied to the initial noise and after each step (projected flow).
     """
     x = x0 if x0 is not None else (noise_fn(shape) if noise_fn is not None else torch.randn(shape))
     if project is not None:
@@ -128,7 +128,7 @@ def sample_ode(model, c, shape, steps: int = 100, noise_fn=None, project=None, x
 
 def train(model, sampler_fn, iters: int, lr: float = 2e-3, log_every: int = 1000, extra=None,
           noise_fn=None, wd: float = 0.0, name: str = ""):
-    """Boucle d'entraînement générique. sampler_fn() -> (x1, c)."""
+    """Generic training loop. sampler_fn() -> (x1, c)."""
     opt = torch.optim.AdamW(model.parameters(), lr=lr, weight_decay=wd)
     sched = torch.optim.lr_scheduler.OneCycleLR(opt, max_lr=lr, total_steps=iters, pct_start=0.05)
     hist = []
@@ -145,12 +145,12 @@ def train(model, sampler_fn, iters: int, lr: float = 2e-3, log_every: int = 1000
         run = 0.98 * run + 0.02 * loss.item() if it > 1 else loss.item()
         if it % log_every == 0 or it == iters:
             hist.append((it, run))
-            print(f"[{name}] it {it:6d}  perte {run:.4f}  {time.time() - t0:.0f} s", flush=True)
+            print(f"[{name}] it {it:6d}  loss {run:.4f}  {time.time() - t0:.0f} s", flush=True)
     return hist, time.time() - t0
 
 
 # ---------------------------------------------------------------------------
-# Distances entre lois (échantillons)
+# Distances between distributions (samples)
 # ---------------------------------------------------------------------------
 def _mean_pdist(a: torch.Tensor, b: torch.Tensor, chunk: int = 2048) -> float:
     tot = 0.0
@@ -160,9 +160,9 @@ def _mean_pdist(a: torch.Tensor, b: torch.Tensor, chunk: int = 2048) -> float:
 
 
 def energy_distance(x: np.ndarray, y: np.ndarray, n: int = 4000, seed: int = 0, wx=None) -> float:
-    """Distance d'énergie de Székely, D^2 = 2E|X-Y| - E|X-X'| - E|Y-Y'| (≥ 0, nulle ssi même loi).
+    """Székely energy distance, D^2 = 2E|X-Y| - E|X-X'| - E|Y-Y'| (>= 0, zero iff same distribution).
 
-    wx : poids éventuels des échantillons de x (on rééchantillonne alors selon ces poids).
+    wx : optional weights of the x samples (x is then resampled according to these weights).
     """
     rng = np.random.default_rng(seed)
     if wx is not None:
@@ -175,7 +175,7 @@ def energy_distance(x: np.ndarray, y: np.ndarray, n: int = 4000, seed: int = 0, 
 
 
 def sliced_w1(x: np.ndarray, y: np.ndarray, n_proj: int = 256, seed: int = 0, n: int = 20000) -> float:
-    """Wasserstein-1 tranché : moyenne sur des directions aléatoires de W1 entre projections 1D."""
+    """Sliced Wasserstein-1: mean over random directions of W1 between 1D projections."""
     rng = np.random.default_rng(seed)
     d = x.shape[1]
     th = rng.normal(size=(n_proj, d))
@@ -189,16 +189,16 @@ def sliced_w1(x: np.ndarray, y: np.ndarray, n_proj: int = 256, seed: int = 0, n:
 
 
 # ---------------------------------------------------------------------------
-# Inclinaison exponentielle (I-projection de Csiszár) sur un nuage d'échantillons
+# Exponential tilting (Csiszar I-projection) on a sample cloud
 # ---------------------------------------------------------------------------
 def exp_tilt(g: np.ndarray, target=None, iters: int = 100, tol: float = 1e-10, reg: float = 0.0):
-    """Poids w_i ∝ exp(λ·g_i) de KL(w || uniforme) minimale tels que Σ w_i g_i = target.
+    """Weights w_i ∝ exp(λ·g_i) with minimal KL(w || uniform) such that Σ w_i g_i = target.
 
-    g : (N, m) valeurs des fonctions de contrainte sur les échantillons.
-    Retourne (w normalisés, λ, info). Méthode de Newton amortie sur le dual convexe
+    g : (N, m) values of the constraint functions on the samples.
+    Returns (normalised w, λ, info). Damped Newton method on the convex dual
     Φ(λ) = log mean exp(λ·g) - λ·target + (reg / 2N) λᵀ Ĉ λ.
-    reg > 0 : I-projection régularisée (maximum d'entropie à contraintes relâchées) ; le résidu
-    toléré est de l'ordre de l'erreur Monte-Carlo de la moyenne empirique (Ĉ = corrélation de g).
+    reg > 0 : regularised I-projection (maximum entropy with relaxed constraints); the tolerated
+    residual is of the order of the Monte Carlo error of the empirical mean (Ĉ = correlation of g).
     """
     g = np.asarray(g, dtype=np.float64)
     n, m = g.shape

@@ -1,6 +1,6 @@
-"""Petit U-Net périodique (padding circulaire) pour le flow matching de champs 2D sur grille.
+"""Small periodic U-Net (circular padding) for flow matching of 2D fields on a grid.
 
-Conditionnement par le temps t et le paramètre physique c via FiLM (échelle, décalage).
+Conditioned on time t and the physical parameter c via FiLM (scale, shift).
 """
 from __future__ import annotations
 
