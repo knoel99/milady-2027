@@ -1,0 +1,48 @@
+# Tier 1 campaign (internship): forced 2D MHD, sweep over the magnetic diffusivity η.
+#
+# Reproduces the dataset of experiment E2 (experiments/e2_data.py) with the solver
+# experiments/mhd2d.py, reused as is: 32² grid, ν = 8e-3, friction α = 0.02, white forcing
+# in the band 2 ≤ |k| ≤ 3 with injection 0.05 (vorticity and potential). The 11 values of η are
+# those of E2 (η_train ∪ η_test = 4e-3 × 2^(j/4), j = 0…10, i.e. Pm = ν/η from 2 to ≈ 0.35).
+# Difference with E2: the seed of each simulation is its index in the campaign (E2:
+# 100 + i for training, 200 + i for the reference) - same laws, different draws.
+#
+# Run:       make sweep CONFIG=infra/configs/stage1_mhd2d.yaml            (CPU, a few minutes / simulation)
+#            python -m milady.sweep infra/configs/stage1_mhd2d.yaml --scheduler local --max-parallel 4
+name: stage1_mhd2d
+description: >-
+  Forced 2D MHD (E2): 11 values of η between 4e-3 and 2.26e-2 (ν = 8e-3), 16 independent trajectories
+  per value, 150 snapshots per trajectory after 30 time units of spin-up.
+code: mhd2d_numpy
+grid:
+  N: 32
+  domain: 2pi            # the 2D solver only knows [0, 2π)²
+fixed:
+  nu: 8.0e-3
+  alpha: 0.02
+  kf_min: 2.0
+  kf_max: 3.0
+  eps_u: 0.05
+  eps_b: 0.05
+sweep:
+  eta: {start: 4.0e-3, stop: 2.2627416997969524e-2, num: 11, scale: log}
+runtime:
+  dt: 0.01               # fixed step (forcing white in time); the output times are multiples of it
+  t_burn: 30.0
+  t_keep: 150.0
+  every: 1.0             # 150 snapshots
+  diag_every: 0.5
+  n_traj: 16             # E2 "members": independent trajectories integrated together
+  checkpoint_every_s: 600
+resources:
+  gpus: 0                # NumPy, CPU only
+  cpus: 2
+  time: "02:00:00"
+  mem: 4G
+  max_parallel: 11
+output:
+  format: mff
+  uri: ${MILADY_STORAGE_URI}   # empty → milady.storage.base_uri() (data/store in portable mode)
+  fields: [velocity, magnetic_field]
+  spectral: false
+  dataset_name: milady_stage1_mhd2d

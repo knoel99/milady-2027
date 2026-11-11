@@ -1,15 +1,15 @@
-"""Tests du solveur MHD 3D (milady.sim.mhd3d), de l'exécution d'une simulation (milady.sim.run) et des
-campagnes (milady.sweep).
+"""Tests of the 3D MHD solver (milady.sim.mhd3d), of the execution of a simulation (milady.sim.run) and of the
+campaigns (milady.sweep).
 
-1. ∇·u et ∇·B à la précision machine (float64) ;
-2. bilan d'énergie dE/dt = injection − dissipation (à 1 % près ; mesuré ≈ 1e-5) et conservation
-   exacte des invariants idéaux par les termes non linéaires tronqués ;
-3. dynamo cinématique ABC à 16³ : λ < 0 à Rm = 6 et λ > 0 à Rm = 12 (seuil ≈ 8,9, voir E3) ;
-4. reprise depuis un point de contrôle (solveur, puis simulation de campagne interrompue) ;
-5. campagne : --dry-run, petite campagne locale (2 simulations 16³) jusqu'au catalogue SQLite et
-   au stockage file://, tableau Slurm (sbatch simulé) ; campagne 2D (solveur des expériences).
+1. ∇·u and ∇·B at machine precision (float64);
+2. energy budget dE/dt = injection − dissipation (to within 1%; measured ≈ 1e-5) and exact conservation
+   of the ideal invariants by the truncated nonlinear terms;
+3. kinematic ABC dynamo at 16³: λ < 0 at Rm = 6 and λ > 0 at Rm = 12 (threshold ≈ 8.9, see E3);
+4. resumption from a checkpoint (solver, then interrupted campaign simulation);
+5. campaign: --dry-run, small local campaign (2 simulations 16³) down to the SQLite catalog and
+   file:// storage, Slurm array (simulated sbatch); 2D campaign (solver of the experiments).
 
-Tous les tests tournent sur CPU en quelques secondes chacun.
+All tests run on CPU in a few seconds each.
 """
 
 from __future__ import annotations
@@ -66,7 +66,7 @@ def test_divergence_machine_precision(forcing: str) -> None:
     for _ in range(4):
         sim.advance_to(sim.t + 0.1, dt=0.01)
     d = sim.diagnostics()
-    # Échelle : |∇u| ~ k_max u_rms ; précision machine float64 ~ 1e-16.
+    # Scale: |∇u| ~ k_max u_rms; float64 machine precision ~ 1e-16.
     scale_u = float(np.max(d["u_rms"])) * sim.kmax_norm
     scale_b = float(np.max(d["b_rms"])) * sim.kmax_norm
     assert np.all(d["max_div_u"] < 1e-12 * scale_u), d["max_div_u"]
@@ -74,12 +74,12 @@ def test_divergence_machine_precision(forcing: str) -> None:
 
 
 def test_divergence_without_projection_and_float32() -> None:
-    # Forme en rotationnel : ∇·(∇×E) = 0 mode par mode, même sans projection de B.
+    # Curl form: ∇·(∇×E) = 0 mode by mode, even without projection of B.
     cfg = MHD3DConfig(n=16, mode="kinematic", flow="tg", kf=1, eta=0.1, b0_amp=1.0, project_every=0, seed=1)
     sim = MHD3D(cfg)
     sim.advance_to(2.0, dt=0.05)
     assert sim.diagnostics()["max_div_b"][0] < 1e-12
-    # float32 : précision ~1e-7 relative.
+    # float32: relative precision ~1e-7.
     sim32 = MHD3D(
         MHD3DConfig(
             n=16,
@@ -100,7 +100,7 @@ def test_divergence_without_projection_and_float32() -> None:
 
 
 # =============================================================================================
-# 2. Bilan d'énergie
+# 2. Energy budget
 # =============================================================================================
 @pytest.mark.parametrize("forcing,kf", [("tg", 1), ("abc", 2)])
 def test_energy_budget(forcing: str, kf: int) -> None:
@@ -119,17 +119,17 @@ def test_energy_budget(forcing: str, kf: int) -> None:
         seed=1,
     )
     E, inj, diss = _budget_run(cfg, 60, dt)
-    dEdt = (E[2:] - E[:-2]) / (2 * dt)  # différences centrées, erreur O(dt²)
+    dEdt = (E[2:] - E[:-2]) / (2 * dt)  # centered differences, error O(dt²)
     rhs = (inj - diss)[1:-1]
     rel = np.abs(dEdt - rhs) / np.maximum(np.abs(rhs), 1e-12)
-    assert np.all(np.abs(rhs) > 0.05), "régime transitoire attendu (dE/dt non nul)"
+    assert np.all(np.abs(rhs) > 0.05), "transient regime expected (dE/dt non-zero)"
     assert rel.max() < 0.01, rel.max()
-    # Écart à l'échelle des termes du bilan : bien meilleur que 1 %.
+    # Deviation relative to the scale of the budget terms: much better than 1%.
     assert (np.abs(dEdt - rhs) / np.maximum(inj, diss)[1:-1]).max() < 1e-3
 
 
 def test_ideal_invariants_conserved() -> None:
-    """ν = η = 0, sans forçage : énergie, hélicité croisée et hélicité magnétique conservées (Galerkin 2/3)."""
+    """ν = η = 0, no forcing: energy, cross helicity and magnetic helicity conserved (Galerkin 2/3)."""
     cfg = MHD3DConfig(
         n=16, mode="dynamic", nu=1e-12, eta=0.0, forcing="none", u0="random", u0_amp=1.0, b0_amp=0.7, seed=4
     )
@@ -142,12 +142,12 @@ def test_ideal_invariants_conserved() -> None:
     assert abs(e1 - e0) / e0 < 1e-8
     assert abs(d1["cross_helicity"] - d0["cross_helicity"]) < 1e-8 * e0
     assert abs(d1["magnetic_helicity"] - d0["magnetic_helicity"]) < 1e-8 * e0
-    # Échange réel d'énergie entre u et B (la dynamique n'est pas triviale).
+    # Real exchange of energy between u and B (the dynamics is not trivial).
     assert abs(d1["magnetic_energy"] - d0["magnetic_energy"]) > 1e-4 * e0
 
 
 def test_random_forcing_injection() -> None:
-    """Forçage blanc : la part d'Itô de l'injection vaut ε ; la puissance moyenne réalisée en est proche."""
+    """White forcing: the Itô part of the injection equals ε; the realized mean power is close to it."""
     cfg = MHD3DConfig(
         n=16,
         mode="dynamic",
@@ -162,14 +162,14 @@ def test_random_forcing_injection() -> None:
         seed=5,
     )
     sim = MHD3D(cfg)
-    sim.diagnostics()  # remise à zéro du cumul
-    sim.advance_to(0.05, dt=1e-3)  # u ≈ 0 : ⟨u·Δu⟩ ≈ 0, l'injection est ≈ ε
+    sim.diagnostics()  # reset of the accumulator
+    sim.advance_to(0.05, dt=1e-3)  # u ≈ 0: ⟨u·Δu⟩ ≈ 0, the injection is ≈ ε
     inj = sim.diagnostics()["injection"]
     assert np.all(np.abs(inj - 0.2) < 0.05), inj
 
 
 # =============================================================================================
-# 3. Dynamo cinématique ABC
+# 3. Kinematic ABC dynamo
 # =============================================================================================
 def _abc_growth(rm: float, n: int = 16, t_total: float = 60.0) -> float:
     sim = MHD3D(MHD3DConfig(n=n, mode="kinematic", flow="abc", eta=1.0 / rm, b0_amp=1.0, seed=0))
@@ -183,13 +183,13 @@ def _abc_growth(rm: float, n: int = 16, t_total: float = 60.0) -> float:
 
 def test_kinematic_abc_threshold() -> None:
     lam6, lam12 = _abc_growth(6.0), _abc_growth(12.0)
-    # Repères E3 (32³) : λ(6) ≈ −0,046, λ(12) ≈ +0,0077 ; seuil ≈ 8,9.
+    # E3 reference values (32³): λ(6) ≈ −0.046, λ(12) ≈ +0.0077; threshold ≈ 8.9.
     assert lam6 < -0.01, lam6
     assert lam12 > 0.002, lam12
 
 
 # =============================================================================================
-# 4. Point de contrôle et reprise
+# 4. Checkpoint and resumption
 # =============================================================================================
 @pytest.mark.parametrize("mode", ["dynamic", "kinematic"])
 def test_checkpoint_restart_bitwise(tmp_path: Path, mode: str) -> None:
@@ -230,7 +230,7 @@ def _write_campaign(path: Path, name: str, extra_runtime: str = "", sweep: str =
     path.write_text(
         textwrap.dedent(f"""\
         name: {name}
-        description: campagne de test
+        description: test campaign
         code: mhd3d_torch
         grid: {{N: 16, domain: 2pi}}
         fixed: {{mode: kinematic, flow: abc}}
@@ -248,7 +248,7 @@ def _write_campaign(path: Path, name: str, extra_runtime: str = "", sweep: str =
 
 @pytest.fixture()
 def milady_env(tmp_path: Path, monkeypatch: pytest.MonkeyPatch) -> dict[str, Path]:
-    """Catalogue SQLite, stockage file:// et dossiers de travail temporaires."""
+    """SQLite catalog, file:// storage and temporary working folders."""
     paths = {
         "db": tmp_path / "catalog.sqlite",
         "store": tmp_path / "store",
@@ -279,17 +279,17 @@ def test_run_resume_after_interruption(
     from milady.sim import run as simrun
 
     cfg = _write_campaign(tmp_path / "c.yaml", "test_resume")
-    # Référence sans interruption (autre stockage, sans catalogue).
+    # Reference without interruption (other storage, without catalog).
     monkeypatch.setenv("MILADY_STORAGE_URI", (tmp_path / "ref").as_uri())
     ref = simrun.run_simulation(cfg, 1, use_catalog=False)
     monkeypatch.setenv("MILADY_STORAGE_URI", milady_env["store"].as_uri())
 
-    # Interruption simulée (comme un SIGTERM de fin de temps Slurm) à t = 1.
+    # Simulated interruption (like a SIGTERM at the end of Slurm time) at t = 1.
     original = simrun.Solver3D.advance_to
 
     def interrupted(self: simrun.Solver3D, t: float, dt: float) -> None:
         if t > 1.0 + 1e-9:
-            raise simrun.Interrupted("signal SIGTERM (simulé)")
+            raise simrun.Interrupted("signal SIGTERM (simulated)")
         original(self, t, dt)
 
     monkeypatch.setattr(simrun.Solver3D, "advance_to", interrupted)
@@ -313,13 +313,13 @@ def test_run_resume_after_interruption(
 
 
 # =============================================================================================
-# 5. Campagnes
+# 5. Campaigns
 # =============================================================================================
 def test_shipped_campaigns_expand() -> None:
     from milady.sweep import load_campaign, sweep_points
 
     root = Path(__file__).resolve().parents[1] / "infra" / "configs"
-    expected = {"palier1_mhd2d": 11, "palier2_abc3d": 37, "palier2_tg3d": 12}
+    expected = {"stage1_mhd2d": 11, "stage2_abc3d": 37, "stage2_tg3d": 12}
     for name, n in expected.items():
         camp = load_campaign(root / f"{name}.yaml")
         pts = sweep_points(camp)
@@ -328,14 +328,14 @@ def test_shipped_campaigns_expand() -> None:
         assert [p.sim_id for p in sweep_points(load_campaign(root / f"{name}.yaml"))] == [
             p.sim_id for p in pts
         ]
-    tg = sweep_points(load_campaign(root / "palier2_tg3d.yaml"))
+    tg = sweep_points(load_campaign(root / "stage2_tg3d.yaml"))
     p = tg[-1].params  # Re = 200, Pm = 2
     assert (
         math.isclose(p["Rm"], 400.0)
         and math.isclose(p["nu"], 0.5 / 200)
         and math.isclose(p["eta"], 0.5 / 400)
     )
-    abc = sweep_points(load_campaign(root / "palier2_abc3d.yaml"))
+    abc = sweep_points(load_campaign(root / "stage2_abc3d.yaml"))
     assert math.isclose(abc[2].params["eta"], 1 / 6)  # Rm = 6 : η = 1/Rm (convention E3)
 
 
@@ -383,10 +383,10 @@ def test_sweep_local_to_catalog_and_storage(
         assert np.max(diag["max_div_b"][1]) < 1e-12
     jobs = [j for j in cat.query_jobs(scheduler="local") if j["simulation_id"] in {s["id"] for s in sims}]
     assert len(jobs) == 2 and {j["status"] for j in jobs} == {"done"} and all(j["log_uri"] for j in jobs)
-    # Relance : idempotente (tout est fait).
+    # Relaunch: idempotent (everything is done).
     capsys.readouterr()
     assert main([str(cfg), "--scheduler", "local"]) == 0
-    assert "rien à exécuter" in capsys.readouterr().out
+    assert "nothing to run" in capsys.readouterr().out
     assert len(cat.query_jobs(scheduler="local")) == 2
 
 
@@ -416,7 +416,7 @@ def test_sweep_slurm_with_fake_sbatch(
     cat = Catalog()
     jobs = {j["external_id"]: j for j in cat.query_jobs(scheduler="slurm")}
     assert set(jobs) == {"4242_0", "4242_1"} and {j["status"] for j in jobs.values()} == {"submitted"}
-    # Exécution de l'élément 0 du tableau, comme sur un nœud de calcul.
+    # Execution of element 0 of the array, as on a compute node.
     monkeypatch.setenv("SLURM_JOB_ID", "4243")
     monkeypatch.setenv("SLURM_ARRAY_JOB_ID", "4242")
     monkeypatch.setenv("SLURM_ARRAY_TASK_ID", "0")
@@ -472,10 +472,10 @@ def test_smoke_run_writes_valid_mff(tmp_path: Path) -> None:
 def test_sweep_docker_with_fake_compose(
     tmp_path: Path, milady_env: dict[str, Path], monkeypatch: pytest.MonkeyPatch
 ) -> None:
-    """Ordonnanceur docker : enregistrement dans un « conteneur », puis une simulation par conteneur.
+    """Docker scheduler: registration in a "container", then one simulation per container.
 
-    ``docker compose`` est remplacé (MILADY_COMPOSE) par un script qui exécute la commande du conteneur
-    sur place, avec ses options ``-e`` : on vérifie toute la chaîne de pilotage sans image Docker.
+    ``docker compose`` is replaced (MILADY_COMPOSE) by a script that runs the container command
+    in place, with its ``-e`` options: the whole driving chain is checked without a Docker image.
     """
     import sys
 
@@ -486,9 +486,9 @@ def test_sweep_docker_with_fake_compose(
     fake.write_text(
         textwrap.dedent(f"""\
         #!/bin/bash
-        # Simule « docker compose run --rm -T [-e K=V]… SERVICE CMD… » en exécutant CMD sur place.
+        # Simulates "docker compose run --rm -T [-e K=V]… SERVICE CMD…" by running CMD in place.
         set -euo pipefail
-        [ "$1" = run ] || {{ echo "attendu : run" >&2; exit 2; }}
+        [ "$1" = run ] || {{ echo "expected: run" >&2; exit 2; }}
         shift
         envs=()
         while [ $# -gt 0 ]; do
@@ -498,7 +498,7 @@ def test_sweep_docker_with_fake_compose(
             *) break ;;
           esac
         done
-        shift                      # nom du service (worker)
+        shift                      # service name (worker)
         [ "$1" = python ] && shift
         exec env "${{envs[@]}}" {sys.executable} "$@"
         """),
@@ -512,6 +512,6 @@ def test_sweep_docker_with_fake_compose(
     cat = Catalog()
     sims = {s["parameters"]["Rm"]: s for s in cat.query_simulations(campaign="test_docker")}
     assert sims[12.0]["status"] == "done" and sims[12.0]["files"]
-    assert 6.0 not in sims  # indice 0 non retenu : ni enregistré ni exécuté
+    assert 6.0 not in sims  # index 0 not selected: neither registered nor run
     jobs = cat.query_jobs(scheduler="docker")
     assert len(jobs) == 1 and jobs[0]["status"] == "done" and jobs[0]["simulation_id"] == sims[12.0]["id"]

@@ -1,20 +1,20 @@
 # syntax=docker/dockerfile:1.7
-# Image GPU (CUDA) du projet MilaDy : VM cloud GPU, et base de l'image Apptainer pour Slurm.
+# GPU (CUDA) image of the MilaDy project: cloud GPU VM, and base of the Apptainer image for Slurm.
 #
-# Construction (depuis la racine du dépôt) :
+# Build (from the repository root):
 #   docker build -f infra/docker/Dockerfile.gpu -t milady:gpu .
-#   ou : make image-gpu
+#   or: make image-gpu
 #
-# Base : image officielle PyTorch (Ubuntu 24.04, Python 3.12 du système, torch 2.14.1, CUDA 12.6,
-# cuDNN 9). Ce Python est « externally managed » (PEP 668) : dans un conteneur, on installe
-# quand même par pip (PIP_BREAK_SYSTEM_PACKAGES=1), c'est l'usage pour ces images.
-# CUDA 12.6 fonctionne avec un pilote NVIDIA >= 525 (compatibilité mineure CUDA 12) et couvre
-# V100, A100, L4, L40S, H100. Pour des GPU Blackwell (B200, RTX 50xx), choisir une base CUDA 13 :
+# Base: official PyTorch image (Ubuntu 24.04, system Python 3.12, torch 2.14.1, CUDA 12.6,
+# cuDNN 9). This Python is "externally managed" (PEP 668): inside a container we install
+# with pip anyway (PIP_BREAK_SYSTEM_PACKAGES=1), which is the usual practice for these images.
+# CUDA 12.6 works with an NVIDIA driver >= 525 (CUDA 12 minor-version compatibility) and covers
+# V100, A100, L4, L40S, H100. For Blackwell GPUs (B200, RTX 50xx), choose a CUDA 13 base:
 #   --build-arg BASE_IMAGE=pytorch/pytorch:2.14.1-cuda13.0-cudnn9-runtime
-# (pilote >= 580 requis ; adapter alors torch dans requirements-gpu.txt).
+# (driver >= 580 required; then adapt torch in requirements-gpu.txt).
 #
-# Mêmes options que le Dockerfile CPU : MILADY_UID, MILADY_GID, WITH_JUPYTER, GIT_COMMIT,
-# --secret id=cacert,src=… (proxy TLS).
+# Same options as the CPU Dockerfile: MILADY_UID, MILADY_GID, WITH_JUPYTER, GIT_COMMIT,
+# --secret id=cacert,src=... (TLS proxy).
 
 ARG BASE_IMAGE=pytorch/pytorch:2.14.1-cuda12.6-cudnn9-runtime
 FROM ${BASE_IMAGE}
@@ -33,16 +33,16 @@ RUN apt-get update \
  && apt-get install -y --no-install-recommends git make curl ca-certificates postgresql-client tini \
  && rm -rf /var/lib/apt/lists/*
 
-# Les ARG sont déclarés au plus près de leur usage : une valeur différente n'invalide le cache
-# de construction qu'à partir de cette ligne (apt et pip restent en cache).
+# ARGs are declared as close as possible to where they are used: a different value only invalidates
+# the build cache from this line onwards (apt and pip stay cached).
 ARG MILADY_UID=1000
 ARG MILADY_GID=1000
 
-# Utilisateur non root, aligné sur l'UID/GID de l'hôte. Robuste aux identifiants déjà pris dans
-# l'image de base (ex. GID 20 des Mac, UID 1000 « ubuntu ») : on réutilise le groupe, on renomme
-# l'utilisateur existant.
+# Non-root user, aligned with the host UID/GID. Robust to IDs already taken in
+# the base image (e.g. GID 20 on Macs, UID 1000 "ubuntu"): the group is reused, the
+# existing user is renamed.
 RUN set -eu; \
-    [ "${MILADY_UID}" != "0" ] || { echo "MILADY_UID=0 refusé : le conteneur tourne sans root" >&2; exit 1; }; \
+    [ "${MILADY_UID}" != "0" ] || { echo "MILADY_UID=0 refused: the container runs without root" >&2; exit 1; }; \
     getent group "${MILADY_GID}" >/dev/null || groupadd --gid "${MILADY_GID}" milady; \
     if getent passwd "${MILADY_UID}" >/dev/null; then \
         usermod -l milady -d /home/milady -m -g "${MILADY_GID}" "$(getent passwd "${MILADY_UID}" | cut -d: -f1)"; \
@@ -52,8 +52,8 @@ RUN set -eu; \
 
 WORKDIR /opt/milady
 
-# Dépendances épinglées SANS la pile CUDA (torch, triton, nvidia-*, cuda-*), déjà fournie par
-# l'image de base : on ne la réinstalle pas, on vérifie seulement la version de torch.
+# Pinned dependencies WITHOUT the CUDA stack (torch, triton, nvidia-*, cuda-*), already provided by
+# the base image: we do not reinstall it, we only check the torch version.
 COPY infra/env/requirements-gpu.txt /tmp/requirements-gpu.txt
 ARG WITH_JUPYTER=0
 RUN --mount=type=secret,id=cacert,required=false \
@@ -64,7 +64,7 @@ RUN --mount=type=secret,id=cacert,required=false \
  && if [ "${WITH_JUPYTER}" = "1" ]; then pip install "jupyterlab==4.6.4"; fi \
  && python -c "import torch; v = torch.__version__.split('+')[0]; assert v == '2.14.1', v; print('torch', torch.__version__, 'cuda', torch.version.cuda)"
 
-# Provenance : déclarée APRÈS les dépendances, sinon chaque nouveau commit réinstallerait torch.
+# Provenance: declared AFTER the dependencies, otherwise every new commit would reinstall torch.
 ARG GIT_COMMIT=""
 ENV MILADY_GIT_COMMIT=${GIT_COMMIT}
 COPY --chown=${MILADY_UID}:${MILADY_GID} . /opt/milady
@@ -78,4 +78,4 @@ RUN --mount=type=secret,id=cacert,required=false \
 USER milady
 
 ENTRYPOINT ["/usr/bin/tini", "--"]
-CMD ["python", "-c", "import torch; print('Image MilaDy prête (GPU) ; CUDA visible :', torch.cuda.is_available())"]
+CMD ["python", "-c", "import torch; print('MilaDy image ready (GPU); CUDA visible:', torch.cuda.is_available())"]

@@ -1,14 +1,14 @@
--- Initialisation de PostgreSQL pour MilaDy (exécuté une seule fois, à la création du volume, par
--- l'image officielle postgres via /docker-entrypoint-initdb.d/, connecté à la base POSTGRES_DB).
+-- PostgreSQL initialisation for MilaDy (run only once, when the volume is created, by
+-- the official postgres image via /docker-entrypoint-initdb.d/, connected to the POSTGRES_DB database).
 --
--- Bases :
---   milady  catalogue des campagnes, simulations, fichiers, jeux de données, modèles, évaluations
---           (créée par l'image à partir de POSTGRES_DB ; recréée ici si on a choisi un autre nom) ;
---           les tables sont créées par infra/db/schema.sql (exécuté juste après ce fichier, par
---           ordre alphabétique) ou, à défaut, par milady.catalog (SQLAlchemy, create_all) ;
---   mlflow  métadonnées du serveur MLflow (tables créées par MLflow au premier démarrage).
+-- Databases:
+--   milady  catalogue of campaigns, simulations, files, datasets, models, evaluations
+--           (created by the image from POSTGRES_DB; recreated here if another name was chosen);
+--           the tables are created by infra/db/schema.sql (run right after this file, in
+--           alphabetical order) or, failing that, by milady.catalog (SQLAlchemy, create_all);
+--   mlflow  MLflow server metadata (tables created by MLflow at first start).
 --
--- Idempotent : peut être rejoué à la main sans erreur :
+-- Idempotent: can be replayed by hand without error:
 --   docker compose -f infra/docker/docker-compose.yml --env-file infra/docker/.env \
 --     exec -T db psql -U milady -d postgres -f /docker-entrypoint-initdb.d/init.sql
 
@@ -18,11 +18,11 @@ WHERE NOT EXISTS (SELECT FROM pg_database WHERE datname = 'milady')\gexec
 SELECT 'CREATE DATABASE mlflow'
 WHERE NOT EXISTS (SELECT FROM pg_database WHERE datname = 'mlflow')\gexec
 
--- Horodatages en UTC dans les deux bases (le catalogue stocke des timestamptz UTC).
+-- UTC timestamps in both databases (the catalogue stores UTC timestamptz).
 ALTER DATABASE milady SET timezone TO 'UTC';
 ALTER DATABASE mlflow SET timezone TO 'UTC';
 
--- Extension utile au catalogue (gen_random_uuid est natif depuis PostgreSQL 13 ; pg_trgm sert
--- aux recherches textuelles sur les noms de campagnes et de modèles).
+-- Extension useful to the catalogue (gen_random_uuid is native since PostgreSQL 13; pg_trgm is used
+-- for text searches on campaign and model names).
 \connect milady
 CREATE EXTENSION IF NOT EXISTS pg_trgm;

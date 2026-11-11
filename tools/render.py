@@ -1,13 +1,13 @@
 #!/usr/bin/env python3
-"""Rend les pages Quarto puis remet les balises KaTeX épinglées (SRI).
+"""Render Quarto pages, then restore the pinned KaTeX tags (SRI).
 
-Quarto réécrit les balises <script>/<link> de KaTeX et retire les attributs
-d'intégrité. Ce script rend chaque page puis remet les deux balises publiées.
+Quarto rewrites KaTeX's <script>/<link> tags and strips the integrity
+attributes. This script renders each page, then puts back the two published tags.
 
-Usage (n'importe quel répertoire) :
-    python3 tools/render.py rapport these prep/p1-calcul-vectoriel
+Usage (from any directory):
+    python3 tools/render.py report thesis prep/p1-vector-calculus
     python3 tools/render.py --all
-Quarto 1.7.32 (pip install quarto-cli==1.7.32, ou binaire officiel).
+Quarto 1.7.32 (pip install quarto-cli==1.7.32, or the official binary).
 """
 import os
 import re
@@ -15,7 +15,7 @@ import subprocess
 import sys
 from pathlib import Path
 
-ROOT = Path(__file__).resolve().parent.parent
+ROOT = Path(__file__).resolve().parent.parent / "site"  # root of the published site
 QUARTO = os.environ.get("QUARTO", "quarto")
 BASE = "https://cdn.jsdelivr.net/npm/katex@0.19.0/dist/"
 JS_TAG = (
@@ -49,7 +49,7 @@ def render(rel: str) -> bool:
             import shutil
             shutil.rmtree(junk)
     ok = "katex" not in html or (JS_TAG in html and CSS_TAG in html)
-    print(f"{rel}: rendu{'' if ok else ' (balises KaTeX NON restaurées)'}")
+    print(f"{rel}: rendered{'' if ok else ' (KaTeX tags NOT restored)'}")
     return ok
 
 

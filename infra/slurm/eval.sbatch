@@ -1,13 +1,13 @@
 #!/bin/bash
-# Évaluation MilaDy sur Slurm (1 GPU) : échantillonnage du modèle, métriques physiques et
-# distances entre lois, résultats enregistrés au catalogue (table evaluation).
+# MilaDy evaluation on Slurm (1 GPU): model sampling, physical metrics and
+# distances between distributions, results recorded in the catalogue (evaluation table).
 #
-# Exemples (depuis la racine du dépôt) :
+# Examples (from the repository root):
 #   sbatch infra/slurm/eval.sbatch infra/configs/train_fm3d.yaml
-#   sbatch infra/slurm/eval.sbatch infra/configs/train_fm3d.yaml --model 3f2c…   # identifiant catalogue
-#   Jean Zay : sbatch --account=abc@h100 -C h100 --cpus-per-task=24 infra/slurm/eval.sbatch …
+#   sbatch infra/slurm/eval.sbatch infra/configs/train_fm3d.yaml --model 3f2c…   # catalogue identifier
+#   Jean Zay: sbatch --account=abc@h100 -C h100 --cpus-per-task=24 infra/slurm/eval.sbatch …
 #
-# Arguments : fichier YAML (celui de l'entraînement), puis options de milady.eval.
+# Arguments: YAML file (the training one), then milady.eval options.
 #
 #SBATCH --job-name=milady-eval
 #SBATCH --nodes=1
@@ -18,14 +18,14 @@
 #SBATCH --time=02:00:00
 #SBATCH --output=%x-%j.out
 #SBATCH --error=%x-%j.out
-# --- À adapter au centre de calcul ---------------------------------------------------------------
-##SBATCH --account=PROJET@h100
+# --- To adapt to the compute centre ---------------------------------------------------------------
+##SBATCH --account=PROJECT@h100
 ##SBATCH --constraint=h100
-##SBATCH --qos=qos_gpu_h100-dev          # Jean Zay : file « dev » (≤ 2 h) pour des évaluations courtes
+##SBATCH --qos=qos_gpu_h100-dev          # Jean Zay: "dev" queue (<= 2 h) for short evaluations
 ##SBATCH --partition=gpu
 set -euo pipefail
 
-CONFIG="${1:?usage : sbatch infra/slurm/eval.sbatch config.yaml [options de milady.eval]}"
+CONFIG="${1:?usage: sbatch infra/slurm/eval.sbatch config.yaml [milady.eval options]}"
 shift
 EXTRA_ARGS=("$@")
 

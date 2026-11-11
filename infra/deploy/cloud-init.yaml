@@ -1,20 +1,20 @@
 #cloud-config
-# Données utilisateur (« user-data ») pour créer une VM MilaDy prête à l'emploi depuis la console
-# d'un fournisseur cloud (Scaleway, OVHcloud, AWS, GCP, Azure, Lambda, RunPod… : champ « cloud-init »,
-# « user data » ou « script de démarrage »). Équivalent de :
+# User data ("user-data") to create a ready-to-use MilaDy VM from the console
+# of a cloud provider (Scaleway, OVHcloud, AWS, GCP, Azure, Lambda, RunPod...: "cloud-init" field,
+# "user data" or "startup script"). Equivalent of:
 #   git clone $MILADY_REPO_URL && cd milady-2027 && sudo infra/deploy/bootstrap_vm.sh
 #
-# AVANT DE COLLER : adapter les variables du fichier /etc/milady/bootstrap.env ci-dessous.
-#   MILADY_REPO_URL        URL du dépôt (HTTPS public, ou dépôt privé : voir infra/README.md —
-#                          clé de déploiement, ou utiliser plutôt deploy_remote.sh depuis le portable)
-#   MILADY_BRANCH          branche ou étiquette à déployer
-#   MILADY_USER            utilisateur propriétaire du dépôt (ubuntu sur la plupart des images Ubuntu)
-#   MILADY_BOOTSTRAP_ARGS  options de bootstrap_vm.sh (--cpu, --no-smoke)
+# BEFORE PASTING: adapt the variables of the /etc/milady/bootstrap.env file below.
+#   MILADY_REPO_URL        repository URL (public HTTPS, or private repository: see infra/README.md —
+#                          deploy key, or rather use deploy_remote.sh from the laptop)
+#   MILADY_BRANCH          branch or tag to deploy
+#   MILADY_USER            user owning the repository (ubuntu on most Ubuntu images)
+#   MILADY_BOOTSTRAP_ARGS  bootstrap_vm.sh options (--cpu, --no-smoke)
 #
-# Suivi de l'installation (5 à 20 min selon le débit et le GPU) :
+# Installation progress (5 to 20 min depending on bandwidth and GPU):
 #   ssh ubuntu@IP 'sudo tail -f /var/log/milady-bootstrap.log'
 #   cloud-init status --wait
-# Aucun secret ici : les mots de passe sont générés sur la VM (infra/docker/.env).
+# No secret here: the passwords are generated on the VM (infra/docker/.env).
 
 write_files:
   - path: /etc/milady/bootstrap.env
@@ -28,7 +28,7 @@ write_files:
     permissions: "0755"
     content: |
       #!/usr/bin/env bash
-      # Clone (ou met à jour) le dépôt puis lance bootstrap_vm.sh ; idempotent.
+      # Clone (or update) the repository then run bootstrap_vm.sh; idempotent.
       set -euo pipefail
       # shellcheck disable=SC1091
       . /etc/milady/bootstrap.env
@@ -58,4 +58,4 @@ packages:
 runcmd:
   - [bash, -c, "set -o pipefail; /usr/local/sbin/milady-cloud-init.sh 2>&1 | tee -a /var/log/milady-bootstrap.log"]
 
-final_message: "MilaDy : cloud-init terminé après $UPTIME s — journal : /var/log/milady-bootstrap.log"
+final_message: "MilaDy: cloud-init finished after $UPTIME s — log: /var/log/milady-bootstrap.log"

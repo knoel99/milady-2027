@@ -1,27 +1,27 @@
 #!/usr/bin/env bash
-# Sauvegarde de la pile MilaDy : dumps PostgreSQL compressés (catalogue « milady » et « mlflow ») et
-# miroir du stockage objet (buckets milady-data, milady-models, mlflow) vers une cible.
+# Backup of the MilaDy stack: compressed PostgreSQL dumps ("milady" catalogue and "mlflow") and
+# mirror of the object storage (buckets milady-data, milady-models, mlflow) to a target.
 #
 # Usage :
-#   infra/deploy/backup.sh CIBLE [--keep N] [--no-objects]
+#   infra/deploy/backup.sh TARGET [--keep N] [--no-objects]
 #
-# CIBLE :
-#   /chemin/dossier       disque local ou volume monté (ex. disque bloc du fournisseur) ;
-#   s3://bucket/préfixe   bucket d'un fournisseur S3 ; identifiants dans l'environnement :
-#                           BACKUP_S3_ENDPOINT   (ex. https://s3.fr-par.scw.cloud)
+# TARGET:
+#   /path/to/dir          local disk or mounted volume (e.g. provider block disk);
+#   s3://bucket/prefix    bucket of an S3 provider; credentials in the environment:
+#                           BACKUP_S3_ENDPOINT   (e.g. https://s3.fr-par.scw.cloud)
 #                           BACKUP_ACCESS_KEY, BACKUP_SECRET_KEY
 #
 # Options :
-#   --keep N       (cible locale) ne conserver que les N derniers dumps par base (défaut 14)
-#   --no-objects   dumps PostgreSQL seulement (pas de miroir S3)
+#   --keep N       (local target) keep only the N latest dumps per database (default 14)
+#   --no-objects   PostgreSQL dumps only (no S3 mirror)
 #
-# Résultat :
-#   CIBLE/db/milady-AAAAMMJJTHHMMSSZ.dump, CIBLE/db/mlflow-….dump   (pg_dump -Fc, compressés)
-#   CIBLE/objects/<bucket>/…                                       (mc mirror, incrémental)
-# Restauration : voir infra/README.md, section « Sauvegarde et restauration ».
+# Result:
+#   TARGET/db/milady-YYYYMMDDTHHMMSSZ.dump, TARGET/db/mlflow-....dump   (pg_dump -Fc, compressed)
+#   TARGET/objects/<bucket>/...                                         (mc mirror, incremental)
+# Restore: see infra/README.md, "Backup and restore" section.
 #
-# Idempotent et incrémental : à lancer avant chaque arrêt de VM, ou par cron :
-#   17 3 * * * cd ~/milady-2027 && infra/deploy/backup.sh s3://mon-bucket/milady >> backups.log 2>&1
+# Idempotent and incremental: run before each VM shutdown, or from cron:
+#   17 3 * * * cd ~/milady-2027 && infra/deploy/backup.sh s3://my-bucket/milady >> backups.log 2>&1
 set -euo pipefail
 
 usage() { sed -n '2,24p' "$0"; }
@@ -34,25 +34,25 @@ while [[ $# -gt 0 ]]; do
     case "$1" in
         --keep) KEEP="$2"; shift ;;
         --no-objects) OBJECTS=0 ;;
-        *) echo "Option inconnue : $1" >&2; exit 2 ;;
+        *) echo "Unknown option: $1" >&2; exit 2 ;;
     esac
     shift
 done
 
 REPO_ROOT="$(cd "$(dirname "${BASH_SOURCE[0]}")/../.." && pwd)"
 ENV_FILE="${MILADY_ENV_FILE:-${REPO_ROOT}/infra/docker/.env}"
-[[ -f "${ENV_FILE}" ]] || { echo "infra/docker/.env absent : rien à sauvegarder ici." >&2; exit 1; }
+[[ -f "${ENV_FILE}" ]] || { echo "infra/docker/.env missing: nothing to back up here." >&2; exit 1; }
 COMPOSE=(docker compose -f "${REPO_ROOT}/infra/docker/docker-compose.yml" --env-file "${ENV_FILE}")
 env_get() { sed -n "s/^$1=//p" "${ENV_FILE}" | tail -n 1; }
 PGUSER_="$(env_get POSTGRES_USER)"; PGUSER_="${PGUSER_:-milady}"
 PGDB_="$(env_get POSTGRES_DB)"; PGDB_="${PGDB_:-milady}"
 TS="$(date -u +%Y%m%dT%H%M%SZ)"
 
-# Dossier de travail : la cible elle-même si locale, sinon un dossier temporaire.
+# Working directory: the target itself if local, otherwise a temporary directory.
 if [[ "${TARGET}" == s3://* ]]; then
-    : "${BACKUP_S3_ENDPOINT:?définir BACKUP_S3_ENDPOINT pour une cible s3://}"
-    : "${BACKUP_ACCESS_KEY:?définir BACKUP_ACCESS_KEY}"
-    : "${BACKUP_SECRET_KEY:?définir BACKUP_SECRET_KEY}"
+    : "${BACKUP_S3_ENDPOINT:?set BACKUP_S3_ENDPOINT for an s3:// target}"
+    : "${BACKUP_ACCESS_KEY:?set BACKUP_ACCESS_KEY}"
+    : "${BACKUP_SECRET_KEY:?set BACKUP_SECRET_KEY}"
     WORK="$(mktemp -d)"
     trap 'rm -rf "${WORK}"' EXIT
     REMOTE=1
@@ -63,30 +63,30 @@ else
 fi
 mkdir -p "${WORK}/db" "${WORK}/objects"
 
-# --- 1. Dumps PostgreSQL ------------------------------------------------------------------------
+# --- 1. PostgreSQL dumps ------------------------------------------------------------------------
 "${COMPOSE[@]}" exec -T db pg_isready -U "${PGUSER_}" >/dev/null \
-    || { echo "le service db ne répond pas (make up ?)" >&2; exit 1; }
+    || { echo "the db service is not responding (make up?)" >&2; exit 1; }
 for db in "${PGDB_}" mlflow; do
     out="${WORK}/db/${db}-${TS}.dump"
     echo "==> pg_dump ${db} → ${out}"
-    # Format personnalisé (-Fc) compressé (-Z 6) : restauration sélective avec pg_restore.
+    # Custom format (-Fc) compressed (-Z 6): selective restore with pg_restore.
     "${COMPOSE[@]}" exec -T db pg_dump -U "${PGUSER_}" -d "${db}" -Fc -Z 6 > "${out}.part"
     mv "${out}.part" "${out}"
     du -h "${out}" | awk '{print "    " $1}'
 done
 if [[ ${REMOTE} -eq 0 ]]; then
-    # Rotation : on garde les KEEP derniers dumps de chaque base.
+    # Rotation: keep the KEEP latest dumps of each database.
     for db in "${PGDB_}" mlflow; do
-        # Noms horodatés sans caractère spécial : ls -t suffit pour trier.
+        # Timestamped names without special characters: ls -t is enough to sort.
         # shellcheck disable=SC2012
         mapfile -t old < <(ls -1t "${WORK}/db/${db}-"*.dump 2>/dev/null | tail -n "+$((KEEP + 1))")
         [[ ${#old[@]} -eq 0 ]] || rm -f -- "${old[@]}"
     done
 fi
 
-# --- 2. Miroir du stockage objet (mc, conteneur s3-init) ---------------------------------------
-# Le conteneur mc rejoint le réseau compose (accès à http://s3:9000) ; la cible est montée sur /backup.
-# shellcheck disable=SC2016  # développé dans le conteneur mc, pas ici
+# --- 2. Object storage mirror (mc, s3-init container) ---------------------------------------
+# The mc container joins the compose network (access to http://s3:9000); the target is mounted on /backup.
+# shellcheck disable=SC2016  # expanded in the mc container, not here
 MC_SCRIPT='set -eu
 mc alias set src http://s3:9000 "$S3_ROOT_USER" "$S3_ROOT_PASSWORD" >/dev/null
 if [ -n "${DEST_URL:-}" ]; then
@@ -101,12 +101,12 @@ else
         for b in milady-data milady-models mlflow; do mc mirror --overwrite "src/$b" "/backup/objects/$b"; done
     fi
 fi'
-# Identifiants transmis au conteneur par leur nom (-e VAR) : jamais visibles dans la liste des processus.
+# Credentials passed to the container by name (-e VAR): never visible in the process list.
 export BACKUP_S3_ENDPOINT="${BACKUP_S3_ENDPOINT:-}" BACKUP_ACCESS_KEY="${BACKUP_ACCESS_KEY:-}" \
        BACKUP_SECRET_KEY="${BACKUP_SECRET_KEY:-}"
 dest_url=""
 [[ ${REMOTE} -eq 1 ]] && dest_url="${TARGET}"
-echo "==> Miroir du stockage objet → ${TARGET}"
+echo "==> Object storage mirror → ${TARGET}"
 "${COMPOSE[@]}" run --rm --no-deps -T \
     --user "$(id -u):$(id -g)" \
     -e MC_CONFIG_DIR=/tmp/mc -e OBJECTS="${OBJECTS}" -e DEST_URL="${dest_url}" \
@@ -114,4 +114,4 @@ echo "==> Miroir du stockage objet → ${TARGET}"
     -v "${WORK}:/backup" \
     --entrypoint /bin/sh s3-init -c "${MC_SCRIPT}"
 
-echo "==> Sauvegarde terminée (${TS}) : ${TARGET}"
+echo "==> Backup finished (${TS}): ${TARGET}"

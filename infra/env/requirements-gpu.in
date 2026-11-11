@@ -1,4 +1,4 @@
-# Dépendances directes (premier niveau) GPU épinglées ; le verrou complet est requirements-gpu.txt (make lock).
+# Pinned direct (top-level) GPU dependencies; the full lock is requirements-gpu.txt (make lock).
 numpy==2.4.6
 scipy==1.17.1
 h5py==3.16.0

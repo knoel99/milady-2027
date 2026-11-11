@@ -1,8 +1,8 @@
-"""Tests du catalogue : SQLite en mémoire (toujours) et PostgreSQL (si un serveur est disponible).
+"""Catalog tests: in-memory SQLite (always) and PostgreSQL (if a server is available).
 
-PostgreSQL : ``MILADY_TEST_PG_URL`` (URL d'un compte autorisé à créer des bases, ex.
-``postgresql://postgres:mdp@127.0.0.1:5432/postgres``) ; à défaut ``MILADY_DB_URL`` si c'est une URL
-PostgreSQL. Chaque test crée une base temporaire puis la supprime.
+PostgreSQL: ``MILADY_TEST_PG_URL`` (URL of an account allowed to create databases, e.g.
+``postgresql://postgres:pwd@127.0.0.1:5432/postgres``); otherwise ``MILADY_DB_URL`` if it is a
+PostgreSQL URL. Each test creates a temporary database and then drops it.
 """
 
 from __future__ import annotations
@@ -31,10 +31,10 @@ def _pg_admin_url() -> str | None:
 
 @pytest.fixture()
 def pg_database() -> Iterator[str]:
-    """Base PostgreSQL temporaire (URL psycopg)."""
+    """Temporary PostgreSQL database (psycopg URL)."""
     admin = _pg_admin_url()
     if admin is None:
-        pytest.skip("pas de PostgreSQL (MILADY_TEST_PG_URL)")
+        pytest.skip("no PostgreSQL (MILADY_TEST_PG_URL)")
     psycopg = pytest.importorskip("psycopg")
     admin = normalize_url(admin).replace("postgresql+psycopg://", "postgresql://")
     name = f"milady_test_{uuid.uuid4().hex[:10]}"
@@ -42,7 +42,7 @@ def pg_database() -> Iterator[str]:
         with psycopg.connect(admin, autocommit=True, connect_timeout=5) as conn:
             conn.execute(f'CREATE DATABASE "{name}"')
     except psycopg.Error as exc:
-        pytest.skip(f"PostgreSQL injoignable ou création de base refusée : {exc}")
+        pytest.skip(f"PostgreSQL unreachable or database creation refused: {exc}")
     base = admin.rsplit("/", 1)[0]
     try:
         yield f"{base}/{name}"
@@ -61,16 +61,16 @@ def _apply_schema_sql(url: str) -> None:
 
 
 # ---------------------------------------------------------------------------------------------
-# Scénario complet, joué sur chaque moteur
+# Full scenario, played on each engine
 # ---------------------------------------------------------------------------------------------
 def _workflow(cat: Catalog) -> None:
-    camp = cat.create_campaign("palier2_abc3d", config_yaml="Rm: [8, 12]\n", description="ABC")
-    assert cat.create_campaign("palier2_abc3d") == camp  # idempotent par nom
+    camp = cat.create_campaign("stage2_abc3d", config_yaml="Rm: [8, 12]\n", description="ABC")
+    assert cat.create_campaign("stage2_abc3d") == camp  # idempotent by name
 
     sims = {}
     for rm in (8.0, 12.0, 16.0):
         sims[rm] = cat.register_simulation(
-            "palier2_abc3d",
+            "stage2_abc3d",
             "mhd3d_torch",
             {"Rm": rm, "Re": np.float32(50.0), "forcing": "ABC", "kinematic": True},
             {"shape": [32, 32, 32], "lengths": [6.283] * 3},
@@ -82,13 +82,13 @@ def _workflow(cat: Catalog) -> None:
     s12 = sims[12.0]
     fixed = str(uuid.uuid4())
     assert cat.register_simulation(camp, "mhd3d_torch", {"Rm": 20.0}, {}, sim_id=fixed) == fixed
-    assert cat.register_simulation(camp, "mhd3d_torch", {"Rm": 99.0}, {}, sim_id=fixed) == fixed  # reprise
+    assert cat.register_simulation(camp, "mhd3d_torch", {"Rm": 99.0}, {}, sim_id=fixed) == fixed  # resumption
     cat.update_simulation(fixed, status="failed", notes="NaN à t = 3")
 
     cat.update_simulation(s12, status="running")
-    cat.update_simulation(s12, status="completed")  # synonyme de done
+    cat.update_simulation(s12, status="completed")  # synonym of done
     sim = cat.get_simulation(s12)
-    assert sim["status"] == "done" and sim["campaign"] == "palier2_abc3d"
+    assert sim["status"] == "done" and sim["campaign"] == "stage2_abc3d"
     assert sim["started_at"].tzinfo is not None and sim["finished_at"] >= sim["started_at"]
     assert sim["wall_time_s"] is not None and sim["wall_time_s"] >= 0
     assert sim["parameters"]["Re"] == 50.0 and sim["grid"]["shape"] == [32, 32, 32]
@@ -99,8 +99,8 @@ def _workflow(cat: Catalog) -> None:
     with pytest.raises(KeyError):
         cat.update_simulation(str(uuid.uuid4()), status="done")
 
-    # Fichiers : clé = URI ; un fichier réécrit est mis à jour.
-    uri = f"s3://milady-data/palier2_abc3d/{s12}/fields.h5"
+    # Files: key = URI; a rewritten file is updated.
+    uri = f"s3://milady-data/stage2_abc3d/{s12}/fields.h5"
     fid = cat.register_file(s12, "fields", uri, "0" * 64, 1234, n_t=10, t_start=0.0, t_end=9.0)
     assert cat.register_file(s12, "fields", uri, "1" * 64, 2345, n_t=10, t_start=0.0, t_end=9.0) == fid
     assert cat.find_file(uri)["sha256"] == "1" * 64 and cat.find_file(uri)["size_bytes"] == 2345
@@ -109,15 +109,15 @@ def _workflow(cat: Catalog) -> None:
     fid8 = cat.register_file(sims[8.0], "fields", uri.replace(s12, sims[8.0]), "2" * 64, 10)
     fid16 = cat.register_file(sims[16.0], "fields", uri.replace(s12, sims[16.0]), "3" * 64, 10)
 
-    # Diagnostics : remplacement à t égal, NaN → NULL.
+    # Diagnostics: replacement at equal t, NaN → NULL.
     t = np.linspace(0, 9, 10)
     assert cat.add_diagnostics(s12, "magnetic_energy", t, np.exp(0.1 * t)) == 10
     cat.add_diagnostics(s12, "magnetic_energy", [9.0, 10.0], [42.0, float("nan")])
     tt, vv = cat.get_diagnostics(s12, "magnetic_energy")["magnetic_energy"]
     assert len(tt) == 11 and vv[9] == 42.0 and np.isnan(vv[10])
 
-    # Requêtes par paramètres.
-    assert {s["id"] for s in cat.query_simulations(campaign="palier2_abc3d", Rm__ge=12)} == {
+    # Queries by parameters.
+    assert {s["id"] for s in cat.query_simulations(campaign="stage2_abc3d", Rm__ge=12)} == {
         s12,
         sims[16.0],
         fixed,
@@ -131,9 +131,9 @@ def _workflow(cat: Catalog) -> None:
     with pytest.raises(KeyError):
         cat.query_simulations(campaign="inconnue")
 
-    # Jeu de données figé.
+    # Frozen dataset.
     members = [(fid8, "train"), (fid16, "train"), (fid, "test")]
-    ds = cat.register_dataset("abc3d_32", "1.0", members, description="palier 2")
+    ds = cat.register_dataset("abc3d_32", "1.0", members, description="stage 2")
     assert cat.register_dataset("abc3d_32", "1.0", list(reversed(members))) == ds
     with pytest.raises(ValueError):
         cat.register_dataset("abc3d_32", "1.0", members[:2])
@@ -142,7 +142,7 @@ def _workflow(cat: Catalog) -> None:
     assert {r["split"] for r in cat.dataset_files("abc3d_32")} == {"train", "test"}
     assert len(cat.dataset_files("abc3d_32", "1.0", split="train")) == 2
 
-    # Modèles et évaluations ; vue v_eval_summary.
+    # Models and evaluations; v_eval_summary view.
     m1 = cat.register_model(
         "fm3d",
         "unet3d",
@@ -159,7 +159,7 @@ def _workflow(cat: Catalog) -> None:
         cat.add_evaluation(
             m1, {"Rm": 12.0, "Re": 50.0}, "energy_distance", v, 256, seed, details={"steps": 50}
         )
-    cat.add_evaluation(m1, {"Re": 50.0, "Rm": 12.0}, "div_rel", 1e-7, 256, 0)  # ordre des clés indifférent
+    cat.add_evaluation(m1, {"Re": 50.0, "Rm": 12.0}, "div_rel", 1e-7, 256, 0)  # key order is irrelevant
     cat.add_evaluation(m1, {"Rm": 14.0, "Re": 50.0}, "energy_distance", 0.3, 256, 0)
     cat.add_evaluation(m2, {"Rm": 12.0, "Re": 50.0}, "div_rel", 0.2, 256, 0)
     rows = cat.eval_summary(m1)
@@ -171,7 +171,7 @@ def _workflow(cat: Catalog) -> None:
     assert single["std"] is None and single["model_name"] == "fm3d"
     assert len(cat.eval_summary()) == 4
 
-    # Tâches.
+    # Tasks.
     job = cat.register_job("simulation", "slurm", "123456_7", simulation_id=s12)
     cat.update_job(job, status="running")
     cat.update_job(job, status="done", log_uri="file:///scratch/logs/123456_7.out")
@@ -186,7 +186,7 @@ def _workflow(cat: Catalog) -> None:
     assert cat.get_job(tj)["started_at"] is not None
 
     counts = {c["name"]: c["counts"] for c in cat.list_campaigns()}
-    assert counts["palier2_abc3d"] == {"queued": 2, "done": 1, "failed": 1}
+    assert counts["stage2_abc3d"] == {"queued": 2, "done": 1, "failed": 1}
 
 
 def test_sqlite_memory_workflow() -> None:
@@ -202,22 +202,22 @@ def test_sqlite_file_default_url(tmp_path: Path, monkeypatch: pytest.MonkeyPatch
     assert cat.url == f"sqlite:///{tmp_path / 'data' / 'catalog.sqlite'}"
     camp = cat.create_campaign("c")
     cat.close()
-    cat2 = Catalog()  # réouverture : rien n'est recréé ni perdu
+    cat2 = Catalog()  # reopening: nothing is recreated or lost
     assert cat2.create_campaign("c") == camp
     monkeypatch.setenv("MILADY_DB_URL", f"sqlite:///{tmp_path / 'autre.sqlite'}")
     assert Catalog().url.endswith("autre.sqlite")
 
 
-def _open_catalog(url: str, queue) -> None:  # processus fils de test_concurrent_schema_creation
+def _open_catalog(url: str, queue) -> None:  # child process of test_concurrent_schema_creation
     try:
         Catalog(url).close()
         queue.put("ok")
-    except Exception as exc:  # noqa: BLE001 - on remonte le message au processus parent
+    except Exception as exc:  # noqa: BLE001 - the message is passed up to the parent process
         queue.put(f"{type(exc).__name__}: {exc}")
 
 
 def test_concurrent_schema_creation(tmp_path: Path) -> None:
-    """Deux campagnes lancées en même temps sur un catalogue SQLite neuf : aucune ne doit échouer."""
+    """Two campaigns launched at the same time on a new SQLite catalog: neither must fail."""
     import multiprocessing as mp
 
     ctx = mp.get_context("spawn")
@@ -237,7 +237,7 @@ def test_concurrent_schema_creation(tmp_path: Path) -> None:
 
 
 def test_sqlite_constraints_enforced() -> None:
-    """Les CHECK et clés étrangères tiennent même si l'on contourne l'API."""
+    """CHECK constraints and foreign keys hold even when bypassing the API."""
     cat = Catalog("sqlite://")
     camp = cat.create_campaign("c")
     sim = cat.register_simulation(camp, "x", {}, {})
@@ -274,13 +274,13 @@ def test_ingest_mff(tmp_path: Path) -> None:
     cat = Catalog("sqlite://")
     out = cat.ingest_mff(str(path), campaign="hpc")
     assert out["simulation_id"] == sim_id
-    assert cat.ingest_mff(path.as_uri(), campaign="hpc")["simulation_id"] == sim_id  # même simulation
+    assert cat.ingest_mff(path.as_uri(), campaign="hpc")["simulation_id"] == sim_id  # same simulation
     sim = cat.get_simulation(sim_id)
     assert sim["status"] == "done" and sim["parameters"] == {"Rm": 9.0, "forcing": "TG"}
     assert sim["grid"]["shape"] == [8, 8, 8] and sim["grid"]["bc"] == ["periodic"]
     assert {f["sha256"] for f in sim["files"]} == {sha} and sim["files"][0]["n_t"] == 4
     _, v = cat.get_diagnostics(sim_id)["magnetic_energy"]
-    np.testing.assert_allclose(v, 2.0)  # moyenne sur les trajectoires
+    np.testing.assert_allclose(v, 2.0)  # mean over the trajectories
 
 
 def test_cli(tmp_path: Path, capsys: pytest.CaptureFixture[str]) -> None:
@@ -301,11 +301,11 @@ def test_cli(tmp_path: Path, capsys: pytest.CaptureFixture[str]) -> None:
 # ---------------------------------------------------------------------------------------------
 @pytest.mark.postgres
 def test_postgres_schema_sql_workflow(pg_database: str) -> None:
-    """Base créée par infra/db/schema.sql (comme le docker-compose), puis API complète."""
+    """Database created by infra/db/schema.sql (like the docker-compose), then full API."""
     _apply_schema_sql(pg_database)
     cat = Catalog(pg_database)
     _workflow(cat)
-    with cat.engine.connect() as conn:  # index GIN et requête JSONB native
+    with cat.engine.connect() as conn:  # GIN index and native JSONB query
         assert "ix_simulation_parameters" in {i["name"] for i in inspect(conn).get_indexes("simulation")}
         n = conn.execute(
             text("""SELECT count(*) FROM simulation WHERE parameters @> '{"forcing": "ABC"}'""")
@@ -316,7 +316,7 @@ def test_postgres_schema_sql_workflow(pg_database: str) -> None:
 
 @pytest.mark.postgres
 def test_postgres_create_all_workflow(pg_database: str) -> None:
-    """Base vide : le schéma est créé par SQLAlchemy (create_all + vue)."""
+    """Empty database: the schema is created by SQLAlchemy (create_all + view)."""
     cat = Catalog(pg_database)
     _workflow(cat)
     cat.close()
@@ -331,7 +331,7 @@ def _columns(conn, table: str) -> dict[str, tuple[str, bool, str | None]]:
 
 @pytest.mark.postgres
 def test_schema_sql_matches_models(pg_database: str) -> None:
-    """schema.sql et models.py décrivent exactement les mêmes colonnes, contraintes, index et vue."""
+    """schema.sql and models.py describe exactly the same columns, constraints, indexes and view."""
     import psycopg
     from sqlalchemy import create_engine
 

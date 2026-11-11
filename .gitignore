@@ -1,13 +1,13 @@
 __pycache__/
 *.pyc
-experiences/donnees_e2/
-experiences/resultats/*_quick.*
-experiences/figures/*_quick.*
+experiments/data_e2/
+experiments/results/*_quick.*
+site/experiments/figures/*_quick.*
 index_files/
 **/index_files/
 .quarto/
-figures/**/node_modules/
-experiences/resultats/cache_e1/
+site/figures/**/node_modules/
+experiments/results/cache_e1/
 /data/
 .env
 infra/docker/.env
@@ -16,7 +16,7 @@ infra/docker/.env
 *.egg-info/
 /mlruns/
 
-# --- Infrastructure (déploiement) : secrets, données, artefacts locaux -----------------------
+# --- Infrastructure (deployment): secrets, data, local artifacts -----------------------
 /backups/
 .venv/
 .venv-front/
@@ -26,3 +26,7 @@ milady-sim-*.out
 milady-train-*.out
 milady-eval-*.out
 infra/env/*.lock.tmp
+
+# Rendered pages (built by .github/workflows/pages.yml)
+site/**/index.html
+_site/

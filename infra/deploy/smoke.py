@@ -1,27 +1,27 @@
 #!/usr/bin/env python3
-"""Test de fumée de bout en bout de l'infrastructure MilaDy (« make smoke »).
+"""End-to-end smoke test of the MilaDy infrastructure ("make smoke").
 
-Chaîne vérifiée, en quelques dizaines de secondes sur CPU :
+Chain checked, in a few tens of seconds on CPU:
 
-1. environnement (versions, GPU, variables de configuration, sans afficher de secret) ;
-2. stockage (``milady.storage`` : aller-retour d'un petit fichier vers ``MILADY_STORAGE_URI``) ;
-3. catalogue (``milady.catalog.api.Catalog`` : campagne, simulation, tâche) ;
-4. simulation 3D minuscule (solveur ``milady.sim.mhd3d``) ;
-5. fichier MFF (``milady.data.format`` : écriture, validation, relecture ; variante Zarr) ;
-6. téléversement vers le stockage, enregistrement du fichier et des diagnostics au catalogue ;
-7. jeu de données (``register_dataset``) ;
-8. entraînement d'une itération (``milady.train.fm3d``), journalisé dans MLflow si
-   ``MLFLOW_TRACKING_URI`` est défini, point de contrôle stocké ;
-9. évaluation (divergence relative, énergie) enregistrée au catalogue, puis résumé ``eval_summary``.
+1. environment (versions, GPU, configuration variables, without printing any secret);
+2. storage (``milady.storage``: round trip of a small file to ``MILADY_STORAGE_URI``);
+3. catalogue (``milady.catalog.api.Catalog``: campaign, simulation, job);
+4. tiny 3D simulation (``milady.sim.mhd3d`` solver);
+5. MFF file (``milady.data.format``: write, validate, read back; Zarr variant);
+6. upload to storage, registration of the file and diagnostics in the catalogue;
+7. dataset (``register_dataset``);
+8. one training iteration (``milady.train.fm3d``), logged to MLflow if
+   ``MLFLOW_TRACKING_URI`` is set, checkpoint stored;
+9. evaluation (relative divergence, energy) recorded in the catalogue, then ``eval_summary`` summary.
 
-Le script s'exécute tel quel dans le conteneur ``worker`` (PostgreSQL + MinIO + MLflow) ou en mode
-portable (SQLite + ``./data/store``). Code de retour 0 si toutes les étapes obligatoires réussissent.
+The script runs as is in the ``worker`` container (PostgreSQL + MinIO + MLflow) or in portable
+mode (SQLite + ``./data/store``). Exit code 0 if all required steps succeed.
 
-Les modules réels (solveur, entraînement, métriques) sont exigés : une panne de l'un d'eux fait
-échouer l'étape. ``--allow-fallback`` autorise les remplacements de secours (champ ABC analytique,
-petit réseau convolutif, divergence spectrale locale) pour tester l'infrastructure seule.
+The real modules (solver, training, metrics) are required: a failure of any of them fails
+the step. ``--allow-fallback`` allows fallback replacements (analytic ABC field,
+small convolutional network, local spectral divergence) to test the infrastructure alone.
 
-Usage : ``python infra/deploy/smoke.py [--n 16] [--keep] [--json rapport.json] [--allow-fallback]``
+Usage: ``python infra/deploy/smoke.py [--n 16] [--keep] [--json report.json] [--allow-fallback]``
 """
 from __future__ import annotations
 
@@ -46,16 +46,16 @@ from typing import Any
 import numpy as np
 
 REPO = Path(__file__).resolve().parents[2]
-if str(REPO) not in sys.path:  # exécution possible sans « pip install -e . »
-    sys.path.insert(0, str(REPO))
+if str(REPO / "src") not in sys.path:  # can run without "pip install -e ."
+    sys.path.insert(0, str(REPO / "src"))
 
 
 # ---------------------------------------------------------------------------------------------
-# Petit moteur d'étapes
+# Small step engine
 # ---------------------------------------------------------------------------------------------
 @dataclass
 class Step:
-    """Résultat d'une étape du test."""
+    """Result of one step of the test."""
 
     name: str
     status: str = "pending"  # ok | fail | skip
@@ -65,17 +65,17 @@ class Step:
 
 @dataclass
 class Runner:
-    """Exécute les étapes, mesure leur durée et collecte les erreurs sans interrompre le rapport."""
+    """Run the steps, time them and collect the errors without interrupting the report."""
 
     steps: list[Step] = field(default_factory=list)
     context: dict[str, Any] = field(default_factory=dict)
 
     def run(self, name: str, fn: Callable[[], str | None], required: bool = True,
             needs: tuple[str, ...] = ()) -> bool:
-        """Lance ``fn`` ; une exception marque l'étape en échec (ou « skip » si facultative).
+        """Run ``fn``; an exception marks the step as failed (or "skip" if optional).
 
-        ``needs`` : étapes préalables ; si l'une n'a pas réussi, l'étape est sautée (l'échec est
-        déjà compté sur l'étape préalable).
+        ``needs``: prerequisite steps; if one has not succeeded, the step is skipped (the failure is
+        already counted on the prerequisite step).
         """
         step = Step(name)
         self.steps.append(step)
@@ -84,12 +84,12 @@ class Runner:
         missing = [n for n in needs if status.get(n) != "ok"]
         try:
             if missing:
-                raise SkipStep("prérequis non satisfait : " + ", ".join(missing))
+                raise SkipStep("unmet prerequisite: " + ", ".join(missing))
             detail = fn()
             step.status, step.detail = "ok", detail or ""
         except SkipStep as exc:
             step.status, step.detail = "skip", str(exc)
-        except Exception as exc:  # noqa: BLE001 — on veut un rapport complet
+        except Exception as exc:  # noqa: BLE001 — we want a complete report
             step.status = "fail" if required else "skip"
             step.detail = f"{type(exc).__name__}: {exc}"
             if os.environ.get("MILADY_SMOKE_DEBUG") or required:
@@ -101,16 +101,16 @@ class Runner:
 
     @property
     def failed(self) -> list[Step]:
-        """Étapes obligatoires en échec."""
+        """Required steps that failed."""
         return [s for s in self.steps if s.status == "fail"]
 
 
 class SkipStep(Exception):
-    """Étape sautée volontairement (dépendance absente, service non configuré)."""
+    """Step deliberately skipped (missing dependency, unconfigured service)."""
 
 
 def _mask(url: str) -> str:
-    """Masque le mot de passe d'une URL de connexion."""
+    """Mask the password of a connection URL."""
     if "://" in url and "@" in url:
         scheme, rest = url.split("://", 1)
         creds, host = rest.rsplit("@", 1)
@@ -120,7 +120,7 @@ def _mask(url: str) -> str:
 
 
 def _optional_module(name: str) -> Any | None:
-    """Importe un module facultatif ; ``None`` s'il n'existe pas encore."""
+    """Import an optional module; ``None`` if it does not exist yet."""
     try:
         return importlib.import_module(name)
     except ModuleNotFoundError as exc:
@@ -130,7 +130,7 @@ def _optional_module(name: str) -> Any | None:
 
 
 def _call_with_supported(fn: Callable[..., Any], **kwargs: Any) -> Any:
-    """Appelle ``fn`` avec les seuls arguments nommés qu'elle accepte (adaptation souple d'API)."""
+    """Call ``fn`` with only the keyword arguments it accepts (flexible API adaptation)."""
     sig = inspect.signature(fn)
     if any(p.kind is inspect.Parameter.VAR_KEYWORD for p in sig.parameters.values()):
         return fn(**kwargs)
@@ -138,10 +138,10 @@ def _call_with_supported(fn: Callable[..., Any], **kwargs: Any) -> Any:
 
 
 # ---------------------------------------------------------------------------------------------
-# Champs de secours (si le solveur 3D n'est pas disponible)
+# Fallback fields (if the 3D solver is not available)
 # ---------------------------------------------------------------------------------------------
 def spectral_grid(n: int) -> tuple[np.ndarray, tuple[np.ndarray, np.ndarray, np.ndarray]]:
-    """Grille périodique [0, 2π)^3 et nombres d'onde entiers (indexation ij)."""
+    """Periodic grid [0, 2π)^3 and integer wavenumbers (ij indexing)."""
     x = 2 * np.pi * np.arange(n) / n
     k = np.fft.fftfreq(n, d=1.0 / n)
     kx, ky, kz = np.meshgrid(k, k, k, indexing="ij")
@@ -149,7 +149,7 @@ def spectral_grid(n: int) -> tuple[np.ndarray, tuple[np.ndarray, np.ndarray, np.
 
 
 def divergence_rel(v: np.ndarray) -> float:
-    """Divergence relative spectrale max|∇·v| / max|∇v| d'un champ (n, n, n, 3) périodique."""
+    """Spectral relative divergence max|∇·v| / max|∇v| of a periodic (n, n, n, 3) field."""
     n = v.shape[0]
     _, (kx, ky, kz) = spectral_grid(n)
     vh = [np.fft.fftn(v[..., i]) for i in range(3)]
@@ -160,10 +160,10 @@ def divergence_rel(v: np.ndarray) -> float:
 
 
 def analytic_fields(n: int, n_t: int, rng: np.random.Generator) -> dict[str, Any]:
-    """Écoulement ABC (A = B = C = 1) et champ magnétique aléatoire à divergence nulle.
+    """ABC flow (A = B = C = 1) and random divergence-free magnetic field.
 
-    B = ∇ × A avec A aléatoire à spectre décroissant ; amplitude ∝ exp(γ t) (croissance fictive)
-    pour obtenir une série temporelle non triviale. Renvoie champs, coordonnées et diagnostics.
+    B = ∇ × A with A random with a decaying spectrum; amplitude ∝ exp(γ t) (fictitious growth)
+    to obtain a non-trivial time series. Returns fields, coordinates and diagnostics.
     """
     x, (kx, ky, kz) = spectral_grid(n)
     X, Y, Z = np.meshgrid(x, x, x, indexing="ij")
@@ -190,7 +190,7 @@ def analytic_fields(n: int, n_t: int, rng: np.random.Generator) -> dict[str, Any
 
 
 def solver_fields(n: int, n_t: int) -> dict[str, Any] | None:
-    """Simulation minuscule avec ``milady.sim.mhd3d`` si le module expose une API reconnue."""
+    """Tiny simulation with ``milady.sim.mhd3d`` if the module exposes a recognised API."""
     mod = _optional_module("milady.sim.mhd3d")
     if mod is None:
         return None
@@ -206,17 +206,17 @@ def solver_fields(n: int, n_t: int) -> dict[str, Any] | None:
 
 
 # ---------------------------------------------------------------------------------------------
-# Test principal
+# Main test
 # ---------------------------------------------------------------------------------------------
 def main(argv: list[str] | None = None) -> int:
-    """Point d'entrée : exécute toutes les étapes et renvoie le code de retour."""
+    """Entry point: run all steps and return the exit code."""
     ap = argparse.ArgumentParser(description=__doc__.split("\n")[0])
-    ap.add_argument("--n", type=int, default=16, help="résolution de la grille (n³), défaut 16")
-    ap.add_argument("--n-t", type=int, default=3, help="nombre de pas de temps écrits, défaut 3")
-    ap.add_argument("--keep", action="store_true", help="conserver les fichiers temporaires locaux")
-    ap.add_argument("--json", type=Path, default=None, help="écrire le rapport JSON dans ce fichier")
+    ap.add_argument("--n", type=int, default=16, help="grid resolution (n³), default 16")
+    ap.add_argument("--n-t", type=int, default=3, help="number of time steps written, default 3")
+    ap.add_argument("--keep", action="store_true", help="keep the local temporary files")
+    ap.add_argument("--json", type=Path, default=None, help="write the JSON report to this file")
     ap.add_argument("--allow-fallback", action="store_true",
-                    help="autoriser les remplacements de secours si solveur, entraînement ou métriques échouent")
+                    help="allow fallback replacements if solver, training or metrics fail")
     args = ap.parse_args(argv)
 
     run_id = time.strftime("%Y%m%dT%H%M%S") + "-" + uuid.uuid4().hex[:6]
@@ -226,9 +226,9 @@ def main(argv: list[str] | None = None) -> int:
     r = Runner()
     ctx = r.context
 
-    print(f"== Test de fumée MilaDy {run_id} (dossier temporaire {workdir})", flush=True)
+    print(f"== MilaDy smoke test {run_id} (temporary directory {workdir})", flush=True)
 
-    # 1. Environnement ----------------------------------------------------------------------
+    # 1. Environment ----------------------------------------------------------------------
     def step_env() -> str:
         import torch
 
@@ -239,8 +239,8 @@ def main(argv: list[str] | None = None) -> int:
         ctx["n_gpus"] = torch.cuda.device_count()
         ctx["git_commit"] = milady.git_commit() if hasattr(milady, "git_commit") else ""
         ctx["host"] = os.environ.get("MILADY_HOST") or socket.gethostname()
-        db = os.environ.get("MILADY_DB_URL", "(défaut SQLite)")
-        st = os.environ.get("MILADY_STORAGE_URI", "(défaut ./data/store)")
+        db = os.environ.get("MILADY_DB_URL", "(default SQLite)")
+        st = os.environ.get("MILADY_STORAGE_URI", "(default ./data/store)")
         print(f"       python {platform.python_version()}  torch {torch.__version__}  "
               f"device {ctx['device']} ({ctx['n_gpus']} GPU)  milady {milady.__version__}")
         print(f"       MILADY_DB_URL={_mask(db)}  MILADY_STORAGE_URI={st}  "
@@ -248,9 +248,9 @@ def main(argv: list[str] | None = None) -> int:
               f"MLFLOW_TRACKING_URI={os.environ.get('MLFLOW_TRACKING_URI', '-')}")
         return f"commit {ctx['git_commit'] or '?'}"
 
-    r.run("environnement", step_env)
+    r.run("environment", step_env)
 
-    # 2. Stockage ---------------------------------------------------------------------------
+    # 2. Storage ---------------------------------------------------------------------------
     def step_storage() -> str:
         from milady import storage
 
@@ -263,17 +263,17 @@ def main(argv: list[str] | None = None) -> int:
         uri = storage.join(base, "_smoke", run_id, "probe.bin")
         storage.put(str(probe), uri)
         if not storage.exists(uri):
-            raise RuntimeError(f"objet introuvable après put : {uri}")
+            raise RuntimeError(f"object not found after put: {uri}")
         back = workdir / "probe_back.bin"
         storage.get(uri, str(back))
         if back.read_bytes() != payload:
-            raise RuntimeError("contenu différent après aller-retour")
+            raise RuntimeError("content differs after round trip")
         with storage.open(uri, "rb") as fh:
             if fh.read(16) != payload[:16]:
-                raise RuntimeError("lecture partielle incorrecte")
+                raise RuntimeError("incorrect partial read")
         return uri
 
-    r.run("stockage", step_storage)
+    r.run("storage", step_storage)
 
     # 3. Catalogue --------------------------------------------------------------------------
     def step_catalog() -> str:
@@ -283,8 +283,8 @@ def main(argv: list[str] | None = None) -> int:
         ctx["cat"] = cat
         ctx["campaign_id"] = cat.create_campaign(
             campaign_name, config_yaml=f"name: {campaign_name}\nkind: smoke\n",
-            description="Test de fumée automatique (infra/deploy/smoke.py)")
-        return f"campagne {campaign_name} ({ctx['campaign_id']})"
+            description="Automatic smoke test (infra/deploy/smoke.py)")
+        return f"campaign {campaign_name} ({ctx['campaign_id']})"
 
     r.run("catalogue", step_catalog)
 
@@ -298,17 +298,17 @@ def main(argv: list[str] | None = None) -> int:
         out = None
         try:
             out = solver_fields(args.n, args.n_t)
-        except Exception as exc:  # repli sur le champ analytique si autorisé
+        except Exception as exc:  # fall back to the analytic field if allowed
             if not args.allow_fallback:
                 raise
-            print(f"       solveur 3D indisponible ({type(exc).__name__}: {exc}) : champ analytique")
+            print(f"       3D solver unavailable ({type(exc).__name__}: {exc}): analytic field")
         if out is None:
             if not args.allow_fallback:
-                raise RuntimeError("milady.sim.mhd3d.smoke_run introuvable (--allow-fallback : champ analytique)")
+                raise RuntimeError("milady.sim.mhd3d.smoke_run not found (--allow-fallback: analytic field)")
             out = analytic_fields(args.n, args.n_t, rng)
         ctx["sim"] = out
         ctx["wall"] = time.perf_counter() - t0
-        if isinstance(out.get("params"), dict):  # paramètres physiques réels du solveur
+        if isinstance(out.get("params"), dict):  # actual physical parameters of the solver
             params = {k: float(v) for k, v in out["params"].items() if isinstance(v, (int, float))}
             ctx["params"] = params
         sim_id = cat.register_simulation(
@@ -323,9 +323,9 @@ def main(argv: list[str] | None = None) -> int:
         ctx["div_rel"] = divergence_rel(b_last.astype(np.float64))
         return f"{out['code']}  n={args.n}  n_t={args.n_t}  div_rel(B)={ctx['div_rel']:.1e}"
 
-    r.run("simulation", step_simulation, needs=("environnement", "catalogue"))
+    r.run("simulation", step_simulation, needs=("environment", "catalogue"))
 
-    # 5. Format MFF -------------------------------------------------------------------------
+    # 5. MFF format -------------------------------------------------------------------------
     def step_format() -> str:
         from milady.data import format as mff
 
@@ -334,39 +334,39 @@ def main(argv: list[str] | None = None) -> int:
         meta = {
             "code": out["code"], "code_version": "smoke", "git_commit": ctx.get("git_commit", ""),
             "uuid": ctx["sim_id"], "host": ctx.get("host", ""), "command": " ".join(sys.argv),
-            "nondimensionalization": "unités d'Alfvén, longueur L/2π (test de fumée)",
+            "nondimensionalization": "Alfvén units, length L/2π (smoke test)",
         }
         sha = mff.write_mff(str(path), out["fields"], out["coords"], ctx["params"], meta=meta,
                             diagnostics=out.get("diagnostics") or None, dataset_name="milady_smoke")
         errors = mff.validate(str(path))
         if errors:
-            raise RuntimeError("validate() : " + " ; ".join(errors[:5]))
+            raise RuntimeError("validate(): " + " ; ".join(errors[:5]))
         back = mff.read_mff(str(path))
         for name, arr in out["fields"].items():
             got = np.asarray(back["fields"][name])
             if got.shape != np.asarray(arr).shape:
-                raise RuntimeError(f"forme relue {got.shape} ≠ {np.asarray(arr).shape} pour {name}")
+                raise RuntimeError(f"shape read back {got.shape} != {np.asarray(arr).shape} for {name}")
             if not np.allclose(got, arr, rtol=1e-6, atol=1e-7):
-                raise RuntimeError(f"valeurs relues différentes pour {name}")
+                raise RuntimeError(f"values read back differ for {name}")
         ctx["mff_path"], ctx["sha256"] = path, sha
-        return f"{path.name} {path.stat().st_size / 1024:.0f} Kio  sha256 {sha[:12]}…"
+        return f"{path.name} {path.stat().st_size / 1024:.0f} KiB  sha256 {sha[:12]}…"
 
-    r.run("format MFF", step_format, needs=("simulation",))
+    r.run("MFF format", step_format, needs=("simulation",))
 
     def step_zarr() -> str:
         from milady.data import format as mff
 
         if not hasattr(mff, "to_zarr"):
-            raise SkipStep("to_zarr absent")
+            raise SkipStep("to_zarr missing")
         zpath = workdir / "fields.zarr"
         mff.to_zarr(str(ctx["mff_path"]), str(zpath))
         back = mff.read_mff(str(zpath))
         shape = np.asarray(back["fields"]["magnetic_field"]).shape
-        return f"{zpath.name} relu, B {shape}"
+        return f"{zpath.name} read back, B {shape}"
 
-    r.run("variante Zarr", step_zarr, required=False, needs=("format MFF",))
+    r.run("Zarr variant", step_zarr, required=False, needs=("MFF format",))
 
-    # 6. Téléversement + catalogue ----------------------------------------------------------
+    # 6. Upload + catalogue ----------------------------------------------------------
     def step_register() -> str:
         storage, cat = ctx["storage"], ctx["cat"]
         out = ctx["sim"]
@@ -384,22 +384,22 @@ def main(argv: list[str] | None = None) -> int:
         cat.update_job(ctx["job_id"], status="done")
         found = cat.query_simulations(campaign=campaign_name)
         if not any(str(s.get("id")) == str(ctx["sim_id"]) for s in found):
-            raise RuntimeError("simulation absente de query_simulations()")
+            raise RuntimeError("simulation missing from query_simulations()")
         ctx["fields_uri"] = uri
         return uri
 
-    r.run("téléversement+catalogue", step_register, needs=("stockage", "format MFF"))
+    r.run("upload+catalogue", step_register, needs=("storage", "MFF format"))
 
-    # 7. Jeu de données ---------------------------------------------------------------------
+    # 7. Dataset ---------------------------------------------------------------------
     def step_dataset() -> str:
         ctx["dataset_id"] = ctx["cat"].register_dataset(
             f"smoke-{run_id}", "0.0.1", [(ctx["file_id"], "train")],
-            description="jeu de données du test de fumée")
+            description="smoke test dataset")
         return str(ctx["dataset_id"])
 
-    r.run("jeu de données", step_dataset, needs=("téléversement+catalogue",))
+    r.run("dataset", step_dataset, needs=("upload+catalogue",))
 
-    # 8. Entraînement (une itération) -------------------------------------------------------
+    # 8. Training (one iteration) -------------------------------------------------------
     def step_train() -> str:
         torch = ctx["torch"]
         fm3d = _optional_module("milady.train.fm3d")
@@ -412,7 +412,7 @@ def main(argv: list[str] | None = None) -> int:
             model_state = info.get("state_dict", {}) if isinstance(info, dict) else {}
             arch = "fm3d"
         elif not args.allow_fallback:
-            raise RuntimeError("milady.train.fm3d.smoke_step introuvable (--allow-fallback : réseau de secours)")
+            raise RuntimeError("milady.train.fm3d.smoke_step not found (--allow-fallback: fallback network)")
         else:
             torch.manual_seed(0)
             net = torch.nn.Sequential(torch.nn.Conv3d(4, 8, 3, padding=1, padding_mode="circular"),
@@ -451,12 +451,12 @@ def main(argv: list[str] | None = None) -> int:
             f"smoke-{run_id}", arch, "none", {"lr": 1e-3, "iterations": 1},
             dataset_id=ctx["dataset_id"], mlflow_run_id=run_id_mlflow, checkpoint_uri=ckpt_uri,
             git_commit=ctx.get("git_commit", ""))
-        mlf = f"  MLflow run {run_id_mlflow[:8]}" if run_id_mlflow else "  (MLflow non configuré)"
+        mlf = f"  MLflow run {run_id_mlflow[:8]}" if run_id_mlflow else "  (MLflow not configured)"
         return f"{arch} loss={loss:.3e}{mlf}"
 
-    r.run("entraînement (1 it.)", step_train, needs=("jeu de données",))
+    r.run("training (1 it.)", step_train, needs=("dataset",))
 
-    # 9. Évaluation -------------------------------------------------------------------------
+    # 9. Evaluation -------------------------------------------------------------------------
     def step_eval() -> str:
         cat = ctx["cat"]
         metrics = _optional_module("milady.eval.metrics")
@@ -467,13 +467,13 @@ def main(argv: list[str] | None = None) -> int:
             if callable(fn):
                 try:
                     div = float(fn(b_last))
-                except Exception:  # convention de forme différente : repli si autorisé
+                except Exception:  # different shape convention: fall back if allowed
                     if not args.allow_fallback:
                         raise
                     div = None
         if div is None:
             if not args.allow_fallback:
-                raise RuntimeError("milady.eval.metrics.divergence_relative introuvable (--allow-fallback)")
+                raise RuntimeError("milady.eval.metrics.divergence_relative not found (--allow-fallback)")
             div = divergence_rel(b_last)
         energy = float(0.5 * (b_last**2).sum(-1).mean())
         for metric, value in (("div_rel", div), ("energy_magnetic", energy)):
@@ -481,12 +481,12 @@ def main(argv: list[str] | None = None) -> int:
                                details={"source": "smoke", "run": run_id})
         summary = cat.eval_summary(ctx["model_id"])
         if not summary:
-            raise RuntimeError("eval_summary() vide")
-        return f"div_rel={div:.1e}  E_B={energy:.2e}  ({len(summary)} ligne(s) de résumé)"
+            raise RuntimeError("eval_summary() empty")
+        return f"div_rel={div:.1e}  E_B={energy:.2e}  ({len(summary)} summary row(s))"
 
-    r.run("évaluation", step_eval, needs=("entraînement (1 it.)",))
+    r.run("evaluation", step_eval, needs=("training (1 it.)",))
 
-    # Rapport -------------------------------------------------------------------------------
+    # Report -------------------------------------------------------------------------------
     if not args.keep:
         import shutil
 
@@ -496,9 +496,9 @@ def main(argv: list[str] | None = None) -> int:
     if args.json:
         args.json.write_text(json.dumps(report, indent=1, ensure_ascii=False), encoding="utf-8")
     if r.failed:
-        print(f"== ÉCHEC du test de fumée : {', '.join(s.name for s in r.failed)}", flush=True)
+        print(f"== Smoke test FAILED: {', '.join(s.name for s in r.failed)}", flush=True)
         return 1
-    print(f"== Test de fumée réussi ({sum(s.seconds for s in r.steps):.1f} s). Campagne : {campaign_name}",
+    print(f"== Smoke test passed ({sum(s.seconds for s in r.steps):.1f} s). Campaign: {campaign_name}",
           flush=True)
     return 0
 

@@ -1,18 +1,18 @@
-# Définition Apptainer (ou SingularityCE) de l'image MilaDy GPU pour clusters Slurm.
+# Apptainer (or SingularityCE) definition of the MilaDy GPU image for Slurm clusters.
 #
-# Trois façons d'obtenir milady.sif (voir infra/slurm/README-slurm.md) :
-#   1. depuis l'image Docker du projet (recommandé, identique à la VM cloud) :
+# Three ways to get milady.sif (see infra/slurm/README-slurm.md):
+#   1. from the project's Docker image (recommended, identical to the cloud VM):
 #        make image-gpu && make sif          # apptainer build milady.sif docker-daemon://milady:gpu
-#      ou, si l'image est publiée dans un registre :
+#      or, if the image is published in a registry:
 #        apptainer build milady.sif docker://ghcr.io/knoel99/milady:gpu
-#   2. depuis CE fichier (base docker://pytorch/pytorch, sans Docker installé) :
-#        apptainer build --fakeroot milady.sif infra/slurm/apptainer.def   # depuis la racine du dépôt
-#   3. Jean Zay : la construction depuis un fichier .def y est impossible (ni root ni fakeroot) ;
-#      construire ailleurs (VM, portable) puis copier le .sif sur $WORK et l'autoriser :
+#   2. from THIS file (docker://pytorch/pytorch base, without Docker installed):
+#        apptainer build --fakeroot milady.sif infra/slurm/apptainer.def   # from the repository root
+#   3. Jean Zay: building from a .def file is impossible there (neither root nor fakeroot);
+#      build elsewhere (VM, laptop) then copy the .sif to $WORK and authorise it:
 #        idrcontmgr cp milady.sif
 #
-# À l'exécution, le dépôt est monté sur /opt/milady (installation éditable) : modifier le code ne
-# demande pas de reconstruire l'image (infra/slurm/env.sh, fonction milady_run).
+# At run time, the repository is mounted on /opt/milady (editable install): changing the code does not
+# require rebuilding the image (infra/slurm/env.sh, function milady_run).
 
 Bootstrap: docker
 From: pytorch/pytorch:2.14.1-cuda12.6-cudnn9-runtime
@@ -24,7 +24,7 @@ From: pytorch/pytorch:2.14.1-cuda12.6-cudnn9-runtime
     milady.cuda 12.6
 
 %help
-    Image MilaDy (Python 3.12, PyTorch 2.14.1, CUDA 12.6). Exemple :
+    MilaDy image (Python 3.12, PyTorch 2.14.1, CUDA 12.6). Example:
       apptainer exec --nv --bind $PWD:/opt/milady milady.sif python -m milady.sweep --help
 
 %files
@@ -42,12 +42,12 @@ From: pytorch/pytorch:2.14.1-cuda12.6-cudnn9-runtime
 
 %post
     set -eu
-    # Python système d'Ubuntu 24.04 (PEP 668) : installation pip autorisée dans l'image.
+    # Ubuntu 24.04 system Python (PEP 668): pip installation allowed in the image.
     export DEBIAN_FRONTEND=noninteractive PIP_NO_CACHE_DIR=1 PIP_ROOT_USER_ACTION=ignore PIP_BREAK_SYSTEM_PACKAGES=1
     apt-get update
     apt-get install -y --no-install-recommends git make ca-certificates
     rm -rf /var/lib/apt/lists/*
-    # Dépendances épinglées SANS la pile CUDA (torch, triton, nvidia-*, cuda-*) de l'image de base.
+    # Pinned dependencies WITHOUT the CUDA stack (torch, triton, nvidia-*, cuda-*) of the base image.
     grep -vE '^(torch|triton|cuda-[a-z-]+|nvidia-[a-z0-9-]+-cu1[0-9])==' /opt/milady/infra/env/requirements-gpu.txt \
         | grep -vE '^--extra-index-url' > /tmp/requirements-nocuda.txt
     pip install -r /tmp/requirements-nocuda.txt

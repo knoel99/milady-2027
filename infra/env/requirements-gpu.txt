@@ -1,16 +1,16 @@
-# Dépendances Python épinglées (GPU, CUDA 12.6) du paquet milady — Linux x86_64 seulement.
-# Valable pour Python 3.11 et 3.12.
+# Pinned Python dependencies (GPU, CUDA 12.6) of the milady package — Linux x86_64 only.
+# Valid for Python 3.11 and 3.12.
 #
-# Deux usages :
-#  1. Image infra/docker/Dockerfile.gpu (base pytorch/pytorch:2.14.1-cuda12.6-cudnn9-runtime) :
-#     torch, triton et les bibliothèques nvidia-*/cuda-* sont DÉJÀ dans l'image de base ;
-#     le Dockerfile filtre ces lignes pour ne pas réinstaller la pile CUDA.
-#  2. venv sur une machine GPU sans Docker (cluster, VM) :
+# Two uses:
+#  1. Image infra/docker/Dockerfile.gpu (base pytorch/pytorch:2.14.1-cuda12.6-cudnn9-runtime):
+#     torch, triton and the nvidia-*/cuda-* libraries are ALREADY in the base image;
+#     the Dockerfile filters these lines so as not to reinstall the CUDA stack.
+#  2. venv on a GPU machine without Docker (cluster, VM):
 #     pip install -r infra/env/requirements-gpu.txt && pip install --no-deps -e ".[gpu]"
-#     (pilote NVIDIA >= 525 requis pour CUDA 12.x ; voir infra/README.md).
+#     (NVIDIA driver >= 525 required for CUDA 12.x; see infra/README.md).
 #
-# Même versions que requirements.txt sauf torch (+cu126) et nvidia-ml-py (extra [gpu]).
-# Régénération : `make lock` (index https://download.pytorch.org/whl/cu126).
+# Same versions as requirements.txt except torch (+cu126) and nvidia-ml-py ([gpu] extra).
+# Regeneration: `make lock` (index https://download.pytorch.org/whl/cu126).
 --extra-index-url https://download.pytorch.org/whl/cu126
 
 aiobotocore==3.10.0

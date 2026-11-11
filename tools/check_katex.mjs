@@ -1,6 +1,6 @@
-// Vérifie que toutes les formules d'une page rendue passent KaTeX (throwOnError).
-// Usage : NODE_PATH=<dossier node_modules> node tools/check_katex.mjs page1/index.html [page2/index.html …]
-// Quarto 1.7 écrit les formules dans <span class="math inline">…</span> et <span class="math display">…</span> (sans \( \)).
+// Check that every formula of a rendered page passes KaTeX (throwOnError).
+// Usage: NODE_PATH=<node_modules folder> node tools/check_katex.mjs page1/index.html [page2/index.html ...]
+// Quarto 1.7 writes formulas in <span class="math inline">...</span> and <span class="math display">...</span> (without \( \)).
 import { readFileSync } from "node:fs";
 import { createRequire } from "node:module";
 const require = createRequire(import.meta.url);
@@ -18,5 +18,5 @@ for (const file of process.argv.slice(2)) {
     catch (e) { bad++; console.log(`${file}: ${e.message.split("\n")[0]}\n    ${tex.slice(0, 160)}`); }
   }
 }
-console.log(`${total} formules, ${bad} erreurs`);
+console.log(`${total} formulas, ${bad} errors`);
 process.exit(bad ? 1 : 0);

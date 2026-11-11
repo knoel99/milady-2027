@@ -1,13 +1,13 @@
-"""Tests du stockage : ``file://`` et chemins locaux (toujours), ``s3://`` sur un serveur compatible S3.
+"""Storage tests: ``file://`` and local paths (always), ``s3://`` on an S3-compatible server.
 
-Serveur S3 de test, par ordre de préférence :
+S3 test server, in order of preference:
 
-1. ``MILADY_TEST_S3_ENDPOINT`` (+ ``AWS_ACCESS_KEY_ID`` / ``AWS_SECRET_ACCESS_KEY``), ex. le MinIO du compose ;
-2. un conteneur MinIO lancé par le test (``docker run <image> server /data``) si Docker est disponible ;
-   image : ``MILADY_TEST_MINIO_IMAGE`` ou ``MINIO_IMAGE``, défaut celle du docker-compose (``minio/minio``
-   n'est plus téléchargeable : fork communautaire ``pgsty/minio``) ;
-3. un serveur ``moto`` en mémoire si le paquet est installé ;
-sinon les tests S3 sont ignorés (skip).
+1. ``MILADY_TEST_S3_ENDPOINT`` (+ ``AWS_ACCESS_KEY_ID`` / ``AWS_SECRET_ACCESS_KEY``), e.g. the MinIO of the compose;
+2. a MinIO container started by the test (``docker run <image> server /data``) if Docker is available;
+      image: ``MILADY_TEST_MINIO_IMAGE`` or ``MINIO_IMAGE``, default that of the docker-compose (``minio/minio``
+      can no longer be downloaded: community fork ``pgsty/minio``);
+3. an in-memory ``moto`` server if the package is installed;
+otherwise the S3 tests are skipped.
 """
 
 from __future__ import annotations
@@ -26,7 +26,7 @@ import pytest
 
 from milady import storage
 
-#: Image MinIO par défaut (même que infra/docker/docker-compose.yml).
+#: Default MinIO image (same as infra/docker/docker-compose.yml).
 MINIO_IMAGE = "pgsty/minio:RELEASE.2026-08-04T00-00-00Z"
 
 
@@ -55,7 +55,7 @@ def test_base_uri_and_join(tmp_path: Path, monkeypatch: pytest.MonkeyPatch) -> N
 
 
 def _roundtrip(base: str, tmp_path: Path) -> None:
-    """put / exists / size / sha256 / open / get / ls / rm sur une base d'URI quelconque."""
+    """put / exists / size / sha256 / open / get / ls / rm on any URI base."""
     src = tmp_path / "src.bin"
     payload = os.urandom(300_000)
     src.write_bytes(payload)
@@ -80,13 +80,13 @@ def _roundtrip(base: str, tmp_path: Path) -> None:
     assert [u.rsplit("/", 1)[1] for u in listing] == ["fields.h5", "notes.txt"]
     storage.rm(uri.rsplit("/", 1)[0], recursive=True)
     assert not storage.exists(uri)
-    storage.rm(uri)  # absent : sans effet
+    storage.rm(uri)  # absent: no effect
 
 
 def test_local_roundtrip(tmp_path: Path) -> None:
     _roundtrip((tmp_path / "store").as_uri(), tmp_path)
-    _roundtrip(str(tmp_path / "plain"), tmp_path)  # chemin sans schéma (HPC)
-    # Copie sur soi-même : sans effet ; pas de fichier temporaire laissé.
+    _roundtrip(str(tmp_path / "plain"), tmp_path)  # path without scheme (HPC)
+    # Copy onto itself: no effect; no temporary file left behind.
     f = tmp_path / "same.bin"
     f.write_bytes(b"x")
     storage.put(f, f.as_uri())
@@ -109,7 +109,7 @@ def test_mff_on_local_store(tmp_path: Path) -> None:
 
 
 # ---------------------------------------------------------------------------------------------
-# S3 (MinIO, moto, ou serveur fourni)
+# S3 (MinIO, moto, or provided server)
 # ---------------------------------------------------------------------------------------------
 def _free_port() -> int:
     with socket.socket() as s:
@@ -123,10 +123,10 @@ def _wait_http(url: str, timeout: float = 60.0) -> bool:
     deadline = time.time() + timeout
     while time.time() < deadline:
         try:
-            urllib.request.urlopen(url, timeout=2)  # adresse locale de test
+            urllib.request.urlopen(url, timeout=2)  # local test address
             return True
         except Exception as exc:  # noqa: BLE001
-            if getattr(exc, "code", None) is not None:  # réponse HTTP (403…) : le serveur répond
+            if getattr(exc, "code", None) is not None:  # HTTP response (403…): the server is answering
                 return True
             time.sleep(0.5)
     return False
@@ -134,7 +134,7 @@ def _wait_http(url: str, timeout: float = 60.0) -> bool:
 
 @pytest.fixture(scope="module")
 def s3_endpoint() -> Iterator[dict[str, str]]:
-    """Point d'accès S3 de test et identifiants."""
+    """S3 test endpoint and credentials."""
     env = os.environ.get("MILADY_TEST_S3_ENDPOINT")
     if env:
         yield {
@@ -180,7 +180,7 @@ def s3_endpoint() -> Iterator[dict[str, str]]:
     try:
         from moto.server import ThreadedMotoServer
     except ImportError:
-        pytest.skip("aucun serveur S3 de test (MILADY_TEST_S3_ENDPOINT, Docker + MinIO ou moto)")
+        pytest.skip("no S3 test server (MILADY_TEST_S3_ENDPOINT, Docker + MinIO or moto)")
     port = _free_port()
     server = ThreadedMotoServer(ip_address="127.0.0.1", port=port)
     server.start()
@@ -192,7 +192,7 @@ def s3_endpoint() -> Iterator[dict[str, str]]:
 
 @pytest.fixture()
 def s3_env(s3_endpoint: dict[str, str], monkeypatch: pytest.MonkeyPatch) -> Iterator[str]:
-    """Variables d'environnement S3 positionnées ; renvoie un bucket de test vide (supprimé à la fin)."""
+    """S3 environment variables set; returns an empty test bucket (deleted at the end)."""
     pytest.importorskip("s3fs")
     monkeypatch.setenv("MILADY_S3_ENDPOINT", s3_endpoint["endpoint"])
     monkeypatch.setenv("AWS_ACCESS_KEY_ID", s3_endpoint["key"])
@@ -202,7 +202,7 @@ def s3_env(s3_endpoint: dict[str, str], monkeypatch: pytest.MonkeyPatch) -> Iter
     yield f"s3://{bucket}"
     try:
         storage.rm(f"s3://{bucket}", recursive=True)
-    except Exception:  # noqa: BLE001 (nettoyage au mieux)
+    except Exception:  # noqa: BLE001 (best-effort cleanup)
         pass
 
 
@@ -217,14 +217,14 @@ def test_s3_roundtrip(s3_env: str, tmp_path: Path) -> None:
 
 @pytest.mark.s3
 def test_s3_mff_hdf5_zarr_and_catalog(s3_env: str, tmp_path: Path, monkeypatch: pytest.MonkeyPatch) -> None:
-    """Fichier MFF écrit directement en S3, lu par blocs, copié en Zarr S3, enregistré au catalogue."""
+    """MFF file written directly to S3, read in blocks, copied to Zarr on S3, registered in the catalog."""
     from milady.catalog.api import Catalog
     from milady.data import read_mff, to_zarr, validate, write_mff
 
     monkeypatch.setenv("MILADY_STORAGE_URI", s3_env)
     sim_id = str(uuid.uuid4())
-    uri = storage.simulation_uri("palier1", sim_id)
-    assert uri == f"{s3_env}/palier1/{sim_id}/fields.h5"
+    uri = storage.simulation_uri("stage1", sim_id)
+    assert uri == f"{s3_env}/stage1/{sim_id}/fields.h5"
     x = 2 * np.pi * np.arange(16) / 16
     rng = np.random.default_rng(0)
     b = rng.normal(size=(2, 5, 16, 16, 16, 3)).astype(np.float32)
@@ -240,7 +240,7 @@ def test_s3_mff_hdf5_zarr_and_catalog(s3_env: str, tmp_path: Path, monkeypatch: 
     d = read_mff(uri, t=slice(3, 5), traj=1)
     np.testing.assert_array_equal(d["fields"]["magnetic_field"], b[1:2, 3:5])
 
-    zuri = storage.simulation_uri("palier1", sim_id, "fields", ".zarr")
+    zuri = storage.simulation_uri("stage1", sim_id, "fields", ".zarr")
     local = tmp_path / "local.h5"
     storage.get(uri, local)
     to_zarr(local, zuri)
@@ -249,6 +249,6 @@ def test_s3_mff_hdf5_zarr_and_catalog(s3_env: str, tmp_path: Path, monkeypatch: 
     np.testing.assert_array_equal(dz["fields"]["magnetic_field"], b[1:2, 3:5])
 
     cat = Catalog("sqlite://")
-    out = cat.ingest_mff(uri, campaign="palier1")
+    out = cat.ingest_mff(uri, campaign="stage1")
     assert out["simulation_id"] == sim_id
     assert cat.get_simulation(sim_id)["files"][0]["sha256"] == sha

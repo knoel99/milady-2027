@@ -1,0 +1,16 @@
+{
+  "schema": {
+    "id": "H<number>, never reused",
+    "statement": "one falsifiable sentence",
+    "origin": "where it comes from: a paper (with its docs/specs/sources entry), a failed experiment, a review item, a conjecture of the theory brief",
+    "refutation_criterion": "quantitative, written before any computation: what result refutes the hypothesis",
+    "protocol": "data, model, metric and its noise floor, number of seeds (at least 5 for a quoted comparison)",
+    "script": "path under experiments/, with a --quick mode",
+    "cost_estimate": "CPU hours (at most 2 per run), GPU euros if any (needs the user's approval)",
+    "status": "proposed | registered | running | supported | refuted | dropped",
+    "verdict": "encadrant verdict, with date",
+    "results": "keys in experiments/results/digest.md",
+    "commit": "commit that produced the results"
+  },
+  "hypotheses": []
+}

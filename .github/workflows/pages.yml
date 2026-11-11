@@ -1,0 +1,71 @@
+# Build the site (site/) and publish it on GitHub Pages.
+#
+# The HTML is not versioned: this workflow renders all pages with tools/render.py (Quarto 1.7.32,
+# KaTeX tags pinned with SRI), runs the quality gates, then publishes the content of site/
+# without the sources (.qmd, .md, diagram scripts). The public URLs are those of site/.
+#
+# Setting required once: Settings → Pages → Build and deployment → Source: "GitHub Actions".
+name: pages
+
+on:
+  push:
+    branches: [main]
+  pull_request:
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+concurrency:
+  group: pages-${{ github.ref }}
+  cancel-in-progress: true
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Quarto 1.7.32
+        run: |
+          curl -fsSL -o /tmp/quarto.tgz \
+            https://github.com/quarto-dev/quarto-cli/releases/download/v1.7.32/quarto-1.7.32-linux-amd64.tar.gz
+          sudo tar -xzf /tmp/quarto.tgz -C /opt
+          echo "/opt/quarto-1.7.32/bin" >> "$GITHUB_PATH"
+
+      - name: Render all pages
+        run: python3 tools/render.py --all
+
+      - name: Quality gates
+        run: python3 tools/check_gates.py
+
+      - name: KaTeX
+        run: |
+          npm install --no-save --prefix /tmp/katex katex@0.19.0
+          NODE_PATH=/tmp/katex/node_modules node tools/check_katex.mjs $(find site -name index.html)
+
+      - name: Assemble _site/
+        run: |
+          rsync -a --prune-empty-dirs \
+            --exclude='*.qmd' --exclude='*.md' --exclude='node_modules/' \
+            --exclude='figures/*/docs/' --exclude='figures/*/figure/*.js' --exclude='figures/*/figure/data/' \
+            site/ _site/
+          touch _site/.nojekyll
+
+      - uses: actions/upload-pages-artifact@v3
+        with:
+          path: _site
+
+  deploy:
+    if: github.event_name != 'pull_request' && github.ref == 'refs/heads/main'
+    needs: build
+    runs-on: ubuntu-latest
+    permissions:
+      pages: write
+      id-token: write
+    environment:
+      name: github-pages
+      url: ${{ steps.deployment.outputs.page_url }}
+    steps:
+      - id: deployment
+        uses: actions/deploy-pages@v4

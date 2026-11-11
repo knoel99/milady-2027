@@ -1,0 +1,61 @@
+# Tier 2 campaign (PhD): dynamic forced 3D Taylor–Green MHD, sweep over Re and Pm.
+#
+# Navier–Stokes + induction, Lorentz force, constant Taylor–Green forcing at mode kf = 2 of the
+# 2π box (TG cells of size π, the usual setup of Taylor–Green dynamo studies);
+# L_ref = 1/k_f = 0.5, U_ref = 1; Re = U_ref L_ref/ν, Rm = Re × Pm.
+# "Turbulent" forcing rule: amplitude |k| U_ref² with |k| = √3 k_f for the TG form (aims at
+# u_rms ~ U_ref in the turbulent regime, order of magnitude only); the effective Reynolds number
+# u_rms L_ref/ν is read a posteriori from the diagnostics (u_rms).
+# Weak magnetic seed (rms 1e-3): kinematic phase (exponential growth if Rm > Rm_c,
+# rate = growth_rate_fit in the catalogue) then nonlinear saturation.
+#
+# Resolution: 64³ (k_max = 21). For the largest Re and Rm (Re = 200, Pm = 2: Rm = 400), check
+# the resolution on a first simulation (spectra E_u(k), E_B(k) that decay over several
+# decades before k_max: milady.sim.mhd3d.MHD3D.energy_spectra) and move to N = 128 if needed.
+#
+# Run:       make sweep CONFIG=infra/configs/stage2_tg3d.yaml
+#            python -m milady.sweep infra/configs/stage2_tg3d.yaml --scheduler slurm
+name: stage2_tg3d
+description: >-
+  Forced 3D Taylor–Green MHD (kf = 2) at 64³: Re ∈ {25, 50, 100, 200} × Pm ∈ {0.5, 1, 2} (12 simulations),
+  magnetic seed 1e-3, 40 snapshots (u, B) after 100 time units.
+code: mhd3d_torch
+grid:
+  N: 64
+  domain: 2pi
+fixed:
+  mode: dynamic
+  forcing: tg
+  kf: 2
+  U_ref: 1.0
+  forcing_amp: turbulent   # or laminar (ν |k|² U_ref, |k|² = 3 k_f² for TG), or a number
+  u0: laminar              # TG flow of amplitude U_ref at the start
+  u_noise: 0.01            # breaks the TG symmetries (otherwise the dynamics stays in the symmetric subspace)
+  b0_amp: 1.0e-3
+sweep:
+  Re: [25, 50, 100, 200]
+  Pm: [0.5, 1.0, 2.0]
+runtime:
+  dt: 0.005               # maximum step; reduced by the CFL condition if u or B grow
+  cfl: 1.0
+  t_burn: 100.0
+  t_keep: 40.0
+  every: 1.0              # 40 snapshots
+  diag_every: 0.1
+  n_traj: 1
+  device: auto
+  dtype: float32
+  checkpoint_every_s: 900
+  checkpoint_to_storage: false
+resources:
+  gpus: 1
+  cpus: 8
+  time: "10:00:00"
+  mem: null
+  max_parallel: 12
+output:
+  format: mff
+  uri: ${MILADY_STORAGE_URI}
+  fields: [velocity, magnetic_field]
+  spectral: false
+  dataset_name: milady_stage2_tg3d

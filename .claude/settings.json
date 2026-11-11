@@ -5,29 +5,5 @@
   "workflowSizeGuideline": "small",
   "env": {
     "CLAUDE_CODE_SUBAGENT_MODEL": "sonnet"
-  },
-  "permissions": {
-    "ask": [
-      "Bash(make film*)",
-      "Bash(make * film*)",
-      "Bash(make scene*)",
-      "Bash(make * scene*)",
-      "Bash(make narration *)",
-      "Bash(make * narration *)",
-      "Bash(make tts-test*)",
-      "Bash(make * tts-test*)",
-      "Bash(make *TTS=live*)",
-      "Bash(npm run film*)",
-      "Bash(npm run-script film*)",
-      "Bash(npm --prefix * run film*)",
-      "Bash(node build.js*)",
-      "Bash(node video/build.js*)",
-      "Bash(node */build.js*)",
-      "Bash(*audio/tts.py*)",
-      "Bash(*--tts live*)",
-      "Bash(*--mode live*)",
-      "Bash(*api.fish.audio*)",
-      "WebFetch(domain:api.fish.audio)"
-    ]
   }
 }
