@@ -19,7 +19,10 @@ R = Path(__file__).resolve().parent / "results"
 SEEDS = (0, 1, 2, 3, 4)
 GENERATORS = ["W0_free", "W1_penalty", "W2_final_projection", "W3_projected_flow", "W4_potentials",
               "W4s_potentials_sym", "W5_stationarity", "W5_control", "W6_diffusion", "W4c_potentials_smooth",
-              "G0_gaussian_modes", "W9_skip_sym", "W9L_skip_long"]
+              "G0_gaussian_modes", "W9_skip_sym", "W9L_skip_long", "W10_anchored", "W10L_anchored_long"]
+# G0 has no network: it is the baseline to beat, not a candidate for the selected generator (the C1 note of
+# race/teams/claude/objectives.toml names the model family: conditional flow matching on the Fourier modes).
+CANDIDATES = [v for v in GENERATORS if v != "G0_gaussian_modes"]
 REGISTERED = ["W0_free", "W2_final_projection", "W3_projected_flow", "W4_potentials", "W4s_potentials_sym",
               "W5_stationarity", "W6_diffusion"]
 POST = ["W7_tilting", "W8_rescaling", "W5_stationarity_half", "W5_control_half"]
@@ -52,7 +55,7 @@ def merge(seed: int, tag: str | bool = "", root: Path = R) -> Path | None:
         data = [json.loads(whole.read_text())]
     else:
         return None
-    for g in ("C", "D"):                                     # optional groups, added after the first runs
+    for g in ("C", "D", "E"):                                # optional groups, added after the first runs
         extra = root / f"e4_mhd3d{tag}_s{seed}_{g}.json"
         if extra.exists():
             data.append(json.loads(extra.read_text()))
@@ -105,8 +108,9 @@ def select(runs: dict) -> dict:
     """Generator with the lowest validation energy-distance ratio (mean over the seeds)."""
     val = {v: float(np.nanmean(per_seed(runs, v, "ed_ratio", "val"))) for v in GENERATORS
            if not np.all(np.isnan(per_seed(runs, v, "ed_ratio", "val")))}
-    best = min(val, key=val.get)
-    return {"variant": best, "criterion": "lowest energy-distance ratio on the validation η, mean over the seeds",
+    best = min((v for v in val if v in CANDIDATES), key=val.get)
+    return {"variant": best, "criterion": "flow-matching or diffusion generator with the lowest energy-distance ratio on the "
+            "validation η, mean over the seeds (the Gaussian baseline G0 is not a candidate)",
             "seeds": sorted(runs), "val_ed_ratio": val}
 
 
@@ -268,6 +272,10 @@ def section(quick: bool = False, root: Path = R, replication: str | None = None,
               f"W4c_potentials_smooth {f(float(np.nanmean(ed('W4c_potentials_smooth'))))}; on the training η: "
               f"{f(float(np.nanmean(per_seed(runs, 'W4_potentials', 'ed_ratio', 'train'))))} and "
               f"{f(float(np.nanmean(per_seed(runs, 'W4c_potentials_smooth', 'ed_ratio', 'train'))))}.")
+        if has("W10_anchored") and has("G0_gaussian_modes"):
+            for v in [x for x in ("W10_anchored", "W10L_anchored_long") if has(x)]:
+                for key, label in (("ed_ratio", "ED ratio"), ("restart_drift_eb", "restart drift E_B"), ("null_count_err_rel", "err. nulls")):
+                    P(paired_row(f"{label}: G0_gaussian_modes − {v} (H19)", per_seed(runs, "G0_gaussian_modes", key), per_seed(runs, v, key)))
         if has("W9_skip_sym"):
             fl = [r["times"].get("W9_skip_sym", {}).get("fm_loss_train_sample") for r in runs.values()]
             fl = [x for x in fl if x is not None]

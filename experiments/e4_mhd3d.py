@@ -65,7 +65,8 @@ GROUPS = {"A": ["W0_free", "W1_penalty", "W2_final_projection", "W3_projected_fl
           "B": ["W4_potentials", "W4s_potentials_sym", "W5_stationarity", "W5_control", "W6_diffusion",
                 "W7_tilting", "W8_rescaling"],
           "C": ["W4c_potentials_smooth"],      # H15: W4 with a smooth embedding of the condition
-          "D": ["G0_gaussian_modes", "W9_skip_sym", "W9L_skip_long"]}   # H16-H18: second-order baseline, affine skip
+          "D": ["G0_gaussian_modes", "W9_skip_sym", "W9L_skip_long"],   # H16-H18: second-order baseline, affine skip
+          "E": ["W10_anchored", "W10L_anchored_long"]}                  # H19: flow matching anchored on the Gaussian field
 
 FULL = {"iters": 4000, "batch": 128, "width": 512, "depth": 4, "lr": 5e-4, "n_gen": 512, "n_gen_train": 256,
         "steps": 50, "ft_iters": 400, "ft_lr": 2e-4, "beta": 20.0, "stat_cond": 4, "stat_per": 16, "stat_steps": 6,
@@ -330,6 +331,14 @@ def reference(quick: bool) -> None:
 # ---------------------------------------------------------------------------------------------
 # Training
 # ---------------------------------------------------------------------------------------------
+def _group_of(variant: str) -> str:
+    """Group of a variant name (derived rows such as W5_stationarity_half belong to group B, W2 to A)."""
+    for g, names in GROUPS.items():
+        if variant in names:
+            return g
+    return "B"
+
+
 def train(field, loss_fn, x: torch.Tensor, c: torch.Tensor, iters: int, lr: float, batch: int, name: str,
           onecycle: bool = True, ema_from=None, extra_loss=None, log: int = 4):
     """Train ``field`` on (x, c); returns (EMA copy of the field in eval mode, duration in s)."""
@@ -364,13 +373,15 @@ def run(quick: bool, seed: int, group: str, device: str = "cpu", cond_scale: flo
     """``cond_scale``: maximum frequency of the condition embedding of every network of the run (8: the
     pre-race default, registered protocol of H4-H14; another value tags the output files ``_cs<value>``)."""
     t_start = time.time()
-    need = {"A": ("comp",), "B": ("pot", "pot_sym"), "C": ("pot",), "D": ("pot_sym",),
-            "all": ("pot", "pot_sym", "comp")}[group]
+    groups = list(GROUPS) if group == "all" else group.split(",")
+    need = tuple(sorted({s for g in groups for s in {"A": ("comp",), "B": ("pot", "pot_sym"), "C": ("pot",),
+                                                     "D": ("pot_sym",), "E": ("pot_sym",)}[g]}))
+    need = ("pot", "pot_sym", "comp") if len(need) == 3 else need
     ctx = Context(quick, need, device)
     cfg, dev = ctx.cfg, ctx.dev
     if ctx.ref_json is None:
         raise SystemExit("run `python3 e4_mhd3d.py --reference` first")
-    names = GROUPS["A"] + GROUPS["B"] + GROUPS["C"] + GROUPS["D"] if group == "all" else GROUPS[group]
+    names = [v for g in groups for v in GROUPS[g]]
     pot, pot_sym, comp = ctx.pot_d, ctx.pot_sym_d, ctx.comp_d          # on the training device
     net = lambda sp, cs=cond_scale: ResMLP(sp.n_modes, sp.n_channels, 1, width=cfg["width"], depth=cfg["depth"],   # noqa: E731
                                            cond_scale=cs).to(dev)
@@ -555,6 +566,24 @@ def run(quick: bool, seed: int, group: str, device: str = "cpu", cond_scale: flo
 
         record("G0_gaussian_modes", {e: sample_g0(e, n) for e, n in eval_etas})
         del g0
+    if "W10_anchored" in names:
+        gauss = C.ModewiseGaussian(sign=pot_sym.sign).fit(ctx.x_pot_sym, ctx.c_train[:, 0])
+        long = ["W10L_anchored_long"] if (dev.type == "cuda" or quick) else []
+        for vname in ["W10_anchored", *long]:
+            seed_all(seed)
+            iters = cfg["iters"] * (cfg["long_factor"] if vname.endswith("_long") else 1)
+            anchored = C.GaussianAnchoredField(SignSymmetrized(net(pot_sym, 0.5), pot_sym.sign), gauss).to(dev)
+            m10, tsec = train(anchored, fm, ctx.x_pot_sym, ctx.c_train, iters, cfg["lr"], cfg["batch"], vname)
+            results["times"][vname] = {"training_time_s": tsec, "iters": iters}
+            with torch.no_grad():
+                gl = torch.Generator().manual_seed(11)
+                idx = torch.randint(0, len(ctx.x_pot_sym), (2048,), generator=gl)
+                results["times"][vname]["fm_loss_train_sample"] = float(
+                    np.mean([fm_loss(m10, ctx.x_pot_sym[idx[i:i + 256]], ctx.c_train[idx[i:i + 256]]).item()
+                             for i in range(0, 2048, 256)]))
+            record(vname, {e: generate(m10, pot_sym, e, n) for e, n in eval_etas})
+            del m10
+        del gauss
     if "W9_skip_sym" in names:
         def skip_net() -> torch.nn.Module:
             base = net(pot_sym, 0.5)
@@ -578,7 +607,13 @@ def run(quick: bool, seed: int, group: str, device: str = "cpu", cond_scale: flo
 
     results["total_duration_s"] = time.time() - t_start
     tag = ("" if cond_scale == 8.0 else f"_cs{cond_scale:g}") + ("_quick" if quick else "")
-    save_json(results, f"e4_mhd3d{tag}_s{seed}_{group}.json")
+    for g in ([group] if group == "all" else groups):                 # one file per group (the digest merges them)
+        part = dict(results, evaluation={k: v for k, v in results["evaluation"].items()
+                                         if group == "all" or _group_of(k) == g},
+                    times={k: v for k, v in results["times"].items() if group == "all" or _group_of(k) == g},
+                    h14=results["h14"] if g in ("A", "all") else [], h12=results["h12"] if g in ("B", "all") else [])
+        part["config"] = {**results["config"], "group": g}
+        save_json(part, f"e4_mhd3d{tag}_s{seed}_{g}.json")
     merge(seed, tag)
     print(f"total duration {time.time() - t_start:.0f} s")
 
@@ -587,7 +622,7 @@ if __name__ == "__main__":
     ap = argparse.ArgumentParser(description=__doc__, formatter_class=argparse.RawDescriptionHelpFormatter)
     ap.add_argument("--quick", action="store_true")
     ap.add_argument("--seed", type=int, default=0, help="seed of the networks, the training and the generation")
-    ap.add_argument("--group", choices=["A", "B", "C", "D", "all"], default="all")
+    ap.add_argument("--group", default="all", help="A, B, C, D, E, a comma-separated list of them, or all")
     ap.add_argument("--reference", action="store_true", help="reference statistics only (no model)")
     ap.add_argument("--threads", type=int, default=1)
     ap.add_argument("--device", default="cpu", help="cpu or cuda: networks, training sets and generation")
