@@ -81,7 +81,7 @@ def test_fallback_collect_delete_and_ledger(job_env, monkeypatch):
     assert body["gpu"]["minCudaVersion"] == "12.8" and body["cloud"] == "SECURE" and "8000/http" in body["ports"]
     assert mcp.deleted == ["pod123"]
     assert (job_env / "experiments/results/pilot_test_output.json").exists()
-    row = json.loads((job_env / "ledger.jsonl").read_text())
+    row = json.loads((job_env / "ledger.jsonl").read_text().splitlines()[-1])
     assert row["gpu"] == "NVIDIA GeForce RTX 5090" and row["usd_per_hour"] == 1.19 and row["rc"] == 0
 
 
@@ -93,7 +93,7 @@ def test_pod_deleted_even_when_polling_crashes(job_env, monkeypatch):
     with pytest.raises(KeyboardInterrupt):
         runpod_job.run(args(log=str(job_env / "job.log")), mcp=mcp, sleep=lambda s: None)
     assert mcp.deleted == ["pod123"]
-    assert json.loads((job_env / "ledger.jsonl").read_text())["rc"] is None
+    assert json.loads((job_env / "ledger.jsonl").read_text().splitlines()[-1])["rc"] is None
 
 
 def test_http_get_sends_an_explicit_user_agent(monkeypatch):
@@ -114,6 +114,27 @@ def test_http_get_sends_an_explicit_user_agent(monkeypatch):
     monkeypatch.setattr(runpod_job.urllib.request, "urlopen", fake_urlopen)
     assert runpod_job.http_get("https://pod-8000.proxy.runpod.net/token/status.txt") == b"DONE rc=0"
     assert seen["agent"] == runpod_job.USER_AGENT and "urllib" not in seen["agent"].lower()
+
+
+def test_prefix_is_per_team_and_a_deleted_pod_stops_the_job(job_env, monkeypatch, tmp_path):
+    """Another session sharing the account deleted this session's running pods with its clean-up (pilot)."""
+    teams = tmp_path / "race" / "teams" / "alpha"
+    teams.mkdir(parents=True)
+    (teams / "objectives.toml").write_text('team = "alpha"\n')
+    monkeypatch.setattr(runpod_job, "ROOT", tmp_path)
+    assert runpod_job.job_prefix() == "milady-alpha-job-"
+    monkeypatch.setenv("MILADY_JOB_PREFIX", "x-")
+    assert runpod_job.job_prefix() == "x-"
+
+    class Gone:
+        def call(self, tool, args):
+            raise RuntimeError('get-pod: {"detail": "pod not found", "status": 404}')
+
+    class Unknown:
+        def call(self, tool, args):
+            raise KeyError(tool)
+
+    assert runpod_job.pod_gone(Gone(), "p") and not runpod_job.pod_gone(Unknown(), "p")
 
 
 def test_bootstrap_is_valid_bash_and_survives_debian_packages(tmp_path):
@@ -250,7 +271,7 @@ def test_community_cloud_is_tried_when_secure_has_no_capacity(job_env, monkeypat
                                log=str(job_env / "j.log")), mcp=mcp, sleep=lambda s: None) == 0
     community = [a["body"]["gpu"]["id"] for t, a in mcp.calls if t == "create-pod" and a["body"]["cloud"] == "COMMUNITY"]
     assert community == ["NVIDIA GeForce RTX 4090"]          # PRO 4500 is not offered on Community Cloud
-    assert json.loads((job_env / "ledger.jsonl").read_text())["usd_per_hour"] == 0.34
+    assert json.loads((job_env / "ledger.jsonl").read_text().splitlines()[-1])["usd_per_hour"] == 0.34
 
 
 def test_shared_credit_guard(job_env, monkeypatch):
@@ -332,3 +353,45 @@ def test_parallel_jobs_reserve_budget_and_are_capped(job_env, monkeypatch):
     assert runpod_job.run(args(hours="0.1"), mcp=mcp, sleep=lambda s: None) == 1   # max_parallel reached
     jobs = runpod_job.running_jobs(mcp)
     assert len(jobs) == 2 and jobs[0]["reserved_usd"] == pytest.approx(1.19 * (2.25 - 10 / 60), rel=1e-2)
+
+
+def test_cleanup_deletes_only_this_teams_own_pods(job_env, monkeypatch):
+    import datetime as dt
+    monkeypatch.setattr(runpod_job, "PREFIX", "milady-cursor-job-")
+    old = (dt.datetime.now(dt.UTC) - dt.timedelta(hours=5)).isoformat()      # past every time limit
+    new = dt.datetime.now(dt.UTC).isoformat()
+    pod = lambda pid, name, created=old: {"id": pid, "name": name, "cost": 0.72, "createdAt": created,
+                                           "env": {"MAX_MIN": "30"}}
+    mcp = FakeMCP(fail_first=False)
+    mcp.pods = [pod("c1", "milady-cursor-job-aaaa"),          # ours, in our ledger, orphan: deleted
+                pod("c2", "milady-cursor-job-bbbb"),          # our prefix but not in our ledger: kept
+                pod("c3", "milady-cursor-job-cccc", new),     # ours, still running: kept unless --all
+                pod("k1", "milady-claude-job-dddd"),          # another team: never
+                pod("g1", "milady-job-eeee"),                 # no team prefix: never
+                pod("x1", "someone-else")]
+    for pid in ("c1", "c3", "k1", "g1"):                      # even a ledger row cannot make another team's pod ours
+        runpod_job.ledger_append({"event": "start", "pod": pid})
+    runpod_job.cleanup(mcp)
+    assert mcp.deleted == ["c1"]
+    runpod_job.cleanup(mcp, everything=True)
+    assert mcp.deleted == ["c1", "c1", "c3"]                  # the fake list still holds c1
+    assert not {"c2", "k1", "g1", "x1"} & set(mcp.deleted)
+    assert runpod_job.spend()["jobs"] == 0                    # start rows are not spending
+    assert len(runpod_job.running_jobs(mcp)) == 5             # the reservation still sees every team's pods
+
+
+def test_cleanup_refuses_without_a_team_prefix(job_env, monkeypatch):
+    monkeypatch.setattr(runpod_job, "PREFIX", "milady-job-")
+    mcp = FakeMCP(fail_first=False)
+    mcp.pods = [{"id": "g1", "name": "milady-job-eeee", "createdAt": "2026-01-01T00:00:00+00:00"}]
+    with pytest.raises(SystemExit, match="team prefix"):
+        runpod_job.cleanup(mcp, everything=True)
+    assert mcp.deleted == []
+
+
+def test_run_writes_a_start_row_with_the_pod_id(job_env, monkeypatch):
+    monkeypatch.setattr(runpod_job, "http_get", lambda url: b"DONE rc=0" if url.endswith("status.txt") else None)
+    assert runpod_job.run(args(log=str(job_env / "j.log")), mcp=FakeMCP(fail_first=False), sleep=lambda s: None) == 0
+    rows = [json.loads(x) for x in (job_env / "ledger.jsonl").read_text().splitlines()]
+    assert rows[0]["event"] == "start" and rows[0]["pod"] == "pod123" and rows[-1]["rc"] == 0
+    assert runpod_job.own_pod_ids() == {"pod123"} and runpod_job.spend()["jobs"] == 1
