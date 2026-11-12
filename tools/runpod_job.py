@@ -15,7 +15,7 @@ read here. Standard library only.
     python3 tools/runpod_job.py run --gpu "NVIDIA H100 80GB HBM3" --hours 1 --outputs experiments/results -- CMD
     python3 tools/runpod_job.py prices        # hourly price and stock of the configured GPUs
     python3 tools/runpod_job.py spend         # GPU spend so far, from the ledger
-    python3 tools/runpod_job.py cleanup       # delete every pod this tool created (name milady-job-*)
+    python3 tools/runpod_job.py cleanup       # delete every pod of this team (name milady-<team>-job-*)
 """
 
 from __future__ import annotations
@@ -41,7 +41,24 @@ ROOT = Path(__file__).resolve().parent.parent
 CONFIG = ROOT / "race" / "config.toml"
 LEDGER = ROOT / "research" / "compute-ledger.jsonl"
 MCP_URL = os.environ.get("RUNPOD_MCP_URL", "https://mcp.runpod.io/")
-PREFIX = "milady-job-"
+
+
+def job_prefix() -> str:
+    """Name prefix of the pods of this checkout: ``milady-<team>-job-`` when the checkout holds one team's
+    objectives, ``MILADY_JOB_PREFIX`` if set, otherwise ``milady-job-``.
+
+    Several sessions can share one RunPod account, and ``cleanup`` deletes every pod that carries the
+    prefix: with a common prefix, the clean-up of one session deleted the running jobs of another
+    (pilot, 2026-11-12, RunPod audit log). One prefix per team keeps each clean-up to its own pods.
+    """
+    env = os.environ.get("MILADY_JOB_PREFIX")
+    if env:
+        return env
+    teams = sorted(f.parent.name for f in (ROOT / "race" / "teams").glob("*/objectives.toml"))
+    return f"milady-{teams[0]}-job-" if len(teams) == 1 else "milady-job-"
+
+
+PREFIX = job_prefix()
 USER_AGENT = "milady-runpod-job/1"
 
 BOOTSTRAP = r"""
@@ -132,6 +149,17 @@ def http_get(url: str) -> bytes | None:
         return None
 
 
+def pod_gone(mcp: MCP, pid: str) -> bool:
+    """True if the pod no longer exists on the account (deleted outside this tool)."""
+    try:
+        mcp.call("get-pod", {"id": pid})
+    except RuntimeError as e:
+        return "404" in str(e) or "not found" in str(e).lower()
+    except (KeyError, OSError, ValueError):  # a client that cannot tell: assume the pod is there
+        return False
+    return False
+
+
 def pushed_commit(ref: str) -> str:
     sha = subprocess.check_output(["git", "rev-parse", ref], cwd=ROOT, text=True).strip()
     remote = subprocess.run(["git", "branch", "-r", "--contains", sha], cwd=ROOT, capture_output=True,
@@ -213,12 +241,16 @@ def run(args, mcp: MCP | None = None, sleep=time.sleep) -> int:
     t0 = time.time()
     print(f"pod {pid} on {gpu['id']} at ${price}/h; limit {hours} h; commit {sha[:12]}", file=sys.stderr)
     base = f"https://{pid}-8000.proxy.runpod.net/{token}/"
-    rc, status = None, ""
+    rc, status, misses = None, "", 0
     try:
         while True:
             sleep(30)
             raw = http_get(base + "status.txt")
             status = raw.decode(errors="replace") if raw else status
+            misses = 0 if raw else misses + 1
+            if misses and misses % 6 == 0 and pod_gone(mcp, pid):  # 3 min without an answer: is the pod still there?
+                status += "\nPOD GONE: deleted outside this tool (another session sharing the account?)"
+                break
             m = re.search(r"DONE rc=(\d+)", status)
             if m:
                 rc = int(m.group(1))

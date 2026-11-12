@@ -112,6 +112,27 @@ def test_http_get_sends_an_explicit_user_agent(monkeypatch):
     assert seen["agent"] == runpod_job.USER_AGENT and "urllib" not in seen["agent"].lower()
 
 
+def test_prefix_is_per_team_and_a_deleted_pod_stops_the_job(job_env, monkeypatch, tmp_path):
+    """Another session sharing the account deleted this session's running pods with its clean-up (pilot)."""
+    teams = tmp_path / "race" / "teams" / "alpha"
+    teams.mkdir(parents=True)
+    (teams / "objectives.toml").write_text('team = "alpha"\n')
+    monkeypatch.setattr(runpod_job, "ROOT", tmp_path)
+    assert runpod_job.job_prefix() == "milady-alpha-job-"
+    monkeypatch.setenv("MILADY_JOB_PREFIX", "x-")
+    assert runpod_job.job_prefix() == "x-"
+
+    class Gone:
+        def call(self, tool, args):
+            raise RuntimeError('get-pod: {"detail": "pod not found", "status": 404}')
+
+    class Unknown:
+        def call(self, tool, args):
+            raise KeyError(tool)
+
+    assert runpod_job.pod_gone(Gone(), "p") and not runpod_job.pod_gone(Unknown(), "p")
+
+
 def test_bootstrap_is_valid_bash_and_survives_debian_packages(tmp_path):
     """The pod image has Debian-installed packages that pip cannot uninstall (pilot, 2026-11-12)."""
     import subprocess
