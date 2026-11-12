@@ -1,0 +1,52 @@
+[W0_free] it    37  loss 1.9649  1 s
+[W0_free] it    74  loss 1.8551  1 s
+[W0_free] it   111  loss 1.7651  1 s
+[W0_free] it   148  loss 1.7075  1 s
+[W0_free] it   150  loss 1.7052  1 s
+== W0_free: test ed_ratio 42.95  div_b 5.34e-01  balance 0.164  spec_b 0.296  Hm 0.719  nulls 2.176  restart 0.314
+== W2_final_projection: test ed_ratio 36.32  div_b 3.50e-08  balance 0.164  spec_b 0.263  Hm 0.719  nulls 2.127  restart 0.109
+[W1_penalty] it    37  loss 3.0109  0 s
+[W1_penalty] it    74  loss 2.6889  1 s
+[W1_penalty] it   111  loss 2.4872  1 s
+[W1_penalty] it   148  loss 2.3633  1 s
+[W1_penalty] it   150  loss 2.3595  1 s
+== W1_penalty: test ed_ratio 28.87  div_b 4.98e-01  balance 0.121  spec_b 1.131  Hm 0.658  nulls 1.237  restart 0.149
+[W3_projected_flow] it    37  loss 1.6287  0 s
+[W3_projected_flow] it    74  loss 1.5119  0 s
+[W3_projected_flow] it   111  loss 1.4177  0 s
+[W3_projected_flow] it   148  loss 1.3576  1 s
+[W3_projected_flow] it   150  loss 1.3552  1 s
+== W3_projected_flow: test ed_ratio 36.48  div_b 2.16e-08  balance 0.162  spec_b 0.261  Hm 0.727  nulls 2.209  restart 0.106
+[W4_potentials] it    37  loss 1.9720  0 s
+[W4_potentials] it    74  loss 1.8666  0 s
+[W4_potentials] it   111  loss 1.7813  0 s
+[W4_potentials] it   148  loss 1.7254  1 s
+[W4_potentials] it   150  loss 1.7234  1 s
+== W4_potentials: test ed_ratio 46.03  div_b 1.21e-08  balance 0.143  spec_b 0.284  Hm 0.714  nulls 2.301  restart 0.133
+[W6_diffusion] it    37  loss 1.0010  0 s
+[W6_diffusion] it    74  loss 0.9566  0 s
+[W6_diffusion] it   111  loss 0.9199  0 s
+[W6_diffusion] it   148  loss 0.8966  1 s
+[W6_diffusion] it   150  loss 0.8964  1 s
+== W6_diffusion: test ed_ratio 38.74  div_b 1.21e-08  balance 0.138  spec_b 0.264  Hm 0.631  nulls 2.247  restart 0.126
+[W4s_potentials_sym] it    37  loss 1.9748  0 s
+[W4s_potentials_sym] it    74  loss 1.8721  1 s
+[W4s_potentials_sym] it   111  loss 1.7903  1 s
+[W4s_potentials_sym] it   148  loss 1.7362  1 s
+[W4s_potentials_sym] it   150  loss 1.7342  1 s
+== W4s_potentials_sym: test ed_ratio 47.18  div_b 1.21e-08  balance 0.136  spec_b 0.245  Hm 0.792  nulls 2.363  restart 0.136
+[W5_stationarity] it     5  loss 1.8479  1 s
+[W5_stationarity] it    10  loss 1.8594  1 s
+[W5_stationarity] it    15  loss 1.8566  2 s
+[W5_stationarity] it    20  loss 1.8692  2 s
+== W5_stationarity: test ed_ratio 47.64  div_b 1.21e-08  balance 0.132  spec_b 0.231  Hm 0.821  nulls 2.401  restart 0.137
+[W5_control] it     5  loss 1.6648  0 s
+[W5_control] it    10  loss 1.6655  0 s
+[W5_control] it    15  loss 1.6671  0 s
+[W5_control] it    20  loss 1.6687  0 s
+== W5_control: test ed_ratio 47.18  div_b 1.21e-08  balance 0.136  spec_b 0.245  Hm 0.792  nulls 2.369  restart 0.136
+== W7_tilting: test ed_ratio 44.17  div_b 1.21e-08  balance 0.088  spec_b 0.359  Hm 0.704  nulls 2.373  restart nan
+== W8_rescaling: test ed_ratio 40.08  div_b 1.20e-08  balance 0.000  spec_b 0.179  Hm 0.789  nulls 1.955  restart nan
+== W5_stationarity_half: test ed_ratio 35.59  div_b 1.21e-08  balance 0.131  spec_b 0.232  Hm 0.815  nulls 2.355  restart nan
+== W5_control_half: test ed_ratio 35.23  div_b 1.21e-08  balance 0.136  spec_b 0.243  Hm 0.787  nulls 2.324  restart nan
+total duration 289 s
