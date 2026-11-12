@@ -15,7 +15,7 @@ read here. Standard library only.
     python3 tools/runpod_job.py run --gpu "NVIDIA H100 80GB HBM3" --hours 1 --outputs experiments/results -- CMD
     python3 tools/runpod_job.py prices        # hourly price and stock of the configured GPUs
     python3 tools/runpod_job.py spend         # GPU spend so far, from the ledger
-    python3 tools/runpod_job.py cleanup       # delete every pod of this team (name milady-<team>-job-*)
+    python3 tools/runpod_job.py cleanup       # delete this team's own pods past their limit (prefix + own ledger)
 """
 
 from __future__ import annotations
@@ -59,6 +59,8 @@ def job_prefix() -> str:
 
 
 PREFIX = job_prefix()
+ANY_JOB = re.compile(r"^milady-(?:[a-z0-9_]+-)?job-")  # pods of this tool, any team (budget reservation)
+TEAM_PREFIX = re.compile(r"^milady-[a-z0-9_]+-job-$")   # a prefix that names a team (required by cleanup)
 USER_AGENT = "milady-runpod-job/1"
 
 BOOTSTRAP = r"""
@@ -127,8 +129,8 @@ class MCP:
             return {"text": text}
 
 
-def gpu_catalog(mcp: MCP) -> dict[str, dict]:
-    data = mcp.call("list-gpu-types", {"include": ["AVAILABILITY"], "product": ["POD"], "cloud": "SECURE"})
+def gpu_catalog(mcp: MCP, cloud: str = "SECURE") -> dict[str, dict]:
+    data = mcp.call("list-gpu-types", {"include": ["AVAILABILITY"], "product": ["POD"], "cloud": cloud})
     items = next(iter(data.values())) if isinstance(data, dict) else data
     return {g["id"]: g for g in items}
 
@@ -177,7 +179,7 @@ def run(args, mcp: MCP | None = None, sleep=time.sleep) -> int:
     command = " ".join(args.command[1:] if args.command[:1] == ["--"] else args.command)
     if not command:
         sys.exit("give the command after --")
-    budget = cfg.get("budget_usd")  # a job starts only if its worst case fits in what is left
+    budget = float(os.environ.get("MILADY_GPU_BUDGET_USD") or cfg.get("budget_usd") or 0)  # this team's share
     spent = spend()["usd"]
     share = cfg.get("approval_fraction", 0.8)
     if budget and share < 1 and spent >= share * budget and not args.over_budget_approved:
@@ -187,44 +189,68 @@ def run(args, mcp: MCP | None = None, sleep=time.sleep) -> int:
     gpus = [g.strip() for g in (args.gpu or ",".join(cfg.get("fallback", []))).split(",") if g.strip()]
     outputs = args.outputs or cfg.get("outputs", ["experiments/results"])
     mcp = mcp or MCP()
-    catalog = gpu_catalog(mcp)
+    credit = cfg.get("credit_usd")  # the prepaid RunPod credit, shared by every team using the account
+    account = account_spend(mcp) if credit else None
+    if account is not None:
+        print(f"RunPod account spend (all teams, billing may lag): ${account:.2f} of ${credit} credit",
+              file=sys.stderr)
+    jobs = running_jobs(mcp)  # other jobs of this tool in flight (any session): their worst case is reserved
+    limit = int(cfg.get("max_parallel", 4))
+    if len(jobs) >= limit:
+        print(f"{len(jobs)} GPU jobs already running (limit [gpu].max_parallel = {limit}): wait for one to end",
+              file=sys.stderr)
+        return 1
+    reserved = sum(j["reserved_usd"] for j in jobs)
+    if jobs:
+        print(f"{len(jobs)} job(s) in flight, ${reserved:.2f} reserved for their worst case", file=sys.stderr)
     token = secrets.token_hex(16)
     env = {"JOB_TOKEN": token, "REPO": cfg.get("repo", "https://github.com/knoel99/milady-2027.git"),
            "REF": sha, "CMD_B64": base64.b64encode(command.encode()).decode(),
            "OUTPUTS": " ".join(outputs), "MAX_MIN": str(int(hours * 60))}
     pod = gpu = None
-    for gid in gpus:
-        g = catalog.get(gid)
-        if not g:
-            print(f"skip {gid}: not in the catalog", file=sys.stderr)
-            continue
-        if g.get("availability") == "NONE":
-            print(f"skip {gid}: no stock", file=sys.stderr)
-            continue
-        worst = hours * float(g["price"].get("secure") or 0)
-        if budget and spent + worst > budget and not args.over_budget_approved:
-            print(f"skip {gid}: up to ${worst:.2f} would exceed the ${budget} budget (${spent:.2f} spent)",
-                  file=sys.stderr)
-            continue
-        body = {"name": f"{PREFIX}{token[:8]}", "cloud": "SECURE", "image": cfg.get("image"),
-                "gpu": {"id": gid, "count": 1, "minCudaVersion": cfg.get("min_cuda", "12.8")},
-                "disk": int(cfg.get("disk_gb", 40)), "ports": ["8000/http"], "env": env,
-                "entrypoint": ["/bin/bash", "-c"], "cmd": [BOOTSTRAP]}
-        if cfg.get("data_centers"):
-            body["dataCenterIds"] = cfg["data_centers"]
-        try:
-            pod = mcp.call("create-pod", {"body": body})
-            gpu = g
-            break
-        except RuntimeError as e:
-            print(f"create-pod on {gid} failed: {e}", file=sys.stderr)
-            if cfg.get("data_centers"):
-                body.pop("dataCenterIds")
+    price = 0.0
+    # Stock reads are unreliable both ways (LOW refuses, NONE sometimes accepts) and a refused create is free:
+    # try every GPU of the list on each cloud in turn.
+    for cloud in cfg.get("clouds", ["SECURE"]):
+        catalog = gpu_catalog(mcp, cloud)
+        for gid in gpus:
+            g = catalog.get(gid)
+            if not g:
+                print(f"skip {gid} ({cloud}): not in the catalog", file=sys.stderr)
+                continue
+            listed = float(g["price"].get(cloud.lower()) or 0)
+            if not g.get(cloud.lower(), True) or listed <= 0:  # the catalog shows placeholder prices off a cloud
+                print(f"skip {gid} ({cloud}): not offered on this cloud", file=sys.stderr)
+                continue
+            worst = hours * listed
+            if account is not None and account + reserved + worst > credit - cfg.get("credit_margin_usd", 5) \
+                    and not args.over_budget_approved:
+                print(f"skip {gid} ({cloud}): up to ${worst:.2f} would exhaust the shared RunPod credit "
+                      f"(${account:.2f} of ${credit} billed)", file=sys.stderr)
+                continue
+            if budget and spent + reserved + worst > budget and not args.over_budget_approved:
+                print(f"skip {gid} ({cloud}): up to ${worst:.2f} would exceed the ${budget} budget "
+                      f"(${spent:.2f} spent, ${reserved:.2f} reserved by running jobs)", file=sys.stderr)
+                continue
+            body = {"name": f"{PREFIX}{token[:8]}", "cloud": cloud, "image": cfg.get("image"),
+                    "gpu": {"id": gid, "count": 1, "minCudaVersion": cfg.get("min_cuda", "12.8")},
+                    "disk": int(cfg.get("disk_gb", 40)), "ports": ["8000/http"], "env": env,
+                    "entrypoint": ["/bin/bash", "-c"], "cmd": [BOOTSTRAP]}
+            attempts = [dict(body, dataCenterIds=cfg["data_centers"]), body] if (
+                cloud == "SECURE" and cfg.get("data_centers")) else [body]
+            for attempt in attempts:
                 try:
-                    pod, gpu = mcp.call("create-pod", {"body": body}), g
+                    pod, gpu = mcp.call("create-pod", {"body": attempt}), g
                     break
-                except RuntimeError as e2:
-                    print(f"  and without data-center constraint: {e2}", file=sys.stderr)
+                except RuntimeError as e:
+                    where = "preferred data centers" if "dataCenterIds" in attempt else "any data center"
+                    print(f"create-pod on {gid} ({cloud}, {where}) failed: {str(e)[:160]}", file=sys.stderr)
+            if pod:
+                cost = pod.get("cost") if isinstance(pod, dict) else None
+                price = float(cost) if isinstance(cost, (int, float)) and cost > 0 else listed
+                break
+        if pod:
+            break
     if not pod:
         print("no GPU could be rented: nothing billed", file=sys.stderr)
         return 1
@@ -237,8 +263,10 @@ def run(args, mcp: MCP | None = None, sleep=time.sleep) -> int:
                 mcp.call("delete-pod", {"id": p["id"]})
                 print(f"deleted pod {p['id']}", file=sys.stderr)
         sys.exit(f"create-pod answered without a pod id ({str(pod)[:200]}); pod {name} looked up and deleted")
-    price = float(gpu["price"].get("secure") or 0)
     t0 = time.time()
+    ledger_append({"event": "start", "time": dt.datetime.now(dt.UTC).strftime("%Y-%m-%dT%H:%M:%SZ"), "pod": pid,
+                   "name": f"{PREFIX}{token[:8]}", "gpu": gpu["id"], "usd_per_hour": price, "limit_hours": hours,
+                   "commit": sha, "command": command})  # the pod is this checkout's from now on (cleanup)
     print(f"pod {pid} on {gpu['id']} at ${price}/h; limit {hours} h; commit {sha[:12]}", file=sys.stderr)
     base = f"https://{pid}-8000.proxy.runpod.net/{token}/"
     rc, status, misses = None, "", 0
@@ -286,8 +314,66 @@ def run(args, mcp: MCP | None = None, sleep=time.sleep) -> int:
     return 0 if rc == 0 else 1
 
 
+def running_jobs(mcp, now: float | None = None, mine_only: bool = False) -> list[dict]:
+    """Pods of this tool still alive, with the dollars their time limit can still cost (plus the 15 min grace).
+
+    By default the pods of every team (any ``milady-[<team>-]job-`` name): the budget reservation must see them
+    all. ``mine_only``: only the pods carrying this checkout's prefix."""
+    now = now or time.time()
+    found = mcp.call("list-pods", {})
+    out = []
+    for p in (found.get("pods", []) if isinstance(found, dict) else found or []):
+        name = str(p.get("name", ""))
+        if not (name.startswith(PREFIX) if mine_only else ANY_JOB.match(name)):
+            continue
+        limit_h = int((p.get("env") or {}).get("MAX_MIN", 120)) / 60 + 0.25
+        try:
+            age_h = (now - dt.datetime.fromisoformat(p["createdAt"]).timestamp()) / 3600
+        except (KeyError, ValueError):
+            age_h = 0.0
+        out.append({"id": p.get("id"), "name": p.get("name"), "age_h": age_h, "limit_h": limit_h,
+                    "reserved_usd": float(p.get("cost") or 0) * max(0.0, limit_h - age_h)})
+    return out
+
+
+def account_spend(mcp) -> float | None:
+    """Total billed on the RunPod account over the last 30 days, all teams; None if unreadable."""
+    try:
+        data = mcp.call("list-billing", {"lastN": 30, "bucketSize": "day"})
+        return float(data["metadata"]["totals"]["totalAmount"])
+    except (RuntimeError, KeyError, TypeError, ValueError):
+        return None
+
+
+def ledger_rows() -> list[dict]:
+    return [json.loads(x) for x in LEDGER.read_text().splitlines() if x.strip()] if LEDGER.exists() else []
+
+
+def own_pod_ids() -> set[str]:
+    """Pods this checkout created: every pod id of its own ledger (a "start" row is written at creation)."""
+    return {r["pod"] for r in ledger_rows() if r.get("pod")}
+
+
+def cleanup(mcp, everything: bool = False, now: float | None = None) -> list[dict]:
+    """Delete only pods that carry this team's prefix AND appear in this checkout's ledger, and by default only
+    those past their time limit. Pods of another team, pods without a team prefix and pods this checkout did
+    not create are never touched (a shared clean-up deleted another session's running jobs, 2026-11-12)."""
+    if not TEAM_PREFIX.match(PREFIX):
+        sys.exit(f"cleanup needs a team prefix (milady-<team>-job-), not {PREFIX!r}: set MILADY_JOB_PREFIX or "
+                 "work in a checkout holding one race/teams/<team>/objectives.toml")
+    mine = own_pod_ids()
+    jobs = [j for j in running_jobs(mcp, now, mine_only=True) if j["id"] in mine]
+    gone = [j for j in jobs if everything or j["age_h"] > j["limit_h"] + 0.25]
+    for j in gone:
+        mcp.call("delete-pod", {"id": j["id"]})
+        print(f"deleted {j['id']} {j['name']} (age {j['age_h']:.2f} h, limit {j['limit_h']:.2f} h)")
+    print(f"{len(gone)} pod(s) deleted; {len(jobs) - len(gone)} of this team's pods within their time limit kept; "
+          "pods of other teams or sessions are never touched")
+    return gone
+
+
 def spend() -> dict:
-    rows = [json.loads(x) for x in LEDGER.read_text().splitlines() if x.strip()] if LEDGER.exists() else []
+    rows = [r for r in ledger_rows() if r.get("event") != "start"]
     by_gpu: dict[str, dict] = {}
     for r in rows:
         g = by_gpu.setdefault(r["gpu"], {"jobs": 0, "hours": 0.0, "usd": 0.0})
@@ -296,7 +382,7 @@ def spend() -> dict:
         g["usd"] += r["usd"]
     return {"jobs": len(rows), "hours": round(sum(r["hours"] for r in rows), 3),
             "usd": round(sum(r["usd"] for r in rows), 2), "by_gpu": by_gpu,
-            "budget_usd": config().get("budget_usd")}
+            "budget_usd": float(os.environ.get("MILADY_GPU_BUDGET_USD") or config().get("budget_usd") or 0)}
 
 
 def main() -> int:
@@ -312,7 +398,8 @@ def main() -> int:
     r.add_argument("command", nargs=argparse.REMAINDER)
     sub.add_parser("prices")
     sub.add_parser("spend")
-    sub.add_parser("cleanup")
+    c = sub.add_parser("cleanup", help="delete pods of this tool past their time limit (orphans of a crashed run)")
+    c.add_argument("--all", action="store_true", help="also delete this team's own pods whose job may still be running")
     a = ap.parse_args()
     if a.cmd == "run":
         return run(a)
@@ -324,18 +411,13 @@ def main() -> int:
         return 0
     mcp = MCP()
     if a.cmd == "prices":
-        cat = gpu_catalog(mcp)
-        for gid in config().get("fallback", []):
-            g = cat.get(gid, {})
-            print(f"{gid:<48} ${g.get('price', {}).get('secure')}/h  stock {g.get('availability')}")
+        for cloud in config().get("clouds", ["SECURE"]):
+            cat = gpu_catalog(mcp, cloud)
+            for gid in config().get("fallback", []):
+                g = cat.get(gid, {})
+                print(f"{cloud:<9} {gid:<48} ${g.get('price', {}).get(cloud.lower())}/h  stock {g.get('availability')}")
         return 0
-    pods = mcp.call("list-pods", {})
-    items = pods.get("pods", []) if isinstance(pods, dict) else pods
-    left = [p for p in items if str(p.get("name", "")).startswith(PREFIX)]
-    for p in left:
-        mcp.call("delete-pod", {"id": p["id"]})
-        print(f"deleted {p['id']} {p.get('name')}")
-    print(f"{len(left)} pod(s) deleted; {len(items) - len(left)} other pod(s) left untouched")
+    cleanup(mcp, everything=a.all)
     return 0
 
 

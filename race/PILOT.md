@@ -10,9 +10,13 @@ The pilot runs the race with a single team before the nine-provider race: one Cl
 | Main session | Claude Fable 5.2, effort `high` (`/model fable`, `/effort high`; `race/config.toml` `[main_session]`) |
 | Roles | Claude Code sub-agents `.claude/agents/*.md`, generated from `agents/roles/`: `encadrant` Fable/medium, `physicien` Fable/high, `biblio` Sonnet 5.5/medium, `jury-externe` Fable/max. `tools/call_model.py` and `tools/run_role.py` need an Anthropic API key and are not used in the pilot |
 | CPU | the session's own container (quick runs, measurements) |
-| GPU | `tools/runpod_job.py run`: RTX PRO 4500 Blackwell, then RTX 5090, then RTX A6000 (`race/config.toml` `[gpu]`); H100 only for float64 validation |
+| GPU | `tools/runpod_job.py run`: the `[gpu]` `fallback` list of `race/config.toml` (RTX PRO 4500 Blackwell, RTX 5090, RTX 4090, RTX A6000, A40, L40S, RTX PRO 6000, A100), each tried on Secure Cloud, then the list again on Community Cloud; the stock shown by the catalog is unreliable, so a refused create is not the end: rerun later or widen `--gpu`. H100 only for float64 validation |
 | Budgets | GPU: 140 USD of the 150 USD prepaid RunPod credit, all usable (`race/config.toml` `[gpu]` `budget_usd`; 10 USD margin for storage and rounding). Claude: the plan's usage limit; `tools/usage_report.py` gives the API-equivalent cost |
 | Duration | one week from the start, or until a budget is spent |
+
+## Deliverables
+
+[`DELIVERABLES.md`](DELIVERABLES.md): an internship report as the offer asks, in HTML on the site and as a classic LaTeX PDF, with many figures (schematics drawn with the `schematic-figure` skill, architecture and workflow diagrams with Archify; `bash tools/install_skills.sh` installs both), and an explorer page to look at and play with the results, all under `site/teams/<team>/`. Build them as the work goes; `python3 tools/check_deliverables.py --team <team>` must pass before the final report.
 
 ## Results and data storage
 
@@ -32,8 +36,13 @@ The pilot runs the race with a single team before the nine-provider race: one Cl
 
 `tools/runpod_job.py spend` gives the GPU spend alone; `tools/runpod_job.py cleanup` deletes any pod a failed job left behind. The session commits the report after each hypothesis and at least every four hours of work, so that the owner can follow it on the branch from any client.
 
+## Reviews over time
+
+The `encadrant` and the `jury-externe` step in when `python3 tools/review_due.py due` says so, not once a week: after new results or hypotheses, after `encadrant_max_gap_hours` of work without a review, at each quarter of the span from `[reviews]` `start` to the deadline, and when the report changes (`race/config.toml` `[reviews]`). Run it after every commit that adds a result and at least every hour; run every due review before going on; record it with `tools/review_due.py log`, so that `research/reviews.jsonl` shows when each role stepped in and what it found.
+
 ## Stop rules
 
+0. Several GPU jobs may run at once when it saves time (independent seeds, groups or parameter values): start each `tools/runpod_job.py run` in the background, with its own `--outputs` directory and `--log`. At most `[gpu]` `max_parallel` jobs (4) run at a time, all sessions together; the tool reserves the worst case of the jobs in flight before starting a new one, and `cleanup` deletes only pods past their time limit.
 1. The whole GPU budget may be used, but a job starts only if its worst case (time limit × hourly price) fits in what is left: `tools/runpod_job.py` checks it, so no job is cut off by an empty credit. Commit and push the outputs and `research/compute-ledger.jsonl` right after each job: the session's container is the only other copy.
 2. The plan's usage limit warns: finish the current hypothesis, write the usage report, commit, push, stop (`AGENTS.md` rule 7).
 3. The deadline is reached: write `research/race-report.md`, the usage report, commit, push, stop.

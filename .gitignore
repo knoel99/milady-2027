@@ -41,3 +41,11 @@ site/figures/*/docs/draft*.png
 experiments/data_e4*/
 experiments/results/*_quick_*
 research/gpu-out/
+
+# Figure skills installed by tools/install_skills.sh (pinned upstream copies, not versioned)
+.claude/skills/schematic-figure/
+.claude/skills/archify/
+.claude/skills/.figure-skills-pinned
+.cursor/skills/
+# archify working folders
+.archify/

@@ -38,6 +38,10 @@ python3 tools/check_calls.py ledger|preflight|exam        # verify models and ef
 python3 tools/compute_broker.py submit --hours H -- CMD   # race only: run CMD on a broker job VM (committed code)
 python3 tools/runpod_job.py run --hours H -- CMD          # pilot: run CMD on a RunPod GPU pod (pushed commit), pod always deleted
 python3 tools/usage_report.py --write research/usage      # tokens, API-equivalent cost, sub-agents, GPU spend of the session
+python3 tools/review_due.py due|log                       # which encadrant / jury reviews are due now; record one
+python3 tools/cursor_agents.py launch|send|wait|report    # Cursor pilot: Cloud Agents with the role's model and effort
+python3 tools/check_deliverables.py --team <team> [--built]  # report, figures, diagrams, explorer of race/DELIVERABLES.md
+bash tools/install_skills.sh                              # schematic-figure and archify skills, pinned (figures of the deliverables)
 ```
 
 - Never edit an `index.html` by hand: `tools/render.py` restores the pinned KaTeX tags (SRI) that Quarto strips.
@@ -61,7 +65,9 @@ Every call is logged in `research/model-calls.jsonl` and its answer in `research
 - **`encadrant`**: tries to refute a result or a protocol (re-runs the script, changes the seed, recomputes the aggregate, tests the edge case, checks the numerical protocol); one verdict per criterion; never edits.
 - **`physicien`**: physical intuition; proposes at most three ranked conjectures (orders of magnitude, limiting cases, toy model), each with a refutation criterion, protocol and cost; the user chooses; never edits.
 - **`biblio`**: prior art for a claim, lifts `[UNCONFIRMED]` tags, drafts reading notes; the main session writes them into `docs/specs/sources/`.
-- **`jury-externe`**: milestones only (theory brief, report v1, thesis v1); a verdict per claim and a pre-defence report.
+- **`jury-externe`**: milestones (theory brief, report v1, thesis v1) and the dates `tools/review_due.py` names; a verdict per claim and a pre-defence report.
+
+**When the checking roles step in.** Not by the week: `python3 tools/review_due.py due` names the reviews that are due from the events and the time that passed (new results or hypotheses since the last `encadrant` review, too long without one while work goes on, each quarter of the race and every changed milestone for `jury-externe`; settings in `race/config.toml` `[reviews]`). Run it after every commit that adds a result and at least every hour of work; run each due review before going on, and record it with `python3 tools/review_due.py log --role … --scope … --verdict …` (register `research/reviews.jsonl`). These reviews do not count in the three calls per hypothesis of rule 7.
 
 ## Hardcore rules
 
