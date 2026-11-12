@@ -86,9 +86,9 @@
       "protocol": "Twelve points, python3 experiments/cursor_abc_batch.py --device cuda, t = 120, dt cap 0.05, cfl 1, seed 0. Rm in {8, 9, 17, 18, 26, 28} at n = 64 and at n = 96. No H100. Before launch, Claude ledger plus local ledger plus reserved pods plus the worst-case price of the new pods must stay under 150 USD.",
       "script": "experiments/cursor_abc_batch.py --device cuda --point 64,8,0 --point 64,9,0",
       "cost_estimate": "Twelve points on up to four pods, 0.5 h cap each. Dearest fallback is about 2.69 USD/h, so the worst-case hold is about 5.4 USD on top of the local ledger 0.44 USD and the Claude ledger 1.71 USD.",
-      "status": "registered",
+      "status": "refuted",
       "verdict": "",
-      "results": "",
+      "results": "Twelve points, all finite, largest max_div_b 9.92e-16. The (8, 9) bracket holds at n=64 and n=96. It fails elsewhere. n=64: lambda(18)=3.15e-6 is not negative, lambda(28)=-6.36e-4 is not positive. n=96: lambda(26)=4.19e-4 is not negative. Files experiments/results/cursor_abc/n{64,96}_rm{8,9,17,18,26,28}_s0.json. Four pods, 0.2538 USD. The pre-set inequalities are not all true, so H6 is refuted.",
       "commit": ""
     }
   ]

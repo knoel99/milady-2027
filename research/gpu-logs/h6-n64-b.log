@@ -1,0 +1,9 @@
+{"Rm": 18.0, "n": 64, "seed": 0, "t": 120.0, "dt_cap": 0.05, "cfl": 1.0, "cfl_dt0": 0.01122391716169123, "steps": 10800, "lambda": 3.15283535828769e-06, "max_div_b": 7.696975447256468e-16, "finite": true, "ok": true}
+{"Rm": 26.0, "n": 64, "seed": 0, "t": 120.0, "dt_cap": 0.05, "cfl": 1.0, "cfl_dt0": 0.01122391716169123, "steps": 10800, "lambda": -0.004083937725004822, "max_div_b": 9.102657607640655e-16, "finite": true, "ok": true}
+{"Rm": 28.0, "n": 64, "seed": 0, "t": 120.0, "dt_cap": 0.05, "cfl": 1.0, "cfl_dt0": 0.01122391716169123, "steps": 10800, "lambda": -0.0006356953676692185, "max_div_b": 9.923962863776048e-16, "finite": true, "ok": true}
+
+--- status
+2026-11-12T22:26:02Z boot NVIDIA RTX A6000, 46068 MiB
+2026-11-12T22:27:22Z job started
+2026-11-12T22:29:01Z job finished rc=0 in 99 s
+2026-11-12T22:29:01Z DONE rc=0

@@ -2,6 +2,18 @@
 
 One entry per working session, newest first, at most ten lines.
 
+## 2026-11-12 - team prefix, team cursor
+- Pods this session creates are named `milady-cursor-job-*`. The prefix is `MILADY_TEAM`, default `cursor` (commit `e2e794b`).
+- `cleanup` deletes only that prefix, and only past the time limit. `milady-claude-job-*` and legacy `milady-job-*` stay, including with `--all`.
+- `running_jobs` still counts every live `milady-*job-*` pod toward the shared 150 USD reservation and the parallel cap.
+
+## 2026-11-12 - H6 refuted, team cursor
+- Twelve points, all finite. Largest final max_div_b is 9.92e-16. Four pods cost 0.2538 USD. Local ledger 0.6895 USD.
+- The (8, 9) bracket holds at n = 64 and n = 96. lambda(8) is negative and lambda(9) is positive at both resolutions.
+- n = 64 fails the other two brackets. lambda(18) = 3.15e-6 is positive. lambda(28) = -6.36e-4 is negative.
+- n = 96 fails the third bracket. lambda(26) = 4.19e-4 is positive. lambda(17) is positive and lambda(18) is negative, so only that bracket holds at n = 96.
+- H6 is refuted. The digest windows do not all survive at these two resolutions. This is not a 3D generator result.
+
 ## 2026-11-12 - cleanup rule, team cursor
 - Confirmed. The cleanup at 22:46 Paris deleted pods this session had not created and killed the Claude team's A-D GPU job. 71 minutes of that job were lost. The pod ids were `hd6qx71mm6jekm` (`milady-job-329724d4`) and `00t6s3l481flvm` (`milady-job-a24b1ae9`).
 - Claude now names its pods `milady-claude-job-*` (commit `62e31c9`).
