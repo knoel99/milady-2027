@@ -2,6 +2,15 @@
 
 One entry per working session, newest first, at most ten lines.
 
+## 2026-11-12 — E4 set-up: 3D data, mechanisms, hypotheses H4–H14, GPU path
+- Goal of the session: build the 3D experiment of the race (E4) and register its hypotheses before any training.
+- Done: `src/milady/train/constraints.py` (9 mechanisms and model families, one test each: objective C7 = 9), `src/milady/train/diffusion.py`, `src/milady/eval/topology.py` (magnetic null points), cube truncation of `FourierPotentialSpace`; `experiments/e4_data.py`, `e4_mhd3d.py`, `e4_digest.py`. Hypotheses H4–H14 registered and pushed (commit 68e2fd4) before the first model; H11–H13 come from the `physicien` (1 call).
+- Data (digest, E4, "Reference data per η"): forced ABC MHD at kf = 2, ν = 0.05, 11 values of η in [0.03, 0.08], 16³ with every Galerkin mode kept (5320 real latent dimensions), 24 trajectories × 100 snapshots per η, generated in 30 min on 4 cores. Energy balance closed to 4e-4, magnetic helicity stationary within 2 SE at every η.
+- H11 (reference data only): H(k = 1) < 0 at 11 of 11 η, but Σ_{k ≥ 2} H(k) > 0 by 2 SE at only 8 of 11 η (negative at the three smallest η): refuted as registered, `encadrant` verdict pending. The identity E[⟨j·B⟩] = 0 itself holds (|z| < 2 at every η). Protocol check of H13: the null count changes by 1.3 to 2.5 % between the 48³ and 64³ grids.
+- GPU path, three findings. (1) Capacity: 9 refusals, then pods on the RTX PRO 4500 Blackwell at 17:24, 17:56 and 17:58 UTC. (2) Bug in `tools/runpod_job.py`: the RunPod HTTP proxy (Cloudflare) answers 403 (error 1010) to the default `Python-urllib` agent, so the status of a job was never read; the first pod ran 24 min for nothing (0.40 h, $0.29) before I interrupted it. Fixed (explicit User-Agent, test added). (3) With the fix, two jobs failed in about one minute at the `pip install` step of the pod bootstrap ($0.02 each); the tool now brings back the set-up log on failure; cause not yet known.
+- Decision: the 5 seeds of E4 run on the 4 CPU cores (two groups per seed, about 1 h of one core each); the GPU bench (check 5) is retried in the background. No GPU timing yet.
+- Cost (tokens, CPU time): see `research/usage/latest.md` of this commit; GPU: 3 jobs, 0.46 h, $0.33.
+
 ## 2026-11-12 — Pilot day 1: start-up checks and objectives
 - Goal of the session: the five checks of `race/PILOT-PROMPT.md`, then the day-1 objectives.
 - Checks 1–4 passed: session `claude-fable-5-2` / `high` (`get_session`); `runpod-api` connected and `runpod_job.py prices` lists RTX PRO 4500 Blackwell $0.72/h, RTX 5090 $1.19/h, RTX A6000 $0.59/h (all stock LOW); `make test` and `sync_agents.py --check` pass; the four roles answered one question on Proposition 1 and `research/usage/latest.md` reports the main session and the 4 role calls as conforming.

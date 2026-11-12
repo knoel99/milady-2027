@@ -1,5 +1,5 @@
 {
- "generated": "2026-11-12T17:12:59Z",
+ "generated": "2026-11-12T18:04:36Z",
  "projects": "/root/.claude/projects/-home-user-milady-2027",
  "sessions": 1,
  "main_session": {
@@ -10,43 +10,43 @@
    "high"
   ],
   "expected": "claude-fable-5-2 / high",
-  "responses": 40,
+  "responses": 97,
   "off_spec": 0,
   "conforms": true
  },
  "first": "2026-11-12T16:50:21.852Z",
- "last": "2026-11-12T17:12:46.674Z",
- "span_hours": 0.37,
+ "last": "2026-11-12T18:04:30.365Z",
+ "span_hours": 1.24,
  "by_model": {
   "claude-fable-5-2": {
-   "input": 85,
-   "cache_write_5m": 46485,
-   "cache_write_1h": 334031,
-   "cache_read": 9018148,
-   "output": 68611,
-   "thinking": 45495,
-   "calls": 44,
-   "usd": 10.36
+   "input": 205,
+   "cache_write_5m": 107880,
+   "cache_write_1h": 521849,
+   "cache_read": 34713455,
+   "output": 226395,
+   "thinking": 114963,
+   "calls": 106,
+   "usd": 25.43
   },
   "claude-sonnet-5-5": {
-   "input": 4,
-   "cache_write_5m": 16980,
+   "input": 12,
+   "cache_write_5m": 42051,
    "cache_write_1h": 0,
-   "cache_read": 9599,
-   "output": 697,
-   "thinking": 0,
-   "calls": 2,
-   "usd": 0.05
+   "cache_read": 64158,
+   "output": 3248,
+   "thinking": 172,
+   "calls": 6,
+   "usd": 0.14
   }
  },
- "total_usd": 10.41,
+ "total_usd": 25.57,
  "subagents": {
-  "count": 4,
+  "count": 6,
   "by_type": {
-   "biblio": 1,
+   "biblio": 2,
    "jury-externe": 1,
    "encadrant": 1,
-   "physicien": 1
+   "physicien": 2
   },
   "calls": [
    {
@@ -101,6 +101,40 @@
     "conforms": true
    },
    {
+    "id": "agent-a8be94ae8334dbfab",
+    "type": "physicien",
+    "description": "Physicien: E4 conjectures",
+    "models": [
+     "claude-fable-5-2"
+    ],
+    "efforts": [
+     "high"
+    ],
+    "calls": 5,
+    "output": 27689,
+    "usd": 1.7479,
+    "off_spec": 0,
+    "expected": "claude-fable-5-2 / high",
+    "conforms": true
+   },
+   {
+    "id": "agent-aa8c18ff5e22e107f",
+    "type": "biblio",
+    "description": "Biblio: E4 references and prior art",
+    "models": [
+     "claude-sonnet-5-5"
+    ],
+    "efforts": [
+     "medium"
+    ],
+    "calls": 4,
+    "output": 2551,
+    "usd": 0.0937,
+    "off_spec": 0,
+    "expected": "claude-sonnet-5-5 / medium",
+    "conforms": true
+   },
+   {
     "id": "agent-ad5c4bac6f994b490",
     "type": "physicien",
     "description": "Role check: physicien Prop 1",
@@ -121,19 +155,26 @@
   "nonconforming": 0
  },
  "tool_calls": {
-  "Bash": 37,
+  "Bash": 92,
   "Read": 17,
-  "Agent": 4,
+  "Agent": 6,
+  "Write": 6,
   "mcp__claude-code-remote__get_session": 1,
   "Grep": 1,
-  "Write": 1
+  "ToolSearch": 1
  },
  "role_calls_via_tools": 0,
  "gpu": {
-  "jobs": 0,
-  "hours": 0,
-  "usd": 0,
-  "by_gpu": {},
+  "jobs": 3,
+  "hours": 0.457,
+  "usd": 0.33,
+  "by_gpu": {
+   "NVIDIA RTX PRO 4500 Blackwell": {
+    "jobs": 3,
+    "hours": 0.45649999999999996,
+    "usd": 0.32870000000000005
+   }
+  },
   "budget_usd": 140
  }
 }
