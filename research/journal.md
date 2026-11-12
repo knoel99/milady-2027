@@ -2,6 +2,11 @@
 
 One entry per working session, newest first, at most ten lines.
 
+## 2026-11-12 - shared GPU budget, team cursor
+- Kim set the hard shared limit to 150 USD, the prepaid credit from main PR #39, first come first served with the Claude team.
+- This session exports MILADY_GPU_BUDGET_USD=150. A new job is refused when main's reservation (account spend, plus the worst case still reserved by live milady-job pods, plus the new job) would cross that credit.
+- H5 is registered before any growth-rate run. CPU smoke `experiments/cursor_abc_growth.py --quick` exited 0 (n = 16, t = 2, Rm = 12, max_div_b 3.46e-16). That short lambda is a transient, not the H5 sample. The float32 bench was already in flight on an RTX 4090. No H100.
+
 ## 2026-11-12 - pod incident, team cursor
 - Incident. `python3 tools/runpod_job.py cleanup` in this session deleted two Claude-team pods this session had not created: `hd6qx71mm6jekm` (`milady-job-329724d4`) and `00t6s3l481flvm` (`milady-job-a24b1ae9`). The cleanup then in this branch deleted every pod whose name started with `milady-job-`.
 - Fix used. Main commit `ce0c796` (PR #39) now deletes only pods past their time limit, and `run` reserves the worst-case cost of pods already running, up to `max_parallel` 4. This branch merged that file and did not rewrite it. `make test` exited 0 after the merge.
