@@ -95,7 +95,15 @@ def test_pod_deleted_even_when_polling_crashes(job_env, monkeypatch):
 def test_hours_limit_and_no_stock(job_env):
     with pytest.raises(SystemExit):
         runpod_job.run(args(hours="5"), mcp=FakeMCP(), sleep=lambda s: None)
-    assert runpod_job.run(args(gpu="NVIDIA RTX A6000"), mcp=FakeMCP(), sleep=lambda s: None) == 1
+    class Full(FakeMCP):
+        def call(self, tool, a):
+            if tool == "create-pod":
+                self.calls.append((tool, a))
+                raise RuntimeError("There are no longer any instances available")
+            return super().call(tool, a)
+    full = Full()
+    assert runpod_job.run(args(gpu="NVIDIA RTX A6000"), mcp=full, sleep=lambda s: None) == 1
+    assert {a["body"]["cloud"] for t, a in full.calls if t == "create-pod"} == {"SECURE"}  # NONE is still tried
 
 
 def line(model, msg_id, effort, out, tools=(), cache_1h=0, read=0, ts="2026-11-20T10:00:00Z"):
@@ -183,3 +191,27 @@ def test_whole_budget_usable_when_no_approval_needed(job_env, monkeypatch):
     late = FakeMCP(fail_first=False)
     assert runpod_job.run(args(hours="0.5"), mcp=late, sleep=lambda s: None) == 1
     assert not [c for c in late.calls if c[0] == "create-pod"]
+
+
+def test_community_cloud_is_tried_when_secure_has_no_capacity(job_env, monkeypatch):
+    monkeypatch.setattr(runpod_job, "http_get", lambda url: b"DONE rc=0" if url.endswith("status.txt") else None)
+
+    class SecureFull(FakeMCP):
+        def call(self, tool, args):
+            if tool == "list-gpu-types":
+                return {"gpuTypes": [{"id": "NVIDIA GeForce RTX 4090", "availability": "LOW", "community": True,
+                                      "secure": True, "price": {"secure": 0.89, "community": 0.34}},
+                                     {"id": "NVIDIA RTX PRO 4500 Blackwell", "availability": "LOW", "community": False,
+                                      "secure": True, "price": {"secure": 0.72, "community": 0.34}}]}
+            if tool == "create-pod":
+                self.calls.append((tool, args))
+                if args["body"]["cloud"] == "SECURE":
+                    raise RuntimeError("There are no longer any instances available")
+                return {"id": "podC", "cost": 0.34}
+            return super().call(tool, args)
+    mcp = SecureFull()
+    assert runpod_job.run(args(gpu="NVIDIA RTX PRO 4500 Blackwell,NVIDIA GeForce RTX 4090",
+                               log=str(job_env / "j.log")), mcp=mcp, sleep=lambda s: None) == 0
+    community = [a["body"]["gpu"]["id"] for t, a in mcp.calls if t == "create-pod" and a["body"]["cloud"] == "COMMUNITY"]
+    assert community == ["NVIDIA GeForce RTX 4090"]          # PRO 4500 is not offered on Community Cloud
+    assert json.loads((job_env / "ledger.jsonl").read_text())["usd_per_hour"] == 0.34

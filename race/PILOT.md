@@ -10,7 +10,7 @@ The pilot runs the race with a single team before the nine-provider race: one Cl
 | Main session | Claude Fable 5.2, effort `high` (`/model fable`, `/effort high`; `race/config.toml` `[main_session]`) |
 | Roles | Claude Code sub-agents `.claude/agents/*.md`, generated from `agents/roles/`: `encadrant` Fable/medium, `physicien` Fable/high, `biblio` Sonnet 5.5/medium, `jury-externe` Fable/max. `tools/call_model.py` and `tools/run_role.py` need an Anthropic API key and are not used in the pilot |
 | CPU | the session's own container (quick runs, measurements) |
-| GPU | `tools/runpod_job.py run`: RTX PRO 4500 Blackwell, then RTX 5090, then RTX A6000 (`race/config.toml` `[gpu]`); H100 only for float64 validation |
+| GPU | `tools/runpod_job.py run`: the `[gpu]` `fallback` list of `race/config.toml` (RTX PRO 4500 Blackwell, RTX 5090, RTX 4090, RTX A6000, A40, L40S, RTX PRO 6000, A100), each tried on Secure Cloud, then the list again on Community Cloud; the stock shown by the catalog is unreliable, so a refused create is not the end: rerun later or widen `--gpu`. H100 only for float64 validation |
 | Budgets | GPU: 140 USD of the 150 USD prepaid RunPod credit, all usable (`race/config.toml` `[gpu]` `budget_usd`; 10 USD margin for storage and rounding). Claude: the plan's usage limit; `tools/usage_report.py` gives the API-equivalent cost |
 | Duration | one week from the start, or until a budget is spent |
 

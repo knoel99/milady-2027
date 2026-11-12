@@ -69,7 +69,10 @@ cache_write_1h_x = 2.0
 repo = "https://github.com/knoel99/milady-2027.git"
 image = "runpod/pytorch:1.0.2-cu1281-torch280-ubuntu2404"   # RunPod official template runpod-torch-v280, CUDA 12.8.1
 min_cuda = "12.8"                                          # Blackwell needs CUDA 12.8 or later
-fallback = ["NVIDIA RTX PRO 4500 Blackwell", "NVIDIA GeForce RTX 5090", "NVIDIA RTX A6000"]
+fallback = ["NVIDIA RTX PRO 4500 Blackwell", "NVIDIA GeForce RTX 5090", "NVIDIA GeForce RTX 4090",
+            "NVIDIA RTX A6000", "NVIDIA A40", "NVIDIA L40S", "NVIDIA RTX PRO 6000 Blackwell Server Edition",
+            "NVIDIA A100-SXM4-80GB"]                       # tried in order: a LOW stock read can still refuse a create
+clouds = ["SECURE", "COMMUNITY"]                           # the whole list on Secure Cloud, then on Community Cloud
 fp64 = "NVIDIA H100 80GB HBM3"                             # float64 validation only, pass it with --gpu
 data_centers = ["EU-CZ-1", "EU-NL-1", "EU-RO-1", "EU-SE-1", "EUR-IS-1", "EUR-NO-1"]   # preferred, not required
 disk_gb = 40

@@ -105,8 +105,8 @@ class MCP:
             return {"text": text}
 
 
-def gpu_catalog(mcp: MCP) -> dict[str, dict]:
-    data = mcp.call("list-gpu-types", {"include": ["AVAILABILITY"], "product": ["POD"], "cloud": "SECURE"})
+def gpu_catalog(mcp: MCP, cloud: str = "SECURE") -> dict[str, dict]:
+    data = mcp.call("list-gpu-types", {"include": ["AVAILABILITY"], "product": ["POD"], "cloud": cloud})
     items = next(iter(data.values())) if isinstance(data, dict) else data
     return {g["id"]: g for g in items}
 
@@ -152,44 +152,49 @@ def run(args, mcp: MCP | None = None, sleep=time.sleep) -> int:
     gpus = [g.strip() for g in (args.gpu or ",".join(cfg.get("fallback", []))).split(",") if g.strip()]
     outputs = args.outputs or cfg.get("outputs", ["experiments/results"])
     mcp = mcp or MCP()
-    catalog = gpu_catalog(mcp)
     token = secrets.token_hex(16)
     env = {"JOB_TOKEN": token, "REPO": cfg.get("repo", "https://github.com/knoel99/milady-2027.git"),
            "REF": sha, "CMD_B64": base64.b64encode(command.encode()).decode(),
            "OUTPUTS": " ".join(outputs), "MAX_MIN": str(int(hours * 60))}
     pod = gpu = None
-    for gid in gpus:
-        g = catalog.get(gid)
-        if not g:
-            print(f"skip {gid}: not in the catalog", file=sys.stderr)
-            continue
-        if g.get("availability") == "NONE":
-            print(f"skip {gid}: no stock", file=sys.stderr)
-            continue
-        worst = hours * float(g["price"].get("secure") or 0)
-        if budget and spent + worst > budget and not args.over_budget_approved:
-            print(f"skip {gid}: up to ${worst:.2f} would exceed the ${budget} budget (${spent:.2f} spent)",
-                  file=sys.stderr)
-            continue
-        body = {"name": f"{PREFIX}{token[:8]}", "cloud": "SECURE", "image": cfg.get("image"),
-                "gpu": {"id": gid, "count": 1, "minCudaVersion": cfg.get("min_cuda", "12.8")},
-                "disk": int(cfg.get("disk_gb", 40)), "ports": ["8000/http"], "env": env,
-                "entrypoint": ["/bin/bash", "-c"], "cmd": [BOOTSTRAP]}
-        if cfg.get("data_centers"):
-            body["dataCenterIds"] = cfg["data_centers"]
-        try:
-            pod = mcp.call("create-pod", {"body": body})
-            gpu = g
-            break
-        except RuntimeError as e:
-            print(f"create-pod on {gid} failed: {e}", file=sys.stderr)
-            if cfg.get("data_centers"):
-                body.pop("dataCenterIds")
+    price = 0.0
+    # Stock reads are unreliable both ways (LOW refuses, NONE sometimes accepts) and a refused create is free:
+    # try every GPU of the list on each cloud in turn.
+    for cloud in cfg.get("clouds", ["SECURE"]):
+        catalog = gpu_catalog(mcp, cloud)
+        for gid in gpus:
+            g = catalog.get(gid)
+            if not g:
+                print(f"skip {gid} ({cloud}): not in the catalog", file=sys.stderr)
+                continue
+            listed = float(g["price"].get(cloud.lower()) or 0)
+            if not g.get(cloud.lower(), True) or listed <= 0:  # the catalog shows placeholder prices off a cloud
+                print(f"skip {gid} ({cloud}): not offered on this cloud", file=sys.stderr)
+                continue
+            worst = hours * listed
+            if budget and spent + worst > budget and not args.over_budget_approved:
+                print(f"skip {gid} ({cloud}): up to ${worst:.2f} would exceed the ${budget} budget "
+                      f"(${spent:.2f} spent)", file=sys.stderr)
+                continue
+            body = {"name": f"{PREFIX}{token[:8]}", "cloud": cloud, "image": cfg.get("image"),
+                    "gpu": {"id": gid, "count": 1, "minCudaVersion": cfg.get("min_cuda", "12.8")},
+                    "disk": int(cfg.get("disk_gb", 40)), "ports": ["8000/http"], "env": env,
+                    "entrypoint": ["/bin/bash", "-c"], "cmd": [BOOTSTRAP]}
+            attempts = [dict(body, dataCenterIds=cfg["data_centers"]), body] if (
+                cloud == "SECURE" and cfg.get("data_centers")) else [body]
+            for attempt in attempts:
                 try:
-                    pod, gpu = mcp.call("create-pod", {"body": body}), g
+                    pod, gpu = mcp.call("create-pod", {"body": attempt}), g
                     break
-                except RuntimeError as e2:
-                    print(f"  and without data-center constraint: {e2}", file=sys.stderr)
+                except RuntimeError as e:
+                    where = "preferred data centers" if "dataCenterIds" in attempt else "any data center"
+                    print(f"create-pod on {gid} ({cloud}, {where}) failed: {str(e)[:160]}", file=sys.stderr)
+            if pod:
+                cost = pod.get("cost") if isinstance(pod, dict) else None
+                price = float(cost) if isinstance(cost, (int, float)) and cost > 0 else listed
+                break
+        if pod:
+            break
     if not pod:
         print("no GPU could be rented: nothing billed", file=sys.stderr)
         return 1
@@ -202,7 +207,6 @@ def run(args, mcp: MCP | None = None, sleep=time.sleep) -> int:
                 mcp.call("delete-pod", {"id": p["id"]})
                 print(f"deleted pod {p['id']}", file=sys.stderr)
         sys.exit(f"create-pod answered without a pod id ({str(pod)[:200]}); pod {name} looked up and deleted")
-    price = float(gpu["price"].get("secure") or 0)
     t0 = time.time()
     print(f"pod {pid} on {gpu['id']} at ${price}/h; limit {hours} h; commit {sha[:12]}", file=sys.stderr)
     base = f"https://{pid}-8000.proxy.runpod.net/{token}/"
@@ -282,10 +286,11 @@ def main() -> int:
         return 0
     mcp = MCP()
     if a.cmd == "prices":
-        cat = gpu_catalog(mcp)
-        for gid in config().get("fallback", []):
-            g = cat.get(gid, {})
-            print(f"{gid:<48} ${g.get('price', {}).get('secure')}/h  stock {g.get('availability')}")
+        for cloud in config().get("clouds", ["SECURE"]):
+            cat = gpu_catalog(mcp, cloud)
+            for gid in config().get("fallback", []):
+                g = cat.get(gid, {})
+                print(f"{cloud:<9} {gid:<48} ${g.get('price', {}).get(cloud.lower())}/h  stock {g.get('availability')}")
         return 0
     pods = mcp.call("list-pods", {})
     items = pods.get("pods", []) if isinstance(pods, dict) else pods
