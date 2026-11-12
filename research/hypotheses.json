@@ -51,6 +51,19 @@
       "verdict": "",
       "results": "Five seeds, test η: ED(V5_control) 2.43, ED(V5) 0.925; paired difference 1.50 ± 0.27, 5.6 SE; V5 below control for 5 of 5 seeds; seed-mean gain at 3 of 5 test η (0.00951, 0.0135, 0.0190), loss at 0.00476 and 0.00673. No criterion met (third one at its limit): not refuted. Digest: E2, 'Paired comparisons' and 'Per test η, over the seeds' tables.",
       "commit": "6dbd0e6"
+    },
+    {
+      "id": "H4",
+      "statement": "On one GPU from the pilot fallback list, both mhd3d bench jobs (n = 64 and 128, 50 steps, float32 then float64) finish with rc 0 and print a finite seconds_per_step for each resolution.",
+      "origin": "race/PILOT-CURSOR-AGENT.md step 4, a measurement of the 3D solver, not a claim from the theory brief",
+      "refutation_criterion": "Refuted if either job's rc is not 0, if either log has no JSON object for n = 64 or n = 128, or if seconds_per_step is not finite. One run per dtype. Not a five-seed comparison, so no speedup is claimed.",
+      "protocol": "Register this criterion first. Then a CPU check, n = 16, 2 steps, float32 and float64. Then python3 tools/runpod_job.py run --hours 0.5 for float32, then the same hours for float64, command python -m milady.sim.mhd3d bench --n 64 128 --device cuda --dtype <dtype> --steps 50. No H100. Before each job, local ledger plus the Claude branch ledger plus the tool's reserved running pods plus 0.5 times the chosen hourly price must stay under 40 USD.",
+      "script": "python -m milady.sim.mhd3d bench --n 64 128 --device cuda --dtype float32 --steps 50",
+      "cost_estimate": "At most 0.5 h times the rented hourly price, twice. Fallback prices on 2026-11-12 were about 0.34 to 2.69 USD per hour, so the tool's worst-case hold is under about 1.35 USD per job. Claude ledger on origin/claude/modest-newton-zx8fqs was 1.71 USD before this job.",
+      "status": "registered",
+      "verdict": "",
+      "results": "",
+      "commit": ""
     }
   ]
 }
