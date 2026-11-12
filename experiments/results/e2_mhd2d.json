@@ -33,36 +33,37 @@
    0.04475862338512773,
    0.007261011143468582
   ],
-  "n_train_per_eta": 2400
+  "n_train_per_eta": 2400,
+  "seed": 0
  },
  "variants": {
   "V0_free": {
-   "training_time_s": 1199.9813313484192,
-   "generation_time_s_per_sample": 0.007355435609817505
+   "training_time_s": 373.9845781326294,
+   "generation_time_s_per_sample": 0.005432514234022661
   },
   "V1_penalty": {
-   "training_time_s": 1059.0878584384918,
-   "generation_time_s_per_sample": 0.018944249933416195
+   "training_time_s": 424.2142605781555,
+   "generation_time_s_per_sample": 0.0061727474602785975
   },
   "V2_final_projection": {
    "training_time_s": 0.0,
-   "generation_time_s_per_sample": 0.005896513613787564
+   "generation_time_s_per_sample": 0.005726340120488947
   },
   "V3_projected_flow": {
-   "training_time_s": 424.09780859947205,
-   "generation_time_s_per_sample": 0.006423290469429709
+   "training_time_s": 401.4169387817383,
+   "generation_time_s_per_sample": 0.006365506649017334
   },
   "V4_potentials": {
-   "training_time_s": 304.9477868080139,
-   "generation_time_s_per_sample": 0.0044820456938310105
+   "training_time_s": 285.6550614833832,
+   "generation_time_s_per_sample": 0.00408403678373857
   },
   "V5_potentials_stat": {
-   "finetuning_time_s": 460.1758997440338,
+   "finetuning_time_s": 415.3711893558502,
    "iters": 600,
    "beta": 50.0
   },
   "V5_control": {
-   "finetuning_time_s": 79.27237820625305,
+   "finetuning_time_s": 74.0045874118805,
    "iters": 600,
    "beta": 0.0
   }
@@ -1481,6 +1482,7 @@
     "Hc_mean": 0.0006860614436063851,
     "Hc_std": 0.05588186323392702
    },
+   "tilting_weighted_energy_distance": 0.932373620643995,
    "ess_frac_b": 0.07578265983925057,
    "lambda": [
     245.4521593504396,
@@ -1532,6 +1534,7 @@
     "Hc_mean": 0.0006362215280252368,
     "Hc_std": 0.05281347920336216
    },
+   "tilting_weighted_energy_distance": 0.3059110789151349,
    "ess_frac_b": 0.5255935241875777,
    "lambda": [
     98.87588687654741,
@@ -1583,6 +1586,7 @@
     "Hc_mean": 0.0013240319722045994,
     "Hc_std": 0.04837309619126381
    },
+   "tilting_weighted_energy_distance": 0.07181075698797823,
    "ess_frac_b": 0.8919041544999673,
    "lambda": [
     -6.3279112212770166,
@@ -1634,6 +1638,7 @@
     "Hc_mean": 0.0018210493920434478,
     "Hc_std": 0.04440249438840105
    },
+   "tilting_weighted_energy_distance": 0.25930848360523484,
    "ess_frac_b": 0.5068901167903678,
    "lambda": [
     -119.51172241225929,
@@ -1685,6 +1690,7 @@
     "Hc_mean": 0.0018269101555787692,
     "Hc_std": 0.0418717465620239
    },
+   "tilting_weighted_energy_distance": 1.559611355119534,
    "ess_frac_b": 0.046932584164585574,
    "lambda": [
     -306.4043106465656,
@@ -1736,6 +1742,7 @@
     "Hc_mean": 0.001796289996371298,
     "Hc_std": 0.040825892522183764
    },
+   "tilting_weighted_energy_distance": 6.51434074908199,
    "ess_frac_b": 0.002000000000017301,
    "lambda": [
     -7202.323082812388,
@@ -1787,6 +1794,7 @@
     "Hc_mean": -0.00021220111655506974,
     "Hc_std": 0.05838250146575571
    },
+   "tilting_weighted_energy_distance": 0.16795052071876704,
    "ess_frac_b": 0.989882300868013,
    "lambda": [
     -8.044002500178918,
@@ -1838,6 +1846,7 @@
     "Hc_mean": -0.0002170498491234232,
     "Hc_std": 0.05693860602760517
    },
+   "tilting_weighted_energy_distance": 0.19311356976564742,
    "ess_frac_b": 0.11615370175374586,
    "lambda": [
     -219.87860920186142,
@@ -1889,6 +1898,7 @@
     "Hc_mean": 0.00019753603361042765,
     "Hc_std": 0.053975236801834754
    },
+   "tilting_weighted_energy_distance": 4.791297587538245,
    "ess_frac_b": 0.0021515351823870373,
    "lambda": [
     -1668.8626733765302,
@@ -1940,6 +1950,7 @@
     "Hc_mean": -5.543723423783486e-05,
     "Hc_std": 0.05616998250765548
    },
+   "tilting_weighted_energy_distance": 6.196905367817591,
    "ess_frac_b": 0.002,
    "lambda": [
     -71387.64597951852,
@@ -1991,6 +2002,7 @@
     "Hc_mean": -5.285770503678705e-05,
     "Hc_std": 0.05718849417815628
    },
+   "tilting_weighted_energy_distance": 9.417346325728097,
    "ess_frac_b": 0.002,
    "lambda": [
     -105663.79517846106,
@@ -2288,8 +2300,12 @@
      "energy_distance_features": 1.1021896850120574
     }
    },
-   "ess_frac_b_mean": 0.28739005248053745
+   "ess_frac_b_mean": 0.28739005248053745,
+   "tilting_weighted_energy_distance": {
+    "train": 1.6072260073923113,
+    "test": 4.153322674313669
+   }
   }
  },
- "total_duration_s": 4022.9101815223694
+ "total_duration_s": 2307.1791501045227
 }

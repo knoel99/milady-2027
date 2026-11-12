@@ -71,10 +71,7 @@ def e1():
 def e1_detail(r):
     """Per-Γ and per-seed details taken from the E1 JSON.
 
-    For each Γ the JSON keeps the mean and standard deviation (ddof = 0) of the two seeds: the two per-seed values
-    are therefore mean ± standard deviation, without knowing which belongs to which seed. We publish the envelope
-    ("low" = mean - std, "high" = mean + std); the mean over Γ for each seed lies
-    between the mean of the low values and that of the high values.
+    For each Γ the JSON keeps [mean, sd, min, max] over the seeds and the per-seed values ("seed_values").
     """
     ev, res = r["evaluation"], r["summary"]
     ref_sd = res["reference"]["dEdt_std"]
@@ -85,11 +82,6 @@ def e1_detail(r):
 
     def mean(xs):
         return sum(xs) / len(xs)
-
-    def env(v, split, k):
-        lo = mean([x[k][0] - x[k][1] for x in rows(v, split)])
-        hi = mean([x[k][0] + x[k][1] for x in rows(v, split)])
-        return lo, hi
 
     print("\n### Asymmetry |P(D>0)−½| per Γ (mean over seeds)\n")
     vs = ["A_reference", "B_augmentation", "C_equivariant"]
@@ -107,21 +99,35 @@ def e1_detail(r):
     for v in ("C_equivariant", "F_stationarity_C", "F0_control_C"):
         print(f"| {v} | " + " | ".join(f(mean([x[k][1] for x in rows(v, 'test')])) for k in ("energy", "liou_train_mean", "liou_test_mean")) + " |")
 
-    print("\n### Per-seed envelope of σ(dE/dt)/σ_ref (mean σ over the test Γ, divided by the reference)\n")
-    print("| variant | low seed | high seed |")
-    print("|---|---|---|")
-    for v in ("F_stationarity_C", "F0_control_C", "C_short", "F_stationarity_Cshort", "F0_control_Cshort"):
-        lo, hi = env(v, "test", "dEdt_std")
-        print(f"| {v} | {f(lo / ref_sd)} | {f(hi / ref_sd)} |")
-    print("\nOn short C, seed 1 diverged: at each Γ its value is the high one, which separates the seeds.")
+    seeds = r["config"]["seeds"]
 
-    print("\n### Short C, seed 0 (low value at each Γ) against its control, test Γ\n")
-    print("| metric | F on short C, seed 0 | control F0, mean over seeds | control F0, high seed |")
-    print("|---|---|---|---|")
+    def per_seed(v, split, k):
+        """Mean over the Γ of one split, for each seed (needs the per-seed values of the JSON)."""
+        rs = rows(v, split)
+        return [mean([x["seed_values"][k][i] for x in rs]) for i in range(len(seeds))]
+
+    print("\n### Per-seed σ(dE/dt)/σ_ref (mean σ over the test Γ, divided by the reference)\n")
+    print("| variant | " + " | ".join(f"seed {s}" for s in seeds) + " |")
+    print("|---|" + "---|" * len(seeds))
+    diverged = {}
+    for v in ("F_stationarity_C", "F0_control_C", "C_short", "F_stationarity_Cshort", "F0_control_Cshort"):
+        vals = per_seed(v, "test", "dEdt_std")
+        print(f"| {v} | " + " | ".join(f(x / ref_sd) for x in vals) + " |")
+        diverged[v] = [s for s, x in zip(seeds, vals, strict=True) if not abs(x / ref_sd) < 10]
+    for v, ss in diverged.items():
+        if ss:
+            print(f"\n{v}: seeds {ss} diverged (σ(dE/dt) more than ten times the reference).")
+
+    print("\n### Stationarity fine-tuning on short C, seeds that did not diverge, against its control, test Γ\n")
+    ok = [i for i, s in enumerate(seeds) if s not in diverged["F_stationarity_Cshort"]]
+    print(f"Seeds kept: {[seeds[i] for i in ok]}.\n")
+    print("| metric | F on short C, mean [min, max] | control F0, mean [min, max] over all seeds |")
+    print("|---|---|---|")
     for k, lab in (("energy", "energy dist."), ("liou_train_mean", "Liouville deg≤2"), ("liou_test_mean", "Liouville deg 3")):
-        lo, _ = env("F_stationarity_Cshort", "test", k)
-        _, hi0 = env("F0_control_Cshort", "test", k)
-        print(f"| {lab} | {f(lo)} | {f(res['F0_control_Cshort']['test'][k])} | {f(hi0)} |")
+        a = [per_seed("F_stationarity_Cshort", "test", k)[i] for i in ok]
+        b = per_seed("F0_control_Cshort", "test", k)
+        cell = lambda xs: f"{f(mean(xs))} [{f(min(xs))}, {f(max(xs))}]" if xs else "–"
+        print(f"| {lab} | {cell(a)} | {cell(b)} |")
 
     print("\n### A posteriori tilting per test Γ (mean over seeds, half b)\n")
     print("| Γ | ESS/N (A) | Liouville deg≤2: A half → A tilted | ESS/N (C) | Liouville deg≤2: C half → C tilted |")
@@ -189,6 +195,21 @@ def spread(values):
     return f"{f(m)} ± {f(sd)} [{f(min(values))}, {f(max(values))}]"
 
 
+def paired(a, b):
+    """Paired differences a − b over the seeds: (values, mean, standard error with ddof = 1, count of a > b)."""
+    d = [x - y for x, y in zip(a, b, strict=True)]
+    n = len(d)
+    m = sum(d) / n
+    se = ((sum((x - m) ** 2 for x in d) / (n - 1)) ** 0.5 / n ** 0.5) if n > 1 else 0.0
+    return d, m, se, sum(x > 0 for x in d)
+
+
+def paired_row(label, a, b):
+    d, m, se, k = paired(a, b)
+    z = f"{m / se:.1f}" if se > 0 else "–"
+    return f"| {label} | " + ", ".join(f(x) for x in d) + f" | {f(m)} ± {f(se)} | {z} | {k} of {len(d)} |"
+
+
 def e1_seeds(r):
     """Dispersion across seeds of the means over the test Γ (runs that store per-seed values)."""
     seeds = r["config"]["seeds"]
@@ -203,6 +224,31 @@ def e1_seeds(r):
         rows = d["test"]
         cells = [spread([sum(row["seed_values"][k][i] for row in rows) / len(rows) for i in range(len(seeds))]) for k, _ in keys]
         print(f"| {v} | " + " | ".join(cells) + " |")
+
+    def ps(v, k):
+        rows = ev[v]["test"]
+        return [sum(row["seed_values"][k][i] for row in rows) / len(rows) for i in range(len(seeds))]
+
+    print(f"\n### Paired comparisons over the seeds {seeds} (means over the test Γ; SE = sd(ddof = 1)/√n)\n")
+    print("| comparison | per-seed differences | mean ± SE | mean/SE | seeds with a positive difference |")
+    print("|---|---|---|---|---|")
+    print(paired_row("energy dist.: A_reference − C_equivariant (H1)", ps("A_reference", "energy"), ps("C_equivariant", "energy")))
+    print(paired_row("Liouville deg 3: F0_control_C − F_stationarity_C (H2)", ps("F0_control_C", "liou_test_mean"), ps("F_stationarity_C", "liou_test_mean")))
+    print(paired_row("Liouville deg≤2: F0_control_C − F_stationarity_C", ps("F0_control_C", "liou_train_mean"), ps("F_stationarity_C", "liou_train_mean")))
+    print(paired_row("energy dist.: F_stationarity_C − F0_control_C", ps("F_stationarity_C", "energy"), ps("F0_control_C", "energy")))
+    ratio = (sum(ps("F_stationarity_C", "energy")) / sum(ps("F0_control_C", "energy")))
+    print(f"\nRatio of the mean energy distances F_stationarity_C / F0_control_C: {f(ratio)}.")
+
+    print("\n### Per seed, test Γ: stationarity fine-tuning of C against its control, and per-sample projection\n")
+    print("| quantity | " + " | ".join(f"seed {s}" for s in seeds) + " |")
+    print("|---|" + "---|" * len(seeds))
+    for lab, k in (("energy dist.", "energy"), ("Liouville deg≤2", "liou_train_mean"), ("Liouville deg 3", "liou_test_mean")):
+        for v in ("F_stationarity_C", "F0_control_C"):
+            print(f"| {lab}, {v} | " + " | ".join(f(x) for x in ps(v, k)) + " |")
+    for lab, a, b in (("A_reference / C_equivariant, energy dist.", "A_reference", "C_equivariant"),
+                      ("E_projection_C / C_equivariant, energy dist.", "E_projection_C", "C_equivariant")):
+        print(f"| {lab} | " + " | ".join(f(x / y) for x, y in zip(ps(a, "energy"), ps(b, "energy"), strict=True)) + " |")
+    print("\nRice error column of the tables: |Rice rate averaged over the seeds − simulated rate|, then mean over the Γ.")
 
 
 def e2_seeds():
@@ -224,6 +270,37 @@ def e2_seeds():
     for m in ("base", "tilting", "rescaling"):
         print(f"| in law: {m} | " + " | ".join(spread([x["summary"]["in_law"][m]["test"][k] for x in runs]) for k, _ in keys) + " |")
 
+    keys2 = [("err_Eu_rel", "err. E_u"), ("err_Eb_rel", "err. E_B"), ("spectrum_error_log10", "err. spectrum"), ("balance_residual_A2", "⟨a²⟩ residual")]
+    print(f"\n### Across seeds, other metrics: means over the test η, mean ± sd [min, max] over {len(runs)} seeds\n")
+    print("| variant | " + " | ".join(k[1] for k in keys2) + " |")
+    print("|---|" + "---|" * len(keys2))
+    for v in ("V1_penalty", "V4_potentials", "V5_potentials_stat", "V5_control"):
+        print(f"| {v} | " + " | ".join(spread([x["summary"][v]["test"][k] for x in runs]) for k, _ in keys2) + " |")
+    for m in ("base", "tilting", "rescaling"):
+        print(f"| in law: {m} | " + " | ".join(spread([x["summary"]["in_law"][m]["test"][k] for x in runs]) for k, _ in keys2) + " |")
+    print("\nMean ESS/N of the tilting over the eleven η, per seed: " + ", ".join(f(x["summary"]["in_law"]["ess_frac_b_mean"]) for x in runs))
+
+    print(f"\n### Paired comparisons over the seeds {seeds} (means over the test η; SE = sd(ddof = 1)/√n)\n")
+    print("| comparison | per-seed differences | mean ± SE | mean/SE | seeds with a positive difference |")
+    print("|---|---|---|---|---|")
+    ed = lambda v: [x["summary"][v]["test"]["energy_distance_features"] for x in runs]
+    print(paired_row("energy dist.: V5_control − V5_potentials_stat (H3)", ed("V5_control"), ed("V5_potentials_stat")))
+    print(paired_row("energy dist.: V2_final_projection − V3_projected_flow", ed("V2_final_projection"), ed("V3_projected_flow")))
+    print(paired_row("energy dist.: V4_potentials − V3_projected_flow", ed("V4_potentials"), ed("V3_projected_flow")))
+
+    print("\n### Per test η, over the seeds: V5 against its control, and ESS/N of the tilting\n")
+    print("| η | control, seed mean | V5, seed mean | control − V5: mean ± SE | mean/SE | seeds where V5 is lower | ESS/N per seed |")
+    print("|---|---|---|---|---|---|---|")
+    test = runs[0]["evaluation"]["V5_control"]["test"]
+    for i, row in enumerate(test):
+        a = [x["evaluation"]["V5_control"]["test"][i]["energy_distance_features"] for x in runs]
+        b = [x["evaluation"]["V5_potentials_stat"]["test"][i]["energy_distance_features"] for x in runs]
+        d, m, se, k = paired(a, b)
+        key = min(runs[0]["in_law"], key=lambda e: abs(float(e) - row["eta"]))
+        ess = [x["in_law"][key]["ess_frac_b"] for x in runs]
+        print(f"| {row['eta']:.5f} | {f(sum(a) / len(a))} | {f(sum(b) / len(b))} | {f(m)} ± {f(se)} | {m / se:.1f} | {k} of {len(d)} | "
+              + ", ".join(f(e) for e in ess) + " |")
+
 
 def e2():
     p = R / "e2_mhd2d.json"
@@ -243,7 +320,7 @@ def e2():
             ("balance_residual_Hc", "H_c residual"), ("balance_residual_A2", "⟨a²⟩ residual"), ("std_diss_rel", "σ(D)/σ_ref"),
             ("energy_distance_features", "energy dist.")]
     for split in ("test", "train"):
-        print(f"\n### Means over the {split} η\n")
+        print(f"\n### Means over the {split} η (seed 0)\n")
         print("| variant | " + " | ".join(k[1] for k in keys) + " |")
         print("|---|" + "---|" * len(keys))
         for v, d in res.items():
@@ -252,7 +329,7 @@ def e2():
             print(f"| {v} | " + " | ".join(f(d[split][k[0]]) for k in keys) + " |")
         for m in ("base", "tilting", "rescaling"):
             print(f"| in law: {m} (V4, half b) | " + " | ".join(f(res['in_law'][m][split][k[0]]) for k in keys) + " |")
-    print(f"\nMean ESS/N of the tilting: {f(res['in_law']['ess_frac_b_mean'])}")
+    print(f"\nMean ESS/N of the tilting (seed 0): {f(res['in_law']['ess_frac_b_mean'])}")
     if "tilting_weighted_energy_distance" in res["in_law"]:
         w = res["in_law"]["tilting_weighted_energy_distance"]
         print(f"Tilting evaluated with its weights (no resampling), energy dist.: test {f(w['test'])}, train {f(w['train'])}")

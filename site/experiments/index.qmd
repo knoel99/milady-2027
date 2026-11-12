@@ -59,26 +59,29 @@ The `experiments/` folder of the repository contains everything needed to reprod
 | `e3_abc.py` | E3: kinematic dynamo of the ABC flow, growth rate as a function of $Rm$ (solver `milady.sim.induction3d`). |
 | `unet.py` | Small periodic U-Net (not used in the final results: too slow on CPU, see below). |
 | `figures.py` | Plots of the results (`figures/<name>.png` and `.svg`). |
-| `digest.py` | Numerical digest `results/digest.md`, the source of Tables 1, 3 to 6 and 8 of the report (Tables 2 and 7 come from the JSON files of E1 and E2). |
+| `digest.py` | Numerical digest `results/digest.md`, the source of the tables of the report. |
 
 ## Reproducing the results {#reproduire}
 
 ```bash
 cd experiments
-python3 e3_abc.py                 # E3, about 23 min
+./run_stage.sh                    # E1-E3, five seeds, then figures and digest: about 6 h on 4 cores
+# or step by step:
+python3 e3_abc.py                 # E3, about 24 min
 python3 e2_data.py                # E2, data: about 30 min
-python3 e2_mhd2d.py               # E2, models: about 67 min (--seed k for another seed)
-python3 e1_gissinger.py           # E1, about 2 to 3 h (resumable; --seeds 0 1 ... to choose the seeds)
+python3 e2_mhd2d.py --seed k      # E2, models, seed k = 0..4: about 38 min each
+python3 e1_gissinger.py --train-only --seeds k   # E1, training of seed k (resumable cache)
+python3 e1_gissinger.py --seeds 0 1 2 3 4        # E1, evaluation over the seeds: about 25 min
 python3 figures.py && python3 digest.py > results/digest.md
 ```
 
-Each script accepts `--quick` for a reduced version (from a few minutes to about twenty minutes for E1), useful for checking the installation. The published runs use seeds 0 and 1 for E1 and seed 0 for E2. `./run_stage.sh --seeds "0 1 2 3 4"` runs the three experiments with several seeds, one process per seed, then the figures and the digest, which then reports the spread across seeds. The durations given were measured on the machine described above, partly while other computations were running.
+Each script accepts `--quick` for a reduced version (from a few minutes to about twenty minutes for E1), useful for checking the installation. The published runs use seeds 0 to 4 for E1 and E2 (`./run_stage.sh`, one process per seed, two at a time); the digest reports the spread across seeds. The durations given were measured on the machine described above.
 
 ## E1 — dipole reversals {#e1}
 
 Gissinger's three-mode model serves as a "pocket dynamo": it has the symmetry $\mathbf{B}\to-\mathbf{B}$, an onset threshold for reversals (between $\Gamma = 0.86$ and $0.865$) and exactly known dynamics. We learn the stationary distribution $p(Q, D, V \mid \Gamma)$ by conditional flow matching, then measure the effect of the symmetry imposed by construction, of the stationarity loss, and of the per-sample projection. The frequency of zero crossings of $D$ (reversals and excursions) is estimated from the generated distribution alone, through the Rice formula.
 
-In short: the equivariant velocity field keeps the distribution symmetric at every value of $\Gamma$, whereas data augmentation symmetrizes it only at training values; projecting each sample onto $\mathrm{d}E/\mathrm{d}t = 0$ multiplies the energy distance to the true distribution by 9; Rice's formula recovers the crossing frequency with a cumulative error of 14% far from the threshold (up to 65% at a single value) and of 42% near the threshold; the stationarity loss improves the residuals of a good model but fails on a biased model.
+In short: the equivariant velocity field keeps the distribution symmetric at every value of $\Gamma$, whereas data augmentation symmetrizes it only at training values; projecting each sample onto $\mathrm{d}E/\mathrm{d}t = 0$ multiplies the energy distance to the true distribution by about 10; Rice's formula recovers the crossing frequency with a cumulative error of 12% far from the threshold (up to 41% at a single value) and of 59% near the threshold (one seed); over five seeds, the stationarity loss does no better than a control run on a good model and diverges on a biased model.
 
 Results and discussion: [report, section E1](../report/index.html#e1). Interactive diagram: [Gissinger model](../interactive/index.html#gissinger).
 
@@ -114,7 +117,7 @@ Results: [report, section E3](../report/index.html#e3). Interactive diagram: [AB
 |---|---|
 | `results/digest.md` | Numerical tables of all the experiments (generated). |
 | `results/e1_gissinger.json` | E1: configuration, data statistics, evaluation per variant and per $\Gamma$ (mean and standard deviation across seeds), fine grid, noise floors. |
-| `results/e2_mhd2d.json` | E2: configuration, evaluation per variant and per $\eta$, "distributional" part. |
+| `results/e2_mhd2d.json`, `e2_mhd2d_s1.json` to `e2_mhd2d_s4.json` | E2, seeds 0 to 4: configuration, evaluation per variant and per $\eta$, "distributional" part. |
 | `results/e3_abc.json` | E3: growth rates, resolution convergence, interpolated thresholds. |
 | `results/*.npz` | Generated samples and eigenmodes, for the figures and the widgets. |
 
