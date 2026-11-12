@@ -2,6 +2,21 @@
 
 One entry per working session, newest first, at most ten lines.
 
+## 2026-11-12 - H12 and H13 registered, team cursor
+- H9 holds, so the next resolution is n = 128 against the same n = 64 control, with the bound tightened to 0.0005 before that run.
+- H13 asks whether the H8 timestep tolerance of 0.002 still holds at n = 96, against the H9 cfl = 1 mean 0.008095872. The cfl = 0.5 points are not computed yet.
+- H100 80GB is 4.39 USD/h on Secure, 4.9 times the 4090. The five-point n = 96 job cost 0.0927 USD. Matching that bill would take about 76 s, and setup is already about 90 s, so an H100 does not win on cost here. Next pods are 4090, then PRO 4500, then A6000.
+
+## 2026-11-12 - H11 refuted, team cursor
+- Ten points at n = 64, 1000 steps, all finite. scale_max stays under 1e-3. The largest is 3.46e-5.
+- rel_max fails 0.01 on ABC seeds 1, 3 and 4 (0.0122, 0.358, 0.0161). Seed 3 has rhs_abs_min 6.4e-6. Taylor-Green stays under 0.01.
+- H11 is refuted. The 0.01 bound was not moved. Pod `w8lf2ntul7d6y4`, PRO 4500, 0.0380 USD. Local ledger 0.8957 USD.
+
+## 2026-11-12 - H9 supported, team cursor
+- Five points at n = 96, Rm = 12, cfl = 1, all finite. Largest max_div_b is 4.92e-16.
+- Mean lambda 0.008096 (sample std 0.000565). Absolute difference from the n = 64 control 0.008127803 is 3.19e-5, under the pre-set 0.001.
+- The H9 refutation criterion is not met. Pod `1x55oy7rjbx04y`, RTX 4090, 0.10 h, 0.0927 USD. PRO 4500 had no capacity, so the measured fallback was the 4090.
+
 ## 2026-11-12 - GPU choice and H9-H11, team cursor
 - Cost per completed point from this branch's ledger. n = 96, three points: PRO 4500 244 s and 0.0683 USD (0.0228 USD/point); A40 586 s and 0.1117 USD (0.0372 USD/point). The 4500 is cheaper and faster, so A40 is not used.
 - n = 64, three points: RTX 4090 56 s and 0.0380 USD (0.0127 USD/point); A6000 99 s and 0.0358 USD (0.0119 USD/point). Five cfl = 0.5 points on the PRO 4500: 158 s and 0.0502 USD (0.0100 USD/point).
