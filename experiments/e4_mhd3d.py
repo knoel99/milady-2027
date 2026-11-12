@@ -57,6 +57,7 @@ from milady.train.fm3d import ResMLP, SignSymmetrized
 
 ETAS, ETA_TRAIN, ETA_VAL, ETA_TEST = D.ETAS, D.ETA_TRAIN, D.ETA_VAL, D.ETA_TEST
 ETA_TRAIN_EVAL = [ETA_TRAIN[0], ETA_TRAIN[2], ETA_TRAIN[5]]
+ETA_SAMPLE = ETA_TEST[1]                               # held-out η whose first generated fields are kept (seed 0)
 LOG_LO, LOG_HI = np.log(0.028), np.log(0.085)          # normalization range of the condition
 AMP = D.NU * D.KF**2                                   # forcing amplitude (laminar rule)
 N_GRID = D.N
@@ -235,6 +236,11 @@ class Context:
             "std_residual_rel": float(np.sqrt(avg((bud["residual_total"] - avg(bud["residual_total"])) ** 2))
                                       / rbud["residual_total"].std()),
             "k_lambda": float(np.sqrt(avg(ph["j2"]) / avg(ph["b2"]))),
+            # mean shell spectra of the ensemble (k = 1 … 9), for the figures and the explorer
+            "spec_b": [float(v) for v in spec_b], "spec_u": [float(v) for v in spec_u],
+            "H_shell": [float(v) for v in avg(ph["H_shell"])],
+            "E_u": float(avg(bud["kinetic_energy"])), "E_B": float(avg(bud["magnetic_energy"])),
+            "injection": float(inj), "dissipation": float(sinks),
         }
         if nulls and self.ref_json is not None:
             m = min(self.cfg["n_null"], n)
@@ -399,6 +405,11 @@ def run(quick: bool, seed: int, group: str, device: str = "cpu", cond_scale: flo
                                 "n_train": ctx.n_train},
                      "evaluation": {}, "times": {}, "h14": [], "h12": []}
     gens: dict = {}
+    samples: dict = {}
+    if seed == 0:                                                  # reference fields at the same η, first 4 snapshots
+        x = D.load(ETA_SAMPLE, quick)["x"][:4]
+        samples["reference"] = ctx.pot.to_grid(ctx.pot.field_hat(torch.as_tensor(x)).to(torch.complex128),
+                                               (N_GRID,) * 3).numpy().astype(np.float16)
 
     tag = ("" if cond_scale == 8.0 else f"_cs{cond_scale:g}") + ("_quick" if quick else "")
 
@@ -448,6 +459,12 @@ def run(quick: bool, seed: int, group: str, device: str = "cpu", cond_scale: flo
                 row.update(ctx.restart_drift(fh, e))
             ev[split(e)].append(row)
         results["evaluation"][name] = ev
+        if seed == 0 and ETA_SAMPLE in fhs:                        # a few generated fields, for the explorer
+            item = fhs[ETA_SAMPLE]
+            fh = (item[0] if isinstance(item, tuple) else item)[:4].cpu().to(torch.complex128)
+            grid = ctx.pot.to_grid(fh, (N_GRID,) * 3).numpy().astype(np.float16)      # (4, 2, n, n, n, 3)
+            samples[name] = grid
+            np.savez_compressed(RESULTS / f"e4_samples{tag}_s0_{group.replace(',', '')}.npz", eta=ETA_SAMPLE, **samples)
         save_parts()
         test = ev["test"]
         print(f"== {name}: test ed_ratio {np.mean([r['ed_ratio'] for r in test]):.2f}  "

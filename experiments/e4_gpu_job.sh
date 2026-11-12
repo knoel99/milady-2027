@@ -33,11 +33,11 @@ for s in $SEEDS; do
 done
 # the result files are written after every variant: copy them as they come, so that a job cut by its
 # time limit still brings back what was evaluated
-( while true; do cp results/e4_mhd3d${TAG}_s*.json results/logs/e4_gpu_s*.log "$OUT"/ 2>/dev/null; sleep 45; done ) &
+( while true; do cp results/e4_mhd3d${TAG}_s*.json results/e4_samples${TAG}_s0_*.npz results/logs/e4_gpu_s*.log "$OUT"/ 2>/dev/null; sleep 45; done ) &
 COPIER=$!
 wait $PIDS
 kill $COPIER 2>/dev/null
-cp results/e4_mhd3d${TAG}_s*.json results/logs/e4_gpu_s*.log "$OUT"/ 2>/dev/null
+cp results/e4_mhd3d${TAG}_s*.json results/e4_samples${TAG}_s0_*.npz results/logs/e4_gpu_s*.log "$OUT"/ 2>/dev/null
 wait
 stamp "done"; nvidia-smi --query-gpu=name,memory.used,utilization.gpu --format=csv,noheader
 ls "$OUT"
