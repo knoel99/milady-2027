@@ -1,5 +1,5 @@
 {
- "generated": "2026-11-12T16:59:30Z",
+ "generated": "2026-11-12T17:12:59Z",
  "projects": "/root/.claude/projects/-home-user-milady-2027",
  "sessions": 1,
  "main_session": {
@@ -10,23 +10,23 @@
    "high"
   ],
   "expected": "claude-fable-5-2 / high",
-  "responses": 26,
+  "responses": 40,
   "off_spec": 0,
   "conforms": true
  },
  "first": "2026-11-12T16:50:21.852Z",
- "last": "2026-11-12T16:59:17.201Z",
- "span_hours": 0.15,
+ "last": "2026-11-12T17:12:46.674Z",
+ "span_hours": 0.37,
  "by_model": {
   "claude-fable-5-2": {
-   "input": 57,
+   "input": 85,
    "cache_write_5m": 46485,
-   "cache_write_1h": 292160,
-   "cache_read": 4598109,
-   "output": 48088,
-   "thinking": 30979,
-   "calls": 30,
-   "usd": 7.98
+   "cache_write_1h": 334031,
+   "cache_read": 9018148,
+   "output": 68611,
+   "thinking": 45495,
+   "calls": 44,
+   "usd": 10.36
   },
   "claude-sonnet-5-5": {
    "input": 4,
@@ -39,7 +39,7 @@
    "usd": 0.05
   }
  },
- "total_usd": 8.03,
+ "total_usd": 10.41,
  "subagents": {
   "count": 4,
   "by_type": {
@@ -121,8 +121,8 @@
   "nonconforming": 0
  },
  "tool_calls": {
-  "Bash": 24,
-  "Read": 16,
+  "Bash": 37,
+  "Read": 17,
   "Agent": 4,
   "mcp__claude-code-remote__get_session": 1,
   "Grep": 1,
