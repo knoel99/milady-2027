@@ -1,6 +1,21 @@
 # Maps the provider-neutral fields of agents/roles/*.md to each tool's agent format.
 # tools/sync_agents.py reads this file. Add a section per provider when it is used;
 # fill model names from that provider's current documentation, never from memory.
+#
+# Sections with format = "none" are a catalogue: no generator exists yet for that tool.
+# Models: the Artificial Analysis Intelligence Index v5.0.1 chart supplied by the user on
+# 2026-11-12 ([index]: chart score, with the reasoning setting it was measured at).
+# API ids, reasoning parameters and CLI facts: read in each provider's official documentation
+# on 2026-11-12 by research sub-agents (quotes relayed through page summaries, not re-read
+# verbatim); `docs` lists the pages, `unconfirmed` what the documentation did not settle.
+# Recheck before use: ids and values change.
+#
+# Tiers: frontier = the provider's best model on the chart, standard = the next one,
+# light = the smallest; a missing tier means the chart lists no such model.
+# [<provider>.reasoning] maps the role levels (low, medium, high, max) to the value of the
+# provider's `reasoning_param`; a missing level has no documented equivalent.
+# [<provider>.cli]: the provider's own coding-agent CLI, whether it reads AGENTS.md, and where
+# file-defined sub-agents live (the target of a future generator).
 
 [claude]
 output_dir = ".claude/agents"
@@ -17,15 +32,650 @@ medium = "medium"
 high = "high"
 max = "max"
 
+[claude.api]
+# Read by tools/call_model.py. base_url and the effort field: to confirm with `check_calls.py preflight`.
+style = "anthropic"
+base_url = "https://api.anthropic.com/v1"
+key_env = "ANTHROPIC_API_KEY"
+effort_field = "output_config.effort"
+models = { frontier = "claude-fable-5-2", standard = "claude-sonnet-5-5", light = "claude-haiku-5-5" }
+extra = { thinking = { type = "adaptive" } }
+
+[claude.harness]
+# Read by tools/run_role.py. From the official docs on 2026-11-12; confirm with a dry run.
+name = "Claude Code"
+install = "npm install -g @anthropic-ai/claude-code"
+setup = "npm install -g @anthropic-ai/claude-code"  # run once on the team VM; unverified until the first launch
+effort_source = "level"  # level: role level as is; provider: [reasoning] value; none: not settable per call
+command = ["claude", "-p", "{prompt}", "--model", "{model}", "--effort", "{effort}", "--max-turns", "{max_turns}", "--permission-mode", "bypassPermissions", "--output-format", "json"]
+effort_support = "yes"
+
+[claude.index]
+"Claude Fable 5.2 (max)" = 65
+"Claude Opus 5.5 (max)" = 59
+"Claude Sonnet 5.5 (max)" = 55
+"Claude Fable 5.1 (max)" = 49
+"Claude Haiku 5.5 (max)" = 36
+
 [claude.tools]
 base = ["Read", "Grep", "Glob"]
 shell = ["Bash"]
 web = ["WebSearch", "WebFetch"]
 write = ["Write", "Edit", "NotebookEdit"]
 
-# Example of a second provider, to be completed by the user:
-# [openai]
-# output_dir = "..."
-# format = "..."
-# [openai.tier]
-# frontier = "..."
+# --- Google -------------------------------------------------------------------------------
+[google]
+format = "none"
+reasoning_param = "thinking_level"
+docs = ["https://aistudio.google.com/docs/models/gemini-4-carbon", "https://ai.google.dev/gemini-api/docs/latest-model"]
+unconfirmed = ["public API for gemini-4-carbon (the chart says no public API; the model page lists a stable id)"]
+
+[google.tier]
+frontier = "gemini-4-carbon"
+standard = "gemini-4-argon"  # "efficient Gemini 4 frontier reasoning model"; same token price as Carbon, fewer tokens per turn
+light = "gemini-3.8-flash"
+
+[google.reasoning]
+low = "low"
+medium = "medium"
+high = "high"
+max = "high"
+
+[google.api]
+# Read by tools/call_model.py. base_url and the effort field: to confirm with `check_calls.py preflight`.
+style = "gemini"
+base_url = "https://generativelanguage.googleapis.com/v1beta"
+key_env = "GEMINI_API_KEY"
+effort_field = "generationConfig.thinkingConfig.thinkingLevel"
+
+[google.harness]
+# Read by tools/run_role.py. From the official docs on 2026-11-12; confirm with a dry run.
+name = "Antigravity CLI"
+install = "curl -fsSL https://antigravity.google/cli/install.sh | bash"
+setup = "curl -fsSL https://antigravity.google/cli/install.sh | bash -s -- --skip-aliases && mkdir -p ~/.gemini/antigravity-cli && echo '{\"modelProvider\": \"gemini\"}' > ~/.gemini/antigravity-cli/settings.json"  # run once on the team VM; unverified until the first launch
+effort_source = "provider"  # level: role level as is; provider: [reasoning] value; none: not settable per call
+command = ["agy", "-p", "{prompt}", "--model", "{model}", "--effort", "{effort}", "--output-format", "json", "--dangerously-skip-permissions"]
+effort_support = "--effort for one run (low, medium, high; xhigh and max only for models that publish them); model slugs to read with `agy models`"
+
+[google.index]
+# Price of Carbon and Argon (aistudio.google.com/docs/pricing): $2 / $10 per 1M tokens until 2026-11-30, then $4 / $20.
+"Gemini 4 Carbon (high)" = 60
+"Gemini 4 Argon (high), from artificialanalysis.ai, not on the chart" = 50
+"Gemini 3.8 Flash (high)" = 31
+
+[google.cli]
+name = "Gemini CLI (its docs say it was replaced by Antigravity CLI on 2026-06-18; Antigravity not checked)"
+agents_md = "only if configured: context.fileName in settings.json (default GEMINI.md)"
+subagents = ".gemini/agents/*.md, YAML header: name, description, kind, tools, mcpServers, model, temperature, max_turns, timeout_mins"
+
+# --- OpenAI -------------------------------------------------------------------------------
+[openai]
+format = "none"
+reasoning_param = "reasoning.effort"
+docs = ["https://developers.openai.com/api/docs/models", "https://learn.chatgpt.com/docs/agent-configuration/subagents"]
+unconfirmed = ["value lists of gpt-6.1-sol, gpt-6.1-terra and gpt-6-luna (no model page read); terra and luna also accept none"]
+
+[openai.tier]
+frontier = "gpt-6-astra"
+standard = "gpt-6.1-sol"
+light = "gpt-6-luna"
+
+[openai.reasoning]
+low = "low"
+medium = "medium"
+high = "high"
+max = "max"
+
+[openai.api]
+# Read by tools/call_model.py. base_url and the effort field: to confirm with `check_calls.py preflight`.
+style = "openai-responses"
+base_url = "https://api.openai.com/v1"
+key_env = "OPENAI_API_KEY"
+effort_field = "reasoning.effort"
+
+[openai.harness]
+# Read by tools/run_role.py. From the official docs on 2026-11-12; confirm with a dry run.
+name = "Codex CLI"
+install = "npm install -g @openai/codex"
+setup = "npm install -g @openai/codex && printenv OPENAI_API_KEY | codex login --with-api-key"  # run once on the team VM; unverified until the first launch
+effort_source = "provider"  # level: role level as is; provider: [reasoning] value; none: not settable per call
+command = ["codex", "exec", "-m", "{model}", "-c", "model_reasoning_effort=\"{effort}\"", "--sandbox", "workspace-write", "--json", "{prompt}"]
+effort_support = "yes"
+
+[openai.index]
+"GPT-6 Astra (max)" = 57
+"GPT-6.1 Sol (max)" = 55
+"GPT-6.1 Terra (max)" = 51
+"GPT-6 Luna (max)" = 28
+
+[openai.cli]
+name = "Codex CLI"
+agents_md = "yes"
+subagents = ".codex/agents/*.toml: name, description, developer_instructions; optional model, model_reasoning_effort"
+
+# --- Meta ---------------------------------------------------------------------------------
+[meta]
+format = "none"
+reasoning_param = "reasoning_effort (Chat Completions) / reasoning.effort (Responses)"
+docs = ["https://dev.meta.ai/docs/models", "https://dev.meta.ai/docs/reasoning"]
+unconfirmed = ["Muse Wonder Full is in Muse Code only, no API", "what 'Standard mode only' means for muse-ember-1.0 on the Model API", "Muse Code CLI: AGENTS.md and sub-agent files known only from third-party coverage"]
+
+[meta.tier]
+frontier = "muse-wonder-1.0"
+light = "muse-ember-1.0"
+
+[meta.reasoning]
+low = "low"
+medium = "medium"
+high = "high"
+max = "max"
+
+[meta.index]
+"Muse Wonder Full (max), no public API" = 50
+"Muse Wonder (max)" = 44
+"Muse Ember (max)" = 36
+
+[meta.cli]
+name = "Muse Code"
+agents_md = "unconfirmed"
+subagents = "unconfirmed"
+
+# --- Moonshot AI (Kimi) -------------------------------------------------------------------
+[moonshot]
+format = "none"
+reasoning_param = "reasoning_effort (low, high, max; default max; thinking cannot be disabled)"
+docs = ["https://platform.kimi.ai/docs/guide/kimi-k3-1-pro-quickstart.md", "https://www.kimi.com/code/docs/en/kimi-code-cli/customization/agents"]
+unconfirmed = ["Hugging Face repo of the open weights"]
+
+[moonshot.tier]
+frontier = "kimi-k3.1-pro"
+
+[moonshot.reasoning]
+low = "low"
+medium = "high"
+high = "high"
+max = "max"
+
+[moonshot.api]
+# Read by tools/call_model.py. base_url and the effort field: to confirm with `check_calls.py preflight`.
+style = "openai-chat"
+base_url = "https://api.moonshot.ai/v1"
+key_env = "MOONSHOT_API_KEY"
+effort_field = "reasoning_effort"
+
+[moonshot.harness]
+# Read by tools/run_role.py. From the official docs on 2026-11-12; confirm with a dry run.
+name = "Kimi Code CLI"
+install = "npm install -g @moonshot-ai/kimi-code"
+setup = "npm install -g @moonshot-ai/kimi-code"  # run once on the team VM; unverified until the first launch
+effort_source = "level"  # level: role level as is; provider: [reasoning] value; none: not settable per call
+command = ["kimi", "-p", "{prompt}", "-m", "{model}", "--output-format", "stream-json"]
+env = { KIMI_MODEL_THINKING_EFFORT = "{effort}", KIMI_MODEL_NAME = "{model}", KIMI_MODEL_API_KEY = "$MOONSHOT_API_KEY", KIMI_MODEL_BASE_URL = "https://api.moonshot.ai/v1" }
+effort_support = "through KIMI_MODEL_THINKING_EFFORT; -m takes an alias from config.toml"
+
+[moonshot.index]
+"Kimi K3.1 Pro" = 46
+
+[moonshot.cli]
+name = "Kimi Code CLI"
+agents_md = "yes"
+subagents = ".kimi-code/agents/*.md or .agents/agents/*.md, YAML header: name, description, whenToUse, override, tools, disallowedTools, subagents"
+
+# --- xAI ----------------------------------------------------------------------------------
+[xai]
+format = "none"
+reasoning_param = "reasoning_effort (low, medium, high, xhigh; default high; cannot be disabled)"
+docs = ["https://docs.x.ai/docs/guides/reasoning", "https://x.ai/cli"]
+unconfirmed = ["file-defined sub-agents in Grok Build"]
+
+[xai.tier]
+frontier = "grok-4.7"
+
+[xai.reasoning]
+low = "low"
+medium = "medium"
+high = "high"
+max = "xhigh"
+
+[xai.api]
+# Read by tools/call_model.py. base_url and the effort field: to confirm with `check_calls.py preflight`.
+style = "openai-chat"
+base_url = "https://api.x.ai/v1"
+key_env = "XAI_API_KEY"
+effort_field = "reasoning_effort"
+
+[xai.harness]
+# Read by tools/run_role.py. From the official docs on 2026-11-12; confirm with a dry run.
+name = "Grok Build"
+install = "curl -fsSL https://x.ai/cli/install.sh | bash"
+setup = "curl -fsSL https://x.ai/cli/install.sh | bash"  # run once on the team VM; unverified until the first launch
+effort_source = "provider"  # level: role level as is; provider: [reasoning] value; none: not settable per call
+command = ["grok", "-p", "{prompt}", "-m", "{model}", "--effort", "{effort}", "--max-turns", "{max_turns}", "--always-approve", "--output-format", "json"]
+effort_support = "yes"
+
+[xai.index]
+"Grok 4.7 (xhigh)" = 35
+
+[xai.cli]
+name = "Grok Build"
+agents_md = "yes"
+subagents = "unconfirmed"
+
+# --- Tencent ------------------------------------------------------------------------------
+[tencent]
+format = "none"
+reasoning_param = "reasoning_effort (default high)"
+docs = ["https://www.tencentcloud.com/document/product/1300/80695", "https://huggingface.co/tencent/Hy4-preview"]
+unconfirmed = ["full value list on TokenHub (only high documented; no_think for self-hosting)", "open weights of the final hy4 (only Hy4-preview is published)", "AGENTS.md in CodeBuddy Code"]
+
+[tencent.tier]
+frontier = "hy4"
+
+[tencent.reasoning]
+high = "high"
+max = "high"
+
+[tencent.index]
+"Tencent Hy4" = 35
+
+[tencent.cli]
+name = "CodeBuddy Code"
+agents_md = "unconfirmed"
+subagents = ".codebuddy/agents/*.md, YAML header: name, description, tools, model, permissionMode, effort, maxTurns, disallowedTools"
+
+# --- Alibaba (Qwen) -----------------------------------------------------------------------
+[alibaba]
+format = "none"
+reasoning_param = "reasoning.effort (Responses API: none, low, medium, xhigh; default xhigh)"
+docs = ["https://www.alibabacloud.com/help/en/model-studio/qwen-api-via-openai-responses", "https://huggingface.co/Qwen/Qwen3.8-27B", "https://qwenlm.github.io/qwen-code-docs/en/users/features/sub-agents/"]
+unconfirmed = ["value list of reasoning_effort on the Chat Completions API", "AGENTS.md in Qwen Code (third-party sources only)"]
+
+[alibaba.tier]
+frontier = "qwen3.8-max-0902"
+standard = "qwen3.8-flash"
+light = "qwen3.8-27b"
+
+[alibaba.reasoning]
+low = "low"
+medium = "medium"
+high = "xhigh"
+max = "xhigh"
+
+[alibaba.api]
+# Read by tools/call_model.py. base_url and the effort field: to confirm with `check_calls.py preflight`.
+style = "openai-chat"
+base_url = "https://dashscope-intl.aliyuncs.com/compatible-mode/v1"
+key_env = "DASHSCOPE_API_KEY"
+effort_field = "reasoning_effort"
+
+[alibaba.harness]
+# Read by tools/run_role.py. From the official docs on 2026-11-12; confirm with a dry run.
+name = "Qwen Code"
+install = "npm install -g @qwen-code/qwen-code"
+setup = "npm install -g @qwen-code/qwen-code && mkdir -p ~/.qwen && echo '{\"security\": {\"auth\": {\"selectedType\": \"openai\"}}}' > ~/.qwen/settings.json"  # run once on the team VM; unverified until the first launch
+effort_source = "none"  # level: role level as is; provider: [reasoning] value; none: not settable per call
+command = ["qwen", "-p", "{prompt}", "-m", "{model}", "--yolo", "-o", "json", "--max-session-turns", "{max_turns}"]
+env = { OPENAI_API_KEY = "$DASHSCOPE_API_KEY", OPENAI_BASE_URL = "https://dashscope-intl.aliyuncs.com/compatible-mode/v1" }
+effort_support = "model.reasoningEffort in settings.json only, not per call"
+
+[alibaba.index]
+"Qwen3.8 Max (0902)" = 34
+"Qwen3.8 27B (xhigh)" = 20
+
+[alibaba.cli]
+name = "Qwen Code"
+agents_md = "unconfirmed"
+subagents = ".qwen/agents/*.md, YAML header: name, description, model, approvalMode, tools, disallowedTools (also accepts Claude fields such as maxTurns)"
+
+# --- DeepSeek -----------------------------------------------------------------------------
+[deepseek]
+format = "none"
+reasoning_param = "reasoning_effort (low, high, max; default high)"
+docs = ["https://api-docs.deepseek.com/", "https://api-docs.deepseek.com/guides/thinking_mode", "https://github.com/deepseek-ai/deepseek-harness"]
+unconfirmed = ["open-weights repo of V4.1 Flash 1017", "dsh: name of the API key variable, permission mode for unattended runs, per-run model and effort"]
+
+[deepseek.tier]
+frontier = "deepseek-flash"
+
+[deepseek.reasoning]
+low = "low"
+medium = "high"
+high = "high"
+max = "max"
+
+[deepseek.api]
+# Read by tools/call_model.py. base_url and the effort field: to confirm with `check_calls.py preflight`.
+style = "openai-chat"
+base_url = "https://api.deepseek.com"
+key_env = "DEEPSEEK_API_KEY"
+effort_field = "reasoning_effort"
+extra = { thinking = { type = "enabled" } }
+
+[deepseek.harness]
+# DeepSeek's own harness, developer preview ("THERE WILL BE COMPATIBILITY-BREAKING CHANGES"), MIT.
+# https://github.com/deepseek-ai/deepseek-harness, apps/cli/reference/README.md. Pin the version on the pilot.
+name = "DeepSeek Harness (dsh, developer preview)"
+install = "npm install -g @deepseek-ai/dsh"
+setup = "npm install -g @deepseek-ai/dsh"  # run once on the team VM; unverified until the first launch
+effort_source = "none"
+command = ["dsh", "--profile", "headless", "{prompt}"]
+effort_support = "not per call: llm-deepseek.reasoningEffort (off, low, high, max) in $DSH_HOME/profiles/headless/cordis.patch.yml; the model too; read the schema with dsh --dump-config-schema on the pilot"
+
+[deepseek.harness_fallback]
+# Claude Code through the Anthropic-compatible endpoint: used if dsh fails on the pilot.
+# Read by tools/run_role.py. From the official docs on 2026-11-12; confirm with a dry run.
+name = "Claude Code (DeepSeek Anthropic endpoint)"
+install = "npm install -g @anthropic-ai/claude-code"
+setup = "npm install -g @anthropic-ai/claude-code"  # run once on the team VM; unverified until the first launch
+effort_source = "level"  # level: role level as is; provider: [reasoning] value; none: not settable per call
+command = ["claude", "-p", "{prompt}", "--model", "{model}", "--effort", "{effort}", "--max-turns", "{max_turns}", "--permission-mode", "bypassPermissions", "--output-format", "json"]
+env = { ANTHROPIC_BASE_URL = "https://api.deepseek.com/anthropic", ANTHROPIC_AUTH_TOKEN = "$DEEPSEEK_API_KEY", ANTHROPIC_DEFAULT_OPUS_MODEL = "deepseek-flash", ANTHROPIC_DEFAULT_SONNET_MODEL = "deepseek-flash", ANTHROPIC_DEFAULT_HAIKU_MODEL = "deepseek-flash" }
+effort_support = "transmitted as output_config.effort; accepted values unconfirmed"
+
+[deepseek.index]
+"DeepSeek V4.1 Flash 1017 (max)" = 33
+
+# --- Zhipu AI (Z.ai) ----------------------------------------------------------------------
+[zhipu]
+format = "none"
+reasoning_param = "reasoning_effort (low, high, max; default max)"
+docs = ["https://docs.z.ai/guides/llm/glm-5.3", "https://zcode.z.ai/en/docs/agents"]
+unconfirmed = ["open-weights repo of GLM-5.3", "sub-agent files in ZCode"]
+
+[zhipu.tier]
+frontier = "glm-5.3"
+light = "glm-5.3-flash"
+
+[zhipu.reasoning]
+low = "low"
+medium = "high"
+high = "high"
+max = "max"
+
+[zhipu.api]
+# Read by tools/call_model.py. base_url and the effort field: to confirm with `check_calls.py preflight`.
+style = "openai-chat"
+base_url = "https://api.z.ai/api/paas/v4"
+key_env = "ZAI_API_KEY"
+effort_field = "reasoning_effort"
+extra = { thinking = { type = "enabled" } }
+
+[zhipu.harness]
+# ZCode (zcode.z.ai) is Z.ai's own agent but a desktop app with no documented headless mode (2026-11-12): not usable unattended.
+# Read by tools/run_role.py. From the official docs on 2026-11-12; confirm with a dry run.
+name = "Claude Code (Z.ai Anthropic endpoint)"
+install = "npm install -g @anthropic-ai/claude-code"
+setup = "npm install -g @anthropic-ai/claude-code"  # run once on the team VM; unverified until the first launch
+effort_source = "level"  # level: role level as is; provider: [reasoning] value; none: not settable per call
+command = ["claude", "-p", "{prompt}", "--model", "{model}", "--effort", "{effort}", "--max-turns", "{max_turns}", "--permission-mode", "bypassPermissions", "--output-format", "json"]
+env = { ANTHROPIC_BASE_URL = "https://api.z.ai/api/anthropic", ANTHROPIC_AUTH_TOKEN = "$ZAI_API_KEY", ANTHROPIC_DEFAULT_OPUS_MODEL = "glm-5.3", ANTHROPIC_DEFAULT_SONNET_MODEL = "glm-5.3", ANTHROPIC_DEFAULT_HAIKU_MODEL = "glm-5.3-flash", API_TIMEOUT_MS = "3000000" }
+effort_support = "transmitted; honoured by GLM: unconfirmed"
+
+[zhipu.index]
+"GLM-5.3 (max)" = 32
+
+[zhipu.cli]
+name = "ZCode Agent"
+agents_md = "yes"
+subagents = "unconfirmed"
+
+# --- Thinking Machines Lab ----------------------------------------------------------------
+[thinking_machines]
+format = "none"
+reasoning_param = "effort, a float in [0.0, 1.0) (renderer argument; default 0.9)"
+docs = ["https://thinkingmachines.ai/news/inkling-2-small/", "https://tinker-docs.thinkingmachines.ai/cookbook/inkling/thinking-effort/"]
+unconfirmed = ["served only through Tinker; open weights announced, not yet confirmed published", "that the effort page applies to Inkling 2 Small"]
+
+[thinking_machines.tier]
+frontier = "thinkingmachines/Inkling-2-Small"
+
+[thinking_machines.reasoning]
+low = 0.2
+medium = 0.7
+high = 0.9
+max = 0.99
+
+[thinking_machines.index]
+"Inkling 2 Small" = 31
+
+# --- Xiaomi -------------------------------------------------------------------------------
+[xiaomi]
+format = "none"
+reasoning_param = "thinking.type (enabled or disabled; no effort levels)"
+docs = ["https://platform.xiaomimimo.com/ultraspeed", "https://huggingface.co/XiaomiMiMo/MiMo-V2.6-Pro-RL", "https://github.com/XiaomiMiMo/MiMo-Code"]
+unconfirmed = ["API id read from search snippets (JS-rendered pages)", "default of thinking.type", "AGENTS.md and sub-agent files in MiMo Code"]
+
+[xiaomi.tier]
+frontier = "mimo-v2.6-pro"
+
+[xiaomi.reasoning]
+low = "enabled"
+medium = "enabled"
+high = "enabled"
+max = "enabled"
+
+[xiaomi.index]
+"MiMo-V2.6-Pro" = 30
+
+[xiaomi.cli]
+name = "MiMo Code"
+agents_md = "unconfirmed"
+subagents = "unconfirmed"
+
+# --- Ant Group (inclusionAI) --------------------------------------------------------------
+[ant_group]
+format = "none"
+reasoning_param = "chat_template_kwargs.enable_thinking (true or false; no effort levels)"
+docs = ["https://huggingface.co/inclusionAI/Ling-3.1-flash-1019"]
+unconfirmed = ["Ant Group ownership (the inclusionAI page does not state it)", "first-party hosted API and its id", "official coding CLI (none found)"]
+
+[ant_group.tier]
+frontier = "inclusionAI/Ling-3.1-flash-1019"
+
+[ant_group.reasoning]
+low = true
+medium = true
+high = true
+max = true
+
+[ant_group.index]
+"Ling 3.1 Flash 1019" = 30
+
+# --- Mistral AI ---------------------------------------------------------------------------
+[mistral]
+format = "none"
+reasoning_param = "reasoning_effort (low, medium, high)"
+docs = ["https://docs.mistral.ai/studio-api/conversations/reasoning", "https://docs.mistral.ai/vibe/code/cli/agents"]
+unconfirmed = []
+
+[mistral.tier]
+frontier = "mistral-large-4"
+
+[mistral.reasoning]
+low = "low"
+medium = "medium"
+high = "high"
+max = "high"
+
+[mistral.api]
+# Read by tools/call_model.py. base_url and the effort field: to confirm with `check_calls.py preflight`.
+style = "openai-chat"
+base_url = "https://api.mistral.ai/v1"
+key_env = "MISTRAL_API_KEY"
+effort_field = "reasoning_effort"
+
+[mistral.harness]
+# Read by tools/run_role.py. From the official docs on 2026-11-12; confirm with a dry run.
+name = "Mistral Vibe"
+install = "uv tool install mistral-vibe"
+setup = "curl -LsSf https://astral.sh/uv/install.sh | sh && ~/.local/bin/uv tool install mistral-vibe"  # run once on the team VM; unverified until the first launch
+effort_source = "none"  # level: role level as is; provider: [reasoning] value; none: not settable per call
+command = ["vibe", "-p", "{prompt}", "--model", "{model}", "--auto-approve", "--max-turns", "{max_turns}", "--output", "json"]
+effort_support = "per-model `thinking` in [[models]] of config.toml, not per call; --model takes an alias"
+
+[mistral.index]
+"Mistral Large 4 (high)" = 26
+
+[mistral.cli]
+name = "Mistral Vibe"
+agents_md = "yes"
+subagents = ".vibe/agents/*.toml: agent_type, display_name, description, safety, active_model, system_prompt_id, enabled_tools, disabled_tools"
+
+# --- Institute of Foundation Models (MBZUAI) ----------------------------------------------
+[ifm]
+format = "none"
+reasoning_param = "chat_template_kwargs.reasoning_effort (high recommended; medium and low mentioned)"
+docs = ["https://huggingface.co/IFM/K2-Horizon-375B-A23B"]
+unconfirmed = ["full value list (see chat_template.jinja)", "first-party API (only inference partners found)", "official coding CLI (none found)"]
+
+[ifm.tier]
+frontier = "IFM/K2-Horizon-375B-A23B"
+
+[ifm.reasoning]
+low = "low"
+medium = "medium"
+high = "high"
+max = "high"
+
+[ifm.index]
+"K2 Horizon 375B A23B" = 18
+
+# --- Reflection AI ------------------------------------------------------------------------
+[reflection]
+format = "none"
+reasoning_param = "reasoning_effort (max used for the official evaluations)"
+docs = ["https://huggingface.co/reflection/Beam-1.0-501B-A23B", "https://developers.reflection.ai/introduction"]
+unconfirmed = ["value list of reasoning_effort (third-party sources disagree)", "API base URL", "AGENTS.md and sub-agent files in the Mirror CLI"]
+
+[reflection.tier]
+frontier = "Beam-1.0-501B-A23B"
+
+[reflection.reasoning]
+max = "max"
+
+[reflection.index]
+"Beam 1.0" = 18
+
+[reflection.cli]
+name = "Mirror"
+agents_md = "unconfirmed"
+subagents = "unconfirmed"
+
+# --- NVIDIA -------------------------------------------------------------------------------
+[nvidia]
+format = "none"
+reasoning_param = "chat template: enable_thinking (bool) and medium_effort (bool)"
+docs = ["https://huggingface.co/nvidia/NVIDIA-Nemotron-3.5-Super-VL-120B-A12B-BF16"]
+unconfirmed = ["hosted API id (build.nvidia.com not checked)", "official coding CLI (none; NVIDIA points to third-party tools)"]
+
+[nvidia.tier]
+frontier = "nvidia/NVIDIA-Nemotron-3.5-Super-VL-120B-A12B-BF16"
+
+[nvidia.reasoning]
+low = "enable_thinking=true, medium_effort=true"
+medium = "enable_thinking=true, medium_effort=true"
+high = "enable_thinking=true"
+max = "enable_thinking=true"
+
+[nvidia.index]
+"Nemotron 3.5 Super VL" = 14
+
+# ==========================================================================================
+# Fast options, read in the official documentation on 2026-11-12 (same caveats as above).
+# parameter: a request field that serves the same model faster; models: base id -> faster
+# model id; gain and price as stated by the provider. A provider without [x.fast] has no
+# documented fast option for the models above.
+# ==========================================================================================
+
+[claude.fast]
+parameter = 'speed = "fast" (Messages API)'
+applies_to = ["claude-fable-5-2", "claude-opus-5-5"]
+gain = "up to 2.5x output tokens per second"
+price = "Fable 5.2: $16 / $80 per MTok; Opus 5.5: $8 / $40 per MTok (input / output)"
+cli = '/fast in Claude Code, or "fastMode": true in settings; falls back to Opus when the model has no fast mode'
+unconfirmed = ["-fast model ids exist only on Microsoft Foundry", "no fast mode for Sonnet 5.5 or Haiku 5.5"]
+
+[openai.fast]
+parameter = 'service_tier = "fast" (formerly "priority"), or "ultrafast" for gpt-6-astra and gpt-6.1-sol'
+applies_to = ["gpt-6-astra", "gpt-6.1-sol", "gpt-6.1-terra", "gpt-6-luna"]
+gain = "fast: up to 2.5x (figure given for an earlier model); ultrafast: up to 8x Astra standard, in Codex"
+price = "fast: per-token premium (2x for the documented example); ultrafast: 6x credits in Codex"
+cli = '/fast in Codex, or service_tier = "fast" in config.toml; ultrafast has no documented toggle'
+unconfirmed = ["speed and price multipliers for the GPT-6.x models"]
+
+[google.fast]
+parameter = 'service_tier = "priority" (preview); Flex and Batch are slower and 50% cheaper'
+applies_to = ["gemini-4-carbon", "gemini-3.8-flash"]
+gain = "second-level response times; overflow is downgraded to standard (x-gemini-service-tier header)"
+price = "75-100% above standard"
+cli = "none documented (Gemini CLI replaced by Antigravity CLI, not checked)"
+unconfirmed = ["service_tier value for Flex", "fast toggle in Antigravity CLI"]
+
+[xai.fast]
+parameter = 'service_tier = "priority" (billed 2x)'
+applies_to = []
+gain = "not quantified"
+price = "priority: 2x standard; Grok 4.7 Fast (Cursor and Grok Build only, no public API id): 2x, 1.5x above 200k context"
+cli = "Grok Build serves Grok 4.7 Fast; no documented toggle"
+unconfirmed = ["whether grok-4.7 accepts service_tier priority"]
+
+[moonshot.fast]
+models = { "kimi-k3.1-pro" = "kimi-k3.1-pro-highspeed" }
+gain = "about 2-3x"
+price = "not shown on the pricing page"
+cli = "Kimi Code CLI: /model, then k3.1-pro-highspeed (about 2x quota, Pro plan and above)"
+unconfirmed = ["API price of the highspeed variant"]
+
+[alibaba.fast]
+models = { "qwen3.8-max-0902" = "qwen3.8-flash" }
+gain = "a separate cheaper and faster tier, not a speed-up of the same model"
+price = "not shown"
+cli = "none documented"
+unconfirmed = ["whether service_tier priority is honoured for Qwen models"]
+
+[deepseek.fast]
+models = {}
+gain = "deepseek-flash is already the light tier next to deepseek-v4-pro; no faster tier or priority parameter"
+price = "off-peak / peak per 1M tokens: input miss $0.15 / $0.30, output $0.60 / $1.20"
+
+[zhipu.fast]
+models = { "glm-5.3" = "glm-5.3-flashx" }
+gain = "glm-5.3-flashx: 200 tokens/s; glm-5.3-flash: a lighter variant (3x Coding Plan quota)"
+price = "not shown officially"
+unconfirmed = ["fast toggle in ZCode", "glm-5.3-flashx is not yet in the Coding Plan"]
+
+[xiaomi.fast]
+models = { "mimo-v2.6-pro" = "mimo-v2.6-pro-ultraspeed" }
+gain = "up to 20x (third-party sources)"
+price = "about 10x standard Pro (third-party sources)"
+unconfirmed = ["everything: the official pages are JS-rendered and could not be read", "mimo-v2.6-flash"]
+
+[mistral.fast]
+parameter = 'service_tier = "auto" (priority when eligible) or "standard_only" (default)'
+models = { "mistral-large-4" = "mistral-small-4-0-26-03" }
+gain = "priority: response in seconds, 99.5% uptime SLA; Small 4 is a cheaper, smaller model"
+price = "priority: 1.75x standard; Small 4: $0.15 / $0.60 per 1M tokens against $0.70 / $2.10"
+unconfirmed = ["whether mistral-large-4 is eligible for the priority tier", "API id of Small 4 (pricing-page slug)"]
+
+[ifm.fast]
+models = { "IFM/K2-Horizon-375B-A23B" = "IFM/K2-Horizon-375B-A23B-NVFP4" }
+gain = "quantized checkpoints (FP8, NVFP4); smaller models: K2-Horizon-MoVA-36B-A4B, K2-Horizon-32B, K2-Horizon-7B-Uno"
+unconfirmed = ["speed figures (model cards not read)"]
+
+[reflection.fast]
+models = { "Beam-1.0-501B-A23B" = "reflection/Beam-1.0-501B-A23B-NVFP4" }
+gain = "quantized checkpoints (FP8, NVFP4) and a speculative-decoding drafter (Beam-1.0-501B-A23B-DFlash2)"
+unconfirmed = ["drafter role (third-party source)", "speed figures"]
+
+[nvidia.fast]
+models = { "nvidia/NVIDIA-Nemotron-3.5-Super-VL-120B-A12B-BF16" = "nvidia/NVIDIA-Nemotron-3.5-Super-VL-120B-A12B-NVFP4" }
+gain = "NVFP4 for faster deployment, slightly lower accuracy; MTP speculative decoding; smaller line: NVIDIA-Nemotron-3.5-Lightning-30B-A3B-NVFP4 (40+ tokens/s per user on one H100)"
+unconfirmed = ["speed figures for the NVFP4 checkpoint"]
+
+[ant_group.fast]
+models = {}
+gain = "no smaller Ling 3.1; MTP speculative decoding in SGLang and vLLM"
+
+[thinking_machines.fast]
+models = {}
+gain = "no smaller Inkling 2 yet; lowering effort is the only speed lever"

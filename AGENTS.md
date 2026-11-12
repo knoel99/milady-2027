@@ -32,6 +32,12 @@ experiments/run_stage.sh [--quick] [--seeds "0 1 2 3 4"]  # E1-E3 with several s
 make test                                                 # pytest for src/milady
 python3 -m ruff check src tests                           # lint, as in CI
 python3 tools/sync_agents.py [--check]                    # regenerate tool-specific agent files from agents/roles/
+python3 tools/call_model.py --role <role> --task <file>   # call a role through the API (MILADY_PROVIDER set)
+python3 tools/run_role.py --role <role> --task <file>     # run a role as a headless session of your harness
+python3 tools/check_calls.py ledger|preflight|exam        # verify models and efforts of the calls
+python3 tools/compute_broker.py submit --hours H -- CMD   # race only: run CMD on a broker job VM (committed code)
+python3 tools/runpod_job.py run --hours H -- CMD          # pilot: run CMD on a RunPod GPU pod (pushed commit), pod always deleted
+python3 tools/usage_report.py --write research/usage      # tokens, API-equivalent cost, sub-agents, GPU spend of the session
 ```
 
 - Never edit an `index.html` by hand: `tools/render.py` restores the pinned KaTeX tags (SRI) that Quarto strips.
@@ -42,6 +48,14 @@ python3 tools/sync_agents.py [--check]                    # regenerate tool-spec
 ## Agents
 
 The roles are defined once, provider-neutral, in `agents/roles/*.md`: a header with an abstract model `tier` (`frontier`, `standard`, `light`), a `reasoning` level (`low`, `medium`, `high`, `max`), `read_only`, `needs` and `max_turns`, then the mandate. `agents/providers.toml` maps tiers and levels to each provider's models; `tools/sync_agents.py` generates the tool-specific files (today `.claude/agents/*.md`). Edit the roles, never the generated files. A tool without sub-agents runs a role as a separate session, with the body of the role file as its prompt. Running a checking role on another provider than the main session is allowed and gives a more independent check.
+
+**Calling a role.** Set `MILADY_PROVIDER` to your provider's section of `agents/providers.toml`, then:
+
+- `python3 tools/call_model.py --role <role> --task <file>`: one API call with the role's model (from its `tier`) and reasoning effort (from its `reasoning`), no tools. Put in the task everything the role needs (statement, code, command outputs).
+- `python3 tools/run_role.py --role <role> --task <file>`: a separate headless session of your own harness with the role's model and effort, with tools (read files, re-run scripts). Use it when the role must run something itself.
+- Native sub-agents of your harness may be used only if they carry the same model and effort.
+
+Every call is logged in `research/model-calls.jsonl` and its answer in `research/calls/`; `python3 tools/check_calls.py ledger` checks that each call used the prescribed model and effort. Never call a role with another tier or effort than its file prescribes.
 
 - **Main session**: the intern, then the PhD student. It reads, states hypotheses, writes code, runs computations, writes and arbitrates.
 - **`encadrant`**: tries to refute a result or a protocol (re-runs the script, changes the seed, recomputes the aggregate, tests the edge case, checks the numerical protocol); one verdict per criterion; never edits.
