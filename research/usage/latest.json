@@ -1,5 +1,5 @@
 {
- "generated": "2026-11-12T22:25:43Z",
+ "generated": "2026-11-12T22:59:32Z",
  "projects": "/root/.claude/projects/-home-user-milady-2027",
  "sessions": 1,
  "main_session": {
@@ -10,23 +10,23 @@
    "high"
   ],
   "expected": "claude-fable-5-2 / high",
-  "responses": 181,
+  "responses": 196,
   "off_spec": 0,
   "conforms": true
  },
  "first": "2026-11-12T16:50:21.852Z",
- "last": "2026-11-12T22:25:28.237Z",
- "span_hours": 5.59,
+ "last": "2026-11-12T22:59:25.469Z",
+ "span_hours": 6.15,
  "by_model": {
   "claude-fable-5-2": {
-   "input": 387,
-   "cache_write_5m": 215637,
-   "cache_write_1h": 753323,
-   "cache_read": 88837132,
-   "output": 418784,
-   "thinking": 202659,
-   "calls": 200,
-   "usd": 48.73
+   "input": 425,
+   "cache_write_5m": 275936,
+   "cache_write_1h": 786843,
+   "cache_read": 100512343,
+   "output": 444727,
+   "thinking": 212430,
+   "calls": 220,
+   "usd": 53.24
   },
   "claude-sonnet-5-5": {
    "input": 16,
@@ -39,13 +39,13 @@
    "usd": 0.21
   }
  },
- "total_usd": 48.94,
+ "total_usd": 53.46,
  "subagents": {
-  "count": 7,
+  "count": 8,
   "by_type": {
    "biblio": 2,
    "jury-externe": 1,
-   "encadrant": 2,
+   "encadrant": 3,
    "physicien": 2
   },
   "calls": [
@@ -152,6 +152,23 @@
     "conforms": true
    },
    {
+    "id": "agent-ad1a2d06d469260b9",
+    "type": "encadrant",
+    "description": "Encadrant: verdicts H4-H10, H12-H14",
+    "models": [
+     "claude-fable-5-2"
+    ],
+    "efforts": [
+     "medium"
+    ],
+    "calls": 5,
+    "output": 10112,
+    "usd": 1.0354,
+    "off_spec": 0,
+    "expected": "claude-fable-5-2 / medium",
+    "conforms": true
+   },
+   {
     "id": "agent-ad5c4bac6f994b490",
     "type": "physicien",
     "description": "Role check: physicien Prop 1",
@@ -172,9 +189,9 @@
   "nonconforming": 0
  },
  "tool_calls": {
-  "Bash": 182,
+  "Bash": 198,
   "Read": 17,
-  "Agent": 7,
+  "Agent": 8,
   "Write": 6,
   "mcp__claude-code-remote__get_session": 1,
   "Grep": 1,
@@ -197,6 +214,6 @@
     "usd": 0.018
    }
   },
-  "budget_usd": 140
+  "budget_usd": 140.0
  }
 }
