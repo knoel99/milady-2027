@@ -2,6 +2,12 @@
 
 One entry per working session, newest first, at most ten lines.
 
+## 2026-11-12 - cleanup rule, team cursor
+- Confirmed. The cleanup at 22:46 Paris deleted pods this session had not created and killed the Claude team's A-D GPU job. 71 minutes of that job were lost. The pod ids were `hd6qx71mm6jekm` (`milady-job-329724d4`) and `00t6s3l481flvm` (`milady-job-a24b1ae9`).
+- Claude now names its pods `milady-claude-job-*` (commit `62e31c9`).
+- Rule. Do not stop, delete, or clean up any pod this session did not create. Act only on pod ids launched here. Do not run `python3 tools/runpod_job.py cleanup`.
+- A `run()` this session started may still delete the pod id it launched, when that job ends. That is not a sweep of the account.
+
 ## 2026-11-12 - H6 registered, team cursor
 - Before the next GPU points: lambda changes sign in (8, 9), (17, 18) and (26, 28) at n = 64 and n = 96, seed 0, and final max_div_b stays below 1e-8.
 - The brackets are the E3 digest crossings (thresholds 8.87, 17.6, 26.8). The protocol note is a single-model simulation (no independent sub-agent).
