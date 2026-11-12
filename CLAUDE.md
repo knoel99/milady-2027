@@ -42,6 +42,7 @@ python3 -m ruff check src tests                           # lint, as in CI
 
 - **Main session**: the intern, then the PhD student. It reads, states hypotheses, writes code, runs computations, writes and arbitrates.
 - **`encadrant`**: tries to refute a result (re-runs the script, changes the seed, recomputes the aggregate, tests the edge case); one verdict per criterion; never edits.
+- **`physicien`**: physical intuition; proposes at most three ranked conjectures (orders of magnitude, limiting cases, toy model), each with a refutation criterion, protocol and cost; the user chooses; never edits.
 - **`biblio`**: prior art for a claim, lifts `[UNCONFIRMED]` tags, drafts reading notes; the main session writes them into `docs/specs/sources/`.
 - **`jury-externe`**: milestones only (theory brief, report v1, thesis v1); a verdict per claim and a pre-defence report.
 
@@ -53,7 +54,7 @@ python3 -m ruff check src tests                           # lint, as in CI
 4. At least five seeds for any comparison that is quoted.
 5. Two cycles without a discriminating verdict: drop the hypothesis and report it as a negative result.
 6. Agents do not hold discussions: they write to the register; data decides, otherwise the user does.
-7. Budget: at most three sub-agent calls per hypothesis; effort `max` only for `jury-externe`; medium by default. When the weekly usage limit warns, finish the current hypothesis, commit and stop.
+7. Budget: at most three sub-agent calls per hypothesis; effort `max` only for `jury-externe`, `high` for `physicien`; medium by default. When the weekly usage limit warns, finish the current hypothesis, commit and stop.
 
 ## Model and effort
 

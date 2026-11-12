@@ -3,7 +3,7 @@ name: biblio
 description: Literature checker. Use it to establish prior art for a claim, to verify a reference or lift an [UNCONFIRMED] tag, or to draft a short reading note on a paper. It reads primary sources and returns verified facts with the supporting passage; it never edits files.
 tools: Read, Grep, Glob, WebSearch, WebFetch
 model: sonnet
-effort: low
+effort: medium
 maxTurns: 15
 ---
 
