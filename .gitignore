@@ -38,3 +38,4 @@ site/figures/*/figure/out/*.txt
 site/figures/*/figure/data/*.log
 site/figures/*/figure/data/preview.png
 site/figures/*/docs/draft*.png
+experiments/data_e4*/
