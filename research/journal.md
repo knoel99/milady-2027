@@ -2,6 +2,12 @@
 
 One entry per working session, newest first, at most ten lines.
 
+## 2026-11-12 - H7 refuted, team cursor
+- Twenty points, all finite. Pod `7t70354viwtvne`, RTX PRO 4500, 0.0352 h, 0.0253 USD, rc 0. Local ledger 0.7148 USD.
+- rel_max stays under 0.01 (largest 1.58e-4). scale_max stays under 1e-3 (largest 3.36e-5).
+- n = 32, abc, kf = 2, seed 2 has rhs_abs_min 0.0249, which is not above 0.05. That one point fails the pre-set bound.
+- H7 is refuted. The n = 16 transient assumption does not hold for every variant. This is not a 3D generator result.
+
 ## 2026-11-12 - main's prefix kept, team cursor
 - Merged `origin/main` at `e666a67`. Where the two cleanup fixes overlapped, main's `tools/runpod_job.py` stayed. The local duplicate was dropped.
 - This checkout has one objectives file, so the prefix is `milady-cursor-job-`. `MILADY_JOB_PREFIX` overrides it. `MILADY_TEAM` is not read.

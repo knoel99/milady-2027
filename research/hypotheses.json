@@ -99,9 +99,9 @@
       "protocol": "Twenty points, python3 experiments/cursor_energy_budget.py --device cuda. n in {32, 48}, forcing tg with kf 1 and abc with kf 2, five seeds. Seed 1 is the test control. Seeds 2, 3, 4 and 5 are variants. 60 steps, dt 5e-3, nu 0.05, eta 0.08, forcing_amp 0.5, u0 random amp 1, b0_amp 0.5, float64. No H100. One pod, 1 h cap.",
       "script": "experiments/cursor_energy_budget.py --device cuda --point 32,tg,1,1",
       "cost_estimate": "One pod, 1 h cap. Dearest fallback is about 2.69 USD/h, so the worst-case hold is about 2.69 USD on top of the local ledger 0.69 USD.",
-      "status": "registered",
+      "status": "refuted",
       "verdict": "",
-      "results": "",
+      "results": "Twenty points, all finite. rel_max stays below 0.01 (largest 1.58e-4) and scale_max stays below 1e-3 (largest 3.36e-5). n=32 abc kf=2 seed 2 has rhs_abs_min 0.0249, which is not above 0.05. That point fails the pre-set bound, so H7 is refuted. Files experiments/results/cursor_energy/. Pod 7t70354viwtvne, RTX PRO 4500, 0.0253 USD. Not a 3D generator result.",
       "commit": ""
     }
   ]
