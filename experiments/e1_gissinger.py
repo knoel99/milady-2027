@@ -254,7 +254,7 @@ def main(quick=False, reverse=False, train_only=False, seeds=None, simulate_only
     variants = {"A_reference": ("plain", False, iters), "B_augmentation": ("plain", True, iters),
                 "C_equivariant": ("sym", False, iters), "C_short": ("sym", False, max(iters // 10, 300))}
     if seeds is None:
-        seeds = [0] if quick else [0, 1]  # published runs: two seeds (shared-CPU compute constraint)
+        seeds = [0] if quick else [0, 1, 2, 3, 4]  # published runs: five seeds (rule 4 of CLAUDE.md)
     n_gen = 4000 if quick else 10000
     grid = np.concatenate([G_TRAIN, G_TEST])
     results = {"config": {"mu": MU, "nu": NU, "G_train": G_TRAIN.tolist(), "G_test": G_TEST.tolist(),
@@ -487,7 +487,7 @@ if __name__ == "__main__":
     ap.add_argument("--train-only", action="store_true", help="only fill the model cache, then stop")
     ap.add_argument("--simulate-only", action="store_true", help="only run the simulations (cache), then stop")
     ap.add_argument("--seeds", type=int, nargs="+", default=None,
-                    help="model seeds (default: 0 with --quick, 0 1 otherwise); one process per seed with "
+                    help="model seeds (default: 0 with --quick, 0 1 2 3 4 otherwise); one process per seed with "
                          "--train-only, then one run with all the seeds to evaluate from the cache")
     a = ap.parse_args()
     main(a.quick, a.reverse, a.train_only, a.seeds, a.simulate_only)

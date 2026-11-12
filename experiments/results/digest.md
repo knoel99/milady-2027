@@ -275,6 +275,32 @@ Spurious crossings below the threshold (fine grid, zero simulated rate): at most
 | C_equivariant_half | 0.0028 ± 9.31e-04 [0.00215, 0.0044] | 0.0335 ± 0.00409 [0.0293, 0.0379] | 0.0177 ± 0.00397 [0.0131, 0.0221] | 0.00568 ± 0.00281 [0.00298, 0.0104] |
 | C_short_half | 0.00455 ± 9.48e-04 [0.0032, 0.00579] | 0.0485 ± 0.00406 [0.0419, 0.0524] | 0.0294 ± 0.00522 [0.0228, 0.0367] | 0.00595 ± 0.00304 [0.0025, 0.0103] |
 
+### Paired comparisons over the seeds [0, 1, 2, 3, 4] (means over the test Γ; SE = sd(ddof = 1)/√n)
+
+| comparison | per-seed differences | mean ± SE | mean/SE | seeds with a positive difference |
+|---|---|---|---|---|
+| energy dist.: A_reference − C_equivariant (H1) | 0.0116, 0.0104, 0.00608, 0.0131, 0.0107 | 0.0104 ± 0.00117 | 8.8 | 5 of 5 |
+| Liouville deg 3: F0_control_C − F_stationarity_C (H2) | -7.73e-04, 5.62e-05, -0.0243, 0.00764, -0.0652 | -0.0165 ± 0.0133 | -1.2 | 2 of 5 |
+| Liouville deg≤2: F0_control_C − F_stationarity_C | 0.00772, 0.0154, 0.00693, 0.00651, -0.0437 | -0.00143 ± 0.0107 | -0.1 | 4 of 5 |
+| energy dist.: F_stationarity_C − F0_control_C | -8.57e-04, -1.26e-04, -3.03e-04, 0.0013, 0.00569 | 0.00114 ± 0.00119 | 1.0 | 2 of 5 |
+
+Ratio of the mean energy distances F_stationarity_C / F0_control_C: 1.41.
+
+### Per seed, test Γ: stationarity fine-tuning of C against its control, and per-sample projection
+
+| quantity | seed 0 | seed 1 | seed 2 | seed 3 | seed 4 |
+|---|---|---|---|---|---|
+| energy dist., F_stationarity_C | 0.00278 | 0.00259 | 0.00358 | 0.00325 | 0.0073 |
+| energy dist., F0_control_C | 0.00363 | 0.00271 | 0.00389 | 0.00195 | 0.00161 |
+| Liouville deg≤2, F_stationarity_C | 0.022 | 0.0135 | 0.0279 | 0.0141 | 0.0568 |
+| Liouville deg≤2, F0_control_C | 0.0297 | 0.0289 | 0.0349 | 0.0206 | 0.0131 |
+| Liouville deg 3, F_stationarity_C | 0.0215 | 0.0156 | 0.0457 | 0.0104 | 0.0755 |
+| Liouville deg 3, F0_control_C | 0.0208 | 0.0157 | 0.0213 | 0.0181 | 0.0103 |
+| A_reference / C_equivariant, energy dist. | 6.51 | 5.3 | 2.73 | 8.12 | 7.47 |
+| E_projection_C / C_equivariant, energy dist. | 11.2 | 8.24 | 6.63 | 11.7 | 13.8 |
+
+Rice error column of the tables: |Rice rate averaged over the seeds − simulated rate|, then mean over the Γ.
+
 Total duration: 1487 s.
 
 ## E2 - forced 2D MHD, generation conditioned on η
@@ -282,7 +308,7 @@ Total duration: 1487 s.
 Configuration: N = 32, ν = 0.008, α = 0.02, forcing band [2.0, 3.0]; training η [0.004, 0.00566, 0.008, 0.01131, 0.016, 0.02263]; test η [0.00476, 0.00673, 0.00951, 0.01345, 0.01903]; 220 independent Fourier modes; dimension 880 (potentials) or 1760 (components); MLP width 1024, 6000 iterations; 1000 samples per η; 2400 training snapshots per η; injection (Itô) ε_u, ε_b, ε_{a²} = [0.04479, 0.04476, 0.00726].
 
 
-### Means over the test η
+### Means over the test η (seed 0)
 
 | variant | rel. div. u | rel. div. B | err. spectrum | err. E_u | err. E_B | energy residual | H_c residual | ⟨a²⟩ residual | σ(D)/σ_ref | energy dist. |
 |---|---|---|---|---|---|---|---|---|---|---|
@@ -298,7 +324,7 @@ Configuration: N = 32, ν = 0.008, α = 0.02, forcing band [2.0, 3.0]; training 
 | in law: tilting (V4, half b) | 1.76e-17 | 1.59e-17 | 0.143 | 0.098 | 0.115 | 0.193 | 0.388 | 0.143 | 0.204 | 4.15 |
 | in law: rescaling (V4, half b) | 2.75e-17 | 2.71e-17 | 0.0804 | 0.113 | 0.188 | 8.27e-06 | 0.015 | 0.299 | 8.64e-04 | 1.1 |
 
-### Means over the train η
+### Means over the train η (seed 0)
 
 | variant | rel. div. u | rel. div. B | err. spectrum | err. E_u | err. E_B | energy residual | H_c residual | ⟨a²⟩ residual | σ(D)/σ_ref | energy dist. |
 |---|---|---|---|---|---|---|---|---|---|---|
@@ -314,7 +340,7 @@ Configuration: N = 32, ν = 0.008, α = 0.02, forcing band [2.0, 3.0]; training 
 | in law: tilting (V4, half b) | 1.74e-17 | 1.63e-17 | 0.0878 | 0.149 | 0.0843 | 0.0253 | 0.133 | 0.0324 | 0.396 | 1.59 |
 | in law: rescaling (V4, half b) | 2.85e-17 | 2.81e-17 | 0.0472 | 0.0688 | 0.0515 | 2.07e-16 | 0.0294 | 0.116 | 1.40e-15 | 0.422 |
 
-Mean ESS/N of the tilting: 0.287
+Mean ESS/N of the tilting (seed 0): 0.287
 Tilting evaluated with its weights (no resampling), energy dist.: test 4.15, train 1.61
 
 ### Per η: energy distance
@@ -396,6 +422,38 @@ Tilting evaluated with its weights (no resampling), energy dist.: test 4.15, tra
 | in law: base | 2.46 ± 0.511 [1.94, 3.18] | 1.77e-17 ± 2.13e-19 [1.75e-17, 1.79e-17] | 0.446 ± 0.0966 [0.35, 0.587] | 0.628 ± 0.0694 [0.553, 0.711] |
 | in law: tilting | 4.04 ± 0.629 [3.33, 4.95] | 1.73e-17 ± 1.21e-18 [1.57e-17, 1.90e-17] | 0.216 ± 0.0532 [0.173, 0.303] | 0.214 ± 0.0556 [0.152, 0.298] |
 | in law: rescaling | 1.06 ± 0.246 [0.839, 1.44] | 2.77e-17 ± 4.15e-19 [2.71e-17, 2.81e-17] | 4.03e-05 ± 4.11e-05 [7.38e-06, 1.08e-04] | 0.00291 ± 0.00224 [8.64e-04, 0.00639] |
+
+### Across seeds, other metrics: means over the test η, mean ± sd [min, max] over 5 seeds
+
+| variant | err. E_u | err. E_B | err. spectrum | ⟨a²⟩ residual |
+|---|---|---|---|---|
+| V1_penalty | 0.102 ± 0.00281 [0.0995, 0.106] | 1.52 ± 0.17 [1.29, 1.68] | 0.178 ± 0.00195 [0.175, 0.18] | 1.22 ± 0.135 [1.03, 1.35] |
+| V4_potentials | 0.23 ± 0.0771 [0.153, 0.339] | 0.35 ± 0.087 [0.265, 0.479] | 0.16 ± 0.0256 [0.135, 0.197] | 0.429 ± 0.0829 [0.35, 0.553] |
+| V5_potentials_stat | 0.212 ± 0.181 [0.0668, 0.479] | 0.0786 ± 0.0295 [0.0567, 0.129] | 0.0816 ± 0.0166 [0.0684, 0.109] | 0.0715 ± 0.032 [0.0466, 0.125] |
+| V5_control | 0.229 ± 0.0778 [0.151, 0.343] | 0.348 ± 0.0885 [0.262, 0.483] | 0.16 ± 0.0261 [0.135, 0.199] | 0.427 ± 0.084 [0.348, 0.556] |
+| in law: base | 0.23 ± 0.0737 [0.155, 0.33] | 0.346 ± 0.0842 [0.262, 0.469] | 0.16 ± 0.0253 [0.135, 0.196] | 0.426 ± 0.0787 [0.348, 0.538] |
+| in law: tilting | 0.17 ± 0.0529 [0.098, 0.237] | 0.184 ± 0.0455 [0.115, 0.231] | 0.147 ± 0.016 [0.13, 0.173] | 0.296 ± 0.115 [0.143, 0.423] |
+| in law: rescaling | 0.0969 ± 0.0341 [0.065, 0.146] | 0.179 ± 0.0504 [0.129, 0.253] | 0.077 ± 0.0145 [0.0633, 0.0989] | 0.294 ± 0.056 [0.242, 0.379] |
+
+Mean ESS/N of the tilting over the eleven η, per seed: 0.287, 0.331, 0.299, 0.27, 0.338
+
+### Paired comparisons over the seeds [0, 1, 2, 3, 4] (means over the test η; SE = sd(ddof = 1)/√n)
+
+| comparison | per-seed differences | mean ± SE | mean/SE | seeds with a positive difference |
+|---|---|---|---|---|
+| energy dist.: V5_control − V5_potentials_stat (H3) | 1.82, 0.932, 1.26, 2.4, 1.11 | 1.5 ± 0.269 | 5.6 | 5 of 5 |
+| energy dist.: V2_final_projection − V3_projected_flow | 0.761, 0.997, 0.836, 1.08, 1.05 | 0.945 ± 0.0625 | 15.1 | 5 of 5 |
+| energy dist.: V4_potentials − V3_projected_flow | 0.731, 0.293, 0.187, 1.5, 0.878 | 0.717 ± 0.234 | 3.1 | 5 of 5 |
+
+### Per test η, over the seeds: V5 against its control, and ESS/N of the tilting
+
+| η | control, seed mean | V5, seed mean | control − V5: mean ± SE | mean/SE | seeds where V5 is lower | ESS/N per seed |
+|---|---|---|---|---|---|---|
+| 0.00476 | 0.255 | 0.659 | -0.403 ± 0.334 | -1.2 | 2 of 5 | 0.99, 0.111, 0.0105, 0.464, 0.945 |
+| 0.00673 | 0.313 | 0.462 | -0.149 ± 0.262 | -0.6 | 2 of 5 | 0.116, 0.845, 0.992, 0.0275, 0.179 |
+| 0.00951 | 0.934 | 0.4 | 0.534 ± 0.296 | 1.8 | 5 of 5 | 0.00215, 0.0236, 0.0165, 0.002, 0.002 |
+| 0.01345 | 3.28 | 0.864 | 2.42 ± 0.406 | 6.0 | 5 of 5 | 0.002, 0.002, 0.002, 0.002, 0.002 |
+| 0.01903 | 7.37 | 2.24 | 5.13 ± 0.37 | 13.9 | 5 of 5 | 0.002, 0.002, 0.002, 0.002, 0.002 |
 
 Times: {"V0_free": {"training_time_s": 373.9846, "generation_time_s_per_sample": 0.0054}, "V1_penalty": {"training_time_s": 424.2143, "generation_time_s_per_sample": 0.0062}, "V2_final_projection": {"training_time_s": 0.0, "generation_time_s_per_sample": 0.0057}, "V3_projected_flow": {"training_time_s": 401.4169, "generation_time_s_per_sample": 0.0064}, "V4_potentials": {"training_time_s": 285.6551, "generation_time_s_per_sample": 0.0041}, "V5_potentials_stat": {"finetuning_time_s": 415.3712, "iters": 600, "beta": 50.0}, "V5_control": {"finetuning_time_s": 74.0046, "iters": 600, "beta": 0.0}}
 
