@@ -1,0 +1,20 @@
+{
+ "fail": [],
+ "warn": [
+  "text is small for the figure: median label 5.5 pt at 183 mm, where published Fig. 1s read like 11.3 pt. Draw it narrower (120 or 136 mm) with 7-8 pt labels, enlarging the main objects and dropping minor ones to make room",
+  "text above 8 pt: \"v\", \"=\", \"+\"",
+  "text: 200 words, 1.05 words/cm2 (calibration from 5 published schematics: 0.20-0.45): smell test, check whether caption material is on the figure",
+  "caption-like labels (a label names a thing in 2-4 words; explanation goes to docs/caption.md): \"Network: width 512\", \"Conjecture: a network narrower than the \", \"cannot carry the linear part (width scan\", \"Measured: flow-matching loss\", \"2–3× too many null points; dE/dt\", \"Four remedies on the same glyphs\", \"Gaussian law per mode: mean + 8×8 covari\", \"3.3× too many null points; restart drift\"",
+  "320 strokes thinner than 0.25 pt at final size (min 0.200 pt) in: rect",
+  "text over busy art (use a halo, move it, or add a leader line): \"⋯\" 0.13, \"⋯\" 0.13, \"1\" 0.1, \"9.1 and 10.6×\" 0.07, \"44.7 and 46.3×\" 0.07, \"9.3 and 7.6×\" 0.07",
+  "docs/facts.md missing: every label and number must be sourced"
+ ],
+ "info": [
+  "build 308 ms; 183 x 104 mm; 72 texts, 379 strokes, 0 images, 2 panels",
+  "median label 5.5 pt = 1.06% of the width (published Fig. 1s: median 2.2%, 25th percentile 1.65%)",
+  "coloured text (fine when the hue is the colour of the entity it names, P15; never for emphasis alone): \"Linear part\", \"A(t) x + b(t)\", \"The rest\", \"non-linear\", \"Gaussian data:exactly af\", \"Gaussian data:none\", \"⋯\", \"⋯\"",
+  "no relations declared (F.relate): the connectivity check is off",
+  "ink coverage 11.0% of the page (calibration: see reference/style.md)",
+  "largest empty square per panel (share of panel area): a 0.049, b 0.027"
+ ]
+}

@@ -1,0 +1,47 @@
+panel	8.0pt	a
+label	6.5pt	Energy balance of a stationary state
+label	5.5pt	time
+label	5.5pt	dE/dt
+label	6.0pt	mean = 0
+label	5.5pt	each snapshot: not zero
+label	5.5pt	Per-sample constraint: not what the law says
+label	5.5pt	flat: every sample balanced
+label	5.5pt	Identity of the stationary law
+label	6.5pt	E[ ⟨f·u⟩ − ν⟨|ω|²⟩ − η⟨|j|²⟩ ] = 0
+label	5.5pt	forcing · viscous, u · Joule, B
+label	5.0pt	residual below 4×10−4 on the reference
+panel	8.0pt	b
+label	6.5pt	Magnetic helicity by shell
+label	5.5pt	1
+label	5.5pt	2
+label	5.5pt	3
+label	5.5pt	4
+label	5.5pt	5
+label	5.5pt	6
+label	5.5pt	7
+label	5.5pt	8
+label	5.5pt	shell k
+label	5.5pt	k² H(k)  (schematic)
+label	5.5pt	large scales
+label	5.5pt	k ≤ 2: negative
+label	5.5pt	small scales
+label	5.5pt	k ≥ 3: positive
+label	5.5pt	peak at k = 4
+label	6.5pt	Σk k² H(k) = E[⟨j·B⟩] = 0
+label	5.5pt	zero mean = cancellation between scales
+panel	8.0pt	c
+label	6.5pt	Use of the identities
+label	5.5pt	Generator at η without data
+label	5.5pt	generated samples (u, B)
+label	5.5pt	Means over samples
+label	5.5pt	energy and magnetic-helicity
+label	5.5pt	balances, to be zero
+label	5.5pt	Training loss
+label	5.5pt	on the means
+label	5.5pt	(W5)
+label	5.5pt	Sampling weights
+label	5.5pt	tilt the samples
+label	5.5pt	(W7)
+label	5.5pt	reweighted samples
+label	5.5pt	Measured (5 seeds, GPU)
+label	5.5pt	W5: energy residual 0.29 → 0.19

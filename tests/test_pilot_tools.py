@@ -436,3 +436,25 @@ def test_collect_takes_over_a_pod_after_a_session_restart(job_env, monkeypatch):
     monkeypatch.setattr(runpod_job, "PREFIX", "milady-beta-job-")
     with pytest.raises(SystemExit):
         runpod_job.collect(a, mcp=Pod(), sleep=lambda s: None)
+
+
+def test_exec_runs_only_in_a_pod_of_this_team(job_env, monkeypatch, capsys):
+    """`exec` repairs a job in flight: it runs from the clone, in this team's pods only."""
+    monkeypatch.setattr(runpod_job, "PREFIX", "milady-alpha-job-")
+    seen = []
+
+    class Pod(FakeMCP):
+        def call(self, tool, args):
+            if tool == "get-pod":
+                return {"id": args["id"], "name": "milady-alpha-job-1" if args["id"] == "mine" else "milady-beta-job-1"}
+            if tool == "exec-pod":
+                seen.append(args["body"]["command"][2])
+                return {"stdout": "ok\n", "exitCode": 0}
+            return super().call(tool, args)
+
+    a = argparse.Namespace(pod="mine", timeout=30, command=["--", "ls", "experiments/results"])
+    assert runpod_job.exec_in_pod(a, mcp=Pod()) == 0
+    assert seen == ["cd /workspace/milady && ls experiments/results"] and capsys.readouterr().out == "ok\n"
+    with pytest.raises(SystemExit):
+        runpod_job.exec_in_pod(argparse.Namespace(pod="theirs", timeout=30, command=["ls"]), mcp=Pod())
+    assert len(seen) == 1

@@ -1,0 +1,68 @@
+panel	8.0pt	a
+label	6.5pt	Optimal velocity field v(x, t)
+label	9.0pt	v
+label	9.0pt	=
+label	6.5pt	Linear part
+label	6.0pt	A(t) x + b(t)
+label	9.0pt	+
+label	6.5pt	The rest
+label	5.5pt	non-linear
+label	5.5pt	Gaussian data:exactly affine
+label	5.5pt	Gaussian data:none
+label	7.0pt	⋯
+label	6.0pt	Latent x: 5320 dimensions
+label	7.0pt	⋯
+label	6.0pt	Velocity v: 5320 dimensions
+label	6.0pt	Network: width 512
+label	5.5pt	linear part
+label	5.5pt	Conjecture: a network narrower than the latent
+label	5.5pt	cannot carry the linear part (width scan pending)
+label	5.5pt	the rest
+label	6.0pt	Measured: flow-matching loss
+label	5.5pt	exact linear field, π/2 ≈ 1.571
+label	5.5pt	W0–W6: 1.60–1.63
+label	5.5pt	Samples over-dispersed:
+label	5.5pt	2–3× too many null points; dE/dt
+label	5.5pt	fluctuations 2–14× the reference
+panel	8.0pt	b
+label	6.5pt	Four remedies on the same glyphs
+label	5.5pt	Energy distance / noise floor
+label	5.0pt	(log scale; held-out η)
+label	5.0pt	1
+label	5.0pt	10
+label	5.0pt	100
+label	5.0pt	1000
+label	5.5pt	W0–W6: 177–519 (first generators)
+label	8.0pt	G0
+label	5.5pt	Gaussian law per mode: mean + 8×8 covariance
+label	5.5pt	no network
+label	6.0pt	3.3×
+label	5.5pt	spectra, energy balance (residual 0.002)
+label	5.5pt	3.3× too many null points; restart drift 0.21
+label	8.0pt	W9
+label	5.5pt	learned G(t, η) x + b
+label	8.0pt	+
+label	5.5pt	network
+label	5.5pt	learned affine + network
+label	6.0pt	9.1 and 10.6×
+label	5.5pt	fewer spurious nulls (error 1.7); drift 0.12
+label	5.5pt	spectra and balance behind G0
+label	8.0pt	W10
+label	5.5pt	exact Gaussian field
+label	8.0pt	+
+label	5.5pt	network
+label	5.5pt	exact Gaussian field + network
+label	6.0pt	44.7 and 46.3×
+label	5.5pt	worse: the network’s linear part perturbs
+label	5.5pt	the second-order statistics of the Gaussian field
+label	8.0pt	W11
+label	5.5pt	exactGaussian
+label	8.0pt	+
+label	5.5pt	learnedaffine
+label	8.0pt	+
+label	5.5pt	network
+label	5.5pt	exact field + learned affine + network
+label	6.0pt	9.3 and 7.6×
+label	5.5pt	fewer spurious nulls (error 1.7); drift 0.12
+label	5.5pt	spectra and balance behind G0
+label	5.5pt	2 seeds, CPU (W0–W6: 5 seeds, GPU)

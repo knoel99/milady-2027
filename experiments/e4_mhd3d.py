@@ -573,12 +573,12 @@ def run(quick: bool, seed: int, group: str, device: str = "cpu", cond_scale: flo
             base = ctx.evaluate(fh[len(fh) // 2:], e, nulls=False)
             row = {"eta": e, "r_a": base["r_a"], "r_b": base["r_b"], "hel_m_err_rel_base": base["hel_m_err_rel"],
                    "ed_ratio_base": base["ed_ratio"]}
-            for tag, keys in (("a", ("energy",)), ("b", ("magnetic_helicity",)), ("ab", ("energy", "magnetic_helicity"))):
+            for combo, keys in (("a", ("energy",)), ("b", ("magnetic_helicity",)), ("ab", ("energy", "magnetic_helicity"))):
                 fb, wb, _ = tilt(fh, e, keys)
                 r = ctx.evaluate(fb, e, wb, nulls=False)
-                row.update({f"hel_m_err_rel_tilt_{tag}": r["hel_m_err_rel"], f"ess_frac_tilt_{tag}": r["ess_frac"],
-                            f"ed_ratio_tilt_{tag}": r["ed_ratio"], f"balance_tilt_{tag}": r["balance_residual_total"],
-                            f"r_b_tilt_{tag}": r["r_b"]})
+                row.update({f"hel_m_err_rel_tilt_{combo}": r["hel_m_err_rel"], f"ess_frac_tilt_{combo}": r["ess_frac"],
+                            f"ed_ratio_tilt_{combo}": r["ed_ratio"], f"balance_tilt_{combo}": r["balance_residual_total"],
+                            f"r_b_tilt_{combo}": r["r_b"]})
             results["h12"].append(row)
 
     if "W4c_potentials_smooth" in names and cond_scale == 8.0:     # H15 (pointless when the whole run is smooth)

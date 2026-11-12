@@ -2,6 +2,15 @@
 
 One entry per working session, newest first, at most ten lines.
 
+## 2026-11-12 — Announcement (23:50 UTC): job `e4_main` collected; result-file bug fixed; `exec` added to the shared tool
+- Goal of the session: collect the orphaned job, check what it brought back, protect the final job from the same loss.
+- Collected: pod `cfjdmc079g5yb1` (RTX PRO 4500, 0.98 h, 0.71 USD, rc 0) through `runpod_job.py collect`; pod deleted, ledger row written. It brings a second GPU replication of the registered groups A and B on 5 seeds (`experiments/results/replications/e4_main`).
+- Bug found in `experiments/e4_mhd3d.py`: a loop `for tag, keys in …` (tilting rows of H12) rebound the suffix `tag` used by `save_parts`, so every result file written after variant W7 went to `e4_mhd3dab_s<k>_<g>.json` and was not copied back. Lost in `e4_main`: the result files of groups C–E for seeds 2–4 (their figures exist only rounded, in the per-seed logs) and the H12 rows; the values that were saved are unaffected. Fix: loop variable renamed; test `tests/test_experiment_scripts.py` (static check that `tag` and `groups` are bound once in `run`).
+- Shared-tool change: `runpod_job.py exec --pod ID -- CMD` runs a shell command in a running pod of this team (other teams' pods refused; test `test_exec_runs_only_in_a_pod_of_this_team`). Used once: on the pod of `e4_final` (`cjs6gxv9cv92rv`, launched with the bug) a loop copies the misnamed files into the output directory, so the job does not have to be restarted. The jobs `e4_final_long` and `e4_final_scan` have no group B and are not affected.
+- No new GPU job; the three final jobs of the 23:25 announcement are running (worst case 8.2 USD). Ledger: 3.66 USD billed for this team.
+- Deliverables: 8 schematics (`site/teams/claude/figures/`) and 3 Archify diagrams (`site/teams/claude/diagrams/`) drawn by worker sub-agents; plots script `experiments/e4_plots.py` written, not yet run on final data.
+- Cost (tokens, CPU time): `research/usage/latest.md`.
+
 ## 2026-11-12 — Announcement (23:25 UTC): session restart, `collect`, three final GPU jobs
 - Goal of the session: recover from a restart of the session's worker and launch the final runs.
 - Incident: the worker of this session restarted at 23:15 UTC. The three `runpod_job.py run` processes died: the job of groups A–E (pod created 22:28) kept running without anyone to collect it; the two jobs announced at 23:20 had not obtained a pod. Files, data and installed tools survived.

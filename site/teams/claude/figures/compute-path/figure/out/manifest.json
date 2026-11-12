@@ -1,0 +1,1069 @@
+{
+ "name": "compute-path",
+ "mode": "design",
+ "format": "journal",
+ "widthMM": 183,
+ "heightMM": 100,
+ "W": 518.740157480315,
+ "H": 283.46456692913387,
+ "texts": [
+  {
+   "s": "a",
+   "role": "panel",
+   "box": {
+    "x": 0,
+    "y": 0.8497171998023987,
+    "w": 4.50018835067749,
+    "h": 9.00037670135498
+   },
+   "size": 8,
+   "minSize": 8,
+   "family": "Arial, Helvetica, sans-serif",
+   "color": "#1a1a1a",
+   "halo": false,
+   "rotate": 0,
+   "italic": false,
+   "weight": "bold"
+  },
+  {
+   "s": "Session container",
+   "role": "label",
+   "box": {
+    "x": 20,
+    "y": 7.62477970123291,
+    "w": 51.588096618652344,
+    "h": 6.7502827644348145
+   },
+   "size": 6,
+   "minSize": 6,
+   "family": "Arial, Helvetica, sans-serif",
+   "color": "#1a1a1a",
+   "halo": false,
+   "rotate": 0,
+   "italic": false,
+   "weight": "bold"
+  },
+  {
+   "s": "4 CPU cores, no GPU",
+   "role": "label",
+   "box": {
+    "x": 20,
+    "y": 15.62477970123291,
+    "w": 53.76787567138672,
+    "h": 6.7502827644348145
+   },
+   "size": 5.5,
+   "minSize": 5.5,
+   "family": "Arial, Helvetica, sans-serif",
+   "color": "#2b2b2b",
+   "halo": false,
+   "rotate": 0,
+   "italic": false,
+   "weight": "normal"
+  },
+  {
+   "s": "Commit and push",
+   "role": "label",
+   "box": {
+    "x": 36.46003341674805,
+    "y": 43.624778747558594,
+    "w": 43.07992935180664,
+    "h": 6.7502827644348145
+   },
+   "size": 5.5,
+   "minSize": 5.5,
+   "family": "Arial, Helvetica, sans-serif",
+   "color": "#1a1a1a",
+   "halo": false,
+   "rotate": 0,
+   "italic": false,
+   "weight": "normal"
+  },
+  {
+   "s": "Job toolrunpod_job.py run",
+   "role": "label",
+   "box": {
+    "x": 127.84476470947266,
+    "y": 40.37977874279022,
+    "w": 44.310447692871094,
+    "h": 13.240280151367188
+   },
+   "size": 5.5,
+   "minSize": 5.5,
+   "family": "Arial, Helvetica, sans-serif",
+   "color": "#1a1a1a",
+   "halo": false,
+   "rotate": 0,
+   "italic": false,
+   "weight": "normal"
+  },
+  {
+   "s": "Fetch outputs,delete pod",
+   "role": "label",
+   "box": {
+    "x": 132.579345703125,
+    "y": 92.37978637218475,
+    "w": 34.84130859375,
+    "h": 13.240280151367188
+   },
+   "size": 5.5,
+   "minSize": 5.5,
+   "family": "Arial, Helvetica, sans-serif",
+   "color": "#1a1a1a",
+   "halo": false,
+   "rotate": 0,
+   "italic": false,
+   "weight": "normal"
+  },
+  {
+   "s": "Cost line incompute ledger",
+   "role": "label",
+   "box": {
+    "x": 39.05584716796875,
+    "y": 92.37978637218475,
+    "w": 38.306365966796875,
+    "h": 13.240280151367188
+   },
+   "size": 5.5,
+   "minSize": 5.5,
+   "family": "Arial, Helvetica, sans-serif",
+   "color": "#1a1a1a",
+   "halo": false,
+   "rotate": 0,
+   "italic": false,
+   "weight": "normal"
+  },
+  {
+   "s": "Commit and pushresults",
+   "role": "label",
+   "box": {
+    "x": 128.46002197265625,
+    "y": 130.3797711133957,
+    "w": 43.079925537109375,
+    "h": 13.24029541015625
+   },
+   "size": 5.5,
+   "minSize": 5.5,
+   "family": "Arial, Helvetica, sans-serif",
+   "color": "#1a1a1a",
+   "halo": false,
+   "rotate": 0,
+   "italic": false,
+   "weight": "normal"
+  },
+  {
+   "s": "digest.pybuilds the digest",
+   "role": "label",
+   "box": {
+    "x": 38.135887145996094,
+    "y": 130.3797711133957,
+    "w": 39.72822570800781,
+    "h": 13.24029541015625
+   },
+   "size": 5.5,
+   "minSize": 5.5,
+   "family": "Arial, Helvetica, sans-serif",
+   "color": "#1a1a1a",
+   "halo": false,
+   "rotate": 0,
+   "italic": false,
+   "weight": "normal"
+  },
+  {
+   "s": "RunPod pod, rented for one job",
+   "role": "label",
+   "box": {
+    "x": 270,
+    "y": 7.62477970123291,
+    "w": 89.91148376464844,
+    "h": 6.7502827644348145
+   },
+   "size": 6,
+   "minSize": 6,
+   "family": "Arial, Helvetica, sans-serif",
+   "color": "#1a1a1a",
+   "halo": false,
+   "rotate": 0,
+   "italic": false,
+   "weight": "bold"
+  },
+  {
+   "s": "Clone the pushed commit",
+   "role": "label",
+   "box": {
+    "x": 355.8326721191406,
+    "y": 33.624778747558594,
+    "w": 62.33464050292969,
+    "h": 6.7502827644348145
+   },
+   "size": 5.5,
+   "minSize": 5.5,
+   "family": "Arial, Helvetica, sans-serif",
+   "color": "#1a1a1a",
+   "halo": false,
+   "rotate": 0,
+   "italic": false,
+   "weight": "normal"
+  },
+  {
+   "s": "Pinned packages in a virtual environment",
+   "role": "label",
+   "box": {
+    "x": 336.7361755371094,
+    "y": 63.624778747558594,
+    "w": 100.52764892578125,
+    "h": 6.7502827644348145
+   },
+   "size": 5.5,
+   "minSize": 5.5,
+   "family": "Arial, Helvetica, sans-serif",
+   "color": "#1a1a1a",
+   "halo": false,
+   "rotate": 0,
+   "italic": false,
+   "weight": "normal"
+  },
+  {
+   "s": "Run the job under a time limit",
+   "role": "label",
+   "box": {
+    "x": 351.2563171386719,
+    "y": 93.6247787475586,
+    "w": 71.48736572265625,
+    "h": 6.7502827644348145
+   },
+   "size": 5.5,
+   "minSize": 5.5,
+   "family": "Arial, Helvetica, sans-serif",
+   "color": "#1a1a1a",
+   "halo": false,
+   "rotate": 0,
+   "italic": false,
+   "weight": "normal"
+  },
+  {
+   "s": "Serve outputs over HTTP, random path",
+   "role": "label",
+   "box": {
+    "x": 339.3905944824219,
+    "y": 123.62477111816406,
+    "w": 95.21883392333984,
+    "h": 6.7502827644348145
+   },
+   "size": 5.5,
+   "minSize": 5.5,
+   "family": "Arial, Helvetica, sans-serif",
+   "color": "#1a1a1a",
+   "halo": false,
+   "rotate": 0,
+   "italic": false,
+   "weight": "normal"
+  },
+  {
+   "s": "rent pod",
+   "role": "label",
+   "box": {
+    "x": 214.91558837890625,
+    "y": 37.624778747558594,
+    "w": 20.168813705444336,
+    "h": 6.7502827644348145
+   },
+   "size": 5.5,
+   "minSize": 5.5,
+   "family": "Arial, Helvetica, sans-serif",
+   "color": "#1a1a1a",
+   "halo": false,
+   "rotate": 0,
+   "italic": false,
+   "weight": "normal"
+  },
+  {
+   "s": "pushed commit",
+   "role": "label",
+   "box": {
+    "x": 131.3605499267578,
+    "y": 20.624778747558594,
+    "w": 37.27890396118164,
+    "h": 6.75028133392334
+   },
+   "size": 5.5,
+   "minSize": 5.5,
+   "family": "Arial, Helvetica, sans-serif",
+   "color": "#7a7a7a",
+   "halo": true,
+   "rotate": 0,
+   "italic": false,
+   "weight": "normal"
+  },
+  {
+   "s": "fetch",
+   "role": "label",
+   "box": {
+    "x": 214.08152770996094,
+    "y": 116.6247787475586,
+    "w": 11.91846752166748,
+    "h": 6.7502827644348145
+   },
+   "size": 5.5,
+   "minSize": 5.5,
+   "family": "Arial, Helvetica, sans-serif",
+   "color": "#1a1a1a",
+   "halo": false,
+   "rotate": 0,
+   "italic": false,
+   "weight": "normal"
+  },
+  {
+   "s": "delete",
+   "role": "label",
+   "box": {
+    "x": 224.5113983154297,
+    "y": 140.62478637695312,
+    "w": 14.977190017700195,
+    "h": 6.7502827644348145
+   },
+   "size": 5.5,
+   "minSize": 5.5,
+   "family": "Arial, Helvetica, sans-serif",
+   "color": "#7a7a7a",
+   "halo": false,
+   "rotate": 0,
+   "italic": false,
+   "weight": "normal"
+  },
+  {
+   "s": "1",
+   "role": "label",
+   "box": {
+    "x": 223.3300018310547,
+    "y": 49.82477569580078,
+    "w": 3.750157117843628,
+    "h": 6.7502827644348145
+   },
+   "size": 6,
+   "minSize": 6,
+   "family": "Arial, Helvetica, sans-serif",
+   "color": "#fff",
+   "halo": false,
+   "rotate": 0,
+   "italic": false,
+   "weight": "bold"
+  },
+  {
+   "s": "2",
+   "role": "label",
+   "box": {
+    "x": 205.3300018310547,
+    "y": 95.82477569580078,
+    "w": 3.750157117843628,
+    "h": 6.7502827644348145
+   },
+   "size": 6,
+   "minSize": 6,
+   "family": "Arial, Helvetica, sans-serif",
+   "color": "#fff",
+   "halo": false,
+   "rotate": 0,
+   "italic": false,
+   "weight": "bold"
+  },
+  {
+   "s": "3",
+   "role": "label",
+   "box": {
+    "x": 260.33001708984375,
+    "y": 57.82477951049805,
+    "w": 3.750157117843628,
+    "h": 6.7502827644348145
+   },
+   "size": 6,
+   "minSize": 6,
+   "family": "Arial, Helvetica, sans-serif",
+   "color": "#fff",
+   "halo": false,
+   "rotate": 0,
+   "italic": false,
+   "weight": "bold"
+  },
+  {
+   "s": "4",
+   "role": "label",
+   "box": {
+    "x": 260.33001708984375,
+    "y": 10.824779510498047,
+    "w": 3.750157117843628,
+    "h": 6.7502827644348145
+   },
+   "size": 6,
+   "minSize": 6,
+   "family": "Arial, Helvetica, sans-serif",
+   "color": "#fff",
+   "halo": false,
+   "rotate": 0,
+   "italic": false,
+   "weight": "bold"
+  },
+  {
+   "s": "5",
+   "role": "label",
+   "box": {
+    "x": 194.3300018310547,
+    "y": 0.8247799873352049,
+    "w": 3.750157117843628,
+    "h": 6.7502827644348145
+   },
+   "size": 6,
+   "minSize": 6,
+   "family": "Arial, Helvetica, sans-serif",
+   "color": "#fff",
+   "halo": false,
+   "rotate": 0,
+   "italic": false,
+   "weight": "bold"
+  },
+  {
+   "s": "b",
+   "role": "panel",
+   "box": {
+    "x": 0,
+    "y": 168.0938120484352,
+    "w": 5.250219821929932,
+    "h": 9.00037670135498
+   },
+   "size": 8,
+   "minSize": 8,
+   "family": "Arial, Helvetica, sans-serif",
+   "color": "#1a1a1a",
+   "halo": false,
+   "rotate": 0,
+   "italic": false,
+   "weight": "bold"
+  },
+  {
+   "s": "Five failures, in the order found",
+   "role": "label",
+   "box": {
+    "x": 11,
+    "y": 169.86887484788895,
+    "w": 89.59861755371094,
+    "h": 6.7502827644348145
+   },
+   "size": 6,
+   "minSize": 6,
+   "family": "Arial, Helvetica, sans-serif",
+   "color": "#1a1a1a",
+   "halo": false,
+   "rotate": 0,
+   "italic": false,
+   "weight": "bold"
+  },
+  {
+   "s": "1",
+   "role": "label",
+   "box": {
+    "x": 6.330008029937744,
+    "y": 188.0688762664795,
+    "w": 3.750157117843628,
+    "h": 6.7502827644348145
+   },
+   "size": 6,
+   "minSize": 6,
+   "family": "Arial, Helvetica, sans-serif",
+   "color": "#fff",
+   "halo": false,
+   "rotate": 0,
+   "italic": false,
+   "weight": "bold"
+  },
+  {
+   "s": "No capacity",
+   "role": "label",
+   "box": {
+    "x": 17,
+    "y": 184.66887378692627,
+    "w": 34.03498840332031,
+    "h": 6.7502827644348145
+   },
+   "size": 6,
+   "minSize": 6,
+   "family": "Arial, Helvetica, sans-serif",
+   "color": "#1a1a1a",
+   "halo": false,
+   "rotate": 0,
+   "italic": false,
+   "weight": "bold"
+  },
+  {
+   "s": "retry",
+   "role": "label",
+   "box": {
+    "x": 17,
+    "y": 192.46887588500977,
+    "w": 11.244624137878418,
+    "h": 6.7502827644348145
+   },
+   "size": 5.5,
+   "minSize": 5.5,
+   "family": "Arial, Helvetica, sans-serif",
+   "color": "#2b2b2b",
+   "halo": false,
+   "rotate": 0,
+   "italic": false,
+   "weight": "normal"
+  },
+  {
+   "s": "2",
+   "role": "label",
+   "box": {
+    "x": 6.330008029937744,
+    "y": 206.06887435913086,
+    "w": 3.750157117843628,
+    "h": 6.7502827644348145
+   },
+   "size": 6,
+   "minSize": 6,
+   "family": "Arial, Helvetica, sans-serif",
+   "color": "#fff",
+   "halo": false,
+   "rotate": 0,
+   "italic": false,
+   "weight": "bold"
+  },
+  {
+   "s": "Job status never read",
+   "role": "label",
+   "box": {
+    "x": 17,
+    "y": 202.66887283325195,
+    "w": 61.99809265136719,
+    "h": 6.7502827644348145
+   },
+   "size": 6,
+   "minSize": 6,
+   "family": "Arial, Helvetica, sans-serif",
+   "color": "#1a1a1a",
+   "halo": false,
+   "rotate": 0,
+   "italic": false,
+   "weight": "bold"
+  },
+  {
+   "s": "the HTTP proxy refuses the default Python user agent",
+   "role": "label",
+   "box": {
+    "x": 17,
+    "y": 210.4688720703125,
+    "w": 131.2789306640625,
+    "h": 6.7502827644348145
+   },
+   "size": 5.5,
+   "minSize": 5.5,
+   "family": "Arial, Helvetica, sans-serif",
+   "color": "#2b2b2b",
+   "halo": false,
+   "rotate": 0,
+   "italic": false,
+   "weight": "normal"
+  },
+  {
+   "s": "3",
+   "role": "label",
+   "box": {
+    "x": 6.330008029937744,
+    "y": 224.06887435913086,
+    "w": 3.750157117843628,
+    "h": 6.7502827644348145
+   },
+   "size": 6,
+   "minSize": 6,
+   "family": "Arial, Helvetica, sans-serif",
+   "color": "#fff",
+   "halo": false,
+   "rotate": 0,
+   "italic": false,
+   "weight": "bold"
+  },
+  {
+   "s": "Pod set-up broken",
+   "role": "label",
+   "box": {
+    "x": 17,
+    "y": 220.6688690185547,
+    "w": 52.66144943237305,
+    "h": 6.7502827644348145
+   },
+   "size": 6,
+   "minSize": 6,
+   "family": "Arial, Helvetica, sans-serif",
+   "color": "#1a1a1a",
+   "halo": false,
+   "rotate": 0,
+   "italic": false,
+   "weight": "bold"
+  },
+  {
+   "s": "a system package",
+   "role": "label",
+   "box": {
+    "x": 17,
+    "y": 228.4688720703125,
+    "w": 44.298728942871094,
+    "h": 6.7502827644348145
+   },
+   "size": 5.5,
+   "minSize": 5.5,
+   "family": "Arial, Helvetica, sans-serif",
+   "color": "#2b2b2b",
+   "halo": false,
+   "rotate": 0,
+   "italic": false,
+   "weight": "normal"
+  },
+  {
+   "s": "4",
+   "role": "label",
+   "box": {
+    "x": 6.330008029937744,
+    "y": 242.0688705444336,
+    "w": 3.750157117843628,
+    "h": 6.7502827644348145
+   },
+   "size": 6,
+   "minSize": 6,
+   "family": "Arial, Helvetica, sans-serif",
+   "color": "#fff",
+   "halo": false,
+   "rotate": 0,
+   "italic": false,
+   "weight": "bold"
+  },
+  {
+   "s": "Running pods deleted",
+   "role": "label",
+   "box": {
+    "x": 17,
+    "y": 238.66887664794922,
+    "w": 62.96888732910156,
+    "h": 6.7502827644348145
+   },
+   "size": 6,
+   "minSize": 6,
+   "family": "Arial, Helvetica, sans-serif",
+   "color": "#1a1a1a",
+   "halo": false,
+   "rotate": 0,
+   "italic": false,
+   "weight": "bold"
+  },
+  {
+   "s": "another session on the account; per-team pod names",
+   "role": "label",
+   "box": {
+    "x": 17,
+    "y": 246.4688720703125,
+    "w": 130.41146850585938,
+    "h": 6.7502827644348145
+   },
+   "size": 5.5,
+   "minSize": 5.5,
+   "family": "Arial, Helvetica, sans-serif",
+   "color": "#2b2b2b",
+   "halo": false,
+   "rotate": 0,
+   "italic": false,
+   "weight": "normal"
+  },
+  {
+   "s": "5",
+   "role": "label",
+   "box": {
+    "x": 6.330008029937744,
+    "y": 260.0688705444336,
+    "w": 3.750157117843628,
+    "h": 6.7502827644348145
+   },
+   "size": 6,
+   "minSize": 6,
+   "family": "Arial, Helvetica, sans-serif",
+   "color": "#fff",
+   "halo": false,
+   "rotate": 0,
+   "italic": false,
+   "weight": "bold"
+  },
+  {
+   "s": "Job orphaned",
+   "role": "label",
+   "box": {
+    "x": 17,
+    "y": 256.6688766479492,
+    "w": 39.6843376159668,
+    "h": 6.7502827644348145
+   },
+   "size": 6,
+   "minSize": 6,
+   "family": "Arial, Helvetica, sans-serif",
+   "color": "#1a1a1a",
+   "halo": false,
+   "rotate": 0,
+   "italic": false,
+   "weight": "bold"
+  },
+  {
+   "s": "the session restarted; collect takes it over",
+   "role": "label",
+   "box": {
+    "x": 17,
+    "y": 264.4688720703125,
+    "w": 101.23241424560547,
+    "h": 6.7502827644348145
+   },
+   "size": 5.5,
+   "minSize": 5.5,
+   "family": "Arial, Helvetica, sans-serif",
+   "color": "#2b2b2b",
+   "halo": false,
+   "rotate": 0,
+   "italic": false,
+   "weight": "normal"
+  },
+  {
+   "s": "c",
+   "role": "panel",
+   "box": {
+    "x": 294.80316162109375,
+    "y": 168.0938120484352,
+    "w": 4.50018835067749,
+    "h": 9.00037670135498
+   },
+   "size": 8,
+   "minSize": 8,
+   "family": "Arial, Helvetica, sans-serif",
+   "color": "#1a1a1a",
+   "halo": false,
+   "rotate": 0,
+   "italic": false,
+   "weight": "bold"
+  },
+  {
+   "s": "Measured on the pilot",
+   "role": "label",
+   "box": {
+    "x": 305.80316162109375,
+    "y": 169.86887484788895,
+    "w": 62.14136505126953,
+    "h": 6.7502827644348145
+   },
+   "size": 6,
+   "minSize": 6,
+   "family": "Arial, Helvetica, sans-serif",
+   "color": "#1a1a1a",
+   "halo": false,
+   "rotate": 0,
+   "italic": false,
+   "weight": "bold"
+  },
+  {
+   "s": "83 min, 1.02 USD",
+   "role": "label",
+   "box": {
+    "x": 302.80316162109375,
+    "y": 187.49384307861328,
+    "w": 56.58218765258789,
+    "h": 7.500312805175781
+   },
+   "size": 7,
+   "minSize": 7,
+   "family": "Arial, Helvetica, sans-serif",
+   "color": "#1a1a1a",
+   "halo": false,
+   "rotate": 0,
+   "italic": false,
+   "weight": "bold"
+  },
+  {
+   "s": "full protocol: 5 seeds, 9 variants, RTX PRO 4500",
+   "role": "label",
+   "box": {
+    "x": 302.80316162109375,
+    "y": 198.8688735961914,
+    "w": 118.43464660644531,
+    "h": 6.7502827644348145
+   },
+   "size": 5.5,
+   "minSize": 5.5,
+   "family": "Arial, Helvetica, sans-serif",
+   "color": "#2b2b2b",
+   "halo": false,
+   "rotate": 0,
+   "italic": false,
+   "weight": "normal"
+  },
+  {
+   "s": "35–60 s vs 15 min",
+   "role": "label",
+   "box": {
+    "x": 302.80316162109375,
+    "y": 221.49384307861328,
+    "w": 59.350860595703125,
+    "h": 7.500314235687256
+   },
+   "size": 7,
+   "minSize": 7,
+   "family": "Arial, Helvetica, sans-serif",
+   "color": "#1a1a1a",
+   "halo": false,
+   "rotate": 0,
+   "italic": false,
+   "weight": "bold"
+  },
+  {
+   "s": "one training: GPU vs one CPU core",
+   "role": "label",
+   "box": {
+    "x": 302.80316162109375,
+    "y": 232.8688735961914,
+    "w": 86.76925659179688,
+    "h": 6.7502827644348145
+   },
+   "size": 5.5,
+   "minSize": 5.5,
+   "family": "Arial, Helvetica, sans-serif",
+   "color": "#2b2b2b",
+   "halo": false,
+   "rotate": 0,
+   "italic": false,
+   "weight": "normal"
+  },
+  {
+   "s": "4–5 ms per step",
+   "role": "label",
+   "box": {
+    "x": 302.80316162109375,
+    "y": 255.49384307861328,
+    "w": 53.116268157958984,
+    "h": 7.500314235687256
+   },
+   "size": 7,
+   "minSize": 7,
+   "family": "Arial, Helvetica, sans-serif",
+   "color": "#1a1a1a",
+   "halo": false,
+   "rotate": 0,
+   "italic": false,
+   "weight": "bold"
+  },
+  {
+   "s": "solver at 64³ on the GPU",
+   "role": "label",
+   "box": {
+    "x": 302.80316162109375,
+    "y": 266.8688735961914,
+    "w": 60.494720458984375,
+    "h": 6.7502827644348145
+   },
+   "size": 5.5,
+   "minSize": 5.5,
+   "family": "Arial, Helvetica, sans-serif",
+   "color": "#2b2b2b",
+   "halo": false,
+   "rotate": 0,
+   "italic": false,
+   "weight": "normal"
+  }
+ ],
+ "strokes": [
+  {
+   "w": 0.5,
+   "tag": "rect",
+   "part": ""
+  },
+  {
+   "w": 0.4,
+   "tag": "rect",
+   "part": "box"
+  },
+  {
+   "w": 0.4,
+   "tag": "rect",
+   "part": "box"
+  },
+  {
+   "w": 0.4,
+   "tag": "rect",
+   "part": "box"
+  },
+  {
+   "w": 0.4,
+   "tag": "rect",
+   "part": "box"
+  },
+  {
+   "w": 0.4,
+   "tag": "rect",
+   "part": "box"
+  },
+  {
+   "w": 0.4,
+   "tag": "rect",
+   "part": "box"
+  },
+  {
+   "w": 0.6,
+   "tag": "path",
+   "part": "arrow-shaft"
+  },
+  {
+   "w": 0.6,
+   "tag": "path",
+   "part": "arrow-shaft"
+  },
+  {
+   "w": 0.6,
+   "tag": "path",
+   "part": "arrow-shaft"
+  },
+  {
+   "w": 0.6,
+   "tag": "path",
+   "part": "arrow-shaft"
+  },
+  {
+   "w": 0.5,
+   "tag": "rect",
+   "part": ""
+  },
+  {
+   "w": 0.4,
+   "tag": "rect",
+   "part": "box"
+  },
+  {
+   "w": 0.6,
+   "tag": "path",
+   "part": "arrow-shaft"
+  },
+  {
+   "w": 0.4,
+   "tag": "rect",
+   "part": "box"
+  },
+  {
+   "w": 0.6,
+   "tag": "path",
+   "part": "arrow-shaft"
+  },
+  {
+   "w": 0.4,
+   "tag": "rect",
+   "part": "box"
+  },
+  {
+   "w": 0.6,
+   "tag": "path",
+   "part": "arrow-shaft"
+  },
+  {
+   "w": 0.4,
+   "tag": "rect",
+   "part": "box"
+  },
+  {
+   "w": 0.7,
+   "tag": "path",
+   "part": "arrow-shaft"
+  },
+  {
+   "w": 0.5,
+   "tag": "path",
+   "part": "arrow-shaft"
+  },
+  {
+   "w": 0.7,
+   "tag": "path",
+   "part": "arrow-shaft"
+  },
+  {
+   "w": 0.5,
+   "tag": "path",
+   "part": "arrow-shaft"
+  },
+  {
+   "w": 0.6,
+   "tag": "circle",
+   "part": ""
+  },
+  {
+   "w": 0.6,
+   "tag": "circle",
+   "part": ""
+  },
+  {
+   "w": 0.6,
+   "tag": "circle",
+   "part": ""
+  },
+  {
+   "w": 0.6,
+   "tag": "circle",
+   "part": ""
+  },
+  {
+   "w": 0.6,
+   "tag": "circle",
+   "part": ""
+  },
+  {
+   "w": 0.6,
+   "tag": "circle",
+   "part": ""
+  },
+  {
+   "w": 0.6,
+   "tag": "circle",
+   "part": ""
+  },
+  {
+   "w": 0.6,
+   "tag": "circle",
+   "part": ""
+  },
+  {
+   "w": 0.6,
+   "tag": "circle",
+   "part": ""
+  },
+  {
+   "w": 0.6,
+   "tag": "circle",
+   "part": ""
+  }
+ ],
+ "images": [],
+ "anchors": {},
+ "relations": [],
+ "drawn": [],
+ "panels": [
+  {
+   "label": "a",
+   "x": 0,
+   "y": 0,
+   "w": 518.740157480315,
+   "h": 158.74015748031496
+  },
+  {
+   "label": "b",
+   "x": 0,
+   "y": 167.244094488189,
+   "w": 317.4803149606299,
+   "h": 116.22047244094489
+  },
+  {
+   "label": "c",
+   "x": 294.80314960629926,
+   "y": 167.244094488189,
+   "w": 223.93700787401576,
+   "h": 116.22047244094489
+  }
+ ]
+}

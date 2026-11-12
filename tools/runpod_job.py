@@ -452,6 +452,26 @@ def collect(args, mcp: MCP | None = None, sleep=time.sleep) -> int:
     return 0 if rc == 0 else 1
 
 
+def exec_in_pod(args, mcp: MCP | None = None) -> int:
+    """Run a shell command in a running pod of this team, from the repository clone, and print its output.
+
+    For repairs of a job in flight (2026-11-12: result files written under a wrong name were copied to the
+    output directory before the job ended). Pods of other teams are refused, as in `collect`.
+    """
+    mcp = mcp or MCP()
+    name = str(mcp.call("get-pod", {"id": args.pod}).get("name", ""))
+    if not (TEAM_PREFIX.match(PREFIX) and name.startswith(PREFIX)):
+        sys.exit(f"pod {args.pod} ({name!r}) does not carry this team's prefix {PREFIX!r}: nothing run")
+    command = " ".join(args.command[1:] if args.command[:1] == ["--"] else args.command)
+    r = mcp.call("exec-pod", {"id": args.pod, "body": {"command": ["sh", "-c", f"cd /workspace/milady && {command}"],
+                                                       "timeoutSeconds": min(int(args.timeout), 25)}})
+    out = r if isinstance(r, dict) else {}
+    print(str(out.get("stdout", "")), end="")
+    if out.get("stderr"):
+        print(str(out["stderr"]), end="", file=sys.stderr)
+    return int(out.get("exitCode") or 0)
+
+
 def spend() -> dict:
     rows = [r for r in ledger_rows() if r.get("event") != "start"]
     by_gpu: dict[str, dict] = {}
@@ -483,6 +503,10 @@ def main() -> int:
     k.add_argument("--outputs", nargs="*", help="paths to bring back (default: the OUTPUTS of the pod)")
     k.add_argument("--log", default=str(ROOT / "research" / "gpu-logs" / "last-job.log"))
     k.add_argument("--now", action="store_true", help="do not wait for the job to finish: take what is there")
+    x = sub.add_parser("exec", help="run a shell command in a running pod of this team (repair of a job in flight)")
+    x.add_argument("--pod", required=True)
+    x.add_argument("--timeout", default=20, help="seconds (at most 25)")
+    x.add_argument("command", nargs=argparse.REMAINDER)
     c = sub.add_parser("cleanup", help="delete pods of this tool past their time limit (orphans of a crashed run)")
     c.add_argument("--all", action="store_true", help="also delete this team's own pods whose job may still be running")
     a = ap.parse_args()
@@ -490,6 +514,8 @@ def main() -> int:
         return run(a)
     if a.cmd == "collect":
         return collect(a)
+    if a.cmd == "exec":
+        return exec_in_pod(a)
     if a.cmd == "spend":
         s = spend()
         print(json.dumps(s, indent=1))

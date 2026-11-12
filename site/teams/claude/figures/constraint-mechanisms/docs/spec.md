@@ -1,0 +1,12 @@
+# Spec: constraint-mechanisms
+Hero: none, a schematic of glyphs and labels; route flat (no 3D object to render). Style: own, clean flat, physics readers. Width 183 mm, journal format, labels 5-7.5 pt.
+Colour key (shared by the team's figures): velocity u blue (#0072B2), magnetic field B orange/red (#D55E00), forcing f grey (#8c8c8c); neutral ink for generic objects.
+Source of every element: site/teams/claude/figures/FACTS.md only; no number marked pending is drawn.
+Render: `CHROME=<chrome wrapper adding --no-sandbox if root> node .claude/skills/schematic-figure/foundation/tools/render.mjs --root site/teams/claude/figures/constraint-mechanisms --fig site/teams/claude/figures/constraint-mechanisms/figure/figure.js` (add `--crop` etc. as needed; engine = the skill's foundation, no copy).
+Gate: `node .claude/skills/schematic-figure/foundation/tools/check.mjs --root site/teams/claude/figures/constraint-mechanisms --fig site/teams/claude/figures/constraint-mechanisms/figure/figure.js --out site/teams/claude/figures/constraint-mechanisms/figure/out`
+(as root, Chrome needs a wrapper script that execs google-chrome with --no-sandbox, passed through the CHROME environment variable.)
+
+## Structure
+Skeleton: one principle with several cases. One shared glyph set (noise cloud, straight paths to samples, constraint surface "div B = 0" as an orange line, law-level target = diamond (mean of samples) and dashed ring, orange correction arrow); each cell reuses it and changes only what the mechanism changes. Three columns named as in the offer: Model design (W4, W4s, W9-W11, G0), Training loss (W1, W5, W0 baseline, legend), Sampling procedure (W2, W3, W7, W8). Cells whose mechanism acts on the law (W9-W11, G0, W5, W7, W8) drop the surface and show the law-level target instead; W5 (a mean) and W8 (each sample) are deliberately contrasted.
+Negative constraints: no result, no ranking, no efficacy claim (W1 and W2 are drawn without showing whether the constraint is enforced); the surface is a straight line only because div B = 0 is linear. Spatial layout of dots is illustrative.
+Inferred: the energy identity text in W5 uses the colour key (f grey, u/omega blue, j orange).

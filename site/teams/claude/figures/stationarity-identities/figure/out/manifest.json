@@ -1,0 +1,1458 @@
+{
+ "name": "stationarity-identities",
+ "mode": "design",
+ "format": "journal",
+ "widthMM": 183,
+ "heightMM": 84,
+ "W": 518.740157480315,
+ "H": 238.11023622047247,
+ "texts": [
+  {
+   "s": "a",
+   "role": "panel",
+   "box": {
+    "x": 0,
+    "y": 0.8497603535652161,
+    "w": 4.50015926361084,
+    "h": 9.00031852722168
+   },
+   "size": 8,
+   "minSize": 8,
+   "family": "Arial, Helvetica, sans-serif",
+   "color": "#1a1a1a",
+   "halo": false,
+   "rotate": 0,
+   "italic": false,
+   "weight": "bold"
+  },
+  {
+   "s": "Energy balance of a stationary state",
+   "role": "label",
+   "box": {
+    "x": 12,
+    "y": 2.2497872038802598,
+    "w": 106.60452270507812,
+    "h": 7.500266075134277
+   },
+   "size": 6.5,
+   "minSize": 6.5,
+   "family": "Arial, Helvetica, sans-serif",
+   "color": "#1a1a1a",
+   "halo": false,
+   "rotate": 0,
+   "italic": false,
+   "weight": "normal"
+  },
+  {
+   "s": "time",
+   "role": "label",
+   "box": {
+    "x": 150.6051025390625,
+    "y": 70.62481689453125,
+    "w": 10.394899368286133,
+    "h": 6.750239372253418
+   },
+   "size": 5.5,
+   "minSize": 5.5,
+   "family": "Arial, Helvetica, sans-serif",
+   "color": "#1a1a1a",
+   "halo": false,
+   "rotate": 0,
+   "italic": false,
+   "weight": "normal"
+  },
+  {
+   "s": "dE/dt",
+   "role": "label",
+   "box": {
+    "x": 17,
+    "y": 26.624813079833984,
+    "w": 13.570793151855469,
+    "h": 6.750240325927734
+   },
+   "size": 5.5,
+   "minSize": 5.5,
+   "family": "Arial, Helvetica, sans-serif",
+   "color": "#1a1a1a",
+   "halo": false,
+   "rotate": 0,
+   "italic": true,
+   "weight": "normal"
+  },
+  {
+   "s": "mean = 0",
+   "role": "label",
+   "box": {
+    "x": 135.19439697265625,
+    "y": 54.624813079833984,
+    "w": 26.218713760375977,
+    "h": 6.750239372253418
+   },
+   "size": 6,
+   "minSize": 6,
+   "family": "Arial, Helvetica, sans-serif",
+   "color": "#00896A",
+   "halo": true,
+   "rotate": 0,
+   "italic": false,
+   "weight": "normal"
+  },
+  {
+   "s": "each snapshot: not zero",
+   "role": "label",
+   "box": {
+    "x": 17,
+    "y": 13.6248140335083,
+    "w": 58.677860260009766,
+    "h": 6.750239372253418
+   },
+   "size": 5.5,
+   "minSize": 5.5,
+   "family": "Arial, Helvetica, sans-serif",
+   "color": "#2b2b2b",
+   "halo": false,
+   "rotate": 0,
+   "italic": false,
+   "weight": "normal"
+  },
+  {
+   "s": "Per-sample constraint: not what the law says",
+   "role": "label",
+   "box": {
+    "x": 17,
+    "y": 102.62481689453125,
+    "w": 113.59402465820312,
+    "h": 6.750236511230469
+   },
+   "size": 5.5,
+   "minSize": 5.5,
+   "family": "Arial, Helvetica, sans-serif",
+   "color": "#7a7a7a",
+   "halo": false,
+   "rotate": 0,
+   "italic": false,
+   "weight": "normal"
+  },
+  {
+   "s": "flat: every sample balanced",
+   "role": "label",
+   "box": {
+    "x": 94,
+    "y": 119.62481689453125,
+    "w": 66.91643524169922,
+    "h": 6.750239372253418
+   },
+   "size": 5.5,
+   "minSize": 5.5,
+   "family": "Arial, Helvetica, sans-serif",
+   "color": "#7a7a7a",
+   "halo": false,
+   "rotate": 0,
+   "italic": false,
+   "weight": "normal"
+  },
+  {
+   "s": "Identity of the stationary law",
+   "role": "label",
+   "box": {
+    "x": 45.09598922729492,
+    "y": 164.6248016357422,
+    "w": 74.43572998046875,
+    "h": 6.750239372253418
+   },
+   "size": 5.5,
+   "minSize": 5.5,
+   "family": "Arial, Helvetica, sans-serif",
+   "color": "#1a1a1a",
+   "halo": false,
+   "rotate": 0,
+   "italic": false,
+   "weight": "normal"
+  },
+  {
+   "s": "E[ ⟨f·u⟩ − ν⟨|ω|²⟩ − η⟨|j|²⟩ ] = 0",
+   "role": "label",
+   "box": {
+    "x": 39.869239807128906,
+    "y": 179.24978637695312,
+    "w": 84.8022689819336,
+    "h": 7.5002593994140625
+   },
+   "size": 6.5,
+   "minSize": 6.5,
+   "family": "Arial, Helvetica, sans-serif",
+   "color": "#1a1a1a",
+   "halo": false,
+   "rotate": 0,
+   "italic": true,
+   "weight": "normal"
+  },
+  {
+   "s": "forcing · viscous, u · Joule, B",
+   "role": "label",
+   "box": {
+    "x": 46.91246032714844,
+    "y": 194.6248016357422,
+    "w": 70.66656494140625,
+    "h": 6.750244140625
+   },
+   "size": 5.5,
+   "minSize": 5.5,
+   "family": "Arial, Helvetica, sans-serif",
+   "color": "#1a1a1a",
+   "halo": false,
+   "rotate": 0,
+   "italic": true,
+   "weight": "normal"
+  },
+  {
+   "s": "residual below 4×10−4 on the reference",
+   "role": "label",
+   "box": {
+    "x": 39.00788116455078,
+    "y": 206.7998993396759,
+    "w": 86.61485290527344,
+    "h": 6.4001617431640625
+   },
+   "size": 5,
+   "minSize": 3.5999999999999996,
+   "family": "Arial, Helvetica, sans-serif",
+   "color": "#7a7a7a",
+   "halo": false,
+   "rotate": 0,
+   "italic": false,
+   "weight": "normal"
+  },
+  {
+   "s": "b",
+   "role": "panel",
+   "box": {
+    "x": 175.74803161621094,
+    "y": 0.8497603535652161,
+    "w": 5.250185966491699,
+    "h": 9.00031852722168
+   },
+   "size": 8,
+   "minSize": 8,
+   "family": "Arial, Helvetica, sans-serif",
+   "color": "#1a1a1a",
+   "halo": false,
+   "rotate": 0,
+   "italic": false,
+   "weight": "bold"
+  },
+  {
+   "s": "Magnetic helicity by shell",
+   "role": "label",
+   "box": {
+    "x": 187.74803161621094,
+    "y": 2.2497872038802598,
+    "w": 76.18915557861328,
+    "h": 7.500266075134277
+   },
+   "size": 6.5,
+   "minSize": 6.5,
+   "family": "Arial, Helvetica, sans-serif",
+   "color": "#1a1a1a",
+   "halo": false,
+   "rotate": 0,
+   "italic": false,
+   "weight": "normal"
+  },
+  {
+   "s": "",
+   "role": "label",
+   "box": {
+    "x": 175.74803161621094,
+    "y": 94,
+    "w": 0,
+    "h": 0
+   },
+   "size": 5.5,
+   "minSize": 5.5,
+   "family": "Arial, Helvetica, sans-serif",
+   "color": "#1a1a1a",
+   "halo": false,
+   "rotate": 0,
+   "italic": false,
+   "weight": "normal"
+  },
+  {
+   "s": "1",
+   "role": "label",
+   "box": {
+    "x": 205.5936794281006,
+    "y": 173.6248016357422,
+    "w": 3.058702230453491,
+    "h": 6.750239372253418
+   },
+   "size": 5.5,
+   "minSize": 5.5,
+   "family": "Arial, Helvetica, sans-serif",
+   "color": "#1a1a1a",
+   "halo": false,
+   "rotate": 0,
+   "italic": false,
+   "weight": "normal"
+  },
+  {
+   "s": "",
+   "role": "label",
+   "box": {
+    "x": 175.74803161621094,
+    "y": 94,
+    "w": 0,
+    "h": 0
+   },
+   "size": 5.5,
+   "minSize": 5.5,
+   "family": "Arial, Helvetica, sans-serif",
+   "color": "#1a1a1a",
+   "halo": false,
+   "rotate": 0,
+   "italic": false,
+   "weight": "normal"
+  },
+  {
+   "s": "2",
+   "role": "label",
+   "box": {
+    "x": 224.34368133544922,
+    "y": 173.6248016357422,
+    "w": 3.058702230453491,
+    "h": 6.750239372253418
+   },
+   "size": 5.5,
+   "minSize": 5.5,
+   "family": "Arial, Helvetica, sans-serif",
+   "color": "#1a1a1a",
+   "halo": false,
+   "rotate": 0,
+   "italic": false,
+   "weight": "normal"
+  },
+  {
+   "s": "",
+   "role": "label",
+   "box": {
+    "x": 175.74803161621094,
+    "y": 107,
+    "w": 0,
+    "h": 0
+   },
+   "size": 5.5,
+   "minSize": 5.5,
+   "family": "Arial, Helvetica, sans-serif",
+   "color": "#1a1a1a",
+   "halo": false,
+   "rotate": 0,
+   "italic": false,
+   "weight": "normal"
+  },
+  {
+   "s": "3",
+   "role": "label",
+   "box": {
+    "x": 243.09368133544922,
+    "y": 173.6248016357422,
+    "w": 3.058702230453491,
+    "h": 6.750239372253418
+   },
+   "size": 5.5,
+   "minSize": 5.5,
+   "family": "Arial, Helvetica, sans-serif",
+   "color": "#1a1a1a",
+   "halo": false,
+   "rotate": 0,
+   "italic": false,
+   "weight": "normal"
+  },
+  {
+   "s": "",
+   "role": "label",
+   "box": {
+    "x": 175.74803161621094,
+    "y": 107,
+    "w": 0,
+    "h": 0
+   },
+   "size": 5.5,
+   "minSize": 5.5,
+   "family": "Arial, Helvetica, sans-serif",
+   "color": "#1a1a1a",
+   "halo": false,
+   "rotate": 0,
+   "italic": false,
+   "weight": "normal"
+  },
+  {
+   "s": "4",
+   "role": "label",
+   "box": {
+    "x": 261.8436813354492,
+    "y": 173.6248016357422,
+    "w": 3.058702230453491,
+    "h": 6.750239372253418
+   },
+   "size": 5.5,
+   "minSize": 5.5,
+   "family": "Arial, Helvetica, sans-serif",
+   "color": "#1a1a1a",
+   "halo": false,
+   "rotate": 0,
+   "italic": false,
+   "weight": "normal"
+  },
+  {
+   "s": "",
+   "role": "label",
+   "box": {
+    "x": 175.74803161621094,
+    "y": 107,
+    "w": 0,
+    "h": 0
+   },
+   "size": 5.5,
+   "minSize": 5.5,
+   "family": "Arial, Helvetica, sans-serif",
+   "color": "#1a1a1a",
+   "halo": false,
+   "rotate": 0,
+   "italic": false,
+   "weight": "normal"
+  },
+  {
+   "s": "5",
+   "role": "label",
+   "box": {
+    "x": 280.5936813354492,
+    "y": 173.6248016357422,
+    "w": 3.058702230453491,
+    "h": 6.750239372253418
+   },
+   "size": 5.5,
+   "minSize": 5.5,
+   "family": "Arial, Helvetica, sans-serif",
+   "color": "#1a1a1a",
+   "halo": false,
+   "rotate": 0,
+   "italic": false,
+   "weight": "normal"
+  },
+  {
+   "s": "",
+   "role": "label",
+   "box": {
+    "x": 175.74803161621094,
+    "y": 107,
+    "w": 0,
+    "h": 0
+   },
+   "size": 5.5,
+   "minSize": 5.5,
+   "family": "Arial, Helvetica, sans-serif",
+   "color": "#1a1a1a",
+   "halo": false,
+   "rotate": 0,
+   "italic": false,
+   "weight": "normal"
+  },
+  {
+   "s": "6",
+   "role": "label",
+   "box": {
+    "x": 299.3436813354492,
+    "y": 173.6248016357422,
+    "w": 3.058702230453491,
+    "h": 6.750239372253418
+   },
+   "size": 5.5,
+   "minSize": 5.5,
+   "family": "Arial, Helvetica, sans-serif",
+   "color": "#1a1a1a",
+   "halo": false,
+   "rotate": 0,
+   "italic": false,
+   "weight": "normal"
+  },
+  {
+   "s": "",
+   "role": "label",
+   "box": {
+    "x": 175.74803161621094,
+    "y": 107,
+    "w": 0,
+    "h": 0
+   },
+   "size": 5.5,
+   "minSize": 5.5,
+   "family": "Arial, Helvetica, sans-serif",
+   "color": "#1a1a1a",
+   "halo": false,
+   "rotate": 0,
+   "italic": false,
+   "weight": "normal"
+  },
+  {
+   "s": "7",
+   "role": "label",
+   "box": {
+    "x": 318.0936737060547,
+    "y": 173.6248016357422,
+    "w": 3.058702230453491,
+    "h": 6.750239372253418
+   },
+   "size": 5.5,
+   "minSize": 5.5,
+   "family": "Arial, Helvetica, sans-serif",
+   "color": "#1a1a1a",
+   "halo": false,
+   "rotate": 0,
+   "italic": false,
+   "weight": "normal"
+  },
+  {
+   "s": "",
+   "role": "label",
+   "box": {
+    "x": 175.74803161621094,
+    "y": 107,
+    "w": 0,
+    "h": 0
+   },
+   "size": 5.5,
+   "minSize": 5.5,
+   "family": "Arial, Helvetica, sans-serif",
+   "color": "#1a1a1a",
+   "halo": false,
+   "rotate": 0,
+   "italic": false,
+   "weight": "normal"
+  },
+  {
+   "s": "8",
+   "role": "label",
+   "box": {
+    "x": 336.8436737060547,
+    "y": 173.6248016357422,
+    "w": 3.058702230453491,
+    "h": 6.750239372253418
+   },
+   "size": 5.5,
+   "minSize": 5.5,
+   "family": "Arial, Helvetica, sans-serif",
+   "color": "#1a1a1a",
+   "halo": false,
+   "rotate": 0,
+   "italic": false,
+   "weight": "normal"
+  },
+  {
+   "s": "shell k",
+   "role": "label",
+   "box": {
+    "x": 264.9547882080078,
+    "y": 183.62481689453125,
+    "w": 15.832595825195312,
+    "h": 6.750244140625
+   },
+   "size": 5.5,
+   "minSize": 5.5,
+   "family": "Arial, Helvetica, sans-serif",
+   "color": "#1a1a1a",
+   "halo": false,
+   "rotate": 0,
+   "italic": true,
+   "weight": "normal"
+  },
+  {
+   "s": "k² H(k)  (schematic)",
+   "role": "label",
+   "box": {
+    "x": 199.74803161621094,
+    "y": 36.624813079833984,
+    "w": 46.45477294921875,
+    "h": 6.750240325927734
+   },
+   "size": 5.5,
+   "minSize": 5.5,
+   "family": "Arial, Helvetica, sans-serif",
+   "color": "#1a1a1a",
+   "halo": false,
+   "rotate": 0,
+   "italic": true,
+   "weight": "normal"
+  },
+  {
+   "s": "",
+   "role": "label",
+   "box": {
+    "x": 175.74803161621094,
+    "y": 149,
+    "w": 0,
+    "h": 0
+   },
+   "size": 5.5,
+   "minSize": 5.5,
+   "family": "Arial, Helvetica, sans-serif",
+   "color": "#1a1a1a",
+   "halo": false,
+   "rotate": 0,
+   "italic": false,
+   "weight": "normal"
+  },
+  {
+   "s": "large scales",
+   "role": "label",
+   "box": {
+    "x": 200.75919151306152,
+    "y": 146.6248016357422,
+    "w": 31.477678298950195,
+    "h": 6.750239372253418
+   },
+   "size": 5.5,
+   "minSize": 5.5,
+   "family": "Arial, Helvetica, sans-serif",
+   "color": "#D55E00",
+   "halo": false,
+   "rotate": 0,
+   "italic": false,
+   "weight": "normal"
+  },
+  {
+   "s": "k ≤ 2: negative",
+   "role": "label",
+   "box": {
+    "x": 198.6380214691162,
+    "y": 153.62481689453125,
+    "w": 35.72001647949219,
+    "h": 6.750244140625
+   },
+   "size": 5.5,
+   "minSize": 5.5,
+   "family": "Arial, Helvetica, sans-serif",
+   "color": "#D55E00",
+   "halo": false,
+   "rotate": 0,
+   "italic": true,
+   "weight": "normal"
+  },
+  {
+   "s": "small scales",
+   "role": "label",
+   "box": {
+    "x": 284.6712875366211,
+    "y": 52.624813079833984,
+    "w": 32.40349197387695,
+    "h": 6.750239372253418
+   },
+   "size": 5.5,
+   "minSize": 5.5,
+   "family": "Arial, Helvetica, sans-serif",
+   "color": "#D55E00",
+   "halo": false,
+   "rotate": 0,
+   "italic": false,
+   "weight": "normal"
+  },
+  {
+   "s": "k ≥ 3: positive",
+   "role": "label",
+   "box": {
+    "x": 284.0853271484375,
+    "y": 59.62481689453125,
+    "w": 33.575408935546875,
+    "h": 6.750236511230469
+   },
+   "size": 5.5,
+   "minSize": 5.5,
+   "family": "Arial, Helvetica, sans-serif",
+   "color": "#D55E00",
+   "halo": false,
+   "rotate": 0,
+   "italic": true,
+   "weight": "normal"
+  },
+  {
+   "s": "peak at k = 4",
+   "role": "label",
+   "box": {
+    "x": 295.24803161621094,
+    "y": 72.62481689453125,
+    "w": 31.641754150390625,
+    "h": 6.750236511230469
+   },
+   "size": 5.5,
+   "minSize": 5.5,
+   "family": "Arial, Helvetica, sans-serif",
+   "color": "#1a1a1a",
+   "halo": false,
+   "rotate": 0,
+   "italic": true,
+   "weight": "normal"
+  },
+  {
+   "s": "Σk k² H(k) = E[⟨j·B⟩] = 0",
+   "role": "label",
+   "box": {
+    "x": 228.68790817260742,
+    "y": 200.33978641033173,
+    "w": 67.16746520996094,
+    "h": 9.32025146484375
+   },
+   "size": 6.5,
+   "minSize": 4.68,
+   "family": "Arial, Helvetica, sans-serif",
+   "color": "#1a1a1a",
+   "halo": false,
+   "rotate": 0,
+   "italic": true,
+   "weight": "normal"
+  },
+  {
+   "s": "zero mean = cancellation between scales",
+   "role": "label",
+   "box": {
+    "x": 211.86504745483398,
+    "y": 210.6248016357422,
+    "w": 100.92438507080078,
+    "h": 6.750239372253418
+   },
+   "size": 5.5,
+   "minSize": 5.5,
+   "family": "Arial, Helvetica, sans-serif",
+   "color": "#1a1a1a",
+   "halo": false,
+   "rotate": 0,
+   "italic": false,
+   "weight": "normal"
+  },
+  {
+   "s": "c",
+   "role": "panel",
+   "box": {
+    "x": 359.99999999999994,
+    "y": 0.8497603535652161,
+    "w": 4.50015926361084,
+    "h": 9.00031852722168
+   },
+   "size": 8,
+   "minSize": 8,
+   "family": "Arial, Helvetica, sans-serif",
+   "color": "#1a1a1a",
+   "halo": false,
+   "rotate": 0,
+   "italic": false,
+   "weight": "bold"
+  },
+  {
+   "s": "Use of the identities",
+   "role": "label",
+   "box": {
+    "x": 371.99999999999994,
+    "y": 2.2497872038802598,
+    "w": 61.82683563232422,
+    "h": 7.500266075134277
+   },
+   "size": 6.5,
+   "minSize": 6.5,
+   "family": "Arial, Helvetica, sans-serif",
+   "color": "#1a1a1a",
+   "halo": false,
+   "rotate": 0,
+   "italic": false,
+   "weight": "normal"
+  },
+  {
+   "s": "Generator at η without data",
+   "role": "label",
+   "box": {
+    "x": 406.0642051696777,
+    "y": 25.624813079833984,
+    "w": 67.30110931396484,
+    "h": 6.750239372253418
+   },
+   "size": 5.5,
+   "minSize": 5.5,
+   "family": "Arial, Helvetica, sans-serif",
+   "color": "#fff",
+   "halo": false,
+   "rotate": 0,
+   "italic": false,
+   "weight": "normal"
+  },
+  {
+   "s": "generated samples (u, B)",
+   "role": "label",
+   "box": {
+    "x": 408.5017929077148,
+    "y": 62.624813079833984,
+    "w": 61.73657989501953,
+    "h": 6.750240325927734
+   },
+   "size": 5.5,
+   "minSize": 5.5,
+   "family": "Arial, Helvetica, sans-serif",
+   "color": "#1a1a1a",
+   "halo": false,
+   "rotate": 0,
+   "italic": true,
+   "weight": "normal"
+  },
+  {
+   "s": "Means over samples",
+   "role": "label",
+   "box": {
+    "x": 412.4804496765136,
+    "y": 92.62480926513672,
+    "w": 53.77925109863281,
+    "h": 6.7502336502075195
+   },
+   "size": 5.5,
+   "minSize": 5.5,
+   "family": "Arial, Helvetica, sans-serif",
+   "color": "#1a1a1a",
+   "halo": false,
+   "rotate": 0,
+   "italic": false,
+   "weight": "normal"
+  },
+  {
+   "s": "energy and magnetic-helicity",
+   "role": "label",
+   "box": {
+    "x": 404.3883628845214,
+    "y": 100.62480926513672,
+    "w": 70.21436309814453,
+    "h": 6.750239372253418
+   },
+   "size": 5.5,
+   "minSize": 5.5,
+   "family": "Arial, Helvetica, sans-serif",
+   "color": "#1a1a1a",
+   "halo": false,
+   "rotate": 0,
+   "italic": false,
+   "weight": "normal"
+  },
+  {
+   "s": "balances, to be zero",
+   "role": "label",
+   "box": {
+    "x": 414.61919403076166,
+    "y": 107.62480926513672,
+    "w": 49.50175476074219,
+    "h": 6.750239372253418
+   },
+   "size": 5.5,
+   "minSize": 5.5,
+   "family": "Arial, Helvetica, sans-serif",
+   "color": "#1a1a1a",
+   "halo": false,
+   "rotate": 0,
+   "italic": false,
+   "weight": "normal"
+  },
+  {
+   "s": "Training loss",
+   "role": "label",
+   "box": {
+    "x": 382.733263015747,
+    "y": 141.62481689453125,
+    "w": 33.90354537963867,
+    "h": 6.750239372253418
+   },
+   "size": 5.5,
+   "minSize": 5.5,
+   "family": "Arial, Helvetica, sans-serif",
+   "color": "#6A4C93",
+   "halo": false,
+   "rotate": 0,
+   "italic": false,
+   "weight": "normal"
+  },
+  {
+   "s": "on the means",
+   "role": "label",
+   "box": {
+    "x": 383.0321025848388,
+    "y": 149.62481689453125,
+    "w": 33.557167053222656,
+    "h": 6.750239372253418
+   },
+   "size": 5.5,
+   "minSize": 5.5,
+   "family": "Arial, Helvetica, sans-serif",
+   "color": "#1a1a1a",
+   "halo": false,
+   "rotate": 0,
+   "italic": false,
+   "weight": "normal"
+  },
+  {
+   "s": "(W5)",
+   "role": "label",
+   "box": {
+    "x": 393.73170089721674,
+    "y": 156.62481689453125,
+    "w": 11.906672477722168,
+    "h": 6.750239372253418
+   },
+   "size": 5.5,
+   "minSize": 5.5,
+   "family": "Arial, Helvetica, sans-serif",
+   "color": "#7a7a7a",
+   "halo": false,
+   "rotate": 0,
+   "italic": false,
+   "weight": "normal"
+  },
+  {
+   "s": "Sampling weights",
+   "role": "label",
+   "box": {
+    "x": 455.6929626464843,
+    "y": 141.62481689453125,
+    "w": 46.72431182861328,
+    "h": 6.750239372253418
+   },
+   "size": 5.5,
+   "minSize": 5.5,
+   "family": "Arial, Helvetica, sans-serif",
+   "color": "#6A4C93",
+   "halo": false,
+   "rotate": 0,
+   "italic": false,
+   "weight": "normal"
+  },
+  {
+   "s": "tilt the samples",
+   "role": "label",
+   "box": {
+    "x": 460.72634124755854,
+    "y": 149.62481689453125,
+    "w": 36.9091682434082,
+    "h": 6.750239372253418
+   },
+   "size": 5.5,
+   "minSize": 5.5,
+   "family": "Arial, Helvetica, sans-serif",
+   "color": "#1a1a1a",
+   "halo": false,
+   "rotate": 0,
+   "italic": false,
+   "weight": "normal"
+  },
+  {
+   "s": "(W7)",
+   "role": "label",
+   "box": {
+    "x": 473.1017761230468,
+    "y": 156.62481689453125,
+    "w": 11.906672477722168,
+    "h": 6.750239372253418
+   },
+   "size": 5.5,
+   "minSize": 5.5,
+   "family": "Arial, Helvetica, sans-serif",
+   "color": "#7a7a7a",
+   "halo": false,
+   "rotate": 0,
+   "italic": false,
+   "weight": "normal"
+  },
+  {
+   "s": "reweighted samples",
+   "role": "label",
+   "box": {
+    "x": 454.60894012451166,
+    "y": 182.62481689453125,
+    "w": 49.13358688354492,
+    "h": 6.750239372253418
+   },
+   "size": 5.5,
+   "minSize": 5.5,
+   "family": "Arial, Helvetica, sans-serif",
+   "color": "#6A4C93",
+   "halo": false,
+   "rotate": 0,
+   "italic": false,
+   "weight": "normal"
+  },
+  {
+   "s": "Measured (5 seeds, GPU)",
+   "role": "label",
+   "box": {
+    "x": 406.83180999755854,
+    "y": 201.6248016357422,
+    "w": 65.0765380859375,
+    "h": 6.750244140625
+   },
+   "size": 5.5,
+   "minSize": 5.5,
+   "family": "Arial, Helvetica, sans-serif",
+   "color": "#1a1a1a",
+   "halo": false,
+   "rotate": 0,
+   "italic": false,
+   "weight": "normal"
+  },
+  {
+   "s": "W5: energy residual 0.29 → 0.19",
+   "role": "label",
+   "box": {
+    "x": 399.1909141540527,
+    "y": 210.6248016357422,
+    "w": 80.35831451416016,
+    "h": 6.750239372253418
+   },
+   "size": 5.5,
+   "minSize": 5.5,
+   "family": "Arial, Helvetica, sans-serif",
+   "color": "#1a1a1a",
+   "halo": false,
+   "rotate": 0,
+   "italic": false,
+   "weight": "normal"
+  }
+ ],
+ "strokes": [
+  {
+   "w": 0.5,
+   "tag": "line",
+   "part": ""
+  },
+  {
+   "w": 0.5,
+   "tag": "path",
+   "part": "arrow-shaft"
+  },
+  {
+   "w": 0.9,
+   "tag": "polyline",
+   "part": ""
+  },
+  {
+   "w": 1.1,
+   "tag": "line",
+   "part": ""
+  },
+  {
+   "w": 0.5,
+   "tag": "line",
+   "part": ""
+  },
+  {
+   "w": 0.5,
+   "tag": "path",
+   "part": "arrow-shaft"
+  },
+  {
+   "w": 1.1,
+   "tag": "line",
+   "part": ""
+  },
+  {
+   "w": 1,
+   "tag": "line",
+   "part": ""
+  },
+  {
+   "w": 1,
+   "tag": "line",
+   "part": ""
+  },
+  {
+   "w": 0.4,
+   "tag": "rect",
+   "part": ""
+  },
+  {
+   "w": 0.5,
+   "tag": "line",
+   "part": ""
+  },
+  {
+   "w": 0.5,
+   "tag": "path",
+   "part": "arrow-shaft"
+  },
+  {
+   "w": 0.9,
+   "tag": "rect",
+   "part": ""
+  },
+  {
+   "w": 0.9,
+   "tag": "rect",
+   "part": ""
+  },
+  {
+   "w": 0.9,
+   "tag": "rect",
+   "part": ""
+  },
+  {
+   "w": 0.9,
+   "tag": "rect",
+   "part": ""
+  },
+  {
+   "w": 0.9,
+   "tag": "rect",
+   "part": ""
+  },
+  {
+   "w": 0.9,
+   "tag": "rect",
+   "part": ""
+  },
+  {
+   "w": 0.9,
+   "tag": "rect",
+   "part": ""
+  },
+  {
+   "w": 0.9,
+   "tag": "rect",
+   "part": ""
+  },
+  {
+   "w": 0.5,
+   "tag": "line",
+   "part": ""
+  },
+  {
+   "w": 0.4,
+   "tag": "polyline",
+   "part": "callout"
+  },
+  {
+   "w": 0.4,
+   "tag": "rect",
+   "part": ""
+  },
+  {
+   "w": 0.6,
+   "tag": "rect",
+   "part": ""
+  },
+  {
+   "w": 0.8,
+   "tag": "path",
+   "part": "arrow-shaft"
+  },
+  {
+   "w": 0.2,
+   "tag": "rect",
+   "part": ""
+  },
+  {
+   "w": 0.2,
+   "tag": "rect",
+   "part": ""
+  },
+  {
+   "w": 0.2,
+   "tag": "rect",
+   "part": ""
+  },
+  {
+   "w": 0.2,
+   "tag": "rect",
+   "part": ""
+  },
+  {
+   "w": 0.2,
+   "tag": "rect",
+   "part": ""
+  },
+  {
+   "w": 0.2,
+   "tag": "rect",
+   "part": ""
+  },
+  {
+   "w": 0.2,
+   "tag": "rect",
+   "part": ""
+  },
+  {
+   "w": 0.2,
+   "tag": "rect",
+   "part": ""
+  },
+  {
+   "w": 0.2,
+   "tag": "rect",
+   "part": ""
+  },
+  {
+   "w": 0.2,
+   "tag": "rect",
+   "part": ""
+  },
+  {
+   "w": 0.2,
+   "tag": "rect",
+   "part": ""
+  },
+  {
+   "w": 0.2,
+   "tag": "rect",
+   "part": ""
+  },
+  {
+   "w": 0.2,
+   "tag": "rect",
+   "part": ""
+  },
+  {
+   "w": 0.2,
+   "tag": "rect",
+   "part": ""
+  },
+  {
+   "w": 0.2,
+   "tag": "rect",
+   "part": ""
+  },
+  {
+   "w": 0.2,
+   "tag": "rect",
+   "part": ""
+  },
+  {
+   "w": 0.2,
+   "tag": "rect",
+   "part": ""
+  },
+  {
+   "w": 0.2,
+   "tag": "rect",
+   "part": ""
+  },
+  {
+   "w": 0.2,
+   "tag": "rect",
+   "part": ""
+  },
+  {
+   "w": 0.2,
+   "tag": "rect",
+   "part": ""
+  },
+  {
+   "w": 0.2,
+   "tag": "rect",
+   "part": ""
+  },
+  {
+   "w": 0.2,
+   "tag": "rect",
+   "part": ""
+  },
+  {
+   "w": 0.2,
+   "tag": "rect",
+   "part": ""
+  },
+  {
+   "w": 0.2,
+   "tag": "rect",
+   "part": ""
+  },
+  {
+   "w": 0.2,
+   "tag": "rect",
+   "part": ""
+  },
+  {
+   "w": 0.2,
+   "tag": "rect",
+   "part": ""
+  },
+  {
+   "w": 0.2,
+   "tag": "rect",
+   "part": ""
+  },
+  {
+   "w": 0.2,
+   "tag": "rect",
+   "part": ""
+  },
+  {
+   "w": 0.2,
+   "tag": "rect",
+   "part": ""
+  },
+  {
+   "w": 0.2,
+   "tag": "rect",
+   "part": ""
+  },
+  {
+   "w": 0.2,
+   "tag": "rect",
+   "part": ""
+  },
+  {
+   "w": 0.2,
+   "tag": "rect",
+   "part": ""
+  },
+  {
+   "w": 0.2,
+   "tag": "rect",
+   "part": ""
+  },
+  {
+   "w": 0.2,
+   "tag": "rect",
+   "part": ""
+  },
+  {
+   "w": 0.2,
+   "tag": "rect",
+   "part": ""
+  },
+  {
+   "w": 0.2,
+   "tag": "rect",
+   "part": ""
+  },
+  {
+   "w": 0.2,
+   "tag": "rect",
+   "part": ""
+  },
+  {
+   "w": 0.2,
+   "tag": "rect",
+   "part": ""
+  },
+  {
+   "w": 0.2,
+   "tag": "rect",
+   "part": ""
+  },
+  {
+   "w": 0.2,
+   "tag": "rect",
+   "part": ""
+  },
+  {
+   "w": 0.2,
+   "tag": "rect",
+   "part": ""
+  },
+  {
+   "w": 0.2,
+   "tag": "rect",
+   "part": ""
+  },
+  {
+   "w": 0.2,
+   "tag": "rect",
+   "part": ""
+  },
+  {
+   "w": 0.2,
+   "tag": "rect",
+   "part": ""
+  },
+  {
+   "w": 0.2,
+   "tag": "rect",
+   "part": ""
+  },
+  {
+   "w": 0.2,
+   "tag": "rect",
+   "part": ""
+  },
+  {
+   "w": 0.2,
+   "tag": "rect",
+   "part": ""
+  },
+  {
+   "w": 0.2,
+   "tag": "rect",
+   "part": ""
+  },
+  {
+   "w": 0.8,
+   "tag": "path",
+   "part": "arrow-shaft"
+  },
+  {
+   "w": 0.6,
+   "tag": "rect",
+   "part": ""
+  },
+  {
+   "w": 0.8,
+   "tag": "path",
+   "part": "arrow-shaft"
+  },
+  {
+   "w": 0.8,
+   "tag": "path",
+   "part": "arrow-shaft"
+  },
+  {
+   "w": 0.8,
+   "tag": "rect",
+   "part": ""
+  },
+  {
+   "w": 0.8,
+   "tag": "rect",
+   "part": ""
+  },
+  {
+   "w": 0.9,
+   "tag": "path",
+   "part": "arrow-shaft"
+  },
+  {
+   "w": 0.9,
+   "tag": "path",
+   "part": "arrow-shaft"
+  },
+  {
+   "w": 0.4,
+   "tag": "rect",
+   "part": ""
+  }
+ ],
+ "images": [],
+ "anchors": {},
+ "relations": [],
+ "drawn": [],
+ "panels": [
+  {
+   "label": "a",
+   "x": 0,
+   "y": 0,
+   "w": 164.40944881889766,
+   "h": 238.11023622047247
+  },
+  {
+   "label": "b",
+   "x": 175.74803149606302,
+   "y": 0,
+   "w": 172.91338582677167,
+   "h": 238.11023622047247
+  },
+  {
+   "label": "c",
+   "x": 360.00000000000006,
+   "y": 0,
+   "w": 158.74015748031496,
+   "h": 238.11023622047247
+  }
+ ]
+}
