@@ -18,7 +18,7 @@ import numpy as np
 R = Path(__file__).resolve().parent / "results"
 SEEDS = (0, 1, 2, 3, 4)
 GENERATORS = ["W0_free", "W1_penalty", "W2_final_projection", "W3_projected_flow", "W4_potentials",
-              "W4s_potentials_sym", "W5_stationarity", "W5_control", "W6_diffusion"]
+              "W4s_potentials_sym", "W5_stationarity", "W5_control", "W6_diffusion", "W4c_potentials_smooth"]
 POST = ["W7_tilting", "W8_rescaling", "W5_stationarity_half", "W5_control_half"]
 KEYS = [("ed_ratio", "ED / floor", False), ("div_rel_b_mean", "rel. div. B", False),
         ("balance_residual_total", "|energy residual|", True), ("spec_err_b_l2", "err. E_B(k)", False),
@@ -35,17 +35,23 @@ def f(v, d=3):
     return f"{v:.{d}g}"
 
 
-def merge(seed: int, quick: bool = False, root: Path = R) -> Path | None:
-    """Merge the group files of a seed into results/e4_mhd3d[_quick]_s<seed>.json (both groups needed)."""
-    tag = "_quick" if quick else ""
+def merge(seed: int, tag: str | bool = "", root: Path = R) -> Path | None:
+    """Merge the group files of a seed into results/e4_mhd3d<tag>_s<seed>.json (groups A and B needed, C optional).
+
+    ``tag``: suffix of the run ("" for E4, "_quick", "_cs0.5" for a run with another condition embedding…).
+    """
+    tag = ("_quick" if tag else "") if isinstance(tag, bool) else tag
     parts = [root / f"e4_mhd3d{tag}_s{seed}_{g}.json" for g in ("A", "B")]
     whole = root / f"e4_mhd3d{tag}_s{seed}_all.json"
+    extra = root / f"e4_mhd3d{tag}_s{seed}_C.json"
     if all(p.exists() for p in parts):
         data = [json.loads(p.read_text()) for p in parts]
     elif whole.exists():
         data = [json.loads(whole.read_text())]
     else:
         return None
+    if extra.exists():
+        data.append(json.loads(extra.read_text()))
     out = {"config": {**data[0]["config"], "group": "merged"}, "evaluation": {}, "times": {}, "h14": [], "h12": [],
            "durations_s": [d["total_duration_s"] for d in data]}
     for d in data:
@@ -58,11 +64,11 @@ def merge(seed: int, quick: bool = False, root: Path = R) -> Path | None:
     return path
 
 
-def load(quick: bool = False, root: Path = R) -> dict[int, dict]:
-    tag = "_quick" if quick else ""
+def load(quick: bool = False, root: Path = R, tag: str = "") -> dict[int, dict]:
+    tag = tag + ("_quick" if quick else "")
     out = {}
     for s in SEEDS:
-        merge(s, quick, root)
+        merge(s, tag, root)
         p = root / f"e4_mhd3d{tag}_s{s}.json"
         if p.exists():
             out[s] = json.loads(p.read_text())
@@ -100,11 +106,12 @@ def select(runs: dict) -> dict:
             "seeds": sorted(runs), "val_ed_ratio": val}
 
 
-def section(quick: bool = False, root: Path = R, replication: str | None = None) -> list[str]:
+def section(quick: bool = False, root: Path = R, replication: str | None = None, run_tag: str = "") -> list[str]:
     """E4 section of the digest; with ``replication``, the same tables for an independent replication
-    stored under ``root`` (no selection file is written, the title says what the replication is)."""
+    stored under ``root`` or for a run with another protocol (``run_tag``, e.g. "_cs0.5"): no selection
+    file is written, the title says what the replication is."""
     tag = "_quick" if quick else ""
-    runs = load(quick, root)
+    runs = load(quick, root, run_tag)
     out: list[str] = []
     P = out.append
     dp, rp = root / f"e4_data{tag}.json", root / f"e4_reference{tag}.json"
@@ -233,6 +240,8 @@ def section(quick: bool = False, root: Path = R, replication: str | None = None)
                      per_seed(runs, "W4_potentials", "hc_sign_asym"), per_seed(runs, "W4s_potentials_sym", "hc_sign_asym")))
         P(paired_row("ED ratio: W4s_potentials_sym − W4_potentials (H9)", ed("W4s_potentials_sym"), ed("W4_potentials")))
         P(paired_row("ED ratio: W6_diffusion − W4_potentials (H10)", ed("W6_diffusion"), ed("W4_potentials")))
+        if not np.all(np.isnan(ed("W4c_potentials_smooth"))):
+            P(paired_row("ED ratio: W4_potentials − W4c_potentials_smooth (H15)", ed("W4_potentials"), ed("W4c_potentials_smooth")))
         h12 = {s: r["h12"] for s, r in runs.items() if r["h12"]}
         if h12:
             m = lambda k: np.asarray([np.mean([x[k] for x in rows]) for rows in h12.values()])   # noqa: E731
@@ -240,6 +249,11 @@ def section(quick: bool = False, root: Path = R, replication: str | None = None)
                          m("hel_m_err_rel_tilt_a"), m("hel_m_err_rel_tilt_b")))
             P(paired_row("normalized residuals of W4s: r_b − r_a (H12)", m("r_b"), m("r_a")))
         div0, div1 = per_seed(runs, "W0_free", "div_rel_b_mean"), per_seed(runs, "W1_penalty", "div_rel_b_mean")
+        if not np.all(np.isnan(ed("W4c_potentials_smooth"))):
+            P(f"\nH15: seed-mean ED ratio on the held-out η: W4_potentials {f(float(np.nanmean(ed('W4_potentials'))))}, "
+              f"W4c_potentials_smooth {f(float(np.nanmean(ed('W4c_potentials_smooth'))))}; on the training η: "
+              f"{f(float(np.nanmean(per_seed(runs, 'W4_potentials', 'ed_ratio', 'train'))))} and "
+              f"{f(float(np.nanmean(per_seed(runs, 'W4c_potentials_smooth', 'ed_ratio', 'train'))))}.")
         P(f"\nH5: relative divergence of B, seed mean: W0_free {f(div0.mean())}, W1_penalty {f(div1.mean())}, ratio {f(div1.mean() / div0.mean())}.")
         P(f"H7: ratio of the seed-mean ED ratios W5_stationarity / W5_control: {f(ed('W5_stationarity').mean() / ed('W5_control').mean())}.")
         P(f"H8: ESS/N of W7_tilting, seed mean over the test η: {f(float(np.nanmean(per_seed(runs, 'W7_tilting', 'ess_frac'))))}.")

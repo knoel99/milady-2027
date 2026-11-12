@@ -63,7 +63,8 @@ N_GRID = D.N
 NULL_GRID = 48
 GROUPS = {"A": ["W0_free", "W1_penalty", "W2_final_projection", "W3_projected_flow"],
           "B": ["W4_potentials", "W4s_potentials_sym", "W5_stationarity", "W5_control", "W6_diffusion",
-                "W7_tilting", "W8_rescaling"]}
+                "W7_tilting", "W8_rescaling"],
+          "C": ["W4c_potentials_smooth"]}      # H15: W4 with a smooth embedding of the condition
 
 FULL = {"iters": 4000, "batch": 128, "width": 512, "depth": 4, "lr": 5e-4, "n_gen": 512, "n_gen_train": 256,
         "steps": 50, "ft_iters": 400, "ft_lr": 2e-4, "beta": 20.0, "stat_cond": 4, "stat_per": 16, "stat_steps": 6,
@@ -358,19 +359,23 @@ def train(field, loss_fn, x: torch.Tensor, c: torch.Tensor, iters: int, lr: floa
     return ema.eval(), time.time() - t0
 
 
-def run(quick: bool, seed: int, group: str, device: str = "cpu") -> None:
+def run(quick: bool, seed: int, group: str, device: str = "cpu", cond_scale: float = 8.0) -> None:
+    """``cond_scale``: maximum frequency of the condition embedding of every network of the run (8: the
+    pre-race default, registered protocol of H4-H14; another value tags the output files ``_cs<value>``)."""
     t_start = time.time()
-    need = {"A": ("comp",), "B": ("pot", "pot_sym"), "all": ("pot", "pot_sym", "comp")}[group]
+    need = {"A": ("comp",), "B": ("pot", "pot_sym"), "C": ("pot",), "all": ("pot", "pot_sym", "comp")}[group]
     ctx = Context(quick, need, device)
     cfg, dev = ctx.cfg, ctx.dev
     if ctx.ref_json is None:
         raise SystemExit("run `python3 e4_mhd3d.py --reference` first")
-    names = GROUPS["A"] + GROUPS["B"] if group == "all" else GROUPS[group]
+    names = GROUPS["A"] + GROUPS["B"] + GROUPS["C"] if group == "all" else GROUPS[group]
     pot, pot_sym, comp = ctx.pot_d, ctx.pot_sym_d, ctx.comp_d          # on the training device
-    net = lambda sp: ResMLP(sp.n_modes, sp.n_channels, 1, width=cfg["width"], depth=cfg["depth"]).to(dev)   # noqa: E731
+    net = lambda sp, cs=cond_scale: ResMLP(sp.n_modes, sp.n_channels, 1, width=cfg["width"], depth=cfg["depth"],   # noqa: E731
+                                           cond_scale=cs).to(dev)
     eval_etas = [(e, cfg["n_gen"]) for e in ETA_VAL + ETA_TEST] + [(e, cfg["n_gen_train"]) for e in ETA_TRAIN_EVAL]
     split = lambda e: "train" if e in ETA_TRAIN else ("val" if e in ETA_VAL else "test")              # noqa: E731
     results: dict = {"config": {**cfg, "quick": quick, "seed": seed, "group": group, "device": str(dev),
+                                "cond_scale": cond_scale,
                                 "N": D.N, "nu": D.NU, "kf": D.KF,
                                 "eta_train": ETA_TRAIN, "eta_val": ETA_VAL, "eta_test": ETA_TEST,
                                 "modes": pot.n_modes, "dim_potentials": pot.n_modes * pot.n_channels,
@@ -527,10 +532,18 @@ def run(quick: bool, seed: int, group: str, device: str = "cpu") -> None:
                             f"r_b_tilt_{tag}": r["r_b"]})
             results["h12"].append(row)
 
+    if "W4c_potentials_smooth" in names and cond_scale == 8.0:     # H15 (pointless when the whole run is smooth)
+        seed_all(seed)
+        mc, tsec = train(net(pot, 0.5), fm, ctx.x_pot, ctx.c_train, cfg["iters"], cfg["lr"], cfg["batch"],
+                         "W4c_potentials_smooth")
+        results["times"]["W4c_potentials_smooth"] = {"training_time_s": tsec}
+        record("W4c_potentials_smooth", {e: generate(mc, pot, e, n) for e, n in eval_etas})
+        del mc
+
     results["total_duration_s"] = time.time() - t_start
-    tag = "_quick" if quick else ""
+    tag = ("" if cond_scale == 8.0 else f"_cs{cond_scale:g}") + ("_quick" if quick else "")
     save_json(results, f"e4_mhd3d{tag}_s{seed}_{group}.json")
-    merge(seed, quick)
+    merge(seed, tag)
     print(f"total duration {time.time() - t_start:.0f} s")
 
 
@@ -538,13 +551,15 @@ if __name__ == "__main__":
     ap = argparse.ArgumentParser(description=__doc__, formatter_class=argparse.RawDescriptionHelpFormatter)
     ap.add_argument("--quick", action="store_true")
     ap.add_argument("--seed", type=int, default=0, help="seed of the networks, the training and the generation")
-    ap.add_argument("--group", choices=["A", "B", "all"], default="all")
+    ap.add_argument("--group", choices=["A", "B", "C", "all"], default="all")
     ap.add_argument("--reference", action="store_true", help="reference statistics only (no model)")
     ap.add_argument("--threads", type=int, default=1)
     ap.add_argument("--device", default="cpu", help="cpu or cuda: networks, training sets and generation")
+    ap.add_argument("--cond-scale", type=float, default=8.0,
+                    help="maximum frequency of the condition embedding of every network (default 8, the registered protocol)")
     a = ap.parse_args()
     torch.set_num_threads(a.threads)
     if a.reference:
         reference(a.quick)
     else:
-        run(a.quick, a.seed, a.group, a.device)
+        run(a.quick, a.seed, a.group, a.device, a.cond_scale)
