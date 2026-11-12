@@ -395,3 +395,44 @@ def test_run_writes_a_start_row_with_the_pod_id(job_env, monkeypatch):
     rows = [json.loads(x) for x in (job_env / "ledger.jsonl").read_text().splitlines()]
     assert rows[0]["event"] == "start" and rows[0]["pod"] == "pod123" and rows[-1]["rc"] == 0
     assert runpod_job.own_pod_ids() == {"pod123"} and runpod_job.spend()["jobs"] == 1
+
+
+def test_collect_takes_over_a_pod_after_a_session_restart(job_env, monkeypatch):
+    """The session's worker restarted while a job was running: the `run` process and its secret path are gone."""
+    monkeypatch.setattr(runpod_job, "PREFIX", "milady-alpha-job-")
+    served, execs = {}, []
+
+    class Pod(FakeMCP):
+        def call(self, tool, args):
+            if tool == "get-pod":
+                return {"id": "pod9", "name": "milady-alpha-job-12345678", "cost": 0.72, "createdAt": "2026-11-12T22:28:27Z",
+                        "gpu": {"id": "NVIDIA RTX PRO 4500 Blackwell"},
+                        "env": {"OUTPUTS": "experiments/results", "MAX_MIN": "120", "REF": "a" * 40}}
+            if tool == "exec-pod":
+                cmd = args["body"]["command"][2]
+                execs.append(cmd)
+                if cmd.startswith("cat /srv/www/*/status.txt"):
+                    return {"stdout": "boot\njob started\n" + ("DONE rc=0\n" if len(execs) > 1 else ""), "exitCode": 0}
+                token = cmd.split("/srv/www/")[1].split(" ")[0]
+                served[token] = True
+                return {"stdout": "", "exitCode": 0}
+            return super().call(tool, args)
+
+    def fake_get(url):
+        token = url.split("/")[-2]
+        if token not in served:
+            return None
+        return results_tar() if url.endswith("results.tar.gz") else b"bench output"
+
+    monkeypatch.setattr(runpod_job, "http_get", fake_get)
+    mcp = Pod()
+    a = argparse.Namespace(pod="pod9", outputs=None, log=str(job_env / "collected.log"), now=False)
+    assert runpod_job.collect(a, mcp=mcp, sleep=lambda s: None) == 0
+    assert mcp.deleted == ["pod9"]
+    assert (job_env / "collected.log").read_bytes().startswith(b"bench output")
+    row = json.loads((job_env / "ledger.jsonl").read_text().splitlines()[-1])
+    assert row["pod"] == "pod9" and row["rc"] == 0 and row["usd_per_hour"] == 0.72 and "collected" in row["command"]
+    # a pod of another team is refused before anything is run in it
+    monkeypatch.setattr(runpod_job, "PREFIX", "milady-beta-job-")
+    with pytest.raises(SystemExit):
+        runpod_job.collect(a, mcp=Pod(), sleep=lambda s: None)
