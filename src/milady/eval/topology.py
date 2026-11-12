@@ -118,7 +118,7 @@ def null_points(b: Any, newton_iters: int = 20, tol: float = 1e-8) -> dict[str, 
     }
 
 
-def null_count(b: Any, chunk: int = 32) -> np.ndarray:
+def null_count(b: Any, chunk: int = 8) -> np.ndarray:
     """Number of null points of each field of ``b`` ``(n, nx, ny, nz, 3)``, computed by chunks of fields."""
     arr = np.asarray(b)
     return np.concatenate([np.atleast_1d(null_points(arr[i : i + chunk])["count"]) for i in range(0, arr.shape[0], chunk)])
