@@ -1,5 +1,5 @@
 {
- "generated": "2026-11-12T20:29:10Z",
+ "generated": "2026-11-12T22:25:43Z",
  "projects": "/root/.claude/projects/-home-user-milady-2027",
  "sessions": 1,
  "main_session": {
@@ -10,23 +10,23 @@
    "high"
   ],
   "expected": "claude-fable-5-2 / high",
-  "responses": 155,
+  "responses": 181,
   "off_spec": 0,
   "conforms": true
  },
  "first": "2026-11-12T16:50:21.852Z",
- "last": "2026-11-12T20:28:54.892Z",
- "span_hours": 3.64,
+ "last": "2026-11-12T22:25:28.237Z",
+ "span_hours": 5.59,
  "by_model": {
   "claude-fable-5-2": {
-   "input": 337,
+   "input": 387,
    "cache_write_5m": 215637,
-   "cache_write_1h": 689528,
-   "cache_read": 70092817,
-   "output": 374539,
-   "thinking": 185649,
-   "calls": 174,
-   "usd": 42.19
+   "cache_write_1h": 753323,
+   "cache_read": 88837132,
+   "output": 418784,
+   "thinking": 202659,
+   "calls": 200,
+   "usd": 48.73
   },
   "claude-sonnet-5-5": {
    "input": 16,
@@ -39,7 +39,7 @@
    "usd": 0.21
   }
  },
- "total_usd": 42.4,
+ "total_usd": 48.94,
  "subagents": {
   "count": 7,
   "by_type": {
@@ -172,7 +172,7 @@
   "nonconforming": 0
  },
  "tool_calls": {
-  "Bash": 153,
+  "Bash": 182,
   "Read": 17,
   "Agent": 7,
   "Write": 6,
@@ -182,14 +182,14 @@
  },
  "role_calls_via_tools": 0,
  "gpu": {
-  "jobs": 10,
-  "hours": 2.373,
-  "usd": 1.71,
+  "jobs": 15,
+  "hours": 3.596,
+  "usd": 2.59,
   "by_gpu": {
    "NVIDIA RTX PRO 4500 Blackwell": {
-    "jobs": 9,
-    "hours": 2.3468,
-    "usd": 1.6896
+    "jobs": 14,
+    "hours": 3.5696,
+    "usd": 2.57
    },
    "NVIDIA RTX A6000": {
     "jobs": 1,

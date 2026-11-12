@@ -2,6 +2,15 @@
 
 One entry per working session, newest first, at most ten lines.
 
+## 2026-11-12 — GPU jobs deleted by another session; second-order baseline and anchored flow matching
+- Goal of the session: run every group (A–E) on GPU as the main result set, test H15–H20.
+- Incident (RunPod audit log, `list-audit-logs`): at 21:46:17–18 UTC the two pods of this session were deleted by something else than this session: the job of groups A–D on 5 seeds, 71 min into its run, and a job created one second earlier. Four other pods named `milady-job-*` with outputs `experiments/results/cursor_abc` were created on the same account at 22:21: another session shares the RunPod account and the pod name prefix, and `runpod_job.py cleanup` deletes every pod with the prefix (PILOT.md asks every session to end each working block with it). This session's own `cleanup` calls (17:13, 17:47, 18:00 UTC) ran when it had the only pods of the account: none of the other session's pods was touched.
+- Consequences: the results of the 71-min job are lost; the tool kept polling dead pods, so the ledger over-counted (two correction entries bring it back to the billed time: 15 entries, $2.59); the GPU budget check of each session ignores the other's spend.
+- Repairs in `tools/runpod_job.py` (tests added): pod prefix per team (`milady-claude-job-`), so `cleanup` only touches this team's pods; after 3 min without an answer the tool asks RunPod whether the pod still exists; `e4_mhd3d.py` writes its result files after every variant and the job script copies them as they come. The other session still runs the old tool: its `cleanup` no longer matches this session's pods, but the shared budget remains unknown to both. The owner has to decide how sessions share the account.
+- Results on the container data, seeds 0 and 1 (CPU; the digest will hold the 5-seed GPU run): G0_gaussian_modes 3.3 times the floor, energy residual 0.002, but 3.3 times too many nulls and a restart drift of 0.21; W9_skip_sym 9.1 and 10.6; W10_anchored 44.7 and 46.3 (H19 will be refuted); `--quick` of W11_anchored_skip 2.3 against 1.6 for G0, restart drift halved. H20 registered before computing (commit f3868f5).
+- Next: main GPU job (groups A–E, 5 seeds), long variants (group L), digest, `encadrant` verdicts, race report.
+- Cost (tokens, CPU time): GPU 13 jobs, $2.59 after correction; tokens: `research/usage/latest.md`.
+
 ## 2026-11-12 — E4 first results: registered protocol on 5 seeds, and why the generators are poor
 - Goal of the session: run the registered protocol (H4–H14) and read it.
 - Done: GPU replication of the registered protocol, data regenerated on the pod, variants W0–W8, seeds 0–4 (`experiments/results/replications/e4_gpu`, 83 min, $1.02; 95 % of the time was the CPU evaluation, the trainings take 35 to 60 s each on the GPU). Convergence job on GPU (8.5 min): 24³, 32³ and half the CFL number agree with the 16³ data within 1–2 SE, including the sign of H(k = 2). On the session container the 10 CPU jobs were stopped after seeds 0 and 1 (3.5 more hours for a result the GPU gives in one).
