@@ -1,0 +1,42 @@
+[V0_free] it   1000  loss 1.8216  231 s
+[V0_free] it   2000  loss 1.7503  459 s
+[V0_free] it   3000  loss 1.6994  689 s
+[V0_free] it   4000  loss 1.6652  957 s
+[V0_free] it   5000  loss 1.6504  1201 s
+[V0_free] it   6000  loss 1.6449  1437 s
+[V1_penalty] it   1000  loss 2.2004  240 s
+[V1_penalty] it   2000  loss 2.0827  538 s
+[V1_penalty] it   3000  loss 2.0062  782 s
+[V1_penalty] it   4000  loss 1.9534  1028 s
+[V1_penalty] it   5000  loss 1.9234  1274 s
+[V1_penalty] it   6000  loss 1.9111  1520 s
+[V3_projected_flow] it   1000  loss 1.5097  243 s
+[V3_projected_flow] it   2000  loss 1.4353  567 s
+[V3_projected_flow] it   3000  loss 1.3840  876 s
+[V3_projected_flow] it   4000  loss 1.3475  1174 s
+[V3_projected_flow] it   5000  loss 1.3314  1482 s
+[V3_projected_flow] it   6000  loss 1.3263  1749 s
+[V4_potentials] it   1000  loss 1.8986  211 s
+[V4_potentials] it   2000  loss 1.8153  410 s
+[V4_potentials] it   3000  loss 1.7613  612 s
+[V4_potentials] it   4000  loss 1.7178  817 s
+[V4_potentials] it   5000  loss 1.6948  1027 s
+[V4_potentials] it   6000  loss 1.6830  1229 s
+[V5_potentials_stat] it 150 loss 2.2163 545 s
+[V5_potentials_stat] it 300 loss 4.6825 1088 s
+[V5_potentials_stat] it 450 loss 1.8229 1557 s
+[V5_potentials_stat] it 600 loss 1.8563 2003 s
+[V5_control] it 150 loss 1.6548 34 s
+[V5_control] it 300 loss 1.7283 64 s
+[V5_control] it 450 loss 1.6750 94 s
+[V5_control] it 600 loss 1.7028 124 s
+V0_free {"train": {"div_rel_u": 0.45746459524208233, "div_rel_b": 0.4570055983911576, "spectrum_error_log10": 0.1515695862846342, "err_Eu_rel": 0.2128138448932467, "err_Eb_rel": 0.3063967156378155, "balance_residual_energy": 0.15288716629789104, "balance_residual_Hc": 0.03525016826354244, "balance_residual_A2": 0.2934597937749715, "std_diss_rel": 0.5662831247798351, "energy_distance_features": 2.414212664592872}, "test": {"div_rel_u": 0.4086728067911663, "div_rel_b": 0.40933294702643225, "spectrum_error_log10": 0.22831056802048338, "err_Eu_rel": 0.4630055114974782, "err_Eb_rel": 0.5500277649309921, "b
+V1_penalty {"train": {"div_rel_u": 0.31102638179045594, "div_rel_b": 0.13208394129718445, "spectrum_error_log10": 0.18049354094329484, "err_Eu_rel": 0.019439311353320332, "err_Eb_rel": 1.8996051937761773, "balance_residual_energy": 1.0168769731969796, "balance_residual_Hc": 0.009897754180874041, "balance_residual_A2": 1.493690282612669, "std_diss_rel": 1.1329040678873625, "energy_distance_features": 6.162128857070274}, "test": {"div_rel_u": 0.34298740651564996, "div_rel_b": 0.16161999914193442, "spectrum_error_log10": 0.18104353816142837, "err_Eu_rel": 0.10333292773703114, "err_Eb_rel": 1.798128275686352
+V2_final_projection {"train": {"div_rel_u": 5.4393517715081166e-17, "div_rel_b": 5.390724041054865e-17, "spectrum_error_log10": 0.09571048561142913, "err_Eu_rel": 0.04904302096145217, "err_Eb_rel": 0.10889645286193898, "balance_residual_energy": 0.14109997878151606, "balance_residual_Hc": 0.03308321677328191, "balance_residual_A2": 0.19017011307810386, "std_diss_rel": 0.5629070156766074, "energy_distance_features": 1.1087278796313391}, "test": {"div_rel_u": 5.0543576962429104e-17, "div_rel_b": 5.0083341779630113e-17, "spectrum_error_log10": 0.1662896294792789, "err_Eu_rel": 0.22355329604120308, "err_Eb_rel": 0.33
+V3_projected_flow {"train": {"div_rel_u": 1.974406375194736e-08, "div_rel_b": 1.911276329923145e-08, "spectrum_error_log10": 0.11012719992462759, "err_Eu_rel": 0.1236233593135424, "err_Eb_rel": 0.15638569200697702, "balance_residual_energy": 0.17255389194099446, "balance_residual_Hc": 0.02542268098076504, "balance_residual_A2": 0.20668062185601646, "std_diss_rel": 0.5890370094199794, "energy_distance_features": 1.106331199553854}, "test": {"div_rel_u": 2.077827325943962e-08, "div_rel_b": 2.0046064763951347e-08, "spectrum_error_log10": 0.13463153039061077, "err_Eu_rel": 0.09306788808332533, "err_Eb_rel": 0.23250
+V4_potentials {"train": {"div_rel_u": 1.7046615294033207e-17, "div_rel_b": 1.5880869934521e-17, "spectrum_error_log10": 0.09156858219092488, "err_Eu_rel": 0.03053119755140445, "err_Eb_rel": 0.11367966533796192, "balance_residual_energy": 0.17138479462528702, "balance_residual_Hc": 0.008080823255332029, "balance_residual_A2": 0.16979704301585505, "std_diss_rel": 0.707743459669682, "energy_distance_features": 1.0168714976507294}, "test": {"div_rel_u": 1.761827706961207e-17, "div_rel_b": 1.6473988466260833e-17, "spectrum_error_log10": 0.13800738862086814, "err_Eu_rel": 0.16350718294342653, "err_Eb_rel": 0.2778
+V5_potentials_stat {"train": {"div_rel_u": 1.7074004991835976e-17, "div_rel_b": 1.6084040475347392e-17, "spectrum_error_log10": 0.08333331471767073, "err_Eu_rel": 0.07531578638903776, "err_Eb_rel": 0.0658314115061865, "balance_residual_energy": 0.08472122976132816, "balance_residual_Hc": 0.019419144944493334, "balance_residual_A2": 0.05010944076950031, "std_diss_rel": 0.5815190688120709, "energy_distance_features": 0.9216719612496576}, "test": {"div_rel_u": 1.722548671128908e-17, "div_rel_b": 1.6087664501424425e-17, "spectrum_error_log10": 0.0714508119877787, "err_Eu_rel": 0.05834638740545128, "err_Eb_rel": 0.05
+V5_control {"train": {"div_rel_u": 1.7082818797227475e-17, "div_rel_b": 1.5927514415983532e-17, "spectrum_error_log10": 0.09480110090483952, "err_Eu_rel": 0.04406995200244727, "err_Eb_rel": 0.12687979056557572, "balance_residual_energy": 0.18381741590381906, "balance_residual_Hc": 0.010582941837716098, "balance_residual_A2": 0.17958652189786842, "std_diss_rel": 0.6998574529934043, "energy_distance_features": 1.1036475969281265}, "test": {"div_rel_u": 1.7659306303440906e-17, "div_rel_b": 1.647288992242528e-17, "spectrum_error_log10": 0.13841775383466817, "err_Eu_rel": 0.1652988461502467, "err_Eb_rel": 0.2
+reference_subsample {"train": {"div_rel_u": 1.5028380454374024e-17, "div_rel_b": 0.0, "spectrum_error_log10": 0.011336391836995254, "err_Eu_rel": 0.02247847865648837, "err_Eb_rel": 0.016276658621839617, "balance_residual_energy": 0.011183033801053822, "balance_residual_Hc": 0.02529594243853577, "balance_residual_A2": 0.01235531129543485, "std_diss_rel": 1.0086364278412956, "energy_distance_features": 0.030354253062940078}, "test": {"div_rel_u": 1.5161569820708492e-17, "div_rel_b": 0.0, "spectrum_error_log10": 0.0021186001961282764, "err_Eu_rel": 0.002611174316673126, "err_Eb_rel": 0.002477937971501909, "balance_r
+in_law {"base": {"train": {"div_rel_u": 1.7071381933943018e-17, "div_rel_b": 1.59458194478546e-17, "spectrum_error_log10": 0.09305751083426535, "err_Eu_rel": 0.03642546973824812, "err_Eb_rel": 0.11789121701131154, "balance_residual_energy": 0.17514572392849836, "balance_residual_Hc": 0.010280019755999627, "balance_residual_A2": 0.1753127531141262, "std_diss_rel": 0.710610360785258, "energy_distance_features": 1.027616037733789}, "test": {"div_rel_u": 1.7630609653286117e-17, "div_rel_b": 1.6499705678956342e-17, "spectrum_error_log10": 0.13817790201493302, "err_Eu_rel": 0.16763021500567055, "err_Eb_rel
+total duration 9308 s
