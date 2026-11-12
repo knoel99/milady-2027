@@ -2,6 +2,12 @@
 
 One entry per working session, newest first, at most ten lines.
 
+## 2026-11-12 - H8 supported, team cursor
+- Five points at n = 64, Rm = 12, cfl = 0.5, all finite. Largest final max_div_b is 5.63e-16.
+- Mean lambda 0.007805 (sample std 0.000458). Absolute difference from the cfl = 1 control mean 0.008127803 is 0.000323, under the pre-set 0.002.
+- The H8 refutation criterion is not met. Pod `o4cerdg2ehjai2`, RTX PRO 4500, 0.0697 h, 0.0502 USD, rc 0. Local ledger 0.7650 USD.
+- This is one kinematic comparison, not a 3D generator result.
+
 ## 2026-11-12 - H8 registered, team cursor
 - Before any cfl = 0.5 growth rate: at n = 64 and Rm = 12, the five-seed mean stays within 0.002 of the cfl = 1 control mean 0.008127803.
 - The cfl = 1 points already measured are the control. Seeds 0-4 at cfl = 0.5 are the variant. Every point must stay finite, with final max_div_b below 1e-8.

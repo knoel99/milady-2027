@@ -112,9 +112,9 @@
       "protocol": "Five seeds, 0-4. The cfl = 1 points already measured are the control. cfl = 0.5 is the variant. python3 experiments/cursor_abc_batch.py --device cuda --cfl 0.5 --point 64,12,0 --point 64,12,1 --point 64,12,2 --point 64,12,3 --point 64,12,4. t = 120, dt cap 0.05, float64. No H100. One pod, 1 h cap.",
       "script": "experiments/cursor_abc_batch.py --device cuda --cfl 0.5 --point 64,12,0",
       "cost_estimate": "One pod, 1 h cap. About 0.72 USD/h on the last GPU, so the worst case is under 3 USD on top of the local ledger 0.71 USD.",
-      "status": "registered",
+      "status": "supported",
       "verdict": "",
-      "results": "",
+      "results": "Five points, all finite, largest max_div_b 5.63e-16. Mean lambda 0.007805 (sample std 0.000458). Absolute difference from the cfl=1 control mean 0.008127803 is 0.000323, under the pre-set 0.002. Files experiments/results/cursor_abc_cfl05/. Pod o4cerdg2ehjai2, RTX PRO 4500, 0.0502 USD. The refutation criterion is not met. Not a 3D generator result.",
       "commit": ""
     }
   ]
