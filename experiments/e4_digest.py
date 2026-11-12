@@ -19,7 +19,8 @@ R = Path(__file__).resolve().parent / "results"
 SEEDS = (0, 1, 2, 3, 4)
 GENERATORS = ["W0_free", "W1_penalty", "W2_final_projection", "W3_projected_flow", "W4_potentials",
               "W4s_potentials_sym", "W5_stationarity", "W5_control", "W6_diffusion", "W4c_potentials_smooth",
-              "G0_gaussian_modes", "W9_skip_sym", "W9L_skip_long", "W10_anchored", "W10L_anchored_long"]
+              "G0_gaussian_modes", "W9_skip_sym", "W10_anchored", "W11_anchored_skip", "W9L_skip_long",
+              "W11L_anchored_skip_long", "W10L_anchored_long"]
 # G0 has no network: it is the baseline to beat, not a candidate for the selected generator (the C1 note of
 # race/teams/claude/objectives.toml names the model family: conditional flow matching on the Fourier modes).
 CANDIDATES = [v for v in GENERATORS if v != "G0_gaussian_modes"]
@@ -49,13 +50,17 @@ def merge(seed: int, tag: str | bool = "", root: Path = R) -> Path | None:
     tag = ("_quick" if tag else "") if isinstance(tag, bool) else tag
     parts = [root / f"e4_mhd3d{tag}_s{seed}_{g}.json" for g in ("A", "B")]
     whole = root / f"e4_mhd3d{tag}_s{seed}_all.json"
+    if not all(p.exists() for p in parts) and not whole.exists():        # a run of the later groups only (D, E, L)
+        parts = [p for g in ("A", "B") if (p := root / f"e4_mhd3d{tag}_s{seed}_{g}.json").exists()]
+        if not any((root / f"e4_mhd3d{tag}_s{seed}_{g}.json").exists() for g in ("C", "D", "E", "L")):
+            return None
     if all(p.exists() for p in parts):
         data = [json.loads(p.read_text()) for p in parts]
     elif whole.exists():
         data = [json.loads(whole.read_text())]
     else:
         return None
-    for g in ("C", "D", "E"):                                # optional groups, added after the first runs
+    for g in ("C", "D", "E", "L"):                           # optional groups, added after the first runs
         extra = root / f"e4_mhd3d{tag}_s{seed}_{g}.json"
         if extra.exists():
             data.append(json.loads(extra.read_text()))
@@ -273,9 +278,11 @@ def section(quick: bool = False, root: Path = R, replication: str | None = None,
               f"{f(float(np.nanmean(per_seed(runs, 'W4_potentials', 'ed_ratio', 'train'))))} and "
               f"{f(float(np.nanmean(per_seed(runs, 'W4c_potentials_smooth', 'ed_ratio', 'train'))))}.")
         if has("W10_anchored") and has("G0_gaussian_modes"):
-            for v in [x for x in ("W10_anchored", "W10L_anchored_long") if has(x)]:
+            for v, h in (("W10_anchored", "H19"), ("W11_anchored_skip", "H20"), ("W11L_anchored_skip_long", "H20, long")):
+                if not has(v):
+                    continue
                 for key, label in (("ed_ratio", "ED ratio"), ("restart_drift_eb", "restart drift E_B"), ("null_count_err_rel", "err. nulls")):
-                    P(paired_row(f"{label}: G0_gaussian_modes − {v} (H19)", per_seed(runs, "G0_gaussian_modes", key), per_seed(runs, v, key)))
+                    P(paired_row(f"{label}: G0_gaussian_modes − {v} ({h})", per_seed(runs, "G0_gaussian_modes", key), per_seed(runs, v, key)))
         if has("W9_skip_sym"):
             fl = [r["times"].get("W9_skip_sym", {}).get("fm_loss_train_sample") for r in runs.values()]
             fl = [x for x in fl if x is not None]

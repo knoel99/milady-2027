@@ -25,11 +25,19 @@ python e4_mhd3d.py --reference $Q --threads "$(( NPROC > 16 ? 16 : NPROC ))" | t
 cp results/e4_data$TAG.json results/e4_reference$TAG.json "$OUT"/
 if [ "$MODE" = full ]; then ( python e4_floor.py | tail -n 3; cp results/e4_floor.json "$OUT"/ ) & fi   # noise floors, in parallel
 stamp "models: seeds $SEEDS, $THREADS threads each"
+PIDS=""
 for s in $SEEDS; do
   ( python e4_mhd3d.py $Q --seed "$s" --group "$GROUP" --device cuda --threads "$THREADS" > "results/logs/e4_gpu_s$s.log" 2>&1
-    echo "seed $s rc=$?"; grep "^==\|Traceback\|Error\|total duration" "results/logs/e4_gpu_s$s.log" | tail -n 16
-    cp results/e4_mhd3d${TAG}_s${s}*.json "$OUT"/ 2>/dev/null; cp "results/logs/e4_gpu_s$s.log" "$OUT"/ ) &
+    echo "seed $s rc=$?"; grep "^==\|Traceback\|Error\|total duration" "results/logs/e4_gpu_s$s.log" | tail -n 24 ) &
+  PIDS="$PIDS $!"
 done
+# the result files are written after every variant: copy them as they come, so that a job cut by its
+# time limit still brings back what was evaluated
+( while true; do cp results/e4_mhd3d${TAG}_s*.json results/logs/e4_gpu_s*.log "$OUT"/ 2>/dev/null; sleep 45; done ) &
+COPIER=$!
+wait $PIDS
+kill $COPIER 2>/dev/null
+cp results/e4_mhd3d${TAG}_s*.json results/logs/e4_gpu_s*.log "$OUT"/ 2>/dev/null
 wait
 stamp "done"; nvidia-smi --query-gpu=name,memory.used,utilization.gpu --format=csv,noheader
 ls "$OUT"
