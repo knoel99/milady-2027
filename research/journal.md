@@ -2,6 +2,11 @@
 
 One entry per working session, newest first, at most ten lines.
 
+## 2026-11-12 - H8 registered, team cursor
+- Before any cfl = 0.5 growth rate: at n = 64 and Rm = 12, the five-seed mean stays within 0.002 of the cfl = 1 control mean 0.008127803.
+- The cfl = 1 points already measured are the control. Seeds 0-4 at cfl = 0.5 are the variant. Every point must stay finite, with final max_div_b below 1e-8.
+- The 0.002 bound is fixed now. No H100.
+
 ## 2026-11-12 - H7 refuted, team cursor
 - Twenty points, all finite. Pod `7t70354viwtvne`, RTX PRO 4500, 0.0352 h, 0.0253 USD, rc 0. Local ledger 0.7148 USD.
 - rel_max stays under 0.01 (largest 1.58e-4). scale_max stays under 1e-3 (largest 3.36e-5).

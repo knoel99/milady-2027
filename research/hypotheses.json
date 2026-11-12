@@ -102,6 +102,19 @@
       "status": "refuted",
       "verdict": "",
       "results": "Twenty points, all finite. rel_max stays below 0.01 (largest 1.58e-4) and scale_max stays below 1e-3 (largest 3.36e-5). n=32 abc kf=2 seed 2 has rhs_abs_min 0.0249, which is not above 0.05. That point fails the pre-set bound, so H7 is refuted. Files experiments/results/cursor_energy/. Pod 7t70354viwtvne, RTX PRO 4500, 0.0253 USD. Not a 3D generator result.",
+      "commit": "6dcc2b2"
+    },
+    {
+      "id": "H8",
+      "statement": "At n = 64 and Rm = 12, the five-seed mean kinematic ABC growth rate at cfl = 0.5 stays within 0.002 of the cfl = 1 control mean 0.008127803049079646, and every cfl = 0.5 point is finite with final max_div_b below 1e-8.",
+      "origin": "H5 measured the cfl = 1 control at n = 64, Rm = 12, seeds 0-4. The cfl = 0.5 variant has not been run.",
+      "refutation_criterion": "Refuted if any cfl = 0.5 point is non-finite or exits non-zero, if any final max_div_b is >= 1e-8, or if the absolute difference between the five-seed mean and 0.008127803049079646 is >= 0.002. The control mean and the 0.002 bound were fixed before the cfl = 0.5 run. Not a 3D generator claim.",
+      "protocol": "Five seeds, 0-4. The cfl = 1 points already measured are the control. cfl = 0.5 is the variant. python3 experiments/cursor_abc_batch.py --device cuda --cfl 0.5 --point 64,12,0 --point 64,12,1 --point 64,12,2 --point 64,12,3 --point 64,12,4. t = 120, dt cap 0.05, float64. No H100. One pod, 1 h cap.",
+      "script": "experiments/cursor_abc_batch.py --device cuda --cfl 0.5 --point 64,12,0",
+      "cost_estimate": "One pod, 1 h cap. About 0.72 USD/h on the last GPU, so the worst case is under 3 USD on top of the local ledger 0.71 USD.",
+      "status": "registered",
+      "verdict": "",
+      "results": "",
       "commit": ""
     }
   ]
