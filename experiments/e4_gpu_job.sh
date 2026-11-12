@@ -22,6 +22,7 @@ python e4_data.py $Q --jobs "$(( NPROC > 11 ? 11 : NPROC ))" | tail -n 13 || exi
 stamp "reference"
 python e4_mhd3d.py --reference $Q --threads "$(( NPROC > 16 ? 16 : NPROC ))" | tail -n 3 || exit 1
 cp results/e4_data$TAG.json results/e4_reference$TAG.json "$OUT"/
+if [ "$MODE" = full ]; then ( python e4_floor.py | tail -n 3; cp results/e4_floor.json "$OUT"/ ) & fi   # noise floors, in parallel
 stamp "models: seeds $SEEDS, $THREADS threads each"
 for s in $SEEDS; do
   ( python e4_mhd3d.py $Q --seed "$s" --group all --device cuda --threads "$THREADS" > "results/logs/e4_gpu_s$s.log" 2>&1
