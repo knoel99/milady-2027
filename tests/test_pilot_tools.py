@@ -112,6 +112,16 @@ def test_http_get_sends_an_explicit_user_agent(monkeypatch):
     assert seen["agent"] == runpod_job.USER_AGENT and "urllib" not in seen["agent"].lower()
 
 
+def test_bootstrap_is_valid_bash_and_survives_debian_packages(tmp_path):
+    """The pod image has Debian-installed packages that pip cannot uninstall (pilot, 2026-11-12)."""
+    import subprocess
+
+    script = tmp_path / "bootstrap.sh"
+    script.write_text(runpod_job.BOOTSTRAP)
+    assert subprocess.run(["bash", "-n", str(script)], check=False).returncode == 0
+    assert "--system-site-packages" in runpod_job.BOOTSTRAP and "--ignore-installed" in runpod_job.BOOTSTRAP
+
+
 def test_hours_limit_and_no_stock(job_env):
     with pytest.raises(SystemExit):
         runpod_job.run(args(hours="5"), mcp=FakeMCP(), sleep=lambda s: None)

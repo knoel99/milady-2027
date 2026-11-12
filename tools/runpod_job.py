@@ -53,7 +53,11 @@ status "boot $(nvidia-smi --query-gpu=name,memory.total --format=csv,noheader 2>
 exec >> "$OUT/setup.log" 2>&1
 cd /workspace && git clone -q "$REPO" milady && cd milady && git checkout -q "$REF" || { status "FAILED clone"; sleep infinity; }
 grep -vE '^(torch==|--extra-index-url|--index-url)' infra/env/requirements.txt > /tmp/req.txt
-pip install -q -r /tmp/req.txt && pip install -q --no-deps -e . || { status "FAILED pip"; sleep infinity; }
+# The image ships Debian-installed packages (pyparsing...) that pip cannot uninstall: install the pins
+# in a virtual environment that still sees the image's CUDA torch, or else on top of the system ones.
+if python3 -m venv --system-site-packages /opt/milady-venv; then . /opt/milady-venv/bin/activate; fi
+{ pip install -q -r /tmp/req.txt || pip install -q --ignore-installed -r /tmp/req.txt; } \
+  && pip install -q --no-deps -e . || { status "FAILED pip"; sleep infinity; }
 python3 -c "import torch; print('torch', torch.__version__, 'cuda', torch.cuda.is_available())" >> "$OUT/setup.log"
 status "job started"
 echo "$CMD_B64" | base64 -d > /tmp/job.sh

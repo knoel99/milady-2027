@@ -1,4 +1,12 @@
 
+--- setup (tail)
+error: uninstall-no-record-file
+
+× Cannot uninstall pyparsing 3.1.1
+╰─> The package's contents are unknown: no RECORD file was found for pyparsing.
+
+hint: The package was installed by debian. You should check if it can uninstall the package.
+
 --- status
-2026-11-12T17:56:48Z boot NVIDIA RTX PRO 4500 Blackwell, 32623 MiB
-2026-11-12T17:57:38Z FAILED pip
+2026-11-12T18:12:36Z boot NVIDIA RTX PRO 4500 Blackwell, 32623 MiB
+2026-11-12T18:18:20Z FAILED pip
