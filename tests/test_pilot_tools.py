@@ -56,6 +56,9 @@ def job_env(tmp_path, monkeypatch):
     monkeypatch.setattr(runpod_job, "LEDGER", tmp_path / "ledger.jsonl")
     monkeypatch.setattr(runpod_job, "ROOT", tmp_path)
     monkeypatch.setattr(runpod_job, "pushed_commit", lambda ref: "a" * 40)
+    # A pilot session sets MILADY_GPU_BUDGET_USD. Clear it so a test that
+    # sets budget_usd on config() is the budget run() actually uses.
+    monkeypatch.delenv("MILADY_GPU_BUDGET_USD", raising=False)
     return tmp_path
 
 
