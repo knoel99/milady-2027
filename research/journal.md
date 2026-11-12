@@ -2,6 +2,13 @@
 
 One entry per working session, newest first, at most ten lines.
 
+## 2026-11-12 - H4 GPU bench, team cursor
+- float32, NVIDIA GeForce RTX 4090, 0.89 USD/h, 0.281 h, 0.2501 USD, rc 0. n=64 0.00644 s/step, n=128 0.00868 s/step. One run. Peak memory 0.070 GB and 0.549 GB.
+- float64, NVIDIA RTX PRO 4500 Blackwell, 0.72 USD/h, 0.0281 h, 0.0202 USD, rc 0. n=64 0.00392 s/step, n=128 0.0484 s/step. One run. Peak memory 0.140 GB and 1.098 GB.
+- The dtypes ran on different GPUs. No speedup is claimed, and the limiter was not profiled. The 4090 job's timed loop was 6 s inside 0.28 h of setup.
+- H4's refutation criterion is not met. Local ledger 0.2703 USD. The shared cap remains 150 USD.
+- Role notes elsewhere in this journal are a single-model simulation (no independent sub-agent). These timings are the pod logs.
+
 ## 2026-11-12 - shared GPU budget, team cursor
 - Kim set the hard shared limit to 150 USD, the prepaid credit from main PR #39, first come first served with the Claude team.
 - This session exports MILADY_GPU_BUDGET_USD=150. A new job is refused when main's reservation (account spend, plus the worst case still reserved by live milady-job pods, plus the new job) would cross that credit.
