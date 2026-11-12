@@ -1,0 +1,39 @@
+simulation (training)...
+(cache) sim_train
+simulation (reference)...
+(cache) sim_ref
+simulation (fine grid)...
+(cache) sim_fine
+[A_reference/s1] it   3000  loss 1.1502  199 s
+[A_reference/s1] it   6000  loss 1.1411  395 s
+[A_reference/s1] it   9000  loss 1.1258  590 s
+[A_reference/s1] it  12000  loss 1.1183  788 s
+[B_augmentation/s1] it   3000  loss 1.1589  199 s
+[B_augmentation/s1] it   6000  loss 1.1409  404 s
+[B_augmentation/s1] it   9000  loss 1.1341  675 s
+[B_augmentation/s1] it  12000  loss 1.1220  871 s
+[C_equivariant/s1] it   3000  loss 1.1457  376 s
+[C_equivariant/s1] it   6000  loss 1.1418  751 s
+[C_equivariant/s1] it   9000  loss 1.1313  1209 s
+[C_equivariant/s1] it  12000  loss 1.1238  1647 s
+[C_short/s1] it    300  loss 1.2008  38 s
+[C_short/s1] it    600  loss 1.1761  76 s
+[C_short/s1] it    900  loss 1.1600  113 s
+[C_short/s1] it   1200  loss 1.1586  151 s
+[F_stationarity_C/s1] fine-tuning it 200  loss -183.8875  477 s
+[F_stationarity_C/s1] fine-tuning it 400  loss 1.2149  913 s
+[F_stationarity_C/s1] fine-tuning it 600  loss 0.9520  1328 s
+[F_stationarity_C/s1] fine-tuning it 800  loss 0.8616  1745 s
+[F0_control_C/s1] fine-tuning it 200  loss 1.1298  29 s
+[F0_control_C/s1] fine-tuning it 400  loss 1.1611  57 s
+[F0_control_C/s1] fine-tuning it 600  loss 1.1520  84 s
+[F0_control_C/s1] fine-tuning it 800  loss 1.1331  111 s
+[F_stationarity_Cshort/s1] fine-tuning it 200  loss 1.3887  446 s
+[F_stationarity_Cshort/s1] fine-tuning it 400  loss -0.8910  853 s
+[F_stationarity_Cshort/s1] fine-tuning it 600  loss -53.9896  1322 s
+[F_stationarity_Cshort/s1] fine-tuning it 800  loss 0.2587  1739 s
+[F0_control_Cshort/s1] fine-tuning it 200  loss 1.1442  25 s
+[F0_control_Cshort/s1] fine-tuning it 400  loss 1.1814  46 s
+[F0_control_Cshort/s1] fine-tuning it 600  loss 1.1664  68 s
+[F0_control_Cshort/s1] fine-tuning it 800  loss 1.1510  89 s
+training only: cache filled, stopping

@@ -1,0 +1,10 @@
+2026-11-12T08:53:24Z boot
+2026-11-12T08:53:24Z http server up
+2026-11-12T08:54:03Z apt done
+2026-11-12T08:54:16Z clone done at 6c1c03b
+2026-11-12T08:55:59Z pip done, 16 vCPU
+2026-11-12T08:55:59Z run_stage  started
+2026-11-12T14:53:24Z GUARD timeout after 360 min: stopping the run
+2026-11-12T14:53:24Z run_stage finished rc=143 in 21445 s
+2026-11-12T14:53:36Z FAILED guard timeout, partial results.tar.gz ready
+2026-11-12T14:53:36Z DONE results.tar.gz ready
