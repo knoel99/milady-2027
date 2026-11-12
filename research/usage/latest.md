@@ -1,13 +1,13 @@
-# Usage report (2026-11-12T18:41:14Z)
+# Usage report (2026-11-12T20:29:10Z)
 
-Sessions: 1; first response 2026-11-12T16:50:21.852Z; last 2026-11-12T18:41:01.557Z; span 1.84 h.
+Sessions: 1; first response 2026-11-12T16:50:21.852Z; last 2026-11-12T20:28:54.892Z; span 3.64 h.
 Main session: models ['claude-fable-5-2'], efforts ['high']; expected claude-fable-5-2 / high: conforms.
-API-equivalent cost of the Claude calls: **$34.22** (prices of race/config.toml [pricing]).
-GPU: 7 job(s), 0.639 h, **$0.46** of a $140 budget.
+API-equivalent cost of the Claude calls: **$42.4** (prices of race/config.toml [pricing]).
+GPU: 10 job(s), 2.373 h, **$1.71** of a $140 budget.
 
 | model | API calls | input | cache write 5m | cache write 1h | cache read | output | of which thinking | cost |
 |---|---|---|---|---|---|---|---|---|
-| claude-fable-5-2 | 144 | 279 | 215,637 | 596,492 | 51,022,959 | 302,433 | 150,284 | $34.0 |
+| claude-fable-5-2 | 174 | 337 | 215,637 | 689,528 | 70,092,817 | 374,539 | 185,649 | $42.19 |
 | claude-sonnet-5-5 | 8 | 16 | 50,639 | 0 | 118,669 | 7,405 | 343 | $0.21 |
 
 Sub-agents: 7 call(s), 0 not conforming to agents/roles/; by type {'biblio': 2, 'jury-externe': 1, 'encadrant': 2, 'physicien': 2}.
@@ -23,4 +23,4 @@ Sub-agents: 7 call(s), 0 not conforming to agents/roles/; by type {'biblio': 2, 
 | physicien | claude-fable-5-2 | high | claude-fable-5-2 / high | 1 | 1,298 | $0.1633 | Role check: physicien Prop 1 |
 
 Role calls through tools/call_model.py or run_role.py: 0.
-Tool calls of the main session: {'Bash': 122, 'Read': 17, 'Agent': 7, 'Write': 6, 'mcp__claude-code-remote__get_session': 1, 'Grep': 1, 'ToolSearch': 1}.
+Tool calls of the main session: {'Bash': 153, 'Read': 17, 'Agent': 7, 'Write': 6, 'mcp__claude-code-remote__get_session': 1, 'Grep': 1, 'ToolSearch': 1}.
