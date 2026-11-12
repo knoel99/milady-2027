@@ -31,6 +31,24 @@ from call_model import API_NOTE, ROOT, load_providers, load_role, resolve
 READ_ONLY_NOTE = "\n\nYou never modify files of the repository; write scratch files only under /tmp.\n"
 
 
+def build_command(provider: str, tier: str, level: str, max_turns: int, prompt: str):
+    """Harness command and environment for one headless run with the given tier and level."""
+    cfg = load_providers()[provider]
+    h = cfg.get("harness")
+    if not h:
+        sys.exit(f"{provider}: no [harness] table in providers.toml")
+    model, provider_effort = resolve(cfg, tier, level, api=False)
+    effort = {"level": level, "provider": provider_effort, "none": None}[h["effort_source"]]
+    fill = {"prompt": prompt, "model": model, "effort": effort or "", "max_turns": str(max_turns)}
+    cmd = [part.format(**fill) for part in h["command"]]
+    if effort is None:  # drop a flag whose value would be empty
+        cmd = [c for i, c in enumerate(cmd) if not (c == "" or (i + 1 < len(cmd) and cmd[i + 1] == ""))]
+    env = dict(os.environ)
+    for k, v in h.get("env", {}).items():
+        env[k] = os.path.expandvars(v.format(**fill))
+    return cmd, env, model, effort, h
+
+
 def main() -> int:
     ap = argparse.ArgumentParser(description=__doc__, formatter_class=argparse.RawDescriptionHelpFormatter)
     ap.add_argument("--provider", default=os.environ.get("MILADY_PROVIDER"))
@@ -42,24 +60,12 @@ def main() -> int:
     if not args.provider:
         ap.error("--provider (or MILADY_PROVIDER) is required")
 
-    cfg = load_providers()[args.provider]
-    h = cfg.get("harness")
-    if not h:
-        sys.exit(f"{args.provider}: no [harness] table in providers.toml")
     meta, body = load_role(args.role)
-    model, provider_effort = resolve(cfg, meta["tier"], meta["reasoning"], api=False)
-    effort = {"level": meta["reasoning"], "provider": provider_effort, "none": None}[h["effort_source"]]
-
     task = sys.stdin.read() if args.task == "-" else Path(args.task).read_text(encoding="utf-8")
     note = API_NOTE.split("## How you are called")[0]  # keep the role text, drop the no-tools note
     prompt = f"{body.strip()}{note}{READ_ONLY_NOTE if meta['read_only'] else ''}\n## Task\n\n{task}"
-    fill = {"prompt": prompt, "model": model, "effort": effort or "", "max_turns": str(meta["max_turns"])}
-    cmd = [part.format(**fill) for part in h["command"]]
-    if effort is None:  # drop a flag whose value would be empty
-        cmd = [c for i, c in enumerate(cmd) if not (c == "" or (i + 1 < len(cmd) and cmd[i + 1] == ""))]
-    env = dict(os.environ)
-    for k, v in h.get("env", {}).items():
-        env[k] = os.path.expandvars(v.format(**fill))
+    cmd, env, model, effort, h = build_command(args.provider, meta["tier"], meta["reasoning"],
+                                               meta["max_turns"], prompt)
 
     shown = [c if c != prompt else f"<prompt {len(prompt)} chars>" for c in cmd]
     if args.dry_run:

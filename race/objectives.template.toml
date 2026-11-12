@@ -1,0 +1,28 @@
+# Copy to race/teams/<team>/objectives.toml on day 1 and fill in every field.
+# One [[objective]] per common objective (same id as race/objectives.common.toml), plus at most
+# five objectives of your own (id starting with "T"). After the user locks the file
+# (tools/race_progress.py lock), any change voids the progress score.
+#
+# command: run from the repository root on a clean checkout of your branch; reads committed
+#   result files, finishes in < 10 min on 4 cores, prints on its last line {"value": <number>}.
+# baseline: the value the command prints on the starting repository, or "none" when the
+#   quantity cannot be measured yet (e.g. no 3D generator exists): progress is then 0 until
+#   the target is reached, and 1 once it is.
+
+team = "<team>"
+
+[[objective]]
+id = "C1-3d-generator"
+target = 2.0
+baseline = "none"
+command = "python3 experiments/<your_script>.py --metric c1"
+note = "data set, held-out parameter values, model family"
+
+[[objective]]
+id = "T1-<short-name>"
+offer = "<the sentence of the offer this objective serves>"
+metric = "<what is measured, on which data, over how many seeds>"
+direction = "lower"
+target = 0.0
+baseline = 0.0
+command = "python3 experiments/<your_script>.py --metric t1"

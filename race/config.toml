@@ -1,0 +1,35 @@
+# Race configuration, owned by the user. Read by tools/race_launch.py, tools/race_progress.py
+# and tools/compute_broker.py.
+
+start_tag = "race-start"
+deadline = "2026-11-26T18:00:00Z"   # one week after launch: set it on launch day
+repo = "https://github.com/knoel99/milady-2027.git"
+
+[budget]
+api_usd = 200                 # per provider, enforced by a spending cap in the provider's console
+cpu_hours = 400               # vCPU-hours per team through the compute broker (16 vCPU x 25 h)
+max_job_hours = 2             # per broker job (AGENTS.md rule 3)
+
+[machines]
+# Scaleway instance types; check prices on the Scaleway pricing page before the launch.
+team_vm = "POP2-4C-16G"       # one per team for the whole week: the agent and quick runs
+job_vm = "POP2-HC-16C-32G"    # broker jobs
+zone = "fr-par-2"
+
+[main_session]
+# Tier and reasoning level of each team's main session.
+tier = "frontier"
+reasoning = "high"
+max_turns = 300               # per harness invocation; the launcher loops until the deadline
+
+# team name = section of agents/providers.toml, and the provider key variable it needs.
+[teams]
+claude = "ANTHROPIC_API_KEY"
+openai = "OPENAI_API_KEY"
+google = "GEMINI_API_KEY"
+xai = "XAI_API_KEY"
+mistral = "MISTRAL_API_KEY"
+zhipu = "ZAI_API_KEY"
+moonshot = "MOONSHOT_API_KEY"
+deepseek = "DEEPSEEK_API_KEY"
+alibaba = "DASHSCOPE_API_KEY"

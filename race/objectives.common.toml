@@ -1,0 +1,49 @@
+# Common objectives of the race, derived from the internship offer
+# (docs/specs/sources/supervisors.md, section 1.2 a). Every team quantifies each of them in
+# race/teams/<team>/objectives.toml: same metric definition for all teams, own target and
+# own measurement command. `direction` says whether a lower or a higher value is better.
+# State of the repository at race-start, for orientation (from experiments/results/digest.md):
+# E2 (2D MHD, N = 32) has divergence-free generators and a best test-eta energy distance of
+# 0.699 (V5, seed 0); E3 (3D ABC dynamo) is a simulation only: no 3D generator exists.
+
+[[objective]]
+id = "C1-3d-generator"
+offer = "3D fields that can serve as input for reduced-order models or data assimilation frameworks"
+metric = "energy distance between generated and reference 3D fields on held-out parameter values, divided by the energy distance between two reference subsamples of the same size (noise floor); mean over held-out values and over 5 seeds"
+direction = "lower"
+
+[[objective]]
+id = "C2-divergence"
+offer = "divergence-free conditions"
+metric = "relative divergence ||div B|| / ||grad B|| of generated 3D magnetic fields on held-out parameter values, maximum over samples"
+direction = "lower"
+
+[[objective]]
+id = "C3-energy-balance"
+offer = "energy balance"
+metric = "relative residual of the mean energy balance of the generated law (C4 class of docs/specs/theory-brief.md) on held-out parameter values, mean over 5 seeds"
+direction = "lower"
+
+[[objective]]
+id = "C4-spectra-helicity"
+offer = "energy spectra, helicity"
+metric = "relative L2 error of the shell-averaged magnetic energy spectrum plus relative error of the mean magnetic helicity, generated against reference, on held-out parameter values, mean over 5 seeds"
+direction = "lower"
+
+[[objective]]
+id = "C5-topology"
+offer = "topology preservation"
+metric = "a topology metric of your choice for magnetic field lines or null points, defined in your objectives file with a source in docs/specs/sources/; relative error generated against reference on held-out parameter values"
+direction = "lower"
+
+[[objective]]
+id = "C6-comparative-study"
+offer = "comparative study (diffusion or flow matching; constraints through model design, training losses, or sampling procedures)"
+metric = "number of pre-registered hypotheses of research/hypotheses.json comparing constraint mechanisms or model families, with 5 seeds and an encadrant verdict CONFIRMED or REFUTED"
+direction = "higher"
+
+[[objective]]
+id = "C7-toolbox"
+offer = "code integrated into the MilaDy project toolbox"
+metric = "number of new models or constraint mechanisms exposed in src/milady with at least one test each, passing make test"
+direction = "higher"

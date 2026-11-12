@@ -45,6 +45,7 @@ extra = { thinking = { type = "adaptive" } }
 # Read by tools/run_role.py. From the official docs on 2026-11-12; confirm with a dry run.
 name = "Claude Code"
 install = "npm install -g @anthropic-ai/claude-code"
+setup = "npm install -g @anthropic-ai/claude-code"  # run once on the team VM; unverified until the first launch
 effort_source = "level"  # level: role level as is; provider: [reasoning] value; none: not settable per call
 command = ["claude", "-p", "{prompt}", "--model", "{model}", "--effort", "{effort}", "--max-turns", "{max_turns}", "--permission-mode", "bypassPermissions", "--output-format", "json"]
 effort_support = "yes"
@@ -90,6 +91,7 @@ effort_field = "generationConfig.thinkingConfig.thinkingLevel"
 # Read by tools/run_role.py. From the official docs on 2026-11-12; confirm with a dry run.
 name = "Antigravity CLI"
 install = "curl -fsSL https://antigravity.google/cli/install.sh | bash"
+setup = "curl -fsSL https://antigravity.google/cli/install.sh | bash -s -- --skip-aliases && mkdir -p ~/.gemini/antigravity-cli && echo '{\"modelProvider\": \"gemini\"}' > ~/.gemini/antigravity-cli/settings.json"  # run once on the team VM; unverified until the first launch
 effort_source = "none"  # level: role level as is; provider: [reasoning] value; none: not settable per call
 command = ["agy", "-p", "{prompt}", "--model", "{model}", "--output-format", "json", "--dangerously-skip-permissions"]
 effort_support = "no per-call effort flag; model slugs from `agy models`"
@@ -132,6 +134,7 @@ effort_field = "reasoning.effort"
 # Read by tools/run_role.py. From the official docs on 2026-11-12; confirm with a dry run.
 name = "Codex CLI"
 install = "npm install -g @openai/codex"
+setup = "npm install -g @openai/codex && printenv OPENAI_API_KEY | codex login --with-api-key"  # run once on the team VM; unverified until the first launch
 effort_source = "provider"  # level: role level as is; provider: [reasoning] value; none: not settable per call
 command = ["codex", "exec", "-m", "{model}", "-c", "model_reasoning_effort=\"{effort}\"", "--sandbox", "workspace-write", "--json", "{prompt}"]
 effort_support = "yes"
@@ -201,9 +204,10 @@ effort_field = "reasoning_effort"
 # Read by tools/run_role.py. From the official docs on 2026-11-12; confirm with a dry run.
 name = "Kimi Code CLI"
 install = "npm install -g @moonshot-ai/kimi-code"
+setup = "npm install -g @moonshot-ai/kimi-code"  # run once on the team VM; unverified until the first launch
 effort_source = "level"  # level: role level as is; provider: [reasoning] value; none: not settable per call
 command = ["kimi", "-p", "{prompt}", "-m", "{model}", "--output-format", "stream-json"]
-env = { KIMI_MODEL_THINKING_EFFORT = "{effort}" }
+env = { KIMI_MODEL_THINKING_EFFORT = "{effort}", KIMI_MODEL_NAME = "{model}", KIMI_MODEL_API_KEY = "$MOONSHOT_API_KEY", KIMI_MODEL_BASE_URL = "https://api.moonshot.ai/v1" }
 effort_support = "through KIMI_MODEL_THINKING_EFFORT; -m takes an alias from config.toml"
 
 [moonshot.index]
@@ -241,6 +245,7 @@ effort_field = "reasoning_effort"
 # Read by tools/run_role.py. From the official docs on 2026-11-12; confirm with a dry run.
 name = "Grok Build"
 install = "curl -fsSL https://x.ai/cli/install.sh | bash"
+setup = "curl -fsSL https://x.ai/cli/install.sh | bash"  # run once on the team VM; unverified until the first launch
 effort_source = "provider"  # level: role level as is; provider: [reasoning] value; none: not settable per call
 command = ["grok", "-p", "{prompt}", "-m", "{model}", "--effort", "{effort}", "--max-turns", "{max_turns}", "--always-approve", "--output-format", "json"]
 effort_support = "yes"
@@ -304,8 +309,10 @@ effort_field = "reasoning_effort"
 # Read by tools/run_role.py. From the official docs on 2026-11-12; confirm with a dry run.
 name = "Qwen Code"
 install = "npm install -g @qwen-code/qwen-code"
+setup = "npm install -g @qwen-code/qwen-code && mkdir -p ~/.qwen && echo '{\"security\": {\"auth\": {\"selectedType\": \"openai\"}}}' > ~/.qwen/settings.json"  # run once on the team VM; unverified until the first launch
 effort_source = "none"  # level: role level as is; provider: [reasoning] value; none: not settable per call
 command = ["qwen", "-p", "{prompt}", "-m", "{model}", "--yolo", "-o", "json", "--max-session-turns", "{max_turns}"]
+env = { OPENAI_API_KEY = "$DASHSCOPE_API_KEY", OPENAI_BASE_URL = "https://dashscope-intl.aliyuncs.com/compatible-mode/v1" }
 effort_support = "model.reasoningEffort in settings.json only, not per call"
 
 [alibaba.index]
@@ -345,6 +352,7 @@ extra = { thinking = { type = "enabled" } }
 # Read by tools/run_role.py. From the official docs on 2026-11-12; confirm with a dry run.
 name = "Claude Code (DeepSeek Anthropic endpoint)"
 install = "npm install -g @anthropic-ai/claude-code"
+setup = "npm install -g @anthropic-ai/claude-code"  # run once on the team VM; unverified until the first launch
 effort_source = "level"  # level: role level as is; provider: [reasoning] value; none: not settable per call
 command = ["claude", "-p", "{prompt}", "--model", "{model}", "--effort", "{effort}", "--max-turns", "{max_turns}", "--permission-mode", "bypassPermissions", "--output-format", "json"]
 env = { ANTHROPIC_BASE_URL = "https://api.deepseek.com/anthropic", ANTHROPIC_AUTH_TOKEN = "$DEEPSEEK_API_KEY", ANTHROPIC_DEFAULT_OPUS_MODEL = "deepseek-flash", ANTHROPIC_DEFAULT_SONNET_MODEL = "deepseek-flash", ANTHROPIC_DEFAULT_HAIKU_MODEL = "deepseek-flash" }
@@ -382,6 +390,7 @@ extra = { thinking = { type = "enabled" } }
 # Read by tools/run_role.py. From the official docs on 2026-11-12; confirm with a dry run.
 name = "Claude Code (Z.ai Anthropic endpoint)"
 install = "npm install -g @anthropic-ai/claude-code"
+setup = "npm install -g @anthropic-ai/claude-code"  # run once on the team VM; unverified until the first launch
 effort_source = "level"  # level: role level as is; provider: [reasoning] value; none: not settable per call
 command = ["claude", "-p", "{prompt}", "--model", "{model}", "--effort", "{effort}", "--max-turns", "{max_turns}", "--permission-mode", "bypassPermissions", "--output-format", "json"]
 env = { ANTHROPIC_BASE_URL = "https://api.z.ai/api/anthropic", ANTHROPIC_AUTH_TOKEN = "$ZAI_API_KEY", ANTHROPIC_DEFAULT_OPUS_MODEL = "glm-5.3", ANTHROPIC_DEFAULT_SONNET_MODEL = "glm-5.3", ANTHROPIC_DEFAULT_HAIKU_MODEL = "glm-5.3-flash", API_TIMEOUT_MS = "3000000" }
@@ -484,6 +493,7 @@ effort_field = "reasoning_effort"
 # Read by tools/run_role.py. From the official docs on 2026-11-12; confirm with a dry run.
 name = "Mistral Vibe"
 install = "uv tool install mistral-vibe"
+setup = "curl -LsSf https://astral.sh/uv/install.sh | sh && ~/.local/bin/uv tool install mistral-vibe"  # run once on the team VM; unverified until the first launch
 effort_source = "none"  # level: role level as is; provider: [reasoning] value; none: not settable per call
 command = ["vibe", "-p", "{prompt}", "--model", "{model}", "--auto-approve", "--max-turns", "{max_turns}", "--output", "json"]
 effort_support = "per-model `thinking` in [[models]] of config.toml, not per call; --model takes an alias"
