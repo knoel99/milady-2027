@@ -1,0 +1,82 @@
+# Objectives of the team "claude" (pilot), written on day 1 (2026-11-12) before any computation.
+# Protocol behind every command: experiments/race_metrics.py (docstring) and experiments/e4_mhd3d.py.
+#
+# E4 data set (experiments/e4_data.py): 3D periodic incompressible MHD forced by a constant ABC
+# force (solver milady.sim.mhd3d, dynamic mode, saturated dynamo), snapshots (u, B) of the
+# statistically stationary state; conditioning parameter Rm at fixed Re. The values of Rm are
+# split into training, validation and held-out test values, interleaved; the test values are used
+# neither for training nor for selecting the model. One generator is measured by C1-C5, T1 and T2:
+# the variant with the lowest C1 ratio on the VALIDATION values (mean over 5 seeds), recorded in
+# experiments/results/e4_selection.json by experiments/e4_digest.py.
+# All values: mean over the held-out test values, then mean over 5 model seeds (C2: maximum).
+
+team = "claude"
+
+[[objective]]
+id = "C1-3d-generator"
+target = 10.0
+baseline = "none"
+command = "python3 experiments/race_metrics.py --metric c1"
+note = "E4, held-out Rm. Energy distance (V statistic) between n = 512 generated and n = 512 reference snapshots on the standardized physical features of milady.eval.metrics.features (log shell spectra of u and B, relative helicities, log energies), divided by the noise floor: mean energy distance between two disjoint reference subsamples of n = 512. A perfect generator gives 1. Model family: conditional flow matching on the Fourier modes of (u, B). Orientation: the best E2 variant (2D) is at about 500 times its floor on held-out eta (digest: 0.925 against 0.00178)."
+
+[[objective]]
+id = "C2-divergence"
+target = 1e-6
+baseline = "none"
+command = "python3 experiments/race_metrics.py --metric c2"
+note = "E4, held-out Rm. milady.eval.metrics.divergence_relative of each generated B (spectral operator, the one of the decoder; float64), maximum over all samples, held-out values and seeds. Target: below single-precision rounding."
+
+[[objective]]
+id = "C3-energy-balance"
+target = 0.05
+baseline = "none"
+command = "python3 experiments/race_metrics.py --metric c3"
+note = "E4, held-out Rm. |E[injection - nu<|omega|^2> - eta<|j|^2>]| / E[nu<|omega|^2> + eta<|j|^2>] over the n = 512 generated snapshots (milady.eval.metrics.budget_summary, balance_residual_total). The generator outputs every mode of the Galerkin system that produced the data, so the identity is exact for the reference law; the residual of the reference sample is reported next to it as the sampling floor."
+
+[[objective]]
+id = "C4-spectra-helicity"
+target = 0.15
+baseline = "none"
+command = "python3 experiments/race_metrics.py --metric c4"
+note = "E4, held-out Rm. ||E_B_gen(k) - E_B_ref(k)||_2 / ||E_B_ref(k)||_2 over the shells of the mean magnetic energy spectrum, plus |H_M_gen - H_M_ref| / |H_M_ref| for the mean magnetic helicity <A.B> (Coulomb gauge); the ABC forcing is helical, so H_M_ref is not zero by symmetry."
+
+[[objective]]
+id = "C5-topology"
+target = 0.2
+baseline = "none"
+command = "python3 experiments/race_metrics.py --metric c5"
+note = "E4, held-out Rm. Topology metric: number of magnetic null points (B = 0) per snapshot, located with the trilinear method of Haynes & Parnell, Phys. Plasmas 14:082107 (2007) (docs/specs/sources/data-metrics.md, section 2.8, [verified]; null structure: Parnell et al. 1996, same section); relative error |N_gen - N_ref| / N_ref of the mean count."
+
+[[objective]]
+id = "C6-comparative-study"
+target = 6
+baseline = 0
+command = "python3 experiments/race_metrics.py --metric c6"
+note = "Hypotheses of research/hypotheses.json with comparison = 'constraint mechanisms' or 'model families', seeds >= 5 and a verdict starting with CONFIRMED or REFUTED (encadrant). Planned: design (potentials, B-sign equivariance) against losses (divergence penalty, law-level energy balance) against sampling procedures (final projection, projected flow, exponential tilting), and flow matching against diffusion."
+
+[[objective]]
+id = "C7-toolbox"
+target = 6
+baseline = 0
+command = "python3 experiments/race_metrics.py --metric c7"
+note = "Entries of milady.train.constraints.REGISTRY (new at the race: models and constraint mechanisms) whose test test_<name> of tests/test_constraints.py passes; the same tests run in make test."
+
+[[objective]]
+id = "T1-restart-drift"
+offer = "3D fields that can serve as input for reduced-order models or data assimilation frameworks developed elsewhere in the project"
+metric = "relative change |E_B(tau) - E_B(0)| / E_B(0) of the ensemble-mean magnetic energy when the generated snapshots (held-out parameter values) are advanced by the solver over a fixed time tau of the order of one turnover time; zero for the invariant law; mean over held-out values and 5 seeds"
+direction = "lower"
+target = 0.05
+baseline = "none"
+command = "python3 experiments/race_metrics.py --metric t1"
+note = "E4, held-out Rm, 256 generated snapshots per value restarted with milady.sim.mhd3d; the same drift on reference snapshots is reported as the floor. Tests the stationarity of the generated law under the dynamics over a finite time (Proposition 5 with phi = E_B, integrated), which the instantaneous balance of C3 does not see."
+
+[[objective]]
+id = "T2-polarity-symmetry"
+offer = "abrupt reversals of the magnetic field polarity"
+metric = "asymmetry |P(<u.B> > 0) - 1/2| of the generated law under B -> -B (exact symmetry of the MHD equations), on held-out parameter values, n = 512 samples; mean over held-out values and 5 seeds"
+direction = "lower"
+target = 0.03
+baseline = "none"
+command = "python3 experiments/race_metrics.py --metric t2"
+note = "E4, held-out Rm. Binomial floor E|p - 1/2| = 1/sqrt(2 pi n) = 0.018 for n = 512. A finite set of trajectories is not symmetric (E1 digest, asymmetry of the training data); the symmetry is a C3-class constraint of docs/specs/theory-brief.md (Proposition 4)."
