@@ -82,6 +82,7 @@ budget_usd = 140                                           # of the 150 USD prep
 approval_fraction = 1.0                                    # owner approval needed past this share of the budget (1.0: none)
 credit_usd = 150                                           # prepaid RunPod credit, shared by every pilot on the account
 credit_margin_usd = 5                                      # a job must leave this much of the credit (billing lags)
+max_parallel = 4                                           # GPU jobs at once (all sessions on the account); run them in the background
 
 # When the encadrant and the jury step in (tools/review_due.py): events and elapsed time, no weeks.
 [reviews]
