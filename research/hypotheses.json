@@ -233,6 +233,51 @@
       "commit": "",
       "comparison": "model families",
       "seeds": 5
+    },
+    {
+      "id": "H16",
+      "statement": "In E4, a conditional Gaussian model with one mean and one covariance per Fourier mode (G0_gaussian_modes: no network; moments estimated at the training η and interpolated linearly in log η, symmetrized under B → −B) has a lower energy-distance ratio on the held-out η than every flow-matching or diffusion generator of the registered protocol (W0 to W6).",
+      "origin": "Failed experiment: results of the 5 seeds of the GPU replication (experiments/results/replications/e4_gpu, 2026-11-12): W0-W6 at 177 to 519 times the floor on the held-out η and 106 to 275 at the training η, generated fields over-dispersed (σ(dE/dt) 2 to 14 times the reference, 2 to 3 times too many nulls). A second-order baseline was missing from the protocol.",
+      "refutation_criterion": "Refuted if the seed-mean energy-distance ratio of G0 on the held-out η is above that of any of W0, W2, W3, W4, W4s, W5, W6 (W1 excluded: it is the worst), or if G0 is not below the best of them in at least 4 of the 5 seeds.",
+      "protocol": "E4 as for H4: same data, held-out η, n = 512, metrics and floors. G0 has no training seed: the 5 seeds are those of its sampling noise; it is compared seed by seed with the variants of the main run.",
+      "script": "experiments/e4_mhd3d.py --seed k --group D, k = 0..4",
+      "cost_estimate": "minutes of GPU per seed (no new data)",
+      "status": "registered",
+      "verdict": "",
+      "results": "",
+      "commit": "",
+      "comparison": "model families",
+      "seeds": 5
+    },
+    {
+      "id": "H17",
+      "statement": "In E4, the over-dispersion of the flow-matching generators comes from the bottleneck of the network (width 512 for 5320 latent dimensions), which cannot represent the linear part of the velocity field: adding an explicit mode-wise affine term v = G(t, η) x + b(t, η) + MLP (W9_skip_sym: potentials, B-sign equivariance, smooth condition embedding, same width, depth, iterations and batch as W4s) divides the energy-distance ratio on the held-out η by at least 5 compared with W4s_potentials_sym.",
+      "origin": "Same failed experiment. The flow-matching loss of W0-W6 stays at 1.60 to 1.63, above π/2 = 1.571, the loss of the exact linear field for independent unit Gaussian coordinates. The same bottleneck exists in E2 for the component models only (dimension 1760, width 1024) and not for the potentials (880), which may confound the E2 comparison V4 against V0 (conjecture, not tested here).",
+      "refutation_criterion": "Refuted if the seed-mean energy-distance ratio of W9_skip_sym on the held-out η is more than one fifth of that of W4s_potentials_sym, or if the paired difference ED(W4s) − ED(W9) is not larger than 2 SE, or if W9 is below W4s in fewer than 4 of the 5 seeds. Reported with it: the final flow-matching loss against π/2.",
+      "protocol": "E4 as for H4: same data, held-out η, n = 512, metrics and floors. Paired difference of the per-seed means over the 3 held-out η between W9_skip_sym (group D) and W4s_potentials_sym (group B), same seeds; SE = sd(ddof = 1)/sqrt(5).",
+      "script": "experiments/e4_mhd3d.py --seed k --group D, k = 0..4",
+      "cost_estimate": "minutes of GPU per seed (no new data)",
+      "status": "registered",
+      "verdict": "",
+      "results": "",
+      "commit": "",
+      "comparison": "model families",
+      "seeds": 5
+    },
+    {
+      "id": "H18",
+      "statement": "In E4, flow matching adds to the second-order baseline what a Gaussian law cannot hold: with the mode-wise affine term and a longer training (W9L_skip_long, 8 times the iterations of W9), the drift of the magnetic energy when the solver is restarted from the generated snapshots (T1 metric) and the error on the number of magnetic null points are both lower than those of G0_gaussian_modes.",
+      "origin": "A Gaussian law with independent modes has no triple correlation, hence no energy transfer between scales at the first instant of a restart, and its null count follows the Gaussian estimate (physicien, conjecture C3 of 2026-11-12).",
+      "refutation_criterion": "Refuted if, for the restart drift or for the null-count error, the paired difference G0 − W9L is not larger than 2 SE or W9L is below G0 in fewer than 4 of the 5 seeds.",
+      "protocol": "E4 as for H4: same data, held-out η, n = 512, metrics and floors. Restart drift on 128 snapshots per held-out η over τ = 4; null count on 200 snapshots at 48³. Paired by seed (training seed of W9L, sampling seed of G0).",
+      "script": "experiments/e4_mhd3d.py --seed k --group D, k = 0..4",
+      "cost_estimate": "minutes of GPU per seed (no new data)",
+      "status": "registered",
+      "verdict": "",
+      "results": "",
+      "commit": "",
+      "comparison": "model families",
+      "seeds": 5
     }
   ]
 }
