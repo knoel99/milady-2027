@@ -7,3 +7,5 @@ Provider-neutral definitions of the project's sub-agents.
 - `python3 tools/sync_agents.py` regenerates the tool-specific files (today `.claude/agents/*.md`); `--check` fails if they are out of date, and CI runs it.
 
 Edit the roles here, never the generated files. A tool without sub-agents runs a role as a separate session with the body of its file as the prompt.
+
+Calling roles from any harness: `tools/call_model.py` (API call, no tools), `tools/run_role.py` (headless session of the team's harness, with tools), both reading the `[api]` and `[harness]` tables of `providers.toml` and logging to `research/model-calls.jsonl`; `tools/check_calls.py` verifies the ledger (`ledger`), probes each model and effort (`preflight`) and grades the autonomy exam `research/preflight-exam.md` (`exam`). `tests/test_call_model.py` checks the request shapes against a local fake server.

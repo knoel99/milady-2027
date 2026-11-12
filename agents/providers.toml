@@ -32,6 +32,23 @@ medium = "medium"
 high = "high"
 max = "max"
 
+[claude.api]
+# Read by tools/call_model.py. base_url and the effort field: to confirm with `check_calls.py preflight`.
+style = "anthropic"
+base_url = "https://api.anthropic.com/v1"
+key_env = "ANTHROPIC_API_KEY"
+effort_field = "output_config.effort"
+models = { frontier = "claude-fable-5-2", standard = "claude-sonnet-5-5", light = "claude-haiku-5-5" }
+extra = { thinking = { type = "adaptive" } }
+
+[claude.harness]
+# Read by tools/run_role.py. From the official docs on 2026-11-12; confirm with a dry run.
+name = "Claude Code"
+install = "npm install -g @anthropic-ai/claude-code"
+effort_source = "level"  # level: role level as is; provider: [reasoning] value; none: not settable per call
+command = ["claude", "-p", "{prompt}", "--model", "{model}", "--effort", "{effort}", "--max-turns", "{max_turns}", "--permission-mode", "bypassPermissions", "--output-format", "json"]
+effort_support = "yes"
+
 [claude.index]
 "Claude Fable 5.2 (max)" = 65
 "Claude Opus 5.5 (max)" = 59
@@ -62,6 +79,21 @@ medium = "medium"
 high = "high"
 max = "high"
 
+[google.api]
+# Read by tools/call_model.py. base_url and the effort field: to confirm with `check_calls.py preflight`.
+style = "gemini"
+base_url = "https://generativelanguage.googleapis.com/v1beta"
+key_env = "GEMINI_API_KEY"
+effort_field = "generationConfig.thinkingConfig.thinkingLevel"
+
+[google.harness]
+# Read by tools/run_role.py. From the official docs on 2026-11-12; confirm with a dry run.
+name = "Antigravity CLI"
+install = "curl -fsSL https://antigravity.google/cli/install.sh | bash"
+effort_source = "none"  # level: role level as is; provider: [reasoning] value; none: not settable per call
+command = ["agy", "-p", "{prompt}", "--model", "{model}", "--output-format", "json", "--dangerously-skip-permissions"]
+effort_support = "no per-call effort flag; model slugs from `agy models`"
+
 [google.index]
 "Gemini 4 Carbon (high)" = 60
 "Gemini 3.8 Flash (high)" = 31
@@ -88,6 +120,21 @@ low = "low"
 medium = "medium"
 high = "high"
 max = "max"
+
+[openai.api]
+# Read by tools/call_model.py. base_url and the effort field: to confirm with `check_calls.py preflight`.
+style = "openai-responses"
+base_url = "https://api.openai.com/v1"
+key_env = "OPENAI_API_KEY"
+effort_field = "reasoning.effort"
+
+[openai.harness]
+# Read by tools/run_role.py. From the official docs on 2026-11-12; confirm with a dry run.
+name = "Codex CLI"
+install = "npm install -g @openai/codex"
+effort_source = "provider"  # level: role level as is; provider: [reasoning] value; none: not settable per call
+command = ["codex", "exec", "-m", "{model}", "-c", "model_reasoning_effort=\"{effort}\"", "--sandbox", "workspace-write", "--json", "{prompt}"]
+effort_support = "yes"
 
 [openai.index]
 "GPT-6 Astra (max)" = 57
@@ -143,6 +190,22 @@ medium = "high"
 high = "high"
 max = "max"
 
+[moonshot.api]
+# Read by tools/call_model.py. base_url and the effort field: to confirm with `check_calls.py preflight`.
+style = "openai-chat"
+base_url = "https://api.moonshot.ai/v1"
+key_env = "MOONSHOT_API_KEY"
+effort_field = "reasoning_effort"
+
+[moonshot.harness]
+# Read by tools/run_role.py. From the official docs on 2026-11-12; confirm with a dry run.
+name = "Kimi Code CLI"
+install = "npm install -g @moonshot-ai/kimi-code"
+effort_source = "level"  # level: role level as is; provider: [reasoning] value; none: not settable per call
+command = ["kimi", "-p", "{prompt}", "-m", "{model}", "--output-format", "stream-json"]
+env = { KIMI_MODEL_THINKING_EFFORT = "{effort}" }
+effort_support = "through KIMI_MODEL_THINKING_EFFORT; -m takes an alias from config.toml"
+
 [moonshot.index]
 "Kimi K3.1 Pro" = 46
 
@@ -166,6 +229,21 @@ low = "low"
 medium = "medium"
 high = "high"
 max = "xhigh"
+
+[xai.api]
+# Read by tools/call_model.py. base_url and the effort field: to confirm with `check_calls.py preflight`.
+style = "openai-chat"
+base_url = "https://api.x.ai/v1"
+key_env = "XAI_API_KEY"
+effort_field = "reasoning_effort"
+
+[xai.harness]
+# Read by tools/run_role.py. From the official docs on 2026-11-12; confirm with a dry run.
+name = "Grok Build"
+install = "curl -fsSL https://x.ai/cli/install.sh | bash"
+effort_source = "provider"  # level: role level as is; provider: [reasoning] value; none: not settable per call
+command = ["grok", "-p", "{prompt}", "-m", "{model}", "--effort", "{effort}", "--max-turns", "{max_turns}", "--always-approve", "--output-format", "json"]
+effort_support = "yes"
 
 [xai.index]
 "Grok 4.7 (xhigh)" = 35
@@ -206,6 +284,7 @@ unconfirmed = ["value list of reasoning_effort on the Chat Completions API", "AG
 
 [alibaba.tier]
 frontier = "qwen3.8-max-0902"
+standard = "qwen3.8-flash"
 light = "qwen3.8-27b"
 
 [alibaba.reasoning]
@@ -213,6 +292,21 @@ low = "low"
 medium = "medium"
 high = "xhigh"
 max = "xhigh"
+
+[alibaba.api]
+# Read by tools/call_model.py. base_url and the effort field: to confirm with `check_calls.py preflight`.
+style = "openai-chat"
+base_url = "https://dashscope-intl.aliyuncs.com/compatible-mode/v1"
+key_env = "DASHSCOPE_API_KEY"
+effort_field = "reasoning_effort"
+
+[alibaba.harness]
+# Read by tools/run_role.py. From the official docs on 2026-11-12; confirm with a dry run.
+name = "Qwen Code"
+install = "npm install -g @qwen-code/qwen-code"
+effort_source = "none"  # level: role level as is; provider: [reasoning] value; none: not settable per call
+command = ["qwen", "-p", "{prompt}", "-m", "{model}", "--yolo", "-o", "json", "--max-session-turns", "{max_turns}"]
+effort_support = "model.reasoningEffort in settings.json only, not per call"
 
 [alibaba.index]
 "Qwen3.8 Max (0902)" = 34
@@ -239,6 +333,23 @@ medium = "high"
 high = "high"
 max = "max"
 
+[deepseek.api]
+# Read by tools/call_model.py. base_url and the effort field: to confirm with `check_calls.py preflight`.
+style = "openai-chat"
+base_url = "https://api.deepseek.com"
+key_env = "DEEPSEEK_API_KEY"
+effort_field = "reasoning_effort"
+extra = { thinking = { type = "enabled" } }
+
+[deepseek.harness]
+# Read by tools/run_role.py. From the official docs on 2026-11-12; confirm with a dry run.
+name = "Claude Code (DeepSeek Anthropic endpoint)"
+install = "npm install -g @anthropic-ai/claude-code"
+effort_source = "level"  # level: role level as is; provider: [reasoning] value; none: not settable per call
+command = ["claude", "-p", "{prompt}", "--model", "{model}", "--effort", "{effort}", "--max-turns", "{max_turns}", "--permission-mode", "bypassPermissions", "--output-format", "json"]
+env = { ANTHROPIC_BASE_URL = "https://api.deepseek.com/anthropic", ANTHROPIC_AUTH_TOKEN = "$DEEPSEEK_API_KEY", ANTHROPIC_DEFAULT_OPUS_MODEL = "deepseek-flash", ANTHROPIC_DEFAULT_SONNET_MODEL = "deepseek-flash", ANTHROPIC_DEFAULT_HAIKU_MODEL = "deepseek-flash" }
+effort_support = "transmitted as output_config.effort; accepted values unconfirmed"
+
 [deepseek.index]
 "DeepSeek V4.1 Flash 1017 (max)" = 33
 
@@ -251,12 +362,30 @@ unconfirmed = ["open-weights repo of GLM-5.3", "sub-agent files in ZCode"]
 
 [zhipu.tier]
 frontier = "glm-5.3"
+light = "glm-5.3-flash"
 
 [zhipu.reasoning]
 low = "low"
 medium = "high"
 high = "high"
 max = "max"
+
+[zhipu.api]
+# Read by tools/call_model.py. base_url and the effort field: to confirm with `check_calls.py preflight`.
+style = "openai-chat"
+base_url = "https://api.z.ai/api/paas/v4"
+key_env = "ZAI_API_KEY"
+effort_field = "reasoning_effort"
+extra = { thinking = { type = "enabled" } }
+
+[zhipu.harness]
+# Read by tools/run_role.py. From the official docs on 2026-11-12; confirm with a dry run.
+name = "Claude Code (Z.ai Anthropic endpoint)"
+install = "npm install -g @anthropic-ai/claude-code"
+effort_source = "level"  # level: role level as is; provider: [reasoning] value; none: not settable per call
+command = ["claude", "-p", "{prompt}", "--model", "{model}", "--effort", "{effort}", "--max-turns", "{max_turns}", "--permission-mode", "bypassPermissions", "--output-format", "json"]
+env = { ANTHROPIC_BASE_URL = "https://api.z.ai/api/anthropic", ANTHROPIC_AUTH_TOKEN = "$ZAI_API_KEY", ANTHROPIC_DEFAULT_OPUS_MODEL = "glm-5.3", ANTHROPIC_DEFAULT_SONNET_MODEL = "glm-5.3", ANTHROPIC_DEFAULT_HAIKU_MODEL = "glm-5.3-flash", API_TIMEOUT_MS = "3000000" }
+effort_support = "transmitted; honoured by GLM: unconfirmed"
 
 [zhipu.index]
 "GLM-5.3 (max)" = 32
@@ -343,6 +472,21 @@ low = "low"
 medium = "medium"
 high = "high"
 max = "high"
+
+[mistral.api]
+# Read by tools/call_model.py. base_url and the effort field: to confirm with `check_calls.py preflight`.
+style = "openai-chat"
+base_url = "https://api.mistral.ai/v1"
+key_env = "MISTRAL_API_KEY"
+effort_field = "reasoning_effort"
+
+[mistral.harness]
+# Read by tools/run_role.py. From the official docs on 2026-11-12; confirm with a dry run.
+name = "Mistral Vibe"
+install = "uv tool install mistral-vibe"
+effort_source = "none"  # level: role level as is; provider: [reasoning] value; none: not settable per call
+command = ["vibe", "-p", "{prompt}", "--model", "{model}", "--auto-approve", "--max-turns", "{max_turns}", "--output", "json"]
+effort_support = "per-model `thinking` in [[models]] of config.toml, not per call; --model takes an alias"
 
 [mistral.index]
 "Mistral Large 4 (high)" = 26
