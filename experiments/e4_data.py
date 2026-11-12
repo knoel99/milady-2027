@@ -140,7 +140,25 @@ def simulate(index: int, quick: bool = False, n: int = N, cfl: float = CFL, devi
                                                  / np.sqrt(n_traj), 1e-30))}
     sinks = series["kinetic_dissipation"][keep].mean() + series["magnetic_dissipation"][keep].mean()
     stats["balance_residual_total"] = float((series["injection"][keep].mean() - sinks) / sinks)
+    stats["shells"] = shell_stats(sp, x.reshape(n_traj * n_t, *x.shape[2:]))
     return stats
+
+
+def shell_stats(sp: FourierPotentialSpace, x: np.ndarray, chunk: int = 600) -> dict:
+    """Mean shell spectra of the snapshots ``x`` (N, M, 8): E_u(k), E_B(k), magnetic helicity H(k), ⟨j·B⟩(k)."""
+    from milady.train.data import _cross
+
+    k = sp.k
+    k2 = (k * k).sum(-1)
+    ns = int(sp.shell.max()) + 1
+    acc = {name: torch.zeros(ns, dtype=torch.float64) for name in ("E_u", "E_B", "H", "J")}
+    for i in range(0, len(x), chunk):
+        fh = sp.field_hat(torch.as_tensor(x[i:i + chunk]).double())
+        uh, bh = fh[:, 0], fh[:, 1]
+        jdens = 2.0 * ((1j * _cross(k.to(bh.dtype), bh)) * bh.conj()).real.sum(-1)
+        for name, dens in (("E_u", (uh.abs() ** 2).sum(-1)), ("E_B", (bh.abs() ** 2).sum(-1)), ("H", jdens / k2), ("J", jdens)):
+            acc[name] += torch.zeros(ns, dtype=torch.float64).index_add(0, sp.shell, dens.sum(0))
+    return {name: (v[1:] / len(x)).tolist() for name, v in acc.items()}
 
 
 def split_of(index: int) -> str:
