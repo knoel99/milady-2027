@@ -23,8 +23,8 @@
       "cost_estimate": "E1 for 5 seeds: one process per seed, about 1 h each at 2 threads (estimate), no GPU",
       "status": "proposed",
       "verdict": "",
-      "results": "",
-      "commit": ""
+      "results": "Five seeds, test Γ: ED(A) 0.0127, ED(C) 0.0023; paired difference A − C = 0.0104 ± 0.0012 (mean ± SE), 8.8 SE; C below A for 5 of 5 seeds; difference 8.4 times the floor (0.00123). No criterion met: not refuted. Digest: E1, 'Across seeds' table.",
+      "commit": "6dbd0e6"
     },
     {
       "id": "H2",
@@ -36,8 +36,8 @@
       "cost_estimate": "included in H1 (same run)",
       "status": "proposed",
       "verdict": "",
-      "results": "",
-      "commit": ""
+      "results": "Five seeds, test Γ: Liouville deg 3, F 0.0338, F0 0.0172; paired difference F0 − F = −0.017 ± 0.013; F below F0 for 2 of 5 seeds; ED(F)/ED(F0) = 1.41. All three criteria met: refuted (verdict pending). Digest: E1, 'Across seeds' and 'Per-seed σ(dE/dt)' tables.",
+      "commit": "6dbd0e6"
     },
     {
       "id": "H3",
@@ -49,8 +49,8 @@
       "cost_estimate": "about 70 min per seed at 2 threads (published run: 4023 s), 5 processes, no GPU",
       "status": "proposed",
       "verdict": "",
-      "results": "",
-      "commit": ""
+      "results": "Five seeds, test η: ED(V5_control) 2.43, ED(V5) 0.925; paired difference 1.50 ± 0.27, 5.6 SE; V5 below control for 5 of 5 seeds; seed-mean gain at 3 of 5 test η (0.00951, 0.0135, 0.0190), loss at 0.00476 and 0.00673. No criterion met (third one at its limit): not refuted. Digest: E2, 'Across seeds' table; per-η seed means computed from e2_mhd2d[_s<k>].json.",
+      "commit": "6dbd0e6"
     }
   ]
 }
