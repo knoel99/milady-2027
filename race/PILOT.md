@@ -38,6 +38,7 @@ The `encadrant` and the `jury-externe` step in when `python3 tools/review_due.py
 
 ## Stop rules
 
+0. Several GPU jobs may run at once when it saves time (independent seeds, groups or parameter values): start each `tools/runpod_job.py run` in the background, with its own `--outputs` directory and `--log`. At most `[gpu]` `max_parallel` jobs (4) run at a time, all sessions together; the tool reserves the worst case of the jobs in flight before starting a new one, and `cleanup` deletes only pods past their time limit.
 1. The whole GPU budget may be used, but a job starts only if its worst case (time limit × hourly price) fits in what is left: `tools/runpod_job.py` checks it, so no job is cut off by an empty credit. Commit and push the outputs and `research/compute-ledger.jsonl` right after each job: the session's container is the only other copy.
 2. The plan's usage limit warns: finish the current hypothesis, write the usage report, commit, push, stop (`AGENTS.md` rule 7).
 3. The deadline is reached: write `research/race-report.md`, the usage report, commit, push, stop.

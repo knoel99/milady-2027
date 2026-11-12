@@ -33,6 +33,8 @@ class FakeMCP:
             if self.fail_first and args["body"]["gpu"]["id"] == "NVIDIA RTX PRO 4500 Blackwell":
                 raise RuntimeError("no capacity")
             return {"id": "pod123", "name": args["body"]["name"]}
+        if tool == "list-pods":
+            return {"pods": getattr(self, "pods", [])}
         if tool == "list-billing":
             return {"metadata": {"totals": {"totalAmount": 0.0}}}
         if tool == "delete-pod":
@@ -92,6 +94,36 @@ def test_pod_deleted_even_when_polling_crashes(job_env, monkeypatch):
         runpod_job.run(args(log=str(job_env / "job.log")), mcp=mcp, sleep=lambda s: None)
     assert mcp.deleted == ["pod123"]
     assert json.loads((job_env / "ledger.jsonl").read_text())["rc"] is None
+
+
+def test_http_get_sends_an_explicit_user_agent(monkeypatch):
+    """The RunPod proxy refuses the default Python-urllib agent (403): the status was never read."""
+    seen = {}
+
+    class Resp(io.BytesIO):
+        def __enter__(self):
+            return self
+
+        def __exit__(self, *exc):
+            return False
+
+    def fake_urlopen(req, timeout=None):
+        seen["agent"] = req.get_header("User-agent")
+        return Resp(b"DONE rc=0")
+
+    monkeypatch.setattr(runpod_job.urllib.request, "urlopen", fake_urlopen)
+    assert runpod_job.http_get("https://pod-8000.proxy.runpod.net/token/status.txt") == b"DONE rc=0"
+    assert seen["agent"] == runpod_job.USER_AGENT and "urllib" not in seen["agent"].lower()
+
+
+def test_bootstrap_is_valid_bash_and_survives_debian_packages(tmp_path):
+    """The pod image has Debian-installed packages that pip cannot uninstall (pilot, 2026-11-12)."""
+    import subprocess
+
+    script = tmp_path / "bootstrap.sh"
+    script.write_text(runpod_job.BOOTSTRAP)
+    assert subprocess.run(["bash", "-n", str(script)], check=False).returncode == 0
+    assert "--system-site-packages" in runpod_job.BOOTSTRAP and "--ignore-installed" in runpod_job.BOOTSTRAP
 
 
 def test_hours_limit_and_no_stock(job_env):
@@ -169,6 +201,8 @@ def test_budget_is_enforced(job_env, monkeypatch):
 
 def test_missing_pod_id_is_cleaned_up(job_env, monkeypatch):
     class Odd(FakeMCP):
+        name = "not-created-yet"
+
         def call(self, tool, args):
             if tool == "create-pod":
                 self.name = args["body"]["name"]
@@ -281,3 +315,20 @@ def test_cursor_launch_uses_role_model_and_logs(tmp_path, monkeypatch):
     row = json.loads((tmp_path / "runs.jsonl").read_text())
     assert row["agent"] == "bc-1" and row["run"] == "run-1" and row["dropped"] == []
     assert ca.cmd_check(Fake()) == 0
+
+
+def test_parallel_jobs_reserve_budget_and_are_capped(job_env, monkeypatch):
+    import datetime as dt
+    cfg = dict(runpod_job.config(), budget_usd=3.0, max_parallel=2)
+    monkeypatch.setattr(runpod_job, "config", lambda: cfg)
+    monkeypatch.setattr(runpod_job, "spend", lambda: {"usd": 0.0})
+    started = (dt.datetime.now(dt.UTC) - dt.timedelta(minutes=10)).isoformat()
+    pod = {"id": "busy", "name": "milady-job-x", "cost": 1.19, "createdAt": started, "env": {"MAX_MIN": "120"}}
+    mcp = FakeMCP(fail_first=False)
+    mcp.pods = [pod]                       # 1.19 $/h x (2.25 - 0.17) h = $2.48 reserved
+    assert runpod_job.run(args(hours="1"), mcp=mcp, sleep=lambda s: None) == 1     # + 0.72 > $3
+    assert not [c for c in mcp.calls if c[0] == "create-pod"]
+    mcp.pods = [pod, dict(pod, id="busy2")]
+    assert runpod_job.run(args(hours="0.1"), mcp=mcp, sleep=lambda s: None) == 1   # max_parallel reached
+    jobs = runpod_job.running_jobs(mcp)
+    assert len(jobs) == 2 and jobs[0]["reserved_usd"] == pytest.approx(1.19 * (2.25 - 10 / 60), rel=1e-2)
