@@ -293,6 +293,21 @@
       "commit": "",
       "comparison": "model families",
       "seeds": 5
+    },
+    {
+      "id": "H20",
+      "statement": "In E4, the anchored model fails (W10_anchored on CPU seeds 0 and 1: 45 times the floor against 3.3 for G0) because the network's own linear component perturbs the second-order statistics that the fixed Gaussian field had right. Adding to the anchored field a learnable mode-wise affine correction, zero at initialization (W11_anchored_skip: v = v_Gauss + G(t, η) x + b(t, η) + network), restores them: its energy-distance ratio on the held-out η is not above that of G0_gaussian_modes, and its restart drift and its null-count error are both below those of G0.",
+      "origin": "CPU runs of groups D and E on seeds 0 and 1 (2026-11-12, container data): G0 3.3; W9_skip_sym (learned affine term + network) 9.1 and 10.6; W10_anchored (exact Gaussian field + network) 44.7 and 46.3 with an energy residual of 0.15: the learned affine term of W9 can compensate the linear part of the network, the fixed anchor of W10 cannot.",
+      "refutation_criterion": "Refuted if the seed-mean energy-distance ratio of W11_anchored_skip on the held-out η exceeds that of G0 by more than 2 SE of the paired difference, or if, for the restart drift or for the null-count error, the paired difference G0 − W11 is not larger than 2 SE or W11 is below G0 in fewer than 4 of the 5 seeds.",
+      "protocol": "E4 as for H19, same budget as W4s (ResMLP 512×4, 4000 iterations, batch 128), 5 seeds, paired with G0 on the same data. W11L_anchored_skip_long (8 times the iterations, GPU) is reported with it.",
+      "script": "experiments/e4_mhd3d.py --seed k --group D,E (and L for the long variants), k = 0..4",
+      "cost_estimate": "minutes of GPU per seed (no new data)",
+      "status": "registered",
+      "verdict": "",
+      "results": "",
+      "commit": "",
+      "comparison": "model families",
+      "seeds": 5
     }
   ]
 }
