@@ -143,11 +143,11 @@ def test_usage_report_counts_costs_and_conformity(tmp_path, monkeypatch):
 
 
 def test_budget_is_enforced(job_env, monkeypatch):
-    cfg = dict(runpod_job.config(), budget_usd=3.0)
+    cfg = dict(runpod_job.config(), budget_usd=3.0, approval_fraction=0.8)
     monkeypatch.setattr(runpod_job, "config", lambda: cfg)
     monkeypatch.setattr(runpod_job, "http_get", lambda url: b"DONE rc=0" if url.endswith("status.txt") else None)
     monkeypatch.setattr(runpod_job, "spend", lambda: {"usd": 2.5})            # 83 % of 3: refused
-    with pytest.raises(SystemExit, match="80 %"):
+    with pytest.raises(SystemExit, match="80%"):
         runpod_job.run(args(), mcp=FakeMCP(), sleep=lambda s: None)
     monkeypatch.setattr(runpod_job, "spend", lambda: {"usd": 1.0})            # 33 %: allowed, but ...
     mcp = FakeMCP(fail_first=False)
@@ -170,3 +170,16 @@ def test_missing_pod_id_is_cleaned_up(job_env, monkeypatch):
     with pytest.raises(SystemExit, match="without a pod id"):
         runpod_job.run(args(), mcp=mcp, sleep=lambda s: None)
     assert mcp.deleted == ["podX"]
+
+
+def test_whole_budget_usable_when_no_approval_needed(job_env, monkeypatch):
+    cfg = dict(runpod_job.config(), budget_usd=3.0, approval_fraction=1.0)
+    monkeypatch.setattr(runpod_job, "config", lambda: cfg)
+    monkeypatch.setattr(runpod_job, "http_get", lambda url: b"DONE rc=0" if url.endswith("status.txt") else None)
+    monkeypatch.setattr(runpod_job, "spend", lambda: {"usd": 2.6})            # 87 %: allowed, job fits
+    mcp = FakeMCP(fail_first=False)
+    assert runpod_job.run(args(hours="0.5", log=str(job_env / "j.log")), mcp=mcp, sleep=lambda s: None) == 0
+    monkeypatch.setattr(runpod_job, "spend", lambda: {"usd": 2.9})            # 0.5 h x $0.72 would not fit
+    late = FakeMCP(fail_first=False)
+    assert runpod_job.run(args(hours="0.5"), mcp=late, sleep=lambda s: None) == 1
+    assert not [c for c in late.calls if c[0] == "create-pod"]

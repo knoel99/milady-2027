@@ -142,10 +142,11 @@ def run(args, mcp: MCP | None = None, sleep=time.sleep) -> int:
     command = " ".join(args.command[1:] if args.command[:1] == ["--"] else args.command)
     if not command:
         sys.exit("give the command after --")
-    budget = cfg.get("budget_usd")
+    budget = cfg.get("budget_usd")  # a job starts only if its worst case fits in what is left
     spent = spend()["usd"]
-    if budget and spent >= 0.8 * budget and not args.over_budget_approved:
-        sys.exit(f"GPU spend ${spent:.2f} is at or above 80 % of the ${budget} budget: no new job without the "
+    share = cfg.get("approval_fraction", 0.8)
+    if budget and share < 1 and spent >= share * budget and not args.over_budget_approved:
+        sys.exit(f"GPU spend ${spent:.2f} is at or above {share:.0%} of the ${budget} budget: no new job without the "
                  "owner's approval (then pass --over-budget-approved)")
     sha = pushed_commit(args.ref)
     gpus = [g.strip() for g in (args.gpu or ",".join(cfg.get("fallback", []))).split(",") if g.strip()]
@@ -238,6 +239,8 @@ def run(args, mcp: MCP | None = None, sleep=time.sleep) -> int:
                        "usd": round(hours_used * price, 4), "commit": sha, "command": command, "rc": rc,
                        "status_tail": status[-300:]})
     print(f"rc={rc}; {hours_used:.2f} h; ${hours_used * price:.2f}; log {args.log}", file=sys.stderr)
+    print("The outputs are only in this checkout: commit and push them now, with research/compute-ledger.jsonl.",
+          file=sys.stderr)
     return 0 if rc == 0 else 1
 
 

@@ -11,7 +11,7 @@ The pilot runs the race with a single team before the nine-provider race: one Cl
 | Roles | Claude Code sub-agents `.claude/agents/*.md`, generated from `agents/roles/`: `encadrant` Fable/medium, `physicien` Fable/high, `biblio` Sonnet 5.5/medium, `jury-externe` Fable/max. `tools/call_model.py` and `tools/run_role.py` need an Anthropic API key and are not used in the pilot |
 | CPU | the session's own container (quick runs, measurements) |
 | GPU | `tools/runpod_job.py run`: RTX PRO 4500 Blackwell, then RTX 5090, then RTX A6000 (`race/config.toml` `[gpu]`); H100 only for float64 validation |
-| Budgets | GPU: 120 USD of the 150 USD prepaid RunPod credit (`race/config.toml` `[gpu]` `budget_usd`). Claude: the plan's usage limit; `tools/usage_report.py` gives the API-equivalent cost |
+| Budgets | GPU: 140 USD of the 150 USD prepaid RunPod credit, all usable (`race/config.toml` `[gpu]` `budget_usd`; 10 USD margin for storage and rounding). Claude: the plan's usage limit; `tools/usage_report.py` gives the API-equivalent cost |
 | Duration | one week from the start, or until a budget is spent |
 
 ## Monitoring
@@ -28,7 +28,7 @@ The pilot runs the race with a single team before the nine-provider race: one Cl
 
 ## Stop rules
 
-1. GPU spend above 80 % of its budget: no new GPU job without the owner's approval.
+1. The whole GPU budget may be used, but a job starts only if its worst case (time limit × hourly price) fits in what is left: `tools/runpod_job.py` checks it, so no job is cut off by an empty credit. Commit and push the outputs and `research/compute-ledger.jsonl` right after each job: the session's container is the only other copy.
 2. The plan's usage limit warns: finish the current hypothesis, write the usage report, commit, push, stop (`AGENTS.md` rule 7).
 3. The deadline is reached: write `research/race-report.md`, the usage report, commit, push, stop.
 4. Never leave a pod running: every GPU job goes through `tools/runpod_job.py`, which deletes the pod; end every working block with `tools/runpod_job.py cleanup`.
