@@ -75,4 +75,5 @@ data_centers = ["EU-CZ-1", "EU-NL-1", "EU-RO-1", "EU-SE-1", "EUR-IS-1", "EUR-NO-
 disk_gb = 40
 max_job_hours = 2
 outputs = ["experiments/results", "site/experiments/figures"]
-budget_usd = 8                                             # of the 10 USD prepaid RunPod credit; raise it when the credit is topped up
+budget_usd = 140                                           # of the 150 USD prepaid credit: 10 USD margin for storage and rounding
+approval_fraction = 1.0                                    # owner approval needed past this share of the budget (1.0: none)
