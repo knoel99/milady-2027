@@ -1,0 +1,5 @@
+single-model session, CPU check before the GPU bench, H4
+command: python -m milady.sim.mhd3d bench --n 16 --device cpu --steps 2
+{"n": 16, "mode": "dynamic", "dtype": "float32", "device": "cpu", "n_traj": 1, "seconds_per_step": 0.00234861199999159, "threads": 4}
+dtype float64
+{"n": 16, "mode": "dynamic", "dtype": "float64", "device": "cpu", "n_traj": 1, "seconds_per_step": 0.003325569499907033, "threads": 4}
