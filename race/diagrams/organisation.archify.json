@@ -1,0 +1,311 @@
+{
+ "schema_version": 2,
+ "diagram_type": "workflow",
+ "meta": {
+  "title": "Course MilaDy : 9 fournisseurs, 1 semaine",
+  "locale": "fr",
+  "quality_profile": "showcase",
+  "output": ".archify/workflow-campagne-20261112/campagne.html"
+ },
+ "lanes": [
+  {
+   "id": "owner",
+   "label": "Vous (propriétaire)"
+  },
+  {
+   "id": "judge",
+   "label": "Lanceur et juge (main)"
+  },
+  {
+   "id": "teams",
+   "label": "9 équipes (une branche chacune)"
+  },
+  {
+   "id": "shared",
+   "label": "Services communs"
+  }
+ ],
+ "phases": [
+  {
+   "id": "setup",
+   "label": "Préparation, jours 0-1",
+   "fromCol": 0,
+   "toCol": 1
+  },
+  {
+   "id": "race",
+   "label": "Course, jours 1-7",
+   "fromCol": 2,
+   "toCol": 4,
+   "variant": "emphasis"
+  },
+  {
+   "id": "judging",
+   "label": "Jugement",
+   "fromCol": 5,
+   "toCol": 5,
+   "variant": "security"
+  }
+ ],
+ "groups": [
+  {
+   "id": "cycle",
+   "label": "Cycle d'hypothèse",
+   "lane": "teams",
+   "fromCol": 2,
+   "toCol": 3,
+   "variant": "emphasis"
+  }
+ ],
+ "mainPath": [
+  "brief",
+  "launch",
+  "preflight",
+  "objectives",
+  "lock",
+  "hypothesis",
+  "roles",
+  "stop",
+  "judging",
+  "arbitration"
+ ],
+ "nodes": [
+  {
+   "id": "brief",
+   "lane": "owner",
+   "col": 0,
+   "type": "external",
+   "icon": "person",
+   "label": "Énoncé + budgets",
+   "sublabel": "200 $ API, quota CPU",
+   "tag": "7 jours"
+  },
+  {
+   "id": "arbitration",
+   "lane": "owner",
+   "col": 5,
+   "type": "external",
+   "icon": "flag",
+   "label": "Arbitrage final",
+   "sublabel": "3 meilleures affirmations"
+  },
+  {
+   "id": "launch",
+   "lane": "judge",
+   "col": 0,
+   "type": "cloud",
+   "label": "Lancer 9 VM",
+   "sublabel": "tag race-start",
+   "tag": "même image"
+  },
+  {
+   "id": "preflight",
+   "lane": "judge",
+   "col": 1,
+   "type": "security",
+   "label": "Preflight + examen",
+   "sublabel": "modèle × effort, autonomie"
+  },
+  {
+   "id": "daily",
+   "lane": "judge",
+   "col": 3,
+   "type": "backend",
+   "icon": "clock",
+   "label": "Mesure quotidienne",
+   "sublabel": "avancement, RAF, $ dépensés"
+  },
+  {
+   "id": "judging",
+   "lane": "judge",
+   "col": 5,
+   "type": "security",
+   "label": "Jugement",
+   "sublabel": "seuils, ré-exécution",
+   "tag": "jury croisé à l'aveugle"
+  },
+  {
+   "id": "objectives",
+   "lane": "teams",
+   "col": 1,
+   "type": "backend",
+   "label": "Chiffrer objectifs",
+   "sublabel": "métrique, cible, commande"
+  },
+  {
+   "id": "hypothesis",
+   "lane": "teams",
+   "col": 2,
+   "type": "backend",
+   "label": "Hypothèse",
+   "sublabel": "critère avant calcul",
+   "tag": "--quick puis complet"
+  },
+  {
+   "id": "roles",
+   "lane": "teams",
+   "col": 3,
+   "type": "backend",
+   "label": "Appels de rôles",
+   "sublabel": "call_model / run_role"
+  },
+  {
+   "id": "stop",
+   "lane": "teams",
+   "col": 4,
+   "type": "messagebus",
+   "icon": "stop",
+   "label": "Arrêt + commit",
+   "sublabel": "budget épuisé ou J7"
+  },
+  {
+   "id": "baseline",
+   "lane": "shared",
+   "col": 1,
+   "type": "database",
+   "label": "Résultats E1-E3",
+   "sublabel": "digest, jamais relancés"
+  },
+  {
+   "id": "broker",
+   "lane": "shared",
+   "col": 2,
+   "type": "cloud",
+   "label": "Courtier de calcul",
+   "sublabel": "quota + cache des runs",
+   "tag": "même code = gratuit"
+  },
+  {
+   "id": "ledger",
+   "lane": "shared",
+   "col": 3,
+   "type": "database",
+   "label": "Journal des appels",
+   "sublabel": "modèle, effort, tokens"
+  },
+  {
+   "id": "lock",
+   "lane": "judge",
+   "col": 2,
+   "type": "security",
+   "label": "Verrouillage",
+   "sublabel": "objectifs gelés (sha256)",
+   "tag": "validé par vous"
+  }
+ ],
+ "edges": [
+  {
+   "id": "e-brief-launch",
+   "from": "brief",
+   "to": "launch",
+   "label": "clés plafonnées"
+  },
+  {
+   "id": "e-launch-pre",
+   "from": "launch",
+   "to": "preflight",
+   "label": "par équipe"
+  },
+  {
+   "id": "e-pre-obj",
+   "from": "preflight",
+   "to": "objectives",
+   "label": "réussi",
+   "variant": "emphasis"
+  },
+  {
+   "id": "e-base-obj",
+   "from": "baseline",
+   "to": "objectives",
+   "label": "valeurs de départ",
+   "variant": "dashed"
+  },
+  {
+   "id": "e-obj-lock",
+   "from": "objectives",
+   "to": "lock",
+   "label": "proposés"
+  },
+  {
+   "id": "e-lock-hyp",
+   "from": "lock",
+   "to": "hypothesis",
+   "label": "gelés",
+   "variant": "emphasis"
+  },
+  {
+   "id": "e-hyp-broker",
+   "from": "hypothesis",
+   "to": "broker",
+   "label": "runs"
+  },
+  {
+   "id": "e-hyp-roles",
+   "from": "hypothesis",
+   "to": "roles",
+   "label": "vérifier"
+  },
+  {
+   "id": "e-roles-ledger",
+   "from": "roles",
+   "to": "ledger",
+   "label": "journalisé"
+  },
+  {
+   "id": "e-roles-stop",
+   "from": "roles",
+   "to": "stop",
+   "label": "verdicts"
+  },
+  {
+   "id": "e-roles-daily",
+   "from": "roles",
+   "to": "daily",
+   "label": "branche du jour",
+   "variant": "dashed"
+  },
+  {
+   "id": "e-stop-judge",
+   "from": "stop",
+   "to": "judging",
+   "label": "branche finale",
+   "variant": "emphasis"
+  },
+  {
+   "id": "e-judge-arb",
+   "from": "judging",
+   "to": "arbitration",
+   "label": "classement + RAF",
+   "variant": "emphasis"
+  }
+ ],
+ "cards": [
+  {
+   "dot": "cyan",
+   "title": "Budget",
+   "items": [
+    "200 $ d'API par fournisseur, plafond réglé dans la console",
+    "Quota CPU Scaleway égal, appliqué par le courtier",
+    "Résultats E1-E3 fournis : les relancer ne rapporte rien"
+   ]
+  },
+  {
+   "dot": "emerald",
+   "title": "Mesure de l'avancement",
+   "items": [
+    "Chaque équipe chiffre ses objectifs au jour 1 : métrique, départ, cible, commande",
+    "Avancement = (mesure − départ) / (cible − départ), recalculé par le juge depuis main",
+    "RAF = objectifs non atteints et écart restant"
+   ]
+  },
+  {
+   "dot": "rose",
+   "title": "Ce qui compte",
+   "items": [
+    "Seuls les résultats reproduits par le juge comptent",
+    "Réfuter l'existant rapporte autant qu'un résultat nouveau",
+    "Appel de rôle hors modèle ou effort prescrit : pénalité"
+   ]
+  }
+ ]
+}

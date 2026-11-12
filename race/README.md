@@ -4,6 +4,8 @@ Nine teams, one per provider, each running its provider's recommended coding har
 
 ## How the week is organised
 
+Interactive versions: [`diagrams/organisation.html`](diagrams/organisation.html) (the week) and [`diagrams/isolation.html`](diagrams/isolation.html) (isolation of one team, see [`ISOLATION.md`](ISOLATION.md)), rendered with [archify](https://github.com/tt-a1i/archify); download and open them in a browser.
+
 ```mermaid
 flowchart LR
   subgraph owner["You (owner)"]
@@ -87,6 +89,7 @@ flowchart LR
 
 - **Not run end to end yet.** The tools are tested locally against a fake API server and a fake cloud (`tests/test_call_model.py`, `tests/test_race.py`). The harness install commands, headless flags and API base URLs come from the providers' documentation read on 2026-11-12; the pilot (step 5) is where they are confirmed.
 - **Spend of the main session.** Role calls are in the ledger; the main session's own API calls are not. The provider's spending cap is the only hard limit; the launcher stops a team after three short failures in a row, which is what a reached cap looks like.
+- **Isolation is designed, not built yet.** [`ISOLATION.md`](ISOLATION.md) compares the sandbox options (NVIDIA OpenShell, Docker Sandboxes, Anthropic sandbox-runtime, gVisor, Kata, Firecracker, hosted services) and recommends three layers: one VM per team on a private network, a gateway VM that alone holds the keys (egress allowlist, API proxy that injects keys and audits every call, broker), and the agent in a rootless Podman container under gVisor. The current launcher implements only the first layer.
 - **Plain HTTP.** Team VMs, job VMs and the broker talk over plain HTTP with secret tokens and random paths. Put them in one Scaleway private network, or behind a TLS proxy, if that is not acceptable.
 - **Untrusted code.** Measurement commands and job commands are written by the teams' agents: run `race_progress.py` on a throwaway machine, never where keys live.
 - **Fairness of targets.** Each team sets its own targets; the common objectives are therefore also compared across teams on their raw values, not only on progress.

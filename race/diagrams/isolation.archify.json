@@ -1,0 +1,38 @@
+{
+  "schema_version": 1,
+  "diagram_type": "architecture",
+  "meta": {
+    "title": "Isolation d'une équipe de la course",
+    "locale": "fr",
+    "quality_profile": "showcase",
+    "output": ".archify/architecture-isolation-20261112/isolation.html"
+  },
+  "components": [
+    { "id": "agent", "type": "backend", "label": "Harnais + agent", "sublabel": "Podman sans root + gVisor", "tag": "clé factice", "pos": [60, 230], "size": [190, 64] },
+    { "id": "workspace", "type": "database", "label": "Dépôt race/<équipe>", "sublabel": "seul volume monté", "pos": [60, 400], "size": [190, 60] },
+    { "id": "injector", "type": "security", "label": "Proxy d'API", "sublabel": "injecte la vraie clé, journalise", "tag": "modèle, effort, $", "pos": [360, 230], "size": [210, 64] },
+    { "id": "providers", "type": "external", "label": "API du fournisseur", "sublabel": "plafond 200 $ en console", "pos": [690, 230], "size": [190, 60] },
+    { "id": "gateway", "type": "security", "label": "Proxy de sortie", "sublabel": "liste blanche de domaines", "pos": [360, 60], "size": [210, 60] },
+    { "id": "internet", "type": "external", "label": "PyPI, npm, GitHub, arXiv", "sublabel": "lecture seule", "pos": [690, 60], "size": [190, 60] },
+    { "id": "broker", "type": "cloud", "label": "Courtier de calcul", "sublabel": "quota + cache des runs", "pos": [360, 400], "size": [210, 60] },
+    { "id": "jobvm", "type": "cloud", "label": "VM de calcul", "sublabel": "même réseau privé, jetable", "pos": [690, 400], "size": [190, 60] }
+  ],
+  "boundaries": [
+    { "kind": "security-group", "label": "VM d'équipe : sans IP publique, sortie vers la passerelle seulement", "wraps": ["agent", "workspace"] },
+    { "kind": "region", "label": "VM passerelle : seule à détenir les clés", "wraps": ["gateway", "injector", "broker"] }
+  ],
+  "connections": [
+    { "id": "api-call", "from": "agent", "to": "injector", "label": "appel API", "variant": "emphasis" },
+    { "id": "api-forward", "from": "injector", "to": "providers", "label": "vraie clé", "variant": "security" },
+    { "id": "web", "from": "agent", "to": "gateway", "label": "HTTPS_PROXY", "variant": "dashed" },
+    { "id": "web-out", "from": "gateway", "to": "internet", "label": "autorisé" },
+    { "id": "mount", "from": "agent", "to": "workspace", "label": "lit, écrit" },
+    { "id": "jobs", "from": "workspace", "to": "broker", "label": "archive du code" },
+    { "id": "run", "from": "broker", "to": "jobvm", "label": "lance, collecte" }
+  ],
+  "cards": [
+    { "dot": "cyan", "title": "Trois couches", "items": ["Une VM par équipe : la frontière principale, celle de l'hyperviseur", "Dans la VM : l'agent dans un conteneur Podman sans root, sous gVisor, avec limites CPU et mémoire", "Hors de la VM : une passerelle qui filtre les sorties et détient les clés"] },
+    { "dot": "emerald", "title": "Ce que la passerelle apporte", "items": ["L'agent ne voit jamais sa vraie clé", "Chaque appel API, session principale comprise, est journalisé : modèle, effort, coût", "Plafond de dépense par équipe appliqué au proxy, en plus de la console"] },
+    { "dot": "rose", "title": "À vérifier au pilote", "items": ["/dev/kvm sur POP2 (Docker Sandboxes, Kata, Firecracker en dépendent)", "Antigravity et Grok Build acceptent-ils une URL d'API personnalisée ?", "Aucun harnais ne contourne HTTPS_PROXY (NODE_USE_ENV_PROXY=1)"] }
+  ]
+}
