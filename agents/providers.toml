@@ -1,0 +1,31 @@
+# Maps the provider-neutral fields of agents/roles/*.md to each tool's agent format.
+# tools/sync_agents.py reads this file. Add a section per provider when it is used;
+# fill model names from that provider's current documentation, never from memory.
+
+[claude]
+output_dir = ".claude/agents"
+format = "claude-code"
+
+[claude.tier]
+frontier = "fable"
+standard = "sonnet"
+light = "haiku"
+
+[claude.reasoning]
+low = "low"
+medium = "medium"
+high = "high"
+max = "max"
+
+[claude.tools]
+base = ["Read", "Grep", "Glob"]
+shell = ["Bash"]
+web = ["WebSearch", "WebFetch"]
+write = ["Write", "Edit", "NotebookEdit"]
+
+# Example of a second provider, to be completed by the user:
+# [openai]
+# output_dir = "..."
+# format = "..."
+# [openai.tier]
+# frontier = "..."

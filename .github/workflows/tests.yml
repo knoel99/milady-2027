@@ -2,6 +2,7 @@
 #
 # Installs the pinned CPU lock (infra/env/requirements.txt), as `make setup` does, then runs the
 # fast tests (`make test`: pytest -m "not slow") and ruff with the rules of pyproject.toml.
+# Also checks that the generated agent files match agents/roles/ (tools/sync_agents.py --check).
 # The site is built separately by pages.yml.
 name: tests
 
@@ -29,6 +30,9 @@ jobs:
           python-version: "3.12"
           cache: pip
           cache-dependency-path: infra/env/requirements.txt
+
+      - name: Agent files in sync with agents/roles
+        run: python tools/sync_agents.py --check
 
       - name: Install the pinned dependencies
         run: |
