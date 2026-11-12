@@ -14,6 +14,10 @@ The pilot runs the race with a single team before the nine-provider race: one Cl
 | Budgets | GPU: 140 USD of the 150 USD prepaid RunPod credit, all usable (`race/config.toml` `[gpu]` `budget_usd`; 10 USD margin for storage and rounding). Claude: the plan's usage limit; `tools/usage_report.py` gives the API-equivalent cost |
 | Duration | one week from the start, or until a budget is spent |
 
+## Deliverables
+
+[`DELIVERABLES.md`](DELIVERABLES.md): an internship report as the offer asks, in HTML on the site and as a classic LaTeX PDF, with many figures (schematics drawn with the `schematic-figure` skill, architecture and workflow diagrams with Archify; `bash tools/install_skills.sh` installs both), and an explorer page to look at and play with the results, all under `site/teams/<team>/`. Build them as the work goes; `python3 tools/check_deliverables.py --team <team>` must pass before the final report.
+
 ## Results and data storage
 
 - `tools/runpod_job.py` brings each job's outputs back into this checkout (default `experiments/results` and `site/experiments/figures`, or the paths given with `--outputs`) with the job log in `research/gpu-logs/`. Commit and push them right after the job.

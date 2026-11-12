@@ -33,6 +33,14 @@ jobs:
           sudo tar -xzf /tmp/quarto.tgz -C /opt
           echo "/opt/quarto-1.7.32/bin" >> "$GITHUB_PATH"
 
+      - name: LaTeX, for the pages that declare a PDF (race/DELIVERABLES.md)
+        run: |
+          if grep -rlqE --include=index.qmd '^  pdf:' site; then
+            sudo apt-get update -qq
+            sudo apt-get install -y -qq --no-install-recommends texlive-latex-recommended texlive-latex-extra \
+              texlive-fonts-recommended texlive-xetex lmodern
+          fi
+
       - name: Render all pages
         run: python3 tools/render.py --all
 
