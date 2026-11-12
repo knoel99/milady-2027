@@ -1,0 +1,72 @@
+# Cursor team objectives. Targets were chosen before the float64 bench and
+# before any H5 growth-rate number. C1-C5 stay at baseline "none" until a 3D
+# generator writes experiments/results/cursor_metrics.json.
+
+team = "cursor"
+
+[[objective]]
+id = "C1-3d-generator"
+metric = "energy distance between generated and reference 3D fields on held-out parameter values, divided by the energy distance between two reference subsamples of the same size (noise floor); mean over held-out values and over 5 seeds"
+direction = "lower"
+target = 1.2
+baseline = "none"
+command = "python3 experiments/cursor_objectives.py --metric c1"
+note = "No 3D generator on this branch. The command prints a sentinel until cursor_metrics.json exists."
+
+[[objective]]
+id = "C2-divergence"
+metric = "relative divergence ||div B|| / ||grad B|| of generated 3D magnetic fields on held-out parameter values, maximum over samples"
+direction = "lower"
+target = 0.001
+baseline = "none"
+command = "python3 experiments/cursor_objectives.py --metric c2"
+
+[[objective]]
+id = "C3-energy-balance"
+metric = "relative residual of the mean energy balance of the generated law (C4 class of docs/specs/theory-brief.md) on held-out parameter values, mean over 5 seeds"
+direction = "lower"
+target = 0.05
+baseline = "none"
+command = "python3 experiments/cursor_objectives.py --metric c3"
+
+[[objective]]
+id = "C4-spectra-helicity"
+metric = "relative L2 error of the shell-averaged magnetic energy spectrum plus relative error of the mean magnetic helicity, generated against reference, on held-out parameter values, mean over 5 seeds"
+direction = "lower"
+target = 0.1
+baseline = "none"
+command = "python3 experiments/cursor_objectives.py --metric c4"
+
+[[objective]]
+id = "C5-topology"
+metric = "relative error of the magnetic null-point count (Haynes and Parnell 2007, docs/specs/sources/data-metrics.md) of generated 3D fields against the reference, on held-out parameter values"
+direction = "lower"
+target = 0.1
+baseline = "none"
+command = "python3 experiments/cursor_objectives.py --metric c5"
+
+[[objective]]
+id = "C6-comparative-study"
+metric = "number of pre-registered hypotheses of research/hypotheses.json comparing constraint mechanisms or model families, with 5 seeds and an encadrant verdict CONFIRMED or REFUTED"
+direction = "higher"
+target = 4
+baseline = 0
+command = "python3 experiments/cursor_objectives.py --metric c6"
+
+[[objective]]
+id = "C7-toolbox"
+metric = "number of new models or constraint mechanisms exposed in src/milady with at least one test each, passing make test"
+direction = "higher"
+target = 2
+baseline = 0
+command = "python3 experiments/cursor_objectives.py --metric c7"
+
+[[objective]]
+id = "T1-solver-step"
+offer = "3D fields that can serve as input for reduced-order models or data assimilation frameworks"
+metric = "seconds per step of milady.sim.mhd3d at n = 128, float32, dynamic mode, one GPU run, from the committed bench log"
+direction = "lower"
+target = 0.05
+baseline = "none"
+command = "python3 experiments/cursor_objectives.py --metric t1"
+note = "Target 0.05 s/step is a wall-clock budget (50 steps under 2.5 s). It is not set equal to the measured float32 value."
