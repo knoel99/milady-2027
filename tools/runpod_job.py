@@ -142,6 +142,11 @@ def run(args, mcp: MCP | None = None, sleep=time.sleep) -> int:
     command = " ".join(args.command[1:] if args.command[:1] == ["--"] else args.command)
     if not command:
         sys.exit("give the command after --")
+    budget = cfg.get("budget_usd")
+    spent = spend()["usd"]
+    if budget and spent >= 0.8 * budget and not args.over_budget_approved:
+        sys.exit(f"GPU spend ${spent:.2f} is at or above 80 % of the ${budget} budget: no new job without the "
+                 "owner's approval (then pass --over-budget-approved)")
     sha = pushed_commit(args.ref)
     gpus = [g.strip() for g in (args.gpu or ",".join(cfg.get("fallback", []))).split(",") if g.strip()]
     outputs = args.outputs or cfg.get("outputs", ["experiments/results"])
@@ -159,6 +164,11 @@ def run(args, mcp: MCP | None = None, sleep=time.sleep) -> int:
             continue
         if g.get("availability") == "NONE":
             print(f"skip {gid}: no stock", file=sys.stderr)
+            continue
+        worst = hours * float(g["price"].get("secure") or 0)
+        if budget and spent + worst > budget and not args.over_budget_approved:
+            print(f"skip {gid}: up to ${worst:.2f} would exceed the ${budget} budget (${spent:.2f} spent)",
+                  file=sys.stderr)
             continue
         body = {"name": f"{PREFIX}{token[:8]}", "cloud": "SECURE", "image": cfg.get("image"),
                 "gpu": {"id": gid, "count": 1, "minCudaVersion": cfg.get("min_cuda", "12.8")},
@@ -182,7 +192,15 @@ def run(args, mcp: MCP | None = None, sleep=time.sleep) -> int:
     if not pod:
         print("no GPU could be rented: nothing billed", file=sys.stderr)
         return 1
-    pid = pod.get("id") or pod.get("pod", {}).get("id")
+    pid = pod.get("id") or (pod.get("pod") or {}).get("id") if isinstance(pod, dict) else None
+    if not pid:  # unknown response shape: find the pod by its unique name, delete it, stop
+        name = f"{PREFIX}{token[:8]}"
+        found = mcp.call("list-pods", {})
+        for p in (found.get("pods", []) if isinstance(found, dict) else found):
+            if p.get("name") == name:
+                mcp.call("delete-pod", {"id": p["id"]})
+                print(f"deleted pod {p['id']}", file=sys.stderr)
+        sys.exit(f"create-pod answered without a pod id ({str(pod)[:200]}); pod {name} looked up and deleted")
     price = float(gpu["price"].get("secure") or 0)
     t0 = time.time()
     print(f"pod {pid} on {gpu['id']} at ${price}/h; limit {hours} h; commit {sha[:12]}", file=sys.stderr)
@@ -245,6 +263,7 @@ def main() -> int:
     r.add_argument("--ref", default="HEAD", help="commit to run; must be pushed")
     r.add_argument("--outputs", nargs="*", help="paths to bring back (default: [gpu].outputs)")
     r.add_argument("--log", default=str(ROOT / "research" / "gpu-logs" / "last-job.log"))
+    r.add_argument("--over-budget-approved", action="store_true", help="the owner approved spending past the budget")
     r.add_argument("command", nargs=argparse.REMAINDER)
     sub.add_parser("prices")
     sub.add_parser("spend")

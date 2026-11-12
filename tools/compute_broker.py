@@ -78,14 +78,7 @@ class Scaleway:
         self.s, self.zone = scaleway, zone
 
     def create(self, name: str, user_data: str, vm_type: str) -> str:
-        s, z = self.s, self.zone
-        body = {"name": name, "commercial_type": vm_type, "image": s.image_id(z, vm_type),
-                "project": s.project_id(), "tags": [s.TAG, "race"], "dynamic_ip_required": True,
-                "volumes": {"0": {"size": 40 * 10**9, "volume_type": "sbs_volume"}}}
-        sid = s.call("POST", f"{s.inst(z)}/servers", body)["server"]["id"]
-        s.call("PATCH", f"{s.inst(z)}/servers/{sid}/user_data/cloud-init", user_data, "text/plain")
-        s.call("POST", f"{s.inst(z)}/servers/{sid}/action", {"action": "poweron"})
-        return sid
+        return self.s.create_server(name, user_data, vm_type, self.zone, tags=("race",))
 
     def ip(self, sid: str) -> str | None:
         srv = self.s.call("GET", f"{self.s.inst(self.zone)}/servers/{sid}")["server"]
@@ -141,8 +134,11 @@ class Broker:
             job = {"id": jid, "team": team, "key": key, "command": command, "outputs": outputs,
                    "vm_type": vm_type, "ncpus": NCPUS.get(vm_type, 16), "hours": hours,
                    "submitted": time.time()}
+            twin = next((j for j in self.db["jobs"].values() if j["key"] == key and j["state"] == "running"), None)
             if (self.dir / "cache" / f"{key}.tar.gz").exists():
                 job.update(state="done", cached=True, charged=0.0)
+            elif twin:  # the same run is already computing: wait for it, free
+                job.update(state="waiting", cached=True, charged=0.0, twin=twin["id"])
             else:
                 charged, reserved = self.used(team)
                 need = job["ncpus"] * hours
@@ -170,6 +166,12 @@ class Broker:
 
     def poll(self) -> None:
         """Collect finished jobs, delete their VMs and charge the vCPU-hours used."""
+        for job in [j for j in self.db["jobs"].values() if j["state"] == "waiting"]:
+            twin = self.db["jobs"].get(job["twin"], {})
+            if twin.get("state") in ("done", "failed"):
+                with self.lock:
+                    job["state"] = twin["state"]
+                    self.save()
         for job in [j for j in self.db["jobs"].values() if j["state"] == "running"]:
             ip = self.cloud.ip(job["server"])
             status = ""

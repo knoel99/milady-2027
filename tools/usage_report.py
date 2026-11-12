@@ -12,6 +12,7 @@ research/compute-ledger.jsonl and the role calls of research/model-calls.jsonl.
 
     python3 tools/usage_report.py                         # markdown to stdout
     python3 tools/usage_report.py --write research/usage  # also writes latest.md and latest.json
+    python3 tools/usage_report.py --all                   # every session of the project, not only the latest
     python3 tools/usage_report.py --projects DIR          # another transcripts directory
 
 Standard library only.
@@ -100,12 +101,23 @@ def role_expectations() -> dict[str, tuple[str, str]]:
     return out
 
 
-def collect(projects: Path) -> dict:
+def off_spec(rs: list[dict], model: str, effort: str) -> int:
+    """Number of responses served by another model or at another effort than prescribed."""
+    return sum(1 for r in rs if r["model"] != model or (r["effort"] and r["effort"] != effort))
+
+
+def collect(projects: Path, session: str | None = "latest") -> dict:
+    """session: a session id, "latest" (most recently written transcript) or None for all sessions."""
     cfg = tomllib.loads(CONFIG.read_text(encoding="utf-8"))
     pricing = cfg.get("pricing", {})
     expected = role_expectations()
     sessions, agents = [], []
-    for f in sorted(projects.glob("*.jsonl")):
+    files = sorted(projects.glob("*.jsonl"), key=lambda f: f.stat().st_mtime)
+    if session == "latest":
+        files = files[-1:]
+    elif session:
+        files = [f for f in files if f.stem == session]
+    for f in files:
         sessions.append({"id": f.stem, "responses": responses(read_jsonl(f))})
         for sub in sorted((projects / f.stem / "subagents").glob("agent-*.jsonl")):
             meta_path = sub.with_suffix("").with_suffix(".meta.json")
@@ -138,7 +150,8 @@ def collect(projects: Path) -> dict:
                "efforts": efforts, "calls": len(rs), "output": sum(r["output"] for r in rs), "usd": round(usd, 4)}
         if a["type"] in expected:
             want_model, want_effort = expected[a["type"]]
-            ok = models == [want_model] and (not efforts or efforts == [want_effort])
+            row["off_spec"] = off_spec(rs, want_model, want_effort)
+            ok = row["off_spec"] == 0
             row["expected"] = f"{want_model} / {want_effort}"
             row["conforms"] = ok
             if not ok:
@@ -153,7 +166,8 @@ def collect(projects: Path) -> dict:
     main_models = sorted({r["model"] for r in main_rs if r["model"]})
     main_efforts = sorted({r["effort"] for r in main_rs if r["effort"]})
     main = {"models": main_models, "efforts": main_efforts, "expected": f"{want_main[0]} / {want_main[1]}",
-            "conforms": main_models == [want_main[0]] and main_efforts == [want_main[1]]}
+            "responses": len(main_rs), "off_spec": off_spec(main_rs, *want_main)}
+    main["conforms"] = bool(main_rs) and main["off_spec"] == 0
     start, end = (min(times), max(times)) if times else (None, None)
     hours = None
     if start:
@@ -181,7 +195,8 @@ def markdown(r: dict) -> str:
     out = [f"# Usage report ({r['generated']})", "",
            f"Sessions: {r['sessions']}; first response {r['first']}; last {r['last']}; span {r['span_hours']} h.",
            f"Main session: models {r['main_session']['models']}, efforts {r['main_session']['efforts']}; expected "
-           f"{r['main_session']['expected']}: " + ("conforms." if r["main_session"]["conforms"] else "**NOT CONFORMING**."),
+           f"{r['main_session']['expected']}: " + ("conforms." if r["main_session"]["conforms"] else
+           f"**NOT CONFORMING** ({r['main_session']['off_spec']} of {r['main_session']['responses']} responses off spec)."),
            f"API-equivalent cost of the Claude calls: **${r['total_usd']}** (prices of race/config.toml [pricing]).",
            f"GPU: {r['gpu']['jobs']} job(s), {r['gpu']['hours']} h, **${r['gpu']['usd']}**"
            + (f" of a ${r['gpu']['budget_usd']} budget." if r["gpu"].get("budget_usd") else "."), "",
@@ -195,7 +210,7 @@ def markdown(r: dict) -> str:
     if s["calls"]:
         out += ["| type | models | efforts | expected | API calls | output | cost | description |", "|---|---|---|---|---|---|---|---|"]
         for a in s["calls"]:
-            flag = "" if a.get("conforms", True) else " **NOT CONFORMING**"
+            flag = "" if a.get("conforms", True) else f" **NOT CONFORMING** ({a['off_spec']}/{a['calls']} off spec)"
             out.append(f"| {a['type']} | {', '.join(a['models'])} | {', '.join(a['efforts'])} | "
                        f"{a.get('expected', '–')}{flag} | {a['calls']} | {a['output']:,} | ${a['usd']} | {a['description']} |")
     out += ["", f"Role calls through tools/call_model.py or run_role.py: {r['role_calls_via_tools']}.",
@@ -207,11 +222,14 @@ def main() -> int:
     ap = argparse.ArgumentParser(description=__doc__, formatter_class=argparse.RawDescriptionHelpFormatter)
     ap.add_argument("--projects", type=Path, default=None)
     ap.add_argument("--write", type=Path, help="directory for latest.md and latest.json")
+    g = ap.add_mutually_exclusive_group()
+    g.add_argument("--session", help="one session id (default: the most recently written transcript)")
+    g.add_argument("--all", action="store_true", help="every session of the project")
     a = ap.parse_args()
     projects = a.projects or default_projects()
     if not projects.exists():
         sys.exit(f"no transcripts in {projects}")
-    r = collect(projects)
+    r = collect(projects, None if a.all else (a.session or "latest"))
     md = markdown(r)
     if a.write:
         a.write.mkdir(parents=True, exist_ok=True)

@@ -144,7 +144,8 @@ def test_broker_quota_cache_and_charge(broker):
     script = broker.cloud.created[0][1]
     assert "__" not in script.replace("__pycache__", "")  # every placeholder filled
     assert "http://broker:8080/archives/" in script
-    assert "error" in broker.submit("openai", req)  # 32 reserved + 32 > 40 vCPU-hours
+    assert broker.submit("openai", req)["state"] == "waiting"  # identical run in progress: attached, free
+    assert "error" in broker.submit("openai", dict(req, command="python3 experiments/e.py --seed 1"))  # 32 + 32 > 40
     assert "error" in broker.submit("openai", dict(req, hours=5))  # over max_job_hours
     broker.cloud.status = "DONE rc=0 results.tar.gz ready"
     broker.poll()
@@ -174,8 +175,33 @@ def test_launch_scripts_for_every_team(monkeypatch):
         assert not [w for w in ud.split() if "__" in w and "__TEAM__" not in w and w.isupper()]
         env_b64 = ud.split('" | base64 -d > /etc/race.env')[0].rsplit('echo "', 1)[1]
         env = base64.b64decode(env_b64).decode()
-        assert f"MILADY_PROVIDER=\"{team}\"" in env and f"dummy-{team}" in env
+        assert f"MILADY_PROVIDER={team}" in env and f"dummy-{team}" in env
         ms = cfg["main_session"]
         cmd, *_ = race_launch.build_command(team, ms["tier"], ms["reasoning"], 10, "P")
         assert cmd[0] in {"claude", "codex", "agy", "grok", "vibe", "kimi", "qwen", "dsh"} and "P" in cmd
     assert "| claude |" in race_launch.plan()
+
+
+def test_env_file_survives_bash(monkeypatch, tmp_path):
+    key = "sk-$HOME`id`\\'\"x"
+    monkeypatch.setenv("OPENAI_API_KEY", key)
+    ud = race_launch.user_data("openai", "http://b", "tok", "abc")
+    env_b64 = ud.split('" | base64 -d > /etc/race.env')[0].rsplit('echo "', 1)[1]
+    f = tmp_path / "race.env"
+    f.write_bytes(base64.b64decode(env_b64))
+    out = subprocess.run(["bash", "-c", f'set -a; . {f}; printf %s "$OPENAI_API_KEY"'], capture_output=True,
+                         text=True, check=True).stdout
+    assert out == key
+
+
+def test_identical_concurrent_run_waits_for_its_twin(broker):
+    req = {"archive": base64.b64encode(archive({"experiments/e.py": "z"})).decode(), "command": "run", "hours": 1}
+    first = broker.submit("openai", req)
+    second = broker.submit("claude", req)
+    assert first["state"] == "running" and second["state"] == "waiting" and second["charged"] == 0
+    assert len(broker.cloud.created) == 1 and broker.used("claude") == (0.0, 0)
+    broker.cloud.status = "DONE rc=0 results.tar.gz ready"
+    broker.poll()
+    broker.poll()
+    assert broker.db["jobs"][second["id"]]["state"] == "done"
+    assert broker.results(broker.db["jobs"][second["id"]]) == b"tarball"

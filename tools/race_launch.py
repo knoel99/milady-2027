@@ -21,6 +21,7 @@ import datetime as dt
 import json
 import os
 import secrets
+import shlex
 import subprocess
 import sys
 import tomllib
@@ -71,7 +72,7 @@ def user_data(team: str, broker_url: str, broker_token: str, token: str) -> str:
     env = {"MILADY_PROVIDER": team, key_var: key, "BROKER_URL": broker_url, "BROKER_TOKEN": broker_token,
            "PATH": "/root/.local/bin:/usr/local/bin:/usr/bin:/bin",
            "IS_SANDBOX": "1"}  # the VM is a throwaway sandbox; some harnesses check it before skipping prompts
-    env_text = "".join(f"{k}={json.dumps(v)}\n" for k, v in env.items())
+    env_text = "".join(f"{k}={shlex.quote(v)}\n" for k, v in env.items())  # sourced by bash: no expansion
     setup = providers[team]["harness"]["setup"]
     script = TEAM_SCRIPT.read_text()
     for k, v in {"__TOKEN__": token, "__TEAM__": team, "__REPO__": cfg["repo"], "__TAG__": cfg["start_tag"],

@@ -95,23 +95,29 @@ def cmd_list(a):
         print(s["id"], s["name"], s["commercial_type"], s["state"], ip, ",".join(s["tags"]))
 
 
+def create_server(name: str, user_data: str, commercial_type: str, zone: str, disk_gb: int = 40,
+                  tags: tuple[str, ...] = ()) -> str:
+    """Create a server with a cloud-init user data script, power it on, return its id."""
+    body = {
+        "name": name,
+        "commercial_type": commercial_type,
+        "image": image_id(zone, commercial_type),
+        "project": project_id(),
+        "tags": [TAG, *tags],
+        "dynamic_ip_required": True,
+        "volumes": {"0": {"size": disk_gb * 10**9, "volume_type": "sbs_volume"}},
+    }
+    sid = call("POST", f"{inst(zone)}/servers", body)["server"]["id"]
+    call("PATCH", f"{inst(zone)}/servers/{sid}/user_data/cloud-init", user_data, "text/plain")
+    call("POST", f"{inst(zone)}/servers/{sid}/action", {"action": "poweron"})
+    return sid
+
+
 def cmd_create(a):
     with open(a.user_data) as f:
         user_data = f.read()
-    body = {
-        "name": a.name,
-        "commercial_type": a.type,
-        "image": image_id(a.zone, a.type),
-        "project": project_id(),
-        "tags": [TAG],
-        "dynamic_ip_required": True,
-        "volumes": {"0": {"size": a.disk * 10**9, "volume_type": "sbs_volume"}},
-    }
-    s = call("POST", f"{inst(a.zone)}/servers", body)["server"]
-    sid = s["id"]
+    sid = create_server(a.name, user_data, a.type, a.zone, a.disk)
     print(f"created  : {sid}")
-    call("PATCH", f"{inst(a.zone)}/servers/{sid}/user_data/cloud-init", user_data, "text/plain")
-    call("POST", f"{inst(a.zone)}/servers/{sid}/action", {"action": "poweron"})
     print("powering on; follow with: status", sid)
 
 

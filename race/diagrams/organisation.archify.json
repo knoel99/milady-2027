@@ -2,46 +2,45 @@
  "schema_version": 2,
  "diagram_type": "workflow",
  "meta": {
-  "title": "Course MilaDy : 9 fournisseurs, 1 semaine",
-  "locale": "fr",
+  "title": "MilaDy race: 9 providers, 1 week",
   "quality_profile": "showcase",
-  "output": ".archify/workflow-campagne-20261112/campagne.html"
+  "output": ".archify/en/organisation.html"
  },
  "lanes": [
   {
    "id": "owner",
-   "label": "Vous (propriétaire)"
+   "label": "You (owner)"
   },
   {
    "id": "judge",
-   "label": "Lanceur et juge (main)"
+   "label": "Launcher and judge (main)"
   },
   {
    "id": "teams",
-   "label": "9 équipes (une branche chacune)"
+   "label": "9 teams (one branch each)"
   },
   {
    "id": "shared",
-   "label": "Services communs"
+   "label": "Shared services"
   }
  ],
  "phases": [
   {
    "id": "setup",
-   "label": "Préparation, jours 0-1",
+   "label": "Setup, days 0-1",
    "fromCol": 0,
    "toCol": 1
   },
   {
    "id": "race",
-   "label": "Course, jours 1-7",
+   "label": "Race, days 1-7",
    "fromCol": 2,
    "toCol": 4,
    "variant": "emphasis"
   },
   {
    "id": "judging",
-   "label": "Jugement",
+   "label": "Judging",
    "fromCol": 5,
    "toCol": 5,
    "variant": "security"
@@ -50,7 +49,7 @@
  "groups": [
   {
    "id": "cycle",
-   "label": "Cycle d'hypothèse",
+   "label": "Hypothesis cycle",
    "lane": "teams",
    "fromCol": 2,
    "toCol": 3,
@@ -76,9 +75,9 @@
    "col": 0,
    "type": "external",
    "icon": "person",
-   "label": "Énoncé + budgets",
-   "sublabel": "200 $ API, quota CPU",
-   "tag": "7 jours"
+   "label": "Brief + budgets",
+   "sublabel": "200 USD API, CPU quota",
+   "tag": "7 days"
   },
   {
    "id": "arbitration",
@@ -86,25 +85,25 @@
    "col": 5,
    "type": "external",
    "icon": "flag",
-   "label": "Arbitrage final",
-   "sublabel": "3 meilleures affirmations"
+   "label": "Final arbitration",
+   "sublabel": "top 3 claims"
   },
   {
    "id": "launch",
    "lane": "judge",
    "col": 0,
    "type": "cloud",
-   "label": "Lancer 9 VM",
+   "label": "Launch 9 VMs",
    "sublabel": "tag race-start",
-   "tag": "même image"
+   "tag": "same image"
   },
   {
    "id": "preflight",
    "lane": "judge",
    "col": 1,
    "type": "security",
-   "label": "Preflight + examen",
-   "sublabel": "modèle × effort, autonomie"
+   "label": "Preflight + exam",
+   "sublabel": "model × effort, autonomy"
   },
   {
    "id": "daily",
@@ -112,41 +111,41 @@
    "col": 3,
    "type": "backend",
    "icon": "clock",
-   "label": "Mesure quotidienne",
-   "sublabel": "avancement, RAF, $ dépensés"
+   "label": "Daily measurement",
+   "sublabel": "progress, remaining work, USD spent"
   },
   {
    "id": "judging",
    "lane": "judge",
    "col": 5,
    "type": "security",
-   "label": "Jugement",
-   "sublabel": "seuils, ré-exécution",
-   "tag": "jury croisé à l'aveugle"
+   "label": "Judging",
+   "sublabel": "gates, re-runs",
+   "tag": "blind cross-provider jury"
   },
   {
    "id": "objectives",
    "lane": "teams",
    "col": 1,
    "type": "backend",
-   "label": "Chiffrer objectifs",
-   "sublabel": "métrique, cible, commande"
+   "label": "Quantify objectives",
+   "sublabel": "metric, target, command"
   },
   {
    "id": "hypothesis",
    "lane": "teams",
    "col": 2,
    "type": "backend",
-   "label": "Hypothèse",
-   "sublabel": "critère avant calcul",
-   "tag": "--quick puis complet"
+   "label": "Hypothesis",
+   "sublabel": "criterion before computing",
+   "tag": "--quick, then full"
   },
   {
    "id": "roles",
    "lane": "teams",
    "col": 3,
    "type": "backend",
-   "label": "Appels de rôles",
+   "label": "Role calls",
    "sublabel": "call_model / run_role"
   },
   {
@@ -155,42 +154,42 @@
    "col": 4,
    "type": "messagebus",
    "icon": "stop",
-   "label": "Arrêt + commit",
-   "sublabel": "budget épuisé ou J7"
+   "label": "Stop + commit",
+   "sublabel": "budget spent or day 7"
   },
   {
    "id": "baseline",
    "lane": "shared",
    "col": 1,
    "type": "database",
-   "label": "Résultats E1-E3",
-   "sublabel": "digest, jamais relancés"
+   "label": "E1-E3 results",
+   "sublabel": "digest, never re-run"
   },
   {
    "id": "broker",
    "lane": "shared",
    "col": 2,
    "type": "cloud",
-   "label": "Courtier de calcul",
-   "sublabel": "quota + cache des runs",
-   "tag": "même code = gratuit"
+   "label": "Compute broker",
+   "sublabel": "quota + run cache",
+   "tag": "same code = free"
   },
   {
    "id": "ledger",
    "lane": "shared",
    "col": 3,
    "type": "database",
-   "label": "Journal des appels",
-   "sublabel": "modèle, effort, tokens"
+   "label": "Call ledger",
+   "sublabel": "model, effort, tokens"
   },
   {
    "id": "lock",
    "lane": "judge",
    "col": 2,
    "type": "security",
-   "label": "Verrouillage",
-   "sublabel": "objectifs gelés (sha256)",
-   "tag": "validé par vous"
+   "label": "Lock",
+   "sublabel": "objectives frozen (sha256)",
+   "tag": "validated by you"
   }
  ],
  "edges": [
@@ -198,58 +197,58 @@
    "id": "e-brief-launch",
    "from": "brief",
    "to": "launch",
-   "label": "clés plafonnées"
+   "label": "capped keys"
   },
   {
    "id": "e-launch-pre",
    "from": "launch",
    "to": "preflight",
-   "label": "par équipe"
+   "label": "per team"
   },
   {
    "id": "e-pre-obj",
    "from": "preflight",
    "to": "objectives",
-   "label": "réussi",
+   "label": "passed",
    "variant": "emphasis"
   },
   {
    "id": "e-base-obj",
    "from": "baseline",
    "to": "objectives",
-   "label": "valeurs de départ",
+   "label": "baselines",
    "variant": "dashed"
   },
   {
    "id": "e-obj-lock",
    "from": "objectives",
    "to": "lock",
-   "label": "proposés"
+   "label": "proposed"
   },
   {
    "id": "e-lock-hyp",
    "from": "lock",
    "to": "hypothesis",
-   "label": "gelés",
+   "label": "frozen",
    "variant": "emphasis"
   },
   {
    "id": "e-hyp-broker",
    "from": "hypothesis",
    "to": "broker",
-   "label": "runs"
+   "label": "jobs"
   },
   {
    "id": "e-hyp-roles",
    "from": "hypothesis",
    "to": "roles",
-   "label": "vérifier"
+   "label": "check"
   },
   {
    "id": "e-roles-ledger",
    "from": "roles",
    "to": "ledger",
-   "label": "journalisé"
+   "label": "logged"
   },
   {
    "id": "e-roles-stop",
@@ -261,21 +260,21 @@
    "id": "e-roles-daily",
    "from": "roles",
    "to": "daily",
-   "label": "branche du jour",
+   "label": "daily branch",
    "variant": "dashed"
   },
   {
    "id": "e-stop-judge",
    "from": "stop",
    "to": "judging",
-   "label": "branche finale",
+   "label": "final branch",
    "variant": "emphasis"
   },
   {
    "id": "e-judge-arb",
    "from": "judging",
    "to": "arbitration",
-   "label": "classement + RAF",
+   "label": "ranking + remaining work",
    "variant": "emphasis"
   }
  ],
@@ -284,27 +283,27 @@
    "dot": "cyan",
    "title": "Budget",
    "items": [
-    "200 $ d'API par fournisseur, plafond réglé dans la console",
-    "Quota CPU Scaleway égal, appliqué par le courtier",
-    "Résultats E1-E3 fournis : les relancer ne rapporte rien"
+    "200 USD of API per provider, capped in the console",
+    "Equal compute quota, enforced by the broker",
+    "E1-E3 results provided: re-running them earns nothing"
    ]
   },
   {
    "dot": "emerald",
-   "title": "Mesure de l'avancement",
+   "title": "Measuring progress",
    "items": [
-    "Chaque équipe chiffre ses objectifs au jour 1 : métrique, départ, cible, commande",
-    "Avancement = (mesure − départ) / (cible − départ), recalculé par le juge depuis main",
-    "RAF = objectifs non atteints et écart restant"
+    "Each team quantifies its objectives on day 1: metric, baseline, target, command",
+    "Progress = (value − baseline) / (target − baseline), recomputed by the judge from main",
+    "Remaining work = objectives not reached and the gap left"
    ]
   },
   {
    "dot": "rose",
-   "title": "Ce qui compte",
+   "title": "What counts",
    "items": [
-    "Seuls les résultats reproduits par le juge comptent",
-    "Réfuter l'existant rapporte autant qu'un résultat nouveau",
-    "Appel de rôle hors modèle ou effort prescrit : pénalité"
+    "Only results the judge reproduces count",
+    "Refuting existing work earns as much as a new result",
+    "A role call off its prescribed model or effort is penalised"
    ]
   }
  ]

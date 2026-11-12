@@ -58,7 +58,8 @@ def job_env(tmp_path, monkeypatch):
 
 
 def args(**kw):
-    base = {"hours": "0.5", "gpu": None, "ref": "HEAD", "outputs": None, "log": "", "command": ["--", "echo", "hi"]}
+    base = {"hours": "0.5", "gpu": None, "ref": "HEAD", "outputs": None, "log": "", "command": ["--", "echo", "hi"],
+            "over_budget_approved": False}
     base.update(kw)
     return argparse.Namespace(**base)
 
@@ -121,7 +122,12 @@ def test_usage_report_counts_costs_and_conformity(tmp_path, monkeypatch):
     (sub / "agent-a1.meta.json").write_text(json.dumps({"agentType": "biblio", "description": "prior art"}))
     (sub / "agent-a2.jsonl").write_text(line("claude-fable-5-2", "s2", "low", 300) + "\n")
     (sub / "agent-a2.meta.json").write_text(json.dumps({"agentType": "encadrant", "description": "check"}))
-    r = usage_report.collect(proj)
+    (proj / "s0.jsonl").write_text(line("claude-opus-5-5", "old", "medium", 9999) + "\n")   # an older session
+    import os
+    os.utime(proj / "s0.jsonl", (1, 1))
+    assert usage_report.collect(proj, None)["by_model"]["claude-opus-5-5"]["output"] == 9999     # --all
+    r = usage_report.collect(proj)                                                               # latest only
+    assert "claude-opus-5-5" not in r["by_model"]
     fable = r["by_model"]["claude-fable-5-2"]
     assert fable["calls"] == 3 and fable["output"] == 1800 and fable["cache_write_1h"] == 100_000
     # main: m1 = 10*8 + 100000*8*2 + 1000*40 ; m2 = 10*8 + 1e6*0.2 + 500*40 ; a2 = 10*8 + 300*40  (per 1e6)
@@ -131,6 +137,36 @@ def test_usage_report_counts_costs_and_conformity(tmp_path, monkeypatch):
     assert r["tool_calls"] == {"Agent": 1, "Bash": 1}
     calls = {a["type"]: a for a in r["subagents"]["calls"]}
     assert calls["biblio"]["conforms"] is True                    # sonnet / medium as prescribed
-    assert calls["encadrant"]["conforms"] is False                # effort low instead of medium
+    assert calls["encadrant"]["conforms"] is False and calls["encadrant"]["off_spec"] == 1   # effort low
     assert r["subagents"]["nonconforming"] == 1
     assert "NOT CONFORMING" in usage_report.markdown(r)
+
+
+def test_budget_is_enforced(job_env, monkeypatch):
+    cfg = dict(runpod_job.config(), budget_usd=3.0)
+    monkeypatch.setattr(runpod_job, "config", lambda: cfg)
+    monkeypatch.setattr(runpod_job, "http_get", lambda url: b"DONE rc=0" if url.endswith("status.txt") else None)
+    monkeypatch.setattr(runpod_job, "spend", lambda: {"usd": 2.5})            # 83 % of 3: refused
+    with pytest.raises(SystemExit, match="80 %"):
+        runpod_job.run(args(), mcp=FakeMCP(), sleep=lambda s: None)
+    monkeypatch.setattr(runpod_job, "spend", lambda: {"usd": 1.0})            # 33 %: allowed, but ...
+    mcp = FakeMCP(fail_first=False)
+    rc = runpod_job.run(args(hours="2", gpu="NVIDIA GeForce RTX 5090,NVIDIA RTX PRO 4500 Blackwell",
+                             log=str(job_env / "j.log")), mcp=mcp, sleep=lambda s: None)
+    rented = [a["body"]["gpu"]["id"] for t, a in mcp.calls if t == "create-pod"]
+    assert rc == 0 and rented == ["NVIDIA RTX PRO 4500 Blackwell"]          # 2 h x $1.19 would pass $3
+
+
+def test_missing_pod_id_is_cleaned_up(job_env, monkeypatch):
+    class Odd(FakeMCP):
+        def call(self, tool, args):
+            if tool == "create-pod":
+                self.name = args["body"]["name"]
+                return {"text": "created"}
+            if tool == "list-pods":
+                return {"pods": [{"id": "podX", "name": self.name}, {"id": "other", "name": "someone-else"}]}
+            return super().call(tool, args)
+    mcp = Odd(fail_first=False)
+    with pytest.raises(SystemExit, match="without a pod id"):
+        runpod_job.run(args(), mcp=mcp, sleep=lambda s: None)
+    assert mcp.deleted == ["podX"]
