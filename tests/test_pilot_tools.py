@@ -61,6 +61,7 @@ def job_env(tmp_path, monkeypatch):
     # A pilot session sets MILADY_GPU_BUDGET_USD. Clear it so a test that
     # sets budget_usd on config() is the budget run() actually uses.
     monkeypatch.delenv("MILADY_GPU_BUDGET_USD", raising=False)
+    monkeypatch.delenv("MILADY_TEAM", raising=False)
     return tmp_path
 
 
@@ -81,6 +82,7 @@ def test_fallback_collect_delete_and_ledger(job_env, monkeypatch):
     assert created[0] == "NVIDIA RTX PRO 4500 Blackwell"            # tried first, no capacity
     assert created[-1] == "NVIDIA GeForce RTX 5090"                 # fallback rented
     body = [a["body"] for t, a in mcp.calls if t == "create-pod"][-1]
+    assert body["name"].startswith("milady-cursor-job-")
     assert body["gpu"]["minCudaVersion"] == "12.8" and body["cloud"] == "SECURE" and "8000/http" in body["ports"]
     assert mcp.deleted == ["pod123"]
     assert (job_env / "experiments/results/pilot_test_output.json").exists()
@@ -335,3 +337,28 @@ def test_parallel_jobs_reserve_budget_and_are_capped(job_env, monkeypatch):
     assert runpod_job.run(args(hours="0.1"), mcp=mcp, sleep=lambda s: None) == 1   # max_parallel reached
     jobs = runpod_job.running_jobs(mcp)
     assert len(jobs) == 2 and jobs[0]["reserved_usd"] == pytest.approx(1.19 * (2.25 - 10 / 60), rel=1e-2)
+
+
+def test_cleanup_spares_other_teams_and_reserves_them(job_env, monkeypatch):
+    """Past-limit Claude and legacy pods stay. The shared reservation still counts the Claude pod."""
+    import datetime as dt
+    assert runpod_job.job_prefix() == "milady-cursor-job-"
+    old = (dt.datetime.now(dt.UTC) - dt.timedelta(hours=5)).isoformat()
+    young = (dt.datetime.now(dt.UTC) - dt.timedelta(minutes=5)).isoformat()
+    env = {"MAX_MIN": "30"}
+    mcp = FakeMCP(fail_first=False)
+    mcp.pods = [
+        {"id": "claude-old", "name": "milady-claude-job-old", "cost": 1.5, "createdAt": old, "env": env},
+        {"id": "claude", "name": "milady-claude-job-x", "cost": 1.5, "createdAt": young, "env": env},
+        {"id": "legacy", "name": "milady-job-x", "cost": 1.0, "createdAt": old, "env": env},
+        {"id": "overdue", "name": "milady-cursor-job-old", "cost": 0.7, "createdAt": old, "env": env},
+        {"id": "live", "name": "milady-cursor-job-live", "cost": 0.7, "createdAt": young, "env": env},
+    ]
+    reserved = {j["name"]: j["reserved_usd"] for j in runpod_job.running_jobs(mcp)}
+    assert "milady-claude-job-x" in reserved and reserved["milady-claude-job-x"] > 0
+    assert "milady-job-x" in reserved and "milady-cursor-job-old" in reserved
+    assert runpod_job.cleanup(mcp) == 0
+    assert mcp.deleted == ["overdue"]
+    mcp.deleted.clear()
+    assert runpod_job.cleanup(mcp, delete_running=True) == 0
+    assert mcp.deleted == ["overdue", "live"]
