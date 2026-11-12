@@ -39,3 +39,5 @@ site/figures/*/figure/data/*.log
 site/figures/*/figure/data/preview.png
 site/figures/*/docs/draft*.png
 experiments/data_e4*/
+experiments/results/*_quick_*
+research/gpu-out/

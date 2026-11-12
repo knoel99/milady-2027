@@ -87,27 +87,39 @@ def eta_of(c: torch.Tensor) -> torch.Tensor:
 class Context:
     """Data, latent spaces and reference statistics shared by all variants."""
 
-    def __init__(self, quick: bool):
+    def __init__(self, quick: bool, need: tuple[str, ...] = ("pot", "pot_sym", "comp"), device: str = "cpu"):
+        """``need``: latent spaces whose training set is built (memory: about 0.3 to 0.5 GB each);
+        ``device``: where the networks, the training sets and the generation live (the evaluation is on CPU)."""
         self.quick = quick
         self.cfg = QUICK if quick else FULL
+        self.dev = torch.device(device)
         self._floors: dict = {}
         self.pot = D.space()
         self.pot_sym = FourierPotentialSpace(D.kcut(), symmetric_b=True, truncation="cube")
         self.comp = C.FourierComponentSpace(D.kcut(), truncation="cube")
-        sim = MHD3D(D.solver_config(ETAS[0], 1, 0))
+        sim = MHD3D(D.solver_config(ETAS[0], 1, 0, dtype="float64"))
         f = (sim.f_phys / sim.forcing_amp).permute(1, 2, 3, 0).numpy()
         self.forcing_hat = self.pot.vector_modes(f).to(torch.complex128)
         assert abs(sim.forcing_amp - AMP) < 1e-12
         self.data = {e: D.load(e, quick) for e in ETAS}
         xs = torch.cat([torch.as_tensor(self.data[e]["x"]) for e in ETA_TRAIN])
-        self.c_train = torch.cat([torch.full((len(self.data[e]["x"]), 1), float(cn(e))) for e in ETA_TRAIN])
+        self.c_train = torch.cat([torch.full((len(self.data[e]["x"]), 1), float(cn(e))) for e in ETA_TRAIN]).to(self.dev)
         self.pot.fit(xs)
         self.pot_sym.fit(xs)
         xc = self.comp.from_hat(self.pot.field_hat(xs))
         self.comp.fit(xc)
-        self.x_pot, self.x_pot_sym, self.x_comp = self.pot.normalize(xs), self.pot_sym.normalize(xs), self.comp.normalize(xc)
-        # reference physical statistics per η (all snapshots)
+        self.x_pot = self.pot.normalize(xs).to(self.dev) if "pot" in need else None
+        self.x_pot_sym = self.pot_sym.normalize(xs).to(self.dev) if "pot_sym" in need else None
+        self.x_comp = self.comp.normalize(xc).to(self.dev) if "comp" in need else None
+        self.n_train = len(xs)
+        del xs, xc
+        # reference physical statistics per η (all snapshots); the raw snapshots are then dropped
         self.ref = {e: self.physics(self.pot.field_hat(torch.as_tensor(self.data[e]["x"])), e) for e in ETAS}
+        if need != ("pot", "pot_sym", "comp"):
+            for d in self.data.values():
+                d.pop("x")
+        # copies of the spaces on the training device (the originals stay on CPU for the evaluation)
+        self.pot_d, self.pot_sym_d, self.comp_d = (copy.deepcopy(s).to(self.dev) for s in (self.pot, self.pot_sym, self.comp))
         pool = np.concatenate([self.ref[e]["features"] for e in ETA_TRAIN])
         self.f_mean, self.f_std = pool.mean(0), pool.std(0) + 1e-9
         ref_file = RESULTS / f"e4_reference{'_quick' if quick else ''}.json"
@@ -122,7 +134,7 @@ class Context:
         return out
 
     def _physics(self, fh: torch.Tensor, eta: float) -> dict:
-        fh = fh.to(torch.complex128)
+        fh = fh.cpu().to(torch.complex128)
         grid = self.pot.to_grid(fh, (N_GRID,) * 3).numpy()
         u, b = grid[:, 0], grid[:, 1]
         feats, _ = M.features(u, b, n_shells=8)
@@ -221,7 +233,7 @@ class Context:
         }
         if nulls and self.ref_json is not None:
             m = min(self.cfg["n_null"], n)
-            b = self.pot.to_grid(fh[:m, 1:2].to(torch.complex128), (NULL_GRID,) * 3)[:, 0].numpy()
+            b = self.pot.to_grid(fh[:m, 1:2].cpu().to(torch.complex128), (NULL_GRID,) * 3)[:, 0].numpy()
             wn = w[:m] / w[:m].sum()
             count = float(wn @ null_count(b))
             ref_count = self.ref_json["values"][f"{eta:.5f}"]["null_count_mean"]
@@ -232,7 +244,7 @@ class Context:
     def restart_drift(self, fh: torch.Tensor, eta: float) -> dict:
         """Relative change of the ensemble-mean energies after advancing ``fh`` by τ with the solver."""
         n = min(self.cfg["n_restart"], len(fh))
-        fh = fh[:n].to(torch.complex128)
+        fh = fh[:n].cpu().to(torch.complex128)
         grid = self.pot.to_grid(fh, (N_GRID,) * 3)                                 # (n, 2, nx, ny, nz, 3)
         sim = MHD3D(D.solver_config(eta, n, seed=0))
         to_hat = lambda f: sim._fft(f.permute(0, 4, 1, 2, 3).to(sim.rdtype)) * sim.mask     # noqa: E731
@@ -346,33 +358,35 @@ def train(field, loss_fn, x: torch.Tensor, c: torch.Tensor, iters: int, lr: floa
     return ema.eval(), time.time() - t0
 
 
-def run(quick: bool, seed: int, group: str) -> None:
+def run(quick: bool, seed: int, group: str, device: str = "cpu") -> None:
     t_start = time.time()
-    ctx = Context(quick)
-    cfg = ctx.cfg
+    need = {"A": ("comp",), "B": ("pot", "pot_sym"), "all": ("pot", "pot_sym", "comp")}[group]
+    ctx = Context(quick, need, device)
+    cfg, dev = ctx.cfg, ctx.dev
     if ctx.ref_json is None:
         raise SystemExit("run `python3 e4_mhd3d.py --reference` first")
     names = GROUPS["A"] + GROUPS["B"] if group == "all" else GROUPS[group]
-    pot, pot_sym, comp = ctx.pot, ctx.pot_sym, ctx.comp
-    net = lambda sp: ResMLP(sp.n_modes, sp.n_channels, 1, width=cfg["width"], depth=cfg["depth"])   # noqa: E731
+    pot, pot_sym, comp = ctx.pot_d, ctx.pot_sym_d, ctx.comp_d          # on the training device
+    net = lambda sp: ResMLP(sp.n_modes, sp.n_channels, 1, width=cfg["width"], depth=cfg["depth"]).to(dev)   # noqa: E731
     eval_etas = [(e, cfg["n_gen"]) for e in ETA_VAL + ETA_TEST] + [(e, cfg["n_gen_train"]) for e in ETA_TRAIN_EVAL]
     split = lambda e: "train" if e in ETA_TRAIN else ("val" if e in ETA_VAL else "test")              # noqa: E731
-    results: dict = {"config": {**cfg, "quick": quick, "seed": seed, "group": group, "N": D.N, "nu": D.NU, "kf": D.KF,
+    results: dict = {"config": {**cfg, "quick": quick, "seed": seed, "group": group, "device": str(dev),
+                                "N": D.N, "nu": D.NU, "kf": D.KF,
                                 "eta_train": ETA_TRAIN, "eta_val": ETA_VAL, "eta_test": ETA_TEST,
                                 "modes": pot.n_modes, "dim_potentials": pot.n_modes * pot.n_channels,
                                 "dim_components": comp.n_modes * comp.n_channels,
-                                "n_train": len(ctx.x_pot)},
+                                "n_train": ctx.n_train},
                      "evaluation": {}, "times": {}, "h14": [], "h12": []}
     gens: dict = {}
 
     def noise(n: int, sp, salt: int) -> torch.Tensor:
         g = torch.Generator().manual_seed(100003 * seed + salt)
-        return torch.randn(n, sp.n_modes, sp.n_channels, generator=g)
+        return torch.randn(n, sp.n_modes, sp.n_channels, generator=g).to(dev)
 
     @torch.no_grad()
     def generate(model, sp, eta: float, n: int, kind: str = "heun", steps: int | None = None) -> torch.Tensor:
         """Field coefficients (n, 2, M, 3) generated at ``eta`` (same noise for every variant of a space)."""
-        c = torch.full((n, 1), float(cn(eta)))
+        c = torch.full((n, 1), float(cn(eta)), device=dev)
         z0 = noise(n, sp, ETAS.index(eta))
         steps = steps or cfg["steps"]
         out = []
@@ -385,7 +399,7 @@ def run(quick: bool, seed: int, group: str) -> None:
                 z = diffusion_sample(model, zi, ci, steps=2 * steps, stochastic=True, generator=g)
             else:
                 z = heun_sample(model, zi, ci, steps=steps)
-            out.append(sp.field_hat(sp.denormalize(z)))
+            out.append(sp.field_hat(sp.denormalize(z)).cpu())
         return torch.cat(out)
 
     def record(name: str, fhs: dict, restart: bool = True) -> None:
@@ -409,7 +423,7 @@ def run(quick: bool, seed: int, group: str) -> None:
 
     def fit(name: str, sp, x, loss_fn):
         seed_all(seed)
-        model, tsec = train(net(sp) if not name.endswith("_sym") else SignSymmetrized(net(sp), sp.sign),
+        model, tsec = train(net(sp) if not name.endswith("_sym") else SignSymmetrized(net(sp), sp.sign).to(dev),
                             loss_fn, x, ctx.c_train, cfg["iters"], cfg["lr"], cfg["batch"], name)
         results["times"][name] = {"training_time_s": tsec}
         return model
@@ -421,19 +435,19 @@ def run(quick: bool, seed: int, group: str) -> None:
         m0 = fit("W0_free", comp, ctx.x_comp, fm)
         gens["W0_free"] = {e: generate(m0, comp, e, n) for e, n in eval_etas}
         record("W0_free", gens["W0_free"])
-        record("W2_final_projection", {e: C.leray_hat(fh, comp.k) for e, fh in gens["W0_free"].items()})
+        record("W2_final_projection", {e: C.leray_hat(fh, ctx.comp.k) for e, fh in gens["W0_free"].items()})
         for e in ETA_TEST:                                             # H14: 50 against 200 integration steps
             row = {"eta": e}
             for steps in (cfg["steps"], 4 * cfg["steps"]):
                 fh = generate(m0, comp, e, min(128, cfg["n_gen"]), steps=steps)
-                row[f"div_rel_b_mean_steps{steps}"] = float(C.divergence_fraction_hat(fh, comp.k)[:, 1].sqrt().mean())
+                row[f"div_rel_b_mean_steps{steps}"] = float(C.divergence_fraction_hat(fh, ctx.comp.k)[:, 1].sqrt().mean())
             results["h14"].append(row)
         del m0
         pen = C.divergence_penalty(comp, weight=10.0)
         m1 = fit("W1_penalty", comp, ctx.x_comp, lambda f, x, c: fm_loss(f, x, c, extra=pen))
         record("W1_penalty", {e: generate(m1, comp, e, n) for e, n in eval_etas})
         del m1
-        pnoise = lambda shape: comp.project(torch.randn(shape))                                # noqa: E731
+        pnoise = lambda shape: comp.project(torch.randn(shape, device=dev))                    # noqa: E731
         m3 = fit("W3_projected_flow", comp, ctx.x_comp, lambda f, x, c: fm_loss(f, x, c, noise_fn=pnoise))
         record("W3_projected_flow", {e: generate(m3, comp, e, n, kind="projected") for e, n in eval_etas})
         del m3
@@ -451,18 +465,17 @@ def run(quick: bool, seed: int, group: str) -> None:
         record("W4s_potentials_sym", gens["W4s"])
 
         # law-level identities on a batch of generated coefficients
-        fhat32 = ctx.forcing_hat.to(torch.complex64)
-
-        def identities(fh: torch.Tensor, eta) -> dict:
-            terms = C.budget_terms_hat(pot_sym, fh, D.NU, eta, forcing_hat=fhat32.to(fh.dtype), amp=AMP)
+        def identities(fh: torch.Tensor, eta, sp=ctx.pot_sym) -> dict:
+            terms = C.budget_terms_hat(sp, fh, D.NU, eta, forcing_hat=ctx.forcing_hat.to(fh.device, fh.dtype), amp=AMP)
             return C.stationarity_residuals(terms, D.NU, eta)
 
         def stat_loss(field, it: int) -> torch.Tensor:
             nc, nper = cfg["stat_cond"], cfg["stat_per"]
             lo, hi = float(cn(ETAS[-1])), float(cn(ETAS[0]))
-            c = (lo + (hi - lo) * torch.rand(nc, 1)).repeat_interleave(nper, 0)
-            z = heun_sample(field, torch.randn(nc * nper, pot_sym.n_modes, pot_sym.n_channels), c, cfg["stat_steps"])
-            res = identities(pot_sym.field_hat(pot_sym.denormalize(z)), eta_of(c[:, 0]))
+            c = (lo + (hi - lo) * torch.rand(nc, 1, device=dev)).repeat_interleave(nper, 0)
+            z = heun_sample(field, torch.randn(nc * nper, pot_sym.n_modes, pot_sym.n_channels, device=dev), c,
+                            cfg["stat_steps"])
+            res = identities(pot_sym.field_hat(pot_sym.denormalize(z)), eta_of(c[:, 0]), pot_sym)
             pen = sum(C.half_batch_product(r, s, nc) for key, (r, s) in res.items() if key != "cross_helicity")
             return cfg["beta"] * min(1.0, it / max(cfg["ft_iters"] // 4, 1)) * pen
 
@@ -494,7 +507,7 @@ def run(quick: bool, seed: int, group: str) -> None:
         for e, fh in gens["W5_control"].items():
             fb, wb, _ = tilt(fh, e, ("energy", "magnetic_helicity"))
             tilted[e] = (fb, wb)
-            out, _ = C.balance_rescaling(pot_sym, fh.to(torch.complex128), D.NU, e, ctx.forcing_hat, amp=AMP)
+            out, _ = C.balance_rescaling(ctx.pot_sym, fh.to(torch.complex128), D.NU, e, ctx.forcing_hat, amp=AMP)
             rescaled[e] = out
             halves[e] = gens["W5_stationarity"][e][len(fh) // 2:]
         record("W7_tilting", tilted)
@@ -528,9 +541,10 @@ if __name__ == "__main__":
     ap.add_argument("--group", choices=["A", "B", "all"], default="all")
     ap.add_argument("--reference", action="store_true", help="reference statistics only (no model)")
     ap.add_argument("--threads", type=int, default=1)
+    ap.add_argument("--device", default="cpu", help="cpu or cuda: networks, training sets and generation")
     a = ap.parse_args()
     torch.set_num_threads(a.threads)
     if a.reference:
         reference(a.quick)
     else:
-        run(a.quick, a.seed, a.group)
+        run(a.quick, a.seed, a.group, a.device)

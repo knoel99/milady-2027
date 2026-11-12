@@ -167,12 +167,12 @@
       "protocol": "E4 reference data only (24 trajectories per η): shell spectrum of the magnetic helicity, time mean per trajectory, then mean and SE over the trajectories. No model.",
       "script": "experiments/e4_mhd3d.py --reference",
       "cost_estimate": "minutes of CPU",
-      "status": "registered",
-      "verdict": "",
-      "results": "",
-      "commit": "",
+      "status": "refuted",
+      "verdict": "REFUTED (encadrant, 2026-11-12): recomputed from the raw snapshots at the 11 η, independently of the experiment code, every value equal to e4_reference.json. H(1) < 0 at 11 of 11 η (z from −19 to −58) and E_B(1)/E_B in [0.370, 0.438] hold; Σ_{k ≥ 2} H(k) > 0 by 2 SE fails at η = 0.0365 and 0.03309 (z = −1.4 and −1.2, sign undetermined) and at η = 0.03 (z = −5.5, negative). The criterion is unchanged since commit 68e2fd4.",
+      "results": "Digest, E4, 'Reference: magnetic helicity spectrum and stationarity identities (H11)'. The sign change of H(k) is not between k = 1 and k = 2: the shell k = 2 (the forcing shell) is negative at every η (12 to 39 SE) and Σ_{k ≥ 3} H is positive at every η (encadrant recomputation, not a registered hypothesis: a post hoc reading). The identity E[⟨j·B⟩] = 0 holds at every η (|z| ≤ 1.7), as a cancellation between the shells k ≤ 2 and k ≥ 3 with the positive part peaking at k = 4. No model seed: 24 trajectories per η.",
+      "commit": "6d9cf24",
       "comparison": "",
-      "seeds": 5
+      "seeds": 0
     },
     {
       "id": "H12",

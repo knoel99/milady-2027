@@ -1,4 +1,8 @@
+{"n": 64, "mode": "dynamic", "dtype": "float64", "device": "cuda", "n_traj": 1, "seconds_per_step": 0.0038813362596556546, "threads": 32, "max_memory_gb": 0.1402301788330078, "gpu": "NVIDIA RTX PRO 4500 Blackwell"}
+{"n": 128, "mode": "dynamic", "dtype": "float64", "device": "cuda", "n_traj": 1, "seconds_per_step": 0.04828716639894992, "threads": 32, "max_memory_gb": 1.0977821350097656, "gpu": "NVIDIA RTX PRO 4500 Blackwell"}
 
 --- status
-2026-11-12T17:58:11Z boot NVIDIA RTX PRO 4500 Blackwell, 32623 MiB
-2026-11-12T17:59:22Z FAILED pip
+2026-11-12T18:25:38Z boot NVIDIA RTX PRO 4500 Blackwell, 32623 MiB
+2026-11-12T18:26:55Z job started
+2026-11-12T18:27:00Z job finished rc=0 in 5 s
+2026-11-12T18:27:00Z DONE rc=0

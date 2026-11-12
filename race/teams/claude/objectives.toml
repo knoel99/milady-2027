@@ -17,7 +17,7 @@ id = "C1-3d-generator"
 target = 10.0
 baseline = "none"
 command = "python3 experiments/race_metrics.py --metric c1"
-note = "E4, held-out Rm. Energy distance (V statistic) between n = 512 generated and n = 512 reference snapshots on the standardized physical features of milady.eval.metrics.features (log shell spectra of u and B, relative helicities, log energies), divided by the noise floor: mean energy distance between two disjoint reference subsamples of n = 512. A perfect generator gives 1. Model family: conditional flow matching on the Fourier modes of (u, B). Orientation: the best E2 variant (2D) is at about 500 times its floor on held-out eta (digest: 0.925 against 0.00178)."
+note = "E4, held-out Rm. Energy distance (V statistic) between n = 512 generated and n = 512 reference snapshots on the standardized physical features of milady.eval.metrics.features (log shell spectra of u and B, relative helicities, log energies), divided by the noise floor: mean energy distance between two reference subsamples of n = 512 drawn from disjoint halves of the trajectories. The floor therefore includes the variability between trajectories (it is 3 to 7 times the pure n = 512 sampling noise) and it is uncertain (sd over the splits 26 to 99 % of the mean); a perfect generator would give about 0.6, not 1 (encadrant, 2026-11-12, before any model result). The digest prints both floors. Model family: conditional flow matching on the Fourier modes of (u, B). Orientation: the best E2 variant (2D) is at about 500 times its floor on held-out eta (digest: 0.925 against 0.00178)."
 
 [[objective]]
 id = "C2-divergence"

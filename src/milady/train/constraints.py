@@ -373,7 +373,7 @@ def balance_rescaling(space: Any, fh: torch.Tensor, nu: torch.Tensor | float, et
     k = space.k.to(fh.real.dtype)
     kn = (k * k).sum(-1).sqrt()
     if k_split is None:
-        forced = forcing_hat.abs().sum(-1) > 1e-12 * float(forcing_hat.abs().max())
+        forced = forcing_hat.abs().sum(-1) > 1e-4 * float(forcing_hat.abs().max())   # above float32 round-off
         k_split = float(kn[forced].max()) * (1 + 1e-6)
     small = (kn > k_split).to(fh.real.dtype)[:, None]
     large_t = budget_terms_hat(space, fh * (1 - small), nu, eta, forcing_hat=forcing_hat, amp=amp)
