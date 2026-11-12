@@ -11,7 +11,7 @@ The pilot runs the race with a single team before the nine-provider race: one Cl
 | Roles | Claude Code sub-agents `.claude/agents/*.md`, generated from `agents/roles/`: `encadrant` Fable/medium, `physicien` Fable/high, `biblio` Sonnet 5.5/medium, `jury-externe` Fable/max. `tools/call_model.py` and `tools/run_role.py` need an Anthropic API key and are not used in the pilot |
 | CPU | the session's own container (quick runs, measurements) |
 | GPU | `tools/runpod_job.py run`: RTX PRO 4500 Blackwell, then RTX 5090, then RTX A6000 (`race/config.toml` `[gpu]`); H100 only for float64 validation |
-| Budgets | GPU: 8 USD of the 10 USD prepaid RunPod credit (`race/config.toml` `[gpu]` `budget_usd`; raise it when the credit is topped up). Claude: the plan's usage limit; `tools/usage_report.py` gives the API-equivalent cost |
+| Budgets | GPU: 120 USD of the 150 USD prepaid RunPod credit (`race/config.toml` `[gpu]` `budget_usd`). Claude: the plan's usage limit; `tools/usage_report.py` gives the API-equivalent cost |
 | Duration | one week from the start, or until a budget is spent |
 
 ## Monitoring
