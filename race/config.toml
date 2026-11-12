@@ -33,3 +33,46 @@ zhipu = "ZAI_API_KEY"
 moonshot = "MOONSHOT_API_KEY"
 deepseek = "DEEPSEEK_API_KEY"
 alibaba = "DASHSCOPE_API_KEY"
+
+# API prices in USD per million tokens, for tools/usage_report.py (Anthropic's model table,
+# read on 2026-11-12). Cache writes cost cache_write_5m_x / cache_write_1h_x times the input price
+# (Anthropic's standard multipliers, to re-check on the pricing page); fast mode is counted 2x.
+[pricing.claude-fable-5-2]
+input = 8.0
+output = 40.0
+cache_read = 0.20
+cache_write_5m_x = 1.25
+cache_write_1h_x = 2.0
+
+[pricing.claude-opus-5-5]
+input = 4.0
+output = 20.0
+cache_read = 0.20
+cache_write_5m_x = 1.25
+cache_write_1h_x = 2.0
+
+[pricing.claude-sonnet-5-5]
+input = 2.0
+output = 10.0
+cache_read = 0.10
+cache_write_5m_x = 1.25
+cache_write_1h_x = 2.0
+
+[pricing.claude-haiku-5-5]
+input = 0.10
+output = 0.50
+cache_write_5m_x = 1.25
+cache_write_1h_x = 2.0
+
+# GPU jobs of the pilot, run on RunPod by tools/runpod_job.py (catalog read on 2026-11-12).
+[gpu]
+repo = "https://github.com/knoel99/milady-2027.git"
+image = "runpod/pytorch:1.0.2-cu1281-torch280-ubuntu2404"   # RunPod official template runpod-torch-v280, CUDA 12.8.1
+min_cuda = "12.8"                                          # Blackwell needs CUDA 12.8 or later
+fallback = ["NVIDIA RTX PRO 4500 Blackwell", "NVIDIA GeForce RTX 5090", "NVIDIA RTX A6000"]
+fp64 = "NVIDIA H100 80GB HBM3"                             # float64 validation only, pass it with --gpu
+data_centers = ["EU-CZ-1", "EU-NL-1", "EU-RO-1", "EU-SE-1", "EUR-IS-1", "EUR-NO-1"]   # preferred, not required
+disk_gb = 40
+max_job_hours = 2
+outputs = ["experiments/results", "site/experiments/figures"]
+budget_usd = 120                                           # of a 150 USD prepaid RunPod credit

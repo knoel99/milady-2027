@@ -36,6 +36,8 @@ python3 tools/call_model.py --role <role> --task <file>   # call a role through 
 python3 tools/run_role.py --role <role> --task <file>     # run a role as a headless session of your harness
 python3 tools/check_calls.py ledger|preflight|exam        # verify models and efforts of the calls
 python3 tools/compute_broker.py submit --hours H -- CMD   # race only: run CMD on a broker job VM (committed code)
+python3 tools/runpod_job.py run --hours H -- CMD          # pilot: run CMD on a RunPod GPU pod (pushed commit), pod always deleted
+python3 tools/usage_report.py --write research/usage      # tokens, API-equivalent cost, sub-agents, GPU spend of the session
 ```
 
 - Never edit an `index.html` by hand: `tools/render.py` restores the pinned KaTeX tags (SRI) that Quarto strips.

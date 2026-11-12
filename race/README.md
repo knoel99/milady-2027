@@ -2,6 +2,8 @@
 
 Nine teams, one per provider, each running its provider's recommended coding harness, start from this repository at the tag `race-start` and try, for one week, to advance the research of the internship offer. Each team has the same budget: 200 USD of API calls (a spending cap in the provider's console) and 400 vCPU-hours of Scaleway compute through a shared broker. The prompt of every team is [`BRIEF.md`](BRIEF.md).
 
+**Pilot first.** Before the nine-provider race, a single Claude Code cloud team runs the brief with GPU jobs on RunPod and full usage monitoring: [`PILOT.md`](PILOT.md), launch prompt in [`PILOT-PROMPT.md`](PILOT-PROMPT.md). The Scaleway launcher and broker below are for the full race and are not used by the pilot.
+
 ## How the week is organised
 
 Interactive versions: [`diagrams/organisation.html`](diagrams/organisation.html) (the week) and [`diagrams/isolation.html`](diagrams/isolation.html) (isolation of one team, see [`ISOLATION.md`](ISOLATION.md)), rendered with [archify](https://github.com/tt-a1i/archify); download and open them in a browser.
