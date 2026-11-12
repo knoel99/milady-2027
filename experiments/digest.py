@@ -71,10 +71,7 @@ def e1():
 def e1_detail(r):
     """Per-Γ and per-seed details taken from the E1 JSON.
 
-    For each Γ the JSON keeps the mean and standard deviation (ddof = 0) of the two seeds: the two per-seed values
-    are therefore mean ± standard deviation, without knowing which belongs to which seed. We publish the envelope
-    ("low" = mean - std, "high" = mean + std); the mean over Γ for each seed lies
-    between the mean of the low values and that of the high values.
+    For each Γ the JSON keeps [mean, sd, min, max] over the seeds and the per-seed values ("seed_values").
     """
     ev, res = r["evaluation"], r["summary"]
     ref_sd = res["reference"]["dEdt_std"]
@@ -85,11 +82,6 @@ def e1_detail(r):
 
     def mean(xs):
         return sum(xs) / len(xs)
-
-    def env(v, split, k):
-        lo = mean([x[k][0] - x[k][1] for x in rows(v, split)])
-        hi = mean([x[k][0] + x[k][1] for x in rows(v, split)])
-        return lo, hi
 
     print("\n### Asymmetry |P(D>0)−½| per Γ (mean over seeds)\n")
     vs = ["A_reference", "B_augmentation", "C_equivariant"]
@@ -107,21 +99,35 @@ def e1_detail(r):
     for v in ("C_equivariant", "F_stationarity_C", "F0_control_C"):
         print(f"| {v} | " + " | ".join(f(mean([x[k][1] for x in rows(v, 'test')])) for k in ("energy", "liou_train_mean", "liou_test_mean")) + " |")
 
-    print("\n### Per-seed envelope of σ(dE/dt)/σ_ref (mean σ over the test Γ, divided by the reference)\n")
-    print("| variant | low seed | high seed |")
-    print("|---|---|---|")
-    for v in ("F_stationarity_C", "F0_control_C", "C_short", "F_stationarity_Cshort", "F0_control_Cshort"):
-        lo, hi = env(v, "test", "dEdt_std")
-        print(f"| {v} | {f(lo / ref_sd)} | {f(hi / ref_sd)} |")
-    print("\nOn short C, seed 1 diverged: at each Γ its value is the high one, which separates the seeds.")
+    seeds = r["config"]["seeds"]
 
-    print("\n### Short C, seed 0 (low value at each Γ) against its control, test Γ\n")
-    print("| metric | F on short C, seed 0 | control F0, mean over seeds | control F0, high seed |")
-    print("|---|---|---|---|")
+    def per_seed(v, split, k):
+        """Mean over the Γ of one split, for each seed (needs the per-seed values of the JSON)."""
+        rs = rows(v, split)
+        return [mean([x["seed_values"][k][i] for x in rs]) for i in range(len(seeds))]
+
+    print("\n### Per-seed σ(dE/dt)/σ_ref (mean σ over the test Γ, divided by the reference)\n")
+    print("| variant | " + " | ".join(f"seed {s}" for s in seeds) + " |")
+    print("|---|" + "---|" * len(seeds))
+    diverged = {}
+    for v in ("F_stationarity_C", "F0_control_C", "C_short", "F_stationarity_Cshort", "F0_control_Cshort"):
+        vals = per_seed(v, "test", "dEdt_std")
+        print(f"| {v} | " + " | ".join(f(x / ref_sd) for x in vals) + " |")
+        diverged[v] = [s for s, x in zip(seeds, vals, strict=True) if not abs(x / ref_sd) < 10]
+    for v, ss in diverged.items():
+        if ss:
+            print(f"\n{v}: seeds {ss} diverged (σ(dE/dt) more than ten times the reference).")
+
+    print("\n### Stationarity fine-tuning on short C, seeds that did not diverge, against its control, test Γ\n")
+    ok = [i for i, s in enumerate(seeds) if s not in diverged["F_stationarity_Cshort"]]
+    print(f"Seeds kept: {[seeds[i] for i in ok]}.\n")
+    print("| metric | F on short C, mean [min, max] | control F0, mean [min, max] over all seeds |")
+    print("|---|---|---|")
     for k, lab in (("energy", "energy dist."), ("liou_train_mean", "Liouville deg≤2"), ("liou_test_mean", "Liouville deg 3")):
-        lo, _ = env("F_stationarity_Cshort", "test", k)
-        _, hi0 = env("F0_control_Cshort", "test", k)
-        print(f"| {lab} | {f(lo)} | {f(res['F0_control_Cshort']['test'][k])} | {f(hi0)} |")
+        a = [per_seed("F_stationarity_Cshort", "test", k)[i] for i in ok]
+        b = per_seed("F0_control_Cshort", "test", k)
+        cell = lambda xs: f"{f(mean(xs))} [{f(min(xs))}, {f(max(xs))}]" if xs else "–"
+        print(f"| {lab} | {cell(a)} | {cell(b)} |")
 
     print("\n### A posteriori tilting per test Γ (mean over seeds, half b)\n")
     print("| Γ | ESS/N (A) | Liouville deg≤2: A half → A tilted | ESS/N (C) | Liouville deg≤2: C half → C tilted |")
