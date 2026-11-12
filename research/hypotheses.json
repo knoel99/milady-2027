@@ -218,6 +218,21 @@
       "commit": "",
       "comparison": "",
       "seeds": 5
+    },
+    {
+      "id": "H15",
+      "statement": "In E4, the error of the generators at the held-out η comes from the embedding of the condition: the Fourier embedding of the pre-race code has frequencies up to 8 cycles over the normalized parameter range, above the Nyquist frequency of the 6 training values (spacing 0.18), so the velocity field is aliased between them. With a smooth embedding (frequencies between 0.5 and 1 cycle; W4c_potentials_smooth), the energy-distance ratio of the potentials model on the held-out η is at least halved.",
+      "origin": "Failed experiment: first full E4 runs (seeds 0 and 1, logs of 2026-11-12): W0_free and W4_potentials at 200 to 250 times the floor on the held-out η with an error on E_B(k) above 2, worse than the --quick run of 150 iterations; a scratch diagnostic (800 iterations) gives a generated latent 16 % too wide at a held-out η whatever the integration step. The same embedding is used by E1 and E2 (experiments/common.py), where the held-out error is also far above the training error (digest: V4_potentials 2.44 on test η against 1.03 on training η).",
+      "refutation_criterion": "Refuted if the seed-mean energy-distance ratio of W4c_potentials_smooth on the held-out η is more than half that of W4_potentials, or if the paired difference ED(W4) − ED(W4c) is not larger than 2 SE, or if W4c is below W4 in fewer than 4 of the 5 seeds.",
+      "protocol": "E4 as for H4: same data, network size, budget, seeds 0-4, n = 512, Heun 50 steps; the only change is the maximum frequency of the condition embedding (ResMLP argument cond_scale: 8 in W4_potentials, 0.5 in W4c_potentials_smooth). Paired difference of the per-seed means over the 3 held-out η; SE = sd(ddof = 1)/sqrt(5). The training-η rows are reported next to the held-out ones.",
+      "script": "experiments/e4_mhd3d.py --seed k --group C, k = 0..4",
+      "cost_estimate": "one training per seed (15 min of one CPU core, or seconds of GPU), no new data",
+      "status": "registered",
+      "verdict": "",
+      "results": "",
+      "commit": "",
+      "comparison": "model families",
+      "seeds": 5
     }
   ]
 }
