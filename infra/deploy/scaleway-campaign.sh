@@ -5,15 +5,20 @@
 # The VM never deletes itself (that would need an API key): the launcher deletes it.
 #
 # Placeholders filled by scaleway.py: __TOKEN__ (random path), __REPO__, __REF__ (commit),
-# __ARGS__ (run_stage.sh options), __MAX_MIN__ (CPU guard: power off after this many minutes;
-# a powered-off Scaleway instance still bills its disk and IP until it is deleted).
+# __ARGS__ (run_stage.sh options), __MAX_MIN__ (guard: after this many minutes from boot, stop
+# the run, archive whatever exists, keep serving it for 30 min, then power off; a powered-off
+# Scaleway instance still bills its disk and IP until the launcher deletes it).
 set -u
 WWW=/srv/www; OUT=$WWW/__TOKEN__; mkdir -p "$OUT"
 : > "$WWW/index.html"                      # no directory listing at the root
 status() { echo "$(date -u +%FT%TZ) $*" >> "$OUT/status.txt"; }
 exec >> "$OUT/setup.log" 2>&1
 status "boot"
-shutdown -h +__MAX_MIN__ "milady CPU guard" || true
+pack() { tar -czf "$OUT/results.tar.gz" -C /opt/milady experiments/results site/experiments/figures; }
+( sleep $(( __MAX_MIN__ * 60 )); status "GUARD timeout after __MAX_MIN__ min: stopping the run"
+  pkill -f run_stage.sh; pkill -f 'experiments/|e[123]_|digest.py|figures.py'
+  pack && status "FAILED guard timeout, partial results.tar.gz ready"
+  sleep 1800; poweroff ) &
 (cd "$WWW" && nohup python3 -m http.server 8000 >/dev/null 2>&1 &)
 status "http server up"
 
@@ -34,5 +39,4 @@ T0=$(date +%s)
 status "run_stage __ARGS__ started"
 if experiments/run_stage.sh __ARGS__ > "$OUT/run_stage.log" 2>&1; then rc=0; else rc=$?; fi
 status "run_stage finished rc=$rc in $(( $(date +%s) - T0 )) s"
-tar -czf "$OUT/results.tar.gz" -C /opt/milady experiments/results site/experiments/figures \
-  && status "DONE results.tar.gz ready" || status "FAILED tar"
+pack && status "DONE results.tar.gz ready" || status "FAILED tar"
