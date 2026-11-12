@@ -32,6 +32,9 @@ Model family
     - :class:`ModewiseAffineSkip` (``modewise_skip``): v = G(t, c) x + b(t, c) + network, with one
       C × C matrix per mode. A network narrower than the latent dimension cannot represent the linear
       part of the optimal field (for Gaussian data the field is linear in x); the explicit term can;
+    - :class:`GaussianAnchoredField` (``gaussian_anchor``): v = v_Gauss(x, t, c) + network, where
+      v_Gauss is the closed-form flow-matching field of the mode-wise Gaussian law; with the network
+      at zero the model is the Gaussian baseline, and training only has to learn the departure from it;
     - :class:`ModewiseGaussian` (``gaussian_modes``): no network, the conditional Gaussian law with
       one mean and one covariance per Fourier mode, interpolated between the training conditions. It
       reproduces the mode-wise second-order statistics (spectra, helicities, mean budgets) and nothing
@@ -57,6 +60,7 @@ from milady.train.flow import heun_sample
 __all__ = [
     "REGISTRY",
     "FourierComponentSpace",
+    "GaussianAnchoredField",
     "ModewiseAffineSkip",
     "ModewiseGaussian",
     "balance_rescaling",
@@ -83,6 +87,7 @@ REGISTRY: dict[str, tuple[str, str]] = {
     "diffusion": ("model", "variance-preserving diffusion, v-prediction, ancestral or deterministic sampler"),
     "modewise_skip": ("design", "explicit mode-wise affine term of the velocity field, around a network with a bottleneck"),
     "gaussian_modes": ("model", "conditional Gaussian law with one mean and covariance per Fourier mode: second-order baseline"),
+    "gaussian_anchor": ("design", "velocity field = exact field of the mode-wise Gaussian law + network for the non-Gaussian part"),
 }
 
 
@@ -499,3 +504,62 @@ class ModewiseGaussian:
         chol = torch.linalg.cholesky(cov + self.jitter * scale[:, None, None] * eye)
         xi = torch.randn(n, *mean.shape, generator=generator, dtype=cov.dtype).to(cov.device)
         return (mean + torch.einsum("mij,nmj->nmi", chol, xi)).to(torch.float32)
+
+
+class GaussianAnchoredField(nn.Module):
+    """v(x, t, c) = v_Gauss(x, t, c) + base(x, t, c): flow matching anchored on the Gaussian law.
+
+    For x₀ ~ N(0, I) and x₁ ~ N(μ, Σ) on the linear path x_t = (1 − t) x₀ + t x₁, the optimal field is
+
+        v_Gauss(x, t) = μ + (t Σ − (1 − t) I) (t² Σ + (1 − t)² I)⁻¹ (x − t μ),
+
+    applied here mode by mode with the moments of a fitted :class:`ModewiseGaussian`, interpolated
+    in the scalar condition ``c`` (first column of the condition tensor). Integrating v_Gauss alone
+    from Gaussian noise gives exactly N(μ(c), Σ(c)). ``base`` (any field, typically zero at
+    initialization) learns the non-Gaussian part of the law. The eigendecompositions of Σ(c) are
+    cached per value of c (few distinct values: the training conditions, then one per sampling call).
+    """
+
+    def __init__(self, base: nn.Module, gaussian: ModewiseGaussian, max_cache: int = 64) -> None:
+        super().__init__()
+        assert gaussian.c is not None and gaussian.mean is not None and gaussian.cov is not None, "fit the Gaussian first"
+        self.base = base
+        self.jitter = gaussian.jitter
+        self.max_cache = max_cache
+        self.register_buffer("c_grid", gaussian.c.clone())
+        self.register_buffer("mean", gaussian.mean.clone())
+        self.register_buffer("cov", gaussian.cov.clone())
+        self._cache: dict[tuple[float, str], tuple[torch.Tensor, torch.Tensor, torch.Tensor]] = {}
+
+    def _moments(self, c: float) -> tuple[torch.Tensor, torch.Tensor, torch.Tensor]:
+        """Mean (M, C), eigenvalues (M, C) and eigenvectors (M, C, C) of the covariance at ``c`` (float32)."""
+        key = (round(c, 7), str(self.mean.device))
+        if key not in self._cache:
+            grid = self.c_grid
+            cc = float(min(max(c, float(grid[0])), float(grid[-1])))
+            j = int(torch.searchsorted(grid, torch.tensor(cc, dtype=grid.dtype, device=grid.device)).clamp(1, len(grid) - 1))
+            w = (cc - float(grid[j - 1])) / (float(grid[j]) - float(grid[j - 1]))
+            mean = (1 - w) * self.mean[j - 1] + w * self.mean[j]
+            cov = (1 - w) * self.cov[j - 1] + w * self.cov[j]
+            lam, q = torch.linalg.eigh(cov)
+            lam = lam.clamp_min(self.jitter * float(lam.mean()))
+            if len(self._cache) >= self.max_cache:
+                self._cache.clear()
+            self._cache[key] = (mean.float(), lam.float(), q.float())
+        return self._cache[key]
+
+    def gaussian_field(self, x: torch.Tensor, t: torch.Tensor, c: torch.Tensor) -> torch.Tensor:
+        """The closed-form field of the Gaussian law at the conditions ``c`` (b, n_cond) or (b,)."""
+        cs = c[:, 0] if c.dim() > 1 else c
+        out = torch.empty_like(x)
+        for value in torch.unique(cs):
+            sel = cs == value
+            mean, lam, q = self._moments(float(value))
+            tt = t[sel].view(-1, 1, 1).to(x.dtype)
+            y = torch.einsum("mji,bmj->bmi", q, x[sel] - tt * mean)                      # Qᵀ (x − t μ)
+            gain = (tt * lam - (1 - tt)) / (tt**2 * lam + (1 - tt) ** 2)
+            out[sel] = mean + torch.einsum("mij,bmj->bmi", q, gain * y)
+        return out
+
+    def forward(self, x: torch.Tensor, t: torch.Tensor, c: torch.Tensor) -> torch.Tensor:
+        return self.gaussian_field(x, t, c) + self.base(x, t, c)

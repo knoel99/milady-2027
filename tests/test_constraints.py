@@ -299,3 +299,41 @@ def test_gaussian_modes() -> None:
     sym = C.ModewiseGaussian(sign=sign).fit(x, c)
     ms, cvs = sym.moments(0.5)
     assert float(ms[:, 2:].abs().max()) == 0.0 and float(cvs[:, :2, 2:].abs().max()) == 0.0
+
+
+def test_gaussian_anchor() -> None:
+    """With a zero network, the anchored flow transports N(0, I) onto the fitted Gaussian law."""
+    M, Cc, n = 5, 4, 30000
+    g = torch.Generator().manual_seed(9)
+    a = torch.randn(2, M, Cc, Cc, generator=g) * 0.6
+    mean = torch.randn(2, M, Cc, generator=g)
+    xs, cs = [], []
+    for j, cv in enumerate((0.1, 0.9)):
+        xs.append(mean[j] + torch.einsum("mij,nmj->nmi", a[j], torch.randn(n, M, Cc, generator=g)))
+        cs.append(torch.full((n,), cv))
+    gauss = C.ModewiseGaussian().fit(torch.cat(xs), torch.cat(cs))
+
+    def zero(x: torch.Tensor, t: torch.Tensor, c: torch.Tensor) -> torch.Tensor:
+        return torch.zeros_like(x)
+
+    field = C.GaussianAnchoredField(zero, gauss)
+    for cv in (0.1, 0.5):
+        mu, cov = gauss.moments(cv)
+        z = torch.randn(n, M, Cc, generator=g)
+        with torch.no_grad():
+            x = C.heun_sample(field, z, torch.full((n, 1), cv), steps=100)
+        d = x.double() - x.double().mean(0)
+        got = torch.einsum("nmi,nmj->mij", d, d) / n
+        assert torch.allclose(x.double().mean(0), mu, atol=0.05), cv
+        assert torch.allclose(got, cov, atol=0.08), cv
+    # the closed form is the conditional expectation E[x1 − x0 | x_t]: its loss is below that of a zero field
+    x1 = xs[0][:4096]
+    base_loss = fm_loss(zero, x1, torch.full((4096, 1), 0.1), generator=torch.Generator().manual_seed(1))
+    anch_loss = fm_loss(field, x1, torch.full((4096, 1), 0.1), generator=torch.Generator().manual_seed(1))
+    assert float(anch_loss) < float(base_loss) - 0.1
+    # mixed conditions in one batch are routed to their own moments
+    xb, tb = torch.randn(6, M, Cc, generator=g), torch.rand(6, generator=g)
+    cb = torch.tensor([[0.1], [0.9], [0.1], [0.5], [0.9], [0.5]])
+    whole = field.gaussian_field(xb, tb, cb)
+    for i in range(6):
+        assert torch.allclose(whole[i], field.gaussian_field(xb[i:i + 1], tb[i:i + 1], cb[i:i + 1])[0], atol=1e-5)

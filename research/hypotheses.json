@@ -278,6 +278,21 @@
       "commit": "",
       "comparison": "model families",
       "seeds": 5
+    },
+    {
+      "id": "H19",
+      "statement": "In E4, a flow-matching field anchored on the exact field of the mode-wise Gaussian law, v = v_Gauss(x, t, η) + network (W10_anchored: the network starts at zero, so the model starts as G0 and learns only the non-Gaussian correction), keeps the second-order accuracy of G0 and adds what G0 lacks: its energy-distance ratio on the held-out η is not above that of G0_gaussian_modes, and its restart drift and its null-count error are both below those of G0.",
+      "origin": "CPU runs of group D on seeds 0 and 1 (2026-11-12): G0 at 3.3 times the floor with an energy residual of 0.002 but 3.3 times too many nulls and a restart drift of 0.21; W9_skip_sym (learned affine term, 4000 iterations) at 9 to 11 times the floor with fewer nulls (error 1.7) and a smaller drift (0.11 to 0.14): the learned linear part is less accurate than the analytic one, the non-Gaussian part is better. For Gaussian data the optimal field is known in closed form: v*(x, t) = μ + (tΣ − (1 − t)I)(t²Σ + (1 − t)²I)⁻¹(x − tμ).",
+      "refutation_criterion": "Refuted if the seed-mean energy-distance ratio of W10_anchored on the held-out η exceeds that of G0 by more than 2 SE of the paired difference, or if, for the restart drift or for the null-count error, the paired difference G0 − W10 is not larger than 2 SE or W10 is below G0 in fewer than 4 of the 5 seeds.",
+      "protocol": "E4 as for H4: same data, held-out η, n = 512, metrics and floors. W10_anchored: potentials, B-sign equivariance, smooth condition embedding, ResMLP 512×4, 4000 iterations, batch 128 (the budget of W4s); W10L_anchored_long (8 times the iterations, GPU) is reported with it. Paired by seed with G0 (sampling seed) on the same data.",
+      "script": "experiments/e4_mhd3d.py --seed k --group D,E, k = 0..4",
+      "cost_estimate": "minutes of GPU per seed (no new data)",
+      "status": "registered",
+      "verdict": "",
+      "results": "",
+      "commit": "",
+      "comparison": "model families",
+      "seeds": 5
     }
   ]
 }

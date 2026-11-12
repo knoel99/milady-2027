@@ -1,0 +1,20 @@
+{
+ "variant": "W3_projected_flow",
+ "criterion": "lowest energy-distance ratio on the validation \u03b7, mean over the seeds",
+ "seeds": [
+  0,
+  1
+ ],
+ "val_ed_ratio": {
+  "W0_free": 255.82916753142135,
+  "W1_penalty": 569.8708780234113,
+  "W2_final_projection": 171.715179715894,
+  "W3_projected_flow": 171.31971388942384,
+  "W4_potentials": 288.7419985300225,
+  "W4s_potentials_sym": 258.4332822704691,
+  "W5_stationarity": 280.8107255837202,
+  "W5_control": 258.01550129706925,
+  "W6_diffusion": 655.5884992068868,
+  "W4c_potentials_smooth": 272.2799748784871
+ }
+}
