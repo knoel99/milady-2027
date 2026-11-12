@@ -2,6 +2,12 @@
 
 One entry per working session, newest first, at most ten lines.
 
+## 2026-11-12 - H7 registered, team cursor
+- Before any n = 32 or n = 48 energy number: the dynamic budget of test_energy_budget holds at both resolutions, for tg kf = 1 and abc kf = 2, seeds 1 to 5.
+- Seed 1 is the test control. Seeds 2, 3, 4 and 5 are variants. All twenty points must pass.
+- Bounds, fixed from the n = 16 test: rhs_abs_min > 0.05, rel_max < 0.01, scale_max < 1e-3, and the residual is finite.
+- A CPU run at n = 16 only checked the script. It is not an H7 point. No H100.
+
 ## 2026-11-12 - team prefix, team cursor
 - Pods this session creates are named `milady-cursor-job-*`. The prefix is `MILADY_TEAM`, default `cursor` (commit `e2e794b`).
 - `cleanup` deletes only that prefix, and only past the time limit. `milady-claude-job-*` and legacy `milady-job-*` stay, including with `--all`.

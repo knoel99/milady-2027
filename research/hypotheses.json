@@ -89,6 +89,19 @@
       "status": "refuted",
       "verdict": "",
       "results": "Twelve points, all finite, largest max_div_b 9.92e-16. The (8, 9) bracket holds at n=64 and n=96. It fails elsewhere. n=64: lambda(18)=3.15e-6 is not negative, lambda(28)=-6.36e-4 is not positive. n=96: lambda(26)=4.19e-4 is not negative. Files experiments/results/cursor_abc/n{64,96}_rm{8,9,17,18,26,28}_s0.json. Four pods, 0.2538 USD. The pre-set inequalities are not all true, so H6 is refuted.",
+      "commit": "f7ef668"
+    },
+    {
+      "id": "H7",
+      "statement": "At n = 32 and n = 48 the dynamic energy budget of test_energy_budget holds for both forcings, on the test control seed and on four variants: rhs_abs_min > 0.05, rel_max < 0.01, and scale_max < 1e-3, and every residual is finite.",
+      "origin": "tests/test_mhd3d.py test_energy_budget, n = 16 only. The same inequalities at the next two resolutions are not in that test.",
+      "refutation_criterion": "Refuted if any of the twenty points is non-finite or exits non-zero, if rhs_abs_min <= 0.05, if rel_max >= 0.01, or if scale_max >= 1e-3. Bounds copied from the n = 16 test before any n = 32 or n = 48 number. Not a 3D generator claim.",
+      "protocol": "Twenty points, python3 experiments/cursor_energy_budget.py --device cuda. n in {32, 48}, forcing tg with kf 1 and abc with kf 2, five seeds. Seed 1 is the test control. Seeds 2, 3, 4 and 5 are variants. 60 steps, dt 5e-3, nu 0.05, eta 0.08, forcing_amp 0.5, u0 random amp 1, b0_amp 0.5, float64. No H100. One pod, 1 h cap.",
+      "script": "experiments/cursor_energy_budget.py --device cuda --point 32,tg,1,1",
+      "cost_estimate": "One pod, 1 h cap. Dearest fallback is about 2.69 USD/h, so the worst-case hold is about 2.69 USD on top of the local ledger 0.69 USD.",
+      "status": "registered",
+      "verdict": "",
+      "results": "",
       "commit": ""
     }
   ]
