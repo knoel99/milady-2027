@@ -35,11 +35,11 @@ def f(v, d=3):
     return f"{v:.{d}g}"
 
 
-def merge(seed: int, quick: bool = False) -> Path | None:
+def merge(seed: int, quick: bool = False, root: Path = R) -> Path | None:
     """Merge the group files of a seed into results/e4_mhd3d[_quick]_s<seed>.json (both groups needed)."""
     tag = "_quick" if quick else ""
-    parts = [R / f"e4_mhd3d{tag}_s{seed}_{g}.json" for g in ("A", "B")]
-    whole = R / f"e4_mhd3d{tag}_s{seed}_all.json"
+    parts = [root / f"e4_mhd3d{tag}_s{seed}_{g}.json" for g in ("A", "B")]
+    whole = root / f"e4_mhd3d{tag}_s{seed}_all.json"
     if all(p.exists() for p in parts):
         data = [json.loads(p.read_text()) for p in parts]
     elif whole.exists():
@@ -53,17 +53,17 @@ def merge(seed: int, quick: bool = False) -> Path | None:
         out["times"].update(d["times"])
         out["h14"] += d["h14"]
         out["h12"] += d["h12"]
-    path = R / f"e4_mhd3d{tag}_s{seed}.json"
+    path = root / f"e4_mhd3d{tag}_s{seed}.json"
     path.write_text(json.dumps(out, indent=1, ensure_ascii=False), encoding="utf-8")
     return path
 
 
-def load(quick: bool = False) -> dict[int, dict]:
+def load(quick: bool = False, root: Path = R) -> dict[int, dict]:
     tag = "_quick" if quick else ""
     out = {}
     for s in SEEDS:
-        merge(s, quick)
-        p = R / f"e4_mhd3d{tag}_s{s}.json"
+        merge(s, quick, root)
+        p = root / f"e4_mhd3d{tag}_s{s}.json"
         if p.exists():
             out[s] = json.loads(p.read_text())
     return out
@@ -100,17 +100,22 @@ def select(runs: dict) -> dict:
             "seeds": sorted(runs), "val_ed_ratio": val}
 
 
-def section(quick: bool = False) -> list[str]:
+def section(quick: bool = False, root: Path = R, replication: str | None = None) -> list[str]:
+    """E4 section of the digest; with ``replication``, the same tables for an independent replication
+    stored under ``root`` (no selection file is written, the title says what the replication is)."""
     tag = "_quick" if quick else ""
-    runs = load(quick)
+    runs = load(quick, root)
     out: list[str] = []
     P = out.append
-    dp, rp = R / f"e4_data{tag}.json", R / f"e4_reference{tag}.json"
+    dp, rp = root / f"e4_data{tag}.json", root / f"e4_reference{tag}.json"
     if not dp.exists():
         return out
     data = json.loads(dp.read_text())
     c = data["config"]
-    P("## E4 - forced 3D MHD dynamo (ABC forcing at kf = 2), generation conditioned on η\n")
+    if replication:
+        P(f"## E4 - replication: {replication}\n")
+    else:
+        P("## E4 - forced 3D MHD dynamo (ABC forcing at kf = 2), generation conditioned on η\n")
     P(f"Data (experiments/e4_data.py): N = {c['N']}, every mode |m_i| ≤ {c['kcut']} ({c['modes']} complex modes per field component pair), "
       f"ν = {c['nu']} (Re = {f(c['Re'])}), kf = {c['kf']}; training η {c['eta_train']}; validation η {c['eta_val']}; test η {c['eta_test']}; "
       f"{c['n_traj']} trajectories per η, transient {c['t_burn']}, kept {c['t_keep']}, one snapshot every {c['every']}; {c['dtype']}; "
@@ -147,7 +152,7 @@ def section(quick: bool = False) -> list[str]:
         P("\nNull count of the reference against the evaluation grid (test η, same 100 snapshots): "
           + "; ".join(f"η = {k}: " + ", ".join(f"{g}³: {f(r.get(f'null_count_mean_grid{g}_n100'))}" for g in (32, 48, 64))
                       for k, r in test) + ".\n")
-    fp = R / "e4_floor.json"
+    fp = root / "e4_floor.json"
     floors = json.loads(fp.read_text())["values"] if fp.exists() and not quick else None
     if floors and ref:
         P("### Noise floors of the energy distance (experiments/e4_floor.py)\n")
@@ -194,7 +199,7 @@ def section(quick: bool = False) -> list[str]:
             cells.append(f"{f(np.nanmean(x))} ± {f(np.nanstd(x, ddof=1) if len(x) > 1 else None)} [{f(np.nanmin(x))}, {f(np.nanmax(x))}]")
         P(f"| {v} | " + " | ".join(cells) + " |")
     sel = select(runs)
-    if not quick:
+    if not quick and not replication:
         (R / "e4_selection.json").write_text(json.dumps(sel, indent=1), encoding="utf-8")
     sv = sel["variant"]
     P(f"\n### Selected generator: {sv}\n")
@@ -286,6 +291,43 @@ def section(quick: bool = False) -> list[str]:
         P(f"| {s} | " + " | ".join(f"{next(iter(r['times'][v].values())):.0f}" if v in r["times"] else "–" for v in tn)
           + f" | {sum(r['durations_s']):.0f} |")
     P("")
+    return out
+
+
+def convergence(root: Path = R / "replications" / "e4_convergence") -> list[str]:
+    """Convergence check of the E4 data: other grids and half the CFL number, same η (solver summaries)."""
+    files = [("16³, CFL 1.5 (same hardware)", "e4_data_n16_same_hardware.json"), ("16³, CFL 0.75", "e4_data_cfl0.75.json"),
+             ("24³, CFL 1.5", "e4_data_n24.json"), ("32³, CFL 1.5", "e4_data_n32.json")]
+    base_p = R / "e4_data.json"
+    if not base_p.exists() or not any((root / f).exists() for _, f in files):
+        return []
+    base = {v["eta"]: v for v in json.loads(base_p.read_text())["values"]}
+    out = ["## E4 - convergence of the data with the grid and the time step (experiments/e4_convergence_job.sh)\n",
+           "| η | run | E_u ± SE | E_B ± SE | H_M ± SE | E_B(1)/E_B | H(k = 1) | H(k = 2) | Σ_{k ≥ 3} H | energy residual |",
+           "|---|---|---|---|---|---|---|---|---|---|"]
+
+    def row(eta: float, label: str, v: dict) -> str:
+        se = lambda k: v[k]["sd_between_traj"] / np.sqrt(v["n_traj"])                 # noqa: E731
+        s = v.get("shells")
+        sh = (f"{f(s['E_B'][0] / sum(s['E_B']))} | {f(s['H'][0])} | {f(s['H'][1])} | {f(sum(s['H'][2:]))}" if s else "– | – | – | –")
+        return (f"| {eta:.5f} | {label} | {f(v['kinetic_energy']['mean'])} ± {f(se('kinetic_energy'), 2)} | "
+                f"{f(v['magnetic_energy']['mean'])} ± {f(se('magnetic_energy'), 2)} | {f(v['magnetic_helicity']['mean'])} ± "
+                f"{f(se('magnetic_helicity'), 2)} | {sh} | {f(v['balance_residual_total'])} |")
+
+    etas = sorted({v["eta"] for _, fn in files if (root / fn).exists()
+                   for v in json.loads((root / fn).read_text())["values"] if v["split"] == "test"}, reverse=True)
+    for eta in etas:
+        out.append(row(eta, "16³, CFL 1.5 (E4 data, CPU)", base[eta]))
+        for label, fn in files:
+            if (root / fn).exists():
+                d = json.loads((root / fn).read_text())
+                if d["config"].get("device", "cpu") == "cpu" and "same hardware" in label:
+                    continue
+                for v in d["values"]:
+                    if v["eta"] == eta and (fn != "e4_data_n16_same_hardware.json" or v.get("shells")):
+                        out.append(row(eta, label, v))
+    out.append("\nSE: standard deviation of the trajectory means over √(number of trajectories) (24). The shell columns exist only for the "
+               "runs made after the shell statistics were added to the data summary. Every run has its own random initial conditions.\n")
     return out
 
 

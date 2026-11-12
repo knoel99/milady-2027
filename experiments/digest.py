@@ -382,7 +382,14 @@ def e3():
 def e4():
     from e4_digest import section
 
+    from e4_digest import R as R4
+    from e4_digest import convergence
+
     lines = section()
+    gpu = R4 / "replications" / "e4_gpu"
+    if (gpu / "e4_data.json").exists():
+        lines += section(root=gpu, replication="regenerated data and all variants on a RunPod GPU pod (experiments/e4_gpu_job.sh)")
+    lines += convergence()
     if lines:
         print("\n".join(lines))
 
