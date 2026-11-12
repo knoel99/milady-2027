@@ -18,7 +18,10 @@ import numpy as np
 R = Path(__file__).resolve().parent / "results"
 SEEDS = (0, 1, 2, 3, 4)
 GENERATORS = ["W0_free", "W1_penalty", "W2_final_projection", "W3_projected_flow", "W4_potentials",
-              "W4s_potentials_sym", "W5_stationarity", "W5_control", "W6_diffusion", "W4c_potentials_smooth"]
+              "W4s_potentials_sym", "W5_stationarity", "W5_control", "W6_diffusion", "W4c_potentials_smooth",
+              "G0_gaussian_modes", "W9_skip_sym", "W9L_skip_long"]
+REGISTERED = ["W0_free", "W2_final_projection", "W3_projected_flow", "W4_potentials", "W4s_potentials_sym",
+              "W5_stationarity", "W6_diffusion"]
 POST = ["W7_tilting", "W8_rescaling", "W5_stationarity_half", "W5_control_half"]
 KEYS = [("ed_ratio", "ED / floor", False), ("div_rel_b_mean", "rel. div. B", False),
         ("balance_residual_total", "|energy residual|", True), ("spec_err_b_l2", "err. E_B(k)", False),
@@ -43,15 +46,16 @@ def merge(seed: int, tag: str | bool = "", root: Path = R) -> Path | None:
     tag = ("_quick" if tag else "") if isinstance(tag, bool) else tag
     parts = [root / f"e4_mhd3d{tag}_s{seed}_{g}.json" for g in ("A", "B")]
     whole = root / f"e4_mhd3d{tag}_s{seed}_all.json"
-    extra = root / f"e4_mhd3d{tag}_s{seed}_C.json"
     if all(p.exists() for p in parts):
         data = [json.loads(p.read_text()) for p in parts]
     elif whole.exists():
         data = [json.loads(whole.read_text())]
     else:
         return None
-    if extra.exists():
-        data.append(json.loads(extra.read_text()))
+    for g in ("C", "D"):                                     # optional groups, added after the first runs
+        extra = root / f"e4_mhd3d{tag}_s{seed}_{g}.json"
+        if extra.exists():
+            data.append(json.loads(extra.read_text()))
     out = {"config": {**data[0]["config"], "group": "merged"}, "evaluation": {}, "times": {}, "h14": [], "h12": [],
            "durations_s": [d["total_duration_s"] for d in data]}
     for d in data:
@@ -242,6 +246,16 @@ def section(quick: bool = False, root: Path = R, replication: str | None = None,
         P(paired_row("ED ratio: W6_diffusion − W4_potentials (H10)", ed("W6_diffusion"), ed("W4_potentials")))
         if not np.all(np.isnan(ed("W4c_potentials_smooth"))):
             P(paired_row("ED ratio: W4_potentials − W4c_potentials_smooth (H15)", ed("W4_potentials"), ed("W4c_potentials_smooth")))
+        has = lambda v: not np.all(np.isnan(ed(v)))                                  # noqa: E731
+        if has("G0_gaussian_modes"):
+            best = min((v for v in REGISTERED if has(v)), key=lambda v: float(np.nanmean(ed(v))))
+            P(paired_row(f"ED ratio: best registered generator ({best}) − G0_gaussian_modes (H16)", ed(best), ed("G0_gaussian_modes")))
+        if has("W9_skip_sym"):
+            P(paired_row("ED ratio: W4s_potentials_sym − W9_skip_sym (H17)", ed("W4s_potentials_sym"), ed("W9_skip_sym")))
+        if has("W9L_skip_long") and has("G0_gaussian_modes"):
+            for key, label in (("restart_drift_eb", "restart drift E_B"), ("null_count_err_rel", "err. nulls"), ("ed_ratio", "ED ratio")):
+                P(paired_row(f"{label}: G0_gaussian_modes − W9L_skip_long (H18)", per_seed(runs, "G0_gaussian_modes", key),
+                             per_seed(runs, "W9L_skip_long", key)))
         h12 = {s: r["h12"] for s, r in runs.items() if r["h12"]}
         if h12:
             m = lambda k: np.asarray([np.mean([x[k] for x in rows]) for rows in h12.values()])   # noqa: E731
@@ -254,6 +268,12 @@ def section(quick: bool = False, root: Path = R, replication: str | None = None,
               f"W4c_potentials_smooth {f(float(np.nanmean(ed('W4c_potentials_smooth'))))}; on the training η: "
               f"{f(float(np.nanmean(per_seed(runs, 'W4_potentials', 'ed_ratio', 'train'))))} and "
               f"{f(float(np.nanmean(per_seed(runs, 'W4c_potentials_smooth', 'ed_ratio', 'train'))))}.")
+        if has("W9_skip_sym"):
+            fl = [r["times"].get("W9_skip_sym", {}).get("fm_loss_train_sample") for r in runs.values()]
+            fl = [x for x in fl if x is not None]
+            P(f"\nH17: ratio of the seed-mean ED ratios W9_skip_sym / W4s_potentials_sym: "
+              f"{f(float(np.nanmean(ed('W9_skip_sym')) / np.nanmean(ed('W4s_potentials_sym'))))}; flow-matching loss of W9_skip_sym on "
+              f"a training sample, seed mean: {f(float(np.mean(fl))) if fl else '–'} (π/2 = 1.571 for independent unit Gaussian coordinates).")
         P(f"\nH5: relative divergence of B, seed mean: W0_free {f(div0.mean())}, W1_penalty {f(div1.mean())}, ratio {f(div1.mean() / div0.mean())}.")
         P(f"H7: ratio of the seed-mean ED ratios W5_stationarity / W5_control: {f(ed('W5_stationarity').mean() / ed('W5_control').mean())}.")
         P(f"H8: ESS/N of W7_tilting, seed mean over the test η: {f(float(np.nanmean(per_seed(runs, 'W7_tilting', 'ess_frac'))))}.")

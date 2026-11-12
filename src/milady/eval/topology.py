@@ -60,15 +60,17 @@ def _trilinear(corners: torch.Tensor, p: torch.Tensor) -> tuple[torch.Tensor, to
     return val, torch.stack([jx, jy, jz], dim=-1)
 
 
-def null_points(b: Any, newton_iters: int = 20, tol: float = 1e-8) -> dict[str, np.ndarray]:
-    """Null points of periodic fields ``b`` of shape ``(..., nx, ny, nz, 3)``.
+def null_points(b: Any, newton_iters: int = 20, tol: float = 1e-8,
+                device: str | torch.device | None = None) -> dict[str, np.ndarray]:
+    """Null points of periodic fields ``b`` of shape ``(..., nx, ny, nz, 3)`` (computed on ``device``).
 
     Returns ``sample`` (index of the field in the flattened leading dimensions), ``position``
     (n_null, 3) in grid units (cell index + position in the cell), ``sign`` (±1: sign of det ∇B),
     ``count``, ``positive`` and ``negative`` (per field, shape of the leading dimensions) and
     ``candidates`` (number of cells kept by the reduction, per field).
     """
-    f = torch.as_tensor(np.asarray(b), dtype=torch.float64)
+    f = torch.as_tensor(np.asarray(b), dtype=torch.float64, device=device)
+    dev = f.device
     lead = f.shape[:-4]
     f = f.reshape(-1, *f.shape[-4:])
     ns, nx, ny, nz, _ = f.shape
@@ -85,10 +87,10 @@ def null_points(b: Any, newton_iters: int = 20, tol: float = 1e-8) -> dict[str, 
     scale = cc.abs().amax(dim=(1, 2, 3, 4)).clamp_min(1e-300)
     found_cell, found_pos, found_sign = [], [], []
     for start in _STARTS:
-        p = torch.tensor(start, dtype=torch.float64).expand(cc.shape[0], 3).clone()
+        p = torch.tensor(start, dtype=torch.float64, device=dev).expand(cc.shape[0], 3).clone()
         for _ in range(newton_iters):
             val, jac = _trilinear(cc, p)
-            step = torch.linalg.solve(jac + 1e-14 * scale[:, None, None] * torch.eye(3, dtype=torch.float64), val)
+            step = torch.linalg.solve(jac + 1e-14 * scale[:, None, None] * torch.eye(3, dtype=torch.float64, device=dev), val)
             p = (p - step).clamp(-1.0, 2.0)
         val, jac = _trilinear(cc, p)
         ok = (val.abs().amax(dim=1) < tol * scale) & (p >= 0).all(dim=1) & (p < 1).all(dim=1)
@@ -100,25 +102,26 @@ def null_points(b: Any, newton_iters: int = 20, tol: float = 1e-8) -> dict[str, 
     sign = torch.cat(found_sign)
     # merge duplicates: same cell and same position to 1e-4 of a cell
     key = torch.cat([cell[:, None].double(), torch.round(pos * 1e4)], dim=1)
-    _, first = np.unique(key.numpy(), axis=0, return_index=True)
-    first = torch.as_tensor(np.sort(first))
+    _, first = np.unique(key.cpu().numpy(), axis=0, return_index=True)
+    first = torch.as_tensor(np.sort(first), device=dev)
     cell, pos, sign = cell[first], pos[first], sign[first]
     sample = idx[cell, 0]
     count = torch.bincount(sample, minlength=ns)
     positive = torch.bincount(sample[sign > 0], minlength=ns)
     negative = torch.bincount(sample[sign < 0], minlength=ns)
     return {
-        "sample": sample.numpy(),
-        "position": (idx[cell, 1:].double() + pos).numpy(),
-        "sign": sign.numpy(),
-        "count": count.numpy().reshape(lead),
-        "positive": positive.numpy().reshape(lead),
-        "negative": negative.numpy().reshape(lead),
-        "candidates": cand.reshape(ns, -1).sum(1).numpy().reshape(lead),
+        "sample": sample.cpu().numpy(),
+        "position": (idx[cell, 1:].double() + pos).cpu().numpy(),
+        "sign": sign.cpu().numpy(),
+        "count": count.cpu().numpy().reshape(lead),
+        "positive": positive.cpu().numpy().reshape(lead),
+        "negative": negative.cpu().numpy().reshape(lead),
+        "candidates": cand.reshape(ns, -1).sum(1).cpu().numpy().reshape(lead),
     }
 
 
-def null_count(b: Any, chunk: int = 8) -> np.ndarray:
+def null_count(b: Any, chunk: int = 8, device: str | torch.device | None = None) -> np.ndarray:
     """Number of null points of each field of ``b`` ``(n, nx, ny, nz, 3)``, computed by chunks of fields."""
     arr = np.asarray(b)
-    return np.concatenate([np.atleast_1d(null_points(arr[i : i + chunk])["count"]) for i in range(0, arr.shape[0], chunk)])
+    return np.concatenate([np.atleast_1d(null_points(arr[i : i + chunk], device=device)["count"])
+                           for i in range(0, arr.shape[0], chunk)])

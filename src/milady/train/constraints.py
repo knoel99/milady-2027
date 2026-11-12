@@ -28,7 +28,14 @@ Sampling procedures
       (I-projection, Proposition 7).
 Model family
     - ``diffusion``: :mod:`milady.train.diffusion` (variance-preserving path, v-prediction,
-      ancestral or deterministic sampler), on the same spaces and networks.
+      ancestral or deterministic sampler), on the same spaces and networks;
+    - :class:`ModewiseAffineSkip` (``modewise_skip``): v = G(t, c) x + b(t, c) + network, with one
+      C × C matrix per mode. A network narrower than the latent dimension cannot represent the linear
+      part of the optimal field (for Gaussian data the field is linear in x); the explicit term can;
+    - :class:`ModewiseGaussian` (``gaussian_modes``): no network, the conditional Gaussian law with
+      one mean and one covariance per Fourier mode, interpolated between the training conditions. It
+      reproduces the mode-wise second-order statistics (spectra, helicities, mean budgets) and nothing
+      else: the baseline that a generative model has to beat.
 
 All field coefficients are "forward"-normalized (independent of the resolution) and given on the
 half set of modes of the space: ``fh`` has shape ``(b, F, M, 3)`` (complex), ``F`` fields in the order
@@ -50,6 +57,8 @@ from milady.train.flow import heun_sample
 __all__ = [
     "REGISTRY",
     "FourierComponentSpace",
+    "ModewiseAffineSkip",
+    "ModewiseGaussian",
     "balance_rescaling",
     "balance_tilting",
     "budget_terms_hat",
@@ -72,6 +81,8 @@ REGISTRY: dict[str, tuple[str, str]] = {
     "balance_rescaling": ("sampling", "per-sample rescaling of the small scales to the energy balance"),
     "balance_tilting": ("sampling", "exponential tilting of the samples on the stationarity identities"),
     "diffusion": ("model", "variance-preserving diffusion, v-prediction, ancestral or deterministic sampler"),
+    "modewise_skip": ("design", "explicit mode-wise affine term of the velocity field, around a network with a bottleneck"),
+    "gaussian_modes": ("model", "conditional Gaussian law with one mean and covariance per Fourier mode: second-order baseline"),
 }
 
 
@@ -396,3 +407,95 @@ def balance_tilting(residuals: np.ndarray, reg: float = 1.0) -> tuple[np.ndarray
     from milady.eval.tilt import exp_tilt
 
     return exp_tilt(np.asarray(residuals, dtype=np.float64), reg=reg)
+
+
+# =============================================================================================
+# Model families: explicit linear part, second-order baseline
+# =============================================================================================
+class ModewiseAffineSkip(nn.Module):
+    """v(x, t, c) = G(t, c) x + b(t, c) + base(x, t, c), with one C × C matrix G and one offset b per mode.
+
+    ``x``: latent ``(b, M, C)``. For Gaussian data the optimal flow-matching field is affine in x; with
+    uncorrelated Fourier modes it is exactly of this mode-wise form. A base network whose hidden
+    width is below M × C cannot carry that term (its Jacobian has rank at most the width): it is given
+    explicitly here, as two linear read-outs of an embedding of (t, c), initialized at zero.
+    """
+
+    def __init__(self, base: nn.Module, n_modes: int, n_channels: int, n_cond: int, emb_dim: int = 128,
+                 n_freq: int = 16, cond_scale: float = 0.5) -> None:
+        super().__init__()
+        from milady.train.fm3d import ConditionEmbedding
+
+        self.base = base
+        self.n_modes, self.n_channels = n_modes, n_channels
+        self.embed = ConditionEmbedding(n_cond, emb_dim, n_freq, cond_scale)
+        self.gain = nn.Linear(emb_dim, n_modes * n_channels * n_channels)
+        self.offset = nn.Linear(emb_dim, n_modes * n_channels)
+        for layer in (self.gain, self.offset):
+            nn.init.zeros_(layer.weight)
+            nn.init.zeros_(layer.bias)
+
+    def affine(self, x: torch.Tensor, t: torch.Tensor, c: torch.Tensor) -> torch.Tensor:
+        """The explicit term G(t, c) x + b(t, c)."""
+        e = torch.nn.functional.silu(self.embed(t, c))
+        g = self.gain(e).view(-1, self.n_modes, self.n_channels, self.n_channels)
+        return torch.einsum("bmij,bmj->bmi", g, x) + self.offset(e).view(-1, self.n_modes, self.n_channels)
+
+    def forward(self, x: torch.Tensor, t: torch.Tensor, c: torch.Tensor) -> torch.Tensor:
+        return self.affine(x, t, c) + self.base(x, t, c)
+
+
+class ModewiseGaussian:
+    """Conditional Gaussian law with one mean and one C × C covariance per Fourier mode.
+
+    :meth:`fit` estimates the moments of the latents ``x`` (N, M, C) at each distinct value of a
+    scalar condition; :meth:`moments` interpolates them linearly between the two neighbouring
+    training conditions (a convex combination of covariances is a covariance; no extrapolation);
+    :meth:`sample` draws from the interpolated law. ``sign`` (C,), entries ±1: the law is made
+    invariant under x → sign · x (e.g. B → −B) by averaging the moments with their images.
+    """
+
+    def __init__(self, sign: torch.Tensor | None = None, jitter: float = 1e-6) -> None:
+        self.sign = sign
+        self.jitter = jitter
+        self.c: torch.Tensor | None = None
+        self.mean: torch.Tensor | None = None
+        self.cov: torch.Tensor | None = None
+
+    @torch.no_grad()
+    def fit(self, x: torch.Tensor, c: torch.Tensor) -> ModewiseGaussian:
+        x = x.to(torch.float64)
+        values = torch.unique(c)
+        means, covs = [], []
+        for v in values:
+            xv = x[c == v]
+            m = xv.mean(0)
+            d = xv - m
+            cov = torch.einsum("nmi,nmj->mij", d, d) / len(xv)
+            if self.sign is not None:
+                s = self.sign.to(x.dtype).to(x.device)
+                m = 0.5 * (m + s * m)
+                cov = 0.5 * (cov + s[:, None] * cov * s[None, :])
+            means.append(m)
+            covs.append(cov)
+        self.c, self.mean, self.cov = values.to(torch.float64), torch.stack(means), torch.stack(covs)
+        return self
+
+    def moments(self, c: float) -> tuple[torch.Tensor, torch.Tensor]:
+        """Mean (M, C) and covariance (M, C, C) at the condition ``c`` (clamped to the training range)."""
+        assert self.c is not None and self.mean is not None and self.cov is not None, "fit first"
+        grid = self.c
+        c = float(min(max(c, float(grid[0])), float(grid[-1])))
+        j = int(torch.searchsorted(grid, torch.tensor(c, dtype=grid.dtype, device=grid.device)).clamp(1, len(grid) - 1))
+        w = (c - float(grid[j - 1])) / (float(grid[j]) - float(grid[j - 1]))
+        return (1 - w) * self.mean[j - 1] + w * self.mean[j], (1 - w) * self.cov[j - 1] + w * self.cov[j]
+
+    @torch.no_grad()
+    def sample(self, c: float, n: int, generator: torch.Generator | None = None) -> torch.Tensor:
+        """``n`` latents (n, M, C), float32, from the Gaussian law at the condition ``c``."""
+        mean, cov = self.moments(c)
+        eye = torch.eye(cov.shape[-1], dtype=cov.dtype, device=cov.device)
+        scale = cov.diagonal(dim1=-2, dim2=-1).mean(-1).clamp_min(1e-30)
+        chol = torch.linalg.cholesky(cov + self.jitter * scale[:, None, None] * eye)
+        xi = torch.randn(n, *mean.shape, generator=generator, dtype=cov.dtype).to(cov.device)
+        return (mean + torch.einsum("mij,nmj->nmi", chol, xi)).to(torch.float32)

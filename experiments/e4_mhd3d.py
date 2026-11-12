@@ -64,12 +64,13 @@ NULL_GRID = 48
 GROUPS = {"A": ["W0_free", "W1_penalty", "W2_final_projection", "W3_projected_flow"],
           "B": ["W4_potentials", "W4s_potentials_sym", "W5_stationarity", "W5_control", "W6_diffusion",
                 "W7_tilting", "W8_rescaling"],
-          "C": ["W4c_potentials_smooth"]}      # H15: W4 with a smooth embedding of the condition
+          "C": ["W4c_potentials_smooth"],      # H15: W4 with a smooth embedding of the condition
+          "D": ["G0_gaussian_modes", "W9_skip_sym", "W9L_skip_long"]}   # H16-H18: second-order baseline, affine skip
 
 FULL = {"iters": 4000, "batch": 128, "width": 512, "depth": 4, "lr": 5e-4, "n_gen": 512, "n_gen_train": 256,
         "steps": 50, "ft_iters": 400, "ft_lr": 2e-4, "beta": 20.0, "stat_cond": 4, "stat_per": 16, "stat_steps": 6,
-        "n_null": 200, "n_restart": 128, "tau": 4.0, "floor_splits": 10, "n_ref_null": 400}
-QUICK = {**FULL, "iters": 150, "width": 256, "depth": 2, "n_gen": 96, "n_gen_train": 64, "steps": 12,
+        "n_null": 200, "n_restart": 128, "tau": 4.0, "floor_splits": 10, "n_ref_null": 400, "long_factor": 8}
+QUICK = {**FULL, "iters": 150, "width": 256, "depth": 2, "n_gen": 96, "n_gen_train": 64, "steps": 12, "long_factor": 2,
          "ft_iters": 20, "n_null": 24, "n_restart": 24, "tau": 1.0, "floor_splits": 4, "n_ref_null": 32}
 
 
@@ -236,7 +237,7 @@ class Context:
             m = min(self.cfg["n_null"], n)
             b = self.pot.to_grid(fh[:m, 1:2].cpu().to(torch.complex128), (NULL_GRID,) * 3)[:, 0].numpy()
             wn = w[:m] / w[:m].sum()
-            count = float(wn @ null_count(b))
+            count = float(wn @ null_count(b, device=self.dev))
             ref_count = self.ref_json["values"][f"{eta:.5f}"]["null_count_mean"]
             row.update(null_count=count, null_count_err_rel=abs(count - ref_count) / ref_count)
         return row
@@ -247,8 +248,8 @@ class Context:
         n = min(self.cfg["n_restart"], len(fh))
         fh = fh[:n].cpu().to(torch.complex128)
         grid = self.pot.to_grid(fh, (N_GRID,) * 3)                                 # (n, 2, nx, ny, nz, 3)
-        sim = MHD3D(D.solver_config(eta, n, seed=0))
-        to_hat = lambda f: sim._fft(f.permute(0, 4, 1, 2, 3).to(sim.rdtype)) * sim.mask     # noqa: E731
+        sim = MHD3D(D.solver_config(eta, n, seed=0, device=str(self.dev)))
+        to_hat = lambda f: sim._fft(f.permute(0, 4, 1, 2, 3).to(sim.device, sim.rdtype)) * sim.mask     # noqa: E731
         t0 = C.budget_terms_hat(self.pot, fh, D.NU, eta)
         sim.uh, sim.bh = to_hat(grid[:, 0]), to_hat(grid[:, 1])
         sim.advance_to(self.cfg["tau"], dt=D.DT, cfl=D.CFL)
@@ -363,12 +364,13 @@ def run(quick: bool, seed: int, group: str, device: str = "cpu", cond_scale: flo
     """``cond_scale``: maximum frequency of the condition embedding of every network of the run (8: the
     pre-race default, registered protocol of H4-H14; another value tags the output files ``_cs<value>``)."""
     t_start = time.time()
-    need = {"A": ("comp",), "B": ("pot", "pot_sym"), "C": ("pot",), "all": ("pot", "pot_sym", "comp")}[group]
+    need = {"A": ("comp",), "B": ("pot", "pot_sym"), "C": ("pot",), "D": ("pot_sym",),
+            "all": ("pot", "pot_sym", "comp")}[group]
     ctx = Context(quick, need, device)
     cfg, dev = ctx.cfg, ctx.dev
     if ctx.ref_json is None:
         raise SystemExit("run `python3 e4_mhd3d.py --reference` first")
-    names = GROUPS["A"] + GROUPS["B"] + GROUPS["C"] if group == "all" else GROUPS[group]
+    names = GROUPS["A"] + GROUPS["B"] + GROUPS["C"] + GROUPS["D"] if group == "all" else GROUPS[group]
     pot, pot_sym, comp = ctx.pot_d, ctx.pot_sym_d, ctx.comp_d          # on the training device
     net = lambda sp, cs=cond_scale: ResMLP(sp.n_modes, sp.n_channels, 1, width=cfg["width"], depth=cfg["depth"],   # noqa: E731
                                            cond_scale=cs).to(dev)
@@ -540,6 +542,40 @@ def run(quick: bool, seed: int, group: str, device: str = "cpu", cond_scale: flo
         record("W4c_potentials_smooth", {e: generate(mc, pot, e, n) for e, n in eval_etas})
         del mc
 
+    # ---------------- group D: second-order baseline and explicit affine term ----------------
+    if "G0_gaussian_modes" in names:
+        t0 = time.time()
+        g0 = C.ModewiseGaussian(sign=pot_sym.sign).fit(ctx.x_pot_sym, ctx.c_train[:, 0])
+        results["times"]["G0_gaussian_modes"] = {"fit_time_s": time.time() - t0}
+
+        def sample_g0(eta: float, n: int) -> torch.Tensor:
+            g = torch.Generator().manual_seed(100003 * seed + 31 + ETAS.index(eta))
+            z = g0.sample(float(np.float32(cn(eta))), n, generator=g)
+            return pot_sym.field_hat(pot_sym.denormalize(z)).cpu()
+
+        record("G0_gaussian_modes", {e: sample_g0(e, n) for e, n in eval_etas})
+        del g0
+    if "W9_skip_sym" in names:
+        def skip_net() -> torch.nn.Module:
+            base = net(pot_sym, 0.5)
+            skip = C.ModewiseAffineSkip(base, pot_sym.n_modes, pot_sym.n_channels, 1, cond_scale=0.5)
+            return SignSymmetrized(skip, pot_sym.sign).to(dev)
+
+        long = ["W9L_skip_long"] if (dev.type == "cuda" or quick) else []      # 8 times the budget: GPU only
+        for vname in ["W9_skip_sym", *long]:
+            seed_all(seed)
+            iters = cfg["iters"] * (cfg["long_factor"] if vname == "W9L_skip_long" else 1)
+            m9, tsec = train(skip_net(), fm, ctx.x_pot_sym, ctx.c_train, iters, cfg["lr"], cfg["batch"], vname)
+            results["times"][vname] = {"training_time_s": tsec, "iters": iters}
+            with torch.no_grad():                                     # final flow-matching loss against π/2
+                gl = torch.Generator().manual_seed(11)
+                idx = torch.randint(0, len(ctx.x_pot_sym), (2048,), generator=gl)
+                results["times"][vname]["fm_loss_train_sample"] = float(
+                    np.mean([fm_loss(m9, ctx.x_pot_sym[idx[i:i + 256]], ctx.c_train[idx[i:i + 256]]).item()
+                             for i in range(0, 2048, 256)]))
+            record(vname, {e: generate(m9, pot_sym, e, n) for e, n in eval_etas})
+            del m9
+
     results["total_duration_s"] = time.time() - t_start
     tag = ("" if cond_scale == 8.0 else f"_cs{cond_scale:g}") + ("_quick" if quick else "")
     save_json(results, f"e4_mhd3d{tag}_s{seed}_{group}.json")
@@ -551,7 +587,7 @@ if __name__ == "__main__":
     ap = argparse.ArgumentParser(description=__doc__, formatter_class=argparse.RawDescriptionHelpFormatter)
     ap.add_argument("--quick", action="store_true")
     ap.add_argument("--seed", type=int, default=0, help="seed of the networks, the training and the generation")
-    ap.add_argument("--group", choices=["A", "B", "C", "all"], default="all")
+    ap.add_argument("--group", choices=["A", "B", "C", "D", "all"], default="all")
     ap.add_argument("--reference", action="store_true", help="reference statistics only (no model)")
     ap.add_argument("--threads", type=int, default=1)
     ap.add_argument("--device", default="cpu", help="cpu or cuda: networks, training sets and generation")

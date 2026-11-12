@@ -226,3 +226,76 @@ def test_diffusion() -> None:
     loss = diffusion.diffusion_loss(lambda x, t, c: net(x), x1, torch.zeros(32, 1), generator=g)
     loss.backward()
     assert math.isfinite(loss.item()) and net.weight.grad is not None
+
+
+def test_modewise_skip() -> None:
+    """Zero at initialization; affine in x; lets a bottlenecked network reach the linear optimum."""
+    M, Cc = 12, 4
+    g = torch.Generator().manual_seed(7)
+
+    def bottleneck() -> torch.nn.Module:
+        class Net(torch.nn.Module):
+            def __init__(self) -> None:
+                super().__init__()
+                self.f = torch.nn.Sequential(torch.nn.Linear(M * Cc + 1, 3), torch.nn.SiLU(), torch.nn.Linear(3, M * Cc))
+
+            def forward(self, x: torch.Tensor, t: torch.Tensor, c: torch.Tensor) -> torch.Tensor:
+                return self.f(torch.cat([x.flatten(1), t[:, None]], dim=1)).view_as(x)
+
+        return Net()
+
+    torch.manual_seed(0)
+    base = bottleneck()
+    skip = C.ModewiseAffineSkip(base, M, Cc, n_cond=1)
+    x, t, c = torch.randn(5, M, Cc, generator=g), torch.rand(5, generator=g), torch.rand(5, 1, generator=g)
+    assert torch.allclose(skip(x, t, c), base(x, t, c))                       # zero-initialized term
+    torch.nn.init.normal_(skip.gain.weight, std=0.1)
+    a1, a2 = skip.affine(x, t, c), skip.affine(2 * x, t, c)
+    off = skip.affine(torch.zeros_like(x), t, c)
+    assert torch.allclose(a2 - off, 2 * (a1 - off), atol=1e-5)                # affine in x
+    # Gaussian data with mode-dependent variances: the optimum is linear in x, out of reach of width 3
+    std = torch.linspace(0.3, 2.0, M)[None, :, None]
+    losses = {}
+    for name in ("base", "skip"):
+        torch.manual_seed(1)
+        net = bottleneck() if name == "base" else C.ModewiseAffineSkip(bottleneck(), M, Cc, n_cond=1)
+        opt = torch.optim.Adam(net.parameters(), lr=1e-2)
+        gen = torch.Generator().manual_seed(2)
+        for _ in range(400):
+            x1 = std * torch.randn(256, M, Cc, generator=gen)
+            loss = fm_loss(net, x1, torch.zeros(256, 1), generator=gen)
+            opt.zero_grad()
+            loss.backward()
+            opt.step()
+        losses[name] = loss.item()
+    assert losses["skip"] < losses["base"] - 0.1, losses
+
+
+def test_gaussian_modes() -> None:
+    """Moments recovered at the training conditions, interpolated in between, symmetric under the sign."""
+    M, Cc, n = 6, 4, 20000
+    g = torch.Generator().manual_seed(8)
+    a = torch.randn(2, M, Cc, Cc, generator=g) * 0.5
+    mean = torch.randn(2, M, Cc, generator=g)
+    xs, cs = [], []
+    for j, cv in enumerate((0.2, 0.8)):
+        xi = torch.randn(n, M, Cc, generator=g)
+        xs.append(mean[j] + torch.einsum("mij,nmj->nmi", a[j], xi))
+        cs.append(torch.full((n,), cv))
+    x, c = torch.cat(xs), torch.cat(cs)
+    model = C.ModewiseGaussian().fit(x, c)
+    cov_true = torch.einsum("kmij,kmlj->kmil", a, a).double()
+    m0, c0 = model.moments(0.2)
+    assert torch.allclose(m0, mean[0].double(), atol=0.03) and torch.allclose(c0, cov_true[0], atol=0.05)
+    mm, cm = model.moments(0.5)
+    assert torch.allclose(mm, 0.5 * (mean[0] + mean[1]).double(), atol=0.03)
+    assert torch.allclose(cm, 0.5 * (cov_true[0] + cov_true[1]), atol=0.05)
+    assert torch.allclose(model.moments(0.0)[0], m0) and torch.allclose(model.moments(1.5)[0], model.moments(0.8)[0])
+    s = model.sample(0.5, 20000, generator=g)
+    assert s.dtype == torch.float32 and s.shape == (20000, M, Cc)
+    d = s.double() - s.double().mean(0)
+    assert torch.allclose(torch.einsum("nmi,nmj->mij", d, d) / len(s), cm, atol=0.08)
+    sign = torch.tensor([1.0, 1.0, -1.0, -1.0])
+    sym = C.ModewiseGaussian(sign=sign).fit(x, c)
+    ms, cvs = sym.moments(0.5)
+    assert float(ms[:, 2:].abs().max()) == 0.0 and float(cvs[:, :2, 2:].abs().max()) == 0.0

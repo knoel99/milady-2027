@@ -7,11 +7,13 @@
 #   python3 tools/runpod_job.py run --hours 2 --outputs experiments/results/replications/e4_gpu \
 #       -- bash experiments/e4_gpu_job.sh full "0 1 2 3 4"
 #   ... --outputs experiments/results/replications/e4_gpu_quick -- bash experiments/e4_gpu_job.sh quick "0"
+# Third argument: name of the output directory under results/replications/ (default e4_gpu).
 set -u
 MODE=${1:-quick}; SEEDS=${2:-0}
 Q=""; TAG=""; if [ "$MODE" = quick ]; then Q="--quick"; TAG="_quick"; fi
 cd "$(dirname "$0")"
-OUT=results/replications/e4_gpu$TAG; mkdir -p "$OUT" results/logs
+NAME=${3:-e4_gpu}
+OUT=results/replications/$NAME$TAG; mkdir -p "$OUT" results/logs
 NPROC=$(nproc); NSEED=$(echo $SEEDS | wc -w); THREADS=$(( NPROC / NSEED > 8 ? 8 : (NPROC / NSEED > 0 ? NPROC / NSEED : 1) ))
 T0=$(date +%s); stamp() { echo "[$(( $(date +%s) - T0 )) s] $*"; }
 python -c "import torch; print('torch', torch.__version__, 'cuda', torch.cuda.is_available(), torch.cuda.get_device_name(0) if torch.cuda.is_available() else '-')"
