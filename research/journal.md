@@ -2,6 +2,10 @@
 
 One entry per working session, newest first, at most ten lines.
 
+## 2026-11-12 - H6 registered, team cursor
+- Before the next GPU points: lambda changes sign in (8, 9), (17, 18) and (26, 28) at n = 64 and n = 96, seed 0, and final max_div_b stays below 1e-8.
+- The brackets are the E3 digest crossings (thresholds 8.87, 17.6, 26.8). The protocol note is a single-model simulation (no independent sub-agent).
+
 ## 2026-11-12 - H5 ABC growth, team cursor
 - Sixteen points, t = 120, dt cap 0.05, CFL 1, float64. A40 at 0.59 USD/h, two RTX 4090 at 0.89 USD/h, RTX 5090 at 1.39 USD/h. Those four ledger rows sum 0.1654 USD. Local ledger 0.4357 USD.
 - Seed 0 signs match the E3 digest at Rm 6, 12, 20 and 30, at n = 48 and n = 64. Largest final max_div_b is 9.33e-16.

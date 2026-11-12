@@ -63,7 +63,7 @@
       "status": "supported",
       "verdict": "",
       "results": "float32 on an RTX 4090 at 0.89 USD/h, 0.281 h, 0.2501 USD, rc 0. n=64 seconds_per_step 0.006443568398244679, n=128 0.008683746322058141. float64 on an RTX PRO 4500 Blackwell at 0.72 USD/h, 0.0281 h, 0.0202 USD, rc 0. n=64 0.003924073041416704, n=128 0.04840661495923996. One run per dtype, different GPUs, no speedup claim. Logs research/gpu-logs/bench-float32.log and bench-float64.log.",
-      "commit": ""
+      "commit": "df029fb"
     },
     {
       "id": "H5",
@@ -76,6 +76,19 @@
       "status": "supported",
       "verdict": "",
       "results": "Sixteen points, all finite, max_div_b 9.33e-16. Seed 0 signs match the digest at Rm 6, 12, 20, 30 for n=48 and n=64. Rm=12 five-seed means 0.008041 (n=48, sample std 0.000497) and 0.008128 (n=64, sample std 0.000667); absolute mean difference 8.68e-5. Files experiments/results/cursor_abc/. GPUs A40, RTX 4090, RTX 5090. Local ledger 0.4357 USD after these jobs. Not a 3D generator result.",
+      "commit": "5730dcb"
+    },
+    {
+      "id": "H6",
+      "statement": "At seed 0, with the same integrator as H5, the kinematic ABC growth rate changes sign inside each of the three digest windows, at both n = 64 and n = 96: lambda(8) < 0 < lambda(9), lambda(17) > 0 > lambda(18), and lambda(26) < 0 < lambda(28). Final max_div_b stays below 1e-8 on every point.",
+      "origin": "E3 digest interpolated thresholds 8.87, 17.6 and 26.8 (experiments/results/digest.md). H5 checked signs far from those thresholds. This asks whether the crossings themselves survive at higher resolution.",
+      "refutation_criterion": "Refuted if any scheduled point is non-finite or exits non-zero, if any final max_div_b is >= 1e-8, or if any of the six inequalities fails at n = 64 or at n = 96. Brackets fixed from the digest before the run. One seed. Not a 3D generator claim.",
+      "protocol": "Twelve points, python3 experiments/cursor_abc_batch.py --device cuda, t = 120, dt cap 0.05, cfl 1, seed 0. Rm in {8, 9, 17, 18, 26, 28} at n = 64 and at n = 96. No H100. Before launch, Claude ledger plus local ledger plus reserved pods plus the worst-case price of the new pods must stay under 150 USD.",
+      "script": "experiments/cursor_abc_batch.py --device cuda --point 64,8,0 --point 64,9,0",
+      "cost_estimate": "Twelve points on up to four pods, 0.5 h cap each. Dearest fallback is about 2.69 USD/h, so the worst-case hold is about 5.4 USD on top of the local ledger 0.44 USD and the Claude ledger 1.71 USD.",
+      "status": "registered",
+      "verdict": "",
+      "results": "",
       "commit": ""
     }
   ]
