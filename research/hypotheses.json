@@ -73,9 +73,9 @@
       "protocol": "CPU smoke first: python3 experiments/cursor_abc_growth.py --quick (n = 16, t = 2, Rm = 12). That smoke is not the sample. Then GPU points, each python3 experiments/cursor_abc_growth.py --rm R --n N --seed S --t 120 --dt 0.05 --cfl 1 --device cuda. Seed 0 at n in {48, 64} and Rm in {6, 12, 20, 30}, plus seeds 1-4 at Rm = 12 for both n. Sixteen points. No H100. Before each launch, Claude ledger plus local ledger plus reserved running pods plus the job's worst-case price must stay under 150 USD.",
       "script": "experiments/cursor_abc_growth.py --rm 12 --n 64 --seed 0 --device cuda",
       "cost_estimate": "Sixteen points. Step count is about t / min(dt, cfl_dt). Hours set from the H4 seconds_per_step once it exists. Worst-case hold per pod is hours times the dearest fallback price, and the sum with ledgers and reservations must stay under 150 USD.",
-      "status": "registered",
+      "status": "supported",
       "verdict": "",
-      "results": "",
+      "results": "Sixteen points, all finite, max_div_b 9.33e-16. Seed 0 signs match the digest at Rm 6, 12, 20, 30 for n=48 and n=64. Rm=12 five-seed means 0.008041 (n=48, sample std 0.000497) and 0.008128 (n=64, sample std 0.000667); absolute mean difference 8.68e-5. Files experiments/results/cursor_abc/. GPUs A40, RTX 4090, RTX 5090. Local ledger 0.4357 USD after these jobs. Not a 3D generator result.",
       "commit": ""
     }
   ]

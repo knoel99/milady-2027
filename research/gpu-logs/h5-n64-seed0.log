@@ -1,0 +1,10 @@
+{"Rm": 6.0, "n": 64, "seed": 0, "t": 120.0, "dt_cap": 0.05, "cfl": 1.0, "cfl_dt0": 0.01122391716169123, "steps": 10800, "lambda": -0.046692780101695655, "max_div_b": 2.1454617393526857e-16, "finite": true, "ok": true}
+{"Rm": 12.0, "n": 64, "seed": 0, "t": 120.0, "dt_cap": 0.05, "cfl": 1.0, "cfl_dt0": 0.01122391716169123, "steps": 10800, "lambda": 0.0071572526964764896, "max_div_b": 3.366602213001763e-16, "finite": true, "ok": true}
+{"Rm": 20.0, "n": 64, "seed": 0, "t": 120.0, "dt_cap": 0.05, "cfl": 1.0, "cfl_dt0": 0.01122391716169123, "steps": 10800, "lambda": -0.004470581528193845, "max_div_b": 5.384322879843229e-16, "finite": true, "ok": true}
+{"Rm": 30.0, "n": 64, "seed": 0, "t": 120.0, "dt_cap": 0.05, "cfl": 1.0, "cfl_dt0": 0.01122391716169123, "steps": 10800, "lambda": 0.012871364441041273, "max_div_b": 8.880957047727124e-16, "finite": true, "ok": true}
+
+--- status
+2026-11-12T22:21:26Z boot NVIDIA GeForce RTX 4090, 24564 MiB
+2026-11-12T22:22:25Z job started
+2026-11-12T22:23:27Z job finished rc=0 in 62 s
+2026-11-12T22:23:27Z DONE rc=0

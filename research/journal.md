@@ -2,6 +2,13 @@
 
 One entry per working session, newest first, at most ten lines.
 
+## 2026-11-12 - H5 ABC growth, team cursor
+- Sixteen points, t = 120, dt cap 0.05, CFL 1, float64. A40 at 0.59 USD/h, two RTX 4090 at 0.89 USD/h, RTX 5090 at 1.39 USD/h. Those four ledger rows sum 0.1654 USD. Local ledger 0.4357 USD.
+- Seed 0 signs match the E3 digest at Rm 6, 12, 20 and 30, at n = 48 and n = 64. Largest final max_div_b is 9.33e-16.
+- Rm = 12, seeds 0-4. Mean lambda 0.008041 at n = 48 (sample std 0.000497) and 0.008128 at n = 64 (sample std 0.000667). Absolute difference of the means 8.68e-5.
+- The H5 refutation criterion is not met. This is one campaign of the kinematic solver, not a 3D generator.
+- Role notes in this journal are a single-model simulation (no independent sub-agent). These rates are the pod outputs.
+
 ## 2026-11-12 - H4 GPU bench, team cursor
 - float32, NVIDIA GeForce RTX 4090, 0.89 USD/h, 0.281 h, 0.2501 USD, rc 0. n=64 0.00644 s/step, n=128 0.00868 s/step. One run. Peak memory 0.070 GB and 0.549 GB.
 - float64, NVIDIA RTX PRO 4500 Blackwell, 0.72 USD/h, 0.0281 h, 0.0202 USD, rc 0. n=64 0.00392 s/step, n=128 0.0484 s/step. One run. Peak memory 0.140 GB and 1.098 GB.
