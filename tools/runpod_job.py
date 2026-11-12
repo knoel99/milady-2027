@@ -42,6 +42,7 @@ CONFIG = ROOT / "race" / "config.toml"
 LEDGER = ROOT / "research" / "compute-ledger.jsonl"
 MCP_URL = os.environ.get("RUNPOD_MCP_URL", "https://mcp.runpod.io/")
 PREFIX = "milady-job-"
+USER_AGENT = "milady-runpod-job/1"
 
 BOOTSTRAP = r"""
 set -u
@@ -52,7 +53,11 @@ status "boot $(nvidia-smi --query-gpu=name,memory.total --format=csv,noheader 2>
 exec >> "$OUT/setup.log" 2>&1
 cd /workspace && git clone -q "$REPO" milady && cd milady && git checkout -q "$REF" || { status "FAILED clone"; sleep infinity; }
 grep -vE '^(torch==|--extra-index-url|--index-url)' infra/env/requirements.txt > /tmp/req.txt
-pip install -q -r /tmp/req.txt && pip install -q --no-deps -e . || { status "FAILED pip"; sleep infinity; }
+# The image ships Debian-installed packages (pyparsing...) that pip cannot uninstall: install the pins
+# in a virtual environment that still sees the image's CUDA torch, or else on top of the system ones.
+if python3 -m venv --system-site-packages /opt/milady-venv; then . /opt/milady-venv/bin/activate; fi
+{ pip install -q -r /tmp/req.txt || pip install -q --ignore-installed -r /tmp/req.txt; } \
+  && pip install -q --no-deps -e . || { status "FAILED pip"; sleep infinity; }
 python3 -c "import torch; print('torch', torch.__version__, 'cuda', torch.cuda.is_available())" >> "$OUT/setup.log"
 status "job started"
 echo "$CMD_B64" | base64 -d > /tmp/job.sh
@@ -118,8 +123,10 @@ def ledger_append(entry: dict) -> None:
 
 
 def http_get(url: str) -> bytes | None:
+    """GET through the RunPod HTTP proxy. The proxy (Cloudflare) answers 403, error 1010, to the default
+    ``Python-urllib`` agent: without an explicit User-Agent the job status is never read (pilot, 2026-11-12)."""
     try:
-        with urllib.request.urlopen(urllib.request.Request(url), timeout=60) as r:
+        with urllib.request.urlopen(urllib.request.Request(url, headers={"User-Agent": USER_AGENT}), timeout=60) as r:
             return r.read()
     except (urllib.error.URLError, TimeoutError, OSError):
         return None
@@ -157,6 +164,15 @@ def run(args, mcp: MCP | None = None, sleep=time.sleep) -> int:
     if account is not None:
         print(f"RunPod account spend (all teams, billing may lag): ${account:.2f} of ${credit} credit",
               file=sys.stderr)
+    jobs = running_jobs(mcp)  # other jobs of this tool in flight (any session): their worst case is reserved
+    limit = int(cfg.get("max_parallel", 4))
+    if len(jobs) >= limit:
+        print(f"{len(jobs)} GPU jobs already running (limit [gpu].max_parallel = {limit}): wait for one to end",
+              file=sys.stderr)
+        return 1
+    reserved = sum(j["reserved_usd"] for j in jobs)
+    if jobs:
+        print(f"{len(jobs)} job(s) in flight, ${reserved:.2f} reserved for their worst case", file=sys.stderr)
     token = secrets.token_hex(16)
     env = {"JOB_TOKEN": token, "REPO": cfg.get("repo", "https://github.com/knoel99/milady-2027.git"),
            "REF": sha, "CMD_B64": base64.b64encode(command.encode()).decode(),
@@ -177,14 +193,14 @@ def run(args, mcp: MCP | None = None, sleep=time.sleep) -> int:
                 print(f"skip {gid} ({cloud}): not offered on this cloud", file=sys.stderr)
                 continue
             worst = hours * listed
-            if account is not None and account + worst > credit - cfg.get("credit_margin_usd", 5) \
+            if account is not None and account + reserved + worst > credit - cfg.get("credit_margin_usd", 5) \
                     and not args.over_budget_approved:
                 print(f"skip {gid} ({cloud}): up to ${worst:.2f} would exhaust the shared RunPod credit "
                       f"(${account:.2f} of ${credit} billed)", file=sys.stderr)
                 continue
-            if budget and spent + worst > budget and not args.over_budget_approved:
+            if budget and spent + reserved + worst > budget and not args.over_budget_approved:
                 print(f"skip {gid} ({cloud}): up to ${worst:.2f} would exceed the ${budget} budget "
-                      f"(${spent:.2f} spent)", file=sys.stderr)
+                      f"(${spent:.2f} spent, ${reserved:.2f} reserved by running jobs)", file=sys.stderr)
                 continue
             body = {"name": f"{PREFIX}{token[:8]}", "cloud": cloud, "image": cfg.get("image"),
                     "gpu": {"id": gid, "count": 1, "minCudaVersion": cfg.get("min_cuda", "12.8")},
@@ -240,8 +256,11 @@ def run(args, mcp: MCP | None = None, sleep=time.sleep) -> int:
             with tarfile.open(fileobj=io.BytesIO(data)) as tar:
                 tar.extractall(ROOT, filter="data")
         logs = http_get(base + "job.log") or b""
+        setup = b""
+        if rc != 0:  # the job did not run or failed: bring back the end of the set-up log (clone, pip)
+            setup = b"\n--- setup (tail)\n" + (http_get(base + "setup.log") or b"")[-4000:]
         Path(args.log).parent.mkdir(parents=True, exist_ok=True)
-        Path(args.log).write_bytes(logs + b"\n--- status\n" + status.encode())
+        Path(args.log).write_bytes(logs + setup + b"\n--- status\n" + status.encode())
     finally:
         try:
             mcp.call("delete-pod", {"id": pid})
@@ -256,6 +275,24 @@ def run(args, mcp: MCP | None = None, sleep=time.sleep) -> int:
     print("The outputs are only in this checkout: commit and push them now, with research/compute-ledger.jsonl.",
           file=sys.stderr)
     return 0 if rc == 0 else 1
+
+
+def running_jobs(mcp, now: float | None = None) -> list[dict]:
+    """Pods of this tool still alive, with the dollars their time limit can still cost (plus the 15 min grace)."""
+    now = now or time.time()
+    found = mcp.call("list-pods", {})
+    out = []
+    for p in (found.get("pods", []) if isinstance(found, dict) else found or []):
+        if not str(p.get("name", "")).startswith(PREFIX):
+            continue
+        limit_h = int((p.get("env") or {}).get("MAX_MIN", 120)) / 60 + 0.25
+        try:
+            age_h = (now - dt.datetime.fromisoformat(p["createdAt"]).timestamp()) / 3600
+        except (KeyError, ValueError):
+            age_h = 0.0
+        out.append({"id": p.get("id"), "name": p.get("name"), "age_h": age_h, "limit_h": limit_h,
+                    "reserved_usd": float(p.get("cost") or 0) * max(0.0, limit_h - age_h)})
+    return out
 
 
 def account_spend(mcp) -> float | None:
@@ -293,7 +330,8 @@ def main() -> int:
     r.add_argument("command", nargs=argparse.REMAINDER)
     sub.add_parser("prices")
     sub.add_parser("spend")
-    sub.add_parser("cleanup")
+    c = sub.add_parser("cleanup", help="delete pods of this tool past their time limit (orphans of a crashed run)")
+    c.add_argument("--all", action="store_true", help="also delete pods whose job may still be running")
     a = ap.parse_args()
     if a.cmd == "run":
         return run(a)
@@ -311,13 +349,12 @@ def main() -> int:
                 g = cat.get(gid, {})
                 print(f"{cloud:<9} {gid:<48} ${g.get('price', {}).get(cloud.lower())}/h  stock {g.get('availability')}")
         return 0
-    pods = mcp.call("list-pods", {})
-    items = pods.get("pods", []) if isinstance(pods, dict) else pods
-    left = [p for p in items if str(p.get("name", "")).startswith(PREFIX)]
-    for p in left:
-        mcp.call("delete-pod", {"id": p["id"]})
-        print(f"deleted {p['id']} {p.get('name')}")
-    print(f"{len(left)} pod(s) deleted; {len(items) - len(left)} other pod(s) left untouched")
+    jobs = running_jobs(mcp)
+    gone = [j for j in jobs if a.all or j["age_h"] > j["limit_h"] + 0.25]  # parallel jobs keep their pods
+    for j in gone:
+        mcp.call("delete-pod", {"id": j["id"]})
+        print(f"deleted {j['id']} {j['name']} (age {j['age_h']:.2f} h, limit {j['limit_h']:.2f} h)")
+    print(f"{len(gone)} pod(s) deleted; {len(jobs) - len(gone)} job pod(s) still within their time limit kept")
     return 0
 
 
