@@ -87,6 +87,8 @@ def main() -> int:
     roles = sorted(ROLES.glob("*.md"))
     stale = []
     for provider, cfg in providers.items():
+        if cfg.get("format") == "none":
+            continue  # catalogue only: no generator for this provider yet
         render = RENDERERS.get(cfg.get("format", ""))
         if render is None:
             print(f"skip {provider}: format {cfg.get('format')!r} not supported")
