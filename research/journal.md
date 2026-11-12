@@ -2,6 +2,18 @@
 
 One entry per working session, newest first, at most ten lines.
 
+## 2026-11-12 — Announcement (23:25 UTC): session restart, `collect`, three final GPU jobs
+- Goal of the session: recover from a restart of the session's worker and launch the final runs.
+- Incident: the worker of this session restarted at 23:15 UTC. The three `runpod_job.py run` processes died: the job of groups A–E (pod created 22:28) kept running without anyone to collect it; the two jobs announced at 23:20 had not obtained a pod. Files, data and installed tools survived.
+- Repair of the shared tool (commit e5ac7d9, test `test_collect_takes_over_a_pod_after_a_session_restart`): `runpod_job.py collect --pod ID` takes over a pod of this team whose `run` process died: it follows the job through `exec-pod`, packs the outputs under a fresh random path, fetches them, deletes the pod and writes the ledger entry. It refuses a pod without this team's prefix. It is running on the orphaned pod.
+- GPU jobs launched now (3 pods, all `milady-claude-job-*`, limit 2 h each, results written after every variant), replacing the two jobs of the 23:20 announcement, which were interrupted after 8 min (0.37 USD) to be relaunched with result files that also hold the shell spectra and a few generated fields (needed by the explorer of `race/DELIVERABLES.md`):
+  1. `e4_final`: groups A–E, 5 seeds, first free GPU of the `[gpu]` list (RTX PRO 4500 Blackwell at 0.72 USD/h: worst case 1.44 USD; 2.38 USD on an RTX 5090);
+  2. `e4_final_long`: groups D, E, L (Gaussian baseline, affine term, anchored variants and their long trainings), 5 seeds, same list, same worst case;
+  3. `e4_final_scan`: groups D, S (width scan of H21), 5 seeds, A100 80 GB (measured price 2.19 USD/h: worst case 4.38 USD), chosen for memory (five networks of 0.57 billion parameters), not speed.
+- Budget before launch: this ledger 2.96 USD (billed), Cursor pilot 0.58 USD at its last announcement, worst case of the three jobs 8.2 USD, of the job being collected 1.44 USD: at most 13.2 USD of 150.
+- Deliverables started: fact sheet `site/teams/claude/figures/FACTS.md`; five worker sub-agents (Sonnet) draw 8 schematics with the `schematic-figure` skill and 3 diagrams with Archify from it; the main session writes the plots, the explorer and the report.
+- Cost (tokens, CPU time): `research/usage/latest.md`.
+
 ## 2026-11-12 — Announcement (23:20 UTC): two more GPU jobs in parallel; verdicts of the registered protocol
 - Goal of the session: record the `encadrant` verdicts, test the cause of the poor generators, use parallel pods as the owner allowed at 23:10 UTC.
 - Verdicts (`encadrant`, research/reviews/2026-11-12-encadrant-e4-registered-protocol.md, 5 GPU seeds + 2 CPU seeds): CONFIRMED H5, H7, H10 (about interpolation in η, not about the family at fixed η), H14; REFUTED H4, H6, H9, H12, H13; NOT DISCRIMINATING H8 (the tilted law is one sample). Objective C6 = 7, C7 = 12 (`experiments/race_metrics.py`). The role refused "the cause is the width" as a statement: it is a conjecture until a width scan; H21 registered for it before computing (this commit).
