@@ -177,5 +177,5 @@ def test_launch_scripts_for_every_team(monkeypatch):
         assert f"MILADY_PROVIDER=\"{team}\"" in env and f"dummy-{team}" in env
         ms = cfg["main_session"]
         cmd, *_ = race_launch.build_command(team, ms["tier"], ms["reasoning"], 10, "P")
-        assert cmd[0] in {"claude", "codex", "agy", "grok", "vibe", "kimi", "qwen"} and "P" in cmd
+        assert cmd[0] in {"claude", "codex", "agy", "grok", "vibe", "kimi", "qwen", "dsh"} and "P" in cmd
     assert "| claude |" in race_launch.plan()

@@ -111,5 +111,5 @@ def test_run_role_dry_run_builds_the_harness_command():
                             "--role", "encadrant", "--task", "-", "--dry-run"],
                            input="claim", capture_output=True, text=True, check=True)
         out = json.loads(r.stdout)
-        assert out["command"][0] in {"claude", "codex", "agy", "grok", "vibe", "kimi", "qwen"}
+        assert out["command"][0] in {"claude", "codex", "agy", "grok", "vibe", "kimi", "qwen", "dsh"}
         assert any("<prompt" in c for c in out["command"])

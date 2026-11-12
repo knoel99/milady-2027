@@ -72,7 +72,8 @@ unconfirmed = ["public API for gemini-4-carbon (the chart says no public API; th
 
 [google.tier]
 frontier = "gemini-4-carbon"
-standard = "gemini-3.8-flash"
+standard = "gemini-4-argon"  # "efficient Gemini 4 frontier reasoning model"; same token price as Carbon, fewer tokens per turn
+light = "gemini-3.8-flash"
 
 [google.reasoning]
 low = "low"
@@ -92,12 +93,14 @@ effort_field = "generationConfig.thinkingConfig.thinkingLevel"
 name = "Antigravity CLI"
 install = "curl -fsSL https://antigravity.google/cli/install.sh | bash"
 setup = "curl -fsSL https://antigravity.google/cli/install.sh | bash -s -- --skip-aliases && mkdir -p ~/.gemini/antigravity-cli && echo '{\"modelProvider\": \"gemini\"}' > ~/.gemini/antigravity-cli/settings.json"  # run once on the team VM; unverified until the first launch
-effort_source = "none"  # level: role level as is; provider: [reasoning] value; none: not settable per call
-command = ["agy", "-p", "{prompt}", "--model", "{model}", "--output-format", "json", "--dangerously-skip-permissions"]
-effort_support = "no per-call effort flag; model slugs from `agy models`"
+effort_source = "provider"  # level: role level as is; provider: [reasoning] value; none: not settable per call
+command = ["agy", "-p", "{prompt}", "--model", "{model}", "--effort", "{effort}", "--output-format", "json", "--dangerously-skip-permissions"]
+effort_support = "--effort for one run (low, medium, high; xhigh and max only for models that publish them); model slugs to read with `agy models`"
 
 [google.index]
+# Price of Carbon and Argon (aistudio.google.com/docs/pricing): $2 / $10 per 1M tokens until 2026-11-30, then $4 / $20.
 "Gemini 4 Carbon (high)" = 60
+"Gemini 4 Argon (high), from artificialanalysis.ai, not on the chart" = 50
 "Gemini 3.8 Flash (high)" = 31
 
 [google.cli]
@@ -328,8 +331,8 @@ subagents = ".qwen/agents/*.md, YAML header: name, description, model, approvalM
 [deepseek]
 format = "none"
 reasoning_param = "reasoning_effort (low, high, max; default high)"
-docs = ["https://api-docs.deepseek.com/", "https://api-docs.deepseek.com/guides/thinking_mode"]
-unconfirmed = ["open-weights repo of V4.1 Flash 1017", "official coding CLI (none found)"]
+docs = ["https://api-docs.deepseek.com/", "https://api-docs.deepseek.com/guides/thinking_mode", "https://github.com/deepseek-ai/deepseek-harness"]
+unconfirmed = ["open-weights repo of V4.1 Flash 1017", "dsh: name of the API key variable, permission mode for unattended runs, per-run model and effort"]
 
 [deepseek.tier]
 frontier = "deepseek-flash"
@@ -349,6 +352,17 @@ effort_field = "reasoning_effort"
 extra = { thinking = { type = "enabled" } }
 
 [deepseek.harness]
+# DeepSeek's own harness, developer preview ("THERE WILL BE COMPATIBILITY-BREAKING CHANGES"), MIT.
+# https://github.com/deepseek-ai/deepseek-harness, apps/cli/reference/README.md. Pin the version on the pilot.
+name = "DeepSeek Harness (dsh, developer preview)"
+install = "npm install -g @deepseek-ai/dsh"
+setup = "npm install -g @deepseek-ai/dsh"  # run once on the team VM; unverified until the first launch
+effort_source = "none"
+command = ["dsh", "--profile", "headless", "{prompt}"]
+effort_support = "not per call: llm-deepseek.reasoningEffort (off, low, high, max) in $DSH_HOME/profiles/headless/cordis.patch.yml; the model too; read the schema with dsh --dump-config-schema on the pilot"
+
+[deepseek.harness_fallback]
+# Claude Code through the Anthropic-compatible endpoint: used if dsh fails on the pilot.
 # Read by tools/run_role.py. From the official docs on 2026-11-12; confirm with a dry run.
 name = "Claude Code (DeepSeek Anthropic endpoint)"
 install = "npm install -g @anthropic-ai/claude-code"
@@ -387,6 +401,7 @@ effort_field = "reasoning_effort"
 extra = { thinking = { type = "enabled" } }
 
 [zhipu.harness]
+# ZCode (zcode.z.ai) is Z.ai's own agent but a desktop app with no documented headless mode (2026-11-12): not usable unattended.
 # Read by tools/run_role.py. From the official docs on 2026-11-12; confirm with a dry run.
 name = "Claude Code (Z.ai Anthropic endpoint)"
 install = "npm install -g @anthropic-ai/claude-code"
