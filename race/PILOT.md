@@ -14,6 +14,12 @@ The pilot runs the race with a single team before the nine-provider race: one Cl
 | Budgets | GPU: 140 USD of the 150 USD prepaid RunPod credit, all usable (`race/config.toml` `[gpu]` `budget_usd`; 10 USD margin for storage and rounding). Claude: the plan's usage limit; `tools/usage_report.py` gives the API-equivalent cost |
 | Duration | one week from the start, or until a budget is spent |
 
+## Results and data storage
+
+- `tools/runpod_job.py` brings each job's outputs back into this checkout (default `experiments/results` and `site/experiments/figures`, or the paths given with `--outputs`) with the job log in `research/gpu-logs/`. Commit and push them right after the job.
+- Small results (JSON, figures, digests, logs) go into git. Never commit a file above 50 MB: GitHub refuses files above 100 MB and the repository must stay light.
+- Where large data lives (3D fields in MFF/HDF5, training sets, checkpoints) is your decision. Before producing more than about 1 GB, choose a storage, write the choice and its reasons in `research/data-storage.md` (what is stored where, how a pod and this session read it back, what it costs, what happens to it after the pilot), and record it in the journal. Use what the repository already has where it fits (`docs/specs/data-format.md`, `src/milady/storage.py`, `src/milady/catalog/`), and keep every dataset regenerable from a committed script and its parameters.
+
 ## Monitoring
 
 `tools/usage_report.py --write research/usage` reads the session transcripts and writes `research/usage/latest.md` and `latest.json`:
