@@ -164,9 +164,9 @@
       "protocol": "Five seeds, 0-4. python3 experiments/cursor_abc_batch.py --device cuda --cfl 1 --out-dir experiments/results/cursor_abc_n128 --point 128,12,0 --point 128,12,1 --point 128,12,2 --point 128,12,3 --point 128,12,4. t = 120, dt cap 0.05, float64. GPU order: RTX 4090, then PRO 4500, then A6000. One pod, 1.5 h cap.",
       "script": "experiments/cursor_abc_batch.py --device cuda --cfl 1 --point 128,12,0",
       "cost_estimate": "One pod, 1.5 h cap on an RTX 4090 at 0.89 USD/h, so the hold is 1.34 USD. The n = 96 five-point job on that GPU cost 0.0927 USD.",
-      "status": "registered",
+      "status": "supported",
       "verdict": "",
-      "results": "",
+      "results": "Five points, all finite, largest max_div_b 4.99e-16. Mean lambda 0.007691 (sample std 0.000788). Absolute difference from the n=64 control 0.008127803 is 4.37e-4, under the pre-set 0.0005. Files experiments/results/cursor_abc_n128/. Pod 2ve329wmhyavou, RTX 4090, 0.3872 h, 0.3446 USD. The refutation criterion is not met. Not a 3D generator result.",
       "commit": ""
     },
     {

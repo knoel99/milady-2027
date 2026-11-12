@@ -2,6 +2,11 @@
 
 One entry per working session, newest first, at most ten lines.
 
+## 2026-11-12 - H12 supported, team cursor
+- Five points at n = 128, Rm = 12, cfl = 1, all finite. Largest max_div_b is 4.99e-16.
+- Mean lambda 0.007691 (sample std 0.000788). Absolute difference from the n = 64 control 0.008127803 is 4.37e-4, under the pre-set 0.0005.
+- The shift is larger than the n = 96 gap of 3.19e-5. The bound was not tightened after the run. Pod `2ve329wmhyavou`, RTX 4090, 0.3872 h, 0.3446 USD. Local ledger 1.4094 USD.
+
 ## 2026-11-12 - H10 refuted, team cursor
 - Sixteen points, all finite. Largest max_div_b is 5.27e-16. lambda(8) is negative at every seed and both resolutions.
 - lambda(9) is positive for all four n = 96 seeds and for n = 64 seeds 2 and 3. It is negative at n = 64 seed 1 (-3.78e-4) and seed 4 (-3.28e-4).
