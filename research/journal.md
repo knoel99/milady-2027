@@ -2,6 +2,12 @@
 
 One entry per working session, newest first, at most ten lines.
 
+## 2026-11-12 - H10 refuted, team cursor
+- Sixteen points, all finite. Largest max_div_b is 5.27e-16. lambda(8) is negative at every seed and both resolutions.
+- lambda(9) is positive for all four n = 96 seeds and for n = 64 seeds 2 and 3. It is negative at n = 64 seed 1 (-3.78e-4) and seed 4 (-3.28e-4).
+- H10 is refuted. The sign rule was not changed after the run. Pod `175n5esaa52aji`, RTX 4090, 0.19 h, 0.1691 USD. Local ledger 1.0648 USD.
+- The account already had four live pods when H12 was ready, three of them Claude's, so that launch created nothing.
+
 ## 2026-11-12 - H12 and H13 registered, team cursor
 - H9 holds, so the next resolution is n = 128 against the same n = 64 control, with the bound tightened to 0.0005 before that run.
 - H13 asks whether the H8 timestep tolerance of 0.002 still holds at n = 96, against the H9 cfl = 1 mean 0.008095872. The cfl = 0.5 points are not computed yet.
