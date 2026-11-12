@@ -229,8 +229,11 @@ def run(args, mcp: MCP | None = None, sleep=time.sleep) -> int:
             with tarfile.open(fileobj=io.BytesIO(data)) as tar:
                 tar.extractall(ROOT, filter="data")
         logs = http_get(base + "job.log") or b""
+        setup = b""
+        if rc != 0:  # the job did not run or failed: bring back the end of the set-up log (clone, pip)
+            setup = b"\n--- setup (tail)\n" + (http_get(base + "setup.log") or b"")[-4000:]
         Path(args.log).parent.mkdir(parents=True, exist_ok=True)
-        Path(args.log).write_bytes(logs + b"\n--- status\n" + status.encode())
+        Path(args.log).write_bytes(logs + setup + b"\n--- status\n" + status.encode())
     finally:
         try:
             mcp.call("delete-pod", {"id": pid})
