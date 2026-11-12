@@ -32,6 +32,10 @@ The pilot runs the race with a single team before the nine-provider race: one Cl
 
 `tools/runpod_job.py spend` gives the GPU spend alone; `tools/runpod_job.py cleanup` deletes any pod a failed job left behind. The session commits the report after each hypothesis and at least every four hours of work, so that the owner can follow it on the branch from any client.
 
+## Reviews over time
+
+The `encadrant` and the `jury-externe` step in when `python3 tools/review_due.py due` says so, not once a week: after new results or hypotheses, after `encadrant_max_gap_hours` of work without a review, at each quarter of the span from `[reviews]` `start` to the deadline, and when the report changes (`race/config.toml` `[reviews]`). Run it after every commit that adds a result and at least every hour; run every due review before going on; record it with `tools/review_due.py log`, so that `research/reviews.jsonl` shows when each role stepped in and what it found.
+
 ## Stop rules
 
 1. The whole GPU budget may be used, but a job starts only if its worst case (time limit × hourly price) fits in what is left: `tools/runpod_job.py` checks it, so no job is cut off by an empty credit. Commit and push the outputs and `research/compute-ledger.jsonl` right after each job: the session's container is the only other copy.

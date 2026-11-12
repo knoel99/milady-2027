@@ -679,3 +679,39 @@ gain = "no smaller Ling 3.1; MTP speculative decoding in SGLang and vLLM"
 [thinking_machines.fast]
 models = {}
 gain = "no smaller Inkling 2 yet; lowering effort is the only speed lever"
+
+# --- Cursor (Grok and Composer, Cursor Ultra) ---------------------------------------------
+# Read in the official documentation on 2026-11-12: https://cursor.com/docs/subagents,
+# https://cursor.com/docs/models-and-pricing, https://cursor.com/docs/cloud-agent/api/endpoints.
+# Cursor reads sub-agents from .cursor/agents/ (wins over .claude/agents/ on a name clash);
+# `model` takes an id with optional bracketed parameters, e.g. composer-2.5[fast=false].
+# The pilot of race/PILOT-CURSOR.md runs every role in Fast mode (2x price, plan ending soon).
+[cursor]
+output_dir = ".cursor/agents"
+format = "cursor"
+fast = true
+docs = ["https://cursor.com/docs/subagents", "https://cursor.com/docs/models-and-pricing",
+        "https://cursor.com/docs/cloud-agent/api/endpoints"]
+unconfirmed = ["the name and values of the effort parameter for Grok 4.7 (check with tools/cursor_agents.py models)",
+               "several bracketed parameters in one sub-agent model string ([effort=high,fast=true])"]
+
+[cursor.tier]
+frontier = "grok-4.7"
+standard = "grok-4.7"
+light = "composer-2.5"
+
+[cursor.reasoning]
+low = "low"
+medium = "medium"
+high = "high"
+max = "xhigh"
+
+[cursor.cloud_api]
+# Read by tools/cursor_agents.py (Cloud Agents API).
+base_url = "https://api.cursor.com/v1"
+key_env = "CURSOR_API_KEY"
+effort_param = "effort"
+fast_param = "fast"
+
+[cursor.index]
+"Grok 4.7 (xhigh)" = 35
