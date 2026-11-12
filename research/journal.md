@@ -2,6 +2,12 @@
 
 One entry per working session, newest first, at most ten lines.
 
+## 2026-11-12 - GPU choice and H9-H11, team cursor
+- Cost per completed point from this branch's ledger. n = 96, three points: PRO 4500 244 s and 0.0683 USD (0.0228 USD/point); A40 586 s and 0.1117 USD (0.0372 USD/point). The 4500 is cheaper and faster, so A40 is not used.
+- n = 64, three points: RTX 4090 56 s and 0.0380 USD (0.0127 USD/point); A6000 99 s and 0.0358 USD (0.0119 USD/point). Five cfl = 0.5 points on the PRO 4500: 158 s and 0.0502 USD (0.0100 USD/point).
+- No completed run on A100, L40S, or RTX PRO 6000, so those stay off the list. H100 stays off the list. Launch order is PRO 4500, then RTX 4090, then A6000.
+- H9, H10, and H11 are registered before their runs. They are independent, so they take the three free slots beside the live Claude pod. Claude's hypotheses are E4 generator comparisons and are not copied.
+
 ## 2026-11-12 - H8 supported, team cursor
 - Five points at n = 64, Rm = 12, cfl = 0.5, all finite. Largest final max_div_b is 5.63e-16.
 - Mean lambda 0.007805 (sample std 0.000458). Absolute difference from the cfl = 1 control mean 0.008127803 is 0.000323, under the pre-set 0.002.

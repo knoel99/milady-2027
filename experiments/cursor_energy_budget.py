@@ -19,9 +19,8 @@ import numpy as np
 from milady.sim.mhd3d import MHD3D, MHD3DConfig
 
 
-def run_point(n: int, forcing: str, kf: int, seed: int, device: str) -> dict:
+def run_point(n: int, forcing: str, kf: int, seed: int, device: str, steps: int = 60) -> dict:
     dt = 5e-3
-    steps = 60
     cfg = MHD3DConfig(
         n=n,
         mode="dynamic",
@@ -76,15 +75,18 @@ def main(argv: list[str] | None = None) -> int:
     ap = argparse.ArgumentParser(description=__doc__)
     ap.add_argument("--point", action="append", required=True, help="n,forcing,kf,seed")
     ap.add_argument("--device", default="cuda")
+    ap.add_argument("--steps", type=int, default=60)
     ap.add_argument("--out-dir", default="experiments/results/cursor_energy")
     args = ap.parse_args(argv)
+    if args.steps < 4:
+        sys.exit("--steps must be at least 4 so the centered residual is defined")
     out = Path(args.out_dir)
     out.mkdir(parents=True, exist_ok=True)
     rc = 0
     for spec in args.point:
         n_s, forcing, kf_s, seed_s = spec.split(",")
         n, kf, seed = int(n_s), int(kf_s), int(seed_s)
-        info = run_point(n, forcing, kf, seed, args.device)
+        info = run_point(n, forcing, kf, seed, args.device, steps=args.steps)
         if not info["finite"]:
             rc = 1
         name = f"n{n}_{forcing}_kf{kf}_s{seed}.json"

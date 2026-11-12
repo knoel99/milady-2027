@@ -115,6 +115,45 @@
       "status": "supported",
       "verdict": "",
       "results": "Five points, all finite, largest max_div_b 5.63e-16. Mean lambda 0.007805 (sample std 0.000458). Absolute difference from the cfl=1 control mean 0.008127803 is 0.000323, under the pre-set 0.002. Files experiments/results/cursor_abc_cfl05/. Pod o4cerdg2ehjai2, RTX PRO 4500, 0.0502 USD. The refutation criterion is not met. Not a 3D generator result.",
+      "commit": "6d4282b"
+    },
+    {
+      "id": "H9",
+      "statement": "At n = 96, Rm = 12, cfl = 1, the five-seed mean kinematic ABC growth rate stays within 0.001 of the n = 64 cfl = 1 control mean 0.008127803049079646, and every point is finite with final max_div_b below 1e-8.",
+      "origin": "H5 measured that control at n = 64. The n = 48 versus n = 64 mean gap there was 8.68e-5. n = 96 at Rm = 12 has not been run. Claude's registered hypotheses are E4 generator comparisons, not this kinematic resolution check.",
+      "refutation_criterion": "Refuted if any point is non-finite or exits non-zero, if any final max_div_b is >= 1e-8, or if the absolute difference between the five-seed mean and 0.008127803049079646 is >= 0.001. The control mean and the 0.001 bound were fixed before the n = 96 run. Not a 3D generator claim.",
+      "protocol": "Five seeds, 0-4. The n = 64 cfl = 1 points are the control. n = 96 is the variant. python3 experiments/cursor_abc_batch.py --device cuda --cfl 1 --out-dir experiments/results/cursor_abc_n96 --point 96,12,0 --point 96,12,1 --point 96,12,2 --point 96,12,3 --point 96,12,4. t = 120, dt cap 0.05, float64. GPU order from the measured cost per point: RTX PRO 4500, then RTX 4090, then RTX A6000. No H100. One pod, 1 h cap.",
+      "script": "experiments/cursor_abc_batch.py --device cuda --cfl 1 --point 96,12,0",
+      "cost_estimate": "One pod, 1 h cap. Measured n = 96 cost on the PRO 4500 is about 0.023 USD per point, so five points are about 0.12 USD plus setup, well under a 0.72 USD hold.",
+      "status": "registered",
+      "verdict": "",
+      "results": "",
+      "commit": ""
+    },
+    {
+      "id": "H10",
+      "statement": "The (8, 9) sign bracket holds for seeds 1, 2, 3 and 4 at both n = 64 and n = 96: lambda(8) < 0 < lambda(9), and every new point is finite with final max_div_b below 1e-8.",
+      "origin": "H6 seed 0 already has lambda(8) < 0 < lambda(9) at both resolutions. The other digest brackets failed at seed 0 and are not reopened. The other seeds of this one bracket have not been run.",
+      "refutation_criterion": "Refuted if any scheduled point is non-finite or exits non-zero, if any final max_div_b is >= 1e-8, or if lambda(8) >= 0 or lambda(9) <= 0 at either resolution for any of seeds 1-4. Signs fixed before the run. Not a 3D generator claim.",
+      "protocol": "Sixteen points. Seed 0 is the already measured control. Seeds 1, 2, 3 and 4 are the variants, at Rm 8 and Rm 9, at n = 64 and n = 96. python3 experiments/cursor_abc_batch.py --device cuda --cfl 1 --out-dir experiments/results/cursor_abc_sign89. t = 120, dt cap 0.05, float64. Same GPU order as H9. No H100. One pod, 1 h cap.",
+      "script": "experiments/cursor_abc_batch.py --device cuda --cfl 1 --point 64,8,1",
+      "cost_estimate": "One pod, 1 h cap. Eight n = 64 points are cheap on the measured 4090 and 4500. Eight n = 96 points are about 0.18 USD at the measured 0.023 USD per point.",
+      "status": "registered",
+      "verdict": "",
+      "results": "",
+      "commit": ""
+    },
+    {
+      "id": "H11",
+      "statement": "At n = 64, over 1000 steps of dt = 5e-3, the dynamic energy residual stays inside the relative bounds of test_energy_budget for both forcings and for seeds 1 to 5: rel_max < 0.01 and scale_max < 1e-3, and every residual is finite.",
+      "origin": "test_energy_budget is 60 steps at n = 16. H7 copied that length at n = 32 and n = 48 and was refuted by rhs_abs_min, not by these two relative bounds. This claim drops the rhs_abs_min bound and lengthens the run. It does not reopen H7.",
+      "refutation_criterion": "Refuted if any of the ten points is non-finite or exits non-zero, if rel_max >= 0.01, or if scale_max >= 1e-3. No rhs_abs_min threshold. Bounds fixed before the run. Not a 3D generator claim.",
+      "protocol": "Ten points. Seed 1 is the test control. Seeds 2, 3, 4 and 5 are variants. Forcing tg with kf 1 and abc with kf 2. python3 experiments/cursor_energy_budget.py --device cuda --steps 1000 --out-dir experiments/results/cursor_energy_long. nu 0.05, eta 0.08, forcing_amp 0.5, u0 random amp 1, b0_amp 0.5, float64. Same GPU order as H9. No H100. One pod, 1 h cap.",
+      "script": "experiments/cursor_energy_budget.py --device cuda --steps 1000 --point 64,tg,1,1",
+      "cost_estimate": "One pod, 1 h cap. The 60-step budget on the PRO 4500 finished in 13 s of compute. One thousand steps at n = 64 is a longer run of the same script, held under 0.72 USD.",
+      "status": "registered",
+      "verdict": "",
+      "results": "",
       "commit": ""
     }
   ]
