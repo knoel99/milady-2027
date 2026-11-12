@@ -21,6 +21,10 @@ The second pilot runs the race brief with Cursor only (Cursor Ultra: Grok and Co
 3. **Reviews over time.** The agents run `tools/review_due.py due` after every commit that adds a result and at least every hour; a due `encadrant` or `jury-externe` review runs as a sub-agent before work goes on and is recorded with `tools/review_due.py log`. Grok Bot checks `research/reviews.jsonl` on the branch at every follow-up and asks for any review that `review_due.py` lists.
 4. **Time.** Grok Bot keeps the agents busy until `MILADY_DEADLINE`: whenever a run ends before it, a new step is sent. One hour before it: the final report (`research/race-report.md`), the usage report, `tools/runpod_job.py cleanup`, commit and push.
 
+## Deliverables
+
+The same as the Claude pilot, `race/DELIVERABLES.md`, under `site/teams/cursor/`. The skills are installed into `.cursor/skills/` by `bash tools/install_skills.sh`.
+
 ## Stop rules
 
 The stop rules of `PILOT.md` apply. In addition: a run whose `report` row shows a model parameter not applied (`dropped`) is not conforming; fix `agents/providers.toml` `[cursor]` after `tools/cursor_agents.py models`, rerun `tools/sync_agents.py`, and relaunch.

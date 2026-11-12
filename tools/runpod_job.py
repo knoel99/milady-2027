@@ -15,7 +15,7 @@ read here. Standard library only.
     python3 tools/runpod_job.py run --gpu "NVIDIA H100 80GB HBM3" --hours 1 --outputs experiments/results -- CMD
     python3 tools/runpod_job.py prices        # hourly price and stock of the configured GPUs
     python3 tools/runpod_job.py spend         # GPU spend so far, from the ledger
-    python3 tools/runpod_job.py cleanup       # delete this team's pods past their time limit (milady-<team>-job-*)
+    python3 tools/runpod_job.py cleanup       # delete this team's own pods past their limit (prefix + own ledger)
 """
 
 from __future__ import annotations
@@ -41,27 +41,27 @@ ROOT = Path(__file__).resolve().parent.parent
 CONFIG = ROOT / "race" / "config.toml"
 LEDGER = ROOT / "research" / "compute-ledger.jsonl"
 MCP_URL = os.environ.get("RUNPOD_MCP_URL", "https://mcp.runpod.io/")
-USER_AGENT = "milady-runpod-job/1"
-# Live pods of every team that reserve the shared credit, including the legacy unscoped name.
-_ACCOUNT_JOB = re.compile(r"^milady-(?:[A-Za-z0-9_-]+-)?job-")
 
 
 def job_prefix() -> str:
-    """Pod name prefix for this session: ``milady-<MILADY_TEAM>-job-``, default ``milady-cursor-job-``.
+    """Name prefix of the pods of this checkout: ``milady-<team>-job-`` when the checkout holds one team's
+    objectives, ``MILADY_JOB_PREFIX`` if set, otherwise ``milady-job-``.
 
-    ``cleanup`` deletes only this prefix. A shared ``milady-job-`` prefix let one session delete
-    another team's running pods (pilot, 2026-11-12).
+    Several sessions can share one RunPod account, and ``cleanup`` deletes every pod that carries the
+    prefix: with a common prefix, the clean-up of one session deleted the running jobs of another
+    (pilot, 2026-11-12, RunPod audit log). One prefix per team keeps each clean-up to its own pods.
     """
-    team = (os.environ.get("MILADY_TEAM") or "cursor").strip()
-    if not re.fullmatch(r"[A-Za-z0-9_-]+", team):
-        team = "cursor"
-    return f"milady-{team}-job-"
+    env = os.environ.get("MILADY_JOB_PREFIX")
+    if env:
+        return env
+    teams = sorted(f.parent.name for f in (ROOT / "race" / "teams").glob("*/objectives.toml"))
+    return f"milady-{teams[0]}-job-" if len(teams) == 1 else "milady-job-"
 
 
-def is_account_job(name: str) -> bool:
-    """True for ``milady-<team>-job-*`` and the legacy ``milady-job-*`` pods. Used for the shared budget."""
-    return _ACCOUNT_JOB.match(str(name)) is not None
-
+PREFIX = job_prefix()
+ANY_JOB = re.compile(r"^milady-(?:[a-z0-9_]+-)?job-")  # pods of this tool, any team (budget reservation)
+TEAM_PREFIX = re.compile(r"^milady-[a-z0-9_]+-job-$")   # a prefix that names a team (required by cleanup)
+USER_AGENT = "milady-runpod-job/1"
 
 BOOTSTRAP = r"""
 set -u
@@ -151,6 +151,17 @@ def http_get(url: str) -> bytes | None:
         return None
 
 
+def pod_gone(mcp: MCP, pid: str) -> bool:
+    """True if the pod no longer exists on the account (deleted outside this tool)."""
+    try:
+        mcp.call("get-pod", {"id": pid})
+    except RuntimeError as e:
+        return "404" in str(e) or "not found" in str(e).lower()
+    except (KeyError, OSError, ValueError):  # a client that cannot tell: assume the pod is there
+        return False
+    return False
+
+
 def pushed_commit(ref: str) -> str:
     sha = subprocess.check_output(["git", "rev-parse", ref], cwd=ROOT, text=True).strip()
     remote = subprocess.run(["git", "branch", "-r", "--contains", sha], cwd=ROOT, capture_output=True,
@@ -193,7 +204,6 @@ def run(args, mcp: MCP | None = None, sleep=time.sleep) -> int:
     if jobs:
         print(f"{len(jobs)} job(s) in flight, ${reserved:.2f} reserved for their worst case", file=sys.stderr)
     token = secrets.token_hex(16)
-    prefix = job_prefix()
     env = {"JOB_TOKEN": token, "REPO": cfg.get("repo", "https://github.com/knoel99/milady-2027.git"),
            "REF": sha, "CMD_B64": base64.b64encode(command.encode()).decode(),
            "OUTPUTS": " ".join(outputs), "MAX_MIN": str(int(hours * 60))}
@@ -222,7 +232,7 @@ def run(args, mcp: MCP | None = None, sleep=time.sleep) -> int:
                 print(f"skip {gid} ({cloud}): up to ${worst:.2f} would exceed the ${budget} budget "
                       f"(${spent:.2f} spent, ${reserved:.2f} reserved by running jobs)", file=sys.stderr)
                 continue
-            body = {"name": f"{prefix}{token[:8]}", "cloud": cloud, "image": cfg.get("image"),
+            body = {"name": f"{PREFIX}{token[:8]}", "cloud": cloud, "image": cfg.get("image"),
                     "gpu": {"id": gid, "count": 1, "minCudaVersion": cfg.get("min_cuda", "12.8")},
                     "disk": int(cfg.get("disk_gb", 40)), "ports": ["8000/http"], "env": env,
                     "entrypoint": ["/bin/bash", "-c"], "cmd": [BOOTSTRAP]}
@@ -246,7 +256,7 @@ def run(args, mcp: MCP | None = None, sleep=time.sleep) -> int:
         return 1
     pid = pod.get("id") or (pod.get("pod") or {}).get("id") if isinstance(pod, dict) else None
     if not pid:  # unknown response shape: find the pod by its unique name, delete it, stop
-        name = f"{prefix}{token[:8]}"
+        name = f"{PREFIX}{token[:8]}"
         found = mcp.call("list-pods", {})
         for p in (found.get("pods", []) if isinstance(found, dict) else found):
             if p.get("name") == name:
@@ -254,14 +264,21 @@ def run(args, mcp: MCP | None = None, sleep=time.sleep) -> int:
                 print(f"deleted pod {p['id']}", file=sys.stderr)
         sys.exit(f"create-pod answered without a pod id ({str(pod)[:200]}); pod {name} looked up and deleted")
     t0 = time.time()
+    ledger_append({"event": "start", "time": dt.datetime.now(dt.UTC).strftime("%Y-%m-%dT%H:%M:%SZ"), "pod": pid,
+                   "name": f"{PREFIX}{token[:8]}", "gpu": gpu["id"], "usd_per_hour": price, "limit_hours": hours,
+                   "commit": sha, "command": command})  # the pod is this checkout's from now on (cleanup)
     print(f"pod {pid} on {gpu['id']} at ${price}/h; limit {hours} h; commit {sha[:12]}", file=sys.stderr)
     base = f"https://{pid}-8000.proxy.runpod.net/{token}/"
-    rc, status = None, ""
+    rc, status, misses = None, "", 0
     try:
         while True:
             sleep(30)
             raw = http_get(base + "status.txt")
             status = raw.decode(errors="replace") if raw else status
+            misses = 0 if raw else misses + 1
+            if misses and misses % 6 == 0 and pod_gone(mcp, pid):  # 3 min without an answer: is the pod still there?
+                status += "\nPOD GONE: deleted outside this tool (another session sharing the account?)"
+                break
             m = re.search(r"DONE rc=(\d+)", status)
             if m:
                 rc = int(m.group(1))
@@ -297,17 +314,17 @@ def run(args, mcp: MCP | None = None, sleep=time.sleep) -> int:
     return 0 if rc == 0 else 1
 
 
-def running_jobs(mcp, now: float | None = None) -> list[dict]:
-    """Live job pods of every team, with the dollars their time limit can still cost (plus the 15 min grace).
+def running_jobs(mcp, now: float | None = None, mine_only: bool = False) -> list[dict]:
+    """Pods of this tool still alive, with the dollars their time limit can still cost (plus the 15 min grace).
 
-    The shared credit is one account, so a Claude pod (``milady-claude-job-*``) and a legacy
-    ``milady-job-*`` pod count here. ``cleanup`` does not delete them.
-    """
+    By default the pods of every team (any ``milady-[<team>-]job-`` name): the budget reservation must see them
+    all. ``mine_only``: only the pods carrying this checkout's prefix."""
     now = now or time.time()
     found = mcp.call("list-pods", {})
     out = []
     for p in (found.get("pods", []) if isinstance(found, dict) else found or []):
-        if not is_account_job(str(p.get("name", ""))):
+        name = str(p.get("name", ""))
+        if not (name.startswith(PREFIX) if mine_only else ANY_JOB.match(name)):
             continue
         limit_h = int((p.get("env") or {}).get("MAX_MIN", 120)) / 60 + 0.25
         try:
@@ -328,8 +345,35 @@ def account_spend(mcp) -> float | None:
         return None
 
 
+def ledger_rows() -> list[dict]:
+    return [json.loads(x) for x in LEDGER.read_text().splitlines() if x.strip()] if LEDGER.exists() else []
+
+
+def own_pod_ids() -> set[str]:
+    """Pods this checkout created: every pod id of its own ledger (a "start" row is written at creation)."""
+    return {r["pod"] for r in ledger_rows() if r.get("pod")}
+
+
+def cleanup(mcp, everything: bool = False, now: float | None = None) -> list[dict]:
+    """Delete only pods that carry this team's prefix AND appear in this checkout's ledger, and by default only
+    those past their time limit. Pods of another team, pods without a team prefix and pods this checkout did
+    not create are never touched (a shared clean-up deleted another session's running jobs, 2026-11-12)."""
+    if not TEAM_PREFIX.match(PREFIX):
+        sys.exit(f"cleanup needs a team prefix (milady-<team>-job-), not {PREFIX!r}: set MILADY_JOB_PREFIX or "
+                 "work in a checkout holding one race/teams/<team>/objectives.toml")
+    mine = own_pod_ids()
+    jobs = [j for j in running_jobs(mcp, now, mine_only=True) if j["id"] in mine]
+    gone = [j for j in jobs if everything or j["age_h"] > j["limit_h"] + 0.25]
+    for j in gone:
+        mcp.call("delete-pod", {"id": j["id"]})
+        print(f"deleted {j['id']} {j['name']} (age {j['age_h']:.2f} h, limit {j['limit_h']:.2f} h)")
+    print(f"{len(gone)} pod(s) deleted; {len(jobs) - len(gone)} of this team's pods within their time limit kept; "
+          "pods of other teams or sessions are never touched")
+    return gone
+
+
 def spend() -> dict:
-    rows = [json.loads(x) for x in LEDGER.read_text().splitlines() if x.strip()] if LEDGER.exists() else []
+    rows = [r for r in ledger_rows() if r.get("event") != "start"]
     by_gpu: dict[str, dict] = {}
     for r in rows:
         g = by_gpu.setdefault(r["gpu"], {"jobs": 0, "hours": 0.0, "usd": 0.0})
@@ -355,7 +399,7 @@ def main() -> int:
     sub.add_parser("prices")
     sub.add_parser("spend")
     c = sub.add_parser("cleanup", help="delete pods of this tool past their time limit (orphans of a crashed run)")
-    c.add_argument("--all", action="store_true", help="also delete pods whose job may still be running")
+    c.add_argument("--all", action="store_true", help="also delete this team's own pods whose job may still be running")
     a = ap.parse_args()
     if a.cmd == "run":
         return run(a)
@@ -373,20 +417,7 @@ def main() -> int:
                 g = cat.get(gid, {})
                 print(f"{cloud:<9} {gid:<48} ${g.get('price', {}).get(cloud.lower())}/h  stock {g.get('availability')}")
         return 0
-    return cleanup(mcp, delete_running=a.all)
-
-
-def cleanup(mcp, delete_running: bool = False) -> int:
-    """Delete this team's pods past their time limit. Other teams and legacy ``milady-job-*`` stay."""
-    own = job_prefix()
-    jobs = running_jobs(mcp)
-    mine = [j for j in jobs if str(j.get("name", "")).startswith(own)]
-    # ``limit_h`` already includes 15 min. The extra 0.25 h is the same grace as before.
-    gone = mine if delete_running else [j for j in mine if j["age_h"] > j["limit_h"] + 0.25]
-    for j in gone:
-        mcp.call("delete-pod", {"id": j["id"]})
-        print(f"deleted {j['id']} {j['name']} (age {j['age_h']:.2f} h, limit {j['limit_h']:.2f} h)")
-    print(f"{len(gone)} pod(s) deleted; {len(mine) - len(gone)} of this team's pods still within their time limit kept")
+    cleanup(mcp, everything=a.all)
     return 0
 
 

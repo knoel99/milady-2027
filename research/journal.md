@@ -2,6 +2,11 @@
 
 One entry per working session, newest first, at most ten lines.
 
+## 2026-11-12 - main's prefix kept, team cursor
+- Merged `origin/main` at `e666a67`. Where the two cleanup fixes overlapped, main's `tools/runpod_job.py` stayed. The local duplicate was dropped.
+- This checkout has one objectives file, so the prefix is `milady-cursor-job-`. `MILADY_JOB_PREFIX` overrides it. `MILADY_TEAM` is not read.
+- `cleanup` deletes a pod only with that prefix, only if its id is in this checkout's ledger, and only past its time limit. Other teams stay. Reservations still count every `milady-*job-*` pod.
+
 ## 2026-11-12 - H7 registered, team cursor
 - Before any n = 32 or n = 48 energy number: the dynamic budget of test_energy_budget holds at both resolutions, for tg kf = 1 and abc kf = 2, seeds 1 to 5.
 - Seed 1 is the test control. Seeds 2, 3, 4 and 5 are variants. All twenty points must pass.

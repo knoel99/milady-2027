@@ -90,4 +90,4 @@ start = "2026-11-12T16:45:00Z"                              # start of the Claud
 encadrant_watch = ["experiments/results", "research/hypotheses.json", "src/milady/sim", "experiments"]
 encadrant_max_gap_hours = 6                                 # a review at least this often while work goes on
 jury_fractions = [0.25, 0.5, 0.75, 0.95]                    # of the span start -> deadline
-jury_watch = ["research/race-report.md", "site/report", "site/thesis"]
+jury_watch = ["research/race-report.md", "site/report", "site/thesis", "site/teams"]
