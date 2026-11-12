@@ -92,6 +92,26 @@ def test_pod_deleted_even_when_polling_crashes(job_env, monkeypatch):
     assert json.loads((job_env / "ledger.jsonl").read_text())["rc"] is None
 
 
+def test_http_get_sends_an_explicit_user_agent(monkeypatch):
+    """The RunPod proxy refuses the default Python-urllib agent (403): the status was never read."""
+    seen = {}
+
+    class Resp(io.BytesIO):
+        def __enter__(self):
+            return self
+
+        def __exit__(self, *exc):
+            return False
+
+    def fake_urlopen(req, timeout=None):
+        seen["agent"] = req.get_header("User-agent")
+        return Resp(b"DONE rc=0")
+
+    monkeypatch.setattr(runpod_job.urllib.request, "urlopen", fake_urlopen)
+    assert runpod_job.http_get("https://pod-8000.proxy.runpod.net/token/status.txt") == b"DONE rc=0"
+    assert seen["agent"] == runpod_job.USER_AGENT and "urllib" not in seen["agent"].lower()
+
+
 def test_hours_limit_and_no_stock(job_env):
     with pytest.raises(SystemExit):
         runpod_job.run(args(hours="5"), mcp=FakeMCP(), sleep=lambda s: None)

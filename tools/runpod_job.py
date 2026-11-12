@@ -42,6 +42,7 @@ CONFIG = ROOT / "race" / "config.toml"
 LEDGER = ROOT / "research" / "compute-ledger.jsonl"
 MCP_URL = os.environ.get("RUNPOD_MCP_URL", "https://mcp.runpod.io/")
 PREFIX = "milady-job-"
+USER_AGENT = "milady-runpod-job/1"
 
 BOOTSTRAP = r"""
 set -u
@@ -118,8 +119,10 @@ def ledger_append(entry: dict) -> None:
 
 
 def http_get(url: str) -> bytes | None:
+    """GET through the RunPod HTTP proxy. The proxy (Cloudflare) answers 403, error 1010, to the default
+    ``Python-urllib`` agent: without an explicit User-Agent the job status is never read (pilot, 2026-11-12)."""
     try:
-        with urllib.request.urlopen(urllib.request.Request(url), timeout=60) as r:
+        with urllib.request.urlopen(urllib.request.Request(url, headers={"User-Agent": USER_AGENT}), timeout=60) as r:
             return r.read()
     except (urllib.error.URLError, TimeoutError, OSError):
         return None

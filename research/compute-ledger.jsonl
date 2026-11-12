@@ -1,0 +1,1 @@
+{"time": "2026-11-12T17:48:35Z", "pod": "p0vtwqixgmk1rp", "gpu": "NVIDIA RTX PRO 4500 Blackwell", "usd_per_hour": 0.72, "hours": 0.4037, "usd": 0.2907, "commit": "36908cc5e22cf1612f65838e3d65f9458ef84a74", "command": "python -m milady.sim.mhd3d bench --n 64 128 --device cuda --dtype float32 --steps 50", "rc": null, "status_tail": ""}
