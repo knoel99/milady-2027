@@ -78,6 +78,11 @@ def eta_file(eta: float, quick: bool = False, n: int = N, cfl: float = CFL) -> P
     return data_dir(quick, n, cfl) / f"eta_{eta:.5f}.npz"
 
 
+# Offset of the seeds of the initial conditions (environment variable E4_DATA_SEED, default 0: the E4 data).
+# Another value gives an independent realisation of the reference data, for a replication.
+SEED_OFFSET = int(os.environ.get("E4_DATA_SEED", "0"))
+
+
 def solver_config(eta: float, n_traj: int, seed: int, n: int = N, dtype: str = "float32",
                   device: str = "cpu") -> MHD3DConfig:
     """Configuration of the E4 solver at ``eta`` (also used to restart from generated snapshots)."""
@@ -95,7 +100,7 @@ def simulate(index: int, quick: bool = False, n: int = N, cfl: float = CFL, devi
     torch.set_num_threads(1)
     cfg = QUICK if quick else FULL
     eta = ETAS[index]
-    sim = MHD3D(solver_config(eta, cfg["n_traj"], seed=1000 + index, n=n, device=device))
+    sim = MHD3D(solver_config(eta, cfg["n_traj"], seed=1000 + SEED_OFFSET + index, n=n, device=device))
     sp = space(n)
     t0 = time.time()
     steps = 0
@@ -195,7 +200,8 @@ def main() -> None:
     cfg = QUICK if a.quick else FULL
     summary = {"config": {"N": a.n, "kcut": kcut(a.n), "modes": space(a.n).n_modes, "nu": NU, "kf": KF,
                           "Re": 1.0 / (KF * NU), "etas": ETAS, "eta_train": ETA_TRAIN, "eta_val": ETA_VAL,
-                          "eta_test": ETA_TEST, **cfg, "dt": DT, "cfl": a.cfl, "dtype": "float32", "device": a.device},
+                          "eta_test": ETA_TEST, **cfg, "dt": DT, "cfl": a.cfl, "dtype": "float32", "device": a.device,
+                          "data_seed_offset": SEED_OFFSET},
                "values": rows, "duration_s": round(time.time() - t0, 1)}
     out.write_text(json.dumps(summary, indent=1), encoding="utf-8")
     for r in rows:

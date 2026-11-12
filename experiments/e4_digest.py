@@ -66,7 +66,7 @@ def merge(seed: int, tag: str | bool = "", root: Path = R) -> Path | None:
         if extra.exists():
             data.append(json.loads(extra.read_text()))
     out = {"config": {**data[0]["config"], "group": "merged"}, "evaluation": {}, "times": {}, "h14": [], "h12": [],
-           "durations_s": [d["total_duration_s"] for d in data]}
+           "durations_s": sorted({round(d["total_duration_s"], 1) for d in data})}      # parts of one run share a duration
     for d in data:
         out["evaluation"].update(d["evaluation"])
         out["times"].update(d["times"])
@@ -81,8 +81,10 @@ def load(quick: bool = False, root: Path = R, tag: str = "") -> dict[int, dict]:
     tag = tag + ("_quick" if quick else "")
     out = {}
     for s in SEEDS:
-        merge(s, tag, root)
         p = root / f"e4_mhd3d{tag}_s{s}.json"
+        parts = list(root.glob(f"e4_mhd3d{tag}_s{s}_*.json"))
+        if parts and (not p.exists() or max(q.stat().st_mtime for q in parts) > p.stat().st_mtime):
+            merge(s, tag, root)                 # reading never rewrites a merged file that is up to date
         if p.exists():
             out[s] = json.loads(p.read_text())
     return out

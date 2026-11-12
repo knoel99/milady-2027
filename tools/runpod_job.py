@@ -469,7 +469,8 @@ def exec_in_pod(args, mcp: MCP | None = None) -> int:
     print(str(out.get("stdout", "")), end="")
     if out.get("stderr"):
         print(str(out["stderr"]), end="", file=sys.stderr)
-    return int(out.get("exitCode") or 0)
+    code = out.get("exitCode")
+    return 1 if code is None else int(code)                  # no exit code: the call did not complete
 
 
 def spend() -> dict:

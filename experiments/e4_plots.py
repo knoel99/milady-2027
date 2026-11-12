@@ -25,7 +25,7 @@ sys.path.insert(0, str(HERE.parent / "site" / "assets"))
 import figstyle as fs  # noqa: E402
 import matplotlib.pyplot as plt  # noqa: E402
 
-from e4_digest import R, load, per_seed  # noqa: E402
+from e4_digest import GENERATORS, R, load, per_seed  # noqa: E402
 
 fs.use(font_size=9)
 C, INK, INK2, LIGHT = fs.C, fs.INK, fs.INK2, fs.LIGHT
@@ -66,9 +66,38 @@ def read(path: Path):
     return json.loads(path.read_text(encoding="utf-8")) if path.exists() else None
 
 
-def mean_se(x: np.ndarray) -> tuple[float, float]:
-    x = x[~np.isnan(x)]
-    return (float(x.mean()), float(x.std(ddof=1) / np.sqrt(len(x))) if len(x) > 1 else 0.0) if len(x) else (np.nan, 0.0)
+MIN_SEEDS = 5          # AGENTS.md rule 4: no mean ± SE quoted with fewer seeds
+
+
+def mean_se(x: np.ndarray) -> tuple[float, float, int]:
+    """Mean, standard error and number of the finite values of ``x`` (SE is NaN with fewer than two values)."""
+    x = np.asarray(x, dtype=float)
+    x = x[np.isfinite(x)]
+    if not len(x):
+        return np.nan, np.nan, 0
+    return float(x.mean()), float(x.std(ddof=1) / np.sqrt(len(x))) if len(x) > 1 else np.nan, len(x)
+
+
+def seed_dots(ax, pos: float, x: np.ndarray, color: str, horizontal: bool = True) -> None:
+    """One dot per seed at ``pos``; mean ± 2 SE in ink only with at least ``MIN_SEEDS`` seeds, otherwise the
+    number of seeds is written next to the dots."""
+    x = np.asarray(x, dtype=float)
+    x = x[np.isfinite(x)]
+    m, se, n = mean_se(x)
+    if not n:
+        return
+    p = np.full(n, pos)
+    ax.scatter(*((x, p) if horizontal else (p, x)), s=14, color=color, alpha=0.6, zorder=2, linewidths=0)
+    if n >= MIN_SEEDS:
+        kw = dict(color=INK, capsize=2, zorder=3, lw=1)
+        if horizontal:
+            ax.errorbar(m, pos, xerr=2 * se, marker="|", ms=10, **kw)
+        else:
+            ax.errorbar(pos, m, yerr=2 * se, marker="_", ms=10, **kw)
+    else:
+        ax.annotate(f"n = {n}", (x.max(), pos) if horizontal else (pos, x.max()), xytext=(4, 0) if horizontal else (0, 4),
+                    textcoords="offset points", fontsize=6.5, color=INK2, va="center" if horizontal else "bottom",
+                    ha="left" if horizontal else "center")
 
 
 def rows_of(runs: dict, variant: str, split: str) -> dict[float, list[dict]]:
@@ -116,7 +145,7 @@ def plot_helicity(out: Path, ref: dict, tag: str) -> None:
         h = np.array(r["H_shell"])
         axes[0].plot(k[: len(h)], h, marker="o", ms=3.5, color=C[i], label=rf"$\eta$ = {float(key):.4f}")
         axes[1].plot(k[: len(h)], np.array(r["J_shell"]), marker="o", ms=3.5, color=C[i])
-    for ax, lab in zip(axes, (r"magnetic helicity spectrum $H(k)$", r"current helicity spectrum $k^2 H(k)$"), strict=True):
+    for ax, lab in zip(axes, (r"magnetic helicity spectrum $H(k)$", r"current helicity spectrum $\langle j\cdot B\rangle(k)$"), strict=True):
         ax.axhline(0, color=INK2, lw=0.8)
         ax.set_xlabel("shell k")
         ax.set_title(lab)
@@ -131,12 +160,8 @@ def plot_ed(out: Path, runs: dict, tag: str) -> None:
     names = [v for v in MAIN if not np.all(np.isnan(per_seed(runs, v, "ed_ratio")))]
     fig, ax = plt.subplots(figsize=(7.4, 0.33 * len(names) + 1.2))
     for i, v in enumerate(names):
-        x = per_seed(runs, v, "ed_ratio")
         xt = per_seed(runs, v, "ed_ratio", "train")
-        col = WHERE_COL[WHERE.get(v, "design")]
-        ax.scatter(x, np.full(len(x), i), s=14, color=col, alpha=0.55, zorder=2)
-        m, se = mean_se(x)
-        ax.errorbar(m, i, xerr=2 * se, color=INK, marker="|", ms=11, capsize=2, zorder=3)
+        seed_dots(ax, i, per_seed(runs, v, "ed_ratio"), WHERE_COL[WHERE.get(v, "design")])
         ax.scatter(np.nanmean(xt), i, s=26, facecolors="none", edgecolors=INK2, zorder=3)
     ax.axvline(1, color=INK2, lw=0.8, ls="--")
     ax.set_xscale("log")
@@ -151,7 +176,8 @@ def plot_ed(out: Path, runs: dict, tag: str) -> None:
     ax.legend(fontsize=7, loc="lower right")
     fig.tight_layout()
     finish(fig, out, "e4_ed_ratio", "Energy distance to the reference divided by the noise floor on the held-out η, per variant: "
-           "one dot per seed, bar: seed mean ± 2 standard errors, open circle: seed mean at the training η. Dashed line: the floor.",
+           "one dot per seed, bar: seed mean ± 2 standard errors (drawn with at least 5 seeds), open circle: seed mean at the training η. "
+           "Dashed line: the floor.",
            [f"experiments/results/e4_mhd3d{tag}_s<k>.json"])
 
 
@@ -195,18 +221,19 @@ def plot_tradeoff(out: Path, runs: dict, ref: dict, tag: str) -> None:
               "restart_drift_eb": np.mean([r.get("restart_drift_eb", np.nan) for r in t])}
     for ax, (key, lab, absolute, log) in zip(axes, keys, strict=True):
         for i, v in enumerate(names):
-            m, se = mean_se(per_seed(runs, v, key, absolute=absolute))
-            ax.barh(i, m, xerr=2 * se, color=WHERE_COL[WHERE.get(v, "design")], height=0.65, error_kw={"lw": 0.8, "capsize": 1.5})
+            seed_dots(ax, i, per_seed(runs, v, key, absolute=absolute), WHERE_COL[WHERE.get(v, "design")])
         if key in floors and np.isfinite(floors[key]):
             ax.axvline(floors[key], color=INK, lw=0.9, ls="--")
         if log:
             ax.set_xscale("log")
+        else:
+            ax.set_xlim(left=0)
         ax.set_title(lab, fontsize=8.5)
     axes[0].set_yticks(range(len(names)))
     axes[0].set_yticklabels([LABEL.get(v, v) for v in names])
     axes[0].invert_yaxis()
     fig.tight_layout()
-    finish(fig, out, "e4_physics_metrics", "Physical metrics on the held-out η, seed mean ± 2 standard errors: residual of the mean "
+    finish(fig, out, "e4_physics_metrics", "Physical metrics on the held-out η, one dot per seed and seed mean ± 2 standard errors: residual of the mean "
            "energy balance, error on the number of magnetic null points, drift of the magnetic energy when the solver restarts from "
            "the generated snapshots, error on the mean magnetic helicity. Dashed lines: the same quantity on reference snapshots.",
            [f"experiments/results/e4_mhd3d{tag}_s<k>.json", f"experiments/results/e4_reference{tag}.json"])
@@ -217,7 +244,7 @@ def plot_per_eta(out: Path, runs: dict, data: dict, tag: str) -> None:
             if rows_of(runs, v, "test")]
     if not show:
         return
-    fig, ax = plt.subplots(figsize=(6.4, 3.2))
+    fig, ax = plt.subplots(figsize=(7.6, 3.2))
     split = {v["eta"]: v["split"] for v in data["values"]}
     for i, v in enumerate(show):
         pts = {}
@@ -233,9 +260,11 @@ def plot_per_eta(out: Path, runs: dict, data: dict, tag: str) -> None:
     ax.set_yscale("log")
     ax.set_xticks([0.03, 0.04, 0.05, 0.06, 0.08])
     ax.set_xticklabels(["0.03", "0.04", "0.05", "0.06", "0.08"])
-    ax.set_xlabel(r"magnetic diffusivity $\eta$ (filled: training values; open: validation □ and held-out ◇)")
+    ax.set_xlabel(r"magnetic diffusivity $\eta$")
     ax.set_ylabel("energy distance / floor")
-    ax.legend(fontsize=7)
+    for sp, lab in (("train", "training η"), ("val", "validation η"), ("test", "held-out η")):
+        ax.scatter([], [], color=INK2, marker=SPLIT_MARK[sp], s=22, facecolors=INK2 if sp == "train" else "white", label=lab)
+    ax.legend(fontsize=7, loc="center left", bbox_to_anchor=(1.01, 0.5))
     fig.tight_layout()
     finish(fig, out, "e4_per_eta", "Energy-distance ratio against η, seed mean: at the training values (filled circles) and between "
            "them (open squares: validation, open diamonds: held-out test). The gap between the two shows how each model interpolates in η.",
@@ -245,12 +274,12 @@ def plot_per_eta(out: Path, runs: dict, data: dict, tag: str) -> None:
 def plot_nulls(out: Path, runs: dict, ref: dict, tag: str) -> None:
     fig, ax = plt.subplots(figsize=(4.6, 3.4))
     xs, ys = [], []
-    for v in MAIN:
+    for v in GENERATORS:                       # the list of the digest's fit of H13
         px, py = [], []
         for r in runs.values():
             for row in r["evaluation"].get(v, {}).get("test", []):
                 rr = ref["values"][f"{row['eta']:.5f}"]
-                if row.get("null_count", 0) > 0:
+                if "null_count" in row and row["null_count"] > 0:
                     px.append(np.log(row["k_lambda"] / rr["k_lambda"]))
                     py.append(np.log(row["null_count"] / rr["null_count_mean"]))
         if px:
@@ -262,7 +291,7 @@ def plot_nulls(out: Path, runs: dict, ref: dict, tag: str) -> None:
         return
     slope, icpt = np.polyfit(xs, ys, 1)
     xx = np.linspace(min(xs), max(xs), 20)
-    ax.plot(xx, slope * xx + icpt, color=INK, lw=1.2, label=f"least squares: slope {slope:.2f}")
+    ax.plot(xx, slope * xx + icpt, color=INK, lw=1.2, label=f"least squares over {len(xs)} points: slope {slope:.2f}")
     ax.plot(xx, 3 * xx, color=INK2, lw=1, ls="--", label="slope 3 (Gaussian estimate)")
     ax.axhline(0, color=LIGHT, lw=0.8)
     ax.axvline(0, color=LIGHT, lw=0.8)
@@ -271,18 +300,20 @@ def plot_nulls(out: Path, runs: dict, ref: dict, tag: str) -> None:
     ax.legend(fontsize=7.5)
     fig.tight_layout()
     finish(fig, out, "e4_nulls_klambda", "Number of magnetic null points against the magnetic Taylor wavenumber k_λ = (⟨|j|²⟩/⟨|B|²⟩)^½, "
-           "generated over reference, one point per variant, held-out η and seed (hypothesis H13).",
+           "generated over reference, one point per variant, held-out η and seed; the fit is the one of the digest (hypothesis H13).",
            [f"experiments/results/e4_mhd3d{tag}_s<k>.json", f"experiments/results/e4_reference{tag}.json"])
 
 
 def plot_floors(out: Path, floors: dict, ref: dict) -> None:
     keys = sorted(floors, key=lambda k: -float(k))
     eta = np.array([float(k) for k in keys])
-    a = np.array([floors[k]["traj_split_512"]["mean"] for k in keys])
-    sd = np.array([floors[k]["traj_split_512"]["sd"] for k in keys])
+    a = np.array([floors[k]["traj_split_512"]["mean_first_10"] for k in keys])      # the 10 splits of the ratio's floor
     b = np.array([floors[k]["random_split_512"]["mean"] for k in keys])
     fig, ax = plt.subplots(figsize=(5.2, 3.0))
-    ax.errorbar(eta, a, yerr=sd, color=C[0], marker="o", ms=4, capsize=2, label="two halves of the trajectories (used for the ratio)")
+    lo = np.array([floors[k]["traj_split_512"]["min"] for k in keys])
+    hi = np.array([floors[k]["traj_split_512"]["max"] for k in keys])
+    ax.errorbar(eta, a, yerr=[a - lo, hi - a], color=C[0], marker="o", ms=4, capsize=2,
+                label="two halves of the trajectories: mean of the 10 splits used for the ratio")
     ax.plot(eta, b, color=C[1], marker="s", ms=4, label="random split of the snapshots")
     ax.set_xscale("log")
     ax.set_yscale("log")
@@ -293,7 +324,8 @@ def plot_floors(out: Path, floors: dict, ref: dict) -> None:
     ax.legend(fontsize=7.5)
     fig.tight_layout()
     finish(fig, out, "e4_floors", "Noise floors of the energy distance on the reference data: between two subsamples from disjoint "
-           "halves of the 24 trajectories (mean ± standard deviation over 20 splits) and between two random subsamples.",
+           "halves of the 24 trajectories (mean of the 10 splits that define the floor of the ratio; bars: smallest and largest of "
+           "20 splits) and between two random subsamples.",
            ["experiments/results/e4_floor.json"])
 
 
@@ -307,6 +339,7 @@ def plot_convergence(out: Path) -> None:
         return
     etas = [v["eta"] for v in read(root / "e4_data_n24.json")["values"] if v["split"] == "test" and v.get("shells")]
     fig, axes = plt.subplots(1, 3, figsize=(9.4, 2.9))
+    seen: set[str] = set()
     for j, (lab, fn, col) in enumerate(files):
         d = base if fn is None else read(root / fn)
         if d is None:
@@ -318,7 +351,8 @@ def plot_convergence(out: Path) -> None:
                     continue
                 se = v[key]["sd_between_traj"] / np.sqrt(v["n_traj"])
                 ax.errorbar(i + 0.14 * (j - 2), v[key]["mean"], yerr=2 * se, color=col, marker="o", ms=4, capsize=2,
-                            label=lab if i == 0 else None)
+                            label=lab if (lab not in seen and key == "kinetic_energy") else None)
+                seen.add(lab)
     for ax, lab in zip(axes, (r"$E_u$", r"$E_B$", r"$\langle A\cdot B\rangle$"), strict=True):
         ax.set_xticks(range(len(etas)))
         ax.set_xticklabels([f"{e:.4f}" for e in etas])
@@ -327,7 +361,7 @@ def plot_convergence(out: Path) -> None:
     axes[0].legend(fontsize=6.8)
     fig.tight_layout()
     finish(fig, out, "e4_convergence", "Convergence of the reference data: energies and magnetic helicity at the three held-out η for "
-           "the 16³ grid of E4, half its time step, 24³ and 32³ (one η); bars: ± 2 standard errors over 24 trajectories.",
+           "the 16³ grid of E4, the same grid recomputed on the hardware of the check, half its time step, 24³ and 32³ (one η); bars: ± 2 standard errors over 24 trajectories.",
            ["experiments/results/e4_data.json", "experiments/results/replications/e4_convergence/*.json"])
 
 
@@ -340,12 +374,10 @@ def plot_scan(out: Path, tag: str) -> None:
         return
     fig, axes = plt.subplots(1, 2, figsize=(8.6, 3.0))
     for i, v in enumerate(names):
-        m, se = mean_se(per_seed(runs, v, "ed_ratio"))
-        axes[0].bar(i, m, yerr=2 * se, color=C[0] if v.startswith("S_") else C[2], capsize=2)
+        col = C[0] if v.startswith("S_") else (C[6] if v.startswith("G0") else C[2])
+        seed_dots(axes[0], i, per_seed(runs, v, "ed_ratio"), col, horizontal=False)
         loss = [r["times"].get(v, {}).get("fm_loss_train_sample") for r in runs.values()]
-        loss = [x for x in loss if x is not None]
-        if loss:
-            axes[1].bar(i, np.mean(loss), color=C[0] if v.startswith("S_") else C[2])
+        seed_dots(axes[1], i, np.array([x for x in loss if x is not None], dtype=float), col, horizontal=False)
     for ax in axes:
         ax.set_xticks(range(len(names)))
         ax.set_xticklabels([LABEL.get(v, v).replace(", ", "\n") for v in names], fontsize=6.5, rotation=20)
@@ -353,7 +385,6 @@ def plot_scan(out: Path, tag: str) -> None:
     axes[0].set_ylabel("energy distance / floor (held-out η)")
     axes[1].axhline(np.pi / 2, color=INK, lw=0.9, ls="--")
     axes[1].set_ylabel("flow-matching loss on a training sample")
-    axes[1].set_ylim(0.9, 1.75)
     fig.tight_layout()
     finish(fig, out, "e4_width_scan", "Width scan (hypothesis H21): energy-distance ratio and flow-matching loss of the equivariant "
            "potentials model without affine term for three widths and two budgets, against the model with the explicit affine term "
@@ -373,15 +404,15 @@ def plot_long(out: Path, tag: str) -> None:
     fig, axes = plt.subplots(1, 4, figsize=(12, 2.9))
     for ax, (key, lab, absolute) in zip(axes, keys, strict=True):
         for i, v in enumerate(names):
-            m, se = mean_se(per_seed(runs, v, key, absolute=absolute))
-            ax.bar(i, m, yerr=2 * se, color=C[6] if v.startswith("G0") else (C[1] if v.endswith("_long") else C[0]), capsize=2)
+            seed_dots(ax, i, per_seed(runs, v, key, absolute=absolute),
+                      C[6] if v.startswith("G0") else (C[1] if v.endswith("_long") else C[0]), horizontal=False)
         ax.set_xticks(range(len(names)))
         ax.set_xticklabels([v.split("_")[0] for v in names], fontsize=7.5)
         ax.set_title(lab, fontsize=8.5)
         ax.set_yscale("log")
     fig.tight_layout()
     finish(fig, out, "e4_long_trainings", "Gaussian baseline (violet), flow matching with the explicit affine term or the Gaussian anchor "
-           "at the base budget (blue) and with 8 times the iterations (orange), on the held-out η: seed mean ± 2 standard errors.",
+           "at the base budget (blue) and with 8 times the iterations (orange), on the held-out η: one dot per seed, seed mean ± 2 standard errors.",
            ["experiments/results/replications/e4_final_long/e4_mhd3d_s<k>.json"])
 
 
@@ -400,6 +431,7 @@ def plot_costs(out: Path) -> None:
     ax.scatter([], [], s=16, color=C[2], label="job finished (rc = 0)")
     ax.scatter([], [], s=16, color=C[7], label="job failed, interrupted or lost")
     ax.scatter([], [], s=16, color=INK2, label="ledger correction")
+    ax.set_xticks(range(1, len(rows) + 1, 2))
     ax.set_xlabel("ledger entry (chronological)")
     ax.set_ylabel("cumulative GPU spend (USD)")
     ax.legend(fontsize=7.5)
