@@ -63,21 +63,26 @@ def kcut(n: int = N) -> int:
     return (n - 1) // 3
 
 
-def data_dir(quick: bool = False, n: int = N) -> Path:
+def variant_tag(n: int = N, cfl: float = CFL) -> str:
+    """Suffix of the outputs of a convergence check (other grid or other CFL number); empty for E4 itself."""
+    return ("" if n == N else f"_n{n}") + ("" if cfl == CFL else f"_cfl{cfl:g}")
+
+
+def data_dir(quick: bool = False, n: int = N, cfl: float = CFL) -> Path:
     root = os.environ.get("E4_DATA")
     base = Path(root) if root else HERE / "data_e4"
-    tag = ("" if n == N else f"_n{n}") + ("_quick" if quick else "")
-    return base.with_name(base.name + tag)
+    return base.with_name(base.name + variant_tag(n, cfl) + ("_quick" if quick else ""))
 
 
-def eta_file(eta: float, quick: bool = False, n: int = N) -> Path:
-    return data_dir(quick, n) / f"eta_{eta:.5f}.npz"
+def eta_file(eta: float, quick: bool = False, n: int = N, cfl: float = CFL) -> Path:
+    return data_dir(quick, n, cfl) / f"eta_{eta:.5f}.npz"
 
 
-def solver_config(eta: float, n_traj: int, seed: int, n: int = N, dtype: str = "float32") -> MHD3DConfig:
+def solver_config(eta: float, n_traj: int, seed: int, n: int = N, dtype: str = "float32",
+                  device: str = "cpu") -> MHD3DConfig:
     """Configuration of the E4 solver at ``eta`` (also used to restart from generated snapshots)."""
     return MHD3DConfig(n=n, mode="dynamic", nu=NU, eta=eta, forcing="abc", kf=KF, u0="laminar", u_noise=0.05,
-                       b0_amp=0.1, n_traj=n_traj, seed=seed, device="cpu", dtype=dtype)
+                       b0_amp=0.1, n_traj=n_traj, seed=seed, device=device, dtype=dtype)
 
 
 def space(n: int = N) -> FourierPotentialSpace:
@@ -85,12 +90,12 @@ def space(n: int = N) -> FourierPotentialSpace:
     return FourierPotentialSpace(kcut(n), truncation="cube")
 
 
-def simulate(index: int, quick: bool = False, n: int = N) -> dict:
+def simulate(index: int, quick: bool = False, n: int = N, cfl: float = CFL, device: str = "cpu") -> dict:
     """Integrate the trajectories of ``ETAS[index]``, write the snapshot file, return its summary."""
     torch.set_num_threads(1)
     cfg = QUICK if quick else FULL
     eta = ETAS[index]
-    sim = MHD3D(solver_config(eta, cfg["n_traj"], seed=1000 + index, n=n))
+    sim = MHD3D(solver_config(eta, cfg["n_traj"], seed=1000 + index, n=n, device=device))
     sp = space(n)
     t0 = time.time()
     steps = 0
@@ -100,20 +105,20 @@ def simulate(index: int, quick: bool = False, n: int = N) -> dict:
     n_out = int(round(t_end / cfg["every"]))
     for i in range(1, n_out + 1):
         t = i * cfg["every"]
-        steps += sim.advance_to(t, dt=DT, cfl=CFL)
+        steps += sim.advance_to(t, dt=DT, cfl=cfl)
         d = sim.diagnostics()
         diag_t.append(t)
         for k in DIAGS:
             diag[k].append(d[k])
         if t > cfg["t_burn"] + 1e-9:
-            xs.append(sp.encode(sim.fields()).numpy())
+            xs.append(sp.encode(sim.fields()).numpy())          # fields() returns CPU arrays
             ts.append(t)
     x = np.stack(xs, axis=1)                                   # (n_traj, n_t, M, 8)
     n_traj, n_t = x.shape[:2]
     traj = np.repeat(np.arange(n_traj), n_t)
     tt = np.tile(np.asarray(ts), n_traj)
     series = {k: np.stack(v) for k, v in diag.items()}         # (n_out, n_traj)
-    path = eta_file(eta, quick, n)
+    path = eta_file(eta, quick, n, cfl)
     path.parent.mkdir(parents=True, exist_ok=True)
     np.savez_compressed(path, x=x.reshape(n_traj * n_t, *x.shape[2:]).astype(np.float32), traj=traj, t=tt,
                         diag_t=np.asarray(diag_t), **{f"diag_{k}": v for k, v in series.items()},
@@ -148,7 +153,7 @@ def load(eta: float, quick: bool = False, n: int = N) -> dict:
     return {"x": d["x"], "traj": d["traj"], "t": d["t"]}
 
 
-def _run(args: tuple[int, bool, int]) -> dict:
+def _run(args: tuple) -> dict:
     return simulate(*args)
 
 
@@ -158,19 +163,21 @@ def main() -> None:
     ap.add_argument("--jobs", type=int, default=4, help="simulations run in parallel (one thread each)")
     ap.add_argument("--index", type=int, nargs="*", help="indices of ETAS to compute (default: all)")
     ap.add_argument("--n", type=int, default=N, help="grid size (default 16; other sizes go to data_e4_n<N>)")
+    ap.add_argument("--cfl", type=float, default=CFL, help="CFL number of the time step (convergence check)")
+    ap.add_argument("--device", default="cpu", help="device of the solver (cuda: use --jobs 1)")
     a = ap.parse_args()
     todo = a.index if a.index else list(range(len(ETAS)))
     t0 = time.time()
     with get_context("spawn").Pool(min(a.jobs, len(todo))) as pool:
-        rows = pool.map(_run, [(i, a.quick, a.n) for i in todo], chunksize=1)
-    tag = ("" if a.n == N else f"_n{a.n}") + ("_quick" if a.quick else "")
+        rows = pool.map(_run, [(i, a.quick, a.n, a.cfl, a.device) for i in todo], chunksize=1)
+    tag = variant_tag(a.n, a.cfl) + ("_quick" if a.quick else "")
     out = RESULTS / f"e4_data{tag}.json"
     old = json.loads(out.read_text())["values"] if out.exists() and a.index else []
     rows = sorted([r for r in old if r["eta"] not in {x["eta"] for x in rows}] + rows, key=lambda r: -r["eta"])
     cfg = QUICK if a.quick else FULL
     summary = {"config": {"N": a.n, "kcut": kcut(a.n), "modes": space(a.n).n_modes, "nu": NU, "kf": KF,
                           "Re": 1.0 / (KF * NU), "etas": ETAS, "eta_train": ETA_TRAIN, "eta_val": ETA_VAL,
-                          "eta_test": ETA_TEST, **cfg, "dt": DT, "cfl": CFL, "dtype": "float32"},
+                          "eta_test": ETA_TEST, **cfg, "dt": DT, "cfl": a.cfl, "dtype": "float32", "device": a.device},
                "values": rows, "duration_s": round(time.time() - t0, 1)}
     out.write_text(json.dumps(summary, indent=1), encoding="utf-8")
     for r in rows:

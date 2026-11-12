@@ -147,6 +147,20 @@ def section(quick: bool = False) -> list[str]:
         P("\nNull count of the reference against the evaluation grid (test η, same 100 snapshots): "
           + "; ".join(f"η = {k}: " + ", ".join(f"{g}³: {f(r.get(f'null_count_mean_grid{g}_n100'))}" for g in (32, 48, 64))
                       for k, r in test) + ".\n")
+    fp = R / "e4_floor.json"
+    floors = json.loads(fp.read_text())["values"] if fp.exists() and not quick else None
+    if floors and ref:
+        P("### Noise floors of the energy distance (experiments/e4_floor.py)\n")
+        P("| η | set | trajectory-split floor, n = 512: mean ± sd [min, max] over 20 splits | random-split floor, n = 512 | ratio | E\\|Y − Y'\\| |")
+        P("|---|---|---|---|---|---|")
+        for key, r in sorted(floors.items(), key=lambda t: -float(t[0])):
+            a, b = r["traj_split_512"], r["random_split_512"]
+            P(f"| {key} | {ref['values'][key]['split']} | {f(a['mean'])} ± {f(a['sd'])} [{f(a['min'])}, {f(a['max'])}] | {f(b['mean'])} | "
+              f"{f(a['mean'] / b['mean'])} | {f(r['mean_pairwise_distance'])} |")
+        P("\nThe C1 ratio uses the trajectory-split floor (two reference subsamples from disjoint halves of the 24 trajectories, mean "
+          "of the first 10 splits). It contains the variability between trajectories, it is uncertain (the splits reuse the same 24 "
+          "trajectories) and it favours the generator: a perfect generator would score below 1 (about 0.6 by the encadrant's "
+          "extrapolation, an estimate). The random-split floor is the sampling noise of 512 snapshots that ignore the trajectories.\n")
     if not runs:
         P("No model run yet.\n")
         return out
@@ -224,6 +238,16 @@ def section(quick: bool = False) -> list[str]:
         P(f"\nH5: relative divergence of B, seed mean: W0_free {f(div0.mean())}, W1_penalty {f(div1.mean())}, ratio {f(div1.mean() / div0.mean())}.")
         P(f"H7: ratio of the seed-mean ED ratios W5_stationarity / W5_control: {f(ed('W5_stationarity').mean() / ed('W5_control').mean())}.")
         P(f"H8: ESS/N of W7_tilting, seed mean over the test η: {f(float(np.nanmean(per_seed(runs, 'W7_tilting', 'ess_frac'))))}.")
+        if floors:
+            # extra V-statistic bias of a weighted sample: (Σw² − 1/n) E|X − X'| ≈ (1/ESS − 1/n) E|Y − Y'|
+            corr = []
+            for r in runs.values():
+                rows = r["evaluation"].get("W7_tilting", {}).get("test", [])
+                corr.append(np.mean([(x["ed"] - (1 / (x["ess_frac"] * x["n"]) - 1 / x["n"])
+                                      * floors[f"{x['eta']:.5f}"]["mean_pairwise_distance"]) / x["ed_floor"] for x in rows]))
+            corr = np.asarray(corr)
+            P(paired_row("H8 with W7 corrected for the extra bias of a weighted sample (estimate): ED ratio W7 − W5_stationarity_half",
+                         corr, ed("W5_stationarity_half")).replace("| H8", "H8", 1).rstrip(" |").replace(" | ", "; "))
         P(f"H9: ratio of the seed-mean ED ratios W4s_potentials_sym / W4_potentials: {f(ed('W4s_potentials_sym').mean() / ed('W4_potentials').mean())}; "
           f"binomial floor of the asymmetry for n = {cfg['n_gen']}: {f((2 * np.pi * cfg['n_gen']) ** -0.5)}.")
         if h12:
