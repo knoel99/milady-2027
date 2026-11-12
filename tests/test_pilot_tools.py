@@ -33,6 +33,8 @@ class FakeMCP:
             if self.fail_first and args["body"]["gpu"]["id"] == "NVIDIA RTX PRO 4500 Blackwell":
                 raise RuntimeError("no capacity")
             return {"id": "pod123", "name": args["body"]["name"]}
+        if tool == "list-billing":
+            return {"metadata": {"totals": {"totalAmount": 0.0}}}
         if tool == "delete-pod":
             self.deleted.append(args["id"])
             return {}
@@ -215,3 +217,67 @@ def test_community_cloud_is_tried_when_secure_has_no_capacity(job_env, monkeypat
     community = [a["body"]["gpu"]["id"] for t, a in mcp.calls if t == "create-pod" and a["body"]["cloud"] == "COMMUNITY"]
     assert community == ["NVIDIA GeForce RTX 4090"]          # PRO 4500 is not offered on Community Cloud
     assert json.loads((job_env / "ledger.jsonl").read_text())["usd_per_hour"] == 0.34
+
+
+def test_shared_credit_guard(job_env, monkeypatch):
+    class Billed(FakeMCP):
+        def call(self, tool, a):
+            if tool == "list-billing":
+                return {"metadata": {"totals": {"totalAmount": 144.9}}}
+            return super().call(tool, a)
+    mcp = Billed(fail_first=False)
+    assert runpod_job.run(args(hours="0.5"), mcp=mcp, sleep=lambda s: None) == 1   # 144.9 + 0.36 > 150 - 5
+    assert not [c for c in mcp.calls if c[0] == "create-pod"]
+
+
+def test_team_budget_from_environment(job_env, monkeypatch):
+    monkeypatch.setenv("MILADY_GPU_BUDGET_USD", "0.1")
+    mcp = FakeMCP(fail_first=False)
+    assert runpod_job.run(args(hours="0.5"), mcp=mcp, sleep=lambda s: None) == 1     # 0.5 h x $0.72 > $0.1
+
+
+def test_review_schedule():
+    import review_due
+    t = review_due.parse
+    s = {"start": t("2026-11-12T00:00:00Z"), "deadline": t("2026-11-14T00:00:00Z"), "encadrant_max_gap_hours": 6}
+    none = lambda since, paths: []
+    assert review_due.due(t("2026-11-12T03:00:00Z"), [], none, s) == []
+    results = lambda since, paths: ["abc 2026 add e4 results"] if "experiments/results" in paths else []
+    assert [r for r, _ in review_due.due(t("2026-11-12T03:00:00Z"), [], results, s)] == ["encadrant"]
+    work = lambda since, paths: ["abc 2026 code"] if paths == ["."] else []
+    assert [r for r, _ in review_due.due(t("2026-11-12T07:00:00Z"), [], work, s)] == ["encadrant"]
+    assert review_due.due(t("2026-11-12T05:00:00Z"), [], work, s) == []                     # gap not reached
+    jury = review_due.due(t("2026-11-13T01:00:00Z"), [{"role": "encadrant", "time": "2026-11-13T00:30:00Z"}], none, s)
+    assert [r for r, _ in jury] == ["jury-externe"] and "50%" in jury[0][1]                 # 25 % and 50 % passed
+    done = [{"role": "jury-externe", "time": "2026-11-13T00:10:00Z"}, {"role": "encadrant", "time": "2026-11-13T00:30:00Z"}]
+    assert review_due.due(t("2026-11-13T01:00:00Z"), done, none, s) == []
+
+
+def test_cursor_launch_uses_role_model_and_logs(tmp_path, monkeypatch):
+    import cursor_agents as ca
+    monkeypatch.setattr(ca, "LEDGER", tmp_path / "runs.jsonl")
+    monkeypatch.setattr(ca, "STATE", tmp_path / "state.json")
+    sent = []
+
+    class Fake(ca.API):
+        def __init__(self):
+            pass
+
+        def call(self, method, path, body=None):
+            if path == "/models":
+                return {"items": [{"id": "grok-4.7", "parameters": [
+                    {"id": "fast", "values": [{"value": "true"}, {"value": "false"}]},
+                    {"id": "effort", "values": [{"value": v} for v in ("low", "medium", "high", "xhigh")]}]},
+                    {"id": "composer-2.5", "parameters": [{"id": "fast", "values": ["true", "false"]}]}]}
+            sent.append((method, path, body))
+            return {"agent": {"id": "bc-1"}, "run": {"id": "run-1"}}
+    task = tmp_path / "t.md"
+    task.write_text("do it")
+    ns = argparse.Namespace(task=str(task), role="physicien", ref="main", name=None, allow_dropped=False)
+    assert ca.cmd_launch(Fake(), ns) == 0
+    body = sent[0][2]
+    assert body["model"] == {"id": "grok-4.7", "params": [{"id": "effort", "value": "high"}, {"id": "fast", "value": "true"}]}
+    assert body["repos"][0]["url"] == "https://github.com/knoel99/milady-2027"
+    row = json.loads((tmp_path / "runs.jsonl").read_text())
+    assert row["agent"] == "bc-1" and row["run"] == "run-1" and row["dropped"] == []
+    assert ca.cmd_check(Fake()) == 0

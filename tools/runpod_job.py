@@ -142,7 +142,7 @@ def run(args, mcp: MCP | None = None, sleep=time.sleep) -> int:
     command = " ".join(args.command[1:] if args.command[:1] == ["--"] else args.command)
     if not command:
         sys.exit("give the command after --")
-    budget = cfg.get("budget_usd")  # a job starts only if its worst case fits in what is left
+    budget = float(os.environ.get("MILADY_GPU_BUDGET_USD") or cfg.get("budget_usd") or 0)  # this team's share
     spent = spend()["usd"]
     share = cfg.get("approval_fraction", 0.8)
     if budget and share < 1 and spent >= share * budget and not args.over_budget_approved:
@@ -152,6 +152,11 @@ def run(args, mcp: MCP | None = None, sleep=time.sleep) -> int:
     gpus = [g.strip() for g in (args.gpu or ",".join(cfg.get("fallback", []))).split(",") if g.strip()]
     outputs = args.outputs or cfg.get("outputs", ["experiments/results"])
     mcp = mcp or MCP()
+    credit = cfg.get("credit_usd")  # the prepaid RunPod credit, shared by every team using the account
+    account = account_spend(mcp) if credit else None
+    if account is not None:
+        print(f"RunPod account spend (all teams, billing may lag): ${account:.2f} of ${credit} credit",
+              file=sys.stderr)
     token = secrets.token_hex(16)
     env = {"JOB_TOKEN": token, "REPO": cfg.get("repo", "https://github.com/knoel99/milady-2027.git"),
            "REF": sha, "CMD_B64": base64.b64encode(command.encode()).decode(),
@@ -172,6 +177,11 @@ def run(args, mcp: MCP | None = None, sleep=time.sleep) -> int:
                 print(f"skip {gid} ({cloud}): not offered on this cloud", file=sys.stderr)
                 continue
             worst = hours * listed
+            if account is not None and account + worst > credit - cfg.get("credit_margin_usd", 5) \
+                    and not args.over_budget_approved:
+                print(f"skip {gid} ({cloud}): up to ${worst:.2f} would exhaust the shared RunPod credit "
+                      f"(${account:.2f} of ${credit} billed)", file=sys.stderr)
+                continue
             if budget and spent + worst > budget and not args.over_budget_approved:
                 print(f"skip {gid} ({cloud}): up to ${worst:.2f} would exceed the ${budget} budget "
                       f"(${spent:.2f} spent)", file=sys.stderr)
@@ -248,6 +258,15 @@ def run(args, mcp: MCP | None = None, sleep=time.sleep) -> int:
     return 0 if rc == 0 else 1
 
 
+def account_spend(mcp) -> float | None:
+    """Total billed on the RunPod account over the last 30 days, all teams; None if unreadable."""
+    try:
+        data = mcp.call("list-billing", {"lastN": 30, "bucketSize": "day"})
+        return float(data["metadata"]["totals"]["totalAmount"])
+    except (RuntimeError, KeyError, TypeError, ValueError):
+        return None
+
+
 def spend() -> dict:
     rows = [json.loads(x) for x in LEDGER.read_text().splitlines() if x.strip()] if LEDGER.exists() else []
     by_gpu: dict[str, dict] = {}
@@ -258,7 +277,7 @@ def spend() -> dict:
         g["usd"] += r["usd"]
     return {"jobs": len(rows), "hours": round(sum(r["hours"] for r in rows), 3),
             "usd": round(sum(r["usd"] for r in rows), 2), "by_gpu": by_gpu,
-            "budget_usd": config().get("budget_usd")}
+            "budget_usd": float(os.environ.get("MILADY_GPU_BUDGET_USD") or config().get("budget_usd") or 0)}
 
 
 def main() -> int:
