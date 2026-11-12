@@ -3,12 +3,19 @@
 # fill model names from that provider's current documentation, never from memory.
 #
 # Sections with format = "none" are a catalogue: no generator exists yet for that tool.
-# Their model names are display names from the Artificial Analysis Intelligence Index v5.0.1
-# chart (supplied by the user on 2026-11-12), not API identifiers: check each provider's
-# documentation for the exact id before using it. [index] holds the chart's score and the
-# reasoning setting it was measured at. Tiers: frontier = the provider's best model on the
-# chart, standard = the next one, light = the smallest; a missing tier means the chart
-# lists no such model.
+# Models: the Artificial Analysis Intelligence Index v5.0.1 chart supplied by the user on
+# 2026-11-12 ([index]: chart score, with the reasoning setting it was measured at).
+# API ids, reasoning parameters and CLI facts: read in each provider's official documentation
+# on 2026-11-12 by research sub-agents (quotes relayed through page summaries, not re-read
+# verbatim); `docs` lists the pages, `unconfirmed` what the documentation did not settle.
+# Recheck before use: ids and values change.
+#
+# Tiers: frontier = the provider's best model on the chart, standard = the next one,
+# light = the smallest; a missing tier means the chart lists no such model.
+# [<provider>.reasoning] maps the role levels (low, medium, high, max) to the value of the
+# provider's `reasoning_param`; a missing level has no documented equivalent.
+# [<provider>.cli]: the provider's own coding-agent CLI, whether it reads AGENTS.md, and where
+# file-defined sub-agents live (the target of a future generator).
 
 [claude]
 output_dir = ".claude/agents"
@@ -38,26 +45,49 @@ shell = ["Bash"]
 web = ["WebSearch", "WebFetch"]
 write = ["Write", "Edit", "NotebookEdit"]
 
-# Google
+# --- Google -------------------------------------------------------------------------------
 [google]
 format = "none"
+reasoning_param = "thinking_level"
+docs = ["https://aistudio.google.com/docs/models/gemini-4-carbon", "https://ai.google.dev/gemini-api/docs/latest-model"]
+unconfirmed = ["public API for gemini-4-carbon (the chart says no public API; the model page lists a stable id)"]
 
 [google.tier]
-frontier = "Gemini 4 Carbon"
-standard = "Gemini 3.8 Flash"
+frontier = "gemini-4-carbon"
+standard = "gemini-3.8-flash"
+
+[google.reasoning]
+low = "low"
+medium = "medium"
+high = "high"
+max = "high"
 
 [google.index]
 "Gemini 4 Carbon (high)" = 60
 "Gemini 3.8 Flash (high)" = 31
 
-# OpenAI
+[google.cli]
+name = "Gemini CLI"
+agents_md = "only if configured: context.fileName in settings.json (default GEMINI.md)"
+subagents = ".gemini/agents/*.md, YAML header: name, description, kind, tools, mcpServers, model, temperature, max_turns, timeout_mins"
+
+# --- OpenAI -------------------------------------------------------------------------------
 [openai]
 format = "none"
+reasoning_param = "reasoning.effort"
+docs = ["https://developers.openai.com/api/docs/models", "https://learn.chatgpt.com/docs/agent-configuration/subagents"]
+unconfirmed = ["value lists of gpt-6.1-sol, gpt-6.1-terra and gpt-6-luna (no model page read); terra and luna also accept none"]
 
 [openai.tier]
-frontier = "GPT-6 Astra"
-standard = "GPT-6.1 Sol"
-light = "GPT-6 Luna"
+frontier = "gpt-6-astra"
+standard = "gpt-6.1-sol"
+light = "gpt-6-luna"
+
+[openai.reasoning]
+low = "low"
+medium = "medium"
+high = "high"
+max = "max"
 
 [openai.index]
 "GPT-6 Astra (max)" = 57
@@ -65,147 +95,318 @@ light = "GPT-6 Luna"
 "GPT-6.1 Terra (max)" = 51
 "GPT-6 Luna (max)" = 28
 
-# Meta; Muse Wonder Full has no public API
+[openai.cli]
+name = "Codex CLI"
+agents_md = "yes"
+subagents = ".codex/agents/*.toml: name, description, developer_instructions; optional model, model_reasoning_effort"
+
+# --- Meta ---------------------------------------------------------------------------------
 [meta]
 format = "none"
+reasoning_param = "reasoning_effort (Chat Completions) / reasoning.effort (Responses)"
+docs = ["https://dev.meta.ai/docs/models", "https://dev.meta.ai/docs/reasoning"]
+unconfirmed = ["Muse Wonder Full is in Muse Code only, no API", "what 'Standard mode only' means for muse-ember-1.0 on the Model API", "Muse Code CLI: AGENTS.md and sub-agent files known only from third-party coverage"]
 
 [meta.tier]
-frontier = "Muse Wonder"
-light = "Muse Ember"
+frontier = "muse-wonder-1.0"
+light = "muse-ember-1.0"
+
+[meta.reasoning]
+low = "low"
+medium = "medium"
+high = "high"
+max = "max"
 
 [meta.index]
 "Muse Wonder Full (max), no public API" = 50
 "Muse Wonder (max)" = 44
 "Muse Ember (max)" = 36
 
-# Moonshot AI (Kimi)
+[meta.cli]
+name = "Muse Code"
+agents_md = "unconfirmed"
+subagents = "unconfirmed"
+
+# --- Moonshot AI (Kimi) -------------------------------------------------------------------
 [moonshot]
 format = "none"
+reasoning_param = "reasoning_effort (low, high, max; default max; thinking cannot be disabled)"
+docs = ["https://platform.kimi.ai/docs/guide/kimi-k3-1-pro-quickstart.md", "https://www.kimi.com/code/docs/en/kimi-code-cli/customization/agents"]
+unconfirmed = ["Hugging Face repo of the open weights"]
 
 [moonshot.tier]
-frontier = "Kimi K3.1 Pro"
+frontier = "kimi-k3.1-pro"
+
+[moonshot.reasoning]
+low = "low"
+medium = "high"
+high = "high"
+max = "max"
 
 [moonshot.index]
 "Kimi K3.1 Pro" = 46
 
-# xAI
+[moonshot.cli]
+name = "Kimi Code CLI"
+agents_md = "yes"
+subagents = ".kimi-code/agents/*.md or .agents/agents/*.md, YAML header: name, description, whenToUse, override, tools, disallowedTools, subagents"
+
+# --- xAI ----------------------------------------------------------------------------------
 [xai]
 format = "none"
+reasoning_param = "reasoning_effort (low, medium, high, xhigh; default high; cannot be disabled)"
+docs = ["https://docs.x.ai/docs/guides/reasoning", "https://x.ai/cli"]
+unconfirmed = ["file-defined sub-agents in Grok Build"]
 
 [xai.tier]
-frontier = "Grok 4.7"
+frontier = "grok-4.7"
+
+[xai.reasoning]
+low = "low"
+medium = "medium"
+high = "high"
+max = "xhigh"
 
 [xai.index]
 "Grok 4.7 (xhigh)" = 35
 
-# Tencent
+[xai.cli]
+name = "Grok Build"
+agents_md = "yes"
+subagents = "unconfirmed"
+
+# --- Tencent ------------------------------------------------------------------------------
 [tencent]
 format = "none"
+reasoning_param = "reasoning_effort (default high)"
+docs = ["https://www.tencentcloud.com/document/product/1300/80695", "https://huggingface.co/tencent/Hy4-preview"]
+unconfirmed = ["full value list on TokenHub (only high documented; no_think for self-hosting)", "open weights of the final hy4 (only Hy4-preview is published)", "AGENTS.md in CodeBuddy Code"]
 
 [tencent.tier]
-frontier = "Hy4"
+frontier = "hy4"
+
+[tencent.reasoning]
+high = "high"
+max = "high"
 
 [tencent.index]
 "Tencent Hy4" = 35
 
-# Alibaba (Qwen)
+[tencent.cli]
+name = "CodeBuddy Code"
+agents_md = "unconfirmed"
+subagents = ".codebuddy/agents/*.md, YAML header: name, description, tools, model, permissionMode, effort, maxTurns, disallowedTools"
+
+# --- Alibaba (Qwen) -----------------------------------------------------------------------
 [alibaba]
 format = "none"
+reasoning_param = "reasoning.effort (Responses API: none, low, medium, xhigh; default xhigh)"
+docs = ["https://www.alibabacloud.com/help/en/model-studio/qwen-api-via-openai-responses", "https://huggingface.co/Qwen/Qwen3.8-27B", "https://qwenlm.github.io/qwen-code-docs/en/users/features/sub-agents/"]
+unconfirmed = ["value list of reasoning_effort on the Chat Completions API", "AGENTS.md in Qwen Code (third-party sources only)"]
 
 [alibaba.tier]
-frontier = "Qwen3.8 Max (0902)"
-light = "Qwen3.8 27B"
+frontier = "qwen3.8-max-0902"
+light = "qwen3.8-27b"
+
+[alibaba.reasoning]
+low = "low"
+medium = "medium"
+high = "xhigh"
+max = "xhigh"
 
 [alibaba.index]
 "Qwen3.8 Max (0902)" = 34
 "Qwen3.8 27B (xhigh)" = 20
 
-# DeepSeek
+[alibaba.cli]
+name = "Qwen Code"
+agents_md = "unconfirmed"
+subagents = ".qwen/agents/*.md, YAML header: name, description, model, approvalMode, tools, disallowedTools (also accepts Claude fields such as maxTurns)"
+
+# --- DeepSeek -----------------------------------------------------------------------------
 [deepseek]
 format = "none"
+reasoning_param = "reasoning_effort (low, high, max; default high)"
+docs = ["https://api-docs.deepseek.com/", "https://api-docs.deepseek.com/guides/thinking_mode"]
+unconfirmed = ["open-weights repo of V4.1 Flash 1017", "official coding CLI (none found)"]
 
 [deepseek.tier]
-frontier = "DeepSeek V4.1 Flash 1017"
+frontier = "deepseek-flash"
+
+[deepseek.reasoning]
+low = "low"
+medium = "high"
+high = "high"
+max = "max"
 
 [deepseek.index]
 "DeepSeek V4.1 Flash 1017 (max)" = 33
 
-# Zhipu AI (Z.ai)
+# --- Zhipu AI (Z.ai) ----------------------------------------------------------------------
 [zhipu]
 format = "none"
+reasoning_param = "reasoning_effort (low, high, max; default max)"
+docs = ["https://docs.z.ai/guides/llm/glm-5.3", "https://zcode.z.ai/en/docs/agents"]
+unconfirmed = ["open-weights repo of GLM-5.3", "sub-agent files in ZCode"]
 
 [zhipu.tier]
-frontier = "GLM-5.3"
+frontier = "glm-5.3"
+
+[zhipu.reasoning]
+low = "low"
+medium = "high"
+high = "high"
+max = "max"
 
 [zhipu.index]
 "GLM-5.3 (max)" = 32
 
-# Thinking Machines
+[zhipu.cli]
+name = "ZCode Agent"
+agents_md = "yes"
+subagents = "unconfirmed"
+
+# --- Thinking Machines Lab ----------------------------------------------------------------
 [thinking_machines]
 format = "none"
+reasoning_param = "effort, a float in [0.0, 1.0) (renderer argument; default 0.9)"
+docs = ["https://thinkingmachines.ai/news/inkling-2-small/", "https://tinker-docs.thinkingmachines.ai/cookbook/inkling/thinking-effort/"]
+unconfirmed = ["served only through Tinker; open weights announced, not yet confirmed published", "that the effort page applies to Inkling 2 Small"]
 
 [thinking_machines.tier]
-frontier = "Inkling 2 Small"
+frontier = "thinkingmachines/Inkling-2-Small"
+
+[thinking_machines.reasoning]
+low = 0.2
+medium = 0.7
+high = 0.9
+max = 0.99
 
 [thinking_machines.index]
 "Inkling 2 Small" = 31
 
-# Xiaomi
+# --- Xiaomi -------------------------------------------------------------------------------
 [xiaomi]
 format = "none"
+reasoning_param = "thinking.type (enabled or disabled; no effort levels)"
+docs = ["https://platform.xiaomimimo.com/ultraspeed", "https://huggingface.co/XiaomiMiMo/MiMo-V2.6-Pro-RL", "https://github.com/XiaomiMiMo/MiMo-Code"]
+unconfirmed = ["API id read from search snippets (JS-rendered pages)", "default of thinking.type", "AGENTS.md and sub-agent files in MiMo Code"]
 
 [xiaomi.tier]
-frontier = "MiMo-V2.6-Pro"
+frontier = "mimo-v2.6-pro"
+
+[xiaomi.reasoning]
+low = "enabled"
+medium = "enabled"
+high = "enabled"
+max = "enabled"
 
 [xiaomi.index]
 "MiMo-V2.6-Pro" = 30
 
-# Ant Group (Ling); provider read from the logo, to verify
+[xiaomi.cli]
+name = "MiMo Code"
+agents_md = "unconfirmed"
+subagents = "unconfirmed"
+
+# --- Ant Group (inclusionAI) --------------------------------------------------------------
 [ant_group]
 format = "none"
+reasoning_param = "chat_template_kwargs.enable_thinking (true or false; no effort levels)"
+docs = ["https://huggingface.co/inclusionAI/Ling-3.1-flash-1019"]
+unconfirmed = ["Ant Group ownership (the inclusionAI page does not state it)", "first-party hosted API and its id", "official coding CLI (none found)"]
 
 [ant_group.tier]
-frontier = "Ling 3.1 Flash 1019"
+frontier = "inclusionAI/Ling-3.1-flash-1019"
+
+[ant_group.reasoning]
+low = true
+medium = true
+high = true
+max = true
 
 [ant_group.index]
 "Ling 3.1 Flash 1019" = 30
 
-# Mistral AI
+# --- Mistral AI ---------------------------------------------------------------------------
 [mistral]
 format = "none"
+reasoning_param = "reasoning_effort (low, medium, high)"
+docs = ["https://docs.mistral.ai/studio-api/conversations/reasoning", "https://docs.mistral.ai/vibe/code/cli/agents"]
+unconfirmed = []
 
 [mistral.tier]
-frontier = "Mistral Large 4"
+frontier = "mistral-large-4"
+
+[mistral.reasoning]
+low = "low"
+medium = "medium"
+high = "high"
+max = "high"
 
 [mistral.index]
 "Mistral Large 4 (high)" = 26
 
-# Institute of Foundation Models (MBZUAI); open weights
+[mistral.cli]
+name = "Mistral Vibe"
+agents_md = "yes"
+subagents = ".vibe/agents/*.toml: agent_type, display_name, description, safety, active_model, system_prompt_id, enabled_tools, disabled_tools"
+
+# --- Institute of Foundation Models (MBZUAI) ----------------------------------------------
 [ifm]
 format = "none"
+reasoning_param = "chat_template_kwargs.reasoning_effort (high recommended; medium and low mentioned)"
+docs = ["https://huggingface.co/IFM/K2-Horizon-375B-A23B"]
+unconfirmed = ["full value list (see chat_template.jinja)", "first-party API (only inference partners found)", "official coding CLI (none found)"]
 
 [ifm.tier]
-frontier = "K2 Horizon 375B A23B"
+frontier = "IFM/K2-Horizon-375B-A23B"
+
+[ifm.reasoning]
+low = "low"
+medium = "medium"
+high = "high"
+max = "high"
 
 [ifm.index]
 "K2 Horizon 375B A23B" = 18
 
-# Reflection AI; open weights
+# --- Reflection AI ------------------------------------------------------------------------
 [reflection]
 format = "none"
+reasoning_param = "reasoning_effort (max used for the official evaluations)"
+docs = ["https://huggingface.co/reflection/Beam-1.0-501B-A23B", "https://developers.reflection.ai/introduction"]
+unconfirmed = ["value list of reasoning_effort (third-party sources disagree)", "API base URL", "AGENTS.md and sub-agent files in the Mirror CLI"]
 
 [reflection.tier]
-frontier = "Beam 1.0"
+frontier = "Beam-1.0-501B-A23B"
+
+[reflection.reasoning]
+max = "max"
 
 [reflection.index]
 "Beam 1.0" = 18
 
-# NVIDIA; open weights
+[reflection.cli]
+name = "Mirror"
+agents_md = "unconfirmed"
+subagents = "unconfirmed"
+
+# --- NVIDIA -------------------------------------------------------------------------------
 [nvidia]
 format = "none"
+reasoning_param = "chat template: enable_thinking (bool) and medium_effort (bool)"
+docs = ["https://huggingface.co/nvidia/NVIDIA-Nemotron-3.5-Super-VL-120B-A12B-BF16"]
+unconfirmed = ["hosted API id (build.nvidia.com not checked)", "official coding CLI (none; NVIDIA points to third-party tools)"]
 
 [nvidia.tier]
-frontier = "Nemotron 3.5 Super VL"
+frontier = "nvidia/NVIDIA-Nemotron-3.5-Super-VL-120B-A12B-BF16"
+
+[nvidia.reasoning]
+low = "enable_thinking=true, medium_effort=true"
+medium = "enable_thinking=true, medium_effort=true"
+high = "enable_thinking=true"
+max = "enable_thinking=true"
 
 [nvidia.index]
 "Nemotron 3.5 Super VL" = 14
