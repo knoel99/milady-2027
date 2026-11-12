@@ -67,7 +67,8 @@ GROUPS = {"A": ["W0_free", "W1_penalty", "W2_final_projection", "W3_projected_fl
           "C": ["W4c_potentials_smooth"],      # H15: W4 with a smooth embedding of the condition
           "D": ["G0_gaussian_modes", "W9_skip_sym"],                    # H16, H17: second-order baseline, affine skip
           "E": ["W10_anchored", "W11_anchored_skip"],                   # H19, H20: anchored on the Gaussian field
-          "L": ["W9L_skip_long", "W11L_anchored_skip_long"]}            # H18: 8 times the iterations (not in "all")
+          "L": ["W9L_skip_long", "W11L_anchored_skip_long"],            # H18: 8 times the iterations (not in "all")
+          "S": ["S_w512", "S_w2048", "S_w5632", "S_w512_long", "S_w2048_long"]}   # H21: width scan (not in "all")
 
 FULL = {"iters": 4000, "batch": 128, "width": 512, "depth": 4, "lr": 5e-4, "n_gen": 512, "n_gen_train": 256,
         "steps": 50, "ft_iters": 400, "ft_lr": 2e-4, "beta": 20.0, "stat_cond": 4, "stat_per": 16, "stat_steps": 6,
@@ -374,9 +375,10 @@ def run(quick: bool, seed: int, group: str, device: str = "cpu", cond_scale: flo
     """``cond_scale``: maximum frequency of the condition embedding of every network of the run (8: the
     pre-race default, registered protocol of H4-H14; another value tags the output files ``_cs<value>``)."""
     t_start = time.time()
-    groups = [g for g in GROUPS if g != "L"] if group == "all" else group.split(",")
+    groups = [g for g in GROUPS if g not in ("L", "S")] if group == "all" else group.split(",")
     need = tuple(sorted({s for g in groups for s in {"A": ("comp",), "B": ("pot", "pot_sym"), "C": ("pot",),
-                                                     "D": ("pot_sym",), "E": ("pot_sym",), "L": ("pot_sym",)}[g]}))
+                                                     "D": ("pot_sym",), "E": ("pot_sym",), "L": ("pot_sym",),
+                                                     "S": ("pot_sym",)}[g]}))
     need = ("pot", "pot_sym", "comp") if len(need) == 3 else need
     ctx = Context(quick, need, device)
     cfg, dev = ctx.cfg, ctx.dev
@@ -597,6 +599,13 @@ def run(quick: bool, seed: int, group: str, device: str = "cpu", cond_scale: flo
     }
     builders["W9L_skip_long"] = builders["W9_skip_sym"]
     builders["W11L_anchored_skip_long"] = builders["W11_anchored_skip"]
+
+    def scan(width: int):                                # H21: no affine term, width of the network varied
+        return lambda gauss: sym(ResMLP(pot_sym.n_modes, pot_sym.n_channels, 1, width=width if not quick else width // 8,
+                                        depth=cfg["depth"], cond_scale=0.5))
+
+    for w in (512, 2048, 5632):
+        builders[f"S_w{w}"] = builders[f"S_w{w}_long"] = scan(w)
     todo = [v for v in names if v in builders]
     if todo:
         gauss = C.ModewiseGaussian(sign=pot_sym.sign).fit(ctx.x_pot_sym, ctx.c_train[:, 0])

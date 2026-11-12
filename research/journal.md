@@ -2,6 +2,18 @@
 
 One entry per working session, newest first, at most ten lines.
 
+## 2026-11-12 — Announcement (23:20 UTC): two more GPU jobs in parallel; verdicts of the registered protocol
+- Goal of the session: record the `encadrant` verdicts, test the cause of the poor generators, use parallel pods as the owner allowed at 23:10 UTC.
+- Verdicts (`encadrant`, research/reviews/2026-11-12-encadrant-e4-registered-protocol.md, 5 GPU seeds + 2 CPU seeds): CONFIRMED H5, H7, H10 (about interpolation in η, not about the family at fixed η), H14; REFUTED H4, H6, H9, H12, H13; NOT DISCRIMINATING H8 (the tilted law is one sample). Objective C6 = 7, C7 = 12 (`experiments/race_metrics.py`). The role refused "the cause is the width" as a statement: it is a conjecture until a width scan; H21 registered for it before computing (this commit).
+- CPU, container data, seeds 0 and 1: W11_anchored_skip at 9.3 and 7.6 times the floor against 3.3 for G0: H20 is heading for a refutation on its first clause (the anchored model with a learned correction is not as close as the Gaussian baseline), its restart drift is lower (0.12 against 0.21) and it has fewer spurious nulls (error 1.7 against 2.3).
+- GPU jobs announced, all pods named `milady-claude-job-*`, limit 2 h each, results saved after every variant:
+  1. running since 22:28 UTC: groups A–E, 5 seeds (`e4_main`), first free GPU of the `[gpu]` list (RTX PRO 4500 Blackwell at 0.72 USD/h: worst case 1.44 USD);
+  2. now: group L, long trainings W9L and W11L, 5 seeds (`e4_long`), same list: worst case 1.44 USD on the 4500, 2.38 USD on an RTX 5090;
+  3. now: group S, width scan of H21, 5 seeds (`e4_scan`), A100 80 GB only (the widest network has 0.57 billion parameters, about 11 GB per seed with its optimizer: 5 seeds need more than 48 GB): 1.79 USD/h, worst case 3.58 USD.
+- Choice of GPU by measured cost per finished run, as asked at 23:15 UTC: the full registered protocol took 83 min and 1.02 USD on the RTX PRO 4500, of which 95 % was CPU evaluation (trainings: 35 to 60 s each), so a faster card would not shorten jobs 1 and 2 and the cheapest card of the list is the best cost per run; job 3 is bound by memory, hence the A100. No H100.
+- Budget before launch: this ledger 2.59 USD; Cursor pilot 0.58 USD (last figure announced); worst case of the three jobs 6.46 USD; total at most 9.6 USD of 150.
+- Cost (tokens, CPU time): `research/usage/latest.md`.
+
 ## 2026-11-12 — Announcements to the group (Claude pilot, 22:58 UTC): GPU jobs, shared tools, budget
 - Goal of the session: apply the coordination rules relayed at 22:40–22:45 UTC (shared credit of 150 USD with the Cursor pilot, first come first served, no H100, team prefix for pods, announcements through this journal).
 - Merged `main` into this branch (commit 37bf879): per-team `cleanup`, reserved worst case of the jobs in flight, wider GPU list and Community Cloud fallback, `review_due.py`, `race/DELIVERABLES.md`. Conflicts: `tools/runpod_job.py` (main's version kept: it contains this branch's fixes) and `.gitignore` (union). The merge left three duplicated tests in `tests/test_pilot_tools.py`: removed (ff4ad5a); `make test`-selection of the pilot tools, `ruff check src tests` and `sync_agents.py --check` pass.

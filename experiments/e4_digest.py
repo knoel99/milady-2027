@@ -20,7 +20,8 @@ SEEDS = (0, 1, 2, 3, 4)
 GENERATORS = ["W0_free", "W1_penalty", "W2_final_projection", "W3_projected_flow", "W4_potentials",
               "W4s_potentials_sym", "W5_stationarity", "W5_control", "W6_diffusion", "W4c_potentials_smooth",
               "G0_gaussian_modes", "W9_skip_sym", "W10_anchored", "W11_anchored_skip", "W9L_skip_long",
-              "W11L_anchored_skip_long", "W10L_anchored_long"]
+              "W11L_anchored_skip_long", "W10L_anchored_long",
+              "S_w512", "S_w2048", "S_w5632", "S_w512_long", "S_w2048_long"]
 # G0 has no network: it is the baseline to beat, not a candidate for the selected generator (the C1 note of
 # race/teams/claude/objectives.toml names the model family: conditional flow matching on the Fourier modes).
 CANDIDATES = [v for v in GENERATORS if v != "G0_gaussian_modes"]
@@ -52,7 +53,7 @@ def merge(seed: int, tag: str | bool = "", root: Path = R) -> Path | None:
     whole = root / f"e4_mhd3d{tag}_s{seed}_all.json"
     if not all(p.exists() for p in parts) and not whole.exists():        # a run of the later groups only (D, E, L)
         parts = [p for g in ("A", "B") if (p := root / f"e4_mhd3d{tag}_s{seed}_{g}.json").exists()]
-        if not any((root / f"e4_mhd3d{tag}_s{seed}_{g}.json").exists() for g in ("C", "D", "E", "L")):
+        if not any((root / f"e4_mhd3d{tag}_s{seed}_{g}.json").exists() for g in ("C", "D", "E", "L", "S")):
             return None
     if all(p.exists() for p in parts):
         data = [json.loads(p.read_text()) for p in parts]
@@ -60,7 +61,7 @@ def merge(seed: int, tag: str | bool = "", root: Path = R) -> Path | None:
         data = [json.loads(whole.read_text())]
     else:
         return None
-    for g in ("C", "D", "E", "L"):                           # optional groups, added after the first runs
+    for g in ("C", "D", "E", "L", "S"):                      # optional groups, added after the first runs
         extra = root / f"e4_mhd3d{tag}_s{seed}_{g}.json"
         if extra.exists():
             data.append(json.loads(extra.read_text()))
@@ -283,6 +284,14 @@ def section(quick: bool = False, root: Path = R, replication: str | None = None,
                     continue
                 for key, label in (("ed_ratio", "ED ratio"), ("restart_drift_eb", "restart drift E_B"), ("null_count_err_rel", "err. nulls")):
                     P(paired_row(f"{label}: G0_gaussian_modes − {v} ({h})", per_seed(runs, "G0_gaussian_modes", key), per_seed(runs, v, key)))
+        if has("S_w512"):
+            def loss_of(v: str) -> str:
+                x = [r["times"].get(v, {}).get("fm_loss_train_sample") for r in runs.values()]
+                x = [y for y in x if y is not None]
+                return f(float(np.mean(x))) if x else "–"
+            P("\nH21 (width scan, no affine term): " + "; ".join(
+                f"{v}: ED ratio {f(float(np.nanmean(ed(v))))}, loss {loss_of(v)}" for v in
+                ("S_w512", "S_w2048", "S_w5632", "S_w512_long", "S_w2048_long") if has(v)) + " (π/2 = 1.571).")
         if has("W9_skip_sym"):
             fl = [r["times"].get("W9_skip_sym", {}).get("fm_loss_train_sample") for r in runs.values()]
             fl = [x for x in fl if x is not None]
