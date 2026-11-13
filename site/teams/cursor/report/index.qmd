@@ -1,0 +1,110 @@
+---
+title: "What the cursor team measured"
+subtitle: "Kinematic ABC signs, constraint comparisons, and a stationary balance"
+lang: en
+format:
+  html:
+    toc: true
+    number-sections: true
+    embed-resources: true
+    html-math-method: plain
+  pdf:
+    documentclass: report
+    toc: true
+    number-sections: true
+    papersize: a4
+    fontsize: 11pt
+    pdf-engine: xelatex
+---
+
+The PDF of this page is [index.pdf](index.pdf). The explorer is [../explorer/index.html](../explorer/index.html).
+
+# Abstract {#abstract}
+
+This report records what team cursor measured while preparing the MilaDy internship. The kinematic ABC threshold is seed dependent. A sampling constraint cuts the relative divergence of a small flow. That flow does not meet the energy-distance target. A linear midpoint in Fourier coefficients does. A dynamic ABC run meets the total energy balance. A kmax=4 truncation does not preserve the trilinear null count. Every number below is measured in a result file, or it is marked published or conjectured.
+
+# Introduction {#introduction}
+
+The internship asks for physics-constrained generative models of parametric 3D fields. This team started from the kinematic ABC dynamo, because the sign of the growth rate is a sharp test, and then moved to the generator metrics C1 to C5. The race report in `research/race-report.md` is the living summary. This page is the internship report of the same measurements.
+
+# State of the art {#state-of-the-art}
+
+The published statements used here are the ones collected in `docs/specs/theory-brief.md` and `docs/specs/sources/`. The stationarity constraint is the mean energy balance of an invariant measure, injection against total dissipation. The trilinear null count follows Haynes and Parnell, Physics of Plasmas 14, 082107 (2007), as cited in `docs/specs/sources/data-metrics.md`. This report does not restate a published dynamo threshold. Where a claim is only a guess, it is marked conjectured.
+
+# Methods {#methods}
+
+Three mechanisms are compared.
+
+The sampling constraint removes the longitudinal Fourier component after every Heun step. The unconstrained baseline does not. Both are small conditional flows on the same coefficients.
+
+The design comparison is a cutoff in wavenumber. A perfect cutoff keeps the modes of the reference field and drops the rest. A linear midpoint averages the kmax=6 coefficients of the fields at Rm=11 and Rm=13.
+
+The stationarity window is the second half of a dynamic ABC run. The first half is the transient baseline. The total residual is the mean injection minus the mean dissipation, divided by the mean dissipation. The magnetic residual keeps the exchange term and subtracts no growth rate.
+
+Nulls are the zeros of the trilinear interpolant on each periodic cell. A root is kept only if the interpolant is numerically zero, and a root on the upper face is left to the next cell.
+
+# Experiments {#experiments}
+
+Kinematic ABC runs use float64, t=120, and cfl=1 unless a result file says otherwise. GPU jobs are named `milady-cursor-job-*`. The constraint comparisons, the midpoint, the dynamic balance, and the null counts are CPU runs at n=16. Seeds are 0 to 4 whenever a comparison is quoted. Rm=12 is held out of every learned or interpolated training set.
+
+Schematic panels live under `figures/dynamo-threshold/`, `figures/constraint-mechanisms/`, `figures/metrics-panel/`, `figures/protocol-panel/`, `figures/balance-panel/`, `figures/null-panel/`, `figures/compute-path/`, and `figures/pipeline-panel/`. Data plots with the same measurements are in `plots/`.
+
+# Results {#results}
+
+Measured. At n=128 and Rm=9, seeds 0-4 are positive (H102). At n=136 the same Rm has negative seeds (H141). At n=128, seeds 0-4, the growth rate is negative at Rm=8.98699951171875 (H144, seed 0, lambda -7.53e-7) and positive at Rm=8.9871826171875 (H142). The files are under `experiments/results/`.
+
+Measured. The sampling constraint has mean maximum relative divergence 1.56e-8. The free baseline is 0.645 (H145). The energy-distance ratio of that flow is 757.56 (H146). Widening the layer and adding neighbour Rm values move that ratio by only a few units.
+
+Measured. A perfect cutoff has mean ratio 0.728 at kmax=4, 0.0092 at kmax=6, and 0.0028 at kmax=7. The kmax=6 midpoint between Rm=11 and Rm=13 has mean ratio 0.014, mean C4 0.0093, and maximum relative divergence 4.58e-16. File `experiments/results/cursor_constraint_midpoint_kmax6.json`.
+
+Measured. The dynamic second-half total residual has mean absolute value 3.74e-6 (H162). The magnetic residual on the same window has mean absolute value 0.067 (H163). File `experiments/results/cursor_stationary.json`.
+
+Measured. The kmax=4 truncation changes the null count. The mean relative error is 0.428 (H164). File `experiments/results/cursor_nulls.json`.
+
+`experiments/results/cursor_metrics.json` quotes C1=0.0140, C2=4.58e-16, C3=3.74e-6, C4=0.0093, and C5=0.428.
+
+# Comparative study {#comparative-study}
+
+| Mechanism | Metric | Mean over seeds 0-4 | Verdict |
+| --- | --- | --- | --- |
+| sampling constraint vs free | max relative divergence | 1.56e-8 vs 0.645 | H145 supported |
+| kmax=2 flow | energy-distance ratio | 757.56 | H146 refuted |
+| kmax=6 midpoint | energy-distance ratio | 0.014 | H157 supported |
+| kmax=6 midpoint | spectrum plus helicity | 0.0093 | H159 supported |
+| dynamic second half | total balance residual | 3.74e-6 | H162 supported |
+| dynamic second half | magnetic residual | 0.067 | H163 refuted |
+| kmax=4 truncation | relative null-count error | 0.428 | H164 refuted |
+
+The standard error is not quoted. The result files hold the five seeds, and the verdict is the pre-registered criterion, not a confidence interval.
+
+# Toolbox {#toolbox}
+
+`src/milady/train/constraints.py` removes the longitudinal Fourier component and scores its energy. `tests/test_constraints.py` names it. `src/milady/eval/nulls.py` counts trilinear nulls. `tests/test_nulls.py` names it. Call `count_nulls` on an array of shape `(n, n, n, 3)`. Call `project_solenoidal` on complex coefficients of shape `(..., M, 3)` with a real wavevector `(M, 3)`.
+
+# Discussion {#discussion}
+
+The negative results matter. Forty Adam steps do not make the small flow match a held-out Rm. Raising kmax at a hidden width of 64 makes the ratio worse. The magnetic balance of a short dynamic window stays above 0.05 even though the total balance is already tiny, because the seed field is still evolving. A kmax=4 truncation is not topology-preserving on these snapshots. It is conjectured that a statistically steady dynamo, rather than a finer cutoff, is what would bring the magnetic residual down. That run is not in the result files.
+
+# Conclusion {#conclusion}
+
+C1, C2, C3, and C4 meet their targets on the quantities named in `cursor_metrics.json`. C5 is measured and does not. The kinematic brackets that are still open are recorded in the race report and are not the next generator test. No team pod was left running after H144.
+
+# References {#references}
+
+Haynes, A. L. and Parnell, C. E. A trilinear method for finding null points in a three-dimensional vector space. Physics of Plasmas 14, 082107 (2007). The local citation is `docs/specs/sources/data-metrics.md`.
+
+The stationarity identity used for the total balance is the C4 class in `docs/specs/theory-brief.md`.
+
+# Reproducibility {#reproducibility}
+
+CPU commands, from the repository root:
+
+```
+python3 experiments/cursor_constraint_cmp.py
+python3 experiments/cursor_constraint_cmp.py --ceiling --out experiments/results/cursor_constraint_ceiling.json
+python3 experiments/cursor_constraint_cmp.py --midpoint --kmax 6 --out experiments/results/cursor_constraint_midpoint_kmax6.json
+python3 experiments/cursor_stationary.py
+python3 experiments/cursor_nulls.py
+```
+
+GPU jobs are the `milady-cursor-job-*` rows of `research/compute-ledger.jsonl`. After H144 the ledger spend is 21.91 USD of the shared 150. The diagrams are `architecture.html`, `workflow.html`, and `agents.html` in `../diagrams/`.

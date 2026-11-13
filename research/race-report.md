@@ -42,6 +42,6 @@ Status: open. The shared GPU budget is not exhausted. This file is a living reco
 - C6. H145 through H157 are five-seed constraint comparisons with a verdict. The target of 4 is met. The next comparison that can move an objective is C3 or C4, not another Rm sign.
 - C7. Two new modules, `constraints.py` and `nulls.py`, each named by a test. The target is 2.
 - T1. Already below the target on the measured bench. No further bench is planned.
-- Deliverables. `site/teams/cursor/` does not exist, so `tools/check_deliverables.py --team cursor --built` does not pass.
+- Deliverables. `site/teams/cursor/` is the team report, eight schematics, three diagrams, eight plots, and the explorer. `python3 tools/check_deliverables.py --team cursor --built` passes after `python3 tools/render.py teams/cursor/report teams/cursor/explorer`. The rendered HTML is gitignored. The PDF is `site/teams/cursor/report/index.pdf`.
 - H138, supported. At n = 160 and Rm = 9.0625, seeds 0-4 are all positive. The smallest lambda is 5.84e-5, seed 3. The bracket against the negative Rm = 9 run is (9, 9.0625). It is not being bisected.
 - No team pod is running. Spend is the ledger total after H144.
