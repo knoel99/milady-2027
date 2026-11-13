@@ -426,16 +426,42 @@ So on this system the flow-matching models that carry their linear part learn pa
 ### Longer trainings and wider networks {#sec-long}
 
 <!-- e4:longtext:begin -->
+Would the models with an affine term overtake the Gaussian law with more training? The two best models were retrained with eight times the iterations (W9L, W11L; @tbl-long, @fig-long), in a separate job whose base models reproduce those of the main run to the last digit.
+
+The answer is no, and the result is a negative one. The flow-matching loss on training samples goes down (from 1.18 to 1.08), but the generated law moves away from the reference: 18.8 and 19.5 floors on the held-out $\eta$ against 9.3 and 8.6, and 12 against 5.5 on the training $\eta$ themselves. The longer training improves the topology (error on the null count 1.4 against 1.7) and keeps the magnetic energy balance (residual 0.05), while the total energy balance and the restart drifts get somewhat worse. Why a lower training loss gives a worse law was not established; a decrease of the loss that sharpens the velocity field beyond what 50 integration steps resolve is one **conjecture**, memorisation of the 14 400 training snapshots another.
+
+The hypothesis registered for this run (H18) was narrower: that with the affine term and a long training, flow matching holds what a Gaussian law cannot, a lower restart drift of the magnetic energy and a lower error on the null count than G0. Both paired differences are positive in the five seeds ($0.070 \pm 0.011$ and $0.86 \pm 0.03$).
 <!-- e4:longtext:end -->
 
-<!-- e4:long:begin -->
-*(not available)*
+```{=latex}
+\begin{landscape}
+\footnotesize\setlength{\tabcolsep}{3pt}
+```
 
-: Long trainings (measured; `experiments/results/replications/e4_final_long`): Gaussian baseline, models with the affine term or the anchor at the base budget and with 8 times the iterations. Columns as in @tbl-comparative; FM loss: flow-matching loss on a training sample ($\pi/2 = 1.571$ for the exact field of independent standard Gaussians). {#tbl-long}
+<!-- e4:long:begin -->
+| Variant | Acts through | ED / floor, training $\eta$ | ED / floor | div B | energy residual | magnetic balance | spectrum of B | magnetic helicity | null points | restart drift $E_B$ | restart drift $E_u$ | polarity | FM loss | Seeds |
+|:--------------------------|:--------|---------:|---------:|---------:|---------:|---------:|---------:|---------:|---------:|---------:|---------:|---------:|---------:|----:|
+| G0 Gaussian per mode (no network) | family | 2.67(8) | 3.52(7) | $1.5\times 10^{-8}$ | 0.0015(3) | 0.9981(9) | 0.024(3) | 0.035(5) | 2.235(7) | 0.212(3) | 0.026(5) | 0.018(3) | – | 5 |
+| W9 mode-wise affine term | design | 5.51(9) | 9.3(3) | $1.5\times 10^{-8}$ | 0.0567(17) | 0.0553(6) | 0.145(3) | 0.196(4) | 1.665(14) | 0.124(3) | 0.053(6) | 0.019(4) | 1.1760(15) | 5 |
+| W9L affine term, 8$\times$ iterations | design | 11.91(15) | 18.8(14) | $1.5\times 10^{-8}$ | 0.096(5) | 0.049(4) | 0.112(15) | 0.12(2) | 1.38(3) | 0.142(10) | 0.077(11) | 0.0147(14) | 1.075(2) | 5 |
+| W10 anchored on the Gaussian field | design | 36.37(10) | 43.6(2) | $1.5\times 10^{-8}$ | 0.1458(9) | 0.3092(17) | 0.2081(19) | 0.096(7) | 2.464(16) | 0.122(2) | 0.092(4) | 0.0135(9) | 1.2727(18) | 5 |
+| W11 anchor + affine term | design | 5.52(13) | 8.6(2) | $1.5\times 10^{-8}$ | 0.0515(9) | 0.0598(6) | 0.143(4) | 0.193(5) | 1.696(12) | 0.120(2) | 0.053(3) | 0.0169(10) | 1.1742(14) | 5 |
+| W11L anchor + affine, 8$\times$ iterations | design | 12.0(5) | 19.5(15) | $1.5\times 10^{-8}$ | 0.098(8) | 0.043(3) | 0.128(14) | 0.14(2) | 1.41(3) | 0.154(17) | 0.081(13) | 0.018(5) | 1.075(2) | 5 |
+
+: Long trainings (measured; `experiments/results/replications/e4_final_long`, five seeds, held-out $\eta$ unless said otherwise): Gaussian baseline, models with the affine term or the anchor at the base budget and with 8 times the iterations. Columns and notation as in @tbl-comparative; FM loss: flow-matching loss on a training sample ($\pi/2 = 1.571$ for the exact field of independent standard Gaussians). {#tbl-long}
 
 <!-- e4:long:end -->
 
+```{=latex}
+\end{landscape}
+```
+
 ![Gaussian baseline (violet), flow matching with the explicit affine term or the Gaussian anchor at the base budget (blue) and with 8 times the iterations (orange), on the held-out $\eta$: one dot per seed, seed mean $\pm 2$ standard errors. Data plot from `experiments/results/replications/e4_final_long/`.](../plots/e4_long_trainings){#fig-long width=100%}
+
+```{=latex}
+\begin{landscape}
+\footnotesize\setlength{\tabcolsep}{3pt}
+```
 
 <!-- e4:scan:begin -->
 *(not available)*
@@ -443,6 +469,10 @@ So on this system the flow-matching models that carry their linear part learn pa
 : Width scan (measured; `experiments/results/replications/e4_final_scan`): the equivariant potentials model with the smooth embedding and no affine term, for three widths and two training budgets, against the model with the affine term and the Gaussian baseline. {#tbl-scan}
 
 <!-- e4:scan:end -->
+
+```{=latex}
+\end{landscape}
+```
 
 ![Width scan (hypothesis H21): energy-distance ratio and flow-matching loss for three widths and two budgets, against the model with the explicit affine term and the Gaussian baseline. Dashed line: $\pi/2$. Data plot from `experiments/results/replications/e4_final_scan/`.](../plots/e4_width_scan){#fig-scan width=90%}
 
@@ -457,12 +487,20 @@ The number of magnetic null points is the most demanding of the metrics: every g
 <!-- e4:indeptext:begin -->
 <!-- e4:indeptext:end -->
 
+```{=latex}
+\begingroup\footnotesize
+```
+
 <!-- e4:indep:begin -->
 *(The replication with other data seeds is not available.)*
 
 : Main run against a replication in which the reference data were regenerated with other seeds of the initial conditions (`E4_DATA_SEED=100`; `experiments/results/replications/e4_indep`); seed mean with its standard error in parentheses, on the held-out $\eta$. {#tbl-indep}
 
 <!-- e4:indep:end -->
+
+```{=latex}
+\endgroup
+```
 
 ### Objectives of the race {#sec-objectives}
 
@@ -736,7 +774,7 @@ Every GPU job of the pilot is in `research/compute-ledger.jsonl` (@tbl-jobs, @fi
 ```
 
 <!-- e4:jobs:begin -->
-Total: 19 ledger entries, 5.71 GPU hours, 4.30 USD.
+Total: 20 ledger entries, 7.22 GPU hours, 5.38 USD.
 
 | End (UTC) | GPU | USD/h | Hours | USD | Exit | Commit | Command (shortened) |
 |:----------|:------------------|-----:|------:|-----:|:----|:-------|:--------------------------------------------|
@@ -759,6 +797,7 @@ Total: 19 ledger entries, 5.71 GPU hours, 4.30 USD.
 | 11-12 23:24 | RTX PRO 4500 Blackwell | 0.72 | 0.126 | 0.09 | – | `5027f7c` | e4\_gpu\_job.sh full "0 1 2 3 4" e4\_long L |
 | 11-12 23:27 | RTX PRO 4500 Blackwell | 0.72 | 0.983 | 0.71 | 0 | `62e31c9` | collected after a restart of the session: milady-claude-job- ... |
 | 11-13 00:17 | RTX PRO 4500 Blackwell | 0.72 | 0.879 | 0.63 | 0 | `973fe3a` | collected after a restart of the session: milady-claude-job- ... |
+| 11-13 00:55 | RTX PRO 4500 Blackwell | 0.72 | 1.508 | 1.09 | 0 | `973fe3a` | collected after a restart of the session: milady-claude-job- ... |
 
 : GPU jobs of the pilot (generated from `research/compute-ledger.jsonl`). {#tbl-jobs}
 

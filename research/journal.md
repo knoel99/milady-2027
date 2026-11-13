@@ -2,6 +2,16 @@
 
 One entry per working session, newest first, at most ten lines.
 
+## 2026-11-13 — Announcement (01:16 UTC): review of the report by `jury-externe`, three hypotheses registered, one GPU job
+- Goal of the session: answer the review of the report v1 before the final version.
+- Review of `jury-externe` on the report v1 (research/reviews/2026-11-13-jury-externe-report-v1.md): the table and the registration order hold; the reading "third-order correlations make the dynamo" is refuted (an oracle Gaussian with the full covariance does as well as W9 on the magnetic balance and better on the restart drift and the nulls: G0 fails because its modes are independent); the claims on the stationarity loss go beyond the table; the mechanisms were only compared on models far from the reference; the restart drift at one time hides a transient. Twelve corrections of wording.
+- Long trainings (job `e4_final_long` collected: pod `tzjj9v55gjfucm`, 1.51 h, 1.09 USD, rc 0, pod deleted): W9L and W11L (8 times the iterations) are at 18.8 and 19.5 floors against 9.3 and 8.6: a longer training lowers the loss and worsens the law; H18 awaits its verdict.
+- Hypotheses registered before computing (commit a0cd918): H22 (Gaussian law with the inter-mode covariance, G1), H23 (stationarity loss on the model with the affine term), H24 (tilting on that model).
+- Toolbox: `FullGaussian` (`gaussian_full`, test `test_gaussian_full`); `e4_mhd3d.py` groups G and M; restart drift recorded at τ = 0.5, 1, 2, 4. Two test defects of mine repaired: the `collect` test depended on the wall clock; the sample size of `test_gaussian_anchor` had been changed by a careless replacement.
+- GPU job launched now (1 pod `milady-claude-job-*`, limit 2 h): `e4_mech`, groups D, E, G, M, 5 seeds, first free GPU of the `[gpu]` list (RTX PRO 4500 at 0.72 USD/h: about 50 min and 0.6 USD expected from the measured runs; worst case 1.44 USD, 2.38 USD on an RTX 5090). Running besides: `e4_final_scan` (A100, time limit at 01:25 UTC), `e4_indep` (RTX 4090).
+- Budget: this ledger 5.39 USD billed; worst case of the three jobs in flight 7.6 USD; at most 13 USD of 150 for this team.
+- Cost (tokens, CPU time): `research/usage/latest.md`.
+
 ## 2026-11-13 — Main run on 5 seeds, verdicts H15–H20, report v1 (00:30 UTC)
 - Goal of the session: collect the final run, decide H15–H20, write the report and the explorer.
 - Hypotheses: H15 REFUTED (smooth embedding: 215 against 256 floors on the held-out η, a real gain of 40.9 ± 6.8 but not the factor 2 registered); H16 CONFIRMED (Gaussian law per mode G0 at 3.5 floors against 177 for the best trained model of the first protocol); H17 CONFIRMED (explicit affine term: 9.3 against 210 floors, factor 22); H19 REFUTED (anchored model W10 at 43.6 floors); H20 REFUTED on its first clause (W11 at 8.6 floors, above G0), its clauses on the restart drift and the null count met. Verdicts of `encadrant` (research/reviews/2026-11-13-encadrant-e4-final-h15-h20.md), written to the register; objective C6 = 12.

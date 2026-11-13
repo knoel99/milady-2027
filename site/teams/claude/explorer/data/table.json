@@ -1180,6 +1180,144 @@
     "se": 0.13314,
     "n": 5
    }
+  },
+  {
+   "id": "W9L_skip_long",
+   "label": "W9L affine term, 8\u00d7 iterations",
+   "where": "design",
+   "source": "experiments/results/replications/e4_final_long",
+   "hypotheses": [
+    {
+     "id": "H18",
+     "status": "registered"
+    }
+   ],
+   "ed_ratio": {
+    "mean": 18.762,
+    "se": 1.374,
+    "n": 5
+   },
+   "div_rel_b_max": {
+    "mean": 1.4841e-08,
+    "se": 5.0265e-11,
+    "n": 5
+   },
+   "balance_residual_total": {
+    "mean": 0.095838,
+    "se": 0.0052752,
+    "n": 5
+   },
+   "balance_residual_magnetic": {
+    "mean": 0.048742,
+    "se": 0.0038317,
+    "n": 5
+   },
+   "spec_err_b_l2": {
+    "mean": 0.11213,
+    "se": 0.014849,
+    "n": 5
+   },
+   "hel_m_err_rel": {
+    "mean": 0.11745,
+    "se": 0.020945,
+    "n": 5
+   },
+   "null_count_err_rel": {
+    "mean": 1.3792,
+    "se": 0.033745,
+    "n": 5
+   },
+   "restart_drift_eb": {
+    "mean": 0.14212,
+    "se": 0.0097041,
+    "n": 5
+   },
+   "restart_drift_eu": {
+    "mean": 0.07727,
+    "se": 0.01149,
+    "n": 5
+   },
+   "hc_sign_asym": {
+    "mean": 0.014714,
+    "se": 0.0014352,
+    "n": 5
+   },
+   "ed_ratio_train": {
+    "mean": 11.914,
+    "se": 0.14689,
+    "n": 5
+   }
+  },
+  {
+   "id": "W11L_anchored_skip_long",
+   "label": "W11L anchor + affine, 8\u00d7 iterations",
+   "where": "design",
+   "source": "experiments/results/replications/e4_final_long",
+   "hypotheses": [
+    {
+     "id": "H18",
+     "status": "registered"
+    },
+    {
+     "id": "H20",
+     "status": "refuted"
+    }
+   ],
+   "ed_ratio": {
+    "mean": 19.516,
+    "se": 1.5125,
+    "n": 5
+   },
+   "div_rel_b_max": {
+    "mean": 1.4874e-08,
+    "se": 5.6888e-11,
+    "n": 5
+   },
+   "balance_residual_total": {
+    "mean": 0.098405,
+    "se": 0.008104,
+    "n": 5
+   },
+   "balance_residual_magnetic": {
+    "mean": 0.043281,
+    "se": 0.0026013,
+    "n": 5
+   },
+   "spec_err_b_l2": {
+    "mean": 0.12769,
+    "se": 0.013805,
+    "n": 5
+   },
+   "hel_m_err_rel": {
+    "mean": 0.144,
+    "se": 0.021319,
+    "n": 5
+   },
+   "null_count_err_rel": {
+    "mean": 1.4141,
+    "se": 0.030652,
+    "n": 5
+   },
+   "restart_drift_eb": {
+    "mean": 0.15406,
+    "se": 0.017304,
+    "n": 5
+   },
+   "restart_drift_eu": {
+    "mean": 0.081266,
+    "se": 0.013144,
+    "n": 5
+   },
+   "hc_sign_asym": {
+    "mean": 0.017578,
+    "se": 0.0047307,
+    "n": 5
+   },
+   "ed_ratio_train": {
+    "mean": 12.049,
+    "se": 0.46731,
+    "n": 5
+   }
   }
  ]
 }
