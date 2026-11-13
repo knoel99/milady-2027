@@ -905,7 +905,7 @@
     },
     {
      "id": "H18",
-     "status": "registered"
+     "status": "supported"
     },
     {
      "id": "H19",
@@ -984,7 +984,7 @@
     },
     {
      "id": "H18",
-     "status": "registered"
+     "status": "supported"
     }
    ],
    "ed_ratio": {
@@ -1189,7 +1189,7 @@
    "hypotheses": [
     {
      "id": "H18",
-     "status": "registered"
+     "status": "supported"
     }
    ],
    "ed_ratio": {
@@ -1256,7 +1256,7 @@
    "hypotheses": [
     {
      "id": "H18",
-     "status": "registered"
+     "status": "supported"
     },
     {
      "id": "H20",
@@ -1316,6 +1316,278 @@
    "ed_ratio_train": {
     "mean": 12.049,
     "se": 0.46731,
+    "n": 5
+   }
+  },
+  {
+   "id": "G1_gaussian_full",
+   "label": "G1 Gaussian, full covariance (no network)",
+   "where": "family",
+   "source": "experiments/results/replications/e4_mech",
+   "hypotheses": [
+    {
+     "id": "H22",
+     "status": "registered"
+    }
+   ],
+   "ed_ratio": {
+    "mean": 2.5468,
+    "se": 0.039702,
+    "n": 5
+   },
+   "div_rel_b_max": {
+    "mean": 1.4879e-08,
+    "se": 6.1772e-11,
+    "n": 5
+   },
+   "balance_residual_total": {
+    "mean": 0.003373,
+    "se": 0.00061511,
+    "n": 5
+   },
+   "balance_residual_magnetic": {
+    "mean": 0.07201,
+    "se": 0.00050384,
+    "n": 5
+   },
+   "spec_err_b_l2": {
+    "mean": 0.026547,
+    "se": 0.0019266,
+    "n": 5
+   },
+   "hel_m_err_rel": {
+    "mean": 0.036662,
+    "se": 0.0037197,
+    "n": 5
+   },
+   "null_count_err_rel": {
+    "mean": 1.0968,
+    "se": 0.011148,
+    "n": 5
+   },
+   "restart_drift_eb": {
+    "mean": 0.064399,
+    "se": 0.0018573,
+    "n": 5
+   },
+   "restart_drift_eu": {
+    "mean": 0.094715,
+    "se": 0.0031299,
+    "n": 5
+   },
+   "hc_sign_asym": {
+    "mean": 0.014844,
+    "se": 0.0019357,
+    "n": 5
+   },
+   "ed_ratio_train": {
+    "mean": 1.8964,
+    "se": 0.046709,
+    "n": 5
+   }
+  },
+  {
+   "id": "W12_skip_stationarity",
+   "label": "W12 affine term + stationarity loss",
+   "where": "loss",
+   "source": "experiments/results/replications/e4_mech",
+   "hypotheses": [
+    {
+     "id": "H23",
+     "status": "registered"
+    }
+   ],
+   "ed_ratio": {
+    "mean": 16.371,
+    "se": 0.67974,
+    "n": 5
+   },
+   "div_rel_b_max": {
+    "mean": 1.5253e-08,
+    "se": 1.4219e-10,
+    "n": 5
+   },
+   "balance_residual_total": {
+    "mean": 0.029189,
+    "se": 0.0011099,
+    "n": 5
+   },
+   "balance_residual_magnetic": {
+    "mean": 0.11289,
+    "se": 0.003529,
+    "n": 5
+   },
+   "spec_err_b_l2": {
+    "mean": 0.21842,
+    "se": 0.0069944,
+    "n": 5
+   },
+   "hel_m_err_rel": {
+    "mean": 0.30521,
+    "se": 0.0063084,
+    "n": 5
+   },
+   "null_count_err_rel": {
+    "mean": 1.9811,
+    "se": 0.019765,
+    "n": 5
+   },
+   "restart_drift_eb": {
+    "mean": 0.079616,
+    "se": 0.0051162,
+    "n": 5
+   },
+   "restart_drift_eu": {
+    "mean": 0.13878,
+    "se": 0.0064493,
+    "n": 5
+   },
+   "hc_sign_asym": {
+    "mean": 0.015495,
+    "se": 0.0034963,
+    "n": 5
+   },
+   "ed_ratio_train": {
+    "mean": 9.4604,
+    "se": 0.48165,
+    "n": 5
+   }
+  },
+  {
+   "id": "W12_skip_control",
+   "label": "W12 control (same fine-tuning, no identity)",
+   "where": "loss",
+   "source": "experiments/results/replications/e4_mech",
+   "hypotheses": [
+    {
+     "id": "H23",
+     "status": "registered"
+    },
+    {
+     "id": "H24",
+     "status": "registered"
+    }
+   ],
+   "ed_ratio": {
+    "mean": 9.3059,
+    "se": 0.4267,
+    "n": 5
+   },
+   "div_rel_b_max": {
+    "mean": 1.5177e-08,
+    "se": 9.699e-11,
+    "n": 5
+   },
+   "balance_residual_total": {
+    "mean": 0.056668,
+    "se": 0.0017909,
+    "n": 5
+   },
+   "balance_residual_magnetic": {
+    "mean": 0.057264,
+    "se": 0.00081221,
+    "n": 5
+   },
+   "spec_err_b_l2": {
+    "mean": 0.14252,
+    "se": 0.0042028,
+    "n": 5
+   },
+   "hel_m_err_rel": {
+    "mean": 0.19489,
+    "se": 0.0060792,
+    "n": 5
+   },
+   "null_count_err_rel": {
+    "mean": 1.6835,
+    "se": 0.011235,
+    "n": 5
+   },
+   "restart_drift_eb": {
+    "mean": 0.12313,
+    "se": 0.0040258,
+    "n": 5
+   },
+   "restart_drift_eu": {
+    "mean": 0.052697,
+    "se": 0.0056734,
+    "n": 5
+   },
+   "hc_sign_asym": {
+    "mean": 0.019271,
+    "se": 0.0023073,
+    "n": 5
+   },
+   "ed_ratio_train": {
+    "mean": 5.4591,
+    "se": 0.05187,
+    "n": 5
+   }
+  },
+  {
+   "id": "W13_skip_tilting",
+   "label": "W13 affine term + exponential tilting",
+   "where": "sampling",
+   "source": "experiments/results/replications/e4_mech",
+   "hypotheses": [
+    {
+     "id": "H24",
+     "status": "registered"
+    }
+   ],
+   "ed_ratio": {
+    "mean": 4.5797,
+    "se": 0.31344,
+    "n": 5
+   },
+   "div_rel_b_max": {
+    "mean": 1.4852e-08,
+    "se": 1.087e-10,
+    "n": 5
+   },
+   "balance_residual_total": {
+    "mean": 0.011466,
+    "se": 0.0022653,
+    "n": 5
+   },
+   "balance_residual_magnetic": {
+    "mean": 0.037945,
+    "se": 0.0041204,
+    "n": 5
+   },
+   "spec_err_b_l2": {
+    "mean": 0.080973,
+    "se": 0.0079593,
+    "n": 5
+   },
+   "hel_m_err_rel": {
+    "mean": 0.087531,
+    "se": 0.011732,
+    "n": 5
+   },
+   "null_count_err_rel": {
+    "mean": 1.2469,
+    "se": 0.023538,
+    "n": 5
+   },
+   "restart_drift_eb": {
+    "mean": null,
+    "se": null,
+    "n": 0
+   },
+   "restart_drift_eu": {
+    "mean": null,
+    "se": null,
+    "n": 0
+   },
+   "hc_sign_asym": {
+    "mean": 0.082603,
+    "se": 0.016541,
+    "n": 5
+   },
+   "ed_ratio_train": {
+    "mean": 3.3254,
+    "se": 0.2967,
     "n": 5
    }
   },

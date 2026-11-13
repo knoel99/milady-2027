@@ -240,5 +240,16 @@
   "rc": 124,
   "commit": "973fe3a",
   "command": "collected after a restart of the session: milady-claude-job-967aba8f"
+ },
+ {
+  "time": "2026-11-13T02:09:19Z",
+  "pod": "4gb4eguf2phk1v",
+  "gpu": "NVIDIA RTX PRO 4500 Blackwell",
+  "usd_per_hour": 0.72,
+  "hours": 0.7621,
+  "usd": 0.5487,
+  "rc": 0,
+  "commit": "607ccbd",
+  "command": "bash experiments/e4_gpu_job.sh full \"0 1 2 3 4\" e4_mech D,E,G,M"
  }
 ]

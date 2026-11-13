@@ -81,6 +81,13 @@
   ]
  },
  {
+  "name": "e4_restart_curves",
+  "caption": "Restart test: signed relative change of the ensemble-mean magnetic and kinetic energies when the solver restarts from generated snapshots, at four times, mean over the held-out \u03b7 and the seeds (bars: \u00b1 2 standard errors).",
+  "sources": [
+   "experiments/results/replications/e4_mech/e4_mhd3d_s<k>.json"
+  ]
+ },
+ {
   "name": "e4_gpu_costs",
   "caption": "Cumulative GPU spend of the pilot, one point per entry of the compute ledger: finished jobs, jobs that failed, were interrupted or were lost, and the corrections made after another session deleted running pods.",
   "sources": [

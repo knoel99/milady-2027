@@ -434,6 +434,16 @@ So on this system the flow-matching models that carry their linear part learn pa
 ```
 
 <!-- e4:mech:begin -->
+| Variant | Acts through | ED / floor, training $\eta$ | ED / floor | div B | energy residual | magnetic balance | spectrum of B | magnetic helicity | null points | restart drift $E_B$ | restart drift $E_u$ | polarity | Seeds |
+|:--------------------------|:--------|---------:|---------:|---------:|---------:|---------:|---------:|---------:|---------:|---------:|---------:|---------:|----:|
+| G0 Gaussian per mode (no network) | family | 2.67(8) | 3.52(7) | $1.5\times 10^{-8}$ | 0.0015(3) | 0.9981(9) | 0.024(3) | 0.035(5) | 2.235(7) | 0.212(3) | 0.026(5) | 0.018(3) | 5 |
+| G1 Gaussian, full covariance (no network) | family | 1.90(5) | 2.55(4) | $1.5\times 10^{-8}$ | 0.0034(6) | 0.0720(5) | 0.0265(19) | 0.037(4) | 1.097(11) | 0.0644(19) | 0.095(3) | 0.0148(19) | 5 |
+| W9 mode-wise affine term | design | 5.51(9) | 9.3(3) | $1.5\times 10^{-8}$ | 0.0567(17) | 0.0553(6) | 0.145(3) | 0.196(4) | 1.665(14) | 0.124(3) | 0.053(6) | 0.019(4) | 5 |
+| W11 anchor + affine term | design | 5.52(13) | 8.6(2) | $1.5\times 10^{-8}$ | 0.0515(9) | 0.0598(6) | 0.143(4) | 0.193(5) | 1.696(12) | 0.120(2) | 0.053(3) | 0.0169(10) | 5 |
+| W12 control (same fine-tuning, no identity) | loss | 5.46(5) | 9.3(4) | $1.5\times 10^{-8}$ | 0.0567(18) | 0.0573(8) | 0.143(4) | 0.195(6) | 1.683(11) | 0.123(4) | 0.053(6) | 0.019(2) | 5 |
+| W12 affine term + stationarity loss | loss | 9.5(5) | 16.4(7) | $1.5\times 10^{-8}$ | 0.0292(11) | 0.113(4) | 0.218(7) | 0.305(6) | 1.981(20) | 0.080(5) | 0.139(6) | 0.015(3) | 5 |
+| W12 control, half ensemble | loss | 4.59(11) | 7.3(3) | $1.5\times 10^{-8}$ | 0.0564(19) | 0.0564(5) | 0.142(4) | 0.192(7) | 1.669(14) | – | – | 0.030(5) | 5 |
+| W13 affine term + exponential tilting | sampling | 3.3(3) | 4.6(3) | $1.5\times 10^{-8}$ | 0.011(2) | 0.038(4) | 0.081(8) | 0.088(12) | 1.25(2) | – | – | 0.083(17) | 5 |
 
 : Gaussian laws and mechanisms on the model with the affine term (measured; `experiments/results/replications/e4_mech`, five seeds, held-out $\eta$; the models G0, W9 and W11 are retrained in this job). G1: Gaussian law with the full covariance of the latent. W12: W9 fine-tuned with the stationarity loss, and its control. W13: exponential tilting of the second half of the control samples, to compare with the untilted half. Columns and notation as in @tbl-comparative. {#tbl-mech}
 
@@ -570,7 +580,7 @@ Generator measured by C1–C5, T1 and T2: `W9_skip_sym`, the variant with the lo
 | C3-energy-balance | $\le$ 0.05 | 0.0567 | 5 | no |
 | C4-spectra-helicity | $\le$ 0.15 | 0.341 | 5 | no |
 | C5-topology | $\le$ 0.2 | 1.66 | 5 | no |
-| C6-comparative-study | $\ge$ 6 | 12 | 5 | yes |
+| C6-comparative-study | $\ge$ 6 | 13 | 5 | yes |
 | C7-toolbox | $\ge$ 6 | 13 | 0 | yes |
 | T1-restart-drift | $\le$ 0.05 | 0.124 | 5 | no |
 | T2-polarity-symmetry | $\le$ 0.03 | 0.0186 | 5 | yes |
@@ -641,7 +651,7 @@ Five of the nine objectives are met: the distance to the reference law (C1, belo
 | H15 | In E4, the error of the generators at the held-out $\eta$ comes from the embedding of the condition: the Fourier embedding of the pre-race code has frequencies up to 8 cycles over the normalized parameter range, above the Nyquist frequency of the 6 training values [...] | refuted | REFUTED (encadrant, 2026-11-13): ratio of the seed-mean ED ratios W4c/W4 = 215.4/256.3 = 0.84 on the held-out $\eta$, above the 0.5 of the criterion; the paired difference ED(W4) - ED(W4c) = 40.9 $\pm$ 6.8 (6.0 SE, 5 of 5 seeds) is real, and absent at the training $\eta$ (0.34 $\pm$ 0.32): the embedding of the condition explains part of the interpolation error, not the failure. |
 | H16 | In E4, a conditional Gaussian model with one mean and one covariance per Fourier mode (G0\_gaussian\_modes: no network; moments estimated at the training $\eta$ and interpolated linearly in log $\eta$, symmetrized under B $\to$ -B) has a lower energy-distance ratio on the [...] | supported | CONFIRMED (encadrant, 2026-11-13): G0 3.52 against 177 to 519 for W0–W6 on the held-out $\eta$ (W3 the lowest, 176.6); best of them per seed 153–194 against G0 3.36–3.70, 5 of 5 seeds. |
 | H17 | In E4, the over-dispersion of the flow-matching generators comes from the bottleneck of the network (width 512 for 5320 latent dimensions), which cannot represent the linear part of the velocity field: [...] | supported | CONFIRMED (encadrant, 2026-11-13): ratio W9/W4s = 9.35/209.8 = 0.045, below 0.2; ED(W4s) - ED(W9) = 200.4 $\pm$ 2.2 (91 SE), 5 of 5 seeds; flow-matching loss of W9 on a training sample 1.18, below $\pi$/2. The factor is 22.4 at the held-out $\eta$ and 30.2 at the training $\eta$. |
-| H18 | In E4, flow matching adds to the second-order baseline what a Gaussian law cannot hold: with the mode-wise affine term and a longer training (W9L\_skip\_long, 8 times the iterations of W9), the drift of the magnetic energy when the solver is restarted from the [...] | registered | not reviewed yet |
+| H18 | In E4, flow matching adds to the second-order baseline what a Gaussian law cannot hold: with the mode-wise affine term and a longer training (W9L\_skip\_long, 8 times the iterations of W9), the drift of the magnetic energy when the solver is restarted from the [...] | supported | CONFIRMED as registered (encadrant, 2026-11-13): G0 - W9L on the held-out $\eta$, restart drift of E\_B 0.070 $\pm$ 0.011 (6.4 SE, 5 of 5 seeds), null-count error 0.856 $\pm$ 0.035 (25 SE, 5 of 5). Caveats: W9 at the base budget already meets both clauses; [...] |
 | H19 | In E4, a flow-matching field anchored on the exact field of the mode-wise Gaussian law, v = v\_Gauss(x, t, $\eta$) + network (W10\_anchored: [...] | refuted | REFUTED (encadrant, 2026-11-13): ED(W10) - ED(G0) = +40.0 $\pm$ 0.26 on the held-out $\eta$ (first clause not met); restart drift of E\_B: G0 - W10 = 0.090 $\pm$ 0.003, 5 of 5 (met); null-count error: G0 - W10 = -0.229 $\pm$ 0.014, 0 of 5 (not met). |
 | H20 | In E4, the anchored model fails (W10\_anchored on CPU seeds 0 and 1: 45 times the floor against 3.3 for G0) because the network's own linear component perturbs the second-order statistics that the fixed Gaussian field had right. [...] | refuted | REFUTED (encadrant, 2026-11-13) on its first clause: ED(W11) - ED(G0) = +5.08 $\pm$ 0.22 (24 SE), 0 of 5 seeds; the two other clauses are met: restart drift of E\_B G0 - W11 = 0.092 $\pm$ 0.003 (5 of 5), null-count error G0 - W11 = 0.539 $\pm$ 0.014 (5 of 5). Reported with it: [...] |
 | H21 | In E4, the over-dispersion of the flow-matching generators without an explicit linear term comes from the width of the network and not from the training budget: [...] | registered | not reviewed yet |
@@ -832,7 +842,7 @@ Every GPU job of the pilot is in `research/compute-ledger.jsonl` (@tbl-jobs, @fi
 ```
 
 <!-- e4:jobs:begin -->
-Total: 22 ledger entries, 10.61 GPU hours, 11.04 USD.
+Total: 23 ledger entries, 11.37 GPU hours, 11.59 USD.
 
 | End (UTC) | GPU | USD/h | Hours | USD | Exit | Commit | Command (shortened) |
 |:----------|:------------------|-----:|------:|-----:|:----|:-------|:--------------------------------------------|
@@ -858,6 +868,7 @@ Total: 22 ledger entries, 10.61 GPU hours, 11.04 USD.
 | 11-13 00:55 | RTX PRO 4500 Blackwell | 0.72 | 1.508 | 1.09 | 0 | `973fe3a` | collected after a restart of the session: milady-claude-job- ... |
 | 11-13 01:25 | GeForce RTX 4090 | 0.89 | 1.356 | 1.21 | 0 | `dfc02a2` | env E4\_DATA\_SEED=100 e4\_gpu\_job.sh full "0 1 2 3 4" e4\_indep ... |
 | 11-13 01:27 | A100-SXM4-80GB | 2.19 | 2.034 | 4.46 | 124 | `973fe3a` | collected after a restart of the session: milady-claude-job- ... |
+| 11-13 02:09 | RTX PRO 4500 Blackwell | 0.72 | 0.762 | 0.55 | 0 | `607ccbd` | e4\_gpu\_job.sh full "0 1 2 3 4" e4\_mech D,E,G,M |
 
 : GPU jobs of the pilot (generated from `research/compute-ledger.jsonl`). {#tbl-jobs}
 

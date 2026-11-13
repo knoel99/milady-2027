@@ -190,12 +190,12 @@
   "id": "H18",
   "statement": "In E4, flow matching adds to the second-order baseline what a Gaussian law cannot hold: with the mode-wise affine term and a longer training (W9L_skip_long, 8 times the iterations of W9), the drift of the magnetic energy when the solver is restarted from the generated snapshots (T1 metric) and the error on the number of magnetic null points are both lower than those of G0_gaussian_modes.",
   "refutation_criterion": "Refuted if, for the restart drift or for the null-count error, the paired difference G0 − W9L is not larger than 2 SE or W9L is below G0 in fewer than 4 of the 5 seeds.",
-  "status": "registered",
-  "verdict": "",
+  "status": "supported",
+  "verdict": "CONFIRMED as registered (encadrant, 2026-11-13): G0 − W9L on the held-out η, restart drift of E_B 0.070 ± 0.011 (6.4 SE, 5 of 5 seeds), null-count error 0.856 ± 0.035 (25 SE, 5 of 5). Caveats: W9 at the base budget already meets both clauses; the long training does not improve the drift (W9L − W9 = +0.018 ± 0.010) and doubles the energy-distance ratio (18.8 ± 1.4 against 9.35); the drift of E_u is worse than that of G0 in 5 of 5 seeds.",
   "comparison": "model families",
   "seeds": 5,
   "script": "experiments/e4_mhd3d.py --seed k --group D, k = 0..4",
-  "commit": ""
+  "commit": "d7aa2bd"
  },
  {
   "id": "H19",
