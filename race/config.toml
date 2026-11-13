@@ -2,7 +2,7 @@
 # and tools/compute_broker.py.
 
 start_tag = "race-start"
-deadline = "2026-11-26T18:00:00Z"   # one week after launch: set it on launch day
+deadline = "2026-11-13T21:00:00Z"   # pilot deadline set by the owner: 13 November 22:00 Paris time; final report 1 h before
 repo = "https://github.com/knoel99/milady-2027.git"
 
 [budget]
