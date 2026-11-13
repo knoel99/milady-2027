@@ -8,7 +8,9 @@ one branch and one systemd service per team on a single VM.
     python3 tools/race_host.py login --team T              # how to log in to the harness with a subscription
 
 The secrets file (root only) holds one KEY=value per line: the provider keys named in
-race/config.toml [teams], RUNPOD_API_KEY, GITHUB_TOKEN, and optionally <TEAM>_GPU_BUDGET_USD.
+race/config.toml [teams], RUNPOD_API_KEY, GITHUB_TOKEN, and optionally <TEAM>_GPU_BUDGET_USD. For isolation,
+REPO_<TEAM> (the team's own private repository, started from tools/race_snapshot.py) and
+GITHUB_TOKEN_<TEAM> (a fine-grained token on that repository only) replace the shared REPO and token.
 A team's environment file receives only its own provider key and the shared keys, never the keys
 of the other teams. Standard library only.
 """
@@ -68,6 +70,11 @@ def env_file(team: str, secrets: dict[str, str]) -> str:
     for k in (key_var, *SHARED, "CLAUDE_CODE_OAUTH_TOKEN" if team == "claude" else ""):
         if k and secrets.get(k):
             env[k] = secrets[k]
+    # Isolation (race/HOST.md): a team's own repository and a token that reaches it only.
+    if secrets.get(f"GITHUB_TOKEN_{team.upper()}"):
+        env["GITHUB_TOKEN"] = secrets[f"GITHUB_TOKEN_{team.upper()}"]
+    if secrets.get(f"REPO_{team.upper()}"):
+        env["RACE_REPO"] = secrets[f"REPO_{team.upper()}"]
     budget = secrets.get(f"{team.upper()}_GPU_BUDGET_USD")
     if budget:
         env["MILADY_GPU_BUDGET_USD"] = budget

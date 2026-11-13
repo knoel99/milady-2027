@@ -44,3 +44,13 @@ Logins with a subscription (`tools/race_host.py login --team <team>`): Codex `co
 ## 5. Before starting all teams
 
 Start one team first (for example `mistral`, the cheapest), watch one or two invocations (`racectl logs`), and only then the others. Untested so far on a real VM: the non-interactive flags of each harness (`agents/providers.toml` `[<provider>.harness]`, from their documentation), the Kimi and DeepSeek effort settings, and `npx playwright install --with-deps` on the host.
+
+## 6. No access to the other teams' work
+
+A team must not see the reports, results or branches of the other teams, nor the published site (`race/BRIEF.md`). Three locks:
+
+1. **Its own repository, without any team's work.** On a machine with the main repository, `python3 tools/race_snapshot.py list` shows what is removed (every `site/teams/<team>/`, `race/teams/<team>/`, `experiments/<team>_*`, `experiments/results/<team>_*`, and `research/` except its README); `python3 tools/race_snapshot.py build --branch race-start` makes one commit without history. Create one private repository per team (for example `knoel99/milady-race-mistral`), push `race-start` to it as `main`, and name it in the secrets: `REPO_MISTRAL=https://github.com/knoel99/milady-race-mistral.git`.
+2. **A token that reaches that repository only**: a fine-grained token per team, contents read and write on its repository only, as `GITHUB_TOKEN_MISTRAL=…`. `tools/race_host.py env` gives the team its own repository and token instead of the shared ones; with the shared token the team could fetch every branch of the main repository.
+3. **The site closed**: `race-host.sh` maps `knoel99.github.io` to nowhere in `/etc/hosts`.
+
+At the end, the owner brings each team's branch back into the main repository under its own paths (`research/teams/<team>/`, `site/teams/<team>/`). A Claude Code cloud session or a Cursor Cloud Agent on the main repository sees everything it holds: for them, start from the same snapshot in a repository of their own.

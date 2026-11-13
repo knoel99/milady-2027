@@ -51,3 +51,24 @@ def test_team_prompt_is_rendered_for_the_team(monkeypatch):
 def test_host_scripts_parse():
     for f in ("race-host.sh", "race-team-loop.sh", "racectl"):
         subprocess.run(["bash", "-n", str(ROOT / "infra" / "deploy" / f)], check=True)
+
+
+def test_team_repository_and_token_replace_the_shared_ones(monkeypatch):
+    import race_host
+
+    monkeypatch.setattr(race_host, "config", lambda: {"teams": {"mistral": "MISTRAL_API_KEY"}})
+    text = race_host.env_file("mistral", {"MISTRAL_API_KEY": "k", "RUNPOD_API_KEY": "r", "GITHUB_TOKEN": "shared",
+                                          "GITHUB_TOKEN_MISTRAL": "own", "REPO_MISTRAL": "https://x/race-mistral.git"})
+    assert "GITHUB_TOKEN=own" in text and "shared" not in text
+    assert "RACE_REPO=https://x/race-mistral.git" in text
+
+
+def test_snapshot_removes_every_team_work():
+    import race_snapshot
+
+    teams = ["claude", "cursor", "mistral"]
+    work = ["site/teams/cursor/report/index.qmd", "race/teams/claude/objectives.toml", "research/journal.md",
+            "research/calls/h1-encadrant.md", "experiments/cursor_fm_train.py", "experiments/results/cursor_abc/x.json"]
+    keep = ["research/README.md", "race/teams/README.md", "site/teams/index.qmd", "experiments/e1_gissinger.py",
+            "tools/race_snapshot.py", "src/milady/storage.py"]
+    assert race_snapshot.check(work + keep, teams) == work

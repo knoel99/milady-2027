@@ -95,6 +95,7 @@ for T in $TEAMS; do
 set -euo pipefail
 set -a; . "$ENVF"; set +a
 mkdir -p ~/.npm-global ~/logs && npm config set prefix ~/.npm-global
+REPO="${RACE_REPO:-$REPO}"   # the team's own repository (tools/race_snapshot.py), when the secrets name one
 if [ ! -d ~/milady/.git ]; then git clone -q "$REPO" ~/milady; fi
 cd ~/milady
 git fetch -q origin
