@@ -347,6 +347,17 @@ def h29_lines(runs: dict, ref: dict | None) -> list[str]:
                        + "; ".join(f"η = {e:.4f}: {f(float(per[e].mean()))} ± {f(sem(per[e]))}, {int((per[e] > 0).sum())} of {n_seed} positive "
                                    f"(third-order part {f(float(cells(w16, key('prod_fluct_over_d'))[e].mean()))})" for e in etas)
                        + f". Verdict on this realisation of the data: {'TEST INVALID (null control)' if not ctl else ('REFUTED' if bad30 else 'NOT REFUTED')}.")
+            # asked by the review of the encadrant role (2026-11-13): paired ED differences per η, the kinetic energy at restart
+            ed = key("ed_ratio")
+            pairs = [("W16 minus G1", w16, g1), ("G4 minus G1", g4, g1), ("W15 minus W16", "W15_recoloured_modes", w16)]
+            out.append("H29, H30, paired differences of ED / floor over the seeds (mean ± SE; per η): " + "; ".join(
+                f"{label}: {f(float((over_eta(cells(a, ed)) - over_eta(cells(b, ed))).mean()))} ± {f(sem(over_eta(cells(a, ed)) - over_eta(cells(b, ed))))} ("
+                + ", ".join(f"{f(float((cells(a, ed)[e] - cells(b, ed)[e]).mean()))} ± {f(sem(cells(a, ed)[e] - cells(b, ed)[e]))}" for e in etas) + ")"
+                for label, a, b in pairs if a in have and b in have) + ".")
+            eu = lambda fn: (lambda x: fn(x["restart_anchor"]["eu"]))                    # noqa: E731
+            out.append("H30, kinetic energy at restart, E_u(τ)/E_u,ref − 1 (mean over the held-out η and the seeds): " + "; ".join(
+                f"{v}: at τ = 0 {f(m(v, eu(lambda a: a[0])))}, largest |value| {f(m(v, eu(lambda a: max(abs(y) for y in a))))}, at the last τ "
+                f"{f(m(v, eu(lambda a: a[-1])))}" for v in (g1, g4, "W9R_skip_sym", "W15_recoloured_modes", w16) if v in have) + ".")
     # H31: G1 restarted at the training η, where it has the sample moments of the data
     gt = "G1T_gaussian_full"
     if gt in have and cells(gt, key("restart_overshoot_eb"), "train"):
