@@ -17,7 +17,8 @@ Status: open. The shared GPU budget is not exhausted. This file is a living reco
 - H151, H152, and H153, supported. A perfect cutoff, with no network, has mean ratio 0.728 at kmax = 4, 0.0092 at kmax = 6, and 0.0028 at kmax = 7. File `experiments/results/cursor_constraint_ceiling.json`. These numbers are not written into `cursor_metrics.json`, because they are not a generated law.
 - H154, supported. Training on Rm 8, 10, 11, 13, 14, and 16 lowers the learned ratio from 787.34 to 781.66. H155, refuted. That ratio is above 1.2. File `experiments/results/cursor_constraint_dense.json`. Held-out Rm 12 was not a training point.
 - H156 and H157, supported. The linear midpoint between Rm = 11 and Rm = 13, at kmax = 4, has mean ratio 0.743. That is below the learned ratio and at most 1.2. Seed 0 alone is 1.80. File `experiments/results/cursor_constraint_midpoint.json`. No network was trained.
-- `experiments/results/cursor_metrics.json` now quotes that midpoint. C1 = 0.743. C2 = 4.80e-16. C3 = 0.0986. C4 = 0.150. C3 is above 0.05 and C4 is above 0.1. C5 is still absent.
+- H158 and H159, supported. The same midpoint at kmax = 6 has mean C4 = 0.0093, below the kmax = 4 value and at most 0.1. H160, refuted. Mean C3 = 0.083, above 0.05. Mean C1 on this map is 0.014. File `experiments/results/cursor_constraint_midpoint_kmax6.json`.
+- `experiments/results/cursor_metrics.json` now quotes the kmax = 6 midpoint. C1 = 0.0140. C2 = 4.58e-16. C3 = 0.0834. C4 = 0.0093. C5 is still absent.
 - The flow-matching runs stay near ratio 750. Their files are kept. They are not the numbers in `cursor_metrics.json` anymore.
 - T1, from `research/gpu-logs/bench-float32.log`: 0.0087 s/step at n = 128, float32. The target is 0.05 s/step.
 - C7 reads 1 after `src/milady/train/constraints.py` and `tests/test_constraints.py`. The target is 2.
@@ -35,7 +36,7 @@ Status: open. The shared GPU budget is not exhausted. This file is a living reco
 
 ## Remaining work
 
-- C1 and C2 meet their targets on the kmax = 4 midpoint at n = 16. C3 = 0.0986 is above 0.05. C4 = 0.150 is above 0.1. C5 stays the sentinel until a Haynes–Parnell null count exists. None is implemented in `src/`. The flow-matching model does not meet C1.
+- C1, C2, and C4 meet their targets on the kmax = 6 midpoint at n = 16. C3 = 0.0834 is above 0.05. C5 stays the sentinel until a Haynes–Parnell null count exists. None is implemented in `src/`. The flow-matching model does not meet C1.
 - C6. H145 through H157 are five-seed constraint comparisons with a verdict. The target of 4 is met. The next comparison that can move an objective is C3 or C4, not another Rm sign.
 - C7. One new module. The target is 2.
 - T1. Already below the target on the measured bench. No further bench is planned.

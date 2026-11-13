@@ -2049,9 +2049,9 @@
       "protocol": "python3 experiments/cursor_constraint_cmp.py --midpoint --kmax 6 --out experiments/results/cursor_constraint_midpoint_kmax6.json. CPU. Same eight times and the same seeds as H156. Rm=12 is not an input.",
       "script": "experiments/cursor_constraint_cmp.py --midpoint --kmax 6",
       "cost_estimate": "CPU only. No GPU dollars.",
-      "status": "registered",
-      "verdict": "",
-      "results": "",
+      "status": "supported",
+      "verdict": "CONFIRMED",
+      "results": "Mean C4 at kmax=6 is 0.009292581587870299, strictly smaller than 0.1498194315020137. All five values are finite. File experiments/results/cursor_constraint_midpoint_kmax6.json.",
       "commit": ""
     },
     {
@@ -2062,9 +2062,9 @@
       "protocol": "python3 experiments/cursor_constraint_cmp.py --midpoint --kmax 6 --out experiments/results/cursor_constraint_midpoint_kmax6.json. CPU. Same eight times and the same seeds as H156. Rm=12 is not an input.",
       "script": "experiments/cursor_constraint_cmp.py --midpoint --kmax 6",
       "cost_estimate": "CPU only. No GPU dollars.",
-      "status": "registered",
-      "verdict": "",
-      "results": "",
+      "status": "supported",
+      "verdict": "CONFIRMED",
+      "results": "Mean C4 is 0.009292581587870299, at most 0.1. All five values are finite. Same file as H158.",
       "commit": ""
     },
     {
@@ -2075,9 +2075,9 @@
       "protocol": "python3 experiments/cursor_constraint_cmp.py --midpoint --kmax 6 --out experiments/results/cursor_constraint_midpoint_kmax6.json. CPU. Same eight times and the same seeds as H156. Rm=12 is not an input.",
       "script": "experiments/cursor_constraint_cmp.py --midpoint --kmax 6",
       "cost_estimate": "CPU only. No GPU dollars.",
-      "status": "registered",
-      "verdict": "",
-      "results": "",
+      "status": "refuted",
+      "verdict": "REFUTED",
+      "results": "Mean C3 is 0.0834132031037454, above 0.05. All five values are finite. Same file as H158. The refutation criterion is met.",
       "commit": ""
     }
   ]

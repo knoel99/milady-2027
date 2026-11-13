@@ -137,3 +137,6 @@ ts	phase	decision	why	evidence	result
 2026-11-13T09:36:00Z	h156	H156 supported. The Rm midpoint beats the learned dense ratio.	Mean ratio 0.743 against 781.66, kmax=4, seeds 0-4, no network.	experiments/results/cursor_constraint_midpoint.json	supported, CPU
 2026-11-13T09:36:00Z	h157	H157 supported. The Rm midpoint mean ratio is at most 1.2.	Mean ratio 0.743. Seed 0 is 1.80 and the criterion is the mean. C3 and C4 stay above their targets.	experiments/results/cursor_constraint_midpoint.json	supported, CPU
 2026-11-13T09:19:21Z	h138	H138 supported. Every seed is positive at n=160, Rm=9.0625.	Smallest lambda 5.84e-5, seed 3. The bracket (9, 9.0625) is not bisected.	experiments/results/cursor_abc_n160_rm90625	supported, RTX 4090, 1.00 USD
+2026-11-13T09:42:00Z	h158	H158 supported. kmax=6 lowers C4.	Mean C4 0.0093 against the kmax=4 baseline 0.150, seeds 0-4.	experiments/results/cursor_constraint_midpoint_kmax6.json	supported, CPU
+2026-11-13T09:42:00Z	h159	H159 supported. The kmax=6 C4 is at most 0.1.	Mean C4 0.0093, seeds 0-4.	experiments/results/cursor_constraint_midpoint_kmax6.json	supported, CPU
+2026-11-13T09:42:00Z	h160	H160 refuted. The kmax=6 C3 stays above 0.05.	Mean C3 0.083, seeds 0-4.	experiments/results/cursor_constraint_midpoint_kmax6.json	refuted, CPU

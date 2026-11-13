@@ -1,8 +1,8 @@
 {
-  "c1": 0.7431289385904811,
-  "c2": 4.803739231704188e-16,
-  "c3": 0.09857389756647705,
-  "c4": 0.1498194315020137,
-  "source": "experiments/results/cursor_constraint_midpoint.json",
-  "model": "linear midpoint of kmax=4 coefficients between Rm=11 and Rm=13, seeds 0-4, n=16, held-out Rm=12"
+  "c1": 0.013966666402533533,
+  "c2": 4.576418772371203e-16,
+  "c3": 0.0834132031037454,
+  "c4": 0.009292581587870299,
+  "source": "experiments/results/cursor_constraint_midpoint_kmax6.json",
+  "model": "linear midpoint of kmax=6 coefficients between Rm=11 and Rm=13, seeds 0-4, n=16, held-out Rm=12"
 }

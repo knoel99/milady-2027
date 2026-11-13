@@ -2,6 +2,11 @@
 
 One entry per working session, newest first, at most ten lines.
 
+## 2026-11-13 - H158 and H159 supported, H160 refuted, team cursor
+- The kmax=6 midpoint has mean C4 0.0093, below 0.150 and below 0.1. H158 and H159 hold.
+- Mean C3 is 0.083, above 0.05. H160 is refuted. C1 on this map is 0.014.
+- cursor_metrics.json now quotes the kmax=6 midpoint. C5 stays the sentinel. H144 stays in flight.
+
 ## 2026-11-13 - H138 supported, team cursor
 - At n=160, Rm=9.0625, seeds 0-4, every lambda is positive. Smallest is seed 3, 5.84e-5. Pod `g0w33xugwvc37o`, 1.12 h, 1.00 USD.
 - n=160 at Rm=9 was negative. The bracket is (9, 9.0625). It is not bisected.
