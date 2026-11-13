@@ -14,6 +14,7 @@ Status: open. The shared GPU budget is not exhausted. This file is a living reco
 - H146, refuted. Mean energy-distance ratio of the sampling constraint is 757.56, above the target 1.2.
 - H147 and H148, refuted. The same protocol at kmax = 4, hidden width 64, has mean ratio 791.02. Raising the mode cutoff without widening the layer does not beat the kmax = 2 baseline. File `experiments/results/cursor_constraint_kmax4.json`. The metrics file stays on the kmax = 2 run, which is the smaller ratio.
 - H149, supported. Hidden width 768 at kmax = 4 has mean ratio 787.34, below 791.02 by about 3.7. H150, refuted. That ratio is above 1.2. File `experiments/results/cursor_constraint_wide.json`.
+- H151, H152, and H153, supported. A perfect cutoff, with no network, has mean ratio 0.728 at kmax = 4, 0.0092 at kmax = 6, and 0.0028 at kmax = 7. File `experiments/results/cursor_constraint_ceiling.json`. These numbers are not written into `cursor_metrics.json`, because they are not a generated law.
 - `experiments/results/cursor_metrics.json` holds the sampling-constraint aggregates. C1 = 757.56. C2 = 2.204e-8 (maximum over samples). C3 = 0.876 (mean absolute magnetic balance residual). C4 = 457.41 (relative L2 spectrum error plus relative helicity error). C5 is absent, so the command still prints the sentinel.
 - T1, from `research/gpu-logs/bench-float32.log`: 0.0087 s/step at n = 128, float32. The target is 0.05 s/step.
 - C7 reads 1 after `src/milady/train/constraints.py` and `tests/test_constraints.py`. The target is 2.
@@ -27,11 +28,11 @@ Status: open. The shared GPU budget is not exhausted. This file is a living reco
 ## Conjectured
 
 - The all-positive kinematic Rm rises with resolution. The sign change between n = 128 and n = 136 at Rm = 9 is measured. The value of the threshold at n = 132 is not.
-- The learned flow at this sample size does not approach the C1 target. Whether a perfect kmax cutoff can is not yet measured.
+- A perfect cutoff can meet the C1 target. That is measured, and it is not a learned model. The learned flow is what stays near 750.
 
 ## Remaining work
 
-- C1, C3, and C4 are measured and far above their targets. The next comparison has to change the model, not the Rm grid. C2 is below 0.001 on this n = 16 run. C5 stays the sentinel until a Haynes–Parnell null count exists. None is implemented in `src/`.
+- C1, C3, and C4 are measured and far above their targets. The cutoff can meet C1, so the next comparison trains on Rm values around the held-out point. C2 is below 0.001 on this n = 16 run. C5 stays the sentinel until a Haynes–Parnell null count exists. None is implemented in `src/`.
 - C6. H145 through H148 are four five-seed constraint comparisons with a verdict. The target is 4. Further comparisons are still worth running when they can move C1.
 - C7. One new module. The target is 2.
 - T1. Already below the target on the measured bench. No further bench is planned.

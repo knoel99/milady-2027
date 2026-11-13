@@ -1958,9 +1958,9 @@
       "protocol": "python3 experiments/cursor_constraint_cmp.py --ceiling --out experiments/results/cursor_constraint_ceiling.json. One run records kmax 4, 6, and 7. CPU. No learned weights.",
       "script": "experiments/cursor_constraint_cmp.py --ceiling",
       "cost_estimate": "CPU only. No GPU dollars.",
-      "status": "registered",
-      "verdict": "",
-      "results": "",
+      "status": "supported",
+      "verdict": "CONFIRMED",
+      "results": "Perfect kmax=4 cutoff. Mean energy-distance ratio 0.7277669416496212, at most 1.2. All five seeds are finite. Key kmax4 in experiments/results/cursor_constraint_ceiling.json. No network was trained. This is not the learned-model C1.",
       "commit": ""
     },
     {
@@ -1971,9 +1971,9 @@
       "protocol": "python3 experiments/cursor_constraint_cmp.py --ceiling --out experiments/results/cursor_constraint_ceiling.json. One run records kmax 4, 6, and 7. CPU. No learned weights.",
       "script": "experiments/cursor_constraint_cmp.py --ceiling",
       "cost_estimate": "CPU only. No GPU dollars.",
-      "status": "registered",
-      "verdict": "",
-      "results": "",
+      "status": "supported",
+      "verdict": "CONFIRMED",
+      "results": "Perfect kmax=6 cutoff. Mean energy-distance ratio 0.009185170929631921, at most 1.2. All five seeds are finite. Key kmax6 in experiments/results/cursor_constraint_ceiling.json. No network was trained. This is not the learned-model C1.",
       "commit": ""
     },
     {
@@ -1984,9 +1984,9 @@
       "protocol": "python3 experiments/cursor_constraint_cmp.py --ceiling --out experiments/results/cursor_constraint_ceiling.json. One run records kmax 4, 6, and 7. CPU. No learned weights.",
       "script": "experiments/cursor_constraint_cmp.py --ceiling",
       "cost_estimate": "CPU only. No GPU dollars.",
-      "status": "registered",
-      "verdict": "",
-      "results": "",
+      "status": "supported",
+      "verdict": "CONFIRMED",
+      "results": "Perfect kmax=7 cutoff. Mean energy-distance ratio 0.0028077496033211006, at most 1.2. All five seeds are finite. Key kmax7 in experiments/results/cursor_constraint_ceiling.json. No network was trained. This is not the learned-model C1.",
       "commit": ""
     }
   ]

@@ -2,6 +2,11 @@
 
 One entry per working session, newest first, at most ten lines.
 
+## 2026-11-13 - projection ceiling under 1.2, team cursor
+- A perfect cutoff at kmax=4 has mean energy-distance ratio 0.728. kmax=6 is 0.0092. kmax=7 is 0.0028. H151, H152, and H153 hold.
+- The learned flows stay near 750. The cutoff is not what misses C1. The learner is.
+- The next comparison trains on Rm values around 12 and still holds 12 out. H138 and H144 stay in flight.
+
 ## 2026-11-13 - H149 supported, H150 refuted, team cursor
 - Hidden width 768 at kmax=4 lowers the ratio from 791.02 to 787.34. H149 holds. The gap is about 3.7.
 - H150 is refuted. 787.34 is above 1.2. The metrics file stays on the kmax=2 ratio, 757.56.
