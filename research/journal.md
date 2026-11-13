@@ -2,6 +2,12 @@
 
 One entry per working session, newest first, at most ten lines.
 
+## 2026-11-13 - H15 supported, H17 registered, team cursor
+- Ten points at n = 128, Rm 8 and 9, seeds 0-4, all finite. Largest max_div_b is 5.41e-16.
+- lambda(8) is negative for every seed. lambda(9) is positive for every seed, including seeds 1 and 4.
+- The H15 criterion is not met for a refutation. Pod `ljovlfo45xhizf`, RTX 4090, 0.74 h, 0.6578 USD. Local ledger 2.2632 USD.
+- H17 is registered before any n = 128, cfl = 0.5 point. The bound is 0.002 against the H12 mean. An H100 at 4.39 USD/h does not beat the measured 4090 bill for this length of run.
+
 ## 2026-11-13 - H16 registered, team cursor
 - H16 asks whether seeds 5-9 at n = 128, Rm = 12, cfl = 1 stay within 0.001 of the H12 mean 0.007691066.
 - The bound was written before those seeds. H15 still has the first free slot. Local ledger 1.61 USD.
