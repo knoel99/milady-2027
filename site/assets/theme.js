@@ -270,9 +270,9 @@
   ];
   /* teams:end */
   function siteRoot() {
-    var s = document.querySelector('script[src$="assets/theme.js"]');
+    var s = document.querySelector('script[src*="assets/theme.js"]');
     if (!s) return null;
-    return new URL(s.getAttribute("src").replace(/assets\/theme\.js$/, ""), location.href);
+    return new URL(s.getAttribute("src").replace(/assets\/theme\.js(\?.*)?$/, ""), location.href);
   }
   function setupNav() {
     var rootUrl = siteRoot();

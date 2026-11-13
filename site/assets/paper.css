@@ -490,6 +490,7 @@ a.tb-btn:hover { color: #0f172a; }
 .team-card.ready .team-status { background: var(--accent); color: var(--bg); border-color: var(--accent); }
 .team-meta { font-size: .88rem; color: var(--muted); line-height: 1.35; display: block; }
 .team-card.ready p:last-child { font-weight: 700; }
+.team-card a { white-space: nowrap; }
 .team-none { font-size: .9rem; color: var(--muted); font-style: italic; }
 
 /* ======================= Narrow screens ======================= */

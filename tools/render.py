@@ -3,12 +3,15 @@
 
 Quarto rewrites KaTeX's <script>/<link> tags and strips the integrity
 attributes. This script renders each page, then puts back the two published tags.
+It also appends ?v=<content hash> to the links to assets/paper.css and assets/theme.js,
+so that browsers fetch the new style sheet and script as soon as they change.
 
 Usage (from any directory):
     python3 tools/render.py report thesis prep/p1-vector-calculus
     python3 tools/render.py --all
 Quarto 1.7.32 (pip install quarto-cli==1.7.32, or the official binary).
 """
+import hashlib
 import os
 import re
 import subprocess
@@ -30,6 +33,14 @@ JS_RE = re.compile(r'<script defer="" src="https://cdn\.jsdelivr\.net/npm/katex@
 CSS_RE = re.compile(r'<link rel="stylesheet" href="https://cdn\.jsdelivr\.net/npm/katex@0\.19\.0/dist/katex\.min\.js(?:katex\.min\.css)?">')
 
 
+ASSETS = ("paper.css", "theme.js")
+ASSET_RE = re.compile(r'((?:\.\./)*assets/(paper\.css|theme\.js))(?:\?v=[0-9a-f]+)?"')
+
+
+def asset_version(name: str) -> str:
+    return hashlib.sha256((ROOT / "assets" / name).read_bytes()).hexdigest()[:10]
+
+
 def pages():
     return sorted(p.parent.relative_to(ROOT).as_posix() for p in ROOT.glob("**/index.qmd")
                   if "figures" not in p.parts and "_freeze" not in p.parts)
@@ -43,6 +54,8 @@ def render(rel: str) -> bool:
     html = html_path.read_text(encoding="utf-8")
     html = JS_RE.sub(lambda _: JS_TAG, html)
     html = CSS_RE.sub(lambda _: CSS_TAG, html)
+    versions = {a: asset_version(a) for a in ASSETS}
+    html = ASSET_RE.sub(lambda m: f'{m.group(1)}?v={versions[m.group(2)]}"', html)
     html_path.write_text(html, encoding="utf-8")
     for junk in (qmd.parent / "index_files",):
         if junk.is_dir():
