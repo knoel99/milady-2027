@@ -2,6 +2,13 @@
 
 One entry per working session, newest first, at most ten lines.
 
+## 2026-11-13 - H80 supported, H84 H85 H86 refuted, team cursor
+- n = 96 at Rm = 8.90625 is all positive. Smallest is 5.68e-5, seed 3. Pod `ka74qxg592d0hh`, 0.1002 USD.
+- n = 48 seed 7 is negative at the latest midpoint, lambda -2.80e-8. Pod `je3x33cpp1q2kv`, 0.0471 USD.
+- n = 32 seed 0 is negative, lambda -3.49e-8. Pod `ts73xpcevlladp`, 0.0392 USD.
+- n = 64 seed 1 is negative, lambda -1.66e-8. Pod `aa4bz815b5i1tp`, 0.0317 USD.
+- H87 asks n = 96 at the midpoint. H88, H89, and H90 ask the three small midpoints. Local ledger about 8.85 USD.
+
 ## 2026-11-13 - H83 refuted, H86 registered, team cursor
 - At n = 64, Rm = 9.059852600097656, seed 1 is negative, lambda -4.03e-8. It was +7.00e-9 at Rm = 9.059860229492188.
 - Pod `5m9resf34p49a1`, RTX 4090, 0.06 h, 0.0544 USD. Largest max_div_b is 4.77e-16.
