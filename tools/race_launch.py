@@ -95,7 +95,7 @@ def run_main(team: str, prompt_file: Path, iteration: int | None) -> int:
                    "where the previous invocation stopped. Commit before you finish.\n")
     cmd, env, model, effort, _ = build_command(team, ms["tier"], ms["reasoning"], ms["max_turns"], prompt)
     print(f"[run-main {team} model={model} effort={effort} iteration={iteration}]", flush=True)
-    return subprocess.run(cmd, env=env, cwd=ROOT, check=False).returncode
+    return subprocess.run(cmd, env=env, cwd=ROOT, check=False, stdin=subprocess.DEVNULL).returncode
 
 
 def main() -> int:

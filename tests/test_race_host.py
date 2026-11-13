@@ -38,7 +38,7 @@ def test_every_team_has_a_setup_and_a_login_note():
 def test_team_prompt_is_rendered_for_the_team(monkeypatch):
     seen = {}
 
-    def fake_run(cmd, env, cwd, check):
+    def fake_run(cmd, env, cwd, check, stdin=None):
         seen["prompt"] = next(c for c in cmd if "MilaDy race" in c)
         return subprocess.CompletedProcess(cmd, 0)
     monkeypatch.setattr(race_launch.subprocess, "run", fake_run)
