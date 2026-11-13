@@ -6854,3 +6854,23 @@ H13: least-squares fit of ln(N_gen/N_ref) on ln(k_λ,gen/k_λ,ref) over 84 point
 
 SE: standard deviation of the trajectory means over √(number of trajectories) (24). The shell columns exist only for the runs made after the shell statistics were added to the data summary. Every run has its own random initial conditions.
 
+## E4 - diagnostic: polarity of the large-scale magnetic field along the reference trajectories
+
+Descriptive diagnostic (experiments/e4_polarity_diag.py): no hypothesis, no threshold; data of the session container (another draw of the same law than the data of the GPU pods). For each of the three magnetic modes of wavenumber 1, whose law is symmetric under a change of sign: autocorrelation ρ(τ) of the complex amplitude over the trajectories (24 per η, 198 time units, one snapshot every 2), the lag where it falls under 1/e, and the fraction of (trajectory, mode) pairs whose projection on its initial value is negative.
+
+| η | set | share of E_B at k = 1 | ρ(10) | ρ(50) | ρ(100) | ρ(198) | lag of ρ = 1/e | opposite sign at the end | at some time | pairs |
+|---|---|---|---|---|---|---|---|---|---|---|
+| 0.08000 | train | 0.202 | 0.54 | 0.09 | -0.01 | -0.10 | 17 | 0.51 | 1.00 | 72 |
+| 0.07253 | test | 0.211 | 0.63 | 0.20 | 0.03 | -0.11 | 24 | 0.50 | 0.99 | 72 |
+| 0.06575 | train | 0.218 | 0.71 | 0.23 | 0.13 | -0.10 | 33 | 0.57 | 0.97 | 72 |
+| 0.05961 | val | 0.228 | 0.76 | 0.22 | -0.01 | -0.06 | 34 | 0.51 | 1.00 | 72 |
+| 0.05404 | train | 0.244 | 0.80 | 0.31 | 0.07 | -0.02 | 42 | 0.54 | 0.97 | 72 |
+| 0.04899 | test | 0.232 | 0.81 | 0.29 | 0.04 | -0.01 | 40 | 0.60 | 0.99 | 72 |
+| 0.04441 | train | 0.232 | 0.83 | 0.33 | 0.09 | 0.05 | 45 | 0.50 | 0.94 | 72 |
+| 0.04026 | val | 0.226 | 0.84 | 0.35 | 0.13 | -0.04 | 48 | 0.60 | 0.99 | 72 |
+| 0.03650 | train | 0.237 | 0.85 | 0.45 | 0.21 | 0.01 | 67 | 0.43 | 0.96 | 72 |
+| 0.03309 | test | 0.234 | 0.87 | 0.49 | 0.33 | 0.06 | 80 | 0.51 | 0.92 | 72 |
+| 0.03000 | train | 0.230 | 0.87 | 0.47 | 0.25 | 0.13 | 66 | 0.40 | 0.93 | 72 |
+
+Over the 11 values of η: the lag of ρ = 1/e goes from 17 to 80 time units; the fraction of pairs of opposite sign at the end of the window from 0.40 to 0.60; the modes k = 1 hold 0.20 to 0.24 of the magnetic energy.
+

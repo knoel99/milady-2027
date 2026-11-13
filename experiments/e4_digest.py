@@ -1784,3 +1784,30 @@ if __name__ == "__main__":
     import sys
 
     print("\n".join(section("--quick" in sys.argv)))
+
+
+def polarity() -> list[str]:
+    """Descriptive diagnostic of the polarity of the modes k = 1 along the reference trajectories (e4_polarity_diag.py)."""
+    path = R / "e4_polarity_diag.json"
+    if not path.exists():
+        return []
+    d = json.loads(path.read_text())
+    out = ["## E4 - diagnostic: polarity of the large-scale magnetic field along the reference trajectories\n",
+           "Descriptive diagnostic (experiments/e4_polarity_diag.py): no hypothesis, no threshold; data of the session container "
+           "(another draw of the same law than the data of the GPU pods). For each of the three magnetic modes of wavenumber 1, "
+           "whose law is symmetric under a change of sign: autocorrelation ρ(τ) of the complex amplitude over the trajectories "
+           "(24 per η, 198 time units, one snapshot every 2), the lag where it falls under 1/e, and the fraction of "
+           "(trajectory, mode) pairs whose projection on its initial value is negative.\n",
+           "| η | set | share of E_B at k = 1 | ρ(10) | ρ(50) | ρ(100) | ρ(198) | lag of ρ = 1/e | opposite sign at the end | at some time | pairs |",
+           "|---|---|---|---|---|---|---|---|---|---|---|"]
+    for e, v in d["values"].items():
+        r = v["rho"]
+        out.append(f"| {e} | {v['split']} | {v['share_of_E_B_at_k1']:.3f} | {r['10']:.2f} | {r['50']:.2f} | {r['100']:.2f} | {r['198']:.2f} | "
+                   f"{v['tau_1_over_e']:.0f} | {v['fraction_opposite_at_end']:.2f} | {v['fraction_opposite_at_some_time']:.2f} | {v['pairs']} |")
+    vals = list(d["values"].values())
+    taus = [v["tau_1_over_e"] for v in vals]
+    out.append(f"\nOver the 11 values of η: the lag of ρ = 1/e goes from {min(taus):.0f} to {max(taus):.0f} time units; the fraction of pairs "
+               f"of opposite sign at the end of the window from {min(v['fraction_opposite_at_end'] for v in vals):.2f} to "
+               f"{max(v['fraction_opposite_at_end'] for v in vals):.2f}; the modes k = 1 hold {min(v['share_of_E_B_at_k1'] for v in vals):.2f} to "
+               f"{max(v['share_of_E_B_at_k1'] for v in vals):.2f} of the magnetic energy.\n")
+    return out

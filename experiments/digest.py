@@ -383,7 +383,7 @@ def e4():
     from e4_digest import section
 
     from e4_digest import R as R4
-    from e4_digest import convergence
+    from e4_digest import convergence, polarity
 
     lines = section()
     reps = [("e4_rank0", "H41: the anchored code path of H28, H38 and H40 with an anchor of rank 0 (the mode-wise law) against W10, which goes "
@@ -447,6 +447,7 @@ def e4():
         if (root / "e4_reference.json").exists():
             lines += section(root=root, replication=what)
     lines += convergence()
+    lines += polarity()
     if lines:
         print("\n".join(lines))
 
