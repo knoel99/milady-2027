@@ -76,6 +76,7 @@ GROUPS = {"A": ["W0_free", "W1_penalty", "W2_final_projection", "W3_projected_fl
           "Z": ["W9Z_skip_sym_gaussdata"],                              # H33: W9 trained on Gaussian surrogate data (draws of G1)
           "Y": ["W9Y_skip_sym_gausstraj"],                              # H34: the same with the time correlation of the trajectories
           "X": ["W16X_relaxed"],                                        # H35: G0, G1, W9 and W16 relaxed by the solver for a short time
+          "V": ["W17_recoloured_surrogate"],                            # H37: W9 trained on Gaussian surrogates, recoloured; oracle
           "N": ["G2_gaussianised_W9"],                                  # H27: Gaussian law fitted to the samples of W9                                    # H22: Gaussian law with the inter-mode covariance
           "M": ["W12_skip_stationarity", "W12_skip_control", "W13_skip_tilting"],   # H23, H24: loss and sampling on W9
           "L": ["W9L_skip_long", "W11L_anchored_skip_long"],            # H18: 8 times the iterations (not in "all")
@@ -500,6 +501,8 @@ def _group_of(variant: str) -> str:
         return "Y"
     if variant.startswith(("G0X_", "G1X_", "W9X_", "W16X_", "REFX_")):
         return "X"
+    if variant.startswith(("W16V_", "W17_", "G1V_", "REFV_")):
+        return "V"
     return "M" if variant.startswith(("W12_", "W13_")) else "B"
 
 
@@ -543,7 +546,7 @@ def run(quick: bool, seed: int, group: str, device: str = "cpu", cond_scale: flo
     groups = [g for g in GROUPS if g in "ABCDE"] if group == "all" else group.split(",")
     need = tuple(sorted({s for g in groups for s in {"A": ("comp",), "B": ("pot", "pot_sym"), "C": ("pot",),
                                                      "D": ("pot_sym",), "E": ("pot_sym",), "L": ("pot_sym",),
-                                                     "S": ("pot_sym",), "G": ("pot_sym",), "M": ("pot_sym",), "N": ("pot_sym",), "F": ("pot_sym",), "R": ("pot_sym",), "T": ("pot_sym",), "Z": ("pot_sym",), "Y": ("pot_sym",), "X": ("pot_sym",)}[g]}))
+                                                     "S": ("pot_sym",), "G": ("pot_sym",), "M": ("pot_sym",), "N": ("pot_sym",), "F": ("pot_sym",), "R": ("pot_sym",), "T": ("pot_sym",), "Z": ("pot_sym",), "Y": ("pot_sym",), "X": ("pot_sym",), "V": ("pot_sym",)}[g]}))
     need = ("pot", "pot_sym", "comp") if len(need) == 3 else need
     ctx = Context(quick, need, device)
     cfg, dev = ctx.cfg, ctx.dev
@@ -1071,6 +1074,86 @@ def run(quick: bool, seed: int, group: str, device: str = "cpu", cond_scale: flo
         results["times"]["W9R_steps_check"] = {"steps": steps_check}
         record("W9R_steps_check", {e: decode(latents(e, n, steps_check)) for e, n in eval_etas})
         del m9r, g0r, g1r, lat, rec_modes, rec_full, ctl
+
+    # ---------------- group V: the model trained on Gaussian surrogates, recoloured like W16; oracle (H37) ----------------
+    if "W17_recoloured_surrogate" in names:
+        v_etas = [(e, n) for e, n in eval_etas if split(e) in ("val", "test")]
+        g1v = C.FullGaussian(sign=pot_sym.sign).fit(ctx.x_pot_sym, ctx.c_train[:, 0])
+        gz = torch.Generator().manual_seed(100003 * seed + 401)             # the surrogate training set of H33 (group Z)
+        xs, cs = [], []
+        for cval in torch.unique(ctx.c_train[:, 0]):
+            sel = ctx.c_train[:, 0] == cval
+            xs.append(g1v.sample(float(cval), int(sel.sum()), generator=gz).to(dev))
+            cs.append(ctx.c_train[sel])
+        x_sur, c_sur = torch.cat(xs), torch.cat(cs)
+        del xs, cs
+        n_rec = cfg.get("n_recolour", 131072)
+        n_modes, n_ch = pot_sym.n_modes, pot_sym.n_channels
+        sgn = pot_sym.sign.to(dev, torch.float64).repeat(n_modes)
+
+        def sym_moments(s1: torch.Tensor, s2: torch.Tensor, m: int) -> tuple[torch.Tensor, torch.Tensor]:
+            """Mean and covariance of a sample and of its images under the sign symmetry, from its sums."""
+            mean = s1 / m * (sgn > 0)
+            return mean, s2 / m * (1 + torch.outer(sgn, sgn)) / 2 - torch.outer(mean, mean)
+
+        @torch.no_grad()
+        def moments_of(model, e: float) -> tuple[torch.Tensor, torch.Tensor]:           # as source_moments of group R (same draws)
+            gm = torch.Generator().manual_seed(100003 * seed + 211 + ETAS.index(e))
+            dim = n_modes * n_ch
+            s1, s2, m = torch.zeros(dim, dtype=torch.float64, device=dev), torch.zeros(dim, dim, dtype=torch.float64, device=dev), 0
+            nb = 4096 if dev.type == "cuda" else 1024
+            for _ in range(max(n_rec // nb, 1)):
+                c = torch.full((nb, 1), float(cn(e)), device=dev)
+                z = heun_sample(model, torch.randn(nb, n_modes, n_ch, generator=gm).to(dev), c, cfg["steps"]).flatten(1)
+                s1 += z.double().sum(0)
+                s2 += (z.T @ z).double()
+                m += len(z)
+            return sym_moments(s1, s2, m)
+
+        def to_fields(z: torch.Tensor) -> torch.Tensor:
+            return pot_sym.field_hat(pot_sym.denormalize(z.to(torch.float32))).cpu()
+
+        @torch.no_grad()
+        def recoloured(model, e: float, n: int) -> torch.Tensor:
+            c = torch.full((n, 1), float(cn(e)), device=dev)
+            z0 = noise(n, pot_sym, ETAS.index(e))
+            z = torch.cat([heun_sample(model, z0[i:i + 256], c[i:i + 256], steps=cfg["steps"]) for i in range(0, n, 256)])
+            mu_s, cov_s = moments_of(model, e)
+            mu1, cov1 = g1v.moments(float(np.float32(cn(e))))
+            mu1, cov1 = mu1.to(dev), cov1.to(dev)
+            amap = C.recolouring_map(cov_s, cov1)
+            return to_fields((mu1 + (z.flatten(1).double() - mu_s) @ amap).view_as(z))
+
+        def sample_g1v(eta: float, n: int) -> torch.Tensor:                 # the draws of G1_gaussian_full (group G)
+            g = torch.Generator().manual_seed(100003 * seed + 57 + ETAS.index(eta))
+            return to_fields(g1v.sample(float(np.float32(cn(eta))), n, generator=g))
+
+        record("G1V_gaussian_full", {e: sample_g1v(e, n) for e, n in v_etas})
+        for out_name, xtr, ctr in (("W16V_recoloured_full", ctx.x_pot_sym, ctx.c_train), ("W17_recoloured_surrogate", x_sur, c_sur)):
+            seed_all(seed)                                  # same initial weights and the same batches of indices for both
+            model, tsec = train(builders["W9_skip_sym"](None).to(dev), fm, xtr, ctr, cfg["iters"], cfg["lr"], cfg["batch"], out_name)
+            results["times"][out_name] = {"training_time_s": tsec, "iters": cfg["iters"], "n_train": len(xtr), "n_recolour": n_rec}
+            record(out_name, {e: recoloured(model, e, n) for e, n in v_etas})
+            del model
+        del x_sur, c_sur
+        # oracle: reference snapshots sent through the same kind of map, from the moments of all the snapshots of the η onto those of G1
+        gref = np.random.default_rng(100003 * seed + 433)
+        raw, rec = {}, {}
+        for e, n in v_etas:
+            z = pot_sym.normalize(torch.as_tensor(D.load(e, quick)["x"])).to(dev).flatten(1).double()      # (N, D)
+            mu_s, cov_s = sym_moments(z.sum(0), z.T @ z, len(z))
+            mu1, cov1 = g1v.moments(float(np.float32(cn(e))))
+            mu1, cov1 = mu1.to(dev), cov1.to(dev)
+            amap = C.recolouring_map(cov_s, cov1)
+            pick = torch.as_tensor(gref.choice(len(z), size=min(n, len(z)), replace=False), device=dev)   # unsorted: all trajectories
+            shape = (len(pick), n_modes, n_ch)
+            raw[e] = to_fields(z[pick].view(shape))
+            rec[e] = to_fields((mu1 + (z[pick] - mu_s) @ amap).view(shape))
+            del z, cov_s, cov1, amap
+        results["times"]["REFV_recoloured"] = {"n_source": "all the snapshots of the η"}
+        record("REFV_raw", raw)
+        record("REFV_recoloured", rec)
+        del g1v, raw, rec
 
     # ---------------- group X: laws followed by a short relaxation in the solver (H35) ----------------
     if "W16X_relaxed" in names:

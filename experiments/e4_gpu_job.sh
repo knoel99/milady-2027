@@ -23,6 +23,10 @@ python e4_data.py $Q --jobs "$(( NPROC > 11 ? 11 : NPROC ))" | tail -n 13 || exi
 stamp "reference"
 python e4_mhd3d.py --reference $Q --threads "$(( NPROC > 16 ? 16 : NPROC ))" | tail -n 3 || exit 1
 cp results/e4_data$TAG.json results/e4_reference$TAG.json "$OUT"/
+if [ "${E4_REFNULLS:-0}" = 1 ] && [ "$MODE" = full ]; then      # null points of the reference on all its snapshots (jury review of 2026-11-13)
+  stamp "reference null count on all the snapshots"
+  python e4_refnulls.py --device cuda --threads "$(( NPROC > 16 ? 16 : NPROC ))" | tail -n 12 && cp results/e4_refnulls.json "$OUT"/
+fi
 if [ "$MODE" = full ]; then ( python e4_floor.py | tail -n 3; cp results/e4_floor.json "$OUT"/ ) & fi   # noise floors, in parallel
 stamp "models: seeds $SEEDS, $THREADS threads each"
 PIDS=""

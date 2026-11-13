@@ -386,7 +386,11 @@ def e4():
     from e4_digest import convergence
 
     lines = section()
-    reps = [("e4_relax2", "H35, second cycle: G0, G1, the model with the affine term (W9) and its recoloured samples (W16) followed by a "
+    reps = [("e4_recsur", "H37: the model with the affine term trained on the data and on Gaussian surrogate data, each recoloured onto the "
+                          "moments of G1 (W16V, W17), G1, and reference snapshots through the same kind of map (oracle); 512 restart "
+                          "states: group V on RunPod GPU pods split by seed (assembled by e4_assemble.py), own regenerated data"),
+            ("e4_recsur_indep", "H37 on the data of the independent replication (E4_DATA_SEED=100): group V"),
+            ("e4_relax2", "H35, second cycle: G0, G1, the model with the affine term (W9) and its recoloured samples (W16) followed by a "
                           "relaxation of 1, 2, 4 and 8 time units in the solver, with a control on reference snapshots; 512 restart states, "
                           "which gives the reference statistics of the job of H29: group X on RunPod GPU pods split by seed (assembled by "
                           "e4_assemble.py), own regenerated data"),
