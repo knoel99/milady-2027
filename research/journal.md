@@ -2,6 +2,12 @@
 
 One entry per working session, newest first, at most ten lines.
 
+## 2026-11-13 - H36 and H37 supported, team cursor
+- H36: cfl = 0.5 at n = 64, Rm = 9.0625, all positive. Smallest lambda is 1.63e-5. Pod `94xxtipk5c70o0`, 0.0469 USD.
+- H37: n = 48, Rm = 9.0625, seeds 0-4, all positive. Smallest lambda is 7.37e-5. Pod `dl8nqu1e3h9jtm`, 0.0467 USD.
+- H35: seeds 5-9 at n = 64, Rm = 9.0625, all positive. Smallest lambda is 2.94e-7. Pod `6oxhe6u585v83v`, 0.0548 USD.
+- H38 asks whether n = 32 stays positive. H39 asks whether seeds 5-9 at n = 48 stay positive. H40 asks whether n = 96 stays positive. H34 is still running.
+
 ## 2026-11-13 - H30 to H33 supported, team cursor
 - H30: n = 64, Rm = 9.0625, seeds 0-4, all positive. Smallest lambda is 1.63e-5. Pod `npkxes95rj9lvp`, 0.0466 USD.
 - H31: seeds 5-9 at Rm = 9.125 stay positive. Smallest is 0.000384. Pod `zx18edxuziodea`, 0.0465 USD.
