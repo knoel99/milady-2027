@@ -361,5 +361,16 @@
   "seeds": 5,
   "script": "experiments/e4_mhd3d.py --reference, then --group G,Z (experiments/e4_gpu_job.sh on a GPU pod; --quick first)",
   "commit": ""
+ },
+ {
+  "id": "H34",
+  "statement": "In E4, the two properties that separate the model with the affine term trained on the data from the same model trained on independent Gaussian data (H33) are not effects of the time correlation of the 24 trajectories of the data: the model trained on Gaussian data with that correlation (W9Y_skip_sym_gausstraj: as many trajectories of as many snapshots, with the mean and covariance of the data and the lag-one autocorrelation of the data along each eigen-direction of that covariance) has (a) less than 0.3, in absolute value, of the third-order part of the magnetic production of the model trained on the data, at each of the two lower held-out η, and (b) a deficit of magnetic energy against the reference of less than half that of the model trained on the data, at each held-out η.",
+  "refutation_criterion": "Seed means, at each η; the base is the model trained on the data in the same job (W9Yb_skip_sym, same seed). Refuted on a realisation of the data if (a) at η = 0.0490 or at η = 0.0331 the third-order part of W9Y over that of the base is 0.3 or more in absolute value on the seed means, or in more than one of the 5 seeds (paired): the third-order part of W9 would then come, in part at least, from the time correlation of its training set; or if (b) at any held-out η, |E_B/E_B,ref − 1| of W9Y is more than half that of the base: its deficit of magnetic energy would then come from the time correlation. The two clauses are reported separately (refuted on a, on b, or on both). Combined verdict: supported only if not refuted on both realisations. Checks of the measurement (a failure invalidates the measurement): the base reproduces the values of H25 within 0.02 at each held-out η and has the sign of the reference in at least 4 of the 5 seeds at the two lower η; the third-order part of G1 of the same job is below 0.02 in absolute value at each held-out η; the third-order part computed on the surrogate training set itself is below 0.02 in absolute value at each training η evaluated; the lag-one autocorrelation of the surrogate, weighted by the variance of each direction, is within 0.03 of that of the data at each training η. Reported: for the base, W9Y and (from the job of H33 on the same realisation) the model trained on independent Gaussian data: mean-flow part, energy-distance ratio, magnetic balance, null-count error, fluctuation of the energy budget; the autocorrelations; the flow-matching loss of each model on a fixed sample of its own training set. The verdict is computed by experiments/e4_digest.py (h34_lines), committed before the full run.",
+  "status": "registered",
+  "verdict": "",
+  "comparison": "model families",
+  "seeds": 5,
+  "script": "experiments/e4_mhd3d.py --reference, then --group G,Y (experiments/e4_gpu_job.sh on a GPU pod; --quick first)",
+  "commit": ""
  }
 ]

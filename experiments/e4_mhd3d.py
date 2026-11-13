@@ -74,6 +74,7 @@ GROUPS = {"A": ["W0_free", "W1_penalty", "W2_final_projection", "W3_projected_fl
           "R": ["W15_recoloured_modes"],                                # H29: W9 with its second moments recoloured at sampling time
           "T": ["G1T_gaussian_full"],                                   # G1 restarted at the training η too (no interpolation)
           "Z": ["W9Z_skip_sym_gaussdata"],                              # H33: W9 trained on Gaussian surrogate data (draws of G1)
+          "Y": ["W9Y_skip_sym_gausstraj"],                              # H34: the same with the time correlation of the trajectories
           "N": ["G2_gaussianised_W9"],                                  # H27: Gaussian law fitted to the samples of W9                                    # H22: Gaussian law with the inter-mode covariance
           "M": ["W12_skip_stationarity", "W12_skip_control", "W13_skip_tilting"],   # H23, H24: loss and sampling on W9
           "L": ["W9L_skip_long", "W11L_anchored_skip_long"],            # H18: 8 times the iterations (not in "all")
@@ -477,6 +478,8 @@ def _group_of(variant: str) -> str:
         return "T"
     if variant.startswith("W9Z"):
         return "Z"
+    if variant.startswith("W9Y"):
+        return "Y"
     return "M" if variant.startswith(("W12_", "W13_")) else "B"
 
 
@@ -520,7 +523,7 @@ def run(quick: bool, seed: int, group: str, device: str = "cpu", cond_scale: flo
     groups = [g for g in GROUPS if g in "ABCDE"] if group == "all" else group.split(",")
     need = tuple(sorted({s for g in groups for s in {"A": ("comp",), "B": ("pot", "pot_sym"), "C": ("pot",),
                                                      "D": ("pot_sym",), "E": ("pot_sym",), "L": ("pot_sym",),
-                                                     "S": ("pot_sym",), "G": ("pot_sym",), "M": ("pot_sym",), "N": ("pot_sym",), "F": ("pot_sym",), "R": ("pot_sym",), "T": ("pot_sym",), "Z": ("pot_sym",)}[g]}))
+                                                     "S": ("pot_sym",), "G": ("pot_sym",), "M": ("pot_sym",), "N": ("pot_sym",), "F": ("pot_sym",), "R": ("pot_sym",), "T": ("pot_sym",), "Z": ("pot_sym",), "Y": ("pot_sym",)}[g]}))
     need = ("pot", "pot_sym", "comp") if len(need) == 3 else need
     ctx = Context(quick, need, device)
     cfg, dev = ctx.cfg, ctx.dev
@@ -897,6 +900,65 @@ def run(quick: bool, seed: int, group: str, device: str = "cpu", cond_scale: flo
                                        "fm_loss_train_sample": fixed_loss(model, xtr, ctr)}
             if vname == "W9Z_skip_sym_gaussdata":
                 results["times"][vname]["surrogate_third_order"] = sur_third
+            record(vname, {e: generate(model, pot_sym, e, n) for e, n in eval_etas})
+            del model
+        del x_sur, c_sur
+
+    # ---------------- group Y: the model with the affine term trained on Gaussian trajectories (H34) ----------------
+    if "W9Y_skip_sym_gausstraj" in names:
+        # Surrogate training set with the structure of the data: at each training η, as many trajectories of as many snapshots,
+        # Gaussian, with the mean and covariance of the data (G1) and, along each eigen-direction of that covariance, the
+        # lag-one autocorrelation measured on the trajectories of the data (independent autoregressive processes of unit
+        # variance in the whitened eigen-coordinates: the law of one snapshot is exactly G1).
+        g1y = C.FullGaussian(sign=pot_sym.sign).fit(ctx.x_pot_sym, ctx.c_train[:, 0])
+        gy = torch.Generator().manual_seed(100003 * seed + 431)
+        xs, cs, rho_info = [], [], {}
+        for e in ETA_TRAIN:
+            cval = float(np.float32(cn(e)))
+            sel = (ctx.c_train[:, 0] - cval).abs() < 1e-5
+            n_traj = len(np.unique(ctx.data[e]["traj"]))
+            xe = ctx.x_pot_sym[sel].flatten(1).double()                     # snapshots ordered by trajectory, then by time
+            n_t = len(xe) // n_traj
+            mean, cov = g1y.moments(cval)
+            mean, cov = mean.to(dev), cov.to(dev)
+            lam, q = torch.linalg.eigh(cov)
+            keep = lam > 1e-9 * lam.max()
+            lam, q = lam[keep], q[:, keep]
+            y = (((xe - mean) @ q) / lam.sqrt()).view(n_traj, n_t, -1)       # whitened coordinates of the data
+            rho = ((y[:, 1:] * y[:, :-1]).mean(dim=(0, 1)) / (y**2).mean(dim=(0, 1))).clamp(0.0, 0.999)
+            z = torch.randn(n_traj, len(lam), generator=gy).to(dev, torch.float64)
+            steps = [z]
+            for _ in range(n_t - 1):
+                z = rho * z + (1 - rho**2).sqrt() * torch.randn(n_traj, len(lam), generator=gy).to(dev, torch.float64)
+                steps.append(z)
+            ys = torch.stack(steps, dim=1)                                  # (n_traj, n_t, r)
+            got = (ys[:, 1:] * ys[:, :-1]).mean(dim=(0, 1)) / (ys**2).mean(dim=(0, 1))
+            xs.append((mean + (ys.reshape(-1, len(lam)) * lam.sqrt()) @ q.T).to(torch.float32).view(-1, pot_sym.n_modes, pot_sym.n_channels))
+            cs.append(ctx.c_train[sel])
+            wts = lam / lam.sum()                                           # autocorrelation weighted by the variance of each direction
+            rho_info[f"{e:.5f}"] = {"n_traj": n_traj, "n_t": n_t, "rank": int(keep.sum()),
+                                    "rho_data_weighted": float((rho * wts).sum()), "rho_surrogate_weighted": float((got * wts).sum()),
+                                    "rho_data_median": float(rho.median()), "rho_surrogate_median": float(got.median())}
+            del cov, q, y, ys, steps
+        x_sur, c_sur = torch.cat(xs), torch.cat(cs)
+        del g1y, xs, cs
+        sur_third = {}
+        for e in ETA_TRAIN_EVAL:
+            sel = (c_sur[:, 0] - float(np.float32(cn(e)))).abs() < 1e-5
+            fh_e = pot_sym.field_hat(pot_sym.denormalize(x_sur[sel])).cpu()
+            sur_third[f"{e:.5f}"] = ctx.evaluate(fh_e, e, None, nulls=False)["prod_fluct_over_d"]
+        gl = torch.Generator().manual_seed(11)
+        idx_y = torch.randint(0, len(ctx.x_pot_sym), (2048,), generator=gl)
+        for vname, xtr, ctr in (("W9Yb_skip_sym", ctx.x_pot_sym, ctx.c_train), ("W9Y_skip_sym_gausstraj", x_sur, c_sur)):
+            seed_all(seed)                                  # same initial weights and the same batches of indices for both
+            model, tsec = train(builders["W9_skip_sym"](None).to(dev), fm, xtr, ctr, cfg["iters"], cfg["lr"], cfg["batch"], vname)
+            gf = torch.Generator().manual_seed(12)
+            with torch.no_grad():
+                loss_fixed = float(np.mean([fm_loss(model, xtr[idx_y[k:k + 256]], ctr[idx_y[k:k + 256]], generator=gf).item()
+                                            for k in range(0, 2048, 256)]))
+            results["times"][vname] = {"training_time_s": tsec, "iters": cfg["iters"], "n_train": len(xtr), "fm_loss_train_sample": loss_fixed}
+            if vname == "W9Y_skip_sym_gausstraj":
+                results["times"][vname].update(surrogate_third_order=sur_third, autocorrelation=rho_info)
             record(vname, {e: generate(model, pot_sym, e, n) for e, n in eval_etas})
             del model
         del x_sur, c_sur

@@ -129,7 +129,7 @@ The question of this report is narrow and practical: **for a parametric 3D MHD d
 
 ![The parametric problem of experiment E4. (a) Periodic box with the helical ABC forcing at wavenumber $k_f = 2$, the flow it drives and the large-scale magnetic field at $k = 1$. (b) The eleven values of the magnetic diffusivity $\eta$, alternating between training, validation and held-out test values, with the trends of the kinetic energy, magnetic energy and magnetic helicity of the saturated state (end values measured, segments schematic). (c) The equations; the viscosity is fixed. (d) The task: draw snapshots $(u, B)$ at a held-out $\eta$ and compare their law with that of the solver. Schematic drawn with the `schematic-figure` skill; source in `figures/mhd-dynamo-problem/`.](../figures/mhd-dynamo-problem/figure/out/mhd-dynamo-problem){#fig-problem width=100%}
 
-The work follows the protocol of the repository (`AGENTS.md`): each hypothesis is written in a register with a quantitative refutation criterion before the computation; each quoted comparison uses five seeds; a reviewing role, the `encadrant`, recomputes the result and gives the verdict; negative results are kept. Thirty-three hypotheses are in the register, thirty of them in this experiment (H4 to H33): six were registered after external reviews of the first and third versions of this report, and the last six (H28 to H33, registered after the reviews of the fourth) are not yet reported here.
+The work follows the protocol of the repository (`AGENTS.md`): each hypothesis is written in a register with a quantitative refutation criterion before the computation; each quoted comparison uses five seeds; a reviewing role, the `encadrant`, recomputes the result and gives the verdict; negative results are kept. Thirty-four hypotheses are in the register, thirty-one of them in this experiment (H4 to H34): six were registered after external reviews of the first and third versions of this report, and the last seven (H28 to H34, registered after the reviews of the fourth) are not yet reported here.
 
 ### Contributions
 
@@ -764,6 +764,7 @@ Five of the nine objectives are met: the distance to the reference law (C1, belo
 | H31 | In E4, the excursion of the magnetic energy when the solver restarts from draws of G1 is not an effect of the interpolation of the covariance in $\eta$: [...] | registered | not reviewed yet |
 | H32 | In E4, the Gaussian law with the covariance of the data (G1) has about twice the magnetic null points of the reference because its field varies faster where it is weak, not because it is weak more often: [...] | registered | not reviewed yet |
 | H33 | In E4, the third-order part of the magnetic production held by the flow-matching model with the affine term (W9: 0.60 and 0.44 of that of the reference at the two lower held-out $\eta$, H25) is learned from the data and not produced by the model on its own: [...] | registered | not reviewed yet |
+| H34 | In E4, the two properties that separate the model with the affine term trained on the data from the same model trained on independent Gaussian data (H33) are not effects of the time correlation of the 24 trajectories of the data: [...] | registered | not reviewed yet |
 
 : Hypotheses of E4, registered with a refutation criterion before the computation (`research/hypotheses.json`), with their status after the review of the `encadrant` role. {#tbl-hypotheses}
 
@@ -971,7 +972,7 @@ Every GPU job of the pilot is in `research/compute-ledger.jsonl` (@tbl-jobs, @fi
 ```
 
 <!-- e4:jobs:begin -->
-Total: 36 ledger entries, 19.99 GPU hours, 18.20 USD.
+Total: 42 ledger entries, 27.39 GPU hours, 23.66 USD.
 
 | End (UTC) | GPU | USD/h | Hours | USD | Exit | Commit | Command (shortened) |
 |:----------|:------------------|-----:|------:|-----:|:----|:-------|:--------------------------------------------|
@@ -1011,6 +1012,12 @@ Total: 36 ledger entries, 19.99 GPU hours, 18.20 USD.
 | 11-13 08:18 | RTX PRO 4500 Blackwell | 0.72 | 0.030 | 0.02 | – | `d4fc624` | e4\_gpu\_job.sh full 0 1 2 3 4 e4\_anchor G,F |
 | 11-13 09:04 | RTX PRO 4500 Blackwell | 0.72 | 0.729 | 0.53 | 0 | `aeac08c` | env E4\_DATA\_SEED=100 e4\_gpu\_job.sh full '0 1 2 3 4' e4\_ancho ... |
 | 11-13 09:05 | RTX PRO 4500 Blackwell | 0.72 | 0.743 | 0.54 | 0 | `aeac08c` | e4\_gpu\_job.sh full '0 1 2 3 4' e4\_anchor G,F |
+| 11-13 10:00 | RTX PRO 4500 Blackwell | 0.72 | 0.914 | 0.66 | – | `abac131` | env E4\_DATA\_SEED=100 E4\_N\_RESTART=512 e4\_gpu\_job.sh full '3  ... |
+| 11-13 10:00 | RTX PRO 4500 Blackwell | 0.72 | 0.921 | 0.66 | – | `abac131` | env E4\_DATA\_SEED=100 E4\_N\_RESTART=512 e4\_gpu\_job.sh full '0  ... |
+| 11-13 10:07 | RTX PRO 4500 Blackwell | 0.72 | 1.776 | 1.28 | 124 | `aeac08c` | env E4\_N\_RESTART=512 e4\_gpu\_job.sh full '0 1 2' e4\_recolour\_ ... |
+| 11-13 10:07 | RTX PRO 4500 Blackwell | 0.72 | 1.773 | 1.28 | 124 | `aeac08c` | env E4\_N\_RESTART=512 e4\_gpu\_job.sh full '3 4' e4\_recolour\_b  ... |
+| 11-13 10:46 | GeForce RTX 4090 | 0.89 | 0.744 | 0.66 | – | `e6df2bd` | collected after a restart of the session: milady-claude-job- ... |
+| 11-13 11:17 | RTX PRO 4500 Blackwell | 0.72 | 1.271 | 0.92 | 0 | `e6df2bd` | collected after a restart of the session: milady-claude-job- ... |
 
 : GPU jobs of the pilot (generated from `research/compute-ledger.jsonl`). {#tbl-jobs}
 

@@ -28,7 +28,7 @@ GENERATORS = ["W0_free", "W1_penalty", "W2_final_projection", "W3_projected_flow
 # the registered rule of H28, and a correction of the samples (like the tilting and the rescaling) never was one.
 LATER = [f"W14_full_anchor_it{k}" for k in (0, 50, 150, 250, 500, 1000, 2000, 4000)] + [
     "G1T_gaussian_full", "W9R_skip_sym", "W9R_steps_check", "W15_recoloured_modes", "W16_recoloured_full", "G4_recoloured_gaussian",
-    "W9Zb_skip_sym", "W9Z_skip_sym_gaussdata"]
+    "W9Zb_skip_sym", "W9Z_skip_sym_gaussdata", "W9Yb_skip_sym", "W9Y_skip_sym_gausstraj"]
 GENERATORS += LATER
 # G0 has no network: it is the baseline to beat, not a candidate for the selected generator (the C1 note of
 # race/teams/claude/objectives.toml names the model family: conditional flow matching on the Fourier modes).
@@ -63,7 +63,7 @@ def merge(seed: int, tag: str | bool = "", root: Path = R) -> Path | None:
     whole = root / f"e4_mhd3d{tag}_s{seed}_all.json"
     if not all(p.exists() for p in parts) and not whole.exists():        # a run of the later groups only (D, E, L)
         parts = [p for g in ("A", "B") if (p := root / f"e4_mhd3d{tag}_s{seed}_{g}.json").exists()]
-        if not any((root / f"e4_mhd3d{tag}_s{seed}_{g}.json").exists() for g in ("C", "D", "E", "L", "S", "G", "M", "N", "F", "R", "T", "Z")):
+        if not any((root / f"e4_mhd3d{tag}_s{seed}_{g}.json").exists() for g in ("C", "D", "E", "L", "S", "G", "M", "N", "F", "R", "T", "Z", "Y")):
             return None
     if all(p.exists() for p in parts):
         data = [json.loads(p.read_text()) for p in parts]
@@ -71,7 +71,7 @@ def merge(seed: int, tag: str | bool = "", root: Path = R) -> Path | None:
         data = [json.loads(whole.read_text())]
     else:
         return None
-    for g in ("C", "D", "E", "L", "S", "G", "M", "N", "F", "R", "T", "Z"):                      # optional groups, added after the first runs
+    for g in ("C", "D", "E", "L", "S", "G", "M", "N", "F", "R", "T", "Z", "Y"):                      # optional groups, added after the first runs
         extra = root / f"e4_mhd3d{tag}_s{seed}_{g}.json"
         if extra.exists():
             data.append(json.loads(extra.read_text()))
@@ -509,6 +509,80 @@ def h33_lines(runs: dict, ref: dict | None, root: Path = R) -> list[str]:
     return out
 
 
+def h34_lines(runs: dict, ref: dict | None, root: Path = R) -> list[str]:
+    """H34: the model with the affine term trained on Gaussian trajectories (the time correlation of the data, nothing
+    non-Gaussian) against the same model trained on the data; verdict as registered (research/hypotheses.json)."""
+    have = {v for r in runs.values() for v in r["evaluation"]}
+    wy, wb = "W9Y_skip_sym_gausstraj", "W9Yb_skip_sym"
+    if ref is None or wy not in have or wb not in have:
+        return []
+    out: list[str] = []
+
+    def cells(v: str, key: str, split: str = "test") -> dict[float, np.ndarray]:
+        acc: dict = {}
+        for r in runs.values():
+            for x in r["evaluation"].get(v, {}).get(split, []):
+                if key in x:
+                    acc.setdefault(round(x["eta"], 5), []).append(x[key])
+        return {e: np.asarray(a) for e, a in sorted(acc.items(), reverse=True)}
+
+    rv = lambda e, k: ref["values"][f"{e:.5f}"][k]                                       # noqa: E731
+    sem = lambda a: float(a.std(ddof=1) / np.sqrt(len(a))) if len(a) > 1 else float("nan")   # noqa: E731
+    pm = lambda a: f"{f(float(a.mean()))} ± {f(sem(a))}"                                 # noqa: E731
+    etas = sorted(cells(wy, "prod_fluct_over_d"), reverse=True)
+    low = sorted(etas)[:2]
+    out.append("\nH34: the model with the affine term trained on the data (W9Yb) and on Gaussian trajectories with the covariance and the "
+               "lag-one autocorrelation of the data (W9Y); seed means ± SE.\n")
+    out.append("| quantity | " + " | ".join(f"η = {e:.4f}: on the data | on Gaussian trajectories" for e in etas) + " |")
+    out.append("|---|" + "---|---|" * len(etas))
+    for label, key, how in (("third-order part of the production / D (reference: " + ", ".join(f(rv(e, "prod_fluct_over_d")) for e in etas) + ")", "prod_fluct_over_d", None),
+                            ("mean-flow part / D (reference: " + ", ".join(f(rv(e, "prod_mean_over_d")) for e in etas) + ")", "prod_mean_over_d", None),
+                            ("E_B over that of the reference − 1", "E_B", "E_B"), ("ED / floor", "ed_ratio", None),
+                            ("|magnetic balance|", "balance_residual_magnetic", "abs"), ("err. nulls", "null_count_err_rel", None),
+                            ("σ(dE/dt)/σ_ref", "std_residual_rel", None)):
+        line = []
+        for e in etas:
+            for v in (wb, wy):
+                a = cells(v, key).get(e)
+                line.append("–" if a is None else pm(a / rv(e, "E_B") - 1 if how == "E_B" else (np.abs(a) if how == "abs" else a)))
+        out.append(f"| {label} | " + " | ".join(line) + " |")
+    ty, tb = cells(wy, "prod_fluct_over_d"), cells(wb, "prod_fluct_over_d")
+    ratio = {e: float(ty[e].mean() / tb[e].mean()) for e in etas}
+    per_seed_ratio = {e: ty[e] / tb[e] for e in etas}
+    a_bad = [e for e in low if abs(ratio[e]) >= 0.3 or int((np.abs(per_seed_ratio[e]) >= 0.3).sum()) > 1]
+    eby = {e: abs(float(cells(wy, "E_B")[e].mean()) / rv(e, "E_B") - 1) for e in etas}
+    ebb = {e: abs(float(cells(wb, "E_B")[e].mean()) / rv(e, "E_B") - 1) for e in etas}
+    b_bad = [e for e in etas if eby[e] > 0.5 * ebb[e]]
+    # checks of the measurement
+    data_file = root / "e4_data.json"
+    offset = json.loads(data_file.read_text())["config"].get("data_seed_offset", 0) if data_file.exists() else None
+    h25 = H25_VALUES.get(offset)
+    dev25 = max(abs(float(tb[e].mean()) - x) for e, x in zip(etas, h25, strict=True)) if h25 and len(etas) == 3 else float("nan")
+    need = min(4, len(next(iter(tb.values()))))
+    sign_ok = all(int((np.sign(tb[e]) == np.sign(rv(e, "prod_fluct_over_d"))).sum()) >= need for e in low)
+    sur = [abs(x) for r in runs.values() for x in r["times"].get(wy, {}).get("surrogate_third_order", {}).values()]
+    rho = [v for r in runs.values() for v in r["times"].get(wy, {}).get("autocorrelation", {}).values()]
+    drho = max((abs(v["rho_surrogate_weighted"] - v["rho_data_weighted"]) for v in rho), default=float("nan"))
+    g1 = next((v for v in ("G1_gaussian_full", "G1T_gaussian_full") if v in have), None)
+    t1 = max(abs(a.mean()) for a in cells(g1, "prod_fluct_over_d").values()) if g1 else float("nan")
+    ok = bool(dev25 <= 0.02) and sign_ok and bool(sur) and max(sur) < 0.02 and bool(drho <= 0.03) and bool(t1 < 0.02)
+    out.append("H34, clause a, third-order part of the model trained on Gaussian trajectories over that of the model trained on the data: "
+               + "; ".join(f"η = {e:.4f}: {f(ratio[e], 2)} on the seed means, per seed {', '.join(f(float(x), 2) for x in per_seed_ratio[e])}" for e in etas)
+               + f" (below 0.3 in absolute value at the two lower η, on the seed means and in all seeds but one at most): {'FAIL' if a_bad else 'pass'}. "
+               "Clause b, |E_B/E_B,ref − 1| of the model trained on Gaussian trajectories and of the model trained on the data: "
+               + "; ".join(f"η = {e:.4f}: {f(eby[e])} and {f(ebb[e])}" for e in etas) + f" (at most half, at each η): {'FAIL' if b_bad else 'pass'}.")
+    out.append(f"H34, checks of the measurement: largest gap of the base to the values of H25 {f(float(dev25))} (limit 0.02), sign of the reference at the two "
+               f"lower η in at least {need} seeds: {'yes' if sign_ok else 'no'}; largest |third-order part| of {g1} {f(float(t1))} and of the surrogate "
+               f"training sets {f(max(sur)) if sur else 'not recorded'} (limit 0.02 each); lag-one autocorrelation weighted by the variance of the "
+               f"directions, data and surrogate: " + "; ".join(sorted({f"{v['rho_data_weighted']:.3f} and {v['rho_surrogate_weighted']:.3f}" for v in rho}))[:400]
+               + f" (largest gap {f(float(drho))}, limit 0.03): {'PASS' if ok else 'FAIL'}. Flow-matching loss on a fixed sample of its own training "
+               f"set: model trained on the data {f(float(np.mean([r['times'].get(wb, {}).get('fm_loss_train_sample', np.nan) for r in runs.values()])), 5)}, "
+               f"on Gaussian trajectories {f(float(np.mean([r['times'].get(wy, {}).get('fm_loss_train_sample', np.nan) for r in runs.values()])), 5)}. "
+               "Verdict on this realisation of the data: " + ("MEASUREMENT INVALID (checks)" if not ok else (
+                   "REFUTED (clause " + " and ".join(c for c, x in (("a", a_bad), ("b", b_bad)) if x) + ")" if a_bad or b_bad else "NOT REFUTED")) + ".")
+    return out
+
+
 def select(runs: dict) -> dict:
     """Generator with the lowest validation energy-distance ratio (mean over the seeds)."""
     val = {v: float(np.nanmean(per_seed(runs, v, "ed_ratio", "val"))) for v in GENERATORS
@@ -929,7 +1003,7 @@ def section(quick: bool = False, root: Path = R, replication: str | None = None,
                 xs, ys = np.asarray(pts).T
                 P(f"Signed drift of E_B at τ = 4 against the bias E_B,ref/E_B(0) − 1 of the law, over the {len(pts)} laws above: "
                   f"correlation {f(float(np.corrcoef(xs, ys)[0, 1]), 2)}.")
-        for line in h28_lines(runs, ref) + h29_lines(runs, ref) + h32_lines(runs, ref) + h33_lines(runs, ref, root):
+        for line in h28_lines(runs, ref) + h29_lines(runs, ref) + h32_lines(runs, ref) + h33_lines(runs, ref, root) + h34_lines(runs, ref, root):
             P(line)
         h27 = [x for r in runs.values() for x in r.get("h27", [])]
         if h27:
