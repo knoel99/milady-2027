@@ -298,7 +298,7 @@ light = "qwen3.8-27b"
 [alibaba.reasoning]
 low = "low"
 medium = "medium"
-high = "xhigh"
+high = "high"  # the API accepts high (tested 2026-11-13)
 max = "xhigh"
 
 [alibaba.api]
@@ -356,10 +356,11 @@ extra = { thinking = { type = "enabled" } }
 # https://github.com/deepseek-ai/deepseek-harness, apps/cli/reference/README.md. Pin the version on the pilot.
 name = "DeepSeek Harness (dsh, developer preview)"
 install = "npm install -g @deepseek-ai/dsh"
-setup = "npm install -g @deepseek-ai/dsh"  # run once on the team VM; unverified until the first launch
-effort_source = "none"
-command = ["dsh", "--profile", "headless", "{prompt}"]
-effort_support = "not per call: llm-deepseek.reasoningEffort (off, low, high, max) in $DSH_HOME/profiles/headless/cordis.patch.yml; the model too; read the schema with dsh --dump-config-schema on the pilot"
+setup = "npm install -g @deepseek-ai/dsh@0.2.2-rc.1 && dsh --profile headless --dump-config >/dev/null 2>&1; mkdir -p ~/.dsh/profiles/headless && printf '%s\\n' \"- id: agent-default-model\" \"  config:\" \"    provider: deepseek-official\" \"    model: !!js process.env.DSH_MODEL || 'deepseek-flash'\" \"- id: llm-deepseek\" \"  config:\" \"    reasoningEffort: !!js process.env.DSH_REASONING_EFFORT || 'high'\" > ~/.dsh/profiles/headless/cordis.patch.yml"  # tested 2026-11-13: both variables reach the API
+effort_source = "provider"
+command = ["dsh", "--profile", "headless", "--json", "--approval-policy", "never", "{prompt}"]
+env = { DSH_MODEL = "{model}", DSH_REASONING_EFFORT = "{effort}" }
+effort_support = "yes, per run through DSH_MODEL and DSH_REASONING_EFFORT read by the profile patch of setup (values off, low, high, max; tested 2026-11-13)"
 
 [deepseek.harness_fallback]
 # Claude Code through the Anthropic-compatible endpoint: used if dsh fails on the pilot.
@@ -388,7 +389,7 @@ light = "glm-5.3-flash"
 
 [zhipu.reasoning]
 low = "low"
-medium = "high"
+medium = "medium"  # the API accepts medium (tested 2026-11-13)
 high = "high"
 max = "max"
 
