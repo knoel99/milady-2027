@@ -1988,6 +1988,32 @@
       "verdict": "CONFIRMED",
       "results": "Perfect kmax=7 cutoff. Mean energy-distance ratio 0.0028077496033211006, at most 1.2. All five seeds are finite. Key kmax7 in experiments/results/cursor_constraint_ceiling.json. No network was trained. This is not the learned-model C1.",
       "commit": ""
+    },
+    {
+      "id": "H154",
+      "statement": "The dense-Rm sampling-constraint variant, trained at Rm 8, 10, 11, 13, 14, and 16, kmax=4, hidden width equal to the coefficient dimension, has a strictly smaller mean energy-distance ratio than the two-Rm wide baseline of H149, which is 787.3417136124243. Seeds 0-4, 40 Adam steps, held-out Rm 12, n=16.",
+      "origin": "The perfect kmax=4 cutoff has mean ratio 0.728, so the representation can meet the target. The learned model only saw Rm 8 and 16. Adding neighbours of the held-out point is the next comparison. The inequality was fixed before the run.",
+      "refutation_criterion": "Refuted if any ratio is non-finite, or if the mean over seeds 0-4 is not strictly smaller than 787.3417136124243.",
+      "protocol": "python3 experiments/cursor_constraint_cmp.py --dense --out experiments/results/cursor_constraint_dense.json. CPU. Held-out Rm 12 is not in the training set.",
+      "script": "experiments/cursor_constraint_cmp.py --dense",
+      "cost_estimate": "CPU only. No GPU dollars.",
+      "status": "registered",
+      "verdict": "",
+      "results": "",
+      "commit": ""
+    },
+    {
+      "id": "H155",
+      "statement": "The same dense-Rm sampling-constraint variant has a mean energy-distance ratio at most 1.2. Seeds 0-4, same protocol as H154.",
+      "origin": "C1 target is 1.2. The perfect cutoff meets it. This bound asks whether the dense training set does. It was fixed before the run.",
+      "refutation_criterion": "Refuted if any ratio is non-finite, or if the mean over seeds 0-4 exceeds 1.2.",
+      "protocol": "Same CPU run as H154.",
+      "script": "experiments/cursor_constraint_cmp.py --dense",
+      "cost_estimate": "CPU only. No GPU dollars.",
+      "status": "registered",
+      "verdict": "",
+      "results": "",
+      "commit": ""
     }
   ]
 }

@@ -144,13 +144,19 @@ def score(gen: np.ndarray, ref: np.ndarray, rm: float) -> dict[str, float]:
     }
 
 
-def run(seeds: list[int], steps: int, n_samples: int, kmax: float = 2.0, hidden: int = 64) -> dict:
+def run(
+    seeds: list[int],
+    steps: int,
+    n_samples: int,
+    kmax: float = 2.0,
+    hidden: int = 64,
+    train_rm: tuple[float, ...] = (8.0, 16.0),
+) -> dict:
     n = 16
     modes = half_ball_modes(kmax)
     if hidden < 0:
         hidden = int(modes.shape[0] * 6)
     k = torch.tensor(modes, dtype=torch.float64)
-    train_rm = (8.0, 16.0)
     held = 12.0
     ref = np.stack([snapshot(n, held, s, 1.0) for s in range(n_samples)], axis=0)
     rows = []
@@ -171,7 +177,15 @@ def run(seeds: list[int], steps: int, n_samples: int, kmax: float = 2.0, hidden:
             row[name] = stats
         rows.append(row)
         print("seed", seed, "projected_div", row["projected"]["div_max"], "free_div", row["free"]["div_max"], flush=True)
-    return {"held_out_rm": held, "n": n, "kmax": kmax, "hidden": hidden, "steps": steps, "seeds": rows}
+    return {
+        "held_out_rm": held,
+        "n": n,
+        "kmax": kmax,
+        "hidden": hidden,
+        "train_rm": list(train_rm),
+        "steps": steps,
+        "seeds": rows,
+    }
 
 
 def projection_ceiling(kmax_values: list[float]) -> dict:
@@ -200,9 +214,25 @@ def main() -> None:
     parser.add_argument("--quick", action="store_true")
     parser.add_argument("--kmax", type=float, default=None)
     parser.add_argument("--hidden", type=int, default=None)
+    parser.add_argument("--dense", action="store_true")
     parser.add_argument("--ceiling", action="store_true")
     parser.add_argument("--out", type=Path, default=None)
     args = parser.parse_args()
+    if args.dense:
+        if args.out is None:
+            raise SystemExit("--out is required with --dense")
+        result = run(
+            [0, 1, 2, 3, 4],
+            steps=40,
+            n_samples=8,
+            kmax=4.0,
+            hidden=-1,
+            train_rm=(8.0, 10.0, 11.0, 13.0, 14.0, 16.0),
+        )
+        args.out.parent.mkdir(parents=True, exist_ok=True)
+        args.out.write_text(json.dumps(result, indent=2) + "\n")
+        print("wrote", args.out)
+        return
     if args.ceiling:
         if args.out is None:
             raise SystemExit("--out is required with --ceiling")
