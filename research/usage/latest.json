@@ -1,5 +1,5 @@
 {
- "generated": "2026-11-13T07:38:38Z",
+ "generated": "2026-11-13T09:17:24Z",
  "projects": "/root/.claude/projects/-home-user-milady-2027",
  "sessions": 1,
  "main_session": {
@@ -10,23 +10,23 @@
    "high"
   ],
   "expected": "claude-fable-5-2 / high",
-  "responses": 716,
+  "responses": 799,
   "off_spec": 0,
   "conforms": true
  },
  "first": "2026-11-12T16:50:21.852Z",
- "last": "2026-11-13T07:38:36.910Z",
- "span_hours": 14.8,
+ "last": "2026-11-13T09:17:21.080Z",
+ "span_hours": 16.45,
  "by_model": {
   "claude-fable-5-2": {
-   "input": 2000,
-   "cache_write_5m": 2902455,
-   "cache_write_1h": 2337229,
-   "cache_read": 378216591,
-   "output": 2026800,
-   "thinking": 1041099,
-   "calls": 1007,
-   "usd": 223.15
+   "input": 2172,
+   "cache_write_5m": 2986471,
+   "cache_write_1h": 2518649,
+   "cache_read": 430576574,
+   "output": 2167124,
+   "thinking": 1108193,
+   "calls": 1096,
+   "usd": 242.98
   },
   "claude-sonnet-5-5": {
    "input": 470,
@@ -39,13 +39,13 @@
    "usd": 8.57
   }
  },
- "total_usd": 231.72,
+ "total_usd": 251.55,
  "subagents": {
-  "count": 32,
+  "count": 33,
   "by_type": {
    "general-purpose": 9,
    "jury-externe": 7,
-   "encadrant": 12,
+   "encadrant": 13,
    "biblio": 2,
    "physicien": 2
   },
@@ -93,6 +93,23 @@
     "usd": 8.7387,
     "off_spec": 0,
     "expected": "claude-fable-5-2 / max",
+    "conforms": true
+   },
+   {
+    "id": "agent-a1004fd4c3cbca040",
+    "type": "encadrant",
+    "description": "Encadrant: verdict H28",
+    "models": [
+     "claude-fable-5-2"
+    ],
+    "efforts": [
+     "medium"
+    ],
+    "calls": 6,
+    "output": 23255,
+    "usd": 1.8133,
+    "off_spec": 0,
+    "expected": "claude-fable-5-2 / medium",
     "conforms": true
    },
    {
@@ -571,9 +588,9 @@
   "nonconforming": 0
  },
  "tool_calls": {
-  "Bash": 671,
-  "Read": 41,
-  "Agent": 32,
+  "Bash": 758,
+  "Read": 44,
+  "Agent": 33,
   "Write": 17,
   "ToolSearch": 4,
   "SendMessage": 3,
@@ -584,14 +601,14 @@
  },
  "role_calls_via_tools": 0,
  "gpu": {
-  "jobs": 30,
-  "hours": 18.428,
-  "usd": 17.08,
+  "jobs": 36,
+  "hours": 19.989,
+  "usd": 18.2,
   "by_gpu": {
    "NVIDIA RTX PRO 4500 Blackwell": {
-    "jobs": 25,
-    "hours": 13.7889,
-    "usd": 9.927900000000001
+    "jobs": 31,
+    "hours": 15.35,
+    "usd": 11.0518
    },
    "NVIDIA RTX A6000": {
     "jobs": 1,
