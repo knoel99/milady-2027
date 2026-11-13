@@ -113,3 +113,6 @@ ts	phase	decision	why	evidence	result
 2026-11-13T07:44:01Z	h131	H131 refuted.	Seed 0 at n=128 is negative at Rm=8.9853515625. H135 asks the midpoint Rm=8.98681640625 before that run.	experiments/results/cursor_abc_n128_rm89853515625	refuted, RTX 4090, 0.3452 USD
 2026-11-13T07:44:36Z	h132	H132 refuted.	Seed 5 at n=128 is negative at Rm=9.046875. H136 asks the midpoint Rm=9.0546875 before that run.	experiments/results/cursor_abc_n128_rm9046875_s5	refuted, RTX 4090, 0.351 USD
 2026-11-13T07:44:00Z	h134	Seeds 5-9 stop holds.	Seed 7 at cfl=0.5 stays positive, lambda 1.24e-9, next to the cfl=1 value 1.24e-9.	experiments/results/cursor_abc_n96_rm8936634063720703125_cfl05	supported, RTX 4090, 0.1766 USD
+2026-11-13T08:08:23Z	h128	H128 refuted.	Seeds 1 and 3 at n=160 are negative at Rm=9. H138 asks Rm=9.0625 before that run.	experiments/results/cursor_abc_n160_rm9	refuted, RTX 4090, 0.992 USD
+2026-11-13T08:10:36Z	h135	H135 refuted.	Seed 0 at n=128 is negative at Rm=8.98681640625. H139 asks the midpoint Rm=8.987548828125 before that run.	experiments/results/cursor_abc_n128_rm898681640625	refuted, RTX 4090, 0.3442 USD
+2026-11-13T08:10:47Z	h136	H136 refuted.	Seed 5 at n=128 is negative at Rm=9.0546875. H140 asks the midpoint Rm=9.05859375 before that run.	experiments/results/cursor_abc_n128_rm90546875_s5	refuted, RTX 4090, 0.3438 USD

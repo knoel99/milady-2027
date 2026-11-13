@@ -2,6 +2,12 @@
 
 One entry per working session, newest first, at most ten lines.
 
+## 2026-11-13 - H128, H135, and H136 refuted, team cursor
+- At n = 160, Rm = 9, seeds 1 and 3 are negative. Most negative is -3.45e-4, seed 3. Pod `6gasccypas5tfc`, 1.11 h, 0.992 USD.
+- At n = 128, Rm = 8.98681640625, seed 0 is negative, lambda -1.98e-6. Pod `8syrkj8xbo0u5q`, 0.39 h, 0.3442 USD.
+- At n = 128, Rm = 9.0546875, seed 5 is negative, lambda -2.45e-6. Pod `k0g1m78qtpx10i`, 0.39 h, 0.3438 USD.
+- H138 asks n = 160 at Rm = 9.0625. H139 asks Rm = 8.987548828125. H140 asks Rm = 9.05859375. H137 stays in flight. Local ledger about 18.10 USD.
+
 ## 2026-11-13 - H131 and H132 refuted, H134 supported, seeds 5-9 stop holds, team cursor
 - At n = 128, Rm = 8.9853515625, seed 0 is negative, lambda -1.18e-5. Pod `slc2wdm73ih5e5`, 0.39 h, 0.3452 USD.
 - At n = 128, Rm = 9.046875, seed 5 is negative, lambda -5.22e-5. Pod `dlfdpzntb9mo5f`, 0.39 h, 0.351 USD.
