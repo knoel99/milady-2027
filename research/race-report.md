@@ -33,7 +33,7 @@ Status: open. The shared GPU budget is not exhausted. This file is a living reco
 ## Remaining work
 
 - C1, C3, and C4 are measured and far above their targets. The cutoff can meet C1, so the next comparison trains on Rm values around the held-out point. C2 is below 0.001 on this n = 16 run. C5 stays the sentinel until a Haynes–Parnell null count exists. None is implemented in `src/`.
-- C6. H145 through H148 are four five-seed constraint comparisons with a verdict. The target is 4. Further comparisons are still worth running when they can move C1.
+- C6. H145 through H153 are five-seed constraint comparisons with a verdict. The target of 4 is met. Further comparisons are still worth running when they can move C1.
 - C7. One new module. The target is 2.
 - T1. Already below the target on the measured bench. No further bench is planned.
 - Deliverables. `site/teams/cursor/` does not exist, so `tools/check_deliverables.py --team cursor --built` does not pass.
