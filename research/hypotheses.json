@@ -2040,6 +2040,45 @@
       "verdict": "CONFIRMED",
       "results": "Mean energy-distance ratio 0.7431289385904811, at most 1.2. All five ratios are finite. Seed 0 is above 1.2 and the criterion is the mean. Same file as H156.",
       "commit": ""
+    },
+    {
+      "id": "H158",
+      "statement": "The kmax=6 linear midpoint between Rm=11 and Rm=13 has a strictly smaller mean C4 than the kmax=4 midpoint baseline, which is 0.1498194315020137. C4 is the relative L2 spectrum error plus the relative helicity error. Seeds 0-4, n=16. The cutoff is the representation constraint. No network is trained.",
+      "origin": "The kmax=4 midpoint meets C1 and misses C4. Raising the cutoff is the one change. The inequality was fixed before the run.",
+      "refutation_criterion": "Refuted if any C4 is non-finite, or if the mean over seeds 0-4 is not strictly smaller than 0.1498194315020137.",
+      "protocol": "python3 experiments/cursor_constraint_cmp.py --midpoint --kmax 6 --out experiments/results/cursor_constraint_midpoint_kmax6.json. CPU. Same eight times and the same seeds as H156. Rm=12 is not an input.",
+      "script": "experiments/cursor_constraint_cmp.py --midpoint --kmax 6",
+      "cost_estimate": "CPU only. No GPU dollars.",
+      "status": "registered",
+      "verdict": "",
+      "results": "",
+      "commit": ""
+    },
+    {
+      "id": "H159",
+      "statement": "The same kmax=6 midpoint has a mean C4 at most 0.1. Seeds 0-4, same representation constraint and same baseline protocol as H158.",
+      "origin": "The C4 target is 0.1. The kmax=4 midpoint is 0.150. The bound was fixed before the run.",
+      "refutation_criterion": "Refuted if any C4 is non-finite, or if the mean over seeds 0-4 exceeds 0.1.",
+      "protocol": "python3 experiments/cursor_constraint_cmp.py --midpoint --kmax 6 --out experiments/results/cursor_constraint_midpoint_kmax6.json. CPU. Same eight times and the same seeds as H156. Rm=12 is not an input.",
+      "script": "experiments/cursor_constraint_cmp.py --midpoint --kmax 6",
+      "cost_estimate": "CPU only. No GPU dollars.",
+      "status": "registered",
+      "verdict": "",
+      "results": "",
+      "commit": ""
+    },
+    {
+      "id": "H160",
+      "statement": "The same kmax=6 midpoint has a mean C3 at most 0.05. C3 is the absolute magnetic balance residual. Seeds 0-4, same representation constraint as H158. The kmax=4 baseline residual is 0.09857389756647705.",
+      "origin": "The C3 target is 0.05. The kmax=4 midpoint misses it. The bound was fixed before the run.",
+      "refutation_criterion": "Refuted if any C3 is non-finite, or if the mean over seeds 0-4 exceeds 0.05.",
+      "protocol": "python3 experiments/cursor_constraint_cmp.py --midpoint --kmax 6 --out experiments/results/cursor_constraint_midpoint_kmax6.json. CPU. Same eight times and the same seeds as H156. Rm=12 is not an input.",
+      "script": "experiments/cursor_constraint_cmp.py --midpoint --kmax 6",
+      "cost_estimate": "CPU only. No GPU dollars.",
+      "status": "registered",
+      "verdict": "",
+      "results": "",
+      "commit": ""
     }
   ]
 }

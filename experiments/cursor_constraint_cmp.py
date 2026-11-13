@@ -188,15 +188,15 @@ def run(
     }
 
 
-def rm_midpoint() -> dict:
+def rm_midpoint(kmax: float = 4.0) -> dict:
     """Linear midpoint in coefficient space between Rm=11 and Rm=13.
 
     No network is trained. The same eight times are used on both sides and
-    on the held-out Rm=12 ensemble. The kmax=4 cutoff is the representation.
+    on the held-out Rm=12 ensemble. ``kmax`` is the representation cutoff.
     """
     n = 16
     held = 12.0
-    modes = half_ball_modes(4.0)
+    modes = half_ball_modes(kmax)
     times = (0.25, 0.5, 0.75, 1.0, 1.25, 1.5, 1.75, 2.0)
     rows = []
     for seed in (0, 1, 2, 3, 4):
@@ -209,7 +209,7 @@ def rm_midpoint() -> dict:
         stats = score(np.stack(gens, axis=0), ref, held)
         rows.append({"seed": seed, "midpoint": stats})
         print("midpoint", seed, stats["c1"], flush=True)
-    return {"held_out_rm": held, "n": n, "kmax": 4.0, "times": list(times), "seeds": rows}
+    return {"held_out_rm": held, "n": n, "kmax": kmax, "times": list(times), "seeds": rows}
 
 
 def projection_ceiling(kmax_values: list[float]) -> dict:
@@ -246,7 +246,7 @@ def main() -> None:
     if args.midpoint:
         if args.out is None:
             raise SystemExit("--out is required with --midpoint")
-        result = rm_midpoint()
+        result = rm_midpoint(args.kmax or 4.0)
         args.out.parent.mkdir(parents=True, exist_ok=True)
         args.out.write_text(json.dumps(result, indent=2) + "\n")
         print("wrote", args.out)
