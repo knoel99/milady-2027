@@ -21,6 +21,7 @@ label	5.5pt	x̂1
 label	6.5pt	W1  Divergence penalty
 label	5.5pt	on the end-of-path prediction x̂1 = xt + (1 − t) v
 label	5.0pt	⟨f·u⟩ − ν⟨|ω|²⟩ − η⟨|j|²⟩ = 0
+label	5.0pt	also on W9: W12
 label	6.5pt	W5  Law-level stationarity loss
 label	5.5pt	constrains a mean over samples, not each sample
 label	5.0pt	∇·B = 0
@@ -35,11 +36,15 @@ label	5.5pt	velocity, magnetic field, forcing
 label	6.5pt	Shared glyphs
 label	5.0pt	μ, Σ per mode
 label	5.5pt	G0
-label	5.5pt	no network
+label	5.0pt	no network
+label	5.0pt	μ, Σ full
+label	5.5pt	G1
+label	5.0pt	no network
 label	5.5pt	W6
 label	5.5pt	same network
-label	6.5pt	G0, W6  Model families (baselines)
-label	5.5pt	G0: Gaussian per mode, no network; W6: diffusion, same network
+label	6.5pt	G0, G1, W6  Model families (baselines)
+label	5.5pt	G0: Gaussian per mode; G1: Gaussian with covariance between
+label	5.5pt	modes (both no network); W6: diffusion, same network
 label	5.0pt	∇·B = 0
 label	6.5pt	W2  Final Leray projection
 label	5.5pt	projection of the final samples onto the surface
@@ -49,6 +54,7 @@ label	5.5pt	every stage projected
 label	6.5pt	W3  Projected flow
 label	5.5pt	training noise projected + every stage projected
 label	5.0pt	measured: effective sample size 1 of 256 in 14 of 15 cases
+label	5.0pt	also on W9: W13 (effective sample 17 %)
 label	6.5pt	W7  Exponential tilting
 label	5.5pt	reweights the samples on the identities (dot size = weight)
 label	6.5pt	W8  Per-sample rescaling

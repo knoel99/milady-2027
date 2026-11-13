@@ -28,7 +28,7 @@ label	5.5pt	Samples over-dispersed:
 label	5.5pt	potentials models: 2 to 3 times too many
 label	5.5pt	null points
 panel	8.0pt	b
-label	6.5pt	Four remedies on the same glyphs
+label	6.5pt	Four remedies and two Gaussian baselines
 label	5.5pt	Energy distance / noise floor
 label	5.0pt	(log scale; seed mean, held-out η)
 label	5.5pt	null-count
@@ -76,9 +76,15 @@ label	6.0pt	1.70
 label	6.0pt	0.12
 label	8.0pt	G0
 label	5.5pt	Gaussian law per mode
-label	5.0pt	Gaussian law per mode, no network
+label	5.0pt	G0: Gaussian law per mode (no covariance between modes), no network
 label	6.0pt	3.5
 label	6.0pt	2.24
 label	6.0pt	0.21
-label	5.0pt	The Gaussian law alone is the closest in energy distance; the models with a learned
-label	5.0pt	affine term have fewer spurious null points and half its restart drift.
+label	8.0pt	G1
+label	5.5pt	Gaussian law with covariance between modes
+label	5.0pt	G1: Gaussian law with the covariance between modes, no network
+label	6.0pt	2.6
+label	6.0pt	1.10
+label	6.0pt	0.06
+label	5.0pt	Two Gaussian laws without a network are closer to the reference than every learned model;
+label	5.0pt	the one that keeps the covariance between modes (G1) is the best on all three columns.

@@ -100,6 +100,7 @@ export default function draw(F, L) {
     const mean = [cx - 10, g.my + 3]; diamond(mean);
     corr([mean[0] + 3, mean[1]], [cx - 6, g.my + 1]);
     L.text(R, g.x + cw - 4, g.y + 5, '⟨{#8c8c8c|*f*}·{#0072B2|*u*}⟩ − ν⟨|{#0072B2|ω}|²⟩ − η⟨|{#D55E00|*j*}|²⟩ = 0', { size: 5, anchor: 'end', valign: 'top' });
+    L.text(R, g.x + cw - 4, g.y + ph - 4, 'also on W9: W12', { size: 5, anchor: 'end', valign: 'bottom', color: GREY });
     title(x, y, 'W5', 'Law-level stationarity loss', ['constrains a mean over samples, not each sample']);
   }
   { // W0
@@ -123,15 +124,27 @@ export default function draw(F, L) {
   { // model families: G0 and W6
     const [x, y] = cell(1, 3); const g = G(x, y); const hw = cw / 2;
     L.line(R, [g.x + hw, g.y + 4], [g.x + hw, g.y + ph - 4], { stroke: LG, width: 0.5, dash: '1.5 1.2' });
-    // G0: Gaussian law per mode, no network
-    const cx0 = g.x + 62;
-    L.ellipse(R, cx0, g.my, 15, 11, { fill: 'none', stroke: INK, width: 0.8, dash: '2 1.2' });
-    YD.forEach((yy, k) => dot([cx0 + XD[k] * 1.1, g.my + yy * 0.4], 1.3, INK));
-    L.rect(R, g.x + 4, g.my - 8, 36, 16, { fill: '#fff', stroke: INK, width: 0.6, r: 2 });
-    L.text(R, g.x + 22, g.my, 'μ, Σ per mode', { size: 5, anchor: 'middle', valign: 'middle' });
-    L.arrow(R, [g.x + 41, g.my], [cx0 - 17, g.my], { stroke: INK, width: 1.2, head: 2.6 });
-    L.text(R, g.x + 4, g.y + 4, '**G0**', { size: 5.5, valign: 'top' });
-    L.text(R, g.x + 22, g.y + ph - 4, 'no network', { size: 5.5, anchor: 'middle', valign: 'bottom', color: GREY });
+    // G0 (top) and G1 (bottom): Gaussian laws, no network
+    const gauss = (my, name, tilted) => {
+      const cx0 = g.x + 62;
+      if (tilted) {                                  // tilted ellipse + correlation mark: covariance between modes
+        const th = -0.6, ca = Math.cos(th), sa = Math.sin(th), pts = [];
+        for (let i = 0; i <= 40; i++) { const t = i / 40 * 2 * Math.PI, ux = 15 * Math.cos(t), uy = 5 * Math.sin(t); pts.push([cx0 + ux * ca - uy * sa, my + ux * sa + uy * ca]); }
+        L.polyline(R, pts, { stroke: INK, width: 0.8, fill: 'none', dash: '2 1.2' });
+        L.line(R, [cx0 - 11, my + 7], [cx0 + 11, my - 7], { stroke: B, width: 0.6 });
+        YD.forEach((yy, k) => { const ux = XD[k] * 1.1, uy = yy * 0.12; dot([cx0 + ux * ca - uy * sa, my + ux * sa + uy * ca], 1.2, INK); });
+      } else {
+        L.ellipse(R, cx0, my, 15, 8, { fill: 'none', stroke: INK, width: 0.8, dash: '2 1.2' });
+        YD.forEach((yy, k) => dot([cx0 + XD[k] * 1.1, my + yy * 0.25], 1.2, INK));
+      }
+      L.rect(R, g.x + 4, my - 7, 36, 14, { fill: '#fff', stroke: INK, width: 0.6, r: 2 });
+      L.text(R, g.x + 22, my, tilted ? 'μ, Σ full' : 'μ, Σ per mode', { size: 5, anchor: 'middle', valign: 'middle' });
+      L.arrow(R, [g.x + 41, my], [cx0 - 19, my], { stroke: INK, width: 1.2, head: 2.4 });
+      L.text(R, g.x + 4, my - 9, `**${name}**`, { size: 5.5, valign: 'bottom' });
+      L.text(R, g.x + 16, my - 9, 'no network', { size: 5, valign: 'bottom', color: GREY });
+    };
+    gauss(g.y + 15, 'G0', false);
+    gauss(g.y + 40, 'G1', true);
     // W6: diffusion, same network
     const nx1 = g.x + hw + 14, ex1 = g.x + hw + 66;
     L.ellipse(R, nx1, g.my, 8, 17, { fill: 'none', stroke: LG, width: 0.5, dash: '1.5 1.2' });
@@ -143,7 +156,7 @@ export default function draw(F, L) {
     });
     L.text(R, g.x + hw + 4, g.y + 4, '**W6**', { size: 5.5, valign: 'top' });
     L.text(R, g.x + hw + 40, g.y + ph - 4, 'same network', { size: 5.5, anchor: 'middle', valign: 'bottom', color: GREY });
-    title(x, y, 'G0, W6', 'Model families (baselines)', ['G0: Gaussian per mode, no network; W6: diffusion, same network']);
+    title(x, y, 'G0, G1, W6', 'Model families (baselines)', ['G0: Gaussian per mode; G1: Gaussian with covariance between', 'modes (both no network); W6: diffusion, same network']);
   }
 
   // ======== SAMPLING ========
@@ -170,6 +183,7 @@ export default function draw(F, L) {
     const rr = [0.5, 0.5, 0.5, 5, 0.5, 0.5]; en.forEach((p, k) => dot(p, rr[k], INK));
     ring([cx, g.my], 5, '1.5 1'); diamond([cx + 3, g.my - 3]);
     L.text(R, g.x + 4, g.y + 4, 'measured: effective sample size 1 of 256 in 14 of 15 cases', { size: 5, valign: 'top', color: INK });
+    L.text(R, g.x + cw - 4, g.y + ph - 4, 'also on W9: W13 (effective sample 17 %)', { size: 5, anchor: 'end', valign: 'bottom', color: GREY });
     title(x, y, 'W7', 'Exponential tilting', ['reweights the samples on the identities (dot size = weight)']);
   }
   { // W8

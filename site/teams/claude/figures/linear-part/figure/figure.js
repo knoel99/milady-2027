@@ -106,7 +106,7 @@ export default function draw(F, L) {
   // =====================================================================================================
   const b = F.panel('b', { x: 69, y: 0, w: 114, h: 104 });
   const bW = b.w;
-  T(b, 12, 6, '**Four remedies** on the same glyphs', { size: 6.5, valign: 'middle' });
+  T(b, 12, 6, '**Four remedies and two Gaussian baselines**', { size: 6.5, valign: 'middle' });
 
   const axX = 158, axW = 92;
   const lx = (v) => axX + (Math.log10(v) / Math.log10(300)) * axW;
@@ -130,22 +130,24 @@ export default function draw(F, L) {
     { id: 'W10', title: 'exact Gaussian field + network', v: 43.6, nc: '2.46', rd: '0.12' },
     { id: 'W9', title: 'learned affine term + network', v: 9.3, nc: '1.67', rd: '0.12' },
     { id: 'W11', title: 'exact Gaussian field + learned affine correction + network', v: 8.6, nc: '1.70', rd: '0.12' },
-    { id: 'G0', title: 'Gaussian law per mode, no network', v: 3.5, nc: '2.24', rd: '0.21' },
+    { id: 'G0', title: 'G0: Gaussian law per mode (no covariance between modes), no network', v: 3.5, nc: '2.24', rd: '0.21' },
+    { id: 'G1', title: 'G1: Gaussian law with the covariance between modes, no network', v: 2.6, nc: '1.10', rd: '0.06' },
   ];
-  const y0 = 64, pitch = 44;
+  const y0 = 62, pitch = 36;
   // axis (labels above the axis line, faint guides below)
   L.line(b, [axX, axY], [axX + axW, axY], { stroke: INK, width: 0.5 });
   for (const [v, sl] of [[1, '1'], [3, '3'], [10, '10'], [30, '30'], [100, '100'], [300, '300']]) {
     L.line(b, [lx(v), axY - 2], [lx(v), axY], { stroke: INK, width: 0.5 });
-    L.line(b, [lx(v), axY], [lx(v), y0 + 4 * pitch + 15], { stroke: C.faint, width: 0.4 });
+    L.line(b, [lx(v), axY], [lx(v), y0 + 5 * pitch + 15], { stroke: C.faint, width: 0.4 });
     T(b, lx(v), axY - 6, sl, { size: 5, anchor: 'middle', valign: 'middle' });
   }
   rows.forEach((r, i) => {
     const y = y0 + i * pitch, gx = 24, ay = y + bh2 / 2;
-    if (i > 0) L.line(b, [0, y - 8], [bW, y - 8], { stroke: C.faint, width: 0.5 });
+    if (i > 0) L.line(b, [0, y - 6], [bW, y - 6], { stroke: C.faint, width: 0.5 });
     T(b, 0, ay, r.id, { size: 8, weight: 'bold', anchor: 'start', valign: 'middle' });
     if (r.id === 'W4s') net(b, gx, y, 120, 'network (no linear part)');
     else if (r.id === 'G0') exact(b, gx, y, 120, 'Gaussian law per mode');
+    else if (r.id === 'G1') { box(b, gx, y, 120, bh2, '#005A45', '#005A45'); T(b, gx + 60, y + bh2 / 2, 'Gaussian law with covariance between modes', { size: 5.5, anchor: 'middle', valign: 'middle', color: '#fff' }); }
     else if (r.id === 'W9') { learned(b, gx, y, 58, 'learned affine term'); plus(b, gx + 63, y); net(b, gx + 68, y, 52, 'network'); }
     else if (r.id === 'W10') { exact(b, gx, y, 58, 'exact Gaussian field'); plus(b, gx + 63, y); net(b, gx + 68, y, 52, 'network'); }
     else { exact(b, gx, y, 36, 'exact\nGaussian'); plus(b, gx + 40, y); learned(b, gx + 44, y, 36, 'learned\naffine'); plus(b, gx + 84, y); net(b, gx + 88, y, 32, 'network'); }
@@ -156,6 +158,6 @@ export default function draw(F, L) {
     T(b, c1, ay, r.nc, { size: 6, anchor: 'middle', valign: 'middle' });
     T(b, c2, ay, r.rd, { size: 6, anchor: 'middle', valign: 'middle' });
   });
-  T(b, 0, 281, 'The Gaussian law alone is the closest in energy distance; the models with a learned', { size: 5, anchor: 'start', valign: 'middle', color: MID });
-  T(b, 0, 288, 'affine term have fewer spurious null points and half its restart drift.', { size: 5, anchor: 'start', valign: 'middle', color: MID });
+  T(b, 0, 280, 'Two Gaussian laws without a network are closer to the reference than every learned model;', { size: 5, anchor: 'start', valign: 'middle', color: MID });
+  T(b, 0, 287, 'the one that keeps the covariance between modes (G1) is the best on all three columns.', { size: 5, anchor: 'start', valign: 'middle', color: MID });
 }
