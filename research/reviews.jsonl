@@ -136,3 +136,5 @@
 {"time": "2026-11-13T09:46:24Z", "role": "jury-externe", "commit": "72f26f3", "scope": "research/race-report.md after H166", "verdict": "midpoint miss confirmed, H167 not yet scored", "file": "research/calls/race-report-jury-midpoint.md"}
 {"time": "2026-11-13T09:57:39Z", "role": "encadrant", "commit": "26b2720", "scope": "H167, experiments/results/cursor_nulls_midpoint_kmax7.json", "verdict": "1 confirmed", "file": "research/calls/h167-result-encadrant.md"}
 {"time": "2026-11-13T09:57:39Z", "role": "jury-externe", "commit": "26b2720", "scope": "research/race-report.md after H167", "verdict": "C5 meets 0.1 on the kmax=7 midpoint", "file": "research/calls/race-report-jury-c5.md"}
+{"time": "2026-11-13T11:53:50Z", "role": "encadrant", "commit": "ebffd58", "scope": "H168 registration and the failed pod", "verdict": "CONFIRMED no score yet; learned ratio UNCHECKED", "file": "research/calls/h168-register-encadrant.md"}
+{"time": "2026-11-13T11:53:50Z", "role": "jury-externe", "commit": "ebffd58", "scope": "team report PDF and race-report deliverables", "verdict": "CONFIRMED 34 pages; H168 score TO BE SPECIFIED", "file": "research/calls/race-report-jury-pages.md"}
