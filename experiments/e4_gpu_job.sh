@@ -49,7 +49,8 @@ stamp "models: seeds $SEEDS, $THREADS threads each"
 PIDS=""
 for s in $SEEDS; do
   ( python e4_mhd3d.py $Q --seed "$s" --group "$GROUP" --device cuda --threads "$THREADS" > "results/logs/e4_gpu_s$s.log" 2>&1
-    echo "seed $s rc=$?"; grep "^==\|Traceback\|Error\|total duration" "results/logs/e4_gpu_s$s.log" | tail -n 24 ) &
+    rc=$?; echo "$rc" > "results/logs/rc_s$s"
+    echo "seed $s rc=$rc"; grep "^==\|Traceback\|Error\|total duration" "results/logs/e4_gpu_s$s.log" | tail -n 24 ) &
   PIDS="$PIDS $!"
 done
 # the result files are written after every variant: copy them as they come, so that a job cut by its
@@ -62,3 +63,7 @@ cp results/e4_mhd3d${TAG}_s*.json results/e4_samples${TAG}_s0_*.npz results/logs
 wait
 stamp "done"; nvidia-smi --query-gpu=name,memory.used,utilization.gpu --format=csv,noheader
 ls "$OUT"
+# a seed that failed must fail the job (the outputs written before the failure are kept): until 2026-11-13 the job ended with
+# rc 0 whatever the seeds returned
+FAILED=""; for s in $SEEDS; do [ "$(cat "results/logs/rc_s$s" 2>/dev/null)" = 0 ] || FAILED="$FAILED $s"; done
+if [ -n "$FAILED" ]; then stamp "FAILED seeds:$FAILED"; exit 4; fi

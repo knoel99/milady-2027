@@ -78,6 +78,7 @@ GROUPS = {"A": ["W0_free", "W1_penalty", "W2_final_projection", "W3_projected_fl
           "X": ["W16X_relaxed"],                                        # H35: G0, G1, W9 and W16 relaxed by the solver for a short time
           "V": ["W17_recoloured_surrogate"],                            # H37: W9 trained on Gaussian surrogates, recoloured
           "O": ["REFV_recoloured"],                                     # H37, reported: reference snapshots through the same kind of map
+          "P": ["W18_anchor_on_W9"],                                    # H38: positive control of the anchored model, trained on samples of W9
           "N": ["G2_gaussianised_W9"],                                  # H27: Gaussian law fitted to the samples of W9                                    # H22: Gaussian law with the inter-mode covariance
           "M": ["W12_skip_stationarity", "W12_skip_control", "W13_skip_tilting"],   # H23, H24: loss and sampling on W9
           "L": ["W9L_skip_long", "W11L_anchored_skip_long"],            # H18: 8 times the iterations (not in "all")
@@ -504,6 +505,8 @@ def _group_of(variant: str) -> str:
         return "X"
     if variant.startswith("REFV_"):
         return "O"
+    if variant.startswith(("W9P", "W18_")):
+        return "P"
     if variant.startswith(("W16V_", "W17_", "G1V_")):
         return "V"
     return "M" if variant.startswith(("W12_", "W13_")) else "B"
@@ -549,7 +552,7 @@ def run(quick: bool, seed: int, group: str, device: str = "cpu", cond_scale: flo
     groups = [g for g in GROUPS if g in "ABCDE"] if group == "all" else group.split(",")
     need = tuple(sorted({s for g in groups for s in {"A": ("comp",), "B": ("pot", "pot_sym"), "C": ("pot",),
                                                      "D": ("pot_sym",), "E": ("pot_sym",), "L": ("pot_sym",),
-                                                     "S": ("pot_sym",), "G": ("pot_sym",), "M": ("pot_sym",), "N": ("pot_sym",), "F": ("pot_sym",), "R": ("pot_sym",), "T": ("pot_sym",), "Z": ("pot_sym",), "Y": ("pot_sym",), "X": ("pot_sym",), "V": ("pot_sym",), "O": ("pot_sym",)}[g]}))
+                                                     "S": ("pot_sym",), "G": ("pot_sym",), "M": ("pot_sym",), "N": ("pot_sym",), "F": ("pot_sym",), "R": ("pot_sym",), "T": ("pot_sym",), "Z": ("pot_sym",), "Y": ("pot_sym",), "X": ("pot_sym",), "V": ("pot_sym",), "O": ("pot_sym",), "P": ("pot_sym",)}[g]}))
     need = ("pot", "pot_sym", "comp") if len(need) == 3 else need
     ctx = Context(quick, need, device)
     cfg, dev = ctx.cfg, ctx.dev
@@ -836,6 +839,60 @@ def run(quick: bool, seed: int, group: str, device: str = "cpu", cond_scale: flo
             results["times"][vname] = {"training_time_s": tsec * k / cfg["iters"], "iters": k, "fm_loss_train_sample": train_loss(model)}
             record(vname, {e: generate(model, pot_sym, e, n) for e, n in eval_etas})
         del model, field, g1a, keep
+
+    # ---------------- group P: positive control of the anchored model: trained on samples of W9 (H38) ----------------
+    if "W18_anchor_on_W9" in names:
+        p_etas = [(e, n) for e, n in eval_etas if split(e) in ("val", "test")]
+        seed_all(seed)
+        m9p, tsec = train(builders["W9_skip_sym"](None).to(dev), fm, ctx.x_pot_sym, ctx.c_train, cfg["iters"], cfg["lr"], cfg["batch"],
+                          "W9P_skip_sym")
+        results["times"]["W9P_skip_sym"] = {"training_time_s": tsec, "iters": cfg["iters"]}
+        record("W9P_skip_sym", {e: generate(m9p, pot_sym, e, n) for e, n in eval_etas}, restart=False)
+        # the training set of the control: as many samples of W9 at each training η as there are snapshots in the data
+        gp = torch.Generator().manual_seed(100003 * seed + 449)
+        xs, cs = [], []
+        with torch.no_grad():
+            for cval in torch.unique(ctx.c_train[:, 0]):
+                n_e = int((ctx.c_train[:, 0] == cval).sum())
+                c = torch.full((n_e, 1), float(cval), device=dev)
+                z0 = torch.randn(n_e, pot_sym.n_modes, pot_sym.n_channels, generator=gp).to(dev)
+                xs.append(torch.cat([heun_sample(m9p, z0[i:i + 256], c[i:i + 256], steps=cfg["steps"]) for i in range(0, n_e, 256)]))
+                cs.append(c)
+        x_set, c_set = torch.cat(xs), torch.cat(cs)
+        del m9p, xs, cs
+        set_third = {}
+        for e in ETA_TRAIN_EVAL:
+            sel = (c_set[:, 0] - float(np.float32(cn(e)))).abs() < 1e-5
+            set_third[f"{e:.5f}"] = ctx.evaluate(pot_sym.field_hat(pot_sym.denormalize(x_set[sel])).cpu(), e, None, nulls=False)["prod_fluct_over_d"]
+        gl = torch.Generator().manual_seed(11)
+        idx_p = torch.randint(0, len(x_set), (2048,), generator=gl)
+
+        def set_loss(model) -> float:                # flow-matching loss on a fixed sample of the training set, fixed noise and times
+            gf = torch.Generator().manual_seed(12)
+            with torch.no_grad():
+                return float(np.mean([fm_loss(model, x_set[idx_p[k:k + 256]], c_set[idx_p[k:k + 256]], generator=gf).item()
+                                      for k in range(0, 2048, 256)]))
+
+        seed_all(seed)
+        g2p = C.FullGaussian(sign=pot_sym.sign).fit(x_set, c_set[:, 0])
+        field = C.FullGaussianAnchoredField(sym(net(pot_sym, 0.5)), g2p).to(dev)
+        its = [k for k in (250, 1000, 2000, 4000) if k <= cfg["iters"]] or [cfg["iters"]]
+        results["times"]["W18_anchor_on_W9_it0"] = {"training_time_s": 0.0, "iters": 0, "fm_loss_train_sample": set_loss(field.eval()),
+                                                    "training_set_third_order": set_third, "n_train": len(x_set)}
+        record("W18_anchor_on_W9_it0", {e: generate(field, pot_sym, e, n) for e, n in p_etas}, restart=False)
+        keep = dict.fromkeys(its)
+        model, tsec = train(field.train(), fm, x_set, c_set, cfg["iters"], cfg["lr"], cfg["batch"], "W18_anchor_on_W9", keep=keep)
+        for k in its:
+            model.load_state_dict(keep[k])
+            vname = f"W18_anchor_on_W9_it{k}"
+            results["times"][vname] = {"training_time_s": tsec * k / cfg["iters"], "iters": k, "fm_loss_train_sample": set_loss(model)}
+            record(vname, {e: generate(model, pot_sym, e, n) for e, n in p_etas}, restart=False)
+        del model, field, g2p, keep
+        seed_all(seed)                               # second reference: W9 retrained from scratch on the same samples
+        m9pp, tsec = train(builders["W9_skip_sym"](None).to(dev), fm, x_set, c_set, cfg["iters"], cfg["lr"], cfg["batch"], "W9PP_retrained_on_W9")
+        results["times"]["W9PP_retrained_on_W9"] = {"training_time_s": tsec, "iters": cfg["iters"], "fm_loss_train_sample": set_loss(m9pp)}
+        record("W9PP_retrained_on_W9", {e: generate(m9pp, pot_sym, e, n) for e, n in p_etas}, restart=False)
+        del m9pp, x_set, c_set
 
     # ---------------- group G: Gaussian law with the full covariance of the latent (H22) ----------------
     if "G1_gaussian_full" in names:

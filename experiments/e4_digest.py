@@ -30,7 +30,8 @@ LATER = [f"W14_full_anchor_it{k}" for k in (0, 50, 150, 250, 500, 1000, 2000, 40
     "G1T_gaussian_full", "W9R_skip_sym", "W9R_steps_check", "W15_recoloured_modes", "W16_recoloured_full", "G4_recoloured_gaussian",
     "W9Zb_skip_sym", "W9Z_skip_sym_gaussdata", "W9Yb_skip_sym", "W9Y_skip_sym_gausstraj"] + [
     f"{law}_tau{t}" for law in ("G0X", "G1X", "W9X", "W16X", "REFX") for t in ("0", "0.5", "1", "2", "4", "8")] + [
-    "G1V_gaussian_full", "W16V_recoloured_full", "W17_recoloured_surrogate", "REFV_raw", "REFV_recoloured"]
+    "G1V_gaussian_full", "W16V_recoloured_full", "W17_recoloured_surrogate", "REFV_raw", "REFV_recoloured"] + [
+    "W9P_skip_sym"] + [f"W18_anchor_on_W9_it{k}" for k in (0, 150, 250, 1000, 2000, 4000)] + ["W9PP_retrained_on_W9"]
 GENERATORS += LATER
 # G0 has no network: it is the baseline to beat, not a candidate for the selected generator (the C1 note of
 # race/teams/claude/objectives.toml names the model family: conditional flow matching on the Fourier modes).
@@ -65,7 +66,7 @@ def merge(seed: int, tag: str | bool = "", root: Path = R) -> Path | None:
     whole = root / f"e4_mhd3d{tag}_s{seed}_all.json"
     if not all(p.exists() for p in parts) and not whole.exists():        # a run of the later groups only (D, E, L)
         parts = [p for g in ("A", "B") if (p := root / f"e4_mhd3d{tag}_s{seed}_{g}.json").exists()]
-        if not any((root / f"e4_mhd3d{tag}_s{seed}_{g}.json").exists() for g in ("C", "D", "E", "L", "S", "G", "M", "N", "F", "R", "T", "Z", "Y", "X", "V", "O")):
+        if not any((root / f"e4_mhd3d{tag}_s{seed}_{g}.json").exists() for g in ("C", "D", "E", "L", "S", "G", "M", "N", "F", "R", "T", "Z", "Y", "X", "V", "O", "P")):
             return None
     if all(p.exists() for p in parts):
         data = [json.loads(p.read_text()) for p in parts]
@@ -73,7 +74,7 @@ def merge(seed: int, tag: str | bool = "", root: Path = R) -> Path | None:
         data = [json.loads(whole.read_text())]
     else:
         return None
-    for g in ("C", "D", "E", "L", "S", "G", "M", "N", "F", "R", "T", "Z", "Y", "X", "V", "O"):                      # optional groups, added after the first runs
+    for g in ("C", "D", "E", "L", "S", "G", "M", "N", "F", "R", "T", "Z", "Y", "X", "V", "O", "P"):                      # optional groups, added after the first runs
         extra = root / f"e4_mhd3d{tag}_s{seed}_{g}.json"
         if extra.exists():
             data.append(json.loads(extra.read_text()))
@@ -957,6 +958,57 @@ def h37_lines(runs: dict, ref: dict | None, root: Path = R) -> list[str]:
     return out
 
 
+def h38_lines(runs: dict, ref: dict | None, root: Path = R) -> list[str]:
+    """H38: positive control of the anchored model, trained on samples of W9; verdict as registered (research/hypotheses.json)."""
+    have = {v for r in runs.values() for v in r["evaluation"]}
+    base = "W9P_skip_sym"
+    its = sorted(int(v.rsplit("_it", 1)[1]) for v in have if v.startswith("W18_anchor_on_W9_it"))
+    if ref is None or base not in have or not its:
+        return []
+    last = its[-1]
+    name = lambda k: f"W18_anchor_on_W9_it{k}"                                           # noqa: E731
+    third = lambda v: _per_seed(runs, v, "prod_fluct_over_d")                             # noqa: E731
+    etas = sorted(third(base), reverse=True)
+    etas = [e for e in etas if e in third(name(last))]
+    low = sorted(e for e in etas if ref["values"][f"{e:.5f}"]["split"] == "test")[:2]
+    tb = third(base)
+    out = ["\nH38: positive control of the anchored model (the construction of H28) trained on samples of W9: third-order part of the "
+           "production over the dissipation, seed means; ratio to that of W9 of the same job (whose samples are the training set); "
+           "flow-matching loss on a fixed sample of the training set.\n",
+           "| model | " + " | ".join(f"η = {e:.4f}: third-order part | ratio to W9" for e in low) + " | loss |", "|---|" + "---|---|" * len(low) + "---|"]
+    loss = lambda v: float(np.mean([r["times"].get(v, {}).get("fm_loss_train_sample", np.nan) for r in runs.values()]))   # noqa: E731
+    for v in [base] + [name(k) for k in its] + (["W9PP_retrained_on_W9"] if "W9PP_retrained_on_W9" in have else []):
+        t = third(v)
+        out.append(f"| {v} | " + " | ".join(f"{f(float(np.mean(t[e])))} | {f(float(np.mean(t[e]) / np.mean(tb[e])), 2)}" for e in low)
+                   + f" | {'–' if np.isnan(loss(v)) else f(loss(v), 5)} |")
+    tl = third(name(last))
+    ratio = {e: float(np.mean(tl[e]) / np.mean(tb[e])) for e in low}
+    per_seed_ratio = {e: np.asarray(tl[e]) / np.asarray(tb[e]) for e in low}
+    n_seed = min(len(tl[e]) for e in low)
+    bad = [e for e in low if ratio[e] < 0.3 or int((per_seed_ratio[e] < 0.3).sum()) > 1]
+    # checks of the measurement
+    t0 = max(abs(float(np.mean(a))) for e, a in third(name(0)).items() if ref["values"][f"{e:.5f}"]["split"] == "test") if 0 in its else float("nan")
+    sets = [r["times"].get(name(0), {}).get("training_set_third_order", {}) for r in runs.values()]
+    tr = _per_seed(runs, base, "prod_fluct_over_d", "train")
+    d_set = max(abs(float(np.mean([s[f"{e:.5f}"] for s in sets if f"{e:.5f}" in s])) - float(np.mean(tr[e]))) for e in tr) if tr and all(sets) else float("nan")
+    data_file = root / "e4_data.json"
+    offset = json.loads(data_file.read_text())["config"].get("data_seed_offset", 0) if data_file.exists() else None
+    h25 = H25_VALUES.get(offset)
+    test_etas = sorted((e for e in third(base) if ref["values"][f"{e:.5f}"]["split"] == "test"), reverse=True)
+    d25 = max(abs(float(np.mean(tb[e])) - x) for e, x in zip(test_etas, h25, strict=True)) if h25 and len(test_etas) == 3 else float("nan")
+    ok = t0 < 0.02 and d_set <= 0.02 and d25 <= 0.02
+    out.append(f"H38, third-order part of the anchored model at iteration {last} over that of W9: "
+               + "; ".join(f"η = {e:.4f}: {f(ratio[e], 2)} on the seed means, per seed {', '.join(f(float(x), 2) for x in per_seed_ratio[e])}" for e in low)
+               + f" (criterion: at least 0.3 on the seed means and in all seeds but one at most, at each of the two lower held-out η). Checks of the "
+                 f"measurement: largest |third-order part| at iteration 0 over the held-out η {f(t0)} (limit 0.02); largest gap between the "
+                 f"third-order part of the training set and that of W9 generated at the same training η {f(d_set)} (limit 0.02); largest gap of "
+                 f"W9 of this job to the values of H25 {f(d25)} (limit 0.02): {'PASS' if ok else 'FAIL'}. Verdict: "
+               + ("INCOMPLETE (fewer than five seeds)" if n_seed < 5 else "MEASUREMENT INVALID (checks)" if not ok else
+                  ("REFUTED (η = " + ", ".join(f"{e:.4f}" for e in bad) + ")" if bad else "NOT REFUTED"))
+               + (" Inconclusive zone of the register (a ratio between 0.2 and 0.4): a second realisation is to be run." if any(0.2 <= ratio[e] <= 0.4 for e in low) else "") + ".")
+    return out
+
+
 def select(runs: dict) -> dict:
     """Generator with the lowest validation energy-distance ratio (mean over the seeds)."""
     val = {v: float(np.nanmean(per_seed(runs, v, "ed_ratio", "val"))) for v in GENERATORS
@@ -1395,7 +1447,7 @@ def section(quick: bool = False, root: Path = R, replication: str | None = None,
                 xs, ys = np.asarray(pts).T
                 P(f"Signed drift of E_B at τ = 4 against the bias E_B,ref/E_B(0) − 1 of the law, over the {len(pts)} laws above: "
                   f"correlation {f(float(np.corrcoef(xs, ys)[0, 1]), 2)}.")
-        for line in h28_lines(runs, ref) + h29_lines(runs, ref) + h32_lines(runs, ref) + h33_lines(runs, ref, root) + h34_lines(runs, ref, root) + h35_lines(runs, ref, root) + h36_lines(runs, ref, root) + h37_lines(runs, ref, root):
+        for line in h28_lines(runs, ref) + h29_lines(runs, ref) + h32_lines(runs, ref) + h33_lines(runs, ref, root) + h34_lines(runs, ref, root) + h35_lines(runs, ref, root) + h36_lines(runs, ref, root) + h37_lines(runs, ref, root) + h38_lines(runs, ref, root):
             P(line)
         h27 = [x for r in runs.values() for x in r.get("h27", [])]
         if h27:
