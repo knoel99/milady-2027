@@ -345,7 +345,7 @@ def test_gaussian_full() -> None:
 
 def test_gaussian_anchor() -> None:
     """With a zero network, the anchored flow transports N(0, I) onto the fitted Gaussian law."""
-    M, Cc, n = 5, 4, 6000
+    M, Cc, n = 5, 4, 30000
     g = torch.Generator().manual_seed(9)
     a = torch.randn(2, M, Cc, Cc, generator=g) * 0.6
     mean = torch.randn(2, M, Cc, generator=g)

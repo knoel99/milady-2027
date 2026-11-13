@@ -404,7 +404,7 @@ def test_collect_takes_over_a_pod_after_a_session_restart(job_env, monkeypatch):
     served, execs = {}, []
     # a pod created ten minutes ago: inside its time limit whenever the test runs (a fixed date made the test
     # fail once the real clock passed the limit, 2026-11-13)
-    created = (dt.datetime.now(dt.timezone.utc) - dt.timedelta(minutes=10)).strftime("%Y-%m-%dT%H:%M:%SZ")
+    created = (dt.datetime.now(dt.UTC) - dt.timedelta(minutes=10)).strftime("%Y-%m-%dT%H:%M:%SZ")
 
     class Pod(FakeMCP):
         def call(self, tool, args):
