@@ -35,6 +35,9 @@ Model family
     - :class:`GaussianAnchoredField` (``gaussian_anchor``): v = v_Gauss(x, t, c) + network, where
       v_Gauss is the closed-form flow-matching field of the mode-wise Gaussian law; with the network
       at zero the model is the Gaussian baseline, and training only has to learn the departure from it;
+    - :class:`FullGaussianAnchoredField` (``gaussian_full_anchor``): the same anchor on the Gaussian law with
+      the full covariance of the latent, inter-mode correlations included (one D × D eigendecomposition per
+      value of the condition);
     - :class:`FullGaussian` (``gaussian_full``): no network, the conditional Gaussian law with the full
       sample covariance of the latent. Unlike the mode-wise law it keeps the correlations between different
       Fourier modes, which a forcing with a fixed phase creates and which carry the mean magnetic
@@ -51,6 +54,7 @@ of ``space.fields``; spatial means follow from Parseval, each mode counting twic
 
 from __future__ import annotations
 
+import copy
 import math
 from collections.abc import Callable, Mapping, Sequence
 from typing import Any
@@ -66,6 +70,7 @@ __all__ = [
     "REGISTRY",
     "FourierComponentSpace",
     "FullGaussian",
+    "FullGaussianAnchoredField",
     "GaussianAnchoredField",
     "ModewiseAffineSkip",
     "ModewiseGaussian",
@@ -95,6 +100,7 @@ REGISTRY: dict[str, tuple[str, str]] = {
     "gaussian_modes": ("model", "conditional Gaussian law with one mean and covariance per Fourier mode: second-order baseline"),
     "gaussian_full": ("model", "conditional Gaussian law with the full covariance of the latent (inter-mode correlations kept)"),
     "gaussian_anchor": ("design", "velocity field = exact field of the mode-wise Gaussian law + network for the non-Gaussian part"),
+    "gaussian_full_anchor": ("design", "velocity field = exact field of the full-covariance Gaussian law + network for the non-Gaussian part"),
 }
 
 
@@ -634,6 +640,91 @@ class GaussianAnchoredField(nn.Module):
             gain = (tt * lam - (1 - tt)) / (tt**2 * lam + (1 - tt) ** 2)
             out[sel] = mean + torch.einsum("mij,bmj->bmi", q, gain * y)
         return out
+
+    def forward(self, x: torch.Tensor, t: torch.Tensor, c: torch.Tensor) -> torch.Tensor:
+        return self.gaussian_field(x, t, c) + self.base(x, t, c)
+
+
+class FullGaussianAnchoredField(nn.Module):
+    """v(x, t, c) = v_Gauss(x, t, c) + base(x, t, c), anchored on a :class:`FullGaussian` law.
+
+    Same closed-form field as :class:`GaussianAnchoredField`,
+
+        v_Gauss(x, t) = μ + Q diag((t λ − (1 − t)) / (t² λ + (1 − t)²)) Qᵀ (x − t μ),
+
+    with Σ(c) = Q diag(λ) Qᵀ the full covariance of the flattened latent (D = M × C) at the condition ``c``:
+    the convex combination (1 − w) Σ₁ + w Σ₂ of the sample covariances of the two neighbouring training
+    conditions, as in :meth:`FullGaussian.sample`. Integrating v_Gauss alone from Gaussian noise gives
+    N(μ(c), Σ(c)), covariance between Fourier modes included. A sample covariance of n < D snapshots is
+    singular: its null eigenvalues are raised to ``jitter`` times the mean eigenvalue, so that the field
+    stays finite as t → 1 (the flow then contracts these directions to a negligible variance).
+
+    One D × D eigendecomposition per distinct value of ``c`` (float64, cached in float32): the training
+    conditions, then one per sampling call. ``base``, zero at initialization, learns what is not Gaussian.
+    """
+
+    def __init__(self, base: nn.Module, gaussian: FullGaussian, jitter: float = 1e-6, max_cache: int = 16) -> None:
+        super().__init__()
+        assert gaussian.c is not None and gaussian.shape is not None and gaussian.mean, "fit the Gaussian first"
+        self.base = base
+        self.jitter = jitter
+        self.max_cache = max_cache
+        self.shape = gaussian.shape
+        self.register_buffer("c_grid", gaussian.c.clone())
+        self.register_buffer("mean", torch.stack(gaussian.mean))
+        self.factor = [a for a in gaussian.factor]                    # (n, D)/√n each; not buffers: only read to build Σ
+        self._cache: dict[tuple[float, str], tuple[torch.Tensor, torch.Tensor, torch.Tensor]] = {}
+
+    @torch.no_grad()
+    def _moments(self, c: float) -> tuple[torch.Tensor, torch.Tensor, torch.Tensor]:
+        """Mean (D,), eigenvalues (D,) and eigenvectors (D, D) of the covariance at ``c`` (float32)."""
+        dev = self.mean.device
+        key = (round(c, 7), str(dev))
+        if key not in self._cache:
+            grid = self.c_grid
+            cc = float(min(max(c, float(grid[0])), float(grid[-1])))
+            if len(grid) == 1:
+                j, w = 1, 1.0
+            else:
+                j = int(torch.searchsorted(grid, torch.tensor(cc, dtype=grid.dtype, device=grid.device)).clamp(1, len(grid) - 1))
+                w = (cc - float(grid[j - 1])) / (float(grid[j]) - float(grid[j - 1]))
+            lo, hi = max(j - 1, 0), min(j, len(self.factor) - 1)
+            a1, a2 = self.factor[lo].to(dev, torch.float64), self.factor[hi].to(dev, torch.float64)
+            cov = (1 - w) * (a1.T @ a1) + w * (a2.T @ a2)
+            mean = (1 - w) * self.mean[lo] + w * self.mean[hi]
+            lam, q = torch.linalg.eigh(cov)
+            lam = lam.clamp_min(self.jitter * float(lam.mean()))
+            if len(self._cache) >= self.max_cache:
+                self._cache.clear()
+            self._cache[key] = (mean.float(), lam.float(), q.float())
+        return self._cache[key]
+
+    def __deepcopy__(self, memo: dict) -> FullGaussianAnchoredField:
+        """A copy with its own ``base`` and the same Gaussian data: the factors and the cached eigenvectors are
+        read-only and large (D × D per condition), so the copy made for a moving average shares them."""
+        new = self.__class__.__new__(self.__class__)
+        nn.Module.__init__(new)
+        new.base = copy.deepcopy(self.base, memo)
+        new.jitter, new.max_cache, new.shape = self.jitter, self.max_cache, self.shape
+        new.register_buffer("c_grid", self.c_grid)
+        new.register_buffer("mean", self.mean)
+        new.factor, new._cache = self.factor, self._cache
+        new.train(self.training)
+        return new
+
+    def gaussian_field(self, x: torch.Tensor, t: torch.Tensor, c: torch.Tensor) -> torch.Tensor:
+        """The closed-form field of the Gaussian law at the conditions ``c`` (b, n_cond) or (b,); ``x`` (b, M, C)."""
+        cs = c[:, 0] if c.dim() > 1 else c
+        flat = x.reshape(len(x), -1)
+        out = torch.empty_like(flat)
+        for value in torch.unique(cs):
+            sel = cs == value
+            mean, lam, q = self._moments(float(value))
+            tt = t[sel].view(-1, 1).to(flat.dtype)
+            y = (flat[sel] - tt * mean) @ q                                              # Qᵀ (x − t μ), row vectors
+            gain = (tt * lam - (1 - tt)) / (tt**2 * lam + (1 - tt) ** 2)
+            out[sel] = mean + (gain * y) @ q.T
+        return out.view_as(x)
 
     def forward(self, x: torch.Tensor, t: torch.Tensor, c: torch.Tensor) -> torch.Tensor:
         return self.gaussian_field(x, t, c) + self.base(x, t, c)

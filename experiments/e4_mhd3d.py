@@ -69,6 +69,7 @@ GROUPS = {"A": ["W0_free", "W1_penalty", "W2_final_projection", "W3_projected_fl
           "D": ["G0_gaussian_modes", "W9_skip_sym"],                    # H16, H17: second-order baseline, affine skip
           "E": ["W10_anchored", "W11_anchored_skip"],                   # H19, H20: anchored on the Gaussian field
           "G": ["G1_gaussian_full"],
+          "F": ["W14_full_anchor"],                                     # H28: anchored on G1, evaluated along the training
           "N": ["G2_gaussianised_W9"],                                  # H27: Gaussian law fitted to the samples of W9                                    # H22: Gaussian law with the inter-mode covariance
           "M": ["W12_skip_stationarity", "W12_skip_control", "W13_skip_tilting"],   # H23, H24: loss and sampling on W9
           "L": ["W9L_skip_long", "W11L_anchored_skip_long"],            # H18: 8 times the iterations (not in "all")
@@ -77,7 +78,7 @@ GROUPS = {"A": ["W0_free", "W1_penalty", "W2_final_projection", "W3_projected_fl
 FULL = {"iters": 4000, "batch": 128, "width": 512, "depth": 4, "lr": 5e-4, "n_gen": 512, "n_gen_train": 256,
         "steps": 50, "ft_iters": 400, "ft_lr": 2e-4, "beta": 20.0, "stat_cond": 4, "stat_per": 16, "stat_steps": 6,
         "n_null": 200, "n_restart": 128, "tau": 4.0, "floor_splits": 10, "n_ref_null": 400, "long_factor": 8}
-QUICK = {**FULL, "n_fit": 512, "ref_restart_draws": 2, "iters": 150, "width": 256, "depth": 2, "n_gen": 96, "n_gen_train": 64, "steps": 12, "long_factor": 2,
+QUICK = {**FULL, "anchor_its": (50, 150), "n_fit": 512, "ref_restart_draws": 2, "iters": 150, "width": 256, "depth": 2, "n_gen": 96, "n_gen_train": 64, "steps": 12, "long_factor": 2,
          "ft_iters": 20, "n_null": 24, "n_restart": 24, "tau": 1.0, "floor_splits": 4, "n_ref_null": 32}
 
 
@@ -438,12 +439,15 @@ def _group_of(variant: str) -> str:
             return g
     if variant.startswith(("W9N_", "G3_")):
         return "N"
+    if variant.startswith("W14_"):
+        return "F"
     return "M" if variant.startswith(("W12_", "W13_")) else "B"
 
 
 def train(field, loss_fn, x: torch.Tensor, c: torch.Tensor, iters: int, lr: float, batch: int, name: str,
-          onecycle: bool = True, ema_from=None, extra_loss=None, log: int = 4):
-    """Train ``field`` on (x, c); returns (EMA copy of the field in eval mode, duration in s)."""
+          onecycle: bool = True, ema_from=None, extra_loss=None, log: int = 4, keep: dict | None = None):
+    """Train ``field`` on (x, c); returns (EMA copy of the field in eval mode, duration in s).
+    ``keep``: {iteration: None}; filled with the state of the EMA copy at these iterations."""
     opt = torch.optim.AdamW(field.parameters(), lr=lr, weight_decay=0.0)
     sched = torch.optim.lr_scheduler.OneCycleLR(opt, max_lr=lr, total_steps=iters, pct_start=0.05) if onecycle else None
     ema = copy.deepcopy(field if ema_from is None else ema_from)
@@ -465,6 +469,8 @@ def train(field, loss_fn, x: torch.Tensor, c: torch.Tensor, iters: int, lr: floa
         with torch.no_grad():
             for pe, p in zip(ema.parameters(), field.parameters(), strict=True):
                 pe.mul_(decay).add_(p.detach(), alpha=1 - decay)
+        if keep is not None and it in keep:
+            keep[it] = copy.deepcopy(ema.state_dict())
         run = loss.item() if it == 1 else 0.98 * run + 0.02 * loss.item()
         if it % max(iters // log, 1) == 0 or it == iters:
             print(f"[{name}] it {it:5d}  loss {run:.4f}  {time.time() - t0:.0f} s", flush=True)
@@ -478,7 +484,7 @@ def run(quick: bool, seed: int, group: str, device: str = "cpu", cond_scale: flo
     groups = [g for g in GROUPS if g in "ABCDE"] if group == "all" else group.split(",")
     need = tuple(sorted({s for g in groups for s in {"A": ("comp",), "B": ("pot", "pot_sym"), "C": ("pot",),
                                                      "D": ("pot_sym",), "E": ("pot_sym",), "L": ("pot_sym",),
-                                                     "S": ("pot_sym",), "G": ("pot_sym",), "M": ("pot_sym",), "N": ("pot_sym",)}[g]}))
+                                                     "S": ("pot_sym",), "G": ("pot_sym",), "M": ("pot_sym",), "N": ("pot_sym",), "F": ("pot_sym",)}[g]}))
     need = ("pot", "pot_sym", "comp") if len(need) == 3 else need
     ctx = Context(quick, need, device)
     cfg, dev = ctx.cfg, ctx.dev
@@ -736,6 +742,33 @@ def run(quick: bool, seed: int, group: str, device: str = "cpu", cond_scale: flo
             record(vname, {e: generate(model, pot_sym, e, n) for e, n in eval_etas})
             del model
         del gauss
+
+    # ---------------- group F: flow matching anchored on the full-covariance Gaussian law (H28) ----------------
+    if "W14_full_anchor" in names:
+        seed_all(seed)
+        g1a = C.FullGaussian(sign=pot_sym.sign).fit(ctx.x_pot_sym, ctx.c_train[:, 0])
+        field = C.FullGaussianAnchoredField(sym(net(pot_sym, 0.5)), g1a).to(dev)
+        its = [k for k in cfg.get("anchor_its", (250, 500, 1000, 2000, 4000)) if k <= cfg["iters"]]
+        gl = torch.Generator().manual_seed(11)
+        idx = torch.randint(0, len(ctx.x_pot_sym), (2048,), generator=gl)
+
+        def train_loss(model) -> float:                               # flow-matching loss on a fixed training sample
+            with torch.no_grad():
+                return float(np.mean([fm_loss(model, ctx.x_pot_sym[idx[k:k + 256]], ctx.c_train[idx[k:k + 256]]).item()
+                                      for k in range(0, 2048, 256)]))
+
+        # iteration 0: the network is zero and the model is the Gaussian law, integrated like any other model
+        results["times"]["W14_full_anchor_it0"] = {"training_time_s": 0.0, "iters": 0, "fm_loss_train_sample": train_loss(field.eval())}
+        record("W14_full_anchor_it0", {e: generate(field, pot_sym, e, n) for e, n in eval_etas})
+        keep = dict.fromkeys(its)
+        model, tsec = train(field.train(), fm, ctx.x_pot_sym, ctx.c_train, cfg["iters"], cfg["lr"], cfg["batch"],
+                            "W14_full_anchor", keep=keep)
+        for k in its:
+            model.load_state_dict(keep[k])
+            vname = f"W14_full_anchor_it{k}"
+            results["times"][vname] = {"training_time_s": tsec * k / cfg["iters"], "iters": k, "fm_loss_train_sample": train_loss(model)}
+            record(vname, {e: generate(model, pot_sym, e, n) for e, n in eval_etas})
+        del model, field, g1a, keep
 
     # ---------------- group G: Gaussian law with the full covariance of the latent (H22) ----------------
     if "G1_gaussian_full" in names:

@@ -379,3 +379,77 @@ def test_gaussian_anchor() -> None:
     whole = field.gaussian_field(xb, tb, cb)
     for i in range(6):
         assert torch.allclose(whole[i], field.gaussian_field(xb[i:i + 1], tb[i:i + 1], cb[i:i + 1])[0], atol=1e-5)
+
+
+def test_gaussian_full_anchor() -> None:
+    """With a zero network, the flow anchored on the full-covariance Gaussian law transports N(0, I) onto it."""
+    M, Cc, n = 5, 4, 20000
+    D = M * Cc
+    g = torch.Generator().manual_seed(21)
+    xs, cs = [], []
+    for cv in (0.1, 0.9):                                   # a full D × D mixing: covariance between different modes
+        a = torch.randn(D, D, generator=g) * 0.4
+        xs.append((torch.randn(D, generator=g) + torch.randn(n, D, generator=g) @ a).reshape(n, M, Cc))
+        cs.append(torch.full((n,), cv))
+    gauss = C.FullGaussian().fit(torch.cat(xs), torch.cat(cs))
+
+    def zero(x: torch.Tensor, t: torch.Tensor, c: torch.Tensor) -> torch.Tensor:
+        return torch.zeros_like(x)
+
+    field = C.FullGaussianAnchoredField(zero, gauss)
+    for cv, w in ((0.1, 0.0), (0.5, 0.5)):                  # a training condition and an interpolated one
+        mu = (1 - w) * gauss.mean[0] + w * gauss.mean[1]
+        cov = (1 - w) * gauss.factor[0].T @ gauss.factor[0] + w * gauss.factor[1].T @ gauss.factor[1]
+        z = torch.randn(n, M, Cc, generator=g)
+        with torch.no_grad():
+            x = C.heun_sample(field, z, torch.full((n, 1), cv), steps=100).reshape(n, D).double()
+        d = x - x.mean(0)
+        got = d.T @ d / n
+        assert torch.allclose(x.mean(0), mu.double(), atol=0.06), cv
+        assert torch.allclose(got, cov.double(), atol=0.12), cv
+        off = ~torch.block_diag(*[torch.ones(Cc, Cc)] * M).bool()          # entries between different modes
+        assert float(cov[off].abs().mean()) > 0.2 and float((got - cov.double())[off].abs().mean()) < 0.03, cv
+    # the closed form is the conditional expectation E[x1 − x0 | x_t]: its loss is below that of a zero field
+    x1 = xs[0][:4096]
+    base_loss = fm_loss(zero, x1, torch.full((4096, 1), 0.1), generator=torch.Generator().manual_seed(1))
+    anch_loss = fm_loss(field, x1, torch.full((4096, 1), 0.1), generator=torch.Generator().manual_seed(1))
+    assert float(anch_loss) < float(base_loss) - 0.1
+    # mixed conditions in one batch are routed to their own moments
+    xb, tb = torch.randn(6, M, Cc, generator=g), torch.rand(6, generator=g)
+    cb = torch.tensor([[0.1], [0.9], [0.1], [0.5], [0.9], [0.5]])
+    whole = field.gaussian_field(xb, tb, cb)
+    for i in range(6):
+        assert torch.allclose(whole[i], field.gaussian_field(xb[i:i + 1], tb[i:i + 1], cb[i:i + 1])[0], atol=1e-4)
+    # a deep copy (the moving average of a training) has its own network and shares the Gaussian data
+    import copy
+
+    lin = torch.nn.Linear(D, D)
+
+    class Net(torch.nn.Module):
+        def __init__(self) -> None:
+            super().__init__()
+            self.lin = lin
+
+        def forward(self, x: torch.Tensor, t: torch.Tensor, c: torch.Tensor) -> torch.Tensor:
+            return self.lin(x.flatten(1)).view_as(x)
+
+    trained = C.FullGaussianAnchoredField(Net(), gauss)
+    twin = copy.deepcopy(trained)
+    assert twin.base.lin.weight is not trained.base.lin.weight and torch.equal(twin.base.lin.weight, trained.base.lin.weight)
+    assert twin.factor[0] is trained.factor[0] and twin._cache is trained._cache
+    assert [n for n, _ in twin.named_parameters()] == [n for n, _ in trained.named_parameters()]
+    assert torch.allclose(twin(xb, tb, cb), trained(xb, tb, cb))
+    # a sample covariance of fewer snapshots than dimensions is singular: the flow stays finite and puts no
+    # variance outside the span of the data
+    few = (torch.randn(8, D, generator=g) * 1.5).reshape(8, M, Cc)
+    sing = C.FullGaussianAnchoredField(zero, C.FullGaussian().fit(few, torch.zeros(8)))
+    with torch.no_grad():
+        xs_ = C.heun_sample(sing, torch.randn(4000, M, Cc, generator=g), torch.zeros(4000, 1), steps=100).reshape(4000, D).double()
+    assert torch.isfinite(xs_).all()
+    a = (few.reshape(8, D) - few.reshape(8, D).mean(0)).double()
+    q, _ = torch.linalg.qr(a.T)                             # orthonormal basis of the span (rank 7)
+    dd = xs_ - xs_.mean(0)
+    inside = (dd @ q[:, :7]).pow(2).sum() / dd.pow(2).sum()
+    assert float(inside) > 0.995
+    assert torch.allclose(dd.T @ dd / 4000, a.T @ a / 8, atol=0.35)
+
