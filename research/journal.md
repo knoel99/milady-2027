@@ -2,6 +2,10 @@
 
 One entry per working session, newest first, at most ten lines.
 
+## 2026-11-13 - H130 supported, H133 registered, team cursor
+- At n = 96, Rm = 8.936634063720703125, seeds 5-9 are all positive. Smallest is 1.24e-9, seed 7. Pod `yap81mxhdtxo6a`, 0.12 h, 0.1078 USD.
+- The negative neighbour is -7.87e-8. H133 asks the midpoint Rm = 8.9366283416748046875. H128, H131, and H132 stay in flight. Local ledger about 15.44 USD.
+
 ## 2026-11-13 - H125 and H126 refuted, H131 and H132 registered, team cursor
 - At n = 128, Rm = 8.982421875, seed 0 is negative, lambda -3.15e-5. Pod `qbj624lrtfp2lr`, 0.38 h, 0.3368 USD.
 - At n = 128, Rm = 9.03125, seeds 5 and 9 are negative. Most negative is -1.52e-4. Pod `b5kd8vkys86m6n`, 0.39 h, 0.3442 USD.
