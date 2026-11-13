@@ -938,6 +938,8 @@ Models (experiments/e4_mhd3d.py): ResMLP 512×4, 4000 iterations, batch 128, lr 
 | G1V_gaussian_full | 1.98 | 1.27e-08 | 0.00196 | 0.0718 | 0.016 | 0.028 | 1.01 | 0.0616 | 0.0809 | 0.0187 | 3.06 | 1 |
 | W16V_recoloured_full | 1.6 | 1.27e-08 | 0.00553 | 0.0335 | 0.0223 | 0.0348 | 0.952 | 0.0213 | 0.036 | 0.0181 | 2.35 | 1 |
 | W17_recoloured_surrogate | 1.91 | 1.27e-08 | 0.00572 | 0.0715 | 0.0224 | 0.0362 | 1 | 0.0588 | 0.0905 | 0.0169 | 2.36 | 1 |
+| REFV_raw | 0.357 | 1.27e-08 | 7.44e-04 | 5.11e-04 | 0.00644 | 0.00906 | 0.0194 | 0.00235 | 0.00228 | 0.0155 | 1.01 | 1 |
+| REFV_recoloured | 0.874 | 1.27e-08 | 0.00223 | 0.0188 | 0.0164 | 0.0307 | 0.678 | 0.0202 | 0.0421 | 0.0234 | 2.67 | 1 |
 | reference | 1 (floor) | – | 1.97e-04 | – | – | – | 0.00132 | 0.00708 | 1 | – |
 
 ### Means over the val η (mean over the seeds)
@@ -947,6 +949,8 @@ Models (experiments/e4_mhd3d.py): ResMLP 512×4, 4000 iterations, batch 128, lr 
 | G1V_gaussian_full | 3.34 | 1.27e-08 | 0.00241 | 0.0573 | 0.0237 | 0.0307 | 1.16 | – | – | 0.017 | 3.27 | 1 |
 | W16V_recoloured_full | 2.7 | 1.27e-08 | 0.00358 | 0.0176 | 0.0184 | 0.0243 | 1.15 | – | – | 0.0213 | 2.41 | 1 |
 | W17_recoloured_surrogate | 3.14 | 1.27e-08 | 0.00325 | 0.0561 | 0.0176 | 0.0225 | 1.2 | – | – | 0.0199 | 2.44 | 1 |
+| REFV_raw | 0.403 | 1.26e-08 | 8.01e-04 | 2.72e-04 | 0.00522 | 0.00475 | 0.0159 | – | – | 0.0369 | 0.986 | 1 |
+| REFV_recoloured | 1.32 | 1.26e-08 | 0.00191 | 0.0108 | 0.0211 | 0.0257 | 0.765 | – | – | 0.0408 | 2.72 | 1 |
 
 ### Means over the train η (mean over the seeds)
 
@@ -955,6 +959,8 @@ Models (experiments/e4_mhd3d.py): ResMLP 512×4, 4000 iterations, batch 128, lr 
 | G1V_gaussian_full | – | – | – | – | – | – | – | – | – | – | – | – |
 | W16V_recoloured_full | – | – | – | – | – | – | – | – | – | – | – | – |
 | W17_recoloured_surrogate | – | – | – | – | – | – | – | – | – | – | – | – |
+| REFV_raw | – | – | – | – | – | – | – | – | – | – | – | – |
+| REFV_recoloured | – | – | – | – | – | – | – | – | – | – | – | – |
 
 ### Across seeds: means over the test η, mean ± sd [min, max] over 5 seeds
 
@@ -963,6 +969,8 @@ Models (experiments/e4_mhd3d.py): ResMLP 512×4, 4000 iterations, batch 128, lr 
 | G1V_gaussian_full | 1.98 ± 0.0604 [1.9, 2.05] | 0.00196 ± 8.32e-04 [0.00128, 0.00317] | 0.016 ± 0.00426 [0.0105, 0.0219] | 0.028 ± 0.00701 [0.0219, 0.0391] | 1.01 ± 0.0352 [0.969, 1.06] |
 | W16V_recoloured_full | 1.6 ± 0.0218 [1.56, 1.62] | 0.00553 ± 0.00117 [0.00353, 0.00647] | 0.0223 ± 0.00517 [0.0152, 0.0279] | 0.0348 ± 0.00944 [0.0193, 0.0425] | 0.952 ± 0.0248 [0.912, 0.972] |
 | W17_recoloured_surrogate | 1.91 ± 0.0975 [1.82, 2.06] | 0.00572 ± 0.00107 [0.00455, 0.00694] | 0.0224 ± 0.00735 [0.0162, 0.0347] | 0.0362 ± 0.0136 [0.0222, 0.0537] | 1 ± 0.0202 [0.98, 1.03] |
+| REFV_raw | 0.357 ± 0.0324 [0.321, 0.402] | 7.44e-04 ± 2.39e-04 [5.31e-04, 0.00114] | 0.00644 ± 0.00372 [0.00321, 0.0128] | 0.00906 ± 0.00418 [0.00464, 0.0156] | 0.0194 ± 0.00604 [0.0118, 0.0252] |
+| REFV_recoloured | 0.874 ± 0.0328 [0.848, 0.916] | 0.00223 ± 3.78e-04 [0.00159, 0.00258] | 0.0164 ± 0.00505 [0.00983, 0.0239] | 0.0307 ± 0.00606 [0.0231, 0.0396] | 0.678 ± 0.0204 [0.647, 0.698] |
 
 ### Selected generator: none
 
@@ -981,18 +989,20 @@ H37: the model with the affine term trained on the data (W16V) and on Gaussian s
 | G1V_gaussian_full | 1.98 ± 0.027 | 0.113 ± 0.00153 | 0.0616 ± 7.20e-04 | 1.01 ± 0.0158 | 0.0718 ± 8.14e-04 | 0.0168 | -0.012, 0.0015 |
 | W16V_recoloured_full | 1.6 ± 0.00974 | 0.0625 ± 0.00243 | 0.0213 ± 0.00183 | 0.952 ± 0.0111 | 0.0335 ± 4.49e-04 | 0.0254 | 0.8, 0.59 |
 | W17_recoloured_surrogate | 1.91 ± 0.0436 | 0.121 ± 0.00357 | 0.0588 ± 0.00138 | 1 ± 0.00902 | 0.0715 ± 0.00108 | 0.0224 | 0.0023, 0.0061 |
+| REFV_raw | 0.357 ± 0.0145 | 0.00382 ± 0.00198 | 0.00235 ± 7.45e-04 | 0.0194 ± 0.0027 | 5.11e-04 ± 5.03e-05 | 0.00445 | 1, 0.99 |
+| REFV_recoloured | 0.874 ± 0.0147 | 0.0501 ± 0.00221 | 0.0202 ± 3.80e-04 | 0.678 ± 0.00914 | 0.0188 ± 3.28e-04 | 0.0202 | 0.86, 0.78 |
 H37, excursion of E_B above the reference, W17 minus W16, paired over the seeds (mean over the held-out η): 0.0527, 0.0648, 0.06, 0.0628, 0.0545; 0.0589 ± 0.00234, 5 of 5 seeds positive (criterion: at least 0.02, more than 2 SE, at least 4 seeds). Reported: W17 minus G1 of the same job 0.00892 ± 0.00392. Checks of the measurement: largest |third-order part| of W17 over the dissipation 0.00168 (limit 0.02); largest |E_B/E_B,ref − 1| of W17 0.0224 (limit 0.05); W16 of this job against W16 of the job of H29 on the same data (e4_recolour_indep, same seeds): excursion -1.39e-04 (limit 0.02), ED / floor -0.00662 (limit 0.5): PASS. Verdict on this realisation of the data: NOT REFUTED.
-H13: least-squares fit of ln(N_gen/N_ref) on ln(k_λ,gen/k_λ,ref) over 45 points (generators × test η × seeds): slope 31.8, intercept 0.759, R² 0.423; range of ln(k_λ ratio) [-0.00952, 0.0031].
+H13: least-squares fit of ln(N_gen/N_ref) on ln(k_λ,gen/k_λ,ref) over 75 points (generators × test η × seeds): slope -21.1, intercept 0.469, R² 0.0331; range of ln(k_λ ratio) [-0.00952, 0.0031].
 
 ### Durations (s), per seed
 
-| seed | W16V_recoloured_full | W17_recoloured_surrogate | total |
-|---|---|---|---|
-| 0 | 63 | 67 | 1218 |
-| 1 | 61 | 55 | 1210 |
-| 2 | 42 | 41 | 1477 |
-| 3 | 44 | 46 | 1482 |
-| 4 | 54 | 64 | 805 |
+| seed | W16V_recoloured_full | W17_recoloured_surrogate | REFV_recoloured | total |
+|---|---|---|---|---|
+| 0 | 63 | 67 | – | 1779 |
+| 1 | 61 | 55 | – | 1758 |
+| 2 | 42 | 41 | – | 2001 |
+| 3 | 44 | 46 | – | 2030 |
+| 4 | 54 | 64 | – | 1366 |
 
 ## E4 - additional run: H35, second cycle: G0, G1, the model with the affine term (W9) and its recoloured samples (W16) followed by a relaxation of 1, 2, 4 and 8 time units in the solver, with a control on reference snapshots; 512 restart states, which gives the reference statistics of the job of H29: group X on RunPod GPU pods split by seed (assembled by e4_assemble.py), own regenerated data
 
