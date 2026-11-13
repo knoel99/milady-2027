@@ -20,7 +20,8 @@ SEEDS = (0, 1, 2, 3, 4)
 GENERATORS = ["W0_free", "W1_penalty", "W2_final_projection", "W3_projected_flow", "W4_potentials",
               "W4s_potentials_sym", "W5_stationarity", "W5_control", "W6_diffusion", "W4c_potentials_smooth",
               "G0_gaussian_modes", "W9_skip_sym", "W10_anchored", "W11_anchored_skip", "W9L_skip_long",
-              "W11L_anchored_skip_long", "W10L_anchored_long",
+              "W11L_anchored_skip_long", "W10L_anchored_long", "G1_gaussian_full", "W12_skip_stationarity", "W12_skip_control",
+              "W13_skip_tilting", "W12_skip_stationarity_half", "W12_skip_control_half",
               "S_w512", "S_w2048", "S_w5632", "S_w512_long", "S_w2048_long"]
 # G0 has no network: it is the baseline to beat, not a candidate for the selected generator (the C1 note of
 # race/teams/claude/objectives.toml names the model family: conditional flow matching on the Fourier modes).
@@ -55,7 +56,7 @@ def merge(seed: int, tag: str | bool = "", root: Path = R) -> Path | None:
     whole = root / f"e4_mhd3d{tag}_s{seed}_all.json"
     if not all(p.exists() for p in parts) and not whole.exists():        # a run of the later groups only (D, E, L)
         parts = [p for g in ("A", "B") if (p := root / f"e4_mhd3d{tag}_s{seed}_{g}.json").exists()]
-        if not any((root / f"e4_mhd3d{tag}_s{seed}_{g}.json").exists() for g in ("C", "D", "E", "L", "S")):
+        if not any((root / f"e4_mhd3d{tag}_s{seed}_{g}.json").exists() for g in ("C", "D", "E", "L", "S", "G", "M")):
             return None
     if all(p.exists() for p in parts):
         data = [json.loads(p.read_text()) for p in parts]
@@ -63,7 +64,7 @@ def merge(seed: int, tag: str | bool = "", root: Path = R) -> Path | None:
         data = [json.loads(whole.read_text())]
     else:
         return None
-    for g in ("C", "D", "E", "L", "S"):                      # optional groups, added after the first runs
+    for g in ("C", "D", "E", "L", "S", "G", "M"):                      # optional groups, added after the first runs
         extra = root / f"e4_mhd3d{tag}_s{seed}_{g}.json"
         if extra.exists():
             data.append(json.loads(extra.read_text()))
@@ -108,7 +109,10 @@ def paired(a: np.ndarray, b: np.ndarray) -> tuple[np.ndarray, float, float]:
     return d, float(d.mean()), float(se)
 
 
-def paired_row(label: str, a: np.ndarray, b: np.ndarray) -> str:
+def paired_row(label: str, a: np.ndarray, b: np.ndarray) -> str | None:
+    """Row of the table of paired comparisons; None when one of the two variants is not in the run."""
+    if np.all(np.isnan(np.asarray(a, dtype=float))) or np.all(np.isnan(np.asarray(b, dtype=float))):
+        return None
     d, m, se = paired(a, b)
     return (f"| {label} | {', '.join(f(x) for x in d)} | {f(m)} ± {f(se)} | {f(m / se, 2) if se > 0 else '–'} | "
             f"{int((d > 0).sum())} of {len(d)} |")
@@ -131,7 +135,7 @@ def section(quick: bool = False, root: Path = R, replication: str | None = None,
     tag = "_quick" if quick else ""
     runs = load(quick, root, run_tag)
     out: list[str] = []
-    P = out.append
+    P = lambda line: out.append(line) if line is not None else None            # noqa: E731
     dp, rp = root / f"e4_data{tag}.json", root / f"e4_reference{tag}.json"
     if not dp.exists():
         return out
@@ -261,7 +265,7 @@ def section(quick: bool = False, root: Path = R, replication: str | None = None,
         if not np.all(np.isnan(ed("W4c_potentials_smooth"))):
             P(paired_row("ED ratio: W4_potentials − W4c_potentials_smooth (H15)", ed("W4_potentials"), ed("W4c_potentials_smooth")))
         has = lambda v: not np.all(np.isnan(ed(v)))                                  # noqa: E731
-        if has("G0_gaussian_modes"):
+        if has("G0_gaussian_modes") and any(has(v) for v in REGISTERED):
             best = min((v for v in REGISTERED if has(v)), key=lambda v: float(np.nanmean(ed(v))))
             P(paired_row(f"ED ratio: best registered generator ({best}) − G0_gaussian_modes (H16)", ed(best), ed("G0_gaussian_modes")))
         if has("W9_skip_sym"):
@@ -299,6 +303,25 @@ def section(quick: bool = False, root: Path = R, replication: str | None = None,
             if has("W9_skip_sym") and has("W11_anchored_skip"):
                 for key, label in (("ed_ratio", "ED ratio"), ("restart_drift_eb", "restart drift E_B"), ("null_count_err_rel", "err. nulls")):
                     P(paired_row(f"{label}: W9_skip_sym − W11_anchored_skip", per_seed(runs, "W9_skip_sym", key), per_seed(runs, "W11_anchored_skip", key)))
+        if has("G1_gaussian_full"):                     # H22: what the inter-mode covariance holds
+            mb = per_seed(runs, "G1_gaussian_full", "balance_residual_magnetic", absolute=True)
+            P(f"| H22: |magnetic balance| of G1_gaussian_full, per seed | {', '.join(f(x) for x in mb)} | {f(float(np.nanmean(mb)))} ± "
+              f"{f(float(np.nanstd(mb, ddof=1) / np.sqrt(len(mb))))} | – | – |")
+            for key, label in (("restart_drift_eb", "restart drift E_B"), ("null_count_err_rel", "err. nulls"), ("ed_ratio", "ED ratio"),
+                               ("restart_drift_eu", "restart drift E_u"), ("restart_drift_eb_max", "largest |drift of E_B| over τ"),
+                               ("restart_drift_eu_max", "largest |drift of E_u| over τ")):
+                for other in ("W9_skip_sym", "G0_gaussian_modes"):
+                    if has(other):
+                        P(paired_row(f"{label}: {other} − G1_gaussian_full (H22)", per_seed(runs, other, key), per_seed(runs, "G1_gaussian_full", key)))
+        if has("W12_skip_stationarity"):                # H23, H24: loss and sampling mechanisms on the model with the affine term
+            for key, label, ab in (("balance_residual_total", "|energy residual|", True), ("balance_residual_magnetic", "|magnetic balance|", True),
+                                   ("r_b", "r_b (helicity identity)", False), ("null_count_err_rel", "err. nulls", False),
+                                   ("spec_err_b_l2", "err. E_B(k)", False)):
+                P(paired_row(f"{label}: W12_skip_control − W12_skip_stationarity (H23)", per_seed(runs, "W12_skip_control", key, absolute=ab),
+                             per_seed(runs, "W12_skip_stationarity", key, absolute=ab)))
+            P(paired_row("ED ratio: W12_skip_stationarity − W12_skip_control (H23)", ed("W12_skip_stationarity"), ed("W12_skip_control")))
+            P(paired_row("|energy residual|: W12_skip_control_half − W13_skip_tilting (H24)", res("W12_skip_control_half"), res("W13_skip_tilting")))
+            P(paired_row("ED ratio: W13_skip_tilting − W12_skip_control_half (H24)", ed("W13_skip_tilting"), ed("W12_skip_control_half")))
         if has("S_w512"):
             def loss_of(v: str) -> str:
                 x = [r["times"].get(v, {}).get("fm_loss_train_sample") for r in runs.values()]
@@ -307,27 +330,42 @@ def section(quick: bool = False, root: Path = R, replication: str | None = None,
             P("\nH21 (width scan, no affine term): " + "; ".join(
                 f"{v}: ED ratio {f(float(np.nanmean(ed(v))))}, loss {loss_of(v)}" for v in
                 ("S_w512", "S_w2048", "S_w5632", "S_w512_long", "S_w2048_long") if has(v)) + " (π/2 = 1.571).")
-        if has("W9_skip_sym"):
+        if has("W13_skip_tilting"):
+            P(f"\nH24: ESS/N of W13_skip_tilting, seed mean over the test η: {f(float(np.nanmean(per_seed(runs, 'W13_skip_tilting', 'ess_frac'))))}; "
+              f"H23: ratio of the seed-mean ED ratios W12_skip_stationarity / W12_skip_control: "
+              f"{f(float(np.nanmean(ed('W12_skip_stationarity')) / np.nanmean(ed('W12_skip_control'))))}.")
+        if has("G1_gaussian_full"):
+            rows = [x for r in runs.values() for x in r["evaluation"]["G1_gaussian_full"].get("test", []) if "restart_curve" in x]
+            for v in ("G0_gaussian_modes", "G1_gaussian_full", "W9_skip_sym", "W11_anchored_skip"):
+                rows = [x for r in runs.values() for x in r["evaluation"].get(v, {}).get("test", []) if "restart_curve" in x]
+                if rows:
+                    taus = rows[0]["restart_curve"]["tau"]
+                    eb = np.mean([x["restart_curve"]["eb"] for x in rows], axis=0)
+                    eu = np.mean([x["restart_curve"]["eu"] for x in rows], axis=0)
+                    P(f"Restart curve of {v} (signed relative change, mean over the test η and the seeds), τ = {', '.join(f(t) for t in taus)}: "
+                      f"E_B {', '.join(f(float(x)) for x in eb)}; E_u {', '.join(f(float(x)) for x in eu)}.")
+        if has("W9_skip_sym") and has("W4s_potentials_sym"):
             fl = [r["times"].get("W9_skip_sym", {}).get("fm_loss_train_sample") for r in runs.values()]
             fl = [x for x in fl if x is not None]
             P(f"\nH17: ratio of the seed-mean ED ratios W9_skip_sym / W4s_potentials_sym: "
               f"{f(float(np.nanmean(ed('W9_skip_sym')) / np.nanmean(ed('W4s_potentials_sym'))))}; flow-matching loss of W9_skip_sym on "
               f"a training sample, seed mean: {f(float(np.mean(fl))) if fl else '–'} (π/2 = 1.571 for independent unit Gaussian coordinates).")
-        P(f"\nH5: relative divergence of B, seed mean: W0_free {f(div0.mean())}, W1_penalty {f(div1.mean())}, ratio {f(div1.mean() / div0.mean())}.")
-        P(f"H7: ratio of the seed-mean ED ratios W5_stationarity / W5_control: {f(ed('W5_stationarity').mean() / ed('W5_control').mean())}.")
-        P(f"H8: ESS/N of W7_tilting, seed mean over the test η: {f(float(np.nanmean(per_seed(runs, 'W7_tilting', 'ess_frac'))))}.")
-        if floors:
-            # extra V-statistic bias of a weighted sample: (Σw² − 1/n) E|X − X'| ≈ (1/ESS − 1/n) E|Y − Y'|
-            corr = []
-            for r in runs.values():
-                rows = r["evaluation"].get("W7_tilting", {}).get("test", [])
-                corr.append(np.mean([(x["ed"] - (1 / (x["ess_frac"] * x["n"]) - 1 / x["n"])
-                                      * floors[f"{x['eta']:.5f}"]["mean_pairwise_distance"]) / x["ed_floor"] for x in rows]))
-            corr = np.asarray(corr)
-            P(paired_row("H8 with W7 corrected for the extra bias of a weighted sample (estimate): ED ratio W7 − W5_stationarity_half",
-                         corr, ed("W5_stationarity_half")).replace("| H8", "H8", 1).rstrip(" |").replace(" | ", "; "))
-        P(f"H9: ratio of the seed-mean ED ratios W4s_potentials_sym / W4_potentials: {f(ed('W4s_potentials_sym').mean() / ed('W4_potentials').mean())}; "
-          f"binomial floor of the asymmetry for n = {cfg['n_gen']}: {f((2 * np.pi * cfg['n_gen']) ** -0.5)}.")
+        if has("W0_free") and has("W4s_potentials_sym"):          # notes of the registered groups A and B
+            P(f"\nH5: relative divergence of B, seed mean: W0_free {f(div0.mean())}, W1_penalty {f(div1.mean())}, ratio {f(div1.mean() / div0.mean())}.")
+            P(f"H7: ratio of the seed-mean ED ratios W5_stationarity / W5_control: {f(ed('W5_stationarity').mean() / ed('W5_control').mean())}.")
+            P(f"H8: ESS/N of W7_tilting, seed mean over the test η: {f(float(np.nanmean(per_seed(runs, 'W7_tilting', 'ess_frac'))))}.")
+            if floors:
+                # extra V-statistic bias of a weighted sample: (Σw² − 1/n) E|X − X'| ≈ (1/ESS − 1/n) E|Y − Y'|
+                corr = []
+                for r in runs.values():
+                    rows = r["evaluation"].get("W7_tilting", {}).get("test", [])
+                    corr.append(np.mean([(x["ed"] - (1 / (x["ess_frac"] * x["n"]) - 1 / x["n"])
+                                          * floors[f"{x['eta']:.5f}"]["mean_pairwise_distance"]) / x["ed_floor"] for x in rows]))
+                corr = np.asarray(corr)
+                P(paired_row("H8 with W7 corrected for the extra bias of a weighted sample (estimate): ED ratio W7 − W5_stationarity_half",
+                             corr, ed("W5_stationarity_half")).replace("| H8", "H8", 1).rstrip(" |").replace(" | ", "; "))
+            P(f"H9: ratio of the seed-mean ED ratios W4s_potentials_sym / W4_potentials: {f(ed('W4s_potentials_sym').mean() / ed('W4_potentials').mean())}; "
+              f"binomial floor of the asymmetry for n = {cfg['n_gen']}: {f((2 * np.pi * cfg['n_gen']) ** -0.5)}.")
         if h12:
             ra, rb = m("r_a"), m("r_b")
             P(f"H12: seed mean of r_b / r_a: {f(float(np.mean(rb / ra)))}; r_b > r_a for {int((rb > ra).sum())} of {len(ra)} seeds; "

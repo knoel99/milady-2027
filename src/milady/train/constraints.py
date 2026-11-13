@@ -35,6 +35,10 @@ Model family
     - :class:`GaussianAnchoredField` (``gaussian_anchor``): v = v_Gauss(x, t, c) + network, where
       v_Gauss is the closed-form flow-matching field of the mode-wise Gaussian law; with the network
       at zero the model is the Gaussian baseline, and training only has to learn the departure from it;
+    - :class:`FullGaussian` (``gaussian_full``): no network, the conditional Gaussian law with the full
+      sample covariance of the latent. Unlike the mode-wise law it keeps the correlations between different
+      Fourier modes, which a forcing with a fixed phase creates and which carry the mean magnetic
+      production ⟨j·(u×B)⟩ (mean flow × inter-mode covariance of B);
     - :class:`ModewiseGaussian` (``gaussian_modes``): no network, the conditional Gaussian law with
       one mean and one covariance per Fourier mode, interpolated between the training conditions. It
       reproduces the mode-wise second-order statistics (spectra, helicities, mean budgets) and nothing
@@ -47,6 +51,7 @@ of ``space.fields``; spatial means follow from Parseval, each mode counting twic
 
 from __future__ import annotations
 
+import math
 from collections.abc import Callable, Mapping, Sequence
 from typing import Any
 
@@ -60,6 +65,7 @@ from milady.train.flow import heun_sample
 __all__ = [
     "REGISTRY",
     "FourierComponentSpace",
+    "FullGaussian",
     "GaussianAnchoredField",
     "ModewiseAffineSkip",
     "ModewiseGaussian",
@@ -87,6 +93,7 @@ REGISTRY: dict[str, tuple[str, str]] = {
     "diffusion": ("model", "variance-preserving diffusion, v-prediction, ancestral or deterministic sampler"),
     "modewise_skip": ("design", "explicit mode-wise affine term of the velocity field, around a network with a bottleneck"),
     "gaussian_modes": ("model", "conditional Gaussian law with one mean and covariance per Fourier mode: second-order baseline"),
+    "gaussian_full": ("model", "conditional Gaussian law with the full covariance of the latent (inter-mode correlations kept)"),
     "gaussian_anchor": ("design", "velocity field = exact field of the mode-wise Gaussian law + network for the non-Gaussian part"),
 }
 
@@ -504,6 +511,73 @@ class ModewiseGaussian:
         chol = torch.linalg.cholesky(cov + self.jitter * scale[:, None, None] * eye)
         xi = torch.randn(n, *mean.shape, generator=generator, dtype=cov.dtype).to(cov.device)
         return (mean + torch.einsum("mij,nmj->nmi", chol, xi)).to(torch.float32)
+
+
+class FullGaussian:
+    """Conditional Gaussian law with the full sample covariance of the latent, all modes together.
+
+    :meth:`fit` keeps, for each distinct value of a scalar condition, the mean (D,) of the flattened latents
+    (D = M × C) and the centred data matrix A (n, D)/√n, so that AᵀA is the sample covariance (rank ≤ n: no
+    D × D matrix is formed). :meth:`sample` draws μ(c) + √(1 − w) ξ₁A₁ + √w ξ₂A₂ with ξ standard Gaussian and
+    (A₁, A₂) the two neighbouring training conditions: the covariance is the convex combination
+    (1 − w) Σ₁ + w Σ₂ and the mean is interpolated linearly (no extrapolation), as in
+    :class:`ModewiseGaussian`. ``sign`` (C,), entries ±1: the law is made invariant under x → sign · x
+    (e.g. B → −B) by adding the image of every sample to the data, which gives the first two moments of the
+    symmetrised law.
+
+    Against :class:`ModewiseGaussian` this law keeps the covariance between different Fourier modes. In a
+    flow forced with a fixed phase the statistics are not homogeneous and that covariance is not zero; the
+    mean magnetic production, a third-order moment, is carried by the product of the mean flow and the
+    inter-mode covariance of B.
+    """
+
+    def __init__(self, sign: torch.Tensor | None = None) -> None:
+        self.sign = sign
+        self.c: torch.Tensor | None = None
+        self.mean: list[torch.Tensor] = []
+        self.factor: list[torch.Tensor] = []
+        self.shape: tuple[int, int] | None = None
+
+    @torch.no_grad()
+    def fit(self, x: torch.Tensor, c: torch.Tensor) -> FullGaussian:
+        self.shape = (x.shape[1], x.shape[2])
+        values = torch.unique(c)
+        self.mean, self.factor = [], []
+        for v in values:
+            xv = x[c == v].reshape(int((c == v).sum()), -1).to(torch.float32)
+            if self.sign is not None:
+                s = self.sign.to(xv.dtype).to(xv.device).repeat(self.shape[0])      # (M × C,): channel signs, mode after mode
+                xv = torch.cat([xv, xv * s])
+            m = xv.mean(0)
+            self.mean.append(m)
+            self.factor.append((xv - m) / math.sqrt(len(xv)))
+        self.c = values.to(torch.float64)
+        return self
+
+    def _neighbours(self, c: float) -> tuple[int, float]:
+        assert self.c is not None, "fit first"
+        grid = self.c
+        c = float(min(max(c, float(grid[0])), float(grid[-1])))
+        if len(grid) == 1:
+            return 1, 1.0
+        j = int(torch.searchsorted(grid, torch.tensor(c, dtype=grid.dtype, device=grid.device)).clamp(1, len(grid) - 1))
+        return j, (c - float(grid[j - 1])) / (float(grid[j]) - float(grid[j - 1]))
+
+    @torch.no_grad()
+    def sample(self, c: float, n: int, generator: torch.Generator | None = None) -> torch.Tensor:
+        """``n`` latents (n, M, C), float32, from the Gaussian law at the condition ``c``."""
+        j, w = self._neighbours(c)
+        lo = max(j - 1, 0)
+        a1, a2 = self.factor[lo], self.factor[min(j, len(self.factor) - 1)]
+        mean = (1 - w) * self.mean[lo] + w * self.mean[min(j, len(self.mean) - 1)]
+        out = []
+        step = max(1, int(5e7 // max(a1.shape[0], a2.shape[0])))               # bounds the memory of the Gaussian draws
+        for k in range(0, n, step):
+            m = min(step, n - k)
+            xi1 = torch.randn(m, a1.shape[0], generator=generator).to(a1.device)
+            xi2 = torch.randn(m, a2.shape[0], generator=generator).to(a2.device)
+            out.append(mean + math.sqrt(max(1 - w, 0.0)) * xi1 @ a1 + math.sqrt(max(w, 0.0)) * xi2 @ a2)
+        return torch.cat(out).reshape(n, *self.shape).to(torch.float32)
 
 
 class GaussianAnchoredField(nn.Module):

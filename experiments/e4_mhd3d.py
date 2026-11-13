@@ -68,6 +68,8 @@ GROUPS = {"A": ["W0_free", "W1_penalty", "W2_final_projection", "W3_projected_fl
           "C": ["W4c_potentials_smooth"],      # H15: W4 with a smooth embedding of the condition
           "D": ["G0_gaussian_modes", "W9_skip_sym"],                    # H16, H17: second-order baseline, affine skip
           "E": ["W10_anchored", "W11_anchored_skip"],                   # H19, H20: anchored on the Gaussian field
+          "G": ["G1_gaussian_full"],                                    # H22: Gaussian law with the inter-mode covariance
+          "M": ["W12_skip_stationarity", "W12_skip_control", "W13_skip_tilting"],   # H23, H24: loss and sampling on W9
           "L": ["W9L_skip_long", "W11L_anchored_skip_long"],            # H18: 8 times the iterations (not in "all")
           "S": ["S_w512", "S_w2048", "S_w5632", "S_w512_long", "S_w2048_long"]}   # H21: width scan (not in "all")
 
@@ -261,12 +263,17 @@ class Context:
         to_hat = lambda f: sim._fft(f.permute(0, 4, 1, 2, 3).to(sim.device, sim.rdtype)) * sim.mask     # noqa: E731
         t0 = C.budget_terms_hat(self.pot, fh, D.NU, eta)
         sim.uh, sim.bh = to_hat(grid[:, 0]), to_hat(grid[:, 1])
-        sim.advance_to(self.cfg["tau"], dt=D.DT, cfl=D.CFL)
-        d = sim.diagnostics()
         eb0, eu0 = float(t0["magnetic_energy"].mean()), float(t0["kinetic_energy"].mean())
-        return {"restart_drift_eb": abs(float(d["magnetic_energy"].mean()) - eb0) / eb0,
-                "restart_drift_eu": abs(float(d["kinetic_energy"].mean()) - eu0) / eu0,
-                "restart_eb_signed": (float(d["magnetic_energy"].mean()) - eb0) / eb0}
+        taus = [self.cfg["tau"] * f for f in (0.125, 0.25, 0.5, 1.0)]              # the drift is a transient: record its course
+        curve = {"tau": taus, "eb": [], "eu": []}
+        for t in taus:
+            sim.advance_to(t, dt=D.DT, cfl=D.CFL)
+            d = sim.diagnostics()
+            curve["eb"].append((float(d["magnetic_energy"].mean()) - eb0) / eb0)
+            curve["eu"].append((float(d["kinetic_energy"].mean()) - eu0) / eu0)
+        return {"restart_drift_eb": abs(curve["eb"][-1]), "restart_drift_eu": abs(curve["eu"][-1]),
+                "restart_eb_signed": curve["eb"][-1], "restart_curve": curve,
+                "restart_drift_eb_max": max(abs(v) for v in curve["eb"]), "restart_drift_eu_max": max(abs(v) for v in curve["eu"])}
 
 
 # ---------------------------------------------------------------------------------------------
@@ -344,7 +351,7 @@ def _group_of(variant: str) -> str:
     for g, names in GROUPS.items():
         if variant in names:
             return g
-    return "B"
+    return "M" if variant.startswith(("W12_", "W13_")) else "B"
 
 
 def train(field, loss_fn, x: torch.Tensor, c: torch.Tensor, iters: int, lr: float, batch: int, name: str,
@@ -381,10 +388,10 @@ def run(quick: bool, seed: int, group: str, device: str = "cpu", cond_scale: flo
     """``cond_scale``: maximum frequency of the condition embedding of every network of the run (8: the
     pre-race default, registered protocol of H4-H14; another value tags the output files ``_cs<value>``)."""
     t_start = time.time()
-    groups = [g for g in GROUPS if g not in ("L", "S")] if group == "all" else group.split(",")
+    groups = [g for g in GROUPS if g in "ABCDE"] if group == "all" else group.split(",")
     need = tuple(sorted({s for g in groups for s in {"A": ("comp",), "B": ("pot", "pot_sym"), "C": ("pot",),
                                                      "D": ("pot_sym",), "E": ("pot_sym",), "L": ("pot_sym",),
-                                                     "S": ("pot_sym",)}[g]}))
+                                                     "S": ("pot_sym",), "G": ("pot_sym",), "M": ("pot_sym",)}[g]}))
     need = ("pot", "pot_sym", "comp") if len(need) == 3 else need
     ctx = Context(quick, need, device)
     cfg, dev = ctx.cfg, ctx.dev
@@ -484,6 +491,31 @@ def run(quick: bool, seed: int, group: str, device: str = "cpu", cond_scale: flo
 
     fm = lambda f, x, c: fm_loss(f, x, c)                                                      # noqa: E731
 
+    # law-level identities on a batch of generated coefficients
+    def identities(fh: torch.Tensor, eta, sp=ctx.pot_sym) -> dict:
+        terms = C.budget_terms_hat(sp, fh, D.NU, eta, forcing_hat=ctx.forcing_hat.to(fh.device, fh.dtype), amp=AMP)
+        return C.stationarity_residuals(terms, D.NU, eta)
+    
+    def stat_loss(field, it: int) -> torch.Tensor:
+        nc, nper = cfg["stat_cond"], cfg["stat_per"]
+        lo, hi = float(cn(ETAS[-1])), float(cn(ETAS[0]))
+        c = (lo + (hi - lo) * torch.rand(nc, 1, device=dev)).repeat_interleave(nper, 0)
+        z = heun_sample(field, torch.randn(nc * nper, pot_sym.n_modes, pot_sym.n_channels, device=dev), c,
+                        cfg["stat_steps"])
+        res = identities(pot_sym.field_hat(pot_sym.denormalize(z)), eta_of(c[:, 0]), pot_sym)
+        pen = sum(C.half_batch_product(r, s, nc) for key, (r, s) in res.items() if key != "cross_helicity")
+        return cfg["beta"] * min(1.0, it / max(cfg["ft_iters"] // 4, 1)) * pen
+    
+    # sampling-time constraints in law, on the samples of the control model
+    def tilt(fh: torch.Tensor, eta: float, keys: tuple[str, ...]) -> tuple[torch.Tensor, np.ndarray, dict]:
+        res = identities(fh.to(torch.complex128), eta)
+        g = np.stack([(res[k][0] / res[k][1].mean()).numpy() for k in keys], axis=1)
+        half = len(fh) // 2
+        _, lam, info = C.balance_tilting(g[:half], reg=1.0)
+        zb = g[half:] @ lam
+        wb = np.exp(zb - zb.max())
+        return fh[half:], wb / wb.sum(), info
+    
     # ---------------- group A: free components ----------------
     if "W0_free" in names:
         m0 = fit("W0_free", comp, ctx.x_comp, fm)
@@ -518,21 +550,6 @@ def run(quick: bool, seed: int, group: str, device: str = "cpu", cond_scale: flo
         gens["W4s"] = {e: generate(m4s, pot_sym, e, n) for e, n in eval_etas}
         record("W4s_potentials_sym", gens["W4s"])
 
-        # law-level identities on a batch of generated coefficients
-        def identities(fh: torch.Tensor, eta, sp=ctx.pot_sym) -> dict:
-            terms = C.budget_terms_hat(sp, fh, D.NU, eta, forcing_hat=ctx.forcing_hat.to(fh.device, fh.dtype), amp=AMP)
-            return C.stationarity_residuals(terms, D.NU, eta)
-
-        def stat_loss(field, it: int) -> torch.Tensor:
-            nc, nper = cfg["stat_cond"], cfg["stat_per"]
-            lo, hi = float(cn(ETAS[-1])), float(cn(ETAS[0]))
-            c = (lo + (hi - lo) * torch.rand(nc, 1, device=dev)).repeat_interleave(nper, 0)
-            z = heun_sample(field, torch.randn(nc * nper, pot_sym.n_modes, pot_sym.n_channels, device=dev), c,
-                            cfg["stat_steps"])
-            res = identities(pot_sym.field_hat(pot_sym.denormalize(z)), eta_of(c[:, 0]), pot_sym)
-            pen = sum(C.half_batch_product(r, s, nc) for key, (r, s) in res.items() if key != "cross_helicity")
-            return cfg["beta"] * min(1.0, it / max(cfg["ft_iters"] // 4, 1)) * pen
-
         for vname, extra in (("W5_stationarity", stat_loss), ("W5_control", None)):
             seed_all(1 + seed)
             model, tsec = train(copy.deepcopy(m4s).train().requires_grad_(True), fm, ctx.x_pot_sym, ctx.c_train,
@@ -546,16 +563,6 @@ def run(quick: bool, seed: int, group: str, device: str = "cpu", cond_scale: flo
             del model
         torch.save(m4s.state_dict(), D.data_dir(quick) / f"model_W4s_potentials_sym_s{seed}.pt")
         del m4s
-
-        # sampling-time constraints in law, on the samples of the control model
-        def tilt(fh: torch.Tensor, eta: float, keys: tuple[str, ...]) -> tuple[torch.Tensor, np.ndarray, dict]:
-            res = identities(fh.to(torch.complex128), eta)
-            g = np.stack([(res[k][0] / res[k][1].mean()).numpy() for k in keys], axis=1)
-            half = len(fh) // 2
-            _, lam, info = C.balance_tilting(g[:half], reg=1.0)
-            zb = g[half:] @ lam
-            wb = np.exp(zb - zb.max())
-            return fh[half:], wb / wb.sum(), info
 
         tilted, rescaled, halves = {}, {}, {}
         for e, fh in gens["W5_control"].items():
@@ -641,6 +648,43 @@ def run(quick: bool, seed: int, group: str, device: str = "cpu", cond_scale: flo
             record(vname, {e: generate(model, pot_sym, e, n) for e, n in eval_etas})
             del model
         del gauss
+
+    # ---------------- group G: Gaussian law with the full covariance of the latent (H22) ----------------
+    if "G1_gaussian_full" in names:
+        t0 = time.time()
+        g1 = C.FullGaussian(sign=pot_sym.sign).fit(ctx.x_pot_sym, ctx.c_train[:, 0])
+        results["times"]["G1_gaussian_full"] = {"fit_time_s": time.time() - t0}
+
+        def sample_g1(eta: float, n: int) -> torch.Tensor:
+            g = torch.Generator().manual_seed(100003 * seed + 57 + ETAS.index(eta))
+            z = g1.sample(float(np.float32(cn(eta))), n, generator=g)
+            return pot_sym.field_hat(pot_sym.denormalize(z)).cpu()
+
+        record("G1_gaussian_full", {e: sample_g1(e, n) for e, n in eval_etas})
+        del g1
+
+    # ---------------- group M: loss and sampling mechanisms on the model with the affine term (H23, H24) ----------------
+    if "W12_skip_stationarity" in names:
+        seed_all(seed)
+        m9, tsec = train(builders["W9_skip_sym"](None).to(dev), fm, ctx.x_pot_sym, ctx.c_train, cfg["iters"], cfg["lr"],
+                         cfg["batch"], "W9_skip_sym(base of W12)")
+        for vname, extra in (("W12_skip_stationarity", stat_loss), ("W12_skip_control", None)):
+            seed_all(1 + seed)
+            model, t2 = train(copy.deepcopy(m9).train().requires_grad_(True), fm, ctx.x_pot_sym, ctx.c_train,
+                              cfg["ft_iters"], cfg["ft_lr"], cfg["batch"], vname, onecycle=False, ema_from=m9, extra_loss=extra)
+            results["times"][vname] = {"training_time_s": tsec, "finetuning_time_s": t2, "iters": cfg["ft_iters"],
+                                       "beta": cfg["beta"] if extra else 0.0}
+            gens[vname] = {e: generate(model, pot_sym, e, n) for e, n in eval_etas}
+            record(vname, gens[vname])
+            del model
+        del m9
+        tilted12 = {}
+        for e, fh in gens["W12_skip_control"].items():                 # same tilting as W7, on a law close to the reference
+            fb, wb, _ = tilt(fh, e, ("energy", "magnetic_helicity"))
+            tilted12[e] = (fb, wb)
+        record("W13_skip_tilting", tilted12)
+        record("W12_skip_stationarity_half", {e: fh[len(fh) // 2:] for e, fh in gens["W12_skip_stationarity"].items()}, restart=False)
+        record("W12_skip_control_half", {e: fh[len(fh) // 2:] for e, fh in gens["W12_skip_control"].items()}, restart=False)
 
     save_parts()
     print(f"total duration {time.time() - t_start:.0f} s")

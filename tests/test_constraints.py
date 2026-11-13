@@ -301,9 +301,51 @@ def test_gaussian_modes() -> None:
     assert float(ms[:, 2:].abs().max()) == 0.0 and float(cvs[:, :2, 2:].abs().max()) == 0.0
 
 
+def test_gaussian_full() -> None:
+    """The full-covariance Gaussian keeps the covariance between modes, which the mode-wise law drops."""
+    M, Cc, n = 5, 4, 6000
+    g = torch.Generator().manual_seed(9)
+    a = torch.randn(2, M * Cc, M * Cc, generator=g) * 0.3              # mixes all modes: inter-mode covariance
+    mean = torch.randn(2, M * Cc, generator=g)
+    xs, cs = [], []
+    for j, cv in enumerate((0.2, 0.8)):
+        xs.append((mean[j] + torch.randn(n, M * Cc, generator=g) @ a[j].T).reshape(n, M, Cc))
+        cs.append(torch.full((n,), cv))
+    x, c = torch.cat(xs), torch.cat(cs)
+    cov_true = torch.einsum("kij,klj->kil", a, a)
+    model = C.FullGaussian().fit(x, c)
+    cov = lambda z: torch.cov(z.reshape(len(z), -1).T)
+    s0 = model.sample(0.2, 30000, generator=g)
+    assert s0.dtype == torch.float32 and s0.shape == (30000, M, Cc)
+    mean_data = [z.reshape(len(z), -1).mean(0) for z in xs]
+    assert torch.allclose(s0.reshape(len(s0), -1).mean(0), mean_data[0], atol=0.05) and torch.allclose(mean_data[0], mean[0], atol=0.1)
+    cov_data = [cov(xs[0]), cov(xs[1])]                                 # the law is the Gaussian of the SAMPLE moments
+    assert torch.allclose(cov(s0), cov_data[0], atol=0.1) and torch.allclose(cov_data[0], cov_true[0], atol=0.3)
+    sm = model.sample(0.5, 30000, generator=g)                          # interpolated: convex combination of the covariances
+    assert torch.allclose(sm.reshape(len(sm), -1).mean(0), 0.5 * (mean_data[0] + mean_data[1]), atol=0.05)
+    assert torch.allclose(cov(sm), 0.5 * (cov_data[0] + cov_data[1]), atol=0.1)
+    assert torch.equal(model.sample(0.0, 4, generator=torch.Generator().manual_seed(1)),
+                       model.sample(0.2, 4, generator=torch.Generator().manual_seed(1)))          # no extrapolation
+    # the covariance between two different modes is kept; the mode-wise law has none
+    inter = cov_true[0][:Cc, Cc:2 * Cc]
+    assert float(inter.abs().max()) > 0.2
+    assert torch.allclose(cov(s0)[:Cc, Cc:2 * Cc], inter, atol=0.2)
+    sw = C.ModewiseGaussian().fit(x, c).sample(0.2, 30000, generator=g)
+    assert float(cov(sw)[:Cc, Cc:2 * Cc].abs().max()) < 0.05
+    # symmetric under the sign: odd channels have zero mean and no covariance with the even ones, in every pair of modes
+    sign = torch.tensor([1.0, 1.0, -1.0, -1.0])
+    sym = C.FullGaussian(sign=sign).fit(x, c)
+    ss = sym.sample(0.2, 30000, generator=g)
+    odd = sign.repeat(M) < 0
+    cs_ = cov(ss)
+    assert float(ss.reshape(len(ss), -1).mean(0)[odd].abs().max()) < 0.05
+    assert float(cs_[~odd][:, odd].abs().max()) < 0.06
+    assert float(cs_[odd][:, odd].abs().max()) > 0.2                    # the odd–odd inter-mode block is kept
+
+
 def test_gaussian_anchor() -> None:
     """With a zero network, the anchored flow transports N(0, I) onto the fitted Gaussian law."""
-    M, Cc, n = 5, 4, 30000
+    M, Cc, n = 5, 4, 6000
     g = torch.Generator().manual_seed(9)
     a = torch.randn(2, M, Cc, Cc, generator=g) * 0.6
     mean = torch.randn(2, M, Cc, generator=g)
