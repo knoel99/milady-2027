@@ -850,6 +850,23 @@ def select(runs: dict) -> dict:
             "seeds": sorted(runs), "val_ed_ratio": val}
 
 
+def same_data_line(root: Path, c: dict) -> str | None:
+    """Is the reference data of a job the realisation that its seed offset names? The solver is chaotic: a pod with another
+    CPU type regenerates another realisation from the same seeds (found by the review of H34, 2026-11-13)."""
+    base = {0: R / "e4_reference.json", 100: R / "replications" / "e4_indep" / "e4_reference.json"}.get(c.get("data_seed_offset", 0))
+    mine = root / "e4_reference.json"
+    if c.get("n_traj", 24) != 24 or base is None or not base.exists() or not mine.exists() or base == mine:
+        return None
+    a, b = json.loads(mine.read_text())["values"], json.loads(base.read_text())["values"]
+    gap = max(abs(a[e]["E_B"] / b[e]["E_B"] - 1) for e in a if e in b)
+    which = "main run" if c.get("data_seed_offset", 0) == 0 else "independent replication (e4_indep)"
+    if gap < 1e-6:
+        return f"Reference data: the realisation of the {which} (largest relative gap of E_B over the η: {f(gap)}).\n"
+    return (f"Reference data: ANOTHER REALISATION than that of the {which}, although the seeds are the same (largest relative gap of E_B over "
+            f"the η: {f(gap)}): the pod of this job has another CPU type and the chaotic solver diverged. Comparisons with jobs on the data of "
+            f"the {which} are comparisons across realisations.\n")
+
+
 def section(quick: bool = False, root: Path = R, replication: str | None = None, run_tag: str = "") -> list[str]:
     """E4 section of the digest; with ``replication``, the same tables for an independent replication
     stored under ``root`` or for a run with another protocol (``run_tag``, e.g. "_cs0.5"): no selection
@@ -865,6 +882,7 @@ def section(quick: bool = False, root: Path = R, replication: str | None = None,
     c = data["config"]
     if replication:
         P(f"## E4 - additional run: {replication}\n")
+        P(same_data_line(root, c))
     else:
         P("## E4 - forced 3D MHD dynamo (ABC forcing at kf = 2), generation conditioned on η\n")
     P(f"Data (experiments/e4_data.py): N = {c['N']}, every mode |m_i| ≤ {c['kcut']} ({c['modes']} complex modes per field component pair), "

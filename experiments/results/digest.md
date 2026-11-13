@@ -732,6 +732,8 @@ H13: least-squares fit of ln(N_gen/N_ref) on ln(k_λ,gen/k_λ,ref) over 210 poin
 
 ## E4 - additional run: H34: the model with the affine term trained on the data and on Gaussian trajectories with the lag-one autocorrelation of the data (W9Yb, W9Y), and G1: groups G and Y on a RunPod GPU pod, own regenerated data
 
+Reference data: the realisation of the main run (largest relative gap of E_B over the η: 0).
+
 Data (experiments/e4_data.py): N = 16, every mode |m_i| ≤ 5 (665 complex modes per field component pair), ν = 0.05 (Re = 10), kf = 2; training η [0.08, 0.06575, 0.054038, 0.044413, 0.036502, 0.03]; validation η [0.059607, 0.040264]; test η [0.072526, 0.04899, 0.033092]; 24 trajectories per η, transient 200.0, kept 200.0, one snapshot every 2.0; float32; generation time 967 s on 4 cores.
 
 ### Reference data per η
@@ -900,7 +902,9 @@ H13: least-squares fit of ln(N_gen/N_ref) on ln(k_λ,gen/k_λ,ref) over 45 point
 | 3 | 0 | 89 | 76 | 861 |
 | 4 | 0 | 95 | 69 | 849 |
 
-## E4 - additional run: H34 on the data of the independent replication (E4_DATA_SEED=100): groups G and Y
+## E4 - additional run: H34 on another realisation of the data (E4_DATA_SEED=100, regenerated on a pod whose CPU type gave other trajectories than those of the independent replication): groups G and Y
+
+Reference data: ANOTHER REALISATION than that of the independent replication (e4_indep), although the seeds are the same (largest relative gap of E_B over the η: 0.0317): the pod of this job has another CPU type and the chaotic solver diverged. Comparisons with jobs on the data of the independent replication (e4_indep) are comparisons across realisations.
 
 Data (experiments/e4_data.py): N = 16, every mode |m_i| ≤ 5 (665 complex modes per field component pair), ν = 0.05 (Re = 10), kf = 2; training η [0.08, 0.06575, 0.054038, 0.044413, 0.036502, 0.03]; validation η [0.059607, 0.040264]; test η [0.072526, 0.04899, 0.033092]; 24 trajectories per η, transient 200.0, kept 200.0, one snapshot every 2.0; float32; generation time 750 s on 4 cores.
 
@@ -1071,6 +1075,8 @@ H13: least-squares fit of ln(N_gen/N_ref) on ln(k_λ,gen/k_λ,ref) over 45 point
 | 4 | 0 | 200 | 161 | 1104 |
 
 ## E4 - additional run: H29-H31: the model with the affine term recoloured onto the moments of the Gaussian laws (W15, W16), its null control (G4), G1 at the training η (G1T) and G1, 512 restarts: groups G, T and R on RunPod GPU pods split by seed (assembled by e4_assemble.py), own regenerated data
+
+Reference data: the realisation of the main run (largest relative gap of E_B over the η: 0).
 
 Data (experiments/e4_data.py): N = 16, every mode |m_i| ≤ 5 (665 complex modes per field component pair), ν = 0.05 (Re = 10), kf = 2; training η [0.08, 0.06575, 0.054038, 0.044413, 0.036502, 0.03]; validation η [0.059607, 0.040264]; test η [0.072526, 0.04899, 0.033092]; 24 trajectories per η, transient 200.0, kept 200.0, one snapshot every 2.0; float32; generation time 555 s on 4 cores.
 
@@ -1267,6 +1273,8 @@ H13: least-squares fit of ln(N_gen/N_ref) on ln(k_λ,gen/k_λ,ref) over 105 poin
 
 ## E4 - additional run: H29-H31 on the data of the independent replication (E4_DATA_SEED=100): groups G, T and R
 
+Reference data: the realisation of the independent replication (e4_indep) (largest relative gap of E_B over the η: 0).
+
 Data (experiments/e4_data.py): N = 16, every mode |m_i| ≤ 5 (665 complex modes per field component pair), ν = 0.05 (Re = 10), kf = 2; training η [0.08, 0.06575, 0.054038, 0.044413, 0.036502, 0.03]; validation η [0.059607, 0.040264]; test η [0.072526, 0.04899, 0.033092]; 24 trajectories per η, transient 200.0, kept 200.0, one snapshot every 2.0; float32; generation time 1219 s on 4 cores.
 
 ### Reference data per η
@@ -1461,6 +1469,8 @@ H13: least-squares fit of ln(N_gen/N_ref) on ln(k_λ,gen/k_λ,ref) over 105 poin
 | 4 | 0 | 108 | 200 | 131072 | 131072 | 2747 |
 
 ## E4 - additional run: H33 and H32: the model with the affine term trained on the data and on Gaussian surrogate data (W9Zb, W9Z), G0, W9 and G1, with the Kac-Rice factors of the null points: groups D, G and Z on a RunPod GPU pod, own regenerated data
+
+Reference data: the realisation of the main run (largest relative gap of E_B over the η: 0).
 
 Data (experiments/e4_data.py): N = 16, every mode |m_i| ≤ 5 (665 complex modes per field component pair), ν = 0.05 (Re = 10), kf = 2; training η [0.08, 0.06575, 0.054038, 0.044413, 0.036502, 0.03]; validation η [0.059607, 0.040264]; test η [0.072526, 0.04899, 0.033092]; 24 trajectories per η, transient 200.0, kept 200.0, one snapshot every 2.0; float32; generation time 500 s on 4 cores.
 
@@ -1684,6 +1694,8 @@ H13: least-squares fit of ln(N_gen/N_ref) on ln(k_λ,gen/k_λ,ref) over 75 point
 
 ## E4 - additional run: H33 and H32 on the data of the independent replication (E4_DATA_SEED=100): groups D, G and Z
 
+Reference data: the realisation of the independent replication (e4_indep) (largest relative gap of E_B over the η: 0).
+
 Data (experiments/e4_data.py): N = 16, every mode |m_i| ≤ 5 (665 complex modes per field component pair), ν = 0.05 (Re = 10), kf = 2; training η [0.08, 0.06575, 0.054038, 0.044413, 0.036502, 0.03]; validation η [0.059607, 0.040264]; test η [0.072526, 0.04899, 0.033092]; 24 trajectories per η, transient 200.0, kept 200.0, one snapshot every 2.0; float32; generation time 800 s on 4 cores.
 
 ### Reference data per η
@@ -1906,6 +1918,8 @@ H13: least-squares fit of ln(N_gen/N_ref) on ln(k_λ,gen/k_λ,ref) over 75 point
 
 ## E4 - additional run: H28: flow matching anchored on the full-covariance Gaussian law (W14), read along one training of 4000 iterations, and G1 sampled exactly: groups G and F on a RunPod GPU pod, own regenerated data
 
+Reference data: the realisation of the main run (largest relative gap of E_B over the η: 0).
+
 Data (experiments/e4_data.py): N = 16, every mode |m_i| ≤ 5 (665 complex modes per field component pair), ν = 0.05 (Re = 10), kf = 2; training η [0.08, 0.06575, 0.054038, 0.044413, 0.036502, 0.03]; validation η [0.059607, 0.040264]; test η [0.072526, 0.04899, 0.033092]; 24 trajectories per η, transient 200.0, kept 200.0, one snapshot every 2.0; float32; generation time 542 s on 4 cores.
 
 ### Reference data per η
@@ -2078,6 +2092,8 @@ H13: least-squares fit of ln(N_gen/N_ref) on ln(k_λ,gen/k_λ,ref) over 105 poin
 
 ## E4 - additional run: H28 on the data of the independent replication (E4_DATA_SEED=100): groups G and F
 
+Reference data: the realisation of the independent replication (e4_indep) (largest relative gap of E_B over the η: 0).
+
 Data (experiments/e4_data.py): N = 16, every mode |m_i| ≤ 5 (665 complex modes per field component pair), ν = 0.05 (Re = 10), kf = 2; training η [0.08, 0.06575, 0.054038, 0.044413, 0.036502, 0.03]; validation η [0.059607, 0.040264]; test η [0.072526, 0.04899, 0.033092]; 24 trajectories per η, transient 200.0, kept 200.0, one snapshot every 2.0; float32; generation time 547 s on 4 cores.
 
 ### Reference data per η
@@ -2249,6 +2265,8 @@ H13: least-squares fit of ln(N_gen/N_ref) on ln(k_λ,gen/k_λ,ref) over 105 poin
 | 4 | 0 | 0 | 10 | 19 | 38 | 76 | 152 | 1040 |
 
 ## E4 - additional run: tests H25-H27 of the structure beyond a Gaussian law (production split with a jackknife, restart anchored on the reference energy up to 16 tau, Gaussianised W9 with a null control): groups D, E, G and N on a RunPod GPU pod, own regenerated data
+
+Reference data: the realisation of the main run (largest relative gap of E_B over the η: 0).
 
 Data (experiments/e4_data.py): N = 16, every mode |m_i| ≤ 5 (665 complex modes per field component pair), ν = 0.05 (Re = 10), kf = 2; training η [0.08, 0.06575, 0.054038, 0.044413, 0.036502, 0.03]; validation η [0.059607, 0.040264]; test η [0.072526, 0.04899, 0.033092]; 24 trajectories per η, transient 200.0, kept 200.0, one snapshot every 2.0; float32; generation time 557 s on 4 cores.
 
@@ -2501,6 +2519,8 @@ H13: least-squares fit of ln(N_gen/N_ref) on ln(k_λ,gen/k_λ,ref) over 120 poin
 
 ## E4 - additional run: the same tests H25-H27 on the data of the independent replication (E4_DATA_SEED=100)
 
+Reference data: the realisation of the independent replication (e4_indep) (largest relative gap of E_B over the η: 0).
+
 Data (experiments/e4_data.py): N = 16, every mode |m_i| ≤ 5 (665 complex modes per field component pair), ν = 0.05 (Re = 10), kf = 2; training η [0.08, 0.06575, 0.054038, 0.044413, 0.036502, 0.03]; validation η [0.059607, 0.040264]; test η [0.072526, 0.04899, 0.033092]; 24 trajectories per η, transient 200.0, kept 200.0, one snapshot every 2.0; float32; generation time 563 s on 4 cores.
 
 ### Reference data per η
@@ -2752,6 +2772,8 @@ H13: least-squares fit of ln(N_gen/N_ref) on ln(k_λ,gen/k_λ,ref) over 120 poin
 
 ## E4 - additional run: long trainings: groups D, E and L (W9L, W11L: 8 times the iterations) on a RunPod GPU pod, own regenerated data
 
+Reference data: the realisation of the main run (largest relative gap of E_B over the η: 0).
+
 Data (experiments/e4_data.py): N = 16, every mode |m_i| ≤ 5 (665 complex modes per field component pair), ν = 0.05 (Re = 10), kf = 2; training η [0.08, 0.06575, 0.054038, 0.044413, 0.036502, 0.03]; validation η [0.059607, 0.040264]; test η [0.072526, 0.04899, 0.033092]; 24 trajectories per η, transient 200.0, kept 200.0, one snapshot every 2.0; float32; generation time 659 s on 4 cores.
 
 ### Reference data per η
@@ -2924,6 +2946,8 @@ H13: least-squares fit of ln(N_gen/N_ref) on ln(k_λ,gen/k_λ,ref) over 90 point
 | 4 | 0 | 99 | 101 | 144 | 889 | 1159 | 3087 |
 
 ## E4 - additional run: Gaussian law with the inter-mode covariance (G1) and loss and tilting on the model with the affine term: groups D, E, G and M on a RunPod GPU pod, own regenerated data; restart drift recorded at four times
+
+Reference data: the realisation of the main run (largest relative gap of E_B over the η: 0).
 
 Data (experiments/e4_data.py): N = 16, every mode |m_i| ≤ 5 (665 complex modes per field component pair), ν = 0.05 (Re = 10), kf = 2; training η [0.08, 0.06575, 0.054038, 0.044413, 0.036502, 0.03]; validation η [0.059607, 0.040264]; test η [0.072526, 0.04899, 0.033092]; 24 trajectories per η, transient 200.0, kept 200.0, one snapshot every 2.0; float32; generation time 578 s on 4 cores.
 
@@ -3154,6 +3178,8 @@ H13: least-squares fit of ln(N_gen/N_ref) on ln(k_λ,gen/k_λ,ref) over 150 poin
 
 ## E4 - additional run: the two Gaussian laws and the model with the affine term (groups D and G) on the data of the independent replication (E4_DATA_SEED=100)
 
+Reference data: the realisation of the independent replication (e4_indep) (largest relative gap of E_B over the η: 0).
+
 Data (experiments/e4_data.py): N = 16, every mode |m_i| ≤ 5 (665 complex modes per field component pair), ν = 0.05 (Re = 10), kf = 2; training η [0.08, 0.06575, 0.054038, 0.044413, 0.036502, 0.03]; validation η [0.059607, 0.040264]; test η [0.072526, 0.04899, 0.033092]; 24 trajectories per η, transient 200.0, kept 200.0, one snapshot every 2.0; float32; generation time 661 s on 4 cores.
 
 ### Reference data per η
@@ -3314,6 +3340,8 @@ H13: least-squares fit of ln(N_gen/N_ref) on ln(k_λ,gen/k_λ,ref) over 45 point
 | 4 | 0 | 106 | 0 | 475 |
 
 ## E4 - additional run: second width scan of H21: groups D and S, 5 seeds on three GPU pods (split by seed)
+
+Reference data: the realisation of the main run (largest relative gap of E_B over the η: 0).
 
 Data (experiments/e4_data.py): N = 16, every mode |m_i| ≤ 5 (665 complex modes per field component pair), ν = 0.05 (Re = 10), kf = 2; training η [0.08, 0.06575, 0.054038, 0.044413, 0.036502, 0.03]; validation η [0.059607, 0.040264]; test η [0.072526, 0.04899, 0.033092]; 24 trajectories per η, transient 200.0, kept 200.0, one snapshot every 2.0; float32; generation time 757 s on 4 cores.
 
@@ -3482,6 +3510,8 @@ H13: least-squares fit of ln(N_gen/N_ref) on ln(k_λ,gen/k_λ,ref) over 105 poin
 | 4 | 0 | 42 | 28 | 91 | 550 | 201 | 732 | 2036 |
 
 ## E4 - additional run: first width scan of H21 (A100, cut by its time limit: S_w5632 and S_w512_long on 2 seeds only)
+
+Reference data: the realisation of the main run (largest relative gap of E_B over the η: 0).
 
 Data (experiments/e4_data.py): N = 16, every mode |m_i| ≤ 5 (665 complex modes per field component pair), ν = 0.05 (Re = 10), kf = 2; training η [0.08, 0.06575, 0.054038, 0.044413, 0.036502, 0.03]; validation η [0.059607, 0.040264]; test η [0.072526, 0.04899, 0.033092]; 24 trajectories per η, transient 200.0, kept 200.0, one snapshot every 2.0; float32; generation time 570 s on 4 cores.
 
@@ -3870,6 +3900,8 @@ H13: least-squares fit of ln(N_gen/N_ref) on ln(k_λ,gen/k_λ,ref) over 210 poin
 
 ## E4 - additional run: first GPU run of the registered groups A and B (the run reviewed for H4-H14; same data and model seeds as the main run)
 
+Reference data: the realisation of the main run (largest relative gap of E_B over the η: 0).
+
 Data (experiments/e4_data.py): N = 16, every mode |m_i| ≤ 5 (665 complex modes per field component pair), ν = 0.05 (Re = 10), kf = 2; training η [0.08, 0.06575, 0.054038, 0.044413, 0.036502, 0.03]; validation η [0.059607, 0.040264]; test η [0.072526, 0.04899, 0.033092]; 24 trajectories per η, transient 200.0, kept 200.0, one snapshot every 2.0; float32; generation time 492 s on 4 cores.
 
 ### Reference data per η
@@ -4039,6 +4071,8 @@ H13: least-squares fit of ln(N_gen/N_ref) on ln(k_λ,gen/k_λ,ref) over 135 poin
 | 4 | 60 | 52 | 42 | 35 | 51 | 44 | 5 | 35 | 3896 |
 
 ## E4 - additional run: seeds 0 and 1 on the CPU of the session's container (first computation of the groups C, D and E; two seeds only)
+
+Reference data: ANOTHER REALISATION than that of the main run, although the seeds are the same (largest relative gap of E_B over the η: 0.025): the pod of this job has another CPU type and the chaotic solver diverged. Comparisons with jobs on the data of the main run are comparisons across realisations.
 
 Data (experiments/e4_data.py): N = 16, every mode |m_i| ≤ 5 (665 complex modes per field component pair), ν = 0.05 (Re = 10), kf = 2; training η [0.08, 0.06575, 0.054038, 0.044413, 0.036502, 0.03]; validation η [0.059607, 0.040264]; test η [0.072526, 0.04899, 0.033092]; 24 trajectories per η, transient 200.0, kept 200.0, one snapshot every 2.0; float32; generation time 1779 s on 4 cores.
 
