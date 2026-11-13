@@ -105,6 +105,14 @@
   ]
  },
  {
+  "name": "e4_surrogate",
+  "caption": "The flow-matching model with the affine term (W9) trained on the data, on independent Gaussian draws with the mean and covariance of the data and on Gaussian trajectories that also have the lag-one autocorrelation of the data, with the Gaussian law G1: third-order part of the magnetic production over the Ohmic dissipation (reference: \u00b1 2 jackknife standard errors), magnetic energy against that of the reference, and energy distance to the reference over the noise floor, at the three held-out \u03b7. Seed means; bars: \u00b1 2 standard errors over the seeds.",
+  "sources": [
+   "experiments/results/replications/e4_surrogate/e4_mhd3d_s<k>.json",
+   "experiments/results/replications/e4_surrogate/e4_reference.json"
+  ]
+ },
+ {
   "name": "e4_gpu_costs",
   "caption": "Cumulative GPU spend of the pilot, one point per entry of the compute ledger: finished jobs, jobs that failed, were interrupted or were lost, and the corrections made after another session deleted running pods.",
   "sources": [

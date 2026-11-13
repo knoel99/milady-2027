@@ -645,6 +645,52 @@ def plot_recolour(out: Path, tag: str = "") -> None:
            [f"{root.relative_to(HERE.parent)}/e4_mhd3d{tag}_s<k>.json", f"{root.relative_to(HERE.parent)}/e4_reference{tag}.json"])
 
 
+def plot_surrogate(out: Path, tag: str = "") -> None:
+    """H33, H34: the model with the affine term trained on the data, on independent Gaussian draws and on Gaussian
+    trajectories (jobs e4_surrogate and e4_trajsur)."""
+    runs, ref, root = _job("e4_surrogate", tag)
+    traj, tref, troot = _job("e4_trajsur", tag)
+    if not runs or not rows_of(runs, "W9Z_skip_sym_gaussdata", "test"):
+        print("skip e4_surrogate")
+        return
+    laws = [(runs, ref, "G1_gaussian_full", "G1 (Gaussian law)", C[3]), (runs, ref, "W9Zb_skip_sym", "W9 trained on the data", C[0]),
+            (runs, ref, "W9Z_skip_sym_gaussdata", "W9 trained on Gaussian draws", C[1])]
+    if traj and rows_of(traj, "W9Y_skip_sym_gausstraj", "test"):
+        laws.append((traj, tref, "W9Y_skip_sym_gausstraj", "W9 trained on Gaussian trajectories", C[2]))
+    etas = sorted(rows_of(runs, "W9Zb_skip_sym", "test"), reverse=True)
+    panels = [("third-order part of the production / dissipation", lambda row, r: row["prod_fluct_over_d"], lambda r: r["prod_fluct_over_d"]),
+              (r"magnetic energy: $E_B/E_{B,\mathrm{ref}} - 1$", lambda row, r: row["E_B"] / r["E_B"] - 1, lambda r: 0.0),
+              ("energy distance / noise floor", lambda row, r: row["ed_ratio"], None)]
+    fig, axes = plt.subplots(1, 3, figsize=(11.2, 3.3))
+    x = np.arange(len(etas))
+    w = 0.8 / (len(laws) + 1)
+    for ax, (title, fn, fref) in zip(axes, panels, strict=True):
+        ax.set_axisbelow(True)
+        if fref is not None and title.startswith("third"):
+            vals = [fref(ref["values"][f"{e:.5f}"]) for e in etas]
+            err = [2 * ref["values"][f"{e:.5f}"].get("prod_fluct_over_d_se_jack", 0) for e in etas]
+            ax.bar(x - 0.4 + w / 2, vals, w, yerr=err, color=LIGHT, edgecolor=INK2, capsize=2, label="reference")
+        for i, (rn, rf, v, label, color) in enumerate(laws):
+            a = np.array([[fn(row, rf["values"][f"{e:.5f}"]) for row in rows_of(rn, v, "test")[e]] for e in etas])   # (η, seeds)
+            se = a.std(1, ddof=1) / np.sqrt(a.shape[1]) if a.shape[1] >= MIN_SEEDS else np.zeros(len(etas))
+            ax.bar(x - 0.4 + (i + 1.5) * w, a.mean(1), w, yerr=2 * se, color=color, capsize=2, label=label)
+        ax.axhline(0, color=INK2, lw=0.8)
+        ax.set_xticks(x)
+        ax.set_xticklabels([f"{e:.4f}" for e in etas])
+        ax.set_xlabel(r"held-out $\eta$")
+        ax.set_title(title, fontsize=9)
+    h, lab = axes[0].get_legend_handles_labels()
+    fig.legend(h, lab, fontsize=7.5, loc="lower center", ncol=len(h), frameon=False)
+    fig.tight_layout(rect=(0, 0.08, 1, 1))
+    finish(fig, out, "e4_surrogate", "The flow-matching model with the affine term (W9) trained on the data, on independent Gaussian draws "
+           "with the mean and covariance of the data and on Gaussian trajectories that also have the lag-one autocorrelation of the data, "
+           "with the Gaussian law G1: third-order part of the magnetic production over the Ohmic dissipation (reference: ± 2 jackknife "
+           "standard errors), magnetic energy against that of the reference, and energy distance to the reference over the noise floor, at "
+           "the three held-out η. Seed means; bars: ± 2 standard errors over the seeds.",
+           [f"{root.relative_to(HERE.parent)}/e4_mhd3d{tag}_s<k>.json", f"{root.relative_to(HERE.parent)}/e4_reference{tag}.json"]
+           + ([f"{troot.relative_to(HERE.parent)}/e4_mhd3d{tag}_s<k>.json"] if len(laws) == 4 else []))
+
+
 def plot_costs(out: Path) -> None:
     led = HERE.parent / "research" / "compute-ledger.jsonl"
     if not led.exists():
@@ -697,6 +743,7 @@ def main() -> None:
     plot_production(a.out, tag)
     plot_anchor(a.out, tag)
     plot_recolour(a.out, tag)
+    plot_surrogate(a.out, tag)
     plot_costs(a.out)
     (a.out / "plots.json").write_text(json.dumps(WRITTEN, indent=1), encoding="utf-8")
     print(len(WRITTEN), "plots")
