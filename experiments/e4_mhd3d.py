@@ -91,9 +91,11 @@ FULL = {"iters": 4000, "batch": 128, "width": 512, "depth": 4, "lr": 5e-4, "n_ge
         "n_null": 200, "n_restart": 128, "tau": 4.0, "floor_splits": 10, "n_ref_null": 400, "long_factor": 8,
         "relax_taus": (1.0, 2.0, 4.0, 8.0), "relax_restart": 4.0, "relax_ref": (1.0, 4.0),
         "cold_taus": (8.0, 16.0, 32.0, 64.0, 128.0, 200.0)}
+if os.environ.get("E4_STRUCT_RANK"):             # rank of the structured anchor of group Q (H41: 0 and 30), recorded in the results
+    FULL["struct_rank"] = int(os.environ["E4_STRUCT_RANK"])
 if os.environ.get("E4_N_RESTART"):               # more restart samples for a job (H30: 512), recorded in the config of the results
     FULL["n_restart"] = int(os.environ["E4_N_RESTART"])
-QUICK = {**FULL, "struct_rank": 20, "cold_taus": (2.0, 8.0), "relax_taus": (0.5, 1.0), "relax_restart": 1.0, "relax_ref": (1.0,), "anchor_its": (50, 150), "n_recolour": 1024, "steps_check": 24, "n_fit": 512, "ref_restart_draws": 2, "iters": 150, "width": 256, "depth": 2, "n_gen": 96, "n_gen_train": 64, "steps": 12, "long_factor": 2,
+QUICK = {**FULL, "struct_rank": FULL.get("struct_rank", 20), "cold_taus": (2.0, 8.0), "relax_taus": (0.5, 1.0), "relax_restart": 1.0, "relax_ref": (1.0,), "anchor_its": (50, 150), "n_recolour": 1024, "steps_check": 24, "n_fit": 512, "ref_restart_draws": 2, "iters": 150, "width": 256, "depth": 2, "n_gen": 96, "n_gen_train": 64, "steps": 12, "long_factor": 2,
          "ft_iters": 20, "n_null": 24, "n_restart": 24, "tau": 1.0, "floor_splits": 4, "n_ref_null": 32}
 
 

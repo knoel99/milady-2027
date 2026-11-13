@@ -386,7 +386,10 @@ def e4():
     from e4_digest import convergence
 
     lines = section()
-    reps = [("e4_struct", "H40: flow matching anchored on a Gaussian law with a structured covariance (300 leading directions plus mode-wise "
+    reps = [("e4_rank0", "H41: the anchored code path of H28, H38 and H40 with an anchor of rank 0 (the mode-wise law) against W10, which goes "
+                         "through the earlier class: groups D, E and Q on a RunPod GPU pod, own regenerated data"),
+            ("e4_rank30", "H41, reported measurement: the anchored model of group Q with an anchor of rank 30"),
+            ("e4_struct", "H40: flow matching anchored on a Gaussian law with a structured covariance (300 leading directions plus mode-wise "
                           "blocks), trained on the data and, as a control, on samples of W9; the structured law sampled exactly; W9: group Q "
                           "on a RunPod GPU pod, own regenerated data"),
             ("e4_struct_indep", "H40 on the data of the independent replication (E4_DATA_SEED=100): group Q"),

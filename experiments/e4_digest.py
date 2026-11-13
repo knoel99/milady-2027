@@ -1161,6 +1161,53 @@ def h40_lines(runs: dict, ref: dict | None, root: Path = R) -> list[str]:
     return out
 
 
+H41_W10 = (-0.012, -0.043, -0.064)        # third-order part of W10 at the held-out η in the run e4_nongauss (data of the main run)
+
+
+def h41_lines(runs: dict, ref: dict | None, root: Path = R) -> list[str]:
+    """H41: the anchored code path of H28/H38/H40 with an anchor of rank 0 against W10 (GaussianAnchoredField); a run with
+    another rank and no W10 is reported without a verdict. As registered (research/hypotheses.json)."""
+    have = {v for r in runs.values() for v in r["evaluation"]}
+    its = sorted(int(v.rsplit("_it", 1)[1]) for v in have if v.startswith("W19_struct_anchor_it"))
+    ranks = {r["times"].get(f"W19_struct_anchor_it{its[-1]}", {}).get("rank") for r in runs.values()} if its else set()
+    if ref is None or not its or ranks == {300}:
+        return []
+    rank = next(iter(ranks)) if len(ranks) == 1 else None
+    last = f"W19_struct_anchor_it{its[-1]}"
+    third = lambda v: {e: np.asarray(a) for e, a in _per_seed(runs, v, "prod_fluct_over_d").items()}   # noqa: E731
+    test = sorted((e for e in third(last) if ref["values"][f"{e:.5f}"]["split"] == "test"), reverse=True)
+    low = sorted(test)[:2][::-1]
+    rv = lambda e, k: ref["values"][f"{e:.5f}"][k]                                       # noqa: E731
+    mean = lambda v, fn: float(np.mean([np.mean([fn(x) for x in r["evaluation"][v]["test"]]) for r in runs.values() if v in r["evaluation"]]))   # noqa: E731
+    loss = lambda v: float(np.mean([r["times"].get(v, {}).get("fm_loss_train_sample", np.nan) for r in runs.values()]))            # noqa: E731
+    t19 = third(last)
+    out = [f"\nH41: the anchored code path of H28, H38 and H40 (FullGaussianAnchoredField) with an anchor of rank {rank}, iteration "
+           f"{its[-1]}: third-order part over the dissipation at the held-out η " + ", ".join(f(float(t19[e].mean())) for e in test)
+           + " (reference " + ", ".join(f(rv(e, "prod_fluct_over_d")) for e in test) + "); over that of the reference at the two lower η: "
+           + ", ".join(f(float(t19[e].mean() / rv(e, "prod_fluct_over_d")), 2) for e in low)
+           + f"; largest E_B/E_B,ref − 1 {f(max((float(np.mean(a)) / rv(e, 'E_B') - 1 for e, a in _per_seed(runs, last, 'E_B').items() if e in test), key=abs))}; "
+             f"ED / floor {f(mean(last, lambda x: x['ed_ratio']))}; loss on a fixed training sample at iteration 0 and at the end: "
+             f"{f(loss('W19_struct_anchor_it0'), 5)}, {f(loss(last), 5)}."]
+    if "W10_anchored" not in have:
+        out.append(f"H41, rank {rank}: reported measurement (no W10 in this job: no verdict).")
+        return out
+    t10 = third("W10_anchored")
+    diff = {e: float(t19[e].mean() - t10[e].mean()) for e in test}
+    bad = [e for e in low if abs(diff[e]) > 0.02]
+    d10 = max(abs(float(t10[e].mean()) - x) for e, x in zip(test, H41_W10, strict=True)) if len(test) == 3 else float("nan")
+    complete = set(runs) >= set(range(5)) and all(last in r["evaluation"] and "W10_anchored" in r["evaluation"] for r in runs.values()) \
+        and its[-1] == 4000 and rank == 0
+    out.append("H41, the same against W10 of this job (anchored on the mode-wise law through GaussianAnchoredField; same seeds): third-order "
+               "part of W10 " + ", ".join(f(float(t10[e].mean())) for e in test) + "; difference " + ", ".join(f(diff[e]) for e in test)
+               + f" (criterion: at most 0.02 in absolute value at the two lower η); E_B/E_B,ref − 1 of W10 "
+               + f"{f(max((float(np.mean(a)) / rv(e, 'E_B') - 1 for e, a in _per_seed(runs, 'W10_anchored', 'E_B').items() if e in test), key=abs))}, "
+               + f"ED / floor {f(mean('W10_anchored', lambda x: x['ed_ratio']))}. Check of the measurement: largest gap of W10 of this job to "
+               + f"its values in the run e4_nongauss {f(d10)} (limit 0.02): {'PASS' if d10 <= 0.02 else 'FAIL'}. Verdict: "
+               + ("INCOMPLETE (five seeds at iteration 4000 with rank 0 are needed: no verdict)" if not complete else
+                  "MEASUREMENT INVALID (check)" if not d10 <= 0.02 else ("REFUTED (η = " + ", ".join(f"{e:.4f}" for e in bad) + ")" if bad else "NOT REFUTED")) + ".")
+    return out
+
+
 def select(runs: dict) -> dict:
     """Generator with the lowest validation energy-distance ratio (mean over the seeds)."""
     val = {v: float(np.nanmean(per_seed(runs, v, "ed_ratio", "val"))) for v in GENERATORS
@@ -1599,7 +1646,7 @@ def section(quick: bool = False, root: Path = R, replication: str | None = None,
                 xs, ys = np.asarray(pts).T
                 P(f"Signed drift of E_B at τ = 4 against the bias E_B,ref/E_B(0) − 1 of the law, over the {len(pts)} laws above: "
                   f"correlation {f(float(np.corrcoef(xs, ys)[0, 1]), 2)}.")
-        for line in h28_lines(runs, ref) + h29_lines(runs, ref) + h32_lines(runs, ref) + h33_lines(runs, ref, root) + h34_lines(runs, ref, root) + h35_lines(runs, ref, root) + h36_lines(runs, ref, root) + h37_lines(runs, ref, root) + h38_lines(runs, ref, root) + h39_lines(runs, ref, root) + h40_lines(runs, ref, root):
+        for line in h28_lines(runs, ref) + h29_lines(runs, ref) + h32_lines(runs, ref) + h33_lines(runs, ref, root) + h34_lines(runs, ref, root) + h35_lines(runs, ref, root) + h36_lines(runs, ref, root) + h37_lines(runs, ref, root) + h38_lines(runs, ref, root) + h39_lines(runs, ref, root) + h40_lines(runs, ref, root) + h41_lines(runs, ref, root):
             P(line)
         h27 = [x for r in runs.values() for x in r.get("h27", [])]
         if h27:
