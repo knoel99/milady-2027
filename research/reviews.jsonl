@@ -76,3 +76,4 @@
 {"time": "2026-11-13T04:57:06Z", "role": "encadrant", "commit": "35f6d55", "scope": "H79 result and H83 protocol", "verdict": "H79 CONFIRMED. H83 UNCHECKED.", "file": "research/calls/h79-result-encadrant.md"}
 {"time": "2026-11-13T05:00:47Z", "role": "encadrant", "commit": "5ab0cb6", "scope": "H81 H82 results and H84 H85 protocols", "verdict": "H81 and H82 REFUTED. H84 H85 UNCHECKED.", "file": "research/calls/h81-result-encadrant.md"}
 {"time": "2026-11-13T05:01:33Z", "role": "encadrant", "commit": "5984330", "scope": "H83 result and H86 protocol", "verdict": "H83 REFUTED. H86 UNCHECKED.", "file": "research/calls/h83-result-encadrant.md"}
+{"time": "2026-11-13T05:05:41Z", "role": "encadrant", "commit": "aeef736", "scope": "H80 H84 H85 H86 results and H87 H88 H89 H90 protocols", "verdict": "H80 CONFIRMED. H84 H85 H86 REFUTED. H87 H88 H89 H90 UNCHECKED.", "file": "research/calls/h80-result-encadrant.md"}
