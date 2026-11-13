@@ -147,3 +147,4 @@ ts	phase	decision	why	evidence	result
 2026-11-13T10:10:00Z	h164	H164 refuted. The kmax=4 truncation moves the null count.	Mean relative error 0.428, seeds 0-4, n=16, Rm=12.	experiments/results/cursor_nulls.json	refuted, CPU
 2026-11-13T10:40:00Z	h165	H165 refuted. The kmax=6 truncation still moves the null count.	Mean relative error 0.160, seeds 0-4, n=16, Rm=12, t=1.	experiments/results/cursor_nulls_kmax6.json	refuted, CPU
 2026-11-13T10:55:00Z	h166	H166 refuted. The kmax=6 midpoint misses the null-count bound.	Mean relative error 0.172, seeds 0-4, eight times, n=16.	experiments/results/cursor_nulls_midpoint_kmax6.json	refuted, CPU
+2026-11-13T11:10:00Z	h167	H167 supported. The kmax=7 midpoint meets the null-count bound.	Mean relative error 0.08397, seeds 0-4, eight times, n=16.	experiments/results/cursor_nulls_midpoint_kmax7.json	supported, CPU

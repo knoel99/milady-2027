@@ -59,9 +59,9 @@ Measured. A perfect cutoff has mean ratio 0.728 at kmax=4, 0.0092 at kmax=6, and
 
 Measured. The dynamic second-half total residual has mean absolute value 3.74e-6 (H162). The magnetic residual on the same window has mean absolute value 0.067 (H163). File `experiments/results/cursor_stationary.json`.
 
-Measured. The kmax=4 truncation changes the null count. The mean relative error is 0.428 (H164). File `experiments/results/cursor_nulls.json`.
+Measured. The kmax=4 truncation changes the null count. The mean relative error is 0.428 (H164). The kmax=6 truncation is 0.160 (H165). The kmax=6 midpoint is 0.172 (H166). The kmax=7 midpoint is 0.084 (H167). Files `experiments/results/cursor_nulls.json`, `cursor_nulls_kmax6.json`, `cursor_nulls_midpoint_kmax6.json`, and `cursor_nulls_midpoint_kmax7.json`.
 
-`experiments/results/cursor_metrics.json` quotes C1=0.0140, C2=4.58e-16, C3=3.74e-6, C4=0.0093, and C5=0.428.
+`experiments/results/cursor_metrics.json` quotes C1=0.0140, C2=4.58e-16, C3=3.74e-6, C4=0.0093, and C5=0.084. C5 is the kmax=7 midpoint. The coarser counts miss 0.1 and stay in the result files.
 
 # Comparative study {#comparative-study}
 
@@ -74,6 +74,9 @@ Measured. The kmax=4 truncation changes the null count. The mean relative error 
 | dynamic second half | total balance residual | 3.74e-6 | H162 supported |
 | dynamic second half | magnetic residual | 0.067 | H163 refuted |
 | kmax=4 truncation | relative null-count error | 0.428 | H164 refuted |
+| kmax=6 truncation | relative null-count error | 0.160 | H165 refuted |
+| kmax=6 midpoint | relative null-count error | 0.172 | H166 refuted |
+| kmax=7 midpoint | relative null-count error | 0.084 | H167 supported |
 
 The standard error is not quoted. The result files hold the five seeds, and the verdict is the pre-registered criterion, not a confidence interval.
 
@@ -83,11 +86,11 @@ The standard error is not quoted. The result files hold the five seeds, and the 
 
 # Discussion {#discussion}
 
-The negative results matter. Forty Adam steps do not make the small flow match a held-out Rm. Raising kmax at a hidden width of 64 makes the ratio worse. The magnetic balance of a short dynamic window stays above 0.05 even though the total balance is already tiny, because the seed field is still evolving. A kmax=4 truncation is not topology-preserving on these snapshots. It is conjectured that a statistically steady dynamo, rather than a finer cutoff, is what would bring the magnetic residual down. That run is not in the result files.
+The negative results matter. Forty Adam steps do not make the small flow match a held-out Rm. Raising kmax at a hidden width of 64 makes the ratio worse. The magnetic balance of a short dynamic window stays above 0.05 even though the total balance is already tiny, because the seed field is still evolving. A kmax=4 truncation is not topology-preserving on these snapshots. The kmax=6 truncation and the kmax=6 midpoint miss 0.1 as well. The kmax=7 midpoint meets 0.1. It is conjectured that a statistically steady dynamo, rather than a finer cutoff, is what would bring the magnetic residual down. That run is not in the result files.
 
 # Conclusion {#conclusion}
 
-C1, C2, C3, and C4 meet their targets on the quantities named in `cursor_metrics.json`. C5 is measured and does not. The kinematic brackets that are still open are recorded in the race report and are not the next generator test. No team pod was left running after H144.
+C1, C2, C3, C4, and C5 meet their targets on the quantities named in `cursor_metrics.json`. C5 meets on the kmax=7 midpoint and not on the coarser counts. The kinematic brackets that are still open are recorded in the race report and are not the next generator test. No team pod was left running after H144.
 
 # References {#references}
 

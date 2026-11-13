@@ -2166,9 +2166,9 @@
       "protocol": "python3 experiments/cursor_nulls_midpoint.py --kmax 7 --out experiments/results/cursor_nulls_midpoint_kmax7.json. CPU. The H166 file is not overwritten.",
       "script": "experiments/cursor_nulls_midpoint.py",
       "cost_estimate": "CPU only. No GPU dollars.",
-      "status": "registered",
-      "verdict": "",
-      "results": "",
+      "status": "supported",
+      "verdict": "CONFIRMED",
+      "results": "Mean over seeds of the per-seed mean relative error is 0.08397460868851093, at most 0.1. Seed means 0.1213924963924964, 0.07124732905982906, 0.10230654761904762, 0.06220858744835727, 0.0627180829228243. Eight times each. File experiments/results/cursor_nulls_midpoint_kmax7.json. The refutation criterion is not met.",
       "commit": ""
     }
   ]

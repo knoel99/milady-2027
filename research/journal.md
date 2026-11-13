@@ -2,6 +2,10 @@
 
 One entry per working session, newest first, at most ten lines.
 
+## 2026-11-13 - H167 supported, team cursor
+- The kmax=7 midpoint meets the null-count bound. Mean relative error 0.08397, at most 0.1.
+- C5 now quotes that error. The coarser counts stay recorded as misses.
+
 ## 2026-11-13 - H166 refuted, team cursor
 - The kmax=6 midpoint misses the null-count bound. Mean relative error 0.172, above 0.1.
 - H167, the same comparison at kmax=7, is registered and not yet run.

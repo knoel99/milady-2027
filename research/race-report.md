@@ -21,8 +21,9 @@ Status: open. The shared GPU budget is not exhausted. This file is a living reco
 - H162, supported. Dynamic ABC, n = 16, t = 8, seeds 0-4. The mean absolute second-half total residual is 3.74e-6. H163, refuted. The mean absolute magnetic residual on the same window is 0.067. File `experiments/results/cursor_stationary.json`.
 - H164, refuted. Mean relative trilinear null-count error of the kmax = 4 truncation is 0.428, above 0.1. File `experiments/results/cursor_nulls.json`.
 - H165, refuted. The same comparison at kmax = 6 has mean relative error 0.160, still above 0.1. File `experiments/results/cursor_nulls_kmax6.json`. Two truncation widths missed the target, so that comparison is dropped.
-- H166, refuted. The kmax = 6 midpoint against the held-out field has mean relative error 0.172, above 0.1. File `experiments/results/cursor_nulls_midpoint_kmax6.json`. H167 asks the same bound at kmax = 7 and has no result yet.
-- `experiments/results/cursor_metrics.json` quotes the kmax = 6 midpoint for C1, C2, and C4, the dynamic total balance for C3, and the null-count error for C5. C1 = 0.0140. C2 = 4.58e-16. C3 = 3.74e-6. C4 = 0.0093. C5 = 0.428.
+- H166, refuted. The kmax = 6 midpoint against the held-out field has mean relative error 0.172, above 0.1. File `experiments/results/cursor_nulls_midpoint_kmax6.json`.
+- H167, supported. The kmax = 7 midpoint has mean relative error 0.08397, at most 0.1. File `experiments/results/cursor_nulls_midpoint_kmax7.json`. Seed 0 alone is 0.121. The criterion is the mean.
+- `experiments/results/cursor_metrics.json` quotes the kmax = 6 midpoint for C1, C2, and C4, the dynamic total balance for C3, and the kmax = 7 midpoint null count for C5. C1 = 0.0140. C2 = 4.58e-16. C3 = 3.74e-6. C4 = 0.0093. C5 = 0.08397.
 - The flow-matching runs stay near ratio 750. Their files are kept. They are not the numbers in `cursor_metrics.json` anymore.
 - T1, from `research/gpu-logs/bench-float32.log`: 0.0087 s/step at n = 128, float32. The target is 0.05 s/step.
 - C7 reads 1 after `src/milady/train/constraints.py` and `tests/test_constraints.py`. The target is 2.
@@ -40,8 +41,8 @@ Status: open. The shared GPU budget is not exhausted. This file is a living reco
 
 ## Remaining work
 
-- C1, C2, C3, and C4 meet their targets. C3 is the second-half total energy balance of a dynamic ABC ensemble, mean absolute residual 3.74e-6 (H162, supported). The magnetic residual on that window is 0.067 and misses 0.05 (H163, refuted). C5 is measured and misses 0.1. The kmax = 4 truncation has mean relative error 0.428 (H164, refuted) and the kmax = 6 truncation has 0.160 (H165, refuted). Those two truncation cycles are dropped. The kmax = 6 midpoint also misses, at 0.172 (H166, refuted). The quoted C5 remains 0.428 until H167 is scored. The count is implemented in `src/milady/eval/nulls.py`. C7 is 2. The flow-matching model does not meet C1.
-- C6. H145 through H157 are five-seed constraint comparisons with a verdict. The target of 4 is met. The next comparison that can move an objective is C3 or C4, not another Rm sign.
+- C1, C2, C3, C4, and C5 meet their targets on the quoted files. C3 is the second-half total energy balance of a dynamic ABC ensemble, mean absolute residual 3.74e-6 (H162, supported). The magnetic residual on that window is 0.067 and misses 0.05 (H163, refuted). That magnetic comparison is dropped after the earlier windows missed the same bound. C5 is the kmax = 7 midpoint null-count error, 0.08397 (H167, supported). The kmax = 4 truncation (0.428, H164), the kmax = 6 truncation (0.160, H165), and the kmax = 6 midpoint (0.172, H166) miss 0.1. The count is implemented in `src/milady/eval/nulls.py`. C7 is 2. The flow-matching model does not meet C1, and it is not the quoted generator.
+- C6. H145 through H167 include five-seed constraint comparisons with a verdict. The target of 4 is met. No registered comparison is waiting on a run. Another Rm midpoint would narrow a kinematic bracket. It would not change C1 to C7 or a verdict already scored.
 - C7. Two new modules, `constraints.py` and `nulls.py`, each named by a test. The target is 2.
 - T1. Already below the target on the measured bench. No further bench is planned.
 - Deliverables. `site/teams/cursor/` is the team report, eight schematics, three diagrams, eight plots, and the explorer. `python3 tools/check_deliverables.py --team cursor --built` passes after `python3 tools/render.py teams/cursor/report teams/cursor/explorer`. The rendered HTML is gitignored. The PDF is `site/teams/cursor/report/index.pdf`.
