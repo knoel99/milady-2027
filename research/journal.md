@@ -2,6 +2,11 @@
 
 One entry per working session, newest first, at most ten lines.
 
+## 2026-11-13 - H138 supported, team cursor
+- At n=160, Rm=9.0625, seeds 0-4, every lambda is positive. Smallest is seed 3, 5.84e-5. Pod `g0w33xugwvc37o`, 1.12 h, 1.00 USD.
+- n=160 at Rm=9 was negative. The bracket is (9, 9.0625). It is not bisected.
+- H144 stays in flight. The quoted generator metrics are the kmax=4 midpoint, not this run.
+
 ## 2026-11-13 - H156 and H157 supported, team cursor
 - The kmax=4 midpoint between Rm=11 and Rm=13 has mean energy-distance ratio 0.743. H156 and H157 hold.
 - cursor_metrics.json now quotes that midpoint. C1 and C2 meet their targets. C3 is 0.099 and C4 is 0.150.

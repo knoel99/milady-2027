@@ -40,4 +40,5 @@ Status: open. The shared GPU budget is not exhausted. This file is a living reco
 - C7. One new module. The target is 2.
 - T1. Already below the target on the measured bench. No further bench is planned.
 - Deliverables. `site/teams/cursor/` does not exist, so `tools/check_deliverables.py --team cursor --built` does not pass.
-- In flight, and not stopped to write this file: H138 (n = 160, Rm = 9.0625) and H144 (n = 128, seeds 0-4).
+- H138, supported. At n = 160 and Rm = 9.0625, seeds 0-4 are all positive. The smallest lambda is 5.84e-5, seed 3. The bracket against the negative Rm = 9 run is (9, 9.0625). It is not being bisected.
+- In flight: H144 (n = 128, seeds 0-4, Rm = 8.98699951171875).
