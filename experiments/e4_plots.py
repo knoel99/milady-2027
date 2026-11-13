@@ -691,6 +691,56 @@ def plot_surrogate(out: Path, tag: str = "") -> None:
            + ([f"{troot.relative_to(HERE.parent)}/e4_mhd3d{tag}_s<k>.json"] if len(laws) == 4 else []))
 
 
+def plot_relax(out: Path, tag: str = "") -> None:
+    """H35: G0, G1, W9 and W16 followed by a relaxation of duration τ in the solver (job e4_relax)."""
+    runs, ref, root = _job("e4_relax", tag)
+    laws = [("G0X", "G0 (Gaussian per mode)", C[4]), ("G1X", "G1 (Gaussian, full covariance)", C[3]), ("W9X", "W9 (learned model)", C[0]),
+            ("W16X", "W16 (W9 recoloured)", C[1]), ("REFX", "reference snapshots (control)", INK2)]
+    have = {v for r in (runs or {}).values() for v in r["evaluation"]}
+    if "W16X_tau0" not in have:
+        print("skip e4_relax")
+        return
+    panels = [("null-count error", lambda x, r: abs(x["null_count_err_rel"]), 0.2, True),
+              (r"$|E_B/E_{B,\mathrm{ref}} - 1|$", lambda x, r: abs(x["E_B"] / r["E_B"] - 1), 0.05, True),
+              ("energy distance / noise floor", lambda x, r: x["ed_ratio"], 10.0, True),
+              (r"mean $|\det\nabla B|$ / reference", lambda x, r: x["kr_jacobian_all"] / r["kr_jacobian_all"], 1.0, False)]
+    fig, axes = plt.subplots(1, 4, figsize=(13.0, 3.3))
+    for ax, (title, fn, level, logy) in zip(axes, panels, strict=True):
+        ax.set_axisbelow(True)
+        for law, label, color in laws:
+            taus = sorted(float(v.rsplit("_tau", 1)[1]) for v in have if v.startswith(law + "_tau"))
+            if law == "REFX" and title.startswith("energy distance"):
+                continue                                   # the control is in the reference: its distance is not a measure
+            pts = []
+            for t in taus:
+                per_seed = [np.mean([fn(x, ref["values"][f"{x['eta']:.5f}"]) for x in r["evaluation"][f"{law}_tau{t:g}"]["test"]])
+                            for r in runs.values() if f"{law}_tau{t:g}" in r["evaluation"]]
+                a = np.asarray(per_seed)
+                pts.append((t, a.mean(), a.std(ddof=1) / np.sqrt(len(a)) if len(a) >= MIN_SEEDS else 0.0))
+            x = np.arange(len(taus)) if law != "REFX" else [sorted({p[0] for p in pts0}).index(t) for t in taus]
+            if law != "REFX":
+                pts0 = pts
+            ax.errorbar(x, [q[1] for q in pts], yerr=[2 * q[2] for q in pts], color=color, marker="o", ms=3.2, capsize=2, lw=1.2,
+                        ls="--" if law == "REFX" else "-", label=label)
+        ax.axhline(level, color=INK, lw=0.9, ls=":")
+        if logy:
+            ax.set_yscale("log")
+        ax.set_xticks(np.arange(len(pts0)))
+        ax.set_xticklabels([f"{q[0]:g}" for q in pts0])
+        ax.set_xlabel(r"relaxation time $\tau$ in the solver")
+        ax.set_title(title, fontsize=9)
+    h, lab = axes[0].get_legend_handles_labels()
+    fig.legend(h, lab, fontsize=7.5, loc="lower center", ncol=len(h), frameon=False)
+    fig.tight_layout(rect=(0, 0.08, 1, 1))
+    finish(fig, out, "e4_relax", "Laws followed by a relaxation of duration τ in the solver of the data: the Gaussian laws G0 and G1, the "
+           "flow-matching model W9, its samples recoloured onto the moments of G1 (W16), and reference snapshots through the same code "
+           "(control). Null-count error, deviation of the magnetic energy from the reference, energy distance to the reference over the "
+           "noise floor, and mean of |det ∇B| over all the cells over that of the reference, against τ; means over the held-out η and the "
+           "seeds, bars ± 2 standard errors over the seeds; dotted lines: the thresholds of the objectives (0.2, 0.05, 10) and the "
+           "reference value (1).",
+           [f"{root.relative_to(HERE.parent)}/e4_mhd3d{tag}_s<k>.json", f"{root.relative_to(HERE.parent)}/e4_reference{tag}.json"])
+
+
 def plot_costs(out: Path) -> None:
     led = HERE.parent / "research" / "compute-ledger.jsonl"
     if not led.exists():
@@ -744,6 +794,7 @@ def main() -> None:
     plot_anchor(a.out, tag)
     plot_recolour(a.out, tag)
     plot_surrogate(a.out, tag)
+    plot_relax(a.out, tag)
     plot_costs(a.out)
     (a.out / "plots.json").write_text(json.dumps(WRITTEN, indent=1), encoding="utf-8")
     print(len(WRITTEN), "plots")
