@@ -2,6 +2,11 @@
 
 One entry per working session, newest first, at most ten lines.
 
+## 2026-11-13 - H144 refuted, team cursor
+- At n=128, Rm=8.98699951171875, seed 0 is negative, lambda -7.53e-7. Pod `6igk1bsvmdnkow`, 0.39 h, 0.3446 USD.
+- The seeds 0-4 bracket is now between this Rm and 8.9871826171875. It is not bisected.
+- No team pod is left running.
+
 ## 2026-11-13 - H162 supported, H163 refuted, team cursor
 - The second-half total energy balance of the dynamic ABC run has mean absolute residual 3.74e-6. H162 holds. C3 now quotes that number.
 - The magnetic residual on the same window has mean 0.067. H163 is refuted.
