@@ -2092,6 +2092,32 @@
       "verdict": "REFUTED",
       "results": "Mean C3 at kmax=7 is 0.08523277525732473, above 0.05. All five values are finite. The kmax=6 mean was 0.0834132031037454. File experiments/results/cursor_constraint_midpoint_kmax7.json. The refutation criterion is met. The metrics file stays on the kmax=6 midpoint.",
       "commit": ""
+    },
+    {
+      "id": "H162",
+      "statement": "The stationarity constraint on a dynamic ABC ensemble, measured as the absolute total energy-balance residual on the second half of the run, has a mean at most 0.05. The first half is the transient baseline. Seeds 0-4, n=16, t_end=8, nu=eta=0.05, b0_amp=1e-3, eight snapshots in each half.",
+      "origin": "The objective C3 is the mean energy balance of a stationary law, injection against total dissipation. Kinematic snapshots do not carry that balance. The bound 0.05 is the objective target and was fixed before the five-seed run.",
+      "refutation_criterion": "Refuted if any second-half residual is non-finite, or if the mean over seeds 0-4 of the absolute second-half total residual exceeds 0.05.",
+      "protocol": "python3 experiments/cursor_stationary.py writes experiments/results/cursor_stationary.json. CPU. --quick is not a quoted result.",
+      "script": "experiments/cursor_stationary.py",
+      "cost_estimate": "CPU only. No GPU dollars.",
+      "status": "registered",
+      "verdict": "",
+      "results": "",
+      "commit": ""
+    },
+    {
+      "id": "H163",
+      "statement": "On the same dynamic ABC ensemble, the absolute magnetic balance residual on the second half has a mean at most 0.05. Seeds 0-4. The stationarity constraint is the claim and the first half is the transient baseline.",
+      "origin": "The magnetic residual of the kmax=6 midpoint is 0.083. This asks whether a dynamic second-half window brings that residual under 0.05. The bound was fixed before the five-seed run.",
+      "refutation_criterion": "Refuted if any second-half magnetic residual is non-finite, or if the mean over seeds 0-4 of its absolute value exceeds 0.05.",
+      "protocol": "Same CPU run as H162.",
+      "script": "experiments/cursor_stationary.py",
+      "cost_estimate": "CPU only. No GPU dollars.",
+      "status": "registered",
+      "verdict": "",
+      "results": "",
+      "commit": ""
     }
   ]
 }
