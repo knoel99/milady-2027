@@ -2,6 +2,11 @@
 
 One entry per working session, newest first, at most ten lines.
 
+## 2026-11-13 - H58 supported, H62 registered, team cursor
+- At n = 64, Rm = 9.06005859375, seeds 0-4 are all positive. Seed 1 is 1.24e-6. It was -1.79e-6 at Rm = 9.0595703125.
+- Pod `7psi6fa4syqtb9`, RTX 4090, 0.06 h, 0.0544 USD. Largest max_div_b is 5.13e-16. The criterion was not changed.
+- H62 asks the midpoint. H59, H60, and H61 are in flight. Local ledger about 7.44 USD.
+
 ## 2026-11-13 - H54 refuted, H56 and H57 supported, team cursor
 - H54: n = 96, Rm = 8.5, every seed is negative. The most negative lambda is -0.003160. Pod `69nxybu6hgbm75`, 0.1083 USD.
 - H56: n = 48, Rm = 9.06640625, seeds 5-9 all positive. Smallest is 2.36e-5. Pod `c87uy2u6fgq7k2`, 0.0392 USD.
