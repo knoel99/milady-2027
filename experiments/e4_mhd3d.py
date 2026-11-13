@@ -79,6 +79,7 @@ GROUPS = {"A": ["W0_free", "W1_penalty", "W2_final_projection", "W3_projected_fl
           "V": ["W17_recoloured_surrogate"],                            # H37: W9 trained on Gaussian surrogates, recoloured
           "O": ["REFV_recoloured"],                                     # H37, reported: reference snapshots through the same kind of map
           "P": ["W18_anchor_on_W9"],                                    # H38: positive control of the anchored model, trained on samples of W9
+          "K": ["COLD_start"],                                          # H39: ensembles of the solver from the initial condition of the data
           "N": ["G2_gaussianised_W9"],                                  # H27: Gaussian law fitted to the samples of W9                                    # H22: Gaussian law with the inter-mode covariance
           "M": ["W12_skip_stationarity", "W12_skip_control", "W13_skip_tilting"],   # H23, H24: loss and sampling on W9
           "L": ["W9L_skip_long", "W11L_anchored_skip_long"],            # H18: 8 times the iterations (not in "all")
@@ -87,10 +88,11 @@ GROUPS = {"A": ["W0_free", "W1_penalty", "W2_final_projection", "W3_projected_fl
 FULL = {"iters": 4000, "batch": 128, "width": 512, "depth": 4, "lr": 5e-4, "n_gen": 512, "n_gen_train": 256,
         "steps": 50, "ft_iters": 400, "ft_lr": 2e-4, "beta": 20.0, "stat_cond": 4, "stat_per": 16, "stat_steps": 6,
         "n_null": 200, "n_restart": 128, "tau": 4.0, "floor_splits": 10, "n_ref_null": 400, "long_factor": 8,
-        "relax_taus": (1.0, 2.0, 4.0, 8.0), "relax_restart": 4.0, "relax_ref": (1.0, 4.0)}
+        "relax_taus": (1.0, 2.0, 4.0, 8.0), "relax_restart": 4.0, "relax_ref": (1.0, 4.0),
+        "cold_taus": (8.0, 16.0, 32.0, 64.0, 128.0, 200.0)}
 if os.environ.get("E4_N_RESTART"):               # more restart samples for a job (H30: 512), recorded in the config of the results
     FULL["n_restart"] = int(os.environ["E4_N_RESTART"])
-QUICK = {**FULL, "relax_taus": (0.5, 1.0), "relax_restart": 1.0, "relax_ref": (1.0,), "anchor_its": (50, 150), "n_recolour": 1024, "steps_check": 24, "n_fit": 512, "ref_restart_draws": 2, "iters": 150, "width": 256, "depth": 2, "n_gen": 96, "n_gen_train": 64, "steps": 12, "long_factor": 2,
+QUICK = {**FULL, "cold_taus": (2.0, 8.0), "relax_taus": (0.5, 1.0), "relax_restart": 1.0, "relax_ref": (1.0,), "anchor_its": (50, 150), "n_recolour": 1024, "steps_check": 24, "n_fit": 512, "ref_restart_draws": 2, "iters": 150, "width": 256, "depth": 2, "n_gen": 96, "n_gen_train": 64, "steps": 12, "long_factor": 2,
          "ft_iters": 20, "n_null": 24, "n_restart": 24, "tau": 1.0, "floor_splits": 4, "n_ref_null": 32}
 
 
@@ -360,6 +362,16 @@ class Context:
             out[t] = self.pot.field_hat(self.pot.encode(sim.fields(dtype=np.float64))).cpu()
         return out
 
+    def cold_start(self, eta: float, n: int, seed: int, taus: tuple[float, ...]) -> dict[float, torch.Tensor]:
+        """``n`` trajectories of the solver from the initial condition of the data (``D.solver_config``: laminar flow, a
+        perturbation, a seed field), read at the times ``taus`` and encoded like the snapshots of the data."""
+        sim = MHD3D(D.solver_config(eta, n, seed=seed, device=str(self.dev)))
+        out = {}
+        for t in sorted(taus):
+            sim.advance_to(t, dt=D.DT, cfl=D.CFL)
+            out[t] = self.pot.field_hat(self.pot.encode(sim.fields(dtype=np.float64))).cpu()
+        return out
+
     def production_jackknife(self, fh: torch.Tensor, traj: np.ndarray, d_ohm: np.ndarray, grid: int = 24) -> dict:
         """Split of the mean magnetic production of an ensemble into its mean-flow part and the rest, with a
         delete-one-trajectory jackknife in which the mean flow is recomputed without the trajectory.
@@ -507,6 +519,8 @@ def _group_of(variant: str) -> str:
         return "O"
     if variant.startswith(("W9P", "W18_")):
         return "P"
+    if variant.startswith("COLD_"):
+        return "K"
     if variant.startswith(("W16V_", "W17_", "G1V_")):
         return "V"
     return "M" if variant.startswith(("W12_", "W13_")) else "B"
@@ -552,7 +566,7 @@ def run(quick: bool, seed: int, group: str, device: str = "cpu", cond_scale: flo
     groups = [g for g in GROUPS if g in "ABCDE"] if group == "all" else group.split(",")
     need = tuple(sorted({s for g in groups for s in {"A": ("comp",), "B": ("pot", "pot_sym"), "C": ("pot",),
                                                      "D": ("pot_sym",), "E": ("pot_sym",), "L": ("pot_sym",),
-                                                     "S": ("pot_sym",), "G": ("pot_sym",), "M": ("pot_sym",), "N": ("pot_sym",), "F": ("pot_sym",), "R": ("pot_sym",), "T": ("pot_sym",), "Z": ("pot_sym",), "Y": ("pot_sym",), "X": ("pot_sym",), "V": ("pot_sym",), "O": ("pot_sym",), "P": ("pot_sym",)}[g]}))
+                                                     "S": ("pot_sym",), "G": ("pot_sym",), "M": ("pot_sym",), "N": ("pot_sym",), "F": ("pot_sym",), "R": ("pot_sym",), "T": ("pot_sym",), "Z": ("pot_sym",), "Y": ("pot_sym",), "X": ("pot_sym",), "V": ("pot_sym",), "O": ("pot_sym",), "P": ("pot_sym",), "K": ("pot_sym",)}[g]}))
     need = ("pot", "pot_sym", "comp") if len(need) == 3 else need
     ctx = Context(quick, need, device)
     cfg, dev = ctx.cfg, ctx.dev
@@ -839,6 +853,17 @@ def run(quick: bool, seed: int, group: str, device: str = "cpu", cond_scale: flo
             results["times"][vname] = {"training_time_s": tsec * k / cfg["iters"], "iters": k, "fm_loss_train_sample": train_loss(model)}
             record(vname, {e: generate(model, pot_sym, e, n) for e, n in eval_etas})
         del model, field, g1a, keep
+
+    # ---------------- group K: the solver alone from the initial condition of the data (H39) ----------------
+    if "COLD_start" in names:
+        k_etas = [(e, n) for e, n in eval_etas if split(e) in ("val", "test")]
+        taus = tuple(cfg["cold_taus"])
+        # seeds of the initial conditions: outside those of the data (1000 + offset + index) for every seed and η
+        cold = {e: ctx.cold_start(e, n, 50000 + 1000 * seed + ETAS.index(e), taus) for e, n in k_etas}
+        for t in taus:
+            results["times"][f"COLD_tau{t:g}"] = {"tau": t, "n_traj": k_etas[0][1]}
+            record(f"COLD_tau{t:g}", {e: cold[e][t] for e, _ in k_etas}, restart=False)
+        del cold
 
     # ---------------- group P: positive control of the anchored model: trained on samples of W9 (H38) ----------------
     if "W18_anchor_on_W9" in names:

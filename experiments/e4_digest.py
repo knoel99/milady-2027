@@ -31,7 +31,8 @@ LATER = [f"W14_full_anchor_it{k}" for k in (0, 50, 150, 250, 500, 1000, 2000, 40
     "W9Zb_skip_sym", "W9Z_skip_sym_gaussdata", "W9Yb_skip_sym", "W9Y_skip_sym_gausstraj"] + [
     f"{law}_tau{t}" for law in ("G0X", "G1X", "W9X", "W16X", "REFX") for t in ("0", "0.5", "1", "2", "4", "8")] + [
     "G1V_gaussian_full", "W16V_recoloured_full", "W17_recoloured_surrogate", "REFV_raw", "REFV_recoloured"] + [
-    "W9P_skip_sym"] + [f"W18_anchor_on_W9_it{k}" for k in (0, 150, 250, 1000, 2000, 4000)] + ["W9PP_retrained_on_W9"]
+    "W9P_skip_sym"] + [f"W18_anchor_on_W9_it{k}" for k in (0, 150, 250, 1000, 2000, 4000)] + ["W9PP_retrained_on_W9"] + [
+    f"COLD_tau{t}" for t in ("2", "8", "16", "32", "64", "128", "200")]
 GENERATORS += LATER
 # G0 has no network: it is the baseline to beat, not a candidate for the selected generator (the C1 note of
 # race/teams/claude/objectives.toml names the model family: conditional flow matching on the Fourier modes).
@@ -66,7 +67,7 @@ def merge(seed: int, tag: str | bool = "", root: Path = R) -> Path | None:
     whole = root / f"e4_mhd3d{tag}_s{seed}_all.json"
     if not all(p.exists() for p in parts) and not whole.exists():        # a run of the later groups only (D, E, L)
         parts = [p for g in ("A", "B") if (p := root / f"e4_mhd3d{tag}_s{seed}_{g}.json").exists()]
-        if not any((root / f"e4_mhd3d{tag}_s{seed}_{g}.json").exists() for g in ("C", "D", "E", "L", "S", "G", "M", "N", "F", "R", "T", "Z", "Y", "X", "V", "O", "P")):
+        if not any((root / f"e4_mhd3d{tag}_s{seed}_{g}.json").exists() for g in ("C", "D", "E", "L", "S", "G", "M", "N", "F", "R", "T", "Z", "Y", "X", "V", "O", "P", "K")):
             return None
     if all(p.exists() for p in parts):
         data = [json.loads(p.read_text()) for p in parts]
@@ -74,7 +75,7 @@ def merge(seed: int, tag: str | bool = "", root: Path = R) -> Path | None:
         data = [json.loads(whole.read_text())]
     else:
         return None
-    for g in ("C", "D", "E", "L", "S", "G", "M", "N", "F", "R", "T", "Z", "Y", "X", "V", "O", "P"):                      # optional groups, added after the first runs
+    for g in ("C", "D", "E", "L", "S", "G", "M", "N", "F", "R", "T", "Z", "Y", "X", "V", "O", "P", "K"):                      # optional groups, added after the first runs
         extra = root / f"e4_mhd3d{tag}_s{seed}_{g}.json"
         if extra.exists():
             data.append(json.loads(extra.read_text()))
@@ -1016,6 +1017,69 @@ def h38_lines(runs: dict, ref: dict | None, root: Path = R) -> list[str]:
     return out
 
 
+def h39_lines(runs: dict, ref: dict | None, root: Path = R) -> list[str]:
+    """H39: ensembles of the solver from the initial condition of the data, read along the transient; as registered."""
+    have = {v for r in runs.values() for v in r["evaluation"]}
+    taus = sorted(float(v.rsplit("_tau", 1)[1]) for v in have if v.startswith("COLD_tau"))
+    if ref is None or not taus:
+        return []
+    rv = lambda e, k: ref["values"][f"{e:.5f}"][k]                                       # noqa: E731
+    name = lambda t: f"COLD_tau{t:g}"                                                      # noqa: E731
+    data_file = root / "e4_data.json"
+    offset = json.loads(data_file.read_text())["config"].get("data_seed_offset", 0) if data_file.exists() else None
+    full_ref = refnulls(offset)
+
+    def seedwise(v: str, fn) -> np.ndarray:
+        return np.array([np.mean([fn(x) for x in r["evaluation"][v]["test"]]) for r in runs.values() if v in r["evaluation"]])
+
+    def eb_mean(v: str) -> float:                           # as in H35: |E_B/ref − 1| of the seed mean, mean over the held-out η
+        return float(np.mean([abs(float(np.mean(a)) / rv(e, "E_B") - 1) for e, a in _per_seed(runs, v, "E_B").items()]))
+
+    def null_full(v: str) -> float:
+        return float(np.mean([abs(float(np.mean(a)) / full_ref[f"{e:.5f}"]["null_count_mean"] - 1) for e, a in _per_seed(runs, v, "null_count").items()]))
+
+    out = ["\nH39: ensembles of the solver started from the initial condition of the data and read at τ (512 trajectories per η and per seed; "
+           "seed means over the held-out η; errors as in H35).\n",
+           "| τ | null-count error | the same against the count on all the snapshots | mean \\|E_B/ref − 1\\| | energy residual | spectrum + helicity | "
+           "ED / floor | \\|det ∇B\\| / ref |", "|---|---|---|---|---|---|---|---|"]
+    stats = {}
+    for t in taus:
+        v = name(t)
+        jac = _per_seed(runs, v, "kr_jacobian_all")
+        st = {"null": float(seedwise(v, lambda x: abs(x["null_count_err_rel"])).mean()), "eb": eb_mean(v),
+              "res": float(seedwise(v, lambda x: abs(x["balance_residual_total"])).mean()),
+              "spec": float(seedwise(v, lambda x: abs(x["spec_err_b_l2"]) + abs(x["hel_m_err_rel"])).mean()),
+              "ed": float(seedwise(v, lambda x: x["ed_ratio"]).mean()),
+              "jac": float(np.mean([np.mean(a) / rv(e, "kr_jacobian_all") for e, a in jac.items()])) if jac else float("nan"),
+              "null_full": null_full(v) if full_ref else float("nan")}
+        stats[t] = st
+        out.append(f"| {t:g} | {f(st['null'])} | {f(st['null_full'])} | {f(st['eb'])} | {f(st['res'])} | {f(st['spec'])} | {f(st['ed'])} | {f(st['jac'])} |")
+    star = next((t for t in taus if stats[t]["null"] <= 0.2 and stats[t]["eb"] <= 0.05), float("inf"))
+    star_full = next((t for t in taus if stats[t]["null_full"] <= 0.2 and stats[t]["eb"] <= 0.05), float("inf")) if full_ref else float("nan")
+    star_ed = next((t for t in taus if stats[t]["ed"] <= 10), float("inf"))
+    per_seed = []
+    for r in runs.values():
+        got = "none"
+        for t in taus:
+            rows = r["evaluation"].get(name(t), {}).get("test", [])
+            if rows and np.mean([abs(x["null_count_err_rel"]) for x in rows]) <= 0.2 and np.mean([abs(x["E_B"] / rv(x["eta"], "E_B") - 1) for x in rows]) <= 0.05:
+                got = f"{t:g}"
+                break
+        per_seed.append(got)
+    fs = lambda t: "none on the grid" if np.isinf(t) else f"{t:g}"                         # noqa: E731
+    complete = set(runs) >= set(range(5)) and all(name(t) in r["evaluation"] for r in runs.values() for t in taus)
+    last = taus[-1]
+    ok = stats[last]["null"] <= 0.2 and stats[last]["eb"] <= 0.05
+    out.append(f"H39, τ*_cold (first τ of the grid " + ", ".join(f"{t:g}" for t in taus) + " with a null-count error of at most 0.2 and a mean "
+               f"|E_B/E_B,ref − 1| of at most 0.05): {fs(star)} (per seed: {', '.join(per_seed)}; against the reference count on all the "
+               f"snapshots: {'not available' if not full_ref else fs(star_full)}); first τ with an energy distance below 10 floors: {fs(star_ed)}. "
+               f"Criterion: refuted if τ*_cold is 16 or less. Check of the measurement: at τ = {last:g} the ensemble meets the two conditions "
+               f"(null-count error {f(stats[last]['null'])}, mean |E_B/ref − 1| {f(stats[last]['eb'])}): {'PASS' if ok else 'FAIL'}. Verdict on this "
+               "realisation of the data: " + ("INCOMPLETE (the seeds 0 to 4 do not all hold every τ: no verdict)" if not complete else
+                                             "MEASUREMENT INVALID (check)" if not ok else ("REFUTED" if star <= 16 else "NOT REFUTED")) + ".")
+    return out
+
+
 def select(runs: dict) -> dict:
     """Generator with the lowest validation energy-distance ratio (mean over the seeds)."""
     val = {v: float(np.nanmean(per_seed(runs, v, "ed_ratio", "val"))) for v in GENERATORS
@@ -1454,7 +1518,7 @@ def section(quick: bool = False, root: Path = R, replication: str | None = None,
                 xs, ys = np.asarray(pts).T
                 P(f"Signed drift of E_B at τ = 4 against the bias E_B,ref/E_B(0) − 1 of the law, over the {len(pts)} laws above: "
                   f"correlation {f(float(np.corrcoef(xs, ys)[0, 1]), 2)}.")
-        for line in h28_lines(runs, ref) + h29_lines(runs, ref) + h32_lines(runs, ref) + h33_lines(runs, ref, root) + h34_lines(runs, ref, root) + h35_lines(runs, ref, root) + h36_lines(runs, ref, root) + h37_lines(runs, ref, root) + h38_lines(runs, ref, root):
+        for line in h28_lines(runs, ref) + h29_lines(runs, ref) + h32_lines(runs, ref) + h33_lines(runs, ref, root) + h34_lines(runs, ref, root) + h35_lines(runs, ref, root) + h36_lines(runs, ref, root) + h37_lines(runs, ref, root) + h38_lines(runs, ref, root) + h39_lines(runs, ref, root):
             P(line)
         h27 = [x for r in runs.values() for x in r.get("h27", [])]
         if h27:

@@ -386,7 +386,10 @@ def e4():
     from e4_digest import convergence
 
     lines = section()
-    reps = [("e4_anchorpos", "H38: positive control of the anchored model of H28: W9, the anchored model trained on samples of W9 and read "
+    reps = [("e4_cold", "H39: ensembles of the solver started from the initial condition of the data, read at 8 to 200 time units: group K on "
+                        "a RunPod GPU pod, own regenerated data"),
+            ("e4_cold_indep", "H39 against the reference of the independent replication (E4_DATA_SEED=100): group K"),
+            ("e4_anchorpos", "H38: positive control of the anchored model of H28: W9, the anchored model trained on samples of W9 and read "
                              "along its training, and W9 retrained on the same samples: group P on a RunPod GPU pod, own regenerated data"),
             ("e4_recsur", "H37: the model with the affine term trained on the data and on Gaussian surrogate data, each recoloured onto the "
                           "moments of G1 (W16V, W17), G1, and reference snapshots through the same kind of map (oracle); 512 restart "
