@@ -2,6 +2,11 @@
 
 One entry per working session, newest first, at most ten lines.
 
+## 2026-11-13 - H22 supported, H23 registered, team cursor
+- Five points at n = 64, Rm = 10, all finite and all positive. The smallest lambda is 0.004400. Largest max_div_b is 5.13e-16.
+- Pod `15206ueh82oyrg`, RTX 4090, 0.04 h, 0.0316 USD. Local ledger 4.7237 USD. The sign holds at n = 64, 96, and 128.
+- H23 asks whether lambda(9.5) is positive at n = 64 for seeds 0-4. That sign may fail. It waits for a free slot. H21 is still on pod `yn68gh7vq4v6lj`.
+
 ## 2026-11-13 - H20 supported, H22 registered, team cursor
 - Five points at n = 96, Rm = 10, cfl = 1, all finite and all positive. The smallest lambda is 0.005517. Largest max_div_b is 6.11e-16.
 - Pod `9d530mb5jhqa8q`, RTX 4090, 0.11 h, 0.1000 USD. Local ledger 4.6921 USD. The sign rule was not changed.
