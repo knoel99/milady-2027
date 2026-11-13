@@ -109,13 +109,22 @@ def block_data() -> list[str]:
 
 TEX = {"½": "1/2", "η": "$\\eta$", "ν": "$\\nu$", "τ": "$\\tau$", "λ": "$\\lambda$", "π": "$\\pi$", "Σ": "$\\Sigma$",
        "⟨": "$\\langle$", "⟩": "$\\rangle$", "≥": "$\\ge$", "≤": "$\\le$", "≈": "$\\approx$", "∝": "$\\propto$",
-       "→": "$\\to$", "−": "$-$", "×": "$\\times$", "±": "$\\pm$", "·": "$\\cdot$", "²": "$^2$", "³": "$^3$", "₁": "$_1$",
-       "₀": "$_0$", "∇": "$\\nabla$", "‖": "$\\Vert$", "…": "...", "|": "/", "_": "\\_", "<": "$<$", ">": "$>$", "^": "\\^{}"}
+       "→": "$\\to$", "−": "-", "×": "$\\times$", "±": "$\\pm$", "·": "$\\cdot$", "²": "$^2$", "³": "$^3$", "₁": "$_1$",
+       "₀": "$_0$", "∇": "$\\nabla$", "‖": "$\\Vert$", "…": "...", "|": "\\|", "_": "\\_", "<": "$<$", ">": "$>$", "^": "\\^{}"}
 
 
 def tex(s: str) -> str:
     """Text of the register for a table cell of both outputs: symbols that the PDF font lacks become maths."""
     return "".join(TEX.get(ch, ch) for ch in s)
+
+
+def cut(s: str, n: int) -> str:
+    """``s`` shortened to at most about ``n`` characters at the end of a sentence or clause, for a table cell."""
+    if len(s) <= n:
+        return tex(s)
+    head = s[:n]
+    stop = max(head.rfind(". "), head.rfind("; "), head.rfind(": "))
+    return tex(head[: stop + 1] if stop > n // 2 else head[: head.rfind(" ")]) + " [...]"
 
 
 def block_hypotheses() -> list[str]:
@@ -125,10 +134,7 @@ def block_hypotheses() -> list[str]:
     for h in reg:
         if not h["id"].startswith("H") or int(h["id"][1:]) < 4:
             continue
-        st = h["statement"]
-        st = tex(st[:230]) + (" ..." if len(st) > 230 else "")
-        vd = h.get("verdict") or "not reviewed yet"
-        vd = tex(vd[:260]) + (" ..." if len(vd) > 260 else "")
+        st, vd = cut(h["statement"], 260), cut(h.get("verdict") or "not reviewed yet", 380)
         out.append(f"| {h['id']} | {st} | {h['status']} | {vd} |")
     return out
 

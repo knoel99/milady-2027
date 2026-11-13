@@ -245,6 +245,12 @@ def section(quick: bool = False, root: Path = R, replication: str | None = None,
                        ("T1 restart drift of E_B", np.mean(per_seed(runs, sv, "restart_drift_eb"))),
                        ("T2 polarity asymmetry", np.mean(per_seed(runs, sv, "hc_sign_asym")))):
         P(f"| {label} | {f(float(val))} |")
+    if floors:
+        x20 = np.asarray([np.mean([row["ed"] / floors[f"{row['eta']:.5f}"]["traj_split_512"]["mean"]
+                                   for row in r["evaluation"][sv]["test"]]) for r in runs.values()])
+        x10 = per_seed(runs, sv, "ed_ratio")
+        P(f"\nEnergy-distance ratio of {sv} per seed with the floor of the protocol (10 splits): {', '.join(f(x) for x in x10)} "
+          f"(mean {f(float(x10.mean()))}); with the floor averaged over 20 splits: {', '.join(f(float(x)) for x in x20)} (mean {f(float(x20.mean()))}).")
     if len(seeds) >= 2:
         P(f"\n### Paired comparisons over the seeds {seeds} (means over the test η; SE = sd(ddof = 1)/√n)\n")
         P("| comparison | per-seed differences | mean ± SE | mean/SE | seeds with a positive difference |")
@@ -256,6 +262,10 @@ def section(quick: bool = False, root: Path = R, replication: str | None = None,
         P(paired_row("ED ratio: W2_final_projection − W3_projected_flow (H6)", ed("W2_final_projection"), ed("W3_projected_flow")))
         P(paired_row("|energy residual|: W5_control − W5_stationarity (H7)", res("W5_control"), res("W5_stationarity")))
         P(paired_row("ED ratio: W5_stationarity − W5_control (H7)", ed("W5_stationarity"), ed("W5_control")))
+        for key, label, ab in (("balance_residual_magnetic", "|magnetic balance|", True), ("r_b", "r_b (helicity identity)", False),
+                               ("null_count_err_rel", "err. nulls", False), ("spec_err_b_l2", "err. E_B(k)", False)):   # side effects of the loss
+            P(paired_row(f"{label}: W5_stationarity − W5_control (side effect, H7)", per_seed(runs, "W5_stationarity", key, absolute=ab),
+                         per_seed(runs, "W5_control", key, absolute=ab)))
         P(paired_row("ED ratio: W7_tilting − W5_stationarity_half (H8)", ed("W7_tilting"), ed("W5_stationarity_half")))
         P(paired_row("ED ratio: W7_tilting − W5_control_half", ed("W7_tilting"), ed("W5_control_half")))
         P(paired_row("polarity asymmetry: W4_potentials − W4s_potentials_sym (H9)",

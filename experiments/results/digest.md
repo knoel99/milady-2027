@@ -661,6 +661,8 @@ Validation energy-distance ratio (mean over the seeds): W0_free 261, W1_penalty 
 | T1 restart drift of E_B | 0.124 |
 | T2 polarity asymmetry | 0.0186 |
 
+Energy-distance ratio of W9_skip_sym per seed with the floor of the protocol (10 splits): 8.76, 10.2, 9.01, 9.93, 8.89 (mean 9.35); with the floor averaged over 20 splits: 9.3, 10.8, 9.64, 10.6, 9.49 (mean 9.96).
+
 ### Paired comparisons over the seeds [0, 1, 2, 3, 4] (means over the test η; SE = sd(ddof = 1)/√n)
 
 | comparison | per-seed differences | mean ± SE | mean/SE | seeds with a positive difference |
@@ -670,6 +672,10 @@ Validation energy-distance ratio (mean over the seeds): W0_free 261, W1_penalty 
 | ED ratio: W2_final_projection − W3_projected_flow (H6) | 11.6, 1.16, 6.01, -10.6, 5.34 | 2.69 ± 3.72 | 0.72 | 4 of 5 |
 | |energy residual|: W5_control − W5_stationarity (H7) | 0.1, 0.0806, 0.0948, 0.139, 0.079 | 0.0988 ± 0.0108 | 9.1 | 5 of 5 |
 | ED ratio: W5_stationarity − W5_control (H7) | -5.41, 6.98, 7.82, 10.8, 3.64 | 4.77 ± 2.79 | 1.7 | 4 of 5 |
+| |magnetic balance|: W5_stationarity − W5_control (side effect, H7) | 0.27, 0.237, 0.283, 0.286, 0.248 | 0.265 ± 0.00966 | 27 | 5 of 5 |
+| r_b (helicity identity): W5_stationarity − W5_control (side effect, H7) | -0.0183, 0.0127, 0.0216, -0.00816, -0.0257 | -0.00358 ± 0.00901 | -0.4 | 2 of 5 |
+| err. nulls: W5_stationarity − W5_control (side effect, H7) | 0.672, 0.368, 0.573, 0.716, 0.479 | 0.562 ± 0.0634 | 8.9 | 5 of 5 |
+| err. E_B(k): W5_stationarity − W5_control (side effect, H7) | -0.737, -0.312, -0.507, -0.753, -0.466 | -0.555 ± 0.0841 | -6.6 | 0 of 5 |
 | ED ratio: W7_tilting − W5_stationarity_half (H8) | 29, 24.5, 68.8, 13.2, 14.7 | 30 ± 10.1 | 3 | 5 of 5 |
 | ED ratio: W7_tilting − W5_control_half | 26.8, 32.2, 78.6, 22.1, 19.5 | 35.8 ± 10.9 | 3.3 | 5 of 5 |
 | polarity asymmetry: W4_potentials − W4s_potentials_sym (H9) | -0.013, -0.0137, 0.00651, 0.0143, 0.00781 | 3.91e-04 ± 0.00576 | 0.068 | 3 of 5 |
@@ -841,6 +847,8 @@ Validation energy-distance ratio (mean over the seeds): G0_gaussian_modes 3.95, 
 | C5 relative error on the null count | 1.66 |
 | T1 restart drift of E_B | 0.124 |
 | T2 polarity asymmetry | 0.0186 |
+
+Energy-distance ratio of W9_skip_sym per seed with the floor of the protocol (10 splits): 8.76, 10.2, 9.01, 9.93, 8.89 (mean 9.35); with the floor averaged over 20 splits: 9.3, 10.8, 9.64, 10.6, 9.49 (mean 9.96).
 
 ### Paired comparisons over the seeds [0, 1, 2, 3, 4] (means over the test η; SE = sd(ddof = 1)/√n)
 
@@ -1029,6 +1037,10 @@ Validation energy-distance ratio (mean over the seeds): W0_free 261, W1_penalty 
 | ED ratio: W2_final_projection − W3_projected_flow (H6) | 11.6, 1.16, 6.01, -10.6, 5.34 | 2.69 ± 3.72 | 0.72 | 4 of 5 |
 | |energy residual|: W5_control − W5_stationarity (H7) | 0.1, 0.0806, 0.0948, 0.139, 0.079 | 0.0988 ± 0.0108 | 9.1 | 5 of 5 |
 | ED ratio: W5_stationarity − W5_control (H7) | -5.41, 6.98, 7.82, 10.8, 3.64 | 4.77 ± 2.79 | 1.7 | 4 of 5 |
+| |magnetic balance|: W5_stationarity − W5_control (side effect, H7) | 0.27, 0.237, 0.283, 0.286, 0.248 | 0.265 ± 0.00966 | 27 | 5 of 5 |
+| r_b (helicity identity): W5_stationarity − W5_control (side effect, H7) | -0.0183, 0.0127, 0.0216, -0.00816, -0.0257 | -0.00358 ± 0.00901 | -0.4 | 2 of 5 |
+| err. nulls: W5_stationarity − W5_control (side effect, H7) | 0.672, 0.368, 0.573, 0.716, 0.479 | 0.562 ± 0.0634 | 8.9 | 5 of 5 |
+| err. E_B(k): W5_stationarity − W5_control (side effect, H7) | -0.737, -0.312, -0.507, -0.753, -0.466 | -0.555 ± 0.0841 | -6.6 | 0 of 5 |
 | ED ratio: W7_tilting − W5_stationarity_half (H8) | 29, 24.5, 68.8, 13.2, 14.7 | 30 ± 10.1 | 3 | 5 of 5 |
 | ED ratio: W7_tilting − W5_control_half | 26.8, 32.2, 78.6, 22.1, 19.5 | 35.8 ± 10.9 | 3.3 | 5 of 5 |
 | polarity asymmetry: W4_potentials − W4s_potentials_sym (H9) | -0.013, -0.0137, 0.00651, 0.0143, 0.00781 | 3.91e-04 ± 0.00576 | 0.068 | 3 of 5 |
@@ -1224,6 +1236,8 @@ Validation energy-distance ratio (mean over the seeds): W0_free 256, W1_penalty 
 | T1 restart drift of E_B | 0.124 |
 | T2 polarity asymmetry | 0.0221 |
 
+Energy-distance ratio of W9_skip_sym per seed with the floor of the protocol (10 splits): 9.11, 10.6 (mean 9.85); with the floor averaged over 20 splits: 8.81, 10.2 (mean 9.53).
+
 ### Paired comparisons over the seeds [0, 1] (means over the test η; SE = sd(ddof = 1)/√n)
 
 | comparison | per-seed differences | mean ± SE | mean/SE | seeds with a positive difference |
@@ -1233,6 +1247,10 @@ Validation energy-distance ratio (mean over the seeds): W0_free 256, W1_penalty 
 | ED ratio: W2_final_projection − W3_projected_flow (H6) | 13.6, -1.47 | 6.05 ± 7.52 | 0.8 | 1 of 2 |
 | |energy residual|: W5_control − W5_stationarity (H7) | 0.113, 0.0814 | 0.0972 ± 0.0159 | 6.1 | 2 of 2 |
 | ED ratio: W5_stationarity − W5_control (H7) | 3.88, 14.5 | 9.19 ± 5.31 | 1.7 | 2 of 2 |
+| |magnetic balance|: W5_stationarity − W5_control (side effect, H7) | 0.313, 0.266 | 0.29 ± 0.0239 | 12 | 2 of 2 |
+| r_b (helicity identity): W5_stationarity − W5_control (side effect, H7) | 0.00622, -0.008 | -8.89e-04 ± 0.00711 | -0.12 | 1 of 2 |
+| err. nulls: W5_stationarity − W5_control (side effect, H7) | 0.738, 0.398 | 0.568 ± 0.17 | 3.3 | 2 of 2 |
+| err. E_B(k): W5_stationarity − W5_control (side effect, H7) | -0.83, -0.341 | -0.585 ± 0.244 | -2.4 | 0 of 2 |
 | ED ratio: W7_tilting − W5_stationarity_half (H8) | 7.28, 2.72 | 5 ± 2.28 | 2.2 | 2 of 2 |
 | ED ratio: W7_tilting − W5_control_half | 11.4, 16 | 13.7 ± 2.33 | 5.9 | 2 of 2 |
 | polarity asymmetry: W4_potentials − W4s_potentials_sym (H9) | 0.00651, 0.00651 | 0.00651 ± 0 | – | 2 of 2 |
