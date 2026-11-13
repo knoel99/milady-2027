@@ -423,14 +423,41 @@ So on this system the flow-matching models that carry their linear part learn pa
 
 ![Physical metrics on the held-out $\eta$, one dot per seed and seed mean $\pm 2$ standard errors: residuals of the mean total and magnetic energy balances, errors on the mean magnetic helicity and on the number of magnetic null points, drifts of the magnetic and kinetic energies when the solver restarts from the generated snapshots. Dashed lines: the same quantity on reference snapshots. Data plot from `experiments/results/e4_mhd3d_s<k>.json`.](../plots/e4_physics_metrics){#fig-physics width=100%}
 
+### Two Gaussian laws: what the covariance between modes holds {#sec-g1}
+
+<!-- e4:g1text:begin -->
+<!-- e4:g1text:end -->
+
+```{=latex}
+\begin{landscape}
+\footnotesize\setlength{\tabcolsep}{3pt}
+```
+
+<!-- e4:mech:begin -->
+
+: Gaussian laws and mechanisms on the model with the affine term (measured; `experiments/results/replications/e4_mech`, five seeds, held-out $\eta$; the models G0, W9 and W11 are retrained in this job). G1: Gaussian law with the full covariance of the latent. W12: W9 fine-tuned with the stationarity loss, and its control. W13: exponential tilting of the second half of the control samples, to compare with the untilted half. Columns and notation as in @tbl-comparative. {#tbl-mech}
+
+<!-- e4:mech:end -->
+
+```{=latex}
+\end{landscape}
+```
+
+![Restart test: signed relative change of the ensemble-mean magnetic and kinetic energies when the solver restarts from generated snapshots, at four times, mean over the held-out $\eta$ and the seeds (bars: $\pm 2$ standard errors). Data plot from `experiments/results/replications/e4_mech/e4_mhd3d_s<k>.json`.](../plots/e4_restart_curves){#fig-restart width=90%}
+
+### Loss and sampling mechanisms on a model close to the reference {#sec-mech}
+
+<!-- e4:mechtext:begin -->
+<!-- e4:mechtext:end -->
+
 ### Longer trainings and wider networks {#sec-long}
 
 <!-- e4:longtext:begin -->
-Would the models with an affine term overtake the Gaussian law with more training? The two best models were retrained with eight times the iterations (W9L, W11L; @tbl-long, @fig-long), in a separate job whose base models reproduce those of the main run to the last digit.
+Would the models with an affine term overtake the Gaussian law with more training? The two best models were retrained with eight times the iterations (W9L, W11L; @tbl-long, @fig-long), in a separate job whose base models reproduce those of the main run bit for bit.
 
-The answer is no, and the result is a negative one. The flow-matching loss on training samples goes down (from 1.18 to 1.08), but the generated law moves away from the reference: 18.8 and 19.5 floors on the held-out $\eta$ against 9.3 and 8.6, and 12 against 5.5 on the training $\eta$ themselves. The longer training improves the topology (error on the null count 1.4 against 1.7) and keeps the magnetic energy balance (residual 0.05), while the total energy balance and the restart drifts get somewhat worse. Why a lower training loss gives a worse law was not established; a decrease of the loss that sharpens the velocity field beyond what 50 integration steps resolve is one **conjecture**, memorisation of the 14 400 training snapshots another.
+The answer is no, and the result is a negative one. The flow-matching loss on training samples goes down (from 1.18 to 1.08), but the generated law moves away from the reference: 18.8 and 19.5 floors on the held-out $\eta$ against 9.3 and 8.6, and 12 against 5.5 on the training $\eta$ themselves. The effect is present in every seed and at every $\eta$ evaluated, and largest at the smallest $\eta$. The longer training improves the topology (error on the null count 1.4 against 1.7) and keeps the magnetic energy balance (residual 0.05), while the residual of the total energy balance nearly doubles and the restart drift of the kinetic energy rises; the restart drift of the magnetic energy is not separable from that of the base models. Why a lower training loss gives a worse law was not established; a decrease of the loss that sharpens the velocity field beyond what 50 integration steps resolve is one **conjecture**, memorisation of the 14 400 training snapshots another.
 
-The hypothesis registered for this run (H18) was narrower: that with the affine term and a long training, flow matching holds what a Gaussian law cannot, a lower restart drift of the magnetic energy and a lower error on the null count than G0. Both paired differences are positive in the five seeds ($0.070 \pm 0.011$ and $0.86 \pm 0.03$).
+The hypothesis registered for this run (H18) was narrower: that with the affine term and a long training, flow matching holds what a Gaussian law cannot, a lower restart drift of the magnetic energy and a lower error on the null count than G0. Both paired differences are positive in the five seeds ($0.070 \pm 0.011$ and $0.86 \pm 0.03$): H18 is **confirmed** as registered. The credit does not go to the long training, though: the models at the base budget already meet both clauses, and the long training does not improve the drift.
 <!-- e4:longtext:end -->
 
 ```{=latex}
@@ -492,9 +519,9 @@ The number of magnetic null points is the most demanding of the metrics: no gene
 ### Replication with other data {#sec-replication}
 
 <!-- e4:indeptext:begin -->
-The five-seed runs made on pods of the same type reproduce one another to the last digits, because the data and model seeds are the same: they check the reproducibility of the pipeline, not the robustness of the conclusions. For that, the whole protocol (groups A to E, five seeds) was run once more on reference data regenerated with other seeds of the initial conditions (@tbl-indep). The statistics of the two reference sets agree; the noise floors differ by up to a factor of 1.6 at one held-out value, which moves the ratios by 5 to 15 %.
+The five-seed runs made on pods of the same type reproduce one another to the last digits, because the data and model seeds are the same: they check the reproducibility of the pipeline, not the robustness of the conclusions. For that, the whole protocol (groups A to E, five seeds) was run once more on reference data regenerated with other seeds of the initial conditions (@tbl-indep). The statistics of the two reference sets agree within their standard errors. The ratios of the replication differ from those of the main run by $-18$ % to $+12$ %; part of this comes from the noise floors (they differ by a factor of 1.6 at one held-out value) and part from the distances themselves, which are 8 to 13 % lower for the three best laws.
 
-Every conclusion of this section is unchanged in the replication: the first-generation models are between 110 and 490 floors from the reference, in the same order; the affine term brings the equivariant model from 191 to 8.2 floors (a factor of 23); the mode-wise Gaussian law is closer (2.9) and has no magnetic production; the anchored model without correction stays at 43 floors; the null-count errors and restart drifts keep their order.
+Every conclusion of this section is unchanged in the replication, and so is every verdict recomputed on it by the `encadrant`: the first-generation models are between 110 and 490 floors from the reference, in the same order (the only inversions are among the half-sample and tilted ensembles); the affine term brings the equivariant model from 191 to 8.2 floors (a factor of 23); the mode-wise Gaussian law is closer (2.9) and has no magnetic production; the anchored model without correction stays at 43 floors; the null-count errors and restart drifts keep their order.
 <!-- e4:indeptext:end -->
 
 ```{=latex}

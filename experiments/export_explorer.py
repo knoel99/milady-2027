@@ -4,7 +4,7 @@
 
 Reads, for team claude (experiment E4): the main run in ``experiments/results`` (``e4_data.json``,
 ``e4_reference.json``, ``e4_mhd3d_s<k>.json``, ``e4_samples_s0_*.npz``), the long trainings and the width scan
-(``results/replications/e4_final_long``, ``e4_final_scan``; only the variants the main run does not hold), the
+(``results/replications/e4_final_long``, ``e4_mech``, ``e4_scan2``, ``e4_final_scan``; only the variants not already read), the
 hypothesis register ``research/hypotheses.json`` and the GPU ledger ``research/compute-ledger.jsonl``.
 
 Writes ``site/teams/<team>/explorer/data/``: ``e4.json`` (reference and per-seed rows of every variant at every η),
@@ -53,6 +53,12 @@ LABEL = {
     "G0_gaussian_modes": ("G0 Gaussian per mode (no network)", "family"), "W9_skip_sym": ("W9 mode-wise affine term", "design"),
     "W10_anchored": ("W10 anchored on the Gaussian field", "design"), "W11_anchored_skip": ("W11 anchor + affine term", "design"),
     "W9L_skip_long": ("W9L affine term, 8× iterations", "design"), "W11L_anchored_skip_long": ("W11L anchor + affine, 8× iterations", "design"),
+    "G1_gaussian_full": ("G1 Gaussian, full covariance (no network)", "family"),
+    "W12_skip_stationarity": ("W12 affine term + stationarity loss", "loss"),
+    "W12_skip_control": ("W12 control (same fine-tuning, no identity)", "loss"),
+    "W13_skip_tilting": ("W13 affine term + exponential tilting", "sampling"),
+    "W12_skip_stationarity_half": ("W12 stationarity loss, half ensemble", "loss"),
+    "W12_skip_control_half": ("W12 control, half ensemble", "loss"),
     "S_w512": ("S width 512", "family"), "S_w2048": ("S width 2048", "family"), "S_w5632": ("S width 5632", "family"),
     "S_w512_long": ("S width 512, 8× iterations", "family"), "S_w2048_long": ("S width 2048, 8× iterations", "family"),
 }
@@ -62,6 +68,7 @@ HYP = {  # hypotheses in which a variant is one side of the registered compariso
     "W5_control": ["H7"], "W6_diffusion": ["H10"], "W7_tilting": ["H8", "H12"], "W8_rescaling": [],
     "W4c_potentials_smooth": ["H15"], "G0_gaussian_modes": ["H16", "H18", "H19", "H20"], "W9_skip_sym": ["H17", "H18"],
     "W10_anchored": ["H19", "H20"], "W11_anchored_skip": ["H20"], "W9L_skip_long": ["H18"], "W11L_anchored_skip_long": ["H18", "H20"],
+    "G1_gaussian_full": ["H22"], "W12_skip_stationarity": ["H23"], "W12_skip_control": ["H23", "H24"], "W13_skip_tilting": ["H24"],
     "S_w512": ["H21"], "S_w2048": ["H21"], "S_w5632": ["H21"], "S_w512_long": ["H21"], "S_w2048_long": ["H21"],
 }
 
@@ -153,7 +160,7 @@ def main() -> None:
 
     sets = [("experiments/results", load(a.quick))]
     if not a.quick:
-        sets += [(f"experiments/results/replications/{n}", load(False, R / "replications" / n)) for n in ("e4_final_long", "e4_final_scan")]
+        sets += [(f"experiments/results/replications/{n}", load(False, R / "replications" / n)) for n in ("e4_final_long", "e4_mech", "e4_scan2", "e4_final_scan")]
     variants, table, seen = [], [], set()
     for source, runs in sets:
         if not runs:

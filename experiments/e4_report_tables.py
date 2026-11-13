@@ -5,10 +5,10 @@
 
 A block of the report is the text between ``<!-- e4:<name>:begin -->`` and ``<!-- e4:<name>:end -->``. Blocks:
 ``data`` (reference data per η), ``comparative`` (variant × metric on the held-out η, seed mean ± SE),
-``hypotheses`` (register with the verdicts), ``long`` and ``scan`` (long trainings, width scan), ``indep`` (replication
+``hypotheses`` (register with the verdicts), ``long``, ``scan`` and ``mech`` (long trainings, width scan, Gaussian law with inter-mode covariance and mechanisms on W9), ``indep`` (replication
 with other data seeds), ``objectives`` (targets of race/teams/claude/objectives.toml against the measured values),
 ``jobs`` (GPU ledger). Sources: ``experiments/results`` (main run), ``results/replications/e4_final_long``,
-``e4_final_scan``, ``e4_indep``, ``research/hypotheses.json``, ``research/compute-ledger.jsonl``.
+``e4_scan2`` (else ``e4_final_scan``), ``e4_mech``, ``e4_indep``, ``research/hypotheses.json``, ``research/compute-ledger.jsonl``.
 """
 from __future__ import annotations
 
@@ -196,7 +196,8 @@ def blocks() -> dict[str, list[str]]:
     main = load(False)
     names = [v for v in LABEL if not v.endswith("_half") and not v.startswith("S_") and not v.endswith("_long")]
     long = load(False, R / "replications" / "e4_final_long")
-    scan = load(False, R / "replications" / "e4_final_scan")
+    scan = load(False, R / "replications" / "e4_scan2") or load(False, R / "replications" / "e4_final_scan")
+    mech = load(False, R / "replications" / "e4_mech")
     return {
         "data": block_data(),
         "comparative": variants_table(main, names),
@@ -205,6 +206,8 @@ def blocks() -> dict[str, list[str]]:
                                       "W11L_anchored_skip_long"], extra_loss=True) if long else ["*(not available)*"],
         "scan": variants_table(scan, ["S_w512", "S_w2048", "S_w5632", "S_w512_long", "S_w2048_long", "W9_skip_sym", "G0_gaussian_modes"],
                                extra_loss=True) if scan else ["*(not available)*"],
+        "mech": variants_table(mech, ["G0_gaussian_modes", "G1_gaussian_full", "W9_skip_sym", "W11_anchored_skip", "W12_skip_control",
+                                      "W12_skip_stationarity", "W12_skip_control_half", "W13_skip_tilting"]) if mech else ["*(not available)*"],
         "indep": block_indep(main),
         "objectives": block_objectives(),
         "jobs": block_jobs(),

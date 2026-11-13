@@ -39,6 +39,8 @@ LABEL = {
     "W9_skip_sym": "W9 affine term", "W10_anchored": "W10 Gaussian anchor", "W11_anchored_skip": "W11 anchor + affine term",
     "W9L_skip_long": "W9L affine term, 8× iterations", "W11L_anchored_skip_long": "W11L anchor + affine, 8× iterations",
     "W7_tilting": "W7 tilting", "W8_rescaling": "W8 per-sample rescaling",
+    "G1_gaussian_full": "G1 Gaussian, full covariance (no network)", "W12_skip_stationarity": "W12 affine + stationarity loss",
+    "W12_skip_control": "W12 control", "W13_skip_tilting": "W13 affine + tilting",
     "S_w512": "width 512", "S_w2048": "width 2048", "S_w5632": "width 5632", "S_w512_long": "width 512, 8× iterations",
     "S_w2048_long": "width 2048, 8× iterations",
 }
@@ -372,7 +374,7 @@ def plot_convergence(out: Path) -> None:
 
 
 def plot_scan(out: Path, tag: str) -> None:
-    runs = load(bool(tag), R if tag else R / "replications" / "e4_final_scan")
+    runs = load(True, R) if tag else (load(False, R / "replications" / "e4_scan2") or load(False, R / "replications" / "e4_final_scan"))
     names = [v for v in ("S_w512", "S_w2048", "S_w5632", "S_w512_long", "S_w2048_long", "W9_skip_sym", "G0_gaussian_modes")
              if runs and not np.all(np.isnan(per_seed(runs, v, "ed_ratio")))]
     if not names or not names[0].startswith("S_"):
@@ -420,6 +422,38 @@ def plot_long(out: Path, tag: str) -> None:
     finish(fig, out, "e4_long_trainings", "Gaussian baseline (violet), flow matching with the explicit affine term or the Gaussian anchor "
            "at the base budget (blue) and with 8 times the iterations (orange), on the held-out η: one dot per seed, seed mean ± 2 standard errors.",
            ["experiments/results/replications/e4_final_long/e4_mhd3d_s<k>.json"])
+
+
+def plot_restart(out: Path) -> None:
+    """Course of the restart drift for the two Gaussian laws and the models with the affine term (run e4_mech)."""
+    runs = load(False, R / "replications" / "e4_mech")
+    names = [v for v in ("G0_gaussian_modes", "G1_gaussian_full", "W9_skip_sym", "W11_anchored_skip") if runs and rows_of(runs, v, "test")]
+    if not names or "restart_curve" not in next(iter(rows_of(runs, names[0], "test").values()))[0]:
+        print("skip e4_restart_curves")
+        return
+    fig, axes = plt.subplots(1, 2, figsize=(8.4, 3.0))
+    for i, v in enumerate(names):
+        per = []                                           # per seed: mean over the held-out η of the signed curves
+        for r in runs.values():
+            rows = [x for x in r["evaluation"].get(v, {}).get("test", []) if "restart_curve" in x]
+            if rows:
+                per.append((np.mean([x["restart_curve"]["eb"] for x in rows], axis=0), np.mean([x["restart_curve"]["eu"] for x in rows], axis=0)))
+        tau = next(iter(rows_of(runs, v, "test").values()))[0]["restart_curve"]["tau"]
+        col = C[6] if v.startswith("G0") else (C[3] if v.startswith("G1") else C[i])
+        for ax, k in zip(axes, (0, 1), strict=True):
+            a = np.array([p[k] for p in per])
+            m = a.mean(0)
+            se = a.std(0, ddof=1) / np.sqrt(len(a)) if len(a) >= MIN_SEEDS else np.zeros_like(m)
+            ax.errorbar([0, *tau], [0, *m], yerr=[0, *(2 * se)], color=col, marker="o", ms=3.5, capsize=2, label=LABEL.get(v, v))
+    for ax, lab in zip(axes, (r"relative change of $E_B$", r"relative change of $E_u$"), strict=True):
+        ax.axhline(0, color=INK2, lw=0.8)
+        ax.set_xlabel(r"time $\tau$ after the restart in the solver")
+        ax.set_title(lab)
+    axes[0].legend(fontsize=7)
+    fig.tight_layout()
+    finish(fig, out, "e4_restart_curves", "Restart test: signed relative change of the ensemble-mean magnetic and kinetic energies when the solver "
+           "restarts from generated snapshots, at four times, mean over the held-out η and the seeds (bars: ± 2 standard errors).",
+           ["experiments/results/replications/e4_mech/e4_mhd3d_s<k>.json"])
 
 
 def plot_costs(out: Path) -> None:
@@ -470,6 +504,7 @@ def main() -> None:
     plot_convergence(a.out)
     plot_scan(a.out, tag)
     plot_long(a.out, tag)
+    plot_restart(a.out)
     plot_costs(a.out)
     (a.out / "plots.json").write_text(json.dumps(WRITTEN, indent=1), encoding="utf-8")
     print(len(WRITTEN), "plots")
