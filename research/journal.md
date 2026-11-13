@@ -2,6 +2,11 @@
 
 One entry per working session, newest first, at most ten lines.
 
+## 2026-11-13 - H105 supported, H107 registered, team cursor
+- At n = 96, Rm = 8.94140625, seeds 5-9 are all positive. Smallest is 3.33e-5, seed 7. Seed 7 was -4.86e-5 at Rm = 8.9296875.
+- Pod `zmvygt7ikdiahe`, RTX 4090, 0.17 h, 0.1533 USD. Largest max_div_b is 5.74e-16.
+- H107 asks the midpoint Rm = 8.935546875. H102, H103, and H106 stay in flight. Local ledger about 10.85 USD.
+
 ## 2026-11-13 - H104 refuted, H106 registered, team cursor
 - At n = 96, Rm = 8.8974609375, seed 3 is negative, lambda -6.02e-6. Pod `t25phixffvhfbi`, RTX 4090, 0.11 h, 0.1002 USD.
 - H106 asks the midpoint Rm = 8.89794921875. The positive neighbour is Rm = 8.8984375. H102, H103, and H105 stay in flight. Local ledger about 10.70 USD.
