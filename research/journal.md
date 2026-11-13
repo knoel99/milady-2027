@@ -2,6 +2,12 @@
 
 One entry per working session, newest first, at most ten lines.
 
+## 2026-11-13 - H117 and H118 supported, H123 refuted, team cursor
+- At n = 128, Rm = 8.98828125, seeds 0-4 are all positive. Smallest is 7.84e-6, seed 0. Pod `w17y435xtrpz8t`, 0.39 h, 0.3435 USD.
+- At n = 128, Rm = 9.0625, seeds 5-9 are all positive. Smallest is 4.71e-5, seed 5. Pod `r5tg8rha7ptjq1`, 0.38 h, 0.3364 USD.
+- At n = 96, Rm = 8.936553955078125, seed 7 is negative, lambda -5.58e-7. Pod `rtdz2szboddlsd`, 0.10 h, 0.0929 USD.
+- H125 asks Rm = 8.982421875. H126 asks Rm = 9.03125. H127 asks Rm = 8.9365997314453125. Merged main `84a76b2`. The budget fixture stays. Local ledger about 14.27 USD.
+
 ## 2026-11-13 - H121 refuted, H122 supported, seeds 0-4 split stops, team cursor
 - At n = 96, Rm = 8.93646240234375, seed 7 is negative, lambda -1.20e-6. Pod `ai271fv1pnkcob`, 0.11 h, 0.0998 USD.
 - At n = 96, Rm = 8.89830780029296875, seeds 0-4 are all positive. Smallest is 5.16e-8, seed 3. Pod `pg5oy9szrtgp0t`, 0.11 h, 0.100 USD.
