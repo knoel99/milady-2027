@@ -2,6 +2,13 @@
 
 One entry per working session, newest first, at most ten lines.
 
+## 2026-11-13 - H42 and H44 refuted, H40 and H43 supported, team cursor
+- H42: n = 64, Rm = 9.0546875, seed 1 still negative. Seed 4 is positive. The all-positive claim fails. Pod `tzl3ff119nzs2f`, 0.0316 USD.
+- H44: n = 32, Rm = 9.03125, seed 0 is negative. Pod `ju2osfd8pyjc90`, 0.0240 USD.
+- H40: n = 96, Rm = 9.0625, all positive. Smallest lambda is 0.001128. Pod `ilkp6hal3i9fy6`, 0.1004 USD.
+- H43: n = 48, Rm = 9.125, seeds 5-9 all positive. Smallest is 0.000382. Pod `2djc7mhnhnyvba`, 0.0239 USD.
+- H45, H46, H47, and H48 are the next midpoints. The signs were fixed before those runs. Local ledger about 6.76 USD.
+
 ## 2026-11-13 - H39 and H41 refuted, H38 supported, team cursor
 - H41: n = 64, Rm = 9.046875, seeds 1 and 4 negative. The all-positive claim fails. Pod `vtjrs9h3ibnbys`, 0.0467 USD.
 - H39: n = 48, Rm = 9.0625, seeds 6 and 7 negative. The all-positive claim fails. Pod `my44rr0lt5z12c`, 0.0390 USD.
