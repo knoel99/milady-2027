@@ -1,22 +1,23 @@
-# Usage report (2026-11-13T04:25:34Z)
+# Usage report (2026-11-13T06:42:29Z)
 
-Sessions: 1; first response 2026-11-12T16:50:21.852Z; last 2026-11-13T04:25:30.891Z; span 11.59 h.
+Sessions: 1; first response 2026-11-12T16:50:21.852Z; last 2026-11-13T06:42:27.133Z; span 13.87 h.
 Main session: models ['claude-fable-5-2'], efforts ['high']; expected claude-fable-5-2 / high: conforms.
-API-equivalent cost of the Claude calls: **$164.01** (prices of race/config.toml [pricing]).
-GPU: 28 job(s), 16.628 h, **$15.78** of a $140.0 budget.
+API-equivalent cost of the Claude calls: **$196.86** (prices of race/config.toml [pricing]).
+GPU: 30 job(s), 18.428 h, **$17.08** of a $140.0 budget.
 
 | model | API calls | input | cache write 5m | cache write 1h | cache read | output | of which thinking | cost |
 |---|---|---|---|---|---|---|---|---|
-| claude-fable-5-2 | 689 | 1,367 | 1,903,034 | 1,690,489 | 274,979,332 | 1,358,780 | 682,106 | $155.44 |
+| claude-fable-5-2 | 826 | 1,634 | 2,328,075 | 2,057,103 | 328,055,142 | 1,661,913 | 852,236 | $188.3 |
 | claude-sonnet-5-5 | 201 | 470 | 1,464,623 | 0 | 23,497,224 | 255,753 | 107,746 | $8.57 |
 
-Sub-agents: 26 call(s), 0 not conforming to agents/roles/; by type {'general-purpose': 9, 'jury-externe': 5, 'biblio': 2, 'encadrant': 8, 'physicien': 2}.
+Sub-agents: 31 call(s), 0 not conforming to agents/roles/; by type {'general-purpose': 9, 'jury-externe': 7, 'encadrant': 11, 'biblio': 2, 'physicien': 2}.
 
 | type | models | efforts | expected | API calls | output | cost | description |
 |---|---|---|---|---|---|---|---|
 | general-purpose | claude-sonnet-5-5 | medium | – | 20 | 33,210 | $0.9517 | Schematics: bottleneck and identities |
 | general-purpose | claude-sonnet-5-5 | medium | – | 21 | 39,710 | $1.1535 | Schematics: problem and metrics |
 | jury-externe | claude-fable-5-2 | max | claude-fable-5-2 / max | 17 | 144,770 | $8.7387 | Jury review: report v1 |
+| encadrant | claude-fable-5-2 | medium | claude-fable-5-2 / medium | 9 | 12,983 | $1.4367 | Encadrant: digest additions v3 |
 | jury-externe | claude-fable-5-2 | max | claude-fable-5-2 / max | 10 | 132,697 | $10.0026 | Jury review: report v2 |
 | biblio | claude-sonnet-5-5 | medium | claude-sonnet-5-5 / medium | 2 | 697 | $0.0504 | Role check: biblio Prop 1 |
 | jury-externe | claude-fable-5-2 | max | claude-fable-5-2 / max | 2 | 5,052 | $0.444 | Role check: jury-externe Prop 1 |
@@ -26,10 +27,14 @@ Sub-agents: 26 call(s), 0 not conforming to agents/roles/; by type {'general-pur
 | encadrant | claude-fable-5-2 | medium | claude-fable-5-2 / medium | 8 | 14,273 | $1.3043 | Encadrant: H21 and G1 replication |
 | jury-externe | claude-fable-5-2 | max | claude-fable-5-2 / max | 41 | 76,650 | $7.1746 | Jury review: deliverable figures |
 | general-purpose | claude-sonnet-5-5 | medium | – | 9 | 8,373 | $0.4509 | Update two schematics with G1 |
+| jury-externe | claude-fable-5-2 | max | claude-fable-5-2 / max | 7 | 118,663 | $6.8616 | Jury review: report v3 and test plan |
 | general-purpose | claude-sonnet-5-5 | medium | – | 15 | 18,805 | $0.6994 | Fix five schematics after jury |
 | physicien | claude-fable-5-2 | high | claude-fable-5-2 / high | 5 | 27,689 | $1.7479 | Physicien: E4 conjectures |
+| encadrant | claude-fable-5-2 | medium | claude-fable-5-2 / medium | 16 | 34,636 | $2.775 | Encadrant review H25-H27 |
 | general-purpose | claude-sonnet-5-5 | medium | – | 20 | 36,970 | $0.9731 | Schematics: pipeline and mechanisms |
 | encadrant | claude-fable-5-2 | medium | claude-fable-5-2 / medium | 10 | 25,950 | $2.2439 | Encadrant: H11 and E4 reference protocol |
+| encadrant | claude-fable-5-2 | medium | claude-fable-5-2 / medium | 1 | 370 | $0.1453 | Encadrant check of v4 numbers |
+| jury-externe | claude-fable-5-2 | max | claude-fable-5-2 / max | 1 | 423 | $0.1445 | Jury-externe review report v4 |
 | biblio | claude-sonnet-5-5 | medium | claude-sonnet-5-5 / medium | 6 | 6,708 | $0.1622 | Biblio: E4 references and prior art |
 | general-purpose | claude-sonnet-5-5 | medium | – | 21 | 31,422 | $0.9916 | Schematics: protocol and compute path |
 | encadrant | claude-fable-5-2 | medium | claude-fable-5-2 / medium | 11 | 19,806 | $1.9591 | Encadrant review: e4_main and bug |
@@ -42,4 +47,4 @@ Sub-agents: 26 call(s), 0 not conforming to agents/roles/; by type {'general-pur
 | general-purpose | claude-sonnet-5-5 | medium | – | 32 | 45,046 | $1.4153 | Archify diagrams for team claude |
 
 Role calls through tools/call_model.py or run_role.py: 0.
-Tool calls of the main session: {'Bash': 496, 'Read': 35, 'Agent': 26, 'Write': 11, 'ToolSearch': 2, 'mcp__claude-code-remote__get_session': 1, 'Grep': 1, 'SendMessage': 1}.
+Tool calls of the main session: {'Bash': 591, 'Read': 40, 'Agent': 31, 'Write': 12, 'ToolSearch': 2, 'mcp__claude-code-remote__get_session': 1, 'Grep': 1, 'SendMessage': 1}.

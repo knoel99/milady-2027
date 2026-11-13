@@ -1,5 +1,5 @@
 {
- "generated": "2026-11-13T04:25:34Z",
+ "generated": "2026-11-13T06:42:29Z",
  "projects": "/root/.claude/projects/-home-user-milady-2027",
  "sessions": 1,
  "main_session": {
@@ -10,23 +10,23 @@
    "high"
   ],
   "expected": "claude-fable-5-2 / high",
-  "responses": 515,
+  "responses": 618,
   "off_spec": 0,
   "conforms": true
  },
  "first": "2026-11-12T16:50:21.852Z",
- "last": "2026-11-13T04:25:30.891Z",
- "span_hours": 11.59,
+ "last": "2026-11-13T06:42:27.133Z",
+ "span_hours": 13.87,
  "by_model": {
   "claude-fable-5-2": {
-   "input": 1367,
-   "cache_write_5m": 1903034,
-   "cache_write_1h": 1690489,
-   "cache_read": 274979332,
-   "output": 1358780,
-   "thinking": 682106,
-   "calls": 689,
-   "usd": 155.44
+   "input": 1634,
+   "cache_write_5m": 2328075,
+   "cache_write_1h": 2057103,
+   "cache_read": 328055142,
+   "output": 1661913,
+   "thinking": 852236,
+   "calls": 826,
+   "usd": 188.3
   },
   "claude-sonnet-5-5": {
    "input": 470,
@@ -39,14 +39,14 @@
    "usd": 8.57
   }
  },
- "total_usd": 164.01,
+ "total_usd": 196.86,
  "subagents": {
-  "count": 26,
+  "count": 31,
   "by_type": {
    "general-purpose": 9,
-   "jury-externe": 5,
+   "jury-externe": 7,
+   "encadrant": 11,
    "biblio": 2,
-   "encadrant": 8,
    "physicien": 2
   },
   "calls": [
@@ -93,6 +93,23 @@
     "usd": 8.7387,
     "off_spec": 0,
     "expected": "claude-fable-5-2 / max",
+    "conforms": true
+   },
+   {
+    "id": "agent-a162ac5ca048d431f",
+    "type": "encadrant",
+    "description": "Encadrant: digest additions v3",
+    "models": [
+     "claude-fable-5-2"
+    ],
+    "efforts": [
+     "medium"
+    ],
+    "calls": 9,
+    "output": 12983,
+    "usd": 1.4367,
+    "off_spec": 0,
+    "expected": "claude-fable-5-2 / medium",
     "conforms": true
    },
    {
@@ -243,6 +260,23 @@
     "usd": 0.4509
    },
    {
+    "id": "agent-a65b9509411b71f28",
+    "type": "jury-externe",
+    "description": "Jury review: report v3 and test plan",
+    "models": [
+     "claude-fable-5-2"
+    ],
+    "efforts": [
+     "max"
+    ],
+    "calls": 7,
+    "output": 118663,
+    "usd": 6.8616,
+    "off_spec": 0,
+    "expected": "claude-fable-5-2 / max",
+    "conforms": true
+   },
+   {
     "id": "agent-a86dbd9dd988e2c8a",
     "type": "general-purpose",
     "description": "Fix five schematics after jury",
@@ -274,6 +308,23 @@
     "conforms": true
    },
    {
+    "id": "agent-a8d94464dec64b5c5",
+    "type": "encadrant",
+    "description": "Encadrant review H25-H27",
+    "models": [
+     "claude-fable-5-2"
+    ],
+    "efforts": [
+     "medium"
+    ],
+    "calls": 16,
+    "output": 34636,
+    "usd": 2.775,
+    "off_spec": 0,
+    "expected": "claude-fable-5-2 / medium",
+    "conforms": true
+   },
+   {
     "id": "agent-a908c0405dad55864",
     "type": "general-purpose",
     "description": "Schematics: pipeline and mechanisms",
@@ -302,6 +353,40 @@
     "usd": 2.2439,
     "off_spec": 0,
     "expected": "claude-fable-5-2 / medium",
+    "conforms": true
+   },
+   {
+    "id": "agent-aa0c8d0bdc90f96b5",
+    "type": "encadrant",
+    "description": "Encadrant check of v4 numbers",
+    "models": [
+     "claude-fable-5-2"
+    ],
+    "efforts": [
+     "medium"
+    ],
+    "calls": 1,
+    "output": 370,
+    "usd": 0.1453,
+    "off_spec": 0,
+    "expected": "claude-fable-5-2 / medium",
+    "conforms": true
+   },
+   {
+    "id": "agent-aa5122cdd1796d8aa",
+    "type": "jury-externe",
+    "description": "Jury-externe review report v4",
+    "models": [
+     "claude-fable-5-2"
+    ],
+    "efforts": [
+     "max"
+    ],
+    "calls": 1,
+    "output": 423,
+    "usd": 0.1445,
+    "off_spec": 0,
+    "expected": "claude-fable-5-2 / max",
     "conforms": true
    },
    {
@@ -469,10 +554,10 @@
   "nonconforming": 0
  },
  "tool_calls": {
-  "Bash": 496,
-  "Read": 35,
-  "Agent": 26,
-  "Write": 11,
+  "Bash": 591,
+  "Read": 40,
+  "Agent": 31,
+  "Write": 12,
   "ToolSearch": 2,
   "mcp__claude-code-remote__get_session": 1,
   "Grep": 1,
@@ -480,14 +565,14 @@
  },
  "role_calls_via_tools": 0,
  "gpu": {
-  "jobs": 28,
-  "hours": 16.628,
-  "usd": 15.78,
+  "jobs": 30,
+  "hours": 18.428,
+  "usd": 17.08,
   "by_gpu": {
    "NVIDIA RTX PRO 4500 Blackwell": {
-    "jobs": 23,
-    "hours": 11.9892,
-    "usd": 8.632100000000001
+    "jobs": 25,
+    "hours": 13.7889,
+    "usd": 9.927900000000001
    },
    "NVIDIA RTX A6000": {
     "jobs": 1,
