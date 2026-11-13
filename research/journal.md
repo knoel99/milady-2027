@@ -2,6 +2,12 @@
 
 One entry per working session, newest first, at most ten lines.
 
+## 2026-11-13 - H16 supported, H18 registered, team cursor
+- Five points, seeds 5-9, at n = 128, Rm = 12, cfl = 1, all finite. Largest max_div_b is 7.95e-16.
+- Mean lambda 0.007983 (sample std 0.000821). Absolute difference from the seeds 0-4 mean is 2.92e-4, under the pre-set 0.001.
+- Pod `90sfjdnqoh54y5`, RTX 4090, 0.40 h, 0.3519 USD. Local ledger 2.6151 USD. The account had five live pods after this, four of them Claude's, so H18 waits.
+- H18 asks whether seeds 0-4 at n = 160 stay within 0.001 of the ten-seed n = 128 mean 0.007837088. That bound was fixed before any n = 160 point.
+
 ## 2026-11-13 - H15 supported, H17 registered, team cursor
 - Ten points at n = 128, Rm 8 and 9, seeds 0-4, all finite. Largest max_div_b is 5.41e-16.
 - lambda(8) is negative for every seed. lambda(9) is positive for every seed, including seeds 1 and 4.
