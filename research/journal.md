@@ -2,6 +2,10 @@
 
 One entry per working session, newest first, at most ten lines.
 
+## 2026-11-13 - H129 refuted, H130 registered, team cursor
+- At n = 96, Rm = 8.93662261962890625, seed 7 is negative, lambda -7.87e-8. The positive neighbour is +8.11e-8. Pod `ik9xvtteuwatn4`, 0.12 h, 0.1077 USD.
+- H130 asks the midpoint Rm = 8.936634063720703125. H125, H126, and H128 stay in flight. Local ledger about 14.65 USD.
+
 ## 2026-11-13 - H127 refuted, H129 registered, team cursor
 - At n = 96, Rm = 8.9365997314453125, seed 7 is negative, lambda -2.38e-7. Pod `hdrkv57tilzo53`, RTX 4090, 0.10 h, 0.0925 USD.
 - H129 asks the midpoint Rm = 8.93662261962890625. Merged main `fd76483`. The pilot has no deadline. The GPU budget is the stop. H125, H126, and H128 stay in flight. Local ledger about 14.54 USD.
