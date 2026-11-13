@@ -4,6 +4,8 @@
   "c3": 3.7436517166459855e-06,
   "c4": 0.009292581587870299,
   "source": "experiments/results/cursor_constraint_midpoint_kmax6.json",
-  "model": "c1, c2 and c4 are the kmax=6 midpoint. c3 is the second-half total energy balance of the dynamic ABC ensemble.",
-  "c3_source": "experiments/results/cursor_stationary.json"
+  "model": "c1, c2 and c4 are the kmax=6 midpoint. c3 is the dynamic total balance. c5 is the kmax=4 null-count error.",
+  "c3_source": "experiments/results/cursor_stationary.json",
+  "c5": 0.428192559074912,
+  "c5_source": "experiments/results/cursor_nulls.json"
 }

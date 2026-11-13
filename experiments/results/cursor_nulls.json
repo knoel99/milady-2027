@@ -1,0 +1,37 @@
+{
+  "kmax": 4.0,
+  "n": 16,
+  "rm": 12.0,
+  "seeds": [
+    {
+      "seed": 0,
+      "n_full": 36,
+      "n_trunc": 34,
+      "relative_error": 0.05555555555555555
+    },
+    {
+      "seed": 1,
+      "n_full": 26,
+      "n_trunc": 46,
+      "relative_error": 0.7692307692307693
+    },
+    {
+      "seed": 2,
+      "n_full": 32,
+      "n_trunc": 30,
+      "relative_error": 0.0625
+    },
+    {
+      "seed": 3,
+      "n_full": 34,
+      "n_trunc": 66,
+      "relative_error": 0.9411764705882353
+    },
+    {
+      "seed": 4,
+      "n_full": 32,
+      "n_trunc": 42,
+      "relative_error": 0.3125
+    }
+  ]
+}

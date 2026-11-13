@@ -2127,9 +2127,9 @@
       "protocol": "python3 experiments/cursor_nulls.py writes experiments/results/cursor_nulls.json. CPU. --quick is not a quoted result.",
       "script": "experiments/cursor_nulls.py",
       "cost_estimate": "CPU only. No GPU dollars.",
-      "status": "registered",
-      "verdict": "",
-      "results": "",
+      "status": "refuted",
+      "verdict": "REFUTED",
+      "results": "Mean relative null-count error 0.428192559074912, above 0.1. Seed counts (full, trunc): (36, 34), (26, 46), (32, 30), (34, 66), (32, 42). File experiments/results/cursor_nulls.json. The refutation criterion is met.",
       "commit": ""
     }
   ]

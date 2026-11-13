@@ -2,6 +2,11 @@
 
 One entry per working session, newest first, at most ten lines.
 
+## 2026-11-13 - H164 refuted, team cursor
+- The kmax=4 truncation changes the trilinear null count. Mean relative error 0.428, above 0.1.
+- C5 now quotes that error. C7 is 2 after src/milady/eval/nulls.py.
+- The five seed pairs are in experiments/results/cursor_nulls.json.
+
 ## 2026-11-13 - H144 refuted, team cursor
 - At n=128, Rm=8.98699951171875, seed 0 is negative, lambda -7.53e-7. Pod `6igk1bsvmdnkow`, 0.39 h, 0.3446 USD.
 - The seeds 0-4 bracket is now between this Rm and 8.9871826171875. It is not bisected.
