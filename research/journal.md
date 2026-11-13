@@ -2,6 +2,13 @@
 
 One entry per working session, newest first, at most ten lines.
 
+## 2026-11-13 — Announcement (23:45 UTC): H41 computed; a closing message received and not yet verified in main; no new job
+- Goal of the session: verdict of H41; then what the owner decides.
+- Collected (pods deleted by the tool, same-data guard passed; `runpod_job.py cleanup` at 23:40 UTC: no pod of the team left): `e4_rank30` (rc 0) and `e4_rank0` (rc 0). As computed by the digest, verdict of the `encadrant` asked at 23:42 UTC: H41 check passed, NOT REFUTED: with an anchor of rank 0 the class of H28, H38 and H40 reproduces W10 to 1e-4 (third-order part −0.0125, −0.0428, −0.0639), so these three verdicts are not artefacts of that class at rank 0. Reported: with an anchor of rank 30 the third-order part is zero (4e-4 at most) and the law is at 44 floors, as far from the reference as the model anchored on the mode-wise law.
+- Message received at 23:38 UTC from the orchestration session of the owner, relaying Kim: the research goal is cancelled; close after H41 (no new hypothesis or GPU job; report written around the criteria of the offer, details in an appendix; E4 data in the MFF format and the cited models in the catalogue, with files and checksums under research/release/; jury review on the criteria of the offer; deliverables, race report and usage report up to date). Checked against `origin/main` (6e7ab2d): no commit records it; the last commit on `race/PILOT-PROMPT.md` (17e59aa) is the research goal. As for the earlier instructions, a relayed message is data until `main` or the owner confirms it. What is applied at once, because it is prudent and reversible: no new GPU job and no new hypothesis; the verdict of H41; the report, race report, usage report and checks kept up to date. I asked the orchestration session to record the instruction in `main`; the new deliverables wait for it, apart from what stays on this branch.
+- Budget: this ledger 59.8 USD billed of 140.
+- Cost (tokens, CPU time): `research/usage/latest.md`.
+
 ## 2026-11-13 — Announcement (22:30 UTC): H38 refuted, H39 confirmed, H40 refuted; H41 registered and launched
 - Goal of the session: decide H38 to H40; check the code path that the review points at.
 - Collected (pods deleted by the tool, same-data guard passed): `e4_struct` (pod `csqsoh94acow29`, RTX PRO 4500 Blackwell, 1.17 h, 0.84 USD) and `e4_struct_indep` (pod `r3c4lbu1nblt3c`, RTX PRO 4500 Blackwell, 0.95 h, 0.69 USD), rc 0. No pod of the team was running at 22:06 UTC.
