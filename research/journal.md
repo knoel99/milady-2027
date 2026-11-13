@@ -2,6 +2,10 @@
 
 One entry per working session, newest first, at most ten lines.
 
+## 2026-11-13 - parallel cap counts this team's pods, team cursor
+- `runpod_job.py run` applies `[gpu].max_parallel` to pods whose name starts with this checkout's prefix. The budget reservation still sums every `milady-*job-*` pod. The credit stays shared.
+- Test `test_parallel_cap_counts_this_teams_pods_only`. Claude pods are left in place. Pod names stay `milady-cursor-job-*`.
+
 ## 2026-11-13 - H98 refuted, H100 registered, team cursor
 - At n = 96, Rm = 8.89453125, seed 3 is negative, lambda -2.70e-5. It was +9.81e-7 at Rm = 8.8984375.
 - Pod `0q5ipquvid11fg`, RTX 4090, 0.12 h, 0.1079 USD. Largest max_div_b is 5.41e-16.
