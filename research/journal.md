@@ -2,6 +2,12 @@
 
 One entry per working session, newest first, at most ten lines.
 
+## 2026-11-13 - H74 supported, H75 and H76 refuted, team cursor
+- n = 48 seeds 5-9 at Rm = 9.0626220703125 are all positive. Smallest is 6.72e-8, seed 7. Pod `qaziio81h5gurb`, 0.0467 USD.
+- n = 64 seed 1 at Rm = 9.059844970703125 is negative, lambda -8.75e-8. Pod `iearzvag61uoax`, 0.0547 USD.
+- n = 32 seed 0 at Rm = 9.05230712890625 is negative, lambda -3.76e-7. Pod `vs1wic83swf5ix`, 0.0471 USD.
+- H77, H78, and H79 ask the next midpoints. H77 and H78 are in flight. H73 is still running.
+
 ## 2026-11-13 - H66 refuted, H70 H71 H72 supported, team cursor
 - n = 96 at Rm = 8.875 has seed 3 negative, lambda -1.68e-4. Pod `p32lpzy6h9yade`, 0.1005 USD.
 - n = 48 seeds 5-9 stay positive at Rm = 9.062744140625. Smallest is 8.29e-7. Pod `s1ah8ic5vxdhx9`, 0.0391 USD.
