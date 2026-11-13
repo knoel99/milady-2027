@@ -2,7 +2,7 @@
 
 One entry per working session, newest first, at most ten lines.
 
-## 2026-11-13 — Announcement (22:35 UTC): H38 refuted, H39 confirmed, H40 refuted; H41 registered and launched
+## 2026-11-13 — Announcement (22:30 UTC): H38 refuted, H39 confirmed, H40 refuted; H41 registered and launched
 - Goal of the session: decide H38 to H40; check the code path that the review points at.
 - Collected (pods deleted by the tool, same-data guard passed): `e4_struct` (pod `csqsoh94acow29`, RTX PRO 4500 Blackwell, 1.17 h, 0.84 USD) and `e4_struct_indep` (pod `r3c4lbu1nblt3c`, RTX PRO 4500 Blackwell, 0.95 h, 0.69 USD), rc 0. No pod of the team was running at 22:06 UTC.
 - Verdicts of the `encadrant` (research/reviews/2026-11-13-encadrant-h38-h39.md and -encadrant-h40.md, logged). H38 REFUTED and H39 CONFIRMED as computed (wording corrected in the entry below). H40 REFUTED on its three clauses on both realisations, checks passed: anchored on a Gaussian law with a structured covariance of full rank (300 leading directions plus mode-wise blocks), the network trains (loss on a fixed training sample 1.208 → 1.151) and the law changes (2.5 → 16.4 floors, magnetic energy +11 to +15 %), but no third-order production appears, on the data or on samples of W9 (0.001 of the reference; 0.002 and 0.004 of that of W9). The rank deficiency of the sample covariance is not a sufficient explanation of the missing third-order part. Valid for rank 300 and this network only.
