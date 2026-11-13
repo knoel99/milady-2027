@@ -1871,6 +1871,32 @@
       "verdict": "",
       "results": "",
       "commit": ""
+    },
+    {
+      "id": "H145",
+      "statement": "The sampling constraint (remove the longitudinal Fourier component after every Heun step) has a strictly smaller mean maximum relative divergence than the unconstrained baseline. Seeds 0-4, n = 16, held-out Rm = 12, 40 Adam steps, the same architecture.",
+      "origin": "C2 is still the sentinel. The two variants differ only by the sampling constraint. The baseline can leave the solenoidal subspace. The inequality was fixed before the run and may fail if both divergences are equal.",
+      "refutation_criterion": "Refuted if any value is non-finite, or if the mean over seeds 0-4 of the maximum relative divergence of the sampling-constraint variant is not strictly smaller than the same mean of the unconstrained baseline.",
+      "protocol": "python3 experiments/cursor_constraint_cmp.py writes experiments/results/cursor_constraint_cmp.json. CPU, n = 16, kmax = 2, seeds 0-4, 40 Adam steps, 8 samples, reference ensemble of 8 snapshots at Rm = 12. --quick is not a quoted result. No GPU pod.",
+      "script": "experiments/cursor_constraint_cmp.py",
+      "cost_estimate": "CPU only. No GPU dollars.",
+      "status": "registered",
+      "verdict": "",
+      "results": "",
+      "commit": ""
+    },
+    {
+      "id": "H146",
+      "statement": "The sampling-constraint variant has a mean energy-distance ratio at most 1.2 on the held-out Rm = 12. The ratio is the energy distance to the reference ensemble divided by the reference-subsample floor. Seeds 0-4, same protocol as H145.",
+      "origin": "C1 is still the sentinel and its target is 1.2. A tiny flow at n = 16 may miss that target. The bound was fixed before the run.",
+      "refutation_criterion": "Refuted if any ratio is non-finite, or if the mean over seeds 0-4 of the sampling-constraint energy-distance ratio exceeds 1.2.",
+      "protocol": "Same CPU run as H145. The ratio uses compare_ensembles on 8 generated samples and 8 reference snapshots.",
+      "script": "experiments/cursor_constraint_cmp.py",
+      "cost_estimate": "CPU only. No GPU dollars.",
+      "status": "registered",
+      "verdict": "",
+      "results": "",
+      "commit": ""
     }
   ]
 }
