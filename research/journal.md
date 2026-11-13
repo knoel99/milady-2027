@@ -2,6 +2,12 @@
 
 One entry per working session, newest first, at most ten lines.
 
+## 2026-11-12 - H13 supported, H15 registered, team cursor
+- Five points at n = 96, Rm = 12, cfl = 0.5, all finite. Largest max_div_b is 5.58e-16.
+- Mean lambda 0.008095872. Absolute difference from the cfl = 1 mean at the same resolution is 2.3e-12, under the pre-set 0.002.
+- The H13 criterion is not met for a refutation. Pod `jszpatyck4j92j`, RTX 4090, 0.2202 h, 0.1960 USD. Local ledger 1.6054 USD.
+- H15 is registered before any n = 128 sign point: lambda(8) < 0 < lambda(9) for seeds 0-4. It launches when a parallel slot is free. Claude holds the four slots.
+
 ## 2026-11-12 - H12 supported, team cursor
 - Five points at n = 128, Rm = 12, cfl = 1, all finite. Largest max_div_b is 4.99e-16.
 - Mean lambda 0.007691 (sample std 0.000788). Absolute difference from the n = 64 control 0.008127803 is 4.37e-4, under the pre-set 0.0005.
