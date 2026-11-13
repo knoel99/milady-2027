@@ -54,6 +54,9 @@ def test_null_density_factors_predict_the_count() -> None:
     b = space.decode(x, 32)["magnetic_field"].numpy()
     counted = float(null_count(b).mean())
     out = {e: null_density_factors(b, eps=e) for e in (0.1, 0.2)}
+    both = null_density_factors(b, eps=(0.1, 0.2))             # several thresholds in one pass: the same numbers
+    for o, e in zip(both, (0.1, 0.2), strict=True):
+        assert all(abs(o[k] / out[e][k] - 1) < 1e-12 for k in ("density_at_zero", "jacobian_at_zero", "jacobian_all", "predicted_count"))
     for e, o in out.items():
         assert o["n_small"] > 2000 and abs(o["predicted_count"] / counted - 1) < 0.15, (e, o["predicted_count"], counted)
     # the two factors do not depend on the threshold beyond the sampling noise, nor on the amplitude of the field

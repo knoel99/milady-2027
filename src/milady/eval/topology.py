@@ -127,8 +127,8 @@ def null_count(b: Any, chunk: int = 8, device: str | torch.device | None = None)
                            for i in range(0, arr.shape[0], chunk)])
 
 
-def null_density_factors(b: Any, eps: float = 0.1, weights: Any = None, device: str | torch.device | None = None,
-                         chunk: int = 16) -> dict:
+def null_density_factors(b: Any, eps: float | tuple[float, ...] = 0.1, weights: Any = None,
+                         device: str | torch.device | None = None, chunk: int = 16) -> Any:
     """The two factors of the expected number of null points of an ensemble of fields ``b`` ``(n, nx, ny, nz, 3)``.
 
     For a random field the mean number of zeros per unit volume is (Kac–Rice)
@@ -143,16 +143,21 @@ def null_density_factors(b: Any, eps: float = 0.1, weights: Any = None, device: 
     ``predicted_count`` (to compare with :func:`null_count`), the share ``small_fraction`` and the number
     ``n_small`` of cells used, ``rms``, ``jacobian_all`` (the mean of |det ∇B| over all the cells, same units:
     is the field rougher everywhere or only where it is weak?) and ``per_field``, the sums of each field from
-    which :func:`null_density_jackknife` recomputes the factors without a group of fields. Two ensembles with the same number of nulls can differ in both
-    factors, and a Gaussian field is fixed by its covariance in both; the ratio of the factors between two
-    ensembles tells whether one has fewer nulls because its field is more rarely weak or because it varies
-    more slowly where it is weak. ``weights`` (n,): weights of the fields (default: equal).
+    which :func:`null_density_jackknife` recomputes the factors without a group of fields. Two ensembles with
+    the same number of nulls can differ in both factors, and a Gaussian field is fixed by its covariance in
+    both; the ratio of the factors between two ensembles tells whether one has fewer nulls because its field is
+    more rarely weak or because it varies more slowly where it is weak. ``weights`` (n,): weights of the fields
+    (default: equal). ``eps``: one threshold, or several (a list of results is returned, from one pass over
+    the fields).
     """
+    many = not isinstance(eps, (int, float))
+    thresholds = tuple(eps) if many else (float(eps),)
     arr = np.asarray(b)
     n = arr.shape[0]
     w = np.full(n, 1.0 / n) if weights is None else np.asarray(weights, dtype=np.float64) / float(np.sum(np.asarray(weights)))
     cells = arr.shape[1] * arr.shape[2] * arr.shape[3]
-    rms = float(np.sqrt(np.sum(w * (arr.astype(np.float64) ** 2).sum(axis=(1, 2, 3, 4))) / cells))
+    b2 = (arr.astype(np.float64) ** 2).sum(axis=(1, 2, 3, 4))
+    rms = float(np.sqrt(np.sum(w * b2) / cells))
 
     def nxt(a: torch.Tensor, ax: int) -> torch.Tensor:           # the next grid point along an axis (periodic)
         return torch.roll(a, -1, dims=ax)
@@ -160,28 +165,32 @@ def null_density_factors(b: Any, eps: float = 0.1, weights: Any = None, device: 
     def avg(a: torch.Tensor, ax: int) -> torch.Tensor:
         return 0.5 * (a + nxt(a, ax))
 
-    s_small, s_det, n_small = 0.0, 0.0, 0
-    per = {"small": [], "det_small": [], "det_all": [], "b2": (arr.astype(np.float64) ** 2).sum(axis=(1, 2, 3, 4))}
+    small_f = [[] for _ in thresholds]
+    det_small_f = [[] for _ in thresholds]
+    det_all_f = []
     for i in range(0, n, chunk):                                  # by chunks of fields: the Jacobian takes 9 values per cell
         t = torch.as_tensor(arr[i:i + chunk], dtype=torch.float64, device=device)
-        wf = torch.as_tensor(w[i:i + chunk], dtype=torch.float64, device=t.device).view(-1, 1, 1, 1)
-        centre = avg(avg(avg(t, 1), 2), 3)
-        jac = torch.stack([avg(avg(nxt(t, 1) - t, 2), 3), avg(avg(nxt(t, 2) - t, 1), 3), avg(avg(nxt(t, 3) - t, 1), 2)], dim=-1)
-        small = (centre.norm(dim=-1) < eps * rms).to(torch.float64)
-        det = torch.linalg.det(jac).abs()
-        s_small += float((small * wf).sum())
-        s_det += float((det * small * wf).sum())
-        n_small += int(small.sum())
-        per["small"].append(small.sum(dim=(1, 2, 3)).cpu().numpy())
-        per["det_small"].append((det * small).sum(dim=(1, 2, 3)).cpu().numpy())
-        per["det_all"].append(det.sum(dim=(1, 2, 3)).cpu().numpy())
-    frac = s_small / cells                                        # weighted share of the cells with a weak field
-    j0 = s_det / s_small / rms**3 if s_small > 0 else float("nan")
-    p0 = frac / (4.0 / 3.0 * np.pi * eps**3)
-    per = {k: (np.concatenate(v) if isinstance(v, list) else v) for k, v in per.items()}
-    j_all = float(np.sum(w * per["det_all"]) / cells) / rms**3
-    return {"eps": eps, "rms": rms, "density_at_zero": p0, "jacobian_at_zero": j0, "predicted_count": cells * p0 * j0,
-            "small_fraction": frac, "n_small": n_small, "jacobian_all": j_all, "cells": cells, "per_field": per}
+        norm = avg(avg(avg(t, 1), 2), 3).norm(dim=-1)
+        j1, j2, j3 = avg(avg(nxt(t, 1) - t, 2), 3), avg(avg(nxt(t, 2) - t, 1), 3), avg(avg(nxt(t, 3) - t, 1), 2)
+        det = (j1 * torch.linalg.cross(j2, j3, dim=-1)).sum(-1).abs()        # |det| of the matrix of columns j1, j2, j3
+        det_all_f.append(det.sum(dim=(1, 2, 3)).cpu().numpy())
+        for k, e in enumerate(thresholds):
+            small = (norm < e * rms).to(torch.float64)
+            small_f[k].append(small.sum(dim=(1, 2, 3)).cpu().numpy())
+            det_small_f[k].append((det * small).sum(dim=(1, 2, 3)).cpu().numpy())
+    det_all = np.concatenate(det_all_f)
+    j_all = float(np.sum(w * det_all) / cells) / rms**3
+    out = []
+    for k, e in enumerate(thresholds):
+        small, det_small = np.concatenate(small_f[k]), np.concatenate(det_small_f[k])
+        s_small = float(np.sum(w * small))
+        frac = s_small / cells                                    # weighted share of the cells with a weak field
+        j0 = float(np.sum(w * det_small)) / s_small / rms**3 if s_small > 0 else float("nan")
+        p0 = frac / (4.0 / 3.0 * np.pi * e**3)
+        out.append({"eps": e, "rms": rms, "density_at_zero": p0, "jacobian_at_zero": j0, "predicted_count": cells * p0 * j0,
+                    "small_fraction": frac, "n_small": int(small.sum()), "jacobian_all": j_all, "cells": cells,
+                    "per_field": {"small": small, "det_small": det_small, "det_all": det_all, "b2": b2}})
+    return out if many else out[0]
 
 
 def null_density_jackknife(factors: dict, groups: Any) -> dict:

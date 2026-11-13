@@ -106,8 +106,11 @@ def kac_rice(b: np.ndarray, weights, device, groups=None) -> dict:
     (milady.eval.topology.null_density_factors; H32). ``groups``: the trajectory of each field, for the jackknife
     standard errors of the reference (threshold 0.1)."""
     out = {}
-    for eps, tag in ((0.1, ""), (0.05, "_eps005"), (0.2, "_eps02")):
-        f = null_density_factors(b, eps=eps, weights=weights, device=device)
+    tags = ((0.1, ""), (0.05, "_eps005"), (0.2, "_eps02"))
+    if device is None and torch.cuda.is_available():          # the reference stage: the GPU of the pod is idle then
+        device = "cuda"
+    res = null_density_factors(b, eps=tuple(e for e, _ in tags), weights=weights, device=device)     # one pass for the three thresholds
+    for (_, tag), f in zip(tags, res, strict=True):
         out.update({f"kr_density{tag}": f["density_at_zero"], f"kr_jacobian{tag}": f["jacobian_at_zero"],
                     f"kr_predicted{tag}": f["predicted_count"], f"kr_n_small{tag}": f["n_small"]})
         if not tag:
