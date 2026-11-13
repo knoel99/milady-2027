@@ -122,7 +122,8 @@ def table_row(name: str, runs: dict, source: str, verdicts: dict) -> dict:
 def slices(quick: bool) -> dict | None:
     tag = "_quick" if quick else ""
     files = sorted(R.glob(f"e4_samples{tag}_s0_*.npz"), key=lambda p: -p.stat().st_size)
-    files += sorted((R / "replications").glob(f"e4_final_*/e4_samples{tag}_s0_*.npz"))
+    for name in ("e4_final_long", "e4_mech"):                        # fields of the variants the main run does not hold
+        files += sorted((R / "replications" / name).glob(f"e4_samples{tag}_s0_*.npz"))
     fields: dict = {}
     eta = None
     for f in files:
