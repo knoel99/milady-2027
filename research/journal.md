@@ -2,6 +2,11 @@
 
 One entry per working session, newest first, at most ten lines.
 
+## 2026-11-13 - H93 refuted, H97 registered, team cursor
+- At n = 96, Rm = 8.90625, seed 7 is negative, lambda -2.14e-4. Seeds 0-4 at this Rm are positive. Pod `iwi25z0iibq140`, 0.0998 USD.
+- H97 asks seeds 5-9 at Rm = 9 before treating that bracket as closed. H94, H95, and H96 are still running.
+- Local ledger about 9.28 USD.
+
 ## 2026-11-13 - H87 and H91 refuted, H92 supported, team cursor
 - n = 96 seed 3 is negative at Rm = 8.890625, lambda -5.51e-5. Pod `c7bhiyc0v8oifm`, 0.0998 USD. H94 asks Rm = 8.8984375.
 - n = 48 seed 7 is negative, lambda -4.19e-9. n = 32 seed 0 is positive, lambda 1.62e-9. Those two splits stop. The remaining gaps are a few times 1e-6 in Rm, and the lambdas are a few times 1e-9. The cfl = 0.5 check differed by 2.7e-11.
