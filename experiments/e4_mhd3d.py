@@ -855,7 +855,7 @@ def run(quick: bool, seed: int, group: str, device: str = "cpu", cond_scale: flo
         results["times"]["W9R_skip_sym"] = {"training_time_s": tsec, "iters": cfg["iters"]}
         g0r = C.ModewiseGaussian(sign=pot_sym.sign).fit(ctx.x_pot_sym, ctx.c_train[:, 0])
         g1r = C.FullGaussian(sign=pot_sym.sign).fit(ctx.x_pot_sym, ctx.c_train[:, 0])
-        n_rec = cfg.get("n_recolour", 65536)
+        n_rec = cfg.get("n_recolour", 131072)
         n_modes, n_ch = pot_sym.n_modes, pot_sym.n_channels
         sgn = pot_sym.sign.to(dev, torch.float64).repeat(n_modes)                  # (D,): channel signs, mode after mode
 
@@ -870,15 +870,16 @@ def run(quick: bool, seed: int, group: str, device: str = "cpu", cond_scale: flo
             return pot_sym.field_hat(pot_sym.denormalize(z.to(torch.float32))).cpu()
 
         @torch.no_grad()
-        def source_moments(e: float) -> tuple[torch.Tensor, torch.Tensor]:
+        def source_moments(e: float, salt: int = 211) -> tuple[torch.Tensor, torch.Tensor]:
             """Mean (D,) and covariance (D, D), float64, of ``n_rec`` fresh samples of the model at ``e``, with their images
             under the sign symmetry (the moments of the symmetrised law, as for the Gaussian laws fitted to the data)."""
-            gz = torch.Generator().manual_seed(100003 * seed + 211 + ETAS.index(e))
+            gz = torch.Generator().manual_seed(100003 * seed + salt + ETAS.index(e))
             dim = n_modes * n_ch
             s1, s2, m = torch.zeros(dim, dtype=torch.float64, device=dev), torch.zeros(dim, dim, dtype=torch.float64, device=dev), 0
-            for _ in range(max(n_rec // 1024, 1)):
-                c = torch.full((1024, 1), float(cn(e)), device=dev)
-                z = heun_sample(m9r, torch.randn(1024, n_modes, n_ch, generator=gz).to(dev), c, cfg["steps"]).flatten(1).double()
+            nb = 4096 if dev.type == "cuda" else 1024
+            for _ in range(max(n_rec // nb, 1)):
+                c = torch.full((nb, 1), float(cn(e)), device=dev)
+                z = heun_sample(m9r, torch.randn(nb, n_modes, n_ch, generator=gz).to(dev), c, cfg["steps"]).flatten(1).double()
                 for zz in (z, z * sgn):
                     s1 += zz.sum(0)
                     s2 += zz.T @ zz
@@ -898,13 +899,19 @@ def run(quick: bool, seed: int, group: str, device: str = "cpu", cond_scale: flo
             rec_modes[e] = decode(C.moment_recolouring(z, mu_s.view(n_modes, n_ch), cov_sm, mu0.to(dev), cov0.to(dev)))
             mu1, cov1 = g1r.moments(cv)
             mu1, cov1 = mu1.to(dev), cov1.to(dev)
+            # The covariance of the model is used as estimated. Samples that did not enter the estimate come out of the map
+            # with a little too much variance, the less the more draws there are (the error is of second order when the
+            # two sets of moments are close); the null control below measures it.
             rec_full[e] = decode(C.moment_recolouring(z.flatten(1), mu_s, cov_s, mu1, cov1).view_as(z))
-            # null control: Gaussian draws with the moments of the model, sent through the same map, are draws of G1
+            # null control: Gaussian draws with the moments of the model estimated on a second, independent sample of the same
+            # size, sent through the map of the first: draws of G1 up to the error of the estimates, which this control measures
+            # on samples that did not enter the map (draws of the first estimate itself would hide that error)
+            mu_c, cov_c = source_moments(e, salt=307)
             gz = torch.Generator().manual_seed(100003 * seed + 263 + ETAS.index(e))
-            lam, q = torch.linalg.eigh(cov_s)
-            y = mu_s + (torch.randn(n, len(lam), generator=gz).to(dev, torch.float64) * lam.clamp_min(0.0).sqrt()) @ q.T
+            lam, q = torch.linalg.eigh(cov_c)
+            y = mu_c + (torch.randn(n, len(lam), generator=gz).to(dev, torch.float64) * lam.clamp_min(0.0).sqrt()) @ q.T
             ctl[e] = decode(C.moment_recolouring(y, mu_s, cov_s, mu1, cov1).view_as(z))
-            del cov_s, cov1, blocks, q
+            del cov_s, cov_c, cov1, blocks, q
         record("W9R_skip_sym", base_z)
         results["times"]["W15_recoloured_modes"] = results["times"]["W16_recoloured_full"] = {"n_recolour": n_rec}
         record("W15_recoloured_modes", rec_modes)

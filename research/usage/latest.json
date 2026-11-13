@@ -1,5 +1,5 @@
 {
- "generated": "2026-11-13T06:42:29Z",
+ "generated": "2026-11-13T07:38:38Z",
  "projects": "/root/.claude/projects/-home-user-milady-2027",
  "sessions": 1,
  "main_session": {
@@ -10,23 +10,23 @@
    "high"
   ],
   "expected": "claude-fable-5-2 / high",
-  "responses": 618,
+  "responses": 716,
   "off_spec": 0,
   "conforms": true
  },
  "first": "2026-11-12T16:50:21.852Z",
- "last": "2026-11-13T06:42:27.133Z",
- "span_hours": 13.87,
+ "last": "2026-11-13T07:38:36.910Z",
+ "span_hours": 14.8,
  "by_model": {
   "claude-fable-5-2": {
-   "input": 1634,
-   "cache_write_5m": 2328075,
-   "cache_write_1h": 2057103,
-   "cache_read": 328055142,
-   "output": 1661913,
-   "thinking": 852236,
-   "calls": 826,
-   "usd": 188.3
+   "input": 2000,
+   "cache_write_5m": 2902455,
+   "cache_write_1h": 2337229,
+   "cache_read": 378216591,
+   "output": 2026800,
+   "thinking": 1041099,
+   "calls": 1007,
+   "usd": 223.15
   },
   "claude-sonnet-5-5": {
    "input": 470,
@@ -39,13 +39,13 @@
    "usd": 8.57
   }
  },
- "total_usd": 196.86,
+ "total_usd": 231.72,
  "subagents": {
-  "count": 31,
+  "count": 32,
   "by_type": {
    "general-purpose": 9,
    "jury-externe": 7,
-   "encadrant": 11,
+   "encadrant": 12,
    "biblio": 2,
    "physicien": 2
   },
@@ -93,6 +93,23 @@
     "usd": 8.7387,
     "off_spec": 0,
     "expected": "claude-fable-5-2 / max",
+    "conforms": true
+   },
+   {
+    "id": "agent-a154b3863b44d397b",
+    "type": "encadrant",
+    "description": "Encadrant: corrections v4 and H28",
+    "models": [
+     "claude-fable-5-2"
+    ],
+    "efforts": [
+     "medium"
+    ],
+    "calls": 26,
+    "output": 47538,
+    "usd": 4.0773,
+    "off_spec": 0,
+    "expected": "claude-fable-5-2 / medium",
     "conforms": true
    },
    {
@@ -365,9 +382,9 @@
     "efforts": [
      "medium"
     ],
-    "calls": 1,
-    "output": 370,
-    "usd": 0.1453,
+    "calls": 17,
+    "output": 29231,
+    "usd": 2.7162,
     "off_spec": 0,
     "expected": "claude-fable-5-2 / medium",
     "conforms": true
@@ -382,9 +399,9 @@
     "efforts": [
      "max"
     ],
-    "calls": 1,
-    "output": 423,
-    "usd": 0.1445,
+    "calls": 42,
+    "output": 118475,
+    "usd": 9.2777,
     "off_spec": 0,
     "expected": "claude-fable-5-2 / max",
     "conforms": true
@@ -554,14 +571,16 @@
   "nonconforming": 0
  },
  "tool_calls": {
-  "Bash": 591,
-  "Read": 40,
-  "Agent": 31,
-  "Write": 12,
-  "ToolSearch": 2,
+  "Bash": 671,
+  "Read": 41,
+  "Agent": 32,
+  "Write": 17,
+  "ToolSearch": 4,
+  "SendMessage": 3,
+  "ReadNotifications": 2,
   "mcp__claude-code-remote__get_session": 1,
   "Grep": 1,
-  "SendMessage": 1
+  "mcp__runpod-api__list-pods": 1
  },
  "role_calls_via_tools": 0,
  "gpu": {
