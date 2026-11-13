@@ -2,6 +2,11 @@
 
 One entry per working session, newest first, at most ten lines.
 
+## 2026-11-13 - H55 refuted, H58 registered, team cursor
+- At n = 64, Rm = 9.0595703125, seed 1 is negative, lambda -1.79e-6. The other four seeds are positive. The all-positive claim fails.
+- Pod `ky7n0s6jukffau`, RTX 4090, 0.06 h, 0.0545 USD. The criterion was not changed.
+- Seed 1 is positive at Rm = 9.060546875. H58 asks the midpoint. H54, H56, and H57 are in flight.
+
 ## 2026-11-13 - H52 supported, H53 refuted, team cursor
 - H52: n = 48, Rm = 9.0703125, seeds 5-9 all positive. Smallest lambda is 4.79e-5. Pod `fy8lgoo7n99t3d`, 0.0390 USD.
 - H53: n = 32, Rm = 9.05078125, seed 0 is negative, lambda -1.01e-5. The all-positive claim fails. Pod `epewxk9z1fdgm8`, 0.0467 USD.
