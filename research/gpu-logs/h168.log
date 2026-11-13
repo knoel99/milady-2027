@@ -1,0 +1,22 @@
+built 0 (48, 768)
+Traceback (most recent call last):
+  File "/workspace/milady/experiments/cursor_fm_train.py", line 149, in <module>
+    main()
+  File "/workspace/milady/experiments/cursor_fm_train.py", line 120, in main
+    model = train_seed(data, cond, modes.to(device), steps, seed, device, mean.to(device), std.to(device))
+            ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/workspace/milady/experiments/cursor_fm_train.py", line 62, in train_seed
+    x = ((data - mean) / std).to(device)
+          ~~~~~^~~~~~
+RuntimeError: Expected all tensors to be on the same device, but found at least two devices, cuda:0 and cpu!
+
+--- setup (tail)
+ERROR: pip's dependency resolver does not currently take into account all the packages that are installed. This behaviour is the source of the following dependency conflicts.
+virtualenv 20.34.0 requires filelock<4,>=3.12.2, but you have filelock 4.2.9 which is incompatible.
+torch 2.8.0+cu128 cuda True
+
+--- status
+2026-11-13T11:30:08Z boot NVIDIA GeForce RTX 4090, 24564 MiB
+2026-11-13T11:32:37Z job started
+2026-11-13T11:34:05Z job finished rc=1 in 88 s
+2026-11-13T11:34:05Z DONE rc=1

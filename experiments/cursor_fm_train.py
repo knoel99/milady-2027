@@ -57,10 +57,14 @@ def train_seed(
 ) -> ResMLP:
     torch.manual_seed(seed)
     dim = data.shape[-1]
+    data = data.to(device)
+    cond = cond.to(device)
+    mean = mean.to(device)
+    std = std.to(device)
     model = ResMLP(dim // 6, 6, n_cond=1, width=256, depth=4, expansion=2, emb_dim=128, n_freq=8).to(device)
     opt = torch.optim.Adam(model.parameters(), lr=1e-3)
-    x = ((data - mean) / std).to(device)
-    c = ((cond - HELD) / 4.0).to(device)
+    x = (data - mean) / std
+    c = (cond - HELD) / 4.0
     batch = min(32, x.shape[0])
     for step in range(steps):
         pick = torch.randint(0, x.shape[0], (batch,), device=device)

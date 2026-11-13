@@ -2,8 +2,9 @@
 
 One entry per working session, newest first, at most ten lines.
 
-## 2026-11-13 - H168 registered, team cursor
-- A normalized ResMLP probe, one seed, not quoted, reached C1 4.35. The five-seed GPU run is registered and not yet started.
+## 2026-11-13 - H168 still registered, team cursor
+- The first GPU attempt on pod vf94e6g28iv9mw exited in 88 s. Tensors sat on two devices. No score was written. Cost 0.0603 USD.
+- The subtraction now happens after every tensor is on the requested device. The criterion is unchanged. The rerun is not a result yet.
 - The report source stays site/teams/cursor/report/index.qmd. No separate tex file.
 
 ## 2026-11-13 - H167 supported, team cursor
