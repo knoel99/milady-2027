@@ -91,3 +91,8 @@ encadrant_watch = ["experiments/results", "research/hypotheses.json", "src/milad
 encadrant_max_gap_hours = 6                                 # a review at least this often while work goes on
 jury_fractions = [0.25, 0.5, 0.75, 0.95]                    # of the GPU budget spent ([gpu] budget_usd or MILADY_GPU_BUDGET_USD)
 jury_watch = ["research/race-report.md", "site/report", "site/thesis", "site/teams"]
+
+[publish]
+# Where a team publishes its data and model files when it cannot create a GitHub release (race/GOAL.md).
+# Empty until the owner chooses one (for example a Hugging Face organisation, with its token in each team's env).
+storage = ""

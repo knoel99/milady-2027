@@ -42,6 +42,17 @@ if [ ! -d /opt/pw-browsers ]; then
   chmod -R a+rX /opt/pw-browsers
 fi
 
+echo "== Quarto 1.7.32 for the report (HTML and LaTeX PDF; TinyTeX per team below)"
+if [ "$(quarto --version 2>/dev/null)" != "1.7.32" ]; then
+  d=$(mktemp -d)
+  curl -fsSL -o "$d/q.tgz" https://github.com/quarto-dev/quarto-cli/releases/download/v1.7.32/quarto-1.7.32-linux-amd64.tar.gz
+  tar -xzf "$d/q.tgz" -C /opt && ln -sf /opt/quarto-1.7.32/bin/quarto /usr/local/bin/quarto; rm -rf "$d"
+fi
+apt-get install -y -q poppler-utils
+
+echo "== the published site of the project is closed to the teams (race/BRIEF.md)"
+for h in knoel99.github.io; do grep -q " $h$" /etc/hosts || echo "0.0.0.0 $h" >> /etc/hosts; done
+
 echo "== processes of one team invisible to the others"
 grep -q 'hidepid' /etc/fstab || echo 'proc /proc proc defaults,hidepid=invisible 0 0' >> /etc/fstab
 mount -o remount,hidepid=invisible /proc || true
@@ -101,6 +112,7 @@ uv pip install -q -r infra/env/requirements.txt && uv pip install -q --no-deps -
 echo "  harness: $SETUP"
 bash -c "$SETUP" || echo "  WARNING: harness setup of $T failed or needs a login (racectl login $T)"
 bash tools/install_skills.sh >/dev/null 2>&1 || echo "  WARNING: figure skills not installed"
+[ -x ~/.TinyTeX/bin/x86_64-linux/pdflatex ] || quarto install tinytex --no-prompt >/dev/null 2>&1 || echo "  WARNING: TinyTeX not installed (no PDF report)"
 echo "  ready: $(git rev-parse --abbrev-ref HEAD) at $(git rev-parse --short HEAD)"
 EOS
 done

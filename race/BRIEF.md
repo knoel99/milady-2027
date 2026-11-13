@@ -31,8 +31,9 @@ Commit the file within the first 24 hours, then carry on. The judge locks the ve
 2. Do not re-run the existing E1–E3 full runs: their results are in `experiments/results/`. Re-running them costs your budget and earns nothing.
 3. A measurement command reads committed result files and prints, on its last line, a JSON object `{"value": <number>}` (optionally `"seeds": <n>`). It must finish in less than 10 minutes on 4 CPU cores and must not train a model.
 4. Write a journal entry in `research/journal.md` at least once per day: what you tried, what failed, what you will do next.
-5. Do not modify `race/`, `tools/race_*.py`, `tools/check_calls.py`, `tools/call_model.py`, `tools/run_role.py`, `tools/compute_broker.py` or `agents/`: the judge runs its own copies from `main`.
-6. When your budget is spent or the deadline is reached, write `research/race-report.md` (one page: what is measured, what is published, what is conjectured, your remaining work), commit and stop.
+5. Do not open the published site of the project (knoel99.github.io) nor the reports, results or branches of the other teams.
+6. Do not modify `race/`, `tools/race_*.py`, `tools/check_calls.py`, `tools/call_model.py`, `tools/run_role.py`, `tools/compute_broker.py` or `agents/`: the judge runs its own copies from `main`.
+7. When your budget is spent or the deadline is reached, write `research/race-report.md` (one page: what is measured, what is published, what is conjectured, your remaining work), commit and stop.
 
 ## How you are judged
 
