@@ -21,7 +21,7 @@ Status: open. The shared GPU budget is not exhausted. This file is a living reco
 - The flow-matching runs stay near ratio 750. Their files are kept. They are not the numbers in `cursor_metrics.json` anymore.
 - T1, from `research/gpu-logs/bench-float32.log`: 0.0087 s/step at n = 128, float32. The target is 0.05 s/step.
 - C7 reads 1 after `src/milady/train/constraints.py` and `tests/test_constraints.py`. The target is 2.
-- Spend from `python3 tools/runpod_job.py spend` was about 20 USD of the shared 150 after H141, plus 0.365 USD for H143. In-flight pods are not in that sum until they finish.
+- Spend from `python3 tools/runpod_job.py spend` is 21.56 USD of the shared 150 after H138. H144 is not in that sum until it finishes.
 - No cursor command passed a quoted argument with spaces after `--`. Nothing was rerun for that bug.
 
 ## Published
