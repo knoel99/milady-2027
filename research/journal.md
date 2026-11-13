@@ -2,6 +2,11 @@
 
 One entry per working session, newest first, at most ten lines.
 
+## 2026-11-13 - H161 refuted, team cursor
+- The kmax=7 midpoint has mean C3 0.085, above 0.05 and not below the kmax=6 value 0.083.
+- The cutoff is not the lever for the balance residual on this n=16 grid. cursor_metrics.json stays on kmax=6.
+- H144 stays in flight. Spend stays 21.56 USD.
+
 ## 2026-11-13 - H158 and H159 supported, H160 refuted, team cursor
 - The kmax=6 midpoint has mean C4 0.0093, below 0.150 and below 0.1. H158 and H159 hold.
 - Mean C3 is 0.083, above 0.05. H160 is refuted. C1 on this map is 0.014.

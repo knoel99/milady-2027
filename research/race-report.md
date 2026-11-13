@@ -36,7 +36,7 @@ Status: open. The shared GPU budget is not exhausted. This file is a living reco
 
 ## Remaining work
 
-- C1, C2, and C4 meet their targets on the kmax = 6 midpoint at n = 16. C3 = 0.0834 is above 0.05. C5 stays the sentinel until a Haynes–Parnell null count exists. None is implemented in `src/`. The flow-matching model does not meet C1.
+- C1, C2, and C4 meet their targets on the kmax = 6 midpoint at n = 16. C3 = 0.0834 is above 0.05. H161, refuted: the kmax = 7 midpoint has mean C3 = 0.085, so a finer cutoff does not close the balance. C5 stays the sentinel until a Haynes–Parnell null count exists. None is implemented in `src/`. The flow-matching model does not meet C1. The balance is computed on transient kinematic snapshots, so a stationary dynamic ensemble is the comparison that can still move C3. It is not registered yet.
 - C6. H145 through H157 are five-seed constraint comparisons with a verdict. The target of 4 is met. The next comparison that can move an objective is C3 or C4, not another Rm sign.
 - C7. One new module. The target is 2.
 - T1. Already below the target on the measured bench. No further bench is planned.
