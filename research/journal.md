@@ -2,6 +2,11 @@
 
 One entry per working session, newest first, at most ten lines.
 
+## 2026-11-13 - H97 supported, H99 registered, team cursor
+- At n = 96, Rm = 9, seeds 5-9 are all positive. Smallest is 4.35e-4, seed 7. Seed 7 was -2.14e-4 at Rm = 8.90625.
+- Pod `s8ebnuqst9fecc`, RTX 4090, 0.10 h, 0.0926 USD. Largest max_div_b is 6.14e-16.
+- H99 asks the midpoint for seeds 5-9. H95, H96, and H98 are in flight. Local ledger about 9.48 USD.
+
 ## 2026-11-13 - H94 supported, H98 registered, team cursor
 - At n = 96, Rm = 8.8984375, seeds 0-4 are all positive. Smallest is 9.81e-7, seed 3. It was -5.51e-5 at Rm = 8.890625.
 - Pod `tqefulq6a1gyy3`, RTX 4090, 0.12 h, 0.1079 USD. Largest max_div_b is 6.40e-16.
