@@ -2131,6 +2131,19 @@
       "verdict": "REFUTED",
       "results": "Mean relative null-count error 0.428192559074912, above 0.1. Seed counts (full, trunc): (36, 34), (26, 46), (32, 30), (34, 66), (32, 42). File experiments/results/cursor_nulls.json. The refutation criterion is met.",
       "commit": ""
+    },
+    {
+      "id": "H165",
+      "statement": "The kmax=6 truncation, the representation constraint and the variant, has a mean relative null-count error at most 0.1 against the full-field baseline. The control is the same n=16, Rm=12, t=1 snapshot as H164. Seeds 0-4. The count is the trilinear Haynes-Parnell count.",
+      "origin": "H164 missed 0.1 at kmax=4. The bound 0.1 is the C5 target and is fixed before this run.",
+      "refutation_criterion": "Refuted if any count fails, or if the mean over seeds 0-4 of |n_trunc - n_full| / max(n_full, 1) exceeds 0.1.",
+      "protocol": "python3 experiments/cursor_nulls.py --kmax 6 --out experiments/results/cursor_nulls_kmax6.json. CPU. The H164 file is not overwritten.",
+      "script": "experiments/cursor_nulls.py",
+      "cost_estimate": "CPU only. No GPU dollars.",
+      "status": "registered",
+      "verdict": "",
+      "results": "",
+      "commit": ""
     }
   ]
 }

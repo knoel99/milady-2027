@@ -34,19 +34,22 @@ def one(seed: int, kmax: float) -> dict:
 def main() -> None:
     parser = argparse.ArgumentParser()
     parser.add_argument("--quick", action="store_true")
+    parser.add_argument("--kmax", type=float, default=4.0)
     parser.add_argument("--out", type=Path, default=None)
     args = parser.parse_args()
     seeds = [0] if args.quick else [0, 1, 2, 3, 4]
     rows = []
     for seed in seeds:
-        row = one(seed, 4.0)
+        row = one(seed, args.kmax)
         rows.append(row)
         print("seed", seed, row, flush=True)
+    if args.out is None and args.kmax != 4.0:
+        raise SystemExit("--out is required when --kmax is not 4")
     dest = args.out or Path(
         "experiments/results/cursor_nulls_quick.json" if args.quick else "experiments/results/cursor_nulls.json"
     )
     dest.parent.mkdir(parents=True, exist_ok=True)
-    dest.write_text(json.dumps({"kmax": 4.0, "n": 16, "rm": 12.0, "seeds": rows}, indent=2) + "\n")
+    dest.write_text(json.dumps({"kmax": args.kmax, "n": 16, "rm": 12.0, "seeds": rows}, indent=2) + "\n")
     print("wrote", dest)
 
 
