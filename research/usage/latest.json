@@ -1,5 +1,5 @@
 {
- "generated": "2026-11-13T13:57:16Z",
+ "generated": "2026-11-13T16:42:49Z",
  "projects": "/root/.claude/projects/-home-user-milady-2027",
  "sessions": 1,
  "main_session": {
@@ -10,23 +10,23 @@
    "high"
   ],
   "expected": "claude-fable-5-2 / high",
-  "responses": 975,
+  "responses": 1087,
   "off_spec": 0,
   "conforms": true
  },
  "first": "2026-11-12T16:50:21.852Z",
- "last": "2026-11-13T13:57:10.226Z",
- "span_hours": 21.11,
+ "last": "2026-11-13T16:42:26.626Z",
+ "span_hours": 23.87,
  "by_model": {
   "claude-fable-5-2": {
-   "input": 2603,
-   "cache_write_5m": 3489071,
-   "cache_write_1h": 2968277,
-   "cache_read": 518686276,
-   "output": 2515837,
-   "thinking": 1264681,
-   "calls": 1317,
-   "usd": 286.77
+   "input": 2948,
+   "cache_write_5m": 4091558,
+   "cache_write_1h": 3207687,
+   "cache_read": 575882095,
+   "output": 2824926,
+   "thinking": 1404375,
+   "calls": 1492,
+   "usd": 320.44
   },
   "claude-sonnet-5-5": {
    "input": 470,
@@ -39,13 +39,13 @@
    "usd": 8.57
   }
  },
- "total_usd": 295.34,
+ "total_usd": 329.01,
  "subagents": {
-  "count": 36,
+  "count": 39,
   "by_type": {
    "general-purpose": 9,
-   "jury-externe": 7,
-   "encadrant": 15,
+   "jury-externe": 8,
+   "encadrant": 17,
    "biblio": 2,
    "physicien": 3
   },
@@ -227,6 +227,23 @@
     "calls": 16,
     "output": 20224,
     "usd": 2.0365,
+    "off_spec": 0,
+    "expected": "claude-fable-5-2 / medium",
+    "conforms": true
+   },
+   {
+    "id": "agent-a3afd606f21feafd6",
+    "type": "encadrant",
+    "description": "Encadrant verdicts H29-H31",
+    "models": [
+     "claude-fable-5-2"
+    ],
+    "efforts": [
+     "medium"
+    ],
+    "calls": 26,
+    "output": 32251,
+    "usd": 4.404,
     "off_spec": 0,
     "expected": "claude-fable-5-2 / medium",
     "conforms": true
@@ -506,6 +523,40 @@
     "conforms": true
    },
    {
+    "id": "agent-ab9fb07f65e9bb76c",
+    "type": "encadrant",
+    "description": "Encadrant verdict H34",
+    "models": [
+     "claude-fable-5-2"
+    ],
+    "efforts": [
+     "medium"
+    ],
+    "calls": 5,
+    "output": 14521,
+    "usd": 1.1234,
+    "off_spec": 0,
+    "expected": "claude-fable-5-2 / medium",
+    "conforms": true
+   },
+   {
+    "id": "agent-abad541ad670a7a91",
+    "type": "jury-externe",
+    "description": "Jury externe: report v5 draft",
+    "models": [
+     "claude-fable-5-2"
+    ],
+    "efforts": [
+     "max"
+    ],
+    "calls": 32,
+    "output": 119394,
+    "usd": 8.4819,
+    "off_spec": 0,
+    "expected": "claude-fable-5-2 / max",
+    "conforms": true
+   },
+   {
     "id": "agent-ac8fd9fc056744728",
     "type": "jury-externe",
     "description": "Jury review: deliverable figures",
@@ -639,12 +690,12 @@
   "nonconforming": 0
  },
  "tool_calls": {
-  "Bash": 941,
-  "Read": 46,
-  "Agent": 36,
+  "Bash": 1057,
+  "Read": 48,
+  "Agent": 39,
   "Write": 18,
-  "ToolSearch": 4,
-  "SendMessage": 3,
+  "ToolSearch": 5,
+  "SendMessage": 4,
   "ReadNotifications": 2,
   "mcp__claude-code-remote__get_session": 1,
   "Grep": 1,
@@ -653,19 +704,19 @@
  },
  "role_calls_via_tools": 0,
  "gpu": {
-  "jobs": 50,
-  "hours": 38.559,
-  "usd": 34.82,
+  "jobs": 62,
+  "hours": 48.705,
+  "usd": 43.76,
   "by_gpu": {
    "NVIDIA RTX PRO 4500 Blackwell": {
-    "jobs": 38,
-    "hours": 25.083099999999995,
-    "usd": 18.0597
+    "jobs": 43,
+    "hours": 28.755499999999994,
+    "usd": 20.703699999999998
    },
    "NVIDIA RTX A6000": {
-    "jobs": 2,
-    "hours": 0.037500000000000006,
-    "usd": 0.025799999999999997
+    "jobs": 3,
+    "hours": 0.8583,
+    "usd": 0.5922000000000001
    },
    "NVIDIA A100-SXM4-80GB": {
     "jobs": 2,
@@ -673,19 +724,19 @@
     "usd": 4.732
    },
    "NVIDIA GeForce RTX 4090": {
-    "jobs": 5,
-    "hours": 6.698499999999999,
-    "usd": 5.9615
+    "jobs": 9,
+    "hours": 10.3882,
+    "usd": 9.2454
    },
    "NVIDIA L40S": {
-    "jobs": 1,
-    "hours": 1.0962,
-    "usd": 1.1949
+    "jobs": 2,
+    "hours": 2.0156,
+    "usd": 2.197
    },
    "NVIDIA GeForce RTX 5090": {
-    "jobs": 2,
-    "hours": 3.4832,
-    "usd": 4.8416
+    "jobs": 3,
+    "hours": 4.5263,
+    "usd": 6.291499999999999
    }
   },
   "budget_usd": 140.0

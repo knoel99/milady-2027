@@ -1,16 +1,16 @@
-# Usage report (2026-11-13T13:57:16Z)
+# Usage report (2026-11-13T16:42:49Z)
 
-Sessions: 1; first response 2026-11-12T16:50:21.852Z; last 2026-11-13T13:57:10.226Z; span 21.11 h.
+Sessions: 1; first response 2026-11-12T16:50:21.852Z; last 2026-11-13T16:42:26.626Z; span 23.87 h.
 Main session: models ['claude-fable-5-2'], efforts ['high']; expected claude-fable-5-2 / high: conforms.
-API-equivalent cost of the Claude calls: **$295.34** (prices of race/config.toml [pricing]).
-GPU: 50 job(s), 38.559 h, **$34.82** of a $140.0 budget.
+API-equivalent cost of the Claude calls: **$329.01** (prices of race/config.toml [pricing]).
+GPU: 62 job(s), 48.705 h, **$43.76** of a $140.0 budget.
 
 | model | API calls | input | cache write 5m | cache write 1h | cache read | output | of which thinking | cost |
 |---|---|---|---|---|---|---|---|---|
-| claude-fable-5-2 | 1317 | 2,603 | 3,489,071 | 2,968,277 | 518,686,276 | 2,515,837 | 1,264,681 | $286.77 |
+| claude-fable-5-2 | 1492 | 2,948 | 4,091,558 | 3,207,687 | 575,882,095 | 2,824,926 | 1,404,375 | $320.44 |
 | claude-sonnet-5-5 | 201 | 470 | 1,464,623 | 0 | 23,497,224 | 255,753 | 107,746 | $8.57 |
 
-Sub-agents: 36 call(s), 0 not conforming to agents/roles/; by type {'general-purpose': 9, 'jury-externe': 7, 'encadrant': 15, 'biblio': 2, 'physicien': 3}.
+Sub-agents: 39 call(s), 0 not conforming to agents/roles/; by type {'general-purpose': 9, 'jury-externe': 8, 'encadrant': 17, 'biblio': 2, 'physicien': 3}.
 
 | type | models | efforts | expected | API calls | output | cost | description |
 |---|---|---|---|---|---|---|---|
@@ -25,6 +25,7 @@ Sub-agents: 36 call(s), 0 not conforming to agents/roles/; by type {'general-pur
 | jury-externe | claude-fable-5-2 | max | claude-fable-5-2 / max | 2 | 5,052 | $0.444 | Role check: jury-externe Prop 1 |
 | encadrant | claude-fable-5-2 | medium | claude-fable-5-2 / medium | 1 | 998 | $0.1537 | Role check: encadrant Prop 1 |
 | encadrant | claude-fable-5-2 | medium | claude-fable-5-2 / medium | 16 | 20,224 | $2.0365 | Encadrant: verdicts H22-H24 |
+| encadrant | claude-fable-5-2 | medium | claude-fable-5-2 / medium | 26 | 32,251 | $4.404 | Encadrant verdicts H29-H31 |
 | general-purpose | claude-sonnet-5-5 | medium | – | 8 | 8,752 | $0.4125 | Redraw linear-part schematic |
 | encadrant | claude-fable-5-2 | medium | claude-fable-5-2 / medium | 8 | 14,273 | $1.3043 | Encadrant: H21 and G1 replication |
 | jury-externe | claude-fable-5-2 | max | claude-fable-5-2 / max | 41 | 76,650 | $7.1746 | Jury review: deliverable figures |
@@ -42,6 +43,8 @@ Sub-agents: 36 call(s), 0 not conforming to agents/roles/; by type {'general-pur
 | biblio | claude-sonnet-5-5 | medium | claude-sonnet-5-5 / medium | 6 | 6,708 | $0.1622 | Biblio: E4 references and prior art |
 | general-purpose | claude-sonnet-5-5 | medium | – | 21 | 31,422 | $0.9916 | Schematics: protocol and compute path |
 | encadrant | claude-fable-5-2 | medium | claude-fable-5-2 / medium | 11 | 19,806 | $1.9591 | Encadrant review: e4_main and bug |
+| encadrant | claude-fable-5-2 | medium | claude-fable-5-2 / medium | 5 | 14,521 | $1.1234 | Encadrant verdict H34 |
+| jury-externe | claude-fable-5-2 | max | claude-fable-5-2 / max | 32 | 119,394 | $8.4819 | Jury externe: report v5 draft |
 | jury-externe | claude-fable-5-2 | max | claude-fable-5-2 / max | 22 | 22,835 | $3.1373 | Jury review: deliverable figures |
 | encadrant | claude-fable-5-2 | medium | claude-fable-5-2 / medium | 8 | 19,260 | $1.6337 | Encadrant: verdicts H4-H10, H12-H14 |
 | physicien | claude-fable-5-2 | high | claude-fable-5-2 / high | 1 | 1,298 | $0.1633 | Role check: physicien Prop 1 |
@@ -52,4 +55,4 @@ Sub-agents: 36 call(s), 0 not conforming to agents/roles/; by type {'general-pur
 | general-purpose | claude-sonnet-5-5 | medium | – | 32 | 45,046 | $1.4153 | Archify diagrams for team claude |
 
 Role calls through tools/call_model.py or run_role.py: 0.
-Tool calls of the main session: {'Bash': 941, 'Read': 46, 'Agent': 36, 'Write': 18, 'ToolSearch': 4, 'SendMessage': 3, 'ReadNotifications': 2, 'mcp__claude-code-remote__get_session': 1, 'Grep': 1, 'mcp__runpod-api__list-pods': 1, 'mcp__claude-code-remote__send_message': 1}.
+Tool calls of the main session: {'Bash': 1057, 'Read': 48, 'Agent': 39, 'Write': 18, 'ToolSearch': 5, 'SendMessage': 4, 'ReadNotifications': 2, 'mcp__claude-code-remote__get_session': 1, 'Grep': 1, 'mcp__runpod-api__list-pods': 1, 'mcp__claude-code-remote__send_message': 1}.
