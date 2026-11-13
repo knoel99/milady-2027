@@ -44,4 +44,12 @@ It is the French form of the `/goal` above; for another team, replace `--team cl
 
 ## Closing goal set by the owner on 13 November 2026
 
-At about 21:20 UTC the owner cancelled the goal above (`/goal clear`) and set a closing goal: no new hypothesis or GPU job, finish the running jobs, write the report to the criteria of the offer with `encadrant` and `jury-externe` reminding them, and publish the data and models as the site promises. Its clauses are now part of the standard goal of `race/GOAL.md`.
+At about 21:20 UTC the owner cancelled the research goal above for the running Claude pilot (session `session_019DLE2XTZBM3CAyB1594sVV`) and asked for its closing phase, relayed by the orchestration session at 21:22 and 23:31 UTC. This record is the instruction:
+
+1. No new hypothesis and no new GPU job after H41; finish the jobs already launched, have their verdicts given by `encadrant`, and run `python3 tools/runpod_job.py cleanup`.
+2. Write the internship report to the criteria of the offer (`docs/specs/sources/supervisors.md` §1.2 a): structure it around what the offer asks; keep measured, published and conjectured apart; say plainly the limits (16³, Re = 10) and what is needed for turbulent regimes, the dynamo threshold and SFEMaNS data; details without impact go to an appendix.
+3. Every task given to `encadrant` and `jury-externe` carries the criteria of the offer and asks whether the work and the report answer them, and what drifts away from them.
+4. Provide the data and the models as the published site promises: E4 data in the MFF format of `docs/specs/data-format.md`, validated; the dataset and the models cited in the report (W9, W16, G0, G1, five seeds) in the catalogue. The session cannot create a GitHub release: put the files that fit the limits of `tools/check_deliverables.py`, the SHA-256 sums of all files and the upload command in `research/release/`; files too large stay in the container, with path and size written there, for the owner to publish.
+5. Then a `jury-externe` review against the criteria of the offer, `tools/check_deliverables.py --team claude --built`, the race report, objectives and usage report up to date, everything committed and pushed.
+
+These clauses are also part of the standard goal of `race/GOAL.md` for later teams.
