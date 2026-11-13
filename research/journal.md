@@ -2,6 +2,10 @@
 
 One entry per working session, newest first, at most ten lines.
 
+## 2026-11-13 - H133 refuted, seeds 5-9 split stops, H134 registered, team cursor
+- At n = 96, Rm = 8.9366283416748046875, seed 7 is negative, lambda -3.87e-8. Pod `uux321o5twqwxt`, 0.12 h, 0.1077 USD.
+- The next Rm is positive at 1.24e-9. The cfl = 1 split for seeds 5-9 stops. H134 repeats that positive point at cfl = 0.5. H128, H131, and H132 stay in flight. Local ledger about 15.54 USD.
+
 ## 2026-11-13 - H130 supported, H133 registered, team cursor
 - At n = 96, Rm = 8.936634063720703125, seeds 5-9 are all positive. Smallest is 1.24e-9, seed 7. Pod `yap81mxhdtxo6a`, 0.12 h, 0.1078 USD.
 - The negative neighbour is -7.87e-8. H133 asks the midpoint Rm = 8.9366283416748046875. H128, H131, and H132 stay in flight. Local ledger about 15.44 USD.
