@@ -1,0 +1,33 @@
+{
+ "parts": {
+  "e4_relax_indep_a": {
+   "seeds": [
+    0,
+    1,
+    2
+   ],
+   "files": [
+    "e4_mhd3d_s0_X.json",
+    "e4_mhd3d_s1_X.json",
+    "e4_mhd3d_s2_X.json"
+   ],
+   "data_duration_s": 831.0
+  },
+  "e4_relax_indep_b": {
+   "seeds": [
+    3,
+    4
+   ],
+   "files": [
+    "e4_mhd3d_s3_X.json",
+    "e4_mhd3d_s4_X.json"
+   ],
+   "data_duration_s": 673.4,
+   "max_rel_diff_reference": 0.0
+  }
+ },
+ "groups": [
+  "X"
+ ],
+ "reference_from": "e4_relax_indep_a"
+}
