@@ -2,6 +2,12 @@
 
 One entry per working session, newest first, at most ten lines.
 
+## 2026-11-13 - H39 and H41 refuted, H38 supported, team cursor
+- H41: n = 64, Rm = 9.046875, seeds 1 and 4 negative. The all-positive claim fails. Pod `vtjrs9h3ibnbys`, 0.0467 USD.
+- H39: n = 48, Rm = 9.0625, seeds 6 and 7 negative. The all-positive claim fails. Pod `my44rr0lt5z12c`, 0.0390 USD.
+- H38: n = 32, Rm = 9.0625, seeds 0-4 all positive. Smallest lambda is 6.45e-5. Pod `odeo2utdbjkpx2`, 0.0394 USD.
+- The criteria were not changed. H42 is the next n = 64 midpoint. H43 and H44 are the neighbouring sign tests. H40 is still running.
+
 ## 2026-11-13 - H34 refuted, team cursor
 - At n = 64, Rm = 9.03125, seeds 1 and 4 are negative. Lambdas are -0.000179 and -0.000130. The other three seeds are positive. Largest max_div_b is 5.51e-16.
 - The all-positive claim fails. The criterion was not changed. Pod `u3vvb69h7bjcv4`, RTX 4090, 0.07 h, 0.0620 USD.
