@@ -75,6 +75,7 @@ __all__ = [
     "FullGaussian",
     "FullGaussianAnchoredField",
     "GaussianAnchoredField",
+    "LowRankModewiseGaussian",
     "ModewiseAffineSkip",
     "ModewiseGaussian",
     "balance_rescaling",
@@ -107,6 +108,7 @@ REGISTRY: dict[str, tuple[str, str]] = {
     "gaussian_anchor": ("design", "velocity field = exact field of the mode-wise Gaussian law + network for the non-Gaussian part"),
     "gaussian_full_anchor": ("design", "velocity field = exact field of the full-covariance Gaussian law + network for the non-Gaussian part"),
     "moment_recolouring": ("sampling", "linear map of the samples onto given first and second moments (optimal transport between Gaussians)"),
+    "gaussian_lowrank_modewise": ("model", "conditional Gaussian law with a structured covariance: leading eigen-directions plus one block per mode"),
 }
 
 
@@ -694,6 +696,51 @@ class GaussianAnchoredField(nn.Module):
 
     def forward(self, x: torch.Tensor, t: torch.Tensor, c: torch.Tensor) -> torch.Tensor:
         return self.gaussian_field(x, t, c) + self.base(x, t, c)
+
+
+class LowRankModewiseGaussian(FullGaussian):
+    """Conditional Gaussian law with a structured covariance: the leading ``rank`` eigen-directions of the sample
+    covariance of the latent, plus one block per Fourier mode for the rest.
+
+    At each training condition, with S = Q diag(λ) Qᵀ the sample covariance (flattened latent, D = M × C),
+
+        Σ = Q_k diag(λ_k) Q_kᵀ + blockdiag_m( [S − Q_k diag(λ_k) Q_kᵀ]_mm ),
+
+    so that the C × C block of every mode is exactly that of S (the second-order statistics of a mode, as in
+    :class:`ModewiseGaussian`), the trace is that of S, and the covariance between different modes is kept on
+    the ``rank`` leading directions only. ``rank = 0`` gives the mode-wise law; ``rank`` ≥ rank(S) gives
+    :class:`FullGaussian`. Unlike a sample covariance of n < D snapshots, Σ has full rank and does not single out
+    the span of the training snapshots: a field anchored on it leaves the network something to learn in-sample
+    (H38, H40). Stored as a factor A (rank + D, D) with AᵀA = Σ, so that :meth:`sample`, :meth:`moments` and
+    :class:`FullGaussianAnchoredField` are those of :class:`FullGaussian`.
+    """
+
+    def __init__(self, rank: int, sign: torch.Tensor | None = None) -> None:
+        super().__init__(sign)
+        self.rank = int(rank)
+
+    @torch.no_grad()
+    def fit(self, x: torch.Tensor, c: torch.Tensor) -> LowRankModewiseGaussian:
+        super().fit(x, c)
+        n_modes, n_ch = self.shape
+        factors = []
+        for a in self.factor:                                           # (n, D)/√n, centred: AᵀA = S
+            a64 = a.to(torch.float64)
+            k = min(self.rank, min(a64.shape))
+            if k > 0:
+                lam, u = torch.linalg.eigh(a64 @ a64.T)                 # (n, n): the non-zero spectrum of S
+                lam, u = lam[-k:].clamp_min(0.0), u[:, -k:]
+                low = (u.T @ a64)                                       # (k, D) = diag(√λ) Q_kᵀ: lowᵀ low = Q_k diag(λ_k) Q_kᵀ
+            else:
+                low = a64.new_zeros(0, a64.shape[1])
+            blocks = torch.einsum("nmc,nmd->mcd", a64.view(-1, n_modes, n_ch), a64.view(-1, n_modes, n_ch))
+            blocks = blocks - torch.einsum("kmc,kmd->mcd", low.view(-1, n_modes, n_ch), low.view(-1, n_modes, n_ch))
+            w, v = torch.linalg.eigh(blocks)                            # (M, C), (M, C, C): the rest, one block per mode
+            root = v * w.clamp_min(0.0).sqrt().unsqueeze(-2) @ v.mT     # symmetric square roots
+            rest = torch.block_diag(*root)                              # (D, D)
+            factors.append(torch.cat([low, rest]).to(a.dtype))
+        self.factor = factors
+        return self
 
 
 class FullGaussianAnchoredField(nn.Module):

@@ -558,3 +558,49 @@ def test_gaussian_full_anchor_learns_a_non_gaussian_law() -> None:
     assert float(s0[big].abs().max()) < 0.2                   # the untrained model is Gaussian
     assert bool((torch.sign(s1[big]) == torch.sign(target[big])).all()) and float((s1[big] / target[big]).min()) > 0.3, (s1, target)
 
+
+def test_gaussian_lowrank_modewise() -> None:
+    """The structured Gaussian keeps the block of every mode and the leading inter-mode directions; rank 0 is the
+    mode-wise law, a rank above that of the sample covariance is the full law; with n < D its covariance has full rank."""
+    M, Cc, n = 6, 4, 4000
+    D = M * Cc
+    g = torch.Generator().manual_seed(21)
+    a = torch.randn(D, D, generator=g) * 0.2 + torch.eye(D)
+    x = (torch.randn(n, D, generator=g) @ a.T + 0.3).reshape(n, M, Cc)
+    c = torch.zeros(n)
+    full = C.FullGaussian().fit(x, c)
+    _, s_full = full.moments(0.0)
+    blocks = lambda cov: torch.stack([cov[i * Cc:(i + 1) * Cc, i * Cc:(i + 1) * Cc] for i in range(M)])
+    for rank in (0, 3, 10, D):
+        law = C.LowRankModewiseGaussian(rank).fit(x, c)
+        mean, cov = law.moments(0.0)
+        assert torch.allclose(mean, full.moments(0.0)[0])
+        assert torch.allclose(blocks(cov), blocks(s_full), atol=1e-5)                       # the statistics of each mode are exact
+        assert abs(float(torch.trace(cov) - torch.trace(s_full))) < 1e-4
+        assert float(torch.linalg.eigvalsh(cov).min()) > -1e-8
+        if rank == 0:
+            off = cov - torch.block_diag(*blocks(cov))
+            assert float(off.abs().max()) < 1e-6                                           # the mode-wise law: no inter-mode covariance
+        if rank == D:
+            assert torch.allclose(cov, s_full, atol=1e-5)                                  # the full law
+    # the error to the full covariance decreases with the rank, and the leading direction is kept
+    errs = [float((C.LowRankModewiseGaussian(r).fit(x, c).moments(0.0)[1] - s_full).norm()) for r in (0, 3, 10, D)]
+    assert errs[0] > errs[1] > errs[2] > errs[3]
+    # between different modes, the covariance is that of the leading directions and nothing else
+    lam, q = torch.linalg.eigh(s_full)
+    low3 = (q[:, -3:] * lam[-3:]) @ q[:, -3:].T
+    cov3 = C.LowRankModewiseGaussian(3).fit(x, c).moments(0.0)[1]
+    off = lambda cov: cov - torch.block_diag(*blocks(cov))
+    assert torch.allclose(off(cov3), off(low3), atol=1e-5) and float(off(low3).abs().max()) > 0.05
+    # fewer snapshots than dimensions: the sample covariance is singular, the structured one is not
+    few = x[: D // 2]
+    s_few = C.FullGaussian().fit(few, torch.zeros(len(few))).moments(0.0)[1]
+    cov_few = C.LowRankModewiseGaussian(3).fit(few, torch.zeros(len(few))).moments(0.0)[1]
+    assert float(torch.linalg.eigvalsh(s_few)[0]) < 1e-8 < float(torch.linalg.eigvalsh(cov_few)[0])
+    # sampling and the sign symmetry go through the parent class
+    sym = C.LowRankModewiseGaussian(3, sign=torch.tensor([1.0, 1.0, -1.0, -1.0])).fit(x, c)
+    z = sym.sample(0.0, 20000, generator=g)
+    assert z.shape == (20000, M, Cc) and z.dtype == torch.float32
+    assert float(z[..., 2:].mean().abs()) < 0.02                                           # odd channels: zero mean
+    assert torch.allclose(torch.cov(z.reshape(len(z), -1).T), sym.moments(0.0)[1].float(), atol=0.08)
+
