@@ -588,7 +588,7 @@
    "role": "label",
    "box": {
     "x": 283.4181900024414,
-    "y": 133.62481689453125,
+    "y": 130.12481689453125,
     "w": 137.5829315185547,
     "h": 6.7502288818359375
    },
@@ -596,6 +596,24 @@
    "minSize": 6,
    "family": "Arial, Helvetica, sans-serif",
    "color": "#1a1a1a",
+   "halo": false,
+   "rotate": 0,
+   "italic": false,
+   "weight": "normal"
+  },
+  {
+   "s": "Model selection: generator chosen on the validation η (mean over the seeds)",
+   "role": "label",
+   "box": {
+    "x": 258.7435073852539,
+    "y": 138.12481689453125,
+    "w": 186.68617248535156,
+    "h": 6.750234603881836
+   },
+   "size": 5.5,
+   "minSize": 5.5,
+   "family": "Arial, Helvetica, sans-serif",
+   "color": "#7a7a7a",
    "halo": false,
    "rotate": 0,
    "italic": false,
@@ -638,7 +656,7 @@
    "weight": "bold"
   },
   {
-   "s": "1",
+   "s": "0",
    "role": "label",
    "box": {
     "x": 20.941301345825195,
@@ -656,7 +674,7 @@
    "weight": "normal"
   },
   {
-   "s": "2",
+   "s": "1",
    "role": "label",
    "box": {
     "x": 20.941301345825195,
@@ -674,7 +692,7 @@
    "weight": "normal"
   },
   {
-   "s": "3",
+   "s": "2",
    "role": "label",
    "box": {
     "x": 20.941301345825195,
@@ -692,7 +710,7 @@
    "weight": "normal"
   },
   {
-   "s": "4",
+   "s": "3",
    "role": "label",
    "box": {
     "x": 20.941301345825195,
@@ -710,7 +728,7 @@
    "weight": "normal"
   },
   {
-   "s": "5",
+   "s": "4",
    "role": "label",
    "box": {
     "x": 20.941301345825195,
@@ -854,12 +872,12 @@
    "weight": "bold"
   },
   {
-   "s": "24 reference trajectories, two disjoint halves",
+   "s": "24 reference trajectories, one of the 10 splits into two halves",
    "role": "label",
    "box": {
     "x": 268.78741455078125,
     "y": 170.36497592926025,
-    "w": 107.17744445800781,
+    "w": 146.59620666503906,
     "h": 6.750234603881836
    },
    "size": 5.5,
@@ -962,12 +980,12 @@
    "weight": "bold"
   },
   {
-   "s": "noise floor = energy distance between the two subsamples",
+   "s": "noise floor = mean over 10 splits into two halves of the 24 trajectories",
    "role": "label",
    "box": {
     "x": 268.78741455078125,
     "y": 235.36497497558594,
-    "w": 143.08853149414062,
+    "w": 168.74240112304688,
     "h": 6.750234603881836
    },
    "size": 5.5,

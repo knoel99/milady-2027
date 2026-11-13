@@ -60,7 +60,8 @@ export default function draw(F, L) {
     split.forEach((s, i) => { if (s === k) mark(b, k, X(i), y); });
   }
   L.rect(b, 0, 128, 331, 18, { fill: '#fff', stroke: MID, width: 0.4, r: 2 });
-  L.text(b, 165, 137, 'At every η: 24 trajectories × 100 snapshots of ({#0072B2|**u**}, {#D55E00|**B**})', { anchor: 'middle', valign: 'middle', size: 6 });
+  L.text(b, 165, 133.5, 'At every η: 24 trajectories × 100 snapshots of ({#0072B2|**u**}, {#D55E00|**B**})', { anchor: 'middle', valign: 'middle', size: 6 });
+  L.text(b, 165, 141.5, 'Model selection: generator chosen on the validation η (mean over the seeds)', { anchor: 'middle', valign: 'middle', size: 5.5, color: MID });
 
   // ---------------------------------------------------------------- c: five seeds, paired difference
   const c = F.panel('c', { x: 0, y: 56, w: 88, h: 48 });
@@ -69,7 +70,7 @@ export default function draw(F, L) {
   const ya = (s) => 36 + s * 14;
   L.line(c, [30, 28], [30, 100], { stroke: C.light, width: 0.3, dash: '0.8 1.4' });
   for (let s = 0; s < 5; s++) {
-    L.text(c, 24, ya(s), String(s + 1), { anchor: 'end', valign: 'middle', size: 5.5, color: MID });
+    L.text(c, 24, ya(s), String(s), { anchor: 'end', valign: 'middle', size: 5.5, color: MID });
     L.line(c, [30 + Av[s], ya(s)], [30 + Bv[s], ya(s)], { stroke: MID, width: 0.6 });
     L.circle(c, 30 + Av[s], ya(s), 3, { fill: '#fff', stroke: INK, width: 0.8 });
     L.circle(c, 30 + Bv[s], ya(s), 3, { fill: INK, stroke: INK, width: 0.5 });
@@ -101,7 +102,7 @@ export default function draw(F, L) {
   L.text(d, 11, 6, 'Noise floor of the reference', { size: 6, weight: 'bold', valign: 'middle' });
   // 24 trajectories, two disjoint halves (one row each)
   const gx = 8, tw = 6.4, rows = [[22, 'half 1', MID], [48, 'half 2', C.light]];
-  L.text(d, gx, 15, '24 reference trajectories, two disjoint halves', { valign: 'middle', size: 5.5 });
+  L.text(d, gx, 15, '24 reference trajectories, one of the 10 splits into two halves', { valign: 'middle', size: 5.5 });
   const blob = (p, cx, cy, fill, seed) => {
     L.rect(p, cx - 22, cy - 9, 44, 18, { fill: '#fff', stroke: MID, width: 0.5, r: 2 });
     for (let k = 0; k < 26; k++) {
@@ -119,7 +120,7 @@ export default function draw(F, L) {
   });
   L.arrow(d, [226, 32], [226, 54], { both: true, stroke: INK, width: 0.6, head: 2.2 });
   L.text(d, 231, 43, 'noise\nfloor', { valign: 'middle', size: 5.5, weight: 'bold', lineGap: 1 });
-  L.text(d, 8, 80, 'noise floor = energy distance between the two subsamples', { valign: 'middle', size: 5.5 });
+  L.text(d, 8, 80, 'noise floor = mean over 10 splits into two halves of the 24 trajectories', { valign: 'middle', size: 5.5 });
   // ratio axis
   const ay = 100, ax0 = 14, ax1 = 232;
   L.arrow(d, [ax0, ay], [ax1, ay], { stroke: INK, width: 0.7 });

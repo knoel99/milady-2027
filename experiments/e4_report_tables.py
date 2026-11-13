@@ -1,0 +1,231 @@
+"""Write the tables of the report of team claude from the result files (no number is typed by hand).
+
+    python3 e4_report_tables.py            # rewrite the blocks of site/teams/claude/report/index.qmd
+    python3 e4_report_tables.py --print    # print the blocks instead
+
+A block of the report is the text between ``<!-- e4:<name>:begin -->`` and ``<!-- e4:<name>:end -->``. Blocks:
+``data`` (reference data per η), ``comparative`` (variant × metric on the held-out η, seed mean ± SE),
+``hypotheses`` (register with the verdicts), ``long`` and ``scan`` (long trainings, width scan), ``indep`` (replication
+with other data seeds), ``objectives`` (targets of race/teams/claude/objectives.toml against the measured values),
+``jobs`` (GPU ledger). Sources: ``experiments/results`` (main run), ``results/replications/e4_final_long``,
+``e4_final_scan``, ``e4_indep``, ``research/hypotheses.json``, ``research/compute-ledger.jsonl``.
+"""
+from __future__ import annotations
+
+import argparse
+import json
+import re
+import subprocess
+import sys
+import tomllib
+from pathlib import Path
+
+import numpy as np
+
+HERE = Path(__file__).resolve().parent
+ROOT = HERE.parent
+sys.path.insert(0, str(HERE))
+from e4_digest import R, load, per_seed  # noqa: E402
+from export_explorer import LABEL  # noqa: E402
+
+REPORT = ROOT / "site" / "teams" / "claude" / "report" / "index.qmd"
+COLS = [("ed_ratio", "ED / floor", False), ("div_rel_b_max", "div B", False), ("balance_residual_total", "energy residual", True),
+        ("spec_err_b_l2", "spectrum of B", False), ("hel_m_err_rel", "magnetic helicity", True),
+        ("null_count_err_rel", "null points", True), ("restart_drift_eb", "restart drift", True), ("hc_sign_asym", "polarity", True)]
+NOTES = "@@notes@@"
+WHERE = {"none": "none", "design": "design", "loss": "loss", "sampling": "sampling", "family": "family"}
+
+
+def f(x: float, n: int = 3) -> str:
+    if x is None or not np.isfinite(x):
+        return "–"
+    if x != 0 and (abs(x) < 1e-3 or abs(x) >= 1e4):
+        m, e = f"{x:.1e}".split("e")
+        return f"${m}\\times 10^{{{int(e)}}}$"
+    return f"{x:.{n}g}"
+
+
+def cell(x: np.ndarray) -> str:
+    """Seed mean with its standard error in parentheses on the last digits: 217(14) = 217 ± 14, 0.456(3) = 0.456 ± 0.003.
+    The error keeps two digits when its first digit is 1, one otherwise; means below 1e-3 are given as a power of ten."""
+    x = np.asarray(x, dtype=float)
+    x = x[np.isfinite(x)]
+    if not len(x):
+        return "–"
+    m = float(x.mean())
+    if abs(m) < 1e-12:
+        return "$<10^{-12}$"
+    if abs(m) < 1e-3:
+        a, e = f"{m:.1e}".split("e")
+        return f"${a}\\times 10^{{{int(e)}}}$"
+    if len(x) < 2:
+        return f(m)
+    se = float(x.std(ddof=1) / np.sqrt(len(x)))
+    if se <= 0 or se < 1e-6 * abs(m):
+        return f(m)
+    exp = int(np.floor(np.log10(se)))
+    lead = int(se / 10 ** exp)
+    digits = 2 if lead == 1 else 1                       # significant digits of the error
+    dec = digits - 1 - exp                               # decimals to keep (may be negative)
+    if dec <= 0:
+        q = 10 ** (-dec)
+        return f"{int(round(m / q) * q)}({int(round(se / q) * q)})"
+    return f"{m:.{dec}f}({int(round(se * 10 ** dec))})"
+
+
+def n_seeds(runs: dict, v: str) -> int:
+    return int(np.isfinite(per_seed(runs, v, "ed_ratio")).sum())
+
+
+def variants_table(runs: dict, names: list[str], extra_loss: bool = False) -> list[str]:
+    head = ["Variant", "Acts through", "ED / floor, training $\\eta$"] + [c[1] for c in COLS] + (["FM loss"] if extra_loss else []) + ["Seeds"]
+    out = ["| " + " | ".join(head) + " |", "|:" + "-" * 30 + "|:" + "-" * 9 + "|" + ("-" * 10 + ":|") * (len(head) - 2)]
+    for v in names:
+        if not n_seeds(runs, v):
+            continue
+        row = [tex(LABEL.get(v, (v, ""))[0]), WHERE[LABEL.get(v, (v, "design"))[1]], cell(per_seed(runs, v, "ed_ratio", "train"))]
+        row += [cell(per_seed(runs, v, k, absolute=a)) for k, _, a in COLS]
+        if extra_loss:
+            row.append(cell(np.array([r["times"].get(v, {}).get("fm_loss_train_sample", np.nan) for r in runs.values()], dtype=float)))
+        row.append(str(n_seeds(runs, v)))
+        out.append("| " + " | ".join(row) + " |")
+    return out
+
+
+def block_data() -> list[str]:
+    data = json.loads((R / "e4_data.json").read_text())
+    ref = json.loads((R / "e4_reference.json").read_text())["values"]
+    out = ["| $\\eta$ | Rm | Split | $E_u$ | $E_B$ | $H_M$ | $E_B(k{=}1)/E_B$ | Null points | $k_\\lambda$ | Energy residual | Floor of the energy distance |",
+           "|---:|---:|:---|---:|---:|---:|---:|---:|---:|---:|---:|"]
+    name = {"train": "training", "val": "validation", "test": "held-out test"}
+    for v in data["values"]:
+        r = ref[f"{v['eta']:.5f}"]
+        out.append(f"| {v['eta']:.4f} | {1 / (2 * v['eta']):.1f} | {name[v['split']]} | {f(r['E_u'])} | {f(r['E_B'])} | {f(r['H_M'])} | "
+                   f"{f(r['EB_k1_fraction'])} | {f(r['null_count_mean'])} $\\pm$ {f(r['null_count_se'], 2)} | {f(r['k_lambda'])} | "
+                   f"{f(r['balance_residual_total'], 2)} | {f(r['ed_floor_512'])} |")
+    return out
+
+
+TEX = {"½": "1/2", "η": "$\\eta$", "ν": "$\\nu$", "τ": "$\\tau$", "λ": "$\\lambda$", "π": "$\\pi$", "Σ": "$\\Sigma$",
+       "⟨": "$\\langle$", "⟩": "$\\rangle$", "≥": "$\\ge$", "≤": "$\\le$", "≈": "$\\approx$", "∝": "$\\propto$",
+       "→": "$\\to$", "−": "$-$", "×": "$\\times$", "±": "$\\pm$", "·": "$\\cdot$", "²": "$^2$", "³": "$^3$", "₁": "$_1$",
+       "₀": "$_0$", "∇": "$\\nabla$", "‖": "$\\Vert$", "…": "...", "|": "/", "_": "\\_", "<": "$<$", ">": "$>$", "^": "\\^{}"}
+
+
+def tex(s: str) -> str:
+    """Text of the register for a table cell of both outputs: symbols that the PDF font lacks become maths."""
+    return "".join(TEX.get(ch, ch) for ch in s)
+
+
+def block_hypotheses() -> list[str]:
+    reg = json.loads((ROOT / "research" / "hypotheses.json").read_text())["hypotheses"]
+    out = ["| Id | Hypothesis (shortened) | Status | Verdict of the `encadrant` role (beginning) |",
+           "|:---|:" + "-" * 44 + "|:" + "-" * 9 + "|:" + "-" * 40 + "|"]
+    for h in reg:
+        if not h["id"].startswith("H") or int(h["id"][1:]) < 4:
+            continue
+        st = h["statement"]
+        st = tex(st[:230]) + (" ..." if len(st) > 230 else "")
+        vd = h.get("verdict") or "not reviewed yet"
+        vd = tex(vd[:260]) + (" ..." if len(vd) > 260 else "")
+        out.append(f"| {h['id']} | {st} | {h['status']} | {vd} |")
+    return out
+
+
+def block_objectives() -> list[str]:
+    obj = tomllib.loads((ROOT / "race" / "teams" / "claude" / "objectives.toml").read_text())["objective"]
+    out = ["| Objective | Target | Measured | Seeds | Met |", "|:---|---:|---:|---:|:---|"]
+    sel = R / "e4_selection.json"
+    for o in obj:
+        r = subprocess.run(o["command"].split(), cwd=ROOT, capture_output=True, text=True)
+        line = (r.stdout.strip().splitlines() or [""])[-1]
+        try:
+            val = json.loads(line)
+            v, n = float(val["value"]), val.get("seeds")
+            higher = o["id"].startswith(("C6", "C7"))
+            met = "yes" if (v >= o["target"] if higher else v <= o["target"]) else "no"
+            out.append(f"| {o['id']} | {'$\\ge$' if higher else '$\\le$'} {f(float(o['target']))} | {f(v)} | {n} | {met} |")
+        except (json.JSONDecodeError, KeyError, ValueError):
+            out.append(f"| {o['id']} | {f(float(o['target']))} | not measurable | – | no |")
+    if sel.exists():
+        s = json.loads(sel.read_text())
+        out += [NOTES, f"Generator measured by C1–C5, T1 and T2: `{s.get('variant')}`, the variant with the lowest energy-distance ratio on the "
+                    "validation $\\eta$ (file `experiments/results/e4_selection.json`)."]
+    return out
+
+
+def block_jobs() -> list[str]:
+    led = [json.loads(x) for x in (ROOT / "research" / "compute-ledger.jsonl").read_text().splitlines() if x.strip()]
+    rows = [r for r in led if r.get("event") != "start"]
+    out = ["| End (UTC) | GPU | USD/h | Hours | USD | Exit | Commit | Command (shortened) |", "|:---|:---|---:|---:|---:|:---|:---|:---|"]
+    for r in rows:
+        cmd = (r.get("command") or "").replace("|", "/").replace("bash experiments/", "")
+        cmd = cmd[:70] + ("…" if len(cmd) > 70 else "")
+        out.append(f"| {r['time'][5:16].replace('T', ' ')} | {(r.get('gpu') or '–').replace('NVIDIA ', '')} | {r.get('usd_per_hour', 0):.2f} | "
+                   f"{r.get('hours', 0):.3f} | {r.get('usd', 0):.2f} | {r.get('rc', '–')} | `{(r.get('commit') or '')[:7]}` | `{cmd}` |")
+    out += [NOTES, f"Total: {len(rows)} ledger entries, {sum(r.get('hours', 0) for r in rows):.2f} GPU hours, "
+                f"{sum(r.get('usd', 0) for r in rows):.2f} USD."]
+    return out
+
+
+def block_indep(main: dict) -> list[str]:
+    other = load(False, R / "replications" / "e4_indep")
+    if not other:
+        return ["*(The replication with other data seeds is not available.)*"]
+    out = ["| Variant | ED / floor, main run | ED / floor, other data seeds | Energy residual, main | Energy residual, other | Null points, main | Null points, other |",
+           "|:---|---:|---:|---:|---:|---:|---:|"]
+    for v in LABEL:
+        if v.endswith("_half") or not n_seeds(main, v) or not n_seeds(other, v):
+            continue
+        out.append(f"| {tex(LABEL[v][0])} | {cell(per_seed(main, v, 'ed_ratio'))} | {cell(per_seed(other, v, 'ed_ratio'))} | "
+                   f"{cell(per_seed(main, v, 'balance_residual_total', absolute=True))} | {cell(per_seed(other, v, 'balance_residual_total', absolute=True))} | "
+                   f"{cell(per_seed(main, v, 'null_count_err_rel', absolute=True))} | {cell(per_seed(other, v, 'null_count_err_rel', absolute=True))} |")
+    return out
+
+
+def blocks() -> dict[str, list[str]]:
+    main = load(False)
+    names = [v for v in LABEL if not v.endswith("_half") and not v.startswith("S_") and not v.endswith("_long")]
+    long = load(False, R / "replications" / "e4_final_long")
+    scan = load(False, R / "replications" / "e4_final_scan")
+    return {
+        "data": block_data(),
+        "comparative": variants_table(main, names),
+        "hypotheses": block_hypotheses(),
+        "long": variants_table(long, ["G0_gaussian_modes", "W9_skip_sym", "W9L_skip_long", "W10_anchored", "W11_anchored_skip",
+                                      "W11L_anchored_skip_long"], extra_loss=True) if long else ["*(not available)*"],
+        "scan": variants_table(scan, ["S_w512", "S_w2048", "S_w5632", "S_w512_long", "S_w2048_long", "W9_skip_sym", "G0_gaussian_modes"],
+                               extra_loss=True) if scan else ["*(not available)*"],
+        "indep": block_indep(main),
+        "objectives": block_objectives(),
+        "jobs": block_jobs(),
+    }
+
+
+def main() -> None:
+    ap = argparse.ArgumentParser(description=__doc__, formatter_class=argparse.RawDescriptionHelpFormatter)
+    ap.add_argument("--print", action="store_true")
+    a = ap.parse_args()
+    b = blocks()
+    if a.print:
+        for k, v in b.items():
+            print(f"--- {k}\n" + "\n".join(v) + "\n")
+        return
+    text = REPORT.read_text(encoding="utf-8")
+    for k, v in b.items():
+        pat = re.compile(rf"(<!-- e4:{k}:begin -->\n).*?(<!-- e4:{k}:end -->)", re.DOTALL)
+        if not pat.search(text):
+            print(f"block {k}: no marker in the report")
+            continue
+        cap = re.search(r"\n(: [^\n]*\{#tbl-[a-z]+\})\s*\Z", pat.search(text).group(0).rsplit("<!--", 1)[0])
+        tail = f"\n{cap.group(1)}\n\n" if cap else ""          # the caption of the table lives inside the block
+        table = v[: v.index(NOTES)] if NOTES in v else v        # notes of a block come before its table and caption
+        notes = v[v.index(NOTES) + 1:] if NOTES in v else []
+        body = ("\n".join(notes) + "\n\n" if notes else "") + "\n".join(table) + "\n" + tail
+        text = pat.sub(lambda m, body=body: m.group(1) + body + m.group(2), text)
+        print(f"block {k}: {len(v)} lines")
+    REPORT.write_text(text, encoding="utf-8")
+
+
+if __name__ == "__main__":
+    main()

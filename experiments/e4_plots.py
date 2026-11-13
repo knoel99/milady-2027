@@ -8,7 +8,7 @@ A plot whose data are missing is skipped with a message.
 
     python3 e4_plots.py [--quick] [--out DIR]     # default DIR: site/teams/claude/plots
 
-Every figure is written as ``<name>.svg`` and ``<name>.png``; ``plots.json`` lists them with the files they
+Every figure is written as ``<name>.svg``, ``<name>.png`` and ``<name>.pdf``; ``plots.json`` lists them with the files they
 come from (the report and the explorer quote these captions).
 """
 from __future__ import annotations
@@ -57,6 +57,7 @@ WRITTEN: list[dict] = []
 def finish(fig, out: Path, name: str, caption: str, sources: list[str]) -> None:
     fig.savefig(out / f"{name}.svg")
     fig.savefig(out / f"{name}.png", dpi=200)
+    fig.savefig(out / f"{name}.pdf")                 # for the PDF of the report
     plt.close(fig)
     WRITTEN.append({"name": name, "caption": caption, "sources": sources})
     print("written", out / f"{name}.svg")

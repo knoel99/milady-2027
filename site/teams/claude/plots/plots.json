@@ -1,0 +1,68 @@
+[
+ {
+  "name": "e4_data_trends",
+  "caption": "Reference data of E4: kinetic energy, magnetic energy and magnetic helicity of the saturated dynamo against \u03b7 (mean over 24 trajectories, bars: \u00b1 2 standard errors), with the training, validation and held-out values.",
+  "sources": [
+   "experiments/results/e4_data.json"
+  ]
+ },
+ {
+  "name": "e4_helicity_spectrum",
+  "caption": "Reference data: shell spectrum of the magnetic helicity and of the current helicity \u27e8j\u00b7B\u27e9 at the three held-out \u03b7. The mean of \u27e8j\u00b7B\u27e9 is zero (stationarity identity): the negative shells k \u2264 2 cancel the positive shells k \u2265 3.",
+  "sources": [
+   "experiments/results/e4_reference.json"
+  ]
+ },
+ {
+  "name": "e4_ed_ratio",
+  "caption": "Energy distance to the reference divided by the noise floor on the held-out \u03b7, per variant: one dot per seed, bar: seed mean \u00b1 2 standard errors (drawn with at least 5 seeds), open circle: seed mean at the training \u03b7. Dashed line: the floor.",
+  "sources": [
+   "experiments/results/e4_mhd3d_s<k>.json"
+  ]
+ },
+ {
+  "name": "e4_physics_metrics",
+  "caption": "Physical metrics on the held-out \u03b7, one dot per seed and seed mean \u00b1 2 standard errors: residual of the mean energy balance, error on the number of magnetic null points, drift of the magnetic energy when the solver restarts from the generated snapshots, error on the mean magnetic helicity. Dashed lines: the same quantity on reference snapshots.",
+  "sources": [
+   "experiments/results/e4_mhd3d_s<k>.json",
+   "experiments/results/e4_reference.json"
+  ]
+ },
+ {
+  "name": "e4_per_eta",
+  "caption": "Energy-distance ratio against \u03b7, seed mean: at the training values (filled circles) and between them (open squares: validation, open diamonds: held-out test). The gap between the two shows how each model interpolates in \u03b7.",
+  "sources": [
+   "experiments/results/e4_mhd3d_s<k>.json"
+  ]
+ },
+ {
+  "name": "e4_nulls_klambda",
+  "caption": "Number of magnetic null points against the magnetic Taylor wavenumber k_\u03bb = (\u27e8|j|\u00b2\u27e9/\u27e8|B|\u00b2\u27e9)^\u00bd, generated over reference, one point per variant, held-out \u03b7 and seed; the fit is the one of the digest (hypothesis H13).",
+  "sources": [
+   "experiments/results/e4_mhd3d_s<k>.json",
+   "experiments/results/e4_reference.json"
+  ]
+ },
+ {
+  "name": "e4_floors",
+  "caption": "Noise floors of the energy distance on the reference data: between two subsamples from disjoint halves of the 24 trajectories (mean of the 10 splits that define the floor of the ratio; bars: smallest and largest of 20 splits) and between two random subsamples.",
+  "sources": [
+   "experiments/results/e4_floor.json"
+  ]
+ },
+ {
+  "name": "e4_convergence",
+  "caption": "Convergence of the reference data: energies and magnetic helicity at the three held-out \u03b7 for the 16\u00b3 grid of E4, the same grid recomputed on the hardware of the check, half its time step, 24\u00b3 and 32\u00b3 (one \u03b7); bars: \u00b1 2 standard errors over 24 trajectories.",
+  "sources": [
+   "experiments/results/e4_data.json",
+   "experiments/results/replications/e4_convergence/*.json"
+  ]
+ },
+ {
+  "name": "e4_gpu_costs",
+  "caption": "Cumulative GPU spend of the pilot, one point per entry of the compute ledger: finished jobs, jobs that failed, were interrupted or were lost, and the corrections made after another session deleted running pods.",
+  "sources": [
+   "research/compute-ledger.jsonl"
+  ]
+ }
+]

@@ -36,10 +36,10 @@ The engine is referenced in place (`.claude/skills/schematic-figure/foundation/`
 | Panel | Metric (FACTS.md "Metrics") |
 |---|---|
 | a | key: generated, reference, colour key |
-| b | energy distance / noise floor (floor = two reference subsamples) |
+| b | energy distance / noise floor (floor drawn as a band: mean of 10 splits of the reference trajectories into two halves; a perfect generator scores about 0.6, not 1) |
 | c | relative divergence of B |
 | d | mean energy balance: injection vs ν and η dissipations |
 | e | shell spectrum E_B(k) (k = 1…8) and mean magnetic helicity H_M |
 | f | magnetic null points (B = 0), mean count |
-| g | restart drift over τ = 4, mean E_B |
+| g | restart drift over τ = 4, mean E_B; bracket spans the generated ensemble at t = 0 and t = τ |
 | h | polarity symmetry B → −B, |P(⟨u·B⟩ > 0) − ½| |

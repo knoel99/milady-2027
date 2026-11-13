@@ -1,17 +1,17 @@
 {
   "schemaVersion": 1,
-  "receiptId": "e06f0ddc-09fc-49c3-be08-1c86068e1e9d",
+  "receiptId": "e40d7801-7c97-44ae-99d2-fd2ae2143fe8",
   "status": "current",
   "command": "deliver",
   "type": "architecture",
   "input": "/home/user/milady-2027/.archify/agents/candidate.json",
   "output": "/home/user/milady-2027/site/teams/claude/diagrams/agent-organisation.html",
   "specification": {
-    "sha256": "b1979418d1e9db1b1a331c4708748b1b5f470c0bbfe2c05547994597fb401255",
-    "bytes": 8756
+    "sha256": "434c58cd08907fb35674429273d0f31229b9e394cec2f454540819628045b632",
+    "bytes": 10559
   },
   "artifact": {
-    "sha256": "a60d932d2852be8ba80a549a2f73e56d679028864557818bfb92bcc99ad12f12",
-    "bytes": 864412
+    "sha256": "df097b47ea001f421822ae836ecadc3a3fc46d54f115b50dff7ec7d88e63a9c4",
+    "bytes": 873364
   }
 }

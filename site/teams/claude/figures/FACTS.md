@@ -19,7 +19,7 @@ is not here. Numbers marked *(pending)* are not final: do not draw them.
 - The magnetic field has a large-scale part at k = 1 (about 40 % of E_B) with negative magnetic helicity; the helicity
   spectrum H(k) is negative at k = 1 and k = 2 and positive for k ≥ 3 (positive part of k² H(k) peaks at k = 4).
 - Exact identities of the stationary law (each mean is zero): energy ⟨f·u⟩ − ν⟨|ω|²⟩ − η⟨|j|²⟩; magnetic helicity ⟨j·B⟩
-  (from d⟨A·B⟩/dt = −2η⟨j·B⟩); cross helicity ⟨f·B⟩ − (ν + η)⟨ω·j⟩. Measured on the reference: energy residual below 4e-4.
+  (from d⟨A·B⟩/dt = −2η⟨j·B⟩); cross helicity ⟨f·B⟩ − (ν + η)⟨ω·j⟩. Measured on the reference: energy residual of a few 1e-4 of the dissipation.
 - Magnetic null points (B = 0): 20 per snapshot at η = 0.08 to 52 at η = 0.03 (trilinear method, 48³ evaluation grid).
 
 ## Data and protocol
@@ -91,7 +91,7 @@ Where a mechanism acts, in the words of the internship offer: **model design**, 
   serves its outputs over HTTP under a random path; the tool fetches them, deletes the pod and writes the cost in
   `research/compute-ledger.jsonl`. Results are committed and pushed; `experiments/digest.py` builds the digest.
 - Measured: full protocol (5 seeds, 9 variants) 83 min and 1.02 USD on an RTX PRO 4500; a training takes 35–60 s on the GPU
-  against 15 min on a CPU core; solver 64³: 4–5 ms per step on GPU.
+  against 15 min on a CPU core; solver 64³: 4.9 ms per step on an RTX A6000 (float32), 3.9 ms on an RTX PRO 4500 (float64).
 - Failures found and repaired in the tool, in order: no capacity (retry); job status never read (the HTTP proxy refuses the
   default Python user agent); pod set-up broken by a system package; another session sharing the account deleted the running
   pods (per-team pod names); the session restarted and orphaned a running job (`collect` takes it over).

@@ -9,7 +9,7 @@ label	5.5pt	flat: every sample balanced
 label	5.5pt	Identity of the stationary law
 label	6.5pt	E[ ⟨f·u⟩ − ν⟨|ω|²⟩ − η⟨|j|²⟩ ] = 0
 label	5.5pt	forcing · viscous, u · Joule, B
-label	5.0pt	residual below 4×10−4 on the reference
+label	5.0pt	a few 10−4 of the dissipation (measured on the reference)
 panel	8.0pt	b
 label	6.5pt	Magnetic helicity by shell
 label	5.5pt	1
@@ -23,7 +23,11 @@ label	5.5pt	8
 label	5.5pt	shell k
 label	5.5pt	k² H(k)  (schematic)
 label	5.5pt	large scales
-label	5.5pt	k ≤ 2: negative
+label	5.5pt	k = 1, 2: negative
+label	5.0pt	k = 2: 3 to 16 times smaller
+label	5.0pt	registered hypothesis H11
+label	5.0pt	(negative at k = 1 only) refuted:
+label	5.0pt	k = 2 is negative too
 label	5.5pt	small scales
 label	5.5pt	k ≥ 3: positive
 label	5.5pt	peak at k = 4
@@ -43,5 +47,6 @@ label	5.5pt	Sampling weights
 label	5.5pt	tilt the samples
 label	5.5pt	(W7)
 label	5.5pt	reweighted samples
+label	5.0pt	collapsed: comparison H8 dropped
 label	5.5pt	Measured (5 seeds, GPU)
 label	5.5pt	W5: energy residual 0.29 → 0.19

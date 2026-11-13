@@ -57,7 +57,7 @@ export default function draw(F, L) {
     ['Job status never read', 'the HTTP proxy refuses the default Python user agent'],
     ['Pod set-up broken', 'a system package'],
     ['Running pods deleted', 'another session on the account; per-team pod names'],
-    ['Job orphaned', 'the session restarted; collect takes it over'],
+    ['Job orphaned', 'session restarted twice: collect takes over the running pods'],
   ];
   fl.forEach(([t, r], i) => {
     const y = 24 + i * 18;
@@ -72,12 +72,13 @@ export default function draw(F, L) {
   const m = [
     ['83 min, 1.02 USD', 'full protocol: 5 seeds, 9 variants, RTX PRO 4500'],
     ['35–60 s vs 15 min', 'one training: GPU vs one CPU core'],
-    ['4–5 ms per step', 'solver at 64³ on the GPU'],
+    ['64³ solver step', '4.9 ms (RTX A6000, float32)', '3.9 ms (RTX PRO 4500, float64)'],
   ];
-  m.forEach(([big, small], i) => {
-    const y = 14 + i * 34;
-    L.rect(c, 0, y, 224, 30, { fill: C.tintGrey, stroke: 'none', r: 2 });
-    L.text(c, 8, y + 10, big, { size: 7, weight: 'bold', valign: 'middle' });
-    L.text(c, 8, y + 21, small, { size: 5.5, valign: 'middle', color: INK });
+  m.forEach(([big, small, small2], i) => {
+    const y = 14 + i * 31, h = small2 ? 38 : 28;
+    L.rect(c, 0, y, 224, h, { fill: C.tintGrey, stroke: 'none', r: 2 });
+    L.text(c, 8, y + 9, big, { size: 7, weight: 'bold', valign: 'middle' });
+    L.text(c, 8, y + 19, small, { size: 5.5, valign: 'middle', color: INK });
+    if (small2) L.text(c, 8, y + 28.5, small2, { size: 5.5, valign: 'middle', color: INK });
   });
 }

@@ -1,0 +1,19 @@
+{
+ "fail": [],
+ "warn": [
+  "text is small for the figure: median label 5.5 pt at 183 mm, where published Fig. 1s read like 11.3 pt. Draw it narrower (120 or 136 mm) with 7-8 pt labels, enlarging the main objects and dropping minor ones to make room",
+  "text: 169 words, 0.92 words/cm2 (calibration from 5 published schematics: 0.20-0.45): smell test, check whether caption material is on the figure",
+  "sentence-style headings (P31: name the content with a noun phrase): \"RunPod pod, rented for one job\", \"Five failures, in the order found\"",
+  "caption-like labels (a label names a thing in 2-4 words; explanation goes to docs/caption.md): \"4 CPU cores, no GPU\", \"Run the job under a time limit\", \"Serve outputs over HTTP, random path\", \"the HTTP proxy refuses the default Pytho\", \"another session on the account; per-team\", \"session restarted twice: collect takes o\", \"full protocol: 5 seeds, 9 variants, RTX \", \"one training: GPU vs one CPU core\"",
+  "text over busy art (use a halo, move it, or add a leader line): \"1\" 0.09, \"2\" 0.09, \"3\" 0.09, \"4\" 0.09, \"5\" 0.09, \"1\" 0.09, \"2\" 0.09, \"3\" 0.09",
+  "large empty area in panel b (35% of the panel, 38 mm square): enlarge the main art, move a neighbour in, or shrink the panel"
+ ],
+ "info": [
+  "build 176 ms; 183 x 100 mm; 49 texts, 33 strokes, 0 images, 3 panels",
+  "median label 5.5 pt = 1.06% of the width (published Fig. 1s: median 2.2%, 25th percentile 1.65%)",
+  "coloured text (fine when the hue is the colour of the entity it names, P15; never for emphasis alone): \"pushed commit\", \"delete\"",
+  "no relations declared (F.relate): the connectivity check is off",
+  "ink coverage 2.2% of the page (calibration: see reference/style.md)",
+  "largest empty square per panel (share of panel area): a 0.021, b 0.35, c 0.004"
+ ]
+}

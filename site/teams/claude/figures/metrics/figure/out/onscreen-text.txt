@@ -1,0 +1,63 @@
+panel	8.0pt	a
+label	6.5pt	Compared ensembles
+label	5.0pt	held-out η
+label	7.0pt	Generated snapshots
+label	7.0pt	Reference snapshots
+label	5.0pt	from the solver
+label	6.0pt	velocity u
+label	6.0pt	field B
+label	6.0pt	forcing f
+panel	8.0pt	b
+label	6.5pt	Energy distance
+label	5.0pt	distance to reference / noise floor
+label	6.0pt	1
+label	5.0pt	two referencesubsamples
+label	5.0pt	generatedvs reference
+label	5.0pt	ratio
+label	5.0pt	floor (grey band): mean of 10 splits of the
+label	5.0pt	reference trajectories into two halves
+label	5.0pt	a perfect generator would score about 0.6, not 1
+panel	8.0pt	c
+label	6.5pt	Divergence of B
+label	5.0pt	‖∇·B‖ / ‖∇B‖
+label	5.0pt	closed field lines
+label	6.0pt	0
+panel	8.0pt	d
+label	6.5pt	Energy balance
+label	5.0pt	injection vs ν + η dissipation
+label	5.0pt	ref.
+label	5.0pt	gen.
+panel	8.0pt	e
+label	6.5pt	Spectrum, helicity
+label	5.0pt	EB(k) and mean HM
+label	5.0pt	1
+label	5.0pt	8
+label	5.0pt	k
+label	6.0pt	HM
+panel	8.0pt	f
+label	6.5pt	Null points
+label	5.0pt	mean count of B = 0
+label	5.0pt	B = 0
+label	5.0pt	ref.
+label	5.0pt	gen.
+panel	8.0pt	g
+label	6.5pt	Restart drift
+label	5.0pt	solver advances snapshots by τ = 4
+label	5.0pt	0
+label	5.0pt	τ
+label	5.0pt	time
+label	5.0pt	mean EB
+label	5.0pt	drift
+panel	8.0pt	h
+label	6.5pt	Polarity symmetry
+label	5.0pt	|P(⟨u·B⟩ > 0) − ½|
+label	6.0pt	B
+label	6.0pt	−B
+label	8.0pt	↔
+label	5.0pt	½
+label	5.0pt	>0
+label	5.0pt	<0
+label	5.0pt	>0
+label	5.0pt	<0
+label	5.0pt	ref.
+label	5.0pt	gen.

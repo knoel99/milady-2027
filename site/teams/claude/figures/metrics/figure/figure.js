@@ -32,16 +32,19 @@ export default function draw(F, L) {
 
   // b: energy distance over noise floor
   const b = cell(1, 'b', 'Energy distance', 'distance to reference / noise floor');
-  axis(b, 14, 78, 112);
-  L.line(b, [34, 74], [34, 82], { stroke: INK, width: 0.5 });
-  L.text(b, 34, 90, '1', { size: 6, anchor: 'middle', valign: 'top' });
-  dot(b, 34, 58, 'ref'); L.text(b, 34, 46, 'two reference\nsubsamples', { size: 5, anchor: 'middle', valign: 'bottom', color: INK });
-  L.line(b, [34, 61], [34, 74], { stroke: INK, width: 0.5, dash: '1.4 1.2' });
-  dot(b, 92, 58, 'gen'); L.text(b, 92, 46, 'generated\nvs reference', { size: 5, anchor: 'middle', valign: 'bottom', color: G });
-  L.line(b, [92, 61], [92, 74], { stroke: G, width: 0.5, dash: '1.4 1.2' });
-  L.arrow(b, [38, 58], [88, 58], { stroke: C.mid, width: 0.5, head: 2.2 });
-  L.text(b, 63, 66, 'ratio', { size: 5, anchor: 'middle', color: C.mid });
-  L.text(b, 62, 100, 'noise floor = 1', { size: 5, anchor: 'middle', color: C.mid });
+  L.rect(b, 27, 42, 14, 34, { fill: '#e6e6e6', stroke: 'none' });
+  axis(b, 14, 74, 112);
+  L.line(b, [34, 70], [34, 78], { stroke: INK, width: 0.5 });
+  L.text(b, 34, 80, '1', { size: 6, anchor: 'middle', valign: 'top' });
+  dot(b, 34, 54, 'ref'); L.text(b, 34, 41, 'two reference\nsubsamples', { size: 5, anchor: 'middle', valign: 'bottom', color: INK });
+  L.line(b, [34, 57], [34, 70], { stroke: INK, width: 0.5, dash: '1.4 1.2' });
+  dot(b, 92, 54, 'gen'); L.text(b, 92, 41, 'generated\nvs reference', { size: 5, anchor: 'middle', valign: 'bottom', color: G });
+  L.line(b, [92, 57], [92, 70], { stroke: G, width: 0.5, dash: '1.4 1.2' });
+  L.arrow(b, [44, 54], [88, 54], { stroke: C.mid, width: 0.5, head: 2.2 });
+  L.text(b, 66, 62, 'ratio', { size: 5, anchor: 'middle', color: C.mid });
+  L.text(b, 12, 92, '**floor** (grey band): mean of 10 splits of the', { size: 5, anchor: 'start', color: C.mid });
+  L.text(b, 12, 98, 'reference trajectories into two halves', { size: 5, anchor: 'start', color: C.mid });
+  L.text(b, 12, 106, 'a perfect generator would score about 0.6, not 1', { size: 5, anchor: 'start', color: INK });
 
   // c: divergence of B
   const c = cell(2, 'c', 'Divergence of B', '‖∇·B‖ / ‖∇B‖');
@@ -109,8 +112,8 @@ export default function draw(F, L) {
   L.line(g, [22, 48], [96, 72], { stroke: G, width: 1 });
   dot(g, 22, 56, 'ref', 1.8); dot(g, 22.01, 48, 'gen', 1.8);
   dot(g, 96, 56, 'ref', 1.8); dot(g, 96.01, 72, 'gen', 1.8);
-  L.bracket(g, [102, 56], [102, 72], { side: 'right', depth: 2.5 });
-  L.text(g, 108, 64, 'drift', { size: 5, anchor: 'start', valign: 'middle', color: G });
+  L.bracket(g, [102, 48], [102, 72], { side: 'right', depth: 2.5 });
+  L.text(g, 108, 60, 'drift', { size: 5, anchor: 'start', valign: 'middle', color: G });
 
   // h: polarity symmetry
   const h = cell(7, 'h', 'Polarity symmetry', '|P(⟨*u*·*B*⟩ > 0) − ½|');

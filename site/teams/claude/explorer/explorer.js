@@ -31,12 +31,18 @@
     const X = (v) => m.l + (tx(v) - x0) / (x1 - x0) * (W - m.l - m.r), Y = (v) => H - m.b - (ty(v) - y0) / (y1 - y0) * (H - m.t - m.b);
     let s = '<svg viewBox="0 0 ' + W + " " + H + '" role="img" aria-label="' + esc(o.title || "") + '">';
     s += '<text x="' + m.l + '" y="14" class="ex-title">' + esc(o.title || "") + "</text>";
-    const nt = 4;
-    for (let i = 0; i <= nt; i++) {
-      const v = y0 + (y1 - y0) * i / nt, y = H - m.b - (H - m.t - m.b) * i / nt, val = o.logy ? Math.pow(10, v) : v;
-      s += '<line x1="' + m.l + '" x2="' + (W - m.r) + '" y1="' + y + '" y2="' + y + '" class="ex-grid"/>';
-      s += '<text x="' + (m.l - 5) + '" y="' + (y + 3.5) + '" text-anchor="end" class="ex-t">' + fmt(val, 2) + "</text>";
+    const ticks = [];
+    if (o.logy && Math.floor(y1) - Math.ceil(y0) >= 1) {                      // decades
+      const step = Math.ceil((Math.floor(y1) - Math.ceil(y0) + 1) / 5);
+      for (let e = Math.ceil(y0); e <= Math.floor(y1); e += step) ticks.push([e, "1e" + e]);
+    } else {
+      for (let i = 0; i <= 4; i++) { const v = y0 + (y1 - y0) * i / 4; ticks.push([v, fmt(o.logy ? Math.pow(10, v) : v, 2)]); }
     }
+    ticks.forEach((t) => {
+      const y = H - m.b - (t[0] - y0) / (y1 - y0) * (H - m.t - m.b);
+      s += '<line x1="' + m.l + '" x2="' + (W - m.r) + '" y1="' + y + '" y2="' + y + '" class="ex-grid"/>';
+      s += '<text x="' + (m.l - 5) + '" y="' + (y + 3.5) + '" text-anchor="end" class="ex-t">' + t[1] + "</text>";
+    });
     (o.xticks || []).forEach((v) => {
       s += '<text x="' + X(v) + '" y="' + (H - m.b + 13) + '" text-anchor="middle" class="ex-t">' + (o.xfmt ? o.xfmt(v) : v) + "</text>";
     });

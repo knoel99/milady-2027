@@ -80,17 +80,6 @@ export default function draw(F, L) {
     L.text(R, cx, g.y + ph - 4, 'Gaussian law, per mode', { size: 5.5, anchor: 'middle', valign: 'bottom' });
     title(x, y, 'W9, W10, W11', 'Affine term, Gaussian anchor', ['W9: affine term learned next to the network', 'W10: exact Gaussian field; W11: plus learned affine correction']);
   }
-  { // G0
-    const [x, y] = cell(0, 3); const g = G(x, y); const cx = g.x + 0.7 * cw;
-    L.ellipse(R, cx, g.my, 22, 14, { fill: 'none', stroke: INK, width: 0.8, dash: '2 1.2' });
-    YD.forEach((yy, k) => dot([cx + XD[k] * 2.2, g.my + yy * 0.6], 1.5, INK));
-    L.rect(R, g.x + 12, g.my - 8, 44, 16, { fill: '#fff', stroke: INK, width: 0.6, r: 2 });
-    L.text(R, g.x + 34, g.my, 'μ, Σ per mode', { size: 5.5, anchor: 'middle', valign: 'middle' });
-    L.arrow(R, [g.x + 58, g.my], [cx - 25, g.my], { stroke: INK, width: 1.4, head: 3 });
-    L.text(R, g.x + 82, g.my - 3, 'sample', { size: 5.5, anchor: 'middle', valign: 'bottom' });
-    L.text(R, g.x + 34, g.y + ph - 4, 'no network', { size: 5.5, anchor: 'middle', valign: 'bottom', color: GREY });
-    title(x, y, 'G0', 'Conditional Gaussian law', ['one mean and one 8 × 8 covariance per Fourier mode']);
-  }
 
   // ======== LOSS ========
   { // W1
@@ -116,10 +105,10 @@ export default function draw(F, L) {
   { // W0
     const [x, y] = cell(1, 2); const g = G(x, y); surface(g);
     const nz = noise(g), en = ends(g, 'off'); flow(g, nz, en);
-    title(x, y, 'W0', 'No constraint', ['free Fourier components: baseline']);
+    title(x, y, 'W0', 'Baseline: no constraint', ['free Fourier components; no mechanism applied']);
   }
   { // legend
-    const [x, y] = cell(1, 3); const g = G(x, y);
+    const [x, y] = cell(0, 3); const g = G(x, y);
     const rows = [
       () => { dot([g.x + 10, g.y + 10], 1.5, LG, GREY); L.arrow(R, [g.x + 14, g.y + 10], [g.x + 26, g.y + 10], { stroke: INK, width: 0.7, head: 2.2 }); dot([g.x + 30, g.y + 10], 1.5, INK); return 'noise → sample, along the flow'; },
       () => { L.line(R, [g.x + 10, g.y + 18], [g.x + 30, g.y + 18], { stroke: B, width: 1.4 }); return 'constraint surface ∇·B = 0'; },
@@ -129,6 +118,32 @@ export default function draw(F, L) {
     ];
     rows.forEach((r, i) => { const t = r(); L.text(R, g.x + 40, g.y + 10 + i * 8, t, { size: 5.5, valign: 'middle' }); });
     L.text(R, x, y - 3, '**Shared glyphs**', { size: 6.5, valign: 'bottom' });
+  }
+
+  { // model families: G0 and W6
+    const [x, y] = cell(1, 3); const g = G(x, y); const hw = cw / 2;
+    L.line(R, [g.x + hw, g.y + 4], [g.x + hw, g.y + ph - 4], { stroke: LG, width: 0.5, dash: '1.5 1.2' });
+    // G0: Gaussian law per mode, no network
+    const cx0 = g.x + 62;
+    L.ellipse(R, cx0, g.my, 15, 11, { fill: 'none', stroke: INK, width: 0.8, dash: '2 1.2' });
+    YD.forEach((yy, k) => dot([cx0 + XD[k] * 1.1, g.my + yy * 0.4], 1.3, INK));
+    L.rect(R, g.x + 4, g.my - 8, 36, 16, { fill: '#fff', stroke: INK, width: 0.6, r: 2 });
+    L.text(R, g.x + 22, g.my, 'μ, Σ per mode', { size: 5, anchor: 'middle', valign: 'middle' });
+    L.arrow(R, [g.x + 41, g.my], [cx0 - 17, g.my], { stroke: INK, width: 1.2, head: 2.6 });
+    L.text(R, g.x + 4, g.y + 4, '**G0**', { size: 5.5, valign: 'top' });
+    L.text(R, g.x + 22, g.y + ph - 4, 'no network', { size: 5.5, anchor: 'middle', valign: 'bottom', color: GREY });
+    // W6: diffusion, same network
+    const nx1 = g.x + hw + 14, ex1 = g.x + hw + 66;
+    L.ellipse(R, nx1, g.my, 8, 17, { fill: 'none', stroke: LG, width: 0.5, dash: '1.5 1.2' });
+    YD.forEach((yy, k) => {
+      const p0 = [nx1 + N[k][0] * 0.4, g.my + N[k][1] * 0.8], p1 = [ex1 + XD[k] * 0.9, g.my + yy * 0.8];
+      const pts = []; for (let i = 0; i <= 16; i++) { const t = i / 16; pts.push([p0[0] + t * (p1[0] - p0[0]), p0[1] + t * (p1[1] - p0[1]) + 1.8 * Math.sin(t * 17 + k * 2) * (1 - t * 0.5)]); }
+      L.polyline(R, pts, { stroke: GREY, width: 0.4, fill: 'none', opacity: 0.85 });
+      dot(p0, 1.3, LG, GREY); dot(p1, 1.3, INK);
+    });
+    L.text(R, g.x + hw + 4, g.y + 4, '**W6**', { size: 5.5, valign: 'top' });
+    L.text(R, g.x + hw + 40, g.y + ph - 4, 'same network', { size: 5.5, anchor: 'middle', valign: 'bottom', color: GREY });
+    title(x, y, 'G0, W6', 'Model families (baselines)', ['G0: Gaussian per mode, no network; W6: diffusion, same network']);
   }
 
   // ======== SAMPLING ========
@@ -144,16 +159,17 @@ export default function draw(F, L) {
       let yy = g.my + off; dot([g.sx, yy], 1.6, LG, GREY);
       for (let k = 0; k < 3; k++) { const a = [g.sx + 8, yy + 8]; L.line(R, [g.sx, yy], a, { stroke: GREY, width: 0.5 }); corr([a[0], a[1]], [g.sx + 1.5, a[1] + 0.01]); yy += 8; dot([g.sx, yy], 1.5, INK); }
     });
-    L.text(R, g.x + 6, g.my - 4, 'projected noise', { size: 5.5, valign: 'bottom' });
+    L.text(R, g.x + 6, g.my - 4, 'projected noise (training)', { size: 5.5, valign: 'bottom' });
     L.arrow(R, [g.x + 30, g.my], [g.sx - 14, g.my], { stroke: INK, width: 0.7, head: 2.4 });
-    L.text(R, g.x + 6, g.my + 12, 'every step projected', { size: 5.5, valign: 'top' });
-    title(x, y, 'W3', 'Projected flow', ['projected noise; projection of every integration stage']);
+    L.text(R, g.x + 6, g.my + 12, 'every stage projected', { size: 5.5, valign: 'top' });
+    title(x, y, 'W3', 'Projected flow', ['training noise projected + every stage projected']);
   }
   { // W7
     const [x, y] = cell(2, 2); const g = G(x, y); const cx = g.x + 0.74 * cw;
     const nz = noise(g), en = ends(g, 'off').map((p, k) => [cx + XD[k] * 2.2, g.my + YD[k] * 0.85]); flow(g, nz, en, { noEnds: true });
-    const rr = [0.8, 1.2, 2.6, 2.4, 1.0, 0.7]; en.forEach((p, k) => dot(p, rr[k], INK));
+    const rr = [0.5, 0.5, 0.5, 5, 0.5, 0.5]; en.forEach((p, k) => dot(p, rr[k], INK));
     ring([cx, g.my], 5, '1.5 1'); diamond([cx + 3, g.my - 3]);
+    L.text(R, g.x + 4, g.y + 4, 'measured: effective sample size 1 of 256 in 14 of 15 cases', { size: 5, valign: 'top', color: INK });
     title(x, y, 'W7', 'Exponential tilting', ['reweights the samples on the identities (dot size = weight)']);
   }
   { // W8

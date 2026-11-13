@@ -15,11 +15,6 @@ label	5.5pt	Gaussian law, per mode
 label	6.5pt	W9, W10, W11  Affine term, Gaussian anchor
 label	5.5pt	W9: affine term learned next to the network
 label	5.5pt	W10: exact Gaussian field; W11: plus learned affine correction
-label	5.5pt	μ, Σ per mode
-label	5.5pt	sample
-label	5.5pt	no network
-label	6.5pt	G0  Conditional Gaussian law
-label	5.5pt	one mean and one 8 × 8 covariance per Fourier mode
 label	5.0pt	∇·B = 0
 label	5.5pt	xt
 label	5.5pt	x̂1
@@ -29,8 +24,8 @@ label	5.0pt	⟨f·u⟩ − ν⟨|ω|²⟩ − η⟨|j|²⟩ = 0
 label	6.5pt	W5  Law-level stationarity loss
 label	5.5pt	constrains a mean over samples, not each sample
 label	5.0pt	∇·B = 0
-label	6.5pt	W0  No constraint
-label	5.5pt	free Fourier components: baseline
+label	6.5pt	W0  Baseline: no constraint
+label	5.5pt	free Fourier components; no mechanism applied
 label	5.5pt	noise → sample, along the flow
 label	5.5pt	constraint surface ∇·B = 0
 label	5.5pt	mean of the samples, law-level target
@@ -38,14 +33,22 @@ label	5.5pt	correction by the mechanism
 label	6.0pt	u   B   f
 label	5.5pt	velocity, magnetic field, forcing
 label	6.5pt	Shared glyphs
+label	5.0pt	μ, Σ per mode
+label	5.5pt	G0
+label	5.5pt	no network
+label	5.5pt	W6
+label	5.5pt	same network
+label	6.5pt	G0, W6  Model families (baselines)
+label	5.5pt	G0: Gaussian per mode, no network; W6: diffusion, same network
 label	5.0pt	∇·B = 0
 label	6.5pt	W2  Final Leray projection
 label	5.5pt	projection of the final samples onto the surface
 label	5.0pt	∇·B = 0
-label	5.5pt	projected noise
-label	5.5pt	every step projected
+label	5.5pt	projected noise (training)
+label	5.5pt	every stage projected
 label	6.5pt	W3  Projected flow
-label	5.5pt	projected noise; projection of every integration stage
+label	5.5pt	training noise projected + every stage projected
+label	5.0pt	measured: effective sample size 1 of 256 in 14 of 15 cases
 label	6.5pt	W7  Exponential tilting
 label	5.5pt	reweights the samples on the identities (dot size = weight)
 label	6.5pt	W8  Per-sample rescaling

@@ -1,0 +1,157 @@
+---
+title: "Explorer of experiment E4"
+subtitle: "Team claude · constrained generative models of a 3D MHD dynamo"
+lang: en
+format:
+  html:
+    theme: none
+    minimal: true
+    toc: false
+    anchor-sections: false
+    html-math-method:
+      method: katex
+      url: "https://cdn.jsdelivr.net/npm/katex@0.19.0/dist/katex.min.js"
+    highlight-style: github
+    embed-resources: false
+    css: ../../../assets/paper.css
+    include-in-header:
+      - text: |
+          <meta name="color-scheme" content="light dark">
+          <script>(function(){try{var t=localStorage.getItem("milady-theme");if(t==="dark"||t==="light")document.documentElement.setAttribute("data-theme",t);}catch(e){}})();</script>
+    include-before-body:
+      - text: |
+          <a class="skip" href="#main">Skip to content</a>
+          <header class="topbar">
+            <button type="button" class="tb-btn" id="toc-toggle" aria-controls="sidetoc" aria-expanded="false"><span aria-hidden="true">☰</span><span class="tb-label">Contents</span></button>
+            <a class="brand" href="../../../index.html">MilaDy<span class="brand-sub"> · 2027</span></a>
+            <span class="tb-title" id="tb-title"></span>
+            <button type="button" class="tb-btn" id="theme-toggle"><span aria-hidden="true">◐</span><span class="tb-label">Theme</span></button>
+          </header>
+          <div class="layout">
+          <nav class="sidetoc" id="sidetoc" aria-label="Contents"></nav>
+          <main class="paper" id="main">
+    include-after-body:
+      - text: |
+          </main>
+          </div>
+          <footer class="foot"><p><a href="../../../index.html">← Home</a> · <a href="../../../prep/index.html">Preparation</a> · <a href="../../../supervisors/index.html">Supervisors</a> · <a href="../../../report/index.html">Internship report</a> · <a href="../../../thesis/index.html">PhD proposal</a> · <a href="../../../interactive/index.html">Interactive diagrams</a> · <a href="../../../experiments/index.html">Experiments</a> · <a href="../../../computing/index.html">Computing and data</a></p></footer>
+          <script defer src="../../../assets/theme.js"></script>
+---
+
+::: note
+[About this page]{.tag}
+This page lets you look at what team claude **measured** in experiment E4 of the race pilot: conditional generative models of the saturated ABC-forced dynamo in 3D incompressible MHD (grid 16³, 665 Fourier modes, ν = 0.05, η from 0.03 to 0.08), with constraints imposed through the model design, the training loss or the sampling procedure. Every number comes from a result file written by a committed script and exported by `experiments/export_explorer.py --team claude`; nothing here is published or reviewed outside this repository. The text, the proofs and the status of each claim are in the [internship report](../report/index.html) ([PDF](../report/index.pdf)).
+:::
+
+```{=html}
+<style>
+.ex-controls { display: grid; grid-template-columns: repeat(auto-fit, minmax(15rem, 1fr)); gap: .6rem 1rem; margin: 1rem 0; padding: .8rem; border: 1px solid var(--hair); border-radius: 6px; background: var(--side-bg); }
+.ex-controls label { display: flex; flex-direction: column; font-size: .85rem; color: var(--soft); gap: .2rem; }
+.ex-controls select, .ex-controls input { font: inherit; padding: .3rem; color: var(--ink); background: var(--bg); border: 1px solid var(--hair); border-radius: 4px; }
+.ex-row { display: grid; grid-template-columns: repeat(auto-fit, minmax(17rem, 1fr)); gap: .5rem; }
+.ex-row svg, #ex-trend svg { width: 100%; height: auto; }
+.ex-title { font-size: 11px; font-weight: 600; fill: var(--ink); }
+.ex-t { font-size: 10px; fill: var(--muted); }
+.ex-grid { stroke: var(--hair); stroke-opacity: .35; stroke-width: 1; }
+.ex-axis { stroke: var(--rule); stroke-width: 1; }
+.ex-ref { stroke: var(--ink); stroke-width: 2.4; fill: var(--ink); }
+.ex-gen { stroke: #d55e00; stroke-width: 1.8; fill: #d55e00; }
+.ex-faint { stroke: none; fill: #d55e00; fill-opacity: .35; }
+polyline.ex-ref, polyline.ex-gen { fill: none; }
+.ex-pt { stroke: none; }
+.ex-legend { font-size: .85rem; color: var(--soft); }
+.ex-legend b.r { color: var(--ink); } .ex-legend b.g { color: #d55e00; }
+.ex-table { border-collapse: collapse; font-size: .85rem; width: 100%; }
+.ex-table th, .ex-table td { border-bottom: 1px solid var(--hair); padding: .25rem .5rem; text-align: right; }
+.ex-table th[scope=row], .ex-table thead th:first-child { text-align: left; font-weight: 500; }
+.ex-table thead th { background: var(--th-bg); font-weight: 600; vertical-align: bottom; }
+.ex-table button { font: inherit; font-weight: 600; color: var(--ink); background: none; border: 0; cursor: pointer; padding: 0; text-align: inherit; }
+.ex-table button:hover, .ex-table button:focus { text-decoration: underline; }
+.ex-scroll { overflow-x: auto; }
+.ex-wide td, .ex-wide th { white-space: nowrap; }
+.ex-wide thead th { white-space: normal; min-width: 5.5rem; }
+.ex-badge { display: inline-block; font-size: .72rem; padding: 0 .35rem; border-radius: 3px; border: 1px solid var(--hair); white-space: nowrap; }
+.ex-supported { background: var(--ex-bg); } .ex-refuted { background: var(--key-bg); } .ex-dropped { background: var(--recap-bg); } .ex-registered, .ex-proposed { background: var(--note-bg); }
+.ex-h { border-bottom: 1px solid var(--hair); padding: .35rem 0; } .ex-h summary { cursor: pointer; } .ex-h p { font-size: .9rem; margin: .4rem 0 .4rem 1rem; }
+.ex-slices { display: flex; flex-wrap: wrap; gap: 1rem; align-items: flex-start; }
+.ex-slices figure { margin: 0; } .ex-slices canvas { width: 240px; height: 240px; border: 1px solid var(--hair); background: #fff; }
+.ex-slices figcaption { font-size: .85rem; color: var(--soft); }
+#ex-warn { color: var(--key-tag); font-weight: 600; }
+</style>
+<p id="ex-warn" role="status"></p>
+```
+
+## Controls {#controls}
+
+The four controls drive every view of the page: the magnetic diffusivity η (the eleven values of the data, marked as training, validation or held-out test), the model variant (grouped by where its constraint acts), one seed or the mean over the seeds, and the metric drawn against η.
+
+```{=html}
+<div class="ex-controls">
+  <label>Parameter value η (Rm = 1/(k_f η), k_f = 2)<select id="ex-eta"></select></label>
+  <label>Model variant or constraint mechanism<select id="ex-variant"></select></label>
+  <label>Seed<select id="ex-seed"><option value="mean">mean over the seeds</option></select></label>
+  <label>Metric against η<select id="ex-metric"></select></label>
+</div>
+```
+
+## Generated against reference {#views}
+
+Shell spectra of the velocity and of the magnetic field and magnetic helicity spectrum of the generated ensemble, against the reference ensemble at the same η; below, the integral quantities, the number of magnetic null points per snapshot, the energy balance and the divergence.
+
+```{=html}
+<p class="ex-legend"><b class="r">━ reference</b> (solver, 24 trajectories) &nbsp; <b class="g">━ generated</b> (chosen variant and seed)</p>
+<div class="ex-row" id="ex-spectra"></div>
+<div id="ex-stats"></div>
+<div id="ex-trend"></div>
+<p class="ex-legend" id="ex-source"></p>
+<script defer src="explorer.js"></script>
+```
+
+## Comparative table {#comparative-table}
+
+Seed mean ± standard error on the three held-out η, for every variant; click a column header to sort. The last column gives the registered hypotheses in which the variant is compared, with their status after review. The same table, with the text of the verdicts, is in the [comparative study of the report](../report/index.html#comparative-study).
+
+```{=html}
+<div id="ex-comparative"></div>
+```
+
+## Slices of 3D fields {#slices}
+
+Plane cuts of a few reference snapshots and of a few generated fields of seed 0 at one held-out η, with the same colour scale.
+
+```{=html}
+<div class="ex-controls">
+  <label>Field<select id="ex-field"><option value="1">magnetic field B</option><option value="0">velocity u</option></select></label>
+  <label>Component<select id="ex-comp"><option value="0">x</option><option value="1">y</option><option value="2" selected>z</option></select></label>
+  <label>Snapshot or sample<select id="ex-snap"><option value="0">0</option></select></label>
+  <label><span id="ex-z-out">z index</span><input type="range" id="ex-z" min="0" max="15" value="8" step="1"></label>
+</div>
+<div class="ex-slices">
+  <figure><canvas id="ex-c-ref" width="240" height="240" role="img" aria-label="Slice of a reference field"></canvas><figcaption>reference</figcaption></figure>
+  <figure><canvas id="ex-c-gen" width="240" height="240" role="img" aria-label="Slice of a generated field"></canvas><figcaption>generated (variant chosen above)</figcaption></figure>
+</div>
+<p class="ex-legend" id="ex-slices-note"></p>
+```
+
+## Hypothesis register {#register}
+
+The hypotheses of `research/hypotheses.json`, each with the refutation criterion written before the computation and the verdict of the `encadrant` role.
+
+```{=html}
+<div class="ex-controls"><label>Status<select id="ex-status"></select></label></div>
+<div id="ex-hyp"></div>
+```
+
+## GPU jobs and costs {#gpu-jobs}
+
+```{=html}
+<div id="ex-jobs"></div>
+```
+
+## Diagrams, code and data {#links}
+
+- Report: [HTML](../report/index.html), [PDF](../report/index.pdf).
+- Diagrams (standalone pages): [code architecture of what was added to `src/milady/`](../diagrams/code-architecture.html), [workflow of experiment E4](../diagrams/experiment-workflow.html), [agent organisation of the team](../diagrams/agent-organisation.html).
+- Code: `src/milady/train/constraints.py`, `src/milady/train/diffusion.py`, `src/milady/eval/topology.py` (tests in `tests/test_constraints.py`, `tests/test_topology.py`); experiment scripts `experiments/e4_data.py`, `experiments/e4_mhd3d.py`, `experiments/e4_digest.py`, `experiments/e4_plots.py`, `experiments/export_explorer.py`.
+- Digest of the results: `experiments/results/digest.md` (sections E4), generated by `experiments/digest.py`.
+- Data of this page: `data/e4.json`, `data/table.json`, `data/hypotheses.json`, `data/jobs.json`, `data/slices.json`.

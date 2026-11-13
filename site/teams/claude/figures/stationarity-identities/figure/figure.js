@@ -41,12 +41,12 @@ export default function draw(F, L) {
   T(a, a.w / 2, 168, '**Identity of the stationary law**', { size: 5.5, anchor: 'middle' });
   T(a, a.w / 2, 183, `E[ {#${FG.slice(1)}|⟨*f*·*u*⟩} − {#${U.slice(1)}|ν⟨|ω|²⟩} − {#${B.slice(1)}|η⟨|*j*|²⟩} ] = 0`, { size: 6.5, anchor: 'middle' });
   T(a, a.w / 2, 198, `{#${FG.slice(1)}|forcing} · {#${U.slice(1)}|viscous, *u*} · {#${B.slice(1)}|Joule, *B*}`, { size: 5.5, anchor: 'middle' });
-  T(a, a.w / 2, 210, 'residual below 4×10^{−4} on the reference', { size: 5, anchor: 'middle', color: MID });
+  T(a, a.w / 2, 210, 'a few 10^{−4} of the dissipation (measured on the reference)', { size: 5, anchor: 'middle', color: MID });
 
   // ================================ panel b: helicity by shell =====================================================
   const b = F.panel('b', { x: 62, y: 0, w: 61, h: 84 });
   T(b, 12, 6, '**Magnetic helicity** by shell', { size: 6.5 });
-  const vals = [-3.0, -3.0, 1.5, 2.2, 1.3, 0.6, 0.25, 0.15];   // schematic; positive and negative parts cancel
+  const vals = [-3.0, -0.3, 1.5, 2.2, 1.3, 0.6, 0.25, 0.15];   // schematic; positive and negative parts cancel
   const bx = 22, bw = 150, by0 = 100, sc = 14;                   // zero line
   L.line(b, [bx, 36], [bx, 170], { stroke: INK, width: 0.5 });
   L.arrow(b, [bx, by0], [bx + bw + 4, by0], { stroke: INK, width: 0.5, head: 2.4 });
@@ -66,8 +66,13 @@ export default function draw(F, L) {
   // sign brackets
   const x12 = bx + 2 * step, x38 = bx + 8 * step;
   T(b, bx + step, by0 + 49 + 0, '', {});
-  T(b, bx + step, 150, '**large scales**', { size: 5.5, anchor: 'middle', color: B });
-  T(b, bx + step, 157, '*k* ≤ 2: negative', { size: 5.5, anchor: 'middle', color: B });
+  const lx = bx + 2 * step + 4;
+  T(b, lx, 112, '**large scales**', { size: 5.5, anchor: 'start', color: B });
+  T(b, lx, 119, '*k* = 1, 2: negative', { size: 5.5, anchor: 'start', color: B });
+  T(b, lx, 126, '*k* = 2: 3 to 16 times smaller', { size: 5, anchor: 'start', color: B });
+  T(b, lx, 136, 'registered hypothesis H11', { size: 5, anchor: 'start', color: MID });
+  T(b, lx, 142, '(negative at *k* = 1 only) refuted:', { size: 5, anchor: 'start', color: MID });
+  T(b, lx, 148, '*k* = 2 is negative too', { size: 5, anchor: 'start', color: MID });
   T(b, bx + step * 5.5, 56, '**small scales**', { size: 5.5, anchor: 'middle', color: B });
   T(b, bx + step * 5.5, 63, '*k* ≥ 3: positive', { size: 5.5, anchor: 'middle', color: B });
   L.callout(b, [bx + 3 * step + step * 0.5, by0 - 2.2 * sc], [bx + 5.2 * step, 76], 'peak at *k* = 4', { anchor: 'start', size: 5.5 });
@@ -113,8 +118,9 @@ export default function draw(F, L) {
   T(c, cw - 3 - uw / 2, 160, '(W7)', { size: 5.5, anchor: 'middle', color: MID });
   // loss feeds back to the generator
   L.arrow(c, [ux + 1, 136], [8, 29], { stroke: NET, width: 0.9, via: [[8, 136]], head: 3, dash: '2 1.2' });
-  L.arrow(c, [cw - 3 - uw / 2, 166], [cw - 3 - uw / 2, 178], { stroke: NET, width: 0.9, head: 3 });
-  T(c, cw - 3 - uw / 2, 186, 'reweighted samples', { size: 5.5, anchor: 'middle', color: NET });
+  L.arrow(c, [cw - 3 - uw / 2, 166], [cw - 3 - uw / 2, 174], { stroke: NET, width: 0.9, head: 3 });
+  T(c, cw - 3 - uw / 2, 180, 'reweighted samples', { size: 5.5, anchor: 'middle', color: NET });
+  T(c, cx, 189, '**collapsed**: comparison H8 dropped', { size: 5, anchor: 'middle', color: MID });
   // measured result
   box(c, 0, 196, cw, 24, '#F6F6F6', C.light, { width: 0.4 });
   T(c, cx, 205, '**Measured** (5 seeds, GPU)', { size: 5.5, anchor: 'middle' });

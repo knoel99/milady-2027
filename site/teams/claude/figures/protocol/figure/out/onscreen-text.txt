@@ -1,0 +1,58 @@
+panel	8.0pt	a
+label	6.0pt	Hypothesis loop
+label	6.0pt	Hypothesis +refutation criterion
+label	5.0pt	written before the computation
+label	6.0pt	Computation: 5 seeds,held-out η
+label	6.0pt	Supervisor’s verdict
+label	5.5pt	Confirmed
+label	5.5pt	Refuted
+label	5.5pt	Not discriminating
+panel	8.0pt	b
+label	6.0pt	Eleven values of η, three roles
+label	6.0pt	0
+label	6.0pt	1
+label	6.0pt	2
+label	6.0pt	3
+label	6.0pt	4
+label	6.0pt	5
+label	6.0pt	6
+label	6.0pt	7
+label	6.0pt	8
+label	6.0pt	9
+label	6.0pt	10
+label	5.5pt	index
+label	5.5pt	η = 0.08
+label	5.5pt	η = 0.03
+label	5.5pt	log-spaced
+label	6.0pt	Training (6)
+label	5.5pt	fits the generator
+label	6.0pt	Validation (2)
+label	5.5pt	chooses the model
+label	6.0pt	Held-out test (3)
+label	5.5pt	judges the model
+label	6.0pt	At every η: 24 trajectories × 100 snapshots of (u, B)
+label	5.5pt	Model selection: generator chosen on the validation η (mean over the seeds)
+panel	8.0pt	c
+label	6.0pt	Five seeds, paired comparison
+label	5.5pt	0
+label	5.5pt	1
+label	5.5pt	2
+label	5.5pt	3
+label	5.5pt	4
+label	5.5pt	seed
+label	5.5pt	variant A
+label	5.5pt	variant B
+label	5.5pt	paired difference B − A
+label	5.5pt	mean ± standarderror
+panel	8.0pt	d
+label	6.0pt	Noise floor of the reference
+label	5.5pt	24 reference trajectories, one of the 10 splits into two halves
+label	5.5pt	half 1
+label	5.5pt	512 snapshots
+label	5.5pt	half 2
+label	5.5pt	512 snapshots
+label	5.5pt	noisefloor
+label	5.5pt	noise floor = mean over 10 splits into two halves of the 24 trajectories
+label	5.5pt	1 (floor)
+label	5.5pt	energy distance to the reference / floor
+label	5.5pt	generator

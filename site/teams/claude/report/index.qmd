@@ -1,0 +1,699 @@
+---
+title: "Physics-constrained generative models of a parametric MHD dynamo"
+subtitle: "M2 internship report · race pilot, team claude · a comparative study of constraints imposed by design, loss and sampling"
+lang: en
+bibliography: references.bib
+link-citations: true
+format:
+  html:
+    default-image-extension: svg
+    theme: none
+    minimal: true
+    toc: false
+    anchor-sections: false
+    html-math-method:
+      method: katex
+      url: "https://cdn.jsdelivr.net/npm/katex@0.19.0/dist/katex.min.js"
+    highlight-style: github
+    embed-resources: false
+    css: ../../../assets/paper.css
+    include-in-header:
+      - text: |
+          <meta name="color-scheme" content="light dark">
+          <script>(function(){try{var t=localStorage.getItem("milady-theme");if(t==="dark"||t==="light")document.documentElement.setAttribute("data-theme",t);}catch(e){}})();</script>
+    include-before-body:
+      - text: |
+          <a class="skip" href="#main">Skip to content</a>
+          <header class="topbar">
+            <button type="button" class="tb-btn" id="toc-toggle" aria-controls="sidetoc" aria-expanded="false"><span aria-hidden="true">☰</span><span class="tb-label">Contents</span></button>
+            <a class="brand" href="../../../index.html">MilaDy<span class="brand-sub"> · 2027</span></a>
+            <span class="tb-title" id="tb-title"></span>
+            <button type="button" class="tb-btn" id="theme-toggle"><span aria-hidden="true">◐</span><span class="tb-label">Theme</span></button>
+          </header>
+          <div class="layout">
+          <nav class="sidetoc" id="sidetoc" aria-label="Contents"></nav>
+          <main class="paper" id="main">
+    include-after-body:
+      - text: |
+          </main>
+          </div>
+          <footer class="foot"><p><a href="../../../index.html">← Home</a> · <a href="../../../prep/index.html">Preparation</a> · <a href="../../../supervisors/index.html">Supervisors</a> · <a href="../../../report/index.html">Internship report</a> · <a href="../../../thesis/index.html">PhD proposal</a> · <a href="../../../interactive/index.html">Interactive diagrams</a> · <a href="../../../experiments/index.html">Experiments</a> · <a href="../../../computing/index.html">Computing and data</a></p></footer>
+          <script defer src="../../../assets/theme.js"></script>
+  pdf:
+    documentclass: scrreprt
+    toc: true
+    toc-depth: 2
+    number-sections: true
+    papersize: a4
+    fontsize: 11pt
+    pdf-engine: xelatex
+    geometry:
+      - margin=25mm
+    colorlinks: true
+    fig-pos: "htbp"
+    default-image-extension: pdf
+    keep-tex: false
+    include-in-header:
+      - text: |
+          \usepackage{newunicodechar}
+          \usepackage{booktabs,longtable,array}
+          \usepackage{pdflscape}
+          \newunicodechar{η}{\ensuremath{\eta}}
+          \newunicodechar{ν}{\ensuremath{\nu}}
+          \newunicodechar{τ}{\ensuremath{\tau}}
+          \newunicodechar{λ}{\ensuremath{\lambda}}
+          \newunicodechar{π}{\ensuremath{\pi}}
+          \newunicodechar{Σ}{\ensuremath{\Sigma}}
+          \newunicodechar{μ}{\ensuremath{\mu}}
+          \newunicodechar{σ}{\ensuremath{\sigma}}
+          \newunicodechar{ω}{\ensuremath{\omega}}
+          \newunicodechar{⟨}{\ensuremath{\langle}}
+          \newunicodechar{⟩}{\ensuremath{\rangle}}
+          \newunicodechar{≥}{\ensuremath{\ge}}
+          \newunicodechar{≤}{\ensuremath{\le}}
+          \newunicodechar{≈}{\ensuremath{\approx}}
+          \newunicodechar{∝}{\ensuremath{\propto}}
+          \newunicodechar{→}{\ensuremath{\to}}
+          \newunicodechar{−}{\textminus{}}
+          \newunicodechar{∇}{\ensuremath{\nabla}}
+          \newunicodechar{‖}{\ensuremath{\Vert}}
+          \newunicodechar{½}{1/2}
+          \newunicodechar{²}{\ensuremath{^2}}
+          \newunicodechar{³}{\ensuremath{^3}}
+          \newunicodechar{₁}{\ensuremath{_1}}
+          \newunicodechar{₀}{\ensuremath{_0}}
+          \newunicodechar{…}{\ldots}
+          \setkomafont{disposition}{\rmfamily\bfseries}
+          \renewcommand{\arraystretch}{1.15}
+---
+
+::: note
+[Status of this document]{.tag}
+This report is the deliverable of team claude in the race pilot of this repository (`race/DELIVERABLES.md`). It is written in the form of the M2 internship report that the MilaDy offer asks for, by an AI agent working alone for one session, and it reports one experiment, E4, designed, run and reviewed during that session. Nothing in it has been read or validated by the supervisors of the internship, and no data of the MilaDy consortium was used.
+
+Three statuses are kept apart throughout. What is **measured** comes from result files written by committed scripts of this repository (`experiments/results/`, summarised in `experiments/results/digest.md`); every table of numbers below is generated from those files by `experiments/e4_report_tables.py`. What is **published** is cited with a reference taken from the verified source files `docs/specs/sources/`. What is **conjectured** is said to be so. The system studied is small (a $16^3$ grid, 665 Fourier modes, Reynolds number 10): the conclusions are about the mechanisms, not about turbulent dynamos.
+:::
+
+::: {.content-visible when-format="html"}
+A PDF version of this report is available: [index.pdf](index.pdf). The results can be explored interactively in the [explorer](../explorer/index.html).
+:::
+
+::: {.content-visible when-format="pdf"}
+The HTML version of this report and an interactive explorer of the results are published with the site of the repository, under `teams/claude/report/` and `teams/claude/explorer/`.
+:::
+
+## Abstract {#abstract}
+
+<!-- e4:abstract:begin -->
+<!-- e4:abstract:end -->
+
+## Introduction {#introduction}
+
+### Context: the internship offer and the MilaDy project
+
+The internship offer that this report answers is entitled *Physics-Constrained Generative AI Modelling of Parametric Dynamical Systems*. It belongs to the ANR project MilaDy, on machine-learning models of turbulent dynamos, and asks for generative models (diffusion or flow matching) of parameter-dependent three-dimensional fields in which physical constraints are imposed "through model design, training losses or sampling procedures". The models are to be evaluated with energy spectra, helicity, divergence control and the preservation of topology, and the expected outcome is a comparative study of the strategies together with code integrated into the project toolbox (`docs/specs/sources/supervisors.md`, §1.2).
+
+A dynamo is a flow of an electrically conducting fluid that sustains its own magnetic field. The equations are those of magnetohydrodynamics (MHD): the Navier–Stokes equations with the Lorentz force, coupled to the induction equation. Two control parameters matter here, the kinetic Reynolds number $Re$ and the magnetic Reynolds number $Rm$, which measures induction against magnetic diffusion. Simulating a dynamo at one parameter value is expensive, and the scientific questions (thresholds, saturation levels, statistics of the saturated state) are questions about how the statistically stationary state changes with the parameters. A conditional generative model addresses exactly that object: it learns the law of the snapshots of the stationary state as a function of the parameter and can then draw new snapshots at parameter values that were never simulated.
+
+The difficulty, and the subject of the offer, is that a generated field must be physically admissible. The magnetic field must be divergence-free. The energy injected by the forcing must, on average, be dissipated. The symmetries of the equations must be those of the generated law. The topology of the magnetic field, for instance its null points, should be that of the reference. The published literature offers three places where such requirements can enter a generative model, which are the three places named by the offer: the design of the model, the training loss, and the sampling procedure.
+
+### Question and approach
+
+The question of this report is narrow and practical: **for a parametric 3D MHD dynamo, which constraints should be imposed where, and what does each mechanism buy on the metrics the offer names?** The approach is a controlled comparison on a system small enough to be simulated, learned and evaluated many times: a helically forced dynamo in a periodic box, on a $16^3$ grid, with the magnetic diffusivity $\eta$ as the conditioning parameter (@fig-problem). On this system the reference law can be sampled at will, every quantity can be computed to round-off, and each comparison can be repeated over five model seeds.
+
+![The parametric problem of experiment E4. (a) Periodic box with the helical ABC forcing at wavenumber $k_f = 2$, the flow it drives and the large-scale magnetic field at $k = 1$. (b) The eleven values of the magnetic diffusivity $\eta$, alternating between training, validation and held-out test values, with the trends of the kinetic energy, magnetic energy and magnetic helicity of the saturated state (end values measured, segments schematic). (c) The equations; the viscosity is fixed. (d) The task: draw snapshots $(u, B)$ at a held-out $\eta$ and compare their law with that of the solver. Schematic drawn with the `schematic-figure` skill; source in `figures/mhd-dynamo-problem/`.](../figures/mhd-dynamo-problem/figure/out/mhd-dynamo-problem){#fig-problem width=100%}
+
+The work follows the protocol of the repository (`AGENTS.md`): each hypothesis is written in a register with a quantitative refutation criterion before the computation; each quoted comparison uses five seeds; a reviewing role, the `encadrant`, recomputes the result and gives the verdict; negative results are kept. Twenty-one hypotheses were registered, eighteen of them in this experiment (H4 to H21).
+
+### Contributions
+
+All of the following are measured in this repository, on the system described above.
+
+1. **A data set and a metric suite for a parametric 3D dynamo** ([Experiments](#experiments)): 11 values of $\eta$, 24 trajectories each, with a convergence check on finer grids, and eight metrics covering the four families of the offer (spectra, helicity, divergence, topology) plus two tests that use the solver itself, a restart test and a polarity test.
+2. **A comparison of constraint mechanisms by the place where they act** ([Comparative study](#comparative-study)): by design (vector potentials, equivariance under $B \to -B$, an explicit affine term, an anchor on a Gaussian law), by the loss (divergence penalty, law-level stationarity identities) and by the sampling procedure (Leray projection, projected flow, exponential tilting, per-sample rescaling), against an unconstrained baseline, a diffusion model and a Gaussian baseline without a network.
+3. **A diagnosis of why the first generators fail and a remedy** ([Results](#results)): residual networks narrower than the latent dimension do worse than the trivial Gaussian velocity field; giving the velocity field its linear part explicitly reduces the distance to the reference law by a factor of about twenty.
+4. **A stationarity identity without parameters**, $\mathbb{E}[\langle j\cdot B\rangle] = 0$, that follows from the magnetic-helicity budget and can be imposed at parameter values without data ([Methods](#methods)).
+5. **Code in the project toolbox** ([Toolbox](#toolbox)): twelve registered constraint mechanisms with one test each, a diffusion sampler, a null-point finder, and the tooling to run and account for GPU jobs.
+
+The report also states what was refuted: six of the hypotheses registered before the computation were refuted and one was dropped as not discriminating ([Discussion](#discussion)).
+
+### Outline
+
+the section [State of the art](#state-of-the-art) places the work in the literature. The section [Methods](#methods) defines the system, the generative model, each constraint mechanism and each metric. The section [Experiments](#experiments) gives the data and the protocol. The section [Results](#results) reports the measurements, the section [Comparative study](#comparative-study) gathers them in one table with the verdict of each hypothesis, the section [Toolbox](#toolbox) describes the code, the section [Discussion](#discussion) discusses limits and negative results, and the section [Reproducibility](#reproducibility) lists the commands, commits, GPU jobs and costs.
+
+## State of the art {#state-of-the-art}
+
+Everything in this section is **published** work, cited from the verified source files of the repository (`docs/specs/sources/literature.md`, `dynamo.md`, `data-metrics.md`); the full references are in the section [References](#references).
+
+### Diffusion and flow matching
+
+Diffusion models learn to reverse a noising process, either as a discrete chain [@ho2020] or as a stochastic differential equation whose reverse drift involves the score of the noised law [@song2021]. Flow matching [@lipman2023] and the closely related rectified flows [@liu2023] and stochastic interpolants [@albergo2023] learn instead the velocity field of an ordinary differential equation that transports a simple law to the data law; with a straight path between a noise sample and a data sample, the regression target is the difference of the two. The parameterisation of a diffusion model by a "velocity" $v = \alpha_t \varepsilon - \sigma_t x$ was introduced by @salimans2022 (their Section 4) and is the one used for the diffusion baseline of this report. Both families extend to function spaces [@kerrigan2024; @lim2025].
+
+### Generative models of flows and of PDE solutions
+
+Generative models have been applied to turbulent flows to draw turbulent states directly, without rolling out a simulation [@lienen2024], to PDE solutions in function space with constraints built into the architecture [@wang2026], to reconstruction from sparse data [@shu2023; @huang2024], and to latent representations of flows [@du2024]. FunDiff [@wang2026] is the main reference of the offer: a generative model over function spaces, with a latent model trained by rectified flow and a decoder that can enforce constraints such as zero divergence through a stream function.
+
+### Three places for a physical constraint
+
+*By design.* A field written as the curl of a potential is divergence-free whatever the potential; @richterpowell2022 build divergence-free networks on this principle, and FunDiff uses a stream function. Symmetries can also be built in: the flow of an equivariant vector field transports an invariant base law to an invariant law [@kohler2020].
+
+*By the training loss.* Physics-informed diffusion models add the residual of the governing equation, evaluated on a denoised estimate, to the training loss [@bastek2025]. The estimate is a conditional mean, so for a nonlinear residual the penalty does not vanish at the optimum (the Jensen gap discussed in that paper). @baldan2026 report a trade-off between the distributional accuracy and the physical accuracy of flow-matching models trained with a residual term.
+
+*By the sampling procedure.* Constraints can be imposed during sampling by guidance with the gradient of a residual [@chung2023; @huang2024], by projection of each iterate onto the constraint set [@christopher2024], or by corrections interleaved with the integration of a flow-matching model, without retraining [@cheng2025; @utkarsh2025]. For incompressible flows, the Leray projection has been used inside diffusion samplers [@genuist2026; @li2026pcdm].
+
+### Helical dynamos in periodic boxes
+
+A flow forced with helicity at an intermediate scale in a periodic box generates a strong magnetic field at the scale of the box, and the time needed to build it grows with $Rm$ [@brandenburg2001]; that paper attributes the underlying inverse cascade of magnetic helicity to @pouquet1976. The magnetic helicity $\langle A\cdot B\rangle$ is an invariant of ideal MHD [@woltjer1958] and evolves, in a periodic domain, as $\mathrm{d}\langle A\cdot B\rangle/\mathrm{d}t = -2\eta\langle j\cdot B\rangle$ [@brandenburg2005]. The forcing used here is the ABC (Arnold–Beltrami–Childress) flow, whose kinematic dynamo properties have been studied in detail [@galloway1986; @alexakis2011]. Dealiased pseudo-spectral codes are a standard tool for such periodic boxes [for instance @ponty2005].
+
+### Metrics
+
+The energy distance of @szekely2013 is a distance between two laws computable from samples; it is zero only when the laws are equal. Magnetic null points, where $B = 0$, organise the topology of a magnetic field [@parnell1996]; the trilinear method of @haynes2007 locates them on a grid.
+
+### What was not found
+
+A literature search made for this repository on 6 November 2026 and extended on 12 November found no generative model trained on dynamo simulations, no use of the magnetic-helicity budget as a constraint of a generative model, no use of null-point counts as an evaluation metric of a generative model, and no restart test of generated MHD snapshots. These are negative statements: an absence in a search is not a proof of novelty, and the source files mark them as unconfirmed.
+
+The repository's own theory brief (`docs/specs/theory-brief.md`) gives the propositions used below. Its Propositions 1 to 7 are elementary and probably known in other forms; in particular the use of weak stationarity identities as the loss of a sample generator is published [@cai2026], and the present work only claims their use for a field PDE, at the level of the law of a parametric conditional model.
+
+## Methods {#methods}
+
+### The physical system {#sec-system}
+
+The fields are the velocity $u$ and the magnetic field $B$ (in Alfvén units) of an incompressible conducting fluid in the periodic box $[0, 2\pi)^3$:
+
+$$
+\partial_t u = u \times \omega + j \times B - \nabla \Pi + \nu \nabla^2 u + f, \qquad
+\partial_t B = \nabla \times (u \times B) + \eta \nabla^2 B, \qquad \nabla\cdot u = \nabla\cdot B = 0,
+$$ {#eq-mhd}
+
+with the vorticity $\omega = \nabla\times u$, the current density $j = \nabla\times B$ and the total pressure $\Pi$. The forcing is a constant ABC force at wavenumber $k_f = 2$,
+
+$$
+f = \nu k_f^2\,\big(\sin k_f z + \cos k_f y,\ \sin k_f x + \cos k_f z,\ \sin k_f y + \cos k_f x\big),
+$$
+
+which is helical ($\nabla\times f = k_f f$) and whose amplitude makes the unit ABC flow the laminar solution without a magnetic field. The viscosity is fixed, $\nu = 0.05$, so that $Re = 1/(k_f\nu) = 10$. The control parameter is the magnetic diffusivity $\eta$, between $0.03$ and $0.08$, that is $Rm = 1/(k_f\eta)$ between 6.2 and 16.7.
+
+The solver is the pseudo-spectral code of the toolbox (`milady.sim.mhd3d`) on a $16^3$ grid with the 2/3 rule: the Fourier modes with $|m_i| \le 5$ in each direction are kept. Counting one mode for each pair $(m, -m)$ of a real field, that is $(11^3 - 1)/2 = 665$ independent complex modes.
+
+### Stationarity identities {#sec-identities}
+
+A statistically stationary state has an invariant law $\mu_\eta$. For any smooth observable $\varphi$ of the state, the mean of its time derivative under $\mu_\eta$ is zero (Proposition 5 of the theory brief). Three quadratic observables give identities that involve only quantities computable on one snapshot (@fig-identities):
+
+$$
+\begin{aligned}
+\text{energy:}\quad & \mathbb{E}\big[\langle f\cdot u\rangle - \nu\langle|\omega|^2\rangle - \eta\langle|j|^2\rangle\big] = 0,\\
+\text{magnetic helicity:}\quad & \mathbb{E}\big[\langle j\cdot B\rangle\big] = 0,\\
+\text{cross helicity:}\quad & \mathbb{E}\big[\langle f\cdot B\rangle - (\nu+\eta)\langle\omega\cdot j\rangle\big] = 0,
+\end{aligned}
+$$ {#eq-identities}
+
+where $\langle\cdot\rangle$ is the spatial mean and $\mathbb{E}$ the mean over the law. The first is the balance between injection and dissipation. The second follows from the magnetic-helicity budget quoted above: in a periodic box the magnetic helicity changes only through $-2\eta\langle j\cdot B\rangle$, so the mean current helicity of a stationary state vanishes. It contains no parameter and no forcing term: it holds at every $\eta$, including values without data. The third is odd in $B$ and is satisfied trivially by a law that is invariant under $B \to -B$.
+
+These are constraints on the law, not on each sample: the injection and the dissipation of one snapshot differ, and their difference is the instantaneous $\mathrm{d}E/\mathrm{d}t$. Forcing each sample to satisfy the balance sets the variance of $\mathrm{d}E/\mathrm{d}t$ to zero and cannot give the right law (Corollary 6 of the theory brief).
+
+![The three stationarity identities used in E4. Each is the mean, over the stationary law, of the time derivative of a quadratic invariant of ideal MHD; each term is computable on a single snapshot. The magnetic-helicity identity has no parameter in it. Schematic; source in `figures/stationarity-identities/`.](../figures/stationarity-identities/figure/out/stationarity-identities){#fig-identities width=100%}
+
+### Latent representation and generative model {#sec-model}
+
+A snapshot $(u, B)$ is transformed to Fourier space and restricted to the 665 modes of the solver. Two representations are used (@fig-pipeline).
+
+*Free components.* The three complex components of $\hat u$ and $\hat B$ at each mode: $665 \times 12 = 7980$ real numbers. Nothing forces $k\cdot\hat u = 0$ or $k\cdot\hat B = 0$.
+
+*Vector potentials.* The potentials in Coulomb gauge, $\hat A = \mathrm{i} k\times\hat B/|k|^2$ and the same for $u$, written in the Craya–Herring basis $(e_1, e_2)$ of the plane perpendicular to $k$: two complex numbers per mode and per field, $665 \times 8 = 5320$ real numbers. Decoding, $\hat B = \mathrm{i} k\times\hat A$, gives a divergence-free field whatever the latent (Proposition 1 of the theory brief). Because the modes are exactly those of the solver, every quadratic quantity of @eq-identities computed from the latent is the one the solver would compute.
+
+Both latents are normalised mode by mode. The generative model is conditional flow matching on the straight path [@lipman2023]: with $x_0 \sim \mathcal{N}(0, I)$, a data latent $x_1$ at the condition $c$ (the normalised $\log\eta$) and $x_t = (1-t)x_0 + t x_1$, a network $v_\theta(x, t, c)$ is trained by regression,
+
+$$
+\mathcal{J}(\theta) = \mathbb{E}\,\big\| v_\theta(x_t, t, c) - (x_1 - x_0) \big\|^2,
+$$ {#eq-fm}
+
+and a sample is obtained by integrating $\mathrm{d}x/\mathrm{d}t = v_\theta(x, t, c)$ from $t = 0$ to $1$ with Heun's scheme (50 steps). The network is a residual multilayer perceptron (width 512, depth 4) acting on the flattened latent, with Fourier embeddings of $t$ and $c$.
+
+![The generative pipeline: snapshots, Fourier modes of the solver, vector potentials in the Craya–Herring basis, conditional flow matching, sampling, decoding. Every decoded sample is divergence-free. Schematic; source in `figures/generative-pipeline/`.](../figures/generative-pipeline/figure/out/generative-pipeline){#fig-pipeline width=100%}
+
+### Constraint mechanisms {#sec-mechanisms}
+
+The mechanisms are grouped by the place where they act (@fig-mechanisms); the names W0 to W11 and G0 are those of the result files.
+
+![The constraint mechanisms compared in E4, by the place where they act: model design, training loss, sampling procedure. Dot positions are illustrative; no result is shown. Schematic; source in `figures/constraint-mechanisms/`.](../figures/constraint-mechanisms/figure/out/constraint-mechanisms){#fig-mechanisms width=100%}
+
+**Baseline (W0).** Flow matching on the free components, no constraint.
+
+**Model design.**
+
+- *Vector potentials* (W4): flow matching on the potential latent.
+- *Equivariance under $B \to -B$* (W4s). @eq-mhd is invariant under $B \to -B$, so the stationary law is too (when it is unique). With $S$ the map that changes the sign of the magnetic channels, the field $v_{\mathrm{sym}}(x) = \tfrac12\,[v(x) + S v(Sx)]$ is equivariant and the generated law is exactly invariant (Proposition 4 of the theory brief; @kohler2020).
+- *Explicit affine term* (W9): $v(x, t, c) = G(t, c)\,x + b(t, c) + \text{network}(x, t, c)$, with one $8\times 8$ matrix $G$ and one offset $b$ per Fourier mode, both read linearly from an embedding of $(t, c)$ and initialised at zero. The reason for this term is given in @sec-linear.
+- *Gaussian anchor* (W10) and *anchor with affine correction* (W11): $v = v_{\mathrm{Gauss}}(x, t, c) + \text{network}$, where $v_{\mathrm{Gauss}}$ is the exact flow-matching field of a mode-wise Gaussian law fitted to the data (@eq-gauss); W11 adds the learnable affine term of W9 to the correction.
+
+**Training loss.**
+
+- *Divergence penalty* (W1): on the free components, the loss @eq-fm plus 10 times the squared relative divergence of the end-of-path prediction $\hat x_1 = x_t + (1-t)v_\theta$. The constraint is linear, so the penalty vanishes at the optimal field and does not bias it (Proposition 3 of the theory brief).
+- *Law-level stationarity loss* (W5): the equivariant potentials model is fine-tuned (400 iterations) with an additional term that draws, at four values of $\eta$ taken at random in the whole range (with or without data), 16 samples through a differentiable 6-step integration, and penalises the squared normalised means of the energy and magnetic-helicity residuals of @eq-identities. The square of a mean is estimated without bias by the product of the means of two half-batches; the naive square of one batch mean would add the variance of the residual and penalise the spread of the law. A control (W5_control) receives the same fine-tuning without the term.
+
+**Sampling procedure.**
+
+- *Final projection* (W2): Leray projection $\hat f - k\,(k\cdot\hat f)/|k|^2$ of the samples of W0.
+- *Projected flow* (W3): the noise is projected, the model is trained with projected noise, and every stage of Heun's scheme is projected, so that the whole path stays in the divergence-free subspace (Proposition 2 of the theory brief).
+- *Exponential tilting* (W7): the samples of a trained model receive weights $w_i \propto \exp(\lambda\cdot g_i)$, where $g_i$ are the per-sample residuals of the identities and $\lambda$ is chosen so that the weighted means vanish; this is the law closest to the generated one, in relative entropy, that satisfies the identities (Proposition 7 of the theory brief; @csiszar1975).
+- *Per-sample rescaling* (W8): the modes above the forcing scale of each sample are multiplied by a factor that makes its own injection equal its own dissipation. This is the per-sample version of a law-level identity, included as the counter-example of Corollary 6.
+
+**Model families.**
+
+- *Diffusion* (W6): the same network and latent as W4, trained by v-prediction on a variance-preserving path [@salimans2022] and sampled with the ancestral sampler (100 steps, the same number of network evaluations as 50 Heun steps).
+- *Mode-wise Gaussian law* (G0): no network. For each training $\eta$, one mean and one $8\times 8$ covariance per Fourier mode are estimated from the data, made invariant under $B \to -B$, and interpolated linearly in $\log\eta$. This law reproduces the second-order statistics of each mode (hence the spectra, the helicities and the mean budgets) and nothing else: it is the baseline that a generative model must beat to have learned anything non-Gaussian.
+
+### The linear part of the velocity field {#sec-linear}
+
+**Proposition (flow-matching field of a Gaussian law).** Let $x_0 \sim \mathcal{N}(0, I)$ and $x_1 \sim \mathcal{N}(\mu, \Sigma)$ be independent and $x_t = (1-t)x_0 + t x_1$. The minimiser of @eq-fm is affine in $x$:
+
+$$
+v_{\mathrm{Gauss}}(x, t) = \mu + \big(t\,\Sigma - (1-t)\,I\big)\big(t^2\Sigma + (1-t)^2 I\big)^{-1}(x - t\mu).
+$$ {#eq-gauss}
+
+*Proof.* The minimiser is the conditional mean $\mathbb{E}[x_1 - x_0 \mid x_t = x]$. The pair $(x_1 - x_0, x_t)$ is jointly Gaussian, with $\mathbb{E}[x_1 - x_0] = \mu$, $\mathbb{E}[x_t] = t\mu$, $\mathrm{Cov}(x_1 - x_0, x_t) = t\Sigma - (1-t)I$ and $\mathrm{Cov}(x_t) = t^2\Sigma + (1-t)^2 I$. The conditional mean of a Gaussian vector is the linear regression. $\square$
+
+This is elementary and certainly known. Two consequences matter here. First, for independent standard Gaussian coordinates ($\mu = 0$, $\Sigma = I$) the field is $v = (2t-1)x/(2t^2 - 2t + 1)$ and the minimum of the loss @eq-fm per coordinate, averaged over $t$, is $\int_0^1 \mathrm{d}t/(2t^2 - 2t + 1) = \pi/2 \approx 1.571$: a model whose loss on normalised data is above $\pi/2$ does worse than this trivial field. Second, the Jacobian of a residual perceptron with respect to $x$ is the identity of its skip connections plus a matrix whose rank is at most the hidden width; the linear part of @eq-gauss is a full-rank, time-dependent matrix in a latent of 5320 dimensions. That a network of width 512 cannot represent it well is a **conjecture** suggested by this rank argument, tested by a width scan in the section [Results](#results) (hypothesis H21). The remedy that does not rely on the conjecture is to give the model the term explicitly (W9) or exactly (W10, W11); @fig-linear summarises the argument.
+
+![Why an explicit linear part. Left: the optimal velocity field of a Gaussian law is affine in $x$, with a full-rank matrix that depends on time. Right: the variants that carry this part explicitly (W9), exactly (W10, W11), or sample the Gaussian law itself (G0). Schematic; source in `figures/linear-part/`. The measured values are in @tbl-comparative.](../figures/linear-part/figure/out/linear-part){#fig-linear width=100%}
+
+### Metrics {#sec-metrics}
+
+All metrics compare an ensemble of generated snapshots at one $\eta$ with the reference ensemble at the same $\eta$ (@fig-metrics).
+
+![The metrics of E4: energy distance over its noise floor, divergence of $B$, energy balance, spectra and magnetic helicity, magnetic null points, restart drift, polarity. Schematic; source in `figures/metrics/`.](../figures/metrics/figure/out/metrics){#fig-metrics width=100%}
+
+- **Energy-distance ratio.** Each snapshot is reduced to physical features (logarithms of the shell spectra of $u$ and $B$ for $k = 1,\dots,8$, relative kinetic, magnetic and cross helicities, logarithms of the energies), standardised with the reference. The energy distance [@szekely2013] between 512 generated and 512 reference snapshots is divided by a **noise floor**: the same distance between two reference subsamples of 512 snapshots taken from disjoint halves of the 24 trajectories (mean of 10 splits). The ratio is the number of floors separating the generated law from the reference. A perfect generator would not give 1 but less, about 0.6, because its samples are independent whereas the reference trajectories are correlated in time; the floor is a scale, not a bound.
+- **Divergence.** $\|\nabla\cdot B\|/\|\nabla B\|$ in the spectral norm, largest value over the ensemble.
+- **Energy balance.** $|\mathbb{E}[\langle f\cdot u\rangle - D_\nu - D_\eta]|/\mathbb{E}[D_\nu + D_\eta]$ with the two dissipations $D_\nu = \nu\langle|\omega|^2\rangle$ and $D_\eta = \eta\langle|j|^2\rangle$.
+- **Spectrum and helicity.** Relative $L^2$ error of the mean shell spectrum $E_B(k)$; relative error of the mean magnetic helicity.
+- **Null points.** Relative error of the mean number of magnetic null points per snapshot. The field is evaluated on a $48^3$ grid, and the nulls of its trilinear interpolant are found by the method of @haynes2007: cells where the three components change sign, then Newton iterations from nine starting points. On a periodic box the numbers of nulls of the two signs of $\det\nabla B$ must be equal (Poincaré–Hopf), which is used as a test of the implementation.
+- **Restart drift.** The generated snapshots are used as initial conditions of the solver and advanced over $\tau = 4$ time units; the metric is the relative change of the ensemble-mean magnetic energy. It is zero for samples of the true stationary law, and it is the only metric here that tests the generated law against the dynamics rather than against statistics chosen in advance.
+- **Polarity.** $|P(\langle u\cdot B\rangle > 0) - \tfrac12|$, zero for a law invariant under $B \to -B$.
+
+## Experiments {#experiments}
+
+### Reference data {#sec-data}
+
+For each of the 11 values of $\eta$ (logarithmically spaced from 0.08 to 0.03), 24 independent trajectories are started from a small random magnetic seed and a perturbed ABC flow, integrated over 200 time units to let the dynamo saturate, then sampled every 2 time units over 200 time units: 2400 snapshots of $(u, B)$ per value (`experiments/e4_data.py`). @tbl-data gives the statistics of the saturated state, all **measured**: the kinetic energy falls and the magnetic energy rises as $\eta$ decreases; the magnetic helicity is negative and its magnitude grows; about 40 % of the magnetic energy sits in the largest scale $k = 1$; the number of magnetic null points per snapshot more than doubles across the range (@fig-data).
+
+<!-- e4:data:begin -->
+| $\eta$ | Rm | Split | $E_u$ | $E_B$ | $H_M$ | $E_B(k{=}1)/E_B$ | Null points | $k_\lambda$ | Energy residual | Floor of the energy distance |
+|---:|---:|:---|---:|---:|---:|---:|---:|---:|---:|---:|
+| 0.0800 | 6.2 | training | 0.484 | 0.0793 | -0.044 | 0.438 | 19.9 $\pm$ 0.43 | 2.5 | $8.5\times 10^{-5}$ | 0.103 |
+| 0.0725 | 6.9 | held-out test | 0.446 | 0.0943 | -0.0534 | 0.43 | 21.9 $\pm$ 0.55 | 2.54 | $-4.0\times 10^{-4}$ | 0.105 |
+| 0.0658 | 7.6 | training | 0.405 | 0.109 | -0.0629 | 0.422 | 22.4 $\pm$ 0.5 | 2.58 | $1.5\times 10^{-4}$ | 0.0348 |
+| 0.0596 | 8.4 | validation | 0.372 | 0.121 | -0.0719 | 0.42 | 23.1 $\pm$ 0.52 | 2.6 | $-1.6\times 10^{-4}$ | 0.0408 |
+| 0.0540 | 9.3 | training | 0.346 | 0.132 | -0.0806 | 0.418 | 23.7 $\pm$ 0.6 | 2.63 | $2.8\times 10^{-4}$ | 0.0489 |
+| 0.0490 | 10.2 | held-out test | 0.325 | 0.139 | -0.0829 | 0.408 | 27 $\pm$ 0.64 | 2.69 | $-9.8\times 10^{-5}$ | 0.0426 |
+| 0.0444 | 11.3 | training | 0.302 | 0.147 | -0.0881 | 0.399 | 30 $\pm$ 0.7 | 2.73 | $-2.1\times 10^{-4}$ | 0.0355 |
+| 0.0403 | 12.4 | validation | 0.287 | 0.155 | -0.0912 | 0.393 | 34.3 $\pm$ 0.84 | 2.78 | $-2.6\times 10^{-4}$ | 0.0452 |
+| 0.0365 | 13.7 | training | 0.277 | 0.16 | -0.0963 | 0.384 | 35.9 $\pm$ 1 | 2.83 | $-5.3\times 10^{-5}$ | 0.0722 |
+| 0.0331 | 15.1 | held-out test | 0.262 | 0.168 | -0.1 | 0.382 | 41.5 $\pm$ 1.1 | 2.87 | $-4.7\times 10^{-5}$ | 0.0455 |
+| 0.0300 | 16.7 | training | 0.253 | 0.173 | -0.101 | 0.37 | 52.1 $\pm$ 1.2 | 2.94 | $9.6\times 10^{-6}$ | 0.0447 |
+
+: Reference data of E4 (measured; `experiments/results/e4_data.json` and `e4_reference.json`). $E_u$, $E_B$: kinetic and magnetic energies; $H_M = \langle A\cdot B\rangle$; null points per snapshot (mean $\pm$ standard error over 400 snapshots); $k_\lambda = (\langle|j|^2\rangle/\langle|B|^2\rangle)^{1/2}$; energy residual: mean of injection minus dissipation, over the mean dissipation; floor: energy distance between two halves of the reference trajectories. {#tbl-data}
+
+<!-- e4:data:end -->
+
+![Reference data: kinetic energy, magnetic energy and magnetic helicity against $\eta$ (mean over 24 trajectories; bars: $\pm 2$ standard errors), with the training, validation and held-out values. Data plot from `experiments/results/e4_data.json` (`experiments/e4_plots.py`).](../plots/e4_data_trends){#fig-data width=100%}
+
+Two properties of the reference were checked before any model was trained.
+
+*The stationarity identities hold on the data.* The energy residual of @tbl-data is at most a few $10^{-4}$ of the dissipation at every $\eta$. The mean current helicity $\langle j\cdot B\rangle$ is zero within its standard error: its shell spectrum changes sign, negative at $k \le 2$ and positive for $k \ge 3$ (@fig-helicity). A hypothesis registered beforehand (H11) predicted a simpler picture, a magnetic helicity spectrum negative at $k = 1$ only and positive for every $k \ge 2$; it was **refuted** by the data, the shell $k = 2$ being negative as well.
+
+![Reference data: shell spectra of the magnetic helicity and of the current helicity $\langle j\cdot B\rangle$ at the three held-out $\eta$. The mean of $\langle j\cdot B\rangle$ is zero: the negative shells $k \le 2$ cancel the positive shells $k \ge 3$. Data plot from `experiments/results/e4_reference.json`.](../plots/e4_helicity_spectrum){#fig-helicity width=85%}
+
+*The data are converged for the purpose.* The same statistics were recomputed at the three held-out $\eta$ with half the time step and on a $24^3$ grid, and at one $\eta$ on a $32^3$ grid (@fig-convergence): energies and helicity agree with those of the $16^3$ data within one to two standard errors. The flow at $Re = 10$ is smooth; the small grid is a choice of scale for the comparison, not an under-resolved simulation.
+
+![Convergence of the reference data: energies and magnetic helicity at the three held-out $\eta$ for the $16^3$ grid of E4, the same grid recomputed on the hardware of the check, half its time step, $24^3$ and $32^3$ (one $\eta$); bars: $\pm 2$ standard errors over 24 trajectories. Data plot from `experiments/results/replications/e4_convergence/`.](../plots/e4_convergence){#fig-convergence width=100%}
+
+### Protocol {#sec-protocol}
+
+![The protocol of E4: values of $\eta$ for training, validation and held-out test; five model seeds; noise floor of the energy distance from two halves of the reference trajectories; hypotheses registered before the computation and reviewed afterwards. Schematic; source in `figures/protocol/`.](../figures/protocol/figure/out/protocol){#fig-protocol width=100%}
+
+*Split of the parameter values.* The 11 values alternate (@fig-protocol): six training values (the two ends and every second value), two validation values and three held-out test values. The test values are used neither to train nor to choose a model. Every number quoted "on the held-out $\eta$" is the mean over the three test values.
+
+*Seeds.* Each variant is trained with five seeds. A comparison between two variants is the paired difference per seed, quoted as mean $\pm$ standard error over the five seeds (rule 4 of `AGENTS.md`).
+
+*Noise floor.* The floor of the energy distance (@sec-metrics) is computed per $\eta$ from disjoint halves of the trajectories and not from a random split of the snapshots: snapshots of one trajectory are correlated in time, and a random split gives a floor three to five times lower that no independent run of the solver would reach (@fig-floors).
+
+![Noise floors of the energy distance on the reference data: between two subsamples from disjoint halves of the 24 trajectories (mean of the 10 splits that define the floor; bars: smallest and largest of 20 splits) and between two random subsamples. Data plot from `experiments/results/e4_floor.json`.](../plots/e4_floors){#fig-floors width=75%}
+
+*Training and sampling.* 4000 iterations of Adam, batch 128, learning rate $5\times 10^{-4}$, exponential moving average of the weights; 512 samples per validation and test value, 256 per training value. The "long" variants use 8 times the iterations. The null points are counted on 200 samples per value and the restart test uses 128 samples.
+
+*Register and review.* Each hypothesis is written in `research/hypotheses.json` with its refutation criterion before the corresponding run, and the commit of the registration precedes the commit of the results. The `encadrant` role then recomputes the comparison from the result files and gives one verdict per criterion; its reports are in `research/reviews/`. The selection of the generator that is measured against the objectives of the race uses the validation values only.
+
+### Compute {#sec-compute}
+
+The session runs in a cloud container with four CPU cores and no GPU. The data, the references and the first two seeds were computed there; the five-seed runs were made on rented GPU pods through `tools/runpod_job.py`, which clones the pushed commit on the pod, runs the command under a time limit, brings the outputs back, deletes the pod and writes the cost in `research/compute-ledger.jsonl` (@fig-compute). A training of 4000 iterations takes 35 to 60 s on the GPU against about 15 minutes on one CPU core; the evaluation (null points, restart test) dominates the run time. The costs are in the section [Reproducibility](#reproducibility).
+
+![The compute path of the pilot: session, GPU pod, results, ledger, and the failures met and repaired on the way. Schematic; source in `figures/compute-path/`.](../figures/compute-path/figure/out/compute-path){#fig-compute width=100%}
+
+The workflow of the experiment and the organisation of the agents are drawn as two explorable diagrams, [experiment-workflow.html](../diagrams/experiment-workflow.html) and [agent-organisation.html](../diagrams/agent-organisation.html); their static exports are @fig-workflow and @fig-agents.
+
+![Workflow of experiment E4: plan, data, reference and floors, variants, GPU runs, digest, objectives and register. Static export of the Archify diagram `diagrams/experiment-workflow.html`.](../diagrams/experiment-workflow.png){#fig-workflow width=100%}
+
+![Organisation of the team: the main session, the four roles with their model tier and reasoning level, the reviews named by `tools/review_due.py`, the registers and the checking tools. Static export of the Archify diagram `diagrams/agent-organisation.html`.](../diagrams/agent-organisation.png){#fig-agents width=100%}
+
+## Results {#results}
+
+Everything in this section is **measured**, on five model seeds unless a table says otherwise; the numbers are in @tbl-comparative of the section [Comparative study](#comparative-study) and in the tables below.
+
+### The registered protocol: every first-generation model is far from the reference {#sec-first}
+
+The first protocol, registered before any training, compared the baseline W0, the mechanisms W1 to W5, the diffusion model W6 and the sampling-time corrections W7 and W8, all with the same residual network of width 512 (@fig-ed).
+
+![Energy distance to the reference divided by the noise floor on the held-out $\eta$, per variant: one dot per seed, bar: seed mean $\pm 2$ standard errors (drawn with at least five seeds), open circle: seed mean at the training $\eta$; dashed line: the floor. Data plot from `experiments/results/e4_mhd3d_s<k>.json`.](../plots/e4_ed_ratio){#fig-ed width=100%}
+
+The outcome is negative for all of them: the generated laws are between about one hundred and five hundred floors away from the reference on the held-out values, and not much closer on the training values. Within this failure the mechanisms can still be told apart, and the registered hypotheses were decided as follows (verdicts of the `encadrant`, @tbl-hypotheses).
+
+- **Divergence.** The potentials (W4), the final projection (W2) and the projected flow (W3) bring the relative divergence of $B$ to round-off, about $10^{-8}$; the free model stays at order one and the penalty (W1) only halves it (H5 confirmed). The divergence of the free model does not change when the number of integration steps is doubled (H14 confirmed): it is an error of the learned field, not of the integrator, as Proposition 2 of the theory brief predicts for a field that lacks the contraction towards the constraint set.
+- **Potentials against free components.** Generating potentials does not bring the law closer to the reference than generating free components: the paired difference has the wrong sign in all five seeds (H4 refuted). The projected flow is not better than a projection of the final samples (H6 refuted); the two are the best of this group.
+- **The penalty costs accuracy.** The model trained with the divergence penalty is about twice as far from the reference as the baseline. The penalty is unbiased at the optimum, but the network is far from the optimum, and there the penalty competes with the regression.
+- **Stationarity loss.** Fine-tuning with the law-level identities lowers the residual of the mean energy balance by about a third against the control that receives the same fine-tuning without the term (H7 confirmed), at parameter values where no data were used, without bringing the law closer to the reference. The comparison between imposing the identities in the loss and by tilting was dropped as not discriminating (H8): the tilted ensemble is one weighted sample, and the registered criterion could be met by its sampling noise.
+- **Which identity constrains more.** The registered conjecture that the magnetic-helicity identity is violated more than the energy identity was refuted (H12): on the samples of the equivariant model the normalised residual of $\mathbb{E}[\langle j\cdot B\rangle] = 0$ is about half that of the energy balance.
+- **Equivariance.** The polarity asymmetry of the non-equivariant model is already at the sampling noise of 512 samples; the equivariant model cannot lower it (H9 refuted on its first clause). The symmetry is exact by construction in W4s, but in this system it is not what the unconstrained model gets wrong.
+- **Flow matching against diffusion.** At the same number of network evaluations, flow matching is about twice closer to the reference than the diffusion model on the held-out $\eta$ (H10 confirmed as registered), but not on the training $\eta$, where the two are equivalent: the difference is in the interpolation in $\eta$ (@fig-per-eta), not in the family at a fixed parameter value.
+- **Per-sample rescaling.** W8 satisfies the energy balance of each sample exactly, and has the lowest distance of this group; its law is still about a hundred floors from the reference, and by construction the variance of $\mathrm{d}E/\mathrm{d}t$ of its samples is zero.
+
+![Energy-distance ratio against $\eta$, seed mean: at the training values (filled circles) and between them (open squares: validation, open diamonds: held-out test). Data plot from `experiments/results/e4_mhd3d_s<k>.json`.](../plots/e4_per_eta){#fig-per-eta width=90%}
+
+### Diagnosis: the models do worse than a Gaussian field {#sec-diagnosis}
+
+Three measurements point to the same cause. The flow-matching loss of the plain flow-matching models (W0, W4, W4s and the control of W5; the other variants have another loss or another noise and are not comparable), evaluated on training samples, ends between 1.60 and 1.63, above $\pi/2 \approx 1.571$, the loss of the exact field for independent standard Gaussian coordinates (@sec-linear): after training, these networks fit the normalised data worse than a field that ignores every correlation. The samples of the potentials models are over-dispersed: about two to three times too many magnetic null points (the penalty model W1 and the diffusion model W6 err the other way, with too few) and a fluctuation of the energy budget several times that of the reference. And the error is of the same order on the training values as on the held-out ones, so it is not an error of interpolation in $\eta$.
+
+Two explanations were registered and tested separately.
+
+*The embedding of the condition* (H15). The Fourier embedding of the condition used frequencies of up to 8 cycles over the range of $\log\eta$, above what six training values can resolve. A model with a smooth embedding (W4c, frequencies up to half a cycle) was compared with W4.
+
+*The linear part of the field* (H16, H17). The Gaussian baseline G0 has no network at all; the affine term of W9 gives the network of W4s the linear part of the field explicitly.
+
+<!-- e4:diagnosis:begin -->
+<!-- e4:diagnosis:end -->
+
+### Giving the field its linear part {#sec-remedy}
+
+<!-- e4:remedy:begin -->
+<!-- e4:remedy:end -->
+
+![Shell spectra of the velocity and of the magnetic field and magnetic helicity spectrum at one held-out $\eta$: reference (black) and generated ensembles (mean over the seeds). Data plot from `experiments/results/e4_mhd3d_s<k>.json` and `e4_reference.json`.](../plots/e4_spectra){#fig-spectra width=100%}
+
+![Physical metrics on the held-out $\eta$, one dot per seed and seed mean $\pm 2$ standard errors: residual of the mean energy balance, error on the number of magnetic null points, drift of the magnetic energy when the solver restarts from the generated snapshots, error on the mean magnetic helicity. Dashed lines: the same quantity on reference snapshots. Data plot from `experiments/results/e4_mhd3d_s<k>.json`.](../plots/e4_physics_metrics){#fig-physics width=100%}
+
+### Longer trainings and wider networks {#sec-long}
+
+<!-- e4:longtext:begin -->
+<!-- e4:longtext:end -->
+
+<!-- e4:long:begin -->
+*(not available)*
+
+: Long trainings (measured; `experiments/results/replications/e4_final_long`): Gaussian baseline, models with the affine term or the anchor at the base budget and with 8 times the iterations. Columns as in @tbl-comparative; FM loss: flow-matching loss on a training sample ($\pi/2 = 1.571$ for the exact field of independent standard Gaussians). {#tbl-long}
+
+<!-- e4:long:end -->
+
+![Gaussian baseline (violet), flow matching with the explicit affine term or the Gaussian anchor at the base budget (blue) and with 8 times the iterations (orange), on the held-out $\eta$: one dot per seed, seed mean $\pm 2$ standard errors. Data plot from `experiments/results/replications/e4_final_long/`.](../plots/e4_long_trainings){#fig-long width=100%}
+
+<!-- e4:scan:begin -->
+*(not available)*
+
+: Width scan (measured; `experiments/results/replications/e4_final_scan`): the equivariant potentials model with the smooth embedding and no affine term, for three widths and two training budgets, against the model with the affine term and the Gaussian baseline. {#tbl-scan}
+
+<!-- e4:scan:end -->
+
+![Width scan (hypothesis H21): energy-distance ratio and flow-matching loss for three widths and two budgets, against the model with the explicit affine term and the Gaussian baseline. Dashed line: $\pi/2$. Data plot from `experiments/results/replications/e4_final_scan/`.](../plots/e4_width_scan){#fig-scan width=90%}
+
+### Topology: null points follow the small scales {#sec-nulls}
+
+The number of magnetic null points is the most demanding of the metrics: every generator has too many of them. A conjecture of the `physicien` role (H13) was that the count scales as the cube of the magnetic Taylor wavenumber $k_\lambda$, as it would for a Gaussian random field, so that the error on the count would be three times the relative error on $k_\lambda$. The fit over all generators, held-out values and seeds gives a slope close to five and not three (@fig-nulls): H13 was **refuted** on the slope. The correlation itself is strong: a generator with too much small-scale magnetic energy has too many nulls, and more than the Gaussian estimate predicts.
+
+![Number of magnetic null points against the magnetic Taylor wavenumber, generated over reference, one point per variant, held-out $\eta$ and seed; the fit is the one of the digest (hypothesis H13). Data plot from `experiments/results/e4_mhd3d_s<k>.json`.](../plots/e4_nulls_klambda){#fig-nulls width=65%}
+
+### Replication with other data {#sec-replication}
+
+<!-- e4:indeptext:begin -->
+<!-- e4:indeptext:end -->
+
+<!-- e4:indep:begin -->
+*(The replication with other data seeds is not available.)*
+
+: Main run against a replication in which the reference data were regenerated with other seeds of the initial conditions (`E4_DATA_SEED=100`; `experiments/results/replications/e4_indep`); seed mean with its standard error in parentheses, on the held-out $\eta$. {#tbl-indep}
+
+<!-- e4:indep:end -->
+
+### Objectives of the race {#sec-objectives}
+
+The objectives of the team were quantified on the first day, before any model was trained (`race/teams/claude/objectives.toml`), and are measured by `experiments/race_metrics.py` on one generator, chosen on the validation values (@tbl-objectives).
+
+<!-- e4:objectives:begin -->
+Generator measured by C1–C5, T1 and T2: `W3_projected_flow`, the variant with the lowest energy-distance ratio on the validation $\eta$ (file `experiments/results/e4_selection.json`).
+
+| Objective | Target | Measured | Seeds | Met |
+|:---|---:|---:|---:|:---|
+| C1-3d-generator | 10 | not measurable | – | no |
+| C2-divergence | $1.0\times 10^{-6}$ | not measurable | – | no |
+| C3-energy-balance | 0.05 | not measurable | – | no |
+| C4-spectra-helicity | 0.15 | not measurable | – | no |
+| C5-topology | 0.2 | not measurable | – | no |
+| C6-comparative-study | $\ge$ 6 | 7 | 5 | yes |
+| C7-toolbox | $\ge$ 6 | 12 | 0 | yes |
+| T1-restart-drift | 0.05 | not measurable | – | no |
+| T2-polarity-symmetry | 0.03 | not measurable | – | no |
+
+: Objectives of the race against the measured values (generated by running the command of each objective). {#tbl-objectives}
+
+<!-- e4:objectives:end -->
+
+<!-- e4:objectivestext:begin -->
+<!-- e4:objectivestext:end -->
+
+## Comparative study {#comparative-study}
+
+@tbl-comparative is the comparison the offer asks for: one line per mechanism or model family, one column per metric, on the three held-out values of $\eta$, seed mean and standard error. @tbl-hypotheses gives, for each registered hypothesis, the status after review. Both are generated from the result files and the register; the sortable version of the first is in the [explorer](../explorer/index.html#comparative-table).
+
+```{=latex}
+\begingroup\scriptsize\setlength{\tabcolsep}{2.5pt}
+```
+
+<!-- e4:comparative:begin -->
+| Variant | Acts through | ED / floor, training $\eta$ | ED / floor | div B | energy residual | spectrum of B | magnetic helicity | null points | restart drift | polarity | Seeds |
+|:------------------------------|:---------|----------:|----------:|----------:|----------:|----------:|----------:|----------:|----------:|----------:|----------:|
+| W0 free components | none | 169(2) | 217(14) | 0.456(3) | 0.305(18) | 2.3(3) | 1.9(5) | 1.17(12) | 0.510(3) | 0.0078(20) | 2 |
+| W1 divergence penalty | loss | 286(3) | 482(3) | 0.24670(4) | 0.649(9) | 26.9(10) | 45.3(20) | 0.739(19) | 0.490(5) | 0.015(9) | 2 |
+| W2 final projection | sampling | 109(3) | 162(17) | $3.2\times 10^{-8}$ | 0.305(18) | 1.9(3) | 1.9(5) | 0.96(14) | 0.438(5) | 0.008(3) | 2 |
+| W3 projected flow | sampling | 109(3) | 156(9) | $2.6\times 10^{-8}$ | 0.296(5) | 1.78(14) | 1.7(2) | 1.00(6) | 0.432(13) | 0.010(6) | 2 |
+| W4 vector potentials | design | 179.9(4) | 244(11) | $1.4\times 10^{-8}$ | 0.411(11) | 2.5(4) | 2.2(5) | 1.15(14) | 0.514(3) | 0.024(4) | 2 |
+| W4s potentials, B $\to$ $-$B equivariant | design | 169.9(6) | 194(5) | $1.4\times 10^{-8}$ | 0.285(18) | 1.0(2) | 0.5(4) | 1.80(17) | 0.384(16) | 0.017(4) | 2 |
+| W5 stationarity loss | loss | 166.2(7) | 203.4(6) | $1.4\times 10^{-8}$ | 0.193(3) | 0.504(4) | 0.731(15) | 2.344(9) | 0.3334(3) | 0.010(3) | 2 |
+| W5 control (same fine-tuning, no identity) | loss | 169.6(6) | 194(6) | $1.4\times 10^{-8}$ | 0.290(19) | 1.1(2) | 0.5(4) | 1.78(18) | 0.389(18) | 0.0160(16) | 2 |
+| W6 diffusion (VP, v-prediction) | family | 164.6(2) | 516(14) | $1.3\times 10^{-8}$ | 0.767(3) | 18(3) | 25(5) | 0.42(5) | 0.635(3) | 0.018(4) | 2 |
+| W7 exponential tilting | sampling | 132(15) | 180(2) | $1.4\times 10^{-8}$ | 0.213(10) | 0.65(12) | 0.32(7) | 1.90(11) | – | 0.5 | 2 |
+| W8 per-sample balance rescaling | sampling | 93.91528(18) | 118(6) | $1.4\times 10^{-8}$ | $<10^{-12}$ | 0.9(2) | 0.6(4) | 0.71(20) | – | 0.0133(10) | 2 |
+| W4c potentials, smooth condition | design | 180.1(3) | 215.6(8) | $1.4\times 10^{-8}$ | 0.27055(17) | 0.670(5) | 0.305(4) | 2.16(3) | 0.3810(18) | 0.013(8) | 2 |
+| G0 Gaussian per mode (no network) | family | 2.91(5) | 3.312(16) | $1.5\times 10^{-8}$ | 0.0020(4) | 0.019(3) | 0.020(5) | 2.268(3) | 0.216(4) | 0.0234(20) | 2 |
+| W9 mode-wise affine term | design | 7.1(4) | 9.9(7) | $1.5\times 10^{-8}$ | 0.058(3) | 0.142(11) | 0.186(14) | 1.693(5) | 0.124(13) | 0.022(4) | 2 |
+| W10 anchored on the Gaussian field | design | 36.5(3) | 45.5(8) | $1.5\times 10^{-8}$ | 0.14784(5) | 0.2146(13) | 0.0841(9) | 2.477(19) | 0.1284(10) | 0.016(10) | 2 |
+| W11 anchor + affine term | design | 6.39(9) | 8.5(8) | $1.5\times 10^{-8}$ | 0.052(2) | 0.140(8) | 0.179(11) | 1.707(11) | 0.1178(12) | 0.015 | 2 |
+
+: Comparative table of E4 (measured; `experiments/results/e4_mhd3d_s<k>.json`). ED / floor: energy distance to the reference over the noise floor, at the training and at the held-out $\eta$; div B: largest relative divergence of $B$; energy residual: absolute residual of the mean energy balance over the mean dissipation; spectrum of B: relative $L^2$ error; magnetic helicity and null points: relative errors of the means; restart drift: relative drift of the magnetic energy after $\tau = 4$; polarity: asymmetry of the sign of the cross helicity. Lower is better in every column. Notation: 217(14) is the seed mean 217 with a standard error of 14 on its last digits; values below $10^{-3}$ are given without error. The tilted ensemble W7 is a weighted sample and W8 a rescaled one: no restart test. {#tbl-comparative}
+
+<!-- e4:comparative:end -->
+
+```{=latex}
+\endgroup
+```
+
+```{=latex}
+\begingroup\footnotesize
+```
+
+<!-- e4:hypotheses:begin -->
+| Id | Hypothesis (shortened) | Status | Verdict of the `encadrant` role (beginning) |
+|:---|:--------------------------------------------|:---------|:----------------------------------------|
+| H4 | In E4 (3D), generating vector potentials (W4\_potentials, constraint by model design) gives a lower energy-distance ratio on the held-out $\eta$ than generating free components (W0\_free). | refuted | REFUTED (encadrant, 2026-11-12): W0\_free $-$ W4\_potentials = $-$20.05 $\pm$ 3.21 ($-$6.2 SE), W4 below W0 in 0 of 5 seeds, negative at each held-out $\eta$; the two CPU seeds agree ($-$26.9). |
+| H5 | In E4, the divergence penalty on the end-of-path prediction (W1\_penalty, weight 10; constraint by a training loss) does not enforce the constraint: it lowers the relative divergence of B of the free model W0\_free by less than a fa ... | supported | CONFIRMED (encadrant, 2026-11-12): relative divergence of B 0.206 against 0.380 (ratio 0.544, not below one tenth); W0\_free $-$ W1\_penalty = $-$228.2 $\pm$ 12.7, 0 of 5: the penalty does not enforce the constraint and degrades the law. |
+| H6 | In E4, the projected flow (W3\_projected\_flow: projected noise and projection of every integration stage) gives a lower energy-distance ratio on the held-out $\eta$ than the Leray projection of the final samples of the free model (W2\_fi ... | refuted | REFUTED (encadrant, 2026-11-12): W2\_final\_projection $-$ W3\_projected\_flow = 2.69 $\pm$ 3.72 (0.72 SE), 4 of 5 seeds: no difference at 2 SE; the CPU seeds show the same absence of effect. |
+| H7 | In E4, fine-tuning the equivariant potentials model with the law-level stationarity loss (W5\_stationarity: energy identity and magnetic-helicity identity E[$\langle$j$\cdot$B$\rangle$] = 0, imposed at every $\eta$ of the range) lowers the absolute residual  ... | supported | CONFIRMED (encadrant, 2026-11-12): /energy residual/ W5\_control $-$ W5\_stationarity = 0.0988 $\pm$ 0.0108 (9.1 SE), 5 of 5 seeds (0.290 $\to$ 0.191); ED ratio W5/control = 1.023. |
+| H8 | In E4, imposing the stationarity identities at training time (W5\_stationarity) gives a lower energy-distance ratio on the held-out $\eta$ than imposing the same identities at sampling time by exponential tilting of the samples of the c ... | dropped | NOT DISCRIMINATING (encadrant, 2026-11-12): the registered criterion is formally met (W7\_tilting $-$ W5\_stationarity\_half = 30.0 $\pm$ 10.1, 5 of 5), but ESS/N is 1/256 in 14 of 15 cells: the tilted law is one sample and its energy distance is not a measurement of a ... |
+| H9 | In E4, the B $\to$ $-$B equivariant velocity field (W4s\_potentials\_sym, constraint by model design) lowers the polarity asymmetry /P($\langle$u$\cdot$B$\rangle$ $>$ 0) $-$ 1/2/ of the generated law on the held-out $\eta$ compared with the same model without symmetrizat ... | refuted | REFUTED (encadrant, 2026-11-12) on its first clause: asymmetry W4 $-$ W4s = 0.0004 $\pm$ 0.0058, 3 of 5 seeds, both at or below the binomial floor 0.0176: the test could not discriminate at n = 512. The second clause holds: ED ratio W4s/W4 = 0.819 ($-$46.5 $\pm$ 4.8, 0 of ... |
+| H10 | In E4, conditional flow matching (W4\_potentials: linear path, Heun, 100 network evaluations) gives a lower energy-distance ratio on the held-out $\eta$ than a variance-preserving diffusion with ancestral sampling (W6\_diffusion: v-predi ... | supported | CONFIRMED as registered (encadrant, 2026-11-12): W6\_diffusion $-$ W4\_potentials = 262.4 $\pm$ 12.1, 5 of 5, positive at each held-out $\eta$. Caveat of the encadrant: at the training $\eta$ the diffusion model is better than flow matching ($-$15.06 $\pm$ 0.90, 0 of 5): the result i ... |
+| H11 | In the E4 reference data, the magnetic helicity spectrum is bipolar at every $\eta$: H(k = 1) $<$ 0 and $\Sigma$\_{k $\ge$ 2} H(k) $>$ 0, with a large-scale energy fraction E\_B(k = 1)/E\_B between 0.2 and 0.8, so that the stationarity identity E[$\langle$j$\cdot$B$\rangle$] ... | refuted | REFUTED (encadrant, 2026-11-12): recomputed from the raw snapshots at the 11 $\eta$, independently of the experiment code, every value equal to e4\_reference.json. H(1) $<$ 0 at 11 of 11 $\eta$ (z from $-$19 to $-$58) and E\_B(1)/E\_B in [0.370, 0.438] hold; $\Sigma$\_{k $\ge$ 2} H(k) $>$ 0 b ... |
+| H12 | In E4, the magnetic-helicity identity E[$\langle$j$\cdot$B$\rangle$] = 0 constrains the generated magnetic law more than the energy identity: on the samples of W4s\_potentials\_sym at the held-out $\eta$ its normalized residual is at least twice that of the e ... | refuted | REFUTED (encadrant, 2026-11-12): seed mean of r\_b/r\_a = 0.504, r\_b $>$ r\_a in 0 of 5 seeds. The tilting clause is met (/err H\_M/ tilt a $-$ tilt b = 0.238 $\pm$ 0.095, 5 of 5) against a degenerate comparator (tilt on the energy identity: ESS/N 0.0096); tilt b against  ... |
+| H13 | In E4, the error of a generator on the number of magnetic null points follows its error on the magnetic Taylor wavenumber k\_$\lambda$ = ($\langle$/j/$^2$$\rangle$/$\langle$/B/$^2$$\rangle$)\^{}1/2 as N $\propto$ k\_$\lambda$$^3$: over all (variant, held-out $\eta$, seed) points, the slope of ln(N\_gen/N\_re ... | refuted | REFUTED on the slope (encadrant, 2026-11-12): slope 4.875, R$^2$ 0.902 over 135 points (seed-bootstrap interval [4.83, 4.92]); CPU 4.96. Protocol check passed (reference nulls change by 0.6 to 3.6 % between 48$^3$ and 64$^3$). |
+| H14 | In E4, the relative divergence of the free model W0\_free is a representation error of the network and not an integration error (Proposition 2, consequence (c)): on the held-out $\eta$ it is of order one with 50 Heun steps (above 0.1) a ... | supported | CONFIRMED (encadrant, 2026-11-12): relative divergence of B of W0\_free 0.3792 at 50 Heun steps and 0.3788 at 200, ratio 0.998 to 1.000 per seed, above 0.1: integration error is excluded; 'representation error' is the remaining reading, not a separate measureme ... |
+| H15 | In E4, the error of the generators at the held-out $\eta$ comes from the embedding of the condition: the Fourier embedding of the pre-race code has frequencies up to 8 cycles over the normalized parameter range, above the Nyquist frequ ... | registered | not reviewed yet |
+| H16 | In E4, a conditional Gaussian model with one mean and one covariance per Fourier mode (G0\_gaussian\_modes: no network; moments estimated at the training $\eta$ and interpolated linearly in log $\eta$, symmetrized under B $\to$ $-$B) has a lower en ... | registered | not reviewed yet |
+| H17 | In E4, the over-dispersion of the flow-matching generators comes from the bottleneck of the network (width 512 for 5320 latent dimensions), which cannot represent the linear part of the velocity field: adding an explicit mode-wise ... | registered | not reviewed yet |
+| H18 | In E4, flow matching adds to the second-order baseline what a Gaussian law cannot hold: with the mode-wise affine term and a longer training (W9L\_skip\_long, 8 times the iterations of W9), the drift of the magnetic energy when the  ... | registered | not reviewed yet |
+| H19 | In E4, a flow-matching field anchored on the exact field of the mode-wise Gaussian law, v = v\_Gauss(x, t, $\eta$) + network (W10\_anchored: the network starts at zero, so the model starts as G0 and learns only the non-Gaussian correctio ... | registered | not reviewed yet |
+| H20 | In E4, the anchored model fails (W10\_anchored on CPU seeds 0 and 1: 45 times the floor against 3.3 for G0) because the network's own linear component perturbs the second-order statistics that the fixed Gaussian field had right. Ad ... | registered | not reviewed yet |
+| H21 | In E4, the over-dispersion of the flow-matching generators without an explicit linear term comes from the width of the network and not from the training budget: for the equivariant potentials model with the smooth condition embedd ... | registered | not reviewed yet |
+
+: Hypotheses of E4, registered with a refutation criterion before the computation (`research/hypotheses.json`), with their status after the review of the `encadrant` role. {#tbl-hypotheses}
+
+<!-- e4:hypotheses:end -->
+
+```{=latex}
+\endgroup
+```
+
+<!-- e4:comparativetext:begin -->
+<!-- e4:comparativetext:end -->
+
+## Toolbox {#toolbox}
+
+The offer asks for "reproducible code integrated into the project toolbox". The toolbox of this repository is the Python package `src/milady/`; what this work added to it is drawn in the code-backed diagram [code-architecture.html](../diagrams/code-architecture.html) (@fig-code) and listed in @tbl-toolbox.
+
+![Code architecture of what E4 added to `src/milady/`: the constraint mechanisms by group, the diffusion module, the topology module, and the modules they build on. Static export of the Archify diagram `diagrams/code-architecture.html`.](../diagrams/code-architecture.png){#fig-code width=100%}
+
+| Module | What it provides | Tests |
+|:---|:---|:---|
+| `milady.train.constraints` | `REGISTRY` of 12 mechanisms: `FourierComponentSpace` (free components), `leray_hat`, `projected_flow_sample`, `divergence_penalty`, `budget_terms_hat` and `stationarity_residuals` (identities), `half_batch_product` (unbiased squared mean), `balance_tilting`, `balance_rescaling`, `ModewiseAffineSkip`, `ModewiseGaussian`, `GaussianAnchoredField` | `tests/test_constraints.py`: one test per mechanism (13 tests) |
+| `milady.train.data` | `FourierPotentialSpace` with `truncation="cube"`: potentials on exactly the modes of the solver | `tests/test_constraints.py::test_galerkin_potentials` |
+| `milady.train.diffusion` | `diffusion_loss` (v-prediction, variance-preserving path), `diffusion_sample` (ancestral or deterministic) | `tests/test_constraints.py::test_diffusion` |
+| `milady.train.fm3d` | `ResMLP` and `ConditionEmbedding` with a `cond_scale` argument (largest frequency of the embedding of the condition) | existing tests |
+| `milady.eval.topology` | `null_points`, `null_count`: null points of a periodic 3D field by the trilinear method | `tests/test_topology.py` (3 tests, including the Poincaré–Hopf balance of signs) |
+| `tools/runpod_job.py` | `run`, `collect`, `exec`, `cleanup`, `spend`: GPU jobs with a time limit, a ledger and per-team pod names | `tests/test_pilot_tools.py` |
+
+: What entered the toolbox, with its tests. {#tbl-toolbox}
+
+How to call it, for a latent space `space` and a trained field `model`:
+
+```python
+from milady.train import constraints as C
+from milady.train.data import FourierPotentialSpace
+from milady.eval.topology import null_count
+
+space = FourierPotentialSpace(n=16, kmax=5, truncation="cube")       # 665 modes, 8 channels
+fh = space.field_hat(space.denormalize(x))                           # (batch, 2 fields, modes, 3)
+terms = C.budget_terms_hat(space, fh, nu=0.05, eta=0.05, forcing_hat=f_hat)
+res = C.stationarity_residuals(terms, nu=0.05, eta=0.05)             # energy, magnetic and cross helicity
+loss = C.half_batch_product(*res["magnetic_helicity"], n_groups=4)   # unbiased (E<j.B>)^2
+gauss = C.ModewiseGaussian(sign=space.sign).fit(x_train, c_train)    # baseline G0
+field = C.ModewiseAffineSkip(model, space.n_modes, space.n_channels, n_cond=1)   # W9
+counts = null_count(b_grid)                                          # (n, nx, ny, nz, 3) -> nulls per field
+```
+
+The tests check each mechanism against an independent computation: the identities against the time derivative of the solver, the Gaussian anchor against the closed form of @eq-gauss, the tilting against its moment conditions, the null finder against fields with a known number of nulls. `make test` runs them (the test suite, the linter and the check of the generated agent files pass on the branch).
+
+The experiment itself is driven by scripts in `experiments/`: `e4_data.py` (data), `e4_mhd3d.py` (variants, by group), `e4_floor.py`, `e4_digest.py` and `digest.py` (digest), `race_metrics.py` (objectives), `e4_plots.py` (the data plots of this report), `e4_report_tables.py` (its tables) and `export_explorer.py` (the data of the explorer).
+
+## Discussion {#discussion}
+
+### What each place of constraint buys
+
+<!-- e4:discussiontext:begin -->
+<!-- e4:discussiontext:end -->
+
+### Negative results and refuted claims
+
+The register keeps what failed. Of the eleven hypotheses of the first protocol, written before any model was trained, six were refuted and one was dropped.
+
+- *Potentials are not closer to the reference than free components* (H4 refuted). The constraint by design gives exact zero divergence at no cost, but the law is not better for it; the theory brief already says that with a perfect field the free model, the projections and the potentials give the same law, so any difference is an approximation effect, and here it has the opposite sign to the one expected.
+- *The projected flow is not better than a final projection* (H6 refuted).
+- *Equivariance does not lower the polarity asymmetry* (H9 refuted): the asymmetry was already at the sampling noise.
+- *The helicity spectrum is not bipolar at $k = 1$ against $k \ge 2$* (H11 refuted): the shell $k = 2$ is negative.
+- *The magnetic-helicity identity is not the more violated one* (H12 refuted).
+- *The null count does not scale as $k_\lambda^3$* (H13 refuted on the slope).
+- *Loss against tilting* (H8) was dropped: the criterion could be met by the sampling noise of one weighted ensemble.
+
+Two claims made during the work were corrected by the reviewing role and are reported as corrected. The first version of the objective on the energy distance said that a perfect generator would give a ratio of one; with a floor computed from trajectory halves it would give about 0.6, and the note was corrected before any model result existed. The statement "the cause of the failure is the width of the network" was refused as a conclusion from the first runs and registered as a hypothesis with a width scan (H21, @sec-long).
+
+A run labelled as a replication was not one. The job `e4_main` reproduced the first GPU run bit for bit, because the data and model seeds were the same and the hardware identical; it is a reproducibility check. The replication with other data seeds is the one of @sec-replication.
+
+### Limits
+
+- **Scale.** The system has 665 Fourier modes and $Re = 10$. The flow is smooth, the statistics of the Fourier modes are close to Gaussian at second order, and that is why a mode-wise Gaussian law is such a strong baseline here. Nothing guarantees this at the Reynolds numbers of the MilaDy simulations, where the non-Gaussian part of the law carries the physics (intermittency, coherent structures). The ranking of the mechanisms may change with scale; the method of comparison does not.
+- **Architecture.** The network acts on the flattened vector of modes. This does not scale: at $64^3$ the latent has more than $10^5$ dimensions. The explicit affine term is mode-wise and scales linearly with the number of modes, but the nonlinear part needs an architecture with locality in Fourier or physical space (a convolutional or attention-based field, as in the references of the section [State of the art](#state-of-the-art)).
+- **Homogeneity.** The mode-wise form of the affine term and of the Gaussian baseline uses the translation invariance of the periodic box, which makes different Fourier modes uncorrelated. In a bounded domain (the von Kármán geometry of the project) the natural basis is different and the second-order structure is not diagonal.
+- **Metrics.** The energy distance is computed on some thirty physical features, mostly second-order quantities. A law can be close to the reference in this distance and wrong in its higher-order structure; the null points and the restart test are there to see that, and they do.
+- **One conditioning parameter.** Only $\eta$ varies, over a range in which the dynamo is always saturated and the law changes smoothly. The dynamo threshold, where the law changes fastest (Proposition 9 of the theory brief), is outside the range.
+- **Statistics.** Five seeds per variant; one realisation of the reference data for the main run and one independent realisation for the replication.
+
+### What the incidents of the pilot teach
+
+Four incidents cost time and are part of the result, because the race is also a test of the method. Rented GPUs were refused for lack of capacity for about an hour. The first pod ran for 24 minutes without its status being read, because a proxy refused the default user agent of the HTTP client. Another session sharing the cloud account deleted two running pods with its clean-up command. The container of the session restarted twice and orphaned running jobs. Each was repaired in the shared tool with a test (user agent, per-team pod names, the `collect` command), and announced in the journal. One bug was in the experiment script itself: a loop variable overwrote the suffix of the result files after a certain variant, and one run brought back incomplete files; it was found by reading what a job returned instead of trusting its exit code, fixed, and covered by a static test.
+
+## Conclusion {#conclusion}
+
+<!-- e4:conclusiontext:begin -->
+<!-- e4:conclusiontext:end -->
+
+## References {#references}
+
+::: {#refs}
+:::
+
+## Reproducibility {#reproducibility}
+
+### Commands
+
+Everything is in the branch `claude/modest-newton-zx8fqs` of the repository. From the root:
+
+```bash
+make test                                             # tests of src/milady (constraints, topology, tools)
+cd experiments
+python3 e4_data.py --quick                            # reference data, quick mode (--jobs N for the full data)
+python3 e4_mhd3d.py --reference --quick               # reference statistics and floors
+python3 e4_mhd3d.py --quick --seed 0 --group all      # variants W0-W11, G0 (groups A-E; L: long; S: width scan)
+python3 e4_floor.py                                   # noise floors
+python3 digest.py > results/digest.md                 # digest of E1-E4
+python3 race_metrics.py --all                         # objectives of the race
+python3 e4_plots.py                                   # data plots of this report
+python3 e4_report_tables.py                           # tables of this report
+python3 export_explorer.py --team claude              # data of the explorer
+# on a GPU pod (5 seeds), from the root:
+python3 tools/runpod_job.py run --hours 2 --outputs experiments/results/replications/e4_final \
+    -- bash experiments/e4_gpu_job.sh full "0 1 2 3 4" e4_final all
+python3 tools/render.py teams/claude/report teams/claude/explorer
+python3 tools/check_deliverables.py --team claude --built
+```
+
+Without `--quick`, the data take about 25 minutes on 11 CPU cores and one seed of the groups A to E about 35 minutes on a GPU. Quick outputs are not versioned and are never quoted.
+
+### Result files and commits
+
+<!-- e4:commits:begin -->
+<!-- e4:commits:end -->
+
+### GPU jobs and costs
+
+Every GPU job of the pilot is in `research/compute-ledger.jsonl` (@tbl-jobs, @fig-costs); the pods were rented on demand and deleted at the end of each job. Jobs with a non-zero exit code are the capacity failures, the interrupted jobs and the incidents described in the section [Discussion](#discussion); the two negative entries are corrections made after another session deleted running pods, so that the ledger matches what was billed.
+
+<!-- e4:jobs:begin -->
+Total: 18 ledger entries, 4.83 GPU hours, 3.66 USD.
+
+| End (UTC) | GPU | USD/h | Hours | USD | Exit | Commit | Command (shortened) |
+|:---|:---|---:|---:|---:|:---|:---|:---|
+| 11-12 17:48 | RTX PRO 4500 Blackwell | 0.72 | 0.404 | 0.29 | None | `36908cc` | `python -m milady.sim.mhd3d bench --n 64 128 --device cuda --dtype floa…` |
+| 11-12 17:58 | RTX PRO 4500 Blackwell | 0.72 | 0.026 | 0.02 | None | `40f6188` | `python -m milady.sim.mhd3d bench --n 64 128 --device cuda --dtype floa…` |
+| 11-12 17:59 | RTX PRO 4500 Blackwell | 0.72 | 0.026 | 0.02 | None | `40f6188` | `python -m milady.sim.mhd3d bench --n 64 128 --device cuda --dtype floa…` |
+| 11-12 18:18 | RTX PRO 4500 Blackwell | 0.72 | 0.104 | 0.07 | None | `d4f2135` | `python -m milady.sim.mhd3d bench --n 64 128 --device cuda --dtype floa…` |
+| 11-12 18:25 | RTX PRO 4500 Blackwell | 0.72 | 0.026 | 0.02 | 0 | `f099fa8` | `python -m milady.sim.mhd3d bench --n 64 128 --device cuda --dtype floa…` |
+| 11-12 18:27 | RTX PRO 4500 Blackwell | 0.72 | 0.026 | 0.02 | 0 | `f099fa8` | `python -m milady.sim.mhd3d bench --n 64 128 --device cuda --dtype floa…` |
+| 11-12 18:40 | RTX A6000 | 0.69 | 0.026 | 0.02 | 0 | `47d057d` | `python -m milady.sim.mhd3d bench --n 64 128 --device cuda --dtype floa…` |
+| 11-12 18:44 | RTX PRO 4500 Blackwell | 0.72 | 0.146 | 0.11 | 0 | `8fd79a0` | `e4_gpu_job.sh quick 0` |
+| 11-12 19:03 | RTX PRO 4500 Blackwell | 0.72 | 0.172 | 0.12 | 0 | `d0e018f` | `e4_convergence_job.sh` |
+| 11-12 20:16 | RTX PRO 4500 Blackwell | 0.72 | 1.415 | 1.02 | 0 | `d0e018f` | `e4_gpu_job.sh full "0 1 2 3 4"` |
+| 11-12 22:21 | RTX PRO 4500 Blackwell | 0.72 | 0.590 | 0.42 | None | `1c21afc` | `e4_gpu_job.sh full "0 1 2 3 4" e4_gpu_de D,E` |
+| 11-12 22:23 | RTX PRO 4500 Blackwell | 0.72 | 1.820 | 1.31 | None | `a20bcb1` | `e4_gpu_job.sh full "0 1 2 3 4" e4_gpu_all` |
+| 11-12 22:24 | RTX PRO 4500 Blackwell | 0.72 | 0.031 | 0.02 | None | `837c23a` | `e4_gpu_job.sh full "0 1 2 3 4" e4_main all` |
+| 11-12 22:24 | RTX PRO 4500 Blackwell | 0.72 | -0.590 | -0.42 | None | `1c21afc` | `CORRECTION of the entry of pod hd6qx71mm6jekm: the pod was deleted by …` |
+| 11-12 22:24 | RTX PRO 4500 Blackwell | 0.72 | -0.628 | -0.45 | None | `a20bcb1` | `CORRECTION of the entry of pod 00t6s3l481flvm: the pod was deleted by …` |
+| 11-12 23:24 | A100-SXM4-80GB | 2.19 | 0.126 | 0.28 | None | `5027f7c` | `e4_gpu_job.sh full "0 1 2 3 4" e4_scan S` |
+| 11-12 23:24 | RTX PRO 4500 Blackwell | 0.72 | 0.126 | 0.09 | None | `5027f7c` | `e4_gpu_job.sh full "0 1 2 3 4" e4_long L` |
+| 11-12 23:27 | RTX PRO 4500 Blackwell | 0.72 | 0.983 | 0.71 | 0 | `62e31c9` | `collected after a restart of the session: milady-claude-job-bae2a10e` |
+
+: GPU jobs of the pilot (generated from `research/compute-ledger.jsonl`). {#tbl-jobs}
+
+<!-- e4:jobs:end -->
+
+![Cumulative GPU spend of the pilot, one point per entry of the compute ledger. Data plot from `research/compute-ledger.jsonl`.](../plots/e4_gpu_costs){#fig-costs width=75%}
+
+The cost of the session itself (tokens, sub-agent calls, CPU time) is reported by `tools/usage_report.py` in `research/usage/latest.md`.
+
+### Figures of this report
+
+The eight schematics were drawn with the `schematic-figure` skill (sources in `site/teams/claude/figures/<name>/`, rendered to SVG and PDF), the three diagrams with Archify (`site/teams/claude/diagrams/`), and the data plots by `experiments/e4_plots.py` from the result files named in each caption (`site/teams/claude/plots/plots.json` lists them).

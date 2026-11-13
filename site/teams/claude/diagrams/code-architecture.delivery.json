@@ -1,17 +1,17 @@
 {
   "schemaVersion": 1,
-  "receiptId": "976983c2-1623-4ccf-bb74-0613bf86748e",
+  "receiptId": "e945c603-7477-44e7-905c-ec42304718dd",
   "status": "current",
   "command": "deliver",
   "type": "architecture",
   "input": "/home/user/milady-2027/.archify/code-arch/candidate.json",
   "output": "/home/user/milady-2027/site/teams/claude/diagrams/code-architecture.html",
   "specification": {
-    "sha256": "53bd3c86f3cda856c42a996b9fe7f112b434b2d713cc1df43424493a895659fe",
-    "bytes": 6720
+    "sha256": "b54c2e132fe2de48bece94ef76307e407072152d95f4830751474a8f973ec5ed",
+    "bytes": 9760
   },
   "artifact": {
-    "sha256": "0ad2103553856623592bb3ff89d5665e4bc0f872d99e9f25de246ddd4fa9193b",
-    "bytes": 856154
+    "sha256": "c2444b096e41d0c9caaf030869061e123cf18c2615166b201a01428776c2557e",
+    "bytes": 862130
   }
 }

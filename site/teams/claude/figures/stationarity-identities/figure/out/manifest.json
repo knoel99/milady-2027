@@ -206,12 +206,12 @@
    "weight": "normal"
   },
   {
-   "s": "residual below 4×10−4 on the reference",
+   "s": "a few 10−4 of the dissipation (measured on the reference)",
    "role": "label",
    "box": {
-    "x": 39.00788116455078,
+    "x": 18.962249755859375,
     "y": 206.7998993396759,
-    "w": 86.61485290527344,
+    "w": 126.48495483398438,
     "h": 6.4001617431640625
    },
    "size": 5,
@@ -605,8 +605,8 @@
    "s": "large scales",
    "role": "label",
    "box": {
-    "x": 200.75919151306152,
-    "y": 146.6248016357422,
+    "x": 239.24803161621094,
+    "y": 108.62480926513672,
     "w": 31.477678298950195,
     "h": 6.750239372253418
    },
@@ -620,18 +620,90 @@
    "weight": "normal"
   },
   {
-   "s": "k ≤ 2: negative",
+   "s": "k = 1, 2: negative",
    "role": "label",
    "box": {
-    "x": 198.6380214691162,
-    "y": 153.62481689453125,
-    "w": 35.72001647949219,
-    "h": 6.750244140625
+    "x": 239.24803161621094,
+    "y": 115.62480926513672,
+    "w": 42.024932861328125,
+    "h": 6.750236511230469
    },
    "size": 5.5,
    "minSize": 5.5,
    "family": "Arial, Helvetica, sans-serif",
    "color": "#D55E00",
+   "halo": false,
+   "rotate": 0,
+   "italic": true,
+   "weight": "normal"
+  },
+  {
+   "s": "k = 2: 3 to 16 times smaller",
+   "role": "label",
+   "box": {
+    "x": 239.24803161621094,
+    "y": 123.37487030029297,
+    "w": 60.38139343261719,
+    "h": 5.25018310546875
+   },
+   "size": 5,
+   "minSize": 5,
+   "family": "Arial, Helvetica, sans-serif",
+   "color": "#D55E00",
+   "halo": false,
+   "rotate": 0,
+   "italic": true,
+   "weight": "normal"
+  },
+  {
+   "s": "registered hypothesis H11",
+   "role": "label",
+   "box": {
+    "x": 239.24803161621094,
+    "y": 133.37486267089844,
+    "w": 57.85253143310547,
+    "h": 5.250185966491699
+   },
+   "size": 5,
+   "minSize": 5,
+   "family": "Arial, Helvetica, sans-serif",
+   "color": "#7a7a7a",
+   "halo": false,
+   "rotate": 0,
+   "italic": false,
+   "weight": "normal"
+  },
+  {
+   "s": "(negative at k = 1 only) refuted:",
+   "role": "label",
+   "box": {
+    "x": 239.24803161621094,
+    "y": 139.37486267089844,
+    "w": 69.081298828125,
+    "h": 5.25018310546875
+   },
+   "size": 5,
+   "minSize": 5,
+   "family": "Arial, Helvetica, sans-serif",
+   "color": "#7a7a7a",
+   "halo": false,
+   "rotate": 0,
+   "italic": true,
+   "weight": "normal"
+  },
+  {
+   "s": "k = 2 is negative too",
+   "role": "label",
+   "box": {
+    "x": 239.24803161621094,
+    "y": 145.37486267089844,
+    "w": 44.76728820800781,
+    "h": 5.25018310546875
+   },
+   "size": 5,
+   "minSize": 5,
+   "family": "Arial, Helvetica, sans-serif",
+   "color": "#7a7a7a",
    "halo": false,
    "rotate": 0,
    "italic": true,
@@ -966,7 +1038,7 @@
    "role": "label",
    "box": {
     "x": 454.60894012451166,
-    "y": 182.62481689453125,
+    "y": 176.6248016357422,
     "w": 49.13358688354492,
     "h": 6.750239372253418
    },
@@ -974,6 +1046,24 @@
    "minSize": 5.5,
    "family": "Arial, Helvetica, sans-serif",
    "color": "#6A4C93",
+   "halo": false,
+   "rotate": 0,
+   "italic": false,
+   "weight": "normal"
+  },
+  {
+   "s": "collapsed: comparison H8 dropped",
+   "role": "label",
+   "box": {
+    "x": 399.81789016723627,
+    "y": 186.37486267089844,
+    "w": 79.3203125,
+    "h": 5.25018310546875
+   },
+   "size": 5,
+   "minSize": 5,
+   "family": "Arial, Helvetica, sans-serif",
+   "color": "#7a7a7a",
    "halo": false,
    "rotate": 0,
    "italic": false,
