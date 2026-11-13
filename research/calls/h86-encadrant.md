@@ -1,6 +1,6 @@
 single-model simulation (no independent sub-agent).
 
-The main session wrote this file by following . No separate role process ran.
+The main session wrote this file by following `.cursor/agents/encadrant.md`. No separate role process ran.
 
 Claim. H86, before n = 64 at Rm = 9.05985641479492. Every lambda is positive.
 
