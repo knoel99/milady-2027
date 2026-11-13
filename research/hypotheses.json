@@ -1906,9 +1906,9 @@
       "protocol": "python3 experiments/cursor_constraint_cmp.py --kmax 4 --out experiments/results/cursor_constraint_kmax4.json. CPU. The H145 file is not overwritten. --quick is not a quoted result.",
       "script": "experiments/cursor_constraint_cmp.py --kmax 4",
       "cost_estimate": "CPU only. No GPU dollars.",
-      "status": "registered",
-      "verdict": "",
-      "results": "",
+      "status": "refuted",
+      "verdict": "REFUTED",
+      "results": "Mean energy-distance ratio at kmax=4 is 791.0166882534577, which is not strictly smaller than 757.5635945317433. All five ratios are finite. File experiments/results/cursor_constraint_kmax4.json. The hidden width stayed 64. The refutation criterion is met.",
       "commit": ""
     },
     {
@@ -1919,9 +1919,9 @@
       "protocol": "Same CPU run as H147.",
       "script": "experiments/cursor_constraint_cmp.py --kmax 4",
       "cost_estimate": "CPU only. No GPU dollars.",
-      "status": "registered",
-      "verdict": "",
-      "results": "",
+      "status": "refuted",
+      "verdict": "REFUTED",
+      "results": "Mean energy-distance ratio at kmax=4 is 791.0166882534577, above 1.2. All five ratios are finite. Same file as H147. The refutation criterion is met.",
       "commit": ""
     }
   ]

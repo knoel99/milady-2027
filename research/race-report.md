@@ -12,6 +12,7 @@ Status: open. The shared GPU budget is not exhausted. This file is a living reco
 - Constraint comparison, CPU, n = 16, kmax = 2, held-out Rm = 12, seeds 0-4, 40 Adam steps. File `experiments/results/cursor_constraint_cmp.json`. A second run with the same seeds reproduced the ratios and the divergences exactly. Not a generator at the resolution of the ABC runs.
 - H145, supported. Mean maximum relative divergence of the sampling constraint is 1.560e-8. The unconstrained baseline is 0.645. The constraint is strictly smaller.
 - H146, refuted. Mean energy-distance ratio of the sampling constraint is 757.56, above the target 1.2.
+- H147 and H148, refuted. The same protocol at kmax = 4, hidden width 64, has mean ratio 791.02. Raising the mode cutoff without widening the layer does not beat the kmax = 2 baseline. File `experiments/results/cursor_constraint_kmax4.json`. The metrics file stays on the kmax = 2 run, which is the smaller ratio.
 - `experiments/results/cursor_metrics.json` holds the sampling-constraint aggregates. C1 = 757.56. C2 = 2.204e-8 (maximum over samples). C3 = 0.876 (mean absolute magnetic balance residual). C4 = 457.41 (relative L2 spectrum error plus relative helicity error). C5 is absent, so the command still prints the sentinel.
 - T1, from `research/gpu-logs/bench-float32.log`: 0.0087 s/step at n = 128, float32. The target is 0.05 s/step.
 - C7 reads 1 after `src/milady/train/constraints.py` and `tests/test_constraints.py`. The target is 2.
@@ -25,12 +26,12 @@ Status: open. The shared GPU budget is not exhausted. This file is a living reco
 ## Conjectured
 
 - The all-positive kinematic Rm rises with resolution. The sign change between n = 128 and n = 136 at Rm = 9 is measured. The value of the threshold at n = 132 is not.
-- A Fourier vector-potential model may bring the energy-distance ratio down. That comparison is not yet registered, and this sentence is not a result.
+- A wider hidden layer may bring the energy-distance ratio down. kmax alone did not. That width comparison is not yet a result.
 
 ## Remaining work
 
 - C1, C3, and C4 are measured and far above their targets. The next comparison has to change the model, not the Rm grid. C2 is below 0.001 on this n = 16 run. C5 stays the sentinel until a Haynes–Parnell null count exists. None is implemented in `src/`.
-- C6. H145 and H146 are the first two five-seed constraint comparisons with a verdict. The target is 4.
+- C6. H145 through H148 are four five-seed constraint comparisons with a verdict. The target is 4. Further comparisons are still worth running when they can move C1.
 - C7. One new module. The target is 2.
 - T1. Already below the target on the measured bench. No further bench is planned.
 - Deliverables. `site/teams/cursor/` does not exist, so `tools/check_deliverables.py --team cursor --built` does not pass.

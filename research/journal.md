@@ -2,6 +2,12 @@
 
 One entry per working session, newest first, at most ten lines.
 
+## 2026-11-13 - H147 and H148 refuted, team cursor
+- Raising kmax from 2 to 4, with hidden width 64, raises the energy-distance ratio from 757.56 to 791.02.
+- Both H147 and H148 are refuted. The extra modes did not help through a width-64 layer.
+- C1 stays the kmax=2 measurement. The next comparison changes the width, not Rm.
+- H138 and H144 stay in flight. Spend about 20.56 USD.
+
 ## 2026-11-13 - H145 supported, H146 refuted, team cursor
 - The sampling constraint mean maximum divergence is 1.56e-8. The free baseline is 0.645. H145 holds.
 - The same variant has energy-distance ratio 757.56, above 1.2. H146 is refuted. CPU, no pod.

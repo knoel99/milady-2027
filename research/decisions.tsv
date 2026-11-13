@@ -125,3 +125,5 @@ ts	phase	decision	why	evidence	result
 2026-11-13T09:06:56Z	h143	H143 refuted.	Seed 9 at n=128, Rm=9.056640625 is negative. The seeds 5-9 bracket is not bisected while C1-C5 are the sentinel.	experiments/results/cursor_abc_n128_rm9056640625_s5	refuted, RTX PRO 4500, 0.365 USD
 2026-11-13T09:14:00Z	h145	H145 supported. The sampling constraint lowers the divergence.	Mean maximum relative divergence 1.560e-8 versus 0.645 for the unconstrained baseline, seeds 0-4, n=16.	experiments/results/cursor_constraint_cmp.json	supported, CPU
 2026-11-13T09:14:00Z	h146	H146 refuted. The energy-distance ratio is far above 1.2.	Mean ratio 757.56 on the sampling-constraint variant, seeds 0-4, held-out Rm=12.	experiments/results/cursor_constraint_cmp.json	refuted, CPU
+2026-11-13T09:20:00Z	h147	H147 refuted. kmax=4 does not beat the kmax=2 ratio.	Mean ratio 791.02 against the baseline 757.56, hidden width 64, seeds 0-4.	experiments/results/cursor_constraint_kmax4.json	refuted, CPU
+2026-11-13T09:20:00Z	h148	H148 refuted. The kmax=4 ratio is above 1.2.	Mean ratio 791.02, seeds 0-4, held-out Rm=12.	experiments/results/cursor_constraint_kmax4.json	refuted, CPU
