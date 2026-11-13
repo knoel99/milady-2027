@@ -205,3 +205,16 @@ def test_identical_concurrent_run_waits_for_its_twin(broker):
     broker.poll()
     assert broker.db["jobs"][second["id"]]["state"] == "done"
     assert broker.results(broker.db["jobs"][second["id"]]) == b"tarball"
+
+
+def test_goal_is_the_same_in_every_prompt():
+    """race/GOAL.md is the one goal: the team prompt and the pilot prompt carry it verbatim."""
+    import re
+    from pathlib import Path
+
+    root = Path(__file__).resolve().parents[1]
+    goal = (root / "race/GOAL.md").read_text()
+    block = re.search(r"## The goal\n\n```\n(.*?)\n```", goal, re.DOTALL).group(1)
+    assert "{team}" in block and "GOAL-MET" in block
+    assert block in (root / "race/TEAM-PROMPT.md").read_text()
+    assert "/goal " + block.replace("{team}", "claude") in (root / "race/PILOT-PROMPT.md").read_text()

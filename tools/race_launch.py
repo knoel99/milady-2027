@@ -86,16 +86,16 @@ def user_data(team: str, broker_url: str, broker_token: str, token: str) -> str:
 def run_main(team: str, prompt_file: Path, iteration: int | None) -> int:
     cfg = config()
     ms = cfg["main_session"]
-    prompt = prompt_file.read_text(encoding="utf-8")
+    prompt = prompt_file.read_text(encoding="utf-8").replace("{team}", team)
     if iteration:
         now = dt.datetime.now(dt.UTC).strftime("%Y-%m-%d %H:%M UTC")
         prompt += (f"\n\n---\n\nYou are team `{team}`. Invocation {iteration} of your harness; now {now}; "
-                   f"deadline {cfg['deadline']}. You have no memory of earlier invocations: read "
+                   "there is no deadline, only the budget. You have no memory of earlier invocations: read "
                    "`research/journal.md`, `research/hypotheses.json` and `git log` first, then carry on "
                    "where the previous invocation stopped. Commit before you finish.\n")
     cmd, env, model, effort, _ = build_command(team, ms["tier"], ms["reasoning"], ms["max_turns"], prompt)
     print(f"[run-main {team} model={model} effort={effort} iteration={iteration}]", flush=True)
-    return subprocess.run(cmd, env=env, cwd=ROOT, check=False).returncode
+    return subprocess.run(cmd, env=env, cwd=ROOT, check=False, stdin=subprocess.DEVNULL).returncode
 
 
 def main() -> int:

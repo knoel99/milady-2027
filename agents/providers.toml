@@ -79,14 +79,15 @@ light = "gemini-3.8-flash"
 low = "low"
 medium = "medium"
 high = "high"
-max = "high"
+max = "high"  # Gemini 4 Carbon refuses xhigh ("Thinking level XHIGH is not supported", tested 2026-11-13)
 
 [google.api]
-# Read by tools/call_model.py. base_url and the effort field: to confirm with `check_calls.py preflight`.
-style = "gemini"
-base_url = "https://generativelanguage.googleapis.com/v1beta"
+# Read by tools/call_model.py. Gemini's OpenAI-compatible endpoint (Authorization: Bearer <API key>):
+# tested 2026-11-13 for every role; the native endpoint wants the key in x-goog-api-key instead.
+style = "openai-chat"
+base_url = "https://generativelanguage.googleapis.com/v1beta/openai"
 key_env = "GEMINI_API_KEY"
-effort_field = "generationConfig.thinkingConfig.thinkingLevel"
+effort_field = "reasoning_effort"
 
 [google.harness]
 # Read by tools/run_role.py. From the official docs on 2026-11-12; confirm with a dry run.
@@ -110,7 +111,8 @@ subagents = ".gemini/agents/*.md, YAML header: name, description, kind, tools, m
 
 # --- OpenAI -------------------------------------------------------------------------------
 [openai]
-format = "none"
+format = "codex"
+output_dir = ".codex/agents"
 reasoning_param = "reasoning.effort"
 docs = ["https://developers.openai.com/api/docs/models", "https://learn.chatgpt.com/docs/agent-configuration/subagents"]
 unconfirmed = ["value lists of gpt-6.1-sol, gpt-6.1-terra and gpt-6-luna (no model page read); terra and luna also accept none"]
@@ -207,11 +209,11 @@ effort_field = "reasoning_effort"
 # Read by tools/run_role.py. From the official docs on 2026-11-12; confirm with a dry run.
 name = "Kimi Code CLI"
 install = "npm install -g @moonshot-ai/kimi-code"
-setup = "npm install -g @moonshot-ai/kimi-code"  # run once on the team VM; unverified until the first launch
-effort_source = "level"  # level: role level as is; provider: [reasoning] value; none: not settable per call
-command = ["kimi", "-p", "{prompt}", "-m", "{model}", "--output-format", "stream-json"]
+setup = "npm install -g @moonshot-ai/kimi-code@2.6.1"  # tested 2026-11-13 with the KIMI_MODEL_* variables (API key)
+effort_source = "provider"  # the API takes low, high, max (and silently accepts any other value)
+command = ["kimi", "-p", "{prompt}", "--output-format", "stream-json"]  # the model comes from KIMI_MODEL_NAME (env alias); -m wants an alias of config.toml
 env = { KIMI_MODEL_THINKING_EFFORT = "{effort}", KIMI_MODEL_NAME = "{model}", KIMI_MODEL_API_KEY = "$MOONSHOT_API_KEY", KIMI_MODEL_BASE_URL = "https://api.moonshot.ai/v1" }
-effort_support = "through KIMI_MODEL_THINKING_EFFORT; -m takes an alias from config.toml"
+effort_support = "yes, per run through KIMI_MODEL_THINKING_EFFORT (read by the CLI, sent as reasoning_effort; tested 2026-11-13); needs the API key, not a subscription login"
 
 [moonshot.index]
 "Kimi K3.1 Pro" = 46
@@ -298,7 +300,7 @@ light = "qwen3.8-27b"
 [alibaba.reasoning]
 low = "low"
 medium = "medium"
-high = "xhigh"
+high = "high"  # the API accepts high (tested 2026-11-13)
 max = "xhigh"
 
 [alibaba.api]
@@ -312,11 +314,11 @@ effort_field = "reasoning_effort"
 # Read by tools/run_role.py. From the official docs on 2026-11-12; confirm with a dry run.
 name = "Qwen Code"
 install = "npm install -g @qwen-code/qwen-code"
-setup = "npm install -g @qwen-code/qwen-code && mkdir -p ~/.qwen && echo '{\"security\": {\"auth\": {\"selectedType\": \"openai\"}}}' > ~/.qwen/settings.json"  # run once on the team VM; unverified until the first launch
-effort_source = "none"  # level: role level as is; provider: [reasoning] value; none: not settable per call
+setup = "npm install -g @qwen-code/qwen-code@0.27.3 && mkdir -p ~/.qwen && echo '{\"security\": {\"auth\": {\"selectedType\": \"openai\"}}}' > ~/.qwen/settings.json && for e in low medium high xhigh max; do echo \"{\\\"model\\\": {\\\"reasoningEffort\\\": \\\"$e\\\"}, \\\"security\\\": {\\\"auth\\\": {\\\"selectedType\\\": \\\"openai\\\"}}}\" > ~/.qwen/effort-$e.json; done"  # one settings file per effort (QWEN_CODE_SYSTEM_SETTINGS_PATH, tested 2026-11-13)
+effort_source = "provider"  # level: role level as is; provider: [reasoning] value; none: not settable per call
 command = ["qwen", "-p", "{prompt}", "-m", "{model}", "--yolo", "-o", "json", "--max-session-turns", "{max_turns}"]
-env = { OPENAI_API_KEY = "$DASHSCOPE_API_KEY", OPENAI_BASE_URL = "https://dashscope-intl.aliyuncs.com/compatible-mode/v1" }
-effort_support = "model.reasoningEffort in settings.json only, not per call"
+env = { OPENAI_API_KEY = "$DASHSCOPE_API_KEY", OPENAI_BASE_URL = "https://dashscope-intl.aliyuncs.com/compatible-mode/v1", QWEN_CODE_SYSTEM_SETTINGS_PATH = "$HOME/.qwen/effort-{effort}.json", QWEN_CODE_SUPPRESS_YOLO_WARNING = "1" }
+effort_support = "yes, per run: QWEN_CODE_SYSTEM_SETTINGS_PATH points to a settings file holding model.reasoningEffort (validated by Qwen Code, changes the reasoning; tested 2026-11-13); a native sub-agent has its own model but no effort field"
 
 [alibaba.index]
 "Qwen3.8 Max (0902)" = 34
@@ -356,10 +358,11 @@ extra = { thinking = { type = "enabled" } }
 # https://github.com/deepseek-ai/deepseek-harness, apps/cli/reference/README.md. Pin the version on the pilot.
 name = "DeepSeek Harness (dsh, developer preview)"
 install = "npm install -g @deepseek-ai/dsh"
-setup = "npm install -g @deepseek-ai/dsh"  # run once on the team VM; unverified until the first launch
-effort_source = "none"
-command = ["dsh", "--profile", "headless", "{prompt}"]
-effort_support = "not per call: llm-deepseek.reasoningEffort (off, low, high, max) in $DSH_HOME/profiles/headless/cordis.patch.yml; the model too; read the schema with dsh --dump-config-schema on the pilot"
+setup = "npm install -g @deepseek-ai/dsh@0.2.2-rc.1 && dsh --profile headless --dump-config >/dev/null 2>&1; mkdir -p ~/.dsh/profiles/headless && cp infra/deploy/dsh-headless.patch.yml ~/.dsh/profiles/headless/cordis.patch.yml"  # run from the clone; tested 2026-11-13
+effort_source = "provider"
+command = ["dsh", "--profile", "headless", "--json", "--approval-policy", "never", "{prompt}"]
+env = { DSH_MODEL = "{model}", DSH_REASONING_EFFORT = "{effort}" }
+effort_support = "yes, per run through DSH_MODEL and DSH_REASONING_EFFORT read by the profile patch of setup (values off, low, high, max; tested 2026-11-13)"
 
 [deepseek.harness_fallback]
 # Claude Code through the Anthropic-compatible endpoint: used if dsh fails on the pilot.
@@ -388,7 +391,7 @@ light = "glm-5.3-flash"
 
 [zhipu.reasoning]
 low = "low"
-medium = "high"
+medium = "medium"  # the API accepts medium (tested 2026-11-13)
 high = "high"
 max = "max"
 
@@ -508,10 +511,10 @@ effort_field = "reasoning_effort"
 # Read by tools/run_role.py. From the official docs on 2026-11-12; confirm with a dry run.
 name = "Mistral Vibe"
 install = "uv tool install mistral-vibe"
-setup = "curl -LsSf https://astral.sh/uv/install.sh | sh && ~/.local/bin/uv tool install mistral-vibe"  # run once on the team VM; unverified until the first launch
-effort_source = "none"  # level: role level as is; provider: [reasoning] value; none: not settable per call
-command = ["vibe", "-p", "{prompt}", "--model", "{model}", "--auto-approve", "--max-turns", "{max_turns}", "--output", "json"]
-effort_support = "per-model `thinking` in [[models]] of config.toml, not per call; --model takes an alias"
+setup = "curl -LsSf https://astral.sh/uv/install.sh | sh && ~/.local/bin/uv tool install mistral-vibe==3.1.2 && mkdir -p ~/.vibe && for e in low medium high; do printf '[[models]]\\nname = \"mistral-large-4-0\"\\nprovider = \"mistral\"\\nalias = \"mistral-large-4-%s\"\\nthinking = \"%s\"\\n\\n' $e $e; done > ~/.vibe/config.toml"  # one alias per effort: Vibe sends thinking as reasoning_effort (seen 2026-11-13)
+effort_source = "provider"  # level: role level as is; provider: [reasoning] value; none: not settable per call
+command = ["vibe", "-p", "{prompt}", "--model", "{model}-{effort}", "--auto-approve", "--max-turns", "{max_turns}", "--output", "json"]
+effort_support = "yes, through the model alias {model}-{effort} written by setup (thinking per alias, sent as reasoning_effort); a Vibe sub-agent ignores its own active_model and inherits the parent's (tested 2026-11-13 with Vibe 3.1.2)"
 
 [mistral.index]
 "Mistral Large 4 (high)" = 26

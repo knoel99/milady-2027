@@ -31,8 +31,9 @@ Commit the file within the first 24 hours, then carry on. The judge locks the ve
 2. Do not re-run the existing E1–E3 full runs: their results are in `experiments/results/`. Re-running them costs your budget and earns nothing.
 3. A measurement command reads committed result files and prints, on its last line, a JSON object `{"value": <number>}` (optionally `"seeds": <n>`). It must finish in less than 10 minutes on 4 CPU cores and must not train a model.
 4. Write a journal entry in `research/journal.md` at least once per day: what you tried, what failed, what you will do next.
-5. Do not modify `race/`, `tools/race_*.py`, `tools/check_calls.py`, `tools/call_model.py`, `tools/run_role.py`, `tools/compute_broker.py` or `agents/`: the judge runs its own copies from `main`.
-6. When your budget is spent or the deadline is reached, write `research/race-report.md` (one page: what is measured, what is published, what is conjectured, your remaining work), commit and stop.
+5. Do not open the published site of the project (knoel99.github.io) nor the reports, results or branches of the other teams.
+6. Do not modify `race/`, `tools/race_*.py`, `tools/check_calls.py`, `tools/call_model.py`, `tools/run_role.py`, `tools/compute_broker.py` or `agents/`: the judge runs its own copies from `main`.
+7. When your budget is spent or the deadline is reached, write `research/race-report.md` (one page: what is measured, what is published, what is conjectured, your remaining work), commit and stop.
 
 ## How you are judged
 
@@ -40,3 +41,4 @@ Commit the file within the first 24 hours, then carry on. The judge locks the ve
 2. **Reproduction**: the judge re-runs your key computations; a result that does not reproduce is removed and penalised.
 3. **Progress**: per objective, `(value − baseline) / (target − baseline)`, clipped to [0, 1]; the remaining work is reported for each objective not reached. Common objectives are also compared across teams on their raw values.
 4. **Blind review**: `jury-externe`, run on another provider than yours on an anonymised copy of your branch, gives a verdict per claim. The user arbitrates the final ranking.
+5. **Time and cost**: the time to the final delivery (first commit of the team to the commit of `research/GOAL-MET`) and the total cost (LLM calls at API-equivalent prices plus GPU time and the team's share of the VM) are compared across teams. Scientific quality comes first: time and cost separate teams of comparable quality, and a result bought with fewer seeds, no registered criterion or no review is penalised under 1 and 4.

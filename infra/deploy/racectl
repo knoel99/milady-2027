@@ -1,0 +1,34 @@
+#!/usr/bin/env bash
+# Control the teams of a shared race host (infra/deploy/race-host.sh). Run as root.
+#   racectl status                 # every team: service state, iteration, branch head, last log line
+#   racectl start|stop|restart T   # stop leaves ~/STOP so that the loop ends after the current invocation
+#   racectl logs T [N]             # last N lines of the team's race log (default 50)
+#   racectl login T                # interactive login of the team's harness (subscriptions)
+#   racectl check T                # preflight: the harness answers, and every role resolves to a model
+#   racectl shell T                # a shell as the team's user
+set -euo pipefail
+cmd="${1:-status}"; T="${2:-}"
+need() { [ -n "$T" ] || { echo "usage: racectl $cmd <team>"; exit 1; }; id "race-$T" >/dev/null 2>&1 || { echo "no team $T"; exit 1; }; }
+as() { sudo -iu "race-$T" bash -lc "set -a; . /etc/race/$T.env; set +a; cd ~/milady; . ~/venv/bin/activate; export PATH=\$HOME/.npm-global/bin:\$HOME/.local/bin:\$PATH; $1"; }
+case "$cmd" in
+  status)
+    for u in $(getent passwd | cut -d: -f1 | grep '^race-' || true); do
+      t="${u#race-}"; h="/home/$u"
+      printf '%-10s %-10s iter %-4s %s | %s\n' "$t" "$(systemctl is-active "race@$t" 2>/dev/null || true)" \
+        "$(cat "$h/.race-iteration" 2>/dev/null || echo 0)" \
+        "$(sudo -u "$u" git -C "$h/milady" log -1 --format='%h %cr %s' 2>/dev/null | cut -c1-60)" \
+        "$(tail -n 1 "$h/logs/race.log" 2>/dev/null | cut -c1-80)"
+    done ;;
+  start) need; rm -f "/home/race-$T/STOP"; systemctl enable --now "race@$T" ;;
+  stop) need; sudo -u "race-$T" touch "/home/race-$T/STOP"; echo "race-$T stops after the current invocation (systemctl stop race@$T to stop now)" ;;
+  restart) need; systemctl restart "race@$T" ;;
+  logs) need; tail -n "${3:-50}" "/home/race-$T/logs/race.log" ;;
+  login) need; echo "login: $(python3 "$(dirname "$(readlink -f "$0")")/../../tools/race_host.py" login --team "$T" 2>/dev/null || true)"
+         sudo -iu "race-$T" ;;
+  check) need
+    as "python3 tools/race_launch.py plan | grep -E '^\| (team|$T) '"
+    as "python3 tools/run_role.py --provider $T --role biblio --task /dev/null --dry-run"
+    as "python3 tools/check_calls.py preflight --provider $T" ;;
+  shell) need; sudo -iu "race-$T" ;;
+  *) sed -n '2,9p' "$0"; exit 1 ;;
+esac

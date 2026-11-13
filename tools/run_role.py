@@ -75,7 +75,8 @@ def main() -> int:
 
     stamp = dt.datetime.now(dt.UTC).strftime("%Y%m%dT%H%M%S%fZ")
     try:
-        r = subprocess.run(cmd, check=False, env=env, cwd=ROOT, capture_output=True, text=True, timeout=args.timeout)
+        r = subprocess.run(cmd, check=False, env=env, cwd=ROOT, capture_output=True, text=True, timeout=args.timeout,
+                           stdin=subprocess.DEVNULL)  # codex exec and others wait on an open stdin
         rc, out, err = r.returncode, r.stdout, r.stderr
     except subprocess.TimeoutExpired as e:
         partial = e.stdout or ""
