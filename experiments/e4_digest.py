@@ -20,12 +20,12 @@ SEEDS = (0, 1, 2, 3, 4)
 GENERATORS = ["W0_free", "W1_penalty", "W2_final_projection", "W3_projected_flow", "W4_potentials",
               "W4s_potentials_sym", "W5_stationarity", "W5_control", "W6_diffusion", "W4c_potentials_smooth",
               "G0_gaussian_modes", "W9_skip_sym", "W10_anchored", "W11_anchored_skip", "W9L_skip_long",
-              "W11L_anchored_skip_long", "W10L_anchored_long", "G1_gaussian_full", "G2_gaussianised_W9", "W12_skip_stationarity", "W12_skip_control",
+              "W11L_anchored_skip_long", "W10L_anchored_long", "G1_gaussian_full", "G2_gaussianised_W9", "G3_gaussianised_G1", "W9N_skip_sym", "W12_skip_stationarity", "W12_skip_control",
               "W13_skip_tilting", "W12_skip_stationarity_half", "W12_skip_control_half",
               "S_w512", "S_w2048", "S_w5632", "S_w512_long", "S_w2048_long"]
 # G0 has no network: it is the baseline to beat, not a candidate for the selected generator (the C1 note of
 # race/teams/claude/objectives.toml names the model family: conditional flow matching on the Fourier modes).
-CANDIDATES = [v for v in GENERATORS if not v.startswith(("G0_", "G1_", "G2_"))]          # learned generators only
+CANDIDATES = [v for v in GENERATORS if not v.startswith(("G0_", "G1_", "G2_", "G3_"))]          # learned generators only
 REGISTERED = ["W0_free", "W2_final_projection", "W3_projected_flow", "W4_potentials", "W4s_potentials_sym",
               "W5_stationarity", "W6_diffusion"]
 POST = ["W7_tilting", "W8_rescaling", "W5_stationarity_half", "W5_control_half"]
@@ -68,13 +68,14 @@ def merge(seed: int, tag: str | bool = "", root: Path = R) -> Path | None:
         extra = root / f"e4_mhd3d{tag}_s{seed}_{g}.json"
         if extra.exists():
             data.append(json.loads(extra.read_text()))
-    out = {"config": {**data[0]["config"], "group": "merged"}, "evaluation": {}, "times": {}, "h14": [], "h12": [],
+    out = {"config": {**data[0]["config"], "group": "merged"}, "evaluation": {}, "times": {}, "h14": [], "h12": [], "h27": [],
            "durations_s": sorted({round(d["total_duration_s"], 1) for d in data})}      # parts of one run share a duration
     for d in data:
         out["evaluation"].update(d["evaluation"])
         out["times"].update(d["times"])
         out["h14"] += d["h14"]
         out["h12"] += d["h12"]
+        out["h27"] += d.get("h27", [])
     path = root / f"e4_mhd3d{tag}_s{seed}.json"
     path.write_text(json.dumps(out, indent=1, ensure_ascii=False), encoding="utf-8")
     return path
@@ -374,7 +375,7 @@ def section(quick: bool = False, root: Path = R, replication: str | None = None,
             if has(v) and not np.all(np.isnan(per_seed(runs, v, "restart_drift_eb_max"))):
                 P(f"Largest restart drift over τ of {v} (seed mean over the test η): E_B {f(float(np.nanmean(per_seed(runs, v, 'restart_drift_eb_max'))))}, "
                   f"E_u {f(float(np.nanmean(per_seed(runs, v, 'restart_drift_eu_max'))))}.")
-        split = [v for v in ("G0_gaussian_modes", "G1_gaussian_full", "G2_gaussianised_W9", "W9_skip_sym", "W11_anchored_skip")
+        split = [v for v in ("G0_gaussian_modes", "G1_gaussian_full", "G3_gaussianised_G1", "G2_gaussianised_W9", "W9_skip_sym", "W9N_skip_sym", "W11_anchored_skip")
                  if has(v) and any("prod_fluct_over_d" in x for r in runs.values() for x in r["evaluation"].get(v, {}).get("test", []))]
         if split:                                   # H25: second-order and third-order parts of the magnetic production
             P("\nMagnetic production over the Ohmic dissipation, split into the part carried by the mean flow (second-order statistics) "
@@ -405,29 +406,89 @@ def section(quick: bool = False, root: Path = R, replication: str | None = None,
                       f"ratio of the seed mean to the reference {f(float(w9.mean() / rv['prod_fluct_over_d']), 2)}; "
                       f"seeds with the sign of the reference and at least half its magnitude: "
                       f"{int(((np.sign(w9) == np.sign(rv['prod_fluct_over_d'])) & (np.abs(w9) >= 0.5 * abs(rv['prod_fluct_over_d']))).sum())} of {len(w9)}.")
-        ends = [v for v in ("G0_gaussian_modes", "G1_gaussian_full", "G2_gaussianised_W9", "W9_skip_sym", "W11_anchored_skip")
-                if has(v) and not np.all(np.isnan(per_seed(runs, v, "restart_drift_eb_end")))]
-        for v in ends:                              # H26: is the drift a transient?
-            end, mx = per_seed(runs, v, "restart_drift_eb_end"), per_seed(runs, v, "restart_drift_eb_max")
-            P(f"H26, {v}: |drift of E_B| at the last time, per seed {', '.join(f(float(x)) for x in end)} (mean {f(float(end.mean()))}); largest over "
-              f"τ ≤ 4, per seed {', '.join(f(float(x)) for x in mx)} (mean {f(float(mx.mean()))}); last below largest in {int((end < mx).sum())} of {len(end)} seeds.")
-        if has("G2_gaussianised_W9") and has("W9_skip_sym"):          # H27: what of W9 is not in its first two moments
+        # ---- restart anchored on the stationary energy of the reference (reviews of 2026-11-13): a(τ) = E_B(τ)/E_B,ref − 1
+        def anchored(row: dict) -> list[float] | None:
+            if "restart_anchor" in row:
+                return list(row["restart_anchor"]["eb"])
+            if "restart_curve" in row and ref:                       # older runs: initial energy of the whole ensemble (approximation)
+                e0 = row["E_B"] / ref["values"][f"{row['eta']:.5f}"]["E_B"]
+                return [e0 - 1] + [e0 * (1 + x) - 1 for x in row["restart_curve"]["eb"]]
+            return None
+
+        def anchor_stats(v: str) -> tuple[np.ndarray, np.ndarray, np.ndarray] | None:
+            """Per seed (mean over the test η): the anchored curve, the overshoot max_τ |a| − |a(0)| and |a| at the last time."""
+            curves, over, end = [], [], []
+            for r in runs.values():
+                rows = [anchored(x) for x in r["evaluation"].get(v, {}).get("test", [])]
+                rows = [x for x in rows if x is not None]
+                if rows:
+                    curves.append(np.mean(rows, axis=0))
+                    over.append(np.mean([max(abs(y) for y in x[1:]) - abs(x[0]) for x in rows]))
+                    end.append(np.mean([abs(x[-1]) for x in rows]))
+            return (np.asarray(curves), np.asarray(over), np.asarray(end)) if curves else None
+
+        anch = {v: anchor_stats(v) for v in ("G0_gaussian_modes", "G1_gaussian_full", "G3_gaussianised_G1", "G2_gaussianised_W9", "W9_skip_sym",
+                                           "W9N_skip_sym", "W11_anchored_skip", "W12_skip_stationarity", "W12_skip_control", "S_w2048",
+                                           "S_w5632", "W9L_skip_long") if has(v)}
+        anch = {v: a_ for v, a_ in anch.items() if a_ is not None}
+        if anch:
+            taus = next((x["restart_anchor"]["tau"] for r in runs.values() for v in anch for x in r["evaluation"][v].get("test", [])
+                         if "restart_anchor" in x), None)
+            if taus is None:
+                taus = [0.0] + next(x["restart_curve"]["tau"] for r in runs.values() for v in anch for x in r["evaluation"][v].get("test", [])
+                                    if "restart_curve" in x)
+            exact = any("restart_anchor" in x for r in runs.values() for v in anch for x in r["evaluation"][v].get("test", []))
+            P("\nRestart anchored on the stationary magnetic energy of the reference, a(τ) = E_B(τ)/E_B,ref − 1 (mean over the held-out η and "
+              "the seeds); overshoot = max_τ |a(τ)| − |a(0)|" + ("" if exact else "; initial value from the energy of the whole ensemble (approximation)") + ".\n")
+            P("| law | " + " | ".join(f"τ = {t:g}" for t in taus) + " | overshoot ± SE | |a| at the last time ± SE |")
+            P("|---|" + "---|" * (len(taus) + 2))
+            sem = lambda x: f(float(x.std(ddof=1) / np.sqrt(len(x)))) if len(x) > 1 else "–"          # noqa: E731
+            if ref and "restart_anchor_eb_mean" in next((x for x in ref["values"].values() if x["split"] == "test"), {}):
+                rr = [x for x in ref["values"].values() if x["split"] == "test"]
+                P("| reference (4 draws; SE over the draws, mean over η) | " + " | ".join(
+                    f"{f(float(np.mean([x['restart_anchor_eb_mean'][i] for x in rr])))} ± {f(float(np.mean([x['restart_anchor_eb_se'][i] for x in rr])))}"
+                    for i in range(len(taus))) + " | – | – |")
+            for v, (cv, ov, en) in anch.items():
+                P(f"| {v} | " + " | ".join(f(float(x)) for x in cv.mean(0)) + f" | {f(float(ov.mean()))} ± {sem(ov)} | {f(float(en.mean()))} ± {sem(en)} |")
+            for v in ("W9_skip_sym", "G1_gaussian_full", "G0_gaussian_modes"):                          # H26
+                if v in anch:
+                    cv, ov, en = anch[v]
+                    P(f"H26, {v}: initial deviation a(0) per seed {', '.join(f(float(x)) for x in cv[:, 0])}; overshoot per seed "
+                      f"{', '.join(f(float(x)) for x in ov)} (mean {f(float(ov.mean()))}); |a| at the last time per seed {', '.join(f(float(x)) for x in en)} "
+                      f"(mean {f(float(en.mean()))}).")
+            for a_, b_, label in (("G2_gaussianised_W9", "W9N_skip_sym", "H27"), ("G3_gaussianised_G1", "G1_gaussian_full", "H27, null control")):
+                if a_ in anch and b_ in anch:
+                    P(paired_row(f"overshoot of E_B: {a_} − {b_} ({label})", anch[a_][1], anch[b_][1]))
+            # the drift of the objective T1 against the bias of the law on E_B
+            pts = [(float(np.nanmean(per_seed(runs, v, "restart_eb_signed"))), float(-cv[:, 0].mean() / (1 + cv[:, 0].mean())))
+                   for v, (cv, _, _) in anch.items() if not np.all(np.isnan(per_seed(runs, v, "restart_eb_signed")))]
+            if len(pts) >= 4:
+                xs, ys = np.asarray(pts).T
+                P(f"Signed drift of E_B at τ = 4 against the bias E_B,ref/E_B(0) − 1 of the law, over the {len(pts)} laws above: "
+                  f"correlation {f(float(np.corrcoef(xs, ys)[0, 1]), 2)}.")
+        h27 = [x for r in runs.values() for x in r.get("h27", [])]
+        if h27:
+            P(f"H27, energy distance between the samples of G2 and of W9N over the reference floor, mean over the held-out η and the seeds: "
+              f"{f(float(np.mean([x['ed_g2_w9'] / x['ed_floor'] for x in h27])))}; between two halves of the W9N samples (256 each, over the floor at 512): "
+              f"{f(float(np.mean([x['ed_w9_halves'] / x['ed_floor'] for x in h27])))}.")
+        w9b = "W9N_skip_sym" if has("W9N_skip_sym") else "W9_skip_sym"       # the base of G2, evaluated in the same group
+        if has("G2_gaussianised_W9") and has(w9b):                     # H27: what of W9 is not in its first two moments
             def at(v: str, i: int, key: str = "eb") -> np.ndarray:
                 return np.asarray([np.mean([abs(x["restart_curve"][key][i]) for x in r["evaluation"][v]["test"] if "restart_curve" in x])
                                    for r in runs.values()])
-            taus = next(x["restart_curve"]["tau"] for r in runs.values() for x in r["evaluation"]["W9_skip_sym"]["test"] if "restart_curve" in x)
+            taus = next(x["restart_curve"]["tau"] for r in runs.values() for x in r["evaluation"][w9b]["test"] if "restart_curve" in x)
             P("\n| comparison (H27) | per-seed differences | mean ± SE | mean/SE | seeds with a positive difference |")
             P("|---|---|---|---|---|")
             for i, t in enumerate(taus):
-                P(paired_row(f"|drift of E_B| at τ = {t:g}: G2_gaussianised_W9 − W9_skip_sym (H27)", at("G2_gaussianised_W9", i), at("W9_skip_sym", i)))
+                P(paired_row(f"|drift of E_B| at τ = {t:g}: G2_gaussianised_W9 − its base W9 (H27)", at("G2_gaussianised_W9", i), at(w9b, i)))
             for key, label, ab in (("ed_ratio", "ED ratio", False), ("null_count_err_rel", "err. nulls", False),
                                    ("balance_residual_magnetic", "|magnetic balance|", True), ("restart_drift_eu_max", "largest |drift of E_u|, τ ≤ 4", False),
                                    ("std_residual_rel", "σ(dE/dt)/σ_ref", False)):
-                P(paired_row(f"{label}: G2_gaussianised_W9 − W9_skip_sym (H27, reported)", per_seed(runs, "G2_gaussianised_W9", key, absolute=ab),
-                             per_seed(runs, "W9_skip_sym", key, absolute=ab)))
+                P(paired_row(f"{label}: G2_gaussianised_W9 − its base W9 (H27, reported)", per_seed(runs, "G2_gaussianised_W9", key, absolute=ab),
+                             per_seed(runs, w9b, key, absolute=ab)))
         if has("G1_gaussian_full"):
             rows = [x for r in runs.values() for x in r["evaluation"]["G1_gaussian_full"].get("test", []) if "restart_curve" in x]
-            for v in ("G0_gaussian_modes", "G1_gaussian_full", "G2_gaussianised_W9", "W9_skip_sym", "W11_anchored_skip"):
+            for v in ("G0_gaussian_modes", "G1_gaussian_full", "G3_gaussianised_G1", "G2_gaussianised_W9", "W9_skip_sym", "W9N_skip_sym", "W11_anchored_skip"):
                 rows = [x for r in runs.values() for x in r["evaluation"].get(v, {}).get("test", []) if "restart_curve" in x]
                 if rows:
                     taus = rows[0]["restart_curve"]["tau"]

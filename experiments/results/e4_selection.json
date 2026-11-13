@@ -1,6 +1,6 @@
 {
  "variant": "W9_skip_sym",
- "criterion": "flow-matching or diffusion generator with the lowest energy-distance ratio on the validation \u03b7, mean over the seeds (the Gaussian baseline G0 is not a candidate)",
+ "criterion": "flow-matching or diffusion generator with the lowest energy-distance ratio on the validation \u03b7, mean over the seeds (the Gaussian laws G0, G1 and G2 are not candidates)",
  "seeds": [
   0,
   1,

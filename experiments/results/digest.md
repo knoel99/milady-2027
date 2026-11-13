@@ -705,7 +705,7 @@ H15: seed-mean ED ratio on the held-out η: W4_potentials 256, W4c_potentials_sm
 | ED ratio: W9_skip_sym − W11_anchored_skip | -0.678, 2.22, 0.463, 1.51, 0.221 | 0.747 ± 0.507 | 1.5 | 4 of 5 |
 | restart drift E_B: W9_skip_sym − W11_anchored_skip | -0.00428, 0.0105, 0.00327, 0.00402, 0.00574 | 0.00386 ± 0.0024 | 1.6 | 4 of 5 |
 | err. nulls: W9_skip_sym − W11_anchored_skip | -0.0703, 0.018, -0.00816, -0.0379, -0.0579 | -0.0313 ± 0.0162 | -1.9 | 1 of 5 |
-Magnetic energy balance of G0_gaussian_modes (seed mean per held-out η): η = 0.0725: residual -0.997, P/D 0.00143; η = 0.0490: residual -0.999, P/D 3.57e-04; η = 0.0331: residual -0.998, P/D 0.0011.
+Magnetic energy balance of G0_gaussian_modes (seed mean per held-out η): η = 0.0725: residual -0.997, P/D 0.00143; η = 0.0490: residual -0.999, P/D not recoverable (P ≤ 0 in some rows); η = 0.0331: residual -0.998, P/D 0.0011.
 Magnetic energy balance of W9_skip_sym (seed mean per held-out η): η = 0.0725: residual -0.118, P/D 0.789; η = 0.0490: residual -0.0387, P/D 0.926; η = 0.0331: residual 0.00931, P/D 1.02.
 Magnetic energy balance of W11_anchored_skip (seed mean per held-out η): η = 0.0725: residual -0.132, P/D 0.767; η = 0.0490: residual -0.0383, P/D 0.926; η = 0.0331: residual 0.00942, P/D 1.02.
 
@@ -888,7 +888,7 @@ Energy-distance ratio of W9_skip_sym per seed with the floor of the protocol (10
 | ED ratio: W9_skip_sym − W11_anchored_skip | -0.678, 2.22, 0.463, 1.51, 0.221 | 0.747 ± 0.507 | 1.5 | 4 of 5 |
 | restart drift E_B: W9_skip_sym − W11_anchored_skip | -0.00428, 0.0105, 0.00327, 0.00402, 0.00574 | 0.00386 ± 0.0024 | 1.6 | 4 of 5 |
 | err. nulls: W9_skip_sym − W11_anchored_skip | -0.0703, 0.018, -0.00816, -0.0379, -0.0579 | -0.0313 ± 0.0162 | -1.9 | 1 of 5 |
-Magnetic energy balance of G0_gaussian_modes (seed mean per held-out η): η = 0.0725: residual -0.997, P/D 0.00143; η = 0.0490: residual -0.999, P/D 3.57e-04; η = 0.0331: residual -0.998, P/D 0.0011.
+Magnetic energy balance of G0_gaussian_modes (seed mean per held-out η): η = 0.0725: residual -0.997, P/D 0.00143; η = 0.0490: residual -0.999, P/D not recoverable (P ≤ 0 in some rows); η = 0.0331: residual -0.998, P/D 0.0011.
 Magnetic energy balance of W9_skip_sym (seed mean per held-out η): η = 0.0725: residual -0.118, P/D 0.789; η = 0.0490: residual -0.0387, P/D 0.926; η = 0.0331: residual 0.00931, P/D 1.02.
 Magnetic energy balance of W11_anchored_skip (seed mean per held-out η): η = 0.0725: residual -0.132, P/D 0.767; η = 0.0490: residual -0.0383, P/D 0.926; η = 0.0331: residual 0.00942, P/D 1.02.
 H13: least-squares fit of ln(N_gen/N_ref) on ln(k_λ,gen/k_λ,ref) over 90 points (generators × test η × seeds): slope 7.79, intercept 0.903, R² 0.546; range of ln(k_λ ratio) [-0.0373, 0.0608].
@@ -1026,21 +1026,21 @@ Models (experiments/e4_mhd3d.py): ResMLP 512×4, 4000 iterations, batch 128, lr 
 | W12_skip_stationarity_half | 12.7 ± 1.55 [11, 14.5] | 0.0293 ± 0.00207 [0.0268, 0.0315] | 0.218 ± 0.017 [0.2, 0.24] | 0.302 ± 0.0179 [0.282, 0.322] | 1.96 ± 0.0673 [1.87, 2.02] |
 | W12_skip_control_half | 7.26 ± 0.756 [6.64, 8.42] | 0.0564 ± 0.00427 [0.0524, 0.0615] | 0.142 ± 0.00955 [0.133, 0.155] | 0.192 ± 0.0146 [0.178, 0.216] | 1.67 ± 0.0309 [1.63, 1.72] |
 
-### Selected generator: G1_gaussian_full
+### Selected generator: W13_skip_tilting
 
 Validation energy-distance ratio (mean over the seeds): G0_gaussian_modes 3.95, W9_skip_sym 8.86, W10_anchored 54.7, W11_anchored_skip 9.16, G1_gaussian_full 2.5, W12_skip_stationarity 19.9, W12_skip_control 8.56, W13_skip_tilting 6.91, W12_skip_stationarity_half 16.5, W12_skip_control_half 7.13.
 
 | objective | value on the held-out test η (mean over the seeds) |
 |---|---|
-| C1 energy distance / floor | 2.55 |
-| C2 max relative divergence of B | 1.58e-08 |
-| C3 |energy balance residual| | 0.00337 |
-| C4 spectrum error + helicity error | 0.0632 |
-| C5 relative error on the null count | 1.1 |
-| T1 restart drift of E_B | 0.0644 |
-| T2 polarity asymmetry | 0.0148 |
+| C1 energy distance / floor | 4.58 |
+| C2 max relative divergence of B | 1.54e-08 |
+| C3 |energy balance residual| | 0.0115 |
+| C4 spectrum error + helicity error | 0.169 |
+| C5 relative error on the null count | 1.25 |
+| T1 restart drift of E_B | – |
+| T2 polarity asymmetry | 0.0826 |
 
-Energy-distance ratio of G1_gaussian_full per seed with the floor of the protocol (10 splits): 2.6, 2.5, 2.57, 2.42, 2.65 (mean 2.55); with the floor averaged over 20 splits: 2.72, 2.59, 2.67, 2.51, 2.75 (mean 2.65).
+Energy-distance ratio of W13_skip_tilting per seed with the floor of the protocol (10 splits): 4.42, 5.65, 4.44, 4.69, 3.7 (mean 4.58); with the floor averaged over 20 splits: 6.19, 7.76, 6.17, 6.34, 5.11 (mean 6.31).
 
 ### Paired comparisons over the seeds [0, 1, 2, 3, 4] (means over the test η; SE = sd(ddof = 1)/√n)
 
@@ -1094,13 +1094,28 @@ H24, err. nulls: untilted half 1.67, tilted 1.25; difference 0.422 ± 0.0298, ti
 H24, err. E_B(k): untilted half 0.142, tilted 0.081; difference 0.0609 ± 0.00766, tilted better in 5 of 5 seeds.
 H24, err. H_M: untilted half 0.192, tilted 0.0875; difference 0.105 ± 0.0121, tilted better in 5 of 5 seeds.
 H24, polarity: untilted half 0.0299, tilted 0.0826; difference -0.0527 ± 0.0175, tilted better in 0 of 5 seeds.
-Magnetic energy balance of G0_gaussian_modes (seed mean per held-out η): η = 0.0725: residual -0.997, P/D 0.00143; η = 0.0490: residual -0.999, P/D 3.57e-04; η = 0.0331: residual -0.998, P/D 0.0011.
+Magnetic energy balance of G0_gaussian_modes (seed mean per held-out η): η = 0.0725: residual -0.997, P/D 0.00143; η = 0.0490: residual -0.999, P/D not recoverable (P ≤ 0 in some rows); η = 0.0331: residual -0.998, P/D 0.0011.
 Magnetic energy balance of G1_gaussian_full (seed mean per held-out η): η = 0.0725: residual -0.0375, P/D 0.928; η = 0.0490: residual 0.0551, P/D 1.12; η = 0.0331: residual 0.123, P/D 1.28.
 Magnetic energy balance of W9_skip_sym (seed mean per held-out η): η = 0.0725: residual -0.118, P/D 0.789; η = 0.0490: residual -0.0387, P/D 0.926; η = 0.0331: residual 0.00931, P/D 1.02.
 Magnetic energy balance of W11_anchored_skip (seed mean per held-out η): η = 0.0725: residual -0.132, P/D 0.767; η = 0.0490: residual -0.0383, P/D 0.926; η = 0.0331: residual 0.00942, P/D 1.02.
 Magnetic energy balance of W13_skip_tilting (seed mean per held-out η): η = 0.0725: residual -0.0743, P/D 0.862; η = 0.0490: residual -0.0107, P/D 0.979; η = 0.0331: residual 0.0219, P/D 1.04.
 Largest restart drift over τ of W12_skip_stationarity (seed mean over the test η): E_B 0.0796, E_u 0.139.
 Largest restart drift over τ of W12_skip_control (seed mean over the test η): E_B 0.123, E_u 0.0555.
+
+Restart anchored on the stationary magnetic energy of the reference, a(τ) = E_B(τ)/E_B,ref − 1 (mean over the held-out η and the seeds); overshoot = max_τ |a(τ)| − |a(0)|; initial value from the energy of the whole ensemble (approximation).
+
+| law | τ = 0 | τ = 0.5 | τ = 1 | τ = 2 | τ = 4 | overshoot ± SE | |a| at the last time ± SE |
+|---|---|---|---|---|---|---|---|
+| G0_gaussian_modes | -0.017 | -0.174 | -0.128 | 0.0598 | 0.191 | 0.175 ± 0.00131 | 0.191 ± 0.00209 |
+| G1_gaussian_full | -0.0118 | 0.0453 | 0.0838 | 0.0909 | 0.0515 | 0.0742 ± 0.00344 | 0.0515 ± 0.00185 |
+| W9_skip_sym | -0.127 | -0.117 | -0.0892 | -0.0515 | -0.0185 | -0.00946 ± 6.85e-04 | 0.0185 ± 0.00204 |
+| W11_anchored_skip | -0.124 | -0.116 | -0.0894 | -0.0527 | -0.0184 | -0.00726 ± 6.09e-04 | 0.0189 ± 0.00319 |
+| W12_skip_stationarity | -0.173 | -0.19 | -0.179 | -0.155 | -0.107 | 0.0175 ± 0.00115 | 0.107 ± 0.003 |
+| W12_skip_control | -0.125 | -0.116 | -0.0878 | -0.0499 | -0.018 | -0.00903 ± 8.44e-04 | 0.0183 ± 0.0018 |
+H26, W9_skip_sym: initial deviation a(0) per seed -0.12, -0.132, -0.122, -0.135, -0.125; overshoot per seed -0.0112, -0.00723, -0.0105, -0.00913, -0.00918 (mean -0.00946); |a| at the last time per seed 0.0167, 0.0152, 0.0202, 0.0258, 0.0149 (mean 0.0185).
+H26, G1_gaussian_full: initial deviation a(0) per seed -0.017, -0.0109, -0.0132, -0.00285, -0.0152; overshoot per seed 0.0757, 0.0704, 0.0645, 0.0855, 0.0747 (mean 0.0742); |a| at the last time per seed 0.0493, 0.0552, 0.0461, 0.056, 0.0508 (mean 0.0515).
+H26, G0_gaussian_modes: initial deviation a(0) per seed -0.0167, -0.0202, -0.0164, -0.0132, -0.0183; overshoot per seed 0.175, 0.172, 0.172, 0.178, 0.178 (mean 0.175); |a| at the last time per seed 0.197, 0.186, 0.189, 0.189, 0.196 (mean 0.191).
+Signed drift of E_B at τ = 4 against the bias E_B,ref/E_B(0) − 1 of the law, over the 6 laws above: correlation -0.34.
 Restart curve of G0_gaussian_modes (signed relative change, mean over the test η and the seeds), τ = 0.5, 1, 2, 4: E_B -0.16, -0.113, 0.078, 0.212; E_u 0.109, 0.153, 0.146, 0.0189.
 Restart curve of G1_gaussian_full (signed relative change, mean over the test η and the seeds), τ = 0.5, 1, 2, 4: E_B 0.0577, 0.0968, 0.104, 0.0644; E_u -0.0254, -0.0506, -0.0806, -0.0947.
 Restart curve of W9_skip_sym (signed relative change, mean over the test η and the seeds), τ = 0.5, 1, 2, 4: E_B 0.0106, 0.0428, 0.0862, 0.124; E_u 0.0215, 0.0331, 0.048, 0.053.
@@ -1212,21 +1227,21 @@ Models (experiments/e4_mhd3d.py): ResMLP 512×4, 4000 iterations, batch 128, lr 
 | W9_skip_sym | 8.07 ± 0.813 [6.8, 8.83] | 0.0588 ± 0.00415 [0.0529, 0.0629] | 0.133 ± 0.0127 [0.114, 0.145] | 0.165 ± 0.0182 [0.14, 0.182] | 1.56 ± 0.0289 [1.52, 1.6] |
 | G1_gaussian_full | 1.98 ± 0.0604 [1.9, 2.05] | 0.00196 ± 8.32e-04 [0.00128, 0.00317] | 0.016 ± 0.00426 [0.0105, 0.0219] | 0.028 ± 0.00701 [0.0219, 0.0391] | 1 ± 0.035 [0.963, 1.05] |
 
-### Selected generator: G1_gaussian_full
+### Selected generator: W9_skip_sym
 
 Validation energy-distance ratio (mean over the seeds): G0_gaussian_modes 5.07, W9_skip_sym 11.7, G1_gaussian_full 3.34.
 
 | objective | value on the held-out test η (mean over the seeds) |
 |---|---|
-| C1 energy distance / floor | 1.98 |
-| C2 max relative divergence of B | 1.56e-08 |
-| C3 |energy balance residual| | 0.00196 |
-| C4 spectrum error + helicity error | 0.044 |
-| C5 relative error on the null count | 1 |
-| T1 restart drift of E_B | 0.0625 |
-| T2 polarity asymmetry | 0.0187 |
+| C1 energy distance / floor | 8.07 |
+| C2 max relative divergence of B | 1.60e-08 |
+| C3 |energy balance residual| | 0.0588 |
+| C4 spectrum error + helicity error | 0.298 |
+| C5 relative error on the null count | 1.56 |
+| T1 restart drift of E_B | 0.126 |
+| T2 polarity asymmetry | 0.0156 |
 
-Energy-distance ratio of G1_gaussian_full per seed with the floor of the protocol (10 splits): 2.03, 1.9, 1.96, 2.05, 1.94 (mean 1.98); with the floor averaged over 20 splits: 1.88, 1.76, 1.82, 1.9, 1.8 (mean 1.83).
+Energy-distance ratio of W9_skip_sym per seed with the floor of the protocol (10 splits): 6.8, 8.83, 8.41, 8.54, 7.75 (mean 8.07); with the floor averaged over 20 splits: 6.37, 8.23, 7.93, 8.02, 7.26 (mean 7.56).
 
 ### Paired comparisons over the seeds [0, 1, 2, 3, 4] (means over the test η; SE = sd(ddof = 1)/√n)
 
@@ -1249,9 +1264,20 @@ Energy-distance ratio of G1_gaussian_full per seed with the floor of the protoco
 | largest |drift of E_B| over τ: G0_gaussian_modes − G1_gaussian_full (H22) | 0.107, 0.109, 0.103, 0.0891, 0.111 | 0.104 ± 0.00392 | 26 | 5 of 5 |
 | largest |drift of E_u| over τ: W9_skip_sym − G1_gaussian_full (H22) | -0.0577, 0.00174, -0.0237, -0.00604, -0.0147 | -0.0201 ± 0.0103 | -1.9 | 1 of 5 |
 | largest |drift of E_u| over τ: G0_gaussian_modes − G1_gaussian_full (H22) | 0.0539, 0.0893, 0.0817, 0.0772, 0.0777 | 0.076 ± 0.00594 | 13 | 5 of 5 |
-Magnetic energy balance of G0_gaussian_modes (seed mean per held-out η): η = 0.0725: residual -0.997, P/D 0.00147; η = 0.0490: residual -0.999, P/D 4.37e-04; η = 0.0331: residual -0.999, P/D 5.42e-04.
+Magnetic energy balance of G0_gaussian_modes (seed mean per held-out η): η = 0.0725: residual -0.997, P/D 0.00147; η = 0.0490: residual -0.999, P/D not recoverable (P ≤ 0 in some rows); η = 0.0331: residual -0.999, P/D 5.42e-04.
 Magnetic energy balance of G1_gaussian_full (seed mean per held-out η): η = 0.0725: residual -0.0316, P/D 0.939; η = 0.0490: residual 0.0616, P/D 1.13; η = 0.0331: residual 0.122, P/D 1.28.
 Magnetic energy balance of W9_skip_sym (seed mean per held-out η): η = 0.0725: residual -0.112, P/D 0.799; η = 0.0490: residual -0.0365, P/D 0.93; η = 0.0331: residual 0.00155, P/D 1.
+
+Restart anchored on the stationary magnetic energy of the reference, a(τ) = E_B(τ)/E_B,ref − 1 (mean over the held-out η and the seeds); overshoot = max_τ |a(τ)| − |a(0)|; initial value from the energy of the whole ensemble (approximation).
+
+| law | τ = 0 | τ = 0.5 | τ = 1 | τ = 2 | τ = 4 | overshoot ± SE | |a| at the last time ± SE |
+|---|---|---|---|---|---|---|---|
+| G0_gaussian_modes | 1.00e-03 | -0.158 | -0.111 | 0.0808 | 0.211 | 0.204 ± 0.00271 | 0.211 ± 0.00213 |
+| G1_gaussian_full | 0.00809 | 0.0658 | 0.104 | 0.111 | 0.0713 | 0.106 ± 0.00287 | 0.0713 ± 0.00397 |
+| W9_skip_sym | -0.116 | -0.108 | -0.0802 | -0.0415 | -0.00447 | -0.00852 ± 8.12e-04 | 0.0167 ± 0.00316 |
+H26, W9_skip_sym: initial deviation a(0) per seed -0.0998, -0.123, -0.119, -0.127, -0.111; overshoot per seed -0.0107, -0.0061, -0.00988, -0.00817, -0.00775 (mean -0.00852); |a| at the last time per seed 0.0154, 0.0218, 0.0242, 0.0163, 0.00596 (mean 0.0167).
+H26, G1_gaussian_full: initial deviation a(0) per seed 0.00966, 0.00671, 0.00393, 0.00798, 0.0122; overshoot per seed 0.109, 0.0965, 0.103, 0.114, 0.106 (mean 0.106); |a| at the last time per seed 0.0639, 0.0655, 0.065, 0.0799, 0.0819 (mean 0.0713).
+H26, G0_gaussian_modes: initial deviation a(0) per seed 0.00163, -0.00192, 4.59e-04, 0.00442, 4.11e-04; overshoot per seed 0.21, 0.197, 0.203, 0.202, 0.212 (mean 0.204); |a| at the last time per seed 0.216, 0.208, 0.208, 0.207, 0.217 (mean 0.211).
 Restart curve of G0_gaussian_modes (signed relative change, mean over the test η and the seeds), τ = 0.5, 1, 2, 4: E_B -0.159, -0.111, 0.0797, 0.21; E_u 0.11, 0.154, 0.146, 0.0192.
 Restart curve of G1_gaussian_full (signed relative change, mean over the test η and the seeds), τ = 0.5, 1, 2, 4: E_B 0.0573, 0.0956, 0.102, 0.0625; E_u -0.0244, -0.0479, -0.0739, -0.0813.
 Restart curve of W9_skip_sym (signed relative change, mean over the test η and the seeds), τ = 0.5, 1, 2, 4: E_B 0.00969, 0.0406, 0.0843, 0.126; E_u 0.0231, 0.0364, 0.0538, 0.0593.
@@ -1404,13 +1430,25 @@ Energy-distance ratio of W9_skip_sym per seed with the floor of the protocol (10
 | err. E_B(k): G0_gaussian_modes − W9_skip_sym | -0.103, -0.125, -0.119, -0.135, -0.117 | -0.12 ± 0.00523 | -23 | 0 of 5 |
 
 H21 (width scan, no affine term): S_w512: ED ratio 205, loss 1.61; S_w2048: ED ratio 25.6, loss 1.22; S_w5632: ED ratio 104, loss 0.777; S_w512_long: ED ratio 215, loss 1.52; S_w2048_long: ED ratio 58.8, loss 0.949 (π/2 = 1.571).
-Magnetic energy balance of G0_gaussian_modes (seed mean per held-out η): η = 0.0725: residual -0.997, P/D 0.00143; η = 0.0490: residual -0.999, P/D 3.57e-04; η = 0.0331: residual -0.998, P/D 0.0011.
+Magnetic energy balance of G0_gaussian_modes (seed mean per held-out η): η = 0.0725: residual -0.997, P/D 0.00143; η = 0.0490: residual -0.999, P/D not recoverable (P ≤ 0 in some rows); η = 0.0331: residual -0.998, P/D 0.0011.
 Magnetic energy balance of W9_skip_sym (seed mean per held-out η): η = 0.0725: residual -0.117, P/D 0.791; η = 0.0490: residual -0.0385, P/D 0.926; η = 0.0331: residual 0.00968, P/D 1.02.
 Magnetic energy balance of S_w2048 (seed mean per held-out η): η = 0.0725: residual -0.213, P/D 0.649; η = 0.0490: residual -0.0633, P/D 0.881; η = 0.0331: residual 0.00903, P/D 1.02.
 Magnetic energy balance of S_w5632 (seed mean per held-out η): η = 0.0725: residual 0.00926, P/D 1.02; η = 0.0490: residual 0.0531, P/D 1.11; η = 0.0331: residual 0.0465, P/D 1.1.
 Largest restart drift over τ of S_w512 (seed mean over the test η): E_B 0.372, E_u 0.268.
 Largest restart drift over τ of S_w2048 (seed mean over the test η): E_B 0.0739, E_u 0.0755.
 Largest restart drift over τ of S_w5632 (seed mean over the test η): E_B 0.449, E_u 0.27.
+
+Restart anchored on the stationary magnetic energy of the reference, a(τ) = E_B(τ)/E_B,ref − 1 (mean over the held-out η and the seeds); overshoot = max_τ |a(τ)| − |a(0)|; initial value from the energy of the whole ensemble (approximation).
+
+| law | τ = 0 | τ = 0.5 | τ = 1 | τ = 2 | τ = 4 | overshoot ± SE | |a| at the last time ± SE |
+|---|---|---|---|---|---|---|---|
+| G0_gaussian_modes | -0.017 | -0.174 | -0.128 | 0.0598 | 0.191 | 0.175 ± 0.00131 | 0.191 ± 0.00209 |
+| W9_skip_sym | -0.126 | -0.116 | -0.088 | -0.0501 | -0.0175 | -0.00969 ± 7.00e-04 | 0.0175 ± 0.00266 |
+| S_w2048 | -0.0977 | -0.108 | -0.0877 | -0.0635 | -0.0331 | 0.00995 ± 5.31e-04 | 0.0356 ± 0.00206 |
+| S_w5632 | -0.344 | -0.308 | -0.264 | -0.185 | -0.0576 | -0.036 ± 0.00178 | 0.0612 ± 0.0119 |
+H26, W9_skip_sym: initial deviation a(0) per seed -0.12, -0.132, -0.122, -0.135, -0.121; overshoot per seed -0.0112, -0.00723, -0.0105, -0.00913, -0.0103 (mean -0.00969); |a| at the last time per seed 0.0167, 0.0152, 0.0202, 0.0258, 0.00978 (mean 0.0175).
+H26, G0_gaussian_modes: initial deviation a(0) per seed -0.0167, -0.0202, -0.0164, -0.0132, -0.0183; overshoot per seed 0.175, 0.172, 0.172, 0.178, 0.178 (mean 0.175); |a| at the last time per seed 0.197, 0.186, 0.189, 0.189, 0.196 (mean 0.191).
+Signed drift of E_B at τ = 4 against the bias E_B,ref/E_B(0) − 1 of the law, over the 4 laws above: correlation 0.84.
 H13: least-squares fit of ln(N_gen/N_ref) on ln(k_λ,gen/k_λ,ref) over 105 points (generators × test η × seeds): slope 4.31, intercept 0.945, R² 0.406; range of ln(k_λ ratio) [-0.0603, 0.0988].
 
 ### Durations (s), per seed
@@ -1556,7 +1594,7 @@ Energy-distance ratio of W9_skip_sym per seed with the floor of the protocol (10
 | err. E_B(k): G0_gaussian_modes − W9_skip_sym | -0.104, -0.122, -0.125, -0.138, -0.13 | -0.124 ± 0.00569 | -22 | 0 of 5 |
 
 H21 (width scan, no affine term): S_w512: ED ratio 206, loss 1.61; S_w2048: ED ratio 25.3, loss 1.22; S_w5632: ED ratio 98.6, loss 0.769; S_w512_long: ED ratio 216, loss 1.53 (π/2 = 1.571).
-Magnetic energy balance of G0_gaussian_modes (seed mean per held-out η): η = 0.0725: residual -0.997, P/D 0.00143; η = 0.0490: residual -0.999, P/D 3.57e-04; η = 0.0331: residual -0.998, P/D 0.0011.
+Magnetic energy balance of G0_gaussian_modes (seed mean per held-out η): η = 0.0725: residual -0.997, P/D 0.00143; η = 0.0490: residual -0.999, P/D not recoverable (P ≤ 0 in some rows); η = 0.0331: residual -0.998, P/D 0.0011.
 Magnetic energy balance of W9_skip_sym (seed mean per held-out η): η = 0.0725: residual -0.118, P/D 0.788; η = 0.0490: residual -0.0362, P/D 0.93; η = 0.0331: residual 0.00778, P/D 1.02.
 Magnetic energy balance of S_w2048 (seed mean per held-out η): η = 0.0725: residual -0.214, P/D 0.648; η = 0.0490: residual -0.0616, P/D 0.884; η = 0.0331: residual 0.0129, P/D 1.03.
 Magnetic energy balance of S_w5632 (seed mean per held-out η): η = 0.0725: residual 0.0147, P/D 1.03; η = 0.0490: residual 0.0509, P/D 1.11; η = 0.0331: residual 0.0186, P/D 1.04.
@@ -1785,7 +1823,7 @@ H15: seed-mean ED ratio on the held-out η: W4_potentials 237, W4c_potentials_sm
 | ED ratio: W9_skip_sym − W11_anchored_skip | 0.223, 1.15, 0.943, 1.3, 0.955 | 0.914 ± 0.185 | 4.9 | 5 of 5 |
 | restart drift E_B: W9_skip_sym − W11_anchored_skip | -0.0108, 0.00514, 0.00298, 0.0108, -0.00133 | 0.00137 ± 0.00361 | 0.38 | 3 of 5 |
 | err. nulls: W9_skip_sym − W11_anchored_skip | -0.0149, -0.00162, -0.0286, -0.0168, -0.012 | -0.0148 ± 0.00433 | -3.4 | 0 of 5 |
-Magnetic energy balance of G0_gaussian_modes (seed mean per held-out η): η = 0.0725: residual -0.997, P/D 0.00147; η = 0.0490: residual -0.999, P/D 4.37e-04; η = 0.0331: residual -0.999, P/D 5.42e-04.
+Magnetic energy balance of G0_gaussian_modes (seed mean per held-out η): η = 0.0725: residual -0.997, P/D 0.00147; η = 0.0490: residual -0.999, P/D not recoverable (P ≤ 0 in some rows); η = 0.0331: residual -0.999, P/D 5.42e-04.
 Magnetic energy balance of W9_skip_sym (seed mean per held-out η): η = 0.0725: residual -0.112, P/D 0.798; η = 0.0490: residual -0.0371, P/D 0.928; η = 0.0331: residual 0.00176, P/D 1.
 Magnetic energy balance of W11_anchored_skip (seed mean per held-out η): η = 0.0725: residual -0.125, P/D 0.778; η = 0.0490: residual -0.0373, P/D 0.928; η = 0.0331: residual -3.75e-05, P/D 1.
 
@@ -2193,7 +2231,7 @@ H15: seed-mean ED ratio on the held-out η: W4_potentials 244, W4c_potentials_sm
 | ED ratio: W9_skip_sym − W11_anchored_skip | -0.228, 2.95 | 1.36 ± 1.59 | 0.86 | 1 of 2 |
 | restart drift E_B: W9_skip_sym − W11_anchored_skip | -0.00765, 0.0203 | 0.00631 ± 0.014 | 0.45 | 1 of 2 |
 | err. nulls: W9_skip_sym − W11_anchored_skip | -0.0305, 8.83e-04 | -0.0148 ± 0.0157 | -0.94 | 1 of 2 |
-Magnetic energy balance of G0_gaussian_modes (seed mean per held-out η): η = 0.0725: residual -1, P/D 0; η = 0.0490: residual -1, P/D 0; η = 0.0331: residual -1, P/D 0.
+Magnetic energy balance of G0_gaussian_modes (seed mean per held-out η): η = 0.0725: residual -1, P/D not recoverable (P ≤ 0 in some rows); η = 0.0490: residual -1, P/D not recoverable (P ≤ 0 in some rows); η = 0.0331: residual -1, P/D not recoverable (P ≤ 0 in some rows).
 Magnetic energy balance of W9_skip_sym (seed mean per held-out η): η = 0.0725: residual -0.113, P/D 0.796; η = 0.0490: residual -0.0334, P/D 0.935; η = 0.0331: residual 0.00705, P/D 1.01.
 Magnetic energy balance of W11_anchored_skip (seed mean per held-out η): η = 0.0725: residual -0.131, P/D 0.769; η = 0.0490: residual -0.0331, P/D 0.936; η = 0.0331: residual 0.00559, P/D 1.01.
 

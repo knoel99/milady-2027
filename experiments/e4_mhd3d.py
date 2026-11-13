@@ -77,7 +77,7 @@ GROUPS = {"A": ["W0_free", "W1_penalty", "W2_final_projection", "W3_projected_fl
 FULL = {"iters": 4000, "batch": 128, "width": 512, "depth": 4, "lr": 5e-4, "n_gen": 512, "n_gen_train": 256,
         "steps": 50, "ft_iters": 400, "ft_lr": 2e-4, "beta": 20.0, "stat_cond": 4, "stat_per": 16, "stat_steps": 6,
         "n_null": 200, "n_restart": 128, "tau": 4.0, "floor_splits": 10, "n_ref_null": 400, "long_factor": 8}
-QUICK = {**FULL, "n_fit": 256, "iters": 150, "width": 256, "depth": 2, "n_gen": 96, "n_gen_train": 64, "steps": 12, "long_factor": 2,
+QUICK = {**FULL, "n_fit": 512, "ref_restart_draws": 2, "iters": 150, "width": 256, "depth": 2, "n_gen": 96, "n_gen_train": 64, "steps": 12, "long_factor": 2,
          "ft_iters": 20, "n_null": 24, "n_restart": 24, "tau": 1.0, "floor_splits": 4, "n_ref_null": 32}
 
 
@@ -270,7 +270,14 @@ class Context:
 
     # -- restart: advance generated snapshots with the solver ------------------------------------
     def restart_drift(self, fh: torch.Tensor, eta: float) -> dict:
-        """Relative change of the ensemble-mean energies after advancing ``fh`` by τ with the solver."""
+        """Course of the ensemble-mean energies when the solver restarts from ``fh`` (at most ``n_restart`` samples).
+
+        ``restart_curve``: relative change against the ensemble's own initial energy (the drift of the objective T1,
+        read at τ = ``tau``). Its long-time limit is not zero for a law whose energy is biased: it is the bias.
+        ``restart_anchor``: the same course as E(τ)/E_ref − 1, against the stationary energies of the reference at
+        this η, with its value at τ = 0 (the bias of the law) first. ``restart_overshoot_*``: how far the energy
+        moves away from the reference beyond its initial deviation, max_τ |a(τ)| − |a(0)| (0 for a monotone
+        relaxation towards the reference)."""
         n = min(self.cfg["n_restart"], len(fh))
         fh = fh[:n].cpu().to(torch.complex128)
         grid = self.pot.to_grid(fh, (N_GRID,) * 3)                                 # (n, 2, nx, ny, nz, 3)
@@ -279,19 +286,65 @@ class Context:
         t0 = C.budget_terms_hat(self.pot, fh, D.NU, eta)
         sim.uh, sim.bh = to_hat(grid[:, 0]), to_hat(grid[:, 1])
         eb0, eu0 = float(t0["magnetic_energy"].mean()), float(t0["kinetic_energy"].mean())
-        taus = [self.cfg["tau"] * f for f in (0.125, 0.25, 0.5, 1.0, 2.0, 4.0)]    # the drift has a course: record it
+        rb = self.ref[eta]["budget"]
+        eb_ref, eu_ref = float(rb["magnetic_energy"].mean()), float(rb["kinetic_energy"].mean())
+        taus = [self.cfg["tau"] * f for f in (1 / 32, 1 / 16, 0.125, 0.25, 0.5, 1.0, 2.0, 4.0)]
         curve = {"tau": taus, "eb": [], "eu": []}
+        anchor = {"tau": [0.0, *taus], "eb": [eb0 / eb_ref - 1], "eu": [eu0 / eu_ref - 1]}
         for t in taus:
             sim.advance_to(t, dt=D.DT, cfl=D.CFL)
             d = sim.diagnostics()
-            curve["eb"].append((float(d["magnetic_energy"].mean()) - eb0) / eb0)
-            curve["eu"].append((float(d["kinetic_energy"].mean()) - eu0) / eu0)
+            eb, eu = float(d["magnetic_energy"].mean()), float(d["kinetic_energy"].mean())
+            curve["eb"].append((eb - eb0) / eb0)
+            curve["eu"].append((eu - eu0) / eu0)
+            anchor["eb"].append(eb / eb_ref - 1)
+            anchor["eu"].append(eu / eu_ref - 1)
         at = taus.index(self.cfg["tau"])                                           # τ of the objective T1
+        over = lambda a: max(abs(v) for v in a[1:]) - abs(a[0])                    # noqa: E731
         return {"restart_drift_eb": abs(curve["eb"][at]), "restart_drift_eu": abs(curve["eu"][at]),
                 "restart_eb_signed": curve["eb"][at], "restart_curve": curve,
                 "restart_drift_eb_max": max(abs(v) for v in curve["eb"][: at + 1]),
                 "restart_drift_eu_max": max(abs(v) for v in curve["eu"][: at + 1]),
-                "restart_drift_eb_end": abs(curve["eb"][-1]), "restart_drift_eu_end": abs(curve["eu"][-1])}
+                "restart_drift_eb_end": abs(curve["eb"][-1]), "restart_drift_eu_end": abs(curve["eu"][-1]),
+                "restart_anchor": anchor, "restart_overshoot_eb": over(anchor["eb"]), "restart_overshoot_eu": over(anchor["eu"]),
+                "restart_anchor_end_eb": abs(anchor["eb"][-1]), "restart_anchor_end_eu": abs(anchor["eu"][-1]),
+                "restart_anchor_tau_eb": abs(anchor["eb"][at + 1]), "restart_anchor_tau_eu": abs(anchor["eu"][at + 1])}
+
+    def production_jackknife(self, fh: torch.Tensor, traj: np.ndarray, d_ohm: np.ndarray, grid: int = 24) -> dict:
+        """Split of the mean magnetic production of an ensemble into its mean-flow part and the rest, with a
+        delete-one-trajectory jackknife in which the mean flow is recomputed without the trajectory.
+
+        ⟨j·(U×B)⟩ = ⟨U·(B×j)⟩ is linear in the velocity U: with w_i = B_i × j_i on an alias-free grid and U_s the sum
+        of the velocities of trajectory s, the matrix C[i, s] = ⟨U_s·w_i⟩ gives every leave-one-out estimate.
+        ``d_ohm``: Ohmic dissipation per sample. Returns the two parts over the mean dissipation and their SE."""
+        fh = fh.cpu().to(torch.complex128)
+        k = self.pot.k.to(fh.dtype)
+        ids = np.unique(traj)
+        w_all, u_all = [], []
+        for i in range(0, len(fh), 400):
+            f = fh[i:i + 400]
+            jh = 1j * C._cross(k, f[:, 1])
+            g = self.pot.to_grid(torch.stack([f[:, 0], f[:, 1], jh], dim=1), (grid,) * 3)      # (n, 3, g, g, g, 3): u, B, j
+            w_all.append(torch.linalg.cross(g[:, 1], g[:, 2], dim=-1).reshape(len(f), -1).to(torch.float32))
+            u_all.append(g[:, 0].reshape(len(f), -1).to(torch.float32))
+        w, u = torch.cat(w_all), torch.cat(u_all)
+        npts = grid**3
+        p_tot = (u * w).sum(1).double().numpy() / npts                                             # own velocity
+        us = torch.stack([u[torch.as_tensor(traj == t)].sum(0) for t in ids])                      # (T, g³·3)
+        cm = (w @ us.T).double().numpy() / npts                                                    # (N, T)
+        tid = np.searchsorted(ids, traj)
+        est = []
+        for t in range(len(ids)):
+            keep = tid != t
+            n1 = int(keep.sum())
+            pm = cm[keep][:, np.arange(len(ids)) != t].sum() / n1**2
+            est.append((pm / d_ohm[keep].mean(), (p_tot[keep].mean() - pm) / d_ohm[keep].mean()))
+        est = np.asarray(est)
+        jse = np.sqrt((len(ids) - 1) / len(ids) * ((est - est.mean(0)) ** 2).sum(0))
+        full_mean = cm.sum() / len(fh) ** 2
+        return {"prod_mean_over_d_jack": float(full_mean / d_ohm.mean()), "prod_mean_over_d_se_jack": float(jse[0]),
+                "prod_fluct_over_d_jack": float((p_tot.mean() - full_mean) / d_ohm.mean()), "prod_fluct_over_d_se_jack": float(jse[1]),
+                "prod_over_d_grid24": float(p_tot.mean() / d_ohm.mean())}
 
 
 # ---------------------------------------------------------------------------------------------
@@ -346,12 +399,21 @@ def reference(quick: bool) -> None:
         }
         dm = float(bud["magnetic_dissipation"].mean())                 # production split (H25), SE over the trajectories
         p_mean, p_fluct = tmean(ref["prod_mean"]), tmean(bud["magnetic_production"] - ref["prod_mean"])
+        row.update(ctx.production_jackknife(fh, traj, bud["magnetic_dissipation"]))
         row.update({"prod_over_d": float(bud["magnetic_production"].mean() / dm),
                     "prod_mean_over_d": float(p_mean.mean() / dm), "prod_mean_over_d_se": float(se(p_mean) / dm),
                     "prod_fluct_over_d": float(p_fluct.mean() / dm), "prod_fluct_over_d_se": float(se(p_fluct) / dm)})
         if D.split_of(ETAS.index(e)) == "test":
             ridx = rng.choice(len(traj), size=min(cfg["n_restart"], len(traj)), replace=False)
             row.update(ctx.restart_drift(fh[ridx], e))
+            draws = [row["restart_anchor"]]                         # the reference's own course: mean and SE over independent draws
+            for _ in range(cfg.get("ref_restart_draws", 4) - 1):
+                rj = rng.choice(len(traj), size=min(cfg["n_restart"], len(traj)), replace=False)
+                draws.append(ctx.restart_drift(fh[rj], e)["restart_anchor"])
+            for key in ("eb", "eu"):
+                arr = np.asarray([dr[key] for dr in draws])
+                row[f"restart_anchor_{key}_mean"] = arr.mean(0).tolist()
+                row[f"restart_anchor_{key}_se"] = (arr.std(0, ddof=1) / np.sqrt(len(arr))).tolist()
             for g in (32, 64):                                         # protocol check of H13: grid convergence
                 m = min(len(idx), 100)
                 bg = ctx.pot.to_grid(fh[idx[:m], 1:2].to(torch.complex128), (g,) * 3)[:, 0].numpy()
@@ -374,6 +436,8 @@ def _group_of(variant: str) -> str:
     for g, names in GROUPS.items():
         if variant in names:
             return g
+    if variant.startswith(("W9N_", "G3_")):
+        return "N"
     return "M" if variant.startswith(("W12_", "W13_")) else "B"
 
 
@@ -433,7 +497,7 @@ def run(quick: bool, seed: int, group: str, device: str = "cpu", cond_scale: flo
                                 "modes": pot.n_modes, "dim_potentials": pot.n_modes * pot.n_channels,
                                 "dim_components": comp.n_modes * comp.n_channels,
                                 "n_train": ctx.n_train},
-                     "evaluation": {}, "times": {}, "h14": [], "h12": []}
+                     "evaluation": {}, "times": {}, "h14": [], "h12": [], "h27": []}
     gens: dict = {}
     samples: dict = {}
     if seed == 0:                                                  # reference fields at the same η, first 4 snapshots
@@ -450,7 +514,8 @@ def run(quick: bool, seed: int, group: str, device: str = "cpu", cond_scale: flo
         for g in groups:
             part = dict(results, evaluation={k: v for k, v in results["evaluation"].items() if _group_of(k) == g},
                         times={k: v for k, v in results["times"].items() if _group_of(k) == g},
-                        h14=results["h14"] if g == "A" else [], h12=results["h12"] if g == "B" else [])
+                        h14=results["h14"] if g == "A" else [], h12=results["h12"] if g == "B" else [],
+                        h27=results["h27"] if g == "N" else [])
             part["config"] = {**results["config"], "group": g}
             if part["evaluation"]:
                 save_json(part, f"e4_mhd3d{tag}_s{seed}_{g}.json")
@@ -686,26 +751,46 @@ def run(quick: bool, seed: int, group: str, device: str = "cpu", cond_scale: flo
         record("G1_gaussian_full", {e: sample_g1(e, n) for e, n in eval_etas})
         del g1
 
-    # ---------------- group N: the Gaussian law that has the first two moments of the samples of W9 (H27) ----------------
+    # ---------------- group N: Gaussian laws fitted to the samples of a generator (H27) ----------------
     if "G2_gaussianised_W9" in names:
         seed_all(seed)
         m9n, tsec = train(builders["W9_skip_sym"](None).to(dev), fm, ctx.x_pot_sym, ctx.c_train, cfg["iters"], cfg["lr"],
-                          cfg["batch"], "W9_skip_sym(base of G2)")
-        n_fit = cfg.get("n_fit", 2048)
-        g2 = {}
-        for e, n in eval_etas:
-            gz = torch.Generator().manual_seed(100003 * seed + 91 + ETAS.index(e))
-            c = torch.full((256, 1), float(cn(e)), device=dev)
-            with torch.no_grad():                          # fresh samples of W9 at this η (not those evaluated as W9)
-                z = torch.cat([heun_sample(m9n, torch.randn(256, pot_sym.n_modes, pot_sym.n_channels, generator=gz).to(dev), c,
-                                           cfg["steps"]) for _ in range(max(n_fit // 256, 1))])
+                          cfg["batch"], "W9N_skip_sym")
+        results["times"]["W9N_skip_sym"] = {"training_time_s": tsec, "iters": cfg["iters"]}
+        base = {e: generate(m9n, pot_sym, e, n) for e, n in eval_etas}             # the base itself, evaluated in this group
+        record("W9N_skip_sym", base)
+        n_fit = cfg.get("n_fit", 8192)
+        g1n = C.FullGaussian(sign=pot_sym.sign).fit(ctx.x_pot_sym, ctx.c_train[:, 0])
+
+        def gaussianise(draw, e: float, n: int, salt: int) -> torch.Tensor:
+            """``n`` samples of the Gaussian law that has the mean and covariance of ``n_fit`` fresh samples of ``draw``."""
+            gz = torch.Generator().manual_seed(100003 * seed + salt + ETAS.index(e))
+            z = torch.cat([draw(e, 256, gz) for _ in range(max(n_fit // 256, 1))])
             law = C.FullGaussian(sign=pot_sym.sign).fit(z, torch.zeros(len(z), device=z.device))
-            x = law.sample(0.0, n, generator=gz)
-            g2[e] = pot_sym.field_hat(pot_sym.denormalize(x)).cpu()
-            del law, z
-        results["times"]["G2_gaussianised_W9"] = {"training_time_s": tsec, "n_fit": n_fit}
+            return pot_sym.field_hat(pot_sym.denormalize(law.sample(0.0, n, generator=gz))).cpu()
+
+        def draw_w9(e: float, m: int, gz: torch.Generator) -> torch.Tensor:
+            c = torch.full((m, 1), float(cn(e)), device=dev)
+            with torch.no_grad():
+                return heun_sample(m9n, torch.randn(m, pot_sym.n_modes, pot_sym.n_channels, generator=gz).to(dev), c, cfg["steps"])
+
+        def draw_g1(e: float, m: int, gz: torch.Generator) -> torch.Tensor:
+            return g1n.sample(float(np.float32(cn(e))), m, generator=gz).to(dev)
+
+        g2 = {e: gaussianise(draw_w9, e, n, 91) for e, n in eval_etas}
+        results["times"]["G2_gaussianised_W9"] = {"n_fit": n_fit}
         record("G2_gaussianised_W9", g2)
-        del m9n
+        g3 = {e: gaussianise(draw_g1, e, n, 131) for e, n in eval_etas}            # null control: a Gaussian law, Gaussianised
+        results["times"]["G3_gaussianised_G1"] = {"n_fit": n_fit}
+        record("G3_gaussianised_G1", g3)
+        for e in ETA_TEST:                                 # distance between the law and its Gaussian version, in floors of the reference
+            fb = ctx.standardize(ctx.physics(base[e], e)["features"])
+            f2 = ctx.standardize(ctx.physics(g2[e], e)["features"])
+            half = len(fb) // 2
+            results["h27"].append({"eta": e, "n": len(fb), "ed_floor": ctx.floor(e, len(fb)),
+                                   "ed_g2_w9": float(M.energy_distance(f2, fb, n=len(fb))),
+                                   "ed_w9_halves": float(M.energy_distance(fb[:half], fb[half:], n=half))})
+        del m9n, g1n
 
     # ---------------- group M: loss and sampling mechanisms on the model with the affine term (H23, H24) ----------------
     if "W12_skip_stationarity" in names:
