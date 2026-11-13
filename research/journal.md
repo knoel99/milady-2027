@@ -2,6 +2,12 @@
 
 One entry per working session, newest first, at most ten lines.
 
+## 2026-11-13 - H48, H50, H51 supported, team cursor
+- H48: n = 96, Rm = 9.03125, seeds 0-4 all positive. Smallest lambda is 0.000920. The same Rm is negative for two seeds at n = 64. Pod `3xqsragjm09ry5`, 0.0926 USD.
+- H50: n = 48, Rm = 9.078125, seeds 5-9 all positive. Smallest is 9.63e-5. Pod `vjg69pqzfnk2nx`, 0.0240 USD.
+- H51: n = 32, Rm = 9.0546875, seeds 0-4 all positive. Smallest is 1.48e-5. Pod `ejwduhbdkmn69h`, 0.0240 USD.
+- H52 and H53 continue those brackets. H54 asks whether n = 96 is already positive at Rm = 8.5. H49 is still running.
+
 ## 2026-11-13 - H45 and H47 refuted, H46 supported, team cursor
 - H45: n = 64, Rm = 9.05859375, seed 1 is still negative, lambda -7.84e-6. The all-positive claim fails. Pod `wc0jpa3u2s9839`, 0.0467 USD.
 - H47: n = 32, Rm = 9.046875, seed 0 is negative, lambda -3.51e-5. Pod `q47is8cxzdfe8b`, 0.0242 USD.
