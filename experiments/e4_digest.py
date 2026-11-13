@@ -687,6 +687,32 @@ def h35_lines(runs: dict, ref: dict | None, root: Path = R) -> list[str]:
         return float("inf")
 
     star = {law: tau_star(law) for law in laws}
+
+    def why(law: str) -> str:
+        """Which condition holds a law back at the last τ before its τ* (or at the last τ of the grid)."""
+        ts = taus_of(law)
+        before = [t for t in ts if t < star[law]]
+        if not before:
+            return "both conditions met at τ = 0"
+        st = stats[(law, before[-1])]
+        held = [n for n, bad in (("null count", st["null"] > 0.2), ("E_B", st["eb_mean"] > 0.05)) if bad]
+        return f"at τ = {before[-1]:g} held back by " + " and ".join(held)
+
+    def star_per_seed(law: str) -> list[str]:
+        res = []
+        for r in runs.values():
+            got = "none"
+            for t in taus_of(law):
+                rows = r["evaluation"].get(name(law, t), {}).get("test", [])
+                if rows and np.mean([abs(x["null_count_err_rel"]) for x in rows]) <= 0.2 and \
+                        np.mean([abs(x["E_B"] / rv(x["eta"], "E_B") - 1) for x in rows]) <= 0.05:
+                    got = f"{t:g}"
+                    break
+            res.append(got)
+        return res
+
+    want = [name(law, t) for law in ("G0X", "G1X", "W9X", "W16X") for t in (0, 1, 2, 4, 8)] + [name("REFX", t) for t in (0, 1, 4)]
+    complete = set(runs) >= set(range(5)) and all(v in r["evaluation"] for r in runs.values() for v in want)
     fs = lambda t: "none on the grid" if np.isinf(t) else f"{t:g}"                         # noqa: E731
     # clause (a): the null-count error at τ = 1 against τ = 0, at each held-out η
     bad_a, parts = [], []
@@ -710,7 +736,9 @@ def h35_lines(runs: dict, ref: dict | None, root: Path = R) -> list[str]:
                + ("not available in this run" if not full else ", ".join(
                    f"{label} {f(seed_mean(name('W16X', 4), key, absolute))}" for label, key, absolute, _ in H35_KEYS)) + ".")
     out.append("H35 (c), residual relaxation time τ* (first τ of the grid " + ", ".join(f"{t:g}" for t in grid) + " with a null-count error of "
-               "at most 0.2 and a mean |E_B/E_B,ref − 1| of at most 0.05): " + ", ".join(f"{law} {fs(star[law])}" for law in laws) + ".")
+               "at most 0.2 and a mean |E_B/E_B,ref − 1| of at most 0.05): " + ", ".join(
+                   f"{law} {fs(star[law])} ({why(law)}; per seed: {', '.join(star_per_seed(law))})" for law in laws)
+               + ("; τ* of W16 and of G1 are equal: not resolved by the grid" if star.get("W16X") == star.get("G1X") else "") + ".")
     # checks of the measurement
     chk, ok = [], True
     for t in taus_of("REFX"):
@@ -725,7 +753,9 @@ def h35_lines(runs: dict, ref: dict | None, root: Path = R) -> list[str]:
     offset = json.loads(data_file.read_text())["config"].get("data_seed_offset", 0) if data_file.exists() else None
     other_root = R / "replications" / {0: "e4_recolour", 100: "e4_recolour_indep"}.get(offset, "none")
     other = load(False, other_root) if (other_root / "e4_reference.json").exists() and full else {}
-    if other and any("W16_recoloured_full" in r["evaluation"] for r in other.values()):
+    same = other and set(other) >= set(runs) and all("W16_recoloured_full" in other[k]["evaluation"] for k in runs)
+    if same:
+        other = {k: other[k] for k in runs}                # the same seeds on both sides
         d_ed = seed_mean(name("W16X", 0), "ed_ratio", False) - float(np.nanmean(per_seed(other, "W16_recoloured_full", "ed_ratio")))
         d_nu = seed_mean(name("W16X", 0), "null_count_err_rel", True) - float(np.nanmean(per_seed(other, "W16_recoloured_full", "null_count_err_rel", absolute=True)))
         d_g1 = seed_mean(name("G1X", 0), "null_count_err_rel", True) - float(np.nanmean(per_seed(other, "G1_gaussian_full", "null_count_err_rel", absolute=True)))
@@ -734,9 +764,10 @@ def h35_lines(runs: dict, ref: dict | None, root: Path = R) -> list[str]:
                    f"error {f(d_nu)} (limit 0.1); G1 at τ = 0, null-count error {f(d_g1)} (limit 0.05)")
     else:
         ok = False
-        chk.append("the job of H29 on the same data is not available: checks (2) and (3) not computed")
+        chk.append("the job of H29 on the same data is not available with the same seeds: checks (2) and (3) not computed")
     out.append("H35, checks of the measurement: " + "; ".join(chk) + f": {'PASS' if ok else 'FAIL'}. Verdict on this realisation of the data: "
-               + ("MEASUREMENT INVALID (checks)" if not ok else
+               + ("INCOMPLETE (the seeds 0 to 4 do not all hold every law at every τ: no verdict)" if not complete else
+                  "MEASUREMENT INVALID (checks)" if not ok else
                   ("NOT REFUTED" if not (bad_a or bad_b or bad_c) else "REFUTED on " + "; ".join(
                       ([f"(a): {', '.join(bad_a)}"] if bad_a else []) + ([f"(b): {', '.join(bad_b)}"] if bad_b else [])
                       + (["(c): τ* of W16 is not smaller than that of G1"] if bad_c else [])))) + ".")

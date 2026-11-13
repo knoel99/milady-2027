@@ -1128,7 +1128,7 @@ def run(quick: bool, seed: int, group: str, device: str = "cpu", cond_scale: flo
         laws["REFX"] = {}
         for e, n in relax_etas:                                              # control: reference snapshots through the same code
             xe = D.load(e, quick)["x"]                                       # the raw snapshots are dropped by the context
-            pick = np.sort(gref.choice(len(xe), size=min(n, len(xe)), replace=False))
+            pick = gref.choice(len(xe), size=min(n, len(xe)), replace=False)   # unsorted: the first 200, used for the null count, cover all the trajectories
             laws["REFX"][e] = ctx.pot.field_hat(torch.as_tensor(xe[pick]))
         for law, fhs in laws.items():
             keep = taus if law != "REFX" else tuple(cfg["relax_ref"])
