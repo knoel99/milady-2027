@@ -7,6 +7,7 @@ Eight times, seeds 0-4. The per-seed error is the mean over times of
 
 from __future__ import annotations
 
+import argparse
 import json
 import sys
 from pathlib import Path
@@ -23,8 +24,12 @@ from milady.train.data import half_ball_modes
 
 
 def main() -> None:
+    parser = argparse.ArgumentParser()
+    parser.add_argument("--kmax", type=float, default=6.0)
+    parser.add_argument("--out", type=Path, default=None)
+    args = parser.parse_args()
     n = 16
-    kmax = 6.0
+    kmax = args.kmax
     modes = half_ball_modes(kmax)
     times = (0.25, 0.5, 0.75, 1.0, 1.25, 1.5, 1.75, 2.0)
     rows = []
@@ -44,7 +49,7 @@ def main() -> None:
         row = {"seed": seed, "relative_error": float(np.mean(errs)), "times": pairs}
         rows.append(row)
         print("seed", seed, row["relative_error"], flush=True)
-    dest = Path("experiments/results/cursor_nulls_midpoint_kmax6.json")
+    dest = args.out or Path(f"experiments/results/cursor_nulls_midpoint_kmax{kmax:g}.json")
     dest.write_text(json.dumps({"kmax": kmax, "n": n, "held_out_rm": 12.0, "seeds": rows}, indent=2) + "\n")
     print("wrote", dest)
 

@@ -2,6 +2,10 @@
 
 One entry per working session, newest first, at most ten lines.
 
+## 2026-11-13 - H166 refuted, team cursor
+- The kmax=6 midpoint misses the null-count bound. Mean relative error 0.172, above 0.1.
+- H167, the same comparison at kmax=7, is registered and not yet run.
+
 ## 2026-11-13 - H165 refuted, team cursor
 - The kmax=6 truncation still moves the null count. Mean relative error 0.160, above 0.1.
 - Two truncation widths missed 0.1, so that comparison is dropped.

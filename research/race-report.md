@@ -20,7 +20,8 @@ Status: open. The shared GPU budget is not exhausted. This file is a living reco
 - H158 and H159, supported. The same midpoint at kmax = 6 has mean C4 = 0.0093, below the kmax = 4 value and at most 0.1. H160, refuted. Mean C3 = 0.083, above 0.05. Mean C1 on this map is 0.014. File `experiments/results/cursor_constraint_midpoint_kmax6.json`.
 - H162, supported. Dynamic ABC, n = 16, t = 8, seeds 0-4. The mean absolute second-half total residual is 3.74e-6. H163, refuted. The mean absolute magnetic residual on the same window is 0.067. File `experiments/results/cursor_stationary.json`.
 - H164, refuted. Mean relative trilinear null-count error of the kmax = 4 truncation is 0.428, above 0.1. File `experiments/results/cursor_nulls.json`.
-- H165, refuted. The same comparison at kmax = 6 has mean relative error 0.160, still above 0.1. File `experiments/results/cursor_nulls_kmax6.json`. Two truncation widths missed the target, so that comparison is dropped. H166, the kmax = 6 midpoint against the held-out field, is registered and has no result yet.
+- H165, refuted. The same comparison at kmax = 6 has mean relative error 0.160, still above 0.1. File `experiments/results/cursor_nulls_kmax6.json`. Two truncation widths missed the target, so that comparison is dropped.
+- H166, refuted. The kmax = 6 midpoint against the held-out field has mean relative error 0.172, above 0.1. File `experiments/results/cursor_nulls_midpoint_kmax6.json`. H167 asks the same bound at kmax = 7 and has no result yet.
 - `experiments/results/cursor_metrics.json` quotes the kmax = 6 midpoint for C1, C2, and C4, the dynamic total balance for C3, and the null-count error for C5. C1 = 0.0140. C2 = 4.58e-16. C3 = 3.74e-6. C4 = 0.0093. C5 = 0.428.
 - The flow-matching runs stay near ratio 750. Their files are kept. They are not the numbers in `cursor_metrics.json` anymore.
 - T1, from `research/gpu-logs/bench-float32.log`: 0.0087 s/step at n = 128, float32. The target is 0.05 s/step.
@@ -39,7 +40,7 @@ Status: open. The shared GPU budget is not exhausted. This file is a living reco
 
 ## Remaining work
 
-- C1, C2, C3, and C4 meet their targets. C3 is the second-half total energy balance of a dynamic ABC ensemble, mean absolute residual 3.74e-6 (H162, supported). The magnetic residual on that window is 0.067 and misses 0.05 (H163, refuted). C5 is measured and misses 0.1. The kmax = 4 truncation has mean relative error 0.428 (H164, refuted) and the kmax = 6 truncation has 0.160 (H165, refuted). Those two truncation cycles are dropped. The quoted C5 remains 0.428 until H166, the midpoint null count, is scored. The count is implemented in `src/milady/eval/nulls.py`. C7 is 2. The flow-matching model does not meet C1.
+- C1, C2, C3, and C4 meet their targets. C3 is the second-half total energy balance of a dynamic ABC ensemble, mean absolute residual 3.74e-6 (H162, supported). The magnetic residual on that window is 0.067 and misses 0.05 (H163, refuted). C5 is measured and misses 0.1. The kmax = 4 truncation has mean relative error 0.428 (H164, refuted) and the kmax = 6 truncation has 0.160 (H165, refuted). Those two truncation cycles are dropped. The kmax = 6 midpoint also misses, at 0.172 (H166, refuted). The quoted C5 remains 0.428 until H167 is scored. The count is implemented in `src/milady/eval/nulls.py`. C7 is 2. The flow-matching model does not meet C1.
 - C6. H145 through H157 are five-seed constraint comparisons with a verdict. The target of 4 is met. The next comparison that can move an objective is C3 or C4, not another Rm sign.
 - C7. Two new modules, `constraints.py` and `nulls.py`, each named by a test. The target is 2.
 - T1. Already below the target on the measured bench. No further bench is planned.
