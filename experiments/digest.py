@@ -386,10 +386,13 @@ def e4():
     from e4_digest import convergence
 
     lines = section()
-    reps = [("e4_relax", "H35: G0, G1, the model with the affine term (W9) and its recoloured samples (W16) followed by a relaxation of 1, 2, 4 "
-                         "and 8 time units in the solver, with a control on reference snapshots: group X on RunPod GPU pods split by seed "
-                         "(assembled by e4_assemble.py), own regenerated data"),
-            ("e4_relax_indep", "H35 on the data of the independent replication (E4_DATA_SEED=100): group X"),
+    reps = [("e4_relax2", "H35, second cycle: G0, G1, the model with the affine term (W9) and its recoloured samples (W16) followed by a "
+                          "relaxation of 1, 2, 4 and 8 time units in the solver, with a control on reference snapshots; 512 restart states, "
+                          "which gives the reference statistics of the job of H29: group X on RunPod GPU pods split by seed (assembled by "
+                          "e4_assemble.py), own regenerated data"),
+            ("e4_relax_indep", "H35 on the data of the independent replication (E4_DATA_SEED=100), 512 restart states: group X"),
+            ("e4_relax", "H35, first cycle (128 restart states: the null count of the reference is taken on another draw of snapshots than "
+                         "in the job of H29, and check (3) of the measurement fails): group X on RunPod GPU pods split by seed"),
             ("e4_moretraj", "H36: G0, W9 and G1 on a data set with the same number of snapshots from four times the trajectories (96 "
                             "trajectories of 25 snapshots per η, E4_DATA_SEED=200): groups D and G on a RunPod GPU pod"),
             ("e4_trajsur", "H34: the model with the affine term trained on the data and on Gaussian trajectories with the lag-one "
