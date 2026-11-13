@@ -2,6 +2,12 @@
 
 One entry per working session, newest first, at most ten lines.
 
+## 2026-11-13 - H88 supported, H89 and H90 refuted, team cursor
+- n = 48 seeds 5-9 stay positive at Rm = 9.062614440917969. Smallest is 1.96e-8, seed 7. Pod `0ipf3qcxgzzqwr`, 0.0467 USD.
+- n = 32 seed 0 is negative at Rm = 9.052364349365234, lambda -1.06e-8. Pod `0hpfymeqdew2dx`, 0.0468 USD.
+- n = 64 seed 1 is negative at Rm = 9.059858322143555, lambda -4.82e-9, and positive at Rm = 9.059860229492188, lambda 7.00e-9. The cfl = 0.5 check differed by 2.7e-11. No further n = 64 split. Pod `jggunh2atv066z`, 0.0466 USD.
+- H91 and H92 ask the n = 48 and n = 32 midpoints. H93 asks n = 96 seeds 5-9 at Rm = 8.90625. H87 is still running.
+
 ## 2026-11-13 - H80 supported, H84 H85 H86 refuted, team cursor
 - n = 96 at Rm = 8.90625 is all positive. Smallest is 5.68e-5, seed 3. Pod `ka74qxg592d0hh`, 0.1002 USD.
 - n = 48 seed 7 is negative at the latest midpoint, lambda -2.80e-8. Pod `je3x33cpp1q2kv`, 0.0471 USD.
