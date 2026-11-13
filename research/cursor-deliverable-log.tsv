@@ -1,0 +1,4 @@
+ts	phase	decision	why	evidence	result
+2026-11-13T11:30:00Z	start	this run starts after the rows that are not in this file	the deliverable log is new for the M2 report and the trained generator	bc-986ba3af-6da0-5d4d-8f17-4e2c292d1008	open
+2026-11-13T11:30:01Z	frame	the exit check is check_deliverables --built, pdfinfo pages at least 30, weight and data links answering, race report and usage report current, no cursor pod, branch pushed, CI green, cursor GPU spend at most 70 USD	Kim named that predicate and said the interpolation quote is not the generator	race/DELIVERABLES.md	open
+2026-11-13T11:40:00Z	train	registered H168 before the GPU run	the one-seed probe is not a quoted result and the bound 1.2 is the C1 target	research/hypotheses.json	registered

@@ -2170,6 +2170,19 @@
       "verdict": "CONFIRMED",
       "results": "Mean over seeds of the per-seed mean relative error is 0.08397460868851093, at most 0.1. Seed means 0.1213924963924964, 0.07124732905982906, 0.10230654761904762, 0.06220858744835727, 0.0627180829228243. Eight times each. File experiments/results/cursor_nulls_midpoint_kmax7.json. The refutation criterion is not met.",
       "commit": ""
+    },
+    {
+      "id": "H168",
+      "statement": "The ResMLP conditional flow, the learned variant, with the sampling constraint applied after every Heun step, has a mean energy-distance ratio at most 1.2 at held-out Rm=12. The control is seeds 0-4 and the same eight times. The baseline is the linear Fourier midpoint at the same kmax.",
+      "origin": "Forty Adam steps on four raw snapshots left the ratio near 750. A one-seed unquoted probe with a normalized ResMLP reached 4.35. The bound 1.2 is the C1 target and is fixed before the five-seed GPU run.",
+      "refutation_criterion": "Refuted if any learned score is non-finite, or if the mean over seeds 0-4 of the learned energy-distance ratio exceeds 1.2.",
+      "protocol": "python3 experiments/cursor_fm_train.py --device cuda --steps 4000 --out-dir experiments/results/cursor_fm on a RunPod GPU. --quick is not a quoted result.",
+      "script": "experiments/cursor_fm_train.py",
+      "cost_estimate": "At most 1.5 h on an RTX 4090, about 1.34 USD. Cursor cumulative ceiling 70 USD.",
+      "status": "registered",
+      "verdict": "",
+      "results": "",
+      "commit": ""
     }
   ]
 }

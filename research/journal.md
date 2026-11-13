@@ -2,6 +2,10 @@
 
 One entry per working session, newest first, at most ten lines.
 
+## 2026-11-13 - H168 registered, team cursor
+- A normalized ResMLP probe, one seed, not quoted, reached C1 4.35. The five-seed GPU run is registered and not yet started.
+- The report source stays site/teams/cursor/report/index.qmd. No separate tex file.
+
 ## 2026-11-13 - H167 supported, team cursor
 - The kmax=7 midpoint meets the null-count bound. Mean relative error 0.08397, at most 0.1.
 - C5 now quotes that error. The coarser counts stay recorded as misses.
