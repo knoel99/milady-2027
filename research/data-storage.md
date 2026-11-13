@@ -9,6 +9,7 @@ Decision of 2026-11-12 (team claude), asked by `race/PILOT.md` before producing 
 | E4 snapshots: 11 files `eta_<η>.npz`, 2400 snapshots each, every Galerkin mode of the 16³ solver as Craya–Herring potentials (665 modes × 8 reals, float32, compressed) | 507 MB | `experiments/data_e4/` in the session container | no (`.gitignore`) |
 | E4 quick snapshots | 81 MB | `experiments/data_e4_quick/` | no |
 | Model weights kept for later evaluations (W4s and W5 per seed) | about 50 MB each | `experiments/data_e4/model_*.pt` | no |
+| E4 data set in the MFF format (`docs/specs/data-format.md` §10.1): 11 files `e4_eta<η>.h5`, fields u and B on the 16³ grid, diagnostics; written on 2026-11-13 by `python -m milady.data.convert e4` from the snapshots above | 2.1 GB | `experiments/data_e4_mff/` in the session container | no (`.gitignore`); checksums, sample and catalogue in `research/release/` |
 | Summaries, per-seed results, reference statistics, digest, logs of the GPU jobs, compute ledger | under 5 MB in all | `experiments/results/`, `research/` | yes |
 
 No file above 50 MB is committed. Nothing is uploaded to an object store: the pilot has no storage budget
@@ -36,3 +37,11 @@ CPU) and the models retrained (about 1 h of one core per seed and group). After 
 copy disappears; the committed summaries and scripts remain. If a later experiment needs more than a few
 GB (32³ or 64³ fields), the plan is the MFF/Zarr format of `docs/specs/data-format.md` with
 `src/milady/storage.py` on an S3 bucket, which needs a storage budget from the owner.
+
+## Release (2026-11-13)
+
+`research/release/` holds what a release of the E4 data needs and what fits in the repository: `manifest.json` and
+`SHA256SUMS` (path, size and SHA-256 of every file), a sample file, the catalogue of the data set and of the cited models
+(`catalog.sqlite`, `catalog.json`) and the upload command (`README.md`). The session cannot create a GitHub release or reach
+an object store; the 11 data files stay in the container until someone uploads them. The weights of the trained models were
+not kept (the pods are deleted after each job); `E4_SAVE_MODELS=1` on a job now brings them back with the outputs.

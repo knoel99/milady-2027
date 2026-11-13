@@ -1,0 +1,1628 @@
+{
+ "campaigns": [
+  {
+   "id": "1c54f6f8-b666-4f32-af44-4de006a4c720",
+   "name": "e4_mhd3d",
+   "description": "E4: saturated 3D MHD dynamo, constant ABC forcing at kf = 2, ν = 0.05 (Re = 10), 11 magnetic diffusivities η from 0.08 to 0.03, 16³ grid, 24 trajectories × 100 snapshots per η.",
+   "config_yaml": "source: experiments/e4_data.py\n",
+   "created_at": "2026-11-13 23:51:46.602892+00:00",
+   "counts": {
+    "done": 11
+   }
+  }
+ ],
+ "dataset": {
+  "name": "e4_mhd3d",
+  "version": "1.0",
+  "files": [
+   {
+    "id": "f8c8f6f4-a595-4377-a3ce-820d6f330f45",
+    "uri": "file:///home/user/milady-2027/experiments/data_e4_mff/e4_eta0.03000.h5",
+    "sha256": "463dbda2fab7f01111eee64a709544b6d485401f59c28cf2a433fe1c6d2e5f37",
+    "size_bytes": 203749721,
+    "split": "train",
+    "simulation_id": "6eb4580d-51c0-45ab-9e55-6e9b56a1a9c4"
+   },
+   {
+    "id": "a8e39f67-a88c-4702-91c3-831fdfd8627a",
+    "uri": "file:///home/user/milady-2027/experiments/data_e4_mff/e4_eta0.03309.h5",
+    "sha256": "0149f2959b7a16df59e5fa162ee56040cec436a27fc4863526d8f143b9a4a769",
+    "size_bytes": 203604564,
+    "split": "test",
+    "simulation_id": "967c5098-aa42-4040-a938-b77d8807589a"
+   },
+   {
+    "id": "d7ce65f8-428d-4752-9152-ee4b3cbf0ab3",
+    "uri": "file:///home/user/milady-2027/experiments/data_e4_mff/e4_eta0.03650.h5",
+    "sha256": "e9ee1b4c38872e97bf71447d1ee27549f07fc8d85de09e67f91553596107ac5e",
+    "size_bytes": 203483354,
+    "split": "train",
+    "simulation_id": "13f4da2f-7e25-48de-981b-93eb7bae1994"
+   },
+   {
+    "id": "4ab4f9b0-d093-414f-9064-7f2556eda4e5",
+    "uri": "file:///home/user/milady-2027/experiments/data_e4_mff/e4_eta0.04026.h5",
+    "sha256": "9682807ddb3fb6d8c21c74926435ca64dffbc8aab3d3d0eacf90fc501ba5d407",
+    "size_bytes": 203476940,
+    "split": "val",
+    "simulation_id": "a5668a67-cbe2-4e5d-b9bc-8e1158fffc2e"
+   },
+   {
+    "id": "a26273f9-405f-4b0a-b804-9ce5c49adc94",
+    "uri": "file:///home/user/milady-2027/experiments/data_e4_mff/e4_eta0.04441.h5",
+    "sha256": "b5cc71e1a4bd0310914fc14af1e62bb75976aa00c5fd7418c440bcff73732813",
+    "size_bytes": 203360109,
+    "split": "train",
+    "simulation_id": "2145fcc7-87ad-4d20-9961-60130d7cd571"
+   },
+   {
+    "id": "b6859581-688e-4df2-b3a6-ff53129cc2bd",
+    "uri": "file:///home/user/milady-2027/experiments/data_e4_mff/e4_eta0.04899.h5",
+    "sha256": "5c6f60276425533e682a0a113b82f7c7ff88699f6f8ae04afed25427b8040c38",
+    "size_bytes": 203241443,
+    "split": "test",
+    "simulation_id": "a975fef6-6355-4f11-98ee-a468e3f4e012"
+   },
+   {
+    "id": "0ceac47f-bd7c-49f3-8182-9e7dcc3d05dc",
+    "uri": "file:///home/user/milady-2027/experiments/data_e4_mff/e4_eta0.05404.h5",
+    "sha256": "dc8bf3ad86f78f5fd0ff24b319b8a121e1760b02a0363bd5e81eb0764cf4d4c6",
+    "size_bytes": 203062290,
+    "split": "train",
+    "simulation_id": "e65dfe9d-966c-44ca-a83e-865610f0bc96"
+   },
+   {
+    "id": "e4c666ef-c180-4281-9b67-b5f64c705fcb",
+    "uri": "file:///home/user/milady-2027/experiments/data_e4_mff/e4_eta0.05961.h5",
+    "sha256": "d1cd66ecdc491527cb71262b62916b2714dffb5b87a7401be0f953d21a4211a2",
+    "size_bytes": 203013565,
+    "split": "val",
+    "simulation_id": "6fc972cf-6ee4-4f2b-a5a7-83e9e96226e4"
+   },
+   {
+    "id": "3697879c-e738-4e0f-9f5a-f608d532a7ab",
+    "uri": "file:///home/user/milady-2027/experiments/data_e4_mff/e4_eta0.06575.h5",
+    "sha256": "1c055ff0039a4c8d259083f33e50fdd60418693556c46a07faf7511722f39ddc",
+    "size_bytes": 202889920,
+    "split": "train",
+    "simulation_id": "8c9cd35a-dbbe-412d-bf63-753ccdb91de9"
+   },
+   {
+    "id": "1254ff8c-153f-4da7-98c0-3ed116439117",
+    "uri": "file:///home/user/milady-2027/experiments/data_e4_mff/e4_eta0.07253.h5",
+    "sha256": "7edf21226c5e0f772a5046f6f61a02328152c339b8c66909ddba65db685f0a12",
+    "size_bytes": 202794757,
+    "split": "test",
+    "simulation_id": "3e03f22a-28b8-4b72-81eb-941c63136e0d"
+   },
+   {
+    "id": "b953c5a4-4eee-4f28-bb02-4d0e1b0aa5d0",
+    "uri": "file:///home/user/milady-2027/experiments/data_e4_mff/e4_eta0.08000.h5",
+    "sha256": "cc25066cb2f755cd61876b02365b9a75b270c33699839a5334404fc0eba8bd64",
+    "size_bytes": 202642305,
+    "split": "train",
+    "simulation_id": "b23f2a44-8672-4477-870e-f23866b30b99"
+   }
+  ]
+ },
+ "simulations": [
+  {
+   "id": "b23f2a44-8672-4477-870e-f23866b30b99",
+   "code": "mhd3d_torch",
+   "parameters": {
+    "Pm": 0.625,
+    "Re": 10.0,
+    "Rm": 6.25,
+    "abc": [
+     1.0,
+     1.0,
+     1.0
+    ],
+    "eta": 0.08,
+    "forcing": "ABC",
+    "kf": 2.0,
+    "nu": 0.05
+   },
+   "grid": {
+    "bc": [
+     "periodic"
+    ],
+    "dims": [
+     "x",
+     "y",
+     "z"
+    ],
+    "lengths": [
+     6.283185323079427,
+     6.283185323079427,
+     6.283185323079427
+    ],
+    "n_spatial_dims": 3,
+    "n_t": 100,
+    "n_trajectories": 24,
+    "shape": [
+     16,
+     16,
+     16
+    ],
+    "t_end": 400.0,
+    "t_start": 202.0,
+    "type": "cartesian"
+   },
+   "status": "done",
+   "git_commit": "5eab4ed94a34"
+  },
+  {
+   "id": "3e03f22a-28b8-4b72-81eb-941c63136e0d",
+   "code": "mhd3d_torch",
+   "parameters": {
+    "Pm": 0.6894079364641647,
+    "Re": 10.0,
+    "Rm": 6.894079364641646,
+    "abc": [
+     1.0,
+     1.0,
+     1.0
+    ],
+    "eta": 0.072526,
+    "forcing": "ABC",
+    "kf": 2.0,
+    "nu": 0.05
+   },
+   "grid": {
+    "bc": [
+     "periodic"
+    ],
+    "dims": [
+     "x",
+     "y",
+     "z"
+    ],
+    "lengths": [
+     6.283185323079427,
+     6.283185323079427,
+     6.283185323079427
+    ],
+    "n_spatial_dims": 3,
+    "n_t": 100,
+    "n_trajectories": 24,
+    "shape": [
+     16,
+     16,
+     16
+    ],
+    "t_end": 400.0,
+    "t_start": 202.0,
+    "type": "cartesian"
+   },
+   "status": "done",
+   "git_commit": "5eab4ed94a34"
+  },
+  {
+   "id": "8c9cd35a-dbbe-412d-bf63-753ccdb91de9",
+   "code": "mhd3d_torch",
+   "parameters": {
+    "Pm": 0.7604562737642586,
+    "Re": 10.0,
+    "Rm": 7.604562737642585,
+    "abc": [
+     1.0,
+     1.0,
+     1.0
+    ],
+    "eta": 0.06575,
+    "forcing": "ABC",
+    "kf": 2.0,
+    "nu": 0.05
+   },
+   "grid": {
+    "bc": [
+     "periodic"
+    ],
+    "dims": [
+     "x",
+     "y",
+     "z"
+    ],
+    "lengths": [
+     6.283185323079427,
+     6.283185323079427,
+     6.283185323079427
+    ],
+    "n_spatial_dims": 3,
+    "n_t": 100,
+    "n_trajectories": 24,
+    "shape": [
+     16,
+     16,
+     16
+    ],
+    "t_end": 400.0,
+    "t_start": 202.0,
+    "type": "cartesian"
+   },
+   "status": "done",
+   "git_commit": "5eab4ed94a34"
+  },
+  {
+   "id": "6fc972cf-6ee4-4f2b-a5a7-83e9e96226e4",
+   "code": "mhd3d_torch",
+   "parameters": {
+    "Pm": 0.8388276544701126,
+    "Re": 10.0,
+    "Rm": 8.388276544701126,
+    "abc": [
+     1.0,
+     1.0,
+     1.0
+    ],
+    "eta": 0.059607,
+    "forcing": "ABC",
+    "kf": 2.0,
+    "nu": 0.05
+   },
+   "grid": {
+    "bc": [
+     "periodic"
+    ],
+    "dims": [
+     "x",
+     "y",
+     "z"
+    ],
+    "lengths": [
+     6.283185323079427,
+     6.283185323079427,
+     6.283185323079427
+    ],
+    "n_spatial_dims": 3,
+    "n_t": 100,
+    "n_trajectories": 24,
+    "shape": [
+     16,
+     16,
+     16
+    ],
+    "t_end": 400.0,
+    "t_start": 202.0,
+    "type": "cartesian"
+   },
+   "status": "done",
+   "git_commit": "5eab4ed94a34"
+  },
+  {
+   "id": "e65dfe9d-966c-44ca-a83e-865610f0bc96",
+   "code": "mhd3d_torch",
+   "parameters": {
+    "Pm": 0.9252748066175654,
+    "Re": 10.0,
+    "Rm": 9.252748066175654,
+    "abc": [
+     1.0,
+     1.0,
+     1.0
+    ],
+    "eta": 0.054038,
+    "forcing": "ABC",
+    "kf": 2.0,
+    "nu": 0.05
+   },
+   "grid": {
+    "bc": [
+     "periodic"
+    ],
+    "dims": [
+     "x",
+     "y",
+     "z"
+    ],
+    "lengths": [
+     6.283185323079427,
+     6.283185323079427,
+     6.283185323079427
+    ],
+    "n_spatial_dims": 3,
+    "n_t": 100,
+    "n_trajectories": 24,
+    "shape": [
+     16,
+     16,
+     16
+    ],
+    "t_end": 400.0,
+    "t_start": 202.0,
+    "type": "cartesian"
+   },
+   "status": "done",
+   "git_commit": "5eab4ed94a34"
+  },
+  {
+   "id": "a975fef6-6355-4f11-98ee-a468e3f4e012",
+   "code": "mhd3d_torch",
+   "parameters": {
+    "Pm": 1.0206164523372117,
+    "Re": 10.0,
+    "Rm": 10.206164523372117,
+    "abc": [
+     1.0,
+     1.0,
+     1.0
+    ],
+    "eta": 0.04899,
+    "forcing": "ABC",
+    "kf": 2.0,
+    "nu": 0.05
+   },
+   "grid": {
+    "bc": [
+     "periodic"
+    ],
+    "dims": [
+     "x",
+     "y",
+     "z"
+    ],
+    "lengths": [
+     6.283185323079427,
+     6.283185323079427,
+     6.283185323079427
+    ],
+    "n_spatial_dims": 3,
+    "n_t": 100,
+    "n_trajectories": 24,
+    "shape": [
+     16,
+     16,
+     16
+    ],
+    "t_end": 400.0,
+    "t_start": 202.0,
+    "type": "cartesian"
+   },
+   "status": "done",
+   "git_commit": "5eab4ed94a34"
+  },
+  {
+   "id": "2145fcc7-87ad-4d20-9961-60130d7cd571",
+   "code": "mhd3d_torch",
+   "parameters": {
+    "Pm": 1.1257965010244748,
+    "Re": 10.0,
+    "Rm": 11.257965010244748,
+    "abc": [
+     1.0,
+     1.0,
+     1.0
+    ],
+    "eta": 0.044413,
+    "forcing": "ABC",
+    "kf": 2.0,
+    "nu": 0.05
+   },
+   "grid": {
+    "bc": [
+     "periodic"
+    ],
+    "dims": [
+     "x",
+     "y",
+     "z"
+    ],
+    "lengths": [
+     6.283185323079427,
+     6.283185323079427,
+     6.283185323079427
+    ],
+    "n_spatial_dims": 3,
+    "n_t": 100,
+    "n_trajectories": 24,
+    "shape": [
+     16,
+     16,
+     16
+    ],
+    "t_end": 400.0,
+    "t_start": 202.0,
+    "type": "cartesian"
+   },
+   "status": "done",
+   "git_commit": "5eab4ed94a34"
+  },
+  {
+   "id": "a5668a67-cbe2-4e5d-b9bc-8e1158fffc2e",
+   "code": "mhd3d_torch",
+   "parameters": {
+    "Pm": 1.2418040929862906,
+    "Re": 10.0,
+    "Rm": 12.418040929862904,
+    "abc": [
+     1.0,
+     1.0,
+     1.0
+    ],
+    "eta": 0.040264,
+    "forcing": "ABC",
+    "kf": 2.0,
+    "nu": 0.05
+   },
+   "grid": {
+    "bc": [
+     "periodic"
+    ],
+    "dims": [
+     "x",
+     "y",
+     "z"
+    ],
+    "lengths": [
+     6.283185323079427,
+     6.283185323079427,
+     6.283185323079427
+    ],
+    "n_spatial_dims": 3,
+    "n_t": 100,
+    "n_trajectories": 24,
+    "shape": [
+     16,
+     16,
+     16
+    ],
+    "t_end": 400.0,
+    "t_start": 202.0,
+    "type": "cartesian"
+   },
+   "status": "done",
+   "git_commit": "5eab4ed94a34"
+  },
+  {
+   "id": "13f4da2f-7e25-48de-981b-93eb7bae1994",
+   "code": "mhd3d_torch",
+   "parameters": {
+    "Pm": 1.3697879568242837,
+    "Re": 10.0,
+    "Rm": 13.697879568242836,
+    "abc": [
+     1.0,
+     1.0,
+     1.0
+    ],
+    "eta": 0.036502,
+    "forcing": "ABC",
+    "kf": 2.0,
+    "nu": 0.05
+   },
+   "grid": {
+    "bc": [
+     "periodic"
+    ],
+    "dims": [
+     "x",
+     "y",
+     "z"
+    ],
+    "lengths": [
+     6.283185323079427,
+     6.283185323079427,
+     6.283185323079427
+    ],
+    "n_spatial_dims": 3,
+    "n_t": 100,
+    "n_trajectories": 24,
+    "shape": [
+     16,
+     16,
+     16
+    ],
+    "t_end": 400.0,
+    "t_start": 202.0,
+    "type": "cartesian"
+   },
+   "status": "done",
+   "git_commit": "5eab4ed94a34"
+  },
+  {
+   "id": "967c5098-aa42-4040-a938-b77d8807589a",
+   "code": "mhd3d_torch",
+   "parameters": {
+    "Pm": 1.5109391998065997,
+    "Re": 10.0,
+    "Rm": 15.109391998065997,
+    "abc": [
+     1.0,
+     1.0,
+     1.0
+    ],
+    "eta": 0.033092,
+    "forcing": "ABC",
+    "kf": 2.0,
+    "nu": 0.05
+   },
+   "grid": {
+    "bc": [
+     "periodic"
+    ],
+    "dims": [
+     "x",
+     "y",
+     "z"
+    ],
+    "lengths": [
+     6.283185323079427,
+     6.283185323079427,
+     6.283185323079427
+    ],
+    "n_spatial_dims": 3,
+    "n_t": 100,
+    "n_trajectories": 24,
+    "shape": [
+     16,
+     16,
+     16
+    ],
+    "t_end": 400.0,
+    "t_start": 202.0,
+    "type": "cartesian"
+   },
+   "status": "done",
+   "git_commit": "5eab4ed94a34"
+  },
+  {
+   "id": "6eb4580d-51c0-45ab-9e55-6e9b56a1a9c4",
+   "code": "mhd3d_torch",
+   "parameters": {
+    "Pm": 1.6666666666666667,
+    "Re": 10.0,
+    "Rm": 16.666666666666668,
+    "abc": [
+     1.0,
+     1.0,
+     1.0
+    ],
+    "eta": 0.03,
+    "forcing": "ABC",
+    "kf": 2.0,
+    "nu": 0.05
+   },
+   "grid": {
+    "bc": [
+     "periodic"
+    ],
+    "dims": [
+     "x",
+     "y",
+     "z"
+    ],
+    "lengths": [
+     6.283185323079427,
+     6.283185323079427,
+     6.283185323079427
+    ],
+    "n_spatial_dims": 3,
+    "n_t": 100,
+    "n_trajectories": 24,
+    "shape": [
+     16,
+     16,
+     16
+    ],
+    "t_end": 400.0,
+    "t_start": 202.0,
+    "type": "cartesian"
+   },
+   "status": "done",
+   "git_commit": "5eab4ed94a34-dirty"
+  }
+ ],
+ "models": [
+  {
+   "id": "c6197427-68de-433d-86fb-e7fb2daae6bb",
+   "name": "e4/G0/seed0",
+   "law": "G0",
+   "variant": "G0_gaussian_modes",
+   "run": "e4_nongauss",
+   "seed": 0,
+   "architecture": "Gaussian law, one 8 × 8 covariance per Fourier mode, interpolated in η",
+   "constraint_mechanism": "vector potentials (zero divergence by design); B → −B symmetry of the covariance",
+   "weights": "closed form: milady.train.constraints.ModewiseGaussian(sign=…).fit(x_train, c_train), refitted from the data set in under 1 s",
+   "regenerate": "python3 tools/runpod_job.py run --hours 1.9 --outputs experiments/results/replications/e4_nongauss -- env E4_SAME_DATA=1 E4_SAVE_MODELS=1 bash experiments/e4_gpu_job.sh full '0 1 2 3 4' e4_nongauss D,E,G,N",
+   "result_file": "experiments/results/replications/e4_nongauss/e4_mhd3d_s0.json",
+   "evaluations": 36
+  },
+  {
+   "id": "9be99ef5-c902-4252-ae29-c64f6d075012",
+   "name": "e4/G0/seed1",
+   "law": "G0",
+   "variant": "G0_gaussian_modes",
+   "run": "e4_nongauss",
+   "seed": 1,
+   "architecture": "Gaussian law, one 8 × 8 covariance per Fourier mode, interpolated in η",
+   "constraint_mechanism": "vector potentials (zero divergence by design); B → −B symmetry of the covariance",
+   "weights": "closed form: milady.train.constraints.ModewiseGaussian(sign=…).fit(x_train, c_train), refitted from the data set in under 1 s",
+   "regenerate": "python3 tools/runpod_job.py run --hours 1.9 --outputs experiments/results/replications/e4_nongauss -- env E4_SAME_DATA=1 E4_SAVE_MODELS=1 bash experiments/e4_gpu_job.sh full '0 1 2 3 4' e4_nongauss D,E,G,N",
+   "result_file": "experiments/results/replications/e4_nongauss/e4_mhd3d_s1.json",
+   "evaluations": 36
+  },
+  {
+   "id": "dd1d551f-d850-4c34-a218-33cf0c79ed7f",
+   "name": "e4/G0/seed2",
+   "law": "G0",
+   "variant": "G0_gaussian_modes",
+   "run": "e4_nongauss",
+   "seed": 2,
+   "architecture": "Gaussian law, one 8 × 8 covariance per Fourier mode, interpolated in η",
+   "constraint_mechanism": "vector potentials (zero divergence by design); B → −B symmetry of the covariance",
+   "weights": "closed form: milady.train.constraints.ModewiseGaussian(sign=…).fit(x_train, c_train), refitted from the data set in under 1 s",
+   "regenerate": "python3 tools/runpod_job.py run --hours 1.9 --outputs experiments/results/replications/e4_nongauss -- env E4_SAME_DATA=1 E4_SAVE_MODELS=1 bash experiments/e4_gpu_job.sh full '0 1 2 3 4' e4_nongauss D,E,G,N",
+   "result_file": "experiments/results/replications/e4_nongauss/e4_mhd3d_s2.json",
+   "evaluations": 36
+  },
+  {
+   "id": "be9db573-87dd-4354-8356-85d5cf80e44e",
+   "name": "e4/G0/seed3",
+   "law": "G0",
+   "variant": "G0_gaussian_modes",
+   "run": "e4_nongauss",
+   "seed": 3,
+   "architecture": "Gaussian law, one 8 × 8 covariance per Fourier mode, interpolated in η",
+   "constraint_mechanism": "vector potentials (zero divergence by design); B → −B symmetry of the covariance",
+   "weights": "closed form: milady.train.constraints.ModewiseGaussian(sign=…).fit(x_train, c_train), refitted from the data set in under 1 s",
+   "regenerate": "python3 tools/runpod_job.py run --hours 1.9 --outputs experiments/results/replications/e4_nongauss -- env E4_SAME_DATA=1 E4_SAVE_MODELS=1 bash experiments/e4_gpu_job.sh full '0 1 2 3 4' e4_nongauss D,E,G,N",
+   "result_file": "experiments/results/replications/e4_nongauss/e4_mhd3d_s3.json",
+   "evaluations": 36
+  },
+  {
+   "id": "7a01c571-d730-44e1-940e-88265f6b8805",
+   "name": "e4/G0/seed4",
+   "law": "G0",
+   "variant": "G0_gaussian_modes",
+   "run": "e4_nongauss",
+   "seed": 4,
+   "architecture": "Gaussian law, one 8 × 8 covariance per Fourier mode, interpolated in η",
+   "constraint_mechanism": "vector potentials (zero divergence by design); B → −B symmetry of the covariance",
+   "weights": "closed form: milady.train.constraints.ModewiseGaussian(sign=…).fit(x_train, c_train), refitted from the data set in under 1 s",
+   "regenerate": "python3 tools/runpod_job.py run --hours 1.9 --outputs experiments/results/replications/e4_nongauss -- env E4_SAME_DATA=1 E4_SAVE_MODELS=1 bash experiments/e4_gpu_job.sh full '0 1 2 3 4' e4_nongauss D,E,G,N",
+   "result_file": "experiments/results/replications/e4_nongauss/e4_mhd3d_s4.json",
+   "evaluations": 36
+  },
+  {
+   "id": "d690b873-0ab0-4b6f-8099-ea84f44d1b61",
+   "name": "e4/G1/seed0",
+   "law": "G1",
+   "variant": "G1_gaussian_full",
+   "run": "e4_recolour",
+   "seed": 0,
+   "architecture": "Gaussian law, full 5320 × 5320 sample covariance per training η, interpolated in η",
+   "constraint_mechanism": "vector potentials (zero divergence by design); B → −B symmetry of the covariance",
+   "weights": "closed form: milady.train.constraints.FullGaussian(sign=…).fit(x_train, c_train), refitted from the data set in under 1 s",
+   "regenerate": "python3 tools/runpod_job.py run --hours 1.9 --outputs experiments/results/replications/e4_recolour -- env E4_SAME_DATA=1 E4_SAVE_MODELS=1 bash experiments/e4_gpu_job.sh full '0 1 2 3 4' e4_recolour G,T,R",
+   "result_file": "experiments/results/replications/e4_recolour/e4_mhd3d_s0.json",
+   "evaluations": 36
+  },
+  {
+   "id": "a5b925e3-ee05-45f4-9ba4-46468721caac",
+   "name": "e4/G1/seed1",
+   "law": "G1",
+   "variant": "G1_gaussian_full",
+   "run": "e4_recolour",
+   "seed": 1,
+   "architecture": "Gaussian law, full 5320 × 5320 sample covariance per training η, interpolated in η",
+   "constraint_mechanism": "vector potentials (zero divergence by design); B → −B symmetry of the covariance",
+   "weights": "closed form: milady.train.constraints.FullGaussian(sign=…).fit(x_train, c_train), refitted from the data set in under 1 s",
+   "regenerate": "python3 tools/runpod_job.py run --hours 1.9 --outputs experiments/results/replications/e4_recolour -- env E4_SAME_DATA=1 E4_SAVE_MODELS=1 bash experiments/e4_gpu_job.sh full '0 1 2 3 4' e4_recolour G,T,R",
+   "result_file": "experiments/results/replications/e4_recolour/e4_mhd3d_s1.json",
+   "evaluations": 36
+  },
+  {
+   "id": "3ae6e44d-c6df-4c35-85be-8af163e1933a",
+   "name": "e4/G1/seed2",
+   "law": "G1",
+   "variant": "G1_gaussian_full",
+   "run": "e4_recolour",
+   "seed": 2,
+   "architecture": "Gaussian law, full 5320 × 5320 sample covariance per training η, interpolated in η",
+   "constraint_mechanism": "vector potentials (zero divergence by design); B → −B symmetry of the covariance",
+   "weights": "closed form: milady.train.constraints.FullGaussian(sign=…).fit(x_train, c_train), refitted from the data set in under 1 s",
+   "regenerate": "python3 tools/runpod_job.py run --hours 1.9 --outputs experiments/results/replications/e4_recolour -- env E4_SAME_DATA=1 E4_SAVE_MODELS=1 bash experiments/e4_gpu_job.sh full '0 1 2 3 4' e4_recolour G,T,R",
+   "result_file": "experiments/results/replications/e4_recolour/e4_mhd3d_s2.json",
+   "evaluations": 36
+  },
+  {
+   "id": "cc4d05ce-f7f1-433c-9588-4af41ac6cbe1",
+   "name": "e4/G1/seed3",
+   "law": "G1",
+   "variant": "G1_gaussian_full",
+   "run": "e4_recolour",
+   "seed": 3,
+   "architecture": "Gaussian law, full 5320 × 5320 sample covariance per training η, interpolated in η",
+   "constraint_mechanism": "vector potentials (zero divergence by design); B → −B symmetry of the covariance",
+   "weights": "closed form: milady.train.constraints.FullGaussian(sign=…).fit(x_train, c_train), refitted from the data set in under 1 s",
+   "regenerate": "python3 tools/runpod_job.py run --hours 1.9 --outputs experiments/results/replications/e4_recolour -- env E4_SAME_DATA=1 E4_SAVE_MODELS=1 bash experiments/e4_gpu_job.sh full '0 1 2 3 4' e4_recolour G,T,R",
+   "result_file": "experiments/results/replications/e4_recolour/e4_mhd3d_s3.json",
+   "evaluations": 36
+  },
+  {
+   "id": "bc210410-49b7-45d2-9a0e-0e4318f914fb",
+   "name": "e4/G1/seed4",
+   "law": "G1",
+   "variant": "G1_gaussian_full",
+   "run": "e4_recolour",
+   "seed": 4,
+   "architecture": "Gaussian law, full 5320 × 5320 sample covariance per training η, interpolated in η",
+   "constraint_mechanism": "vector potentials (zero divergence by design); B → −B symmetry of the covariance",
+   "weights": "closed form: milady.train.constraints.FullGaussian(sign=…).fit(x_train, c_train), refitted from the data set in under 1 s",
+   "regenerate": "python3 tools/runpod_job.py run --hours 1.9 --outputs experiments/results/replications/e4_recolour -- env E4_SAME_DATA=1 E4_SAVE_MODELS=1 bash experiments/e4_gpu_job.sh full '0 1 2 3 4' e4_recolour G,T,R",
+   "result_file": "experiments/results/replications/e4_recolour/e4_mhd3d_s4.json",
+   "evaluations": 36
+  },
+  {
+   "id": "e4f3bf0d-da56-4032-bb26-7783521de25e",
+   "name": "e4/W9/seed0",
+   "law": "W9",
+   "variant": "W9R_skip_sym",
+   "run": "e4_recolour",
+   "seed": 0,
+   "architecture": "conditional flow matching on the potentials: ResMLP (width 512, depth 4) plus an explicit mode-wise affine term",
+   "constraint_mechanism": "vector potentials (zero divergence by design); velocity field equivariant under B → −B",
+   "weights": "not kept (the pod of the job was deleted); retrained by the job below in about 1 min per seed on a GPU",
+   "regenerate": "python3 tools/runpod_job.py run --hours 1.9 --outputs experiments/results/replications/e4_recolour -- env E4_SAME_DATA=1 E4_SAVE_MODELS=1 bash experiments/e4_gpu_job.sh full '0 1 2 3 4' e4_recolour G,T,R",
+   "result_file": "experiments/results/replications/e4_recolour/e4_mhd3d_s0.json",
+   "evaluations": 36
+  },
+  {
+   "id": "1a3308a3-3f86-4fda-90c6-6c62138646b8",
+   "name": "e4/W9/seed1",
+   "law": "W9",
+   "variant": "W9R_skip_sym",
+   "run": "e4_recolour",
+   "seed": 1,
+   "architecture": "conditional flow matching on the potentials: ResMLP (width 512, depth 4) plus an explicit mode-wise affine term",
+   "constraint_mechanism": "vector potentials (zero divergence by design); velocity field equivariant under B → −B",
+   "weights": "not kept (the pod of the job was deleted); retrained by the job below in about 1 min per seed on a GPU",
+   "regenerate": "python3 tools/runpod_job.py run --hours 1.9 --outputs experiments/results/replications/e4_recolour -- env E4_SAME_DATA=1 E4_SAVE_MODELS=1 bash experiments/e4_gpu_job.sh full '0 1 2 3 4' e4_recolour G,T,R",
+   "result_file": "experiments/results/replications/e4_recolour/e4_mhd3d_s1.json",
+   "evaluations": 36
+  },
+  {
+   "id": "891ba88b-78f6-4bff-8870-6d3bbda5beba",
+   "name": "e4/W9/seed2",
+   "law": "W9",
+   "variant": "W9R_skip_sym",
+   "run": "e4_recolour",
+   "seed": 2,
+   "architecture": "conditional flow matching on the potentials: ResMLP (width 512, depth 4) plus an explicit mode-wise affine term",
+   "constraint_mechanism": "vector potentials (zero divergence by design); velocity field equivariant under B → −B",
+   "weights": "not kept (the pod of the job was deleted); retrained by the job below in about 1 min per seed on a GPU",
+   "regenerate": "python3 tools/runpod_job.py run --hours 1.9 --outputs experiments/results/replications/e4_recolour -- env E4_SAME_DATA=1 E4_SAVE_MODELS=1 bash experiments/e4_gpu_job.sh full '0 1 2 3 4' e4_recolour G,T,R",
+   "result_file": "experiments/results/replications/e4_recolour/e4_mhd3d_s2.json",
+   "evaluations": 36
+  },
+  {
+   "id": "9e32a602-3097-49aa-912a-4150fb2a9b4c",
+   "name": "e4/W9/seed3",
+   "law": "W9",
+   "variant": "W9R_skip_sym",
+   "run": "e4_recolour",
+   "seed": 3,
+   "architecture": "conditional flow matching on the potentials: ResMLP (width 512, depth 4) plus an explicit mode-wise affine term",
+   "constraint_mechanism": "vector potentials (zero divergence by design); velocity field equivariant under B → −B",
+   "weights": "not kept (the pod of the job was deleted); retrained by the job below in about 1 min per seed on a GPU",
+   "regenerate": "python3 tools/runpod_job.py run --hours 1.9 --outputs experiments/results/replications/e4_recolour -- env E4_SAME_DATA=1 E4_SAVE_MODELS=1 bash experiments/e4_gpu_job.sh full '0 1 2 3 4' e4_recolour G,T,R",
+   "result_file": "experiments/results/replications/e4_recolour/e4_mhd3d_s3.json",
+   "evaluations": 36
+  },
+  {
+   "id": "305cb0ef-0d9a-45d2-9c85-0637bd986847",
+   "name": "e4/W9/seed4",
+   "law": "W9",
+   "variant": "W9R_skip_sym",
+   "run": "e4_recolour",
+   "seed": 4,
+   "architecture": "conditional flow matching on the potentials: ResMLP (width 512, depth 4) plus an explicit mode-wise affine term",
+   "constraint_mechanism": "vector potentials (zero divergence by design); velocity field equivariant under B → −B",
+   "weights": "not kept (the pod of the job was deleted); retrained by the job below in about 1 min per seed on a GPU",
+   "regenerate": "python3 tools/runpod_job.py run --hours 1.9 --outputs experiments/results/replications/e4_recolour -- env E4_SAME_DATA=1 E4_SAVE_MODELS=1 bash experiments/e4_gpu_job.sh full '0 1 2 3 4' e4_recolour G,T,R",
+   "result_file": "experiments/results/replications/e4_recolour/e4_mhd3d_s4.json",
+   "evaluations": 36
+  },
+  {
+   "id": "455481c0-39d1-4ec4-9607-a2c3e9d6c334",
+   "name": "e4/W16/seed0",
+   "law": "W16",
+   "variant": "W16_recoloured_full",
+   "run": "e4_recolour",
+   "seed": 0,
+   "architecture": "samples of W9 sent through the linear map that gives them the mean and covariance of G1 (estimated on 131 072 samples per η)",
+   "constraint_mechanism": "vector potentials; first two moments of the law imposed at sampling time",
+   "weights": "no weights of its own: W9 plus the map, recomputed at sampling time",
+   "regenerate": "python3 tools/runpod_job.py run --hours 1.9 --outputs experiments/results/replications/e4_recolour -- env E4_SAME_DATA=1 E4_SAVE_MODELS=1 bash experiments/e4_gpu_job.sh full '0 1 2 3 4' e4_recolour G,T,R",
+   "result_file": "experiments/results/replications/e4_recolour/e4_mhd3d_s0.json",
+   "evaluations": 36
+  },
+  {
+   "id": "59362d8c-d886-4577-b2f8-3a495a311560",
+   "name": "e4/W16/seed1",
+   "law": "W16",
+   "variant": "W16_recoloured_full",
+   "run": "e4_recolour",
+   "seed": 1,
+   "architecture": "samples of W9 sent through the linear map that gives them the mean and covariance of G1 (estimated on 131 072 samples per η)",
+   "constraint_mechanism": "vector potentials; first two moments of the law imposed at sampling time",
+   "weights": "no weights of its own: W9 plus the map, recomputed at sampling time",
+   "regenerate": "python3 tools/runpod_job.py run --hours 1.9 --outputs experiments/results/replications/e4_recolour -- env E4_SAME_DATA=1 E4_SAVE_MODELS=1 bash experiments/e4_gpu_job.sh full '0 1 2 3 4' e4_recolour G,T,R",
+   "result_file": "experiments/results/replications/e4_recolour/e4_mhd3d_s1.json",
+   "evaluations": 36
+  },
+  {
+   "id": "71bc85fc-dec1-4703-81e6-f15616712cd4",
+   "name": "e4/W16/seed2",
+   "law": "W16",
+   "variant": "W16_recoloured_full",
+   "run": "e4_recolour",
+   "seed": 2,
+   "architecture": "samples of W9 sent through the linear map that gives them the mean and covariance of G1 (estimated on 131 072 samples per η)",
+   "constraint_mechanism": "vector potentials; first two moments of the law imposed at sampling time",
+   "weights": "no weights of its own: W9 plus the map, recomputed at sampling time",
+   "regenerate": "python3 tools/runpod_job.py run --hours 1.9 --outputs experiments/results/replications/e4_recolour -- env E4_SAME_DATA=1 E4_SAVE_MODELS=1 bash experiments/e4_gpu_job.sh full '0 1 2 3 4' e4_recolour G,T,R",
+   "result_file": "experiments/results/replications/e4_recolour/e4_mhd3d_s2.json",
+   "evaluations": 36
+  },
+  {
+   "id": "b741ceed-2569-4758-8d41-f3d2009b7c6c",
+   "name": "e4/W16/seed3",
+   "law": "W16",
+   "variant": "W16_recoloured_full",
+   "run": "e4_recolour",
+   "seed": 3,
+   "architecture": "samples of W9 sent through the linear map that gives them the mean and covariance of G1 (estimated on 131 072 samples per η)",
+   "constraint_mechanism": "vector potentials; first two moments of the law imposed at sampling time",
+   "weights": "no weights of its own: W9 plus the map, recomputed at sampling time",
+   "regenerate": "python3 tools/runpod_job.py run --hours 1.9 --outputs experiments/results/replications/e4_recolour -- env E4_SAME_DATA=1 E4_SAVE_MODELS=1 bash experiments/e4_gpu_job.sh full '0 1 2 3 4' e4_recolour G,T,R",
+   "result_file": "experiments/results/replications/e4_recolour/e4_mhd3d_s3.json",
+   "evaluations": 36
+  },
+  {
+   "id": "647edd67-8be4-4ef2-87c5-939f116d1061",
+   "name": "e4/W16/seed4",
+   "law": "W16",
+   "variant": "W16_recoloured_full",
+   "run": "e4_recolour",
+   "seed": 4,
+   "architecture": "samples of W9 sent through the linear map that gives them the mean and covariance of G1 (estimated on 131 072 samples per η)",
+   "constraint_mechanism": "vector potentials; first two moments of the law imposed at sampling time",
+   "weights": "no weights of its own: W9 plus the map, recomputed at sampling time",
+   "regenerate": "python3 tools/runpod_job.py run --hours 1.9 --outputs experiments/results/replications/e4_recolour -- env E4_SAME_DATA=1 E4_SAVE_MODELS=1 bash experiments/e4_gpu_job.sh full '0 1 2 3 4' e4_recolour G,T,R",
+   "result_file": "experiments/results/replications/e4_recolour/e4_mhd3d_s4.json",
+   "evaluations": 36
+  }
+ ],
+ "evaluation_summary": {
+  "G0": {
+   "balance_residual_magnetic @ eta=0.033092": {
+    "mean_over_seeds": -0.9977987704073383,
+    "sd_over_seeds": 0.0031153552687137225,
+    "seeds": 5
+   },
+   "balance_residual_magnetic @ eta=0.04899": {
+    "mean_over_seeds": -0.9992870565323069,
+    "sd_over_seeds": 0.0015941900578763087,
+    "seeds": 5
+   },
+   "balance_residual_magnetic @ eta=0.072526": {
+    "mean_over_seeds": -0.9971361170506089,
+    "sd_over_seeds": 0.002913473478885505,
+    "seeds": 5
+   },
+   "balance_residual_total @ eta=0.033092": {
+    "mean_over_seeds": 0.00024147423944898672,
+    "sd_over_seeds": 0.0011816773427598007,
+    "seeds": 5
+   },
+   "balance_residual_total @ eta=0.04899": {
+    "mean_over_seeds": 0.001295250923499499,
+    "sd_over_seeds": 0.0016322083294933744,
+    "seeds": 5
+   },
+   "balance_residual_total @ eta=0.072526": {
+    "mean_over_seeds": -0.0021044711545673126,
+    "sd_over_seeds": 0.0013291643033754796,
+    "seeds": 5
+   },
+   "div_rel_b_max @ eta=0.033092": {
+    "mean_over_seeds": 1.5024107576026636e-08,
+    "sd_over_seeds": 1.9204088324250117e-10,
+    "seeds": 5
+   },
+   "div_rel_b_max @ eta=0.04899": {
+    "mean_over_seeds": 1.507927657039471e-08,
+    "sd_over_seeds": 6.209214014279215e-10,
+    "seeds": 5
+   },
+   "div_rel_b_max @ eta=0.072526": {
+    "mean_over_seeds": 1.4279781086695583e-08,
+    "sd_over_seeds": 2.6206628831363647e-10,
+    "seeds": 5
+   },
+   "ed_ratio @ eta=0.033092": {
+    "mean_over_seeds": 1.8054300999675779,
+    "sd_over_seeds": 0.0861196223869034,
+    "seeds": 5
+   },
+   "ed_ratio @ eta=0.04899": {
+    "mean_over_seeds": 4.817215451769984,
+    "sd_over_seeds": 0.3919860215072727,
+    "seeds": 5
+   },
+   "ed_ratio @ eta=0.072526": {
+    "mean_over_seeds": 3.9432049021043456,
+    "sd_over_seeds": 0.2590360268449892,
+    "seeds": 5
+   },
+   "err_Eb_rel @ eta=0.033092": {
+    "mean_over_seeds": 0.007946667192050972,
+    "sd_over_seeds": 0.0043884767320334864,
+    "seeds": 5
+   },
+   "err_Eb_rel @ eta=0.04899": {
+    "mean_over_seeds": 0.021527291070055708,
+    "sd_over_seeds": 0.004354943520127266,
+    "seeds": 5
+   },
+   "err_Eb_rel @ eta=0.072526": {
+    "mean_over_seeds": 0.026288536032268994,
+    "sd_over_seeds": 0.007431747793796582,
+    "seeds": 5
+   },
+   "hc_sign_asym @ eta=0.033092": {
+    "mean_over_seeds": 0.02109375,
+    "sd_over_seeds": 0.017436495406770034,
+    "seeds": 5
+   },
+   "hc_sign_asym @ eta=0.04899": {
+    "mean_over_seeds": 0.01953125,
+    "sd_over_seeds": 0.012732817197661424,
+    "seeds": 5
+   },
+   "hc_sign_asym @ eta=0.072526": {
+    "mean_over_seeds": 0.012109375,
+    "sd_over_seeds": 0.005055538713103431,
+    "seeds": 5
+   },
+   "hel_m_err_rel @ eta=0.033092": {
+    "mean_over_seeds": 0.02494802096132561,
+    "sd_over_seeds": 0.013223086584563164,
+    "seeds": 5
+   },
+   "hel_m_err_rel @ eta=0.04899": {
+    "mean_over_seeds": 0.045602306593031536,
+    "sd_over_seeds": 0.009146787817824636,
+    "seeds": 5
+   },
+   "hel_m_err_rel @ eta=0.072526": {
+    "mean_over_seeds": 0.03335461965610897,
+    "sd_over_seeds": 0.021816957513733734,
+    "seeds": 5
+   },
+   "null_count_err_rel @ eta=0.033092": {
+    "mean_over_seeds": 1.7261642873859118,
+    "sd_over_seeds": 0.028636413109928663,
+    "seeds": 5
+   },
+   "null_count_err_rel @ eta=0.04899": {
+    "mean_over_seeds": 2.425654972350648,
+    "sd_over_seeds": 0.01951913537699947,
+    "seeds": 5
+   },
+   "null_count_err_rel @ eta=0.072526": {
+    "mean_over_seeds": 2.638655462184874,
+    "sd_over_seeds": 0.04269284439636915,
+    "seeds": 5
+   },
+   "prod_fluct_over_d @ eta=0.033092": {
+    "mean_over_seeds": -0.0013557542247970504,
+    "sd_over_seeds": 0.0013474942722771926,
+    "seeds": 5
+   },
+   "prod_fluct_over_d @ eta=0.04899": {
+    "mean_over_seeds": 0.000231418358711672,
+    "sd_over_seeds": 0.002246072338105187,
+    "seeds": 5
+   },
+   "prod_fluct_over_d @ eta=0.072526": {
+    "mean_over_seeds": 0.00028838416861721365,
+    "sd_over_seeds": 0.002522621971607713,
+    "seeds": 5
+   },
+   "prod_mean_over_d @ eta=0.033092": {
+    "mean_over_seeds": -0.0020401701855009575,
+    "sd_over_seeds": 0.005697295783879191,
+    "seeds": 5
+   },
+   "prod_mean_over_d @ eta=0.04899": {
+    "mean_over_seeds": -0.0021923240863986754,
+    "sd_over_seeds": 0.0011750773821597401,
+    "seeds": 5
+   },
+   "prod_mean_over_d @ eta=0.072526": {
+    "mean_over_seeds": -0.0010336704360121613,
+    "sd_over_seeds": 0.003958786741308693,
+    "seeds": 5
+   },
+   "restart_drift_eb @ eta=0.033092": {
+    "mean_over_seeds": 0.17948953140317908,
+    "sd_over_seeds": 0.007922153098145009,
+    "seeds": 5
+   },
+   "restart_drift_eb @ eta=0.04899": {
+    "mean_over_seeds": 0.1995255846881485,
+    "sd_over_seeds": 0.009482222939449041,
+    "seeds": 5
+   },
+   "restart_drift_eb @ eta=0.072526": {
+    "mean_over_seeds": 0.2578368674625377,
+    "sd_over_seeds": 0.010154784878193391,
+    "seeds": 5
+   },
+   "spec_err_b_l2 @ eta=0.033092": {
+    "mean_over_seeds": 0.014509979064085252,
+    "sd_over_seeds": 0.006322634385769332,
+    "seeds": 5
+   },
+   "spec_err_b_l2 @ eta=0.04899": {
+    "mean_over_seeds": 0.027417136861942554,
+    "sd_over_seeds": 0.005104443023846324,
+    "seeds": 5
+   },
+   "spec_err_b_l2 @ eta=0.072526": {
+    "mean_over_seeds": 0.0315083239774965,
+    "sd_over_seeds": 0.01156207784260144,
+    "seeds": 5
+   }
+  },
+  "G1": {
+   "balance_residual_magnetic @ eta=0.033092": {
+    "mean_over_seeds": 0.1234049465402953,
+    "sd_over_seeds": 0.0018592190943899827,
+    "seeds": 5
+   },
+   "balance_residual_magnetic @ eta=0.04899": {
+    "mean_over_seeds": 0.055103551269135895,
+    "sd_over_seeds": 0.0009287366974271416,
+    "seeds": 5
+   },
+   "balance_residual_magnetic @ eta=0.072526": {
+    "mean_over_seeds": -0.03752060628474514,
+    "sd_over_seeds": 0.0013061388900136404,
+    "seeds": 5
+   },
+   "balance_residual_total @ eta=0.033092": {
+    "mean_over_seeds": -0.0028068166484596525,
+    "sd_over_seeds": 0.002611447810237539,
+    "seeds": 5
+   },
+   "balance_residual_total @ eta=0.04899": {
+    "mean_over_seeds": 0.0006774867394090864,
+    "sd_over_seeds": 0.0028612412231973127,
+    "seeds": 5
+   },
+   "balance_residual_total @ eta=0.072526": {
+    "mean_over_seeds": -0.0042554245944018505,
+    "sd_over_seeds": 0.003490727687047905,
+    "seeds": 5
+   },
+   "div_rel_b_max @ eta=0.033092": {
+    "mean_over_seeds": 1.509759930482289e-08,
+    "sd_over_seeds": 3.6260661414224857e-10,
+    "seeds": 5
+   },
+   "div_rel_b_max @ eta=0.04899": {
+    "mean_over_seeds": 1.5137525464612114e-08,
+    "sd_over_seeds": 6.898650494257572e-11,
+    "seeds": 5
+   },
+   "div_rel_b_max @ eta=0.072526": {
+    "mean_over_seeds": 1.4431070192565404e-08,
+    "sd_over_seeds": 1.497061723951146e-10,
+    "seeds": 5
+   },
+   "ed_ratio @ eta=0.033092": {
+    "mean_over_seeds": 1.2594527886673976,
+    "sd_over_seeds": 0.1820240028168095,
+    "seeds": 5
+   },
+   "ed_ratio @ eta=0.04899": {
+    "mean_over_seeds": 3.323851815853891,
+    "sd_over_seeds": 0.22795848234461571,
+    "seeds": 5
+   },
+   "ed_ratio @ eta=0.072526": {
+    "mean_over_seeds": 3.0570547093129408,
+    "sd_over_seeds": 0.07196258125985203,
+    "seeds": 5
+   },
+   "err_Eb_rel @ eta=0.033092": {
+    "mean_over_seeds": 0.01325605913586787,
+    "sd_over_seeds": 0.007610287888693562,
+    "seeds": 5
+   },
+   "err_Eb_rel @ eta=0.04899": {
+    "mean_over_seeds": 0.023805756964974067,
+    "sd_over_seeds": 0.008413169503016396,
+    "seeds": 5
+   },
+   "err_Eb_rel @ eta=0.072526": {
+    "mean_over_seeds": 0.02494823090482896,
+    "sd_over_seeds": 0.0039285604009985445,
+    "seeds": 5
+   },
+   "hc_sign_asym @ eta=0.033092": {
+    "mean_over_seeds": 0.014453125,
+    "sd_over_seeds": 0.006987712429686843,
+    "seeds": 5
+   },
+   "hc_sign_asym @ eta=0.04899": {
+    "mean_over_seeds": 0.018359375,
+    "sd_over_seeds": 0.013289863934534376,
+    "seeds": 5
+   },
+   "hc_sign_asym @ eta=0.072526": {
+    "mean_over_seeds": 0.01171875,
+    "sd_over_seeds": 0.007437278423695223,
+    "seeds": 5
+   },
+   "hel_m_err_rel @ eta=0.033092": {
+    "mean_over_seeds": 0.016951903242192104,
+    "sd_over_seeds": 0.007194140764851857,
+    "seeds": 5
+   },
+   "hel_m_err_rel @ eta=0.04899": {
+    "mean_over_seeds": 0.04545244969880202,
+    "sd_over_seeds": 0.014282486223584199,
+    "seeds": 5
+   },
+   "hel_m_err_rel @ eta=0.072526": {
+    "mean_over_seeds": 0.04758271380073442,
+    "sd_over_seeds": 0.011268296708602943,
+    "seeds": 5
+   },
+   "null_count_err_rel @ eta=0.033092": {
+    "mean_over_seeds": 0.6345120526707021,
+    "sd_over_seeds": 0.0484012510273277,
+    "seeds": 5
+   },
+   "null_count_err_rel @ eta=0.04899": {
+    "mean_over_seeds": 1.0346931659693168,
+    "sd_over_seeds": 0.03438163924866289,
+    "seeds": 5
+   },
+   "null_count_err_rel @ eta=0.072526": {
+    "mean_over_seeds": 1.4296918767506999,
+    "sd_over_seeds": 0.05660330448903384,
+    "seeds": 5
+   },
+   "prod_fluct_over_d @ eta=0.033092": {
+    "mean_over_seeds": 0.0018359126176446892,
+    "sd_over_seeds": 0.001861012231149314,
+    "seeds": 5
+   },
+   "prod_fluct_over_d @ eta=0.04899": {
+    "mean_over_seeds": -0.0007464515985192733,
+    "sd_over_seeds": 0.0025726553101700724,
+    "seeds": 5
+   },
+   "prod_fluct_over_d @ eta=0.072526": {
+    "mean_over_seeds": -0.0003957711554790605,
+    "sd_over_seeds": 0.0017370737410453995,
+    "seeds": 5
+   },
+   "prod_mean_over_d @ eta=0.033092": {
+    "mean_over_seeds": 1.2797274920412882,
+    "sd_over_seeds": 0.0033266390929319574,
+    "seeds": 5
+   },
+   "prod_mean_over_d @ eta=0.04899": {
+    "mean_over_seeds": 1.1173821409007614,
+    "sd_over_seeds": 0.003877377372586749,
+    "seeds": 5
+   },
+   "prod_mean_over_d @ eta=0.072526": {
+    "mean_over_seeds": 0.9280707698035832,
+    "sd_over_seeds": 0.0030237323331832053,
+    "seeds": 5
+   },
+   "restart_drift_eb @ eta=0.033092": {
+    "mean_over_seeds": 0.03290029764398862,
+    "sd_over_seeds": 0.005631311839629608,
+    "seeds": 5
+   },
+   "restart_drift_eb @ eta=0.04899": {
+    "mean_over_seeds": 0.06299722130237832,
+    "sd_over_seeds": 0.007595632592372214,
+    "seeds": 5
+   },
+   "restart_drift_eb @ eta=0.072526": {
+    "mean_over_seeds": 0.09786240657857313,
+    "sd_over_seeds": 0.0076199469036700804,
+    "seeds": 5
+   },
+   "spec_err_b_l2 @ eta=0.033092": {
+    "mean_over_seeds": 0.018356508399473996,
+    "sd_over_seeds": 0.01041375109679234,
+    "seeds": 5
+   },
+   "spec_err_b_l2 @ eta=0.04899": {
+    "mean_over_seeds": 0.030916158193405503,
+    "sd_over_seeds": 0.010145804086200682,
+    "seeds": 5
+   },
+   "spec_err_b_l2 @ eta=0.072526": {
+    "mean_over_seeds": 0.030368616972179147,
+    "sd_over_seeds": 0.004140423776971988,
+    "seeds": 5
+   }
+  },
+  "W9": {
+   "balance_residual_magnetic @ eta=0.033092": {
+    "mean_over_seeds": 0.008822384839489735,
+    "sd_over_seeds": 0.002504563850784743,
+    "seeds": 5
+   },
+   "balance_residual_magnetic @ eta=0.04899": {
+    "mean_over_seeds": -0.0370426782570413,
+    "sd_over_seeds": 0.0026171551218476053,
+    "seeds": 5
+   },
+   "balance_residual_magnetic @ eta=0.072526": {
+    "mean_over_seeds": -0.11819637479762939,
+    "sd_over_seeds": 0.003146693519266519,
+    "seeds": 5
+   },
+   "balance_residual_total @ eta=0.033092": {
+    "mean_over_seeds": 0.056387833877217554,
+    "sd_over_seeds": 0.003252620554641989,
+    "seeds": 5
+   },
+   "balance_residual_total @ eta=0.04899": {
+    "mean_over_seeds": 0.0517863691688553,
+    "sd_over_seeds": 0.002926340246925317,
+    "seeds": 5
+   },
+   "balance_residual_total @ eta=0.072526": {
+    "mean_over_seeds": 0.06176703568587503,
+    "sd_over_seeds": 0.005729122291381412,
+    "seeds": 5
+   },
+   "div_rel_b_max @ eta=0.033092": {
+    "mean_over_seeds": 1.570266629065834e-08,
+    "sd_over_seeds": 4.197452229168569e-10,
+    "seeds": 5
+   },
+   "div_rel_b_max @ eta=0.04899": {
+    "mean_over_seeds": 1.5237960731687532e-08,
+    "sd_over_seeds": 2.7344294656726e-10,
+    "seeds": 5
+   },
+   "div_rel_b_max @ eta=0.072526": {
+    "mean_over_seeds": 1.4711375316638502e-08,
+    "sd_over_seeds": 3.4647540175263375e-10,
+    "seeds": 5
+   },
+   "ed_ratio @ eta=0.033092": {
+    "mean_over_seeds": 7.541141841020964,
+    "sd_over_seeds": 0.9049488456424334,
+    "seeds": 5
+   },
+   "ed_ratio @ eta=0.04899": {
+    "mean_over_seeds": 11.986632174351513,
+    "sd_over_seeds": 1.016603502857949,
+    "seeds": 5
+   },
+   "ed_ratio @ eta=0.072526": {
+    "mean_over_seeds": 8.502516661636085,
+    "sd_over_seeds": 0.9936624712854837,
+    "seeds": 5
+   },
+   "err_Eb_rel @ eta=0.033092": {
+    "mean_over_seeds": 0.1126696118182331,
+    "sd_over_seeds": 0.01079332655819715,
+    "seeds": 5
+   },
+   "err_Eb_rel @ eta=0.04899": {
+    "mean_over_seeds": 0.11430846745207894,
+    "sd_over_seeds": 0.004843046117734053,
+    "seeds": 5
+   },
+   "err_Eb_rel @ eta=0.072526": {
+    "mean_over_seeds": 0.15453688879809038,
+    "sd_over_seeds": 0.011132793390688067,
+    "seeds": 5
+   },
+   "hc_sign_asym @ eta=0.033092": {
+    "mean_over_seeds": 0.012890625,
+    "sd_over_seeds": 0.013289863934534374,
+    "seeds": 5
+   },
+   "hc_sign_asym @ eta=0.04899": {
+    "mean_over_seeds": 0.009375,
+    "sd_over_seeds": 0.00576089109521587,
+    "seeds": 5
+   },
+   "hc_sign_asym @ eta=0.072526": {
+    "mean_over_seeds": 0.0265625,
+    "sd_over_seeds": 0.015166616139310295,
+    "seeds": 5
+   },
+   "hel_m_err_rel @ eta=0.033092": {
+    "mean_over_seeds": 0.1917006546023139,
+    "sd_over_seeds": 0.020271645460835194,
+    "seeds": 5
+   },
+   "hel_m_err_rel @ eta=0.04899": {
+    "mean_over_seeds": 0.1794542013522314,
+    "sd_over_seeds": 0.015631911234290252,
+    "seeds": 5
+   },
+   "hel_m_err_rel @ eta=0.072526": {
+    "mean_over_seeds": 0.2226202277959893,
+    "sd_over_seeds": 0.01751954024050634,
+    "seeds": 5
+   },
+   "null_count_err_rel @ eta=0.033092": {
+    "mean_over_seeds": 1.029521078899862,
+    "sd_over_seeds": 0.05055017376939467,
+    "seeds": 5
+   },
+   "null_count_err_rel @ eta=0.04899": {
+    "mean_over_seeds": 1.5810669456066946,
+    "sd_over_seeds": 0.04732581289066247,
+    "seeds": 5
+   },
+   "null_count_err_rel @ eta=0.072526": {
+    "mean_over_seeds": 2.187068160597572,
+    "sd_over_seeds": 0.05558879420584003,
+    "seeds": 5
+   },
+   "prod_fluct_over_d @ eta=0.033092": {
+    "mean_over_seeds": -0.11672166113231452,
+    "sd_over_seeds": 0.0036146372505645504,
+    "seeds": 5
+   },
+   "prod_fluct_over_d @ eta=0.04899": {
+    "mean_over_seeds": -0.08222555471967252,
+    "sd_over_seeds": 0.002056757553470565,
+    "seeds": 5
+   },
+   "prod_fluct_over_d @ eta=0.072526": {
+    "mean_over_seeds": -0.003943388746589873,
+    "sd_over_seeds": 0.0017189545004951958,
+    "seeds": 5
+   },
+   "prod_mean_over_d @ eta=0.033092": {
+    "mean_over_seeds": 1.1345337837163336,
+    "sd_over_seeds": 0.008139848052015777,
+    "seeds": 5
+   },
+   "prod_mean_over_d @ eta=0.04899": {
+    "mean_over_seeds": 1.0107963187045061,
+    "sd_over_seeds": 0.004017276087150962,
+    "seeds": 5
+   },
+   "prod_mean_over_d @ eta=0.072526": {
+    "mean_over_seeds": 0.7925493219047804,
+    "sd_over_seeds": 0.0053990120105284365,
+    "seeds": 5
+   },
+   "restart_drift_eb @ eta=0.033092": {
+    "mean_over_seeds": 0.11407742410245514,
+    "sd_over_seeds": 0.011121495537562033,
+    "seeds": 5
+   },
+   "restart_drift_eb @ eta=0.04899": {
+    "mean_over_seeds": 0.11175076891949898,
+    "sd_over_seeds": 0.005558959979996102,
+    "seeds": 5
+   },
+   "restart_drift_eb @ eta=0.072526": {
+    "mean_over_seeds": 0.14836882658252687,
+    "sd_over_seeds": 0.01269697494710573,
+    "seeds": 5
+   },
+   "spec_err_b_l2 @ eta=0.033092": {
+    "mean_over_seeds": 0.1315940514203305,
+    "sd_over_seeds": 0.01391834698258709,
+    "seeds": 5
+   },
+   "spec_err_b_l2 @ eta=0.04899": {
+    "mean_over_seeds": 0.13136530160845675,
+    "sd_over_seeds": 0.006700393420413208,
+    "seeds": 5
+   },
+   "spec_err_b_l2 @ eta=0.072526": {
+    "mean_over_seeds": 0.1747611645118588,
+    "sd_over_seeds": 0.011592754706071115,
+    "seeds": 5
+   }
+  },
+  "W16": {
+   "balance_residual_magnetic @ eta=0.033092": {
+    "mean_over_seeds": 0.052556664380056906,
+    "sd_over_seeds": 0.0008530788756229521,
+    "seeds": 5
+   },
+   "balance_residual_magnetic @ eta=0.04899": {
+    "mean_over_seeds": 0.011642106360736332,
+    "sd_over_seeds": 0.0026265991515371876,
+    "seeds": 5
+   },
+   "balance_residual_magnetic @ eta=0.072526": {
+    "mean_over_seeds": -0.037631728157082996,
+    "sd_over_seeds": 0.002008616771124547,
+    "seeds": 5
+   },
+   "balance_residual_total @ eta=0.033092": {
+    "mean_over_seeds": -0.004794389758913599,
+    "sd_over_seeds": 0.0029938540814622478,
+    "seeds": 5
+   },
+   "balance_residual_total @ eta=0.04899": {
+    "mean_over_seeds": -0.005074545741774099,
+    "sd_over_seeds": 0.0014650844152773758,
+    "seeds": 5
+   },
+   "balance_residual_total @ eta=0.072526": {
+    "mean_over_seeds": -0.007904687296896914,
+    "sd_over_seeds": 0.0013903635054176226,
+    "seeds": 5
+   },
+   "div_rel_b_max @ eta=0.033092": {
+    "mean_over_seeds": 1.5237272899316023e-08,
+    "sd_over_seeds": 1.5039831512126766e-10,
+    "seeds": 5
+   },
+   "div_rel_b_max @ eta=0.04899": {
+    "mean_over_seeds": 1.4910005170066846e-08,
+    "sd_over_seeds": 2.8914138949835537e-10,
+    "seeds": 5
+   },
+   "div_rel_b_max @ eta=0.072526": {
+    "mean_over_seeds": 1.4690840655017688e-08,
+    "sd_over_seeds": 2.995183977783983e-10,
+    "seeds": 5
+   },
+   "ed_ratio @ eta=0.033092": {
+    "mean_over_seeds": 0.8091489273911245,
+    "sd_over_seeds": 0.10427139912498927,
+    "seeds": 5
+   },
+   "ed_ratio @ eta=0.04899": {
+    "mean_over_seeds": 2.1453029008040447,
+    "sd_over_seeds": 0.23111012890133434,
+    "seeds": 5
+   },
+   "ed_ratio @ eta=0.072526": {
+    "mean_over_seeds": 3.2582394267063117,
+    "sd_over_seeds": 0.12275408421670848,
+    "seeds": 5
+   },
+   "err_Eb_rel @ eta=0.033092": {
+    "mean_over_seeds": 0.012547084785764384,
+    "sd_over_seeds": 0.005506775397636537,
+    "seeds": 5
+   },
+   "err_Eb_rel @ eta=0.04899": {
+    "mean_over_seeds": 0.007935903655437903,
+    "sd_over_seeds": 0.002915679232050932,
+    "seeds": 5
+   },
+   "err_Eb_rel @ eta=0.072526": {
+    "mean_over_seeds": 0.013018681170343705,
+    "sd_over_seeds": 0.007556132213296827,
+    "seeds": 5
+   },
+   "hc_sign_asym @ eta=0.033092": {
+    "mean_over_seeds": 0.014453125,
+    "sd_over_seeds": 0.008580422904878437,
+    "seeds": 5
+   },
+   "hc_sign_asym @ eta=0.04899": {
+    "mean_over_seeds": 0.00703125,
+    "sd_over_seeds": 0.005793905068043487,
+    "seeds": 5
+   },
+   "hc_sign_asym @ eta=0.072526": {
+    "mean_over_seeds": 0.010546875,
+    "sd_over_seeds": 0.008123685290267742,
+    "seeds": 5
+   },
+   "hel_m_err_rel @ eta=0.033092": {
+    "mean_over_seeds": 0.01695073010580036,
+    "sd_over_seeds": 0.005011685994302176,
+    "seeds": 5
+   },
+   "hel_m_err_rel @ eta=0.04899": {
+    "mean_over_seeds": 0.029281719528803752,
+    "sd_over_seeds": 0.013128665149284844,
+    "seeds": 5
+   },
+   "hel_m_err_rel @ eta=0.072526": {
+    "mean_over_seeds": 0.027241748226874675,
+    "sd_over_seeds": 0.02128046870847795,
+    "seeds": 5
+   },
+   "null_count_err_rel @ eta=0.033092": {
+    "mean_over_seeds": 0.5602421153233512,
+    "sd_over_seeds": 0.0323833941620616,
+    "seeds": 5
+   },
+   "null_count_err_rel @ eta=0.04899": {
+    "mean_over_seeds": 1.0214783821478381,
+    "sd_over_seeds": 0.05939505492954561,
+    "seeds": 5
+   },
+   "null_count_err_rel @ eta=0.072526": {
+    "mean_over_seeds": 1.4203548085901023,
+    "sd_over_seeds": 0.04148216493083904,
+    "seeds": 5
+   },
+   "prod_fluct_over_d @ eta=0.033092": {
+    "mean_over_seeds": -0.15730966521468365,
+    "sd_over_seeds": 0.0033800452150361832,
+    "seeds": 5
+   },
+   "prod_fluct_over_d @ eta=0.04899": {
+    "mean_over_seeds": -0.1011064951819107,
+    "sd_over_seeds": 0.0027236109226559803,
+    "seeds": 5
+   },
+   "prod_fluct_over_d @ eta=0.072526": {
+    "mean_over_seeds": -0.0011427525588215668,
+    "sd_over_seeds": 0.001800832044557281,
+    "seeds": 5
+   },
+   "prod_mean_over_d @ eta=0.033092": {
+    "mean_over_seeds": 1.268255219532763,
+    "sd_over_seeds": 0.0034478243107578807,
+    "seeds": 5
+   },
+   "prod_mean_over_d @ eta=0.04899": {
+    "mean_over_seeds": 1.1246764008764079,
+    "sd_over_seeds": 0.0037338153279897084,
+    "seeds": 5
+   },
+   "prod_mean_over_d @ eta=0.072526": {
+    "mean_over_seeds": 0.9286146455090181,
+    "sd_over_seeds": 0.004495154163656144,
+    "seeds": 5
+   },
+   "restart_drift_eb @ eta=0.033092": {
+    "mean_over_seeds": 0.013385434977884724,
+    "sd_over_seeds": 0.007341283811893087,
+    "seeds": 5
+   },
+   "restart_drift_eb @ eta=0.04899": {
+    "mean_over_seeds": 0.016430643083803386,
+    "sd_over_seeds": 0.004114815662854689,
+    "seeds": 5
+   },
+   "restart_drift_eb @ eta=0.072526": {
+    "mean_over_seeds": 0.034133317336619035,
+    "sd_over_seeds": 0.006610417177227999,
+    "seeds": 5
+   },
+   "spec_err_b_l2 @ eta=0.033092": {
+    "mean_over_seeds": 0.016300473925678752,
+    "sd_over_seeds": 0.007995991876775405,
+    "seeds": 5
+   },
+   "spec_err_b_l2 @ eta=0.04899": {
+    "mean_over_seeds": 0.012300937589741042,
+    "sd_over_seeds": 0.0034928699397623604,
+    "seeds": 5
+   },
+   "spec_err_b_l2 @ eta=0.072526": {
+    "mean_over_seeds": 0.018555777745983555,
+    "sd_over_seeds": 0.009841004787210412,
+    "seeds": 5
+   }
+  }
+ }
+}

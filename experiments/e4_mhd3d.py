@@ -828,6 +828,9 @@ def run(quick: bool, seed: int, group: str, device: str = "cpu", cond_scale: flo
                     np.mean([fm_loss(model, ctx.x_pot_sym[idx[k:k + 256]], ctx.c_train[idx[k:k + 256]]).item()
                              for k in range(0, 2048, 256)]))
             record(vname, {e: generate(model, pot_sym, e, n) for e, n in eval_etas})
+            if os.environ.get("E4_SAVE_MODELS") == "1":               # weights of the evaluated model, for a release (not committed)
+                torch.save({"state_dict": model.state_dict(), "variant": vname, "seed": seed, "config": results["config"]},
+                           RESULTS / f"e4_model{tag}_{vname}_s{seed}.pt")
             del model
         del gauss
 

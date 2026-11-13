@@ -1,0 +1,505 @@
+{
+ "release": "e4-data-v1.0",
+ "dataset": {
+  "name": "e4_mhd3d",
+  "version": "1.0",
+  "format": "MFF 1.0"
+ },
+ "note": "Realisation generated in the container of the pilot session (Intel CPU) by experiments/e4_data.py with seed offset 0. The solver is chaotic and its float32 trajectories differ between processor types: this is another draw of the same law than the data regenerated on the GPU pods (AMD CPUs) for the results of the report.",
+ "data_files": [
+  {
+   "file": "e4_eta0.08000.h5",
+   "path": "experiments/data_e4_mff/e4_eta0.08000.h5",
+   "size_bytes": 202642305,
+   "sha256": "cc25066cb2f755cd61876b02365b9a75b270c33699839a5334404fc0eba8bd64",
+   "uuid": "b23f2a44-8672-4477-870e-f23866b30b99",
+   "eta": 0.08,
+   "Rm": 6.25,
+   "split": "train",
+   "n_trajectories": 24,
+   "n_t": 100,
+   "t_start": 202.0,
+   "t_end": 400.0,
+   "valid_full_scan": true,
+   "problems": [],
+   "source": "eta_0.08000.npz",
+   "source_sha256": "7765cb760728024c46d34174bc685f2df46594aeca7d7319ae6bbc94945f982f",
+   "git_commit": "5eab4ed94a34",
+   "latent_roundtrip": 8.097841162380187e-08,
+   "max_abs_divergence": {
+    "magnetic_field": 4.407238713360443e-07,
+    "velocity": 7.610992079205749e-07
+   },
+   "E_B_mean": 0.07933659156687402,
+   "E_B_of_the_pod_realisation": 0.07826379540640663,
+   "E_B_gap_to_the_pod_realisation": 0.013707438476457723
+  },
+  {
+   "file": "e4_eta0.07253.h5",
+   "path": "experiments/data_e4_mff/e4_eta0.07253.h5",
+   "size_bytes": 202794757,
+   "sha256": "7edf21226c5e0f772a5046f6f61a02328152c339b8c66909ddba65db685f0a12",
+   "uuid": "3e03f22a-28b8-4b72-81eb-941c63136e0d",
+   "eta": 0.072526,
+   "Rm": 6.894079364641646,
+   "split": "test",
+   "n_trajectories": 24,
+   "n_t": 100,
+   "t_start": 202.0,
+   "t_end": 400.0,
+   "valid_full_scan": true,
+   "problems": [],
+   "source": "eta_0.07253.npz",
+   "source_sha256": "af80b9b6ccfa61392ffd5ff61fc9da7ccb01233d0db7c338b5bb9fa3401391d8",
+   "git_commit": "5eab4ed94a34",
+   "latent_roundtrip": 8.260765326450309e-08,
+   "max_abs_divergence": {
+    "magnetic_field": 5.009341611837668e-07,
+    "velocity": 8.805026266575994e-07
+   },
+   "E_B_mean": 0.09425742418961211,
+   "E_B_of_the_pod_realisation": 0.09667611722389464,
+   "E_B_gap_to_the_pod_realisation": -0.025018516503729882
+  },
+  {
+   "file": "e4_eta0.06575.h5",
+   "path": "experiments/data_e4_mff/e4_eta0.06575.h5",
+   "size_bytes": 202889920,
+   "sha256": "1c055ff0039a4c8d259083f33e50fdd60418693556c46a07faf7511722f39ddc",
+   "uuid": "8c9cd35a-dbbe-412d-bf63-753ccdb91de9",
+   "eta": 0.06575,
+   "Rm": 7.604562737642585,
+   "split": "train",
+   "n_trajectories": 24,
+   "n_t": 100,
+   "t_start": 202.0,
+   "t_end": 400.0,
+   "valid_full_scan": true,
+   "problems": [],
+   "source": "eta_0.06575.npz",
+   "source_sha256": "07d35b52afd77021ec0d546abb9f08af6dbc12ef3eda9eb3cbe0ecf99ae090d4",
+   "git_commit": "5eab4ed94a34",
+   "latent_roundtrip": 1.6727374951683122e-07,
+   "max_abs_divergence": {
+    "magnetic_field": 4.981316685165002e-07,
+    "velocity": 7.466956191004198e-07
+   },
+   "E_B_mean": 0.10909196398298567,
+   "E_B_of_the_pod_realisation": 0.1108091408845957,
+   "E_B_gap_to_the_pod_realisation": -0.015496708014354321
+  },
+  {
+   "file": "e4_eta0.05961.h5",
+   "path": "experiments/data_e4_mff/e4_eta0.05961.h5",
+   "size_bytes": 203013565,
+   "sha256": "d1cd66ecdc491527cb71262b62916b2714dffb5b87a7401be0f953d21a4211a2",
+   "uuid": "6fc972cf-6ee4-4f2b-a5a7-83e9e96226e4",
+   "eta": 0.059607,
+   "Rm": 8.388276544701126,
+   "split": "val",
+   "n_trajectories": 24,
+   "n_t": 100,
+   "t_start": 202.0,
+   "t_end": 400.0,
+   "valid_full_scan": true,
+   "problems": [],
+   "source": "eta_0.05961.npz",
+   "source_sha256": "4e449dd77654a6c2dabbfc00e1887b43d90fb4ea44ffe8459e1e24980a5330cf",
+   "git_commit": "5eab4ed94a34",
+   "latent_roundtrip": 8.450681548977363e-08,
+   "max_abs_divergence": {
+    "magnetic_field": 4.2908482556411416e-07,
+    "velocity": 7.887205391027957e-07
+   },
+   "E_B_mean": 0.12127567113842815,
+   "E_B_of_the_pod_realisation": 0.12054207498632233,
+   "E_B_gap_to_the_pod_realisation": 0.0060858098899414514
+  },
+  {
+   "file": "e4_eta0.05404.h5",
+   "path": "experiments/data_e4_mff/e4_eta0.05404.h5",
+   "size_bytes": 203062290,
+   "sha256": "dc8bf3ad86f78f5fd0ff24b319b8a121e1760b02a0363bd5e81eb0764cf4d4c6",
+   "uuid": "e65dfe9d-966c-44ca-a83e-865610f0bc96",
+   "eta": 0.054038,
+   "Rm": 9.252748066175654,
+   "split": "train",
+   "n_trajectories": 24,
+   "n_t": 100,
+   "t_start": 202.0,
+   "t_end": 400.0,
+   "valid_full_scan": true,
+   "problems": [],
+   "source": "eta_0.05404.npz",
+   "source_sha256": "b1cbf1df3715894b3fec1eacbdc7e05135f939e6208c733ce1ef94a03609fc08",
+   "git_commit": "5eab4ed94a34",
+   "latent_roundtrip": 8.643034702120122e-08,
+   "max_abs_divergence": {
+    "magnetic_field": 4.563233884177682e-07,
+    "velocity": 7.314342873252371e-07
+   },
+   "E_B_mean": 0.13162436358164997,
+   "E_B_of_the_pod_realisation": 0.1305136339591353,
+   "E_B_gap_to_the_pod_realisation": 0.008510448976253748
+  },
+  {
+   "file": "e4_eta0.04899.h5",
+   "path": "experiments/data_e4_mff/e4_eta0.04899.h5",
+   "size_bytes": 203241443,
+   "sha256": "5c6f60276425533e682a0a113b82f7c7ff88699f6f8ae04afed25427b8040c38",
+   "uuid": "a975fef6-6355-4f11-98ee-a468e3f4e012",
+   "eta": 0.04899,
+   "Rm": 10.206164523372117,
+   "split": "test",
+   "n_trajectories": 24,
+   "n_t": 100,
+   "t_start": 202.0,
+   "t_end": 400.0,
+   "valid_full_scan": true,
+   "problems": [],
+   "source": "eta_0.04899.npz",
+   "source_sha256": "b35e137475b1e43b225aca70ce0c8e141880ff4fc8bd9ed072023ef63a32f994",
+   "git_commit": "5eab4ed94a34",
+   "latent_roundtrip": 8.519309940147513e-08,
+   "max_abs_divergence": {
+    "magnetic_field": 4.823293666946359e-07,
+    "velocity": 7.283073813503985e-07
+   },
+   "E_B_mean": 0.13868035732147593,
+   "E_B_of_the_pod_realisation": 0.13967252251647314,
+   "E_B_gap_to_the_pod_realisation": -0.0071035102475519585
+  },
+  {
+   "file": "e4_eta0.04441.h5",
+   "path": "experiments/data_e4_mff/e4_eta0.04441.h5",
+   "size_bytes": 203360109,
+   "sha256": "b5cc71e1a4bd0310914fc14af1e62bb75976aa00c5fd7418c440bcff73732813",
+   "uuid": "2145fcc7-87ad-4d20-9961-60130d7cd571",
+   "eta": 0.044413,
+   "Rm": 11.257965010244748,
+   "split": "train",
+   "n_trajectories": 24,
+   "n_t": 100,
+   "t_start": 202.0,
+   "t_end": 400.0,
+   "valid_full_scan": true,
+   "problems": [],
+   "source": "eta_0.04441.npz",
+   "source_sha256": "2196cd643306e00212b4cc328a9e6c92bd020a3e1453d85165141abf5e075b88",
+   "git_commit": "5eab4ed94a34",
+   "latent_roundtrip": 8.856671372128128e-08,
+   "max_abs_divergence": {
+    "magnetic_field": 4.666703468613306e-07,
+    "velocity": 6.90339796418802e-07
+   },
+   "E_B_mean": 0.14746897692481678,
+   "E_B_of_the_pod_realisation": 0.14466031895186246,
+   "E_B_gap_to_the_pod_realisation": 0.0194155383681196
+  },
+  {
+   "file": "e4_eta0.04026.h5",
+   "path": "experiments/data_e4_mff/e4_eta0.04026.h5",
+   "size_bytes": 203476940,
+   "sha256": "9682807ddb3fb6d8c21c74926435ca64dffbc8aab3d3d0eacf90fc501ba5d407",
+   "uuid": "a5668a67-cbe2-4e5d-b9bc-8e1158fffc2e",
+   "eta": 0.040264,
+   "Rm": 12.418040929862904,
+   "split": "val",
+   "n_trajectories": 24,
+   "n_t": 100,
+   "t_start": 202.0,
+   "t_end": 400.0,
+   "valid_full_scan": true,
+   "problems": [],
+   "source": "eta_0.04026.npz",
+   "source_sha256": "d41125e7accc6605d2c032d461cb8421ab12d351e78c31ee14ee195460d01b83",
+   "git_commit": "5eab4ed94a34",
+   "latent_roundtrip": 9.090086947505659e-08,
+   "max_abs_divergence": {
+    "magnetic_field": 5.223958490675644e-07,
+    "velocity": 6.752210684540286e-07
+   },
+   "E_B_mean": 0.15452102217823266,
+   "E_B_of_the_pod_realisation": 0.15337137570423906,
+   "E_B_gap_to_the_pod_realisation": 0.007495834660899092
+  },
+  {
+   "file": "e4_eta0.03650.h5",
+   "path": "experiments/data_e4_mff/e4_eta0.03650.h5",
+   "size_bytes": 203483354,
+   "sha256": "e9ee1b4c38872e97bf71447d1ee27549f07fc8d85de09e67f91553596107ac5e",
+   "uuid": "13f4da2f-7e25-48de-981b-93eb7bae1994",
+   "eta": 0.036502,
+   "Rm": 13.697879568242836,
+   "split": "train",
+   "n_trajectories": 24,
+   "n_t": 100,
+   "t_start": 202.0,
+   "t_end": 400.0,
+   "valid_full_scan": true,
+   "problems": [],
+   "source": "eta_0.03650.npz",
+   "source_sha256": "abd9cbe6ffd77cd806222d83b0ba9f41cd0076c4fca59d3130260e0dbbb96dd8",
+   "git_commit": "5eab4ed94a34",
+   "latent_roundtrip": 9.07631022460853e-08,
+   "max_abs_divergence": {
+    "magnetic_field": 4.901908004616081e-07,
+    "velocity": 6.277191027114575e-07
+   },
+   "E_B_mean": 0.16034660033881665,
+   "E_B_of_the_pod_realisation": 0.16034871865358075,
+   "E_B_gap_to_the_pod_realisation": -1.3210674721264581e-05
+  },
+  {
+   "file": "e4_eta0.03309.h5",
+   "path": "experiments/data_e4_mff/e4_eta0.03309.h5",
+   "size_bytes": 203604564,
+   "sha256": "0149f2959b7a16df59e5fa162ee56040cec436a27fc4863526d8f143b9a4a769",
+   "uuid": "967c5098-aa42-4040-a938-b77d8807589a",
+   "eta": 0.033092,
+   "Rm": 15.109391998065997,
+   "split": "test",
+   "n_trajectories": 24,
+   "n_t": 100,
+   "t_start": 202.0,
+   "t_end": 400.0,
+   "valid_full_scan": true,
+   "problems": [],
+   "source": "eta_0.03309.npz",
+   "source_sha256": "f2a32ccdbbac6be14e3f7405b5be2b9d1de7b1e08c39b19c12ae3e9c6eb83a90",
+   "git_commit": "5eab4ed94a34",
+   "latent_roundtrip": 9.130248034926545e-08,
+   "max_abs_divergence": {
+    "magnetic_field": 4.6841219961152606e-07,
+    "velocity": 6.58967517019767e-07
+   },
+   "E_B_mean": 0.16780879284255207,
+   "E_B_of_the_pod_realisation": 0.16548703682179852,
+   "E_B_gap_to_the_pod_realisation": 0.01402983620556153
+  },
+  {
+   "file": "e4_eta0.03000.h5",
+   "path": "experiments/data_e4_mff/e4_eta0.03000.h5",
+   "size_bytes": 203749721,
+   "sha256": "463dbda2fab7f01111eee64a709544b6d485401f59c28cf2a433fe1c6d2e5f37",
+   "uuid": "6eb4580d-51c0-45ab-9e55-6e9b56a1a9c4",
+   "eta": 0.03,
+   "Rm": 16.666666666666668,
+   "split": "train",
+   "n_trajectories": 24,
+   "n_t": 100,
+   "t_start": 202.0,
+   "t_end": 400.0,
+   "valid_full_scan": true,
+   "problems": [],
+   "source": "eta_0.03000.npz",
+   "source_sha256": "77e68f6ecdaba058b94fe800ec55541c4dc33fb8c44103bfc138590afc7c8dec",
+   "git_commit": "5eab4ed94a34-dirty",
+   "latent_roundtrip": 9.469013767057614e-08,
+   "max_abs_divergence": {
+    "magnetic_field": 4.6306698762080633e-07,
+    "velocity": 6.128155216876033e-07
+   },
+   "E_B_mean": 0.17343720399464171,
+   "E_B_of_the_pod_realisation": 0.17169338837946613,
+   "E_B_gap_to_the_pod_realisation": 0.010156568238501418
+  }
+ ],
+ "sample": {
+  "file": "e4_sample_eta0.04899.h5",
+  "path": "research/release/e4_sample_eta0.04899.h5",
+  "size_bytes": 4282238,
+  "sha256": "498744ee77842436d19c41996e992633ba3f279b49249c861e4c211ca5ed1270",
+  "valid_full_scan": true,
+  "eta": 0.04899,
+  "n_trajectories": 2,
+  "n_t": 25
+ },
+ "catalog": {
+  "file": "catalog.sqlite",
+  "export": "catalog.json",
+  "simulations": 11,
+  "dataset_files": 11,
+  "models": 20,
+  "evaluations": 720
+ },
+ "models": [
+  {
+   "name": "e4/G0/seed0",
+   "variant": "G0_gaussian_modes",
+   "run": "e4_nongauss",
+   "seed": 0,
+   "weights": "closed form: milady.train.constraints.ModewiseGaussian(sign=…).fit(x_train, c_train), refitted from the data set in under 1 s",
+   "result_file": "experiments/results/replications/e4_nongauss/e4_mhd3d_s0.json"
+  },
+  {
+   "name": "e4/G0/seed1",
+   "variant": "G0_gaussian_modes",
+   "run": "e4_nongauss",
+   "seed": 1,
+   "weights": "closed form: milady.train.constraints.ModewiseGaussian(sign=…).fit(x_train, c_train), refitted from the data set in under 1 s",
+   "result_file": "experiments/results/replications/e4_nongauss/e4_mhd3d_s1.json"
+  },
+  {
+   "name": "e4/G0/seed2",
+   "variant": "G0_gaussian_modes",
+   "run": "e4_nongauss",
+   "seed": 2,
+   "weights": "closed form: milady.train.constraints.ModewiseGaussian(sign=…).fit(x_train, c_train), refitted from the data set in under 1 s",
+   "result_file": "experiments/results/replications/e4_nongauss/e4_mhd3d_s2.json"
+  },
+  {
+   "name": "e4/G0/seed3",
+   "variant": "G0_gaussian_modes",
+   "run": "e4_nongauss",
+   "seed": 3,
+   "weights": "closed form: milady.train.constraints.ModewiseGaussian(sign=…).fit(x_train, c_train), refitted from the data set in under 1 s",
+   "result_file": "experiments/results/replications/e4_nongauss/e4_mhd3d_s3.json"
+  },
+  {
+   "name": "e4/G0/seed4",
+   "variant": "G0_gaussian_modes",
+   "run": "e4_nongauss",
+   "seed": 4,
+   "weights": "closed form: milady.train.constraints.ModewiseGaussian(sign=…).fit(x_train, c_train), refitted from the data set in under 1 s",
+   "result_file": "experiments/results/replications/e4_nongauss/e4_mhd3d_s4.json"
+  },
+  {
+   "name": "e4/G1/seed0",
+   "variant": "G1_gaussian_full",
+   "run": "e4_recolour",
+   "seed": 0,
+   "weights": "closed form: milady.train.constraints.FullGaussian(sign=…).fit(x_train, c_train), refitted from the data set in under 1 s",
+   "result_file": "experiments/results/replications/e4_recolour/e4_mhd3d_s0.json"
+  },
+  {
+   "name": "e4/G1/seed1",
+   "variant": "G1_gaussian_full",
+   "run": "e4_recolour",
+   "seed": 1,
+   "weights": "closed form: milady.train.constraints.FullGaussian(sign=…).fit(x_train, c_train), refitted from the data set in under 1 s",
+   "result_file": "experiments/results/replications/e4_recolour/e4_mhd3d_s1.json"
+  },
+  {
+   "name": "e4/G1/seed2",
+   "variant": "G1_gaussian_full",
+   "run": "e4_recolour",
+   "seed": 2,
+   "weights": "closed form: milady.train.constraints.FullGaussian(sign=…).fit(x_train, c_train), refitted from the data set in under 1 s",
+   "result_file": "experiments/results/replications/e4_recolour/e4_mhd3d_s2.json"
+  },
+  {
+   "name": "e4/G1/seed3",
+   "variant": "G1_gaussian_full",
+   "run": "e4_recolour",
+   "seed": 3,
+   "weights": "closed form: milady.train.constraints.FullGaussian(sign=…).fit(x_train, c_train), refitted from the data set in under 1 s",
+   "result_file": "experiments/results/replications/e4_recolour/e4_mhd3d_s3.json"
+  },
+  {
+   "name": "e4/G1/seed4",
+   "variant": "G1_gaussian_full",
+   "run": "e4_recolour",
+   "seed": 4,
+   "weights": "closed form: milady.train.constraints.FullGaussian(sign=…).fit(x_train, c_train), refitted from the data set in under 1 s",
+   "result_file": "experiments/results/replications/e4_recolour/e4_mhd3d_s4.json"
+  },
+  {
+   "name": "e4/W9/seed0",
+   "variant": "W9R_skip_sym",
+   "run": "e4_recolour",
+   "seed": 0,
+   "weights": "not kept (the pod of the job was deleted); retrained by the job below in about 1 min per seed on a GPU",
+   "result_file": "experiments/results/replications/e4_recolour/e4_mhd3d_s0.json"
+  },
+  {
+   "name": "e4/W9/seed1",
+   "variant": "W9R_skip_sym",
+   "run": "e4_recolour",
+   "seed": 1,
+   "weights": "not kept (the pod of the job was deleted); retrained by the job below in about 1 min per seed on a GPU",
+   "result_file": "experiments/results/replications/e4_recolour/e4_mhd3d_s1.json"
+  },
+  {
+   "name": "e4/W9/seed2",
+   "variant": "W9R_skip_sym",
+   "run": "e4_recolour",
+   "seed": 2,
+   "weights": "not kept (the pod of the job was deleted); retrained by the job below in about 1 min per seed on a GPU",
+   "result_file": "experiments/results/replications/e4_recolour/e4_mhd3d_s2.json"
+  },
+  {
+   "name": "e4/W9/seed3",
+   "variant": "W9R_skip_sym",
+   "run": "e4_recolour",
+   "seed": 3,
+   "weights": "not kept (the pod of the job was deleted); retrained by the job below in about 1 min per seed on a GPU",
+   "result_file": "experiments/results/replications/e4_recolour/e4_mhd3d_s3.json"
+  },
+  {
+   "name": "e4/W9/seed4",
+   "variant": "W9R_skip_sym",
+   "run": "e4_recolour",
+   "seed": 4,
+   "weights": "not kept (the pod of the job was deleted); retrained by the job below in about 1 min per seed on a GPU",
+   "result_file": "experiments/results/replications/e4_recolour/e4_mhd3d_s4.json"
+  },
+  {
+   "name": "e4/W16/seed0",
+   "variant": "W16_recoloured_full",
+   "run": "e4_recolour",
+   "seed": 0,
+   "weights": "no weights of its own: W9 plus the map, recomputed at sampling time",
+   "result_file": "experiments/results/replications/e4_recolour/e4_mhd3d_s0.json"
+  },
+  {
+   "name": "e4/W16/seed1",
+   "variant": "W16_recoloured_full",
+   "run": "e4_recolour",
+   "seed": 1,
+   "weights": "no weights of its own: W9 plus the map, recomputed at sampling time",
+   "result_file": "experiments/results/replications/e4_recolour/e4_mhd3d_s1.json"
+  },
+  {
+   "name": "e4/W16/seed2",
+   "variant": "W16_recoloured_full",
+   "run": "e4_recolour",
+   "seed": 2,
+   "weights": "no weights of its own: W9 plus the map, recomputed at sampling time",
+   "result_file": "experiments/results/replications/e4_recolour/e4_mhd3d_s2.json"
+  },
+  {
+   "name": "e4/W16/seed3",
+   "variant": "W16_recoloured_full",
+   "run": "e4_recolour",
+   "seed": 3,
+   "weights": "no weights of its own: W9 plus the map, recomputed at sampling time",
+   "result_file": "experiments/results/replications/e4_recolour/e4_mhd3d_s3.json"
+  },
+  {
+   "name": "e4/W16/seed4",
+   "variant": "W16_recoloured_full",
+   "run": "e4_recolour",
+   "seed": 4,
+   "weights": "no weights of its own: W9 plus the map, recomputed at sampling time",
+   "result_file": "experiments/results/replications/e4_recolour/e4_mhd3d_s4.json"
+  }
+ ],
+ "release_files": [
+  {
+   "file": "catalog.json",
+   "size_bytes": 50785,
+   "sha256": "9e3c187b4bb6657d880d64130d9a698dee228f37eaf6646daeb1fb7211599af4"
+  },
+  {
+   "file": "catalog.sqlite",
+   "size_bytes": 3096576,
+   "sha256": "3dd9aea89d5bfacfe6f4dea98740cac4ff44cf6e393cabb2b5aa57b8e5088afb"
+  },
+  {
+   "file": "e4_sample_eta0.04899.h5",
+   "size_bytes": 4282238,
+   "sha256": "498744ee77842436d19c41996e992633ba3f279b49249c861e4c211ca5ed1270"
+  }
+ ]
+}

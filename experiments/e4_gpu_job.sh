@@ -61,6 +61,9 @@ wait $PIDS
 kill $COPIER 2>/dev/null
 cp results/e4_mhd3d${TAG}_s*.json results/e4_samples${TAG}_s0_*.npz results/logs/e4_gpu_s*.log "$OUT"/ 2>/dev/null
 wait
+# E4_SAVE_MODELS=1: the weights of the models of groups A to E, S and L (about 50 MB each) come back with the outputs; they are
+# git-ignored and meant for a release (research/release/README.md)
+[ "${E4_SAVE_MODELS:-0}" = 1 ] && cp results/e4_model${TAG}_*_s*.pt "$OUT"/ 2>/dev/null
 stamp "done"; nvidia-smi --query-gpu=name,memory.used,utilization.gpu --format=csv,noheader
 ls "$OUT"
 # a seed that failed must fail the job (the outputs written before the failure are kept): until 2026-11-13 the job ended with
