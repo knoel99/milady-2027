@@ -2,6 +2,11 @@
 
 One entry per working session, newest first, at most ten lines.
 
+## 2026-11-13 - H165 refuted, team cursor
+- The kmax=6 truncation still moves the null count. Mean relative error 0.160, above 0.1.
+- Two truncation widths missed 0.1, so that comparison is dropped.
+- H166, the midpoint against the held-out field, is registered and not yet run.
+
 ## 2026-11-13 - H164 refuted, team cursor
 - The kmax=4 truncation changes the trilinear null count. Mean relative error 0.428, above 0.1.
 - C5 now quotes that error. C7 is 2 after src/milady/eval/nulls.py.
