@@ -1,0 +1,233 @@
+[
+ {
+  "id": "H1",
+  "statement": "In E1, the equivariant velocity field (C_equivariant) gives a lower energy distance to the reference law on the test Γ than the baseline (A_reference).",
+  "refutation_criterion": "Refuted if the mean paired difference ED(A) − ED(C) is not larger than 2 SE, or if C is below A in fewer than 4 of the 5 seeds, or if ED(A) − ED(C) is smaller than the Monte Carlo floor of the energy distance (digest: mc_noise_floors.n_gen.energy).",
+  "status": "proposed",
+  "verdict": "",
+  "comparison": null,
+  "seeds": null,
+  "script": "experiments/e1_gissinger.py --seeds 0 1 2 3 4",
+  "commit": "6dbd0e6"
+ },
+ {
+  "id": "H2",
+  "statement": "In E1, fine-tuning with the stationarity loss (F_stationarity_C) lowers the residual of the held-out degree-3 Liouville identities on the test Γ compared with the same fine-tuning without the loss (F0_control_C), without degrading the energy distance by more than 20 %.",
+  "refutation_criterion": "Refuted if the mean paired difference Liou3(F0) − Liou3(F) is not larger than 2 SE, or if F is below F0 in fewer than 4 of the 5 seeds, or if the mean energy distance of F exceeds 1.2 times that of F0.",
+  "status": "proposed",
+  "verdict": "",
+  "comparison": null,
+  "seeds": null,
+  "script": "experiments/e1_gissinger.py --seeds 0 1 2 3 4",
+  "commit": "6dbd0e6"
+ },
+ {
+  "id": "H3",
+  "statement": "In E2, the stationarity loss in law (V5_potentials_stat) lowers the energy distance of the generated law on the test η compared with the same fine-tuning without the loss (V5_control).",
+  "refutation_criterion": "Refuted if the mean paired difference ED(V5_control) − ED(V5_potentials_stat) is not larger than 2 SE, or if V5 is below its control in fewer than 4 of the 5 seeds, or if the gain comes from fewer than 3 of the 5 test η (per-η table of the digest, seed mean).",
+  "status": "proposed",
+  "verdict": "",
+  "comparison": null,
+  "seeds": null,
+  "script": "experiments/e2_mhd2d.py --seed k, k = 0..4",
+  "commit": "6dbd0e6"
+ },
+ {
+  "id": "H4",
+  "statement": "In E4 (3D), generating vector potentials (W4_potentials, constraint by model design) gives a lower energy-distance ratio on the held-out η than generating free components (W0_free).",
+  "refutation_criterion": "Refuted if the mean paired difference ED(W0_free) − ED(W4_potentials) is not larger than 2 SE, or if W4 is below W0 in fewer than 4 of the 5 seeds.",
+  "status": "refuted",
+  "verdict": "REFUTED (encadrant, 2026-11-12): W0_free − W4_potentials = −20.05 ± 3.21 (−6.2 SE), W4 below W0 in 0 of 5 seeds, negative at each held-out η; the two CPU seeds agree (−26.9).",
+  "comparison": "constraint mechanisms",
+  "seeds": 5,
+  "script": "experiments/e4_mhd3d.py --seed k, k = 0..4",
+  "commit": "fb0786b"
+ },
+ {
+  "id": "H5",
+  "statement": "In E4, the divergence penalty on the end-of-path prediction (W1_penalty, weight 10; constraint by a training loss) does not enforce the constraint: it lowers the relative divergence of B of the free model W0_free by less than a factor 10, and it does not lower the energy-distance ratio.",
+  "refutation_criterion": "Refuted if the seed mean of the relative divergence of B of W1 is below one tenth of that of W0, or if ED(W0_free) − ED(W1_penalty) is larger than 2 SE with W1 below W0 in at least 4 of the 5 seeds.",
+  "status": "supported",
+  "verdict": "CONFIRMED (encadrant, 2026-11-12): relative divergence of B 0.206 against 0.380 (ratio 0.544, not below one tenth); W0_free − W1_penalty = −228.2 ± 12.7, 0 of 5: the penalty does not enforce the constraint and degrades the law.",
+  "comparison": "constraint mechanisms",
+  "seeds": 5,
+  "script": "experiments/e4_mhd3d.py --seed k, k = 0..4",
+  "commit": "fb0786b"
+ },
+ {
+  "id": "H6",
+  "statement": "In E4, the projected flow (W3_projected_flow: projected noise and projection of every integration stage) gives a lower energy-distance ratio on the held-out η than the Leray projection of the final samples of the free model (W2_final_projection).",
+  "refutation_criterion": "Refuted if the mean paired difference ED(W2) − ED(W3) is not larger than 2 SE, or if W3 is below W2 in fewer than 4 of the 5 seeds.",
+  "status": "refuted",
+  "verdict": "REFUTED (encadrant, 2026-11-12): W2_final_projection − W3_projected_flow = 2.69 ± 3.72 (0.72 SE), 4 of 5 seeds: no difference at 2 SE; the CPU seeds show the same absence of effect.",
+  "comparison": "constraint mechanisms",
+  "seeds": 5,
+  "script": "experiments/e4_mhd3d.py --seed k, k = 0..4",
+  "commit": "fb0786b"
+ },
+ {
+  "id": "H7",
+  "statement": "In E4, fine-tuning the equivariant potentials model with the law-level stationarity loss (W5_stationarity: energy identity and magnetic-helicity identity E[⟨j·B⟩] = 0, imposed at every η of the range) lowers the absolute residual of the mean energy balance on the held-out η compared with the same fine-tuning without the loss (W5_control), without raising the energy-distance ratio by more than 20 %.",
+  "refutation_criterion": "Refuted if the mean paired difference |res|(W5_control) − |res|(W5_stationarity) is not larger than 2 SE, or if W5 is below its control in fewer than 4 of the 5 seeds, or if the seed-mean energy-distance ratio of W5 exceeds 1.2 times that of the control.",
+  "status": "supported",
+  "verdict": "CONFIRMED (encadrant, 2026-11-12): |energy residual| W5_control − W5_stationarity = 0.0988 ± 0.0108 (9.1 SE), 5 of 5 seeds (0.290 → 0.191); ED ratio W5/control = 1.023.",
+  "comparison": "constraint mechanisms",
+  "seeds": 5,
+  "script": "experiments/e4_mhd3d.py --seed k, k = 0..4",
+  "commit": "fb0786b"
+ },
+ {
+  "id": "H8",
+  "statement": "In E4, imposing the stationarity identities at training time (W5_stationarity) gives a lower energy-distance ratio on the held-out η than imposing the same identities at sampling time by exponential tilting of the samples of the control model (W7_tilting: multipliers fitted on one half of the samples, the other half evaluated with its weights).",
+  "refutation_criterion": "Refuted if the mean paired difference ED(W7_tilting) − ED(W5_stationarity) is not larger than 2 SE, or if W5 is below W7 in fewer than 4 of the 5 seeds.",
+  "status": "dropped",
+  "verdict": "NOT DISCRIMINATING (encadrant, 2026-11-12): the registered criterion is formally met (W7_tilting − W5_stationarity_half = 30.0 ± 10.1, 5 of 5), but ESS/N is 1/256 in 14 of 15 cells: the tilted law is one sample and its energy distance is not a measurement of a law; with an estimate of the extra bias of a weighted sample the sign flips (−13.9 ± 9.5). Reading the formal criterion as a support would be wrong; the relabelling is post hoc and left to the owner.",
+  "comparison": "constraint mechanisms",
+  "seeds": 5,
+  "script": "experiments/e4_mhd3d.py --seed k, k = 0..4",
+  "commit": "fb0786b"
+ },
+ {
+  "id": "H9",
+  "statement": "In E4, the B → −B equivariant velocity field (W4s_potentials_sym, constraint by model design) lowers the polarity asymmetry |P(⟨u·B⟩ > 0) − ½| of the generated law on the held-out η compared with the same model without symmetrization (W4_potentials), without raising the energy-distance ratio by more than 20 %.",
+  "refutation_criterion": "Refuted if the mean paired difference asym(W4) − asym(W4s) is not larger than 2 SE, or if W4s is below W4 in fewer than 4 of the 5 seeds, or if the seed-mean energy-distance ratio of W4s exceeds 1.2 times that of W4.",
+  "status": "refuted",
+  "verdict": "REFUTED (encadrant, 2026-11-12) on its first clause: asymmetry W4 − W4s = 0.0004 ± 0.0058, 3 of 5 seeds, both at or below the binomial floor 0.0176: the test could not discriminate at n = 512. The second clause holds: ED ratio W4s/W4 = 0.819 (−46.5 ± 4.8, 0 of 5).",
+  "comparison": "constraint mechanisms",
+  "seeds": 5,
+  "script": "experiments/e4_mhd3d.py --seed k, k = 0..4",
+  "commit": "fb0786b"
+ },
+ {
+  "id": "H10",
+  "statement": "In E4, conditional flow matching (W4_potentials: linear path, Heun, 100 network evaluations) gives a lower energy-distance ratio on the held-out η than a variance-preserving diffusion with ancestral sampling (W6_diffusion: v-prediction, 100 network evaluations), with the same latent space, network, training budget and seeds.",
+  "refutation_criterion": "Refuted if the mean paired difference ED(W6_diffusion) − ED(W4_potentials) is not larger than 2 SE, or if W4 is below W6 in fewer than 4 of the 5 seeds.",
+  "status": "supported",
+  "verdict": "CONFIRMED as registered (encadrant, 2026-11-12): W6_diffusion − W4_potentials = 262.4 ± 12.1, 5 of 5, positive at each held-out η. Caveat of the encadrant: at the training η the diffusion model is better than flow matching (−15.06 ± 0.90, 0 of 5): the result is about interpolation in η with the aliased condition embedding, not about the model family at fixed η.",
+  "comparison": "model families",
+  "seeds": 5,
+  "script": "experiments/e4_mhd3d.py --seed k, k = 0..4",
+  "commit": "fb0786b"
+ },
+ {
+  "id": "H11",
+  "statement": "In the E4 reference data, the magnetic helicity spectrum is bipolar at every η: H(k = 1) < 0 and Σ_{k ≥ 2} H(k) > 0, with a large-scale energy fraction E_B(k = 1)/E_B between 0.2 and 0.8, so that the stationarity identity E[⟨j·B⟩] = Σ k² H(k) = 0 is a cancellation between the two signs.",
+  "refutation_criterion": "Refuted if, at any of the 11 η, H(1) is not negative or Σ_{k ≥ 2} H(k) is not positive by 2 SE (SE over the trajectory means), or if E_B(1)/E_B falls outside [0.2, 0.8]. Stationarity gate, reported and not a refutation: z = trajectory mean of ⟨j·B⟩ over its SE; |z| > 2 at a value of η means that the identity is not yet stationary there.",
+  "status": "refuted",
+  "verdict": "REFUTED (encadrant, 2026-11-12): recomputed from the raw snapshots at the 11 η, independently of the experiment code, every value equal to e4_reference.json. H(1) < 0 at 11 of 11 η (z from −19 to −58) and E_B(1)/E_B in [0.370, 0.438] hold; Σ_{k ≥ 2} H(k) > 0 by 2 SE fails at η = 0.0365 and 0.03309 (z = −1.4 and −1.2, sign undetermined) and at η = 0.03 (z = −5.5, negative). The criterion is unchanged since commit 68e2fd4.",
+  "comparison": "",
+  "seeds": 0,
+  "script": "experiments/e4_mhd3d.py --reference",
+  "commit": "6d9cf24"
+ },
+ {
+  "id": "H12",
+  "statement": "In E4, the magnetic-helicity identity E[⟨j·B⟩] = 0 constrains the generated magnetic law more than the energy identity: on the samples of W4s_potentials_sym at the held-out η its normalized residual is at least twice that of the energy identity, and tilting on it alone lowers the error on the mean magnetic helicity more than tilting on the energy identity alone.",
+  "refutation_criterion": "Refuted if the seed mean of r_b/r_a is below 2, or if r_b > r_a in fewer than 4 of the 5 seeds, or if the paired difference |err H_M|(tilt a) − |err H_M|(tilt b) is not larger than 2 SE; if ESS/N of the tilt on (b) is below 0.1 the tilting part is reported as a negative result.",
+  "status": "refuted",
+  "verdict": "REFUTED (encadrant, 2026-11-12): seed mean of r_b/r_a = 0.504, r_b > r_a in 0 of 5 seeds. The tilting clause is met (|err H_M| tilt a − tilt b = 0.238 ± 0.095, 5 of 5) against a degenerate comparator (tilt on the energy identity: ESS/N 0.0096); tilt b against no tilt gains 0.110 ± 0.049; the two CPU seeds do not agree in sign.",
+  "comparison": "constraint mechanisms",
+  "seeds": 5,
+  "script": "experiments/e4_mhd3d.py --seed k, k = 0..4",
+  "commit": "fb0786b"
+ },
+ {
+  "id": "H13",
+  "statement": "In E4, the error of a generator on the number of magnetic null points follows its error on the magnetic Taylor wavenumber k_λ = (⟨|j|²⟩/⟨|B|²⟩)^½ as N ∝ k_λ³: over all (variant, held-out η, seed) points, the slope of ln(N_gen/N_ref) against ln(k_λ,gen/k_λ,ref) lies between 2 and 4.",
+  "refutation_criterion": "Refuted if the least-squares slope falls outside [2, 4] or if R² < 0.5. Protocol check first, not a refutation: the null count of the reference must change by less than 10 % between the 48³ and 64³ evaluation grids.",
+  "status": "refuted",
+  "verdict": "REFUTED on the slope (encadrant, 2026-11-12): slope 4.875, R² 0.902 over 135 points (seed-bootstrap interval [4.83, 4.92]); CPU 4.96. Protocol check passed (reference nulls change by 0.6 to 3.6 % between 48³ and 64³).",
+  "comparison": "",
+  "seeds": 5,
+  "script": "experiments/e4_mhd3d.py --seed k, k = 0..4",
+  "commit": "fb0786b"
+ },
+ {
+  "id": "H14",
+  "statement": "In E4, the relative divergence of the free model W0_free is a representation error of the network and not an integration error (Proposition 2, consequence (c)): on the held-out η it is of order one with 50 Heun steps (above 0.1) and changes by less than 20 % with 200 steps.",
+  "refutation_criterion": "Refuted if the seed-mean relative divergence of B of W0_free with 50 steps is below 0.1, or if its ratio between 200 and 50 steps falls outside [0.8, 1.2].",
+  "status": "supported",
+  "verdict": "CONFIRMED (encadrant, 2026-11-12): relative divergence of B of W0_free 0.3792 at 50 Heun steps and 0.3788 at 200, ratio 0.998 to 1.000 per seed, above 0.1: integration error is excluded; 'representation error' is the remaining reading, not a separate measurement.",
+  "comparison": "",
+  "seeds": 5,
+  "script": "experiments/e4_mhd3d.py --seed k, k = 0..4",
+  "commit": "fb0786b"
+ },
+ {
+  "id": "H15",
+  "statement": "In E4, the error of the generators at the held-out η comes from the embedding of the condition: the Fourier embedding of the pre-race code has frequencies up to 8 cycles over the normalized parameter range, above the Nyquist frequency of the 6 training values (spacing 0.18), so the velocity field is aliased between them. With a smooth embedding (frequencies between 0.5 and 1 cycle; W4c_potentials_smooth), the energy-distance ratio of the potentials model on the held-out η is at least halved.",
+  "refutation_criterion": "Refuted if the seed-mean energy-distance ratio of W4c_potentials_smooth on the held-out η is more than half that of W4_potentials, or if the paired difference ED(W4) − ED(W4c) is not larger than 2 SE, or if W4c is below W4 in fewer than 4 of the 5 seeds.",
+  "status": "refuted",
+  "verdict": "REFUTED (encadrant, 2026-11-13): ratio of the seed-mean ED ratios W4c/W4 = 215.4/256.3 = 0.84 on the held-out η, above the 0.5 of the criterion; the paired difference ED(W4) − ED(W4c) = 40.9 ± 6.8 (6.0 SE, 5 of 5 seeds) is real, and absent at the training η (0.34 ± 0.32): the embedding of the condition explains part of the interpolation error, not the failure.",
+  "comparison": "model families",
+  "seeds": 5,
+  "script": "experiments/e4_mhd3d.py --seed k --group C, k = 0..4",
+  "commit": "991d682"
+ },
+ {
+  "id": "H16",
+  "statement": "In E4, a conditional Gaussian model with one mean and one covariance per Fourier mode (G0_gaussian_modes: no network; moments estimated at the training η and interpolated linearly in log η, symmetrized under B → −B) has a lower energy-distance ratio on the held-out η than every flow-matching or diffusion generator of the registered protocol (W0 to W6).",
+  "refutation_criterion": "Refuted if the seed-mean energy-distance ratio of G0 on the held-out η is above that of any of W0, W2, W3, W4, W4s, W5, W6 (W1 excluded: it is the worst), or if G0 is not below the best of them in at least 4 of the 5 seeds.",
+  "status": "supported",
+  "verdict": "CONFIRMED (encadrant, 2026-11-13): G0 3.52 against 177 to 519 for W0–W6 on the held-out η (W3 the lowest, 176.6); best of them per seed 153–194 against G0 3.36–3.70, 5 of 5 seeds.",
+  "comparison": "model families",
+  "seeds": 5,
+  "script": "experiments/e4_mhd3d.py --seed k --group D, k = 0..4",
+  "commit": "991d682"
+ },
+ {
+  "id": "H17",
+  "statement": "In E4, the over-dispersion of the flow-matching generators comes from the bottleneck of the network (width 512 for 5320 latent dimensions), which cannot represent the linear part of the velocity field: adding an explicit mode-wise affine term v = G(t, η) x + b(t, η) + MLP (W9_skip_sym: potentials, B-sign equivariance, smooth condition embedding, same width, depth, iterations and batch as W4s) divides the energy-distance ratio on the held-out η by at least 5 compared with W4s_potentials_sym.",
+  "refutation_criterion": "Refuted if the seed-mean energy-distance ratio of W9_skip_sym on the held-out η is more than one fifth of that of W4s_potentials_sym, or if the paired difference ED(W4s) − ED(W9) is not larger than 2 SE, or if W9 is below W4s in fewer than 4 of the 5 seeds. Reported with it: the final flow-matching loss against π/2.",
+  "status": "supported",
+  "verdict": "CONFIRMED (encadrant, 2026-11-13): ratio W9/W4s = 9.35/209.8 = 0.045, below 0.2; ED(W4s) − ED(W9) = 200.4 ± 2.2 (91 SE), 5 of 5 seeds; flow-matching loss of W9 on a training sample 1.18, below π/2. The factor is 22.4 at the held-out η and 30.2 at the training η.",
+  "comparison": "model families",
+  "seeds": 5,
+  "script": "experiments/e4_mhd3d.py --seed k --group D, k = 0..4",
+  "commit": "991d682"
+ },
+ {
+  "id": "H18",
+  "statement": "In E4, flow matching adds to the second-order baseline what a Gaussian law cannot hold: with the mode-wise affine term and a longer training (W9L_skip_long, 8 times the iterations of W9), the drift of the magnetic energy when the solver is restarted from the generated snapshots (T1 metric) and the error on the number of magnetic null points are both lower than those of G0_gaussian_modes.",
+  "refutation_criterion": "Refuted if, for the restart drift or for the null-count error, the paired difference G0 − W9L is not larger than 2 SE or W9L is below G0 in fewer than 4 of the 5 seeds.",
+  "status": "registered",
+  "verdict": "",
+  "comparison": "model families",
+  "seeds": 5,
+  "script": "experiments/e4_mhd3d.py --seed k --group D, k = 0..4",
+  "commit": ""
+ },
+ {
+  "id": "H19",
+  "statement": "In E4, a flow-matching field anchored on the exact field of the mode-wise Gaussian law, v = v_Gauss(x, t, η) + network (W10_anchored: the network starts at zero, so the model starts as G0 and learns only the non-Gaussian correction), keeps the second-order accuracy of G0 and adds what G0 lacks: its energy-distance ratio on the held-out η is not above that of G0_gaussian_modes, and its restart drift and its null-count error are both below those of G0.",
+  "refutation_criterion": "Refuted if the seed-mean energy-distance ratio of W10_anchored on the held-out η exceeds that of G0 by more than 2 SE of the paired difference, or if, for the restart drift or for the null-count error, the paired difference G0 − W10 is not larger than 2 SE or W10 is below G0 in fewer than 4 of the 5 seeds.",
+  "status": "refuted",
+  "verdict": "REFUTED (encadrant, 2026-11-13): ED(W10) − ED(G0) = +40.0 ± 0.26 on the held-out η (first clause not met); restart drift of E_B: G0 − W10 = 0.090 ± 0.003, 5 of 5 (met); null-count error: G0 − W10 = −0.229 ± 0.014, 0 of 5 (not met).",
+  "comparison": "model families",
+  "seeds": 5,
+  "script": "experiments/e4_mhd3d.py --seed k --group D,E, k = 0..4",
+  "commit": "991d682"
+ },
+ {
+  "id": "H20",
+  "statement": "In E4, the anchored model fails (W10_anchored on CPU seeds 0 and 1: 45 times the floor against 3.3 for G0) because the network's own linear component perturbs the second-order statistics that the fixed Gaussian field had right. Adding to the anchored field a learnable mode-wise affine correction, zero at initialization (W11_anchored_skip: v = v_Gauss + G(t, η) x + b(t, η) + network), restores them: its energy-distance ratio on the held-out η is not above that of G0_gaussian_modes, and its restart drift and its null-count error are both below those of G0.",
+  "refutation_criterion": "Refuted if the seed-mean energy-distance ratio of W11_anchored_skip on the held-out η exceeds that of G0 by more than 2 SE of the paired difference, or if, for the restart drift or for the null-count error, the paired difference G0 − W11 is not larger than 2 SE or W11 is below G0 in fewer than 4 of the 5 seeds.",
+  "status": "refuted",
+  "verdict": "REFUTED (encadrant, 2026-11-13) on its first clause: ED(W11) − ED(G0) = +5.08 ± 0.22 (24 SE), 0 of 5 seeds; the two other clauses are met: restart drift of E_B G0 − W11 = 0.092 ± 0.003 (5 of 5), null-count error G0 − W11 = 0.539 ± 0.014 (5 of 5). Reported with it: the magnetic energy balance residual is 0.998 for G0 against 0.060 for W11, and the restart drift of E_u is lower for G0 (0.026 against 0.053).",
+  "comparison": "model families",
+  "seeds": 5,
+  "script": "experiments/e4_mhd3d.py --seed k --group D,E (and L for the long variants), k = 0..4",
+  "commit": "991d682"
+ },
+ {
+  "id": "H21",
+  "statement": "In E4, the over-dispersion of the flow-matching generators without an explicit linear term comes from the width of the network and not from the training budget: for the equivariant potentials model with the smooth condition embedding and no affine term, (i) the energy-distance ratio on the held-out η decreases with the width over 512, 2048 and 5632 (the last one above the latent dimension 5320) at 4000 iterations, the widest being at most one fifth of the narrowest, and (ii) 8 times the iterations at width 512 do not bring the ratio below half its value at 4000 iterations.",
+  "refutation_criterion": "Refuted if the seed-mean ratios at 4000 iterations are not ordered S_w512 > S_w2048 > S_w5632, or if S_w5632 is above one fifth of S_w512, or if S_w512_long (32000 iterations) is below half of S_w512. Reported with it: the flow-matching loss of each on a training sample against π/2.",
+  "status": "registered",
+  "verdict": "",
+  "comparison": "model families",
+  "seeds": 5,
+  "script": "experiments/e4_mhd3d.py --seed k --group S --device cuda, k = 0..4",
+  "commit": ""
+ }
+]

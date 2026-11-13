@@ -29,9 +29,11 @@ REGISTERED = ["W0_free", "W2_final_projection", "W3_projected_flow", "W4_potenti
               "W5_stationarity", "W6_diffusion"]
 POST = ["W7_tilting", "W8_rescaling", "W5_stationarity_half", "W5_control_half"]
 KEYS = [("ed_ratio", "ED / floor", False), ("div_rel_b_mean", "rel. div. B", False),
-        ("balance_residual_total", "|energy residual|", True), ("spec_err_b_l2", "err. E_B(k)", False),
+        ("balance_residual_total", "|energy residual|", True), ("balance_residual_magnetic", "|magnetic balance|", True),
+        ("spec_err_b_l2", "err. E_B(k)", False),
         ("hel_m_err_rel", "err. H_M", False), ("null_count_err_rel", "err. nulls", False),
-        ("restart_drift_eb", "restart drift E_B", False), ("hc_sign_asym", "|P(H_c>0)−½|", False),
+        ("restart_drift_eb", "restart drift E_B", False), ("restart_drift_eu", "restart drift E_u", False),
+        ("hc_sign_asym", "|P(H_c>0)−½|", False),
         ("std_residual_rel", "σ(dE/dt)/σ_ref", False), ("ess_frac", "ESS/N", False)]
 
 
@@ -286,6 +288,17 @@ def section(quick: bool = False, root: Path = R, replication: str | None = None,
                     continue
                 for key, label in (("ed_ratio", "ED ratio"), ("restart_drift_eb", "restart drift E_B"), ("null_count_err_rel", "err. nulls")):
                     P(paired_row(f"{label}: G0_gaussian_modes − {v} ({h})", per_seed(runs, "G0_gaussian_modes", key), per_seed(runs, v, key)))
+        if has("G0_gaussian_modes"):                 # what a Gaussian law cannot hold, and what it holds better (review of 2026-11-13)
+            for v in ("W9_skip_sym", "W11_anchored_skip", "W9L_skip_long", "W11L_anchored_skip_long"):
+                if not has(v):
+                    continue
+                for key, label, ab in (("balance_residual_magnetic", "|magnetic balance|", True), ("restart_drift_eu", "restart drift E_u", False),
+                                       ("balance_residual_total", "|energy residual|", True), ("spec_err_b_l2", "err. E_B(k)", False)):
+                    P(paired_row(f"{label}: G0_gaussian_modes − {v}", per_seed(runs, "G0_gaussian_modes", key, absolute=ab),
+                                 per_seed(runs, v, key, absolute=ab)))
+            if has("W9_skip_sym") and has("W11_anchored_skip"):
+                for key, label in (("ed_ratio", "ED ratio"), ("restart_drift_eb", "restart drift E_B"), ("null_count_err_rel", "err. nulls")):
+                    P(paired_row(f"{label}: W9_skip_sym − W11_anchored_skip", per_seed(runs, "W9_skip_sym", key), per_seed(runs, "W11_anchored_skip", key)))
         if has("S_w512"):
             def loss_of(v: str) -> str:
                 x = [r["times"].get(v, {}).get("fm_loss_train_sample") for r in runs.values()]

@@ -113,16 +113,18 @@
       cell("magnetic helicity ⟨A·B⟩", value(row, "hel_m", seed), ref.H_M) +
       cell("magnetic null points per snapshot", value(row, "null_count", seed), ref.null_count_mean, "reference ± " + fmt(ref.null_count_se, 2) + " (SE)") +
       cell("residual of the mean energy balance / injection", value(row, "balance_residual_total", seed), ref.balance_residual_total) +
+      cell("residual of the mean magnetic energy balance", value(row, "balance_residual_magnetic", seed), ref.balance_residual_magnetic, "(production − Ohmic dissipation) / (|production| + dissipation)") +
       cell("relative divergence of B (largest)", value(row, "div_rel_b_max", seed), null, "spectral, double precision") +
       cell("magnetic Taylor wavenumber k<sub>λ</sub>", value(row, "k_lambda", seed), ref.k_lambda) +
       cell("energy distance / noise floor", value(row, "ed_ratio", seed), null, "floor " + fmt(ref.ed_floor, 3) + " (two halves of the reference trajectories)") +
       cell("drift of E<sub>B</sub> after a solver restart", value(row, "restart_drift_eb", seed), ref.restart_drift_eb, row && row.split !== "test" ? "computed on the held-out η only" : "") +
+      cell("drift of E<sub>u</sub> after a solver restart", value(row, "restart_drift_eu", seed), ref.restart_drift_eu, row && row.split !== "test" ? "computed on the held-out η only" : "") +
       "</tbody></table>" + (row ? "" : "<p>This variant was not evaluated at this η.</p>");
     const etas = D.etas.map((e) => e.eta), keys = etas.map((e) => e.toFixed(5)), shapes = D.etas.map((e) => e.split);
     const series = [];
     if (seed === "mean") seeds.forEach((s) => series.push({ name: "seed " + s, x: etas, y: keys.map((q) => value(v.rows[q], metric.key, s, metric.abs)), cls: "ex-faint", line: false, shapes: shapes, r: 2 }));
     series.push({ name: seed === "mean" ? "seed mean" : "seed " + seed, x: etas, y: keys.map((q) => value(v.rows[q], metric.key, seed, metric.abs)), cls: "ex-gen", shapes: shapes, r: 3.5 });
-    const logy = ["ed_ratio", "div_rel_b_max", "balance_residual_total", "hel_m_err_rel", "restart_drift_eb"].includes(metric.key);
+    const logy = ["ed_ratio", "div_rel_b_max", "balance_residual_total", "balance_residual_magnetic", "hel_m_err_rel", "restart_drift_eb", "restart_drift_eu"].includes(metric.key);
     $("ex-trend").innerHTML = chart(series, { w: 640, h: 260, title: metric.label + " — " + v.label, xlabel: "magnetic diffusivity η  (● training, ■ validation, ◆ held-out test)", logx: true, logy: logy, xticks: [0.03, 0.04, 0.05, 0.06, 0.08], xfmt: (x) => (+x).toFixed(3) });
     $("ex-source").textContent = "Source: " + v.source + "/e4_mhd3d_s<k>.json" + (v.fm_loss ? "; flow-matching loss on a training sample " + fmt(v.fm_loss, 4) + " (π/2 = 1.571 for the exact field of independent unit Gaussians)" : "") + (v.training_time_s ? "; training " + fmt(v.training_time_s, 3) + " s." : ".");
     drawSlices();

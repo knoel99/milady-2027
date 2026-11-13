@@ -21,8 +21,16 @@
   ]
  },
  {
+  "name": "e4_spectra",
+  "caption": "Shell spectra of the velocity and of the magnetic field and magnetic helicity spectrum at the held-out \u03b7 = 0.0490: reference (black) and generated ensembles (mean over the seeds).",
+  "sources": [
+   "experiments/results/e4_mhd3d_s<k>.json",
+   "experiments/results/e4_reference.json"
+  ]
+ },
+ {
   "name": "e4_physics_metrics",
-  "caption": "Physical metrics on the held-out \u03b7, one dot per seed and seed mean \u00b1 2 standard errors: residual of the mean energy balance, error on the number of magnetic null points, drift of the magnetic energy when the solver restarts from the generated snapshots, error on the mean magnetic helicity. Dashed lines: the same quantity on reference snapshots.",
+  "caption": "Physical metrics on the held-out \u03b7, one dot per seed and seed mean \u00b1 2 standard errors: residuals of the mean total and magnetic energy balances, errors on the mean magnetic helicity and on the number of magnetic null points, drifts of the magnetic and kinetic energies when the solver restarts from the generated snapshots. Dashed lines: the same quantity on reference snapshots.",
   "sources": [
    "experiments/results/e4_mhd3d_s<k>.json",
    "experiments/results/e4_reference.json"

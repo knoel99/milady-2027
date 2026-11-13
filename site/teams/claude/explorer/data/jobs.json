@@ -1,0 +1,211 @@
+[
+ {
+  "time": "2026-11-12T17:48:35Z",
+  "pod": "p0vtwqixgmk1rp",
+  "gpu": "NVIDIA RTX PRO 4500 Blackwell",
+  "usd_per_hour": 0.72,
+  "hours": 0.4037,
+  "usd": 0.2907,
+  "rc": null,
+  "commit": "36908cc",
+  "command": "python -m milady.sim.mhd3d bench --n 64 128 --device cuda --dtype float32 --steps 50"
+ },
+ {
+  "time": "2026-11-12T17:58:03Z",
+  "pod": "8e4zzeg8f1e7td",
+  "gpu": "NVIDIA RTX PRO 4500 Blackwell",
+  "usd_per_hour": 0.72,
+  "hours": 0.0264,
+  "usd": 0.019,
+  "rc": null,
+  "commit": "40f6188",
+  "command": "python -m milady.sim.mhd3d bench --n 64 128 --device cuda --dtype float32 --steps 50"
+ },
+ {
+  "time": "2026-11-12T17:59:40Z",
+  "pod": "a4tr118qbcf8pm",
+  "gpu": "NVIDIA RTX PRO 4500 Blackwell",
+  "usd_per_hour": 0.72,
+  "hours": 0.0264,
+  "usd": 0.019,
+  "rc": null,
+  "commit": "40f6188",
+  "command": "python -m milady.sim.mhd3d bench --n 64 128 --device cuda --dtype float64 --steps 50"
+ },
+ {
+  "time": "2026-11-12T18:18:45Z",
+  "pod": "0v16bniphtsp31",
+  "gpu": "NVIDIA RTX PRO 4500 Blackwell",
+  "usd_per_hour": 0.72,
+  "hours": 0.1037,
+  "usd": 0.0746,
+  "rc": null,
+  "commit": "d4f2135",
+  "command": "python -m milady.sim.mhd3d bench --n 64 128 --device cuda --dtype float32 --steps 50"
+ },
+ {
+  "time": "2026-11-12T18:25:32Z",
+  "pod": "a6bfbmjrml4g9t",
+  "gpu": "NVIDIA RTX PRO 4500 Blackwell",
+  "usd_per_hour": 0.72,
+  "hours": 0.0264,
+  "usd": 0.019,
+  "rc": 0,
+  "commit": "f099fa8",
+  "command": "python -m milady.sim.mhd3d bench --n 64 128 --device cuda --dtype float32 --steps 50"
+ },
+ {
+  "time": "2026-11-12T18:27:10Z",
+  "pod": "jidpwjwq8vb73n",
+  "gpu": "NVIDIA RTX PRO 4500 Blackwell",
+  "usd_per_hour": 0.72,
+  "hours": 0.0264,
+  "usd": 0.019,
+  "rc": 0,
+  "commit": "f099fa8",
+  "command": "python -m milady.sim.mhd3d bench --n 64 128 --device cuda --dtype float64 --steps 50"
+ },
+ {
+  "time": "2026-11-12T18:40:30Z",
+  "pod": "dvrep85lyg496h",
+  "gpu": "NVIDIA RTX A6000",
+  "usd_per_hour": 0.69,
+  "hours": 0.0261,
+  "usd": 0.018,
+  "rc": 0,
+  "commit": "47d057d",
+  "command": "python -m milady.sim.mhd3d bench --n 64 128 --device cuda --dtype float32 --steps 50"
+ },
+ {
+  "time": "2026-11-12T18:44:03Z",
+  "pod": "e620mvqal8g0vl",
+  "gpu": "NVIDIA RTX PRO 4500 Blackwell",
+  "usd_per_hour": 0.72,
+  "hours": 0.1463,
+  "usd": 0.1054,
+  "rc": 0,
+  "commit": "8fd79a0",
+  "command": "bash experiments/e4_gpu_job.sh quick 0"
+ },
+ {
+  "time": "2026-11-12T19:03:28Z",
+  "pod": "zpfspptdd164gz",
+  "gpu": "NVIDIA RTX PRO 4500 Blackwell",
+  "usd_per_hour": 0.72,
+  "hours": 0.1723,
+  "usd": 0.124,
+  "rc": 0,
+  "commit": "d0e018f",
+  "command": "bash experiments/e4_convergence_job.sh"
+ },
+ {
+  "time": "2026-11-12T20:16:13Z",
+  "pod": "d318r1aqrkt015",
+  "gpu": "NVIDIA RTX PRO 4500 Blackwell",
+  "usd_per_hour": 0.72,
+  "hours": 1.4152,
+  "usd": 1.0189,
+  "rc": 0,
+  "commit": "d0e018f",
+  "command": "bash experiments/e4_gpu_job.sh full \"0 1 2 3 4\""
+ },
+ {
+  "time": "2026-11-12T22:21:41Z",
+  "pod": "hd6qx71mm6jekm",
+  "gpu": "NVIDIA RTX PRO 4500 Blackwell",
+  "usd_per_hour": 0.72,
+  "hours": 0.5903,
+  "usd": 0.425,
+  "rc": null,
+  "commit": "1c21afc",
+  "command": "bash experiments/e4_gpu_job.sh full \"0 1 2 3 4\" e4_gpu_de D,E"
+ },
+ {
+  "time": "2026-11-12T22:23:59Z",
+  "pod": "00t6s3l481flvm",
+  "gpu": "NVIDIA RTX PRO 4500 Blackwell",
+  "usd_per_hour": 0.72,
+  "hours": 1.8197,
+  "usd": 1.3102,
+  "rc": null,
+  "commit": "a20bcb1",
+  "command": "bash experiments/e4_gpu_job.sh full \"0 1 2 3 4\" e4_gpu_all"
+ },
+ {
+  "time": "2026-11-12T22:24:00Z",
+  "pod": "tq1h5u6vshm1r9",
+  "gpu": "NVIDIA RTX PRO 4500 Blackwell",
+  "usd_per_hour": 0.72,
+  "hours": 0.0306,
+  "usd": 0.022,
+  "rc": null,
+  "commit": "837c23a",
+  "command": "bash experiments/e4_gpu_job.sh full \"0 1 2 3 4\" e4_main all"
+ },
+ {
+  "time": "2026-11-12T22:24:49Z",
+  "pod": "hd6qx71mm6jekm",
+  "gpu": "NVIDIA RTX PRO 4500 Blackwell",
+  "usd_per_hour": 0.72,
+  "hours": -0.59,
+  "usd": -0.4248,
+  "rc": null,
+  "commit": "1c21afc",
+  "command": "CORRECTION of the entry of pod hd6qx71mm6jekm: the pod was deleted by another session's clean-up (created 21:46:16, deleted 21:46:17 UTC, RunPod audit log); the"
+ },
+ {
+  "time": "2026-11-12T22:24:49Z",
+  "pod": "00t6s3l481flvm",
+  "gpu": "NVIDIA RTX PRO 4500 Blackwell",
+  "usd_per_hour": 0.72,
+  "hours": -0.6278,
+  "usd": -0.452,
+  "rc": null,
+  "commit": "a20bcb1",
+  "command": "CORRECTION of the entry of pod 00t6s3l481flvm: the pod was deleted by another session's clean-up (created 20:34:47, deleted 21:46:18 UTC, RunPod audit log); the"
+ },
+ {
+  "time": "2026-11-12T23:24:01Z",
+  "pod": "0f9igs6x9751ff",
+  "gpu": "NVIDIA A100-SXM4-80GB",
+  "usd_per_hour": 2.19,
+  "hours": 0.1263,
+  "usd": 0.2767,
+  "rc": null,
+  "commit": "5027f7c",
+  "command": "bash experiments/e4_gpu_job.sh full \"0 1 2 3 4\" e4_scan S"
+ },
+ {
+  "time": "2026-11-12T23:24:01Z",
+  "pod": "j086ni3xthyx5p",
+  "gpu": "NVIDIA RTX PRO 4500 Blackwell",
+  "usd_per_hour": 0.72,
+  "hours": 0.1263,
+  "usd": 0.0909,
+  "rc": null,
+  "commit": "5027f7c",
+  "command": "bash experiments/e4_gpu_job.sh full \"0 1 2 3 4\" e4_long L"
+ },
+ {
+  "time": "2026-11-12T23:27:27Z",
+  "pod": "cfjdmc079g5yb1",
+  "gpu": "NVIDIA RTX PRO 4500 Blackwell",
+  "usd_per_hour": 0.72,
+  "hours": 0.9833,
+  "usd": 0.708,
+  "rc": 0,
+  "commit": "62e31c9",
+  "command": "collected after a restart of the session: milady-claude-job-bae2a10e"
+ },
+ {
+  "time": "2026-11-13T00:17:23Z",
+  "pod": "cjs6gxv9cv92rv",
+  "gpu": "NVIDIA RTX PRO 4500 Blackwell",
+  "usd_per_hour": 0.72,
+  "hours": 0.8787,
+  "usd": 0.6326,
+  "rc": 0,
+  "commit": "973fe3a",
+  "command": "collected after a restart of the session: milady-claude-job-229a6eaf"
+ }
+]

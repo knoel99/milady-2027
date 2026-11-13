@@ -30,8 +30,9 @@ from export_explorer import LABEL  # noqa: E402
 
 REPORT = ROOT / "site" / "teams" / "claude" / "report" / "index.qmd"
 COLS = [("ed_ratio", "ED / floor", False), ("div_rel_b_max", "div B", False), ("balance_residual_total", "energy residual", True),
-        ("spec_err_b_l2", "spectrum of B", False), ("hel_m_err_rel", "magnetic helicity", True),
-        ("null_count_err_rel", "null points", True), ("restart_drift_eb", "restart drift", True), ("hc_sign_asym", "polarity", True)]
+        ("balance_residual_magnetic", "magnetic balance", True), ("spec_err_b_l2", "spectrum of B", False),
+        ("hel_m_err_rel", "magnetic helicity", True), ("null_count_err_rel", "null points", True),
+        ("restart_drift_eb", "restart drift $E_B$", True), ("restart_drift_eu", "restart drift $E_u$", True), ("hc_sign_asym", "polarity", True)]
 NOTES = "@@notes@@"
 WHERE = {"none": "none", "design": "design", "loss": "loss", "sampling": "sampling", "family": "family"}
 
@@ -79,7 +80,7 @@ def n_seeds(runs: dict, v: str) -> int:
 
 def variants_table(runs: dict, names: list[str], extra_loss: bool = False) -> list[str]:
     head = ["Variant", "Acts through", "ED / floor, training $\\eta$"] + [c[1] for c in COLS] + (["FM loss"] if extra_loss else []) + ["Seeds"]
-    out = ["| " + " | ".join(head) + " |", "|:" + "-" * 30 + "|:" + "-" * 9 + "|" + ("-" * 10 + ":|") * (len(head) - 2)]
+    out = ["| " + " | ".join(head) + " |", "|:" + "-" * 26 + "|:" + "-" * 8 + "|" + ("-" * 9 + ":|") * (len(head) - 3) + "----:|"]
     for v in names:
         if not n_seeds(runs, v):
             continue
@@ -157,12 +158,13 @@ def block_objectives() -> list[str]:
 def block_jobs() -> list[str]:
     led = [json.loads(x) for x in (ROOT / "research" / "compute-ledger.jsonl").read_text().splitlines() if x.strip()]
     rows = [r for r in led if r.get("event") != "start"]
-    out = ["| End (UTC) | GPU | USD/h | Hours | USD | Exit | Commit | Command (shortened) |", "|:---|:---|---:|---:|---:|:---|:---|:---|"]
+    out = ["| End (UTC) | GPU | USD/h | Hours | USD | Exit | Commit | Command (shortened) |",
+           "|:----------|:------------------|-----:|------:|-----:|:----|:-------|:" + "-" * 44 + "|"]
     for r in rows:
         cmd = (r.get("command") or "").replace("|", "/").replace("bash experiments/", "")
-        cmd = cmd[:70] + ("…" if len(cmd) > 70 else "")
+        cmd = cmd[:60] + (" ..." if len(cmd) > 60 else "")
         out.append(f"| {r['time'][5:16].replace('T', ' ')} | {(r.get('gpu') or '–').replace('NVIDIA ', '')} | {r.get('usd_per_hour', 0):.2f} | "
-                   f"{r.get('hours', 0):.3f} | {r.get('usd', 0):.2f} | {r.get('rc', '–')} | `{(r.get('commit') or '')[:7]}` | `{cmd}` |")
+                   f"{r.get('hours', 0):.3f} | {r.get('usd', 0):.2f} | {'–' if r.get('rc') is None else r.get('rc')} | `{(r.get('commit') or '')[:7]}` | {tex(cmd)} |")
     out += [NOTES, f"Total: {len(rows)} ledger entries, {sum(r.get('hours', 0) for r in rows):.2f} GPU hours, "
                 f"{sum(r.get('usd', 0) for r in rows):.2f} USD."]
     return out

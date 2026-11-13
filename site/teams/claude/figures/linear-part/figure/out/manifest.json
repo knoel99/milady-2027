@@ -224,12 +224,12 @@
    "weight": "normal"
   },
   {
-   "s": "Latent x: 5320 dimensions",
+   "s": "Latent x: 5320 (potentials)",
    "role": "label",
    "box": {
-    "x": 57.91756820678711,
+    "x": 58.25156021118164,
     "y": 57.62489318847656,
-    "w": 71.25146484375,
+    "w": 70.83352661132812,
     "h": 6.750141143798828
    },
    "size": 6,
@@ -260,12 +260,12 @@
    "weight": "normal"
   },
   {
-   "s": "Velocity v: 5320 dimensions",
+   "s": "Velocity v: 5320 (potentials)",
    "role": "label",
    "box": {
-    "x": 55.585487365722656,
+    "x": 55.91947937011719,
     "y": 137.62489318847656,
-    "w": 75.91564178466797,
+    "w": 75.49769592285156,
     "h": 6.7501373291015625
    },
    "size": 6,
@@ -314,12 +314,12 @@
    "weight": "normal"
   },
   {
-   "s": "Conjecture: a network narrower than the latent",
+   "s": "Conjecture (tested by a width scan, H21):",
    "role": "label",
    "box": {
-    "x": 37.01674270629883,
-    "y": 144.74989318847656,
-    "w": 113.05313110351562,
+    "x": 43.128196716308594,
+    "y": 146.74989318847656,
+    "w": 100.83020782470703,
     "h": 6.7501373291015625
    },
    "size": 5.5,
@@ -332,18 +332,54 @@
    "weight": "normal"
   },
   {
-   "s": "cannot carry the linear part (width scan pending)",
+   "s": "a network narrower than the latent",
    "role": "label",
    "box": {
-    "x": 34.73154067993164,
-    "y": 151.74989318847656,
-    "w": 117.62354278564453,
+    "x": 51.835411071777344,
+    "y": 153.74989318847656,
+    "w": 83.41580200195312,
     "h": 6.75014066696167
    },
    "size": 5.5,
    "minSize": 5.5,
    "family": "Arial, Helvetica, sans-serif",
    "color": "#2b2b2b",
+   "halo": false,
+   "rotate": 0,
+   "italic": false,
+   "weight": "normal"
+  },
+  {
+   "s": "cannot carry the linear part",
+   "role": "label",
+   "box": {
+    "x": 60.85317611694336,
+    "y": 160.74989318847656,
+    "w": 65.38026428222656,
+    "h": 6.75014066696167
+   },
+   "size": 5.5,
+   "minSize": 5.5,
+   "family": "Arial, Helvetica, sans-serif",
+   "color": "#2b2b2b",
+   "halo": false,
+   "rotate": 0,
+   "italic": false,
+   "weight": "normal"
+  },
+  {
+   "s": "(W0, free components: 7980)",
+   "role": "label",
+   "box": {
+    "x": 105.77605438232422,
+    "y": 105.37493133544922,
+    "w": 64.6536865234375,
+    "h": 5.2501091957092285
+   },
+   "size": 5,
+   "minSize": 5,
+   "family": "Arial, Helvetica, sans-serif",
+   "color": "#7a7a7a",
    "halo": false,
    "rotate": 0,
    "italic": false,
@@ -368,12 +404,12 @@
    "weight": "normal"
   },
   {
-   "s": "Measured: flow-matching loss",
+   "s": "Measured: flow-matching loss of the plain",
    "role": "label",
    "box": {
-    "x": 53.27098846435547,
-    "y": 192.62490844726562,
-    "w": 80.55020904541016,
+    "x": 37.78433609008789,
+    "y": 198.62489318847656,
+    "w": 111.5179443359375,
     "h": 6.7501373291015625
    },
    "size": 6,
@@ -386,12 +422,30 @@
    "weight": "normal"
   },
   {
-   "s": "exact linear field, π/2 ≈ 1.571",
+   "s": "models W0, W4, W4s after training",
+   "role": "label",
+   "box": {
+    "x": 47.2825813293457,
+    "y": 205.62489318847656,
+    "w": 92.5214614868164,
+    "h": 6.75014066696167
+   },
+   "size": 6,
+   "minSize": 6,
+   "family": "Arial, Helvetica, sans-serif",
+   "color": "#1a1a1a",
+   "halo": false,
+   "rotate": 0,
+   "italic": false,
+   "weight": "normal"
+  },
+  {
+   "s": "π/2 ≈ 1.571",
    "role": "label",
    "box": {
     "x": 41.57973098754883,
-    "y": 202.62489318847656,
-    "w": 70.98194885253906,
+    "y": 216.62490844726562,
+    "w": 28.20762062072754,
     "h": 6.75014066696167
    },
    "size": 5.5,
@@ -404,12 +458,12 @@
    "weight": "normal"
   },
   {
-   "s": "W0–W6: 1.60–1.63",
+   "s": "1.60–1.63, above π/2",
    "role": "label",
    "box": {
-    "x": 95.68042755126953,
-    "y": 222.62489318847656,
-    "w": 47.051761627197266,
+    "x": 93.01435089111328,
+    "y": 236.62489318847656,
+    "w": 52.38390350341797,
     "h": 6.75014066696167
    },
    "size": 5.5,
@@ -426,7 +480,7 @@
    "role": "label",
    "box": {
     "x": 60.85317611694336,
-    "y": 238.62489318847656,
+    "y": 252.62489318847656,
     "w": 65.38026428222656,
     "h": 6.75014066696167
    },
@@ -440,12 +494,12 @@
    "weight": "bold"
   },
   {
-   "s": "2–3× too many null points; dE/dt",
+   "s": "potentials models: 2 to 3 times too many",
    "role": "label",
    "box": {
-    "x": 54.2026481628418,
-    "y": 245.62490844726562,
-    "w": 78.68132781982422,
+    "x": 44.35283279418945,
+    "y": 259.6248779296875,
+    "w": 98.62300109863281,
     "h": 6.75014066696167
    },
    "size": 5.5,
@@ -458,12 +512,12 @@
    "weight": "normal"
   },
   {
-   "s": "fluctuations 2–14× the reference",
+   "s": "null points",
    "role": "label",
    "box": {
-    "x": 54.2026481628418,
-    "y": 252.62489318847656,
-    "w": 78.68132781982422,
+    "x": 81.16805267333984,
+    "y": 266.6249084472656,
+    "w": 25.001054763793945,
     "h": 6.75014066696167
    },
    "size": 5.5,
@@ -515,8 +569,8 @@
    "s": "Energy distance / noise floor",
    "role": "label",
    "box": {
-    "x": 410.59425354003906,
-    "y": 4.6248908042907715,
+    "x": 362.01947021484375,
+    "y": 18.62489128112793,
     "w": 75.2440185546875,
     "h": 6.75014066696167
    },
@@ -530,12 +584,102 @@
    "weight": "normal"
   },
   {
-   "s": "(log scale; held-out η)",
+   "s": "(log scale; seed mean, held-out η)",
    "role": "label",
    "box": {
-    "x": 424.15899658203125,
-    "y": 12.374922752380371,
-    "w": 48.012718200683594,
+    "x": 361.8495330810547,
+    "y": 26.374923706054688,
+    "w": 75.48204040527344,
+    "h": 5.2501091957092285
+   },
+   "size": 5,
+   "minSize": 5,
+   "family": "Arial, Helvetica, sans-serif",
+   "color": "#7a7a7a",
+   "halo": false,
+   "rotate": 0,
+   "italic": false,
+   "weight": "normal"
+  },
+  {
+   "s": "null-count",
+   "role": "label",
+   "box": {
+    "x": 462.30706787109375,
+    "y": 29.62489128112793,
+    "w": 26.97767448425293,
+    "h": 6.75014066696167
+   },
+   "size": 5.5,
+   "minSize": 5.5,
+   "family": "Arial, Helvetica, sans-serif",
+   "color": "#1a1a1a",
+   "halo": false,
+   "rotate": 0,
+   "italic": false,
+   "weight": "bold"
+  },
+  {
+   "s": "error",
+   "role": "label",
+   "box": {
+    "x": 469.1744079589844,
+    "y": 36.6248893737793,
+    "w": 12.941912651062012,
+    "h": 6.75014066696167
+   },
+   "size": 5.5,
+   "minSize": 5.5,
+   "family": "Arial, Helvetica, sans-serif",
+   "color": "#1a1a1a",
+   "halo": false,
+   "rotate": 0,
+   "italic": false,
+   "weight": "bold"
+  },
+  {
+   "s": "restart",
+   "role": "label",
+   "box": {
+    "x": 497.0356750488281,
+    "y": 29.62489128112793,
+    "w": 17.52834129333496,
+    "h": 6.75014066696167
+   },
+   "size": 5.5,
+   "minSize": 5.5,
+   "family": "Arial, Helvetica, sans-serif",
+   "color": "#1a1a1a",
+   "halo": false,
+   "rotate": 0,
+   "italic": false,
+   "weight": "bold"
+  },
+  {
+   "s": "drift",
+   "role": "label",
+   "box": {
+    "x": 500.2467041015625,
+    "y": 36.6248893737793,
+    "w": 11.103586196899414,
+    "h": 6.75014066696167
+   },
+   "size": 5.5,
+   "minSize": 5.5,
+   "family": "Arial, Helvetica, sans-serif",
+   "color": "#1a1a1a",
+   "halo": false,
+   "rotate": 0,
+   "italic": false,
+   "weight": "bold"
+  },
+  {
+   "s": "(relative values)",
+   "role": "label",
+   "box": {
+    "x": 472.9710693359375,
+    "y": 11.374922752380371,
+    "w": 35.239013671875,
     "h": 5.2501091957092285
    },
    "size": 5,
@@ -551,8 +695,26 @@
    "s": "1",
    "role": "label",
    "box": {
-    "x": 382.20184326171875,
-    "y": 33.37492370605469,
+    "x": 352.20184326171875,
+    "y": 43.37492370605469,
+    "w": 3.0000624656677246,
+    "h": 5.2501091957092285
+   },
+   "size": 5,
+   "minSize": 5,
+   "family": "Arial, Helvetica, sans-serif",
+   "color": "#1a1a1a",
+   "halo": false,
+   "rotate": 0,
+   "italic": false,
+   "weight": "normal"
+  },
+  {
+   "s": "3",
+   "role": "label",
+   "box": {
+    "x": 369.9220886230469,
+    "y": 43.37492370605469,
     "w": 3.0000624656677246,
     "h": 5.2501091957092285
    },
@@ -569,8 +731,26 @@
    "s": "10",
    "role": "label",
    "box": {
-    "x": 423.86302185058594,
-    "y": 33.37492370605469,
+    "x": 387.9530487060547,
+    "y": 43.37492370605469,
+    "w": 5.776525497436523,
+    "h": 5.2501091957092285
+   },
+   "size": 5,
+   "minSize": 5,
+   "family": "Arial, Helvetica, sans-serif",
+   "color": "#1a1a1a",
+   "halo": false,
+   "rotate": 0,
+   "italic": false,
+   "weight": "normal"
+  },
+  {
+   "s": "30",
+   "role": "label",
+   "box": {
+    "x": 405.6732635498047,
+    "y": 43.37492370605469,
     "w": 5.776525497436523,
     "h": 5.2501091957092285
    },
@@ -587,8 +767,8 @@
    "s": "100",
    "role": "label",
    "box": {
-    "x": 465.524169921875,
-    "y": 33.37492370605469,
+    "x": 423.7042236328125,
+    "y": 43.37492370605469,
     "w": 8.553011894226074,
     "h": 5.2501091957092285
    },
@@ -602,12 +782,12 @@
    "weight": "normal"
   },
   {
-   "s": "1000",
+   "s": "300",
    "role": "label",
    "box": {
-    "x": 507.1853332519531,
-    "y": 33.37492370605469,
-    "w": 11.329497337341309,
+    "x": 441.4244384765625,
+    "y": 43.37492370605469,
+    "w": 8.553011894226074,
     "h": 5.2501091957092285
    },
    "size": 5,
@@ -620,317 +800,11 @@
    "weight": "normal"
   },
   {
-   "s": "W0–W6: 177–519 (first generators)",
-   "role": "label",
-   "box": {
-    "x": 387.5511474609375,
-    "y": 21.82489013671875,
-    "w": 90.22441864013672,
-    "h": 6.75014066696167
-   },
-   "size": 5.5,
-   "minSize": 5.5,
-   "family": "Arial, Helvetica, sans-serif",
-   "color": "#1a1a1a",
-   "halo": false,
-   "rotate": 0,
-   "italic": false,
-   "weight": "bold"
-  },
-  {
-   "s": "G0",
+   "s": "W4s",
    "role": "label",
    "box": {
     "x": 195.5905456542969,
-    "y": 42.49985885620117,
-    "w": 10.716802597045898,
-    "h": 9.000184059143066
-   },
-   "size": 8,
-   "minSize": 8,
-   "family": "Arial, Helvetica, sans-serif",
-   "color": "#1a1a1a",
-   "halo": false,
-   "rotate": 0,
-   "italic": false,
-   "weight": "bold"
-  },
-  {
-   "s": "",
-   "role": "label",
-   "box": {
-    "x": 195.5905456542969,
-    "y": 0,
-    "w": 0,
-    "h": 0
-   },
-   "size": 5.5,
-   "minSize": 5.5,
-   "family": "Arial, Helvetica, sans-serif",
-   "color": "#1a1a1a",
-   "halo": false,
-   "rotate": 0,
-   "italic": false,
-   "weight": "normal"
-  },
-  {
-   "s": "Gaussian law per mode: mean + 8×8 covariance",
-   "role": "label",
-   "box": {
-    "x": 221.46821212768558,
-    "y": 44.12489318847656,
-    "w": 118.24465179443357,
-    "h": 6.75014066696167
-   },
-   "size": 5.5,
-   "minSize": 5.5,
-   "family": "Arial, Helvetica, sans-serif",
-   "color": "#fff",
-   "halo": false,
-   "rotate": 0,
-   "italic": false,
-   "weight": "normal"
-  },
-  {
-   "s": "no network",
-   "role": "label",
-   "box": {
-    "x": 221.59054756164554,
-    "y": 57.1248893737793,
-    "w": 27.137264251708984,
-    "h": 6.75014066696167
-   },
-   "size": 5.5,
-   "minSize": 5.5,
-   "family": "Arial, Helvetica, sans-serif",
-   "color": "#7a7a7a",
-   "halo": false,
-   "rotate": 0,
-   "italic": true,
-   "weight": "normal"
-  },
-  {
-   "s": "3.3×",
-   "role": "label",
-   "box": {
-    "x": 442.2531280517578,
-    "y": 40.12489318847656,
-    "w": 12.074798583984375,
-    "h": 6.75014066696167
-   },
-   "size": 6,
-   "minSize": 6,
-   "family": "Arial, Helvetica, sans-serif",
-   "color": "#1a1a1a",
-   "halo": false,
-   "rotate": 0,
-   "italic": false,
-   "weight": "bold"
-  },
-  {
-   "s": "spectra, energy balance (residual 0.002)",
-   "role": "label",
-   "box": {
-    "x": 207.5905456542969,
-    "y": 64.62489318847656,
-    "w": 98.38095092773435,
-    "h": 6.75014066696167
-   },
-   "size": 5.5,
-   "minSize": 5.5,
-   "family": "Arial, Helvetica, sans-serif",
-   "color": "#1a1a1a",
-   "halo": false,
-   "rotate": 0,
-   "italic": false,
-   "weight": "normal"
-  },
-  {
-   "s": "3.3× too many null points; restart drift 0.21",
-   "role": "label",
-   "box": {
-    "x": 207.5905456542969,
-    "y": 72.62489318847656,
-    "w": 102.81073760986325,
-    "h": 6.75014066696167
-   },
-   "size": 5.5,
-   "minSize": 5.5,
-   "family": "Arial, Helvetica, sans-serif",
-   "color": "#1a1a1a",
-   "halo": false,
-   "rotate": 0,
-   "italic": false,
-   "weight": "normal"
-  },
-  {
-   "s": "W9",
-   "role": "label",
-   "box": {
-    "x": 195.5905456542969,
-    "y": 104.49986267089844,
-    "w": 12.043658256530762,
-    "h": 9.000186920166016
-   },
-   "size": 8,
-   "minSize": 8,
-   "family": "Arial, Helvetica, sans-serif",
-   "color": "#1a1a1a",
-   "halo": false,
-   "rotate": 0,
-   "italic": false,
-   "weight": "bold"
-  },
-  {
-   "s": "",
-   "role": "label",
-   "box": {
-    "x": 195.5905456542969,
-    "y": 0,
-    "w": 0,
-    "h": 0
-   },
-   "size": 5.5,
-   "minSize": 5.5,
-   "family": "Arial, Helvetica, sans-serif",
-   "color": "#1a1a1a",
-   "halo": false,
-   "rotate": 0,
-   "italic": false,
-   "weight": "normal"
-  },
-  {
-   "s": "learned G(t, η) x + b",
-   "role": "label",
-   "box": {
-    "x": 226.05682945251468,
-    "y": 106.12489318847656,
-    "w": 49.06742858886716,
-    "h": 6.7501373291015625
-   },
-   "size": 5.5,
-   "minSize": 5.5,
-   "family": "Arial, Helvetica, sans-serif",
-   "color": "#00896A",
-   "halo": false,
-   "rotate": 0,
-   "italic": true,
-   "weight": "normal"
-  },
-  {
-   "s": "+",
-   "role": "label",
-   "box": {
-    "x": 282.2526092529297,
-    "y": 104.99986267089844,
-    "w": 4.675878524780273,
-    "h": 9.000186920166016
-   },
-   "size": 8,
-   "minSize": 8,
-   "family": "Arial, Helvetica, sans-serif",
-   "color": "#1a1a1a",
-   "halo": false,
-   "rotate": 0,
-   "italic": false,
-   "weight": "normal"
-  },
-  {
-   "s": "network",
-   "role": "label",
-   "box": {
-    "x": 304.96338653564453,
-    "y": 106.12489318847656,
-    "w": 19.496767044067383,
-    "h": 6.75014066696167
-   },
-   "size": 5.5,
-   "minSize": 5.5,
-   "family": "Arial, Helvetica, sans-serif",
-   "color": "#fff",
-   "halo": false,
-   "rotate": 0,
-   "italic": false,
-   "weight": "normal"
-  },
-  {
-   "s": "learned affine + network",
-   "role": "label",
-   "box": {
-    "x": 221.59054756164554,
-    "y": 119.12489318847656,
-    "w": 59.06793975830075,
-    "h": 6.75014066696167
-   },
-   "size": 5.5,
-   "minSize": 5.5,
-   "family": "Arial, Helvetica, sans-serif",
-   "color": "#7a7a7a",
-   "halo": false,
-   "rotate": 0,
-   "italic": true,
-   "weight": "normal"
-  },
-  {
-   "s": "9.1 and 10.6×",
-   "role": "label",
-   "box": {
-    "x": 429.4384002685547,
-    "y": 102.12489318847656,
-    "w": 37.703941345214844,
-    "h": 6.75014066696167
-   },
-   "size": 6,
-   "minSize": 6,
-   "family": "Arial, Helvetica, sans-serif",
-   "color": "#1a1a1a",
-   "halo": false,
-   "rotate": 0,
-   "italic": false,
-   "weight": "bold"
-  },
-  {
-   "s": "fewer spurious nulls (error 1.7); drift 0.12",
-   "role": "label",
-   "box": {
-    "x": 207.5905456542969,
-    "y": 126.62489318847656,
-    "w": 98.97862243652341,
-    "h": 6.75014066696167
-   },
-   "size": 5.5,
-   "minSize": 5.5,
-   "family": "Arial, Helvetica, sans-serif",
-   "color": "#1a1a1a",
-   "halo": false,
-   "rotate": 0,
-   "italic": false,
-   "weight": "normal"
-  },
-  {
-   "s": "spectra and balance behind G0",
-   "role": "label",
-   "box": {
-    "x": 207.5905456542969,
-    "y": 134.62489318847656,
-    "w": 76.39611816406247,
-    "h": 6.75014066696167
-   },
-   "size": 5.5,
-   "minSize": 5.5,
-   "family": "Arial, Helvetica, sans-serif",
-   "color": "#1a1a1a",
-   "halo": false,
-   "rotate": 0,
-   "italic": false,
-   "weight": "normal"
-  },
-  {
-   "s": "W10",
-   "role": "label",
-   "box": {
-    "x": 195.5905456542969,
-    "y": 166.49986267089844,
+    "y": 66.99986267089844,
     "w": 16.488624572753906,
     "h": 9.000186920166016
    },
@@ -944,16 +818,70 @@
    "weight": "bold"
   },
   {
-   "s": "",
+   "s": "network (no linear part)",
    "role": "label",
    "box": {
-    "x": 195.5905456542969,
-    "y": 0,
-    "w": 0,
-    "h": 0
+    "x": 251.33018875122073,
+    "y": 68.12489318847656,
+    "w": 56.52070999145505,
+    "h": 6.75014066696167
    },
    "size": 5.5,
    "minSize": 5.5,
+   "family": "Arial, Helvetica, sans-serif",
+   "color": "#fff",
+   "halo": false,
+   "rotate": 0,
+   "italic": false,
+   "weight": "normal"
+  },
+  {
+   "s": "same network, no linear part",
+   "role": "label",
+   "box": {
+    "x": 219.5905456542969,
+    "y": 82.37492370605469,
+    "w": 63.851707458496065,
+    "h": 5.2501091957092285
+   },
+   "size": 5,
+   "minSize": 5,
+   "family": "Arial, Helvetica, sans-serif",
+   "color": "#7a7a7a",
+   "halo": false,
+   "rotate": 0,
+   "italic": true,
+   "weight": "normal"
+  },
+  {
+   "s": "210",
+   "role": "label",
+   "box": {
+    "x": 424.8412170410156,
+    "y": 68.12489318847656,
+    "w": 10.41102123260498,
+    "h": 6.75014066696167
+   },
+   "size": 6,
+   "minSize": 6,
+   "family": "Arial, Helvetica, sans-serif",
+   "color": "#1a1a1a",
+   "halo": false,
+   "rotate": 0,
+   "italic": false,
+   "weight": "bold"
+  },
+  {
+   "s": "1.83",
+   "role": "label",
+   "box": {
+    "x": 469.7603454589844,
+    "y": 68.12489318847656,
+    "w": 12.074798583984375,
+    "h": 6.75014066696167
+   },
+   "size": 6,
+   "minSize": 6,
    "family": "Arial, Helvetica, sans-serif",
    "color": "#1a1a1a",
    "halo": false,
@@ -962,11 +890,47 @@
    "weight": "normal"
   },
   {
+   "s": "0.38",
+   "role": "label",
+   "box": {
+    "x": 499.7603454589844,
+    "y": 68.12489318847656,
+    "w": 12.074798583984375,
+    "h": 6.75014066696167
+   },
+   "size": 6,
+   "minSize": 6,
+   "family": "Arial, Helvetica, sans-serif",
+   "color": "#1a1a1a",
+   "halo": false,
+   "rotate": 0,
+   "italic": false,
+   "weight": "normal"
+  },
+  {
+   "s": "W10",
+   "role": "label",
+   "box": {
+    "x": 195.5905456542969,
+    "y": 110.99986267089844,
+    "w": 16.488624572753906,
+    "h": 9.000186920166016
+   },
+   "size": 8,
+   "minSize": 8,
+   "family": "Arial, Helvetica, sans-serif",
+   "color": "#1a1a1a",
+   "halo": false,
+   "rotate": 0,
+   "italic": false,
+   "weight": "bold"
+  },
+  {
    "s": "exact Gaussian field",
    "role": "label",
    "box": {
-    "x": 225.84002685546878,
-    "y": 168.12489318847656,
+    "x": 223.84003829956058,
+    "y": 112.12489318847656,
     "w": 49.50102996826169,
     "h": 6.75014066696167
    },
@@ -983,8 +947,8 @@
    "s": "+",
    "role": "label",
    "box": {
-    "x": 282.2526092529297,
-    "y": 166.99986267089844,
+    "x": 280.2526092529297,
+    "y": 110.99986267089844,
     "w": 4.675878524780273,
     "h": 9.000186920166016
    },
@@ -1001,8 +965,8 @@
    "s": "network",
    "role": "label",
    "box": {
-    "x": 304.96338653564453,
-    "y": 168.12489318847656,
+    "x": 303.96339416503906,
+    "y": 112.12489318847656,
     "w": 19.496767044067383,
     "h": 6.75014066696167
    },
@@ -1019,13 +983,13 @@
    "s": "exact Gaussian field + network",
    "role": "label",
    "box": {
-    "x": 221.59054756164554,
-    "y": 181.12489318847656,
-    "w": 75.25331878662107,
-    "h": 6.75014066696167
+    "x": 219.5905456542969,
+    "y": 126.37493133544922,
+    "w": 68.62870788574216,
+    "h": 5.2501091957092285
    },
-   "size": 5.5,
-   "minSize": 5.5,
+   "size": 5,
+   "minSize": 5,
    "family": "Arial, Helvetica, sans-serif",
    "color": "#7a7a7a",
    "halo": false,
@@ -1034,12 +998,12 @@
    "weight": "normal"
   },
   {
-   "s": "44.7 and 46.3×",
+   "s": "43.6",
    "role": "label",
    "box": {
-    "x": 427.77430725097656,
-    "y": 164.12489318847656,
-    "w": 41.034423828125,
+    "x": 419.48089599609375,
+    "y": 112.12489318847656,
+    "w": 12.074798583984375,
     "h": 6.75014066696167
    },
    "size": 6,
@@ -1052,34 +1016,16 @@
    "weight": "bold"
   },
   {
-   "s": "worse: the network’s linear part perturbs",
+   "s": "2.46",
    "role": "label",
    "box": {
-    "x": 206.84053039550784,
-    "y": 188.62489318847656,
-    "w": 98.65643310546872,
-    "h": 6.750152111053467
-   },
-   "size": 5.5,
-   "minSize": 5.5,
-   "family": "Arial, Helvetica, sans-serif",
-   "color": "#1a1a1a",
-   "halo": false,
-   "rotate": 0,
-   "italic": false,
-   "weight": "normal"
-  },
-  {
-   "s": "the second-order statistics of the Gaussian field",
-   "role": "label",
-   "box": {
-    "x": 207.5905456542969,
-    "y": 196.12490844726562,
-    "w": 115.79537963867185,
+    "x": 469.7603454589844,
+    "y": 112.12489318847656,
+    "w": 12.074798583984375,
     "h": 6.75014066696167
    },
-   "size": 5.5,
-   "minSize": 5.5,
+   "size": 6,
+   "minSize": 6,
    "family": "Arial, Helvetica, sans-serif",
    "color": "#1a1a1a",
    "halo": false,
@@ -1088,12 +1034,30 @@
    "weight": "normal"
   },
   {
-   "s": "W11",
+   "s": "0.12",
+   "role": "label",
+   "box": {
+    "x": 499.7603454589844,
+    "y": 112.12489318847656,
+    "w": 12.074798583984375,
+    "h": 6.75014066696167
+   },
+   "size": 6,
+   "minSize": 6,
+   "family": "Arial, Helvetica, sans-serif",
+   "color": "#1a1a1a",
+   "halo": false,
+   "rotate": 0,
+   "italic": false,
+   "weight": "normal"
+  },
+  {
+   "s": "W9",
    "role": "label",
    "box": {
     "x": 195.5905456542969,
-    "y": 228.4998779296875,
-    "w": 16.0474796295166,
+    "y": 154.99986267089844,
+    "w": 12.043658256530762,
     "h": 9.000186920166016
    },
    "size": 8,
@@ -1106,67 +1070,13 @@
    "weight": "bold"
   },
   {
-   "s": "",
+   "s": "learned affine term",
    "role": "label",
    "box": {
-    "x": 195.5905456542969,
-    "y": 0,
-    "w": 0,
-    "h": 0
-   },
-   "size": 5.5,
-   "minSize": 5.5,
-   "family": "Arial, Helvetica, sans-serif",
-   "color": "#1a1a1a",
-   "halo": false,
-   "rotate": 0,
-   "italic": false,
-   "weight": "normal"
-  },
-  {
-   "s": "exactGaussian",
-   "role": "label",
-   "box": {
-    "x": 228.97702789306643,
-    "y": 227.3748779296875,
-    "w": 23.227046966552734,
-    "h": 12.250152587890625
-   },
-   "size": 5.5,
-   "minSize": 5.5,
-   "family": "Arial, Helvetica, sans-serif",
-   "color": "#fff",
-   "halo": false,
-   "rotate": 0,
-   "italic": false,
-   "weight": "normal"
-  },
-  {
-   "s": "+",
-   "role": "label",
-   "box": {
-    "x": 261.7526092529297,
-    "y": 228.99984741210938,
-    "w": 4.675878524780273,
-    "h": 9.000186920166016
-   },
-   "size": 8,
-   "minSize": 8,
-   "family": "Arial, Helvetica, sans-serif",
-   "color": "#1a1a1a",
-   "halo": false,
-   "rotate": 0,
-   "italic": false,
-   "weight": "normal"
-  },
-  {
-   "s": "learnedaffine",
-   "role": "label",
-   "box": {
-    "x": 278.4204330444336,
-    "y": 227.3748779296875,
-    "w": 18.340225219726562,
-    "h": 12.250152587890625
+    "x": 225.72093772888186,
+    "y": 156.12489318847656,
+    "w": 45.73923492431638,
+    "h": 6.75014066696167
    },
    "size": 5.5,
    "minSize": 5.5,
@@ -1181,8 +1091,8 @@
    "s": "+",
    "role": "label",
    "box": {
-    "x": 308.7526092529297,
-    "y": 228.99984741210938,
+    "x": 280.2526092529297,
+    "y": 154.99986267089844,
     "w": 4.675878524780273,
     "h": 9.000186920166016
    },
@@ -1199,8 +1109,8 @@
    "s": "network",
    "role": "label",
    "box": {
-    "x": 325.96339416503906,
-    "y": 230.1248779296875,
+    "x": 303.96339416503906,
+    "y": 156.12489318847656,
     "w": 19.496767044067383,
     "h": 6.75014066696167
    },
@@ -1214,16 +1124,16 @@
    "weight": "normal"
   },
   {
-   "s": "exact field + learned affine + network",
+   "s": "learned affine term + network",
    "role": "label",
    "box": {
-    "x": 221.59054756164554,
-    "y": 243.12489318847656,
-    "w": 90.07810211181638,
-    "h": 6.75014066696167
+    "x": 219.5905456542969,
+    "y": 170.3749237060547,
+    "w": 65.29888916015622,
+    "h": 5.2501091957092285
    },
-   "size": 5.5,
-   "minSize": 5.5,
+   "size": 5,
+   "minSize": 5,
    "family": "Arial, Helvetica, sans-serif",
    "color": "#7a7a7a",
    "halo": false,
@@ -1232,12 +1142,12 @@
    "weight": "normal"
   },
   {
-   "s": "9.3 and 7.6×",
+   "s": "9.3",
    "role": "label",
    "box": {
-    "x": 431.1024932861328,
-    "y": 226.12489318847656,
-    "w": 34.37345886230469,
+    "x": 394.5598907470703,
+    "y": 156.12489318847656,
+    "w": 8.744338035583496,
     "h": 6.75014066696167
    },
    "size": 6,
@@ -1250,16 +1160,16 @@
    "weight": "bold"
   },
   {
-   "s": "fewer spurious nulls (error 1.7); drift 0.12",
+   "s": "1.67",
    "role": "label",
    "box": {
-    "x": 207.5905456542969,
-    "y": 250.6248779296875,
-    "w": 98.97862243652341,
+    "x": 469.7603454589844,
+    "y": 156.12489318847656,
+    "w": 12.074798583984375,
     "h": 6.75014066696167
    },
-   "size": 5.5,
-   "minSize": 5.5,
+   "size": 6,
+   "minSize": 6,
    "family": "Arial, Helvetica, sans-serif",
    "color": "#1a1a1a",
    "halo": false,
@@ -1268,16 +1178,16 @@
    "weight": "normal"
   },
   {
-   "s": "spectra and balance behind G0",
+   "s": "0.12",
    "role": "label",
    "box": {
-    "x": 207.5905456542969,
-    "y": 258.6249084472656,
-    "w": 76.39611816406247,
+    "x": 499.7603454589844,
+    "y": 156.12489318847656,
+    "w": 12.074798583984375,
     "h": 6.75014066696167
    },
-   "size": 5.5,
-   "minSize": 5.5,
+   "size": 6,
+   "minSize": 6,
    "family": "Arial, Helvetica, sans-serif",
    "color": "#1a1a1a",
    "halo": false,
@@ -1286,21 +1196,327 @@
    "weight": "normal"
   },
   {
-   "s": "2 seeds, CPU (W0–W6: 5 seeds, GPU)",
+   "s": "W11",
    "role": "label",
    "box": {
-    "x": 422.07017517089844,
-    "y": 287.46490478515625,
-    "w": 96.66998291015625,
+    "x": 195.5905456542969,
+    "y": 198.99986267089844,
+    "w": 16.0474796295166,
+    "h": 9.000186920166016
+   },
+   "size": 8,
+   "minSize": 8,
+   "family": "Arial, Helvetica, sans-serif",
+   "color": "#1a1a1a",
+   "halo": false,
+   "rotate": 0,
+   "italic": false,
+   "weight": "bold"
+  },
+  {
+   "s": "exactGaussian",
+   "role": "label",
+   "box": {
+    "x": 225.97702217102054,
+    "y": 197.37490844726562,
+    "w": 23.227048873901367,
+    "h": 12.250137329101562
+   },
+   "size": 5.5,
+   "minSize": 5.5,
+   "family": "Arial, Helvetica, sans-serif",
+   "color": "#fff",
+   "halo": false,
+   "rotate": 0,
+   "italic": false,
+   "weight": "normal"
+  },
+  {
+   "s": "+",
+   "role": "label",
+   "box": {
+    "x": 257.2526092529297,
+    "y": 198.99986267089844,
+    "w": 4.675878524780273,
+    "h": 9.000186920166016
+   },
+   "size": 8,
+   "minSize": 8,
+   "family": "Arial, Helvetica, sans-serif",
+   "color": "#1a1a1a",
+   "halo": false,
+   "rotate": 0,
+   "italic": false,
+   "weight": "normal"
+  },
+  {
+   "s": "learnedaffine",
+   "role": "label",
+   "box": {
+    "x": 272.4204406738281,
+    "y": 197.37490844726562,
+    "w": 18.340225219726562,
+    "h": 12.250137329101562
+   },
+   "size": 5.5,
+   "minSize": 5.5,
+   "family": "Arial, Helvetica, sans-serif",
+   "color": "#00896A",
+   "halo": false,
+   "rotate": 0,
+   "italic": false,
+   "weight": "normal"
+  },
+  {
+   "s": "+",
+   "role": "label",
+   "box": {
+    "x": 301.2526092529297,
+    "y": 198.99986267089844,
+    "w": 4.675878524780273,
+    "h": 9.000186920166016
+   },
+   "size": 8,
+   "minSize": 8,
+   "family": "Arial, Helvetica, sans-serif",
+   "color": "#1a1a1a",
+   "halo": false,
+   "rotate": 0,
+   "italic": false,
+   "weight": "normal"
+  },
+  {
+   "s": "network",
+   "role": "label",
+   "box": {
+    "x": 313.96339416503906,
+    "y": 200.12490844726562,
+    "w": 19.496767044067383,
     "h": 6.75014066696167
    },
    "size": 5.5,
    "minSize": 5.5,
+   "family": "Arial, Helvetica, sans-serif",
+   "color": "#fff",
+   "halo": false,
+   "rotate": 0,
+   "italic": false,
+   "weight": "normal"
+  },
+  {
+   "s": "exact Gaussian field + learned affine correction + network",
+   "role": "label",
+   "box": {
+    "x": 219.5905456542969,
+    "y": 214.37490844726562,
+    "w": 127.87803649902341,
+    "h": 5.2501091957092285
+   },
+   "size": 5,
+   "minSize": 5,
    "family": "Arial, Helvetica, sans-serif",
    "color": "#7a7a7a",
    "halo": false,
    "rotate": 0,
    "italic": true,
+   "weight": "normal"
+  },
+  {
+   "s": "8.6",
+   "role": "label",
+   "box": {
+    "x": 393.29771423339844,
+    "y": 200.12490844726562,
+    "w": 8.744338035583496,
+    "h": 6.75014066696167
+   },
+   "size": 6,
+   "minSize": 6,
+   "family": "Arial, Helvetica, sans-serif",
+   "color": "#1a1a1a",
+   "halo": false,
+   "rotate": 0,
+   "italic": false,
+   "weight": "bold"
+  },
+  {
+   "s": "1.70",
+   "role": "label",
+   "box": {
+    "x": 469.7603454589844,
+    "y": 200.12490844726562,
+    "w": 12.074798583984375,
+    "h": 6.75014066696167
+   },
+   "size": 6,
+   "minSize": 6,
+   "family": "Arial, Helvetica, sans-serif",
+   "color": "#1a1a1a",
+   "halo": false,
+   "rotate": 0,
+   "italic": false,
+   "weight": "normal"
+  },
+  {
+   "s": "0.12",
+   "role": "label",
+   "box": {
+    "x": 499.7603454589844,
+    "y": 200.12490844726562,
+    "w": 12.074798583984375,
+    "h": 6.75014066696167
+   },
+   "size": 6,
+   "minSize": 6,
+   "family": "Arial, Helvetica, sans-serif",
+   "color": "#1a1a1a",
+   "halo": false,
+   "rotate": 0,
+   "italic": false,
+   "weight": "normal"
+  },
+  {
+   "s": "G0",
+   "role": "label",
+   "box": {
+    "x": 195.5905456542969,
+    "y": 242.99986267089844,
+    "w": 10.716802597045898,
+    "h": 9.000186920166016
+   },
+   "size": 8,
+   "minSize": 8,
+   "family": "Arial, Helvetica, sans-serif",
+   "color": "#1a1a1a",
+   "halo": false,
+   "rotate": 0,
+   "italic": false,
+   "weight": "bold"
+  },
+  {
+   "s": "Gaussian law per mode",
+   "role": "label",
+   "box": {
+    "x": 250.71494293212893,
+    "y": 244.12489318847656,
+    "w": 57.75120162963864,
+    "h": 6.75014066696167
+   },
+   "size": 5.5,
+   "minSize": 5.5,
+   "family": "Arial, Helvetica, sans-serif",
+   "color": "#fff",
+   "halo": false,
+   "rotate": 0,
+   "italic": false,
+   "weight": "normal"
+  },
+  {
+   "s": "Gaussian law per mode, no network",
+   "role": "label",
+   "box": {
+    "x": 219.5905456542969,
+    "y": 258.37493896484375,
+    "w": 80.14411926269528,
+    "h": 5.2501091957092285
+   },
+   "size": 5,
+   "minSize": 5,
+   "family": "Arial, Helvetica, sans-serif",
+   "color": "#7a7a7a",
+   "halo": false,
+   "rotate": 0,
+   "italic": true,
+   "weight": "normal"
+  },
+  {
+   "s": "3.5",
+   "role": "label",
+   "box": {
+    "x": 378.7971649169922,
+    "y": 244.12489318847656,
+    "w": 8.7443265914917,
+    "h": 6.75014066696167
+   },
+   "size": 6,
+   "minSize": 6,
+   "family": "Arial, Helvetica, sans-serif",
+   "color": "#1a1a1a",
+   "halo": false,
+   "rotate": 0,
+   "italic": false,
+   "weight": "bold"
+  },
+  {
+   "s": "2.24",
+   "role": "label",
+   "box": {
+    "x": 469.7603454589844,
+    "y": 244.12489318847656,
+    "w": 12.074798583984375,
+    "h": 6.75014066696167
+   },
+   "size": 6,
+   "minSize": 6,
+   "family": "Arial, Helvetica, sans-serif",
+   "color": "#1a1a1a",
+   "halo": false,
+   "rotate": 0,
+   "italic": false,
+   "weight": "normal"
+  },
+  {
+   "s": "0.21",
+   "role": "label",
+   "box": {
+    "x": 499.7603454589844,
+    "y": 244.12489318847656,
+    "w": 12.074798583984375,
+    "h": 6.75014066696167
+   },
+   "size": 6,
+   "minSize": 6,
+   "family": "Arial, Helvetica, sans-serif",
+   "color": "#1a1a1a",
+   "halo": false,
+   "rotate": 0,
+   "italic": false,
+   "weight": "normal"
+  },
+  {
+   "s": "The Gaussian law alone is the closest in energy distance; the models with a learned",
+   "role": "label",
+   "box": {
+    "x": 195.5905456542969,
+    "y": 278.37493896484375,
+    "w": 185.5965423583984,
+    "h": 5.2501091957092285
+   },
+   "size": 5,
+   "minSize": 5,
+   "family": "Arial, Helvetica, sans-serif",
+   "color": "#7a7a7a",
+   "halo": false,
+   "rotate": 0,
+   "italic": false,
+   "weight": "normal"
+  },
+  {
+   "s": "affine term have fewer spurious null points and half its restart drift.",
+   "role": "label",
+   "box": {
+    "x": 195.5905456542969,
+    "y": 285.3749084472656,
+    "w": 145.7011566162109,
+    "h": 5.2501091957092285
+   },
+   "size": 5,
+   "minSize": 5,
+   "family": "Arial, Helvetica, sans-serif",
+   "color": "#7a7a7a",
+   "halo": false,
+   "rotate": 0,
+   "italic": false,
    "weight": "normal"
   }
  ],
@@ -2991,12 +3207,7 @@
    "part": ""
   },
   {
-   "w": 0.5,
-   "tag": "line",
-   "part": ""
-  },
-  {
-   "w": 0.5,
+   "w": 0.4,
    "tag": "line",
    "part": ""
   },
@@ -3007,22 +3218,52 @@
   },
   {
    "w": 0.4,
-   "tag": "rect",
+   "tag": "line",
    "part": ""
   },
   {
-   "w": 0.6,
-   "tag": "rect",
-   "part": ""
-  },
-  {
-   "w": 0.6,
+   "w": 0.5,
    "tag": "line",
    "part": ""
   },
   {
    "w": 0.4,
    "tag": "line",
+   "part": ""
+  },
+  {
+   "w": 0.5,
+   "tag": "line",
+   "part": ""
+  },
+  {
+   "w": 0.4,
+   "tag": "line",
+   "part": ""
+  },
+  {
+   "w": 0.5,
+   "tag": "line",
+   "part": ""
+  },
+  {
+   "w": 0.4,
+   "tag": "line",
+   "part": ""
+  },
+  {
+   "w": 0.5,
+   "tag": "line",
+   "part": ""
+  },
+  {
+   "w": 0.4,
+   "tag": "line",
+   "part": ""
+  },
+  {
+   "w": 0.6,
+   "tag": "rect",
    "part": ""
   },
   {
@@ -3031,18 +3272,23 @@
    "part": ""
   },
   {
-   "w": 1,
-   "tag": "polyline",
-   "part": ""
-  },
-  {
-   "w": 1,
+   "w": 0.5,
    "tag": "line",
    "part": ""
   },
   {
-   "w": 1,
-   "tag": "line",
+   "w": 0.6,
+   "tag": "rect",
+   "part": ""
+  },
+  {
+   "w": 0.6,
+   "tag": "rect",
+   "part": ""
+  },
+  {
+   "w": 0.4,
+   "tag": "circle",
    "part": ""
   },
   {
@@ -3061,83 +3307,8 @@
    "part": ""
   },
   {
-   "w": 0.6,
-   "tag": "line",
-   "part": ""
-  },
-  {
-   "w": 0.4,
-   "tag": "line",
-   "part": ""
-  },
-  {
    "w": 0.4,
    "tag": "circle",
-   "part": ""
-  },
-  {
-   "w": 0.4,
-   "tag": "circle",
-   "part": ""
-  },
-  {
-   "w": 1,
-   "tag": "polyline",
-   "part": ""
-  },
-  {
-   "w": 1,
-   "tag": "line",
-   "part": ""
-  },
-  {
-   "w": 1,
-   "tag": "line",
-   "part": ""
-  },
-  {
-   "w": 0.5,
-   "tag": "line",
-   "part": ""
-  },
-  {
-   "w": 0.6,
-   "tag": "rect",
-   "part": ""
-  },
-  {
-   "w": 0.6,
-   "tag": "rect",
-   "part": ""
-  },
-  {
-   "w": 0.6,
-   "tag": "line",
-   "part": ""
-  },
-  {
-   "w": 0.4,
-   "tag": "line",
-   "part": ""
-  },
-  {
-   "w": 0.4,
-   "tag": "circle",
-   "part": ""
-  },
-  {
-   "w": 0.4,
-   "tag": "circle",
-   "part": ""
-  },
-  {
-   "w": 1,
-   "tag": "line",
-   "part": ""
-  },
-  {
-   "w": 1,
-   "tag": "line",
    "part": ""
   },
   {
@@ -3161,43 +3332,23 @@
    "part": ""
   },
   {
-   "w": 0.6,
-   "tag": "line",
-   "part": ""
-  },
-  {
-   "w": 0.4,
-   "tag": "line",
-   "part": ""
-  },
-  {
    "w": 0.4,
    "tag": "circle",
-   "part": ""
-  },
-  {
-   "w": 0.4,
-   "tag": "circle",
-   "part": ""
-  },
-  {
-   "w": 1,
-   "tag": "polyline",
-   "part": ""
-  },
-  {
-   "w": 1,
-   "tag": "line",
-   "part": ""
-  },
-  {
-   "w": 1,
-   "tag": "line",
    "part": ""
   },
   {
    "w": 0.5,
    "tag": "line",
+   "part": ""
+  },
+  {
+   "w": 0.6,
+   "tag": "rect",
+   "part": ""
+  },
+  {
+   "w": 0.4,
+   "tag": "circle",
    "part": ""
   }
  ],

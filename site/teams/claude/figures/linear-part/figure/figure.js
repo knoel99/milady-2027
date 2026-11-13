@@ -66,7 +66,7 @@ export default function draw(F, L) {
   const cx = bx + bw / 2;
   L.rect(a, bx, ty, bw, bh, { fill: '#fff', stroke: INK, width: 0.5 });
   modeBar(a, bx + 2, ty + 1.2, bw - 4);
-  T(a, cx, ty - 5, '**Latent** *x*: 5320 dimensions', { size: 6, anchor: 'middle', valign: 'middle' });
+  T(a, cx, ty - 5, '**Latent** *x*: 5320 (potentials)', { size: 6, anchor: 'middle', valign: 'middle' });
   const nw = bw * 512 / 5320, ny = ty + bh + 22, nh = 12;
   L.polygon(a, [[bx, ty + bh], [bx + bw, ty + bh], [cx + nw / 2, ny], [cx - nw / 2, ny]], { fill: '#EFEFEF', stroke: MID, width: 0.4 });
   L.rect(a, cx - nw / 2, ny, nw, nh, { fill: NET, stroke: NET, width: 0.5 });
@@ -74,7 +74,7 @@ export default function draw(F, L) {
   L.polygon(a, [[cx - nw / 2, ny + nh], [cx + nw / 2, ny + nh], [bx + bw, by], [bx, by]], { fill: '#EFEFEF', stroke: MID, width: 0.4 });
   L.rect(a, bx, by, bw, bh, { fill: '#fff', stroke: INK, width: 0.5 });
   modeBar(a, bx + 2, by + 1.2, bw - 4);
-  T(a, cx, by + bh + 5, '**Velocity** *v*: 5320 dimensions', { size: 6, anchor: 'middle', valign: 'middle' });
+  T(a, cx, by + bh + 5, '**Velocity** *v*: 5320 (potentials)', { size: 6, anchor: 'middle', valign: 'middle' });
   T(a, cx + nw / 2 + 4, ny + nh / 2, '**Network**: width 512', { size: 6, anchor: 'start', valign: 'middle', color: NET });
   // linear part tries to cross the neck
   L.arrow(a, [cx - 12, ty + bh + 3], [cx - 3, ny - 2], { stroke: LIN, width: 1.1, dash: '2.2 1.4', head: 3 });
@@ -83,87 +83,79 @@ export default function draw(F, L) {
   L.line(a, [cx - 5.5, ny + 6.5], [cx + 0.5, ny + 0.5], { stroke: INK, width: 1, cap: 'round' });
   // (the cross sits on the neck: drawn in white halo for contrast)
   L.arrow(a, [cx + 2.2, ny + nh + 3], [cx + 2.2, by - 2], { stroke: NET, width: 1.1, head: 3 });
-  T(a, cx, by + bh + 14, '*Conjecture*: a network narrower than the latent', { size: 5.5, anchor: 'middle', color: INK });
-  T(a, cx, by + bh + 21, 'cannot carry the linear part (width scan pending)', { size: 5.5, anchor: 'middle', color: INK });
+  T(a, cx, by + bh + 16, '*Conjecture (tested by a width scan, H21)*:', { size: 5.5, anchor: 'middle', color: INK });
+  T(a, cx, by + bh + 23, 'a network narrower than the latent', { size: 5.5, anchor: 'middle', color: INK });
+  T(a, cx, by + bh + 30, 'cannot carry the linear part', { size: 5.5, anchor: 'middle', color: INK });
+  T(a, cx + nw / 2 + 4, ny + nh / 2 + 7, '(W0, free components: 7980)', { size: 5, anchor: 'start', valign: 'middle', color: MID });
   T(a, cx + 6, ny + nh + 9, 'the rest', { size: 5.5, anchor: 'start', color: NET, halo: true });
   // measured evidence: flow-matching loss against the exact linear field
-  const ey = 218, lo = 1.55, hi = 1.65, lxp = (v) => bx + (v - lo) / (hi - lo) * bw;
-  T(a, cx, ey - 22, '**Measured**: flow-matching loss', { size: 6, anchor: 'middle', valign: 'middle' });
+  const ey = 232, lo = 1.55, hi = 1.65, lxp = (v) => bx + (v - lo) / (hi - lo) * bw;
+  T(a, cx, ey - 30, '**Measured**: flow-matching loss of the plain', { size: 6, anchor: 'middle', valign: 'middle' });
+  T(a, cx, ey - 23, 'models W0, W4, W4s after training', { size: 6, anchor: 'middle', valign: 'middle' });
   L.line(a, [bx, ey], [bx + bw, ey], { stroke: INK, width: 0.5 });
   L.rect(a, lxp(1.60), ey - 5, lxp(1.63) - lxp(1.60), 5, { fill: NET, stroke: NET, width: 0.4 });
   L.line(a, [lxp(Math.PI / 2), ey - 9], [lxp(Math.PI / 2), ey + 3], { stroke: LIN, width: 1.1 });
-  T(a, lxp(Math.PI / 2) - 2, ey - 12, 'exact linear field, π/2 ≈ 1.571', { size: 5.5, anchor: 'start', valign: 'middle', color: LIN });
-  T(a, lxp(1.615), ey + 8, 'W0–W6: 1.60–1.63', { size: 5.5, anchor: 'middle', valign: 'middle', color: NET });
+  T(a, lxp(Math.PI / 2) - 2, ey - 12, 'π/2 ≈ 1.571', { size: 5.5, anchor: 'start', valign: 'middle', color: LIN });
+  T(a, lxp(1.615), ey + 8, '1.60–1.63, above π/2', { size: 5.5, anchor: 'middle', valign: 'middle', color: NET });
   T(a, cx, ey + 24, 'Samples over-dispersed:', { size: 5.5, anchor: 'middle', valign: 'middle', weight: 'bold' });
-  T(a, cx, ey + 31, '2–3× too many null points; dE/dt', { size: 5.5, anchor: 'middle', valign: 'middle' });
-  T(a, cx, ey + 38, 'fluctuations 2–14× the reference', { size: 5.5, anchor: 'middle', valign: 'middle' });
+  T(a, cx, ey + 31, 'potentials models: 2 to 3 times too many', { size: 5.5, anchor: 'middle', valign: 'middle' });
+  T(a, cx, ey + 38, 'null points', { size: 5.5, anchor: 'middle', valign: 'middle' });
 
   // =====================================================================================================
-  // panel b: four remedies, on the same glyphs, with their numbers
+  // panel b: four remedies against the plain model, seed means over 5 seeds, held-out eta
   // =====================================================================================================
   const b = F.panel('b', { x: 69, y: 0, w: 114, h: 104 });
   const bW = b.w;
   T(b, 12, 6, '**Four remedies** on the same glyphs', { size: 6.5, valign: 'middle' });
 
-  // shared log axis for "energy distance / floor"
-  const axX = 188, axW = bW - axX - 6;
-  const lx = (v) => axX + (Math.log10(v) / 3) * axW;
-  const axY = 30;
-  T(b, axX + axW / 2, 8, '**Energy distance / noise floor**', { size: 5.5, anchor: 'middle', valign: 'middle' });
-  T(b, axX + axW / 2, 15, '(log scale; held-out η)', { size: 5, anchor: 'middle', valign: 'middle', color: MID });
-  L.line(b, [axX, axY], [axX + axW, axY], { stroke: INK, width: 0.5 });
-  for (const [v, s] of [[1, '1'], [10, '10'], [100, '100'], [1000, '1000']]) {
-    L.line(b, [lx(v), axY], [lx(v), axY + 2], { stroke: INK, width: 0.5 });
-    T(b, lx(v), axY + 6, s, { size: 5, anchor: 'middle', valign: 'middle' });
-  }
-  // first generators band (5 seeds, GPU)
-  const rowH = 55.5, r0 = 34;
-  // baseline row
-  L.rect(b, lx(177), axY - 7, lx(519) - lx(177), 4.5, { fill: '#C9C9C9', stroke: MID, width: 0.4 });
-  T(b, lx(177) - 3, axY - 4.8, 'W0–W6: 177–519 (first generators)', { size: 5.5, anchor: 'end', valign: 'middle', weight: 'bold' });
+  const axX = 158, axW = 92;
+  const lx = (v) => axX + (Math.log10(v) / Math.log10(300)) * axW;
+  const axY = 52;
+  const c1 = 280, c2 = 310;                           // table column centres
+  T(b, axX + axW / 2, 22, '**Energy distance / noise floor**', { size: 5.5, anchor: 'middle', valign: 'middle' });
+  T(b, axX + axW / 2, 29, '(log scale; seed mean, held-out η)', { size: 5, anchor: 'middle', valign: 'middle', color: MID });
+  T(b, c1, 33, 'null-count', { size: 5.5, anchor: 'middle', valign: 'middle', weight: 'bold' });
+  T(b, c1, 40, 'error', { size: 5.5, anchor: 'middle', valign: 'middle', weight: 'bold' });
+  T(b, c2, 33, 'restart', { size: 5.5, anchor: 'middle', valign: 'middle', weight: 'bold' });
+  T(b, c2, 40, 'drift', { size: 5.5, anchor: 'middle', valign: 'middle', weight: 'bold' });
+  T(b, (c1 + c2) / 2, 14, '(relative values)', { size: 5, anchor: 'middle', valign: 'middle', color: MID });
 
-  // component glyphs
   const bh2 = 15;
   const exact = (p, x, y, w, lab) => { box(p, x, y, w, bh2, LIN, LIN); T(p, x + w / 2, y + bh2 / 2, lab, { size: 5.5, anchor: 'middle', valign: 'middle', color: '#fff', lineGap: 1 }); };
   const learned = (p, x, y, w, lab) => { box(p, x, y, w, bh2, '#D6EEE6', LIN, { dash: '2 1.2', width: 0.8 }); T(p, x + w / 2, y + bh2 / 2, lab, { size: 5.5, anchor: 'middle', valign: 'middle', color: LIN, lineGap: 1 }); };
   const net = (p, x, y, w, lab) => { box(p, x, y, w, bh2, NET, NET); T(p, x + w / 2, y + bh2 / 2, lab, { size: 5.5, anchor: 'middle', valign: 'middle', color: '#fff' }); };
   const plus = (p, x, y) => T(p, x, y + bh2 / 2, '+', { size: 8, anchor: 'middle', valign: 'middle' });
   const rows = [
-    { id: 'G0', title: 'no network', pts: [3.3], good: ['spectra, energy balance (residual 0.002)'], bad: ['3.3× too many null points; restart drift 0.21'] },
-    { id: 'W9', title: 'learned affine + network', pts: [9.1, 10.6], good: ['fewer spurious nulls (error 1.7); drift 0.12'], bad: ['spectra and balance behind G0'] },
-    { id: 'W10', title: 'exact Gaussian field + network', pts: [44.7, 46.3], good: [], bad: ['worse: the network’s linear part perturbs', 'the second-order statistics of the Gaussian field'] },
-    { id: 'W11', title: 'exact field + learned affine + network', pts: [9.3, 7.6], good: ['fewer spurious nulls (error 1.7); drift 0.12'], bad: ['spectra and balance behind G0'] },
+    { id: 'W4s', title: 'same network, no linear part', v: 210, nc: '1.83', rd: '0.38' },
+    { id: 'W10', title: 'exact Gaussian field + network', v: 43.6, nc: '2.46', rd: '0.12' },
+    { id: 'W9', title: 'learned affine term + network', v: 9.3, nc: '1.67', rd: '0.12' },
+    { id: 'W11', title: 'exact Gaussian field + learned affine correction + network', v: 8.6, nc: '1.70', rd: '0.12' },
+    { id: 'G0', title: 'Gaussian law per mode, no network', v: 3.5, nc: '2.24', rd: '0.21' },
   ];
+  const y0 = 64, pitch = 44;
+  // axis (labels above the axis line, faint guides below)
+  L.line(b, [axX, axY], [axX + axW, axY], { stroke: INK, width: 0.5 });
+  for (const [v, sl] of [[1, '1'], [3, '3'], [10, '10'], [30, '30'], [100, '100'], [300, '300']]) {
+    L.line(b, [lx(v), axY - 2], [lx(v), axY], { stroke: INK, width: 0.5 });
+    L.line(b, [lx(v), axY], [lx(v), y0 + 4 * pitch + 15], { stroke: C.faint, width: 0.4 });
+    T(b, lx(v), axY - 6, sl, { size: 5, anchor: 'middle', valign: 'middle' });
+  }
   rows.forEach((r, i) => {
-    const y0 = r0 + i * 17.5 * 1.0 * 1.0 + 0;
-    const y = 46 + i * 62;
-    if (i > 0) L.line(b, [0, y - 6], [bW, y - 6], { stroke: C.faint, width: 0.5 });
-    T(b, 0, y + 1, r.id, { size: 8, weight: 'bold', anchor: 'start', valign: 'middle' });
-    T(b, 0, y + 10, r.id === 'G0' ? '' : '', {});
-    const gx = 26, gy = y - 6;
-    if (r.id === 'G0') {
-      box(b, gx, gy, 118, bh2, LIN, LIN);
-      T(b, gx + 59, gy + bh2 / 2, 'Gaussian law per mode: mean + 8×8 covariance', { size: 5.5, anchor: 'middle', valign: 'middle', color: '#fff' });
-    } else if (r.id === 'W9') {
-      learned(b, gx, gy, 58, 'learned *G*(*t*, η) *x* + *b*'); plus(b, gx + 63, gy); net(b, gx + 68, gy, 50, 'network');
-    } else if (r.id === 'W10') {
-      exact(b, gx, gy, 58, 'exact Gaussian field'); plus(b, gx + 63, gy); net(b, gx + 68, gy, 50, 'network');
-    } else {
-      exact(b, gx, gy, 38, 'exact\nGaussian'); plus(b, gx + 42.5, gy); learned(b, gx + 47, gy, 38, 'learned\naffine'); plus(b, gx + 89.5, gy); net(b, gx + 94, gy, 40, 'network');
-    }
-    T(b, gx, gy + bh2 + 5.5, r.title, { size: 5.5, anchor: 'start', valign: 'middle', color: MID, italic: true });
-    // dots on the shared axis
-    const ay = gy + bh2 / 2;
-    L.line(b, [lx(1), ay], [lx(1), ay], {});
-    L.line(b, [axX, ay + 8], [axX + axW, ay + 8], { stroke: C.faint, width: 0.4 });
-    r.pts.forEach((v) => L.circle(b, lx(v), ay + 8, 2.1, { fill: NET, stroke: '#fff', width: 0.4 }));
-    T(b, axX + axW / 2, ay - 4, r.pts.map((v) => v.toString()).join(' and ') + '×', { size: 6, anchor: 'middle', valign: 'middle', weight: 'bold' });
-    // right / wrong
-    let ty2 = gy + bh2 + 13;
-    r.good.forEach((s) => { tick(b, 4, ty2, true); T(b, 12, ty2, s, { size: 5.5, anchor: 'start', valign: 'middle' }); ty2 += 8; });
-    r.bad.forEach((s, k) => { if (k === 0) tick(b, 4, ty2, false); T(b, 12, ty2, s, { size: 5.5, anchor: 'start', valign: 'middle' }); ty2 += 7.5; });
+    const y = y0 + i * pitch, gx = 24, ay = y + bh2 / 2;
+    if (i > 0) L.line(b, [0, y - 8], [bW, y - 8], { stroke: C.faint, width: 0.5 });
+    T(b, 0, ay, r.id, { size: 8, weight: 'bold', anchor: 'start', valign: 'middle' });
+    if (r.id === 'W4s') net(b, gx, y, 120, 'network (no linear part)');
+    else if (r.id === 'G0') exact(b, gx, y, 120, 'Gaussian law per mode');
+    else if (r.id === 'W9') { learned(b, gx, y, 58, 'learned affine term'); plus(b, gx + 63, y); net(b, gx + 68, y, 52, 'network'); }
+    else if (r.id === 'W10') { exact(b, gx, y, 58, 'exact Gaussian field'); plus(b, gx + 63, y); net(b, gx + 68, y, 52, 'network'); }
+    else { exact(b, gx, y, 36, 'exact\nGaussian'); plus(b, gx + 40, y); learned(b, gx + 44, y, 36, 'learned\naffine'); plus(b, gx + 84, y); net(b, gx + 88, y, 32, 'network'); }
+    T(b, gx, y + bh2 + 6, r.title, { size: 5, anchor: 'start', valign: 'middle', color: MID, italic: true });
+    L.circle(b, lx(r.v), ay, 2.4, { fill: NET, stroke: '#fff', width: 0.4 });
+    const lxv = lx(r.v), right = r.v < 100;
+    T(b, right ? lxv + 5 : lxv - 5, ay, r.v.toString(), { size: 6, anchor: right ? 'start' : 'end', valign: 'middle', weight: 'bold' });
+    T(b, c1, ay, r.nc, { size: 6, anchor: 'middle', valign: 'middle' });
+    T(b, c2, ay, r.rd, { size: 6, anchor: 'middle', valign: 'middle' });
   });
-  // floor line over the dot rows
-  L.line(b, [lx(1), axY], [lx(1), 46 + 3 * 62 + 22], { stroke: INK, width: 0.5, dash: '1.2 1.2' });
-  T(b, bW, 104 * 2.835 - 4, '2 seeds, CPU (W0–W6: 5 seeds, GPU)', { size: 5.5, anchor: 'end', valign: 'middle', color: MID, italic: true });
+  T(b, 0, 281, 'The Gaussian law alone is the closest in energy distance; the models with a learned', { size: 5, anchor: 'start', valign: 'middle', color: MID });
+  T(b, 0, 288, 'affine term have fewer spurious null points and half its restart drift.', { size: 5, anchor: 'start', valign: 'middle', color: MID });
 }

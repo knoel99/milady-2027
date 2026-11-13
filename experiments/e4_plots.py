@@ -214,13 +214,16 @@ def plot_spectra(out: Path, runs: dict, ref: dict, tag: str) -> None:
 
 def plot_tradeoff(out: Path, runs: dict, ref: dict, tag: str) -> None:
     names = [v for v in MAIN if not np.all(np.isnan(per_seed(runs, v, "ed_ratio")))]
-    keys = [("balance_residual_total", "|energy balance residual|", True, True), ("null_count_err_rel", "relative error on the null count", True, False),
-            ("restart_drift_eb", r"restart drift of $E_B$", True, True), ("hel_m_err_rel", "relative error on the magnetic helicity", True, True)]
-    fig, axes = plt.subplots(1, 4, figsize=(12.5, 0.3 * len(names) + 1.3), sharey=True)
+    keys = [("balance_residual_total", "|total energy balance residual|", True, True),
+            ("balance_residual_magnetic", "|magnetic energy balance residual|", True, True),
+            ("hel_m_err_rel", "relative error on the magnetic helicity", True, True),
+            ("null_count_err_rel", "relative error on the null count", True, False),
+            ("restart_drift_eb", r"restart drift of $E_B$", True, True), ("restart_drift_eu", r"restart drift of $E_u$", True, True)]
+    fig, axes = plt.subplots(2, 3, figsize=(10.5, 0.52 * len(names) + 2.0), sharey=True)
     t = [r for r in ref["values"].values() if r["split"] == "test"]
-    floors = {"balance_residual_total": np.mean([abs(r["balance_residual_total"]) for r in t]),
-              "restart_drift_eb": np.mean([r.get("restart_drift_eb", np.nan) for r in t])}
-    for ax, (key, lab, absolute, log) in zip(axes, keys, strict=True):
+    floors = {k: np.mean([abs(r.get(k, np.nan)) for r in t]) for k in ("balance_residual_total", "balance_residual_magnetic",
+                                                                       "restart_drift_eb", "restart_drift_eu")}
+    for ax, (key, lab, absolute, log) in zip(axes.ravel(), keys, strict=True):
         for i, v in enumerate(names):
             seed_dots(ax, i, per_seed(runs, v, key, absolute=absolute), WHERE_COL[WHERE.get(v, "design")])
         if key in floors and np.isfinite(floors[key]):
@@ -230,13 +233,15 @@ def plot_tradeoff(out: Path, runs: dict, ref: dict, tag: str) -> None:
         else:
             ax.set_xlim(left=0)
         ax.set_title(lab, fontsize=8.5)
-    axes[0].set_yticks(range(len(names)))
-    axes[0].set_yticklabels([LABEL.get(v, v) for v in names])
-    axes[0].invert_yaxis()
+    for ax in axes[:, 0]:
+        ax.set_yticks(range(len(names)))
+        ax.set_yticklabels([LABEL.get(v, v) for v in names])
+    axes[0, 0].invert_yaxis()
     fig.tight_layout()
-    finish(fig, out, "e4_physics_metrics", "Physical metrics on the held-out η, one dot per seed and seed mean ± 2 standard errors: residual of the mean "
-           "energy balance, error on the number of magnetic null points, drift of the magnetic energy when the solver restarts from "
-           "the generated snapshots, error on the mean magnetic helicity. Dashed lines: the same quantity on reference snapshots.",
+    finish(fig, out, "e4_physics_metrics", "Physical metrics on the held-out η, one dot per seed and seed mean ± 2 standard errors: residuals "
+           "of the mean total and magnetic energy balances, errors on the mean magnetic helicity and on the number of magnetic null "
+           "points, drifts of the magnetic and kinetic energies when the solver restarts from the generated snapshots. Dashed lines: "
+           "the same quantity on reference snapshots.",
            [f"experiments/results/e4_mhd3d{tag}_s<k>.json", f"experiments/results/e4_reference{tag}.json"])
 
 

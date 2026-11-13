@@ -1,0 +1,1185 @@
+{
+ "metrics": [
+  {
+   "key": "ed_ratio",
+   "label": "energy distance / noise floor",
+   "abs": false,
+   "objective": "C1"
+  },
+  {
+   "key": "div_rel_b_max",
+   "label": "relative divergence of B (largest of the ensemble)",
+   "abs": false,
+   "objective": "C2"
+  },
+  {
+   "key": "balance_residual_total",
+   "label": "|residual of the mean energy balance| / injection",
+   "abs": true,
+   "objective": "C3"
+  },
+  {
+   "key": "balance_residual_magnetic",
+   "label": "|residual of the mean magnetic energy balance|, production against Ohmic dissipation",
+   "abs": true,
+   "objective": "\u2013"
+  },
+  {
+   "key": "spec_err_b_l2",
+   "label": "relative L2 error on the magnetic spectrum",
+   "abs": false,
+   "objective": "C4"
+  },
+  {
+   "key": "hel_m_err_rel",
+   "label": "relative error on the mean magnetic helicity",
+   "abs": true,
+   "objective": "C4"
+  },
+  {
+   "key": "null_count_err_rel",
+   "label": "relative error on the number of magnetic null points",
+   "abs": true,
+   "objective": "C5"
+  },
+  {
+   "key": "restart_drift_eb",
+   "label": "relative drift of the magnetic energy after a solver restart",
+   "abs": true,
+   "objective": "T1"
+  },
+  {
+   "key": "restart_drift_eu",
+   "label": "relative drift of the kinetic energy after a solver restart",
+   "abs": true,
+   "objective": "\u2013"
+  },
+  {
+   "key": "hc_sign_asym",
+   "label": "polarity asymmetry of the cross helicity",
+   "abs": true,
+   "objective": "T2"
+  }
+ ],
+ "rows": [
+  {
+   "id": "W0_free",
+   "label": "W0 free components",
+   "where": "none",
+   "source": "experiments/results",
+   "hypotheses": [
+    {
+     "id": "H4",
+     "status": "refuted"
+    },
+    {
+     "id": "H14",
+     "status": "supported"
+    }
+   ],
+   "ed_ratio": {
+    "mean": 236.23,
+    "se": 6.4815,
+    "n": 5
+   },
+   "div_rel_b_max": {
+    "mean": 0.45417,
+    "se": 0.0022869,
+    "n": 5
+   },
+   "balance_residual_total": {
+    "mean": 0.31388,
+    "se": 0.011306,
+    "n": 5
+   },
+   "balance_residual_magnetic": {
+    "mean": 0.15865,
+    "se": 0.014564,
+    "n": 5
+   },
+   "spec_err_b_l2": {
+    "mean": 2.3744,
+    "se": 0.13007,
+    "n": 5
+   },
+   "hel_m_err_rel": {
+    "mean": 1.9925,
+    "se": 0.18655,
+    "n": 5
+   },
+   "null_count_err_rel": {
+    "mean": 1.1097,
+    "se": 0.050038,
+    "n": 5
+   },
+   "restart_drift_eb": {
+    "mean": 0.51324,
+    "se": 0.0091624,
+    "n": 5
+   },
+   "restart_drift_eu": {
+    "mean": 0.41344,
+    "se": 0.009494,
+    "n": 5
+   },
+   "hc_sign_asym": {
+    "mean": 0.014583,
+    "se": 0.0028348,
+    "n": 5
+   },
+   "ed_ratio_train": {
+    "mean": 165.4,
+    "se": 0.48329,
+    "n": 5
+   }
+  },
+  {
+   "id": "W1_penalty",
+   "label": "W1 divergence penalty",
+   "where": "loss",
+   "source": "experiments/results",
+   "hypotheses": [
+    {
+     "id": "H5",
+     "status": "supported"
+    }
+   ],
+   "ed_ratio": {
+    "mean": 464.38,
+    "se": 11.553,
+    "n": 5
+   },
+   "div_rel_b_max": {
+    "mean": 0.26115,
+    "se": 0.005871,
+    "n": 5
+   },
+   "balance_residual_total": {
+    "mean": 0.61286,
+    "se": 0.017784,
+    "n": 5
+   },
+   "balance_residual_magnetic": {
+    "mean": 0.41023,
+    "se": 0.0053586,
+    "n": 5
+   },
+   "spec_err_b_l2": {
+    "mean": 22.964,
+    "se": 1.6508,
+    "n": 5
+   },
+   "hel_m_err_rel": {
+    "mean": 37.629,
+    "se": 2.8248,
+    "n": 5
+   },
+   "null_count_err_rel": {
+    "mean": 0.69782,
+    "se": 0.012298,
+    "n": 5
+   },
+   "restart_drift_eb": {
+    "mean": 0.50082,
+    "se": 0.0014164,
+    "n": 5
+   },
+   "restart_drift_eu": {
+    "mean": 0.70855,
+    "se": 0.0040972,
+    "n": 5
+   },
+   "hc_sign_asym": {
+    "mean": 0.020313,
+    "se": 0.0044366,
+    "n": 5
+   },
+   "ed_ratio_train": {
+    "mean": 274.53,
+    "se": 3.6733,
+    "n": 5
+   }
+  },
+  {
+   "id": "W2_final_projection",
+   "label": "W2 final projection",
+   "where": "sampling",
+   "source": "experiments/results",
+   "hypotheses": [
+    {
+     "id": "H6",
+     "status": "refuted"
+    }
+   ],
+   "ed_ratio": {
+    "mean": 179.27,
+    "se": 8.0757,
+    "n": 5
+   },
+   "div_rel_b_max": {
+    "mean": 3.1252e-08,
+    "se": 3.828e-10,
+    "n": 5
+   },
+   "balance_residual_total": {
+    "mean": 0.31388,
+    "se": 0.011306,
+    "n": 5
+   },
+   "balance_residual_magnetic": {
+    "mean": 0.15902,
+    "se": 0.014653,
+    "n": 5
+   },
+   "spec_err_b_l2": {
+    "mean": 2.043,
+    "se": 0.13045,
+    "n": 5
+   },
+   "hel_m_err_rel": {
+    "mean": 1.9925,
+    "se": 0.18655,
+    "n": 5
+   },
+   "null_count_err_rel": {
+    "mean": 0.91139,
+    "se": 0.046618,
+    "n": 5
+   },
+   "restart_drift_eb": {
+    "mean": 0.44322,
+    "se": 0.013838,
+    "n": 5
+   },
+   "restart_drift_eu": {
+    "mean": 0.35419,
+    "se": 0.010763,
+    "n": 5
+   },
+   "hc_sign_asym": {
+    "mean": 0.015365,
+    "se": 0.0039095,
+    "n": 5
+   },
+   "ed_ratio_train": {
+    "mean": 106.88,
+    "se": 0.60255,
+    "n": 5
+   }
+  },
+  {
+   "id": "W3_projected_flow",
+   "label": "W3 projected flow",
+   "where": "sampling",
+   "source": "experiments/results",
+   "hypotheses": [
+    {
+     "id": "H6",
+     "status": "refuted"
+    }
+   ],
+   "ed_ratio": {
+    "mean": 176.58,
+    "se": 6.8428,
+    "n": 5
+   },
+   "div_rel_b_max": {
+    "mean": 2.5992e-08,
+    "se": 9.8213e-11,
+    "n": 5
+   },
+   "balance_residual_total": {
+    "mean": 0.3116,
+    "se": 0.016355,
+    "n": 5
+   },
+   "balance_residual_magnetic": {
+    "mean": 0.16145,
+    "se": 0.011967,
+    "n": 5
+   },
+   "spec_err_b_l2": {
+    "mean": 2.0024,
+    "se": 0.18073,
+    "n": 5
+   },
+   "hel_m_err_rel": {
+    "mean": 1.9165,
+    "se": 0.24862,
+    "n": 5
+   },
+   "null_count_err_rel": {
+    "mean": 0.90017,
+    "se": 0.06942,
+    "n": 5
+   },
+   "restart_drift_eb": {
+    "mean": 0.44796,
+    "se": 0.016501,
+    "n": 5
+   },
+   "restart_drift_eu": {
+    "mean": 0.35523,
+    "se": 0.015589,
+    "n": 5
+   },
+   "hc_sign_asym": {
+    "mean": 0.015365,
+    "se": 0.0022981,
+    "n": 5
+   },
+   "ed_ratio_train": {
+    "mean": 105.84,
+    "se": 0.64377,
+    "n": 5
+   }
+  },
+  {
+   "id": "W4_potentials",
+   "label": "W4 vector potentials",
+   "where": "design",
+   "source": "experiments/results",
+   "hypotheses": [
+    {
+     "id": "H4",
+     "status": "refuted"
+    },
+    {
+     "id": "H9",
+     "status": "refuted"
+    },
+    {
+     "id": "H10",
+     "status": "supported"
+    },
+    {
+     "id": "H15",
+     "status": "refuted"
+    }
+   ],
+   "ed_ratio": {
+    "mean": 256.28,
+    "se": 6.5929,
+    "n": 5
+   },
+   "div_rel_b_max": {
+    "mean": 1.3932e-08,
+    "se": 7.1221e-11,
+    "n": 5
+   },
+   "balance_residual_total": {
+    "mean": 0.40761,
+    "se": 0.01151,
+    "n": 5
+   },
+   "balance_residual_magnetic": {
+    "mean": 0.14917,
+    "se": 0.014405,
+    "n": 5
+   },
+   "spec_err_b_l2": {
+    "mean": 2.4469,
+    "se": 0.18698,
+    "n": 5
+   },
+   "hel_m_err_rel": {
+    "mean": 2.0737,
+    "se": 0.25841,
+    "n": 5
+   },
+   "null_count_err_rel": {
+    "mean": 1.1392,
+    "se": 0.074549,
+    "n": 5
+   },
+   "restart_drift_eb": {
+    "mean": 0.51694,
+    "se": 0.010273,
+    "n": 5
+   },
+   "restart_drift_eu": {
+    "mean": 0.42547,
+    "se": 0.011851,
+    "n": 5
+   },
+   "hc_sign_asym": {
+    "mean": 0.013281,
+    "se": 0.0031466,
+    "n": 5
+   },
+   "ed_ratio_train": {
+    "mean": 175.45,
+    "se": 0.51444,
+    "n": 5
+   }
+  },
+  {
+   "id": "W4s_potentials_sym",
+   "label": "W4s potentials, B \u2192 \u2212B equivariant",
+   "where": "design",
+   "source": "experiments/results",
+   "hypotheses": [
+    {
+     "id": "H9",
+     "status": "refuted"
+    },
+    {
+     "id": "H12",
+     "status": "refuted"
+    },
+    {
+     "id": "H17",
+     "status": "supported"
+    }
+   ],
+   "ed_ratio": {
+    "mean": 209.79,
+    "se": 1.9499,
+    "n": 5
+   },
+   "div_rel_b_max": {
+    "mean": 1.4237e-08,
+    "se": 1.9543e-10,
+    "n": 5
+   },
+   "balance_residual_total": {
+    "mean": 0.28401,
+    "se": 0.0097822,
+    "n": 5
+   },
+   "balance_residual_magnetic": {
+    "mean": 0.26408,
+    "se": 0.013912,
+    "n": 5
+   },
+   "spec_err_b_l2": {
+    "mean": 0.97153,
+    "se": 0.083436,
+    "n": 5
+   },
+   "hel_m_err_rel": {
+    "mean": 0.45254,
+    "se": 0.092915,
+    "n": 5
+   },
+   "null_count_err_rel": {
+    "mean": 1.8301,
+    "se": 0.06536,
+    "n": 5
+   },
+   "restart_drift_eb": {
+    "mean": 0.38176,
+    "se": 0.012383,
+    "n": 5
+   },
+   "restart_drift_eu": {
+    "mean": 0.28144,
+    "se": 0.015673,
+    "n": 5
+   },
+   "hc_sign_asym": {
+    "mean": 0.012891,
+    "se": 0.0029434,
+    "n": 5
+   },
+   "ed_ratio_train": {
+    "mean": 166.34,
+    "se": 0.25523,
+    "n": 5
+   }
+  },
+  {
+   "id": "W5_stationarity",
+   "label": "W5 stationarity loss",
+   "where": "loss",
+   "source": "experiments/results",
+   "hypotheses": [
+    {
+     "id": "H7",
+     "status": "supported"
+    },
+    {
+     "id": "H8",
+     "status": "dropped"
+    }
+   ],
+   "ed_ratio": {
+    "mean": 215.02,
+    "se": 1.8523,
+    "n": 5
+   },
+   "div_rel_b_max": {
+    "mean": 1.4124e-08,
+    "se": 5.5629e-11,
+    "n": 5
+   },
+   "balance_residual_total": {
+    "mean": 0.19118,
+    "se": 0.0047716,
+    "n": 5
+   },
+   "balance_residual_magnetic": {
+    "mean": 0.51636,
+    "se": 0.012722,
+    "n": 5
+   },
+   "spec_err_b_l2": {
+    "mean": 0.4735,
+    "se": 0.014983,
+    "n": 5
+   },
+   "hel_m_err_rel": {
+    "mean": 0.6934,
+    "se": 0.0092439,
+    "n": 5
+   },
+   "null_count_err_rel": {
+    "mean": 2.3561,
+    "se": 0.024089,
+    "n": 5
+   },
+   "restart_drift_eb": {
+    "mean": 0.33376,
+    "se": 0.0031517,
+    "n": 5
+   },
+   "restart_drift_eu": {
+    "mean": 0.24331,
+    "se": 0.0025679,
+    "n": 5
+   },
+   "hc_sign_asym": {
+    "mean": 0.013411,
+    "se": 0.0023528,
+    "n": 5
+   },
+   "ed_ratio_train": {
+    "mean": 165.12,
+    "se": 0.48495,
+    "n": 5
+   }
+  },
+  {
+   "id": "W5_control",
+   "label": "W5 control (same fine-tuning, no identity)",
+   "where": "loss",
+   "source": "experiments/results",
+   "hypotheses": [
+    {
+     "id": "H7",
+     "status": "supported"
+    }
+   ],
+   "ed_ratio": {
+    "mean": 210.25,
+    "se": 2.0999,
+    "n": 5
+   },
+   "div_rel_b_max": {
+    "mean": 1.4132e-08,
+    "se": 7.0989e-11,
+    "n": 5
+   },
+   "balance_residual_total": {
+    "mean": 0.28994,
+    "se": 0.010255,
+    "n": 5
+   },
+   "balance_residual_magnetic": {
+    "mean": 0.25126,
+    "se": 0.014861,
+    "n": 5
+   },
+   "spec_err_b_l2": {
+    "mean": 1.0286,
+    "se": 0.090712,
+    "n": 5
+   },
+   "hel_m_err_rel": {
+    "mean": 0.49543,
+    "se": 0.10609,
+    "n": 5
+   },
+   "null_count_err_rel": {
+    "mean": 1.7943,
+    "se": 0.069122,
+    "n": 5
+   },
+   "restart_drift_eb": {
+    "mean": 0.39019,
+    "se": 0.012497,
+    "n": 5
+   },
+   "restart_drift_eu": {
+    "mean": 0.28904,
+    "se": 0.0156,
+    "n": 5
+   },
+   "hc_sign_asym": {
+    "mean": 0.011198,
+    "se": 0.0023868,
+    "n": 5
+   },
+   "ed_ratio_train": {
+    "mean": 166.36,
+    "se": 0.30048,
+    "n": 5
+   }
+  },
+  {
+   "id": "W6_diffusion",
+   "label": "W6 diffusion (VP, v-prediction)",
+   "where": "family",
+   "source": "experiments/results",
+   "hypotheses": [
+    {
+     "id": "H10",
+     "status": "supported"
+    }
+   ],
+   "ed_ratio": {
+    "mean": 518.73,
+    "se": 17.153,
+    "n": 5
+   },
+   "div_rel_b_max": {
+    "mean": 1.2906e-08,
+    "se": 9.8665e-11,
+    "n": 5
+   },
+   "balance_residual_total": {
+    "mean": 0.74731,
+    "se": 0.013975,
+    "n": 5
+   },
+   "balance_residual_magnetic": {
+    "mean": 0.21269,
+    "se": 0.010868,
+    "n": 5
+   },
+   "spec_err_b_l2": {
+    "mean": 15.808,
+    "se": 1.6195,
+    "n": 5
+   },
+   "hel_m_err_rel": {
+    "mean": 21.71,
+    "se": 2.4899,
+    "n": 5
+   },
+   "null_count_err_rel": {
+    "mean": 0.42936,
+    "se": 0.020778,
+    "n": 5
+   },
+   "restart_drift_eb": {
+    "mean": 0.63668,
+    "se": 0.0023636,
+    "n": 5
+   },
+   "restart_drift_eu": {
+    "mean": 0.61611,
+    "se": 0.013649,
+    "n": 5
+   },
+   "hc_sign_asym": {
+    "mean": 0.022266,
+    "se": 0.0062899,
+    "n": 5
+   },
+   "ed_ratio_train": {
+    "mean": 160.38,
+    "se": 0.58671,
+    "n": 5
+   }
+  },
+  {
+   "id": "W7_tilting",
+   "label": "W7 exponential tilting",
+   "where": "sampling",
+   "source": "experiments/results",
+   "hypotheses": [
+    {
+     "id": "H8",
+     "status": "dropped"
+    },
+    {
+     "id": "H12",
+     "status": "refuted"
+    }
+   ],
+   "ed_ratio": {
+    "mean": 195.4,
+    "se": 10.529,
+    "n": 5
+   },
+   "div_rel_b_max": {
+    "mean": 1.3942e-08,
+    "se": 4.9496e-11,
+    "n": 5
+   },
+   "balance_residual_total": {
+    "mean": 0.20364,
+    "se": 0.0075159,
+    "n": 5
+   },
+   "balance_residual_magnetic": {
+    "mean": 0.43147,
+    "se": 0.036946,
+    "n": 5
+   },
+   "spec_err_b_l2": {
+    "mean": 0.51468,
+    "se": 0.061441,
+    "n": 5
+   },
+   "hel_m_err_rel": {
+    "mean": 0.40668,
+    "se": 0.10885,
+    "n": 5
+   },
+   "null_count_err_rel": {
+    "mean": 2.2411,
+    "se": 0.18927,
+    "n": 5
+   },
+   "restart_drift_eb": {
+    "mean": null,
+    "se": null,
+    "n": 0
+   },
+   "restart_drift_eu": {
+    "mean": null,
+    "se": null,
+    "n": 0
+   },
+   "hc_sign_asym": {
+    "mean": 0.46714,
+    "se": 0.032859,
+    "n": 5
+   },
+   "ed_ratio_train": {
+    "mean": 160.98,
+    "se": 8.9893,
+    "n": 5
+   }
+  },
+  {
+   "id": "W8_rescaling",
+   "label": "W8 per-sample balance rescaling",
+   "where": "sampling",
+   "source": "experiments/results",
+   "hypotheses": [],
+   "ed_ratio": {
+    "mean": 116.68,
+    "se": 2.2838,
+    "n": 5
+   },
+   "div_rel_b_max": {
+    "mean": 1.3954e-08,
+    "se": 1.3832e-10,
+    "n": 5
+   },
+   "balance_residual_total": {
+    "mean": 1.1723e-16,
+    "se": 2.4727e-17,
+    "n": 5
+   },
+   "balance_residual_magnetic": {
+    "mean": 0.19518,
+    "se": 0.019031,
+    "n": 5
+   },
+   "spec_err_b_l2": {
+    "mean": 0.86068,
+    "se": 0.081625,
+    "n": 5
+   },
+   "hel_m_err_rel": {
+    "mean": 0.5242,
+    "se": 0.11288,
+    "n": 5
+   },
+   "null_count_err_rel": {
+    "mean": 0.71129,
+    "se": 0.081715,
+    "n": 5
+   },
+   "restart_drift_eb": {
+    "mean": null,
+    "se": null,
+    "n": 0
+   },
+   "restart_drift_eu": {
+    "mean": null,
+    "se": null,
+    "n": 0
+   },
+   "hc_sign_asym": {
+    "mean": 0.013411,
+    "se": 0.0018019,
+    "n": 5
+   },
+   "ed_ratio_train": {
+    "mean": 92.899,
+    "se": 0.30806,
+    "n": 5
+   }
+  },
+  {
+   "id": "W4c_potentials_smooth",
+   "label": "W4c potentials, smooth condition",
+   "where": "design",
+   "source": "experiments/results",
+   "hypotheses": [
+    {
+     "id": "H15",
+     "status": "refuted"
+    }
+   ],
+   "ed_ratio": {
+    "mean": 215.43,
+    "se": 0.34827,
+    "n": 5
+   },
+   "div_rel_b_max": {
+    "mean": 1.4259e-08,
+    "se": 4.1027e-11,
+    "n": 5
+   },
+   "balance_residual_total": {
+    "mean": 0.26942,
+    "se": 0.00062344,
+    "n": 5
+   },
+   "balance_residual_magnetic": {
+    "mean": 0.38427,
+    "se": 0.0016288,
+    "n": 5
+   },
+   "spec_err_b_l2": {
+    "mean": 0.63724,
+    "se": 0.0058664,
+    "n": 5
+   },
+   "hel_m_err_rel": {
+    "mean": 0.32966,
+    "se": 0.0045987,
+    "n": 5
+   },
+   "null_count_err_rel": {
+    "mean": 2.1417,
+    "se": 0.012489,
+    "n": 5
+   },
+   "restart_drift_eb": {
+    "mean": 0.38262,
+    "se": 0.0010556,
+    "n": 5
+   },
+   "restart_drift_eu": {
+    "mean": 0.25155,
+    "se": 0.0044066,
+    "n": 5
+   },
+   "hc_sign_asym": {
+    "mean": 0.013932,
+    "se": 0.0018711,
+    "n": 5
+   },
+   "ed_ratio_train": {
+    "mean": 175.1,
+    "se": 0.80388,
+    "n": 5
+   }
+  },
+  {
+   "id": "G0_gaussian_modes",
+   "label": "G0 Gaussian per mode (no network)",
+   "where": "family",
+   "source": "experiments/results",
+   "hypotheses": [
+    {
+     "id": "H16",
+     "status": "supported"
+    },
+    {
+     "id": "H18",
+     "status": "registered"
+    },
+    {
+     "id": "H19",
+     "status": "refuted"
+    },
+    {
+     "id": "H20",
+     "status": "refuted"
+    }
+   ],
+   "ed_ratio": {
+    "mean": 3.522,
+    "se": 0.067855,
+    "n": 5
+   },
+   "div_rel_b_max": {
+    "mean": 1.4794e-08,
+    "se": 1.1541e-10,
+    "n": 5
+   },
+   "balance_residual_total": {
+    "mean": 0.0015445,
+    "se": 0.00026359,
+    "n": 5
+   },
+   "balance_residual_magnetic": {
+    "mean": 0.99807,
+    "se": 0.00086254,
+    "n": 5
+   },
+   "spec_err_b_l2": {
+    "mean": 0.024478,
+    "se": 0.0028966,
+    "n": 5
+   },
+   "hel_m_err_rel": {
+    "mean": 0.034635,
+    "se": 0.0049979,
+    "n": 5
+   },
+   "null_count_err_rel": {
+    "mean": 2.235,
+    "se": 0.0072767,
+    "n": 5
+   },
+   "restart_drift_eb": {
+    "mean": 0.21228,
+    "se": 0.0025986,
+    "n": 5
+   },
+   "restart_drift_eu": {
+    "mean": 0.025732,
+    "se": 0.0046679,
+    "n": 5
+   },
+   "hc_sign_asym": {
+    "mean": 0.017578,
+    "se": 0.0028601,
+    "n": 5
+   },
+   "ed_ratio_train": {
+    "mean": 2.6701,
+    "se": 0.079632,
+    "n": 5
+   }
+  },
+  {
+   "id": "W9_skip_sym",
+   "label": "W9 mode-wise affine term",
+   "where": "design",
+   "source": "experiments/results",
+   "hypotheses": [
+    {
+     "id": "H17",
+     "status": "supported"
+    },
+    {
+     "id": "H18",
+     "status": "registered"
+    }
+   ],
+   "ed_ratio": {
+    "mean": 9.3494,
+    "se": 0.2881,
+    "n": 5
+   },
+   "div_rel_b_max": {
+    "mean": 1.5174e-08,
+    "se": 5.3657e-11,
+    "n": 5
+   },
+   "balance_residual_total": {
+    "mean": 0.056719,
+    "se": 0.0016833,
+    "n": 5
+   },
+   "balance_residual_magnetic": {
+    "mean": 0.055282,
+    "se": 0.00056329,
+    "n": 5
+   },
+   "spec_err_b_l2": {
+    "mean": 0.14482,
+    "se": 0.0029237,
+    "n": 5
+   },
+   "hel_m_err_rel": {
+    "mean": 0.19569,
+    "se": 0.0037808,
+    "n": 5
+   },
+   "null_count_err_rel": {
+    "mean": 1.6646,
+    "se": 0.013774,
+    "n": 5
+   },
+   "restart_drift_eb": {
+    "mean": 0.1242,
+    "se": 0.0034443,
+    "n": 5
+   },
+   "restart_drift_eu": {
+    "mean": 0.053007,
+    "se": 0.0056519,
+    "n": 5
+   },
+   "hc_sign_asym": {
+    "mean": 0.01862,
+    "se": 0.0036458,
+    "n": 5
+   },
+   "ed_ratio_train": {
+    "mean": 5.5053,
+    "se": 0.093744,
+    "n": 5
+   }
+  },
+  {
+   "id": "W10_anchored",
+   "label": "W10 anchored on the Gaussian field",
+   "where": "design",
+   "source": "experiments/results",
+   "hypotheses": [
+    {
+     "id": "H19",
+     "status": "refuted"
+    },
+    {
+     "id": "H20",
+     "status": "refuted"
+    }
+   ],
+   "ed_ratio": {
+    "mean": 43.564,
+    "se": 0.23537,
+    "n": 5
+   },
+   "div_rel_b_max": {
+    "mean": 1.4871e-08,
+    "se": 6.5813e-11,
+    "n": 5
+   },
+   "balance_residual_total": {
+    "mean": 0.14575,
+    "se": 0.00090994,
+    "n": 5
+   },
+   "balance_residual_magnetic": {
+    "mean": 0.3092,
+    "se": 0.0016717,
+    "n": 5
+   },
+   "spec_err_b_l2": {
+    "mean": 0.20814,
+    "se": 0.0019088,
+    "n": 5
+   },
+   "hel_m_err_rel": {
+    "mean": 0.09573,
+    "se": 0.0072679,
+    "n": 5
+   },
+   "null_count_err_rel": {
+    "mean": 2.4635,
+    "se": 0.015863,
+    "n": 5
+   },
+   "restart_drift_eb": {
+    "mean": 0.12239,
+    "se": 0.0020615,
+    "n": 5
+   },
+   "restart_drift_eu": {
+    "mean": 0.091859,
+    "se": 0.0035516,
+    "n": 5
+   },
+   "hc_sign_asym": {
+    "mean": 0.013542,
+    "se": 0.0009068,
+    "n": 5
+   },
+   "ed_ratio_train": {
+    "mean": 36.373,
+    "se": 0.10341,
+    "n": 5
+   }
+  },
+  {
+   "id": "W11_anchored_skip",
+   "label": "W11 anchor + affine term",
+   "where": "design",
+   "source": "experiments/results",
+   "hypotheses": [
+    {
+     "id": "H20",
+     "status": "refuted"
+    }
+   ],
+   "ed_ratio": {
+    "mean": 8.6022,
+    "se": 0.24362,
+    "n": 5
+   },
+   "div_rel_b_max": {
+    "mean": 1.5166e-08,
+    "se": 8.0007e-11,
+    "n": 5
+   },
+   "balance_residual_total": {
+    "mean": 0.051542,
+    "se": 0.00088361,
+    "n": 5
+   },
+   "balance_residual_magnetic": {
+    "mean": 0.059787,
+    "se": 0.00060261,
+    "n": 5
+   },
+   "spec_err_b_l2": {
+    "mean": 0.14308,
+    "se": 0.0039483,
+    "n": 5
+   },
+   "hel_m_err_rel": {
+    "mean": 0.19345,
+    "se": 0.0052245,
+    "n": 5
+   },
+   "null_count_err_rel": {
+    "mean": 1.6958,
+    "se": 0.012218,
+    "n": 5
+   },
+   "restart_drift_eb": {
+    "mean": 0.12034,
+    "se": 0.002027,
+    "n": 5
+   },
+   "restart_drift_eu": {
+    "mean": 0.052874,
+    "se": 0.0030917,
+    "n": 5
+   },
+   "hc_sign_asym": {
+    "mean": 0.016927,
+    "se": 0.0010294,
+    "n": 5
+   },
+   "ed_ratio_train": {
+    "mean": 5.5211,
+    "se": 0.13314,
+    "n": 5
+   }
+  }
+ ]
+}

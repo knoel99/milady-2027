@@ -6,11 +6,11 @@ Colour key (team): velocity u blue (#0072B2), magnetic field B orange/red (#D55E
 ## Panels
 | Panel | Job |
 |---|---|
-| a | v = linear part + rest; latent 5320 vs network width 512 (conjecture); measured loss 1.60-1.63 vs pi/2 and over-dispersion |
-| b | G0, W9, W10, W11 as sums of glyphs; 2-seed CPU energy distance / floor on a log axis; what each gets right or wrong |
+| a | v = linear part + rest; latent 5320 vs network width 512 (conjecture); measured loss of W0, W4, W4s 1.60-1.63 vs pi/2; latent 5320 (potentials) / 7980 (free components); width statement is a conjecture (H21) |
+| b | G0, W9, W10, W11 as sums of glyphs; 5-seed mean energy distance / floor on a log axis (W4s 210, W10 43.6, W9 9.3, W11 8.6, G0 3.5) with null-count error and restart drift table |
 
 ## Components (labels exact, all from FACTS.md "Why the first generators fail")
-Latent bar 5320 (mode glyphs), network neck width 512, linear part A(t)x+b(t), the rest, loss ruler (pi/2 = 1.571; 1.60-1.63), W0-W6 band 177-519 (5 seeds, GPU), dots G0 3.3; W9 9.1, 10.6; W10 44.7, 46.3; W11 9.3, 7.6 (2 seeds, CPU); G0 residual 0.002, drift 0.21; W9/W11 nulls error 1.7, drift 0.12.
+Latent bar 5320 (potentials; 7980 for W0), network neck width 512, linear part A(t)x+b(t), the rest, loss ruler (pi/2 = 1.571; 1.60-1.63), log axis 1-300 with W4s 210, W10 43.6, W9 9.3, W11 8.6, G0 3.5; table null-count error / restart drift (W4s 1.83/0.38, W10 2.46/0.12, W9 1.67/0.12, W11 1.70/0.12, G0 2.24/0.21).
 
 ## Relations
 Linear part -> neck (dashed, blocked, cross; conjecture); the rest -> through neck (solid).
@@ -19,7 +19,7 @@ Linear part -> neck (dashed, blocked, cross; conjecture); the rest -> through ne
 Green = linear/exact Gaussian (solid = exact, dashed = learned); purple = network. Dots are values from FACTS.md; the loss ruler and axis are drawn to their stated numbers; widths of the two boxes in the decomposition are illustrative.
 
 ## Negative constraints
-No pending 5-seed number; the width explanation is labelled "Conjecture".
+No verdicts, no 2-seed or CPU numbers; the width explanation is labelled "Conjecture (tested by a width scan, H21)".
 
 ## Render and gate (from the repository root)
 `CHROME=<path of Chrome/Chromium, add --no-sandbox in a wrapper if running as root> node .claude/skills/schematic-figure/foundation/tools/render.mjs --root site/teams/claude/figures/linear-part --fig site/teams/claude/figures/linear-part/figure/figure.js`

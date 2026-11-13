@@ -26,7 +26,7 @@ ROOT = HERE.parent
 sys.path.insert(0, str(HERE))
 from e4_digest import R, load, per_seed  # noqa: E402
 
-SCALARS = ["ed_ratio", "div_rel_b_max", "balance_residual_total", "spec_err_b_l2", "spec_err_u_l2", "hel_m_err_rel",
+SCALARS = ["ed_ratio", "div_rel_b_max", "balance_residual_total", "balance_residual_magnetic", "restart_drift_eu", "spec_err_b_l2", "spec_err_u_l2", "hel_m_err_rel",
            "null_count", "null_count_err_rel", "restart_drift_eb", "hc_sign_asym", "E_u", "E_B", "hel_m", "injection",
            "dissipation", "k_lambda"]
 ARRAYS = ["spec_u", "spec_b", "H_shell"]
@@ -34,10 +34,12 @@ METRICS = [  # key, label, use the absolute value, objective of race/teams/claud
     ("ed_ratio", "energy distance / noise floor", False, "C1"),
     ("div_rel_b_max", "relative divergence of B (largest of the ensemble)", False, "C2"),
     ("balance_residual_total", "|residual of the mean energy balance| / injection", True, "C3"),
+    ("balance_residual_magnetic", "|residual of the mean magnetic energy balance|, production against Ohmic dissipation", True, "–"),
     ("spec_err_b_l2", "relative L2 error on the magnetic spectrum", False, "C4"),
     ("hel_m_err_rel", "relative error on the mean magnetic helicity", True, "C4"),
     ("null_count_err_rel", "relative error on the number of magnetic null points", True, "C5"),
     ("restart_drift_eb", "relative drift of the magnetic energy after a solver restart", True, "T1"),
+    ("restart_drift_eu", "relative drift of the kinetic energy after a solver restart", True, "–"),
     ("hc_sign_asym", "polarity asymmetry of the cross helicity", True, "T2"),
 ]
 LABEL = {
@@ -173,6 +175,7 @@ def main() -> None:
                           "null_count_mean": sig(r["null_count_mean"]), "null_count_se": sig(r["null_count_se"]),
                           "k_lambda": sig(r["k_lambda"]), "balance_residual_total": sig(r["balance_residual_total"]),
                           "ed_floor": sig(r["ed_floor_512"]), "hc_sign_asym": sig(r["hc_sign_asym"]),
+                          "balance_residual_magnetic": sig(r.get("balance_residual_magnetic")), "restart_drift_eu": sig(r.get("restart_drift_eu")),
                           "restart_drift_eb": sig(r.get("restart_drift_eb")),
                           "spec_u": sig(r["spec_u"], 4), "spec_b": sig(r["spec_b"], 4), "H_shell": sig(r["H_shell"], 4)}
                       for k, r in ref["values"].items()},
