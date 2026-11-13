@@ -1,0 +1,11 @@
+{"Rm": 9.5, "n": 64, "seed": 0, "t": 120.0, "dt_cap": 0.05, "cfl": 1.0, "cfl_dt0": 0.01122391716169123, "steps": 10800, "lambda": 0.0029661224130233766, "max_div_b": 3.3428663113328637e-16, "finite": true, "ok": true}
+{"Rm": 9.5, "n": 64, "seed": 1, "t": 120.0, "dt_cap": 0.05, "cfl": 1.0, "cfl_dt0": 0.01122391716169123, "steps": 10800, "lambda": 0.002392119616486714, "max_div_b": 1.9791156021935255e-16, "finite": true, "ok": true}
+{"Rm": 9.5, "n": 64, "seed": 2, "t": 120.0, "dt_cap": 0.05, "cfl": 1.0, "cfl_dt0": 0.01122391716169123, "steps": 10800, "lambda": 0.003922543170472234, "max_div_b": 4.590387463332181e-16, "finite": true, "ok": true}
+{"Rm": 9.5, "n": 64, "seed": 3, "t": 120.0, "dt_cap": 0.05, "cfl": 1.0, "cfl_dt0": 0.01122391716169123, "steps": 10800, "lambda": 0.00407891564966686, "max_div_b": 4.911526878325968e-16, "finite": true, "ok": true}
+{"Rm": 9.5, "n": 64, "seed": 4, "t": 120.0, "dt_cap": 0.05, "cfl": 1.0, "cfl_dt0": 0.01122391716169123, "steps": 10800, "lambda": 0.002413391792346616, "max_div_b": 2.6669768759714526e-16, "finite": true, "ok": true}
+
+--- status
+2026-11-13T03:35:50Z boot NVIDIA GeForce RTX 4090, 49140 MiB
+2026-11-13T03:37:08Z job started
+2026-11-13T03:38:30Z job finished rc=0 in 82 s
+2026-11-13T03:38:31Z DONE rc=0

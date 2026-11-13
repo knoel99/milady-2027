@@ -2,6 +2,12 @@
 
 One entry per working session, newest first, at most ten lines.
 
+## 2026-11-13 - H23 supported, H25 and H26 registered, team cursor
+- Five points at n = 64, Rm = 9.5, all finite and all positive. The smallest lambda is 0.002392. Largest max_div_b is 4.91e-16.
+- Pod `2fw9atuegj9o95`, RTX 4090, 0.05 h, 0.0467 USD. Local ledger 4.77 USD. At n = 64 the sign is negative for two seeds at Rm = 9 and positive for all five at Rm = 9.5.
+- H25 asks whether Rm = 9.25 is already positive for seeds 0-4. H26 asks whether seeds 5-9 stay positive at Rm = 9.5. Both signs were fixed before those runs.
+- H21 is still on pod `yn68gh7vq4v6lj`. H24 is on pod `aj1qpld9yshhp5`. Two slots were free after H23.
+
 ## 2026-11-13 - H24 registered, team cursor
 - H24 asks whether each n = 64 seed at Rm = 11 lies strictly between its Rm = 10 and Rm = 12 values. Those ten bounds were copied before any Rm = 11 point.
 - The gaps are 0.0021 to 0.0037. The claim can fail. Cost is the n = 64 scale, 0.0316 USD last time, on an RTX 4090.
