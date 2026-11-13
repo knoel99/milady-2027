@@ -1230,9 +1230,9 @@
       "protocol": "Five seeds, 0-4. python3 experiments/cursor_abc_batch.py --device cuda --cfl 1 --out-dir experiments/results/cursor_abc_n128_rm8890625 --point 128,8.890625,0 --point 128,8.890625,1 --point 128,8.890625,2 --point 128,8.890625,3 --point 128,8.890625,4. t = 120, dt cap 0.05, float64. GPU order RTX 4090, then PRO 4500, then A6000. One pod, 2 h cap. Launch when a parallel slot is free.",
       "script": "experiments/cursor_abc_batch.py --device cuda --cfl 1 --point 128,8.890625,0",
       "cost_estimate": "One pod, 2 h cap. An n = 160 job cost 0.99 USD. n = 128 should cost less on the same RTX 4090.",
-      "status": "registered",
+      "status": "refuted",
       "verdict": "",
-      "results": "",
+      "results": "Five points, all finite. Seeds 0 and 1 are negative, lambda -6.642687378275723e-04 and -1.961116e-04. Seeds 2, 3, and 4 are positive. Largest max_div_b is 4.48e-16. Files experiments/results/cursor_abc_n128_rm8890625/. Pod p79984sx0e3aro, RTX 4090, 0.39 h, 0.3513 USD. The refutation criterion is met. Not a 3D generator result.",
       "commit": ""
     },
     {
@@ -1321,6 +1321,19 @@
       "protocol": "Five seeds, 0-4. python3 experiments/cursor_abc_batch.py --device cuda --cfl 1 --out-dir experiments/results/cursor_abc_n128_rm9 --point 128,9,0 --point 128,9,1 --point 128,9,2 --point 128,9,3 --point 128,9,4. t = 120, dt cap 0.05, float64. GPU order RTX 4090, then PRO 4500, then A6000. One pod, 2 h cap. Launch when this team has fewer than four pods.",
       "script": "experiments/cursor_abc_batch.py --device cuda --cfl 1 --point 128,9,0",
       "cost_estimate": "One pod, 2 h cap. The n = 128 job at Rm = 8.90625 cost 0.3362 USD.",
+      "status": "registered",
+      "verdict": "",
+      "results": "",
+      "commit": ""
+    },
+    {
+      "id": "H103",
+      "statement": "At n = 128, Rm = 8.953125, cfl = 1, seeds 0-4, every kinematic ABC growth rate is positive, and every point is finite with final max_div_b below 1e-8.",
+      "origin": "H96 found seeds 0 and 1 negative at n = 128, Rm = 8.90625, most negative -5.54370117385338e-04. Rm = 8.953125 has not been run at n = 128. The positive sign is the claim and may fail.",
+      "refutation_criterion": "Refuted if any point is non-finite or exits non-zero, if any final max_div_b is >= 1e-8, or if any lambda is <= 0. The sign was fixed before the run. Not a 3D generator claim.",
+      "protocol": "Five seeds, 0-4. python3 experiments/cursor_abc_batch.py --device cuda --cfl 1 --out-dir experiments/results/cursor_abc_n128_rm8953125 --point 128,8.953125,0 --point 128,8.953125,1 --point 128,8.953125,2 --point 128,8.953125,3 --point 128,8.953125,4. t = 120, dt cap 0.05, float64. GPU order RTX 4090, then PRO 4500, then A6000. One pod, 2 h cap. Launch when this team has fewer than four pods.",
+      "script": "experiments/cursor_abc_batch.py --device cuda --cfl 1 --point 128,8.953125,0",
+      "cost_estimate": "One pod, 2 h cap. The n = 128 job at Rm = 8.890625 cost 0.3513 USD.",
       "status": "registered",
       "verdict": "",
       "results": "",

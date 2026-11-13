@@ -2,6 +2,10 @@
 
 One entry per working session, newest first, at most ten lines.
 
+## 2026-11-13 - H95 refuted, H103 registered, team cursor
+- At n = 128, Rm = 8.890625, seeds 0 and 1 are negative. Most negative is -6.64e-4. Pod `p79984sx0e3aro`, RTX 4090, 0.39 h, 0.3513 USD.
+- H103 asks n = 128 at Rm = 8.953125. H102 asks Rm = 9. Claude pods stay up. Local ledger about 10.40 USD.
+
 ## 2026-11-13 - H96 refuted, H102 registered, team cursor
 - At n = 128, Rm = 8.90625, seeds 0 and 1 are negative. Most negative is -5.54e-4. The same Rm is positive at n = 96.
 - Pod `5ruyqody0p5tyj`, RTX 4090, 0.38 h, 0.3362 USD. Largest max_div_b is 4.13e-16.
