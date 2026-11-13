@@ -2,6 +2,12 @@
 
 One entry per working session, newest first, at most ten lines.
 
+## 2026-11-13 - H18 supported, H21 registered, team cursor
+- Five points at n = 160, Rm = 12, cfl = 1, all finite. Largest max_div_b is 5.02e-16.
+- Mean lambda 0.008286 (sample std 0.000601). Absolute difference from the ten-seed n = 128 mean 0.007837088 is 4.49e-4, under the pre-set 0.001.
+- Pod `z1a4bgm0uztfzo`, RTX 4090, 1.11 h, 0.9920 USD. Local ledger 4.5921 USD. The bound was not tightened after the run.
+- H21 asks whether seeds 5-9 at n = 160 stay within 0.001 of that mean. H20 is already on pod `9d530mb5jhqa8q`.
+
 ## 2026-11-13 - H19 supported, H20 registered, team cursor
 - Five points at n = 128, Rm = 10, cfl = 1, all finite and all positive. The smallest lambda is 0.005015. Largest max_div_b is 5.12e-16.
 - The H19 criterion is not met for a refutation. Pod `jc4tw36hkpg8l2`, RTX 4090, 0.38 h, 0.3357 USD. Local ledger 3.6001 USD.
