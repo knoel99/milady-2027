@@ -1,1 +1,5 @@
-Full and kmax=4 counts come from experiments/results/cursor_nulls.json. Title: A truncation moves the null count.
+The null count is the Haynes–Parnell elimination on the trilinear interpolant, with the periodic upper face counted once.
+
+Must not call a sign-change octree by this name.
+
+Width 160 mm.

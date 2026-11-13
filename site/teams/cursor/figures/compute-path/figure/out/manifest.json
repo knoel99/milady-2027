@@ -1,0 +1,282 @@
+{
+ "name": "compute-path",
+ "mode": "design",
+ "format": "journal",
+ "widthMM": 160,
+ "heightMM": 58,
+ "W": 453.5433070866142,
+ "H": 164.40944881889766,
+ "texts": [
+  {
+   "s": "a",
+   "role": "panel",
+   "box": {
+    "x": 5.6692914962768555,
+    "y": 6.519018232822418,
+    "w": 4.500182151794434,
+    "h": 9.000364303588867
+   },
+   "size": 8,
+   "minSize": 8,
+   "family": "Arial, Helvetica, sans-serif",
+   "color": "#1a1a1a",
+   "halo": false,
+   "rotate": 0,
+   "italic": false,
+   "weight": "bold"
+  },
+  {
+   "s": "Session",
+   "role": "label",
+   "box": {
+    "x": 16.01651668548584,
+    "y": 38.29407978057861,
+    "w": 21.30554962158203,
+    "h": 6.75027322769165
+   },
+   "size": 6,
+   "minSize": 6,
+   "family": "Arial, Helvetica, sans-serif",
+   "color": "#1a1a1a",
+   "halo": false,
+   "rotate": 0,
+   "italic": false,
+   "weight": "normal"
+  },
+  {
+   "s": "RunPod",
+   "role": "label",
+   "box": {
+    "x": 53.84658718109131,
+    "y": 38.29407978057861,
+    "w": 21.64540672302246,
+    "h": 6.75027322769165
+   },
+   "size": 6,
+   "minSize": 6,
+   "family": "Arial, Helvetica, sans-serif",
+   "color": "#1a1a1a",
+   "halo": false,
+   "rotate": 0,
+   "italic": false,
+   "weight": "normal"
+  },
+  {
+   "s": "Result JSON",
+   "role": "label",
+   "box": {
+    "x": 85.35999584197998,
+    "y": 38.29407978057861,
+    "w": 34.78495788574219,
+    "h": 6.75027322769165
+   },
+   "size": 6,
+   "minSize": 6,
+   "family": "Arial, Helvetica, sans-serif",
+   "color": "#1a1a1a",
+   "halo": false,
+   "rotate": 0,
+   "italic": false,
+   "weight": "normal"
+  },
+  {
+   "s": "Race report",
+   "role": "label",
+   "box": {
+    "x": 125.02412700653076,
+    "y": 38.29407978057861,
+    "w": 31.8740234375,
+    "h": 6.75027322769165
+   },
+   "size": 6,
+   "minSize": 6,
+   "family": "Arial, Helvetica, sans-serif",
+   "color": "#1a1a1a",
+   "halo": false,
+   "rotate": 0,
+   "italic": false,
+   "weight": "normal"
+  },
+  {
+   "s": "Pod names start with milady-cursor-job-. The ledger stores hours and dollars.",
+   "role": "label",
+   "box": {
+    "x": 13.669291496276855,
+    "y": 59.919135093688965,
+    "w": 170.66839599609375,
+    "h": 5.2502121925354
+   },
+   "size": 5,
+   "minSize": 5,
+   "family": "Arial, Helvetica, sans-serif",
+   "color": "#1a1a1a",
+   "halo": false,
+   "rotate": 0,
+   "italic": false,
+   "weight": "normal"
+  }
+ ],
+ "strokes": [
+  {
+   "w": 0.4,
+   "tag": "rect",
+   "part": "box"
+  },
+  {
+   "w": 0.4,
+   "tag": "rect",
+   "part": "box"
+  },
+  {
+   "w": 0.4,
+   "tag": "rect",
+   "part": "box"
+  },
+  {
+   "w": 0.4,
+   "tag": "rect",
+   "part": "box"
+  },
+  {
+   "w": 0.6,
+   "tag": "path",
+   "part": "arrow-shaft"
+  },
+  {
+   "w": 0.6,
+   "tag": "path",
+   "part": "arrow-shaft"
+  },
+  {
+   "w": 0.6,
+   "tag": "path",
+   "part": "arrow-shaft"
+  }
+ ],
+ "images": [],
+ "anchors": {
+  "session.left": {
+   "x": 11.669291496276855,
+   "y": 41.669291496276855
+  },
+  "session.right": {
+   "x": 41.669291496276855,
+   "y": 41.669291496276855
+  },
+  "session.top": {
+   "x": 26.669291496276855,
+   "y": 33.669291496276855
+  },
+  "session.bottom": {
+   "x": 26.669291496276855,
+   "y": 49.669291496276855
+  },
+  "session.center": {
+   "x": 26.669291496276855,
+   "y": 41.669291496276855
+  },
+  "pod.left": {
+   "x": 49.669291496276855,
+   "y": 41.669291496276855
+  },
+  "pod.right": {
+   "x": 79.66929149627686,
+   "y": 41.669291496276855
+  },
+  "pod.top": {
+   "x": 64.66929149627686,
+   "y": 33.669291496276855
+  },
+  "pod.bottom": {
+   "x": 64.66929149627686,
+   "y": 49.669291496276855
+  },
+  "pod.center": {
+   "x": 64.66929149627686,
+   "y": 41.669291496276855
+  },
+  "json.left": {
+   "x": 87.66929149627686,
+   "y": 41.669291496276855
+  },
+  "json.right": {
+   "x": 117.66929149627686,
+   "y": 41.669291496276855
+  },
+  "json.top": {
+   "x": 102.66929149627686,
+   "y": 33.669291496276855
+  },
+  "json.bottom": {
+   "x": 102.66929149627686,
+   "y": 49.669291496276855
+  },
+  "json.center": {
+   "x": 102.66929149627686,
+   "y": 41.669291496276855
+  },
+  "report.left": {
+   "x": 125.66929149627686,
+   "y": 41.669291496276855
+  },
+  "report.right": {
+   "x": 155.66929149627686,
+   "y": 41.669291496276855
+  },
+  "report.top": {
+   "x": 140.66929149627686,
+   "y": 33.669291496276855
+  },
+  "report.bottom": {
+   "x": 140.66929149627686,
+   "y": 49.669291496276855
+  },
+  "report.center": {
+   "x": 140.66929149627686,
+   "y": 41.669291496276855
+  }
+ },
+ "relations": [
+  {
+   "from": "session.right",
+   "to": "pod.left",
+   "kind": "next"
+  },
+  {
+   "from": "pod.right",
+   "to": "json.left",
+   "kind": "next"
+  },
+  {
+   "from": "json.right",
+   "to": "report.left",
+   "kind": "next"
+  }
+ ],
+ "drawn": [
+  {
+   "from": "session.right",
+   "to": "pod.left",
+   "kind": "flow"
+  },
+  {
+   "from": "pod.right",
+   "to": "json.left",
+   "kind": "flow"
+  },
+  {
+   "from": "json.right",
+   "to": "report.left",
+   "kind": "flow"
+  }
+ ],
+ "panels": [
+  {
+   "label": "a",
+   "x": 5.669291338582678,
+   "y": 5.669291338582678,
+   "w": 442.2047244094489,
+   "h": 153.0708661417323
+  }
+ ]
+}

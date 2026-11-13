@@ -45,6 +45,6 @@ Status: open. The shared GPU budget is not exhausted. This file is a living reco
 - C6. H145 through H167 include five-seed constraint comparisons with a verdict. The target of 4 is met. H168 is registered and has no result yet. It asks whether a GPU-trained ResMLP flow, with the sampling constraint, reaches a mean energy-distance ratio of 1.2 at held-out Rm=12. The Fourier midpoint at the same cutoff is the baseline.
 - C7. Two new modules, `constraints.py` and `nulls.py`, each named by a test. The target is 2.
 - T1. Already below the target on the measured bench. No further bench is planned.
-- Deliverables. `site/teams/cursor/` is the team report, eight schematics, three diagrams, eight plots, and the explorer. `python3 tools/check_deliverables.py --team cursor --built` passes after `python3 tools/render.py teams/cursor/report teams/cursor/explorer`. The rendered HTML is gitignored. The PDF is `site/teams/cursor/report/index.pdf`.
+- Deliverables. `site/teams/cursor/report/index.qmd` is the only report source. `pdfinfo` reports 34 pages for `site/teams/cursor/report/index.pdf`. Eight schematic-figure panels, three Archify diagrams, and eight data plots are in that tree. `python3 tools/check_deliverables.py --team cursor --built` passes, including the 30-page gate from main.
 - H138, supported. At n = 160 and Rm = 9.0625, seeds 0-4 are all positive. The smallest lambda is 5.84e-5, seed 3. The bracket against the negative Rm = 9 run is (9, 9.0625). It is not being bisected.
-- No team pod is running. Spend is the ledger total after H144.
+- H168 is in flight on pod `1lzm2p635n6com` after the device fix. The earlier pod `vf94e6g28iv9mw` exited before a score and cost 0.0603 USD. That attempt is not a result.

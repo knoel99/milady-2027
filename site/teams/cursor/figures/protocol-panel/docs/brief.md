@@ -1,1 +1,5 @@
-Training values stay off Rm=12. Every quoted comparison uses seeds 0-4. Title: Held-out Rm and five seeds.
+Training values of Rm sit on either side of 12, and 12 is marked as held out.
+
+Must not show Rm = 12 inside the training row.
+
+Width 160 mm.

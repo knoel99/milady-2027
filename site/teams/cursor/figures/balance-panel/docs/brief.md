@@ -1,1 +1,5 @@
-The total residual of the dynamic run is far under 0.05. The magnetic residual is not. Title: Total balance against the magnetic residual.
+The total energy balance of the dynamic run is tiny. The magnetic residual on the same window is not. They are different claims.
+
+Must not subtract a measured growth rate and call the result stationary.
+
+Width 160 mm.

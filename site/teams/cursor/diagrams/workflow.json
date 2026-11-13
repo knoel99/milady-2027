@@ -1,0 +1,28 @@
+{
+  "schema_version": 2,
+  "diagram_type": "workflow",
+  "meta": {
+    "title": "Cursor experiment workflow",
+    "output": "site/teams/cursor/diagrams/workflow.html",
+    "quality_profile": "standard"
+  },
+  "lanes": [
+    { "id": "reg", "label": "Register" },
+    { "id": "run", "label": "Compute" },
+    { "id": "keep", "label": "Record" }
+  ],
+  "nodes": [
+    { "id": "hyp", "lane": "reg", "col": 0, "type": "backend", "label": "Hypothesis", "sublabel": "criterion first" },
+    { "id": "pod", "lane": "run", "col": 1, "type": "cloud", "label": "RunPod pod", "sublabel": "milady-cursor-job" },
+    { "id": "cpu", "lane": "run", "col": 2, "type": "backend", "label": "CPU script", "sublabel": "same scorer" },
+    { "id": "json", "lane": "keep", "col": 3, "type": "database", "label": "Result JSON", "sublabel": "experiments/results" },
+    { "id": "report", "lane": "keep", "col": 4, "type": "frontend", "label": "Race report", "sublabel": "measured only" }
+  ],
+  "edges": [
+    { "id": "h-pod", "from": "hyp", "to": "pod" },
+    { "id": "h-cpu", "from": "hyp", "to": "cpu" },
+    { "id": "pod-json", "from": "pod", "to": "json" },
+    { "id": "cpu-json", "from": "cpu", "to": "json" },
+    { "id": "json-report", "from": "json", "to": "report" }
+  ]
+}

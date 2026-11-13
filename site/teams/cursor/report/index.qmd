@@ -1,14 +1,43 @@
 ---
 title: "What the cursor team measured"
-subtitle: "Kinematic ABC signs, constraint comparisons, and a stationary balance"
+subtitle: "Conditional flow matching, Fourier baselines, and metrics C1 to C5"
 lang: en
 format:
   html:
+    theme: none
+    minimal: true
     toc: true
     number-sections: true
-    embed-resources: true
-    html-math-method: plain
+    anchor-sections: false
+    html-math-method:
+      method: katex
+      url: "https://cdn.jsdelivr.net/npm/katex@0.19.0/dist/katex.min.js"
+    highlight-style: github
+    embed-resources: false
     format-links: false
+    css: ../../../assets/paper.css
+    include-in-header:
+      - text: |
+          <meta name="color-scheme" content="light dark">
+          <script>(function(){try{var t=localStorage.getItem("milady-theme");if(t==="dark"||t==="light")document.documentElement.setAttribute("data-theme",t);}catch(e){}})();</script>
+    include-before-body:
+      - text: |
+          <a class="skip" href="#main">Skip to content</a>
+          <header class="topbar">
+            <button type="button" class="tb-btn" id="toc-toggle" aria-controls="sidetoc" aria-expanded="false"><span aria-hidden="true">☰</span><span class="tb-label">Contents</span></button>
+            <a class="brand" href="../explorer/index.html">MilaDy<span class="brand-sub"> · cursor</span></a>
+            <span class="tb-title" id="tb-title"></span>
+            <button type="button" class="tb-btn" id="theme-toggle"><span aria-hidden="true">◐</span><span class="tb-label">Theme</span></button>
+          </header>
+          <div class="layout">
+          <nav class="sidetoc" id="sidetoc" aria-label="Contents"></nav>
+          <main class="paper" id="main">
+    include-after-body:
+      - text: |
+          </main>
+          </div>
+          <footer class="foot"><p><a href="index.pdf">PDF</a> · <a href="../explorer/index.html">Explorer</a> · <a href="../diagrams/architecture.html">Architecture</a> · <a href="../diagrams/workflow.html">Workflow</a> · <a href="../diagrams/agents.html">Roles</a></p></footer>
+          <script defer src="../../../assets/theme.js"></script>
   pdf:
     documentclass: report
     toc: true
@@ -22,86 +51,392 @@ The PDF of this page is [index.pdf](index.pdf). The explorer is [../explorer/ind
 
 # Abstract {#abstract}
 
-This report records what team cursor measured while preparing the MilaDy internship. The kinematic ABC threshold is seed dependent. A sampling constraint cuts the relative divergence of a small flow. That flow does not meet the energy-distance target. A linear midpoint in Fourier coefficients does. A dynamic ABC run meets the total energy balance. A kmax=4 truncation does not preserve the trilinear null count. Every number below is measured in a result file, or it is marked published or conjectured.
+This report records what team cursor measured while preparing the MilaDy internship. The scientific object is a physics-constrained generator of parametric magnetohydrodynamic fields. The measurements that can be quoted today split into two families.
+
+The first family is a kinematic ABC dynamo. Growth-rate signs depend on the seed, the magnetic Reynolds number, and the grid. Several brackets are closed. Several remain open. Those runs are not a generator result.
+
+The second family scores ensembles of magnetic fields at $n = 16$ and held-out $Rm = 12$. A small conditional flow, trained for forty Adam steps, meets a divergence comparison and misses the energy-distance target by about two orders of magnitude. A perfect Fourier cutoff and a linear midpoint in coefficient space meet that target. A dynamic ABC window meets the total energy balance and misses the magnetic residual. A trilinear null count is preserved, at the pre-registered tolerance, only by the kmax=7 midpoint.
+
+A ResMLP conditional flow, hypothesis H168, is registered and has no score yet. The first GPU attempt exited before any ratio was written. The rerun is the same protocol after a device fix. This report does not quote it.
+
+Every number below is measured in a committed result file, published with a reference, or marked conjectured. The file `experiments/results/cursor_metrics.json` currently stores the kmax=6 midpoint for C1, C2, and C4, the dynamic total residual for C3, and the kmax=7 midpoint null error for C5. Those stored values are baselines. They are not a trained generator.
 
 # Introduction {#introduction}
 
-The internship asks for physics-constrained generative models of parametric 3D fields. This team started from the kinematic ABC dynamo, because the sign of the growth rate is a sharp test, and then moved to the generator metrics C1 to C5. The race report in `research/race-report.md` is the living summary. This page is the internship report of the same measurements.
+The internship offer asks for conditional generative models of parameter-dependent fields, with constraints imposed by model design, by the training loss, or by the sampling procedure, and with a comparative study on spectra, helicity, divergence, and topology. The local statement of that offer is in `docs/specs/sources/literature.md`. This page is the cursor team's report of the measurements made toward that study. The living summary of the same measurements is `research/race-report.md`.
+
+The work started from the kinematic ABC problem because the sign of the growth rate is a sharp, cheap test of the solver. It then moved to the generator metrics, because a sign bracket does not train a model. The generator comparisons use one held-out parameter, $Rm = 12$, five seeds, and the same scoring function for every mechanism.
+
+Three facts organise the rest of the report. A sampling projection removes the longitudinal Fourier component and cuts the divergence. The same small networks do not match the held-out ensemble in energy distance. A linear operation in Fourier space, either a perfect cutoff of the reference field or a midpoint between the two neighbouring Reynolds numbers, does match that distance, and only the finest of those midpoints also matches the null count.
+
+The pipeline, the open dynamo bracket, the constraint glyphs, the metric panel, the protocol, the balance, the null count, and the compute path are drawn in `figures/pipeline-panel/`, `figures/dynamo-threshold/`, `figures/constraint-mechanisms/`, `figures/metrics-panel/`, `figures/protocol-panel/`, `figures/balance-panel/`, `figures/null-panel/`, and `figures/compute-path/`. Each of those directories holds a `figure/figure.js` source, a brief, a specification, and both an SVG and a PDF render. Data plots of the same result files are in `plots/`.
 
 # State of the art {#state-of-the-art}
 
-The published statements used here are the ones collected in `docs/specs/theory-brief.md` and `docs/specs/sources/`. The stationarity constraint is the mean energy balance of an invariant measure, injection against total dissipation. The trilinear null count follows Haynes and Parnell, Physics of Plasmas 14, 082107 (2007), as cited in `docs/specs/sources/data-metrics.md`. This report does not restate a published dynamo threshold. Where a claim is only a guess, it is marked conjectured.
+The published statements used here are the ones collected in `docs/specs/sources/` and `docs/specs/theory-brief.md`. This section does not add a claim that those files mark unconfirmed.
+
+Flow matching trains a velocity on a conditional path without differentiating through the solver. Lipman, Chen, Ben-Hamu, Nickel, and Le, Flow Matching for Generative Modeling, ICLR 2023, arXiv:2210.02747, is the published reference used for that loss. The local note is `docs/specs/sources/literature.md`. The path used in this repository is the linear interpolant $x_t = (1-t) x_0 + t x_1$, with $x_0$ a standard Gaussian, which is also the rectified-flow path of Liu, Gong, and Liu, ICLR 2023, arXiv:2209.03003.
+
+A field can be made divergence-free by construction. Richter-Powell, Lipman, and Chen, Neural Conservation Laws, NeurIPS 2022, arXiv:2210.01741, is the published construction by differential forms. The mechanism measured here is narrower. `project_solenoidal` removes the longitudinal Fourier component of a periodic field. That is a spectral Helmholtz projection, not the neural conservation law, and it is applied as a sampling constraint after each Heun step.
+
+The stationarity constraint is not the instantaneous identity $\mathrm{d}E/\mathrm{d}t = P - \varepsilon$. Theory brief Proposition 5 says that an invariant law has mean zero for the generator applied to a smooth observable, and that the mean energy balance is the case of the energy. The same brief says that the instantaneous balance is an identity, and that the constraint is the expectation. The magnetic residual and the total residual are therefore different claims. Both are measured below. Only the total residual on the dynamic window meets 0.05.
+
+Nulls are the zeros of a trilinear interpolant on each periodic cell. The published method is Haynes and Parnell, Physics of Plasmas 14, 082107 (2007), as recorded in `docs/specs/sources/data-metrics.md`. The implementation is `src/milady/eval/nulls.py`. It is not a sign-change octree, and it is not Greene's 1992 method.
+
+No published dynamo threshold is restated here. The kinematic signs in this repository are measured growth rates of one solver. Where a sentence is only a guess about a run that is not in the result files, it is marked conjectured.
 
 # Methods {#methods}
 
-Three mechanisms are compared.
+## Scoring
 
-The sampling constraint removes the longitudinal Fourier component after every Heun step. The unconstrained baseline does not. Both are small conditional flows on the same coefficients.
+One function scores every ensemble. `score` in `experiments/cursor_constraint_cmp.py` calls `compare_ensembles` on the magnetic field. The energy-distance ratio, called C1 in the result files, is `energy_distance` divided by `energy_distance_floor` from that comparison. The floor is the distance of the reference ensemble to a subsample of itself. A ratio near 1 means the generated cloud is as far from the reference as the reference is from its own subsample. The objective target used in the hypotheses is 1.2.
 
-The design comparison is a cutoff in wavenumber. A perfect cutoff keeps the modes of the reference field and drops the rest. A linear midpoint averages the kmax=6 coefficients of the fields at Rm=11 and Rm=13.
+The maximum relative divergence is the maximum, over the generated samples, of `divergence_relative`. C4 is the relative $L^2$ error of the shell spectrum of $B$ plus the relative error of the mean magnetic helicity. In the constraint files, the key `c3` is the absolute magnetic balance residual returned by `compare_ensembles`. That is not the total residual used for the quoted objective C3. The quoted total residual comes only from `experiments/results/cursor_stationary.json`.
 
-The stationarity window is the second half of a dynamic ABC run. The first half is the transient baseline. The total residual is the mean injection minus the mean dissipation, divided by the mean dissipation. The magnetic residual keeps the exchange term and subtracts no growth rate.
+## Three mechanisms
 
-Nulls are the zeros of the trilinear interpolant on each periodic cell. A root is kept only if the interpolant is numerically zero, and a root on the upper face is left to the next cell.
+The sampling constraint removes the longitudinal Fourier component after every Heun step. The unconstrained baseline uses the same network, the same data, and the same seed, and does not project. Both are small conditional flows. The early runs use a two-layer network, hidden width 64 unless a file says otherwise, forty Adam steps, and four or eight snapshots. Those runs are the ones whose energy-distance ratio stays near 750. They are measured. They are not an acceptable generator.
+
+The design comparison is a cutoff in wavenumber. A perfect cutoff keeps the modes of the reference field inside the ball and drops the rest. No network is trained. A linear midpoint averages the packed coefficients of the fields at $Rm = 11$ and $Rm = 13$, at the same time, and unpacks the average. $Rm = 12$ is not an input of that average. The midpoint is a baseline. `cursor_metrics.json` currently points C1, C2, and C4 at the kmax=6 midpoint because that file was written before a trained model had a finite five-seed score under 1.2.
+
+The stationarity window is the second half of a dynamic ABC run at $n = 16$, $t = 8$, $\nu = \eta = 0.05$, and a seed field of amplitude $10^{-3}$. The first half is the transient baseline. The total residual is the mean of injection minus viscous dissipation minus ohmic dissipation, divided by the mean of the two dissipations. The magnetic residual keeps the exchange term and subtracts no growth rate. The code path is `budget_summary` with laminar ABC forcing and $U_{\mathrm{ref}} = 1$.
+
+## The registered learned model
+
+H168 asks whether a wider conditional flow meets the same C1 bound. The network is `milady.train.fm3d.ResMLP`, width 256, depth 4, embedding 128, eight Fourier features, six channels. The loss is `fm_loss`. The sampler is `heun_sample` with 32 steps. After each step the physical coefficients are projected with `project_solenoidal` and mapped back to the normalized coordinates. Each seed is normalized by its own mean and standard deviation. Training Reynolds numbers are 8, 10, 11, 13, 14, and 16. Times are eight values from 0.25 to 2. Held-out $Rm$ is 12. Seeds are 0 to 4. The optimizer is Adam for 4000 steps, batch 32, learning rate $10^{-3}$. The Fourier midpoint of $Rm = 11$ and $Rm = 13$ is scored by the same function at the same cutoff. The criterion, fixed before the run, is refuted if any learned ratio is non-finite or if the five-seed mean exceeds 1.2.
+
+A one-seed probe with 200 steps is recorded in the hypothesis origin. It is not a quoted result. The five-seed GPU run is the quoted protocol. It had not written `experiments/results/cursor_fm/metrics.json` when this section was rendered.
+
+## Nulls
+
+On each periodic cell the magnetic field is replaced by its trilinear interpolant. A root is kept when that interpolant is numerically zero. A root on the upper face is left to the neighbouring cell so that a periodic root is not counted twice. The relative error is the absolute difference of the two counts divided by the full-field count. The tolerance fixed before H164 was 0.1.
+
+## What the figures show
+
+::: {.content-visible when-format="html"}
+![Pipeline. A kinematic field is packed into Fourier coefficients, a conditional flow or a midpoint produces a new coefficient vector, and the same score compares it with the held-out ensemble. Source `figures/pipeline-panel/`.](../figures/pipeline-panel/figure/out/pipeline-panel.svg){width=92%}
+:::
+
+::: {.content-visible when-format="pdf"}
+![Pipeline. A kinematic field is packed into Fourier coefficients, a conditional flow or a midpoint produces a new coefficient vector, and the same score compares it with the held-out ensemble. Source `figures/pipeline-panel/`.](../figures/pipeline-panel/figure/out/pipeline-panel.pdf){width=92%}
+:::
+
+::: {.content-visible when-format="html"}
+![Open kinematic bracket. The panel marks the n=128 seeds 0-4 interval that was left open on purpose. Measured signs are in the race report, not in this drawing. Source `figures/dynamo-threshold/`.](../figures/dynamo-threshold/figure/out/dynamo-threshold.svg){width=92%}
+:::
+
+::: {.content-visible when-format="pdf"}
+![Open kinematic bracket. The panel marks the n=128 seeds 0-4 interval that was left open on purpose. Measured signs are in the race report, not in this drawing. Source `figures/dynamo-threshold/`.](../figures/dynamo-threshold/figure/out/dynamo-threshold.pdf){width=92%}
+:::
+
+::: {.content-visible when-format="html"}
+![Constraint glyphs. The sampling projection removes the longitudinal Fourier part. The free model does not. The cutoff is a separate design constraint. Source `figures/constraint-mechanisms/`.](../figures/constraint-mechanisms/figure/out/constraint-mechanisms.svg){width=92%}
+:::
+
+::: {.content-visible when-format="pdf"}
+![Constraint glyphs. The sampling projection removes the longitudinal Fourier part. The free model does not. The cutoff is a separate design constraint. Source `figures/constraint-mechanisms/`.](../figures/constraint-mechanisms/figure/out/constraint-mechanisms.pdf){width=92%}
+:::
+
+::: {.content-visible when-format="html"}
+![Metrics. Energy distance, divergence, the two balance residuals, spectrum plus helicity, and the trilinear null count. Source `figures/metrics-panel/`.](../figures/metrics-panel/figure/out/metrics-panel.svg){width=92%}
+:::
+
+::: {.content-visible when-format="pdf"}
+![Metrics. Energy distance, divergence, the two balance residuals, spectrum plus helicity, and the trilinear null count. Source `figures/metrics-panel/`.](../figures/metrics-panel/figure/out/metrics-panel.pdf){width=92%}
+:::
 
 # Experiments {#experiments}
 
-Kinematic ABC runs use float64, t=120, and cfl=1 unless a result file says otherwise. GPU jobs are named `milady-cursor-job-*`. The constraint comparisons, the midpoint, the dynamic balance, and the null counts are CPU runs at n=16. Seeds are 0 to 4 whenever a comparison is quoted. Rm=12 is held out of every learned or interpolated training set.
+## Grids and seeds
 
-Schematic panels live under `figures/dynamo-threshold/`, `figures/constraint-mechanisms/`, `figures/metrics-panel/`, `figures/protocol-panel/`, `figures/balance-panel/`, `figures/null-panel/`, `figures/compute-path/`, and `figures/pipeline-panel/`. Data plots with the same measurements are in `plots/`.
+Kinematic ABC runs use float64, $t = 120$, a time-step cap of 0.05, and CFL 1 unless a result file says otherwise. A point is kept when it is finite and the final $\max|\nabla\cdot B|$ is below $10^{-8}$. GPU jobs of this team are named `milady-cursor-job-*`. Pods of the other team are not touched.
+
+Generator comparisons are CPU runs at $n = 16$ unless they are H168. Seeds are 0, 1, 2, 3, and 4 whenever a comparison is quoted. The standard error in the comparative table is the sample standard deviation divided by the square root of 5. It is computed from the five seed values in the named JSON file. It is not a second experiment.
+
+$Rm = 12$ is held out of every learned training set and is not an endpoint of a midpoint. Training values used by the small flows are the pairs or the grids named in each result file. H168 trains at 8, 10, 11, 13, 14, and 16.
+
+## Protocol panel and compute path
+
+::: {.content-visible when-format="html"}
+![Protocol. Training values stay off Rm=12. Every quoted comparison uses seeds 0 to 4. Source `figures/protocol-panel/`.](../figures/protocol-panel/figure/out/protocol-panel.svg){width=92%}
+:::
+
+::: {.content-visible when-format="pdf"}
+![Protocol. Training values stay off Rm=12. Every quoted comparison uses seeds 0 to 4. Source `figures/protocol-panel/`.](../figures/protocol-panel/figure/out/protocol-panel.pdf){width=92%}
+:::
+
+::: {.content-visible when-format="html"}
+![Compute path. The session launches a pod named milady-cursor-job-*, the pod runs one command, and the ledger records hours and dollars. Source `figures/compute-path/`.](../figures/compute-path/figure/out/compute-path.svg){width=92%}
+:::
+
+::: {.content-visible when-format="pdf"}
+![Compute path. The session launches a pod named milady-cursor-job-*, the pod runs one command, and the ledger records hours and dollars. Source `figures/compute-path/`.](../figures/compute-path/figure/out/compute-path.pdf){width=92%}
+:::
+
+## What was run
+
+The small-flow file is `experiments/results/cursor_constraint_cmp.json` (kmax=2, forty steps). The kmax=4 width-64 file is `cursor_constraint_kmax4.json`. The wide hidden layer is `cursor_constraint_wide.json`. The six training Reynolds numbers at kmax=4 are `cursor_constraint_dense.json`. Perfect cutoffs are `cursor_constraint_ceiling.json`. Midpoints are `cursor_constraint_midpoint.json`, `cursor_constraint_midpoint_kmax6.json`, and `cursor_constraint_midpoint_kmax7.json`. The dynamic window is `cursor_stationary.json`. Null counts are `cursor_nulls.json`, `cursor_nulls_kmax6.json`, `cursor_nulls_midpoint_kmax6.json`, and `cursor_nulls_midpoint_kmax7.json`.
+
+H168 is `experiments/cursor_fm_train.py` with `--device cuda --steps 4000`. The first pod, `vf94e6g28iv9mw`, exited in 88 seconds because a mean tensor was on CUDA while the coefficients were still on CPU. The log is `research/gpu-logs/h168.log`. The cost on that row of `research/compute-ledger.jsonl` is 0.0603 USD. No metric file was written. The subtraction was then moved onto the requested device. The criterion was not changed. The rerun uses the same command on the fixed commit. It is not scored in this render.
 
 # Results {#results}
 
-Measured. At n=128 and Rm=9, seeds 0-4 are positive (H102). At n=136 the same Rm has negative seeds (H141). At n=128, seeds 0-4, the growth rate is negative at Rm=8.98699951171875 (H144, seed 0, lambda -7.53e-7) and positive at Rm=8.9871826171875 (H142). The files are under `experiments/results/`.
+## Divergence and the small flows
 
-Measured. The sampling constraint has mean maximum relative divergence 1.56e-8. The free baseline is 0.645 (H145). The energy-distance ratio of that flow is 757.56 (H146). Widening the layer and adding neighbour Rm values move that ratio by only a few units.
+Measured, file `experiments/results/cursor_constraint_cmp.json`. The sampling constraint has mean maximum relative divergence $1.560\times 10^{-8}$ (SE $2.60\times 10^{-9}$). The free baseline has mean $0.6454$ (SE $0.0048$). H145 is confirmed. The same projected variant has mean energy-distance ratio 757.56 (SE 1.83). H146 is refuted. All five projected ratios are finite and all of them sit between 753 and 764.
 
-Measured. A perfect cutoff has mean ratio 0.728 at kmax=4, 0.0092 at kmax=6, and 0.0028 at kmax=7. The kmax=6 midpoint between Rm=11 and Rm=13 has mean ratio 0.014, mean C4 0.0093, and maximum relative divergence 4.58e-16. File `experiments/results/cursor_constraint_midpoint_kmax6.json`.
+Raising the cutoff at hidden width 64 does not help. File `cursor_constraint_kmax4.json`, projected mean ratio 791.02 (SE 1.80). That mean is larger than 757.56, so H147 is refuted, and it is above 1.2, so H148 is refuted. A hidden width equal to the packed dimension, file `cursor_constraint_wide.json`, brings the mean to 787.34 (SE 1.01). That is strictly smaller than the width-64 mean, so H149 is confirmed, and it is still above 1.2, so H150 is refuted. Training at six Reynolds numbers, file `cursor_constraint_dense.json`, gives 781.66 (SE 1.55). H154 is confirmed on the inequality against the wide baseline. H155 is refuted on the bound 1.2.
 
-Measured. The dynamic second-half total residual has mean absolute value 3.74e-6 (H162). The magnetic residual on the same window has mean absolute value 0.067 (H163). File `experiments/results/cursor_stationary.json`.
+The per-seed projected ratios are the values the means come from.
 
-Measured. The kmax=4 truncation changes the null count. The mean relative error is 0.428 (H164). The kmax=6 truncation is 0.160 (H165). The kmax=6 midpoint is 0.172 (H166). The kmax=7 midpoint is 0.084 (H167). Files `experiments/results/cursor_nulls.json`, `cursor_nulls_kmax6.json`, `cursor_nulls_midpoint_kmax6.json`, and `cursor_nulls_midpoint_kmax7.json`.
+| Seed | kmax=2 | kmax=4, width 64 | wide | dense Rm |
+| --- | --- | --- | --- | --- |
+| 0 | 758.853 | 793.478 | 786.250 | 783.277 |
+| 1 | 758.504 | 789.790 | 787.853 | 784.603 |
+| 2 | 763.250 | 787.471 | 787.077 | 780.156 |
+| 3 | 753.071 | 796.741 | 790.792 | 784.015 |
+| 4 | 754.139 | 787.603 | 784.737 | 776.260 |
 
-`experiments/results/cursor_metrics.json` quotes C1=0.0140, C2=4.58e-16, C3=3.74e-6, C4=0.0093, and C5=0.084. C5 is the kmax=7 midpoint. The coarser counts miss 0.1 and stay in the result files.
+::: {.content-visible when-format="html"}
+![Maximum relative divergence by seed. Sampling constraint against the free baseline. File `experiments/results/cursor_constraint_cmp.json`.](../plots/divergence.svg){width=88%}
+:::
+
+::: {.content-visible when-format="pdf"}
+![Maximum relative divergence by seed. Sampling constraint against the free baseline. File `experiments/results/cursor_constraint_cmp.json`.](../plots/divergence.pdf){width=88%}
+:::
+
+::: {.content-visible when-format="html"}
+![Energy-distance ratios of the two kmax=2 flows. The horizontal line is the target 1.2. File `experiments/results/cursor_constraint_cmp.json`.](../plots/flow-ratios.svg){width=88%}
+:::
+
+::: {.content-visible when-format="pdf"}
+![Energy-distance ratios of the two kmax=2 flows. The horizontal line is the target 1.2. File `experiments/results/cursor_constraint_cmp.json`.](../plots/flow-ratios.pdf){width=88%}
+:::
+
+## Fourier ceiling and midpoint
+
+Measured, file `cursor_constraint_ceiling.json`. A perfect cutoff of the reference field has mean ratio 0.7278 at kmax=4 (SE 0.279), $9.185\times 10^{-3}$ at kmax=6 (SE $3.91\times 10^{-3}$), and $2.808\times 10^{-3}$ at kmax=7 (SE $1.18\times 10^{-3}$). H151, H152, and H153 are confirmed. Seed 0 at kmax=4 is 1.752, above 1.2. The criterion is the mean, and the mean is under 1.2. This is a measurement of a truncation of the reference, not of a model that never saw the reference.
+
+Measured, file `cursor_constraint_midpoint.json`. The kmax=4 midpoint has mean ratio 0.7431 (SE 0.287). H156 says that mean is strictly smaller than the dense learned baseline 781.66. It is. H157 says the same mean is at most 1.2. It is. The earlier draft of this report attached H157 to the kmax=6 midpoint. That attachment was wrong. H157 is the kmax=4 midpoint.
+
+Measured, file `cursor_constraint_midpoint_kmax6.json`. The kmax=6 midpoint has mean ratio 0.0140 (SE 0.0060), mean C4 $9.293\times 10^{-3}$ (SE $3.13\times 10^{-3}$), and mean maximum relative divergence $4.219\times 10^{-16}$ (SE $1.13\times 10^{-17}$). H158 and H159 are confirmed on C4. There is no separate registered hypothesis whose statement is the kmax=6 energy-distance bound. The number is measured, and `cursor_metrics.json` stores C1 as 0.013966666402533533 from this file. The same file's mean absolute magnetic residual is 0.0834 (SE 0.0241). H160, which asked for that residual to be at most 0.05, is refuted.
+
+Measured, file `cursor_constraint_midpoint_kmax7.json`. The kmax=7 midpoint has mean absolute magnetic residual 0.0852 (SE 0.0230), which is not below the kmax=6 value and is above 0.05. H161 is refuted. The cutoff is not the lever for that kinematic magnetic residual.
+
+| Seed | cutoff kmax=4 | cutoff kmax=6 | midpoint kmax=4 | midpoint kmax=6 |
+| --- | --- | --- | --- | --- |
+| 0 | 1.75195 | 0.021342 | 1.79787 | 0.034779 |
+| 1 | 0.51408 | 0.005499 | 0.52203 | 0.008560 |
+| 2 | 0.28340 | 0.001926 | 0.28721 | 0.003228 |
+| 3 | 0.86026 | 0.015349 | 0.87530 | 0.019840 |
+| 4 | 0.22914 | 0.001810 | 0.23324 | 0.003427 |
+
+::: {.content-visible when-format="html"}
+![Perfect-cutoff energy-distance ratio against kmax. File `experiments/results/cursor_constraint_ceiling.json`.](../plots/ceiling.svg){width=88%}
+:::
+
+::: {.content-visible when-format="pdf"}
+![Perfect-cutoff energy-distance ratio against kmax. File `experiments/results/cursor_constraint_ceiling.json`.](../plots/ceiling.pdf){width=88%}
+:::
+
+::: {.content-visible when-format="html"}
+![kmax=6 midpoint energy-distance ratio by seed. File `experiments/results/cursor_constraint_midpoint_kmax6.json`.](../plots/midpoint.svg){width=88%}
+:::
+
+::: {.content-visible when-format="pdf"}
+![kmax=6 midpoint energy-distance ratio by seed. File `experiments/results/cursor_constraint_midpoint_kmax6.json`.](../plots/midpoint.pdf){width=88%}
+:::
+
+::: {.content-visible when-format="html"}
+![Spectrum plus helicity error of the kmax=6 midpoint. File `experiments/results/cursor_constraint_midpoint_kmax6.json`.](../plots/spectra-helicity.svg){width=88%}
+:::
+
+::: {.content-visible when-format="pdf"}
+![Spectrum plus helicity error of the kmax=6 midpoint. File `experiments/results/cursor_constraint_midpoint_kmax6.json`.](../plots/spectra-helicity.pdf){width=88%}
+:::
+
+## Energy balance
+
+::: {.content-visible when-format="html"}
+![Total balance against the magnetic residual. The drawing summarises the dynamic window. Numbers are in `experiments/results/cursor_stationary.json`. Source `figures/balance-panel/`.](../figures/balance-panel/figure/out/balance-panel.svg){width=92%}
+:::
+
+::: {.content-visible when-format="pdf"}
+![Total balance against the magnetic residual. The drawing summarises the dynamic window. Numbers are in `experiments/results/cursor_stationary.json`. Source `figures/balance-panel/`.](../figures/balance-panel/figure/out/balance-panel.pdf){width=92%}
+:::
+
+Measured, file `cursor_stationary.json`. On the second half, the mean absolute total residual is $3.744\times 10^{-6}$ (SE $1.36\times 10^{-6}$). H162 is confirmed. The mean absolute magnetic residual on the same window is 0.0675 (SE 0.0162). H163 is refuted. The five magnetic residuals are all negative. The total residuals are all negative and all smaller than $10^{-5}$ in absolute value. The objective C3 quoted in `cursor_metrics.json` is the total residual, $3.7436517166459855\times 10^{-6}$, not the magnetic one.
+
+| Seed | absolute total, second half | absolute magnetic, second half |
+| --- | --- | --- |
+| 0 | 7.298e-6 | 0.07018 |
+| 1 | 2.603e-6 | 0.11074 |
+| 2 | 9.840e-7 | 0.05256 |
+| 3 | 1.152e-6 | 0.08823 |
+| 4 | 6.682e-6 | 0.01556 |
+
+The seed table is the absolute value of the signed residual stored in the file. The means above are the means of those absolute values.
+
+::: {.content-visible when-format="html"}
+![Absolute second-half residuals. Total and magnetic. File `experiments/results/cursor_stationary.json`.](../plots/balance.svg){width=88%}
+:::
+
+::: {.content-visible when-format="pdf"}
+![Absolute second-half residuals. Total and magnetic. File `experiments/results/cursor_stationary.json`.](../plots/balance.pdf){width=88%}
+:::
+
+## Null counts
+
+::: {.content-visible when-format="html"}
+![Null panel. A truncation moves the trilinear count. Counts are in `experiments/results/cursor_nulls.json`. Source `figures/null-panel/`.](../figures/null-panel/figure/out/null-panel.svg){width=92%}
+:::
+
+::: {.content-visible when-format="pdf"}
+![Null panel. A truncation moves the trilinear count. Counts are in `experiments/results/cursor_nulls.json`. Source `figures/null-panel/`.](../figures/null-panel/figure/out/null-panel.pdf){width=92%}
+:::
+
+Measured. The full field at $Rm = 12$, eight times, has null counts 36, 26, 32, 34, and 32 on seeds 0 to 4. File `cursor_nulls.json`. The kmax=4 truncation of the same fields has counts 34, 46, 30, 66, and 42. The mean relative error is 0.4282 (SE 0.182). H164 is refuted. File `cursor_nulls_kmax6.json` has truncated counts 30, 24, 36, 38, and 42, and mean relative error 0.1597 (SE 0.0408). H165 is refuted. Two truncation widths missed 0.1, so that comparison was dropped.
+
+The midpoint is a different comparison. It is scored against the held-out field, not against a truncation of that same field. File `cursor_nulls_midpoint_kmax6.json`, mean relative error 0.1715 (SE 0.0247). H166 is refuted. File `cursor_nulls_midpoint_kmax7.json`, mean relative error 0.0840 (SE 0.0119). H167 is confirmed. `cursor_metrics.json` stores C5 as 0.08397460868851093 from that file. The coarser counts remain misses.
+
+| Seed | full count | kmax=4 count | kmax=4 relative | kmax=7 midpoint relative |
+| --- | --- | --- | --- | --- |
+| 0 | 36 | 34 | 0.0556 | 0.1214 |
+| 1 | 26 | 46 | 0.7692 | 0.0712 |
+| 2 | 32 | 30 | 0.0625 | 0.1023 |
+| 3 | 34 | 66 | 0.9412 | 0.0622 |
+| 4 | 32 | 42 | 0.3125 | 0.0627 |
+
+::: {.content-visible when-format="html"}
+![Trilinear null counts, full field and kmax=4 truncation. File `experiments/results/cursor_nulls.json`.](../plots/nulls.svg){width=88%}
+:::
+
+::: {.content-visible when-format="pdf"}
+![Trilinear null counts, full field and kmax=4 truncation. File `experiments/results/cursor_nulls.json`.](../plots/nulls.pdf){width=88%}
+:::
+
+::: {.content-visible when-format="html"}
+![Relative null-count error of the kmax=4 truncation. File `experiments/results/cursor_nulls.json`.](../plots/null-error.svg){width=88%}
+:::
+
+::: {.content-visible when-format="pdf"}
+![Relative null-count error of the kmax=4 truncation. File `experiments/results/cursor_nulls.json`.](../plots/null-error.pdf){width=88%}
+:::
+
+## Solver timing
+
+Measured, `research/gpu-logs/bench-float32.log`. One step of `milady.sim.mhd3d` at $n = 128$, float32, on an RTX 4090, takes 0.008683746322058141 seconds. The T1 target in the team objectives is 0.05. This bench meets it. The same log records 0.006443568398244679 seconds at $n = 64$.
+
+Measured, `research/gpu-logs/bench-float64.log`. The float64 companion at $n = 128$ takes 0.04840661495923996 seconds per step on an RTX PRO 4500. There is no T2 row in `race/teams/cursor/objectives.toml`. The number is a bench, not an objective id.
+
+## Kinematic signs, in one paragraph
+
+Measured growth rates, not a generator. At $n = 128$ and $Rm = 9$, seeds 0 to 4 are positive (H102). At $n = 136$ the same $Rm$ has negative seeds (H141). At $n = 128$, seeds 0 to 4, the growth rate is negative at $Rm = 8.98699951171875$ (H144, seed 0, $\lambda = -7.53\times 10^{-7}$) and positive at $Rm = 8.9871826171875$ (H142). That bracket is open and is not bisected. The same decision applies to the other open brackets recorded in the race report. H144 is refuted as a claim that every seed would be positive at the lower $Rm$. Its verdict is a sign, not a C6 comparison of two mechanisms.
 
 # Comparative study {#comparative-study}
 
-| Mechanism | Metric | Mean over seeds 0-4 | Verdict |
-| --- | --- | --- | --- |
-| sampling constraint vs free | max relative divergence | 1.56e-8 vs 0.645 | H145 supported |
-| kmax=2 flow | energy-distance ratio | 757.56 | H146 refuted |
-| kmax=6 midpoint | energy-distance ratio | 0.014 | H157 supported |
-| kmax=6 midpoint | spectrum plus helicity | 0.0093 | H159 supported |
-| dynamic second half | total balance residual | 3.74e-6 | H162 supported |
-| dynamic second half | magnetic residual | 0.067 | H163 refuted |
-| kmax=4 truncation | relative null-count error | 0.428 | H164 refuted |
-| kmax=6 truncation | relative null-count error | 0.160 | H165 refuted |
-| kmax=6 midpoint | relative null-count error | 0.172 | H166 refuted |
-| kmax=7 midpoint | relative null-count error | 0.084 | H167 supported |
+The table is one mechanism or model family against one metric. The mean and the standard error use the five seeds in the result file named in the results chapter. CONFIRMED means the pre-registered criterion was not met by the data, so the claim holds. REFUTED means the criterion was met. H168 has no row of numbers because `metrics.json` does not exist yet.
 
-The standard error is not quoted. The result files hold the five seeds, and the verdict is the pre-registered criterion, not a confidence interval.
+| Mechanism | Metric | Mean ± SE | Verdict |
+| --- | --- | --- | --- |
+| sampling constraint, kmax=2 | max relative divergence | 1.560e-08 ± 2.603e-09 | H145 CONFIRMED |
+| free baseline, kmax=2 | max relative divergence | 0.6454 ± 0.0048 | control of H145 |
+| sampling constraint, kmax=2 | energy-distance ratio | 757.56 ± 1.83 | H146 REFUTED |
+| sampling constraint, kmax=4, width 64 | energy-distance ratio | 791.02 ± 1.80 | H147 REFUTED, H148 REFUTED |
+| sampling constraint, kmax=4, wide | energy-distance ratio | 787.34 ± 1.01 | H149 CONFIRMED, H150 REFUTED |
+| sampling constraint, dense Rm | energy-distance ratio | 781.66 ± 1.55 | H154 CONFIRMED, H155 REFUTED |
+| perfect cutoff kmax=4 | energy-distance ratio | 0.7278 ± 0.2791 | H151 CONFIRMED |
+| perfect cutoff kmax=6 | energy-distance ratio | 9.185e-03 ± 3.914e-03 | H152 CONFIRMED |
+| perfect cutoff kmax=7 | energy-distance ratio | 2.808e-03 ± 1.180e-03 | H153 CONFIRMED |
+| midpoint kmax=4 | energy-distance ratio | 0.7431 ± 0.2869 | H156 CONFIRMED, H157 CONFIRMED |
+| midpoint kmax=4 | C4, spectrum plus helicity | 0.1498 ± 0.0366 | baseline of H158 |
+| midpoint kmax=6 | C4, spectrum plus helicity | 9.293e-03 ± 3.128e-03 | H158 CONFIRMED, H159 CONFIRMED |
+| midpoint kmax=6 | absolute magnetic residual | 0.0834 ± 0.0241 | H160 REFUTED |
+| midpoint kmax=6 | energy-distance ratio | 0.0140 ± 0.0060 | measured in the midpoint file |
+| midpoint kmax=7 | absolute magnetic residual | 0.0852 ± 0.0230 | H161 REFUTED |
+| dynamic second half | absolute total residual | 3.744e-06 ± 1.358e-06 | H162 CONFIRMED |
+| dynamic second half | absolute magnetic residual | 0.0675 ± 0.0162 | H163 REFUTED |
+| kmax=4 truncation | relative null-count error | 0.4282 ± 0.1824 | H164 REFUTED |
+| kmax=6 truncation | relative null-count error | 0.1597 ± 0.0408 | H165 REFUTED |
+| kmax=6 midpoint | relative null-count error | 0.1715 ± 0.0247 | H166 REFUTED |
+| kmax=7 midpoint | relative null-count error | 0.0840 ± 0.0119 | H167 CONFIRMED |
+| ResMLP flow, sampling constraint | energy-distance ratio | not scored | H168 registered |
+
+Reading the table as a comparison of mechanisms, the sampling projection wins on divergence and loses on energy distance. Width, cutoff, and a denser $Rm$ grid do not move that loss under 1.2. A perfect cutoff and a midpoint win on energy distance because they are linear operations on the coefficients of fields the score also sees. The midpoint at kmax=6 wins on C4 and loses on the magnetic residual. The dynamic window wins on the total residual and loses on the magnetic residual. The null count loses until kmax=7. The learned ResMLP is the open row.
+
+The register `research/hypotheses.json`, read at the commit of this page, holds 86 supported claims, 77 refuted claims, 1 registered claim (H168), and 3 proposed claims (H2, H3, and the early E1 statement). The kinematic rows H5 to H144 are sign tests. Their verdicts are in that file. They are not repeated as generator metrics. C6, the count of five-seed confirmed or refuted comparisons, is already above its target on H145 to H167 alone. H168 will add one comparison when it is scored. It is not counted yet.
 
 # Toolbox {#toolbox}
 
-`src/milady/train/constraints.py` removes the longitudinal Fourier component and scores its energy. `tests/test_constraints.py` names it. `src/milady/eval/nulls.py` counts trilinear nulls. `tests/test_nulls.py` names it. Call `count_nulls` on an array of shape `(n, n, n, 3)`. Call `project_solenoidal` on complex coefficients of shape `(..., M, 3)` with a real wavevector `(M, 3)`.
+Two modules entered the path that this team calls, with tests that name them.
+
+`src/milady/train/constraints.py` removes the longitudinal Fourier component and scores its energy. `tests/test_constraints.py` names that projection. Call `project_solenoidal` on complex coefficients of shape `(..., M, 3)` with a real wavevector of shape `(M, 3)`.
+
+`src/milady/eval/nulls.py` counts trilinear nulls. `tests/test_nulls.py` names that count. Call `count_nulls` on a real array of shape `(n, n, n, 3)`.
+
+The flow pieces used by H168 were already in the package. `src/milady/train/fm3d.py` defines `ResMLP`. `src/milady/train/flow.py` defines `fm_loss` and `heun_sample`. `src/milady/train/data.py` defines `half_ball_modes`. The team script that wires them is `experiments/cursor_fm_train.py`. It is not a new module under `src/milady/`. Adding a third module to inflate objective C7 would be a fake. C7 is already 2 on the constraint file and the null file.
+
+The static exports below are screenshots of the Archify HTML. The HTML files are `architecture.html`, `workflow.html`, and `agents.html`.
+
+::: {.content-visible when-format="html"}
+The code diagram is [architecture.html](../diagrams/architecture.html).
+:::
+
+::: {.content-visible when-format="pdf"}
+![Code architecture of the cursor additions under src/milady. Static export of architecture.html.](../diagrams/architecture.png){width=92%}
+:::
+
+::: {.content-visible when-format="html"}
+The experiment diagram is [workflow.html](../diagrams/workflow.html).
+:::
+
+::: {.content-visible when-format="pdf"}
+![Experiment workflow from a registered hypothesis to a result file and the race report. Static export of workflow.html.](../diagrams/workflow.png){width=92%}
+:::
+
+::: {.content-visible when-format="html"}
+The role diagram is [agents.html](../diagrams/agents.html).
+:::
+
+::: {.content-visible when-format="pdf"}
+![Team roles. The main session writes and runs. Encadrant, jury, and the ledger read what it writes. Static export of agents.html.](../diagrams/agents.png){width=92%}
+:::
 
 # Discussion {#discussion}
 
-The negative results matter. Forty Adam steps do not make the small flow match a held-out Rm. Raising kmax at a hidden width of 64 makes the ratio worse. The magnetic balance of a short dynamic window stays above 0.05 even though the total balance is already tiny, because the seed field is still evolving. A kmax=4 truncation is not topology-preserving on these snapshots. The kmax=6 truncation and the kmax=6 midpoint miss 0.1 as well. The kmax=7 midpoint meets 0.1. It is conjectured that a statistically steady dynamo, rather than a finer cutoff, is what would bring the magnetic residual down. That run is not in the result files.
+The negative results are the content of the comparison, not a preface to it.
+
+Forty Adam steps on a two-layer map of a few raw coefficients do not match a held-out Reynolds number. The ratio stays between about 750 and about 840 across kmax 2 and 4, across a wider hidden layer, and across a denser training grid. H146, H148, H150, and H155 are the same miss under four designs. Two of those designs were the truncation cycle. They were dropped. A third design that only changes width or the training grid inside the same forty-step regime is not a new hypothesis worth a GPU hour. H168 changes the network, the normalization, the step count, and the training grid together, and it was registered before that run. If its mean exceeds 1.2, the criterion stands. It will not be relaxed after the fact.
+
+The Fourier results are easy to over-read. A perfect cutoff of the reference field is close to the reference field. That is a ceiling on the representation, measured so that a later model can be compared with it. It is not a generator. The midpoint is also not trained. It is the linear interpolant in coefficient space between the two neighbours of the held-out parameter. At kmax=6 its energy-distance ratio is 0.014, which is why the metrics file quotes it. The user-facing goal of this team is a learned generator compared with that baseline, not a silent substitution of the baseline for the generator. Until H168 has a finite five-seed mean, the learned side of that comparison is the refuted forty-step flows.
+
+The magnetic residual is a separate negative result. On kinematic snapshots the midpoint residual stays near 0.08 at kmax=6 and at kmax=7. On the dynamic window the total residual is already $4\times 10^{-6}$ while the magnetic residual is 0.067. H163 stays refuted. It is conjectured that a statistically steady dynamo, rather than a finer cutoff, is what would bring the magnetic residual down. That run is not in the result files, and the conjecture is not a registered hypothesis.
+
+Nulls punish a coarse representation. The kmax=4 and kmax=6 truncations, and the kmax=6 midpoint, all miss 0.1. The kmax=7 midpoint meets it. Seed 0 of that midpoint is 0.121, above 0.1. The criterion is the mean. The mean is 0.084. Topology preservation on this grid is therefore a statement about kmax=7, not about every cutoff that already meets C1.
+
+The open kinematic brackets are measurements of the solver. Bisecting them further does not change C1 to C5. They stay open on purpose.
 
 # Conclusion {#conclusion}
 
-C1, C2, C3, C4, and C5 meet their targets on the quantities named in `cursor_metrics.json`. C5 meets on the kmax=7 midpoint and not on the coarser counts. The kinematic brackets that are still open are recorded in the race report and are not the next generator test. No team pod was left running after H144.
+The sampling constraint controls divergence and does not, at forty steps, control energy distance. A Fourier midpoint at kmax=6 meets the energy-distance, divergence, and spectrum-plus-helicity numbers currently stored in `cursor_metrics.json`. Those numbers are a baseline. The dynamic total balance meets the stored C3. The kmax=7 midpoint meets the stored C5, and the coarser null counts do not. The learned comparison that can still change the generator verdict is H168. It is registered, it has already consumed a failed pod at 0.0603 USD, and it has no score in this render.
+
+C6 is met by the confirmed and refuted five-seed comparisons already in the register. C7 is met by `constraints.py` and `nulls.py`. T1 is met by the float32 bench at $n = 128$. No cursor pod is required to keep those statements true. A cursor pod is required only to finish the registered H168 protocol, inside the team ceiling of 70 USD.
 
 # References {#references}
 
 Haynes, A. L. and Parnell, C. E. A trilinear method for finding null points in a three-dimensional vector space. Physics of Plasmas 14, 082107 (2007). The local citation is `docs/specs/sources/data-metrics.md`.
 
-The stationarity identity used for the total balance is the C4 class in `docs/specs/theory-brief.md`.
+Lipman, Y., Chen, R. T. Q., Ben-Hamu, H., Nickel, M., and Le, M. Flow Matching for Generative Modeling. ICLR 2023. arXiv:2210.02747. The local citation is `docs/specs/sources/literature.md`.
+
+Liu, X., Gong, C., and Liu, Q. Flow Straight and Fast. ICLR 2023. arXiv:2209.03003. The local citation is the same literature file.
+
+Richter-Powell, J., Lipman, Y., and Chen, R. T. Q. Neural Conservation Laws. NeurIPS 2022. arXiv:2210.01741. The local citation is `docs/specs/sources/data-metrics.md`.
+
+The stationarity identity used for the total balance is Proposition 5 in `docs/specs/theory-brief.md`. The offer that asks for the comparative study is recorded in `docs/specs/sources/literature.md` and `docs/specs/sources/supervisors.md`.
 
 # Reproducibility {#reproducibility}
 
-CPU commands, from the repository root:
+CPU commands, from the repository root. Each writes the result file named in the results chapter.
 
 ```
 python3 experiments/cursor_constraint_cmp.py
@@ -109,6 +444,19 @@ python3 experiments/cursor_constraint_cmp.py --ceiling --out experiments/results
 python3 experiments/cursor_constraint_cmp.py --midpoint --kmax 6 --out experiments/results/cursor_constraint_midpoint_kmax6.json
 python3 experiments/cursor_stationary.py
 python3 experiments/cursor_nulls.py
+python3 experiments/cursor_team_figures.py
+python3 experiments/export_explorer.py --team cursor
+python3 tools/render.py teams/cursor/report teams/cursor/explorer
 ```
 
-GPU jobs are the `milady-cursor-job-*` rows of `research/compute-ledger.jsonl`. After H144 the ledger spend is 21.91 USD of the shared 150. The diagrams are `architecture.html`, `workflow.html`, and `agents.html` in `../diagrams/`.
+The learned protocol, which is H168 and not a CPU command, is
+
+```
+python3 experiments/cursor_fm_train.py --device cuda --steps 4000 --out-dir experiments/results/cursor_fm
+```
+
+GPU jobs are the `milady-cursor-job-*` rows of `research/compute-ledger.jsonl`. The float32 bench is `research/gpu-logs/bench-float32.log`. The float64 bench is `research/gpu-logs/bench-float64.log`. The failed H168 attempt is pod `vf94e6g28iv9mw`, 0.0678 hours, 0.0603 USD, exit code 1, log `research/gpu-logs/h168.log`. The shared RunPod credit is 150 USD. This team's cumulative ceiling for the present order is 70 USD. The ledger total of finished cursor commands, after that failed pod, is about 21.97 USD. The rerun is capped at 1.5 hours on an RTX 4090, about 1.34 USD at 0.89 USD per hour, which stays under 70.
+
+Schematic sources were rendered with the schematic-figure skill. The three diagrams were rendered with `node .claude/skills/archify/bin/archify.mjs` from `site/teams/cursor/diagrams/architecture.json`, `workflow.json`, and `agents.json`. Their HTML names are `architecture.html`, `workflow.html`, and `agents.html`.
+
+This page is the only report source. There is no separate `.tex` file. HTML and PDF are the two formats of `site/teams/cursor/report/index.qmd`.
