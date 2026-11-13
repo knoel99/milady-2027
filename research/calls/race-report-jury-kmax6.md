@@ -4,9 +4,9 @@ The main session wrote this file by following `.cursor/agents/jury-externe.md`. 
 
 | Claim | Location | Verdict | Evidence | Required change |
 | --- | --- | --- | --- | --- |
-| kmax=6 C4 is 0.0093 and meets 0.1 | race report, Measured | CONFIRMED | cursor_constraint_midpoint_kmax6.json | None |
-| C1 on that map is 0.014 | race report, Measured | CONFIRMED | same file, mean of five seeds | The quoted model is a midpoint, not a flow. The report says so |
-| C3 is 0.083 and misses 0.05 | race report, Remaining | CONFIRMED | same file | Do not claim the energy balance meets its target |
-| C5 is still the sentinel | race report, Remaining | CONFIRMED | cursor_objectives.py --metric c5 prints 1 | A Haynes-Parnell count is still required before any C5 number |
+| H165 mean is 0.160 and misses 0.1 | race report, Measured | CONFIRMED | cursor_nulls_kmax6.json | Do not replace the quoted C5 with this miss |
+| Two truncation widths are dropped | race report, Remaining | CONFIRMED | H164 0.428 and H165 0.160, both above 0.1 | Do not launch a third truncation of the same snapshot |
+| H166 has no result yet | race report, Measured | CONFIRMED | status registered, no result file at the review | Score it only after the run that was registered first |
+| Quoted C5 remains 0.428 | race report, Remaining | CONFIRMED | cursor_metrics.json | Keep the label on the kmax=4 file |
 
-Pre-defence. Three of the five generator metrics now meet their targets on a linear midpoint at n=16. The energy balance does not, there is no null count, and the deliverables are absent. The document is not defendable. H144 was still in flight. Spend was 21.56 USD of 150 before this CPU run, which cost nothing.
+Pre-defence. The truncation route to C5 is a negative result. The midpoint comparison is the remaining registered test of that objective.
