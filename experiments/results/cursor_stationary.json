@@ -1,0 +1,73 @@
+{
+  "t_end": 8.0,
+  "n": 16,
+  "nu": 0.05,
+  "eta": 0.05,
+  "seeds": [
+    {
+      "seed": 0,
+      "first": {
+        "total": -6.265380375951004e-06,
+        "magnetic": 0.1641775634512302,
+        "finite": true
+      },
+      "second": {
+        "total": -7.297628230057025e-06,
+        "magnetic": -0.07018488231752408,
+        "finite": true
+      }
+    },
+    {
+      "seed": 1,
+      "first": {
+        "total": -3.859606869672588e-06,
+        "magnetic": 0.03846344886563513,
+        "finite": true
+      },
+      "second": {
+        "total": -2.602764213574339e-06,
+        "magnetic": -0.11073845030065504,
+        "finite": true
+      }
+    },
+    {
+      "seed": 2,
+      "first": {
+        "total": -2.591091388295205e-06,
+        "magnetic": -0.06342220276422177,
+        "finite": true
+      },
+      "second": {
+        "total": -9.83999283359223e-07,
+        "magnetic": -0.0525560328339832,
+        "finite": true
+      }
+    },
+    {
+      "seed": 3,
+      "first": {
+        "total": -2.9125151265986715e-06,
+        "magnetic": -0.007369061139400839,
+        "finite": true
+      },
+      "second": {
+        "total": -1.1522122544841057e-06,
+        "magnetic": -0.08823345388055175,
+        "finite": true
+      }
+    },
+    {
+      "seed": 4,
+      "first": {
+        "total": -5.082210287050419e-06,
+        "magnetic": 0.09779707634267451,
+        "finite": true
+      },
+      "second": {
+        "total": -6.6816546017552365e-06,
+        "magnetic": -0.015556496382086338,
+        "finite": true
+      }
+    }
+  ]
+}

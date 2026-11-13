@@ -2101,9 +2101,9 @@
       "protocol": "python3 experiments/cursor_stationary.py writes experiments/results/cursor_stationary.json. CPU. --quick is not a quoted result.",
       "script": "experiments/cursor_stationary.py",
       "cost_estimate": "CPU only. No GPU dollars.",
-      "status": "registered",
-      "verdict": "",
-      "results": "",
+      "status": "supported",
+      "verdict": "CONFIRMED",
+      "results": "Mean absolute second-half total residual 3.7436517166459855e-06, at most 0.05. All five values are finite. The largest is 7.297628230057025e-06. File experiments/results/cursor_stationary.json.",
       "commit": ""
     },
     {
@@ -2114,9 +2114,9 @@
       "protocol": "Same CPU run as H162.",
       "script": "experiments/cursor_stationary.py",
       "cost_estimate": "CPU only. No GPU dollars.",
-      "status": "registered",
-      "verdict": "",
-      "results": "",
+      "status": "refuted",
+      "verdict": "REFUTED",
+      "results": "Mean absolute second-half magnetic residual 0.06745386314296008, above 0.05. All five values are finite. Same file as H162. The refutation criterion is met.",
       "commit": ""
     }
   ]

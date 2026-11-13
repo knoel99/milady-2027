@@ -2,6 +2,11 @@
 
 One entry per working session, newest first, at most ten lines.
 
+## 2026-11-13 - H162 supported, H163 refuted, team cursor
+- The second-half total energy balance of the dynamic ABC run has mean absolute residual 3.74e-6. H162 holds. C3 now quotes that number.
+- The magnetic residual on the same window has mean 0.067. H163 is refuted.
+- n=16, t=8, five seeds, CPU. H144 stays in flight.
+
 ## 2026-11-13 - H161 refuted, team cursor
 - The kmax=7 midpoint has mean C3 0.085, above 0.05 and not below the kmax=6 value 0.083.
 - The cutoff is not the lever for the balance residual on this n=16 grid. cursor_metrics.json stays on kmax=6.

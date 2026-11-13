@@ -1,8 +1,9 @@
 {
   "c1": 0.013966666402533533,
   "c2": 4.576418772371203e-16,
-  "c3": 0.0834132031037454,
+  "c3": 3.7436517166459855e-06,
   "c4": 0.009292581587870299,
   "source": "experiments/results/cursor_constraint_midpoint_kmax6.json",
-  "model": "linear midpoint of kmax=6 coefficients between Rm=11 and Rm=13, seeds 0-4, n=16, held-out Rm=12"
+  "model": "c1, c2 and c4 are the kmax=6 midpoint. c3 is the second-half total energy balance of the dynamic ABC ensemble.",
+  "c3_source": "experiments/results/cursor_stationary.json"
 }
