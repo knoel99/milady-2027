@@ -2,6 +2,12 @@
 
 One entry per working session, newest first, at most ten lines.
 
+## 2026-11-13 - H17 supported, H19 registered, team cursor
+- Five points at n = 128, Rm = 12, cfl = 0.5, all finite. Largest max_div_b is 4.82e-16.
+- Mean lambda 0.007691066. Absolute difference from the cfl = 1 mean is 8.87e-13, under the pre-set 0.002.
+- Pod `nmcrrnaf8kpbi8`, RTX 4090, 0.73 h, 0.6493 USD. Local ledger 3.2644 USD.
+- H19 asks whether lambda(10) is positive for seeds 0-4 at n = 128. The sign was fixed before the run. H18 is already on pod `z1a4bgm0uztfzo`.
+
 ## 2026-11-13 - H16 supported, H18 registered, team cursor
 - Five points, seeds 5-9, at n = 128, Rm = 12, cfl = 1, all finite. Largest max_div_b is 7.95e-16.
 - Mean lambda 0.007983 (sample std 0.000821). Absolute difference from the seeds 0-4 mean is 2.92e-4, under the pre-set 0.001.

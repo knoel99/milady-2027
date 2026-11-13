@@ -216,9 +216,9 @@
       "protocol": "Five seeds, 0-4. python3 experiments/cursor_abc_batch.py --device cuda --cfl 0.5 --out-dir experiments/results/cursor_abc_n128_cfl05 --point 128,12,0 --point 128,12,1 --point 128,12,2 --point 128,12,3 --point 128,12,4. t = 120, dt cap 0.05, float64. GPU order RTX 4090, then PRO 4500, then A6000. One pod, 1.5 h cap.",
       "script": "experiments/cursor_abc_batch.py --device cuda --cfl 0.5 --point 128,12,0",
       "cost_estimate": "One pod, 1.5 h cap. Five n = 128 cfl = 1 points cost 0.3446 USD. cfl = 0.5 about doubles the step count. An H100 at 4.39 USD/h is not used. Matching the 0.34 USD bill would require the job to finish in about 5 minutes, and the 4090 run took 0.39 h.",
-      "status": "registered",
+      "status": "supported",
       "verdict": "",
-      "results": "",
+      "results": "Five points, all finite, largest max_div_b 4.82e-16. Mean lambda 0.007691066. Absolute difference from the cfl=1 mean 0.007691066 is 8.87e-13, under the pre-set 0.002. Files experiments/results/cursor_abc_n128_cfl05/. Pod nmcrrnaf8kpbi8, RTX 4090, 0.73 h, 0.6493 USD. The refutation criterion is not met. Not a 3D generator result.",
       "commit": ""
     },
     {
@@ -229,6 +229,19 @@
       "protocol": "Five seeds, 0-4. python3 experiments/cursor_abc_batch.py --device cuda --cfl 1 --out-dir experiments/results/cursor_abc_n160 --point 160,12,0 --point 160,12,1 --point 160,12,2 --point 160,12,3 --point 160,12,4. t = 120, dt cap 0.05, float64. GPU order RTX 4090, then PRO 4500, then A6000. One pod, 2 h cap. Launch when a parallel slot is free.",
       "script": "experiments/cursor_abc_batch.py --device cuda --cfl 1 --point 160,12,0",
       "cost_estimate": "One pod, 2 h cap on an RTX 4090, hold 1.78 USD. Five n = 128 points cost about 0.35 USD. n = 160 is a larger grid, so the hold is the cap rather than the expected bill.",
+      "status": "registered",
+      "verdict": "",
+      "results": "",
+      "commit": ""
+    },
+    {
+      "id": "H19",
+      "statement": "At n = 128, Rm = 10, cfl = 1, seeds 0-4, every kinematic ABC growth rate is positive, and every point is finite with final max_div_b below 1e-8.",
+      "origin": "H15 found lambda(9) positive at this resolution for the same seeds, with the smallest value 8.62e-5. Rm = 10 has not been run. The sign is the pre-set claim. The magnitude is not.",
+      "refutation_criterion": "Refuted if any point is non-finite or exits non-zero, if any final max_div_b is >= 1e-8, or if any lambda is <= 0. The sign was fixed before the run. Not a 3D generator claim.",
+      "protocol": "Five seeds, 0-4. python3 experiments/cursor_abc_batch.py --device cuda --cfl 1 --out-dir experiments/results/cursor_abc_n128_rm10 --point 128,10,0 --point 128,10,1 --point 128,10,2 --point 128,10,3 --point 128,10,4. t = 120, dt cap 0.05, float64. GPU order RTX 4090, then PRO 4500, then A6000. One pod, 1.5 h cap.",
+      "script": "experiments/cursor_abc_batch.py --device cuda --cfl 1 --point 128,10,0",
+      "cost_estimate": "One pod, 1.5 h cap. Five n = 128 points on an RTX 4090 cost about 0.35 USD, as in H16.",
       "status": "registered",
       "verdict": "",
       "results": "",
