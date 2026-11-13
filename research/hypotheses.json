@@ -323,6 +323,51 @@
       "commit": "",
       "comparison": "model families",
       "seeds": 5
+    },
+    {
+      "id": "H22",
+      "statement": "In E4, the failures of the mode-wise Gaussian law G0 on the magnetic energy balance, on the restart drift of the magnetic energy and on the number of null points come from the independence of its Fourier modes and not from its Gaussianity: a Gaussian law with the full covariance of the latent (G1_gaussian_full: sample mean and covariance over all modes at each training η, symmetrised under B → −B, interpolated linearly in log η between the two neighbouring training values) has, on the held-out η, a residual of the mean magnetic energy balance below 0.2, and a lower restart drift of E_B and a lower null-count error than the flow-matching model with the affine term (W9_skip_sym).",
+      "origin": "Review of the jury-externe role on the report v1 (research/reviews/2026-11-13-jury-externe-report-v1.md, problem 1): an oracle Gaussian with the full covariance of the reference at each held-out η gave a magnetic residual of 0.07, a restart drift of E_B of 0.058 and a null error of about 1.05, which refutes the reading 'third-order correlations make the dynamo' of the report v1. The oracle used held-out data; G1 is the fair baseline, fitted on the training η only.",
+      "refutation_criterion": "Refuted if, on the held-out η, the seed-mean absolute residual of the magnetic energy balance of G1_gaussian_full is above 0.2, or if, for the restart drift of E_B (τ = 4) or for the null-count error, the paired difference W9_skip_sym − G1_gaussian_full is not larger than 2 SE or G1 is below W9 in fewer than 4 of the 5 seeds. Reported with it, without a criterion: the energy-distance ratio, the restart drift of E_u, the restart curves at τ = 0.5, 1, 2 and 4 and their maxima.",
+      "protocol": "Data, splits, metrics and floors of E4 (experiments/e4_data.py, e4_mhd3d.py); G1 has no network and no training: the 5 seeds are 5 independent draws of the samples; W9_skip_sym is retrained in the same job (group D) so that the paired differences use the same reference data. Restart drift now recorded at τ/8, τ/4, τ/2 and τ.",
+      "script": "experiments/e4_mhd3d.py --group D,E,G,M (experiments/e4_gpu_job.sh on a GPU pod; --quick first)",
+      "cost_estimate": "one GPU job of about 50 min for 5 seeds (data regenerated on the pod), about 0.6 USD on an RTX PRO 4500; no CPU run",
+      "status": "registered",
+      "verdict": "",
+      "results": "",
+      "commit": "",
+      "comparison": "model families",
+      "seeds": 5
+    },
+    {
+      "id": "H23",
+      "statement": "In E4, in the regime where the generator is close to the reference law (the model with the affine term, W9_skip_sym), fine-tuning with the law-level stationarity loss on the energy and magnetic-helicity identities (W12_skip_stationarity: same loss, weight and schedule as W5_stationarity) lowers the absolute residual of the mean energy balance on the held-out η against the control that receives the same fine-tuning without the term (W12_skip_control), without degrading the law.",
+      "origin": "Review of the jury-externe role on the report v1 (problem 3): the loss and sampling mechanisms were compared only on models far from the reference (W4s at 210 floors). H7 confirmed the effect on the energy residual there, with side effects on the magnetic balance, the null count and the spectrum.",
+      "refutation_criterion": "Refuted if the paired difference |energy residual|(W12_skip_control) − |energy residual|(W12_skip_stationarity) on the held-out η is not larger than 2 SE or is positive in fewer than 4 of the 5 seeds, or if the seed-mean energy-distance ratio of W12_skip_stationarity exceeds that of W12_skip_control by more than 10 %. Reported with it: the residuals of the magnetic balance and of the magnetic-helicity identity (r_b), the null-count error and the spectrum error.",
+      "protocol": "As H7, on the model W9_skip_sym trained in the same job (same seed, 4000 iterations), then 400 fine-tuning iterations with or without the stationarity term; 5 seeds; held-out η.",
+      "script": "experiments/e4_mhd3d.py --group D,E,G,M (experiments/e4_gpu_job.sh on a GPU pod; --quick first)",
+      "cost_estimate": "one GPU job of about 50 min for 5 seeds (data regenerated on the pod), about 0.6 USD on an RTX PRO 4500; no CPU run",
+      "status": "registered",
+      "verdict": "",
+      "results": "",
+      "commit": "",
+      "comparison": "constraint mechanisms",
+      "seeds": 5
+    },
+    {
+      "id": "H24",
+      "statement": "In E4, exponential tilting on the energy and magnetic-helicity identities does not collapse when the generated law is close to the reference: applied to the samples of W12_skip_control (multipliers fitted on one half of the sample, weights applied to the other half, as for W7_tilting), it keeps an effective sample size above 10 % of the sample on the held-out η and lowers the absolute residual of the mean energy balance against the untilted half.",
+      "origin": "H8 was dropped as not discriminating because the tilted ensemble of W7 had an effective sample size of one sample: the tilting was only tried on a law 200 floors from the reference (review of the jury-externe role, problem 3).",
+      "refutation_criterion": "Refuted if the seed-mean ESS/N of W13_skip_tilting on the held-out η is below 0.1, or if the paired difference |energy residual|(W12_skip_control_half) − |energy residual|(W13_skip_tilting) is not larger than 2 SE or is positive in fewer than 4 of the 5 seeds.",
+      "protocol": "As W7_tilting (experiments/e4_mhd3d.py, function tilt), on the samples of W12_skip_control; 5 seeds; held-out η; the comparison is with the same second half of the sample, untilted.",
+      "script": "experiments/e4_mhd3d.py --group D,E,G,M (experiments/e4_gpu_job.sh on a GPU pod; --quick first)",
+      "cost_estimate": "one GPU job of about 50 min for 5 seeds (data regenerated on the pod), about 0.6 USD on an RTX PRO 4500; no CPU run",
+      "status": "registered",
+      "verdict": "",
+      "results": "",
+      "commit": "",
+      "comparison": "constraint mechanisms",
+      "seeds": 5
     }
   ]
 }
