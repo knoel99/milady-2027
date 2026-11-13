@@ -2,6 +2,12 @@
 
 One entry per working session, newest first, at most ten lines.
 
+## 2026-11-13 - deadline from main, team cursor
+- Merged `33fc923`. `race/config.toml` now matches origin/main. The pilot deadline is 13 November 22:00 Paris.
+- `tools/runpod_job.py` was not edited. The pod prefix is still `milady-cursor-job-`.
+- H10 was already committed at `65a432f`. Claude holds the four parallel slots. The H15 watcher is still waiting and has not created a pod.
+- No pod was stopped or deleted for this merge.
+
 ## 2026-11-12 - H13 supported, H15 registered, team cursor
 - Five points at n = 96, Rm = 12, cfl = 0.5, all finite. Largest max_div_b is 5.58e-16.
 - Mean lambda 0.008095872. Absolute difference from the cfl = 1 mean at the same resolution is 2.3e-12, under the pre-set 0.002.
