@@ -28,7 +28,8 @@ GENERATORS = ["W0_free", "W1_penalty", "W2_final_projection", "W3_projected_flow
 # the registered rule of H28, and a correction of the samples (like the tilting and the rescaling) never was one.
 LATER = [f"W14_full_anchor_it{k}" for k in (0, 50, 150, 250, 500, 1000, 2000, 4000)] + [
     "G1T_gaussian_full", "W9R_skip_sym", "W9R_steps_check", "W15_recoloured_modes", "W16_recoloured_full", "G4_recoloured_gaussian",
-    "W9Zb_skip_sym", "W9Z_skip_sym_gaussdata", "W9Yb_skip_sym", "W9Y_skip_sym_gausstraj"]
+    "W9Zb_skip_sym", "W9Z_skip_sym_gaussdata", "W9Yb_skip_sym", "W9Y_skip_sym_gausstraj"] + [
+    f"{law}_tau{t}" for law in ("G0X", "G1X", "W9X", "W16X", "REFX") for t in ("0", "0.5", "1", "2", "4", "8")]
 GENERATORS += LATER
 # G0 has no network: it is the baseline to beat, not a candidate for the selected generator (the C1 note of
 # race/teams/claude/objectives.toml names the model family: conditional flow matching on the Fourier modes).
@@ -63,7 +64,7 @@ def merge(seed: int, tag: str | bool = "", root: Path = R) -> Path | None:
     whole = root / f"e4_mhd3d{tag}_s{seed}_all.json"
     if not all(p.exists() for p in parts) and not whole.exists():        # a run of the later groups only (D, E, L)
         parts = [p for g in ("A", "B") if (p := root / f"e4_mhd3d{tag}_s{seed}_{g}.json").exists()]
-        if not any((root / f"e4_mhd3d{tag}_s{seed}_{g}.json").exists() for g in ("C", "D", "E", "L", "S", "G", "M", "N", "F", "R", "T", "Z", "Y")):
+        if not any((root / f"e4_mhd3d{tag}_s{seed}_{g}.json").exists() for g in ("C", "D", "E", "L", "S", "G", "M", "N", "F", "R", "T", "Z", "Y", "X")):
             return None
     if all(p.exists() for p in parts):
         data = [json.loads(p.read_text()) for p in parts]
@@ -71,7 +72,7 @@ def merge(seed: int, tag: str | bool = "", root: Path = R) -> Path | None:
         data = [json.loads(whole.read_text())]
     else:
         return None
-    for g in ("C", "D", "E", "L", "S", "G", "M", "N", "F", "R", "T", "Z", "Y"):                      # optional groups, added after the first runs
+    for g in ("C", "D", "E", "L", "S", "G", "M", "N", "F", "R", "T", "Z", "Y", "X"):                      # optional groups, added after the first runs
         extra = root / f"e4_mhd3d{tag}_s{seed}_{g}.json"
         if extra.exists():
             data.append(json.loads(extra.read_text()))
@@ -233,6 +234,12 @@ def h29_lines(runs: dict, ref: dict | None) -> list[str]:
     if ref is None or not ({"W16_recoloured_full", "G1T_gaussian_full"} & have):
         return []
     out: list[str] = []
+    if "W16_recoloured_full" in have:                      # a run still being assembled: only the seeds that have every law
+        full = {s: r for s, r in runs.items() if "G4_recoloured_gaussian" in r["evaluation"]}
+        if len(full) < len(runs):
+            out.append(f"\nH29-H31: {len(full)} of the {len(runs)} seeds have the recoloured laws; the lines below use these seeds only "
+                       "(incomplete run: no verdict may be quoted).")
+            runs = full
     n_seed = len(runs)
     need = min(4, n_seed)
 
@@ -616,6 +623,123 @@ def h34_lines(runs: dict, ref: dict | None, root: Path = R) -> list[str]:
                f"on Gaussian trajectories {f(float(np.mean([r['times'].get(wy, {}).get('fm_loss_train_sample', np.nan) for r in runs.values()])), 5)}. "
                "Verdict on this realisation of the data: " + ("MEASUREMENT INVALID (checks)" if not ok else (
                    "REFUTED (clause " + " and ".join(c for c, x in (("a", a_bad), ("b", b_bad)) if x) + ")" if a_bad or b_bad else "NOT REFUTED")) + ".")
+    return out
+
+
+H35_KEYS = (("null-count error", "null_count_err_rel", True, 0.2), ("energy residual", "balance_residual_total", True, 0.05),
+            ("spectrum + helicity", ("spec_err_b_l2", "hel_m_err_rel"), True, 0.15), ("ED / floor", "ed_ratio", False, 10.0),
+            ("restart drift", "restart_drift_eb", True, 0.05))
+
+
+def h35_lines(runs: dict, ref: dict | None, root: Path = R) -> list[str]:
+    """H35: G0, G1, W9 and W16 followed by a short relaxation in the solver; verdict as registered (research/hypotheses.json)."""
+    have = {v for r in runs.values() for v in r["evaluation"]}
+    if ref is None or "W16X_tau0" not in have:
+        return []
+    out: list[str] = []
+    rv = lambda e, k: ref["values"][f"{e:.5f}"][k]                                       # noqa: E731
+
+    def taus_of(law: str) -> list[float]:
+        return sorted(float(v.rsplit("_tau", 1)[1]) for v in have if v.startswith(law + "_tau"))
+
+    def name(law: str, t: float) -> str:
+        return f"{law}_tau{t:g}"
+
+    def seed_mean(v: str, key, absolute: bool) -> float:
+        """As the objectives: mean over the held-out η for each seed, then mean over the seeds."""
+        keys = key if isinstance(key, tuple) else (key,)
+        return float(np.nanmean(sum(per_seed(runs, v, k, absolute=absolute) for k in keys)))
+
+    def eb_dev(v: str) -> dict[float, float]:
+        return {e: float(np.mean(a)) / rv(e, "E_B") - 1 for e, a in sorted(_per_seed(runs, v, "E_B").items(), reverse=True)}
+
+    def null_err(v: str) -> dict[float, float]:
+        return {e: float(np.mean(np.abs(a))) for e, a in sorted(_per_seed(runs, v, "null_count_err_rel").items(), reverse=True)}
+
+    laws = [law for law in ("G0X", "G1X", "W9X", "W16X") if name(law, 0) in have]
+    grid = taus_of("W16X")
+    out.append("\nH35: laws followed by a relaxation of duration τ in the solver (seed means; errors as in the objectives, means over the "
+               "held-out η; E_B: largest |E_B/E_B,ref − 1| over the held-out η; |det ∇B|: mean over all the cells over that of the reference, "
+               "mean over the held-out η).\n")
+    out.append("| law | τ | null-count error | mean \\|E_B/ref − 1\\| | largest \\|E_B/ref − 1\\| | energy residual | spectrum + helicity | ED / floor | "
+               "\\|det ∇B\\| / ref | restart drift |")
+    out.append("|---|---|---|---|---|---|---|---|---|---|")
+    stats: dict = {}
+    for law in laws + (["REFX"] if name("REFX", 0) in have else []):
+        for t in taus_of(law):
+            v = name(law, t)
+            eb = eb_dev(v)
+            jac = _per_seed(runs, v, "kr_jacobian_all")
+            jr = float(np.mean([np.mean(a) / rv(e, "kr_jacobian_all") for e, a in jac.items()])) if jac and "kr_jacobian_all" in next(
+                iter(ref["values"].values())) else float("nan")
+            st = {"null": seed_mean(v, "null_count_err_rel", True), "eb_mean": float(np.mean([abs(x) for x in eb.values()])),
+                  "eb_max": max(abs(x) for x in eb.values()), "res": seed_mean(v, "balance_residual_total", True),
+                  "spec": seed_mean(v, ("spec_err_b_l2", "hel_m_err_rel"), True), "ed": seed_mean(v, "ed_ratio", False), "jac": jr,
+                  "drift": seed_mean(v, "restart_drift_eb", True)}
+            stats[(law, t)] = st
+            out.append(f"| {law} | {t:g} | {f(st['null'])} | {f(st['eb_mean'])} | {f(st['eb_max'])} | {f(st['res'])} | {f(st['spec'])} | "
+                       f"{f(st['ed'])} | {f(st['jac'])} | {'–' if np.isnan(st['drift']) else f(st['drift'])} |")
+
+    def tau_star(law: str) -> float:
+        for t in taus_of(law):
+            if stats[(law, t)]["null"] <= 0.2 and stats[(law, t)]["eb_mean"] <= 0.05:
+                return t
+        return float("inf")
+
+    star = {law: tau_star(law) for law in laws}
+    fs = lambda t: "none on the grid" if np.isinf(t) else f"{t:g}"                         # noqa: E731
+    # clause (a): the null-count error at τ = 1 against τ = 0, at each held-out η
+    bad_a, parts = [], []
+    for law in ("G1X", "W16X"):
+        if name(law, 1) in have:
+            n0, n1 = null_err(name(law, 0)), null_err(name(law, 1))
+            parts.append(f"{law}: " + ", ".join(f"η = {e:.4f}: {f(n1[e])} against {f(n0[e])} (ratio {f(n1[e] / n0[e], 2)})" for e in n0))
+            bad_a += [f"{law} at η = {e:.4f}" for e in n0 if n1[e] > 0.6 * n0[e]]
+    full = name("W16X", 4) in have and name("G1X", 1) in have
+    # clause (b): the five thresholds for W16X relaxed by 4 time units
+    bad_b = []
+    if full:
+        v = name("W16X", 4)
+        for label, key, absolute, limit in H35_KEYS:
+            x = seed_mean(v, key, absolute)
+            if not x <= limit:
+                bad_b.append(f"{label} {f(x)} > {limit:g}")
+    bad_c = not star.get("W16X", np.inf) < star.get("G1X", np.inf)
+    out.append("H35 (a), null-count error at τ = 1 against τ = 0, at each held-out η (criterion: at most 0.6 of it): " + "; ".join(parts) + ".")
+    out.append("H35 (b), W16X relaxed by 4 time units against the thresholds of the objectives (C5 0.2, C3 0.05, C4 0.15, C1 10, T1 0.05): "
+               + ("not available in this run" if not full else ", ".join(
+                   f"{label} {f(seed_mean(name('W16X', 4), key, absolute))}" for label, key, absolute, _ in H35_KEYS)) + ".")
+    out.append("H35 (c), residual relaxation time τ* (first τ of the grid " + ", ".join(f"{t:g}" for t in grid) + " with a null-count error of "
+               "at most 0.2 and a mean |E_B/E_B,ref − 1| of at most 0.05): " + ", ".join(f"{law} {fs(star[law])}" for law in laws) + ".")
+    # checks of the measurement
+    chk, ok = [], True
+    for t in taus_of("REFX"):
+        v = name("REFX", t)
+        ne, eb = max(null_err(v).values()), max(abs(x) for x in eb_dev(v).values())
+        ok &= ne <= 0.1 and eb <= 0.03
+        chk.append(f"reference snapshots relaxed by τ = {t:g}: largest null-count error {f(ne)} (limit 0.1), largest |E_B/ref − 1| {f(eb)} (limit 0.03)")
+    if not taus_of("REFX"):
+        ok = False
+        chk.append("no control on reference snapshots in this run")
+    data_file = root / "e4_data.json"
+    offset = json.loads(data_file.read_text())["config"].get("data_seed_offset", 0) if data_file.exists() else None
+    other_root = R / "replications" / {0: "e4_recolour", 100: "e4_recolour_indep"}.get(offset, "none")
+    other = load(False, other_root) if (other_root / "e4_reference.json").exists() and full else {}
+    if other and any("W16_recoloured_full" in r["evaluation"] for r in other.values()):
+        d_ed = seed_mean(name("W16X", 0), "ed_ratio", False) - float(np.nanmean(per_seed(other, "W16_recoloured_full", "ed_ratio")))
+        d_nu = seed_mean(name("W16X", 0), "null_count_err_rel", True) - float(np.nanmean(per_seed(other, "W16_recoloured_full", "null_count_err_rel", absolute=True)))
+        d_g1 = seed_mean(name("G1X", 0), "null_count_err_rel", True) - float(np.nanmean(per_seed(other, "G1_gaussian_full", "null_count_err_rel", absolute=True)))
+        ok &= abs(d_ed) <= 0.5 and abs(d_nu) <= 0.1 and abs(d_g1) <= 0.05
+        chk.append(f"against the job of H29 on the same data ({other_root.name}): W16 at τ = 0, ED / floor {f(d_ed)} (limit 0.5) and null-count "
+                   f"error {f(d_nu)} (limit 0.1); G1 at τ = 0, null-count error {f(d_g1)} (limit 0.05)")
+    else:
+        ok = False
+        chk.append("the job of H29 on the same data is not available: checks (2) and (3) not computed")
+    out.append("H35, checks of the measurement: " + "; ".join(chk) + f": {'PASS' if ok else 'FAIL'}. Verdict on this realisation of the data: "
+               + ("MEASUREMENT INVALID (checks)" if not ok else
+                  ("NOT REFUTED" if not (bad_a or bad_b or bad_c) else "REFUTED on " + "; ".join(
+                      ([f"(a): {', '.join(bad_a)}"] if bad_a else []) + ([f"(b): {', '.join(bad_b)}"] if bad_b else [])
+                      + (["(c): τ* of W16 is not smaller than that of G1"] if bad_c else [])))) + ".")
     return out
 
 
@@ -1039,7 +1163,7 @@ def section(quick: bool = False, root: Path = R, replication: str | None = None,
                 xs, ys = np.asarray(pts).T
                 P(f"Signed drift of E_B at τ = 4 against the bias E_B,ref/E_B(0) − 1 of the law, over the {len(pts)} laws above: "
                   f"correlation {f(float(np.corrcoef(xs, ys)[0, 1]), 2)}.")
-        for line in h28_lines(runs, ref) + h29_lines(runs, ref) + h32_lines(runs, ref) + h33_lines(runs, ref, root) + h34_lines(runs, ref, root):
+        for line in h28_lines(runs, ref) + h29_lines(runs, ref) + h32_lines(runs, ref) + h33_lines(runs, ref, root) + h34_lines(runs, ref, root) + h35_lines(runs, ref, root):
             P(line)
         h27 = [x for r in runs.values() for x in r.get("h27", [])]
         if h27:

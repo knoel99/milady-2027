@@ -75,6 +75,7 @@ GROUPS = {"A": ["W0_free", "W1_penalty", "W2_final_projection", "W3_projected_fl
           "T": ["G1T_gaussian_full"],                                   # G1 restarted at the training η too (no interpolation)
           "Z": ["W9Z_skip_sym_gaussdata"],                              # H33: W9 trained on Gaussian surrogate data (draws of G1)
           "Y": ["W9Y_skip_sym_gausstraj"],                              # H34: the same with the time correlation of the trajectories
+          "X": ["W16X_relaxed"],                                        # H35: G0, G1, W9 and W16 relaxed by the solver for a short time
           "N": ["G2_gaussianised_W9"],                                  # H27: Gaussian law fitted to the samples of W9                                    # H22: Gaussian law with the inter-mode covariance
           "M": ["W12_skip_stationarity", "W12_skip_control", "W13_skip_tilting"],   # H23, H24: loss and sampling on W9
           "L": ["W9L_skip_long", "W11L_anchored_skip_long"],            # H18: 8 times the iterations (not in "all")
@@ -82,10 +83,11 @@ GROUPS = {"A": ["W0_free", "W1_penalty", "W2_final_projection", "W3_projected_fl
 
 FULL = {"iters": 4000, "batch": 128, "width": 512, "depth": 4, "lr": 5e-4, "n_gen": 512, "n_gen_train": 256,
         "steps": 50, "ft_iters": 400, "ft_lr": 2e-4, "beta": 20.0, "stat_cond": 4, "stat_per": 16, "stat_steps": 6,
-        "n_null": 200, "n_restart": 128, "tau": 4.0, "floor_splits": 10, "n_ref_null": 400, "long_factor": 8}
+        "n_null": 200, "n_restart": 128, "tau": 4.0, "floor_splits": 10, "n_ref_null": 400, "long_factor": 8,
+        "relax_taus": (1.0, 2.0, 4.0, 8.0), "relax_restart": 4.0, "relax_ref": (1.0, 4.0)}
 if os.environ.get("E4_N_RESTART"):               # more restart samples for a job (H30: 512), recorded in the config of the results
     FULL["n_restart"] = int(os.environ["E4_N_RESTART"])
-QUICK = {**FULL, "anchor_its": (50, 150), "n_recolour": 1024, "steps_check": 24, "n_fit": 512, "ref_restart_draws": 2, "iters": 150, "width": 256, "depth": 2, "n_gen": 96, "n_gen_train": 64, "steps": 12, "long_factor": 2,
+QUICK = {**FULL, "relax_taus": (0.5, 1.0), "relax_restart": 1.0, "relax_ref": (1.0,), "anchor_its": (50, 150), "n_recolour": 1024, "steps_check": 24, "n_fit": 512, "ref_restart_draws": 2, "iters": 150, "width": 256, "depth": 2, "n_gen": 96, "n_gen_train": 64, "steps": 12, "long_factor": 2,
          "ft_iters": 20, "n_null": 24, "n_restart": 24, "tau": 1.0, "floor_splits": 4, "n_ref_null": 32}
 
 
@@ -341,6 +343,20 @@ class Context:
                 "restart_anchor_end_eb": abs(anchor["eb"][-1]), "restart_anchor_end_eu": abs(anchor["eu"][-1]),
                 "restart_anchor_tau_eb": abs(anchor["eb"][at + 1]), "restart_anchor_tau_eu": abs(anchor["eu"][at + 1])}
 
+    def relax(self, fh: torch.Tensor, eta: float, taus: tuple[float, ...]) -> dict[float, torch.Tensor]:
+        """The ensemble ``fh`` advanced by the solver of the data (as in ``restart_drift``) and read at the times
+        ``taus``: field coefficients encoded like the snapshots of the data (potentials, single precision)."""
+        fh = fh.cpu().to(torch.complex128)
+        grid = self.pot.to_grid(fh, (N_GRID,) * 3)                                 # (n, 2, nx, ny, nz, 3)
+        sim = MHD3D(D.solver_config(eta, len(fh), seed=0, device=str(self.dev)))
+        to_hat = lambda f: sim._fft(f.permute(0, 4, 1, 2, 3).to(sim.device, sim.rdtype)) * sim.mask     # noqa: E731
+        sim.uh, sim.bh = to_hat(grid[:, 0]), to_hat(grid[:, 1])
+        out = {}
+        for t in sorted(taus):
+            sim.advance_to(t, dt=D.DT, cfl=D.CFL)
+            out[t] = self.pot.field_hat(self.pot.encode(sim.fields(dtype=np.float64))).cpu()
+        return out
+
     def production_jackknife(self, fh: torch.Tensor, traj: np.ndarray, d_ohm: np.ndarray, grid: int = 24) -> dict:
         """Split of the mean magnetic production of an ensemble into its mean-flow part and the rest, with a
         delete-one-trajectory jackknife in which the mean flow is recomputed without the trajectory.
@@ -482,6 +498,8 @@ def _group_of(variant: str) -> str:
         return "Z"
     if variant.startswith("W9Y"):
         return "Y"
+    if variant.startswith(("G0X_", "G1X_", "W9X_", "W16X_", "REFX_")):
+        return "X"
     return "M" if variant.startswith(("W12_", "W13_")) else "B"
 
 
@@ -525,7 +543,7 @@ def run(quick: bool, seed: int, group: str, device: str = "cpu", cond_scale: flo
     groups = [g for g in GROUPS if g in "ABCDE"] if group == "all" else group.split(",")
     need = tuple(sorted({s for g in groups for s in {"A": ("comp",), "B": ("pot", "pot_sym"), "C": ("pot",),
                                                      "D": ("pot_sym",), "E": ("pot_sym",), "L": ("pot_sym",),
-                                                     "S": ("pot_sym",), "G": ("pot_sym",), "M": ("pot_sym",), "N": ("pot_sym",), "F": ("pot_sym",), "R": ("pot_sym",), "T": ("pot_sym",), "Z": ("pot_sym",), "Y": ("pot_sym",)}[g]}))
+                                                     "S": ("pot_sym",), "G": ("pot_sym",), "M": ("pot_sym",), "N": ("pot_sym",), "F": ("pot_sym",), "R": ("pot_sym",), "T": ("pot_sym",), "Z": ("pot_sym",), "Y": ("pot_sym",), "X": ("pot_sym",)}[g]}))
     need = ("pot", "pot_sym", "comp") if len(need) == 3 else need
     ctx = Context(quick, need, device)
     cfg, dev = ctx.cfg, ctx.dev
@@ -1053,6 +1071,75 @@ def run(quick: bool, seed: int, group: str, device: str = "cpu", cond_scale: flo
         results["times"]["W9R_steps_check"] = {"steps": steps_check}
         record("W9R_steps_check", {e: decode(latents(e, n, steps_check)) for e, n in eval_etas})
         del m9r, g0r, g1r, lat, rec_modes, rec_full, ctl
+
+    # ---------------- group X: laws followed by a short relaxation in the solver (H35) ----------------
+    if "W16X_relaxed" in names:
+        relax_etas = [(e, n) for e, n in eval_etas if split(e) in ("val", "test")]
+        taus = tuple(cfg["relax_taus"])
+        g0x = C.ModewiseGaussian(sign=pot_sym.sign).fit(ctx.x_pot_sym, ctx.c_train[:, 0])
+        g1x = C.FullGaussian(sign=pot_sym.sign).fit(ctx.x_pot_sym, ctx.c_train[:, 0])
+
+        def gauss(law, salt: int, eta: float, n: int) -> torch.Tensor:       # the draws of the groups D (salt 31) and G (salt 57)
+            g = torch.Generator().manual_seed(100003 * seed + salt + ETAS.index(eta))
+            return pot_sym.field_hat(pot_sym.denormalize(law.sample(float(np.float32(cn(eta))), n, generator=g))).cpu()
+
+        seed_all(seed)                                                       # the training of W9 of the groups D and R
+        m9x, tsec = train(builders["W9_skip_sym"](None).to(dev), fm, ctx.x_pot_sym, ctx.c_train, cfg["iters"], cfg["lr"],
+                          cfg["batch"], "W9X_skip_sym")
+        n_rec = cfg.get("n_recolour", 131072)
+        n_modes, n_ch = pot_sym.n_modes, pot_sym.n_channels
+        sgn = pot_sym.sign.to(dev, torch.float64).repeat(n_modes)
+
+        @torch.no_grad()
+        def moments_x(e: float) -> tuple[torch.Tensor, torch.Tensor]:       # as source_moments of group R (same draws)
+            gz = torch.Generator().manual_seed(100003 * seed + 211 + ETAS.index(e))
+            dim = n_modes * n_ch
+            s1, s2, m = torch.zeros(dim, dtype=torch.float64, device=dev), torch.zeros(dim, dim, dtype=torch.float64, device=dev), 0
+            nb = 4096 if dev.type == "cuda" else 1024
+            for _ in range(max(n_rec // nb, 1)):
+                c = torch.full((nb, 1), float(cn(e)), device=dev)
+                z = heun_sample(m9x, torch.randn(nb, n_modes, n_ch, generator=gz).to(dev), c, cfg["steps"]).flatten(1)
+                s1 += z.double().sum(0)
+                s2 += (z.T @ z).double()
+                m += len(z)
+            mean = s1 / m * (sgn > 0)
+            return mean, s2 / m * (1 + torch.outer(sgn, sgn)) / 2 - torch.outer(mean, mean)
+
+        laws: dict[str, dict] = {"G0X": {}, "G1X": {}, "W9X": {}, "W16X": {}}
+        for e, n in relax_etas:
+            cv = float(np.float32(cn(e)))
+            laws["G0X"][e], laws["G1X"][e] = gauss(g0x, 31, e, n), gauss(g1x, 57, e, n)
+            with torch.no_grad():
+                c = torch.full((n, 1), float(cn(e)), device=dev)
+                z0 = noise(n, pot_sym, ETAS.index(e))
+                z = torch.cat([heun_sample(m9x, z0[i:i + 256], c[i:i + 256], steps=cfg["steps"]) for i in range(0, n, 256)])
+            laws["W9X"][e] = pot_sym.field_hat(pot_sym.denormalize(z)).cpu()
+            mu_s, cov_s = moments_x(e)
+            mu1, cov1 = g1x.moments(cv)
+            mu1, cov1 = mu1.to(dev), cov1.to(dev)
+            amap = C.recolouring_map(cov_s, cov1)
+            zr = (mu1 + (z.flatten(1).double() - mu_s) @ amap).view_as(z)
+            laws["W16X"][e] = pot_sym.field_hat(pot_sym.denormalize(zr.to(torch.float32))).cpu()
+            del cov_s, cov1, amap, z, zr
+        del m9x, g0x, g1x
+        info = {"training_time_s": tsec, "iters": cfg["iters"], "n_recolour": n_rec, "relax_taus": list(taus),
+                "relax_restart": cfg["relax_restart"]}
+        gref = np.random.default_rng(100003 * seed + 419)
+        laws["REFX"] = {}
+        for e, n in relax_etas:                                              # control: reference snapshots through the same code
+            xe = D.load(e, quick)["x"]                                       # the raw snapshots are dropped by the context
+            pick = np.sort(gref.choice(len(xe), size=min(n, len(xe)), replace=False))
+            laws["REFX"][e] = ctx.pot.field_hat(torch.as_tensor(xe[pick]))
+        for law, fhs in laws.items():
+            keep = taus if law != "REFX" else tuple(cfg["relax_ref"])
+            results["times"][f"{law}_tau0"] = info
+            record(f"{law}_tau0", fhs, restart=False)
+            relaxed = {e: ctx.relax(fh, e, keep) for e, fh in fhs.items()}
+            for t in keep:
+                results["times"][f"{law}_tau{t:g}"] = info
+                record(f"{law}_tau{t:g}", {e: r[t] for e, r in relaxed.items()}, restart=(t == cfg["relax_restart"] and law != "REFX"))
+            del relaxed
+        del laws
 
     # ---------------- group M: loss and sampling mechanisms on the model with the affine term (H23, H24) ----------------
     if "W12_skip_stationarity" in names:
