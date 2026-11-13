@@ -132,3 +132,5 @@
 {"time": "2026-11-13T09:33:33Z", "role": "jury-externe", "commit": "15f3f3b", "scope": "research/race-report.md after H164 and the team site", "verdict": "C5 miss confirmed, deliverables confirmed", "file": "research/calls/race-report-jury-nulls.md"}
 {"time": "2026-11-13T09:36:19Z", "role": "encadrant", "commit": "f389bfa", "scope": "H165, experiments/results/cursor_nulls_kmax6.json", "verdict": "1 refuted", "file": "research/calls/h165-result-encadrant.md"}
 {"time": "2026-11-13T09:36:19Z", "role": "jury-externe", "commit": "f389bfa", "scope": "research/race-report.md after H165", "verdict": "truncation pair dropped, H166 not yet scored", "file": "research/calls/race-report-jury-kmax6.md"}
+{"time": "2026-11-13T09:46:23Z", "role": "encadrant", "commit": "72f26f3", "scope": "H166, experiments/results/cursor_nulls_midpoint_kmax6.json", "verdict": "1 refuted", "file": "research/calls/h166-result-encadrant.md"}
+{"time": "2026-11-13T09:46:24Z", "role": "jury-externe", "commit": "72f26f3", "scope": "research/race-report.md after H166", "verdict": "midpoint miss confirmed, H167 not yet scored", "file": "research/calls/race-report-jury-midpoint.md"}
