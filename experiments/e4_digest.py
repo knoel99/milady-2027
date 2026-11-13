@@ -412,6 +412,24 @@ def section(quick: bool = False, root: Path = R, replication: str | None = None,
             vals = sorted(ref["values"].items(), key=lambda kv: -float(kv[0]))
             P("Third-order part of the magnetic production of the reference over the Ohmic dissipation, at the eleven η (± jackknife SE): "
               + "; ".join(f"η = {float(e):.4f}: {f(v['prod_fluct_over_d'])} ± {f(v['prod_fluct_over_d_se_jack'])}" for e, v in vals) + ".")
+            for v in ("W9_skip_sym", "G1_gaussian_full"):          # asked by the review of the report v4
+                if not has(v):
+                    continue
+                acc: dict = {}
+                for r in runs.values():
+                    for sp in ("train", "test"):
+                        for x in r["evaluation"][v].get(sp, []):
+                            acc.setdefault((sp, f"{x['eta']:.5f}"), []).append((x.get("prod_fluct_over_d", float("nan")), x["null_count"]))
+                keys = sorted(acc, key=lambda kv: (kv[0], -float(kv[1])))
+                if v == "W9_skip_sym":
+                    P("Third-order part of W9_skip_sym at the training η evaluated (seed mean; ratio to the reference): " + "; ".join(
+                        f"η = {float(e):.4f}: {f(float(np.mean([a_[0] for a_ in acc[(sp, e)]])))} "
+                        f"({f(float(np.mean([a_[0] for a_ in acc[(sp, e)]])) / ref['values'][e]['prod_fluct_over_d'], 2)})"
+                        for sp, e in keys if sp == "train") + ".")
+                else:
+                    P("Null points of G1_gaussian_full over those of the reference (seed mean): " + "; ".join(
+                        f"{'training' if sp == 'train' else 'held-out'} η = {float(e):.4f}: "
+                        f"{f(float(np.mean([a_[1] for a_ in acc[(sp, e)]])) / ref['values'][e]['null_count_mean'], 3)}" for sp, e in keys) + ".")
             rows = {}                              # H25, check 2: at the training η, mean-flow part of the reference against P/D of G1
             for sp in ("train", "val"):            # the validation η are outside the registered check: G1 is interpolated there
                 for r in runs.values():
@@ -494,6 +512,21 @@ def section(quick: bool = False, root: Path = R, replication: str | None = None,
                 if "G2_gaussianised_W9" in anch and "W9N_skip_sym" in anch:
                     P(paired_row("excursion of E_B above the reference, max(0, max_τ a): G2_gaussianised_W9 − W9N_skip_sym (post hoc, not registered)",
                                  course("G2_gaussianised_W9", lambda x: max(0.0, max(x))), course("W9N_skip_sym", lambda x: max(0.0, max(x)))))
+            if exact and "G2_gaussianised_W9" in anch and "W9N_skip_sym" in anch:      # asked by the review of the report v4
+                def per_eta(v: str, fn) -> dict:
+                    out: dict = {}
+                    for r in runs.values():
+                        for x in r["evaluation"][v]["test"]:
+                            out.setdefault(round(x["eta"], 4), []).append(fn(anchored(x)))
+                    return {e: np.asarray(a_) for e, a_ in out.items()}
+                exc = lambda x: max(0.0, max(x))                                         # noqa: E731
+                g2e, w9e = per_eta("G2_gaussianised_W9", exc), per_eta("W9N_skip_sym", exc)
+                P("Post hoc (not registered), per held-out η: excursion above the reference of G2 minus that of W9N, paired over the seeds, "
+                  "with the production over dissipation of the two laws: " + "; ".join(
+                      f"η = {e:.4f}: {f(float((g2e[e] - w9e[e]).mean()))} ± {f(float((g2e[e] - w9e[e]).std(ddof=1) / np.sqrt(len(w9e[e]))))}"
+                      f" (P/D {f(float(np.mean([x['prod_over_d'] for r in runs.values() for x in r['evaluation']['G2_gaussianised_W9']['test'] if round(x['eta'], 4) == e])))}"
+                      f" and {f(float(np.mean([x['prod_over_d'] for r in runs.values() for x in r['evaluation']['W9N_skip_sym']['test'] if round(x['eta'], 4) == e])))})"
+                      for e in sorted(g2e, reverse=True)) + ".")
             # the drift of the objective T1 against the bias of the law on E_B
             pts = [(float(np.nanmean(per_seed(runs, v, "restart_eb_signed"))), float(-cv[:, 0].mean() / (1 + cv[:, 0].mean())))
                    for v, (cv, _, _) in anch.items() if not np.all(np.isnan(per_seed(runs, v, "restart_eb_signed")))]

@@ -295,5 +295,16 @@
   "seeds": 5,
   "script": "experiments/e4_mhd3d.py --reference, then --group D,E,G,N (experiments/e4_gpu_job.sh on a GPU pod; --quick first)",
   "commit": "245c783"
+ },
+ {
+  "id": "H28",
+  "statement": "In E4, a flow-matching model anchored on the Gaussian law with the full covariance (W14_full_anchor: v = v_G1(x, t, η) + network, the network being zero at initialisation so that the untrained model is G1) acquires a third-order part of the magnetic production during training without losing the second-order accuracy of G1: at the training length k* chosen on the validation η, it holds at least 0.3 of the third-order part of the reference at the two lower held-out η and stays within 1.5 times the energy-distance ratio of the untrained model.",
+  "refutation_criterion": "Checkpoints: the moving-average model at 250, 500, 1000, 2000 and 4000 iterations; iteration 0 is the untrained model. Selection on the validation η (0.0596 and 0.0403), on seed means: k* is the checkpoint with the smallest energy-distance ratio among those whose third-order part of the production at η = 0.0403 has the sign of the reference and at least 0.3 of its magnitude. Refuted if no checkpoint qualifies on the validation η; or if, at k* on the held-out η, the seed-mean third-order part is below 0.3 of that of the reference in magnitude, or of the other sign, at η = 0.0490 or at η = 0.0331, or has the sign of the reference in fewer than 4 of the 5 seeds at either; or if the energy-distance ratio of k* on the held-out η exceeds 1.5 times that of iteration 0 on the seed means, or in more than one seed. Checks of the measurement (a failure invalidates the measurement, not the hypothesis): the model at iteration 0, integrated with the 50 Heun steps of every model, reproduces G1 sampled exactly in the same job: energy-distance ratio within 0.5 floor, third-order part below 0.02 in absolute value and mean-flow part within 0.02 at each held-out η. Reported with it, for every checkpoint: energy-distance ratio on the training, validation and held-out η, mean-flow and third-order parts, magnetic and total energy balance, spectrum and helicity errors, null-count error, restart anchored on the reference (initial deviation, rise, overshoot, drift at τ = 4), flow-matching loss on a training sample; the values of the objectives C1, C3, C4, C5 and T1 at k*, next to G1 and W9.",
+  "status": "registered",
+  "verdict": "",
+  "comparison": "model families",
+  "seeds": 5,
+  "script": "experiments/e4_mhd3d.py --reference, then --group G,F (experiments/e4_gpu_job.sh on a GPU pod; --quick first)",
+  "commit": ""
  }
 ]
