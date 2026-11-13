@@ -635,6 +635,21 @@
    "commit": "",
    "comparison": "model families",
    "seeds": 5
+  },
+  {
+   "id": "H38",
+   "statement": "In E4, the flow-matching model anchored on a full-covariance Gaussian law (the construction of H28) can learn a non-Gaussian part at this size when its training set holds one that a network of the same family represents: trained on 14 400 samples of W9 (2400 per training η, the size of the data set) and anchored on the Gaussian law fitted to these samples, it recovers, after the 4000 iterations of the protocol, at least 0.3 of the third-order part of the magnetic production of W9 at each of the two lower held-out η.",
+   "origin": "Fourth control asked by the jury-externe role in its review of the draft of the report v5 (research/reviews/2026-11-13-jury-externe-report-v5-draft.md): 'positive control of H28 at full size: the anchored model trained on 14 400 samples of W9, whose third-order part is known'. H28 (refuted) showed that the anchored model learns nothing from the data in the budget; its only positive control is a unit test in low dimension. Whether that failure belongs to the data (few independent states, a structure too hard for the budget) or to the construction at this dimension is not known. The third-order part of W9 is −0.08 and −0.12 of the dissipation at the two lower held-out η (H25).",
+   "refutation_criterion": "Third-order part of the production over the dissipation, 512 generated samples per η, seed means. Refuted if, at η = 0.0490 or at η = 0.0331, the third-order part of the anchored model at iteration 4000 over that of W9 of the same job (the model whose samples are the training set) is below 0.3 on the seed means, or below 0.3 in more than one of the 5 seeds. 'Refuted' means that the anchored construction does not learn, in this budget and at this dimension, a non-Gaussian part that a network of the same size represents exactly: the negative result of H28 then belongs to the construction (or its optimisation) and says nothing about the data. 'Supported' means that it can, and that the failure of H28 is specific to the real data. Checks of the measurement (a failure invalidates it): (1) at iteration 0 the anchored model has a third-order part below 0.02 in absolute value at each held-out η (it is then the Gaussianisation of W9); (2) the third-order part computed on the training set itself (the samples of W9 at the three training η that are evaluated) is within 0.02 of that of W9 generated at the same η in the same job; (3) W9 of this job reproduces the values of H25 within 0.02 at each held-out η. Reported: the same ratio at iterations 250, 1000 and 2000; the flow-matching loss on a fixed sample of the training set at each checkpoint; and, as a second reference, W9 retrained from scratch on the same samples (same seed and budget): its third-order part over that of W9. One realisation of the data (the main run); a second only if the first is inconclusive (ratio between 0.2 and 0.4 on the seed means at either η). The verdict is computed by experiments/e4_digest.py (h38_lines), committed before the full run.",
+   "protocol": "Data, splits, model (W9_skip_sym), optimiser and budget of E4. For each seed: W9 trained on the data; 2400 samples of it at each of the six training η (50 Heun steps, fresh noise) form the training set; FullGaussian fitted on that set with the sign symmetry; FullGaussianAnchoredField (network of the size of W9, last layer zero) trained 4000 iterations on the set, read at iterations 0, 250, 1000, 2000 and 4000; W9 retrained from scratch on the set. Each model generates 512 samples at the validation and held-out η, evaluated like any variant (no restart). --quick first as a test of the code.",
+   "script": "E4_SAME_DATA=1 experiments/e4_gpu_job.sh full '0 1 2 3 4' e4_anchorpos P (on a GPU pod; --quick first)",
+   "cost_estimate": "one GPU job of about 1 h for 5 seeds, about 1 USD on an RTX 4090",
+   "status": "registered",
+   "verdict": "",
+   "results": "",
+   "commit": "",
+   "comparison": "model families",
+   "seeds": 5
   }
  ]
 }
