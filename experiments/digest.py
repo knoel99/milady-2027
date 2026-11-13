@@ -386,7 +386,10 @@ def e4():
     from e4_digest import convergence
 
     lines = section()
-    reps = [("e4_anchor", "H28: flow matching anchored on the full-covariance Gaussian law (W14), read along one training of 4000 iterations, "
+    reps = [("e4_surrogate", "H33 and H32: the model with the affine term trained on the data and on Gaussian surrogate data (W9Zb, W9Z), "
+                             "G0, W9 and G1, with the Kac-Rice factors of the null points: groups D, G and Z on a RunPod GPU pod, own regenerated data"),
+            ("e4_surrogate_indep", "H33 and H32 on the data of the independent replication (E4_DATA_SEED=100): groups D, G and Z"),
+            ("e4_anchor", "H28: flow matching anchored on the full-covariance Gaussian law (W14), read along one training of 4000 iterations, "
                           "and G1 sampled exactly: groups G and F on a RunPod GPU pod, own regenerated data"),
             ("e4_anchor_indep", "H28 on the data of the independent replication (E4_DATA_SEED=100): groups G and F"),
             ("e4_nongauss", "tests H25-H27 of the structure beyond a Gaussian law (production split with a jackknife, restart anchored on the "
