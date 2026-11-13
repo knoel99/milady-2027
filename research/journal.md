@@ -2,6 +2,12 @@
 
 One entry per working session, newest first, at most ten lines.
 
+## 2026-11-13 - H45 and H47 refuted, H46 supported, team cursor
+- H45: n = 64, Rm = 9.05859375, seed 1 is still negative, lambda -7.84e-6. The all-positive claim fails. Pod `wc0jpa3u2s9839`, 0.0467 USD.
+- H47: n = 32, Rm = 9.046875, seed 0 is negative, lambda -3.51e-5. Pod `q47is8cxzdfe8b`, 0.0242 USD.
+- H46: n = 48, Rm = 9.09375, seeds 5-9 all positive. Smallest lambda is 0.000192. Pod `xo996or9uzz8ep`, 0.0240 USD.
+- H49, H50, and H51 are the next midpoints. H48, n = 96 at Rm = 9.03125, is still running.
+
 ## 2026-11-13 - H42 and H44 refuted, H40 and H43 supported, team cursor
 - H42: n = 64, Rm = 9.0546875, seed 1 still negative. Seed 4 is positive. The all-positive claim fails. Pod `tzl3ff119nzs2f`, 0.0316 USD.
 - H44: n = 32, Rm = 9.03125, seed 0 is negative. Pod `ju2osfd8pyjc90`, 0.0240 USD.
