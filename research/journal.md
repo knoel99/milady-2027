@@ -2,6 +2,11 @@
 
 One entry per working session, newest first, at most ten lines.
 
+## 2026-11-13 - H143 refuted, team cursor
+- At n = 128, Rm = 9.056640625, seeds 5-9, seed 9 is negative, lambda -5.35e-6. Pod `09sisn0uy6qnop`, PRO 4500, 0.51 h, 0.365 USD.
+- The seeds 5-9 bracket is now between 9.0546875 and 9.056640625. It is not bisected while C1-C5 are the sentinel.
+- H138 and H144 stay in flight. H145 and H146, the constraint comparison, are registered and not yet run.
+
 ## 2026-11-13 - H141 refuted, next step leaves the Rm split, team cursor
 - At n = 136, Rm = 9, seeds 2 and 4 are negative. Most negative is -3.97e-4, seed 2. Pod `v8ijpyib68z0fq`, 0.56 h, 0.4966 USD.
 - n = 128 is positive at this Rm. The resolution bracket stays open. The free slot is not used for n = 132.
