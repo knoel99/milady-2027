@@ -508,6 +508,142 @@ def plot_production(out: Path, tag: str = "") -> None:
            [f"{root.relative_to(HERE.parent)}/e4_mhd3d{tag}_s<k>.json", f"{root.relative_to(HERE.parent)}/e4_reference{tag}.json"])
 
 
+def _job(name: str, tag: str):
+    """Runs and reference of a later job (the quick files of the working directory with --quick)."""
+    root = R if tag else R / "replications" / name
+    ref = read(root / f"e4_reference{tag}.json")
+    return (load(bool(tag), root), ref, root) if ref else (None, None, root)
+
+
+def _seed_stat(runs: dict, v: str, fn, split: str = "test") -> tuple[float, float]:
+    """Seed mean and standard error of ``fn(rows of the split)`` (the error only with enough seeds)."""
+    a = np.array([fn(r["evaluation"][v][split]) for r in runs.values() if r["evaluation"].get(v, {}).get(split)])
+    return float(a.mean()), float(a.std(ddof=1) / np.sqrt(len(a))) if len(a) >= MIN_SEEDS else 0.0
+
+
+def plot_anchor(out: Path, tag: str = "") -> None:
+    """H28: the flow-matching model anchored on the full-covariance Gaussian law, along one training (job e4_anchor)."""
+    runs, ref, root = _job("e4_anchor", tag)
+    names = sorted({v for r in (runs or {}).values() for v in r["evaluation"] if v.startswith("W14_full_anchor_it")},
+                   key=lambda v: int(v.rsplit("it", 1)[1])) if runs else []
+    if len(names) < 2:
+        print("skip e4_anchor_training")
+        return
+    its = [int(v.rsplit("it", 1)[1]) for v in names]
+    x = np.arange(len(its))
+    etas = sorted(rows_of(runs, names[0], "test"), reverse=True)
+    rv = lambda e, k: ref["values"][f"{e:.5f}"][k]                                    # noqa: E731
+    fig, axes = plt.subplots(1, 4, figsize=(13.0, 3.2))
+    ax = axes[0]                                              # distance to the reference law
+    for split, lab in (("test", r"held-out $\eta$"), ("val", r"validation $\eta$"), ("train", r"training $\eta$")):
+        st = [_seed_stat(runs, v, lambda rows: np.mean([q["ed_ratio"] for q in rows]), split) for v in names]
+        ax.errorbar(x, [m for m, _ in st], yerr=[2 * e for _, e in st], color=SPLIT_COL[split], marker=SPLIT_MARK[split], ms=3.5,
+                    capsize=2, lw=1.3, label=lab)
+    if rows_of(runs, "G1_gaussian_full", "test"):
+        g, _ = _seed_stat(runs, "G1_gaussian_full", lambda rows: np.mean([q["ed_ratio"] for q in rows]))
+        ax.axhline(g, color=INK, lw=0.9, ls="--", label=r"G1 sampled exactly, held-out $\eta$")
+    ax.set_ylabel("energy distance / noise floor")
+    ax.legend(fontsize=6.8)
+    ax = axes[1]                                              # third-order part of the production, over that of the reference
+    ax.axhspan(0.3, 1.5, color=LIGHT, alpha=0.5, label="registered band (0.3 to 1.5)")
+    for k, e in enumerate(etas):
+        st = [_seed_stat(runs, v, lambda rows, e=e: [q["prod_fluct_over_d"] for q in rows if q["eta"] == e][0] / rv(e, "prod_fluct_over_d"))
+              for v in names]
+        ax.errorbar(x, [m for m, _ in st], yerr=[2 * s_ for _, s_ in st], color=C[k], marker="o", ms=3.5, capsize=2, lw=1.3,
+                    label=rf"$\eta$ = {e:.4f}")
+    ax.axhline(1, color=INK, lw=0.9, ls="--")
+    ax.axhline(0, color=INK2, lw=0.8)
+    ax.set_ylabel("third-order production / reference")
+    ax.legend(fontsize=6.8)
+    ax = axes[2]                                              # second-order accuracy
+    for key, lab, col in (("prod_mean_over_d", "mean-flow production minus reference", C[0]), ("E_B", r"$E_B/E_{B,\mathrm{ref}} - 1$", C[1])):
+        def worst(rows, key=key):
+            d = [q[key] - rv(q["eta"], key) if key != "E_B" else q[key] / rv(q["eta"], key) - 1 for q in rows]
+            return max(d, key=abs)
+        st = [_seed_stat(runs, v, worst) for v in names]
+        ax.errorbar(x, [m for m, _ in st], yerr=[2 * s_ for _, s_ in st], color=col, marker="o", ms=3.5, capsize=2, lw=1.3, label=lab)
+    ax.axhspan(-0.05, 0.05, color=LIGHT, alpha=0.5, label="registered tolerance (0.05)")
+    ax.axhline(0, color=INK2, lw=0.8)
+    ax.set_ylabel(r"largest deviation over the held-out $\eta$")
+    ax.legend(fontsize=6.8)
+    ax = axes[3]                                              # flow-matching loss on a fixed training sample
+    loss = np.array([[r["times"].get(v, {}).get("fm_loss_train_sample", np.nan) for v in names] for r in runs.values()])
+    m = np.nanmean(loss, axis=0)
+    se = np.nanstd(loss, axis=0, ddof=1) / np.sqrt(len(loss)) if len(loss) >= MIN_SEEDS else np.zeros_like(m)
+    ax.errorbar(x, m, yerr=2 * se, color=INK, marker="o", ms=3.5, capsize=2, lw=1.3)
+    ax.set_ylabel("flow-matching loss, fixed training sample")
+    for ax in axes:
+        ax.set_xticks(x)
+        ax.set_xticklabels([str(i) for i in its])
+        ax.set_xlabel("training iterations (checkpoint of the moving average)")
+    fig.tight_layout()
+    finish(fig, out, "e4_anchor_training", "Flow matching anchored on the Gaussian law with the full covariance (G1), read along one training of "
+           "4000 iterations; iteration 0 is the untrained model, which is G1 integrated like any model. Energy distance over the noise "
+           "floor; third-order part of the magnetic production over that of the reference, per held-out η; largest deviation over the "
+           "held-out η of the mean-flow production and of the magnetic energy from the reference; flow-matching loss on a fixed training "
+           "sample. Seed means; bars: ± 2 standard errors over the seeds.",
+           [f"{root.relative_to(HERE.parent)}/e4_mhd3d{tag}_s<k>.json", f"{root.relative_to(HERE.parent)}/e4_reference{tag}.json"])
+
+
+def plot_recolour(out: Path, tag: str = "") -> None:
+    """H29, H30: samples of W9 recoloured onto the moments of the data; production split and restart (job e4_recolour)."""
+    runs, ref, root = _job("e4_recolour", tag)
+    lab = {"G1_gaussian_full": "G1", "W9R_skip_sym": "W9", "W15_recoloured_modes": "W15\nper mode", "W16_recoloured_full": "W16\nfull",
+           "G4_recoloured_gaussian": "G4\ncontrol"}
+    names = [v for v in lab if runs and rows_of(runs, v, "test") and "prod_fluct_over_d" in next(iter(rows_of(runs, v, "test").values()))[0]]
+    if "W16_recoloured_full" not in names:
+        print("skip e4_recolour")
+        return
+    etas = sorted(rows_of(runs, names[0], "test"), reverse=True)
+    fig, axes = plt.subplots(1, len(etas) + 1, figsize=(3.0 * len(etas) + 4.4, 3.3), gridspec_kw={"width_ratios": [1] * len(etas) + [1.45]})
+    for ax, eta in zip(axes[:-1], etas, strict=True):
+        r = ref["values"][f"{eta:.5f}"]
+        vals = [("reference", r["prod_mean_over_d"], r.get("prod_mean_over_d_se_jack", 0), r["prod_fluct_over_d"], r.get("prod_fluct_over_d_se_jack", 0))]
+        for v in names:
+            a = np.array([[row["prod_mean_over_d"], row["prod_fluct_over_d"]] for row in rows_of(runs, v, "test")[eta]])
+            se = a.std(0, ddof=1) / np.sqrt(len(a)) if len(a) >= MIN_SEEDS else np.zeros(2)
+            vals.append((lab[v], a[:, 0].mean(), se[0], a[:, 1].mean(), se[1]))
+        xs = np.arange(len(vals))
+        ax.set_axisbelow(True)
+        ax.bar(xs - 0.2, [v[1] for v in vals], 0.38, yerr=[2 * v[2] for v in vals], color=C[0], capsize=2, label="mean-flow part")
+        ax.bar(xs + 0.2, [v[3] for v in vals], 0.38, yerr=[2 * v[4] for v in vals], color=C[1], capsize=2, label="third-order part")
+        ax.axhline(1, color=INK, lw=0.9, ls="--")
+        ax.axhline(0, color=INK2, lw=0.8)
+        ax.set_xticks(xs)
+        ax.set_xticklabels([v[0] for v in vals], fontsize=6.6)
+        ax.set_title(rf"held-out $\eta$ = {eta:.4f}", fontsize=9)
+    axes[0].set_ylabel("magnetic production / Ohmic dissipation")
+    hb, lb = axes[0].get_legend_handles_labels()
+    ax = axes[-1]                                             # restart anchored on the reference energy
+    col = {"G1_gaussian_full": C[3], "W9R_skip_sym": C[0], "W15_recoloured_modes": C[2], "W16_recoloured_full": C[1], "G4_recoloured_gaussian": C[6]}
+    rr = [q for q in ref["values"].values() if q["split"] == "test" and "restart_anchor_eb_mean" in q]
+    tau = next(iter(rows_of(runs, names[0], "test").values()))[0]["restart_anchor"]["tau"]
+    x = np.arange(len(tau))
+    if rr:
+        m = np.mean([q["restart_anchor_eb_mean"] for q in rr], axis=0)
+        se = np.mean([q["restart_anchor_eb_se"] for q in rr], axis=0)
+        ax.fill_between(x, m - 2 * se, m + 2 * se, color=LIGHT, alpha=0.6, label="reference snapshots")
+    for v in names:
+        per = np.array([np.mean([row["restart_anchor"]["eb"] for row in r["evaluation"][v]["test"]], axis=0) for r in runs.values()])
+        m = per.mean(0)
+        se = per.std(0, ddof=1) / np.sqrt(len(per)) if len(per) >= MIN_SEEDS else np.zeros_like(m)
+        ax.errorbar(x, m, yerr=2 * se, color=col[v], marker="o", ms=3.2, capsize=2, lw=1.2, label=lab[v].replace("\n", ", "))
+    ax.axhline(0, color=INK2, lw=0.8)
+    ax.set_xticks(x)
+    ax.set_xticklabels([f"{t:g}" for t in tau], fontsize=7.5)
+    ax.set_xlabel(r"time $\tau$ after the restart")
+    ax.set_title(r"restart: $E_B(\tau)/E_{B,\mathrm{ref}} - 1$", fontsize=9)
+    hr, lr = ax.get_legend_handles_labels()
+    fig.legend(hb + hr, lb + lr, fontsize=7, loc="lower center", ncol=len(hb) + len(hr), frameon=False)
+    fig.tight_layout(rect=(0, 0.07, 1, 1))
+    finish(fig, out, "e4_recolour", "Samples of the flow-matching model W9 recoloured at sampling time onto the first and second moments fitted "
+           "on the data: mode by mode (W15) or with the full covariance of G1 (W16); G4: Gaussian draws with the moments of W9 sent through "
+           "the map of W16 (null control). Left: mean magnetic production over the Ohmic dissipation at the held-out η, split into its "
+           "mean-flow and third-order parts (reference: ± 2 jackknife standard errors). Right: magnetic energy after a restart in the solver, "
+           "relative to the stationary energy of the reference, mean over the held-out η. Seed means; bars: ± 2 standard errors over the seeds.",
+           [f"{root.relative_to(HERE.parent)}/e4_mhd3d{tag}_s<k>.json", f"{root.relative_to(HERE.parent)}/e4_reference{tag}.json"])
+
+
 def plot_costs(out: Path) -> None:
     led = HERE.parent / "research" / "compute-ledger.jsonl"
     if not led.exists():
@@ -558,6 +694,8 @@ def main() -> None:
     plot_long(a.out, tag)
     plot_restart(a.out, tag)
     plot_production(a.out, tag)
+    plot_anchor(a.out, tag)
+    plot_recolour(a.out, tag)
     plot_costs(a.out)
     (a.out / "plots.json").write_text(json.dumps(WRITTEN, indent=1), encoding="utf-8")
     print(len(WRITTEN), "plots")
