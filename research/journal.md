@@ -2,6 +2,11 @@
 
 One entry per working session, newest first, at most ten lines.
 
+## 2026-11-13 - H121 refuted, H122 supported, seeds 0-4 split stops, team cursor
+- At n = 96, Rm = 8.93646240234375, seed 7 is negative, lambda -1.20e-6. Pod `ai271fv1pnkcob`, 0.11 h, 0.0998 USD.
+- At n = 96, Rm = 8.89830780029296875, seeds 0-4 are all positive. Smallest is 5.16e-8, seed 3. Pod `pg5oy9szrtgp0t`, 0.11 h, 0.100 USD.
+- The cfl = 1 split for seeds 0-4 stops. Seed 3 is -3.04e-9 at Rm = 8.8983001708984375 and +5.16e-8 one step higher. H123 continues seeds 5-9. H124 repeats the negative neighbour at cfl = 0.5. Local ledger about 13.50 USD.
+
 ## 2026-11-13 - H119 supported, H120 refuted, H121 and H122 registered, team cursor
 - At n = 96, Rm = 8.9366455078125, seeds 5-9 are all positive. Smallest is 8.11e-8, seed 7. Pod `ud32b2k2klsjfy`, 0.11 h, 0.1002 USD.
 - At n = 96, Rm = 8.8983001708984375, seed 3 is negative, lambda -3.04e-9. Pod `hqgasseggjnvrr`, 0.10 h, 0.0924 USD.
