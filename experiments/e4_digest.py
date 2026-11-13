@@ -409,17 +409,22 @@ def section(quick: bool = False, root: Path = R, replication: str | None = None,
                       f"seeds with the sign of the reference and at least half its magnitude: "
                       f"{int(((np.sign(w9) == np.sign(rv['prod_fluct_over_d'])) & (np.abs(w9) >= 0.5 * abs(rv['prod_fluct_over_d']))).sum())} of {len(w9)}.")
         if split and ref and has("G1_gaussian_full") and "prod_mean_over_d_se_jack" in next(iter(ref["values"].values())):
+            vals = sorted(ref["values"].items(), key=lambda kv: -float(kv[0]))
+            P("Third-order part of the magnetic production of the reference over the Ohmic dissipation, at the eleven η (± jackknife SE): "
+              + "; ".join(f"η = {float(e):.4f}: {f(v['prod_fluct_over_d'])} ± {f(v['prod_fluct_over_d_se_jack'])}" for e, v in vals) + ".")
             rows = {}                              # H25, check 2: at the training η, mean-flow part of the reference against P/D of G1
-            for r in runs.values():
-                for x in r["evaluation"]["G1_gaussian_full"].get("train", []):
-                    if "prod_over_d" in x:
-                        rows.setdefault(f"{x['eta']:.5f}", []).append(x["prod_over_d"])
-            for e, g1 in sorted(rows.items(), reverse=True):
+            for sp in ("train", "val"):            # the validation η are outside the registered check: G1 is interpolated there
+                for r in runs.values():
+                    for x in r["evaluation"]["G1_gaussian_full"].get(sp, []):
+                        if "prod_over_d" in x:
+                            rows.setdefault((sp, f"{x['eta']:.5f}"), []).append(x["prod_over_d"])
+            for (sp, e), g1 in sorted(rows.items(), key=lambda kv: (kv[0][0], -float(kv[0][1]))):
                 g1 = np.asarray(g1)
                 rv = ref["values"][e]
                 se_g, se_r = float(g1.std(ddof=1) / np.sqrt(len(g1))) if len(g1) > 1 else float("nan"), rv["prod_mean_over_d_se_jack"]
                 d = float(g1.mean() - rv["prod_mean_over_d"])
-                P(f"H25, check at the training η = {float(e):.4f}: P/D of G1 {f(float(g1.mean()))} ± {f(se_g)} (SE over the seeds), mean-flow part of the "
+                where = "training η" if sp == "train" else "validation η (G1 interpolated, outside the registered check)"
+                P(f"H25, check at the {where} = {float(e):.4f}: P/D of G1 {f(float(g1.mean()))} ± {f(se_g)} (SE over the seeds), mean-flow part of the "
                   f"reference {f(rv['prod_mean_over_d'])} ± {f(se_r)} (jackknife); difference {f(d)}: {f(d / se_g, 2)} SE of G1, "
                   f"{f(d / se_r, 2)} SE of the reference, {f(d / float(np.hypot(se_g, se_r)), 2)} combined SE.")
         # ---- restart anchored on the stationary energy of the reference (reviews of 2026-11-13): a(τ) = E_B(τ)/E_B,ref − 1
