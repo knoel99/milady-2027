@@ -464,7 +464,14 @@ The hypothesis registered for this run (H18) was narrower: that with the affine 
 ```
 
 <!-- e4:scan:begin -->
-*(not available)*
+| Variant | Acts through | ED / floor, training $\eta$ | ED / floor | div B | energy residual | magnetic balance | spectrum of B | magnetic helicity | null points | restart drift $E_B$ | restart drift $E_u$ | polarity | FM loss | Seeds |
+|:--------------------------|:--------|---------:|---------:|---------:|---------:|---------:|---------:|---------:|---------:|---------:|---------:|---------:|---------:|----:|
+| S width 512 | family | 166.0(5) | 205.6(5) | $1.4\times 10^{-8}$ | 0.2737(9) | 0.328(2) | 0.665(6) | 0.186(7) | 2.124(11) | 0.3725(20) | 0.268(3) | 0.0165(11) | 1.608(2) | 5 |
+| S width 2048 | family | 25.3(2) | 25.3(3) | $1.5\times 10^{-8}$ | 0.0130(6) | 0.0960(13) | 0.143(4) | 0.278(6) | 2.004(20) | 0.072(4) | 0.075(4) | 0.0141(12) | 1.2169(17) | 5 |
+| S width 5632 | family | 76(5) | 99(8) | $1.5\times 10^{-8}$ | 0.270(19) | 0.028(3) | 0.35(2) | 0.37(2) | 1.00(6) | 0.46(5) | 0.29(4) | 0.0215(20) | 0.769(3) | 2 |
+| S width 512, 8$\times$ iterations | family | 175.1(14) | 215.8(16) | $1.4\times 10^{-8}$ | 0.2607(20) | 0.398(8) | 0.568(4) | 0.34(2) | 2.187(5) | 0.364(3) | 0.223(7) | 0.013(6) | 1.526(6) | 2 |
+| W9 mode-wise affine term | design | 5.48(11) | 9.40(19) | $1.5\times 10^{-8}$ | 0.0572(14) | 0.0541(5) | 0.148(3) | 0.200(3) | 1.678(14) | 0.127(3) | 0.050(6) | 0.018(3) | 1.1770(13) | 5 |
+| G0 Gaussian per mode (no network) | family | 2.67(8) | 3.52(7) | $1.5\times 10^{-8}$ | 0.0015(3) | 0.9981(9) | 0.024(3) | 0.035(5) | 2.235(7) | 0.212(3) | 0.026(5) | 0.018(3) | – | 5 |
 
 : Width scan (measured; `experiments/results/replications/e4_final_scan`): the equivariant potentials model with the smooth embedding and no affine term, for three widths and two training budgets, against the model with the affine term and the Gaussian baseline. {#tbl-scan}
 
@@ -485,6 +492,9 @@ The number of magnetic null points is the most demanding of the metrics: no gene
 ### Replication with other data {#sec-replication}
 
 <!-- e4:indeptext:begin -->
+The five-seed runs made on pods of the same type reproduce one another to the last digits, because the data and model seeds are the same: they check the reproducibility of the pipeline, not the robustness of the conclusions. For that, the whole protocol (groups A to E, five seeds) was run once more on reference data regenerated with other seeds of the initial conditions (@tbl-indep). The statistics of the two reference sets agree; the noise floors differ by up to a factor of 1.6 at one held-out value, which moves the ratios by 5 to 15 %.
+
+Every conclusion of this section is unchanged in the replication: the first-generation models are between 110 and 490 floors from the reference, in the same order; the affine term brings the equivariant model from 191 to 8.2 floors (a factor of 23); the mode-wise Gaussian law is closer (2.9) and has no magnetic production; the anchored model without correction stays at 43 floors; the null-count errors and restart drifts keep their order.
 <!-- e4:indeptext:end -->
 
 ```{=latex}
@@ -492,9 +502,26 @@ The number of magnetic null points is the most demanding of the metrics: no gene
 ```
 
 <!-- e4:indep:begin -->
-*(The replication with other data seeds is not available.)*
+| Variant | ED / floor, main | ED / floor, other | magnetic balance, main | magnetic balance, other | null points, main | null points, other | restart drift $E_B$, main | restart drift $E_B$, other |
+|:------------------------------|---------:|---------:|---------:|---------:|---------:|---------:|---------:|---------:|
+| W0 free components | 236(6) | 221(8) | 0.159(15) | 0.162(12) | 1.11(5) | 0.98(7) | 0.513(9) | 0.520(10) |
+| W1 divergence penalty | 464(12) | 420(7) | 0.410(5) | 0.395(6) | 0.698(12) | 0.686(7) | 0.5008(14) | 0.4995(20) |
+| W2 final projection | 179(8) | 169(9) | 0.159(15) | 0.162(12) | 0.91(5) | 0.79(8) | 0.443(14) | 0.453(16) |
+| W3 projected flow | 177(7) | 164(8) | 0.161(12) | 0.165(13) | 0.90(7) | 0.82(8) | 0.448(17) | 0.452(19) |
+| W4 vector potentials | 256(7) | 237(6) | 0.149(14) | 0.153(18) | 1.14(7) | 1.05(8) | 0.517(10) | 0.517(10) |
+| W4s potentials, B $\to$ -B equivariant | 209.8(19) | 191(3) | 0.264(14) | 0.256(12) | 1.83(7) | 1.68(6) | 0.382(12) | 0.385(12) |
+| W5 stationarity loss | 215.0(19) | 196.7(8) | 0.516(13) | 0.516(8) | 2.36(2) | 2.209(17) | 0.334(3) | 0.334(2) |
+| W5 control (same fine-tuning, no identity) | 210(2) | 192(3) | 0.251(15) | 0.244(12) | 1.79(7) | 1.64(6) | 0.390(12) | 0.392(11) |
+| W6 diffusion (VP, v-prediction) | 519(17) | 491(10) | 0.213(11) | 0.212(12) | 0.43(2) | 0.456(19) | 0.637(2) | 0.632(2) |
+| W7 exponential tilting | 195(11) | 214(6) | 0.43(4) | 0.41(4) | 2.24(19) | 2.05(6) | – | – |
+| W8 per-sample balance rescaling | 117(2) | 110(3) | 0.195(19) | 0.191(17) | 0.71(8) | 0.63(7) | – | – |
+| W4c potentials, smooth condition | 215.4(3) | 205.8(7) | 0.3843(16) | 0.387(3) | 2.142(12) | 2.018(12) | 0.3826(11) | 0.3807(16) |
+| G0 Gaussian per mode (no network) | 3.52(7) | 2.90(5) | 0.9981(9) | 0.9984(8) | 2.235(7) | 2.102(7) | 0.212(3) | 0.210(3) |
+| W9 mode-wise affine term | 9.3(3) | 8.20(9) | 0.0553(6) | 0.0506(6) | 1.665(14) | 1.551(8) | 0.124(3) | 0.122(4) |
+| W10 anchored on the Gaussian field | 43.6(2) | 43.3(2) | 0.3092(17) | 0.3122(19) | 2.464(16) | 2.323(15) | 0.122(2) | 0.125(4) |
+| W11 anchor + affine term | 8.6(2) | 7.28(13) | 0.0598(6) | 0.0547(7) | 1.696(12) | 1.565(8) | 0.120(2) | 0.121(3) |
 
-: Main run against a replication in which the reference data were regenerated with other seeds of the initial conditions (`E4_DATA_SEED=100`; `experiments/results/replications/e4_indep`); seed mean with its standard error in parentheses, on the held-out $\eta$. {#tbl-indep}
+: Main run ("main") against a replication in which the reference data were regenerated with other seeds of the initial conditions ("other": `E4_DATA_SEED=100`; `experiments/results/replications/e4_indep`); five seeds each, held-out $\eta$, notation of @tbl-comparative. {#tbl-indep}
 
 <!-- e4:indep:end -->
 
@@ -778,7 +805,7 @@ Every GPU job of the pilot is in `research/compute-ledger.jsonl` (@tbl-jobs, @fi
 ```
 
 <!-- e4:jobs:begin -->
-Total: 20 ledger entries, 7.22 GPU hours, 5.38 USD.
+Total: 22 ledger entries, 10.61 GPU hours, 11.04 USD.
 
 | End (UTC) | GPU | USD/h | Hours | USD | Exit | Commit | Command (shortened) |
 |:----------|:------------------|-----:|------:|-----:|:----|:-------|:--------------------------------------------|
@@ -802,6 +829,8 @@ Total: 20 ledger entries, 7.22 GPU hours, 5.38 USD.
 | 11-12 23:27 | RTX PRO 4500 Blackwell | 0.72 | 0.983 | 0.71 | 0 | `62e31c9` | collected after a restart of the session: milady-claude-job- ... |
 | 11-13 00:17 | RTX PRO 4500 Blackwell | 0.72 | 0.879 | 0.63 | 0 | `973fe3a` | collected after a restart of the session: milady-claude-job- ... |
 | 11-13 00:55 | RTX PRO 4500 Blackwell | 0.72 | 1.508 | 1.09 | 0 | `973fe3a` | collected after a restart of the session: milady-claude-job- ... |
+| 11-13 01:25 | GeForce RTX 4090 | 0.89 | 1.356 | 1.21 | 0 | `dfc02a2` | env E4\_DATA\_SEED=100 e4\_gpu\_job.sh full "0 1 2 3 4" e4\_indep ... |
+| 11-13 01:27 | A100-SXM4-80GB | 2.19 | 2.034 | 4.46 | 124 | `973fe3a` | collected after a restart of the session: milady-claude-job- ... |
 
 : GPU jobs of the pilot (generated from `research/compute-ledger.jsonl`). {#tbl-jobs}
 

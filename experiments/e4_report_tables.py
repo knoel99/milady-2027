@@ -180,14 +180,15 @@ def block_indep(main: dict) -> list[str]:
     other = load(False, R / "replications" / "e4_indep")
     if not other:
         return ["*(The replication with other data seeds is not available.)*"]
-    out = ["| Variant | ED / floor, main run | ED / floor, other data seeds | Energy residual, main | Energy residual, other | Null points, main | Null points, other |",
-           "|:---|---:|---:|---:|---:|---:|---:|"]
+    cols = [("ed_ratio", "ED / floor", False), ("balance_residual_magnetic", "magnetic balance", True),
+            ("null_count_err_rel", "null points", True), ("restart_drift_eb", "restart drift $E_B$", True)]
+    out = ["| Variant | " + " | ".join(f"{lab}, main | {lab}, other" for _, lab, _ in cols) + " |",
+           "|:" + "-" * 30 + "|" + ("-" * 9 + ":|") * (2 * len(cols))]
     for v in LABEL:
         if v.endswith("_half") or not n_seeds(main, v) or not n_seeds(other, v):
             continue
-        out.append(f"| {tex(LABEL[v][0])} | {cell(per_seed(main, v, 'ed_ratio'))} | {cell(per_seed(other, v, 'ed_ratio'))} | "
-                   f"{cell(per_seed(main, v, 'balance_residual_total', absolute=True))} | {cell(per_seed(other, v, 'balance_residual_total', absolute=True))} | "
-                   f"{cell(per_seed(main, v, 'null_count_err_rel', absolute=True))} | {cell(per_seed(other, v, 'null_count_err_rel', absolute=True))} |")
+        out.append(f"| {tex(LABEL[v][0])} | " + " | ".join(
+            f"{cell(per_seed(main, v, k, absolute=ab))} | {cell(per_seed(other, v, k, absolute=ab))}" for k, _, ab in cols) + " |")
     return out
 
 

@@ -218,5 +218,27 @@
   "rc": 0,
   "commit": "973fe3a",
   "command": "collected after a restart of the session: milady-claude-job-ec2b370e"
+ },
+ {
+  "time": "2026-11-13T01:25:48Z",
+  "pod": "pabi5rkisndiwc",
+  "gpu": "NVIDIA GeForce RTX 4090",
+  "usd_per_hour": 0.89,
+  "hours": 1.3558,
+  "usd": 1.2066,
+  "rc": 0,
+  "commit": "dfc02a2",
+  "command": "env E4_DATA_SEED=100 bash experiments/e4_gpu_job.sh full \"0 1 2 3 4\" e4_indep all"
+ },
+ {
+  "time": "2026-11-13T01:27:22Z",
+  "pod": "8g0on88hbc34yv",
+  "gpu": "NVIDIA A100-SXM4-80GB",
+  "usd_per_hour": 2.19,
+  "hours": 2.0344,
+  "usd": 4.4553,
+  "rc": 124,
+  "commit": "973fe3a",
+  "command": "collected after a restart of the session: milady-claude-job-967aba8f"
  }
 ]

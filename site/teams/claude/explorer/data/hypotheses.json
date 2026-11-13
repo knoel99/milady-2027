@@ -229,5 +229,38 @@
   "seeds": 5,
   "script": "experiments/e4_mhd3d.py --seed k --group S --device cuda, k = 0..4",
   "commit": ""
+ },
+ {
+  "id": "H22",
+  "statement": "In E4, the failures of the mode-wise Gaussian law G0 on the magnetic energy balance, on the restart drift of the magnetic energy and on the number of null points come from the independence of its Fourier modes and not from its Gaussianity: a Gaussian law with the full covariance of the latent (G1_gaussian_full: sample mean and covariance over all modes at each training η, symmetrised under B → −B, interpolated linearly in log η between the two neighbouring training values) has, on the held-out η, a residual of the mean magnetic energy balance below 0.2, and a lower restart drift of E_B and a lower null-count error than the flow-matching model with the affine term (W9_skip_sym).",
+  "refutation_criterion": "Refuted if, on the held-out η, the seed-mean absolute residual of the magnetic energy balance of G1_gaussian_full is above 0.2, or if, for the restart drift of E_B (τ = 4) or for the null-count error, the paired difference W9_skip_sym − G1_gaussian_full is not larger than 2 SE or G1 is below W9 in fewer than 4 of the 5 seeds. Reported with it, without a criterion: the energy-distance ratio, the restart drift of E_u, the restart curves at τ = 0.5, 1, 2 and 4 and their maxima.",
+  "status": "registered",
+  "verdict": "",
+  "comparison": "model families",
+  "seeds": 5,
+  "script": "experiments/e4_mhd3d.py --group D,E,G,M (experiments/e4_gpu_job.sh on a GPU pod; --quick first)",
+  "commit": ""
+ },
+ {
+  "id": "H23",
+  "statement": "In E4, in the regime where the generator is close to the reference law (the model with the affine term, W9_skip_sym), fine-tuning with the law-level stationarity loss on the energy and magnetic-helicity identities (W12_skip_stationarity: same loss, weight and schedule as W5_stationarity) lowers the absolute residual of the mean energy balance on the held-out η against the control that receives the same fine-tuning without the term (W12_skip_control), without degrading the law.",
+  "refutation_criterion": "Refuted if the paired difference |energy residual|(W12_skip_control) − |energy residual|(W12_skip_stationarity) on the held-out η is not larger than 2 SE or is positive in fewer than 4 of the 5 seeds, or if the seed-mean energy-distance ratio of W12_skip_stationarity exceeds that of W12_skip_control by more than 10 %. Reported with it: the residuals of the magnetic balance and of the magnetic-helicity identity (r_b), the null-count error and the spectrum error.",
+  "status": "registered",
+  "verdict": "",
+  "comparison": "constraint mechanisms",
+  "seeds": 5,
+  "script": "experiments/e4_mhd3d.py --group D,E,G,M (experiments/e4_gpu_job.sh on a GPU pod; --quick first)",
+  "commit": ""
+ },
+ {
+  "id": "H24",
+  "statement": "In E4, exponential tilting on the energy and magnetic-helicity identities does not collapse when the generated law is close to the reference: applied to the samples of W12_skip_control (multipliers fitted on one half of the sample, weights applied to the other half, as for W7_tilting), it keeps an effective sample size above 10 % of the sample on the held-out η and lowers the absolute residual of the mean energy balance against the untilted half.",
+  "refutation_criterion": "Refuted if the seed-mean ESS/N of W13_skip_tilting on the held-out η is below 0.1, or if the paired difference |energy residual|(W12_skip_control_half) − |energy residual|(W13_skip_tilting) is not larger than 2 SE or is positive in fewer than 4 of the 5 seeds.",
+  "status": "registered",
+  "verdict": "",
+  "comparison": "constraint mechanisms",
+  "seeds": 5,
+  "script": "experiments/e4_mhd3d.py --group D,E,G,M (experiments/e4_gpu_job.sh on a GPU pod; --quick first)",
+  "commit": ""
  }
 ]

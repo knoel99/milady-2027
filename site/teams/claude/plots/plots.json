@@ -67,6 +67,13 @@
   ]
  },
  {
+  "name": "e4_width_scan",
+  "caption": "Width scan (hypothesis H21): energy-distance ratio and flow-matching loss of the equivariant potentials model without affine term for three widths and two budgets, against the model with the explicit affine term and the Gaussian baseline. Dashed line: \u03c0/2, the loss of the exact field for independent unit Gaussian coordinates.",
+  "sources": [
+   "experiments/results/replications/e4_final_scan/e4_mhd3d_s<k>.json"
+  ]
+ },
+ {
   "name": "e4_long_trainings",
   "caption": "Gaussian baseline (violet), flow matching with the explicit affine term or the Gaussian anchor at the base budget (blue) and with 8 times the iterations (orange), on the held-out \u03b7: one dot per seed, seed mean \u00b1 2 standard errors.",
   "sources": [
