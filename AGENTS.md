@@ -41,6 +41,7 @@ python3 tools/usage_report.py --write research/usage      # tokens, API-equivale
 python3 tools/review_due.py due|log                       # which encadrant / jury reviews are due now; record one
 python3 tools/cursor_agents.py launch|send|wait|report    # Cursor pilot: Cloud Agents with the role's model and effort
 python3 tools/check_deliverables.py --team <team> [--built]  # report, figures, diagrams, explorer of race/DELIVERABLES.md
+python3 tools/teams_index.py [--check]                    # team cards of the home page, Teams table, Site menu links
 bash tools/install_skills.sh                              # schematic-figure and archify skills, pinned (figures of the deliverables)
 ```
 

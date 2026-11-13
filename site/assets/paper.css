@@ -477,6 +477,21 @@ a.tb-btn:hover { color: #0f172a; }
 .crumbs span { color: var(--muted); }
 @media print { .crumbs, .sitemenu { display: none !important; } }
 
+
+/* ======================= Team cards (home page, tools/teams_index.py) ======================= */
+.team-cards { display: grid; grid-template-columns: repeat(auto-fill, minmax(14rem, 1fr)); gap: .8rem; margin: 1rem 0 1.6rem; }
+.team-card { border: 2px solid var(--hair); border-radius: .5rem; padding: .75rem .9rem; background: var(--bg); }
+.team-card p { margin: 0 0 .35rem; }
+.team-card p:last-child { margin-bottom: 0; }
+.team-card.ready { border-color: var(--accent); border-width: 3px; background: var(--def-bg); }
+.team-name { font-weight: 800; font-size: 1.1rem; margin-right: .4rem; }
+.team-status { display: inline-block; font-size: .8rem; font-weight: 700; padding: .1rem .5rem; border-radius: 1rem;
+  border: 1.5px solid var(--hair); color: var(--muted); vertical-align: middle; }
+.team-card.ready .team-status { background: var(--accent); color: var(--bg); border-color: var(--accent); }
+.team-meta { font-size: .88rem; color: var(--muted); line-height: 1.35; display: block; }
+.team-card.ready p:last-child { font-weight: 700; }
+.team-none { font-size: .9rem; color: var(--muted); font-style: italic; }
+
 /* ======================= Narrow screens ======================= */
 @media (max-width: 52rem) {
   .brand-sub { display: none; }

@@ -262,11 +262,13 @@
     ["supervisors/", "Supervisors"], ["experiments/", "Experiments"], ["computing/", "Computing and data"],
     ["interactive/", "Interactive diagrams"], ["teams/", "Teams"]
   ];
+  /* teams:begin */
   var TEAM_LINKS = [
     ["teams/cursor/report/index.html", "Cursor team: report (HTML)"],
     ["teams/cursor/report/index.pdf", "Cursor team: report (PDF)", true],
     ["teams/cursor/explorer/index.html", "Cursor team: explorer"]
   ];
+  /* teams:end */
   function siteRoot() {
     var s = document.querySelector('script[src$="assets/theme.js"]');
     if (!s) return null;

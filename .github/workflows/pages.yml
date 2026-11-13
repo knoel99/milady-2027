@@ -41,6 +41,9 @@ jobs:
               texlive-fonts-recommended texlive-xetex lmodern
           fi
 
+      - name: Team cards, Teams table and Site menu from site/teams and race/config.toml
+        run: python3 tools/teams_index.py
+
       - name: Render all pages
         run: python3 tools/render.py --all
 
