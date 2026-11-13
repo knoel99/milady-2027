@@ -1,5 +1,5 @@
 {
- "generated": "2026-11-13T03:43:10Z",
+ "generated": "2026-11-13T04:25:34Z",
  "projects": "/root/.claude/projects/-home-user-milady-2027",
  "sessions": 1,
  "main_session": {
@@ -10,23 +10,23 @@
    "high"
   ],
   "expected": "claude-fable-5-2 / high",
-  "responses": 496,
+  "responses": 515,
   "off_spec": 0,
   "conforms": true
  },
  "first": "2026-11-12T16:50:21.852Z",
- "last": "2026-11-13T03:42:39.645Z",
- "span_hours": 10.87,
+ "last": "2026-11-13T04:25:30.891Z",
+ "span_hours": 11.59,
  "by_model": {
   "claude-fable-5-2": {
-   "input": 1304,
-   "cache_write_5m": 1440166,
-   "cache_write_1h": 1641197,
-   "cache_read": 259346183,
-   "output": 1185964,
-   "thinking": 553555,
-   "calls": 657,
-   "usd": 139.98
+   "input": 1367,
+   "cache_write_5m": 1903034,
+   "cache_write_1h": 1690489,
+   "cache_read": 274979332,
+   "output": 1358780,
+   "thinking": 682106,
+   "calls": 689,
+   "usd": 155.44
   },
   "claude-sonnet-5-5": {
    "input": 470,
@@ -39,12 +39,12 @@
    "usd": 8.57
   }
  },
- "total_usd": 148.55,
+ "total_usd": 164.01,
  "subagents": {
-  "count": 25,
+  "count": 26,
   "by_type": {
    "general-purpose": 9,
-   "jury-externe": 4,
+   "jury-externe": 5,
    "biblio": 2,
    "encadrant": 8,
    "physicien": 2
@@ -91,6 +91,23 @@
     "calls": 17,
     "output": 144770,
     "usd": 8.7387,
+    "off_spec": 0,
+    "expected": "claude-fable-5-2 / max",
+    "conforms": true
+   },
+   {
+    "id": "agent-a20e4cd02f7a6aa7b",
+    "type": "jury-externe",
+    "description": "Jury review: report v2",
+    "models": [
+     "claude-fable-5-2"
+    ],
+    "efforts": [
+     "max"
+    ],
+    "calls": 10,
+    "output": 132697,
+    "usd": 10.0026,
     "off_spec": 0,
     "expected": "claude-fable-5-2 / max",
     "conforms": true
@@ -187,9 +204,9 @@
     "efforts": [
      "medium"
     ],
-    "calls": 5,
-    "output": 8718,
-    "usd": 0.9203,
+    "calls": 8,
+    "output": 14273,
+    "usd": 1.3043,
     "off_spec": 0,
     "expected": "claude-fable-5-2 / medium",
     "conforms": true
@@ -452,10 +469,10 @@
   "nonconforming": 0
  },
  "tool_calls": {
-  "Bash": 480,
-  "Read": 34,
-  "Agent": 25,
-  "Write": 10,
+  "Bash": 496,
+  "Read": 35,
+  "Agent": 26,
+  "Write": 11,
   "ToolSearch": 2,
   "mcp__claude-code-remote__get_session": 1,
   "Grep": 1,

@@ -359,6 +359,21 @@ def section(quick: bool = False, root: Path = R, replication: str | None = None,
                 dk = a_ - b_
                 P(f"H24, {label}: untilted half {f(float(np.nanmean(a_)))}, tilted {f(float(np.nanmean(b_)))}; difference {f(float(np.nanmean(dk)))} ± "
                   f"{f(float(np.nanstd(dk, ddof=1) / np.sqrt(len(dk))))}, tilted better in {int((dk > 0).sum())} of {len(dk)} seeds.")
+        for v in ("G0_gaussian_modes", "G1_gaussian_full", "W9_skip_sym", "W11_anchored_skip", "W13_skip_tilting", "S_w2048", "S_w5632"):
+            if has(v):                              # production over Ohmic dissipation, from the signed residual r = (P − D)/(|P| + D)
+                per = {}
+                for r in runs.values():
+                    for x in r["evaluation"].get(v, {}).get("test", []):
+                        per.setdefault(x["eta"], []).append(x["balance_residual_magnetic"])
+                parts = []
+                for e in sorted(per, reverse=True):
+                    rm = float(np.mean(per[e]))
+                    parts.append(f"η = {e:.4f}: residual {f(rm)}, P/D {f((1 + rm) / (1 - rm)) if rm > -1 else '0'}")
+                P(f"Magnetic energy balance of {v} (seed mean per held-out η): " + "; ".join(parts) + ".")
+        for v in ("S_w512", "S_w2048", "S_w5632", "W12_skip_stationarity", "W12_skip_control"):
+            if has(v) and not np.all(np.isnan(per_seed(runs, v, "restart_drift_eb_max"))):
+                P(f"Largest restart drift over τ of {v} (seed mean over the test η): E_B {f(float(np.nanmean(per_seed(runs, v, 'restart_drift_eb_max'))))}, "
+                  f"E_u {f(float(np.nanmean(per_seed(runs, v, 'restart_drift_eu_max'))))}.")
         if has("G1_gaussian_full"):
             rows = [x for r in runs.values() for x in r["evaluation"]["G1_gaussian_full"].get("test", []) if "restart_curve" in x]
             for v in ("G0_gaussian_modes", "G1_gaussian_full", "W9_skip_sym", "W11_anchored_skip"):

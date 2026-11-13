@@ -156,7 +156,7 @@ def block_objectives() -> list[str]:
             out.append(f"| {o['id']} | {f(float(o['target']))} | not measurable | – | no |")
     if sel.exists():
         s = json.loads(sel.read_text())
-        out += [NOTES, f"Generator measured by C1–C5, T1 and T2: `{s.get('variant')}`, the variant with the lowest energy-distance ratio on the "
+        out += [NOTES, f"Generator measured by C1–C5, T1 and T2: `{s.get('variant')}`, the learned variant with the lowest energy-distance ratio on the "
                     "validation $\\eta$ (file `experiments/results/e4_selection.json`)."]
     return out
 
