@@ -41,6 +41,8 @@ LABEL = {
     "W7_tilting": "W7 tilting", "W8_rescaling": "W8 per-sample rescaling",
     "G1_gaussian_full": "G1 Gaussian, full covariance (no network)", "W12_skip_stationarity": "W12 affine + stationarity loss",
     "W12_skip_control": "W12 control", "W13_skip_tilting": "W13 affine + tilting",
+    "G2_gaussianised_W9": "G2 Gaussian law fitted to W9 samples", "G3_gaussianised_G1": "G3 Gaussian law fitted to G1 samples",
+    "W9N_skip_sym": "W9 affine term (base of G2)",
     "S_w512": "width 512", "S_w2048": "width 2048", "S_w5632": "width 5632", "S_w512_long": "width 512, 8× iterations",
     "S_w2048_long": "width 2048, 8× iterations",
 }
@@ -424,36 +426,86 @@ def plot_long(out: Path, tag: str) -> None:
            ["experiments/results/replications/e4_final_long/e4_mhd3d_s<k>.json"])
 
 
-def plot_restart(out: Path) -> None:
-    """Course of the restart drift for the two Gaussian laws and the models with the affine term (run e4_mech)."""
-    runs = load(False, R / "replications" / "e4_mech")
-    names = [v for v in ("G0_gaussian_modes", "G1_gaussian_full", "W9_skip_sym", "W11_anchored_skip") if runs and rows_of(runs, v, "test")]
-    if not names or "restart_curve" not in next(iter(rows_of(runs, names[0], "test").values()))[0]:
+def _nongauss(tag: str):
+    """Runs and reference of the job of the tests H25–H27 (the quick files of the working directory with --quick)."""
+    root = R if tag else R / "replications" / "e4_nongauss"
+    ref = read(root / f"e4_reference{tag}.json")
+    return (load(bool(tag), root), ref, root) if ref else (None, None, root)
+
+
+def plot_restart(out: Path, tag: str = "") -> None:
+    """Restart test anchored on the stationary energies of the reference: a(τ) = E(τ)/E_ref − 1 (job e4_nongauss)."""
+    runs, ref, root = _nongauss(tag)
+    names = [v for v in ("G0_gaussian_modes", "G1_gaussian_full", "W9N_skip_sym", "G2_gaussianised_W9") if runs and rows_of(runs, v, "test")]
+    if not names or "restart_anchor" not in next(iter(rows_of(runs, names[0], "test").values()))[0]:
         print("skip e4_restart_curves")
         return
-    fig, axes = plt.subplots(1, 2, figsize=(8.4, 3.0))
-    for i, v in enumerate(names):
-        per = []                                           # per seed: mean over the held-out η of the signed curves
-        for r in runs.values():
-            rows = [x for x in r["evaluation"].get(v, {}).get("test", []) if "restart_curve" in x]
-            if rows:
-                per.append((np.mean([x["restart_curve"]["eb"] for x in rows], axis=0), np.mean([x["restart_curve"]["eu"] for x in rows], axis=0)))
-        tau = next(iter(rows_of(runs, v, "test").values()))[0]["restart_curve"]["tau"]
-        col = C[6] if v.startswith("G0") else (C[3] if v.startswith("G1") else C[i])
-        for ax, k in zip(axes, (0, 1), strict=True):
-            a = np.array([p[k] for p in per])
-            m = a.mean(0)
-            se = a.std(0, ddof=1) / np.sqrt(len(a)) if len(a) >= MIN_SEEDS else np.zeros_like(m)
-            ax.errorbar([0, *tau], [0, *m], yerr=[0, *(2 * se)], color=col, marker="o", ms=3.5, capsize=2, label=LABEL.get(v, v))
-    for ax, lab in zip(axes, (r"relative change of $E_B$", r"relative change of $E_u$"), strict=True):
+    lab = {"W9N_skip_sym": "W9 affine term", "G2_gaussianised_W9": "G2: Gaussian law fitted to W9 samples"}
+    col = {"G0_gaussian_modes": C[6], "G1_gaussian_full": C[3], "W9N_skip_sym": C[0], "G2_gaussianised_W9": C[1]}
+    fig, axes = plt.subplots(1, 2, figsize=(9.0, 3.7))
+    rr = [x for x in ref["values"].values() if x["split"] == "test" and "restart_anchor_eb_mean" in x]
+    tau = next(iter(rows_of(runs, names[0], "test").values()))[0]["restart_anchor"]["tau"]
+    x = np.arange(len(tau))                                 # equal steps: the times double
+    for ax, key in zip(axes, ("eb", "eu"), strict=True):
+        if rr:
+            m = np.mean([r[f"restart_anchor_{key}_mean"] for r in rr], axis=0)
+            se = np.mean([r[f"restart_anchor_{key}_se"] for r in rr], axis=0)
+            ax.fill_between(x, m - 2 * se, m + 2 * se, color=LIGHT, alpha=0.6, label="reference snapshots (mean ± 2 SE over 4 draws)")
+            ax.plot(x, m, color=INK, lw=1)
+        for v in names:
+            per = np.array([np.mean([row["restart_anchor"][key] for row in r["evaluation"][v]["test"]], axis=0) for r in runs.values()])
+            m = per.mean(0)
+            se = per.std(0, ddof=1) / np.sqrt(len(per)) if len(per) >= MIN_SEEDS else np.zeros_like(m)
+            ax.errorbar(x, m, yerr=2 * se, color=col[v], marker="o", ms=3.5, capsize=2, lw=1.3, label=lab.get(v, LABEL.get(v, v)))
         ax.axhline(0, color=INK2, lw=0.8)
+        ax.set_xticks(x)
+        ax.set_xticklabels([f"{t:g}" for t in tau])
         ax.set_xlabel(r"time $\tau$ after the restart in the solver")
-        ax.set_title(lab)
-    axes[0].legend(fontsize=7)
+    axes[0].set_title(r"magnetic energy: $E_B(\tau)/E_{B,\mathrm{ref}} - 1$")
+    axes[1].set_title(r"kinetic energy: $E_u(\tau)/E_{u,\mathrm{ref}} - 1$")
+    hs, ls = axes[0].get_legend_handles_labels()
+    fig.legend(hs, ls, fontsize=7.2, loc="lower center", ncol=3, frameon=False)
+    fig.tight_layout(rect=(0, 0.11, 1, 1))
+    finish(fig, out, "e4_restart_curves", "Restart test anchored on the reference: energy of the ensemble advanced by the solver, relative to the "
+           "stationary energy of the reference at the same η, against the time after the restart (τ = 0: the bias of the law). Mean over the "
+           "held-out η and the seeds; bars: ± 2 standard errors over the seeds; grey band: reference snapshots.",
+           [f"{root.relative_to(HERE.parent)}/e4_mhd3d{tag}_s<k>.json", f"{root.relative_to(HERE.parent)}/e4_reference{tag}.json"])
+
+
+def plot_production(out: Path, tag: str = "") -> None:
+    """Mean magnetic production over the Ohmic dissipation, split into its mean-flow part and its third-order part (H25)."""
+    runs, ref, root = _nongauss(tag)
+    names = [v for v in ("G0_gaussian_modes", "G1_gaussian_full", "G2_gaussianised_W9", "W9N_skip_sym", "W11_anchored_skip")
+             if runs and rows_of(runs, v, "test") and "prod_fluct_over_d" in next(iter(rows_of(runs, v, "test").values()))[0]]
+    if not names:
+        print("skip e4_production_split")
+        return
+    lab = {"G0_gaussian_modes": "G0", "G1_gaussian_full": "G1", "G2_gaussianised_W9": "G2", "W9N_skip_sym": "W9", "W11_anchored_skip": "W11"}
+    etas = sorted(rows_of(runs, names[0], "test"), reverse=True)
+    fig, axes = plt.subplots(1, len(etas), figsize=(3.1 * len(etas), 3.0), sharey=True)
+    for ax, eta in zip(np.atleast_1d(axes), etas, strict=True):
+        r = ref["values"][f"{eta:.5f}"]
+        vals = [("reference", r["prod_mean_over_d"], r.get("prod_mean_over_d_se_jack", 0), r["prod_fluct_over_d"], r.get("prod_fluct_over_d_se_jack", 0))]
+        for v in names:
+            a = np.array([[row["prod_mean_over_d"], row["prod_fluct_over_d"]] for row in rows_of(runs, v, "test")[eta]])
+            se = a.std(0, ddof=1) / np.sqrt(len(a)) if len(a) >= MIN_SEEDS else np.zeros(2)
+            vals.append((lab[v], a[:, 0].mean(), se[0], a[:, 1].mean(), se[1]))
+        xs = np.arange(len(vals))
+        ax.set_axisbelow(True)
+        ax.bar(xs - 0.2, [v[1] for v in vals], 0.38, yerr=[2 * v[2] for v in vals], color=C[0], capsize=2, label="mean-flow part (second order)")
+        ax.bar(xs + 0.2, [v[3] for v in vals], 0.38, yerr=[2 * v[4] for v in vals], color=C[1], capsize=2, label="third-order part")
+        ax.axhline(1, color=INK, lw=0.9, ls="--")
+        ax.axhline(0, color=INK2, lw=0.8)
+        ax.set_xticks(xs)
+        ax.set_xticklabels([v[0] for v in vals], fontsize=7.5)
+        ax.set_title(rf"held-out $\eta$ = {eta:.4f}", fontsize=9)
+    np.atleast_1d(axes)[0].set_ylabel("magnetic production / Ohmic dissipation")
+    np.atleast_1d(axes)[0].legend(fontsize=7)
     fig.tight_layout()
-    finish(fig, out, "e4_restart_curves", "Restart test: signed relative change of the ensemble-mean magnetic and kinetic energies when the solver "
-           "restarts from generated snapshots, at four times, mean over the held-out η and the seeds (bars: ± 2 standard errors).",
-           ["experiments/results/replications/e4_mech/e4_mhd3d_s<k>.json"])
+    finish(fig, out, "e4_production_split", "Mean magnetic production over the Ohmic dissipation at the three held-out η, split into the part carried "
+           "by the mean flow and the second moments of B and the third-order part; the two parts of a stationary law sum to 1 (dashed line). "
+           "Reference: bars ± 2 jackknife standard errors over the trajectories; laws: ± 2 standard errors over the seeds.",
+           [f"{root.relative_to(HERE.parent)}/e4_mhd3d{tag}_s<k>.json", f"{root.relative_to(HERE.parent)}/e4_reference{tag}.json"])
 
 
 def plot_costs(out: Path) -> None:
@@ -504,7 +556,8 @@ def main() -> None:
     plot_convergence(a.out)
     plot_scan(a.out, tag)
     plot_long(a.out, tag)
-    plot_restart(a.out)
+    plot_restart(a.out, tag)
+    plot_production(a.out, tag)
     plot_costs(a.out)
     (a.out / "plots.json").write_text(json.dumps(WRITTEN, indent=1), encoding="utf-8")
     print(len(WRITTEN), "plots")

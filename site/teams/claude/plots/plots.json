@@ -82,9 +82,18 @@
  },
  {
   "name": "e4_restart_curves",
-  "caption": "Restart test: signed relative change of the ensemble-mean magnetic and kinetic energies when the solver restarts from generated snapshots, at four times, mean over the held-out \u03b7 and the seeds (bars: \u00b1 2 standard errors).",
+  "caption": "Restart test anchored on the reference: energy of the ensemble advanced by the solver, relative to the stationary energy of the reference at the same \u03b7, against the time after the restart (\u03c4 = 0: the bias of the law). Mean over the held-out \u03b7 and the seeds; bars: \u00b1 2 standard errors over the seeds; grey band: reference snapshots.",
   "sources": [
-   "experiments/results/replications/e4_mech/e4_mhd3d_s<k>.json"
+   "experiments/results/replications/e4_nongauss/e4_mhd3d_s<k>.json",
+   "experiments/results/replications/e4_nongauss/e4_reference.json"
+  ]
+ },
+ {
+  "name": "e4_production_split",
+  "caption": "Mean magnetic production over the Ohmic dissipation at the three held-out \u03b7, split into the part carried by the mean flow and the second moments of B and the third-order part; the two parts of a stationary law sum to 1 (dashed line). Reference: bars \u00b1 2 jackknife standard errors over the trajectories; laws: \u00b1 2 standard errors over the seeds.",
+  "sources": [
+   "experiments/results/replications/e4_nongauss/e4_mhd3d_s<k>.json",
+   "experiments/results/replications/e4_nongauss/e4_reference.json"
   ]
  },
  {

@@ -306,5 +306,27 @@
   "rc": 0,
   "commit": "830a40a",
   "command": "collected after a restart of the session: milady-claude-job-443e2c8b"
+ },
+ {
+  "time": "2026-11-13T06:19:16Z",
+  "pod": "5xqx6nfak6zn4e",
+  "gpu": "NVIDIA RTX PRO 4500 Blackwell",
+  "usd_per_hour": 0.72,
+  "hours": 0.8819,
+  "usd": 0.635,
+  "rc": 0,
+  "commit": "2e87cbc",
+  "command": "bash experiments/e4_gpu_job.sh full \"0 1 2 3 4\" e4_nongauss D,E,G,N"
+ },
+ {
+  "time": "2026-11-13T06:21:50Z",
+  "pod": "9dfdw0dvpoftt4",
+  "gpu": "NVIDIA RTX PRO 4500 Blackwell",
+  "usd_per_hour": 0.72,
+  "hours": 0.9178,
+  "usd": 0.6608,
+  "rc": 0,
+  "commit": "2e87cbc",
+  "command": "env E4_DATA_SEED=100 bash experiments/e4_gpu_job.sh full \"0 1 2 3 4\" e4_nongauss_indep D,E,G,N"
  }
 ]

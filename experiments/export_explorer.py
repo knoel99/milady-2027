@@ -26,7 +26,8 @@ ROOT = HERE.parent
 sys.path.insert(0, str(HERE))
 from e4_digest import R, load, per_seed  # noqa: E402
 
-SCALARS = ["ed_ratio", "div_rel_b_max", "balance_residual_total", "balance_residual_magnetic", "restart_drift_eu", "spec_err_b_l2", "spec_err_u_l2", "hel_m_err_rel",
+SCALARS = ["ed_ratio", "div_rel_b_max", "balance_residual_total", "balance_residual_magnetic", "restart_drift_eu",
+           "prod_mean_over_d", "prod_fluct_over_d", "restart_overshoot_eb", "restart_anchor_end_eb", "spec_err_b_l2", "spec_err_u_l2", "hel_m_err_rel",
            "null_count", "null_count_err_rel", "restart_drift_eb", "hc_sign_asym", "E_u", "E_B", "hel_m", "injection",
            "dissipation", "k_lambda"]
 ARRAYS = ["spec_u", "spec_b", "H_shell"]
@@ -41,6 +42,10 @@ METRICS = [  # key, label, use the absolute value, objective of race/teams/claud
     ("restart_drift_eb", "relative drift of the magnetic energy after a solver restart", True, "T1"),
     ("restart_drift_eu", "relative drift of the kinetic energy after a solver restart", True, "–"),
     ("hc_sign_asym", "polarity asymmetry of the cross helicity", True, "T2"),
+    ("prod_fluct_over_d", "third-order part of the magnetic production / Ohmic dissipation (signed)", False, "–"),
+    ("prod_mean_over_d", "mean-flow part of the magnetic production / Ohmic dissipation", False, "–"),
+    ("restart_overshoot_eb", "restart anchored on the reference: overshoot of the magnetic energy", False, "–"),
+    ("restart_anchor_end_eb", "restart anchored on the reference: |E_B/E_B,ref − 1| at τ = 16", False, "–"),
 ]
 LABEL = {
     "W0_free": ("W0 free components", "none"), "W1_penalty": ("W1 divergence penalty", "loss"),
@@ -54,6 +59,9 @@ LABEL = {
     "W10_anchored": ("W10 anchored on the Gaussian field", "design"), "W11_anchored_skip": ("W11 anchor + affine term", "design"),
     "W9L_skip_long": ("W9L affine term, 8× iterations", "design"), "W11L_anchored_skip_long": ("W11L anchor + affine, 8× iterations", "design"),
     "G1_gaussian_full": ("G1 Gaussian, full covariance (no network)", "family"),
+    "G2_gaussianised_W9": ("G2 Gaussian law fitted to W9 samples (no network at sampling)", "family"),
+    "G3_gaussianised_G1": ("G3 Gaussian law fitted to G1 samples (null control)", "family"),
+    "W9N_skip_sym": ("W9 mode-wise affine term (base of G2, same job)", "design"),
     "W12_skip_stationarity": ("W12 affine term + stationarity loss", "loss"),
     "W12_skip_control": ("W12 control (same fine-tuning, no identity)", "loss"),
     "W13_skip_tilting": ("W13 affine term + exponential tilting", "sampling"),
@@ -68,7 +76,7 @@ HYP = {  # hypotheses in which a variant is one side of the registered compariso
     "W5_control": ["H7"], "W6_diffusion": ["H10"], "W7_tilting": ["H8", "H12"], "W8_rescaling": [],
     "W4c_potentials_smooth": ["H15"], "G0_gaussian_modes": ["H16", "H18", "H19", "H20"], "W9_skip_sym": ["H17", "H18"],
     "W10_anchored": ["H19", "H20"], "W11_anchored_skip": ["H20"], "W9L_skip_long": ["H18"], "W11L_anchored_skip_long": ["H18", "H20"],
-    "G1_gaussian_full": ["H22"], "W12_skip_stationarity": ["H23"], "W12_skip_control": ["H23", "H24"], "W13_skip_tilting": ["H24"],
+    "G1_gaussian_full": ["H22", "H26"], "G2_gaussianised_W9": ["H25", "H27"], "G3_gaussianised_G1": ["H27"], "W9N_skip_sym": ["H25", "H26", "H27"], "W12_skip_stationarity": ["H23"], "W12_skip_control": ["H23", "H24"], "W13_skip_tilting": ["H24"],
     "S_w512": ["H21"], "S_w2048": ["H21"], "S_w5632": ["H21"], "S_w512_long": ["H21"], "S_w2048_long": ["H21"],
 }
 
@@ -122,7 +130,7 @@ def table_row(name: str, runs: dict, source: str, verdicts: dict) -> dict:
 def slices(quick: bool) -> dict | None:
     tag = "_quick" if quick else ""
     files = sorted(R.glob(f"e4_samples{tag}_s0_*.npz"), key=lambda p: -p.stat().st_size)
-    for name in ("e4_final_long", "e4_mech"):                        # fields of the variants the main run does not hold
+    for name in ("e4_final_long", "e4_mech", "e4_nongauss"):                        # fields of the variants the main run does not hold
         files += sorted((R / "replications" / name).glob(f"e4_samples{tag}_s0_*.npz"))
     fields: dict = {}
     eta = None
@@ -161,7 +169,7 @@ def main() -> None:
 
     sets = [("experiments/results", load(a.quick))]
     if not a.quick:
-        sets += [(f"experiments/results/replications/{n}", load(False, R / "replications" / n)) for n in ("e4_final_long", "e4_mech", "e4_scan2", "e4_final_scan")]
+        sets += [(f"experiments/results/replications/{n}", load(False, R / "replications" / n)) for n in ("e4_final_long", "e4_nongauss", "e4_mech", "e4_scan2", "e4_final_scan")]
     variants, table, seen = [], [], set()
     for source, runs in sets:
         if not runs:

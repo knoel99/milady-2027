@@ -156,7 +156,7 @@ def block_objectives() -> list[str]:
             out.append(f"| {o['id']} | {f(float(o['target']))} | not measurable | – | no |")
     if sel.exists():
         s = json.loads(sel.read_text())
-        out += [NOTES, f"Generator measured by C1–C5, T1 and T2: `{s.get('variant')}`, the learned variant with the lowest energy-distance ratio on the "
+        out += [NOTES, f"Generator measured by C1–C5, T1 and T2: `{s.get('variant')}`, the learned variant of the main run with the lowest energy-distance ratio on the "
                     "validation $\\eta$ (file `experiments/results/e4_selection.json`)."]
     return out
 
@@ -192,6 +192,48 @@ def block_indep(main: dict) -> list[str]:
     return out
 
 
+def block_split() -> list[str]:
+    """Production split and restart anchored on the reference energy (H25–H27), from the job e4_nongauss."""
+    root = R / "replications" / "e4_nongauss"
+    runs = load(False, root)
+    if not runs or not (root / "e4_reference.json").exists():
+        return ["*(not available)*"]
+    ref = json.loads((root / "e4_reference.json").read_text())["values"]
+    names = [v for v in ("G0_gaussian_modes", "G1_gaussian_full", "G3_gaussianised_G1", "W9N_skip_sym", "G2_gaussianised_W9", "W11_anchored_skip",
+                         "W10_anchored") if n_seeds(runs, v)]
+    etas = sorted({x["eta"] for r in runs.values() for x in r["evaluation"][names[0]]["test"]}, reverse=True)
+    lab = {"W9N_skip_sym": "W9 mode-wise affine term", "G2_gaussianised_W9": "G2 Gaussian law fitted to W9 samples",
+           "G3_gaussianised_G1": "G3 Gaussian law fitted to G1 samples (null control)"}
+    head = ["Law"] + [f"mean-flow part, $\\eta$ = {e:.4f}" for e in etas] + [f"third-order part, $\\eta$ = {e:.4f}" for e in etas] + \
+           ["$a_B(0)$", "overshoot of $E_B$", "$|a_B|$ at $\\tau = 16$"]
+    out = ["| " + " | ".join(head) + " |", "|:" + "-" * 26 + "|" + ("-" * 9 + ":|") * (len(head) - 1)]
+
+    def pm(m: float, se: float) -> str:
+        return cell(np.array([m - se, m + se])) if se > 0 else f(m)       # two points with this mean and this SE (sd·√2/√2)
+
+    rr = [ref[f"{e:.5f}"] for e in etas]
+    row = ["reference (SE: jackknife over trajectories; 4 restart draws)"]
+    row += [pm(r["prod_mean_over_d"], r.get("prod_mean_over_d_se_jack", 0.0)) for r in rr]
+    row += [pm(r["prod_fluct_over_d"], r.get("prod_fluct_over_d_se_jack", 0.0)) for r in rr]
+    if "restart_anchor_eb_mean" in rr[0]:
+        a0 = np.array([r["restart_anchor_eb_mean"][0] for r in rr])
+        ov = np.array([max(abs(v) for v in r["restart_anchor_eb_mean"][1:]) - abs(r["restart_anchor_eb_mean"][0]) for r in rr])
+        en = np.array([abs(r["restart_anchor_eb_mean"][-1]) for r in rr])
+        row += [f(float(a0.mean())), f(float(ov.mean())), f(float(en.mean()))]
+    else:
+        row += ["–", "–", "–"]
+    out.append("| " + " | ".join(row) + " |")
+    for v in names:
+        row = [tex(lab.get(v, LABEL.get(v, (v, ""))[0]))]
+        for key in ("prod_mean_over_d", "prod_fluct_over_d"):
+            for e in etas:
+                row.append(cell(np.array([x[key] for r in runs.values() for x in r["evaluation"][v]["test"] if x["eta"] == e])))
+        a0 = np.array([np.mean([x["restart_anchor"]["eb"][0] for x in r["evaluation"][v]["test"]]) for r in runs.values()])
+        row += [cell(a0), cell(per_seed(runs, v, "restart_overshoot_eb")), cell(per_seed(runs, v, "restart_anchor_end_eb"))]
+        out.append("| " + " | ".join(row) + " |")
+    return out
+
+
 def blocks() -> dict[str, list[str]]:
     main = load(False)
     names = [v for v in LABEL if not v.endswith("_half") and not v.startswith("S_") and not v.endswith("_long")]
@@ -209,6 +251,7 @@ def blocks() -> dict[str, list[str]]:
         "mech": variants_table(mech, ["G0_gaussian_modes", "G1_gaussian_full", "W9_skip_sym", "W11_anchored_skip", "W12_skip_control",
                                       "W12_skip_stationarity", "W12_skip_control_half", "W13_skip_tilting"]) if mech else ["*(not available)*"],
         "indep": block_indep(main),
+        "split": block_split(),
         "objectives": block_objectives(),
         "jobs": block_jobs(),
     }

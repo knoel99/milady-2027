@@ -386,7 +386,11 @@ def e4():
     from e4_digest import convergence
 
     lines = section()
-    reps = [("e4_final_long", "long trainings: groups D, E and L (W9L, W11L: 8 times the iterations) on a RunPod GPU pod, own regenerated data"),
+    reps = [("e4_nongauss", "tests H25-H27 of the structure beyond a Gaussian law (production split with a jackknife, restart anchored on the "
+                            "reference energy up to 16 tau, Gaussianised W9 with a null control): groups D, E, G and N on a RunPod GPU pod, "
+                            "own regenerated data"),
+            ("e4_nongauss_indep", "the same tests H25-H27 on the data of the independent replication (E4_DATA_SEED=100)"),
+            ("e4_final_long", "long trainings: groups D, E and L (W9L, W11L: 8 times the iterations) on a RunPod GPU pod, own regenerated data"),
             ("e4_mech", "Gaussian law with the inter-mode covariance (G1) and loss and tilting on the model with the affine term: groups D, E, G "
                         "and M on a RunPod GPU pod, own regenerated data; restart drift recorded at four times"),
             ("e4_g1indep", "the two Gaussian laws and the model with the affine term (groups D and G) on the data of the independent "

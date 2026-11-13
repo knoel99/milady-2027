@@ -59,6 +59,30 @@
    "label": "polarity asymmetry of the cross helicity",
    "abs": true,
    "objective": "T2"
+  },
+  {
+   "key": "prod_fluct_over_d",
+   "label": "third-order part of the magnetic production / Ohmic dissipation (signed)",
+   "abs": false,
+   "objective": "\u2013"
+  },
+  {
+   "key": "prod_mean_over_d",
+   "label": "mean-flow part of the magnetic production / Ohmic dissipation",
+   "abs": false,
+   "objective": "\u2013"
+  },
+  {
+   "key": "restart_overshoot_eb",
+   "label": "restart anchored on the reference: overshoot of the magnetic energy",
+   "abs": false,
+   "objective": "\u2013"
+  },
+  {
+   "key": "restart_anchor_end_eb",
+   "label": "restart anchored on the reference: |E_B/E_B,ref \u2212 1| at \u03c4 = 16",
+   "abs": false,
+   "objective": "\u2013"
   }
  ],
  "rows": [
@@ -127,6 +151,26 @@
     "se": 0.0028348,
     "n": 5
    },
+   "prod_fluct_over_d": {
+    "mean": null,
+    "se": null,
+    "n": 0
+   },
+   "prod_mean_over_d": {
+    "mean": null,
+    "se": null,
+    "n": 0
+   },
+   "restart_overshoot_eb": {
+    "mean": null,
+    "se": null,
+    "n": 0
+   },
+   "restart_anchor_end_eb": {
+    "mean": null,
+    "se": null,
+    "n": 0
+   },
    "ed_ratio_train": {
     "mean": 165.4,
     "se": 0.48329,
@@ -193,6 +237,26 @@
     "mean": 0.020313,
     "se": 0.0044366,
     "n": 5
+   },
+   "prod_fluct_over_d": {
+    "mean": null,
+    "se": null,
+    "n": 0
+   },
+   "prod_mean_over_d": {
+    "mean": null,
+    "se": null,
+    "n": 0
+   },
+   "restart_overshoot_eb": {
+    "mean": null,
+    "se": null,
+    "n": 0
+   },
+   "restart_anchor_end_eb": {
+    "mean": null,
+    "se": null,
+    "n": 0
    },
    "ed_ratio_train": {
     "mean": 274.53,
@@ -261,6 +325,26 @@
     "se": 0.0039095,
     "n": 5
    },
+   "prod_fluct_over_d": {
+    "mean": null,
+    "se": null,
+    "n": 0
+   },
+   "prod_mean_over_d": {
+    "mean": null,
+    "se": null,
+    "n": 0
+   },
+   "restart_overshoot_eb": {
+    "mean": null,
+    "se": null,
+    "n": 0
+   },
+   "restart_anchor_end_eb": {
+    "mean": null,
+    "se": null,
+    "n": 0
+   },
    "ed_ratio_train": {
     "mean": 106.88,
     "se": 0.60255,
@@ -327,6 +411,26 @@
     "mean": 0.015365,
     "se": 0.0022981,
     "n": 5
+   },
+   "prod_fluct_over_d": {
+    "mean": null,
+    "se": null,
+    "n": 0
+   },
+   "prod_mean_over_d": {
+    "mean": null,
+    "se": null,
+    "n": 0
+   },
+   "restart_overshoot_eb": {
+    "mean": null,
+    "se": null,
+    "n": 0
+   },
+   "restart_anchor_end_eb": {
+    "mean": null,
+    "se": null,
+    "n": 0
    },
    "ed_ratio_train": {
     "mean": 105.84,
@@ -407,6 +511,26 @@
     "se": 0.0031466,
     "n": 5
    },
+   "prod_fluct_over_d": {
+    "mean": null,
+    "se": null,
+    "n": 0
+   },
+   "prod_mean_over_d": {
+    "mean": null,
+    "se": null,
+    "n": 0
+   },
+   "restart_overshoot_eb": {
+    "mean": null,
+    "se": null,
+    "n": 0
+   },
+   "restart_anchor_end_eb": {
+    "mean": null,
+    "se": null,
+    "n": 0
+   },
    "ed_ratio_train": {
     "mean": 175.45,
     "se": 0.51444,
@@ -482,6 +606,26 @@
     "se": 0.0029434,
     "n": 5
    },
+   "prod_fluct_over_d": {
+    "mean": null,
+    "se": null,
+    "n": 0
+   },
+   "prod_mean_over_d": {
+    "mean": null,
+    "se": null,
+    "n": 0
+   },
+   "restart_overshoot_eb": {
+    "mean": null,
+    "se": null,
+    "n": 0
+   },
+   "restart_anchor_end_eb": {
+    "mean": null,
+    "se": null,
+    "n": 0
+   },
    "ed_ratio_train": {
     "mean": 166.34,
     "se": 0.25523,
@@ -553,6 +697,26 @@
     "se": 0.0023528,
     "n": 5
    },
+   "prod_fluct_over_d": {
+    "mean": null,
+    "se": null,
+    "n": 0
+   },
+   "prod_mean_over_d": {
+    "mean": null,
+    "se": null,
+    "n": 0
+   },
+   "restart_overshoot_eb": {
+    "mean": null,
+    "se": null,
+    "n": 0
+   },
+   "restart_anchor_end_eb": {
+    "mean": null,
+    "se": null,
+    "n": 0
+   },
    "ed_ratio_train": {
     "mean": 165.12,
     "se": 0.48495,
@@ -620,6 +784,26 @@
     "se": 0.0023868,
     "n": 5
    },
+   "prod_fluct_over_d": {
+    "mean": null,
+    "se": null,
+    "n": 0
+   },
+   "prod_mean_over_d": {
+    "mean": null,
+    "se": null,
+    "n": 0
+   },
+   "restart_overshoot_eb": {
+    "mean": null,
+    "se": null,
+    "n": 0
+   },
+   "restart_anchor_end_eb": {
+    "mean": null,
+    "se": null,
+    "n": 0
+   },
    "ed_ratio_train": {
     "mean": 166.36,
     "se": 0.30048,
@@ -686,6 +870,26 @@
     "mean": 0.022266,
     "se": 0.0062899,
     "n": 5
+   },
+   "prod_fluct_over_d": {
+    "mean": null,
+    "se": null,
+    "n": 0
+   },
+   "prod_mean_over_d": {
+    "mean": null,
+    "se": null,
+    "n": 0
+   },
+   "restart_overshoot_eb": {
+    "mean": null,
+    "se": null,
+    "n": 0
+   },
+   "restart_anchor_end_eb": {
+    "mean": null,
+    "se": null,
+    "n": 0
    },
    "ed_ratio_train": {
     "mean": 160.38,
@@ -758,6 +962,26 @@
     "se": 0.032859,
     "n": 5
    },
+   "prod_fluct_over_d": {
+    "mean": null,
+    "se": null,
+    "n": 0
+   },
+   "prod_mean_over_d": {
+    "mean": null,
+    "se": null,
+    "n": 0
+   },
+   "restart_overshoot_eb": {
+    "mean": null,
+    "se": null,
+    "n": 0
+   },
+   "restart_anchor_end_eb": {
+    "mean": null,
+    "se": null,
+    "n": 0
+   },
    "ed_ratio_train": {
     "mean": 160.98,
     "se": 8.9893,
@@ -819,6 +1043,26 @@
     "mean": 0.013411,
     "se": 0.0018019,
     "n": 5
+   },
+   "prod_fluct_over_d": {
+    "mean": null,
+    "se": null,
+    "n": 0
+   },
+   "prod_mean_over_d": {
+    "mean": null,
+    "se": null,
+    "n": 0
+   },
+   "restart_overshoot_eb": {
+    "mean": null,
+    "se": null,
+    "n": 0
+   },
+   "restart_anchor_end_eb": {
+    "mean": null,
+    "se": null,
+    "n": 0
    },
    "ed_ratio_train": {
     "mean": 92.899,
@@ -886,6 +1130,26 @@
     "mean": 0.013932,
     "se": 0.0018711,
     "n": 5
+   },
+   "prod_fluct_over_d": {
+    "mean": null,
+    "se": null,
+    "n": 0
+   },
+   "prod_mean_over_d": {
+    "mean": null,
+    "se": null,
+    "n": 0
+   },
+   "restart_overshoot_eb": {
+    "mean": null,
+    "se": null,
+    "n": 0
+   },
+   "restart_anchor_end_eb": {
+    "mean": null,
+    "se": null,
+    "n": 0
    },
    "ed_ratio_train": {
     "mean": 175.1,
@@ -966,6 +1230,26 @@
     "se": 0.0028601,
     "n": 5
    },
+   "prod_fluct_over_d": {
+    "mean": null,
+    "se": null,
+    "n": 0
+   },
+   "prod_mean_over_d": {
+    "mean": null,
+    "se": null,
+    "n": 0
+   },
+   "restart_overshoot_eb": {
+    "mean": null,
+    "se": null,
+    "n": 0
+   },
+   "restart_anchor_end_eb": {
+    "mean": null,
+    "se": null,
+    "n": 0
+   },
    "ed_ratio_train": {
     "mean": 2.6701,
     "se": 0.079632,
@@ -1036,6 +1320,26 @@
     "mean": 0.01862,
     "se": 0.0036458,
     "n": 5
+   },
+   "prod_fluct_over_d": {
+    "mean": null,
+    "se": null,
+    "n": 0
+   },
+   "prod_mean_over_d": {
+    "mean": null,
+    "se": null,
+    "n": 0
+   },
+   "restart_overshoot_eb": {
+    "mean": null,
+    "se": null,
+    "n": 0
+   },
+   "restart_anchor_end_eb": {
+    "mean": null,
+    "se": null,
+    "n": 0
    },
    "ed_ratio_train": {
     "mean": 5.5053,
@@ -1108,6 +1412,26 @@
     "se": 0.0009068,
     "n": 5
    },
+   "prod_fluct_over_d": {
+    "mean": null,
+    "se": null,
+    "n": 0
+   },
+   "prod_mean_over_d": {
+    "mean": null,
+    "se": null,
+    "n": 0
+   },
+   "restart_overshoot_eb": {
+    "mean": null,
+    "se": null,
+    "n": 0
+   },
+   "restart_anchor_end_eb": {
+    "mean": null,
+    "se": null,
+    "n": 0
+   },
    "ed_ratio_train": {
     "mean": 36.373,
     "se": 0.10341,
@@ -1175,6 +1499,26 @@
     "se": 0.0010294,
     "n": 5
    },
+   "prod_fluct_over_d": {
+    "mean": null,
+    "se": null,
+    "n": 0
+   },
+   "prod_mean_over_d": {
+    "mean": null,
+    "se": null,
+    "n": 0
+   },
+   "restart_overshoot_eb": {
+    "mean": null,
+    "se": null,
+    "n": 0
+   },
+   "restart_anchor_end_eb": {
+    "mean": null,
+    "se": null,
+    "n": 0
+   },
    "ed_ratio_train": {
     "mean": 5.5211,
     "se": 0.13314,
@@ -1241,6 +1585,26 @@
     "mean": 0.014714,
     "se": 0.0014352,
     "n": 5
+   },
+   "prod_fluct_over_d": {
+    "mean": null,
+    "se": null,
+    "n": 0
+   },
+   "prod_mean_over_d": {
+    "mean": null,
+    "se": null,
+    "n": 0
+   },
+   "restart_overshoot_eb": {
+    "mean": null,
+    "se": null,
+    "n": 0
+   },
+   "restart_anchor_end_eb": {
+    "mean": null,
+    "se": null,
+    "n": 0
    },
    "ed_ratio_train": {
     "mean": 11.914,
@@ -1313,6 +1677,26 @@
     "se": 0.0047307,
     "n": 5
    },
+   "prod_fluct_over_d": {
+    "mean": null,
+    "se": null,
+    "n": 0
+   },
+   "prod_mean_over_d": {
+    "mean": null,
+    "se": null,
+    "n": 0
+   },
+   "restart_overshoot_eb": {
+    "mean": null,
+    "se": null,
+    "n": 0
+   },
+   "restart_anchor_end_eb": {
+    "mean": null,
+    "se": null,
+    "n": 0
+   },
    "ed_ratio_train": {
     "mean": 12.049,
     "se": 0.46731,
@@ -1323,10 +1707,14 @@
    "id": "G1_gaussian_full",
    "label": "G1 Gaussian, full covariance (no network)",
    "where": "family",
-   "source": "experiments/results/replications/e4_mech",
+   "source": "experiments/results/replications/e4_nongauss",
    "hypotheses": [
     {
      "id": "H22",
+     "status": "supported"
+    },
+    {
+     "id": "H26",
      "status": "supported"
     }
    ],
@@ -1361,8 +1749,8 @@
     "n": 5
    },
    "null_count_err_rel": {
-    "mean": 1.0968,
-    "se": 0.011148,
+    "mean": 1.1156,
+    "se": 0.01133,
     "n": 5
    },
    "restart_drift_eb": {
@@ -1380,9 +1768,302 @@
     "se": 0.0019357,
     "n": 5
    },
+   "prod_fluct_over_d": {
+    "mean": 0.00023123,
+    "se": 0.00041629,
+    "n": 5
+   },
+   "prod_mean_over_d": {
+    "mean": 1.1084,
+    "se": 0.0009891,
+    "n": 5
+   },
+   "restart_overshoot_eb": {
+    "mean": 0.09136,
+    "se": 0.007781,
+    "n": 5
+   },
+   "restart_anchor_end_eb": {
+    "mean": 0.014253,
+    "se": 0.003689,
+    "n": 5
+   },
    "ed_ratio_train": {
     "mean": 1.8964,
     "se": 0.046709,
+    "n": 5
+   }
+  },
+  {
+   "id": "G2_gaussianised_W9",
+   "label": "G2 Gaussian law fitted to W9 samples (no network at sampling)",
+   "where": "family",
+   "source": "experiments/results/replications/e4_nongauss",
+   "hypotheses": [
+    {
+     "id": "H25",
+     "status": "refuted"
+    },
+    {
+     "id": "H27",
+     "status": "refuted"
+    }
+   ],
+   "ed_ratio": {
+    "mean": 9.9069,
+    "se": 0.43926,
+    "n": 5
+   },
+   "div_rel_b_max": {
+    "mean": 1.4993e-08,
+    "se": 2.065e-11,
+    "n": 5
+   },
+   "balance_residual_total": {
+    "mean": 0.057117,
+    "se": 0.0019092,
+    "n": 5
+   },
+   "balance_residual_magnetic": {
+    "mean": 0.061572,
+    "se": 0.00055108,
+    "n": 5
+   },
+   "spec_err_b_l2": {
+    "mean": 0.14774,
+    "se": 0.0055642,
+    "n": 5
+   },
+   "hel_m_err_rel": {
+    "mean": 0.19766,
+    "se": 0.0067765,
+    "n": 5
+   },
+   "null_count_err_rel": {
+    "mean": 1.7304,
+    "se": 0.024097,
+    "n": 5
+   },
+   "restart_drift_eb": {
+    "mean": 0.16962,
+    "se": 0.0064232,
+    "n": 5
+   },
+   "restart_drift_eu": {
+    "mean": 0.030416,
+    "se": 0.0033822,
+    "n": 5
+   },
+   "hc_sign_asym": {
+    "mean": 0.01849,
+    "se": 0.0042222,
+    "n": 5
+   },
+   "prod_fluct_over_d": {
+    "mean": -0.00040057,
+    "se": 0.0003804,
+    "n": 5
+   },
+   "prod_mean_over_d": {
+    "mean": 0.97808,
+    "se": 0.0031379,
+    "n": 5
+   },
+   "restart_overshoot_eb": {
+    "mean": -0.0006014,
+    "se": 0.00034523,
+    "n": 5
+   },
+   "restart_anchor_end_eb": {
+    "mean": 0.015828,
+    "se": 0.0028728,
+    "n": 5
+   },
+   "ed_ratio_train": {
+    "mean": 6.8894,
+    "se": 0.1017,
+    "n": 5
+   }
+  },
+  {
+   "id": "G3_gaussianised_G1",
+   "label": "G3 Gaussian law fitted to G1 samples (null control)",
+   "where": "family",
+   "source": "experiments/results/replications/e4_nongauss",
+   "hypotheses": [
+    {
+     "id": "H27",
+     "status": "refuted"
+    }
+   ],
+   "ed_ratio": {
+    "mean": 2.5847,
+    "se": 0.03146,
+    "n": 5
+   },
+   "div_rel_b_max": {
+    "mean": 1.489e-08,
+    "se": 7.2039e-11,
+    "n": 5
+   },
+   "balance_residual_total": {
+    "mean": 0.0030097,
+    "se": 0.00064927,
+    "n": 5
+   },
+   "balance_residual_magnetic": {
+    "mean": 0.072792,
+    "se": 0.00058807,
+    "n": 5
+   },
+   "spec_err_b_l2": {
+    "mean": 0.02138,
+    "se": 0.0011055,
+    "n": 5
+   },
+   "hel_m_err_rel": {
+    "mean": 0.030422,
+    "se": 0.0018012,
+    "n": 5
+   },
+   "null_count_err_rel": {
+    "mean": 1.1395,
+    "se": 0.0068804,
+    "n": 5
+   },
+   "restart_drift_eb": {
+    "mean": 0.062949,
+    "se": 0.0033451,
+    "n": 5
+   },
+   "restart_drift_eu": {
+    "mean": 0.084043,
+    "se": 0.0018129,
+    "n": 5
+   },
+   "hc_sign_asym": {
+    "mean": 0.015625,
+    "se": 0.0015406,
+    "n": 5
+   },
+   "prod_fluct_over_d": {
+    "mean": 0.0010577,
+    "se": 8.7132e-05,
+    "n": 5
+   },
+   "prod_mean_over_d": {
+    "mean": 1.106,
+    "se": 0.00068303,
+    "n": 5
+   },
+   "restart_overshoot_eb": {
+    "mean": 0.067732,
+    "se": 0.0080967,
+    "n": 5
+   },
+   "restart_anchor_end_eb": {
+    "mean": 0.017517,
+    "se": 0.0018415,
+    "n": 5
+   },
+   "ed_ratio_train": {
+    "mean": 1.9554,
+    "se": 0.062328,
+    "n": 5
+   }
+  },
+  {
+   "id": "W9N_skip_sym",
+   "label": "W9 mode-wise affine term (base of G2, same job)",
+   "where": "design",
+   "source": "experiments/results/replications/e4_nongauss",
+   "hypotheses": [
+    {
+     "id": "H25",
+     "status": "refuted"
+    },
+    {
+     "id": "H26",
+     "status": "supported"
+    },
+    {
+     "id": "H27",
+     "status": "refuted"
+    }
+   ],
+   "ed_ratio": {
+    "mean": 9.3494,
+    "se": 0.2881,
+    "n": 5
+   },
+   "div_rel_b_max": {
+    "mean": 1.5174e-08,
+    "se": 5.3657e-11,
+    "n": 5
+   },
+   "balance_residual_total": {
+    "mean": 0.056719,
+    "se": 0.0016833,
+    "n": 5
+   },
+   "balance_residual_magnetic": {
+    "mean": 0.055282,
+    "se": 0.00056329,
+    "n": 5
+   },
+   "spec_err_b_l2": {
+    "mean": 0.14482,
+    "se": 0.0029237,
+    "n": 5
+   },
+   "hel_m_err_rel": {
+    "mean": 0.19569,
+    "se": 0.0037808,
+    "n": 5
+   },
+   "null_count_err_rel": {
+    "mean": 1.6877,
+    "se": 0.013923,
+    "n": 5
+   },
+   "restart_drift_eb": {
+    "mean": 0.1242,
+    "se": 0.003444,
+    "n": 5
+   },
+   "restart_drift_eu": {
+    "mean": 0.053008,
+    "se": 0.0056519,
+    "n": 5
+   },
+   "hc_sign_asym": {
+    "mean": 0.01862,
+    "se": 0.0036458,
+    "n": 5
+   },
+   "prod_fluct_over_d": {
+    "mean": -0.068384,
+    "se": 0.00048416,
+    "n": 5
+   },
+   "prod_mean_over_d": {
+    "mean": 0.97954,
+    "se": 0.00084669,
+    "n": 5
+   },
+   "restart_overshoot_eb": {
+    "mean": 0.0045398,
+    "se": 0.00025832,
+    "n": 5
+   },
+   "restart_anchor_end_eb": {
+    "mean": 0.01018,
+    "se": 0.00085731,
+    "n": 5
+   },
+   "ed_ratio_train": {
+    "mean": 5.5053,
+    "se": 0.093744,
     "n": 5
    }
   },
@@ -1446,6 +2127,26 @@
     "mean": 0.015495,
     "se": 0.0034963,
     "n": 5
+   },
+   "prod_fluct_over_d": {
+    "mean": null,
+    "se": null,
+    "n": 0
+   },
+   "prod_mean_over_d": {
+    "mean": null,
+    "se": null,
+    "n": 0
+   },
+   "restart_overshoot_eb": {
+    "mean": null,
+    "se": null,
+    "n": 0
+   },
+   "restart_anchor_end_eb": {
+    "mean": null,
+    "se": null,
+    "n": 0
    },
    "ed_ratio_train": {
     "mean": 9.4604,
@@ -1518,6 +2219,26 @@
     "se": 0.0023073,
     "n": 5
    },
+   "prod_fluct_over_d": {
+    "mean": null,
+    "se": null,
+    "n": 0
+   },
+   "prod_mean_over_d": {
+    "mean": null,
+    "se": null,
+    "n": 0
+   },
+   "restart_overshoot_eb": {
+    "mean": null,
+    "se": null,
+    "n": 0
+   },
+   "restart_anchor_end_eb": {
+    "mean": null,
+    "se": null,
+    "n": 0
+   },
    "ed_ratio_train": {
     "mean": 5.4591,
     "se": 0.05187,
@@ -1584,6 +2305,26 @@
     "mean": 0.082603,
     "se": 0.016541,
     "n": 5
+   },
+   "prod_fluct_over_d": {
+    "mean": null,
+    "se": null,
+    "n": 0
+   },
+   "prod_mean_over_d": {
+    "mean": null,
+    "se": null,
+    "n": 0
+   },
+   "restart_overshoot_eb": {
+    "mean": null,
+    "se": null,
+    "n": 0
+   },
+   "restart_anchor_end_eb": {
+    "mean": null,
+    "se": null,
+    "n": 0
    },
    "ed_ratio_train": {
     "mean": 3.3254,
@@ -1652,6 +2393,26 @@
     "se": 0.0024132,
     "n": 5
    },
+   "prod_fluct_over_d": {
+    "mean": null,
+    "se": null,
+    "n": 0
+   },
+   "prod_mean_over_d": {
+    "mean": null,
+    "se": null,
+    "n": 0
+   },
+   "restart_overshoot_eb": {
+    "mean": null,
+    "se": null,
+    "n": 0
+   },
+   "restart_anchor_end_eb": {
+    "mean": null,
+    "se": null,
+    "n": 0
+   },
    "ed_ratio_train": {
     "mean": 165.79,
     "se": 0.44064,
@@ -1718,6 +2479,26 @@
     "mean": 0.011328,
     "se": 0.0020339,
     "n": 5
+   },
+   "prod_fluct_over_d": {
+    "mean": null,
+    "se": null,
+    "n": 0
+   },
+   "prod_mean_over_d": {
+    "mean": null,
+    "se": null,
+    "n": 0
+   },
+   "restart_overshoot_eb": {
+    "mean": null,
+    "se": null,
+    "n": 0
+   },
+   "restart_anchor_end_eb": {
+    "mean": null,
+    "se": null,
+    "n": 0
    },
    "ed_ratio_train": {
     "mean": 25.8,
@@ -1786,6 +2567,26 @@
     "se": 0.003776,
     "n": 5
    },
+   "prod_fluct_over_d": {
+    "mean": null,
+    "se": null,
+    "n": 0
+   },
+   "prod_mean_over_d": {
+    "mean": null,
+    "se": null,
+    "n": 0
+   },
+   "restart_overshoot_eb": {
+    "mean": null,
+    "se": null,
+    "n": 0
+   },
+   "restart_anchor_end_eb": {
+    "mean": null,
+    "se": null,
+    "n": 0
+   },
    "ed_ratio_train": {
     "mean": 70.039,
     "se": 4.6759,
@@ -1853,6 +2654,26 @@
     "se": 0.0022078,
     "n": 5
    },
+   "prod_fluct_over_d": {
+    "mean": null,
+    "se": null,
+    "n": 0
+   },
+   "prod_mean_over_d": {
+    "mean": null,
+    "se": null,
+    "n": 0
+   },
+   "restart_overshoot_eb": {
+    "mean": null,
+    "se": null,
+    "n": 0
+   },
+   "restart_anchor_end_eb": {
+    "mean": null,
+    "se": null,
+    "n": 0
+   },
    "ed_ratio_train": {
     "mean": 173.41,
     "se": 1.1166,
@@ -1919,6 +2740,26 @@
     "mean": 0.025651,
     "se": 0.0029592,
     "n": 5
+   },
+   "prod_fluct_over_d": {
+    "mean": null,
+    "se": null,
+    "n": 0
+   },
+   "prod_mean_over_d": {
+    "mean": null,
+    "se": null,
+    "n": 0
+   },
+   "restart_overshoot_eb": {
+    "mean": null,
+    "se": null,
+    "n": 0
+   },
+   "restart_anchor_end_eb": {
+    "mean": null,
+    "se": null,
+    "n": 0
    },
    "ed_ratio_train": {
     "mean": 110.0,

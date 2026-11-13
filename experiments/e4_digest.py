@@ -402,10 +402,26 @@ def section(quick: bool = False, root: Path = R, replication: str | None = None,
                     rv = ref["values"][f"{e:.5f}"]
                     w9 = per_v[("W9_skip_sym", e)]
                     P(f"H25, η = {e:.4f}: third-order part of the reference {f(rv['prod_fluct_over_d'])} ± {f(rv['prod_fluct_over_d_se'])} "
-                      f"({f(rv['prod_fluct_over_d'] / rv['prod_fluct_over_d_se'], 2)} SE); W9 per seed {', '.join(f(float(x)) for x in w9)}; "
+                      f"({f(rv['prod_fluct_over_d'] / rv['prod_fluct_over_d_se'], 2)} SE over the trajectory means; delete-one-trajectory "
+                      f"jackknife with the mean flow recomputed: ± {f(rv.get('prod_fluct_over_d_se_jack', float('nan')))}, "
+                      f"{f(rv['prod_fluct_over_d'] / rv.get('prod_fluct_over_d_se_jack', float('nan')), 2)} SE); W9 per seed {', '.join(f(float(x)) for x in w9)}; "
                       f"ratio of the seed mean to the reference {f(float(w9.mean() / rv['prod_fluct_over_d']), 2)}; "
                       f"seeds with the sign of the reference and at least half its magnitude: "
                       f"{int(((np.sign(w9) == np.sign(rv['prod_fluct_over_d'])) & (np.abs(w9) >= 0.5 * abs(rv['prod_fluct_over_d']))).sum())} of {len(w9)}.")
+        if split and ref and has("G1_gaussian_full") and "prod_mean_over_d_se_jack" in next(iter(ref["values"].values())):
+            rows = {}                              # H25, check 2: at the training η, mean-flow part of the reference against P/D of G1
+            for r in runs.values():
+                for x in r["evaluation"]["G1_gaussian_full"].get("train", []):
+                    if "prod_over_d" in x:
+                        rows.setdefault(f"{x['eta']:.5f}", []).append(x["prod_over_d"])
+            for e, g1 in sorted(rows.items(), reverse=True):
+                g1 = np.asarray(g1)
+                rv = ref["values"][e]
+                se_g, se_r = float(g1.std(ddof=1) / np.sqrt(len(g1))) if len(g1) > 1 else float("nan"), rv["prod_mean_over_d_se_jack"]
+                d = float(g1.mean() - rv["prod_mean_over_d"])
+                P(f"H25, check at the training η = {float(e):.4f}: P/D of G1 {f(float(g1.mean()))} ± {f(se_g)} (SE over the seeds), mean-flow part of the "
+                  f"reference {f(rv['prod_mean_over_d'])} ± {f(se_r)} (jackknife); difference {f(d)}: {f(d / se_g, 2)} SE of G1, "
+                  f"{f(d / se_r, 2)} SE of the reference, {f(d / float(np.hypot(se_g, se_r)), 2)} combined SE.")
         # ---- restart anchored on the stationary energy of the reference (reviews of 2026-11-13): a(τ) = E_B(τ)/E_B,ref − 1
         def anchored(row: dict) -> list[float] | None:
             if "restart_anchor" in row:
@@ -459,6 +475,20 @@ def section(quick: bool = False, root: Path = R, replication: str | None = None,
             for a_, b_, label in (("G2_gaussianised_W9", "W9N_skip_sym", "H27"), ("G3_gaussianised_G1", "G1_gaussian_full", "H27, null control")):
                 if a_ in anch and b_ in anch:
                     P(paired_row(f"overshoot of E_B: {a_} − {b_} ({label})", anch[a_][1], anch[b_][1]))
+            if exact:                      # measures asked by the review of H25-H27, post hoc: not registered criteria
+                def course(v: str, fn) -> np.ndarray:
+                    return np.asarray([np.mean([fn(anchored(x)) for x in r["evaluation"][v]["test"]]) for r in runs.values()
+                                       if r["evaluation"].get(v, {}).get("test")])
+                post = [v for v in ("W9_skip_sym", "G2_gaussianised_W9", "G1_gaussian_full", "G3_gaussianised_G1", "G0_gaussian_modes") if v in anch]
+                P("Post hoc (review of H25-H27, not registered), seed means over the held-out η: rise of E_B after the restart, max_τ a(τ) − a(0): "
+                  + "; ".join(f"{v} {f(float(course(v, lambda x: max(x[1:]) - x[0]).mean()))}" for v in post)
+                  + ". Largest |a(τ)| over the course, τ = 0 included: "
+                  + "; ".join(f"{v} {f(float(course(v, lambda x: max(abs(y) for y in x)).mean()))}" for v in post)
+                  + ". Excursion above the reference, max(0, max_τ a(τ)): "
+                  + "; ".join(f"{v} {f(float(course(v, lambda x: max(0.0, max(x))).mean()))}" for v in post) + ".")
+                if "G2_gaussianised_W9" in anch and "W9N_skip_sym" in anch:
+                    P(paired_row("excursion of E_B above the reference, max(0, max_τ a): G2_gaussianised_W9 − W9N_skip_sym (post hoc, not registered)",
+                                 course("G2_gaussianised_W9", lambda x: max(0.0, max(x))), course("W9N_skip_sym", lambda x: max(0.0, max(x)))))
             # the drift of the objective T1 against the bias of the law on E_B
             pts = [(float(np.nanmean(per_seed(runs, v, "restart_eb_signed"))), float(-cv[:, 0].mean() / (1 + cv[:, 0].mean())))
                    for v, (cv, _, _) in anch.items() if not np.all(np.isnan(per_seed(runs, v, "restart_eb_signed")))]
@@ -470,7 +500,11 @@ def section(quick: bool = False, root: Path = R, replication: str | None = None,
         if h27:
             P(f"H27, energy distance between the samples of G2 and of W9N over the reference floor, mean over the held-out η and the seeds: "
               f"{f(float(np.mean([x['ed_g2_w9'] / x['ed_floor'] for x in h27])))}; between two halves of the W9N samples (256 each, over the floor at 512): "
-              f"{f(float(np.mean([x['ed_w9_halves'] / x['ed_floor'] for x in h27])))}.")
+              f"{f(float(np.mean([x['ed_w9_halves'] / x['ed_floor'] for x in h27])))}. The energy distance is a V statistic whose value "
+              f"under equal laws scales as 1/n + 1/m: the two-halves value at 256 corresponds to "
+              f"{f(float(np.mean([0.5 * x['ed_w9_halves'] / x['ed_floor'] for x in h27])))} at 512 against 512; G2 against W9N is "
+              f"{f(float(np.mean([x['ed_g2_w9'] / x['ed_floor'] for x in h27]) / np.mean([0.5 * x['ed_w9_halves'] / x['ed_floor'] for x in h27])), 2)} "
+              f"times that (review of H25-H27).")
         w9b = "W9N_skip_sym" if has("W9N_skip_sym") else "W9_skip_sym"       # the base of G2, evaluated in the same group
         if has("G2_gaussianised_W9") and has(w9b):                     # H27: what of W9 is not in its first two moments
             def at(v: str, i: int, key: str = "eb") -> np.ndarray:
