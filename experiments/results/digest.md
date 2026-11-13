@@ -730,6 +730,153 @@ H13: least-squares fit of ln(N_gen/N_ref) on ln(k_λ,gen/k_λ,ref) over 210 poin
 | 3 | 61 | 61 | 56 | 42 | 57 | 30 | 4 | 40 | 27 | 0 | 57 | 93 | 121 | 1914 |
 | 4 | 60 | 61 | 52 | 40 | 54 | 32 | 4 | 41 | 33 | 0 | 73 | 101 | 124 | 1871 |
 
+## E4 - additional run: H38: positive control of the anchored model of H28: W9, the anchored model trained on samples of W9 and read along its training, and W9 retrained on the same samples: group P on a RunPod GPU pod, own regenerated data
+
+Reference data: the realisation of the main run (largest relative gap of E_B over the η: 0).
+
+Data (experiments/e4_data.py): N = 16, every mode |m_i| ≤ 5 (665 complex modes per field component pair), ν = 0.05 (Re = 10), kf = 2; training η [0.08, 0.06575, 0.054038, 0.044413, 0.036502, 0.03]; validation η [0.059607, 0.040264]; test η [0.072526, 0.04899, 0.033092]; 24 trajectories per η, transient 200.0, kept 200.0, one snapshot every 2.0; float32; generation time 510 s on 4 cores.
+
+### Reference data per η
+
+| η | Rm | set | E_u | E_B | H_M | energy residual (time mean) | H_M drift (SE) | nulls per snapshot | k_λ | ED floor |
+|---|---|---|---|---|---|---|---|---|---|---|
+| 0.08000 | 6.25 | train | 0.491 | 0.0783 | -0.0433 | -3.01e-05 | -0.35 | 21.1 ± 0.47 | 2.5 | 0.117 |
+| 0.07253 | 6.89 | test | 0.44 | 0.0967 | -0.056 | 4.42e-06 | 0.23 | 21.4 ± 0.53 | 2.53 | 0.0703 |
+| 0.06575 | 7.6 | train | 0.402 | 0.111 | -0.0646 | -4.15e-04 | 1.5 | 21.7 ± 0.46 | 2.57 | 0.0363 |
+| 0.05961 | 8.39 | val | 0.373 | 0.121 | -0.0719 | 1.27e-04 | -0.14 | 23.1 ± 0.55 | 2.61 | 0.0425 |
+| 0.05404 | 9.25 | train | 0.345 | 0.131 | -0.0778 | 2.17e-04 | 0.73 | 24.2 ± 0.56 | 2.65 | 0.037 |
+| 0.04899 | 10.2 | test | 0.321 | 0.14 | -0.0841 | -4.56e-05 | -0.43 | 27.6 ± 0.63 | 2.69 | 0.0394 |
+| 0.04441 | 11.3 | train | 0.309 | 0.145 | -0.0849 | -2.75e-04 | -0.77 | 31.7 ± 0.79 | 2.74 | 0.0409 |
+| 0.04026 | 12.4 | val | 0.288 | 0.153 | -0.0904 | -2.11e-04 | -0.44 | 34 ± 0.81 | 2.79 | 0.0514 |
+| 0.03650 | 13.7 | train | 0.276 | 0.16 | -0.0947 | 6.59e-06 | 1.5 | 37.4 ± 0.98 | 2.84 | 0.0479 |
+| 0.03309 | 15.1 | test | 0.265 | 0.165 | -0.0962 | 1.65e-04 | 1.7 | 42.7 ± 1.1 | 2.9 | 0.0733 |
+| 0.03000 | 16.7 | train | 0.253 | 0.172 | -0.0968 | 2.32e-04 | -0.69 | 51.7 ± 1.2 | 2.95 | 0.04 |
+
+Energy residual: (⟨injection⟩ − ⟨Dν + Dη⟩)/⟨Dν + Dη⟩ over the kept window and the trajectories (solver diagnostics). H_M drift: difference of the trajectory means between the two halves of the kept window, in units of its standard error. ED floor: energy distance between two reference subsamples of 512 snapshots from disjoint halves of the trajectories.
+
+### Reference: magnetic helicity spectrum and stationarity identities (H11)
+
+| η | H(k = 1) ± SE | Σ_{k ≥ 2} H(k) ± SE | E_B(1)/E_B | z of ⟨j·B⟩ | r_b | energy residual ± SE | magnetic-energy residual | restart drift E_B |
+|---|---|---|---|---|---|---|---|---|
+| 0.08000 | -0.0461 ± 0.0025 | 0.00283 ± 2.15e-04 | 0.436 | -0.081 | 9.65e-05 | -3.01e-05 ± 2.32e-04 | 1.93e-05 | – |
+| 0.07253 | -0.0591 ± 0.0019 | 0.00307 ± 2.03e-04 | 0.434 | 0.47 | 6.32e-04 | 4.44e-06 ± 2.54e-04 | -6.36e-05 | 0.00943 |
+| 0.06575 | -0.0675 ± 0.0015 | 0.00291 ± 1.65e-04 | 0.426 | 1.3 | 0.00134 | -4.15e-04 ± 1.65e-04 | 1.99e-04 | – |
+| 0.05961 | -0.0747 ± 0.0018 | 0.00282 ± 1.85e-04 | 0.422 | 0.16 | 1.47e-04 | 1.27e-04 ± 1.93e-04 | -5.10e-05 | – |
+| 0.05404 | -0.0799 ± 0.0018 | 0.00213 ± 2.24e-04 | 0.413 | -0.38 | 3.96e-04 | 2.17e-04 ± 2.06e-04 | -1.93e-04 | – |
+| 0.04899 | -0.0858 ± 0.0016 | 0.00171 ± 1.87e-04 | 0.408 | -1.3 | 0.00117 | -4.56e-05 ± 1.60e-04 | -1.40e-04 | 0.00905 |
+| 0.04441 | -0.0859 ± 0.0019 | 0.00106 ± 2.04e-04 | 0.396 | 1.7 | 0.00189 | -2.75e-04 ± 1.39e-04 | 3.68e-04 | – |
+| 0.04026 | -0.0906 ± 0.0021 | 2.50e-04 ± 2.51e-04 | 0.389 | -0.065 | 7.29e-05 | -2.11e-04 ± 1.30e-04 | 4.26e-05 | – |
+| 0.03650 | -0.0945 ± 0.0029 | -1.75e-04 ± 2.25e-04 | 0.384 | -0.064 | 9.72e-05 | 6.61e-06 ± 1.14e-04 | -4.59e-06 | – |
+| 0.03309 | -0.0949 ± 0.0032 | -0.00122 ± 2.74e-04 | 0.371 | 0.31 | 5.16e-04 | 1.65e-04 ± 1.85e-04 | -2.55e-06 | 0.0039 |
+| 0.03000 | -0.0953 ± 0.0016 | -0.00151 ± 2.14e-04 | 0.364 | 0.7 | 0.00186 | 2.33e-04 ± 1.57e-04 | 2.04e-05 | – |
+
+H11: H(1) negative by 2 SE at 11 of 11 η; Σ_{k ≥ 2} H positive by 2 SE at 7 of 11 η (fails at η = 0.04026, 0.03650, 0.03309, 0.03000); E_B(1)/E_B in [0.364, 0.436]; |z| of ⟨j·B⟩ above 2 at 0 of 11 η. SE over the trajectory means; r_b = |Σ_k E J(k)| / Σ_k |E J(k)| with J(k) the shell spectrum of ⟨j·B⟩.
+
+Null count of the reference against the evaluation grid (test η, same 100 snapshots): η = 0.07253: 32³: 20.5, 48³: 21.8, 64³: 21.9; η = 0.04899: 32³: 27, 48³: 28.9, 64³: 29.7; η = 0.03309: 32³: 40, 48³: 43, 64³: 44.1.
+
+### Noise floors of the energy distance (experiments/e4_floor.py)
+
+| η | set | trajectory-split floor, n = 512: mean ± sd [min, max] over 20 splits | random-split floor, n = 512 | ratio | E\|Y − Y'\| |
+|---|---|---|---|---|---|
+| 0.08000 | train | 0.138 ± 0.102 [0.0228, 0.386] | 0.0197 | 7.02 | 4.8 |
+| 0.07253 | test | 0.0719 ± 0.0511 [0.0222, 0.213] | 0.0151 | 4.75 | 4.17 |
+| 0.06575 | train | 0.0378 ± 0.0231 [0.0123, 0.102] | 0.0119 | 3.17 | 3.24 |
+| 0.05961 | val | 0.0426 ± 0.0198 [0.0136, 0.0884] | 0.0113 | 3.76 | 3.22 |
+| 0.05404 | train | 0.0376 ± 0.0151 [0.0176, 0.07] | 0.0119 | 3.15 | 3.15 |
+| 0.04899 | test | 0.0387 ± 0.0155 [0.0195, 0.0739] | 0.0117 | 3.31 | 3.06 |
+| 0.04441 | train | 0.0422 ± 0.0191 [0.014, 0.0782] | 0.0117 | 3.59 | 3.04 |
+| 0.04026 | val | 0.0549 ± 0.0263 [0.0188, 0.11] | 0.0121 | 4.53 | 3.04 |
+| 0.03650 | train | 0.0433 ± 0.0152 [0.0149, 0.0694] | 0.0132 | 3.29 | 3.07 |
+| 0.03309 | test | 0.059 ± 0.0357 [0.0164, 0.15] | 0.0122 | 4.84 | 3.12 |
+| 0.03000 | train | 0.0374 ± 0.0213 [0.0169, 0.0918] | 0.0118 | 3.18 | 3.07 |
+
+The C1 ratio uses the trajectory-split floor (two reference subsamples from disjoint halves of the 24 trajectories, mean of the first 10 splits). It contains the variability between trajectories, it is uncertain (the splits reuse the same 24 trajectories) and it favours the generator: a perfect generator would score below 1 (about 0.6 by the encadrant's extrapolation, an estimate). The random-split floor is the sampling noise of 512 snapshots that ignore the trajectories.
+
+Models (experiments/e4_mhd3d.py): ResMLP 512×4, 4000 iterations, batch 128, lr 0.0005; latent dimension 5320 (potentials) or 7980 (components); 14400 training snapshots; 512 samples per validation and test η, Heun 50 steps (diffusion: 100 ancestral steps); fine-tuning 400 iterations, β = 20.0; nulls on 200 samples, restart of 128 samples over τ = 4.0; seeds [0, 1, 2, 3, 4].
+
+### Means over the test η (mean over the seeds)
+
+| variant | ED / floor | rel. div. B | |energy residual| | |magnetic balance| | err. E_B(k) | err. H_M | err. nulls | restart drift E_B | restart drift E_u | |P(H_c>0)−½| | σ(dE/dt)/σ_ref | ESS/N |
+|---|---|---|---|---|---|---|---|---|---|---|---|---|
+| W9P_skip_sym | 9.43 | 1.29e-08 | 0.0569 | 0.0547 | 0.148 | 0.201 | 1.7 | – | – | 0.0201 | 1.62 | 1 |
+| W18_anchor_on_W9_it0 | 8.79 | 1.28e-08 | 0.0463 | 0.0606 | 0.133 | 0.185 | 1.75 | – | – | 0.0171 | 2.5 | 1 |
+| W18_anchor_on_W9_it250 | 8.79 | 1.29e-08 | 0.0463 | 0.0606 | 0.133 | 0.185 | 1.75 | – | – | 0.0169 | 2.5 | 1 |
+| W18_anchor_on_W9_it1000 | 8.79 | 1.29e-08 | 0.0463 | 0.0606 | 0.133 | 0.185 | 1.75 | – | – | 0.0161 | 2.5 | 1 |
+| W18_anchor_on_W9_it2000 | 8.79 | 1.29e-08 | 0.0463 | 0.0606 | 0.133 | 0.185 | 1.75 | – | – | 0.0172 | 2.5 | 1 |
+| W18_anchor_on_W9_it4000 | 8.79 | 1.29e-08 | 0.0463 | 0.0606 | 0.133 | 0.185 | 1.75 | – | – | 0.0165 | 2.5 | 1 |
+| W9PP_retrained_on_W9 | 18.1 | 1.29e-08 | 0.08 | 0.073 | 0.205 | 0.282 | 1.94 | – | – | 0.0158 | 1.41 | 1 |
+| reference | 1 (floor) | – | 7.18e-05 | – | – | – | 0.00746 | 0.00458 | 1 | – |
+
+### Means over the val η (mean over the seeds)
+
+| variant | ED / floor | rel. div. B | |energy residual| | |magnetic balance| | err. E_B(k) | err. H_M | err. nulls | restart drift E_B | restart drift E_u | |P(H_c>0)−½| | σ(dE/dt)/σ_ref | ESS/N |
+|---|---|---|---|---|---|---|---|---|---|---|---|---|
+| W9P_skip_sym | 8.88 | 1.28e-08 | 0.0449 | 0.0391 | 0.112 | 0.154 | 1.69 | – | – | 0.0129 | 1.79 | 1 |
+| W18_anchor_on_W9_it0 | 11.5 | 1.29e-08 | 0.0497 | 0.0361 | 0.133 | 0.18 | 1.8 | – | – | 0.017 | 2.61 | 1 |
+| W18_anchor_on_W9_it250 | 11.5 | 1.29e-08 | 0.0497 | 0.0361 | 0.133 | 0.18 | 1.8 | – | – | 0.0166 | 2.61 | 1 |
+| W18_anchor_on_W9_it1000 | 11.5 | 1.29e-08 | 0.0497 | 0.036 | 0.133 | 0.18 | 1.8 | – | – | 0.017 | 2.61 | 1 |
+| W18_anchor_on_W9_it2000 | 11.5 | 1.29e-08 | 0.0497 | 0.0361 | 0.133 | 0.18 | 1.8 | – | – | 0.0176 | 2.61 | 1 |
+| W18_anchor_on_W9_it4000 | 11.5 | 1.29e-08 | 0.0497 | 0.036 | 0.133 | 0.18 | 1.8 | – | – | 0.017 | 2.61 | 1 |
+| W9PP_retrained_on_W9 | 18.7 | 1.29e-08 | 0.0676 | 0.0588 | 0.173 | 0.242 | 1.95 | – | – | 0.0135 | 1.52 | 1 |
+
+### Means over the train η (mean over the seeds)
+
+| variant | ED / floor | rel. div. B | |energy residual| | |magnetic balance| | err. E_B(k) | err. H_M | err. nulls | restart drift E_B | restart drift E_u | |P(H_c>0)−½| | σ(dE/dt)/σ_ref | ESS/N |
+|---|---|---|---|---|---|---|---|---|---|---|---|---|
+| W9P_skip_sym | 5.68 | 1.28e-08 | 0.0461 | 0.0787 | 0.113 | 0.15 | 1.7 | – | – | 0.0302 | 1.63 | 1 |
+| W18_anchor_on_W9_it0 | – | – | – | – | – | – | – | – | – | – | – | – |
+| W18_anchor_on_W9_it250 | – | – | – | – | – | – | – | – | – | – | – | – |
+| W18_anchor_on_W9_it1000 | – | – | – | – | – | – | – | – | – | – | – | – |
+| W18_anchor_on_W9_it2000 | – | – | – | – | – | – | – | – | – | – | – | – |
+| W18_anchor_on_W9_it4000 | – | – | – | – | – | – | – | – | – | – | – | – |
+| W9PP_retrained_on_W9 | – | – | – | – | – | – | – | – | – | – | – | – |
+
+### Across seeds: means over the test η, mean ± sd [min, max] over 5 seeds
+
+| variant | ED / floor | |energy residual| | err. E_B(k) | err. H_M | err. nulls |
+|---|---|---|---|---|---|
+| W9P_skip_sym | 9.43 ± 0.591 [8.46, 9.89] | 0.0569 ± 0.00383 [0.0508, 0.0612] | 0.148 ± 0.0108 [0.129, 0.157] | 0.201 ± 0.0138 [0.181, 0.218] | 1.7 ± 0.0479 [1.62, 1.75] |
+| W18_anchor_on_W9_it0 | 8.79 ± 0.258 [8.45, 9.06] | 0.0463 ± 0.00137 [0.045, 0.0484] | 0.133 ± 0.00454 [0.128, 0.139] | 0.185 ± 0.00874 [0.171, 0.195] | 1.75 ± 0.0307 [1.71, 1.78] |
+| W18_anchor_on_W9_it250 | 8.79 ± 0.259 [8.45, 9.06] | 0.0463 ± 0.00136 [0.0451, 0.0484] | 0.133 ± 0.00455 [0.128, 0.139] | 0.185 ± 0.00873 [0.171, 0.195] | 1.75 ± 0.0304 [1.71, 1.78] |
+| W18_anchor_on_W9_it1000 | 8.79 ± 0.257 [8.45, 9.06] | 0.0463 ± 0.00135 [0.0451, 0.0484] | 0.133 ± 0.00454 [0.128, 0.139] | 0.185 ± 0.00872 [0.171, 0.195] | 1.75 ± 0.0304 [1.71, 1.78] |
+| W18_anchor_on_W9_it2000 | 8.79 ± 0.257 [8.45, 9.06] | 0.0463 ± 0.00135 [0.045, 0.0484] | 0.133 ± 0.00453 [0.128, 0.139] | 0.185 ± 0.00872 [0.171, 0.195] | 1.75 ± 0.0307 [1.71, 1.78] |
+| W18_anchor_on_W9_it4000 | 8.79 ± 0.257 [8.45, 9.06] | 0.0463 ± 0.00134 [0.045, 0.0484] | 0.133 ± 0.00454 [0.128, 0.139] | 0.185 ± 0.00872 [0.171, 0.195] | 1.75 ± 0.0312 [1.71, 1.78] |
+| W9PP_retrained_on_W9 | 18.1 ± 0.602 [17.6, 19.2] | 0.08 ± 0.00262 [0.0775, 0.0829] | 0.205 ± 0.00291 [0.201, 0.209] | 0.282 ± 0.0058 [0.276, 0.29] | 1.94 ± 0.0284 [1.91, 1.98] |
+
+### Selected generator: none
+
+This run holds no candidate for the selected generator (the Gaussian laws, the checkpoints of H28 and the corrections of the samples are not candidates): the objectives are those of the main run.
+
+
+### Paired comparisons over the seeds [0, 1, 2, 3, 4] (means over the test η; SE = sd(ddof = 1)/√n)
+
+| comparison | per-seed differences | mean ± SE | mean/SE | seeds with a positive difference |
+|---|---|---|---|---|
+
+H38: positive control of the anchored model (the construction of H28) trained on samples of W9: third-order part of the production over the dissipation, seed means; ratio to that of W9 of the same job (whose samples are the training set); flow-matching loss on a fixed sample of the training set.
+
+| model | η = 0.0331: third-order part | ratio to W9 | η = 0.0490: third-order part | ratio to W9 | loss |
+|---|---|---|---|---|---|
+| W9P_skip_sym | -0.116 | 1 | -0.0811 | 1 | – |
+| W18_anchor_on_W9_it0 | -7.17e-04 | 0.0062 | 1.98e-04 | -0.0024 | 1.0371 |
+| W18_anchor_on_W9_it250 | -7.15e-04 | 0.0062 | 1.99e-04 | -0.0025 | 1.0371 |
+| W18_anchor_on_W9_it1000 | -7.16e-04 | 0.0062 | 1.99e-04 | -0.0024 | 1.0371 |
+| W18_anchor_on_W9_it2000 | -7.16e-04 | 0.0062 | 1.97e-04 | -0.0024 | 1.0371 |
+| W18_anchor_on_W9_it4000 | -7.17e-04 | 0.0062 | 1.97e-04 | -0.0024 | 1.0371 |
+| W9PP_retrained_on_W9 | -0.0375 | 0.32 | -0.0358 | 0.44 | 1.2208 |
+H38, third-order part of the anchored model at iteration 4000 over that of W9: η = 0.0331: 0.0062 on the seed means, per seed -0.007, 0.023, 0.0071, 0.0092, -0.0019; η = 0.0490: -0.0024 on the seed means, per seed -0.038, -0.0072, 0.016, -0.0033, 0.02 (criterion: at least 0.3 on the seed means and in all seeds but one at most, at each of the two lower held-out η). Checks of the measurement: largest |third-order part| at iteration 0 over the held-out η 7.17e-04 (limit 0.02); largest gap between the third-order part of the training set and that of W9 generated at the same training η 0.0027 (limit 0.02); largest gap of W9 of this job to the values of H25 0.00188 (limit 0.02): PASS. Verdict: REFUTED (η = 0.0331, 0.0490).
+H13: least-squares fit of ln(N_gen/N_ref) on ln(k_λ,gen/k_λ,ref) over 105 points (generators × test η × seeds): slope 12.9, intercept 0.69, R² 0.251; range of ln(k_λ ratio) [0.0149, 0.0389].
+
+### Durations (s), per seed
+
+| seed | W9P_skip_sym | W18_anchor_on_W9_it0 | W18_anchor_on_W9_it250 | W18_anchor_on_W9_it1000 | W18_anchor_on_W9_it2000 | W18_anchor_on_W9_it4000 | W9PP_retrained_on_W9 | total |
+|---|---|---|---|---|---|---|---|---|
+| 0 | 82 | 0 | 7 | 29 | 58 | 117 | 69 | 1079 |
+| 1 | 78 | 0 | 7 | 28 | 56 | 112 | 70 | 1049 |
+| 2 | 73 | 0 | 7 | 27 | 54 | 107 | 62 | 1022 |
+| 3 | 81 | 0 | 7 | 30 | 60 | 120 | 75 | 1056 |
+| 4 | 81 | 0 | 7 | 30 | 60 | 119 | 69 | 1077 |
+
 ## E4 - additional run: H37: the model with the affine term trained on the data and on Gaussian surrogate data, each recoloured onto the moments of G1 (W16V, W17), G1, and reference snapshots through the same kind of map (oracle); 512 restart states: group V on RunPod GPU pods split by seed (assembled by e4_assemble.py), own regenerated data
 
 Reference data: the realisation of the main run (largest relative gap of E_B over the η: 0).
