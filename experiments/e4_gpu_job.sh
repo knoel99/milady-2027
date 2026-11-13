@@ -21,7 +21,24 @@ python -c "import torch; print('torch', torch.__version__, 'cuda', torch.cuda.is
 stamp "data: $NPROC cores"
 python e4_data.py $Q --jobs "$(( NPROC > 11 ? 11 : NPROC ))" | tail -n 13 || exit 1
 stamp "reference"
+# E4_SAME_DATA=1: stop before the models if the data regenerated on this pod are not the realisation that the seed offset names
+# (the solver is chaotic and some CPU types give other trajectories from the same seeds; found on 2026-11-13). The committed
+# reference of the realisation is read before the reference stage overwrites it.
+EXPECT=""
+if [ "${E4_SAME_DATA:-0}" = 1 ] && [ "$MODE" = full ]; then
+  case "${E4_DATA_SEED:-0}" in 0) REFFILE=results/e4_reference.json;; 100) REFFILE=results/replications/e4_indep/e4_reference.json;; *) REFFILE="";; esac
+  [ -n "$REFFILE" ] && EXPECT=$(python -c "import json; v=json.load(open('$REFFILE'))['values']; print(' '.join(f\"{e}:{v[e]['E_B']:.10g}\" for e in v))")
+fi
 python e4_mhd3d.py --reference $Q --threads "$(( NPROC > 16 ? 16 : NPROC ))" | tail -n 3 || exit 1
+if [ -n "$EXPECT" ]; then
+  python - "$EXPECT" <<'PY' || { stamp "STOP: the data of this pod are another realisation than the one named by the seed offset"; exit 3; }
+import json, sys
+v = json.load(open("results/e4_reference.json"))["values"]
+gap = max(abs(v[e]["E_B"] / float(x) - 1) for e, x in (t.split(":") for t in sys.argv[1].split()))
+print(f"same data check: largest relative gap of E_B to the committed reference {gap:.2e}")
+sys.exit(0 if gap < 1e-6 else 1)
+PY
+fi
 cp results/e4_data$TAG.json results/e4_reference$TAG.json "$OUT"/
 if [ "${E4_REFNULLS:-0}" = 1 ] && [ "$MODE" = full ]; then      # null points of the reference on all its snapshots (jury review of 2026-11-13)
   stamp "reference null count on all the snapshots"
