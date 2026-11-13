@@ -5,6 +5,7 @@
 - the pinned KaTeX tags (SRI) are present on pages that have formulas;
 - the preparation modules have all the sections of the contract and >= 10 graded exercises;
 - every image of a module's own folder is written by its figures_p*.py script (figure provenance);
+- every team directory that has a report is linked from teams/index.qmd;
 - all relative links (href, src) of the published pages point to existing files;
 - internal anchors (#id) exist in the target page;
 - no index_files/ folder or .quarto file is published.
@@ -73,6 +74,38 @@ def parse(path):
     return Links(path.read_text(encoding="utf-8"))
 
 
+def team_listing():
+    """Every team directory with a report is linked from teams/index.qmd.
+
+    A team is a direct child of site/teams/ that contains report/index.qmd.
+    The site footer points at that one page. A new team is one row there.
+    """
+    problems = []
+    teams = ROOT / "teams"
+    if not teams.is_dir():
+        return problems
+    present = sorted(
+        p.name for p in teams.iterdir()
+        if p.is_dir() and (p / "report" / "index.qmd").is_file()
+    )
+    if not present:
+        return problems
+    index = teams / "index.qmd"
+    if not index.is_file():
+        problems.append("teams: index.qmd missing")
+        return problems
+    src = index.read_text(encoding="utf-8")
+    for name in present:
+        for needle in (
+            f"{name}/report/index.html",
+            f"{name}/report/index.pdf",
+            f"{name}/explorer/index.html",
+        ):
+            if needle not in src:
+                problems.append(f"teams: {needle} not listed in teams/index.qmd")
+    return problems
+
+
 def main():
     problems = []
     only = [a.strip("/") for a in sys.argv[1:]]
@@ -125,6 +158,7 @@ def main():
                 tl = cache.setdefault(target, parse(target))
                 if parts.fragment not in tl.ids:
                     problems.append(f"{rel}: anchor missing {ref}")
+    problems.extend(team_listing())
     if (ROOT / ".quarto").exists():
         problems.append(".quarto/ present (do not publish)")
     if problems:

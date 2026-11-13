@@ -34,7 +34,7 @@ format:
       - text: |
           </main>
           </div>
-          <footer class="foot"><p><a href="index.html">← Home</a> · <a href="prep/index.html">Preparation</a> · <a href="supervisors/index.html">Supervisors</a> · <a href="report/index.html">Internship report</a> · <a href="thesis/index.html">PhD proposal</a> · <a href="interactive/index.html">Interactive diagrams</a> · <a href="experiments/index.html">Experiments</a> · <a href="computing/index.html">Computing and data</a></p></footer>
+          <footer class="foot"><p><a href="index.html">← Home</a> · <a href="prep/index.html">Preparation</a> · <a href="supervisors/index.html">Supervisors</a> · <a href="report/index.html">Internship report</a> · <a href="thesis/index.html">PhD proposal</a> · <a href="interactive/index.html">Interactive diagrams</a> · <a href="experiments/index.html">Experiments</a> · <a href="computing/index.html">Computing and data</a> · <a href="teams/index.html">Teams</a></p></footer>
           <script defer src="assets/theme.js"></script>
 ---
 

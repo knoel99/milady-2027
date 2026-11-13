@@ -9,7 +9,8 @@ KATEX = "https://cdn.jsdelivr.net/npm/katex@0.19.0/dist/katex.min.js"
 
 UI = {"skip": "Skip to content", "contents": "Contents", "theme": "Theme", "home": "← Home",
       "prep": "Preparation", "sup": "Supervisors", "report": "Internship report", "thesis": "PhD proposal",
-      "exp": "Experiments", "interactive": "Interactive diagrams", "calc": "Computing and data"}
+      "exp": "Experiments", "interactive": "Interactive diagrams", "calc": "Computing and data",
+      "teams": "Teams"}
 
 
 def header(title: str, subtitle: str, up: str) -> str:
@@ -51,7 +52,7 @@ format:
       - text: |
           </main>
           </div>
-          <footer class="foot"><p><a href="{home}index.html">{u["home"]}</a> · <a href="{home}prep/index.html">{u["prep"]}</a> · <a href="{home}supervisors/index.html">{u["sup"]}</a> · <a href="{home}report/index.html">{u["report"]}</a> · <a href="{home}thesis/index.html">{u["thesis"]}</a> · <a href="{home}interactive/index.html">{u["interactive"]}</a> · <a href="{home}experiments/index.html">{u["exp"]}</a> · <a href="{home}computing/index.html">{u["calc"]}</a></p></footer>
+          <footer class="foot"><p><a href="{home}index.html">{u["home"]}</a> · <a href="{home}prep/index.html">{u["prep"]}</a> · <a href="{home}supervisors/index.html">{u["sup"]}</a> · <a href="{home}report/index.html">{u["report"]}</a> · <a href="{home}thesis/index.html">{u["thesis"]}</a> · <a href="{home}interactive/index.html">{u["interactive"]}</a> · <a href="{home}experiments/index.html">{u["exp"]}</a> · <a href="{home}computing/index.html">{u["calc"]}</a> · <a href="{home}teams/index.html">{u["teams"]}</a></p></footer>
           <script defer src="{up}assets/theme.js"></script>
 ---
 '''
