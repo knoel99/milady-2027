@@ -1,0 +1,75 @@
+{
+ "parts": {
+  "e4_recolour_c": {
+   "seeds": [
+    0,
+    1,
+    2
+   ],
+   "files": [
+    "e4_mhd3d_s0_G.json",
+    "e4_mhd3d_s0_T.json",
+    "e4_mhd3d_s0_R.json",
+    "e4_mhd3d_s1_G.json",
+    "e4_mhd3d_s1_T.json",
+    "e4_mhd3d_s1_R.json",
+    "e4_mhd3d_s2_G.json",
+    "e4_mhd3d_s2_T.json",
+    "e4_mhd3d_s2_R.json"
+   ],
+   "data_duration_s": 555.0
+  },
+  "e4_recolour_d": {
+   "seeds": [
+    3,
+    4
+   ],
+   "files": [
+    "e4_mhd3d_s3_G.json",
+    "e4_mhd3d_s3_T.json",
+    "e4_mhd3d_s3_R.json",
+    "e4_mhd3d_s4_G.json",
+    "e4_mhd3d_s4_T.json",
+    "e4_mhd3d_s4_R.json"
+   ],
+   "data_duration_s": 536.3,
+   "max_rel_diff_reference": 0.0
+  },
+  "e4_recolour_e0": {
+   "seeds": [
+    0
+   ],
+   "files": [
+    "e4_mhd3d_s0_R.json"
+   ],
+   "data_duration_s": 504.8,
+   "max_rel_diff_reference": 0.0
+  },
+  "e4_recolour_e1": {
+   "seeds": [
+    1
+   ],
+   "files": [
+    "e4_mhd3d_s1_R.json"
+   ],
+   "data_duration_s": 1009.1,
+   "max_rel_diff_reference": 8.885450183196989e-11
+  },
+  "e4_recolour_e2": {
+   "seeds": [
+    2
+   ],
+   "files": [
+    "e4_mhd3d_s2_R.json"
+   ],
+   "data_duration_s": 567.1,
+   "max_rel_diff_reference": 0.0
+  }
+ },
+ "groups": [
+  "G",
+  "T",
+  "R"
+ ],
+ "reference_from": "e4_recolour_c"
+}

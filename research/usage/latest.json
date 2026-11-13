@@ -1,5 +1,5 @@
 {
- "generated": "2026-11-13T09:17:24Z",
+ "generated": "2026-11-13T13:57:16Z",
  "projects": "/root/.claude/projects/-home-user-milady-2027",
  "sessions": 1,
  "main_session": {
@@ -10,23 +10,23 @@
    "high"
   ],
   "expected": "claude-fable-5-2 / high",
-  "responses": 799,
+  "responses": 975,
   "off_spec": 0,
   "conforms": true
  },
  "first": "2026-11-12T16:50:21.852Z",
- "last": "2026-11-13T09:17:21.080Z",
- "span_hours": 16.45,
+ "last": "2026-11-13T13:57:10.226Z",
+ "span_hours": 21.11,
  "by_model": {
   "claude-fable-5-2": {
-   "input": 2172,
-   "cache_write_5m": 2986471,
-   "cache_write_1h": 2518649,
-   "cache_read": 430576574,
-   "output": 2167124,
-   "thinking": 1108193,
-   "calls": 1096,
-   "usd": 242.98
+   "input": 2603,
+   "cache_write_5m": 3489071,
+   "cache_write_1h": 2968277,
+   "cache_read": 518686276,
+   "output": 2515837,
+   "thinking": 1264681,
+   "calls": 1317,
+   "usd": 286.77
   },
   "claude-sonnet-5-5": {
    "input": 470,
@@ -39,15 +39,15 @@
    "usd": 8.57
   }
  },
- "total_usd": 251.55,
+ "total_usd": 295.34,
  "subagents": {
-  "count": 33,
+  "count": 36,
   "by_type": {
    "general-purpose": 9,
    "jury-externe": 7,
-   "encadrant": 13,
+   "encadrant": 15,
    "biblio": 2,
-   "physicien": 2
+   "physicien": 3
   },
   "calls": [
    {
@@ -105,9 +105,9 @@
     "efforts": [
      "medium"
     ],
-    "calls": 6,
-    "output": 23255,
-    "usd": 1.8133,
+    "calls": 9,
+    "output": 41023,
+    "usd": 3.5912,
     "off_spec": 0,
     "expected": "claude-fable-5-2 / medium",
     "conforms": true
@@ -390,6 +390,23 @@
     "conforms": true
    },
    {
+    "id": "agent-a9cb9b2d8aa8ebefa",
+    "type": "encadrant",
+    "description": "Encadrant verdicts H33 H32",
+    "models": [
+     "claude-fable-5-2"
+    ],
+    "efforts": [
+     "medium"
+    ],
+    "calls": 12,
+    "output": 22684,
+    "usd": 2.5401,
+    "off_spec": 0,
+    "expected": "claude-fable-5-2 / medium",
+    "conforms": true
+   },
+   {
     "id": "agent-aa0c8d0bdc90f96b5",
     "type": "encadrant",
     "description": "Encadrant check of v4 numbers",
@@ -421,6 +438,23 @@
     "usd": 9.2777,
     "off_spec": 0,
     "expected": "claude-fable-5-2 / max",
+    "conforms": true
+   },
+   {
+    "id": "agent-aa8072812bf8ea441",
+    "type": "physicien",
+    "description": "Physicien: next conjectures E4",
+    "models": [
+     "claude-fable-5-2"
+    ],
+    "efforts": [
+     "high"
+    ],
+    "calls": 17,
+    "output": 65969,
+    "usd": 4.3532,
+    "off_spec": 0,
+    "expected": "claude-fable-5-2 / high",
     "conforms": true
    },
    {
@@ -523,6 +557,23 @@
     "conforms": true
    },
    {
+    "id": "agent-adb7d62e4b9bbdbc3",
+    "type": "encadrant",
+    "description": "Encadrant: H35 criterion",
+    "models": [
+     "claude-fable-5-2"
+    ],
+    "efforts": [
+     "medium"
+    ],
+    "calls": 13,
+    "output": 23395,
+    "usd": 2.1457,
+    "off_spec": 0,
+    "expected": "claude-fable-5-2 / medium",
+    "conforms": true
+   },
+   {
     "id": "agent-adf603f91fe7d7174",
     "type": "encadrant",
     "description": "Encadrant: H18 and replication",
@@ -588,32 +639,33 @@
   "nonconforming": 0
  },
  "tool_calls": {
-  "Bash": 758,
-  "Read": 44,
-  "Agent": 33,
-  "Write": 17,
+  "Bash": 941,
+  "Read": 46,
+  "Agent": 36,
+  "Write": 18,
   "ToolSearch": 4,
   "SendMessage": 3,
   "ReadNotifications": 2,
   "mcp__claude-code-remote__get_session": 1,
   "Grep": 1,
-  "mcp__runpod-api__list-pods": 1
+  "mcp__runpod-api__list-pods": 1,
+  "mcp__claude-code-remote__send_message": 1
  },
  "role_calls_via_tools": 0,
  "gpu": {
-  "jobs": 36,
-  "hours": 19.989,
-  "usd": 18.2,
+  "jobs": 50,
+  "hours": 38.559,
+  "usd": 34.82,
   "by_gpu": {
    "NVIDIA RTX PRO 4500 Blackwell": {
-    "jobs": 31,
-    "hours": 15.35,
-    "usd": 11.0518
+    "jobs": 38,
+    "hours": 25.083099999999995,
+    "usd": 18.0597
    },
    "NVIDIA RTX A6000": {
-    "jobs": 1,
-    "hours": 0.0261,
-    "usd": 0.018
+    "jobs": 2,
+    "hours": 0.037500000000000006,
+    "usd": 0.025799999999999997
    },
    "NVIDIA A100-SXM4-80GB": {
     "jobs": 2,
@@ -621,14 +673,19 @@
     "usd": 4.732
    },
    "NVIDIA GeForce RTX 4090": {
-    "jobs": 1,
-    "hours": 1.3558,
-    "usd": 1.2066
+    "jobs": 5,
+    "hours": 6.698499999999999,
+    "usd": 5.9615
    },
    "NVIDIA L40S": {
     "jobs": 1,
     "hours": 1.0962,
     "usd": 1.1949
+   },
+   "NVIDIA GeForce RTX 5090": {
+    "jobs": 2,
+    "hours": 3.4832,
+    "usd": 4.8416
    }
   },
   "budget_usd": 140.0
