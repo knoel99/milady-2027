@@ -144,9 +144,9 @@ def score(gen: np.ndarray, ref: np.ndarray, rm: float) -> dict[str, float]:
     }
 
 
-def run(seeds: list[int], steps: int, n_samples: int) -> dict:
+def run(seeds: list[int], steps: int, n_samples: int, kmax: float = 2.0) -> dict:
     n = 16
-    modes = half_ball_modes(2.0)
+    modes = half_ball_modes(kmax)
     k = torch.tensor(modes, dtype=torch.float64)
     train_rm = (8.0, 16.0)
     held = 12.0
@@ -169,17 +169,23 @@ def run(seeds: list[int], steps: int, n_samples: int) -> dict:
             row[name] = stats
         rows.append(row)
         print("seed", seed, "projected_div", row["projected"]["div_max"], "free_div", row["free"]["div_max"], flush=True)
-    return {"held_out_rm": held, "n": n, "steps": steps, "seeds": rows}
+    return {"held_out_rm": held, "n": n, "kmax": kmax, "steps": steps, "seeds": rows}
 
 
 def main() -> None:
     parser = argparse.ArgumentParser()
     parser.add_argument("--quick", action="store_true")
+    parser.add_argument("--kmax", type=float, default=None)
     parser.add_argument("--out", type=Path, default=None)
     args = parser.parse_args()
+    if args.kmax is not None and args.out is None:
+        raise SystemExit("--out is required with --kmax, so the H145 file is not overwritten")
     if args.quick:
-        result = run([0], steps=5, n_samples=2)
+        result = run([0], steps=5, n_samples=2, kmax=args.kmax or 2.0)
         dest = args.out or Path("experiments/results/cursor_constraint_quick.json")
+    elif args.kmax is not None:
+        result = run([0, 1, 2, 3, 4], steps=40, n_samples=8, kmax=args.kmax)
+        dest = args.out
     else:
         result = run([0, 1, 2, 3, 4], steps=40, n_samples=8)
         dest = args.out or Path("experiments/results/cursor_constraint_cmp.json")

@@ -1897,6 +1897,32 @@
       "verdict": "REFUTED",
       "results": "Mean energy-distance ratio of the sampling-constraint variant is 757.563594531743, above 1.2. All five ratios are finite. Same file as H145. The refutation criterion is met.",
       "commit": ""
+    },
+    {
+      "id": "H147",
+      "statement": "The kmax=4 sampling-constraint variant has a strictly smaller mean energy-distance ratio than the kmax=2 baseline of H146, which is 757.5635945317433. Seeds 0-4, hidden width 64, 40 Adam steps, training Rm 8 and 16, held-out Rm 12, n=16.",
+      "origin": "H146 missed the C1 target by two orders of magnitude. The generated field kept only modes |m|<=2, so the spectrum error was large. Raising kmax to 4 is the next comparison. The width stays 64, so a failure can still be the hidden layer.",
+      "refutation_criterion": "Refuted if any ratio is non-finite, or if the mean over seeds 0-4 of the kmax=4 sampling-constraint energy-distance ratio is not strictly smaller than 757.5635945317433.",
+      "protocol": "python3 experiments/cursor_constraint_cmp.py --kmax 4 --out experiments/results/cursor_constraint_kmax4.json. CPU. The H145 file is not overwritten. --quick is not a quoted result.",
+      "script": "experiments/cursor_constraint_cmp.py --kmax 4",
+      "cost_estimate": "CPU only. No GPU dollars.",
+      "status": "registered",
+      "verdict": "",
+      "results": "",
+      "commit": ""
+    },
+    {
+      "id": "H148",
+      "statement": "The same kmax=4 sampling-constraint variant has a mean energy-distance ratio at most 1.2. Seeds 0-4, same protocol as H147.",
+      "origin": "C1 target is 1.2. H146 was 757.56 at kmax=2. The bound was fixed before the kmax=4 run.",
+      "refutation_criterion": "Refuted if any ratio is non-finite, or if the mean over seeds 0-4 exceeds 1.2.",
+      "protocol": "Same CPU run as H147.",
+      "script": "experiments/cursor_constraint_cmp.py --kmax 4",
+      "cost_estimate": "CPU only. No GPU dollars.",
+      "status": "registered",
+      "verdict": "",
+      "results": "",
+      "commit": ""
     }
   ]
 }
