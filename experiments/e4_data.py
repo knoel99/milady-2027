@@ -81,6 +81,11 @@ def eta_file(eta: float, quick: bool = False, n: int = N, cfl: float = CFL) -> P
 # Offset of the seeds of the initial conditions (environment variable E4_DATA_SEED, default 0: the E4 data).
 # Another value gives an independent realisation of the reference data, for a replication.
 SEED_OFFSET = int(os.environ.get("E4_DATA_SEED", "0"))
+# Another number of trajectories or kept duration for a job (H36: E4_N_TRAJ=96 E4_T_KEEP=50, the same number of snapshots
+# from four times the trajectories); recorded in the configuration of the data file (n_traj, t_keep).
+for _key, _env, _cast in (("n_traj", "E4_N_TRAJ", int), ("t_keep", "E4_T_KEEP", float)):
+    if os.environ.get(_env):
+        FULL[_key] = QUICK[_key] = _cast(os.environ[_env])
 
 
 def solver_config(eta: float, n_traj: int, seed: int, n: int = N, dtype: str = "float32",

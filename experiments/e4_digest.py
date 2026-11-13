@@ -774,6 +774,61 @@ def h35_lines(runs: dict, ref: dict | None, root: Path = R) -> list[str]:
     return out
 
 
+def h36_lines(runs: dict, ref: dict | None, root: Path = R) -> list[str]:
+    """H36: W9 trained on the same number of snapshots from four times the trajectories; verdict as registered."""
+    data_file = root / "e4_data.json"
+    cfg = json.loads(data_file.read_text())["config"] if data_file.exists() else {}
+    if ref is None or cfg.get("n_traj", 24) == 24 or not any("W9_skip_sym" in r["evaluation"] for r in runs.values()):
+        return []
+    main = json.loads((R / "e4_reference.json").read_text())["values"]
+    main_runs = load(False)
+    rv = lambda e, k: ref["values"][f"{e:.5f}"][k]                                       # noqa: E731
+    out = [f"\nH36: the same number of snapshots from more trajectories ({cfg.get('n_traj')} trajectories, kept duration {cfg.get('t_keep'):g}, "
+           f"{next(iter(ref['values'].values()))['n']} snapshots per η, seed offset {cfg.get('data_seed_offset')}); seed means, "
+           "with the values of the main run (24 trajectories of 100 snapshots) in brackets.\n"]
+
+    def cell(rs: dict, rf, v: str, fn) -> dict[float, np.ndarray]:
+        acc: dict = {}
+        for r in rs.values():
+            for x in r["evaluation"].get(v, {}).get("test", []):
+                acc.setdefault(round(x["eta"], 5), []).append(fn(x, rf[f"{x['eta']:.5f}"]))
+        return {e: np.asarray(a) for e, a in sorted(acc.items(), reverse=True)}
+
+    sem = lambda a: float(a.std(ddof=1) / np.sqrt(len(a))) if len(a) > 1 else float("nan")   # noqa: E731
+    rows = (("E_B over that of the reference − 1", lambda x, r: x["E_B"] / r["E_B"] - 1), ("ED / floor", lambda x, r: x["ed_ratio"]),
+            ("mean-flow part of the production − reference", lambda x, r: x["prod_mean_over_d"] - r["prod_mean_over_d"]),
+            ("third-order part / reference", lambda x, r: x["prod_fluct_over_d"] / r["prod_fluct_over_d"]),
+            ("null-count error", lambda x, r: abs(x["null_count_err_rel"])), ("restart drift", lambda x, r: abs(x.get("restart_drift_eb", np.nan))))
+    laws = [v for v in ("G0_gaussian_modes", "G1_gaussian_full", "W9_skip_sym") if any(v in r["evaluation"] for r in runs.values())]
+    etas = sorted(cell(runs, ref["values"], "W9_skip_sym", rows[0][1]), reverse=True)
+    out.append("| law | quantity | " + " | ".join(f"η = {e:.4f}" for e in etas) + " |")
+    out.append("|---|---|" + "---|" * len(etas))
+    for v in laws:
+        for label, fn in rows:
+            new, old = cell(runs, ref["values"], v, fn), cell(main_runs, main, v, fn)
+            out.append(f"| {v} | {label} | " + " | ".join(
+                f"{f(float(new[e].mean()))} ± {f(sem(new[e]))} [{f(float(old[e].mean())) if e in old else '–'}]" for e in etas) + " |")
+    dev = cell(runs, ref["values"], "W9_skip_sym", rows[0][1])
+    n_seed = min(len(a) for a in dev.values())
+    deficit = {e: float(-dev[e].mean()) for e in etas}
+    # checks: same stationary law as the main run; G1 of the new data has the energy of its reference
+    d_eb = max(abs(rv(e, "E_B") / main[f"{e:.5f}"]["E_B"] - 1) for e in (float(k) for k in ref["values"]))
+    d_3 = max(abs(rv(e, "prod_fluct_over_d") - main[f"{e:.5f}"]["prod_fluct_over_d"]) for e in (float(k) for k in ref["values"]))
+    g1 = cell(runs, ref["values"], "G1_gaussian_full", rows[0][1])
+    d_g1 = max(abs(float(a.mean())) for a in g1.values()) if g1 else float("nan")
+    ok = d_eb <= 0.05 and d_3 <= 0.05 and d_g1 <= 0.05
+    verdict = ("INCOMPLETE (fewer than five seeds)" if n_seed < 5 else "MEASUREMENT INVALID (checks)" if not ok else
+               "REFUTED (the deficit is at most 0.06 at each held-out η)" if all(abs(x) <= 0.06 for x in deficit.values()) else
+               "SUPPORTED (the deficit is at least 0.09 at each held-out η)" if all(x >= 0.09 for x in deficit.values()) else "INCONCLUSIVE")
+    out.append("H36, deficit of magnetic energy of W9_skip_sym trained on this data set, at the held-out η: "
+               + ", ".join(f"η = {e:.4f}: {f(deficit[e])} ± {f(sem(dev[e]))}" for e in etas)
+               + f" ({n_seed} seeds; refuted if at most 0.06 at each η, supported if at least 0.09 at each η). Checks of the measurement: "
+                 f"reference of this data set against that of the main run, largest relative gap of E_B over the eleven η {f(d_eb)} (limit 0.05), "
+                 f"largest gap of the third-order part {f(d_3)} (limit 0.05); largest |E_B/E_B,ref − 1| of G1 at the held-out η {f(d_g1)} "
+                 f"(limit 0.05): {'PASS' if ok else 'FAIL'}. Verdict: {verdict}.")
+    return out
+
+
 def select(runs: dict) -> dict:
     """Generator with the lowest validation energy-distance ratio (mean over the seeds)."""
     val = {v: float(np.nanmean(per_seed(runs, v, "ed_ratio", "val"))) for v in GENERATORS
@@ -1194,7 +1249,7 @@ def section(quick: bool = False, root: Path = R, replication: str | None = None,
                 xs, ys = np.asarray(pts).T
                 P(f"Signed drift of E_B at τ = 4 against the bias E_B,ref/E_B(0) − 1 of the law, over the {len(pts)} laws above: "
                   f"correlation {f(float(np.corrcoef(xs, ys)[0, 1]), 2)}.")
-        for line in h28_lines(runs, ref) + h29_lines(runs, ref) + h32_lines(runs, ref) + h33_lines(runs, ref, root) + h34_lines(runs, ref, root) + h35_lines(runs, ref, root):
+        for line in h28_lines(runs, ref) + h29_lines(runs, ref) + h32_lines(runs, ref) + h33_lines(runs, ref, root) + h34_lines(runs, ref, root) + h35_lines(runs, ref, root) + h36_lines(runs, ref, root):
             P(line)
         h27 = [x for r in runs.values() for x in r.get("h27", [])]
         if h27:

@@ -273,6 +273,11 @@ def block_later(run: str, names: list[str]) -> list[str]:
         row.append(cell(np.array([r["times"].get(v, {}).get("fm_loss_train_sample", np.nan) for r in runs.values()], dtype=float)))
         row.append(str(n_seeds(runs, v)))
         out.append("| " + " | ".join(row) + " |")
+    cells = [[c.strip() for c in line.strip("|").split(" | ")] for line in out]
+    k = head.index("FM loss")
+    if all(c[k].strip() == "–" for c in cells[2:]):               # no loss recorded for these laws: drop the column
+        out = ["| " + " | ".join(c[:k] + c[k + 1:]) + " |" for c in cells[:1] + cells[2:]]
+        out.insert(1, "|:" + "-" * 26 + "|" + ("-" * 9 + ":|") * (len(head) - 2))
     return out
 
 
