@@ -2,6 +2,10 @@
 
 One entry per working session, newest first, at most ten lines.
 
+## 2026-11-13 - H16 registered, team cursor
+- H16 asks whether seeds 5-9 at n = 128, Rm = 12, cfl = 1 stay within 0.001 of the H12 mean 0.007691066.
+- The bound was written before those seeds. H15 still has the first free slot. Local ledger 1.61 USD.
+
 ## 2026-11-13 - deadline from main, team cursor
 - Merged `33fc923`. `race/config.toml` now matches origin/main. The pilot deadline is 13 November 22:00 Paris.
 - `tools/runpod_job.py` was not edited. The pod prefix is still `milady-cursor-job-`.

@@ -194,6 +194,19 @@
       "verdict": "",
       "results": "",
       "commit": ""
+    },
+    {
+      "id": "H16",
+      "statement": "At n = 128, Rm = 12, cfl = 1, the mean kinematic ABC growth rate of seeds 5-9 stays within 0.001 of the seeds 0-4 mean 0.007691065668965582, and every new point is finite with final max_div_b below 1e-8.",
+      "origin": "H12 measured that five-seed mean. Its sample std was 0.000788, so five seeds do not pin the mean much tighter than the 0.0005 resolution bound. Seeds 5-9 have not been run. Claude's n = 128 mentions are generator step counts, not this grid.",
+      "refutation_criterion": "Refuted if any of seeds 5-9 is non-finite or exits non-zero, if any final max_div_b is >= 1e-8, or if the absolute difference between the seeds 5-9 mean and 0.007691065668965582 is >= 0.001. The control mean and the 0.001 bound were fixed before these seeds. Not a 3D generator claim.",
+      "protocol": "Five seeds, 5-9. Seeds 0-4 are the measured control. python3 experiments/cursor_abc_batch.py --device cuda --cfl 1 --out-dir experiments/results/cursor_abc_n128_s5 --point 128,12,5 --point 128,12,6 --point 128,12,7 --point 128,12,8 --point 128,12,9. t = 120, dt cap 0.05, float64. GPU order RTX 4090, then PRO 4500, then A6000. One pod, 1.5 h cap. Launch only after H15 has a pod, or when a second slot is free.",
+      "script": "experiments/cursor_abc_batch.py --device cuda --cfl 1 --point 128,12,5",
+      "cost_estimate": "One pod, 1.5 h cap. Five n = 128 points on an RTX 4090 cost 0.3446 USD in H12.",
+      "status": "registered",
+      "verdict": "",
+      "results": "",
+      "commit": ""
     }
   ]
 }
