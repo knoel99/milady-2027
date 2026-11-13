@@ -57,9 +57,9 @@ The first family is a kinematic ABC dynamo. Growth-rate signs depend on the seed
 
 The second family scores ensembles of magnetic fields at $n = 16$ and held-out $Rm = 12$. A small conditional flow, trained for forty Adam steps, meets a divergence comparison and misses the energy-distance target by about two orders of magnitude. A perfect Fourier cutoff and a linear midpoint in coefficient space meet that target. A dynamic ABC window meets the total energy balance and misses the magnetic residual. A trilinear null count is preserved, at the pre-registered tolerance, only by the kmax=7 midpoint.
 
-A ResMLP conditional flow, hypothesis H168, is registered and has no score yet. The first GPU attempt exited before any ratio was written. The rerun is the same protocol after a device fix. This report does not quote it.
+A ResMLP conditional flow, hypothesis H168, was then trained for 4000 Adam steps on a GPU. Its five-seed mean energy-distance ratio is 0.769, which meets 1.2. Seed 0 alone is 1.508. The same-kmax Fourier midpoint on that run has mean 0.743. The learned mean C4 is 0.310 and misses 0.1. That C4 figure is measured. It was not a registered criterion.
 
-Every number below is measured in a committed result file, published with a reference, or marked conjectured. The file `experiments/results/cursor_metrics.json` currently stores the kmax=6 midpoint for C1, C2, and C4, the dynamic total residual for C3, and the kmax=7 midpoint null error for C5. Those stored values are baselines. They are not a trained generator.
+Every number below is measured in a committed result file, published with a reference, or marked conjectured. The file `experiments/results/cursor_metrics.json` stores the H168 learned mean as C1. It still stores the kmax=6 midpoint for C2 and C4, because the learned C4 misses 0.1. C3 is the dynamic total residual. C5 is the kmax=7 midpoint null error.
 
 # Introduction {#introduction}
 
@@ -105,7 +105,7 @@ The stationarity window is the second half of a dynamic ABC run at $n = 16$, $t 
 
 H168 asks whether a wider conditional flow meets the same C1 bound. The network is `milady.train.fm3d.ResMLP`, width 256, depth 4, embedding 128, eight Fourier features, six channels. The loss is `fm_loss`. The sampler is `heun_sample` with 32 steps. After each step the physical coefficients are projected with `project_solenoidal` and mapped back to the normalized coordinates. Each seed is normalized by its own mean and standard deviation. Training Reynolds numbers are 8, 10, 11, 13, 14, and 16. Times are eight values from 0.25 to 2. Held-out $Rm$ is 12. Seeds are 0 to 4. The optimizer is Adam for 4000 steps, batch 32, learning rate $10^{-3}$. The Fourier midpoint of $Rm = 11$ and $Rm = 13$ is scored by the same function at the same cutoff. The criterion, fixed before the run, is refuted if any learned ratio is non-finite or if the five-seed mean exceeds 1.2.
 
-A one-seed probe with 200 steps is recorded in the hypothesis origin. It is not a quoted result. The five-seed GPU run is the quoted protocol. It had not written `experiments/results/cursor_fm/metrics.json` when this section was rendered.
+A one-seed probe with 200 steps is recorded in the hypothesis origin. It is not a quoted result. The five-seed GPU run is the quoted protocol. Its file is `experiments/results/cursor_fm/metrics.json`.
 
 ## Nulls
 
@@ -177,7 +177,7 @@ $Rm = 12$ is held out of every learned training set and is not an endpoint of a 
 
 The small-flow file is `experiments/results/cursor_constraint_cmp.json` (kmax=2, forty steps). The kmax=4 width-64 file is `cursor_constraint_kmax4.json`. The wide hidden layer is `cursor_constraint_wide.json`. The six training Reynolds numbers at kmax=4 are `cursor_constraint_dense.json`. Perfect cutoffs are `cursor_constraint_ceiling.json`. Midpoints are `cursor_constraint_midpoint.json`, `cursor_constraint_midpoint_kmax6.json`, and `cursor_constraint_midpoint_kmax7.json`. The dynamic window is `cursor_stationary.json`. Null counts are `cursor_nulls.json`, `cursor_nulls_kmax6.json`, `cursor_nulls_midpoint_kmax6.json`, and `cursor_nulls_midpoint_kmax7.json`.
 
-H168 is `experiments/cursor_fm_train.py` with `--device cuda --steps 4000`. The first pod, `vf94e6g28iv9mw`, exited in 88 seconds because a mean tensor was on CUDA while the coefficients were still on CPU. The log is `research/gpu-logs/h168.log`. The cost on that row of `research/compute-ledger.jsonl` is 0.0603 USD. No metric file was written. The subtraction was then moved onto the requested device. The criterion was not changed. The rerun uses the same command on the fixed commit. It is not scored in this render.
+H168 is `experiments/cursor_fm_train.py` with `--device cuda --steps 4000`. The first pod, `vf94e6g28iv9mw`, exited in 88 seconds because a mean tensor was on CUDA while the coefficients were still on CPU. The log is `research/gpu-logs/h168.log`. That row costs 0.0603 USD and is not a score. The subtraction was then moved onto the requested device. The criterion was not changed. The rerun is pod `1lzm2p635n6com`, 0.1656 hours, 0.1474 USD, exit code 0. The file is `experiments/results/cursor_fm/metrics.json`.
 
 # Results {#results}
 
@@ -323,6 +323,20 @@ The midpoint is a different comparison. It is scored against the held-out field,
 ![Relative null-count error of the kmax=4 truncation. File `experiments/results/cursor_nulls.json`.](../plots/null-error.pdf){width=88%}
 :::
 
+## The learned flow
+
+Measured, file `experiments/results/cursor_fm/metrics.json`. Five seeds, 4000 steps, kmax=4, held-out $Rm = 12$. The learned energy-distance ratios are 1.5078, 0.6832, 0.7370, 0.6482, and 0.2703. The mean is 0.7693 (SE 0.2022). H168 is confirmed. The criterion is the mean. Seed 0 is above 1.2 and does not refute the claim.
+
+The same file scores the kmax=4 midpoint on the same eight times. Its mean ratio is 0.7431 (SE 0.2869), which matches `cursor_constraint_midpoint.json`. The learned mean does not beat that midpoint. The learned mean maximum relative divergence is $1.987\times 10^{-8}$ (SE $7.71\times 10^{-10}$). The learned mean C4 is 0.3098 (SE 0.0783), above 0.1. The learned mean absolute magnetic residual is 0.1077 (SE 0.0330), above 0.05. Those two misses are measurements. They were not the H168 criterion, and they are why `cursor_metrics.json` does not replace C4 with the learned number.
+
+| Seed | learned C1 | midpoint C1 | learned C4 |
+| --- | --- | --- | --- |
+| 0 | 1.50779 | 1.79787 | 0.23217 |
+| 1 | 0.68322 | 0.52203 | 0.24004 |
+| 2 | 0.73696 | 0.28720 | 0.62289 |
+| 3 | 0.64820 | 0.87530 | 0.23228 |
+| 4 | 0.27034 | 0.23324 | 0.22150 |
+
 ## Solver timing
 
 Measured, `research/gpu-logs/bench-float32.log`. One step of `milady.sim.mhd3d` at $n = 128$, float32, on an RTX 4090, takes 0.008683746322058141 seconds. The T1 target in the team objectives is 0.05. This bench meets it. The same log records 0.006443568398244679 seconds at $n = 64$.
@@ -335,7 +349,7 @@ Measured growth rates, not a generator. At $n = 128$ and $Rm = 9$, seeds 0 to 4 
 
 # Comparative study {#comparative-study}
 
-The table is one mechanism or model family against one metric. The mean and the standard error use the five seeds in the result file named in the results chapter. CONFIRMED means the pre-registered criterion was not met by the data, so the claim holds. REFUTED means the criterion was met. H168 has no row of numbers because `metrics.json` does not exist yet.
+The table is one mechanism or model family against one metric. The mean and the standard error use the five seeds in the result file named in the results chapter. CONFIRMED means the pre-registered criterion was not met by the data, so the claim holds. REFUTED means the criterion was met.
 
 | Mechanism | Metric | Mean ± SE | Verdict |
 | --- | --- | --- | --- |
@@ -360,11 +374,11 @@ The table is one mechanism or model family against one metric. The mean and the 
 | kmax=6 truncation | relative null-count error | 0.1597 ± 0.0408 | H165 REFUTED |
 | kmax=6 midpoint | relative null-count error | 0.1715 ± 0.0247 | H166 REFUTED |
 | kmax=7 midpoint | relative null-count error | 0.0840 ± 0.0119 | H167 CONFIRMED |
-| ResMLP flow, sampling constraint | energy-distance ratio | not scored | H168 registered |
+| ResMLP flow, sampling constraint, kmax=4 | energy-distance ratio | 0.7693 ± 0.2022 | H168 CONFIRMED |
 
-Reading the table as a comparison of mechanisms, the sampling projection wins on divergence and loses on energy distance. Width, cutoff, and a denser $Rm$ grid do not move that loss under 1.2. A perfect cutoff and a midpoint win on energy distance because they are linear operations on the coefficients of fields the score also sees. The midpoint at kmax=6 wins on C4 and loses on the magnetic residual. The dynamic window wins on the total residual and loses on the magnetic residual. The null count loses until kmax=7. The learned ResMLP is the open row.
+Reading the table as a comparison of mechanisms, the sampling projection wins on divergence and loses on energy distance. Width, cutoff, and a denser $Rm$ grid do not move that loss under 1.2. A perfect cutoff and a midpoint win on energy distance because they are linear operations on the coefficients of fields the score also sees. The midpoint at kmax=6 wins on C4 and loses on the magnetic residual. The dynamic window wins on the total residual and loses on the magnetic residual. The null count loses until kmax=7. The learned ResMLP meets the energy-distance bound and misses C4. Its mean, 0.769, does not beat the same-kmax midpoint mean, 0.743. The registered claim did not ask it to.
 
-The register `research/hypotheses.json`, read at the commit of this page, holds 86 supported claims, 77 refuted claims, 1 registered claim (H168), and 3 proposed claims (H2, H3, and the early E1 statement). The kinematic rows H5 to H144 are sign tests. Their verdicts are in that file. They are not repeated as generator metrics. C6, the count of five-seed confirmed or refuted comparisons, is already above its target on H145 to H167 alone. H168 will add one comparison when it is scored. It is not counted yet.
+The register `research/hypotheses.json`, read at the commit of this page, holds 87 supported claims, 77 refuted claims, and 3 proposed claims (H2, H3, and the early E1 statement). The kinematic rows H5 to H144 are sign tests. Their verdicts are in that file. They are not repeated as generator metrics. C6, the count of five-seed confirmed or refuted comparisons, includes H168.
 
 # Toolbox {#toolbox}
 
@@ -406,9 +420,9 @@ The role diagram is [agents.html](../diagrams/agents.html).
 
 The negative results are the content of the comparison, not a preface to it.
 
-Forty Adam steps on a two-layer map of a few raw coefficients do not match a held-out Reynolds number. The ratio stays between about 750 and about 840 across kmax 2 and 4, across a wider hidden layer, and across a denser training grid. H146, H148, H150, and H155 are the same miss under four designs. Two of those designs were the truncation cycle. They were dropped. A third design that only changes width or the training grid inside the same forty-step regime is not a new hypothesis worth a GPU hour. H168 changes the network, the normalization, the step count, and the training grid together, and it was registered before that run. If its mean exceeds 1.2, the criterion stands. It will not be relaxed after the fact.
+Forty Adam steps on a two-layer map of a few raw coefficients do not match a held-out Reynolds number. The ratio stays between about 750 and about 840 across kmax 2 and 4, across a wider hidden layer, and across a denser training grid. H146, H148, H150, and H155 are the same miss under four designs. Two of those designs were the truncation cycle. They were dropped. A third design that only changes width or the training grid inside the same forty-step regime is not a new hypothesis worth a GPU hour. H168 changes the network, the normalization, the step count, and the training grid together, and it was registered before that run. The mean is 0.769, so the criterion is not met and the claim holds. The bound was not relaxed after the fact. Seed 0 at 1.508 stays in the table.
 
-The Fourier results are easy to over-read. A perfect cutoff of the reference field is close to the reference field. That is a ceiling on the representation, measured so that a later model can be compared with it. It is not a generator. The midpoint is also not trained. It is the linear interpolant in coefficient space between the two neighbours of the held-out parameter. At kmax=6 its energy-distance ratio is 0.014, which is why the metrics file quotes it. The user-facing goal of this team is a learned generator compared with that baseline, not a silent substitution of the baseline for the generator. Until H168 has a finite five-seed mean, the learned side of that comparison is the refuted forty-step flows.
+The Fourier results are easy to over-read. A perfect cutoff of the reference field is close to the reference field. That is a ceiling on the representation, measured so that a later model can be compared with it. It is not a generator. The midpoint is also not trained. It is the linear interpolant in coefficient space between the two neighbours of the held-out parameter. At kmax=6 its energy-distance ratio is 0.014. `cursor_metrics.json` now stores the learned C1, 0.769, and keeps this midpoint for C2 and C4. The learned model meets the energy-distance bound and does not meet C4. It also does not beat the kmax=4 midpoint on the mean.
 
 The magnetic residual is a separate negative result. On kinematic snapshots the midpoint residual stays near 0.08 at kmax=6 and at kmax=7. On the dynamic window the total residual is already $4\times 10^{-6}$ while the magnetic residual is 0.067. H163 stays refuted. It is conjectured that a statistically steady dynamo, rather than a finer cutoff, is what would bring the magnetic residual down. That run is not in the result files, and the conjecture is not a registered hypothesis.
 
@@ -418,9 +432,9 @@ The open kinematic brackets are measurements of the solver. Bisecting them furth
 
 # Conclusion {#conclusion}
 
-The sampling constraint controls divergence and does not, at forty steps, control energy distance. A Fourier midpoint at kmax=6 meets the energy-distance, divergence, and spectrum-plus-helicity numbers currently stored in `cursor_metrics.json`. Those numbers are a baseline. The dynamic total balance meets the stored C3. The kmax=7 midpoint meets the stored C5, and the coarser null counts do not. The learned comparison that can still change the generator verdict is H168. It is registered, it has already consumed a failed pod at 0.0603 USD, and it has no score in this render.
+The sampling constraint controls divergence and does not, at forty steps, control energy distance. A Fourier midpoint at kmax=6 meets the energy-distance, divergence, and spectrum-plus-helicity numbers currently stored in `cursor_metrics.json`. Those numbers are a baseline. The dynamic total balance meets the stored C3. The kmax=7 midpoint meets the stored C5, and the coarser null counts do not. H168 is confirmed. The learned mean energy-distance ratio is 0.7693019720277114. The weights and the coefficient dataset are in `experiments/results/cursor_fm/`, with `MODEL_CARD.md` and `DATASET_CARD.md`.
 
-C6 is met by the confirmed and refuted five-seed comparisons already in the register. C7 is met by `constraints.py` and `nulls.py`. T1 is met by the float32 bench at $n = 128$. No cursor pod is required to keep those statements true. A cursor pod is required only to finish the registered H168 protocol, inside the team ceiling of 70 USD.
+C6 is met by the confirmed and refuted five-seed comparisons in the register, including H168. C7 is met by `constraints.py` and `nulls.py`. T1 is met by the float32 bench at $n = 128$. The scored H168 pod has exited. The team spend on cursor commands is about 21.84 USD, under the ceiling of 70 USD.
 
 # References {#references}
 
@@ -455,7 +469,9 @@ The learned protocol, which is H168 and not a CPU command, is
 python3 experiments/cursor_fm_train.py --device cuda --steps 4000 --out-dir experiments/results/cursor_fm
 ```
 
-GPU jobs are the `milady-cursor-job-*` rows of `research/compute-ledger.jsonl`. The float32 bench is `research/gpu-logs/bench-float32.log`. The float64 bench is `research/gpu-logs/bench-float64.log`. The failed H168 attempt is pod `vf94e6g28iv9mw`, 0.0678 hours, 0.0603 USD, exit code 1, log `research/gpu-logs/h168.log`. The shared RunPod credit is 150 USD. This team's cumulative ceiling for the present order is 70 USD. The ledger total of finished cursor commands, after that failed pod, is about 21.97 USD. The rerun is capped at 1.5 hours on an RTX 4090, about 1.34 USD at 0.89 USD per hour, which stays under 70.
+GPU jobs are the `milady-cursor-job-*` rows of `research/compute-ledger.jsonl`. The float32 bench is `research/gpu-logs/bench-float32.log`. The float64 bench is `research/gpu-logs/bench-float64.log`. The failed H168 attempt is pod `vf94e6g28iv9mw`, 0.0678 hours, 0.0603 USD, exit code 1, log `research/gpu-logs/h168.log`. The scored run is pod `1lzm2p635n6com`, 0.1656 hours, 0.1474 USD, exit code 0, log `research/gpu-logs/h168b.log`. The shared RunPod credit is 150 USD. This team's cumulative ceiling is 70 USD. Finished cursor commands in the ledger sum to about 21.84 USD, under that ceiling. No cursor pod from this run is still up.
+
+The weights are [weights_s0.pt](https://github.com/knoel99/milady-2027/blob/cursor/pilot-step1-1008/experiments/results/cursor_fm/weights_s0.pt), [weights_s1.pt](https://github.com/knoel99/milady-2027/blob/cursor/pilot-step1-1008/experiments/results/cursor_fm/weights_s1.pt), [weights_s2.pt](https://github.com/knoel99/milady-2027/blob/cursor/pilot-step1-1008/experiments/results/cursor_fm/weights_s2.pt), [weights_s3.pt](https://github.com/knoel99/milady-2027/blob/cursor/pilot-step1-1008/experiments/results/cursor_fm/weights_s3.pt), and [weights_s4.pt](https://github.com/knoel99/milady-2027/blob/cursor/pilot-step1-1008/experiments/results/cursor_fm/weights_s4.pt). The dataset is [dataset.npz](https://github.com/knoel99/milady-2027/blob/cursor/pilot-step1-1008/experiments/results/cursor_fm/dataset.npz). The cards are [MODEL_CARD.md](https://github.com/knoel99/milady-2027/blob/cursor/pilot-step1-1008/experiments/results/cursor_fm/MODEL_CARD.md) and [DATASET_CARD.md](https://github.com/knoel99/milady-2027/blob/cursor/pilot-step1-1008/experiments/results/cursor_fm/DATASET_CARD.md).
 
 Schematic sources were rendered with the schematic-figure skill. The three diagrams were rendered with `node .claude/skills/archify/bin/archify.mjs` from `site/teams/cursor/diagrams/architecture.json`, `workflow.json`, and `agents.json`. Their HTML names are `architecture.html`, `workflow.html`, and `agents.html`.
 

@@ -2,6 +2,11 @@
 
 One entry per working session, newest first, at most ten lines.
 
+## 2026-11-13 - H168 supported, team cursor
+- Learned mean C1 is 0.7693019720277114 over seeds 0-4. The bound 1.2 holds. Seed 0 is 1.508.
+- Same-kmax midpoint mean is 0.743. Learned mean C4 is 0.310 and was not the criterion.
+- Pod 1lzm2p635n6com, 0.1656 h, 0.1474 USD. The pod has exited.
+
 ## 2026-11-13 - report PDF is 34 pages, team cursor
 - `pdfinfo` reports 34 pages for site/teams/cursor/report/index.pdf. The source is the qmd alone.
 - H168 is still registered. The rerun is on pod 1lzm2p635n6com. No learned score is quoted.

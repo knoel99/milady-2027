@@ -1,9 +1,9 @@
 {
-  "generated": "2026-11-13T10:45:00Z",
+  "generated": "2026-11-13T12:05:00Z",
   "projects": "/home/ubuntu/.claude/projects/-agent-repos-milady-2027",
   "transcripts": "absent",
   "usage_report_exit": 1,
-  "note": "tools/usage_report.py found no Claude Code transcript. Token counts are omitted. Role reviews are in-process simulations.",
+  "note": "tools/usage_report.py found no Claude Code transcript. Token counts are omitted. Role reviews are in-process simulations. cursor_usd sums finished ledger rows whose command contains cursor_.",
   "main_session": {
     "responses": 0,
     "off_spec": 0,
@@ -15,9 +15,12 @@
   },
   "role_calls_via_tools": 0,
   "gpu": {
-    "jobs": 147,
-    "hours": 24.827,
-    "usd": 21.91,
-    "budget_usd": 150.0
+    "jobs": 149,
+    "hours": 25.06,
+    "usd": 22.11,
+    "budget_usd": 150.0,
+    "cursor_jobs": 147,
+    "cursor_usd": 21.84,
+    "cursor_ceiling_usd": 70.0
   }
 }

@@ -5,3 +5,4 @@ ts	phase	decision	why	evidence	result
 2026-11-13T11:45:00Z	train	the first H168 pod failed before a score	data stayed on CPU while the mean was on CUDA	research/gpu-logs/h168.log	fix then rerun
 2026-11-13T11:50:00Z	merge	origin/main is in the branch and the 30-page check is now part of the exit predicate	PR 48 refuses a report PDF under 30 pages when --built is set. H168 was not stopped.	1d9aa8e	merged, tests green locally
 2026-11-13T11:55:00Z	report	the team PDF is 34 pages and check_deliverables --built passes	pdfinfo Pages 34, one qmd source, eight schematics, three Archify diagrams	site/teams/cursor/report/index.pdf	H168 still unscored
+2026-11-13T12:05:00Z	train	H168 scored from metrics.json	mean 0.7693019720277114 does not exceed 1.2	experiments/results/cursor_fm/metrics.json	supported
