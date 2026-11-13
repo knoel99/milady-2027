@@ -16,6 +16,6 @@ Tests run from a Claude Code cloud session with each provider's API key as a net
 ## What remains to make every team run its roles with their model and effort
 
 1. **google**: done (header `x-goog-api-key` saved on 13 November).
-2. **mistral**: a key with a higher rate limit (this one allows 1,000 tokens per minute; Vibe's first request is larger), then one real `run_role.py` call.
+2. **mistral**: on 13 November a second key (pay-as-you-go organization) is still limited to 1,000 tokens per minute by the API (`X-Ratelimit-Limit-Tokens-Minute: 1000`; 623 tokens pass, 1,200 get 429) although the console lists 10M tokens per minute for mistral-large-4; Vibe's smallest first request is about 5,600 tokens (measured with a local probe). Until Mistral raises the key's tier, the team can only call its roles through `tools/call_model.py` (API, no tools).
 3. **moonshot**: the key allows 3 requests per minute (tier 0): recharge the account to raise it before a race.
 4. Every team except openai and deepseek calls its roles with `tools/run_role.py` (a separate headless instance of its own harness with the role's model and effort), as `race/TEAM-PROMPT.md` says; `tools/check_calls.py ledger` then checks each call.
