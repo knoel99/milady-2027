@@ -2,6 +2,11 @@
 
 One entry per working session, newest first, at most ten lines.
 
+## 2026-11-13 - H19 supported, H20 registered, team cursor
+- Five points at n = 128, Rm = 10, cfl = 1, all finite and all positive. The smallest lambda is 0.005015. Largest max_div_b is 5.12e-16.
+- The H19 criterion is not met for a refutation. Pod `jc4tw36hkpg8l2`, RTX 4090, 0.38 h, 0.3357 USD. Local ledger 3.6001 USD.
+- H20 asks whether lambda(10) stays positive at n = 96 for seeds 0-4. The sign was fixed before that run. It waits for a free slot. H18 is still on pod `z1a4bgm0uztfzo`.
+
 ## 2026-11-13 - H17 supported, H19 registered, team cursor
 - Five points at n = 128, Rm = 12, cfl = 0.5, all finite. Largest max_div_b is 4.82e-16.
 - Mean lambda 0.007691066. Absolute difference from the cfl = 1 mean is 8.87e-13, under the pre-set 0.002.
