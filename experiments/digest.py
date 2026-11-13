@@ -386,7 +386,11 @@ def e4():
     from e4_digest import convergence
 
     lines = section()
-    reps = [("e4_cold", "H39: ensembles of the solver started from the initial condition of the data, read at 8 to 200 time units: group K on "
+    reps = [("e4_struct", "H40: flow matching anchored on a Gaussian law with a structured covariance (300 leading directions plus mode-wise "
+                          "blocks), trained on the data and, as a control, on samples of W9; the structured law sampled exactly; W9: group Q "
+                          "on a RunPod GPU pod, own regenerated data"),
+            ("e4_struct_indep", "H40 on the data of the independent replication (E4_DATA_SEED=100): group Q"),
+            ("e4_cold", "H39: ensembles of the solver started from the initial condition of the data, read at 8 to 200 time units: group K on "
                         "a RunPod GPU pod, own regenerated data"),
             ("e4_cold_indep", "H39 against the reference of the independent replication (E4_DATA_SEED=100): group K"),
             ("e4_anchorpos", "H38: positive control of the anchored model of H28: W9, the anchored model trained on samples of W9 and read "

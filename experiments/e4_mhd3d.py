@@ -80,6 +80,7 @@ GROUPS = {"A": ["W0_free", "W1_penalty", "W2_final_projection", "W3_projected_fl
           "O": ["REFV_recoloured"],                                     # H37, reported: reference snapshots through the same kind of map
           "P": ["W18_anchor_on_W9"],                                    # H38: positive control of the anchored model, trained on samples of W9
           "K": ["COLD_start"],                                          # H39: ensembles of the solver from the initial condition of the data
+          "Q": ["W19_struct_anchor"],                                   # H40: anchored on a Gaussian law with a structured covariance
           "N": ["G2_gaussianised_W9"],                                  # H27: Gaussian law fitted to the samples of W9                                    # H22: Gaussian law with the inter-mode covariance
           "M": ["W12_skip_stationarity", "W12_skip_control", "W13_skip_tilting"],   # H23, H24: loss and sampling on W9
           "L": ["W9L_skip_long", "W11L_anchored_skip_long"],            # H18: 8 times the iterations (not in "all")
@@ -92,7 +93,7 @@ FULL = {"iters": 4000, "batch": 128, "width": 512, "depth": 4, "lr": 5e-4, "n_ge
         "cold_taus": (8.0, 16.0, 32.0, 64.0, 128.0, 200.0)}
 if os.environ.get("E4_N_RESTART"):               # more restart samples for a job (H30: 512), recorded in the config of the results
     FULL["n_restart"] = int(os.environ["E4_N_RESTART"])
-QUICK = {**FULL, "cold_taus": (2.0, 8.0), "relax_taus": (0.5, 1.0), "relax_restart": 1.0, "relax_ref": (1.0,), "anchor_its": (50, 150), "n_recolour": 1024, "steps_check": 24, "n_fit": 512, "ref_restart_draws": 2, "iters": 150, "width": 256, "depth": 2, "n_gen": 96, "n_gen_train": 64, "steps": 12, "long_factor": 2,
+QUICK = {**FULL, "struct_rank": 20, "cold_taus": (2.0, 8.0), "relax_taus": (0.5, 1.0), "relax_restart": 1.0, "relax_ref": (1.0,), "anchor_its": (50, 150), "n_recolour": 1024, "steps_check": 24, "n_fit": 512, "ref_restart_draws": 2, "iters": 150, "width": 256, "depth": 2, "n_gen": 96, "n_gen_train": 64, "steps": 12, "long_factor": 2,
          "ft_iters": 20, "n_null": 24, "n_restart": 24, "tau": 1.0, "floor_splits": 4, "n_ref_null": 32}
 
 
@@ -521,6 +522,8 @@ def _group_of(variant: str) -> str:
         return "P"
     if variant.startswith("COLD_"):
         return "K"
+    if variant.startswith(("G5_", "W19_", "W20_", "W9Q")):
+        return "Q"
     if variant.startswith(("W16V_", "W17_", "G1V_")):
         return "V"
     return "M" if variant.startswith(("W12_", "W13_")) else "B"
@@ -566,7 +569,7 @@ def run(quick: bool, seed: int, group: str, device: str = "cpu", cond_scale: flo
     groups = [g for g in GROUPS if g in "ABCDE"] if group == "all" else group.split(",")
     need = tuple(sorted({s for g in groups for s in {"A": ("comp",), "B": ("pot", "pot_sym"), "C": ("pot",),
                                                      "D": ("pot_sym",), "E": ("pot_sym",), "L": ("pot_sym",),
-                                                     "S": ("pot_sym",), "G": ("pot_sym",), "M": ("pot_sym",), "N": ("pot_sym",), "F": ("pot_sym",), "R": ("pot_sym",), "T": ("pot_sym",), "Z": ("pot_sym",), "Y": ("pot_sym",), "X": ("pot_sym",), "V": ("pot_sym",), "O": ("pot_sym",), "P": ("pot_sym",), "K": ("pot_sym",)}[g]}))
+                                                     "S": ("pot_sym",), "G": ("pot_sym",), "M": ("pot_sym",), "N": ("pot_sym",), "F": ("pot_sym",), "R": ("pot_sym",), "T": ("pot_sym",), "Z": ("pot_sym",), "Y": ("pot_sym",), "X": ("pot_sym",), "V": ("pot_sym",), "O": ("pot_sym",), "P": ("pot_sym",), "K": ("pot_sym",), "Q": ("pot_sym",)}[g]}))
     need = ("pot", "pot_sym", "comp") if len(need) == 3 else need
     ctx = Context(quick, need, device)
     cfg, dev = ctx.cfg, ctx.dev
@@ -853,6 +856,66 @@ def run(quick: bool, seed: int, group: str, device: str = "cpu", cond_scale: flo
             results["times"][vname] = {"training_time_s": tsec * k / cfg["iters"], "iters": k, "fm_loss_train_sample": train_loss(model)}
             record(vname, {e: generate(model, pot_sym, e, n) for e, n in eval_etas})
         del model, field, g1a, keep
+
+    # ---------------- group Q: anchored on a Gaussian law with a structured covariance (H40) ----------------
+    if "W19_struct_anchor" in names:
+        q_etas = [(e, n) for e, n in eval_etas if split(e) in ("val", "test")]
+        rank = cfg.get("struct_rank", 300)
+        its = [k for k in (1000, 4000) if k <= cfg["iters"]] or [cfg["iters"]]
+
+        def anchored_run(tag: str, x_tr: torch.Tensor, c_tr: torch.Tensor, full_eval: bool) -> None:
+            """The structured Gaussian law of (x_tr, c_tr), the model anchored on it, read at iteration 0 and at ``its``."""
+            law = C.LowRankModewiseGaussian(rank, sign=pot_sym.sign).fit(x_tr, c_tr[:, 0])
+            if full_eval:                                   # the anchor itself, sampled exactly
+                def sample_g5(eta: float, n: int) -> torch.Tensor:
+                    g = torch.Generator().manual_seed(100003 * seed + 461 + ETAS.index(eta))
+                    return pot_sym.field_hat(pot_sym.denormalize(law.sample(float(np.float32(cn(eta))), n, generator=g))).cpu()
+                results["times"]["G5_gaussian_struct"] = {"rank": rank}
+                record("G5_gaussian_struct", {e: sample_g5(e, n) for e, n in eval_etas})
+            gl = torch.Generator().manual_seed(11)
+            idx_q = torch.randint(0, len(x_tr), (2048,), generator=gl)
+
+            def fixed_loss(model) -> float:
+                gf = torch.Generator().manual_seed(12)
+                with torch.no_grad():
+                    return float(np.mean([fm_loss(model, x_tr[idx_q[k:k + 256]], c_tr[idx_q[k:k + 256]], generator=gf).item()
+                                          for k in range(0, 2048, 256)]))
+
+            seed_all(seed)
+            field = C.FullGaussianAnchoredField(sym(net(pot_sym, 0.5)), law).to(dev)
+            results["times"][f"{tag}_it0"] = {"training_time_s": 0.0, "iters": 0, "rank": rank, "fm_loss_train_sample": fixed_loss(field.eval())}
+            record(f"{tag}_it0", {e: generate(field, pot_sym, e, n) for e, n in q_etas}, restart=False)
+            keep = dict.fromkeys(its)
+            model, tsec = train(field.train(), fm, x_tr, c_tr, cfg["iters"], cfg["lr"], cfg["batch"], tag, keep=keep)
+            for k in its:
+                model.load_state_dict(keep[k])
+                last = k == its[-1]
+                results["times"][f"{tag}_it{k}"] = {"training_time_s": tsec * k / cfg["iters"], "iters": k, "rank": rank,
+                                                   "fm_loss_train_sample": fixed_loss(model)}
+                record(f"{tag}_it{k}", {e: generate(model, pot_sym, e, n) for e, n in (eval_etas if last and full_eval else q_etas)},
+                       restart=last and full_eval)
+            del model, field, law, keep
+
+        anchored_run("W19_struct_anchor", ctx.x_pot_sym, ctx.c_train, True)
+        # W9 of the job, and the positive control on its samples (the training set of H38, same generator)
+        seed_all(seed)
+        m9q, tsec = train(builders["W9_skip_sym"](None).to(dev), fm, ctx.x_pot_sym, ctx.c_train, cfg["iters"], cfg["lr"], cfg["batch"],
+                          "W9Q_skip_sym")
+        results["times"]["W9Q_skip_sym"] = {"training_time_s": tsec, "iters": cfg["iters"]}
+        record("W9Q_skip_sym", {e: generate(m9q, pot_sym, e, n) for e, n in eval_etas}, restart=False)
+        gp = torch.Generator().manual_seed(100003 * seed + 449)
+        xs, cs = [], []
+        with torch.no_grad():
+            for cval in torch.unique(ctx.c_train[:, 0]):
+                n_e = int((ctx.c_train[:, 0] == cval).sum())
+                c = torch.full((n_e, 1), float(cval), device=dev)
+                z0 = torch.randn(n_e, pot_sym.n_modes, pot_sym.n_channels, generator=gp).to(dev)
+                xs.append(torch.cat([heun_sample(m9q, z0[i:i + 256], c[i:i + 256], steps=cfg["steps"]) for i in range(0, n_e, 256)]))
+                cs.append(c)
+        x_set, c_set = torch.cat(xs), torch.cat(cs)
+        del m9q, xs, cs
+        anchored_run("W20_struct_anchor_on_W9", x_set, c_set, False)
+        del x_set, c_set
 
     # ---------------- group K: the solver alone from the initial condition of the data (H39) ----------------
     if "COLD_start" in names:
