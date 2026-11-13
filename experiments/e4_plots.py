@@ -693,7 +693,7 @@ def plot_surrogate(out: Path, tag: str = "") -> None:
 
 def plot_relax(out: Path, tag: str = "") -> None:
     """H35: G0, G1, W9 and W16 followed by a relaxation of duration τ in the solver (job e4_relax)."""
-    runs, ref, root = _job("e4_relax", tag)
+    runs, ref, root = _job("e4_relax2", tag)
     laws = [("G0X", "G0 (Gaussian per mode)", C[4]), ("G1X", "G1 (Gaussian, full covariance)", C[3]), ("W9X", "W9 (learned model)", C[0]),
             ("W16X", "W16 (W9 recoloured)", C[1]), ("REFX", "reference snapshots (control)", INK2)]
     have = {v for r in (runs or {}).values() for v in r["evaluation"]}

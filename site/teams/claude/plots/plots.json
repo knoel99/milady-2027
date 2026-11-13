@@ -122,6 +122,14 @@
   ]
  },
  {
+  "name": "e4_relax",
+  "caption": "Laws followed by a relaxation of duration \u03c4 in the solver of the data: the Gaussian laws G0 and G1, the flow-matching model W9, its samples recoloured onto the moments of G1 (W16), and reference snapshots through the same code (control). Null-count error, deviation of the magnetic energy from the reference, energy distance to the reference over the noise floor, and mean of |det \u2207B| over all the cells over that of the reference, against \u03c4; means over the held-out \u03b7 and the seeds, bars \u00b1 2 standard errors over the seeds; dotted lines: the thresholds of the objectives (0.2, 0.05, 10) and the reference value (1).",
+  "sources": [
+   "experiments/results/replications/e4_relax2/e4_mhd3d_s<k>.json",
+   "experiments/results/replications/e4_relax2/e4_reference.json"
+  ]
+ },
+ {
   "name": "e4_gpu_costs",
   "caption": "Cumulative GPU spend of the pilot, one point per entry of the compute ledger: finished jobs, jobs that failed, were interrupted or were lost, and the corrections made after another session deleted running pods.",
   "sources": [
