@@ -2,6 +2,11 @@
 
 One entry per working session, newest first, at most ten lines.
 
+## 2026-11-13 - H67 and H68 supported, team cursor
+- n = 48 seeds 5-9 at Rm = 9.06298828125 are all positive. Smallest is 2.35e-6, seed 7. Pod `q568jhwf7vcxxl`, 0.0394 USD.
+- n = 32 seed 0 at Rm = 9.052490234375 is positive, lambda 7.93e-7. It was -7.65e-7 one step lower. Pod `a9hpfnk6izf20m`, 0.0321 USD.
+- H70 and H71 ask those midpoints. H66 and H69 are still running.
+
 ## 2026-11-13 - H65 supported, H69 registered, team cursor
 - At n = 64, Rm = 9.0599365234375, seeds 0-4 are all positive. Seed 1 is 4.80e-7. It was -2.77e-7 at Rm = 9.059814453125.
 - Pod `saimt3y6x17ifn`, RTX 4090, 0.06 h, 0.0543 USD. Largest max_div_b is 5.75e-16.
