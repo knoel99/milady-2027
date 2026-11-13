@@ -68,7 +68,8 @@ GROUPS = {"A": ["W0_free", "W1_penalty", "W2_final_projection", "W3_projected_fl
           "C": ["W4c_potentials_smooth"],      # H15: W4 with a smooth embedding of the condition
           "D": ["G0_gaussian_modes", "W9_skip_sym"],                    # H16, H17: second-order baseline, affine skip
           "E": ["W10_anchored", "W11_anchored_skip"],                   # H19, H20: anchored on the Gaussian field
-          "G": ["G1_gaussian_full"],                                    # H22: Gaussian law with the inter-mode covariance
+          "G": ["G1_gaussian_full"],
+          "N": ["G2_gaussianised_W9"],                                  # H27: Gaussian law fitted to the samples of W9                                    # H22: Gaussian law with the inter-mode covariance
           "M": ["W12_skip_stationarity", "W12_skip_control", "W13_skip_tilting"],   # H23, H24: loss and sampling on W9
           "L": ["W9L_skip_long", "W11L_anchored_skip_long"],            # H18: 8 times the iterations (not in "all")
           "S": ["S_w512", "S_w2048", "S_w5632", "S_w512_long", "S_w2048_long"]}   # H21: width scan (not in "all")
@@ -76,7 +77,7 @@ GROUPS = {"A": ["W0_free", "W1_penalty", "W2_final_projection", "W3_projected_fl
 FULL = {"iters": 4000, "batch": 128, "width": 512, "depth": 4, "lr": 5e-4, "n_gen": 512, "n_gen_train": 256,
         "steps": 50, "ft_iters": 400, "ft_lr": 2e-4, "beta": 20.0, "stat_cond": 4, "stat_per": 16, "stat_steps": 6,
         "n_null": 200, "n_restart": 128, "tau": 4.0, "floor_splits": 10, "n_ref_null": 400, "long_factor": 8}
-QUICK = {**FULL, "iters": 150, "width": 256, "depth": 2, "n_gen": 96, "n_gen_train": 64, "steps": 12, "long_factor": 2,
+QUICK = {**FULL, "n_fit": 256, "iters": 150, "width": 256, "depth": 2, "n_gen": 96, "n_gen_train": 64, "steps": 12, "long_factor": 2,
          "ft_iters": 20, "n_null": 24, "n_restart": 24, "tau": 1.0, "floor_splits": 4, "n_ref_null": 32}
 
 
@@ -134,20 +135,30 @@ class Context:
         self.ref_json = json.loads(ref_file.read_text()) if ref_file.exists() else None
 
     # -- physics of a set of coefficients ------------------------------------------------------
-    def physics(self, fh: torch.Tensor, eta: float, chunk: int = 400) -> dict:
-        """Per-sample physical quantities of the field coefficients ``fh`` (n, 2, M, 3), by chunks."""
-        parts = [self._physics(fh[i:i + chunk], eta) for i in range(0, len(fh), chunk)]
+    def physics(self, fh: torch.Tensor, eta: float, chunk: int = 400, w: np.ndarray | None = None) -> dict:
+        """Per-sample physical quantities of the field coefficients ``fh`` (n, 2, M, 3), by chunks.
+
+        ``prod_mean`` is the magnetic production ⟨j·(ū×B)⟩ of each sample with the (weighted) ensemble-mean
+        velocity ū in place of its own: its mean is the part of the production carried by second-order
+        statistics (mean flow × second moments of B); the rest, ⟨j·((u − ū)×B)⟩, is a third-order moment."""
+        wt = torch.full((len(fh),), 1.0 / len(fh), dtype=torch.float64) if w is None else torch.as_tensor(w / w.sum(), dtype=torch.float64)
+        uh = (wt[:, None, None].to(torch.complex128) * fh[:, 0].cpu().to(torch.complex128)).sum(0)
+        zero = torch.zeros_like(uh)
+        u_mean = self.pot.to_grid(torch.stack([uh, zero])[None], (N_GRID,) * 3).numpy()[0, 0]
+        parts = [self._physics(fh[i:i + chunk], eta, u_mean) for i in range(0, len(fh), chunk)]
         out = {k: np.concatenate([p[k] for p in parts]) for k in parts[0] if k != "budget"}
         out["budget"] = {k: np.concatenate([p["budget"][k] for p in parts]) for k in parts[0]["budget"]}
         return out
 
-    def _physics(self, fh: torch.Tensor, eta: float) -> dict:
+    def _physics(self, fh: torch.Tensor, eta: float, u_mean: np.ndarray | None = None) -> dict:
         fh = fh.cpu().to(torch.complex128)
         grid = self.pot.to_grid(fh, (N_GRID,) * 3).numpy()
         u, b = grid[:, 0], grid[:, 1]
         feats, _ = M.features(u, b, n_shells=8)
         params = {"mode": "dynamic", "forcing": "abc", "kf": D.KF, "nu": D.NU, "eta": eta}
         bud = M.energy_budget(u, b, params)
+        prod_mean = (M.energy_budget(np.repeat(u_mean[None], len(b), 0), b, params)["magnetic_production"]
+                     if u_mean is not None else np.full(len(b), np.nan))
         hel = M.helicities(u, b)
         k = self.pot.k
         bh = fh[:, 1]
@@ -159,7 +170,7 @@ class Context:
         hdens = jdens / k2                                           # magnetic helicity per mode
         zeros = torch.zeros(fh.shape[0], ns, dtype=torch.float64)
         return {
-            "features": feats, "budget": bud,
+            "features": feats, "budget": bud, "prod_mean": prod_mean,
             "div_u": M.divergence_relative(u, per_sample=True), "div_b": M.divergence_relative(b, per_sample=True),
             "spec_u": M.energy_spectrum(u, n_shells=ns)[:, 1:], "spec_b": M.energy_spectrum(b, n_shells=ns)[:, 1:],
             "Hm": hel["magnetic_helicity"], "Hc": hel["cross_helicity"], "j2": hel["mean_square_current"],
@@ -197,7 +208,7 @@ class Context:
     # -- evaluation of a generated ensemble ------------------------------------------------------
     def evaluate(self, fh: torch.Tensor, eta: float, w: np.ndarray | None = None, nulls: bool = True) -> dict:
         """Metrics of the coefficients ``fh`` generated at ``eta`` (optionally weighted by ``w``)."""
-        ph, ref = self.physics(fh, eta), self.ref[eta]
+        ph, ref = self.physics(fh, eta, w=w), self.ref[eta]
         n = len(fh)
         w = np.full(n, 1.0 / n) if w is None else w / w.sum()
         uniform = np.allclose(w, 1.0 / n)
@@ -226,6 +237,10 @@ class Context:
             "balance_residual_total": float((inj - sinks) / sinks),
             "balance_residual_magnetic": float((prod - avg(bud["magnetic_dissipation"]))
                                                / (abs(prod) + avg(bud["magnetic_dissipation"]))),
+            # production over Ohmic dissipation, and its split into the second-order part (mean flow) and the third-order part
+            "prod_over_d": float(prod / avg(bud["magnetic_dissipation"])),
+            "prod_mean_over_d": float(avg(ph["prod_mean"]) / avg(bud["magnetic_dissipation"])),
+            "prod_fluct_over_d": float((prod - avg(ph["prod_mean"])) / avg(bud["magnetic_dissipation"])),
             "r_a": float(abs(inj - sinks) / (inj + sinks)),
             "r_b": float(abs(J.sum()) / np.abs(J).sum()),
             "spec_err_b_l2": float(np.linalg.norm(spec_b - rspec_b) / np.linalg.norm(rspec_b)),
@@ -264,16 +279,19 @@ class Context:
         t0 = C.budget_terms_hat(self.pot, fh, D.NU, eta)
         sim.uh, sim.bh = to_hat(grid[:, 0]), to_hat(grid[:, 1])
         eb0, eu0 = float(t0["magnetic_energy"].mean()), float(t0["kinetic_energy"].mean())
-        taus = [self.cfg["tau"] * f for f in (0.125, 0.25, 0.5, 1.0)]              # the drift is a transient: record its course
+        taus = [self.cfg["tau"] * f for f in (0.125, 0.25, 0.5, 1.0, 2.0, 4.0)]    # the drift has a course: record it
         curve = {"tau": taus, "eb": [], "eu": []}
         for t in taus:
             sim.advance_to(t, dt=D.DT, cfl=D.CFL)
             d = sim.diagnostics()
             curve["eb"].append((float(d["magnetic_energy"].mean()) - eb0) / eb0)
             curve["eu"].append((float(d["kinetic_energy"].mean()) - eu0) / eu0)
-        return {"restart_drift_eb": abs(curve["eb"][-1]), "restart_drift_eu": abs(curve["eu"][-1]),
-                "restart_eb_signed": curve["eb"][-1], "restart_curve": curve,
-                "restart_drift_eb_max": max(abs(v) for v in curve["eb"]), "restart_drift_eu_max": max(abs(v) for v in curve["eu"])}
+        at = taus.index(self.cfg["tau"])                                           # τ of the objective T1
+        return {"restart_drift_eb": abs(curve["eb"][at]), "restart_drift_eu": abs(curve["eu"][at]),
+                "restart_eb_signed": curve["eb"][at], "restart_curve": curve,
+                "restart_drift_eb_max": max(abs(v) for v in curve["eb"][: at + 1]),
+                "restart_drift_eu_max": max(abs(v) for v in curve["eu"][: at + 1]),
+                "restart_drift_eb_end": abs(curve["eb"][-1]), "restart_drift_eu_end": abs(curve["eu"][-1])}
 
 
 # ---------------------------------------------------------------------------------------------
@@ -326,6 +344,11 @@ def reference(quick: bool) -> None:
             "spec_b": ref["spec_b"].mean(0).tolist(), "spec_u": ref["spec_u"].mean(0).tolist(),
             "std_diss": float((bud["kinetic_dissipation"] + bud["magnetic_dissipation"]).std()),
         }
+        dm = float(bud["magnetic_dissipation"].mean())                 # production split (H25), SE over the trajectories
+        p_mean, p_fluct = tmean(ref["prod_mean"]), tmean(bud["magnetic_production"] - ref["prod_mean"])
+        row.update({"prod_over_d": float(bud["magnetic_production"].mean() / dm),
+                    "prod_mean_over_d": float(p_mean.mean() / dm), "prod_mean_over_d_se": float(se(p_mean) / dm),
+                    "prod_fluct_over_d": float(p_fluct.mean() / dm), "prod_fluct_over_d_se": float(se(p_fluct) / dm)})
         if D.split_of(ETAS.index(e)) == "test":
             ridx = rng.choice(len(traj), size=min(cfg["n_restart"], len(traj)), replace=False)
             row.update(ctx.restart_drift(fh[ridx], e))
@@ -391,7 +414,7 @@ def run(quick: bool, seed: int, group: str, device: str = "cpu", cond_scale: flo
     groups = [g for g in GROUPS if g in "ABCDE"] if group == "all" else group.split(",")
     need = tuple(sorted({s for g in groups for s in {"A": ("comp",), "B": ("pot", "pot_sym"), "C": ("pot",),
                                                      "D": ("pot_sym",), "E": ("pot_sym",), "L": ("pot_sym",),
-                                                     "S": ("pot_sym",), "G": ("pot_sym",), "M": ("pot_sym",)}[g]}))
+                                                     "S": ("pot_sym",), "G": ("pot_sym",), "M": ("pot_sym",), "N": ("pot_sym",)}[g]}))
     need = ("pot", "pot_sym", "comp") if len(need) == 3 else need
     ctx = Context(quick, need, device)
     cfg, dev = ctx.cfg, ctx.dev
@@ -662,6 +685,27 @@ def run(quick: bool, seed: int, group: str, device: str = "cpu", cond_scale: flo
 
         record("G1_gaussian_full", {e: sample_g1(e, n) for e, n in eval_etas})
         del g1
+
+    # ---------------- group N: the Gaussian law that has the first two moments of the samples of W9 (H27) ----------------
+    if "G2_gaussianised_W9" in names:
+        seed_all(seed)
+        m9n, tsec = train(builders["W9_skip_sym"](None).to(dev), fm, ctx.x_pot_sym, ctx.c_train, cfg["iters"], cfg["lr"],
+                          cfg["batch"], "W9_skip_sym(base of G2)")
+        n_fit = cfg.get("n_fit", 2048)
+        g2 = {}
+        for e, n in eval_etas:
+            gz = torch.Generator().manual_seed(100003 * seed + 91 + ETAS.index(e))
+            c = torch.full((256, 1), float(cn(e)), device=dev)
+            with torch.no_grad():                          # fresh samples of W9 at this η (not those evaluated as W9)
+                z = torch.cat([heun_sample(m9n, torch.randn(256, pot_sym.n_modes, pot_sym.n_channels, generator=gz).to(dev), c,
+                                           cfg["steps"]) for _ in range(max(n_fit // 256, 1))])
+            law = C.FullGaussian(sign=pot_sym.sign).fit(z, torch.zeros(len(z), device=z.device))
+            x = law.sample(0.0, n, generator=gz)
+            g2[e] = pot_sym.field_hat(pot_sym.denormalize(x)).cpu()
+            del law, z
+        results["times"]["G2_gaussianised_W9"] = {"training_time_s": tsec, "n_fit": n_fit}
+        record("G2_gaussianised_W9", g2)
+        del m9n
 
     # ---------------- group M: loss and sampling mechanisms on the model with the affine term (H23, H24) ----------------
     if "W12_skip_stationarity" in names:
