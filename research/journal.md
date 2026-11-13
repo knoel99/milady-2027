@@ -2,6 +2,11 @@
 
 One entry per working session, newest first, at most ten lines.
 
+## 2026-11-13 - H24 registered, team cursor
+- H24 asks whether each n = 64 seed at Rm = 11 lies strictly between its Rm = 10 and Rm = 12 values. Those ten bounds were copied before any Rm = 11 point.
+- The gaps are 0.0021 to 0.0037. The claim can fail. Cost is the n = 64 scale, 0.0316 USD last time, on an RTX 4090.
+- H23 still waits for a free slot. H21 is still on pod `yn68gh7vq4v6lj` at age about 0.68 h. Local ledger 4.72 USD. Four pods are up, so nothing new launches yet.
+
 ## 2026-11-13 - H22 supported, H23 registered, team cursor
 - Five points at n = 64, Rm = 10, all finite and all positive. The smallest lambda is 0.004400. Largest max_div_b is 5.13e-16.
 - Pod `15206ueh82oyrg`, RTX 4090, 0.04 h, 0.0316 USD. Local ledger 4.7237 USD. The sign holds at n = 64, 96, and 128.

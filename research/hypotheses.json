@@ -298,6 +298,19 @@
       "verdict": "",
       "results": "",
       "commit": ""
+    },
+    {
+      "id": "H24",
+      "statement": "At n = 64, Rm = 11, cfl = 1, seeds 0-4, each kinematic ABC growth rate lies strictly between that seed's already measured Rm = 10 and Rm = 12 values, and every point is finite with final max_div_b below 1e-8.",
+      "origin": "The five n = 64 pairs are already measured. Seed 0: 0.004856755237684226 then 0.0071572526964764896. Seed 1: 0.004424512451073159 then 0.008144094832181672. Seed 2: 0.005993760181833761 then 0.009024448884006341. Seed 3: 0.006179606623621823 then 0.008284867491019794. Seed 4: 0.00439954791290452 then 0.008028351341713934. Rm = 11 has not been run. The ordering is the claim and may fail.",
+      "refutation_criterion": "Refuted if any point is non-finite or exits non-zero, if any final max_div_b is >= 1e-8, or if any seed's lambda is less than or equal to its Rm = 10 value or greater than or equal to its Rm = 12 value. Those ten bounds were copied from the finished files before this run. Not a 3D generator claim.",
+      "protocol": "Five seeds, 0-4. python3 experiments/cursor_abc_batch.py --device cuda --cfl 1 --out-dir experiments/results/cursor_abc_n64_rm11 --point 64,11,0 --point 64,11,1 --point 64,11,2 --point 64,11,3 --point 64,11,4. t = 120, dt cap 0.05, float64. GPU order RTX 4090, then PRO 4500, then A6000. One pod, 1 h cap. Launch only when a slot is free and H23 is not waiting on the last slot.",
+      "script": "experiments/cursor_abc_batch.py --device cuda --cfl 1 --point 64,11,0",
+      "cost_estimate": "One pod, 1 h cap. The n = 64 Rm = 10 job cost 0.0316 USD.",
+      "status": "registered",
+      "verdict": "",
+      "results": "",
+      "commit": ""
     }
   ]
 }
