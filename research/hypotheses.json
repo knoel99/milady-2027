@@ -2023,9 +2023,9 @@
       "protocol": "python3 experiments/cursor_constraint_cmp.py --midpoint --out experiments/results/cursor_constraint_midpoint.json. CPU. Rm=12 is not an input of the midpoint.",
       "script": "experiments/cursor_constraint_cmp.py --midpoint",
       "cost_estimate": "CPU only. No GPU dollars.",
-      "status": "registered",
-      "verdict": "",
-      "results": "",
+      "status": "supported",
+      "verdict": "CONFIRMED",
+      "results": "Mean energy-distance ratio 0.7431289385904811, strictly smaller than 781.6620366634046. All five ratios are finite. Seed 0 is 1.7978719787055657. File experiments/results/cursor_constraint_midpoint.json. No network was trained.",
       "commit": ""
     },
     {
@@ -2036,9 +2036,9 @@
       "protocol": "Same CPU run as H156.",
       "script": "experiments/cursor_constraint_cmp.py --midpoint",
       "cost_estimate": "CPU only. No GPU dollars.",
-      "status": "registered",
-      "verdict": "",
-      "results": "",
+      "status": "supported",
+      "verdict": "CONFIRMED",
+      "results": "Mean energy-distance ratio 0.7431289385904811, at most 1.2. All five ratios are finite. Seed 0 is above 1.2 and the criterion is the mean. Same file as H156.",
       "commit": ""
     }
   ]

@@ -2,6 +2,11 @@
 
 One entry per working session, newest first, at most ten lines.
 
+## 2026-11-13 - H156 and H157 supported, team cursor
+- The kmax=4 midpoint between Rm=11 and Rm=13 has mean energy-distance ratio 0.743. H156 and H157 hold.
+- cursor_metrics.json now quotes that midpoint. C1 and C2 meet their targets. C3 is 0.099 and C4 is 0.150.
+- Seed 0 alone is 1.80. The criterion was the mean. The flow-matching ratios stay near 750. H138 and H144 stay in flight.
+
 ## 2026-11-13 - H154 supported, H155 refuted, team cursor
 - Training on six Rm values around 12 lowers the ratio from 787.34 to 781.66. H154 holds. The gap is about 5.7.
 - H155 is refuted. 781.66 is above 1.2. The perfect kmax=4 cutoff remains 0.728.

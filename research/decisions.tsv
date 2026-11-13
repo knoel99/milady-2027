@@ -134,3 +134,5 @@ ts	phase	decision	why	evidence	result
 2026-11-13T09:28:00Z	h153	H153 supported. A perfect kmax=7 cutoff is far under 1.2.	Mean ratio 0.0028, seeds 0-4.	experiments/results/cursor_constraint_ceiling.json	supported, CPU
 2026-11-13T09:32:00Z	h154	H154 supported. Neighbour Rm values beat the two-point training by a small margin.	Mean ratio 781.66 against 787.34, kmax=4, hidden 768, seeds 0-4. Rm=12 was held out.	experiments/results/cursor_constraint_dense.json	supported, CPU
 2026-11-13T09:32:00Z	h155	H155 refuted. The dense-Rm ratio is above 1.2.	Mean ratio 781.66, seeds 0-4.	experiments/results/cursor_constraint_dense.json	refuted, CPU
+2026-11-13T09:36:00Z	h156	H156 supported. The Rm midpoint beats the learned dense ratio.	Mean ratio 0.743 against 781.66, kmax=4, seeds 0-4, no network.	experiments/results/cursor_constraint_midpoint.json	supported, CPU
+2026-11-13T09:36:00Z	h157	H157 supported. The Rm midpoint mean ratio is at most 1.2.	Mean ratio 0.743. Seed 0 is 1.80 and the criterion is the mean. C3 and C4 stay above their targets.	experiments/results/cursor_constraint_midpoint.json	supported, CPU
