@@ -2014,6 +2014,32 @@
       "verdict": "REFUTED",
       "results": "Mean energy-distance ratio 781.6620366634046, above 1.2. All five ratios are finite. Same file as H154. The refutation criterion is met.",
       "commit": ""
+    },
+    {
+      "id": "H156",
+      "statement": "The linear midpoint in kmax=4 coefficient space between Rm=11 and Rm=13 has a strictly smaller mean energy-distance ratio than the dense learned baseline of H154, which is 781.6620366634046. Seeds 0-4, n=16, the same eight times on both sides and on the held-out Rm=12 ensemble. The cutoff is the representation constraint. No network is trained.",
+      "origin": "Dense flow training moved the ratio by about 5.7. A midpoint between the neighbours is the baseline that says whether the field is easy to interpolate. The inequality was fixed before the run.",
+      "refutation_criterion": "Refuted if any ratio is non-finite, or if the mean over seeds 0-4 is not strictly smaller than 781.6620366634046.",
+      "protocol": "python3 experiments/cursor_constraint_cmp.py --midpoint --out experiments/results/cursor_constraint_midpoint.json. CPU. Rm=12 is not an input of the midpoint.",
+      "script": "experiments/cursor_constraint_cmp.py --midpoint",
+      "cost_estimate": "CPU only. No GPU dollars.",
+      "status": "registered",
+      "verdict": "",
+      "results": "",
+      "commit": ""
+    },
+    {
+      "id": "H157",
+      "statement": "The same linear midpoint has a mean energy-distance ratio at most 1.2. Seeds 0-4, same protocol as H156.",
+      "origin": "The perfect cutoff meets 1.2. This bound asks whether a midpoint between the neighbours does too. It was fixed before the run.",
+      "refutation_criterion": "Refuted if any ratio is non-finite, or if the mean over seeds 0-4 exceeds 1.2.",
+      "protocol": "Same CPU run as H156.",
+      "script": "experiments/cursor_constraint_cmp.py --midpoint",
+      "cost_estimate": "CPU only. No GPU dollars.",
+      "status": "registered",
+      "verdict": "",
+      "results": "",
+      "commit": ""
     }
   ]
 }

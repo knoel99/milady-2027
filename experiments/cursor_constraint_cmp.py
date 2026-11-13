@@ -188,6 +188,30 @@ def run(
     }
 
 
+def rm_midpoint() -> dict:
+    """Linear midpoint in coefficient space between Rm=11 and Rm=13.
+
+    No network is trained. The same eight times are used on both sides and
+    on the held-out Rm=12 ensemble. The kmax=4 cutoff is the representation.
+    """
+    n = 16
+    held = 12.0
+    modes = half_ball_modes(4.0)
+    times = (0.25, 0.5, 0.75, 1.0, 1.25, 1.5, 1.75, 2.0)
+    rows = []
+    for seed in (0, 1, 2, 3, 4):
+        ref = np.stack([snapshot(n, held, seed, t) for t in times], axis=0)
+        gens = []
+        for t in times:
+            left = pack(snapshot(n, 11.0, seed, t), modes)
+            right = pack(snapshot(n, 13.0, seed, t), modes)
+            gens.append(unpack(0.5 * (left + right), modes, n))
+        stats = score(np.stack(gens, axis=0), ref, held)
+        rows.append({"seed": seed, "midpoint": stats})
+        print("midpoint", seed, stats["c1"], flush=True)
+    return {"held_out_rm": held, "n": n, "kmax": 4.0, "times": list(times), "seeds": rows}
+
+
 def projection_ceiling(kmax_values: list[float]) -> dict:
     """Energy-distance ratio of a perfect mode cutoff against the full field.
 
@@ -214,10 +238,19 @@ def main() -> None:
     parser.add_argument("--quick", action="store_true")
     parser.add_argument("--kmax", type=float, default=None)
     parser.add_argument("--hidden", type=int, default=None)
+    parser.add_argument("--midpoint", action="store_true")
     parser.add_argument("--dense", action="store_true")
     parser.add_argument("--ceiling", action="store_true")
     parser.add_argument("--out", type=Path, default=None)
     args = parser.parse_args()
+    if args.midpoint:
+        if args.out is None:
+            raise SystemExit("--out is required with --midpoint")
+        result = rm_midpoint()
+        args.out.parent.mkdir(parents=True, exist_ok=True)
+        args.out.write_text(json.dumps(result, indent=2) + "\n")
+        print("wrote", args.out)
+        return
     if args.dense:
         if args.out is None:
             raise SystemExit("--out is required with --dense")
