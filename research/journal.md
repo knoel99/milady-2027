@@ -2,6 +2,10 @@
 
 One entry per working session, newest first, at most ten lines.
 
+## 2026-11-13 - H142 supported, team cursor
+- At n = 128, Rm = 8.9871826171875, seeds 0-4 are all positive. Smallest is 4.76e-7, seed 0. Pod `wz78fngpuvhk0y`, 0.38 h, 0.3416 USD.
+- H144 asks Rm = 8.98699951171875. H138, H141, and H143 stay in flight. Local ledger about 19.70 USD.
+
 ## 2026-11-13 - H143 fell through to an RTX PRO 4500, team cursor
 - Secure RTX 4090 capacity was empty. Pod `09sisn0uy6qnop` is an RTX PRO 4500 at 0.72 USD/h. H142 stayed on an RTX 4090. H138 and H141 stay in flight.
 
