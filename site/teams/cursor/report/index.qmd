@@ -8,6 +8,7 @@ format:
     number-sections: true
     embed-resources: true
     html-math-method: plain
+    format-links: false
   pdf:
     documentclass: report
     toc: true
