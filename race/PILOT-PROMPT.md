@@ -1,6 +1,6 @@
 # Pilot prompt
 
-Paste the text below as the first message of a new Claude Code cloud session on the `milady-2027` environment, after `/model fable` and `/effort high`. Then set the goal with the `/goal` line at the end.
+Paste the text below as the first message of a new Claude Code cloud session on the `milady-2027` environment, after `/model fable` and `/effort high`. Then set the goal with the `/goal` line at the end. The goal ends on the budget, not on a report: a goal made only of end-state conditions lets the session stop as soon as its first report is written (pilot of 2026-11-12, stopped with objectives not met and budget left). The pilot chooses its strategy freely; there is no time limit.
 
 ---
 
@@ -17,5 +17,5 @@ Start with these checks, and stop to tell me if one fails:
 Then carry out the race brief: quantify your objectives in `race/teams/claude/objectives.toml` on day 1, register each hypothesis with its refutation criterion before computing, use the roles as `AGENTS.md` prescribes, run GPU work only through `tools/runpod_job.py`, and commit and push at least every hour. After each hypothesis and at least every four hours of work, run `python3 tools/usage_report.py --write research/usage` and `python3 tools/runpod_job.py spend`, commit the report, and add a line to `research/journal.md`: hypothesis, verdict, tokens, cost, GPU hours.
 
 ```
-/goal race/teams/claude/objectives.toml exists and passes `python3 tools/race_progress.py check`; research/race-report.md states what is measured, published and conjectured and the remaining work for each objective; research/usage/latest.md is up to date and shows no non-conforming role call; `python3 tools/runpod_job.py spend` is within budget and no pod is left running; everything is committed and pushed. If the usage limit warns, a budget is spent or the deadline in race/config.toml is reached, write the report, commit, push and stop.
+/goal Advance the research of the internship offer as far as the budget allows: after each result, take the next step of the remaining work of research/race-report.md that you judge most useful, with your own strategy. The goal is met only when the GPU budget cannot pay for another useful job or the usage limit warns, or when you show in research/race-report.md, with evidence, that no step left within the budget can change a verdict or an objective. At that point: race/teams/claude/objectives.toml passes `python3 tools/race_progress.py check`; research/race-report.md states what is measured, published and conjectured and the remaining work for each objective; `python3 tools/check_deliverables.py --team claude --built` passes; research/usage/latest.md is up to date and shows no non-conforming role call; no pod of the team is left running; everything is committed and pushed.
 ```

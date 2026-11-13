@@ -294,18 +294,22 @@ def test_team_budget_from_environment(job_env, monkeypatch):
 def test_review_schedule():
     import review_due
     t = review_due.parse
-    s = {"start": t("2026-11-12T00:00:00Z"), "deadline": t("2026-11-14T00:00:00Z"), "encadrant_max_gap_hours": 6}
+    s = {"start": t("2026-11-12T00:00:00+00:00"), "budget_usd": 100.0, "encadrant_max_gap_hours": 6}
     none = lambda since, paths: []
-    assert review_due.due(t("2026-11-12T03:00:00Z"), [], none, s) == []
+    nospend: list = []
+    assert review_due.due(t("2026-11-12T03:00:00+00:00"), [], none, s, nospend) == []
     results = lambda since, paths: ["abc 2026 add e4 results"] if "experiments/results" in paths else []
-    assert [r for r, _ in review_due.due(t("2026-11-12T03:00:00Z"), [], results, s)] == ["encadrant"]
+    assert [r for r, _ in review_due.due(t("2026-11-12T03:00:00+00:00"), [], results, s, nospend)] == ["encadrant"]
     work = lambda since, paths: ["abc 2026 code"] if paths == ["."] else []
-    assert [r for r, _ in review_due.due(t("2026-11-12T07:00:00Z"), [], work, s)] == ["encadrant"]
-    assert review_due.due(t("2026-11-12T05:00:00Z"), [], work, s) == []                     # gap not reached
-    jury = review_due.due(t("2026-11-13T01:00:00Z"), [{"role": "encadrant", "time": "2026-11-13T00:30:00Z"}], none, s)
-    assert [r for r, _ in jury] == ["jury-externe"] and "50%" in jury[0][1]                 # 25 % and 50 % passed
-    done = [{"role": "jury-externe", "time": "2026-11-13T00:10:00Z"}, {"role": "encadrant", "time": "2026-11-13T00:30:00Z"}]
-    assert review_due.due(t("2026-11-13T01:00:00Z"), done, none, s) == []
+    assert [r for r, _ in review_due.due(t("2026-11-12T07:00:00+00:00"), [], work, s, nospend)] == ["encadrant"]
+    assert review_due.due(t("2026-11-12T05:00:00+00:00"), [], work, s, nospend) == []      # gap not reached
+    spend = [(t("2026-11-12T01:00:00+00:00"), 20.0), (t("2026-11-12T02:00:00+00:00"), 35.0)]   # 55 of 100
+    enc = [{"role": "encadrant", "time": "2026-11-12T02:30:00+00:00"}]
+    jury = review_due.due(t("2026-11-12T03:00:00+00:00"), enc, none, s, spend)
+    assert [r for r, _ in jury] == ["jury-externe"] and "50%" in jury[0][1]                # 25 % and 50 % spent
+    done = enc + [{"role": "jury-externe", "time": "2026-11-12T02:10:00+00:00"}]
+    assert review_due.due(t("2026-11-12T03:00:00+00:00"), done, none, s, spend) == []
+    assert review_due.due(t("2030-01-01T00:00:00+00:00"), enc, none, s, spend[:1]) == []   # time alone calls no jury
 
 
 def test_cursor_launch_uses_role_model_and_logs(tmp_path, monkeypatch):

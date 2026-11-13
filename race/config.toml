@@ -2,7 +2,7 @@
 # and tools/compute_broker.py.
 
 start_tag = "race-start"
-deadline = "2026-11-13T21:00:00Z"   # pilot deadline set by the owner: 13 November 22:00 Paris time; final report 1 h before
+deadline = "2026-11-26T18:00:00Z"   # full nine-team race only (tools/race_launch.py); the pilots have no deadline, only a budget
 repo = "https://github.com/knoel99/milady-2027.git"
 
 [budget]
@@ -89,5 +89,5 @@ max_parallel = 4                                           # GPU jobs at once (a
 start = "2026-11-12T16:45:00Z"                              # start of the Claude pilot; MILADY_START overrides
 encadrant_watch = ["experiments/results", "research/hypotheses.json", "src/milady/sim", "experiments"]
 encadrant_max_gap_hours = 6                                 # a review at least this often while work goes on
-jury_fractions = [0.25, 0.5, 0.75, 0.95]                    # of the span start -> deadline
+jury_fractions = [0.25, 0.5, 0.75, 0.95]                    # of the GPU budget spent ([gpu] budget_usd or MILADY_GPU_BUDGET_USD)
 jury_watch = ["research/race-report.md", "site/report", "site/thesis", "site/teams"]
