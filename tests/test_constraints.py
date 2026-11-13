@@ -501,3 +501,60 @@ def test_moment_recolouring() -> None:
     flat = torch.cat([x[:, :1, :2], torch.zeros(n, 1, 2)], dim=-1)
     cz = torch.einsum("nmi,nmj->mij", flat.double() - flat.double().mean(0), flat.double() - flat.double().mean(0)) / n
     assert torch.isfinite(C.moment_recolouring(flat, flat.double().mean(0), cz, mu_t[:1], cov_t[:1])).all()
+
+
+def test_gaussian_full_anchor_learns_a_non_gaussian_law() -> None:
+    """Positive control of the anchored model: on skewed data the network, zero at the start, lowers the loss and gives
+    the samples the skewness of the data (the untrained model is the Gaussian law: no skewness)."""
+    torch.manual_seed(0)
+    g = torch.Generator().manual_seed(4)
+    M, Cc, n = 3, 2, 8192
+    D = M * Cc
+    z = torch.randn(n, D, generator=g)
+    mix = torch.randn(D, D, generator=g) * 0.5 + torch.eye(D)
+    x = ((z + 0.7 * (z**2 - 1)) @ mix).reshape(n, M, Cc)
+    c = torch.zeros(n)
+    gauss = C.FullGaussian().fit(x, c)
+
+    class Net(torch.nn.Module):
+        def __init__(self) -> None:
+            super().__init__()
+            self.body = torch.nn.Sequential(torch.nn.Linear(D + 1, 128), torch.nn.SiLU(), torch.nn.Linear(128, 128), torch.nn.SiLU())
+            self.out = torch.nn.Linear(128, D)
+            torch.nn.init.zeros_(self.out.weight)
+            torch.nn.init.zeros_(self.out.bias)
+
+        def forward(self, xx: torch.Tensor, t: torch.Tensor, cc: torch.Tensor) -> torch.Tensor:
+            return self.out(self.body(torch.cat([xx.flatten(1), t.view(-1, 1)], dim=1))).view_as(xx)
+
+    field = C.FullGaussianAnchoredField(Net(), gauss)
+    cond = torch.zeros(2048, 1)
+
+    def fixed_loss() -> float:
+        with torch.no_grad():
+            return float(fm_loss(field, x[:2048], cond, generator=torch.Generator().manual_seed(7)))
+
+    def skew(v: torch.Tensor) -> torch.Tensor:
+        d = v.double() - v.double().mean(0)
+        return (d**3).mean(0) / (d**2).mean(0) ** 1.5
+
+    before = fixed_loss()
+    with torch.no_grad():
+        s0 = skew(C.heun_sample(field, torch.randn(4096, M, Cc, generator=g), torch.zeros(4096, 1), steps=40).reshape(-1, D))
+    opt = torch.optim.Adam(field.parameters(), lr=2e-3)
+    for _ in range(500):
+        idx = torch.randint(0, n, (256,))
+        loss = fm_loss(field, x[idx], torch.zeros(256, 1))
+        opt.zero_grad()
+        loss.backward()
+        opt.step()
+    after = fixed_loss()
+    with torch.no_grad():
+        s1 = skew(C.heun_sample(field, torch.randn(4096, M, Cc, generator=g), torch.zeros(4096, 1), steps=40).reshape(-1, D))
+    target = skew(x.reshape(n, D))
+    big = target.abs() > 0.5                                  # coordinates where the data are clearly skewed
+    assert int(big.sum()) >= 2
+    assert after < before - 0.02, (before, after)
+    assert float(s0[big].abs().max()) < 0.2                   # the untrained model is Gaussian
+    assert bool((torch.sign(s1[big]) == torch.sign(target[big])).all()) and float((s1[big] / target[big]).min()) > 0.3, (s1, target)
+

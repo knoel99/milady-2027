@@ -73,6 +73,7 @@ GROUPS = {"A": ["W0_free", "W1_penalty", "W2_final_projection", "W3_projected_fl
           "F": ["W14_full_anchor"],                                     # H28: anchored on G1, evaluated along the training
           "R": ["W15_recoloured_modes"],                                # H29: W9 with its second moments recoloured at sampling time
           "T": ["G1T_gaussian_full"],                                   # G1 restarted at the training η too (no interpolation)
+          "Z": ["W9Z_skip_sym_gaussdata"],                              # H33: W9 trained on Gaussian surrogate data (draws of G1)
           "N": ["G2_gaussianised_W9"],                                  # H27: Gaussian law fitted to the samples of W9                                    # H22: Gaussian law with the inter-mode covariance
           "M": ["W12_skip_stationarity", "W12_skip_control", "W13_skip_tilting"],   # H23, H24: loss and sampling on W9
           "L": ["W9L_skip_long", "W11L_anchored_skip_long"],            # H18: 8 times the iterations (not in "all")
@@ -463,6 +464,8 @@ def _group_of(variant: str) -> str:
         return "R"
     if variant.startswith("G1T_"):
         return "T"
+    if variant.startswith("W9Z"):
+        return "Z"
     return "M" if variant.startswith(("W12_", "W13_")) else "B"
 
 
@@ -506,7 +509,7 @@ def run(quick: bool, seed: int, group: str, device: str = "cpu", cond_scale: flo
     groups = [g for g in GROUPS if g in "ABCDE"] if group == "all" else group.split(",")
     need = tuple(sorted({s for g in groups for s in {"A": ("comp",), "B": ("pot", "pot_sym"), "C": ("pot",),
                                                      "D": ("pot_sym",), "E": ("pot_sym",), "L": ("pot_sym",),
-                                                     "S": ("pot_sym",), "G": ("pot_sym",), "M": ("pot_sym",), "N": ("pot_sym",), "F": ("pot_sym",), "R": ("pot_sym",), "T": ("pot_sym",)}[g]}))
+                                                     "S": ("pot_sym",), "G": ("pot_sym",), "M": ("pot_sym",), "N": ("pot_sym",), "F": ("pot_sym",), "R": ("pot_sym",), "T": ("pot_sym",), "Z": ("pot_sym",)}[g]}))
     need = ("pot", "pot_sym", "comp") if len(need) == 3 else need
     ctx = Context(quick, need, device)
     cfg, dev = ctx.cfg, ctx.dev
@@ -848,6 +851,27 @@ def run(quick: bool, seed: int, group: str, device: str = "cpu", cond_scale: flo
                                    "ed_g2_w9": float(M.energy_distance(f2, fb, n=len(fb))),
                                    "ed_w9_halves": float(M.energy_distance(fb[:half], fb[half:], n=half))})
         del m9n, g1n
+
+    # ---------------- group Z: the model with the affine term trained on Gaussian surrogate data (H33) ----------------
+    if "W9Z_skip_sym_gaussdata" in names:
+        # the surrogate training set: at each training η, as many draws of the Gaussian law with the mean and covariance of
+        # the data (G1, with the sign symmetry) as there are snapshots; it has the first two moments of the data and nothing else
+        g1z = C.FullGaussian(sign=pot_sym.sign).fit(ctx.x_pot_sym, ctx.c_train[:, 0])
+        gz = torch.Generator().manual_seed(100003 * seed + 401)
+        xs, cs = [], []
+        for cval in torch.unique(ctx.c_train[:, 0]):
+            sel = ctx.c_train[:, 0] == cval
+            xs.append(g1z.sample(float(cval), int(sel.sum()), generator=gz).to(dev))
+            cs.append(ctx.c_train[sel])
+        x_sur, c_sur = torch.cat(xs), torch.cat(cs)
+        del g1z, xs, cs
+        for vname, xtr, ctr in (("W9Zb_skip_sym", ctx.x_pot_sym, ctx.c_train), ("W9Z_skip_sym_gaussdata", x_sur, c_sur)):
+            seed_all(seed)                                  # same initial weights and the same batches of indices for both
+            model, tsec = train(builders["W9_skip_sym"](None).to(dev), fm, xtr, ctr, cfg["iters"], cfg["lr"], cfg["batch"], vname)
+            results["times"][vname] = {"training_time_s": tsec, "iters": cfg["iters"], "n_train": len(xtr)}
+            record(vname, {e: generate(model, pot_sym, e, n) for e, n in eval_etas})
+            del model
+        del x_sur, c_sur
 
     # ---------------- group T: the full-covariance Gaussian law restarted at the training η as well ----------------
     if "G1T_gaussian_full" in names:

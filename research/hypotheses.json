@@ -523,6 +523,21 @@
       "commit": "",
       "comparison": "model families",
       "seeds": 5
+    },
+    {
+      "id": "H33",
+      "statement": "In E4, the third-order part of the magnetic production held by the flow-matching model with the affine term (W9: 0.60 and 0.44 of that of the reference at the two lower held-out η, H25) is learned from the data and not produced by the model on its own: the same model, with the same seed and budget, trained on Gaussian surrogate data that have the first two moments of the data and nothing else (draws of G1, as many as there are snapshots at each training η) has less than 0.3 of the third-order part of the model trained on the data, at each of the two lower held-out η.",
+      "origin": "Result of H28 (digest, additional runs e4_anchor and e4_anchor_indep, commit 60e8998; verdict of the encadrant role pending at the time of this registration): a network of the same size and budget, anchored on the exact Gaussian field of G1 and left only the non-Gaussian part to learn, stays at G1 to three digits over 4000 iterations and lowers the flow-matching loss on a fixed training sample by nothing (0.8945 at every checkpoint), on both data realisations; a unit test shows that the same anchored model does learn a skewed law in low dimension. If nothing non-Gaussian is learned there, the third-order part that W9 holds may come from the way a network narrower than the latent represents the Gaussian part, not from the data. Its values along η speak for that reading as much as for the other: they are never positive where the reference is (+0.008 against +0.139 at the training η = 0.08; −0.006 against +0.054 at η = 0.0725) and grow in magnitude as η decreases. The surrogate test separates the two readings.",
+      "refutation_criterion": "Refuted on a realisation of the data if, at η = 0.0490 or at η = 0.0331, the third-order part of the model trained on the Gaussian surrogate data (W9Z_skip_sym_gaussdata) over that of the model trained on the data in the same job (W9Zb_skip_sym) is 0.3 or more on the seed means, or is 0.3 or more in more than one of the 5 seeds (same seed, paired). Combined verdict: supported only if not refuted on both realisations; refuted means that a model of this family produces most or part of this third-order production without any in the data, and the reading of H25 as a learned property is withdrawn. Checks of the measurement (a failure invalidates the measurement): the third-order part of G1 of the same job, the law of the surrogate set, is below 0.02 in absolute value at each held-out η; the model trained on the data reproduces the values of H25 within 0.02 at each held-out η (−0.006, −0.082, −0.118 on the data of the main run; −0.012, −0.085, −0.113 on the second realisation). Reported: for both models, the mean-flow part, the magnetic energy against the reference (is the 12 % deficit also there on Gaussian data), the energy-distance ratio, the magnetic balance, the null-count error, the fluctuation of the energy budget, and the third-order part at the training η. The verdict is computed by experiments/e4_digest.py (h33_lines), committed before the full run.",
+      "protocol": "Data, splits, model (W9_skip_sym: ResMLP 512 × 4 with the mode-wise affine term, sign-symmetrised), optimiser and budget of E4 (4000 iterations, batch 128, lr 5e-4), one training on the data and one on the surrogate set with the same seed. Surrogate set: at each of the six training η, as many draws (2400) of FullGaussian fitted on the data with the sign symmetry (G1) as there are snapshots; the draws are independent, whereas the snapshots come from 24 trajectories. Evaluation of both models against the reference of the job, as every variant (512 samples per held-out η, Heun 50 steps; production split of H25). Five seeds; the same job on the second realisation of the data.",
+      "script": "experiments/e4_mhd3d.py --reference, then --group G,Z (experiments/e4_gpu_job.sh on a GPU pod; --quick first)",
+      "cost_estimate": "one GPU job of about 40 min for 5 seeds on the data of the main run and one on the second realisation, about 0.5 USD each on an RTX PRO 4500",
+      "status": "registered",
+      "verdict": "",
+      "results": "",
+      "commit": "",
+      "comparison": "model families",
+      "seeds": 5
     }
   ]
 }

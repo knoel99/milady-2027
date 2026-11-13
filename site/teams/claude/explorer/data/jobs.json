@@ -372,5 +372,27 @@
   "rc": null,
   "commit": "d4fc624",
   "command": "bash experiments/e4_gpu_job.sh full 0 1 2 3 4 e4_anchor G,F"
+ },
+ {
+  "time": "2026-11-13T09:04:36Z",
+  "pod": "bjk2hvdc9tulrx",
+  "gpu": "NVIDIA RTX PRO 4500 Blackwell",
+  "usd_per_hour": 0.72,
+  "hours": 0.7292,
+  "usd": 0.525,
+  "rc": 0,
+  "commit": "aeac08c",
+  "command": "env E4_DATA_SEED=100 bash experiments/e4_gpu_job.sh full '0 1 2 3 4' e4_anchor_indep G,F"
+ },
+ {
+  "time": "2026-11-13T09:05:07Z",
+  "pod": "izggd9ht6t5peb",
+  "gpu": "NVIDIA RTX PRO 4500 Blackwell",
+  "usd_per_hour": 0.72,
+  "hours": 0.7433,
+  "usd": 0.5352,
+  "rc": 0,
+  "commit": "aeac08c",
+  "command": "bash experiments/e4_gpu_job.sh full '0 1 2 3 4' e4_anchor G,F"
  }
 ]

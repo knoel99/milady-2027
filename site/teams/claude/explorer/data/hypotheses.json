@@ -350,5 +350,16 @@
   "seeds": 5,
   "script": "experiments/e4_mhd3d.py --reference, then --group D,G (experiments/e4_gpu_job.sh on a GPU pod; --quick first)",
   "commit": ""
+ },
+ {
+  "id": "H33",
+  "statement": "In E4, the third-order part of the magnetic production held by the flow-matching model with the affine term (W9: 0.60 and 0.44 of that of the reference at the two lower held-out η, H25) is learned from the data and not produced by the model on its own: the same model, with the same seed and budget, trained on Gaussian surrogate data that have the first two moments of the data and nothing else (draws of G1, as many as there are snapshots at each training η) has less than 0.3 of the third-order part of the model trained on the data, at each of the two lower held-out η.",
+  "refutation_criterion": "Refuted on a realisation of the data if, at η = 0.0490 or at η = 0.0331, the third-order part of the model trained on the Gaussian surrogate data (W9Z_skip_sym_gaussdata) over that of the model trained on the data in the same job (W9Zb_skip_sym) is 0.3 or more on the seed means, or is 0.3 or more in more than one of the 5 seeds (same seed, paired). Combined verdict: supported only if not refuted on both realisations; refuted means that a model of this family produces most or part of this third-order production without any in the data, and the reading of H25 as a learned property is withdrawn. Checks of the measurement (a failure invalidates the measurement): the third-order part of G1 of the same job, the law of the surrogate set, is below 0.02 in absolute value at each held-out η; the model trained on the data reproduces the values of H25 within 0.02 at each held-out η (−0.006, −0.082, −0.118 on the data of the main run; −0.012, −0.085, −0.113 on the second realisation). Reported: for both models, the mean-flow part, the magnetic energy against the reference (is the 12 % deficit also there on Gaussian data), the energy-distance ratio, the magnetic balance, the null-count error, the fluctuation of the energy budget, and the third-order part at the training η. The verdict is computed by experiments/e4_digest.py (h33_lines), committed before the full run.",
+  "status": "registered",
+  "verdict": "",
+  "comparison": "model families",
+  "seeds": 5,
+  "script": "experiments/e4_mhd3d.py --reference, then --group G,Z (experiments/e4_gpu_job.sh on a GPU pod; --quick first)",
+  "commit": ""
  }
 ]

@@ -1707,7 +1707,7 @@
    "id": "G1_gaussian_full",
    "label": "G1 Gaussian, full covariance (no network)",
    "where": "family",
-   "source": "experiments/results/replications/e4_nongauss",
+   "source": "experiments/results/replications/e4_anchor",
    "hypotheses": [
     {
      "id": "H22",
@@ -1791,6 +1791,498 @@
    "ed_ratio_train": {
     "mean": 1.8964,
     "se": 0.046709,
+    "n": 5
+   }
+  },
+  {
+   "id": "W14_full_anchor_it0",
+   "label": "W14 anchor on G1, iteration 0 (untrained: G1 integrated)",
+   "where": "design",
+   "source": "experiments/results/replications/e4_anchor",
+   "hypotheses": [],
+   "ed_ratio": {
+    "mean": 2.4453,
+    "se": 0.039008,
+    "n": 5
+   },
+   "div_rel_b_max": {
+    "mean": 1.4901e-08,
+    "se": 1.209e-10,
+    "n": 5
+   },
+   "balance_residual_total": {
+    "mean": 0.0035225,
+    "se": 0.00029648,
+    "n": 5
+   },
+   "balance_residual_magnetic": {
+    "mean": 0.071296,
+    "se": 0.00081966,
+    "n": 5
+   },
+   "spec_err_b_l2": {
+    "mean": 0.016093,
+    "se": 0.0015642,
+    "n": 5
+   },
+   "hel_m_err_rel": {
+    "mean": 0.025309,
+    "se": 0.0034288,
+    "n": 5
+   },
+   "null_count_err_rel": {
+    "mean": 1.1229,
+    "se": 0.012356,
+    "n": 5
+   },
+   "restart_drift_eb": {
+    "mean": 0.060364,
+    "se": 0.0050369,
+    "n": 5
+   },
+   "restart_drift_eu": {
+    "mean": 0.087987,
+    "se": 0.0034495,
+    "n": 5
+   },
+   "hc_sign_asym": {
+    "mean": 0.011589,
+    "se": 0.0024481,
+    "n": 5
+   },
+   "prod_fluct_over_d": {
+    "mean": 0.00015944,
+    "se": 0.00074092,
+    "n": 5
+   },
+   "prod_mean_over_d": {
+    "mean": 1.1091,
+    "se": 0.00074996,
+    "n": 5
+   },
+   "restart_overshoot_eb": {
+    "mean": 0.085597,
+    "se": 0.0074822,
+    "n": 5
+   },
+   "restart_anchor_end_eb": {
+    "mean": 0.014695,
+    "se": 0.0029,
+    "n": 5
+   },
+   "ed_ratio_train": {
+    "mean": 1.8608,
+    "se": 0.058799,
+    "n": 5
+   }
+  },
+  {
+   "id": "W14_full_anchor_it250",
+   "label": "W14 anchor on G1, iteration 250",
+   "where": "design",
+   "source": "experiments/results/replications/e4_anchor",
+   "hypotheses": [],
+   "ed_ratio": {
+    "mean": 2.4439,
+    "se": 0.03933,
+    "n": 5
+   },
+   "div_rel_b_max": {
+    "mean": 1.5053e-08,
+    "se": 6.29e-11,
+    "n": 5
+   },
+   "balance_residual_total": {
+    "mean": 0.0035271,
+    "se": 0.00030324,
+    "n": 5
+   },
+   "balance_residual_magnetic": {
+    "mean": 0.071271,
+    "se": 0.00081522,
+    "n": 5
+   },
+   "spec_err_b_l2": {
+    "mean": 0.016028,
+    "se": 0.0015837,
+    "n": 5
+   },
+   "hel_m_err_rel": {
+    "mean": 0.025246,
+    "se": 0.0035074,
+    "n": 5
+   },
+   "null_count_err_rel": {
+    "mean": 1.1229,
+    "se": 0.012664,
+    "n": 5
+   },
+   "restart_drift_eb": {
+    "mean": 0.060303,
+    "se": 0.0050607,
+    "n": 5
+   },
+   "restart_drift_eu": {
+    "mean": 0.087965,
+    "se": 0.003493,
+    "n": 5
+   },
+   "hc_sign_asym": {
+    "mean": 0.011979,
+    "se": 0.0024671,
+    "n": 5
+   },
+   "prod_fluct_over_d": {
+    "mean": 0.00015655,
+    "se": 0.00074176,
+    "n": 5
+   },
+   "prod_mean_over_d": {
+    "mean": 1.1091,
+    "se": 0.00084227,
+    "n": 5
+   },
+   "restart_overshoot_eb": {
+    "mean": 0.085677,
+    "se": 0.0075199,
+    "n": 5
+   },
+   "restart_anchor_end_eb": {
+    "mean": 0.014701,
+    "se": 0.0029479,
+    "n": 5
+   },
+   "ed_ratio_train": {
+    "mean": 1.8595,
+    "se": 0.058997,
+    "n": 5
+   }
+  },
+  {
+   "id": "W14_full_anchor_it500",
+   "label": "W14 anchor on G1, iteration 500",
+   "where": "design",
+   "source": "experiments/results/replications/e4_anchor",
+   "hypotheses": [],
+   "ed_ratio": {
+    "mean": 2.445,
+    "se": 0.039226,
+    "n": 5
+   },
+   "div_rel_b_max": {
+    "mean": 1.4939e-08,
+    "se": 1.2898e-10,
+    "n": 5
+   },
+   "balance_residual_total": {
+    "mean": 0.0035431,
+    "se": 0.0002992,
+    "n": 5
+   },
+   "balance_residual_magnetic": {
+    "mean": 0.07125,
+    "se": 0.00081475,
+    "n": 5
+   },
+   "spec_err_b_l2": {
+    "mean": 0.016076,
+    "se": 0.0015613,
+    "n": 5
+   },
+   "hel_m_err_rel": {
+    "mean": 0.025277,
+    "se": 0.003425,
+    "n": 5
+   },
+   "null_count_err_rel": {
+    "mean": 1.1222,
+    "se": 0.012352,
+    "n": 5
+   },
+   "restart_drift_eb": {
+    "mean": 0.060341,
+    "se": 0.0050525,
+    "n": 5
+   },
+   "restart_drift_eu": {
+    "mean": 0.087894,
+    "se": 0.0033882,
+    "n": 5
+   },
+   "hc_sign_asym": {
+    "mean": 0.011458,
+    "se": 0.0024585,
+    "n": 5
+   },
+   "prod_fluct_over_d": {
+    "mean": 0.00016003,
+    "se": 0.00074181,
+    "n": 5
+   },
+   "prod_mean_over_d": {
+    "mean": 1.109,
+    "se": 0.00079178,
+    "n": 5
+   },
+   "restart_overshoot_eb": {
+    "mean": 0.085587,
+    "se": 0.0074774,
+    "n": 5
+   },
+   "restart_anchor_end_eb": {
+    "mean": 0.014676,
+    "se": 0.002893,
+    "n": 5
+   },
+   "ed_ratio_train": {
+    "mean": 1.8611,
+    "se": 0.059176,
+    "n": 5
+   }
+  },
+  {
+   "id": "W14_full_anchor_it1000",
+   "label": "W14 anchor on G1, iteration 1000",
+   "where": "design",
+   "source": "experiments/results/replications/e4_anchor",
+   "hypotheses": [],
+   "ed_ratio": {
+    "mean": 2.4459,
+    "se": 0.038279,
+    "n": 5
+   },
+   "div_rel_b_max": {
+    "mean": 1.4956e-08,
+    "se": 1.0517e-10,
+    "n": 5
+   },
+   "balance_residual_total": {
+    "mean": 0.0035616,
+    "se": 0.00029803,
+    "n": 5
+   },
+   "balance_residual_magnetic": {
+    "mean": 0.071257,
+    "se": 0.0008054,
+    "n": 5
+   },
+   "spec_err_b_l2": {
+    "mean": 0.016078,
+    "se": 0.0015531,
+    "n": 5
+   },
+   "hel_m_err_rel": {
+    "mean": 0.025309,
+    "se": 0.0034168,
+    "n": 5
+   },
+   "null_count_err_rel": {
+    "mean": 1.1232,
+    "se": 0.0123,
+    "n": 5
+   },
+   "restart_drift_eb": {
+    "mean": 0.060308,
+    "se": 0.0050564,
+    "n": 5
+   },
+   "restart_drift_eu": {
+    "mean": 0.087784,
+    "se": 0.0034296,
+    "n": 5
+   },
+   "hc_sign_asym": {
+    "mean": 0.011458,
+    "se": 0.0024585,
+    "n": 5
+   },
+   "prod_fluct_over_d": {
+    "mean": 0.00015813,
+    "se": 0.00074026,
+    "n": 5
+   },
+   "prod_mean_over_d": {
+    "mean": 1.1089,
+    "se": 0.00069803,
+    "n": 5
+   },
+   "restart_overshoot_eb": {
+    "mean": 0.08547,
+    "se": 0.0075186,
+    "n": 5
+   },
+   "restart_anchor_end_eb": {
+    "mean": 0.014647,
+    "se": 0.0028917,
+    "n": 5
+   },
+   "ed_ratio_train": {
+    "mean": 1.8611,
+    "se": 0.058799,
+    "n": 5
+   }
+  },
+  {
+   "id": "W14_full_anchor_it2000",
+   "label": "W14 anchor on G1, iteration 2000",
+   "where": "design",
+   "source": "experiments/results/replications/e4_anchor",
+   "hypotheses": [],
+   "ed_ratio": {
+    "mean": 2.4455,
+    "se": 0.038476,
+    "n": 5
+   },
+   "div_rel_b_max": {
+    "mean": 1.4947e-08,
+    "se": 9.2822e-11,
+    "n": 5
+   },
+   "balance_residual_total": {
+    "mean": 0.0035058,
+    "se": 0.00030243,
+    "n": 5
+   },
+   "balance_residual_magnetic": {
+    "mean": 0.071325,
+    "se": 0.00081646,
+    "n": 5
+   },
+   "spec_err_b_l2": {
+    "mean": 0.01608,
+    "se": 0.0015714,
+    "n": 5
+   },
+   "hel_m_err_rel": {
+    "mean": 0.025295,
+    "se": 0.0034397,
+    "n": 5
+   },
+   "null_count_err_rel": {
+    "mean": 1.1227,
+    "se": 0.012646,
+    "n": 5
+   },
+   "restart_drift_eb": {
+    "mean": 0.060375,
+    "se": 0.0050729,
+    "n": 5
+   },
+   "restart_drift_eu": {
+    "mean": 0.08808,
+    "se": 0.0033898,
+    "n": 5
+   },
+   "hc_sign_asym": {
+    "mean": 0.010937,
+    "se": 0.0025993,
+    "n": 5
+   },
+   "prod_fluct_over_d": {
+    "mean": 0.00015958,
+    "se": 0.00074047,
+    "n": 5
+   },
+   "prod_mean_over_d": {
+    "mean": 1.1092,
+    "se": 0.0008193,
+    "n": 5
+   },
+   "restart_overshoot_eb": {
+    "mean": 0.08562,
+    "se": 0.0074422,
+    "n": 5
+   },
+   "restart_anchor_end_eb": {
+    "mean": 0.014673,
+    "se": 0.0029075,
+    "n": 5
+   },
+   "ed_ratio_train": {
+    "mean": 1.8607,
+    "se": 0.058846,
+    "n": 5
+   }
+  },
+  {
+   "id": "W14_full_anchor_it4000",
+   "label": "W14 anchor on G1, iteration 4000",
+   "where": "design",
+   "source": "experiments/results/replications/e4_anchor",
+   "hypotheses": [],
+   "ed_ratio": {
+    "mean": 2.4452,
+    "se": 0.038903,
+    "n": 5
+   },
+   "div_rel_b_max": {
+    "mean": 1.5036e-08,
+    "se": 1.1192e-10,
+    "n": 5
+   },
+   "balance_residual_total": {
+    "mean": 0.0035105,
+    "se": 0.00029726,
+    "n": 5
+   },
+   "balance_residual_magnetic": {
+    "mean": 0.071306,
+    "se": 0.00081979,
+    "n": 5
+   },
+   "spec_err_b_l2": {
+    "mean": 0.016083,
+    "se": 0.0015653,
+    "n": 5
+   },
+   "hel_m_err_rel": {
+    "mean": 0.025296,
+    "se": 0.0034406,
+    "n": 5
+   },
+   "null_count_err_rel": {
+    "mean": 1.1237,
+    "se": 0.012524,
+    "n": 5
+   },
+   "restart_drift_eb": {
+    "mean": 0.060379,
+    "se": 0.0050463,
+    "n": 5
+   },
+   "restart_drift_eu": {
+    "mean": 0.087987,
+    "se": 0.003408,
+    "n": 5
+   },
+   "hc_sign_asym": {
+    "mean": 0.011849,
+    "se": 0.0023956,
+    "n": 5
+   },
+   "prod_fluct_over_d": {
+    "mean": 0.00015336,
+    "se": 0.0007417,
+    "n": 5
+   },
+   "prod_mean_over_d": {
+    "mean": 1.1091,
+    "se": 0.00077819,
+    "n": 5
+   },
+   "restart_overshoot_eb": {
+    "mean": 0.085581,
+    "se": 0.0074511,
+    "n": 5
+   },
+   "restart_anchor_end_eb": {
+    "mean": 0.014674,
+    "se": 0.0028873,
+    "n": 5
+   },
+   "ed_ratio_train": {
+    "mean": 1.8612,
+    "se": 0.058564,
     "n": 5
    }
   },
