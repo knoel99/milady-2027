@@ -10,6 +10,7 @@ One entry per working session, newest first, at most ten lines.
 - Repair asked by the review: the GPU job script returned 0 whatever its seeds returned; a seed that fails now fails the job, after the outputs are copied.
 - Registered before any code (H38), then coded with its verdict line and a `--quick` test: positive control of H28 at full size (the anchored model trained on 14 400 samples of W9, whose third-order part is known).
 - GPU job launched at 19:20 UTC, GPU list restricted and `E4_SAME_DATA=1`: `e4_anchorpos` (pod `muarl86epqn1y7`, RTX 5090 at 1.39 USD/h, group P, five seeds, limit 1.9 h, worst case 2.64 USD).
+- Added at 19:45 UTC. Registered before any code (H39), then coded with its verdict line and a `--quick` test: how long the solver alone needs, from the initial condition of the data, to meet the two conditions of the residual relaxation time of H35 (the baseline that H35 lacks; a CPU diagnostic on the data files of the session suggests 32 to 64 time units). GPU jobs launched, GPU list restricted and `E4_SAME_DATA=1`, no model trained: `e4_cold` (pod `9gdkiig93q9lb4`, RTX PRO 4500 Blackwell at 0.72 USD/h, group K against the reference of the main run, five ensembles of 512 trajectories per η, limit 1.6 h) and `e4_cold_indep` (pod `m1bybxeyu93tjp`, RTX PRO 4500 Blackwell at 0.72 USD/h, the same against the reference of the second realisation, limit 1.6 h); worst case 2.30 USD.
 - Budget: this ledger 52.8 USD billed of 140.
 - Cost (tokens, CPU time): `research/usage/latest.md`.
 
