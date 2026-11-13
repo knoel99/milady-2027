@@ -1949,6 +1949,45 @@
       "verdict": "REFUTED",
       "results": "Mean energy-distance ratio 787.3417136124243, above 1.2. All five ratios are finite. Same file as H149. The refutation criterion is met.",
       "commit": ""
+    },
+    {
+      "id": "H151",
+      "statement": "The perfect kmax=4 cutoff of a kinematic ABC field, with no learned model, has a mean energy-distance ratio at most 1.2 against the unprojected field. Seeds 0-4, n=16, Rm=12, eight times from 0.25 to 2. The cutoff is the representation constraint. The unprojected ensemble is the baseline.",
+      "origin": "Learned flows at kmax 2 and 4 stay near ratio 750. The ceiling says whether that cutoff can meet the C1 target even when the model is perfect. The bound was fixed before the run.",
+      "refutation_criterion": "Refuted if any ratio in kmax4 is non-finite, or if the mean over seeds 0-4 exceeds 1.2.",
+      "protocol": "python3 experiments/cursor_constraint_cmp.py --ceiling --out experiments/results/cursor_constraint_ceiling.json. One run records kmax 4, 6, and 7. CPU. No learned weights.",
+      "script": "experiments/cursor_constraint_cmp.py --ceiling",
+      "cost_estimate": "CPU only. No GPU dollars.",
+      "status": "registered",
+      "verdict": "",
+      "results": "",
+      "commit": ""
+    },
+    {
+      "id": "H152",
+      "statement": "The perfect kmax=6 cutoff of a kinematic ABC field, with no learned model, has a mean energy-distance ratio at most 1.2 against the unprojected field. Seeds 0-4, n=16, Rm=12, eight times from 0.25 to 2. The cutoff is the representation constraint. The unprojected ensemble is the baseline.",
+      "origin": "Learned flows at kmax 2 and 4 stay near ratio 750. The ceiling says whether that cutoff can meet the C1 target even when the model is perfect. The bound was fixed before the run.",
+      "refutation_criterion": "Refuted if any ratio in kmax6 is non-finite, or if the mean over seeds 0-4 exceeds 1.2.",
+      "protocol": "python3 experiments/cursor_constraint_cmp.py --ceiling --out experiments/results/cursor_constraint_ceiling.json. One run records kmax 4, 6, and 7. CPU. No learned weights.",
+      "script": "experiments/cursor_constraint_cmp.py --ceiling",
+      "cost_estimate": "CPU only. No GPU dollars.",
+      "status": "registered",
+      "verdict": "",
+      "results": "",
+      "commit": ""
+    },
+    {
+      "id": "H153",
+      "statement": "The perfect kmax=7 cutoff of a kinematic ABC field, with no learned model, has a mean energy-distance ratio at most 1.2 against the unprojected field. Seeds 0-4, n=16, Rm=12, eight times from 0.25 to 2. The cutoff is the representation constraint. The unprojected ensemble is the baseline.",
+      "origin": "Learned flows at kmax 2 and 4 stay near ratio 750. The ceiling says whether that cutoff can meet the C1 target even when the model is perfect. The bound was fixed before the run.",
+      "refutation_criterion": "Refuted if any ratio in kmax7 is non-finite, or if the mean over seeds 0-4 exceeds 1.2.",
+      "protocol": "python3 experiments/cursor_constraint_cmp.py --ceiling --out experiments/results/cursor_constraint_ceiling.json. One run records kmax 4, 6, and 7. CPU. No learned weights.",
+      "script": "experiments/cursor_constraint_cmp.py --ceiling",
+      "cost_estimate": "CPU only. No GPU dollars.",
+      "status": "registered",
+      "verdict": "",
+      "results": "",
+      "commit": ""
     }
   ]
 }

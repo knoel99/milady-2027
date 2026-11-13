@@ -174,13 +174,43 @@ def run(seeds: list[int], steps: int, n_samples: int, kmax: float = 2.0, hidden:
     return {"held_out_rm": held, "n": n, "kmax": kmax, "hidden": hidden, "steps": steps, "seeds": rows}
 
 
+def projection_ceiling(kmax_values: list[float]) -> dict:
+    """Energy-distance ratio of a perfect mode cutoff against the full field.
+
+    No network is trained. Each seed is eight snapshots of one ABC trajectory.
+    """
+    n = 16
+    held = 12.0
+    times = (0.25, 0.5, 0.75, 1.0, 1.25, 1.5, 1.75, 2.0)
+    rows = []
+    for seed in (0, 1, 2, 3, 4):
+        raw = np.stack([snapshot(n, held, seed, t) for t in times], axis=0)
+        row: dict = {"seed": seed}
+        for kmax in kmax_values:
+            modes = half_ball_modes(kmax)
+            projected = np.stack([unpack(pack(field, modes), modes, n) for field in raw], axis=0)
+            row[f"kmax{kmax:g}"] = score(projected, raw, held)
+        rows.append(row)
+        print("ceiling", seed, flush=True)
+    return {"held_out_rm": held, "n": n, "times": list(times), "seeds": rows}
+
+
 def main() -> None:
     parser = argparse.ArgumentParser()
     parser.add_argument("--quick", action="store_true")
     parser.add_argument("--kmax", type=float, default=None)
     parser.add_argument("--hidden", type=int, default=None)
+    parser.add_argument("--ceiling", action="store_true")
     parser.add_argument("--out", type=Path, default=None)
     args = parser.parse_args()
+    if args.ceiling:
+        if args.out is None:
+            raise SystemExit("--out is required with --ceiling")
+        result = projection_ceiling([4.0, 6.0, 7.0])
+        args.out.parent.mkdir(parents=True, exist_ok=True)
+        args.out.write_text(json.dumps(result, indent=2) + "\n")
+        print("wrote", args.out)
+        return
     if (args.kmax is not None or args.hidden is not None) and args.out is None:
         raise SystemExit("--out is required with --kmax or --hidden, so the H145 file is not overwritten")
     if args.quick:
