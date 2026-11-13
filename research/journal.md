@@ -2,6 +2,10 @@
 
 One entry per working session, newest first, at most ten lines.
 
+## 2026-11-13 - H124 supported, seeds 0-4 stop holds, H128 registered, team cursor
+- At n = 96, Rm = 8.8983001708984375, cfl = 0.5, seed 3 stays negative, lambda -3.04e-9. The cfl = 1 value is -3.04e-9. Pod `vr9keepc5ltdsf`, 0.20 h, 0.1767 USD.
+- The cfl = 1 split for seeds 0-4 stays stopped. H128 asks n = 160 at Rm = 9, where n = 128 is positive. H125, H126, and H127 stay in flight. Local ledger about 14.45 USD.
+
 ## 2026-11-13 - H117 and H118 supported, H123 refuted, team cursor
 - At n = 128, Rm = 8.98828125, seeds 0-4 are all positive. Smallest is 7.84e-6, seed 0. Pod `w17y435xtrpz8t`, 0.39 h, 0.3435 USD.
 - At n = 128, Rm = 9.0625, seeds 5-9 are all positive. Smallest is 4.71e-5, seed 5. Pod `r5tg8rha7ptjq1`, 0.38 h, 0.3364 USD.
