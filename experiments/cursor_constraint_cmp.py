@@ -71,9 +71,9 @@ def unpack(vec: np.ndarray, modes: np.ndarray, n: int) -> np.ndarray:
 
 
 class _Velocity(nn.Module):
-    def __init__(self, dim: int) -> None:
+    def __init__(self, dim: int, hidden: int = 64) -> None:
         super().__init__()
-        self.net = nn.Sequential(nn.Linear(dim + 2, 64), nn.SiLU(), nn.Linear(64, dim))
+        self.net = nn.Sequential(nn.Linear(dim + 2, hidden), nn.SiLU(), nn.Linear(hidden, dim))
 
     def forward(self, x: torch.Tensor, t: torch.Tensor, c: torch.Tensor) -> torch.Tensor:
         return self.net(torch.cat((x, t[:, None], c), dim=-1))
@@ -88,10 +88,10 @@ def _to_real(coeff: torch.Tensor) -> torch.Tensor:
     return torch.view_as_real(coeff).reshape(*coeff.shape[:-2], -1)
 
 
-def train_one(data: torch.Tensor, cond: torch.Tensor, steps: int, seed: int) -> _Velocity:
+def train_one(data: torch.Tensor, cond: torch.Tensor, steps: int, seed: int, hidden: int = 64) -> _Velocity:
     """Adam on the conditional flow loss. Both variants share this training."""
     torch.manual_seed(seed)
-    model = _Velocity(data.shape[-1])
+    model = _Velocity(data.shape[-1], hidden=hidden)
     opt = torch.optim.Adam(model.parameters(), lr=1e-3)
     for _ in range(steps):
         loss = fm_loss(model, data, cond)
@@ -144,9 +144,11 @@ def score(gen: np.ndarray, ref: np.ndarray, rm: float) -> dict[str, float]:
     }
 
 
-def run(seeds: list[int], steps: int, n_samples: int, kmax: float = 2.0) -> dict:
+def run(seeds: list[int], steps: int, n_samples: int, kmax: float = 2.0, hidden: int = 64) -> dict:
     n = 16
     modes = half_ball_modes(kmax)
+    if hidden < 0:
+        hidden = int(modes.shape[0] * 6)
     k = torch.tensor(modes, dtype=torch.float64)
     train_rm = (8.0, 16.0)
     held = 12.0
@@ -162,29 +164,36 @@ def run(seeds: list[int], steps: int, n_samples: int, kmax: float = 2.0) -> dict
         cond = torch.tensor(cs, dtype=torch.float32)
         row: dict = {"seed": seed}
         for name, project in (("projected", True), ("free", False)):
-            model = train_one(data, cond, steps, seed)
+            model = train_one(data, cond, steps, seed, hidden=hidden)
             drawn = sample(model, held, n_samples, steps=8, project=project, k=k.to(torch.float32))
             fields = np.stack([unpack(v, modes, n) for v in drawn.numpy()], axis=0)
             stats = score(fields, ref, held)
             row[name] = stats
         rows.append(row)
         print("seed", seed, "projected_div", row["projected"]["div_max"], "free_div", row["free"]["div_max"], flush=True)
-    return {"held_out_rm": held, "n": n, "kmax": kmax, "steps": steps, "seeds": rows}
+    return {"held_out_rm": held, "n": n, "kmax": kmax, "hidden": hidden, "steps": steps, "seeds": rows}
 
 
 def main() -> None:
     parser = argparse.ArgumentParser()
     parser.add_argument("--quick", action="store_true")
     parser.add_argument("--kmax", type=float, default=None)
+    parser.add_argument("--hidden", type=int, default=None)
     parser.add_argument("--out", type=Path, default=None)
     args = parser.parse_args()
-    if args.kmax is not None and args.out is None:
-        raise SystemExit("--out is required with --kmax, so the H145 file is not overwritten")
+    if (args.kmax is not None or args.hidden is not None) and args.out is None:
+        raise SystemExit("--out is required with --kmax or --hidden, so the H145 file is not overwritten")
     if args.quick:
-        result = run([0], steps=5, n_samples=2, kmax=args.kmax or 2.0)
+        result = run([0], steps=5, n_samples=2, kmax=args.kmax or 2.0, hidden=args.hidden or 64)
         dest = args.out or Path("experiments/results/cursor_constraint_quick.json")
-    elif args.kmax is not None:
-        result = run([0, 1, 2, 3, 4], steps=40, n_samples=8, kmax=args.kmax)
+    elif args.kmax is not None or args.hidden is not None:
+        result = run(
+            [0, 1, 2, 3, 4],
+            steps=40,
+            n_samples=8,
+            kmax=args.kmax or 2.0,
+            hidden=args.hidden or 64,
+        )
         dest = args.out
     else:
         result = run([0, 1, 2, 3, 4], steps=40, n_samples=8)

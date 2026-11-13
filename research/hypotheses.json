@@ -1923,6 +1923,32 @@
       "verdict": "REFUTED",
       "results": "Mean energy-distance ratio at kmax=4 is 791.0166882534577, above 1.2. All five ratios are finite. Same file as H147. The refutation criterion is met.",
       "commit": ""
+    },
+    {
+      "id": "H149",
+      "statement": "The wide sampling-constraint variant, hidden width equal to the packed coefficient dimension, kmax=4, has a strictly smaller mean energy-distance ratio than the width-64 baseline of H147, which is 791.0166882534577. Seeds 0-4, 40 Adam steps, training Rm 8 and 16, held-out Rm 12, n=16.",
+      "origin": "H147 kept hidden width 64 while the mode count grew, and the ratio got worse. The width is the one change. The inequality was fixed before the run.",
+      "refutation_criterion": "Refuted if any ratio is non-finite, or if the mean over seeds 0-4 is not strictly smaller than 791.0166882534577.",
+      "protocol": "python3 experiments/cursor_constraint_cmp.py --kmax 4 --hidden -1 --out experiments/results/cursor_constraint_wide.json. hidden -1 means the packed dimension. CPU. The earlier result files are not overwritten.",
+      "script": "experiments/cursor_constraint_cmp.py --kmax 4 --hidden -1",
+      "cost_estimate": "CPU only. No GPU dollars.",
+      "status": "registered",
+      "verdict": "",
+      "results": "",
+      "commit": ""
+    },
+    {
+      "id": "H150",
+      "statement": "The same wide kmax=4 sampling-constraint variant has a mean energy-distance ratio at most 1.2. Seeds 0-4, same protocol as H149.",
+      "origin": "C1 target is 1.2. The bound was fixed before the wide run.",
+      "refutation_criterion": "Refuted if any ratio is non-finite, or if the mean over seeds 0-4 exceeds 1.2.",
+      "protocol": "Same CPU run as H149.",
+      "script": "experiments/cursor_constraint_cmp.py --kmax 4 --hidden -1",
+      "cost_estimate": "CPU only. No GPU dollars.",
+      "status": "registered",
+      "verdict": "",
+      "results": "",
+      "commit": ""
     }
   ]
 }
