@@ -97,6 +97,14 @@
   ]
  },
  {
+  "name": "e4_anchor_training",
+  "caption": "Flow matching anchored on the Gaussian law with the full covariance (G1), read along one training of 4000 iterations; iteration 0 is the untrained model, which is G1 integrated like any model. Energy distance over the noise floor; third-order part of the magnetic production over that of the reference, per held-out \u03b7; largest deviation over the held-out \u03b7 of the mean-flow production and of the magnetic energy from the reference; flow-matching loss on a fixed training sample. Seed means; bars: \u00b1 2 standard errors over the seeds.",
+  "sources": [
+   "experiments/results/replications/e4_anchor/e4_mhd3d_s<k>.json",
+   "experiments/results/replications/e4_anchor/e4_reference.json"
+  ]
+ },
+ {
   "name": "e4_gpu_costs",
   "caption": "Cumulative GPU spend of the pilot, one point per entry of the compute ledger: finished jobs, jobs that failed, were interrupted or were lost, and the corrections made after another session deleted running pods.",
   "sources": [

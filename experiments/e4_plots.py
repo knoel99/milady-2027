@@ -543,7 +543,7 @@ def plot_anchor(out: Path, tag: str = "") -> None:
         g, _ = _seed_stat(runs, "G1_gaussian_full", lambda rows: np.mean([q["ed_ratio"] for q in rows]))
         ax.axhline(g, color=INK, lw=0.9, ls="--", label=r"G1 sampled exactly, held-out $\eta$")
     ax.set_ylabel("energy distance / noise floor")
-    ax.legend(fontsize=6.8)
+    ax.legend(fontsize=6.8, loc="center", bbox_to_anchor=(0.5, 0.36))
     ax = axes[1]                                              # third-order part of the production, over that of the reference
     ax.axhspan(0.3, 1.5, color=LIGHT, alpha=0.5, label="registered band (0.3 to 1.5)")
     for k, e in enumerate(etas):
@@ -571,7 +571,8 @@ def plot_anchor(out: Path, tag: str = "") -> None:
     m = np.nanmean(loss, axis=0)
     se = np.nanstd(loss, axis=0, ddof=1) / np.sqrt(len(loss)) if len(loss) >= MIN_SEEDS else np.zeros_like(m)
     ax.errorbar(x, m, yerr=2 * se, color=INK, marker="o", ms=3.5, capsize=2, lw=1.3)
-    ax.set_ylabel("flow-matching loss, fixed training sample")
+    ax.set_ylabel("flow-matching loss, fixed training sample\n(note the scale: changes of 1e-5)")
+    ax.ticklabel_format(axis="y", useOffset=False)
     for ax in axes:
         ax.set_xticks(x)
         ax.set_xticklabels([str(i) for i in its])
