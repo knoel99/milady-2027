@@ -1,0 +1,81 @@
+torch 2.8.0+cu128 cuda True NVIDIA RTX PRO 4500 Blackwell
+[2 s] data: 112 cores
+eta 0.08000 (train) Eu 0.491 Eb 0.078 Hm -0.043 (drift -0.4 SE) balance -0.0000  635 s
+eta 0.07253 (test ) Eu 0.440 Eb 0.097 Hm -0.056 (drift +0.2 SE) balance +0.0000  627 s
+eta 0.06575 (train) Eu 0.402 Eb 0.111 Hm -0.065 (drift +1.5 SE) balance -0.0004  610 s
+eta 0.05961 (val  ) Eu 0.373 Eb 0.121 Hm -0.072 (drift -0.1 SE) balance +0.0001  588 s
+eta 0.05404 (train) Eu 0.345 Eb 0.131 Hm -0.078 (drift +0.7 SE) balance +0.0002  597 s
+eta 0.04899 (test ) Eu 0.321 Eb 0.140 Hm -0.084 (drift -0.4 SE) balance -0.0000  594 s
+eta 0.04441 (train) Eu 0.309 Eb 0.145 Hm -0.085 (drift -0.8 SE) balance -0.0003  584 s
+eta 0.04026 (val  ) Eu 0.288 Eb 0.153 Hm -0.090 (drift -0.4 SE) balance -0.0002  570 s
+eta 0.03650 (train) Eu 0.276 Eb 0.160 Hm -0.095 (drift +1.5 SE) balance +0.0000  607 s
+eta 0.03309 (test ) Eu 0.265 Eb 0.165 Hm -0.096 (drift +1.7 SE) balance +0.0002  600 s
+eta 0.03000 (train) Eu 0.253 Eb 0.172 Hm -0.097 (drift -0.7 SE) balance +0.0002  597 s
+total 639 s -> /workspace/milady/experiments/results/e4_data.json
+[642 s] reference
+eta 0.03309 nulls 47.1 ± 1.2  k_lambda 2.90  H(1) -0.0949  H(k>=2) -0.0012  E1/EB 0.37  z(j.B) +0.3  floor 0.0733
+eta 0.03000 nulls 50.4 ± 1.2  k_lambda 2.95  H(1) -0.0953  H(k>=2) -0.0015  E1/EB 0.36  z(j.B) +0.7  floor 0.0400
+reference done in 768 s
+same data check: largest relative gap of E_B to the committed reference 3.33e-10
+[1413 s] models: seeds 2 3, 8 threads each
+eta 0.03650: trajectory floor 0.0433 ± 0.0152 [0.0149, 0.0694], random floor 0.0132, E|Y-Y'| 3.073
+eta 0.03309: trajectory floor 0.0590 ± 0.0357 [0.0164, 0.1500], random floor 0.0122, E|Y-Y'| 3.119
+eta 0.03000: trajectory floor 0.0374 ± 0.0213 [0.0169, 0.0918], random floor 0.0118, E|Y-Y'| 3.066
+seed 2 rc=1
+== G1V_gaussian_full: test ed_ratio 2.57  div_b 1.27e-08  balance 0.004  spec_b 0.033  Hm 0.048  nulls 1.041  restart 0.064
+== W16V_recoloured_full: test ed_ratio 2.20  div_b 1.27e-08  balance 0.007  spec_b 0.015  Hm 0.026  nulls 1.024  restart 0.020
+== W17_recoloured_surrogate: test ed_ratio 2.30  div_b 1.27e-08  balance 0.007  spec_b 0.019  Hm 0.023  nulls 1.052  restart 0.060
+Traceback (most recent call last):
+RuntimeError: Expected all tensors to be on the same device, but found at least two devices, cuda:0 and cpu!
+seed 3 rc=1
+== G1V_gaussian_full: test ed_ratio 2.42  div_b 1.27e-08  balance 0.005  spec_b 0.023  Hm 0.026  nulls 0.996  restart 0.055
+== W16V_recoloured_full: test ed_ratio 1.93  div_b 1.27e-08  balance 0.006  spec_b 0.010  Hm 0.013  nulls 0.960  restart 0.020
+== W17_recoloured_surrogate: test ed_ratio 2.21  div_b 1.27e-08  balance 0.006  spec_b 0.011  Hm 0.014  nulls 1.007  restart 0.062
+Traceback (most recent call last):
+RuntimeError: Expected all tensors to be on the same device, but found at least two devices, cuda:0 and cpu!
+[3844 s] done
+NVIDIA RTX PRO 4500 Blackwell, 2 MiB, 0 %
+e4_data.json
+e4_floor.json
+e4_gpu_s2.log
+e4_gpu_s3.log
+e4_mhd3d_s0.json
+e4_mhd3d_s0_A.json
+e4_mhd3d_s0_B.json
+e4_mhd3d_s0_C.json
+e4_mhd3d_s0_D.json
+e4_mhd3d_s0_E.json
+e4_mhd3d_s1.json
+e4_mhd3d_s1_A.json
+e4_mhd3d_s1_B.json
+e4_mhd3d_s1_C.json
+e4_mhd3d_s1_D.json
+e4_mhd3d_s1_E.json
+e4_mhd3d_s2.json
+e4_mhd3d_s2_A.json
+e4_mhd3d_s2_B.json
+e4_mhd3d_s2_C.json
+e4_mhd3d_s2_D.json
+e4_mhd3d_s2_E.json
+e4_mhd3d_s2_V.json
+e4_mhd3d_s3.json
+e4_mhd3d_s3_A.json
+e4_mhd3d_s3_B.json
+e4_mhd3d_s3_C.json
+e4_mhd3d_s3_D.json
+e4_mhd3d_s3_E.json
+e4_mhd3d_s3_V.json
+e4_mhd3d_s4.json
+e4_mhd3d_s4_A.json
+e4_mhd3d_s4_B.json
+e4_mhd3d_s4_C.json
+e4_mhd3d_s4_D.json
+e4_mhd3d_s4_E.json
+e4_reference.json
+e4_samples_s0_all.npz
+
+--- status
+2026-11-13T17:32:09Z boot NVIDIA RTX PRO 4500 Blackwell, 32623 MiB
+2026-11-13T17:33:39Z job started
+2026-11-13T18:37:43Z job finished rc=0 in 3844 s
+2026-11-13T18:37:43Z DONE rc=0

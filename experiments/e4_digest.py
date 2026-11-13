@@ -1486,7 +1486,7 @@ def section(quick: bool = False, root: Path = R, replication: str | None = None,
     P("| seed | " + " | ".join(tn) + " | total |")
     P("|---|" + "---|" * (len(tn) + 1))
     for s, r in runs.items():
-        P(f"| {s} | " + " | ".join(f"{next(iter(r['times'][v].values())):.0f}" if v in r["times"] else "–" for v in tn)
+        P(f"| {s} | " + " | ".join(f"{next(iter(r['times'][v].values())):.0f}" if v in r["times"] and isinstance(next(iter(r['times'][v].values())), (int, float)) else "–" for v in tn)
           + f" | {sum(r['durations_s']):.0f} |")
     P("")
     return out
