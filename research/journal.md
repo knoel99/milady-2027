@@ -2,6 +2,12 @@
 
 One entry per working session, newest first, at most ten lines.
 
+## 2026-11-13 - H54 refuted, H56 and H57 supported, team cursor
+- H54: n = 96, Rm = 8.5, every seed is negative. The most negative lambda is -0.003160. Pod `69nxybu6hgbm75`, 0.1083 USD.
+- H56: n = 48, Rm = 9.06640625, seeds 5-9 all positive. Smallest is 2.36e-5. Pod `c87uy2u6fgq7k2`, 0.0392 USD.
+- H57: n = 32, Rm = 9.052734375, seeds 0-4 all positive. Smallest is 2.35e-6. Pod `k0i510cxe4fudx`, 0.0467 USD.
+- H59 asks n = 96 at Rm = 8.75. H60 and H61 are the next small midpoints. H58 is still running.
+
 ## 2026-11-13 - H55 refuted, H58 registered, team cursor
 - At n = 64, Rm = 9.0595703125, seed 1 is negative, lambda -1.79e-6. The other four seeds are positive. The all-positive claim fails.
 - Pod `ky7n0s6jukffau`, RTX 4090, 0.06 h, 0.0545 USD. The criterion was not changed.
