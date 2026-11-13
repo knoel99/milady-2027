@@ -28,6 +28,7 @@ import json
 import os
 import re
 import secrets
+import shlex
 import subprocess
 import sys
 import tarfile
@@ -171,12 +172,32 @@ def pushed_commit(ref: str) -> str:
     return sha
 
 
+def shell_command(argv: list[str]) -> str:
+    """The shell line run on the pod, from the arguments given after ``--``.
+
+    A single argument is a shell line and is kept as it is. Several arguments are joined with spaces; one that
+    contains white space was quoted by the caller's shell and is quoted again, so that the pod sees it as one
+    word (``… full "0 1 2" name`` used to reach the pod as ``full 0 1 2 name``: wrong seeds, wrong group, and no
+    error). Arguments without white space are left alone: globs, pipes and ``&&`` are meant for the pod's shell. An
+    argument already wrapped in quotes (the older way round the problem) is left alone too.
+    """
+    words = argv[1:] if argv[:1] == ["--"] else list(argv)
+    if len(words) == 1:
+        return words[0]
+
+    def word(w: str) -> str:
+        wrapped = len(w) >= 2 and w[0] == w[-1] and w[0] in "\"'"
+        return shlex.quote(w) if re.search(r"\s", w) and not wrapped else w
+
+    return " ".join(word(w) for w in words)
+
+
 def run(args, mcp: MCP | None = None, sleep=time.sleep) -> int:
     cfg = config()
     hours = float(args.hours)
     if not 0 < hours <= cfg.get("max_job_hours", 2):
         sys.exit(f"--hours must be in (0, {cfg.get('max_job_hours', 2)}]")
-    command = " ".join(args.command[1:] if args.command[:1] == ["--"] else args.command)
+    command = shell_command(args.command)
     if not command:
         sys.exit("give the command after --")
     budget = float(os.environ.get("MILADY_GPU_BUDGET_USD") or cfg.get("budget_usd") or 0)  # this team's share

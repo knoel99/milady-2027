@@ -425,3 +425,22 @@ def test_run_writes_a_start_row_with_the_pod_id(job_env, monkeypatch):
     rows = [json.loads(x) for x in (job_env / "ledger.jsonl").read_text().splitlines()]
     assert rows[0]["event"] == "start" and rows[0]["pod"] == "pod123" and rows[-1]["rc"] == 0
     assert runpod_job.own_pod_ids() == {"pod123"} and runpod_job.spend()["jobs"] == 1
+
+
+def test_an_argument_with_spaces_reaches_the_pod_as_one_word(job_env, monkeypatch):
+    """`… full "0 1 2" name G,F` was joined with spaces and reached the pod as `full 0 1 2 name G,F` (2026-11-13:
+    four jobs started with the wrong seeds and an invalid group, stopped by hand)."""
+    sc = runpod_job.shell_command
+    assert sc(["--", "bash", "job.sh", "full", "0 1 2", "name", "G,F"]) == "bash job.sh full '0 1 2' name G,F"
+    assert sc(["env", "A=1", "bash", "job.sh", "full", "3 4"]) == "env A=1 bash job.sh full '3 4'"
+    assert sc(["--", "cd x && make test | tail -n 3"]) == "cd x && make test | tail -n 3"          # one shell line, as it is
+    assert sc(["--", "cat", "/srv/www/*/status.txt", "|", "tail", "-n", "2"]) == "cat /srv/www/*/status.txt | tail -n 2"
+    assert sc(["bash", "job.sh", '"0 1 2"']) == 'bash job.sh "0 1 2"'                               # already quoted
+    # and the command of a job is the quoted one, in the pod and in the ledger
+    monkeypatch.setattr(runpod_job, "http_get", lambda url: b"DONE rc=0" if url.endswith("status.txt") else None)
+    mcp = FakeMCP(fail_first=False)
+    a = args(log=str(job_env / "j.log"))
+    a.command = ["--", "bash", "job.sh", "full", "0 1 2", "name"]
+    assert runpod_job.run(a, mcp=mcp, sleep=lambda s: None) == 0
+    rows = [json.loads(x) for x in (job_env / "ledger.jsonl").read_text().splitlines()]
+    assert rows[0]["command"] == rows[-1]["command"] == "bash job.sh full '0 1 2' name"
