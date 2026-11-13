@@ -117,3 +117,4 @@
 {"time": "2026-11-13T09:15:32Z", "role": "encadrant", "commit": "b1e6e90", "scope": "H147 and H148 results", "verdict": "H147 REFUTED. H148 REFUTED.", "file": "research/calls/h147-result-encadrant.md"}
 {"time": "2026-11-13T09:15:32Z", "role": "jury-externe", "commit": "b1e6e90", "scope": "race report after the kmax=4 result", "verdict": "kmax=4 ratio CONFIRMED as a negative result. Report not defendable.", "file": "research/calls/race-report-jury-kmax.md"}
 {"time": "2026-11-13T09:16:33Z", "role": "encadrant", "commit": "49a83d7", "scope": "H149 and H150 results", "verdict": "H149 CONFIRMED. H150 REFUTED.", "file": "research/calls/h149-result-encadrant.md"}
+{"time": "2026-11-13T09:16:38Z", "role": "jury-externe", "commit": "4a33e72", "scope": "race report after the wide-layer result", "verdict": "Width gap CONFIRMED. Ceiling TO BE SPECIFIED. Report not defendable.", "file": "research/calls/race-report-jury-wide.md"}
