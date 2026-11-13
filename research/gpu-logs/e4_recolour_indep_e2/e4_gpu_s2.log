@@ -1,0 +1,12 @@
+== G1_gaussian_full: test ed_ratio 1.96  div_b 1.27e-08  balance 0.001  spec_b 0.010  Hm 0.022  nulls 1.017  restart 0.062
+== G1T_gaussian_full: test ed_ratio 1.96  div_b 1.27e-08  balance 0.001  spec_b 0.010  Hm 0.022  nulls 1.017  restart 0.062
+[W9R_skip_sym] it  1000  loss 1.2715  27 s
+[W9R_skip_sym] it  2000  loss 1.2138  53 s
+[W9R_skip_sym] it  3000  loss 1.1826  79 s
+[W9R_skip_sym] it  4000  loss 1.1776  106 s
+== W9R_skip_sym: test ed_ratio 8.27  div_b 1.28e-08  balance 0.059  spec_b 0.133  Hm 0.169  nulls 1.570  restart 0.129
+== W15_recoloured_modes: test ed_ratio 1.62  div_b 1.27e-08  balance 0.002  spec_b 0.014  Hm 0.017  nulls 1.375  restart 0.043
+== W16_recoloured_full: test ed_ratio 1.60  div_b 1.27e-08  balance 0.004  spec_b 0.015  Hm 0.019  nulls 0.958  restart 0.026
+== G4_recoloured_gaussian: test ed_ratio 2.36  div_b 1.27e-08  balance 0.004  spec_b 0.027  Hm 0.039  nulls 1.043  restart 0.062
+== W9R_steps_check: test ed_ratio 8.28  div_b 1.28e-08  balance 0.059  spec_b 0.134  Hm 0.171  nulls 1.575  restart 0.129
+total duration 1721 s

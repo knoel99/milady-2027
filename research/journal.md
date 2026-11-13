@@ -2,7 +2,7 @@
 
 One entry per working session, newest first, at most ten lines.
 
-## 2026-11-13 — Announcement (14:20 UTC): H35 read and amended before any run; four jobs launched; H34 and the recolouring computed on the data of the main run
+## 2026-11-13 — Announcement (14:15 UTC): H35 read and amended before any run; four jobs launched; H34 and the recolouring computed on the data of the main run
 - Goal of the session: decide H29 to H31 and H34; run H35.
 - H35 before any full run: `--quick` of group X passes on the CPU of the session; the `encadrant` read the criterion and the code (research/reviews/2026-11-13-encadrant-h35-criterion.md): the relaxation code reproduces stored trajectories to 3e-6; one blocking flaw (the control on reference snapshots counted its null points on the first ten trajectories only) and two smaller ones repaired, three dated amendments in the register, no threshold changed (97e2a25).
 - GPU jobs launched, one pod each, limit 1.9 h, all `milady-claude-job-*`: `e4_trajsur_indep` (pod `xwkr7qphwsr0jo`, RTX A6000 at 0.69 USD/h, H34 on the second realisation, 13:46 UTC, worst case 1.31 USD); `e4_relax_a` (pod `06t5e9s6ypu94e`, RTX PRO 4500 at 0.72 USD/h, H35, seeds 0 1, 14:14 UTC, worst case 1.37 USD); `e4_relax_b` (pod `ec2ppo7po2icyx`, L40S at 1.09 USD/h, the cheaper GPUs having no stock, H35, seeds 2 3, 14:14 UTC, worst case 2.07 USD). Still running: `e4_recolour_indep_e2`. To come as slots free: `e4_relax_c` (seed 4) and the three jobs of H35 on the second realisation; worst case about 6 USD more.
