@@ -38,6 +38,9 @@ Model family
     - :class:`FullGaussianAnchoredField` (``gaussian_full_anchor``): the same anchor on the Gaussian law with
       the full covariance of the latent, inter-mode correlations included (one D × D eigendecomposition per
       value of the condition);
+    - :func:`moment_recolouring` (``moment_recolouring``): at sampling time, the linear optimal-transport map
+      that gives the samples prescribed first and second moments (those fitted on the data), for the whole
+      latent or mode by mode; what the samples hold beyond their second moments is kept;
     - :class:`FullGaussian` (``gaussian_full``): no network, the conditional Gaussian law with the full
       sample covariance of the latent. Unlike the mode-wise law it keeps the correlations between different
       Fourier modes, which a forcing with a fixed phase creates and which carry the mean magnetic
@@ -81,6 +84,7 @@ __all__ = [
     "divergence_penalty",
     "half_batch_product",
     "leray_hat",
+    "moment_recolouring",
     "projected_flow_sample",
     "stationarity_residuals",
 ]
@@ -101,6 +105,7 @@ REGISTRY: dict[str, tuple[str, str]] = {
     "gaussian_full": ("model", "conditional Gaussian law with the full covariance of the latent (inter-mode correlations kept)"),
     "gaussian_anchor": ("design", "velocity field = exact field of the mode-wise Gaussian law + network for the non-Gaussian part"),
     "gaussian_full_anchor": ("design", "velocity field = exact field of the full-covariance Gaussian law + network for the non-Gaussian part"),
+    "moment_recolouring": ("sampling", "linear map of the samples onto given first and second moments (optimal transport between Gaussians)"),
 }
 
 
@@ -430,6 +435,35 @@ def balance_tilting(residuals: np.ndarray, reg: float = 1.0) -> tuple[np.ndarray
 # =============================================================================================
 # Model families: explicit linear part, second-order baseline
 # =============================================================================================
+@torch.no_grad()
+def moment_recolouring(x: torch.Tensor, mean_src: torch.Tensor, cov_src: torch.Tensor, mean_tgt: torch.Tensor,
+                       cov_tgt: torch.Tensor, floor: float = 1e-6) -> torch.Tensor:
+    """Samples ``x`` (n, ..., d) mapped linearly so that moments (mean_src, cov_src) become (mean_tgt, cov_tgt).
+
+    The map is x → mean_tgt + A (x − mean_src) with the symmetric positive matrix
+
+        A = Σs^(−1/2) (Σs^(1/2) Σt Σs^(1/2))^(1/2) Σs^(−1/2),        A Σs A = Σt,
+
+    the optimal-transport map between the Gaussian laws with these moments: among the linear maps that give
+    the target covariance it moves the samples least, and it is the identity when the moments agree. A law
+    that is not Gaussian keeps its standardised higher-order structure, transported by A. ``cov_*`` have
+    shape (..., d, d) and ``mean_*`` (..., d): one map for the flattened latent (no leading dimensions) or one
+    per Fourier mode (leading dimension M). Eigenvalues of Σs below ``floor`` times their mean are raised to
+    it (Σs must be estimated from many more samples than d, or its small eigenvalues are biased low and the
+    map amplifies them). Computed in float64, returned in the dtype of ``x``.
+    """
+    cs, ct = cov_src.to(torch.float64), cov_tgt.to(torch.float64)
+    lam, q = torch.linalg.eigh(cs)
+    lam = torch.maximum(lam, floor * lam.mean(-1, keepdim=True))
+    half = (q * lam.sqrt().unsqueeze(-2)) @ q.mT
+    inv_half = (q * lam.rsqrt().unsqueeze(-2)) @ q.mT
+    lam2, q2 = torch.linalg.eigh(half @ ct @ half)
+    a = inv_half @ ((q2 * lam2.clamp_min(0.0).sqrt().unsqueeze(-2)) @ q2.mT) @ inv_half
+    d = x.to(torch.float64) - mean_src.to(torch.float64)
+    out = mean_tgt.to(torch.float64) + torch.einsum("...ij,n...j->n...i", a, d)
+    return out.to(x.dtype)
+
+
 class ModewiseAffineSkip(nn.Module):
     """v(x, t, c) = G(t, c) x + b(t, c) + base(x, t, c), with one C × C matrix G and one offset b per mode.
 
@@ -559,6 +593,15 @@ class FullGaussian:
             self.factor.append((xv - m) / math.sqrt(len(xv)))
         self.c = values.to(torch.float64)
         return self
+
+    @torch.no_grad()
+    def moments(self, c: float) -> tuple[torch.Tensor, torch.Tensor]:
+        """Mean (D,) and covariance (D, D), float64, of the law at the condition ``c`` (D = M × C)."""
+        j, w = self._neighbours(c)
+        lo, hi = max(j - 1, 0), min(j, len(self.factor) - 1)
+        a1, a2 = self.factor[lo].to(torch.float64), self.factor[hi].to(torch.float64)
+        mean = (1 - w) * self.mean[lo].to(torch.float64) + w * self.mean[hi].to(torch.float64)
+        return mean, (1 - w) * (a1.T @ a1) + w * (a2.T @ a2)
 
     def _neighbours(self, c: float) -> tuple[int, float]:
         assert self.c is not None, "fit first"

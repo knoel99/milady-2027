@@ -23,9 +23,15 @@ GENERATORS = ["W0_free", "W1_penalty", "W2_final_projection", "W3_projected_flow
               "W11L_anchored_skip_long", "W10L_anchored_long", "G1_gaussian_full", "G2_gaussianised_W9", "G3_gaussianised_G1", "W9N_skip_sym", "W12_skip_stationarity", "W12_skip_control",
               "W13_skip_tilting", "W12_skip_stationarity_half", "W12_skip_control_half",
               "S_w512", "S_w2048", "S_w5632", "S_w512_long", "S_w2048_long"]
+# Later variants (H28, H29): checkpoints of the model anchored on G1, W9 retrained in the job and its samples recoloured,
+# controls. None is a candidate for the selected generator: iteration 0 of W14 is G1, the choice among its checkpoints is
+# the registered rule of H28, and a correction of the samples (like the tilting and the rescaling) never was one.
+LATER = [f"W14_full_anchor_it{k}" for k in (0, 50, 150, 250, 500, 1000, 2000, 4000)] + [
+    "G1T_gaussian_full", "W9R_skip_sym", "W9R_steps_check", "W15_recoloured_modes", "W16_recoloured_full", "G4_recoloured_gaussian"]
+GENERATORS += LATER
 # G0 has no network: it is the baseline to beat, not a candidate for the selected generator (the C1 note of
 # race/teams/claude/objectives.toml names the model family: conditional flow matching on the Fourier modes).
-CANDIDATES = [v for v in GENERATORS if not v.startswith(("G0_", "G1_", "G2_", "G3_"))]          # learned generators only
+CANDIDATES = [v for v in GENERATORS if not v.startswith(("G0_", "G1_", "G2_", "G3_")) and v not in LATER]   # learned generators only
 REGISTERED = ["W0_free", "W2_final_projection", "W3_projected_flow", "W4_potentials", "W4s_potentials_sym",
               "W5_stationarity", "W6_diffusion"]
 POST = ["W7_tilting", "W8_rescaling", "W5_stationarity_half", "W5_control_half"]
@@ -56,7 +62,7 @@ def merge(seed: int, tag: str | bool = "", root: Path = R) -> Path | None:
     whole = root / f"e4_mhd3d{tag}_s{seed}_all.json"
     if not all(p.exists() for p in parts) and not whole.exists():        # a run of the later groups only (D, E, L)
         parts = [p for g in ("A", "B") if (p := root / f"e4_mhd3d{tag}_s{seed}_{g}.json").exists()]
-        if not any((root / f"e4_mhd3d{tag}_s{seed}_{g}.json").exists() for g in ("C", "D", "E", "L", "S", "G", "M", "N")):
+        if not any((root / f"e4_mhd3d{tag}_s{seed}_{g}.json").exists() for g in ("C", "D", "E", "L", "S", "G", "M", "N", "F", "R", "T")):
             return None
     if all(p.exists() for p in parts):
         data = [json.loads(p.read_text()) for p in parts]
@@ -64,7 +70,7 @@ def merge(seed: int, tag: str | bool = "", root: Path = R) -> Path | None:
         data = [json.loads(whole.read_text())]
     else:
         return None
-    for g in ("C", "D", "E", "L", "S", "G", "M", "N"):                      # optional groups, added after the first runs
+    for g in ("C", "D", "E", "L", "S", "G", "M", "N", "F", "R", "T"):                      # optional groups, added after the first runs
         extra = root / f"e4_mhd3d{tag}_s{seed}_{g}.json"
         if extra.exists():
             data.append(json.loads(extra.read_text()))
@@ -117,6 +123,230 @@ def paired_row(label: str, a: np.ndarray, b: np.ndarray) -> str | None:
     d, m, se = paired(a, b)
     return (f"| {label} | {', '.join(f(x) for x in d)} | {f(m)} ± {f(se)} | {f(m / se, 2) if se > 0 else '–'} | "
             f"{int((d > 0).sum())} of {len(d)} |")
+
+
+def h28_lines(runs: dict, ref: dict | None) -> list[str]:
+    """H28: the model anchored on G1 along its training; selection of the checkpoint and verdict, clause by clause, as
+    registered (research/hypotheses.json, amendment of 2026-11-13 written before any full run)."""
+    names = sorted({v for r in runs.values() for v in r["evaluation"] if v.startswith("W14_full_anchor_it")}, key=lambda v: int(v.rsplit("it", 1)[1]))
+    if not names or ref is None:
+        return []
+    out: list[str] = []
+    it = {v: int(v.rsplit("it", 1)[1]) for v in names}
+
+    def cells(v: str, key: str, split: str) -> dict[float, np.ndarray]:
+        """{η: values over the seeds} of ``key`` for the variant ``v``."""
+        acc: dict = {}
+        for r in runs.values():
+            for x in r["evaluation"].get(v, {}).get(split, []):
+                if key in x:
+                    acc.setdefault(round(x["eta"], 5), []).append(x[key])
+        return {e: np.asarray(a) for e, a in sorted(acc.items(), reverse=True)}
+
+    rv = lambda e, key: ref["values"][f"{e:.5f}"][key]                                    # noqa: E731
+    ed = lambda v, split: np.mean(list(cells(v, "ed_ratio", split).values()), axis=0)     # noqa: E731  per seed, mean over the η
+    third = lambda v, split: {e: a.mean() / rv(e, "prod_fluct_over_d") for e, a in cells(v, "prod_fluct_over_d", split).items()}   # noqa: E731
+    mflow = lambda v: {e: a.mean() - rv(e, "prod_mean_over_d") for e, a in cells(v, "prod_mean_over_d", "test").items()}          # noqa: E731
+    eb = lambda v: {e: a.mean() / rv(e, "E_B") - 1 for e, a in cells(v, "E_B", "test").items()}                                  # noqa: E731
+    mean_abs = lambda v, key: float(np.mean([np.abs(a).mean() for a in cells(v, key, "test").values()])) if cells(v, key, "test") else float("nan")  # noqa: E731
+    val_eta = sorted(cells(names[0], "ed_ratio", "val"), reverse=True)
+    test_eta = sorted(cells(names[0], "ed_ratio", "test"), reverse=True)
+    train_eta = sorted(cells(names[0], "ed_ratio", "train"), reverse=True)
+    e_sel = min(val_eta)                                                                   # the lower validation η (0.0403)
+    out.append("\nH28: flow matching anchored on the full-covariance Gaussian law, read along one training (seed means; ED / floor: mean over "
+               "the η of the split; third-order part over that of the reference; mean-flow part minus that of the reference; E_B over "
+               "that of the reference minus 1, on the generated samples).\n")
+    head = ["checkpoint", "ED val", "ED test"] + [f"3rd/ref val η={e:.4f}" for e in val_eta] + [f"3rd/ref η={e:.4f}" for e in test_eta] + \
+           [f"3rd/ref train η={train_eta[0]:.4f}"] + ["max |mean-flow − ref|", "max |E_B/ref − 1|", "|magnetic balance|", "|energy residual|",
+                                                    "err. E_B(k)", "err. H_M", "err. nulls", "drift E_B τ=4", "overshoot E_B", "FM loss"]
+    out.append("| " + " | ".join(head) + " |")
+    out.append("|---|" + "---|" * (len(head) - 1))
+    for v in names:
+        tv, tt, ttr = third(v, "val"), third(v, "test"), third(v, "train")
+        loss = [r["times"].get(v, {}).get("fm_loss_train_sample") for r in runs.values()]
+        loss = [x for x in loss if x is not None]
+        row = [f"iteration {it[v]}", f(float(ed(v, "val").mean())), f(float(ed(v, "test").mean()))] + [f(tv[e], 2) for e in val_eta] + \
+              [f(tt[e], 2) for e in test_eta] + [f(ttr[train_eta[0]], 2), f(max(abs(x) for x in mflow(v).values())),
+                                               f(max(abs(x) for x in eb(v).values())), f(mean_abs(v, "balance_residual_magnetic")),
+                                               f(mean_abs(v, "balance_residual_total")), f(mean_abs(v, "spec_err_b_l2")),
+                                               f(mean_abs(v, "hel_m_err_rel")), f(mean_abs(v, "null_count_err_rel")),
+                                               f(mean_abs(v, "restart_drift_eb")), f(mean_abs(v, "restart_overshoot_eb")),
+                                               f(float(np.mean(loss))) if loss else "–"]
+        out.append("| " + " | ".join(row) + " |")
+    # measurement check: iteration 0 against G1 sampled exactly in the same job
+    v0, g1 = names[0], "G1_gaussian_full"
+    if it[v0] == 0 and any(g1 in r["evaluation"] for r in runs.values()):
+        d_ed = float(ed(v0, "test").mean() - ed(g1, "test").mean())
+        t0 = max(abs(a.mean()) for a in cells(v0, "prod_fluct_over_d", "test").values())
+        dm = max(abs(cells(v0, "prod_mean_over_d", "test")[e].mean() - cells(g1, "prod_mean_over_d", "test")[e].mean()) for e in test_eta)
+        de = max(abs(cells(v0, "E_B", "test")[e].mean() / cells(g1, "E_B", "test")[e].mean() - 1) for e in test_eta)
+        ok = abs(d_ed) <= 0.5 and t0 < 0.02 and dm <= 0.02 and de <= 0.03
+        out.append(f"H28, check of the measurement (iteration 0 against G1 of the same job, seed means, held-out η): ED / floor differs by "
+                   f"{f(d_ed)} (limit 0.5); largest |third-order part| {f(float(t0))} (limit 0.02); largest difference of the mean-flow part "
+                   f"{f(float(dm))} (limit 0.02); largest |E_B(it 0)/E_B(G1) − 1| {f(float(de))} (limit 0.03): {'PASS' if ok else 'FAIL'}.")
+    else:
+        out.append("H28, check of the measurement: iteration 0 or G1 missing from this run: NOT AVAILABLE.")
+    # selection on the validation η, then the clauses of the refutation criterion
+    cand = [v for v in names if it[v] > 0]
+    qual = [v for v in cand if 0.3 <= third(v, "val")[e_sel] <= 1.5]
+    out.append(f"H28, selection on the validation η: third-order part over that of the reference at η = {e_sel:.4f}: "
+               + "; ".join(f"iteration {it[v]}: {f(third(v, 'val')[e_sel], 2)} (ED val {f(float(ed(v, 'val').mean()))})" for v in cand)
+               + f". Qualifying (between 0.3 and 1.5): {', '.join(str(it[v]) for v in qual) or 'none'}.")
+    if not qual:
+        out.append("H28, verdict on this realisation of the data: REFUTED (clause a: no checkpoint qualifies on the validation η).")
+        return out
+    ks = min(qual, key=lambda v: float(ed(v, "val").mean()))
+    tt = third(ks, "test")
+    low = sorted(test_eta)[:2]                                                             # the two lower held-out η
+    signs = {e: int((np.sign(cells(ks, "prod_fluct_over_d", "test")[e]) == np.sign(rv(e, "prod_fluct_over_d"))).sum()) for e in low}
+    n_seed = len(next(iter(cells(ks, "prod_fluct_over_d", "test").values())))
+    need = min(4, n_seed)
+    b_bad = [e for e in low if not (0.3 <= tt[e] <= 1.5) or signs[e] < need]
+    r_ed = ed(ks, "test") / ed(v0, "test")
+    c_bad = float(ed(ks, "test").mean() / ed(v0, "test").mean()) > 1.5 or int((r_ed > 1.5).sum()) > 1
+    d_val, e_val = mflow(ks), eb(ks)
+    d_bad = [e for e in test_eta if abs(d_val[e]) > 0.05]
+    e_bad = [e for e in test_eta if abs(e_val[e]) > 0.05]
+    out.append(f"H28, checkpoint k* = iteration {it[ks]} (smallest ED on the validation η among the qualifying ones). Clause b, third-order part "
+               f"over that of the reference at the two lower held-out η: " + ", ".join(f"η = {e:.4f}: {f(tt[e], 2)} ({signs[e]} of {n_seed} seeds with the sign of the reference)" for e in sorted(low, reverse=True))
+               + f" (between 0.3 and 1.5, at least {need} seeds): {'FAIL' if b_bad else 'pass'}. Clause c, ED / floor of k* over that of iteration 0: "
+               f"{f(float(ed(ks, 'test').mean() / ed(v0, 'test').mean()), 2)} on the seed means, per seed {', '.join(f(float(x), 2) for x in r_ed)} "
+               f"(limit 1.5, at most one seed above): {'FAIL' if c_bad else 'pass'}. Clause d, mean-flow part minus that of the reference: "
+               + ", ".join(f"{f(float(d_val[e]))}" for e in test_eta) + f" (limit 0.05): {'FAIL' if d_bad else 'pass'}. Clause e, E_B over that of "
+               f"the reference minus 1: " + ", ".join(f"{f(float(e_val[e]))}" for e in test_eta) + f" (limit 0.05): {'FAIL' if e_bad else 'pass'}.")
+    bad = [c for c, x in (("b", b_bad), ("c", c_bad), ("d", d_bad), ("e", e_bad)) if x]
+    out.append(f"H28, verdict on this realisation of the data: {'REFUTED (clauses ' + ', '.join(bad) + ')' if bad else 'NOT REFUTED'}; third-order part "
+               f"of k* at η = {max(test_eta):.4f}: {f(tt[max(test_eta)], 2)} of the reference, at the training η = {train_eta[0]:.4f}: "
+               f"{f(third(ks, 'train')[train_eta[0]], 2)}.")
+    return out
+
+
+def h29_lines(runs: dict, ref: dict | None) -> list[str]:
+    """H29, H30, H31: the samples of W9 recoloured onto the moments of the data, the restart at equal moments, the restart
+    of G1 at the training η; verdicts clause by clause, as registered (research/hypotheses.json)."""
+    have = {v for r in runs.values() for v in r["evaluation"]}
+    if ref is None or not ({"W16_recoloured_full", "G1T_gaussian_full"} & have):
+        return []
+    out: list[str] = []
+    n_seed = len(runs)
+    need = min(4, n_seed)
+
+    def cells(v: str, fn, split: str = "test") -> dict[float, np.ndarray]:
+        """{η: values over the seeds} of ``fn(row)`` for the variant ``v`` (rows without the quantity are skipped)."""
+        acc: dict = {}
+        for r in runs.values():
+            for x in r["evaluation"].get(v, {}).get(split, []):
+                try:
+                    acc.setdefault(round(x["eta"], 5), []).append(fn(x))
+                except KeyError:
+                    pass
+        return {e: np.asarray(a) for e, a in sorted(acc.items(), reverse=True)}
+
+    key = lambda k: (lambda x: x[k])                                                     # noqa: E731
+    rv = lambda e, k: ref["values"][f"{e:.5f}"][k]                                       # noqa: E731
+    over_eta = lambda d: np.mean(list(d.values()), axis=0)                               # noqa: E731  per seed, mean over the η
+    sem = lambda a: float(a.std(ddof=1) / np.sqrt(len(a))) if len(a) > 1 else float("nan")   # noqa: E731
+    exc = lambda x: max(0.0, max(x["restart_anchor"]["eb"][1:]))                         # noqa: E731
+    rise = lambda x: max(x["restart_anchor"]["eb"][1:]) - x["restart_anchor"]["eb"][0]   # noqa: E731
+    amax = lambda x: max(abs(y) for y in x["restart_anchor"]["eb"])                      # noqa: E731
+    a0 = lambda x: x["restart_anchor"]["eb"][0]                                          # noqa: E731
+    g1 = "G1_gaussian_full" if "G1_gaussian_full" in have else "G1T_gaussian_full"
+    w16, w15, g4, w9, chk = "W16_recoloured_full", "W15_recoloured_modes", "G4_recoloured_gaussian", "W9R_skip_sym", "W9R_steps_check"
+
+    if w16 in have:
+        etas = sorted(cells(w16, key("ed_ratio")), reverse=True)
+        low = sorted(etas)[:2]
+        n_rs = sorted({r["config"].get("n_restart") for r in runs.values()})
+        out.append(f"\nH29, H30: samples of W9 recoloured onto the moments fitted on the data (seed means on the held-out η; restart of "
+                   f"{', '.join(str(x) for x in n_rs)} samples; third-order part over that of the reference; mean-flow part minus that of "
+                   f"the reference; E_B of the generated samples over that of the reference minus 1).\n")
+        head = ["law", "ED / floor"] + [f"3rd/ref η={e:.4f}" for e in etas] + ["max |mean-flow − ref|", "max |E_B/ref − 1|", "|magnetic balance|",
+                "|energy residual|", "err. E_B(k)", "err. H_M", "err. nulls", "σ(dE/dt)/σ_ref", "a(0)", "excursion", "rise", "overshoot",
+                "largest |a|", "drift E_B τ=4"]
+        out.append("| " + " | ".join(head) + " |")
+        out.append("|---|" + "---|" * (len(head) - 1))
+        m = lambda v, fn: float(over_eta(cells(v, fn)).mean()) if cells(v, fn) else float("nan")     # noqa: E731
+        mabs = lambda v, k: float(np.mean([np.abs(a).mean() for a in cells(v, key(k)).values()])) if cells(v, key(k)) else float("nan")   # noqa: E731
+        third = lambda v: {e: a.mean() / rv(e, "prod_fluct_over_d") for e, a in cells(v, key("prod_fluct_over_d")).items()}             # noqa: E731
+        mflow = lambda v: {e: a.mean() - rv(e, "prod_mean_over_d") for e, a in cells(v, key("prod_mean_over_d")).items()}               # noqa: E731
+        eb = lambda v: {e: a.mean() / rv(e, "E_B") - 1 for e, a in cells(v, key("E_B")).items()}                                        # noqa: E731
+        for v in (g1, g4, w9, chk, w15, w16):
+            if v not in have:
+                continue
+            t = third(v)
+            out.append("| " + " | ".join([v, f(m(v, key("ed_ratio")))] + [f(t[e], 2) for e in etas] + [
+                f(max(abs(x) for x in mflow(v).values())), f(max(abs(x) for x in eb(v).values())), f(mabs(v, "balance_residual_magnetic")),
+                f(mabs(v, "balance_residual_total")), f(mabs(v, "spec_err_b_l2")), f(mabs(v, "hel_m_err_rel")), f(mabs(v, "null_count_err_rel")),
+                f(mabs(v, "std_residual_rel")), f(m(v, a0)), f(m(v, exc)), f(m(v, rise)), f(mabs(v, "restart_overshoot_eb")), f(m(v, amax)),
+                f(mabs(v, "restart_drift_eb"))]) + " |")
+        # null control shared by H29 and H30: Gaussian draws through the map of W16 against G1 of the same job
+        if g4 in have and g1 in have:
+            d_ed = m(g4, key("ed_ratio")) - m(g1, key("ed_ratio"))
+            t4 = max(abs(a.mean()) for a in cells(g4, key("prod_fluct_over_d")).values())
+            dm = max(abs(cells(g4, key("prod_mean_over_d"))[e].mean() - cells(g1, key("prod_mean_over_d"))[e].mean()) for e in etas)
+            de = max(abs(cells(g4, key("E_B"))[e].mean() / cells(g1, key("E_B"))[e].mean() - 1) for e in etas)
+            dx = m(g4, exc) - m(g1, exc)
+            ok29 = abs(d_ed) <= 0.5 and t4 < 0.02 and dm <= 0.03 and de <= 0.03
+            out.append(f"H29, null control (G4 against G1 of the same job): ED / floor differs by {f(d_ed)} (limit 0.5); largest |third-order part| "
+                       f"{f(float(t4))} (limit 0.02); largest difference of the mean-flow part {f(float(dm))} (limit 0.03); largest "
+                       f"|E_B(G4)/E_B(G1) − 1| {f(float(de))} (limit 0.03): {'PASS' if ok29 else 'FAIL'}. H30, null control: excursion of G4 minus "
+                       f"that of G1 {f(dx)} (limit 0.02 in absolute value): {'PASS' if abs(dx) < 0.02 else 'FAIL'}.")
+        else:
+            ok29 = False
+            out.append("H29, H30, null controls: G4 or G1 missing from this run: NOT AVAILABLE.")
+        # H29, clause by clause
+        t, mf, e_b = third(w16), mflow(w16), eb(w16)
+        signs = {e: int((np.sign(cells(w16, key("prod_fluct_over_d"))[e]) == np.sign(rv(e, "prod_fluct_over_d"))).sum()) for e in low}
+        a_bad = [e for e in etas if abs(mf[e]) > 0.05 or abs(e_b[e]) > 0.05]
+        b_bad = [e for e in low if not (0.3 <= t[e] <= 1.5) or signs[e] < need]
+        absbal = lambda v: over_eta({e: np.abs(a) for e, a in cells(v, key("balance_residual_magnetic")).items()})       # noqa: E731
+        d = absbal(g1) - absbal(w16) if g1 in have else np.full(n_seed, np.nan)
+        c_bad = not (d.mean() > 2 * sem(d) and int((d > 0).sum()) >= need)
+        d_ed16 = m(w16, key("ed_ratio")) - (m(g1, key("ed_ratio")) if g1 in have else float("nan"))
+        d_bad = not d_ed16 <= 0.5
+        out.append(f"H29, clause a (second moments): mean-flow part minus that of the reference {', '.join(f(float(mf[e])) for e in etas)}; "
+                   f"E_B over that of the reference minus 1 {', '.join(f(float(e_b[e])) for e in etas)} (limit 0.05 each): {'FAIL' if a_bad else 'pass'}. "
+                   f"Clause b (third-order part over that of the reference at the two lower η): "
+                   + ", ".join(f"η = {e:.4f}: {f(t[e], 2)} ({signs[e]} of {n_seed} seeds with the sign of the reference)" for e in sorted(low, reverse=True))
+                   + f" (between 0.3 and 1.5, at least {need} seeds): {'FAIL' if b_bad else 'pass'}. Clause c (|magnetic balance| of G1 minus that of "
+                   f"W16, paired): {f(float(d.mean()))} ± {f(sem(d))}, {int((d > 0).sum())} of {n_seed} seeds positive (more than 2 SE, at least {need} "
+                   f"seeds): {'FAIL' if c_bad else 'pass'}. Clause d (ED / floor of W16 minus that of G1): {f(d_ed16)} (limit 0.5): "
+                   f"{'FAIL' if d_bad else 'pass'}.")
+        bad = [c for c, x in (("a", a_bad), ("b", b_bad), ("c", c_bad), ("d", d_bad)) if x]
+        out.append(f"H29, verdict on this realisation of the data: " + ("TEST INVALID (null control)" if not ok29 else
+                   ("REFUTED (clauses " + ", ".join(bad) + ")" if bad else "NOT REFUTED")) + ".")
+        if chk in have and w9 in have:                       # numerical protocol: 4 times the Heun steps, same noise
+            de = max(abs(cells(chk, key("E_B"))[e].mean() - cells(w9, key("E_B"))[e].mean()) / rv(e, "E_B") for e in etas)
+            dd = max(abs(cells(chk, key("ed_ratio"))[e].mean() - cells(w9, key("ed_ratio"))[e].mean()) for e in etas)
+            steps = sorted({r["times"].get(chk, {}).get("steps") for r in runs.values()} - {None})
+            out.append(f"H29, check of the numerical protocol (W9R integrated with {', '.join(str(x) for x in steps)} Heun steps against "
+                       f"{', '.join(str(x) for x in sorted({r['config'].get('steps') for r in runs.values()}))}, same noise): largest change of "
+                       f"E_B over that of the reference {f(float(de))} (tolerance 0.02); largest change of ED / floor {f(float(dd))} "
+                       f"(tolerance 0.5): {'within tolerance' if de <= 0.02 and dd <= 0.5 else 'OUT OF TOLERANCE'}.")
+        # H30: excursion above the reference at equal moments
+        if g4 in have:
+            dx = over_eta(cells(g4, exc)) - over_eta(cells(w16, exc))
+            bad30 = not (dx.mean() > 2 * sem(dx) and dx.mean() >= 0.02 and int((dx > 0).sum()) >= need)
+            ctl = abs(m(g4, exc) - m(g1, exc)) < 0.02 if g1 in have else False
+            per = {e: cells(g4, exc)[e] - cells(w16, exc)[e] for e in etas}
+            out.append(f"H30, excursion of E_B above the reference, G4 minus W16, paired over the seeds (mean over the held-out η): "
+                       f"{', '.join(f(float(x)) for x in dx)}; {f(float(dx.mean()))} ± {f(sem(dx))}, {int((dx > 0).sum())} of {n_seed} seeds positive "
+                       f"(more than 2 SE, at least 0.02, at least {need} seeds). Per η, with the third-order part of W16 over the dissipation: "
+                       + "; ".join(f"η = {e:.4f}: {f(float(per[e].mean()))} ± {f(sem(per[e]))}, {int((per[e] > 0).sum())} of {n_seed} positive "
+                                   f"(third-order part {f(float(cells(w16, key('prod_fluct_over_d'))[e].mean()))})" for e in etas)
+                       + f". Verdict on this realisation of the data: {'TEST INVALID (null control)' if not ctl else ('REFUTED' if bad30 else 'NOT REFUTED')}.")
+    # H31: G1 restarted at the training η, where it has the sample moments of the data
+    gt = "G1T_gaussian_full"
+    if gt in have and cells(gt, key("restart_overshoot_eb"), "train"):
+        ov, a_0, rs, am = (cells(gt, fn, "train") for fn in (key("restart_overshoot_eb"), a0, rise, amax))
+        bad31 = [e for e in ov if ov[e].mean() < 0.05 or int((ov[e] < 0.05).sum()) > 1]
+        out.append("H31, restart of G1 at the training η (sample moments of the data, no interpolation): " + "; ".join(
+            f"η = {e:.4f}: a(0) {f(float(a_0[e].mean()))}, overshoot {f(float(ov[e].mean()))} ± {f(sem(ov[e]))} "
+            f"({int((ov[e] < 0.05).sum())} of {len(ov[e])} seeds below 0.05), rise {f(float(rs[e].mean()))}, largest |a| {f(float(am[e].mean()))}"
+            for e in ov) + "; at the held-out η: " + "; ".join(
+            f"η = {e:.4f}: overshoot {f(float(a.mean()))}" for e, a in cells(gt, key("restart_overshoot_eb")).items())
+            + f". Verdict on this realisation of the data: {'REFUTED (η = ' + ', '.join(f'{e:.4f}' for e in bad31) + ')' if bad31 else 'NOT REFUTED'}.")
+    return out
 
 
 def select(runs: dict) -> dict:
@@ -523,7 +753,8 @@ def section(quick: bool = False, root: Path = R, replication: str | None = None,
                 g2e, w9e = per_eta("G2_gaussianised_W9", exc), per_eta("W9N_skip_sym", exc)
                 P("Post hoc (not registered), per held-out η: excursion above the reference of G2 minus that of W9N, paired over the seeds, "
                   "with the production over dissipation of the two laws: " + "; ".join(
-                      f"η = {e:.4f}: {f(float((g2e[e] - w9e[e]).mean()))} ± {f(float((g2e[e] - w9e[e]).std(ddof=1) / np.sqrt(len(w9e[e]))))}"
+                      f"η = {e:.4f}: {f(float((g2e[e] - w9e[e]).mean()))} ± {f(float((g2e[e] - w9e[e]).std(ddof=1) / np.sqrt(len(w9e[e]))))}, "
+                      f"{int((g2e[e] - w9e[e] > 0).sum())} of {len(w9e[e])} seeds positive"
                       f" (P/D {f(float(np.mean([x['prod_over_d'] for r in runs.values() for x in r['evaluation']['G2_gaussianised_W9']['test'] if round(x['eta'], 4) == e])))}"
                       f" and {f(float(np.mean([x['prod_over_d'] for r in runs.values() for x in r['evaluation']['W9N_skip_sym']['test'] if round(x['eta'], 4) == e])))})"
                       for e in sorted(g2e, reverse=True)) + ".")
@@ -534,6 +765,8 @@ def section(quick: bool = False, root: Path = R, replication: str | None = None,
                 xs, ys = np.asarray(pts).T
                 P(f"Signed drift of E_B at τ = 4 against the bias E_B,ref/E_B(0) − 1 of the law, over the {len(pts)} laws above: "
                   f"correlation {f(float(np.corrcoef(xs, ys)[0, 1]), 2)}.")
+        for line in h28_lines(runs, ref) + h29_lines(runs, ref):
+            P(line)
         h27 = [x for r in runs.values() for x in r.get("h27", [])]
         if h27:
             P(f"H27, energy distance between the samples of G2 and of W9N over the reference floor, mean over the held-out η and the seeds: "

@@ -39,6 +39,7 @@ from __future__ import annotations
 import argparse
 import copy
 import json
+import os
 import time
 import numpy as np
 import torch
@@ -70,6 +71,8 @@ GROUPS = {"A": ["W0_free", "W1_penalty", "W2_final_projection", "W3_projected_fl
           "E": ["W10_anchored", "W11_anchored_skip"],                   # H19, H20: anchored on the Gaussian field
           "G": ["G1_gaussian_full"],
           "F": ["W14_full_anchor"],                                     # H28: anchored on G1, evaluated along the training
+          "R": ["W15_recoloured_modes"],                                # H29: W9 with its second moments recoloured at sampling time
+          "T": ["G1T_gaussian_full"],                                   # G1 restarted at the training η too (no interpolation)
           "N": ["G2_gaussianised_W9"],                                  # H27: Gaussian law fitted to the samples of W9                                    # H22: Gaussian law with the inter-mode covariance
           "M": ["W12_skip_stationarity", "W12_skip_control", "W13_skip_tilting"],   # H23, H24: loss and sampling on W9
           "L": ["W9L_skip_long", "W11L_anchored_skip_long"],            # H18: 8 times the iterations (not in "all")
@@ -78,7 +81,9 @@ GROUPS = {"A": ["W0_free", "W1_penalty", "W2_final_projection", "W3_projected_fl
 FULL = {"iters": 4000, "batch": 128, "width": 512, "depth": 4, "lr": 5e-4, "n_gen": 512, "n_gen_train": 256,
         "steps": 50, "ft_iters": 400, "ft_lr": 2e-4, "beta": 20.0, "stat_cond": 4, "stat_per": 16, "stat_steps": 6,
         "n_null": 200, "n_restart": 128, "tau": 4.0, "floor_splits": 10, "n_ref_null": 400, "long_factor": 8}
-QUICK = {**FULL, "anchor_its": (50, 150), "n_fit": 512, "ref_restart_draws": 2, "iters": 150, "width": 256, "depth": 2, "n_gen": 96, "n_gen_train": 64, "steps": 12, "long_factor": 2,
+if os.environ.get("E4_N_RESTART"):               # more restart samples for a job (H30: 512), recorded in the config of the results
+    FULL["n_restart"] = int(os.environ["E4_N_RESTART"])
+QUICK = {**FULL, "anchor_its": (50, 150), "n_recolour": 1024, "steps_check": 24, "n_fit": 512, "ref_restart_draws": 2, "iters": 150, "width": 256, "depth": 2, "n_gen": 96, "n_gen_train": 64, "steps": 12, "long_factor": 2,
          "ft_iters": 20, "n_null": 24, "n_restart": 24, "tau": 1.0, "floor_splits": 4, "n_ref_null": 32}
 
 
@@ -441,6 +446,10 @@ def _group_of(variant: str) -> str:
         return "N"
     if variant.startswith("W14_"):
         return "F"
+    if variant.startswith(("W9R_", "W15_", "W16_", "G4_")):
+        return "R"
+    if variant.startswith("G1T_"):
+        return "T"
     return "M" if variant.startswith(("W12_", "W13_")) else "B"
 
 
@@ -484,7 +493,7 @@ def run(quick: bool, seed: int, group: str, device: str = "cpu", cond_scale: flo
     groups = [g for g in GROUPS if g in "ABCDE"] if group == "all" else group.split(",")
     need = tuple(sorted({s for g in groups for s in {"A": ("comp",), "B": ("pot", "pot_sym"), "C": ("pot",),
                                                      "D": ("pot_sym",), "E": ("pot_sym",), "L": ("pot_sym",),
-                                                     "S": ("pot_sym",), "G": ("pot_sym",), "M": ("pot_sym",), "N": ("pot_sym",), "F": ("pot_sym",)}[g]}))
+                                                     "S": ("pot_sym",), "G": ("pot_sym",), "M": ("pot_sym",), "N": ("pot_sym",), "F": ("pot_sym",), "R": ("pot_sym",), "T": ("pot_sym",)}[g]}))
     need = ("pot", "pot_sym", "comp") if len(need) == 3 else need
     ctx = Context(quick, need, device)
     cfg, dev = ctx.cfg, ctx.dev
@@ -550,13 +559,14 @@ def run(quick: bool, seed: int, group: str, device: str = "cpu", cond_scale: flo
             out.append(sp.field_hat(sp.denormalize(z)).cpu())
         return torch.cat(out)
 
-    def record(name: str, fhs: dict, restart: bool = True) -> None:
-        """Evaluate the ensembles ``{eta: fh}`` (or ``{eta: (fh, weights)}``) of a variant."""
+    def record(name: str, fhs: dict, restart: bool = True, restart_splits: tuple[str, ...] = ("test",)) -> None:
+        """Evaluate the ensembles ``{eta: fh}`` (or ``{eta: (fh, weights)}``) of a variant; the restart test is
+        run on the η of ``restart_splits``."""
         ev: dict = {"train": [], "val": [], "test": []}
         for e, item in fhs.items():
             fh, w = item if isinstance(item, tuple) else (item, None)
             row = ctx.evaluate(fh, e, w)
-            if restart and split(e) == "test" and w is None:
+            if restart and split(e) in restart_splits and w is None:
                 row.update(ctx.restart_drift(fh, e))
             ev[split(e)].append(row)
         results["evaluation"][name] = ev
@@ -752,9 +762,10 @@ def run(quick: bool, seed: int, group: str, device: str = "cpu", cond_scale: flo
         gl = torch.Generator().manual_seed(11)
         idx = torch.randint(0, len(ctx.x_pot_sym), (2048,), generator=gl)
 
-        def train_loss(model) -> float:                               # flow-matching loss on a fixed training sample
+        def train_loss(model) -> float:              # flow-matching loss on a fixed training sample, with fixed noise and times
+            gf = torch.Generator().manual_seed(12)
             with torch.no_grad():
-                return float(np.mean([fm_loss(model, ctx.x_pot_sym[idx[k:k + 256]], ctx.c_train[idx[k:k + 256]]).item()
+                return float(np.mean([fm_loss(model, ctx.x_pot_sym[idx[k:k + 256]], ctx.c_train[idx[k:k + 256]], generator=gf).item()
                                       for k in range(0, 2048, 256)]))
 
         # iteration 0: the network is zero and the model is the Gaussian law, integrated like any other model
@@ -824,6 +835,86 @@ def run(quick: bool, seed: int, group: str, device: str = "cpu", cond_scale: flo
                                    "ed_g2_w9": float(M.energy_distance(f2, fb, n=len(fb))),
                                    "ed_w9_halves": float(M.energy_distance(fb[:half], fb[half:], n=half))})
         del m9n, g1n
+
+    # ---------------- group T: the full-covariance Gaussian law restarted at the training η as well ----------------
+    if "G1T_gaussian_full" in names:
+        g1t = C.FullGaussian(sign=pot_sym.sign).fit(ctx.x_pot_sym, ctx.c_train[:, 0])
+
+        def sample_g1t(eta: float, n: int) -> torch.Tensor:           # the draws of G1_gaussian_full (group G)
+            g = torch.Generator().manual_seed(100003 * seed + 57 + ETAS.index(eta))
+            return pot_sym.field_hat(pot_sym.denormalize(g1t.sample(float(np.float32(cn(eta))), n, generator=g))).cpu()
+
+        record("G1T_gaussian_full", {e: sample_g1t(e, n) for e, n in eval_etas}, restart_splits=("test", "train"))
+        del g1t
+
+    # ---------------- group R: second moments of W9 recoloured to those of the data at sampling time (H29) ----------------
+    if "W15_recoloured_modes" in names:
+        seed_all(seed)
+        m9r, tsec = train(builders["W9_skip_sym"](None).to(dev), fm, ctx.x_pot_sym, ctx.c_train, cfg["iters"], cfg["lr"],
+                          cfg["batch"], "W9R_skip_sym")
+        results["times"]["W9R_skip_sym"] = {"training_time_s": tsec, "iters": cfg["iters"]}
+        g0r = C.ModewiseGaussian(sign=pot_sym.sign).fit(ctx.x_pot_sym, ctx.c_train[:, 0])
+        g1r = C.FullGaussian(sign=pot_sym.sign).fit(ctx.x_pot_sym, ctx.c_train[:, 0])
+        n_rec = cfg.get("n_recolour", 65536)
+        n_modes, n_ch = pot_sym.n_modes, pot_sym.n_channels
+        sgn = pot_sym.sign.to(dev, torch.float64).repeat(n_modes)                  # (D,): channel signs, mode after mode
+
+        @torch.no_grad()
+        def latents(e: float, n: int, steps: int | None = None) -> torch.Tensor:
+            """The latents of ``generate`` (same noise), before they are decoded."""
+            c = torch.full((n, 1), float(cn(e)), device=dev)
+            z0 = noise(n, pot_sym, ETAS.index(e))
+            return torch.cat([heun_sample(m9r, z0[i:i + 256], c[i:i + 256], steps=steps or cfg["steps"]) for i in range(0, n, 256)])
+
+        def decode(z: torch.Tensor) -> torch.Tensor:
+            return pot_sym.field_hat(pot_sym.denormalize(z.to(torch.float32))).cpu()
+
+        @torch.no_grad()
+        def source_moments(e: float) -> tuple[torch.Tensor, torch.Tensor]:
+            """Mean (D,) and covariance (D, D), float64, of ``n_rec`` fresh samples of the model at ``e``, with their images
+            under the sign symmetry (the moments of the symmetrised law, as for the Gaussian laws fitted to the data)."""
+            gz = torch.Generator().manual_seed(100003 * seed + 211 + ETAS.index(e))
+            dim = n_modes * n_ch
+            s1, s2, m = torch.zeros(dim, dtype=torch.float64, device=dev), torch.zeros(dim, dim, dtype=torch.float64, device=dev), 0
+            for _ in range(max(n_rec // 1024, 1)):
+                c = torch.full((1024, 1), float(cn(e)), device=dev)
+                z = heun_sample(m9r, torch.randn(1024, n_modes, n_ch, generator=gz).to(dev), c, cfg["steps"]).flatten(1).double()
+                for zz in (z, z * sgn):
+                    s1 += zz.sum(0)
+                    s2 += zz.T @ zz
+                    m += len(zz)
+            mean = s1 / m
+            return mean, s2 / m - torch.outer(mean, mean)
+
+        base_z, rec_modes, rec_full, ctl = {}, {}, {}, {}
+        for e, n in eval_etas:
+            cv = float(np.float32(cn(e)))
+            z = latents(e, n)
+            base_z[e] = decode(z)
+            mu_s, cov_s = source_moments(e)
+            blocks = cov_s.view(n_modes, n_ch, n_modes, n_ch)
+            cov_sm = torch.stack([blocks[i, :, i, :] for i in range(n_modes)])     # (M, C, C): the blocks of each mode
+            mu0, cov0 = g0r.moments(cv)
+            rec_modes[e] = decode(C.moment_recolouring(z, mu_s.view(n_modes, n_ch), cov_sm, mu0.to(dev), cov0.to(dev)))
+            mu1, cov1 = g1r.moments(cv)
+            mu1, cov1 = mu1.to(dev), cov1.to(dev)
+            rec_full[e] = decode(C.moment_recolouring(z.flatten(1), mu_s, cov_s, mu1, cov1).view_as(z))
+            # null control: Gaussian draws with the moments of the model, sent through the same map, are draws of G1
+            gz = torch.Generator().manual_seed(100003 * seed + 263 + ETAS.index(e))
+            lam, q = torch.linalg.eigh(cov_s)
+            y = mu_s + (torch.randn(n, len(lam), generator=gz).to(dev, torch.float64) * lam.clamp_min(0.0).sqrt()) @ q.T
+            ctl[e] = decode(C.moment_recolouring(y, mu_s, cov_s, mu1, cov1).view_as(z))
+            del cov_s, cov1, blocks, q
+        record("W9R_skip_sym", base_z)
+        results["times"]["W15_recoloured_modes"] = results["times"]["W16_recoloured_full"] = {"n_recolour": n_rec}
+        record("W15_recoloured_modes", rec_modes)
+        record("W16_recoloured_full", rec_full)
+        record("G4_recoloured_gaussian", ctl)
+        # numerical protocol: the same model and noise integrated with four times the steps
+        steps_check = cfg.get("steps_check", 4 * cfg["steps"])
+        results["times"]["W9R_steps_check"] = {"steps": steps_check}
+        record("W9R_steps_check", {e: decode(latents(e, n, steps_check)) for e, n in eval_etas})
+        del m9r, g0r, g1r, base_z, rec_modes, rec_full, ctl
 
     # ---------------- group M: loss and sampling mechanisms on the model with the affine term (H23, H24) ----------------
     if "W12_skip_stationarity" in names:

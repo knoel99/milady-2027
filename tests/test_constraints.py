@@ -400,6 +400,8 @@ def test_gaussian_full_anchor() -> None:
     for cv, w in ((0.1, 0.0), (0.5, 0.5)):                  # a training condition and an interpolated one
         mu = (1 - w) * gauss.mean[0] + w * gauss.mean[1]
         cov = (1 - w) * gauss.factor[0].T @ gauss.factor[0] + w * gauss.factor[1].T @ gauss.factor[1]
+        mu_m, cov_m = gauss.moments(cv)                      # the moments returned by the law itself
+        assert torch.allclose(mu_m, mu.double(), atol=1e-6) and torch.allclose(cov_m, cov.double(), atol=1e-5)
         z = torch.randn(n, M, Cc, generator=g)
         with torch.no_grad():
             x = C.heun_sample(field, z, torch.full((n, 1), cv), steps=100).reshape(n, D).double()
@@ -453,3 +455,49 @@ def test_gaussian_full_anchor() -> None:
     assert float(inside) > 0.995
     assert torch.allclose(dd.T @ dd / 4000, a.T @ a / 8, atol=0.35)
 
+
+
+
+def test_moment_recolouring() -> None:
+    """The linear map gives the samples the target mean and covariance and keeps their non-Gaussian structure."""
+    g = torch.Generator().manual_seed(5)
+    n, M, d = 40000, 3, 4
+    mix = torch.randn(M, d, d, generator=g) * 0.7
+    z = torch.randn(n, M, d, generator=g)
+    x = torch.einsum("mij,nmj->nmi", mix, z + 0.6 * (z**2 - 1)) + 0.3                       # skewed, correlated
+    mu_s = x.double().mean(0)
+    dx = x.double() - mu_s
+    cov_s = torch.einsum("nmi,nmj->mij", dx, dx) / n
+    b = torch.randn(M, d, d, generator=g).double()
+    mu_t, cov_t = torch.randn(M, d, generator=g).double(), b @ b.mT + 0.1 * torch.eye(d, dtype=torch.float64)
+    y = C.moment_recolouring(x, mu_s, cov_s, mu_t, cov_t).double()                           # one map per mode
+    dy = y - y.mean(0)
+    assert C.moment_recolouring(x[:8], mu_s, cov_s, mu_t, cov_t).dtype == x.dtype          # returned in the dtype of x
+    assert torch.allclose(y.mean(0), mu_t, atol=1e-4)
+    assert torch.allclose(torch.einsum("nmi,nmj->mij", dy, dy) / n, cov_t, atol=1e-3)
+    # identity when the moments already agree; symmetric positive map
+    assert torch.allclose(C.moment_recolouring(x, mu_s, cov_s, mu_s, cov_s).double(), x.double(), atol=1e-4)
+    # the same map on the flattened latent (covariance between modes included)
+    xf = x.reshape(n, M * d).double()
+    mf = xf.mean(0)
+    cf = (xf - mf).T @ (xf - mf) / n
+    bf = torch.randn(M * d, M * d, generator=g).double()
+    tf = bf @ bf.T / (M * d) + 0.05 * torch.eye(M * d, dtype=torch.float64)
+    yf = C.moment_recolouring(xf, mf, cf, torch.zeros(M * d, dtype=torch.float64), tf)
+    assert torch.allclose(yf.mean(0), torch.zeros(M * d, dtype=torch.float64), atol=1e-4)
+    assert torch.allclose((yf - yf.mean(0)).T @ (yf - yf.mean(0)) / n, tf, atol=1e-3)
+    # what is not Gaussian is kept: a pure rescaling of the covariance leaves the standardised skewness unchanged,
+    # and a Gaussian sample stays Gaussian (zero skewness)
+    def skew(v: torch.Tensor) -> torch.Tensor:
+        c = v - v.mean(0)
+        return (c**3).mean(0) / (c**2).mean(0) ** 1.5
+
+    ys = C.moment_recolouring(x, mu_s, cov_s, mu_s, 4.0 * cov_s).double()
+    assert torch.allclose(skew(ys), skew(x.double()), atol=1e-6) and float(skew(x.double()).abs().max()) > 0.5
+    gauss = torch.einsum("mij,nmj->nmi", mix, z)
+    cg = torch.einsum("nmi,nmj->mij", gauss.double() - gauss.double().mean(0), gauss.double() - gauss.double().mean(0)) / n
+    assert float(skew(C.moment_recolouring(gauss, gauss.double().mean(0), cg, mu_t, cov_t).double()).abs().max()) < 0.05
+    # a singular source covariance does not blow up
+    flat = torch.cat([x[:, :1, :2], torch.zeros(n, 1, 2)], dim=-1)
+    cz = torch.einsum("nmi,nmj->mij", flat.double() - flat.double().mean(0), flat.double() - flat.double().mean(0)) / n
+    assert torch.isfinite(C.moment_recolouring(flat, flat.double().mean(0), cz, mu_t[:1], cov_t[:1])).all()
