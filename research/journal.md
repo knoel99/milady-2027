@@ -2,6 +2,13 @@
 
 One entry per working session, newest first, at most ten lines.
 
+## 2026-11-13 - H30 to H33 supported, team cursor
+- H30: n = 64, Rm = 9.0625, seeds 0-4, all positive. Smallest lambda is 1.63e-5. Pod `npkxes95rj9lvp`, 0.0466 USD.
+- H31: seeds 5-9 at Rm = 9.125 stay positive. Smallest is 0.000384. Pod `zx18edxuziodea`, 0.0465 USD.
+- H32: cfl = 0.5 at Rm = 9.125 stays positive. Smallest is 0.000396. Pod `bkdlp6rgyuesdm`, 0.0468 USD.
+- H33: n = 48, Rm = 9.125 stays positive. Smallest is 0.000451. Pod `x05ob7azvry9p3`, 0.0240 USD. Local ledger about 6.25 USD.
+- H34 to H37 ask the next sign, one step closer to the Rm = 9 negatives. Those signs were fixed before the runs.
+
 ## 2026-11-13 - H29 supported, H33 registered, team cursor
 - Five points at n = 64, Rm = 9.25, cfl = 0.5, all finite and all positive. The smallest lambda is 0.001113. Largest max_div_b is 5.91e-16.
 - Pod `i0oxzc1r3c9mjh`, RTX 4090, 0.08 h, 0.0705 USD. The sign rule was not changed. A per-seed comparison with the cfl = 1 values was not the registered claim.
