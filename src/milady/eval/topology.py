@@ -35,7 +35,7 @@ from typing import Any
 import numpy as np
 import torch
 
-__all__ = ["null_count", "null_density_factors", "null_points"]
+__all__ = ["null_count", "null_density_factors", "null_density_jackknife", "null_points"]
 
 _STARTS = [(0.5, 0.5, 0.5)] + [(a, b, c) for a in (0.25, 0.75) for b in (0.25, 0.75) for c in (0.25, 0.75)]
 
@@ -141,7 +141,9 @@ def null_density_factors(b: Any, eps: float = 0.1, weights: Any = None, device: 
     ensemble, the Jacobian as the mean of |det ∇B| over these cells. Returned, with B in units of that rms and
     lengths in grid cells: ``density_at_zero``, ``jacobian_at_zero``, their product times the number of cells
     ``predicted_count`` (to compare with :func:`null_count`), the share ``small_fraction`` and the number
-    ``n_small`` of cells used, and ``rms``. Two ensembles with the same number of nulls can differ in both
+    ``n_small`` of cells used, ``rms``, ``jacobian_all`` (the mean of |det ∇B| over all the cells, same units:
+    is the field rougher everywhere or only where it is weak?) and ``per_field``, the sums of each field from
+    which :func:`null_density_jackknife` recomputes the factors without a group of fields. Two ensembles with the same number of nulls can differ in both
     factors, and a Gaussian field is fixed by its covariance in both; the ratio of the factors between two
     ensembles tells whether one has fewer nulls because its field is more rarely weak or because it varies
     more slowly where it is weak. ``weights`` (n,): weights of the fields (default: equal).
@@ -159,18 +161,48 @@ def null_density_factors(b: Any, eps: float = 0.1, weights: Any = None, device: 
         return 0.5 * (a + nxt(a, ax))
 
     s_small, s_det, n_small = 0.0, 0.0, 0
+    per = {"small": [], "det_small": [], "det_all": [], "b2": (arr.astype(np.float64) ** 2).sum(axis=(1, 2, 3, 4))}
     for i in range(0, n, chunk):                                  # by chunks of fields: the Jacobian takes 9 values per cell
         t = torch.as_tensor(arr[i:i + chunk], dtype=torch.float64, device=device)
         wf = torch.as_tensor(w[i:i + chunk], dtype=torch.float64, device=t.device).view(-1, 1, 1, 1)
         centre = avg(avg(avg(t, 1), 2), 3)
         jac = torch.stack([avg(avg(nxt(t, 1) - t, 2), 3), avg(avg(nxt(t, 2) - t, 1), 3), avg(avg(nxt(t, 3) - t, 1), 2)], dim=-1)
         small = (centre.norm(dim=-1) < eps * rms).to(torch.float64)
+        det = torch.linalg.det(jac).abs()
         s_small += float((small * wf).sum())
-        s_det += float((torch.linalg.det(jac).abs() * small * wf).sum())
+        s_det += float((det * small * wf).sum())
         n_small += int(small.sum())
+        per["small"].append(small.sum(dim=(1, 2, 3)).cpu().numpy())
+        per["det_small"].append((det * small).sum(dim=(1, 2, 3)).cpu().numpy())
+        per["det_all"].append(det.sum(dim=(1, 2, 3)).cpu().numpy())
     frac = s_small / cells                                        # weighted share of the cells with a weak field
     j0 = s_det / s_small / rms**3 if s_small > 0 else float("nan")
     p0 = frac / (4.0 / 3.0 * np.pi * eps**3)
+    per = {k: (np.concatenate(v) if isinstance(v, list) else v) for k, v in per.items()}
+    j_all = float(np.sum(w * per["det_all"]) / cells) / rms**3
     return {"eps": eps, "rms": rms, "density_at_zero": p0, "jacobian_at_zero": j0, "predicted_count": cells * p0 * j0,
-            "small_fraction": frac, "n_small": n_small}
+            "small_fraction": frac, "n_small": n_small, "jacobian_all": j_all, "cells": cells, "per_field": per}
+
+
+def null_density_jackknife(factors: dict, groups: Any) -> dict:
+    """Delete-one-group jackknife standard errors of the factors returned by :func:`null_density_factors` (equal
+    weights). ``groups`` (n,): the group of each field (the trajectory of a snapshot). The cells with a weak field
+    are those of the whole ensemble (threshold ``eps`` times its rms); the units follow the rms of the fields kept.
+    Returns ``density_at_zero_se``, ``jacobian_at_zero_se``, ``jacobian_all_se`` and ``predicted_count_se``."""
+    per, eps, cells, rms = factors["per_field"], factors["eps"], factors["cells"], factors["rms"]
+    g = np.asarray(groups)
+    ids = np.unique(g)
+    est = []
+    for k in ids:
+        keep = g != k
+        m = int(keep.sum())
+        r = float(np.sqrt(per["b2"][keep].sum() / (m * cells)))
+        frac = per["small"][keep].sum() / (m * cells)
+        p0 = frac / (4.0 / 3.0 * np.pi * eps**3) * (r / rms) ** 3
+        j0 = per["det_small"][keep].sum() / per["small"][keep].sum() / r**3
+        est.append((p0, j0, per["det_all"][keep].sum() / (m * cells) / r**3, cells * p0 * j0))
+    est = np.asarray(est)
+    se = np.sqrt((len(ids) - 1) / len(ids) * ((est - est.mean(0)) ** 2).sum(0))
+    return {"density_at_zero_se": float(se[0]), "jacobian_at_zero_se": float(se[1]), "jacobian_all_se": float(se[2]),
+            "predicted_count_se": float(se[3])}
 

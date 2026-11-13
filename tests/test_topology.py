@@ -5,7 +5,7 @@ from __future__ import annotations
 import numpy as np
 import torch
 
-from milady.eval.topology import null_count, null_density_factors, null_points
+from milady.eval.topology import null_count, null_density_factors, null_density_jackknife, null_points
 from milady.train.data import FourierPotentialSpace
 
 
@@ -59,6 +59,13 @@ def test_null_density_factors_predict_the_count() -> None:
     # the two factors do not depend on the threshold beyond the sampling noise, nor on the amplitude of the field
     assert abs(out[0.2]["density_at_zero"] / out[0.1]["density_at_zero"] - 1) < 0.1
     assert abs(out[0.2]["jacobian_at_zero"] / out[0.1]["jacobian_at_zero"] - 1) < 0.1
+    # the unconditional Jacobian of a Gaussian field equals the one where the field is weak, within the sampling noise
+    assert abs(out[0.1]["jacobian_all"] / out[0.1]["jacobian_at_zero"] - 1) < 0.15
+    # jackknife over groups of fields: errors of a few per cent, and the two halves of the ensemble agree within them
+    se = null_density_jackknife(out[0.1], np.arange(48) // 4)
+    assert 0 < se["jacobian_at_zero_se"] < 0.1 * out[0.1]["jacobian_at_zero"] and 0 < se["density_at_zero_se"] < 0.1 * out[0.1]["density_at_zero"]
+    h1, h2 = null_density_factors(b[:24], eps=0.1), null_density_factors(b[24:], eps=0.1)
+    assert abs(h1["jacobian_at_zero"] - h2["jacobian_at_zero"]) < 6 * se["jacobian_at_zero_se"] * 2**0.5
     scaled = null_density_factors(3.0 * b, eps=0.1)
     assert abs(scaled["density_at_zero"] / out[0.1]["density_at_zero"] - 1) < 1e-9
     assert abs(scaled["jacobian_at_zero"] / out[0.1]["jacobian_at_zero"] - 1) < 1e-9

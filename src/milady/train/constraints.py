@@ -86,6 +86,7 @@ __all__ = [
     "leray_hat",
     "moment_recolouring",
     "projected_flow_sample",
+    "recolouring_map",
     "stationarity_residuals",
 ]
 
@@ -436,6 +437,19 @@ def balance_tilting(residuals: np.ndarray, reg: float = 1.0) -> tuple[np.ndarray
 # Model families: explicit linear part, second-order baseline
 # =============================================================================================
 @torch.no_grad()
+def recolouring_map(cov_src: torch.Tensor, cov_tgt: torch.Tensor, floor: float = 1e-6) -> torch.Tensor:
+    """The symmetric positive matrix A = Σs^(−1/2) (Σs^(1/2) Σt Σs^(1/2))^(1/2) Σs^(−1/2) of :func:`moment_recolouring`
+    (float64; ``cov_*`` of shape (..., d, d)), to apply the same map to several sets of samples."""
+    cs, ct = cov_src.to(torch.float64), cov_tgt.to(torch.float64)
+    lam, q = torch.linalg.eigh(cs)
+    lam = torch.maximum(lam, floor * lam.mean(-1, keepdim=True))
+    half = (q * lam.sqrt().unsqueeze(-2)) @ q.mT
+    inv_half = (q * lam.rsqrt().unsqueeze(-2)) @ q.mT
+    lam2, q2 = torch.linalg.eigh(half @ ct @ half)
+    return inv_half @ ((q2 * lam2.clamp_min(0.0).sqrt().unsqueeze(-2)) @ q2.mT) @ inv_half
+
+
+@torch.no_grad()
 def moment_recolouring(x: torch.Tensor, mean_src: torch.Tensor, cov_src: torch.Tensor, mean_tgt: torch.Tensor,
                        cov_tgt: torch.Tensor, floor: float = 1e-6) -> torch.Tensor:
     """Samples ``x`` (n, ..., d) mapped linearly so that moments (mean_src, cov_src) become (mean_tgt, cov_tgt).
@@ -452,13 +466,7 @@ def moment_recolouring(x: torch.Tensor, mean_src: torch.Tensor, cov_src: torch.T
     it (Σs must be estimated from many more samples than d, or its small eigenvalues are biased low and the
     map amplifies them). Computed in float64, returned in the dtype of ``x``.
     """
-    cs, ct = cov_src.to(torch.float64), cov_tgt.to(torch.float64)
-    lam, q = torch.linalg.eigh(cs)
-    lam = torch.maximum(lam, floor * lam.mean(-1, keepdim=True))
-    half = (q * lam.sqrt().unsqueeze(-2)) @ q.mT
-    inv_half = (q * lam.rsqrt().unsqueeze(-2)) @ q.mT
-    lam2, q2 = torch.linalg.eigh(half @ ct @ half)
-    a = inv_half @ ((q2 * lam2.clamp_min(0.0).sqrt().unsqueeze(-2)) @ q2.mT) @ inv_half
+    a = recolouring_map(cov_src, cov_tgt, floor)
     d = x.to(torch.float64) - mean_src.to(torch.float64)
     out = mean_tgt.to(torch.float64) + torch.einsum("...ij,n...j->n...i", a, d)
     return out.to(x.dtype)

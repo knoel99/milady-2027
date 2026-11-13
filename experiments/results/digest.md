@@ -878,14 +878,14 @@ Post hoc (review of H25-H27, not registered), seed means over the held-out η: r
 
 H28: flow matching anchored on the full-covariance Gaussian law, read along one training (seed means; ED / floor: mean over the η of the split; third-order part over that of the reference; mean-flow part minus that of the reference; E_B over that of the reference minus 1, on the generated samples).
 
-| checkpoint | ED val | ED test | 3rd/ref val η=0.0596 | 3rd/ref val η=0.0403 | 3rd/ref η=0.0725 | 3rd/ref η=0.0490 | 3rd/ref η=0.0331 | 3rd/ref train η=0.0800 | max |mean-flow − ref| | max |E_B/ref − 1| | |magnetic balance| | |energy residual| | err. E_B(k) | err. H_M | err. nulls | drift E_B τ=4 | overshoot E_B | FM loss |
-|---|---|---|---|---|---|---|---|---|---|---|---|---|---|---|---|---|---|---|
-| iteration 0 | 2.86 | 2.45 | 0.06 | -3.10e-04 | 0.0071 | 0.0012 | -9.61e-04 | 2.62e-04 | 0.0147 | 0.0137 | 0.0713 | 0.00352 | 0.0161 | 0.0253 | 1.12 | 0.0604 | 0.0866 | 0.894 |
-| iteration 250 | 2.85 | 2.44 | 0.06 | -2.88e-04 | 0.0071 | 0.0013 | -9.58e-04 | 2.23e-04 | 0.0146 | 0.0137 | 0.0713 | 0.00353 | 0.016 | 0.0252 | 1.12 | 0.0603 | 0.0868 | 0.895 |
-| iteration 500 | 2.86 | 2.45 | 0.06 | -3.09e-04 | 0.0072 | 0.0012 | -9.71e-04 | 2.56e-04 | 0.0146 | 0.0137 | 0.0712 | 0.00354 | 0.0161 | 0.0253 | 1.12 | 0.0603 | 0.0866 | 0.894 |
-| iteration 1000 | 2.86 | 2.45 | 0.06 | -3.18e-04 | 0.0072 | 0.0012 | -9.39e-04 | 2.75e-04 | 0.0148 | 0.0138 | 0.0713 | 0.00356 | 0.0161 | 0.0253 | 1.12 | 0.0603 | 0.0865 | 0.894 |
-| iteration 2000 | 2.86 | 2.45 | 0.06 | -2.82e-04 | 0.0071 | 0.0012 | -9.65e-04 | 2.77e-04 | 0.0146 | 0.0137 | 0.0713 | 0.00351 | 0.0161 | 0.0253 | 1.12 | 0.0604 | 0.0867 | 0.894 |
-| iteration 4000 | 2.86 | 2.45 | 0.06 | -2.58e-04 | 0.0071 | 0.0013 | -9.34e-04 | 2.33e-04 | 0.0147 | 0.0138 | 0.0713 | 0.00351 | 0.0161 | 0.0253 | 1.12 | 0.0604 | 0.0866 | 0.894 |
+| checkpoint | ED val | ED test | 3rd/ref val η=0.0596 | 3rd/ref val η=0.0403 | 3rd/ref η=0.0725 | 3rd/ref η=0.0490 | 3rd/ref η=0.0331 | 3rd/ref train η=0.0800 | max |mean-flow − ref| | max |E_B/ref − 1| | |magnetic balance| | |energy residual| | err. E_B(k) | err. H_M | err. nulls | drift E_B τ=4 | overshoot E_B | FM loss | FM loss − iteration 0 (smallest and largest seed) |
+|---|---|---|---|---|---|---|---|---|---|---|---|---|---|---|---|---|---|---|---|
+| iteration 0 | 2.86 | 2.45 | 0.06 | -3.10e-04 | 0.0071 | 0.0012 | -9.61e-04 | 2.62e-04 | 0.0147 | 0.0137 | 0.0713 | 0.00352 | 0.0161 | 0.0253 | 1.12 | 0.0604 | 0.0866 | 0.89449 | – |
+| iteration 250 | 2.85 | 2.44 | 0.06 | -2.88e-04 | 0.0071 | 0.0013 | -9.58e-04 | 2.23e-04 | 0.0146 | 0.0137 | 0.0713 | 0.00353 | 0.016 | 0.0252 | 1.12 | 0.0603 | 0.0868 | 0.89451 | +8.9e-06 to +2.8e-05 |
+| iteration 500 | 2.86 | 2.45 | 0.06 | -3.09e-04 | 0.0072 | 0.0012 | -9.71e-04 | 2.56e-04 | 0.0146 | 0.0137 | 0.0712 | 0.00354 | 0.0161 | 0.0253 | 1.12 | 0.0603 | 0.0866 | 0.8945 | +7.0e-06 to +1.3e-05 |
+| iteration 1000 | 2.86 | 2.45 | 0.06 | -3.18e-04 | 0.0072 | 0.0012 | -9.39e-04 | 2.75e-04 | 0.0148 | 0.0138 | 0.0713 | 0.00356 | 0.0161 | 0.0253 | 1.12 | 0.0603 | 0.0865 | 0.8945 | +6.5e-06 to +1.2e-05 |
+| iteration 2000 | 2.86 | 2.45 | 0.06 | -2.82e-04 | 0.0071 | 0.0012 | -9.65e-04 | 2.77e-04 | 0.0146 | 0.0137 | 0.0713 | 0.00351 | 0.0161 | 0.0253 | 1.12 | 0.0604 | 0.0867 | 0.89449 | +2.7e-06 to +8.3e-06 |
+| iteration 4000 | 2.86 | 2.45 | 0.06 | -2.58e-04 | 0.0071 | 0.0013 | -9.34e-04 | 2.33e-04 | 0.0147 | 0.0138 | 0.0713 | 0.00351 | 0.0161 | 0.0253 | 1.12 | 0.0604 | 0.0866 | 0.89449 | -4.0e-06 to +4.2e-06 |
 H28, check of the measurement (iteration 0 against G1 of the same job, seed means, held-out η): ED / floor differs by -0.101 (limit 0.5); largest |third-order part| 3.87e-04 (limit 0.02); largest difference of the mean-flow part 0.01 (limit 0.02); largest |E_B(it 0)/E_B(G1) − 1| 0.0117 (limit 0.03): PASS.
 H28, selection on the validation η: third-order part over that of the reference at η = 0.0403: iteration 250: -2.88e-04 (ED val 2.85); iteration 500: -3.09e-04 (ED val 2.86); iteration 1000: -3.18e-04 (ED val 2.86); iteration 2000: -2.82e-04 (ED val 2.86); iteration 4000: -2.58e-04 (ED val 2.86). Qualifying (between 0.3 and 1.5): none.
 H28, verdict on this realisation of the data: REFUTED (clause a: no checkpoint qualifies on the validation η).
@@ -1050,14 +1050,14 @@ Post hoc (review of H25-H27, not registered), seed means over the held-out η: r
 
 H28: flow matching anchored on the full-covariance Gaussian law, read along one training (seed means; ED / floor: mean over the η of the split; third-order part over that of the reference; mean-flow part minus that of the reference; E_B over that of the reference minus 1, on the generated samples).
 
-| checkpoint | ED val | ED test | 3rd/ref val η=0.0596 | 3rd/ref val η=0.0403 | 3rd/ref η=0.0725 | 3rd/ref η=0.0490 | 3rd/ref η=0.0331 | 3rd/ref train η=0.0800 | max |mean-flow − ref| | max |E_B/ref − 1| | |magnetic balance| | |energy residual| | err. E_B(k) | err. H_M | err. nulls | drift E_B τ=4 | overshoot E_B | FM loss |
-|---|---|---|---|---|---|---|---|---|---|---|---|---|---|---|---|---|---|---|
-| iteration 0 | 3.54 | 1.97 | 0.011 | 0.0045 | 0.011 | -6.72e-04 | 0.0061 | -0.0059 | 0.0025 | 0.0212 | 0.0711 | 0.00324 | 0.0201 | 0.0311 | 1 | 0.0579 | 0.102 | 0.892 |
-| iteration 250 | 3.54 | 1.98 | 0.011 | 0.0045 | 0.011 | -6.76e-04 | 0.0061 | -0.006 | 0.00257 | 0.0212 | 0.0711 | 0.00327 | 0.0201 | 0.0311 | 1 | 0.0578 | 0.102 | 0.892 |
-| iteration 500 | 3.54 | 1.98 | 0.011 | 0.0045 | 0.011 | -6.82e-04 | 0.0061 | -0.0059 | 0.00232 | 0.0212 | 0.0711 | 0.00323 | 0.0201 | 0.0311 | 1 | 0.0578 | 0.102 | 0.892 |
-| iteration 1000 | 3.54 | 1.97 | 0.011 | 0.0045 | 0.011 | -6.91e-04 | 0.0061 | -0.006 | 0.00264 | 0.0213 | 0.0712 | 0.00322 | 0.0202 | 0.0312 | 1 | 0.0579 | 0.103 | 0.892 |
-| iteration 2000 | 3.54 | 1.98 | 0.011 | 0.0045 | 0.011 | -6.70e-04 | 0.0061 | -0.0059 | 0.00252 | 0.0212 | 0.0712 | 0.00324 | 0.0201 | 0.0311 | 1 | 0.0579 | 0.103 | 0.892 |
-| iteration 4000 | 3.54 | 1.97 | 0.011 | 0.0045 | 0.011 | -6.72e-04 | 0.0061 | -0.006 | 0.00249 | 0.0212 | 0.0712 | 0.00324 | 0.0201 | 0.0311 | 1 | 0.0579 | 0.102 | 0.892 |
+| checkpoint | ED val | ED test | 3rd/ref val η=0.0596 | 3rd/ref val η=0.0403 | 3rd/ref η=0.0725 | 3rd/ref η=0.0490 | 3rd/ref η=0.0331 | 3rd/ref train η=0.0800 | max |mean-flow − ref| | max |E_B/ref − 1| | |magnetic balance| | |energy residual| | err. E_B(k) | err. H_M | err. nulls | drift E_B τ=4 | overshoot E_B | FM loss | FM loss − iteration 0 (smallest and largest seed) |
+|---|---|---|---|---|---|---|---|---|---|---|---|---|---|---|---|---|---|---|---|
+| iteration 0 | 3.54 | 1.97 | 0.011 | 0.0045 | 0.011 | -6.72e-04 | 0.0061 | -0.0059 | 0.0025 | 0.0212 | 0.0711 | 0.00324 | 0.0201 | 0.0311 | 1 | 0.0579 | 0.102 | 0.89157 | – |
+| iteration 250 | 3.54 | 1.98 | 0.011 | 0.0045 | 0.011 | -6.76e-04 | 0.0061 | -0.006 | 0.00257 | 0.0212 | 0.0711 | 0.00327 | 0.0201 | 0.0311 | 1 | 0.0578 | 0.102 | 0.89158 | +1.0e-05 to +1.4e-05 |
+| iteration 500 | 3.54 | 1.98 | 0.011 | 0.0045 | 0.011 | -6.82e-04 | 0.0061 | -0.0059 | 0.00232 | 0.0212 | 0.0711 | 0.00323 | 0.0201 | 0.0311 | 1 | 0.0578 | 0.102 | 0.89158 | +4.7e-06 to +1.2e-05 |
+| iteration 1000 | 3.54 | 1.97 | 0.011 | 0.0045 | 0.011 | -6.91e-04 | 0.0061 | -0.006 | 0.00264 | 0.0213 | 0.0712 | 0.00322 | 0.0202 | 0.0312 | 1 | 0.0579 | 0.103 | 0.89158 | +8.1e-06 to +2.0e-05 |
+| iteration 2000 | 3.54 | 1.98 | 0.011 | 0.0045 | 0.011 | -6.70e-04 | 0.0061 | -0.0059 | 0.00252 | 0.0212 | 0.0712 | 0.00324 | 0.0201 | 0.0311 | 1 | 0.0579 | 0.103 | 0.89157 | +4.7e-06 to +8.2e-06 |
+| iteration 4000 | 3.54 | 1.97 | 0.011 | 0.0045 | 0.011 | -6.72e-04 | 0.0061 | -0.006 | 0.00249 | 0.0212 | 0.0712 | 0.00324 | 0.0201 | 0.0311 | 1 | 0.0579 | 0.102 | 0.89157 | +1.6e-06 to +1.2e-05 |
 H28, check of the measurement (iteration 0 against G1 of the same job, seed means, held-out η): ED / floor differs by -0.00256 (limit 0.5); largest |third-order part| 0.00166 (limit 0.02); largest difference of the mean-flow part 0.0042 (limit 0.02); largest |E_B(it 0)/E_B(G1) − 1| 0.00448 (limit 0.03): PASS.
 H28, selection on the validation η: third-order part over that of the reference at η = 0.0403: iteration 250: 0.0045 (ED val 3.54); iteration 500: 0.0045 (ED val 3.54); iteration 1000: 0.0045 (ED val 3.54); iteration 2000: 0.0045 (ED val 3.54); iteration 4000: 0.0045 (ED val 3.54). Qualifying (between 0.3 and 1.5): none.
 H28, verdict on this realisation of the data: REFUTED (clause a: no checkpoint qualifies on the validation η).

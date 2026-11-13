@@ -48,7 +48,7 @@ import e4_data as D
 from e4_digest import merge
 from common import RESULTS, save_json, seed_all
 from milady.eval import metrics as M
-from milady.eval.topology import null_count, null_density_factors
+from milady.eval.topology import null_count, null_density_factors, null_density_jackknife
 from milady.sim.mhd3d import MHD3D
 from milady.train import constraints as C
 from milady.train.data import FourierPotentialSpace
@@ -100,14 +100,22 @@ def eta_of(c: torch.Tensor) -> torch.Tensor:
 # ---------------------------------------------------------------------------------------------
 # Spaces, forcing, reference
 # ---------------------------------------------------------------------------------------------
-def kac_rice(b: np.ndarray, weights, device) -> dict:
+def kac_rice(b: np.ndarray, weights, device, groups=None) -> dict:
     """The two factors of the mean number of null points (density of B at zero, mean Jacobian where B is weak) of an
-    ensemble of fields on the null grid, at three thresholds (milady.eval.topology.null_density_factors; H32)."""
+    ensemble of fields on the null grid, at three thresholds, and the mean Jacobian over all the cells
+    (milady.eval.topology.null_density_factors; H32). ``groups``: the trajectory of each field, for the jackknife
+    standard errors of the reference (threshold 0.1)."""
     out = {}
     for eps, tag in ((0.1, ""), (0.05, "_eps005"), (0.2, "_eps02")):
         f = null_density_factors(b, eps=eps, weights=weights, device=device)
         out.update({f"kr_density{tag}": f["density_at_zero"], f"kr_jacobian{tag}": f["jacobian_at_zero"],
                     f"kr_predicted{tag}": f["predicted_count"], f"kr_n_small{tag}": f["n_small"]})
+        if not tag:
+            out["kr_jacobian_all"] = f["jacobian_all"]
+            if groups is not None:
+                se = null_density_jackknife(f, groups)
+                out.update(kr_density_se=se["density_at_zero_se"], kr_jacobian_se=se["jacobian_at_zero_se"],
+                           kr_jacobian_all_se=se["jacobian_all_se"], kr_predicted_se=se["predicted_count_se"])
     return out
 
 
@@ -388,7 +396,7 @@ def reference(quick: bool) -> None:
         idx = rng.choice(len(traj), size=min(cfg["n_ref_null"], len(traj)), replace=False)
         b = ctx.pot.to_grid(fh[idx, 1:2].to(torch.complex128), (NULL_GRID,) * 3)[:, 0].numpy()
         counts = null_count(b)
-        kr_ref = kac_rice(b, None, None)
+        kr_ref = kac_rice(b, None, None, groups=traj[idx])
         bud = ref["budget"]
         res_a = tmean(bud["residual_total"])
         sinks = (bud["kinetic_dissipation"] + bud["magnetic_dissipation"]).mean()
@@ -865,10 +873,27 @@ def run(quick: bool, seed: int, group: str, device: str = "cpu", cond_scale: flo
             cs.append(ctx.c_train[sel])
         x_sur, c_sur = torch.cat(xs), torch.cat(cs)
         del g1z, xs, cs
+        # check of the surrogate set itself: its third-order production at the training η that are evaluated
+        sur_third = {}
+        for e in ETA_TRAIN_EVAL:
+            sel = (c_sur[:, 0] - float(np.float32(cn(e)))).abs() < 1e-5
+            fh_e = pot_sym.field_hat(pot_sym.denormalize(x_sur[sel])).cpu()
+            sur_third[f"{e:.5f}"] = ctx.evaluate(fh_e, e, None, nulls=False)["prod_fluct_over_d"]
+        gl = torch.Generator().manual_seed(11)
+        idx_f = torch.randint(0, len(ctx.x_pot_sym), (2048,), generator=gl)
+
+        def fixed_loss(model, xtr, ctr) -> float:           # flow-matching loss on a fixed sample of the model's own training set
+            gf = torch.Generator().manual_seed(12)
+            with torch.no_grad():
+                return float(np.mean([fm_loss(model, xtr[idx_f[k:k + 256]], ctr[idx_f[k:k + 256]], generator=gf).item()
+                                      for k in range(0, 2048, 256)]))
         for vname, xtr, ctr in (("W9Zb_skip_sym", ctx.x_pot_sym, ctx.c_train), ("W9Z_skip_sym_gaussdata", x_sur, c_sur)):
             seed_all(seed)                                  # same initial weights and the same batches of indices for both
             model, tsec = train(builders["W9_skip_sym"](None).to(dev), fm, xtr, ctr, cfg["iters"], cfg["lr"], cfg["batch"], vname)
-            results["times"][vname] = {"training_time_s": tsec, "iters": cfg["iters"], "n_train": len(xtr)}
+            results["times"][vname] = {"training_time_s": tsec, "iters": cfg["iters"], "n_train": len(xtr),
+                                       "fm_loss_train_sample": fixed_loss(model, xtr, ctr)}
+            if vname == "W9Z_skip_sym_gaussdata":
+                results["times"][vname]["surrogate_third_order"] = sur_third
             record(vname, {e: generate(model, pot_sym, e, n) for e, n in eval_etas})
             del model
         del x_sur, c_sur
@@ -916,19 +941,21 @@ def run(quick: bool, seed: int, group: str, device: str = "cpu", cond_scale: flo
             nb = 4096 if dev.type == "cuda" else 1024
             for _ in range(max(n_rec // nb, 1)):
                 c = torch.full((nb, 1), float(cn(e)), device=dev)
-                z = heun_sample(m9r, torch.randn(nb, n_modes, n_ch, generator=gz).to(dev), c, cfg["steps"]).flatten(1).double()
-                for zz in (z, z * sgn):
-                    s1 += zz.sum(0)
-                    s2 += zz.T @ zz
-                    m += len(zz)
-            mean = s1 / m
-            return mean, s2 / m - torch.outer(mean, mean)
+                z = heun_sample(m9r, torch.randn(nb, n_modes, n_ch, generator=gz).to(dev), c, cfg["steps"]).flatten(1)
+                s1 += z.double().sum(0)
+                s2 += (z.T @ z).double()                     # products in single precision per batch, sums in double precision
+                m += len(z)
+            # with the images x → sign · x added to the sample, the mean of the odd coordinates vanishes and so do the second
+            # moments between an even and an odd coordinate; the others are unchanged
+            mean = s1 / m * (sgn > 0)
+            return mean, s2 / m * (1 + torch.outer(sgn, sgn)) / 2 - torch.outer(mean, mean)
 
-        base_z, rec_modes, rec_full, ctl = {}, {}, {}, {}
+        lat = {e: latents(e, n) for e, n in eval_etas}
+        record("W9R_skip_sym", {e: decode(z) for e, z in lat.items()})         # the base first: it does not wait for the moments
+        rec_modes, rec_full, ctl = {}, {}, {}
         for e, n in eval_etas:
             cv = float(np.float32(cn(e)))
-            z = latents(e, n)
-            base_z[e] = decode(z)
+            z = lat[e]
             mu_s, cov_s = source_moments(e)
             blocks = cov_s.view(n_modes, n_ch, n_modes, n_ch)
             cov_sm = torch.stack([blocks[i, :, i, :] for i in range(n_modes)])     # (M, C, C): the blocks of each mode
@@ -939,7 +966,8 @@ def run(quick: bool, seed: int, group: str, device: str = "cpu", cond_scale: flo
             # The covariance of the model is used as estimated. Samples that did not enter the estimate come out of the map
             # with a little too much variance, the less the more draws there are (the error is of second order when the
             # two sets of moments are close); the null control below measures it.
-            rec_full[e] = decode(C.moment_recolouring(z.flatten(1), mu_s, cov_s, mu1, cov1).view_as(z))
+            amap = C.recolouring_map(cov_s, cov1)              # one map for the samples of the model and for the control
+            rec_full[e] = decode((mu1 + (z.flatten(1).double() - mu_s) @ amap).view_as(z))
             # null control: Gaussian draws with the moments of the model estimated on a second, independent sample of the same
             # size, sent through the map of the first: draws of G1 up to the error of the estimates, which this control measures
             # on samples that did not enter the map (draws of the first estimate itself would hide that error)
@@ -947,9 +975,8 @@ def run(quick: bool, seed: int, group: str, device: str = "cpu", cond_scale: flo
             gz = torch.Generator().manual_seed(100003 * seed + 263 + ETAS.index(e))
             lam, q = torch.linalg.eigh(cov_c)
             y = mu_c + (torch.randn(n, len(lam), generator=gz).to(dev, torch.float64) * lam.clamp_min(0.0).sqrt()) @ q.T
-            ctl[e] = decode(C.moment_recolouring(y, mu_s, cov_s, mu1, cov1).view_as(z))
-            del cov_s, cov_c, cov1, blocks, q
-        record("W9R_skip_sym", base_z)
+            ctl[e] = decode((mu1 + (y - mu_s) @ amap).view_as(z))
+            del cov_s, cov_c, cov1, blocks, q, amap
         results["times"]["W15_recoloured_modes"] = results["times"]["W16_recoloured_full"] = {"n_recolour": n_rec}
         record("W15_recoloured_modes", rec_modes)
         record("W16_recoloured_full", rec_full)
@@ -958,7 +985,7 @@ def run(quick: bool, seed: int, group: str, device: str = "cpu", cond_scale: flo
         steps_check = cfg.get("steps_check", 4 * cfg["steps"])
         results["times"]["W9R_steps_check"] = {"steps": steps_check}
         record("W9R_steps_check", {e: decode(latents(e, n, steps_check)) for e, n in eval_etas})
-        del m9r, g0r, g1r, base_z, rec_modes, rec_full, ctl
+        del m9r, g0r, g1r, lat, rec_modes, rec_full, ctl
 
     # ---------------- group M: loss and sampling mechanisms on the model with the affine term (H23, H24) ----------------
     if "W12_skip_stationarity" in names:
