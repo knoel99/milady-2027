@@ -1,0 +1,41 @@
+{
+ "parts": {
+  "e4_relax_a": {
+   "seeds": [
+    0,
+    1
+   ],
+   "files": [
+    "e4_mhd3d_s0_X.json",
+    "e4_mhd3d_s1_X.json"
+   ],
+   "data_duration_s": 503.8
+  },
+  "e4_relax_b": {
+   "seeds": [
+    2,
+    3
+   ],
+   "files": [
+    "e4_mhd3d_s2_X.json",
+    "e4_mhd3d_s3_X.json"
+   ],
+   "data_duration_s": 383.2,
+   "max_rel_diff_reference": 8.885450183196989e-11
+  },
+  "e4_relax_c": {
+   "seeds": [
+    4
+   ],
+   "files": [
+    "e4_mhd3d_s4_X.json"
+   ],
+   "data_duration_s": 421.5,
+   "max_rel_diff_reference": 8.885450183196989e-11
+  }
+ },
+ "groups": [
+  "X"
+ ],
+ "reference_from": "e4_relax_a"
+}

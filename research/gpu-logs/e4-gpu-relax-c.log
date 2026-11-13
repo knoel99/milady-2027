@@ -1,11 +1,91 @@
-
---- setup (tail)
-error: RPC failed; curl 56 Recv failure: Connection reset by peer
-error: 5437 bytes of body are still expected
-fetch-pack: unexpected disconnect while reading sideband packet
-fatal: early EOF
-fatal: fetch-pack: invalid index-pack output
+torch 2.8.0+cu128 cuda True NVIDIA RTX PRO 4500 Blackwell
+[2 s] data: 64 cores
+eta 0.08000 (train) Eu 0.491 Eb 0.078 Hm -0.043 (drift -0.4 SE) balance -0.0000  408 s
+eta 0.07253 (test ) Eu 0.440 Eb 0.097 Hm -0.056 (drift +0.2 SE) balance +0.0000  419 s
+eta 0.06575 (train) Eu 0.402 Eb 0.111 Hm -0.065 (drift +1.5 SE) balance -0.0004  395 s
+eta 0.05961 (val  ) Eu 0.373 Eb 0.121 Hm -0.072 (drift -0.1 SE) balance +0.0001  392 s
+eta 0.05404 (train) Eu 0.345 Eb 0.131 Hm -0.078 (drift +0.7 SE) balance +0.0002  395 s
+eta 0.04899 (test ) Eu 0.321 Eb 0.140 Hm -0.084 (drift -0.4 SE) balance -0.0000  398 s
+eta 0.04441 (train) Eu 0.309 Eb 0.145 Hm -0.085 (drift -0.8 SE) balance -0.0003  354 s
+eta 0.04026 (val  ) Eu 0.288 Eb 0.153 Hm -0.090 (drift -0.4 SE) balance -0.0002  368 s
+eta 0.03650 (train) Eu 0.276 Eb 0.160 Hm -0.095 (drift +1.5 SE) balance +0.0000  393 s
+eta 0.03309 (test ) Eu 0.265 Eb 0.165 Hm -0.096 (drift +1.7 SE) balance +0.0002  382 s
+eta 0.03000 (train) Eu 0.253 Eb 0.172 Hm -0.097 (drift -0.7 SE) balance +0.0002  397 s
+total 422 s -> /workspace/milady/experiments/results/e4_data.json
+[425 s] reference
+eta 0.03309 nulls 42.7 ± 1.1  k_lambda 2.90  H(1) -0.0949  H(k>=2) -0.0012  E1/EB 0.37  z(j.B) +0.3  floor 0.0733
+eta 0.03000 nulls 51.7 ± 1.2  k_lambda 2.95  H(1) -0.0953  H(k>=2) -0.0015  E1/EB 0.36  z(j.B) +0.7  floor 0.0400
+reference done in 694 s
+[1121 s] models: seeds 4, 8 threads each
+eta 0.03650: trajectory floor 0.0433 ± 0.0152 [0.0149, 0.0694], random floor 0.0132, E|Y-Y'| 3.073
+eta 0.03309: trajectory floor 0.0590 ± 0.0357 [0.0164, 0.1500], random floor 0.0122, E|Y-Y'| 3.119
+eta 0.03000: trajectory floor 0.0374 ± 0.0213 [0.0169, 0.0918], random floor 0.0118, E|Y-Y'| 3.066
+seed 4 rc=0
+== G0X_tau0: test ed_ratio 3.63  div_b 1.27e-08  balance 0.002  spec_b 0.023  Hm 0.039  nulls 2.258  restart nan
+== G0X_tau1: test ed_ratio 59.61  div_b 1.25e-08  balance 0.157  spec_b 0.125  Hm 0.065  nulls 0.502  restart nan
+== G0X_tau2: test ed_ratio 43.52  div_b 1.30e-08  balance 0.031  spec_b 0.059  Hm 0.031  nulls 0.497  restart nan
+== G0X_tau4: test ed_ratio 22.87  div_b 1.27e-08  balance 0.085  spec_b 0.175  Hm 0.101  nulls 0.370  restart 0.112
+== G0X_tau8: test ed_ratio 4.17  div_b 1.25e-08  balance 0.011  spec_b 0.076  Hm 0.098  nulls 0.049  restart nan
+== G1X_tau0: test ed_ratio 2.65  div_b 1.27e-08  balance 0.003  spec_b 0.027  Hm 0.033  nulls 1.110  restart nan
+== G1X_tau1: test ed_ratio 15.57  div_b 1.28e-08  balance 0.032  spec_b 0.088  Hm 0.020  nulls 0.375  restart nan
+== G1X_tau2: test ed_ratio 10.98  div_b 1.27e-08  balance 0.031  spec_b 0.099  Hm 0.029  nulls 0.259  restart nan
+== G1X_tau4: test ed_ratio 4.62  div_b 1.26e-08  balance 0.006  spec_b 0.065  Hm 0.037  nulls 0.145  restart 0.038
+== G1X_tau8: test ed_ratio 2.34  div_b 1.26e-08  balance 0.010  spec_b 0.027  Hm 0.023  nulls 0.064  restart nan
+== W9X_tau0: test ed_ratio 8.89  div_b 1.28e-08  balance 0.056  spec_b 0.143  Hm 0.187  nulls 1.706  restart nan
+== W9X_tau1: test ed_ratio 24.51  div_b 1.29e-08  balance 0.059  spec_b 0.109  Hm 0.171  nulls 0.496  restart nan
+== W9X_tau2: test ed_ratio 15.53  div_b 1.29e-08  balance 0.033  spec_b 0.081  Hm 0.141  nulls 0.372  restart nan
+== W9X_tau4: test ed_ratio 4.41  div_b 1.28e-08  balance 0.004  spec_b 0.057  Hm 0.092  nulls 0.267  restart 0.017
+== W9X_tau8: test ed_ratio 1.15  div_b 1.27e-08  balance 0.005  spec_b 0.030  Hm 0.055  nulls 0.126  restart nan
+== W16X_tau0: test ed_ratio 1.98  div_b 1.27e-08  balance 0.006  spec_b 0.012  Hm 0.016  nulls 1.087  restart nan
+== W16X_tau1: test ed_ratio 6.76  div_b 1.28e-08  balance 0.023  spec_b 0.048  Hm 0.022  nulls 0.369  restart nan
+== W16X_tau2: test ed_ratio 4.43  div_b 1.27e-08  balance 0.016  spec_b 0.049  Hm 0.029  nulls 0.238  restart nan
+== W16X_tau4: test ed_ratio 1.55  div_b 1.26e-08  balance 0.002  spec_b 0.029  Hm 0.027  nulls 0.106  restart 0.019
+== W16X_tau8: test ed_ratio 0.99  div_b 1.26e-08  balance 0.004  spec_b 0.014  Hm 0.015  nulls 0.035  restart nan
+== REFX_tau0: test ed_ratio 0.38  div_b 1.27e-08  balance 0.001  spec_b 0.010  Hm 0.013  nulls 0.045  restart nan
+== REFX_tau1: test ed_ratio 0.39  div_b 1.26e-08  balance 0.001  spec_b 0.010  Hm 0.014  nulls 0.026  restart nan
+== REFX_tau4: test ed_ratio 0.41  div_b 1.26e-08  balance 0.002  spec_b 0.011  Hm 0.016  nulls 0.030  restart nan
+total duration 1302 s
+[2425 s] done
+NVIDIA RTX PRO 4500 Blackwell, 2 MiB, 0 %
+e4_data.json
+e4_floor.json
+e4_gpu_s4.log
+e4_mhd3d_s0.json
+e4_mhd3d_s0_A.json
+e4_mhd3d_s0_B.json
+e4_mhd3d_s0_C.json
+e4_mhd3d_s0_D.json
+e4_mhd3d_s0_E.json
+e4_mhd3d_s1.json
+e4_mhd3d_s1_A.json
+e4_mhd3d_s1_B.json
+e4_mhd3d_s1_C.json
+e4_mhd3d_s1_D.json
+e4_mhd3d_s1_E.json
+e4_mhd3d_s2.json
+e4_mhd3d_s2_A.json
+e4_mhd3d_s2_B.json
+e4_mhd3d_s2_C.json
+e4_mhd3d_s2_D.json
+e4_mhd3d_s2_E.json
+e4_mhd3d_s3.json
+e4_mhd3d_s3_A.json
+e4_mhd3d_s3_B.json
+e4_mhd3d_s3_C.json
+e4_mhd3d_s3_D.json
+e4_mhd3d_s3_E.json
+e4_mhd3d_s4.json
+e4_mhd3d_s4_A.json
+e4_mhd3d_s4_B.json
+e4_mhd3d_s4_C.json
+e4_mhd3d_s4_D.json
+e4_mhd3d_s4_E.json
+e4_mhd3d_s4_X.json
+e4_reference.json
+e4_samples_s0_all.npz
 
 --- status
-2026-11-13T14:18:18Z boot NVIDIA GeForce RTX 4090, 24564 MiB
-2026-11-13T14:37:07Z FAILED clone
+2026-11-13T14:47:55Z boot NVIDIA RTX PRO 4500 Blackwell, 32623 MiB
+2026-11-13T14:49:22Z job started
+2026-11-13T15:29:47Z job finished rc=0 in 2425 s
+2026-11-13T15:29:47Z DONE rc=0
