@@ -2,6 +2,11 @@
 
 One entry per working session, newest first, at most ten lines.
 
+## 2026-11-13 - H139 and H140 supported, team cursor
+- At n = 128, Rm = 8.987548828125, seeds 0-4 are all positive. Smallest is 2.93e-6, seed 0. Pod `5vazrnsmf3z5dw`, 0.38 h, 0.3366 USD.
+- At n = 128, Rm = 9.05859375, seeds 5-9 are all positive. Smallest is 2.24e-5, seed 5. Pod `rmgfzfvfk1cg5n`, 0.38 h, 0.3371 USD.
+- H142 asks Rm = 8.9871826171875. H143 asks Rm = 9.056640625. H138 and H141 stay in flight. Local ledger about 19.36 USD.
+
 ## 2026-11-13 - H137 refuted, arguments with spaces checked, team cursor
 - At n = 144, Rm = 9, seed 3 is negative, lambda -3.59e-4. Pod `8srkxbqud65eqi`, 0.66 h, 0.5883 USD.
 - n = 128 is positive at this Rm. H141 asks n = 136. Merged main `a34e8f3`. No cursor job passed an argument with a space after `--`. H138, H139, and H140 stay in flight. Local ledger about 18.68 USD.
