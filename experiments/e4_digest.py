@@ -784,7 +784,8 @@ def h35_lines(runs: dict, ref: dict | None, root: Path = R) -> list[str]:
         d_g1 = seed_mean(name("G1X", 0), "null_count_err_rel", True) - float(np.nanmean(per_seed(other, "G1_gaussian_full", "null_count_err_rel", absolute=True)))
         ok &= abs(d_ed) <= 0.5 and abs(d_nu) <= 0.1 and abs(d_g1) <= 0.05
         chk.append(f"against the job of H29 on the same data ({other_root.name}): W16 at τ = 0, ED / floor {f(d_ed)} (limit 0.5) and null-count "
-                   f"error {f(d_nu)} (limit 0.1); G1 at τ = 0, null-count error {f(d_g1)} (limit 0.05)")
+                   f"error {f(d_nu)} (limit 0.1); G1 at τ = 0, null-count error {f(d_g1)} (limit 0.05"
+                   + ("; zero by construction: same draws of G1 and same reference statistics" if d_g1 == 0 else "") + ")")
     else:
         ok = False
         chk.append("the job of H29 on the same data is not available with the same seeds: checks (2) and (3) not computed")
@@ -871,7 +872,8 @@ def h36_lines(runs: dict, ref: dict | None, root: Path = R) -> list[str]:
                "SUPPORTED (the deficit is at least 0.09 at each held-out η)" if all(x >= 0.09 for x in deficit.values()) else "INCONCLUSIVE")
     out.append("H36, deficit of magnetic energy of W9_skip_sym trained on this data set, at the held-out η: "
                + ", ".join(f"η = {e:.4f}: {f(deficit[e])} ± {f(sem(dev[e]))}" for e in etas)
-               + f" ({n_seed} seeds; refuted if at most 0.06 at each η, supported if at least 0.09 at each η). Checks of the measurement: "
+               + f" ({n_seed} seeds, ± the standard error over the training seeds only; refuted if at most 0.06 at each η, supported if at "
+                 f"least 0.09 at each η). Checks of the measurement: "
                  f"reference of this data set against that of the main run, largest relative gap of E_B over the eleven η {f(d_eb)} "
                  f"({'limit 0.05' if first_cycle else 'reported'}) and over the held-out η {f(d_eb_test)} "
                  f"({'reported' if first_cycle else 'limit 0.05, check as amended for the second cycle'}), "
