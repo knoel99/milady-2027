@@ -90,3 +90,4 @@
 {"time": "2026-11-13T05:50:37Z", "role": "encadrant", "commit": "a7800a0", "scope": "H104 result and H106 protocol", "verdict": "H104 REFUTED. H106 UNCHECKED.", "file": "research/calls/h104-result-encadrant.md"}
 {"time": "2026-11-13T05:57:31Z", "role": "encadrant", "commit": "8f29d66", "scope": "H105 result and H107 protocol", "verdict": "H105 SUPPORTED. H107 UNCHECKED.", "file": "research/calls/h105-result-encadrant.md"}
 {"time": "2026-11-13T05:58:07Z", "role": "encadrant", "commit": "7593d70", "scope": "H106 result and H108 protocol", "verdict": "H106 REFUTED. H108 UNCHECKED.", "file": "research/calls/h106-result-encadrant.md"}
+{"time": "2026-11-13T06:03:38Z", "role": "encadrant", "commit": "934b25e", "scope": "H102 and H103 results, H109 and H110 protocols", "verdict": "H102 SUPPORTED. H103 REFUTED. H109 UNCHECKED. H110 UNCHECKED.", "file": "research/calls/h102-result-encadrant.md"}
