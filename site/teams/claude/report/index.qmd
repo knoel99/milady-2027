@@ -439,7 +439,7 @@ G1 is the best generator of this report on almost every metric, without a networ
 - its restart drift of the magnetic energy at $\tau = 4$ is 0.064, against 0.21 for G0 and 0.12 for W9;
 - it is worse than W9 on the restart drift of the kinetic energy (0.095 against 0.053), and the fluctuation of its energy budget is three times that of the reference.
 
-The three clauses of H22 are met in every seed (H22 **confirmed**), and the advantage of G1 on the distance, the null count and the restart of the magnetic energy holds at each held-out $\eta$. G1 uses the training values only: its samples at a held-out $\eta$ are Gaussian draws from an interpolated covariance, not copies of snapshots. One caveat: its five seeds are five draws from one fitted law, on one realisation of the data. The consequence is plain: on this system, the advantage of the flow-matching models with an affine term over the mode-wise Gaussian law is consistent with their having the covariance between Fourier modes that a mode-wise law cannot hold (their magnetic production shows that they have it), and a Gaussian law that has this covariance does better than they do. Nothing measured here shows that any of the learned models captures a non-Gaussian feature of the reference law.
+The three clauses of H22 are met in every seed (H22 **confirmed**), and the advantage of G1 on the distance, the null count and the restart of the magnetic energy holds at each held-out $\eta$. G1 uses the training values only: its samples at a held-out $\eta$ are Gaussian draws from an interpolated covariance, not copies of snapshots. Its five seeds are five draws from one fitted law; the comparison was therefore repeated on the second realisation of the reference data, that of @sec-replication, with the same outcome: 2.0 floors for G1 against 8.1 for W9 and 2.9 for G0, a magnetic balance residual of 0.072, a null-count error of 1.00 against 1.56, a restart drift of the magnetic energy of 0.06 against 0.13 (`experiments/results/replications/e4_g1indep`). The consequence is plain: on this system, the advantage of the flow-matching models with an affine term over the mode-wise Gaussian law is consistent with their having the covariance between Fourier modes that a mode-wise law cannot hold (their magnetic production shows that they have it), and a Gaussian law that has this covariance does better than they do. Nothing measured here shows that any of the learned models captures a non-Gaussian feature of the reference law.
 
 The restart test deserves a second look (@fig-restart). Recorded at four times instead of one, the drift depends strongly on the time at which it is read. For G0 the magnetic energy first falls by 16 %, crosses its initial value and reaches +21 % at $\tau = 4$, still rising; its kinetic energy is 15 % too high at $\tau = 1$ to 2 and back to +2 % at $\tau = 4$. The single-time metric of the objectives therefore made G0 look best on the kinetic energy. By the largest drift over the four times the order is G1 (0.11), W9 (0.12), G0 (0.21) for the magnetic energy and W9 (0.06), G1 (0.10), G0 (0.16) for the kinetic energy; several of these maxima sit at the last time recorded, so they are lower bounds. No generator produces states that the solver accepts as stationary: the smallest of these drifts is several times that of reference snapshots (below 0.01).
 <!-- e4:g1text:end -->
@@ -518,6 +518,17 @@ The hypothesis registered for this run (H18) was narrower: that with the affine 
 
 ![Gaussian baseline (violet), flow matching with the explicit affine term or the Gaussian anchor at the base budget (blue) and with 8 times the iterations (orange), on the held-out $\eta$: one dot per seed, seed mean $\pm 2$ standard errors. Data plot from `experiments/results/replications/e4_final_long/`.](../plots/e4_long_trainings){#fig-long width=100%}
 
+<!-- e4:scantext:begin -->
+Is the failure of the plain networks a matter of width, as the rank argument of @sec-linear suggests (H21)? The equivariant network with the smooth embedding and no affine term was trained at three widths, 512, 2048 and 5632 (the last one above the latent dimension of 5320), and at 8 times the iterations for the first two (@tbl-scan, @fig-scan). The five seeds come from a second scan, split over three GPU jobs whose reference data are identical; a first scan on a single GPU was cut by its time limit and agrees with it on the seeds it has.
+
+- **Width 512** is the matched control of W9, the same network without the affine term: 205 floors, with a final loss of 1.61, above $\pi/2$. The affine term is worth a factor of 22.
+- **Width 2048** is at 25.6 floors, with a loss of 1.22: eight times closer. Capacity matters.
+- **Width 5632**, above the latent dimension, reaches a much lower loss (0.78) and a worse law: 104 floors. The order registered for H21 (the wider the closer, and the widest at less than a fifth of the narrowest) does not hold.
+- **More training does not help.** At width 512 the loss falls to 1.52, now below $\pi/2$, and the law does not move (215 floors); at width 2048 the loss falls to 0.95 and the law gets worse (59 floors against 25.6).
+
+So the width is part of the story and not the whole of it. For these plain networks the training loss and the distance of the generated law to the reference part ways: beyond width 2048 at the base budget, a lower loss on the training samples comes with a worse law, at the training $\eta$ as well as between them. With 14 400 training snapshots in 5320 dimensions, fitting the training set more closely than the affine model does (its loss is 1.18) is not learning the law; that this is memorisation of the snapshots is a **conjecture**, not a measurement. The explicit affine term at width 512 does better than any width tried.
+<!-- e4:scantext:end -->
+
 ```{=latex}
 \begin{landscape}
 \footnotesize\setlength{\tabcolsep}{3pt}
@@ -526,14 +537,15 @@ The hypothesis registered for this run (H18) was narrower: that with the affine 
 <!-- e4:scan:begin -->
 | Variant | Acts through | ED / floor, training $\eta$ | ED / floor | div B | energy residual | magnetic balance | spectrum of B | magnetic helicity | null points | restart drift $E_B$ | restart drift $E_u$ | polarity | FM loss | Seeds |
 |:--------------------------|:--------|---------:|---------:|---------:|---------:|---------:|---------:|---------:|---------:|---------:|---------:|---------:|---------:|----:|
-| S width 512 | family | 166.0(5) | 205.6(5) | $1.4\times 10^{-8}$ | 0.2737(9) | 0.328(2) | 0.665(6) | 0.186(7) | 2.124(11) | 0.3725(20) | 0.268(3) | 0.0165(11) | 1.608(2) | 5 |
-| S width 2048 | family | 25.3(2) | 25.3(3) | $1.5\times 10^{-8}$ | 0.0130(6) | 0.0960(13) | 0.143(4) | 0.278(6) | 2.004(20) | 0.072(4) | 0.075(4) | 0.0141(12) | 1.2169(17) | 5 |
-| S width 5632 | family | 76(5) | 99(8) | $1.5\times 10^{-8}$ | 0.270(19) | 0.028(3) | 0.35(2) | 0.37(2) | 1.00(6) | 0.46(5) | 0.29(4) | 0.0215(20) | 0.769(3) | 2 |
-| S width 512, 8$\times$ iterations | family | 175.1(14) | 215.8(16) | $1.4\times 10^{-8}$ | 0.2607(20) | 0.398(8) | 0.568(4) | 0.34(2) | 2.187(5) | 0.364(3) | 0.223(7) | 0.013(6) | 1.526(6) | 2 |
-| W9 mode-wise affine term | design | 5.48(11) | 9.40(19) | $1.5\times 10^{-8}$ | 0.0572(14) | 0.0541(5) | 0.148(3) | 0.200(3) | 1.678(14) | 0.127(3) | 0.050(6) | 0.018(3) | 1.1770(13) | 5 |
+| S width 512 | family | 165.8(4) | 205.3(5) | $1.4\times 10^{-8}$ | 0.2737(9) | 0.3284(19) | 0.663(5) | 0.184(6) | 2.116(11) | 0.3725(16) | 0.268(3) | 0.013(2) | 1.613(3) | 5 |
+| S width 2048 | family | 25.8(2) | 25.6(4) | $1.5\times 10^{-8}$ | 0.0117(8) | 0.0951(3) | 0.151(2) | 0.286(4) | 2.007(19) | 0.0719(14) | 0.075(4) | 0.011(2) | 1.222(2) | 5 |
+| S width 5632 | family | 70(5) | 104(8) | $1.5\times 10^{-8}$ | 0.274(16) | 0.037(5) | 0.34(3) | 0.37(3) | 0.96(5) | 0.45(4) | 0.27(3) | 0.022(4) | 0.777(3) | 5 |
+| S width 512, 8$\times$ iterations | family | 173.4(11) | 215.5(19) | $1.4\times 10^{-8}$ | 0.260(2) | 0.400(5) | 0.563(10) | 0.349(14) | 2.202(17) | 0.366(5) | 0.223(5) | 0.010(2) | 1.5247(14) | 5 |
+| S width 2048, 8$\times$ iterations | family | 110(11) | 59(3) | $1.5\times 10^{-8}$ | 0.150(7) | 0.138(6) | 0.291(11) | 0.441(12) | 2.14(3) | 0.264(10) | 0.30(2) | 0.026(3) | 0.949(3) | 5 |
+| W9 mode-wise affine term | design | 5.47(12) | 9.3(3) | $1.5\times 10^{-8}$ | 0.0566(17) | 0.0551(4) | 0.144(3) | 0.195(4) | 1.669(16) | 0.124(3) | 0.052(6) | 0.016(3) | 1.1773(10) | 5 |
 | G0 Gaussian per mode (no network) | family | 2.67(8) | 3.52(7) | $1.5\times 10^{-8}$ | 0.0015(3) | 0.9981(9) | 0.024(3) | 0.035(5) | 2.235(7) | 0.212(3) | 0.026(5) | 0.018(3) | – | 5 |
 
-: Width scan (measured; `experiments/results/replications/e4_final_scan`): the equivariant potentials model with the smooth embedding and no affine term, for three widths and two training budgets, against the model with the affine term and the Gaussian baseline. {#tbl-scan}
+: Width scan (measured; `experiments/results/replications/e4_scan2`, five seeds on three GPU jobs with the same data, held-out $\eta$): the equivariant potentials model with the smooth embedding and no affine term, for three widths and two training budgets, against the model with the affine term and the mode-wise Gaussian law. Columns and notation as in @tbl-comparative; FM loss as in @tbl-long. {#tbl-scan}
 
 <!-- e4:scan:end -->
 
@@ -541,7 +553,7 @@ The hypothesis registered for this run (H18) was narrower: that with the affine 
 \end{landscape}
 ```
 
-![Width scan (hypothesis H21): energy-distance ratio and flow-matching loss for three widths and two budgets, against the model with the explicit affine term and the Gaussian baseline. Dashed line: $\pi/2$. Data plot from `experiments/results/replications/e4_final_scan/`.](../plots/e4_width_scan){#fig-scan width=90%}
+![Width scan (hypothesis H21): energy-distance ratio and flow-matching loss for three widths and two budgets, against the model with the explicit affine term and the Gaussian baseline. Dashed line: $\pi/2$. Data plot from `experiments/results/replications/e4_scan2/`.](../plots/e4_width_scan){#fig-scan width=90%}
 
 ### Topology: null points follow the small scales {#sec-nulls}
 
@@ -876,7 +888,7 @@ Every GPU job of the pilot is in `research/compute-ledger.jsonl` (@tbl-jobs, @fi
 ```
 
 <!-- e4:jobs:begin -->
-Total: 23 ledger entries, 11.37 GPU hours, 11.59 USD.
+Total: 28 ledger entries, 16.63 GPU hours, 15.78 USD.
 
 | End (UTC) | GPU | USD/h | Hours | USD | Exit | Commit | Command (shortened) |
 |:----------|:------------------|-----:|------:|-----:|:----|:-------|:--------------------------------------------|
@@ -903,6 +915,11 @@ Total: 23 ledger entries, 11.37 GPU hours, 11.59 USD.
 | 11-13 01:25 | GeForce RTX 4090 | 0.89 | 1.356 | 1.21 | 0 | `dfc02a2` | env E4\_DATA\_SEED=100 e4\_gpu\_job.sh full "0 1 2 3 4" e4\_indep ... |
 | 11-13 01:27 | A100-SXM4-80GB | 2.19 | 2.034 | 4.46 | 124 | `973fe3a` | collected after a restart of the session: milady-claude-job- ... |
 | 11-13 02:09 | RTX PRO 4500 Blackwell | 0.72 | 0.762 | 0.55 | 0 | `607ccbd` | e4\_gpu\_job.sh full "0 1 2 3 4" e4\_mech D,E,G,M |
+| 11-13 03:01 | RTX PRO 4500 Blackwell | 0.72 | 1.636 | 1.18 | 0 | `607ccbd` | e4\_gpu\_job.sh full "0 1" e4\_scan2a D,S |
+| 11-13 03:16 | RTX PRO 4500 Blackwell | 0.72 | 1.472 | 1.06 | 0 | `d7aa2bd` | e4\_gpu\_job.sh full "2 3" e4\_scan2b D,S |
+| 11-13 03:35 | RTX PRO 4500 Blackwell | 0.72 | 0.505 | 0.36 | 0 | `81a0e0c` | env E4\_DATA\_SEED=100 e4\_gpu\_job.sh full "0 1 2 3 4" e4\_g1ind ... |
+| 11-13 03:38 | RTX PRO 4500 Blackwell | 0.72 | 0.548 | 0.39 | 0 | `81a0e0c` | env E4\_DATA\_SEED=100 e4\_gpu\_job.sh full "0 1 2 3 4" e4\_g1ind ... |
+| 11-13 03:38 | L40S | 1.09 | 1.096 | 1.19 | 0 | `830a40a` | collected after a restart of the session: milady-claude-job- ... |
 
 : GPU jobs of the pilot (generated from `research/compute-ledger.jsonl`). {#tbl-jobs}
 

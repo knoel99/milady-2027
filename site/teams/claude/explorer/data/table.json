@@ -1327,7 +1327,7 @@
    "hypotheses": [
     {
      "id": "H22",
-     "status": "registered"
+     "status": "supported"
     }
    ],
    "ed_ratio": {
@@ -1394,7 +1394,7 @@
    "hypotheses": [
     {
      "id": "H23",
-     "status": "registered"
+     "status": "refuted"
     }
    ],
    "ed_ratio": {
@@ -1461,11 +1461,11 @@
    "hypotheses": [
     {
      "id": "H23",
-     "status": "registered"
+     "status": "refuted"
     },
     {
      "id": "H24",
-     "status": "registered"
+     "status": "supported"
     }
    ],
    "ed_ratio": {
@@ -1532,7 +1532,7 @@
    "hypotheses": [
     {
      "id": "H24",
-     "status": "registered"
+     "status": "supported"
     }
    ],
    "ed_ratio": {
@@ -1595,7 +1595,7 @@
    "id": "S_w512",
    "label": "S width 512",
    "where": "family",
-   "source": "experiments/results/replications/e4_final_scan",
+   "source": "experiments/results/replications/e4_scan2",
    "hypotheses": [
     {
      "id": "H21",
@@ -1603,58 +1603,58 @@
     }
    ],
    "ed_ratio": {
-    "mean": 205.59,
-    "se": 0.53782,
+    "mean": 205.33,
+    "se": 0.5438,
     "n": 5
    },
    "div_rel_b_max": {
-    "mean": 1.4247e-08,
-    "se": 3.0722e-11,
+    "mean": 1.4216e-08,
+    "se": 9.522e-11,
     "n": 5
    },
    "balance_residual_total": {
-    "mean": 0.27372,
-    "se": 0.00085238,
+    "mean": 0.27366,
+    "se": 0.0008841,
     "n": 5
    },
    "balance_residual_magnetic": {
-    "mean": 0.32813,
-    "se": 0.0021173,
+    "mean": 0.3284,
+    "se": 0.001915,
     "n": 5
    },
    "spec_err_b_l2": {
-    "mean": 0.66483,
-    "se": 0.0064174,
+    "mean": 0.66258,
+    "se": 0.0049383,
     "n": 5
    },
    "hel_m_err_rel": {
-    "mean": 0.18572,
-    "se": 0.0069853,
+    "mean": 0.1844,
+    "se": 0.0059607,
     "n": 5
    },
    "null_count_err_rel": {
-    "mean": 2.1242,
-    "se": 0.011219,
+    "mean": 2.1158,
+    "se": 0.011188,
     "n": 5
    },
    "restart_drift_eb": {
-    "mean": 0.37253,
-    "se": 0.001962,
+    "mean": 0.37249,
+    "se": 0.0015666,
     "n": 5
    },
    "restart_drift_eu": {
-    "mean": 0.26814,
-    "se": 0.0029638,
+    "mean": 0.26797,
+    "se": 0.0032673,
     "n": 5
    },
    "hc_sign_asym": {
-    "mean": 0.016536,
-    "se": 0.001101,
+    "mean": 0.013151,
+    "se": 0.0024132,
     "n": 5
    },
    "ed_ratio_train": {
-    "mean": 165.98,
-    "se": 0.45077,
+    "mean": 165.79,
+    "se": 0.44064,
     "n": 5
    }
   },
@@ -1662,7 +1662,7 @@
    "id": "S_w2048",
    "label": "S width 2048",
    "where": "family",
-   "source": "experiments/results/replications/e4_final_scan",
+   "source": "experiments/results/replications/e4_scan2",
    "hypotheses": [
     {
      "id": "H21",
@@ -1670,58 +1670,58 @@
     }
    ],
    "ed_ratio": {
-    "mean": 25.293,
-    "se": 0.31456,
+    "mean": 25.607,
+    "se": 0.36428,
     "n": 5
    },
    "div_rel_b_max": {
-    "mean": 1.4907e-08,
-    "se": 4.3619e-11,
+    "mean": 1.4912e-08,
+    "se": 8.1965e-11,
     "n": 5
    },
    "balance_residual_total": {
-    "mean": 0.012952,
-    "se": 0.00060899,
+    "mean": 0.011726,
+    "se": 0.00081011,
     "n": 5
    },
    "balance_residual_magnetic": {
-    "mean": 0.096008,
-    "se": 0.001261,
+    "mean": 0.095097,
+    "se": 0.00025006,
     "n": 5
    },
    "spec_err_b_l2": {
-    "mean": 0.1435,
-    "se": 0.004448,
+    "mean": 0.15093,
+    "se": 0.0024017,
     "n": 5
    },
    "hel_m_err_rel": {
-    "mean": 0.27754,
-    "se": 0.0056803,
+    "mean": 0.28553,
+    "se": 0.0041925,
     "n": 5
    },
    "null_count_err_rel": {
-    "mean": 2.0044,
-    "se": 0.019751,
+    "mean": 2.0067,
+    "se": 0.018797,
     "n": 5
    },
    "restart_drift_eb": {
-    "mean": 0.072007,
-    "se": 0.0036401,
+    "mean": 0.071856,
+    "se": 0.0014494,
     "n": 5
    },
    "restart_drift_eu": {
-    "mean": 0.074876,
-    "se": 0.0039326,
+    "mean": 0.075263,
+    "se": 0.004324,
     "n": 5
    },
    "hc_sign_asym": {
-    "mean": 0.014063,
-    "se": 0.001211,
+    "mean": 0.011328,
+    "se": 0.0020339,
     "n": 5
    },
    "ed_ratio_train": {
-    "mean": 25.269,
-    "se": 0.23799,
+    "mean": 25.8,
+    "se": 0.22201,
     "n": 5
    }
   },
@@ -1729,7 +1729,7 @@
    "id": "S_w5632",
    "label": "S width 5632",
    "where": "family",
-   "source": "experiments/results/replications/e4_final_scan",
+   "source": "experiments/results/replications/e4_scan2",
    "hypotheses": [
     {
      "id": "H21",
@@ -1737,66 +1737,66 @@
     }
    ],
    "ed_ratio": {
-    "mean": 98.559,
-    "se": 7.9585,
-    "n": 2
+    "mean": 104.44,
+    "se": 7.5225,
+    "n": 5
    },
    "div_rel_b_max": {
-    "mean": 1.5321e-08,
-    "se": 8.175e-11,
-    "n": 2
+    "mean": 1.5164e-08,
+    "se": 1.2025e-10,
+    "n": 5
    },
    "balance_residual_total": {
-    "mean": 0.27021,
-    "se": 0.018604,
-    "n": 2
+    "mean": 0.27411,
+    "se": 0.016488,
+    "n": 5
    },
    "balance_residual_magnetic": {
-    "mean": 0.028062,
-    "se": 0.0031882,
-    "n": 2
+    "mean": 0.036924,
+    "se": 0.0047132,
+    "n": 5
    },
    "spec_err_b_l2": {
-    "mean": 0.3484,
-    "se": 0.023814,
-    "n": 2
+    "mean": 0.34071,
+    "se": 0.025457,
+    "n": 5
    },
    "hel_m_err_rel": {
-    "mean": 0.37208,
-    "se": 0.02234,
-    "n": 2
+    "mean": 0.3655,
+    "se": 0.026994,
+    "n": 5
    },
    "null_count_err_rel": {
-    "mean": 1.0044,
-    "se": 0.057452,
-    "n": 2
+    "mean": 0.95725,
+    "se": 0.051594,
+    "n": 5
    },
    "restart_drift_eb": {
-    "mean": 0.45978,
-    "se": 0.049264,
-    "n": 2
+    "mean": 0.44877,
+    "se": 0.035081,
+    "n": 5
    },
    "restart_drift_eu": {
-    "mean": 0.28956,
-    "se": 0.035128,
-    "n": 2
+    "mean": 0.27019,
+    "se": 0.028648,
+    "n": 5
    },
    "hc_sign_asym": {
-    "mean": 0.021484,
-    "se": 0.0019531,
-    "n": 2
+    "mean": 0.021615,
+    "se": 0.003776,
+    "n": 5
    },
    "ed_ratio_train": {
-    "mean": 75.94,
-    "se": 5.3767,
-    "n": 2
+    "mean": 70.039,
+    "se": 4.6759,
+    "n": 5
    }
   },
   {
    "id": "S_w512_long",
    "label": "S width 512, 8\u00d7 iterations",
    "where": "family",
-   "source": "experiments/results/replications/e4_final_scan",
+   "source": "experiments/results/replications/e4_scan2",
    "hypotheses": [
     {
      "id": "H21",
@@ -1804,59 +1804,126 @@
     }
    ],
    "ed_ratio": {
-    "mean": 215.76,
-    "se": 1.6084,
-    "n": 2
+    "mean": 215.48,
+    "se": 1.9447,
+    "n": 5
    },
    "div_rel_b_max": {
-    "mean": 1.4302e-08,
-    "se": 1.8485e-10,
-    "n": 2
+    "mean": 1.421e-08,
+    "se": 4.7823e-11,
+    "n": 5
    },
    "balance_residual_total": {
-    "mean": 0.26066,
-    "se": 0.0019924,
-    "n": 2
+    "mean": 0.26017,
+    "se": 0.0024537,
+    "n": 5
    },
    "balance_residual_magnetic": {
-    "mean": 0.39833,
-    "se": 0.0084826,
-    "n": 2
+    "mean": 0.40033,
+    "se": 0.0048233,
+    "n": 5
    },
    "spec_err_b_l2": {
-    "mean": 0.56772,
-    "se": 0.0040262,
-    "n": 2
+    "mean": 0.56349,
+    "se": 0.010253,
+    "n": 5
    },
    "hel_m_err_rel": {
-    "mean": 0.34418,
-    "se": 0.022743,
-    "n": 2
+    "mean": 0.34879,
+    "se": 0.013539,
+    "n": 5
    },
    "null_count_err_rel": {
-    "mean": 2.1869,
-    "se": 0.005012,
-    "n": 2
+    "mean": 2.2022,
+    "se": 0.016727,
+    "n": 5
    },
    "restart_drift_eb": {
-    "mean": 0.36364,
-    "se": 0.0028029,
-    "n": 2
+    "mean": 0.36591,
+    "se": 0.004556,
+    "n": 5
    },
    "restart_drift_eu": {
-    "mean": 0.22252,
-    "se": 0.0070708,
-    "n": 2
+    "mean": 0.22347,
+    "se": 0.0045434,
+    "n": 5
    },
    "hc_sign_asym": {
-    "mean": 0.013021,
-    "se": 0.0058594,
-    "n": 2
+    "mean": 0.010417,
+    "se": 0.0022078,
+    "n": 5
    },
    "ed_ratio_train": {
-    "mean": 175.11,
-    "se": 1.3811,
-    "n": 2
+    "mean": 173.41,
+    "se": 1.1166,
+    "n": 5
+   }
+  },
+  {
+   "id": "S_w2048_long",
+   "label": "S width 2048, 8\u00d7 iterations",
+   "where": "family",
+   "source": "experiments/results/replications/e4_scan2",
+   "hypotheses": [
+    {
+     "id": "H21",
+     "status": "registered"
+    }
+   ],
+   "ed_ratio": {
+    "mean": 58.84,
+    "se": 2.5468,
+    "n": 5
+   },
+   "div_rel_b_max": {
+    "mean": 1.494e-08,
+    "se": 1.3622e-10,
+    "n": 5
+   },
+   "balance_residual_total": {
+    "mean": 0.14985,
+    "se": 0.0072063,
+    "n": 5
+   },
+   "balance_residual_magnetic": {
+    "mean": 0.13794,
+    "se": 0.0064393,
+    "n": 5
+   },
+   "spec_err_b_l2": {
+    "mean": 0.29074,
+    "se": 0.0115,
+    "n": 5
+   },
+   "hel_m_err_rel": {
+    "mean": 0.44121,
+    "se": 0.012144,
+    "n": 5
+   },
+   "null_count_err_rel": {
+    "mean": 2.1396,
+    "se": 0.032047,
+    "n": 5
+   },
+   "restart_drift_eb": {
+    "mean": 0.26407,
+    "se": 0.0095381,
+    "n": 5
+   },
+   "restart_drift_eu": {
+    "mean": 0.29517,
+    "se": 0.020866,
+    "n": 5
+   },
+   "hc_sign_asym": {
+    "mean": 0.025651,
+    "se": 0.0029592,
+    "n": 5
+   },
+   "ed_ratio_train": {
+    "mean": 110.0,
+    "se": 10.535,
+    "n": 5
    }
   }
  ]

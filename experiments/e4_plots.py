@@ -2,7 +2,7 @@
 
 Reads only result files written by committed scripts: the main run in ``experiments/results``
 (``e4_data.json``, ``e4_reference.json``, ``e4_floor.json``, ``e4_mhd3d_s<k>.json``), the runs of the long
-trainings and of the width scan (``results/replications/e4_final_long``, ``e4_final_scan``), the convergence
+trainings and of the width scan (``results/replications/e4_final_long``, ``e4_scan2``, ``e4_mech``), the convergence
 check (``results/replications/e4_convergence``) and the GPU ledger ``research/compute-ledger.jsonl``.
 A plot whose data are missing is skipped with a message.
 
@@ -397,7 +397,7 @@ def plot_scan(out: Path, tag: str) -> None:
     finish(fig, out, "e4_width_scan", "Width scan (hypothesis H21): energy-distance ratio and flow-matching loss of the equivariant "
            "potentials model without affine term for three widths and two budgets, against the model with the explicit affine term "
            "and the Gaussian baseline. Dashed line: π/2, the loss of the exact field for independent unit Gaussian coordinates.",
-           ["experiments/results/replications/e4_final_scan/e4_mhd3d_s<k>.json"])
+           ["experiments/results/replications/e4_scan2/e4_mhd3d_s<k>.json"])
 
 
 def plot_long(out: Path, tag: str) -> None:

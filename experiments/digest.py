@@ -389,6 +389,8 @@ def e4():
     reps = [("e4_final_long", "long trainings: groups D, E and L (W9L, W11L: 8 times the iterations) on a RunPod GPU pod, own regenerated data"),
             ("e4_mech", "Gaussian law with the inter-mode covariance (G1) and loss and tilting on the model with the affine term: groups D, E, G "
                         "and M on a RunPod GPU pod, own regenerated data; restart drift recorded at four times"),
+            ("e4_g1indep", "the two Gaussian laws and the model with the affine term (groups D and G) on the data of the independent "
+                           "replication (E4_DATA_SEED=100)"),
             ("e4_scan2", "second width scan of H21: groups D and S, 5 seeds on three GPU pods (split by seed)"),
             ("e4_final_scan", "first width scan of H21 (A100, cut by its time limit: S_w5632 and S_w512_long on 2 seeds only)"),
             ("e4_indep", "independent replication: reference data regenerated with other seeds of the initial conditions (E4_DATA_SEED=100), "

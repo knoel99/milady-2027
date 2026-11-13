@@ -26,6 +26,17 @@
    ],
    "data_duration_s": 574.2,
    "max_rel_diff_reference": 0.0
+  },
+  "e4_scan2c": {
+   "seeds": [
+    4
+   ],
+   "files": [
+    "e4_mhd3d_s4_D.json",
+    "e4_mhd3d_s4_S.json"
+   ],
+   "data_duration_s": 388.8,
+   "max_rel_diff_reference": 8.885450183196989e-11
   }
  },
  "reference_from": "e4_scan2a"
