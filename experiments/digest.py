@@ -386,9 +386,16 @@ def e4():
     from e4_digest import convergence
 
     lines = section()
-    gpu = R4 / "replications" / "e4_gpu"
-    if (gpu / "e4_data.json").exists():
-        lines += section(root=gpu, replication="regenerated data and all variants on a RunPod GPU pod (experiments/e4_gpu_job.sh)")
+    reps = [("e4_final_long", "long trainings: groups D, E and L (W9L, W11L: 8 times the iterations) on a RunPod GPU pod, own regenerated data"),
+            ("e4_final_scan", "width scan of H21: groups D and S on a RunPod GPU pod, own regenerated data"),
+            ("e4_indep", "independent replication: reference data regenerated with other seeds of the initial conditions (E4_DATA_SEED=100), "
+                         "groups A to E"),
+            ("e4_gpu", "first GPU run of the registered groups A and B (the run reviewed for H4-H14; same data and model seeds as the main run)"),
+            ("e4_cpu", "seeds 0 and 1 on the CPU of the session's container (first computation of the groups C, D and E; two seeds only)")]
+    for name, what in reps:
+        root = R4 / "replications" / name
+        if (root / "e4_reference.json").exists():
+            lines += section(root=root, replication=what)
     lines += convergence()
     if lines:
         print("\n".join(lines))

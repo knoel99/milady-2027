@@ -1,20 +1,27 @@
 {
- "variant": "W3_projected_flow",
- "criterion": "lowest energy-distance ratio on the validation \u03b7, mean over the seeds",
+ "variant": "W9_skip_sym",
+ "criterion": "flow-matching or diffusion generator with the lowest energy-distance ratio on the validation \u03b7, mean over the seeds (the Gaussian baseline G0 is not a candidate)",
  "seeds": [
   0,
-  1
+  1,
+  2,
+  3,
+  4
  ],
  "val_ed_ratio": {
-  "W0_free": 255.82916753142135,
-  "W1_penalty": 569.8708780234113,
-  "W2_final_projection": 171.715179715894,
-  "W3_projected_flow": 171.31971388942384,
-  "W4_potentials": 288.7419985300225,
-  "W4s_potentials_sym": 258.4332822704691,
-  "W5_stationarity": 280.8107255837202,
-  "W5_control": 258.01550129706925,
-  "W6_diffusion": 655.5884992068868,
-  "W4c_potentials_smooth": 272.2799748784871
+  "W0_free": 260.92078377345695,
+  "W1_penalty": 534.2570140219581,
+  "W2_final_projection": 184.3118956274015,
+  "W3_projected_flow": 186.0225250260719,
+  "W4_potentials": 278.5419195001042,
+  "W4s_potentials_sym": 250.11219529691874,
+  "W5_stationarity": 264.0954700670792,
+  "W5_control": 249.78507470018263,
+  "W6_diffusion": 628.5182087030923,
+  "W4c_potentials_smooth": 255.64955713459148,
+  "G0_gaussian_modes": 3.95176196053346,
+  "W9_skip_sym": 8.863329835373811,
+  "W10_anchored": 54.72407242447264,
+  "W11_anchored_skip": 9.157791836070377
  }
 }

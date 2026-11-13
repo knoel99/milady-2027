@@ -136,7 +136,7 @@ def section(quick: bool = False, root: Path = R, replication: str | None = None,
     data = json.loads(dp.read_text())
     c = data["config"]
     if replication:
-        P(f"## E4 - replication: {replication}\n")
+        P(f"## E4 - additional run: {replication}\n")
     else:
         P("## E4 - forced 3D MHD dynamo (ABC forcing at kf = 2), generation conditioned on η\n")
     P(f"Data (experiments/e4_data.py): N = {c['N']}, every mode |m_i| ≤ {c['kcut']} ({c['modes']} complex modes per field component pair), "
