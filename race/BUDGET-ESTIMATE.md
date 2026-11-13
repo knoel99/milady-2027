@@ -9,9 +9,9 @@ Basis: the Claude pilot, measured by `tools/usage_report.py` and `research/compu
 | xai | Grok 4.7 | 0.95 | ~310 USD | X subscription Ultra 200 USD/month | **Ultra 200 USD**, or API 350 USD |
 | mistral | Mistral Large 4 | 0.15 | ~50 USD | Pro 15 USD/month + pay-as-you-go | **API 75 USD** on a paid tier (this key allows 1,000 tokens per minute) |
 | zhipu | GLM-5.3 | 0.5 | ~170 USD | GLM Coding Plan Max 118 to 168 USD/month | **Coding Plan Max** (cancel 24 h before renewal), or API 250 USD |
-| moonshot | Kimi K3.1 Pro | 0.5 (prices in USD unofficial) | ~155 USD | Max ~80 to 100 USD/month | **API 200 USD** (a recharge also lifts the 3 requests per minute of tier 0) |
+| moonshot | Kimi K3.1 Pro | 0.44 (official CNY prices: 13 / 1.30 / 68 CNY per 1M tokens, at 7.1 CNY per USD) | ~145 USD | Max ~80 to 100 USD/month | **API 200 USD** (a recharge also lifts the 3 requests per minute of tier 0) |
 | deepseek | DeepSeek V4.1 Flash 1017 | 0.03 | ~10 USD | none | **API 25 USD** (V4 Pro for the jury included) |
-| alibaba | Qwen3.8-Max | 0.4 to 3.5 (cache price not published) | 145 to 1,160 USD | none usable (the Coding Plan forbids automation) | **API 150 USD with a hard cap**, then read the real cost after one hour |
+| alibaba | Qwen3.8-Max | 0.44 to 0.78 if a cache hit costs 10 to 20 % of the input price (Alibaba writes that for qwen3.8-max it is "not 20 %" and gives no figure); 3.5 without any cache | 145 to 260 USD (1,160 without cache) | none usable (the Coding Plan forbids automation) | **API 150 USD with a hard cap**, then read the real cost after one hour |
 
 GPU (RunPod, shared credit): about **50 USD per team per pilot**, so about 350 USD for seven teams on top of what the Claude and Cursor pilots used. On Scaleway the same 52 GPU-hours would cost about 41 EUR on an L4 (0.79 EUR/h) or 76 EUR on an L40S (1.47 EUR/h), but `tools/runpod_job.py` has no Scaleway equivalent yet and the L40S and H100 of pl-waw-2 were out of stock on 12 November.
 

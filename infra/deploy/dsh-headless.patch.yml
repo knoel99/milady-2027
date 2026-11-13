@@ -1,0 +1,25 @@
+# dsh headless profile patch for the deepseek team (copied by agents/providers.toml [deepseek.harness] setup).
+# Model and effort of the main run from DSH_MODEL / DSH_REASONING_EFFORT (tools/run_role.py sets them per role);
+# native sub-agents get model and reasoning_effort per call (modelSelection) within the allowed routes. Tested 2026-11-13.
+- id: agent-default-model
+  config:
+    provider: deepseek-official
+    model: !!js process.env.DSH_MODEL || 'deepseek-flash'
+- id: llm-deepseek
+  config:
+    reasoningEffort: !!js process.env.DSH_REASONING_EFFORT || 'high'
+- id: tool-subagent
+  config:
+    provider: spawn
+    toolName: subagent
+    modelSelection: true
+- insert:
+    - id: subagent-model-selection
+      name: '@deepseek-ai/dsh-tool-subagent/model-selection-settings'
+      config:
+        enabled: true
+        allowedModels:
+          - provider: deepseek-official
+            model: deepseek-flash
+          - provider: deepseek-official
+            model: deepseek-v4-pro

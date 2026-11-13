@@ -79,14 +79,15 @@ light = "gemini-3.8-flash"
 low = "low"
 medium = "medium"
 high = "high"
-max = "high"
+max = "high"  # Gemini 4 Carbon refuses xhigh ("Thinking level XHIGH is not supported", tested 2026-11-13)
 
 [google.api]
-# Read by tools/call_model.py. base_url and the effort field: to confirm with `check_calls.py preflight`.
-style = "gemini"
-base_url = "https://generativelanguage.googleapis.com/v1beta"
+# Read by tools/call_model.py. Gemini's OpenAI-compatible endpoint (Authorization: Bearer <API key>):
+# tested 2026-11-13 for every role; the native endpoint wants the key in x-goog-api-key instead.
+style = "openai-chat"
+base_url = "https://generativelanguage.googleapis.com/v1beta/openai"
 key_env = "GEMINI_API_KEY"
-effort_field = "generationConfig.thinkingConfig.thinkingLevel"
+effort_field = "reasoning_effort"
 
 [google.harness]
 # Read by tools/run_role.py. From the official docs on 2026-11-12; confirm with a dry run.
@@ -357,7 +358,7 @@ extra = { thinking = { type = "enabled" } }
 # https://github.com/deepseek-ai/deepseek-harness, apps/cli/reference/README.md. Pin the version on the pilot.
 name = "DeepSeek Harness (dsh, developer preview)"
 install = "npm install -g @deepseek-ai/dsh"
-setup = "npm install -g @deepseek-ai/dsh@0.2.2-rc.1 && dsh --profile headless --dump-config >/dev/null 2>&1; mkdir -p ~/.dsh/profiles/headless && printf '%s\\n' \"- id: agent-default-model\" \"  config:\" \"    provider: deepseek-official\" \"    model: !!js process.env.DSH_MODEL || 'deepseek-flash'\" \"- id: llm-deepseek\" \"  config:\" \"    reasoningEffort: !!js process.env.DSH_REASONING_EFFORT || 'high'\" > ~/.dsh/profiles/headless/cordis.patch.yml"  # tested 2026-11-13: both variables reach the API
+setup = "npm install -g @deepseek-ai/dsh@0.2.2-rc.1 && dsh --profile headless --dump-config >/dev/null 2>&1; mkdir -p ~/.dsh/profiles/headless && cp infra/deploy/dsh-headless.patch.yml ~/.dsh/profiles/headless/cordis.patch.yml"  # run from the clone; tested 2026-11-13
 effort_source = "provider"
 command = ["dsh", "--profile", "headless", "--json", "--approval-policy", "never", "{prompt}"]
 env = { DSH_MODEL = "{model}", DSH_REASONING_EFFORT = "{effort}" }
