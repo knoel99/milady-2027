@@ -1157,6 +1157,14 @@ H15: seed-mean ED ratio on the held-out η: W4_potentials 256, W4c_potentials_sm
 | ED ratio: W13_skip_tilting − W12_skip_control_half (H24) | -2.26, -2.78, -2.2, -2.91, -3.26 | -2.68 ± 0.2 | -13 | 0 of 5 |
 
 H24: ESS/N of W13_skip_tilting, seed mean over the test η: 0.172; H23: ratio of the seed-mean ED ratios W12_skip_stationarity / W12_skip_control: 1.76.
+H24, W13 corrected for the extra bias of a weighted sample (estimate): ED ratio per seed 3.61, 3.47, 3.01, 3.79, 2.8 (mean 3.33); W12_skip_control_half − corrected W13: 3.93 ± 0.311, positive in 5 of 5 seeds.
+H24, r_b (helicity identity): untilted half 0.0159, tilted 0.0265; difference -0.0106 ± 0.00157, tilted better in 0 of 5 seeds.
+H24, err. E_u(k): untilted half 0.0202, tilted 0.0394; difference -0.0192 ± 0.00485, tilted better in 0 of 5 seeds.
+H24, |magnetic balance|: untilted half 0.0564, tilted 0.0379; difference 0.0185 ± 0.00393, tilted better in 5 of 5 seeds.
+H24, err. nulls: untilted half 1.67, tilted 1.25; difference 0.422 ± 0.0298, tilted better in 5 of 5 seeds.
+H24, err. E_B(k): untilted half 0.142, tilted 0.081; difference 0.0609 ± 0.00766, tilted better in 5 of 5 seeds.
+H24, err. H_M: untilted half 0.192, tilted 0.0875; difference 0.105 ± 0.0121, tilted better in 5 of 5 seeds.
+H24, polarity: untilted half 0.0299, tilted 0.0826; difference -0.0527 ± 0.0175, tilted better in 0 of 5 seeds.
 Restart curve of G0_gaussian_modes (signed relative change, mean over the test η and the seeds), τ = 0.5, 1, 2, 4: E_B -0.16, -0.113, 0.078, 0.212; E_u 0.109, 0.153, 0.146, 0.0189.
 Restart curve of G1_gaussian_full (signed relative change, mean over the test η and the seeds), τ = 0.5, 1, 2, 4: E_B 0.0577, 0.0968, 0.104, 0.0644; E_u -0.0254, -0.0506, -0.0806, -0.0947.
 Restart curve of W9_skip_sym (signed relative change, mean over the test η and the seeds), τ = 0.5, 1, 2, 4: E_B 0.0106, 0.0428, 0.0862, 0.124; E_u 0.0215, 0.0331, 0.048, 0.053.

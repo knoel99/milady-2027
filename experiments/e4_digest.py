@@ -344,6 +344,21 @@ def section(quick: bool = False, root: Path = R, replication: str | None = None,
             P(f"\nH24: ESS/N of W13_skip_tilting, seed mean over the test η: {f(float(np.nanmean(per_seed(runs, 'W13_skip_tilting', 'ess_frac'))))}; "
               f"H23: ratio of the seed-mean ED ratios W12_skip_stationarity / W12_skip_control: "
               f"{f(float(np.nanmean(ed('W12_skip_stationarity')) / np.nanmean(ed('W12_skip_control'))))}.")
+        if has("W13_skip_tilting") and floors:
+            corr13 = np.asarray([np.mean([(x["ed"] - (1 / (x["ess_frac"] * x["n"]) - 1 / x["n"])
+                                           * floors[f"{x['eta']:.5f}"]["mean_pairwise_distance"]) / x["ed_floor"]
+                                          for x in r["evaluation"]["W13_skip_tilting"]["test"]]) for r in runs.values()])
+            dd = ed("W12_skip_control_half") - corr13
+            P(f"H24, W13 corrected for the extra bias of a weighted sample (estimate): ED ratio per seed {', '.join(f(float(x)) for x in corr13)} "
+              f"(mean {f(float(corr13.mean()))}); W12_skip_control_half − corrected W13: {f(float(dd.mean()))} ± "
+              f"{f(float(dd.std(ddof=1) / np.sqrt(len(dd))))}, positive in {int((dd > 0).sum())} of {len(dd)} seeds.")
+            for key, label, ab in (("r_b", "r_b (helicity identity)", False), ("spec_err_u_l2", "err. E_u(k)", False),
+                                   ("balance_residual_magnetic", "|magnetic balance|", True), ("null_count_err_rel", "err. nulls", False),
+                                   ("spec_err_b_l2", "err. E_B(k)", False), ("hel_m_err_rel", "err. H_M", True), ("hc_sign_asym", "polarity", False)):
+                a_, b_ = per_seed(runs, "W12_skip_control_half", key, absolute=ab), per_seed(runs, "W13_skip_tilting", key, absolute=ab)
+                dk = a_ - b_
+                P(f"H24, {label}: untilted half {f(float(np.nanmean(a_)))}, tilted {f(float(np.nanmean(b_)))}; difference {f(float(np.nanmean(dk)))} ± "
+                  f"{f(float(np.nanstd(dk, ddof=1) / np.sqrt(len(dk))))}, tilted better in {int((dk > 0).sum())} of {len(dk)} seeds.")
         if has("G1_gaussian_full"):
             rows = [x for r in runs.values() for x in r["evaluation"]["G1_gaussian_full"].get("test", []) if "restart_curve" in x]
             for v in ("G0_gaussian_modes", "G1_gaussian_full", "W9_skip_sym", "W11_anchored_skip"):

@@ -2,6 +2,15 @@
 
 One entry per working session, newest first, at most ten lines.
 
+## 2026-11-13 — Announcement (02:20 UTC): verdicts H18, H22–H24; one more GPU job
+- Goal of the session: decide the hypotheses registered after the review of the report and close the central interpretation.
+- H22 CONFIRMED: the Gaussian law with the covariance between modes (G1, no network, fitted on the training η) is at 2.55 floors against 9.35 for W9 and 3.52 for G0; magnetic balance 0.072; null error 1.10 against 1.67; restart drift of E_B 0.064 against 0.124. No learned model of the pilot beats it on these. H23 REFUTED: the stationarity loss on W9 halves the energy residual (0.029 against 0.057) and raises the ED ratio from 9.3 to 16.4. H24 CONFIRMED: tilting on W9 samples keeps 17 % of effective sample and lowers the energy residual to 0.011; better on most metrics, worse on four. H18 CONFIRMED with caveats (the long training doubles the ED ratio). Reviews: research/reviews/2026-11-13-encadrant-h18-replication.md, 2026-11-13-encadrant-h22-h24.md. Objective C6 = 16.
+- The first interpretation of the report ("third-order correlations") is withdrawn; the report v2 says that a Gaussian law does as well or better.
+- Independent replication (`e4_indep`: pod `pabi5rkisndiwc`, RTX 4090, 1.36 h, 1.21 USD, rc 0, pod deleted): every verdict of H4–H17, H19, H20 unchanged on other data seeds. First width scan (`e4_final_scan`: A100, 2.03 h, 4.46 USD, cut by its time limit, pod deleted): width 512 at 206 floors, width 2048 at 25 (5 seeds each), width 5632 at 91 and 107 (2 seeds). Job `e4_mech` (pod `4gb4eguf2phk1v`, RTX PRO 4500, 0.76 h, 0.55 USD, rc 0, pod deleted).
+- GPU job launched now (1 pod `milady-claude-job-*`, limit 2 h, queued behind the parallel limit): `e4_g1indep`, groups D and G (G0, W9, G1) on the data of the replication (`E4_DATA_SEED=100`), 5 seeds: the check asked by the review (G1 was measured on one data realisation). First free GPU of the `[gpu]` list; about 35 min and 0.4 USD expected on the RTX PRO 4500, worst case 1.44 USD (2.78 USD on an RTX 5090).
+- Running: `e4_scan2a`, `e4_scan2b` (RTX PRO 4500); queued: `e4_scan2c`, `e4_g1indep`. Ledger: 11.59 USD billed for this team; worst case of the four jobs 5.8 USD: at most 17.4 USD of 150.
+- Cost (tokens, CPU time): `research/usage/latest.md`.
+
 ## 2026-11-13 — Announcement (01:16 UTC): review of the report by `jury-externe`, three hypotheses registered, one GPU job
 - Goal of the session: answer the review of the report v1 before the final version.
 - Review of `jury-externe` on the report v1 (research/reviews/2026-11-13-jury-externe-report-v1.md): the table and the registration order hold; the reading "third-order correlations make the dynamo" is refuted (an oracle Gaussian with the full covariance does as well as W9 on the magnetic balance and better on the restart drift and the nulls: G0 fails because its modes are independent); the claims on the stationarity loss go beyond the table; the mechanisms were only compared on models far from the reference; the restart drift at one time hides a transient. Twelve corrections of wording.
