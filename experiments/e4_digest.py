@@ -928,6 +928,13 @@ def h37_lines(runs: dict, ref: dict | None, root: Path = R) -> list[str]:
         out.append(f"| {v} | " + " | ".join(cells) + " |")
     n_seed = len(runs)
     complete = set(runs) >= set(range(5)) and all(v in r["evaluation"] for r in runs.values() for v in (w16, w17))
+    data_cfg = root / "e4_data.json"
+    full_ref = refnulls(json.loads(data_cfg.read_text())["config"].get("data_seed_offset", 0)) if data_cfg.exists() else None
+    if full_ref:                                            # asked by the review of the encadrant role (2026-11-13)
+        out.append("H37, null-count error against the count of the reference on all its snapshots (mean over the held-out η and the seeds; "
+                   "the table above is against the 400 snapshots of the reference stage): " + ", ".join(
+                       f"{v} {f(float(np.mean([abs(np.mean(a) / full_ref[f'{e:.5f}']['null_count_mean'] - 1) for e, a in _per_seed(runs, v, 'null_count').items()])))}"
+                       for v in (g1, w16, w17, "REFV_raw", "REFV_recoloured") if v in have) + ".")
     d = seedwise(runs, w17, exc) - seedwise(runs, w16, exc)
     bad = not (d.mean() >= 0.02 and d.mean() > 2 * sem(d) and int((d > 0).sum()) >= min(4, n_seed))
     # checks of the measurement
