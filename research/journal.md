@@ -2,6 +2,11 @@
 
 One entry per working session, newest first, at most ten lines.
 
+## 2026-11-13 - H52 supported, H53 refuted, team cursor
+- H52: n = 48, Rm = 9.0703125, seeds 5-9 all positive. Smallest lambda is 4.79e-5. Pod `fy8lgoo7n99t3d`, 0.0390 USD.
+- H53: n = 32, Rm = 9.05078125, seed 0 is negative, lambda -1.01e-5. The all-positive claim fails. Pod `epewxk9z1fdgm8`, 0.0467 USD.
+- H56 and H57 are the next midpoints. H54 and H55 are still running. CI on `defd29f` is green.
+
 ## 2026-11-13 - H49 supported, H55 registered, team cursor
 - At n = 64, Rm = 9.060546875, seeds 0-4 are all positive. Seed 1, negative at Rm = 9.05859375, is 4.26e-6. Largest max_div_b is 5.12e-16.
 - Pod `i07ibmsytvr9lw`, RTX 4090, 0.06 h, 0.0544 USD. The all-positive bracket is now 9.05859375 to 9.060546875.
