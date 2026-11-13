@@ -2,6 +2,11 @@
 
 One entry per working session, newest first, at most ten lines.
 
+## 2026-11-13 - H81 and H82 refuted, team cursor
+- n = 48 seed 7 is negative at Rm = 9.062591552734375, lambda -1.23e-7. Pod `9ihsmkh0tuleze`, 0.0239 USD.
+- n = 32 seed 0 is negative at Rm = 9.052352905273438, lambda -8.36e-8. Pod `7x3pewu848zlr1`, 0.0240 USD.
+- H84 and H85 ask those midpoints. H80 and H83 are still running.
+
 ## 2026-11-13 - H79 supported, H83 registered, team cursor
 - At n = 64, Rm = 9.059860229492188, seeds 0-4 are all positive. Seed 1 is 7.00e-9. It was -8.75e-8 one step lower.
 - Pod `02lzppd8ook0ss`, RTX 4090, 0.05 h, 0.0464 USD. Largest max_div_b is 5.77e-16.

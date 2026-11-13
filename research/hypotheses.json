@@ -1048,9 +1048,9 @@
       "protocol": "python3 experiments/cursor_abc_batch.py --device cuda --cfl 1 --out-dir experiments/results/cursor_abc_n48_rm9062591552734375 --point 48,9.062591552734375,5 --point 48,9.062591552734375,6 --point 48,9.062591552734375,7 --point 48,9.062591552734375,8 --point 48,9.062591552734375,9. t = 120, dt cap 0.05, float64. GPU order RTX 4090, then PRO 4500, then A6000. One pod, 1 h cap. Launch when a parallel slot is free.",
       "script": "experiments/cursor_abc_batch.py --device cuda --cfl 1 --point 48,9.062591552734375,5",
       "cost_estimate": "One pod, 1 h cap. The previous job at this n cost 0.0544 USD.",
-      "status": "registered",
+      "status": "refuted",
       "verdict": "",
-      "results": "",
+      "results": "Five points, all finite. Seed 7 lambda is -1.2317519555451566e-07. Seeds 5, 6, 8, and 9 are positive. Largest max_div_b is 5.86e-16. Files experiments/results/cursor_abc_n48_rm9062591552734375/. Pod 9ihsmkh0tuleze, RTX 4090, 0.03 h, 0.0239 USD. The refutation criterion is met. Not a 3D generator result.",
       "commit": ""
     },
     {
@@ -1061,9 +1061,9 @@
       "protocol": "python3 experiments/cursor_abc_batch.py --device cuda --cfl 1 --out-dir experiments/results/cursor_abc_n32_rm9052352905273438 --point 32,9.052352905273438,0 --point 32,9.052352905273438,1 --point 32,9.052352905273438,2 --point 32,9.052352905273438,3 --point 32,9.052352905273438,4. t = 120, dt cap 0.05, float64. GPU order RTX 4090, then PRO 4500, then A6000. One pod, 1 h cap. Launch when a parallel slot is free.",
       "script": "experiments/cursor_abc_batch.py --device cuda --cfl 1 --point 32,9.052352905273438,0",
       "cost_estimate": "One pod, 1 h cap. The previous job at this n cost 0.0239 USD.",
-      "status": "registered",
+      "status": "refuted",
       "verdict": "",
-      "results": "",
+      "results": "Five points, all finite. Seed 0 lambda is -8.359483689374549e-08. The other four are positive, from 0.001361 to 0.001552. Largest max_div_b is 5.00e-16. Files experiments/results/cursor_abc_n32_rm9052352905273438/. Pod 7x3pewu848zlr1, RTX 4090, 0.03 h, 0.0240 USD. The refutation criterion is met. Not a 3D generator result.",
       "commit": ""
     },
     {
@@ -1074,6 +1074,32 @@
       "protocol": "Five seeds, 0-4. python3 experiments/cursor_abc_batch.py --device cuda --cfl 1 --out-dir experiments/results/cursor_abc_n64_rm9059852600097656 --point 64,9.059852600097656,0 --point 64,9.059852600097656,1 --point 64,9.059852600097656,2 --point 64,9.059852600097656,3 --point 64,9.059852600097656,4. t = 120, dt cap 0.05, float64. GPU order RTX 4090, then PRO 4500, then A6000. One pod, 1 h cap. Launch when a parallel slot is free.",
       "script": "experiments/cursor_abc_batch.py --device cuda --cfl 1 --point 64,9.059852600097656,0",
       "cost_estimate": "One pod, 1 h cap. The previous n = 64 job cost 0.0464 USD.",
+      "status": "registered",
+      "verdict": "",
+      "results": "",
+      "commit": ""
+    },
+    {
+      "id": "H84",
+      "statement": "At n = 48, Rm = 9.062606811523438, cfl = 1, seeds 5-9, every kinematic ABC growth rate is positive, and every point is finite with final max_div_b below 1e-8.",
+      "origin": "H81 found seed 7 negative at Rm = 9.062591552734375, lambda -1.2317519555451566e-07. H74 found seeds 5-9 positive at Rm = 9.0626220703125, smallest 6.719843710419098e-08. Rm = 9.062606811523438 has not been run for these seeds. The positive sign is the claim and may fail.",
+      "refutation_criterion": "Refuted if any point is non-finite or exits non-zero, if any final max_div_b is >= 1e-8, or if any lambda is <= 0. The sign was fixed before the run. Not a 3D generator claim.",
+      "protocol": "python3 experiments/cursor_abc_batch.py --device cuda --cfl 1 --out-dir experiments/results/cursor_abc_n48_rm9062606811523438 --point 48,9.062606811523438,5 --point 48,9.062606811523438,6 --point 48,9.062606811523438,7 --point 48,9.062606811523438,8 --point 48,9.062606811523438,9. t = 120, dt cap 0.05, float64. GPU order RTX 4090, then PRO 4500, then A6000. One pod, 1 h cap. Launch when a parallel slot is free.",
+      "script": "experiments/cursor_abc_batch.py --device cuda --cfl 1 --point 48,9.062606811523438,5",
+      "cost_estimate": "One pod, 1 h cap. The previous job at this n cost 0.0239 USD.",
+      "status": "registered",
+      "verdict": "",
+      "results": "",
+      "commit": ""
+    },
+    {
+      "id": "H85",
+      "statement": "At n = 32, Rm = 9.052360534667969, cfl = 1, seeds 0-4, every kinematic ABC growth rate is positive, and every point is finite with final max_div_b below 1e-8.",
+      "origin": "H82 found seed 0 negative at Rm = 9.052352905273438, lambda -8.359483689374549e-08. H71 found seed 0 positive at Rm = 9.0523681640625, lambda 1.3794367016421137e-08. Rm = 9.052360534667969 has not been run. The positive sign is the claim and may fail.",
+      "refutation_criterion": "Refuted if any point is non-finite or exits non-zero, if any final max_div_b is >= 1e-8, or if any lambda is <= 0. The sign was fixed before the run. Not a 3D generator claim.",
+      "protocol": "python3 experiments/cursor_abc_batch.py --device cuda --cfl 1 --out-dir experiments/results/cursor_abc_n32_rm9052360534667969 --point 32,9.052360534667969,0 --point 32,9.052360534667969,1 --point 32,9.052360534667969,2 --point 32,9.052360534667969,3 --point 32,9.052360534667969,4. t = 120, dt cap 0.05, float64. GPU order RTX 4090, then PRO 4500, then A6000. One pod, 1 h cap. Launch when a parallel slot is free.",
+      "script": "experiments/cursor_abc_batch.py --device cuda --cfl 1 --point 32,9.052360534667969,0",
+      "cost_estimate": "One pod, 1 h cap. The previous job at this n cost 0.0240 USD.",
       "status": "registered",
       "verdict": "",
       "results": "",
