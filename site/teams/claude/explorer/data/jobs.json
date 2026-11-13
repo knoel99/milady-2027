@@ -460,5 +460,148 @@
   "rc": 0,
   "commit": "e6df2bd",
   "command": "collected after a restart of the session: milady-claude-job-b4ea30e4"
+ },
+ {
+  "time": "2026-11-13T11:52:18Z",
+  "pod": "wveiej0gcbw4a8",
+  "gpu": "NVIDIA GeForce RTX 5090",
+  "usd_per_hour": 1.39,
+  "hours": 1.7292,
+  "usd": 2.4036,
+  "rc": 0,
+  "commit": "0722e02",
+  "command": "collected after a restart of the session: milady-claude-job-779056a9"
+ },
+ {
+  "time": "2026-11-13T12:03:36Z",
+  "pod": "1tjbufof6jwus1",
+  "gpu": "NVIDIA RTX PRO 4500 Blackwell",
+  "usd_per_hour": 0.72,
+  "hours": 1.9244,
+  "usd": 1.3856,
+  "rc": 124,
+  "commit": "0722e02",
+  "command": "collected after a restart of the session: milady-claude-job-5bf0a857"
+ },
+ {
+  "time": "2026-11-13T12:07:08Z",
+  "pod": "duhid0b8tm68sz",
+  "gpu": "NVIDIA GeForce RTX 4090",
+  "usd_per_hour": 0.89,
+  "hours": 1.3436,
+  "usd": 1.1958,
+  "rc": 0,
+  "commit": "e96b420",
+  "command": "env E4_DATA_SEED=100 bash experiments/e4_gpu_job.sh full '0 1 2 3 4' e4_surrogate_indep D,G,Z"
+ },
+ {
+  "time": "2026-11-13T13:03:03Z",
+  "pod": "55rm33sgtem306",
+  "gpu": "NVIDIA GeForce RTX 5090",
+  "usd_per_hour": 1.39,
+  "hours": 1.754,
+  "usd": 2.438,
+  "rc": 0,
+  "commit": "df7109e",
+  "command": "env E4_DATA_SEED=100 E4_N_RESTART=512 bash experiments/e4_gpu_job.sh full '0 1 2' e4_recolour_indep_c G,T,R"
+ },
+ {
+  "time": "2026-11-13T13:13:18Z",
+  "pod": "l4vxf0ashfy7o8",
+  "gpu": "NVIDIA RTX PRO 4500 Blackwell",
+  "usd_per_hour": 0.72,
+  "hours": 1.1532,
+  "usd": 0.8303,
+  "rc": 0,
+  "commit": "c156486",
+  "command": "env E4_N_RESTART=512 bash experiments/e4_gpu_job.sh full 0 e4_recolour_e0 R"
+ },
+ {
+  "time": "2026-11-13T13:30:09Z",
+  "pod": "h9d81ztpitz8s5",
+  "gpu": "NVIDIA GeForce RTX 4090",
+  "usd_per_hour": 0.89,
+  "hours": 1.3783,
+  "usd": 1.2267,
+  "rc": 0,
+  "commit": "59532d5",
+  "command": "env E4_N_RESTART=512 bash experiments/e4_gpu_job.sh full 1 e4_recolour_e1 R"
+ },
+ {
+  "time": "2026-11-13T13:31:20Z",
+  "pod": "kahdfjzh6pt4u3",
+  "gpu": "NVIDIA RTX A6000",
+  "usd_per_hour": 0.69,
+  "hours": 0.0114,
+  "usd": 0.0078,
+  "rc": null,
+  "commit": "d5fa655",
+  "command": "bash experiments/e4_gpu_job.sh full '0 1 2 3 4' e4_trajsur G,Y"
+ },
+ {
+  "time": "2026-11-13T13:45:38Z",
+  "pod": "h7midn7uam6t44",
+  "gpu": "NVIDIA GeForce RTX 4090",
+  "usd_per_hour": 0.89,
+  "hours": 1.8766,
+  "usd": 1.6701,
+  "rc": 0,
+  "commit": "6e72225",
+  "command": "env E4_DATA_SEED=100 E4_N_RESTART=512 bash experiments/e4_gpu_job.sh full '3 4' e4_recolour_indep_d G,T,R"
+ },
+ {
+  "time": "2026-11-13T14:11:48Z",
+  "pod": "ts2w6z62s1w1mv",
+  "gpu": "NVIDIA GeForce RTX 4090",
+  "usd_per_hour": 0.89,
+  "hours": 0.669,
+  "usd": 0.5954,
+  "rc": 0,
+  "commit": "d5fa655",
+  "command": "bash experiments/e4_gpu_job.sh full '0 1 2 3 4' e4_trajsur G,Y"
+ },
+ {
+  "time": "2026-11-13T14:13:51Z",
+  "pod": "iiyshrmmlp9p2c",
+  "gpu": "NVIDIA RTX PRO 4500 Blackwell",
+  "usd_per_hour": 0.72,
+  "hours": 1.0049,
+  "usd": 0.7235,
+  "rc": 0,
+  "commit": "37a7af4",
+  "command": "env E4_N_RESTART=512 bash experiments/e4_gpu_job.sh full 2 e4_recolour_e2 R"
+ },
+ {
+  "time": "2026-11-13T14:17:56Z",
+  "pod": "xrap7kkdgyn61v",
+  "gpu": "NVIDIA GeForce RTX 4090",
+  "usd_per_hour": 0.89,
+  "hours": 1.241,
+  "usd": 1.1045,
+  "rc": 0,
+  "commit": "092af2e",
+  "command": "env E4_DATA_SEED=100 E4_N_RESTART=512 bash experiments/e4_gpu_job.sh full 2 e4_recolour_indep_e2 G,T,R"
+ },
+ {
+  "time": "2026-11-13T14:35:21Z",
+  "pod": "xwkr7qphwsr0jo",
+  "gpu": "NVIDIA RTX A6000",
+  "usd_per_hour": 0.69,
+  "hours": 0.8208,
+  "usd": 0.5664,
+  "rc": 0,
+  "commit": "1e00f23",
+  "command": "env E4_DATA_SEED=100 bash experiments/e4_gpu_job.sh full '0 1 2 3 4' e4_trajsur_indep G,Y"
+ },
+ {
+  "time": "2026-11-13T14:37:24Z",
+  "pod": "v4j5uqpdiygtx5",
+  "gpu": "NVIDIA GeForce RTX 4090",
+  "usd_per_hour": 0.89,
+  "hours": 0.3187,
+  "usd": 0.2837,
+  "rc": null,
+  "commit": "d698812",
+  "command": "bash experiments/e4_gpu_job.sh full 4 e4_relax_c X"
  }
 ]
