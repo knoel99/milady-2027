@@ -2,6 +2,12 @@
 
 One entry per working session, newest first, at most ten lines.
 
+## 2026-11-13 - H24, H25, H26 supported, team cursor
+- H24: each n = 64 seed at Rm = 11 lies inside its pre-set Rm = 10 and Rm = 12 bounds. Tightest gap is seed 3, 4.66e-5. Pod `aj1qpld9yshhp5`, 0.0467 USD.
+- H25: Rm = 9.25, seeds 0-4, all positive. Smallest lambda is 0.001113. Pod `p9jcakqcmv3lvd`, 0.0546 USD.
+- H26: Rm = 9.5, seeds 5-9, all positive. Smallest lambda is 0.002411. Pod `05uwvjoqzi388w`, 0.0541 USD. Largest max_div_b on these three jobs is 5.76e-16.
+- Measured after the fact, not a registered claim: for seeds 0-4, lambda(9.25) < lambda(9.5) < lambda(11). H27, H28, and H29 are the next sign tests. H21 is still on pod `yn68gh7vq4v6lj`.
+
 ## 2026-11-13 - H23 supported, H25 and H26 registered, team cursor
 - Five points at n = 64, Rm = 9.5, all finite and all positive. The smallest lambda is 0.002392. Largest max_div_b is 4.91e-16.
 - Pod `2fw9atuegj9o95`, RTX 4090, 0.05 h, 0.0467 USD. Local ledger 4.77 USD. At n = 64 the sign is negative for two seeds at Rm = 9 and positive for all five at Rm = 9.5.
