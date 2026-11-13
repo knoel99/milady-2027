@@ -11,6 +11,8 @@ from __future__ import annotations
 
 import argparse
 import re
+import shutil
+import subprocess
 import sys
 from pathlib import Path
 
@@ -19,7 +21,30 @@ ANCHORS = ["abstract", "introduction", "state-of-the-art", "methods", "experimen
            "comparative-study", "toolbox", "discussion", "conclusion", "references", "reproducibility"]
 MIN_SCHEMATICS, MIN_DIAGRAMS, MIN_PLOTS = 8, 3, 8
 MAX_DATA_MB, MAX_FILE_MB, MAX_PDF_MB = 25, 10, 20
+MIN_PDF_PAGES = 30  # race/DELIVERABLES.md: "about 30 to 50 pages in PDF"
 PLOT_EXT = {".svg", ".png"}
+
+
+def pdf_pages(pdf: Path) -> tuple[int | None, str]:
+    """Number of pages of a PDF and the method used: pypdf, else poppler's pdfinfo, else a count of the
+    /Type /Page objects of an uncompressed file. (None, reason) when no method can tell."""
+    try:
+        from pypdf import PdfReader
+
+        return len(PdfReader(str(pdf)).pages), "pypdf"
+    except ImportError:
+        pass
+    except Exception as e:  # noqa: BLE001 - a broken file is reported, not raised
+        return None, f"pypdf could not read it ({type(e).__name__})"
+    if shutil.which("pdfinfo"):
+        out = subprocess.run(["pdfinfo", str(pdf)], capture_output=True, text=True, check=False).stdout
+        m = re.search(r"^Pages:\s+(\d+)", out, re.MULTILINE)
+        if m:
+            return int(m.group(1)), "pdfinfo"
+    n = len(re.findall(rb"/Type\s*/Page(?![a-zA-Z])", pdf.read_bytes()))
+    if n:
+        return n, "page objects"
+    return None, "no page counter (install pypdf or poppler-utils)"
 
 
 def section(text: str, anchor: str) -> str:
@@ -82,6 +107,9 @@ def checks(team: str, built: bool, root: Path = ROOT) -> list[tuple[bool, str]]:
         pdf = base / "report" / "index.pdf"
         out.append((pdf.exists() and pdf.stat().st_size <= MAX_PDF_MB * 1e6,
                     f"PDF {pdf.relative_to(root)} built (at most {MAX_PDF_MB} MB)"))
+        pages, how = pdf_pages(pdf) if pdf.exists() else (None, "no PDF")
+        out.append((pages is not None and pages >= MIN_PDF_PAGES,
+                    f"PDF pages: {pages if pages is not None else '?'} (at least {MIN_PDF_PAGES}; {how})"))
         out.append(("index.pdf" in text, "the report links its PDF"))
         for page in (base / "report" / "index.html", base / "explorer" / "index.html"):
             out.append((page.exists(), f"rendered {page.relative_to(root)}"))

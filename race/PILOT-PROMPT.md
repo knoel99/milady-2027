@@ -19,3 +19,13 @@ Then carry out the race brief: quantify your objectives in `race/teams/claude/ob
 ```
 /goal Advance the research of the internship offer as far as the budget allows: after each result, take the next step of the remaining work of research/race-report.md that you judge most useful, with your own strategy. The goal is met only when the GPU budget cannot pay for another useful job or the usage limit warns, or when you show in research/race-report.md, with evidence, that no step left within the budget can change a verdict or an objective. At that point: race/teams/claude/objectives.toml passes `python3 tools/race_progress.py check`; research/race-report.md states what is measured, published and conjectured and the remaining work for each objective; `python3 tools/check_deliverables.py --team claude --built` passes; research/usage/latest.md is up to date and shows no non-conforming role call; no pod of the team is left running; everything is committed and pushed.
 ```
+
+## Goal set by the owner on the running Claude pilot
+
+Set by the owner in session `session_019DLE2XTZBM3CAyB1594sVV` on 2026-11-13 at about 07:05 UTC (recorded in the session as active), verbatim:
+
+```
+/goal Fais avancer la recherche du sujet de stage aussi loin que le budget le permet, avec ta propre stratégie : après chaque résultat, choisis l'étape suivante la plus utile. Le goal n'est atteint que si le budget GPU ne permet plus un job utile, si la limite d'usage prévient, ou si tu montres preuves à l'appui dans research/race-report.md qu'aucune étape restante dans le budget ne peut changer un verdict ou un objectif. À ce moment : objectives.toml valide, race-report.md à jour (mesuré, publié, conjecturé, reste à faire), `tools/check_deliverables.py --team claude --built` passe, rapport d'usage à jour, aucun pod de l'équipe en marche, tout commité et poussé.
+```
+
+It is the French form of the `/goal` above; for another team, replace `--team claude` by its team.
