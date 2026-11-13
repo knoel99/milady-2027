@@ -2,6 +2,15 @@
 
 One entry per working session, newest first, at most ten lines.
 
+## 2026-11-13 — Announcement (22:35 UTC): H38 refuted, H39 confirmed, H40 refuted; H41 registered and launched
+- Goal of the session: decide H38 to H40; check the code path that the review points at.
+- Collected (pods deleted by the tool, same-data guard passed): `e4_struct` (pod `csqsoh94acow29`, RTX PRO 4500 Blackwell, 1.17 h, 0.84 USD) and `e4_struct_indep` (pod `r3c4lbu1nblt3c`, RTX PRO 4500 Blackwell, 0.95 h, 0.69 USD), rc 0. No pod of the team was running at 22:06 UTC.
+- Verdicts of the `encadrant` (research/reviews/2026-11-13-encadrant-h38-h39.md and -encadrant-h40.md, logged). H38 REFUTED and H39 CONFIRMED as computed (wording corrected in the entry below). H40 REFUTED on its three clauses on both realisations, checks passed: anchored on a Gaussian law with a structured covariance of full rank (300 leading directions plus mode-wise blocks), the network trains (loss on a fixed training sample 1.208 → 1.151) and the law changes (2.5 → 16.4 floors, magnetic energy +11 to +15 %), but no third-order production appears, on the data or on samples of W9 (0.001 of the reference; 0.002 and 0.004 of that of W9). The rank deficiency of the sample covariance is not a sufficient explanation of the missing third-order part. Valid for rank 300 and this network only.
+- Point of the review, registered before its code as H41: the four constructions without a third-order part (W14, W18, W19, W20) share one class, `FullGaussianAnchoredField`, which has never produced one, while W10, anchored on the mode-wise law through the earlier class, holds 0.3 and 0.2 of the third-order part of the reference. The control runs the suspected class with an anchor of rank 0, where it must reproduce W10. If it fails, the verdicts of H28, H38 and H40 are withdrawn as measurements of a faulty code. `--quick` passes (in that test the two classes give the same law).
+- GPU jobs launched at 22:30 UTC, GPU list restricted and `E4_SAME_DATA=1`: `e4_rank0` (pod `uj5v4789e68oz5`, RTX 5090 at 1.39 USD/h, groups D, E, Q with `E4_STRUCT_RANK=0`, five seeds, limit 1.9 h) and `e4_rank30` (pod `hq6rt973zhx572`, RTX 5090 at 1.39 USD/h, group Q with rank 30, a reported measurement, limit 1.9 h); worst case 5.28 USD.
+- Budget: this ledger 57.3 USD billed of 140.
+- Cost (tokens, CPU time): `research/usage/latest.md`.
+
 ## 2026-11-13 — Announcement (20:55 UTC): H38 and H39 computed; the anchor of H28 is the obstacle; H40 registered and launched
 - Goal of the session: the positive control of H28, the baseline of H35, and what follows from them.
 - Collected (pods deleted by the tool, same-data guard passed): `e4_anchorpos` (pod `muarl86epqn1y7`, RTX 5090, 0.78 h, 1.08 USD), `e4_cold` (pod `9gdkiig93q9lb4`, RTX PRO 4500 Blackwell, 1.31 h, 0.95 USD), `e4_cold_indep` (pod `m1bybxeyu93tjp`, RTX PRO 4500 Blackwell, 1.29 h, 0.93 USD), all rc 0.
