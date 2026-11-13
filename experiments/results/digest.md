@@ -900,6 +900,176 @@ H13: least-squares fit of ln(N_gen/N_ref) on ln(k_λ,gen/k_λ,ref) over 45 point
 | 3 | 0 | 89 | 76 | 861 |
 | 4 | 0 | 95 | 69 | 849 |
 
+## E4 - additional run: H34 on the data of the independent replication (E4_DATA_SEED=100): groups G and Y
+
+Data (experiments/e4_data.py): N = 16, every mode |m_i| ≤ 5 (665 complex modes per field component pair), ν = 0.05 (Re = 10), kf = 2; training η [0.08, 0.06575, 0.054038, 0.044413, 0.036502, 0.03]; validation η [0.059607, 0.040264]; test η [0.072526, 0.04899, 0.033092]; 24 trajectories per η, transient 200.0, kept 200.0, one snapshot every 2.0; float32; generation time 750 s on 4 cores.
+
+### Reference data per η
+
+| η | Rm | set | E_u | E_B | H_M | energy residual (time mean) | H_M drift (SE) | nulls per snapshot | k_λ | ED floor |
+|---|---|---|---|---|---|---|---|---|---|---|
+| 0.08000 | 6.25 | train | 0.491 | 0.0764 | -0.0422 | 2.70e-04 | -0.45 | 21.6 ± 0.49 | 2.5 | 0.166 |
+| 0.07253 | 6.89 | test | 0.441 | 0.0967 | -0.0544 | -3.05e-04 | 1.5 | 21.4 ± 0.5 | 2.54 | 0.061 |
+| 0.06575 | 7.6 | train | 0.393 | 0.114 | -0.0668 | 1.88e-04 | -0.11 | 20.6 ± 0.46 | 2.56 | 0.0388 |
+| 0.05961 | 8.39 | val | 0.376 | 0.12 | -0.0711 | -4.54e-05 | -0.77 | 23.8 ± 0.56 | 2.61 | 0.0591 |
+| 0.05404 | 9.25 | train | 0.346 | 0.129 | -0.0759 | 6.01e-05 | -0.17 | 24.7 ± 0.54 | 2.65 | 0.0322 |
+| 0.04899 | 10.2 | test | 0.323 | 0.138 | -0.0806 | -1.06e-04 | -0.61 | 28 ± 0.59 | 2.69 | 0.0364 |
+| 0.04441 | 11.3 | train | 0.307 | 0.146 | -0.0869 | -3.40e-05 | 1.1 | 30.9 ± 0.78 | 2.74 | 0.0331 |
+| 0.04026 | 12.4 | val | 0.286 | 0.156 | -0.0955 | -9.69e-05 | 1.5 | 30.9 ± 0.81 | 2.76 | 0.052 |
+| 0.03650 | 13.7 | train | 0.275 | 0.161 | -0.0957 | -2.47e-06 | 0.4 | 36.6 ± 0.95 | 2.83 | 0.0431 |
+| 0.03309 | 15.1 | test | 0.26 | 0.17 | -0.105 | -5.45e-05 | -1.1 | 36.3 ± 1 | 2.86 | 0.0382 |
+| 0.03000 | 16.7 | train | 0.251 | 0.177 | -0.11 | 3.40e-05 | -0.52 | 42.9 ± 1.4 | 2.9 | 0.0889 |
+
+Energy residual: (⟨injection⟩ − ⟨Dν + Dη⟩)/⟨Dν + Dη⟩ over the kept window and the trajectories (solver diagnostics). H_M drift: difference of the trajectory means between the two halves of the kept window, in units of its standard error. ED floor: energy distance between two reference subsamples of 512 snapshots from disjoint halves of the trajectories.
+
+### Reference: magnetic helicity spectrum and stationarity identities (H11)
+
+| η | H(k = 1) ± SE | Σ_{k ≥ 2} H(k) ± SE | E_B(1)/E_B | z of ⟨j·B⟩ | r_b | energy residual ± SE | magnetic-energy residual | restart drift E_B |
+|---|---|---|---|---|---|---|---|---|
+| 0.08000 | -0.0448 ± 0.003 | 0.00265 ± 2.40e-04 | 0.433 | -0.14 | 1.92e-04 | 2.70e-04 ± 2.15e-04 | -2.09e-04 | – |
+| 0.07253 | -0.0573 ± 0.0016 | 0.0029 ± 1.45e-04 | 0.43 | 0.48 | 5.69e-04 | -3.05e-04 ± 2.58e-04 | 3.98e-05 | 0.00651 |
+| 0.06575 | -0.07 ± 0.0015 | 0.00314 ± 1.49e-04 | 0.43 | 3.95e-04 | 2.95e-07 | 1.88e-04 ± 1.60e-04 | -8.04e-05 | – |
+| 0.05961 | -0.0737 ± 0.0024 | 0.00256 ± 2.24e-04 | 0.418 | 0.53 | 6.06e-04 | -4.54e-05 ± 2.15e-04 | 1.22e-04 | – |
+| 0.05404 | -0.078 ± 0.0015 | 0.0021 ± 1.48e-04 | 0.41 | -1.5 | 0.00121 | 6.01e-05 ± 1.72e-04 | -1.26e-04 | – |
+| 0.04899 | -0.0822 ± 0.0012 | 0.00161 ± 1.70e-04 | 0.405 | -0.7 | 8.20e-04 | -1.06e-04 ± 1.54e-04 | -3.27e-05 | 0.00795 |
+| 0.04441 | -0.0882 ± 0.0018 | 0.00124 ± 2.20e-04 | 0.401 | -0.68 | 8.54e-04 | -3.40e-05 ± 1.60e-04 | 2.70e-05 | – |
+| 0.04026 | -0.0967 ± 0.0025 | 0.00118 ± 2.73e-04 | 0.4 | -0.89 | 9.17e-04 | -9.69e-05 ± 1.61e-04 | 1.13e-05 | – |
+| 0.03650 | -0.0958 ± 0.0031 | 3.42e-05 ± 2.58e-04 | 0.387 | 0.9 | 0.00155 | -2.46e-06 ± 1.06e-04 | 1.00e-04 | – |
+| 0.03309 | -0.104 ± 0.0032 | -4.78e-04 ± 2.54e-04 | 0.386 | 0.53 | 8.60e-04 | -5.45e-05 ± 1.27e-04 | 5.35e-05 | 0.00123 |
+| 0.03000 | -0.109 ± 0.0046 | -0.00113 ± 2.80e-04 | 0.383 | -0.77 | 0.0016 | 3.40e-05 ± 1.75e-04 | 4.99e-05 | – |
+
+H11: H(1) negative by 2 SE at 11 of 11 η; Σ_{k ≥ 2} H positive by 2 SE at 8 of 11 η (fails at η = 0.03650, 0.03309, 0.03000); E_B(1)/E_B in [0.383, 0.433]; |z| of ⟨j·B⟩ above 2 at 0 of 11 η. SE over the trajectory means; r_b = |Σ_k E J(k)| / Σ_k |E J(k)| with J(k) the shell spectrum of ⟨j·B⟩.
+
+Null count of the reference against the evaluation grid (test η, same 100 snapshots): η = 0.07253: 32³: 19.5, 48³: 20.5, 64³: 21; η = 0.04899: 32³: 27.5, 48³: 29.5, 64³: 30; η = 0.03309: 32³: 33.6, 48³: 36.6, 64³: 37.6.
+
+### Noise floors of the energy distance (experiments/e4_floor.py)
+
+| η | set | trajectory-split floor, n = 512: mean ± sd [min, max] over 20 splits | random-split floor, n = 512 | ratio | E\|Y − Y'\| |
+|---|---|---|---|---|---|
+| 0.08000 | train | 0.171 ± 0.125 [0.0485, 0.541] | 0.0232 | 7.37 | 4.95 |
+| 0.07253 | test | 0.0545 ± 0.0346 [0.0231, 0.176] | 0.0135 | 4.02 | 3.51 |
+| 0.06575 | train | 0.0363 ± 0.0127 [0.0208, 0.0603] | 0.0105 | 3.45 | 3.09 |
+| 0.05961 | val | 0.0552 ± 0.0337 [0.0179, 0.13] | 0.013 | 4.26 | 3.2 |
+| 0.05404 | train | 0.0309 ± 0.0139 [0.0119, 0.065] | 0.0112 | 2.76 | 2.93 |
+| 0.04899 | test | 0.0328 ± 0.0169 [0.014, 0.0651] | 0.0131 | 2.5 | 2.92 |
+| 0.04441 | train | 0.0322 ± 0.00868 [0.0181, 0.0464] | 0.0131 | 2.45 | 3.02 |
+| 0.04026 | val | 0.0544 ± 0.035 [0.0183, 0.151] | 0.011 | 4.96 | 2.95 |
+| 0.03650 | train | 0.0442 ± 0.0265 [0.0195, 0.0997] | 0.0119 | 3.71 | 3.03 |
+| 0.03309 | test | 0.0527 ± 0.0356 [0.0159, 0.137] | 0.0131 | 4.02 | 3.09 |
+| 0.03000 | train | 0.0949 ± 0.0963 [0.0195, 0.365] | 0.0132 | 7.19 | 3.22 |
+
+The C1 ratio uses the trajectory-split floor (two reference subsamples from disjoint halves of the 24 trajectories, mean of the first 10 splits). It contains the variability between trajectories, it is uncertain (the splits reuse the same 24 trajectories) and it favours the generator: a perfect generator would score below 1 (about 0.6 by the encadrant's extrapolation, an estimate). The random-split floor is the sampling noise of 512 snapshots that ignore the trajectories.
+
+Models (experiments/e4_mhd3d.py): ResMLP 512×4, 4000 iterations, batch 128, lr 0.0005; latent dimension 5320 (potentials) or 7980 (components); 14400 training snapshots; 512 samples per validation and test η, Heun 50 steps (diffusion: 100 ancestral steps); fine-tuning 400 iterations, β = 20.0; nulls on 200 samples, restart of 128 samples over τ = 4.0; seeds [0, 1, 2, 3, 4].
+
+### Means over the test η (mean over the seeds)
+
+| variant | ED / floor | rel. div. B | |energy residual| | |magnetic balance| | err. E_B(k) | err. H_M | err. nulls | restart drift E_B | restart drift E_u | |P(H_c>0)−½| | σ(dE/dt)/σ_ref | ESS/N |
+|---|---|---|---|---|---|---|---|---|---|---|---|---|
+| G1_gaussian_full | 2.67 | 1.27e-08 | 0.00325 | 0.072 | 0.0148 | 0.0154 | 1.15 | 0.0616 | 0.0841 | 0.016 | 3.06 | 1 |
+| W9Yb_skip_sym | 12.2 | 1.28e-08 | 0.0592 | 0.051 | 0.149 | 0.19 | 1.78 | 0.13 | 0.0571 | 0.0152 | 1.71 | 1 |
+| W9Y_skip_sym_gausstraj | 8.17 | 1.27e-08 | 0.0159 | 0.057 | 0.0918 | 0.125 | 1.5 | 0.059 | 0.0705 | 0.0165 | 2.1 | 1 |
+| reference | 1 (floor) | – | 1.55e-04 | – | – | – | 0.00523 | 0.0269 | 1 | – |
+
+### Means over the val η (mean over the seeds)
+
+| variant | ED / floor | rel. div. B | |energy residual| | |magnetic balance| | err. E_B(k) | err. H_M | err. nulls | restart drift E_B | restart drift E_u | |P(H_c>0)−½| | σ(dE/dt)/σ_ref | ESS/N |
+|---|---|---|---|---|---|---|---|---|---|---|---|---|
+| G1_gaussian_full | 1.99 | 1.27e-08 | 0.00261 | 0.0597 | 0.0261 | 0.0311 | 1.16 | – | – | 0.0182 | 3.25 | 1 |
+| W9Yb_skip_sym | 7.43 | 1.28e-08 | 0.0432 | 0.0358 | 0.107 | 0.158 | 1.76 | – | – | 0.0158 | 1.87 | 1 |
+| W9Y_skip_sym_gausstraj | 7.15 | 1.25e-08 | 0.0124 | 0.0608 | 0.15 | 0.162 | 1.29 | – | – | 0.0123 | 2.52 | 1 |
+
+### Means over the train η (mean over the seeds)
+
+| variant | ED / floor | rel. div. B | |energy residual| | |magnetic balance| | err. E_B(k) | err. H_M | err. nulls | restart drift E_B | restart drift E_u | |P(H_c>0)−½| | σ(dE/dt)/σ_ref | ESS/N |
+|---|---|---|---|---|---|---|---|---|---|---|---|---|
+| G1_gaussian_full | 2.08 | 1.26e-08 | 0.0038 | 0.0872 | 0.0208 | 0.0246 | 1.15 | – | – | 0.0216 | 3.36 | 1 |
+| W9Yb_skip_sym | 5.06 | 1.27e-08 | 0.0455 | 0.0798 | 0.104 | 0.135 | 1.71 | – | – | 0.0273 | 2 | 1 |
+| W9Y_skip_sym_gausstraj | 4.48 | 1.25e-08 | 0.023 | 0.107 | 0.112 | 0.13 | 1.38 | – | – | 0.0286 | 2.51 | 1 |
+
+### Across seeds: means over the test η, mean ± sd [min, max] over 5 seeds
+
+| variant | ED / floor | |energy residual| | err. E_B(k) | err. H_M | err. nulls |
+|---|---|---|---|---|---|
+| G1_gaussian_full | 2.67 ± 0.135 [2.48, 2.81] | 0.00325 ± 0.00149 [0.00142, 0.00467] | 0.0148 ± 0.00309 [0.0117, 0.0185] | 0.0154 ± 0.00636 [0.00959, 0.0254] | 1.15 ± 0.0175 [1.13, 1.17] |
+| W9Yb_skip_sym | 12.2 ± 1.49 [10.1, 14] | 0.0592 ± 0.00484 [0.0532, 0.0658] | 0.149 ± 0.0155 [0.126, 0.166] | 0.19 ± 0.0181 [0.16, 0.204] | 1.78 ± 0.0222 [1.74, 1.8] |
+| W9Y_skip_sym_gausstraj | 8.17 ± 1.69 [6.1, 10.6] | 0.0159 ± 0.00706 [0.00743, 0.0266] | 0.0918 ± 0.0215 [0.0659, 0.123] | 0.125 ± 0.0393 [0.0677, 0.174] | 1.5 ± 0.0528 [1.42, 1.55] |
+
+### Selected generator: none
+
+This run holds no candidate for the selected generator (the Gaussian laws, the checkpoints of H28 and the corrections of the samples are not candidates): the objectives are those of the main run.
+
+
+### Paired comparisons over the seeds [0, 1, 2, 3, 4] (means over the test η; SE = sd(ddof = 1)/√n)
+
+| comparison | per-seed differences | mean ± SE | mean/SE | seeds with a positive difference |
+|---|---|---|---|---|
+| H22: |magnetic balance| of G1_gaussian_full, per seed | 0.071, 0.071, 0.0698, 0.075, 0.0732 | 0.072 ± 9.15e-04 | – | – |
+Magnetic energy balance of G1_gaussian_full (seed mean per held-out η): η = 0.0725: residual -0.0315, P/D 0.939; η = 0.0490: residual 0.0581, P/D 1.12; η = 0.0331: residual 0.126, P/D 1.29.
+
+Magnetic production over the Ohmic dissipation, split into the part carried by the mean flow (second-order statistics) and the rest (third-order moment), per held-out η; reference: mean ± SE over the trajectories; variants: mean ± SE over the seeds.
+
+| law | η = 0.0725: mean-flow part | third-order part | η = 0.0490: mean-flow part | third-order part | η = 0.0331: mean-flow part | third-order part |
+|---|---|---|---|---|---|---|
+| reference | 0.942 ± 0.0234 | 0.0583 ± 0.00745 | 1.13 ± 0.0073 | -0.129 ± 0.00528 | 1.29 ± 0.00743 | -0.292 ± 0.00874 |
+| G1_gaussian_full | 0.939 ± 0.00341 | -4.78e-04 ± 6.07e-04 | 1.12 ± 0.00315 | -2.02e-04 ± 8.47e-04 | 1.29 ± 0.00181 | -0.00153 ± 6.80e-04 |
+Third-order part of the magnetic production of the reference over the Ohmic dissipation, at the eleven η (± jackknife SE): η = 0.0800: 0.139 ± 0.0148; η = 0.0725: 0.0583 ± 0.00905; η = 0.0658: -0.0241 ± 0.00615; η = 0.0596: -0.048 ± 0.0085; η = 0.0540: -0.0904 ± 0.00426; η = 0.0490: -0.129 ± 0.00296; η = 0.0444: -0.166 ± 0.00407; η = 0.0403: -0.214 ± 0.00552; η = 0.0365: -0.245 ± 0.00679; η = 0.0331: -0.292 ± 0.00673; η = 0.0300: -0.336 ± 0.0108.
+Null points of G1_gaussian_full over those of the reference (seed mean): held-out η = 0.0725: 2.39; held-out η = 0.0490: 2.1; held-out η = 0.0331: 1.97; training η = 0.0800: 2.39; training η = 0.0540: 2.26; training η = 0.0300: 1.8.
+H25, check at the training η = 0.0800: P/D of G1 0.857 ± 0.00525 (SE over the seeds), mean-flow part of the reference 0.86 ± 0.0149 (jackknife); difference -0.00372: -0.71 SE of G1, -0.25 SE of the reference, -0.24 combined SE.
+H25, check at the training η = 0.0540: P/D of G1 1.09 ± 0.0062 (SE over the seeds), mean-flow part of the reference 1.09 ± 0.00423 (jackknife); difference -4.37e-05: -0.0071 SE of G1, -0.01 SE of the reference, -0.0058 combined SE.
+H25, check at the training η = 0.0300: P/D of G1 1.33 ± 0.00757 (SE over the seeds), mean-flow part of the reference 1.34 ± 0.0108 (jackknife); difference -0.00771: -1 SE of G1, -0.72 SE of the reference, -0.59 combined SE.
+H25, check at the validation η (G1 interpolated, outside the registered check) = 0.0596: P/D of G1 1.06 ± 0.00178 (SE over the seeds), mean-flow part of the reference 1.05 ± 0.00845 (jackknife); difference 0.0104: 5.8 SE of G1, 1.2 SE of the reference, 1.2 combined SE.
+H25, check at the validation η (G1 interpolated, outside the registered check) = 0.0403: P/D of G1 1.2 ± 0.00489 (SE over the seeds), mean-flow part of the reference 1.21 ± 0.00554 (jackknife); difference -0.014: -2.9 SE of G1, -2.5 SE of the reference, -1.9 combined SE.
+
+Restart anchored on the stationary magnetic energy of the reference, a(τ) = E_B(τ)/E_B,ref − 1 (mean over the held-out η and the seeds); overshoot = max_τ |a(τ)| − |a(0)|.
+
+| law | τ = 0 | τ = 0.125 | τ = 0.25 | τ = 0.5 | τ = 1 | τ = 2 | τ = 4 | τ = 8 | τ = 16 | overshoot ± SE | |a| at the last time ± SE |
+|---|---|---|---|---|---|---|---|---|---|---|---|
+| reference (4 draws; SE over the draws, mean over η) | 0.00233 ± 0.00492 | 0.00249 ± 0.00496 | 0.00265 ± 0.00499 | 0.00296 ± 0.00506 | 0.00356 ± 0.00517 | 0.00446 ± 0.00524 | 0.00445 ± 0.00514 | 0.00282 ± 0.00367 | 3.56e-04 ± 0.00545 | – | – |
+| G1_gaussian_full | -0.0111 | 5.85e-05 | 0.0149 | 0.0446 | 0.0811 | 0.0863 | 0.0494 | 0.0141 | 0.00956 | 0.0724 ± 0.00336 | 0.0216 ± 0.00354 |
+H26, G1_gaussian_full: initial deviation a(0) per seed -0.012, -0.0122, -0.0191, -0.01, -0.00212; overshoot per seed 0.0696, 0.0705, 0.0677, 0.0857, 0.0684 (mean 0.0724); |a| at the last time per seed 0.0205, 0.0291, 0.0271, 0.0221, 0.00888 (mean 0.0216).
+Post hoc (review of H25-H27, not registered), seed means over the held-out η: rise of E_B after the restart, max_τ a(τ) − a(0): G1_gaussian_full 0.103. Largest |a(τ)| over the course, τ = 0 included: G1_gaussian_full 0.0918. Excursion above the reference, max(0, max_τ a(τ)): G1_gaussian_full 0.0918.
+
+H32: Kac-Rice factors of the mean number of magnetic null points per field (threshold 0.1 of the rms of |B|; density of B at zero in units of rms⁻³, Jacobian where B is weak in rms³ per cell³; predicted = cells × density × Jacobian; seed means).
+
+| law | η = 0.0725: density | Jacobian | predicted | counted | η = 0.0490: density | Jacobian | predicted | counted | η = 0.0331: density | Jacobian | predicted | counted |
+|---|---|---|---|---|---|---|---|---|---|---|---|---|
+| reference | 1.33 | 1.43e-04 | 21 | 21.4 | 0.733 | 3.39e-04 | 27.5 | 28 | 0.531 | 6.01e-04 | 35.3 | 36.3 |
+| G1_gaussian_full | 0.64 | 7.09e-04 | 50.1 | 51.2 | 0.686 | 7.56e-04 | 57.3 | 58.8 | 0.69 | 9.15e-04 | 69.8 | 71.7 |
+| W9Yb_skip_sym | 0.572 | 0.00101 | 64.1 | 65.6 | 0.59 | 0.00112 | 73.4 | 75.2 | 0.566 | 0.00148 | 92.5 | 94 |
+| W9Y_skip_sym_gausstraj | 0.573 | 8.97e-04 | 56.8 | 58 | 0.613 | 9.08e-04 | 61.6 | 63.1 | 0.585 | 0.0014 | 90.4 | 92.7 |
+H32, ratios to the reference (density at zero, Jacobian): G1_gaussian_full: η = 0.0725: 0.48 and 5, η = 0.0490: 0.94 and 2.2, η = 0.0331: 1.3 and 1.5; W9Yb_skip_sym: η = 0.0725: 0.43 and 7.1, η = 0.0490: 0.8 and 3.3, η = 0.0331: 1.1 and 2.5; W9Y_skip_sym_gausstraj: η = 0.0725: 0.43 and 6.3, η = 0.0490: 0.84 and 2.7, η = 0.0331: 1.1 and 2.3.
+H32, the two checks per η and per law (largest relative change of a factor between the thresholds; relative gap of the predicted to the counted number): η = 0.0725, reference: threshold 0.28, count 0.019; η = 0.0725, G1_gaussian_full: threshold 0.057, count 0.02; η = 0.0490, reference: threshold 0.12, count 0.019; η = 0.0490, G1_gaussian_full: threshold 0.057, count 0.025; η = 0.0331, reference: threshold 0.072, count 0.03; η = 0.0331, G1_gaussian_full: threshold 0.054, count 0.027.
+H32, relative standard error over the seeds of the factors of G1_gaussian_full, not included in the errors below (as registered): 0.0024 to 0.014.
+H32, checks of the measurement (reference and G1_gaussian_full, held-out η): largest relative gap between the predicted and the counted number of null points 0.0297 (limit 0.2); largest relative change of a factor between the thresholds 0.05 or 0.2 and 0.1: 0.283 (limit 0.2): FAIL.
+H32, G1_gaussian_full over the reference (± the jackknife error of the reference over its trajectories): Jacobian where B is weak 4.97 ± 0.56, 2.23 ± 0.039, 1.52 ± 0.026 (at least 1.5 each); density at zero 0.481 ± 0.06, 0.935 ± 0.029, 1.3 ± 0.072 (at most 1.25 each); Jacobian over all the cells 1.59 ± 0.014, 1.48 ± 0.013, 1.39 ± 0.023 (below 1.25 each); at the training η, density and Jacobian where B is weak: η = 0.0800: 0.17 and 15, η = 0.0540: 0.9 and 2.5, η = 0.0300: 1.2 and 1.5. Verdict on this realisation of the data: MEASUREMENT INVALID (checks).
+
+H34: the model with the affine term trained on the data (W9Yb) and on Gaussian trajectories with the covariance and the lag-one autocorrelation of the data (W9Y); seed means ± SE.
+
+| quantity | η = 0.0725: on the data | on Gaussian trajectories | η = 0.0490: on the data | on Gaussian trajectories | η = 0.0331: on the data | on Gaussian trajectories |
+|---|---|---|---|---|---|---|
+| third-order part of the production / D (reference: 0.0583, -0.129, -0.292) | -0.0146 ± 8.60e-04 | -7.12e-04 ± 7.63e-04 | -0.0798 ± 8.29e-04 | 0.00106 ± 6.81e-04 | -0.116 ± 0.00275 | 8.04e-04 ± 9.63e-04 |
+| mean-flow part / D (reference: 0.942, 1.13, 1.29) | 0.818 ± 9.78e-04 | 0.893 ± 0.00226 | 1.01 ± 0.00401 | 1.11 ± 0.00916 | 1.13 ± 0.00549 | 1.13 ± 0.0114 |
+| E_B over that of the reference − 1 | -0.124 ± 0.00601 | 0.0287 ± 0.00602 | -0.11 ± 0.00533 | 0.101 ± 0.0175 | -0.151 ± 0.00906 | -0.0523 ± 0.02 |
+| ED / floor | 7.04 ± 0.493 | 4.23 ± 0.444 | 12 ± 0.554 | 9.74 ± 0.963 | 17.7 ± 1.39 | 10.5 ± 1.38 |
+| |magnetic balance| | 0.109 ± 5.64e-04 | 0.0569 ± 0.00132 | 0.0375 ± 0.00196 | 0.051 ± 0.00424 | 0.00634 ± 0.00167 | 0.0632 ± 0.00466 |
+| err. nulls | 2.06 ± 0.00838 | 1.71 ± 0.0175 | 1.68 ± 0.0146 | 1.25 ± 0.0339 | 1.59 ± 0.0246 | 1.55 ± 0.0642 |
+| σ(dE/dt)/σ_ref | 1.64 ± 0.0246 | 1.88 ± 0.0536 | 1.8 ± 0.0264 | 2.39 ± 0.0447 | 1.7 ± 0.024 | 2.02 ± 0.0735 |
+H34, clause a, third-order part of the model trained on Gaussian trajectories over that of the model trained on the data: η = 0.0725: 0.049 on the seed means, per seed 0.028, -0.11, 0.16, -0.016, 0.16; η = 0.0490: -0.013 on the seed means, per seed -0.042, -0.02, -0.0083, -7.97e-04, 0.0055; η = 0.0331: -0.0069 on the seed means, per seed 0.011, -0.032, 0.011, -0.012, -0.015 (below 0.3 in absolute value at the two lower η, on the seed means and in all seeds but one at most): pass. Clause b, |E_B/E_B,ref − 1| of the model trained on Gaussian trajectories and of the model trained on the data: η = 0.0725: 0.0287 and 0.124; η = 0.0490: 0.101 and 0.11; η = 0.0331: 0.0523 and 0.151 (at most half, at each η): FAIL.
+H34, checks of the measurement: largest gap of the base to the values of H25 0.00515 (limit 0.02), sign of the reference at the two lower η in at least 4 seeds: yes; largest |third-order part| of G1_gaussian_full 0.00153 and of the surrogate training sets 0.0068 (limit 0.02 each); lag-one autocorrelation weighted by the variance of the directions, data and surrogate: 0.756 and 0.754; 0.756 and 0.755; 0.769 and 0.768; 0.769 and 0.769; 0.772 and 0.772; 0.785 and 0.784; 0.785 and 0.785; 0.786 and 0.785; 0.786 and 0.786; 0.790 and 0.789; 0.790 and 0.790 (largest gap 0.00123, limit 0.03): PASS. Flow-matching loss on a fixed sample of its own training set: model trained on the data 1.1746, on Gaussian trajectories 1.0903. Verdict on this realisation of the data: REFUTED (clause b).
+Restart curve of G1_gaussian_full (signed relative change, mean over the test η and the seeds), τ = 0.125, 0.25, 0.5, 1, 2, 4, 8, 16: E_B 0.0112, 0.0261, 0.0562, 0.0932, 0.0987, 0.0616, 0.0261, 0.0214; E_u -0.00568, -0.0118, -0.0249, -0.0485, -0.0748, -0.0841, -0.0521, -0.017.
+H13: least-squares fit of ln(N_gen/N_ref) on ln(k_λ,gen/k_λ,ref) over 45 points (generators × test η × seeds): slope 3.2, intercept 0.871, R² 0.184; range of ln(k_λ ratio) [-0.0297, 0.0427].
+
+### Durations (s), per seed
+
+| seed | G1_gaussian_full | W9Yb_skip_sym | W9Y_skip_sym_gausstraj | total |
+|---|---|---|---|---|
+| 0 | 0 | 162 | 152 | 1297 |
+| 1 | 0 | 192 | 162 | 1111 |
+| 2 | 0 | 192 | 154 | 1164 |
+| 3 | 0 | 166 | 157 | 1280 |
+| 4 | 0 | 200 | 161 | 1104 |
+
 ## E4 - additional run: H29-H31: the model with the affine term recoloured onto the moments of the Gaussian laws (W15, W16), its null control (G4), G1 at the training η (G1T) and G1, 512 restarts: groups G, T and R on RunPod GPU pods split by seed (assembled by e4_assemble.py), own regenerated data
 
 Data (experiments/e4_data.py): N = 16, every mode |m_i| ≤ 5 (665 complex modes per field component pair), ν = 0.05 (Re = 10), kf = 2; training η [0.08, 0.06575, 0.054038, 0.044413, 0.036502, 0.03]; validation η [0.059607, 0.040264]; test η [0.072526, 0.04899, 0.033092]; 24 trajectories per η, transient 200.0, kept 200.0, one snapshot every 2.0; float32; generation time 555 s on 4 cores.
