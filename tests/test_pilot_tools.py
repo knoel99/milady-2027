@@ -355,6 +355,32 @@ def test_parallel_jobs_reserve_budget_and_are_capped(job_env, monkeypatch):
     assert len(jobs) == 2 and jobs[0]["reserved_usd"] == pytest.approx(1.19 * (2.25 - 10 / 60), rel=1e-2)
 
 
+def test_parallel_cap_counts_this_teams_pods_only(job_env, monkeypatch):
+    """Another team's pods fill the account: this team may still start a job, and their worst case stays reserved."""
+    import datetime as dt
+    monkeypatch.setattr(runpod_job, "PREFIX", "milady-alpha-job-")
+    cfg = dict(runpod_job.config(), budget_usd=30.0, max_parallel=2)
+    monkeypatch.setattr(runpod_job, "config", lambda: cfg)
+    monkeypatch.setattr(runpod_job, "spend", lambda: {"usd": 0.0})
+    started = (dt.datetime.now(dt.UTC) - dt.timedelta(minutes=10)).isoformat()
+    other = {"id": "o1", "name": "milady-beta-job-1", "cost": 1.0, "createdAt": started, "env": {"MAX_MIN": "120"}}
+    mcp = FakeMCP(fail_first=False)
+    mcp.pods = [other, dict(other, id="o2", name="milady-beta-job-2")]
+    with pytest.raises(AssertionError, match="get-pod"):    # the fake stops after the creation: the cap did not block it
+        runpod_job.run(args(hours="0.1"), mcp=mcp, sleep=lambda s: None)
+    assert [c for c in mcp.calls if c[0] == "create-pod"]
+    own = dict(other, name="milady-alpha-job-1")
+    mcp2 = FakeMCP(fail_first=False)
+    mcp2.pods = [own, dict(own, id="o2", name="milady-alpha-job-2")]
+    assert runpod_job.run(args(hours="0.1"), mcp=mcp2, sleep=lambda s: None) == 1      # blocked by its own two pods
+    assert not [c for c in mcp2.calls if c[0] == "create-pod"]
+    cfg["budget_usd"] = 4.5                                 # the other team's pods still reserve the shared budget
+    mcp3 = FakeMCP(fail_first=False)
+    mcp3.pods = [other, dict(other, id="o2", name="milady-beta-job-2")]              # 2 x 1.0 $/h x 2.08 h = $4.17 reserved
+    assert runpod_job.run(args(hours="1"), mcp=mcp3, sleep=lambda s: None) == 1         # + 0.72 > $4.5
+    assert not [c for c in mcp3.calls if c[0] == "create-pod"]
+
+
 def test_cleanup_deletes_only_this_teams_own_pods(job_env, monkeypatch):
     import datetime as dt
     monkeypatch.setattr(runpod_job, "PREFIX", "milady-cursor-job-")

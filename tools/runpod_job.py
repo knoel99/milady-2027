@@ -195,9 +195,13 @@ def run(args, mcp: MCP | None = None, sleep=time.sleep) -> int:
         print(f"RunPod account spend (all teams, billing may lag): ${account:.2f} of ${credit} credit",
               file=sys.stderr)
     jobs = running_jobs(mcp)  # other jobs of this tool in flight (any session): their worst case is reserved
+    # The cap on parallel jobs applies to this team's own pods (2026-11-13: the other pilot of the shared account held
+    # the four slots, and the owner lets each pilot choose its number of pods). The budget reservation below still
+    # counts the pods of every team: the credit is shared.
     limit = int(cfg.get("max_parallel", 4))
-    if len(jobs) >= limit:
-        print(f"{len(jobs)} GPU jobs already running (limit [gpu].max_parallel = {limit}): wait for one to end",
+    mine = [j for j in jobs if str(j.get("name", "")).startswith(PREFIX)]
+    if len(mine) >= limit:
+        print(f"{len(mine)} GPU jobs of this team already running (limit [gpu].max_parallel = {limit}): wait for one to end",
               file=sys.stderr)
         return 1
     reserved = sum(j["reserved_usd"] for j in jobs)
