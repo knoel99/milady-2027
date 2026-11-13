@@ -114,3 +114,5 @@
 {"time": "2026-11-13T09:11:08Z", "role": "encadrant", "commit": "5e042eb", "scope": "H143 result and H145 protocol", "verdict": "H143 REFUTED. H145 UNCHECKED.", "file": "research/calls/h143-result-encadrant.md"}
 {"time": "2026-11-13T09:12:57Z", "role": "encadrant", "commit": "fc4d037", "scope": "H145 and H146 results", "verdict": "H145 CONFIRMED. H146 REFUTED.", "file": "research/calls/h145-result-encadrant.md"}
 {"time": "2026-11-13T09:12:57Z", "role": "jury-externe", "commit": "fc4d037", "scope": "race report after the constraint comparison", "verdict": "H145 CONFIRMED. H146 CONFIRMED as a failed ratio. Report not defendable.", "file": "research/calls/race-report-jury.md"}
+{"time": "2026-11-13T09:15:32Z", "role": "encadrant", "commit": "b1e6e90", "scope": "H147 and H148 results", "verdict": "H147 REFUTED. H148 REFUTED.", "file": "research/calls/h147-result-encadrant.md"}
+{"time": "2026-11-13T09:15:32Z", "role": "jury-externe", "commit": "b1e6e90", "scope": "race report after the kmax=4 result", "verdict": "kmax=4 ratio CONFIRMED as a negative result. Report not defendable.", "file": "research/calls/race-report-jury-kmax.md"}
