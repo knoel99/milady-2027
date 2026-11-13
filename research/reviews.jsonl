@@ -111,3 +111,4 @@
 {"time": "2026-11-13T08:36:04Z", "role": "encadrant", "commit": "8dd42c1", "scope": "H139 H140 results and H142 H143 protocols", "verdict": "H139 CONFIRMED. H140 CONFIRMED. H142 UNCHECKED. H143 UNCHECKED.", "file": "research/calls/h139-result-encadrant.md"}
 {"time": "2026-11-13T09:02:18Z", "role": "encadrant", "commit": "c009356", "scope": "H142 result and H144 protocol", "verdict": "H142 CONFIRMED. H144 UNCHECKED.", "file": "research/calls/h142-result-encadrant.md"}
 {"time": "2026-11-13T09:07:48Z", "role": "encadrant", "commit": "182084e", "scope": "H141 result", "verdict": "H141 REFUTED.", "file": "research/calls/h141-result-encadrant.md"}
+{"time": "2026-11-13T09:11:08Z", "role": "encadrant", "commit": "5e042eb", "scope": "H143 result and H145 protocol", "verdict": "H143 REFUTED. H145 UNCHECKED.", "file": "research/calls/h143-result-encadrant.md"}
