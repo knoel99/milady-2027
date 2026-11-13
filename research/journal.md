@@ -2,6 +2,12 @@
 
 One entry per working session, newest first, at most ten lines.
 
+## 2026-11-13 - H60 supported, H61 and H62 refuted, team cursor
+- n = 48 seeds 5-9 at Rm = 9.064453125 are all positive. Smallest is 1.15e-5, seed 7. Pod `uof8xng35o523n`, 0.0544 USD.
+- n = 32 seed 0 at Rm = 9.0517578125 is negative, lambda -3.88e-6. Pod `juneeb2w8kanwe`, 0.0392 USD.
+- n = 64 seed 1 at Rm = 9.059814453125 is negative, lambda -2.77e-7. Pod `5yj9263580wl21`, 0.0315 USD.
+- H63, H64, and H65 ask the three midpoints. H59 is still running. The criteria were not changed.
+
 ## 2026-11-13 - H58 supported, H62 registered, team cursor
 - At n = 64, Rm = 9.06005859375, seeds 0-4 are all positive. Seed 1 is 1.24e-6. It was -1.79e-6 at Rm = 9.0595703125.
 - Pod `7psi6fa4syqtb9`, RTX 4090, 0.06 h, 0.0544 USD. Largest max_div_b is 5.13e-16. The criterion was not changed.
