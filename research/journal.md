@@ -2,6 +2,11 @@
 
 One entry per working session, newest first, at most ten lines.
 
+## 2026-11-13 - H79 supported, H83 registered, team cursor
+- At n = 64, Rm = 9.059860229492188, seeds 0-4 are all positive. Seed 1 is 7.00e-9. It was -8.75e-8 one step lower.
+- Pod `02lzppd8ook0ss`, RTX 4090, 0.05 h, 0.0464 USD. Largest max_div_b is 5.77e-16.
+- H83 asks the midpoint. H80, H81, and H82 are in flight. Local ledger about 8.53 USD.
+
 ## 2026-11-13 - H73 supported, H77 and H78 refuted, team cursor
 - n = 96 at Rm = 8.9375 is all positive. Smallest is 2.78e-4, seed 3. Pod `1zncsnmt5efp6c`, 0.1002 USD.
 - n = 48 seeds 6 and 7 are negative at Rm = 9.06256103515625. Pod `mkwv5iy5rku29p`, 0.0544 USD.
