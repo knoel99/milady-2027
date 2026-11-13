@@ -354,6 +354,16 @@ def h29_lines(runs: dict, ref: dict | None) -> list[str]:
     return out
 
 
+def _per_seed(runs: dict, v: str, key: str, split: str = "test") -> dict[float, list[float]]:
+    """Values of one variant per η, one per seed (mean over the fields of the seed is already in the file)."""
+    acc: dict = {}
+    for r in runs.values():
+        for x in r["evaluation"].get(v, {}).get(split, []):
+            if key in x:
+                acc.setdefault(round(x["eta"], 5), []).append(x[key])
+    return acc
+
+
 def h32_lines(runs: dict, ref: dict | None) -> list[str]:
     """H32: Kac-Rice factors of the number of null points (density of B at zero, Jacobian where B is weak), reference
     against G1 and the other laws of the run; verdict as registered (research/hypotheses.json)."""
@@ -395,6 +405,19 @@ def h32_lines(runs: dict, ref: dict | None) -> list[str]:
             for k in ("kr_density", "kr_jacobian"):
                 worst_eps = max(worst_eps, abs(rv(e, k + tag) / rv(e, k) - 1), abs(law(g1, k + tag)[e] / law(g1, k)[e] - 1))
     ok = worst_pred <= 0.2 and worst_eps <= 0.2
+    detail = []                                                # per η and per law (review of the encadrant role, 2026-11-13)
+    for e in etas:
+        for who, get in (("reference", lambda k, e=e: rv(e, k)), (g1, lambda k, e=e: law(g1, k)[e])):
+            eps = max(abs(get(k + tag) / get(k) - 1) for tag in ("_eps005", "_eps02") for k in ("kr_density", "kr_jacobian"))
+            cnt = get("null_count_mean") if who == "reference" else law(g1, "null_count")[e]
+            detail.append(f"η = {e:.4f}, {who}: threshold {f(eps, 2)}, count {f(abs(get('kr_predicted') / cnt - 1), 2)}")
+    out.append("H32, the two checks per η and per law (largest relative change of a factor between the thresholds; relative gap of the "
+               "predicted to the counted number): " + "; ".join(detail) + ".")
+    sems = [float(np.std(a, ddof=1) / np.sqrt(len(a)) / np.mean(a)) for k in ("kr_density", "kr_jacobian", "kr_jacobian_all")
+            for a in _per_seed(runs, g1, k).values() if len(a) > 1]
+    if sems:
+        out.append(f"H32, relative standard error over the seeds of the factors of {g1}, not included in the errors below (as registered): "
+                   f"{f(min(sems), 2)} to {f(max(sems), 2)}.")
     out.append(f"H32, checks of the measurement (reference and {g1}, held-out η): largest relative gap between the predicted and the counted "
                f"number of null points {f(worst_pred)} (limit 0.2); largest relative change of a factor between the thresholds 0.05 or 0.2 "
                f"and 0.1: {f(worst_eps)} (limit 0.2): {'PASS' if ok else 'FAIL'}.")
@@ -486,6 +509,8 @@ def h33_lines(runs: dict, ref: dict | None, root: Path = R) -> list[str]:
     sign_ok = all(int((np.sign(tb[e]) == np.sign(rv(e, "prod_fluct_over_d"))).sum()) >= need for e in low)
     sur = [abs(x) for r in runs.values() for x in r["times"].get(wz, {}).get("surrogate_third_order", {}).values()]
     base_ok = bool(dev25 <= 0.02) and sign_ok and bool(sur) and max(sur) < 0.02
+    n_sur = len({k for r in runs.values() for k in r["times"].get(wz, {}).get("surrogate_third_order", {})})
+    n_train = len([k for k, x in ref["values"].items() if x.get("split") == "train"])
     out.append("H33, third-order part of the model trained on Gaussian data over that of the model trained on the data: " + "; ".join(
         f"η = {e:.4f}: {f(ratio[e], 2)} on the seed means, per seed {', '.join(f(float(x), 2) for x in per_seed_ratio[e])}" for e in etas)
         + ("; at the training η: " + "; ".join(
@@ -496,10 +521,21 @@ def h33_lines(runs: dict, ref: dict | None, root: Path = R) -> list[str]:
           + ", ".join(f(float(tb[e].mean())) for e in etas)
           + f" (largest gap to the values of H25 for this realisation: {f(float(dev25))}, limit 0.02; sign of the reference at the "
             f"two lower η in at least {need} seeds: {'yes' if sign_ok else 'no'}). Third-order part computed on the surrogate training sets "
-            f"themselves, largest absolute value over the seeds and the training η: {f(max(sur)) if sur else 'not recorded'} (limit 0.02).")
+            f"themselves, largest absolute value over the seeds and the {n_sur} training η where it is computed (of the {n_train} of the "
+            f"training set; the register says each): {f(max(sur)) if sur else 'not recorded'} (limit 0.02).")
     g1 = next((v for v in ("G1_gaussian_full", "G1T_gaussian_full") if v in have), None)
     t1 = max(abs(a.mean()) for a in cells(g1, "prod_fluct_over_d").values()) if g1 else float("nan")
     ok = base_ok and bool(t1 < 0.02)
+    if g1:
+        ed_z, ed_g, eb_z, eb_g = cells(wz, "ed_ratio"), cells(g1, "ed_ratio"), cells(wz, "E_B"), cells(g1, "E_B")
+        if all(len(ed_z[e]) == len(ed_g[e]) for e in etas):
+            out.append(f"H33, the model trained on Gaussian data against {g1}, the law of its training set (same seed, paired; both evaluated "
+                       "against the reference): ED / floor " + "; ".join(
+                           f"η = {e:.4f}: {f(float(ed_z[e].mean()), 3)} against {f(float(ed_g[e].mean()), 3)} (difference {pm(ed_z[e] - ed_g[e])}, "
+                           f"positive in {int((ed_z[e] > ed_g[e]).sum())} of {len(ed_z[e])} seeds)" for e in etas)
+                       + "; E_B over that of the reference − 1: " + "; ".join(
+                           f"η = {e:.4f}: {f(float(eb_z[e].mean() / rv(e, 'E_B') - 1), 2)} against {f(float(eb_g[e].mean() / rv(e, 'E_B') - 1), 2)}"
+                           for e in etas) + ".")
     out.append(f"H33, largest |third-order part| of {g1}, the law of the surrogate training set, on the held-out η: {f(float(t1))} (limit 0.02). "
                f"Flow-matching loss on a fixed sample of its own training set (fixed noise): model trained on the data "
                f"{f(float(np.mean([r['times'].get(wb, {}).get('fm_loss_train_sample', np.nan) for r in runs.values()])), 5)}, model trained on "
