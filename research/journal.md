@@ -2,6 +2,11 @@
 
 One entry per working session, newest first, at most ten lines.
 
+## 2026-11-13 - H29 supported, H33 registered, team cursor
+- Five points at n = 64, Rm = 9.25, cfl = 0.5, all finite and all positive. The smallest lambda is 0.001113. Largest max_div_b is 5.91e-16.
+- Pod `i0oxzc1r3c9mjh`, RTX 4090, 0.08 h, 0.0705 USD. The sign rule was not changed. A per-seed comparison with the cfl = 1 values was not the registered claim.
+- H33 asks whether the same Rm stays positive at n = 48 for seeds 0-4. That sign may fail. H30, H31, and H32 are already on RTX 4090 pods.
+
 ## 2026-11-13 - H21, H27, H28 supported, team cursor
 - H21: seeds 5-9 at n = 160, Rm = 12. Mean lambda 0.008491. Absolute difference from the seeds 0-4 mean is 2.05e-4, under the pre-set 0.001. Pod `yn68gh7vq4v6lj`, RTX 4090, 1.12 h, 0.9924 USD.
 - H27: Rm = 9.125, seeds 0-4, all positive. Smallest lambda is 0.000396. Pod `qtiiio75dugag7`, 0.0618 USD.
