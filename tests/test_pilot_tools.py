@@ -3,6 +3,7 @@
 from __future__ import annotations
 
 import argparse
+import datetime as dt
 import io
 import json
 import sys
@@ -401,11 +402,14 @@ def test_collect_takes_over_a_pod_after_a_session_restart(job_env, monkeypatch):
     """The session's worker restarted while a job was running: the `run` process and its secret path are gone."""
     monkeypatch.setattr(runpod_job, "PREFIX", "milady-alpha-job-")
     served, execs = {}, []
+    # a pod created ten minutes ago: inside its time limit whenever the test runs (a fixed date made the test
+    # fail once the real clock passed the limit, 2026-11-13)
+    created = (dt.datetime.now(dt.timezone.utc) - dt.timedelta(minutes=10)).strftime("%Y-%m-%dT%H:%M:%SZ")
 
     class Pod(FakeMCP):
         def call(self, tool, args):
             if tool == "get-pod":
-                return {"id": "pod9", "name": "milady-alpha-job-12345678", "cost": 0.72, "createdAt": "2026-11-12T22:28:27Z",
+                return {"id": "pod9", "name": "milady-alpha-job-12345678", "cost": 0.72, "createdAt": created,
                         "gpu": {"id": "NVIDIA RTX PRO 4500 Blackwell"},
                         "env": {"OUTPUTS": "experiments/results", "MAX_MIN": "120", "REF": "a" * 40}}
             if tool == "exec-pod":
