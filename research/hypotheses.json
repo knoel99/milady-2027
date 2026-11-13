@@ -2079,6 +2079,19 @@
       "verdict": "REFUTED",
       "results": "Mean C3 is 0.0834132031037454, above 0.05. All five values are finite. Same file as H158. The refutation criterion is met.",
       "commit": ""
+    },
+    {
+      "id": "H161",
+      "statement": "The kmax=7 linear midpoint between Rm=11 and Rm=13 has a mean C3 at most 0.05. C3 is the absolute magnetic balance residual. Seeds 0-4, n=16. The cutoff is the representation constraint. The kmax=6 baseline residual is 0.0834132031037454. No network is trained.",
+      "origin": "H160 missed 0.05 at kmax=6. kmax=7 is the finest cutoff that fits on n=16. The bound was fixed before the run.",
+      "refutation_criterion": "Refuted if any C3 is non-finite, or if the mean over seeds 0-4 exceeds 0.05.",
+      "protocol": "python3 experiments/cursor_constraint_cmp.py --midpoint --kmax 7 --out experiments/results/cursor_constraint_midpoint_kmax7.json. CPU.",
+      "script": "experiments/cursor_constraint_cmp.py --midpoint --kmax 7",
+      "cost_estimate": "CPU only. No GPU dollars.",
+      "status": "registered",
+      "verdict": "",
+      "results": "",
+      "commit": ""
     }
   ]
 }
