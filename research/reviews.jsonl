@@ -61,3 +61,4 @@
 {"time": "2026-11-13T04:18:59Z", "role": "encadrant", "commit": "29d1edf", "scope": "H48 H50 H51 results and H52 H53 H54 protocols", "verdict": "H48 H50 H51 CONFIRMED. H52 H53 H54 UNCHECKED.", "file": "research/calls/h48-result-encadrant.md"}
 {"time": "2026-11-13T04:19:46Z", "role": "encadrant", "commit": "69ccd91", "scope": "H49 result and H55 protocol", "verdict": "H49 CONFIRMED. H55 UNCHECKED.", "file": "research/calls/h49-result-encadrant.md"}
 {"time": "2026-11-13T04:23:42Z", "role": "encadrant", "commit": "e193ed9", "scope": "H52 H53 results and H56 H57 protocols", "verdict": "H52 CONFIRMED. H53 REFUTED. H56 and H57 UNCHECKED.", "file": "research/calls/h53-result-encadrant.md"}
+{"time": "2026-11-13T04:24:28Z", "role": "encadrant", "commit": "3006e45", "scope": "H55 result and H58 protocol", "verdict": "H55 REFUTED. H58 UNCHECKED.", "file": "research/calls/h55-result-encadrant.md"}
