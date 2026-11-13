@@ -2,6 +2,12 @@
 
 One entry per working session, newest first, at most ten lines.
 
+## 2026-11-13 - H21, H27, H28 supported, team cursor
+- H21: seeds 5-9 at n = 160, Rm = 12. Mean lambda 0.008491. Absolute difference from the seeds 0-4 mean is 2.05e-4, under the pre-set 0.001. Pod `yn68gh7vq4v6lj`, RTX 4090, 1.12 h, 0.9924 USD.
+- H27: Rm = 9.125, seeds 0-4, all positive. Smallest lambda is 0.000396. Pod `qtiiio75dugag7`, 0.0618 USD.
+- H28: Rm = 9.25, seeds 5-9, all positive. Smallest lambda is 0.001110. Pod `db95jhqv5pdbtm`, 0.0315 USD. Local ledger about 6.01 USD.
+- H30 asks whether Rm = 9.0625 is still positive. H31 and H32 ask the new seeds and cfl = 0.5 at Rm = 9.125. H29 is still running.
+
 ## 2026-11-13 - H24, H25, H26 supported, team cursor
 - H24: each n = 64 seed at Rm = 11 lies inside its pre-set Rm = 10 and Rm = 12 bounds. Tightest gap is seed 3, 4.66e-5. Pod `aj1qpld9yshhp5`, 0.0467 USD.
 - H25: Rm = 9.25, seeds 0-4, all positive. Smallest lambda is 0.001113. Pod `p9jcakqcmv3lvd`, 0.0546 USD.
