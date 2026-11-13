@@ -138,3 +138,5 @@
 {"time": "2026-11-13T09:57:39Z", "role": "jury-externe", "commit": "26b2720", "scope": "research/race-report.md after H167", "verdict": "C5 meets 0.1 on the kmax=7 midpoint", "file": "research/calls/race-report-jury-c5.md"}
 {"time": "2026-11-13T11:53:50Z", "role": "encadrant", "commit": "ebffd58", "scope": "H168 registration and the failed pod", "verdict": "CONFIRMED no score yet; learned ratio UNCHECKED", "file": "research/calls/h168-register-encadrant.md"}
 {"time": "2026-11-13T11:53:50Z", "role": "jury-externe", "commit": "ebffd58", "scope": "team report PDF and race-report deliverables", "verdict": "CONFIRMED 34 pages; H168 score TO BE SPECIFIED", "file": "research/calls/race-report-jury-pages.md"}
+{"time": "2026-11-13T11:59:49Z", "role": "encadrant", "commit": "759734b", "scope": "H168 metrics.json", "verdict": "CONFIRMED mean 0.769 at most 1.2", "file": "research/calls/h168-result-encadrant.md"}
+{"time": "2026-11-13T11:59:49Z", "role": "jury-externe", "commit": "759734b", "scope": "H168 race report and 35-page PDF", "verdict": "CONFIRMED the bound; learned C4 not quoted", "file": "research/calls/race-report-jury-h168.md"}
