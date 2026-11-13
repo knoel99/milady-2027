@@ -2,6 +2,11 @@
 
 One entry per working session, newest first, at most ten lines.
 
+## 2026-11-13 - H96 refuted, H102 registered, team cursor
+- At n = 128, Rm = 8.90625, seeds 0 and 1 are negative. Most negative is -5.54e-4. The same Rm is positive at n = 96.
+- Pod `5ruyqody0p5tyj`, RTX 4090, 0.38 h, 0.3362 USD. Largest max_div_b is 4.13e-16.
+- H102 asks n = 128 at Rm = 9. H95 is still running. Local ledger about 10.04 USD.
+
 ## 2026-11-13 - H99 supported, H101 registered, team cursor
 - At n = 96, Rm = 8.953125, seeds 5-9 are all positive. Smallest is 1.15e-4, seed 7. Seed 7 was -2.14e-4 at Rm = 8.90625.
 - Pod `vuupjgd79fimmq`, RTX 4090, 0.13 h, 0.1152 USD. Largest max_div_b is 5.41e-16.
