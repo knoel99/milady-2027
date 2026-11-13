@@ -393,6 +393,8 @@ def e4():
             ("e4_relax_indep", "H35 on the data of the independent replication (E4_DATA_SEED=100), 512 restart states: group X"),
             ("e4_relax", "H35, first cycle (128 restart states: the null count of the reference is taken on another draw of snapshots than "
                          "in the job of H29, and check (3) of the measurement fails): group X on RunPod GPU pods split by seed"),
+            ("e4_moretraj2", "H36, second cycle: G0, W9 and G1 on a second data set of 96 trajectories of 25 snapshots per η "
+                             "(E4_DATA_SEED=300), check (1) as amended before this run: groups D and G on a RunPod GPU pod"),
             ("e4_moretraj", "H36: G0, W9 and G1 on a data set with the same number of snapshots from four times the trajectories (96 "
                             "trajectories of 25 snapshots per η, E4_DATA_SEED=200): groups D and G on a RunPod GPU pod"),
             ("e4_trajsur", "H34: the model with the affine term trained on the data and on Gaussian trajectories with the lag-one "

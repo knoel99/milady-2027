@@ -791,18 +791,22 @@ def h36_lines(runs: dict, ref: dict | None, root: Path = R) -> list[str]:
     cfg = json.loads(data_file.read_text())["config"] if data_file.exists() else {}
     if ref is None or cfg.get("n_traj", 24) == 24 or not any("W9_skip_sym" in r["evaluation"] for r in runs.values()):
         return []
-    main = json.loads((R / "e4_reference.json").read_text())["values"]
-    main_runs = load(False)
+    main_root = R / "replications" / "e4_nongauss"            # G0, W9 and G1 on the data of the main run, with the production split
+    main = json.loads((main_root / "e4_reference.json").read_text())["values"]
+    main_runs = load(False, main_root)
     rv = lambda e, k: ref["values"][f"{e:.5f}"][k]                                       # noqa: E731
     out = [f"\nH36: the same number of snapshots from more trajectories ({cfg.get('n_traj')} trajectories, kept duration {cfg.get('t_keep'):g}, "
            f"{next(iter(ref['values'].values()))['n']} snapshots per η, seed offset {cfg.get('data_seed_offset')}); seed means, "
-           "with the values of the main run (24 trajectories of 100 snapshots) in brackets.\n"]
+           "with the values of the run e4_nongauss on the data of the main run (24 trajectories of 100 snapshots) in brackets.\n"]
 
     def cell(rs: dict, rf, v: str, fn) -> dict[float, np.ndarray]:
         acc: dict = {}
         for r in rs.values():
             for x in r["evaluation"].get(v, {}).get("test", []):
-                acc.setdefault(round(x["eta"], 5), []).append(fn(x, rf[f"{x['eta']:.5f}"]))
+                try:
+                    acc.setdefault(round(x["eta"], 5), []).append(fn(x, rf[f"{x['eta']:.5f}"]))
+                except KeyError:
+                    pass
         return {e: np.asarray(a) for e, a in sorted(acc.items(), reverse=True)}
 
     sem = lambda a: float(a.std(ddof=1) / np.sqrt(len(a))) if len(a) > 1 else float("nan")   # noqa: E731
@@ -824,17 +828,23 @@ def h36_lines(runs: dict, ref: dict | None, root: Path = R) -> list[str]:
     deficit = {e: float(-dev[e].mean()) for e in etas}
     # checks: same stationary law as the main run; G1 of the new data has the energy of its reference
     d_eb = max(abs(rv(e, "E_B") / main[f"{e:.5f}"]["E_B"] - 1) for e in (float(k) for k in ref["values"]))
+    d_eb_test = max(abs(rv(e, "E_B") / main[f"{e:.5f}"]["E_B"] - 1) for e in etas)
     d_3 = max(abs(rv(e, "prod_fluct_over_d") - main[f"{e:.5f}"]["prod_fluct_over_d"]) for e in (float(k) for k in ref["values"]))
     g1 = cell(runs, ref["values"], "G1_gaussian_full", rows[0][1])
     d_g1 = max(abs(float(a.mean())) for a in g1.values()) if g1 else float("nan")
-    ok = d_eb <= 0.05 and d_3 <= 0.05 and d_g1 <= 0.05
+    # check (1) as registered for the first cycle (seed offset 200): the eleven η; as amended on 2026-11-13 for the second cycle
+    # (other seed offsets): the held-out η, where the criterion is read (see the amendments of H36 in the register)
+    first_cycle = cfg.get("data_seed_offset") == 200
+    ok = (d_eb if first_cycle else d_eb_test) <= 0.05 and d_3 <= 0.05 and d_g1 <= 0.05
     verdict = ("INCOMPLETE (fewer than five seeds)" if n_seed < 5 else "MEASUREMENT INVALID (checks)" if not ok else
                "REFUTED (the deficit is at most 0.06 at each held-out η)" if all(abs(x) <= 0.06 for x in deficit.values()) else
                "SUPPORTED (the deficit is at least 0.09 at each held-out η)" if all(x >= 0.09 for x in deficit.values()) else "INCONCLUSIVE")
     out.append("H36, deficit of magnetic energy of W9_skip_sym trained on this data set, at the held-out η: "
                + ", ".join(f"η = {e:.4f}: {f(deficit[e])} ± {f(sem(dev[e]))}" for e in etas)
                + f" ({n_seed} seeds; refuted if at most 0.06 at each η, supported if at least 0.09 at each η). Checks of the measurement: "
-                 f"reference of this data set against that of the main run, largest relative gap of E_B over the eleven η {f(d_eb)} (limit 0.05), "
+                 f"reference of this data set against that of the main run, largest relative gap of E_B over the eleven η {f(d_eb)} "
+                 f"({'limit 0.05' if first_cycle else 'reported'}) and over the held-out η {f(d_eb_test)} "
+                 f"({'reported' if first_cycle else 'limit 0.05, check as amended for the second cycle'}), "
                  f"largest gap of the third-order part {f(d_3)} (limit 0.05); largest |E_B/E_B,ref − 1| of G1 at the held-out η {f(d_g1)} "
                  f"(limit 0.05): {'PASS' if ok else 'FAIL'}. Verdict: {verdict}.")
     return out
