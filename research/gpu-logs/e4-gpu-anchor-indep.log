@@ -1,0 +1,125 @@
+torch 2.8.0+cu128 cuda True NVIDIA RTX PRO 4500 Blackwell
+[2 s] data: 128 cores
+eta 0.08000 (train) Eu 0.487 Eb 0.079 Hm -0.044 (drift -0.3 SE) balance -0.0001  508 s
+eta 0.07253 (test ) Eu 0.446 Eb 0.094 Hm -0.054 (drift +0.8 SE) balance -0.0002  519 s
+eta 0.06575 (train) Eu 0.399 Eb 0.112 Hm -0.067 (drift +0.3 SE) balance -0.0003  544 s
+eta 0.05961 (val  ) Eu 0.368 Eb 0.123 Hm -0.073 (drift -0.1 SE) balance +0.0001  540 s
+eta 0.05404 (train) Eu 0.348 Eb 0.130 Hm -0.078 (drift +0.2 SE) balance -0.0002  518 s
+eta 0.04899 (test ) Eu 0.324 Eb 0.139 Hm -0.082 (drift +0.7 SE) balance +0.0002  506 s
+eta 0.04441 (train) Eu 0.301 Eb 0.148 Hm -0.090 (drift -0.3 SE) balance -0.0001  526 s
+eta 0.04026 (val  ) Eu 0.291 Eb 0.153 Hm -0.090 (drift +0.2 SE) balance -0.0002  505 s
+eta 0.03650 (train) Eu 0.272 Eb 0.161 Hm -0.095 (drift -0.9 SE) balance +0.0002  523 s
+eta 0.03309 (test ) Eu 0.264 Eb 0.166 Hm -0.095 (drift -0.7 SE) balance -0.0002  526 s
+eta 0.03000 (train) Eu 0.256 Eb 0.173 Hm -0.101 (drift -0.5 SE) balance -0.0002  491 s
+total 547 s -> /workspace/milady/experiments/results/e4_data.json
+[551 s] reference
+eta 0.03309 nulls 44.9 ± 1.1  k_lambda 2.90  H(1) -0.0937  H(k>=2) -0.0013  E1/EB 0.37  z(j.B) -1.4  floor 0.0599
+eta 0.03000 nulls 50.9 ± 1.4  k_lambda 2.94  H(1) -0.0999  H(k>=2) -0.0015  E1/EB 0.37  z(j.B) -1.6  floor 0.0739
+reference done in 927 s
+[1480 s] models: seeds 0 1 2 3 4, 8 threads each
+eta 0.03650: trajectory floor 0.0307 ± 0.0088 [0.0154, 0.0532], random floor 0.0110, E|Y-Y'| 2.990
+eta 0.03309: trajectory floor 0.0581 ± 0.0298 [0.0240, 0.1237], random floor 0.0106, E|Y-Y'| 3.121
+eta 0.03000: trajectory floor 0.0840 ± 0.0647 [0.0227, 0.2236], random floor 0.0132, E|Y-Y'| 3.205
+seed 4 rc=0
+== W14_full_anchor_it0: test ed_ratio 2.02  div_b 1.27e-08  balance 0.005  spec_b 0.022  Hm 0.026  nulls 1.004  restart 0.056
+== W14_full_anchor_it250: test ed_ratio 2.02  div_b 1.27e-08  balance 0.005  spec_b 0.022  Hm 0.026  nulls 1.002  restart 0.056
+== W14_full_anchor_it500: test ed_ratio 2.02  div_b 1.27e-08  balance 0.005  spec_b 0.022  Hm 0.026  nulls 1.002  restart 0.056
+== W14_full_anchor_it1000: test ed_ratio 2.02  div_b 1.27e-08  balance 0.005  spec_b 0.022  Hm 0.026  nulls 1.003  restart 0.056
+== W14_full_anchor_it2000: test ed_ratio 2.02  div_b 1.27e-08  balance 0.005  spec_b 0.022  Hm 0.026  nulls 1.002  restart 0.056
+== W14_full_anchor_it4000: test ed_ratio 2.02  div_b 1.27e-08  balance 0.005  spec_b 0.022  Hm 0.026  nulls 1.001  restart 0.056
+== G1_gaussian_full: test ed_ratio 1.94  div_b 1.27e-08  balance 0.002  spec_b 0.022  Hm 0.039  nulls 1.020  restart 0.069
+total duration 1040 s
+seed 2 rc=0
+== W14_full_anchor_it0: test ed_ratio 1.87  div_b 1.27e-08  balance 0.002  spec_b 0.015  Hm 0.019  nulls 1.012  restart 0.057
+== W14_full_anchor_it250: test ed_ratio 1.87  div_b 1.27e-08  balance 0.002  spec_b 0.015  Hm 0.019  nulls 1.012  restart 0.057
+== W14_full_anchor_it500: test ed_ratio 1.87  div_b 1.27e-08  balance 0.002  spec_b 0.015  Hm 0.019  nulls 1.012  restart 0.057
+== W14_full_anchor_it1000: test ed_ratio 1.87  div_b 1.27e-08  balance 0.002  spec_b 0.015  Hm 0.020  nulls 1.013  restart 0.056
+== W14_full_anchor_it2000: test ed_ratio 1.87  div_b 1.27e-08  balance 0.002  spec_b 0.015  Hm 0.019  nulls 1.014  restart 0.057
+== W14_full_anchor_it4000: test ed_ratio 1.87  div_b 1.27e-08  balance 0.002  spec_b 0.015  Hm 0.019  nulls 1.015  restart 0.057
+== G1_gaussian_full: test ed_ratio 1.96  div_b 1.27e-08  balance 0.001  spec_b 0.010  Hm 0.022  nulls 1.021  restart 0.061
+total duration 1040 s
+seed 0 rc=0
+== W14_full_anchor_it0: test ed_ratio 2.14  div_b 1.27e-08  balance 0.004  spec_b 0.019  Hm 0.027  nulls 1.002  restart 0.043
+== W14_full_anchor_it250: test ed_ratio 2.14  div_b 1.27e-08  balance 0.004  spec_b 0.019  Hm 0.027  nulls 1.005  restart 0.043
+== W14_full_anchor_it500: test ed_ratio 2.14  div_b 1.27e-08  balance 0.004  spec_b 0.019  Hm 0.027  nulls 1.004  restart 0.043
+== W14_full_anchor_it1000: test ed_ratio 2.14  div_b 1.27e-08  balance 0.004  spec_b 0.019  Hm 0.027  nulls 1.003  restart 0.043
+== W14_full_anchor_it2000: test ed_ratio 2.14  div_b 1.27e-08  balance 0.004  spec_b 0.019  Hm 0.027  nulls 1.003  restart 0.043
+== W14_full_anchor_it4000: test ed_ratio 2.14  div_b 1.27e-08  balance 0.004  spec_b 0.019  Hm 0.027  nulls 1.003  restart 0.043
+== G1_gaussian_full: test ed_ratio 2.03  div_b 1.27e-08  balance 0.003  spec_b 0.016  Hm 0.030  nulls 0.987  restart 0.053
+total duration 1044 s
+seed 1 rc=0
+== W14_full_anchor_it0: test ed_ratio 1.89  div_b 1.27e-08  balance 0.002  spec_b 0.027  Hm 0.045  nulls 0.991  restart 0.070
+== W14_full_anchor_it250: test ed_ratio 1.89  div_b 1.27e-08  balance 0.002  spec_b 0.027  Hm 0.045  nulls 0.990  restart 0.070
+== W14_full_anchor_it500: test ed_ratio 1.89  div_b 1.26e-08  balance 0.002  spec_b 0.027  Hm 0.045  nulls 0.992  restart 0.070
+== W14_full_anchor_it1000: test ed_ratio 1.89  div_b 1.27e-08  balance 0.002  spec_b 0.027  Hm 0.044  nulls 0.994  restart 0.070
+== W14_full_anchor_it2000: test ed_ratio 1.89  div_b 1.27e-08  balance 0.002  spec_b 0.027  Hm 0.045  nulls 0.992  restart 0.070
+== W14_full_anchor_it4000: test ed_ratio 1.89  div_b 1.27e-08  balance 0.002  spec_b 0.027  Hm 0.045  nulls 0.993  restart 0.070
+== G1_gaussian_full: test ed_ratio 1.90  div_b 1.27e-08  balance 0.001  spec_b 0.018  Hm 0.027  nulls 0.973  restart 0.058
+total duration 1044 s
+seed 3 rc=0
+== W14_full_anchor_it0: test ed_ratio 1.95  div_b 1.26e-08  balance 0.002  spec_b 0.018  Hm 0.039  nulls 0.989  restart 0.064
+== W14_full_anchor_it250: test ed_ratio 1.95  div_b 1.27e-08  balance 0.002  spec_b 0.018  Hm 0.039  nulls 0.989  restart 0.063
+== W14_full_anchor_it500: test ed_ratio 1.95  div_b 1.27e-08  balance 0.002  spec_b 0.018  Hm 0.039  nulls 0.989  restart 0.063
+== W14_full_anchor_it1000: test ed_ratio 1.95  div_b 1.27e-08  balance 0.002  spec_b 0.018  Hm 0.039  nulls 0.987  restart 0.064
+== W14_full_anchor_it2000: test ed_ratio 1.95  div_b 1.26e-08  balance 0.002  spec_b 0.018  Hm 0.039  nulls 0.988  restart 0.064
+== W14_full_anchor_it4000: test ed_ratio 1.95  div_b 1.27e-08  balance 0.002  spec_b 0.018  Hm 0.039  nulls 0.989  restart 0.064
+== G1_gaussian_full: test ed_ratio 2.05  div_b 1.27e-08  balance 0.002  spec_b 0.014  Hm 0.022  nulls 1.065  restart 0.071
+total duration 1049 s
+[2531 s] done
+NVIDIA RTX PRO 4500 Blackwell, 2 MiB, 0 %
+e4_data.json
+e4_floor.json
+e4_gpu_s0.log
+e4_gpu_s1.log
+e4_gpu_s2.log
+e4_gpu_s3.log
+e4_gpu_s4.log
+e4_mhd3d_s0.json
+e4_mhd3d_s0_A.json
+e4_mhd3d_s0_B.json
+e4_mhd3d_s0_C.json
+e4_mhd3d_s0_D.json
+e4_mhd3d_s0_E.json
+e4_mhd3d_s0_F.json
+e4_mhd3d_s0_G.json
+e4_mhd3d_s1.json
+e4_mhd3d_s1_A.json
+e4_mhd3d_s1_B.json
+e4_mhd3d_s1_C.json
+e4_mhd3d_s1_D.json
+e4_mhd3d_s1_E.json
+e4_mhd3d_s1_F.json
+e4_mhd3d_s1_G.json
+e4_mhd3d_s2.json
+e4_mhd3d_s2_A.json
+e4_mhd3d_s2_B.json
+e4_mhd3d_s2_C.json
+e4_mhd3d_s2_D.json
+e4_mhd3d_s2_E.json
+e4_mhd3d_s2_F.json
+e4_mhd3d_s2_G.json
+e4_mhd3d_s3.json
+e4_mhd3d_s3_A.json
+e4_mhd3d_s3_B.json
+e4_mhd3d_s3_C.json
+e4_mhd3d_s3_D.json
+e4_mhd3d_s3_E.json
+e4_mhd3d_s3_F.json
+e4_mhd3d_s3_G.json
+e4_mhd3d_s4.json
+e4_mhd3d_s4_A.json
+e4_mhd3d_s4_B.json
+e4_mhd3d_s4_C.json
+e4_mhd3d_s4_D.json
+e4_mhd3d_s4_E.json
+e4_mhd3d_s4_F.json
+e4_mhd3d_s4_G.json
+e4_reference.json
+e4_samples_s0_GF.npz
+e4_samples_s0_all.npz
+
+--- status
+2026-11-13T08:20:53Z boot NVIDIA RTX PRO 4500 Blackwell, 32623 MiB
+2026-11-13T08:22:09Z job started
+2026-11-13T09:04:20Z job finished rc=0 in 2531 s
+2026-11-13T09:04:21Z DONE rc=0

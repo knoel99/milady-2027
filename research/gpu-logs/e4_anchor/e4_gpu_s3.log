@@ -1,0 +1,12 @@
+== W14_full_anchor_it0: test ed_ratio 2.33  div_b 1.27e-08  balance 0.003  spec_b 0.012  Hm 0.012  nulls 1.109  restart 0.068
+[W14_full_anchor] it  1000  loss 0.9043  34 s
+[W14_full_anchor] it  2000  loss 0.9001  69 s
+[W14_full_anchor] it  3000  loss 0.9055  104 s
+[W14_full_anchor] it  4000  loss 0.9036  140 s
+== W14_full_anchor_it250: test ed_ratio 2.32  div_b 1.27e-08  balance 0.003  spec_b 0.012  Hm 0.012  nulls 1.109  restart 0.068
+== W14_full_anchor_it500: test ed_ratio 2.33  div_b 1.27e-08  balance 0.003  spec_b 0.012  Hm 0.012  nulls 1.108  restart 0.068
+== W14_full_anchor_it1000: test ed_ratio 2.33  div_b 1.27e-08  balance 0.003  spec_b 0.012  Hm 0.012  nulls 1.110  restart 0.068
+== W14_full_anchor_it2000: test ed_ratio 2.33  div_b 1.27e-08  balance 0.003  spec_b 0.012  Hm 0.012  nulls 1.109  restart 0.068
+== W14_full_anchor_it4000: test ed_ratio 2.33  div_b 1.27e-08  balance 0.003  spec_b 0.012  Hm 0.012  nulls 1.110  restart 0.068
+== G1_gaussian_full: test ed_ratio 2.42  div_b 1.27e-08  balance 0.005  spec_b 0.023  Hm 0.026  nulls 1.078  restart 0.059
+total duration 1013 s

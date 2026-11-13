@@ -410,7 +410,7 @@ def select(runs: dict) -> dict:
     """Generator with the lowest validation energy-distance ratio (mean over the seeds)."""
     val = {v: float(np.nanmean(per_seed(runs, v, "ed_ratio", "val"))) for v in GENERATORS
            if not np.all(np.isnan(per_seed(runs, v, "ed_ratio", "val")))}
-    best = min((v for v in val if v in CANDIDATES), key=val.get)
+    best = min((v for v in val if v in CANDIDATES), key=val.get, default=None)     # None: a run without any candidate
     return {"variant": best, "criterion": "flow-matching or diffusion generator with the lowest energy-distance ratio on the "
             "validation η, mean over the seeds (the Gaussian laws G0, G1 and G2 are not candidates)",
             "seeds": sorted(runs), "val_ed_ratio": val}
@@ -519,26 +519,30 @@ def section(quick: bool = False, root: Path = R, replication: str | None = None,
     if not quick and not replication:
         (R / "e4_selection.json").write_text(json.dumps(sel, indent=1), encoding="utf-8")
     sv = sel["variant"]
-    P(f"\n### Selected generator: {sv}\n")
-    P("Validation energy-distance ratio (mean over the seeds): " + ", ".join(f"{k} {f(v)}" for k, v in sel["val_ed_ratio"].items()) + ".\n")
-    P("| objective | value on the held-out test η (mean over the seeds) |")
-    P("|---|---|")
-    c4 = per_seed(runs, sv, "spec_err_b_l2") + per_seed(runs, sv, "hel_m_err_rel")
-    div_max = max(x["div_rel_b_max"] for r in runs.values() for x in r["evaluation"][sv]["test"])
-    for label, val in (("C1 energy distance / floor", np.mean(per_seed(runs, sv, "ed_ratio"))),
-                       ("C2 max relative divergence of B", div_max),
-                       ("C3 |energy balance residual|", np.mean(per_seed(runs, sv, "balance_residual_total", absolute=True))),
-                       ("C4 spectrum error + helicity error", np.mean(c4)),
-                       ("C5 relative error on the null count", np.mean(per_seed(runs, sv, "null_count_err_rel"))),
-                       ("T1 restart drift of E_B", np.mean(per_seed(runs, sv, "restart_drift_eb"))),
-                       ("T2 polarity asymmetry", np.mean(per_seed(runs, sv, "hc_sign_asym")))):
-        P(f"| {label} | {f(float(val))} |")
-    if floors:
-        x20 = np.asarray([np.mean([row["ed"] / floors[f"{row['eta']:.5f}"]["traj_split_512"]["mean"]
-                                   for row in r["evaluation"][sv]["test"]]) for r in runs.values()])
-        x10 = per_seed(runs, sv, "ed_ratio")
-        P(f"\nEnergy-distance ratio of {sv} per seed with the floor of the protocol (10 splits): {', '.join(f(x) for x in x10)} "
-          f"(mean {f(float(x10.mean()))}); with the floor averaged over 20 splits: {', '.join(f(float(x)) for x in x20)} (mean {f(float(x20.mean()))}).")
+    P(f"\n### Selected generator: {sv if sv else 'none'}\n")
+    if sv is None:
+        P("This run holds no candidate for the selected generator (the Gaussian laws, the checkpoints of H28 and the corrections of "
+          "the samples are not candidates): the objectives are those of the main run.\n")
+    else:
+        P("Validation energy-distance ratio (mean over the seeds): " + ", ".join(f"{k} {f(v)}" for k, v in sel["val_ed_ratio"].items()) + ".\n")
+        P("| objective | value on the held-out test η (mean over the seeds) |")
+        P("|---|---|")
+        c4 = per_seed(runs, sv, "spec_err_b_l2") + per_seed(runs, sv, "hel_m_err_rel")
+        div_max = max(x["div_rel_b_max"] for r in runs.values() for x in r["evaluation"][sv]["test"])
+        for label, val in (("C1 energy distance / floor", np.mean(per_seed(runs, sv, "ed_ratio"))),
+                           ("C2 max relative divergence of B", div_max),
+                           ("C3 |energy balance residual|", np.mean(per_seed(runs, sv, "balance_residual_total", absolute=True))),
+                           ("C4 spectrum error + helicity error", np.mean(c4)),
+                           ("C5 relative error on the null count", np.mean(per_seed(runs, sv, "null_count_err_rel"))),
+                           ("T1 restart drift of E_B", np.mean(per_seed(runs, sv, "restart_drift_eb"))),
+                           ("T2 polarity asymmetry", np.mean(per_seed(runs, sv, "hc_sign_asym")))):
+            P(f"| {label} | {f(float(val))} |")
+        if floors:
+            x20 = np.asarray([np.mean([row["ed"] / floors[f"{row['eta']:.5f}"]["traj_split_512"]["mean"]
+                                       for row in r["evaluation"][sv]["test"]]) for r in runs.values()])
+            x10 = per_seed(runs, sv, "ed_ratio")
+            P(f"\nEnergy-distance ratio of {sv} per seed with the floor of the protocol (10 splits): {', '.join(f(x) for x in x10)} "
+              f"(mean {f(float(x10.mean()))}); with the floor averaged over 20 splits: {', '.join(f(float(x)) for x in x20)} (mean {f(float(x20.mean()))}).")
     if len(seeds) >= 2:
         P(f"\n### Paired comparisons over the seeds {seeds} (means over the test η; SE = sd(ddof = 1)/√n)\n")
         P("| comparison | per-seed differences | mean ± SE | mean/SE | seeds with a positive difference |")

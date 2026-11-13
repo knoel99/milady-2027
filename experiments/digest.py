@@ -386,7 +386,10 @@ def e4():
     from e4_digest import convergence
 
     lines = section()
-    reps = [("e4_nongauss", "tests H25-H27 of the structure beyond a Gaussian law (production split with a jackknife, restart anchored on the "
+    reps = [("e4_anchor", "H28: flow matching anchored on the full-covariance Gaussian law (W14), read along one training of 4000 iterations, "
+                          "and G1 sampled exactly: groups G and F on a RunPod GPU pod, own regenerated data"),
+            ("e4_anchor_indep", "H28 on the data of the independent replication (E4_DATA_SEED=100): groups G and F"),
+            ("e4_nongauss", "tests H25-H27 of the structure beyond a Gaussian law (production split with a jackknife, restart anchored on the "
                             "reference energy up to 16 tau, Gaussianised W9 with a null control): groups D, E, G and N on a RunPod GPU pod, "
                             "own regenerated data"),
             ("e4_nongauss_indep", "the same tests H25-H27 on the data of the independent replication (E4_DATA_SEED=100)"),
