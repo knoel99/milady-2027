@@ -2,6 +2,11 @@
 
 One entry per working session, newest first, at most ten lines.
 
+## 2026-11-13 - H149 supported, H150 refuted, team cursor
+- Hidden width 768 at kmax=4 lowers the ratio from 791.02 to 787.34. H149 holds. The gap is about 3.7.
+- H150 is refuted. 787.34 is above 1.2. The metrics file stays on the kmax=2 ratio, 757.56.
+- The next measurement is the projection ceiling, not another learned width. H138 and H144 stay in flight.
+
 ## 2026-11-13 - H147 and H148 refuted, team cursor
 - Raising kmax from 2 to 4, with hidden width 64, raises the energy-distance ratio from 757.56 to 791.02.
 - Both H147 and H148 are refuted. The extra modes did not help through a width-64 layer.

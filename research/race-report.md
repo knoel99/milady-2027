@@ -13,6 +13,7 @@ Status: open. The shared GPU budget is not exhausted. This file is a living reco
 - H145, supported. Mean maximum relative divergence of the sampling constraint is 1.560e-8. The unconstrained baseline is 0.645. The constraint is strictly smaller.
 - H146, refuted. Mean energy-distance ratio of the sampling constraint is 757.56, above the target 1.2.
 - H147 and H148, refuted. The same protocol at kmax = 4, hidden width 64, has mean ratio 791.02. Raising the mode cutoff without widening the layer does not beat the kmax = 2 baseline. File `experiments/results/cursor_constraint_kmax4.json`. The metrics file stays on the kmax = 2 run, which is the smaller ratio.
+- H149, supported. Hidden width 768 at kmax = 4 has mean ratio 787.34, below 791.02 by about 3.7. H150, refuted. That ratio is above 1.2. File `experiments/results/cursor_constraint_wide.json`.
 - `experiments/results/cursor_metrics.json` holds the sampling-constraint aggregates. C1 = 757.56. C2 = 2.204e-8 (maximum over samples). C3 = 0.876 (mean absolute magnetic balance residual). C4 = 457.41 (relative L2 spectrum error plus relative helicity error). C5 is absent, so the command still prints the sentinel.
 - T1, from `research/gpu-logs/bench-float32.log`: 0.0087 s/step at n = 128, float32. The target is 0.05 s/step.
 - C7 reads 1 after `src/milady/train/constraints.py` and `tests/test_constraints.py`. The target is 2.
@@ -26,7 +27,7 @@ Status: open. The shared GPU budget is not exhausted. This file is a living reco
 ## Conjectured
 
 - The all-positive kinematic Rm rises with resolution. The sign change between n = 128 and n = 136 at Rm = 9 is measured. The value of the threshold at n = 132 is not.
-- A wider hidden layer may bring the energy-distance ratio down. kmax alone did not. That width comparison is not yet a result.
+- The learned flow at this sample size does not approach the C1 target. Whether a perfect kmax cutoff can is not yet measured.
 
 ## Remaining work
 

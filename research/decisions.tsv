@@ -127,3 +127,5 @@ ts	phase	decision	why	evidence	result
 2026-11-13T09:14:00Z	h146	H146 refuted. The energy-distance ratio is far above 1.2.	Mean ratio 757.56 on the sampling-constraint variant, seeds 0-4, held-out Rm=12.	experiments/results/cursor_constraint_cmp.json	refuted, CPU
 2026-11-13T09:20:00Z	h147	H147 refuted. kmax=4 does not beat the kmax=2 ratio.	Mean ratio 791.02 against the baseline 757.56, hidden width 64, seeds 0-4.	experiments/results/cursor_constraint_kmax4.json	refuted, CPU
 2026-11-13T09:20:00Z	h148	H148 refuted. The kmax=4 ratio is above 1.2.	Mean ratio 791.02, seeds 0-4, held-out Rm=12.	experiments/results/cursor_constraint_kmax4.json	refuted, CPU
+2026-11-13T09:26:00Z	h149	H149 supported. A wider layer beats width 64 by a small margin.	Mean ratio 787.34 against 791.02, kmax=4, seeds 0-4. The gap does not approach 1.2.	experiments/results/cursor_constraint_wide.json	supported, CPU
+2026-11-13T09:26:00Z	h150	H150 refuted. The wide-layer ratio is above 1.2.	Mean ratio 787.34, seeds 0-4, held-out Rm=12.	experiments/results/cursor_constraint_wide.json	refuted, CPU
