@@ -53,3 +53,50 @@ def test_complete_team_passes(tmp_path):
     assert failed == []
     built = [w for ok, w in cd.checks("t", True, tmp_path) if not ok]
     assert any("PDF" in w for w in built)               # not rendered yet
+
+
+def minimal_pdf(path: Path, pages: int) -> None:
+    """An uncompressed PDF with the given number of empty pages (no dependency)."""
+    kids = " ".join(f"{3 + i} 0 R" for i in range(pages))
+    objs = ["<< /Type /Catalog /Pages 2 0 R >>", f"<< /Type /Pages /Kids [{kids}] /Count {pages} >>"]
+    objs += ["<< /Type /Page /Parent 2 0 R /MediaBox [0 0 595 842] >>"] * pages
+    body, offsets = b"%PDF-1.4\n", []
+    for i, o in enumerate(objs, 1):
+        offsets.append(len(body))
+        body += f"{i} 0 obj {o} endobj\n".encode()
+    xref = len(body)
+    body += f"xref\n0 {len(objs) + 1}\n0000000000 65535 f \n".encode()
+    body += b"".join(f"{o:010d} 00000 n \n".encode() for o in offsets)
+    body += f"trailer << /Size {len(objs) + 1} /Root 1 0 R >>\nstartxref\n{xref}\n%%EOF\n".encode()
+    path.write_bytes(body)
+
+
+def test_pdf_page_count_and_minimum(tmp_path, monkeypatch):
+    build(tmp_path)
+    report = tmp_path / "site" / "teams" / "t" / "report"
+    for name in ("index.html",):
+        (report / name).write_text("<html>")
+    (tmp_path / "site" / "teams" / "t" / "explorer" / "index.html").write_text("<html>")
+    pdf = report / "index.pdf"
+
+    def page_check(pages):
+        minimal_pdf(pdf, pages)
+        rows = [(ok, w) for ok, w in cd.checks("t", True, tmp_path) if w.startswith("PDF pages")]
+        assert len(rows) == 1
+        return rows[0]
+
+    ok, what = page_check(cd.MIN_PDF_PAGES - 1)
+    assert not ok and f"{cd.MIN_PDF_PAGES - 1} (at least {cd.MIN_PDF_PAGES}" in what
+    ok, _ = page_check(cd.MIN_PDF_PAGES)
+    assert ok
+    assert [w for ok, w in cd.checks("t", True, tmp_path) if not ok] == []          # complete and long enough
+
+    # every counter gives the same answer, and the last fallback works without pypdf or pdfinfo
+    import builtins
+    real_import = builtins.__import__
+    monkeypatch.setattr(builtins, "__import__", lambda n, *a, **k: (_ for _ in ()).throw(ImportError(n))
+                        if n == "pypdf" else real_import(n, *a, **k))
+    monkeypatch.setattr(cd.shutil, "which", lambda name: None)
+    assert cd.pdf_pages(pdf) == (cd.MIN_PDF_PAGES, "page objects")
+    pdf.write_bytes(b"%PDF-1.4 not a real pdf")
+    assert cd.pdf_pages(pdf)[0] is None                                              # reported, not raised
