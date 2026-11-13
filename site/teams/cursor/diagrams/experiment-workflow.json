@@ -3,7 +3,7 @@
   "diagram_type": "workflow",
   "meta": {
     "title": "Cursor experiment workflow",
-    "output": "site/teams/cursor/diagrams/workflow.html",
+    "output": "site/teams/cursor/diagrams/experiment-workflow.html",
     "quality_profile": "standard"
   },
   "lanes": [

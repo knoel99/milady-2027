@@ -491,6 +491,9 @@ a.tb-btn:hover { color: #0f172a; }
 .team-meta { font-size: .88rem; color: var(--muted); line-height: 1.35; display: block; }
 .team-card.ready p:last-child { font-weight: 700; }
 .team-card a { white-space: nowrap; }
+.team-logos { display: flex; align-items: center; gap: .55rem; margin-bottom: .45rem; color: var(--ink); }
+.team-logos span { display: inline-flex; }
+.team-logo { width: 1.9rem; height: 1.9rem; flex: none; }
 .team-none { font-size: .9rem; color: var(--muted); font-style: italic; }
 
 /* ======================= Narrow screens ======================= */

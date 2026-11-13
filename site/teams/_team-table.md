@@ -3,7 +3,7 @@
 | Team | Status | HTML report | PDF | Explorer | Diagrams |
 |---|---|---|---|---|---|
 | **Claude** (pilot team, also in the race) | in progress | — | — | — | — |
-| **Cursor** (pilot team) | report published | [HTML report](cursor/report/index.html) | [Download the PDF](cursor/report/index.pdf){download=""} | [Explorer](cursor/explorer/index.html) | [Agents](cursor/diagrams/agents.html) · [Architecture](cursor/diagrams/architecture.html) · [Workflow](cursor/diagrams/workflow.html) |
+| **Cursor** (pilot team) | report published | [HTML report](cursor/report/index.html) | [Download the PDF](cursor/report/index.pdf){download="milady-2027-cursor-report.pdf"} | [Explorer](cursor/explorer/index.html) | [Agent organisation](cursor/diagrams/agent-organisation.html) · [Code architecture](cursor/diagrams/code-architecture.html) · [Experiment workflow](cursor/diagrams/experiment-workflow.html) |
 | **OpenAI** (race team) | planned | — | — | — | — |
 | **Google** (race team) | planned | — | — | — | — |
 | **xAI** (race team) | planned | — | — | — | — |

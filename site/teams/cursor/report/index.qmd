@@ -36,7 +36,7 @@ format:
       - text: |
           </main>
           </div>
-          <footer class="foot"><p><a href="index.pdf">PDF</a> · <a href="../explorer/index.html">Explorer</a> · <a href="../diagrams/architecture.html">Architecture</a> · <a href="../diagrams/workflow.html">Workflow</a> · <a href="../diagrams/agents.html">Roles</a></p></footer>
+          <footer class="foot"><p><a href="index.pdf" download="milady-2027-cursor-report.pdf">PDF</a> · <a href="../explorer/index.html">Explorer</a> · <a href="../diagrams/code-architecture.html">Architecture</a> · <a href="../diagrams/experiment-workflow.html">Workflow</a> · <a href="../diagrams/agent-organisation.html">Roles</a></p></footer>
           <script defer src="../../../assets/theme.js"></script>
   pdf:
     documentclass: report
@@ -47,7 +47,7 @@ format:
     pdf-engine: xelatex
 ---
 
-The PDF of this page is [index.pdf](index.pdf). The explorer is [../explorer/index.html](../explorer/index.html).
+The PDF of this page is [index.pdf](index.pdf){download="milady-2027-cursor-report.pdf"}. The explorer is [../explorer/index.html](../explorer/index.html).
 
 # Abstract {#abstract}
 
@@ -390,30 +390,30 @@ Two modules entered the path that this team calls, with tests that name them.
 
 The flow pieces used by H168 were already in the package. `src/milady/train/fm3d.py` defines `ResMLP`. `src/milady/train/flow.py` defines `fm_loss` and `heun_sample`. `src/milady/train/data.py` defines `half_ball_modes`. The team script that wires them is `experiments/cursor_fm_train.py`. It is not a new module under `src/milady/`. Adding a third module to inflate objective C7 would be a fake. C7 is already 2 on the constraint file and the null file.
 
-The static exports below are screenshots of the Archify HTML. The HTML files are `architecture.html`, `workflow.html`, and `agents.html`.
+The static exports below are screenshots of the Archify HTML. The HTML files are `code-architecture.html`, `experiment-workflow.html`, and `agent-organisation.html`.
 
 ::: {.content-visible when-format="html"}
-The code diagram is [architecture.html](../diagrams/architecture.html).
+The code diagram is [code-architecture.html](../diagrams/code-architecture.html).
 :::
 
 ::: {.content-visible when-format="pdf"}
-![Code architecture of the cursor additions under src/milady. Static export of architecture.html.](../diagrams/architecture.png){width=92%}
+![Code architecture of the cursor additions under src/milady. Static export of code-architecture.html.](../diagrams/code-architecture.png){width=92%}
 :::
 
 ::: {.content-visible when-format="html"}
-The experiment diagram is [workflow.html](../diagrams/workflow.html).
+The experiment diagram is [experiment-workflow.html](../diagrams/experiment-workflow.html).
 :::
 
 ::: {.content-visible when-format="pdf"}
-![Experiment workflow from a registered hypothesis to a result file and the race report. Static export of workflow.html.](../diagrams/workflow.png){width=92%}
+![Experiment workflow from a registered hypothesis to a result file and the race report. Static export of experiment-workflow.html.](../diagrams/experiment-workflow.png){width=92%}
 :::
 
 ::: {.content-visible when-format="html"}
-The role diagram is [agents.html](../diagrams/agents.html).
+The role diagram is [agent-organisation.html](../diagrams/agent-organisation.html).
 :::
 
 ::: {.content-visible when-format="pdf"}
-![Team roles. The main session writes and runs. Encadrant, jury, and the ledger read what it writes. Static export of agents.html.](../diagrams/agents.png){width=92%}
+![Team roles. The main session writes and runs. Encadrant, jury, and the ledger read what it writes. Static export of agent-organisation.html.](../diagrams/agent-organisation.png){width=92%}
 :::
 
 # Discussion {#discussion}
@@ -473,6 +473,6 @@ GPU jobs are the `milady-cursor-job-*` rows of `research/compute-ledger.jsonl`. 
 
 The weights are [weights_s0.pt](https://github.com/knoel99/milady-2027/blob/cursor/pilot-step1-1008/experiments/results/cursor_fm/weights_s0.pt), [weights_s1.pt](https://github.com/knoel99/milady-2027/blob/cursor/pilot-step1-1008/experiments/results/cursor_fm/weights_s1.pt), [weights_s2.pt](https://github.com/knoel99/milady-2027/blob/cursor/pilot-step1-1008/experiments/results/cursor_fm/weights_s2.pt), [weights_s3.pt](https://github.com/knoel99/milady-2027/blob/cursor/pilot-step1-1008/experiments/results/cursor_fm/weights_s3.pt), and [weights_s4.pt](https://github.com/knoel99/milady-2027/blob/cursor/pilot-step1-1008/experiments/results/cursor_fm/weights_s4.pt). The dataset is [dataset.npz](https://github.com/knoel99/milady-2027/blob/cursor/pilot-step1-1008/experiments/results/cursor_fm/dataset.npz). The cards are [MODEL_CARD.md](https://github.com/knoel99/milady-2027/blob/cursor/pilot-step1-1008/experiments/results/cursor_fm/MODEL_CARD.md) and [DATASET_CARD.md](https://github.com/knoel99/milady-2027/blob/cursor/pilot-step1-1008/experiments/results/cursor_fm/DATASET_CARD.md).
 
-Schematic sources were rendered with the schematic-figure skill. The three diagrams were rendered with `node .claude/skills/archify/bin/archify.mjs` from `site/teams/cursor/diagrams/architecture.json`, `workflow.json`, and `agents.json`. Their HTML names are `architecture.html`, `workflow.html`, and `agents.html`.
+Schematic sources were rendered with the schematic-figure skill. The three diagrams were rendered with `node .claude/skills/archify/bin/archify.mjs` from `site/teams/cursor/diagrams/code-architecture.json`, `experiment-workflow.json`, and `agent-organisation.json`. Their HTML names are `code-architecture.html`, `experiment-workflow.html`, and `agent-organisation.html`.
 
 This page is the only report source. There is no separate `.tex` file. HTML and PDF are the two formats of `site/teams/cursor/report/index.qmd`.
