@@ -82,3 +82,4 @@
 {"time": "2026-11-13T05:19:01Z", "role": "encadrant", "commit": "8fd6311", "scope": "H93 result and H97 protocol", "verdict": "H93 REFUTED. H97 UNCHECKED.", "file": "research/calls/h93-result-encadrant.md"}
 {"time": "2026-11-13T05:22:34Z", "role": "encadrant", "commit": "80b535b", "scope": "H94 result and H98 protocol", "verdict": "H94 CONFIRMED. H98 UNCHECKED.", "file": "research/calls/h94-result-encadrant.md"}
 {"time": "2026-11-13T05:26:07Z", "role": "encadrant", "commit": "e89f82c", "scope": "H97 result and H99 protocol", "verdict": "H97 CONFIRMED. H99 UNCHECKED.", "file": "research/calls/h97-result-encadrant.md"}
+{"time": "2026-11-13T05:32:55Z", "role": "encadrant", "commit": "4460ff1", "scope": "H98 result and H100 protocol", "verdict": "H98 REFUTED. H100 UNCHECKED.", "file": "research/calls/h98-result-encadrant.md"}
