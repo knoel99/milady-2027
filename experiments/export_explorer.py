@@ -62,6 +62,14 @@ LABEL = {
     "G2_gaussianised_W9": ("G2 Gaussian law fitted to W9 samples (no network at sampling)", "family"),
     "G3_gaussianised_G1": ("G3 Gaussian law fitted to G1 samples (null control)", "family"),
     "W9N_skip_sym": ("W9 mode-wise affine term (base of G2, same job)", "design"),
+    **{f"W14_full_anchor_it{k}": (f"W14 anchor on G1, iteration {k}" + (" (untrained: G1 integrated)" if k == 0 else ""), "design")
+       for k in (0, 250, 500, 1000, 2000, 4000)},
+    "G1T_gaussian_full": ("G1 Gaussian, full covariance (restarted at the training η too)", "family"),
+    "W9R_skip_sym": ("W9 mode-wise affine term (base of the recolouring, same job)", "design"),
+    "W9R_steps_check": ("W9, 200 Heun steps instead of 50 (same noise)", "design"),
+    "W15_recoloured_modes": ("W15 W9 recoloured mode by mode onto the moments of the data", "sampling"),
+    "W16_recoloured_full": ("W16 W9 recoloured onto the full covariance of the data", "sampling"),
+    "G4_recoloured_gaussian": ("G4 Gaussian draws with the moments of W9, through the map of W16 (null control)", "family"),
     "W12_skip_stationarity": ("W12 affine term + stationarity loss", "loss"),
     "W12_skip_control": ("W12 control (same fine-tuning, no identity)", "loss"),
     "W13_skip_tilting": ("W13 affine term + exponential tilting", "sampling"),
@@ -130,7 +138,7 @@ def table_row(name: str, runs: dict, source: str, verdicts: dict) -> dict:
 def slices(quick: bool) -> dict | None:
     tag = "_quick" if quick else ""
     files = sorted(R.glob(f"e4_samples{tag}_s0_*.npz"), key=lambda p: -p.stat().st_size)
-    for name in ("e4_final_long", "e4_mech", "e4_nongauss"):                        # fields of the variants the main run does not hold
+    for name in ("e4_final_long", "e4_mech", "e4_nongauss", "e4_anchor", "e4_recolour"):                        # fields of the variants the main run does not hold
         files += sorted((R / "replications" / name).glob(f"e4_samples{tag}_s0_*.npz"))
     fields: dict = {}
     eta = None
@@ -169,7 +177,7 @@ def main() -> None:
 
     sets = [("experiments/results", load(a.quick))]
     if not a.quick:
-        sets += [(f"experiments/results/replications/{n}", load(False, R / "replications" / n)) for n in ("e4_final_long", "e4_nongauss", "e4_mech", "e4_scan2", "e4_final_scan")]
+        sets += [(f"experiments/results/replications/{n}", load(False, R / "replications" / n)) for n in ("e4_final_long", "e4_anchor", "e4_recolour", "e4_nongauss", "e4_mech", "e4_scan2", "e4_final_scan")]
     variants, table, seen = [], [], set()
     for source, runs in sets:
         if not runs:

@@ -234,6 +234,48 @@ def block_split() -> list[str]:
     return out
 
 
+def block_later(run: str, names: list[str]) -> list[str]:
+    """Table of a later job (H28: e4_anchor; H29-H31: e4_recolour): distance, the two parts of the production against the
+    reference, second moments, balances, null points and the restart anchored on the reference energy."""
+    root = R / "replications" / run
+    runs = load(False, root)
+    if not runs or not (root / "e4_reference.json").exists():
+        return ["*(not available)*"]
+    ref = json.loads((root / "e4_reference.json").read_text())["values"]
+    names = [v for v in names if n_seeds(runs, v)]
+    if not names:
+        return ["*(not available)*"]
+    etas = sorted({x["eta"] for r in runs.values() for x in r["evaluation"][names[0]]["test"]}, reverse=True)
+    rv = lambda e, k: ref[f"{e:.5f}"][k]                                                 # noqa: E731
+    head = ["Law", "ED / floor, validation $\\eta$", "ED / floor"] + [f"third-order part / reference, $\\eta$ = {e:.4f}" for e in etas] + \
+           ["mean-flow part $-$ reference", "$E_B/E_{B,\\mathrm{ref}} - 1$", "magnetic balance", "energy residual", "spectrum of B", "null points",
+            "$a_B(0)$", "excursion of $E_B$", "overshoot of $E_B$", "drift $E_B$, $\\tau = 4$", "FM loss", "Seeds"]
+    out = ["| " + " | ".join(head) + " |", "|:" + "-" * 26 + "|" + ("-" * 9 + ":|") * (len(head) - 1)]
+
+    def worst(v: str, fn) -> str:
+        """Deviation of largest absolute value over the held-out η, on the seed means (as in the registered criteria)."""
+        d = [float(np.mean([fn(x) for r in runs.values() for x in r["evaluation"][v]["test"] if x["eta"] == e])) for e in etas]
+        return f(max(d, key=abs))
+
+    def anchor(v: str, fn) -> np.ndarray:
+        return np.array([np.mean([fn(x["restart_anchor"]["eb"]) for x in r["evaluation"][v]["test"] if "restart_anchor" in x] or [np.nan])
+                         for r in runs.values()])
+
+    for v in names:
+        row = [tex(LABEL.get(v, (v, ""))[0]), cell(per_seed(runs, v, "ed_ratio", "val")), cell(per_seed(runs, v, "ed_ratio"))]
+        row += [cell(np.array([x["prod_fluct_over_d"] / rv(e, "prod_fluct_over_d") for r in runs.values() for x in r["evaluation"][v]["test"]
+                               if x["eta"] == e])) for e in etas]
+        row += [worst(v, lambda x: x["prod_mean_over_d"] - rv(x["eta"], "prod_mean_over_d")), worst(v, lambda x: x["E_B"] / rv(x["eta"], "E_B") - 1)]
+        row += [cell(per_seed(runs, v, k, absolute=True)) for k in ("balance_residual_magnetic", "balance_residual_total")]
+        row += [cell(per_seed(runs, v, "spec_err_b_l2")), cell(per_seed(runs, v, "null_count_err_rel", absolute=True))]
+        row += [cell(anchor(v, lambda a: a[0])), cell(anchor(v, lambda a: max(0.0, max(a[1:])))), cell(per_seed(runs, v, "restart_overshoot_eb")),
+                cell(per_seed(runs, v, "restart_drift_eb", absolute=True))]
+        row.append(cell(np.array([r["times"].get(v, {}).get("fm_loss_train_sample", np.nan) for r in runs.values()], dtype=float)))
+        row.append(str(n_seeds(runs, v)))
+        out.append("| " + " | ".join(row) + " |")
+    return out
+
+
 def blocks() -> dict[str, list[str]]:
     main = load(False)
     names = [v for v in LABEL if not v.endswith("_half") and not v.startswith("S_") and not v.endswith("_long")]
@@ -252,6 +294,9 @@ def blocks() -> dict[str, list[str]]:
                                       "W12_skip_stationarity", "W12_skip_control_half", "W13_skip_tilting"]) if mech else ["*(not available)*"],
         "indep": block_indep(main),
         "split": block_split(),
+        "anchor": block_later("e4_anchor", ["G1_gaussian_full"] + [f"W14_full_anchor_it{k}" for k in (0, 250, 500, 1000, 2000, 4000)]),
+        "recolour": block_later("e4_recolour", ["G1_gaussian_full", "G4_recoloured_gaussian", "W9R_skip_sym", "W9R_steps_check",
+                                                "W15_recoloured_modes", "W16_recoloured_full"]),
         "objectives": block_objectives(),
         "jobs": block_jobs(),
     }
