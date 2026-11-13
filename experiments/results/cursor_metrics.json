@@ -1,0 +1,12 @@
+{
+  "c1": 0.7693019720277114,
+  "c2": 4.576418772371203e-16,
+  "c3": 3.7436517166459855e-06,
+  "c4": 0.009292581587870299,
+  "source": "experiments/results/cursor_constraint_midpoint_kmax6.json",
+  "model": "c1 is the H168 ResMLP mean over seeds 0-4. c2 and c4 stay the kmax=6 midpoint, because the learned C4 mean is 0.309777 and misses 0.1. c3 is the dynamic total balance. c5 is the kmax=7 midpoint null-count error.",
+  "c3_source": "experiments/results/cursor_stationary.json",
+  "c5": 0.08397460868851093,
+  "c5_source": "experiments/results/cursor_nulls_midpoint_kmax7.json",
+  "c1_source": "experiments/results/cursor_fm/metrics.json"
+}

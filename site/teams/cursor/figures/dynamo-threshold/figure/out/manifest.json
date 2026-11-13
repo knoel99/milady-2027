@@ -1,0 +1,309 @@
+{
+ "name": "dynamo-threshold",
+ "mode": "design",
+ "format": "journal",
+ "widthMM": 160,
+ "heightMM": 68,
+ "W": 453.5433070866142,
+ "H": 192.75590551181105,
+ "texts": [
+  {
+   "s": "a",
+   "role": "panel",
+   "box": {
+    "x": 5.6692914962768555,
+    "y": 6.519081771373749,
+    "w": 4.5001397132873535,
+    "h": 9.000279426574705
+   },
+   "size": 7.999999999999999,
+   "minSize": 7.999999999999999,
+   "family": "Arial, Helvetica, sans-serif",
+   "color": "#1a1a1a",
+   "halo": false,
+   "rotate": 0,
+   "italic": false,
+   "weight": "bold"
+  },
+  {
+   "s": "Kinematic ABC",
+   "role": "label",
+   "box": {
+    "x": 13.669291496276855,
+    "y": 21.669105529785156,
+    "w": 50.476810455322266,
+    "h": 7.500233173370358
+   },
+   "size": 6.999999999999999,
+   "minSize": 6.999999999999999,
+   "family": "Arial, Helvetica, sans-serif",
+   "color": "#1a1a1a",
+   "halo": false,
+   "rotate": 0,
+   "italic": false,
+   "weight": "700"
+  },
+  {
+   "s": "u is imposed. B grows or decays.",
+   "role": "label",
+   "box": {
+    "x": 13.669291496276855,
+    "y": 36.419127464294434,
+    "w": 87.86991882324217,
+    "h": 6.750209808349602
+   },
+   "size": 5.999999999999999,
+   "minSize": 5.999999999999999,
+   "family": "Arial, Helvetica, sans-serif",
+   "color": "#1a1a1a",
+   "halo": false,
+   "rotate": 0,
+   "italic": false,
+   "weight": "normal"
+  },
+  {
+   "s": "flow u",
+   "role": "label",
+   "box": {
+    "x": 23.846781730651852,
+    "y": 61.29412746429443,
+    "w": 15.645017623901364,
+    "h": 6.750209808349602
+   },
+   "size": 5.999999999999999,
+   "minSize": 5.999999999999999,
+   "family": "Arial, Helvetica, sans-serif",
+   "color": "#1a1a1a",
+   "halo": false,
+   "rotate": 0,
+   "italic": false,
+   "weight": "normal"
+  },
+  {
+   "s": "field B",
+   "role": "label",
+   "box": {
+    "x": 71.34286022186278,
+    "y": 61.29412746429443,
+    "w": 16.652860641479492,
+    "h": 6.750209808349602
+   },
+   "size": 5.999999999999999,
+   "minSize": 5.999999999999999,
+   "family": "Arial, Helvetica, sans-serif",
+   "color": "#1a1a1a",
+   "halo": false,
+   "rotate": 0,
+   "italic": false,
+   "weight": "normal"
+  },
+  {
+   "s": "Sign of λ from ln||B|| on t ∈ [T/2, T]",
+   "role": "label",
+   "box": {
+    "x": 13.669291496276855,
+    "y": 93.91917705535887,
+    "w": 77.25782775878905,
+    "h": 5.2501630783081055
+   },
+   "size": 4.999999999999999,
+   "minSize": 4.999999999999999,
+   "family": "Arial, Helvetica, sans-serif",
+   "color": "#1a1a1a",
+   "halo": false,
+   "rotate": 0,
+   "italic": false,
+   "weight": "normal"
+  },
+  {
+   "s": "induction",
+   "role": "label",
+   "box": {
+    "x": 43.6806411743164,
+    "y": 65.29412460327148,
+    "w": 23.977308273315423,
+    "h": 6.750209808349595
+   },
+   "size": 5.999999999999999,
+   "minSize": 5.999999999999999,
+   "family": "Arial, Helvetica, sans-serif",
+   "color": "#1a1a1a",
+   "halo": false,
+   "rotate": 0,
+   "italic": false,
+   "weight": "normal"
+  },
+  {
+   "s": "b",
+   "role": "panel",
+   "box": {
+    "x": 300.4724426269531,
+    "y": 6.519081771373749,
+    "w": 5.2501630783081055,
+    "h": 9.000279426574705
+   },
+   "size": 7.999999999999999,
+   "minSize": 7.999999999999999,
+   "family": "Arial, Helvetica, sans-serif",
+   "color": "#1a1a1a",
+   "halo": false,
+   "rotate": 0,
+   "italic": false,
+   "weight": "bold"
+  },
+  {
+   "s": "Rm",
+   "role": "label",
+   "box": {
+    "x": 324.5875549316406,
+    "y": 71.6691732406616,
+    "w": 8.105449676513672,
+    "h": 5.2501630783081055
+   },
+   "size": 4.999999999999999,
+   "minSize": 4.999999999999999,
+   "family": "Arial, Helvetica, sans-serif",
+   "color": "#1a1a1a",
+   "halo": false,
+   "rotate": 0,
+   "italic": false,
+   "weight": "normal"
+  },
+  {
+   "s": "sign",
+   "role": "label",
+   "box": {
+    "x": 301.72232604026794,
+    "y": 46.86955881118774,
+    "w": 5.2501630783081055,
+    "h": 9.381906509399414
+   },
+   "size": 4.999999999999999,
+   "minSize": 4.999999999999999,
+   "family": "Arial, Helvetica, sans-serif",
+   "color": "#1a1a1a",
+   "halo": false,
+   "rotate": 0,
+   "italic": false,
+   "weight": "normal"
+  },
+  {
+   "s": "n = 128, seeds 0–4",
+   "role": "label",
+   "box": {
+    "x": 307.1670951843262,
+    "y": 19.919175148010254,
+    "w": 42.83157730102539,
+    "h": 5.250163078308102
+   },
+   "size": 4.999999999999999,
+   "minSize": 4.999999999999999,
+   "family": "Arial, Helvetica, sans-serif",
+   "color": "#1a1a1a",
+   "halo": false,
+   "rotate": 0,
+   "italic": false,
+   "weight": "normal"
+  }
+ ],
+ "strokes": [
+  {
+   "w": 0.39999999999999997,
+   "tag": "rect",
+   "part": "box"
+  },
+  {
+   "w": 0.39999999999999997,
+   "tag": "rect",
+   "part": "box"
+  },
+  {
+   "w": 0.5999999999999999,
+   "tag": "path",
+   "part": "arrow-shaft"
+  },
+  {
+   "w": 0.39999999999999997,
+   "tag": "path",
+   "part": "arrow-shaft"
+  },
+  {
+   "w": 0.39999999999999997,
+   "tag": "path",
+   "part": "arrow-shaft"
+  }
+ ],
+ "images": [],
+ "anchors": {
+  "u.left": {
+   "x": 13.669291496276855,
+   "y": 64.66929149627686
+  },
+  "u.right": {
+   "x": 49.66929149627685,
+   "y": 64.66929149627686
+  },
+  "u.top": {
+   "x": 31.669291496276852,
+   "y": 53.66929149627685
+  },
+  "u.bottom": {
+   "x": 31.669291496276852,
+   "y": 75.66929149627684
+  },
+  "u.center": {
+   "x": 31.669291496276852,
+   "y": 64.66929149627686
+  },
+  "b.left": {
+   "x": 61.66929149627685,
+   "y": 64.66929149627686
+  },
+  "b.right": {
+   "x": 97.66929149627684,
+   "y": 64.66929149627686
+  },
+  "b.top": {
+   "x": 79.66929149627684,
+   "y": 53.66929149627685
+  },
+  "b.bottom": {
+   "x": 79.66929149627684,
+   "y": 75.66929149627684
+  },
+  "b.center": {
+   "x": 79.66929149627684,
+   "y": 64.66929149627686
+  }
+ },
+ "relations": [
+  {
+   "from": "u.right",
+   "to": "b.left",
+   "kind": "drives"
+  }
+ ],
+ "drawn": [
+  {
+   "from": "u.right",
+   "to": "b.left",
+   "kind": "flow"
+  }
+ ],
+ "panels": [
+  {
+   "label": "a",
+   "x": 5.669291338582678,
+   "y": 5.669291338582678,
+   "w": 283.46456692913387,
+   "h": 181.4173228346457
+  },
+  {
+   "label": "b",
+   "x": 300.4724409448819,
+   "y": 5.669291338582678,
+   "w": 147.40157480314963,
+   "h": 181.4173228346457
+  }
+ ]
+}

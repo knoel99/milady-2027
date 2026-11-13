@@ -1,0 +1,354 @@
+{
+ "name": "pipeline-panel",
+ "mode": "design",
+ "format": "journal",
+ "widthMM": 160,
+ "heightMM": 62,
+ "W": 453.5433070866142,
+ "H": 175.74803149606302,
+ "texts": [
+  {
+   "s": "a",
+   "role": "panel",
+   "box": {
+    "x": 5.6692914962768555,
+    "y": 6.519217669963837,
+    "w": 4.500049114227295,
+    "h": 9.00009822845459
+   },
+   "size": 8,
+   "minSize": 8,
+   "family": "Arial, Helvetica, sans-serif",
+   "color": "#1a1a1a",
+   "halo": false,
+   "rotate": 0,
+   "italic": false,
+   "weight": "bold"
+  },
+  {
+   "s": "ABC field",
+   "role": "label",
+   "box": {
+    "x": 15.182826042175293,
+    "y": 80.29423809051514,
+    "w": 24.972929000854492,
+    "h": 6.750073432922363
+   },
+   "size": 6,
+   "minSize": 6,
+   "family": "Arial, Helvetica, sans-serif",
+   "color": "#1a1a1a",
+   "halo": false,
+   "rotate": 0,
+   "italic": false,
+   "weight": "normal"
+  },
+  {
+   "s": "n = 16",
+   "role": "label",
+   "box": {
+    "x": 20.65554141998291,
+    "y": 103.9192533493042,
+    "w": 14.242327690124512,
+    "h": 5.250057220458984
+   },
+   "size": 5,
+   "minSize": 5,
+   "family": "Arial, Helvetica, sans-serif",
+   "color": "#1a1a1a",
+   "halo": false,
+   "rotate": 0,
+   "italic": false,
+   "weight": "normal"
+  },
+  {
+   "s": "Fourier pack",
+   "role": "label",
+   "box": {
+    "x": 49.02848720550537,
+    "y": 80.29423809051514,
+    "w": 33.286842346191406,
+    "h": 6.750073432922363
+   },
+   "size": 6,
+   "minSize": 6,
+   "family": "Arial, Helvetica, sans-serif",
+   "color": "#1a1a1a",
+   "halo": false,
+   "rotate": 0,
+   "italic": false,
+   "weight": "normal"
+  },
+  {
+   "s": "|m| ≤ kmax",
+   "role": "label",
+   "box": {
+    "x": 53.569552421569824,
+    "y": 103.9192533493042,
+    "w": 24.6972713470459,
+    "h": 5.250057220458984
+   },
+   "size": 5,
+   "minSize": 5,
+   "family": "Arial, Helvetica, sans-serif",
+   "color": "#1a1a1a",
+   "halo": false,
+   "rotate": 0,
+   "italic": false,
+   "weight": "normal"
+  },
+  {
+   "s": "ResMLP flow",
+   "role": "label",
+   "box": {
+    "x": 86.0851240158081,
+    "y": 80.29423809051514,
+    "w": 35.34233856201172,
+    "h": 6.750073432922363
+   },
+   "size": 6,
+   "minSize": 6,
+   "family": "Arial, Helvetica, sans-serif",
+   "color": "#1a1a1a",
+   "halo": false,
+   "rotate": 0,
+   "italic": false,
+   "weight": "normal"
+  },
+  {
+   "s": "v(x, t, Rm)",
+   "role": "label",
+   "box": {
+    "x": 92.15549755096436,
+    "y": 103.9192533493042,
+    "w": 23.0275936126709,
+    "h": 5.250057220458984
+   },
+   "size": 5,
+   "minSize": 5,
+   "family": "Arial, Helvetica, sans-serif",
+   "color": "#1a1a1a",
+   "halo": false,
+   "rotate": 0,
+   "italic": false,
+   "weight": "normal"
+  },
+  {
+   "s": "Decode",
+   "role": "label",
+   "box": {
+    "x": 131.3449583053589,
+    "y": 80.29423809051514,
+    "w": 21.06012725830078,
+    "h": 6.750073432922363
+   },
+   "size": 6,
+   "minSize": 6,
+   "family": "Arial, Helvetica, sans-serif",
+   "color": "#1a1a1a",
+   "halo": false,
+   "rotate": 0,
+   "italic": false,
+   "weight": "normal"
+  },
+  {
+   "s": "real B",
+   "role": "label",
+   "box": {
+    "x": 135.14773082733154,
+    "y": 103.9192533493042,
+    "w": 13.461511611938477,
+    "h": 5.250057220458984
+   },
+   "size": 5,
+   "minSize": 5,
+   "family": "Arial, Helvetica, sans-serif",
+   "color": "#1a1a1a",
+   "halo": false,
+   "rotate": 0,
+   "italic": false,
+   "weight": "normal"
+  },
+  {
+   "s": "Held-out Rm = 12 is never a training condition",
+   "role": "label",
+   "box": {
+    "x": 22.836600303649902,
+    "y": 28.41923427581787,
+    "w": 121.66539001464844,
+    "h": 6.750073432922363
+   },
+   "size": 6,
+   "minSize": 6,
+   "family": "Arial, Helvetica, sans-serif",
+   "color": "#1a1a1a",
+   "halo": false,
+   "rotate": 0,
+   "italic": false,
+   "weight": "normal"
+  }
+ ],
+ "strokes": [
+  {
+   "w": 0.4,
+   "tag": "rect",
+   "part": "box"
+  },
+  {
+   "w": 0.4,
+   "tag": "rect",
+   "part": "box"
+  },
+  {
+   "w": 0.4,
+   "tag": "rect",
+   "part": "box"
+  },
+  {
+   "w": 0.4,
+   "tag": "rect",
+   "part": "box"
+  },
+  {
+   "w": 0.6,
+   "tag": "path",
+   "part": "arrow-shaft"
+  },
+  {
+   "w": 0.6,
+   "tag": "path",
+   "part": "arrow-shaft"
+  },
+  {
+   "w": 0.6,
+   "tag": "path",
+   "part": "arrow-shaft"
+  }
+ ],
+ "images": [],
+ "anchors": {
+  "data.left": {
+   "x": 13.669291496276855,
+   "y": 83.66929149627686
+  },
+  "data.right": {
+   "x": 41.669291496276855,
+   "y": 83.66929149627686
+  },
+  "data.top": {
+   "x": 27.669291496276855,
+   "y": 67.66929149627686
+  },
+  "data.bottom": {
+   "x": 27.669291496276855,
+   "y": 99.66929149627686
+  },
+  "data.center": {
+   "x": 27.669291496276855,
+   "y": 83.66929149627686
+  },
+  "pack.left": {
+   "x": 51.669291496276855,
+   "y": 83.66929149627686
+  },
+  "pack.right": {
+   "x": 79.66929149627686,
+   "y": 83.66929149627686
+  },
+  "pack.top": {
+   "x": 65.66929149627686,
+   "y": 67.66929149627686
+  },
+  "pack.bottom": {
+   "x": 65.66929149627686,
+   "y": 99.66929149627686
+  },
+  "pack.center": {
+   "x": 65.66929149627686,
+   "y": 83.66929149627686
+  },
+  "flow.left": {
+   "x": 89.66929149627686,
+   "y": 83.66929149627686
+  },
+  "flow.right": {
+   "x": 117.66929149627686,
+   "y": 83.66929149627686
+  },
+  "flow.top": {
+   "x": 103.66929149627686,
+   "y": 67.66929149627686
+  },
+  "flow.bottom": {
+   "x": 103.66929149627686,
+   "y": 99.66929149627686
+  },
+  "flow.center": {
+   "x": 103.66929149627686,
+   "y": 83.66929149627686
+  },
+  "decode.left": {
+   "x": 127.66929149627686,
+   "y": 83.66929149627686
+  },
+  "decode.right": {
+   "x": 155.66929149627686,
+   "y": 83.66929149627686
+  },
+  "decode.top": {
+   "x": 141.66929149627686,
+   "y": 67.66929149627686
+  },
+  "decode.bottom": {
+   "x": 141.66929149627686,
+   "y": 99.66929149627686
+  },
+  "decode.center": {
+   "x": 141.66929149627686,
+   "y": 83.66929149627686
+  }
+ },
+ "relations": [
+  {
+   "from": "data.right",
+   "to": "pack.left",
+   "kind": "next"
+  },
+  {
+   "from": "pack.right",
+   "to": "flow.left",
+   "kind": "next"
+  },
+  {
+   "from": "flow.right",
+   "to": "decode.left",
+   "kind": "next"
+  }
+ ],
+ "drawn": [
+  {
+   "from": "data.right",
+   "to": "pack.left",
+   "kind": "flow"
+  },
+  {
+   "from": "pack.right",
+   "to": "flow.left",
+   "kind": "flow"
+  },
+  {
+   "from": "flow.right",
+   "to": "decode.left",
+   "kind": "flow"
+  }
+ ],
+ "panels": [
+  {
+   "label": "a",
+   "x": 5.669291338582678,
+   "y": 5.669291338582678,
+   "w": 442.2047244094489,
+   "h": 164.40944881889766
+  }
+ ]
+}

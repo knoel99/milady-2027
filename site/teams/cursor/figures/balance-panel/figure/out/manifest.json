@@ -1,0 +1,212 @@
+{
+ "name": "balance-panel",
+ "mode": "design",
+ "format": "journal",
+ "widthMM": 160,
+ "heightMM": 64,
+ "W": 453.5433070866142,
+ "H": 181.4173228346457,
+ "texts": [
+  {
+   "s": "a",
+   "role": "panel",
+   "box": {
+    "x": 5.6692914962768555,
+    "y": 6.518891215324402,
+    "w": 4.500267028808594,
+    "h": 9.000534057617188
+   },
+   "size": 8,
+   "minSize": 8,
+   "family": "Arial, Helvetica, sans-serif",
+   "color": "#1a1a1a",
+   "halo": false,
+   "rotate": 0,
+   "italic": false,
+   "weight": "bold"
+  },
+  {
+   "s": "Total balance",
+   "role": "label",
+   "box": {
+    "x": 13.669291496276855,
+    "y": 21.668935775756836,
+    "w": 44.194026947021484,
+    "h": 7.500445365905762
+   },
+   "size": 7,
+   "minSize": 7,
+   "family": "Arial, Helvetica, sans-serif",
+   "color": "#1a1a1a",
+   "halo": false,
+   "rotate": 0,
+   "italic": false,
+   "weight": "700"
+  },
+  {
+   "s": "injection = viscous + ohmic",
+   "role": "label",
+   "box": {
+    "x": 13.669291496276855,
+    "y": 36.41898059844971,
+    "w": 71.57134246826172,
+    "h": 6.750400543212891
+   },
+   "size": 6,
+   "minSize": 6,
+   "family": "Arial, Helvetica, sans-serif",
+   "color": "#1a1a1a",
+   "halo": false,
+   "rotate": 0,
+   "italic": false,
+   "weight": "normal"
+  },
+  {
+   "s": "Second-half mean |residual|",
+   "role": "label",
+   "box": {
+    "x": 13.669291496276855,
+    "y": 53.919066429138184,
+    "w": 62.18753433227539,
+    "h": 5.250311851501465
+   },
+   "size": 5,
+   "minSize": 5,
+   "family": "Arial, Helvetica, sans-serif",
+   "color": "#1a1a1a",
+   "halo": false,
+   "rotate": 0,
+   "italic": false,
+   "weight": "normal"
+  },
+  {
+   "s": "3.74e-6 on five seeds",
+   "role": "label",
+   "box": {
+    "x": 13.669291496276855,
+    "y": 64.41898250579834,
+    "w": 60.33826446533203,
+    "h": 6.750400543212891
+   },
+   "size": 6,
+   "minSize": 6,
+   "family": "Arial, Helvetica, sans-serif",
+   "color": "#1a1a1a",
+   "halo": false,
+   "rotate": 0,
+   "italic": false,
+   "weight": "700"
+  },
+  {
+   "s": "b",
+   "role": "panel",
+   "box": {
+    "x": 232.4409484863281,
+    "y": 6.518891215324402,
+    "w": 5.250311851501465,
+    "h": 9.000534057617188
+   },
+   "size": 8,
+   "minSize": 8,
+   "family": "Arial, Helvetica, sans-serif",
+   "color": "#1a1a1a",
+   "halo": false,
+   "rotate": 0,
+   "italic": false,
+   "weight": "bold"
+  },
+  {
+   "s": "Magnetic residual",
+   "role": "label",
+   "box": {
+    "x": 240.4409484863281,
+    "y": 21.668935775756836,
+    "w": 59.1011657714844,
+    "h": 7.500445365905762
+   },
+   "size": 7,
+   "minSize": 7,
+   "family": "Arial, Helvetica, sans-serif",
+   "color": "#1a1a1a",
+   "halo": false,
+   "rotate": 0,
+   "italic": false,
+   "weight": "700"
+  },
+  {
+   "s": "exchange kept, no growth subtracted",
+   "role": "label",
+   "box": {
+    "x": 240.4409484863281,
+    "y": 37.91907024383545,
+    "w": 82.0974044799805,
+    "h": 5.250311851501465
+   },
+   "size": 5,
+   "minSize": 5,
+   "family": "Arial, Helvetica, sans-serif",
+   "color": "#1a1a1a",
+   "halo": false,
+   "rotate": 0,
+   "italic": false,
+   "weight": "normal"
+  },
+  {
+   "s": "Same window, mean |residual|",
+   "role": "label",
+   "box": {
+    "x": 240.4409484863281,
+    "y": 53.919066429138184,
+    "w": 67.73322296142581,
+    "h": 5.250311851501465
+   },
+   "size": 5,
+   "minSize": 5,
+   "family": "Arial, Helvetica, sans-serif",
+   "color": "#1a1a1a",
+   "halo": false,
+   "rotate": 0,
+   "italic": false,
+   "weight": "normal"
+  },
+  {
+   "s": "0.067, above 0.05",
+   "role": "label",
+   "box": {
+    "x": 240.4409484863281,
+    "y": 64.41898250579834,
+    "w": 49.361034393310575,
+    "h": 6.750400543212891
+   },
+   "size": 6,
+   "minSize": 6,
+   "family": "Arial, Helvetica, sans-serif",
+   "color": "#1a1a1a",
+   "halo": false,
+   "rotate": 0,
+   "italic": false,
+   "weight": "700"
+  }
+ ],
+ "strokes": [],
+ "images": [],
+ "anchors": {},
+ "relations": [],
+ "drawn": [],
+ "panels": [
+  {
+   "label": "a",
+   "x": 5.669291338582678,
+   "y": 5.669291338582678,
+   "w": 215.43307086614175,
+   "h": 170.07874015748033
+  },
+  {
+   "label": "b",
+   "x": 232.44094488188978,
+   "y": 5.669291338582678,
+   "w": 215.43307086614175,
+   "h": 170.07874015748033
+  }
+ ]
+}

@@ -1,0 +1,10 @@
+{"Rm": 6.0, "n": 48, "seed": 0, "t": 120.0, "dt_cap": 0.05, "cfl": 1.0, "cfl_dt0": 0.015713484026367724, "steps": 7680, "lambda": -0.0465286329255565, "max_div_b": 3.002182859640679e-16, "finite": true, "ok": true}
+{"Rm": 12.0, "n": 48, "seed": 0, "t": 120.0, "dt_cap": 0.05, "cfl": 1.0, "cfl_dt0": 0.015713484026367724, "steps": 7680, "lambda": 0.008813740207138356, "max_div_b": 5.498708475956241e-16, "finite": true, "ok": true}
+{"Rm": 20.0, "n": 48, "seed": 0, "t": 120.0, "dt_cap": 0.05, "cfl": 1.0, "cfl_dt0": 0.015713484026367724, "steps": 7680, "lambda": -0.003163357706207703, "max_div_b": 8.742226337833309e-16, "finite": true, "ok": true}
+{"Rm": 30.0, "n": 48, "seed": 0, "t": 120.0, "dt_cap": 0.05, "cfl": 1.0, "cfl_dt0": 0.015713484026367724, "steps": 7680, "lambda": 0.012425283927946703, "max_div_b": 9.331474506076454e-16, "finite": true, "ok": true}
+
+--- status
+2026-11-12T22:21:17Z boot NVIDIA A40, 46068 MiB
+2026-11-12T22:22:24Z job started
+2026-11-12T22:23:11Z job finished rc=0 in 47 s
+2026-11-12T22:23:11Z DONE rc=0

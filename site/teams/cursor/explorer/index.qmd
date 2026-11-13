@@ -1,0 +1,23 @@
+---
+title: "Cursor result explorer"
+lang: en
+format:
+  html:
+    toc: true
+    embed-resources: true
+---
+
+The written report is [../report/index.html](../report/index.html).
+
+# Inputs
+
+<label>Seed <input id="seed" type="number" min="0" max="4" value="0"></label>
+<label>File
+<select id="file">
+  <option>cursor_metrics.json</option>
+  <option>cursor_nulls.json</option>
+  <option>cursor_stationary.json</option>
+</select>
+</label>
+
+The bundle is `data/bundle.json`, written by `experiments/export_explorer.py --team cursor`. It copies the committed result files. Nothing here is recomputed.

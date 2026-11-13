@@ -1,0 +1,21 @@
+{
+  "schema_version": 1,
+  "diagram_type": "architecture",
+  "meta": {
+    "title": "Cursor team roles",
+    "output": "site/teams/cursor/diagrams/agents.html",
+    "visual_preset": "blueprint",
+    "quality_profile": "standard"
+  },
+  "components": [
+    { "id": "main", "type": "backend", "label": "Main session", "sublabel": "writes and runs", "pos": [280, 40], "size": [160, 60] },
+    { "id": "enc", "type": "security", "label": "Encadrant", "sublabel": "tries to refute", "pos": [40, 200], "size": [150, 60] },
+    { "id": "jury", "type": "security", "label": "Jury", "sublabel": "reads the race report", "pos": [280, 200], "size": [160, 60] },
+    { "id": "ledger", "type": "database", "label": "Ledger", "sublabel": "hours and dollars", "pos": [520, 200], "size": [150, 60] }
+  ],
+  "connections": [
+    { "from": "main", "to": "enc", "label": "result" },
+    { "from": "main", "to": "jury", "label": "report", "labelAt": [360, 150] },
+    { "from": "main", "to": "ledger", "label": "GPU row" }
+  ]
+}

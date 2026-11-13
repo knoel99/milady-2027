@@ -1,0 +1,23 @@
+{
+  "schema_version": 1,
+  "diagram_type": "architecture",
+  "meta": {
+    "title": "Cursor additions under src/milady",
+    "output": "site/teams/cursor/diagrams/architecture.html",
+    "visual_preset": "blueprint",
+    "quality_profile": "standard"
+  },
+  "components": [
+    { "id": "flow", "type": "backend", "label": "train/fm3d.py", "sublabel": "ResMLP velocity", "pos": [40, 80], "size": [160, 64] },
+    { "id": "loss", "type": "backend", "label": "train/flow.py", "sublabel": "flow-matching loss", "pos": [260, 80], "size": [160, 64] },
+    { "id": "proj", "type": "security", "label": "train/constraints.py", "sublabel": "solenoidal projection", "pos": [480, 80], "size": [180, 64] },
+    { "id": "nulls", "type": "backend", "label": "eval/nulls.py", "sublabel": "trilinear count", "pos": [260, 220], "size": [160, 64] },
+    { "id": "tests", "type": "external", "label": "tests", "sublabel": "one test file each", "pos": [480, 220], "size": [160, 64] }
+  ],
+  "connections": [
+    { "from": "flow", "to": "loss", "label": "v(x, t, c)" },
+    { "from": "loss", "to": "proj", "label": "after Heun" },
+    { "from": "nulls", "to": "tests" },
+    { "from": "proj", "to": "tests" }
+  ]
+}

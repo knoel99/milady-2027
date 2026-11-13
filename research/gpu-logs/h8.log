@@ -1,0 +1,11 @@
+{"Rm": 12.0, "n": 64, "seed": 0, "t": 120.0, "dt_cap": 0.05, "cfl": 0.5, "cfl_dt0": 0.005611958580845615, "steps": 21480, "lambda": 0.007711343242288457, "max_div_b": 3.5631165718340735e-16, "finite": true, "ok": true}
+{"Rm": 12.0, "n": 64, "seed": 1, "t": 120.0, "dt_cap": 0.05, "cfl": 0.5, "cfl_dt0": 0.005611958580845615, "steps": 21480, "lambda": 0.007720343682981375, "max_div_b": 3.3955189388956894e-16, "finite": true, "ok": true}
+{"Rm": 12.0, "n": 64, "seed": 2, "t": 120.0, "dt_cap": 0.05, "cfl": 0.5, "cfl_dt0": 0.005611958580845615, "steps": 21480, "lambda": 0.00794087851909774, "max_div_b": 5.62760495599137e-16, "finite": true, "ok": true}
+{"Rm": 12.0, "n": 64, "seed": 3, "t": 120.0, "dt_cap": 0.05, "cfl": 0.5, "cfl_dt0": 0.005611958580845615, "steps": 21480, "lambda": 0.008459742221444091, "max_div_b": 4.794589959668079e-16, "finite": true, "ok": true}
+{"Rm": 12.0, "n": 64, "seed": 4, "t": 120.0, "dt_cap": 0.05, "cfl": 0.5, "cfl_dt0": 0.005611958580845615, "steps": 21480, "lambda": 0.007190694468952674, "max_div_b": 2.850557071539037e-16, "finite": true, "ok": true}
+
+--- status
+2026-11-12T22:56:30Z boot NVIDIA RTX PRO 4500 Blackwell, 32623 MiB
+2026-11-12T22:57:52Z job started
+2026-11-12T23:00:30Z job finished rc=0 in 158 s
+2026-11-12T23:00:30Z DONE rc=0

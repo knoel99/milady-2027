@@ -1,0 +1,139 @@
+{
+ "name": "null-panel",
+ "mode": "design",
+ "format": "journal",
+ "widthMM": 160,
+ "heightMM": 64,
+ "W": 453.5433070866142,
+ "H": 181.4173228346457,
+ "texts": [
+  {
+   "s": "a",
+   "role": "panel",
+   "box": {
+    "x": 5.6692914962768555,
+    "y": 6.518891215324402,
+    "w": 4.500267028808594,
+    "h": 9.000534057617188
+   },
+   "size": 8,
+   "minSize": 8,
+   "family": "Arial, Helvetica, sans-serif",
+   "color": "#1a1a1a",
+   "halo": false,
+   "rotate": 0,
+   "italic": false,
+   "weight": "bold"
+  },
+  {
+   "s": "One periodic cell",
+   "role": "label",
+   "box": {
+    "x": 13.669291496276855,
+    "y": 21.668935775756836,
+    "w": 56.38225173950195,
+    "h": 7.500445365905762
+   },
+   "size": 7,
+   "minSize": 7,
+   "family": "Arial, Helvetica, sans-serif",
+   "color": "#1a1a1a",
+   "halo": false,
+   "rotate": 0,
+   "italic": false,
+   "weight": "700"
+  },
+  {
+   "s": "Trilinear interpolant on the cell.",
+   "role": "label",
+   "box": {
+    "x": 49.669291496276855,
+    "y": 40.41898250579834,
+    "w": 81.67281341552734,
+    "h": 6.750400543212891
+   },
+   "size": 6,
+   "minSize": 6,
+   "family": "Arial, Helvetica, sans-serif",
+   "color": "#1a1a1a",
+   "halo": false,
+   "rotate": 0,
+   "italic": false,
+   "weight": "normal"
+  },
+  {
+   "s": "Eliminate one coordinate. Resultant of the other two.",
+   "role": "label",
+   "box": {
+    "x": 49.669291496276855,
+    "y": 52.418978691101074,
+    "w": 139.1566925048828,
+    "h": 6.750400543212891
+   },
+   "size": 6,
+   "minSize": 6,
+   "family": "Arial, Helvetica, sans-serif",
+   "color": "#1a1a1a",
+   "halo": false,
+   "rotate": 0,
+   "italic": false,
+   "weight": "normal"
+  },
+  {
+   "s": "A root on the upper face belongs to the next cell.",
+   "role": "label",
+   "box": {
+    "x": 49.669291496276855,
+    "y": 64.41898250579834,
+    "w": 128.51544189453125,
+    "h": 6.750400543212891
+   },
+   "size": 6,
+   "minSize": 6,
+   "family": "Arial, Helvetica, sans-serif",
+   "color": "#1a1a1a",
+   "halo": false,
+   "rotate": 0,
+   "italic": false,
+   "weight": "normal"
+  },
+  {
+   "s": "Keep the root only if the interpolant is about zero.",
+   "role": "label",
+   "box": {
+    "x": 49.669291496276855,
+    "y": 76.4189863204956,
+    "w": 130.50775146484375,
+    "h": 6.750400543212891
+   },
+   "size": 6,
+   "minSize": 6,
+   "family": "Arial, Helvetica, sans-serif",
+   "color": "#1a1a1a",
+   "halo": false,
+   "rotate": 0,
+   "italic": false,
+   "weight": "normal"
+  }
+ ],
+ "strokes": [
+  {
+   "w": 0.6,
+   "tag": "rect",
+   "part": ""
+  }
+ ],
+ "images": [],
+ "anchors": {},
+ "relations": [],
+ "drawn": [],
+ "panels": [
+  {
+   "label": "a",
+   "x": 5.669291338582678,
+   "y": 5.669291338582678,
+   "w": 442.2047244094489,
+   "h": 170.07874015748033
+  }
+ ]
+}

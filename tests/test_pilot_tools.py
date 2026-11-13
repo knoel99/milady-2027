@@ -58,6 +58,8 @@ def job_env(tmp_path, monkeypatch):
     monkeypatch.setattr(runpod_job, "LEDGER", tmp_path / "ledger.jsonl")
     monkeypatch.setattr(runpod_job, "ROOT", tmp_path)
     monkeypatch.setattr(runpod_job, "pushed_commit", lambda ref: "a" * 40)
+    # The session exports the shared budget. A test budget is the one the test sets.
+    monkeypatch.delenv("MILADY_GPU_BUDGET_USD", raising=False)
     return tmp_path
 
 

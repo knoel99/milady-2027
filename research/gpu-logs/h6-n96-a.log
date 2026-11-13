@@ -1,0 +1,9 @@
+{"Rm": 8.0, "n": 96, "seed": 0, "t": 120.0, "dt_cap": 0.05, "cfl": 1.0, "cfl_dt0": 0.007603298722435996, "steps": 15840, "lambda": -0.008377625729446626, "max_div_b": 3.1673278383897455e-16, "finite": true, "ok": true}
+{"Rm": 9.0, "n": 96, "seed": 0, "t": 120.0, "dt_cap": 0.05, "cfl": 1.0, "cfl_dt0": 0.007603298722435996, "steps": 15840, "lambda": 0.00042194423754882707, "max_div_b": 3.838549058303744e-16, "finite": true, "ok": true}
+{"Rm": 17.0, "n": 96, "seed": 0, "t": 120.0, "dt_cap": 0.05, "cfl": 1.0, "cfl_dt0": 0.007603298722435996, "steps": 15840, "lambda": 0.00046294128591734815, "max_div_b": 4.917860379705177e-16, "finite": true, "ok": true}
+
+--- status
+2026-11-12T22:26:04Z boot NVIDIA A40, 46068 MiB
+2026-11-12T22:27:12Z job started
+2026-11-12T22:36:58Z job finished rc=0 in 586 s
+2026-11-12T22:36:58Z DONE rc=0

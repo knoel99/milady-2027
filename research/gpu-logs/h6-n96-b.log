@@ -1,0 +1,9 @@
+{"Rm": 18.0, "n": 96, "seed": 0, "t": 120.0, "dt_cap": 0.05, "cfl": 1.0, "cfl_dt0": 0.007603298722435996, "steps": 15840, "lambda": -0.0015795180817479977, "max_div_b": 5.023173510478474e-16, "finite": true, "ok": true}
+{"Rm": 26.0, "n": 96, "seed": 0, "t": 120.0, "dt_cap": 0.05, "cfl": 1.0, "cfl_dt0": 0.007603298722435996, "steps": 15840, "lambda": 0.0004187395175076376, "max_div_b": 7.928943276979896e-16, "finite": true, "ok": true}
+{"Rm": 28.0, "n": 96, "seed": 0, "t": 120.0, "dt_cap": 0.05, "cfl": 1.0, "cfl_dt0": 0.007603298722435996, "steps": 15840, "lambda": 0.007401556047029729, "max_div_b": 8.8263769716156e-16, "finite": true, "ok": true}
+
+--- status
+2026-11-12T22:26:00Z boot NVIDIA RTX PRO 4500 Blackwell, 32623 MiB
+2026-11-12T22:27:24Z job started
+2026-11-12T22:31:28Z job finished rc=0 in 244 s
+2026-11-12T22:31:28Z DONE rc=0

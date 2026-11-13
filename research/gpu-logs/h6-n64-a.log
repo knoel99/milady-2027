@@ -1,0 +1,9 @@
+{"Rm": 8.0, "n": 64, "seed": 0, "t": 120.0, "dt_cap": 0.05, "cfl": 1.0, "cfl_dt0": 0.01122391716169123, "steps": 10800, "lambda": -0.008263401330334435, "max_div_b": 3.724027117749478e-16, "finite": true, "ok": true}
+{"Rm": 9.0, "n": 64, "seed": 0, "t": 120.0, "dt_cap": 0.05, "cfl": 1.0, "cfl_dt0": 0.01122391716169123, "steps": 10800, "lambda": 0.00028580346733261765, "max_div_b": 3.578037532431495e-16, "finite": true, "ok": true}
+{"Rm": 17.0, "n": 64, "seed": 0, "t": 120.0, "dt_cap": 0.05, "cfl": 1.0, "cfl_dt0": 0.01122391716169123, "steps": 10800, "lambda": 0.0011438719331366273, "max_div_b": 6.986440760332763e-16, "finite": true, "ok": true}
+
+--- status
+2026-11-12T22:26:01Z boot NVIDIA GeForce RTX 4090, 24564 MiB
+2026-11-12T22:27:13Z job started
+2026-11-12T22:28:09Z job finished rc=0 in 56 s
+2026-11-12T22:28:09Z DONE rc=0
