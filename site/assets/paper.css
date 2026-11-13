@@ -453,6 +453,30 @@ tr.nc td, .nc { color: var(--nc); }
 .tbl.programme td { overflow-wrap: normal; }
 .tbl.programme td:first-child { min-width: 11rem; }
 
+
+/* ======================= Site navigation (theme.js §5) ======================= */
+a.tb-btn { text-decoration: none; }
+a.tb-btn:visited { color: var(--bar-ink); }
+a.tb-btn:hover { color: #0f172a; }
+.sitemenu { position: relative; flex: 0 0 auto; }
+.sitemenu-panel { position: absolute; right: 0; top: calc(100% + .55rem); z-index: 60;
+  min-width: 17rem; max-height: calc(100vh - 5rem); overflow-y: auto;
+  background: var(--bg); color: var(--ink); border: 2px solid var(--rule); border-radius: .5rem;
+  box-shadow: 0 .6rem 2rem rgba(0,0,0,.35); padding: .4rem; }
+.sitemenu-panel[hidden] { display: none; }
+.sitemenu-panel ul { list-style: none; margin: 0; padding: 0; }
+.sitemenu-panel a { display: block; padding: .45rem .7rem; border-radius: .35rem; color: var(--ink);
+  text-decoration: none; font-weight: 700; font-size: .98rem; }
+.sitemenu-panel li.sub a { font-weight: 500; padding-left: 1.4rem; font-size: .93rem; }
+.sitemenu-panel li.sub:first-of-type, .sitemenu-panel li:not(.sub) + li.sub { border-top: 1px solid var(--hair); margin-top: .3rem; padding-top: .3rem; }
+.sitemenu-panel a:hover { background: var(--side-bg); text-decoration: underline; }
+.sitemenu-panel a[aria-current="page"] { background: var(--side-active-bg); color: var(--side-active-ink); }
+.crumbs { margin: 0 0 1rem; font-size: .95rem; }
+.crumbs ol { list-style: none; margin: 0; padding: 0; display: flex; flex-wrap: wrap; gap: .2rem .4rem; }
+.crumbs li + li::before { content: "›"; margin-right: .4rem; color: var(--muted); }
+.crumbs span { color: var(--muted); }
+@media print { .crumbs, .sitemenu { display: none !important; } }
+
 /* ======================= Narrow screens ======================= */
 @media (max-width: 52rem) {
   .brand-sub { display: none; }

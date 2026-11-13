@@ -38,6 +38,11 @@ format:
           <script defer src="assets/theme.js"></script>
 ---
 
+::: key
+[Team deliverables]{.tag}
+The Cursor pilot team's internship report: [read it online](teams/cursor/report/index.html) or [download the PDF](teams/cursor/report/index.pdf){download=""}; its [result explorer](teams/cursor/explorer/index.html) and its diagrams are on the [Teams](teams/index.html) page.
+:::
+
 ![The framework under study: physical parameters drive a generative model whose fields satisfy $\nabla\cdot\mathbf{u} = 0$, $\nabla\cdot\mathbf{B} = 0$ and the symmetry $\mathbf{B}\to-\mathbf{B}$ by construction, and whose distribution satisfies the mean energy budget. Diagram drawn with the [schematic-figure](https://lgwrightlab.github.io/schematic-figure/) skill; full caption in the [report](report/index.html#formulation).](figures/framework/figure/out/framework.png){width="100%" fig-alt="Diagram of the generative framework: parameters, flow matching in a latent space, potential decoder, divergence-free fields, distributional control of the energy budget, downstream uses."}
 
 ::: note

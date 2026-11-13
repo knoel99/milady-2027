@@ -42,7 +42,7 @@ Each row is one team directory under `teams/`. The links open the HTML report, t
 
 ## Reports {#reports}
 
-| Team | HTML report | PDF | Explorer | Models and data |
-|---|---|---|---|---|
-| cursor | [HTML report](cursor/report/index.html) | [PDF](cursor/report/index.pdf) | [Explorer](cursor/explorer/index.html) | [experiments/results/cursor_fm/](https://github.com/knoel99/milady-2027/tree/main/experiments/results/cursor_fm) |
+| Team | HTML report | PDF | Explorer | Diagrams | Models and data |
+|---|---|---|---|---|---|
+| cursor | [HTML report](cursor/report/index.html) | [Download the PDF](cursor/report/index.pdf){download=""} | [Explorer](cursor/explorer/index.html) | [Architecture](cursor/diagrams/architecture.html) · [Workflow](cursor/diagrams/workflow.html) · [Roles](cursor/diagrams/agents.html) | [experiments/results/cursor_fm/](https://github.com/knoel99/milady-2027/tree/main/experiments/results/cursor_fm) |
 
