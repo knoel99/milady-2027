@@ -2,6 +2,13 @@
 
 One entry per working session, newest first, at most ten lines.
 
+## 2026-11-13 - H66 refuted, H70 H71 H72 supported, team cursor
+- n = 96 at Rm = 8.875 has seed 3 negative, lambda -1.68e-4. Pod `p32lpzy6h9yade`, 0.1005 USD.
+- n = 48 seeds 5-9 stay positive at Rm = 9.062744140625. Smallest is 8.29e-7. Pod `s1ah8ic5vxdhx9`, 0.0391 USD.
+- n = 32 seed 0 is positive at Rm = 9.0523681640625, lambda 1.38e-8. Pod `0e8zh26tehom3d`, 0.0391 USD.
+- The cfl = 0.5 repeat of the n = 64 point keeps seed 1 at 1.02e-7. The cfl = 1 value was 1.015e-7. Pod `88amwjefmkbx0g`, 0.0469 USD.
+- H73 asks n = 96 at Rm = 8.9375. H74, H75, and H76 are the next midpoints. Local ledger about 8.16 USD.
+
 ## 2026-11-13 - H69 supported, H72 registered, team cursor
 - At n = 64, Rm = 9.05987548828125, cfl = 1, seeds 0-4 are all positive. Seed 1 is 1.02e-7.
 - Pod `06wh0zrvxx0x5v`, RTX 4090, 0.06 h, 0.0545 USD. Largest max_div_b is 5.75e-16.
