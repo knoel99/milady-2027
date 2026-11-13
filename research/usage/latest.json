@@ -1,5 +1,5 @@
 {
- "generated": "2026-11-13T02:17:48Z",
+ "generated": "2026-11-13T03:43:10Z",
  "projects": "/root/.claude/projects/-home-user-milady-2027",
  "sessions": 1,
  "main_session": {
@@ -10,43 +10,43 @@
    "high"
   ],
   "expected": "claude-fable-5-2 / high",
-  "responses": 469,
+  "responses": 496,
   "off_spec": 0,
   "conforms": true
  },
  "first": "2026-11-12T16:50:21.852Z",
- "last": "2026-11-13T02:17:14.511Z",
- "span_hours": 9.45,
+ "last": "2026-11-13T03:42:39.645Z",
+ "span_hours": 10.87,
  "by_model": {
   "claude-fable-5-2": {
-   "input": 1243,
-   "cache_write_5m": 1385152,
-   "cache_write_1h": 1597648,
-   "cache_read": 239810921,
-   "output": 1152290,
-   "thinking": 544632,
-   "calls": 625,
-   "usd": 133.48
+   "input": 1304,
+   "cache_write_5m": 1440166,
+   "cache_write_1h": 1641197,
+   "cache_read": 259346183,
+   "output": 1185964,
+   "thinking": 553555,
+   "calls": 657,
+   "usd": 139.98
   },
   "claude-sonnet-5-5": {
-   "input": 444,
-   "cache_write_5m": 1348968,
+   "input": 470,
+   "cache_write_5m": 1464623,
    "cache_write_1h": 0,
-   "cache_read": 22717346,
-   "output": 247380,
-   "thinking": 105954,
-   "calls": 192,
-   "usd": 8.12
+   "cache_read": 23497224,
+   "output": 255753,
+   "thinking": 107746,
+   "calls": 201,
+   "usd": 8.57
   }
  },
- "total_usd": 141.6,
+ "total_usd": 148.55,
  "subagents": {
-  "count": 23,
+  "count": 25,
   "by_type": {
-   "general-purpose": 8,
+   "general-purpose": 9,
    "jury-externe": 4,
    "biblio": 2,
-   "encadrant": 7,
+   "encadrant": 8,
    "physicien": 2
   },
   "calls": [
@@ -178,6 +178,23 @@
     "usd": 0.4125
    },
    {
+    "id": "agent-a3fb644fb441c9d23",
+    "type": "encadrant",
+    "description": "Encadrant: H21 and G1 replication",
+    "models": [
+     "claude-fable-5-2"
+    ],
+    "efforts": [
+     "medium"
+    ],
+    "calls": 5,
+    "output": 8718,
+    "usd": 0.9203,
+    "off_spec": 0,
+    "expected": "claude-fable-5-2 / medium",
+    "conforms": true
+   },
+   {
     "id": "agent-a55fde23e87a3cc43",
     "type": "jury-externe",
     "description": "Jury review: deliverable figures",
@@ -193,6 +210,20 @@
     "off_spec": 0,
     "expected": "claude-fable-5-2 / max",
     "conforms": true
+   },
+   {
+    "id": "agent-a578d434a5b7f7043",
+    "type": "general-purpose",
+    "description": "Update two schematics with G1",
+    "models": [
+     "claude-sonnet-5-5"
+    ],
+    "efforts": [
+     "medium"
+    ],
+    "calls": 9,
+    "output": 8373,
+    "usd": 0.4509
    },
    {
     "id": "agent-a86dbd9dd988e2c8a",
@@ -421,9 +452,9 @@
   "nonconforming": 0
  },
  "tool_calls": {
-  "Bash": 456,
-  "Read": 33,
-  "Agent": 23,
+  "Bash": 480,
+  "Read": 34,
+  "Agent": 25,
   "Write": 10,
   "ToolSearch": 2,
   "mcp__claude-code-remote__get_session": 1,
@@ -432,14 +463,14 @@
  },
  "role_calls_via_tools": 0,
  "gpu": {
-  "jobs": 23,
-  "hours": 11.371,
-  "usd": 11.59,
+  "jobs": 28,
+  "hours": 16.628,
+  "usd": 15.78,
   "by_gpu": {
    "NVIDIA RTX PRO 4500 Blackwell": {
-    "jobs": 19,
-    "hours": 7.8284,
-    "usd": 5.6363
+    "jobs": 23,
+    "hours": 11.9892,
+    "usd": 8.632100000000001
    },
    "NVIDIA RTX A6000": {
     "jobs": 1,
@@ -455,6 +486,11 @@
     "jobs": 1,
     "hours": 1.3558,
     "usd": 1.2066
+   },
+   "NVIDIA L40S": {
+    "jobs": 1,
+    "hours": 1.0962,
+    "usd": 1.1949
    }
   },
   "budget_usd": 140.0

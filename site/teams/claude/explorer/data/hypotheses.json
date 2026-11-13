@@ -223,12 +223,12 @@
   "id": "H21",
   "statement": "In E4, the over-dispersion of the flow-matching generators without an explicit linear term comes from the width of the network and not from the training budget: for the equivariant potentials model with the smooth condition embedding and no affine term, (i) the energy-distance ratio on the held-out η decreases with the width over 512, 2048 and 5632 (the last one above the latent dimension 5320) at 4000 iterations, the widest being at most one fifth of the narrowest, and (ii) 8 times the iterations at width 512 do not bring the ratio below half its value at 4000 iterations.",
   "refutation_criterion": "Refuted if the seed-mean ratios at 4000 iterations are not ordered S_w512 > S_w2048 > S_w5632, or if S_w5632 is above one fifth of S_w512, or if S_w512_long (32000 iterations) is below half of S_w512. Reported with it: the flow-matching loss of each on a training sample against π/2.",
-  "status": "registered",
-  "verdict": "",
+  "status": "refuted",
+  "verdict": "REFUTED as registered (encadrant, 2026-11-13) on its first two clauses, 5 seeds, held-out η: S_w512 205.3 ± 0.5, S_w2048 25.6 ± 0.4, S_w5632 104.4 ± 7.5 floors: the order is not monotonic (2048 − 5632 = −78.8 ± 7.6, 0 of 5 seeds) and S_w5632 is at 0.51 of S_w512, above one fifth. Third clause not triggered: S_w512_long 215.5 ± 1.9 (1.05 of S_w512). Flow-matching losses 1.61, 1.22, 0.78; long trainings 1.52 and 0.95 (S_w2048_long at 58.8 ± 2.6 floors). Width helps up to 2048 (factor 8) and the widest network has the lowest loss and a worse law; the affine term at width 512 (W9, 9.3) is closer than every width.",
   "comparison": "model families",
   "seeds": 5,
   "script": "experiments/e4_mhd3d.py --seed k --group S --device cuda, k = 0..4",
-  "commit": ""
+  "commit": "133934a"
  },
  {
   "id": "H22",

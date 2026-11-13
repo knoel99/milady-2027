@@ -439,7 +439,7 @@ G1 is the best generator of this report on almost every metric, without a networ
 - its restart drift of the magnetic energy at $\tau = 4$ is 0.064, against 0.21 for G0 and 0.12 for W9;
 - it is worse than W9 on the restart drift of the kinetic energy (0.095 against 0.053), and the fluctuation of its energy budget is three times that of the reference.
 
-The three clauses of H22 are met in every seed (H22 **confirmed**), and the advantage of G1 on the distance, the null count and the restart of the magnetic energy holds at each held-out $\eta$. G1 uses the training values only: its samples at a held-out $\eta$ are Gaussian draws from an interpolated covariance, not copies of snapshots. Its five seeds are five draws from one fitted law; the comparison was therefore repeated on the second realisation of the reference data, that of @sec-replication, with the same outcome: 2.0 floors for G1 against 8.1 for W9 and 2.9 for G0, a magnetic balance residual of 0.072, a null-count error of 1.00 against 1.56, a restart drift of the magnetic energy of 0.06 against 0.13 (`experiments/results/replications/e4_g1indep`). The consequence is plain: on this system, the advantage of the flow-matching models with an affine term over the mode-wise Gaussian law is consistent with their having the covariance between Fourier modes that a mode-wise law cannot hold (their magnetic production shows that they have it), and a Gaussian law that has this covariance does better than they do. Nothing measured here shows that any of the learned models captures a non-Gaussian feature of the reference law.
+The three clauses of H22 are met in every seed (H22 **confirmed**), and the advantage of G1 on the distance, the null count and the restart of the magnetic energy holds at each held-out $\eta$. G1 uses the training values only: its samples at a held-out $\eta$ are Gaussian draws from an interpolated covariance, not copies of snapshots. Its five seeds are five draws from one fitted law; the comparison was therefore repeated on the second realisation of the reference data, that of @sec-replication, with the same outcome on each point: 2.0 floors for G1 against 8.1 for W9 and 2.9 for G0, a magnetic balance residual of 0.072 (W9: 0.050), a null-count error of 1.00 against 1.56, a restart drift of the magnetic energy of 0.06 against 0.13 and of the kinetic energy of 0.08 against 0.06 (`experiments/results/replications/e4_g1indep`). The consequence is plain: on this system, the advantage of the flow-matching models with an affine term over the mode-wise Gaussian law is consistent with their having the covariance between Fourier modes that a mode-wise law cannot hold (their magnetic production shows that they have it), and a Gaussian law that has this covariance does better than they do. Nothing measured here shows that any of the learned models captures a non-Gaussian feature of the reference law.
 
 The restart test deserves a second look (@fig-restart). Recorded at four times instead of one, the drift depends strongly on the time at which it is read. For G0 the magnetic energy first falls by 16 %, crosses its initial value and reaches +21 % at $\tau = 4$, still rising; its kinetic energy is 15 % too high at $\tau = 1$ to 2 and back to +2 % at $\tau = 4$. The single-time metric of the objectives therefore made G0 look best on the kinetic energy. By the largest drift over the four times the order is G1 (0.11), W9 (0.12), G0 (0.21) for the magnetic energy and W9 (0.06), G1 (0.10), G0 (0.16) for the kinetic energy; several of these maxima sit at the last time recorded, so they are lower bounds. No generator produces states that the solver accepts as stationary: the smallest of these drifts is several times that of reference snapshots (below 0.01).
 <!-- e4:g1text:end -->
@@ -522,11 +522,11 @@ The hypothesis registered for this run (H18) was narrower: that with the affine 
 Is the failure of the plain networks a matter of width, as the rank argument of @sec-linear suggests (H21)? The equivariant network with the smooth embedding and no affine term was trained at three widths, 512, 2048 and 5632 (the last one above the latent dimension of 5320), and at 8 times the iterations for the first two (@tbl-scan, @fig-scan). The five seeds come from a second scan, split over three GPU jobs whose reference data are identical; a first scan on a single GPU was cut by its time limit and agrees with it on the seeds it has.
 
 - **Width 512** is the matched control of W9, the same network without the affine term: 205 floors, with a final loss of 1.61, above $\pi/2$. The affine term is worth a factor of 22.
-- **Width 2048** is at 25.6 floors, with a loss of 1.22: eight times closer. Capacity matters.
-- **Width 5632**, above the latent dimension, reaches a much lower loss (0.78) and a worse law: 104 floors. The order registered for H21 (the wider the closer, and the widest at less than a fifth of the narrowest) does not hold.
-- **More training does not help.** At width 512 the loss falls to 1.52, now below $\pi/2$, and the law does not move (215 floors); at width 2048 the loss falls to 0.95 and the law gets worse (59 floors against 25.6).
+- **Width 2048** is at 25.6 floors, with a loss of 1.22: eight times closer. Capacity matters. This network is farther from the reference than W9 in energy distance but better on the total energy residual (0.012 against 0.057) and on the restart drift of the magnetic energy (0.072 against 0.124).
+- **Width 5632**, above the latent dimension, reaches a much lower loss (0.78) and a worse law: 104 floors. The order registered for H21 (the wider the closer, and the widest at less than a fifth of the narrowest) does not hold, in any seed: H21 is **refuted**. This network is not uniformly worse, though: it has the best null-count error of all the networks of this report (0.96) and the best magnetic balance (0.037), with the worst restart drift of the magnetic energy (0.45).
+- **More training does not help.** At width 512 the loss falls to 1.52, now below $\pi/2$, and the law is slightly worse (215 floors, $+10 \pm 1.6$); at width 2048 the loss falls to 0.95 and the distance more than doubles (59 floors against 25.6), the damage being concentrated at the smallest $\eta$.
 
-So the width is part of the story and not the whole of it. For these plain networks the training loss and the distance of the generated law to the reference part ways: beyond width 2048 at the base budget, a lower loss on the training samples comes with a worse law, at the training $\eta$ as well as between them. With 14 400 training snapshots in 5320 dimensions, fitting the training set more closely than the affine model does (its loss is 1.18) is not learning the law; that this is memorisation of the snapshots is a **conjecture**, not a measurement. The explicit affine term at width 512 does better than any width tried.
+So the width is part of the story and not the whole of it. For these plain networks the training loss and the distance of the generated law to the reference part ways: beyond width 2048 at the base budget, a lower loss on the training samples comes with a worse law, at the training $\eta$ as well as between them. With 14 400 training snapshots in 5320 dimensions, fitting the training set more closely than the affine model does (its loss is 1.18) is not learning the law; that this is memorisation of the snapshots is a **conjecture**, not a measurement. In energy distance, the explicit affine term at width 512 does better than any width tried; on other metrics the ranking of the networks is not the same.
 <!-- e4:scantext:end -->
 
 ```{=latex}
@@ -545,7 +545,7 @@ So the width is part of the story and not the whole of it. For these plain netwo
 | W9 mode-wise affine term | design | 5.47(12) | 9.3(3) | $1.5\times 10^{-8}$ | 0.0566(17) | 0.0551(4) | 0.144(3) | 0.195(4) | 1.669(16) | 0.124(3) | 0.052(6) | 0.016(3) | 1.1773(10) | 5 |
 | G0 Gaussian per mode (no network) | family | 2.67(8) | 3.52(7) | $1.5\times 10^{-8}$ | 0.0015(3) | 0.9981(9) | 0.024(3) | 0.035(5) | 2.235(7) | 0.212(3) | 0.026(5) | 0.018(3) | – | 5 |
 
-: Width scan (measured; `experiments/results/replications/e4_scan2`, five seeds on three GPU jobs with the same data, held-out $\eta$): the equivariant potentials model with the smooth embedding and no affine term, for three widths and two training budgets, against the model with the affine term and the mode-wise Gaussian law. Columns and notation as in @tbl-comparative; FM loss as in @tbl-long. {#tbl-scan}
+: Width scan (measured; `experiments/results/replications/e4_scan2`, five seeds on three GPU jobs with the same data, held-out $\eta$): the equivariant potentials model with the smooth embedding and no affine term, for three widths and two training budgets, against the model with the affine term and the mode-wise Gaussian law. Columns and notation as in @tbl-comparative; FM loss as in @tbl-long. In these result files the field `cond_scale` of the configuration is the default of the run (8); the builders of these variants and of W9 fix the embedding of the condition to 0.5. {#tbl-scan}
 
 <!-- e4:scan:end -->
 
@@ -615,7 +615,7 @@ Generator measured by C1–C5, T1 and T2: `W9_skip_sym`, the variant with the lo
 | C3-energy-balance | $\le$ 0.05 | 0.0567 | 5 | no |
 | C4-spectra-helicity | $\le$ 0.15 | 0.341 | 5 | no |
 | C5-topology | $\le$ 0.2 | 1.66 | 5 | no |
-| C6-comparative-study | $\ge$ 6 | 16 | 5 | yes |
+| C6-comparative-study | $\ge$ 6 | 17 | 5 | yes |
 | C7-toolbox | $\ge$ 6 | 13 | 0 | yes |
 | T1-restart-drift | $\le$ 0.05 | 0.124 | 5 | no |
 | T2-polarity-symmetry | $\le$ 0.03 | 0.0186 | 5 | yes |
@@ -689,7 +689,7 @@ Five of the nine objectives are met: the distance to the reference law (C1, belo
 | H18 | In E4, flow matching adds to the second-order baseline what a Gaussian law cannot hold: with the mode-wise affine term and a longer training (W9L\_skip\_long, 8 times the iterations of W9), the drift of the magnetic energy when the solver is restarted from the [...] | supported | CONFIRMED as registered (encadrant, 2026-11-13): G0 - W9L on the held-out $\eta$, restart drift of E\_B 0.070 $\pm$ 0.011 (6.4 SE, 5 of 5 seeds), null-count error 0.856 $\pm$ 0.035 (25 SE, 5 of 5). Caveats: W9 at the base budget already meets both clauses; [...] |
 | H19 | In E4, a flow-matching field anchored on the exact field of the mode-wise Gaussian law, v = v\_Gauss(x, t, $\eta$) + network (W10\_anchored: [...] | refuted | REFUTED (encadrant, 2026-11-13): ED(W10) - ED(G0) = +40.0 $\pm$ 0.26 on the held-out $\eta$ (first clause not met); restart drift of E\_B: G0 - W10 = 0.090 $\pm$ 0.003, 5 of 5 (met); null-count error: G0 - W10 = -0.229 $\pm$ 0.014, 0 of 5 (not met). |
 | H20 | In E4, the anchored model fails (W10\_anchored on CPU seeds 0 and 1: 45 times the floor against 3.3 for G0) because the network's own linear component perturbs the second-order statistics that the fixed Gaussian field had right. [...] | refuted | REFUTED (encadrant, 2026-11-13) on its first clause: ED(W11) - ED(G0) = +5.08 $\pm$ 0.22 (24 SE), 0 of 5 seeds; the two other clauses are met: restart drift of E\_B G0 - W11 = 0.092 $\pm$ 0.003 (5 of 5), null-count error G0 - W11 = 0.539 $\pm$ 0.014 (5 of 5). Reported with it: [...] |
-| H21 | In E4, the over-dispersion of the flow-matching generators without an explicit linear term comes from the width of the network and not from the training budget: [...] | registered | not reviewed yet |
+| H21 | In E4, the over-dispersion of the flow-matching generators without an explicit linear term comes from the width of the network and not from the training budget: [...] | refuted | REFUTED as registered (encadrant, 2026-11-13) on its first two clauses, 5 seeds, held-out $\eta$: S\_w512 205.3 $\pm$ 0.5, S\_w2048 25.6 $\pm$ 0.4, S\_w5632 104.4 $\pm$ 7.5 floors: the order is not monotonic (2048 - 5632 = -78.8 $\pm$ 7.6, 0 of 5 seeds) and S\_w5632 is at 0.51 of S\_w512, above one fifth. Third clause not triggered: S\_w512\_long 215.5 $\pm$ 1.9 (1.05 of S\_w512). [...] |
 | H22 | In E4, the failures of the mode-wise Gaussian law G0 on the magnetic energy balance, on the restart drift of the magnetic energy and on the number of null points come from the independence of its Fourier modes and not from its Gaussianity: [...] | supported | CONFIRMED as registered (encadrant, 2026-11-13): \|magnetic balance\| of G1\_gaussian\_full 0.072 (per seed 0.071–0.074), below 0.2; restart drift of E\_B at $\tau$ = 4, W9 - G1 = 0.0598 $\pm$ 0.0034 (17.6 SE, 5 of 5 seeds); null-count error, W9 - G1 = 0.568 $\pm$ 0.020 (29 SE, 5 of 5). Reported with it: ED ratio 2.55 against 9.35 (W9) and 3.52 (G0); [...] |
 | H23 | In E4, in the regime where the generator is close to the reference law (the model with the affine term, W9\_skip\_sym), fine-tuning with the law-level stationarity loss on the energy and magnetic-helicity identities (W12\_skip\_stationarity: [...] | refuted | REFUTED on its second clause (encadrant, 2026-11-13): the first clause is met, \|energy residual\| control - stationarity = 0.0275 $\pm$ 0.0012 (22 SE, 5 of 5 seeds); the energy-distance ratio of W12\_skip\_stationarity is 16.37 against 9.31 for the control, a factor 1.76 where the criterion allowed 1.10. Reported with it: [...] |
 | H24 | In E4, exponential tilting on the energy and magnetic-helicity identities does not collapse when the generated law is close to the reference: [...] | supported | CONFIRMED as registered (encadrant, 2026-11-13): ESS/N of W13\_skip\_tilting 0.172 on the held-out $\eta$ (below 0.1 in 6 of the 15 cells, minimum 0.049); \|energy residual\| untilted half - tilted = 0.0449 $\pm$ 0.0030 (14.8 SE, 5 of 5 seeds). Reported with it: the tilted ensemble is better on the ED ratio (4.58 against 7.26; [...] |
@@ -753,7 +753,7 @@ counts = null_count(b_grid)
 
 The tests check each mechanism against an independent computation: the identities against the time derivative of the solver, the Gaussian anchor against the closed form of @eq-gauss, the tilting against its moment conditions, the null finder against fields with a known number of nulls. `make test` runs them (the test suite, the linter and the check of the generated agent files pass on the branch).
 
-The experiment itself is driven by scripts in `experiments/`: `e4_data.py` (data), `e4_mhd3d.py` (variants, by group), `e4_floor.py`, `e4_digest.py` and `digest.py` (digest), `race_metrics.py` (objectives), `e4_plots.py` (the data plots of this report), `e4_report_tables.py` (its tables) and `export_explorer.py` (the data of the explorer).
+The experiment itself is driven by scripts in `experiments/`: `e4_data.py` (data), `e4_mhd3d.py` (variants, by group), `e4_floor.py`, `e4_digest.py` and `digest.py` (digest), `race_metrics.py` (objectives), `e4_assemble_scan.py` (the width scan from its three jobs), `e4_plots.py` (the data plots of this report), `e4_report_tables.py` (its tables) and `export_explorer.py` (the data of the explorer).
 
 ## Discussion {#discussion}
 
@@ -789,7 +789,7 @@ The register keeps what failed. Of the eleven hypotheses of the first protocol, 
 - *The null count does not scale as $k_\lambda^3$* (H13 refuted on the slope).
 - *Loss against tilting* (H8) was dropped: the criterion could be met by the sampling noise of one weighted ensemble.
 
-The later hypotheses added four refutations. The embedding of the condition is not the cause of the failure of the first models (H15). Anchoring the velocity field on the mode-wise Gaussian field does not give a model at least as close as that law, with or without a learned affine correction (H19, H20). And the stationarity loss, applied to a model close to the reference, degrades the law beyond the margin that was registered (H23).
+The later hypotheses added five refutations. The embedding of the condition is not the cause of the failure of the first models (H15). Nor is the width of the network alone: a wider network is closer up to a point, and the widest one, with the lowest loss, is farther again (H21). Anchoring the velocity field on the mode-wise Gaussian field does not give a model at least as close as that law, with or without a learned affine correction (H19, H20). And the stationarity loss, applied to a model close to the reference, degrades the law beyond the margin that was registered (H23).
 
 The interpretation of the main result was itself refuted. The first version of this report read the advantage of the flow-matching models over the mode-wise Gaussian law, on the magnetic energy balance, the null points and the restart test, as evidence that they had learned non-Gaussian, third-order structure. The `jury-externe` role showed with an oracle that a Gaussian law with the full covariance had the same advantage; the hypothesis was then registered, the baseline G1 built on the training values only and run, and the reading was replaced by the one of @sec-g1. The review that caught it is in `research/reviews/2026-11-13-jury-externe-report-v1.md`.
 
@@ -822,7 +822,7 @@ This report compared, on a small parametric MHD dynamo, the three places where a
 4. A law-level stationarity loss can be imposed at parameter values without data. It lowers the residual of the energy identity, on a wrong model and on a nearly right one, and it is not free: on the nearly right model it moves the law away from the reference. Exponential tilting on the same identities, at sampling time, collapses on a wrong model and improves a nearly right one on most metrics. Imposing a balance on each sample satisfies it exactly and removes real fluctuations.
 5. No generator, Gaussian or learned, reproduces the magnetic topology (the laws closest to the reference have at least twice the reference number of null points) or produces states that the solver accepts as stationary (the smallest restart drift is several times that of reference snapshots).
 
-What remains **conjectured**: that the failure of the plain networks is only a matter of width (the scan of the section [Results](#results) tests it); that the null points and the restart drift measure the non-Gaussian part of the law that a better generative model should learn; and that the ranking of the mechanisms carries over to turbulent regimes.
+What remains **conjectured**: that the degradation of the wide and long-trained networks is memorisation of the training snapshots (the width alone does not explain the failure of the plain networks: H21 was refuted); that the null points and the restart drift measure the non-Gaussian part of the law that a better generative model should learn; and that the ranking of the mechanisms carries over to turbulent regimes.
 
 The next steps for the internship follow from these results. Keep the Gaussian law with the full covariance as the baseline and as the anchor of the flow-matching field, in place of the mode-wise one. Use an architecture with locality for the correction, since the flattened perceptron does not scale. Put the magnetic energy balance and the restart curve among the objectives. Repeat the protocol on a $64^3$ box at higher Reynolds numbers, where the law is less Gaussian and the solver of the toolbox runs at a few milliseconds per step on a GPU, and over a range of $\eta$ that crosses the dynamo threshold. And look for training signals aimed at topology, since topology is where every model fails.
 <!-- e4:conclusiontext:end -->
@@ -843,8 +843,11 @@ make test                                    # tests of src/milady and of the to
 cd experiments
 python3 e4_data.py --quick                   # reference data (--jobs N: full data)
 python3 e4_mhd3d.py --reference --quick      # reference statistics and floors
-python3 e4_mhd3d.py --quick --seed 0 --group all   # groups A-E (L: long; S: scan)
+python3 e4_mhd3d.py --quick --seed 0 --group all   # groups A-E
+python3 e4_mhd3d.py --quick --seed 0 --group D,G,M # G: Gaussian law G1; M: loss and
+                                             # tilting on W9; L: long; S: width scan
 python3 e4_floor.py                          # noise floors
+python3 e4_assemble_scan.py                  # width scan from its three jobs
 python3 digest.py > results/digest.md        # digest of E1-E4
 python3 race_metrics.py --all                # objectives of the race
 python3 e4_plots.py                          # data plots of this report
@@ -872,7 +875,13 @@ Without `--quick`, the data take about 25 minutes on 11 CPU cores and one seed o
 | Bitwise re-run of groups A and B | `experiments/results/replications/e4_main` | `62e31c9` | `8184bc9` |
 | Convergence of the data | `experiments/results/replications/e4_convergence` | `d0e018f` | `56dbb91` |
 | CPU seeds 0 and 1 (container) | `experiments/results/replications/e4_cpu` | several | `991d682` |
-<!-- e4:commitsmore -->
+| Long trainings (H18): groups D, E, L | `experiments/results/replications/e4_final_long` | `973fe3a` | `bf07893` |
+| Independent replication (other data seeds): groups A–E | `experiments/results/replications/e4_indep` | `dfc02a2` | `d7aa2bd` |
+| Register: H22, H23, H24 | `research/hypotheses.json` | – | `a0cd918` |
+| Gaussian law G1, loss and tilting on W9 (H22–H24): groups D, E, G, M | `experiments/results/replications/e4_mech` | `607ccbd` | `cc1da7b` |
+| G1 on the second data realisation: groups D, G | `experiments/results/replications/e4_g1indep` | `81a0e0c` | `133934a` |
+| Width scan (H21), 5 seeds on three jobs: groups D, S | `experiments/results/replications/e4_scan2` (parts `e4_scan2a`, `b`, `c`) | `607ccbd`, `d7aa2bd`, `830a40a` | `81a0e0c`, `133934a` |
+| First width scan, cut by its time limit | `experiments/results/replications/e4_final_scan` | `973fe3a` | `d7aa2bd` |
 
 : Result sets, with the commit of the code that produced them and the commit that added them. The registrations precede the results of the hypotheses they concern. {#tbl-commits}
 
@@ -881,7 +890,7 @@ The main run was launched with a file-naming bug (the section [Discussion](#disc
 
 ### GPU jobs and costs
 
-Every GPU job of the pilot is in `research/compute-ledger.jsonl` (@tbl-jobs, @fig-costs); the pods were rented on demand and deleted at the end of each job. Jobs with a non-zero exit code are the capacity failures, the interrupted jobs and the incidents described in the section [Discussion](#discussion); the two negative entries are corrections made after another session deleted running pods, so that the ledger matches what was billed.
+Every GPU job of the pilot is in `research/compute-ledger.jsonl` (@tbl-jobs, @fig-costs); the pods were rented on demand and deleted at the end of each job. Jobs without an exit code or with a non-zero one are the capacity failures, the interrupted jobs, the scan cut by its time limit and the incidents described in the section [Discussion](#discussion); the two negative entries are corrections made after another session deleted running pods, so that the ledger matches what was billed; one job (`e4_g1indep`) was launched twice by mistake.
 
 ```{=latex}
 \begingroup\footnotesize
