@@ -31,6 +31,31 @@ NAMES = {
     "deepseek": "DeepSeek", "alibaba": "Alibaba",
 }
 HARNESS = {"claude": "Claude Code cloud session", "cursor": "Cursor Cloud Agents"}
+# Company and product logos of each team (site/assets/logos/, see SOURCE.txt there), inlined in the cards
+# so that the monochrome ones follow the text colour in light and dark mode.
+LOGOS = {
+    "claude": [("anthropic", "Anthropic"), ("claude-color", "Claude")],
+    "cursor": [("cursor", "Cursor"), ("grok", "Grok")],
+    "openai": [("openai", "OpenAI")],
+    "google": [("google-color", "Google"), ("gemini-color", "Gemini")],
+    "xai": [("xai", "xAI"), ("grok", "Grok")],
+    "mistral": [("mistral-color", "Mistral AI")],
+    "zhipu": [("zhipu-color", "Zhipu AI"), ("chatglm-color", "GLM")],
+    "moonshot": [("moonshot", "Moonshot AI"), ("kimi-color", "Kimi")],
+    "deepseek": [("deepseek-color", "DeepSeek")],
+    "alibaba": [("alibaba-color", "Alibaba"), ("qwen-color", "Qwen")],
+}
+PDF_NAME = "milady-2027-{team}-report.pdf"  # file name a reader's browser saves the team's PDF under
+
+
+def logo(name: str, label: str, uid: str) -> str:
+    svg = (SITE / "assets" / "logos" / f"{name}.svg").read_text(encoding="utf-8")
+    svg = re.sub(r"<title>.*?</title>", "", svg, flags=re.DOTALL)
+    svg = re.sub(r"\s+", " ", svg).strip()
+    svg = svg.replace("lobe-icons-", f"logo-{uid}-")  # gradient ids unique on the page
+    attrs = f'<svg focusable="false" role="img" aria-label="{label}" class="team-logo" '
+    svg = svg.replace("<svg ", attrs, 1)
+    return f'<span title="{label}">{svg}</span>'
 
 
 def teams() -> list[dict]:
@@ -73,7 +98,7 @@ def links(t: dict, prefix: str) -> list[str]:
     if t["report"]:
         out.append(f"[Report]({b}report/index.html)")
     if t["pdf"]:
-        out.append(f'[PDF]({b}report/index.pdf){{download=""}}')
+        out.append(f'[PDF]({b}report/index.pdf){{download="{PDF_NAME.format(team=t["id"])}"}}')
     if t["explorer"]:
         out.append(f"[Explorer]({b}explorer/index.html)")
     return out
@@ -84,8 +109,11 @@ def cards(ts: list[dict]) -> str:
     for t in sorted(ts, key=lambda t: not t["report"]):  # published reports first
         done = t["report"]
         status = "Report published" if done else "In progress" if t["pilot"] else "Planned"
-        lines += ["", f"::: {{.team-card{' .ready' if done else ''}}}",
-                  f"[{t['name']}]{{.team-name}} [{status}]{{.team-status}}", ""]
+        lines += ["", f"::: {{.team-card{' .ready' if done else ''}}}"]
+        if LOGOS.get(t["id"]):
+            logos = "".join(logo(n, label, f"{t['id']}-{i}") for i, (n, label) in enumerate(LOGOS[t["id"]]))
+            lines += ["", "```{=html}", f'<div class="team-logos">{logos}</div>', "```", ""]
+        lines += [f"[{t['name']}]{{.team-name}} [{status}]{{.team-status}}", ""]
         meta = t["kind"] + "".join(f" · {x}" for x in (t["harness"],) if x)
         if t["model"]:
             meta += f" · {t['model']}"
@@ -110,7 +138,7 @@ def table(ts: list[dict]) -> str:
             f"| **{t['name']}** ({t['kind'].lower()})",
             "report published" if t["report"] else "in progress" if t["pilot"] else "planned",
             cell(t["report"], f"[HTML report]({b}report/index.html)"),
-            cell(t["pdf"], f'[Download the PDF]({b}report/index.pdf){{download=""}}'),
+            cell(t["pdf"], f'[Download the PDF]({b}report/index.pdf){{download="{PDF_NAME.format(team=t["id"])}"}}'),
             cell(t["explorer"], f"[Explorer]({b}explorer/index.html)"),
             diags]) + " |")
     lines.append("")
@@ -123,7 +151,8 @@ def nav(ts: list[dict]) -> str:
         if t["report"]:
             items.append([f"teams/{t['id']}/report/index.html", f"{t['name']} team: report (HTML)"])
         if t["pdf"]:
-            items.append([f"teams/{t['id']}/report/index.pdf", f"{t['name']} team: report (PDF)", True])
+            items.append([f"teams/{t['id']}/report/index.pdf", f"{t['name']} team: report (PDF)",
+                          PDF_NAME.format(team=t["id"])])
         if t["explorer"]:
             items.append([f"teams/{t['id']}/explorer/index.html", f"{t['name']} team: explorer"])
     body = ",\n    ".join(json.dumps(i, ensure_ascii=False) for i in items)

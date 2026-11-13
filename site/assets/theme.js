@@ -265,14 +265,14 @@
   /* teams:begin */
   var TEAM_LINKS = [
     ["teams/cursor/report/index.html", "Cursor team: report (HTML)"],
-    ["teams/cursor/report/index.pdf", "Cursor team: report (PDF)", true],
+    ["teams/cursor/report/index.pdf", "Cursor team: report (PDF)", "milady-2027-cursor-report.pdf"],
     ["teams/cursor/explorer/index.html", "Cursor team: explorer"]
   ];
   /* teams:end */
   function siteRoot() {
     var s = document.querySelector('script[src*="assets/theme.js"]');
     if (!s) return null;
-    return new URL(s.getAttribute("src").replace(/assets\/theme\.js(\?.*)?$/, ""), location.href);
+    return new URL(s.getAttribute("src").replace(/assets\/theme\.js(\?.*)?$/, "") || "./", location.href);
   }
   function setupNav() {
     var rootUrl = siteRoot();
@@ -312,16 +312,20 @@
     /* PDF of this page, when the page links to one in its own folder */
     var here = location.href.replace(/[#?].*$/, "").replace(/[^\/]*$/, "");
     var pdf = null;
+    function pdfName(href) {  /* teams/<team>/report/index.pdf is saved as milady-2027-<team>-report.pdf */
+      var m = /\/teams\/([^\/]+)\/report\/index\.pdf$/.exec(new URL(href, location.href).pathname);
+      return m ? "milady-2027-" + m[1] + "-report.pdf" : "";
+    }
     document.querySelectorAll('a[href$=".pdf"]').forEach(function (a) {
       if (a.href.indexOf(here) === 0 && a.href.slice(here.length).indexOf("/") < 0) {
-        a.setAttribute("download", "");
+        if (!a.getAttribute("download")) a.setAttribute("download", pdfName(a.href));
         if (!pdf) pdf = a.href;
       }
     });
     if (pdf) {
       var pb = el("a", "tb-btn tb-pdf");
       pb.href = pdf;
-      pb.setAttribute("download", "");
+      pb.setAttribute("download", pdfName(pdf));
       pb.title = "Download the PDF of this page";
       pb.setAttribute("aria-label", pb.title);
       pb.innerHTML = '<span aria-hidden="true">⤓</span><span class="tb-label">PDF</span>';
@@ -346,7 +350,7 @@
     function item(href, text, dl, sub) {
       var li = el("li", sub ? "sub" : null), a = el("a", null, text);
       a.href = R + href;
-      if (dl) a.setAttribute("download", "");
+      if (dl) a.setAttribute("download", typeof dl === "string" ? dl : "");
       var target = R + href, cur = location.href.replace(/[#?].*$/, "");
       if (cur === target || cur === target + "index.html") a.setAttribute("aria-current", "page");
       li.appendChild(a);
