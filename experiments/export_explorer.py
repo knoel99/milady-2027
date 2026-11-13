@@ -33,7 +33,7 @@ ARRAYS = ["spec_u", "spec_b", "H_shell"]
 METRICS = [  # key, label, use the absolute value, objective of race/teams/claude/objectives.toml
     ("ed_ratio", "energy distance / noise floor", False, "C1"),
     ("div_rel_b_max", "relative divergence of B (largest of the ensemble)", False, "C2"),
-    ("balance_residual_total", "|residual of the mean energy balance| / injection", True, "C3"),
+    ("balance_residual_total", "|residual of the mean energy balance| / dissipation", True, "C3"),
     ("balance_residual_magnetic", "|residual of the mean magnetic energy balance|, production against Ohmic dissipation", True, "–"),
     ("spec_err_b_l2", "relative L2 error on the magnetic spectrum", False, "C4"),
     ("hel_m_err_rel", "relative error on the mean magnetic helicity", True, "C4"),

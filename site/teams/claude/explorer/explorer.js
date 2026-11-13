@@ -112,7 +112,7 @@
       cell("magnetic energy E<sub>B</sub>", value(row, "E_B", seed), ref.E_B) +
       cell("magnetic helicity ⟨A·B⟩", value(row, "hel_m", seed), ref.H_M) +
       cell("magnetic null points per snapshot", value(row, "null_count", seed), ref.null_count_mean, "reference ± " + fmt(ref.null_count_se, 2) + " (SE)") +
-      cell("residual of the mean energy balance / injection", value(row, "balance_residual_total", seed), ref.balance_residual_total) +
+      cell("residual of the mean energy balance / dissipation", value(row, "balance_residual_total", seed), ref.balance_residual_total) +
       cell("residual of the mean magnetic energy balance", value(row, "balance_residual_magnetic", seed), ref.balance_residual_magnetic, "(production − Ohmic dissipation) / (|production| + dissipation)") +
       cell("relative divergence of B (largest)", value(row, "div_rel_b_max", seed), null, "spectral, double precision") +
       cell("magnetic Taylor wavenumber k<sub>λ</sub>", value(row, "k_lambda", seed), ref.k_lambda) +

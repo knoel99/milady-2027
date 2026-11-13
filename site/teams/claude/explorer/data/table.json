@@ -14,7 +14,7 @@
   },
   {
    "key": "balance_residual_total",
-   "label": "|residual of the mean energy balance| / injection",
+   "label": "|residual of the mean energy balance| / dissipation",
    "abs": true,
    "objective": "C3"
   },
