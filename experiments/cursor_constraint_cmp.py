@@ -125,16 +125,21 @@ def score(gen: np.ndarray, ref: np.ndarray, rm: float) -> dict[str, float]:
     ratio = dist / floor if floor > 0 else float("nan")
     div = divergence_relative(gen, per_sample=True)
     hel_g = float(m["magnetic_helicity_mean"])
-    # The reference helicity is not in metrics. Recompute it on the reference ensemble.
+    # The reference helicity is not in the comparison row. Recompute it on the reference ensemble.
     ref_cmp = compare_ensembles({"magnetic_field": ref}, None, params, n_shells=4)
     hel_r = float(ref_cmp["metrics"]["magnetic_helicity_mean"])
     hel = abs(hel_g - hel_r) / max(abs(hel_r), 1e-30)
+    sg = np.asarray(out["details"]["spectrum_b"], dtype=np.float64)
+    sr = np.asarray(out["details"]["spectrum_b_ref"], dtype=np.float64)
+    spectrum_l2 = float(np.linalg.norm(sg - sr) / max(np.linalg.norm(sr), 1e-30))
     residual = abs(float(m.get("balance_residual_magnetique", float("nan"))))
     return {
         "c1": ratio,
         "div_max": float(np.max(div)),
         "c3": residual,
-        "c4": float(m["spectrum_error_b_log10"]) + hel,
+        "spectrum_l2": spectrum_l2,
+        "helicity_rel": hel,
+        "c4": spectrum_l2 + hel,
         "finite": bool(np.isfinite(gen).all() and all(np.isfinite(v) for v in m.values())),
     }
 

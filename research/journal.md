@@ -2,6 +2,12 @@
 
 One entry per working session, newest first, at most ten lines.
 
+## 2026-11-13 - H145 supported, H146 refuted, team cursor
+- The sampling constraint mean maximum divergence is 1.56e-8. The free baseline is 0.645. H145 holds.
+- The same variant has energy-distance ratio 757.56, above 1.2. H146 is refuted. CPU, no pod.
+- C1, C3, and C4 are now measured and far from their targets. C5 stays the sentinel. C2 is 2.20e-8.
+- H138 and H144 stay in flight. The next comparison has to change the model.
+
 ## 2026-11-13 - H143 refuted, team cursor
 - At n = 128, Rm = 9.056640625, seeds 5-9, seed 9 is negative, lambda -5.35e-6. Pod `09sisn0uy6qnop`, PRO 4500, 0.51 h, 0.365 USD.
 - The seeds 5-9 bracket is now between 9.0546875 and 9.056640625. It is not bisected while C1-C5 are the sentinel.

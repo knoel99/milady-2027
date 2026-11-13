@@ -1,0 +1,8 @@
+{
+  "c1": 757.5635945317433,
+  "c2": 2.2042567349925145e-08,
+  "c3": 0.8755806597966733,
+  "c4": 457.4140106202018,
+  "source": "experiments/results/cursor_constraint_cmp.json",
+  "model": "sampling constraint, n=16, kmax=2, held-out Rm=12, seeds 0-4"
+}
