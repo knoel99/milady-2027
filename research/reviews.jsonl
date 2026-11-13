@@ -101,3 +101,4 @@
 {"time": "2026-11-13T06:55:37Z", "role": "encadrant", "commit": "e5a5e10", "scope": "H117, H118, and H123 results, H125 H126 H127 protocols", "verdict": "H117 SUPPORTED. H118 SUPPORTED. H123 REFUTED. H125 UNCHECKED. H126 UNCHECKED. H127 UNCHECKED.", "file": "research/calls/h117-result-encadrant.md"}
 {"time": "2026-11-13T07:01:25Z", "role": "encadrant", "commit": "a273255", "scope": "H124 result and H128 protocol", "verdict": "H124 SUPPORTED. H128 UNCHECKED.", "file": "research/calls/h124-result-encadrant.md"}
 {"time": "2026-11-13T07:06:24Z", "role": "encadrant", "commit": "f591247", "scope": "H127 result and H129 protocol", "verdict": "H127 REFUTED. H129 UNCHECKED.", "file": "research/calls/h127-result-encadrant.md"}
+{"time": "2026-11-13T07:15:05Z", "role": "encadrant", "commit": "4f21bcb", "scope": "H129 result and H130 protocol", "verdict": "H129 REFUTED. H130 UNCHECKED.", "file": "research/calls/h129-result-encadrant.md"}
