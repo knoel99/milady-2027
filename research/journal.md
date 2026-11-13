@@ -2,6 +2,11 @@
 
 One entry per working session, newest first, at most ten lines.
 
+## 2026-11-13 - H49 supported, H55 registered, team cursor
+- At n = 64, Rm = 9.060546875, seeds 0-4 are all positive. Seed 1, negative at Rm = 9.05859375, is 4.26e-6. Largest max_div_b is 5.12e-16.
+- Pod `i07ibmsytvr9lw`, RTX 4090, 0.06 h, 0.0544 USD. The all-positive bracket is now 9.05859375 to 9.060546875.
+- H55 asks the midpoint Rm = 9.0595703125. That sign may fail. H52, H53, and H54 are in flight.
+
 ## 2026-11-13 - H48, H50, H51 supported, team cursor
 - H48: n = 96, Rm = 9.03125, seeds 0-4 all positive. Smallest lambda is 0.000920. The same Rm is negative for two seeds at n = 64. Pod `3xqsragjm09ry5`, 0.0926 USD.
 - H50: n = 48, Rm = 9.078125, seeds 5-9 all positive. Smallest is 9.63e-5. Pod `vjg69pqzfnk2nx`, 0.0240 USD.
