@@ -2,6 +2,16 @@
 
 One entry per working session, newest first, at most ten lines.
 
+## 2026-11-13 — New instructions from Kim (07:00 UTC): no deadline, only the budget and the subject
+- Source: a message of the owner's preparation session, relaying Kim's words of 06:50 to 06:58 UTC, checked against `main` before acting: commit `fd76483` (author Kim Noel, 06:59 UTC, PR #45) carries them in `race/PILOT-PROMPT.md`, `race/PILOT.md` and `race/config.toml`.
+- The words as relayed: « Je ne veux pas imposer de temps. L'objectif est de faire avancer la science comme le sujet le demande et avec une contrainte de budget. C'est tout. Le pilote stagiaire est libre de ses stratégies et approches. » « Il n'y a pas d'échéance de temps seulement de budget argent et le sujet de stage. »
+- What changes: the deadline of 13 November is withdrawn; the pilot has no time limit. Only the internship subject and the money count: GPU 17.08 USD spent of 140 on this ledger, hard cap 150 at the level of the RunPod account. The strategy is free.
+- New goal, adopted as written in `race/PILOT-PROMPT.md` on `main`: advance the research of the offer as far as the budget allows, taking after each result the next step of the remaining work of `research/race-report.md` judged most useful. It is met only when the GPU budget cannot pay for another useful job, when the usage limit warns, or when the race report shows with evidence that no step left within the budget can change a verdict or an objective; then the end-state checks (objectives file, race report, deliverables, usage report, no pod running, everything pushed).
+- Why the first goal ended early: it listed end states only, and they were all true once the first race report was written (04:30 UTC), with four objectives not met (C3, C4, C5, T1) and 123 USD of GPU budget left.
+- `tools/review_due.py` now calls the `jury-externe` at 25, 50, 75 and 95 % of the GPU budget spent, not at fractions of a time span.
+- Merges of `main` into this branch: `c8178e8` (`84a76b2`, the per-team cap on parallel jobs, already here) and `bc2f1d1` (`fd76483`). Both clean three-way merges; the `collect` and `exec` commands of `tools/runpod_job.py`, which `main` does not have, and their tests are kept. `make test`, ruff and `sync_agents.py --check` pass.
+- Next: the remaining work of the race report, objectives not met first.
+
 ## 2026-11-13 — Tests H25–H27 decided, report v4 (06:45 UTC)
 - Goal of the session: collect the two GPU jobs of the tests of non-Gaussian structure, have them reviewed, and re-read every statement of the report on the restart test.
 - GPU, both jobs collected with rc 0 and their pods deleted by `runpod_job.py run`: `e4_nongauss` (pod `5xqx6nfak6zn4e`, RTX PRO 4500, 0.88 h, 0.64 USD) and `e4_nongauss_indep` (pod `9dfdw0dvpoftt4`, RTX PRO 4500, 0.92 h, 0.66 USD), groups D, E, G, N, 5 seeds each. Ledger: 30 jobs, 18.43 h, 17.08 USD of 140. Listing of the account at 06:44 UTC: no pod `milady-claude-job-*`; four running pods `milady-cursor-job-*` of the other pilot, not touched; no clean-up run.
