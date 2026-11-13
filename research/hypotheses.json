@@ -1828,9 +1828,9 @@
       "protocol": "Five seeds, 0-4. python3 experiments/cursor_abc_batch.py --device cuda --cfl 1 --out-dir experiments/results/cursor_abc_n136_rm9 --point 136,9,0 --point 136,9,1 --point 136,9,2 --point 136,9,3 --point 136,9,4. t = 120, dt cap 0.05, float64. GPU order RTX 4090, then PRO 4500, then A6000. One pod, 2 h cap. Launch when this team has fewer than four pods.",
       "script": "experiments/cursor_abc_batch.py --device cuda --cfl 1 --point 136,9,0",
       "cost_estimate": "One pod, 2 h cap. The n = 144 job H137 cost 0.5883 USD. This n = 136 job should cost less on an RTX 4090.",
-      "status": "registered",
+      "status": "refuted",
       "verdict": "",
-      "results": "",
+      "results": "Five points, all finite. Seeds 2 and 4 are negative. Most negative is seed 2, lambda -3.9711083543028799e-04. Largest max_div_b is 5.40e-16. Files experiments/results/cursor_abc_n136_rm9/. Pod v8ijpyib68z0fq, RTX 4090, 0.558 h, 0.4966 USD. The refutation criterion is met. Not a 3D generator result.",
       "commit": ""
     },
     {

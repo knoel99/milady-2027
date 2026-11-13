@@ -2,6 +2,11 @@
 
 One entry per working session, newest first, at most ten lines.
 
+## 2026-11-13 - H141 refuted, next step leaves the Rm split, team cursor
+- At n = 136, Rm = 9, seeds 2 and 4 are negative. Most negative is -3.97e-4, seed 2. Pod `v8ijpyib68z0fq`, 0.56 h, 0.4966 USD.
+- n = 128 is positive at this Rm. The resolution bracket stays open. The free slot is not used for n = 132.
+- C1 to C5 are still the sentinel. The next job compares two constraint mechanisms and writes cursor_metrics.json. H138, H143, and H144 stay in flight. Local ledger about 20.20 USD.
+
 ## 2026-11-13 - H142 supported, team cursor
 - At n = 128, Rm = 8.9871826171875, seeds 0-4 are all positive. Smallest is 4.76e-7, seed 0. Pod `wz78fngpuvhk0y`, 0.38 h, 0.3416 USD.
 - H144 asks Rm = 8.98699951171875. H138, H141, and H143 stay in flight. Local ledger about 19.70 USD.
