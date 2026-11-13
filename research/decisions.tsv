@@ -132,3 +132,5 @@ ts	phase	decision	why	evidence	result
 2026-11-13T09:28:00Z	h151	H151 supported. A perfect kmax=4 cutoff meets the ratio target.	Mean ratio 0.728, seeds 0-4, no learned model. The learned flows stay near 750.	experiments/results/cursor_constraint_ceiling.json	supported, CPU
 2026-11-13T09:28:00Z	h152	H152 supported. A perfect kmax=6 cutoff is far under 1.2.	Mean ratio 0.0092, seeds 0-4.	experiments/results/cursor_constraint_ceiling.json	supported, CPU
 2026-11-13T09:28:00Z	h153	H153 supported. A perfect kmax=7 cutoff is far under 1.2.	Mean ratio 0.0028, seeds 0-4.	experiments/results/cursor_constraint_ceiling.json	supported, CPU
+2026-11-13T09:32:00Z	h154	H154 supported. Neighbour Rm values beat the two-point training by a small margin.	Mean ratio 781.66 against 787.34, kmax=4, hidden 768, seeds 0-4. Rm=12 was held out.	experiments/results/cursor_constraint_dense.json	supported, CPU
+2026-11-13T09:32:00Z	h155	H155 refuted. The dense-Rm ratio is above 1.2.	Mean ratio 781.66, seeds 0-4.	experiments/results/cursor_constraint_dense.json	refuted, CPU

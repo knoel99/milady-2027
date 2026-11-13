@@ -2,6 +2,11 @@
 
 One entry per working session, newest first, at most ten lines.
 
+## 2026-11-13 - H154 supported, H155 refuted, team cursor
+- Training on six Rm values around 12 lowers the ratio from 787.34 to 781.66. H154 holds. The gap is about 5.7.
+- H155 is refuted. 781.66 is above 1.2. The perfect kmax=4 cutoff remains 0.728.
+- The next comparison is linear interpolation between Rm=11 and Rm=13, not more flow steps. H138 and H144 stay in flight.
+
 ## 2026-11-13 - projection ceiling under 1.2, team cursor
 - A perfect cutoff at kmax=4 has mean energy-distance ratio 0.728. kmax=6 is 0.0092. kmax=7 is 0.0028. H151, H152, and H153 hold.
 - The learned flows stay near 750. The cutoff is not what misses C1. The learner is.
