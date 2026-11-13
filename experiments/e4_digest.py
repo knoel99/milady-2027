@@ -349,6 +349,63 @@ def h29_lines(runs: dict, ref: dict | None) -> list[str]:
     return out
 
 
+def h32_lines(runs: dict, ref: dict | None) -> list[str]:
+    """H32: Kac-Rice factors of the number of null points (density of B at zero, Jacobian where B is weak), reference
+    against G1 and the other laws of the run; verdict as registered (research/hypotheses.json)."""
+    have = {v for r in runs.values() for v in r["evaluation"] if any("kr_density" in x for x in r["evaluation"][v].get("test", []))}
+    g1 = next((v for v in ("G1_gaussian_full", "G1T_gaussian_full") if v in have), None)
+    if ref is None or g1 is None or "kr_density" not in next(iter(ref["values"].values())):
+        return []
+    out: list[str] = []
+
+    def law(v: str, key: str, split: str = "test") -> dict[float, float]:
+        acc: dict = {}
+        for r in runs.values():
+            for x in r["evaluation"].get(v, {}).get(split, []):
+                if key in x:
+                    acc.setdefault(round(x["eta"], 5), []).append(x[key])
+        return {e: float(np.mean(a)) for e, a in sorted(acc.items(), reverse=True)}
+
+    rv = lambda e, k: ref["values"][f"{e:.5f}"][k]                                       # noqa: E731
+    etas = sorted(law(g1, "kr_density"), reverse=True)
+    out.append("\nH32: Kac-Rice factors of the mean number of magnetic null points per field (threshold 0.1 of the rms of |B|; density of B "
+               "at zero in units of rms⁻³, Jacobian where B is weak in rms³ per cell³; predicted = cells × density × Jacobian; seed means).\n")
+    out.append("| law | " + " | ".join(f"η = {e:.4f}: density | Jacobian | predicted | counted" for e in etas) + " |")
+    out.append("|---|" + "---|---|---|---|" * len(etas))
+    out.append("| reference | " + " | ".join(f"{f(rv(e, 'kr_density'))} | {f(rv(e, 'kr_jacobian'))} | {f(rv(e, 'kr_predicted'))} | "
+                                             f"{f(rv(e, 'null_count_mean'))}" for e in etas) + " |")
+    order = [v for v in GENERATORS if v in have and not v.startswith("W14_")]
+    for v in order:
+        d, j, pr, cnt = law(v, "kr_density"), law(v, "kr_jacobian"), law(v, "kr_predicted"), law(v, "null_count")
+        out.append(f"| {v} | " + " | ".join(f"{f(d[e])} | {f(j[e])} | {f(pr[e])} | {f(cnt[e])}" for e in etas) + " |")
+    out.append("H32, ratios to the reference (density at zero, Jacobian): " + "; ".join(
+        f"{v}: " + ", ".join(f"η = {e:.4f}: {f(law(v, 'kr_density')[e] / rv(e, 'kr_density'), 2)} and "
+                             f"{f(law(v, 'kr_jacobian')[e] / rv(e, 'kr_jacobian'), 2)}" for e in etas) for v in order) + ".")
+    # checks of the measurement, for the reference and for G1
+    worst_pred, worst_eps = 0.0, 0.0
+    for e in etas:
+        worst_pred = max(worst_pred, abs(rv(e, "kr_predicted") / rv(e, "null_count_mean") - 1),
+                         abs(law(g1, "kr_predicted")[e] / law(g1, "null_count")[e] - 1))
+        for tag in ("_eps005", "_eps02"):
+            for k in ("kr_density", "kr_jacobian"):
+                worst_eps = max(worst_eps, abs(rv(e, k + tag) / rv(e, k) - 1), abs(law(g1, k + tag)[e] / law(g1, k)[e] - 1))
+    ok = worst_pred <= 0.2 and worst_eps <= 0.2
+    out.append(f"H32, checks of the measurement (reference and {g1}, held-out η): largest relative gap between the predicted and the counted "
+               f"number of null points {f(worst_pred)} (limit 0.2); largest relative change of a factor between the thresholds 0.05 or 0.2 "
+               f"and 0.1: {f(worst_eps)} (limit 0.2): {'PASS' if ok else 'FAIL'}.")
+    rj = {e: law(g1, "kr_jacobian")[e] / rv(e, "kr_jacobian") for e in etas}
+    rd = {e: law(g1, "kr_density")[e] / rv(e, "kr_density") for e in etas}
+    bad = [e for e in etas if rj[e] < 1.5 or rd[e] > 1.25]
+    tr = law(g1, "kr_jacobian", "train")
+    out.append(f"H32, {g1} over the reference: Jacobian factor " + ", ".join(f"{f(rj[e], 2)}" for e in etas) + " (at least 1.5 each); density at zero "
+               + ", ".join(f"{f(rd[e], 2)}" for e in etas) + " (at most 1.25 each)"
+               + ("; at the training η: " + ", ".join(f"η = {e:.4f}: {f(law(g1, 'kr_density', 'train')[e] / rv(e, 'kr_density'), 2)} and "
+                                                      f"{f(tr[e] / rv(e, 'kr_jacobian'), 2)}" for e in tr) if tr else "")
+               + ". Verdict on this realisation of the data: " + ("MEASUREMENT INVALID (checks)" if not ok else
+                  ("REFUTED (η = " + ", ".join(f"{e:.4f}" for e in bad) + ")" if bad else "NOT REFUTED")) + ".")
+    return out
+
+
 def select(runs: dict) -> dict:
     """Generator with the lowest validation energy-distance ratio (mean over the seeds)."""
     val = {v: float(np.nanmean(per_seed(runs, v, "ed_ratio", "val"))) for v in GENERATORS
@@ -765,7 +822,7 @@ def section(quick: bool = False, root: Path = R, replication: str | None = None,
                 xs, ys = np.asarray(pts).T
                 P(f"Signed drift of E_B at τ = 4 against the bias E_B,ref/E_B(0) − 1 of the law, over the {len(pts)} laws above: "
                   f"correlation {f(float(np.corrcoef(xs, ys)[0, 1]), 2)}.")
-        for line in h28_lines(runs, ref) + h29_lines(runs, ref):
+        for line in h28_lines(runs, ref) + h29_lines(runs, ref) + h32_lines(runs, ref):
             P(line)
         h27 = [x for r in runs.values() for x in r.get("h27", [])]
         if h27:

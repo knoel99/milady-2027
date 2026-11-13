@@ -48,7 +48,7 @@ import e4_data as D
 from e4_digest import merge
 from common import RESULTS, save_json, seed_all
 from milady.eval import metrics as M
-from milady.eval.topology import null_count
+from milady.eval.topology import null_count, null_density_factors
 from milady.sim.mhd3d import MHD3D
 from milady.train import constraints as C
 from milady.train.data import FourierPotentialSpace
@@ -99,6 +99,17 @@ def eta_of(c: torch.Tensor) -> torch.Tensor:
 # ---------------------------------------------------------------------------------------------
 # Spaces, forcing, reference
 # ---------------------------------------------------------------------------------------------
+def kac_rice(b: np.ndarray, weights, device) -> dict:
+    """The two factors of the mean number of null points (density of B at zero, mean Jacobian where B is weak) of an
+    ensemble of fields on the null grid, at three thresholds (milady.eval.topology.null_density_factors; H32)."""
+    out = {}
+    for eps, tag in ((0.1, ""), (0.05, "_eps005"), (0.2, "_eps02")):
+        f = null_density_factors(b, eps=eps, weights=weights, device=device)
+        out.update({f"kr_density{tag}": f["density_at_zero"], f"kr_jacobian{tag}": f["jacobian_at_zero"],
+                    f"kr_predicted{tag}": f["predicted_count"], f"kr_n_small{tag}": f["n_small"]})
+    return out
+
+
 class Context:
     """Data, latent spaces and reference statistics shared by all variants."""
 
@@ -272,6 +283,7 @@ class Context:
             count = float(wn @ null_count(b, device=self.dev))
             ref_count = self.ref_json["values"][f"{eta:.5f}"]["null_count_mean"]
             row.update(null_count=count, null_count_err_rel=abs(count - ref_count) / ref_count)
+            row.update(kac_rice(b, wn.numpy() if hasattr(wn, "numpy") else wn, self.dev))
         return row
 
     # -- restart: advance generated snapshots with the solver ------------------------------------
@@ -375,6 +387,7 @@ def reference(quick: bool) -> None:
         idx = rng.choice(len(traj), size=min(cfg["n_ref_null"], len(traj)), replace=False)
         b = ctx.pot.to_grid(fh[idx, 1:2].to(torch.complex128), (NULL_GRID,) * 3)[:, 0].numpy()
         counts = null_count(b)
+        kr_ref = kac_rice(b, None, None)
         bud = ref["budget"]
         res_a = tmean(bud["residual_total"])
         sinks = (bud["kinetic_dissipation"] + bud["magnetic_dissipation"]).mean()
@@ -385,7 +398,7 @@ def reference(quick: bool) -> None:
         frac1 = eb_shell[:, 0] / eb_shell.sum(1)
         row = {
             "split": D.split_of(ETAS.index(e)), "n": len(traj), "n_traj": len(tr_ids),
-            "null_count_mean": float(counts.mean()), "null_count_sd": float(counts.std()),
+            "null_count_mean": float(counts.mean()), "null_count_sd": float(counts.std()), **kr_ref,
             "null_count_se": float(counts.std(ddof=1) / np.sqrt(len(counts))),
             "k_lambda": float(np.sqrt(ref["j2"].mean() / ref["b2"].mean())),
             "ed_floor_512": ctx.floor(e, min(cfg["n_gen"], len(traj) // 2)),

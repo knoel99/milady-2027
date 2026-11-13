@@ -328,5 +328,49 @@
   "rc": 0,
   "commit": "2e87cbc",
   "command": "env E4_DATA_SEED=100 bash experiments/e4_gpu_job.sh full \"0 1 2 3 4\" e4_nongauss_indep D,E,G,N"
+ },
+ {
+  "time": "2026-11-13T08:18:45Z",
+  "pod": "by5uutqozcfbvh",
+  "gpu": "NVIDIA RTX PRO 4500 Blackwell",
+  "usd_per_hour": 0.72,
+  "hours": 0.0194,
+  "usd": 0.014,
+  "rc": null,
+  "commit": "d4fc624",
+  "command": "env E4_N_RESTART=512 bash experiments/e4_gpu_job.sh full 0 1 2 e4_recolour_a G,T,R"
+ },
+ {
+  "time": "2026-11-13T08:18:45Z",
+  "pod": "yemrguikyon4tl",
+  "gpu": "NVIDIA RTX PRO 4500 Blackwell",
+  "usd_per_hour": 0.72,
+  "hours": 0.0249,
+  "usd": 0.0179,
+  "rc": null,
+  "commit": "d4fc624",
+  "command": "env E4_DATA_SEED=100 bash experiments/e4_gpu_job.sh full 0 1 2 3 4 e4_anchor_indep G,F"
+ },
+ {
+  "time": "2026-11-13T08:18:45Z",
+  "pod": "nqmboujudv4kc4",
+  "gpu": "NVIDIA RTX PRO 4500 Blackwell",
+  "usd_per_hour": 0.72,
+  "hours": 0.0138,
+  "usd": 0.0099,
+  "rc": null,
+  "commit": "d4fc624",
+  "command": "env E4_N_RESTART=512 bash experiments/e4_gpu_job.sh full 3 4 e4_recolour_b G,T,R"
+ },
+ {
+  "time": "2026-11-13T08:18:45Z",
+  "pod": "ldug6jzaursop5",
+  "gpu": "NVIDIA RTX PRO 4500 Blackwell",
+  "usd_per_hour": 0.72,
+  "hours": 0.0305,
+  "usd": 0.0219,
+  "rc": null,
+  "commit": "d4fc624",
+  "command": "bash experiments/e4_gpu_job.sh full 0 1 2 3 4 e4_anchor G,F"
  }
 ]

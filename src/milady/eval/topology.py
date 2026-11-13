@@ -35,7 +35,7 @@ from typing import Any
 import numpy as np
 import torch
 
-__all__ = ["null_count", "null_points"]
+__all__ = ["null_count", "null_density_factors", "null_points"]
 
 _STARTS = [(0.5, 0.5, 0.5)] + [(a, b, c) for a in (0.25, 0.75) for b in (0.25, 0.75) for c in (0.25, 0.75)]
 
@@ -125,3 +125,52 @@ def null_count(b: Any, chunk: int = 8, device: str | torch.device | None = None)
     arr = np.asarray(b)
     return np.concatenate([np.atleast_1d(null_points(arr[i : i + chunk], device=device)["count"])
                            for i in range(0, arr.shape[0], chunk)])
+
+
+def null_density_factors(b: Any, eps: float = 0.1, weights: Any = None, device: str | torch.device | None = None,
+                         chunk: int = 16) -> dict:
+    """The two factors of the expected number of null points of an ensemble of fields ``b`` ``(n, nx, ny, nz, 3)``.
+
+    For a random field the mean number of zeros per unit volume is (Kac–Rice)
+
+        p_B(0) · E[ |det ∇B|  given  B = 0 ],
+
+    the density of the field at the value zero times the mean Jacobian where it vanishes. Both are estimated on
+    the cells of the grid, with the value and the gradient of the trilinear interpolant at the cell centre: the
+    density from the share of cells where |B| is below ``eps`` times the root-mean-square of |B| over the
+    ensemble, the Jacobian as the mean of |det ∇B| over these cells. Returned, with B in units of that rms and
+    lengths in grid cells: ``density_at_zero``, ``jacobian_at_zero``, their product times the number of cells
+    ``predicted_count`` (to compare with :func:`null_count`), the share ``small_fraction`` and the number
+    ``n_small`` of cells used, and ``rms``. Two ensembles with the same number of nulls can differ in both
+    factors, and a Gaussian field is fixed by its covariance in both; the ratio of the factors between two
+    ensembles tells whether one has fewer nulls because its field is more rarely weak or because it varies
+    more slowly where it is weak. ``weights`` (n,): weights of the fields (default: equal).
+    """
+    arr = np.asarray(b)
+    n = arr.shape[0]
+    w = np.full(n, 1.0 / n) if weights is None else np.asarray(weights, dtype=np.float64) / float(np.sum(np.asarray(weights)))
+    cells = arr.shape[1] * arr.shape[2] * arr.shape[3]
+    rms = float(np.sqrt(np.sum(w * (arr.astype(np.float64) ** 2).sum(axis=(1, 2, 3, 4))) / cells))
+
+    def nxt(a: torch.Tensor, ax: int) -> torch.Tensor:           # the next grid point along an axis (periodic)
+        return torch.roll(a, -1, dims=ax)
+
+    def avg(a: torch.Tensor, ax: int) -> torch.Tensor:
+        return 0.5 * (a + nxt(a, ax))
+
+    s_small, s_det, n_small = 0.0, 0.0, 0
+    for i in range(0, n, chunk):                                  # by chunks of fields: the Jacobian takes 9 values per cell
+        t = torch.as_tensor(arr[i:i + chunk], dtype=torch.float64, device=device)
+        wf = torch.as_tensor(w[i:i + chunk], dtype=torch.float64, device=t.device).view(-1, 1, 1, 1)
+        centre = avg(avg(avg(t, 1), 2), 3)
+        jac = torch.stack([avg(avg(nxt(t, 1) - t, 2), 3), avg(avg(nxt(t, 2) - t, 1), 3), avg(avg(nxt(t, 3) - t, 1), 2)], dim=-1)
+        small = (centre.norm(dim=-1) < eps * rms).to(torch.float64)
+        s_small += float((small * wf).sum())
+        s_det += float((torch.linalg.det(jac).abs() * small * wf).sum())
+        n_small += int(small.sum())
+    frac = s_small / cells                                        # weighted share of the cells with a weak field
+    j0 = s_det / s_small / rms**3 if s_small > 0 else float("nan")
+    p0 = frac / (4.0 / 3.0 * np.pi * eps**3)
+    return {"eps": eps, "rms": rms, "density_at_zero": p0, "jacobian_at_zero": j0, "predicted_count": cells * p0 * j0,
+            "small_fraction": frac, "n_small": n_small}
+

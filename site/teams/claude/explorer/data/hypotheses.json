@@ -339,5 +339,16 @@
   "seeds": 5,
   "script": "experiments/e4_mhd3d.py --reference, then --group G,T,R with E4_N_RESTART=512 (experiments/e4_gpu_job.sh on GPU pods, split by seed if the job would exceed 2 h; --quick first)",
   "commit": ""
+ },
+ {
+  "id": "H32",
+  "statement": "In E4, the Gaussian law with the covariance of the data (G1) has about twice the magnetic null points of the reference because its field varies faster where it is weak, not because it is weak more often: in the Kac-Rice decomposition of the mean number of null points, N = cells × p_B(0) × E[|det ∇B| where B is weak], the Jacobian factor of G1 is at least 1.5 times that of the reference at each held-out η, and its density at zero is at most 1.25 times that of the reference.",
+  "refutation_criterion": "Refuted on a realisation of the data if, at any held-out η, the ratio G1 over reference of the Jacobian factor (threshold ε = 0.1 of the rms of |B|; seed mean of G1) is below 1.5, or the ratio of the density at zero exceeds 1.25. Checks of the measurement (a failure invalidates the measurement, not the hypothesis): for the reference and for G1, at each held-out η, the product of the two factors times the number of cells is within 20 % of the counted number of null points, and each factor at ε = 0.05 and at ε = 0.2 is within 20 % of its value at ε = 0.1. Combined verdict: supported only if not refuted on both realisations. Reported: the two factors and their ratios to the reference for G0, W9 and, where the job has them, W15, W16 and G4 (which factor each law has wrong), and at the training η. The verdict is computed by experiments/e4_digest.py (h32_lines), committed before the full run.",
+  "status": "registered",
+  "verdict": "",
+  "comparison": "model families",
+  "seeds": 5,
+  "script": "experiments/e4_mhd3d.py --reference, then --group D,G (experiments/e4_gpu_job.sh on a GPU pod; --quick first)",
+  "commit": ""
  }
 ]
