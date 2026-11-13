@@ -38,6 +38,12 @@ format:
           <script defer src="assets/theme.js"></script>
 ---
 
+## The teams' internship reports {#teams}
+
+Each team (one AI provider and its agents) runs the internship and delivers its own report, in HTML and as a PDF, with an explorer of its results. All the planned teams are listed; a card gets its links once the team's report is published. Details on the [Teams](teams/index.html) page.
+
+{{< include _team-cards.md >}}
+
 ![The framework under study: physical parameters drive a generative model whose fields satisfy $\nabla\cdot\mathbf{u} = 0$, $\nabla\cdot\mathbf{B} = 0$ and the symmetry $\mathbf{B}\to-\mathbf{B}$ by construction, and whose distribution satisfies the mean energy budget. Diagram drawn with the [schematic-figure](https://lgwrightlab.github.io/schematic-figure/) skill; full caption in the [report](report/index.html#formulation).](figures/framework/figure/out/framework.png){width="100%" fig-alt="Diagram of the generative framework: parameters, flow matching in a latent space, potential decoder, divergence-free fields, distributional control of the energy budget, downstream uses."}
 
 ::: note

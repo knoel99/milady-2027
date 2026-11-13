@@ -38,11 +38,9 @@ format:
           <script defer src="../assets/theme.js"></script>
 ---
 
-Each row is one team directory under `teams/`. The links open the HTML report, the PDF, the explorer, and the model files for that team.
+Each row is one planned team: the pilots, then the teams of the race. The links open the HTML report, the PDF, the explorer and the diagrams of the team once they are published; results and models are under [experiments/results/](https://github.com/knoel99/milady-2027/tree/main/experiments/results).
 
 ## Reports {#reports}
 
-| Team | HTML report | PDF | Explorer | Models and data |
-|---|---|---|---|---|
-| cursor | [HTML report](cursor/report/index.html) | [PDF](cursor/report/index.pdf) | [Explorer](cursor/explorer/index.html) | [experiments/results/cursor_fm/](https://github.com/knoel99/milady-2027/tree/main/experiments/results/cursor_fm) |
+{{< include _team-table.md >}}
 

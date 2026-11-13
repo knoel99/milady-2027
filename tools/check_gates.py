@@ -95,6 +95,9 @@ def team_listing():
         problems.append("teams: index.qmd missing")
         return problems
     src = index.read_text(encoding="utf-8")
+    for inc in re.findall(r"\{\{< include (\S+) >\}\}", src):  # tools/teams_index.py writes the table
+        f = teams / inc
+        src += f.read_text(encoding="utf-8") if f.is_file() else ""
     for name in present:
         for needle in (
             f"{name}/report/index.html",

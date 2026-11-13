@@ -1,23 +1,154 @@
 ---
 title: "Cursor result explorer"
+subtitle: "The Cursor team's measurements, hypotheses and GPU jobs, read from the committed result files"
 lang: en
 format:
   html:
-    toc: true
-    embed-resources: true
+    theme: none
+    minimal: true
+    toc: false
+    anchor-sections: false
+    highlight-style: github
+    embed-resources: false
+    css: ../../../assets/paper.css
+    include-in-header:
+      - text: |
+          <meta name="color-scheme" content="light dark">
+          <script>(function(){try{var t=localStorage.getItem("milady-theme");if(t==="dark"||t==="light")document.documentElement.setAttribute("data-theme",t);}catch(e){}})();</script>
+          <style>
+          .xp-controls { display: flex; flex-wrap: wrap; gap: .6rem 1.2rem; align-items: end; margin: 1rem 0; }
+          .xp-controls label { display: flex; flex-direction: column; font-weight: 700; font-size: .92rem; gap: .25rem; }
+          .xp-controls select, .xp-controls input { font: inherit; font-weight: 400; padding: .35rem .5rem; border: 2px solid var(--rule);
+            border-radius: .35rem; background: var(--bg); color: var(--ink); min-width: 9rem; }
+          .xp-kpis { display: grid; grid-template-columns: repeat(auto-fill, minmax(13rem, 1fr)); gap: .7rem; margin: 1rem 0; }
+          .xp-kpi { border: 2px solid var(--hair); border-radius: .5rem; padding: .6rem .8rem; }
+          .xp-kpi b { display: block; font-size: .85rem; color: var(--muted); }
+          .xp-kpi .v { font-size: 1.35rem; font-weight: 800; font-variant-numeric: tabular-nums; }
+          .xp-kpi small { display: block; color: var(--muted); overflow-wrap: anywhere; font-size: .78rem; }
+          .xp-chart { width: 100%; overflow-x: auto; margin: .6rem 0 1rem; }
+          .xp-chart svg { display: block; max-width: 100%; height: auto; font-family: inherit; }
+          .xp-chart text { fill: var(--ink); font-size: 12px; }
+          .xp-chart .axis line, .xp-chart .grid line { stroke: var(--hair); }
+          .xp-chart .grid line { stroke-dasharray: 2 3; opacity: .7; }
+          .xp-chart .seed { fill: var(--muted); opacity: .75; }
+          .xp-chart .mean { fill: var(--accent); }
+          .xp-chart .err { stroke: var(--accent); stroke-width: 2; }
+          .xp-chart .target { stroke: #c2410c; stroke-width: 2; stroke-dasharray: 6 4; }
+          .xp-chart .target-label { fill: #c2410c; font-weight: 700; }
+          table.xp { font-size: .92rem; }
+          table.xp th[data-k] { cursor: pointer; white-space: nowrap; }
+          table.xp th[data-k]::after { content: " ↕"; color: var(--muted); font-weight: 400; }
+          table.xp td.num { text-align: right; font-variant-numeric: tabular-nums; white-space: nowrap; }
+          .xp-status { font-weight: 700; font-size: .8rem; padding: .05rem .45rem; border-radius: 1rem; border: 1.5px solid var(--hair); white-space: nowrap; }
+          .xp-status.supported { border-color: #15803d; color: #15803d; }
+          .xp-status.refuted { border-color: #be123c; color: #be123c; }
+          .xp-gallery { display: grid; grid-template-columns: repeat(auto-fill, minmax(15rem, 1fr)); gap: .9rem; margin: 1rem 0; }
+          .xp-gallery figure { margin: 0; border: 2px solid var(--hair); border-radius: .5rem; padding: .5rem; background: #fff; }
+          .xp-gallery img { width: 100%; height: 11rem; object-fit: contain; display: block; }
+          .xp-gallery figcaption { font-size: .85rem; color: #1f2937; margin-top: .35rem; }
+          .xp-gallery figcaption a { color: #0037b3; }
+          .paper { max-width: 64rem; }
+          .xp-note { color: var(--muted); font-size: .9rem; }
+          .tb-more { font: inherit; font-weight: 700; padding: .4rem .8rem; border-radius: .4rem; border: 2px solid var(--rule);
+            background: var(--bg); color: var(--ink); cursor: pointer; }
+          #xp-nulls td:first-child, #xp-table td:first-child { min-width: 10rem; }
+          </style>
+    include-before-body:
+      - text: |
+          <a class="skip" href="#main">Skip to content</a>
+          <header class="topbar">
+            <button type="button" class="tb-btn" id="toc-toggle" aria-controls="sidetoc" aria-expanded="false"><span aria-hidden="true">☰</span><span class="tb-label">Contents</span></button>
+            <a class="brand" href="../../../index.html">MilaDy<span class="brand-sub"> · cursor</span></a>
+            <span class="tb-title" id="tb-title"></span>
+            <button type="button" class="tb-btn" id="theme-toggle"><span aria-hidden="true">◐</span><span class="tb-label">Theme</span></button>
+          </header>
+          <div class="layout">
+          <nav class="sidetoc" id="sidetoc" aria-label="Contents"></nav>
+          <main class="paper" id="main">
+    include-after-body:
+      - text: |
+          </main>
+          </div>
+          <footer class="foot"><p><a href="../../../index.html">← Home</a> · <a href="../../index.html">Teams</a> · <a href="../report/index.html">Report</a> · <a href="../report/index.pdf" download="milady-2027-cursor-report.pdf">PDF</a> · <a href="../diagrams/code-architecture.html">Architecture</a> · <a href="../diagrams/experiment-workflow.html">Workflow</a> · <a href="../diagrams/agent-organisation.html">Roles</a></p></footer>
+          <script defer src="../../../assets/theme.js"></script>
+          <script defer src="../../../assets/team-explorer.js"></script>
 ---
 
-The written report is [../report/index.html](../report/index.html).
+Every number on this page is **measured** in this repository: it is read from `data/bundle.json`, which `experiments/export_explorer.py --team cursor` copies from the committed result files (`experiments/results/cursor_*.json`), the hypothesis register (`research/hypotheses.json`) and the GPU ledger (`research/compute-ledger.jsonl`). Nothing is recomputed except means and standard errors over seeds (sample standard deviation divided by √n). What the numbers mean, and which claims they support, is in the [report](../report/index.html) ([PDF](../report/index.pdf){download="milady-2027-cursor-report.pdf"}); the code, data and agent organisation are drawn in the [architecture](../diagrams/code-architecture.html), [workflow](../diagrams/experiment-workflow.html) and [roles](../diagrams/agent-organisation.html) diagrams.
 
-# Inputs
+[Loading `data/bundle.json`…]{#xp-loading .xp-note}
 
-<label>Seed <input id="seed" type="number" min="0" max="4" value="0"></label>
-<label>File
-<select id="file">
-  <option>cursor_metrics.json</option>
-  <option>cursor_nulls.json</option>
-  <option>cursor_stationary.json</option>
-</select>
-</label>
+## Stored objectives C1 to C5 {#objectives}
 
-The bundle is `data/bundle.json`, written by `experiments/export_explorer.py --team cursor`. It copies the committed result files. Nothing here is recomputed.
+The five values stored in `experiments/results/cursor_metrics.json`, with the file each one comes from.
+
+::: {#xp-kpis .xp-kpis}
+:::
+
+## Mechanisms compared {#compare}
+
+Each row is one variant of one experiment, scored at the held-out value Rm = 12 by the same function. Choose a metric and either the mean over the seeds (dot: mean, bar: ± one standard error, grey dots: seeds) or one seed. The axis is logarithmic. The dashed line is the target used in the registered hypotheses for that metric (1.2 for the energy-distance ratio, 0.1 for C4), as stated in the report.
+
+```{=html}
+<div class="xp-controls">
+  <label>Metric <select id="xp-metric"></select></label>
+  <label>Seed <select id="xp-seed"><option value="mean">mean over seeds</option></select></label>
+  <label>Experiments <select id="xp-family">
+    <option value="all">all</option>
+    <option value="learned">networks (sampling constraint, free, learned flow)</option>
+    <option value="fourier">Fourier baselines (cutoff, midpoint)</option>
+  </select></label>
+</div>
+<div class="xp-chart" id="xp-chart" role="img" aria-label="Chart of the chosen metric for each variant"></div>
+<table class="xp tbl" id="xp-table"></table>
+```
+
+## Energy balance {#balance}
+
+File `cursor_stationary.json`: residuals of the total and magnetic energy balance on the first and second halves of the dynamic window, per seed. The last row is the mean of the absolute values ± SE.
+
+```{=html}
+<table class="xp tbl" id="xp-balance"></table>
+```
+
+## Null counts {#nulls}
+
+Relative error of the number of magnetic null points (trilinear count) against the reference field, per seed, for the truncations and midpoints of the `cursor_nulls*.json` files.
+
+```{=html}
+<div class="xp-chart" id="xp-nulls-chart" role="img" aria-label="Chart of the null-count errors"></div>
+<table class="xp tbl" id="xp-nulls"></table>
+```
+
+## Hypothesis register {#register}
+
+The register `research/hypotheses.json`, with each hypothesis's statement and refutation criterion written before its computation. Filter by status or search the text; click an identifier for the criterion and the verdict.
+
+```{=html}
+<div class="xp-controls">
+  <label>Status <select id="xp-hstatus"><option value="">all</option></select></label>
+  <label>Search <input id="xp-hq" type="search" placeholder="e.g. midpoint, H16"></label>
+  <span class="xp-note" id="xp-hcount"></span>
+</div>
+<table class="xp tbl" id="xp-hyp"></table>
+```
+
+## GPU jobs and costs {#gpu}
+
+The finished jobs of `research/compute-ledger.jsonl` (RunPod pods, one command each).
+
+```{=html}
+<div class="xp-kpis" id="xp-gpu-kpis"></div>
+<div class="xp-controls">
+  <label>Jobs <select id="xp-rc"><option value="">all</option><option value="0">exit code 0</option><option value="fail">failed</option></select></label>
+</div>
+<table class="xp tbl" id="xp-gpu"></table>
+```
+
+## Figures {#figures}
+
+The data plots (`plots/`, written by committed scripts from the result files) and the schematics (`figures/`, drawn with the schematic-figure skill) of the report. Click a figure to open it full size; the captions are in the [report](../report/index.html).
+
+```{=html}
+<div class="xp-gallery" id="xp-gallery"></div>
+```

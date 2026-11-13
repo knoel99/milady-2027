@@ -6,7 +6,10 @@
       the section being read is highlighted and named in the top bar.
    3. Tables: wrapped so they scroll sideways on phones; two-column
       key / value tables (course fiches) stack on narrow screens.
-   4. Long formulas are scaled to fit narrow screens. */
+   4. Long formulas are scaled to fit narrow screens.
+   5. Site navigation: a Back button, a Site menu with every section and
+      the team deliverables, a breadcrumb above the title, and a PDF
+      download button when the page has a PDF next to it. */
 (function () {
   var KEY = "milady-theme";
   var TOC_KEY = "milady-toc-hidden";
@@ -252,9 +255,151 @@
   window.addEventListener("load", fitFormulas);
   window.addEventListener("resize", scheduleFit);
 
+
+  /* ---------- 5. Site navigation ---------- */
+  var SECTIONS = [
+    ["", "Home"], ["prep/", "Preparation"], ["report/", "Internship report"], ["thesis/", "PhD proposal"],
+    ["supervisors/", "Supervisors"], ["experiments/", "Experiments"], ["computing/", "Computing and data"],
+    ["interactive/", "Interactive diagrams"], ["teams/", "Teams"]
+  ];
+  /* teams:begin */
+  var TEAM_LINKS = [
+    ["teams/cursor/report/index.html", "Cursor team: report (HTML)"],
+    ["teams/cursor/report/index.pdf", "Cursor team: report (PDF)", "milady-2027-cursor-report.pdf"],
+    ["teams/cursor/explorer/index.html", "Cursor team: explorer"]
+  ];
+  /* teams:end */
+  function siteRoot() {
+    var s = document.querySelector('script[src*="assets/theme.js"]');
+    if (!s) return null;
+    return new URL(s.getAttribute("src").replace(/assets\/theme\.js(\?.*)?$/, "") || "./", location.href);
+  }
+  function setupNav() {
+    var rootUrl = siteRoot();
+    var bar = document.querySelector(".topbar");
+    if (!rootUrl || !bar) return;
+    var R = rootUrl.href;
+    var rel = location.pathname.indexOf(rootUrl.pathname) === 0 ?
+      location.pathname.slice(rootUrl.pathname.length) : "";
+    rel = rel.replace(/index\.html$/, "");
+    var segs = rel.split("/").filter(Boolean);
+    var isHome = segs.length === 0;
+
+    var brand = bar.querySelector("a.brand");
+    if (brand) brand.href = R + "index.html";
+
+    /* Back: the previous page of this site if there is one, else the parent section */
+    var parent = R + "index.html";
+    if (segs.length > 1 && SECTIONS.some(function (x) { return x[0] === segs[0] + "/"; })) {
+      parent = R + segs[0] + "/index.html";
+    }
+    var theme = document.getElementById("theme-toggle");
+    if (!isHome) {
+      var back = el("button", "tb-btn tb-back");
+      back.type = "button";
+      back.title = "Back to the previous page";
+      back.setAttribute("aria-label", back.title);
+      back.innerHTML = '<span aria-hidden="true">←</span><span class="tb-label">Back</span>';
+      back.addEventListener("click", function () {
+        var same = false;
+        try { same = !!document.referrer && new URL(document.referrer).origin === location.origin; } catch (e) {}
+        if (same && history.length > 1) history.back(); else location.href = parent;
+      });
+      var tocBtn = document.getElementById("toc-toggle");
+      bar.insertBefore(back, tocBtn ? tocBtn.nextSibling : bar.firstChild);
+    }
+
+    /* PDF of this page, when the page links to one in its own folder */
+    var here = location.href.replace(/[#?].*$/, "").replace(/[^\/]*$/, "");
+    var pdf = null;
+    function pdfName(href) {  /* teams/<team>/report/index.pdf is saved as milady-2027-<team>-report.pdf */
+      var m = /\/teams\/([^\/]+)\/report\/index\.pdf$/.exec(new URL(href, location.href).pathname);
+      return m ? "milady-2027-" + m[1] + "-report.pdf" : "";
+    }
+    document.querySelectorAll('a[href$=".pdf"]').forEach(function (a) {
+      if (a.href.indexOf(here) === 0 && a.href.slice(here.length).indexOf("/") < 0) {
+        if (!a.getAttribute("download")) a.setAttribute("download", pdfName(a.href));
+        if (!pdf) pdf = a.href;
+      }
+    });
+    if (pdf) {
+      var pb = el("a", "tb-btn tb-pdf");
+      pb.href = pdf;
+      pb.setAttribute("download", pdfName(pdf));
+      pb.title = "Download the PDF of this page";
+      pb.setAttribute("aria-label", pb.title);
+      pb.innerHTML = '<span aria-hidden="true">⤓</span><span class="tb-label">PDF</span>';
+      bar.insertBefore(pb, theme);
+    }
+
+    /* Site menu */
+    var wrap = el("div", "sitemenu");
+    var mb = el("button", "tb-btn");
+    mb.type = "button";
+    mb.id = "site-menu-toggle";
+    mb.setAttribute("aria-haspopup", "true");
+    mb.setAttribute("aria-expanded", "false");
+    mb.setAttribute("aria-controls", "site-menu");
+    mb.title = "All sections of the site";
+    mb.innerHTML = '<span aria-hidden="true">≡</span><span class="tb-label">Site</span>';
+    var panel = el("nav", "sitemenu-panel");
+    panel.id = "site-menu";
+    panel.setAttribute("aria-label", "Site");
+    panel.hidden = true;
+    var ul = el("ul");
+    function item(href, text, dl, sub) {
+      var li = el("li", sub ? "sub" : null), a = el("a", null, text);
+      a.href = R + href;
+      if (dl) a.setAttribute("download", typeof dl === "string" ? dl : "");
+      var target = R + href, cur = location.href.replace(/[#?].*$/, "");
+      if (cur === target || cur === target + "index.html") a.setAttribute("aria-current", "page");
+      li.appendChild(a);
+      ul.appendChild(li);
+    }
+    SECTIONS.forEach(function (x) { item(x[0] + (x[0] ? "index.html" : "index.html"), x[1]); });
+    TEAM_LINKS.forEach(function (x) { item(x[0], x[1], x[2], true); });
+    panel.appendChild(ul);
+    wrap.appendChild(mb);
+    wrap.appendChild(panel);
+    bar.insertBefore(wrap, theme);
+    function setMenu(open) {
+      panel.hidden = !open;
+      mb.setAttribute("aria-expanded", open ? "true" : "false");
+    }
+    mb.addEventListener("click", function (e) { e.stopPropagation(); setMenu(panel.hidden); });
+    document.addEventListener("click", function (e) { if (!wrap.contains(e.target)) setMenu(false); });
+    document.addEventListener("keydown", function (e) {
+      if (e.key === "Escape" && !panel.hidden) { setMenu(false); mb.focus(); }
+    });
+
+    /* Breadcrumb above the title */
+    var main = document.querySelector("main.paper") || document.querySelector("main");
+    if (!isHome && main && !main.querySelector(".crumbs")) {
+      var cr = el("nav", "crumbs");
+      cr.setAttribute("aria-label", "Breadcrumb");
+      var ol = el("ol");
+      function crumb(href, text) {
+        var li = el("li");
+        if (href) { var a = el("a", null, text); a.href = href; li.appendChild(a); }
+        else { var sp = el("span", null, text); sp.setAttribute("aria-current", "page"); li.appendChild(sp); }
+        ol.appendChild(li);
+      }
+      crumb(R + "index.html", "Home");
+      var sec = SECTIONS.filter(function (x) { return x[0] === segs[0] + "/"; })[0];
+      if (sec && segs.length > 1) crumb(R + sec[0] + "index.html", sec[1]);
+      var h1 = document.querySelector("h1.title, main h1");
+      var t = h1 ? headingText(h1) : document.title;
+      if (segs[0] === "teams" && segs.length > 2) t = segs[1] + " · " + t;
+      crumb(null, t);
+      cr.appendChild(ol);
+      main.insertBefore(cr, main.firstChild);
+    }
+  }
+
   function mount() {
     setupTables();
     setupToc();
+    setupNav();
     var btn = document.getElementById("theme-toggle");
     if (btn) {
       btn.addEventListener("click", function () {
