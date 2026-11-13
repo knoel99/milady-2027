@@ -650,6 +650,21 @@
    "commit": "",
    "comparison": "model families",
    "seeds": 5
+  },
+  {
+   "id": "H39",
+   "statement": "In E4, the recoloured model followed by a short relaxation saves most of the transient of a simulation: started from the initial condition of the data (laminar flow with a perturbation and a seed magnetic field), an ensemble of trajectories of the solver needs at least 32 time units to be inside the two conditions that define the residual relaxation time of H35 (a null-count error of at most 0.2 and a mean |E_B/E_B,ref − 1| of at most 0.05 over the held-out η), that is at least 8 times the 4 time units measured for the recoloured model.",
+   "origin": "H35 (confirmed on one prospective realisation): the residual relaxation time is 2 to 4 time units for the recoloured model W16 and 8 for the Gaussian law G1; the report compares it with the 200 time units of transient that the protocol of the data discards, which were chosen and never measured. A comparison needs the same two conditions applied to the solver alone. CPU diagnostic on the data files of the session (24 trajectories, another realisation of the same law; not a result): the ensemble-mean magnetic energy from the cold start is within 5 % of its stationary value on the mean over the held-out η at t = 64 and not at t = 32 (deviations 0.16, 0.00, 0.07) nor at t = 16.",
+   "refutation_criterion": "Ensembles of 512 trajectories per η started from the initial condition of the data (other seeds than the data), read at τ = 8, 16, 32, 64, 128 and 200 time units, encoded and evaluated like the relaxed ensembles of H35; five ensembles (seeds). τ*_cold is the first τ of the grid at which, on the seed means, the mean over the held-out η of the null-count error is at most 0.2 and that of |E_B/E_B,ref − 1| at most 0.05. Refuted on a realisation if τ*_cold is 16 or less. Combined verdict: supported only if not refuted on both realisations. Checks of the measurement (a failure invalidates it): at τ = 200, the transient discarded by the protocol of the data, the ensemble meets the two conditions (otherwise the thresholds are below the noise of a fresh ensemble against a reference of 24 trajectories). Reported: every metric at every τ (energy distance, energy residual, spectrum and helicity, mean |det ∇B|), the null-count error against the reference count on all the snapshots, τ*_cold per seed, and the first τ at which the energy distance is below 10 floors. 'Supported' compares two times to reach two ensemble statistics; it does not say that the relaxed ensemble of the generator samples the stationary law, and the transient of a simulation depends on its initial condition (here that of the data: a seed field of amplitude 0.1). The verdict is computed by experiments/e4_digest.py (h39_lines), committed before the full run.",
+   "protocol": "Solver, forcing, time step and CFL rule of the data (experiments/e4_data.py, solver_config); 512 trajectories per validation and held-out η and per seed, on the GPU; states encoded like the snapshots of the data and evaluated by the code of every variant (no restart). No model is trained. Both realisations of the data for the reference statistics (the ensembles themselves do not depend on the realisation). --quick first as a test of the code.",
+   "script": "E4_SAME_DATA=1 experiments/e4_gpu_job.sh full '0 1 2 3 4' e4_cold K (on a GPU pod; --quick first)",
+   "cost_estimate": "one GPU job of about 1 h per data realisation, about 2 USD in all",
+   "status": "registered",
+   "verdict": "",
+   "results": "",
+   "commit": "",
+   "comparison": "constraint mechanisms",
+   "seeds": 5
   }
  ]
 }
