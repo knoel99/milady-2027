@@ -385,7 +385,9 @@ def reference(quick: bool) -> None:
     t0 = time.time()
     ctx = Context(quick)
     cfg = ctx.cfg
-    out: dict = {"config": {"quick": quick, "null_grid": NULL_GRID, "n_ref_null": cfg["n_ref_null"], "tau": cfg["tau"],
+    if torch.cuda.is_available():      # the restarts of the reference (4 draws of n_restart states, 3 η) on the idle GPU of the pod
+        ctx.dev = torch.device("cuda")
+    out: dict = {"config": {"quick": quick, "restart_device": str(ctx.dev), "null_grid": NULL_GRID, "n_ref_null": cfg["n_ref_null"], "tau": cfg["tau"],
                             "n_restart": cfg["n_restart"], "features": M.features(np.zeros((1, 8, 8, 8, 3)),
                                                                                  np.zeros((1, 8, 8, 8, 3)))[1]},
                  "values": {}}
