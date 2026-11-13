@@ -2118,6 +2118,19 @@
       "verdict": "REFUTED",
       "results": "Mean absolute second-half magnetic residual 0.06745386314296008, above 0.05. All five values are finite. Same file as H162. The refutation criterion is met.",
       "commit": ""
+    },
+    {
+      "id": "H164",
+      "statement": "The kmax=4 truncation of a kinematic ABC field, the representation constraint, has a mean relative null-count error at most 0.1 against the full-field baseline. The count is the trilinear Haynes-Parnell count. Seeds 0-4, n=16, Rm=12, t=1.",
+      "origin": "C5 is still the sentinel. The bound 0.1 is the objective target and was fixed before the five-seed run.",
+      "refutation_criterion": "Refuted if any count fails, or if the mean over seeds 0-4 of |n_trunc - n_full| / max(n_full, 1) exceeds 0.1.",
+      "protocol": "python3 experiments/cursor_nulls.py writes experiments/results/cursor_nulls.json. CPU. --quick is not a quoted result.",
+      "script": "experiments/cursor_nulls.py",
+      "cost_estimate": "CPU only. No GPU dollars.",
+      "status": "registered",
+      "verdict": "",
+      "results": "",
+      "commit": ""
     }
   ]
 }
