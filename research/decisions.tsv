@@ -94,3 +94,5 @@ ts	phase	decision	why	evidence	result
 2026-11-13T06:22:32Z	h114	H114 refuted.	Seed 3 at n=96 is negative at Rm=8.89825439453125. H116 asks the midpoint Rm=8.898284912109375 before that run.	experiments/results/cursor_abc_n96_rm889825439453125	refuted, RTX 4090, 0.1077 USD
 2026-11-13T06:28:06Z	h109	H109 refuted.	Seed 0 at n=128 is negative at Rm=8.9765625. H117 asks the midpoint Rm=8.98828125 before that run.	experiments/results/cursor_abc_n128_rm89765625	refuted, RTX 4090, 0.344 USD
 2026-11-13T06:28:06Z	h110	H110 refuted.	Seeds 5 and 9 at n=128 are negative at Rm=9. H118 asks Rm=9.0625 for seeds 5-9 before that run.	experiments/results/cursor_abc_n128_rm9_s5	refuted, RTX 4090, 0.3444 USD
+2026-11-13T06:30:53Z	h115	H115 refuted.	Seed 7 at n=96 is negative at Rm=8.936279296875. H119 asks the midpoint Rm=8.9366455078125 before that run.	experiments/results/cursor_abc_n96_rm8936279296875_s5	refuted, RTX 4090, 0.0928 USD
+2026-11-13T06:30:53Z	h116	H116 refuted.	Seed 3 at n=96 is negative at Rm=8.898284912109375. H120 asks the midpoint Rm=8.8983001708984375 before that run.	experiments/results/cursor_abc_n96_rm8898284912109375	refuted, RTX 4090, 0.0925 USD

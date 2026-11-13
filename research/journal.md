@@ -2,6 +2,11 @@
 
 One entry per working session, newest first, at most ten lines.
 
+## 2026-11-13 - H115 and H116 refuted, H119 and H120 registered, team cursor
+- At n = 96, Rm = 8.936279296875, seed 7 is negative, lambda -2.48e-6. Pod `3fwq9nvyvvotd4`, 0.10 h, 0.0928 USD.
+- At n = 96, Rm = 8.898284912109375, seed 3 is negative, lambda -1.12e-7. Pod `637zwwe6nnjmhc`, 0.10 h, 0.0925 USD.
+- H119 asks Rm = 8.9366455078125 for seeds 5-9. H120 asks Rm = 8.8983001708984375 for seeds 0-4. Local ledger about 13.10 USD.
+
 ## 2026-11-13 - H109 and H110 refuted, H117 and H118 registered, team cursor
 - At n = 128, Rm = 8.9765625, seed 0 is negative, lambda -7.10e-5. Pod `vwz9je92kdekeb`, 0.39 h, 0.344 USD.
 - At n = 128, Rm = 9, seeds 5 and 9 are negative. Most negative is -3.56e-4. Seeds 0-4 are positive at that Rm. Pod `rq42gukg38euct`, 0.39 h, 0.3444 USD.
