@@ -2,6 +2,11 @@
 
 One entry per working session, newest first, at most ten lines.
 
+## 2026-11-13 - H125 and H126 refuted, H131 and H132 registered, team cursor
+- At n = 128, Rm = 8.982421875, seed 0 is negative, lambda -3.15e-5. Pod `qbj624lrtfp2lr`, 0.38 h, 0.3368 USD.
+- At n = 128, Rm = 9.03125, seeds 5 and 9 are negative. Most negative is -1.52e-4. Pod `b5kd8vkys86m6n`, 0.39 h, 0.3442 USD.
+- H131 asks Rm = 8.9853515625. H132 asks Rm = 9.046875. H128 and H130 stay in flight. Local ledger about 15.33 USD.
+
 ## 2026-11-13 - H129 refuted, H130 registered, team cursor
 - At n = 96, Rm = 8.93662261962890625, seed 7 is negative, lambda -7.87e-8. The positive neighbour is +8.11e-8. Pod `ik9xvtteuwatn4`, 0.12 h, 0.1077 USD.
 - H130 asks the midpoint Rm = 8.936634063720703125. H125, H126, and H128 stay in flight. Local ledger about 14.65 USD.
