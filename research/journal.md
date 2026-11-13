@@ -2,6 +2,11 @@
 
 One entry per working session, newest first, at most ten lines.
 
+## 2026-11-13 - H99 supported, H101 registered, team cursor
+- At n = 96, Rm = 8.953125, seeds 5-9 are all positive. Smallest is 1.15e-4, seed 7. Seed 7 was -2.14e-4 at Rm = 8.90625.
+- Pod `vuupjgd79fimmq`, RTX 4090, 0.13 h, 0.1152 USD. Largest max_div_b is 5.41e-16.
+- H101 asks the midpoint. The parallel cap now counts only `milady-cursor-job-*`. H100 is in flight. Local ledger about 9.71 USD.
+
 ## 2026-11-13 - parallel cap counts this team's pods, team cursor
 - `runpod_job.py run` applies `[gpu].max_parallel` to pods whose name starts with this checkout's prefix. The budget reservation still sums every `milady-*job-*` pod. The credit stays shared.
 - Test `test_parallel_cap_counts_this_teams_pods_only`. Claude pods are left in place. Pod names stay `milady-cursor-job-*`.
