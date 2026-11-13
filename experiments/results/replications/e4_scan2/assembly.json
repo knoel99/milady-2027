@@ -1,0 +1,18 @@
+{
+ "parts": {
+  "e4_scan2a": {
+   "seeds": [
+    0,
+    1
+   ],
+   "files": [
+    "e4_mhd3d_s0_D.json",
+    "e4_mhd3d_s0_S.json",
+    "e4_mhd3d_s1_D.json",
+    "e4_mhd3d_s1_S.json"
+   ],
+   "data_duration_s": 757.2
+  }
+ },
+ "reference_from": "e4_scan2a"
+}
