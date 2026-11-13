@@ -2,6 +2,16 @@
 
 One entry per working session, newest first, at most ten lines.
 
+## 2026-11-13 — Main run on 5 seeds, verdicts H15–H20, report v1 (00:30 UTC)
+- Goal of the session: collect the final run, decide H15–H20, write the report and the explorer.
+- Hypotheses: H15 REFUTED (smooth embedding: 215 against 256 floors on the held-out η, a real gain of 40.9 ± 6.8 but not the factor 2 registered); H16 CONFIRMED (Gaussian law per mode G0 at 3.5 floors against 177 for the best trained model of the first protocol); H17 CONFIRMED (explicit affine term: 9.3 against 210 floors, factor 22); H19 REFUTED (anchored model W10 at 43.6 floors); H20 REFUTED on its first clause (W11 at 8.6 floors, above G0), its clauses on the restart drift and the null count met. Verdicts of `encadrant` (research/reviews/2026-11-13-encadrant-e4-final-h15-h20.md), written to the register; objective C6 = 12.
+- Found by the review, not by the main session: the Gaussian law G0 violates the magnetic energy balance completely (residual 0.998: almost no mean production) where W9 and W11 are at 0.055 and 0.060; the restart drift of the kinetic energy is lower for G0 (0.026 against 0.053). Both added to the digest, the tables, the plots and the explorer.
+- Objectives on the selected generator W9_skip_sym (5 seeds, held-out η): C1 9.35 (target 10, met), C2 1.6e-8 (met), C3 0.057 (target 0.05, missed), C4 0.34 (0.15, missed), C5 1.66 (0.2, missed), C7 12 (met), T1 0.124 (0.05, missed), T2 0.019 (0.03, met).
+- GPU: job `e4_final` collected (pod `cjs6gxv9cv92rv`, RTX PRO 4500, 0.88 h, 0.63 USD, rc 0, pod deleted); its misnamed files were brought back by the loop started with `runpod_job.py exec` and renamed; the set is promoted to `experiments/results/` and the former CPU set moved to `replications/e4_cpu`. Job `e4_indep` obtained a pod at 00:04 UTC (`pabi5rkisndiwc`, RTX 4090 at 0.89 USD/h, limit 2 h, worst case 1.78 USD; the 4500 announced at 23:55 was not free). Still running: `e4_final_long`, `e4_final_scan`, `e4_indep`. Ledger: 4.30 USD billed for this team.
+- Reviews: `jury-externe` on the 8 schematics and 3 diagrams (2 accepted, 8 corrected, 1 panel redrawn; research/reviews/2026-11-12-jury-externe-figures.md): all corrections applied by worker sub-agents; `jury-externe` on the report v1 running.
+- Deliverables: report (HTML and PDF, 48 pages), explorer, 8 schematics, 3 diagrams, 10 data plots; `tools/check_deliverables.py --team claude --built`: 33 of 33.
+- Cost (tokens, CPU time): `research/usage/latest.md` (112 USD API-equivalent at 00:30 UTC).
+
 ## 2026-11-12 — Announcement (23:55 UTC): second restart, three `collect`, review of `encadrant`, one more GPU job
 - Goal of the session: recover from a second restart of the container (23:39 UTC), apply the due review, launch an independent replication.
 - Incident: the container restarted at 23:39 UTC; the three `runpod_job.py run` processes of the final jobs died again, the pods kept running. Each is taken over by `runpod_job.py collect` (pods `cjs6gxv9cv92rv`, `tzjj9v55gjfucm`, `8g0on88hbc34yv`); nothing was lost. The `jury-externe` review that was running was cut and is started again.

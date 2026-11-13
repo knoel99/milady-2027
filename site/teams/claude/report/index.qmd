@@ -711,6 +711,20 @@ Without `--quick`, the data take about 25 minutes on 11 CPU cores and one seed o
 ### Result files and commits
 
 <!-- e4:commits:begin -->
+| Result set | Location | Code commit of the run | Commit of the results |
+|:------------------------------|:------------------------------------|:-----------|:-----------|
+| Objectives of the team (day 1) | `race/teams/claude/objectives.toml` | – | `90e64af` |
+| Register: H4–H14, H15, H16–H18, H19–H20, H21 | `research/hypotheses.json` | – | `68e2fd4`, `9fd7272`, `fc04247`, `f3868f5`, `5027f7c` |
+| Main run: groups A–E, 5 seeds (GPU job `e4_final`) | `experiments/results/e4_*.json` | `973fe3a` | `991d682` |
+| First GPU run of groups A and B (reviewed for H4–H14) | `experiments/results/replications/e4_gpu` | `d0e018f` | `fb0786b` |
+| Bitwise re-run of groups A and B | `experiments/results/replications/e4_main` | `62e31c9` | `8184bc9` |
+| Convergence of the data | `experiments/results/replications/e4_convergence` | `d0e018f` | `56dbb91` |
+| CPU seeds 0 and 1 (container) | `experiments/results/replications/e4_cpu` | several | `991d682` |
+<!-- e4:commitsmore -->
+
+: Result sets, with the commit of the code that produced them and the commit that added them. The registrations precede the results of the hypotheses they concern. {#tbl-commits}
+
+The main run was launched with a file-naming bug (the section [Discussion](#discussion)): its result files were written under another suffix, copied back by a loop started on the pod, and renamed; the `encadrant` checked the renamed files against the per-seed logs of the job (`research/gpu-logs/e4-final/`).
 <!-- e4:commits:end -->
 
 ### GPU jobs and costs
