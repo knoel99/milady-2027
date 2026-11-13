@@ -643,6 +643,16 @@ H35_KEYS = (("null-count error", "null_count_err_rel", True, 0.2), ("energy resi
             ("restart drift", "restart_drift_eb", True, 0.05))
 
 
+def refnulls(offset: int | None) -> dict | None:
+    """Null count of the reference on all its snapshots (e4_refnulls.py), for the realisation of a seed offset; None if absent."""
+    places = {0: [R / "e4_refnulls.json", R / "replications" / "e4_recsur_a" / "e4_refnulls.json"],
+              100: [R / "replications" / "e4_recsur_indep_a" / "e4_refnulls.json"]}.get(offset, [])
+    for p in places:
+        if p.exists():
+            return json.loads(p.read_text())["values"]
+    return None
+
+
 def h35_lines(runs: dict, ref: dict | None, root: Path = R) -> list[str]:
     """H35: G0, G1, W9 and W16 followed by a short relaxation in the solver; verdict as registered (research/hypotheses.json)."""
     have = {v for r in runs.values() for v in r["evaluation"]}
@@ -777,6 +787,24 @@ def h35_lines(runs: dict, ref: dict | None, root: Path = R) -> list[str]:
     else:
         ok = False
         chk.append("the job of H29 on the same data is not available with the same seeds: checks (2) and (3) not computed")
+    full_ref = refnulls(offset)
+    if full_ref and full:                                   # asked by the jury-externe role (2026-11-13): reported, not the criterion
+        def err_full(v: str) -> dict[float, float]:
+            return {e: abs(float(np.mean(a)) / full_ref[f"{e:.5f}"]["null_count_mean"] - 1)
+                    for e, a in sorted(_per_seed(runs, v, "null_count").items(), reverse=True)}
+        ratios = {law: {e: err_full(name(law, 1))[e] / err_full(name(law, 0))[e] for e in err_full(name(law, 0))} for law in ("G1X", "W16X")}
+        mean_err = {law: {t: float(np.mean(list(err_full(name(law, t)).values()))) for t in taus_of(law)} for law in laws}
+        star_full = {law: next((t for t in taus_of(law) if mean_err[law][t] <= 0.2 and stats[(law, t)]["eb_mean"] <= 0.05), float("inf"))
+                     for law in laws}
+        out.append("H35, the same quantities with the null count of the reference taken on all its snapshots (e4_refnulls.py: "
+                   + ", ".join(f"η = {float(e):.4f}: {f(v['null_count_mean'])} ± {f(v['null_count_se_traj'])}" for e, v in full_ref.items()
+                               if v["split"] == "test")
+                   + "; standard error over the trajectories), reported beside the registered criterion: (a) ratio at τ = 1 over τ = 0: "
+                   + "; ".join(f"{law}: " + ", ".join(f(x, 2) for x in ratios[law].values()) for law in ratios)
+                   + "; (b) null-count error of the laws relaxed by 4 time units: "
+                   + ", ".join(f"{law} {f(mean_err[law][4.0])}" for law in laws if 4.0 in mean_err[law])
+                   + "; at τ = 0: " + ", ".join(f"{law} {f(mean_err[law][0.0])}" for law in laws)
+                   + "; (c) τ*: " + ", ".join(f"{law} {fs(star_full[law])}" for law in laws) + ".")
     out.append("H35, checks of the measurement: " + "; ".join(chk) + f": {'PASS' if ok else 'FAIL'}. Verdict on this realisation of the data: "
                + ("INCOMPLETE (the seeds 0 to 4 do not all hold every law at every τ: no verdict)" if not complete else
                   "MEASUREMENT INVALID (checks)" if not ok else
