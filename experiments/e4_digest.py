@@ -645,7 +645,8 @@ H35_KEYS = (("null-count error", "null_count_err_rel", True, 0.2), ("energy resi
 
 def refnulls(offset: int | None) -> dict | None:
     """Null count of the reference on all its snapshots (e4_refnulls.py), for the realisation of a seed offset; None if absent."""
-    places = {0: [R / "e4_refnulls.json", R / "replications" / "e4_recsur_a" / "e4_refnulls.json"],
+    # computed on the pods, on the data of each realisation: the data files of the session's own CPU are another realisation
+    places = {0: [R / "replications" / "e4_recsur_a" / "e4_refnulls.json"],
               100: [R / "replications" / "e4_recsur_indep_a" / "e4_refnulls.json"]}.get(offset, [])
     for p in places:
         if p.exists():
