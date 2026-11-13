@@ -2,6 +2,9 @@
 
 One entry per working session, newest first, at most ten lines.
 
+## 2026-11-13 - H143 fell through to an RTX PRO 4500, team cursor
+- Secure RTX 4090 capacity was empty. Pod `09sisn0uy6qnop` is an RTX PRO 4500 at 0.72 USD/h. H142 stayed on an RTX 4090. H138 and H141 stay in flight.
+
 ## 2026-11-13 - H139 and H140 supported, team cursor
 - At n = 128, Rm = 8.987548828125, seeds 0-4 are all positive. Smallest is 2.93e-6, seed 0. Pod `5vazrnsmf3z5dw`, 0.38 h, 0.3366 USD.
 - At n = 128, Rm = 9.05859375, seeds 5-9 are all positive. Smallest is 2.24e-5, seed 5. Pod `rmgfzfvfk1cg5n`, 0.38 h, 0.3371 USD.

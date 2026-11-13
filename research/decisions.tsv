@@ -119,3 +119,4 @@ ts	phase	decision	why	evidence	result
 2026-11-13T08:27:28Z	h137	H137 refuted.	Seed 3 at n=144 is negative at Rm=9. H141 asks n=136 at the same Rm before that run.	experiments/results/cursor_abc_n144_rm9	refuted, RTX 4090, 0.5883 USD
 2026-11-13T08:34:49Z	h139	H139 supported.	Seeds 0-4 at n=128 are positive at Rm=8.987548828125. H142 asks the midpoint Rm=8.9871826171875 before that run.	experiments/results/cursor_abc_n128_rm8987548828125	supported, RTX 4090, 0.3366 USD
 2026-11-13T08:35:04Z	h140	H140 supported.	Seeds 5-9 at n=128 are positive at Rm=9.05859375. H143 asks the midpoint Rm=9.056640625 before that run.	experiments/results/cursor_abc_n128_rm905859375_s5	supported, RTX 4090, 0.3371 USD
+2026-11-13T08:36:57Z	h143	H143 uses an RTX PRO 4500.	Secure RTX 4090 capacity was empty. The fallback order is RTX 4090, then PRO 4500, then A6000.	pod 09sisn0uy6qnop	launched, 0.72 USD/h
