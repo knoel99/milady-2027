@@ -2,6 +2,12 @@
 
 One entry per working session, newest first, at most ten lines.
 
+## 2026-11-13 - H34 refuted, team cursor
+- At n = 64, Rm = 9.03125, seeds 1 and 4 are negative. Lambdas are -0.000179 and -0.000130. The other three seeds are positive. Largest max_div_b is 5.51e-16.
+- The all-positive claim fails. The criterion was not changed. Pod `u3vvb69h7bjcv4`, RTX 4090, 0.07 h, 0.0620 USD.
+- At the same resolution, Rm = 9.0625 is positive for seeds 0-4 and 5-9. The all-positive boundary sits between 9.03125 and 9.0625.
+- H41 asks whether Rm = 9.046875 is already positive for seeds 0-4. That sign may fail. H38, H39, and H40 are in flight.
+
 ## 2026-11-13 - H36 and H37 supported, team cursor
 - H36: cfl = 0.5 at n = 64, Rm = 9.0625, all positive. Smallest lambda is 1.63e-5. Pod `94xxtipk5c70o0`, 0.0469 USD.
 - H37: n = 48, Rm = 9.0625, seeds 0-4, all positive. Smallest lambda is 7.37e-5. Pod `dl8nqu1e3h9jtm`, 0.0467 USD.
