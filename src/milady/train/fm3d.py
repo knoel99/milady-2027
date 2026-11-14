@@ -264,11 +264,15 @@ def _flatten(d: Mapping[str, Any], prefix: str = "") -> dict[str, Any]:
 class ConditionEmbedding(nn.Module):
     """Shared embedding of time t and of the n_cond normalized parameters → vector of dimension ``emb_dim``."""
 
-    def __init__(self, n_cond: int, emb_dim: int = 256, n_freq: int = 16) -> None:
+    def __init__(self, n_cond: int, emb_dim: int = 256, n_freq: int = 16, cond_scale: float = 8.0) -> None:
+        """``cond_scale``: largest (if > 1) or smallest (if < 1) frequency of the condition embedding, in
+        cycles over the normalized range [0, 1]; the other end is 1 cycle. With the default 8, features
+        oscillate faster than a coarse grid of training values can resolve (E4, hypothesis H15); 0.5 gives
+        a smooth embedding (periods between 1 and 2 ranges)."""
         super().__init__()
         self.n_cond = n_cond
         self.t_emb = FourierEmbedding(n_freq, 30.0)
-        self.c_emb = FourierEmbedding(n_freq, 8.0)
+        self.c_emb = FourierEmbedding(n_freq, cond_scale)
         d_in = (2 * n_freq + 1) * (1 + n_cond)
         self.mlp = nn.Sequential(nn.Linear(d_in, emb_dim), nn.SiLU(), nn.Linear(emb_dim, emb_dim))
 
@@ -318,10 +322,11 @@ class ResMLP(nn.Module):
         emb_dim: int = 256,
         n_freq: int = 16,
         dropout: float = 0.0,
+        cond_scale: float = 8.0,
     ) -> None:
         super().__init__()
         dim = n_modes * n_channels
-        self.embed = ConditionEmbedding(n_cond, emb_dim, n_freq)
+        self.embed = ConditionEmbedding(n_cond, emb_dim, n_freq, cond_scale)
         self.inp = nn.Linear(dim, width)
         self.blocks = nn.ModuleList(ResBlock(width, expansion, emb_dim, dropout) for _ in range(depth))
         self.norm_out = nn.LayerNorm(width, elementwise_affine=False, eps=1e-6)

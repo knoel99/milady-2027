@@ -50,6 +50,7 @@ __all__ = [
     "craya_basis",
     "fixed_parameters",
     "half_ball_modes",
+    "half_cube_modes",
     "iter_snapshots",
     "load_latents",
     "local_copy",
@@ -262,6 +263,25 @@ def half_ball_modes(kmax: float) -> np.ndarray:
     return m[order].astype(np.int64)
 
 
+def half_cube_modes(kmax: float) -> np.ndarray:
+    """Integer indices m ≠ 0 of the cube |m_i| ≤ kmax, one representative per pair (m, −m), sorted by |m|.
+
+    The cube is the 2/3-rule truncation of ``milady.sim.mhd3d`` (|m_i| ≤ (n − 1)//3): with it, the
+    latent space holds every mode of the Galerkin system that produced the data, and the quadratic
+    budgets computed from the latent are those of the solver. Same half-space as :func:`half_ball_modes`.
+    """
+    r = math.floor(kmax)
+    if r < 1:
+        raise ValueError("kmax ≥ 1 required")
+    g = np.arange(-r, r + 1)
+    mx, my, mz = (a.ravel() for a in np.meshgrid(g, g, g, indexing="ij"))
+    m2 = mx**2 + my**2 + mz**2
+    keep = ((mz > 0) | ((mz == 0) & ((my > 0) | ((my == 0) & (mx > 0))))) & (m2 > 0)
+    m = np.stack([mx[keep], my[keep], mz[keep]], axis=1)
+    order = np.lexsort((m[:, 2], m[:, 1], m[:, 0], m2[keep]))
+    return m[order].astype(np.int64)
+
+
 def craya_basis(k: np.ndarray) -> tuple[np.ndarray, np.ndarray]:
     """Orthonormal basis (e₁, e₂) of the plane ⟂ k (Craya–Herring).
 
@@ -292,7 +312,8 @@ class FourierPotentialSpace(nn.Module):
 
     Parameters: ``kmax`` (truncation radius in integer indices), ``fields`` (``velocity``,
     ``magnetic_field`` or just one of the two), ``lengths`` (periodic box, default 2π), ``symmetric_b``
-    (zero mean of B, for a model equivariant under B → −B).
+    (zero mean of B, for a model equivariant under B → −B), ``truncation`` (``ball``: |m| ≤ kmax;
+    ``cube``: |m_i| ≤ kmax, the 2/3-rule truncation of the solver, see :func:`half_cube_modes`).
     """
 
     m: torch.Tensor
@@ -310,17 +331,21 @@ class FourierPotentialSpace(nn.Module):
         fields: Sequence[str] = FIELD_NAMES,
         lengths: Sequence[float] = (TWO_PI, TWO_PI, TWO_PI),
         symmetric_b: bool = False,
+        truncation: str = "ball",
     ) -> None:
         super().__init__()
         fields = tuple(fields)
         unknown = set(fields) - set(FIELD_NAMES)
         if unknown or not fields:
             raise ValueError(f"fields {fields}: non-empty subset of {FIELD_NAMES} expected")
+        if truncation not in ("ball", "cube"):
+            raise ValueError(f"truncation {truncation!r}: ball or cube")
         self.kmax = float(kmax)
         self.fields = fields
         self.lengths = tuple(float(v) for v in lengths)
         self.symmetric_b = bool(symmetric_b)
-        m = half_ball_modes(self.kmax)
+        self.truncation = truncation
+        m = half_ball_modes(self.kmax) if truncation == "ball" else half_cube_modes(self.kmax)
         k = TWO_PI * m / np.asarray(self.lengths)[None, :]
         e1, e2 = craya_basis(k)
         self.register_buffer("m", torch.as_tensor(m))
@@ -350,12 +375,15 @@ class FourierPotentialSpace(nn.Module):
 
     def config(self) -> dict[str, Any]:
         """Constructor arguments (serializable)."""
-        return {
+        cfg: dict[str, Any] = {
             "kmax": self.kmax,
             "fields": list(self.fields),
             "lengths": list(self.lengths),
             "symmetric_b": self.symmetric_b,
         }
+        if self.truncation != "ball":  # absent for the default: checkpoints written before the option load as is
+            cfg["truncation"] = self.truncation
+        return cfg
 
     def field_slice(self, name: str) -> slice:
         """Channels of the field ``name``."""

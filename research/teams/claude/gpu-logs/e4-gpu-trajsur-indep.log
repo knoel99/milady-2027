@@ -1,0 +1,105 @@
+torch 2.8.0+cu128 cuda True NVIDIA RTX A6000
+[1 s] data: 96 cores
+eta 0.08000 (train) Eu 0.491 Eb 0.076 Hm -0.042 (drift -0.4 SE) balance +0.0003  747 s
+eta 0.07253 (test ) Eu 0.441 Eb 0.097 Hm -0.054 (drift +1.5 SE) balance -0.0003  736 s
+eta 0.06575 (train) Eu 0.393 Eb 0.114 Hm -0.067 (drift -0.1 SE) balance +0.0002  709 s
+eta 0.05961 (val  ) Eu 0.376 Eb 0.120 Hm -0.071 (drift -0.8 SE) balance -0.0000  635 s
+eta 0.05404 (train) Eu 0.346 Eb 0.129 Hm -0.076 (drift -0.2 SE) balance +0.0001  660 s
+eta 0.04899 (test ) Eu 0.323 Eb 0.138 Hm -0.081 (drift -0.6 SE) balance -0.0001  678 s
+eta 0.04441 (train) Eu 0.307 Eb 0.146 Hm -0.087 (drift +1.1 SE) balance -0.0000  703 s
+eta 0.04026 (val  ) Eu 0.286 Eb 0.156 Hm -0.095 (drift +1.5 SE) balance -0.0001  688 s
+eta 0.03650 (train) Eu 0.275 Eb 0.161 Hm -0.096 (drift +0.4 SE) balance -0.0000  628 s
+eta 0.03309 (test ) Eu 0.260 Eb 0.170 Hm -0.105 (drift -1.1 SE) balance -0.0001  694 s
+eta 0.03000 (train) Eu 0.251 Eb 0.177 Hm -0.110 (drift -0.5 SE) balance +0.0000  694 s
+total 750 s -> /workspace/milady/experiments/results/e4_data.json
+[754 s] reference
+eta 0.03309 nulls 36.3 ± 1.0  k_lambda 2.86  H(1) -0.1042  H(k>=2) -0.0005  E1/EB 0.39  z(j.B) +0.5  floor 0.0382
+eta 0.03000 nulls 42.9 ± 1.4  k_lambda 2.90  H(1) -0.1087  H(k>=2) -0.0011  E1/EB 0.38  z(j.B) -0.8  floor 0.0889
+reference done in 805 s
+[1561 s] models: seeds 0 1 2 3 4, 8 threads each
+eta 0.03650: trajectory floor 0.0442 ± 0.0265 [0.0195, 0.0997], random floor 0.0119, E|Y-Y'| 3.028
+eta 0.03309: trajectory floor 0.0527 ± 0.0356 [0.0159, 0.1374], random floor 0.0131, E|Y-Y'| 3.090
+eta 0.03000: trajectory floor 0.0949 ± 0.0963 [0.0195, 0.3653], random floor 0.0132, E|Y-Y'| 3.225
+seed 4 rc=0
+== G1_gaussian_full: test ed_ratio 2.81  div_b 1.27e-08  balance 0.003  spec_b 0.013  Hm 0.013  nulls 1.165  restart 0.050
+== W9Yb_skip_sym: test ed_ratio 13.11  div_b 1.29e-08  balance 0.061  spec_b 0.158  Hm 0.203  nulls 1.803  restart 0.135
+== W9Y_skip_sym_gausstraj: test ed_ratio 9.03  div_b 1.27e-08  balance 0.018  spec_b 0.100  Hm 0.134  nulls 1.534  restart 0.063
+total duration 1104 s
+seed 1 rc=0
+== G1_gaussian_full: test ed_ratio 2.71  div_b 1.27e-08  balance 0.005  spec_b 0.014  Hm 0.025  nulls 1.139  restart 0.053
+== W9Yb_skip_sym: test ed_ratio 12.35  div_b 1.28e-08  balance 0.061  spec_b 0.151  Hm 0.197  nulls 1.780  restart 0.140
+== W9Y_skip_sym_gausstraj: test ed_ratio 10.56  div_b 1.27e-08  balance 0.027  spec_b 0.123  Hm 0.174  nulls 1.520  restart 0.089
+total duration 1111 s
+seed 2 rc=0
+== G1_gaussian_full: test ed_ratio 2.48  div_b 1.27e-08  balance 0.002  spec_b 0.012  Hm 0.010  nulls 1.165  restart 0.075
+== W9Yb_skip_sym: test ed_ratio 11.66  div_b 1.28e-08  balance 0.056  spec_b 0.143  Hm 0.185  nulls 1.775  restart 0.120
+== W9Y_skip_sym_gausstraj: test ed_ratio 7.58  div_b 1.28e-08  balance 0.013  spec_b 0.083  Hm 0.109  nulls 1.550  restart 0.066
+total duration 1164 s
+seed 3 rc=0
+== G1_gaussian_full: test ed_ratio 2.76  div_b 1.27e-08  balance 0.001  spec_b 0.018  Hm 0.018  nulls 1.166  restart 0.067
+== W9Yb_skip_sym: test ed_ratio 13.99  div_b 1.28e-08  balance 0.066  spec_b 0.166  Hm 0.204  nulls 1.783  restart 0.143
+== W9Y_skip_sym_gausstraj: test ed_ratio 7.56  div_b 1.27e-08  balance 0.007  spec_b 0.087  Hm 0.139  nulls 1.497  restart 0.049
+total duration 1280 s
+seed 0 rc=0
+== G1_gaussian_full: test ed_ratio 2.57  div_b 1.27e-08  balance 0.005  spec_b 0.019  Hm 0.012  nulls 1.129  restart 0.063
+== W9Yb_skip_sym: test ed_ratio 10.06  div_b 1.28e-08  balance 0.053  spec_b 0.126  Hm 0.160  nulls 1.742  restart 0.111
+== W9Y_skip_sym_gausstraj: test ed_ratio 6.10  div_b 1.27e-08  balance 0.015  spec_b 0.066  Hm 0.068  nulls 1.416  restart 0.029
+total duration 1297 s
+[2860 s] done
+NVIDIA RTX A6000, 1 MiB, 0 %
+e4_data.json
+e4_floor.json
+e4_gpu_s0.log
+e4_gpu_s1.log
+e4_gpu_s2.log
+e4_gpu_s3.log
+e4_gpu_s4.log
+e4_mhd3d_s0.json
+e4_mhd3d_s0_A.json
+e4_mhd3d_s0_B.json
+e4_mhd3d_s0_C.json
+e4_mhd3d_s0_D.json
+e4_mhd3d_s0_E.json
+e4_mhd3d_s0_G.json
+e4_mhd3d_s0_Y.json
+e4_mhd3d_s1.json
+e4_mhd3d_s1_A.json
+e4_mhd3d_s1_B.json
+e4_mhd3d_s1_C.json
+e4_mhd3d_s1_D.json
+e4_mhd3d_s1_E.json
+e4_mhd3d_s1_G.json
+e4_mhd3d_s1_Y.json
+e4_mhd3d_s2.json
+e4_mhd3d_s2_A.json
+e4_mhd3d_s2_B.json
+e4_mhd3d_s2_C.json
+e4_mhd3d_s2_D.json
+e4_mhd3d_s2_E.json
+e4_mhd3d_s2_G.json
+e4_mhd3d_s2_Y.json
+e4_mhd3d_s3.json
+e4_mhd3d_s3_A.json
+e4_mhd3d_s3_B.json
+e4_mhd3d_s3_C.json
+e4_mhd3d_s3_D.json
+e4_mhd3d_s3_E.json
+e4_mhd3d_s3_G.json
+e4_mhd3d_s3_Y.json
+e4_mhd3d_s4.json
+e4_mhd3d_s4_A.json
+e4_mhd3d_s4_B.json
+e4_mhd3d_s4_C.json
+e4_mhd3d_s4_D.json
+e4_mhd3d_s4_E.json
+e4_mhd3d_s4_G.json
+e4_mhd3d_s4_Y.json
+e4_reference.json
+e4_samples_s0_GY.npz
+e4_samples_s0_all.npz
+
+--- status
+2026-11-13T13:46:09Z boot NVIDIA RTX A6000, 49140 MiB
+2026-11-13T13:47:22Z job started
+2026-11-13T14:35:04Z job finished rc=0 in 2862 s
+2026-11-13T14:35:04Z DONE rc=0

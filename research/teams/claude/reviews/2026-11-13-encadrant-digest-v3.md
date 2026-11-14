@@ -1,0 +1,12 @@
+# Review by `encadrant` — commit 8a0f33a: digest additions and numbers of the report v3 and of the race report
+
+Review due on the three commits after 03:44 UTC (9e947e8, 64ae50f, c246c28). Role `encadrant` (sub-agent, model and effort of the role file), 2026-11-13 04:35 UTC. Recomputed from the group JSON files (5 seeds × 3 held-out η); nothing written.
+
+1. **Production over dissipation: CONFIRMED (one edge case).** P/D = (1 + r)/(1 − r) is exact for P > 0; for P ≤ 0, r = −1 identically and P/D cannot be recovered (the code printed 0; only G0 is affected). Recomputed: G1 0.928, 1.117, 1.282; W9 0.789, 0.926, 1.019; W13 0.862, 0.979, 1.045; S_w5632 1.019, 1.112, 1.098; S_w2048 0.649, 0.881, 1.018. Converting the mean residual is fair (difference with the seed mean of per-seed P/D at most 0.0014).
+2. **Restart: CONFIRMED, one ordering undecided.** Curves: G1 0.058, 0.097, 0.104, 0.064; W9 0.012, 0.043, 0.086, 0.124. Seed mean of row maxima against maximum of the mean curve agree within 0.004. Paired: W9 − G1 = +0.0161 ± 0.0045 (5 of 5); G1 − W12 = +0.0285 ± 0.0043 (5 of 5); G1 − S_w2048 = +0.0342 ± 0.0016 (5 of 5, across jobs); W12 − S_w2048 = +0.0057 ± 0.0045 (3 of 5): not decided, and not claimed by the report.
+3. **Sentences of the report: CONFIRMED.** σ(dE/dt) ratios 2.99, 1.63, 1.37; null count within 60 floors: G1 1.097 lowest (next W13 1.247), lower and far W6 0.43, W8 0.71, S_w5632 0.96; over-production 1.282 (1.278 on the second realisation); magnetic balance W9 0.0553, W13 0.0379, S_w5632 0.0369, G1 0.0720 (second realisation: W9 0.050, G1 0.072).
+4. **Race report: one sentence REFUTED, the rest CONFIRMED** (0.26, 117–519, 9.3, 205, factor 22, 3.5, 0.998, 0.072, 0.064/0.124, 0.29 → 0.19, 0.057 → 0.029, 16.4, 0.011, 17 %, 18.8, 25.6, 104, 9/11/1, the objectives table, G0 meeting 7 of 9).
+
+Defects by severity: (1) "No law within 60 floors…": both ranges too narrow: W10 (43.6 floors) has 3.46 times the reference null count, S_w2048_long (58.8 floors) drifts by 0.264: write "2.1 to 3.5 times" and "0.06 to 0.26". (2) Double rounding: G1 is at 2.547, so "2.6 floors" should be 2.5; the null error of W9 is 1.6646, so 1.66. (3) "W9 has the better magnetic balance" holds on the η-mean of |r| only; at their worst η the two are comparable (W9 −0.118, G1 +0.123). (4) The digest prints "P/D 0" when P ≤ 0.
+
+What the main session did with it: the four defects corrected (race report, report, digest).

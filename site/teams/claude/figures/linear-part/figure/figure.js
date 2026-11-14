@@ -1,0 +1,163 @@
+// Hero: none, a conceptual diagram (flat route).
+// Figure: why the first generators are over-dispersed and what was tried (linear part of the velocity field).
+// Every statement comes from site/teams/claude/figures/FACTS.md. Units inside a panel: pt.
+export const figure = { width: 183, height: 104, name: 'linear-part', format: 'journal' };
+
+export default function draw(F, L) {
+  const C = L.STYLE.color;
+  const m = L.mm;
+  // colour key (shared by the team): u blue, B orange/red, forcing grey (not used here)
+  const U = C.blue, B = C.vermillion;
+  const LIN = '#00896A';      // linear part / exact Gaussian field
+  const NET = '#6A4C93';      // network, "the rest"
+  const INK = C.ink, MID = C.mid;
+  const T = (p, x, y, s, o = {}) => L.text(p, x, y, s, Object.assign({ size: 5.5 }, o));
+
+  // ---------- shared glyph: one Fourier mode = 4 real numbers for u (blue) + 4 for B (orange/red) ----------
+  function mode(p, x, y, cw = 1.5, ch = 2.4) {
+    for (let i = 0; i < 4; i++) {
+      L.rect(p, x + i * cw, y, cw, ch, { fill: U, stroke: '#fff', width: 0.2 });
+      L.rect(p, x + i * cw, y + ch, cw, ch, { fill: B, stroke: '#fff', width: 0.2 });
+    }
+    return 4 * cw;
+  }
+  function modeBar(p, x, y, w) {                    // a row of mode glyphs with a break
+    const g = 4 * 1.5 + 1.2, n = Math.floor(w / g);
+    let k = 0;
+    for (let i = 0; i < n; i++) {
+      const xx = x + i * g + (w - n * g) / 2;
+      if (i === n - 4) { T(p, xx + 2, y + 2.6, '⋯', { size: 7, anchor: 'start', valign: 'middle', color: MID }); continue; }
+      if (i === n - 3 || i === n - 2) continue;
+      mode(p, xx, y);
+      k++;
+    }
+  }
+  const box = (p, x, y, w, h, fill, stroke, o = {}) => L.rect(p, x, y, w, h, Object.assign({ fill, stroke, width: 0.6, r: 1.2 }, o));
+  const tick = (p, x, y, ok) => {                   // small drawn check / cross
+    if (ok) L.polyline(p, [[x - 1.7, y], [x - 0.5, y + 1.4], [x + 1.9, y - 1.8]], { stroke: LIN, width: 1, fill: 'none', cap: 'round', join: 'round' });
+    else { L.line(p, [x - 1.5, y - 1.5], [x + 1.5, y + 1.5], { stroke: INK, width: 1, cap: 'round' }); L.line(p, [x - 1.5, y + 1.5], [x + 1.5, y - 1.5], { stroke: INK, width: 1, cap: 'round' }); }
+  };
+
+  // =====================================================================================================
+  // panel a: the field, its linear part, and the network that is narrower than the latent
+  // =====================================================================================================
+  const a = F.panel('a', { x: 0, y: 0, w: 66, h: 104 });
+  const aw = a.w;
+  T(a, 12, 6, '**Optimal velocity field** *v*(*x*, *t*)', { size: 6.5, valign: 'middle' });
+
+  // decomposition v = linear part + the rest (widths are illustrative)
+  const dy = 17, dh = 22;
+  box(a, 0, dy, 30, dh, '#fff', INK, { width: 0.5 });
+  T(a, 15, dy + dh / 2, '*v*', { size: 9, anchor: 'middle', valign: 'middle' });
+  T(a, 34, dy + dh / 2, '=', { size: 9, anchor: 'middle', valign: 'middle' });
+  box(a, 40, dy, 62, dh, '#D6EEE6', LIN, { width: 0.8 });
+  T(a, 71, dy + 7, '**Linear part**', { size: 6.5, anchor: 'middle', valign: 'middle', color: LIN });
+  T(a, 71, dy + 15, '*A*(*t*) *x* + *b*(*t*)', { size: 6, anchor: 'middle', valign: 'middle', color: LIN });
+  T(a, 106, dy + dh / 2, '+', { size: 9, anchor: 'middle', valign: 'middle' });
+  box(a, 111, dy, 42, dh, '#E6DFF0', NET, { width: 0.8 });
+  T(a, 132, dy + 7, '**The rest**', { size: 6.5, anchor: 'middle', valign: 'middle', color: NET });
+  T(a, 132, dy + 15, 'non-linear', { size: 5.5, anchor: 'middle', valign: 'middle', color: NET });
+  T(a, 71, dy + dh + 7, 'Gaussian data:\nexactly affine', { size: 5.5, anchor: 'middle', valign: 'middle', color: LIN, lineGap: 1 });
+  T(a, 132, dy + dh + 7, 'Gaussian data:\nnone', { size: 5.5, anchor: 'middle', valign: 'middle', color: NET, lineGap: 1 });
+
+  // network narrower than the latent (neck drawn to scale: 512 / 5320)
+  const bx = 8, bw = aw - 16;                       // latent bar
+  const ty = 66, bh = 7;
+  const cx = bx + bw / 2;
+  L.rect(a, bx, ty, bw, bh, { fill: '#fff', stroke: INK, width: 0.5 });
+  modeBar(a, bx + 2, ty + 1.2, bw - 4);
+  T(a, cx, ty - 5, '**Latent** *x*: 5320 (potentials)', { size: 6, anchor: 'middle', valign: 'middle' });
+  const nw = bw * 512 / 5320, ny = ty + bh + 22, nh = 12;
+  L.polygon(a, [[bx, ty + bh], [bx + bw, ty + bh], [cx + nw / 2, ny], [cx - nw / 2, ny]], { fill: '#EFEFEF', stroke: MID, width: 0.4 });
+  L.rect(a, cx - nw / 2, ny, nw, nh, { fill: NET, stroke: NET, width: 0.5 });
+  const by = ny + nh + 22;
+  L.polygon(a, [[cx - nw / 2, ny + nh], [cx + nw / 2, ny + nh], [bx + bw, by], [bx, by]], { fill: '#EFEFEF', stroke: MID, width: 0.4 });
+  L.rect(a, bx, by, bw, bh, { fill: '#fff', stroke: INK, width: 0.5 });
+  modeBar(a, bx + 2, by + 1.2, bw - 4);
+  T(a, cx, by + bh + 5, '**Velocity** *v*: 5320 (potentials)', { size: 6, anchor: 'middle', valign: 'middle' });
+  T(a, cx + nw / 2 + 4, ny + nh / 2, '**Network**: width 512', { size: 6, anchor: 'start', valign: 'middle', color: NET });
+  // linear part tries to cross the neck
+  L.arrow(a, [cx - 12, ty + bh + 3], [cx - 3, ny - 2], { stroke: LIN, width: 1.1, dash: '2.2 1.4', head: 3 });
+  T(a, cx - 14, ty + bh + 8, 'linear part', { size: 5.5, anchor: 'end', color: LIN, halo: true });
+  L.line(a, [cx - 5.5, ny + 0.5], [cx + 0.5, ny + 6.5], { stroke: INK, width: 1, cap: 'round' });
+  L.line(a, [cx - 5.5, ny + 6.5], [cx + 0.5, ny + 0.5], { stroke: INK, width: 1, cap: 'round' });
+  // (the cross sits on the neck: drawn in white halo for contrast)
+  L.arrow(a, [cx + 2.2, ny + nh + 3], [cx + 2.2, by - 2], { stroke: NET, width: 1.1, head: 3 });
+  T(a, cx, by + bh + 16, '*Conjecture (tested by a width scan, H21)*:', { size: 5.5, anchor: 'middle', color: INK });
+  T(a, cx, by + bh + 23, 'a network narrower than the latent', { size: 5.5, anchor: 'middle', color: INK });
+  T(a, cx, by + bh + 30, 'cannot carry the linear part', { size: 5.5, anchor: 'middle', color: INK });
+  T(a, cx + nw / 2 + 4, ny + nh / 2 + 7, '(W0, free components: 7980)', { size: 5, anchor: 'start', valign: 'middle', color: MID });
+  T(a, cx + 6, ny + nh + 9, 'the rest', { size: 5.5, anchor: 'start', color: NET, halo: true });
+  // measured evidence: flow-matching loss against the exact linear field
+  const ey = 232, lo = 1.55, hi = 1.65, lxp = (v) => bx + (v - lo) / (hi - lo) * bw;
+  T(a, cx, ey - 30, '**Measured**: flow-matching loss of the plain', { size: 6, anchor: 'middle', valign: 'middle' });
+  T(a, cx, ey - 23, 'models W0, W4, W4s after training', { size: 6, anchor: 'middle', valign: 'middle' });
+  L.line(a, [bx, ey], [bx + bw, ey], { stroke: INK, width: 0.5 });
+  L.rect(a, lxp(1.60), ey - 5, lxp(1.63) - lxp(1.60), 5, { fill: NET, stroke: NET, width: 0.4 });
+  L.line(a, [lxp(Math.PI / 2), ey - 9], [lxp(Math.PI / 2), ey + 3], { stroke: LIN, width: 1.1 });
+  T(a, lxp(Math.PI / 2) - 2, ey - 12, 'π/2 ≈ 1.571', { size: 5.5, anchor: 'start', valign: 'middle', color: LIN });
+  T(a, lxp(1.615), ey + 8, '1.60–1.63, above π/2', { size: 5.5, anchor: 'middle', valign: 'middle', color: NET });
+  T(a, cx, ey + 24, 'Samples over-dispersed:', { size: 5.5, anchor: 'middle', valign: 'middle', weight: 'bold' });
+  T(a, cx, ey + 31, 'potentials models: 2 to 3 times too many', { size: 5.5, anchor: 'middle', valign: 'middle' });
+  T(a, cx, ey + 38, 'null points', { size: 5.5, anchor: 'middle', valign: 'middle' });
+
+  // =====================================================================================================
+  // panel b: four remedies against the plain model, seed means over 5 seeds, held-out eta
+  // =====================================================================================================
+  const b = F.panel('b', { x: 69, y: 0, w: 114, h: 104 });
+  const bW = b.w;
+  T(b, 12, 6, '**Four remedies and two Gaussian baselines**', { size: 6.5, valign: 'middle' });
+
+  const axX = 158, axW = 92;
+  const lx = (v) => axX + (Math.log10(v) / Math.log10(300)) * axW;
+  const axY = 52;
+  const c1 = 280, c2 = 310;                           // table column centres
+  T(b, axX + axW / 2, 22, '**Energy distance / noise floor**', { size: 5.5, anchor: 'middle', valign: 'middle' });
+  T(b, axX + axW / 2, 29, '(log scale; seed mean, held-out η)', { size: 5, anchor: 'middle', valign: 'middle', color: MID });
+  T(b, c1, 33, 'null-count', { size: 5.5, anchor: 'middle', valign: 'middle', weight: 'bold' });
+  T(b, c1, 40, 'error', { size: 5.5, anchor: 'middle', valign: 'middle', weight: 'bold' });
+  T(b, c2, 33, 'restart', { size: 5.5, anchor: 'middle', valign: 'middle', weight: 'bold' });
+  T(b, c2, 40, 'drift', { size: 5.5, anchor: 'middle', valign: 'middle', weight: 'bold' });
+  T(b, (c1 + c2) / 2, 14, '(relative values)', { size: 5, anchor: 'middle', valign: 'middle', color: MID });
+
+  const bh2 = 15;
+  const exact = (p, x, y, w, lab) => { box(p, x, y, w, bh2, LIN, LIN); T(p, x + w / 2, y + bh2 / 2, lab, { size: 5.5, anchor: 'middle', valign: 'middle', color: '#fff', lineGap: 1 }); };
+  const learned = (p, x, y, w, lab) => { box(p, x, y, w, bh2, '#D6EEE6', LIN, { dash: '2 1.2', width: 0.8 }); T(p, x + w / 2, y + bh2 / 2, lab, { size: 5.5, anchor: 'middle', valign: 'middle', color: LIN, lineGap: 1 }); };
+  const net = (p, x, y, w, lab) => { box(p, x, y, w, bh2, NET, NET); T(p, x + w / 2, y + bh2 / 2, lab, { size: 5.5, anchor: 'middle', valign: 'middle', color: '#fff' }); };
+  const plus = (p, x, y) => T(p, x, y + bh2 / 2, '+', { size: 8, anchor: 'middle', valign: 'middle' });
+  const rows = [
+    { id: 'W4s', title: 'same network, no linear part', v: 210, nc: '1.83', rd: '0.38' },
+    { id: 'W10', title: 'exact Gaussian field + network', v: 43.6, nc: '2.46', rd: '0.12' },
+    { id: 'W9', title: 'learned affine term + network', v: 9.3, nc: '1.67', rd: '0.12' },
+    { id: 'W11', title: 'exact Gaussian field + learned affine correction + network', v: 8.6, nc: '1.70', rd: '0.12' },
+    { id: 'G0', title: 'G0: Gaussian law per mode (no covariance between modes), no network', v: 3.5, nc: '2.24', rd: '0.21' },
+    { id: 'G1', title: 'G1: Gaussian law with the covariance between modes, no network', v: 2.6, nc: '1.10', rd: '0.06' },
+  ];
+  const y0 = 62, pitch = 36;
+  // axis (labels above the axis line, faint guides below)
+  L.line(b, [axX, axY], [axX + axW, axY], { stroke: INK, width: 0.5 });
+  for (const [v, sl] of [[1, '1'], [3, '3'], [10, '10'], [30, '30'], [100, '100'], [300, '300']]) {
+    L.line(b, [lx(v), axY - 2], [lx(v), axY], { stroke: INK, width: 0.5 });
+    L.line(b, [lx(v), axY], [lx(v), y0 + 5 * pitch + 15], { stroke: C.faint, width: 0.4 });
+    T(b, lx(v), axY - 6, sl, { size: 5, anchor: 'middle', valign: 'middle' });
+  }
+  rows.forEach((r, i) => {
+    const y = y0 + i * pitch, gx = 24, ay = y + bh2 / 2;
+    if (i > 0) L.line(b, [0, y - 6], [bW, y - 6], { stroke: C.faint, width: 0.5 });
+    T(b, 0, ay, r.id, { size: 8, weight: 'bold', anchor: 'start', valign: 'middle' });
+    if (r.id === 'W4s') net(b, gx, y, 120, 'network (no linear part)');
+    else if (r.id === 'G0') exact(b, gx, y, 120, 'Gaussian law per mode');
+    else if (r.id === 'G1') { box(b, gx, y, 120, bh2, '#005A45', '#005A45'); T(b, gx + 60, y + bh2 / 2, 'Gaussian law with covariance between modes', { size: 5.5, anchor: 'middle', valign: 'middle', color: '#fff' }); }
+    else if (r.id === 'W9') { learned(b, gx, y, 58, 'learned affine term'); plus(b, gx + 63, y); net(b, gx + 68, y, 52, 'network'); }
+    else if (r.id === 'W10') { exact(b, gx, y, 58, 'exact Gaussian field'); plus(b, gx + 63, y); net(b, gx + 68, y, 52, 'network'); }
+    else { exact(b, gx, y, 36, 'exact\nGaussian'); plus(b, gx + 40, y); learned(b, gx + 44, y, 36, 'learned\naffine'); plus(b, gx + 84, y); net(b, gx + 88, y, 32, 'network'); }
+    T(b, gx, y + bh2 + 6, r.title, { size: 5, anchor: 'start', valign: 'middle', color: MID, italic: true });
+    L.circle(b, lx(r.v), ay, 2.4, { fill: NET, stroke: '#fff', width: 0.4 });
+    const lxv = lx(r.v), right = r.v < 100;
+    T(b, right ? lxv + 5 : lxv - 5, ay, r.v.toString(), { size: 6, anchor: right ? 'start' : 'end', valign: 'middle', weight: 'bold' });
+    T(b, c1, ay, r.nc, { size: 6, anchor: 'middle', valign: 'middle' });
+    T(b, c2, ay, r.rd, { size: 6, anchor: 'middle', valign: 'middle' });
+  });
+  T(b, 0, 280, 'Two Gaussian laws without a network are closer to the reference than every learned model;', { size: 5, anchor: 'start', valign: 'middle', color: MID });
+  T(b, 0, 287, 'the one that keeps the covariance between modes (G1) is the best on all three columns.', { size: 5, anchor: 'start', valign: 'middle', color: MID });
+}

@@ -1,0 +1,53 @@
+{
+ "parts": {
+  "e4_recolour_indep_c": {
+   "seeds": [
+    0,
+    1
+   ],
+   "files": [
+    "e4_mhd3d_s0_G.json",
+    "e4_mhd3d_s0_T.json",
+    "e4_mhd3d_s0_R.json",
+    "e4_mhd3d_s1_G.json",
+    "e4_mhd3d_s1_T.json",
+    "e4_mhd3d_s1_R.json"
+   ],
+   "data_duration_s": 1218.7
+  },
+  "e4_recolour_indep_d": {
+   "seeds": [
+    3,
+    4
+   ],
+   "files": [
+    "e4_mhd3d_s3_G.json",
+    "e4_mhd3d_s3_T.json",
+    "e4_mhd3d_s3_R.json",
+    "e4_mhd3d_s4_G.json",
+    "e4_mhd3d_s4_T.json",
+    "e4_mhd3d_s4_R.json"
+   ],
+   "data_duration_s": 745.1,
+   "max_rel_diff_reference": 7.617903759792953e-11
+  },
+  "e4_recolour_indep_e2": {
+   "seeds": [
+    2
+   ],
+   "files": [
+    "e4_mhd3d_s2_G.json",
+    "e4_mhd3d_s2_T.json",
+    "e4_mhd3d_s2_R.json"
+   ],
+   "data_duration_s": 750.1,
+   "max_rel_diff_reference": 7.617903759792953e-11
+  }
+ },
+ "groups": [
+  "G",
+  "T",
+  "R"
+ ],
+ "reference_from": "e4_recolour_indep_c"
+}

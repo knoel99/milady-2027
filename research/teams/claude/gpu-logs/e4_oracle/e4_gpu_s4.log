@@ -1,0 +1,3 @@
+== REFV_raw: test ed_ratio 0.35  div_b 1.27e-08  balance 0.001  spec_b 0.006  Hm 0.009  nulls 0.038  restart 0.003
+== REFV_recoloured: test ed_ratio 1.27  div_b 1.27e-08  balance 0.003  spec_b 0.024  Hm 0.037  nulls 0.720  restart 0.022
+total duration 543 s

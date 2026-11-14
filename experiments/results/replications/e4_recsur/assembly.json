@@ -1,0 +1,60 @@
+{
+ "parts": {
+  "e4_recsur_a": {
+   "seeds": [
+    0,
+    1
+   ],
+   "files": [
+    "e4_mhd3d_s0_V.json",
+    "e4_mhd3d_s1_V.json"
+   ],
+   "data_duration_s": 745.8
+  },
+  "e4_recsur_b": {
+   "seeds": [
+    2,
+    3
+   ],
+   "files": [
+    "e4_mhd3d_s2_V.json",
+    "e4_mhd3d_s3_V.json"
+   ],
+   "data_duration_s": 638.5,
+   "max_rel_diff_reference": 0.0
+  },
+  "e4_recsur_c": {
+   "seeds": [
+    4
+   ],
+   "files": [
+    "e4_mhd3d_s4_V.json"
+   ],
+   "data_duration_s": 1241.1,
+   "max_rel_diff_reference": 8.885450183196989e-11
+  },
+  "e4_oracle": {
+   "seeds": [
+    0,
+    1,
+    2,
+    3,
+    4
+   ],
+   "files": [
+    "e4_mhd3d_s0_O.json",
+    "e4_mhd3d_s1_O.json",
+    "e4_mhd3d_s2_O.json",
+    "e4_mhd3d_s3_O.json",
+    "e4_mhd3d_s4_O.json"
+   ],
+   "data_duration_s": 550.2,
+   "max_rel_diff_reference": 0.0
+  }
+ },
+ "groups": [
+  "V",
+  "O"
+ ],
+ "reference_from": "e4_recsur_a"
+}

@@ -3,6 +3,7 @@
 from __future__ import annotations
 
 import argparse
+import datetime as dt
 import io
 import json
 import sys
@@ -446,3 +447,69 @@ def test_an_argument_with_spaces_reaches_the_pod_as_one_word(job_env, monkeypatc
     assert runpod_job.run(a, mcp=mcp, sleep=lambda s: None) == 0
     rows = [json.loads(x) for x in (job_env / "ledger.jsonl").read_text().splitlines()]
     assert rows[0]["command"] == rows[-1]["command"] == "bash job.sh full '0 1 2' name"
+
+
+def test_collect_takes_over_a_pod_after_a_session_restart(job_env, monkeypatch):
+    """The session's worker restarted while a job was running: the `run` process and its secret path are gone."""
+    monkeypatch.setattr(runpod_job, "PREFIX", "milady-alpha-job-")
+    served, execs = {}, []
+    # a pod created ten minutes ago: inside its time limit whenever the test runs (a fixed date made the test
+    # fail once the real clock passed the limit, 2026-11-13)
+    created = (dt.datetime.now(dt.UTC) - dt.timedelta(minutes=10)).strftime("%Y-%m-%dT%H:%M:%SZ")
+
+    class Pod(FakeMCP):
+        def call(self, tool, args):
+            if tool == "get-pod":
+                return {"id": "pod9", "name": "milady-alpha-job-12345678", "cost": 0.72, "createdAt": created,
+                        "gpu": {"id": "NVIDIA RTX PRO 4500 Blackwell"},
+                        "env": {"OUTPUTS": "experiments/results", "MAX_MIN": "120", "REF": "a" * 40}}
+            if tool == "exec-pod":
+                cmd = args["body"]["command"][2]
+                execs.append(cmd)
+                if cmd.startswith("cat /srv/www/*/status.txt"):
+                    return {"stdout": "boot\njob started\n" + ("DONE rc=0\n" if len(execs) > 1 else ""), "exitCode": 0}
+                token = cmd.split("/srv/www/")[1].split(" ")[0]
+                served[token] = True
+                return {"stdout": "", "exitCode": 0}
+            return super().call(tool, args)
+
+    def fake_get(url):
+        token = url.split("/")[-2]
+        if token not in served:
+            return None
+        return results_tar() if url.endswith("results.tar.gz") else b"bench output"
+
+    monkeypatch.setattr(runpod_job, "http_get", fake_get)
+    mcp = Pod()
+    a = argparse.Namespace(pod="pod9", outputs=None, log=str(job_env / "collected.log"), now=False)
+    assert runpod_job.collect(a, mcp=mcp, sleep=lambda s: None) == 0
+    assert mcp.deleted == ["pod9"]
+    assert (job_env / "collected.log").read_bytes().startswith(b"bench output")
+    row = json.loads((job_env / "ledger.jsonl").read_text().splitlines()[-1])
+    assert row["pod"] == "pod9" and row["rc"] == 0 and row["usd_per_hour"] == 0.72 and "collected" in row["command"]
+    # a pod of another team is refused before anything is run in it
+    monkeypatch.setattr(runpod_job, "PREFIX", "milady-beta-job-")
+    with pytest.raises(SystemExit):
+        runpod_job.collect(a, mcp=Pod(), sleep=lambda s: None)
+
+
+def test_exec_runs_only_in_a_pod_of_this_team(job_env, monkeypatch, capsys):
+    """`exec` repairs a job in flight: it runs from the clone, in this team's pods only."""
+    monkeypatch.setattr(runpod_job, "PREFIX", "milady-alpha-job-")
+    seen = []
+
+    class Pod(FakeMCP):
+        def call(self, tool, args):
+            if tool == "get-pod":
+                return {"id": args["id"], "name": "milady-alpha-job-1" if args["id"] == "mine" else "milady-beta-job-1"}
+            if tool == "exec-pod":
+                seen.append(args["body"]["command"][2])
+                return {"stdout": "ok\n", "exitCode": 0}
+            return super().call(tool, args)
+
+    a = argparse.Namespace(pod="mine", timeout=30, command=["--", "ls", "experiments/results"])
+    assert runpod_job.exec_in_pod(a, mcp=Pod()) == 0
+    assert seen == ["cd /workspace/milady && ls experiments/results"] and capsys.readouterr().out == "ok\n"
+    with pytest.raises(SystemExit):
+        runpod_job.exec_in_pod(argparse.Namespace(pod="theirs", timeout=30, command=["ls"]), mcp=Pod())
+    assert len(seen) == 1

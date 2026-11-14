@@ -1,0 +1,2511 @@
+{
+ "name": "constraint-mechanisms",
+ "mode": "design",
+ "format": "journal",
+ "widthMM": 183,
+ "heightMM": 129,
+ "W": 518.740157480315,
+ "H": 365.6692913385827,
+ "texts": [
+  {
+   "s": "Model design",
+   "role": "label",
+   "box": {
+    "x": 6.685039520263672,
+    "y": 3.8748549222946167,
+    "w": 47.84881591796875,
+    "h": 8.250200271606445
+   },
+   "size": 7.5,
+   "minSize": 7.5,
+   "family": "Arial, Helvetica, sans-serif",
+   "color": "#1a1a1a",
+   "halo": false,
+   "rotate": 0,
+   "italic": false,
+   "weight": "bold"
+  },
+  {
+   "s": "Training loss",
+   "role": "label",
+   "box": {
+    "x": 177.3700714111328,
+    "y": 3.8748549222946167,
+    "w": 46.52381134033203,
+    "h": 8.250200271606445
+   },
+   "size": 7.5,
+   "minSize": 7.5,
+   "family": "Arial, Helvetica, sans-serif",
+   "color": "#1a1a1a",
+   "halo": false,
+   "rotate": 0,
+   "italic": false,
+   "weight": "bold"
+  },
+  {
+   "s": "Sampling procedure",
+   "role": "label",
+   "box": {
+    "x": 348.05511474609375,
+    "y": 3.8748549222946167,
+    "w": 72.73734283447266,
+    "h": 8.250200271606445
+   },
+   "size": 7.5,
+   "minSize": 7.5,
+   "family": "Arial, Helvetica, sans-serif",
+   "color": "#1a1a1a",
+   "halo": false,
+   "rotate": 0,
+   "italic": false,
+   "weight": "bold"
+  },
+  {
+   "s": "∇·B = 0",
+   "role": "label",
+   "box": {
+    "x": 130.29502868652344,
+    "y": 34.49991035461426,
+    "w": 18.046911239624023,
+    "h": 5.25012731552124
+   },
+   "size": 5,
+   "minSize": 5,
+   "family": "Arial, Helvetica, sans-serif",
+   "color": "#D55E00",
+   "halo": false,
+   "rotate": 0,
+   "italic": false,
+   "weight": "bold"
+  },
+  {
+   "s": "B = ∇ × Â",
+   "role": "label",
+   "box": {
+    "x": 78.56504821777344,
+    "y": 76.6248779296875,
+    "w": 23.620250701904297,
+    "h": 6.750163555145264
+   },
+   "size": 5.5,
+   "minSize": 5.5,
+   "family": "Arial, Helvetica, sans-serif",
+   "color": "#1a1a1a",
+   "halo": false,
+   "rotate": 0,
+   "italic": true,
+   "weight": "normal"
+  },
+  {
+   "s": "W4  Vector potentials",
+   "role": "label",
+   "box": {
+    "x": 6.685039520263672,
+    "y": 21.499855041503906,
+    "w": 60.04756546020508,
+    "h": 7.500181198120117
+   },
+   "size": 6.5,
+   "minSize": 6.5,
+   "family": "Arial, Helvetica, sans-serif",
+   "color": "#1a1a1a",
+   "halo": false,
+   "rotate": 0,
+   "italic": false,
+   "weight": "normal"
+  },
+  {
+   "s": "the output lies on the surface by construction",
+   "role": "label",
+   "box": {
+    "x": 6.685039520263672,
+    "y": 87.7498779296875,
+    "w": 109.08077239990234,
+    "h": 6.750163555145264
+   },
+   "size": 5.5,
+   "minSize": 5.5,
+   "family": "Arial, Helvetica, sans-serif",
+   "color": "#222222",
+   "halo": false,
+   "rotate": 0,
+   "italic": false,
+   "weight": "normal"
+  },
+  {
+   "s": "∇·B = 0",
+   "role": "label",
+   "box": {
+    "x": 130.29502868652344,
+    "y": 122.49990844726562,
+    "w": 18.046911239624023,
+    "h": 5.25012731552124
+   },
+   "size": 5,
+   "minSize": 5,
+   "family": "Arial, Helvetica, sans-serif",
+   "color": "#D55E00",
+   "halo": false,
+   "rotate": 0,
+   "italic": false,
+   "weight": "bold"
+  },
+  {
+   "s": "mirror: B → −B",
+   "role": "label",
+   "box": {
+    "x": 12.685040473937988,
+    "y": 124.99987030029297,
+    "w": 36.58682632446289,
+    "h": 6.750160217285156
+   },
+   "size": 5.5,
+   "minSize": 5.5,
+   "family": "Arial, Helvetica, sans-serif",
+   "color": "#D55E00",
+   "halo": true,
+   "rotate": 0,
+   "italic": true,
+   "weight": "normal"
+  },
+  {
+   "s": "W4s  B → −B equivariance",
+   "role": "label",
+   "box": {
+    "x": 6.685039520263672,
+    "y": 109.49986267089844,
+    "w": 76.472900390625,
+    "h": 7.50018310546875
+   },
+   "size": 6.5,
+   "minSize": 6.5,
+   "family": "Arial, Helvetica, sans-serif",
+   "color": "#1a1a1a",
+   "halo": false,
+   "rotate": 0,
+   "italic": false,
+   "weight": "normal"
+  },
+  {
+   "s": "the velocity field is equivariant",
+   "role": "label",
+   "box": {
+    "x": 6.685039520263672,
+    "y": 175.7498779296875,
+    "w": 73.02130126953125,
+    "h": 6.750163555145264
+   },
+   "size": 5.5,
+   "minSize": 5.5,
+   "family": "Arial, Helvetica, sans-serif",
+   "color": "#222222",
+   "halo": false,
+   "rotate": 0,
+   "italic": false,
+   "weight": "normal"
+  },
+  {
+   "s": "G x + b",
+   "role": "label",
+   "box": {
+    "x": 61.62342071533203,
+    "y": 240.9998779296875,
+    "w": 17.88324737548828,
+    "h": 6.7501678466796875
+   },
+   "size": 5.5,
+   "minSize": 5.5,
+   "family": "Arial, Helvetica, sans-serif",
+   "color": "#1a1a1a",
+   "halo": false,
+   "rotate": 0,
+   "italic": true,
+   "weight": "normal"
+  },
+  {
+   "s": "+ network",
+   "role": "label",
+   "box": {
+    "x": 58.57061004638672,
+    "y": 216.2498779296875,
+    "w": 24.233577728271484,
+    "h": 6.750163555145264
+   },
+   "size": 5.5,
+   "minSize": 5.5,
+   "family": "Arial, Helvetica, sans-serif",
+   "color": "#8c8c8c",
+   "halo": false,
+   "rotate": 0,
+   "italic": false,
+   "weight": "normal"
+  },
+  {
+   "s": "Gaussian law, per mode",
+   "role": "label",
+   "box": {
+    "x": 91.99995422363281,
+    "y": 251.2498779296875,
+    "w": 58.97018051147461,
+    "h": 6.750163555145264
+   },
+   "size": 5.5,
+   "minSize": 5.5,
+   "family": "Arial, Helvetica, sans-serif",
+   "color": "#1a1a1a",
+   "halo": false,
+   "rotate": 0,
+   "italic": false,
+   "weight": "normal"
+  },
+  {
+   "s": "W9, W10, W11  Affine term, Gaussian anchor",
+   "role": "label",
+   "box": {
+    "x": 6.685039520263672,
+    "y": 197.49986267089844,
+    "w": 128.79824829101562,
+    "h": 7.50018310546875
+   },
+   "size": 6.5,
+   "minSize": 6.5,
+   "family": "Arial, Helvetica, sans-serif",
+   "color": "#1a1a1a",
+   "halo": false,
+   "rotate": 0,
+   "italic": false,
+   "weight": "normal"
+  },
+  {
+   "s": "W9: affine term learned next to the network",
+   "role": "label",
+   "box": {
+    "x": 6.685039520263672,
+    "y": 263.7498779296875,
+    "w": 105.2440185546875,
+    "h": 6.750163555145264
+   },
+   "size": 5.5,
+   "minSize": 5.5,
+   "family": "Arial, Helvetica, sans-serif",
+   "color": "#222222",
+   "halo": false,
+   "rotate": 0,
+   "italic": false,
+   "weight": "normal"
+  },
+  {
+   "s": "W10: exact Gaussian field; W11: plus learned affine correction",
+   "role": "label",
+   "box": {
+    "x": 6.685039520263672,
+    "y": 270.2498779296875,
+    "w": 151.327880859375,
+    "h": 6.750163555145264
+   },
+   "size": 5.5,
+   "minSize": 5.5,
+   "family": "Arial, Helvetica, sans-serif",
+   "color": "#222222",
+   "halo": false,
+   "rotate": 0,
+   "italic": false,
+   "weight": "normal"
+  },
+  {
+   "s": "∇·B = 0",
+   "role": "label",
+   "box": {
+    "x": 300.9800720214844,
+    "y": 34.49991035461426,
+    "w": 18.04692268371582,
+    "h": 5.25012731552124
+   },
+   "size": 5,
+   "minSize": 5,
+   "family": "Arial, Helvetica, sans-serif",
+   "color": "#D55E00",
+   "halo": false,
+   "rotate": 0,
+   "italic": false,
+   "weight": "bold"
+  },
+  {
+   "s": "xt",
+   "role": "label",
+   "box": {
+    "x": 247.2133026123047,
+    "y": 44.63987445831299,
+    "w": 5.0040130615234375,
+    "h": 8.290164947509766
+   },
+   "size": 5.5,
+   "minSize": 3.96,
+   "family": "Arial, Helvetica, sans-serif",
+   "color": "#1a1a1a",
+   "halo": true,
+   "rotate": 0,
+   "italic": true,
+   "weight": "normal"
+  },
+  {
+   "s": "x̂1",
+   "role": "label",
+   "box": {
+    "x": 312.572265625,
+    "y": 59.599876403808594,
+    "w": 5.161865234375,
+    "h": 8.290164947509766
+   },
+   "size": 5.5,
+   "minSize": 3.96,
+   "family": "Arial, Helvetica, sans-serif",
+   "color": "#1a1a1a",
+   "halo": true,
+   "rotate": 0,
+   "italic": false,
+   "weight": "normal"
+  },
+  {
+   "s": "W1  Divergence penalty",
+   "role": "label",
+   "box": {
+    "x": 177.3700714111328,
+    "y": 21.499855041503906,
+    "w": 67.62425231933594,
+    "h": 7.500181198120117
+   },
+   "size": 6.5,
+   "minSize": 6.5,
+   "family": "Arial, Helvetica, sans-serif",
+   "color": "#1a1a1a",
+   "halo": false,
+   "rotate": 0,
+   "italic": false,
+   "weight": "normal"
+  },
+  {
+   "s": "on the end-of-path prediction x̂1 = xt + (1 − t) v",
+   "role": "label",
+   "box": {
+    "x": 177.3700714111328,
+    "y": 87.7498779296875,
+    "w": 112.95976257324219,
+    "h": 8.290168762207031
+   },
+   "size": 5.5,
+   "minSize": 3.96,
+   "family": "Arial, Helvetica, sans-serif",
+   "color": "#222222",
+   "halo": false,
+   "rotate": 0,
+   "italic": true,
+   "weight": "normal"
+  },
+  {
+   "s": "⟨f·u⟩ − ν⟨|ω|²⟩ − η⟨|j|²⟩ = 0",
+   "role": "label",
+   "box": {
+    "x": 281.17730712890625,
+    "y": 124.99989318847656,
+    "w": 56.40618896484375,
+    "h": 6.000144958496094
+   },
+   "size": 5,
+   "minSize": 5,
+   "family": "Arial, Helvetica, sans-serif",
+   "color": "#1a1a1a",
+   "halo": false,
+   "rotate": 0,
+   "italic": true,
+   "weight": "normal"
+  },
+  {
+   "s": "also on W9: W12",
+   "role": "label",
+   "box": {
+    "x": 299.3535461425781,
+    "y": 164.74990844726562,
+    "w": 38.23630142211914,
+    "h": 5.25012731552124
+   },
+   "size": 5,
+   "minSize": 5,
+   "family": "Arial, Helvetica, sans-serif",
+   "color": "#8c8c8c",
+   "halo": false,
+   "rotate": 0,
+   "italic": false,
+   "weight": "normal"
+  },
+  {
+   "s": "W5  Law-level stationarity loss",
+   "role": "label",
+   "box": {
+    "x": 177.3700714111328,
+    "y": 109.49986267089844,
+    "w": 86.01710510253906,
+    "h": 7.50018310546875
+   },
+   "size": 6.5,
+   "minSize": 6.5,
+   "family": "Arial, Helvetica, sans-serif",
+   "color": "#1a1a1a",
+   "halo": false,
+   "rotate": 0,
+   "italic": false,
+   "weight": "normal"
+  },
+  {
+   "s": "constrains a mean over samples, not each sample",
+   "role": "label",
+   "box": {
+    "x": 177.3700714111328,
+    "y": 175.7498779296875,
+    "w": 122.51078033447266,
+    "h": 6.750163555145264
+   },
+   "size": 5.5,
+   "minSize": 5.5,
+   "family": "Arial, Helvetica, sans-serif",
+   "color": "#222222",
+   "halo": false,
+   "rotate": 0,
+   "italic": false,
+   "weight": "normal"
+  },
+  {
+   "s": "∇·B = 0",
+   "role": "label",
+   "box": {
+    "x": 300.9800720214844,
+    "y": 210.4999237060547,
+    "w": 18.04692268371582,
+    "h": 5.25012731552124
+   },
+   "size": 5,
+   "minSize": 5,
+   "family": "Arial, Helvetica, sans-serif",
+   "color": "#D55E00",
+   "halo": false,
+   "rotate": 0,
+   "italic": false,
+   "weight": "bold"
+  },
+  {
+   "s": "W0  Baseline: no constraint",
+   "role": "label",
+   "box": {
+    "x": 177.3700714111328,
+    "y": 197.49986267089844,
+    "w": 77.6728515625,
+    "h": 7.50018310546875
+   },
+   "size": 6.5,
+   "minSize": 6.5,
+   "family": "Arial, Helvetica, sans-serif",
+   "color": "#1a1a1a",
+   "halo": false,
+   "rotate": 0,
+   "italic": false,
+   "weight": "normal"
+  },
+  {
+   "s": "free Fourier components; no mechanism applied",
+   "role": "label",
+   "box": {
+    "x": 177.3700714111328,
+    "y": 263.7498779296875,
+    "w": 117.92864227294922,
+    "h": 6.750163555145264
+   },
+   "size": 5.5,
+   "minSize": 5.5,
+   "family": "Arial, Helvetica, sans-serif",
+   "color": "#222222",
+   "halo": false,
+   "rotate": 0,
+   "italic": false,
+   "weight": "normal"
+  },
+  {
+   "s": "noise → sample, along the flow",
+   "role": "label",
+   "box": {
+    "x": 46.68503952026367,
+    "y": 302.6248779296875,
+    "w": 76.90928649902344,
+    "h": 6.750163555145264
+   },
+   "size": 5.5,
+   "minSize": 5.5,
+   "family": "Arial, Helvetica, sans-serif",
+   "color": "#1a1a1a",
+   "halo": false,
+   "rotate": 0,
+   "italic": false,
+   "weight": "normal"
+  },
+  {
+   "s": "constraint surface ∇·B = 0",
+   "role": "label",
+   "box": {
+    "x": 46.68503952026367,
+    "y": 310.6248779296875,
+    "w": 63.39997482299805,
+    "h": 6.750163555145264
+   },
+   "size": 5.5,
+   "minSize": 5.5,
+   "family": "Arial, Helvetica, sans-serif",
+   "color": "#1a1a1a",
+   "halo": false,
+   "rotate": 0,
+   "italic": false,
+   "weight": "normal"
+  },
+  {
+   "s": "mean of the samples, law-level target",
+   "role": "label",
+   "box": {
+    "x": 46.68503952026367,
+    "y": 318.6248779296875,
+    "w": 91.04517364501953,
+    "h": 6.750163555145264
+   },
+   "size": 5.5,
+   "minSize": 5.5,
+   "family": "Arial, Helvetica, sans-serif",
+   "color": "#1a1a1a",
+   "halo": false,
+   "rotate": 0,
+   "italic": false,
+   "weight": "normal"
+  },
+  {
+   "s": "correction by the mechanism",
+   "role": "label",
+   "box": {
+    "x": 46.68503952026367,
+    "y": 326.6248779296875,
+    "w": 70.26732635498047,
+    "h": 6.750163555145264
+   },
+   "size": 5.5,
+   "minSize": 5.5,
+   "family": "Arial, Helvetica, sans-serif",
+   "color": "#1a1a1a",
+   "halo": false,
+   "rotate": 0,
+   "italic": false,
+   "weight": "normal"
+  },
+  {
+   "s": "u   B   f",
+   "role": "label",
+   "box": {
+    "x": 16.685041427612305,
+    "y": 334.6248779296875,
+    "w": 14.332378387451172,
+    "h": 6.750152587890625
+   },
+   "size": 6,
+   "minSize": 6,
+   "family": "Arial, Helvetica, sans-serif",
+   "color": "#1a1a1a",
+   "halo": false,
+   "rotate": 0,
+   "italic": true,
+   "weight": "bold"
+  },
+  {
+   "s": "velocity, magnetic field, forcing",
+   "role": "label",
+   "box": {
+    "x": 46.68503952026367,
+    "y": 334.6248779296875,
+    "w": 74.43930053710938,
+    "h": 6.750163555145264
+   },
+   "size": 5.5,
+   "minSize": 5.5,
+   "family": "Arial, Helvetica, sans-serif",
+   "color": "#1a1a1a",
+   "halo": false,
+   "rotate": 0,
+   "italic": false,
+   "weight": "normal"
+  },
+  {
+   "s": "Shared glyphs",
+   "role": "label",
+   "box": {
+    "x": 6.685039520263672,
+    "y": 285.4998779296875,
+    "w": 44.87567138671875,
+    "h": 7.500181674957275
+   },
+   "size": 6.5,
+   "minSize": 6.5,
+   "family": "Arial, Helvetica, sans-serif",
+   "color": "#1a1a1a",
+   "halo": false,
+   "rotate": 0,
+   "italic": false,
+   "weight": "normal"
+  },
+  {
+   "s": "μ, Σ per mode",
+   "role": "label",
+   "box": {
+    "x": 183.7603302001953,
+    "y": 308.37493896484375,
+    "w": 31.437705993652344,
+    "h": 5.25012731552124
+   },
+   "size": 5,
+   "minSize": 5,
+   "family": "Arial, Helvetica, sans-serif",
+   "color": "#1a1a1a",
+   "halo": false,
+   "rotate": 0,
+   "italic": false,
+   "weight": "normal"
+  },
+  {
+   "s": "G0",
+   "role": "label",
+   "box": {
+    "x": 181.3700714111328,
+    "y": 295.2498779296875,
+    "w": 7.33611536026001,
+    "h": 6.750163555145264
+   },
+   "size": 5.5,
+   "minSize": 5.5,
+   "family": "Arial, Helvetica, sans-serif",
+   "color": "#1a1a1a",
+   "halo": false,
+   "rotate": 0,
+   "italic": false,
+   "weight": "normal"
+  },
+  {
+   "s": "no network",
+   "role": "label",
+   "box": {
+    "x": 193.37008666992188,
+    "y": 296.7499084472656,
+    "w": 24.92430305480957,
+    "h": 5.25012731552124
+   },
+   "size": 5,
+   "minSize": 5,
+   "family": "Arial, Helvetica, sans-serif",
+   "color": "#8c8c8c",
+   "halo": false,
+   "rotate": 0,
+   "italic": false,
+   "weight": "normal"
+  },
+  {
+   "s": "μ, Σ full",
+   "role": "label",
+   "box": {
+    "x": 191.11402893066406,
+    "y": 333.37493896484375,
+    "w": 16.896238327026367,
+    "h": 5.25012731552124
+   },
+   "size": 5,
+   "minSize": 5,
+   "family": "Arial, Helvetica, sans-serif",
+   "color": "#1a1a1a",
+   "halo": false,
+   "rotate": 0,
+   "italic": false,
+   "weight": "normal"
+  },
+  {
+   "s": "G1",
+   "role": "label",
+   "box": {
+    "x": 181.3700714111328,
+    "y": 320.2498779296875,
+    "w": 7.33611536026001,
+    "h": 6.750163555145264
+   },
+   "size": 5.5,
+   "minSize": 5.5,
+   "family": "Arial, Helvetica, sans-serif",
+   "color": "#1a1a1a",
+   "halo": false,
+   "rotate": 0,
+   "italic": false,
+   "weight": "normal"
+  },
+  {
+   "s": "no network",
+   "role": "label",
+   "box": {
+    "x": 193.37008666992188,
+    "y": 321.7499084472656,
+    "w": 24.92430305480957,
+    "h": 5.25012731552124
+   },
+   "size": 5,
+   "minSize": 5,
+   "family": "Arial, Helvetica, sans-serif",
+   "color": "#8c8c8c",
+   "halo": false,
+   "rotate": 0,
+   "italic": false,
+   "weight": "normal"
+  },
+  {
+   "s": "W6",
+   "role": "label",
+   "box": {
+    "x": 263.3700866699219,
+    "y": 299.9998779296875,
+    "w": 8.250200271606445,
+    "h": 6.750163555145264
+   },
+   "size": 5.5,
+   "minSize": 5.5,
+   "family": "Arial, Helvetica, sans-serif",
+   "color": "#1a1a1a",
+   "halo": false,
+   "rotate": 0,
+   "italic": false,
+   "weight": "normal"
+  },
+  {
+   "s": "same network",
+   "role": "label",
+   "box": {
+    "x": 282.26031494140625,
+    "y": 339.2498779296875,
+    "w": 34.463871002197266,
+    "h": 6.750163555145264
+   },
+   "size": 5.5,
+   "minSize": 5.5,
+   "family": "Arial, Helvetica, sans-serif",
+   "color": "#8c8c8c",
+   "halo": false,
+   "rotate": 0,
+   "italic": false,
+   "weight": "normal"
+  },
+  {
+   "s": "G0, G1, W6  Model families (baselines)",
+   "role": "label",
+   "box": {
+    "x": 177.3700714111328,
+    "y": 285.4998779296875,
+    "w": 111.22190856933594,
+    "h": 7.50018310546875
+   },
+   "size": 6.5,
+   "minSize": 6.5,
+   "family": "Arial, Helvetica, sans-serif",
+   "color": "#1a1a1a",
+   "halo": false,
+   "rotate": 0,
+   "italic": false,
+   "weight": "normal"
+  },
+  {
+   "s": "G0: Gaussian per mode; G1: Gaussian with covariance between",
+   "role": "label",
+   "box": {
+    "x": 177.3700714111328,
+    "y": 351.7499084472656,
+    "w": 156.73036193847656,
+    "h": 6.750163555145264
+   },
+   "size": 5.5,
+   "minSize": 5.5,
+   "family": "Arial, Helvetica, sans-serif",
+   "color": "#222222",
+   "halo": false,
+   "rotate": 0,
+   "italic": false,
+   "weight": "normal"
+  },
+  {
+   "s": "modes (both no network); W6: diffusion, same network",
+   "role": "label",
+   "box": {
+    "x": 177.3700714111328,
+    "y": 358.2498779296875,
+    "w": 133.03651428222656,
+    "h": 6.750163555145264
+   },
+   "size": 5.5,
+   "minSize": 5.5,
+   "family": "Arial, Helvetica, sans-serif",
+   "color": "#222222",
+   "halo": false,
+   "rotate": 0,
+   "italic": false,
+   "weight": "normal"
+  },
+  {
+   "s": "∇·B = 0",
+   "role": "label",
+   "box": {
+    "x": 471.6651306152344,
+    "y": 34.49991035461426,
+    "w": 18.046899795532227,
+    "h": 5.25012731552124
+   },
+   "size": 5,
+   "minSize": 5,
+   "family": "Arial, Helvetica, sans-serif",
+   "color": "#D55E00",
+   "halo": false,
+   "rotate": 0,
+   "italic": false,
+   "weight": "bold"
+  },
+  {
+   "s": "W2  Final Leray projection",
+   "role": "label",
+   "box": {
+    "x": 348.05511474609375,
+    "y": 21.499855041503906,
+    "w": 73.75201416015625,
+    "h": 7.500181198120117
+   },
+   "size": 6.5,
+   "minSize": 6.5,
+   "family": "Arial, Helvetica, sans-serif",
+   "color": "#1a1a1a",
+   "halo": false,
+   "rotate": 0,
+   "italic": false,
+   "weight": "normal"
+  },
+  {
+   "s": "projection of the final samples onto the surface",
+   "role": "label",
+   "box": {
+    "x": 348.05511474609375,
+    "y": 87.7498779296875,
+    "w": 113.66291046142578,
+    "h": 6.750163555145264
+   },
+   "size": 5.5,
+   "minSize": 5.5,
+   "family": "Arial, Helvetica, sans-serif",
+   "color": "#222222",
+   "halo": false,
+   "rotate": 0,
+   "italic": false,
+   "weight": "normal"
+  },
+  {
+   "s": "∇·B = 0",
+   "role": "label",
+   "box": {
+    "x": 471.6651306152344,
+    "y": 122.49990844726562,
+    "w": 18.046899795532227,
+    "h": 5.25012731552124
+   },
+   "size": 5,
+   "minSize": 5,
+   "family": "Arial, Helvetica, sans-serif",
+   "color": "#D55E00",
+   "halo": false,
+   "rotate": 0,
+   "italic": false,
+   "weight": "bold"
+  },
+  {
+   "s": "projected noise (training)",
+   "role": "label",
+   "box": {
+    "x": 354.0551452636719,
+    "y": 136.2498779296875,
+    "w": 60.49365234375,
+    "h": 6.750163555145264
+   },
+   "size": 5.5,
+   "minSize": 5.5,
+   "family": "Arial, Helvetica, sans-serif",
+   "color": "#1a1a1a",
+   "halo": false,
+   "rotate": 0,
+   "italic": false,
+   "weight": "normal"
+  },
+  {
+   "s": "every stage projected",
+   "role": "label",
+   "box": {
+    "x": 354.0551452636719,
+    "y": 158.9998779296875,
+    "w": 52.55986785888672,
+    "h": 6.750163555145264
+   },
+   "size": 5.5,
+   "minSize": 5.5,
+   "family": "Arial, Helvetica, sans-serif",
+   "color": "#1a1a1a",
+   "halo": false,
+   "rotate": 0,
+   "italic": false,
+   "weight": "normal"
+  },
+  {
+   "s": "W3  Projected flow",
+   "role": "label",
+   "box": {
+    "x": 348.05511474609375,
+    "y": 109.49986267089844,
+    "w": 52.8807373046875,
+    "h": 7.50018310546875
+   },
+   "size": 6.5,
+   "minSize": 6.5,
+   "family": "Arial, Helvetica, sans-serif",
+   "color": "#1a1a1a",
+   "halo": false,
+   "rotate": 0,
+   "italic": false,
+   "weight": "normal"
+  },
+  {
+   "s": "training noise projected + every stage projected",
+   "role": "label",
+   "box": {
+    "x": 348.05511474609375,
+    "y": 175.7498779296875,
+    "w": 115.65514373779297,
+    "h": 6.750163555145264
+   },
+   "size": 5.5,
+   "minSize": 5.5,
+   "family": "Arial, Helvetica, sans-serif",
+   "color": "#222222",
+   "halo": false,
+   "rotate": 0,
+   "italic": false,
+   "weight": "normal"
+  },
+  {
+   "s": "measured: effective sample size 1 of 256 in 14 of 15 cases",
+   "role": "label",
+   "box": {
+    "x": 352.05511474609375,
+    "y": 211.99990844726562,
+    "w": 130.2868194580078,
+    "h": 5.25012731552124
+   },
+   "size": 5,
+   "minSize": 5,
+   "family": "Arial, Helvetica, sans-serif",
+   "color": "#222222",
+   "halo": false,
+   "rotate": 0,
+   "italic": false,
+   "weight": "normal"
+  },
+  {
+   "s": "also on W9: W13 (effective sample 17 %)",
+   "role": "label",
+   "box": {
+    "x": 416.57635498046875,
+    "y": 252.74990844726562,
+    "w": 91.4787826538086,
+    "h": 5.25012731552124
+   },
+   "size": 5,
+   "minSize": 5,
+   "family": "Arial, Helvetica, sans-serif",
+   "color": "#8c8c8c",
+   "halo": false,
+   "rotate": 0,
+   "italic": false,
+   "weight": "normal"
+  },
+  {
+   "s": "W7  Exponential tilting",
+   "role": "label",
+   "box": {
+    "x": 348.05511474609375,
+    "y": 197.49986267089844,
+    "w": 62.571136474609375,
+    "h": 7.50018310546875
+   },
+   "size": 6.5,
+   "minSize": 6.5,
+   "family": "Arial, Helvetica, sans-serif",
+   "color": "#1a1a1a",
+   "halo": false,
+   "rotate": 0,
+   "italic": false,
+   "weight": "normal"
+  },
+  {
+   "s": "reweights the samples on the identities (dot size = weight)",
+   "role": "label",
+   "box": {
+    "x": 348.05511474609375,
+    "y": 263.7498779296875,
+    "w": 140.99169921875,
+    "h": 6.750163555145264
+   },
+   "size": 5.5,
+   "minSize": 5.5,
+   "family": "Arial, Helvetica, sans-serif",
+   "color": "#222222",
+   "halo": false,
+   "rotate": 0,
+   "italic": false,
+   "weight": "normal"
+  },
+  {
+   "s": "W8  Per-sample rescaling",
+   "role": "label",
+   "box": {
+    "x": 348.05511474609375,
+    "y": 285.4998779296875,
+    "w": 72.6614990234375,
+    "h": 7.50018310546875
+   },
+   "size": 6.5,
+   "minSize": 6.5,
+   "family": "Arial, Helvetica, sans-serif",
+   "color": "#1a1a1a",
+   "halo": false,
+   "rotate": 0,
+   "italic": false,
+   "weight": "normal"
+  },
+  {
+   "s": "each sample: small scales rescaled to the energy balance",
+   "role": "label",
+   "box": {
+    "x": 348.05511474609375,
+    "y": 351.7499084472656,
+    "w": 140.85107421875,
+    "h": 6.750163555145264
+   },
+   "size": 5.5,
+   "minSize": 5.5,
+   "family": "Arial, Helvetica, sans-serif",
+   "color": "#222222",
+   "halo": false,
+   "rotate": 0,
+   "italic": false,
+   "weight": "normal"
+  }
+ ],
+ "strokes": [
+  {
+   "w": 0.7,
+   "tag": "line",
+   "part": ""
+  },
+  {
+   "w": 0.7,
+   "tag": "line",
+   "part": ""
+  },
+  {
+   "w": 0.7,
+   "tag": "line",
+   "part": ""
+  },
+  {
+   "w": 0.5,
+   "tag": "rect",
+   "part": ""
+  },
+  {
+   "w": 1.4,
+   "tag": "line",
+   "part": ""
+  },
+  {
+   "w": 0.5,
+   "tag": "ellipse",
+   "part": ""
+  },
+  {
+   "w": 0.4,
+   "tag": "line",
+   "part": ""
+  },
+  {
+   "w": 0.4,
+   "tag": "line",
+   "part": ""
+  },
+  {
+   "w": 0.4,
+   "tag": "line",
+   "part": ""
+  },
+  {
+   "w": 0.4,
+   "tag": "line",
+   "part": ""
+  },
+  {
+   "w": 0.4,
+   "tag": "line",
+   "part": ""
+  },
+  {
+   "w": 0.4,
+   "tag": "line",
+   "part": ""
+  },
+  {
+   "w": 0.4,
+   "tag": "circle",
+   "part": ""
+  },
+  {
+   "w": 0.4,
+   "tag": "circle",
+   "part": ""
+  },
+  {
+   "w": 0.4,
+   "tag": "circle",
+   "part": ""
+  },
+  {
+   "w": 0.4,
+   "tag": "circle",
+   "part": ""
+  },
+  {
+   "w": 0.4,
+   "tag": "circle",
+   "part": ""
+  },
+  {
+   "w": 0.4,
+   "tag": "circle",
+   "part": ""
+  },
+  {
+   "w": 0.4,
+   "tag": "circle",
+   "part": ""
+  },
+  {
+   "w": 0.4,
+   "tag": "circle",
+   "part": ""
+  },
+  {
+   "w": 0.4,
+   "tag": "circle",
+   "part": ""
+  },
+  {
+   "w": 0.4,
+   "tag": "circle",
+   "part": ""
+  },
+  {
+   "w": 0.4,
+   "tag": "circle",
+   "part": ""
+  },
+  {
+   "w": 0.4,
+   "tag": "circle",
+   "part": ""
+  },
+  {
+   "w": 0.7,
+   "tag": "path",
+   "part": "arrow-shaft"
+  },
+  {
+   "w": 0.5,
+   "tag": "rect",
+   "part": ""
+  },
+  {
+   "w": 1.4,
+   "tag": "line",
+   "part": ""
+  },
+  {
+   "w": 0.5,
+   "tag": "ellipse",
+   "part": ""
+  },
+  {
+   "w": 0.4,
+   "tag": "line",
+   "part": ""
+  },
+  {
+   "w": 0.4,
+   "tag": "line",
+   "part": ""
+  },
+  {
+   "w": 0.4,
+   "tag": "circle",
+   "part": ""
+  },
+  {
+   "w": 0.4,
+   "tag": "circle",
+   "part": ""
+  },
+  {
+   "w": 0.4,
+   "tag": "line",
+   "part": ""
+  },
+  {
+   "w": 0.4,
+   "tag": "line",
+   "part": ""
+  },
+  {
+   "w": 0.4,
+   "tag": "circle",
+   "part": ""
+  },
+  {
+   "w": 0.4,
+   "tag": "circle",
+   "part": ""
+  },
+  {
+   "w": 0.4,
+   "tag": "line",
+   "part": ""
+  },
+  {
+   "w": 0.4,
+   "tag": "line",
+   "part": ""
+  },
+  {
+   "w": 0.4,
+   "tag": "circle",
+   "part": ""
+  },
+  {
+   "w": 0.4,
+   "tag": "circle",
+   "part": ""
+  },
+  {
+   "w": 0.4,
+   "tag": "circle",
+   "part": ""
+  },
+  {
+   "w": 0.4,
+   "tag": "circle",
+   "part": ""
+  },
+  {
+   "w": 0.4,
+   "tag": "circle",
+   "part": ""
+  },
+  {
+   "w": 0.4,
+   "tag": "circle",
+   "part": ""
+  },
+  {
+   "w": 0.4,
+   "tag": "circle",
+   "part": ""
+  },
+  {
+   "w": 0.4,
+   "tag": "circle",
+   "part": ""
+  },
+  {
+   "w": 0.5,
+   "tag": "line",
+   "part": ""
+  },
+  {
+   "w": 0.5,
+   "tag": "rect",
+   "part": ""
+  },
+  {
+   "w": 0.8,
+   "tag": "ellipse",
+   "part": ""
+  },
+  {
+   "w": 0.5,
+   "tag": "ellipse",
+   "part": ""
+  },
+  {
+   "w": 0.4,
+   "tag": "circle",
+   "part": ""
+  },
+  {
+   "w": 0.4,
+   "tag": "circle",
+   "part": ""
+  },
+  {
+   "w": 0.4,
+   "tag": "circle",
+   "part": ""
+  },
+  {
+   "w": 0.4,
+   "tag": "circle",
+   "part": ""
+  },
+  {
+   "w": 0.4,
+   "tag": "circle",
+   "part": ""
+  },
+  {
+   "w": 0.4,
+   "tag": "circle",
+   "part": ""
+  },
+  {
+   "w": 1.4,
+   "tag": "path",
+   "part": "arrow-shaft"
+  },
+  {
+   "w": 0.7,
+   "tag": "polyline",
+   "part": ""
+  },
+  {
+   "w": 0.5,
+   "tag": "rect",
+   "part": ""
+  },
+  {
+   "w": 1.4,
+   "tag": "line",
+   "part": ""
+  },
+  {
+   "w": 0.5,
+   "tag": "ellipse",
+   "part": ""
+  },
+  {
+   "w": 0.4,
+   "tag": "line",
+   "part": ""
+  },
+  {
+   "w": 0.4,
+   "tag": "line",
+   "part": ""
+  },
+  {
+   "w": 0.4,
+   "tag": "line",
+   "part": ""
+  },
+  {
+   "w": 0.4,
+   "tag": "line",
+   "part": ""
+  },
+  {
+   "w": 0.4,
+   "tag": "line",
+   "part": ""
+  },
+  {
+   "w": 0.4,
+   "tag": "line",
+   "part": ""
+  },
+  {
+   "w": 0.4,
+   "tag": "circle",
+   "part": ""
+  },
+  {
+   "w": 0.4,
+   "tag": "circle",
+   "part": ""
+  },
+  {
+   "w": 0.4,
+   "tag": "circle",
+   "part": ""
+  },
+  {
+   "w": 0.4,
+   "tag": "circle",
+   "part": ""
+  },
+  {
+   "w": 0.4,
+   "tag": "circle",
+   "part": ""
+  },
+  {
+   "w": 0.4,
+   "tag": "circle",
+   "part": ""
+  },
+  {
+   "w": 0.4,
+   "tag": "circle",
+   "part": ""
+  },
+  {
+   "w": 0.4,
+   "tag": "circle",
+   "part": ""
+  },
+  {
+   "w": 0.4,
+   "tag": "circle",
+   "part": ""
+  },
+  {
+   "w": 0.4,
+   "tag": "circle",
+   "part": ""
+  },
+  {
+   "w": 0.4,
+   "tag": "circle",
+   "part": ""
+  },
+  {
+   "w": 0.4,
+   "tag": "circle",
+   "part": ""
+  },
+  {
+   "w": 0.7,
+   "tag": "path",
+   "part": "arrow-shaft"
+  },
+  {
+   "w": 0.8,
+   "tag": "circle",
+   "part": ""
+  },
+  {
+   "w": 0.9,
+   "tag": "rect",
+   "part": ""
+  },
+  {
+   "w": 0.9,
+   "tag": "path",
+   "part": "arrow-shaft"
+  },
+  {
+   "w": 0.5,
+   "tag": "rect",
+   "part": ""
+  },
+  {
+   "w": 0.5,
+   "tag": "ellipse",
+   "part": ""
+  },
+  {
+   "w": 0.4,
+   "tag": "line",
+   "part": ""
+  },
+  {
+   "w": 0.4,
+   "tag": "line",
+   "part": ""
+  },
+  {
+   "w": 0.4,
+   "tag": "line",
+   "part": ""
+  },
+  {
+   "w": 0.4,
+   "tag": "line",
+   "part": ""
+  },
+  {
+   "w": 0.4,
+   "tag": "line",
+   "part": ""
+  },
+  {
+   "w": 0.4,
+   "tag": "line",
+   "part": ""
+  },
+  {
+   "w": 0.4,
+   "tag": "circle",
+   "part": ""
+  },
+  {
+   "w": 0.4,
+   "tag": "circle",
+   "part": ""
+  },
+  {
+   "w": 0.4,
+   "tag": "circle",
+   "part": ""
+  },
+  {
+   "w": 0.4,
+   "tag": "circle",
+   "part": ""
+  },
+  {
+   "w": 0.4,
+   "tag": "circle",
+   "part": ""
+  },
+  {
+   "w": 0.4,
+   "tag": "circle",
+   "part": ""
+  },
+  {
+   "w": 0.4,
+   "tag": "circle",
+   "part": ""
+  },
+  {
+   "w": 0.4,
+   "tag": "circle",
+   "part": ""
+  },
+  {
+   "w": 0.4,
+   "tag": "circle",
+   "part": ""
+  },
+  {
+   "w": 0.4,
+   "tag": "circle",
+   "part": ""
+  },
+  {
+   "w": 0.4,
+   "tag": "circle",
+   "part": ""
+  },
+  {
+   "w": 0.4,
+   "tag": "circle",
+   "part": ""
+  },
+  {
+   "w": 0.7,
+   "tag": "path",
+   "part": "arrow-shaft"
+  },
+  {
+   "w": 0.9,
+   "tag": "circle",
+   "part": ""
+  },
+  {
+   "w": 0.9,
+   "tag": "polygon",
+   "part": ""
+  },
+  {
+   "w": 0.9,
+   "tag": "path",
+   "part": "arrow-shaft"
+  },
+  {
+   "w": 0.5,
+   "tag": "rect",
+   "part": ""
+  },
+  {
+   "w": 1.4,
+   "tag": "line",
+   "part": ""
+  },
+  {
+   "w": 0.5,
+   "tag": "ellipse",
+   "part": ""
+  },
+  {
+   "w": 0.4,
+   "tag": "line",
+   "part": ""
+  },
+  {
+   "w": 0.4,
+   "tag": "line",
+   "part": ""
+  },
+  {
+   "w": 0.4,
+   "tag": "line",
+   "part": ""
+  },
+  {
+   "w": 0.4,
+   "tag": "line",
+   "part": ""
+  },
+  {
+   "w": 0.4,
+   "tag": "line",
+   "part": ""
+  },
+  {
+   "w": 0.4,
+   "tag": "line",
+   "part": ""
+  },
+  {
+   "w": 0.4,
+   "tag": "circle",
+   "part": ""
+  },
+  {
+   "w": 0.4,
+   "tag": "circle",
+   "part": ""
+  },
+  {
+   "w": 0.4,
+   "tag": "circle",
+   "part": ""
+  },
+  {
+   "w": 0.4,
+   "tag": "circle",
+   "part": ""
+  },
+  {
+   "w": 0.4,
+   "tag": "circle",
+   "part": ""
+  },
+  {
+   "w": 0.4,
+   "tag": "circle",
+   "part": ""
+  },
+  {
+   "w": 0.4,
+   "tag": "circle",
+   "part": ""
+  },
+  {
+   "w": 0.4,
+   "tag": "circle",
+   "part": ""
+  },
+  {
+   "w": 0.4,
+   "tag": "circle",
+   "part": ""
+  },
+  {
+   "w": 0.4,
+   "tag": "circle",
+   "part": ""
+  },
+  {
+   "w": 0.4,
+   "tag": "circle",
+   "part": ""
+  },
+  {
+   "w": 0.4,
+   "tag": "circle",
+   "part": ""
+  },
+  {
+   "w": 0.7,
+   "tag": "path",
+   "part": "arrow-shaft"
+  },
+  {
+   "w": 0.5,
+   "tag": "rect",
+   "part": ""
+  },
+  {
+   "w": 0.4,
+   "tag": "circle",
+   "part": ""
+  },
+  {
+   "w": 0.7,
+   "tag": "path",
+   "part": "arrow-shaft"
+  },
+  {
+   "w": 0.4,
+   "tag": "circle",
+   "part": ""
+  },
+  {
+   "w": 1.4,
+   "tag": "line",
+   "part": ""
+  },
+  {
+   "w": 0.9,
+   "tag": "polygon",
+   "part": ""
+  },
+  {
+   "w": 0.9,
+   "tag": "circle",
+   "part": ""
+  },
+  {
+   "w": 0.9,
+   "tag": "path",
+   "part": "arrow-shaft"
+  },
+  {
+   "w": 0.5,
+   "tag": "rect",
+   "part": ""
+  },
+  {
+   "w": 0.5,
+   "tag": "line",
+   "part": ""
+  },
+  {
+   "w": 0.8,
+   "tag": "ellipse",
+   "part": ""
+  },
+  {
+   "w": 0.4,
+   "tag": "circle",
+   "part": ""
+  },
+  {
+   "w": 0.4,
+   "tag": "circle",
+   "part": ""
+  },
+  {
+   "w": 0.4,
+   "tag": "circle",
+   "part": ""
+  },
+  {
+   "w": 0.4,
+   "tag": "circle",
+   "part": ""
+  },
+  {
+   "w": 0.4,
+   "tag": "circle",
+   "part": ""
+  },
+  {
+   "w": 0.4,
+   "tag": "circle",
+   "part": ""
+  },
+  {
+   "w": 0.6,
+   "tag": "rect",
+   "part": ""
+  },
+  {
+   "w": 1.2,
+   "tag": "path",
+   "part": "arrow-shaft"
+  },
+  {
+   "w": 0.8,
+   "tag": "polyline",
+   "part": ""
+  },
+  {
+   "w": 0.6,
+   "tag": "line",
+   "part": ""
+  },
+  {
+   "w": 0.4,
+   "tag": "circle",
+   "part": ""
+  },
+  {
+   "w": 0.4,
+   "tag": "circle",
+   "part": ""
+  },
+  {
+   "w": 0.4,
+   "tag": "circle",
+   "part": ""
+  },
+  {
+   "w": 0.4,
+   "tag": "circle",
+   "part": ""
+  },
+  {
+   "w": 0.4,
+   "tag": "circle",
+   "part": ""
+  },
+  {
+   "w": 0.4,
+   "tag": "circle",
+   "part": ""
+  },
+  {
+   "w": 0.6,
+   "tag": "rect",
+   "part": ""
+  },
+  {
+   "w": 1.2,
+   "tag": "path",
+   "part": "arrow-shaft"
+  },
+  {
+   "w": 0.5,
+   "tag": "ellipse",
+   "part": ""
+  },
+  {
+   "w": 0.4,
+   "tag": "polyline",
+   "part": ""
+  },
+  {
+   "w": 0.4,
+   "tag": "circle",
+   "part": ""
+  },
+  {
+   "w": 0.4,
+   "tag": "circle",
+   "part": ""
+  },
+  {
+   "w": 0.4,
+   "tag": "polyline",
+   "part": ""
+  },
+  {
+   "w": 0.4,
+   "tag": "circle",
+   "part": ""
+  },
+  {
+   "w": 0.4,
+   "tag": "circle",
+   "part": ""
+  },
+  {
+   "w": 0.4,
+   "tag": "polyline",
+   "part": ""
+  },
+  {
+   "w": 0.4,
+   "tag": "circle",
+   "part": ""
+  },
+  {
+   "w": 0.4,
+   "tag": "circle",
+   "part": ""
+  },
+  {
+   "w": 0.4,
+   "tag": "polyline",
+   "part": ""
+  },
+  {
+   "w": 0.4,
+   "tag": "circle",
+   "part": ""
+  },
+  {
+   "w": 0.4,
+   "tag": "circle",
+   "part": ""
+  },
+  {
+   "w": 0.4,
+   "tag": "polyline",
+   "part": ""
+  },
+  {
+   "w": 0.4,
+   "tag": "circle",
+   "part": ""
+  },
+  {
+   "w": 0.4,
+   "tag": "circle",
+   "part": ""
+  },
+  {
+   "w": 0.4,
+   "tag": "polyline",
+   "part": ""
+  },
+  {
+   "w": 0.4,
+   "tag": "circle",
+   "part": ""
+  },
+  {
+   "w": 0.4,
+   "tag": "circle",
+   "part": ""
+  },
+  {
+   "w": 0.5,
+   "tag": "rect",
+   "part": ""
+  },
+  {
+   "w": 1.4,
+   "tag": "line",
+   "part": ""
+  },
+  {
+   "w": 0.5,
+   "tag": "ellipse",
+   "part": ""
+  },
+  {
+   "w": 0.4,
+   "tag": "line",
+   "part": ""
+  },
+  {
+   "w": 0.4,
+   "tag": "line",
+   "part": ""
+  },
+  {
+   "w": 0.4,
+   "tag": "line",
+   "part": ""
+  },
+  {
+   "w": 0.4,
+   "tag": "line",
+   "part": ""
+  },
+  {
+   "w": 0.4,
+   "tag": "line",
+   "part": ""
+  },
+  {
+   "w": 0.4,
+   "tag": "line",
+   "part": ""
+  },
+  {
+   "w": 0.4,
+   "tag": "circle",
+   "part": ""
+  },
+  {
+   "w": 0.4,
+   "tag": "circle",
+   "part": ""
+  },
+  {
+   "w": 0.4,
+   "tag": "circle",
+   "part": ""
+  },
+  {
+   "w": 0.4,
+   "tag": "circle",
+   "part": ""
+  },
+  {
+   "w": 0.4,
+   "tag": "circle",
+   "part": ""
+  },
+  {
+   "w": 0.4,
+   "tag": "circle",
+   "part": ""
+  },
+  {
+   "w": 0.4,
+   "tag": "circle",
+   "part": ""
+  },
+  {
+   "w": 0.4,
+   "tag": "circle",
+   "part": ""
+  },
+  {
+   "w": 0.4,
+   "tag": "circle",
+   "part": ""
+  },
+  {
+   "w": 0.4,
+   "tag": "circle",
+   "part": ""
+  },
+  {
+   "w": 0.4,
+   "tag": "circle",
+   "part": ""
+  },
+  {
+   "w": 0.4,
+   "tag": "circle",
+   "part": ""
+  },
+  {
+   "w": 0.7,
+   "tag": "path",
+   "part": "arrow-shaft"
+  },
+  {
+   "w": 0.9,
+   "tag": "path",
+   "part": "arrow-shaft"
+  },
+  {
+   "w": 0.4,
+   "tag": "circle",
+   "part": ""
+  },
+  {
+   "w": 0.9,
+   "tag": "path",
+   "part": "arrow-shaft"
+  },
+  {
+   "w": 0.4,
+   "tag": "circle",
+   "part": ""
+  },
+  {
+   "w": 0.9,
+   "tag": "path",
+   "part": "arrow-shaft"
+  },
+  {
+   "w": 0.4,
+   "tag": "circle",
+   "part": ""
+  },
+  {
+   "w": 0.9,
+   "tag": "path",
+   "part": "arrow-shaft"
+  },
+  {
+   "w": 0.4,
+   "tag": "circle",
+   "part": ""
+  },
+  {
+   "w": 0.9,
+   "tag": "path",
+   "part": "arrow-shaft"
+  },
+  {
+   "w": 0.4,
+   "tag": "circle",
+   "part": ""
+  },
+  {
+   "w": 0.9,
+   "tag": "path",
+   "part": "arrow-shaft"
+  },
+  {
+   "w": 0.4,
+   "tag": "circle",
+   "part": ""
+  },
+  {
+   "w": 0.5,
+   "tag": "rect",
+   "part": ""
+  },
+  {
+   "w": 1.4,
+   "tag": "line",
+   "part": ""
+  },
+  {
+   "w": 0.4,
+   "tag": "circle",
+   "part": ""
+  },
+  {
+   "w": 0.5,
+   "tag": "line",
+   "part": ""
+  },
+  {
+   "w": 0.9,
+   "tag": "path",
+   "part": "arrow-shaft"
+  },
+  {
+   "w": 0.4,
+   "tag": "circle",
+   "part": ""
+  },
+  {
+   "w": 0.5,
+   "tag": "line",
+   "part": ""
+  },
+  {
+   "w": 0.9,
+   "tag": "path",
+   "part": "arrow-shaft"
+  },
+  {
+   "w": 0.4,
+   "tag": "circle",
+   "part": ""
+  },
+  {
+   "w": 0.5,
+   "tag": "line",
+   "part": ""
+  },
+  {
+   "w": 0.9,
+   "tag": "path",
+   "part": "arrow-shaft"
+  },
+  {
+   "w": 0.4,
+   "tag": "circle",
+   "part": ""
+  },
+  {
+   "w": 0.4,
+   "tag": "circle",
+   "part": ""
+  },
+  {
+   "w": 0.5,
+   "tag": "line",
+   "part": ""
+  },
+  {
+   "w": 0.9,
+   "tag": "path",
+   "part": "arrow-shaft"
+  },
+  {
+   "w": 0.4,
+   "tag": "circle",
+   "part": ""
+  },
+  {
+   "w": 0.5,
+   "tag": "line",
+   "part": ""
+  },
+  {
+   "w": 0.9,
+   "tag": "path",
+   "part": "arrow-shaft"
+  },
+  {
+   "w": 0.4,
+   "tag": "circle",
+   "part": ""
+  },
+  {
+   "w": 0.5,
+   "tag": "line",
+   "part": ""
+  },
+  {
+   "w": 0.9,
+   "tag": "path",
+   "part": "arrow-shaft"
+  },
+  {
+   "w": 0.4,
+   "tag": "circle",
+   "part": ""
+  },
+  {
+   "w": 0.7,
+   "tag": "path",
+   "part": "arrow-shaft"
+  },
+  {
+   "w": 0.5,
+   "tag": "rect",
+   "part": ""
+  },
+  {
+   "w": 0.5,
+   "tag": "ellipse",
+   "part": ""
+  },
+  {
+   "w": 0.4,
+   "tag": "line",
+   "part": ""
+  },
+  {
+   "w": 0.4,
+   "tag": "line",
+   "part": ""
+  },
+  {
+   "w": 0.4,
+   "tag": "line",
+   "part": ""
+  },
+  {
+   "w": 0.4,
+   "tag": "line",
+   "part": ""
+  },
+  {
+   "w": 0.4,
+   "tag": "line",
+   "part": ""
+  },
+  {
+   "w": 0.4,
+   "tag": "line",
+   "part": ""
+  },
+  {
+   "w": 0.4,
+   "tag": "circle",
+   "part": ""
+  },
+  {
+   "w": 0.4,
+   "tag": "circle",
+   "part": ""
+  },
+  {
+   "w": 0.4,
+   "tag": "circle",
+   "part": ""
+  },
+  {
+   "w": 0.4,
+   "tag": "circle",
+   "part": ""
+  },
+  {
+   "w": 0.4,
+   "tag": "circle",
+   "part": ""
+  },
+  {
+   "w": 0.4,
+   "tag": "circle",
+   "part": ""
+  },
+  {
+   "w": 0.7,
+   "tag": "path",
+   "part": "arrow-shaft"
+  },
+  {
+   "w": 0.4,
+   "tag": "circle",
+   "part": ""
+  },
+  {
+   "w": 0.4,
+   "tag": "circle",
+   "part": ""
+  },
+  {
+   "w": 0.4,
+   "tag": "circle",
+   "part": ""
+  },
+  {
+   "w": 0.4,
+   "tag": "circle",
+   "part": ""
+  },
+  {
+   "w": 0.4,
+   "tag": "circle",
+   "part": ""
+  },
+  {
+   "w": 0.4,
+   "tag": "circle",
+   "part": ""
+  },
+  {
+   "w": 0.9,
+   "tag": "circle",
+   "part": ""
+  },
+  {
+   "w": 0.9,
+   "tag": "polygon",
+   "part": ""
+  },
+  {
+   "w": 0.5,
+   "tag": "rect",
+   "part": ""
+  },
+  {
+   "w": 0.5,
+   "tag": "ellipse",
+   "part": ""
+  },
+  {
+   "w": 0.4,
+   "tag": "line",
+   "part": ""
+  },
+  {
+   "w": 0.4,
+   "tag": "line",
+   "part": ""
+  },
+  {
+   "w": 0.4,
+   "tag": "line",
+   "part": ""
+  },
+  {
+   "w": 0.4,
+   "tag": "line",
+   "part": ""
+  },
+  {
+   "w": 0.4,
+   "tag": "line",
+   "part": ""
+  },
+  {
+   "w": 0.4,
+   "tag": "line",
+   "part": ""
+  },
+  {
+   "w": 0.4,
+   "tag": "circle",
+   "part": ""
+  },
+  {
+   "w": 0.4,
+   "tag": "circle",
+   "part": ""
+  },
+  {
+   "w": 0.4,
+   "tag": "circle",
+   "part": ""
+  },
+  {
+   "w": 0.4,
+   "tag": "circle",
+   "part": ""
+  },
+  {
+   "w": 0.4,
+   "tag": "circle",
+   "part": ""
+  },
+  {
+   "w": 0.4,
+   "tag": "circle",
+   "part": ""
+  },
+  {
+   "w": 0.7,
+   "tag": "path",
+   "part": "arrow-shaft"
+  },
+  {
+   "w": 0.9,
+   "tag": "circle",
+   "part": ""
+  },
+  {
+   "w": 0.4,
+   "tag": "circle",
+   "part": ""
+  },
+  {
+   "w": 0.4,
+   "tag": "circle",
+   "part": ""
+  },
+  {
+   "w": 0.4,
+   "tag": "circle",
+   "part": ""
+  },
+  {
+   "w": 0.4,
+   "tag": "circle",
+   "part": ""
+  },
+  {
+   "w": 0.4,
+   "tag": "circle",
+   "part": ""
+  },
+  {
+   "w": 0.4,
+   "tag": "circle",
+   "part": ""
+  }
+ ],
+ "images": [],
+ "anchors": {},
+ "relations": [],
+ "drawn": [],
+ "panels": []
+}

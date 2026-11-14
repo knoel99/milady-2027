@@ -1,0 +1,27 @@
+{
+ "variant": "W9_skip_sym",
+ "criterion": "flow-matching or diffusion generator with the lowest energy-distance ratio on the validation \u03b7, mean over the seeds (the Gaussian laws G0, G1 and G2 are not candidates)",
+ "seeds": [
+  0,
+  1,
+  2,
+  3,
+  4
+ ],
+ "val_ed_ratio": {
+  "W0_free": 260.92078377345695,
+  "W1_penalty": 534.2570140219581,
+  "W2_final_projection": 184.3118956274015,
+  "W3_projected_flow": 186.0225250260719,
+  "W4_potentials": 278.5419195001042,
+  "W4s_potentials_sym": 250.11219529691874,
+  "W5_stationarity": 264.0954700670792,
+  "W5_control": 249.78507470018263,
+  "W6_diffusion": 628.5182087030923,
+  "W4c_potentials_smooth": 255.64955713459148,
+  "G0_gaussian_modes": 3.95176196053346,
+  "W9_skip_sym": 8.863329835373811,
+  "W10_anchored": 54.72407242447264,
+  "W11_anchored_skip": 9.157791836070377
+ }
+}

@@ -1,0 +1,8 @@
+== G0_gaussian_modes: test ed_ratio 4.62  div_b 1.27e-08  balance 0.001  spec_b 0.023  Hm 0.031  nulls 2.338  restart 0.216
+[W9_skip_sym] it  1000  loss 1.2718  16 s
+[W9_skip_sym] it  2000  loss 1.2163  35 s
+[W9_skip_sym] it  3000  loss 1.1901  56 s
+[W9_skip_sym] it  4000  loss 1.1823  77 s
+== W9_skip_sym: test ed_ratio 11.53  div_b 1.29e-08  balance 0.055  spec_b 0.137  Hm 0.176  nulls 1.676  restart 0.111
+== G1_gaussian_full: test ed_ratio 2.92  div_b 1.27e-08  balance 0.001  spec_b 0.017  Hm 0.024  nulls 1.118  restart 0.052
+total duration 489 s

@@ -63,7 +63,7 @@ Every number below is measured in a committed result file, published with a refe
 
 # Introduction {#introduction}
 
-The internship offer asks for conditional generative models of parameter-dependent fields, with constraints imposed by model design, by the training loss, or by the sampling procedure, and with a comparative study on spectra, helicity, divergence, and topology. The local statement of that offer is in `docs/specs/sources/literature.md`. This page is the cursor team's report of the measurements made toward that study. The living summary of the same measurements is `research/race-report.md`.
+The internship offer asks for conditional generative models of parameter-dependent fields, with constraints imposed by model design, by the training loss, or by the sampling procedure, and with a comparative study on spectra, helicity, divergence, and topology. The local statement of that offer is in `docs/specs/sources/literature.md`. This page is the cursor team's report of the measurements made toward that study. The living summary of the same measurements is `research/teams/cursor/race-report.md`.
 
 The work started from the kinematic ABC problem because the sign of the growth rate is a sharp, cheap test of the solver. It then moved to the generator metrics, because a sign bracket does not train a model. The generator comparisons use one held-out parameter, $Rm = 12$, five seeds, and the same scoring function for every mechanism.
 
@@ -177,7 +177,7 @@ $Rm = 12$ is held out of every learned training set and is not an endpoint of a 
 
 The small-flow file is `experiments/results/cursor_constraint_cmp.json` (kmax=2, forty steps). The kmax=4 width-64 file is `cursor_constraint_kmax4.json`. The wide hidden layer is `cursor_constraint_wide.json`. The six training Reynolds numbers at kmax=4 are `cursor_constraint_dense.json`. Perfect cutoffs are `cursor_constraint_ceiling.json`. Midpoints are `cursor_constraint_midpoint.json`, `cursor_constraint_midpoint_kmax6.json`, and `cursor_constraint_midpoint_kmax7.json`. The dynamic window is `cursor_stationary.json`. Null counts are `cursor_nulls.json`, `cursor_nulls_kmax6.json`, `cursor_nulls_midpoint_kmax6.json`, and `cursor_nulls_midpoint_kmax7.json`.
 
-H168 is `experiments/cursor_fm_train.py` with `--device cuda --steps 4000`. The first pod, `vf94e6g28iv9mw`, exited in 88 seconds because a mean tensor was on CUDA while the coefficients were still on CPU. The log is `research/gpu-logs/h168.log`. That row costs 0.0603 USD and is not a score. The subtraction was then moved onto the requested device. The criterion was not changed. The rerun is pod `1lzm2p635n6com`, 0.1656 hours, 0.1474 USD, exit code 0. The file is `experiments/results/cursor_fm/metrics.json`.
+H168 is `experiments/cursor_fm_train.py` with `--device cuda --steps 4000`. The first pod, `vf94e6g28iv9mw`, exited in 88 seconds because a mean tensor was on CUDA while the coefficients were still on CPU. The log is `research/teams/cursor/gpu-logs/h168.log`. That row costs 0.0603 USD and is not a score. The subtraction was then moved onto the requested device. The criterion was not changed. The rerun is pod `1lzm2p635n6com`, 0.1656 hours, 0.1474 USD, exit code 0. The file is `experiments/results/cursor_fm/metrics.json`.
 
 # Results {#results}
 
@@ -339,9 +339,9 @@ The same file scores the kmax=4 midpoint on the same eight times. Its mean ratio
 
 ## Solver timing
 
-Measured, `research/gpu-logs/bench-float32.log`. One step of `milady.sim.mhd3d` at $n = 128$, float32, on an RTX 4090, takes 0.008683746322058141 seconds. The T1 target in the team objectives is 0.05. This bench meets it. The same log records 0.006443568398244679 seconds at $n = 64$.
+Measured, `research/teams/cursor/gpu-logs/bench-float32.log`. One step of `milady.sim.mhd3d` at $n = 128$, float32, on an RTX 4090, takes 0.008683746322058141 seconds. The T1 target in the team objectives is 0.05. This bench meets it. The same log records 0.006443568398244679 seconds at $n = 64$.
 
-Measured, `research/gpu-logs/bench-float64.log`. The float64 companion at $n = 128$ takes 0.04840661495923996 seconds per step on an RTX PRO 4500. There is no T2 row in `race/teams/cursor/objectives.toml`. The number is a bench, not an objective id.
+Measured, `research/teams/cursor/gpu-logs/bench-float64.log`. The float64 companion at $n = 128$ takes 0.04840661495923996 seconds per step on an RTX PRO 4500. There is no T2 row in `race/teams/cursor/objectives.toml`. The number is a bench, not an objective id.
 
 ## Kinematic signs, in one paragraph
 
@@ -378,7 +378,7 @@ The table is one mechanism or model family against one metric. The mean and the 
 
 Reading the table as a comparison of mechanisms, the sampling projection wins on divergence and loses on energy distance. Width, cutoff, and a denser $Rm$ grid do not move that loss under 1.2. A perfect cutoff and a midpoint win on energy distance because they are linear operations on the coefficients of fields the score also sees. The midpoint at kmax=6 wins on C4 and loses on the magnetic residual. The dynamic window wins on the total residual and loses on the magnetic residual. The null count loses until kmax=7. The learned ResMLP meets the energy-distance bound and misses C4. Its mean, 0.769, does not beat the same-kmax midpoint mean, 0.743. The registered claim did not ask it to.
 
-The register `research/hypotheses.json`, read at the commit of this page, holds 87 supported claims, 77 refuted claims, and 3 proposed claims (H2, H3, and the early E1 statement). The kinematic rows H5 to H144 are sign tests. Their verdicts are in that file. They are not repeated as generator metrics. C6, the count of five-seed confirmed or refuted comparisons, includes H168.
+The register `research/teams/cursor/hypotheses.json`, read at the commit of this page, holds 87 supported claims, 77 refuted claims, and 3 proposed claims (H2, H3, and the early E1 statement). The kinematic rows H5 to H144 are sign tests. Their verdicts are in that file. They are not repeated as generator metrics. C6, the count of five-seed confirmed or refuted comparisons, includes H168.
 
 # Toolbox {#toolbox}
 
@@ -469,7 +469,7 @@ The learned protocol, which is H168 and not a CPU command, is
 python3 experiments/cursor_fm_train.py --device cuda --steps 4000 --out-dir experiments/results/cursor_fm
 ```
 
-GPU jobs are the `milady-cursor-job-*` rows of `research/compute-ledger.jsonl`. The float32 bench is `research/gpu-logs/bench-float32.log`. The float64 bench is `research/gpu-logs/bench-float64.log`. The failed H168 attempt is pod `vf94e6g28iv9mw`, 0.0678 hours, 0.0603 USD, exit code 1, log `research/gpu-logs/h168.log`. The scored run is pod `1lzm2p635n6com`, 0.1656 hours, 0.1474 USD, exit code 0, log `research/gpu-logs/h168b.log`. The shared RunPod credit is 150 USD. This team's cumulative ceiling is 70 USD. Finished cursor commands in the ledger sum to about 21.84 USD, under that ceiling. No cursor pod from this run is still up.
+GPU jobs are the `milady-cursor-job-*` rows of `research/teams/cursor/compute-ledger.jsonl`. The float32 bench is `research/teams/cursor/gpu-logs/bench-float32.log`. The float64 bench is `research/teams/cursor/gpu-logs/bench-float64.log`. The failed H168 attempt is pod `vf94e6g28iv9mw`, 0.0678 hours, 0.0603 USD, exit code 1, log `research/teams/cursor/gpu-logs/h168.log`. The scored run is pod `1lzm2p635n6com`, 0.1656 hours, 0.1474 USD, exit code 0, log `research/teams/cursor/gpu-logs/h168b.log`. The shared RunPod credit is 150 USD. This team's cumulative ceiling is 70 USD. Finished cursor commands in the ledger sum to about 21.84 USD, under that ceiling. No cursor pod from this run is still up.
 
 The weights are [weights_s0.pt](https://github.com/knoel99/milady-2027/blob/cursor/pilot-step1-1008/experiments/results/cursor_fm/weights_s0.pt), [weights_s1.pt](https://github.com/knoel99/milady-2027/blob/cursor/pilot-step1-1008/experiments/results/cursor_fm/weights_s1.pt), [weights_s2.pt](https://github.com/knoel99/milady-2027/blob/cursor/pilot-step1-1008/experiments/results/cursor_fm/weights_s2.pt), [weights_s3.pt](https://github.com/knoel99/milady-2027/blob/cursor/pilot-step1-1008/experiments/results/cursor_fm/weights_s3.pt), and [weights_s4.pt](https://github.com/knoel99/milady-2027/blob/cursor/pilot-step1-1008/experiments/results/cursor_fm/weights_s4.pt). The dataset is [dataset.npz](https://github.com/knoel99/milady-2027/blob/cursor/pilot-step1-1008/experiments/results/cursor_fm/dataset.npz). The cards are [MODEL_CARD.md](https://github.com/knoel99/milady-2027/blob/cursor/pilot-step1-1008/experiments/results/cursor_fm/MODEL_CARD.md) and [DATASET_CARD.md](https://github.com/knoel99/milady-2027/blob/cursor/pilot-step1-1008/experiments/results/cursor_fm/DATASET_CARD.md).
 

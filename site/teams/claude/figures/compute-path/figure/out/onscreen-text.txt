@@ -1,0 +1,49 @@
+panel	8.0pt	a
+label	6.0pt	Session container
+label	5.5pt	4 CPU cores, no GPU
+label	5.5pt	Commit and push
+label	5.5pt	Job toolrunpod_job.py run
+label	5.5pt	Fetch outputs,delete pod
+label	5.5pt	Cost line incompute ledger
+label	5.5pt	Commit and pushresults
+label	5.5pt	digest.pybuilds the digest
+label	6.0pt	RunPod pod, rented for one job
+label	5.5pt	Clone the pushed commit
+label	5.5pt	Pinned packages in a virtual environment
+label	5.5pt	Run the job under a time limit
+label	5.5pt	Serve outputs over HTTP, random path
+label	5.5pt	rent pod
+label	5.5pt	pushed commit
+label	5.5pt	fetch
+label	5.5pt	delete
+label	6.0pt	1
+label	6.0pt	2
+label	6.0pt	3
+label	6.0pt	4
+label	6.0pt	5
+panel	8.0pt	b
+label	6.0pt	Five failures, in the order found
+label	6.0pt	1
+label	6.0pt	No capacity
+label	5.5pt	retry
+label	6.0pt	2
+label	6.0pt	Job status never read
+label	5.5pt	the HTTP proxy refuses the default Python user agent
+label	6.0pt	3
+label	6.0pt	Pod set-up broken
+label	5.5pt	a system package
+label	6.0pt	4
+label	6.0pt	Running pods deleted
+label	5.5pt	another session on the account; per-team pod names
+label	6.0pt	5
+label	6.0pt	Job orphaned
+label	5.5pt	session restarted twice: collect takes over the running pods
+panel	8.0pt	c
+label	6.0pt	Measured on the pilot
+label	7.0pt	83 min, 1.02 USD
+label	5.5pt	full protocol: 5 seeds, 9 variants, RTX PRO 4500
+label	7.0pt	35–60 s vs 15 min
+label	5.5pt	one training: GPU vs one CPU core
+label	7.0pt	64³ solver step
+label	5.5pt	4.9 ms (RTX A6000, float32)
+label	5.5pt	3.9 ms (RTX PRO 4500, float64)

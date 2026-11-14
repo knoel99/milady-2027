@@ -1,0 +1,21 @@
+== G1V_gaussian_full: test ed_ratio 2.57  div_b 1.27e-08  balance 0.004  spec_b 0.033  Hm 0.048  nulls 1.041  restart 0.064
+[W16V_recoloured_full] it  1000  loss 1.2747  17 s
+[W16V_recoloured_full] it  2000  loss 1.2189  33 s
+[W16V_recoloured_full] it  3000  loss 1.1879  49 s
+[W16V_recoloured_full] it  4000  loss 1.1808  66 s
+== W16V_recoloured_full: test ed_ratio 2.20  div_b 1.27e-08  balance 0.007  spec_b 0.015  Hm 0.026  nulls 1.024  restart 0.020
+[W17_recoloured_surrogate] it  1000  loss 1.2635  18 s
+[W17_recoloured_surrogate] it  2000  loss 1.2313  35 s
+[W17_recoloured_surrogate] it  3000  loss 1.2111  52 s
+[W17_recoloured_surrogate] it  4000  loss 1.2026  70 s
+== W17_recoloured_surrogate: test ed_ratio 2.30  div_b 1.27e-08  balance 0.007  spec_b 0.019  Hm 0.023  nulls 1.052  restart 0.060
+Traceback (most recent call last):
+  File "/workspace/milady/experiments/e4_mhd3d.py", line 1269, in <module>
+    run(a.quick, a.seed, a.group, a.device, a.cond_scale)
+  File "/workspace/milady/experiments/e4_mhd3d.py", line 1143, in run
+    z = pot_sym.normalize(torch.as_tensor(D.load(e, quick)["x"])).to(dev).flatten(1).double()      # (N, D)
+        ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/workspace/milady/src/milady/train/data.py", line 494, in normalize
+    return (x - self.mean) / self.std
+            ~~^~~~~~~~~~~
+RuntimeError: Expected all tensors to be on the same device, but found at least two devices, cuda:0 and cpu!

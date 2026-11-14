@@ -1,0 +1,28 @@
+torch 2.8.0+cu128 cuda True NVIDIA RTX PRO 4500 Blackwell
+[2 s] data: 48 cores
+eta 0.08000 (train) Eu 0.491 Eb 0.078 Hm -0.043 (drift -0.4 SE) balance -0.0000  552 s
+eta 0.07253 (test ) Eu 0.440 Eb 0.097 Hm -0.056 (drift +0.2 SE) balance +0.0000  539 s
+eta 0.06575 (train) Eu 0.402 Eb 0.111 Hm -0.065 (drift +1.5 SE) balance -0.0004  520 s
+eta 0.05961 (val  ) Eu 0.373 Eb 0.121 Hm -0.072 (drift -0.1 SE) balance +0.0001  528 s
+eta 0.05404 (train) Eu 0.345 Eb 0.131 Hm -0.078 (drift +0.7 SE) balance +0.0002  527 s
+eta 0.04899 (test ) Eu 0.321 Eb 0.140 Hm -0.084 (drift -0.4 SE) balance -0.0000  512 s
+eta 0.04441 (train) Eu 0.309 Eb 0.145 Hm -0.085 (drift -0.8 SE) balance -0.0003  513 s
+eta 0.04026 (val  ) Eu 0.288 Eb 0.153 Hm -0.090 (drift -0.4 SE) balance -0.0002  516 s
+eta 0.03650 (train) Eu 0.276 Eb 0.160 Hm -0.095 (drift +1.5 SE) balance +0.0000  525 s
+eta 0.03309 (test ) Eu 0.265 Eb 0.165 Hm -0.096 (drift +1.7 SE) balance +0.0002  515 s
+eta 0.03000 (train) Eu 0.253 Eb 0.172 Hm -0.097 (drift -0.7 SE) balance +0.0002  502 s
+total 555 s -> /workspace/milady/experiments/results/e4_data.json
+[558 s] reference
+eta 0.03309 nulls 47.1 ± 1.2  k_lambda 2.90  H(1) -0.0949  H(k>=2) -0.0012  E1/EB 0.37  z(j.B) +0.3  floor 0.0733
+eta 0.03000 nulls 50.4 ± 1.2  k_lambda 2.95  H(1) -0.0953  H(k>=2) -0.0015  E1/EB 0.36  z(j.B) +0.7  floor 0.0400
+reference done in 2945 s
+[3505 s] models: seeds 0 1 2, 8 threads each
+eta 0.03650: trajectory floor 0.0433 ± 0.0152 [0.0149, 0.0694], random floor 0.0132, E|Y-Y'| 3.073
+eta 0.03309: trajectory floor 0.0590 ± 0.0357 [0.0164, 0.1500], random floor 0.0122, E|Y-Y'| 3.119
+eta 0.03000: trajectory floor 0.0374 ± 0.0213 [0.0169, 0.0918], random floor 0.0118, E|Y-Y'| 3.066
+
+--- status (collected after a restart of the session)
+2026-11-13T10:08:11Z boot NVIDIA RTX PRO 4500 Blackwell, 32623 MiB
+2026-11-13T10:09:25Z job started
+2026-11-13T12:03:25Z job finished rc=124 in 6840 s
+2026-11-13T12:03:25Z DONE rc=124

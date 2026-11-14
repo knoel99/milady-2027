@@ -1,4 +1,4 @@
-"""Tests of the MFF 1.0 format: round trip, The Well structure, validation, Zarr, E2 and SFEMaNS converters."""
+"""Tests of the MFF 1.0 format: round trip, The Well structure, validation, Zarr, E2, E4 and SFEMaNS converters."""
 
 from __future__ import annotations
 
@@ -432,6 +432,72 @@ def test_e2_converter_cli_with_catalog(tmp_path: Path) -> None:
     assert "kinetic_energy" in cat.get_diagnostics(sims[0]["id"])
     assert [r["split"] for r in cat.dataset_files("e2_mhd2d", "1.0")] == ["train"]
     assert convert.main(["validate", str(tmp_path / "out" / "e2_eta0.004000_train.h5")]) == 0
+
+
+# ---------------------------------------------------------------------------------------------
+# E4 converter
+# ---------------------------------------------------------------------------------------------
+def _synthetic_e4(tmp_path: Path, etas: tuple[float, ...], n: int = 8, members: int = 2, n_snap: int = 3) -> Path:
+    """npz files in the format of experiments/e4_data.py: random potentials on every mode |m_i| ≤ (n − 1)//3."""
+    from milady.train.data import FourierPotentialSpace
+
+    sp = FourierPotentialSpace((n - 1) // 3, truncation="cube")
+    src = tmp_path / "e4_src"
+    src.mkdir()
+    rng = np.random.default_rng(7)
+    for i, eta in enumerate(etas):
+        x = rng.normal(size=(members * n_snap, sp.n_modes, sp.n_channels)).astype(np.float32)
+        t = np.tile(200.0 + 2.0 * np.arange(1, n_snap + 1), members)
+        diag_t = 2.0 * np.arange(1, 100 + n_snap + 1)
+        cfg = {"n": [n, n, n], "nu": 0.05, "eta": eta, "kf": 2, "abc": [1.0, 1.0, 1.0], "n_traj": members,
+               "seed": 1000 + i, "dtype": "float32", "forcing": "abc"}  # fmt: skip
+        diag = {f"diag_{k}": rng.normal(size=(diag_t.size, members)) for k in ("kinetic_energy", "magnetic_energy")}
+        np.savez_compressed(src / f"eta_{eta:.5f}.npz", x=x, traj=np.repeat(np.arange(members), n_snap), t=t,
+                            diag_t=diag_t, config=json.dumps(cfg), **diag)  # fmt: skip
+    return src
+
+
+def test_e4_converter_synthetic(tmp_path: Path) -> None:
+    from milady.catalog.api import Catalog
+    from milady.train.data import FourierPotentialSpace
+
+    etas = tuple(float(f"{v:.5g}") for v in np.geomspace(0.08, 0.03, 11))
+    src = _synthetic_e4(tmp_path, etas)
+    cat = Catalog(f"sqlite:///{tmp_path / 'cat.sqlite'}")
+    recs = convert.convert_e4(src, tmp_path / "out", catalog=cat, extra_meta={"note": "synthetic"}, verbose=False)
+    assert [r["split"] for r in recs] == list(convert.E4_SPLIT_BY_RANK)  # decreasing η, split of e4_data.py
+    assert [r["eta"] for r in recs] == sorted(etas, reverse=True)
+    path = Path(recs[1]["path"])
+    assert validate(path, full_scan=True) == []
+    d = read_mff(path)
+    u, b = d["fields"]["velocity"], d["fields"]["magnetic_field"]
+    assert u.shape == (2, 3, 8, 8, 8, 3) and u.dtype == np.float32
+    np.testing.assert_allclose(d["coords"]["time"], [202.0, 204.0, 206.0])
+    assert d["params"]["Re"] == pytest.approx(10.0) and d["params"]["Rm"] == pytest.approx(1 / (2 * etas[1]))
+    assert d["meta"]["split"] == "test" and d["meta"]["seed"] == 1001 and d["meta"]["note"] == "synthetic"
+    assert d["diagnostics"]["magnetic_energy"].shape == (2, 103)  # transient included, own time grid
+    # The fields are those of the potentials (u = ∇×A_u, B = ∇×A_B): exactly divergence-free, and the potentials
+    # are recovered from the stored float32 fields; "grouped by trajectory" layout of the source.
+    with np.load(src / f"eta_{etas[1]:.5f}.npz") as z:
+        x = z["x"].reshape(2, 3, *z["x"].shape[1:])
+    sp = FourierPotentialSpace(2, truncation="cube")
+    import torch
+
+    f = sp.decode(torch.as_tensor(x[1]).double(), 8)
+    np.testing.assert_allclose(b[1], f["magnetic_field"].numpy(), atol=1e-5)
+    assert recs[1]["max_abs_divergence"]["magnetic_field"] < 1e-4 and recs[1]["latent_roundtrip"] < 1e-5
+    np.testing.assert_allclose(convert.e4_latents(path), x, atol=1e-5)
+    np.testing.assert_allclose(convert.e4_latents(path, traj=slice(1, 2), t=slice(0, 2)), x[1:2, :2], atol=1e-5)
+    # Catalog: 11 simulations and the dataset with its three splits; second pass reuses the files.
+    assert len(cat.query_simulations(campaign="e4_mhd3d", status="done")) == 11
+    files = cat.dataset_files("e4_mhd3d", "1.0")
+    assert sorted(r["split"] for r in files) == sorted(convert.E4_SPLIT_BY_RANK)
+    again = convert.convert_e4(src, tmp_path / "out", catalog=cat, verbose=False)
+    assert again[1]["uuid"] == recs[1]["uuid"] and again[1].get("reused")
+    # A folder without the 11 values has no split, and the command line converts a reduced sample.
+    assert convert.main(["e4", str(src), str(tmp_path / "sample"), "--limit", "1", "--max-snapshots", "2"]) == 0
+    one = read_mff(tmp_path / "sample" / f"e4_eta{etas[0]:.5f}.h5")
+    assert one["fields"]["velocity"].shape[:2] == (2, 2) and one["meta"]["split"] == "train"
 
 
 E2_DATA = Path(os.environ.get("E2_DATA", Path(__file__).resolve().parents[1] / "experiments" / "data_e2"))

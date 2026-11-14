@@ -1,0 +1,21 @@
+== G5_gaussian_struct: test ed_ratio 2.48  div_b 1.27e-08  balance 0.005  spec_b 0.024  Hm 0.023  nulls 1.646  restart 0.076
+== W19_struct_anchor_it0: test ed_ratio 2.56  div_b 1.27e-08  balance 0.004  spec_b 0.016  Hm 0.030  nulls 1.632  restart nan
+[W19_struct_anchor] it  1000  loss 1.1781  30 s
+[W19_struct_anchor] it  2000  loss 1.1655  65 s
+[W19_struct_anchor] it  3000  loss 1.1574  101 s
+[W19_struct_anchor] it  4000  loss 1.1556  136 s
+== W19_struct_anchor_it1000: test ed_ratio 8.90  div_b 1.28e-08  balance 0.061  spec_b 0.075  Hm 0.044  nulls 1.674  restart nan
+== W19_struct_anchor_it4000: test ed_ratio 16.57  div_b 1.28e-08  balance 0.089  spec_b 0.112  Hm 0.068  nulls 1.719  restart 0.056
+[W9Q_skip_sym] it  1000  loss 1.2738  18 s
+[W9Q_skip_sym] it  2000  loss 1.2166  35 s
+[W9Q_skip_sym] it  3000  loss 1.1925  52 s
+[W9Q_skip_sym] it  4000  loss 1.1813  67 s
+== W9Q_skip_sym: test ed_ratio 8.76  div_b 1.28e-08  balance 0.053  spec_b 0.138  Hm 0.190  nulls 1.640  restart nan
+== W20_struct_anchor_on_W9_it0: test ed_ratio 8.39  div_b 1.29e-08  balance 0.045  spec_b 0.125  Hm 0.174  nulls 1.891  restart nan
+[W20_struct_anchor_on_W9] it  1000  loss 1.2197  44 s
+[W20_struct_anchor_on_W9] it  2000  loss 1.2067  70 s
+[W20_struct_anchor_on_W9] it  3000  loss 1.2012  99 s
+[W20_struct_anchor_on_W9] it  4000  loss 1.1984  134 s
+== W20_struct_anchor_on_W9_it1000: test ed_ratio 5.23  div_b 1.29e-08  balance 0.010  spec_b 0.060  Hm 0.109  nulls 1.888  restart nan
+== W20_struct_anchor_on_W9_it4000: test ed_ratio 8.08  div_b 1.29e-08  balance 0.032  spec_b 0.051  Hm 0.095  nulls 1.923  restart nan
+total duration 1640 s

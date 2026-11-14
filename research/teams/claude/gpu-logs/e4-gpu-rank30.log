@@ -1,0 +1,126 @@
+torch 2.8.0+cu128 cuda True NVIDIA GeForce RTX 5090
+[2 s] data: 256 cores
+eta 0.08000 (train) Eu 0.491 Eb 0.078 Hm -0.043 (drift -0.4 SE) balance -0.0000  408 s
+eta 0.07253 (test ) Eu 0.440 Eb 0.097 Hm -0.056 (drift +0.2 SE) balance +0.0000  419 s
+eta 0.06575 (train) Eu 0.402 Eb 0.111 Hm -0.065 (drift +1.5 SE) balance -0.0004  382 s
+eta 0.05961 (val  ) Eu 0.373 Eb 0.121 Hm -0.072 (drift -0.1 SE) balance +0.0001  398 s
+eta 0.05404 (train) Eu 0.345 Eb 0.131 Hm -0.078 (drift +0.7 SE) balance +0.0002  402 s
+eta 0.04899 (test ) Eu 0.321 Eb 0.140 Hm -0.084 (drift -0.4 SE) balance -0.0000  395 s
+eta 0.04441 (train) Eu 0.309 Eb 0.145 Hm -0.085 (drift -0.8 SE) balance -0.0003  388 s
+eta 0.04026 (val  ) Eu 0.288 Eb 0.153 Hm -0.090 (drift -0.4 SE) balance -0.0002  387 s
+eta 0.03650 (train) Eu 0.276 Eb 0.160 Hm -0.095 (drift +1.5 SE) balance +0.0000  360 s
+eta 0.03309 (test ) Eu 0.265 Eb 0.165 Hm -0.096 (drift +1.7 SE) balance +0.0002  365 s
+eta 0.03000 (train) Eu 0.253 Eb 0.172 Hm -0.097 (drift -0.7 SE) balance +0.0002  407 s
+total 422 s -> /workspace/milady/experiments/results/e4_data.json
+[425 s] reference
+eta 0.03309 nulls 42.7 ± 1.1  k_lambda 2.90  H(1) -0.0949  H(k>=2) -0.0012  E1/EB 0.37  z(j.B) +0.3  floor 0.0733
+eta 0.03000 nulls 51.7 ± 1.2  k_lambda 2.95  H(1) -0.0953  H(k>=2) -0.0015  E1/EB 0.36  z(j.B) +0.7  floor 0.0400
+reference done in 1083 s
+same data check: largest relative gap of E_B to the committed reference 3.33e-10
+[1511 s] models: seeds 0 1 2 3 4, 8 threads each
+eta 0.03650: trajectory floor 0.0433 ± 0.0152 [0.0149, 0.0694], random floor 0.0132, E|Y-Y'| 3.073
+eta 0.03309: trajectory floor 0.0590 ± 0.0357 [0.0164, 0.1500], random floor 0.0122, E|Y-Y'| 3.119
+eta 0.03000: trajectory floor 0.0374 ± 0.0213 [0.0169, 0.0918], random floor 0.0118, E|Y-Y'| 3.066
+seed 4 rc=0
+== G5_gaussian_struct: test ed_ratio 2.48  div_b 1.27e-08  balance 0.004  spec_b 0.013  Hm 0.023  nulls 2.226  restart 0.102
+== W19_struct_anchor_it0: test ed_ratio 2.83  div_b 1.27e-08  balance 0.005  spec_b 0.023  Hm 0.037  nulls 2.226  restart nan
+== W19_struct_anchor_it1000: test ed_ratio 33.24  div_b 1.29e-08  balance 0.140  spec_b 0.188  Hm 0.102  nulls 2.250  restart nan
+== W19_struct_anchor_it4000: test ed_ratio 44.39  div_b 1.29e-08  balance 0.166  spec_b 0.240  Hm 0.142  nulls 2.217  restart 0.149
+== W9Q_skip_sym: test ed_ratio 9.30  div_b 1.29e-08  balance 0.057  spec_b 0.149  Hm 0.199  nulls 1.747  restart nan
+== W20_struct_anchor_on_W9_it0: test ed_ratio 9.51  div_b 1.29e-08  balance 0.049  spec_b 0.143  Hm 0.197  nulls 2.487  restart nan
+== W20_struct_anchor_on_W9_it1000: test ed_ratio 22.48  div_b 1.31e-08  balance 0.100  spec_b 0.100  Hm 0.066  nulls 2.523  restart nan
+== W20_struct_anchor_on_W9_it4000: test ed_ratio 30.22  div_b 1.31e-08  balance 0.123  spec_b 0.129  Hm 0.032  nulls 2.487  restart nan
+total duration 959 s
+seed 0 rc=0
+== G5_gaussian_struct: test ed_ratio 2.35  div_b 1.27e-08  balance 0.003  spec_b 0.011  Hm 0.012  nulls 2.251  restart 0.113
+== W19_struct_anchor_it0: test ed_ratio 2.56  div_b 1.27e-08  balance 0.003  spec_b 0.018  Hm 0.031  nulls 2.200  restart nan
+== W19_struct_anchor_it1000: test ed_ratio 32.90  div_b 1.29e-08  balance 0.142  spec_b 0.194  Hm 0.109  nulls 2.195  restart nan
+== W19_struct_anchor_it4000: test ed_ratio 43.44  div_b 1.29e-08  balance 0.166  spec_b 0.244  Hm 0.150  nulls 2.168  restart 0.156
+== W9Q_skip_sym: test ed_ratio 8.46  div_b 1.28e-08  balance 0.051  spec_b 0.129  Hm 0.181  nulls 1.622  restart nan
+== W20_struct_anchor_on_W9_it0: test ed_ratio 8.65  div_b 1.29e-08  balance 0.046  spec_b 0.132  Hm 0.183  nulls 2.422  restart nan
+== W20_struct_anchor_on_W9_it1000: test ed_ratio 21.88  div_b 1.31e-08  balance 0.102  spec_b 0.098  Hm 0.054  nulls 2.444  restart nan
+== W20_struct_anchor_on_W9_it4000: test ed_ratio 29.62  div_b 1.31e-08  balance 0.124  spec_b 0.131  Hm 0.016  nulls 2.386  restart nan
+total duration 980 s
+seed 3 rc=0
+== G5_gaussian_struct: test ed_ratio 2.96  div_b 1.27e-08  balance 0.002  spec_b 0.029  Hm 0.046  nulls 2.259  restart 0.120
+== W19_struct_anchor_it0: test ed_ratio 2.44  div_b 1.27e-08  balance 0.003  spec_b 0.011  Hm 0.012  nulls 2.240  restart nan
+== W19_struct_anchor_it1000: test ed_ratio 32.81  div_b 1.29e-08  balance 0.142  spec_b 0.200  Hm 0.129  nulls 2.209  restart nan
+== W19_struct_anchor_it4000: test ed_ratio 43.59  div_b 1.29e-08  balance 0.167  spec_b 0.252  Hm 0.170  nulls 2.178  restart 0.146
+== W9Q_skip_sym: test ed_ratio 9.63  div_b 1.29e-08  balance 0.061  spec_b 0.152  Hm 0.199  nulls 1.689  restart nan
+== W20_struct_anchor_on_W9_it0: test ed_ratio 8.23  div_b 1.29e-08  balance 0.045  spec_b 0.126  Hm 0.171  nulls 2.432  restart nan
+== W20_struct_anchor_on_W9_it1000: test ed_ratio 21.57  div_b 1.31e-08  balance 0.102  spec_b 0.102  Hm 0.044  nulls 2.441  restart nan
+== W20_struct_anchor_on_W9_it4000: test ed_ratio 29.31  div_b 1.31e-08  balance 0.125  spec_b 0.137  Hm 0.006  nulls 2.422  restart nan
+total duration 983 s
+seed 2 rc=0
+== G5_gaussian_struct: test ed_ratio 2.50  div_b 1.27e-08  balance 0.003  spec_b 0.005  Hm 0.012  nulls 2.250  restart 0.082
+== W19_struct_anchor_it0: test ed_ratio 2.53  div_b 1.27e-08  balance 0.003  spec_b 0.019  Hm 0.032  nulls 2.255  restart nan
+== W19_struct_anchor_it1000: test ed_ratio 33.05  div_b 1.29e-08  balance 0.143  spec_b 0.194  Hm 0.101  nulls 2.256  restart nan
+== W19_struct_anchor_it4000: test ed_ratio 43.91  div_b 1.29e-08  balance 0.168  spec_b 0.247  Hm 0.146  nulls 2.210  restart 0.150
+== W9Q_skip_sym: test ed_ratio 9.89  div_b 1.28e-08  balance 0.057  spec_b 0.157  Hm 0.218  nulls 1.707  restart nan
+== W20_struct_anchor_on_W9_it0: test ed_ratio 8.97  div_b 1.29e-08  balance 0.045  spec_b 0.137  Hm 0.195  nulls 2.475  restart nan
+== W20_struct_anchor_on_W9_it1000: test ed_ratio 22.06  div_b 1.31e-08  balance 0.102  spec_b 0.099  Hm 0.067  nulls 2.500  restart nan
+== W20_struct_anchor_on_W9_it4000: test ed_ratio 29.71  div_b 1.31e-08  balance 0.124  spec_b 0.130  Hm 0.029  nulls 2.465  restart nan
+total duration 1022 s
+seed 1 rc=0
+== G5_gaussian_struct: test ed_ratio 2.67  div_b 1.27e-08  balance 0.001  spec_b 0.027  Hm 0.045  nulls 2.251  restart 0.115
+== W19_struct_anchor_it0: test ed_ratio 2.48  div_b 1.27e-08  balance 0.003  spec_b 0.020  Hm 0.026  nulls 2.217  restart nan
+== W19_struct_anchor_it1000: test ed_ratio 33.57  div_b 1.29e-08  balance 0.142  spec_b 0.200  Hm 0.117  nulls 2.213  restart nan
+== W19_struct_anchor_it4000: test ed_ratio 45.14  div_b 1.29e-08  balance 0.169  spec_b 0.258  Hm 0.165  nulls 2.162  restart 0.140
+== W9Q_skip_sym: test ed_ratio 9.86  div_b 1.29e-08  balance 0.059  spec_b 0.152  Hm 0.209  nulls 1.726  restart nan
+== W20_struct_anchor_on_W9_it0: test ed_ratio 8.37  div_b 1.29e-08  balance 0.046  spec_b 0.129  Hm 0.181  nulls 2.466  restart nan
+== W20_struct_anchor_on_W9_it1000: test ed_ratio 22.04  div_b 1.31e-08  balance 0.101  spec_b 0.100  Hm 0.059  nulls 2.464  restart nan
+== W20_struct_anchor_on_W9_it4000: test ed_ratio 30.05  div_b 1.31e-08  balance 0.124  spec_b 0.134  Hm 0.018  nulls 2.440  restart nan
+total duration 1090 s
+[2603 s] done
+NVIDIA GeForce RTX 5090, 2 MiB, 0 %
+e4_data.json
+e4_floor.json
+e4_gpu_s0.log
+e4_gpu_s1.log
+e4_gpu_s2.log
+e4_gpu_s3.log
+e4_gpu_s4.log
+e4_mhd3d_s0.json
+e4_mhd3d_s0_A.json
+e4_mhd3d_s0_B.json
+e4_mhd3d_s0_C.json
+e4_mhd3d_s0_D.json
+e4_mhd3d_s0_E.json
+e4_mhd3d_s0_Q.json
+e4_mhd3d_s1.json
+e4_mhd3d_s1_A.json
+e4_mhd3d_s1_B.json
+e4_mhd3d_s1_C.json
+e4_mhd3d_s1_D.json
+e4_mhd3d_s1_E.json
+e4_mhd3d_s1_Q.json
+e4_mhd3d_s2.json
+e4_mhd3d_s2_A.json
+e4_mhd3d_s2_B.json
+e4_mhd3d_s2_C.json
+e4_mhd3d_s2_D.json
+e4_mhd3d_s2_E.json
+e4_mhd3d_s2_Q.json
+e4_mhd3d_s3.json
+e4_mhd3d_s3_A.json
+e4_mhd3d_s3_B.json
+e4_mhd3d_s3_C.json
+e4_mhd3d_s3_D.json
+e4_mhd3d_s3_E.json
+e4_mhd3d_s3_Q.json
+e4_mhd3d_s4.json
+e4_mhd3d_s4_A.json
+e4_mhd3d_s4_B.json
+e4_mhd3d_s4_C.json
+e4_mhd3d_s4_D.json
+e4_mhd3d_s4_E.json
+e4_mhd3d_s4_Q.json
+e4_reference.json
+e4_samples_s0_Q.npz
+e4_samples_s0_all.npz
+
+--- status
+2026-11-13T22:30:39Z boot NVIDIA GeForce RTX 5090, 32607 MiB
+2026-11-13T22:31:58Z job started
+2026-11-13T23:15:21Z job finished rc=0 in 2603 s
+2026-11-13T23:15:21Z DONE rc=0

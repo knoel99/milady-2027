@@ -1,0 +1,6 @@
+== G1_gaussian_full: test ed_ratio 2.65  div_b 1.27e-08  balance 0.003  spec_b 0.027  Hm 0.033  nulls 1.027  restart 0.067
+== G1T_gaussian_full: test ed_ratio 2.65  div_b 1.27e-08  balance 0.003  spec_b 0.027  Hm 0.033  nulls 1.027  restart 0.067
+[W9R_skip_sym] it  1000  loss 1.2707  18 s
+[W9R_skip_sym] it  2000  loss 1.2191  35 s
+[W9R_skip_sym] it  3000  loss 1.1926  52 s
+[W9R_skip_sym] it  4000  loss 1.1853  66 s

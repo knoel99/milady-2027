@@ -1,0 +1,12 @@
+== G1V_gaussian_full: test ed_ratio 1.96  div_b 1.27e-08  balance 0.001  spec_b 0.010  Hm 0.022  nulls 1.017  restart 0.062
+[W16V_recoloured_full] it  1000  loss 1.2715  11 s
+[W16V_recoloured_full] it  2000  loss 1.2138  21 s
+[W16V_recoloured_full] it  3000  loss 1.1826  32 s
+[W16V_recoloured_full] it  4000  loss 1.1776  42 s
+== W16V_recoloured_full: test ed_ratio 1.60  div_b 1.27e-08  balance 0.004  spec_b 0.015  Hm 0.019  nulls 0.958  restart 0.026
+[W17_recoloured_surrogate] it  1000  loss 1.2599  11 s
+[W17_recoloured_surrogate] it  2000  loss 1.2292  21 s
+[W17_recoloured_surrogate] it  3000  loss 1.2060  31 s
+[W17_recoloured_surrogate] it  4000  loss 1.1990  41 s
+== W17_recoloured_surrogate: test ed_ratio 1.86  div_b 1.27e-08  balance 0.005  spec_b 0.016  Hm 0.022  nulls 1.011  restart 0.061
+total duration 1477 s
