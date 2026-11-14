@@ -485,16 +485,17 @@
    "result_file": "experiments/results/replications/e4_recolour/e4_mhd3d_s4.json"
   }
  ],
+ "model_files": [],
  "release_files": [
   {
    "file": "catalog.json",
    "size_bytes": 50785,
-   "sha256": "9e3c187b4bb6657d880d64130d9a698dee228f37eaf6646daeb1fb7211599af4"
+   "sha256": "df8e98996d614822ca1f9ad34363386babad6dd7c043b1fb75c151a674be2e55"
   },
   {
    "file": "catalog.sqlite",
-   "size_bytes": 3096576,
-   "sha256": "3dd9aea89d5bfacfe6f4dea98740cac4ff44cf6e393cabb2b5aa57b8e5088afb"
+   "size_bytes": 3084288,
+   "sha256": "8aa006ae85a5491329ef9283bc436838c71523b0a78e54540a18a83858fccca7"
   },
   {
    "file": "e4_sample_eta0.04899.h5",

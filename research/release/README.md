@@ -62,6 +62,16 @@ not run, the pilot being closed to new jobs):
 python3 tools/runpod_job.py run --hours 1.9 --outputs experiments/results/replications/e4_weights -- env E4_SAME_DATA=1 E4_SAVE_MODELS=1 bash experiments/e4_gpu_job.sh full '0 1 2 3 4' e4_weights D
 ```
 
+## Reload a law and draw samples
+
+`experiments/e4_release_example.py` reads the data set, rebuilds the latent space from the training files, fits G0 and G1,
+reloads W9 from a weight file, recolours it into W16, draws fields (u, B) on the 16³ grid at one η and prints their mean
+energies against those of the data (about one minute on a CPU):
+
+```bash
+python3 experiments/e4_release_example.py --eta 0.04899 --n 256
+```
+
 ## Upload
 
 The session cannot create a GitHub release. From a checkout that holds the files (this container), with the `gh` command

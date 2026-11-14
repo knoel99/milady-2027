@@ -2,6 +2,12 @@
 
 One entry per working session, newest first, at most ten lines.
 
+## 2026-11-14 — Announcement (01:05 UTC): the closing instruction is in main; CPU retraining of W9 for the release (no GPU)
+- `origin/main` now records the closing instruction of the owner (`race/PILOT-PROMPT.md`, section "Closing goal set by the owner on 13 November 2026", commit f1d0e72, merged as 2046d1c): it is applied as written; what was done since 23:35 UTC matches its five points.
+- The models cited by the report have no weight file (pods deleted after each job) and the instruction closes the GPU. Launched at 00:55 UTC on the CPU of the session container, in a separate worktree so that no committed result is overwritten: the reference statistics of the session's data and W9 (group D, seeds 0 to 4, `E4_SAVE_MODELS=1`), about 2 h. No pod, no GPU cost. The weights will be released as "W9 retrained on the released data set", with their own evaluations; they are not the weights of the cited runs.
+- `experiments/e4_release_example.py`: reloads G0, G1, W9 and W16 from the released files and draws samples; tested for G0 and G1 (magnetic energy of 256 samples at η = 0.0490 within 1 % of the data).
+- `jury-externe` review of the report v6 against the criteria of the offer: running since 00:50 UTC.
+
 ## 2026-11-14 — Announcement (00:35 UTC): H41 decided; report v6 written around the offer; E4 data in MFF, catalogue and release files; no GPU job launched
 - Goal of the session: close what the closing message asks, as far as it stays on this branch and spends no GPU (the message is still not recorded in `origin/main`, checked at 23:37 UTC: HEAD 6e7ab2d).
 - H41: verdict of the `encadrant` role, NOT REFUTED confirmed (rank 0 through the anchored code path reproduces W10 within 1.3e-4; scope: block-diagonal anchor); three corrections of wording applied; review `research/reviews/2026-11-13-encadrant-h41.md`, logged. The role also judged the report against the criteria of the offer: answered on methods, constraints, divergence, spectra and helicity, comparative study; partly on conditioning, energy balance, toolbox; not answered on reversals, reduced models and data assimilation, scale.

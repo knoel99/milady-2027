@@ -1,11 +1,11 @@
 {
  "campaigns": [
   {
-   "id": "1c54f6f8-b666-4f32-af44-4de006a4c720",
+   "id": "cbec487c-3b3e-413d-be99-d081eaa2d2c9",
    "name": "e4_mhd3d",
    "description": "E4: saturated 3D MHD dynamo, constant ABC forcing at kf = 2, ν = 0.05 (Re = 10), 11 magnetic diffusivities η from 0.08 to 0.03, 16³ grid, 24 trajectories × 100 snapshots per η.",
    "config_yaml": "source: experiments/e4_data.py\n",
-   "created_at": "2026-11-13 23:51:46.602892+00:00",
+   "created_at": "2026-11-14 00:12:22.240142+00:00",
    "counts": {
     "done": 11
    }
@@ -16,7 +16,7 @@
   "version": "1.0",
   "files": [
    {
-    "id": "f8c8f6f4-a595-4377-a3ce-820d6f330f45",
+    "id": "43fc7094-0b16-4b3f-bb81-6aedf2ef3ed0",
     "uri": "file:///home/user/milady-2027/experiments/data_e4_mff/e4_eta0.03000.h5",
     "sha256": "463dbda2fab7f01111eee64a709544b6d485401f59c28cf2a433fe1c6d2e5f37",
     "size_bytes": 203749721,
@@ -24,7 +24,7 @@
     "simulation_id": "6eb4580d-51c0-45ab-9e55-6e9b56a1a9c4"
    },
    {
-    "id": "a8e39f67-a88c-4702-91c3-831fdfd8627a",
+    "id": "08b9e983-0e34-4b33-b0a9-58ab04f32839",
     "uri": "file:///home/user/milady-2027/experiments/data_e4_mff/e4_eta0.03309.h5",
     "sha256": "0149f2959b7a16df59e5fa162ee56040cec436a27fc4863526d8f143b9a4a769",
     "size_bytes": 203604564,
@@ -32,7 +32,7 @@
     "simulation_id": "967c5098-aa42-4040-a938-b77d8807589a"
    },
    {
-    "id": "d7ce65f8-428d-4752-9152-ee4b3cbf0ab3",
+    "id": "d3e37aa5-7731-4cde-a6b6-d2fc4845efe0",
     "uri": "file:///home/user/milady-2027/experiments/data_e4_mff/e4_eta0.03650.h5",
     "sha256": "e9ee1b4c38872e97bf71447d1ee27549f07fc8d85de09e67f91553596107ac5e",
     "size_bytes": 203483354,
@@ -40,7 +40,7 @@
     "simulation_id": "13f4da2f-7e25-48de-981b-93eb7bae1994"
    },
    {
-    "id": "4ab4f9b0-d093-414f-9064-7f2556eda4e5",
+    "id": "3cd5ad92-99c1-45aa-917a-d2f25e6f2b1e",
     "uri": "file:///home/user/milady-2027/experiments/data_e4_mff/e4_eta0.04026.h5",
     "sha256": "9682807ddb3fb6d8c21c74926435ca64dffbc8aab3d3d0eacf90fc501ba5d407",
     "size_bytes": 203476940,
@@ -48,7 +48,7 @@
     "simulation_id": "a5668a67-cbe2-4e5d-b9bc-8e1158fffc2e"
    },
    {
-    "id": "a26273f9-405f-4b0a-b804-9ce5c49adc94",
+    "id": "b94c61dc-f410-40d4-b180-8bd7fa014eae",
     "uri": "file:///home/user/milady-2027/experiments/data_e4_mff/e4_eta0.04441.h5",
     "sha256": "b5cc71e1a4bd0310914fc14af1e62bb75976aa00c5fd7418c440bcff73732813",
     "size_bytes": 203360109,
@@ -56,7 +56,7 @@
     "simulation_id": "2145fcc7-87ad-4d20-9961-60130d7cd571"
    },
    {
-    "id": "b6859581-688e-4df2-b3a6-ff53129cc2bd",
+    "id": "ff849ff6-9fd7-4a39-9b34-bd5da418fd3f",
     "uri": "file:///home/user/milady-2027/experiments/data_e4_mff/e4_eta0.04899.h5",
     "sha256": "5c6f60276425533e682a0a113b82f7c7ff88699f6f8ae04afed25427b8040c38",
     "size_bytes": 203241443,
@@ -64,7 +64,7 @@
     "simulation_id": "a975fef6-6355-4f11-98ee-a468e3f4e012"
    },
    {
-    "id": "0ceac47f-bd7c-49f3-8182-9e7dcc3d05dc",
+    "id": "d8282ba0-0bc2-4fc5-b45e-bf1a2953f4c3",
     "uri": "file:///home/user/milady-2027/experiments/data_e4_mff/e4_eta0.05404.h5",
     "sha256": "dc8bf3ad86f78f5fd0ff24b319b8a121e1760b02a0363bd5e81eb0764cf4d4c6",
     "size_bytes": 203062290,
@@ -72,7 +72,7 @@
     "simulation_id": "e65dfe9d-966c-44ca-a83e-865610f0bc96"
    },
    {
-    "id": "e4c666ef-c180-4281-9b67-b5f64c705fcb",
+    "id": "9b2778e6-6b83-4486-aeb2-d8e5ef03034b",
     "uri": "file:///home/user/milady-2027/experiments/data_e4_mff/e4_eta0.05961.h5",
     "sha256": "d1cd66ecdc491527cb71262b62916b2714dffb5b87a7401be0f953d21a4211a2",
     "size_bytes": 203013565,
@@ -80,7 +80,7 @@
     "simulation_id": "6fc972cf-6ee4-4f2b-a5a7-83e9e96226e4"
    },
    {
-    "id": "3697879c-e738-4e0f-9f5a-f608d532a7ab",
+    "id": "444b6e8b-8808-41fc-8f94-823278fb2f2e",
     "uri": "file:///home/user/milady-2027/experiments/data_e4_mff/e4_eta0.06575.h5",
     "sha256": "1c055ff0039a4c8d259083f33e50fdd60418693556c46a07faf7511722f39ddc",
     "size_bytes": 202889920,
@@ -88,7 +88,7 @@
     "simulation_id": "8c9cd35a-dbbe-412d-bf63-753ccdb91de9"
    },
    {
-    "id": "1254ff8c-153f-4da7-98c0-3ed116439117",
+    "id": "48f7e2c7-722f-46c7-a000-c96a7f480c70",
     "uri": "file:///home/user/milady-2027/experiments/data_e4_mff/e4_eta0.07253.h5",
     "sha256": "7edf21226c5e0f772a5046f6f61a02328152c339b8c66909ddba65db685f0a12",
     "size_bytes": 202794757,
@@ -96,7 +96,7 @@
     "simulation_id": "3e03f22a-28b8-4b72-81eb-941c63136e0d"
    },
    {
-    "id": "b953c5a4-4eee-4f28-bb02-4d0e1b0aa5d0",
+    "id": "8d2501fb-23ed-4fb6-be63-2c506d6148ff",
     "uri": "file:///home/user/milady-2027/experiments/data_e4_mff/e4_eta0.08000.h5",
     "sha256": "cc25066cb2f755cd61876b02365b9a75b270c33699839a5334404fc0eba8bd64",
     "size_bytes": 202642305,
@@ -615,7 +615,7 @@
  ],
  "models": [
   {
-   "id": "c6197427-68de-433d-86fb-e7fb2daae6bb",
+   "id": "89433aba-b702-4cc0-93c1-84ec8a7a201c",
    "name": "e4/G0/seed0",
    "law": "G0",
    "variant": "G0_gaussian_modes",
@@ -629,7 +629,7 @@
    "evaluations": 36
   },
   {
-   "id": "9be99ef5-c902-4252-ae29-c64f6d075012",
+   "id": "8d44e464-8f20-4f63-9813-1ccc0abe50ea",
    "name": "e4/G0/seed1",
    "law": "G0",
    "variant": "G0_gaussian_modes",
@@ -643,7 +643,7 @@
    "evaluations": 36
   },
   {
-   "id": "dd1d551f-d850-4c34-a218-33cf0c79ed7f",
+   "id": "d516ddcd-163b-45e0-9dd0-017b3ff9b943",
    "name": "e4/G0/seed2",
    "law": "G0",
    "variant": "G0_gaussian_modes",
@@ -657,7 +657,7 @@
    "evaluations": 36
   },
   {
-   "id": "be9db573-87dd-4354-8356-85d5cf80e44e",
+   "id": "dea8bdd3-5819-472b-950b-066024f8586c",
    "name": "e4/G0/seed3",
    "law": "G0",
    "variant": "G0_gaussian_modes",
@@ -671,7 +671,7 @@
    "evaluations": 36
   },
   {
-   "id": "7a01c571-d730-44e1-940e-88265f6b8805",
+   "id": "f51f40d2-ce13-42a6-bfe0-c5a7237f03cf",
    "name": "e4/G0/seed4",
    "law": "G0",
    "variant": "G0_gaussian_modes",
@@ -685,7 +685,7 @@
    "evaluations": 36
   },
   {
-   "id": "d690b873-0ab0-4b6f-8099-ea84f44d1b61",
+   "id": "aa508346-b1cb-4ba8-9e51-09d2f43903b6",
    "name": "e4/G1/seed0",
    "law": "G1",
    "variant": "G1_gaussian_full",
@@ -699,7 +699,7 @@
    "evaluations": 36
   },
   {
-   "id": "a5b925e3-ee05-45f4-9ba4-46468721caac",
+   "id": "764f018c-83f4-41f8-a9b9-efc5a19b6319",
    "name": "e4/G1/seed1",
    "law": "G1",
    "variant": "G1_gaussian_full",
@@ -713,7 +713,7 @@
    "evaluations": 36
   },
   {
-   "id": "3ae6e44d-c6df-4c35-85be-8af163e1933a",
+   "id": "4adb7d1b-8c7d-4cb3-b67c-fff8039f6589",
    "name": "e4/G1/seed2",
    "law": "G1",
    "variant": "G1_gaussian_full",
@@ -727,7 +727,7 @@
    "evaluations": 36
   },
   {
-   "id": "cc4d05ce-f7f1-433c-9588-4af41ac6cbe1",
+   "id": "f765a52f-0e2d-4c34-9cc7-e36430864233",
    "name": "e4/G1/seed3",
    "law": "G1",
    "variant": "G1_gaussian_full",
@@ -741,7 +741,7 @@
    "evaluations": 36
   },
   {
-   "id": "bc210410-49b7-45d2-9a0e-0e4318f914fb",
+   "id": "3daf3ac9-856d-4994-95ff-027211cb1829",
    "name": "e4/G1/seed4",
    "law": "G1",
    "variant": "G1_gaussian_full",
@@ -755,7 +755,7 @@
    "evaluations": 36
   },
   {
-   "id": "e4f3bf0d-da56-4032-bb26-7783521de25e",
+   "id": "90e47c5a-e295-45f5-a0f9-7b6d257668f9",
    "name": "e4/W9/seed0",
    "law": "W9",
    "variant": "W9R_skip_sym",
@@ -769,7 +769,7 @@
    "evaluations": 36
   },
   {
-   "id": "1a3308a3-3f86-4fda-90c6-6c62138646b8",
+   "id": "ef4636e7-bb4f-40a6-a9a3-3d13539c8aae",
    "name": "e4/W9/seed1",
    "law": "W9",
    "variant": "W9R_skip_sym",
@@ -783,7 +783,7 @@
    "evaluations": 36
   },
   {
-   "id": "891ba88b-78f6-4bff-8870-6d3bbda5beba",
+   "id": "96c1f37a-1cbd-4d33-9dd9-cb38dc9fec28",
    "name": "e4/W9/seed2",
    "law": "W9",
    "variant": "W9R_skip_sym",
@@ -797,7 +797,7 @@
    "evaluations": 36
   },
   {
-   "id": "9e32a602-3097-49aa-912a-4150fb2a9b4c",
+   "id": "e96c0b76-1dc4-47c9-81df-c8a62e7a18b7",
    "name": "e4/W9/seed3",
    "law": "W9",
    "variant": "W9R_skip_sym",
@@ -811,7 +811,7 @@
    "evaluations": 36
   },
   {
-   "id": "305cb0ef-0d9a-45d2-9c85-0637bd986847",
+   "id": "de00cba5-cb53-4722-985d-10f64010f45e",
    "name": "e4/W9/seed4",
    "law": "W9",
    "variant": "W9R_skip_sym",
@@ -825,7 +825,7 @@
    "evaluations": 36
   },
   {
-   "id": "455481c0-39d1-4ec4-9607-a2c3e9d6c334",
+   "id": "07339c81-d362-415d-90b4-bc9598d63b9f",
    "name": "e4/W16/seed0",
    "law": "W16",
    "variant": "W16_recoloured_full",
@@ -839,7 +839,7 @@
    "evaluations": 36
   },
   {
-   "id": "59362d8c-d886-4577-b2f8-3a495a311560",
+   "id": "449c9b49-c639-48e3-b285-c0e1d4c3ad93",
    "name": "e4/W16/seed1",
    "law": "W16",
    "variant": "W16_recoloured_full",
@@ -853,7 +853,7 @@
    "evaluations": 36
   },
   {
-   "id": "71bc85fc-dec1-4703-81e6-f15616712cd4",
+   "id": "ffd2f209-54b2-412e-9703-47afe1063edb",
    "name": "e4/W16/seed2",
    "law": "W16",
    "variant": "W16_recoloured_full",
@@ -867,7 +867,7 @@
    "evaluations": 36
   },
   {
-   "id": "b741ceed-2569-4758-8d41-f3d2009b7c6c",
+   "id": "a2d7fd3d-5801-443c-a781-36337c2a6cd1",
    "name": "e4/W16/seed3",
    "law": "W16",
    "variant": "W16_recoloured_full",
@@ -881,7 +881,7 @@
    "evaluations": 36
   },
   {
-   "id": "647edd67-8be4-4ef2-87c5-939f116d1061",
+   "id": "510b5e78-d77e-4be7-aafd-08bc653f26ae",
    "name": "e4/W16/seed4",
    "law": "W16",
    "variant": "W16_recoloured_full",

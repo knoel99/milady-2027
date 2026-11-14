@@ -13,7 +13,10 @@ What it does, from the root of the repository:
 4. writes ``manifest.json``, ``SHA256SUMS``, ``catalog.json`` (a readable export of the catalogue) and ``README.md``.
 
 The large files stay where they are (git-ignored); the manifest gives their path and size. The weights of the trained
-models were not kept (the GPU pods are deleted after each job): the catalogue records how to regenerate them.
+models of the cited runs were not kept (the GPU pods are deleted after each job): the catalogue records how to regenerate
+them. When ``experiments/results/replications/e4_release_cpu`` holds the model W9 retrained on the released data set on the
+CPU of the session (``e4_model_W9_skip_sym_s<seed>.pt`` with the result files of the same run), these weights are
+registered as separate models, with their own evaluations, and listed in the manifest.
 """
 from __future__ import annotations
 
@@ -40,6 +43,7 @@ SAMPLE_ETA, SAMPLE_TRAJ, SAMPLE_T = "0.04899", 2, 25
 METRICS = ("ed_ratio", "err_Eb_rel", "balance_residual_total", "balance_residual_magnetic", "prod_mean_over_d",
            "prod_fluct_over_d", "spec_err_b_l2", "hel_m_err_rel", "null_count_err_rel", "div_rel_b_max",
            "restart_drift_eb", "hc_sign_asym")
+CPU_RUN = "e4_release_cpu"            # W9 retrained on the released data set, on CPU (weights kept)
 JOB = "python3 tools/runpod_job.py run --hours 1.9 --outputs experiments/results/replications/{run} -- env E4_SAME_DATA=1 E4_SAVE_MODELS=1 bash experiments/e4_gpu_job.sh full '0 1 2 3 4' {run} {groups}"
 #: law → (variant in the result files, run under results/replications, groups of the job, architecture, constraint, weights)
 MODELS = {
@@ -120,8 +124,33 @@ def catalogue(mff_dir: Path, npz_dir: Path, out: Path) -> dict:
             models.append({"id": mid, "name": f"e4/{law}/seed{seed}", "law": law, "variant": variant, "run": run, "seed": seed,
                            "architecture": arch, "constraint_mechanism": constraint, "weights": weights,
                            "regenerate": hyper["regenerate"], "result_file": hyper["result_file"], "evaluations": n_eval})
+    cpu = RES / "replications" / CPU_RUN
+    ds_id = ds[0]["dataset_id"] if ds else None
+    for seed in range(5):
+        w, f = cpu / f"e4_model_W9_skip_sym_s{seed}.pt", cpu / f"e4_mhd3d_s{seed}_D.json"
+        if not (w.exists() and f.exists()):
+            continue
+        r = json.loads(f.read_text())
+        hyper = {"law": "W9-released", "variant": "W9_skip_sym", "seed": seed, "config": r["config"], "times": r["times"].get("W9_skip_sym", {}),
+                 "result_file": str(f.relative_to(ROOT)), "weights_sha256": mff.sha256_file(w), "weights_size_bytes": w.stat().st_size,
+                 "reload": f"python3 experiments/e4_release_example.py --weights {w.relative_to(ROOT)}",
+                 "training_data": "data set e4_mhd3d 1.0 (the released files), trained on the CPU of the session container"}
+        mid = cat.register_model(f"e4/W9-released/seed{seed}", MODELS["W9"][3], MODELS["W9"][4], hyper, dataset_id=ds_id,
+                                 checkpoint_uri=w.resolve().as_uri(), git_commit=git_commit())
+        n_eval = 0
+        for row in r["evaluation"]["W9_skip_sym"]["test"]:
+            for m in METRICS:
+                if isinstance(row.get(m), int | float):
+                    cat.add_evaluation(mid, {"eta": row["eta"], "nu": r["config"]["nu"], "kf": r["config"]["kf"]}, m, row[m], int(row["n"]), seed,
+                                       details={"run": CPU_RUN, "variant": "W9_skip_sym"})
+                    n_eval += 1
+        models.append({"id": mid, "name": f"e4/W9-released/seed{seed}", "law": "W9-released", "variant": "W9_skip_sym", "run": CPU_RUN, "seed": seed,
+                       "architecture": MODELS["W9"][3], "constraint_mechanism": MODELS["W9"][4],
+                       "weights": str(w.relative_to(ROOT)), "weights_sha256": hyper["weights_sha256"], "weights_size_bytes": hyper["weights_size_bytes"],
+                       "regenerate": f"E4_SAVE_MODELS=1 python3 experiments/e4_mhd3d.py --seed {seed} --group D --device cpu", "result_file": hyper["result_file"],
+                       "evaluations": n_eval})
     summary: dict[str, dict] = {}
-    for law in MODELS:                                                   # seed means per law, metric and held-out η
+    for law in [*MODELS, "W9-released"]:                                                   # seed means per law, metric and held-out η
         per: dict[tuple[str, float], list[float]] = {}
         for m in (x for x in models if x["law"] == law):
             for row in cat.eval_summary(m["id"]):
@@ -133,7 +162,7 @@ def catalogue(mff_dir: Path, npz_dir: Path, out: Path) -> dict:
                           "files": [{k: r[k] for k in ("id", "uri", "sha256", "size_bytes", "split", "simulation_id") if k in r} for r in ds]},
               "simulations": [{k: s.get(k) for k in ("id", "code", "parameters", "grid", "status", "git_commit")}
                               for s in cat.query_simulations(campaign="e4_mhd3d")],
-              "models": models, "evaluation_summary": summary}
+              "models": models, "evaluation_summary": {k: v for k, v in summary.items() if v}}
     (out / "catalog.json").write_text(json.dumps(export, indent=1, ensure_ascii=False, default=str) + "\n", encoding="utf-8")
     cat.close()
     return export
@@ -188,11 +217,15 @@ files named in `catalog.json`):
 |---|---|---|
 """ + "\n".join(f"| {law} | {v[3]} | {v[5]} |" for law, v in MODELS.items()) + f"""
 
-The weights of W9 were not kept. One GPU job writes them (five seeds, about 30 min, under 1 USD at the prices of the pilot;
-not run, the pilot being closed to new jobs):
+{weights_section(man)}
+## Reload a law and draw samples
+
+`experiments/e4_release_example.py` reads the data set, rebuilds the latent space from the training files, fits G0 and G1,
+reloads W9 from a weight file, recolours it into W16, draws fields (u, B) on the 16³ grid at one η and prints their mean
+energies against those of the data (about one minute on a CPU):
 
 ```bash
-{JOB.format(run='e4_weights', groups='D')}
+{reload_cmd(man)}
 ```
 
 ## Upload
@@ -201,7 +234,7 @@ The session cannot create a GitHub release. From a checkout that holds the files
 authenticated:
 
 ```bash
-gh release create e4-data-v1.0 --repo knoel99/milady-2027 --target claude/modest-newton-zx8fqs --title "E4 data set 1.0 (MFF) and catalogue" --notes-file research/release/README.md experiments/data_e4_mff/e4_eta*.h5 research/release/SHA256SUMS research/release/manifest.json research/release/catalog.json research/release/catalog.sqlite
+gh release create e4-data-v1.0 --repo knoel99/milady-2027 --target claude/modest-newton-zx8fqs --title "E4 data set 1.0 (MFF) and catalogue" --notes-file research/release/README.md experiments/data_e4_mff/e4_eta*.h5{' experiments/results/replications/' + CPU_RUN + '/e4_model_W9_skip_sym_s*.pt' if man.get('model_files') else ''} research/release/SHA256SUMS research/release/manifest.json research/release/catalog.json research/release/catalog.sqlite
 ```
 
 To an object store instead, with the catalogue registered at the destination (`MILADY_DB_URL` set):
@@ -226,6 +259,39 @@ the checksums then differ (new identifiers and dates, and another draw on anothe
 """
 
 
+def weights_section(man: dict) -> str:
+    ws = man.get("model_files", [])
+    job = f"```bash\n{JOB.format(run='e4_weights', groups='D')}\n```\n"
+    if not ws:
+        return ("The weights of W9 were not kept. One GPU job writes them (five seeds, about 30 min, under 1 USD at the prices of the pilot;\n"
+                "not run, the pilot being closed to new jobs):\n\n" + job)
+    rows = "\n".join(f"| `{w['path']}` | {w['seed']} | {w['size_bytes'] / 2**20:.1f} | `{w['sha256'][:16]}…` |" for w in ws)
+    cmp_ = man.get("released_against_cited", {})
+    lines = "\n".join(f"| {k} | {v['cited']} | {v['released']} |" for k, v in cmp_.items())
+    return f"""**Weights.** The weights of the runs cited by the report were not kept (the GPU pods are deleted after each job). The files below are the
+same model (W9: same code, seeds, iterations and width) **retrained on this data set on the CPU of the session**, with the evaluation
+of the same pipeline against the reference statistics of this realisation (`experiments/results/replications/{CPU_RUN}/`). They are
+another training on another draw of the data than the cited runs: their numbers are those of the table below, not those of the report.
+
+| File (in the container, not in git) | seed | MiB | SHA-256 |
+|---|---|---|---|
+{rows}
+
+| Held-out η, mean over the five seeds | W9 of the report (GPU pods) | W9 released (CPU, this data set) |
+|---|---|---|
+{lines}
+
+The weights of the cited runs themselves can be written by one GPU job (five seeds, about 30 min, under 1 USD at the prices of the
+pilot; not run, the pilot being closed to new jobs):
+
+{job}"""
+
+
+def reload_cmd(man: dict) -> str:
+    ws = man.get("model_files", [])
+    return "python3 experiments/e4_release_example.py --eta 0.04899 --n 256" + (f" --weights {ws[0]['path']}" if ws else "")
+
+
 def main() -> None:
     ap = argparse.ArgumentParser(description=__doc__, formatter_class=argparse.RawDescriptionHelpFormatter)
     ap.add_argument("--mff", default=str(ROOT / "experiments" / "data_e4_mff"))
@@ -241,11 +307,25 @@ def main() -> None:
                       "dataset_files": len(export["dataset"]["files"]), "models": len(export["models"]),
                       "evaluations": sum(m["evaluations"] for m in export["models"])}
     man["models"] = [{k: m[k] for k in ("name", "variant", "run", "seed", "weights", "result_file")} for m in export["models"]]
+    man["model_files"] = [{"file": Path(m["weights"]).name, "path": m["weights"], "seed": m["seed"], "size_bytes": m["weights_size_bytes"],
+                           "sha256": m["weights_sha256"]} for m in export["models"] if m["law"] == "W9-released"]
+    if man["model_files"]:
+        ev = export["evaluation_summary"]
+
+        def cell(law: str, metric: str) -> str:
+            vals = [v["mean_over_seeds"] for k, v in ev[law].items() if k.startswith(metric + " @")]
+            return ", ".join(f"{x:.3g}" for x in vals)
+
+        man["released_against_cited"] = {name: {"cited": cell("W9", m), "released": cell("W9-released", m)} for name, m in (
+            ("energy distance over the noise floor (η = 0.0331, 0.0490, 0.0725)", "ed_ratio"), ("relative error of the magnetic energy", "err_Eb_rel"),
+            ("third-order part of the production over the dissipation", "prod_fluct_over_d"), ("residual of the energy balance", "balance_residual_total"),
+            ("null-count error", "null_count_err_rel"), ("restart drift of the magnetic energy", "restart_drift_eb"))}
     (out / "README.md").write_text(readme(man), encoding="utf-8")
     small = [out / n for n in ("catalog.json", "catalog.sqlite", man["sample"]["file"])]
     man["release_files"] = [{"file": p.name, "size_bytes": p.stat().st_size, "sha256": mff.sha256_file(p)} for p in small]
     (out / "manifest.json").write_text(json.dumps(man, indent=1, ensure_ascii=False) + "\n", encoding="utf-8")
-    lines = [f"{f['sha256']}  {f['file']}" for f in man["data_files"]] + [f"{f['sha256']}  {f['file']}" for f in man["release_files"]]
+    lines = ([f"{f['sha256']}  {f['file']}" for f in man["data_files"]] + [f"{f['sha256']}  {f['file']}" for f in man["release_files"]]
+             + [f"{f['sha256']}  {f['file']}" for f in man["model_files"]])
     (out / "SHA256SUMS").write_text("\n".join(lines) + "\n", encoding="utf-8")
     print(json.dumps({"data_files": len(man["data_files"]), "all_valid": all(f["valid_full_scan"] for f in man["data_files"]),
                       "total_GiB": round(sum(f["size_bytes"] for f in man["data_files"]) / 2**30, 2), **man["catalog"],
