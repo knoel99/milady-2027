@@ -307,6 +307,7 @@ def blocks() -> dict[str, list[str]]:
         "jobs": block_jobs(),
         "release": block_release(),
         "releaseeval": block_releaseeval(),
+        "releasepage": block_releasepage(),
     }
 
 
@@ -342,6 +343,33 @@ def block_release() -> list[str]:
     return rows
 
 
+def block_releasepage() -> list[str]:
+    """Downloads of the release for the explorer page of the team: link, size and format of each kind of file."""
+    path = RELEASE / "manifest.json"
+    man = json.loads(path.read_text()) if path.exists() else {}
+    if "url" not in man:
+        return ["- The release is not built yet."]
+    url, data, mods = man["url"], man["data_files"], man["model_files"]
+    gib = lambda fs: f"{sum(f['size_bytes'] for f in fs) / 2**30:.2f} GiB"                           # noqa: E731
+    mib = lambda f: f"{f['size_bytes'] / 2**20:.1f} MiB"                                             # noqa: E731
+    by = lambda kind: [f for f in mods if f["kind"] == kind]                                         # noqa: E731
+    links = lambda fs: ", ".join(f"[{f['file']}]({url}/{f['file']})" for f in fs)                    # noqa: E731
+    out = [f"- **Data** (MFF 1.0: HDF5 with the layout of The Well; {len(data)} files, {gib(data)} in all, {mib(data[0])} each; "
+           f"{data[0]['n_trajectories']} trajectories × {data[0]['n_t']} snapshots of $u$ and $B$ on the 16³ grid per η): "
+           + ", ".join(f"[η = {f['eta']:.5f} ({f['split']})]({url}/{f['file']})" for f in data)
+           + f"; a sample of {mib(man['sample'])}: [{man['sample']['file']}]({url}/{man['sample']['file']}).",
+           f"- **Latent space** of the models (PyTorch, {mib(by('latent space')[0])}): {links(by('latent space'))}.",
+           f"- **Gaussian laws** as parameters (PyTorch): G0, {mib(by('G0')[0])}: {links(by('G0'))}; G1, {mib(by('G1')[0])}: {links(by('G1'))}."]
+    if by("W9"):
+        out.append(f"- **Flow-matching model W9**, weights of the five seeds (PyTorch, {mib(by('W9')[0])} each): {links(by('W9'))}.")
+    if by("W16"):
+        out.append(f"- **Recoloured law W16**, linear map of each seed at the three held-out η (PyTorch, {mib(by('W16')[0])} each; estimated on "
+                   f"{man['n_recolour']} samples of W9 per η): {links(by('W16'))}.")
+    out.append(f"- **Catalogue** of the data set, the released models and their evaluations (`milady.catalog`): [catalog.sqlite]({url}/catalog.sqlite), "
+               f"[catalog.json]({url}/catalog.json). **Checksums and list**: [SHA256SUMS]({url}/SHA256SUMS), [manifest.json]({url}/manifest.json).")
+    return out
+
+
 def block_releaseeval() -> list[str]:
     """Metrics of the released models against those of the cited runs (research/release/catalog.json)."""
     path = RELEASE / "catalog.json"
@@ -372,6 +400,13 @@ def main() -> None:
         for k, v in b.items():
             print(f"--- {k}\n" + "\n".join(v) + "\n")
         return
+    explorer = REPORT.parent.parent / "explorer" / "index.qmd"
+    etext = explorer.read_text(encoding="utf-8")
+    page = re.compile(r"(<!-- e4:releasepage:begin -->\n).*?(<!-- e4:releasepage:end -->)", re.DOTALL)
+    if page.search(etext):
+        explorer.write_text(page.sub(lambda m: m.group(1) + "\n".join(b["releasepage"]) + "\n" + m.group(2), etext), encoding="utf-8")
+        print(f"block releasepage (explorer): {len(b['releasepage'])} lines")
+    del b["releasepage"]
     text = REPORT.read_text(encoding="utf-8")
     for k, v in b.items():
         pat = re.compile(rf"(<!-- e4:{k}:begin -->\n).*?(<!-- e4:{k}:end -->)", re.DOTALL)

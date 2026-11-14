@@ -148,6 +148,32 @@ The hypotheses of `research/hypotheses.json`, each with the refutation criterion
 <div id="ex-jobs"></div>
 ```
 
+## Data and models {#downloads}
+
+The reference data of E4, the laws that the report cites and a catalogue of both are published as the release [e4-data-v1.0](https://github.com/knoel99/milady-2027/releases/tag/e4-data-v1.0) of the repository; the section [Data and models](../report/index.html#sec-release) of the report says what they are. The data are a draw generated for the release by the committed script, and the models are the cited laws retrained on these data on CPU: the weights of the GPU runs behind the report were not kept.
+
+<!-- e4:releasepage:begin -->
+- The release is not built yet.
+<!-- e4:releasepage:end -->
+
+Reload a law and draw samples, from a checkout of the repository (the script downloads the files it needs and checks their SHA-256):
+
+```bash
+python3 experiments/e4_release_example.py --dir e4_release --download --law W16 --seed 0 --eta 0.04899 --n 256 --out samples.h5
+```
+
+```python
+import sys; sys.path[:0] = ["src", "experiments"]
+import e4_release_example as R
+for name in (R.SPACE, R.WEIGHTS.format(seed=0)):
+    R.fetch("e4_release", name)                # download, check the SHA-256
+space = R.load_space("e4_release")             # latent space and its normalisation
+w9 = R.load_w9("e4_release", space, seed=0)    # flow-matching model W9
+fields = R.to_fields(space, R.sample_w9(w9, space, eta=0.04899, n=64))   # u and B: (64, 16, 16, 16, 3)
+```
+
+A data file is read with `milady.data.read_mff(path)` and checked with `python -m milady.data.convert validate --full <file>`.
+
 ## Diagrams, code and data {#links}
 
 - Report: [HTML](../report/index.html), [PDF](../report/index.pdf).
