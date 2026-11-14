@@ -1,8 +1,8 @@
 #!/usr/bin/env python3
 """Team cards of the home page, the table of the Teams page and the team links of the Site menu.
 
-Every planned team is listed: the pilots (race/PILOT.md is the Claude pilot, race/PILOT-<TEAM>.md
-the others) and the teams of race/config.toml [teams]. A team's links appear as soon as its
+Every planned team is listed: the pilots and the race teams of milady.toml [site] (the race itself
+is configured in the repository knoel99/sciathon). A team's links appear as soon as its
 deliverables exist under site/teams/<team>/ (report/index.qmd, report/index.pdf, explorer/index.qmd,
 diagrams/*.html); until then the card says "planned".
 
@@ -59,16 +59,10 @@ def logo(name: str, label: str, uid: str) -> str:
 
 
 def teams() -> list[dict]:
-    config = tomllib.loads((ROOT / "race/config.toml").read_text(encoding="utf-8"))
+    site = tomllib.loads((ROOT / "milady.toml").read_text(encoding="utf-8")).get("site", {})
     providers = tomllib.loads((ROOT / "agents/providers.toml").read_text(encoding="utf-8"))
-    pilots = []
-    if (ROOT / "race/PILOT.md").exists():
-        pilots.append("claude")
-    for f in sorted((ROOT / "race").glob("PILOT-*.md")):
-        m = re.fullmatch(r"PILOT-([A-Z0-9_]+)\.md", f.name)
-        if m and m.group(1).lower() in providers and m.group(1).lower() not in pilots:
-            pilots.append(m.group(1).lower())
-    race = list(config.get("teams", {}))
+    pilots = list(site.get("pilots", []))
+    race = list(site.get("race_teams", []))
     on_disk = sorted(p.name for p in (SITE / "teams").iterdir() if p.is_dir())
     order = pilots + [t for t in race if t not in pilots] + [t for t in on_disk if t not in pilots + race]
     out = []

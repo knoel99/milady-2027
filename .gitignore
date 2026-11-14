@@ -58,3 +58,9 @@ experiments/release_models/
 # Downloads and samples of experiments/e4_release_example.py
 /e4_release/
 /samples.h5
+
+# The race brief, installed from the repository knoel99/sciathon (tools/race_launch.py install-brief);
+# a team commits only its objectives file race/teams/<team>/objectives.toml.
+/race/*
+!/race/teams/
+/race/teams/README.md

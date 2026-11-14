@@ -6,7 +6,7 @@
 A block of the report is the text between ``<!-- e4:<name>:begin -->`` and ``<!-- e4:<name>:end -->``. Blocks:
 ``data`` (reference data per η), ``comparative`` (variant × metric on the held-out η, seed mean ± SE),
 ``hypotheses`` (register with the verdicts), ``long``, ``scan`` and ``mech`` (long trainings, width scan, Gaussian law with inter-mode covariance and mechanisms on W9), ``indep`` (replication
-with other data seeds), ``objectives`` (targets of race/teams/claude/objectives.toml against the measured values),
+with other data seeds), ``objectives`` (targets of research/teams/claude/objectives.toml against the measured values),
 ``jobs`` (GPU ledger). Sources: ``experiments/results`` (main run), ``results/replications/e4_final_long``,
 ``e4_scan2`` (else ``e4_final_scan``), ``e4_mech``, ``e4_indep``, ``research/teams/claude/hypotheses.json``, ``research/teams/claude/compute-ledger.jsonl``.
 """
@@ -141,7 +141,7 @@ def block_hypotheses() -> list[str]:
 
 
 def block_objectives() -> list[str]:
-    obj = tomllib.loads((ROOT / "race" / "teams" / "claude" / "objectives.toml").read_text())["objective"]
+    obj = tomllib.loads((ROOT / "research" / "teams" / "claude" / "objectives.toml").read_text())["objective"]
     out = ["| Objective | Target | Measured | Seeds | Met |", "|:---|---:|---:|---:|:---|"]
     sel = R / "e4_selection.json"
     for o in obj:

@@ -4,7 +4,7 @@
 Reads the session transcripts Claude Code keeps under ~/.claude/projects/<project>/ (one JSONL file
 per session, one per sub-agent under <session>/subagents/ with a .meta.json naming its type), counts
 each API response once (by message id), and reports per model: input, cache writes (5 min and
-1 h), cache reads, output (with thinking) and the cost at the prices of race/config.toml
+1 h), cache reads, output (with thinking) and the cost at the prices of milady.toml
 [pricing]. In a Claude Code session on a subscription the cost is an API-equivalent figure, not
 a bill. It also lists every sub-agent call with its type, model and effort, checks the roles of
 agents/roles/ against their prescribed model and effort, and adds the GPU spend of
@@ -29,7 +29,7 @@ from collections import defaultdict
 from pathlib import Path
 
 ROOT = Path(__file__).resolve().parent.parent
-CONFIG = ROOT / "race" / "config.toml"
+CONFIG = ROOT / "milady.toml"
 TOKEN_KEYS = ("input", "cache_write_5m", "cache_write_1h", "cache_read", "output", "thinking")
 
 
@@ -197,7 +197,7 @@ def markdown(r: dict) -> str:
            f"Main session: models {r['main_session']['models']}, efforts {r['main_session']['efforts']}; expected "
            f"{r['main_session']['expected']}: " + ("conforms." if r["main_session"]["conforms"] else
            f"**NOT CONFORMING** ({r['main_session']['off_spec']} of {r['main_session']['responses']} responses off spec)."),
-           f"API-equivalent cost of the Claude calls: **${r['total_usd']}** (prices of race/config.toml [pricing]).",
+           f"API-equivalent cost of the Claude calls: **${r['total_usd']}** (prices of milady.toml [pricing]).",
            f"GPU: {r['gpu']['jobs']} job(s), {r['gpu']['hours']} h, **${r['gpu']['usd']}**"
            + (f" of a ${r['gpu']['budget_usd']} budget." if r["gpu"].get("budget_usd") else "."), "",
            "| model | API calls | input | cache write 5m | cache write 1h | cache read | output | of which thinking | cost |",

@@ -2,7 +2,7 @@
 """Say when the supervisor (`encadrant`) and the external examiner (`jury-externe`) must step in.
 
 The race has no weeks: reviews are triggered by what happens and by the time that passes,
-from race/config.toml [reviews] and the review register research/reviews.jsonl.
+from milady.toml [reviews] and the review register research/reviews.jsonl.
 
 - `encadrant` is due when commits touching the watched results (experiments/results, the
   hypothesis register, the simulator) exist since its last review, or when work went on for
@@ -43,7 +43,7 @@ LEDGER = ROOT / "research" / "compute-ledger.jsonl"
 
 
 def settings() -> dict:
-    cfg = tomllib.loads((ROOT / "race" / "config.toml").read_text(encoding="utf-8"))
+    cfg = tomllib.loads((ROOT / "milady.toml").read_text(encoding="utf-8"))
     r = dict(cfg.get("reviews", {}))
     r["start"] = parse(os.environ.get("MILADY_START") or r["start"])
     gpu = cfg.get("gpu", {})

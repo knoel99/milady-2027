@@ -40,7 +40,7 @@ import urllib.request
 from pathlib import Path
 
 ROOT = Path(__file__).resolve().parent.parent
-CONFIG = ROOT / "race" / "config.toml"
+CONFIG = ROOT / "milady.toml"
 LEDGER = ROOT / "research" / "compute-ledger.jsonl"
 MCP_URL = os.environ.get("RUNPOD_MCP_URL", "https://mcp.runpod.io/")
 
