@@ -543,6 +543,19 @@ class ModewiseGaussian:
         self.c, self.mean, self.cov = values.to(torch.float64), torch.stack(means), torch.stack(covs)
         return self
 
+    def state(self) -> dict[str, Any]:
+        """Parameters of the fitted law as plain tensors (``torch.save``-able); see :meth:`from_state`."""
+        assert self.c is not None and self.mean is not None and self.cov is not None, "fit first"
+        return {"law": "ModewiseGaussian", "c": self.c.cpu(), "mean": self.mean.cpu(), "cov": self.cov.cpu(),
+                "sign": None if self.sign is None else self.sign.cpu(), "jitter": self.jitter}
+
+    @classmethod
+    def from_state(cls, state: Mapping[str, Any]) -> ModewiseGaussian:
+        """The law saved by :meth:`state`."""
+        law = cls(sign=state["sign"], jitter=float(state["jitter"]))
+        law.c, law.mean, law.cov = state["c"], state["mean"], state["cov"]
+        return law
+
     def moments(self, c: float) -> tuple[torch.Tensor, torch.Tensor]:
         """Mean (M, C) and covariance (M, C, C) at the condition ``c`` (clamped to the training range)."""
         assert self.c is not None and self.mean is not None and self.cov is not None, "fit first"
@@ -603,6 +616,20 @@ class FullGaussian:
             self.factor.append((xv - m) / math.sqrt(len(xv)))
         self.c = values.to(torch.float64)
         return self
+
+    def state(self) -> dict[str, Any]:
+        """Parameters of the fitted law as plain tensors (``torch.save``-able); see :meth:`from_state`."""
+        assert self.c is not None and self.shape is not None, "fit first"
+        return {"law": type(self).__name__, "c": self.c.cpu(), "mean": [m.cpu() for m in self.mean],
+                "factor": [a.cpu() for a in self.factor], "shape": tuple(self.shape),
+                "sign": None if self.sign is None else self.sign.cpu()}
+
+    @classmethod
+    def from_state(cls, state: Mapping[str, Any]) -> FullGaussian:
+        """The law saved by :meth:`state` (mean and factor per training condition)."""
+        law = FullGaussian(sign=state["sign"])
+        law.c, law.mean, law.factor, law.shape = state["c"], list(state["mean"]), list(state["factor"]), tuple(state["shape"])
+        return law
 
     @torch.no_grad()
     def moments(self, c: float) -> tuple[torch.Tensor, torch.Tensor]:

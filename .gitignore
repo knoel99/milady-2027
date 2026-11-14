@@ -53,3 +53,4 @@ research/gpu-out/
 # Model weights of E4 (E4_SAVE_MODELS=1): released as files, never committed
 experiments/results/**/e4_model*.pt
 experiments/results/e4_model*.pt
+experiments/release_models/

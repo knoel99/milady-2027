@@ -1,191 +1,234 @@
-"""E4 release - data in the MFF format, catalogue of the data set and of the cited models, checksums.
+"""E4 release - assemble the folder of a release: data in the MFF format, model files, catalogue, checksums, notes.
 
-    python3 experiments/e4_release.py            # writes research/release/
+    python3 experiments/e4_release.py --mff DIR --npz DIR --run DIR --models DIR --out DIR [--url URL] [--repo-dir DIR]
 
-What it does, from the root of the repository:
+Inputs (all written by ``experiments/e4_release_build.sh``, on CPU):
 
-1. checks the MFF files of ``experiments/data_e4_mff`` (written by ``python -m milady.data.convert e4``; they are
-   converted first if absent) with the full validation of the format, and records their size and SHA-256;
-2. writes a small sample file (one held-out η, 2 trajectories × 25 snapshots) that fits in the repository;
-3. builds a catalogue (``milady.catalog``, SQLite): the campaign ``e4_mhd3d``, its 11 simulations and files, the data
-   set ``e4_mhd3d`` 1.0 with its splits, and the four laws cited by the report (G0, G1, W9, W16) for the five seeds,
-   with their evaluations at the held-out η read from the committed result files;
-4. writes ``manifest.json``, ``SHA256SUMS``, ``catalog.json`` (a readable export of the catalogue) and ``README.md``.
+- ``--mff``: the 11 MFF files of the data (``python -m milady.data.convert e4``); ``--npz``: their source snapshots;
+- ``--run``: the result files ``e4_mhd3d_s<seed>.json`` of the groups D and G trained and evaluated on these data, and the
+  weights ``e4_model_W9_skip_sym_s<seed>.pt`` (``E4_SAVE_MODELS=1``);
+- ``--models``: the parameter files of ``experiments/e4_release_models.py`` (latent space, G0, G1, maps of W16).
 
-The large files stay where they are (git-ignored); the manifest gives their path and size. The weights of the trained
-models of the cited runs were not kept (the GPU pods are deleted after each job): the catalogue records how to regenerate
-them. When ``experiments/results/replications/e4_release_cpu`` holds the model W9 retrained on the released data set on the
-CPU of the session (``e4_model_W9_skip_sym_s<seed>.pt`` with the result files of the same run), these weights are
-registered as separate models, with their own evaluations, and listed in the manifest.
+Output ``--out``, the assets of the release: the data files, the model files, a sample of the data, ``catalog.sqlite`` and
+``catalog.json`` (``milady.catalog``: campaign, simulations, files, data set ``e4_mhd3d`` 1.0 with its splits; the models
+released with their file, hyperparameters, commit, data set and evaluations; and, as records without files, the models of
+the runs cited by the report with the evaluations of the committed result files), ``manifest.json``, ``SHA256SUMS`` and
+``README.md``. ``--url`` is the address where the assets are published: it is written in the catalogue and in the notes.
+``--repo-dir`` receives a copy of the small files (notes, manifest, checksums, catalogue export) to commit.
 """
 from __future__ import annotations
 
 import argparse
 import json
+import os
+import shutil
 import sys
 from pathlib import Path
 
 import numpy as np
+from sqlalchemy import text
 
 ROOT = Path(__file__).resolve().parent.parent
 sys.path.insert(0, str(ROOT / "src"))
+sys.path.insert(0, str(ROOT / "experiments"))
 
+import e4_release_example as R  # noqa: E402
 from milady import git_commit  # noqa: E402
 from milady.catalog.api import Catalog  # noqa: E402
 from milady.data import convert  # noqa: E402
 from milady.data import format as mff  # noqa: E402
 
 RES = ROOT / "experiments" / "results"
-NOTE = ("Realisation generated in the container of the pilot session (Intel CPU) by experiments/e4_data.py with seed "
-        "offset 0. The solver is chaotic and its float32 trajectories differ between processor types: this is another "
-        "draw of the same law than the data regenerated on the GPU pods (AMD CPUs) for the results of the report.")
 SAMPLE_ETA, SAMPLE_TRAJ, SAMPLE_T = "0.04899", 2, 25
 METRICS = ("ed_ratio", "err_Eb_rel", "balance_residual_total", "balance_residual_magnetic", "prod_mean_over_d",
            "prod_fluct_over_d", "spec_err_b_l2", "hel_m_err_rel", "null_count_err_rel", "div_rel_b_max",
            "restart_drift_eb", "hc_sign_asym")
-CPU_RUN = "e4_release_cpu"            # W9 retrained on the released data set, on CPU (weights kept)
-JOB = "python3 tools/runpod_job.py run --hours 1.9 --outputs experiments/results/replications/{run} -- env E4_SAME_DATA=1 E4_SAVE_MODELS=1 bash experiments/e4_gpu_job.sh full '0 1 2 3 4' {run} {groups}"
-#: law → (variant in the result files, run under results/replications, groups of the job, architecture, constraint, weights)
-MODELS = {
-    "G0": ("G0_gaussian_modes", "e4_nongauss", "D,E,G,N", "Gaussian law, one 8 × 8 covariance per Fourier mode, interpolated in η",
-           "vector potentials (zero divergence by design); B → −B symmetry of the covariance",
-           "closed form: milady.train.constraints.ModewiseGaussian(sign=…).fit(x_train, c_train), refitted from the data set in under 1 s"),
-    "G1": ("G1_gaussian_full", "e4_recolour", "G,T,R", "Gaussian law, full 5320 × 5320 sample covariance per training η, interpolated in η",
-           "vector potentials (zero divergence by design); B → −B symmetry of the covariance",
-           "closed form: milady.train.constraints.FullGaussian(sign=…).fit(x_train, c_train), refitted from the data set in under 1 s"),
-    "W9": ("W9R_skip_sym", "e4_recolour", "G,T,R", "conditional flow matching on the potentials: ResMLP (width 512, depth 4) plus an explicit mode-wise affine term",
-           "vector potentials (zero divergence by design); velocity field equivariant under B → −B",
-           "not kept (the pod of the job was deleted); retrained by the job below in about 1 min per seed on a GPU"),
-    "W16": ("W16_recoloured_full", "e4_recolour", "G,T,R", "samples of W9 sent through the linear map that gives them the mean and covariance of G1 (estimated on 131 072 samples per η)",
-            "vector potentials; first two moments of the law imposed at sampling time",
-            "no weights of its own: W9 plus the map, recomputed at sampling time"),
-}
+ARCH = {"G0": "Gaussian law, one mean and one 8 × 8 covariance per Fourier mode at each training η, interpolated linearly in the condition",
+        "G1": "Gaussian law, mean and full sample covariance of the 5320 latent coordinates at each training η, interpolated linearly in the condition",
+        "W9": "conditional flow matching on the potentials: ResMLP (width 512, depth 4) plus an explicit mode-wise affine term; Heun sampler, 50 steps",
+        "W16": "samples of W9 sent through the linear map x → mean_G1 + (x − mean_W9) A that gives them the mean and covariance of G1"}
+CONSTRAINT = {"G0": "vector potentials (zero divergence by design); law symmetric under B → −B",
+              "G1": "vector potentials (zero divergence by design); law symmetric under B → −B",
+              "W9": "vector potentials (zero divergence by design); velocity field equivariant under B → −B",
+              "W16": "vector potentials; first two moments of the law imposed at sampling time"}
+#: law → (variant in the committed result files of the report, run under results/replications)
+CITED = {"G0": ("G0_gaussian_modes", "e4_nongauss"), "G1": ("G1_gaussian_full", "e4_recolour"),
+         "W9": ("W9R_skip_sym", "e4_recolour"), "W16": ("W16_recoloured_full", "e4_recolour")}
+#: law → variant in the result files of the release build
+BUILT = {"G0": "G0_gaussian_modes", "G1": "G1_gaussian_full", "W9": "W9_skip_sym"}
 
 
-def data_files(mff_dir: Path, npz_dir: Path) -> list[dict]:
-    if not list(mff_dir.glob("e4_eta*.h5")):
-        convert.convert_e4(npz_dir, mff_dir, extra_meta={"note": NOTE})
-    ref = json.loads((RES / "e4_reference.json").read_text())["values"]
+def _place(src: Path, dst: Path) -> None:
+    """Hard link when the two folders share a file system (the large files are not duplicated), copy otherwise."""
+    try:
+        os.link(src, dst)
+    except OSError:
+        shutil.copy2(src, dst)
+
+
+def data_files(mff_dir: Path, out: Path, note: str) -> list[dict]:
     rows = []
-    for path in sorted(mff_dir.glob("e4_eta*.h5"), reverse=True):
+    for src in sorted(mff_dir.glob("e4_eta*.h5"), reverse=True):
+        path = out / src.name
+        if not path.exists():
+            _place(src, path)
         errs = mff.validate(path, full_scan=True)
         d = mff.read_mff(path, fields=[])
-        eb = np.asarray(d["diagnostics"]["magnetic_energy"])[:, np.asarray(d["diagnostics"]["time"]) > 200 + 1e-9].mean()
-        eta = float(d["params"]["eta"])
-        pod = next((v["E_B"] for e, v in ref.items() if abs(float(e) - eta) < 1e-4), None)
         g = mff.grid_info(path)
         with mff.open_mff(path) as f:
             n_traj = int(f.attrs["n_trajectories"])
-        rows.append({"file": path.name, "path": str(path.relative_to(ROOT)), "size_bytes": path.stat().st_size,
-                     "sha256": mff.sha256_file(path), "uuid": d["meta"]["uuid"], "eta": eta, "Rm": d["params"]["Rm"],
-                     "split": d["meta"]["split"], "n_trajectories": n_traj, "n_t": g.get("n_t"),
-                     "t_start": g.get("t_start"), "t_end": g.get("t_end"), "valid_full_scan": not errs, "problems": errs,
-                     "source": d["meta"]["source"], "source_sha256": d["meta"]["source_sha256"],
+        eb = np.asarray(d["diagnostics"]["magnetic_energy"])[:, np.asarray(d["diagnostics"]["time"]) > 200 + 1e-9].mean()
+        rows.append({"file": path.name, "kind": "data", "format": "MFF 1.0 (HDF5, layout of The Well)", "size_bytes": path.stat().st_size,
+                     "sha256": mff.sha256_file(path), "uuid": d["meta"]["uuid"], "eta": float(d["params"]["eta"]), "Rm": d["params"]["Rm"],
+                     "split": d["meta"]["split"], "n_trajectories": n_traj, "n_t": g.get("n_t"), "t_start": g.get("t_start"),
+                     "t_end": g.get("t_end"), "valid_full_scan": not errs, "problems": errs, "source_sha256": d["meta"]["source_sha256"],
                      "git_commit": d["meta"].get("git_commit"), "latent_roundtrip": d["meta"]["latent"]["roundtrip_max_abs_over_rms"],
-                     "max_abs_divergence": d["meta"]["max_abs_divergence"], "E_B_mean": float(eb),
-                     "E_B_of_the_pod_realisation": pod, "E_B_gap_to_the_pod_realisation": None if pod is None else float(eb / pod - 1)})
+                     "max_abs_divergence": d["meta"]["max_abs_divergence"], "E_B_mean": float(eb)})
+    assert len(rows) == 11, f"{len(rows)} data files in {mff_dir}, expected 11"
     return rows
 
 
-def sample(npz_dir: Path, out: Path) -> dict:
+def model_files(run: Path, models: Path, out: Path) -> list[dict]:
+    rows = []
+    for src, kind, what in ([(models / R.SPACE, "latent space", "latent space of the models and its normalisation (state of FourierPotentialSpace)"),
+                             (models / R.GAUSS.format(law="G0"), "G0", "parameters of the Gaussian law G0 (condition grid, mean and covariance per mode)"),
+                             (models / R.GAUSS.format(law="G1"), "G1", "parameters of the Gaussian law G1 (condition grid, mean and factor A with AᵀA the covariance)")]
+                            + [(run / R.WEIGHTS.format(seed=s), "W9", f"weights of the flow-matching model W9, seed {s}") for s in range(5)]
+                            + [(models / R.MAP.format(seed=s), "W16", f"linear map of W16 at the held-out η for W9 of seed {s}") for s in range(5)]):
+        if not src.exists():
+            continue
+        path = out / src.name
+        if not path.exists():
+            _place(src, path)
+        rows.append({"file": path.name, "kind": kind, "format": "PyTorch (torch.save of a dictionary of tensors)", "content": what,
+                     "size_bytes": path.stat().st_size, "sha256": mff.sha256_file(path)})
+    return rows
+
+
+def sample(npz_dir: Path, out: Path, note: str) -> dict:
     path = out / f"e4_sample_eta{SAMPLE_ETA}.h5"
     if not (path.exists() and not mff.validate(path)):
         convert.convert_e4_file(npz_dir / f"eta_{SAMPLE_ETA}.npz", path, split="test", max_members=SAMPLE_TRAJ, max_snapshots=SAMPLE_T,
-                                extra_meta={"note": NOTE + f" Sample: the first {SAMPLE_TRAJ} trajectories and {SAMPLE_T} snapshots."})
-    return {"file": path.name, "path": str(path.relative_to(ROOT)), "size_bytes": path.stat().st_size, "sha256": mff.sha256_file(path),
-            "valid_full_scan": not mff.validate(path, full_scan=True), "eta": float(SAMPLE_ETA), "n_trajectories": SAMPLE_TRAJ, "n_t": SAMPLE_T}
+                                extra_meta={"note": note + f" Sample: the first {SAMPLE_TRAJ} trajectories and {SAMPLE_T} snapshots."})
+    return {"file": path.name, "kind": "data sample", "format": "MFF 1.0 (HDF5)", "size_bytes": path.stat().st_size, "sha256": mff.sha256_file(path),
+            "content": f"η = {SAMPLE_ETA}, {SAMPLE_TRAJ} trajectories × {SAMPLE_T} snapshots"}
 
 
-def catalogue(mff_dir: Path, npz_dir: Path, out: Path) -> dict:
+def _evals(cat: Catalog, mid: str, rows: list[dict], cfg: dict, seed: int, details: dict) -> int:
+    n = 0
+    for row in rows:
+        for m in METRICS:
+            if isinstance(row.get(m), int | float):
+                cat.add_evaluation(mid, {"eta": row["eta"], "nu": cfg["nu"], "kf": cfg["kf"]}, m, row[m], int(row["n"]), seed, details=details)
+                n += 1
+    return n
+
+
+def _w16(models: Path) -> dict | None:
+    """Evaluations of W16 written per seed by e4_release_models.py, merged."""
+    parts = [json.loads(p.read_text()) for p in sorted(models.glob("e4_release_w16_s*.json"))]
+    if not parts:
+        return None
+    return {"config": {k: v for k, v in parts[0]["config"].items() if k != "seed"}, "evaluation": {str(p["config"]["seed"]): p["evaluation"] for p in parts}}
+
+
+def catalogue(out: Path, run: Path, models: Path, files: list[dict], url: str) -> dict:
     db = out / "catalog.sqlite"
     db.unlink(missing_ok=True)
     cat = Catalog(f"sqlite:///{db}")
-    recs = convert.convert_e4(npz_dir, mff_dir, catalog=cat, verbose=False)
-    assert all(r.get("reused") for r in recs), "the MFF files were rewritten: run the script again"
-    ds = cat.dataset_files("e4_mhd3d", "1.0")
-    models = []
-    for law, (variant, run, groups, arch, constraint, weights) in MODELS.items():
-        for seed in range(5):
-            f = RES / "replications" / run / f"e4_mhd3d_s{seed}.json"
-            r = json.loads(f.read_text())
-            hyper = {"law": law, "variant": variant, "seed": seed, "config": r["config"], "times": r["times"].get(variant, {}),
-                     "result_file": str(f.relative_to(ROOT)), "weights": weights,
-                     "regenerate": JOB.format(run=run, groups=groups),
-                     "training_data": "E4 data of the main run as regenerated on the pod of the job (not stored): another realisation "
-                                      "of the law of the data set e4_mhd3d 1.0 (same script and seeds, other processor type)"}
-            mid = cat.register_model(f"e4/{law}/seed{seed}", arch, constraint, hyper, dataset_id=None, checkpoint_uri=None, git_commit=git_commit())
-            n_eval = 0
-            for row in r["evaluation"][variant]["test"]:
-                for m in METRICS:
-                    if isinstance(row.get(m), int | float):
-                        cat.add_evaluation(mid, {"eta": row["eta"], "nu": r["config"]["nu"], "kf": r["config"]["kf"]}, m, row[m], int(row["n"]), seed,
-                                           details={"run": run, "variant": variant})
-                        n_eval += 1
-            models.append({"id": mid, "name": f"e4/{law}/seed{seed}", "law": law, "variant": variant, "run": run, "seed": seed,
-                           "architecture": arch, "constraint_mechanism": constraint, "weights": weights,
-                           "regenerate": hyper["regenerate"], "result_file": hyper["result_file"], "evaluations": n_eval})
-    cpu = RES / "replications" / CPU_RUN
-    ds_id = ds[0]["dataset_id"] if ds else None
-    for seed in range(5):
-        w, f = cpu / f"e4_model_W9_skip_sym_s{seed}.pt", cpu / f"e4_mhd3d_s{seed}_D.json"
-        if not (w.exists() and f.exists()):
+    members = []
+    for f in files:
+        ids = cat.ingest_mff((out / f["file"]).resolve().as_uri(), campaign="e4_mhd3d")
+        members.append((ids["file_id"], f["split"]))
+    cat.create_campaign("e4_mhd3d", config_yaml="source: experiments/e4_data.py\n",
+                        description="E4: saturated 3D MHD dynamo, constant ABC forcing at kf = 2, ν = 0.05 (Re = 10), 11 magnetic "
+                                    "diffusivities η from 0.08 to 0.03, 16³ grid, 24 trajectories × 100 snapshots per η.")
+    ds_id = cat.register_dataset("e4_mhd3d", "1.0", members, description="E4: snapshots of a saturated 3D MHD dynamo on a 16³ grid (ABC forcing, "
+                                 "Re = 10), conditioned on η: 6 training, 2 validation and 3 held-out test values.")
+    commit, sha = git_commit(), {f["file"]: f["sha256"] for f in model_files(run, models, out)}
+    out_models = []
+    w16 = _w16(models)
+    for seed in range(5):                                                    # the models of this release, with their files
+        f = run / f"e4_mhd3d_s{seed}.json"
+        if not f.exists():
             continue
         r = json.loads(f.read_text())
-        hyper = {"law": "W9-released", "variant": "W9_skip_sym", "seed": seed, "config": r["config"], "times": r["times"].get("W9_skip_sym", {}),
-                 "result_file": str(f.relative_to(ROOT)), "weights_sha256": mff.sha256_file(w), "weights_size_bytes": w.stat().st_size,
-                 "reload": f"python3 experiments/e4_release_example.py --weights {w.relative_to(ROOT)}",
-                 "training_data": "data set e4_mhd3d 1.0 (the released files), trained on the CPU of the session container"}
-        mid = cat.register_model(f"e4/W9-released/seed{seed}", MODELS["W9"][3], MODELS["W9"][4], hyper, dataset_id=ds_id,
-                                 checkpoint_uri=w.resolve().as_uri(), git_commit=git_commit())
-        n_eval = 0
-        for row in r["evaluation"]["W9_skip_sym"]["test"]:
-            for m in METRICS:
-                if isinstance(row.get(m), int | float):
-                    cat.add_evaluation(mid, {"eta": row["eta"], "nu": r["config"]["nu"], "kf": r["config"]["kf"]}, m, row[m], int(row["n"]), seed,
-                                       details={"run": CPU_RUN, "variant": "W9_skip_sym"})
-                    n_eval += 1
-        models.append({"id": mid, "name": f"e4/W9-released/seed{seed}", "law": "W9-released", "variant": "W9_skip_sym", "run": CPU_RUN, "seed": seed,
-                       "architecture": MODELS["W9"][3], "constraint_mechanism": MODELS["W9"][4],
-                       "weights": str(w.relative_to(ROOT)), "weights_sha256": hyper["weights_sha256"], "weights_size_bytes": hyper["weights_size_bytes"],
-                       "regenerate": f"E4_SAVE_MODELS=1 python3 experiments/e4_mhd3d.py --seed {seed} --group D --device cpu", "result_file": hyper["result_file"],
-                       "evaluations": n_eval})
+        for law in ("G0", "G1", "W9", "W16"):
+            name = {"G0": R.GAUSS.format(law="G0"), "G1": R.GAUSS.format(law="G1"), "W9": R.WEIGHTS.format(seed=seed), "W16": R.MAP.format(seed=seed)}[law]
+            if name not in sha:
+                continue
+            need = [R.SPACE, name] + ([R.WEIGHTS.format(seed=seed)] if law == "W16" else [])
+            hyper = {"law": law, "seed": seed, "config": r["config"], "files": {n: sha.get(n) for n in need}, "dataset": "e4_mhd3d 1.0 (this release)",
+                     "reload": f"python3 experiments/e4_release_example.py --dir e4_release --download --law {law} --seed {seed}",
+                     "seed_meaning": "seed of the draws (one parameter file for the five)" if law in ("G0", "G1") else "seed of the training of W9"}
+            if law == "W16":
+                rows, hyper["n_recolour"] = (w16["evaluation"].get(str(seed), []), w16["config"]["n_recolour"]) if w16 else ([], None)
+                hyper["evaluation"] = "512 samples per held-out η outside the estimate of the map; no restart in the solver"
+            else:
+                rows, hyper["times"] = r["evaluation"].get(BUILT[law], {}).get("test", []), r["times"].get(BUILT[law], {})
+            mid = cat.register_model(f"e4/released/{law}/seed{seed}", ARCH[law], CONSTRAINT[law], hyper, dataset_id=ds_id,
+                                     checkpoint_uri=f"{url}/{name}", git_commit=commit)
+            n_eval = _evals(cat, mid, rows, r["config"], seed, {"run": "release build", "law": law})
+            out_models.append({"id": mid, "name": f"e4/released/{law}/seed{seed}", "law": law, "seed": seed, "status": "released", "file": name,
+                               "sha256": sha[name], "url": f"{url}/{name}", "git_commit": commit, "dataset": "e4_mhd3d 1.0", "evaluations": n_eval})
+    for law, (variant, cited_run) in CITED.items():                          # the runs cited by the report: records without files
+        for seed in range(5):
+            f = RES / "replications" / cited_run / f"e4_mhd3d_s{seed}.json"
+            if not f.exists():
+                continue
+            r = json.loads(f.read_text())
+            hyper = {"law": law, "variant": variant, "seed": seed, "config": r["config"], "times": r["times"].get(variant, {}),
+                     "result_file": str(f.relative_to(ROOT)),
+                     "weights": "not kept: the GPU pod of the run was deleted with its files; the released models are the same code retrained on the released data",
+                     "training_data": "E4 data as regenerated on the pod of the run (not stored): another draw of the law of the data set e4_mhd3d 1.0"}
+            mid = cat.register_model(f"e4/cited/{law}/seed{seed}", ARCH[law], CONSTRAINT[law], hyper, dataset_id=None, checkpoint_uri=None, git_commit="")
+            n_eval = _evals(cat, mid, r["evaluation"][variant]["test"], r["config"], seed, {"run": cited_run, "variant": variant})
+            out_models.append({"id": mid, "name": f"e4/cited/{law}/seed{seed}", "law": law, "seed": seed, "status": "cited by the report, no file",
+                               "result_file": hyper["result_file"], "evaluations": n_eval})
     summary: dict[str, dict] = {}
-    for law in [*MODELS, "W9-released"]:                                                   # seed means per law, metric and held-out η
-        per: dict[tuple[str, float], list[float]] = {}
-        for m in (x for x in models if x["law"] == law):
-            for row in cat.eval_summary(m["id"]):
-                per.setdefault((row["metric"], row["parameters"]["eta"]), []).append(row["mean"])
-        summary[law] = {f"{metric} @ eta={eta:g}": {"mean_over_seeds": float(np.mean(v)), "sd_over_seeds": float(np.std(v, ddof=1)), "seeds": len(v)}
-                        for (metric, eta), v in sorted(per.items())}
-    export = {"campaigns": cat.list_campaigns(),
-              "dataset": {"name": "e4_mhd3d", "version": "1.0",
-                          "files": [{k: r[k] for k in ("id", "uri", "sha256", "size_bytes", "split", "simulation_id") if k in r} for r in ds]},
-              "simulations": [{k: s.get(k) for k in ("id", "code", "parameters", "grid", "status", "git_commit")}
-                              for s in cat.query_simulations(campaign="e4_mhd3d")],
-              "models": models, "evaluation_summary": {k: v for k, v in summary.items() if v}}
-    (out / "catalog.json").write_text(json.dumps(export, indent=1, ensure_ascii=False, default=str) + "\n", encoding="utf-8")
+    for status in ("released", "cited"):
+        for law in ARCH:
+            per: dict[tuple[str, float], list[float]] = {}
+            for m in (x for x in out_models if x["name"].startswith(f"e4/{status}/{law}/")):
+                for row in cat.eval_summary(m["id"]):
+                    per.setdefault((row["metric"], row["parameters"]["eta"]), []).append(row["mean"])
+            summary[f"{status}/{law}"] = {f"{metric} @ eta={eta:g}": {"mean_over_seeds": float(np.mean(v)), "sd_over_seeds": float(np.std(v, ddof=1)) if len(v) > 1 else None,
+                                                                    "seeds": len(v)} for (metric, eta), v in sorted(per.items())}
+    sims = [{k: s.get(k) for k in ("id", "code", "parameters", "grid", "status", "git_commit")} for s in cat.query_simulations(campaign="e4_mhd3d")]
+    ds = cat.dataset_files("e4_mhd3d", "1.0")
     cat.close()
+    with Catalog(f"sqlite:///{db}").engine.begin() as conn:               # the files are published at `url`, not where they were built
+        local = out.resolve().as_uri()
+        conn.execute(text("UPDATE file SET uri = replace(uri, :a, :b)"), {"a": local, "b": url})
+    export = {"dataset": {"name": "e4_mhd3d", "version": "1.0", "id": ds_id,
+                          "files": [{"id": r["id"], "uri": r["uri"].replace(out.resolve().as_uri(), url), "sha256": r["sha256"], "size_bytes": r["size_bytes"],
+                                     "split": r["split"], "simulation_id": r["simulation_id"]} for r in ds]},
+              "simulations": sims, "models": out_models, "evaluation_summary": {k: v for k, v in summary.items() if v}}
+    (out / "catalog.json").write_text(json.dumps(export, indent=1, ensure_ascii=False, default=str) + "\n", encoding="utf-8")
     return export
 
 
-def readme(man: dict) -> str:
-    files, s = man["data_files"], man["sample"]
+def _cell(ev: dict, key: str, metric: str) -> str:
+    vals = [v["mean_over_seeds"] for k, v in ev.get(key, {}).items() if k.startswith(metric + " @")]
+    return ", ".join(f"{x:.3g}" for x in vals) if vals else "not evaluated"
+
+
+def readme(man: dict, export: dict, url: str) -> str:
+    files, mods, ev = man["data_files"], man["model_files"], export["evaluation_summary"]
     total = sum(f["size_bytes"] for f in files)
-    gaps = [abs(f["E_B_gap_to_the_pod_realisation"]) for f in files if f["E_B_gap_to_the_pod_realisation"] is not None]
-    rows = "\n".join(f"| `{f['file']}` | {f['eta']:.5f} | {f['Rm']:.2f} | {f['split']} | {f['size_bytes'] / 2**20:.1f} | `{f['sha256'][:16]}…` |" for f in files)
-    return f"""# E4 release 1.0: data in the MFF format, catalogue, cited models
+    rows = "\n".join(f"| [`{f['file']}`]({url}/{f['file']}) | {f['eta']:.5f} | {f['Rm']:.2f} | {f['split']} | {f['size_bytes'] / 2**20:.1f} | `{f['sha256'][:16]}…` |" for f in files)
+    mrows = "\n".join(f"| [`{f['file']}`]({url}/{f['file']}) | {f['content']} | {f['size_bytes'] / 2**20:.1f} | `{f['sha256'][:16]}…` |" for f in mods)
+    metrics = (("energy distance over the noise floor", "ed_ratio"), ("relative error of the magnetic energy", "err_Eb_rel"),
+               ("third-order part of the production over the dissipation", "prod_fluct_over_d"), ("residual of the energy balance", "balance_residual_total"),
+               ("null-count error", "null_count_err_rel"), ("restart drift of the magnetic energy", "restart_drift_eb"))
+    cmp_rows = "\n".join(f"| {law} | {name} | {_cell(ev, 'cited/' + law, m)} | {_cell(ev, 'released/' + law, m)} |" for law in ARCH for name, m in metrics)
+    n_rec = man.get("n_recolour")
+    return f"""# E4 release 1.0: data in the MFF format, model files, catalogue
 
-Generated by `experiments/e4_release.py` (do not edit; run the script again). Commit of the conversion code: `{files[0]['git_commit']}`.
+Generated by `experiments/e4_release.py` (do not edit; run the build again). Built from commit `{man['git_commit']}` by
+`experiments/e4_release_build.sh` on {man['host']}: {man['build']}. Everything was computed on CPU; no file comes from a GPU run.
 
-## What is here
-
-| File | Content | In git |
-|---|---|---|
-| `manifest.json` | every file of the release with its path, size, SHA-256, identifier and checks | yes |
-| `SHA256SUMS` | the same checksums in the format of `sha256sum -c` | yes |
-| `{s['file']}` | sample of the data set: η = {s['eta']}, {s['n_trajectories']} trajectories × {s['n_t']} snapshots, {s['size_bytes'] / 2**20:.1f} MiB | yes |
-| `catalog.sqlite`, `catalog.json` | catalogue (`milady.catalog`): campaign, 11 simulations and files, data set `e4_mhd3d` 1.0, 20 models with their evaluations; `catalog.json` is a readable export | yes |
-| `experiments/data_e4_mff/e4_eta<η>.h5` | the data set: 11 files, {total / 2**30:.2f} GiB in all | no: in the container of the session |
+All files: {url} (checksums: [`SHA256SUMS`]({url}/SHA256SUMS); list with sizes: [`manifest.json`]({url}/manifest.json)).
 
 ## The data set `e4_mhd3d` 1.0
 
@@ -193,8 +236,8 @@ Saturated 3D MHD dynamo in a periodic box, constant ABC force at $k_f = 2$, ν =
 $|m_i| \\le 5$ of the solver), 11 magnetic diffusivities η from 0.08 to 0.03 (Rm = 6.25 to 16.7): 6 training, 2 validation and
 3 held-out test values. Each file holds {files[0]['n_trajectories']} trajectories × {files[0]['n_t']} snapshots (t = {files[0]['t_start']:g} to {files[0]['t_end']:g}, one every 2 time units, after
 a transient of 200), the fields `velocity` and `magnetic_field` in float32, and the time series of the solver diagnostics
-(energies, injection, dissipations, helicities; transient included). Format: MFF 1.0 (`docs/specs/data-format.md`),
-readable as a data set of The Well. Every file passes `validate(..., full_scan=True)`: {sum(f['valid_full_scan'] for f in files)} of {len(files)}.
+(energies, injection, dissipations, helicities; transient included). Format: MFF 1.0 (`docs/specs/data-format.md`), an HDF5
+file with the layout of The Well. Every file passes `validate(..., full_scan=True)`: {sum(f['valid_full_scan'] for f in files)} of {len(files)}. Total: {total / 2**30:.2f} GiB.
 
 | File | η | Rm | split | MiB | SHA-256 |
 |---|---|---|---|---|---|
@@ -202,48 +245,72 @@ readable as a data set of The Well. Every file passes `validate(..., full_scan=T
 
 The fields are band-limited: the potentials on which the models are trained are recovered from the stored fields by
 `milady.data.convert.e4_latents(path)`, within {max(f['latent_roundtrip'] for f in files):.1e} of their root-mean-square value. Largest stored |∇·B|: {max(f['max_abs_divergence']['magnetic_field'] for f in files):.1e}.
+A small sample for a first look: [`{man['sample']['file']}`]({url}/{man['sample']['file']}) ({man['sample']['content']}, {man['sample']['size_bytes'] / 2**20:.1f} MiB).
 
-**Which realisation.** These files are the data generated in the container of the session. The results of the report were
-computed on data regenerated on each GPU pod from the same script and seeds; the solver is chaotic and its float32
-trajectories differ between processor types, so the two are different draws of the same law. The mean magnetic energy of these
-files differs from that of the pod realisation (`experiments/results/e4_reference.json`) by at most {max(gaps) * 100:.1f} % over the 11 values of η.
+**Which realisation.** The solver is chaotic and its float32 trajectories differ between processor types. These files were
+generated by this build from the committed script and seeds (`experiments/e4_data.py`); the results of the report were computed
+on data regenerated the same way on each GPU pod. They are different draws of the same law.
 
-## The cited models
+## The models
 
-Four laws × five seeds are in the catalogue, each with its evaluations at the three held-out η (source: the committed result
-files named in `catalog.json`):
+| File | Content | MiB | SHA-256 |
+|---|---|---|---|
+{mrows}
 
-| Law | What it is | Weights |
-|---|---|---|
-""" + "\n".join(f"| {law} | {v[3]} | {v[5]} |" for law, v in MODELS.items()) + f"""
+**What these models are.** The weights of the runs cited by the report were not kept: each GPU pod was deleted with its files at
+the end of its job. The models here are the same code, seeds, widths and iterations **retrained by this build on the data of this
+release, on CPU**, and evaluated by the same pipeline (`experiments/e4_mhd3d.py`, groups D and G) against the reference
+statistics of these data. They are other trainings on another draw of the data than the cited runs: their numbers are in the
+right column below, the numbers of the report in the left one. The map of W16 is estimated here on {n_rec} samples of W9 per
+η (131 072 in the report, on a GPU), and W16 is evaluated on 512 samples outside that estimate, without the restart in the solver.
 
-{weights_section(man)}
+| Law | Metric at the held-out η = 0.0331, 0.0490, 0.0725 (mean over the five seeds) | cited by the report (GPU runs) | released (this build) |
+|---|---|---|---|
+{cmp_rows}
+
+## The catalogue
+
+[`catalog.sqlite`]({url}/catalog.sqlite) (`milady.catalog`, SQLite; [`catalog.json`]({url}/catalog.json) is a readable export): the campaign
+`e4_mhd3d` with its 11 simulations and files, the data set `e4_mhd3d` 1.0 with its splits, and {len(export['models'])} model entries: the released
+models (`e4/released/<law>/seed<k>`: file address, SHA-256, hyperparameters, commit, data set, evaluations) and, as records
+without files, the models of the cited runs (`e4/cited/<law>/seed<k>`, with the evaluations of the committed result files).
+
+```bash
+PYTHONPATH=src python3 -m milady.catalog --url sqlite:///catalog.sqlite summary
+```
+
 ## Reload a law and draw samples
 
-`experiments/e4_release_example.py` reads the data set, rebuilds the latent space from the training files, fits G0 and G1,
-reloads W9 from a weight file, recolours it into W16, draws fields (u, B) on the 16³ grid at one η and prints their mean
-energies against those of the data (about one minute on a CPU):
+From a checkout of the repository at the commit above (dependencies: `infra/env/requirements.txt`), `--download` fetches the
+files that are needed and checks their SHA-256:
 
 ```bash
-{reload_cmd(man)}
+python3 experiments/e4_release_example.py --dir e4_release --download --law G1 --eta 0.04899 --n 256
 ```
-
-## Upload
-
-The session cannot create a GitHub release. From a checkout that holds the files (this container), with the `gh` command
-authenticated:
 
 ```bash
-gh release create e4-data-v1.0 --repo knoel99/milady-2027 --target claude/modest-newton-zx8fqs --title "E4 data set 1.0 (MFF) and catalogue" --notes-file research/release/README.md experiments/data_e4_mff/e4_eta*.h5{' experiments/results/replications/' + CPU_RUN + '/e4_model_W9_skip_sym_s*.pt' if man.get('model_files') else ''} research/release/SHA256SUMS research/release/manifest.json research/release/catalog.json research/release/catalog.sqlite
+python3 experiments/e4_release_example.py --dir e4_release --download --law W16 --seed 0 --eta 0.04899 --n 256 --out samples.h5
 ```
 
-To an object store instead, with the catalogue registered at the destination (`MILADY_DB_URL` set):
+In Python:
 
-```bash
-PYTHONPATH=src python3 -m milady.data.convert e4 experiments/data_e4 experiments/data_e4_mff --store s3://milady-data --catalog
+```python
+import sys; sys.path[:0] = ["src", "experiments"]
+import e4_release_example as R
+for name in (R.SPACE, R.GAUSS.format(law="G1"), R.WEIGHTS.format(seed=0)):
+    R.fetch("e4_release", name)                       # download and check the SHA-256
+space = R.load_space("e4_release")                    # latent space and its normalisation
+g1 = R.load_gaussian("e4_release", "G1")              # Gaussian law with the full covariance
+w9 = R.load_w9("e4_release", space, seed=0)           # flow-matching model
+z = R.sample_w9(w9, space, eta=0.04899, n=64)         # normalised latents (64, 665, 8)
+fields = R.to_fields(space, z)                        # "velocity", "magnetic_field": (64, 16, 16, 16, 3)
+z1 = g1.sample(R.cn(0.04899), 64)                     # the same for the Gaussian law
 ```
 
-Check after download:
+Read a data file, and train on it (`milady.train`): `milady.data.read_mff(path)` returns the fields, coordinates, parameters and
+diagnostics; `milady.data.convert.e4_latents(path)` the training latents; `experiments/e4_mhd3d.py` is the training script.
+
+## Check a download
 
 ```bash
 sha256sum -c SHA256SUMS
@@ -252,84 +319,51 @@ sha256sum -c SHA256SUMS
 ```bash
 PYTHONPATH=src python3 -m milady.data.convert validate --full e4_eta*.h5
 ```
-
-The container is temporary: if it is reclaimed before the upload, the files are regenerated by `python3 experiments/e4_data.py
---jobs 4` (about 30 min of CPU) and `python -m milady.data.convert e4 experiments/data_e4 experiments/data_e4_mff` (2 min);
-the checksums then differ (new identifiers and dates, and another draw on another processor type).
 """
-
-
-def weights_section(man: dict) -> str:
-    ws = man.get("model_files", [])
-    job = f"```bash\n{JOB.format(run='e4_weights', groups='D')}\n```\n"
-    if not ws:
-        return ("The weights of W9 were not kept. One GPU job writes them (five seeds, about 30 min, under 1 USD at the prices of the pilot;\n"
-                "not run, the pilot being closed to new jobs):\n\n" + job)
-    rows = "\n".join(f"| `{w['path']}` | {w['seed']} | {w['size_bytes'] / 2**20:.1f} | `{w['sha256'][:16]}…` |" for w in ws)
-    cmp_ = man.get("released_against_cited", {})
-    lines = "\n".join(f"| {k} | {v['cited']} | {v['released']} |" for k, v in cmp_.items())
-    return f"""**Weights.** The weights of the runs cited by the report were not kept (the GPU pods are deleted after each job). The files below are the
-same model (W9: same code, seeds, iterations and width) **retrained on this data set on the CPU of the session**, with the evaluation
-of the same pipeline against the reference statistics of this realisation (`experiments/results/replications/{CPU_RUN}/`). They are
-another training on another draw of the data than the cited runs: their numbers are those of the table below, not those of the report.
-
-| File (in the container, not in git) | seed | MiB | SHA-256 |
-|---|---|---|---|
-{rows}
-
-| Held-out η, mean over the five seeds | W9 of the report (GPU pods) | W9 released (CPU, this data set) |
-|---|---|---|
-{lines}
-
-The weights of the cited runs themselves can be written by one GPU job (five seeds, about 30 min, under 1 USD at the prices of the
-pilot; not run, the pilot being closed to new jobs):
-
-{job}"""
-
-
-def reload_cmd(man: dict) -> str:
-    ws = man.get("model_files", [])
-    return "python3 experiments/e4_release_example.py --eta 0.04899 --n 256" + (f" --weights {ws[0]['path']}" if ws else "")
 
 
 def main() -> None:
     ap = argparse.ArgumentParser(description=__doc__, formatter_class=argparse.RawDescriptionHelpFormatter)
-    ap.add_argument("--mff", default=str(ROOT / "experiments" / "data_e4_mff"))
-    ap.add_argument("--npz", default=str(ROOT / "experiments" / "data_e4"))
-    ap.add_argument("--out", default=str(ROOT / "research" / "release"))
+    ap.add_argument("--mff", required=True)
+    ap.add_argument("--npz", required=True)
+    ap.add_argument("--run", required=True)
+    ap.add_argument("--models", required=True)
+    ap.add_argument("--out", required=True)
+    ap.add_argument("--url", default=R.RELEASE_URL)
+    ap.add_argument("--host", default="the CPU of a GitHub Actions runner")
+    ap.add_argument("--build", default="data, reference statistics, models and parameter files in one job")
+    ap.add_argument("--repo-dir", default=None)
     a = ap.parse_args()
-    mff_dir, npz_dir, out = Path(a.mff), Path(a.npz), Path(a.out)
+    mff_dir, npz_dir, run, models, out = (Path(x).resolve() for x in (a.mff, a.npz, a.run, a.models, a.out))
     out.mkdir(parents=True, exist_ok=True)
-    man = {"release": "e4-data-v1.0", "dataset": {"name": "e4_mhd3d", "version": "1.0", "format": "MFF 1.0"}, "note": NOTE,
-           "data_files": data_files(mff_dir, npz_dir), "sample": sample(npz_dir, out)}
-    export = catalogue(mff_dir, npz_dir, out)
-    man["catalog"] = {"file": "catalog.sqlite", "export": "catalog.json", "simulations": len(export["simulations"]),
-                      "dataset_files": len(export["dataset"]["files"]), "models": len(export["models"]),
-                      "evaluations": sum(m["evaluations"] for m in export["models"])}
-    man["models"] = [{k: m[k] for k in ("name", "variant", "run", "seed", "weights", "result_file")} for m in export["models"]]
-    man["model_files"] = [{"file": Path(m["weights"]).name, "path": m["weights"], "seed": m["seed"], "size_bytes": m["weights_size_bytes"],
-                           "sha256": m["weights_sha256"]} for m in export["models"] if m["law"] == "W9-released"]
-    if man["model_files"]:
-        ev = export["evaluation_summary"]
-
-        def cell(law: str, metric: str) -> str:
-            vals = [v["mean_over_seeds"] for k, v in ev[law].items() if k.startswith(metric + " @")]
-            return ", ".join(f"{x:.3g}" for x in vals)
-
-        man["released_against_cited"] = {name: {"cited": cell("W9", m), "released": cell("W9-released", m)} for name, m in (
-            ("energy distance over the noise floor (η = 0.0331, 0.0490, 0.0725)", "ed_ratio"), ("relative error of the magnetic energy", "err_Eb_rel"),
-            ("third-order part of the production over the dissipation", "prod_fluct_over_d"), ("residual of the energy balance", "balance_residual_total"),
-            ("null-count error", "null_count_err_rel"), ("restart drift of the magnetic energy", "restart_drift_eb"))}
-    (out / "README.md").write_text(readme(man), encoding="utf-8")
-    small = [out / n for n in ("catalog.json", "catalog.sqlite", man["sample"]["file"])]
-    man["release_files"] = [{"file": p.name, "size_bytes": p.stat().st_size, "sha256": mff.sha256_file(p)} for p in small]
+    note = "Generated by experiments/e4_data.py with seed offset 0 in the build of the E4 release."
+    w16 = _w16(models)
+    man = {"release": "e4-data-v1.0", "url": a.url, "git_commit": git_commit(), "host": a.host, "build": a.build,
+           "dataset": {"name": "e4_mhd3d", "version": "1.0", "format": "MFF 1.0"}, "n_recolour": w16["config"]["n_recolour"] if w16 else None,
+           "data_files": data_files(mff_dir, out, note), "model_files": model_files(run, models, out), "sample": sample(npz_dir, out, note)}
+    export = catalogue(out, run, models, man["data_files"], a.url)
+    man["catalog"] = {"simulations": len(export["simulations"]), "dataset_files": len(export["dataset"]["files"]), "models": len(export["models"]),
+                      "released_models": sum(m["status"] == "released" for m in export["models"]), "evaluations": sum(m["evaluations"] for m in export["models"])}
+    if w16:
+        (out / "e4_release_w16.json").write_text(json.dumps(w16, indent=1) + "\n", encoding="utf-8")
+    for s in range(5):                                                      # the evaluations of the released models, as written by the pipeline
+        if (run / f"e4_mhd3d_s{s}.json").exists():
+            shutil.copy2(run / f"e4_mhd3d_s{s}.json", out / f"e4_release_eval_s{s}.json")
+    (out / "README.md").write_text(readme(man, export, a.url), encoding="utf-8")
+    other = sorted(p for p in out.iterdir() if p.is_file() and p.name not in {f["file"] for f in man["data_files"] + man["model_files"]} | {"manifest.json", "SHA256SUMS", man["sample"]["file"]})
+    man["other_files"] = [{"file": p.name, "size_bytes": p.stat().st_size, "sha256": mff.sha256_file(p)} for p in other]
     (out / "manifest.json").write_text(json.dumps(man, indent=1, ensure_ascii=False) + "\n", encoding="utf-8")
-    lines = ([f"{f['sha256']}  {f['file']}" for f in man["data_files"]] + [f"{f['sha256']}  {f['file']}" for f in man["release_files"]]
-             + [f"{f['sha256']}  {f['file']}" for f in man["model_files"]])
-    (out / "SHA256SUMS").write_text("\n".join(lines) + "\n", encoding="utf-8")
+    every = man["data_files"] + man["model_files"] + [man["sample"]] + man["other_files"]
+    (out / "SHA256SUMS").write_text("".join(f"{f['sha256']}  {f['file']}\n" for f in every) + f"{mff.sha256_file(out / 'manifest.json')}  manifest.json\n", encoding="utf-8")
+    if a.repo_dir:
+        repo = Path(a.repo_dir)
+        repo.mkdir(parents=True, exist_ok=True)
+        for n in ("README.md", "manifest.json", "SHA256SUMS", "catalog.json", "e4_release_w16.json"):
+            if (out / n).exists():
+                shutil.copy2(out / n, repo / n)
     print(json.dumps({"data_files": len(man["data_files"]), "all_valid": all(f["valid_full_scan"] for f in man["data_files"]),
-                      "total_GiB": round(sum(f["size_bytes"] for f in man["data_files"]) / 2**30, 2), **man["catalog"],
-                      "committed_MB": round(sum(p.stat().st_size for p in out.iterdir()) / 1e6, 2)}))
+                      "model_files": len(man["model_files"]), **man["catalog"], "total_GiB": round(sum(p.stat().st_size for p in out.iterdir() if p.is_file()) / 2**30, 2),
+                      "largest_file_GiB": round(max(p.stat().st_size for p in out.iterdir() if p.is_file()) / 2**30, 2)}))
 
 
 if __name__ == "__main__":

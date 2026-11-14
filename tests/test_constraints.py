@@ -604,3 +604,19 @@ def test_gaussian_lowrank_modewise() -> None:
     assert float(z[..., 2:].mean().abs()) < 0.02                                           # odd channels: zero mean
     assert torch.allclose(torch.cov(z.reshape(len(z), -1).T), sym.moments(0.0)[1].float(), atol=0.08)
 
+
+def test_gaussian_laws_state_roundtrip(tmp_path) -> None:
+    """The fitted Gaussian laws are saved and reloaded as plain tensors: same moments, same samples."""
+    g = torch.Generator().manual_seed(3)
+    x = torch.randn(600, 5, 4, generator=g) * torch.linspace(0.5, 2.0, 5)[None, :, None]
+    c = torch.cat([torch.zeros(300), torch.ones(300)])
+    sign = torch.tensor([1.0, 1.0, -1.0, -1.0])
+    for cls in (C.ModewiseGaussian, C.FullGaussian):
+        law = cls(sign=sign).fit(x, c)
+        torch.save(law.state(), tmp_path / "law.pt")
+        back = cls.from_state(torch.load(tmp_path / "law.pt"))
+        for a, b in zip(law.moments(0.3), back.moments(0.3), strict=True):
+            assert torch.equal(a, b)
+        s1 = law.sample(0.3, 7, generator=torch.Generator().manual_seed(5))
+        s2 = back.sample(0.3, 7, generator=torch.Generator().manual_seed(5))
+        assert torch.equal(s1, s2) and s1.shape == (7, 5, 4)
