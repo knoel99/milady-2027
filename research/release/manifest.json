@@ -1,18 +1,30 @@
 {
  "release": "e4-data-v1.0",
+ "url": "https://github.com/knoel99/milady-2027/releases/download/e4-data-v1.0",
+ "git_commit": "7c505ca552daaa9c5019c7689192bf1e50916edb",
+ "models_commit": "240b56cc186367871ac7adf519fb1a0b73e88262",
+ "host": "the CPU of a GitHub Actions runner",
+ "build": "data, reference statistics, models and parameter files in one job",
  "dataset": {
   "name": "e4_mhd3d",
   "version": "1.0",
   "format": "MFF 1.0"
  },
- "note": "Realisation generated in the container of the pilot session (Intel CPU) by experiments/e4_data.py with seed offset 0. The solver is chaotic and its float32 trajectories differ between processor types: this is another draw of the same law than the data regenerated on the GPU pods (AMD CPUs) for the results of the report.",
+ "main_run_check": {
+  "against": "experiments/results/e4_data.json (statistics of the data of the main run, generated on a GPU pod)",
+  "max_relative_gap_of_E_B": 0.0,
+  "same_realisation": true,
+  "n_eta": 11
+ },
+ "n_recolour": 32768,
  "data_files": [
   {
    "file": "e4_eta0.08000.h5",
-   "path": "experiments/data_e4_mff/e4_eta0.08000.h5",
-   "size_bytes": 202642305,
-   "sha256": "cc25066cb2f755cd61876b02365b9a75b270c33699839a5334404fc0eba8bd64",
-   "uuid": "b23f2a44-8672-4477-870e-f23866b30b99",
+   "kind": "data",
+   "format": "MFF 1.0 (HDF5, layout of The Well)",
+   "size_bytes": 202649462,
+   "sha256": "8aafe3c02c782daa89c0b4aac64b2186e74c1804114c671b1130efeb61b3ee18",
+   "uuid": "9865f09e-9fc3-4641-bc59-7486afc0fb8e",
    "eta": 0.08,
    "Rm": 6.25,
    "split": "train",
@@ -22,24 +34,22 @@
    "t_end": 400.0,
    "valid_full_scan": true,
    "problems": [],
-   "source": "eta_0.08000.npz",
-   "source_sha256": "7765cb760728024c46d34174bc685f2df46594aeca7d7319ae6bbc94945f982f",
-   "git_commit": "5eab4ed94a34",
-   "latent_roundtrip": 8.097841162380187e-08,
+   "source_sha256": "1c3444be0a2baad45594451b62eb326eee4a7814531a233960443c614b954500",
+   "git_commit": "7c505ca552daaa9c5019c7689192bf1e50916edb",
+   "latent_roundtrip": 1.5858399213118217e-07,
    "max_abs_divergence": {
-    "magnetic_field": 4.407238713360443e-07,
-    "velocity": 7.610992079205749e-07
+    "magnetic_field": 5.152465979181149e-07,
+    "velocity": 9.455628417980115e-07
    },
-   "E_B_mean": 0.07933659156687402,
-   "E_B_of_the_pod_realisation": 0.07826379540640663,
-   "E_B_gap_to_the_pod_realisation": 0.013707438476457723
+   "E_B_mean": 0.07826380007201805
   },
   {
    "file": "e4_eta0.07253.h5",
-   "path": "experiments/data_e4_mff/e4_eta0.07253.h5",
-   "size_bytes": 202794757,
-   "sha256": "7edf21226c5e0f772a5046f6f61a02328152c339b8c66909ddba65db685f0a12",
-   "uuid": "3e03f22a-28b8-4b72-81eb-941c63136e0d",
+   "kind": "data",
+   "format": "MFF 1.0 (HDF5, layout of The Well)",
+   "size_bytes": 202801153,
+   "sha256": "2b862c9e635f5b5d1cd7e9d65d030a52be01ff47ab98c213b7945cdd8c64a4b1",
+   "uuid": "9e0f9b28-3538-4a91-bd53-ec9de057b7ad",
    "eta": 0.072526,
    "Rm": 6.894079364641646,
    "split": "test",
@@ -49,24 +59,22 @@
    "t_end": 400.0,
    "valid_full_scan": true,
    "problems": [],
-   "source": "eta_0.07253.npz",
-   "source_sha256": "af80b9b6ccfa61392ffd5ff61fc9da7ccb01233d0db7c338b5bb9fa3401391d8",
-   "git_commit": "5eab4ed94a34",
-   "latent_roundtrip": 8.260765326450309e-08,
+   "source_sha256": "46992ee9165b76adbe92b5e82f937ace1554123bc6b0e05fca2ab2c10c659249",
+   "git_commit": "7c505ca552daaa9c5019c7689192bf1e50916edb",
+   "latent_roundtrip": 8.089968908585477e-08,
    "max_abs_divergence": {
-    "magnetic_field": 5.009341611837668e-07,
-    "velocity": 8.805026266575994e-07
+    "magnetic_field": 4.999667922074574e-07,
+    "velocity": 7.872988647566062e-07
    },
-   "E_B_mean": 0.09425742418961211,
-   "E_B_of_the_pod_realisation": 0.09667611722389464,
-   "E_B_gap_to_the_pod_realisation": -0.025018516503729882
+   "E_B_mean": 0.09667612265756664
   },
   {
    "file": "e4_eta0.06575.h5",
-   "path": "experiments/data_e4_mff/e4_eta0.06575.h5",
-   "size_bytes": 202889920,
-   "sha256": "1c055ff0039a4c8d259083f33e50fdd60418693556c46a07faf7511722f39ddc",
-   "uuid": "8c9cd35a-dbbe-412d-bf63-753ccdb91de9",
+   "kind": "data",
+   "format": "MFF 1.0 (HDF5, layout of The Well)",
+   "size_bytes": 202933386,
+   "sha256": "fbe9b9cc2094afdd718cc71038e78cb91be28bb8fe4e861877b9ae0b72629907",
+   "uuid": "01931297-d9e2-44dd-bba5-be70b2092195",
    "eta": 0.06575,
    "Rm": 7.604562737642585,
    "split": "train",
@@ -76,24 +84,22 @@
    "t_end": 400.0,
    "valid_full_scan": true,
    "problems": [],
-   "source": "eta_0.06575.npz",
-   "source_sha256": "07d35b52afd77021ec0d546abb9f08af6dbc12ef3eda9eb3cbe0ecf99ae090d4",
-   "git_commit": "5eab4ed94a34",
-   "latent_roundtrip": 1.6727374951683122e-07,
+   "source_sha256": "2a4432a8a9d47809e43e2a599b72f0645f710bd27085b9d87eb7c098615b218a",
+   "git_commit": "7c505ca552daaa9c5019c7689192bf1e50916edb",
+   "latent_roundtrip": 8.250007132673737e-08,
    "max_abs_divergence": {
-    "magnetic_field": 4.981316685165002e-07,
-    "velocity": 7.466956191004198e-07
+    "magnetic_field": 5.021504552958555e-07,
+    "velocity": 8.079029060528727e-07
    },
-   "E_B_mean": 0.10909196398298567,
-   "E_B_of_the_pod_realisation": 0.1108091408845957,
-   "E_B_gap_to_the_pod_realisation": -0.015496708014354321
+   "E_B_mean": 0.11080914703818659
   },
   {
    "file": "e4_eta0.05961.h5",
-   "path": "experiments/data_e4_mff/e4_eta0.05961.h5",
-   "size_bytes": 203013565,
-   "sha256": "d1cd66ecdc491527cb71262b62916b2714dffb5b87a7401be0f953d21a4211a2",
-   "uuid": "6fc972cf-6ee4-4f2b-a5a7-83e9e96226e4",
+   "kind": "data",
+   "format": "MFF 1.0 (HDF5, layout of The Well)",
+   "size_bytes": 203048291,
+   "sha256": "108e817efeb1b802be36a922786c90acaef43ce311bc8e92f606cd7aa9f1ee11",
+   "uuid": "08c83382-26d1-4ccf-a2f3-6f20ebc2eebe",
    "eta": 0.059607,
    "Rm": 8.388276544701126,
    "split": "val",
@@ -103,24 +109,22 @@
    "t_end": 400.0,
    "valid_full_scan": true,
    "problems": [],
-   "source": "eta_0.05961.npz",
-   "source_sha256": "4e449dd77654a6c2dabbfc00e1887b43d90fb4ea44ffe8459e1e24980a5330cf",
-   "git_commit": "5eab4ed94a34",
-   "latent_roundtrip": 8.450681548977363e-08,
+   "source_sha256": "4dbcc8ce74ff80f9c36473ec45f4df8d718cc0bcefe5ad6a11a8094ac0040483",
+   "git_commit": "7c505ca552daaa9c5019c7689192bf1e50916edb",
+   "latent_roundtrip": 8.423333778986298e-08,
    "max_abs_divergence": {
-    "magnetic_field": 4.2908482556411416e-07,
-    "velocity": 7.887205391027957e-07
+    "magnetic_field": 5.019752099458036e-07,
+    "velocity": 7.855173968156509e-07
    },
-   "E_B_mean": 0.12127567113842815,
-   "E_B_of_the_pod_realisation": 0.12054207498632233,
-   "E_B_gap_to_the_pod_realisation": 0.0060858098899414514
+   "E_B_mean": 0.12054208170933028
   },
   {
    "file": "e4_eta0.05404.h5",
-   "path": "experiments/data_e4_mff/e4_eta0.05404.h5",
-   "size_bytes": 203062290,
-   "sha256": "dc8bf3ad86f78f5fd0ff24b319b8a121e1760b02a0363bd5e81eb0764cf4d4c6",
-   "uuid": "e65dfe9d-966c-44ca-a83e-865610f0bc96",
+   "kind": "data",
+   "format": "MFF 1.0 (HDF5, layout of The Well)",
+   "size_bytes": 203113474,
+   "sha256": "09c626d7ffdf60a396a4ee83fefd194b078fc59e7a05b59bc7e84d028b629705",
+   "uuid": "fa9f17f8-c50e-44d6-956e-a6768cb99e64",
    "eta": 0.054038,
    "Rm": 9.252748066175654,
    "split": "train",
@@ -130,24 +134,22 @@
    "t_end": 400.0,
    "valid_full_scan": true,
    "problems": [],
-   "source": "eta_0.05404.npz",
-   "source_sha256": "b1cbf1df3715894b3fec1eacbdc7e05135f939e6208c733ce1ef94a03609fc08",
-   "git_commit": "5eab4ed94a34",
-   "latent_roundtrip": 8.643034702120122e-08,
+   "source_sha256": "d22ce0a20252569b09e04d0e30af5e9626efca01636ae095e5e6d05848fd1116",
+   "git_commit": "7c505ca552daaa9c5019c7689192bf1e50916edb",
+   "latent_roundtrip": 8.492788157151746e-08,
    "max_abs_divergence": {
-    "magnetic_field": 4.563233884177682e-07,
-    "velocity": 7.314342873252371e-07
+    "magnetic_field": 4.675698008543135e-07,
+    "velocity": 7.89396391674178e-07
    },
-   "E_B_mean": 0.13162436358164997,
-   "E_B_of_the_pod_realisation": 0.1305136339591353,
-   "E_B_gap_to_the_pod_realisation": 0.008510448976253748
+   "E_B_mean": 0.13051364130340518
   },
   {
    "file": "e4_eta0.04899.h5",
-   "path": "experiments/data_e4_mff/e4_eta0.04899.h5",
-   "size_bytes": 203241443,
-   "sha256": "5c6f60276425533e682a0a113b82f7c7ff88699f6f8ae04afed25427b8040c38",
-   "uuid": "a975fef6-6355-4f11-98ee-a468e3f4e012",
+   "kind": "data",
+   "format": "MFF 1.0 (HDF5, layout of The Well)",
+   "size_bytes": 203253637,
+   "sha256": "205923b2ea088e7ac614911bc3664c8bcbf721ea07cd0c1346e2f88e6a156ad9",
+   "uuid": "2e7e8ff6-69bc-42f8-8105-a8f01d4b20d8",
    "eta": 0.04899,
    "Rm": 10.206164523372117,
    "split": "test",
@@ -157,24 +159,22 @@
    "t_end": 400.0,
    "valid_full_scan": true,
    "problems": [],
-   "source": "eta_0.04899.npz",
-   "source_sha256": "b35e137475b1e43b225aca70ce0c8e141880ff4fc8bd9ed072023ef63a32f994",
-   "git_commit": "5eab4ed94a34",
-   "latent_roundtrip": 8.519309940147513e-08,
+   "source_sha256": "de21cdce2f1bfc0854798ac14990c8f9b55d7b2fa999030735b1c414e0d71188",
+   "git_commit": "7c505ca552daaa9c5019c7689192bf1e50916edb",
+   "latent_roundtrip": 1.7205923322950378e-07,
    "max_abs_divergence": {
-    "magnetic_field": 4.823293666946359e-07,
-    "velocity": 7.283073813503985e-07
+    "magnetic_field": 4.5182138910581357e-07,
+    "velocity": 7.598568856090333e-07
    },
-   "E_B_mean": 0.13868035732147593,
-   "E_B_of_the_pod_realisation": 0.13967252251647314,
-   "E_B_gap_to_the_pod_realisation": -0.0071035102475519585
+   "E_B_mean": 0.1396725303741793
   },
   {
    "file": "e4_eta0.04441.h5",
-   "path": "experiments/data_e4_mff/e4_eta0.04441.h5",
-   "size_bytes": 203360109,
-   "sha256": "b5cc71e1a4bd0310914fc14af1e62bb75976aa00c5fd7418c440bcff73732813",
-   "uuid": "2145fcc7-87ad-4d20-9961-60130d7cd571",
+   "kind": "data",
+   "format": "MFF 1.0 (HDF5, layout of The Well)",
+   "size_bytes": 203355465,
+   "sha256": "b03b480021f78f616635bc1ef6f04a51f47c665a3969551b3396d5a69cc07195",
+   "uuid": "4d4d8009-dc2d-4df2-9de7-89c2a4cd5587",
    "eta": 0.044413,
    "Rm": 11.257965010244748,
    "split": "train",
@@ -184,24 +184,22 @@
    "t_end": 400.0,
    "valid_full_scan": true,
    "problems": [],
-   "source": "eta_0.04441.npz",
-   "source_sha256": "2196cd643306e00212b4cc328a9e6c92bd020a3e1453d85165141abf5e075b88",
-   "git_commit": "5eab4ed94a34",
-   "latent_roundtrip": 8.856671372128128e-08,
+   "source_sha256": "99e1e0b2fd330ece92d6695c228b94df4119ba81d0197a0006491aa90fab244b",
+   "git_commit": "7c505ca552daaa9c5019c7689192bf1e50916edb",
+   "latent_roundtrip": 8.917930918249271e-08,
    "max_abs_divergence": {
-    "magnetic_field": 4.666703468613306e-07,
-    "velocity": 6.90339796418802e-07
+    "magnetic_field": 4.4736672599003725e-07,
+    "velocity": 6.754567681976036e-07
    },
-   "E_B_mean": 0.14746897692481678,
-   "E_B_of_the_pod_realisation": 0.14466031895186246,
-   "E_B_gap_to_the_pod_realisation": 0.0194155383681196
+   "E_B_mean": 0.1446603268633286
   },
   {
    "file": "e4_eta0.04026.h5",
-   "path": "experiments/data_e4_mff/e4_eta0.04026.h5",
-   "size_bytes": 203476940,
-   "sha256": "9682807ddb3fb6d8c21c74926435ca64dffbc8aab3d3d0eacf90fc501ba5d407",
-   "uuid": "a5668a67-cbe2-4e5d-b9bc-8e1158fffc2e",
+   "kind": "data",
+   "format": "MFF 1.0 (HDF5, layout of The Well)",
+   "size_bytes": 203514023,
+   "sha256": "48e49ae4b2cc32cb371a58eb1bb5bb5a831e04e9adbcadf0aab0d2f335b40997",
+   "uuid": "01da2dc8-e9f2-46e1-8a26-771bad785e21",
    "eta": 0.040264,
    "Rm": 12.418040929862904,
    "split": "val",
@@ -211,24 +209,22 @@
    "t_end": 400.0,
    "valid_full_scan": true,
    "problems": [],
-   "source": "eta_0.04026.npz",
-   "source_sha256": "d41125e7accc6605d2c032d461cb8421ab12d351e78c31ee14ee195460d01b83",
-   "git_commit": "5eab4ed94a34",
-   "latent_roundtrip": 9.090086947505659e-08,
+   "source_sha256": "0e6dd0f285bca221aefe10442d43c0087ecccf2a1cd4f6104aebb364045c970a",
+   "git_commit": "7c505ca552daaa9c5019c7689192bf1e50916edb",
+   "latent_roundtrip": 8.93120335187286e-08,
    "max_abs_divergence": {
-    "magnetic_field": 5.223958490675644e-07,
-    "velocity": 6.752210684540286e-07
+    "magnetic_field": 4.4514894731845255e-07,
+    "velocity": 6.400514122402784e-07
    },
-   "E_B_mean": 0.15452102217823266,
-   "E_B_of_the_pod_realisation": 0.15337137570423906,
-   "E_B_gap_to_the_pod_realisation": 0.007495834660899092
+   "E_B_mean": 0.15337138403517506
   },
   {
    "file": "e4_eta0.03650.h5",
-   "path": "experiments/data_e4_mff/e4_eta0.03650.h5",
-   "size_bytes": 203483354,
-   "sha256": "e9ee1b4c38872e97bf71447d1ee27549f07fc8d85de09e67f91553596107ac5e",
-   "uuid": "13f4da2f-7e25-48de-981b-93eb7bae1994",
+   "kind": "data",
+   "format": "MFF 1.0 (HDF5, layout of The Well)",
+   "size_bytes": 203524181,
+   "sha256": "8f8c04f44434ea080654976e4a44264394bf015791786ac8f323552ca2d7d067",
+   "uuid": "848d8bfd-1c42-4f33-a724-29d09d66f913",
    "eta": 0.036502,
    "Rm": 13.697879568242836,
    "split": "train",
@@ -238,24 +234,22 @@
    "t_end": 400.0,
    "valid_full_scan": true,
    "problems": [],
-   "source": "eta_0.03650.npz",
-   "source_sha256": "abd9cbe6ffd77cd806222d83b0ba9f41cd0076c4fca59d3130260e0dbbb96dd8",
-   "git_commit": "5eab4ed94a34",
-   "latent_roundtrip": 9.07631022460853e-08,
+   "source_sha256": "cd8f18ac19909cf040bdbe60040a43a4b1a260454555dbaa3b247978097870a1",
+   "git_commit": "7c505ca552daaa9c5019c7689192bf1e50916edb",
+   "latent_roundtrip": 9.049144018849509e-08,
    "max_abs_divergence": {
-    "magnetic_field": 4.901908004616081e-07,
-    "velocity": 6.277191027114575e-07
+    "magnetic_field": 4.785106728152602e-07,
+    "velocity": 6.27879111024188e-07
    },
-   "E_B_mean": 0.16034660033881665,
-   "E_B_of_the_pod_realisation": 0.16034871865358075,
-   "E_B_gap_to_the_pod_realisation": -1.3210674721264581e-05
+   "E_B_mean": 0.1603487275633961
   },
   {
    "file": "e4_eta0.03309.h5",
-   "path": "experiments/data_e4_mff/e4_eta0.03309.h5",
-   "size_bytes": 203604564,
-   "sha256": "0149f2959b7a16df59e5fa162ee56040cec436a27fc4863526d8f143b9a4a769",
-   "uuid": "967c5098-aa42-4040-a938-b77d8807589a",
+   "kind": "data",
+   "format": "MFF 1.0 (HDF5, layout of The Well)",
+   "size_bytes": 203624638,
+   "sha256": "eb7184ff3408e7e85b1fcf21c91a1ed5ca91bbbe8fc86ce146196bccae4350a6",
+   "uuid": "c59dd8cf-11d2-43b9-987a-ef085da05390",
    "eta": 0.033092,
    "Rm": 15.109391998065997,
    "split": "test",
@@ -265,24 +259,22 @@
    "t_end": 400.0,
    "valid_full_scan": true,
    "problems": [],
-   "source": "eta_0.03309.npz",
-   "source_sha256": "f2a32ccdbbac6be14e3f7405b5be2b9d1de7b1e08c39b19c12ae3e9c6eb83a90",
-   "git_commit": "5eab4ed94a34",
-   "latent_roundtrip": 9.130248034926545e-08,
+   "source_sha256": "52e1f8f2407ea22b9360372644b66b71cffb0d09c8131b068d7781531f21a3c1",
+   "git_commit": "7c505ca552daaa9c5019c7689192bf1e50916edb",
+   "latent_roundtrip": 9.251094888968913e-08,
    "max_abs_divergence": {
-    "magnetic_field": 4.6841219961152606e-07,
-    "velocity": 6.58967517019767e-07
+    "magnetic_field": 4.948511496876976e-07,
+    "velocity": 6.500036692820536e-07
    },
-   "E_B_mean": 0.16780879284255207,
-   "E_B_of_the_pod_realisation": 0.16548703682179852,
-   "E_B_gap_to_the_pod_realisation": 0.01402983620556153
+   "E_B_mean": 0.1654870459685723
   },
   {
    "file": "e4_eta0.03000.h5",
-   "path": "experiments/data_e4_mff/e4_eta0.03000.h5",
-   "size_bytes": 203749721,
-   "sha256": "463dbda2fab7f01111eee64a709544b6d485401f59c28cf2a433fe1c6d2e5f37",
-   "uuid": "6eb4580d-51c0-45ab-9e55-6e9b56a1a9c4",
+   "kind": "data",
+   "format": "MFF 1.0 (HDF5, layout of The Well)",
+   "size_bytes": 203767942,
+   "sha256": "c8e966ff3d69a104c2cf5829928a27e872b7418e820297a49603734f7925de3d",
+   "uuid": "ea13c95a-4c1f-45a4-a3cd-366b076f5471",
    "eta": 0.03,
    "Rm": 16.666666666666668,
    "split": "train",
@@ -292,215 +284,182 @@
    "t_end": 400.0,
    "valid_full_scan": true,
    "problems": [],
-   "source": "eta_0.03000.npz",
-   "source_sha256": "77e68f6ecdaba058b94fe800ec55541c4dc33fb8c44103bfc138590afc7c8dec",
-   "git_commit": "5eab4ed94a34-dirty",
-   "latent_roundtrip": 9.469013767057614e-08,
+   "source_sha256": "a84ec3d4719d381718647f0d16a55fede5ae32eb3bb316f101f9c4ca66352ae7",
+   "git_commit": "7c505ca552daaa9c5019c7689192bf1e50916edb",
+   "latent_roundtrip": 9.31559012011709e-08,
    "max_abs_divergence": {
-    "magnetic_field": 4.6306698762080633e-07,
-    "velocity": 6.128155216876033e-07
+    "magnetic_field": 5.058359665488935e-07,
+    "velocity": 5.726692399247104e-07
    },
-   "E_B_mean": 0.17343720399464171,
-   "E_B_of_the_pod_realisation": 0.17169338837946613,
-   "E_B_gap_to_the_pod_realisation": 0.010156568238501418
+   "E_B_mean": 0.1716933980428924
+  }
+ ],
+ "model_files": [
+  {
+   "file": "e4_latent_space.pt",
+   "kind": "latent space",
+   "format": "PyTorch (torch.save of a dictionary of tensors)",
+   "content": "latent space of the models and its normalisation (state of FourierPotentialSpace)",
+   "size_bytes": 115325,
+   "sha256": "661ba2300571809231fd7cd3070c0552ad3cf9876b98028ae5f2fbb1387fde68"
+  },
+  {
+   "file": "e4_gaussian_G0.pt",
+   "kind": "G0",
+   "format": "PyTorch (torch.save of a dictionary of tensors)",
+   "content": "parameters of the Gaussian law G0 (condition grid, mean and covariance per mode)",
+   "size_bytes": 2300771,
+   "sha256": "117fffdb1c2ea7e1d35fc52621fde7f3eb674132328b7ad1b70d4b62e6f23a7a"
+  },
+  {
+   "file": "e4_gaussian_G1.pt",
+   "kind": "G1",
+   "format": "PyTorch (torch.save of a dictionary of tensors)",
+   "content": "parameters of the Gaussian law G1 (condition grid, mean and factor A with AᵀA the covariance)",
+   "size_bytes": 612996485,
+   "sha256": "5d60f1eef6bca3d720559e9756776e37ce10b1b9c054ec0e15942b0783093338"
+  },
+  {
+   "file": "e4_model_W9_skip_sym_s0.pt",
+   "kind": "W9",
+   "format": "PyTorch (torch.save of a dictionary of tensors)",
+   "content": "weights of the flow-matching model W9, seed 0",
+   "size_bytes": 71141734,
+   "sha256": "8b1fba8ccbdf4b59d2d9b68a024d8179e9757b90f767fc2e100110058be6a074"
+  },
+  {
+   "file": "e4_model_W9_skip_sym_s1.pt",
+   "kind": "W9",
+   "format": "PyTorch (torch.save of a dictionary of tensors)",
+   "content": "weights of the flow-matching model W9, seed 1",
+   "size_bytes": 71141734,
+   "sha256": "61f9575b814ff1a02a029b449367ff2094b1b89171010332906e63156e113d26"
+  },
+  {
+   "file": "e4_model_W9_skip_sym_s2.pt",
+   "kind": "W9",
+   "format": "PyTorch (torch.save of a dictionary of tensors)",
+   "content": "weights of the flow-matching model W9, seed 2",
+   "size_bytes": 71141734,
+   "sha256": "78e808c3449142d05e7736dc20e26d4a075b9af33f0f5bf4e71771b97d0966fa"
+  },
+  {
+   "file": "e4_model_W9_skip_sym_s3.pt",
+   "kind": "W9",
+   "format": "PyTorch (torch.save of a dictionary of tensors)",
+   "content": "weights of the flow-matching model W9, seed 3",
+   "size_bytes": 71141734,
+   "sha256": "8ed2032b5ee7653e4f92e0d413232b785cb4283b9db128e0fc76a120c9d3bc94"
+  },
+  {
+   "file": "e4_model_W9_skip_sym_s4.pt",
+   "kind": "W9",
+   "format": "PyTorch (torch.save of a dictionary of tensors)",
+   "content": "weights of the flow-matching model W9, seed 4",
+   "size_bytes": 71141734,
+   "sha256": "6bf3083b7ac50f3a75a84007f32b3db1ad990a02e75f72ee206d35025b923acd"
+  },
+  {
+   "file": "e4_W16_map_s0.pt",
+   "kind": "W16",
+   "format": "PyTorch (torch.save of a dictionary of tensors)",
+   "content": "linear map of W16 at the held-out η for W9 of seed 0",
+   "size_bytes": 339760163,
+   "sha256": "4948032e9da3f8d25e0b990b688b38f8c33caf2c5c0440f22c6b038e285ec8d3"
+  },
+  {
+   "file": "e4_W16_map_s1.pt",
+   "kind": "W16",
+   "format": "PyTorch (torch.save of a dictionary of tensors)",
+   "content": "linear map of W16 at the held-out η for W9 of seed 1",
+   "size_bytes": 339760163,
+   "sha256": "a2778cefdba175af3a1b56bfda1184d68f87196f849d1d1d56c95910e2b80caa"
+  },
+  {
+   "file": "e4_W16_map_s2.pt",
+   "kind": "W16",
+   "format": "PyTorch (torch.save of a dictionary of tensors)",
+   "content": "linear map of W16 at the held-out η for W9 of seed 2",
+   "size_bytes": 339760163,
+   "sha256": "08b1499daec706e7bc25141ec01f4db5c4e1ea1c528ed7f2b22ac3389247cfc0"
+  },
+  {
+   "file": "e4_W16_map_s3.pt",
+   "kind": "W16",
+   "format": "PyTorch (torch.save of a dictionary of tensors)",
+   "content": "linear map of W16 at the held-out η for W9 of seed 3",
+   "size_bytes": 339760163,
+   "sha256": "bde55920ad01ab1d30a30bd3b7e16f13e00649c2cdbe2976ee2a23038a3fdc21"
+  },
+  {
+   "file": "e4_W16_map_s4.pt",
+   "kind": "W16",
+   "format": "PyTorch (torch.save of a dictionary of tensors)",
+   "content": "linear map of W16 at the held-out η for W9 of seed 4",
+   "size_bytes": 339760163,
+   "sha256": "c33ed8d0a120b4fdd76e894954b0eae401aacb7d4b8075828d68952d826b10ae"
   }
  ],
  "sample": {
   "file": "e4_sample_eta0.04899.h5",
-  "path": "research/release/e4_sample_eta0.04899.h5",
-  "size_bytes": 4282238,
-  "sha256": "498744ee77842436d19c41996e992633ba3f279b49249c861e4c211ca5ed1270",
-  "valid_full_scan": true,
-  "eta": 0.04899,
-  "n_trajectories": 2,
-  "n_t": 25
+  "kind": "data sample",
+  "format": "MFF 1.0 (HDF5)",
+  "size_bytes": 4277035,
+  "sha256": "7096f6689ed19a7b15dc85ddbaa36d71a6df11f4201afb4efd5ddfb5e62ca130",
+  "content": "η = 0.04899, 2 trajectories × 25 snapshots"
  },
  "catalog": {
-  "file": "catalog.sqlite",
-  "export": "catalog.json",
   "simulations": 11,
   "dataset_files": 11,
-  "models": 20,
-  "evaluations": 720
+  "models": 40,
+  "released_models": 20,
+  "evaluations": 1425
  },
- "models": [
+ "other_files": [
   {
-   "name": "e4/G0/seed0",
-   "variant": "G0_gaussian_modes",
-   "run": "e4_nongauss",
-   "seed": 0,
-   "weights": "closed form: milady.train.constraints.ModewiseGaussian(sign=…).fit(x_train, c_train), refitted from the data set in under 1 s",
-   "result_file": "experiments/results/replications/e4_nongauss/e4_mhd3d_s0.json"
+   "file": "README.md",
+   "size_bytes": 13199,
+   "sha256": "28869f13bd0c96e53147ddc61b08b11650dca34a829048023dab7785049507a4"
   },
-  {
-   "name": "e4/G0/seed1",
-   "variant": "G0_gaussian_modes",
-   "run": "e4_nongauss",
-   "seed": 1,
-   "weights": "closed form: milady.train.constraints.ModewiseGaussian(sign=…).fit(x_train, c_train), refitted from the data set in under 1 s",
-   "result_file": "experiments/results/replications/e4_nongauss/e4_mhd3d_s1.json"
-  },
-  {
-   "name": "e4/G0/seed2",
-   "variant": "G0_gaussian_modes",
-   "run": "e4_nongauss",
-   "seed": 2,
-   "weights": "closed form: milady.train.constraints.ModewiseGaussian(sign=…).fit(x_train, c_train), refitted from the data set in under 1 s",
-   "result_file": "experiments/results/replications/e4_nongauss/e4_mhd3d_s2.json"
-  },
-  {
-   "name": "e4/G0/seed3",
-   "variant": "G0_gaussian_modes",
-   "run": "e4_nongauss",
-   "seed": 3,
-   "weights": "closed form: milady.train.constraints.ModewiseGaussian(sign=…).fit(x_train, c_train), refitted from the data set in under 1 s",
-   "result_file": "experiments/results/replications/e4_nongauss/e4_mhd3d_s3.json"
-  },
-  {
-   "name": "e4/G0/seed4",
-   "variant": "G0_gaussian_modes",
-   "run": "e4_nongauss",
-   "seed": 4,
-   "weights": "closed form: milady.train.constraints.ModewiseGaussian(sign=…).fit(x_train, c_train), refitted from the data set in under 1 s",
-   "result_file": "experiments/results/replications/e4_nongauss/e4_mhd3d_s4.json"
-  },
-  {
-   "name": "e4/G1/seed0",
-   "variant": "G1_gaussian_full",
-   "run": "e4_recolour",
-   "seed": 0,
-   "weights": "closed form: milady.train.constraints.FullGaussian(sign=…).fit(x_train, c_train), refitted from the data set in under 1 s",
-   "result_file": "experiments/results/replications/e4_recolour/e4_mhd3d_s0.json"
-  },
-  {
-   "name": "e4/G1/seed1",
-   "variant": "G1_gaussian_full",
-   "run": "e4_recolour",
-   "seed": 1,
-   "weights": "closed form: milady.train.constraints.FullGaussian(sign=…).fit(x_train, c_train), refitted from the data set in under 1 s",
-   "result_file": "experiments/results/replications/e4_recolour/e4_mhd3d_s1.json"
-  },
-  {
-   "name": "e4/G1/seed2",
-   "variant": "G1_gaussian_full",
-   "run": "e4_recolour",
-   "seed": 2,
-   "weights": "closed form: milady.train.constraints.FullGaussian(sign=…).fit(x_train, c_train), refitted from the data set in under 1 s",
-   "result_file": "experiments/results/replications/e4_recolour/e4_mhd3d_s2.json"
-  },
-  {
-   "name": "e4/G1/seed3",
-   "variant": "G1_gaussian_full",
-   "run": "e4_recolour",
-   "seed": 3,
-   "weights": "closed form: milady.train.constraints.FullGaussian(sign=…).fit(x_train, c_train), refitted from the data set in under 1 s",
-   "result_file": "experiments/results/replications/e4_recolour/e4_mhd3d_s3.json"
-  },
-  {
-   "name": "e4/G1/seed4",
-   "variant": "G1_gaussian_full",
-   "run": "e4_recolour",
-   "seed": 4,
-   "weights": "closed form: milady.train.constraints.FullGaussian(sign=…).fit(x_train, c_train), refitted from the data set in under 1 s",
-   "result_file": "experiments/results/replications/e4_recolour/e4_mhd3d_s4.json"
-  },
-  {
-   "name": "e4/W9/seed0",
-   "variant": "W9R_skip_sym",
-   "run": "e4_recolour",
-   "seed": 0,
-   "weights": "not kept (the pod of the job was deleted); retrained by the job below in about 1 min per seed on a GPU",
-   "result_file": "experiments/results/replications/e4_recolour/e4_mhd3d_s0.json"
-  },
-  {
-   "name": "e4/W9/seed1",
-   "variant": "W9R_skip_sym",
-   "run": "e4_recolour",
-   "seed": 1,
-   "weights": "not kept (the pod of the job was deleted); retrained by the job below in about 1 min per seed on a GPU",
-   "result_file": "experiments/results/replications/e4_recolour/e4_mhd3d_s1.json"
-  },
-  {
-   "name": "e4/W9/seed2",
-   "variant": "W9R_skip_sym",
-   "run": "e4_recolour",
-   "seed": 2,
-   "weights": "not kept (the pod of the job was deleted); retrained by the job below in about 1 min per seed on a GPU",
-   "result_file": "experiments/results/replications/e4_recolour/e4_mhd3d_s2.json"
-  },
-  {
-   "name": "e4/W9/seed3",
-   "variant": "W9R_skip_sym",
-   "run": "e4_recolour",
-   "seed": 3,
-   "weights": "not kept (the pod of the job was deleted); retrained by the job below in about 1 min per seed on a GPU",
-   "result_file": "experiments/results/replications/e4_recolour/e4_mhd3d_s3.json"
-  },
-  {
-   "name": "e4/W9/seed4",
-   "variant": "W9R_skip_sym",
-   "run": "e4_recolour",
-   "seed": 4,
-   "weights": "not kept (the pod of the job was deleted); retrained by the job below in about 1 min per seed on a GPU",
-   "result_file": "experiments/results/replications/e4_recolour/e4_mhd3d_s4.json"
-  },
-  {
-   "name": "e4/W16/seed0",
-   "variant": "W16_recoloured_full",
-   "run": "e4_recolour",
-   "seed": 0,
-   "weights": "no weights of its own: W9 plus the map, recomputed at sampling time",
-   "result_file": "experiments/results/replications/e4_recolour/e4_mhd3d_s0.json"
-  },
-  {
-   "name": "e4/W16/seed1",
-   "variant": "W16_recoloured_full",
-   "run": "e4_recolour",
-   "seed": 1,
-   "weights": "no weights of its own: W9 plus the map, recomputed at sampling time",
-   "result_file": "experiments/results/replications/e4_recolour/e4_mhd3d_s1.json"
-  },
-  {
-   "name": "e4/W16/seed2",
-   "variant": "W16_recoloured_full",
-   "run": "e4_recolour",
-   "seed": 2,
-   "weights": "no weights of its own: W9 plus the map, recomputed at sampling time",
-   "result_file": "experiments/results/replications/e4_recolour/e4_mhd3d_s2.json"
-  },
-  {
-   "name": "e4/W16/seed3",
-   "variant": "W16_recoloured_full",
-   "run": "e4_recolour",
-   "seed": 3,
-   "weights": "no weights of its own: W9 plus the map, recomputed at sampling time",
-   "result_file": "experiments/results/replications/e4_recolour/e4_mhd3d_s3.json"
-  },
-  {
-   "name": "e4/W16/seed4",
-   "variant": "W16_recoloured_full",
-   "run": "e4_recolour",
-   "seed": 4,
-   "weights": "no weights of its own: W9 plus the map, recomputed at sampling time",
-   "result_file": "experiments/results/replications/e4_recolour/e4_mhd3d_s4.json"
-  }
- ],
- "model_files": [],
- "release_files": [
   {
    "file": "catalog.json",
-   "size_bytes": 50785,
-   "sha256": "df8e98996d614822ca1f9ad34363386babad6dd7c043b1fb75c151a674be2e55"
+   "size_bytes": 69411,
+   "sha256": "96787462e7d2c29d50f3040445708a5da8b0595dedd2f5f858ca5d7e8a717c94"
   },
   {
    "file": "catalog.sqlite",
-   "size_bytes": 3084288,
-   "sha256": "8aa006ae85a5491329ef9283bc436838c71523b0a78e54540a18a83858fccca7"
+   "size_bytes": 3350528,
+   "sha256": "3ccaf077d773735e8d351dbaf7af4d41df62618ba00536ad20eb2dd51a084324"
   },
   {
-   "file": "e4_sample_eta0.04899.h5",
-   "size_bytes": 4282238,
-   "sha256": "498744ee77842436d19c41996e992633ba3f279b49249c861e4c211ca5ed1270"
+   "file": "e4_release_eval_s0.json",
+   "size_bytes": 83107,
+   "sha256": "4715cccf2593b2ec652e7ed424bab8edc5ce7d284798dd590ff0b9b27e33a8be"
+  },
+  {
+   "file": "e4_release_eval_s1.json",
+   "size_bytes": 83197,
+   "sha256": "ab20a1908c12809d34adceb03d430715d5c860adbec85fac0767020c5613121b"
+  },
+  {
+   "file": "e4_release_eval_s2.json",
+   "size_bytes": 83096,
+   "sha256": "030e7c43b2a951fad9b712edf281bcb3cce2638445302e9f2c5db7be045f8cec"
+  },
+  {
+   "file": "e4_release_eval_s3.json",
+   "size_bytes": 83070,
+   "sha256": "8826303d4f332628e9f8d1d501bf267725677019255c083618344675c33d5feb"
+  },
+  {
+   "file": "e4_release_eval_s4.json",
+   "size_bytes": 83126,
+   "sha256": "4570f39bbdea5b5638539de3136a1a45df37bf5857c8d3a27e22d2f031e411c1"
+  },
+  {
+   "file": "e4_release_w16.json",
+   "size_bytes": 38727,
+   "sha256": "c8230645ee23aee2a205a95716ed45bd0f11c3d2050b2440440cacc830aafae5"
   }
  ]
 }

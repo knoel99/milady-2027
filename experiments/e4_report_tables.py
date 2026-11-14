@@ -323,7 +323,7 @@ def block_release() -> list[str]:
     url, data, mods = man["url"], man["data_files"], man["model_files"]
     mib = lambda b: f"{b / 2**20:.1f} MiB" if b < 2**30 else f"{b / 2**30:.2f} GiB"                 # noqa: E731
     link = lambda f: f"[`{f}`]({url}/{f})"                                                           # noqa: E731
-    rows = ["| File | Content | Format | Size |", "|:-----------------------|:------------------------------------------|:------------------|-------:|"]
+    rows = ["| File | Content | Format | Size |", "|:---------------------------------------|:--------------------------------------|:---------------|---------:|"]
     etas = "`e4_eta<η>.h5` for η = " + ", ".join(f"[{f['eta']:.5f}]({url}/{f['file']})" for f in data)
     rows.append(f"| {etas} | Reference data, one file per $\\eta$ ({data[0]['n_trajectories']} trajectories × {data[0]['n_t']} snapshots): "
                 f"fields $u$ and $B$ on the $16^3$ grid, time series of the solver, provenance; splits train, val and test in the metadata | "
@@ -336,7 +336,9 @@ def block_release() -> list[str]:
         fs = [f for f in mods if f["kind"] == kind]
         if fs:
             size = mib(fs[0]["size_bytes"]) if len(fs) == 1 else f"{len(fs)} files, {mib(sum(f['size_bytes'] for f in fs))} in all"
-            rows.append(f"| {', '.join(link(f['file']) for f in fs)} | {what} | PyTorch dictionary of tensors | {size} |")
+            names = link(fs[0]["file"]) if len(fs) == 1 else (f"`{fs[0]['file'].replace('_s0.pt', '_s<k>.pt')}` for k = "
+                                                              + ", ".join(f"[{i}]({url}/{f['file']})" for i, f in enumerate(fs)))
+            rows.append(f"| {names} | {what} | PyTorch dictionary of tensors | {size} |")
     rows.append(f"| {link('catalog.sqlite')}, {link('catalog.json')} | Catalogue: data set `e4_mhd3d` 1.0 with its splits, {man['catalog']['released_models']} released models with "
                 f"file, hyperparameters, commit, data set and evaluations, and the cited runs as records without files | SQLite (`milady.catalog`), JSON export | – |")
     rows.append(f"| {link('SHA256SUMS')}, {link('manifest.json')}, {link('README.md')} | Checksums, list of the files with sizes and identifiers, notes | text, JSON | – |")

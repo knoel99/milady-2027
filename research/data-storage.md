@@ -38,10 +38,20 @@ copy disappears; the committed summaries and scripts remain. If a later experime
 GB (32³ or 64³ fields), the plan is the MFF/Zarr format of `docs/specs/data-format.md` with
 `src/milady/storage.py` on an S3 bucket, which needs a storage budget from the owner.
 
-## Release (2026-11-13)
+## Release (2026-11-14)
 
-`research/release/` holds what a release of the E4 data needs and what fits in the repository: `manifest.json` and
-`SHA256SUMS` (path, size and SHA-256 of every file), a sample file, the catalogue of the data set and of the cited models
-(`catalog.sqlite`, `catalog.json`) and the upload command (`README.md`). The session cannot create a GitHub release or reach
-an object store; the 11 data files stay in the container until someone uploads them. The weights of the trained models were
-not kept (the pods are deleted after each job); `E4_SAVE_MODELS=1` on a job now brings them back with the outputs.
+The data and the models are published as the release `e4-data-v1.0` of the repository
+(https://github.com/knoel99/milady-2027/releases/tag/e4-data-v1.0; 36 files, 4.58 GiB, none above 0.6 GiB), with their
+SHA-256 sums. `research/release/` holds a copy of its notes (`README.md`), `manifest.json`, `SHA256SUMS`, the export of the
+catalogue (`catalog.json`) and the evaluations of the released W16 (`e4_release_w16.json`).
+
+- The session cannot send a file of its container to GitHub, and the weights of the GPU runs cited by the report were not kept
+  (each pod was deleted with its files). The release is therefore built from the committed code on the CPU of GitHub runners,
+  by `.github/workflows/e4-release.yml` (`experiments/e4_release_build.sh`): the E4 data, their MFF files with the full
+  validation, the reference statistics, W9 retrained and evaluated with G0 and G1 for the five seeds, the map of W16, the
+  catalogue. `.github/workflows/e4-release-repack.yml` rewrites the MFF files and the notes from the outputs of a build.
+- The data of the build are the realisation of the main run of the report: the mean magnetic energy of each η equals the value
+  recorded for that run in `experiments/results/e4_data.json` exactly (`main_run_check` in the manifest). The copy of the
+  session container (`experiments/data_e4/`, `experiments/data_e4_mff/`) is another draw and is not published.
+- Reload and sampling: `experiments/e4_release_example.py` (download with a SHA-256 check).
+- The files of the container (data, early checkpoints W4s and W5) disappear with the session; nothing else depends on them.
