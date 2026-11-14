@@ -2,7 +2,7 @@
 # (tools/runpod_job.py), API prices (tools/usage_report.py), when the checking roles step in
 # (tools/review_due.py), where large files are published, and the teams shown on the site
 # (tools/teams_index.py). The race itself (teams, budgets, prompts, launcher, broker, judge) is
-# configured in the separate repository knoel99/sciathon (race/config.toml there).
+# configured in the separate repository knoel99/frontier-one (race/config.toml there).
 
 # API prices in USD per million tokens, for tools/usage_report.py (Anthropic's model table,
 # read on 2026-11-12). Cache writes cost cache_write_5m_x / cache_write_1h_x times the input price
@@ -67,7 +67,7 @@ jury_watch = ["research/race-report.md", "site/report", "site/thesis", "site/tea
 # Empty until the owner chooses one (for example a Hugging Face organisation, with its token in each team's env).
 storage = ""
 
-# Teams shown on the site (tools/teams_index.py): the pilots first, then the race teams of sciathon's
+# Teams shown on the site (tools/teams_index.py): the pilots first, then the race teams of frontier-one's
 # race/config.toml [teams] (copied here so that the site builds without the race repository).
 [site]
 pilots = ["claude", "cursor"]

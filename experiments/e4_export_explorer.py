@@ -1,4 +1,4 @@
-"""Export the data of a team's explorer page (race/DELIVERABLES.md of knoel99/sciathon §3) from the result files.
+"""Export the data of a team's explorer page (race/DELIVERABLES.md of knoel99/frontier-one §3) from the result files.
 
     python3 e4_export_explorer.py --team claude [--quick]
 

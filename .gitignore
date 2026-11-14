@@ -59,7 +59,7 @@ experiments/release_models/
 /e4_release/
 /samples.h5
 
-# The race brief, installed from the repository knoel99/sciathon (tools/race_launch.py install-brief);
+# The race brief, installed from the repository knoel99/frontier-one (tools/race_launch.py install-brief);
 # a team commits only its objectives file race/teams/<team>/objectives.toml.
 /race/*
 !/race/teams/

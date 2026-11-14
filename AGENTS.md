@@ -6,7 +6,7 @@ Instructions for any AI coding agent working in this repository, whatever its pr
 
 An English-only Quarto site preparing the M2 internship MilaDy 2027 (physics-constrained generative models of parametric dynamical systems: MHD, dynamo, conditional flow matching). `site/` holds eight preparation modules (`prep/`), a **prospective** internship report (`report/`), a PhD proposal (`thesis/`) and pages on the supervisors, experiments, computing and interactive diagrams. `experiments/` holds the CPU experiments E1–E3. `src/milady/`, `tests/` and `infra/` are the HPC package planned for the thesis. `research/` will hold the hypothesis register and the lab journal. Page paths given to tools (`prep/p3-mhd-dynamo`, `report`) are relative to `site/`.
 
-The race of AI teams on this project (the sciathon: brief, team configuration, launcher, compute broker, judge) lives in the separate repository `knoel99/sciathon`, which drives a checkout of this one; its files under `race/` are installed from there and git-ignored here, except each team's `race/teams/<team>/objectives.toml`. The work of earlier teams is filed in `research/teams/<team>/` and `site/teams/<team>/`. Settings of the research tools (GPU jobs, API prices, reviews, publication, teams shown on the site) are in `milady.toml`.
+The race of AI teams on this project (Frontier One: brief, team configuration, launcher, compute broker, judge) lives in the separate repository `knoel99/frontier-one`, which drives a checkout of this one; its files under `race/` are installed from there and git-ignored here, except each team's `race/teams/<team>/objectives.toml`. The work of earlier teams is filed in `research/teams/<team>/` and `site/teams/<team>/`. Settings of the research tools (GPU jobs, API prices, reviews, publication, teams shown on the site) are in `milady.toml`.
 
 The site is built and published by `.github/workflows/pages.yml` on every push to `main`; rendered `index.html` files are not versioned. `.github/workflows/tests.yml` runs `make test`'s pytest selection, `ruff check src tests` and `tools/sync_agents.py --check` on every push to `main` and every pull request.
 
@@ -37,11 +37,11 @@ python3 tools/sync_agents.py [--check]                    # regenerate tool-spec
 python3 tools/call_model.py --role <role> --task <file>   # call a role through the API (MILADY_PROVIDER set)
 python3 tools/run_role.py --role <role> --task <file>     # run a role as a headless session of your harness
 python3 tools/check_calls.py ledger|preflight|exam        # verify models and efforts of the calls
-python3 "$SCIATHON_HOME"/tools/compute_broker.py submit --hours H -- CMD  # race only (knoel99/sciathon): CMD on a broker job VM
+python3 "$FRONTIER_HOME"/tools/compute_broker.py submit --hours H -- CMD  # race only (knoel99/frontier-one): CMD on a broker job VM
 python3 tools/runpod_job.py run --hours H -- CMD          # pilot: run CMD on a RunPod GPU pod (pushed commit), pod always deleted
 python3 tools/usage_report.py --write research/usage      # tokens, API-equivalent cost, sub-agents, GPU spend of the session
 python3 tools/review_due.py due|log                       # which encadrant / jury reviews are due now; record one
-python3 tools/check_deliverables.py --team <team> [--built]  # report, figures, diagrams, explorer of race/DELIVERABLES.md (sciathon)
+python3 tools/check_deliverables.py --team <team> [--built]  # report, figures, diagrams, explorer of race/DELIVERABLES.md (frontier-one)
 python3 tools/teams_index.py [--check]                    # team cards of the home page, Teams table, Site menu links
 bash tools/install_skills.sh                              # schematic-figure and archify skills, pinned (figures of the deliverables)
 ```

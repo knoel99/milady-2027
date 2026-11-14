@@ -1,5 +1,5 @@
 #!/usr/bin/env bash
-# Install the figure skills used for the deliverables (race/DELIVERABLES.md of knoel99/sciathon), at pinned commits:
+# Install the figure skills used for the deliverables (race/DELIVERABLES.md of knoel99/frontier-one), at pinned commits:
 #   schematic-figure (MIT, lgwrightlab)  -> scientific schematics as SVG/PDF/PNG from code
 #   archify (Apache-2.0, tt-a1i)         -> architecture, workflow and data-flow diagrams as HTML
 # into .claude/skills/ (Claude Code) and .cursor/skills/ (Cursor), both git-ignored.

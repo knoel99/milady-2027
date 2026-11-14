@@ -688,14 +688,14 @@ gain = "no smaller Inkling 2 yet; lowering effort is the only speed lever"
 # https://cursor.com/docs/models-and-pricing, https://cursor.com/docs/cloud-agent/api/endpoints.
 # Cursor reads sub-agents from .cursor/agents/ (wins over .claude/agents/ on a name clash);
 # `model` takes an id with optional bracketed parameters, e.g. composer-2.5[fast=false].
-# The pilot of race/PILOT-CURSOR.md (knoel99/sciathon) runs every role in Fast mode (2x price, plan ending soon).
+# The pilot of race/PILOT-CURSOR.md (knoel99/frontier-one) runs every role in Fast mode (2x price, plan ending soon).
 [cursor]
 output_dir = ".cursor/agents"
 format = "cursor"
 fast = true
 docs = ["https://cursor.com/docs/subagents", "https://cursor.com/docs/models-and-pricing",
         "https://cursor.com/docs/cloud-agent/api/endpoints"]
-unconfirmed = ["the name and values of the effort parameter for Grok 4.7 (check with tools/cursor_agents.py models of knoel99/sciathon)",
+unconfirmed = ["the name and values of the effort parameter for Grok 4.7 (check with tools/cursor_agents.py models of knoel99/frontier-one)",
                "several bracketed parameters in one sub-agent model string ([effort=high,fast=true])"]
 
 [cursor.tier]
@@ -710,7 +710,7 @@ high = "high"
 max = "xhigh"
 
 [cursor.cloud_api]
-# Read by tools/cursor_agents.py of knoel99/sciathon (Cloud Agents API).
+# Read by tools/cursor_agents.py of knoel99/frontier-one (Cloud Agents API).
 base_url = "https://api.cursor.com/v1"
 key_env = "CURSOR_API_KEY"
 effort_param = "effort"

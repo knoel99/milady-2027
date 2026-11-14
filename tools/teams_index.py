@@ -2,7 +2,7 @@
 """Team cards of the home page, the table of the Teams page and the team links of the Site menu.
 
 Every planned team is listed: the pilots and the race teams of milady.toml [site] (the race itself
-is configured in the repository knoel99/sciathon). A team's links appear as soon as its
+is configured in the repository knoel99/frontier-one). A team's links appear as soon as its
 deliverables exist under site/teams/<team>/ (report/index.qmd, report/index.pdf, explorer/index.qmd,
 diagrams/*.html); until then the card says "planned".
 

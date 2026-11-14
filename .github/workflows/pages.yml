@@ -33,7 +33,7 @@ jobs:
           sudo tar -xzf /tmp/quarto.tgz -C /opt
           echo "/opt/quarto-1.7.32/bin" >> "$GITHUB_PATH"
 
-      - name: LaTeX, for the pages that declare a PDF (race/DELIVERABLES.md of knoel99/sciathon)
+      - name: LaTeX, for the pages that declare a PDF (race/DELIVERABLES.md of knoel99/frontier-one)
         run: |
           if grep -rlqE --include=index.qmd '^  pdf:' site; then
             sudo apt-get update -qq
