@@ -83,3 +83,41 @@ Verdicts per criterion: unchanged for all seven; point E is now confirmed.
 Not checked: `research/race-report.md` (two lines changed), the rendered HTML, the PDF layout.
 
 Open blocking points: 0
+
+## Follow-up of the main session (2)
+
+The goal of the owner asks that the detail without bearing on the criteria of the offer go to an appendix or be summarised. The parts that the role had listed as detail still in the main text were therefore moved or summarised at commit 3087e8f (the compute section and its figure, the origin of each group of hypotheses, the descriptive result of H33, the paragraph of H31, the catalogue detail, the third paragraph of "Negative results", item 7 of the conclusion), and the role read that commit.
+
+## Third answer: check of 3087e8f
+
+No blocking point: the commit only moves text, nothing left the main text by accident, and no reference is broken (6 tool calls, nothing edited, tree clean).
+
+- **Moves.** In the sentence-level diff 83c2d27 → 3087e8f, the only whole paragraphs that changed place are the Compute paragraph with its figure and the third paragraph of "Negative results"; ten sentences moved verbatim. `{#sec-origin}` holds the seven expected paragraphs in the expected order, and no two paragraphs are glued.
+- **Numbers.** "At most 5.3 %" and "0.08 to 0.13" match the register (H33, H31) and the digest. "About half" holds on the raw files of `e4_surrogate` and `e4_surrogate_indep`: the model trained on Gaussian draws misses 0.06 to 0.10 of the dissipation, against 0.12 to 0.16 for the model trained on the data. The counts of (e) match the register statuses.
+- **References.** None is unresolved in the `.qmd` or the PDF (103 pages, appendix A on p. 73).
+
+My seven verdicts do not change. The detail left in the main text is short and announced: the "Two side tests" paragraph (L570) and the two history sentences closing `{#sec-remedy}`. I ask for no further move.
+
+Corrections, none blocking:
+
+1. L558: "has no deficit of magnetic energy" → "has no such deficit of magnetic energy". The model is 5.3 % low at η = 0.0725 (digest L4205), and the moved text says "no such deficit".
+2. L1221: "The costs are in the section [Reproducibility](#reproducibility)." → "The costs are in @sec-costs."
+3. L1237: "added five (" → "added four refutations and one dropped hypothesis (". The antecedent of "five" stayed in the main text.
+4. The digest does not print the mean-flow part of the model trained on Gaussian draws, so "0.06 to 0.10" (L1004) has no source there. Add it in `experiments/e4_digest.py`.
+
+Open blocking points: 0
+
+## Follow-up of the main session (3)
+
+Corrections 1 to 3 applied word for word at commit 172d7bd. Correction 4 was not needed: the table of H33 in the digest already gives the mean-flow part of the model trained on Gaussian draws (0.842, 1.06, 1.21 against 0.946, 1.14, 1.27 for the reference); the role accepted this.
+
+## Fourth answer: confirmation of the final version at 172d7bd
+
+The final version holds, with no blocking point (1 tool call, nothing edited, tree clean).
+
+- **Corrections 1 to 3:** applied word for word (L558, L1221, L1237). No other sentence changed, no reference is unresolved, and the PDF is regenerated (103 pages).
+- **Correction 4:** I accept your point and withdraw it; my search of the digest stopped before line 4198. The digest, unchanged since 3087e8f, gives 0.842, 1.06, 1.21 against 0.946, 1.14, 1.27 (line 4422: 0.862, 1.06, 1.20 against 0.94, 1.14, 1.27). That matches my recomputation from the raw files.
+
+My seven verdicts per criterion stand for this version.
+
+Open blocking points: 0
