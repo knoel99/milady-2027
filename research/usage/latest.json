@@ -1,5 +1,5 @@
 {
- "generated": "2026-11-13T20:56:12Z",
+ "generated": "2026-11-14T00:04:32Z",
  "projects": "/root/.claude/projects/-home-user-milady-2027",
  "sessions": 1,
  "main_session": {
@@ -10,23 +10,23 @@
    "high"
   ],
   "expected": "claude-fable-5-2 / high",
-  "responses": 1181,
+  "responses": 1281,
   "off_spec": 0,
   "conforms": true
  },
  "first": "2026-11-12T16:50:21.852Z",
- "last": "2026-11-13T20:56:05.665Z",
- "span_hours": 28.1,
+ "last": "2026-11-14T00:04:20.641Z",
+ "span_hours": 31.23,
  "by_model": {
   "claude-fable-5-2": {
-   "input": 3152,
-   "cache_write_5m": 4282328,
-   "cache_write_1h": 3448281,
-   "cache_read": 641138995,
-   "output": 3032018,
-   "thinking": 1467730,
-   "calls": 1600,
-   "usd": 347.53
+   "input": 3394,
+   "cache_write_5m": 4523238,
+   "cache_write_1h": 3814663,
+   "cache_read": 688500236,
+   "output": 3232177,
+   "thinking": 1539792,
+   "calls": 1726,
+   "usd": 373.28
   },
   "claude-sonnet-5-5": {
    "input": 470,
@@ -39,13 +39,13 @@
    "usd": 8.57
   }
  },
- "total_usd": 356.1,
+ "total_usd": 381.85,
  "subagents": {
-  "count": 42,
+  "count": 44,
   "by_type": {
    "general-purpose": 9,
    "jury-externe": 8,
-   "encadrant": 20,
+   "encadrant": 22,
    "biblio": 2,
    "physicien": 3
   },
@@ -289,9 +289,9 @@
     "efforts": [
      "medium"
     ],
-    "calls": 1,
-    "output": 936,
-    "usd": 0.1776,
+    "calls": 9,
+    "output": 24012,
+    "usd": 1.8442,
     "off_spec": 0,
     "expected": "claude-fable-5-2 / medium",
     "conforms": true
@@ -509,6 +509,23 @@
     "conforms": true
    },
    {
+    "id": "agent-aab794e04545043af",
+    "type": "encadrant",
+    "description": "Encadrant verdict H40",
+    "models": [
+     "claude-fable-5-2"
+    ],
+    "efforts": [
+     "medium"
+    ],
+    "calls": 8,
+    "output": 14452,
+    "usd": 1.3883,
+    "off_spec": 0,
+    "expected": "claude-fable-5-2 / medium",
+    "conforms": true
+   },
+   {
     "id": "agent-ab64fd339d312e41e",
     "type": "general-purpose",
     "description": "Schematics: protocol and compute path",
@@ -588,6 +605,23 @@
     "usd": 3.1373,
     "off_spec": 0,
     "expected": "claude-fable-5-2 / max",
+    "conforms": true
+   },
+   {
+    "id": "agent-ace69745bfedfba5f",
+    "type": "encadrant",
+    "description": "Encadrant verdict H41 + offer",
+    "models": [
+     "claude-fable-5-2"
+    ],
+    "efforts": [
+     "medium"
+    ],
+    "calls": 10,
+    "output": 14374,
+    "usd": 1.6818,
+    "off_spec": 0,
+    "expected": "claude-fable-5-2 / medium",
     "conforms": true
    },
    {
@@ -741,28 +775,28 @@
   "nonconforming": 0
  },
  "tool_calls": {
-  "Bash": 1161,
-  "Read": 49,
-  "Agent": 42,
+  "Bash": 1257,
+  "Read": 54,
+  "Agent": 44,
   "Write": 18,
   "ToolSearch": 5,
   "SendMessage": 4,
-  "ReadNotifications": 2,
+  "ReadNotifications": 3,
+  "mcp__claude-code-remote__send_message": 2,
   "mcp__claude-code-remote__get_session": 1,
   "Grep": 1,
-  "mcp__runpod-api__list-pods": 1,
-  "mcp__claude-code-remote__send_message": 1
+  "mcp__runpod-api__list-pods": 1
  },
  "role_calls_via_tools": 0,
  "gpu": {
-  "jobs": 78,
-  "hours": 62.96,
-  "usd": 55.76,
+  "jobs": 82,
+  "hours": 66.881,
+  "usd": 59.79,
   "by_gpu": {
    "NVIDIA RTX PRO 4500 Blackwell": {
-    "jobs": 50,
-    "hours": 35.31449999999999,
-    "usd": 25.426
+    "jobs": 52,
+    "hours": 37.43439999999999,
+    "usd": 26.952399999999997
    },
    "NVIDIA RTX A6000": {
     "jobs": 3,
@@ -785,9 +819,9 @@
     "usd": 2.197
    },
    "NVIDIA GeForce RTX 5090": {
-    "jobs": 6,
-    "hours": 6.661300000000001,
-    "usd": 8.8611
+    "jobs": 8,
+    "hours": 8.4617,
+    "usd": 11.3637
    },
    "NVIDIA A40": {
     "jobs": 1,
