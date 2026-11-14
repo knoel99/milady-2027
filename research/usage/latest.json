@@ -1,5 +1,5 @@
 {
- "generated": "2026-11-14T06:24:00Z",
+ "generated": "2026-11-14T06:49:32Z",
  "projects": "/root/.claude/projects/-home-user-milady-2027",
  "sessions": 1,
  "main_session": {
@@ -10,23 +10,23 @@
    "high"
   ],
   "expected": "claude-fable-5-2 / high",
-  "responses": 1414,
+  "responses": 1429,
   "off_spec": 0,
   "conforms": true
  },
  "first": "2026-11-12T16:50:21.852Z",
- "last": "2026-11-14T06:23:31.146Z",
- "span_hours": 37.55,
+ "last": "2026-11-14T06:49:07.695Z",
+ "span_hours": 37.98,
  "by_model": {
   "claude-fable-5-2": {
-   "input": 3794,
-   "cache_write_5m": 5192263,
-   "cache_write_1h": 4674389,
-   "cache_read": 762896723,
-   "output": 3601994,
-   "thinking": 1736827,
-   "calls": 1920,
-   "usd": 423.4
+   "input": 3849,
+   "cache_write_5m": 5608069,
+   "cache_write_1h": 4707360,
+   "cache_read": 774380013,
+   "output": 3722400,
+   "thinking": 1825005,
+   "calls": 1944,
+   "usd": 435.2
   },
   "claude-sonnet-5-5": {
    "input": 470,
@@ -39,12 +39,12 @@
    "usd": 8.57
   }
  },
- "total_usd": 431.97,
+ "total_usd": 443.77,
  "subagents": {
-  "count": 47,
+  "count": 48,
   "by_type": {
    "general-purpose": 9,
-   "jury-externe": 10,
+   "jury-externe": 11,
    "encadrant": 23,
    "biblio": 2,
    "physicien": 3
@@ -806,6 +806,23 @@
     "usd": 1.4153
    },
    {
+    "id": "agent-af7e3b61314f6fdf8",
+    "type": "jury-externe",
+    "description": "Final jury review of report",
+    "models": [
+     "claude-fable-5-2"
+    ],
+    "efforts": [
+     "max"
+    ],
+    "calls": 9,
+    "output": 99598,
+    "usd": 8.4397,
+    "off_spec": 0,
+    "expected": "claude-fable-5-2 / max",
+    "conforms": true
+   },
+   {
     "id": "agent-afc133e8d66d2591c",
     "type": "encadrant",
     "description": "Encadrant verdict H37",
@@ -826,12 +843,12 @@
   "nonconforming": 0
  },
  "tool_calls": {
-  "Bash": 1363,
+  "Bash": 1373,
   "Read": 55,
-  "Agent": 47,
+  "Agent": 48,
   "Write": 18,
   "ToolSearch": 9,
-  "SendMessage": 5,
+  "SendMessage": 6,
   "ReadNotifications": 5,
   "mcp__github__get_job_logs": 3,
   "mcp__claude-code-remote__send_message": 2,
