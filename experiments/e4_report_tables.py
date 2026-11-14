@@ -13,6 +13,7 @@ with other data seeds), ``objectives`` (targets of race/teams/claude/objectives.
 from __future__ import annotations
 
 import argparse
+import os
 import json
 import re
 import subprocess
@@ -304,7 +305,62 @@ def blocks() -> dict[str, list[str]]:
                                                 "W15_recoloured_modes", "W16_recoloured_full"]),
         "objectives": block_objectives(),
         "jobs": block_jobs(),
+        "release": block_release(),
+        "releaseeval": block_releaseeval(),
     }
+
+
+RELEASE = Path(os.environ.get("E4_RELEASE_DIR", ROOT / "research" / "release"))
+
+
+def block_release() -> list[str]:
+    """Files of the published release (research/release/manifest.json, written by the release build)."""
+    path = RELEASE / "manifest.json"
+    man = json.loads(path.read_text()) if path.exists() else {}
+    if "url" not in man:
+        return ["| File | Content | Format | Size |", "|:---|:---|:---|---:|", "| – | the release is not built yet | – | – |"]
+    url, data, mods = man["url"], man["data_files"], man["model_files"]
+    mib = lambda b: f"{b / 2**20:.1f} MiB" if b < 2**30 else f"{b / 2**30:.2f} GiB"                 # noqa: E731
+    link = lambda f: f"[`{f}`]({url}/{f})"                                                           # noqa: E731
+    rows = ["| File | Content | Format | Size |", "|:-----------------------|:------------------------------------------|:------------------|-------:|"]
+    etas = "`e4_eta<η>.h5` for η = " + ", ".join(f"[{f['eta']:.5f}]({url}/{f['file']})" for f in data)
+    rows.append(f"| {etas} | Reference data, one file per $\\eta$ ({data[0]['n_trajectories']} trajectories × {data[0]['n_t']} snapshots): "
+                f"fields $u$ and $B$ on the $16^3$ grid, time series of the solver, provenance; splits train, val and test in the metadata | "
+                f"MFF 1.0: HDF5 with the layout of The Well | {len(data)} files, {mib(sum(f['size_bytes'] for f in data))} in all |")
+    rows.append(f"| {link(man['sample']['file'])} | Sample of the data: {man['sample']['content']} | MFF 1.0 | {mib(man['sample']['size_bytes'])} |")
+    kinds = {"latent space": "Latent space of the models and its normalisation", "G0": "Parameters of the Gaussian law G0 (mean and covariance per Fourier mode at each training $\\eta$)",
+             "G1": "Parameters of the Gaussian law G1 (mean and factor of the full covariance at each training $\\eta$)",
+             "W9": "Weights of the flow-matching model W9, one file per seed", "W16": "Linear map of W16 at the three held-out $\\eta$, one file per seed of W9"}
+    for kind, what in kinds.items():
+        fs = [f for f in mods if f["kind"] == kind]
+        if fs:
+            size = mib(fs[0]["size_bytes"]) if len(fs) == 1 else f"{len(fs)} files, {mib(sum(f['size_bytes'] for f in fs))} in all"
+            rows.append(f"| {', '.join(link(f['file']) for f in fs)} | {what} | PyTorch dictionary of tensors | {size} |")
+    rows.append(f"| {link('catalog.sqlite')}, {link('catalog.json')} | Catalogue: data set `e4_mhd3d` 1.0 with its splits, {man['catalog']['released_models']} released models with "
+                f"file, hyperparameters, commit, data set and evaluations, and the cited runs as records without files | SQLite (`milady.catalog`), JSON export | – |")
+    rows.append(f"| {link('SHA256SUMS')}, {link('manifest.json')}, {link('README.md')} | Checksums, list of the files with sizes and identifiers, notes | text, JSON | – |")
+    return rows
+
+
+def block_releaseeval() -> list[str]:
+    """Metrics of the released models against those of the cited runs (research/release/catalog.json)."""
+    path = RELEASE / "catalog.json"
+    ev = json.loads(path.read_text()).get("evaluation_summary", {}) if path.exists() else {}
+    head = ["| Law | Metric | Runs cited by the report (GPU) | Released models (CPU build) |", "|:----|:--------------------------------------|:------------------------|:------------------------|"]
+    if not any(k.startswith("released/") for k in ev):
+        return head + ["| – | the release is not built yet | – | – |"]
+    metrics = (("energy distance over the noise floor", "ed_ratio"), ("relative error of the magnetic energy", "err_Eb_rel"),
+               ("third-order part of the production over the dissipation", "prod_fluct_over_d"), ("residual of the energy balance", "balance_residual_total"),
+               ("null-count error", "null_count_err_rel"), ("restart drift of the magnetic energy", "restart_drift_eb"))
+
+    def cell(key: str, metric: str) -> str:
+        vals = [v["mean_over_seeds"] for k, v in ev.get(key, {}).items() if k.startswith(metric + " @")]
+        return ", ".join(f"{x:.3g}" for x in vals) if vals else "not evaluated"
+
+    man = json.loads((RELEASE / "manifest.json").read_text())
+    notes = [f"The release was built from commit `{str(man['git_commit'])[:12]}` on {man['host']}. The map of W16 is estimated there on {man['n_recolour']} samples of W9 per "
+             "held-out $\\eta$ (131 072 in the report, on a GPU), and W16 is evaluated on 512 samples outside that estimate, without the restart in the solver."]
+    return head + [f"| {law} | {name} | {cell('cited/' + law, m)} | {cell('released/' + law, m)} |" for law in ("G0", "G1", "W9", "W16") for name, m in metrics] + [NOTES] + notes
 
 
 def main() -> None:
