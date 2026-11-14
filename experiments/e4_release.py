@@ -129,7 +129,10 @@ def _w16(models: Path) -> dict | None:
     parts = [json.loads(p.read_text()) for p in sorted(models.glob("e4_release_w16_s*.json"))]
     if not parts:
         return None
-    return {"config": {k: v for k, v in parts[0]["config"].items() if k != "seed"}, "evaluation": {str(p["config"]["seed"]): p["evaluation"] for p in parts}}
+    by_seed = {str(p["config"]["seed"]): p["config"]["n_recolour"] for p in parts}
+    lo, hi = min(by_seed.values()), max(by_seed.values())
+    return {"config": {**{k: v for k, v in parts[0]["config"].items() if k != "seed"}, "n_recolour": lo if lo == hi else f"{lo} to {hi}",
+                       "n_recolour_by_seed": by_seed}, "evaluation": {str(p["config"]["seed"]): p["evaluation"] for p in parts}}
 
 
 def catalogue(out: Path, run: Path, models: Path, files: list[dict], url: str) -> dict:
@@ -162,7 +165,7 @@ def catalogue(out: Path, run: Path, models: Path, files: list[dict], url: str) -
                      "reload": f"python3 experiments/e4_release_example.py --dir e4_release --download --law {law} --seed {seed}",
                      "seed_meaning": "seed of the draws (one parameter file for the five)" if law in ("G0", "G1") else "seed of the training of W9"}
             if law == "W16":
-                rows, hyper["n_recolour"] = (w16["evaluation"].get(str(seed), []), w16["config"]["n_recolour"]) if w16 else ([], None)
+                rows, hyper["n_recolour"] = (w16["evaluation"].get(str(seed), []), w16["config"]["n_recolour_by_seed"].get(str(seed))) if w16 else ([], None)
                 hyper["evaluation"] = "512 samples per held-out η outside the estimate of the map; no restart in the solver"
             else:
                 rows, hyper["times"] = r["evaluation"].get(BUILT[law], {}).get("test", []), r["times"].get(BUILT[law], {})

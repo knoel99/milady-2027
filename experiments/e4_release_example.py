@@ -107,13 +107,26 @@ def sample_w9(model: torch.nn.Module, space: FourierPotentialSpace, eta: float, 
     return torch.cat(out)
 
 
-def recolouring(zs: torch.Tensor, g1: C.FullGaussian, eta: float) -> dict[str, torch.Tensor]:
-    """Map of W16 at ``eta`` from samples ``zs`` of W9: x → mean_tgt + (x − mean_src) A, with the moments of G1 as target."""
-    flat = zs.flatten(1).double()
-    mu_s = flat.mean(0)
-    d = flat - mu_s
+@torch.no_grad()
+def moments_w9(model: torch.nn.Module, space: FourierPotentialSpace, eta: float, n: int, seed: int = 0, steps: int = 50,
+               batch: int = 512) -> tuple[torch.Tensor, torch.Tensor]:
+    """Mean (D,) and covariance (D, D), float64, of ``n`` samples of W9 at ``eta``, accumulated batch by batch."""
+    g = torch.Generator().manual_seed(seed)
+    d = space.n_modes * space.n_channels
+    s1, s2 = torch.zeros(d, dtype=torch.float64), torch.zeros(d, d, dtype=torch.float64)
+    for i in range(0, n, batch):
+        z0 = torch.randn(min(batch, n - i), space.n_modes, space.n_channels, generator=g)
+        z = heun_sample(model, z0, torch.full((len(z0), 1), cn(eta)), steps=steps).flatten(1).double()
+        s1 += z.sum(0)
+        s2 += z.T @ z
+    mean = s1 / n
+    return mean, s2 / n - torch.outer(mean, mean)
+
+
+def recolouring(mean_src: torch.Tensor, cov_src: torch.Tensor, g1: C.FullGaussian, eta: float) -> dict[str, torch.Tensor]:
+    """Map of W16 at ``eta`` from the moments of W9: x → mean_tgt + (x − mean_src) A, with the moments of G1 as target."""
     mu_t, cov_t = g1.moments(cn(eta))
-    return {"mean_src": mu_s.float(), "map": C.recolouring_map(d.T @ d / len(d), cov_t).float(), "mean_tgt": mu_t.float()}
+    return {"mean_src": mean_src.float(), "map": C.recolouring_map(cov_src, cov_t).float(), "mean_tgt": mu_t.float()}
 
 
 def recolour(z: torch.Tensor, rec: dict[str, torch.Tensor]) -> torch.Tensor:
@@ -175,7 +188,7 @@ def main() -> None:
                     fetch(a.dir, GAUSS.format(law="G1"), a.url)
                 n_rec = a.n_recolour or 8192
                 print(f"recomputing the map of W16 from {n_rec} samples of W9", flush=True)
-                rec = recolouring(sample_w9(model, space, a.eta, n_rec, seed=1000 + a.seed), load_gaussian(a.dir, "G1"), a.eta)
+                rec = recolouring(*moments_w9(model, space, a.eta, n_rec, seed=1000 + a.seed), load_gaussian(a.dir, "G1"), a.eta)
             z = recolour(z, rec)
     f = to_fields(space, z)
     eb, eu = (0.5 * (f[k].astype(np.float64) ** 2).sum(-1).mean() for k in ("magnetic_field", "velocity"))

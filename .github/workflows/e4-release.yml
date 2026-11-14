@@ -21,14 +21,14 @@ concurrency:
 
 env:
   E4_RELEASE_BUILD: "1"
-  E4_N_RECOLOUR: "16384"
+  E4_N_RECOLOUR: "32768"
   RELEASE_TAG: e4-data-v1.0
   MILADY_GIT_COMMIT: ${{ github.sha }}
 
 jobs:
   data:
     runs-on: ubuntu-latest
-    timeout-minutes: 120
+    timeout-minutes: 300
     steps:
       - uses: actions/checkout@v4
       - uses: actions/setup-python@v5

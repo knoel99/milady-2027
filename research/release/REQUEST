@@ -1,0 +1,3 @@
+Build request of the E4 release (.github/workflows/e4-release.yml runs when this file changes on the branch of team claude).
+tag: e4-data-v1.0
+request: 1 (2026-11-14): data in the MFF format, models G0, G1, W9 and W16 for the five seeds, catalogue, checksums
