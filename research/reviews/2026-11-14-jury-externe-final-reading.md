@@ -121,3 +121,41 @@ The final version holds, with no blocking point (1 tool call, nothing edited, tr
 My seven verdicts per criterion stand for this version.
 
 Open blocking points: 0
+
+## Fifth answer: the race report at 346cee0
+
+One blocking point. The offer section agrees with `@tbl-offer` and with my seven verdicts (5 tool calls, nothing edited).
+
+Confirmed: the objectives table equals `race_metrics.py --all`; the counts hold (38 as 19, 17, 2; 103 pages; 36 files, 4.58 GiB); nothing over is presented as active.
+
+Corrections:
+
+1. **BLOCKING.** Polarity bullet: "…and carry no such dynamics." → "…, which fix at most the mean rate of sign changes (not computed), not the course or waiting times of a reversal." (report L640).
+2. C5 cell: "no law is below 0.95" → "no law within 60 floors of the reference is below 0.95" (W6: 0.43).
+3. H28 bullet: after "below 0.005 of the reference" add "on the seed means (0.023 in one seed)"; "(below 0.003 of the dissipation)" → "(seed means below 0.002, at most 0.005 in any seed)".
+4. H33 bullet: "no deficit of magnetic energy (at most 5 %)" → "no such deficit of magnetic energy (at most 5.3 %)".
+5. After "written before its run" add "(the checks of H35 and H36 were amended after a first invalid cycle)".
+6. Conjectured: "30 or more inter-mode directions" → "30 or 300 inter-mode directions, or the full sample covariance".
+7. Offer section: "the reference fields and the models are published in the format of the project" → "the reference fields are published in the format of the project, with the models".
+
+Not checked: the state of the pods.
+
+Open blocking points: 1
+
+## Follow-up of the main session (4)
+
+The seven corrections were applied word for word at commit 6be3362. The cost of the session is given in the race report by reference to `research/usage/latest.md`, which is rewritten at the last commit.
+
+## Sixth answer: confirmation of the race report at 6be3362
+
+The blocking point is closed: the polarity sentence is replaced, and the six other corrections are in place word for word (1 tool call, nothing edited).
+
+The race report and the report now agree on the criteria of the offer.
+
+Not blocking, and not in my list: "about 3 % of subsampling uncertainty" sits beside "4 and 10 %" in the same file.
+
+Open blocking points: 0
+
+## Follow-up of the main session (5)
+
+The remaining remark was applied in the next commit: "about 3 % of subsampling uncertainty" is replaced by "the reference count on 400 snapshots differs by 4 to 10 % between two draws".

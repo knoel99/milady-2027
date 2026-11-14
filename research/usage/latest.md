@@ -1,13 +1,13 @@
-# Usage report (2026-11-14T07:00:19Z)
+# Usage report (2026-11-14T07:08:35Z)
 
-Sessions: 1; first response 2026-11-12T16:50:21.852Z; last 2026-11-14T07:00:17.338Z; span 38.17 h.
+Sessions: 1; first response 2026-11-12T16:50:21.852Z; last 2026-11-14T07:08:14.248Z; span 38.3 h.
 Main session: models ['claude-fable-5-2'], efforts ['high']; expected claude-fable-5-2 / high: conforms.
-API-equivalent cost of the Claude calls: **$451.73** (prices of race/config.toml [pricing]).
+API-equivalent cost of the Claude calls: **$455.57** (prices of race/config.toml [pricing]).
 GPU: 82 job(s), 66.881 h, **$59.79** of a $140.0 budget.
 
 | model | API calls | input | cache write 5m | cache write 1h | cache read | output | of which thinking | cost |
 |---|---|---|---|---|---|---|---|---|
-| claude-fable-5-2 | 1967 | 3,905 | 5,931,693 | 4,734,481 | 786,977,936 | 3,766,495 | 1,847,953 | $443.16 |
+| claude-fable-5-2 | 1982 | 3,944 | 5,977,315 | 4,745,607 | 795,484,994 | 3,804,181 | 1,875,101 | $447.0 |
 | claude-sonnet-5-5 | 201 | 470 | 1,464,623 | 0 | 23,497,224 | 255,753 | 107,746 | $8.57 |
 
 Sub-agents: 48 call(s), 0 not conforming to agents/roles/; by type {'general-purpose': 9, 'jury-externe': 11, 'encadrant': 23, 'biblio': 2, 'physicien': 3}.
@@ -60,8 +60,8 @@ Sub-agents: 48 call(s), 0 not conforming to agents/roles/; by type {'general-pur
 | general-purpose | claude-sonnet-5-5 | medium | – | 47 | 26,060 | $1.3093 | Fix three Archify diagrams |
 | encadrant | claude-fable-5-2 | medium | claude-fable-5-2 / medium | 8 | 10,684 | $1.1972 | Encadrant: verdicts H15-H20 main run |
 | general-purpose | claude-sonnet-5-5 | medium | – | 32 | 45,046 | $1.4153 | Archify diagrams for team claude |
-| jury-externe | claude-fable-5-2 | max | claude-fable-5-2 / max | 17 | 127,043 | $13.2029 | Final jury review of report |
+| jury-externe | claude-fable-5-2 | max | claude-fable-5-2 / max | 23 | 157,462 | $15.2902 | Final jury review of report |
 | encadrant | claude-fable-5-2 | medium | claude-fable-5-2 / medium | 7 | 21,514 | $1.8329 | Encadrant verdict H37 |
 
 Role calls through tools/call_model.py or run_role.py: 0.
-Tool calls of the main session: {'Bash': 1382, 'Read': 55, 'Agent': 48, 'Write': 18, 'ToolSearch': 9, 'SendMessage': 8, 'ReadNotifications': 5, 'mcp__github__get_job_logs': 3, 'mcp__claude-code-remote__send_message': 2, 'mcp__github__actions_list': 2, 'mcp__claude-code-remote__get_session': 1, 'Grep': 1, 'mcp__runpod-api__list-pods': 1, 'mcp__claude-code-remote__read_documentation': 1, 'TaskStop': 1}.
+Tool calls of the main session: {'Bash': 1386, 'Read': 55, 'Agent': 48, 'Write': 18, 'SendMessage': 10, 'ToolSearch': 9, 'ReadNotifications': 5, 'mcp__github__get_job_logs': 3, 'mcp__claude-code-remote__send_message': 2, 'mcp__github__actions_list': 2, 'mcp__claude-code-remote__get_session': 1, 'Grep': 1, 'mcp__runpod-api__list-pods': 1, 'mcp__claude-code-remote__read_documentation': 1, 'TaskStop': 1}.

@@ -2,6 +2,10 @@
 
 One entry per working session, newest first, at most ten lines.
 
+## 2026-11-14 — Closing (07:08 UTC): the race report read by `jury-externe`; end
+- `research/race-report.md` no longer quotes a cost that goes stale: it refers to `research/usage/latest.md`, rewritten at the last commit. The `jury-externe` role, which had not read the race report, checked it against the final report and the criteria of the offer (answers 5 and 6 of `research/reviews/2026-11-14-jury-externe-final-reading.md`, logged): its section on the offer agrees with the table of the report and the verdicts of the role, the objectives table equals `race_metrics.py --all`, the counts hold; one blocking point (the sentence on what a snapshot generator fixes of the reversals) and seven precisions, corrected and confirmed: no open blocking point.
+- Final state: no job, workflow or pod of the team running; `check_deliverables --team claude --built` 33 of 33; objectives valid; `review_due.py due`: nothing due; usage report rewritten; everything committed and pushed.
+
 ## 2026-11-14 — Closing (07:00 UTC): last detail moved to appendices; final version confirmed by `jury-externe`
 - The parts that the final reading still listed as detail without bearing on the offer were moved to appendices or summarised (commit 3087e8f: compute path, origin of each group of hypotheses, descriptive result of H33, H31, catalogue detail, later refutations, item 7 of the conclusion): 103 pages, about 72 of text and ten appendices. The role read the commit (no paragraph lost, numbers and counts equal to the register and the digest, no broken reference, its seven verdicts per criterion of the offer unchanged), asked three wordings, applied at 172d7bd, and confirmed that final version: "Open blocking points: 0" (`research/reviews/2026-11-14-jury-externe-final-reading.md`, logged at 172d7bd).
 - Recall for the record: the runs of H38, H39 and H40 ended on 13 November and their verdicts were given by `encadrant` the same day (reviews logged at 21:17 and 22:17 UTC; H41 at 23:40 UTC); nothing was launched on a GPU since.
