@@ -386,7 +386,7 @@ def block_releaseeval() -> list[str]:
         return ", ".join(f"{x:.3g}" for x in vals) if vals else "not evaluated"
 
     man = json.loads((RELEASE / "manifest.json").read_text())
-    notes = [f"The release was built from commit `{str(man['git_commit'])[:12]}` on {man['host']}. The map of W16 is estimated there on {man['n_recolour']} samples of W9 per "
+    notes = [f"The models of the release were trained at commit `{str(man.get('models_commit', man['git_commit']))[:12]}` on {man['host']}. The map of W16 is estimated there on {man['n_recolour']} samples of W9 per "
              "held-out $\\eta$ (131 072 in the report, on a GPU), and W16 is evaluated on 512 samples outside that estimate, without the restart in the solver."]
     return head + [f"| {law} | {name} | {cell('cited/' + law, m)} | {cell('released/' + law, m)} |" for law in ("G0", "G1", "W9", "W16") for name, m in metrics] + [NOTES] + notes
 

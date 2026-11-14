@@ -1,0 +1,85 @@
+# E4 release, repack: write the MFF files again from the snapshots of an earlier build (their provenance note says whether
+# the data are the realisation of the main run of the report), assemble the folder of the release with the model files of
+# that build, and replace the assets and the notes of the release. No training: a few minutes on one runner.
+# It runs when research/release/REPACK changes on the branch of team claude, or by hand.
+name: e4-release-repack
+
+on:
+  push:
+    branches: ["claude/modest-newton-zx8fqs"]
+    paths: ["research/release/REPACK"]
+  workflow_dispatch:
+
+permissions:
+  contents: write
+  actions: read
+
+concurrency:
+  group: e4-release
+  cancel-in-progress: false
+
+env:
+  E4_RELEASE_BUILD: "1"
+  RELEASE_TAG: e4-data-v1.0
+  SOURCE_RUN: "43537658555"                                      # the build whose snapshots and models are repacked
+  E4_MODEL_COMMIT: 240b56cc186367871ac7adf519fb1a0b73e88262      # the commit of that build
+  MILADY_GIT_COMMIT: ${{ github.sha }}
+
+jobs:
+  repack:
+    runs-on: ubuntu-latest
+    timeout-minutes: 90
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.12"
+          cache: pip
+          cache-dependency-path: infra/env/requirements.txt
+      - name: Install the pinned dependencies
+        run: |
+          python -m pip install -r infra/env/requirements.txt
+          python -m pip install --no-deps -e .
+      - uses: actions/download-artifact@v4
+        with:
+          name: e4-npz
+          path: experiments/
+          run-id: ${{ env.SOURCE_RUN }}
+          github-token: ${{ github.token }}
+      - uses: actions/download-artifact@v4
+        with:
+          pattern: e4-model-*
+          merge-multiple: true
+          path: experiments/
+          run-id: ${{ env.SOURCE_RUN }}
+          github-token: ${{ github.token }}
+      - name: MFF files with their provenance note
+        run: bash experiments/e4_release_build.sh mff
+      - name: Release folder
+        run: |
+          bash experiments/e4_release_build.sh assemble "$RUNNER_TEMP/e4_release" \
+            "https://github.com/${{ github.repository }}/releases/download/$RELEASE_TAG"
+          ls -la "$RUNNER_TEMP/e4_release"
+      - name: Reload each law from the release folder and draw samples
+        run: |
+          for law in G0 G1 W9 W16; do
+            python experiments/e4_release_example.py --dir "$RUNNER_TEMP/e4_release" --law "$law" --seed 0 --eta 0.04899 --n 64
+          done
+      - name: Replace the assets and the notes of the release
+        env:
+          GH_TOKEN: ${{ github.token }}
+        run: |
+          cd "$RUNNER_TEMP/e4_release"
+          sha256sum -c SHA256SUMS
+          gh release upload "$RELEASE_TAG" --repo "${{ github.repository }}" --clobber ./*
+          gh release edit "$RELEASE_TAG" --repo "${{ github.repository }}" --notes-file README.md
+      - uses: actions/upload-artifact@v4
+        with:
+          name: e4-release-small-files
+          retention-days: 30
+          path: |
+            ${{ runner.temp }}/e4_release/README.md
+            ${{ runner.temp }}/e4_release/manifest.json
+            ${{ runner.temp }}/e4_release/SHA256SUMS
+            ${{ runner.temp }}/e4_release/catalog.json
+            ${{ runner.temp }}/e4_release/e4_release_w16.json
