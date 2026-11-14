@@ -6,6 +6,8 @@ The bundle copies, without recomputing anything:
   - every summary result file experiments/results/<team>_*.json, and <team>_fm/metrics.json if present;
   - the hypothesis register research/hypotheses.json (id, statement, criterion, status, verdict);
   - the finished GPU jobs of research/compute-ledger.jsonl (time, GPU, hours, USD, command, exit code);
+  (in the main repository the research files of a finished team are under research/teams/<team>/, read first;
+  team claude's E4 explorer has its own exporter, experiments/e4_export_explorer.py)
   - the list of the team's SVG data plots and schematics, for the figure gallery.
 """
 
@@ -28,16 +30,21 @@ def results(team: str) -> dict:
     return {p.relative_to(res).as_posix(): json.loads(p.read_text(encoding="utf-8")) for p in files}
 
 
-def hypotheses() -> list[dict]:
-    path = ROOT / "research" / "hypotheses.json"
+def research_dir(team: str) -> Path:
+    archived = ROOT / "research" / "teams" / team
+    return archived if archived.is_dir() else ROOT / "research"
+
+
+def hypotheses(team: str) -> list[dict]:
+    path = research_dir(team) / "hypotheses.json"
     if not path.exists():
         return []
     keep = ("id", "statement", "refutation_criterion", "status", "verdict", "script")
     return [{k: h.get(k) for k in keep} for h in json.loads(path.read_text(encoding="utf-8"))["hypotheses"]]
 
 
-def gpu_jobs() -> list[dict]:
-    path = ROOT / "research" / "compute-ledger.jsonl"
+def gpu_jobs(team: str) -> list[dict]:
+    path = research_dir(team) / "compute-ledger.jsonl"
     if not path.exists():
         return []
     keep = ("time", "gpu", "hours", "usd", "command", "rc", "commit")
@@ -56,7 +63,7 @@ def figures(team: str) -> list[dict]:
 
 
 def export(team: str) -> Path:
-    bundle = {"team": team, "results": results(team), "hypotheses": hypotheses(), "gpu_jobs": gpu_jobs(),
+    bundle = {"team": team, "results": results(team), "hypotheses": hypotheses(team), "gpu_jobs": gpu_jobs(team),
               "figures": figures(team)}
     text = json.dumps(bundle, indent=1, allow_nan=False) + "\n"
     if len(text.encode()) > MAX_BYTES:

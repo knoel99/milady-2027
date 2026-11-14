@@ -1,0 +1,67 @@
+[W0_free] it  1000  loss 1.6606  15 s
+[W0_free] it  2000  loss 1.6336  32 s
+[W0_free] it  3000  loss 1.6101  46 s
+[W0_free] it  4000  loss 1.6009  61 s
+== W0_free: test ed_ratio 234.06  div_b 3.86e-01  balance 0.295  spec_b 2.187  Hm 1.690  nulls 1.184  restart 0.506
+== W2_final_projection: test ed_ratio 177.48  div_b 2.59e-08  balance 0.295  spec_b 1.854  Hm 1.690  nulls 0.995  restart 0.433
+[W1_penalty] it  1000  loss 2.0678  15 s
+[W1_penalty] it  2000  loss 2.0149  31 s
+[W1_penalty] it  3000  loss 1.9874  46 s
+[W1_penalty] it  4000  loss 1.9741  60 s
+== W1_penalty: test ed_ratio 435.53  div_b 2.17e-01  balance 0.574  spec_b 19.070  Hm 30.820  nulls 0.657  restart 0.506
+[W3_projected_flow] it  1000  loss 1.3207  13 s
+[W3_projected_flow] it  2000  loss 1.2970  28 s
+[W3_projected_flow] it  3000  loss 1.2744  43 s
+[W3_projected_flow] it  4000  loss 1.2652  55 s
+== W3_projected_flow: test ed_ratio 171.47  div_b 2.14e-08  balance 0.286  spec_b 1.745  Hm 1.544  nulls 0.997  restart 0.427
+[W4_potentials] it  1000  loss 1.6923  9 s
+[W4_potentials] it  2000  loss 1.6555  19 s
+[W4_potentials] it  3000  loss 1.6353  30 s
+[W4_potentials] it  4000  loss 1.6295  42 s
+== W4_potentials: test ed_ratio 247.03  div_b 1.18e-08  balance 0.383  spec_b 2.084  Hm 1.545  nulls 1.287  restart 0.505
+[W6_diffusion] it  1000  loss 0.8884  9 s
+[W6_diffusion] it  2000  loss 0.8631  19 s
+[W6_diffusion] it  3000  loss 0.8524  30 s
+[W6_diffusion] it  4000  loss 0.8457  41 s
+== W6_diffusion: test ed_ratio 477.70  div_b 1.03e-08  balance 0.701  spec_b 12.043  Hm 16.050  nulls 0.481  restart 0.630
+[W4s_potentials_sym] it  1000  loss 1.6663  13 s
+[W4s_potentials_sym] it  2000  loss 1.6333  27 s
+[W4s_potentials_sym] it  3000  loss 1.6163  41 s
+[W4s_potentials_sym] it  4000  loss 1.6116  57 s
+== W4s_potentials_sym: test ed_ratio 208.25  div_b 1.22e-08  balance 0.276  spec_b 0.920  Hm 0.364  nulls 1.867  restart 0.379
+[W5_stationarity] it   100  loss 1.7014  8 s
+[W5_stationarity] it   200  loss 1.7259  16 s
+[W5_stationarity] it   300  loss 1.7120  25 s
+[W5_stationarity] it   400  loss 1.6979  34 s
+== W5_stationarity: test ed_ratio 215.98  div_b 1.22e-08  balance 0.186  spec_b 0.464  Hm 0.697  nulls 2.402  restart 0.333
+[W5_control] it   100  loss 1.6203  1 s
+[W5_control] it   200  loss 1.6176  2 s
+[W5_control] it   300  loss 1.6117  4 s
+[W5_control] it   400  loss 1.6216  5 s
+== W5_control: test ed_ratio 208.16  div_b 1.21e-08  balance 0.281  spec_b 0.971  Hm 0.401  nulls 1.830  restart 0.386
+== W7_tilting: test ed_ratio 237.04  div_b 1.21e-08  balance 0.191  spec_b 0.375  Hm 0.799  nulls 2.817  restart nan
+== W8_rescaling: test ed_ratio 113.11  div_b 1.17e-08  balance 0.000  spec_b 0.810  Hm 0.429  nulls 0.751  restart nan
+== W5_stationarity_half: test ed_ratio 168.27  div_b 1.22e-08  balance 0.187  spec_b 0.466  Hm 0.719  nulls 2.349  restart nan
+== W5_control_half: test ed_ratio 158.47  div_b 1.21e-08  balance 0.282  spec_b 0.976  Hm 0.375  nulls 1.813  restart nan
+[W4c_potentials_smooth] it  1000  loss 1.6922  9 s
+[W4c_potentials_smooth] it  2000  loss 1.6554  17 s
+[W4c_potentials_smooth] it  3000  loss 1.6350  25 s
+[W4c_potentials_smooth] it  4000  loss 1.6292  33 s
+== W4c_potentials_smooth: test ed_ratio 215.65  div_b 1.24e-08  balance 0.270  spec_b 0.643  Hm 0.328  nulls 2.174  restart 0.385
+== G0_gaussian_modes: test ed_ratio 3.36  div_b 1.27e-08  balance 0.001  spec_b 0.022  Hm 0.033  nulls 2.252  restart 0.209
+[W9_skip_sym] it  1000  loss 1.2747  19 s
+[W9_skip_sym] it  2000  loss 1.2189  38 s
+[W9_skip_sym] it  3000  loss 1.1879  57 s
+[W9_skip_sym] it  4000  loss 1.1808  77 s
+== W9_skip_sym: test ed_ratio 9.01  div_b 1.29e-08  balance 0.054  spec_b 0.140  Hm 0.195  nulls 1.689  restart 0.116
+[W10_anchored] it  1000  loss 1.3283  31 s
+[W10_anchored] it  2000  loss 1.3019  53 s
+[W10_anchored] it  3000  loss 1.2829  76 s
+[W10_anchored] it  4000  loss 1.2767  100 s
+== W10_anchored: test ed_ratio 44.35  div_b 1.29e-08  balance 0.148  spec_b 0.208  Hm 0.081  nulls 2.473  restart 0.123
+[W11_anchored_skip] it  1000  loss 1.2707  30 s
+[W11_anchored_skip] it  2000  loss 1.2158  61 s
+[W11_anchored_skip] it  3000  loss 1.1857  92 s
+[W11_anchored_skip] it  4000  loss 1.1789  127 s
+== W11_anchored_skip: test ed_ratio 8.55  div_b 1.29e-08  balance 0.049  spec_b 0.138  Hm 0.196  nulls 1.697  restart 0.113
+total duration 1874 s

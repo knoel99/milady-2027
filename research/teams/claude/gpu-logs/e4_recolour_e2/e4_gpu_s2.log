@@ -1,0 +1,10 @@
+[W9R_skip_sym] it  1000  loss 1.2747  12 s
+[W9R_skip_sym] it  2000  loss 1.2189  23 s
+[W9R_skip_sym] it  3000  loss 1.1879  38 s
+[W9R_skip_sym] it  4000  loss 1.1808  49 s
+== W9R_skip_sym: test ed_ratio 9.01  div_b 1.29e-08  balance 0.054  spec_b 0.140  Hm 0.195  nulls 1.608  restart 0.119
+== W15_recoloured_modes: test ed_ratio 2.24  div_b 1.27e-08  balance 0.002  spec_b 0.020  Hm 0.035  nulls 1.421  restart 0.039
+== W16_recoloured_full: test ed_ratio 2.20  div_b 1.27e-08  balance 0.007  spec_b 0.015  Hm 0.026  nulls 1.024  restart 0.020
+== G4_recoloured_gaussian: test ed_ratio 2.65  div_b 1.27e-08  balance 0.004  spec_b 0.013  Hm 0.021  nulls 1.060  restart 0.063
+== W9R_steps_check: test ed_ratio 9.02  div_b 1.28e-08  balance 0.054  spec_b 0.141  Hm 0.196  nulls 1.610  restart 0.120
+total duration 2008 s

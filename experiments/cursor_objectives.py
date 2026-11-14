@@ -19,8 +19,8 @@ from pathlib import Path
 
 ROOT = Path(__file__).resolve().parent.parent
 METRICS = ROOT / "experiments" / "results" / "cursor_metrics.json"
-BENCH32 = ROOT / "research" / "gpu-logs" / "bench-float32.log"
-HYPO = ROOT / "research" / "hypotheses.json"
+BENCH32 = ROOT / "research" / "teams" / "cursor" / "gpu-logs" / "bench-float32.log"
+HYPO = ROOT / "research" / "teams" / "cursor" / "hypotheses.json"
 
 # Far side of each lower-is-better target. Not a measurement.
 SENTINEL = {"c1": 1.0e6, "c2": 1.0, "c3": 1.0, "c4": 1.0, "c5": 1.0}

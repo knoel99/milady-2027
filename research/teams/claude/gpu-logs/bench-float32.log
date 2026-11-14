@@ -1,0 +1,8 @@
+{"n": 64, "mode": "dynamic", "dtype": "float32", "device": "cuda", "n_traj": 1, "seconds_per_step": 0.004947435236535966, "threads": 48, "max_memory_gb": 0.07039070129394531, "gpu": "NVIDIA RTX A6000"}
+{"n": 128, "mode": "dynamic", "dtype": "float32", "device": "cuda", "n_traj": 1, "seconds_per_step": 0.02662265283986926, "threads": 48, "max_memory_gb": 0.5488910675048828, "gpu": "NVIDIA RTX A6000"}
+
+--- status
+2026-11-12T18:38:59Z boot NVIDIA RTX A6000, 49140 MiB
+2026-11-12T18:40:10Z job started
+2026-11-12T18:40:15Z job finished rc=0 in 5 s
+2026-11-12T18:40:15Z DONE rc=0

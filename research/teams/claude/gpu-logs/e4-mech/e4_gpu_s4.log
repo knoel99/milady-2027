@@ -1,0 +1,35 @@
+== G0_gaussian_modes: test ed_ratio 3.63  div_b 1.27e-08  balance 0.002  spec_b 0.023  Hm 0.039  nulls 2.230  restart 0.219
+[W9_skip_sym] it  1000  loss 1.2707  29 s
+[W9_skip_sym] it  2000  loss 1.2191  58 s
+[W9_skip_sym] it  3000  loss 1.1926  87 s
+[W9_skip_sym] it  4000  loss 1.1853  118 s
+== W9_skip_sym: test ed_ratio 8.89  div_b 1.28e-08  balance 0.056  spec_b 0.143  Hm 0.187  nulls 1.683  restart 0.126
+[W10_anchored] it  1000  loss 1.3274  26 s
+[W10_anchored] it  2000  loss 1.3033  53 s
+[W10_anchored] it  3000  loss 1.2878  80 s
+[W10_anchored] it  4000  loss 1.2782  107 s
+== W10_anchored: test ed_ratio 43.79  div_b 1.29e-08  balance 0.147  spec_b 0.211  Hm 0.080  nulls 2.510  restart 0.128
+[W11_anchored_skip] it  1000  loss 1.2665  37 s
+[W11_anchored_skip] it  2000  loss 1.2163  75 s
+[W11_anchored_skip] it  3000  loss 1.1906  112 s
+[W11_anchored_skip] it  4000  loss 1.1837  150 s
+== W11_anchored_skip: test ed_ratio 8.67  div_b 1.28e-08  balance 0.052  spec_b 0.150  Hm 0.198  nulls 1.741  restart 0.120
+== G1_gaussian_full: test ed_ratio 2.65  div_b 1.27e-08  balance 0.003  spec_b 0.027  Hm 0.033  nulls 1.091  restart 0.067
+[W9_skip_sym(base of W12)] it  1000  loss 1.2707  27 s
+[W9_skip_sym(base of W12)] it  2000  loss 1.2191  56 s
+[W9_skip_sym(base of W12)] it  3000  loss 1.1926  85 s
+[W9_skip_sym(base of W12)] it  4000  loss 1.1853  114 s
+[W12_skip_stationarity] it   100  loss 1.1924  18 s
+[W12_skip_stationarity] it   200  loss 1.2115  38 s
+[W12_skip_stationarity] it   300  loss 1.2186  57 s
+[W12_skip_stationarity] it   400  loss 1.2225  77 s
+== W12_skip_stationarity: test ed_ratio 17.74  div_b 1.30e-08  balance 0.032  spec_b 0.242  Hm 0.324  nulls 2.057  restart 0.098
+[W12_skip_control] it   100  loss 1.1823  2 s
+[W12_skip_control] it   200  loss 1.1872  5 s
+[W12_skip_control] it   300  loss 1.1858  8 s
+[W12_skip_control] it   400  loss 1.1845  11 s
+== W12_skip_control: test ed_ratio 9.11  div_b 1.28e-08  balance 0.057  spec_b 0.144  Hm 0.192  nulls 1.695  restart 0.124
+== W13_skip_tilting: test ed_ratio 3.70  div_b 1.28e-08  balance 0.004  spec_b 0.056  Hm 0.050  nulls 1.290  restart nan
+== W12_skip_stationarity_half: test ed_ratio 13.94  div_b 1.30e-08  balance 0.031  spec_b 0.240  Hm 0.320  nulls 2.025  restart nan
+== W12_skip_control_half: test ed_ratio 6.96  div_b 1.28e-08  balance 0.055  spec_b 0.136  Hm 0.178  nulls 1.666  restart nan
+total duration 1403 s

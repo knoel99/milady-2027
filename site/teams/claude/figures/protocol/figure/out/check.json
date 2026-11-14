@@ -1,0 +1,16 @@
+{
+ "fail": [],
+ "warn": [
+  "text is small for the figure: median label 5.5 pt at 183 mm, where published Fig. 1s read like 11.3 pt. Draw it narrower (120 or 136 mm) with 7-8 pt labels, enlarging the main objects and dropping minor ones to make room",
+  "text: 139 words, 0.75 words/cm2 (calibration from 5 published schematics: 0.20-0.45): smell test, check whether caption material is on the figure",
+  "caption-like labels (a label names a thing in 2-4 words; explanation goes to docs/caption.md): \"Computation: 5 seeds,held-out η\", \"Model selection: generator chosen on the\", \"24 reference trajectories, one of the 10\", \"noise floor = mean over 10 splits into t\", \"energy distance to the reference / floor\""
+ ],
+ "info": [
+  "build 153 ms; 183 x 101 mm; 58 texts, 94 strokes, 0 images, 4 panels",
+  "median label 5.5 pt = 1.06% of the width (published Fig. 1s: median 2.2%, 25th percentile 1.65%)",
+  "coloured text (fine when the hue is the colour of the entity it names, P15; never for emphasis alone): \"index\", \"log-spaced\", \"Training (6)\", \"Validation (2)\", \"Held-out test (3)\", \"Model selection: generat\", \"0\", \"1\"",
+  "no relations declared (F.relate): the connectivity check is off",
+  "ink coverage 18.5% of the page (calibration: see reference/style.md)",
+  "largest empty square per panel (share of panel area): a 0.017, b 0.037, c 0.077, d 0.062"
+ ]
+}

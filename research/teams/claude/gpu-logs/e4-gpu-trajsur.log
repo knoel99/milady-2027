@@ -1,0 +1,105 @@
+torch 2.8.0+cu128 cuda True NVIDIA GeForce RTX 4090
+[1 s] data: 32 cores
+eta 0.08000 (train) Eu 0.491 Eb 0.078 Hm -0.043 (drift -0.4 SE) balance -0.0000  952 s
+eta 0.07253 (test ) Eu 0.440 Eb 0.097 Hm -0.056 (drift +0.2 SE) balance +0.0000  965 s
+eta 0.06575 (train) Eu 0.402 Eb 0.111 Hm -0.065 (drift +1.5 SE) balance -0.0004  935 s
+eta 0.05961 (val  ) Eu 0.373 Eb 0.121 Hm -0.072 (drift -0.1 SE) balance +0.0001  952 s
+eta 0.05404 (train) Eu 0.345 Eb 0.131 Hm -0.078 (drift +0.7 SE) balance +0.0002  956 s
+eta 0.04899 (test ) Eu 0.321 Eb 0.140 Hm -0.084 (drift -0.4 SE) balance -0.0000  907 s
+eta 0.04441 (train) Eu 0.309 Eb 0.145 Hm -0.085 (drift -0.8 SE) balance -0.0003  888 s
+eta 0.04026 (val  ) Eu 0.288 Eb 0.153 Hm -0.090 (drift -0.4 SE) balance -0.0002  942 s
+eta 0.03650 (train) Eu 0.276 Eb 0.160 Hm -0.095 (drift +1.5 SE) balance +0.0000  815 s
+eta 0.03309 (test ) Eu 0.265 Eb 0.165 Hm -0.096 (drift +1.7 SE) balance +0.0002  908 s
+eta 0.03000 (train) Eu 0.253 Eb 0.172 Hm -0.097 (drift -0.7 SE) balance +0.0002  945 s
+total 967 s -> /workspace/milady/experiments/results/e4_data.json
+[968 s] reference
+eta 0.03309 nulls 42.7 ± 1.1  k_lambda 2.90  H(1) -0.0949  H(k>=2) -0.0012  E1/EB 0.37  z(j.B) +0.3  floor 0.0733
+eta 0.03000 nulls 51.7 ± 1.2  k_lambda 2.95  H(1) -0.0953  H(k>=2) -0.0015  E1/EB 0.36  z(j.B) +0.7  floor 0.0400
+reference done in 490 s
+[1459 s] models: seeds 0 1 2 3 4, 6 threads each
+eta 0.03650: trajectory floor 0.0433 ± 0.0152 [0.0149, 0.0694], random floor 0.0132, E|Y-Y'| 3.073
+eta 0.03309: trajectory floor 0.0590 ± 0.0357 [0.0164, 0.1500], random floor 0.0122, E|Y-Y'| 3.119
+eta 0.03000: trajectory floor 0.0374 ± 0.0213 [0.0169, 0.0918], random floor 0.0118, E|Y-Y'| 3.066
+seed 4 rc=0
+== G1_gaussian_full: test ed_ratio 2.65  div_b 1.27e-08  balance 0.003  spec_b 0.027  Hm 0.033  nulls 1.110  restart 0.067
+== W9Yb_skip_sym: test ed_ratio 8.87  div_b 1.28e-08  balance 0.057  spec_b 0.144  Hm 0.193  nulls 1.705  restart 0.127
+== W9Y_skip_sym_gausstraj: test ed_ratio 5.18  div_b 1.27e-08  balance 0.012  spec_b 0.040  Hm 0.040  nulls 1.410  restart 0.045
+total duration 849 s
+seed 1 rc=0
+== G1_gaussian_full: test ed_ratio 2.50  div_b 1.27e-08  balance 0.003  spec_b 0.028  Hm 0.038  nulls 1.119  restart 0.067
+== W9Yb_skip_sym: test ed_ratio 10.02  div_b 1.28e-08  balance 0.059  spec_b 0.151  Hm 0.208  nulls 1.724  restart 0.134
+== W9Y_skip_sym_gausstraj: test ed_ratio 6.45  div_b 1.27e-08  balance 0.020  spec_b 0.074  Hm 0.096  nulls 1.420  restart 0.080
+total duration 854 s
+seed 0 rc=0
+== G1_gaussian_full: test ed_ratio 2.60  div_b 1.27e-08  balance 0.002  spec_b 0.022  Hm 0.038  nulls 1.148  restart 0.068
+== W9Yb_skip_sym: test ed_ratio 9.07  div_b 1.29e-08  balance 0.054  spec_b 0.141  Hm 0.194  nulls 1.663  restart 0.118
+== W9Y_skip_sym_gausstraj: test ed_ratio 5.71  div_b 1.27e-08  balance 0.024  spec_b 0.078  Hm 0.062  nulls 1.365  restart 0.048
+total duration 859 s
+seed 2 rc=0
+== G1_gaussian_full: test ed_ratio 2.57  div_b 1.27e-08  balance 0.004  spec_b 0.033  Hm 0.048  nulls 1.123  restart 0.060
+== W9Yb_skip_sym: test ed_ratio 8.84  div_b 1.29e-08  balance 0.053  spec_b 0.141  Hm 0.200  nulls 1.713  restart 0.126
+== W9Y_skip_sym_gausstraj: test ed_ratio 5.08  div_b 1.27e-08  balance 0.009  spec_b 0.034  Hm 0.043  nulls 1.517  restart 0.070
+total duration 860 s
+seed 3 rc=0
+== G1_gaussian_full: test ed_ratio 2.42  div_b 1.27e-08  balance 0.005  spec_b 0.023  Hm 0.026  nulls 1.078  restart 0.059
+== W9Yb_skip_sym: test ed_ratio 9.82  div_b 1.28e-08  balance 0.062  spec_b 0.154  Hm 0.196  nulls 1.704  restart 0.132
+== W9Y_skip_sym_gausstraj: test ed_ratio 5.62  div_b 1.27e-08  balance 0.011  spec_b 0.058  Hm 0.081  nulls 1.461  restart 0.062
+total duration 861 s
+[2321 s] done
+NVIDIA GeForce RTX 4090, 1 MiB, 0 %
+e4_data.json
+e4_floor.json
+e4_gpu_s0.log
+e4_gpu_s1.log
+e4_gpu_s2.log
+e4_gpu_s3.log
+e4_gpu_s4.log
+e4_mhd3d_s0.json
+e4_mhd3d_s0_A.json
+e4_mhd3d_s0_B.json
+e4_mhd3d_s0_C.json
+e4_mhd3d_s0_D.json
+e4_mhd3d_s0_E.json
+e4_mhd3d_s0_G.json
+e4_mhd3d_s0_Y.json
+e4_mhd3d_s1.json
+e4_mhd3d_s1_A.json
+e4_mhd3d_s1_B.json
+e4_mhd3d_s1_C.json
+e4_mhd3d_s1_D.json
+e4_mhd3d_s1_E.json
+e4_mhd3d_s1_G.json
+e4_mhd3d_s1_Y.json
+e4_mhd3d_s2.json
+e4_mhd3d_s2_A.json
+e4_mhd3d_s2_B.json
+e4_mhd3d_s2_C.json
+e4_mhd3d_s2_D.json
+e4_mhd3d_s2_E.json
+e4_mhd3d_s2_G.json
+e4_mhd3d_s2_Y.json
+e4_mhd3d_s3.json
+e4_mhd3d_s3_A.json
+e4_mhd3d_s3_B.json
+e4_mhd3d_s3_C.json
+e4_mhd3d_s3_D.json
+e4_mhd3d_s3_E.json
+e4_mhd3d_s3_G.json
+e4_mhd3d_s3_Y.json
+e4_mhd3d_s4.json
+e4_mhd3d_s4_A.json
+e4_mhd3d_s4_B.json
+e4_mhd3d_s4_C.json
+e4_mhd3d_s4_D.json
+e4_mhd3d_s4_E.json
+e4_mhd3d_s4_G.json
+e4_mhd3d_s4_Y.json
+e4_reference.json
+e4_samples_s0_GY.npz
+e4_samples_s0_all.npz
+
+--- status
+2026-11-13T13:31:41Z boot NVIDIA GeForce RTX 4090, 24564 MiB
+2026-11-13T13:32:37Z job started
+2026-11-13T14:11:18Z job finished rc=0 in 2321 s
+2026-11-13T14:11:19Z DONE rc=0

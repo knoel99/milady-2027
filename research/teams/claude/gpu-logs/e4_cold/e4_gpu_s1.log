@@ -1,0 +1,7 @@
+== COLD_tau8: test ed_ratio 328.49  div_b 1.45e-08  balance 0.384  spec_b 0.620  Hm 0.260  nulls 3.782  restart nan
+== COLD_tau16: test ed_ratio 22.53  div_b 1.30e-08  balance 0.065  spec_b 0.131  Hm 0.292  nulls 0.328  restart nan
+== COLD_tau32: test ed_ratio 3.74  div_b 1.28e-08  balance 0.003  spec_b 0.092  Hm 0.145  nulls 0.191  restart nan
+== COLD_tau64: test ed_ratio 0.84  div_b 1.26e-08  balance 0.001  spec_b 0.030  Hm 0.052  nulls 0.075  restart nan
+== COLD_tau128: test ed_ratio 0.49  div_b 1.26e-08  balance 0.001  spec_b 0.013  Hm 0.015  nulls 0.028  restart nan
+== COLD_tau200: test ed_ratio 0.46  div_b 1.27e-08  balance 0.001  spec_b 0.014  Hm 0.018  nulls 0.030  restart nan
+total duration 2106 s

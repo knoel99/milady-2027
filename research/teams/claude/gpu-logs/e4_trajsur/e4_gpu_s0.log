@@ -1,0 +1,12 @@
+== G1_gaussian_full: test ed_ratio 2.60  div_b 1.27e-08  balance 0.002  spec_b 0.022  Hm 0.038  nulls 1.148  restart 0.068
+[W9Yb_skip_sym] it  1000  loss 1.2724  21 s
+[W9Yb_skip_sym] it  2000  loss 1.2164  46 s
+[W9Yb_skip_sym] it  3000  loss 1.1911  70 s
+[W9Yb_skip_sym] it  4000  loss 1.1836  94 s
+== W9Yb_skip_sym: test ed_ratio 9.07  div_b 1.29e-08  balance 0.054  spec_b 0.141  Hm 0.194  nulls 1.663  restart 0.118
+[W9Y_skip_sym_gausstraj] it  1000  loss 1.2147  16 s
+[W9Y_skip_sym_gausstraj] it  2000  loss 1.1392  39 s
+[W9Y_skip_sym_gausstraj] it  3000  loss 1.1089  63 s
+[W9Y_skip_sym_gausstraj] it  4000  loss 1.1015  79 s
+== W9Y_skip_sym_gausstraj: test ed_ratio 5.71  div_b 1.27e-08  balance 0.024  spec_b 0.078  Hm 0.062  nulls 1.365  restart 0.048
+total duration 859 s

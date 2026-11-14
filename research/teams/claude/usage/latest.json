@@ -1,0 +1,906 @@
+{
+ "generated": "2026-11-14T07:08:57Z",
+ "projects": "/root/.claude/projects/-home-user-milady-2027",
+ "sessions": 1,
+ "main_session": {
+  "models": [
+   "claude-fable-5-2"
+  ],
+  "efforts": [
+   "high"
+  ],
+  "expected": "claude-fable-5-2 / high",
+  "responses": 1454,
+  "off_spec": 0,
+  "conforms": true
+ },
+ "first": "2026-11-12T16:50:21.852Z",
+ "last": "2026-11-14T07:08:48.358Z",
+ "span_hours": 38.31,
+ "by_model": {
+  "claude-fable-5-2": {
+   "input": 3946,
+   "cache_write_5m": 5977315,
+   "cache_write_1h": 4749096,
+   "cache_read": 796204973,
+   "output": 3805152,
+   "thinking": 1875520,
+   "calls": 1983,
+   "usd": 447.24
+  },
+  "claude-sonnet-5-5": {
+   "input": 470,
+   "cache_write_5m": 1464623,
+   "cache_write_1h": 0,
+   "cache_read": 23497224,
+   "output": 255753,
+   "thinking": 107746,
+   "calls": 201,
+   "usd": 8.57
+  }
+ },
+ "total_usd": 455.81,
+ "subagents": {
+  "count": 48,
+  "by_type": {
+   "general-purpose": 9,
+   "jury-externe": 11,
+   "encadrant": 23,
+   "biblio": 2,
+   "physicien": 3
+  },
+  "calls": [
+   {
+    "id": "agent-a01c6675f4bd01337",
+    "type": "general-purpose",
+    "description": "Schematics: bottleneck and identities",
+    "models": [
+     "claude-sonnet-5-5"
+    ],
+    "efforts": [
+     "medium"
+    ],
+    "calls": 20,
+    "output": 33210,
+    "usd": 0.9517
+   },
+   {
+    "id": "agent-a0807a372b7d3c3ff",
+    "type": "general-purpose",
+    "description": "Schematics: problem and metrics",
+    "models": [
+     "claude-sonnet-5-5"
+    ],
+    "efforts": [
+     "medium"
+    ],
+    "calls": 21,
+    "output": 39710,
+    "usd": 1.1535
+   },
+   {
+    "id": "agent-a0a08159275e339c6",
+    "type": "jury-externe",
+    "description": "Jury review: report v1",
+    "models": [
+     "claude-fable-5-2"
+    ],
+    "efforts": [
+     "max"
+    ],
+    "calls": 17,
+    "output": 144770,
+    "usd": 8.7387,
+    "off_spec": 0,
+    "expected": "claude-fable-5-2 / max",
+    "conforms": true
+   },
+   {
+    "id": "agent-a1004fd4c3cbca040",
+    "type": "encadrant",
+    "description": "Encadrant: verdict H28",
+    "models": [
+     "claude-fable-5-2"
+    ],
+    "efforts": [
+     "medium"
+    ],
+    "calls": 9,
+    "output": 41023,
+    "usd": 3.5912,
+    "off_spec": 0,
+    "expected": "claude-fable-5-2 / medium",
+    "conforms": true
+   },
+   {
+    "id": "agent-a154b3863b44d397b",
+    "type": "encadrant",
+    "description": "Encadrant: corrections v4 and H28",
+    "models": [
+     "claude-fable-5-2"
+    ],
+    "efforts": [
+     "medium"
+    ],
+    "calls": 26,
+    "output": 47538,
+    "usd": 4.0773,
+    "off_spec": 0,
+    "expected": "claude-fable-5-2 / medium",
+    "conforms": true
+   },
+   {
+    "id": "agent-a162ac5ca048d431f",
+    "type": "encadrant",
+    "description": "Encadrant: digest additions v3",
+    "models": [
+     "claude-fable-5-2"
+    ],
+    "efforts": [
+     "medium"
+    ],
+    "calls": 9,
+    "output": 12983,
+    "usd": 1.4367,
+    "off_spec": 0,
+    "expected": "claude-fable-5-2 / medium",
+    "conforms": true
+   },
+   {
+    "id": "agent-a20e4cd02f7a6aa7b",
+    "type": "jury-externe",
+    "description": "Jury review: report v2",
+    "models": [
+     "claude-fable-5-2"
+    ],
+    "efforts": [
+     "max"
+    ],
+    "calls": 10,
+    "output": 132697,
+    "usd": 10.0026,
+    "off_spec": 0,
+    "expected": "claude-fable-5-2 / max",
+    "conforms": true
+   },
+   {
+    "id": "agent-a2aa5b17f6ebb170e",
+    "type": "biblio",
+    "description": "Role check: biblio Prop 1",
+    "models": [
+     "claude-sonnet-5-5"
+    ],
+    "efforts": [
+     "medium"
+    ],
+    "calls": 2,
+    "output": 697,
+    "usd": 0.0504,
+    "off_spec": 0,
+    "expected": "claude-sonnet-5-5 / medium",
+    "conforms": true
+   },
+   {
+    "id": "agent-a2fdcd82bbff1bd2e",
+    "type": "jury-externe",
+    "description": "Role check: jury-externe Prop 1",
+    "models": [
+     "claude-fable-5-2"
+    ],
+    "efforts": [
+     "max"
+    ],
+    "calls": 2,
+    "output": 5052,
+    "usd": 0.444,
+    "off_spec": 0,
+    "expected": "claude-fable-5-2 / max",
+    "conforms": true
+   },
+   {
+    "id": "agent-a30c8cf89a8e96099",
+    "type": "encadrant",
+    "description": "Role check: encadrant Prop 1",
+    "models": [
+     "claude-fable-5-2"
+    ],
+    "efforts": [
+     "medium"
+    ],
+    "calls": 1,
+    "output": 998,
+    "usd": 0.1537,
+    "off_spec": 0,
+    "expected": "claude-fable-5-2 / medium",
+    "conforms": true
+   },
+   {
+    "id": "agent-a3592600eef7c39d1",
+    "type": "encadrant",
+    "description": "Encadrant: verdicts H22-H24",
+    "models": [
+     "claude-fable-5-2"
+    ],
+    "efforts": [
+     "medium"
+    ],
+    "calls": 16,
+    "output": 20224,
+    "usd": 2.0365,
+    "off_spec": 0,
+    "expected": "claude-fable-5-2 / medium",
+    "conforms": true
+   },
+   {
+    "id": "agent-a3afd606f21feafd6",
+    "type": "encadrant",
+    "description": "Encadrant verdicts H29-H31",
+    "models": [
+     "claude-fable-5-2"
+    ],
+    "efforts": [
+     "medium"
+    ],
+    "calls": 26,
+    "output": 32251,
+    "usd": 4.404,
+    "off_spec": 0,
+    "expected": "claude-fable-5-2 / medium",
+    "conforms": true
+   },
+   {
+    "id": "agent-a3b534c1ab759b298",
+    "type": "general-purpose",
+    "description": "Redraw linear-part schematic",
+    "models": [
+     "claude-sonnet-5-5"
+    ],
+    "efforts": [
+     "medium"
+    ],
+    "calls": 8,
+    "output": 8752,
+    "usd": 0.4125
+   },
+   {
+    "id": "agent-a3fb644fb441c9d23",
+    "type": "encadrant",
+    "description": "Encadrant: H21 and G1 replication",
+    "models": [
+     "claude-fable-5-2"
+    ],
+    "efforts": [
+     "medium"
+    ],
+    "calls": 8,
+    "output": 14273,
+    "usd": 1.3043,
+    "off_spec": 0,
+    "expected": "claude-fable-5-2 / medium",
+    "conforms": true
+   },
+   {
+    "id": "agent-a5527c20c229f0f6b",
+    "type": "encadrant",
+    "description": "Encadrant verdicts H38 H39",
+    "models": [
+     "claude-fable-5-2"
+    ],
+    "efforts": [
+     "medium"
+    ],
+    "calls": 9,
+    "output": 24012,
+    "usd": 1.8442,
+    "off_spec": 0,
+    "expected": "claude-fable-5-2 / medium",
+    "conforms": true
+   },
+   {
+    "id": "agent-a55fde23e87a3cc43",
+    "type": "jury-externe",
+    "description": "Jury review: deliverable figures",
+    "models": [
+     "claude-fable-5-2"
+    ],
+    "efforts": [
+     "max"
+    ],
+    "calls": 41,
+    "output": 76650,
+    "usd": 7.1746,
+    "off_spec": 0,
+    "expected": "claude-fable-5-2 / max",
+    "conforms": true
+   },
+   {
+    "id": "agent-a578d434a5b7f7043",
+    "type": "general-purpose",
+    "description": "Update two schematics with G1",
+    "models": [
+     "claude-sonnet-5-5"
+    ],
+    "efforts": [
+     "medium"
+    ],
+    "calls": 9,
+    "output": 8373,
+    "usd": 0.4509
+   },
+   {
+    "id": "agent-a5e3b408362b997e3",
+    "type": "encadrant",
+    "description": "Encadrant check of closing results",
+    "models": [
+     "claude-fable-5-2"
+    ],
+    "efforts": [
+     "medium"
+    ],
+    "calls": 7,
+    "output": 18508,
+    "usd": 1.5404,
+    "off_spec": 0,
+    "expected": "claude-fable-5-2 / medium",
+    "conforms": true
+   },
+   {
+    "id": "agent-a65b9509411b71f28",
+    "type": "jury-externe",
+    "description": "Jury review: report v3 and test plan",
+    "models": [
+     "claude-fable-5-2"
+    ],
+    "efforts": [
+     "max"
+    ],
+    "calls": 7,
+    "output": 118663,
+    "usd": 6.8616,
+    "off_spec": 0,
+    "expected": "claude-fable-5-2 / max",
+    "conforms": true
+   },
+   {
+    "id": "agent-a85a1c5c239ed5cad",
+    "type": "jury-externe",
+    "description": "Jury verifies release and corrections",
+    "models": [
+     "claude-fable-5-2"
+    ],
+    "efforts": [
+     "max"
+    ],
+    "calls": 13,
+    "output": 95825,
+    "usd": 7.0858,
+    "off_spec": 0,
+    "expected": "claude-fable-5-2 / max",
+    "conforms": true
+   },
+   {
+    "id": "agent-a86dbd9dd988e2c8a",
+    "type": "general-purpose",
+    "description": "Fix five schematics after jury",
+    "models": [
+     "claude-sonnet-5-5"
+    ],
+    "efforts": [
+     "medium"
+    ],
+    "calls": 15,
+    "output": 18805,
+    "usd": 0.6994
+   },
+   {
+    "id": "agent-a8be94ae8334dbfab",
+    "type": "physicien",
+    "description": "Physicien: E4 conjectures",
+    "models": [
+     "claude-fable-5-2"
+    ],
+    "efforts": [
+     "high"
+    ],
+    "calls": 5,
+    "output": 27689,
+    "usd": 1.7479,
+    "off_spec": 0,
+    "expected": "claude-fable-5-2 / high",
+    "conforms": true
+   },
+   {
+    "id": "agent-a8d94464dec64b5c5",
+    "type": "encadrant",
+    "description": "Encadrant review H25-H27",
+    "models": [
+     "claude-fable-5-2"
+    ],
+    "efforts": [
+     "medium"
+    ],
+    "calls": 16,
+    "output": 34636,
+    "usd": 2.775,
+    "off_spec": 0,
+    "expected": "claude-fable-5-2 / medium",
+    "conforms": true
+   },
+   {
+    "id": "agent-a908c0405dad55864",
+    "type": "general-purpose",
+    "description": "Schematics: pipeline and mechanisms",
+    "models": [
+     "claude-sonnet-5-5"
+    ],
+    "efforts": [
+     "medium"
+    ],
+    "calls": 20,
+    "output": 36970,
+    "usd": 0.9731
+   },
+   {
+    "id": "agent-a97df68ffeb48f718",
+    "type": "encadrant",
+    "description": "Encadrant: H11 and E4 reference protocol",
+    "models": [
+     "claude-fable-5-2"
+    ],
+    "efforts": [
+     "medium"
+    ],
+    "calls": 10,
+    "output": 25950,
+    "usd": 2.2439,
+    "off_spec": 0,
+    "expected": "claude-fable-5-2 / medium",
+    "conforms": true
+   },
+   {
+    "id": "agent-a9cb9b2d8aa8ebefa",
+    "type": "encadrant",
+    "description": "Encadrant verdicts H33 H32",
+    "models": [
+     "claude-fable-5-2"
+    ],
+    "efforts": [
+     "medium"
+    ],
+    "calls": 12,
+    "output": 22684,
+    "usd": 2.5401,
+    "off_spec": 0,
+    "expected": "claude-fable-5-2 / medium",
+    "conforms": true
+   },
+   {
+    "id": "agent-aa0c8d0bdc90f96b5",
+    "type": "encadrant",
+    "description": "Encadrant check of v4 numbers",
+    "models": [
+     "claude-fable-5-2"
+    ],
+    "efforts": [
+     "medium"
+    ],
+    "calls": 17,
+    "output": 29231,
+    "usd": 2.7162,
+    "off_spec": 0,
+    "expected": "claude-fable-5-2 / medium",
+    "conforms": true
+   },
+   {
+    "id": "agent-aa5122cdd1796d8aa",
+    "type": "jury-externe",
+    "description": "Jury-externe review report v4",
+    "models": [
+     "claude-fable-5-2"
+    ],
+    "efforts": [
+     "max"
+    ],
+    "calls": 42,
+    "output": 118475,
+    "usd": 9.2777,
+    "off_spec": 0,
+    "expected": "claude-fable-5-2 / max",
+    "conforms": true
+   },
+   {
+    "id": "agent-aa6d7a3e5ea5e09dc",
+    "type": "jury-externe",
+    "description": "Jury review report v6 on offer",
+    "models": [
+     "claude-fable-5-2"
+    ],
+    "efforts": [
+     "max"
+    ],
+    "calls": 41,
+    "output": 74907,
+    "usd": 7.1977,
+    "off_spec": 0,
+    "expected": "claude-fable-5-2 / max",
+    "conforms": true
+   },
+   {
+    "id": "agent-aa8072812bf8ea441",
+    "type": "physicien",
+    "description": "Physicien: next conjectures E4",
+    "models": [
+     "claude-fable-5-2"
+    ],
+    "efforts": [
+     "high"
+    ],
+    "calls": 17,
+    "output": 65969,
+    "usd": 4.3532,
+    "off_spec": 0,
+    "expected": "claude-fable-5-2 / high",
+    "conforms": true
+   },
+   {
+    "id": "agent-aa8c18ff5e22e107f",
+    "type": "biblio",
+    "description": "Biblio: E4 references and prior art",
+    "models": [
+     "claude-sonnet-5-5"
+    ],
+    "efforts": [
+     "medium"
+    ],
+    "calls": 6,
+    "output": 6708,
+    "usd": 0.1622,
+    "off_spec": 0,
+    "expected": "claude-sonnet-5-5 / medium",
+    "conforms": true
+   },
+   {
+    "id": "agent-aab794e04545043af",
+    "type": "encadrant",
+    "description": "Encadrant verdict H40",
+    "models": [
+     "claude-fable-5-2"
+    ],
+    "efforts": [
+     "medium"
+    ],
+    "calls": 8,
+    "output": 14452,
+    "usd": 1.3883,
+    "off_spec": 0,
+    "expected": "claude-fable-5-2 / medium",
+    "conforms": true
+   },
+   {
+    "id": "agent-ab64fd339d312e41e",
+    "type": "general-purpose",
+    "description": "Schematics: protocol and compute path",
+    "models": [
+     "claude-sonnet-5-5"
+    ],
+    "efforts": [
+     "medium"
+    ],
+    "calls": 21,
+    "output": 31422,
+    "usd": 0.9916
+   },
+   {
+    "id": "agent-ab8117af01efa849f",
+    "type": "encadrant",
+    "description": "Encadrant review: e4_main and bug",
+    "models": [
+     "claude-fable-5-2"
+    ],
+    "efforts": [
+     "medium"
+    ],
+    "calls": 11,
+    "output": 19806,
+    "usd": 1.9591,
+    "off_spec": 0,
+    "expected": "claude-fable-5-2 / medium",
+    "conforms": true
+   },
+   {
+    "id": "agent-ab9fb07f65e9bb76c",
+    "type": "encadrant",
+    "description": "Encadrant verdict H34",
+    "models": [
+     "claude-fable-5-2"
+    ],
+    "efforts": [
+     "medium"
+    ],
+    "calls": 5,
+    "output": 14521,
+    "usd": 1.1234,
+    "off_spec": 0,
+    "expected": "claude-fable-5-2 / medium",
+    "conforms": true
+   },
+   {
+    "id": "agent-abad541ad670a7a91",
+    "type": "jury-externe",
+    "description": "Jury externe: report v5 draft",
+    "models": [
+     "claude-fable-5-2"
+    ],
+    "efforts": [
+     "max"
+    ],
+    "calls": 32,
+    "output": 119394,
+    "usd": 8.4819,
+    "off_spec": 0,
+    "expected": "claude-fable-5-2 / max",
+    "conforms": true
+   },
+   {
+    "id": "agent-ac8fd9fc056744728",
+    "type": "jury-externe",
+    "description": "Jury review: deliverable figures",
+    "models": [
+     "claude-fable-5-2"
+    ],
+    "efforts": [
+     "max"
+    ],
+    "calls": 22,
+    "output": 22835,
+    "usd": 3.1373,
+    "off_spec": 0,
+    "expected": "claude-fable-5-2 / max",
+    "conforms": true
+   },
+   {
+    "id": "agent-ace69745bfedfba5f",
+    "type": "encadrant",
+    "description": "Encadrant verdict H41 + offer",
+    "models": [
+     "claude-fable-5-2"
+    ],
+    "efforts": [
+     "medium"
+    ],
+    "calls": 10,
+    "output": 14374,
+    "usd": 1.6818,
+    "off_spec": 0,
+    "expected": "claude-fable-5-2 / medium",
+    "conforms": true
+   },
+   {
+    "id": "agent-ad1a2d06d469260b9",
+    "type": "encadrant",
+    "description": "Encadrant: verdicts H4-H10, H12-H14",
+    "models": [
+     "claude-fable-5-2"
+    ],
+    "efforts": [
+     "medium"
+    ],
+    "calls": 8,
+    "output": 19260,
+    "usd": 1.6337,
+    "off_spec": 0,
+    "expected": "claude-fable-5-2 / medium",
+    "conforms": true
+   },
+   {
+    "id": "agent-ad5c4bac6f994b490",
+    "type": "physicien",
+    "description": "Role check: physicien Prop 1",
+    "models": [
+     "claude-fable-5-2"
+    ],
+    "efforts": [
+     "high"
+    ],
+    "calls": 1,
+    "output": 1298,
+    "usd": 0.1633,
+    "off_spec": 0,
+    "expected": "claude-fable-5-2 / high",
+    "conforms": true
+   },
+   {
+    "id": "agent-adb7d62e4b9bbdbc3",
+    "type": "encadrant",
+    "description": "Encadrant: H35 criterion",
+    "models": [
+     "claude-fable-5-2"
+    ],
+    "efforts": [
+     "medium"
+    ],
+    "calls": 13,
+    "output": 23395,
+    "usd": 2.1457,
+    "off_spec": 0,
+    "expected": "claude-fable-5-2 / medium",
+    "conforms": true
+   },
+   {
+    "id": "agent-adf603f91fe7d7174",
+    "type": "encadrant",
+    "description": "Encadrant: H18 and replication",
+    "models": [
+     "claude-fable-5-2"
+    ],
+    "efforts": [
+     "medium"
+    ],
+    "calls": 14,
+    "output": 22018,
+    "usd": 2.054,
+    "off_spec": 0,
+    "expected": "claude-fable-5-2 / medium",
+    "conforms": true
+   },
+   {
+    "id": "agent-ae1aac79185272502",
+    "type": "encadrant",
+    "description": "Encadrant verdicts H35 H36",
+    "models": [
+     "claude-fable-5-2"
+    ],
+    "efforts": [
+     "medium"
+    ],
+    "calls": 6,
+    "output": 21215,
+    "usd": 1.7548,
+    "off_spec": 0,
+    "expected": "claude-fable-5-2 / medium",
+    "conforms": true
+   },
+   {
+    "id": "agent-ae7adfdb2d1d5f549",
+    "type": "general-purpose",
+    "description": "Fix three Archify diagrams",
+    "models": [
+     "claude-sonnet-5-5"
+    ],
+    "efforts": [
+     "medium"
+    ],
+    "calls": 47,
+    "output": 26060,
+    "usd": 1.3093
+   },
+   {
+    "id": "agent-aeb3846993b5ba564",
+    "type": "encadrant",
+    "description": "Encadrant: verdicts H15-H20 main run",
+    "models": [
+     "claude-fable-5-2"
+    ],
+    "efforts": [
+     "medium"
+    ],
+    "calls": 8,
+    "output": 10684,
+    "usd": 1.1972,
+    "off_spec": 0,
+    "expected": "claude-fable-5-2 / medium",
+    "conforms": true
+   },
+   {
+    "id": "agent-af5a1610d43d70af2",
+    "type": "general-purpose",
+    "description": "Archify diagrams for team claude",
+    "models": [
+     "claude-sonnet-5-5"
+    ],
+    "efforts": [
+     "medium"
+    ],
+    "calls": 32,
+    "output": 45046,
+    "usd": 1.4153
+   },
+   {
+    "id": "agent-af7e3b61314f6fdf8",
+    "type": "jury-externe",
+    "description": "Final jury review of report",
+    "models": [
+     "claude-fable-5-2"
+    ],
+    "efforts": [
+     "max"
+    ],
+    "calls": 23,
+    "output": 157462,
+    "usd": 15.2902,
+    "off_spec": 0,
+    "expected": "claude-fable-5-2 / max",
+    "conforms": true
+   },
+   {
+    "id": "agent-afc133e8d66d2591c",
+    "type": "encadrant",
+    "description": "Encadrant verdict H37",
+    "models": [
+     "claude-fable-5-2"
+    ],
+    "efforts": [
+     "medium"
+    ],
+    "calls": 7,
+    "output": 21514,
+    "usd": 1.8329,
+    "off_spec": 0,
+    "expected": "claude-fable-5-2 / medium",
+    "conforms": true
+   }
+  ],
+  "nonconforming": 0
+ },
+ "tool_calls": {
+  "Bash": 1387,
+  "Read": 55,
+  "Agent": 48,
+  "Write": 18,
+  "SendMessage": 10,
+  "ToolSearch": 9,
+  "ReadNotifications": 5,
+  "mcp__github__get_job_logs": 3,
+  "mcp__claude-code-remote__send_message": 2,
+  "mcp__github__actions_list": 2,
+  "mcp__claude-code-remote__get_session": 1,
+  "Grep": 1,
+  "mcp__runpod-api__list-pods": 1,
+  "mcp__claude-code-remote__read_documentation": 1,
+  "TaskStop": 1
+ },
+ "role_calls_via_tools": 0,
+ "gpu": {
+  "jobs": 82,
+  "hours": 66.881,
+  "usd": 59.79,
+  "by_gpu": {
+   "NVIDIA RTX PRO 4500 Blackwell": {
+    "jobs": 52,
+    "hours": 37.43439999999999,
+    "usd": 26.952399999999997
+   },
+   "NVIDIA RTX A6000": {
+    "jobs": 3,
+    "hours": 0.8583,
+    "usd": 0.5922000000000001
+   },
+   "NVIDIA A100-SXM4-80GB": {
+    "jobs": 2,
+    "hours": 2.1607000000000003,
+    "usd": 4.732
+   },
+   "NVIDIA GeForce RTX 4090": {
+    "jobs": 14,
+    "hours": 15.1468,
+    "usd": 13.480700000000002
+   },
+   "NVIDIA L40S": {
+    "jobs": 2,
+    "hours": 2.0156,
+    "usd": 2.197
+   },
+   "NVIDIA GeForce RTX 5090": {
+    "jobs": 8,
+    "hours": 8.4617,
+    "usd": 11.3637
+   },
+   "NVIDIA A40": {
+    "jobs": 1,
+    "hours": 0.8031,
+    "usd": 0.4738
+   }
+  },
+  "budget_usd": 140.0
+ }
+}

@@ -1,0 +1,115 @@
+torch 2.8.0+cu128 cuda True NVIDIA GeForce RTX 4090
+[3 s] data: 64 cores
+eta 0.08000 (train) Eu 0.487 Eb 0.079 Hm -0.044 (drift -0.3 SE) balance -0.0001  796 s
+eta 0.07253 (test ) Eu 0.446 Eb 0.094 Hm -0.054 (drift +0.8 SE) balance -0.0002  777 s
+eta 0.06575 (train) Eu 0.399 Eb 0.112 Hm -0.067 (drift +0.3 SE) balance -0.0003  760 s
+eta 0.05961 (val  ) Eu 0.368 Eb 0.123 Hm -0.073 (drift -0.1 SE) balance +0.0001  767 s
+eta 0.05404 (train) Eu 0.348 Eb 0.130 Hm -0.078 (drift +0.2 SE) balance -0.0002  745 s
+eta 0.04899 (test ) Eu 0.324 Eb 0.139 Hm -0.082 (drift +0.7 SE) balance +0.0002  760 s
+eta 0.04441 (train) Eu 0.301 Eb 0.148 Hm -0.090 (drift -0.3 SE) balance -0.0001  739 s
+eta 0.04026 (val  ) Eu 0.291 Eb 0.153 Hm -0.090 (drift +0.2 SE) balance -0.0002  737 s
+eta 0.03650 (train) Eu 0.272 Eb 0.161 Hm -0.095 (drift -0.9 SE) balance +0.0002  741 s
+eta 0.03309 (test ) Eu 0.264 Eb 0.166 Hm -0.095 (drift -0.7 SE) balance -0.0002  696 s
+eta 0.03000 (train) Eu 0.256 Eb 0.173 Hm -0.101 (drift -0.5 SE) balance -0.0002  747 s
+total 800 s -> /workspace/milady/experiments/results/e4_data.json
+[805 s] reference
+eta 0.03309 nulls 44.9 ± 1.1  k_lambda 2.90  H(1) -0.0937  H(k>=2) -0.0013  E1/EB 0.37  z(j.B) -1.4  floor 0.0599
+eta 0.03000 nulls 50.9 ± 1.4  k_lambda 2.94  H(1) -0.0999  H(k>=2) -0.0015  E1/EB 0.37  z(j.B) -1.6  floor 0.0739
+reference done in 1926 s
+[2733 s] models: seeds 0 1 2 3 4, 8 threads each
+eta 0.03650: trajectory floor 0.0307 ± 0.0088 [0.0154, 0.0532], random floor 0.0110, E|Y-Y'| 2.990
+eta 0.03309: trajectory floor 0.0581 ± 0.0298 [0.0240, 0.1237], random floor 0.0106, E|Y-Y'| 3.121
+eta 0.03000: trajectory floor 0.0840 ± 0.0647 [0.0227, 0.2236], random floor 0.0132, E|Y-Y'| 3.205
+seed 3 rc=0
+== G0_gaussian_modes: test ed_ratio 2.83  div_b 1.27e-08  balance 0.002  spec_b 0.021  Hm 0.032  nulls 2.098  restart 0.202
+== W9_skip_sym: test ed_ratio 8.21  div_b 1.28e-08  balance 0.062  spec_b 0.138  Hm 0.161  nulls 1.534  restart 0.132
+== G1_gaussian_full: test ed_ratio 2.05  div_b 1.27e-08  balance 0.002  spec_b 0.014  Hm 0.022  nulls 1.065  restart 0.071
+== W9Zb_skip_sym: test ed_ratio 8.21  div_b 1.28e-08  balance 0.062  spec_b 0.138  Hm 0.161  nulls 1.534  restart 0.132
+== W9Z_skip_sym_gaussdata: test ed_ratio 2.42  div_b 1.26e-08  balance 0.022  spec_b 0.021  Hm 0.014  nulls 1.363  restart 0.100
+total duration 1259 s
+seed 0 rc=0
+== G0_gaussian_modes: test ed_ratio 3.01  div_b 1.27e-08  balance 0.001  spec_b 0.018  Hm 0.020  nulls 2.124  restart 0.215
+== W9_skip_sym: test ed_ratio 7.94  div_b 1.28e-08  balance 0.057  spec_b 0.124  Hm 0.159  nulls 1.559  restart 0.117
+== G1_gaussian_full: test ed_ratio 2.03  div_b 1.27e-08  balance 0.003  spec_b 0.016  Hm 0.030  nulls 0.987  restart 0.053
+== W9Zb_skip_sym: test ed_ratio 7.94  div_b 1.28e-08  balance 0.057  spec_b 0.124  Hm 0.159  nulls 1.559  restart 0.117
+== W9Z_skip_sym_gaussdata: test ed_ratio 2.35  div_b 1.27e-08  balance 0.012  spec_b 0.027  Hm 0.036  nulls 1.294  restart 0.069
+total duration 1275 s
+seed 2 rc=0
+== G0_gaussian_modes: test ed_ratio 2.76  div_b 1.27e-08  balance 0.001  spec_b 0.010  Hm 0.014  nulls 2.140  restart 0.207
+== W9_skip_sym: test ed_ratio 8.27  div_b 1.28e-08  balance 0.059  spec_b 0.133  Hm 0.169  nulls 1.575  restart 0.118
+== G1_gaussian_full: test ed_ratio 1.96  div_b 1.27e-08  balance 0.001  spec_b 0.010  Hm 0.022  nulls 1.021  restart 0.061
+== W9Zb_skip_sym: test ed_ratio 8.27  div_b 1.28e-08  balance 0.059  spec_b 0.133  Hm 0.169  nulls 1.575  restart 0.118
+== W9Z_skip_sym_gaussdata: test ed_ratio 2.43  div_b 1.27e-08  balance 0.020  spec_b 0.018  Hm 0.010  nulls 1.363  restart 0.091
+total duration 1457 s
+seed 1 rc=0
+== G0_gaussian_modes: test ed_ratio 2.91  div_b 1.27e-08  balance 0.002  spec_b 0.013  Hm 0.016  nulls 2.114  restart 0.210
+== W9_skip_sym: test ed_ratio 8.48  div_b 1.28e-08  balance 0.062  spec_b 0.137  Hm 0.172  nulls 1.580  restart 0.131
+== G1_gaussian_full: test ed_ratio 1.90  div_b 1.27e-08  balance 0.001  spec_b 0.018  Hm 0.027  nulls 0.973  restart 0.058
+== W9Zb_skip_sym: test ed_ratio 8.48  div_b 1.28e-08  balance 0.062  spec_b 0.137  Hm 0.172  nulls 1.580  restart 0.131
+== W9Z_skip_sym_gaussdata: test ed_ratio 2.71  div_b 1.27e-08  balance 0.020  spec_b 0.021  Hm 0.021  nulls 1.376  restart 0.111
+total duration 1630 s
+seed 4 rc=0
+== G0_gaussian_modes: test ed_ratio 2.98  div_b 1.27e-08  balance 0.001  spec_b 0.011  Hm 0.014  nulls 2.122  restart 0.216
+== W9_skip_sym: test ed_ratio 8.09  div_b 1.28e-08  balance 0.058  spec_b 0.133  Hm 0.161  nulls 1.573  restart 0.113
+== G1_gaussian_full: test ed_ratio 1.94  div_b 1.27e-08  balance 0.002  spec_b 0.022  Hm 0.039  nulls 1.020  restart 0.069
+== W9Zb_skip_sym: test ed_ratio 8.09  div_b 1.28e-08  balance 0.058  spec_b 0.133  Hm 0.161  nulls 1.573  restart 0.113
+== W9Z_skip_sym_gaussdata: test ed_ratio 2.34  div_b 1.27e-08  balance 0.018  spec_b 0.024  Hm 0.034  nulls 1.331  restart 0.076
+total duration 1993 s
+[4729 s] done
+NVIDIA GeForce RTX 4090, 1 MiB, 0 %
+e4_data.json
+e4_floor.json
+e4_gpu_s0.log
+e4_gpu_s1.log
+e4_gpu_s2.log
+e4_gpu_s3.log
+e4_gpu_s4.log
+e4_mhd3d_s0.json
+e4_mhd3d_s0_A.json
+e4_mhd3d_s0_B.json
+e4_mhd3d_s0_C.json
+e4_mhd3d_s0_D.json
+e4_mhd3d_s0_E.json
+e4_mhd3d_s0_G.json
+e4_mhd3d_s0_Z.json
+e4_mhd3d_s1.json
+e4_mhd3d_s1_A.json
+e4_mhd3d_s1_B.json
+e4_mhd3d_s1_C.json
+e4_mhd3d_s1_D.json
+e4_mhd3d_s1_E.json
+e4_mhd3d_s1_G.json
+e4_mhd3d_s1_Z.json
+e4_mhd3d_s2.json
+e4_mhd3d_s2_A.json
+e4_mhd3d_s2_B.json
+e4_mhd3d_s2_C.json
+e4_mhd3d_s2_D.json
+e4_mhd3d_s2_E.json
+e4_mhd3d_s2_G.json
+e4_mhd3d_s2_Z.json
+e4_mhd3d_s3.json
+e4_mhd3d_s3_A.json
+e4_mhd3d_s3_B.json
+e4_mhd3d_s3_C.json
+e4_mhd3d_s3_D.json
+e4_mhd3d_s3_E.json
+e4_mhd3d_s3_G.json
+e4_mhd3d_s3_Z.json
+e4_mhd3d_s4.json
+e4_mhd3d_s4_A.json
+e4_mhd3d_s4_B.json
+e4_mhd3d_s4_C.json
+e4_mhd3d_s4_D.json
+e4_mhd3d_s4_E.json
+e4_mhd3d_s4_G.json
+e4_mhd3d_s4_Z.json
+e4_reference.json
+e4_samples_s0_DGZ.npz
+e4_samples_s0_all.npz
+
+--- status
+2026-11-13T10:46:35Z boot NVIDIA GeForce RTX 4090, 24564 MiB
+2026-11-13T10:48:14Z job started
+2026-11-13T12:07:03Z job finished rc=0 in 4729 s
+2026-11-13T12:07:04Z DONE rc=0

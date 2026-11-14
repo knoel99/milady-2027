@@ -74,7 +74,7 @@ format:
           <script defer src="../../../assets/team-explorer.js"></script>
 ---
 
-Every number on this page is **measured** in this repository: it is read from `data/bundle.json`, which `experiments/export_explorer.py --team cursor` copies from the committed result files (`experiments/results/cursor_*.json`), the hypothesis register (`research/hypotheses.json`) and the GPU ledger (`research/compute-ledger.jsonl`). Nothing is recomputed except means and standard errors over seeds (sample standard deviation divided by √n). What the numbers mean, and which claims they support, is in the [report](../report/index.html) ([PDF](../report/index.pdf){download="milady-2027-cursor-report.pdf"}); the code, data and agent organisation are drawn in the [architecture](../diagrams/code-architecture.html), [workflow](../diagrams/experiment-workflow.html) and [roles](../diagrams/agent-organisation.html) diagrams.
+Every number on this page is **measured** in this repository: it is read from `data/bundle.json`, which `experiments/export_explorer.py --team cursor` copies from the committed result files (`experiments/results/cursor_*.json`), the hypothesis register (`research/teams/cursor/hypotheses.json`) and the GPU ledger (`research/teams/cursor/compute-ledger.jsonl`). Nothing is recomputed except means and standard errors over seeds (sample standard deviation divided by √n). What the numbers mean, and which claims they support, is in the [report](../report/index.html) ([PDF](../report/index.pdf){download="milady-2027-cursor-report.pdf"}); the code, data and agent organisation are drawn in the [architecture](../diagrams/code-architecture.html), [workflow](../diagrams/experiment-workflow.html) and [roles](../diagrams/agent-organisation.html) diagrams.
 
 [Loading `data/bundle.json`…]{#xp-loading .xp-note}
 
@@ -122,7 +122,7 @@ Relative error of the number of magnetic null points (trilinear count) against t
 
 ## Hypothesis register {#register}
 
-The register `research/hypotheses.json`, with each hypothesis's statement and refutation criterion written before its computation. Filter by status or search the text; click an identifier for the criterion and the verdict.
+The register `research/teams/cursor/hypotheses.json`, with each hypothesis's statement and refutation criterion written before its computation. Filter by status or search the text; click an identifier for the criterion and the verdict.
 
 ```{=html}
 <div class="xp-controls">
@@ -135,7 +135,7 @@ The register `research/hypotheses.json`, with each hypothesis's statement and re
 
 ## GPU jobs and costs {#gpu}
 
-The finished jobs of `research/compute-ledger.jsonl` (RunPod pods, one command each).
+The finished jobs of `research/teams/cursor/compute-ledger.jsonl` (RunPod pods, one command each).
 
 ```{=html}
 <div class="xp-kpis" id="xp-gpu-kpis"></div>

@@ -1,0 +1,17 @@
+{
+ "fail": [],
+ "warn": [
+  "text is small for the figure: median label 6 pt at 183 mm, where published Fig. 1s read like 11.3 pt. Draw it narrower (120 or 136 mm) with 7-8 pt labels, enlarging the main objects and dropping minor ones to make room",
+  "text: 55 words, 0.55 words/cm2 (calibration from 5 published schematics: 0.20-0.45): smell test, check whether caption material is on the figure",
+  "sentence-style headings (P31: name the content with a noun phrase): \"Generated: Fourier modes of the potentia\"",
+  "caption-like labels (a label names a thing in 2-4 words; explanation goes to docs/caption.md): \"latent: 5320 reals\""
+ ],
+ "info": [
+  "build 185 ms; 183 x 55 mm; 33 texts, 73 strokes, 0 images, 0 panels",
+  "median label 6 pt = 1.16% of the width (published Fig. 1s: median 2.2%, 25th percentile 1.65%)",
+  "coloured text (fine when the hue is the colour of the entity it names, P15; never for emphasis alone): \"16³ grid\", \"|mi| ≤ 5\", \"665 complex modes\", \"Craya–Herring basis\", \"latent: 5320 reals\", \"noise → data, straight p\", \"conditioned on log η\", \"integrate the flow\"",
+  "no relations declared (F.relate): the connectivity check is off",
+  "ink coverage 9.2% of the page (calibration: see reference/style.md)",
+  "largest empty square per panel (share of panel area): "
+ ]
+}

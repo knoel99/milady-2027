@@ -1,0 +1,17 @@
+{
+  "schemaVersion": 1,
+  "receiptId": "e945c603-7477-44e7-905c-ec42304718dd",
+  "status": "current",
+  "command": "deliver",
+  "type": "architecture",
+  "input": "/home/user/milady-2027/.archify/code-arch/candidate.json",
+  "output": "/home/user/milady-2027/site/teams/claude/diagrams/code-architecture.html",
+  "specification": {
+    "sha256": "b54c2e132fe2de48bece94ef76307e407072152d95f4830751474a8f973ec5ed",
+    "bytes": 9760
+  },
+  "artifact": {
+    "sha256": "c2444b096e41d0c9caaf030869061e123cf18c2615166b201a01428776c2557e",
+    "bytes": 862130
+  }
+}

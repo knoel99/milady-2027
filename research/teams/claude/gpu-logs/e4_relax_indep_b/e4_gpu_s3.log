@@ -1,0 +1,28 @@
+[W9X_skip_sym] it  1000  loss 1.2702  16 s
+[W9X_skip_sym] it  2000  loss 1.2187  33 s
+[W9X_skip_sym] it  3000  loss 1.1856  48 s
+[W9X_skip_sym] it  4000  loss 1.1779  67 s
+== G0X_tau0: test ed_ratio 2.83  div_b 1.27e-08  balance 0.002  spec_b 0.021  Hm 0.032  nulls 2.092  restart nan
+== G0X_tau1: test ed_ratio 54.51  div_b 1.25e-08  balance 0.157  spec_b 0.114  Hm 0.006  nulls 0.379  restart nan
+== G0X_tau2: test ed_ratio 38.86  div_b 1.29e-08  balance 0.028  spec_b 0.100  Hm 0.039  nulls 0.353  restart nan
+== G0X_tau4: test ed_ratio 24.69  div_b 1.27e-08  balance 0.086  spec_b 0.207  Hm 0.175  nulls 0.269  restart 0.108
+== G0X_tau8: test ed_ratio 5.41  div_b 1.24e-08  balance 0.011  spec_b 0.105  Hm 0.164  nulls 0.125  restart nan
+== G1X_tau0: test ed_ratio 2.05  div_b 1.27e-08  balance 0.002  spec_b 0.014  Hm 0.022  nulls 1.060  restart nan
+== G1X_tau1: test ed_ratio 14.05  div_b 1.27e-08  balance 0.033  spec_b 0.113  Hm 0.049  nulls 0.358  restart nan
+== G1X_tau2: test ed_ratio 10.68  div_b 1.26e-08  balance 0.032  spec_b 0.123  Hm 0.077  nulls 0.236  restart nan
+== G1X_tau4: test ed_ratio 5.08  div_b 1.26e-08  balance 0.005  spec_b 0.087  Hm 0.085  nulls 0.135  restart 0.030
+== G1X_tau8: test ed_ratio 2.89  div_b 1.26e-08  balance 0.009  spec_b 0.050  Hm 0.061  nulls 0.052  restart nan
+== W9X_tau0: test ed_ratio 8.70  div_b 1.28e-08  balance 0.064  spec_b 0.146  Hm 0.174  nulls 1.575  restart nan
+== W9X_tau1: test ed_ratio 23.34  div_b 1.29e-08  balance 0.069  spec_b 0.110  Hm 0.156  nulls 0.430  restart nan
+== W9X_tau2: test ed_ratio 14.81  div_b 1.29e-08  balance 0.040  spec_b 0.078  Hm 0.122  nulls 0.320  restart nan
+== W9X_tau4: test ed_ratio 4.26  div_b 1.28e-08  balance 0.005  spec_b 0.050  Hm 0.067  nulls 0.220  restart 0.011
+== W9X_tau8: test ed_ratio 1.02  div_b 1.27e-08  balance 0.007  spec_b 0.027  Hm 0.025  nulls 0.053  restart nan
+== W16X_tau0: test ed_ratio 1.70  div_b 1.26e-08  balance 0.006  spec_b 0.019  Hm 0.043  nulls 0.953  restart nan
+== W16X_tau1: test ed_ratio 5.90  div_b 1.27e-08  balance 0.022  spec_b 0.060  Hm 0.059  nulls 0.240  restart nan
+== W16X_tau2: test ed_ratio 4.34  div_b 1.27e-08  balance 0.014  spec_b 0.064  Hm 0.075  nulls 0.126  restart nan
+== W16X_tau4: test ed_ratio 1.84  div_b 1.26e-08  balance 0.003  spec_b 0.042  Hm 0.075  nulls 0.040  restart 0.017
+== W16X_tau8: test ed_ratio 1.22  div_b 1.26e-08  balance 0.004  spec_b 0.020  Hm 0.049  nulls 0.078  restart nan
+== REFX_tau0: test ed_ratio 0.38  div_b 1.27e-08  balance 0.001  spec_b 0.007  Hm 0.006  nulls 0.021  restart nan
+== REFX_tau1: test ed_ratio 0.38  div_b 1.27e-08  balance 0.001  spec_b 0.007  Hm 0.006  nulls 0.016  restart nan
+== REFX_tau4: test ed_ratio 0.37  div_b 1.27e-08  balance 0.001  spec_b 0.006  Hm 0.008  nulls 0.008  restart nan
+total duration 1840 s

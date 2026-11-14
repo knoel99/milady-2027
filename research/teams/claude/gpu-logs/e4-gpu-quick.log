@@ -1,0 +1,46 @@
+torch 2.8.0+cu128 cuda True NVIDIA RTX PRO 4500 Blackwell
+[2 s] data: 48 cores
+eta 0.08000 (train) Eu 0.480 Eb 0.081 Hm -0.045 (drift -0.4 SE) balance +0.0007  48 s
+eta 0.07253 (test ) Eu 0.446 Eb 0.096 Hm -0.054 (drift -0.2 SE) balance +0.0019  50 s
+eta 0.06575 (train) Eu 0.385 Eb 0.116 Hm -0.070 (drift +0.1 SE) balance +0.0015  49 s
+eta 0.05961 (val  ) Eu 0.370 Eb 0.124 Hm -0.075 (drift -3.1 SE) balance -0.0003  49 s
+eta 0.05404 (train) Eu 0.340 Eb 0.129 Hm -0.072 (drift +1.0 SE) balance +0.0006  50 s
+eta 0.04899 (test ) Eu 0.315 Eb 0.141 Hm -0.083 (drift -0.9 SE) balance +0.0001  50 s
+eta 0.04441 (train) Eu 0.312 Eb 0.144 Hm -0.082 (drift -0.5 SE) balance -0.0008  50 s
+eta 0.04026 (val  ) Eu 0.278 Eb 0.158 Hm -0.095 (drift -0.5 SE) balance -0.0024  51 s
+eta 0.03650 (train) Eu 0.272 Eb 0.161 Hm -0.093 (drift +0.7 SE) balance +0.0004  50 s
+eta 0.03309 (test ) Eu 0.269 Eb 0.165 Hm -0.095 (drift +1.4 SE) balance +0.0002  50 s
+eta 0.03000 (train) Eu 0.256 Eb 0.172 Hm -0.098 (drift +0.6 SE) balance +0.0002  51 s
+total 53 s -> /workspace/milady/experiments/results/e4_data_quick.json
+[57 s] reference
+eta 0.03309 nulls 44.8 ± 2.8  k_lambda 2.92  H(1) -0.0941  H(k>=2) -0.0013  E1/EB 0.37  z(j.B) +0.1  floor 0.4497
+eta 0.03000 nulls 40.8 ± 3.5  k_lambda 2.96  H(1) -0.0964  H(k>=2) -0.0019  E1/EB 0.36  z(j.B) -0.1  floor 0.4373
+reference done in 84 s
+[143 s] models: seeds 0, 8 threads each
+seed 0 rc=0
+== W0_free: test ed_ratio 42.95  div_b 5.34e-01  balance 0.164  spec_b 0.296  Hm 0.719  nulls 2.176  restart 0.314
+== W2_final_projection: test ed_ratio 36.32  div_b 3.50e-08  balance 0.164  spec_b 0.263  Hm 0.719  nulls 2.127  restart 0.109
+== W1_penalty: test ed_ratio 28.87  div_b 4.98e-01  balance 0.121  spec_b 1.131  Hm 0.658  nulls 1.237  restart 0.149
+== W3_projected_flow: test ed_ratio 36.48  div_b 2.16e-08  balance 0.162  spec_b 0.261  Hm 0.727  nulls 2.209  restart 0.106
+== W4_potentials: test ed_ratio 46.03  div_b 1.21e-08  balance 0.143  spec_b 0.284  Hm 0.714  nulls 2.301  restart 0.133
+== W6_diffusion: test ed_ratio 38.74  div_b 1.21e-08  balance 0.138  spec_b 0.264  Hm 0.631  nulls 2.247  restart 0.126
+== W4s_potentials_sym: test ed_ratio 47.18  div_b 1.21e-08  balance 0.136  spec_b 0.245  Hm 0.792  nulls 2.363  restart 0.136
+== W5_stationarity: test ed_ratio 47.64  div_b 1.21e-08  balance 0.132  spec_b 0.231  Hm 0.821  nulls 2.401  restart 0.137
+== W5_control: test ed_ratio 47.18  div_b 1.21e-08  balance 0.136  spec_b 0.245  Hm 0.792  nulls 2.369  restart 0.136
+== W7_tilting: test ed_ratio 44.17  div_b 1.21e-08  balance 0.088  spec_b 0.359  Hm 0.704  nulls 2.373  restart nan
+== W8_rescaling: test ed_ratio 40.08  div_b 1.20e-08  balance 0.000  spec_b 0.179  Hm 0.789  nulls 1.955  restart nan
+== W5_stationarity_half: test ed_ratio 35.59  div_b 1.21e-08  balance 0.131  spec_b 0.232  Hm 0.815  nulls 2.355  restart nan
+== W5_control_half: test ed_ratio 35.23  div_b 1.21e-08  balance 0.136  spec_b 0.243  Hm 0.787  nulls 2.324  restart nan
+total duration 289 s
+[434 s] done
+NVIDIA RTX PRO 4500 Blackwell, 2 MiB, 0 %
+e4_data_quick.json
+e4_gpu_s0.log
+e4_mhd3d_quick_s0.json
+e4_reference_quick.json
+
+--- status
+2026-11-12T18:35:19Z boot NVIDIA RTX PRO 4500 Blackwell, 32623 MiB
+2026-11-12T18:36:41Z job started
+2026-11-12T18:43:55Z job finished rc=0 in 434 s
+2026-11-12T18:43:55Z DONE rc=0

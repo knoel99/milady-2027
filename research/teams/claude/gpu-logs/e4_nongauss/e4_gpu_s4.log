@@ -1,0 +1,25 @@
+== G0_gaussian_modes: test ed_ratio 3.63  div_b 1.27e-08  balance 0.002  spec_b 0.023  Hm 0.039  nulls 2.258  restart 0.219
+[W9_skip_sym] it  1000  loss 1.2707  24 s
+[W9_skip_sym] it  2000  loss 1.2191  52 s
+[W9_skip_sym] it  3000  loss 1.1926  81 s
+[W9_skip_sym] it  4000  loss 1.1853  110 s
+== W9_skip_sym: test ed_ratio 8.89  div_b 1.28e-08  balance 0.056  spec_b 0.143  Hm 0.187  nulls 1.706  restart 0.126
+[W10_anchored] it  1000  loss 1.3274  26 s
+[W10_anchored] it  2000  loss 1.3033  51 s
+[W10_anchored] it  3000  loss 1.2878  77 s
+[W10_anchored] it  4000  loss 1.2782  102 s
+== W10_anchored: test ed_ratio 43.79  div_b 1.29e-08  balance 0.147  spec_b 0.211  Hm 0.080  nulls 2.540  restart 0.128
+[W11_anchored_skip] it  1000  loss 1.2665  33 s
+[W11_anchored_skip] it  2000  loss 1.2163  70 s
+[W11_anchored_skip] it  3000  loss 1.1906  106 s
+[W11_anchored_skip] it  4000  loss 1.1837  143 s
+== W11_anchored_skip: test ed_ratio 8.67  div_b 1.28e-08  balance 0.052  spec_b 0.150  Hm 0.198  nulls 1.764  restart 0.120
+== G1_gaussian_full: test ed_ratio 2.65  div_b 1.27e-08  balance 0.003  spec_b 0.027  Hm 0.033  nulls 1.110  restart 0.067
+[W9N_skip_sym] it  1000  loss 1.2707  22 s
+[W9N_skip_sym] it  2000  loss 1.2191  49 s
+[W9N_skip_sym] it  3000  loss 1.1926  77 s
+[W9N_skip_sym] it  4000  loss 1.1853  106 s
+== W9N_skip_sym: test ed_ratio 8.89  div_b 1.28e-08  balance 0.056  spec_b 0.143  Hm 0.187  nulls 1.706  restart 0.126
+== G2_gaussianised_W9: test ed_ratio 9.80  div_b 1.28e-08  balance 0.056  spec_b 0.143  Hm 0.192  nulls 1.702  restart 0.161
+== G3_gaussianised_G1: test ed_ratio 2.59  div_b 1.27e-08  balance 0.004  spec_b 0.022  Hm 0.026  nulls 1.130  restart 0.071
+total duration 1551 s

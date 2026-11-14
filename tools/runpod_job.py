@@ -14,6 +14,7 @@ read here. Standard library only.
     python3 tools/runpod_job.py run --hours 1.5 -- python -m milady.sim.mhd3d bench --n 64 --device cuda
     python3 tools/runpod_job.py run --gpu "NVIDIA H100 80GB HBM3" --hours 1 --outputs experiments/results -- CMD
     python3 tools/runpod_job.py prices        # hourly price and stock of the configured GPUs
+    python3 tools/runpod_job.py collect --pod ID --log FILE   # take over a job whose `run` process died
     python3 tools/runpod_job.py spend         # GPU spend so far, from the ledger
     python3 tools/runpod_job.py cleanup       # delete this team's own pods past their limit (prefix + own ledger)
 """
@@ -397,6 +398,106 @@ def cleanup(mcp, everything: bool = False, now: float | None = None) -> list[dic
     return gone
 
 
+def collect(args, mcp: MCP | None = None, sleep=time.sleep) -> int:
+    """Take over a pod of this team whose `run` process died (the session's worker restarted, 2026-11-12).
+
+    The dead process held the random path under which the pod serves its results, so they are read another
+    way: `exec-pod` follows the job status inside the pod, then packs the outputs under a fresh random path;
+    the archive is fetched, the pod deleted and the job written to the ledger, as `run` would have done.
+    """
+    mcp = mcp or MCP()
+    pid = args.pod
+    pod = mcp.call("get-pod", {"id": pid})
+    name = str(pod.get("name", ""))
+    if not (TEAM_PREFIX.match(PREFIX) and name.startswith(PREFIX)):
+        sys.exit(f"pod {pid} ({name!r}) does not carry this team's prefix {PREFIX!r}: not collected")
+    env = pod.get("env") or {}
+    outputs = args.outputs or str(env.get("OUTPUTS", "")).split() or config().get("outputs", ["experiments/results"])
+    limit_h = int(env.get("MAX_MIN", 120)) / 60
+    try:
+        t0 = dt.datetime.fromisoformat(pod["createdAt"]).timestamp()
+    except (KeyError, ValueError):
+        t0 = time.time()
+    price = float(pod.get("cost") or 0)
+
+    def ex(cmd: str, timeout: int = 20) -> str:
+        r = mcp.call("exec-pod", {"id": pid, "body": {"command": ["sh", "-c", cmd], "timeoutSeconds": timeout}})
+        return str(r.get("stdout", "")) if isinstance(r, dict) else ""
+
+    rc, status = None, ""
+    try:
+        while True:
+            status = ex("cat /srv/www/*/status.txt 2>/dev/null") or status
+            m = re.search(r"DONE rc=(\d+)", status)
+            if m:
+                rc = int(m.group(1))
+                break
+            if "FAILED" in status or args.now:
+                break
+            if time.time() - t0 > (limit_h + 0.25) * 3600:
+                status += "\nTIMEOUT: pod deleted by runpod_job.py collect"
+                break
+            sleep(30)
+        token = secrets.token_hex(16)
+        ex(f"mkdir -p /srv/www/{token} && cd /workspace/milady && "
+           f"tar -czf /srv/www/{token}/part.tgz --ignore-failed-read {' '.join(outputs)} 2>/dev/null; "
+           f"mv /srv/www/{token}/part.tgz /srv/www/{token}/results.tar.gz; "
+           f"cat /srv/www/*/job.log > /srv/www/{token}/job.log 2>/dev/null; true", 25)
+        base = f"https://{pid}-8000.proxy.runpod.net/{token}/"
+        data = None
+        for _ in range(20):  # a large archive may outlast the exec call: wait for the renamed file
+            data = http_get(base + "results.tar.gz")
+            if data:
+                break
+            sleep(15)
+        if data:
+            with tarfile.open(fileobj=io.BytesIO(data)) as tar:
+                tar.extractall(ROOT, filter="data")
+        logs = http_get(base + "job.log") or b""
+        Path(args.log).parent.mkdir(parents=True, exist_ok=True)
+        Path(args.log).write_bytes(logs + b"\n--- status (collected after a restart of the session)\n" + status.encode())
+        if not data:
+            print(f"no archive could be fetched from pod {pid}: the pod is kept, collect again or delete it",
+                  file=sys.stderr)
+            return 1
+    except RuntimeError as e:
+        print(f"collect failed for pod {pid}: {e}. The pod is kept.", file=sys.stderr)
+        return 1
+    try:
+        mcp.call("delete-pod", {"id": pid})
+    except RuntimeError as e:
+        print(f"DELETE FAILED for pod {pid}: {e}. Delete it by hand, it is still billing.", file=sys.stderr)
+    hours_used = (time.time() - t0) / 3600
+    ledger_append({"time": dt.datetime.now(dt.UTC).strftime("%Y-%m-%dT%H:%M:%SZ"), "pod": pid,
+                   "gpu": (pod.get("gpu") or {}).get("id", "?"), "usd_per_hour": price, "hours": round(hours_used, 4),
+                   "usd": round(hours_used * price, 4), "commit": str(env.get("REF", "")),
+                   "command": "collected after a restart of the session: " + name, "rc": rc,
+                   "status_tail": status[-300:]})
+    print(f"rc={rc}; {hours_used:.2f} h; ${hours_used * price:.2f}; log {args.log}", file=sys.stderr)
+    return 0 if rc == 0 else 1
+
+
+def exec_in_pod(args, mcp: MCP | None = None) -> int:
+    """Run a shell command in a running pod of this team, from the repository clone, and print its output.
+
+    For repairs of a job in flight (2026-11-12: result files written under a wrong name were copied to the
+    output directory before the job ended). Pods of other teams are refused, as in `collect`.
+    """
+    mcp = mcp or MCP()
+    name = str(mcp.call("get-pod", {"id": args.pod}).get("name", ""))
+    if not (TEAM_PREFIX.match(PREFIX) and name.startswith(PREFIX)):
+        sys.exit(f"pod {args.pod} ({name!r}) does not carry this team's prefix {PREFIX!r}: nothing run")
+    command = shell_command(args.command)
+    r = mcp.call("exec-pod", {"id": args.pod, "body": {"command": ["sh", "-c", f"cd /workspace/milady && {command}"],
+                                                       "timeoutSeconds": min(int(args.timeout), 25)}})
+    out = r if isinstance(r, dict) else {}
+    print(str(out.get("stdout", "")), end="")
+    if out.get("stderr"):
+        print(str(out["stderr"]), end="", file=sys.stderr)
+    code = out.get("exitCode")
+    return 1 if code is None else int(code)                  # no exit code: the call did not complete
+
+
 def spend() -> dict:
     rows = [r for r in ledger_rows() if r.get("event") != "start"]
     by_gpu: dict[str, dict] = {}
@@ -423,11 +524,24 @@ def main() -> int:
     r.add_argument("command", nargs=argparse.REMAINDER)
     sub.add_parser("prices")
     sub.add_parser("spend")
+    k = sub.add_parser("collect", help="take over a pod of this team whose `run` process died: outputs, delete, ledger")
+    k.add_argument("--pod", required=True, help="pod id (list-pods; its name carries this team's prefix)")
+    k.add_argument("--outputs", nargs="*", help="paths to bring back (default: the OUTPUTS of the pod)")
+    k.add_argument("--log", default=str(ROOT / "research" / "gpu-logs" / "last-job.log"))
+    k.add_argument("--now", action="store_true", help="do not wait for the job to finish: take what is there")
+    x = sub.add_parser("exec", help="run a shell command in a running pod of this team (repair of a job in flight)")
+    x.add_argument("--pod", required=True)
+    x.add_argument("--timeout", default=20, help="seconds (at most 25)")
+    x.add_argument("command", nargs=argparse.REMAINDER)
     c = sub.add_parser("cleanup", help="delete pods of this tool past their time limit (orphans of a crashed run)")
     c.add_argument("--all", action="store_true", help="also delete this team's own pods whose job may still be running")
     a = ap.parse_args()
     if a.cmd == "run":
         return run(a)
+    if a.cmd == "collect":
+        return collect(a)
+    if a.cmd == "exec":
+        return exec_in_pod(a)
     if a.cmd == "spend":
         s = spend()
         print(json.dumps(s, indent=1))

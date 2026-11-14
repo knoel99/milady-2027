@@ -1,0 +1,33 @@
+label	6.5pt	Snapshots(u, B)
+label	5.5pt	16³ grid
+label	6.5pt	Fouriermodes
+label	5.5pt	|mi| ≤ 5
+label	5.5pt	665 complex modes
+label	6.5pt	Vectorpotentials
+label	5.5pt	Craya–Herring basis
+label	5.5pt	latent: 5320 reals
+label	6.5pt	Conditionalflow matching
+label	5.5pt	noise → data, straight paths
+label	5.5pt	conditioned on log η
+label	6.5pt	Samplingthe flow
+label	5.5pt	integrate the flow
+label	5.5pt	t = 0 → 1
+label	6.5pt	Decodingby the curl
+label	5.5pt	B = ∇ × A (u alike)
+label	5.5pt	∇·B = 0
+label	7.0pt	u
+label	7.0pt	B
+label	5.5pt	m
+label	6.0pt	e1
+label	6.0pt	e2
+label	6.5pt	k
+label	6.0pt	x0
+label	6.0pt	x1
+label	5.5pt	xt
+label	6.0pt	vθ(x, t, c)
+label	6.0pt	x0
+label	6.0pt	x1
+label	6.0pt	dx/dt = vθ
+label	7.0pt	B
+label	6.0pt	Generated: Fourier modes of the potentials
+label	6.0pt	every sample: ∇·B = 0

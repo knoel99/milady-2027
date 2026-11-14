@@ -494,3 +494,36 @@ Checked by the `biblio` agent on 2026-11-11.
 - S. O. Rice, "Mathematical analysis of random noise", *Bell Syst. Tech. J.* **23** (1944), **24** (1945): origin of the crossing-rate formula. [UNCONFIRMED: not retrieved]
 - D. Chandler, "Statistical mechanics of isomerization dynamics in liquids and the transition state approximation", *J. Chem. Phys.* **68**, 2959 (1978); C. H. Bennett (1977), in Christoffersen (ed.), *Algorithms for Chemical Computation*, ACS, p. 63. [verified, bibliographic data only] The transition-state-theory rate is an equilibrium flux through a dividing surface, the same structure as Rice's formula applied to a stationary law (general knowledge, not checked in these papers).
 - Consequence: the formula itself is prior art. The claim of this work is only its application to the law produced by a snapshot generator, with "no earlier application found in our search (2026-11-11, shallow search)".
+
+
+## Entries added on 2026-11-12 (race pilot, experiment E4)
+
+Checked by the `biblio` agent on 2026-11-12 (about 17 web requests; arXiv abstract pages, ar5iv HTML and Crossref; the page text was summarised by the fetch tool, so quotations are as returned by it and must be re-read in the PDF before being quoted verbatim).
+
+**Salimans & Ho (2022).** T. Salimans, J. Ho, "Progressive Distillation for Fast Sampling of Diffusion Models", ICLR 2022, arXiv:2202.00512. [verified]
+- Section 4 "Diffusion model parameterization and training loss" lists the parameterization "Predicting v ≡ α_t ε − σ_t x", with x̂ = α_t z_t − σ_t v̂_θ(z_t). [verified, ar5iv HTML] The abstract only says "new parameterizations of diffusion models that provide increased stability when using few sampling steps": cite Section 4, not the abstract. Appendix D (DDIM derivation) not checked.
+- Use here: `src/milady/train/diffusion.py` (v-prediction on a trigonometric variance-preserving path).
+
+**Song, Meng & Ermon (2021).** J. Song, C. Meng, S. Ermon, "Denoising Diffusion Implicit Models", ICLR 2021, arXiv:2010.02502. [verified, abstract]
+- DDIMs "define a class of non-Markovian diffusion processes" with the same training objective as DDPMs; samples 10 to 50 times faster in wall-clock time. [verified, abstract]
+- That the σ_t = 0 member is a **deterministic** sampler is in the body, not in the abstract. [UNCONFIRMED: body not opened] Do not cite "deterministic sampler (Song et al. 2021)" without checking the section.
+
+**Brandenburg (2001).** A. Brandenburg, "The inverse cascade and nonlinear alpha-effect in simulations of isotropic helical hydromagnetic turbulence", *Astrophys. J.* **550**, 824–840 (2001), arXiv:astro-ph/0006186, DOI 10.1086/319783. [verified]
+- Abstract: helically forced turbulence in a periodic box "generates a strong large-scale magnetic field at the box scale", nearly force-free and stronger than equipartition; a higher magnetic Reynolds number gives a longer time to build the large-scale field. [verified, abstract]
+- Section III.6: "the growth of the large scale field is limited by the microscopic resistivity"; saturation time increases with Rm. [verified, ar5iv] [corrected: "saturation on a resistive time scale" is a paraphrase, not the paper's wording]
+- Section III.3: magnetic helicity of opposite sign at large scales. [UNCONFIRMED wording: quotation returned by the fetch tool without certainty]
+- Section I attributes the inverse cascade of magnetic helicity to Frisch et al. (1975) and Pouquet et al. (1976). [verified, ar5iv]
+
+**Pouquet, Frisch & Léorat (1976).** A. Pouquet, U. Frisch, J. Léorat, "Strong MHD helical turbulence and the nonlinear dynamo effect", *J. Fluid Mech.* **77**(2), 321–354 (1976), DOI 10.1017/S0022112076002140. [verified, bibliographic data via Crossref]
+- The inverse cascade of magnetic helicity is attributed to this paper by Brandenburg (2001, Section I); the statement itself was not read in the paper. [UNCONFIRMED at primary level]
+
+**Brandenburg & Subramanian (2005).** A. Brandenburg, K. Subramanian, "Astrophysical magnetic fields and nonlinear dynamo theory", *Phys. Rep.* **417**, 1–209 (2005), arXiv:astro-ph/0405052, DOI 10.1016/j.physrep.2005.06.005. [verified, bibliographic data]
+- Section 3.4 "Magnetic helicity", Eq. (3.34): dH/dt = −2∫E·B dV + surface terms = −2ηC with C = ∫J·B dV; the surface terms vanish in closed domains. [verified with a caveat: from the fetch tool's summary of the ar5iv page, not a verbatim read; re-read Eq. (3.34) before quoting] The sign and the factor 2 are those of the identity d⟨A·B⟩/dt = −2η⟨j·B⟩ used in E4, which `tests/test_constraints.py::test_stationarity_identities` checks against the solver independently of this reference.
+
+**Zeros of a Gaussian random vector field (Kac–Rice).** J.-M. Azaïs, M. Wschebor, *Level Sets and Extrema of Random Processes and Fields*, Wiley, 2009, ISBN 978-0-470-40933-6. [UNCONFIRMED: seen as a search result only; no DOI found] Survey found but not opened: Berzin, Latour, León, "Kac-Rice formula: A contemporary overview", arXiv:2205.08742. [UNCONFIRMED] Adler & Taylor (2007) not searched. Consequence: the constant of the null-count estimate N ≈ 4.88 k_λ³ (physicien, 2026-11-12, own Monte Carlo) has no verified source; present it as a conjecture.
+
+**Prior art for the E4 constraints and metrics (search of 2026-11-12, WebSearch only; a "not found" is not a proof of novelty).**
+- Magnetic helicity budget or the identity E[⟨j·B⟩] = 0 as a loss or constraint of a generative model of MHD fields: nothing found. Number or type of magnetic null points as an evaluation metric of a generative model: nothing found (null points appear only in physics papers, e.g. arXiv:1509.05915, arXiv:2406.06328, not opened). [UNCONFIRMED, negative claims]
+- "Restart" test (generated snapshots advanced by the solver, drift of an invariant measured): nothing found in MHD. Closest in fluids: arXiv:2508.04318, "Turbulent Injection assisted by Diffusion Models for Scale Resolving Simulations" (diffusion model trained on decaying homogeneous isotropic turbulence, samples injected as inlet conditions; the search snippet reports spectra and autocorrelations, not a drift of an invariant). [UNCONFIRMED: not opened; open it before claiming that no restart-type test exists there]
+- Flow matching against diffusion at equal budget for turbulence or MHD fields: no published comparison found. Closest: X. Dong, H. Yang, J.-L. Wu, arXiv:2602.17089 (2D Kolmogorov flows; favours flow matching in a latent space for fast sampling: a speed claim) [verified, abstract]; H. Wang et al., "FourierFlow", arXiv:2506.00862 (argues that diffusion models suffer from spectral bias; no matched-budget comparison in the abstract) [verified, abstract]; arXiv:2511.19379 (MNIST, low step budgets) [UNCONFIRMED, snippet only].
+- Székely & Rizzo (2013) is already in `data-metrics.md` (§ energy distance), [verified]; not re-checked.

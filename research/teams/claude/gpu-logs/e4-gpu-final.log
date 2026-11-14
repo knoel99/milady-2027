@@ -1,0 +1,191 @@
+torch 2.8.0+cu128 cuda True NVIDIA RTX PRO 4500 Blackwell
+[2 s] data: 64 cores
+eta 0.08000 (train) Eu 0.491 Eb 0.078 Hm -0.043 (drift -0.4 SE) balance -0.0000  450 s
+eta 0.07253 (test ) Eu 0.440 Eb 0.097 Hm -0.056 (drift +0.2 SE) balance +0.0000  444 s
+eta 0.06575 (train) Eu 0.402 Eb 0.111 Hm -0.065 (drift +1.5 SE) balance -0.0004  420 s
+eta 0.05961 (val  ) Eu 0.373 Eb 0.121 Hm -0.072 (drift -0.1 SE) balance +0.0001  432 s
+eta 0.05404 (train) Eu 0.345 Eb 0.131 Hm -0.078 (drift +0.7 SE) balance +0.0002  407 s
+eta 0.04899 (test ) Eu 0.321 Eb 0.140 Hm -0.084 (drift -0.4 SE) balance -0.0000  398 s
+eta 0.04441 (train) Eu 0.309 Eb 0.145 Hm -0.085 (drift -0.8 SE) balance -0.0003  430 s
+eta 0.04026 (val  ) Eu 0.288 Eb 0.153 Hm -0.090 (drift -0.4 SE) balance -0.0002  399 s
+eta 0.03650 (train) Eu 0.276 Eb 0.160 Hm -0.095 (drift +1.5 SE) balance +0.0000  419 s
+eta 0.03309 (test ) Eu 0.265 Eb 0.165 Hm -0.096 (drift +1.7 SE) balance +0.0002  406 s
+eta 0.03000 (train) Eu 0.253 Eb 0.172 Hm -0.097 (drift -0.7 SE) balance +0.0002  401 s
+total 453 s -> /workspace/milady/experiments/results/e4_data.json
+[456 s] reference
+eta 0.03309 nulls 44.1 ± 1.1  k_lambda 2.90  H(1) -0.0949  H(k>=2) -0.0012  E1/EB 0.37  z(j.B) +0.3  floor 0.0733
+eta 0.03000 nulls 52.0 ± 1.2  k_lambda 2.95  H(1) -0.0953  H(k>=2) -0.0015  E1/EB 0.36  z(j.B) +0.7  floor 0.0400
+reference done in 664 s
+[1123 s] models: seeds 0 1 2 3 4, 8 threads each
+eta 0.03650: trajectory floor 0.0433 ± 0.0152 [0.0149, 0.0694], random floor 0.0132, E|Y-Y'| 3.073
+eta 0.03309: trajectory floor 0.0590 ± 0.0357 [0.0164, 0.1500], random floor 0.0122, E|Y-Y'| 3.119
+eta 0.03000: trajectory floor 0.0374 ± 0.0213 [0.0169, 0.0918], random floor 0.0118, E|Y-Y'| 3.066
+seed 4 rc=0
+== W0_free: test ed_ratio 251.19  div_b 3.78e-01  balance 0.313  spec_b 2.613  Hm 2.354  nulls 0.996  restart 0.504
+== W2_final_projection: test ed_ratio 198.86  div_b 2.55e-08  balance 0.313  spec_b 2.284  Hm 2.354  nulls 0.803  restart 0.430
+== W1_penalty: test ed_ratio 452.38  div_b 2.13e-01  balance 0.597  spec_b 21.099  Hm 34.687  nulls 0.691  restart 0.498
+== W3_projected_flow: test ed_ratio 193.52  div_b 2.12e-08  balance 0.312  spec_b 2.223  Hm 2.267  nulls 0.757  restart 0.438
+== W4_potentials: test ed_ratio 263.93  div_b 1.17e-08  balance 0.394  spec_b 2.544  Hm 2.309  nulls 1.093  restart 0.493
+== W6_diffusion: test ed_ratio 534.22  div_b 9.98e-09  balance 0.743  spec_b 17.040  Hm 23.800  nulls 0.423  restart 0.633
+== W4s_potentials_sym: test ed_ratio 214.13  div_b 1.22e-08  balance 0.268  spec_b 0.879  Hm 0.498  nulls 1.888  restart 0.358
+== W5_stationarity: test ed_ratio 217.94  div_b 1.23e-08  balance 0.195  spec_b 0.462  Hm 0.686  nulls 2.344  restart 0.334
+== W5_control: test ed_ratio 214.30  div_b 1.21e-08  balance 0.274  spec_b 0.928  Hm 0.533  nulls 1.865  restart 0.367
+== W7_tilting: test ed_ratio 183.03  div_b 1.21e-08  balance 0.191  spec_b 0.494  Hm 0.420  nulls 2.131  restart nan
+== W8_rescaling: test ed_ratio 119.14  div_b 1.17e-08  balance 0.000  spec_b 0.770  Hm 0.561  nulls 0.796  restart nan
+== W5_stationarity_half: test ed_ratio 168.31  div_b 1.23e-08  balance 0.195  spec_b 0.464  Hm 0.702  nulls 2.412  restart nan
+== W5_control_half: test ed_ratio 163.55  div_b 1.21e-08  balance 0.274  spec_b 0.937  Hm 0.542  nulls 1.834  restart nan
+== W4c_potentials_smooth: test ed_ratio 214.17  div_b 1.24e-08  balance 0.268  spec_b 0.635  Hm 0.323  nulls 2.137  restart 0.381
+== G0_gaussian_modes: test ed_ratio 3.63  div_b 1.27e-08  balance 0.002  spec_b 0.023  Hm 0.039  nulls 2.230  restart 0.219
+== W9_skip_sym: test ed_ratio 8.89  div_b 1.28e-08  balance 0.056  spec_b 0.143  Hm 0.187  nulls 1.683  restart 0.126
+== W10_anchored: test ed_ratio 43.79  div_b 1.29e-08  balance 0.147  spec_b 0.211  Hm 0.080  nulls 2.510  restart 0.128
+== W11_anchored_skip: test ed_ratio 8.67  div_b 1.28e-08  balance 0.052  spec_b 0.150  Hm 0.198  nulls 1.741  restart 0.120
+total duration 1871 s
+seed 1 rc=0
+== W0_free: test ed_ratio 215.18  div_b 3.88e-01  balance 0.292  spec_b 1.986  Hm 1.431  nulls 1.259  restart 0.516
+== W2_final_projection: test ed_ratio 154.19  div_b 2.59e-08  balance 0.292  spec_b 1.653  Hm 1.431  nulls 1.045  restart 0.448
+== W1_penalty: test ed_ratio 476.31  div_b 2.03e-01  balance 0.623  spec_b 24.111  Hm 39.382  nulls 0.701  restart 0.501
+== W3_projected_flow: test ed_ratio 153.03  div_b 2.14e-08  balance 0.287  spec_b 1.568  Hm 1.312  nulls 1.092  restart 0.443
+== W4_potentials: test ed_ratio 240.02  div_b 1.18e-08  balance 0.390  spec_b 1.968  Hm 1.409  nulls 1.333  restart 0.512
+== W6_diffusion: test ed_ratio 511.04  div_b 1.01e-08  balance 0.768  spec_b 14.946  Hm 20.257  nulls 0.382  restart 0.642
+== W4s_potentials_sym: test ed_ratio 204.17  div_b 1.23e-08  balance 0.262  spec_b 0.736  Hm 0.180  nulls 2.020  restart 0.355
+== W5_stationarity: test ed_ratio 211.21  div_b 1.23e-08  balance 0.186  spec_b 0.463  Hm 0.700  nulls 2.361  restart 0.328
+== W5_control: test ed_ratio 204.23  div_b 1.23e-08  balance 0.267  spec_b 0.775  Hm 0.173  nulls 1.993  restart 0.363
+== W7_tilting: test ed_ratio 186.39  div_b 1.23e-08  balance 0.193  spec_b 0.395  Hm 0.400  nulls 2.490  restart nan
+== W8_rescaling: test ed_ratio 115.08  div_b 1.19e-08  balance 0.000  spec_b 0.633  Hm 0.176  nulls 0.948  restart nan
+== W5_stationarity_half: test ed_ratio 161.86  div_b 1.23e-08  balance 0.185  spec_b 0.462  Hm 0.696  nulls 2.379  restart nan
+== W5_control_half: test ed_ratio 154.18  div_b 1.23e-08  balance 0.266  spec_b 0.771  Hm 0.187  nulls 2.017  restart nan
+== W4c_potentials_smooth: test ed_ratio 216.24  div_b 1.24e-08  balance 0.269  spec_b 0.623  Hm 0.346  nulls 2.152  restart 0.381
+== G0_gaussian_modes: test ed_ratio 3.55  div_b 1.27e-08  balance 0.002  spec_b 0.026  Hm 0.037  nulls 2.227  restart 0.211
+== W9_skip_sym: test ed_ratio 10.15  div_b 1.29e-08  balance 0.059  spec_b 0.151  Hm 0.209  nulls 1.685  restart 0.135
+== W10_anchored: test ed_ratio 43.32  div_b 1.29e-08  balance 0.145  spec_b 0.205  Hm 0.092  nulls 2.423  restart 0.116
+== W11_anchored_skip: test ed_ratio 7.93  div_b 1.28e-08  balance 0.050  spec_b 0.133  Hm 0.181  nulls 1.667  restart 0.125
+total duration 1873 s
+seed 2 rc=0
+== W0_free: test ed_ratio 234.06  div_b 3.86e-01  balance 0.295  spec_b 2.187  Hm 1.690  nulls 1.184  restart 0.506
+== W2_final_projection: test ed_ratio 177.48  div_b 2.59e-08  balance 0.295  spec_b 1.854  Hm 1.690  nulls 0.995  restart 0.433
+== W1_penalty: test ed_ratio 435.53  div_b 2.17e-01  balance 0.574  spec_b 19.070  Hm 30.820  nulls 0.657  restart 0.506
+== W3_projected_flow: test ed_ratio 171.47  div_b 2.14e-08  balance 0.286  spec_b 1.745  Hm 1.544  nulls 0.997  restart 0.427
+== W4_potentials: test ed_ratio 247.03  div_b 1.18e-08  balance 0.383  spec_b 2.084  Hm 1.545  nulls 1.287  restart 0.505
+== W6_diffusion: test ed_ratio 477.70  div_b 1.03e-08  balance 0.701  spec_b 12.043  Hm 16.050  nulls 0.481  restart 0.630
+== W4s_potentials_sym: test ed_ratio 208.25  div_b 1.22e-08  balance 0.276  spec_b 0.920  Hm 0.364  nulls 1.867  restart 0.379
+== W5_stationarity: test ed_ratio 215.98  div_b 1.22e-08  balance 0.186  spec_b 0.464  Hm 0.697  nulls 2.402  restart 0.333
+== W5_control: test ed_ratio 208.16  div_b 1.21e-08  balance 0.281  spec_b 0.971  Hm 0.401  nulls 1.830  restart 0.386
+== W7_tilting: test ed_ratio 237.04  div_b 1.21e-08  balance 0.191  spec_b 0.375  Hm 0.799  nulls 2.817  restart nan
+== W8_rescaling: test ed_ratio 113.11  div_b 1.17e-08  balance 0.000  spec_b 0.810  Hm 0.429  nulls 0.751  restart nan
+== W5_stationarity_half: test ed_ratio 168.27  div_b 1.22e-08  balance 0.187  spec_b 0.466  Hm 0.719  nulls 2.349  restart nan
+== W5_control_half: test ed_ratio 158.47  div_b 1.21e-08  balance 0.282  spec_b 0.976  Hm 0.375  nulls 1.813  restart nan
+== W4c_potentials_smooth: test ed_ratio 215.65  div_b 1.24e-08  balance 0.270  spec_b 0.643  Hm 0.328  nulls 2.174  restart 0.385
+== G0_gaussian_modes: test ed_ratio 3.36  div_b 1.27e-08  balance 0.001  spec_b 0.022  Hm 0.033  nulls 2.252  restart 0.209
+== W9_skip_sym: test ed_ratio 9.01  div_b 1.29e-08  balance 0.054  spec_b 0.140  Hm 0.195  nulls 1.689  restart 0.116
+== W10_anchored: test ed_ratio 44.35  div_b 1.29e-08  balance 0.148  spec_b 0.208  Hm 0.081  nulls 2.473  restart 0.123
+== W11_anchored_skip: test ed_ratio 8.55  div_b 1.29e-08  balance 0.049  spec_b 0.138  Hm 0.196  nulls 1.697  restart 0.113
+total duration 1874 s
+seed 3 rc=0
+== W0_free: test ed_ratio 232.15  div_b 3.64e-01  balance 0.355  spec_b 2.682  Hm 2.371  nulls 1.013  restart 0.547
+== W2_final_projection: test ed_ratio 171.47  div_b 2.47e-08  balance 0.355  spec_b 2.349  Hm 2.371  nulls 0.837  restart 0.493
+== W1_penalty: test ed_ratio 455.07  div_b 2.10e-01  balance 0.593  spec_b 21.812  Hm 35.733  nulls 0.708  restart 0.499
+== W3_projected_flow: test ed_ratio 182.11  div_b 2.10e-08  balance 0.374  spec_b 2.584  Hm 2.684  nulls 0.730  restart 0.512
+== W4_potentials: test ed_ratio 252.94  div_b 1.16e-08  balance 0.441  spec_b 2.660  Hm 2.328  nulls 1.047  restart 0.554
+== W6_diffusion: test ed_ratio 494.42  div_b 1.02e-08  balance 0.742  spec_b 13.616  Hm 18.186  nulls 0.388  restart 0.639
+== W4s_potentials_sym: test ed_ratio 208.11  div_b 1.21e-08  balance 0.313  spec_b 1.140  Hm 0.472  nulls 1.732  restart 0.422
+== W5_stationarity: test ed_ratio 219.71  div_b 1.23e-08  balance 0.181  spec_b 0.447  Hm 0.720  nulls 2.402  restart 0.328
+== W5_control: test ed_ratio 208.87  div_b 1.21e-08  balance 0.320  spec_b 1.200  Hm 0.547  nulls 1.686  restart 0.430
+== W7_tilting: test ed_ratio 180.61  div_b 1.21e-08  balance 0.227  spec_b 0.688  Hm 0.244  nulls 2.050  restart nan
+== W8_rescaling: test ed_ratio 111.73  div_b 1.16e-08  balance 0.000  spec_b 1.013  Hm 0.587  nulls 0.573  restart nan
+== W5_stationarity_half: test ed_ratio 167.37  div_b 1.23e-08  balance 0.179  spec_b 0.446  Hm 0.708  nulls 2.431  restart nan
+== W5_control_half: test ed_ratio 158.50  div_b 1.21e-08  balance 0.318  spec_b 1.200  Hm 0.570  nulls 1.705  restart nan
+== W4c_potentials_smooth: test ed_ratio 215.79  div_b 1.24e-08  balance 0.268  spec_b 0.629  Hm 0.333  nulls 2.148  restart 0.380
+== G0_gaussian_modes: test ed_ratio 3.38  div_b 1.27e-08  balance 0.002  spec_b 0.018  Hm 0.017  nulls 2.215  restart 0.205
+== W9_skip_sym: test ed_ratio 9.93  div_b 1.29e-08  balance 0.062  spec_b 0.152  Hm 0.197  nulls 1.649  restart 0.126
+== W10_anchored: test ed_ratio 42.99  div_b 1.29e-08  balance 0.147  spec_b 0.213  Hm 0.117  nulls 2.433  restart 0.124
+== W11_anchored_skip: test ed_ratio 8.42  div_b 1.29e-08  balance 0.053  spec_b 0.140  Hm 0.183  nulls 1.687  restart 0.122
+total duration 1915 s
+seed 0 rc=0
+== W0_free: test ed_ratio 248.56  div_b 3.83e-01  balance 0.314  spec_b 2.404  Hm 2.117  nulls 1.097  restart 0.493
+== W2_final_projection: test ed_ratio 194.35  div_b 2.59e-08  balance 0.314  spec_b 2.074  Hm 2.117  nulls 0.876  restart 0.412
+== W1_penalty: test ed_ratio 502.64  div_b 1.89e-01  balance 0.677  spec_b 28.728  Hm 47.524  nulls 0.732  restart 0.500
+== W3_projected_flow: test ed_ratio 182.77  div_b 2.15e-08  balance 0.299  spec_b 1.893  Hm 1.775  nulls 0.926  restart 0.420
+== W4_potentials: test ed_ratio 277.49  div_b 1.16e-08  balance 0.429  spec_b 2.979  Hm 2.777  nulls 0.936  restart 0.521
+== W6_diffusion: test ed_ratio 576.27  div_b 9.99e-09  balance 0.783  spec_b 21.395  Hm 30.258  nulls 0.474  restart 0.641
+== W4s_potentials_sym: test ed_ratio 214.31  div_b 1.21e-08  balance 0.300  spec_b 1.182  Hm 0.749  nulls 1.643  restart 0.395
+== W5_stationarity: test ed_ratio 210.26  div_b 1.22e-08  balance 0.208  spec_b 0.532  Hm 0.664  nulls 2.271  restart 0.345
+== W5_control: test ed_ratio 215.66  div_b 1.20e-08  balance 0.309  spec_b 1.269  Hm 0.824  nulls 1.599  restart 0.405
+== W7_tilting: test ed_ratio 189.93  div_b 1.21e-08  balance 0.216  spec_b 0.621  Hm 0.170  nulls 1.717  restart nan
+== W8_rescaling: test ed_ratio 124.33  div_b 1.15e-08  balance 0.000  spec_b 1.078  Hm 0.869  nulls 0.488  restart nan
+== W5_stationarity_half: test ed_ratio 160.96  div_b 1.23e-08  balance 0.206  spec_b 0.523  Hm 0.666  nulls 2.289  restart nan
+== W5_control_half: test ed_ratio 163.14  div_b 1.21e-08  balance 0.307  spec_b 1.255  Hm 0.799  nulls 1.610  restart nan
+== W4c_potentials_smooth: test ed_ratio 215.31  div_b 1.24e-08  balance 0.271  spec_b 0.657  Hm 0.320  nulls 2.098  restart 0.385
+== G0_gaussian_modes: test ed_ratio 3.70  div_b 1.27e-08  balance 0.001  spec_b 0.035  Hm 0.047  nulls 2.251  restart 0.218
+== W9_skip_sym: test ed_ratio 8.76  div_b 1.28e-08  balance 0.053  spec_b 0.138  Hm 0.190  nulls 1.617  restart 0.118
+== W10_anchored: test ed_ratio 43.36  div_b 1.29e-08  balance 0.142  spec_b 0.203  Hm 0.108  nulls 2.479  restart 0.120
+== W11_anchored_skip: test ed_ratio 9.44  div_b 1.29e-08  balance 0.054  spec_b 0.154  Hm 0.209  nulls 1.688  restart 0.122
+total duration 1933 s
+[3058 s] done
+NVIDIA RTX PRO 4500 Blackwell, 2 MiB, 0 %
+e4_data.json
+e4_floor.json
+e4_gpu_s0.log
+e4_gpu_s1.log
+e4_gpu_s2.log
+e4_gpu_s3.log
+e4_gpu_s4.log
+e4_mhd3d_s0.json
+e4_mhd3d_s0_A.json
+e4_mhd3d_s0_B.json
+e4_mhd3d_s0_C.json
+e4_mhd3d_s0_D.json
+e4_mhd3d_s0_E.json
+e4_mhd3d_s1.json
+e4_mhd3d_s1_A.json
+e4_mhd3d_s1_B.json
+e4_mhd3d_s1_C.json
+e4_mhd3d_s1_D.json
+e4_mhd3d_s1_E.json
+e4_mhd3d_s2.json
+e4_mhd3d_s2_A.json
+e4_mhd3d_s2_B.json
+e4_mhd3d_s3.json
+e4_mhd3d_s3_A.json
+e4_mhd3d_s3_B.json
+e4_mhd3d_s4.json
+e4_mhd3d_s4_A.json
+e4_mhd3d_s4_B.json
+e4_mhd3dab_s0.json
+e4_mhd3dab_s0_A.json
+e4_mhd3dab_s0_B.json
+e4_mhd3dab_s0_C.json
+e4_mhd3dab_s0_D.json
+e4_mhd3dab_s0_E.json
+e4_mhd3dab_s1.json
+e4_mhd3dab_s1_A.json
+e4_mhd3dab_s1_B.json
+e4_mhd3dab_s1_C.json
+e4_mhd3dab_s1_D.json
+e4_mhd3dab_s1_E.json
+e4_mhd3dab_s2.json
+e4_mhd3dab_s2_A.json
+e4_mhd3dab_s2_B.json
+e4_mhd3dab_s2_C.json
+e4_mhd3dab_s2_D.json
+e4_mhd3dab_s2_E.json
+e4_mhd3dab_s3.json
+e4_mhd3dab_s3_A.json
+e4_mhd3dab_s3_B.json
+e4_mhd3dab_s3_C.json
+e4_mhd3dab_s3_D.json
+e4_mhd3dab_s3_E.json
+e4_mhd3dab_s4.json
+e4_mhd3dab_s4_A.json
+e4_mhd3dab_s4_B.json
+e4_mhd3dab_s4_C.json
+e4_mhd3dab_s4_D.json
+e4_mhd3dab_s4_E.json
+e4_reference.json
+e4_samples_s0_all.npz
+e4_samplesab_s0_all.npz
+
+--- status (collected after a restart of the session)
+2026-11-12T23:24:43Z boot NVIDIA RTX PRO 4500 Blackwell, 32623 MiB
+2026-11-12T23:26:12Z job started
+2026-11-13T00:17:10Z job finished rc=0 in 3058 s
+2026-11-13T00:17:10Z DONE rc=0

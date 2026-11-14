@@ -1,0 +1,20 @@
+[W9P_skip_sym] it  1000  loss 1.2726  25 s
+[W9P_skip_sym] it  2000  loss 1.2165  47 s
+[W9P_skip_sym] it  3000  loss 1.1914  65 s
+[W9P_skip_sym] it  4000  loss 1.1844  82 s
+== W9P_skip_sym: test ed_ratio 8.46  div_b 1.28e-08  balance 0.051  spec_b 0.129  Hm 0.181  nulls 1.622  restart nan
+== W18_anchor_on_W9_it0: test ed_ratio 8.77  div_b 1.29e-08  balance 0.045  spec_b 0.130  Hm 0.184  nulls 1.711  restart nan
+[W18_anchor_on_W9] it  1000  loss 1.0350  30 s
+[W18_anchor_on_W9] it  2000  loss 1.0325  59 s
+[W18_anchor_on_W9] it  3000  loss 1.0310  90 s
+[W18_anchor_on_W9] it  4000  loss 1.0314  117 s
+== W18_anchor_on_W9_it250: test ed_ratio 8.77  div_b 1.29e-08  balance 0.045  spec_b 0.130  Hm 0.184  nulls 1.711  restart nan
+== W18_anchor_on_W9_it1000: test ed_ratio 8.76  div_b 1.29e-08  balance 0.045  spec_b 0.130  Hm 0.184  nulls 1.710  restart nan
+== W18_anchor_on_W9_it2000: test ed_ratio 8.76  div_b 1.29e-08  balance 0.045  spec_b 0.130  Hm 0.184  nulls 1.711  restart nan
+== W18_anchor_on_W9_it4000: test ed_ratio 8.76  div_b 1.29e-08  balance 0.045  spec_b 0.130  Hm 0.184  nulls 1.709  restart nan
+[W9PP_retrained_on_W9] it  1000  loss 1.2598  20 s
+[W9PP_retrained_on_W9] it  2000  loss 1.2317  38 s
+[W9PP_retrained_on_W9] it  3000  loss 1.2105  54 s
+[W9PP_retrained_on_W9] it  4000  loss 1.2095  69 s
+== W9PP_retrained_on_W9: test ed_ratio 17.64  div_b 1.29e-08  balance 0.078  spec_b 0.201  Hm 0.279  nulls 1.907  restart nan
+total duration 1079 s

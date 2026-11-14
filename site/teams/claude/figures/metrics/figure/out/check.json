@@ -1,0 +1,17 @@
+{
+ "fail": [],
+ "warn": [
+  "text is small for the figure: median label 5 pt at 183 mm, where published Fig. 1s read like 11.3 pt. Draw it narrower (120 or 136 mm) with 7-8 pt labels, enlarging the main objects and dropping minor ones to make room",
+  "text: 101 words, 0.64 words/cm2 (calibration from 5 published schematics: 0.20-0.45): smell test, check whether caption material is on the figure",
+  "caption-like labels (a label names a thing in 2-4 words; explanation goes to docs/caption.md): \"floor (grey band): mean of 10 splits of \", \"a perfect generator would score about 0.\"",
+  "large empty area in panel a (22% of the panel, 18 mm square), e (19% of the panel, 17 mm square): enlarge the main art, move a neighbour in, or shrink the panel"
+ ],
+ "info": [
+  "build 213 ms; 183 x 86 mm; 63 texts, 55 strokes, 0 images, 8 panels",
+  "median label 5 pt = 0.96% of the width (published Fig. 1s: median 2.2%, 25th percentile 1.65%)",
+  "coloured text (fine when the hue is the colour of the entity it names, P15; never for emphasis alone): \"held-out η\", \"Generated snapshots\", \"from the solver\", \"velocity u\", \"field B\", \"forcing f\", \"distance to reference / \", \"generatedvs reference\"",
+  "no relations declared (F.relate): the connectivity check is off",
+  "ink coverage 4.2% of the page (calibration: see reference/style.md)",
+  "largest empty square per panel (share of panel area): a 0.218, b 0.063, c 0.099, d 0.148, e 0.193, f 0.135, g 0.099, h 0.067"
+ ]
+}

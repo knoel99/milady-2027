@@ -38,6 +38,9 @@ site/figures/*/figure/out/*.txt
 site/figures/*/figure/data/*.log
 site/figures/*/figure/data/preview.png
 site/figures/*/docs/draft*.png
+experiments/data_e4*/
+experiments/results/*_quick_*
+research/gpu-out/
 
 # Figure skills installed by tools/install_skills.sh (pinned upstream copies, not versioned)
 .claude/skills/schematic-figure/
@@ -46,3 +49,12 @@ site/figures/*/docs/draft*.png
 .cursor/skills/
 # archify working folders
 .archify/
+
+# Model weights of E4 (E4_SAVE_MODELS=1): released as files, never committed
+experiments/results/**/e4_model*.pt
+experiments/results/e4_model*.pt
+experiments/release_models/
+
+# Downloads and samples of experiments/e4_release_example.py
+/e4_release/
+/samples.h5

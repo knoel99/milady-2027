@@ -1,0 +1,90 @@
+panel	8.0pt	a
+label	6.5pt	Optimal velocity field v(x, t)
+label	9.0pt	v
+label	9.0pt	=
+label	6.5pt	Linear part
+label	6.0pt	A(t) x + b(t)
+label	9.0pt	+
+label	6.5pt	The rest
+label	5.5pt	non-linear
+label	5.5pt	Gaussian data:exactly affine
+label	5.5pt	Gaussian data:none
+label	7.0pt	⋯
+label	6.0pt	Latent x: 5320 (potentials)
+label	7.0pt	⋯
+label	6.0pt	Velocity v: 5320 (potentials)
+label	6.0pt	Network: width 512
+label	5.5pt	linear part
+label	5.5pt	Conjecture (tested by a width scan, H21):
+label	5.5pt	a network narrower than the latent
+label	5.5pt	cannot carry the linear part
+label	5.0pt	(W0, free components: 7980)
+label	5.5pt	the rest
+label	6.0pt	Measured: flow-matching loss of the plain
+label	6.0pt	models W0, W4, W4s after training
+label	5.5pt	π/2 ≈ 1.571
+label	5.5pt	1.60–1.63, above π/2
+label	5.5pt	Samples over-dispersed:
+label	5.5pt	potentials models: 2 to 3 times too many
+label	5.5pt	null points
+panel	8.0pt	b
+label	6.5pt	Four remedies and two Gaussian baselines
+label	5.5pt	Energy distance / noise floor
+label	5.0pt	(log scale; seed mean, held-out η)
+label	5.5pt	null-count
+label	5.5pt	error
+label	5.5pt	restart
+label	5.5pt	drift
+label	5.0pt	(relative values)
+label	5.0pt	1
+label	5.0pt	3
+label	5.0pt	10
+label	5.0pt	30
+label	5.0pt	100
+label	5.0pt	300
+label	8.0pt	W4s
+label	5.5pt	network (no linear part)
+label	5.0pt	same network, no linear part
+label	6.0pt	210
+label	6.0pt	1.83
+label	6.0pt	0.38
+label	8.0pt	W10
+label	5.5pt	exact Gaussian field
+label	8.0pt	+
+label	5.5pt	network
+label	5.0pt	exact Gaussian field + network
+label	6.0pt	43.6
+label	6.0pt	2.46
+label	6.0pt	0.12
+label	8.0pt	W9
+label	5.5pt	learned affine term
+label	8.0pt	+
+label	5.5pt	network
+label	5.0pt	learned affine term + network
+label	6.0pt	9.3
+label	6.0pt	1.67
+label	6.0pt	0.12
+label	8.0pt	W11
+label	5.5pt	exactGaussian
+label	8.0pt	+
+label	5.5pt	learnedaffine
+label	8.0pt	+
+label	5.5pt	network
+label	5.0pt	exact Gaussian field + learned affine correction + network
+label	6.0pt	8.6
+label	6.0pt	1.70
+label	6.0pt	0.12
+label	8.0pt	G0
+label	5.5pt	Gaussian law per mode
+label	5.0pt	G0: Gaussian law per mode (no covariance between modes), no network
+label	6.0pt	3.5
+label	6.0pt	2.24
+label	6.0pt	0.21
+label	8.0pt	G1
+label	5.5pt	Gaussian law with covariance between modes
+label	5.0pt	G1: Gaussian law with the covariance between modes, no network
+label	6.0pt	2.6
+label	6.0pt	1.10
+label	6.0pt	0.06
+label	5.0pt	Two Gaussian laws without a network are closer to the reference than every learned model;
+label	5.0pt	the one that keeps the covariance between modes (G1) is the best on all three columns.

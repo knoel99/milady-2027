@@ -247,7 +247,7 @@ with open_mff(uri) as f:                                         # h5py.File (or
     b_last = f["t1_fields/magnetic_field"][0, -1]
 ```
 
-Command line: `python -m milady.data.convert {e2, validate, info, zarr, sfemans}`; catalog:
+Command line: `python -m milady.data.convert {e2, e4, validate, info, zarr, sfemans}`; catalog:
 `python -m milady.catalog ingest <uri>… --campaign <campaign>` (without `--campaign`, the simulations go into a
 "default" campaign) (registers files that have already been written, for example after a Slurm job array
 whose nodes cannot reach the database).
@@ -362,6 +362,21 @@ t_j = 30 + j (j = 1…n); parameters ν, η, Pm, α, eps_u, eps_b, kf_min, kf_ma
 on the real files, the mean dissipation equals the injection to within 1 % (energy balance at the law level). With
 `--catalog`, the campaign `e2_mhd2d`, the simulations, files, mean diagnostics and the `e2_mhd2d` v1.0 dataset
 (train → train, ref → test) are registered; the command is idempotent.
+
+### 10.1 Conversion of the E4 data
+
+`python -m milady.data.convert e4 <npz_folder> <output> [--catalog [URL]] [--store URI] [--note TEXT]` reads the
+`eta_<η>.npz` files of `experiments/e4_data.py` (every Galerkin mode of the 16³ solver as Craya–Herring vector potentials,
+24 trajectories × 100 snapshots grouped by trajectory) and writes one 3D MFF file per value of η: `velocity` and
+`magnetic_field` on the solver grid (u = ∇×A_u, B = ∇×A_B, zero divergence to float32 rounding), times t = 202 … 400,
+parameters ν, η, Re = 1/(k_f ν), Rm = 1/(k_f η), Pm, k_f and the forcing, and the time series of the solver in
+`milady_diagnostics/` on their own time grid (transient included). No `milady_spectral/` group: the fields are band-limited
+to the modes of the solver, and `milady.data.convert.e4_latents(path)` recovers the potentials from the stored fields within
+1e-6 of their root-mean-square value (`milady_latent` records the latent space and the measured error). The split of each
+η (`milady_split`: train, val, test) is that of `e4_data.py`. With `--catalog`, the campaign `e4_mhd3d`, the simulations,
+files, mean diagnostics and the `e4_mhd3d` v1.0 dataset are registered; the command is idempotent. Size: 194 MiB per file,
+2.1 GiB for the 11 values. `experiments/e4_release.py` writes the checksums, a sample file and the catalogue of the data set
+and of the models under `research/release/`.
 
 ## 11. Format evolution
 

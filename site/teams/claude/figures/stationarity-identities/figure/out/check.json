@@ -1,0 +1,18 @@
+{
+ "fail": [],
+ "warn": [
+  "text is small for the figure: median label 5.5 pt at 183 mm, where published Fig. 1s read like 11.3 pt. Draw it narrower (120 or 136 mm) with 7-8 pt labels, enlarging the main objects and dropping minor ones to make room",
+  "text: 143 words, 0.93 words/cm2 (calibration from 5 published schematics: 0.20-0.45): smell test, check whether caption material is on the figure",
+  "caption-like labels (a label names a thing in 2-4 words; explanation goes to docs/caption.md): \"each snapshot: not zero\", \"Per-sample constraint: not what the law \", \"flat: every sample balanced\", \"a few 10−4 of the dissipation (measured \", \"collapsed: comparison H8 dropped\"",
+  "48 strokes thinner than 0.25 pt at final size (min 0.200 pt) in: rect"
+ ],
+ "info": [
+  "build 175 ms; 183 x 84 mm; 61 texts, 82 strokes, 0 images, 3 panels",
+  "median label 5.5 pt = 1.06% of the width (published Fig. 1s: median 2.2%, 25th percentile 1.65%)",
+  "coloured text (fine when the hue is the colour of the entity it names, P15; never for emphasis alone): \"mean = 0\", \"Per-sample constraint: n\", \"flat: every sample balan\", \"a few 10−4 of the dissip\", \"large scales\", \"k = 1, 2: negative\", \"k = 2: 3 to 16 times sma\", \"registered hypothesis H1\"",
+  "no relations declared (F.relate): the connectivity check is off",
+  "ink coverage 9.3% of the page (calibration: see reference/style.md)",
+  "largest empty square per panel (share of panel area): a 0.054, b 0.061, c 0.053",
+  "leader lines checked for crossings: 1"
+ ]
+}

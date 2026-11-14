@@ -379,6 +379,79 @@ def e3():
     print(f"Duration: {r['duration_s']:.0f} s.\n")
 
 
+def e4():
+    from e4_digest import section
+
+    from e4_digest import R as R4
+    from e4_digest import convergence, polarity
+
+    lines = section()
+    reps = [("e4_rank0", "H41: the anchored code path of H28, H38 and H40 with an anchor of rank 0 (the mode-wise law) against W10, which goes "
+                         "through the earlier class: groups D, E and Q on a RunPod GPU pod, own regenerated data"),
+            ("e4_rank30", "H41, reported measurement: the anchored model of group Q with an anchor of rank 30"),
+            ("e4_struct", "H40: flow matching anchored on a Gaussian law with a structured covariance (300 leading directions plus mode-wise "
+                          "blocks), trained on the data and, as a control, on samples of W9; the structured law sampled exactly; W9: group Q "
+                          "on a RunPod GPU pod, own regenerated data"),
+            ("e4_struct_indep", "H40 on the data of the independent replication (E4_DATA_SEED=100): group Q"),
+            ("e4_cold", "H39: ensembles of the solver started from the initial condition of the data, read at 8 to 200 time units: group K on "
+                        "a RunPod GPU pod, own regenerated data"),
+            ("e4_cold_indep", "H39 against the reference of the independent replication (E4_DATA_SEED=100): group K"),
+            ("e4_anchorpos", "H38: positive control of the anchored model of H28: W9, the anchored model trained on samples of W9 and read "
+                             "along its training, and W9 retrained on the same samples: group P on a RunPod GPU pod, own regenerated data"),
+            ("e4_recsur", "H37: the model with the affine term trained on the data and on Gaussian surrogate data, each recoloured onto the "
+                          "moments of G1 (W16V, W17), G1, and reference snapshots through the same kind of map (oracle); 512 restart "
+                          "states: group V on RunPod GPU pods split by seed (assembled by e4_assemble.py), own regenerated data"),
+            ("e4_recsur_indep", "H37 on the data of the independent replication (E4_DATA_SEED=100): group V"),
+            ("e4_relax2", "H35, second cycle: G0, G1, the model with the affine term (W9) and its recoloured samples (W16) followed by a "
+                          "relaxation of 1, 2, 4 and 8 time units in the solver, with a control on reference snapshots; 512 restart states, "
+                          "which gives the reference statistics of the job of H29: group X on RunPod GPU pods split by seed (assembled by "
+                          "e4_assemble.py), own regenerated data"),
+            ("e4_relax_indep", "H35 on the data of the independent replication (E4_DATA_SEED=100), 512 restart states: group X"),
+            ("e4_relax", "H35, first cycle (128 restart states: the null count of the reference is taken on another draw of snapshots than "
+                         "in the job of H29, and check (3) of the measurement fails): group X on RunPod GPU pods split by seed"),
+            ("e4_moretraj2", "H36, second cycle: G0, W9 and G1 on a second data set of 96 trajectories of 25 snapshots per η "
+                             "(E4_DATA_SEED=300), check (1) as amended before this run: groups D and G on a RunPod GPU pod"),
+            ("e4_moretraj", "H36: G0, W9 and G1 on a data set with the same number of snapshots from four times the trajectories (96 "
+                            "trajectories of 25 snapshots per η, E4_DATA_SEED=200): groups D and G on a RunPod GPU pod"),
+            ("e4_trajsur", "H34: the model with the affine term trained on the data and on Gaussian trajectories with the lag-one "
+                           "autocorrelation of the data (W9Yb, W9Y), and G1: groups G and Y on a RunPod GPU pod, own regenerated data"),
+            ("e4_trajsur_indep", "H34 on another realisation of the data (E4_DATA_SEED=100, regenerated on a pod whose CPU type gave "
+                                 "other trajectories than those of the independent replication): groups G and Y"),
+            ("e4_recolour", "H29-H31: the model with the affine term recoloured onto the moments of the Gaussian laws (W15, W16), its null "
+                            "control (G4), G1 at the training η (G1T) and G1, 512 restarts: groups G, T and R on RunPod GPU pods split by seed "
+                            "(assembled by e4_assemble.py), own regenerated data"),
+            ("e4_recolour_indep", "H29-H31 on the data of the independent replication (E4_DATA_SEED=100): groups G, T and R"),
+            ("e4_surrogate", "H33 and H32: the model with the affine term trained on the data and on Gaussian surrogate data (W9Zb, W9Z), "
+                             "G0, W9 and G1, with the Kac-Rice factors of the null points: groups D, G and Z on a RunPod GPU pod, own regenerated data"),
+            ("e4_surrogate_indep", "H33 and H32 on the data of the independent replication (E4_DATA_SEED=100): groups D, G and Z"),
+            ("e4_anchor", "H28: flow matching anchored on the full-covariance Gaussian law (W14), read along one training of 4000 iterations, "
+                          "and G1 sampled exactly: groups G and F on a RunPod GPU pod, own regenerated data"),
+            ("e4_anchor_indep", "H28 on the data of the independent replication (E4_DATA_SEED=100): groups G and F"),
+            ("e4_nongauss", "tests H25-H27 of the structure beyond a Gaussian law (production split with a jackknife, restart anchored on the "
+                            "reference energy up to 16 tau, Gaussianised W9 with a null control): groups D, E, G and N on a RunPod GPU pod, "
+                            "own regenerated data"),
+            ("e4_nongauss_indep", "the same tests H25-H27 on the data of the independent replication (E4_DATA_SEED=100)"),
+            ("e4_final_long", "long trainings: groups D, E and L (W9L, W11L: 8 times the iterations) on a RunPod GPU pod, own regenerated data"),
+            ("e4_mech", "Gaussian law with the inter-mode covariance (G1) and loss and tilting on the model with the affine term: groups D, E, G "
+                        "and M on a RunPod GPU pod, own regenerated data; restart drift recorded at four times"),
+            ("e4_g1indep", "the two Gaussian laws and the model with the affine term (groups D and G) on the data of the independent "
+                           "replication (E4_DATA_SEED=100)"),
+            ("e4_scan2", "second width scan of H21: groups D and S, 5 seeds on three GPU pods (split by seed)"),
+            ("e4_final_scan", "first width scan of H21 (A100, cut by its time limit: S_w5632 and S_w512_long on 2 seeds only)"),
+            ("e4_indep", "independent replication: reference data regenerated with other seeds of the initial conditions (E4_DATA_SEED=100), "
+                         "groups A to E"),
+            ("e4_gpu", "first GPU run of the registered groups A and B (the run reviewed for H4-H14; same data and model seeds as the main run)"),
+            ("e4_cpu", "seeds 0 and 1 on the CPU of the session's container (first computation of the groups C, D and E; two seeds only)")]
+    for name, what in reps:
+        root = R4 / "replications" / name
+        if (root / "e4_reference.json").exists():
+            lines += section(root=root, replication=what)
+    lines += convergence()
+    lines += polarity()
+    if lines:
+        print("\n".join(lines))
+
+
 if __name__ == "__main__":
     print("# Results digest (generated by experiments/digest.py)\n")
-    e1(); e2(); e3()
+    e1(); e2(); e3(); e4()

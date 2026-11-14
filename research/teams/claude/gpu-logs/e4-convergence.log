@@ -1,0 +1,27 @@
+eta 0.03650 (train) Eu 0.277 Eb 0.160 Hm -0.096 (drift +0.4 SE) balance -0.0001  496 s
+eta 0.03309 (test ) Eu 0.262 Eb 0.167 Hm -0.098 (drift -0.0 SE) balance -0.0001  28 s
+eta 0.03000 (train) Eu 0.253 Eb 0.173 Hm -0.101 (drift +0.4 SE) balance +0.0000  471 s
+total 91 s -> /workspace/milady/experiments/results/e4_data.json
+eta 0.07253 (test ) Eu 0.448 Eb 0.093 Hm -0.054 (drift -1.9 SE) balance -0.0002  61 s
+eta 0.04899 (test ) Eu 0.322 Eb 0.140 Hm -0.085 (drift +1.6 SE) balance -0.0001  58 s
+eta 0.03309 (test ) Eu 0.266 Eb 0.168 Hm -0.102 (drift -0.5 SE) balance -0.0001  57 s
+total 181 s -> /workspace/milady/experiments/results/e4_data_cfl0.75.json
+eta 0.07253 (test ) Eu 0.439 Eb 0.097 Hm -0.056 (drift -0.2 SE) balance -0.0001  46 s
+eta 0.04899 (test ) Eu 0.320 Eb 0.139 Hm -0.084 (drift -0.3 SE) balance -0.0003  43 s
+eta 0.03309 (test ) Eu 0.259 Eb 0.166 Hm -0.100 (drift -0.7 SE) balance +0.0001  43 s
+total 145 s -> /workspace/milady/experiments/results/e4_data_n24.json
+eta 0.04899 (test ) Eu 0.322 Eb 0.138 Hm -0.083 (drift -0.4 SE) balance -0.0001  74 s
+total 87 s -> /workspace/milady/experiments/results/e4_data_n32.json
+total 56
+drwxr-xr-x 2 root root   140 Nov 12 19:02 .
+drwxr-xr-x 5 root root    91 Nov 12 18:54 ..
+-rw-r--r-- 1 root root  8993 Nov 12 18:59 e4_data_cfl0.75.json
+-rw-r--r-- 1 root root 22721 Nov 12 18:55 e4_data_n16_same_hardware.json
+-rw-r--r-- 1 root root 10036 Nov 12 19:01 e4_data_n24.json
+-rw-r--r-- 1 root root  4320 Nov 12 19:02 e4_data_n32.json
+
+--- status
+2026-11-12T18:53:12Z boot NVIDIA RTX PRO 4500 Blackwell, 32623 MiB
+2026-11-12T18:54:26Z job started
+2026-11-12T19:02:57Z job finished rc=0 in 511 s
+2026-11-12T19:02:57Z DONE rc=0

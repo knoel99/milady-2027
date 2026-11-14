@@ -264,6 +264,9 @@
   ];
   /* teams:begin */
   var TEAM_LINKS = [
+    ["teams/claude/report/index.html", "Claude team: report (HTML)"],
+    ["teams/claude/report/index.pdf", "Claude team: report (PDF)", "milady-2027-claude-report.pdf"],
+    ["teams/claude/explorer/index.html", "Claude team: explorer"],
     ["teams/cursor/report/index.html", "Cursor team: report (HTML)"],
     ["teams/cursor/report/index.pdf", "Cursor team: report (PDF)", "milady-2027-cursor-report.pdf"],
     ["teams/cursor/explorer/index.html", "Cursor team: explorer"]

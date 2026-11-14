@@ -1,0 +1,17 @@
+{
+  "schemaVersion": 1,
+  "receiptId": "abfccea2-b47e-4062-b22a-4d79959b5ac5",
+  "status": "current",
+  "command": "deliver",
+  "type": "workflow",
+  "input": "/home/user/milady-2027/.archify/exp-flow/candidate.json",
+  "output": "/home/user/milady-2027/site/teams/claude/diagrams/experiment-workflow.html",
+  "specification": {
+    "sha256": "e1948d0f10e5ec9a5036524f7157d56e745dad26d0cca3322b0fdf0acbf05d00",
+    "bytes": 9982
+  },
+  "artifact": {
+    "sha256": "bb2c8c2dfab9b0e46031399ce2c17f5b06602d1028ce86bbc648b913f63dce17",
+    "bytes": 863224
+  }
+}
