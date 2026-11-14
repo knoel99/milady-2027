@@ -6,6 +6,8 @@ Instructions for any AI coding agent working in this repository, whatever its pr
 
 An English-only Quarto site preparing the M2 internship MilaDy 2027 (physics-constrained generative models of parametric dynamical systems: MHD, dynamo, conditional flow matching). `site/` holds eight preparation modules (`prep/`), a **prospective** internship report (`report/`), a PhD proposal (`thesis/`) and pages on the supervisors, experiments, computing and interactive diagrams. `experiments/` holds the CPU experiments E1–E3. `src/milady/`, `tests/` and `infra/` are the HPC package planned for the thesis. `research/` will hold the hypothesis register and the lab journal. Page paths given to tools (`prep/p3-mhd-dynamo`, `report`) are relative to `site/`.
 
+The race of AI teams on this project (Frontier One: brief, team configuration, launcher, compute broker, judge) lives in the separate repository `knoel99/frontier-one`, which drives a checkout of this one; its files under `race/` are installed from there and git-ignored here, except each team's `race/teams/<team>/objectives.toml`. The work of earlier teams is filed in `research/teams/<team>/` and `site/teams/<team>/`. Settings of the research tools (GPU jobs, API prices, reviews, publication, teams shown on the site) are in `milady.toml`.
+
 The site is built and published by `.github/workflows/pages.yml` on every push to `main`; rendered `index.html` files are not versioned. `.github/workflows/tests.yml` runs `make test`'s pytest selection, `ruff check src tests` and `tools/sync_agents.py --check` on every push to `main` and every pull request.
 
 ## Sources of truth
@@ -35,12 +37,11 @@ python3 tools/sync_agents.py [--check]                    # regenerate tool-spec
 python3 tools/call_model.py --role <role> --task <file>   # call a role through the API (MILADY_PROVIDER set)
 python3 tools/run_role.py --role <role> --task <file>     # run a role as a headless session of your harness
 python3 tools/check_calls.py ledger|preflight|exam        # verify models and efforts of the calls
-python3 tools/compute_broker.py submit --hours H -- CMD   # race only: run CMD on a broker job VM (committed code)
+python3 "$FRONTIER_HOME"/tools/compute_broker.py submit --hours H -- CMD  # race only (knoel99/frontier-one): CMD on a broker job VM
 python3 tools/runpod_job.py run --hours H -- CMD          # pilot: run CMD on a RunPod GPU pod (pushed commit), pod always deleted
 python3 tools/usage_report.py --write research/usage      # tokens, API-equivalent cost, sub-agents, GPU spend of the session
 python3 tools/review_due.py due|log                       # which encadrant / jury reviews are due now; record one
-python3 tools/cursor_agents.py launch|send|wait|report    # Cursor pilot: Cloud Agents with the role's model and effort
-python3 tools/check_deliverables.py --team <team> [--built]  # report, figures, diagrams, explorer of race/DELIVERABLES.md
+python3 tools/check_deliverables.py --team <team> [--built]  # report, figures, diagrams, explorer of race/DELIVERABLES.md (frontier-one)
 python3 tools/teams_index.py [--check]                    # team cards of the home page, Teams table, Site menu links
 bash tools/install_skills.sh                              # schematic-figure and archify skills, pinned (figures of the deliverables)
 ```
@@ -68,7 +69,7 @@ Every call is logged in `research/model-calls.jsonl` and its answer in `research
 - **`biblio`**: prior art for a claim, lifts `[UNCONFIRMED]` tags, drafts reading notes; the main session writes them into `docs/specs/sources/`.
 - **`jury-externe`**: milestones (theory brief, report v1, thesis v1) and the dates `tools/review_due.py` names; a verdict per claim and a pre-defence report.
 
-**When the checking roles step in.** Not by the week: `python3 tools/review_due.py due` names the reviews that are due from the events and the time that passed (new results or hypotheses since the last `encadrant` review, too long without one while work goes on, each quarter of the GPU budget spent and every changed milestone for `jury-externe`; settings in `race/config.toml` `[reviews]`). Run it after every commit that adds a result and at least every hour of work; run each due review before going on, and record it with `python3 tools/review_due.py log --role … --scope … --verdict …` (register `research/reviews.jsonl`). These reviews do not count in the three calls per hypothesis of rule 7.
+**When the checking roles step in.** Not by the week: `python3 tools/review_due.py due` names the reviews that are due from the events and the time that passed (new results or hypotheses since the last `encadrant` review, too long without one while work goes on, each quarter of the GPU budget spent and every changed milestone for `jury-externe`; settings in `milady.toml` `[reviews]`). Run it after every commit that adds a result and at least every hour of work; run each due review before going on, and record it with `python3 tools/review_due.py log --role … --scope … --verdict …` (register `research/reviews.jsonl`). These reviews do not count in the three calls per hypothesis of rule 7.
 
 ## Hardcore rules
 

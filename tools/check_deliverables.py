@@ -1,5 +1,5 @@
 #!/usr/bin/env python3
-"""Check the deliverables of a team against race/DELIVERABLES.md (report, figures, diagrams, explorer).
+"""Check the deliverables of a team against race/DELIVERABLES.md of knoel99/frontier-one (report, figures, diagrams, explorer).
 
     python3 tools/check_deliverables.py --team claude            # sources: sections, figures, links, sizes
     python3 tools/check_deliverables.py --team claude --built    # also the rendered HTML and the PDF

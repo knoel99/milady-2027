@@ -1,4 +1,4 @@
-"""Export the data of a team's explorer page (race/DELIVERABLES.md §3) from the result files.
+"""Export the data of a team's explorer page (race/DELIVERABLES.md of knoel99/frontier-one §3) from the result files.
 
     python3 e4_export_explorer.py --team claude [--quick]
 
@@ -31,7 +31,7 @@ SCALARS = ["ed_ratio", "div_rel_b_max", "balance_residual_total", "balance_resid
            "null_count", "null_count_err_rel", "restart_drift_eb", "hc_sign_asym", "E_u", "E_B", "hel_m", "injection",
            "dissipation", "k_lambda"]
 ARRAYS = ["spec_u", "spec_b", "H_shell"]
-METRICS = [  # key, label, use the absolute value, objective of race/teams/claude/objectives.toml
+METRICS = [  # key, label, use the absolute value, objective of research/teams/claude/objectives.toml
     ("ed_ratio", "energy distance / noise floor", False, "C1"),
     ("div_rel_b_max", "relative divergence of B (largest of the ensemble)", False, "C2"),
     ("balance_residual_total", "|residual of the mean energy balance| / dissipation", True, "C3"),

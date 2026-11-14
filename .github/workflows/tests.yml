@@ -34,7 +34,7 @@ jobs:
       - name: Agent files in sync with agents/roles
         run: python tools/sync_agents.py --check
 
-      - name: Team cards and links in sync with site/teams and race/config.toml
+      - name: Team cards and links in sync with site/teams and milady.toml [site]
         run: python tools/teams_index.py --check
 
       - name: Install the pinned dependencies

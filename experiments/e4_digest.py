@@ -36,7 +36,7 @@ LATER = [f"W14_full_anchor_it{k}" for k in (0, 50, 150, 250, 500, 1000, 2000, 40
     "G5_gaussian_struct", "W9Q_skip_sym"] + [f"{t}_it{k}" for t in ("W19_struct_anchor", "W20_struct_anchor_on_W9") for k in (0, 150, 1000, 4000)]
 GENERATORS += LATER
 # G0 has no network: it is the baseline to beat, not a candidate for the selected generator (the C1 note of
-# race/teams/claude/objectives.toml names the model family: conditional flow matching on the Fourier modes).
+# research/teams/claude/objectives.toml names the model family: conditional flow matching on the Fourier modes).
 CANDIDATES = [v for v in GENERATORS if not v.startswith(("G0_", "G1_", "G2_", "G3_")) and v not in LATER]   # learned generators only
 REGISTERED = ["W0_free", "W2_final_projection", "W3_projected_flow", "W4_potentials", "W4s_potentials_sym",
               "W5_stationarity", "W6_diffusion"]

@@ -1,38 +1,8 @@
-# Race configuration, owned by the user. Read by tools/race_launch.py, tools/race_progress.py
-# and tools/compute_broker.py.
-
-start_tag = "race-start"
-deadline = "2026-11-26T18:00:00Z"   # full nine-team race only (tools/race_launch.py); the pilots have no deadline, only a budget
-repo = "https://github.com/knoel99/milady-2027.git"
-
-[budget]
-api_usd = 200                 # per provider, enforced by a spending cap in the provider's console
-cpu_hours = 400               # vCPU-hours per team through the compute broker (16 vCPU x 25 h)
-max_job_hours = 2             # per broker job (AGENTS.md rule 3)
-
-[machines]
-# Scaleway instance types; check prices on the Scaleway pricing page before the launch.
-team_vm = "POP2-4C-16G"       # one per team for the whole week: the agent and quick runs
-job_vm = "POP2-HC-16C-32G"    # broker jobs
-zone = "fr-par-2"
-
-[main_session]
-# Tier and reasoning level of each team's main session.
-tier = "frontier"
-reasoning = "high"
-max_turns = 300               # per harness invocation; the launcher loops until the deadline
-
-# team name = section of agents/providers.toml, and the provider key variable it needs.
-[teams]
-claude = "ANTHROPIC_API_KEY"
-openai = "OPENAI_API_KEY"
-google = "GEMINI_API_KEY"
-xai = "XAI_API_KEY"
-mistral = "MISTRAL_API_KEY"
-zhipu = "ZAI_API_KEY"
-moonshot = "MOONSHOT_API_KEY"
-deepseek = "DEEPSEEK_API_KEY"
-alibaba = "DASHSCOPE_API_KEY"
+# Settings of the research tools of this repository, owned by the user: GPU jobs on RunPod
+# (tools/runpod_job.py), API prices (tools/usage_report.py), when the checking roles step in
+# (tools/review_due.py), where large files are published, and the teams shown on the site
+# (tools/teams_index.py). The race itself (teams, budgets, prompts, launcher, broker, judge) is
+# configured in the separate repository knoel99/frontier-one (race/config.toml there).
 
 # API prices in USD per million tokens, for tools/usage_report.py (Anthropic's model table,
 # read on 2026-11-12). Cache writes cost cache_write_5m_x / cache_write_1h_x times the input price
@@ -96,3 +66,9 @@ jury_watch = ["research/race-report.md", "site/report", "site/thesis", "site/tea
 # Where a team publishes its data and model files when it cannot create a GitHub release (race/GOAL.md).
 # Empty until the owner chooses one (for example a Hugging Face organisation, with its token in each team's env).
 storage = ""
+
+# Teams shown on the site (tools/teams_index.py): the pilots first, then the race teams of frontier-one's
+# race/config.toml [teams] (copied here so that the site builds without the race repository).
+[site]
+pilots = ["claude", "cursor"]
+race_teams = ["claude", "openai", "google", "xai", "mistral", "zhipu", "moonshot", "deepseek", "alibaba"]

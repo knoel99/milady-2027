@@ -1,4 +1,4 @@
-"""Measurement commands of the race objectives (race/teams/claude/objectives.toml).
+"""Measurement commands of the race objectives (research/teams/claude/objectives.toml, written in the pilot as race/teams/claude/objectives.toml).
 
 Each metric reads committed result files only, trains nothing, and prints on its last line a JSON
 object ``{"value": <number>, "seeds": <n>}``. It exits with code 1 when the files it needs are
