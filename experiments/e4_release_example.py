@@ -22,7 +22,7 @@ Prints the mean energies of the samples and the largest |∇·B|, against the da
     w9 = R.load_w9("e4_release", space, seed=0)                 # flow-matching model
     z = R.sample_w9(w9, space, eta=0.04899, n=64)               # normalised latents (64, 665, 8)
     fields = R.to_fields(space, z)                              # {"velocity", "magnetic_field"}: (64, 16, 16, 16, 3)
-    z1 = g1.sample(R.cn(0.04899), 64)                           # the same for the Gaussian law
+    z1 = g1.sample(R.cn(0.04899), 64)                           # the same for the Gaussian law (pass generator=… for a seed)
 """
 from __future__ import annotations
 
@@ -73,7 +73,7 @@ def fetch(folder: str | Path, name: str, url: str = RELEASE_URL) -> Path:
 
 def load_space(folder: str | Path) -> FourierPotentialSpace:
     """Latent space of the models (vector potentials on the 665 modes of the solver) with its normalisation."""
-    rec = torch.load(Path(folder) / SPACE, map_location="cpu")
+    rec = torch.load(Path(folder) / SPACE, map_location="cpu", weights_only=True)
     space = FourierPotentialSpace(rec["kmax"], symmetric_b=rec["symmetric_b"], truncation=rec["truncation"])
     space.load_state_dict(rec["state_dict"])
     return space
@@ -81,13 +81,13 @@ def load_space(folder: str | Path) -> FourierPotentialSpace:
 
 def load_gaussian(folder: str | Path, law: str) -> C.ModewiseGaussian | C.FullGaussian:
     """G0 (one covariance per Fourier mode) or G1 (full covariance) from its parameter file."""
-    state = torch.load(Path(folder) / GAUSS.format(law=law), map_location="cpu")
+    state = torch.load(Path(folder) / GAUSS.format(law=law), map_location="cpu", weights_only=True)
     return (C.ModewiseGaussian if law == "G0" else C.FullGaussian).from_state(state)
 
 
 def load_w9(folder: str | Path, space: FourierPotentialSpace, seed: int = 0) -> torch.nn.Module:
     """The flow-matching model W9 of ``seed`` from its weight file (written by a run with ``E4_SAVE_MODELS=1``)."""
-    rec = torch.load(Path(folder) / WEIGHTS.format(seed=seed), map_location="cpu")
+    rec = torch.load(Path(folder) / WEIGHTS.format(seed=seed), map_location="cpu", weights_only=True)
     cfg = rec["config"]
     net = ResMLP(space.n_modes, space.n_channels, 1, width=cfg["width"], depth=cfg["depth"], cond_scale=0.5)
     model = SignSymmetrized(C.ModewiseAffineSkip(net, space.n_modes, space.n_channels, 1, cond_scale=0.5), space.sign)
@@ -137,7 +137,7 @@ def recolour(z: torch.Tensor, rec: dict[str, torch.Tensor]) -> torch.Tensor:
 
 def load_map(folder: str | Path, seed: int, eta: float) -> dict[str, torch.Tensor] | None:
     """The stored map of W16 for ``seed`` at ``eta``, or ``None`` when the file does not hold that η."""
-    rec = torch.load(Path(folder) / MAP.format(seed=seed), map_location="cpu")
+    rec = torch.load(Path(folder) / MAP.format(seed=seed), map_location="cpu", weights_only=True)
     for i, e in enumerate(rec["eta"]):
         if abs(e - eta) < 1e-6:
             return {k: rec[k][i] for k in ("mean_src", "map", "mean_tgt")}

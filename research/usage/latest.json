@@ -1,5 +1,5 @@
 {
- "generated": "2026-11-14T05:32:30Z",
+ "generated": "2026-11-14T06:18:06Z",
  "projects": "/root/.claude/projects/-home-user-milady-2027",
  "sessions": 1,
  "main_session": {
@@ -10,23 +10,23 @@
    "high"
   ],
   "expected": "claude-fable-5-2 / high",
-  "responses": 1401,
+  "responses": 1409,
   "off_spec": 0,
   "conforms": true
  },
  "first": "2026-11-12T16:50:21.852Z",
- "last": "2026-11-14T05:32:20.353Z",
- "span_hours": 36.7,
+ "last": "2026-11-14T06:15:10.337Z",
+ "span_hours": 37.41,
  "by_model": {
   "claude-fable-5-2": {
-   "input": 3725,
-   "cache_write_5m": 4810596,
-   "cache_write_1h": 4638991,
-   "cache_read": 753528016,
-   "output": 3462910,
-   "thinking": 1650018,
-   "calls": 1887,
-   "usd": 411.58
+   "input": 3769,
+   "cache_write_5m": 5117665,
+   "cache_write_1h": 4662502,
+   "cache_read": 759421771,
+   "output": 3575192,
+   "thinking": 1726037,
+   "calls": 1908,
+   "usd": 420.7
   },
   "claude-sonnet-5-5": {
    "input": 470,
@@ -39,12 +39,12 @@
    "usd": 8.57
   }
  },
- "total_usd": 420.15,
+ "total_usd": 429.27,
  "subagents": {
-  "count": 45,
+  "count": 46,
   "by_type": {
    "general-purpose": 9,
-   "jury-externe": 9,
+   "jury-externe": 10,
    "encadrant": 22,
    "biblio": 2,
    "physicien": 3
@@ -340,6 +340,23 @@
     "calls": 7,
     "output": 118663,
     "usd": 6.8616,
+    "off_spec": 0,
+    "expected": "claude-fable-5-2 / max",
+    "conforms": true
+   },
+   {
+    "id": "agent-a85a1c5c239ed5cad",
+    "type": "jury-externe",
+    "description": "Jury verifies release and corrections",
+    "models": [
+     "claude-fable-5-2"
+    ],
+    "efforts": [
+     "max"
+    ],
+    "calls": 13,
+    "output": 95825,
+    "usd": 7.0858,
     "off_spec": 0,
     "expected": "claude-fable-5-2 / max",
     "conforms": true
@@ -792,9 +809,9 @@
   "nonconforming": 0
  },
  "tool_calls": {
-  "Bash": 1354,
+  "Bash": 1360,
   "Read": 55,
-  "Agent": 45,
+  "Agent": 46,
   "Write": 18,
   "ToolSearch": 9,
   "SendMessage": 5,

@@ -341,6 +341,10 @@ def block_release() -> list[str]:
             rows.append(f"| {names} | {what} | PyTorch dictionary of tensors | {size} |")
     rows.append(f"| {link('catalog.sqlite')}, {link('catalog.json')} | Catalogue: data set `e4_mhd3d` 1.0 with its splits, {man['catalog']['released_models']} released models with "
                 f"file, hyperparameters, commit, data set and evaluations, and the cited runs as records without files | SQLite (`milady.catalog`), JSON export | – |")
+    evals = [f for f in man.get("other_files", []) if f["file"].startswith("e4_release_eval_s")]
+    if evals:
+        rows.append("| `e4_release_eval_s<k>.json` for k = " + ", ".join(f"[{i}]({url}/{f['file']})" for i, f in enumerate(evals)) + f", {link('e4_release_w16.json')} | "
+                    "Evaluations of the released models as written by the pipeline: G0, G1 and W9 per seed, and W16 | JSON | – |")
     rows.append(f"| {link('SHA256SUMS')}, {link('manifest.json')}, {link('README.md')} | Checksums, list of the files with sizes and identifiers, notes | text, JSON | – |")
     return rows
 
@@ -356,7 +360,7 @@ def block_releasepage() -> list[str]:
     mib = lambda f: f"{f['size_bytes'] / 2**20:.1f} MiB"                                             # noqa: E731
     by = lambda kind: [f for f in mods if f["kind"] == kind]                                         # noqa: E731
     links = lambda fs: ", ".join(f"[{f['file']}]({url}/{f['file']})" for f in fs)                    # noqa: E731
-    out = [f"- **Data** (MFF 1.0: HDF5 with the layout of The Well; {len(data)} files, {gib(data)} in all, {mib(data[0])} each; "
+    out = [f"- **Data** (MFF 1.0: HDF5 with the layout of The Well; {len(data)} files, {gib(data)} in all, {min(f['size_bytes'] for f in data) / 2**20:.1f} to {max(f['size_bytes'] for f in data) / 2**20:.1f} MiB each; "
            f"{data[0]['n_trajectories']} trajectories × {data[0]['n_t']} snapshots of $u$ and $B$ on the 16³ grid per η): "
            + ", ".join(f"[η = {f['eta']:.5f} ({f['split']})]({url}/{f['file']})" for f in data)
            + f"; a sample of {mib(man['sample'])}: [{man['sample']['file']}]({url}/{man['sample']['file']}).",

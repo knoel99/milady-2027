@@ -54,3 +54,7 @@ research/gpu-out/
 experiments/results/**/e4_model*.pt
 experiments/results/e4_model*.pt
 experiments/release_models/
+
+# Downloads and samples of experiments/e4_release_example.py
+/e4_release/
+/samples.h5
