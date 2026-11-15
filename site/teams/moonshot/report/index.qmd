@@ -65,10 +65,10 @@ format:
           \renewcommand{\arraystretch}{1.15}
 ---
 
-> Report of an automated race team, copied as the team left it (delivered at 01:33 UTC after 1.04 h). Delivery: private dataset knoel/milady-20261115-race-moonshot-delivery on the Hugging Face Hub; [delivery record, decisions and costs](https://github.com/knoel99/milady-2027/tree/main/research/teams/moonshot).
+> Report of an automated race team (delivered at 01:33 UTC after 1.04 h). Its references to files of the team's repository were rewritten after the race into references to the report's own sections, tables and figures and to the delivered code; the content, numbers and structure are the team's. Delivery: private dataset knoel/milady-20261115-race-moonshot-delivery on the Hugging Face Hub; the report as the team wrote it is kept with its [delivery record, decisions and costs](https://github.com/knoel99/milady-2027/tree/main/research/teams/moonshot).
 
 **race-moonshot research report** — 2026-11-15. Mission context: ANR MilaDy internship subject
-(`subject/stage_milady_2027.pdf`). This study implements and compares physics-constrained
+(the internship offer). This study implements and compares physics-constrained
 conditional generative models on a simple parametric PDE benchmark, as the subject prescribes
 for the first stage of the work.
 
@@ -89,7 +89,7 @@ consistency and statistical fidelity, and at what cost?
 ## 2. Benchmark data: parametric 2-D Kolmogorov flow
 
 We solve the 2-D incompressible Navier–Stokes equations in vorticity form on a doubly periodic
-64×64 grid with a pseudo-spectral solver (RK4, 2/3 de-aliasing, `code/gen_data.py`):
+64×64 grid with a pseudo-spectral solver (RK4, 2/3 de-aliasing, the data generator of the delivered code):
 
 ∂ω/∂t + u·∇ω = νΔω − αω + f,  with Kolmogorov forcing f = −F·k_f·cos(k_f y), F = 1, k_f = 4,
 Rayleigh friction α = 0.1.
@@ -132,10 +132,10 @@ V2 trains on ψ = Δ⁻¹ω (1 channel); V3 reuses the V0 checkpoint (no extra t
 
 ## 4. Results
 
-Training and sampling cost per variant: see `checkpoints/train_log.jsonl`
+Training and sampling cost per variant: see the training log of the delivery
 (measured on one RTX 4090).
 
-### 4.1 Main metrics (mean over the four Reynolds numbers; per-Re values in `results/metrics.json`)
+### 4.1 Main metrics (mean over the four Reynolds numbers; per-Re values in the metrics file of the delivery)
 
 | variant | RMS divergence ↓ | spectrum rel. L2 ↓ | energy W1 ↓ | energy mean ratio gen/ref |
 |---|---|---|---|---|
@@ -148,19 +148,19 @@ Divergence of the reference DNS fields is exactly 0 by construction (spectral); 
 of ∇·u for these flows is O(1–3), so V0's 2.61 means essentially no divergence control, V1 reduces
 it by only ~26%, and V2/V3 achieve machine precision (fp32).
 
-Conditioning check (V0, `results/conditioning_v0.json`): spectrum rel. L2 with matched Re =
+Conditioning check (V0, conditioning results of the delivery): spectrum rel. L2 with matched Re =
 **0.161** vs mismatched Re = **0.417** (2.6× worse when the label is wrong), showing the
 conditioning carries physical information. Per-Re matched errors: 0.083 / 0.311 / 0.116 / 0.133
 for Re = 53 / 127 / 283 / 605 — the mid-range Re = 127 regime is the hardest for all variants.
 
-Training: 191–196 s per variant on one RTX 4090 (`checkpoints/train_log.jsonl`); sampling
+Training: 191–196 s per variant on one RTX 4090 (training log of the delivery); sampling
 256 fields takes ~7 s per (variant, Re) with 40 Euler steps.
 
 ### 4.2 Figures
 
-- `results/figures/samples.png` — generated vorticity fields, one per (Re, variant).
-- `results/figures/spectra.png` — E(k) of generated vs DNS reference, per Re.
-- `results/figures/divergence.png` — RMS divergence per variant (log scale).
+- Figure 1 — generated vorticity fields, one per (Re, variant).
+- Figure 2 — E(k) of generated vs DNS reference, per Re.
+- Figure 3 — RMS divergence per variant (log scale).
 
 ## 5. Discussion
 
@@ -194,7 +194,7 @@ V1 underestimates systematically, V2 overshoots badly.
 spectrum difference (0.152 vs 0.200) is within what seed noise could plausibly explain; the
 divergence and V2 findings are unambiguous (orders of magnitude). All variants reproduce the
 forcing peak (k = 4) and the large scales well but overestimate the steep small-scale tail
-(visible in `results/figures/spectra.png`) — a known tendency of score/flow models trained with
+(visible in Figure 2) — a known tendency of score/flow models trained with
 an L2 objective; V2's flat high-k excess is the extreme case of the same phenomenon.
 
 ## 6. Limitations
@@ -202,7 +202,7 @@ an L2 objective; V2's flat high-k excess is the extreme case of the same phenome
 - Single training seed per variant (mission time budget 1.5 h); metric spreads across samples
   are reported, but seed-level uncertainty is not quantified.
 - 2-D, moderate-Re benchmark; no MHD fields (the subject sequences MHD after this benchmark —
-  see COMPLIANCE.md S3, S7).
+  see the compliance statement of the delivery, S3 and S7).
 - Helicity vanishes identically in 2-D; topology preservation (e.g., vortex statistics,
   persistence diagrams) left for future work.
 - V1's penalty weight λ was fixed to 0.05 without a sweep.

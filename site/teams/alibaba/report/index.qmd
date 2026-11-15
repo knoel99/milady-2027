@@ -65,19 +65,19 @@ format:
           \renewcommand{\arraystretch}{1.15}
 ---
 
-> Report of an automated race team, copied as the team left it (delivered at 01:56 UTC after 1.41 h). Delivery: private dataset knoel/milady-20261115-race-alibaba-delivery on the Hugging Face Hub; [delivery record, decisions and costs](https://github.com/knoel99/milady-2027/tree/main/research/teams/alibaba).
+> Report of an automated race team (delivered at 01:56 UTC after 1.41 h). Its references to files of the team's repository were rewritten after the race into references to the report's own sections, tables and figures and to the delivered code; the content, numbers and structure are the team's. Delivery: private dataset knoel/milady-20261115-race-alibaba-delivery on the Hugging Face Hub; the report as the team wrote it is kept with its [delivery record, decisions and costs](https://github.com/knoel99/milady-2027/tree/main/research/teams/alibaba).
 
 **MilaDy mission report — race-alibaba.** Work performed 2026-11-15, 00:32–02:0x UTC, in a 90-minute window with a
 5 USD LLM budget. Everything below is either measured in this repository (with the command that regenerates it),
 quoted from the literature with a reference, or explicitly marked as a conjecture.
 
 **Who did what (AI contribution statement).** The whole mission — reading the subject, study design, all code
-(`code/milady/*.py`, `code/exp_*.py`), the experiment orchestration, the analysis and this report — was carried out
+(the delivered code and its experiment scripts), the experiment orchestration, the analysis and this report — was carried out
 by one autonomous agent: the Qwen Code harness running `alibaba/qwen3.8-flash` (tier *standard*, reasoning *high*).
 No sub-agent on any other model was used for the science (deliberately: the LLM budget was not the binding
-constraint, the clock was; see `DECISIONS.md`). The Frontier tools were used for cloud provisioning
+constraint, the clock was; see the decision log of the delivery). The Frontier tools were used for cloud provisioning
 (`rp_create_pod`/`rp_delete_pod`), budget accounting (`budget_status`) and delivery. Per-component spend is written
-by the framework into `COSTS.md`.
+by the framework into the cost record of the delivery.
 
 ## 1. Task and summary of results
 
@@ -109,10 +109,10 @@ What this report delivers:
    enough to compare *what the constraint mechanism does*, not enough to compare converged models, and every
    statement below is qualified accordingly.
 5. Two further benchmarks **implemented but not measured** in this window, so no numbers are claimed from them:
-   a 2D incompressible benchmark with analytic ground truth (`code/exp_gen.py::exp2`, spectrum
+   a 2D incompressible benchmark with analytic ground truth (the second experiment of the generative-study script, spectrum
    `|u(k)|^2 ~ k^2/(1+lam^2 k^2)^2`) and a 1D stochastic *quenched* mean-field alpha^2 dynamo with polarity
-   reversals (`code/milady/dynamo.py::mean_field_run`, `code/exp_gen.py --which 4`). Both are wired into
-   `reproduce.sh`. A partial (un-quenched, hence overflowing) results file from the 1D model was deleted rather
+   reversals (the mean-field run of the dynamo module, fourth experiment of the generative-study script). Both are wired into
+   the reproduction script of the delivery. A partial (un-quenched, hence overflowing) results file from the 1D model was deleted rather
    than reported.
 
 ## 2. Setup
@@ -131,7 +131,7 @@ maximally helical Beltrami ABC flow, `curl u = u`; h<1 breaks the Beltrami prope
 **Why kinematic.** A saturated turbulent MHD campaign at meaningful resolution does not fit a 90-minute window on
 rented compute; the kinematic equation is the standard first benchmark of the dynamo problem (it has a measurable
 threshold and an exactly defined energy budget), and it lets every claim here be backed by a run that is actually in
-this repository. Stated as a limit in §8, and recorded as a deviation in `COMPLIANCE.md` (S6d).
+this repository. Stated as a limit in §8, and recorded as a deviation in the compliance record of the delivery (S6d).
 
 **Numerics.** Fourier–Galerkin truncation with RK4 in time and exact spectral Helmholtz projection of `B` every
 step; `dt = 0.04` at n=16 (CFL and diffusive stability margins checked in code). Snapshots are taken when the
@@ -149,7 +149,7 @@ seeds), and additionally the whole `Rm = 24` value (at both `h`) held out from t
 `Rm ∈ {10, 16}` and asked to generate at `Rm = 24`, i.e. just past the training range toward the dynamo
 transition, so the conditioning test is an **extrapolation** test.
 
-**Metrics** (`code/milady/metrics.py`, all validated in Table 1):
+**Metrics** (the metrics module of the delivered code, all validated in Table 1):
 relative divergence `‖∇·B‖/‖B‖`; shell energy spectrum `E(k)` and its inertial-range slope; the energy budget
 `E`, `P = ⟨u·(B×j)⟩`, `D = η⟨|j|²⟩` and the **closure** `γ_inst = (P−D)/(2E)`, which for a true snapshot equals the
 instantaneous logarithmic growth rate — so `γ_inst(generated) vs γ(Rm)` is an energy-balance *and* a conditioning
@@ -183,7 +183,7 @@ features, real vs generated, chance 0.5) and ensemble spread.
 **No threshold is claimed**: at every sampled `Rm` the measured growth rate is negative (the field decays), so the sampled range does not bracket the transition. The trend (`gamma_inst` increasing toward 0 with `Rm`) is reported instead. Same definition Rm = abs u_rms/(k_min eta), k_min = 1; the published ABC-flow threshold is ~20 for this convention (external reference, not our result).
 
 <!--TABLE:exp1b-->
-*(results/exp*_*.json for this table not produced yet)*
+*(results for this table not produced yet)*
 
 ## Table 4 - the dataset: physical descriptors per parameter group
 
@@ -232,15 +232,15 @@ Dataset tensor shape: [108, 3, 16, 16, 16] (float16), wall 115.01 s.
 |---|---|---|
 
 <!--TABLE:exp2-->
-*(results/exp*_*.json for this table not produced yet)*
+*(results for this table not produced yet)*
 
 <!--TABLE:exp4-->
-*(results/exp*_*.json for this table not produced yet)*
+*(results for this table not produced yet)*
 
 
 ## 3. Findings
 
-Each statement is a number from `results/exp3_study.json` (mean over the 6 parameter groups, Table 5) unless
+Each statement is a number from the results of the comparative study (mean over the 6 parameter groups, Table 5) unless
 marked otherwise. All are at the reduced capacity stated in §1.4.
 
 1. **The generator and the metrics are verified, not assumed.** Six exact identities hold to <=2.4e-6 (Table 1):
@@ -273,7 +273,7 @@ marked otherwise. All are at the reduced capacity stated in §1.4.
    -1.38, -0.90 at Rm = 10, 16, 24 (h = 1, Table 4) - all decaying, monotonically approaching 0. The published
    ABC-flow threshold (~20 for the same Rm definition: Gailis & Krishnamurthi 1992) is quoted as external context
    only. The level-crossing gamma estimates in Table 2 are transient-contaminated at these short horizons (see
-   DECISIONS.md 01:09) which is exactly why the algebraic closure is the quantity we compare on.
+   the decision log of the delivery, entry 01:09) which is exactly why the algebraic closure is the quantity we compare on.
 7. **A numerical bug found by the validation suite and fixed here:** the spectral Helmholtz projection left a
    spurious relative divergence of 6.6e-1 on *white-noise* fields - the rfft/irfft round-trip is not exactly
    antisymmetric on the Nyquist slice - while it was clean (5.8e-7) on the band-limited dynamo fields. Masking
@@ -285,20 +285,20 @@ marked otherwise. All are at the reduced capacity stated in §1.4.
 
 - **No saturated turbulent MHD**, no back-reaction, no true steady-state energy cascade: `Rm` here controls a
   kinematic growth/decay rate, not a turbulent Reynolds number. The subject's turbulent-dynamo application remains
-  open (S6d in `COMPLIANCE.md`).
+  open (S6d in the compliance record of the delivery).
 - **16³ grid** for the learning study. Our own convergence check (Table 3) shows how much the measured growth rate
   moves between n = 12, 16 and 24, so the resolution sensitivity of every number here is quantified rather than
   assumed; the dynamo mode is resolved (k_max = 8 ≥ the fastest-growing mode) but the inertial range is not.
 - **Single training seed** per strategy, 6 IC seeds per parameter group ⇒ the rankings are descriptive; no
-  confidence intervals or significance tests are reported (§5 of `CHECKLIST.md`).
+  confidence intervals or significance tests are reported (§5 of the checklist of the delivery).
 - Amplitude is not generated (unit-rms snapshots by construction); the sampler ablation covers ODE discretisation
   error, not model misspecification.
 - No data-assimilation or reduced-order-model closure test, although the ensembles produced are in the format one
-  would need for it (S3 in `COMPLIANCE.md`).
+  would need for it (S3 in the compliance record of the delivery).
 - **Compute incident:** the first rented resource (Runpod RTX 4090, pod `xqeduphrdeuobe`) crash-looped on container
   start for ~20 minutes and was deleted before running any of our code; the whole campaign was then executed on the
   4 local CPU cores (shared with another mission's jobs on the same host), which is what fixed the achievable
-  resolution. See `DECISIONS.md`.
+  resolution. See the decision log of the delivery.
 
 ## 5. Related work (positioning, with what each gives us)
 
@@ -316,12 +316,8 @@ marked otherwise. All are at the reduced capacity stated in §1.4.
 
 ## 6. Reproduction
 
-```
-bash reproduce.sh          # ~15-25 min on 4 CPU cores, needs only numpy + torch
-python3 code/make_tables.py  # re-renders every table above from results/*.json
-```
+The reproduction script of the delivery runs the whole campaign in ~15-25 min on 4 CPU cores and needs only numpy + torch; the table script then re-renders every table above from the result files.
 
-Code: `code/milady/` (`spectral.py` operators, `dynamo.py` generators, `model.py` network, `flow.py` CFM +
-constraint strategies, `metrics.py` physics/statistics metrics), drivers `code/exp_data.py`,
-`code/exp_gen.py`, tables `code/make_tables.py`. Results: `results/*.json`. Data: `data/dynamo_dataset.{pt,npz}`
-(Hub URL in `DELIVERY.md`).
+Code: the delivered code package (spectral operators, dynamo generators, network, CFM +
+constraint strategies, physics/statistics metrics), the data and generative-study drivers, and the table script. Results: the result files of the delivery. Data: the dynamo dataset of the delivery
+(published in the delivery dataset on the Hugging Face Hub).

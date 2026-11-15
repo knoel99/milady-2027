@@ -65,7 +65,7 @@ format:
           \renewcommand{\arraystretch}{1.15}
 ---
 
-> Report of an automated race team, copied as the team left it (delivered at 01:53 UTC after 1.36 h). Delivery: private dataset knoel/milady-20261115-race-zhipu-delivery on the Hugging Face Hub; [delivery record, decisions and costs](https://github.com/knoel99/milady-2027/tree/main/research/teams/zhipu).
+> Report of an automated race team (delivered at 01:53 UTC after 1.36 h). Its references to files of the team's repository were rewritten after the race into references to the report's own sections, tables and figures and to the delivered code; the content, numbers and structure are the team's. Delivery: private dataset knoel/milady-20261115-race-zhipu-delivery on the Hugging Face Hub; the report as the team wrote it is kept with its [delivery record, decisions and costs](https://github.com/knoel99/milady-2027/tree/main/research/teams/zhipu).
 
 ### A comparative study on Kolmogorov flow and solenoidal helical fields
 
@@ -112,7 +112,7 @@ We score each model on statistical and physical consistency. Statistical: the ra
 
 ## 4 Experimental setup
 
-2D: 64×64 periodic grid; four training viscosities ν ∈ {0.02, 0.01, 0.006, 0.004} (Re = 12.5, 25, 41.7, 62.5) plus ν = 0.008 (Re = 31.25) held out; 50 snapshots per ν (dt = 1e-4, T = 10, transient 2.5, snapshot every 0.15), 250 in total, with an 80/20 temporal split for the training ν. The solver is pseudo-spectral (fp32, RK2, integer-wavenumber 2/3 dealiasing, advective-CFL-safe dt). 3D: 32³ periodic grid; 2000 training fields with random θ in the box, plus 4 fixed test parameter sets θ × 200 fields each. Both conditional U-Nets are small (1.0 M / 1.9 M parameters) with FiLM conditioning on time and the control parameter (Re or (kp, h)); the 2D model is trained for 1500 steps (batch 64) and 3D models for 1200 steps (batch 16, the three 3D runs executed concurrently on one GPU), AdamW lr 2e-4. Sampling uses a 50-step Euler ODE solver with 64 generated fields per parameter point. All runs use a single NVIDIA RTX 4090 (24 GB, rented on Runpod) in fp32 with fixed seeds (data seed 0, model seed 0). Every number in §5 is reproducible from `code/run_all.sh` on one CUDA GPU (~25 GPU-minutes); the 3D dataset generator is pure NumPy and regenerates byte-identical data for a given seed. Honest framing: the 3D set is a synthetic benchmark, not MHD DNS; the Re range is moderate (no inertial-range claims); the models are small; and we report a single seed per configuration.
+2D: 64×64 periodic grid; four training viscosities ν ∈ {0.02, 0.01, 0.006, 0.004} (Re = 12.5, 25, 41.7, 62.5) plus ν = 0.008 (Re = 31.25) held out; 50 snapshots per ν (dt = 1e-4, T = 10, transient 2.5, snapshot every 0.15), 250 in total, with an 80/20 temporal split for the training ν. The solver is pseudo-spectral (fp32, RK2, integer-wavenumber 2/3 dealiasing, advective-CFL-safe dt). 3D: 32³ periodic grid; 2000 training fields with random θ in the box, plus 4 fixed test parameter sets θ × 200 fields each. Both conditional U-Nets are small (1.0 M / 1.9 M parameters) with FiLM conditioning on time and the control parameter (Re or (kp, h)); the 2D model is trained for 1500 steps (batch 64) and 3D models for 1200 steps (batch 16, the three 3D runs executed concurrently on one GPU), AdamW lr 2e-4. Sampling uses a 50-step Euler ODE solver with 64 generated fields per parameter point. All runs use a single NVIDIA RTX 4090 (24 GB, rented on Runpod) in fp32 with fixed seeds (data seed 0, model seed 0). Every number in §5 is reproducible from the run script of the delivered code on one CUDA GPU (~25 GPU-minutes); the 3D dataset generator is pure NumPy and regenerates byte-identical data for a given seed. Honest framing: the 3D set is a synthetic benchmark, not MHD DNS; the Re range is moderate (no inertial-range claims); the models are small; and we report a single seed per configuration.
 
 ## 5 Results
 
@@ -125,14 +125,13 @@ inverse-cascade-dominated regime at high Re. The radial vorticity spectra show t
 at k = k_f = 4 (peak shell value up to 4×10⁶ at Re = 25) superposed on a large-scale k = 1 mode that
 dominates at Re = 62.5. The 3D dataset passes every constraint check exactly: total energy
 0.5⟨|B|²⟩ = 1.009 ± 0.044 (target 1, N⁶-Parseval normalization), Fourier-exact divergence ratio
-≤ 1.5×10⁻⁷ for every field, mean helicity ratio ⟨B·∇×B⟩/⟨|B|²⟩ = 2.50 and Beltrami alignment 0.47
-(`results/meta3d.json`).
+≤ 1.5×10⁻⁷ for every field, mean helicity ratio ⟨B·∇×B⟩/⟨|B|²⟩ = 2.50 and Beltrami alignment 0.47.
 
 ### 5.2 2D: conditional flow matching and sampling-time constraints
 
 All three 2D strategies were trained on identical data (fm2d, 1500 steps, final loss 0.051) and evaluated
 by 50-step ODE sampling of 64 fields per Re point. Headline metrics (means over the 5 Re points; full
-per-Re tables regenerate via `run_all.sh`):
+per-Re tables regenerate via the run script of the delivered code):
 
 | strategy | spectrum rel. L2 error ↓ | MMD² (summary stats) ↓ |
 |---|---|---|
@@ -165,10 +164,10 @@ that soft penalties need careful weighting/schedules that a fixed-budget study c
 
 The full 3D sampling/evaluation stage (4 strategies × 4 parameter points × 64 fields with spectrum,
 divergence, helicity, alignment and MMD metrics) was still executing on the GPU when the mission's
-delivery deadline was reached; its metrics file (`results/metrics.json`) is produced by step 4 of
-`code/run_all.sh` and regenerates in ≈ 8 minutes. The delivered artifacts therefore contain the complete
+delivery deadline was reached; its metrics file is produced by step 4 of
+the run script of the delivered code and regenerates in ≈ 8 minutes. The delivered artifacts therefore contain the complete
 2D evaluation and data/training evidence for 3D, with the 3D evaluation rerun left to the regeneration
-command. This delivery cut is recorded in `DECISIONS.md` (D9) and `COMPLIANCE.md` (S7, S8).
+command. This delivery cut is recorded in the decision log (D9) and the compliance matrix (S7, S8).
 
 ## 6 Discussion and limitations
 
@@ -207,7 +206,7 @@ presented as DNS data.
 
 ## Author contributions (AI models)
 
-- **Harness agent** (ZCode CLI on `glm-5.3-flash`, provider zhipu): mission planning, experiment design, all experiment code (`code/`), running/training/evaluation on the rented GPU, results analysis, report integration and §5–6.
+- **Harness agent** (ZCode CLI on `glm-5.3-flash`, provider zhipu): mission planning, experiment design, all experiment code (the delivered code), running/training/evaluation on the rented GPU, results analysis, report integration and §5–6.
 - **Sub-agent** (`deepseek-v4-pro`, DeepSeek): drafted §1–4 prose from a detailed factual brief (0.0044 USD).
-- **Sub-agent** (`glm-5.3-flash`, zhipu): drafted `COMPLIANCE.md`, `CHECKLIST.md`, `CITATION.cff` scaffolding (0.0018 USD).
+- **Sub-agent** (`glm-5.3-flash`, zhipu): drafted the compliance matrix, the NeurIPS checklist and the citation file scaffolding (0.0018 USD).
 - Compute: 1× Runpod RTX 4090 (billed hourly); all code, figures and numbers machine-generated.

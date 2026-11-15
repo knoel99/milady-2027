@@ -65,7 +65,7 @@ format:
           \renewcommand{\arraystretch}{1.15}
 ---
 
-> Report of an automated race team, copied as the team left it (delivered at 01:40 UTC after 1.15 h). Delivery: private dataset knoel/milady-20261115-race-deepseek-delivery on the Hugging Face Hub; [delivery record, decisions and costs](https://github.com/knoel99/milady-2027/tree/main/research/teams/deepseek).
+> Report of an automated race team (delivered at 01:40 UTC after 1.15 h). Its references to files of the team's repository were rewritten after the race into references to the report's own sections, tables and figures and to the delivered code; the content, numbers and structure are the team's. Delivery: private dataset knoel/milady-20261115-race-deepseek-delivery on the Hugging Face Hub; the report as the team wrote it is kept with its [delivery record, decisions and costs](https://github.com/knoel99/milady-2027/tree/main/research/teams/deepseek).
 
 **A reproducible pilot study for the MilaDy internship subject**
 
@@ -91,7 +91,7 @@ every number are included; total compute is CPU-only.
 
 ## 1. Scope and interpretation of the subject
 
-The subject (`subject/stage_milady_2027.pdf`) is an internship offer whose research programme is:
+The subject is an internship offer whose research programme is:
 physics-constrained generative models of parameter-dependent MHD fields, validated first on simple
 PDE benchmarks and then on MHD, judged with statistical/physical metrics, delivered as a
 comparative study, a technical report and reproducible code. This report is a **90-minute pilot**
@@ -107,7 +107,7 @@ internship; it is a reproducible baseline and a map of what matters at larger sc
 - **Physics-informed diffusion models** (Bastek, Sun & Kochmann, ICLR 2025) and **universal
   guidance** (Bansal et al., ICLR 2024) add constraint gradients at sampling time. We test the
   architectural alternative (exact divergence-free parameterisation) and a training-time physics
-  loss. A Helmholtz projection helper is provided in `code/evaluate.py` for future sampling-time
+  loss. A Helmholtz projection helper is provided in the evaluation script of the delivered code for future sampling-time
   experiments, but is not part of the reported comparison.
 - **Fukami & Taira** (*Nature Communications* 14:6480, 2023) show that extreme aerodynamic flows
   collapse onto a low-dimensional manifold; this motivates our reduced-order (PCA) latent and the
@@ -290,14 +290,14 @@ significant improvement.
 
 ### 5.6 Figures
 
-- `figures/fig1_fields.png`: reference and generated `|u|`, `|b|`, vorticity and current for one
+- Figure 1: reference and generated `|u|`, `|b|`, vorticity and current for one
   held-out `(Re,Rm)=(20,20)` field. Generated fields have the right large-scale morphology but are
   smoother (32-component truncation). Because generation is conditioned on parameters only, a
   generated sample is not expected to match a particular reference initial condition; the figure is
   illustrative, all quantitative claims are ensemble metrics.
-- `figures/fig2_physics.png`: spectra, divergence, spectrum error, energy balance, parameter
+- Figure 2: spectra, divergence, spectrum error, energy balance, parameter
   response and interpolation generalisation.
-- `figures/fig3_burgers.png`: Burgers spectra and energy-balance residuals by viscosity.
+- Figure 3: Burgers spectra and energy-balance residuals by viscosity.
 
 ## 6. Discussion and limitations
 
@@ -324,21 +324,21 @@ conditioning.
   ranges (Re,Rm ≤ 50) are moderate and the flow is decaying, not statistically forced.
 - **Helicity.** In 2D with in-plane `b`, magnetic helicity is identically zero; we use `<A²>` and
   distributional topology proxies. A 3D helicity spectrum is left to the internship.
-- **Cost.** No cloud GPU was used. LLM spend is logged in `COSTS.md`; the entire study is CPU-only
+- **Cost.** No cloud GPU was used. LLM spend is logged in the delivery; the entire study is CPU-only
   (4 vCPU) and reproduces in ~20–25 min.
 
 ## 7. Reproducibility and NeurIPS checklist
 
-See `CHECKLIST.md`. `reproduce.sh` regenerates datasets, training, metrics and figures from a fresh
-checkout; seeds are fixed; `results/metrics.json` is the machine-readable record behind every table.
+See the checklist included in the delivery. The reproduction script of the delivered code regenerates datasets, training, metrics and figures from a fresh
+checkout; seeds are fixed; the machine-readable metrics file of the delivery is the record behind every table.
 
 ## 8. AI contribution statement
 
 This work was carried out by the DeepSeek Harness agent (`deepseek-v4-pro`, reasoning `high`)
 operating the tools of the mission: it wrote the solver, model, training/evaluation code, ran the
 experiments on the mission's CPU, produced the figures and wrote this report. No human wrote or
-edited the scientific content during the mission. The subject PDF was the only external brief; the
-cited papers were not read in full (see `COMPLIANCE.md`, S15) and are cited for context.
+edited the scientific content during the mission. The subject was the only external brief; the
+cited papers were not read in full (see the compliance record of the delivery, item S15) and are cited for context.
 
 ## References
 

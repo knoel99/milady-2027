@@ -65,7 +65,7 @@ format:
           \renewcommand{\arraystretch}{1.15}
 ---
 
-> Report of an automated race team, copied as the team left it (not delivered: stopped at its LLM budget before calling deliver; the report as the team left it). No delivery was made, so there is no delivery dataset; [delivery record, decisions and costs](https://github.com/knoel99/milady-2027/tree/main/research/teams/xai).
+> Report of an automated race team (not delivered: stopped at its LLM budget before calling deliver; the report as the team left it). Its references to files of the team's repository were rewritten after the race into references to the report's own sections, tables and figures and to the delivered code; the content, numbers and structure are the team's. No delivery was made, so there is no delivery dataset; the report as the team wrote it is kept with its [delivery record, decisions and costs](https://github.com/knoel99/milady-2027/tree/main/research/teams/xai).
 
 A comparative study for the ANR MilaDy internship subject (CEREA / LISN, 2027). The subject asks for conditional generative models of physical fields, constrained by the governing equations, evaluated first on a simple PDE and then on MHD fields with energy, divergence, helicity and topology metrics. This report is that study, at the scale one CPU and ninety minutes allow.
 
@@ -93,7 +93,7 @@ The physics loss follows the idea of Bastek, Sun and Kochmann (ICLR 2025), who a
 
 ## Benchmarks
 
-**B1, viscous Burgers.** `u_t + u u_x = ν u_xx` on the periodic interval, initial condition `−sin(2πx)`, solved by Hopf–Cole (Benton and Platzman 1972; Basdevant et al. 1986). Train viscosities `{0.010, 0.016, 0.025, 0.040, 0.060, 0.080}`, held-out `{0.013, 0.032, 0.070}`, five train times and three held-out times. Grid 32. The floor `ν ≥ 0.01` is a numerical limit of the float64 Hopf–Cole transform, not a physical one; below it the exact solver raises instead of returning an exploded field (`milady/physics.py`).
+**B1, viscous Burgers.** `u_t + u u_x = ν u_xx` on the periodic interval, initial condition `−sin(2πx)`, solved by Hopf–Cole (Benton and Platzman 1972; Basdevant et al. 1986). Train viscosities `{0.010, 0.016, 0.025, 0.040, 0.060, 0.080}`, held-out `{0.013, 0.032, 0.070}`, five train times and three held-out times. Grid 32. The floor `ν ≥ 0.01` is a numerical limit of the float64 Hopf–Cole transform, not a physical one; below it the exact solver raises instead of returning an exploded field.
 
 **B2, 2D kinematic induction.** `∂t B = ∇×(u×B) + Rm^{−1} ∇²B` with a steady cellular velocity, periodic, 24×24, `t_end = 0.03`. B is the curl of a magnetic stream function, so the reference is divergence-free to about `2×10⁻⁷` in the reported metric. Train Rm `{25, 50, 100}` × seeds `{0, 1, 2}`; test Rm `{40, 80}` × seeds `{10, 11}`.
 
@@ -103,15 +103,15 @@ These are kinematic. The Lorentz force is absent, the boxes are small, and the i
 
 ## What the reference solvers do
 
-Measured, `results/reference.json`:
+Measured, from the reference solvers of the team's results:
 
-- Burgers energy at `t = 0.2` falls from 0.196 at `ν = 0.01` to 0.065 at `ν = 0.08`. The instantaneous decay identity `dE/dt = −ν ∫ u_x² dx` matches a centred finite difference to 0.01% (`milady/check_physics.py`).
+- Burgers energy at `t = 0.2` falls from 0.196 at `ν = 0.01` to 0.065 at `ν = 0.08`. The instantaneous decay identity `dE/dt = −ν ∫ u_x² dx` matches a centred finite difference to 0.01% (a physics check of the team's code).
 - 2D magnetic energy rises with Rm, from 0.0207 at Rm 25 to 0.0264 at Rm 100, at fixed time and seed. Relative divergence of the reference stays near `2×10⁻⁷`.
 - 3D axial mean of `B_z` across six seeds at Rm 40 is at most `1×10⁻¹⁰`. That is roundoff on a projected zero-mean field. **The benchmark contains no polarity reversal.** The subject's reversal question is not answerable from these runs. Claiming otherwise would be a conjecture stated as a result, so it is not claimed.
 
 ## Burgers results (measured)
 
-Held-out viscosity, train times, 15 fields. Three training seeds. Seed 0 used 300 Adam steps; seeds 1 and 2 used 250. The difference is small next to the seed spread, and the three are pooled. Source: `results/seeds_summary.json`. The seed-0 point estimates, including the joint held-out split, are in `results/burgers/metrics.json`.
+Held-out viscosity, train times, 15 fields. Three training seeds. Seed 0 used 300 Adam steps; seeds 1 and 2 used 250. The difference is small next to the seed spread, and the three are pooled. Source: the team's multi-seed results. The seed-0 point estimates, including the joint held-out split, are in the team's seed-0 Burgers results.
 
 Mean ± sample standard deviation over the three seeds:
 
@@ -136,7 +136,7 @@ On the joint held-out split (held-out ν and held-out t, 9 fields, seed 0 only):
 
 ## MHD 2D results (measured)
 
-Held-out Rm, 4 fields. Seed 0, 300 Adam steps. `results/mhd2d/metrics.json`.
+Held-out Rm, 4 fields. Seed 0, 300 Adam steps.
 
 | model | rel L2 | div (rel.) | energy rel. error | log-spectrum L2 | ⟨A²⟩ rel. error |
 |---|---:|---:|---:|---:|---:|
@@ -150,11 +150,11 @@ Reference divergence on the same grid is `2×10⁻⁷`. None of the learned mode
 
 - Conditioning barely moves relative L2 (1.06 → 1.01). With 9 training fields and a 48k-parameter U-Net, the network does not learn the Rm dependence. That is a negative result, and it is why the 3D study moves the parameter dependence into a 32-dimensional latent.
 - The hard stream-function design (`cond_div`, `cond_phys`) does not train. Relative L2 stays near 5 and the energy error near 23. A zero-initialised curl has no gradient; a small normal initialisation (std 0.01) does not repair it; the unscaled induction residual in `cond_phys` opens at a loss of about 4800. The ⟨A²⟩ error happens to be the smallest of the five, which is consistent with a field that has collapsed toward a smooth stream function and is otherwise wrong. **A divergence-free parameterisation that is not scaled to the data does not enforce the constraint in any useful sense.** This agrees, at the level of a negative result, with the design choice in FunDiff of putting the constraint where the decoder can be trained against field data (Wang et al. 2026), rather than inside an unscaled velocity head.
-- The sampling projection does what it says. Helmholtz projection of the `cond` samples cuts the divergence score from 1.49 to 0.14 on seed 0, and to 0.29 ± 0.02 on two further seeds trained for 200 steps (`results/seeds_summary.json`, not pooled with seed 0 because the step count differs). Field error stays near 1.2. Energy and spectrum do not improve. Projection is a constraint on the sample, not a model of the conditional distribution.
+- The sampling projection does what it says. Helmholtz projection of the `cond` samples cuts the divergence score from 1.49 to 0.14 on seed 0, and to 0.29 ± 0.02 on two further seeds trained for 200 steps (the team's multi-seed results, not pooled with seed 0 because the step count differs). Field error stays near 1.2. Energy and spectrum do not improve. Projection is a constraint on the sample, not a model of the conditional distribution.
 
 ## MHD 3D results (measured)
 
-Held-out Rm, 4 fields, 8³. Seed 0, 200 Adam steps. `results/mhd3d/metrics.json`.
+Held-out Rm, 4 fields, 8³. Seed 0, 200 Adam steps.
 
 | model | rel L2 | div (rel.) | energy rel. error | helicity rel. error | log-spectrum L2 | axial-sign agreement |
 |---|---:|---:|---:|---:|---:|---:|
@@ -180,13 +180,13 @@ Published context, not our numbers. FunDiff reports physically consistent genera
 ## Limits
 
 - No self-consistent MHD, no Lorentz force, no turbulence, no dynamo threshold, no reversal. The ABC box is 8³ and the run is 0.03 time units. A claim that these models generate dynamo fields, or that they preserve magnetic topology in the sense of a reversal study, would be a conjecture. It is not made.
-- Single delivered seed for MHD 3D and for the failed 2D stream-function pair. Burgers has three seeds; the spread is in `results/seeds_summary.json`. With four test fields, a 0.05 difference in relative L2 is not a finding.
+- Single delivered seed for MHD 3D and for the failed 2D stream-function pair. Burgers has three seeds; the spread is in the team's multi-seed results. With four test fields, a 0.05 difference in relative L2 is not a finding.
 - The 2D and 3D field errors near 1.0 for the unconstrained models mean those samples are not usable as initial conditions for a data-assimilation pipeline. The 3D `cond_phys` samples, at relative L2 0.43, are closer and still not a surrogate for a DNS.
-- Cloud GPUs were requested and refused (Scaleway quota on every type tried; Runpod community offers returned empty data-centre lists). The study ran on one shared CPU. Resolution and seed count are what that box finished. See `DECISIONS.md`.
+- Cloud GPUs were requested and refused (Scaleway quota on every type tried; Runpod community offers returned empty data-centre lists). The study ran on one shared CPU. Resolution and seed count are what that box finished.
 
 ## Who did the work
 
-The code, the runs, the tables and this report were produced by the race-xai harness on `grok-4.7` (xAI). No sub-agent was spawned. No model call was used to generate a numerical result. Physics checks and training logs are in `results/` and were produced by the commands in `DELIVERY.md`.
+The code, the runs, the tables and this report were produced by the race-xai harness on `grok-4.7` (xAI). No sub-agent was spawned. No model call was used to generate a numerical result. Physics checks and training logs are part of the team's results.
 
 ## References
 
