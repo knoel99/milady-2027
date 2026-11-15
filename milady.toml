@@ -71,4 +71,4 @@ storage = ""
 # race/config.toml [teams] (copied here so that the site builds without the race repository).
 [site]
 pilots = ["claude", "cursor"]
-race_teams = ["claude", "openai", "google", "xai", "mistral", "zhipu", "moonshot", "deepseek", "alibaba"]
+race_teams = ["anthropic", "openai", "google", "xai", "mistral", "zhipu", "moonshot", "deepseek", "alibaba"]

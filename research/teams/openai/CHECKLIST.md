@@ -1,0 +1,10 @@
+# NeurIPS-style research checklist
+
+- **Claims and limitations:** Answered in REPORT.md. Claims are restricted to these measured synthetic benchmarks; failures and the gap to sustained turbulent dynamos are explicit.
+- **Assumptions and theory:** Periodic domain, unforced incompressible equations, solver, model, losses and correction are specified. There is no new theorem or claimed proof of full PDE consistency.
+- **Reproducibility:** Code, full generated train/test tensors, 12 trained checkpoints, per-sample metrics, seeds, hyperparameters, logs, independent reference comparisons and commands are included. GPU and package details are in results/environment.txt. GPU kernels and device-specific RNG can vary numerically; bitwise replication is not promised.
+- **Statistical significance:** No formal significance claim or hypothesis test. Three independent training seeds are summarized by ranges; tests use 128 or 256 independent trajectories per condition, with independent-reference distances. This is too few training seeds for strong population-level inference.
+- **Compute:** One RTX 4090 (24 GB), Python 3.11.10, PyTorch 2.4.1+cu124 and NumPy 1.26.3; training on 2026-11-15, plus local CPU checks. Actual resource and model costs are recorded by the framework in COSTS.md. No pretrained third-party weights.
+- **Assets and licences:** New code and model weights: MIT; generated data: CC0-1.0. PyTorch and NumPy are third-party BSD-3-Clause software, CUDA and the NVIDIA driver are subject to NVIDIA's terms. The user-supplied subject PDF is retained for traceability and is not relicensed by this repository. No personal data or externally sourced research dataset was used.
+- **Ethics and impact:** The artifacts are research toys, not validated operational forecasting or safety systems. Inappropriate use as a real dynamo forecast is a risk. No human participants or human subject data were involved.
+- **AI assistance:** OpenAI GPT-6.1-terra via Codex designed, coded, ran and wrote the work; no human review or other model contributed research content. Launcher connectivity checks of other models are in the ledger.

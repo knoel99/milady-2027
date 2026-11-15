@@ -2,13 +2,14 @@
 
 | Team | Status | HTML report | PDF | Explorer | Diagrams |
 |---|---|---|---|---|---|
-| **Claude** (pilot team, also in the race) | report published | [HTML report](claude/report/index.html) | [Download the PDF](claude/report/index.pdf){download="milady-2027-claude-report.pdf"} | [Explorer](claude/explorer/index.html) | [Agent organisation](claude/diagrams/agent-organisation.html) · [Code architecture](claude/diagrams/code-architecture.html) · [Experiment workflow](claude/diagrams/experiment-workflow.html) |
+| **Claude** (pilot team) | report published | [HTML report](claude/report/index.html) | [Download the PDF](claude/report/index.pdf){download="milady-2027-claude-report.pdf"} | [Explorer](claude/explorer/index.html) | [Agent organisation](claude/diagrams/agent-organisation.html) · [Code architecture](claude/diagrams/code-architecture.html) · [Experiment workflow](claude/diagrams/experiment-workflow.html) |
 | **Cursor** (pilot team) | report published | [HTML report](cursor/report/index.html) | [Download the PDF](cursor/report/index.pdf){download="milady-2027-cursor-report.pdf"} | [Explorer](cursor/explorer/index.html) | [Agent organisation](cursor/diagrams/agent-organisation.html) · [Code architecture](cursor/diagrams/code-architecture.html) · [Experiment workflow](cursor/diagrams/experiment-workflow.html) |
-| **OpenAI** (race team) | planned | — | — | — | — |
-| **Google** (race team) | planned | — | — | — | — |
-| **xAI** (race team) | planned | — | — | — | — |
-| **Mistral** (race team) | planned | — | — | — | — |
-| **Zhipu** (race team) | planned | — | — | — | — |
-| **Moonshot** (race team) | planned | — | — | — | — |
-| **DeepSeek** (race team) | planned | — | — | — | — |
-| **Alibaba** (race team) | planned | — | — | — | — |
+| **Anthropic** (race team) | report published | [HTML report](anthropic/report/index.html) | — | — | — |
+| **OpenAI** (race team) | report published | [HTML report](openai/report/index.html) | — | — | — |
+| **Google** (race team) | not delivered | — | — | — | — |
+| **xAI** (race team) | not delivered (report as left at its budget) | [HTML report](xai/report/index.html) | — | — | — |
+| **Mistral** (race team) | not delivered | — | — | — | — |
+| **Zhipu** (race team) | report published | [HTML report](zhipu/report/index.html) | — | — | — |
+| **Moonshot** (race team) | report published | [HTML report](moonshot/report/index.html) | — | — | — |
+| **DeepSeek** (race team) | report published | [HTML report](deepseek/report/index.html) | — | — | — |
+| **Alibaba** (race team) | report published | [HTML report](alibaba/report/index.html) | — | — | — |

@@ -98,13 +98,13 @@ def team_listing():
     for inc in re.findall(r"\{\{< include (\S+) >\}\}", src):  # tools/teams_index.py writes the table
         f = teams / inc
         src += f.read_text(encoding="utf-8") if f.is_file() else ""
-    for name in present:
-        for needle in (
-            f"{name}/report/index.html",
-            f"{name}/report/index.pdf",
-            f"{name}/explorer/index.html",
+    for name in present:  # the report, and the PDF and explorer when the team has them (race teams have no explorer)
+        for needle, source in (
+            (f"{name}/report/index.html", f"{name}/report/index.qmd"),
+            (f"{name}/report/index.pdf", f"{name}/report/index.pdf"),
+            (f"{name}/explorer/index.html", f"{name}/explorer/index.qmd"),
         ):
-            if needle not in src:
+            if (teams / source).exists() and needle not in src:
                 problems.append(f"teams: {needle} not listed in teams/index.qmd")
     return problems
 

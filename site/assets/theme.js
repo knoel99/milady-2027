@@ -269,7 +269,14 @@
     ["teams/claude/explorer/index.html", "Claude team: explorer"],
     ["teams/cursor/report/index.html", "Cursor team: report (HTML)"],
     ["teams/cursor/report/index.pdf", "Cursor team: report (PDF)", "milady-2027-cursor-report.pdf"],
-    ["teams/cursor/explorer/index.html", "Cursor team: explorer"]
+    ["teams/cursor/explorer/index.html", "Cursor team: explorer"],
+    ["teams/anthropic/report/index.html", "Anthropic team: report (HTML)"],
+    ["teams/openai/report/index.html", "OpenAI team: report (HTML)"],
+    ["teams/xai/report/index.html", "xAI team: report (HTML)"],
+    ["teams/zhipu/report/index.html", "Zhipu team: report (HTML)"],
+    ["teams/moonshot/report/index.html", "Moonshot team: report (HTML)"],
+    ["teams/deepseek/report/index.html", "DeepSeek team: report (HTML)"],
+    ["teams/alibaba/report/index.html", "Alibaba team: report (HTML)"]
   ];
   /* teams:end */
   function siteRoot() {
