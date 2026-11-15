@@ -1,0 +1,267 @@
+---
+title: "Race ranking"
+subtitle: "The jury of the race of 2026-11-15: nine AI teams, the same subject, 5 USD of model calls, 5 USD of GPU and 1.5 hours each"
+lang: en
+format:
+  html:
+    theme: none
+    minimal: true
+    toc: false
+    anchor-sections: false
+    html-math-method:
+      method: katex
+      url: "https://cdn.jsdelivr.net/npm/katex@0.19.0/dist/katex.min.js"
+    highlight-style: github
+    embed-resources: false
+    css: ../assets/paper.css
+    include-in-header:
+      - text: |
+          <meta name="color-scheme" content="light dark">
+          <script>(function(){try{var t=localStorage.getItem("milady-theme");if(t==="dark"||t==="light")document.documentElement.setAttribute("data-theme",t);}catch(e){}})();</script>
+    include-before-body:
+      - text: |
+          <a class="skip" href="#main">Skip to content</a>
+          <header class="topbar">
+            <button type="button" class="tb-btn" id="toc-toggle" aria-controls="sidetoc" aria-expanded="false"><span aria-hidden="true">☰</span><span class="tb-label">Contents</span></button>
+            <a class="brand" href="../index.html">MilaDy<span class="brand-sub"> · 2027</span></a>
+            <span class="tb-title" id="tb-title"></span>
+            <button type="button" class="tb-btn" id="theme-toggle"><span aria-hidden="true">◐</span><span class="tb-label">Theme</span></button>
+          </header>
+          <div class="layout">
+          <nav class="sidetoc" id="sidetoc" aria-label="Contents"></nav>
+          <main class="paper" id="main">
+    include-after-body:
+      - text: |
+          </main>
+          </div>
+          <footer class="foot"><p><a href="../index.html">← Home</a> · <a href="../prep/index.html">Preparation</a> · <a href="../supervisors/index.html">Supervisors</a> · <a href="../report/index.html">Internship report</a> · <a href="../thesis/index.html">PhD proposal</a> · <a href="../interactive/index.html">Interactive diagrams</a> · <a href="../experiments/index.html">Experiments</a> · <a href="../computing/index.html">Computing and data</a> · <a href="../teams/index.html">Teams</a></p></footer>
+          <script defer src="../assets/theme.js"></script>
+---
+
+## How the teams were graded {#method}
+
+Nine teams, one per AI provider, each on that provider's own agent harness, carried out the internship subject autonomously, with the same budgets and time limit. Four criteria, known to the teams from the start, count equally:
+
+- **Scientific quality** and **compliance with the subject's instructions**, graded from 0 to 10 by the jury on the evidence each team left (report, records, code, results).
+- **Cost control**: 10 times the share of the two budgets left at delivery (model calls and GPU weigh alike).
+- **Delivery time**: 10 times the share of the 1.5 hours left at delivery.
+
+Cost control and delivery time are measured by the race framework from its ledgers, and count 0 for a team that did not deliver; delivered teams rank before the others.
+
+The jury graded **anonymously**: each team was known to it only by a pseudonym (Team A to Team I), every name of a provider, model or agent tool was removed from what it read, and it read nothing else. It graded against the means (the budgets, the time, a shared 4-core machine) and against each team's incidents, telling apart what was inside and outside the team's control. The jury was one judge: a claude-fable-5-2 agent.
+
+## Ranking {#ranking}
+
+| Rank | Team | Harness | Delivered | Final | Scientific quality | Compliance | Cost control | Delivery time | Spent: model calls / GPU (USD) |
+|---|---|---|---|---|---|---|---|---|---|
+| 1 | [OpenAI](../teams/openai/report/index.html) | Codex CLI | 00:51 UTC | **7.98** | 7.5 | 7.5 | 9.12 | 7.81 | 0.64 / 0.23 |
+| 2 | [DeepSeek](../teams/deepseek/report/index.html) | DeepSeek dsh | 01:40 UTC | **6.27** | 6.5 | 6.5 | 9.72 | 2.35 | 0.28 / 0.00 |
+| 3 | [Anthropic](../teams/anthropic/report/index.html) | Claude Code | 01:50 UTC | **5.31** | 6 | 5.5 | 8.47 | 1.26 | 1.52 / 0.00 |
+| 4 | [Alibaba](../teams/alibaba/report/index.html) | Qwen Code | 01:56 UTC | **5.07** | 5 | 5.5 | 9.17 | 0.61 | 0.52 / 0.31 |
+| 5 | [Moonshot](../teams/moonshot/report/index.html) | Kimi Code | 01:33 UTC | **4.8** | 6 | 5 | 5.11 | 3.09 | 4.35 / 0.54 |
+| 6 | [Zhipu](../teams/zhipu/report/index.html) | ZCode | 01:53 UTC | **3.74** | 3.5 | 4 | 6.54 | 0.93 | 2.33 / 1.13 |
+| 7 | [xAI](../teams/xai/report/index.html) | Grok Build | no | **2.25** | 4.5 | 4.5 | 0 | 0 | 4.80 / 0.00 |
+| 8 | Google | Antigravity | no | **0.62** | 1.5 | 1 | 0 | 0 | 3.18 / 0.00 |
+| 9 | Mistral | Mistral Vibe | no | **0** | — | — | 0 | 0 | 0.00 / 0.00 |
+
+## Team by team {#teams}
+
+### 1. OpenAI {#openai}
+
+OpenAI delivered a small but carefully controlled comparison of soft-loss and sampling-time constraints on an analytic heat benchmark and a 3D periodic MHD system. Three seeds, independent test sets and reference floors back every claim, including the negative ones. The study is limited by its tiny grid and by stopping after twenty minutes with most of its means unused.
+
+**Means.** The scale is deliberately small and fits the means with room to spare: 0.64 USD of model calls, 0.23 USD of GPU, delivered after 20 minutes. What was bought was used well (seeds, floors, tests). The unused 70 minutes and 4.7 USD of GPU could have paid for a higher resolution, a design-route arm or more seeds, which is the main reason the grade is not higher.
+
+**Context.** No incident. The read-only .git prevented intermediate commits, without effect on the result.
+
+**Strengths.**
+
+- Three training seeds, independent test sets and a reference-versus-reference floor on every metric
+- Real nonlinear 3D MHD solver with operator tests and a convergence check
+- Explicit intervention test of the parameter response
+- Negative results kept and claims strictly bounded
+- Data, checkpoints and models published; fully reproducible
+
+**Weaknesses.**
+
+- 8^3, modes |k|<=2, short decaying runs: far from any dynamo regime
+- No constraint-by-design arm
+- Topology only by a coarse excursion-set proxy
+- Stopped at 22% of the time allowance
+- Thin use of the subject's references
+
+### 2. DeepSeek {#deepseek}
+
+DeepSeek ran a CPU-only pilot on Burgers and 2D MHD, comparing an unconstrained model, an exactly divergence-free one and a physics-informed loss, with truncation floors, unseen parameters and significance tests. Its sober reading, that the soft physics loss does not improve the distributions, is well argued; its two positive claims are weaker, because the unconstrained baseline did not train and the parameter-response gain rests on one seed. The study is well documented and reproducible, at 2D pilot scale.
+
+**Means.** CPU only, 0.28 USD of model calls, delivered after 1.15 h. The scale (64x64, 256 training fields, small MLPs that train in seconds to minutes) fits the shared machine well, and the time was used for iterations on the design rather than for size. The untouched 5 USD of GPU could have paid for a convolutional model in field space and a fair unconstrained baseline, which is where the study is weakest.
+
+**Context.** No measurable effect on the work. The Hub publication failed with an InvalidURL error in the tool, the same error another team met; the files are staged and this is not counted against the science.
+
+**Strengths.**
+
+- PCA-truncation floor and reference floors next to every model number
+- In-distribution and unseen-parameter grids, several seeds, significance tests
+- Simple PDE benchmark and MHD benchmark with the same method
+- Candid decision log (rejected designs, wrong-checkpoint evaluation redone) and clear statement of what the evidence does not support
+
+**Weaknesses.**
+
+- Unconstrained baseline untrained and in another representation: the key comparison is confounded
+- Parameter-response claim rests on one seed and is overstated; interpolation numbers partly contradict it
+- Weak generators: over-dispersed, energies about 30% off, PDE residual far above reference
+- 2D, no sampling-time arm, stale entries in COMPLIANCE.md and CHECKLIST.md
+
+### 3. Anthropic {#anthropic}
+
+Anthropic compared six ways of making conditional flow matching divergence-free on 2D MHD fields produced by its own solver, with a noise floor and a held-out parameter band. Hard constraints and projections reach round-off divergence and the stream-function model gives the best spectra, on a single under-trained seed that the report flags from its first line. A framework failure took away the GPU and half an hour, which explains the small scale.
+
+**Means.** Zero GPU spend and 1.53 USD of model calls. After the GPU became unreachable the team cut the network and step count to what four contended cores could finish, and kept an equal budget across arms. The scale is small but fits what was left; the choice to keep six arms at 400 steps rather than fewer arms with seeds is defensible but leaves every ranking unconfirmed.
+
+**Context.** The team lost the GPU for the whole race and about 26 minutes of attempts, then restarted without context with 35 minutes left. This explains the 400-step, single-seed, CPU-only scale; it is not held against the team, and the grade reflects the small but real evidence delivered.
+
+**Strengths.**
+
+- True MHD benchmark from its own solver with a held-out parameter band
+- Six strategies spanning design, loss and sampling under equal budget
+- Data noise floor and wide metric set including a topology count and a parameter-response slope
+- Caveats stated first; bug and abandoned run disclosed
+
+**Weaknesses.**
+
+- One seed, 400 steps: rankings not established
+- 2D only, no separate simple PDE benchmark
+- No publication of data or models; solver validation not logged
+- No related work
+
+### 4. Alibaba {#alibaba}
+
+Alibaba built and validated a 3D kinematic dynamo solver and compared six ways of enforcing the divergence-free constraint in conditional flow matching. The comparison ran at a very small scale after a lost GPU and three re-scopes, so only the exact-versus-soft divergence result is firm. The report is candid about its limits but was left unfinished, with placeholders and a few figures that do not match its own result files.
+
+**Means.** The plan (rented GPU, 9 strategies at 32^3, two auxiliary benchmarks) was too large for 90 minutes; three re-scopes ended in a 22-second, 120-step study run in the last ten minutes. Only 0.52 USD of model calls and 0.31 USD of GPU (a pod that never ran code) were spent, so the budget was not the constraint; the time was, and it was spent on provisioning and on a dataset build rather than on the comparison.
+
+**Context.** No incident is recorded by the framework. The team reports a Runpod pod that crash-looped for about 20 minutes on its chosen image; this is counted as its own provisioning risk. The shared 4-core machine slowed everything, as for all teams.
+
+**Strengths.**
+
+- Validated 3D kinematic dynamo solver with exact-identity checks that caught real bugs
+- All three constraint routes plus a prior arm, on true 3D solenoidal fields with a held-out Rm
+- Limits and non-results stated plainly (no threshold claimed, invalid 1D result deleted)
+- Dataset published with a card
+
+**Weaknesses.**
+
+- Learning study at token scale: 120 steps, width 6, 8 samples, one seed
+- Report not finalised: placeholders, duplicated and dangling items, a figure contradicted by its own table
+- Simple PDE benchmark never run
+- Stale records (checklist, delivery, data card) that describe a study that was not run
+
+### 5. Moonshot {#moonshot}
+
+Moonshot compared a divergence penalty, a stream-function design and a sampling-time projection for conditional flow matching on 2D Kolmogorov flow, with well-trained models and traceable metrics. Projection and design give exact divergence control, the penalty does not, and the stream-function model failed statistically, which the team reports. The work stops at the first stage of the subject: no magnetic field, no 3D, one seed.
+
+**Means.** The scope (one 2D benchmark, three trainings of 3.3 minutes on an RTX 4090) fits the means and was finished after 1.04 h. The GPU spend is modest (0.54 USD, including a slow first pod). The model-call spend is the highest of the delivered teams, 4.35 of 5 USD, for a single-agent study of this size; the remaining half hour was not used for seeds or a held-out Re.
+
+**Context.** No visible loss of scientific content; the Hub failure is not held against the team. Scaleway GPU quota at zero forced Runpod, at the cost of a few minutes.
+
+**Strengths.**
+
+- Properly trained models and 256 samples per condition: effects are large and clean
+- Every reported number traceable to results/metrics.json
+- Negative result (stream-function model) reported and analysed as a conjecture
+- Conditioning verified by a mismatched-label test
+
+**Weaknesses.**
+
+- No MHD, no 3D, no helicity or topology metric
+- One seed, no held-out Reynolds number, no noise floor
+- Two statements on energy fidelity of the projected model overstated against the JSON
+- High model-call spend for the scope
+
+### 6. Zhipu {#zhipu}
+
+Zhipu planned a two-benchmark comparison of where to inject physics into conditional flow matching and trained its models on a rented GPU. Solver bugs and a session cut left only a small, negative 2D evaluation; the 3D comparison was trained but never evaluated. The report is honest about the cut but draws conclusions the delivered files do not support.
+
+**Means.** The scale chosen fitted one RTX 4090 and the time on paper, and 1.13 USD of GPU and 2.33 USD of model calls were spent, but about 45 minutes of GPU time produced NaN or wrongly normalised data because the solvers were not tested before launch. The budget bought trained 3D models that were never evaluated.
+
+**Context.** The cut cost the running pipeline and a restart with about 50 minutes left. The data it had produced were already invalid through the team's own solver bugs, so the incident cost a few minutes and the context rather than valid results; the unfinished 3D evaluation follows mainly from the bugs and three evaluation restarts.
+
+**Strengths.**
+
+- Well-posed two-stage design with a held-out Reynolds number
+- Bugs diagnosed and documented precisely in DECISIONS.md
+- Negative 2D result reported rather than hidden
+- Delivery cut stated explicitly
+
+**Weaknesses.**
+
+- The main comparison (3D, four strategies) has no results
+- Result files cited by the report are absent from the repository
+- 2D evaluation numbers look inconsistent and are not investigated
+- Records claim committed metrics and Hub publication that do not exist
+
+### 7. xAI {#xai}
+
+xAI did not deliver: it used almost its whole model budget in 23 minutes. Its repository still holds an honest three-benchmark comparison of design, loss and sampling constraints, with negative results clearly reported. The experiments are too small for most models to learn, so only the Burgers conditioning and the sampling-time corrections stand as measured results.
+
+**Means.** The mission spent 4.80 of 5 USD of model calls in 23 minutes, through contexts of about 200 thousand tokens per call, and stopped without delivering; no GPU was obtained. The experiments themselves cost seconds of CPU, so the science is far below what the time allowance permitted, and the budget was used poorly.
+
+**Context.** The restart gave a full allowance. The 00:59 stop cost about a minute; the exhaustion of the model budget by 01:03 is the team's own, and is what prevented delivery, a larger study and the publication. The absence of a GPU explains the CPU scale but not datasets of nine fields.
+
+**Strengths.**
+
+- Measured, published and conjectured statements kept strictly apart
+- Negative results stated as such; single-seed ranking withdrawn after three seeds
+- All three constraint routes on three benchmarks including 3D
+- Result files that reproduce almost every number of the report
+
+**Weaknesses.**
+
+- Not delivered; budget exhausted in 23 minutes
+- Toy scale: 9 to 16 training fields, 4 test fields, 200-300 steps; most generators fail
+- Deterministic targets scored by relative L2: not a test of generative diversity
+- One table column not backed by its result file; DELIVERY.md and Hub publication cited but absent
+
+### 8. Google {#google}
+
+Google lost almost all of its time to incidents outside its control and worked for about twenty minutes. It left a code skeleton without any run, result or report. The benchmark generators it wrote prescribe the physics instead of simulating it, so no scientific conclusion can be drawn from the repository.
+
+**Means.** About 21 minutes of work after the restart, 3.18 USD of model calls, no GPU. The plan was several times larger than 90 minutes allow, and the time available went into writing a large package rather than into one small experiment.
+
+**Context.** The team had about 21 working minutes, interrupted once, instead of 90. The incidents prevented any experiment, report and delivery; that is not held against it, but there is no scientific result to credit, and the code that exists rests on fabricated benchmark data.
+
+**Strengths.**
+
+- Systematic reading of the subject into a compliance plan
+- Broad code skeleton covering the three constraint routes and the requested metrics
+
+**Weaknesses.**
+
+- No run, no result, no report, not delivered
+- Benchmarks are hand-built fields with prescribed regime laws, described as MHD dynamo physics
+- Scope out of proportion with the means
+
+### 9. Mistral {#mistral}
+
+Not graded: the provider account refused every call of the team (a rate limit of the account), so the team never worked.
+
+## How close the calls are {#close}
+
+First place is clear: OpenAI leads on both grades, on cost and on time. Second place is fairly safe but depends on
+result tables of DeepSeek that the repository lists and my extract did not show; if they held a surprise, H and G
+would swap. G over F is the closest call among the delivered teams: equal scientific grade, F with stronger
+evidence per claim, G with wider coverage of the subject, an outside incident and a third of the model spend; a
+judge who weights statistical firmness over coverage would reverse them. A is separated from F and G by a full
+point of scientific quality and from C by a point and a half. C over I is the other genuinely open call: I is one
+point better on science and half a point better on compliance, and is placed below only because non-delivery and the
+exhaustion of the budget were largely within its control; a ranking on the two grades alone would put I sixth.
+Last place is not in doubt.
+
+## Limits of this grading {#limits}
+
+- One judge, and it is an Anthropic model: the Anthropic team was graded, anonymously, by a model of its own provider.
+- The judge read each team's file as the race framework extracted it: some result tables and the end of some code files were cut by the extract's size limits. The judge says the second and third places could swap if the DeepSeek team's result tables, which it did not see, held a surprise.
+- Delivery time is measured as it is: it does not discount the time a team lost to an incident outside its control (the Anthropic team lost about 25 minutes to a failure of the race framework).
+- The reports were graded as the teams wrote them; the versions on this site were edited afterwards to remove file paths.
+
+The jury's records (grades, the judge's ranking, the facts measured) are in the repository's [research/race-2026-11-15/jury](https://github.com/knoel99/milady-2027/tree/main/research/race-2026-11-15/jury).
