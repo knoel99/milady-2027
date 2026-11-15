@@ -38,7 +38,7 @@ jobs:
           if grep -rlqE --include=index.qmd '^  pdf:' site; then
             sudo apt-get update -qq
             sudo apt-get install -y -qq --no-install-recommends texlive-latex-recommended texlive-latex-extra \
-              texlive-fonts-recommended texlive-xetex lmodern
+              texlive-fonts-recommended texlive-xetex lmodern fonts-dejavu-core
           fi
 
       - name: Team cards, Teams table and Site menu from site/teams and milady.toml [site]

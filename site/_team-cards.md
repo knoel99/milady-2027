@@ -38,7 +38,7 @@
 
 [Race team · Claude Code · claude-sonnet-5-5]{.team-meta}
 
-[Report](teams/anthropic/report/index.html)
+[Report](teams/anthropic/report/index.html) · [PDF](teams/anthropic/report/index.pdf){download="milady-2027-anthropic-report.pdf"}
 :::
 
 ::: {.team-card .ready}
@@ -51,7 +51,7 @@
 
 [Race team · Codex CLI · gpt-6.1-terra]{.team-meta}
 
-[Report](teams/openai/report/index.html)
+[Report](teams/openai/report/index.html) · [PDF](teams/openai/report/index.pdf){download="milady-2027-openai-report.pdf"}
 :::
 
 ::: {.team-card .ready}
@@ -64,7 +64,7 @@
 
 [Race team · Grok Build · grok-4.7]{.team-meta}
 
-[Report](teams/xai/report/index.html)
+[Report](teams/xai/report/index.html) · [PDF](teams/xai/report/index.pdf){download="milady-2027-xai-report.pdf"}
 :::
 
 ::: {.team-card .ready}
@@ -77,7 +77,7 @@
 
 [Race team · ZCode · glm-5.3-flash]{.team-meta}
 
-[Report](teams/zhipu/report/index.html)
+[Report](teams/zhipu/report/index.html) · [PDF](teams/zhipu/report/index.pdf){download="milady-2027-zhipu-report.pdf"}
 :::
 
 ::: {.team-card .ready}
@@ -90,7 +90,7 @@
 
 [Race team · Kimi Code · kimi-k3]{.team-meta}
 
-[Report](teams/moonshot/report/index.html)
+[Report](teams/moonshot/report/index.html) · [PDF](teams/moonshot/report/index.pdf){download="milady-2027-moonshot-report.pdf"}
 :::
 
 ::: {.team-card .ready}
@@ -103,7 +103,7 @@
 
 [Race team · DeepSeek dsh · deepseek-flash]{.team-meta}
 
-[Report](teams/deepseek/report/index.html)
+[Report](teams/deepseek/report/index.html) · [PDF](teams/deepseek/report/index.pdf){download="milady-2027-deepseek-report.pdf"}
 :::
 
 ::: {.team-card .ready}
@@ -116,7 +116,7 @@
 
 [Race team · Qwen Code · qwen3.8-flash]{.team-meta}
 
-[Report](teams/alibaba/report/index.html)
+[Report](teams/alibaba/report/index.html) · [PDF](teams/alibaba/report/index.pdf){download="milady-2027-alibaba-report.pdf"}
 :::
 
 ::: {.team-card}
