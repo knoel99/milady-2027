@@ -43,8 +43,8 @@ Each row is one planned team: the pilots, then the teams of the race. The links 
 ## Race ranking {#ranking}
 
 The race of 2026-11-15 put nine AI teams, one per provider, on the same subject with 5 USD of model calls, 5 USD of
-GPU and 1.5 hours each. An anonymous jury graded their scientific quality and compliance; cost and delivery time
-were measured. OpenAI ranks first, DeepSeek second, Anthropic third: see the [race ranking](../jury/index.html) for
+GPU and 1.5 hours each. An anonymous jury graded their scientific quality and compliance out of 100 on an absolute
+scale (100 being a historic discovery); cost and delivery time were measured. OpenAI ranks first, DeepSeek second, Anthropic third: see the [race ranking](../jury/index.html) for
 the full table, the grading method and the jury's assessment of each team.
 
 ## Reports {#reports}
