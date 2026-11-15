@@ -65,7 +65,7 @@ format:
           \renewcommand{\arraystretch}{1.15}
 ---
 
-> Report of an automated race team, copied as the team left it (delivered at 00:51 UTC after 0.33 h). Delivery: private dataset knoel/milady-20261115-race-openai-delivery on the Hugging Face Hub; [delivery record, decisions and costs](https://github.com/knoel99/milady-2027/tree/main/research/teams/openai).
+> Report of an automated race team (delivered at 00:51 UTC after 0.33 h). Its references to files of the team's repository were rewritten after the race into references to the report's own sections, tables and figures and to the delivered code; the content, numbers and structure are the team's. Delivery: private dataset knoel/milady-20261115-race-openai-delivery on the Hugging Face Hub; the report as the team wrote it is kept with its [delivery record, decisions and costs](https://github.com/knoel99/milady-2027/tree/main/research/teams/openai).
 
 ## Question and scope
 
@@ -91,13 +91,13 @@ where ω = ∇×u, j = ∇×b and P is the Helmholtz projection. A de-aliased ps
 
 For each condition, a separate 128-trajectory MHD or 256-trajectory heat reference sample is compared with an equally sized generated sample. One-dimensional energy and helicity distribution errors are empirical Wasserstein-1 distances; spectral errors are L1 differences of mean shell energies. We also calculate reference-versus-another-independent-reference distances, which expose finite-sample variation rather than acting as a zero-error target. Model comparisons share sample noise within a trained model. Seen and interpolated conditions are averaged separately; seed ranges describe only three trainings. Parameter intervention holds the simulator's initial random draw or the generator's latent noise fixed while changing the parameter.
 
-MHD diagnostics include total, kinetic, and magnetic energy distributions; kinetic and magnetic energy shell spectra; full-frequency Fourier divergence RMS averaged across the four vectors; absolute trapezoidal energy-budget residual; magnetic helicity of the zero-mean solenoidal fluctuation in Coulomb gauge; current helicity; and a topology proxy. The proxy counts 6-connected components of the |b| excursion set above each field's 75th percentile, with periodic wrapping. It measures a coarse geometric feature, not field-line linkage or topology preservation. Helicity for unconstrained, non-solenoidal fields is only a proxy. The input-grid Nyquist convention in training sets the real derivative's Nyquist coefficient to zero; the reporting evaluator counts all signed Fourier frequencies in divergence, dissipation and spectra. The hard projector removes those high modes. Current helicity uses the real-grid curl convention. See `code/evaluate_mhd.py`.
+MHD diagnostics include total, kinetic, and magnetic energy distributions; kinetic and magnetic energy shell spectra; full-frequency Fourier divergence RMS averaged across the four vectors; absolute trapezoidal energy-budget residual; magnetic helicity of the zero-mean solenoidal fluctuation in Coulomb gauge; current helicity; and a topology proxy. The proxy counts 6-connected components of the |b| excursion set above each field's 75th percentile, with periodic wrapping. It measures a coarse geometric feature, not field-line linkage or topology preservation. Helicity for unconstrained, non-solenoidal fields is only a proxy. The input-grid Nyquist convention in training sets the real derivative's Nyquist coefficient to zero; the reporting evaluator counts all signed Fourier frequencies in divergence, dissipation and spectra. The hard projector removes those high modes. Current helicity uses the real-grid curl convention. The reporting evaluator is part of the delivered code.
 
-Independent tests in `code/test_physics.py` check projection idempotence/divergence, the spectral MHD energy identity, an exact heat Fourier mode, and the correction's discrete budget. For one double-precision de-aliased trajectory, relative L2 errors against step 0.0125 were 1.86×10⁻⁶, 1.12×10⁻⁷, and 6.47×10⁻⁹ for steps 0.1, 0.05, and 0.025 respectively (`results/convergence.json`), consistent with temporal fourth-order convergence in this check. This is not a spatial resolution study.
+Independent tests in the delivered code check projection idempotence/divergence, the spectral MHD energy identity, an exact heat Fourier mode, and the correction's discrete budget. For one double-precision de-aliased trajectory, relative L2 errors against step 0.0125 were 1.86×10⁻⁶, 1.12×10⁻⁷, and 6.47×10⁻⁹ for steps 0.1, 0.05, and 0.025 respectively (convergence results in the delivery), consistent with temporal fourth-order convergence in this check. This is not a spatial resolution study.
 
 ## Results
 
-The table summarizes the two interpolation conditions, averaged over conditions and the three training seeds. Brackets are the range of the three seed-level means, not confidence intervals. Full seen-condition results, all metrics and per-seed values are in results/summary.md and the corrected JSON and per-sample arrays under `artifacts/`.
+The table summarizes the two interpolation conditions, averaged over conditions and the three training seeds. Brackets are the range of the three seed-level means, not confidence intervals. Full seen-condition results, all metrics and per-seed values are in the results summary and the corrected JSON and per-sample arrays of the delivery dataset on the Hugging Face Hub.
 
 | Heat strategy | PDE residual RMS | energy W1 | spectrum L1 |
 |---|---:|---:|---:|
@@ -130,6 +130,6 @@ The small, finite and non-turbulent ensemble, low spatial resolution, single dom
 
 - Lipman, Chen, Ben-Hamu, Nickel and Le, “Flow Matching for Generative Modeling,” ICLR 2023, [arXiv:2210.02747](https://arxiv.org/abs/2210.02747). Our conditional linear-path training follows the general flow-matching idea; this work is not a reproduction of their published results.
 - Bastek, Sun and Kochmann, “Physics-Informed Diffusion Models,” ICLR 2025, [arXiv:2403.14404](https://arxiv.org/abs/2403.14404). Physics-based training losses motivate the comparison; their reported results are not our measurements.
-- The subject brief is `subject/stage_milady_2027.pdf`.
+- The subject brief is the internship offer.
 
 OpenAI GPT-6.1-terra, operated through Codex, designed and implemented the study, ran and interpreted the experiments, and wrote the report. No other AI model contributed research content. Launcher connectivity probes of other models are recorded in the framework ledger. The numerical PDE and generative results are computed by the committed code, not generated by the language model. No human validation or MilaDy toolbox maintainer review occurred.
