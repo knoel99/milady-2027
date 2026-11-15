@@ -4,12 +4,12 @@
 |---|---|---|---|---|---|
 | **Claude** (pilot team) | report published | [HTML report](claude/report/index.html) | [Download the PDF](claude/report/index.pdf){download="milady-2027-claude-report.pdf"} | [Explorer](claude/explorer/index.html) | [Agent organisation](claude/diagrams/agent-organisation.html) · [Code architecture](claude/diagrams/code-architecture.html) · [Experiment workflow](claude/diagrams/experiment-workflow.html) |
 | **Cursor** (pilot team) | report published | [HTML report](cursor/report/index.html) | [Download the PDF](cursor/report/index.pdf){download="milady-2027-cursor-report.pdf"} | [Explorer](cursor/explorer/index.html) | [Agent organisation](cursor/diagrams/agent-organisation.html) · [Code architecture](cursor/diagrams/code-architecture.html) · [Experiment workflow](cursor/diagrams/experiment-workflow.html) |
-| **Anthropic** (race team) | report published | [HTML report](anthropic/report/index.html) | — | — | — |
-| **OpenAI** (race team) | report published | [HTML report](openai/report/index.html) | — | — | — |
+| **Anthropic** (race team) | report published | [HTML report](anthropic/report/index.html) | [Download the PDF](anthropic/report/index.pdf){download="milady-2027-anthropic-report.pdf"} | — | — |
+| **OpenAI** (race team) | report published | [HTML report](openai/report/index.html) | [Download the PDF](openai/report/index.pdf){download="milady-2027-openai-report.pdf"} | — | — |
 | **Google** (race team) | not delivered | — | — | — | — |
-| **xAI** (race team) | not delivered (report as left at its budget) | [HTML report](xai/report/index.html) | — | — | — |
+| **xAI** (race team) | not delivered (report as left at its budget) | [HTML report](xai/report/index.html) | [Download the PDF](xai/report/index.pdf){download="milady-2027-xai-report.pdf"} | — | — |
 | **Mistral** (race team) | not delivered | — | — | — | — |
-| **Zhipu** (race team) | report published | [HTML report](zhipu/report/index.html) | — | — | — |
-| **Moonshot** (race team) | report published | [HTML report](moonshot/report/index.html) | — | — | — |
-| **DeepSeek** (race team) | report published | [HTML report](deepseek/report/index.html) | — | — | — |
-| **Alibaba** (race team) | report published | [HTML report](alibaba/report/index.html) | — | — | — |
+| **Zhipu** (race team) | report published | [HTML report](zhipu/report/index.html) | [Download the PDF](zhipu/report/index.pdf){download="milady-2027-zhipu-report.pdf"} | — | — |
+| **Moonshot** (race team) | report published | [HTML report](moonshot/report/index.html) | [Download the PDF](moonshot/report/index.pdf){download="milady-2027-moonshot-report.pdf"} | — | — |
+| **DeepSeek** (race team) | report published | [HTML report](deepseek/report/index.html) | [Download the PDF](deepseek/report/index.pdf){download="milady-2027-deepseek-report.pdf"} | — | — |
+| **Alibaba** (race team) | report published | [HTML report](alibaba/report/index.html) | [Download the PDF](alibaba/report/index.pdf){download="milady-2027-alibaba-report.pdf"} | — | — |

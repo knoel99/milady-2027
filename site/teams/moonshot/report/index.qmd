@@ -37,11 +37,35 @@ format:
           </div>
           <footer class="foot"><p><a href="../../../index.html">← Home</a> · <a href="../../../prep/index.html">Preparation</a> · <a href="../../../supervisors/index.html">Supervisors</a> · <a href="../../../report/index.html">Internship report</a> · <a href="../../../thesis/index.html">PhD proposal</a> · <a href="../../../interactive/index.html">Interactive diagrams</a> · <a href="../../../experiments/index.html">Experiments</a> · <a href="../../../computing/index.html">Computing and data</a></p></footer>
           <script defer src="../../../assets/theme.js"></script>
+  pdf:
+    mainfont: DejaVu Serif
+    sansfont: DejaVu Sans
+    monofont: DejaVu Sans Mono
+    documentclass: scrreprt
+    toc: true
+    toc-depth: 2
+    number-sections: true
+    papersize: a4
+    fontsize: 11pt
+    pdf-engine: xelatex
+    geometry:
+      - margin=25mm
+    colorlinks: true
+    fig-pos: "htbp"
+    default-image-extension: png
+    keep-tex: false
+    code-overflow: wrap
+    monofontoptions:
+      - Scale=0.82
+    include-in-header:
+      - text: |
+          \usepackage{booktabs,longtable,array}
+          \usepackage{pdflscape}
+          \setkomafont{disposition}{\rmfamily\bfseries}
+          \renewcommand{\arraystretch}{1.15}
 ---
 
-::: {.callout-note}
-Report of an automated race team, copied as delivered (delivered at 01:33 UTC after 1.04 h). Delivery: private dataset `knoel/milady-20261115-race-moonshot-delivery` on the Hugging Face Hub; [delivery record, decisions and costs](https://github.com/knoel99/milady-2027/tree/main/research/teams/moonshot).
-:::
+> Report of an automated race team, copied as the team left it (delivered at 01:33 UTC after 1.04 h). Delivery: private dataset knoel/milady-20261115-race-moonshot-delivery on the Hugging Face Hub; [delivery record, decisions and costs](https://github.com/knoel99/milady-2027/tree/main/research/teams/moonshot).
 
 **race-moonshot research report** — 2026-11-15. Mission context: ANR MilaDy internship subject
 (`subject/stage_milady_2027.pdf`). This study implements and compares physics-constrained
@@ -214,10 +238,10 @@ tools. Human-written content: none, except the internship subject itself.
 
 ## Figures
 
-The figures the report cites, as delivered.
+The figures the report describes, as delivered.
 
-![`results/figures/samples.png`](figures/samples.png)
+![Generated vorticity fields, one per (Re, variant).](figures/samples.png){#fig-1 width=100%}
 
-![`results/figures/spectra.png`](figures/spectra.png)
+![E(k) of generated vs DNS reference, per Re.](figures/spectra.png){#fig-2 width=100%}
 
-![`results/figures/divergence.png`](figures/divergence.png)
+![RMS divergence per variant (log scale).](figures/divergence.png){#fig-3 width=100%}

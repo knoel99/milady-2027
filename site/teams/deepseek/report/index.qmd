@@ -37,11 +37,35 @@ format:
           </div>
           <footer class="foot"><p><a href="../../../index.html">← Home</a> · <a href="../../../prep/index.html">Preparation</a> · <a href="../../../supervisors/index.html">Supervisors</a> · <a href="../../../report/index.html">Internship report</a> · <a href="../../../thesis/index.html">PhD proposal</a> · <a href="../../../interactive/index.html">Interactive diagrams</a> · <a href="../../../experiments/index.html">Experiments</a> · <a href="../../../computing/index.html">Computing and data</a></p></footer>
           <script defer src="../../../assets/theme.js"></script>
+  pdf:
+    mainfont: DejaVu Serif
+    sansfont: DejaVu Sans
+    monofont: DejaVu Sans Mono
+    documentclass: scrreprt
+    toc: true
+    toc-depth: 2
+    number-sections: true
+    papersize: a4
+    fontsize: 11pt
+    pdf-engine: xelatex
+    geometry:
+      - margin=25mm
+    colorlinks: true
+    fig-pos: "htbp"
+    default-image-extension: png
+    keep-tex: false
+    code-overflow: wrap
+    monofontoptions:
+      - Scale=0.82
+    include-in-header:
+      - text: |
+          \usepackage{booktabs,longtable,array}
+          \usepackage{pdflscape}
+          \setkomafont{disposition}{\rmfamily\bfseries}
+          \renewcommand{\arraystretch}{1.15}
 ---
 
-::: {.callout-note}
-Report of an automated race team, copied as delivered (delivered at 01:40 UTC after 1.15 h). Delivery: private dataset `knoel/milady-20261115-race-deepseek-delivery` on the Hugging Face Hub; [delivery record, decisions and costs](https://github.com/knoel99/milady-2027/tree/main/research/teams/deepseek).
-:::
+> Report of an automated race team, copied as the team left it (delivered at 01:40 UTC after 1.15 h). Delivery: private dataset knoel/milady-20261115-race-deepseek-delivery on the Hugging Face Hub; [delivery record, decisions and costs](https://github.com/knoel99/milady-2027/tree/main/research/teams/deepseek).
 
 **A reproducible pilot study for the MilaDy internship subject**
 
@@ -335,10 +359,10 @@ cited papers were not read in full (see `COMPLIANCE.md`, S15) and are cited for 
 
 ## Figures
 
-The figures the report cites, as delivered.
+The figures the report describes, as delivered.
 
-![`figures/fig1_fields.png`](figures/fig1_fields.png)
+![Reference and generated |u|, |b|, vorticity and current for one held-out (Re,Rm)=(20,20) field. Generated fields have the right large-scale morphology but are smoother (32-component truncation). Because generation is conditioned on parameters only, a generated sample is not expected to match a particular reference initial condition; the figure is illustrative, all quantitative claims are ensemble metrics.](figures/fig1_fields.png){#fig-1 width=100%}
 
-![`figures/fig2_physics.png`](figures/fig2_physics.png)
+![Spectra, divergence, spectrum error, energy balance, parameter response and interpolation generalisation.](figures/fig2_physics.png){#fig-2 width=100%}
 
-![`figures/fig3_burgers.png`](figures/fig3_burgers.png)
+![Burgers spectra and energy-balance residuals by viscosity.](figures/fig3_burgers.png){#fig-3 width=100%}

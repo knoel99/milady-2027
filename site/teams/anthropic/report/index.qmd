@@ -37,11 +37,35 @@ format:
           </div>
           <footer class="foot"><p><a href="../../../index.html">← Home</a> · <a href="../../../prep/index.html">Preparation</a> · <a href="../../../supervisors/index.html">Supervisors</a> · <a href="../../../report/index.html">Internship report</a> · <a href="../../../thesis/index.html">PhD proposal</a> · <a href="../../../interactive/index.html">Interactive diagrams</a> · <a href="../../../experiments/index.html">Experiments</a> · <a href="../../../computing/index.html">Computing and data</a></p></footer>
           <script defer src="../../../assets/theme.js"></script>
+  pdf:
+    mainfont: DejaVu Serif
+    sansfont: DejaVu Sans
+    monofont: DejaVu Sans Mono
+    documentclass: scrreprt
+    toc: true
+    toc-depth: 2
+    number-sections: true
+    papersize: a4
+    fontsize: 11pt
+    pdf-engine: xelatex
+    geometry:
+      - margin=25mm
+    colorlinks: true
+    fig-pos: "htbp"
+    default-image-extension: png
+    keep-tex: false
+    code-overflow: wrap
+    monofontoptions:
+      - Scale=0.82
+    include-in-header:
+      - text: |
+          \usepackage{booktabs,longtable,array}
+          \usepackage{pdflscape}
+          \setkomafont{disposition}{\rmfamily\bfseries}
+          \renewcommand{\arraystretch}{1.15}
 ---
 
-::: {.callout-note}
-Report of an automated race team, copied as delivered (delivered at 01:50 UTC after 1.31 h). Delivery: private dataset `knoel/milady-20261115-race-anthropic-delivery` on the Hugging Face Hub; [delivery record, decisions and costs](https://github.com/knoel99/milady-2027/tree/main/research/teams/anthropic).
-:::
+> Report of an automated race team, copied as the team left it (delivered at 01:50 UTC after 1.31 h). Delivery: private dataset knoel/milady-20261115-race-anthropic-delivery on the Hugging Face Hub; [delivery record, decisions and costs](https://github.com/knoel99/milady-2027/tree/main/research/teams/anthropic).
 
 **Status: small, under-trained, single-seed pilot. Differences between strategies are descriptive, NOT statistically established.**
 
@@ -85,8 +109,8 @@ Everything (solver, code, experiments, this report) was produced autonomously by
 
 ## Figures
 
-The figures the report cites, as delivered.
+The figures the report describes, as delivered.
 
-![`results/fig_spectra.png`](figures/fig_spectra.png)
+![Spectra, as delivered by the team.](figures/fig_spectra.png){#fig-1 width=100%}
 
-![`results/fig_fields.png`](figures/fig_fields.png)
+![Fields, as delivered by the team.](figures/fig_fields.png){#fig-2 width=100%}

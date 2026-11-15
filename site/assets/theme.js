@@ -271,12 +271,19 @@
     ["teams/cursor/report/index.pdf", "Cursor team: report (PDF)", "milady-2027-cursor-report.pdf"],
     ["teams/cursor/explorer/index.html", "Cursor team: explorer"],
     ["teams/anthropic/report/index.html", "Anthropic team: report (HTML)"],
+    ["teams/anthropic/report/index.pdf", "Anthropic team: report (PDF)", "milady-2027-anthropic-report.pdf"],
     ["teams/openai/report/index.html", "OpenAI team: report (HTML)"],
+    ["teams/openai/report/index.pdf", "OpenAI team: report (PDF)", "milady-2027-openai-report.pdf"],
     ["teams/xai/report/index.html", "xAI team: report (HTML)"],
+    ["teams/xai/report/index.pdf", "xAI team: report (PDF)", "milady-2027-xai-report.pdf"],
     ["teams/zhipu/report/index.html", "Zhipu team: report (HTML)"],
+    ["teams/zhipu/report/index.pdf", "Zhipu team: report (PDF)", "milady-2027-zhipu-report.pdf"],
     ["teams/moonshot/report/index.html", "Moonshot team: report (HTML)"],
+    ["teams/moonshot/report/index.pdf", "Moonshot team: report (PDF)", "milady-2027-moonshot-report.pdf"],
     ["teams/deepseek/report/index.html", "DeepSeek team: report (HTML)"],
-    ["teams/alibaba/report/index.html", "Alibaba team: report (HTML)"]
+    ["teams/deepseek/report/index.pdf", "DeepSeek team: report (PDF)", "milady-2027-deepseek-report.pdf"],
+    ["teams/alibaba/report/index.html", "Alibaba team: report (HTML)"],
+    ["teams/alibaba/report/index.pdf", "Alibaba team: report (PDF)", "milady-2027-alibaba-report.pdf"]
   ];
   /* teams:end */
   function siteRoot() {
