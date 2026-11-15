@@ -40,6 +40,13 @@ format:
 
 Each row is one planned team: the pilots, then the teams of the race. The links open the HTML report, the PDF, the explorer and the diagrams of the team once they are published; results and models are under [experiments/results/](https://github.com/knoel99/milady-2027/tree/main/experiments/results).
 
+## Race ranking {#ranking}
+
+The race of 2026-11-15 put nine AI teams, one per provider, on the same subject with 5 USD of model calls, 5 USD of
+GPU and 1.5 hours each. An anonymous jury graded their scientific quality and compliance out of 100 on an absolute
+scale (100 being a historic discovery); cost and delivery time were measured. OpenAI ranks first, DeepSeek second, Anthropic third: see the [race ranking](../jury/index.html) for
+the full table, the grading method and the jury's assessment of each team.
+
 ## Reports {#reports}
 
 {{< include _team-table.md >}}
