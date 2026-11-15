@@ -1,933 +1,882 @@
 {
+ "calibration": {
+  "soundness": 50,
+  "significance": 42,
+  "positioning": 55,
+  "clarity": 72,
+  "reproducibility": 68,
+  "code": 68,
+  "data": 66,
+  "traceability": 72,
+  "note": "38 h, ~450 USD of model calls and ~60 USD of GPU: one 16^3 helically forced MHD dynamo benchmark (a real solver, grid-convergence check), 11 values of eta with validation and held-out values, five seeds per model, noise floors, 38 pre-registered hypotheses with reviewed verdicts, many ablations and negative results, data and models released. A validated pipeline with held-out tests, seeds and noise floors (45) and partly the 60 level (five seeds, ablations) but a single small benchmark and one conditioning parameter; a careful known-method study with informative, largely negative results (around 45, slightly below because Gaussian baselines beat every learned model and the system is small); key works cited and discussed with explicit differences, no quantitative comparison to published numbers; very clear, limits extensive, measured/published/conjectured kept apart; commands, commits, tested package, released data with a catalogue, tables generated from result files, though the released models are retrained ones, not the cited runs."
+ },
  "Team A": {
   "scientific_quality": {
-   "score": 31,
-   "justification": "A small pilot with supported results, at the top of the 30 band: an analytic heat benchmark and a 3D incompressible MHD toy (8^3 grid, modes |k|<=2, short unforced decay), three training seeds for baseline and soft-loss models, post-hoc projection and energy-budget correction, reference-vs-reference floors and a matched-noise parameter intervention. Every table number traces to results/summary.md. The findings are modest and mostly negative or by construction: the soft MHD loss does not help, the corrections are exact by construction, and generated distributions stay 4-7 times above the finite-sample floor with a parameter response 3-4 times too weak. The scale (8^3, non-turbulent, no dynamo) and three seeds keep it well below an internship-report level.",
+   "rubrics": {
+    "soundness": {
+     "score": 17.0,
+     "justification": "Toy scale: analytic 1D heat on 64 points and an unforced, decaying 3D MHD box on an 8^3 grid (modes |k_i|<=2, pairs at t=0.50/0.75). Three training seeds per arm, 2,400 updates, independent held-out trajectories (128 or 256 per condition), a reference-vs-independent-reference floor, operator tests and a temporal convergence check (results/convergence.json). The tables match results/summary.md and summary.json. But the models are far from the floor (MHD energy W1 0.034 vs 0.0079, heat loss still falling at 0.66), there is no ablation or tuning of the penalty weights, no spatial resolution study, and seed ranges on three runs are the only uncertainty. Claims are modest and supported; the level is that of a 20-minute pilot."
+    },
+    "significance": {
+     "score": 13.0,
+     "justification": "Expected results at this scale: projection gives round-off divergence, a rescaling enforces the budget by construction, a soft penalty helps on heat and does not help (is inconsistent across seeds) on MHD. The matched-noise parameter intervention showing a response 3 to 4 times too weak is a small, useful diagnostic. Nothing that others could build on beyond the exercise."
+    },
+    "positioning": {
+     "score": 12.0,
+     "justification": "Two references only (Lipman et al. 2023, Bastek et al. 2025), both real and correctly attributed, with no state of the art, no discussion of the subject's other references (FunDiff, universal guidance), no dynamo literature and no comparison with published work."
+    },
+    "clarity": {
+     "score": 45.0,
+     "justification": "Short, readable and candid: scope and non-claims stated at the top, constructions that are zero 'by construction' flagged, proxies named as proxies, a real limitations section, measured results kept apart from cited ones. Gaps: no figure, architecture and loss details terse, heat/MHD only for interpolation conditions in the main table."
+    }
+   },
+   "adequacy": "on_subject",
+   "adequacy_note": "Conditional flow matching on a simple PDE benchmark then on 3D incompressible MHD with (nu, eta) as conditions, constraints by loss and by sampling, metrics of the offer (spectra, helicity, divergence, a topology proxy), a comparative table. It is a heavily reduced version: no dynamo (unforced decaying fields), no constraint by design, no diffusion model, topology only by a coarse proxy; the report says so.",
    "evidence": [
-    "results/summary.md: MHD interpolation baseline divergence 0.178, projected 1.18e-7, budget residual 1.80e-8 after correction; energy W1 0.0337 vs reference floor 0.00788",
-    "results/summary.md heat interpolation: residual 0.487 baseline vs 0.266 soft; energy W1 0.159 vs 0.098",
-    "results/convergence.json: RK4 errors 1.86e-6, 1.12e-7, 6.47e-9",
-    "results/operator_checks.txt: PASS on projection, energy identity, heat mode, budget correction",
-    "code/mhd.py, code/evaluate_mhd.py: solver, soft loss, hard(), metrics present and consistent with the report"
+    "results/summary.md interpolation rows reproduce the report tables exactly (e.g. baseline divergence 0.17831, projected+budget residual 1.8025e-08, reference/reference energy W1 0.0078832)",
+    "results/summary.json conditioning: reference delta -0.1475 vs raw baseline -0.0349 to -0.0490 and projected+budget -0.0846 to -0.1025",
+    "results/convergence.json: 1.86e-6, 1.12e-7, 6.47e-9",
+    "code/mhd.py: N=8, 3072 training pairs, seeds 11,22,33, 2400 steps; code/test_physics.py and results/operator_checks.txt PASS",
+    "artifacts/heat/results.json train_log: flow loss 2.12 -> 0.66 at step 2399, still decreasing"
    ]
   },
-  "compliance": {
-   "score": 57,
-   "justification": "Most research instructions are touched on a real 3D MHD system with all four metric families, but at toy scale: no design-level constraint, weak parameter response, proxies for helicity and topology, no ROM/DA test.",
-   "instructions": [
-    {
-     "id": "I1",
-     "instruction": "Implement and test conditional generative models based on diffusion or flow matching",
-     "verdict": "met",
-     "note": "Flow matching, MLP (heat) and periodic 3D conv net (MHD), 3 seeds each"
+  "artifacts": {
+   "rubrics": {
+    "reproducibility": {
+     "score": 55.0,
+     "justification": "reproduce.sh with --evaluate (from shipped data and 12 checkpoints) and --all (regenerate and retrain), fixed seeds, requirements.txt pinning numpy and torch, environment.txt, SHA256SUMS, results files that match the report. No re-run result is given; TF32 and device RNG make a retrain non-bitwise, and training logs are not shown in the file."
     },
-    {
-     "id": "I2",
-     "instruction": "Condition generation on control parameters (Re, Rm, material properties)",
-     "verdict": "partial",
-     "note": "Conditioned on kappa and (nu, eta) with held-out interpolation points; measured response 3-4x too weak"
+    "code": {
+     "score": 50.0,
+     "justification": "Small, runs end to end, MIT licence, pinned dependencies, a sampling CLI with range checks, one assertion script for the operators and a convergence script. Dense one-line style, little documentation, no test suite beyond the single script, module-level monkey-patching in evaluate_mhd.py."
     },
-    {
-     "id": "I3",
-     "instruction": "Incorporate PDE and boundary-condition constraints through model design, training losses or sampling procedures",
-     "verdict": "partial",
-     "note": "Training loss and sampling corrections compared; no constraint by model design; periodic boundaries only"
+    "data": {
+     "score": 50.0,
+     "justification": "Dataset and 12 checkpoints published on the Hub (private) with commit hashes, cards, CC0/MIT licences, stated splits and limits; copies in the repository. Format is torch .pt dictionaries (not an open, self-describing format), no units/metadata schema beyond the card."
     },
-    {
-     "id": "I4",
-     "instruction": "Respect energy balance and divergence-free conditions",
-     "verdict": "partial",
-     "note": "Divergence and a two-snapshot energy budget enforced post hoc by construction; soft loss fails"
-    },
-    {
-     "id": "I5",
-     "instruction": "First validate the methods on simple PDE benchmarks",
-     "verdict": "met",
-     "note": "Analytic periodic heat equation, though run in parallel with MHD rather than first"
-    },
-    {
-     "id": "I6",
-     "instruction": "Evaluate generated MHD fields with energy spectra, helicity, divergence control and topology preservation",
-     "verdict": "partial",
-     "note": "Spectra, magnetic/current helicity, divergence and a component-count topology proxy on 3D MHD at 8^3"
-    },
-    {
-     "id": "I7",
-     "instruction": "Robust generation of 3D fields usable as input for reduced-order models or data assimilation",
-     "verdict": "partial",
-     "note": "3D field pairs generated and exported by sample_mhd.py; robustness and downstream use not shown"
-    },
-    {
-     "id": "I8",
-     "instruction": "Comparative study of physics-constrained strategies for parameter-dependent MHD fields",
-     "verdict": "partial",
-     "note": "Four strategies compared on one toy unforced regime"
-    },
-    {
-     "id": "I9",
-     "instruction": "Concise technical report and reproducible code (toolbox-ready)",
-     "verdict": "met",
-     "note": "Concise report, reproduce.sh, checkpoints, private Hub dataset and models"
+    "traceability": {
+     "score": 50.0,
+     "justification": "Report tables are generated by code/summarize.py from results_corrected.json and can be matched line by line to results/summary.md; per-sample metrics in metrics.npz. In-text numbers (kinetic spectrum, helicity, interventions) are found in summary.json but are not linked one by one; no figures."
     }
-   ]
+   }
   },
   "claims_checked": [
    {
-    "claim": "Hard projection brings MHD divergence to numerical precision and the budget correction to ~1e-8",
+    "claim": "Heat: soft loss lowers residual 0.487 -> 0.266 and energy W1 0.159 -> 0.098 at interpolation conditions",
     "supported": "yes",
-    "evidence": "results/summary.md, baseline/projected and projected_budget rows; code/mhd.py hard()"
+    "evidence": "results/summary.md HEAT/interpolation: 0.4871, 0.26599, 0.15936, 0.097722; three seeds, ranges disjoint for the residual"
    },
    {
-    "claim": "The soft MHD loss does not beat the baseline and is inconsistent across seeds",
+    "claim": "MHD: projection brings divergence to ~1.2e-7 and the budget correction brings the residual to ~1.8e-8",
     "supported": "yes",
-    "evidence": "results/summary.md soft/raw: divergence 0.209 [0.168, 0.289] vs 0.178"
+    "evidence": "summary.md MHD/interpolation baseline/projected 1.1802e-07, projected_budget 1.8025e-08; by construction, as the report says"
    },
    {
-    "claim": "The heat soft loss improves residual and distributional errors",
+    "claim": "MHD soft loss does not beat the baseline and is inconsistent across seeds",
     "supported": "yes",
-    "evidence": "results/summary.md heat tables, both splits, seed ranges do not overlap for the residual"
+    "evidence": "soft/raw divergence 0.209 [0.168, 0.289] vs 0.178 [0.176, 0.182]; energy W1 0.0426 vs 0.0358"
    },
    {
-    "claim": "Temporal fourth-order convergence of the MHD solver",
+    "claim": "Generated energy and spectra remain well above the reference/reference floor",
     "supported": "yes",
-    "evidence": "results/convergence.json (ratios ~16)"
+    "evidence": "energy W1 0.0337 vs 0.00788; magnetic spectrum L1 0.0145 vs 0.00362"
    },
    {
-    "claim": "Raw generator parameter response is too weak (-0.035 to -0.049 vs -0.1475)",
+    "claim": "Parameter response has the right sign but is too weak",
+    "supported": "yes",
+    "evidence": "summary.json conditioning: MHD reference -0.1475, raw baseline -0.0349..-0.0490; heat reference -0.1775, raw -0.041..-0.058"
+   },
+   {
+    "claim": "Temporal fourth-order convergence of the solver",
     "supported": "partly",
-    "evidence": "Computed in code/evaluate_mhd.py and stored in results_corrected.json; the summary of it was not displayed in the small files I read in full"
+    "evidence": "results/convergence.json ratios ~16.6 and ~17.3 for halved steps, one trajectory, double precision; no spatial study (stated)"
+   },
+   {
+    "claim": "Magnetic-helicity W1 0.00183 vs floor 0.00179 (no topology claim drawn)",
+    "supported": "yes",
+    "evidence": "summary.md 0.0018344 vs 0.0017882; the report correctly declines to conclude"
    }
   ],
-  "means": "Delivered after 0.33 h of 1.5 h, with 0.64 USD of model calls and 0.23 USD of GPU. Efficient, but more than an hour and most of both budgets were left unused; larger grids, more seeds or a design-level constraint were within reach.",
-  "context": {
-   "incidents_outside_control": [],
-   "effect": "No incident. The scale of the study is the team's own choice."
-  },
-  "strengths": [
-   "Reference-vs-reference floors next to every distributional metric",
-   "Three training seeds with ranges, negative result reported",
-   "Operator and convergence tests committed with outputs",
-   "Careful statement of what the corrections do and do not prove"
-  ],
-  "weaknesses": [
-   "8^3 grid with 5 modes per direction: not turbulence, not a dynamo",
-   "No constraint by model design",
-   "Generated distributions remain several times above the floor; weak conditioning",
-   "Topology and helicity are coarse proxies; no figures"
-  ],
-  "summary": "Team A compared an unconstrained flow-matching model, a soft physics loss and post-sampling projection and energy-budget correction on an analytic heat equation and a very small 3D periodic MHD system, with three seeds and finite-sample floors. Projection gives exact divergence control, the soft MHD loss does not help, and the generated distributions and parameter response remain far from the reference. It is a clean, honest small pilot at toy resolution."
- },
- "Team F": {
-  "scientific_quality": {
-   "score": 30,
-   "justification": "A small pilot with supported results, at the 30 level: own 2D MHD solver (64^2, Re, Rm <= 50, decaying) and a Burgers benchmark, flow matching in a 32-component PCA latent, raw vs stream-function vs physics-loss variants, PCA truncation floor, held-out and interpolation grids, Wilcoxon tests, figures. Numbers in the report match results/metrics_table.md. Rigour is limited by confounds the report only partly states: the raw baseline lives in a different space (no PCA, different width), the physics variant was trained 1600 steps against 3500 for the structural one (results/jobs_essential.txt), seed counts are 3/2/1, and the headline parameter-response benefit of the physics loss rests on seed 0 only. The exact divergence of the structural model is by construction, and the PCA floor dominates the errors.",
-   "evidence": [
-    "results/metrics_table.md: struct div 2.7e-9, energy balance 0.041 vs floor 0.035; raw div 0.531, energy balance 0.258",
-    "results/sanity_checks.json: Wilcoxon p = 0.40 (spectrum), 0.375 (Burgers energy balance)",
-    "results/jobs_essential.txt vs results/train_jobs.txt: phys at 1600 steps, struct at 3500",
-    "code/train.py: PCA latent, physics loss on denoised estimate, validation-based selection",
-    "COMPLIANCE.md still cites an interpolation grid {75,150,300} and DECISIONS 99.985 % variance: stale records"
-   ]
-  },
-  "compliance": {
-   "score": 53,
-   "justification": "Flow matching, Re/Rm conditioning, a Burgers benchmark and a 2D MHD comparison are done; sampling-time constraints are not in the comparison, the fields are 2D, helicity is replaced by <A^2>, and Hub publication failed.",
-   "instructions": [
-    {
-     "id": "I1",
-     "instruction": "Implement and test conditional generative models based on diffusion or flow matching",
-     "verdict": "met",
-     "note": "Conditional flow matching MLP in PCA latent, 10 checkpoints"
-    },
-    {
-     "id": "I2",
-     "instruction": "Condition generation on control parameters (Re, Rm, material properties)",
-     "verdict": "met",
-     "note": "Conditioned on (log Re, log Rm) with interpolation grid and response slopes"
-    },
-    {
-     "id": "I3",
-     "instruction": "Incorporate PDE and boundary-condition constraints through model design, training losses or sampling procedures",
-     "verdict": "partial",
-     "note": "Design and loss compared; sampling-time projection only a helper, not measured; periodic boundaries only"
-    },
-    {
-     "id": "I4",
-     "instruction": "Respect energy balance and divergence-free conditions",
-     "verdict": "partial",
-     "note": "Divergence exact by design; energy balance at the PCA floor, not at the reference level (0.041 vs 0.002)"
-    },
-    {
-     "id": "I5",
-     "instruction": "First validate the methods on simple PDE benchmarks",
-     "verdict": "met",
-     "note": "1D viscous Burgers with energy balance"
-    },
-    {
-     "id": "I6",
-     "instruction": "Evaluate generated MHD fields with energy spectra, helicity, divergence control and topology preservation",
-     "verdict": "partial",
-     "note": "Spectra, divergence, <A^2> and Wasserstein proxies on 2D MHD; no helicity, topology only by proxy"
-    },
-    {
-     "id": "I7",
-     "instruction": "Robust generation of 3D fields usable as input for reduced-order models or data assimilation",
-     "verdict": "not met",
-     "note": "2D only; justified by time, still a departure"
-    },
-    {
-     "id": "I8",
-     "instruction": "Comparative study of physics-constrained strategies for parameter-dependent MHD fields",
-     "verdict": "partial",
-     "note": "Three strategies on parametric 2D MHD with unequal seeds and training budgets"
-    },
-    {
-     "id": "I9",
-     "instruction": "Concise technical report and reproducible code (toolbox-ready)",
-     "verdict": "met",
-     "note": "Report, reproduce.sh, data, weights, figures in the repository; Hub upload failed and is staged"
-    }
-   ]
-  },
-  "claims_checked": [
-   {
-    "claim": "Divergence-free parameterisation reaches machine precision; raw model has 53 % relative divergence",
-    "supported": "yes",
-    "evidence": "results/metrics_table.md"
-   },
-   {
-    "claim": "Structural model's energy-balance residual sits at the PCA floor",
-    "supported": "yes",
-    "evidence": "0.041 vs 0.035 (test), 0.029 vs 0.026 (interpolation)"
-   },
-   {
-    "claim": "Physics loss does not improve distributional metrics",
-    "supported": "yes",
-    "evidence": "metrics_table.md and Wilcoxon p-values; but the two variants had different step counts"
-   },
-   {
-    "claim": "Physics loss aligns the Re/Rm response with the data (slopes 0.259/0.165 vs 0.204/0.072)",
-    "supported": "partly",
-    "evidence": "Seed 0 only, unequal training length; on the interpolation grid the Rm slope is worse (0.111 vs 0.132)"
-   },
-   {
-    "claim": "Burgers: physics loss lowers energy-balance residual 0.013 to 0.010",
-    "supported": "partly",
-    "evidence": "metrics_table.md; p = 0.375, not significant, as the report says"
-   }
-  ],
-  "means": "0.28 USD of model calls, no GPU, delivered at 1.15 h. Frugal and CPU-only by choice; the unused GPU budget could have paid for equal seeds and step counts across variants.",
+  "means": "Delivered after 19.7 of 90 minutes, with 0.64 of 5 USD of model calls and 0.23 of 5 USD of GPU: under a quarter of the time and about a tenth of the budgets were used. The pipeline was efficient, but the remaining 70 minutes and 4.7 USD of GPU could have bought a larger grid, a forced dynamo, more seeds, longer training and a constraint-by-design arm.",
   "context": {
    "incidents_outside_control": [
-    "The harness ran a different model than the configured one",
-    "The Hub publishing tool failed with an InvalidURL error"
+    "none recorded by the framework; the team notes a read-only .git that prevented intermediate commits and no capacity on a cheaper GPU offer"
    ],
-   "effect": "The model substitution has no visible effect on the work; the Hub failure left dataset and weights staged locally instead of published."
+   "effect": "Negligible: the work was not limited by incidents but by the team's own early stop."
   },
   "strengths": [
-   "Truncation floor and reference floors reported next to model values",
-   "Held-out and interpolation parameter grids, significance tests",
-   "Two benchmarks with a real 2D MHD solver",
-   "Rejected designs and an evaluation-path bug are logged"
+   "Honest, tightly scoped claims; every 'zero by construction' is flagged as such",
+   "Independent held-out trajectories, interpolation conditions and a reference-vs-reference floor",
+   "Three seeds per arm with per-seed ranges; negative result on the MHD soft loss reported",
+   "Complete artifact chain: data, 12 checkpoints, pinned requirements, reproduce.sh, licences, Hub cards",
+   "Matched-noise parameter intervention as a direct test of conditioning"
   ],
   "weaknesses": [
-   "Raw vs structural comparison confounded by representation; phys vs struct by training length",
-   "2D, low Re/Rm, 256 training fields, MLP on 32 PCA modes",
-   "Key conditioning claim from a single seed",
-   "Stale figures in the compliance and decision records; no sampling-time constraint measured"
+   "8^3 unforced decaying MHD: no dynamo, no forcing, two snapshots 0.25 apart",
+   "Models undertrained and 4 to 5 times the noise floor; no tuning or ablation",
+   "No constraint by design, no diffusion baseline, topology only as an excursion-set component count",
+   "Two references, no state of the art",
+   "No figures; most of the time and budget left unused"
   ],
-  "summary": "Team F trained conditional flow matching in a PCA latent on a 2D MHD solver dataset and a Burgers benchmark, comparing an unconstrained model, a stream-function design and a physics-informed loss against a truncation floor. The divergence-free design is exact and near the floor on energy balance, while the physics loss does not improve distributions and its claimed benefit on parameter response rests on one seed and unequal training. A well-documented 2D pilot, limited by confounded comparisons and small scale."
- },
- "Team G": {
-  "scientific_quality": {
-   "score": 26,
-   "justification": "Between preliminary runs and a small pilot: a forced 2D Kolmogorov-flow dataset from an own solver (64^2, measured Re 53-605), a 7 M-parameter conditional flow-matching U-Net trained on GPU, and four constraint strategies with numbers that match results/metrics.json. The baseline is reasonably trained (spectrum error 0.15, a matched/mismatched conditioning check). But there is one seed per variant, the test set is later snapshots of the same four trajectories, there is no MHD, no helicity or topology, the stream-function variant failed (energy 3-3.7x too high) with only a conjectured cause, and the conclusion that projection dominates rests on a difference the report itself says is within seed noise.",
-   "evidence": [
-    "results/metrics.json: v0 div_rms_mean 2.61, energy_w1_mean 0.048; v1 1.92 / 0.112; v2 div 5.1e-6, energy_w1 1.62",
-    "results/conditioning_v0.json: matched 0.161 vs mismatched 0.417",
-    "REPORT section 5: V0-vs-V3 spectrum difference 'within what seed noise could plausibly explain'",
-    "CHECKLIST.md states 4000 steps, batch 128, RTX 2000 Ada, while the report states 3000 steps, batch 64, RTX 4090"
-   ]
-  },
-  "compliance": {
-   "score": 40,
-   "justification": "The simple-benchmark stage is done properly with all three constraint routes, but the MHD stage, 3D, helicity and topology are absent.",
-   "instructions": [
-    {
-     "id": "I1",
-     "instruction": "Implement and test conditional generative models based on diffusion or flow matching",
-     "verdict": "met",
-     "note": "Conditional flow matching U-Net, three trained variants"
-    },
-    {
-     "id": "I2",
-     "instruction": "Condition generation on control parameters (Re, Rm, material properties)",
-     "verdict": "partial",
-     "note": "Reynolds number only; no Rm or material property"
-    },
-    {
-     "id": "I3",
-     "instruction": "Incorporate PDE and boundary-condition constraints through model design, training losses or sampling procedures",
-     "verdict": "met",
-     "note": "Loss (V1), design (V2), sampling projection (V3); periodic boundaries"
-    },
-    {
-     "id": "I4",
-     "instruction": "Respect energy balance and divergence-free conditions",
-     "verdict": "partial",
-     "note": "Divergence handled; energy only as statistics, no balance constraint"
-    },
-    {
-     "id": "I5",
-     "instruction": "First validate the methods on simple PDE benchmarks",
-     "verdict": "met",
-     "note": "2D Kolmogorov flow"
-    },
-    {
-     "id": "I6",
-     "instruction": "Evaluate generated MHD fields with energy spectra, helicity, divergence control and topology preservation",
-     "verdict": "not met",
-     "note": "No MHD fields; spectra and divergence only on Navier-Stokes; no helicity, no topology"
-    },
-    {
-     "id": "I7",
-     "instruction": "Robust generation of 3D fields usable as input for reduced-order models or data assimilation",
-     "verdict": "not met",
-     "note": "2D only"
-    },
-    {
-     "id": "I8",
-     "instruction": "Comparative study of physics-constrained strategies for parameter-dependent MHD fields",
-     "verdict": "not met",
-     "note": "Comparative study exists but not on MHD fields; counted as a departure"
-    },
-    {
-     "id": "I9",
-     "instruction": "Concise technical report and reproducible code (toolbox-ready)",
-     "verdict": "met",
-     "note": "Report, reproduce.sh, figures, Hub dataset and checkpoints"
-    }
-   ]
-  },
-  "claims_checked": [
-   {
-    "claim": "Projection and stream function give machine-precision divergence; soft loss reduces it by 26 %",
-    "supported": "yes",
-    "evidence": "results/metrics.json div_rms_mean values"
-   },
-   {
-    "claim": "Conditioning carries physical information (0.161 vs 0.417)",
-    "supported": "yes",
-    "evidence": "results/conditioning_v0.json"
-   },
-   {
-    "claim": "Sampling-time projection dominates",
-    "supported": "partly",
-    "evidence": "Exact divergence at small fidelity cost on one seed; fidelity difference not resolved from noise"
-   },
-   {
-    "claim": "Stream-function failure is due to k-weighting of the loss",
-    "supported": "no",
-    "evidence": "Stated as a conjecture; no run tests it"
-   },
-   {
-    "claim": "Data generation is bit-reproducible across two machines",
-    "supported": "partly",
-    "evidence": "Only reported in DECISIONS.md (identical measured Re); no stored comparison"
-   }
-  ],
-  "means": "4.35 USD of 5 USD of model calls for a study with no sub-agents, 0.54 USD of GPU, delivered at 1.04 h. The GPU was used well after a slow first pod; the model budget was nearly exhausted by the harness alone.",
-  "context": {
-   "incidents_outside_control": [
-    "The harness ran a fallback model tier",
-    "The Hub copy of the delivery failed at delivery and was published after the race",
-    "Scaleway GPU quota was zero"
-   ],
-   "effect": "About ten minutes lost to GPU provisioning and a slow pod; no visible effect on the content otherwise."
-  },
-  "strengths": [
-   "Real forced-flow dataset over a wide Re range with a properly sized model",
-   "All three constraint routes under one protocol",
-   "Matched/mismatched conditioning test",
-   "Negative result on the design route reported"
-  ],
-  "weaknesses": [
-   "No MHD at all, 2D only",
-   "Single seed, temporally correlated train/test split",
-   "No helicity, topology or energy-budget metric",
-   "Records inconsistent with the report on training settings"
-  ],
-  "summary": "Team G generated a 2D Kolmogorov-flow dataset over four Reynolds numbers and compared an unconstrained flow-matching U-Net with a divergence penalty, a stream-function design and a Helmholtz projection at sampling. Projection gives exact divergence at little cost, the penalty is a poor trade-off, and the stream-function model failed at this budget. The work is a sound single-seed first stage that never reaches MHD, 3D, helicity or topology."
- },
- "Team D": {
-  "scientific_quality": {
-   "score": 23,
-   "justification": "Between preliminary runs and a small pilot: an own 2D MHD solver (32^2, 3200 runs over random nu, eta), five divergence strategies under one protocol, a data noise floor and a held-out parameter band, with report numbers matching results/table.md. But the models are 400-step, width-24, single-seed CPU runs that the report itself calls under-trained, almost all metrics are 4-6 times above the floor, the solver validation log is not in the repository, and the one notable finding (stream-function model reaches the spectral noise floor in distribution) is a single run.",
-   "evidence": [
-    "results/table.md: m4 spec_logerr 0.0236 vs floor 0.0277 (in), 0.0856 vs 0.0094 (band); m0 div_rel 0.116, m1 0.0768, projections ~4e-7",
-    "REPORT: '400 training steps, batch 32, 1 seed'",
-    "REPORT: energy conservation check 'log not kept in results/'",
-    "DECISIONS 01:29: M1 penalty bug found and fixed before the reported run"
-   ]
-  },
-  "compliance": {
-   "score": 43,
-   "justification": "A real parametric 2D MHD comparison with all three constraint routes and a topology metric, but no separate simple benchmark, no 3D, no helicity, nothing on the Hub.",
-   "instructions": [
-    {
-     "id": "I1",
-     "instruction": "Implement and test conditional generative models based on diffusion or flow matching",
-     "verdict": "met",
-     "note": "Conditional flow matching U-Net with FiLM"
-    },
-    {
-     "id": "I2",
-     "instruction": "Condition generation on control parameters (Re, Rm, material properties)",
-     "verdict": "met",
-     "note": "(log nu, log eta) with a held-out band; conditioning slope measured"
-    },
-    {
-     "id": "I3",
-     "instruction": "Incorporate PDE and boundary-condition constraints through model design, training losses or sampling procedures",
-     "verdict": "met",
-     "note": "Loss (M1), design (M4, M5), sampling (proj_end, proj_step); periodic only"
-    },
-    {
-     "id": "I4",
-     "instruction": "Respect energy balance and divergence-free conditions",
-     "verdict": "partial",
-     "note": "Divergence enforced; energy and dissipation only compared statistically"
-    },
-    {
-     "id": "I5",
-     "instruction": "First validate the methods on simple PDE benchmarks",
-     "verdict": "not met",
-     "note": "Simple benchmark merged into the MHD benchmark; justified, still a departure"
-    },
-    {
-     "id": "I6",
-     "instruction": "Evaluate generated MHD fields with energy spectra, helicity, divergence control and topology preservation",
-     "verdict": "partial",
-     "note": "Spectra, divergence, cross-helicity, <A^2>, critical-point counts on 2D MHD; magnetic helicity not applicable in 2D; detector admitted crude"
-    },
-    {
-     "id": "I7",
-     "instruction": "Robust generation of 3D fields usable as input for reduced-order models or data assimilation",
-     "verdict": "not met",
-     "note": "2D only"
-    },
-    {
-     "id": "I8",
-     "instruction": "Comparative study of physics-constrained strategies for parameter-dependent MHD fields",
-     "verdict": "partial",
-     "note": "Five strategies on parametric 2D MHD, single seed, under-trained"
-    },
-    {
-     "id": "I9",
-     "instruction": "Concise technical report and reproducible code (toolbox-ready)",
-     "verdict": "partial",
-     "note": "Short report, reproduce.sh, figures; no dataset or model published, no validation log"
-    }
-   ]
-  },
-  "claims_checked": [
-   {
-    "claim": "Hard and projection methods reach ~1e-7 divergence; soft penalty only 7.7 %",
-    "supported": "yes",
-    "evidence": "results/table.md div_rel column"
-   },
-   {
-    "claim": "Stream-function model gives the best spectra, near the noise floor",
-    "supported": "partly",
-    "evidence": "True on the in-distribution set for one seed; on the held-out band it is 9x above the floor"
-   },
-   {
-    "claim": "Post-hoc projection leaves other metrics unchanged",
-    "supported": "yes",
-    "evidence": "m0/plain vs m0/proj_end rows"
-   },
-   {
-    "claim": "Solver conserves energy to 1e-6 in the ideal limit",
-    "supported": "no",
-    "evidence": "No log or test in the repository; the report says so"
-   }
-  ],
-  "means": "1.53 USD of model calls, no GPU spend, delivered at 1.31 h. The GPU budget could not be used because of the proxy incident; the CPU fallback was handled sensibly but a 1500-step batch was abandoned.",
-  "context": {
-   "incidents_outside_control": [
-    "From 00:58 to 01:24 every GPU call failed because of a framework proxy error",
-    "The session was restarted at 01:25 and lost its conversation context",
-    "Shared CPU at load 9-17"
-   ],
-   "effect": "No GPU training; the reported models are 400-step single-seed CPU runs instead of longer multi-seed ones."
-  },
-  "strengths": [
-   "Real 2D MHD data over a continuous parameter range with a held-out band",
-   "Five strategies including in-loop projection and a projection layer",
-   "Noise floor reported; status line states the limits bluntly",
-   "A bug that made M1 identical to M0 was caught and disclosed"
-  ],
-  "weaknesses": [
-   "Single seed, 400 steps, far from the floor",
-   "No simple PDE stage, no 3D, no helicity",
-   "Solver validation not evidenced",
-   "Nothing published; references not read"
-  ],
-  "summary": "Team D built a 2D pseudo-spectral MHD dataset and compared five ways of enforcing zero divergence in conditional flow matching, with a data noise floor and a held-out parameter band. Hard constraints reach round-off divergence and the stream-function model has the best spectra, but every model is a 400-step single-seed CPU run far from the floor. An honest, under-trained 2D pilot shaped by the loss of GPU access."
- },
- "Team I": {
-  "scientific_quality": {
-   "score": 18,
-   "justification": "Slightly above preliminary runs: three benchmarks (Hopf-Cole Burgers, 2D and 3D kinematic induction) with code, checkpoints and metrics files, three seeds on Burgers, and unusually careful separation of measured, published and conjectured. But the data are minimal (9 training fields in 2D, 4 test fields, 8^3 and 24^2 grids, t_end = 0.03, 200-300 Adam steps), the unconstrained 2D and 3D models have relative L2 near 1.0 (they did not learn the fields), the 2D design route did not train, and the only positive 3D result is one seed on four fields. Burgers is a deterministic map, so the generative aspect is not tested there. Few claims are supported beyond 'conditioning helps on Burgers' and 'projection cuts divergence'.",
-   "evidence": [
-    "results/seeds_summary.json: Burgers cond rel L2 0.418 +/- 0.068 vs uncond 0.576 +/- 0.009",
-    "REPORT MHD 2D table: cond rel L2 1.01, cond_div 4.90, sampler_proj div 0.14",
-    "REPORT MHD 3D table: cond_phys rel L2 0.43 vs 1.00, seed 0, 4 fields",
-    "REPORT: 'The benchmark contains no polarity reversal'"
-   ]
-  },
-  "compliance": {
-   "score": 43,
-   "justification": "All three routes and a simple-benchmark-then-MHD sequence exist, including 3D with helicity, but at a scale where most instructions are only partly met; not delivered.",
-   "instructions": [
-    {
-     "id": "I1",
-     "instruction": "Implement and test conditional generative models based on diffusion or flow matching",
-     "verdict": "met",
-     "note": "Conditional rectified flows on three benchmarks"
-    },
-    {
-     "id": "I2",
-     "instruction": "Condition generation on control parameters (Re, Rm, material properties)",
-     "verdict": "partial",
-     "note": "nu, t and Rm conditioning; fails to be learned on 2D induction"
-    },
-    {
-     "id": "I3",
-     "instruction": "Incorporate PDE and boundary-condition constraints through model design, training losses or sampling procedures",
-     "verdict": "met",
-     "note": "Design (curl), loss (energy/residual, boundary jump), sampling (projection, rescaling)"
-    },
-    {
-     "id": "I4",
-     "instruction": "Respect energy balance and divergence-free conditions",
-     "verdict": "partial",
-     "note": "Divergence at 1e-7 only in the 3D curl decoder; 2D design fails; energy via penalty and rescaling"
-    },
-    {
-     "id": "I5",
-     "instruction": "First validate the methods on simple PDE benchmarks",
-     "verdict": "met",
-     "note": "Burgers first, with an energy identity check"
-    },
-    {
-     "id": "I6",
-     "instruction": "Evaluate generated MHD fields with energy spectra, helicity, divergence control and topology preservation",
-     "verdict": "partial",
-     "note": "Spectra, helicity, divergence on 2D/3D kinematic induction; topology metric admitted empty; 4 test fields"
-    },
-    {
-     "id": "I7",
-     "instruction": "Robust generation of 3D fields usable as input for reduced-order models or data assimilation",
-     "verdict": "partial",
-     "note": "8^3 fields generated; the report says they are not usable for assimilation"
-    },
-    {
-     "id": "I8",
-     "instruction": "Comparative study of physics-constrained strategies for parameter-dependent MHD fields",
-     "verdict": "partial",
-     "note": "Five strategies, three benchmarks, mostly single seed"
-    },
-    {
-     "id": "I9",
-     "instruction": "Concise technical report and reproducible code (toolbox-ready)",
-     "verdict": "partial",
-     "note": "Report, reproduce.sh, package and results present; no DELIVERY.md, deliver never called"
-    }
-   ]
-  },
-  "claims_checked": [
-   {
-    "claim": "Conditioning is a real gain on Burgers",
-    "supported": "yes",
-    "evidence": "results/seeds_summary.json, three seeds"
-   },
-   {
-    "claim": "Energy penalty does not beat plain conditioning on Burgers over three seeds",
-    "supported": "yes",
-    "evidence": "0.269 +/- 0.082 vs 0.283 +/- 0.028"
-   },
-   {
-    "claim": "Helmholtz projection cuts 2D divergence from 1.49 to 0.14",
-    "supported": "partly",
-    "evidence": "Seed 0; 0.29 on two other seeds; residual divergence far above the reference 2e-7"
-   },
-   {
-    "claim": "3D energy penalty cuts rel L2 from 1.00 to 0.43",
-    "supported": "partly",
-    "evidence": "results/mhd3d/metrics.json, one seed, four test fields"
-   },
-   {
-    "claim": "Stream-function head fails because it is unscaled",
-    "supported": "partly",
-    "evidence": "Failure measured; the cause is asserted, not isolated"
-   }
-  ],
-  "means": "4.80 USD of 5 USD of model calls, no GPU, not delivered. The team let its contexts grow to about 200 thousand tokens per call and exhausted the model budget in about 20 minutes of metered work, leaving most of the time unused.",
-  "context": {
-   "incidents_outside_control": [
-    "A first unmetered run was set aside and the team restarted at 00:40",
-    "The framework ended the mission at 00:59 on a worst-case cost rule, resumed at 01:00",
-    "Scaleway quota and Runpod stock refused GPUs"
-   ],
-   "effect": "The restart and the cost-rule stop cost a few minutes; the absence of delivery comes mainly from the team's own model spend. Graded on what the repository holds."
-  },
-  "strengths": [
-   "Strict separation of measured, published and conjectured",
-   "Negative results kept (2D design route, single-seed ranking withdrawn)",
-   "Three benchmarks including 3D with helicity",
-   "Exact Burgers reference and physics checks"
-  ],
-  "weaknesses": [
-   "Tiny data and training; models near rel L2 = 1",
-   "Four test fields per MHD table, one seed",
-   "Kinematic, t_end 0.03: no dynamo dynamics",
-   "Not delivered"
-  ],
-  "summary": "Team I did not deliver; its repository holds a report and results for Burgers and for 2D and 3D kinematic induction with conditional rectified flows and constraints by design, loss and sampling. Conditioning helps on Burgers and projection reduces divergence, but the MHD models barely learn their fields and rest on a handful of samples and one seed. The report is exemplary in honesty and thin in established results."
+  "summary": "Team A delivered in 20 minutes a small, clean comparison of conditional flow matching with a soft physics loss and sampling-time corrections on an analytic heat equation and an unforced 8^3 periodic MHD box, with three seeds, held-out conditions and a reference noise floor. The results are the expected ones at this scale (projection and rescaling enforce their constraints by construction, the soft loss helps on heat and not on MHD, the parameter response is too weak) and are reported honestly with reproducible artifacts. The work stays at the level of a toy pilot far from a dynamo, with almost no positioning in the literature and most of the allowed time and budget unused."
  },
  "Team B": {
   "scientific_quality": {
-   "score": 17,
-   "justification": "At the level of preliminary runs with few supported claims. The spectral toolkit and metric validation are real (identities checked at 1e-7), but the dataset is 108 unit-normalised snapshots of a kinematic ABC field that decays at every sampled Rm, and the comparative table comes from 120 optimiser steps of a width-6 network on 48 fields, one seed, 12 test fields, with an undefined AUC column. Differences between arms at that training level say little about the strategies beyond what holds by construction. The report still carries three empty table placeholders, refers to a Table 3 and a resolution study that were not produced, gives two different values for the same validation error (0.00282 in Table 1, 2.4e-6 in the text), and attributes the ABC threshold to a reference I cannot match to the usual literature.",
+   "rubrics": {
+    "soundness": {
+     "score": 8.0,
+     "justification": "The only learning result (Table 5) comes from networks of base width 6 trained for 120 steps with batch 8 on 48 fields, one training seed, 8 generated samples per group, 8 Euler steps: the 'free' model has a relative divergence of 3.4 and a dissipation twice the data's, i.e. the models are essentially untrained, and rankings between arms rest on one seed and 8 samples with no noise floor. The results file behind Table 5 (results/exp3_study.json) is not shown, so the table can only be checked against the code. The report contradicts its own results: it states the single-mode decay check holds to 2.4e-6 (-0.640002), while Table 1 and results/exp0_validation.json give -0.641803 and a relative error of 2.8e-3, above the table's own <1e-4 target. All sampled regimes decay (gamma < 0), so there is no dynamo in the data; AUC is nan for every arm; three tables are placeholders. What is established: five solver/metric identities at ~1e-7 and round-off divergence for curl-A and projection."
+    },
+    "significance": {
+     "score": 8.0,
+     "justification": "The supported findings are trivial at this scale (structural constraints give round-off divergence, a penalty does not). The more interesting statements (coloured prior as a constraint, in-loop projection better than post-hoc) are single-seed observations on untrained models and cannot be relied on. Finding the Nyquist-slice projection bug is a useful engineering note."
+    },
+    "positioning": {
+     "score": 15.0,
+     "justification": "Only the five references of the offer, each given one line, without bibliographic detail, a reference list, or any search of the dynamo or constrained-generation literature. 'Gailis & Krishnamurthi 1992' is cited for the ABC threshold with no bibliographic entry and I cannot match it to a known paper (the classical sources are Arnold & Korkina 1983, Galloway & Frisch 1986, Galanti, Sulem & Pouquet 1992): unverifiable, for the stewards to check. The guidance arm attributed to Bansal et al. was not measured and is mislabelled S5."
+    },
+    "clarity": {
+     "score": 25.0,
+     "justification": "The limits and the incident are stated frankly and the reduced capacity is flagged repeatedly. But the report is unfinished: item 3 and 4 of the summary duplicate each other, tables 3, 6, 7 and the sampler ablation are empty placeholders, sections '\u00a78', '\u00a77', '\u00a76-below', '\u00a73.3' and 'Table 3' are cited and do not exist, the text and the data card disagree on the design (training on Rm 10,16 with extrapolation to 24 vs interpolation between 16 and 45; 108 vs 144 fields; T=60 vs t=12), and the checklist describes 9 strategies and 800-1400 steps that were not run."
+    }
+   },
+   "adequacy": "partial",
+   "adequacy_note": "The design covers the offer's three constraint routes, Rm conditioning with a held-out value and the named metric families, on a 3D induction problem. But the system is the kinematic induction equation in a prescribed ABC flow at Rm below threshold (decaying field, unit-rms snapshots), the simple-PDE validation step was not run, energy balance is only a diagnostic, and the comparison is between untrained models: only part of the subject is addressed.",
    "evidence": [
-    "REPORT Table 5: S1 rel_div 3.4, S3 7.07e-7, S4 5.37e-7; AUC nan for all arms",
-    "REPORT section 1.4: 'base 6 / 2 blocks / 120 flow-matching steps / 8 ODE steps'",
-    "REPORT Table 2: gamma negative at Rm 10, 16, 24",
-    "REPORT: three '(results/exp*_*.json for this table not produced yet)' placeholders",
-    "results/exp0_validation.json, results/exp3_study.json exist; results/exp4.log is empty"
+    "results/exp0_validation.json: V3_rel_err 0.0028171 (report \u00a73.1 claims 2.4e-6 and -0.640002)",
+    "results/exp1_growth.json: gamma -4.95, -2.89, -1.82 at Rm 10, 16, 24; Rm_c NaN",
+    "code/exp3_fast.py: base=6, n_blocks=2, steps=120, batch=8, nsamp=8, ssteps=8, torch.manual_seed(0), 'auc_vs_data': nan",
+    "REPORT Table 5: S1_free rel_div 3.4, D gen 10.56 vs D data 4.998; spread gen 0.008 vs 0.064",
+    "reproduce.sh runs exp_gen.py --which 3 --steps 600 and exp_ds.py --rms 10,16,45,24 --T 60, not the commands that produced the delivered tables; exp_data.py is called with an option (--only-ds) its parser does not define",
+    "results/exp3_study.json (40 kB) listed in the repository but not shown"
    ]
   },
-  "compliance": {
-   "score": 40,
-   "justification": "A 3D kinematic induction comparison with four constraint routes and the requested metric families was measured, but barely trained; no simple PDE benchmark was run and the report is unfinished in places.",
-   "instructions": [
-    {
-     "id": "I1",
-     "instruction": "Implement and test conditional generative models based on diffusion or flow matching",
-     "verdict": "partial",
-     "note": "Flow matching implemented; tested only at 120 steps"
+  "artifacts": {
+   "rubrics": {
+    "reproducibility": {
+     "score": 27.0,
+     "justification": "The delivered reproduce.sh does not regenerate the reported numbers: it launches the full-capacity study that the team itself could not finish, builds a different dataset (four Rm values, T=60) from the one delivered (three Rm, t capped at 12), and calls exp_data.py with an unknown flag masked by '|| true'. Table 5 can be re-obtained only by running code/exp3_fast.py on the shipped dataset, which is not in the documented commands. Seeds are fixed; no pinned environment."
     },
-    {
-     "id": "I2",
-     "instruction": "Condition generation on control parameters (Re, Rm, material properties)",
-     "verdict": "partial",
-     "note": "Rm and h with a held-out Rm; conditioning 'partially learned' by the report's own account"
+    "code": {
+     "score": 37.0,
+     "justification": "A modular package (spectral operators, dynamo integrator, flow matching with four constraint routes, metrics) that ran on CPU, with a validation suite of exact identities inside exp_data.py and readable docstrings. No licence file, no requirements file, no unit tests, much unexercised code (guidance, 2D benchmark, 1D reversal model, full study), a leftover pod-upload script with machine-specific paths."
     },
-    {
-     "id": "I3",
-     "instruction": "Incorporate PDE and boundary-condition constraints through model design, training losses or sampling procedures",
-     "verdict": "met",
-     "note": "Design, loss, in-loop and post-hoc projection, prior; guidance not measured"
+    "data": {
+     "score": 38.0,
+     "justification": "A 108-field dataset in .npz and .pt with a card, parameters and descriptors, published privately on the Hub. The card contradicts the data (interpolation between 16 and 45, validation 'to <=2.4e-6'), the Hub name in DELIVERY.md differs from the one recorded by the framework, DELIVERY says 144 fields, the licence is given only in the card (BSD-3 for data), and no model weights are released."
     },
-    {
-     "id": "I4",
-     "instruction": "Respect energy balance and divergence-free conditions",
-     "verdict": "partial",
-     "note": "Divergence exact for structural arms; energy balance only as an instantaneous closure metric with large errors"
-    },
-    {
-     "id": "I5",
-     "instruction": "First validate the methods on simple PDE benchmarks",
-     "verdict": "not met",
-     "note": "2D and 1D benchmarks implemented but not run; justified by time, still a departure"
-    },
-    {
-     "id": "I6",
-     "instruction": "Evaluate generated MHD fields with energy spectra, helicity, divergence control and topology preservation",
-     "verdict": "partial",
-     "note": "Spectra, helicity, divergence, polarity on 3D kinematic fields; 12 test fields; classifier score undefined"
-    },
-    {
-     "id": "I7",
-     "instruction": "Robust generation of 3D fields usable as input for reduced-order models or data assimilation",
-     "verdict": "partial",
-     "note": "16^3 fields; not robust, no downstream test"
-    },
-    {
-     "id": "I8",
-     "instruction": "Comparative study of physics-constrained strategies for parameter-dependent MHD fields",
-     "verdict": "partial",
-     "note": "Six arms at reduced capacity, one seed"
-    },
-    {
-     "id": "I9",
-     "instruction": "Concise technical report and reproducible code (toolbox-ready)",
-     "verdict": "partial",
-     "note": "Report with placeholders and inconsistencies; reproduce.sh; dataset on Hub, no models"
+    "traceability": {
+     "score": 30.0,
+     "justification": "Tables are rendered from results/*.json by make_tables.py, which is the right mechanism, and Tables 1, 2, 4 match the shown files. Table 5's source file is not reproducible from the documented commands, several in-text numbers contradict the result files, and placeholders remain where tables were not produced."
     }
-   ]
+   }
   },
   "claims_checked": [
    {
-    "claim": "Generator and metrics verified by six identities",
-    "supported": "partly",
-    "evidence": "Table 1 values at 1e-7, but V3 shows relative error 0.00282 against an expected <1e-4 while the text says 2.4e-6"
-   },
-   {
-    "claim": "Structural constraints give machine-precision divergence; the loss does not",
-    "supported": "yes",
-    "evidence": "Table 5 rel_div column, results/exp3_study.json"
-   },
-   {
-    "claim": "A function-space prior alone improves divergence, closure and spectrum",
-    "supported": "partly",
-    "evidence": "Table 5 S6 row; one seed, 120 steps"
-   },
-   {
-    "claim": "In-loop projection beats post-hoc projection",
-    "supported": "partly",
-    "evidence": "0.30 vs 1.01 spectral error on one barely trained model"
-   },
-   {
-    "claim": "Resolution sensitivity quantified in Table 3",
+    "claim": "Six exact identities hold to <=2.4e-6, incl. the single-mode decay rate (-0.640002 vs -0.64)",
     "supported": "no",
-    "evidence": "No Table 3; DECISIONS 01:36 says the resolution sweep was dropped"
+    "evidence": "exp0_validation.json: V3_growth_measured -0.6418, V3_rel_err 2.8e-3; the other five checks are at 1e-7 to 6e-7 as claimed"
+   },
+   {
+    "claim": "Structural constraints give machine-precision divergence (7.1e-7, 5.4e-7, 5.6e-7); the penalty leaves 2.2 vs 3.4 unconstrained",
+    "supported": "partly",
+    "evidence": "Table 5 and code/exp3_fast.py, flow.py (curl of potential, grid.project); results/exp3_study.json not shown; one seed, 8 samples"
+   },
+   {
+    "claim": "A k^-3 function-space prior alone improves divergence, closure and spectrum (3.4->0.85, 1.89->0.80, 0.81->0.58)",
+    "supported": "partly",
+    "evidence": "Table 5 row S6; single seed on a 120-step model, no noise floor; the effect may be that a smooth prior is simply closer to smooth data when the network has learned almost nothing"
+   },
+   {
+    "claim": "In-loop projection beats post-hoc projection (spectral error 0.30 vs 1.01)",
+    "supported": "partly",
+    "evidence": "Table 5 rows S4, S5 from the same single model and the same 8 noise draws per group; no repetition"
+   },
+   {
+    "claim": "Parameter conditioning partially learned; held-out Rm=24 generated",
+    "supported": "partly",
+    "evidence": "Held-out table: gamma_inst gen -1.42 to -3.50 vs data -0.90/-0.78; the generated value barely tracks the data and the ensemble is under-dispersed (stated)"
+   },
+   {
+    "claim": "A validated dynamo benchmark with a measurable threshold and a resolution study (COMPLIANCE S6d)",
+    "supported": "no",
+    "evidence": "exp1_growth.json: Rm_c NaN, all gamma negative; resolution table is a placeholder; the report body itself says no threshold is claimed"
+   },
+   {
+    "claim": "reproduce.sh regenerates every reported number",
+    "supported": "no",
+    "evidence": "reproduce.sh runs exp_gen.py --which 3 --steps 600 and a different dataset build; exp3_fast.py is not called"
+   },
+   {
+    "claim": "2D analytic benchmark and 1D reversal model implemented but not measured",
+    "supported": "yes",
+    "evidence": "code present (exp_gen.py, dynamo.py), results/exp4.log empty, placeholders in the report; correctly not claimed"
    }
   ],
-  "means": "0.52 USD of model calls and 0.31 USD of GPU that produced no computation; delivered at 1.41 h. Twenty minutes went to a crash-looping pod and much of the rest to dataset rebuilds, leaving 22 seconds of training for the reported study.",
+  "means": "84.5 of 90 minutes used, 0.52 of 5 USD of model calls and 0.31 of 5 USD of GPU, the latter entirely on a pod that never ran code. The plan was too wide for the window (three benchmarks, nine strategies, growth and resolution sweeps); after the pod failure the team did not try another image or machine although 4.7 USD of GPU remained, and three successive re-scopes on a contended CPU left 22 seconds of training as the only learning evidence.",
   "context": {
    "incidents_outside_control": [
-    "The rented GPU pod crash-looped on start for about 20 minutes (listed by the team; the framework records no incident)",
-    "Shared CPU contention"
+    "Self-reported (the framework records no incident): the rented RTX 4090 pod crash-looped on container start for about 20 minutes and was deleted without running any code",
+    "Self-reported: the 4 local CPU cores were shared with other teams' jobs, slowing the dataset build"
    ],
-   "effect": "The study fell back to CPU and to a reduced-capacity run; the planned benchmarks, guidance arm and resolution study were not produced."
+   "effect": "About 20 minutes and all GPU compute were lost, which forced a CPU-only campaign at 16^3 and at minimal model capacity; the full study, the simple-PDE benchmark, the reversal model and the resolution study that this prevented do not exist and are not graded."
   },
   "strengths": [
-   "Validation suite of exact identities that caught real bugs",
-   "Four constraint routes plus a prior arm in one code path",
-   "3D induction with Rm held out",
-   "Limits and the re-scoping are logged in detail"
+   "Physically relevant choice of system (ABC-flow induction equation, Rm and helicity parameter) and of metrics (budget closure gamma_inst, shell helicity)",
+   "Validation of solver and metrics against exact identities, which caught real bugs including a Nyquist-slice projection error",
+   "All three constraint routes of the offer plus a prior arm implemented in one library",
+   "Frank account of limits, re-scopes and what was not run; an invalid result file deleted rather than reported"
   ],
   "weaknesses": [
-   "120 training steps, one seed, 12 test fields",
-   "No growing dynamo in the sampled range; amplitude normalised away",
-   "Report unfinished and internally inconsistent",
-   "Simple benchmarks and several promised analyses not run"
+   "Learning results from effectively untrained models: 120 steps, one seed, 8 samples, no noise floor",
+   "Report text contradicts the result files (decay-rate check) and its own data card; unfinished document with placeholders and dangling references",
+   "No dynamo in the data (all regimes decaying), no simple-PDE validation, no amplitude",
+   "reproduce.sh does not reproduce the delivered tables; no licence, pins or tests",
+   "Positioning limited to the offer's references; one unverifiable citation"
   ],
-  "summary": "Team B built a validated spectral toolkit for the kinematic ABC induction problem and compared six constraint and prior strategies for conditional flow matching on 16^3 fields. The comparison comes from 120 training steps on 48 fields with one seed, so only the by-construction divergence results are firm, and the report still contains empty tables and inconsistent numbers. Ambitious design, preliminary evidence."
+  "summary": "Team B built a pseudo-spectral kinematic ABC-flow induction solver with validated metrics and a flow-matching library covering constraints by design, loss, sampling and prior, but lost its GPU to a provisioning failure and ran everything on a shared CPU. The only comparative results come from 22 seconds of training (120 steps, one seed, 8 samples) on a 108-field dataset of decaying fields, so beyond round-off divergence for structural constraints nothing is established. The report is candid about this but unfinished, contradicts its result files in places, and its reproduction script does not regenerate the delivered tables."
  },
  "Team C": {
   "scientific_quality": {
-   "score": 10,
-   "justification": "Between scaffolding and preliminary runs. The repository holds code, four short training logs and a twelve-line summary of the 2D evaluation; the 3D evaluation, the centre of the study, did not finish, and the files the report cites for data quality (results/meta3d.json) and 3D metrics (results/metrics.json) are absent. The one evaluated model, 2D Kolmogorov flow, is under-fit with energy errors of +185 % and -71 %, so the comparison of sampling constraints on it is uninformative. The discussion draws conclusions about four constraint routes that no delivered measurement supports. The 3D benchmark is a synthetic random-field family, not a PDE solution.",
+   "rubrics": {
+    "soundness": {
+     "score": 6.0,
+     "justification": "Only the 2D Kolmogorov part was evaluated: three sampling variants of one underfit model (1500 steps, 200 training fields, 64x64, one seed), with spectrum errors of 1.3 to 2.3 and energy errors of -71 % to +185 %. The 3D comparison of the four constraint strategies, the core of the study, has no evaluation at all (the stage did not finish). No noise floor, no seeds, no per-Re table delivered; the training and test splits of the 2D data differ by a factor of about 4 in energy at Re=62.5 (3.11 against 0.84), so the reference is not stationary. Several statements of sections 5.1 and 5.3 (3D energy 1.009, divergence 1.5e-7, divloss divergence 0.40) rest on files that are not in the repository."
+    },
+    "significance": {
+     "score": 6.0,
+     "justification": "The only measured finding is that post-hoc spectrum projection and energy guidance do not repair an underfit conditional model, on one seed; expected and not established. The discussion on where constraints can be guaranteed is stated from construction, not from measurements."
+    },
+    "positioning": {
+     "score": 20.0,
+     "justification": "The five references of the offer plus Lipman et al. and Liu et al., each summarised in a sentence, none compared quantitatively; no search beyond the offer's list (no divergence-free networks, projection or guidance samplers for PDEs, MHD/dynamo literature). The framing by place of injection is correct but generic."
+    },
+    "clarity": {
+     "score": 30.0,
+     "justification": "The report is well structured and its limits section is frank about the synthetic 3D stand-in, the single seed and the missing 3D evaluation. But results and intentions are mixed: methods and metrics are described for a 3D study that produced no number, section 5.3 says the models 'trained to convergence' at 1200 steps, and the records contradict the repository (metrics.json, meta files, LICENSE and a Hugging Face publication are said to exist and do not)."
+    }
+   },
+   "adequacy": "partial",
+   "adequacy_note": "Conditional flow matching with constraint strategies is on the subject, but no MHD field is involved: the evaluated part is 2D Navier-Stokes with sampling-time corrections only, and the 3D part (synthetic Gaussian helical fields, not solutions of a PDE) has no evaluation. Helicity, divergence control and topology are implemented but not measured on generated fields.",
    "evidence": [
-    "results/eval_2d_summary.txt: base spec_err 1.31, proj 2.27, guided 1.81; '3D sampling/evaluation was still running on the GPU at the delivery deadline'",
-    "Repository listing: no results/metrics.json, no meta3d.json, no checkpoints, no figures",
-    "REPORT section 5.3: divloss divergence diagnostic 0.40 quoted from training, not in a results file I could match beyond the train log",
-    "COMPLIANCE.md cites results/metrics.json and results/samples_3d_f16.npz, which do not exist"
+    "results/eval_2d_summary.txt: base spec_err=1.3127 mmd2=0.8196; proj 2.2724/1.2256; guided 1.8080/0.9404; '3D sampling/evaluation was still running on the GPU at the delivery deadline'",
+    "Repository listing: no results/metrics.json, meta2d.json, meta3d.json, figures, checkpoints or LICENSE; only eval_2d_summary.txt and four training logs",
+    "DECISIONS.md D4-D9: solver bugs (dealias mask, mixed real/Fourier rhs, sign flip, N^6 normalisation) fixed in session 2; three eval restarts; 3D evaluation cut at the deadline",
+    "code/train_fm.py: seed default 0, 1500/1200 steps; code/sample_eval.py computes the 2D metrics as the report describes"
    ]
   },
-  "compliance": {
-   "score": 24,
-   "justification": "A conditional flow-matching model was trained and evaluated on a 2D Navier-Stokes benchmark; everything about constrained 3D/MHD generation is code and training logs without evaluation, and the compliance matrix overstates it.",
-   "instructions": [
-    {
-     "id": "I1",
-     "instruction": "Implement and test conditional generative models based on diffusion or flow matching",
-     "verdict": "partial",
-     "note": "Implemented and trained; tested only in 2D, where it is under-fit"
+  "artifacts": {
+   "rubrics": {
+    "reproducibility": {
+     "score": 25.0,
+     "justification": "One command (run_all.sh) and fixed seeds exist, but the pipeline was never seen to run to its end: the 3D evaluation crashed or was cut, and the files the report says its numbers come from (results/metrics.json, meta*.json) are not delivered. Only the six 2D headline numbers have a results file, a hand-written summary. Needs a CUDA GPU; requirements are lower bounds, not pins."
     },
-    {
-     "id": "I2",
-     "instruction": "Condition generation on control parameters (Re, Rm, material properties)",
-     "verdict": "partial",
-     "note": "Re in 2D with a held-out value, badly reproduced; (kp, h) in 3D not evaluated"
+    "code": {
+     "score": 32.0,
+     "justification": "Readable, documented modules (solver, generator, model, training, sampling and metrics) whose 2D path ran; the 3D evaluation path is unproven, with bugs fixed up to the deadline. No tests, no pinned versions, and the MIT licence announced in the records is not in the repository."
     },
-    {
-     "id": "I3",
-     "instruction": "Incorporate PDE and boundary-condition constraints through model design, training losses or sampling procedures",
-     "verdict": "partial",
-     "note": "Design, loss and projection coded for 3D but unevaluated; 2D sampling constraints evaluated"
+    "data": {
+     "score": 8.0,
+     "justification": "No dataset, checkpoint, sample archive or figure delivered or published; data are regenerable from deterministic generators only. The metadata files described are absent; no card, no licence file."
     },
-    {
-     "id": "I4",
-     "instruction": "Respect energy balance and divergence-free conditions",
-     "verdict": "partial",
-     "note": "2D divergence-free by data formulation; energy guidance tried; no 3D result"
-    },
-    {
-     "id": "I5",
-     "instruction": "First validate the methods on simple PDE benchmarks",
-     "verdict": "met",
-     "note": "2D Kolmogorov flow run first, with a negative outcome"
-    },
-    {
-     "id": "I6",
-     "instruction": "Evaluate generated MHD fields with energy spectra, helicity, divergence control and topology preservation",
-     "verdict": "not met",
-     "note": "No MHD fields; 3D synthetic evaluation not completed"
-    },
-    {
-     "id": "I7",
-     "instruction": "Robust generation of 3D fields usable as input for reduced-order models or data assimilation",
-     "verdict": "not met",
-     "note": "No evaluated 3D generation"
-    },
-    {
-     "id": "I8",
-     "instruction": "Comparative study of physics-constrained strategies for parameter-dependent MHD fields",
-     "verdict": "not met",
-     "note": "3D comparison not evaluated; 2D comparison is not MHD"
-    },
-    {
-     "id": "I9",
-     "instruction": "Concise technical report and reproducible code (toolbox-ready)",
-     "verdict": "partial",
-     "note": "Report and run_all.sh exist; results cannot be checked without a GPU rerun; nothing published"
+    "traceability": {
+     "score": 15.0,
+     "justification": "The 2D headline table traces to eval_2d_summary.txt; the per-Re values, the data-quality numbers of section 5.1 and the 3D training numbers of section 5.3 point to files that are not in the repository (training logs are listed but the meta and metrics files are not). No figure."
     }
-   ]
+   }
   },
   "claims_checked": [
    {
-    "claim": "2D: sampling-time constraints do not repair an under-fit conditional model",
-    "supported": "partly",
-    "evidence": "results/eval_2d_summary.txt shows proj and guided worse than base; per-Re tables are not in the repository"
+    "claim": "2D: base spectrum error 1.31 / MMD2 0.82, guided 1.81 / 0.94, proj 2.27 / 1.23",
+    "supported": "yes",
+    "evidence": "results/eval_2d_summary.txt gives 1.3127/0.8196, 1.8080/0.9404, 2.2724/1.2256 (one seed, 64 fields per Re)"
    },
    {
-    "claim": "3D dataset passes every constraint check (energy 1.009 +/- 0.044, divergence <= 1.5e-7)",
+    "claim": "Energy errors +185 % at Re=25, +172 % at Re=62.5, -71 % at held-out Re=31.25",
+    "supported": "yes",
+    "evidence": "eval_2d_summary.txt probe: 0.0202 vs 0.0071, 2.2936 vs 0.8433, 0.0278 vs 0.0949"
+   },
+   {
+    "claim": "Energy guidance corrects the per-point energy bias",
     "supported": "no",
-    "evidence": "results/meta3d.json is cited but absent"
+    "evidence": "No per-point energy error of the guided sampler is delivered; the summary shows guided worse than base on both headline metrics"
    },
    {
-    "claim": "Soft divergence loss at lambda = 0.1 left divergence at 0.40",
-    "supported": "partly",
-    "evidence": "Only training logs (fm3d_divloss.jsonl); no sampled-field evaluation"
-   },
-   {
-    "claim": "The four injection points are not interchangeable (discussion)",
+    "claim": "3D data: energy 1.009 +/- 0.044, divergence ratio <= 1.5e-7, helicity ratio 2.50 (results/meta3d.json)",
     "supported": "no",
-    "evidence": "No 3D evaluation was delivered"
+    "evidence": "results/meta3d.json is not in the repository listing; the generator code is consistent with exact zero divergence but the numbers have no trace"
+   },
+   {
+    "claim": "Divergence penalty at lambda=0.1 left a divergence diagnostic of 0.40",
+    "supported": "partly",
+    "evidence": "train_fm.py logs 'div' for divloss and results/train_logs/fm3d_divloss.jsonl is listed, but its content is not shown; it is a training-time value on the denoised estimate, not on samples"
+   },
+   {
+    "claim": "A comparative study across four injection points",
+    "supported": "no",
+    "evidence": "Design (curl) and loss (divloss) strategies were trained but never sampled or evaluated; only sampling-time variants were compared, in 2D"
+   },
+   {
+    "claim": "Every number of section 5 is read from results/metrics.json, committed; artifacts published on Hugging Face; MIT LICENSE",
+    "supported": "no",
+    "evidence": "None of these files is in the repository listing; DELIVERY.md itself says nothing was published"
    }
   ],
-  "means": "2.33 USD of model calls and 1.13 USD of GPU, delivered at 1.36 h. The GPU ran for the whole session but three evaluation restarts and a 4 KB transfer channel meant almost none of its output reached the repository.",
+  "means": "2.33 of 5 USD of model calls and 1.13 of 5 USD of GPU, 82 of 90 minutes. The GPU was rented early and sat mostly idle while solver and evaluation bugs were fixed; a two-benchmark plan with four trainings was too wide for the time, and the 3D half produced no result.",
   "context": {
    "incidents_outside_control": [
-    "The harness ran a fallback model tier",
-    "At 01:10 the operator cut the session over a wrongly allowed sub-agent; the team resumed in a new session",
-    "The pod's only outbound channel was a 4 KB exec call"
+    "Ran on a fallback model tier of its provider (framework)",
+    "Session cut by the operator at 01:10 for a wrongly allowed sub-agent; resumed in a new session, and the pipeline of session 1 died with it"
    ],
-   "effect": "The session cut cost context and time in the last 50 minutes, and the transfer limit kept checkpoints, figures and metrics off the repository; the 3D evaluation did not exist at delivery."
+   "effect": "The session cut cost about a third of the time and the running pipeline; the data of session 1 were however NaN from the team's own solver bugs, so the restart would have been needed anyway. The pod's blocked outbound channels explain the missing binary artifacts, not the missing JSON files."
   },
   "strengths": [
-   "Clear framing of where a constraint can enter",
-   "Forced 2D turbulence benchmark with a held-out Re",
-   "Negative 2D result reported rather than hidden",
-   "Delivery cut stated openly in the report"
+   "Frank statement that the 3D evaluation did not finish and that the 2D result is negative",
+   "Sensible design: a PDE benchmark first, then design / loss / sampling strategies in 3D with helicity and divergence metrics",
+   "Bugs found, explained and logged in DECISIONS.md",
+   "Held-out Reynolds number in the 2D protocol"
   ],
   "weaknesses": [
-   "Core 3D study has no results",
-   "Cited result files are missing",
-   "Under-fit 2D model, single seed",
-   "Conclusions exceed the evidence; nothing published"
+   "The comparison the subject asks for (design, loss, sampling on divergence-free fields) has no measured result",
+   "One seed, an underfit model, no noise floor, non-stationary 2D reference",
+   "The 3D benchmark is a synthetic Gaussian field family, not a PDE or MHD solution",
+   "Records claim files and a publication that do not exist",
+   "Only the offer's references, none found by a search"
   ],
-  "summary": "Team C planned a four-way comparison of constraint injection on 2D Kolmogorov flow and a synthetic 3D solenoidal field family. Only the 2D evaluation finished, on an under-fit model where sampling constraints made things worse, and the 3D models were trained but never evaluated. The repository supports very few of the report's statements."
+  "summary": "Team C planned a two-stage study (2D Kolmogorov flow, then a synthetic 3D helical-field benchmark with four ways of imposing zero divergence) but only the 2D part was evaluated, on one seed and an underfit model. Its measured result is negative: spectrum projection and energy guidance at sampling time made an underfit conditional model worse, not better. The 3D comparison of constraint strategies, the core of the subject, was trained but never evaluated, and several files cited by the report are missing from the repository."
+ },
+ "Team D": {
+  "scientific_quality": {
+   "rubrics": {
+    "soundness": {
+     "score": 13.0,
+     "justification": "One benchmark at toy resolution (32x32 decaying 2D MHD from random initial conditions, snapshot at T=1), six strategies, one seed, 400 CPU training steps. In favour: 3200 simulations, an in-distribution test set and a held-out parameter band, a data noise floor (indicative, parameters not matched), a complete results table whose values match the report, a bug in M1 found and fixed before reporting. Against: no seed variation, so no ranking is established (the M1 ranking even reverses between the two test sets), the solver validation log was not kept, topology detector admitted to over-count."
+    },
+    "significance": {
+     "score": 12.0,
+     "justification": "Expected results at this scale: projections and potentials give round-off divergence, a soft penalty does not, a final projection changes nothing else. The one notable observation, that the stream-function parametrisation gives spectra at the noise floor (0.024 against 0.15) but a worse parameter slope and extremum count, is on one seed and unexplained (probably the smoother target space)."
+    },
+    "positioning": {
+     "score": 7.0,
+     "justification": "No related-work section and no reference list; Bastek et al. is named once, the other references of the offer only as 'cited but not re-read'. No search was made, which the report says. Nothing invented."
+    },
+    "clarity": {
+     "score": 38.0,
+     "justification": "Short, readable and honest: the status line, the limits and the caveats (one seed, under-trained, crude topology metric, 2D substitutes for helicity) are explicit and measured values are kept apart from the rest. But it is a page of notes: no equations, no description of the data regime (decaying, not forced; no dynamo), methods given in one line each, figures not discussed."
+    }
+   },
+   "adequacy": "partial",
+   "adequacy_note": "It addresses the core of the subject (conditional flow matching on MHD fields conditioned on nu and eta, constraints by design, loss and sampling, spectra / divergence / topology metrics, held-out parameters) but in 2D only, on decaying fields without a dynamo, with no 3D generation, no energy-balance constraint, no separate simple-PDE stage and helicity replaced by 2D substitutes.",
+   "evidence": [
+    "results/table.md, test set 'in': m0 div_rel 0.116, proj_end 4.1e-07, m1 0.0768, m4 spec_logerr 0.0236 (floor 0.0277), W1_nO 2.65 to 10.1 against floor 0.47; all match the report table",
+    "results/table.md, test set 'band': m4 spec_logerr 0.0856, others 0.112 to 0.224; m1 better than m0 there (0.112 vs 0.221), unlike on 'in'",
+    "reproduce.sh: --seed 0 --steps 400 --width 24 --bs 32, as reported; n=1 in every row",
+    "DECISIONS.md 01:27-01:29: 1500-step batch abandoned, M1 penalty swallowed by a comment, fixed and relaunched",
+    "src/fm.py: leray, to_psi/from_psi, m5 projected noise and velocity, m1 penalty on the denoised estimate, as described"
+   ]
+  },
+  "artifacts": {
+   "rubrics": {
+    "reproducibility": {
+     "score": 48.0,
+     "justification": "One CPU-only command (reproduce.sh) covering data, four trainings, evaluation and figures, with the reported settings and fixed seeds (data 123, training 0, sampling 1); committed metrics_raw.json, metrics_agg.json, table.md and figures match the report. Not re-run from a fresh checkout as far as shown, dependencies unpinned, bitwise determinism not guaranteed, and the 400-step runs were themselves a relaunch."
+    },
+    "code": {
+     "score": 42.0,
+     "justification": "Compact code that ran end to end: own 2D MHD solver, flow-matching model with five strategies, metrics, figures; licence file present. Dense one-line style, few comments, no tests, no requirements file, dead code left in (rhs/rhs2 sign juggling, an UNUSED generator)."
+    },
+    "data": {
+     "score": 15.0,
+     "justification": "Metrics in JSON and two figures are committed; the 52 MB data set, samples and checkpoints are local only and regenerable by a seeded script. Nothing published, no card, no metadata or units beyond the code."
+    },
+    "traceability": {
+     "score": 50.0,
+     "justification": "Every number of the report table is in results/table.md and metrics_agg.json, produced by src/eval_all.py from samples written by src/fm.py; figures come from src/figs.py. The solver validation (energy conservation to 1e-6) has no log, and samples and checkpoints behind the metrics are not delivered."
+    }
+   }
+  },
+  "claims_checked": [
+   {
+    "claim": "Hard and projection methods reach about 1e-7 relative divergence; unconstrained 12 %; soft penalty 7.7 %",
+    "supported": "yes",
+    "evidence": "table.md 'in': 0.116 (m0), 4.1e-07 / 4.5e-07 / 3.57e-07 / 7.49e-07 (proj_end, proj_step, m4, m5), 0.0768 (m1); one seed"
+   },
+   {
+    "claim": "Final projection leaves the other metrics unchanged to 3 digits",
+    "supported": "partly",
+    "evidence": "table.md: W1 metrics identical, spec_logerr 0.158 -> 0.161 and hik 0.18 -> 0.185: unchanged to about two digits"
+   },
+   {
+    "claim": "Stream-function model has the best spectra (0.024 on 'in', near the floor; 0.086 on 'band')",
+    "supported": "yes",
+    "evidence": "table.md: m4 0.0236 vs floor 0.0277 on 'in'; 0.0856 on 'band' (floor 0.0094 there, so not near the floor on the held-out band); one seed"
+   },
+   {
+    "claim": "M1 is the worst on high-k spectra, dissipation and topology",
+    "supported": "partly",
+    "evidence": "True on 'in' (0.289, 0.0707, 10.1); on 'band' M1's high-k spectrum error (0.184) is better than M0, proj_step and M5"
+   },
+   {
+    "claim": "Held-out band: same ranking for spectra",
+    "supported": "partly",
+    "evidence": "M4 is best on both sets, but the order of the others changes (M1 second on 'band', worst on 'in')"
+   },
+   {
+    "claim": "Solver conserves energy to about 1e-6 relative in the ideal limit",
+    "supported": "no",
+    "evidence": "The report says the log was not kept; no test or output in the repository"
+   },
+   {
+    "claim": "No number from the buggy M1 run is reported",
+    "supported": "yes",
+    "evidence": "M1 rows differ from M0 rows in table.md; the delivered fm.py has the penalty active"
+   }
+  ],
+  "means": "1.53 of 5 USD of model calls, 0 of 5 USD of GPU, 52 counted minutes. Cheap and finished early, but the whole GPU budget stayed unused and a first 1500-step batch was lost to missing checkpoints; with the remaining time the team chose 400 steps and one seed where several seeds of the same small runs would have made the comparison worth more.",
+  "context": {
+   "incidents_outside_control": [
+    "All GPU calls failed from 00:58 to about 01:24 (framework proxy error); the team was restarted at 01:25 with a lost conversation context; 27 minutes neutralised",
+    "Shared 4-core machine at load 9 to 17"
+   ],
+   "effect": "No GPU training was possible when the team tried, so the study fell back to a width-24 network, 400 steps and one seed on a contended CPU; the restart also cost the context of the first session. The grades describe what exists: a single-seed CPU pilot."
+  },
+  "strengths": [
+   "Real MHD data from the team's own 2D solver, 3200 runs with two conditioning parameters and a held-out band",
+   "All three places of constraint compared on the same network, with a data noise floor",
+   "Report, table and JSON agree; conclusions explicitly called descriptive",
+   "A bug that made M1 identical to M0 was caught and no number from it kept"
+  ],
+  "weaknesses": [
+   "One seed, 400 steps, 32x32: no difference between strategies is established",
+   "2D decaying fields: no dynamo, no 3D, no energy-balance constraint",
+   "No literature review and no reference list",
+   "Solver validation not recorded; topology metric admitted unreliable",
+   "Data, samples and checkpoints not published"
+  ],
+  "summary": "Team D compared six ways of imposing zero divergence in a conditional flow-matching model of 2D MHD fields from its own solver, on CPU, with one seed and 400 training steps. Projections and a stream-function parametrisation reach round-off divergence while a soft penalty does not, and the stream-function model has the best spectra; the report calls these observations descriptive, not established. The work is honest and reproducible by one command but stays a small 2D pilot without 3D fields, dynamo physics or a literature review."
+ },
+ "Team F": {
+  "scientific_quality": {
+   "rubrics": {
+    "soundness": {
+     "score": 17.0,
+     "justification": "Toy scale: 2D decaying MHD at 64^2 truncated to k<=8, 256 training fields, a 3-layer MLP on a 32-component PCA latent; 3 seeds (div-free), 2 (physics), 1 (raw). Good points: held-out test and interpolation grids, a PCA truncation floor, reference floors, Wilcoxon tests, a solver checked by divergence and energy balance. But the comparisons are confounded and not disclosed in the report: run_training.sh and the checkpoint records show struct trained 3500 steps, phys and raw 1600 steps, raw in a different (2312-dim, hidden 256) space. The validation CFM losses (1.52-1.65) are at the level of a plain whitened Gaussian (pi/2 = 1.57), so the models have learned little beyond the PCA Gaussian, and no PCA-Gaussian baseline is given. The headline positive claim for the physics loss (parameter slopes, seed 0 only) has no code and no result file in the delivery."
+    },
+    "significance": {
+     "score": 16.0,
+     "justification": "Expected results at this scale: a curl parameterisation gives zero divergence by construction; a soft physics loss does not improve distributions (a small negative result, but confounded by unequal training and non-significant, p=0.40). The PCA floor as a way to separate representation from model error is a sensible touch. No sampling-time strategy compared, nothing a third party could build on beyond a small benchmark."
+    },
+    "positioning": {
+     "score": 22.0,
+     "justification": "Seven references: the five given by the subject plus Lipman et al. and Albergo & Vanden-Eijnden (the latter given as NeurIPS 2023; it is ICLR 2023). No literature search, no quantitative comparison to published work, no MHD-specific or divergence-free generative prior art; the report itself states that the cited papers were not read in full."
+    },
+    "clarity": {
+     "score": 45.0,
+     "justification": "Well structured, measured results and limits clearly separated, honest discussion of what the evidence does not support, seed counts stated. Gaps: the unequal step counts between variants are not stated; several records are stale and contradict the report (COMPLIANCE: interpolation grid {75,150,300}; CHECKLIST: three seeds per variant; model card: 3 seeds of raw/phys/noparam at 3500 steps; DECISIONS: 99.985 % vs 95.8 % variance); interpolation slopes sentence is ambiguous."
+    }
+   },
+   "adequacy": "on_subject",
+   "adequacy_note": "Conditional flow matching conditioned on (Re, Rm), validated on a simple PDE (Burgers) then on 2D MHD, with divergence, energy balance, spectra and a 2D substitute for helicity/topology; constraints by model design and training loss are compared. Not 3D, decaying short-time fields only, and the sampling-procedure route is only a helper, not compared: a pilot of the subject, but it addresses it.",
+   "evidence": [
+    "results/metrics_table.md matches the tables of REPORT 5.1 and 5.5 (div 2.7e-9, resE 0.041 vs floor 0.035, raw 0.531 / 0.258)",
+    "results/sanity_checks.json: Wilcoxon p = 0.404 (test), 0.129 (ood), 0.375 (Burgers)",
+    "code/run_training.sh: struct --steps 3500, phys and raw --steps 1600",
+    "checkpoints_pca/mhd_phys_s0.json: steps 1600, best_val 1.524, training resE about 0.04 from step 400 on",
+    "checkpoints_pca/mhd_struct_s{0,1,2}.json: best_val 1.52 / 1.59 / 1.65",
+    "no polyfit/lstsq/corrcoef anywhere in the delivered code for the slope table of 5.2"
+   ]
+  },
+  "artifacts": {
+   "rubrics": {
+    "reproducibility": {
+     "score": 50.0,
+     "justification": "One-command reproduce.sh (data, training, evaluation, figures, tables), pinned requirements.txt, deterministic data seeds and training seeds, checkpoints and datasets in the repository, results/metrics_table.md matching the report. But evaluate.py samples with torch.randn without any seed (DELIVERY says seeds are explicit there), so the numbers will not regenerate exactly; the parameter-response table cannot be regenerated at all; no re-run evidence."
+    },
+    "code": {
+     "score": 50.0,
+     "justification": "Runs (logs, checkpoints, tables), modular (solver, model, train, evaluate, figures, checks), README, MIT LICENSE, pinned dependencies, a results sanity-check script. No unit tests, dead code and stale docstrings (t0=0.5 in make_data, placeholder line in the solver), leftover directories (checkpoints/, checkpoints_tmp/, results_pre*)."
+    },
+    "data": {
+     "score": 45.0,
+     "justification": "Datasets and 10 checkpoints in the repository in npz/pt with meta json, dataset and model cards with shapes, provenance, limits and licences (CC-BY-4.0, MIT). Not published on the Hub (the tool failed, staged in hf/), so no identifier; the model card describes checkpoints that do not exist (3 seeds of raw/phys, noparam)."
+    },
+    "traceability": {
+     "score": 40.0,
+     "justification": "Tables 5.1 and 5.5 trace to results/metrics.json through check_results.py, figures to make_figures.py, training commands to train_jobs.txt and per-checkpoint json. The table of 5.2 (slopes, correlation), which carries the abstract's main positive claim, traces to no code or file; Burgers spectrum errors are not in the generated table; stale records point to wrong settings."
+    }
+   }
+  },
+  "claims_checked": [
+   {
+    "claim": "Div-free CFM reaches machine-precision divergence (2.7e-9) and energy-balance residual 0.041 vs PCA floor 0.035; raw CFM 0.531 and 0.258",
+    "supported": "yes",
+    "evidence": "results/metrics_table.md mhd_test rows; true by construction for the divergence. The raw model was trained 1600 steps in the full space, so the size of its violation is specific to that under-trained baseline."
+   },
+   {
+    "claim": "The physics loss does not improve the distributional metrics (spectrum 0.290 vs 0.275, p = 0.40)",
+    "supported": "partly",
+    "evidence": "Numbers match metrics_table.md and sanity_checks.json, but phys was trained 1600 steps against 3500 for struct (run_training.sh), 2 seeds vs 3: the comparison is not at equal budget and this is not said in the report."
+   },
+   {
+    "claim": "The physics loss brings the parameter response close to the data (b_Re 0.259 vs 0.277, b_Rm 0.165 vs 0.179, corr 0.974)",
+    "supported": "no",
+    "evidence": "Seed 0 only, no seed spread; no code computing the fit and no result file holding it in the delivery; called 'almost exact' and 'a real, measured benefit'."
+   },
+   {
+    "claim": "Models interpolate to unseen (Re,Rm) in {7,14,32} without failure",
+    "supported": "partly",
+    "evidence": "mhd_ood table: E rel 0.263/0.273, spec 0.249/0.285, close to in-distribution; but both are close to the PCA floor (0.214, 0.132) and the model is near a Gaussian in the latent, so this says little about conditioning."
+   },
+   {
+    "claim": "Burgers: physics loss reduces the energy-balance residual 0.013 to 0.010 and PDE residual by 31 %",
+    "supported": "partly",
+    "evidence": "metrics_table.md Burgers rows (0.013/0.010, 11.53/7.90); p = 0.375 over four viscosities, 2 seeds, 1600 vs 3500 steps; the report itself says it is not significant."
+   },
+   {
+    "claim": "reproduce.sh regenerates every reported number; seeds explicit in evaluate.py",
+    "supported": "partly",
+    "evidence": "reproduce.sh and run_training.sh are consistent with the delivered checkpoints, but evaluate.py has no seed for sampling and the slope table has no code."
+   }
+  ],
+  "means": "Very frugal: 0.28 USD of 5 USD of model calls, no GPU at all, 69 of 90 minutes. The unused GPU budget and 20 minutes could have paid for equal training steps, five seeds and the dropped parameter-blind ablation, which are exactly what the conclusions lack; local CPU contention is what cut them.",
+  "context": {
+   "incidents_outside_control": [
+    "The harness ran another model than the configured one",
+    "hf_publish failed with InvalidURL, so the dataset and models were only staged in hf/",
+    "Shared 4-core machine: physics runs 3x slower than benchmarked, seeds and the noparam ablation dropped"
+   ],
+   "effect": "Fewer seeds, shorter physics/raw trainings and no Hub publication; the team chose not to use the GPU budget that would have avoided the CPU contention."
+  },
+  "strengths": [
+   "Addresses MHD itself (2D, Re and Rm) plus a simple PDE, with its own verified pseudo-spectral solvers",
+   "Floors reported next to every model number (reference residuals, PCA truncation floor), held-out and interpolation grids, significance tests",
+   "Honest limits and a decision log that records rejected designs and a wrong-checkpoint-directory error caught before delivery",
+   "Complete, licensed, pinned repository with data and checkpoints and a one-command reproduction"
+  ],
+  "weaknesses": [
+   "Variants compared at unequal training budgets (3500 vs 1600 steps) and unequal seeds, not disclosed in the report",
+   "Validation losses at the Gaussian level: the generator is close to a PCA Gaussian and no such baseline is given; ensembles over-dispersed 1.6-1.8x",
+   "The main positive claim for the physics loss (parameter slopes) rests on one seed and has no code or file",
+   "Decaying fields at t = 1.0-1.2 truncated to k<=8, 8 reference fields per pair: toy scale; sampling-time constraints not compared",
+   "Stale and contradictory records (compliance, checklist, model card); unseeded evaluation sampling"
+  ],
+  "summary": "Team F built a CPU-only pilot on 1D Burgers and 2D decaying MHD: conditional flow matching on a PCA latent of stream/flux-function coefficients, compared with an unconstrained model and with a physics-informed loss, with held-out and interpolation parameter grids and a truncation floor. The exact-divergence result is established by construction and the tables match the result files, but the variants were trained with unequal steps and one to three seeds, the models are close to a Gaussian in the latent, and the claimed benefit of the physics loss on the parameter response has no traceable computation. A clean, well-documented and frugal repository whose scientific content stays at the level of a toy-scale pilot."
+ },
+ "Team G": {
+  "scientific_quality": {
+   "rubrics": {
+    "soundness": {
+     "score": 13.0,
+     "justification": "One benchmark (2D Kolmogorov flow, 64^2, four Re), one training seed per variant, about 3 minutes of training each, 256 samples per Re against 64 held-out snapshots taken from the same trajectory (later times, correlated). The order-of-magnitude findings (projection and stream function give 1e-6 divergence; V2 has 3x too much energy) are solid and match results/metrics.json; the ranking V0/V1/V3 on spectra and energy is within what one seed can show, as the report says. No noise floor, no ablation, lambda not swept, V2 failure explained only by conjecture. The energy-ratio column and the '5-8 %' statement are wrong for V3 (metrics.json gives 0.855-0.955, i.e. up to 14.5 % low) and slightly off for V0 and V1."
+    },
+    "significance": {
+     "score": 15.0,
+     "justification": "Expected outcome at this scale: an exact Helmholtz projection removes divergence at no training cost, a soft penalty with a small weight does little. The comparison of the three routes the subject names (loss, design, sampling) on equal architecture and budget is a reasonable frame, and the stream-function failure is a small negative observation, unexplained. No MHD."
+    },
+    "positioning": {
+     "score": 20.0,
+     "justification": "Six references, five of them from the subject plus Lipman et al., and an unreferenced mention of Orszag 1971. Each strategy is mapped to one reference in one line; no search of the literature on divergence-free generative models or Kolmogorov-flow benchmarks, no quantitative comparison to published work."
+    },
+    "clarity": {
+     "score": 40.0,
+     "justification": "Concise and readable, research question stated, limits and single-seed caveat stated, measured vs conjectured told apart. Gaps: figures only listed, not discussed; wrong energy-ratio ranges; inconsistent settings between records (CHECKLIST: 4000 steps, batch 128, RTX 2000 Ada; report: 3000 steps, batch 64, RTX 4090; reproduce.sh comment mentions the RTX 2000 Ada); conditioning check described with two different sample counts."
+    }
+   },
+   "adequacy": "partial",
+   "adequacy_note": "Covers only the 'simple PDE benchmark' stage: 2D incompressible Navier-Stokes, no magnetic field, no Rm, no helicity or topology metric, energy 'balance' reduced to energy statistics. The conditional generation, Re conditioning and the three constraint routes are on subject, but the MHD part of the subject is not addressed.",
+   "evidence": [
+    "results/metrics.json: div_rms_mean 2.61 / 1.92 / 5.1e-6 / 2.4e-6; spectrum_rel_l2_mean 0.152 / 0.247 / 0.826 / 0.200; energy_w1_mean 0.049 / 0.112 / 1.624 / 0.085 (match the table)",
+    "Recomputed energy_mean_gen/energy_mean_ref from metrics.json: V0 0.934-1.05, V1 0.81-0.90, V2 2.93-3.66, V3 0.855-0.955 (report: 0.95-1.05, 0.83-0.91, 3.0-3.7, 0.92-0.96)",
+    "results/conditioning_v0.json: matched 0.161, mismatched 0.417, per-Re 0.083/0.311/0.116/0.133",
+    "code/evaluate.py conditioning block uses 64 samples and the 256-sample matched mean, and writes a note about V2: it does not produce the 128-sample block found in metrics.json",
+    "COSTS.md: three pods, 0.54 USD"
+   ]
+  },
+  "artifacts": {
+   "rubrics": {
+    "reproducibility": {
+     "score": 42.0,
+     "justification": "reproduce.sh chains data generation, three trainings and evaluation; data seeds fixed and regeneration verified identical on two machines. But training and sampling have no seed, dependencies are not pinned (no requirements file), checkpoints and data are not in the repository (Hub, private), the delivered evaluate.py does not regenerate the conditioning block of metrics.json, and the script mixes python3 and python. No re-run evidence."
+    },
+    "code": {
+     "score": 40.0,
+     "justification": "Four short, readable scripts that ran (logs, metrics, figures); two real bugs found by smoke tests during the race. No tests delivered, no pinned dependencies, no LICENSE file (MIT only named in CITATION.cff and cards), hyper-parameters as module constants, tools/pod_push.py holds absolute paths of the race machine."
+    },
+    "data": {
+     "score": 45.0,
+     "justification": "Dataset and three checkpoints published on the Hugging Face Hub (private, after the race because of a framework bug) with cards giving shapes, equation, parameters, provenance, limits and MIT licence; open npz format. Units/metadata minimal, single trajectory per regime, private repositories."
+    },
+    "traceability": {
+     "score": 40.0,
+     "justification": "Main table traces to results/metrics.json and evaluate.py, timings to train_log.jsonl, the conditioning numbers to conditioning_v0.json. The energy-ratio column does not match the file, the conditioning block of metrics.json was not written by the delivered code, and settings differ between report and checklist."
+    }
+   }
+  },
+  "claims_checked": [
+   {
+    "claim": "V2 and V3 reach machine-precision divergence (5.1e-6, 2.4e-6) while V0 has 2.61 and V1 1.92 (-26 %)",
+    "supported": "yes",
+    "evidence": "results/metrics.json div_rms_mean for the four variants; one seed, but orders of magnitude."
+   },
+   {
+    "claim": "V3 (projection) dominates: spectrum 0.200 vs 0.152, energy W1 0.085 vs 0.049, mean energy within 5-8 % at every Re",
+    "supported": "partly",
+    "evidence": "Spectrum and W1 match metrics.json; the energy ratio of V3 is 0.855-0.955 in metrics.json (up to 14.5 % low), not 0.92-0.96; one seed, so 'dominates' over V1 is indicative only."
+   },
+   {
+    "claim": "V1 soft penalty is a poor trade-off (spectrum x1.6, energy 10-17 % low)",
+    "supported": "partly",
+    "evidence": "metrics.json: 0.247 vs 0.152, ratios 0.81-0.90; single lambda = 0.05, single seed, no sweep."
+   },
+   {
+    "claim": "V2 stream-function model has 3-3.7x too much energy",
+    "supported": "yes",
+    "evidence": "metrics.json ratios 2.93-3.66, W1 1.62; the k^-2 weighting explanation is stated as a conjecture and not tested."
+   },
+   {
+    "claim": "Conditioning carries information: matched 0.161 vs mismatched 0.417",
+    "supported": "partly",
+    "evidence": "results/conditioning_v0.json holds the numbers (128 samples, one mismatched Re per target); the delivered evaluate.py computes a different variant of the check (64 samples, 256-sample matched mean)."
+   },
+   {
+    "claim": "Data generation is bit-reproducible on two machines",
+    "supported": "partly",
+    "evidence": "DECISIONS 01:09 reports identical measured Re on both pods; no hash or log of the two runs is delivered."
+   }
+  ],
+  "means": "4.35 of 5 USD of model calls for 176 turns and 0.54 of 5 USD of GPU, 62 of 90 minutes. Half an hour was lost on an under-powered GPU and pod changes; nearly 4.5 USD of GPU and 28 minutes were left, enough for several seeds and a lambda sweep at 3 minutes per training, which is what the conclusions lack.",
+  "context": {
+   "incidents_outside_control": [
+    "A framework tier fallback ran another model than the configured one",
+    "Scaleway GPU quota was zero, forcing a switch to Runpod",
+    "hf_publish failed through the MCP tool; the Hub copy of the delivery failed at delivery and was published after the race"
+   ],
+   "effect": "Some minutes lost on compute provisioning and publication; no effect on the scientific content beyond time."
+  },
+  "strengths": [
+   "The three constraint routes named by the subject (loss, model design, sampling) compared on the same architecture, data and budget",
+   "Own pseudo-spectral Kolmogorov solver, exact spectral divergence and projection operators, verified to fp32 precision",
+   "Limits stated plainly (one seed, 2D, no MHD); V2 failure reported as a negative result rather than hidden",
+   "Dataset and checkpoints published with cards"
+  ],
+  "weaknesses": [
+   "No MHD at all: only the first stage of the subject, with no helicity, topology or true energy-balance metric",
+   "One seed per variant, about 3 minutes of training, test snapshots from the same trajectory; rankings other than the divergence are not established",
+   "Energy-ratio column and the '5-8 %' statement contradict results/metrics.json for V3",
+   "Unpinned environment, unseeded training and sampling, no tests, no LICENSE file, records inconsistent on the training settings",
+   "Literature limited to the subject's own list"
+  ],
+  "summary": "Team G compared, on a 2D Kolmogorov-flow benchmark with four Reynolds numbers, an unconstrained conditional flow-matching U-Net with a divergence penalty, a stream-function model and a Helmholtz projection at sampling. The divergence results are clear and match the result files (projection and stream function are exact, the soft penalty gains 26 %), but everything rests on one seed and a few minutes of training, one energy column of the report disagrees with the files, and no MHD field is treated. A tidy first-stage exercise with published data and models, at the level of a quick single-seed pilot covering part of the subject."
  },
  "Team H": {
   "scientific_quality": {
-   "score": 3,
-   "justification": "Scaffolding, nothing established: the repository holds a decisions log and about 90 kB of package code (benchmarks, models, metrics, downstream modules) with no report, no run, no output and no result file. The planned '3D MHD dynamo' dataset is assembled analytically with prescribed regimes and thresholds rather than solved, so even if run it would not have been simulation data.",
+   "rubrics": {
+    "soundness": {
+     "score": 1.0,
+     "justification": "No experiment was run: the repository holds no result file, no log, no figure and no report ('Small result and record files: (none)'). DECISIONS.md reports only a timing benchmark (100 steps in 3.97 s) with no trace. Nothing is established."
+    },
+    "significance": {
+     "score": 3.0,
+     "justification": "A code skeleton only (generators, operators, metrics, a unified DDPM/CFM class, ROM and DA modules). No result, positive or negative. The 'benchmarks' are hand-built random fields with invented scaling laws (Rm_c = 22, E_M ~ (Rm-Rm_c)^0.85), not solutions of a PDE, so even if run they would test the reproduction of an analytic recipe."
+    },
+    "positioning": {
+     "score": 6.0,
+     "justification": "Only the five references of the subject are named, in docstrings and DECISIONS.md, as inspirations ('FunDiff-inspired', 'PIDM-style'); no search, no discussion, no reference list, no report."
+    },
+    "clarity": {
+     "score": 4.0,
+     "justification": "No report. DECISIONS.md states an intended plan in two entries and the code has docstrings; limits are not stated and several docstrings assert properties (energy balance 'to machine precision', 'turbulent dynamo', 'polarity reversals') that the code does not establish."
+    }
+   },
+   "adequacy": "partial",
+   "adequacy_note": "The code is aimed at the subject (conditional diffusion / flow matching, constraints by design, loss and sampling, the metrics of the offer, ROM and DA), but nothing was trained or evaluated, there is no comparative study and no report, and the data generators are analytic constructions rather than PDE or MHD solutions.",
    "evidence": [
-    "Repository listing: only DECISIONS.md and milady/*.py; 'Small result and record files: (none)'",
-    "milady/benchmarks/mhd3d.py: regimes assigned by hard-coded Rm_c = 22 and random draws",
-    "Facts: delivered false"
+    "Framework facts: delivered false, report false, DELIVERY/COMPLIANCE/CITATION/checklist false; 'Report: (no report in the repository)'.",
+    "Repository listing: 13 files, only DECISIONS.md and the milady/ package; no results, no script entry point, no requirements, no tests.",
+    "milady/benchmarks/mhd3d.py: fields are ABC modes plus filtered Gaussian noise rescaled to compute_3d_mhd_Target_laws(mu); no time integration of the MHD equations.",
+    "milady/downstream/da.py lines building 'ens_attr' from x_true + noise for generative priors only: the truth is injected into the ensemble being scored."
    ]
   },
-  "compliance": {
-   "score": 5,
-   "justification": "Code for several instructions exists but nothing was run, evaluated or reported; not delivered.",
-   "instructions": [
-    {
-     "id": "I1",
-     "instruction": "Implement and test conditional generative models based on diffusion or flow matching",
-     "verdict": "partial",
-     "note": "DDPM and flow-matching classes written, never trained or tested"
+  "artifacts": {
+   "rubrics": {
+    "reproducibility": {
+     "score": 3.0,
+     "justification": "No command, no script, no seed protocol, no environment file and no reported number to regenerate."
     },
-    {
-     "id": "I2",
-     "instruction": "Condition generation on control parameters (Re, Rm, material properties)",
-     "verdict": "not met",
-     "note": "Conditioning coded only"
+    "code": {
+     "score": 20.0,
+     "justification": "About 90 kB of structured, docstringed PyTorch code is available, but no evidence that it runs end to end: no entry point, no test, no requirements file (torch, numpy, scipy imported), no licence. Visible defects: in sample(), the guidance result is discarded for potential-space strategies; the DA benchmark leaks the true state into the generative-prior ensemble; 'energy balance' is a match to hand-written target laws."
     },
-    {
-     "id": "I3",
-     "instruction": "Incorporate PDE and boundary-condition constraints through model design, training losses or sampling procedures",
-     "verdict": "not met",
-     "note": "Strategies coded only"
+    "data": {
+     "score": 2.0,
+     "justification": "No data set, no model weights, no card; only generator functions for synthetic fields."
     },
-    {
-     "id": "I4",
-     "instruction": "Respect energy balance and divergence-free conditions",
-     "verdict": "not met",
-     "note": "No measurement"
-    },
-    {
-     "id": "I5",
-     "instruction": "First validate the methods on simple PDE benchmarks",
-     "verdict": "not met",
-     "note": "2D benchmark module written, not run"
-    },
-    {
-     "id": "I6",
-     "instruction": "Evaluate generated MHD fields with energy spectra, helicity, divergence control and topology preservation",
-     "verdict": "not met",
-     "note": "Metrics module written, not run"
-    },
-    {
-     "id": "I7",
-     "instruction": "Robust generation of 3D fields usable as input for reduced-order models or data assimilation",
-     "verdict": "not met",
-     "note": "Nothing generated"
-    },
-    {
-     "id": "I8",
-     "instruction": "Comparative study of physics-constrained strategies for parameter-dependent MHD fields",
-     "verdict": "not met",
-     "note": "No study"
-    },
-    {
-     "id": "I9",
-     "instruction": "Concise technical report and reproducible code (toolbox-ready)",
-     "verdict": "not met",
-     "note": "No report, no reproduce script, no results"
+    "traceability": {
+     "score": 0.0,
+     "justification": "No figure and no number exists to be traced."
     }
-   ]
+   }
   },
   "claims_checked": [
    {
-    "claim": "(DECISIONS D2) spectral architecture runs 100 steps in 3.97 s on CPU",
+    "claim": "DECISIONS D2: the spectral architecture runs 100 steps (batch 32) in 3.97 s on CPU, raw 3D convolution 2.1 s/step.",
     "supported": "no",
-    "evidence": "No log or output in the repository"
+    "evidence": "No benchmark script or log in the repository."
+   },
+   {
+    "claim": "Docstring of mhd3d.py: a '3D turbulent MHD dynamo' benchmark with polarity reversals obeying the MHD power balance.",
+    "supported": "no",
+    "evidence": "generate_3d_mhd_dynamo_dataset assigns regimes by random draw and builds fields from sinusoids plus filtered noise rescaled to invented target energies; no solver, and only energies (not dissipation/power) are rescaled."
+   },
+   {
+    "claim": "D1/D2: 'complete, statistically rigorous multi-seed experimental evidence', comparative study of DDPM and CFM across four constraint strategies.",
+    "supported": "no",
+    "evidence": "No run, no result file, no report."
+   },
+   {
+    "claim": "curl_potential_mhd_3d guarantees div u = div B = 0 to floating-point precision.",
+    "supported": "partly",
+    "evidence": "True by construction of the spectral curl in milady/physics/operators.py, but no output of a check is shown."
    }
   ],
-  "means": "3.18 USD of model calls over 20 sessions and about 20 minutes of effective work before the provider account ran dry; no GPU. The time available went into writing a large package before any experiment.",
+  "means": "3.18 USD of 5 USD of model calls and no GPU were spent on writing a large code base with an over-wide plan (2D PDE, 3D MHD, five strategies, two backbones, ROM, DA) before running anything; when the account credit ran out about 21 minutes after the restart, nothing had been executed or written up. A first small run with a result would have left something to grade.",
   "context": {
    "incidents_outside_control": [
-    "A first run was consumed by the harness's built-in safety monitor and set aside; restart at 00:50:52",
-    "At 01:01 the operator cut the session over wrongly allowed sub-agents",
-    "At about 01:12 the provider account's credit ran out and every call was refused"
+    "First run consumed by the harness's built-in safety monitor; restarted from scratch with a fresh budget and a full 1.5 h (first run not graded).",
+    "Session cut by the operator at 01:01 over a configuration error on sub-agent providers; resumed in a new session.",
+    "Provider account's prepaid credit exhausted at about 01:12: every later call refused, so the team could neither continue nor deliver."
    ],
-   "effect": "The team had roughly 20 minutes of working time and could neither run experiments nor deliver. Graded on what the repository holds, which is code only."
+   "effect": "The team had about 21 minutes of effective work after the restart instead of 90; it lost the chance to run its code, write the report and deliver. What exists is the code written in that window."
   },
   "strengths": [
-   "Broad, structured package layout covering the subject's stages",
-   "Requirement extraction planned from the first minutes"
+   "Coherent package layout covering the three constraint routes, both generative families and the metrics the offer names (spectra, helicities, divergence in two discretisations, Betti numbers).",
+   "Divergence-free parameterisation by vector potentials and Helmholtz projection implemented spectrally."
   ],
   "weaknesses": [
-   "No run, no result, no report",
-   "Synthetic hand-built 'dynamo' data instead of a solver",
-   "Plan far larger than the window allowed"
+   "No report, no experiment, no result, not delivered.",
+   "Benchmarks are analytic random fields with invented scaling laws, presented in docstrings as turbulent dynamo data.",
+   "The data-assimilation benchmark injects the true state into the generative ensembles, which would bias the comparison in their favour.",
+   "No entry point, tests, requirements, licence, data or citations."
   ],
-  "summary": "Team H did not deliver: three incidents outside its control left it about twenty minutes of work, after which its provider refused every call. The repository contains a decisions log and untested package code, with no experiment, result or report. Nothing is established."
+  "summary": "Team H left only a code skeleton: generators of synthetic fields, physics operators and metrics, and a unified diffusion / flow-matching class, with no run, no result and no report. Three incidents outside its control, ending with the exhaustion of the provider credit, cut its effective time to about twenty minutes. The grades reflect that nothing is established and that the delivered code is not shown to run."
+ },
+ "Team I": {
+  "scientific_quality": {
+   "rubrics": {
+    "soundness": {
+     "score": 10.0,
+     "justification": "Toy scale throughout: Burgers on 32 points (30 training fields), 2D induction 24x24 (9 training fields, 4 test), 3D induction 8^3 (16 training, 4 test), each model trained 2 to 7 s (train_seconds in the metrics.json files). Burgers has 3 seeds (seed 0 at 300 steps pooled with seeds 1-2 at 250); the 2D and 3D MHD tables are one seed. The MHD generators do not learn the fields (rel. L2 about 1.0 on near-deterministic targets), the 2D divergence-free design fails (rel. L2 about 5), and the only positive MHD result (3D cond_phys 1.00 -> 0.43) rests on one seed and 4 test fields. reference.json shows the 3D energy barely depends on Rm (0.002870 to 0.002880), so that benchmark hardly tests conditioning. Solver checks exist (check_physics.py) but their output is not in the repository. The <A^2> column of the 2D table does not match results/mhd2d/metrics.json. The team is careful not to over-read: single-seed rankings are withdrawn when three seeds contradict them."
+    },
+    "significance": {
+     "score": 12.0,
+     "justification": "Known methods (rectified flow, FiLM, curl parameterisation, projection, energy rescaling) on trivial benchmarks, with expected results: conditioning helps on Burgers, projection lowers divergence, rescaling fixes energy. The negative observations (unscaled stream-function head does not train; a loss penalty does not beat conditioning over three seeds) are honest but come from seconds of under-trained runs and cannot be separated from under-training. No dynamo, no Lorentz force, no diffusion baseline."
+    },
+    "positioning": {
+     "score": 28.0,
+     "justification": "Ten references, plausible and correctly attributed (flow matching, rectified flow, FunDiff, PIDM, Hopf-Cole sources, ABC flow). FunDiff and PIDM are discussed in two or three sentences with their published claims kept apart from the team's numbers. Bansal et al. is used in COMPLIANCE.md but absent from the reference list; Fukami-Taira and Solera-Rico are listed but not discussed; no literature search beyond the subject's list and classical sources, no quantitative comparison. Not verifiable here: the volume/article number given for FunDiff."
+    },
+    "clarity": {
+     "score": 50.0,
+     "justification": "Short, well-structured report: question, models, benchmarks, one table per benchmark with the result file named, a comparison of the three routes, limits, and a consistent separation of measured, published and conjectured. Limits are stated frankly (kinematic, tiny boxes, single seed, empty polarity metric). Gaps: the report and checklist point to a DELIVERY.md that does not exist, the 2D <A^2> column disagrees with the result file, the 0.14 residual divergence after a 'projection' and the 5.5e-3 divergence of the 3D reference are not explained, and model sizes/hyper-parameters are only in the code."
+    }
+   },
+   "adequacy": "on_subject",
+   "adequacy_note": "Conditional flow-matching generators conditioned on a parameter, the three constraint routes of the offer, a simple PDE first and then 2D/3D induction fields scored on divergence, energy, spectra and helicity. The MHD part is kinematic (prescribed velocity, t = 0.03, 8^3), with no dynamo and no diffusion model, and the topology metric is declared empty; these are stated as limits rather than hidden.",
+   "evidence": [
+    "results/seeds_summary.json reproduces the Burgers table (e.g. cond rel. L2 0.4176 +/- 0.0682; sampler_energy 0.3470 +/- 0.0153, energy error 0.10648 in all three seeds).",
+    "results/mhd2d/metrics.json: uncond 1.063, cond 1.013, cond_div 4.90, cond_phys 5.08, sampler_proj div 0.1376 (steps 300, seed 0, n_test 4).",
+    "results/mhd3d/metrics.json: cond_latent rel. L2 1.003, cond_phys 0.430, div about 1.3e-7 to 1.5e-7, axial_sign_agreement 0.5/0.75/0.5 (n 8, steps 200, n_test 4).",
+    "results/reference.json: polarity_reversal_in_benchmark false; mhd3d energy 0.002870/0.002877/0.002880 at Rm 20/40/80; reference 3D divergence 5.5e-3.",
+    "train_seconds in all three metrics.json: 1.8 to 6.6 s per model."
+   ]
+  },
+  "artifacts": {
+   "rubrics": {
+    "reproducibility": {
+     "score": 48.0,
+     "justification": "reproduce.sh, per-experiment CLIs, fixed seeds and committed metrics/samples/weights are present, and the committed JSON files match the report tables except one column. But the default reproduce.sh runs a smaller configuration than the reported one, and its --full branch does not use the delivered settings either (Burgers 250 steps/12 sampling steps against 300/16 in results/burgers/metrics.json; MHD 2D 200 against 300; MHD 3D 150 steps against 200), seeds_light.py is not called by it, DELIVERY.md with the exact commands is missing, and requirements are lower bounds, not pins. No re-run result was given."
+    },
+    "code": {
+     "score": 52.0,
+     "justification": "Runs (result files with timings), readable and docstringed, a physics sanity script that exits non-zero on failure, MIT licence, requirements.txt (unpinned). No unit tests. Leftovers reduce reusability: dead terms in the Burgers physics loss (a term multiplied by 0.0, an unused dissipation estimate), a boundary 'jump' penalty between the first and last nodes of a periodic grid that is not a boundary condition, an induction_residual docstring that contradicts itself, multiseed.py superseded by seeds_light.py."
+    },
+    "data": {
+     "score": 45.0,
+     "justification": "Burgers and 2D induction sets as npz with JSON metadata and a dataset card (MIT, provenance, limits), a model card, and checkpoints for all strategies in results/. The framework records a publication, but no URL or identifier is visible in the file (DELIVERY.md missing); the 3D set exists only as results/mhd3d/dataset.npz without a card; units and array layouts are not documented beyond the code."
+    },
+    "traceability": {
+     "score": 45.0,
+     "justification": "Each table names its result file and the values match for Burgers, MHD 3D and four of five MHD 2D columns; make_figures.py regenerates TABLES.md and two figures from the metrics files. The <A^2> column of the 2D table (0.48/0.40/0.17/0.13/0.35) does not match results/mhd2d/metrics.json (0.457/0.639/0.235/0.076/0.568), the figures are not referenced in the report, and the command log the report cites is absent."
+    }
+   }
+  },
+  "claims_checked": [
+   {
+    "claim": "Burgers, three seeds: conditioning lowers rel. L2 from 0.576 +/- 0.009 to 0.418 +/- 0.068; sampler_energy 0.347 +/- 0.015 with energy error 0.106.",
+    "supported": "yes",
+    "evidence": "results/seeds_summary.json, burgers_interp_nu_seeds_0_1_2, values per seed listed; seed 0 (300 steps) pooled with seeds 1-2 (250 steps), as the report says."
+   },
+   {
+    "claim": "The energy penalty does not beat plain conditioning once three seeds are averaged (0.269 +/- 0.082 vs 0.283 +/- 0.028).",
+    "supported": "yes",
+    "evidence": "seeds_summary.json cond_phys and cond energy_rel_err_mean; seed-0 values 0.180 vs 0.253 in results/burgers/metrics.json."
+   },
+   {
+    "claim": "MHD 2D: Helmholtz projection at sampling cuts the divergence score from 1.49 to 0.14 (seed 0) and to 0.29 +/- 0.02 on two further seeds.",
+    "supported": "yes",
+    "evidence": "results/mhd2d/metrics.json (1.492 -> 0.138); seeds_summary.json mhd2d_extra_seeds_1_2_steps200 sampler_proj div 0.2945 +/- 0.016. The residual 0.14 to 0.29 after an exact projection is not explained (reference 2e-7)."
+   },
+   {
+    "claim": "MHD 2D table, <A^2> rel. error column: 0.48, 0.40, 0.17, 0.13, 0.35, 'the smallest of the five' for the failed stream-function pair.",
+    "supported": "partly",
+    "evidence": "results/mhd2d/metrics.json gives 0.457, 0.639, 0.235, 0.076, 0.568: the ordering claim holds, the printed values do not match the file."
+   },
+   {
+    "claim": "MHD 3D: the curl decoder holds divergence at about 1e-7 for every strategy; an energy penalty cuts rel. L2 from 1.00 to 0.43, energy error 0.49 to 0.12, helicity error 1.53 to 0.81.",
+    "supported": "partly",
+    "evidence": "Numbers match results/mhd3d/metrics.json, but one training seed, 4 test fields, 200 steps (about 2 s of training); the report says so. The generality ('the loss route helps once the architecture can represent a divergence-free field') is not established."
+   },
+   {
+    "claim": "Conditioning on Rm is not learned on the 2D set (1.06 -> 1.01) because nine fields do not identify a 48k-parameter U-Net.",
+    "supported": "partly",
+    "evidence": "The numbers are in metrics.json; the cause is asserted, not tested (300 steps of training and 6 s of compute are an equally likely cause; extra seeds at 200 steps give cond 1.30 vs uncond 1.23)."
+   },
+   {
+    "claim": "The benchmark contains no polarity reversal; the axial-sign column is empty of meaning.",
+    "supported": "yes",
+    "evidence": "results/reference.json: axial means of order 1e-11, polarity_reversal_in_benchmark false."
+   },
+   {
+    "claim": "reproduce.sh regenerates every reported number; DELIVERY.md lists the exact commands.",
+    "supported": "no",
+    "evidence": "reproduce.sh default is a smaller configuration and --full uses other step counts than the committed metrics; DELIVERY.md is not in the repository."
+   },
+   {
+    "claim": "Burgers decay identity dE/dt = -nu * int u_x^2 matches a finite difference to 0.01 %.",
+    "supported": "partly",
+    "evidence": "milady/check_physics.py implements the check with a 2 % tolerance; no output of the run is committed."
+   }
+  ],
+  "means": "4.80 USD of 5 USD of model calls were spent in about 23 minutes, most of it on contexts of about 200 thousand tokens per call (7.1 M input tokens for 103 calls), and no GPU was obtained; the experiments themselves took seconds of CPU. Two thirds of the time allowance and all the GPU budget were left unused because the model budget was exhausted, so the models stayed under-trained (a few hundred steps) and most MHD results single-seed.",
+  "context": {
+   "incidents_outside_control": [
+    "A first run was not metered by the framework and was set aside; the team restarted from scratch at 00:40:36.",
+    "At 00:59 the framework refused a call whose worst-case cost exceeded the remaining budget by 0.01 USD and ended the mission (rule since relaxed); resumed one minute later with the same budget and deadline.",
+    "Cloud machines refused (Scaleway quotas on every type tried; Runpod offers without listed data centres), as recorded in DECISIONS.md."
+   ],
+   "effect": "The refusal at 00:59 cost about a minute and came when 4.2 USD were already spent, which was the team's own doing; the lack of GPU limited resolution but the delivered runs used seconds of CPU, so compute was not the binding constraint. The team stopped at 4.80 USD without calling deliver and without writing DELIVERY.md."
+  },
+  "strengths": [
+   "All three constraint routes of the offer implemented and compared on three benchmarks with held-out parameter values.",
+   "Honest reading: single-seed rankings withdrawn against three seeds, failures reported as failures, the empty polarity metric declared empty, measured/published/conjectured kept apart.",
+   "Result files, weights, samples, dataset and model cards, licence and a physics sanity script are committed, and the tables match the files almost everywhere."
+  ],
+  "weaknesses": [
+   "Toy scale and seconds of training: MHD generators at relative error about 1 do not reproduce near-deterministic targets, so the comparison of constraints is made on models that have not learned the data.",
+   "MHD results on one seed and four test fields; the 3D benchmark has almost no dependence on Rm (energy changes by 0.3 %).",
+   "Kinematic induction over t = 0.03 only: no dynamo, no Lorentz force, no diffusion baseline, no usable topology metric.",
+   "Not delivered; DELIVERY.md cited but missing; reproduce.sh --full does not match the delivered configuration; one table column disagrees with its result file."
+  ],
+  "summary": "Team I compared conditional flow-matching generators with constraints by design, by the loss and at sampling on viscous Burgers and on small 2D and 3D kinematic induction problems, on CPU, in about twenty minutes of work. The Burgers comparison has three seeds and shows that conditioning and a sampling-time energy rescaling help; the MHD models are under-trained, single-seed and tested on four fields, and the report says so plainly. Code, result files, weights and data cards are in the repository, but the team ran out of model budget before delivering and its reproduction script does not match the reported configuration."
  }
 }
